@@ -1,111 +1,111 @@
 @interface SavedRecordingService
 + (BOOL)reloadStockRecordings;
-+ (BOOL)shouldAcceptXPCConnection:(id)a3;
++ (BOOL)shouldAcceptXPCConnection:(id)connection;
 + (NSPersistentHistoryToken)localChangeToken;
 + (id)sharedInstance;
-+ (void)_moveLegacyRecordings:(id)a3;
-+ (void)_removeVestigialCloudKitSupportDirectory:(id)a3;
++ (void)_moveLegacyRecordings:(id)recordings;
++ (void)_removeVestigialCloudKitSupportDirectory:(id)directory;
 + (void)moveRecordingsDirectoryIfNeeded;
 + (void)removeDatabaseDirectories;
-+ (void)setLocalChangeToken:(id)a3;
-- (BOOL)_onServiceQueueHasActiveExclusiveSessionForCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4;
-- (BOOL)_onServiceQueueHasActiveSessionsForCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4;
-- (BOOL)_setupCloudMirroring:(id *)a3;
++ (void)setLocalChangeToken:(id)token;
+- (BOOL)_onServiceQueueHasActiveExclusiveSessionForCompositionAVURL:(id)l ignoredAccessSession:(id)session;
+- (BOOL)_onServiceQueueHasActiveSessionsForCompositionAVURL:(id)l ignoredAccessSession:(id)session;
+- (BOOL)_setupCloudMirroring:(id *)mirroring;
 - (BOOL)_shutdownCloudMirroring;
 - (BOOL)cloudKitIsEnabled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)willPerformRecoveryForError:(id)a3 fromContext:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)willPerformRecoveryForError:(id)error fromContext:(id)context;
 - (SavedRecordingService)init;
-- (id)_createMetadataForRecordingWithId:(id)a3 withAssetAtURL:(id)a4 error:(id *)a5;
-- (id)_getMetadataFromRecordingWithId:(id)a3 codecNames:(id)a4 error:(id *)a5;
+- (id)_createMetadataForRecordingWithId:(id)id withAssetAtURL:(id)l error:(id *)error;
+- (id)_getMetadataFromRecordingWithId:(id)id codecNames:(id)names error:(id *)error;
 - (id)_init;
 - (id)_onQueue_composedAVURLsWithActiveSessionsOrScheduledWork;
-- (id)_serviceErrorForInternalError:(id)a3 code:(unint64_t)a4;
+- (id)_serviceErrorForInternalError:(id)error code:(unint64_t)code;
 - (id)newBackgroundMirroringModel;
-- (void)_addDisabledOrphanCleanupForCompositionAVURL:(id)a3 xpcConnection:(id)a4 completionBlock:(id)a5;
-- (void)_attemptFinalizationOfCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4 completionBlock:(id)a5;
-- (void)_attemptOrphanedFragmentsCleanupForCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4 completionBlock:(id)a5;
-- (void)_attemptToRunDeferredFinalizationOfCompositionAVURL:(id)a3 completionBlock:(id)a4;
-- (void)_checkMobileRestore:(id)a3;
-- (void)_createAccountStatusUpdatedMigration:(id)a3;
+- (void)_addDisabledOrphanCleanupForCompositionAVURL:(id)l xpcConnection:(id)connection completionBlock:(id)block;
+- (void)_attemptFinalizationOfCompositionAVURL:(id)l ignoredAccessSession:(id)session completionBlock:(id)block;
+- (void)_attemptOrphanedFragmentsCleanupForCompositionAVURL:(id)l ignoredAccessSession:(id)session completionBlock:(id)block;
+- (void)_attemptToRunDeferredFinalizationOfCompositionAVURL:(id)l completionBlock:(id)block;
+- (void)_checkMobileRestore:(id)restore;
+- (void)_createAccountStatusUpdatedMigration:(id)migration;
 - (void)_downloadAssets;
-- (void)_excludeSupportFilesForDatabaseURL:(id)a3;
-- (void)_fetchAllAccessTokens:(id)a3;
-- (void)_handleCloudKitContainerEvent:(id)a3;
-- (void)_handleCloudKitContainerEventChangedNotification:(id)a3;
+- (void)_excludeSupportFilesForDatabaseURL:(id)l;
+- (void)_fetchAllAccessTokens:(id)tokens;
+- (void)_handleCloudKitContainerEvent:(id)event;
+- (void)_handleCloudKitContainerEventChangedNotification:(id)notification;
 - (void)_handleDebugSignal;
-- (void)_handleDidResetSyncNotification:(id)a3;
-- (void)_handleRemoteChangeNotification:(id)a3;
-- (void)_handleRemoteChangeNotificationOnServiceQueue:(id)a3;
-- (void)_handleTombstoneForRecordingDeleteChange:(id)a3;
-- (void)_handleTombstoneForRecordingResetDeleteChange:(id)a3;
-- (void)_handleWillResetSyncNotification:(id)a3;
-- (void)_handleXPCDisconnect:(id)a3;
+- (void)_handleDidResetSyncNotification:(id)notification;
+- (void)_handleRemoteChangeNotification:(id)notification;
+- (void)_handleRemoteChangeNotificationOnServiceQueue:(id)queue;
+- (void)_handleTombstoneForRecordingDeleteChange:(id)change;
+- (void)_handleTombstoneForRecordingResetDeleteChange:(id)change;
+- (void)_handleWillResetSyncNotification:(id)notification;
+- (void)_handleXPCDisconnect:(id)disconnect;
 - (void)_handleiCloudAvailabilityChanged;
-- (void)_initWithContainer:(id)a3 recordingsExist:(BOOL)a4;
+- (void)_initWithContainer:(id)container recordingsExist:(BOOL)exist;
 - (void)_initializeCloudKitPushNotifications;
 - (void)_initiateImplicitEncryptedTitleMigration;
-- (void)_notifyEncryptedFieldsMigrationStatusKnown:(BOOL)a3;
-- (void)_onQueueCloseAccessSession:(id)a3 normalTermination:(BOOL)a4 completionBlock:(id)a5;
+- (void)_notifyEncryptedFieldsMigrationStatusKnown:(BOOL)known;
+- (void)_onQueueCloseAccessSession:(id)session normalTermination:(BOOL)termination completionBlock:(id)block;
 - (void)_onQueuePerformOrphanHandlingIfEnabled;
-- (void)_onServiceQueueAttemptToRunningDeferredWorkAfterClosingSession:(id)a3;
-- (void)_onServiceQueueOpenAccessSessionNamed:(id)a3 compositionAVURL:(id)a4 accessIntent:(int64_t)a5 xpcConnection:(id)a6 accessSessionHandler:(id)a7;
+- (void)_onServiceQueueAttemptToRunningDeferredWorkAfterClosingSession:(id)session;
+- (void)_onServiceQueueOpenAccessSessionNamed:(id)named compositionAVURL:(id)l accessIntent:(int64_t)intent xpcConnection:(id)connection accessSessionHandler:(id)handler;
 - (void)_performDeferredSetup;
 - (void)_performEncryptedTitleMigrationIfNeeded;
-- (void)_performOnServiceQueue:(id)a3;
-- (void)_performOnServiceQueueWithBackgroundModel:(id)a3;
+- (void)_performOnServiceQueue:(id)queue;
+- (void)_performOnServiceQueueWithBackgroundModel:(id)model;
 - (void)_performSetupRequiringMobileRestoreCompletion;
-- (void)_processImportChange:(id)a3 model:(id)a4;
-- (void)_processImportRecordingChange:(id)a3 model:(id)a4;
-- (void)_processImportTransaction:(id)a3 model:(id)a4;
-- (void)_processLocalRecordingChange:(id)a3 model:(id)a4;
-- (void)_processLocalTransaction:(id)a3 model:(id)a4;
-- (void)_processResetTransaction:(id)a3 model:(id)a4;
-- (void)_processSpotlightTransaction:(id)a3 changes:(id)a4;
-- (void)_recreateAudioFuturesIfNeeded:(id)a3;
-- (void)_registerForCloudKitContainerEventsForMirroringStore:(id)a3;
+- (void)_processImportChange:(id)change model:(id)model;
+- (void)_processImportRecordingChange:(id)change model:(id)model;
+- (void)_processImportTransaction:(id)transaction model:(id)model;
+- (void)_processLocalRecordingChange:(id)change model:(id)model;
+- (void)_processLocalTransaction:(id)transaction model:(id)model;
+- (void)_processResetTransaction:(id)transaction model:(id)model;
+- (void)_processSpotlightTransaction:(id)transaction changes:(id)changes;
+- (void)_recreateAudioFuturesIfNeeded:(id)needed;
+- (void)_registerForCloudKitContainerEventsForMirroringStore:(id)store;
 - (void)_registerForVoxInitiatedMigrationNotificationName;
-- (void)_removeDisabledOrphanCleanupAVURLsForConnection:(id)a3;
-- (void)_removeDisabledOrphanCleanupForCompositionAVURL:(id)a3 xpcConnection:(id)a4;
+- (void)_removeDisabledOrphanCleanupAVURLsForConnection:(id)connection;
+- (void)_removeDisabledOrphanCleanupForCompositionAVURL:(id)l xpcConnection:(id)connection;
 - (void)_resetEncryptedFieldsMigrationState;
 - (void)_setupSignalHandlers;
 - (void)_stopMonitoringDemoMovieIfNeeded;
 - (void)_tearDownSignalHandlers;
-- (void)_unregisterForCloudKitContainerEventsForMirroringStore:(id)a3;
+- (void)_unregisterForCloudKitContainerEventsForMirroringStore:(id)store;
 - (void)_updateMigrationStatusIfNeeded;
-- (void)_updateNilTitlesWithLocalTitles:(id)a3;
-- (void)_validateOnFirstImport:(id)a3;
-- (void)_validateUpdate:(id)a3;
+- (void)_updateNilTitlesWithLocalTitles:(id)titles;
+- (void)_validateOnFirstImport:(id)import;
+- (void)_validateUpdate:(id)update;
 - (void)_wipeCloudKitCaches;
-- (void)assetAccessSessionController:(id)a3 sessionDidChangedFromActiveSessions:(id)a4 toActiveSessions:(id)a5;
-- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)assetAccessSessionController:(id)controller sessionDidChangedFromActiveSessions:(id)sessions toActiveSessions:(id)activeSessions;
+- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)block;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)dealloc;
-- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)a3 completionBlock:(id)a4;
-- (void)enableCloudRecordingsWithCompletionBlock:(id)a3;
-- (void)enableOrphanHandlingWithCompletionBlock:(id)a3;
-- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)a3;
-- (void)endAccessSessionWithToken:(id)a3 completionBlock:(id)a4;
-- (void)exportRecordingsToCloud:(id)a3;
-- (void)expungeRecordingsFromCloud:(id)a3;
-- (void)fetchCompositionAVURLsBeingExported:(id)a3;
-- (void)fetchCompositionAVURLsBeingModified:(id)a3;
-- (void)fetchMetadataForRecordingWithUUID:(id)a3 completionBlock:(id)a4;
-- (void)fetchRecordingUUIDsForExport:(id)a3;
-- (void)importRecordingWithSourceAudioURL:(id)a3 name:(id)a4 date:(id)a5 userInfo:(id)a6 importCompletionBlock:(id)a7;
-- (void)importRecordingsFromCloud:(id)a3;
-- (void)performLocalEncryptedTitleMigrationIfNeeded:(id)a3;
-- (void)prepareToCaptureToCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
-- (void)prepareToExportCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
-- (void)prepareToPreviewCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
-- (void)prepareToTrimCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
+- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)l completionBlock:(id)block;
+- (void)enableCloudRecordingsWithCompletionBlock:(id)block;
+- (void)enableOrphanHandlingWithCompletionBlock:(id)block;
+- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)l;
+- (void)endAccessSessionWithToken:(id)token completionBlock:(id)block;
+- (void)exportRecordingsToCloud:(id)cloud;
+- (void)expungeRecordingsFromCloud:(id)cloud;
+- (void)fetchCompositionAVURLsBeingExported:(id)exported;
+- (void)fetchCompositionAVURLsBeingModified:(id)modified;
+- (void)fetchMetadataForRecordingWithUUID:(id)d completionBlock:(id)block;
+- (void)fetchRecordingUUIDsForExport:(id)export;
+- (void)importRecordingWithSourceAudioURL:(id)l name:(id)name date:(id)date userInfo:(id)info importCompletionBlock:(id)block;
+- (void)importRecordingsFromCloud:(id)cloud;
+- (void)performLocalEncryptedTitleMigrationIfNeeded:(id)needed;
+- (void)prepareToCaptureToCompositionAVURL:(id)l accessRequestHandler:(id)handler;
+- (void)prepareToExportCompositionAVURL:(id)l accessRequestHandler:(id)handler;
+- (void)prepareToPreviewCompositionAVURL:(id)l accessRequestHandler:(id)handler;
+- (void)prepareToTrimCompositionAVURL:(id)l accessRequestHandler:(id)handler;
 - (void)reconcileMigrationStates;
-- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)a3;
-- (void)removeAllUserDataWithCompletion:(id)a3;
-- (void)sizeOfRecordingsForExport:(id)a3;
+- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)block;
+- (void)removeAllUserDataWithCompletion:(id)completion;
+- (void)sizeOfRecordingsForExport:(id)export;
 - (void)start;
-- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)a3 recordingURIsToUpdate:(id)a4 recordingURIsToDelete:(id)a5 completionBlock:(id)a6;
-- (void)valueForServiceKey:(id)a3 completion:(id)a4;
+- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)insert recordingURIsToUpdate:(id)update recordingURIsToDelete:(id)delete completionBlock:(id)block;
+- (void)valueForServiceKey:(id)key completion:(id)completion;
 @end
 
 @implementation SavedRecordingService
@@ -124,19 +124,19 @@
 {
   if (+[MobileRestoreObserver setupAssistantNeedsToRun])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(cloudSyncIsAvailable) = 0;
   }
 
   else
   {
-    v3 = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager cloudSyncIsAvailable];
-    if (v3)
+    cloudSyncIsAvailable = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager cloudSyncIsAvailable];
+    if (cloudSyncIsAvailable)
     {
-      LOBYTE(v3) = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager tccCloudAccess]== 2;
+      LOBYTE(cloudSyncIsAvailable) = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager tccCloudAccess]== 2;
     }
   }
 
-  return v3;
+  return cloudSyncIsAvailable;
 }
 
 + (id)sharedInstance
@@ -266,11 +266,11 @@
   return v4;
 }
 
-+ (void)setLocalChangeToken:(id)a3
++ (void)setLocalChangeToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v3 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+    v3 = [NSKeyedArchiver archivedDataWithRootObject:token requiringSecureCoding:1 error:0];
     if (!v3)
     {
       goto LABEL_6;
@@ -299,13 +299,13 @@ LABEL_6:
   return v3;
 }
 
-- (void)importRecordingWithSourceAudioURL:(id)a3 name:(id)a4 date:(id)a5 userInfo:(id)a6 importCompletionBlock:(id)a7
+- (void)importRecordingWithSourceAudioURL:(id)l name:(id)name date:(id)date userInfo:(id)info importCompletionBlock:(id)block
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [a3 url];
+  nameCopy = name;
+  dateCopy = date;
+  infoCopy = info;
+  blockCopy = block;
+  v15 = [l url];
   v16 = OSLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -315,38 +315,38 @@ LABEL_6:
   if (v15)
   {
     v17 = +[RCServiceContainer sharedContainer];
-    v18 = [v17 newBackgroundModel];
+    newBackgroundModel = [v17 newBackgroundModel];
     v19 = +[NSXPCConnection currentConnection];
-    [v18 importRecordingWithSourceAudioURL:v15 name:v11 date:v12 xpcConnection:v19 userInfo:v13 completionHandler:v14];
+    [newBackgroundModel importRecordingWithSourceAudioURL:v15 name:nameCopy date:dateCopy xpcConnection:v19 userInfo:infoCopy completionHandler:blockCopy];
   }
 
   else
   {
     v17 = [NSError errorWithDomain:RCSSavedRecordingServiceErrorDomain code:101 userInfo:0];
-    v14[2](v14, 0, v17);
+    blockCopy[2](blockCopy, 0, v17);
   }
 }
 
-- (void)enableCloudRecordingsWithCompletionBlock:(id)a3
+- (void)enableCloudRecordingsWithCompletionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001208C;
   v4[3] = &unk_1000551C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SavedRecordingService *)v5 _performOnServiceQueue:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(SavedRecordingService *)selfCopy _performOnServiceQueue:v4];
 }
 
-- (id)_serviceErrorForInternalError:(id)a3 code:(unint64_t)a4
+- (id)_serviceErrorForInternalError:(id)error code:(unint64_t)code
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
-    v7 = [v5 userInfo];
-    v8 = [v7 objectForKeyedSubscript:NSDebugDescriptionErrorKey];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:NSDebugDescriptionErrorKey];
     v9 = v8;
     if (v8)
     {
@@ -364,7 +364,7 @@ LABEL_6:
     v16 = NSDebugDescriptionErrorKey;
     v17 = v12;
     v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v11 = [NSError errorWithDomain:v13 code:a4 userInfo:v14];
+    v11 = [NSError errorWithDomain:v13 code:code userInfo:v14];
   }
 
   else
@@ -375,9 +375,9 @@ LABEL_6:
   return v11;
 }
 
-- (void)importRecordingsFromCloud:(id)a3
+- (void)importRecordingsFromCloud:(id)cloud
 {
-  v4 = a3;
+  cloudCopy = cloud;
   mirroringContainer = self->_mirroringContainer;
   if (mirroringContainer)
   {
@@ -390,14 +390,14 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s -- Import began", buf, 0xCu);
     }
 
-    v8 = [(RCMirroringContainer *)v6 newBackgroundModel];
+    newBackgroundModel = [(RCMirroringContainer *)v6 newBackgroundModel];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100012554;
     v12[3] = &unk_100055B88;
     v12[4] = self;
-    v13 = v4;
-    [v8 importFromCloudForStore:0 completionHandler:v12];
+    v13 = cloudCopy;
+    [newBackgroundModel importFromCloudForStore:0 completionHandler:v12];
   }
 
   else
@@ -408,25 +408,25 @@ LABEL_6:
     v10 = 0;
     v6 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v11 = [NSError errorWithDomain:v9 code:402 userInfo:v6];
-    (*(v4 + 2))(v4, 0, v11);
+    (*(cloudCopy + 2))(cloudCopy, 0, v11);
   }
 }
 
-- (void)exportRecordingsToCloud:(id)a3
+- (void)exportRecordingsToCloud:(id)cloud
 {
-  v4 = a3;
+  cloudCopy = cloud;
   mirroringContainer = self->_mirroringContainer;
   if (mirroringContainer)
   {
     v6 = mirroringContainer;
-    v7 = [(RCMirroringContainer *)v6 newBackgroundModel];
+    newBackgroundModel = [(RCMirroringContainer *)v6 newBackgroundModel];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100012874;
     v11[3] = &unk_100055B88;
     v11[4] = self;
-    v12 = v4;
-    [v7 exportToCloudForStore:0 completionHandler:v11];
+    v12 = cloudCopy;
+    [newBackgroundModel exportToCloudForStore:0 completionHandler:v11];
   }
 
   else
@@ -437,15 +437,15 @@ LABEL_6:
     v9 = 0;
     v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v10 = [NSError errorWithDomain:v8 code:401 userInfo:v6];
-    (*(v4 + 2))(v4, 0, v10);
+    (*(cloudCopy + 2))(cloudCopy, 0, v10);
   }
 }
 
-- (void)fetchRecordingUUIDsForExport:(id)a3
+- (void)fetchRecordingUUIDsForExport:(id)export
 {
-  v3 = a3;
+  exportCopy = export;
   v4 = +[RCServiceContainer sharedContainer];
-  v5 = [v4 newBackgroundModel];
+  newBackgroundModel = [v4 newBackgroundModel];
 
   v6 = +[RCQueryManager visibleRecordingsFetchRequest];
   v15 = RCCloudRecording_UniqueID;
@@ -457,23 +457,23 @@ LABEL_6:
   v11[1] = 3221225472;
   v11[2] = sub_100012B70;
   v11[3] = &unk_100055BB0;
-  v12 = v5;
+  v12 = newBackgroundModel;
   v13 = v6;
-  v14 = v3;
-  v8 = v3;
+  v14 = exportCopy;
+  v8 = exportCopy;
   v9 = v6;
-  v10 = v5;
+  v10 = newBackgroundModel;
   [v10 performBlockAndWait:v11];
 }
 
-- (void)fetchMetadataForRecordingWithUUID:(id)a3 completionBlock:(id)a4
+- (void)fetchMetadataForRecordingWithUUID:(id)d completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v8 = +[RCServiceContainer sharedContainer];
-  v9 = [v8 newBackgroundModel];
+  newBackgroundModel = [v8 newBackgroundModel];
 
-  v10 = [RCQueryManager recordingsWithUniqueIDFetchRequest:v6];
+  v10 = [RCQueryManager recordingsWithUniqueIDFetchRequest:dCopy];
   v20 = RCCloudRecording_FileName;
   v11 = [NSArray arrayWithObjects:&v20 count:1];
   [v10 setPropertiesToFetch:v11];
@@ -482,24 +482,24 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = sub_100012EC8;
   v15[3] = &unk_100055BD8;
-  v16 = v9;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
-  v12 = v7;
-  v13 = v6;
-  v14 = v9;
+  v16 = newBackgroundModel;
+  v17 = dCopy;
+  selfCopy = self;
+  v19 = blockCopy;
+  v12 = blockCopy;
+  v13 = dCopy;
+  v14 = newBackgroundModel;
   [v14 performBlockAndWait:v15];
 }
 
-- (void)sizeOfRecordingsForExport:(id)a3
+- (void)sizeOfRecordingsForExport:(id)export
 {
-  v25 = a3;
+  exportCopy = export;
   v3 = RCRecordingsDirectoryURL();
-  v4 = [v3 path];
+  path = [v3 path];
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 enumeratorAtPath:v4];
+  v6 = [v5 enumeratorAtPath:path];
   v7 = [NSSet setWithObjects:RCAudioFileExtensionM4A, RCAudioFileExtensionQT, RCAudioFileExtensionQTA, 0];
   v30 = 0u;
   v31 = 0u;
@@ -527,9 +527,9 @@ LABEL_6:
         objc_enumerationMutation(v8);
       }
 
-      v12 = [v4 stringByAppendingPathComponent:*(*(&v30 + 1) + 8 * v11)];
-      v13 = [v12 pathExtension];
-      v14 = [v7 containsObject:v13];
+      v12 = [path stringByAppendingPathComponent:*(*(&v30 + 1) + 8 * v11)];
+      pathExtension = [v12 pathExtension];
+      v14 = [v7 containsObject:pathExtension];
 
       if (v14)
       {
@@ -555,7 +555,7 @@ LABEL_12:
         else
         {
           v18 = v7;
-          v19 = v4;
+          v19 = path;
           v20 = v5;
           v21 = [v15 objectForKeyedSubscript:NSFileType];
           v22 = [v21 isEqualToString:NSFileTypeRegular];
@@ -565,14 +565,14 @@ LABEL_12:
             v17 = [v15 objectForKeyedSubscript:NSFileSize];
             v27 += [v17 unsignedLongLongValue];
             v5 = v20;
-            v4 = v19;
+            path = v19;
             v7 = v18;
             v8 = v26;
             goto LABEL_12;
           }
 
           v5 = v20;
-          v4 = v19;
+          path = v19;
           v7 = v18;
           v8 = v26;
         }
@@ -592,22 +592,22 @@ LABEL_12:
 LABEL_20:
 
   v24 = [NSNumber numberWithUnsignedLongLong:v27];
-  v25[2](v25, v24, v9);
+  exportCopy[2](exportCopy, v24, v9);
 }
 
-- (id)_createMetadataForRecordingWithId:(id)a3 withAssetAtURL:(id)a4 error:(id *)a5
+- (id)_createMetadataForRecordingWithId:(id)id withAssetAtURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  [v9 fileSystemRepresentation];
+  idCopy = id;
+  lCopy = l;
+  [lCopy fileSystemRepresentation];
   v10 = sandbox_extension_issue_file();
   if (v10)
   {
     v11 = [NSData dataWithBytesNoCopy:v10 length:strlen(v10) + 1 freeWhenDone:1];
-    v12 = [[NSSecurityScopedURLWrapper alloc] initWithURL:v9 readonly:1 scope:v11];
-    v13 = [AVAsset assetWithURL:v9];
-    v14 = [v13 rc_allCodecNames];
-    v15 = [(SavedRecordingService *)self _getMetadataFromRecordingWithId:v8 codecNames:v14 error:a5];
+    v12 = [[NSSecurityScopedURLWrapper alloc] initWithURL:lCopy readonly:1 scope:v11];
+    v13 = [AVAsset assetWithURL:lCopy];
+    rc_allCodecNames = [v13 rc_allCodecNames];
+    v15 = [(SavedRecordingService *)self _getMetadataFromRecordingWithId:idCopy codecNames:rc_allCodecNames error:error];
     v16 = v15;
     if (v15)
     {
@@ -619,13 +619,13 @@ LABEL_20:
   {
     v17 = [NSString stringWithFormat:@"Failed to create metadata: could not fget sandbox token"];
     v18 = v17;
-    if (a5)
+    if (error)
     {
       v19 = RCVoiceMemosErrorDomain;
       v22 = NSDebugDescriptionErrorKey;
       v23 = v17;
       v20 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      *a5 = [NSError errorWithDomain:v19 code:1 userInfo:v20];
+      *error = [NSError errorWithDomain:v19 code:1 userInfo:v20];
     }
 
     v16 = 0;
@@ -634,12 +634,12 @@ LABEL_20:
   return v16;
 }
 
-- (id)_getMetadataFromRecordingWithId:(id)a3 codecNames:(id)a4 error:(id *)a5
+- (id)_getMetadataFromRecordingWithId:(id)id codecNames:(id)names error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  namesCopy = names;
   v9 = +[RCServiceContainer sharedContainer];
-  v10 = [v9 newBackgroundModel];
+  newBackgroundModel = [v9 newBackgroundModel];
 
   v29 = 0;
   v30 = &v29;
@@ -657,19 +657,19 @@ LABEL_20:
   v17[1] = 3221225472;
   v17[2] = sub_10001398C;
   v17[3] = &unk_100055C00;
-  v11 = v10;
+  v11 = newBackgroundModel;
   v18 = v11;
-  v12 = v7;
+  v12 = idCopy;
   v19 = v12;
   v21 = &v23;
   v22 = &v29;
-  v13 = v8;
+  v13 = namesCopy;
   v20 = v13;
   [v11 performBlockAndWait:v17];
   v14 = v30[5];
-  if (a5 && !v14)
+  if (error && !v14)
   {
-    *a5 = v24[5];
+    *error = v24[5];
     v14 = v30[5];
   }
 
@@ -681,21 +681,21 @@ LABEL_20:
   return v15;
 }
 
-- (void)expungeRecordingsFromCloud:(id)a3
+- (void)expungeRecordingsFromCloud:(id)cloud
 {
-  v4 = a3;
+  cloudCopy = cloud;
   mirroringContainer = self->_mirroringContainer;
   if (mirroringContainer)
   {
     v6 = mirroringContainer;
-    v7 = [(RCMirroringContainer *)v6 newBackgroundModel];
+    newBackgroundModel = [(RCMirroringContainer *)v6 newBackgroundModel];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100013C64;
     v11[3] = &unk_100055B88;
     v11[4] = self;
-    v12 = v4;
-    [v7 resetCloudForStore:0 completionHandler:v11];
+    v12 = cloudCopy;
+    [newBackgroundModel resetCloudForStore:0 completionHandler:v11];
   }
 
   else
@@ -706,23 +706,23 @@ LABEL_20:
     v9 = 0;
     v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v10 = [NSError errorWithDomain:v8 code:403 userInfo:v6];
-    (*(v4 + 2))(v4, 0, v10);
+    (*(cloudCopy + 2))(cloudCopy, 0, v10);
   }
 }
 
-- (void)prepareToCaptureToCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToCaptureToCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = OSLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100035EF4(v6);
+    sub_100035EF4(lCopy);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (lCopy)
     {
       v9 = +[NSXPCConnection currentConnection];
       v12[0] = _NSConcreteStackBlock;
@@ -730,9 +730,9 @@ LABEL_20:
       v12[2] = sub_100013F00;
       v12[3] = &unk_100055C50;
       v12[4] = self;
-      v13 = v6;
+      v13 = lCopy;
       v14 = v9;
-      v15 = v7;
+      v15 = handlerCopy;
       v10 = v9;
       [(SavedRecordingService *)self _performOnServiceQueue:v12];
     }
@@ -746,7 +746,7 @@ LABEL_20:
       }
 
       v10 = [NSError errorWithDomain:RCSSavedRecordingServiceErrorDomain code:101 userInfo:0];
-      (*(v7 + 2))(v7, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
     }
   }
 
@@ -760,19 +760,19 @@ LABEL_20:
   }
 }
 
-- (void)prepareToPreviewCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToPreviewCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = OSLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100036104(v6);
+    sub_100036104(lCopy);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (lCopy)
     {
       v9 = +[NSXPCConnection currentConnection];
       v12[0] = _NSConcreteStackBlock;
@@ -780,9 +780,9 @@ LABEL_20:
       v12[2] = sub_100014208;
       v12[3] = &unk_100055C50;
       v12[4] = self;
-      v13 = v6;
+      v13 = lCopy;
       v14 = v9;
-      v15 = v7;
+      v15 = handlerCopy;
       v10 = v9;
       [(SavedRecordingService *)self _performOnServiceQueue:v12];
     }
@@ -796,7 +796,7 @@ LABEL_20:
       }
 
       v10 = [NSError errorWithDomain:RCSSavedRecordingServiceErrorDomain code:101 userInfo:0];
-      (*(v7 + 2))(v7, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
     }
   }
 
@@ -810,19 +810,19 @@ LABEL_20:
   }
 }
 
-- (void)prepareToExportCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToExportCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = OSLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100036314(v6);
+    sub_100036314(lCopy);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (lCopy)
     {
       v9 = +[NSXPCConnection currentConnection];
       v12[0] = _NSConcreteStackBlock;
@@ -830,9 +830,9 @@ LABEL_20:
       v12[2] = sub_100014510;
       v12[3] = &unk_100055C50;
       v12[4] = self;
-      v13 = v6;
+      v13 = lCopy;
       v14 = v9;
-      v15 = v7;
+      v15 = handlerCopy;
       v10 = v9;
       [(SavedRecordingService *)self _performOnServiceQueue:v12];
     }
@@ -846,7 +846,7 @@ LABEL_20:
       }
 
       v10 = [NSError errorWithDomain:RCSSavedRecordingServiceErrorDomain code:101 userInfo:0];
-      (*(v7 + 2))(v7, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
     }
   }
 
@@ -860,19 +860,19 @@ LABEL_20:
   }
 }
 
-- (void)prepareToTrimCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToTrimCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = OSLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100036524(v6);
+    sub_100036524(lCopy);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (lCopy)
     {
       v9 = +[NSXPCConnection currentConnection];
       v12[0] = _NSConcreteStackBlock;
@@ -880,9 +880,9 @@ LABEL_20:
       v12[2] = sub_100014A58;
       v12[3] = &unk_100055C50;
       v12[4] = self;
-      v13 = v6;
+      v13 = lCopy;
       v14 = v9;
-      v15 = v7;
+      v15 = handlerCopy;
       v10 = v9;
       [(SavedRecordingService *)self _performOnServiceQueue:v12];
     }
@@ -896,7 +896,7 @@ LABEL_20:
       }
 
       v10 = [NSError errorWithDomain:RCSSavedRecordingServiceErrorDomain code:101 userInfo:0];
-      (*(v7 + 2))(v7, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
     }
   }
 
@@ -913,19 +913,19 @@ LABEL_20:
 + (void)moveRecordingsDirectoryIfNeeded
 {
   v3 = RCLegacyRecordingsDirectoryURL();
-  [a1 _moveLegacyRecordings:v3];
+  [self _moveLegacyRecordings:v3];
 
   v4 = RCLibraryRecordingsDirectoryURL();
-  [a1 _moveLegacyRecordings:v4];
+  [self _moveLegacyRecordings:v4];
 }
 
-+ (void)_moveLegacyRecordings:(id)a3
++ (void)_moveLegacyRecordings:(id)recordings
 {
-  v4 = a3;
+  recordingsCopy = recordings;
   v5 = RCRecordingsDirectoryURL();
-  if (([v5 isEqual:v4] & 1) == 0)
+  if (([v5 isEqual:recordingsCopy] & 1) == 0)
   {
-    [a1 _removeVestigialCloudKitSupportDirectory:v4];
+    [self _removeVestigialCloudKitSupportDirectory:recordingsCopy];
     v6 = RCCloudRecordingsDatabaseFileName;
     v7 = [v5 URLByAppendingPathComponent:RCCloudRecordingsDatabaseFileName];
     v8 = [v7 checkResourceIsReachableAndReturnError:0];
@@ -935,12 +935,12 @@ LABEL_20:
       sub_100036734(v5);
     }
 
-    v10 = [v4 URLByAppendingPathComponent:v6];
+    v10 = [recordingsCopy URLByAppendingPathComponent:v6];
     v11 = [v10 checkResourceIsReachableAndReturnError:0];
     v12 = OSLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000367E8(v4);
+      sub_1000367E8(recordingsCopy);
     }
 
     v43 = +[NSFileManager defaultManager];
@@ -953,14 +953,14 @@ LABEL_20:
         *buf = 136315650;
         v57 = "+[SavedRecordingService _moveLegacyRecordings:]";
         v58 = 2112;
-        v59 = v4;
+        v59 = recordingsCopy;
         v60 = 2112;
         v61 = v5;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s -- Migrating recordings directory from %@ to %@", buf, 0x20u);
       }
 
       v54 = 0;
-      v14 = [v43 moveItemAtURL:v4 toURL:v5 error:&v54];
+      v14 = [v43 moveItemAtURL:recordingsCopy toURL:v5 error:&v54];
       v15 = v54;
       if ((v14 & 1) == 0)
       {
@@ -976,13 +976,13 @@ LABEL_20:
       }
     }
 
-    if (([v4 checkResourceIsReachableAndReturnError:0] & v8) != 1)
+    if (([recordingsCopy checkResourceIsReachableAndReturnError:0] & v8) != 1)
     {
       goto LABEL_54;
     }
 
     v53 = 0;
-    v17 = [v43 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:&__NSArray0__struct options:0 error:&v53];
+    v17 = [v43 contentsOfDirectoryAtURL:recordingsCopy includingPropertiesForKeys:&__NSArray0__struct options:0 error:&v53];
     v18 = v53;
     if (!v17)
     {
@@ -999,7 +999,7 @@ LABEL_20:
     {
       v42 = v5;
       v38 = v10;
-      v39 = v4;
+      v39 = recordingsCopy;
       v41 = objc_opt_new();
       v49 = 0u;
       v50 = 0u;
@@ -1025,32 +1025,32 @@ LABEL_20:
             }
 
             v23 = *(*(&v49 + 1) + 8 * v22);
-            v24 = [v23 lastPathComponent];
-            v25 = [v24 pathExtension];
-            v26 = [RCCaptureFormat supportsFileExtension:v25];
+            lastPathComponent = [v23 lastPathComponent];
+            pathExtension = [lastPathComponent pathExtension];
+            v26 = [RCCaptureFormat supportsFileExtension:pathExtension];
 
             if (v26)
             {
               v27 = +[NSUUID UUID];
-              v28 = [v27 UUIDString];
-              v29 = [v24 pathExtension];
-              v30 = [v28 stringByAppendingPathExtension:v29];
+              uUIDString = [v27 UUIDString];
+              pathExtension2 = [lastPathComponent pathExtension];
+              v30 = [uUIDString stringByAppendingPathExtension:pathExtension2];
 
               v31 = [v42 URLByAppendingPathComponent:v30];
               v48 = v18;
-              LODWORD(v29) = [v43 moveItemAtURL:v23 toURL:v31 error:&v48];
+              LODWORD(pathExtension2) = [v43 moveItemAtURL:v23 toURL:v31 error:&v48];
               v32 = v48;
 
               v33 = OSLogForCategory();
               v34 = v33;
-              if (v29)
+              if (pathExtension2)
               {
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 136315394;
                   v57 = "+[SavedRecordingService _moveLegacyRecordings:]";
                   v58 = 2112;
-                  v59 = v24;
+                  v59 = lastPathComponent;
                   _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "%s -- Moving %@ from legacy to destination Recordings", buf, 0x16u);
                 }
 
@@ -1064,7 +1064,7 @@ LABEL_20:
                   *buf = 136315650;
                   v57 = "+[SavedRecordingService _moveLegacyRecordings:]";
                   v58 = 2112;
-                  v59 = v24;
+                  v59 = lastPathComponent;
                   v60 = 2112;
                   v61 = v32;
                   _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%s -- Failed to move %@ from legacy to destination Recordings - error = %@", buf, 0x20u);
@@ -1093,7 +1093,7 @@ LABEL_20:
         v40 = 0;
       }
 
-      v4 = v39;
+      recordingsCopy = v39;
       v5 = v42;
       if ([v41 count])
       {
@@ -1137,7 +1137,7 @@ LABEL_51:
     else
     {
       v46 = 0;
-      if ([v43 removeItemAtURL:v4 error:&v46])
+      if ([v43 removeItemAtURL:recordingsCopy error:&v46])
       {
 LABEL_53:
 
@@ -1178,41 +1178,41 @@ LABEL_55:
   }
 }
 
-- (void)removeAllUserDataWithCompletion:(id)a3
+- (void)removeAllUserDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_assetSessionController;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100015470;
   v8[3] = &unk_100055BB0;
   v9 = v5;
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v11 = completionCopy;
+  v6 = completionCopy;
   v7 = v5;
   [(SavedRecordingService *)self _performOnServiceQueue:v8];
 }
 
-- (void)endAccessSessionWithToken:(id)a3 completionBlock:(id)a4
+- (void)endAccessSessionWithToken:(id)token completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  blockCopy = block;
   v8 = OSLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_100036B10();
   }
 
-  if (v6)
+  if (tokenCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100015818;
     v10[3] = &unk_100055BB0;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = tokenCopy;
+    v12 = blockCopy;
     [(SavedRecordingService *)self _performOnServiceQueue:v10];
   }
 
@@ -1226,43 +1226,43 @@ LABEL_55:
   }
 }
 
-- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)a3 completionBlock:(id)a4
+- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   +[NSXPCConnection currentConnection];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100015A20;
   v11[3] = &unk_100055C50;
   v11[4] = self;
-  v13 = v12 = v6;
-  v14 = v7;
-  v8 = v7;
+  v13 = v12 = lCopy;
+  v14 = blockCopy;
+  v8 = blockCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = lCopy;
   [(SavedRecordingService *)self _performOnServiceQueue:v11];
 }
 
-- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)a3
+- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   +[NSXPCConnection currentConnection];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100015AF8;
   v7[3] = &unk_1000556A0;
   v7[4] = self;
-  v9 = v8 = v4;
+  v9 = v8 = lCopy;
   v5 = v9;
-  v6 = v4;
+  v6 = lCopy;
   [(SavedRecordingService *)self _performOnServiceQueue:v7];
 }
 
 - (void)_onQueuePerformOrphanHandlingIfEnabled
 {
   v3 = +[RCServiceContainer sharedContainer];
-  v4 = [v3 newBackgroundModel];
+  newBackgroundModel = [v3 newBackgroundModel];
 
   v24 = 0;
   v25 = &v24;
@@ -1276,7 +1276,7 @@ LABEL_55:
   v21[3] = &unk_1000552B0;
   v21[4] = self;
   v23 = &v24;
-  v22 = v4;
+  v22 = newBackgroundModel;
   v14 = v22;
   [v22 performBlockAndWait:v21];
   v19 = 0u;
@@ -1352,112 +1352,112 @@ LABEL_55:
   _Block_object_dispose(&v24, 8);
 }
 
-- (void)enableOrphanHandlingWithCompletionBlock:(id)a3
+- (void)enableOrphanHandlingWithCompletionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100016258;
   v4[3] = &unk_100055D40;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  blockCopy = block;
+  v3 = blockCopy;
   [_TtC10voicememod27InitialCaptureOrphanHandler handleOrphanedInitalCapturesWithCompletionHandler:v4];
 }
 
-- (void)fetchCompositionAVURLsBeingExported:(id)a3
+- (void)fetchCompositionAVURLsBeingExported:(id)exported
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  exportedCopy = exported;
+  v5 = exportedCopy;
+  if (exportedCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100016440;
     v6[3] = &unk_1000551C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = exportedCopy;
     [(SavedRecordingService *)self _performOnServiceQueue:v6];
   }
 }
 
-- (void)fetchCompositionAVURLsBeingModified:(id)a3
+- (void)fetchCompositionAVURLsBeingModified:(id)modified
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  modifiedCopy = modified;
+  v5 = modifiedCopy;
+  if (modifiedCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100016628;
     v6[3] = &unk_1000551C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = modifiedCopy;
     [(SavedRecordingService *)self _performOnServiceQueue:v6];
   }
 }
 
-- (void)_fetchAllAccessTokens:(id)a3
+- (void)_fetchAllAccessTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tokensCopy = tokens;
+  v5 = tokensCopy;
+  if (tokensCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000168CC;
     v6[3] = &unk_1000551C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = tokensCopy;
     [(SavedRecordingService *)self _performOnServiceQueue:v6];
   }
 }
 
-- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)a3
+- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100016B40;
   v4[3] = &unk_1000551C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SavedRecordingService *)v5 _performOnServiceQueue:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(SavedRecordingService *)selfCopy _performOnServiceQueue:v4];
 }
 
-- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)a3
+- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100016C7C;
   v4[3] = &unk_1000551C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SavedRecordingService *)v5 _performOnServiceQueue:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(SavedRecordingService *)selfCopy _performOnServiceQueue:v4];
 }
 
-- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)a3 recordingURIsToUpdate:(id)a4 recordingURIsToDelete:(id)a5 completionBlock:(id)a6
+- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)insert recordingURIsToUpdate:(id)update recordingURIsToDelete:(id)delete completionBlock:(id)block
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100016E30;
   v13[3] = &unk_100055D68;
-  v14 = self;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v9 = v18;
-  v10 = v17;
-  v11 = v16;
-  v12 = v15;
-  [(SavedRecordingService *)v14 _performOnServiceQueue:v13];
+  selfCopy = self;
+  insertCopy = insert;
+  updateCopy = update;
+  deleteCopy = delete;
+  blockCopy = block;
+  v9 = blockCopy;
+  v10 = deleteCopy;
+  v11 = updateCopy;
+  v12 = insertCopy;
+  [(SavedRecordingService *)selfCopy _performOnServiceQueue:v13];
 }
 
-- (BOOL)willPerformRecoveryForError:(id)a3 fromContext:(id)a4
+- (BOOL)willPerformRecoveryForError:(id)error fromContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  errorCopy = error;
+  contextCopy = context;
   v7 = OSLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1467,15 +1467,15 @@ LABEL_55:
   return 0;
 }
 
-- (void)assetAccessSessionController:(id)a3 sessionDidChangedFromActiveSessions:(id)a4 toActiveSessions:(id)a5
+- (void)assetAccessSessionController:(id)controller sessionDidChangedFromActiveSessions:(id)sessions toActiveSessions:(id)activeSessions
 {
-  v6 = a5;
+  activeSessionsCopy = activeSessions;
   v7 = +[NSMutableSet set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = activeSessionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -1491,14 +1491,14 @@ LABEL_55:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 accessToken];
-        v15 = [v14 accessIntent];
+        accessToken = [v13 accessToken];
+        accessIntent = [accessToken accessIntent];
 
-        if (v15 == 3)
+        if (accessIntent == 3)
         {
-          v16 = [v13 accessToken];
-          v17 = [v16 compositionAVURL];
-          [v7 addObject:v17];
+          accessToken2 = [v13 accessToken];
+          compositionAVURL = [accessToken2 compositionAVURL];
+          [v7 addObject:compositionAVURL];
         }
       }
 
@@ -1525,51 +1525,51 @@ LABEL_55:
   }
 }
 
-- (void)_processImportTransaction:(id)a3 model:(id)a4
+- (void)_processImportTransaction:(id)transaction model:(id)model
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000171F4;
   v8[3] = &unk_1000556A0;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  transactionCopy = transaction;
+  selfCopy = self;
+  modelCopy = model;
+  v6 = modelCopy;
+  v7 = transactionCopy;
   [v6 performWithSavingDisabled:v8];
   [v6 saveIfNecessary];
 }
 
-- (void)_processImportChange:(id)a3 model:(id)a4
+- (void)_processImportChange:(id)change model:(id)model
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 changedObjectID];
-  v8 = [v7 entity];
-  v9 = [v8 name];
+  changeCopy = change;
+  modelCopy = model;
+  changedObjectID = [changeCopy changedObjectID];
+  entity = [changedObjectID entity];
+  name = [entity name];
 
-  if ([v9 isEqualToString:RCCloudRecording_EntityName])
+  if ([name isEqualToString:RCCloudRecording_EntityName])
   {
-    [(SavedRecordingService *)self _processImportRecordingChange:v10 model:v6];
+    [(SavedRecordingService *)self _processImportRecordingChange:changeCopy model:modelCopy];
   }
 
-  else if ([v9 isEqualToString:RCRecordingFolder_EntityName])
+  else if ([name isEqualToString:RCRecordingFolder_EntityName])
   {
-    [v6 reconcileChangedFolder:v7 change:v10];
+    [modelCopy reconcileChangedFolder:changedObjectID change:changeCopy];
   }
 
-  else if ([v9 isEqualToString:RCMigration_EntityName])
+  else if ([name isEqualToString:RCMigration_EntityName])
   {
     [(SavedRecordingService *)self reconcileMigrationStates];
   }
 }
 
-- (void)_validateUpdate:(id)a3
+- (void)_validateUpdate:(id)update
 {
   v3 = RCCloudRecording_VersionedAudioFuture;
-  v4 = a3;
-  v5 = [v4 containsObject:v3];
-  v6 = [v4 containsObject:RCCloudRecording_AudioFutureFlags];
+  updateCopy = update;
+  v5 = [updateCopy containsObject:v3];
+  v6 = [updateCopy containsObject:RCCloudRecording_AudioFutureFlags];
 
   if (v5 != v6)
   {
@@ -1581,32 +1581,32 @@ LABEL_55:
   }
 }
 
-- (void)_processImportRecordingChange:(id)a3 model:(id)a4
+- (void)_processImportRecordingChange:(id)change model:(id)model
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [v19 changeType];
-  if (!v7)
+  changeCopy = change;
+  modelCopy = model;
+  changeType = [changeCopy changeType];
+  if (!changeType)
   {
     goto LABEL_6;
   }
 
-  if (v7 == 2)
+  if (changeType == 2)
   {
-    v17 = [v19 tombstone];
-    [(SavedRecordingService *)self _handleTombstoneForRecordingDeleteChange:v17];
+    tombstone = [changeCopy tombstone];
+    [(SavedRecordingService *)self _handleTombstoneForRecordingDeleteChange:tombstone];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  if (v7 != 1)
+  if (changeType != 1)
   {
     goto LABEL_13;
   }
 
-  v8 = [v19 updatedProperties];
-  v9 = [v8 na_map:&stru_100055DA8];
+  updatedProperties = [changeCopy updatedProperties];
+  v9 = [updatedProperties na_map:&stru_100055DA8];
 
   v10 = RCAudioFuturePropertyNames();
   v11 = [v9 intersectsSet:v10];
@@ -1616,14 +1616,14 @@ LABEL_12:
     [(SavedRecordingService *)self _validateUpdate:v9];
 
 LABEL_6:
-    v12 = [v19 changedObjectID];
-    v13 = [v6 recordingWithID:v12];
+    changedObjectID = [changeCopy changedObjectID];
+    v13 = [modelCopy recordingWithID:changedObjectID];
 
     if (([v13 recreateAudioFutureIfNecessary] & 1) == 0)
     {
       audioFutureSyncManager = self->_audioFutureSyncManager;
-      v15 = [v19 changedObjectID];
-      [(RCAudioFutureSyncManager *)audioFutureSyncManager importAudioFuture:v15 mirroringModel:v6];
+      changedObjectID2 = [changeCopy changedObjectID];
+      [(RCAudioFutureSyncManager *)audioFutureSyncManager importAudioFuture:changedObjectID2 mirroringModel:modelCopy];
     }
 
     goto LABEL_9;
@@ -1640,23 +1640,23 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    v16 = [v19 changedObjectID];
-    v17 = [v6 recordingWithID:v16];
+    changedObjectID3 = [changeCopy changedObjectID];
+    tombstone = [modelCopy recordingWithID:changedObjectID3];
 
-    [v17 updateForRemoteTitleChange:self->_encryptedFieldsStatus == 1];
+    [tombstone updateForRemoteTitleChange:self->_encryptedFieldsStatus == 1];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)_handleTombstoneForRecordingDeleteChange:(id)a3
+- (void)_handleTombstoneForRecordingDeleteChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (changeCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:RCCloudRecording_FileName];
+    v6 = [changeCopy objectForKeyedSubscript:RCCloudRecording_FileName];
     if (v6)
     {
       v7 = v6;
@@ -1683,10 +1683,10 @@ LABEL_13:
               objc_enumerationMutation(v10);
             }
 
-            v16 = [*(*(&v26 + 1) + 8 * i) accessToken];
-            v17 = [v16 accessIntent];
+            accessToken = [*(*(&v26 + 1) + 8 * i) accessToken];
+            accessIntent = [accessToken accessIntent];
 
-            v13 |= (v17 & 0xFFFFFFFFFFFFFFFELL) == 2;
+            v13 |= (accessIntent & 0xFFFFFFFFFFFFFFFELL) == 2;
           }
 
           v12 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -1701,8 +1701,8 @@ LABEL_13:
       }
 
       v18 = +[NSFileManager defaultManager];
-      v19 = [v9 path];
-      v20 = [v18 fileExistsAtPath:v19];
+      path = [v9 path];
+      v20 = [v18 fileExistsAtPath:path];
 
       if (v20)
       {
@@ -1729,8 +1729,8 @@ LABEL_21:
       else
       {
         v22 = [RCComposition compositionLoadedForComposedAVURL:v9 createIfNeeded:0];
-        v23 = [v22 decomposedFragments];
-        v24 = [v23 count] > 1;
+        decomposedFragments = [v22 decomposedFragments];
+        v24 = [decomposedFragments count] > 1;
 
         if (((v24 | v13) & 1) == 0)
         {
@@ -1755,13 +1755,13 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_handleTombstoneForRecordingResetDeleteChange:(id)a3
+- (void)_handleTombstoneForRecordingResetDeleteChange:(id)change
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  changeCopy = change;
+  v4 = changeCopy;
+  if (changeCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:RCCloudRecording_FileName];
+    v5 = [changeCopy objectForKeyedSubscript:RCCloudRecording_FileName];
     if (v5)
     {
       v6 = v5;
@@ -1801,14 +1801,14 @@ LABEL_8:
   }
 }
 
-- (void)_processResetTransaction:(id)a3 model:(id)a4
+- (void)_processResetTransaction:(id)transaction model:(id)model
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [a3 changes];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  changes = [transaction changes];
+  v5 = [changes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1820,19 +1820,19 @@ LABEL_8:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changes);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 changedObjectID];
-        v12 = [v11 entity];
-        v13 = [v12 name];
-        v14 = [v13 isEqualToString:v8];
+        changedObjectID = [v10 changedObjectID];
+        entity = [changedObjectID entity];
+        name = [entity name];
+        v14 = [name isEqualToString:v8];
 
-        v15 = [v10 changeType];
+        changeType = [v10 changeType];
         if (v14)
         {
-          v16 = v15 == 2;
+          v16 = changeType == 2;
         }
 
         else
@@ -1842,12 +1842,12 @@ LABEL_8:
 
         if (v16)
         {
-          v17 = [v10 tombstone];
-          [(SavedRecordingService *)self _handleTombstoneForRecordingResetDeleteChange:v17];
+          tombstone = [v10 tombstone];
+          [(SavedRecordingService *)self _handleTombstoneForRecordingResetDeleteChange:tombstone];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [changes countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -1856,21 +1856,21 @@ LABEL_8:
   [(SavedRecordingService *)self _resetEncryptedFieldsMigrationState];
 }
 
-- (void)_processLocalTransaction:(id)a3 model:(id)a4
+- (void)_processLocalTransaction:(id)transaction model:(id)model
 {
-  v5 = a3;
-  v6 = a4;
-  v30 = [v5 author];
-  v7 = v6;
-  v8 = [v6 context];
-  v29 = [v8 transactionAuthor];
+  transactionCopy = transaction;
+  modelCopy = model;
+  author = [transactionCopy author];
+  v7 = modelCopy;
+  context = [modelCopy context];
+  transactionAuthor = [context transactionAuthor];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = v5;
-  obj = [v5 changes];
+  v27 = transactionCopy;
+  obj = [transactionCopy changes];
   v9 = [obj countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v9)
   {
@@ -1894,25 +1894,25 @@ LABEL_8:
           v15 = OSLogForCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v24 = [v14 changeID];
-            v25 = [v14 updatedProperties];
-            v26 = [v25 valueForKey:@"name"];
+            changeID = [v14 changeID];
+            updatedProperties = [v14 updatedProperties];
+            v26 = [updatedProperties valueForKey:@"name"];
             *buf = 136315906;
             v39 = "[SavedRecordingService _processLocalTransaction:model:]";
             v40 = 2112;
-            v41 = v30;
+            v41 = author;
             v42 = 2048;
-            v43 = v24;
+            v43 = changeID;
             v44 = 2112;
             v45 = v26;
             _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s -- author = %@, changedID = %lld, updatedProperties:  %@", buf, 0x2Au);
           }
         }
 
-        v16 = [v14 changedObjectID];
-        v17 = [v16 entity];
-        v18 = [v17 name];
-        v19 = [v18 isEqualToString:v12];
+        changedObjectID = [v14 changedObjectID];
+        entity = [changedObjectID entity];
+        name = [entity name];
+        v19 = [name isEqualToString:v12];
 
         if (v19)
         {
@@ -1920,14 +1920,14 @@ LABEL_8:
           goto LABEL_20;
         }
 
-        v20 = [v17 name];
-        if ([v20 isEqualToString:v31])
+        name2 = [entity name];
+        if ([name2 isEqualToString:v31])
         {
-          v21 = [v30 isEqualToString:v29];
+          v21 = [author isEqualToString:transactionAuthor];
 
           if ((v21 & 1) == 0)
           {
-            [v7 reconcileChangedFolder:v16 change:v14];
+            [v7 reconcileChangedFolder:changedObjectID change:v14];
             goto LABEL_20;
           }
         }
@@ -1936,10 +1936,10 @@ LABEL_8:
         {
         }
 
-        v22 = [v17 name];
-        if ([v22 isEqualToString:v28])
+        name3 = [entity name];
+        if ([name3 isEqualToString:v28])
         {
-          v23 = [v30 isEqualToString:v29];
+          v23 = [author isEqualToString:transactionAuthor];
 
           if ((v23 & 1) == 0)
           {
@@ -1961,20 +1961,20 @@ LABEL_20:
   }
 }
 
-- (void)_processLocalRecordingChange:(id)a3 model:(id)a4
+- (void)_processLocalRecordingChange:(id)change model:(id)model
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v16 changeType] != 2)
+  changeCopy = change;
+  modelCopy = model;
+  if ([changeCopy changeType] != 2)
   {
-    v7 = [v16 changedObjectID];
-    v8 = [v6 recordingWithID:v7];
+    changedObjectID = [changeCopy changedObjectID];
+    v8 = [modelCopy recordingWithID:changedObjectID];
     if (v8)
     {
-      if ([v16 changeType] == 1)
+      if ([changeCopy changeType] == 1)
       {
-        v9 = [v16 updatedProperties];
-        v10 = [v9 na_map:&stru_100055DC8];
+        updatedProperties = [changeCopy updatedProperties];
+        v10 = [updatedProperties na_map:&stru_100055DC8];
 
         v11 = RCAudioFuturePropertyNames();
         v12 = [v10 intersectsSet:v11];
@@ -1995,7 +1995,7 @@ LABEL_13:
           if (encryptedFieldsStatus)
           {
             [v8 updateForLocalTitleChange:encryptedFieldsStatus == 1];
-            [v6 saveIfNecessary];
+            [modelCopy saveIfNecessary];
           }
 
           goto LABEL_15;
@@ -2004,7 +2004,7 @@ LABEL_13:
 
       else
       {
-        if ([v16 changeType])
+        if ([changeCopy changeType])
         {
           goto LABEL_15;
         }
@@ -2012,11 +2012,11 @@ LABEL_13:
         v13 = 1;
       }
 
-      v14 = [v8 syncedAudioFuture];
+      syncedAudioFuture = [v8 syncedAudioFuture];
 
-      if (v14)
+      if (syncedAudioFuture)
       {
-        [(RCAudioFutureSyncManager *)self->_audioFutureSyncManager markRecordingAsNeedingExport:v7 model:v6];
+        [(RCAudioFutureSyncManager *)self->_audioFutureSyncManager markRecordingAsNeedingExport:changedObjectID model:modelCopy];
         goto LABEL_10;
       }
 
@@ -2030,15 +2030,15 @@ LABEL_15:
   }
 }
 
-- (void)_processSpotlightTransaction:(id)a3 changes:(id)a4
+- (void)_processSpotlightTransaction:(id)transaction changes:(id)changes
 {
-  v5 = a4;
+  changesCopy = changes;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a3 changes];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  changes = [transaction changes];
+  v7 = [changes countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2049,37 +2049,37 @@ LABEL_15:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(changes);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = off_100055DE8[[v11 changeType]];
-        v13 = [v5 objectForKeyedSubscript:v12];
+        v13 = [changesCopy objectForKeyedSubscript:v12];
         if (!v13)
         {
           v13 = objc_opt_new();
-          [v5 setObject:v13 forKeyedSubscript:v12];
+          [changesCopy setObject:v13 forKeyedSubscript:v12];
         }
 
-        v14 = [v11 changedObjectID];
-        v15 = [v14 URIRepresentation];
-        [v13 addObject:v15];
+        changedObjectID = [v11 changedObjectID];
+        uRIRepresentation = [changedObjectID URIRepresentation];
+        [v13 addObject:uRIRepresentation];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [changes countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_handleRemoteChangeNotificationOnServiceQueue:(id)a3
+- (void)_handleRemoteChangeNotificationOnServiceQueue:(id)queue
 {
-  v4 = [a3 userInfo];
+  userInfo = [queue userInfo];
   v5 = self->_cloudStoreToken;
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:NSPersistentHistoryTokenKey];
+    v6 = [userInfo objectForKeyedSubscript:NSPersistentHistoryTokenKey];
     if (v6 && [(NSPersistentHistoryToken *)v5 compareToken:v6 error:0]== 2)
     {
       mirroringContainer = self->_mirroringContainer;
@@ -2099,57 +2099,57 @@ LABEL_15:
       v12[2] = sub_1000184A4;
       v12[3] = &unk_1000559F8;
       v12[4] = self;
-      v13 = [(RCMirroringContainer *)v8 newBackgroundModel];
+      newBackgroundModel = [(RCMirroringContainer *)v8 newBackgroundModel];
       v14 = v5;
       v15 = v9;
       v10 = v9;
-      v11 = v13;
+      v11 = newBackgroundModel;
       [v11 performBlockAndWait:v12];
     }
   }
 }
 
-- (void)_handleRemoteChangeNotification:(id)a3
+- (void)_handleRemoteChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serviceSerialQueue = self->_serviceSerialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100018884;
   v7[3] = &unk_1000556C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(serviceSerialQueue, v7);
 }
 
-- (void)_handleWillResetSyncNotification:(id)a3
+- (void)_handleWillResetSyncNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = OSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100036DD8(v3);
+    sub_100036DD8(notificationCopy);
   }
 }
 
-- (void)_handleDidResetSyncNotification:(id)a3
+- (void)_handleDidResetSyncNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = OSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100036E94(v3);
+    sub_100036E94(notificationCopy);
   }
 }
 
-- (void)_registerForCloudKitContainerEventsForMirroringStore:(id)a3
+- (void)_registerForCloudKitContainerEventsForMirroringStore:(id)store
 {
-  v4 = [a3 rc_mirroringDelegate];
-  if (v4)
+  rc_mirroringDelegate = [store rc_mirroringDelegate];
+  if (rc_mirroringDelegate)
   {
     v5 = +[NSNotificationCenter defaultCenter];
-    [v5 addObserver:self selector:"_handleCloudKitContainerEventChangedNotification:" name:NSPersistentCloudKitContainerEventChangedNotification object:v4];
+    [v5 addObserver:self selector:"_handleCloudKitContainerEventChangedNotification:" name:NSPersistentCloudKitContainerEventChangedNotification object:rc_mirroringDelegate];
   }
 
   else
@@ -2162,17 +2162,17 @@ LABEL_15:
   }
 }
 
-- (void)_unregisterForCloudKitContainerEventsForMirroringStore:(id)a3
+- (void)_unregisterForCloudKitContainerEventsForMirroringStore:(id)store
 {
-  v5 = [a3 rc_mirroringDelegate];
+  rc_mirroringDelegate = [store rc_mirroringDelegate];
   v4 = +[NSNotificationCenter defaultCenter];
-  [v4 removeObserver:self name:NSPersistentCloudKitContainerEventChangedNotification object:v5];
+  [v4 removeObserver:self name:NSPersistentCloudKitContainerEventChangedNotification object:rc_mirroringDelegate];
 }
 
-- (void)_handleCloudKitContainerEventChangedNotification:(id)a3
+- (void)_handleCloudKitContainerEventChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NSPersistentCloudKitContainerEventUserInfoKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NSPersistentCloudKitContainerEventUserInfoKey];
 
   if (v5)
   {
@@ -2184,17 +2184,17 @@ LABEL_15:
   }
 }
 
-- (void)_handleCloudKitContainerEvent:(id)a3
+- (void)_handleCloudKitContainerEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_firstImportComplete && [v4 type] == 1)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (!self->_firstImportComplete && [eventCopy type] == 1)
   {
     if ([v5 succeeded])
     {
-      v6 = [v5 endDate];
+      endDate = [v5 endDate];
 
-      if (v6)
+      if (endDate)
       {
         self->_firstImportComplete = 1;
         v7 = OSLogForCategory();
@@ -2217,14 +2217,14 @@ LABEL_15:
   {
     out_token = 0;
     objc_initWeak(&location, self);
-    v3 = [RCVoxInitiatedMigrationNotificationName UTF8String];
+    uTF8String = [RCVoxInitiatedMigrationNotificationName UTF8String];
     v4 = &_dispatch_main_q;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100018D38;
     handler[3] = &unk_100055E30;
     objc_copyWeak(&v6, &location);
-    notify_register_dispatch(v3, &out_token, &_dispatch_main_q, handler);
+    notify_register_dispatch(uTF8String, &out_token, &_dispatch_main_q, handler);
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -2264,8 +2264,8 @@ LABEL_15:
   }
 
 LABEL_9:
-  v4 = [(RCAccountStatusObserver *)self->_accountStatusObserver encryptedFieldsAccountStatus];
-  if (!self->_firstImportComplete || v4 == 0)
+  encryptedFieldsAccountStatus = [(RCAccountStatusObserver *)self->_accountStatusObserver encryptedFieldsAccountStatus];
+  if (!self->_firstImportComplete || encryptedFieldsAccountStatus == 0)
   {
     v6 = OSLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2305,11 +2305,11 @@ LABEL_9:
   [(SavedRecordingService *)self _performOnServiceQueueWithBackgroundModel:v2];
 }
 
-- (void)_createAccountStatusUpdatedMigration:(id)a3
+- (void)_createAccountStatusUpdatedMigration:(id)migration
 {
-  v3 = a3;
-  v4 = [v3 createEncryptedFieldsMigration:1];
-  [v3 saveIfNecessary];
+  migrationCopy = migration;
+  v4 = [migrationCopy createEncryptedFieldsMigration:1];
+  [migrationCopy saveIfNecessary];
 
   v5 = OSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2325,34 +2325,34 @@ LABEL_9:
 - (void)_initiateImplicitEncryptedTitleMigration
 {
   v3 = +[RCServiceContainer sharedContainer];
-  v4 = [v3 newBackgroundModel];
+  newBackgroundModel = [v3 newBackgroundModel];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000192B8;
   v6[3] = &unk_1000556F0;
-  v7 = v4;
-  v5 = v4;
+  v7 = newBackgroundModel;
+  v5 = newBackgroundModel;
   [v5 performBlockAndWait:v6];
   [(SavedRecordingService *)self reconcileMigrationStates];
 }
 
-- (void)performLocalEncryptedTitleMigrationIfNeeded:(id)a3
+- (void)performLocalEncryptedTitleMigrationIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = +[RCServiceContainer sharedContainer];
-  v5 = [v4 performLocalEncryptedTitleMigrationIfNeeded];
+  performLocalEncryptedTitleMigrationIfNeeded = [v4 performLocalEncryptedTitleMigrationIfNeeded];
 
-  if (v5)
+  if (performLocalEncryptedTitleMigrationIfNeeded)
   {
-    v6 = [v3 encryptedFieldMigrations];
+    encryptedFieldMigrations = [neededCopy encryptedFieldMigrations];
     v7 = OSLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 136315394;
       v9 = "[SavedRecordingService performLocalEncryptedTitleMigrationIfNeeded:]";
       v10 = 2112;
-      v11 = v6;
+      v11 = encryptedFieldMigrations;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s -- Performed encrypted field migration for local recordings, migrations %@", &v8, 0x16u);
     }
   }
@@ -2367,9 +2367,9 @@ LABEL_9:
   [(SavedRecordingService *)self reconcileMigrationStates];
 }
 
-- (void)_notifyEncryptedFieldsMigrationStatusKnown:(BOOL)a3
+- (void)_notifyEncryptedFieldsMigrationStatusKnown:(BOOL)known
 {
-  if (a3)
+  if (known)
   {
     v3 = 7;
   }
@@ -2391,28 +2391,28 @@ LABEL_9:
   notify_post([RCMigrationReadyNotificationName UTF8String]);
 }
 
-- (void)_validateOnFirstImport:(id)a3
+- (void)_validateOnFirstImport:(id)import
 {
   if (self->_encryptedFieldsStatus)
   {
-    v4 = a3;
-    [(SavedRecordingService *)self _updateNilTitlesWithLocalTitles:v4];
-    [(SavedRecordingService *)self _recreateAudioFuturesIfNeeded:v4];
+    importCopy = import;
+    [(SavedRecordingService *)self _updateNilTitlesWithLocalTitles:importCopy];
+    [(SavedRecordingService *)self _recreateAudioFuturesIfNeeded:importCopy];
 
     [(SavedRecordingService *)self _performEncryptedTitleMigrationIfNeeded];
   }
 }
 
-- (void)_updateNilTitlesWithLocalTitles:(id)a3
+- (void)_updateNilTitlesWithLocalTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   encryptedFieldsStatus = self->_encryptedFieldsStatus;
-  v6 = [v4 recordingsWithNilEncryptedTitleOrCustomLabel];
+  recordingsWithNilEncryptedTitleOrCustomLabel = [titlesCopy recordingsWithNilEncryptedTitleOrCustomLabel];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [recordingsWithNilEncryptedTitleOrCustomLabel countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2424,7 +2424,7 @@ LABEL_9:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordingsWithNilEncryptedTitleOrCustomLabel);
         }
 
         [*(*(&v11 + 1) + 8 * v10) updateNilTitleFields:encryptedFieldsStatus == 1];
@@ -2432,24 +2432,24 @@ LABEL_9:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [recordingsWithNilEncryptedTitleOrCustomLabel countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 
-  [v4 saveIfNecessary];
+  [titlesCopy saveIfNecessary];
 }
 
-- (void)_recreateAudioFuturesIfNeeded:(id)a3
+- (void)_recreateAudioFuturesIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 recordingsWithNilAudioFutures];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  recordingsWithNilAudioFutures = [neededCopy recordingsWithNilAudioFutures];
+  v5 = [recordingsWithNilAudioFutures countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2461,7 +2461,7 @@ LABEL_9:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recordingsWithNilAudioFutures);
         }
 
         [*(*(&v9 + 1) + 8 * v8) recreateAudioFutureIfNecessary];
@@ -2469,13 +2469,13 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [recordingsWithNilAudioFutures countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 
-  [v3 saveIfNecessary];
+  [neededCopy saveIfNecessary];
 }
 
 - (void)_performEncryptedTitleMigrationIfNeeded
@@ -2486,27 +2486,27 @@ LABEL_9:
   }
 }
 
-- (void)_checkMobileRestore:(id)a3
+- (void)_checkMobileRestore:(id)restore
 {
-  v6 = a3;
+  restoreCopy = restore;
   v4 = [[MobileRestoreObserver alloc] initWithQueue:self->_serviceSerialQueue];
   restoreObserver = self->_restoreObserver;
   self->_restoreObserver = v4;
 
-  [(MobileRestoreObserver *)self->_restoreObserver observeMobileRestore:v6];
+  [(MobileRestoreObserver *)self->_restoreObserver observeMobileRestore:restoreCopy];
 }
 
 - (void)_initializeCloudKitPushNotifications
 {
   v7 = [[CKNotificationListener alloc] initWithMachServiceName:@"com.apple.aps.voicememod"];
   v2 = +[RCCloudKitContainerUtilities createContainer];
-  v3 = [v2 privateCloudDatabase];
+  privateCloudDatabase = [v2 privateCloudDatabase];
   v4 = objc_opt_new();
-  v5 = [v4 subscriptionID];
-  [v7 registerForSubscriptionWithID:v5 inDatabase:v3 handler:&stru_100055F00];
+  subscriptionID = [v4 subscriptionID];
+  [v7 registerForSubscriptionWithID:subscriptionID inDatabase:privateCloudDatabase handler:&stru_100055F00];
 
-  v6 = [v4 subscriptionID];
-  [v7 unregisterForSubscriptionWithID:v6 inDatabase:v3];
+  subscriptionID2 = [v4 subscriptionID];
+  [v7 unregisterForSubscriptionWithID:subscriptionID2 inDatabase:privateCloudDatabase];
 }
 
 - (void)_wipeCloudKitCaches
@@ -2515,15 +2515,15 @@ LABEL_9:
   [v2 wipeAllCachesAndDie];
 }
 
-- (void)_excludeSupportFilesForDatabaseURL:(id)a3
+- (void)_excludeSupportFilesForDatabaseURL:(id)l
 {
   v3 = RCSupportDirectoryForDatabase();
   [v3 setResourceValue:&__kCFBooleanTrue forKey:NSURLIsExcludedFromBackupKey error:0];
 }
 
-- (void)_initWithContainer:(id)a3 recordingsExist:(BOOL)a4
+- (void)_initWithContainer:(id)container recordingsExist:(BOOL)exist
 {
-  v6 = a3;
+  containerCopy = container;
   v7 = OSLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -2534,7 +2534,7 @@ LABEL_9:
   savedRecordingSearchIndexController = self->_savedRecordingSearchIndexController;
   self->_savedRecordingSearchIndexController = v8;
 
-  if (!a4)
+  if (!exist)
   {
     v10 = +[NSFileManager defaultManager];
     v11 = RCStockRecordingsURL();
@@ -2545,26 +2545,26 @@ LABEL_9:
     if (v13)
     {
       v14 = +[RCServiceContainer sharedContainer];
-      v15 = [v14 newBackgroundModel];
+      newBackgroundModel = [v14 newBackgroundModel];
 
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_100019FA0;
       v29[3] = &unk_1000556C8;
       v30 = v13;
-      v31 = v15;
-      v16 = v15;
+      v31 = newBackgroundModel;
+      v16 = newBackgroundModel;
       [v16 performBlockAndWait:v29];
     }
   }
 
-  v17 = [v6 store];
-  v18 = [v17 persistentStoreCoordinator];
+  store = [containerCopy store];
+  persistentStoreCoordinator = [store persistentStoreCoordinator];
 
-  v19 = [v6 store];
-  v32 = v19;
+  store2 = [containerCopy store];
+  v32 = store2;
   v20 = [NSArray arrayWithObjects:&v32 count:1];
-  v21 = [v18 currentPersistentHistoryTokenFromStores:v20];
+  v21 = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:v20];
   cloudStoreToken = self->_cloudStoreToken;
   self->_cloudStoreToken = v21;
 
@@ -2574,7 +2574,7 @@ LABEL_9:
 
   [(RCAudioFutureSyncManager *)self->_audioFutureSyncManager setDelegate:self];
   v25 = +[NSNotificationCenter defaultCenter];
-  [v25 addObserver:self selector:"_handleRemoteChangeNotification:" name:NSPersistentStoreRemoteChangeNotification object:v18];
+  [v25 addObserver:self selector:"_handleRemoteChangeNotification:" name:NSPersistentStoreRemoteChangeNotification object:persistentStoreCoordinator];
   [v25 addObserver:self selector:"_handleWillResetSyncNotification:" name:NSCloudKitMirroringDelegateWillResetSyncNotificationName object:0];
   [v25 addObserver:self selector:"_handleDidResetSyncNotification:" name:NSCloudKitMirroringDelegateDidResetSyncNotificationName object:0];
   v26 = RCRecordingsDirectoryURL();
@@ -2600,10 +2600,10 @@ LABEL_9:
   [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager setDelegate:self];
   [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager startMonitoringAccountChanges];
   v5 = +[RCServiceContainer sharedContainer];
-  v6 = [v5 newBackgroundModel];
-  v7 = [v6 encryptedFieldsMigrationExists];
+  newBackgroundModel = [v5 newBackgroundModel];
+  encryptedFieldsMigrationExists = [newBackgroundModel encryptedFieldsMigrationExists];
 
-  if (v7)
+  if (encryptedFieldsMigrationExists)
   {
     self->_encryptedFieldsStatus = 1;
   }
@@ -2706,13 +2706,13 @@ LABEL_9:
   _Block_object_dispose(v18, 8);
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a5;
-  v6 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   v7 = OSLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (replyCopy)
   {
     if (v8)
     {
@@ -2725,70 +2725,70 @@ LABEL_9:
     sub_100037348();
   }
 
-  [v6 invoke];
+  [invocationCopy invoke];
 }
 
-+ (BOOL)shouldAcceptXPCConnection:(id)a3
++ (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = OSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100037470(v3);
+    sub_100037470(connectionCopy);
   }
 
-  v5 = [v3 valueForEntitlement:@"com.apple.private.voicememod.client"];
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.voicememod.client"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = [v3 serviceName];
-    if (v7)
+    serviceName = [connectionCopy serviceName];
+    if (serviceName)
     {
-      v8 = [v3 valueForEntitlement:@"com.apple.security.exception.mach-lookup.global-name"];
+      v8 = [connectionCopy valueForEntitlement:@"com.apple.security.exception.mach-lookup.global-name"];
       if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v8 count])
       {
-        v6 = [v8 containsObject:v7];
+        bOOLValue = [v8 containsObject:serviceName];
       }
 
       else
       {
-        v6 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [SavedRecordingService shouldAcceptXPCConnection:v7];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [SavedRecordingService shouldAcceptXPCConnection:connectionCopy];
   if (v8)
   {
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v9 = +[RCSSavedRecordingServiceConnection serviceInterface];
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
     v10 = +[RCSSavedRecordingServiceConnection clientInterface];
-    [v7 setRemoteObjectInterface:v10];
+    [connectionCopy setRemoteObjectInterface:v10];
 
-    [v7 setDelegate:self];
-    [v7 rcs_setValid:1];
-    v11 = [v7 rcs_applicationIdentifier];
-    if ([v11 isEqualToString:RCVoiceMemosBundleID])
+    [connectionCopy setDelegate:self];
+    [connectionCopy rcs_setValid:1];
+    rcs_applicationIdentifier = [connectionCopy rcs_applicationIdentifier];
+    if ([rcs_applicationIdentifier isEqualToString:RCVoiceMemosBundleID])
     {
-      self->_VoiceMemosPID = [v7 processIdentifier];
+      self->_VoiceMemosPID = [connectionCopy processIdentifier];
       v12 = OSLogForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
@@ -2796,7 +2796,7 @@ LABEL_9:
       }
     }
 
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     objc_initWeak(&from, self);
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -2804,28 +2804,28 @@ LABEL_9:
     v22[3] = &unk_100055FB8;
     objc_copyWeak(&v25, &location);
     objc_copyWeak(&v26, &from);
-    v13 = v11;
+    v13 = rcs_applicationIdentifier;
     v23 = v13;
-    v24 = self;
-    [v7 setInvalidationHandler:v22];
+    selfCopy = self;
+    [connectionCopy setInvalidationHandler:v22];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_10001AF0C;
     v19 = &unk_100055FE0;
     objc_copyWeak(&v20, &location);
     objc_copyWeak(&v21, &from);
-    [v7 setInterruptionHandler:&v16];
+    [connectionCopy setInterruptionHandler:&v16];
     v14 = OSLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v30 = "[SavedRecordingService listener:shouldAcceptNewConnection:]";
       v31 = 2112;
-      v32 = v7;
+      v32 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s -- Listener accepted new connection %@", buf, 0x16u);
     }
 
-    [v7 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v20);
 
@@ -2838,9 +2838,9 @@ LABEL_9:
   return v8;
 }
 
-- (void)_performOnServiceQueue:(id)a3
+- (void)_performOnServiceQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -2852,34 +2852,34 @@ LABEL_9:
   v7[1] = 3221225472;
   v7[2] = sub_10001B0B4;
   v7[3] = &unk_100055B38;
-  v8 = v4;
+  v8 = queueCopy;
   v9 = v10;
-  v6 = v4;
+  v6 = queueCopy;
   dispatch_async(serviceSerialQueue, v7);
 
   _Block_object_dispose(v10, 8);
 }
 
-- (void)_performOnServiceQueueWithBackgroundModel:(id)a3
+- (void)_performOnServiceQueueWithBackgroundModel:(id)model
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001B200;
   v5[3] = &unk_100055238;
-  v6 = a3;
-  v4 = v6;
+  modelCopy = model;
+  v4 = modelCopy;
   [(SavedRecordingService *)self _performOnServiceQueue:v5];
 }
 
-- (void)_onServiceQueueOpenAccessSessionNamed:(id)a3 compositionAVURL:(id)a4 accessIntent:(int64_t)a5 xpcConnection:(id)a6 accessSessionHandler:(id)a7
+- (void)_onServiceQueueOpenAccessSessionNamed:(id)named compositionAVURL:(id)l accessIntent:(int64_t)intent xpcConnection:(id)connection accessSessionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  namedCopy = named;
+  lCopy = l;
+  connectionCopy = connection;
+  handlerCopy = handler;
   assetSessionController = self->_assetSessionController;
   v40[0] = 0;
-  v17 = [(AssetAccessSessionController *)assetSessionController openAccessSessionWithName:v12 xpcConnection:v14 compositionAVURL:v13 accessIntent:a5 error:v40];
+  v17 = [(AssetAccessSessionController *)assetSessionController openAccessSessionWithName:namedCopy xpcConnection:connectionCopy compositionAVURL:lCopy accessIntent:intent error:v40];
   v18 = v40[0];
   if (v17)
   {
@@ -2887,10 +2887,10 @@ LABEL_9:
     v29[1] = 3221225472;
     v29[2] = sub_10001B72C;
     v29[3] = &unk_100056058;
-    v32 = v15;
+    v32 = handlerCopy;
     v30 = v17;
     v31 = v18;
-    [(SavedRecordingService *)self _attemptOrphanedFragmentsCleanupForCompositionAVURL:v13 ignoredAccessSession:v30 completionBlock:v29];
+    [(SavedRecordingService *)self _attemptOrphanedFragmentsCleanupForCompositionAVURL:lCopy ignoredAccessSession:v30 completionBlock:v29];
 
     v19 = v32;
   }
@@ -2899,11 +2899,11 @@ LABEL_9:
   {
     if (![(NSMutableArray *)self->_closingSessions count])
     {
-      (*(v15 + 2))(v15, 0, v18);
+      (*(handlerCopy + 2))(handlerCopy, 0, v18);
       goto LABEL_10;
     }
 
-    v20 = [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL objectForKey:v13];
+    v20 = [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL objectForKey:lCopy];
     v21 = v20;
     if (v20)
     {
@@ -2915,13 +2915,13 @@ LABEL_9:
     v33[1] = 3221225472;
     v33[2] = sub_10001B598;
     v33[3] = &unk_100056030;
-    v34 = v12;
-    v38 = v15;
-    v35 = self;
-    v27 = v13;
+    v34 = namedCopy;
+    v38 = handlerCopy;
+    selfCopy = self;
+    v27 = lCopy;
     v36 = v27;
-    v39 = a5;
-    v37 = v14;
+    intentCopy = intent;
+    v37 = connectionCopy;
     v22 = objc_retainBlock(v33);
     v23 = OSLogForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -2940,11 +2940,11 @@ LABEL_9:
 LABEL_10:
 }
 
-- (BOOL)_onServiceQueueHasActiveExclusiveSessionForCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4
+- (BOOL)_onServiceQueueHasActiveExclusiveSessionForCompositionAVURL:(id)l ignoredAccessSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  [(AssetAccessSessionController *)self->_assetSessionController activeSessionsWithWithCompositionAVURL:v6];
+  lCopy = l;
+  sessionCopy = session;
+  [(AssetAccessSessionController *)self->_assetSessionController activeSessionsWithWithCompositionAVURL:lCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -2963,12 +2963,12 @@ LABEL_10:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if (v12 != v7)
+        if (v12 != sessionCopy)
         {
-          v13 = [*(*(&v16 + 1) + 8 * i) accessToken];
-          v14 = [v13 isExclusive];
+          accessToken = [*(*(&v16 + 1) + 8 * i) accessToken];
+          isExclusive = [accessToken isExclusive];
 
-          if (v14)
+          if (isExclusive)
           {
             v9 = OSLogForCategory();
             if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2976,11 +2976,11 @@ LABEL_10:
               *buf = 136315906;
               v21 = "[SavedRecordingService _onServiceQueueHasActiveExclusiveSessionForCompositionAVURL:ignoredAccessSession:]";
               v22 = 2112;
-              v23 = v6;
+              v23 = lCopy;
               v24 = 2112;
               v25 = v12;
               v26 = 2112;
-              v27 = v7;
+              v27 = sessionCopy;
               _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s -- FINALIZATION ERROR:  another access session has exclusive access to compositionAVURL = %@ (session = %@, ignored = %@)", buf, 0x2Au);
             }
 
@@ -3005,10 +3005,10 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)_onServiceQueueHasActiveSessionsForCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4
+- (BOOL)_onServiceQueueHasActiveSessionsForCompositionAVURL:(id)l ignoredAccessSession:(id)session
 {
-  v6 = a4;
-  [(AssetAccessSessionController *)self->_assetSessionController activeSessionsWithWithCompositionAVURL:a3];
+  sessionCopy = session;
+  [(AssetAccessSessionController *)self->_assetSessionController activeSessionsWithWithCompositionAVURL:l];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -3026,7 +3026,7 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        if (*(*(&v12 + 1) + 8 * i) != v6)
+        if (*(*(&v12 + 1) + 8 * i) != sessionCopy)
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -3048,20 +3048,20 @@ LABEL_11:
   return v8;
 }
 
-- (void)_onQueueCloseAccessSession:(id)a3 normalTermination:(BOOL)a4 completionBlock:(id)a5
+- (void)_onQueueCloseAccessSession:(id)session normalTermination:(BOOL)termination completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  sessionCopy = session;
+  blockCopy = block;
+  if (sessionCopy)
   {
-    [(NSMutableArray *)self->_closingSessions addObject:v8];
+    [(NSMutableArray *)self->_closingSessions addObject:sessionCopy];
     v10 = OSLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v19 = "[SavedRecordingService _onQueueCloseAccessSession:normalTermination:completionBlock:]";
       v20 = 2112;
-      v21 = v8;
+      v21 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s -- Closing access session: %@.", buf, 0x16u);
     }
 
@@ -3073,44 +3073,44 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s -- Scheduling orphan fragment cleanup for closing session", buf, 0xCu);
     }
 
-    v12 = [v8 accessToken];
-    v13 = [v12 compositionAVURL];
+    accessToken = [sessionCopy accessToken];
+    compositionAVURL = [accessToken compositionAVURL];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10001BC50;
     v14[3] = &unk_1000560A8;
-    v17 = a4;
+    terminationCopy = termination;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
-    [(SavedRecordingService *)self _attemptOrphanedFragmentsCleanupForCompositionAVURL:v13 ignoredAccessSession:v15 completionBlock:v14];
+    v15 = sessionCopy;
+    v16 = blockCopy;
+    [(SavedRecordingService *)self _attemptOrphanedFragmentsCleanupForCompositionAVURL:compositionAVURL ignoredAccessSession:v15 completionBlock:v14];
   }
 }
 
-- (void)_attemptToRunDeferredFinalizationOfCompositionAVURL:(id)a3 completionBlock:(id)a4
+- (void)_attemptToRunDeferredFinalizationOfCompositionAVURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   v8 = OSLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     *buf = 136315394;
     v15 = "[SavedRecordingService _attemptToRunDeferredFinalizationOfCompositionAVURL:completionBlock:]";
     v16 = 2112;
-    v17 = v9;
+    v17 = lastPathComponent;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s -- Received request to schedule finalization of '%@'...", buf, 0x16u);
   }
 
-  if (v6)
+  if (lCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10001C0EC;
     v11[3] = &unk_100055BB0;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = lCopy;
+    v13 = blockCopy;
     [(SavedRecordingService *)self _performOnServiceQueue:v11];
   }
 
@@ -3124,24 +3124,24 @@ LABEL_11:
   }
 }
 
-- (void)_attemptFinalizationOfCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4 completionBlock:(id)a5
+- (void)_attemptFinalizationOfCompositionAVURL:(id)l ignoredAccessSession:(id)session completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(SavedRecordingService *)self _onServiceQueueHasActiveExclusiveSessionForCompositionAVURL:v8 ignoredAccessSession:v9])
+  lCopy = l;
+  sessionCopy = session;
+  blockCopy = block;
+  if ([(SavedRecordingService *)self _onServiceQueueHasActiveExclusiveSessionForCompositionAVURL:lCopy ignoredAccessSession:sessionCopy])
   {
-    if (v10)
+    if (blockCopy)
     {
-      v10[2](v10, 0);
+      blockCopy[2](blockCopy, 0);
     }
   }
 
   else
   {
-    v11 = [RCComposition compositionLoadedForComposedAVURL:v8 createIfNeeded:1];
-    v12 = [v11 decomposedFragments];
-    v13 = [v12 count];
+    v11 = [RCComposition compositionLoadedForComposedAVURL:lCopy createIfNeeded:1];
+    decomposedFragments = [v11 decomposedFragments];
+    v13 = [decomposedFragments count];
 
     if (v13)
     {
@@ -3155,15 +3155,15 @@ LABEL_11:
       block[2] = sub_10001C5A8;
       block[3] = &unk_100055A48;
       block[4] = self;
-      v15 = v8;
+      v15 = lCopy;
       v21 = v15;
       v22 = &v23;
       dispatch_sync(serialQueue, block);
       if (*(v24 + 24) == 1)
       {
-        if (v10)
+        if (blockCopy)
         {
-          v10[2](v10, 0);
+          blockCopy[2](blockCopy, 0);
         }
       }
 
@@ -3177,36 +3177,36 @@ LABEL_11:
         v17[3] = &unk_1000560F8;
         v17[4] = self;
         v18 = v15;
-        v19 = v10;
+        v19 = blockCopy;
         [(AssetExportController *)assetExportController finalizeAssetWithComposition:v11 completionBlock:v17];
       }
 
       _Block_object_dispose(&v23, 8);
     }
 
-    else if (v10)
+    else if (blockCopy)
     {
-      v10[2](v10, 1);
+      blockCopy[2](blockCopy, 1);
     }
   }
 }
 
-- (void)_attemptOrphanedFragmentsCleanupForCompositionAVURL:(id)a3 ignoredAccessSession:(id)a4 completionBlock:(id)a5
+- (void)_attemptOrphanedFragmentsCleanupForCompositionAVURL:(id)l ignoredAccessSession:(id)session completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([(NSCountedSet *)self->_disabledOrphanedFragmentCleanupByCompositionAVURL containsObject:v8]& 1) == 0 && ![(SavedRecordingService *)self _onServiceQueueHasActiveSessionsForCompositionAVURL:v8 ignoredAccessSession:v9])
+  lCopy = l;
+  sessionCopy = session;
+  blockCopy = block;
+  if (([(NSCountedSet *)self->_disabledOrphanedFragmentCleanupByCompositionAVURL containsObject:lCopy]& 1) == 0 && ![(SavedRecordingService *)self _onServiceQueueHasActiveSessionsForCompositionAVURL:lCopy ignoredAccessSession:sessionCopy])
   {
-    v11 = [RCComposition compositionLoadedForComposedAVURL:v8 createIfNeeded:0];
+    v11 = [RCComposition compositionLoadedForComposedAVURL:lCopy createIfNeeded:0];
     if (v11)
     {
       v12 = +[RCServiceContainer sharedContainer];
-      v13 = [v12 newBackgroundModel];
+      newBackgroundModel = [v12 newBackgroundModel];
 
-      v14 = [v11 savedRecordingUUID];
+      savedRecordingUUID = [v11 savedRecordingUUID];
 
-      if (v14)
+      if (savedRecordingUUID)
       {
         goto LABEL_13;
       }
@@ -3221,9 +3221,9 @@ LABEL_11:
       v19[1] = 3221225472;
       v19[2] = sub_10001CAF4;
       v19[3] = &unk_100055A48;
-      v15 = v8;
+      v15 = lCopy;
       v20 = v15;
-      v21 = v13;
+      v21 = newBackgroundModel;
       v22 = buf;
       [v21 performBlockAndWait:v19];
       v16 = *(*&buf[8] + 40);
@@ -3250,7 +3250,7 @@ LABEL_11:
       if (v16)
       {
 LABEL_13:
-        v18 = [v13 repairCompositionDecomposedFragmentMetadataIfNecessary:v11];
+        v18 = [newBackgroundModel repairCompositionDecomposedFragmentMetadataIfNecessary:v11];
 
         [v18 enumerateOrphanedFragmentsWithBlock:&stru_100056138];
         v11 = v18;
@@ -3265,15 +3265,15 @@ LABEL_13:
         *buf = 136315394;
         *&buf[4] = "[SavedRecordingService _attemptOrphanedFragmentsCleanupForCompositionAVURL:ignoredAccessSession:completionBlock:]";
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = lCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s -- WARNING: attempt to delete orphaned fragments for %@ failed because the composition failed to load", buf, 0x16u);
       }
     }
   }
 
-  if (v10)
+  if (blockCopy)
   {
-    v10[2](v10);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -3288,14 +3288,14 @@ LABEL_13:
   v5 = v3;
   v31 = v5;
   [(NSCountedSet *)disabledOrphanedFragmentCleanupByCompositionAVURL enumerateObjectsUsingBlock:v30];
-  v6 = [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL allKeys];
+  allKeys = [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL allKeys];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10001CFA8;
   v28[3] = &unk_100056188;
   v7 = v5;
   v29 = v7;
-  [v6 enumerateObjectsUsingBlock:v28];
+  [allKeys enumerateObjectsUsingBlock:v28];
 
   compositionAVURLsToFinalize = self->_compositionAVURLsToFinalize;
   v26[0] = _NSConcreteStackBlock;
@@ -3305,12 +3305,12 @@ LABEL_13:
   v9 = v7;
   v27 = v9;
   [(NSMutableArray *)compositionAVURLsToFinalize enumerateObjectsUsingBlock:v26];
-  v10 = [(AssetAccessSessionController *)self->_assetSessionController activeSessions];
+  activeSessions = [(AssetAccessSessionController *)self->_assetSessionController activeSessions];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  v11 = [activeSessions countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
@@ -3321,22 +3321,22 @@ LABEL_13:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(activeSessions);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 accessToken];
-        v17 = [v16 compositionAVURL];
+        accessToken = [v15 accessToken];
+        compositionAVURL = [accessToken compositionAVURL];
 
-        if (v17)
+        if (compositionAVURL)
         {
-          v18 = [v15 accessToken];
-          v19 = [v18 compositionAVURL];
-          [v9 addObject:v19];
+          accessToken2 = [v15 accessToken];
+          compositionAVURL2 = [accessToken2 compositionAVURL];
+          [v9 addObject:compositionAVURL2];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v12 = [activeSessions countByEnumeratingWithState:&v22 objects:v32 count:16];
     }
 
     while (v12);
@@ -3347,83 +3347,83 @@ LABEL_13:
   return v9;
 }
 
-- (void)_onServiceQueueAttemptToRunningDeferredWorkAfterClosingSession:(id)a3
+- (void)_onServiceQueueAttemptToRunningDeferredWorkAfterClosingSession:(id)session
 {
-  v4 = [a3 accessToken];
-  v7 = [v4 compositionAVURL];
+  accessToken = [session accessToken];
+  compositionAVURL = [accessToken compositionAVURL];
 
-  if (v7)
+  if (compositionAVURL)
   {
-    v5 = [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL objectForKey:v7];
+    v5 = [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL objectForKey:compositionAVURL];
     v6 = [v5 copy];
 
     if (v6)
     {
-      [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_compositionAVURLsDeferredAccessRequestBlocksByAVURL removeObjectForKey:compositionAVURL];
       v6[2](v6, 0);
     }
 
-    else if ([(NSMutableArray *)self->_compositionAVURLsToFinalize containsObject:v7])
+    else if ([(NSMutableArray *)self->_compositionAVURLsToFinalize containsObject:compositionAVURL])
     {
-      [(NSMutableArray *)self->_compositionAVURLsToFinalize removeObject:v7];
-      [(SavedRecordingService *)self _attemptToRunDeferredFinalizationOfCompositionAVURL:v7 completionBlock:0];
+      [(NSMutableArray *)self->_compositionAVURLsToFinalize removeObject:compositionAVURL];
+      [(SavedRecordingService *)self _attemptToRunDeferredFinalizationOfCompositionAVURL:compositionAVURL completionBlock:0];
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)_addDisabledOrphanCleanupForCompositionAVURL:(id)a3 xpcConnection:(id)a4 completionBlock:(id)a5
+- (void)_addDisabledOrphanCleanupForCompositionAVURL:(id)l xpcConnection:(id)connection completionBlock:(id)block
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 rc_userInfoForKey:@"disabledOrphanedFragmentCleanupAVURLs"];
+  lCopy = l;
+  connectionCopy = connection;
+  blockCopy = block;
+  v10 = [connectionCopy rc_userInfoForKey:@"disabledOrphanedFragmentCleanupAVURLs"];
   if (!v10)
   {
     v10 = +[NSCountedSet set];
-    [v8 rc_setUserInfo:v10 forKey:@"disabledOrphanedFragmentCleanupAVURLs"];
+    [connectionCopy rc_setUserInfo:v10 forKey:@"disabledOrphanedFragmentCleanupAVURLs"];
   }
 
-  if (v11)
+  if (lCopy)
   {
-    [v10 addObject:v11];
-    if ([v10 countForObject:v11] == 1)
+    [v10 addObject:lCopy];
+    if ([v10 countForObject:lCopy] == 1)
     {
-      [(NSCountedSet *)self->_disabledOrphanedFragmentCleanupByCompositionAVURL addObject:v11];
+      [(NSCountedSet *)self->_disabledOrphanedFragmentCleanupByCompositionAVURL addObject:lCopy];
     }
   }
 
-  if (v9)
+  if (blockCopy)
   {
-    v9[2](v9, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)_removeDisabledOrphanCleanupForCompositionAVURL:(id)a3 xpcConnection:(id)a4
+- (void)_removeDisabledOrphanCleanupForCompositionAVURL:(id)l xpcConnection:(id)connection
 {
-  v9 = a3;
-  v6 = [a4 rc_userInfoForKey:@"disabledOrphanedFragmentCleanupAVURLs"];
-  if (v9)
+  lCopy = l;
+  v6 = [connection rc_userInfoForKey:@"disabledOrphanedFragmentCleanupAVURLs"];
+  if (lCopy)
   {
-    v7 = [v6 countForObject:v9];
+    v7 = [v6 countForObject:lCopy];
     if (v7)
     {
       v8 = v7;
-      [v6 removeObject:v9];
+      [v6 removeObject:lCopy];
       if (v8 == 1)
       {
-        [(NSCountedSet *)self->_disabledOrphanedFragmentCleanupByCompositionAVURL removeObject:v9];
-        [(SavedRecordingService *)self _attemptOrphanedFragmentsCleanupForCompositionAVURL:v9 ignoredAccessSession:0 completionBlock:0];
+        [(NSCountedSet *)self->_disabledOrphanedFragmentCleanupByCompositionAVURL removeObject:lCopy];
+        [(SavedRecordingService *)self _attemptOrphanedFragmentsCleanupForCompositionAVURL:lCopy ignoredAccessSession:0 completionBlock:0];
       }
     }
   }
 }
 
-- (void)_removeDisabledOrphanCleanupAVURLsForConnection:(id)a3
+- (void)_removeDisabledOrphanCleanupAVURLsForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 rc_userInfoForKey:@"disabledOrphanedFragmentCleanupAVURLs"];
+  connectionCopy = connection;
+  v5 = [connectionCopy rc_userInfoForKey:@"disabledOrphanedFragmentCleanupAVURLs"];
   v6 = [v5 copy];
 
   v14 = 0u;
@@ -3446,7 +3446,7 @@ LABEL_13:
           objc_enumerationMutation(v7);
         }
 
-        [(SavedRecordingService *)self _removeDisabledOrphanCleanupForCompositionAVURL:*(*(&v12 + 1) + 8 * v11) xpcConnection:v4, v12];
+        [(SavedRecordingService *)self _removeDisabledOrphanCleanupForCompositionAVURL:*(*(&v12 + 1) + 8 * v11) xpcConnection:connectionCopy, v12];
         v11 = v11 + 1;
       }
 
@@ -3475,15 +3475,15 @@ LABEL_13:
   }
 }
 
-- (void)_handleXPCDisconnect:(id)a3
+- (void)_handleXPCDisconnect:(id)disconnect
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001D500;
   v5[3] = &unk_1000556C8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  v4 = disconnectCopy;
   [(SavedRecordingService *)self _performOnServiceQueue:v5];
 }
 
@@ -3497,14 +3497,14 @@ LABEL_13:
     v6[1] = 3221225472;
     v6[2] = sub_10001D76C;
     v6[3] = &unk_1000556C8;
-    v7 = [(RCMirroringContainer *)v4 newBackgroundModel];
-    v8 = self;
-    v5 = v7;
+    newBackgroundModel = [(RCMirroringContainer *)v4 newBackgroundModel];
+    selfCopy = self;
+    v5 = newBackgroundModel;
     [v5 performBlockAndWait:v6];
   }
 }
 
-- (BOOL)_setupCloudMirroring:(id *)a3
+- (BOOL)_setupCloudMirroring:(id *)mirroring
 {
   v5 = [RCMirroringContainer alloc];
   v6 = RCCloudRecordingsStoreURL();
@@ -3524,18 +3524,18 @@ LABEL_13:
     }
 
     audioFutureSyncManager = self->_audioFutureSyncManager;
-    v12 = [(RCMirroringContainer *)self->_mirroringContainer store];
-    [(RCAudioFutureSyncManager *)audioFutureSyncManager setPersistentStore:v12];
+    store = [(RCMirroringContainer *)self->_mirroringContainer store];
+    [(RCAudioFutureSyncManager *)audioFutureSyncManager setPersistentStore:store];
     goto LABEL_7;
   }
 
-  if (a3)
+  if (mirroring)
   {
     v13 = RCSSavedRecordingServiceErrorDomain;
     v17 = NSLocalizedFailureReasonErrorKey;
     v18 = @"CloudKit mirroring model failed to load";
-    v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    *a3 = [NSError errorWithDomain:v13 code:501 userInfo:v12];
+    store = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+    *mirroring = [NSError errorWithDomain:v13 code:501 userInfo:store];
 LABEL_7:
   }
 
@@ -3587,7 +3587,7 @@ LABEL_7:
   v8[2] = sub_10001DF90;
   v7 = v8[3] = &unk_100056220;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [v4 enumerateKeysAndObjectsUsingBlock:v8];
 
   objc_destroyWeak(&v12);
@@ -3641,15 +3641,15 @@ LABEL_7:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-+ (void)_removeVestigialCloudKitSupportDirectory:(id)a3
++ (void)_removeVestigialCloudKitSupportDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[NSFileManager defaultManager];
   v13 = 0;
-  v5 = [v3 URLByAppendingPathComponent:@"ckAssetFiles"];
+  v5 = [directoryCopy URLByAppendingPathComponent:@"ckAssetFiles"];
 
-  v6 = [v5 path];
-  v7 = [v4 fileExistsAtPath:v6 isDirectory:&v13];
+  path = [v5 path];
+  v7 = [v4 fileExistsAtPath:path isDirectory:&v13];
   v8 = v13;
 
   if (v7 && (v8 & 1) != 0)
@@ -3679,11 +3679,11 @@ LABEL_7:
   return result;
 }
 
-- (void)valueForServiceKey:(id)a3 completion:(id)a4
+- (void)valueForServiceKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:RCSSavedRecordingServiceKeyEncryptedFieldsStatus])
+  keyCopy = key;
+  completionCopy = completion;
+  if ([keyCopy isEqualToString:RCSSavedRecordingServiceKeyEncryptedFieldsStatus])
   {
     encryptedFieldsStatus = self->_encryptedFieldsStatus;
     if (encryptedFieldsStatus >= 3)
@@ -3702,33 +3702,33 @@ LABEL_7:
       v9 = *(&off_100056240 + encryptedFieldsStatus);
     }
 
-    (*(v7 + 2))(v7, *v9, 0);
+    (*(completionCopy + 2))(completionCopy, *v9, 0);
   }
 
   else
   {
-    if ([v6 isEqualToString:RCSSavedRecordingServiceKeyEncryptedAccountStatus])
+    if ([keyCopy isEqualToString:RCSSavedRecordingServiceKeyEncryptedAccountStatus])
     {
       v10 = sub_10001ECBC([(RCAccountStatusObserver *)self->_accountStatusObserver encryptedFieldsAccountStatus]);
-      (*(v7 + 2))(v7, v10, 0);
+      (*(completionCopy + 2))(completionCopy, v10, 0);
     }
 
     else
     {
-      if (![v6 isEqualToString:RCSSavedRecordingServiceKeyFirstImportIsComplete])
+      if (![keyCopy isEqualToString:RCSSavedRecordingServiceKeyFirstImportIsComplete])
       {
         v12 = RCVoiceMemosErrorDomain;
         v15 = NSLocalizedDescriptionKey;
         v16 = @"Service Key Not Found";
         v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
         v14 = [NSError errorWithDomain:v12 code:-1 userInfo:v13];
-        (*(v7 + 2))(v7, 0, v14);
+        (*(completionCopy + 2))(completionCopy, 0, v14);
 
         goto LABEL_14;
       }
 
       v10 = [NSNumber numberWithBool:self->_firstImportComplete];
-      (*(v7 + 2))(v7, v10, 0);
+      (*(completionCopy + 2))(completionCopy, v10, 0);
     }
   }
 

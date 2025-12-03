@@ -1,54 +1,54 @@
 @interface CarClusterNavigationController
 - (BOOL)smartGuidanceActive;
-- (BOOL)updateManeuverIndex:(unint64_t)a3 distanceToManeuver:(double)a4;
-- (BOOL)updateManeuverIndices:(id)a3 distanceToManeuver:(double)a4;
-- (BOOL)updateRemainingDistance:(double)a3;
-- (BOOL)updateRemainingTime:(double)a3;
-- (BOOL)updateRouteGuidanceState:(unsigned __int16)a3;
-- (CarClusterNavigationController)initWithAccessory:(id)a3 component:(id)a4;
+- (BOOL)updateManeuverIndex:(unint64_t)index distanceToManeuver:(double)maneuver;
+- (BOOL)updateManeuverIndices:(id)indices distanceToManeuver:(double)maneuver;
+- (BOOL)updateRemainingDistance:(double)distance;
+- (BOOL)updateRemainingTime:(double)time;
+- (BOOL)updateRouteGuidanceState:(unsigned __int16)state;
+- (CarClusterNavigationController)initWithAccessory:(id)accessory component:(id)component;
 - (id)_destinationTimeZoneOffsetMinutes;
-- (int)_roadClassAtLocation:(id)a3;
-- (void)_updateRemainingTimeIfNeededWithDisplayFormatter:(id)a3 remainingSeconds:(double)a4;
-- (void)_updateSecondaryManeuversIfNecessaryForGuidanceEvent:(id)a3 maneuver:(id)a4;
+- (int)_roadClassAtLocation:(id)location;
+- (void)_updateRemainingTimeIfNeededWithDisplayFormatter:(id)formatter remainingSeconds:(double)seconds;
+- (void)_updateSecondaryManeuversIfNecessaryForGuidanceEvent:(id)event maneuver:(id)maneuver;
 - (void)dealloc;
-- (void)etaDisplayFormatter:(id)a3 didUpdateDisplayETA:(id)a4;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4;
-- (void)navigationService:(id)a3 didFailWithError:(id)a4;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationService:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4;
-- (void)navigationService:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10;
-- (void)navigationService:(id)a3 displaySecondaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8;
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationServiceDidCancelReroute:(id)a3;
-- (void)navigationServiceDidHideSecondaryStep:(id)a3;
-- (void)navigationServiceEndGuidanceUpdate:(id)a3;
-- (void)navigationServiceWillReroute:(id)a3;
+- (void)etaDisplayFormatter:(id)formatter didUpdateDisplayETA:(id)a;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didChangeNavigationState:(int)state;
+- (void)navigationService:(id)service didFailWithError:(id)error;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationService:(id)service didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service displayManeuverAlertForAnnouncementStage:(unint64_t)stage;
+- (void)navigationService:(id)service displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0;
+- (void)navigationService:(id)service displaySecondaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side;
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id;
+- (void)navigationService:(id)service showLaneDirections:(id)directions;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationServiceDidCancelReroute:(id)reroute;
+- (void)navigationServiceDidHideSecondaryStep:(id)step;
+- (void)navigationServiceEndGuidanceUpdate:(id)update;
+- (void)navigationServiceWillReroute:(id)reroute;
 - (void)sendLaneGuidance;
-- (void)sendLaneGuidanceUpdate:(id)a3;
-- (void)sendManeuverUpdate:(id)a3;
+- (void)sendLaneGuidanceUpdate:(id)update;
+- (void)sendManeuverUpdate:(id)update;
 - (void)sendManeuvers;
 - (void)sendRouteGuidance;
-- (void)setCurrentRoute:(id)a3;
-- (void)setRouteGuidanceBeingShownInApp:(BOOL)a3;
+- (void)setCurrentRoute:(id)route;
+- (void)setRouteGuidanceBeingShownInApp:(BOOL)app;
 @end
 
 @implementation CarClusterNavigationController
 
-- (void)_updateRemainingTimeIfNeededWithDisplayFormatter:(id)a3 remainingSeconds:(double)a4
+- (void)_updateRemainingTimeIfNeededWithDisplayFormatter:(id)formatter remainingSeconds:(double)seconds
 {
-  v6 = a3;
-  v7 = [(CarClusterNavigationController *)self etaDisplayFormatter];
+  formatterCopy = formatter;
+  etaDisplayFormatter = [(CarClusterNavigationController *)self etaDisplayFormatter];
 
-  if (v7 == v6)
+  if (etaDisplayFormatter == formatterCopy)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -56,23 +56,23 @@
     block[2] = sub_100E5C974;
     block[3] = &unk_10165FBC0;
     objc_copyWeak(v9, &location);
-    v9[1] = *&a4;
+    v9[1] = *&seconds;
     dispatch_async(&_dispatch_main_q, block);
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)etaDisplayFormatter:(id)a3 didUpdateDisplayETA:(id)a4
+- (void)etaDisplayFormatter:(id)formatter didUpdateDisplayETA:(id)a
 {
-  v6 = a3;
-  -[CarClusterNavigationController _updateRemainingTimeIfNeededWithDisplayFormatter:remainingSeconds:](self, "_updateRemainingTimeIfNeededWithDisplayFormatter:remainingSeconds:", v6, [a4 displayRemainingMinutesToEndOfLeg] * 60.0);
+  formatterCopy = formatter;
+  -[CarClusterNavigationController _updateRemainingTimeIfNeededWithDisplayFormatter:remainingSeconds:](self, "_updateRemainingTimeIfNeededWithDisplayFormatter:remainingSeconds:", formatterCopy, [a displayRemainingMinutesToEndOfLeg] * 60.0);
 }
 
-- (void)navigationServiceDidCancelReroute:(id)a3
+- (void)navigationServiceDidCancelReroute:(id)reroute
 {
-  v4 = [a3 route];
-  [(CarClusterNavigationController *)self setCurrentRoute:v4];
+  route = [reroute route];
+  [(CarClusterNavigationController *)self setCurrentRoute:route];
 
   v5 = +[MNNavigationService sharedService];
   v6 = +[CarClusterUpdate _accNavRouteGuidanceStateForGEONavigationState:](CarClusterUpdate, "_accNavRouteGuidanceStateForGEONavigationState:", [v5 navigationState]);
@@ -84,12 +84,12 @@
   }
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
-  v6 = a4;
+  rerouteCopy = reroute;
   [(CarClusterNavigationController *)self updateRouteGuidanceState:0];
   [(CarClusterNavigationController *)self sendRouteGuidance];
-  [(CarClusterNavigationController *)self setCurrentRoute:v6];
+  [(CarClusterNavigationController *)self setCurrentRoute:rerouteCopy];
 
   v7 = +[MNNavigationService sharedService];
   v8 = +[CarClusterUpdate _accNavRouteGuidanceStateForGEONavigationState:](CarClusterUpdate, "_accNavRouteGuidanceStateForGEONavigationState:", [v7 navigationState]);
@@ -101,7 +101,7 @@
   }
 }
 
-- (void)navigationServiceWillReroute:(id)a3
+- (void)navigationServiceWillReroute:(id)reroute
 {
   if ([(CarClusterNavigationController *)self updateRouteGuidanceState:5])
   {
@@ -110,104 +110,104 @@
   }
 }
 
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id
 {
-  v5 = [(CarClusterNavigationController *)self latestLaneGuidanceInfo:a3];
+  v5 = [(CarClusterNavigationController *)self latestLaneGuidanceInfo:service];
 
   if (v5)
   {
     [(CarClusterNavigationController *)self setLatestLaneGuidanceInfo:0];
-    v6 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v6 setLaneGuidanceCurrentIndex:0];
+    currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance setLaneGuidanceCurrentIndex:0];
 
-    v7 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v7 setLaneGuidanceShowing:0];
+    currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance2 setLaneGuidanceShowing:0];
 
     [(CarClusterNavigationController *)self sendRouteGuidance];
   }
 }
 
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4
+- (void)navigationService:(id)service showLaneDirections:(id)directions
 {
-  v12 = a4;
-  v5 = [(CarClusterNavigationController *)self latestLaneGuidanceInfo];
-  v6 = [v5 uniqueID];
-  v7 = [v12 uniqueID];
-  v8 = [MNComparison isValue:v6 equalTo:v7];
+  directionsCopy = directions;
+  latestLaneGuidanceInfo = [(CarClusterNavigationController *)self latestLaneGuidanceInfo];
+  uniqueID = [latestLaneGuidanceInfo uniqueID];
+  uniqueID2 = [directionsCopy uniqueID];
+  v8 = [MNComparison isValue:uniqueID equalTo:uniqueID2];
 
   if ((v8 & 1) == 0)
   {
-    [(CarClusterNavigationController *)self setLatestLaneGuidanceInfo:v12];
-    v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v12 composedGuidanceEventIndex]);
-    v10 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v10 setLaneGuidanceCurrentIndex:v9];
+    [(CarClusterNavigationController *)self setLatestLaneGuidanceInfo:directionsCopy];
+    v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [directionsCopy composedGuidanceEventIndex]);
+    currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance setLaneGuidanceCurrentIndex:v9];
 
-    v11 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v11 setLaneGuidanceShowing:1];
+    currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance2 setLaneGuidanceShowing:1];
 
     [(CarClusterNavigationController *)self sendRouteGuidance];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v9 = a4;
-  v7 = [a3 route];
-  v8 = [v7 isLegIndexOfLastLeg:{objc_msgSend(v9, "legIndex")}];
+  infoCopy = info;
+  route = [service route];
+  v8 = [route isLegIndexOfLastLeg:{objc_msgSend(infoCopy, "legIndex")}];
 
-  if (v8 && [v9 isInArrivalState] && -[CarClusterNavigationController updateRouteGuidanceState:](self, "updateRouteGuidanceState:", 2))
+  if (v8 && [infoCopy isInArrivalState] && -[CarClusterNavigationController updateRouteGuidanceState:](self, "updateRouteGuidanceState:", 2))
   {
     [(CarClusterNavigationController *)self sendRouteGuidance];
   }
 }
 
-- (void)navigationServiceDidHideSecondaryStep:(id)a3
+- (void)navigationServiceDidHideSecondaryStep:(id)step
 {
   [(CarClusterNavigationController *)self sendManeuvers];
-  v4 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v5 = [v4 routeGuidanceManeuverCurrentList];
-  v6 = [v5 count];
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  routeGuidanceManeuverCurrentList = [currentACCNavRouteGuidance routeGuidanceManeuverCurrentList];
+  v6 = [routeGuidanceManeuverCurrentList count];
 
   if (v6 == 2)
   {
-    v7 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    v8 = [v7 routeGuidanceManeuverCurrentList];
-    v9 = [v8 firstObject];
-    v12 = v9;
+    currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    routeGuidanceManeuverCurrentList2 = [currentACCNavRouteGuidance2 routeGuidanceManeuverCurrentList];
+    firstObject = [routeGuidanceManeuverCurrentList2 firstObject];
+    v12 = firstObject;
     v10 = [NSArray arrayWithObjects:&v12 count:1];
-    v11 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v11 setRouteGuidanceManeuverCurrentList:v10];
+    currentACCNavRouteGuidance3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance3 setRouteGuidanceManeuverCurrentList:v10];
 
     [(CarClusterNavigationController *)self sendRouteGuidance];
   }
 }
 
-- (void)navigationService:(id)a3 displaySecondaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8
+- (void)navigationService:(id)service displaySecondaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side
 {
-  [(CarClusterNavigationController *)self sendManeuvers:a3];
-  v22 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v9 = [v22 routeGuidanceManeuverCurrentList];
-  if ([v9 count] == 1)
+  [(CarClusterNavigationController *)self sendManeuvers:service];
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  routeGuidanceManeuverCurrentList = [currentACCNavRouteGuidance routeGuidanceManeuverCurrentList];
+  if ([routeGuidanceManeuverCurrentList count] == 1)
   {
-    v10 = [(CarClusterNavigationController *)self component];
-    v11 = [v10 guidanceManeuverCapacity];
+    component = [(CarClusterNavigationController *)self component];
+    guidanceManeuverCapacity = [component guidanceManeuverCapacity];
 
-    if (v11 >= 2)
+    if (guidanceManeuverCapacity >= 2)
     {
-      v12 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      v13 = [v12 routeGuidanceManeuverCurrentList];
-      v14 = [v13 firstObject];
-      v15 = [v14 unsignedIntegerValue];
+      currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      routeGuidanceManeuverCurrentList2 = [currentACCNavRouteGuidance2 routeGuidanceManeuverCurrentList];
+      firstObject = [routeGuidanceManeuverCurrentList2 firstObject];
+      unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-      v16 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      v17 = [v16 routeGuidanceManeuverCurrentList];
-      v18 = [v17 firstObject];
-      v23[0] = v18;
-      v19 = [NSNumber numberWithUnsignedInteger:v15 + 1];
+      currentACCNavRouteGuidance3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      routeGuidanceManeuverCurrentList3 = [currentACCNavRouteGuidance3 routeGuidanceManeuverCurrentList];
+      firstObject2 = [routeGuidanceManeuverCurrentList3 firstObject];
+      v23[0] = firstObject2;
+      v19 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
       v23[1] = v19;
       v20 = [NSArray arrayWithObjects:v23 count:2];
-      v21 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v21 setRouteGuidanceManeuverCurrentList:v20];
+      currentACCNavRouteGuidance4 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance4 setRouteGuidanceManeuverCurrentList:v20];
 
       [(CarClusterNavigationController *)self sendRouteGuidance];
     }
@@ -218,17 +218,17 @@
   }
 }
 
-- (void)navigationService:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4
+- (void)navigationService:(id)service displayManeuverAlertForAnnouncementStage:(unint64_t)stage
 {
-  v6 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  [v6 updateNavAnnouncementStage:a4];
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  [currentACCNavRouteGuidance updateNavAnnouncementStage:stage];
 
   [(CarClusterNavigationController *)self sendRouteGuidance];
 }
 
-- (void)navigationService:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10
+- (void)navigationService:(id)service displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0
 {
-  if (-[CarClusterNavigationController updateManeuverIndex:distanceToManeuver:](self, "updateManeuverIndex:distanceToManeuver:", a9, [a4 distance]))
+  if (-[CarClusterNavigationController updateManeuverIndex:distanceToManeuver:](self, "updateManeuverIndex:distanceToManeuver:", index, [step distance]))
   {
     [(CarClusterNavigationController *)self sendManeuvers];
 
@@ -236,24 +236,24 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v17 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v17 routeID];
-  v12 = [v10 route];
+  aCopy = a;
+  distanceCopy = distance;
+  serviceCopy = service;
+  routeID = [aCopy routeID];
+  route = [serviceCopy route];
 
-  v13 = [v12 uniqueRouteID];
-  v14 = [v11 isEqual:v13];
+  uniqueRouteID = [route uniqueRouteID];
+  v14 = [routeID isEqual:uniqueRouteID];
 
   if (v14)
   {
-    v15 = [v17 displayRemainingMinutesToEndOfLeg] * 60.0;
-    v16 = [(CarClusterNavigationController *)self etaDisplayFormatter];
-    [v16 setRemainingTimeToEndOfLeg:v15];
+    v15 = [aCopy displayRemainingMinutesToEndOfLeg] * 60.0;
+    etaDisplayFormatter = [(CarClusterNavigationController *)self etaDisplayFormatter];
+    [etaDisplayFormatter setRemainingTimeToEndOfLeg:v15];
 
-    [v9 distanceRemainingToEndOfLeg];
+    [distanceCopy distanceRemainingToEndOfLeg];
     if ([(CarClusterNavigationController *)self updateRemainingDistance:?])
     {
       [(CarClusterNavigationController *)self sendRouteGuidance];
@@ -261,13 +261,13 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index
 {
-  v9 = [(CarClusterNavigationController *)self currentRoute:a3];
+  v9 = [(CarClusterNavigationController *)self currentRoute:service];
 
   if (v9)
   {
-    v10 = [(CarClusterNavigationController *)self updateManeuverIndex:a6 distanceToManeuver:a4];
+    v10 = [(CarClusterNavigationController *)self updateManeuverIndex:index distanceToManeuver:sign];
     v11 = [(CarClusterNavigationController *)self updateRouteGuidanceState:1];
     if ((v10 & 1) != 0 || v11)
     {
@@ -278,19 +278,19 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index
 {
-  if (a6 <= 1)
+  if (index <= 1)
   {
-    v7 = 0;
+    indexCopy = 0;
   }
 
   else
   {
-    v7 = a6;
+    indexCopy = index;
   }
 
-  if ([(CarClusterNavigationController *)self updateManeuverIndex:v7 distanceToManeuver:a5, a4])
+  if ([(CarClusterNavigationController *)self updateManeuverIndex:indexCopy distanceToManeuver:string, distance])
   {
     [(CarClusterNavigationController *)self sendManeuvers];
 
@@ -298,7 +298,7 @@
   }
 }
 
-- (void)navigationServiceEndGuidanceUpdate:(id)a3
+- (void)navigationServiceEndGuidanceUpdate:(id)update
 {
   if (![(CarClusterNavigationController *)self smartGuidanceActive])
   {
@@ -306,40 +306,40 @@
   }
 
   v18 = objc_opt_new();
-  v4 = [(CarClusterNavigationController *)self latestSignInfo];
-  v5 = [v4 primarySign];
+  latestSignInfo = [(CarClusterNavigationController *)self latestSignInfo];
+  primarySign = [latestSignInfo primarySign];
 
-  if (v5)
+  if (primarySign)
   {
-    v6 = [(CarClusterNavigationController *)self latestSignInfo];
-    v7 = [v6 primarySign];
-    v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 composedGuidanceEventIndex]);
+    latestSignInfo2 = [(CarClusterNavigationController *)self latestSignInfo];
+    primarySign2 = [latestSignInfo2 primarySign];
+    v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [primarySign2 composedGuidanceEventIndex]);
     [v18 addObject:v8];
   }
 
-  v9 = [(CarClusterNavigationController *)self latestSignInfo];
-  v10 = [v9 secondarySign];
-  if (!v10)
+  latestSignInfo3 = [(CarClusterNavigationController *)self latestSignInfo];
+  secondarySign = [latestSignInfo3 secondarySign];
+  if (!secondarySign)
   {
     goto LABEL_7;
   }
 
-  v11 = v10;
-  v12 = [(CarClusterNavigationController *)self component];
-  v13 = [v12 guidanceManeuverCapacity];
+  v11 = secondarySign;
+  component = [(CarClusterNavigationController *)self component];
+  guidanceManeuverCapacity = [component guidanceManeuverCapacity];
 
-  if (v13 >= 2)
+  if (guidanceManeuverCapacity >= 2)
   {
-    v9 = [(CarClusterNavigationController *)self latestSignInfo];
-    v14 = [v9 secondarySign];
-    v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v14 composedGuidanceEventIndex]);
+    latestSignInfo3 = [(CarClusterNavigationController *)self latestSignInfo];
+    secondarySign2 = [latestSignInfo3 secondarySign];
+    v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [secondarySign2 composedGuidanceEventIndex]);
     [v18 addObject:v15];
 
 LABEL_7:
   }
 
-  v16 = [(CarClusterNavigationController *)self latestSignInfo];
-  [v16 primaryDistance_SIRI_USE_ONLY];
+  latestSignInfo4 = [(CarClusterNavigationController *)self latestSignInfo];
+  [latestSignInfo4 primaryDistance_SIRI_USE_ONLY];
   v17 = [(CarClusterNavigationController *)self updateManeuverIndices:v18 distanceToManeuver:?];
 
   if (v17)
@@ -349,22 +349,22 @@ LABEL_7:
   }
 }
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   if ([(CarClusterNavigationController *)self smartGuidanceActive])
   {
-    [(CarClusterNavigationController *)self setLatestSignInfo:v5];
+    [(CarClusterNavigationController *)self setLatestSignInfo:infoCopy];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v10 = a4;
-  if ([v10 locationUnreliable])
+  locationCopy = location;
+  if ([locationCopy locationUnreliable])
   {
-    v5 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v5 setCurrentRoadName:&stru_1016631F0];
+    currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance setCurrentRoadName:&stru_1016631F0];
 
     if (![(CarClusterNavigationController *)self smartGuidanceActive])
     {
@@ -376,104 +376,104 @@ LABEL_7:
 
   else
   {
-    v7 = [v10 roadName];
-    v8 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v8 setCurrentRoadName:v7];
+    roadName = [locationCopy roadName];
+    currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance2 setCurrentRoadName:roadName];
 
     if (![(CarClusterNavigationController *)self smartGuidanceActive])
     {
       goto LABEL_7;
     }
 
-    v6 = [(CarClusterNavigationController *)self _roadClassAtLocation:v10];
+    v6 = [(CarClusterNavigationController *)self _roadClassAtLocation:locationCopy];
   }
 
-  v9 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  [v9 setManeuverRoadClass:v6];
+  currentACCNavRouteGuidance3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  [currentACCNavRouteGuidance3 setManeuverRoadClass:v6];
 
 LABEL_7:
   [(CarClusterNavigationController *)self sendRouteGuidance];
 }
 
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4
+- (void)navigationService:(id)service didChangeNavigationState:(int)state
 {
-  if ([(CarClusterNavigationController *)self updateRouteGuidanceState:[CarClusterUpdate _accNavRouteGuidanceStateForGEONavigationState:*&a4]])
+  if ([(CarClusterNavigationController *)self updateRouteGuidanceState:[CarClusterUpdate _accNavRouteGuidanceStateForGEONavigationState:*&state]])
   {
 
     [(CarClusterNavigationController *)self sendRouteGuidance];
   }
 }
 
-- (void)navigationService:(id)a3 didFailWithError:(id)a4
+- (void)navigationService:(id)service didFailWithError:(id)error
 {
-  if ([(CarClusterNavigationController *)self updateRouteGuidanceState:0, a4])
+  if ([(CarClusterNavigationController *)self updateRouteGuidanceState:0, error])
   {
 
     [(CarClusterNavigationController *)self sendRouteGuidance];
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
-  if (a5)
+  serviceCopy = service;
+  if (toState)
   {
-    if (a5 == 4)
+    if (toState == 4)
     {
-      v12 = v7;
-      v8 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      v9 = v8;
+      v12 = serviceCopy;
+      currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      v9 = currentACCNavRouteGuidance;
       v10 = 1;
     }
 
     else
     {
-      if (a5 != 5)
+      if (toState != 5)
       {
         goto LABEL_9;
       }
 
-      v12 = v7;
-      v8 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      v9 = v8;
+      v12 = serviceCopy;
+      currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      v9 = currentACCNavRouteGuidance;
       v10 = 0;
     }
 
-    [v8 setBeingShownInApp:v10];
+    [currentACCNavRouteGuidance setBeingShownInApp:v10];
   }
 
   else
   {
-    v12 = v7;
+    v12 = serviceCopy;
     [(CarClusterNavigationController *)self updateRouteGuidanceState:0];
-    v11 = [(CarClusterNavigationController *)self etaDisplayFormatter];
-    [v11 setDelegate:0];
+    etaDisplayFormatter = [(CarClusterNavigationController *)self etaDisplayFormatter];
+    [etaDisplayFormatter setDelegate:0];
 
     [(CarClusterNavigationController *)self setEtaDisplayFormatter:0];
     [(CarClusterNavigationController *)self setCurrentRoute:0];
   }
 
   [(CarClusterNavigationController *)self sendRouteGuidance];
-  v7 = v12;
+  serviceCopy = v12;
 LABEL_9:
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v11 = a3;
+  serviceCopy = service;
   if (MNNavigationServiceStateChangedToNavigating())
   {
-    v7 = [v11 route];
+    route = [serviceCopy route];
 
-    if (v7)
+    if (route)
     {
-      v8 = [v11 route];
-      [(CarClusterNavigationController *)self setCurrentRoute:v8];
+      route2 = [serviceCopy route];
+      [(CarClusterNavigationController *)self setCurrentRoute:route2];
 
-      v9 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      v10 = [v9 routeGuidanceState];
+      currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      routeGuidanceState = [currentACCNavRouteGuidance routeGuidanceState];
 
-      if (!v10)
+      if (!routeGuidanceState)
       {
         [(CarClusterNavigationController *)self updateRouteGuidanceState:3];
       }
@@ -482,58 +482,58 @@ LABEL_9:
     }
   }
 
-  if (!a5 && [(CarClusterNavigationController *)self updateRouteGuidanceState:0])
+  if (!toState && [(CarClusterNavigationController *)self updateRouteGuidanceState:0])
   {
 LABEL_7:
     [(CarClusterNavigationController *)self sendRouteGuidance];
   }
 }
 
-- (int)_roadClassAtLocation:(id)a3
+- (int)_roadClassAtLocation:(id)location
 {
   v8 = 0;
   v9 = 9;
-  v4 = [a3 routeMatch];
-  v5 = [v4 routeCoordinate];
+  routeMatch = [location routeMatch];
+  routeCoordinate = [routeMatch routeCoordinate];
 
-  v6 = [(CarClusterNavigationController *)self currentRoute];
-  [v6 getFormOfWay:&v8 roadClass:&v9 at:v5];
+  currentRoute = [(CarClusterNavigationController *)self currentRoute];
+  [currentRoute getFormOfWay:&v8 roadClass:&v9 at:routeCoordinate];
 
   return v9;
 }
 
-- (void)_updateSecondaryManeuversIfNecessaryForGuidanceEvent:(id)a3 maneuver:(id)a4
+- (void)_updateSecondaryManeuversIfNecessaryForGuidanceEvent:(id)event maneuver:(id)maneuver
 {
-  if (a3 && a4)
+  if (event && maneuver)
   {
-    v6 = a4;
-    v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a3 stepIndex]);
-    v7 = [(CarClusterNavigationController *)self indexedSteps];
-    v8 = [v7 objectForKeyedSubscript:v20];
+    maneuverCopy = maneuver;
+    v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [event stepIndex]);
+    indexedSteps = [(CarClusterNavigationController *)self indexedSteps];
+    v8 = [indexedSteps objectForKeyedSubscript:v20];
 
     if (!v8)
     {
       v9 = objc_opt_new();
-      v10 = [(CarClusterNavigationController *)self indexedSteps];
-      [v10 setObject:v9 forKeyedSubscript:v20];
+      indexedSteps2 = [(CarClusterNavigationController *)self indexedSteps];
+      [indexedSteps2 setObject:v9 forKeyedSubscript:v20];
     }
 
-    v11 = [(CarClusterNavigationController *)self indexedSteps];
-    v12 = [v11 objectForKeyedSubscript:v20];
-    [v12 addObject:v6];
+    indexedSteps3 = [(CarClusterNavigationController *)self indexedSteps];
+    v12 = [indexedSteps3 objectForKeyedSubscript:v20];
+    [v12 addObject:maneuverCopy];
 
-    v13 = [(CarClusterNavigationController *)self indexedSteps];
-    v14 = [v13 objectForKeyedSubscript:v20];
+    indexedSteps4 = [(CarClusterNavigationController *)self indexedSteps];
+    v14 = [indexedSteps4 objectForKeyedSubscript:v20];
     [v14 sortUsingComparator:&stru_1016563F8];
 
-    v15 = [(CarClusterNavigationController *)self indexedSteps];
-    v16 = [v15 objectForKeyedSubscript:v20];
+    indexedSteps5 = [(CarClusterNavigationController *)self indexedSteps];
+    v16 = [indexedSteps5 objectForKeyedSubscript:v20];
     v17 = [v16 count];
 
     if (v17 >= 2)
     {
-      v18 = [(CarClusterNavigationController *)self indexedSteps];
-      v19 = [v18 objectForKeyedSubscript:v20];
+      indexedSteps6 = [(CarClusterNavigationController *)self indexedSteps];
+      v19 = [indexedSteps6 objectForKeyedSubscript:v20];
       [v19 enumerateObjectsUsingBlock:&stru_101656438];
     }
   }
@@ -543,9 +543,9 @@ LABEL_7:
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+  currentACCNavManeuvers = [(CarClusterNavigationController *)self currentACCNavManeuvers];
 
-  if (!v5)
+  if (!currentACCNavManeuvers)
   {
     v6 = objc_opt_new();
     [(CarClusterNavigationController *)self setCurrentACCNavManeuvers:v6];
@@ -554,54 +554,54 @@ LABEL_7:
     [(CarClusterNavigationController *)self setIndexedSteps:v7];
   }
 
-  v8 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-  v9 = [v8 valueForKey:@"index"];
+  currentACCNavManeuvers2 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+  v9 = [currentACCNavManeuvers2 valueForKey:@"index"];
 
-  v10 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-  v11 = [v10 firstObject];
+  currentACCNavManeuvers3 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+  firstObject = [currentACCNavManeuvers3 firstObject];
 
-  v12 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v13 = [v12 firstIndex_RouteGuidanceManeuverCurrentList];
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  firstIndex_RouteGuidanceManeuverCurrentList = [currentACCNavRouteGuidance firstIndex_RouteGuidanceManeuverCurrentList];
 
-  if (v13 != -1)
+  if (firstIndex_RouteGuidanceManeuverCurrentList != -1)
   {
-    v14 = [v11 index];
-    v15 = [v14 unsignedIntegerValue];
-    v16 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    if (v15 == [v16 firstIndex_RouteGuidanceManeuverCurrentList])
+    index = [firstObject index];
+    unsignedIntegerValue = [index unsignedIntegerValue];
+    currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    if (unsignedIntegerValue == [currentACCNavRouteGuidance2 firstIndex_RouteGuidanceManeuverCurrentList])
     {
-      v17 = v11;
+      firstObject2 = firstObject;
 LABEL_8:
 
-      v11 = v17;
+      firstObject = firstObject2;
     }
 
     else
     {
       while (1)
       {
-        v18 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-        v19 = [v18 count];
+        currentACCNavManeuvers4 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+        v19 = [currentACCNavManeuvers4 count];
 
         if (!v19)
         {
           break;
         }
 
-        v20 = [v11 index];
-        [v3 addObject:v20];
+        index2 = [firstObject index];
+        [v3 addObject:index2];
 
-        v21 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-        [v21 removeObjectAtIndex:0];
+        currentACCNavManeuvers5 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+        [currentACCNavManeuvers5 removeObjectAtIndex:0];
 
-        v22 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-        v17 = [v22 firstObject];
+        currentACCNavManeuvers6 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+        firstObject2 = [currentACCNavManeuvers6 firstObject];
 
-        v14 = [v17 index];
-        v23 = [v14 unsignedIntegerValue];
-        v16 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-        v11 = v17;
-        if (v23 == [v16 firstIndex_RouteGuidanceManeuverCurrentList])
+        index = [firstObject2 index];
+        unsignedIntegerValue2 = [index unsignedIntegerValue];
+        currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+        firstObject = firstObject2;
+        if (unsignedIntegerValue2 == [currentACCNavRouteGuidance2 firstIndex_RouteGuidanceManeuverCurrentList])
         {
           goto LABEL_8;
         }
@@ -609,42 +609,42 @@ LABEL_8:
     }
   }
 
-  v24 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-  v25 = [v24 lastObject];
+  currentACCNavManeuvers7 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+  lastObject = [currentACCNavManeuvers7 lastObject];
 
-  if (v25)
+  if (lastObject)
   {
-    v26 = [v25 index];
-    v27 = [v26 unsignedIntegerValue] + 1;
+    index3 = [lastObject index];
+    firstIndex_RouteGuidanceManeuverCurrentList2 = [index3 unsignedIntegerValue] + 1;
   }
 
   else
   {
-    v26 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    v27 = [v26 firstIndex_RouteGuidanceManeuverCurrentList];
+    index3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    firstIndex_RouteGuidanceManeuverCurrentList2 = [index3 firstIndex_RouteGuidanceManeuverCurrentList];
   }
 
-  v28 = [(CarClusterNavigationController *)self smartGuidanceActive];
-  v29 = [(CarClusterNavigationController *)self currentRoute];
-  v30 = v29;
+  smartGuidanceActive = [(CarClusterNavigationController *)self smartGuidanceActive];
+  currentRoute = [(CarClusterNavigationController *)self currentRoute];
+  v30 = currentRoute;
   v61 = v3;
-  v59 = v25;
-  if (v28)
+  v59 = lastObject;
+  if (smartGuidanceActive)
   {
-    [v29 composedGuidanceEvents];
+    [currentRoute composedGuidanceEvents];
   }
 
   else
   {
-    [v29 steps];
+    [currentRoute steps];
   }
   v31 = ;
   v60 = v9;
 
-  v32 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-  v33 = [v32 count];
-  v34 = [(CarClusterNavigationController *)self component];
-  if (v33 >= [v34 guidanceManeuverCapacity])
+  currentACCNavManeuvers8 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+  v33 = [currentACCNavManeuvers8 count];
+  component = [(CarClusterNavigationController *)self component];
+  if (v33 >= [component guidanceManeuverCapacity])
   {
 LABEL_23:
   }
@@ -655,22 +655,22 @@ LABEL_23:
     {
       v35 = [v31 count];
 
-      if (v35 <= v27)
+      if (v35 <= firstIndex_RouteGuidanceManeuverCurrentList2)
       {
         break;
       }
 
       if ([(CarClusterNavigationController *)self smartGuidanceActive])
       {
-        v36 = [v31 objectAtIndexedSubscript:v27];
-        v37 = [(CarClusterNavigationController *)self currentRoute];
-        v38 = [v37 steps];
-        v39 = [v38 objectAtIndexedSubscript:{objc_msgSend(v36, "stepIndex")}];
+        v36 = [v31 objectAtIndexedSubscript:firstIndex_RouteGuidanceManeuverCurrentList2];
+        currentRoute2 = [(CarClusterNavigationController *)self currentRoute];
+        steps = [currentRoute2 steps];
+        component3 = [steps objectAtIndexedSubscript:{objc_msgSend(v36, "stepIndex")}];
 
-        v40 = [(CarClusterNavigationController *)self component];
-        v41 = [CarClusterUpdateManeuverInfo maneuverUpdateWithGuidanceEvent:v36 routeStep:v39 component:v40];
+        component2 = [(CarClusterNavigationController *)self component];
+        v41 = [CarClusterUpdateManeuverInfo maneuverUpdateWithGuidanceEvent:v36 routeStep:component3 component:component2];
 
-        v42 = [NSNumber numberWithUnsignedInteger:v27];
+        v42 = [NSNumber numberWithUnsignedInteger:firstIndex_RouteGuidanceManeuverCurrentList2];
         [v41 setIndex:v42];
 
         [(CarClusterNavigationController *)self _updateSecondaryManeuversIfNecessaryForGuidanceEvent:v36 maneuver:v41];
@@ -678,38 +678,38 @@ LABEL_23:
 
       else
       {
-        v36 = [v31 objectAtIndexedSubscript:v27];
-        v39 = [(CarClusterNavigationController *)self component];
-        v41 = [CarClusterUpdateManeuverInfo maneuverUpdateWithStep:v36 component:v39];
+        v36 = [v31 objectAtIndexedSubscript:firstIndex_RouteGuidanceManeuverCurrentList2];
+        component3 = [(CarClusterNavigationController *)self component];
+        v41 = [CarClusterUpdateManeuverInfo maneuverUpdateWithStep:v36 component:component3];
       }
 
       if (v41)
       {
-        v43 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-        [v43 addObject:v41];
+        currentACCNavManeuvers9 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+        [currentACCNavManeuvers9 addObject:v41];
       }
 
-      ++v27;
+      ++firstIndex_RouteGuidanceManeuverCurrentList2;
 
-      v32 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-      v44 = [v32 count];
-      v34 = [(CarClusterNavigationController *)self component];
-      if (v44 >= [v34 guidanceManeuverCapacity])
+      currentACCNavManeuvers8 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+      v44 = [currentACCNavManeuvers8 count];
+      component = [(CarClusterNavigationController *)self component];
+      if (v44 >= [component guidanceManeuverCapacity])
       {
         goto LABEL_23;
       }
     }
   }
 
-  v45 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-  v58 = [v45 valueForKey:@"index"];
+  currentACCNavManeuvers10 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+  v58 = [currentACCNavManeuvers10 valueForKey:@"index"];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v46 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
-  v47 = [v46 countByEnumeratingWithState:&v62 objects:v74 count:16];
+  currentACCNavManeuvers11 = [(CarClusterNavigationController *)self currentACCNavManeuvers];
+  v47 = [currentACCNavManeuvers11 countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (v47)
   {
     v48 = v47;
@@ -720,7 +720,7 @@ LABEL_23:
       {
         if (*v63 != v49)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(currentACCNavManeuvers11);
         }
 
         v51 = *(*(&v62 + 1) + 8 * i);
@@ -734,14 +734,14 @@ LABEL_23:
           }
 
           [v51 setHasBeenSent:1];
-          v52 = [v51 index];
-          [v4 addObject:v52];
+          index4 = [v51 index];
+          [v4 addObject:index4];
 
           [(CarClusterNavigationController *)self sendManeuverUpdate:v51];
         }
       }
 
-      v48 = [v46 countByEnumeratingWithState:&v62 objects:v74 count:16];
+      v48 = [currentACCNavManeuvers11 countByEnumeratingWithState:&v62 objects:v74 count:16];
     }
 
     while (v48);
@@ -770,9 +770,9 @@ LABEL_23:
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+  currentACCNavLaneGuidances = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
 
-  if (!v5)
+  if (!currentACCNavLaneGuidances)
   {
     v6 = objc_opt_new();
     [(CarClusterNavigationController *)self setCurrentACCNavLaneGuidances:v6];
@@ -781,127 +781,127 @@ LABEL_23:
     [(CarClusterNavigationController *)self setCurrentACCNavLaneGuidanceIndexes:v7];
   }
 
-  v8 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-  v59 = [v8 valueForKey:@"index"];
+  currentACCNavLaneGuidances2 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+  v59 = [currentACCNavLaneGuidances2 valueForKey:@"index"];
 
-  v9 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-  v10 = [v9 firstObject];
+  currentACCNavLaneGuidances3 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+  firstObject = [currentACCNavLaneGuidances3 firstObject];
 
-  v11 = [v10 index];
-  if (v11)
+  index = [firstObject index];
+  if (index)
   {
-    v12 = v11;
-    v13 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    v14 = [v13 laneGuidanceCurrentIndex];
+    v12 = index;
+    currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    laneGuidanceCurrentIndex = [currentACCNavRouteGuidance laneGuidanceCurrentIndex];
 
-    if (v14)
+    if (laneGuidanceCurrentIndex)
     {
       while (1)
       {
-        v15 = [v10 index];
-        v16 = [v15 unsignedIntegerValue];
-        v17 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-        v18 = [v17 laneGuidanceCurrentIndex];
-        v19 = [v18 unsignedIntegerValue];
+        index2 = [firstObject index];
+        unsignedIntegerValue = [index2 unsignedIntegerValue];
+        currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+        laneGuidanceCurrentIndex2 = [currentACCNavRouteGuidance2 laneGuidanceCurrentIndex];
+        unsignedIntegerValue2 = [laneGuidanceCurrentIndex2 unsignedIntegerValue];
 
-        if (v16 == v19)
+        if (unsignedIntegerValue == unsignedIntegerValue2)
         {
           break;
         }
 
-        v20 = [v10 index];
-        [v3 addObject:v20];
+        index3 = [firstObject index];
+        [v3 addObject:index3];
 
-        v21 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-        [v21 removeObjectAtIndex:0];
+        currentACCNavLaneGuidances4 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+        [currentACCNavLaneGuidances4 removeObjectAtIndex:0];
 
-        v22 = [(CarClusterNavigationController *)self currentACCNavLaneGuidanceIndexes];
-        v23 = [v10 index];
-        [v22 removeObject:v23];
+        currentACCNavLaneGuidanceIndexes = [(CarClusterNavigationController *)self currentACCNavLaneGuidanceIndexes];
+        index4 = [firstObject index];
+        [currentACCNavLaneGuidanceIndexes removeObject:index4];
 
-        v24 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-        v25 = [v24 firstObject];
+        currentACCNavLaneGuidances5 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+        firstObject2 = [currentACCNavLaneGuidances5 firstObject];
 
-        v10 = v25;
+        firstObject = firstObject2;
       }
     }
   }
 
-  v26 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-  v27 = [v26 lastObject];
+  currentACCNavLaneGuidances6 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+  lastObject = [currentACCNavLaneGuidances6 lastObject];
 
-  v28 = [v27 index];
-  v29 = [v28 unsignedIntegerValue];
+  index5 = [lastObject index];
+  unsignedIntegerValue3 = [index5 unsignedIntegerValue];
 
   v60 = v3;
-  v57 = v27;
+  v57 = lastObject;
   if ([(CarClusterNavigationController *)self smartGuidanceActive])
   {
-    v30 = [(CarClusterNavigationController *)self currentRoute];
-    v31 = [v30 composedGuidanceEvents];
+    currentRoute = [(CarClusterNavigationController *)self currentRoute];
+    composedGuidanceEvents = [currentRoute composedGuidanceEvents];
   }
 
   else
   {
-    v31 = 0;
+    composedGuidanceEvents = 0;
   }
 
-  v32 = [(CarClusterNavigationController *)self component];
-  v33 = [v32 laneGuidanceCapacity];
+  component = [(CarClusterNavigationController *)self component];
+  laneGuidanceCapacity = [component laneGuidanceCapacity];
 
-  v34 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-  if ([v34 count] >= v33)
+  currentACCNavLaneGuidances7 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+  if ([currentACCNavLaneGuidances7 count] >= laneGuidanceCapacity)
   {
 LABEL_16:
   }
 
   else
   {
-    v35 = v29 + 1;
+    v35 = unsignedIntegerValue3 + 1;
     while (1)
     {
-      v36 = [v31 count];
+      v36 = [composedGuidanceEvents count];
 
       if (v36 <= v35)
       {
         break;
       }
 
-      v37 = [v31 objectAtIndexedSubscript:v35];
-      v38 = [(CarClusterNavigationController *)self component];
-      v39 = [CarClusterUpdateLaneGuidance laneGuidanceUpdateWithComposedGuidanceEvent:v37 component:v38];
+      v37 = [composedGuidanceEvents objectAtIndexedSubscript:v35];
+      component2 = [(CarClusterNavigationController *)self component];
+      v39 = [CarClusterUpdateLaneGuidance laneGuidanceUpdateWithComposedGuidanceEvent:v37 component:component2];
 
       v40 = [NSNumber numberWithUnsignedInteger:v35];
       [v39 setIndex:v40];
 
       if (v39)
       {
-        v41 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-        [v41 addObject:v39];
+        currentACCNavLaneGuidances8 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+        [currentACCNavLaneGuidances8 addObject:v39];
 
-        v42 = [(CarClusterNavigationController *)self currentACCNavLaneGuidanceIndexes];
-        v43 = [v39 index];
-        [v42 addObject:v43];
+        currentACCNavLaneGuidanceIndexes2 = [(CarClusterNavigationController *)self currentACCNavLaneGuidanceIndexes];
+        index6 = [v39 index];
+        [currentACCNavLaneGuidanceIndexes2 addObject:index6];
       }
 
-      v34 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+      currentACCNavLaneGuidances7 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
       ++v35;
-      if ([v34 count] >= v33)
+      if ([currentACCNavLaneGuidances7 count] >= laneGuidanceCapacity)
       {
         goto LABEL_16;
       }
     }
   }
 
-  v44 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-  v61 = [v44 valueForKey:@"index"];
+  currentACCNavLaneGuidances9 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+  v61 = [currentACCNavLaneGuidances9 valueForKey:@"index"];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v45 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
-  v46 = [v45 countByEnumeratingWithState:&v62 objects:v74 count:16];
+  currentACCNavLaneGuidances10 = [(CarClusterNavigationController *)self currentACCNavLaneGuidances];
+  v46 = [currentACCNavLaneGuidances10 countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (v46)
   {
     v47 = v46;
@@ -912,21 +912,21 @@ LABEL_16:
       {
         if (*v63 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(currentACCNavLaneGuidances10);
         }
 
         v50 = *(*(&v62 + 1) + 8 * i);
         if (([v50 hasBeenSent] & 1) == 0)
         {
           [v50 setHasBeenSent:1];
-          v51 = [v50 index];
-          [v4 addObject:v51];
+          index7 = [v50 index];
+          [v4 addObject:index7];
 
           [(CarClusterNavigationController *)self sendLaneGuidanceUpdate:v50];
         }
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v62 objects:v74 count:16];
+      v47 = [currentACCNavLaneGuidances10 countByEnumeratingWithState:&v62 objects:v74 count:16];
     }
 
     while (v47);
@@ -951,172 +951,172 @@ LABEL_16:
   }
 }
 
-- (void)sendLaneGuidanceUpdate:(id)a3
+- (void)sendLaneGuidanceUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(CarClusterNavigationController *)self accessory];
-    v7 = [v6 accessoryUID];
-    v8 = [(CarClusterNavigationController *)self component];
-    v9 = [v8 identifier];
-    v10 = [v4 logFormat];
-    v11 = [v4 accNavFormat];
+    accessory = [(CarClusterNavigationController *)self accessory];
+    accessoryUID = [accessory accessoryUID];
+    component = [(CarClusterNavigationController *)self component];
+    identifier = [component identifier];
+    logFormat = [updateCopy logFormat];
+    accNavFormat = [updateCopy accNavFormat];
     *buf = 138413058;
-    v18 = v7;
+    v18 = accessoryUID;
     v19 = 2048;
-    v20 = v9;
+    v20 = identifier;
     v21 = 2112;
-    v22 = v10;
+    v22 = logFormat;
     v23 = 2112;
-    v24 = v11;
+    v24 = accNavFormat;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "accessory=%@ component=%ld \nupdate=%@ \naccNavFormat=%@", buf, 0x2Au);
   }
 
-  v12 = [(CarClusterNavigationController *)self accessory];
-  v13 = [ACCNavigationInfoBuilder accNavigationLaneGuidanceInfoFrom:v4];
-  v14 = [(CarClusterNavigationController *)self component];
-  v16 = v14;
+  accessory2 = [(CarClusterNavigationController *)self accessory];
+  v13 = [ACCNavigationInfoBuilder accNavigationLaneGuidanceInfoFrom:updateCopy];
+  component2 = [(CarClusterNavigationController *)self component];
+  v16 = component2;
   v15 = [NSArray arrayWithObjects:&v16 count:1];
-  [v12 updateLaneGuidanceInfo:v13 componentList:v15];
+  [accessory2 updateLaneGuidanceInfo:v13 componentList:v15];
 }
 
-- (void)sendManeuverUpdate:(id)a3
+- (void)sendManeuverUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(CarClusterNavigationController *)self currentACCNavLaneGuidanceIndexes];
-  v6 = [v4 index];
-  v7 = [v5 containsObject:v6];
+  updateCopy = update;
+  currentACCNavLaneGuidanceIndexes = [(CarClusterNavigationController *)self currentACCNavLaneGuidanceIndexes];
+  index = [updateCopy index];
+  v7 = [currentACCNavLaneGuidanceIndexes containsObject:index];
 
   if (v7)
   {
-    v8 = [v4 index];
-    [v4 setLinkedLaneGuidanceInfo:v8];
+    index2 = [updateCopy index];
+    [updateCopy setLinkedLaneGuidanceInfo:index2];
   }
 
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(CarClusterNavigationController *)self accessory];
-    v11 = [v10 accessoryUID];
-    v12 = [(CarClusterNavigationController *)self component];
-    v13 = [v12 identifier];
-    v14 = [v4 logFormat];
-    v15 = [v4 accNavFormat];
+    accessory = [(CarClusterNavigationController *)self accessory];
+    accessoryUID = [accessory accessoryUID];
+    component = [(CarClusterNavigationController *)self component];
+    identifier = [component identifier];
+    logFormat = [updateCopy logFormat];
+    accNavFormat = [updateCopy accNavFormat];
     *buf = 138413058;
-    v22 = v11;
+    v22 = accessoryUID;
     v23 = 2048;
-    v24 = v13;
+    v24 = identifier;
     v25 = 2112;
-    v26 = v14;
+    v26 = logFormat;
     v27 = 2112;
-    v28 = v15;
+    v28 = accNavFormat;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "accessory=%@ component=%ld \nupdate=%@ \naccNavFormat=%@", buf, 0x2Au);
   }
 
-  v16 = [(CarClusterNavigationController *)self accessory];
-  v17 = [ACCNavigationInfoBuilder accNavigationManeuverUpdateInfoFrom:v4];
-  v18 = [(CarClusterNavigationController *)self component];
-  v20 = v18;
+  accessory2 = [(CarClusterNavigationController *)self accessory];
+  v17 = [ACCNavigationInfoBuilder accNavigationManeuverUpdateInfoFrom:updateCopy];
+  component2 = [(CarClusterNavigationController *)self component];
+  v20 = component2;
   v19 = [NSArray arrayWithObjects:&v20 count:1];
-  [v16 updateManeuverInfo:v17 componentList:v19];
+  [accessory2 updateManeuverInfo:v17 componentList:v19];
 }
 
 - (void)sendRouteGuidance
 {
-  v3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(CarClusterNavigationController *)self accessory];
-    v6 = [v5 accessoryUID];
-    v7 = [(CarClusterNavigationController *)self component];
-    v8 = [v7 identifier];
-    v9 = [v3 logFormat];
-    v10 = [v3 accNavFormat];
+    accessory = [(CarClusterNavigationController *)self accessory];
+    accessoryUID = [accessory accessoryUID];
+    component = [(CarClusterNavigationController *)self component];
+    identifier = [component identifier];
+    logFormat = [currentACCNavRouteGuidance logFormat];
+    accNavFormat = [currentACCNavRouteGuidance accNavFormat];
     *buf = 138413058;
-    v17 = v6;
+    v17 = accessoryUID;
     v18 = 2048;
-    v19 = v8;
+    v19 = identifier;
     v20 = 2112;
-    v21 = v9;
+    v21 = logFormat;
     v22 = 2112;
-    v23 = v10;
+    v23 = accNavFormat;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "accessory=%@ component=%ld \nupdate=%@ \naccNavFormat=%@", buf, 0x2Au);
   }
 
-  v11 = [(CarClusterNavigationController *)self accessory];
-  v12 = [ACCNavigationInfoBuilder accNavigationRouteGuidanceUpdateInfoFrom:v3];
-  v13 = [(CarClusterNavigationController *)self component];
-  v15 = v13;
+  accessory2 = [(CarClusterNavigationController *)self accessory];
+  v12 = [ACCNavigationInfoBuilder accNavigationRouteGuidanceUpdateInfoFrom:currentACCNavRouteGuidance];
+  component2 = [(CarClusterNavigationController *)self component];
+  v15 = component2;
   v14 = [NSArray arrayWithObjects:&v15 count:1];
-  [v11 updateRouteGuidanceInfo:v12 componentList:v14];
+  [accessory2 updateRouteGuidanceInfo:v12 componentList:v14];
 }
 
-- (BOOL)updateRouteGuidanceState:(unsigned __int16)a3
+- (BOOL)updateRouteGuidanceState:(unsigned __int16)state
 {
-  v3 = a3;
-  if (a3 == 1)
+  stateCopy = state;
+  if (state == 1)
   {
-    v5 = [(CarClusterNavigationController *)self currentRoute];
+    currentRoute = [(CarClusterNavigationController *)self currentRoute];
 
-    if (!v5)
+    if (!currentRoute)
     {
       return 0;
     }
   }
 
-  v6 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v7 = [v6 routeGuidanceState];
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  routeGuidanceState = [currentACCNavRouteGuidance routeGuidanceState];
 
-  if (v7 == v3)
+  if (routeGuidanceState == stateCopy)
   {
     return 0;
   }
 
-  v9 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  [v9 setRouteGuidanceState:v3];
+  currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  [currentACCNavRouteGuidance2 setRouteGuidanceState:stateCopy];
 
-  v10 = v3 - 3;
-  if (v3 >= 3)
+  v10 = stateCopy - 3;
+  if (stateCopy >= 3)
   {
-    v11 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v11 setCurrentRoadName:&stru_1016631F0];
+    currentACCNavRouteGuidance3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance3 setCurrentRoadName:&stru_1016631F0];
 
-    if (v3 == 5)
+    if (stateCopy == 5)
     {
       [(CarClusterNavigationController *)self setCurrentRoute:0];
     }
 
-    v12 = [(CarClusterNavigationController *)self currentRoute];
+    currentRoute2 = [(CarClusterNavigationController *)self currentRoute];
 
-    if (!v12)
+    if (!currentRoute2)
     {
-      v13 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v13 setRouteGuidanceManeuverCount:&off_1016EA040];
+      currentACCNavRouteGuidance4 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance4 setRouteGuidanceManeuverCount:&off_1016EA040];
 
-      v14 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v14 setRouteGuidanceManeuverCurrentList:&off_1016EDAC0];
+      currentACCNavRouteGuidance5 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance5 setRouteGuidanceManeuverCurrentList:&off_1016EDAC0];
 
-      v15 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v15 setManeuverState:3];
+      currentACCNavRouteGuidance6 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance6 setManeuverState:3];
 
-      v16 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v16 setLaneGuidanceShowing:0];
+      currentACCNavRouteGuidance7 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance7 setLaneGuidanceShowing:0];
 
-      v17 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v17 setLaneGuidanceTotalCount:&off_1016EA058];
+      currentACCNavRouteGuidance8 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance8 setLaneGuidanceTotalCount:&off_1016EA058];
 
-      v18 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v18 setLaneGuidanceCurrentIndex:&off_1016EA058];
+      currentACCNavRouteGuidance9 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance9 setLaneGuidanceCurrentIndex:&off_1016EA058];
 
-      v19 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v19 setDestinationTimeZoneOffsetMinutes:&off_1016EA058];
+      currentACCNavRouteGuidance10 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance10 setDestinationTimeZoneOffsetMinutes:&off_1016EA058];
 
       v20 = objc_opt_new();
-      v21 = [(CarClusterNavigationController *)self component];
-      [v20 setComponent:v21];
+      component = [(CarClusterNavigationController *)self component];
+      [v20 setComponent:component];
 
       v22 = &stru_1016631F0;
       [v20 setAfterManeuverRoadName:&stru_1016631F0];
@@ -1137,54 +1137,54 @@ LABEL_16:
   return 1;
 }
 
-- (BOOL)updateRemainingDistance:(double)a3
+- (BOOL)updateRemainingDistance:(double)distance
 {
-  v5 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v6 = [v5 distanceRemaining];
-  [v6 doubleValue];
-  v8 = v7 != a3 && a3 >= 0.0;
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  distanceRemaining = [currentACCNavRouteGuidance distanceRemaining];
+  [distanceRemaining doubleValue];
+  v8 = v7 != distance && distance >= 0.0;
 
   if (v8)
   {
-    v9 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v9 updateRemainingDistance:a3];
+    currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance2 updateRemainingDistance:distance];
   }
 
   return v8;
 }
 
-- (BOOL)updateRemainingTime:(double)a3
+- (BOOL)updateRemainingTime:(double)time
 {
-  if (a3 < 0.0)
+  if (time < 0.0)
   {
     return 0;
   }
 
-  v5 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v6 = [v5 routeGuidanceState];
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  routeGuidanceState = [currentACCNavRouteGuidance routeGuidanceState];
 
-  if (!v6)
+  if (!routeGuidanceState)
   {
     return 0;
   }
 
-  v7 = [(CarClusterNavigationController *)self etaDisplayFormatter];
-  [v7 displayRemainingTimeToEndOfLeg];
+  etaDisplayFormatter = [(CarClusterNavigationController *)self etaDisplayFormatter];
+  [etaDisplayFormatter displayRemainingTimeToEndOfLeg];
   v9 = v8;
 
-  v10 = [(CarClusterNavigationController *)self etaDisplayFormatter];
-  v11 = [v10 displayETAToEndOfLeg];
-  [v11 timeIntervalSince1970];
+  etaDisplayFormatter2 = [(CarClusterNavigationController *)self etaDisplayFormatter];
+  displayETAToEndOfLeg = [etaDisplayFormatter2 displayETAToEndOfLeg];
+  [displayETAToEndOfLeg timeIntervalSince1970];
   v13 = v12;
 
-  v14 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v15 = [v14 timeRemainingToDestination];
-  [v15 doubleValue];
+  currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  timeRemainingToDestination = [currentACCNavRouteGuidance2 timeRemainingToDestination];
+  [timeRemainingToDestination doubleValue];
   v17 = v16;
 
-  v18 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v19 = [v18 estimatedTimeOfArrival];
-  [v19 doubleValue];
+  currentACCNavRouteGuidance3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  estimatedTimeOfArrival = [currentACCNavRouteGuidance3 estimatedTimeOfArrival];
+  [estimatedTimeOfArrival doubleValue];
   v21 = v20;
 
   if (v9 == v17 && v13 == v21)
@@ -1192,34 +1192,34 @@ LABEL_16:
     return 0;
   }
 
-  v22 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  [v22 updateRemainingTime:v9 estimatedTimeOfArrival:v13];
+  currentACCNavRouteGuidance4 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  [currentACCNavRouteGuidance4 updateRemainingTime:v9 estimatedTimeOfArrival:v13];
 
   return 1;
 }
 
 - (id)_destinationTimeZoneOffsetMinutes
 {
-  v2 = [(GEOComposedRoute *)self->_currentRoute destination];
-  v3 = [v2 timezone];
+  destination = [(GEOComposedRoute *)self->_currentRoute destination];
+  timezone = [destination timezone];
 
   v4 = +[NSDate date];
-  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 secondsFromGMTForDate:v4] / 60);
+  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [timezone secondsFromGMTForDate:v4] / 60);
 
   return v5;
 }
 
-- (BOOL)updateManeuverIndices:(id)a3 distanceToManeuver:(double)a4
+- (BOOL)updateManeuverIndices:(id)indices distanceToManeuver:(double)maneuver
 {
-  v6 = a3;
-  v7 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v8 = [v7 routeGuidanceManeuverCurrentList];
-  if (v8)
+  indicesCopy = indices;
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  routeGuidanceManeuverCurrentList = [currentACCNavRouteGuidance routeGuidanceManeuverCurrentList];
+  if (routeGuidanceManeuverCurrentList)
   {
-    v9 = v8;
-    v10 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    v11 = [v10 routeGuidanceManeuverCurrentList];
-    v12 = [MNComparison isValue:v11 equalTo:v6];
+    v9 = routeGuidanceManeuverCurrentList;
+    currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    routeGuidanceManeuverCurrentList2 = [currentACCNavRouteGuidance2 routeGuidanceManeuverCurrentList];
+    v12 = [MNComparison isValue:routeGuidanceManeuverCurrentList2 equalTo:indicesCopy];
 
     if (v12)
     {
@@ -1232,32 +1232,32 @@ LABEL_16:
   {
   }
 
-  v14 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  [v14 setRouteGuidanceManeuverCurrentList:v6];
+  currentACCNavRouteGuidance3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  [currentACCNavRouteGuidance3 setRouteGuidanceManeuverCurrentList:indicesCopy];
 
   v13 = 1;
 LABEL_6:
-  v15 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  v16 = [v15 distanceRemainingToNextManeuver];
-  [v16 doubleValue];
+  currentACCNavRouteGuidance4 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  distanceRemainingToNextManeuver = [currentACCNavRouteGuidance4 distanceRemainingToNextManeuver];
+  [distanceRemainingToNextManeuver doubleValue];
   v18 = v17;
 
-  if (v18 != a4)
+  if (v18 != maneuver)
   {
-    v19 = [NSNumber numberWithDouble:a4];
-    v20 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v20 setDistanceRemainingToNextManeuver:v19];
+    v19 = [NSNumber numberWithDouble:maneuver];
+    currentACCNavRouteGuidance5 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance5 setDistanceRemainingToNextManeuver:v19];
 
     v27 = 0;
     v26 = 0;
-    [CarClusterUpdateRouteGuidance getStringValue:&v26 displayUnits:&v27 forRemainingDistance:a4];
+    [CarClusterUpdateRouteGuidance getStringValue:&v26 displayUnits:&v27 forRemainingDistance:maneuver];
     v21 = v26;
-    v22 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v22 setDistanceRemainingToNextManeuverDisplayString:v21];
+    currentACCNavRouteGuidance6 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance6 setDistanceRemainingToNextManeuverDisplayString:v21];
 
     v23 = v27;
-    v24 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-    [v24 setDistanceRemainingToNextManeuverDisplayUnits:v23];
+    currentACCNavRouteGuidance7 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+    [currentACCNavRouteGuidance7 setDistanceRemainingToNextManeuverDisplayUnits:v23];
 
     v13 = 1;
   }
@@ -1265,77 +1265,77 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)updateManeuverIndex:(unint64_t)a3 distanceToManeuver:(double)a4
+- (BOOL)updateManeuverIndex:(unint64_t)index distanceToManeuver:(double)maneuver
 {
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:index];
   v9 = v6;
   v7 = [NSArray arrayWithObjects:&v9 count:1];
-  LOBYTE(self) = [(CarClusterNavigationController *)self updateManeuverIndices:v7 distanceToManeuver:a4];
+  LOBYTE(self) = [(CarClusterNavigationController *)self updateManeuverIndices:v7 distanceToManeuver:maneuver];
 
   return self;
 }
 
-- (void)setCurrentRoute:(id)a3
+- (void)setCurrentRoute:(id)route
 {
-  v5 = a3;
-  if (self->_currentRoute != v5)
+  routeCopy = route;
+  if (self->_currentRoute != routeCopy)
   {
-    v35 = v5;
-    objc_storeStrong(&self->_currentRoute, a3);
+    v35 = routeCopy;
+    objc_storeStrong(&self->_currentRoute, route);
     [(CarClusterNavigationController *)self setCurrentACCNavManeuvers:0];
     [(CarClusterNavigationController *)self setCurrentACCNavLaneGuidances:0];
     [(CarClusterNavigationController *)self setEtaDisplayFormatter:0];
     [(CarClusterNavigationController *)self setIndexedSteps:0];
     if (v35)
     {
-      v6 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      v7 = [v6 routeGuidanceState];
+      currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      routeGuidanceState = [currentACCNavRouteGuidance routeGuidanceState];
 
-      if (!v7)
+      if (!routeGuidanceState)
       {
         [(CarClusterNavigationController *)self updateRouteGuidanceState:3];
       }
 
       v8 = [MNETADisplayFormatter alloc];
       v9 = +[MNNavigationService sharedService];
-      v10 = [v9 upcomingStop];
-      v11 = [v10 timezone];
-      v12 = [v8 initWithTimeZone:v11];
+      upcomingStop = [v9 upcomingStop];
+      timezone = [upcomingStop timezone];
+      v12 = [v8 initWithTimeZone:timezone];
       [(CarClusterNavigationController *)self setEtaDisplayFormatter:v12];
 
-      v13 = [(CarClusterNavigationController *)self etaDisplayFormatter];
-      [v13 setDelegate:self];
+      etaDisplayFormatter = [(CarClusterNavigationController *)self etaDisplayFormatter];
+      [etaDisplayFormatter setDelegate:self];
 
-      v14 = [(CarClusterNavigationController *)self smartGuidanceActive];
-      v15 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v15 setSmartGuidanceActive:v14];
+      smartGuidanceActive = [(CarClusterNavigationController *)self smartGuidanceActive];
+      currentACCNavRouteGuidance2 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance2 setSmartGuidanceActive:smartGuidanceActive];
 
-      v16 = [(GEOComposedRoute *)v35 composedGuidanceEventsWithSignGuidance];
-      v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v16 count]);
-      v18 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v18 setRouteGuidanceManeuverCount:v17];
+      composedGuidanceEventsWithSignGuidance = [(GEOComposedRoute *)v35 composedGuidanceEventsWithSignGuidance];
+      v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [composedGuidanceEventsWithSignGuidance count]);
+      currentACCNavRouteGuidance3 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance3 setRouteGuidanceManeuverCount:v17];
 
-      v19 = [(GEOComposedRoute *)v35 composedGuidanceEvents];
-      v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v19 count]);
-      v21 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v21 setLaneGuidanceTotalCount:v20];
+      composedGuidanceEvents = [(GEOComposedRoute *)v35 composedGuidanceEvents];
+      v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [composedGuidanceEvents count]);
+      currentACCNavRouteGuidance4 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance4 setLaneGuidanceTotalCount:v20];
 
-      v22 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v22 setLaneGuidanceShowing:0];
+      currentACCNavRouteGuidance5 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance5 setLaneGuidanceShowing:0];
 
-      v23 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v23 setLaneGuidanceCurrentIndex:0];
+      currentACCNavRouteGuidance6 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance6 setLaneGuidanceCurrentIndex:0];
 
-      v24 = [(CarClusterNavigationController *)self _destinationTimeZoneOffsetMinutes];
-      v25 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v25 setDestinationTimeZoneOffsetMinutes:v24];
+      _destinationTimeZoneOffsetMinutes = [(CarClusterNavigationController *)self _destinationTimeZoneOffsetMinutes];
+      currentACCNavRouteGuidance7 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance7 setDestinationTimeZoneOffsetMinutes:_destinationTimeZoneOffsetMinutes];
 
       v26 = +[MNNavigationService sharedService];
       v27 = [v26 displayETAInfoForRoute:v35];
 
-      v28 = [v27 displayRemainingMinutesToEndOfLeg];
-      v29 = [(CarClusterNavigationController *)self etaDisplayFormatter];
-      [v29 setRemainingTimeToEndOfLeg:v28];
+      displayRemainingMinutesToEndOfLeg = [v27 displayRemainingMinutesToEndOfLeg];
+      etaDisplayFormatter2 = [(CarClusterNavigationController *)self etaDisplayFormatter];
+      [etaDisplayFormatter2 setRemainingTimeToEndOfLeg:displayRemainingMinutesToEndOfLeg];
 
       v30 = +[MNNavigationService sharedService];
       v31 = [v30 remainingDistanceInfoForRoute:v35];
@@ -1343,31 +1343,31 @@ LABEL_6:
       [v31 distanceRemainingToEndOfLeg];
       [(CarClusterNavigationController *)self updateRemainingDistance:?];
       v32 = +[MNNavigationService sharedService];
-      v33 = [v32 destinationName];
-      v34 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-      [v34 setDestinationName:v33];
+      destinationName = [v32 destinationName];
+      currentACCNavRouteGuidance8 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+      [currentACCNavRouteGuidance8 setDestinationName:destinationName];
     }
 
     [(CarClusterNavigationController *)self sendLaneGuidance];
     [(CarClusterNavigationController *)self sendManeuvers];
     [(CarClusterNavigationController *)self sendRouteGuidance];
-    v5 = v35;
+    routeCopy = v35;
   }
 }
 
 - (BOOL)smartGuidanceActive
 {
-  v2 = [(GEOComposedRoute *)self->_currentRoute composedGuidanceEvents];
-  v3 = [v2 count] != 0;
+  composedGuidanceEvents = [(GEOComposedRoute *)self->_currentRoute composedGuidanceEvents];
+  v3 = [composedGuidanceEvents count] != 0;
 
   return v3;
 }
 
-- (void)setRouteGuidanceBeingShownInApp:(BOOL)a3
+- (void)setRouteGuidanceBeingShownInApp:(BOOL)app
 {
-  v3 = a3;
-  v5 = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
-  [v5 setBeingShownInApp:v3];
+  appCopy = app;
+  currentACCNavRouteGuidance = [(CarClusterNavigationController *)self currentACCNavRouteGuidance];
+  [currentACCNavRouteGuidance setBeingShownInApp:appCopy];
 
   [(CarClusterNavigationController *)self sendRouteGuidance];
 }
@@ -1388,23 +1388,23 @@ LABEL_6:
   [(CarClusterNavigationController *)&v5 dealloc];
 }
 
-- (CarClusterNavigationController)initWithAccessory:(id)a3 component:(id)a4
+- (CarClusterNavigationController)initWithAccessory:(id)accessory component:(id)component
 {
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  componentCopy = component;
   v15.receiver = self;
   v15.super_class = CarClusterNavigationController;
   v9 = [(CarClusterNavigationController *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessory, a3);
-    objc_storeStrong(&v10->_component, a4);
+    objc_storeStrong(&v9->_accessory, accessory);
+    objc_storeStrong(&v10->_component, component);
     v11 = objc_alloc_init(CarClusterUpdateRouteGuidance);
     currentACCNavRouteGuidance = v10->_currentACCNavRouteGuidance;
     v10->_currentACCNavRouteGuidance = v11;
 
-    [(CarClusterUpdate *)v10->_currentACCNavRouteGuidance setComponent:v8];
+    [(CarClusterUpdate *)v10->_currentACCNavRouteGuidance setComponent:componentCopy];
     v13 = +[MNNavigationService sharedService];
     [v13 registerObserver:v10];
   }

@@ -1,66 +1,66 @@
 @interface CDXRetrieveExtensionsOperation
-- (BOOL)_nsExtension:(id)a3 isOnlyExtensionInContainingAppAmongNSExtensions:(id)a4;
-- (CDXRetrieveExtensionsOperation)initWithStore:(id)a3;
-- (CDXRetrieveExtensionsOperation)initWithStore:(id)a3 extensionsDataSource:(id)a4 queue:(id)a5;
-- (id)_extensionsFromNSExtensions:(id)a3 usingProritizedStoreExtensions:(id)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (BOOL)_nsExtension:(id)extension isOnlyExtensionInContainingAppAmongNSExtensions:(id)extensions;
+- (CDXRetrieveExtensionsOperation)initWithStore:(id)store;
+- (CDXRetrieveExtensionsOperation)initWithStore:(id)store extensionsDataSource:(id)source queue:(id)queue;
+- (id)_extensionsFromNSExtensions:(id)extensions usingProritizedStoreExtensions:(id)storeExtensions;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDXRetrieveExtensionsOperation
 
-- (CDXRetrieveExtensionsOperation)initWithStore:(id)a3 extensionsDataSource:(id)a4 queue:(id)a5
+- (CDXRetrieveExtensionsOperation)initWithStore:(id)store extensionsDataSource:(id)source queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  sourceCopy = source;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = CDXRetrieveExtensionsOperation;
   v12 = [(CDXRetrieveExtensionsOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a5);
-    objc_storeStrong(&v13->_extensionsDataSource, a4);
-    objc_storeStrong(&v13->_store, a3);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_extensionsDataSource, source);
+    objc_storeStrong(&v13->_store, store);
   }
 
   return v13;
 }
 
-- (CDXRetrieveExtensionsOperation)initWithStore:(id)a3
+- (CDXRetrieveExtensionsOperation)initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = dispatch_queue_create("com.apple.callkit.calldirectory.retrieveextensionsoperation", 0);
   v6 = objc_alloc_init(CXCallDirectoryNSExtensionManager);
-  v7 = [(CDXRetrieveExtensionsOperation *)self initWithStore:v4 extensionsDataSource:v6 queue:v5];
+  v7 = [(CDXRetrieveExtensionsOperation *)self initWithStore:storeCopy extensionsDataSource:v6 queue:v5];
 
   return v7;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CDXRetrieveExtensionsOperation *)self queue];
+  handlerCopy = handler;
+  queue = [(CDXRetrieveExtensionsOperation *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011FC4;
   v7[3] = &unk_100034B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (id)_extensionsFromNSExtensions:(id)a3 usingProritizedStoreExtensions:(id)a4
+- (id)_extensionsFromNSExtensions:(id)extensions usingProritizedStoreExtensions:(id)storeExtensions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+  extensionsCopy = extensions;
+  storeExtensionsCopy = storeExtensions;
+  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [extensionsCopy count]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v6;
+  v9 = extensionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v10)
   {
@@ -76,8 +76,8 @@
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        [v8 setObject:v14 forKeyedSubscript:v15];
+        identifier = [v14 identifier];
+        [v8 setObject:v14 forKeyedSubscript:identifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v35 objects:v42 count:16];
@@ -86,12 +86,12 @@
     while (v11);
   }
 
-  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [storeExtensionsCopy count]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v7;
+  obj = storeExtensionsCopy;
   v17 = [obj countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v17)
   {
@@ -109,8 +109,8 @@
         }
 
         v22 = *(*(&v31 + 1) + 8 * j);
-        v23 = [v22 identifier];
-        v24 = [v8 objectForKeyedSubscript:v23];
+        identifier2 = [v22 identifier];
+        v24 = [v8 objectForKeyedSubscript:identifier2];
 
         if (v24)
         {
@@ -123,9 +123,9 @@
           v25 = sub_100001C1C();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v22 identifier];
+            identifier3 = [v22 identifier];
             *buf = v29;
-            v40 = v26;
+            v40 = identifier3;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "No NSExtension found with prioritized store extension identifier %@", buf, 0xCu);
           }
         }
@@ -142,15 +142,15 @@
   return v27;
 }
 
-- (BOOL)_nsExtension:(id)a3 isOnlyExtensionInContainingAppAmongNSExtensions:(id)a4
+- (BOOL)_nsExtension:(id)extension isOnlyExtensionInContainingAppAmongNSExtensions:(id)extensions
 {
-  v5 = a3;
+  extensionCopy = extension;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  extensionsCopy = extensions;
+  v7 = [extensionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = 0;
@@ -161,12 +161,12 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(extensionsCopy);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) containingAppURL];
-        v12 = [v5 containingAppURL];
-        v13 = [v11 isEqual:v12];
+        containingAppURL = [*(*(&v15 + 1) + 8 * i) containingAppURL];
+        containingAppURL2 = [extensionCopy containingAppURL];
+        v13 = [containingAppURL isEqual:containingAppURL2];
 
         v8 += v13;
         if (v8 > 1)
@@ -176,7 +176,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [extensionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

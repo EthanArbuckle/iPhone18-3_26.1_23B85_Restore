@@ -1,39 +1,39 @@
 @interface SSUIServiceOptions
-- (BOOL)isEqual:(id)a3;
-- (SSUIServiceOptions)initWithBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SSUIServiceOptions)initWithBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSUIServiceOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setFlashStyle:{-[SSUIServiceOptions flashStyle](self, "flashStyle")}];
   [v4 setSaveLocation:{-[SSUIServiceOptions saveLocation](self, "saveLocation")}];
-  v5 = [(SSUIServiceOptions *)self assetMetadata];
-  [v4 setAssetMetadata:v5];
+  assetMetadata = [(SSUIServiceOptions *)self assetMetadata];
+  [v4 setAssetMetadata:assetMetadata];
 
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeUInt64:-[SSUIServiceOptions flashStyle](self forKey:{"flashStyle"), @"SSUIServiceFlashStyleKey"}];
-  [v4 encodeUInt64:-[SSUIServiceOptions saveLocation](self forKey:{"saveLocation"), @"SSUIServiceSaveLocationKey"}];
-  v5 = [(SSUIServiceOptions *)self assetMetadata];
-  [v4 encodeObject:v5 forKey:@"SSUIServiceMetadataKey"];
+  coderCopy = coder;
+  [coderCopy encodeUInt64:-[SSUIServiceOptions flashStyle](self forKey:{"flashStyle"), @"SSUIServiceFlashStyleKey"}];
+  [coderCopy encodeUInt64:-[SSUIServiceOptions saveLocation](self forKey:{"saveLocation"), @"SSUIServiceSaveLocationKey"}];
+  assetMetadata = [(SSUIServiceOptions *)self assetMetadata];
+  [coderCopy encodeObject:assetMetadata forKey:@"SSUIServiceMetadataKey"];
 }
 
-- (SSUIServiceOptions)initWithBSXPCCoder:(id)a3
+- (SSUIServiceOptions)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSUIServiceOptions *)self init];
-  v5->_flashStyle = [v4 decodeUInt64ForKey:@"SSUIServiceFlashStyleKey"];
-  v5->_saveLocation = [v4 decodeUInt64ForKey:@"SSUIServiceSaveLocationKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSUIServiceMetadataKey"];
+  v5->_flashStyle = [coderCopy decodeUInt64ForKey:@"SSUIServiceFlashStyleKey"];
+  v5->_saveLocation = [coderCopy decodeUInt64ForKey:@"SSUIServiceSaveLocationKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSUIServiceMetadataKey"];
 
   assetMetadata = v5->_assetMetadata;
   v5->_assetMetadata = v6;
@@ -41,14 +41,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    v5 = [(SSUIServiceOptions *)self flashStyle];
-    if (v5 != [(SSUIServiceOptions *)v4 flashStyle]|| (v6 = [(SSUIServiceOptions *)self saveLocation], v6 != [(SSUIServiceOptions *)v4 saveLocation]))
+    flashStyle = [(SSUIServiceOptions *)self flashStyle];
+    if (flashStyle != [(SSUIServiceOptions *)equalCopy flashStyle]|| (v6 = [(SSUIServiceOptions *)self saveLocation], v6 != [(SSUIServiceOptions *)equalCopy saveLocation]))
     {
       v7 = 0;
     }

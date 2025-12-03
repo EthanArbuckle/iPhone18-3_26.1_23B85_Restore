@@ -1,13 +1,13 @@
 @interface _WBSWKApplicationManifestExtrasUtilities
-+ (id)applicationCategoryTypeForCategories:(id)a3;
++ (id)applicationCategoryTypeForCategories:(id)categories;
 @end
 
 @implementation _WBSWKApplicationManifestExtrasUtilities
 
-+ (id)applicationCategoryTypeForCategories:(id)a3
++ (id)applicationCategoryTypeForCategories:(id)categories
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  categoriesCopy = categories;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 URLForResource:@"WebAppCategories" withExtension:@"plist"];
 
@@ -16,7 +16,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v3;
+  v7 = categoriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {

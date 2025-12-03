@@ -1,24 +1,24 @@
 @interface AACAwardsClient
 - (AACAwardsClient)init;
-- (id)allAchievementsWithError:(id *)a3;
-- (id)ephemeralAchievementWithTemplateUniqueName:(id)a3 error:(id *)a4;
-- (id)initialHistoricalRunStatusWithError:(id *)a3;
-- (void)achievementsForTemplateNames:(id)a3 completion:(id)a4;
-- (void)addEarnedInstances:(id)a3 completion:(id)a4;
-- (void)addTemplates:(id)a3 completion:(id)a4;
-- (void)allAchievementsWithCompletion:(id)a3;
-- (void)anniversaryAchievementsForDate:(id)a3 templateNames:(id)a4 completion:(id)a5;
+- (id)allAchievementsWithError:(id *)error;
+- (id)ephemeralAchievementWithTemplateUniqueName:(id)name error:(id *)error;
+- (id)initialHistoricalRunStatusWithError:(id *)error;
+- (void)achievementsForTemplateNames:(id)names completion:(id)completion;
+- (void)addEarnedInstances:(id)instances completion:(id)completion;
+- (void)addTemplates:(id)templates completion:(id)completion;
+- (void)allAchievementsWithCompletion:(id)completion;
+- (void)anniversaryAchievementsForDate:(id)date templateNames:(id)names completion:(id)completion;
 - (void)dealloc;
-- (void)earnedAchievementsForDateInterval:(id)a3 completion:(id)a4;
-- (void)provideAchievementProgressUpdates:(id)a3 completion:(id)a4;
-- (void)removeEarnedInstances:(id)a3 completion:(id)a4;
-- (void)removeTemplates:(id)a3 completion:(id)a4;
-- (void)removeTemplatesForSource:(id)a3 completion:(id)a4;
-- (void)removeTemplatesWithUniqueNames:(id)a3 completion:(id)a4;
-- (void)requestAwardingWithTriggers:(unint64_t)a3 completion:(id)a4;
-- (void)requestProgressUpdateForProgressProviderIdentifier:(id)a3 completion:(id)a4;
-- (void)scheduleAwardingWithCompletion:(id)a3;
-- (void)templatesForSource:(id)a3 completion:(id)a4;
+- (void)earnedAchievementsForDateInterval:(id)interval completion:(id)completion;
+- (void)provideAchievementProgressUpdates:(id)updates completion:(id)completion;
+- (void)removeEarnedInstances:(id)instances completion:(id)completion;
+- (void)removeTemplates:(id)templates completion:(id)completion;
+- (void)removeTemplatesForSource:(id)source completion:(id)completion;
+- (void)removeTemplatesWithUniqueNames:(id)names completion:(id)completion;
+- (void)requestAwardingWithTriggers:(unint64_t)triggers completion:(id)completion;
+- (void)requestProgressUpdateForProgressProviderIdentifier:(id)identifier completion:(id)completion;
+- (void)scheduleAwardingWithCompletion:(id)completion;
+- (void)templatesForSource:(id)source completion:(id)completion;
 @end
 
 @implementation AACAwardsClient
@@ -46,30 +46,30 @@
   [(AACAwardsClient *)&v3 dealloc];
 }
 
-- (void)scheduleAwardingWithCompletion:(id)a3
+- (void)scheduleAwardingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__AACAwardsClient_scheduleAwardingWithCompletion___block_invoke;
   v7[3] = &unk_278C45808;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(AACXPCClient *)client sendRequest:0 completion:v7];
 }
 
-- (void)requestAwardingWithTriggers:(unint64_t)a3 completion:(id)a4
+- (void)requestAwardingWithTriggers:(unint64_t)triggers completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   client = self->_client;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:triggers];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__AACAwardsClient_requestAwardingWithTriggers_completion___block_invoke;
   v10[3] = &unk_278C45808;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(AACXPCClient *)client sendRequest:1 payload:v8 completion:v10];
 }
 
@@ -93,7 +93,7 @@ void __58__AACAwardsClient_requestAwardingWithTriggers_completion___block_invoke
   }
 }
 
-- (id)initialHistoricalRunStatusWithError:(id *)a3
+- (id)initialHistoricalRunStatusWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -123,10 +123,10 @@ void __58__AACAwardsClient_requestAwardingWithTriggers_completion___block_invoke
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -189,16 +189,16 @@ void __55__AACAwardsClient_initialHistoricalRunStatusWithError___block_invoke(ui
   }
 }
 
-- (void)allAchievementsWithCompletion:(id)a3
+- (void)allAchievementsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__AACAwardsClient_allAchievementsWithCompletion___block_invoke;
   v7[3] = &unk_278C45808;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(AACXPCClient *)client sendRequest:2 completion:v7];
 }
 
@@ -260,7 +260,7 @@ void __49__AACAwardsClient_allAchievementsWithCompletion___block_invoke(uint64_t
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allAchievementsWithError:(id *)a3
+- (id)allAchievementsWithError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v22 = 0;
@@ -293,10 +293,10 @@ void __49__AACAwardsClient_allAchievementsWithCompletion___block_invoke(uint64_t
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -372,11 +372,11 @@ void __44__AACAwardsClient_allAchievementsWithError___block_invoke(uint64_t a1, 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)earnedAchievementsForDateInterval:(id)a3 completion:(id)a4
+- (void)earnedAchievementsForDateInterval:(id)interval completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = ACHCodableFromDateInterval();
-  v7 = [v6 data];
+  data = [v6 data];
   v8 = ACHLogXPC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -388,9 +388,9 @@ void __44__AACAwardsClient_allAchievementsWithError___block_invoke(uint64_t a1, 
   v11[1] = 3221225472;
   v11[2] = __64__AACAwardsClient_earnedAchievementsForDateInterval_completion___block_invoke;
   v11[3] = &unk_278C45808;
-  v12 = v5;
-  v10 = v5;
-  [(AACXPCClient *)client sendRequest:3 payloadData:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(AACXPCClient *)client sendRequest:3 payloadData:data completion:v11];
 }
 
 void __64__AACAwardsClient_earnedAchievementsForDateInterval_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -457,11 +457,11 @@ void __64__AACAwardsClient_earnedAchievementsForDateInterval_completion___block_
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)anniversaryAchievementsForDate:(id)a3 templateNames:(id)a4 completion:(id)a5
+- (void)anniversaryAchievementsForDate:(id)date templateNames:(id)names completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = ACHCodableFromAnniversaryRequest();
-  v8 = [v7 data];
+  data = [v7 data];
   v9 = ACHLogXPC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -473,9 +473,9 @@ void __64__AACAwardsClient_earnedAchievementsForDateInterval_completion___block_
   v12[1] = 3221225472;
   v12[2] = __75__AACAwardsClient_anniversaryAchievementsForDate_templateNames_completion___block_invoke;
   v12[3] = &unk_278C45808;
-  v13 = v6;
-  v11 = v6;
-  [(AACXPCClient *)client sendRequest:22 payloadData:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(AACXPCClient *)client sendRequest:22 payloadData:data completion:v12];
 }
 
 void __75__AACAwardsClient_anniversaryAchievementsForDate_templateNames_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -542,11 +542,11 @@ void __75__AACAwardsClient_anniversaryAchievementsForDate_templateNames_completi
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)achievementsForTemplateNames:(id)a3 completion:(id)a4
+- (void)achievementsForTemplateNames:(id)names completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = ACHCodableFromTemplateNameArray();
-  v7 = [v6 data];
+  data = [v6 data];
   v8 = ACHLogXPC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -558,9 +558,9 @@ void __75__AACAwardsClient_anniversaryAchievementsForDate_templateNames_completi
   v11[1] = 3221225472;
   v11[2] = __59__AACAwardsClient_achievementsForTemplateNames_completion___block_invoke;
   v11[3] = &unk_278C45808;
-  v12 = v5;
-  v10 = v5;
-  [(AACXPCClient *)client sendRequest:21 payloadData:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(AACXPCClient *)client sendRequest:21 payloadData:data completion:v11];
 }
 
 void __59__AACAwardsClient_achievementsForTemplateNames_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -627,10 +627,10 @@ void __59__AACAwardsClient_achievementsForTemplateNames_completion___block_invok
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)ephemeralAchievementWithTemplateUniqueName:(id)a3 error:(id *)a4
+- (id)ephemeralAchievementWithTemplateUniqueName:(id)name error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -656,15 +656,15 @@ void __59__AACAwardsClient_achievementsForTemplateNames_completion___block_invok
   v17[3] = &unk_278C45830;
   v17[4] = &v18;
   v17[5] = &v24;
-  [(AACXPCClient *)client sendSynchronousRequest:18 payload:v6 resultHandler:v17];
+  [(AACXPCClient *)client sendSynchronousRequest:18 payload:nameCopy resultHandler:v17];
   v9 = v19[5];
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -678,7 +678,7 @@ void __59__AACAwardsClient_achievementsForTemplateNames_completion___block_invok
   {
     v13 = v25[5];
     *buf = 138412546;
-    v31 = v6;
+    v31 = nameCopy;
     v32 = 2112;
     v33 = v13;
     _os_log_impl(&dword_23E4F1000, v12, OS_LOG_TYPE_DEFAULT, "Returning ephermeral achievement for template name %@: %@", buf, 0x16u);
@@ -714,17 +714,17 @@ void __68__AACAwardsClient_ephemeralAchievementWithTemplateUniqueName_error___bl
   }
 }
 
-- (void)templatesForSource:(id)a3 completion:(id)a4
+- (void)templatesForSource:(id)source completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   client = self->_client;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__AACAwardsClient_templatesForSource_completion___block_invoke;
   v9[3] = &unk_278C45808;
-  v10 = v6;
-  v8 = v6;
-  [(AACXPCClient *)client sendRequest:11 payload:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(AACXPCClient *)client sendRequest:11 payload:source completion:v9];
 }
 
 void __49__AACAwardsClient_templatesForSource_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -780,17 +780,17 @@ void __49__AACAwardsClient_templatesForSource_completion___block_invoke(uint64_t
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addTemplates:(id)a3 completion:(id)a4
+- (void)addTemplates:(id)templates completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  templatesCopy = templates;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = templatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -822,15 +822,15 @@ void __49__AACAwardsClient_templatesForSource_completion___block_invoke(uint64_t
 
   v16 = objc_alloc_init(MEMORY[0x277CE8D20]);
   [v16 setTemplates:v8];
-  v17 = [v16 data];
+  data = [v16 data];
   client = self->_client;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __43__AACAwardsClient_addTemplates_completion___block_invoke;
   v21[3] = &unk_278C45808;
-  v22 = v7;
-  v19 = v7;
-  [(AACXPCClient *)client sendRequest:12 payloadData:v17 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [(AACXPCClient *)client sendRequest:12 payloadData:data completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -855,17 +855,17 @@ void __43__AACAwardsClient_addTemplates_completion___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)removeTemplates:(id)a3 completion:(id)a4
+- (void)removeTemplates:(id)templates completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  templatesCopy = templates;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = templatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -897,15 +897,15 @@ void __43__AACAwardsClient_addTemplates_completion___block_invoke(uint64_t a1, u
 
   v16 = objc_alloc_init(MEMORY[0x277CE8D20]);
   [v16 setTemplates:v8];
-  v17 = [v16 data];
+  data = [v16 data];
   client = self->_client;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __46__AACAwardsClient_removeTemplates_completion___block_invoke;
   v21[3] = &unk_278C45808;
-  v22 = v7;
-  v19 = v7;
-  [(AACXPCClient *)client sendRequest:13 payloadData:v17 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [(AACXPCClient *)client sendRequest:13 payloadData:data completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -930,17 +930,17 @@ void __46__AACAwardsClient_removeTemplates_completion___block_invoke(uint64_t a1
   }
 }
 
-- (void)removeTemplatesForSource:(id)a3 completion:(id)a4
+- (void)removeTemplatesForSource:(id)source completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   client = self->_client;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__AACAwardsClient_removeTemplatesForSource_completion___block_invoke;
   v9[3] = &unk_278C45808;
-  v10 = v6;
-  v8 = v6;
-  [(AACXPCClient *)client sendRequest:14 payload:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(AACXPCClient *)client sendRequest:14 payload:source completion:v9];
 }
 
 void __55__AACAwardsClient_removeTemplatesForSource_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -963,17 +963,17 @@ void __55__AACAwardsClient_removeTemplatesForSource_completion___block_invoke(ui
   }
 }
 
-- (void)removeTemplatesWithUniqueNames:(id)a3 completion:(id)a4
+- (void)removeTemplatesWithUniqueNames:(id)names completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   client = self->_client;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__AACAwardsClient_removeTemplatesWithUniqueNames_completion___block_invoke;
   v9[3] = &unk_278C45808;
-  v10 = v6;
-  v8 = v6;
-  [(AACXPCClient *)client sendRequest:15 payload:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(AACXPCClient *)client sendRequest:15 payload:names completion:v9];
 }
 
 void __61__AACAwardsClient_removeTemplatesWithUniqueNames_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -996,17 +996,17 @@ void __61__AACAwardsClient_removeTemplatesWithUniqueNames_completion___block_inv
   }
 }
 
-- (void)addEarnedInstances:(id)a3 completion:(id)a4
+- (void)addEarnedInstances:(id)instances completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  instancesCopy = instances;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = instancesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -1038,15 +1038,15 @@ void __61__AACAwardsClient_removeTemplatesWithUniqueNames_completion___block_inv
 
   v16 = objc_alloc_init(MEMORY[0x277CE8D00]);
   [v16 setEarnedInstances:v8];
-  v17 = [v16 data];
+  data = [v16 data];
   client = self->_client;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __49__AACAwardsClient_addEarnedInstances_completion___block_invoke;
   v21[3] = &unk_278C45808;
-  v22 = v7;
-  v19 = v7;
-  [(AACXPCClient *)client sendRequest:16 payloadData:v17 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [(AACXPCClient *)client sendRequest:16 payloadData:data completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -1071,17 +1071,17 @@ void __49__AACAwardsClient_addEarnedInstances_completion___block_invoke(uint64_t
   }
 }
 
-- (void)removeEarnedInstances:(id)a3 completion:(id)a4
+- (void)removeEarnedInstances:(id)instances completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  instancesCopy = instances;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = instancesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -1113,15 +1113,15 @@ void __49__AACAwardsClient_addEarnedInstances_completion___block_invoke(uint64_t
 
   v16 = objc_alloc_init(MEMORY[0x277CE8D00]);
   [v16 setEarnedInstances:v8];
-  v17 = [v16 data];
+  data = [v16 data];
   client = self->_client;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __52__AACAwardsClient_removeEarnedInstances_completion___block_invoke;
   v21[3] = &unk_278C45808;
-  v22 = v7;
-  v19 = v7;
-  [(AACXPCClient *)client sendRequest:17 payloadData:v17 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [(AACXPCClient *)client sendRequest:17 payloadData:data completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -1146,17 +1146,17 @@ void __52__AACAwardsClient_removeEarnedInstances_completion___block_invoke(uint6
   }
 }
 
-- (void)requestProgressUpdateForProgressProviderIdentifier:(id)a3 completion:(id)a4
+- (void)requestProgressUpdateForProgressProviderIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   client = self->_client;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__AACAwardsClient_requestProgressUpdateForProgressProviderIdentifier_completion___block_invoke;
   v9[3] = &unk_278C45808;
-  v10 = v6;
-  v8 = v6;
-  [(AACXPCClient *)client sendRequest:20 payload:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(AACXPCClient *)client sendRequest:20 payload:identifier completion:v9];
 }
 
 void __81__AACAwardsClient_requestProgressUpdateForProgressProviderIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -1179,17 +1179,17 @@ void __81__AACAwardsClient_requestProgressUpdateForProgressProviderIdentifier_co
   }
 }
 
-- (void)provideAchievementProgressUpdates:(id)a3 completion:(id)a4
+- (void)provideAchievementProgressUpdates:(id)updates completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = updatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -1221,15 +1221,15 @@ void __81__AACAwardsClient_requestProgressUpdateForProgressProviderIdentifier_co
 
   v16 = objc_alloc_init(MEMORY[0x277CE8CF0]);
   [v16 setAchievementProgressUpdates:v8];
-  v17 = [v16 data];
+  data = [v16 data];
   client = self->_client;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __64__AACAwardsClient_provideAchievementProgressUpdates_completion___block_invoke;
   v21[3] = &unk_278C45808;
-  v22 = v7;
-  v19 = v7;
-  [(AACXPCClient *)client sendRequest:19 payloadData:v17 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [(AACXPCClient *)client sendRequest:19 payloadData:data completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }

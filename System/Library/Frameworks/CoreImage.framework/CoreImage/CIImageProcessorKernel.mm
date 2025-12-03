@@ -1,13 +1,13 @@
 @interface CIImageProcessorKernel
 + (BOOL)processWithInputs:(NSArray *)inputs arguments:(NSDictionary *)arguments output:(id)output error:(NSError *)error;
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 outputs:(id)a5 error:(id *)a6;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments outputs:(id)outputs error:(id *)error;
 + (CIImage)applyWithExtent:(CGRect)extent inputs:(NSArray *)inputs arguments:(NSDictionary *)args error:(NSError *)error;
 + (NSArray)roiTileArrayForInput:(int)input arguments:(NSDictionary *)arguments outputRect:(CGRect)outputRect;
-+ (id)applyWithExtents:(id)a3 inputs:(id)a4 arguments:(id)a5 error:(id *)a6;
-+ (id)logDescription:(id)a3;
-+ (int)_call_formatForInputAtIndex:(int)a3 arguments:(id)a4;
-+ (int)_call_outputFormatWithArguments:(id)a3;
-+ (unint64_t)_digestForArgs:(id)a3;
++ (id)applyWithExtents:(id)extents inputs:(id)inputs arguments:(id)arguments error:(id *)error;
++ (id)logDescription:(id)description;
++ (int)_call_formatForInputAtIndex:(int)index arguments:(id)arguments;
++ (int)_call_outputFormatWithArguments:(id)arguments;
++ (unint64_t)_digestForArgs:(id)args;
 @end
 
 @implementation CIImageProcessorKernel
@@ -22,7 +22,7 @@
   objc_exception_throw(v10);
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 outputs:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments outputs:(id)outputs error:(id *)error
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
@@ -35,23 +35,23 @@
 + (NSArray)roiTileArrayForInput:(int)input arguments:(NSDictionary *)arguments outputRect:(CGRect)outputRect
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  [a1 roiForInput:*&input arguments:arguments outputRect:{outputRect.origin.x, outputRect.origin.y, outputRect.size.width, outputRect.size.height}];
+  [self roiForInput:*&input arguments:arguments outputRect:{outputRect.origin.x, outputRect.origin.y, outputRect.size.width, outputRect.size.height}];
   v6[0] = [CIVector vectorWithCGRect:?];
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 }
 
-+ (id)logDescription:(id)a3
++ (id)logDescription:(id)description
 {
   v3 = objc_opt_class();
 
   return NSStringFromClass(v3);
 }
 
-+ (unint64_t)_digestForArgs:(id)a3
++ (unint64_t)_digestForArgs:(id)args
 {
   v6 = 0;
   XXH64_reset(v5, 0);
-  if (a3 && (digestAdd(v5, a3, &v6), v6))
+  if (args && (digestAdd(v5, args, &v6), v6))
   {
     return 0;
   }
@@ -62,9 +62,9 @@
   }
 }
 
-+ (int)_call_formatForInputAtIndex:(int)a3 arguments:(id)a4
++ (int)_call_formatForInputAtIndex:(int)index arguments:(id)arguments
 {
-  v5 = *&a3;
+  v5 = *&index;
   v6 = [objc_opt_class() methodForSelector:sel_formatForInputAtIndex_arguments_];
   v7 = [CIImageProcessorKernel methodForSelector:sel_formatForInputAtIndex_arguments_];
   v8 = objc_opt_class();
@@ -77,11 +77,11 @@
   else
   {
 
-    return [v8 formatForInputAtIndex:v5 arguments:a4];
+    return [v8 formatForInputAtIndex:v5 arguments:arguments];
   }
 }
 
-+ (int)_call_outputFormatWithArguments:(id)a3
++ (int)_call_outputFormatWithArguments:(id)arguments
 {
   v4 = [objc_opt_class() methodForSelector:sel_outputFormatWithArguments_];
   v5 = [CIImageProcessorKernel methodForSelector:sel_outputFormatWithArguments_];
@@ -95,7 +95,7 @@
   else
   {
 
-    return [v6 outputFormatWithArguments:a3];
+    return [v6 outputFormatWithArguments:arguments];
   }
 }
 
@@ -134,12 +134,12 @@
   else
   {
     v41 = error;
-    v20 = [objc_opt_class() skipFormatChecks];
+    skipFormatChecks = [objc_opt_class() skipFormatChecks];
     v21 = [(NSArray *)inputs count];
-    v22 = [a1 _call_outputFormatWithArguments:args];
+    v22 = [self _call_outputFormatWithArguments:args];
     v24 = CI::format_modernize(v22, "+[CIImageProcessorKernel applyWithExtent:inputs:arguments:error:]", v23);
     v25 = v24;
-    if (v20 & 1) != 0 || !v24 || (CI::ProcessorImage::format_is_supported(v24, 0))
+    if (skipFormatChecks & 1) != 0 || !v24 || (CI::ProcessorImage::format_is_supported(v24, 0))
     {
       if (!v25 || v25 == 266)
       {
@@ -151,7 +151,7 @@
         [objc_opt_class() outputIsOpaque];
       }
 
-      if (![a1 _digestForArgs:args])
+      if (![self _digestForArgs:args])
       {
         v26 = ci_logger_performance();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -186,11 +186,11 @@ LABEL_33:
       v30 = 0;
       while (1)
       {
-        v31 = [a1 _call_formatForInputAtIndex:v30 arguments:args];
+        v31 = [self _call_formatForInputAtIndex:v30 arguments:args];
         v33 = CI::format_modernize(v31, "+[CIImageProcessorKernel applyWithExtent:inputs:arguments:error:]", v32);
         v34 = v33;
         v42[v29] = v33;
-        v35 = v33 ? v20 : 1;
+        v35 = v33 ? skipFormatChecks : 1;
         if ((v35 & 1) == 0 && (CI::ProcessorImage::format_is_supported(v33, 1) & 1) == 0)
         {
           break;
@@ -472,21 +472,21 @@ void __65__CIImageProcessorKernel_applyWithExtent_inputs_arguments_error___block
   objc_autoreleasePoolPop(v62);
 }
 
-+ (id)applyWithExtents:(id)a3 inputs:(id)a4 arguments:(id)a5 error:(id *)a6
++ (id)applyWithExtents:(id)extents inputs:(id)inputs arguments:(id)arguments error:(id *)error
 {
   v77[1] = *MEMORY[0x1E69E9840];
   v9 = NSSelectorFromString(&cfstr_Processwithinp_0.isa);
-  v10 = [a1 methodForSelector:v9];
+  v10 = [self methodForSelector:v9];
   v11 = [CIImageProcessorKernel methodForSelector:v9];
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   if (v10 == v11 || v12 == v13)
   {
-    v50 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%s must be overridden in %@ class", "+[CIImageProcessorKernel applyWithExtents:inputs:arguments:error:]", NSStringFromClass(a1)), 0}];
+    v50 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%s must be overridden in %@ class", "+[CIImageProcessorKernel applyWithExtents:inputs:arguments:error:]", NSStringFromClass(self)), 0}];
     objc_exception_throw(v50);
   }
 
-  v15 = [a3 count];
+  v15 = [extents count];
   if (v15)
   {
     if (v15 < 5)
@@ -496,7 +496,7 @@ void __65__CIImageProcessorKernel_applyWithExtent_inputs_arguments_error___block
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v18 = [a3 countByEnumeratingWithState:&v57 objects:v75 count:16];
+      v18 = [extents countByEnumeratingWithState:&v57 objects:v75 count:16];
       if (v18)
       {
         v19 = *v58;
@@ -506,7 +506,7 @@ LABEL_12:
         {
           if (*v58 != v19)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(extents);
           }
 
           v21 = *(*(&v57 + 1) + 8 * v20);
@@ -523,7 +523,7 @@ LABEL_12:
           height = v78.size.height;
           if (CGRectIsInfinite(v78) || (v79.origin.x = x, v79.origin.y = y, v79.size.width = width, v79.size.height = height, CGRectIsEmpty(v79)) || (v80.origin.x = x, v80.origin.y = y, v80.size.width = width, v80.size.height = height, CGRectIsEmpty(v80)))
           {
-            if (!a6)
+            if (!error)
             {
               return 0;
             }
@@ -537,7 +537,7 @@ LABEL_12:
 
           if (v18 == ++v20)
           {
-            v18 = [a3 countByEnumeratingWithState:&v57 objects:v75 count:16];
+            v18 = [extents countByEnumeratingWithState:&v57 objects:v75 count:16];
             if (v18)
             {
               goto LABEL_12;
@@ -547,7 +547,7 @@ LABEL_12:
           }
         }
 
-        if (!a6)
+        if (!error)
         {
           return 0;
         }
@@ -560,21 +560,21 @@ LABEL_12:
       }
 
 LABEL_22:
-      v26 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = v51;
       do
       {
-        [v26 addObject:{+[CIImage emptyImage](CIImage, "emptyImage")}];
+        [array addObject:{+[CIImage emptyImage](CIImage, "emptyImage")}];
         --v27;
       }
 
       while (v27);
-      if (![a1 _digestForArgs:a5])
+      if (![self _digestForArgs:arguments])
       {
         v28 = ci_logger_performance();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = NSStringFromClass(a1);
+          v29 = NSStringFromClass(self);
           *buf = 136446466;
           *&buf[4] = "+[CIImageProcessorKernel applyWithExtents:inputs:arguments:error:]";
           *&buf[12] = 2114;
@@ -583,7 +583,7 @@ LABEL_22:
         }
       }
 
-      v30 = [a4 count];
+      v30 = [inputs count];
       if (!v30)
       {
         v40 = 0;
@@ -600,30 +600,30 @@ LABEL_22:
         v56 = 0;
         do
         {
-          [objc_msgSend(a3 objectAtIndexedSubscript:{v40), "CGRectValue"}];
+          [objc_msgSend(extents objectAtIndexedSubscript:{v40), "CGRectValue"}];
           *(v41 - 2) = v42;
           *(v41 - 1) = v43;
           *v41 = v44;
           *(v41 + 1) = v45;
-          *(&v56 + v40 + 4) = [a1 allowSRGBTranferFuntionOnOutput];
-          v46 = [a1 outputFormatAtIndex:v40 arguments:a5];
+          *(&v56 + v40 + 4) = [self allowSRGBTranferFuntionOnOutput];
+          v46 = [self outputFormatAtIndex:v40 arguments:arguments];
           *(v68 + v40) = v46;
           if (CI::format_has_alpha(v46))
           {
-            v47 = [a1 outputIsOpaque];
+            outputIsOpaque = [self outputIsOpaque];
           }
 
           else
           {
-            v47 = 1;
+            outputIsOpaque = 1;
           }
 
-          *(&v56 + v40++) = v47;
+          *(&v56 + v40++) = outputIsOpaque;
           v41 += 32;
         }
 
         while ((v51 & 7) != v40);
-        [a1 logDescription:a5];
+        [self logDescription:arguments];
         [objc_opt_class() methodForSelector:sel_roiTileArrayForInput_arguments_outputRect_];
         [CIImageProcessorKernel methodForSelector:sel_roiTileArrayForInput_arguments_outputRect_];
         [objc_opt_class() onlyUsesMetal];
@@ -636,11 +636,11 @@ LABEL_22:
       v32 = 0;
       while (1)
       {
-        v33 = [a1 _call_formatForInputAtIndex:v32 arguments:a5];
+        v33 = [self _call_formatForInputAtIndex:v32 arguments:arguments];
         v35 = CI::format_modernize(v33, "+[CIImageProcessorKernel applyWithExtents:inputs:arguments:error:]", v34);
         v53[v31] = v35;
-        v36 = [a1 skipFormatChecks];
-        v37 = v35 ? v36 : 1;
+        skipFormatChecks = [self skipFormatChecks];
+        v37 = v35 ? skipFormatChecks : 1;
         if ((v37 & 1) == 0 && (CI::ProcessorImage::format_is_supported(v35, 1) & 1) == 0)
         {
           break;
@@ -649,7 +649,7 @@ LABEL_22:
         v54[v31] = 0;
         if (!v35 || v35 == 266)
         {
-          v54[v31] = [a1 allowSRGBTranferFuntionOnInputAtIndex:v32];
+          v54[v31] = [self allowSRGBTranferFuntionOnInputAtIndex:v32];
         }
 
         v31 = (v32 + 1);
@@ -660,12 +660,12 @@ LABEL_22:
         }
       }
 
-      if (a6)
+      if (error)
       {
         v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"inputFormat for image %d must be 0, %s.", v32, "R8, Rh, Rf, BGRA8, RGBAh, RGBAf"];
         v69 = @"CINonLocalizedDescriptionKey";
         v70 = v48;
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIImageProcessorKernel" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v70, &v69, 1)}];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIImageProcessorKernel" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v70, &v69, 1)}];
       }
 
       free(v53);
@@ -675,14 +675,14 @@ LABEL_22:
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       v76 = @"CINonLocalizedDescriptionKey";
       v77[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"The number of extents is too large."];
       v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIImageProcessorKernel" code:4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v77, &v76, 1)}];
 LABEL_43:
       v17 = 0;
-      *a6 = v16;
+      *error = v16;
       return v17;
     }
 

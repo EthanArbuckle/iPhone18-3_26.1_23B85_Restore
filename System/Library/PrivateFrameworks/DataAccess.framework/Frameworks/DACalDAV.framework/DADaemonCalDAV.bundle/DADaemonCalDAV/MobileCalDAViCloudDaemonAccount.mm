@@ -1,14 +1,14 @@
 @interface MobileCalDAViCloudDaemonAccount
-- (void)noteHomeSetOnDifferentHost:(id)a3;
+- (void)noteHomeSetOnDifferentHost:(id)host;
 @end
 
 @implementation MobileCalDAViCloudDaemonAccount
 
-- (void)noteHomeSetOnDifferentHost:(id)a3
+- (void)noteHomeSetOnDifferentHost:(id)host
 {
-  v4 = a3;
-  v5 = [(MobileCalDAViCloudDaemonAccount *)self backingAccount];
-  [v5 noteHomeSetOnDifferentHost:v4];
+  hostCopy = host;
+  backingAccount = [(MobileCalDAViCloudDaemonAccount *)self backingAccount];
+  [backingAccount noteHomeSetOnDifferentHost:hostCopy];
 }
 
 @end

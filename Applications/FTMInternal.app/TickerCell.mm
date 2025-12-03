@@ -1,15 +1,15 @@
 @interface TickerCell
-- (_TtC11FTMInternal10TickerCell)initWithCoder:(id)a3;
-- (_TtC11FTMInternal10TickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC11FTMInternal10TickerCell)initWithCoder:(id)coder;
+- (_TtC11FTMInternal10TickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TickerCell
 
-- (_TtC11FTMInternal10TickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11FTMInternal10TickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_1001D3030(a3, a4, v6);
+  return sub_1001D3030(style, identifier, v6);
 }
 
-- (_TtC11FTMInternal10TickerCell)initWithCoder:(id)a3
+- (_TtC11FTMInternal10TickerCell)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal10TickerCell_digit);
   *v3 = 48;

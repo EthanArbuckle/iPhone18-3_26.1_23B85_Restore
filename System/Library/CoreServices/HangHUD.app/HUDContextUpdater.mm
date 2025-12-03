@@ -3,7 +3,7 @@
 - (BOOL)cleanUpExpiredHUDContents;
 - (HUDContextUpdater)init;
 - (void)HandleUpdateAndClear;
-- (void)addHUDContents:(id)a3;
+- (void)addHUDContents:(id)contents;
 - (void)kickOffUpdater;
 - (void)saveClearHUDRequest;
 - (void)stopUpdater;
@@ -38,11 +38,11 @@
   return v3;
 }
 
-- (void)addHUDContents:(id)a3
+- (void)addHUDContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   os_unfair_lock_lock(&self->_hudContenDictLock);
-  [(NSMutableDictionary *)self->_hudContentDictionary addEntriesFromDictionary:v4];
+  [(NSMutableDictionary *)self->_hudContentDictionary addEntriesFromDictionary:contentsCopy];
 
   os_unfair_lock_unlock(&self->_hudContenDictLock);
   v5 = +[HUDRenderServer sharedInstance];
@@ -109,8 +109,8 @@
           v20 = sub_100017A6C(v11 - [v19 receivedTimestamp]);
           if (v20 <= 5000.0)
           {
-            v15 = sub_10000A9AC();
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+            processName2 = sub_10000A9AC();
+            if (os_log_type_enabled(processName2, OS_LOG_TYPE_DEBUG))
             {
               v25 = sub_100017A6C(v11);
               v26 = sub_100017A6C([v19 receivedTimestamp]);
@@ -124,26 +124,26 @@
               *&v39[6] = v25;
               v40 = 2048;
               v41 = v26;
-              _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "  ==> keeping hangInfo item %@ since durationToKeepRendering: %f ms < threshold: %i ms where current_time: %fms, receivedTimestamp: %f", buf, 0x30u);
+              _os_log_debug_impl(&_mh_execute_header, processName2, OS_LOG_TYPE_DEBUG, "  ==> keeping hangInfo item %@ since durationToKeepRendering: %f ms < threshold: %i ms where current_time: %fms, receivedTimestamp: %f", buf, 0x30u);
             }
           }
 
           else
           {
             [(NSMutableDictionary *)self->_hudContentDictionary removeObjectForKey:v9];
-            v15 = sub_10000A9AC();
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            processName2 = sub_10000A9AC();
+            if (os_log_type_enabled(processName2, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v19 hangStartTime];
+              hangStartTime = [v19 hangStartTime];
               *buf = 138413058;
               v35 = v14;
               v36 = 2048;
-              v37 = *&v21;
+              v37 = *&hangStartTime;
               v38 = 2048;
               *v39 = v20;
               *&v39[8] = 1024;
               *&v39[10] = 5000;
-              v17 = v15;
+              v17 = processName2;
               v18 = "  ==> removing hangInfo with process name %@ and hangStartTime: %llu since durationToKeepRendering: %f ms > threshold: %i ms";
 LABEL_14:
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, v18, buf, 0x26u);
@@ -160,11 +160,11 @@ LABEL_14:
           v14 = sub_10000A9AC();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [v12 processName];
+            processName = [v12 processName];
             v23 = sub_100017A6C(v11);
             v24 = sub_100017A6C([v12 exitTimestamp]);
             *buf = v28;
-            v35 = v22;
+            v35 = processName;
             v36 = 2048;
             v37 = v13;
             v38 = 1024;
@@ -184,12 +184,12 @@ LABEL_14:
         v14 = sub_10000A9AC();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v12 processName];
-          v16 = [v12 exitTimestamp];
+          processName2 = [v12 processName];
+          exitTimestamp = [v12 exitTimestamp];
           *buf = 138413058;
-          v35 = v15;
+          v35 = processName2;
           v36 = 2048;
-          v37 = *&v16;
+          v37 = *&exitTimestamp;
           v38 = 2048;
           *v39 = v13;
           *&v39[8] = 1024;
@@ -266,8 +266,8 @@ LABEL_26:
   if (hudUpdateHandler)
   {
     hudUpdateHandler[2](hudUpdateHandler, self->_hudContentDictionary);
-    v4 = [(HUDContextUpdater *)self cleanUpExpiredHUDContents];
-    if ([(NSMutableDictionary *)self->_clearHUDRequestDictionary count]&& (v4 & 1) == 0)
+    cleanUpExpiredHUDContents = [(HUDContextUpdater *)self cleanUpExpiredHUDContents];
+    if ([(NSMutableDictionary *)self->_clearHUDRequestDictionary count]&& (cleanUpExpiredHUDContents & 1) == 0)
     {
       clearHUDRequestDictionary = self->_clearHUDRequestDictionary;
       (*(self->_hudUpdateHandler + 2))();

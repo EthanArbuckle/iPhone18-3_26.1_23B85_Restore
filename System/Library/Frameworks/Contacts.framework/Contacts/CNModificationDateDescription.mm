@@ -1,29 +1,29 @@
 @interface CNModificationDateDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNModificationDateDescription
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_modificationDate"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_modificationDate"];
 
   v7 = [v9 copy];
-  v8 = v5[30];
-  v5[30] = v7;
+  v8 = contactCopy[30];
+  contactCopy[30] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A4B8];
+    *d = *MEMORY[0x1E698A4B8];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

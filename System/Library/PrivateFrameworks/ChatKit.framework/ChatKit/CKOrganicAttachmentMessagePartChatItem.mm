@@ -1,6 +1,6 @@
 @interface CKOrganicAttachmentMessagePartChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CKOrganicAttachmentMessagePartChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CKOrganicAttachmentMessagePartChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (Class)balloonViewClass;
 - (unint64_t)layoutType;
 @end
@@ -20,14 +20,14 @@
   }
 }
 
-- (CKOrganicAttachmentMessagePartChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKOrganicAttachmentMessagePartChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = CKOrganicAttachmentMessagePartChatItem;
-  v4 = [(CKAttachmentMessagePartChatItem *)&v18 initWithIMChatItem:a3 maxWidth:a4];
-  v5 = [(CKMessagePartChatItem *)v4 visibleAssociatedMessageChatItems];
-  v6 = [v5 count];
+  v4 = [(CKAttachmentMessagePartChatItem *)&v18 initWithIMChatItem:item maxWidth:width];
+  visibleAssociatedMessageChatItems = [(CKMessagePartChatItem *)v4 visibleAssociatedMessageChatItems];
+  v6 = [visibleAssociatedMessageChatItems count];
 
   if (v6)
   {
@@ -35,8 +35,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(CKMessagePartChatItem *)v4 visibleAssociatedMessageChatItems];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    visibleAssociatedMessageChatItems2 = [(CKMessagePartChatItem *)v4 visibleAssociatedMessageChatItems];
+    v8 = [visibleAssociatedMessageChatItems2 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -48,7 +48,7 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(visibleAssociatedMessageChatItems2);
           }
 
           v12 = *(*(&v14 + 1) + 8 * v11);
@@ -62,7 +62,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v9 = [visibleAssociatedMessageChatItems2 countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v9);
@@ -75,7 +75,7 @@
 - (Class)balloonViewClass
 {
   v3 = objc_opt_class();
-  v4 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -87,13 +87,13 @@
   return v3;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v14.receiver = self;
   v14.super_class = CKOrganicAttachmentMessagePartChatItem;
-  [(CKAttachmentMessagePartChatItem *)&v14 loadSizeThatFits:a4 textAlignmentInsets:?];
+  [(CKAttachmentMessagePartChatItem *)&v14 loadSizeThatFits:insets textAlignmentInsets:?];
   v8 = width * dbl_190DD1070[v6 < v7];
   if (height < v8)
   {

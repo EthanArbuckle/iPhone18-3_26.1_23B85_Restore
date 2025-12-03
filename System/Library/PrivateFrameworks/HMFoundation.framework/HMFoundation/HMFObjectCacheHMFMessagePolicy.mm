@@ -1,15 +1,15 @@
 @interface HMFObjectCacheHMFMessagePolicy
-+ (id)cachedInstanceForMessagePolicy:(id)a3;
++ (id)cachedInstanceForMessagePolicy:(id)policy;
 @end
 
 @implementation HMFObjectCacheHMFMessagePolicy
 
-+ (id)cachedInstanceForMessagePolicy:(id)a3
++ (id)cachedInstanceForMessagePolicy:(id)policy
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  policyCopy = policy;
   v4 = objc_autoreleasePoolPush();
-  if (!v3)
+  if (!policyCopy)
   {
     v8 = 0;
     goto LABEL_16;
@@ -28,7 +28,7 @@
       v19 = 138544130;
       v20 = v11;
       v21 = 2112;
-      v22 = v3;
+      v22 = policyCopy;
       v23 = 2112;
       v24 = v12;
       v25 = 2112;
@@ -40,7 +40,7 @@
     goto LABEL_15;
   }
 
-  if (([v3 conformsToProtocol:&unk_283ED34A0] & 1) == 0)
+  if (([policyCopy conformsToProtocol:&unk_283ED34A0] & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = HMFGetOSLogHandle();
@@ -50,7 +50,7 @@
       v19 = 138543874;
       v20 = v15;
       v21 = 2112;
-      v22 = v3;
+      v22 = policyCopy;
       v23 = 2112;
       v24 = objc_opt_class();
       v16 = v24;
@@ -60,7 +60,7 @@
 LABEL_15:
 
     objc_autoreleasePoolPop(v9);
-    v8 = v3;
+    v8 = policyCopy;
     goto LABEL_16;
   }
 
@@ -75,10 +75,10 @@ LABEL_15:
     v5 = qword_280AFC248;
   }
 
-  v8 = [v5 member:v3];
+  v8 = [v5 member:policyCopy];
   if (!v8)
   {
-    v8 = [v3 copy];
+    v8 = [policyCopy copy];
     [qword_280AFC248 addObject:v8];
   }
 

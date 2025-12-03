@@ -1,30 +1,30 @@
 @interface ICQUIManageStorageTipAction
-+ (id)actionsFromActionInfos:(id)a3;
-- (id)initFromActionInfo:(id)a3;
-- (id)initFromRUITableViewRow:(id)a3;
++ (id)actionsFromActionInfos:(id)infos;
+- (id)initFromActionInfo:(id)info;
+- (id)initFromRUITableViewRow:(id)row;
 @end
 
 @implementation ICQUIManageStorageTipAction
 
-- (id)initFromRUITableViewRow:(id)a3
+- (id)initFromRUITableViewRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v16.receiver = self;
   v16.super_class = ICQUIManageStorageTipAction;
   v5 = [(ICQUIManageStorageTipAction *)&v16 init];
   if (v5)
   {
-    v6 = [v4 attributes];
-    v7 = [v6 objectForKeyedSubscript:@"actionButtonText"];
+    attributes = [rowCopy attributes];
+    v7 = [attributes objectForKeyedSubscript:@"actionButtonText"];
     actionButtonText = v5->_actionButtonText;
     v5->_actionButtonText = v7;
 
-    v9 = [v6 objectForKeyedSubscript:@"actionName"];
+    v9 = [attributes objectForKeyedSubscript:@"actionName"];
     actionName = v5->_actionName;
     v5->_actionName = v9;
 
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v6 objectForKeyedSubscript:@"actionURL"];
+    v12 = [attributes objectForKeyedSubscript:@"actionURL"];
     v13 = [v11 URLWithString:v12];
     actionURL = v5->_actionURL;
     v5->_actionURL = v13;
@@ -33,51 +33,51 @@
   return v5;
 }
 
-- (id)initFromActionInfo:(id)a3
+- (id)initFromActionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = ICQUIManageStorageTipAction;
   v5 = [(ICQUIManageStorageTipAction *)&v22 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [infoCopy title];
     actionButtonText = v5->_actionButtonText;
-    v5->_actionButtonText = v6;
+    v5->_actionButtonText = title;
 
-    v8 = [v4 icqLink];
-    [v8 action];
+    icqLink = [infoCopy icqLink];
+    [icqLink action];
     v9 = _ICQStringForAction();
     actionName = v5->_actionName;
     v5->_actionName = v9;
 
-    v11 = [v4 actionURL];
-    v12 = v11;
-    if (v11)
+    actionURL = [infoCopy actionURL];
+    v12 = actionURL;
+    if (actionURL)
     {
-      v13 = v11;
+      v13 = actionURL;
       actionURL = v5->_actionURL;
       v5->_actionURL = v13;
     }
 
     else
     {
-      actionURL = [v4 icqLink];
-      v15 = [actionURL serverUIURL];
-      v16 = v15;
-      if (v15)
+      actionURL = [infoCopy icqLink];
+      serverUIURL = [actionURL serverUIURL];
+      v16 = serverUIURL;
+      if (serverUIURL)
       {
-        v17 = v15;
-        v18 = v5->_actionURL;
+        v17 = serverUIURL;
+        icqLink2 = v5->_actionURL;
         v5->_actionURL = v17;
       }
 
       else
       {
-        v18 = [v4 icqLink];
-        v19 = [v18 actionURL];
+        icqLink2 = [infoCopy icqLink];
+        actionURL2 = [icqLink2 actionURL];
         v20 = v5->_actionURL;
-        v5->_actionURL = v19;
+        v5->_actionURL = actionURL2;
       }
     }
   }
@@ -85,16 +85,16 @@
   return v5;
 }
 
-+ (id)actionsFromActionInfos:(id)a3
++ (id)actionsFromActionInfos:(id)infos
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infosCopy = infos;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = infosCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

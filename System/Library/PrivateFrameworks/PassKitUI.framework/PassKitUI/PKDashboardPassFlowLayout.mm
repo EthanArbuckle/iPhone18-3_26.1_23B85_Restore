@@ -1,19 +1,19 @@
 @interface PKDashboardPassFlowLayout
 + (double)topMarginInFirstSection;
-- (BOOL)_indexPathIsPassGroupIndexPath:(id)a3;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)_indexPathIsPassGroupIndexPath:(id)path;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (PKDashboardPassFlowLayout)init;
-- (id)_modifiedLayoutAttributes:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (void)_adjustItems:(id)a3 withLateralMove:(double)a4;
+- (id)_modifiedLayoutAttributes:(id)attributes;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (void)_adjustItems:(id)items withLateralMove:(double)move;
 - (void)hideContent;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)revealContentAnimated:(BOOL)a3;
+- (void)revealContentAnimated:(BOOL)animated;
 @end
 
 @implementation PKDashboardPassFlowLayout
@@ -70,18 +70,18 @@ id __33__PKDashboardPassFlowLayout_init__block_invoke(uint64_t a1, uint64_t a2, 
   return v7;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = PKDashboardPassFlowLayout;
-  v4 = a3;
-  [(PKDashboardPassFlowLayout *)&v9 invalidateLayoutWithContext:v4];
-  v5 = [v4 invalidatedItemIndexPaths];
+  contextCopy = context;
+  [(PKDashboardPassFlowLayout *)&v9 invalidateLayoutWithContext:contextCopy];
+  invalidatedItemIndexPaths = [contextCopy invalidatedItemIndexPaths];
 
-  if ([v5 count] == 1)
+  if ([invalidatedItemIndexPaths count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
+    firstObject = [invalidatedItemIndexPaths firstObject];
+    _indexPathForPassGroup = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
     v8 = PKEqualObjects();
 
     if (v8)
@@ -100,15 +100,15 @@ id __33__PKDashboardPassFlowLayout_init__block_invoke(uint64_t a1, uint64_t a2, 
 
   else
   {
-    v3 = [(PKDashboardPassFlowLayout *)self collectionView];
-    v4 = [v3 delegate];
-    v5 = v4;
-    if (v3)
+    collectionView = [(PKDashboardPassFlowLayout *)self collectionView];
+    delegate = [collectionView delegate];
+    v5 = delegate;
+    if (collectionView)
     {
-      if (v4)
+      if (delegate)
       {
-        v6 = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
-        [v5 collectionView:v3 layout:self sizeForItemAtIndexPath:v6];
+        _indexPathForPassGroup = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
+        [v5 collectionView:collectionView layout:self sizeForItemAtIndexPath:_indexPathForPassGroup];
         self->_passCellSize.width = v7;
         self->_passCellSize.height = v8;
 
@@ -120,13 +120,13 @@ id __33__PKDashboardPassFlowLayout_init__block_invoke(uint64_t a1, uint64_t a2, 
   }
 }
 
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
   v89 = *MEMORY[0x1E69E9840];
-  v70 = a4;
-  v5 = [(PKDashboardPassFlowLayout *)self collectionView];
-  v6 = [v5 delegate];
-  [v5 frame];
+  environmentCopy = environment;
+  collectionView = [(PKDashboardPassFlowLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  [collectionView frame];
   v8 = v7;
   v9 = objc_opt_respondsToSelector();
   v10 = objc_opt_respondsToSelector();
@@ -135,8 +135,8 @@ id __33__PKDashboardPassFlowLayout_init__block_invoke(uint64_t a1, uint64_t a2, 
   v12 = objc_opt_respondsToSelector();
   v73 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v71 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13 = [v5 dataSource];
-  v14 = [v13 collectionView:v5 numberOfItemsInSection:a3];
+  dataSource = [collectionView dataSource];
+  v14 = [dataSource collectionView:collectionView numberOfItemsInSection:index];
 
   if (v14 < 1)
   {
@@ -144,25 +144,25 @@ id __33__PKDashboardPassFlowLayout_init__block_invoke(uint64_t a1, uint64_t a2, 
     goto LABEL_63;
   }
 
-  v15 = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
-  v16 = [v15 section];
+  _indexPathForPassGroup = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
+  section = [_indexPathForPassGroup section];
   topMarginInFirstSection = 0.0;
-  if (v16 == a3)
+  if (section == index)
   {
     topMarginInFirstSection = self->_topMarginInFirstSection;
   }
 
   v69 = topMarginInFirstSection;
 
-  if ((v10 & 1) != 0 && [v6 collectionView:v5 layout:self isListSectionAtIndex:a3])
+  if ((v10 & 1) != 0 && [delegate collectionView:collectionView layout:self isListSectionAtIndex:index])
   {
     v18 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [v18 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v18 setBackgroundColor:clearColor];
 
     if (v11)
     {
-      v20 = [v6 collectionView:v5 layout:self hasHeaderForSectionAtIndex:a3];
+      v20 = [delegate collectionView:collectionView layout:self hasHeaderForSectionAtIndex:index];
     }
 
     else
@@ -172,7 +172,7 @@ id __33__PKDashboardPassFlowLayout_init__block_invoke(uint64_t a1, uint64_t a2, 
 
     if (v68)
     {
-      v65 = [v6 collectionView:v5 layout:self hasFooterForSectionAtIndex:a3];
+      v65 = [delegate collectionView:collectionView layout:self hasFooterForSectionAtIndex:index];
       if (!v20)
       {
         goto LABEL_54;
@@ -224,7 +224,7 @@ LABEL_54:
           [v18 setSeparatorConfiguration:v66];
         }
 
-        v64 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v18 layoutEnvironment:v70];
+        v64 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v18 layoutEnvironment:environmentCopy];
         [v64 setContentInsets:{v69, self->_horizontalInset, 20.0, self->_horizontalInset}];
         objc_destroyWeak(&location);
         goto LABEL_62;
@@ -235,7 +235,7 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  [v5 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v21 = 0;
   v22 = 0;
   v25 = v8 - v23 - v24;
@@ -246,14 +246,14 @@ LABEL_54:
   v30 = 0.0;
   do
   {
-    v31 = [MEMORY[0x1E696AC88] indexPathForRow:v22 inSection:a3];
-    [v6 collectionView:v5 layout:self sizeForItemAtIndexPath:v31];
+    v31 = [MEMORY[0x1E696AC88] indexPathForRow:v22 inSection:index];
+    [delegate collectionView:collectionView layout:self sizeForItemAtIndexPath:v31];
     v33 = v32;
     v35 = v34;
     if (v9)
     {
-      v36 = [v6 itemIsStackableInCollectionView:v5 atIndexPath:v31];
-      v37 = [v6 itemIsIndependentInCollectionView:v5 atIndexPath:v31];
+      v36 = [delegate itemIsStackableInCollectionView:collectionView atIndexPath:v31];
+      v37 = [delegate itemIsIndependentInCollectionView:collectionView atIndexPath:v31];
       if (v36)
       {
         v38 = 0;
@@ -274,7 +274,7 @@ LABEL_54:
 
     else
     {
-      v37 = [v6 itemIsIndependentInCollectionView:v5 atIndexPath:v31];
+      v37 = [delegate itemIsIndependentInCollectionView:collectionView atIndexPath:v31];
     }
 
     v39 = v28 + v30;
@@ -482,15 +482,15 @@ id __68__PKDashboardPassFlowLayout_layoutSectionAtIndex_layoutEnvironment___bloc
   return v18;
 }
 
-- (void)_adjustItems:(id)a3 withLateralMove:(double)a4
+- (void)_adjustItems:(id)items withLateralMove:(double)move
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -501,25 +501,25 @@ id __68__PKDashboardPassFlowLayout_layoutSectionAtIndex_layoutEnvironment___bloc
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         [v10 frame];
-        [v10 setFrame:v11 + a4];
+        [v10 setFrame:v11 + move];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  y = a3.origin.y;
-  v5 = [(PKDashboardPassFlowLayout *)self collectionView:a3.origin.x];
+  y = change.origin.y;
+  v5 = [(PKDashboardPassFlowLayout *)self collectionView:change.origin.x];
   v6 = v5;
   p_userIsHoldingCardInCurrentDrag = &self->_userIsHoldingCardInCurrentDrag;
   if (self->_userIsHoldingCardInCurrentDrag)
@@ -594,16 +594,16 @@ LABEL_21:
   return needsCustomLocation;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKDashboardPassFlowLayout;
-  v4 = [(PKDashboardPassFlowLayout *)&v8 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PKDashboardPassFlowLayout *)&v8 invalidationContextForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
   if (self->_needsCustomLocation)
   {
-    v5 = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
-    v9[0] = v5;
+    _indexPathForPassGroup = [(PKDashboardPassFlowLayout *)self _indexPathForPassGroup];
+    v9[0] = _indexPathForPassGroup;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     [v4 invalidateItemsAtIndexPaths:v6];
   }
@@ -611,21 +611,21 @@ LABEL_21:
   return v4;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = PKDashboardPassFlowLayout;
-  v4 = [(PKDashboardPassFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(PKDashboardPassFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:path];
   v5 = [(PKDashboardPassFlowLayout *)self _modifiedLayoutAttributes:v4];
 
   return v5;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v10.receiver = self;
   v10.super_class = PKDashboardPassFlowLayout;
-  v4 = [(PKDashboardPassFlowLayout *)&v10 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PKDashboardPassFlowLayout *)&v10 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = [v4 mutableCopy];
 
   if ([v5 count])
@@ -655,10 +655,10 @@ LABEL_21:
   v6 = v5;
   if (!self->_cellsPresented)
   {
-    v7 = [(PKDashboardPassFlowLayout *)self collectionView];
-    [v7 bounds];
+    collectionView = [(PKDashboardPassFlowLayout *)self collectionView];
+    [collectionView bounds];
     v9 = v8 - self->_passCellSize.height;
-    [v7 safeAreaInsets];
+    [collectionView safeAreaInsets];
     v6 = v6 - (v9 - v10 + -20.0);
   }
 
@@ -669,7 +669,7 @@ LABEL_21:
   return result;
 }
 
-- (void)revealContentAnimated:(BOOL)a3
+- (void)revealContentAnimated:(BOOL)animated
 {
   if (!self->_cellsPresented)
   {
@@ -687,27 +687,27 @@ LABEL_21:
   }
 }
 
-- (BOOL)_indexPathIsPassGroupIndexPath:(id)a3
+- (BOOL)_indexPathIsPassGroupIndexPath:(id)path
 {
-  v3 = a3;
-  if ([v3 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 row] == 0;
+    v4 = [pathCopy row] == 0;
   }
 
   return v4;
 }
 
-- (id)_modifiedLayoutAttributes:(id)a3
+- (id)_modifiedLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(PKDashboardPassFlowLayout *)self collectionView];
-  v6 = [v4 copy];
+  attributesCopy = attributes;
+  collectionView = [(PKDashboardPassFlowLayout *)self collectionView];
+  v6 = [attributesCopy copy];
 
   [v6 frame];
   v8 = v7;
@@ -716,12 +716,12 @@ LABEL_21:
   v14 = v13;
   [v6 alpha];
   v16 = v15;
-  v17 = [v6 indexPath];
-  if ([(PKDashboardPassFlowLayout *)self _indexPathIsPassGroupIndexPath:v17])
+  indexPath = [v6 indexPath];
+  if ([(PKDashboardPassFlowLayout *)self _indexPathIsPassGroupIndexPath:indexPath])
   {
-    v18 = [v6 representedElementCategory];
+    representedElementCategory = [v6 representedElementCategory];
 
-    if (!v18)
+    if (!representedElementCategory)
     {
       topMarginInFirstSection = self->_topMarginInFirstSection;
       if (!self->_needsCustomLocation)
@@ -729,9 +729,9 @@ LABEL_21:
         goto LABEL_13;
       }
 
-      [v5 contentOffset];
+      [collectionView contentOffset];
       v20 = v19;
-      [v5 adjustedContentInset];
+      [collectionView adjustedContentInset];
       v22 = v20 + v21;
       goto LABEL_12;
     }
@@ -743,9 +743,9 @@ LABEL_21:
 
   if (self->_hideCellsDuringDismissal && !self->_fade)
   {
-    [v5 bounds];
+    [collectionView bounds];
     v24 = v23;
-    [v5 safeAreaInsets];
+    [collectionView safeAreaInsets];
     v22 = v24 - v25 - self->_topMarginInFirstSection - self->_passCellSize.height;
 LABEL_12:
     topMarginInFirstSection = topMarginInFirstSection + v22;

@@ -36,15 +36,15 @@
 {
   v118.receiver = self;
   v118.super_class = TSWPEquationFloatingLayout;
-  v3 = [(TSWPEquationFloatingLayout *)&v118 computeLayoutGeometry];
+  computeLayoutGeometry = [(TSWPEquationFloatingLayout *)&v118 computeLayoutGeometry];
   v6 = objc_msgSend_equationInfo(self, v4, v5);
   v9 = objc_msgSend_textProperties(v6, v7, v8);
 
   v12 = objc_msgSend_equationLayoutContext(self, v10, v11);
   v13 = [TSWPEquationLayoutContext alloc];
-  objc_msgSend_size(v3, v14, v15);
+  objc_msgSend_size(computeLayoutGeometry, v14, v15);
   v17 = objc_msgSend_initWithTextProperties_targetSize_(v13, v16, v9);
-  objc_msgSend_size(v3, v18, v19);
+  objc_msgSend_size(computeLayoutGeometry, v18, v19);
   v21 = v20;
   v23 = v22;
   v27 = objc_msgSend_equationLayout(self, v24, v25);
@@ -91,9 +91,9 @@
     v67 = v66;
     v69 = v68;
     v72 = objc_alloc(MEMORY[0x277D80300]);
-    if (v3)
+    if (computeLayoutGeometry)
     {
-      objc_msgSend_transform(v3, v70, v71);
+      objc_msgSend_transform(computeLayoutGeometry, v70, v71);
     }
 
     else
@@ -124,9 +124,9 @@
     v123 = CGRectOffset(v122, v86, v87);
     objc_msgSend_setBoundsForStandardKnobs_(self, v90, v91, v123.origin.x, v123.origin.y, v123.size.width, v123.size.height);
     memset(&v117, 0, sizeof(v117));
-    if (v3)
+    if (computeLayoutGeometry)
     {
-      objc_msgSend_transform(v3, v92, v93);
+      objc_msgSend_transform(computeLayoutGeometry, v92, v93);
     }
 
     else
@@ -143,9 +143,9 @@
   else
   {
     v75 = objc_alloc(MEMORY[0x277D80300]);
-    if (v3)
+    if (computeLayoutGeometry)
     {
-      objc_msgSend_transform(v3, v73, v74);
+      objc_msgSend_transform(computeLayoutGeometry, v73, v74);
     }
 
     else

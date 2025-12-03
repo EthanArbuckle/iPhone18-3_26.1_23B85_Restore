@@ -1,15 +1,15 @@
 @interface GKLeaderboardScoreFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGSize)contentSizeBeforeInsertingItemsAbove;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 @end
 
 @implementation GKLeaderboardScoreFlowLayout
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(GKLeaderboardScoreFlowLayout *)self heightOfInsertedItems];
   v7 = y + v6;
   [(GKLeaderboardScoreFlowLayout *)self setHeightOfInsertedItems:0.0];
@@ -20,20 +20,20 @@
   return result;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   v19.receiver = self;
   v19.super_class = GKLeaderboardScoreFlowLayout;
-  [(GKLeaderboardScoreFlowLayout *)&v19 prepareForCollectionViewUpdates:v4];
+  [(GKLeaderboardScoreFlowLayout *)&v19 prepareForCollectionViewUpdates:updatesCopy];
   if ([(GKLeaderboardScoreFlowLayout *)self isInsertingItemsAbove])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = updatesCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v6)
     {
@@ -52,10 +52,10 @@
           v11 = *(*(&v15 + 1) + 8 * i);
           if (![v11 updateAction])
           {
-            v12 = [v11 indexPathAfterUpdate];
-            if (v12)
+            indexPathAfterUpdate = [v11 indexPathAfterUpdate];
+            if (indexPathAfterUpdate)
             {
-              v13 = [(UICollectionViewFlowLayout *)self layoutAttributesForItemAtIndexPath:v12];
+              v13 = [(UICollectionViewFlowLayout *)self layoutAttributesForItemAtIndexPath:indexPathAfterUpdate];
               [v13 frame];
               v9 = v9 + v14;
             }

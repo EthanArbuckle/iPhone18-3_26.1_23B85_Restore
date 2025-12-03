@@ -1,17 +1,17 @@
 @interface MTLDebugIOScratchBufferAllocator
-- (MTLDebugIOScratchBufferAllocator)initWithBaseObject:(id)a3 parent:(id)a4;
-- (id)allocateScratchBufferWithMinimumSize:(unint64_t)a3;
-- (id)newScratchBufferWithMinimumSize:(unint64_t)a3;
+- (MTLDebugIOScratchBufferAllocator)initWithBaseObject:(id)object parent:(id)parent;
+- (id)allocateScratchBufferWithMinimumSize:(unint64_t)size;
+- (id)newScratchBufferWithMinimumSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation MTLDebugIOScratchBufferAllocator
 
-- (MTLDebugIOScratchBufferAllocator)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLDebugIOScratchBufferAllocator)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTLDebugIOScratchBufferAllocator;
-  return [(MTLToolsIOScratchBufferAllocator *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsIOScratchBufferAllocator *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (void)dealloc
@@ -21,7 +21,7 @@
   [(MTLToolsIOScratchBufferAllocator *)&v2 dealloc];
 }
 
-- (id)newScratchBufferWithMinimumSize:(unint64_t)a3
+- (id)newScratchBufferWithMinimumSize:(unint64_t)size
 {
   v4 = [-[MTLToolsObject baseObject](self "baseObject")];
   v5 = [(MTLToolsIOScratchBuffer *)[MTLDebugIOScratchBuffer alloc] initWithBaseObject:v4 parent:self];
@@ -29,7 +29,7 @@
   return v5;
 }
 
-- (id)allocateScratchBufferWithMinimumSize:(unint64_t)a3
+- (id)allocateScratchBufferWithMinimumSize:(unint64_t)size
 {
   v4 = [-[MTLToolsObject baseObject](self "baseObject")];
   v5 = [(MTLToolsIOScratchBuffer *)[MTLDebugIOScratchBuffer alloc] initWithBaseObject:v4 parent:self];

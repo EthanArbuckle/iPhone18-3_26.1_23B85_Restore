@@ -1,6 +1,6 @@
 @interface CalDAVResourceTypeItem
 - (id)copyParseRules;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation CalDAVResourceTypeItem
@@ -34,122 +34,122 @@
 
   v29.receiver = self;
   v29.super_class = CalDAVResourceTypeItem;
-  v14 = [(CoreDAVItem *)&v29 copyParseRules];
-  [v25 addEntriesFromDictionary:v14];
+  copyParseRules = [(CoreDAVItem *)&v29 copyParseRules];
+  [v25 addEntriesFromDictionary:copyParseRules];
 
   return v25;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CoreDAVItem *)self name];
-  v6 = [(CoreDAVItem *)self nameSpace];
-  [v4 startElement:v5 inNamespace:v6 withAttributeNamesAndValues:0];
+  writeCopy = write;
+  name = [(CoreDAVItem *)self name];
+  nameSpace = [(CoreDAVItem *)self nameSpace];
+  [writeCopy startElement:name inNamespace:nameSpace withAttributeNamesAndValues:0];
 
-  v7 = [(CalDAVResourceTypeItem *)self calendar];
+  calendar = [(CalDAVResourceTypeItem *)self calendar];
 
-  if (v7)
+  if (calendar)
   {
-    v8 = [(CalDAVResourceTypeItem *)self calendar];
-    [v8 write:v4];
+    calendar2 = [(CalDAVResourceTypeItem *)self calendar];
+    [calendar2 write:writeCopy];
   }
 
-  v9 = [(CalDAVResourceTypeItem *)self scheduleInbox];
+  scheduleInbox = [(CalDAVResourceTypeItem *)self scheduleInbox];
 
-  if (v9)
+  if (scheduleInbox)
   {
-    v10 = [(CalDAVResourceTypeItem *)self scheduleInbox];
-    [v10 write:v4];
+    scheduleInbox2 = [(CalDAVResourceTypeItem *)self scheduleInbox];
+    [scheduleInbox2 write:writeCopy];
   }
 
-  v11 = [(CalDAVResourceTypeItem *)self scheduleOutbox];
+  scheduleOutbox = [(CalDAVResourceTypeItem *)self scheduleOutbox];
 
-  if (v11)
+  if (scheduleOutbox)
   {
-    v12 = [(CalDAVResourceTypeItem *)self scheduleOutbox];
-    [v12 write:v4];
+    scheduleOutbox2 = [(CalDAVResourceTypeItem *)self scheduleOutbox];
+    [scheduleOutbox2 write:writeCopy];
   }
 
-  v13 = [(CalDAVResourceTypeItem *)self notification];
+  notification = [(CalDAVResourceTypeItem *)self notification];
 
-  if (v13)
+  if (notification)
   {
-    v14 = [(CalDAVResourceTypeItem *)self notification];
-    [v14 write:v4];
+    notification2 = [(CalDAVResourceTypeItem *)self notification];
+    [notification2 write:writeCopy];
   }
 
-  v15 = [(CalDAVResourceTypeItem *)self subscribed];
+  subscribed = [(CalDAVResourceTypeItem *)self subscribed];
 
-  if (v15)
+  if (subscribed)
   {
-    v16 = [(CalDAVResourceTypeItem *)self subscribed];
-    [v16 write:v4];
+    subscribed2 = [(CalDAVResourceTypeItem *)self subscribed];
+    [subscribed2 write:writeCopy];
   }
 
-  v17 = [(CalDAVResourceTypeItem *)self sharedOwner];
+  sharedOwner = [(CalDAVResourceTypeItem *)self sharedOwner];
 
-  if (v17)
+  if (sharedOwner)
   {
-    v18 = [(CalDAVResourceTypeItem *)self sharedOwner];
-    [v18 write:v4];
+    sharedOwner2 = [(CalDAVResourceTypeItem *)self sharedOwner];
+    [sharedOwner2 write:writeCopy];
   }
 
-  v19 = [(CoreDAVResourceTypeItem *)self shared];
+  shared = [(CoreDAVResourceTypeItem *)self shared];
 
-  if (v19)
+  if (shared)
   {
-    v20 = [(CoreDAVResourceTypeItem *)self shared];
-    [v20 write:v4];
+    shared2 = [(CoreDAVResourceTypeItem *)self shared];
+    [shared2 write:writeCopy];
   }
 
-  v21 = [(CoreDAVResourceTypeItem *)self addressBook];
+  addressBook = [(CoreDAVResourceTypeItem *)self addressBook];
 
-  if (v21)
+  if (addressBook)
   {
-    v22 = [(CoreDAVResourceTypeItem *)self addressBook];
-    [v22 write:v4];
+    addressBook2 = [(CoreDAVResourceTypeItem *)self addressBook];
+    [addressBook2 write:writeCopy];
   }
 
-  v23 = [(CoreDAVResourceTypeItem *)self searchAddressBook];
+  searchAddressBook = [(CoreDAVResourceTypeItem *)self searchAddressBook];
 
-  if (v23)
+  if (searchAddressBook)
   {
-    v24 = [(CoreDAVResourceTypeItem *)self searchAddressBook];
-    [v24 write:v4];
+    searchAddressBook2 = [(CoreDAVResourceTypeItem *)self searchAddressBook];
+    [searchAddressBook2 write:writeCopy];
   }
 
-  v25 = [(CoreDAVResourceTypeItem *)self principal];
+  principal = [(CoreDAVResourceTypeItem *)self principal];
 
-  if (v25)
+  if (principal)
   {
-    v26 = [(CoreDAVResourceTypeItem *)self principal];
-    [v26 write:v4];
+    principal2 = [(CoreDAVResourceTypeItem *)self principal];
+    [principal2 write:writeCopy];
   }
 
-  v27 = [(CoreDAVResourceTypeItem *)self collection];
+  collection = [(CoreDAVResourceTypeItem *)self collection];
 
-  if (v27)
+  if (collection)
   {
-    v28 = [(CoreDAVResourceTypeItem *)self collection];
-    [v28 write:v4];
+    collection2 = [(CoreDAVResourceTypeItem *)self collection];
+    [collection2 write:writeCopy];
   }
 
-  v29 = [(CoreDAVResourceTypeItem *)self unauthenticated];
+  unauthenticated = [(CoreDAVResourceTypeItem *)self unauthenticated];
 
-  if (v29)
+  if (unauthenticated)
   {
-    v30 = [(CoreDAVResourceTypeItem *)self unauthenticated];
-    [v30 write:v4];
+    unauthenticated2 = [(CoreDAVResourceTypeItem *)self unauthenticated];
+    [unauthenticated2 write:writeCopy];
   }
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v31 = [(CoreDAVItem *)self extraChildItems];
-  v32 = [v31 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  extraChildItems = [(CoreDAVItem *)self extraChildItems];
+  v32 = [extraChildItems countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v32)
   {
     v33 = v32;
@@ -161,22 +161,22 @@
       {
         if (*v40 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(extraChildItems);
         }
 
-        [*(*(&v39 + 1) + 8 * v35++) write:v4];
+        [*(*(&v39 + 1) + 8 * v35++) write:writeCopy];
       }
 
       while (v33 != v35);
-      v33 = [v31 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v33 = [extraChildItems countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v33);
   }
 
-  v36 = [(CoreDAVItem *)self name];
-  v37 = [(CoreDAVItem *)self nameSpace];
-  [v4 endElement:v36 inNamespace:v37];
+  name2 = [(CoreDAVItem *)self name];
+  nameSpace2 = [(CoreDAVItem *)self nameSpace];
+  [writeCopy endElement:name2 inNamespace:nameSpace2];
 
   v38 = *MEMORY[0x277D85DE8];
 }

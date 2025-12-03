@@ -1,24 +1,24 @@
 @interface INObjectResolutionResult
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4;
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4;
-- (void)transformResolutionResultForIntent:(id)a3 intentSlotDescription:(id)a4 withOptionsProvider:(id)a5 completion:(id)a6;
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description;
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description;
+- (void)transformResolutionResultForIntent:(id)intent intentSlotDescription:(id)description withOptionsProvider:(id)provider completion:(id)completion;
 @end
 
 @implementation INObjectResolutionResult
 
-- (void)transformResolutionResultForIntent:(id)a3 intentSlotDescription:(id)a4 withOptionsProvider:(id)a5 completion:(id)a6
+- (void)transformResolutionResultForIntent:(id)intent intentSlotDescription:(id)description withOptionsProvider:(id)provider completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 _codableDescription];
-  if (v14)
+  intentCopy = intent;
+  descriptionCopy = description;
+  providerCopy = provider;
+  completionCopy = completion;
+  _codableDescription = [intentCopy _codableDescription];
+  if (_codableDescription)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = _codableDescription;
     }
 
     else
@@ -34,14 +34,14 @@
 
   v16 = v15;
 
-  v17 = [(INIntentResolutionResult *)self resolvedValue];
-  v18 = [v16 _referencedCodableDescriptionsByClassName];
-  v19 = [INCodableDescription _codableDescriptionForTypedObject:v17 inDictionary:v18];
+  resolvedValue = [(INIntentResolutionResult *)self resolvedValue];
+  _referencedCodableDescriptionsByClassName = [v16 _referencedCodableDescriptionsByClassName];
+  v19 = [INCodableDescription _codableDescriptionForTypedObject:resolvedValue inDictionary:_referencedCodableDescriptionsByClassName];
 
   if (v19)
   {
-    v20 = [v11 name];
-    v21 = [v16 attributeByName:v20];
+    name = [descriptionCopy name];
+    v21 = [v16 attributeByName:name];
 
     if (v21)
     {
@@ -65,13 +65,13 @@
     v23 = v22;
 
     [v23 setCodableDescription:v19];
-    v24 = [v11 codableAttribute];
-    if (v24)
+    codableAttribute = [descriptionCopy codableAttribute];
+    if (codableAttribute)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = v24;
+        v25 = codableAttribute;
       }
 
       else
@@ -92,22 +92,22 @@
 
   v27.receiver = self;
   v27.super_class = INObjectResolutionResult;
-  [(INIntentResolutionResult *)&v27 transformResolutionResultForIntent:v10 intentSlotDescription:v11 withOptionsProvider:v12 completion:v13];
+  [(INIntentResolutionResult *)&v27 transformResolutionResultForIntent:intentCopy intentSlotDescription:descriptionCopy withOptionsProvider:providerCopy completion:completionCopy];
 }
 
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 description];
-  v8 = [MEMORY[0x1E695DF58] systemLocale];
-  v9 = [v8 groupingSeparator];
-  if ([v6 valueType] == 225)
+  objectCopy = object;
+  descriptionCopy = description;
+  v7 = [objectCopy description];
+  systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+  groupingSeparator = [systemLocale groupingSeparator];
+  if ([descriptionCopy valueType] == 225)
   {
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
     {
-      v12 = [v5 valueForKey:@"displayString"];
-      v13 = [v12 if_escapedComponentsJoinedByString:v9 forLocale:v8];
+      v12 = [objectCopy valueForKey:@"displayString"];
+      displayString = [v12 if_escapedComponentsJoinedByString:groupingSeparator forLocale:systemLocale];
 
       v7 = v12;
     }
@@ -120,10 +120,10 @@
         goto LABEL_9;
       }
 
-      v13 = [v5 displayString];
+      displayString = [objectCopy displayString];
     }
 
-    v7 = v13;
+    v7 = displayString;
   }
 
 LABEL_9:
@@ -131,22 +131,22 @@ LABEL_9:
   return v7;
 }
 
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  descriptionCopy = description;
   v7 = objc_alloc_init(_INPBIntentSlotValue);
-  if ([v6 valueType] == 225)
+  if ([descriptionCopy valueType] == 225)
   {
     [(_INPBIntentSlotValue *)v7 setType:1000];
-    v8 = [v6 codableAttribute];
-    if (v8)
+    codableAttribute = [descriptionCopy codableAttribute];
+    if (codableAttribute)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = codableAttribute;
       }
 
       else
@@ -162,21 +162,21 @@ LABEL_9:
 
     v10 = v9;
 
-    v11 = [v10 valueTransformer];
+    valueTransformer = [v10 valueTransformer];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __70__INObjectResolutionResult__intentSlotValueForObject_slotDescription___block_invoke;
     v29[3] = &unk_1E7283450;
-    v12 = v11;
+    v12 = valueTransformer;
     v30 = v12;
     v31 = v7;
     v13 = v10;
     v32 = v13;
     v14 = MEMORY[0x193AD7780](v29);
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) != 0))
     {
       v24 = v12;
-      v17 = v5;
+      v17 = objectCopy;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
@@ -212,7 +212,7 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        (v14)[2](v14, v5);
+        (v14)[2](v14, objectCopy);
       }
     }
   }

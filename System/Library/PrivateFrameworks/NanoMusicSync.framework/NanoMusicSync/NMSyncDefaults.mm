@@ -1,8 +1,8 @@
 @interface NMSyncDefaults
 + (id)sharedDefaults;
-- (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)_continueUsingMusicRecommendationKey;
-- (BOOL)_deviceHasCapability:(id)a3 forCapabilitiesKey:(id)a4;
+- (BOOL)_deviceHasCapability:(id)capability forCapabilitiesKey:(id)key;
 - (BOOL)debugSyncInfoEnabled;
 - (MPMediaPlaylist)assetSyncPlaylist;
 - (NMSyncDefaults)init;
@@ -24,57 +24,57 @@
 - (NSString)description;
 - (id)_associatedObject;
 - (id)_companionSidePerDeviceDefaults;
-- (id)_dateValueForKey:(id)a3 bundleID:(id)a4;
+- (id)_dateValueForKey:(id)key bundleID:(id)d;
 - (id)_defaultPlaylistPersistentID;
-- (id)_defaultWithPrefix:(id)a3 forBundleIdentifier:(id)a4;
-- (id)_lastSyncInfoRequestDateWithPrefix:(id)a3 forBundleIdentifier:(id)a4;
-- (id)_objectForKey:(id)a3;
-- (id)_playlistPersistentIDForPlaylistName:(id)a3;
-- (int64_t)dormancyIntervalInHoursForBundleID:(id)a3;
-- (unint64_t)_spaceQuotaForNumberOfSongs:(unint64_t)a3;
-- (void)_addCapability:(id)a3 forCapabilitiesKey:(id)a4;
+- (id)_defaultWithPrefix:(id)prefix forBundleIdentifier:(id)identifier;
+- (id)_lastSyncInfoRequestDateWithPrefix:(id)prefix forBundleIdentifier:(id)identifier;
+- (id)_objectForKey:(id)key;
+- (id)_playlistPersistentIDForPlaylistName:(id)name;
+- (int64_t)dormancyIntervalInHoursForBundleID:(id)d;
+- (unint64_t)_spaceQuotaForNumberOfSongs:(unint64_t)songs;
+- (void)_addCapability:(id)capability forCapabilitiesKey:(id)key;
 - (void)_clearAssetSyncPlaylistDependentDefaults;
 - (void)_migrateDataIfNecessary;
-- (void)_notifyChangesForKey:(id)a3;
-- (void)_perDeviceSettingsDidResetNotification:(id)a3;
+- (void)_notifyChangesForKey:(id)key;
+- (void)_perDeviceSettingsDidResetNotification:(id)notification;
 - (void)_reloadPropertiesFromDefaults;
 - (void)_reloadPropertiesFromDefaultsOnMainThread;
-- (void)_removeObjectForKey:(id)a3;
+- (void)_removeObjectForKey:(id)key;
 - (void)_removeOldMusicRecommendationsInfoIfPossible;
 - (void)_resetDomainAccessor;
-- (void)_setLastSyncInfoRequestDate:(id)a3 prefix:(id)a4 forBundleIdentifier:(id)a5;
-- (void)_setLegacyObject:(id)a3 forKey:(id)a4 ifRemoteDeviceMissingCapability:(id)a5;
+- (void)_setLastSyncInfoRequestDate:(id)date prefix:(id)prefix forBundleIdentifier:(id)identifier;
+- (void)_setLegacyObject:(id)object forKey:(id)key ifRemoteDeviceMissingCapability:(id)capability;
 - (void)_setNeedsSynchronize;
-- (void)_setObject:(id)a3 forKey:(id)a4 shouldSynchronizeToPairedDevice:(BOOL)a5;
+- (void)_setObject:(id)object forKey:(id)key shouldSynchronizeToPairedDevice:(BOOL)device;
 - (void)_setupNotifiers;
-- (void)_writeDate:(id)a3 forKey:(id)a4 bundleID:(id)a5;
+- (void)_writeDate:(id)date forKey:(id)key bundleID:(id)d;
 - (void)_writePropertiesToDefaults;
 - (void)beginBatchUpdates;
-- (void)clearAppActivityStatusDefaultsForBundleID:(id)a3;
+- (void)clearAppActivityStatusDefaultsForBundleID:(id)d;
 - (void)clearPodcastsDefaults;
-- (void)dispatcherDidReceiveNotificationFromOtherProcess:(id)a3;
-- (void)dispatcherDidReceiveNotificationFromRemoteDevice:(id)a3;
+- (void)dispatcherDidReceiveNotificationFromOtherProcess:(id)process;
+- (void)dispatcherDidReceiveNotificationFromRemoteDevice:(id)device;
 - (void)endBatchUpdates;
-- (void)setAssetSyncLimit:(id)a3;
-- (void)setAssetSyncLimitType:(unint64_t)a3;
-- (void)setAssetSyncPlaylist:(id)a3;
-- (void)setAssetSyncPlaylistPersistentID:(id)a3;
-- (void)setAssetSyncType:(unint64_t)a3;
-- (void)setCatalogRecommendationsLastUpdateDate:(id)a3;
-- (void)setInstallDateForBundleID:(id)a3;
-- (void)setLastContentUsedDateForBundleID:(id)a3;
-- (void)setLastFullySentAssetSyncPlaylistPersistentID:(id)a3;
-- (void)setLastFullySentAssetSyncPlaylistVersion:(id)a3;
-- (void)setLastLocalPlaybackDateForBundleID:(id)a3;
-- (void)setLastUserLaunchDateForBundleID:(id)a3;
-- (void)setLastUserPinningChangeDateForBundleID:(id)a3;
-- (void)setLibraryRecommendationAlbums:(id)a3;
-- (void)setLibraryRecommendationExpirationDate:(id)a3;
-- (void)setLibraryRecommendationPlaylists:(id)a3;
-- (void)setMusicRecommendationDict:(id)a3;
-- (void)setPinnedAlbums:(id)a3;
-- (void)setPinnedPlaylists:(id)a3;
-- (void)setWorkoutPlaylistID:(id)a3;
+- (void)setAssetSyncLimit:(id)limit;
+- (void)setAssetSyncLimitType:(unint64_t)type;
+- (void)setAssetSyncPlaylist:(id)playlist;
+- (void)setAssetSyncPlaylistPersistentID:(id)d;
+- (void)setAssetSyncType:(unint64_t)type;
+- (void)setCatalogRecommendationsLastUpdateDate:(id)date;
+- (void)setInstallDateForBundleID:(id)d;
+- (void)setLastContentUsedDateForBundleID:(id)d;
+- (void)setLastFullySentAssetSyncPlaylistPersistentID:(id)d;
+- (void)setLastFullySentAssetSyncPlaylistVersion:(id)version;
+- (void)setLastLocalPlaybackDateForBundleID:(id)d;
+- (void)setLastUserLaunchDateForBundleID:(id)d;
+- (void)setLastUserPinningChangeDateForBundleID:(id)d;
+- (void)setLibraryRecommendationAlbums:(id)albums;
+- (void)setLibraryRecommendationExpirationDate:(id)date;
+- (void)setLibraryRecommendationPlaylists:(id)playlists;
+- (void)setMusicRecommendationDict:(id)dict;
+- (void)setPinnedAlbums:(id)albums;
+- (void)setPinnedPlaylists:(id)playlists;
+- (void)setWorkoutPlaylistID:(id)d;
 @end
 
 @implementation NMSyncDefaults
@@ -105,8 +105,8 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
   v2 = [(NMSyncDefaults *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__perDeviceSettingsDidResetNotification_ name:@"_NMPerDeviceSettingsDidResetNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__perDeviceSettingsDidResetNotification_ name:@"_NMPerDeviceSettingsDidResetNotification" object:0];
 
     [(NMSyncDefaults *)v2 _setupNotifiers];
     [(NMSyncDefaults *)v2 _reloadPropertiesFromDefaultsOnMainThread];
@@ -120,31 +120,31 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
 {
   v31 = *MEMORY[0x277D85DE8];
   [(NMSyncDefaults *)self _migrateDataIfNecessary];
-  v3 = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
-  v4 = [v3 synchronize];
-  v5 = [v3 objectForKey:@"SyncPlaylistID"];
+  _companionSidePerDeviceDefaults = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
+  synchronize = [_companionSidePerDeviceDefaults synchronize];
+  v5 = [_companionSidePerDeviceDefaults objectForKey:@"SyncPlaylistID"];
   assetSyncPlaylistPersistentID = self->_assetSyncPlaylistPersistentID;
   self->_assetSyncPlaylistPersistentID = v5;
 
-  self->_assetSyncLimitType = [v3 integerForKey:@"SyncAmountType"];
-  v7 = [v3 objectForKey:@"SyncAmount"];
+  self->_assetSyncLimitType = [_companionSidePerDeviceDefaults integerForKey:@"SyncAmountType"];
+  v7 = [_companionSidePerDeviceDefaults objectForKey:@"SyncAmount"];
   assetSyncLimit = self->_assetSyncLimit;
   self->_assetSyncLimit = v7;
 
-  self->_assetSyncType = [v3 integerForKey:@"SyncType"];
-  v9 = [v3 objectForKey:@"LastFullSyncPlaylistID"];
+  self->_assetSyncType = [_companionSidePerDeviceDefaults integerForKey:@"SyncType"];
+  v9 = [_companionSidePerDeviceDefaults objectForKey:@"LastFullSyncPlaylistID"];
   lastFullySentAssetSyncPlaylistPersistentID = self->_lastFullySentAssetSyncPlaylistPersistentID;
   self->_lastFullySentAssetSyncPlaylistPersistentID = v9;
 
-  v11 = [v3 objectForKey:@"SyncPlaylistVers"];
+  v11 = [_companionSidePerDeviceDefaults objectForKey:@"SyncPlaylistVers"];
   lastFullySentAssetSyncPlaylistVersion = self->_lastFullySentAssetSyncPlaylistVersion;
   self->_lastFullySentAssetSyncPlaylistVersion = v11;
 
-  v13 = [v3 objectForKey:@"PairingID"];
+  v13 = [_companionSidePerDeviceDefaults objectForKey:@"PairingID"];
   pairingID = self->_pairingID;
   self->_pairingID = v13;
 
-  v15 = [v3 objectForKey:@"ModDate"];
+  v15 = [_companionSidePerDeviceDefaults objectForKey:@"ModDate"];
   v16 = v15;
   if (v15)
   {
@@ -156,13 +156,13 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
   modificationDate = self->_modificationDate;
   self->_modificationDate = v15;
 
-  v19 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v20 = [v19 getActivePairedDevice];
-  v21 = [v20 valueForProperty:*MEMORY[0x277D2BBB8]];
-  v22 = [v21 UUIDString];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
+  v21 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBB8]];
+  uUIDString = [v21 UUIDString];
 
   v23 = self->_pairingID;
-  if (v23 != v22 && ([(NSString *)v23 isEqual:v22]& 1) == 0)
+  if (v23 != uUIDString && ([(NSString *)v23 isEqual:uUIDString]& 1) == 0)
   {
     v24 = NMLogForCategory(5);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -171,11 +171,11 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
       v27 = 138412546;
       v28 = v25;
       v29 = 2112;
-      v30 = v22;
+      v30 = uUIDString;
       _os_log_impl(&dword_25B27B000, v24, OS_LOG_TYPE_DEFAULT, "[NMSyncDefaults] The pairing ID changed from %@ to %@; clearing pairing-specific defaults!", &v27, 0x16u);
     }
 
-    objc_storeStrong(&self->_pairingID, v22);
+    objc_storeStrong(&self->_pairingID, uUIDString);
     [(NMSyncDefaults *)self _clearAssetSyncPlaylistDependentDefaults];
     [(NMSyncDefaults *)self _writePropertiesToDefaults];
   }
@@ -187,11 +187,11 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
 {
   v122[1] = *MEMORY[0x277D85DE8];
   [(NMSyncDefaults *)self beginBatchUpdates];
-  v3 = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
-  v4 = [v3 objectForKey:@"SyncDataMigrationRevision"];
-  v5 = [v3 objectForKey:@"ModDate"];
+  _companionSidePerDeviceDefaults = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
+  v4 = [_companionSidePerDeviceDefaults objectForKey:@"SyncDataMigrationRevision"];
+  v5 = [_companionSidePerDeviceDefaults objectForKey:@"ModDate"];
   v6 = v5;
-  if (v3)
+  if (_companionSidePerDeviceDefaults)
   {
     v7 = v5 == 0;
   }
@@ -213,17 +213,17 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
     }
 
     v4 = &unk_286C8D538;
-    [v3 setObject:&unk_286C8D538 forKey:@"SyncDataMigrationRevision"];
+    [_companionSidePerDeviceDefaults setObject:&unk_286C8D538 forKey:@"SyncDataMigrationRevision"];
     v11 = MEMORY[0x277CCABB0];
-    v12 = [MEMORY[0x277CBEAA8] date];
-    [v12 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v13 = [v11 numberWithDouble:?];
-    [v3 setObject:v13 forKey:@"ModDate"];
+    [_companionSidePerDeviceDefaults setObject:v13 forKey:@"ModDate"];
 
-    v14 = [v3 synchronize];
+    synchronize = [_companionSidePerDeviceDefaults synchronize];
   }
 
-  else if (!v3)
+  else if (!_companionSidePerDeviceDefaults)
   {
     [(NMSyncDefaults *)self _removeOldMusicRecommendationsInfoIfPossible];
     v8 = 0;
@@ -232,136 +232,136 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
 
   if (![v4 unsignedIntegerValue])
   {
-    v15 = [v3 objectForKey:@"SyncAssetsEnabled"];
-    v16 = [v3 integerForKey:@"SyncType"];
+    v15 = [_companionSidePerDeviceDefaults objectForKey:@"SyncAssetsEnabled"];
+    v16 = [_companionSidePerDeviceDefaults integerForKey:@"SyncType"];
     if (v15 && ([v15 BOOLValue] & 1) != 0 || v16 == 1)
     {
-      v17 = [v3 objectForKey:@"SyncPlaylistID"];
+      _defaultPlaylistPersistentID = [_companionSidePerDeviceDefaults objectForKey:@"SyncPlaylistID"];
       v18 = 1;
     }
 
     else
     {
-      v17 = [(NMSyncDefaults *)self _defaultPlaylistPersistentID];
-      v18 = [v17 longLongValue] != 0;
+      _defaultPlaylistPersistentID = [(NMSyncDefaults *)self _defaultPlaylistPersistentID];
+      v18 = [_defaultPlaylistPersistentID longLongValue] != 0;
     }
 
-    [v3 setObject:&unk_286C8D550 forKey:@"SyncDataMigrationRevision"];
+    [_companionSidePerDeviceDefaults setObject:&unk_286C8D550 forKey:@"SyncDataMigrationRevision"];
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
-    [v3 setObject:v19 forKey:@"SyncType"];
+    [_companionSidePerDeviceDefaults setObject:v19 forKey:@"SyncType"];
 
-    [v3 setObject:v17 forKey:@"SyncPlaylistID"];
+    [_companionSidePerDeviceDefaults setObject:_defaultPlaylistPersistentID forKey:@"SyncPlaylistID"];
     v20 = MEMORY[0x277CCABB0];
-    v21 = [MEMORY[0x277CBEAA8] date];
-    [v21 timeIntervalSinceReferenceDate];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceReferenceDate];
     v22 = [v20 numberWithDouble:?];
-    [v3 setObject:v22 forKey:@"ModDate"];
+    [_companionSidePerDeviceDefaults setObject:v22 forKey:@"ModDate"];
 
-    [v3 removeObjectForKey:@"SyncAssetsEnabled"];
-    v23 = [v3 synchronize];
+    [_companionSidePerDeviceDefaults removeObjectForKey:@"SyncAssetsEnabled"];
+    synchronize2 = [_companionSidePerDeviceDefaults synchronize];
 
     v8 = 1;
   }
 
   if ([v4 unsignedIntegerValue] <= 1)
   {
-    if (![v3 integerForKey:@"SyncType"])
+    if (![_companionSidePerDeviceDefaults integerForKey:@"SyncType"])
     {
-      v24 = [(NMSyncDefaults *)self _defaultPlaylistPersistentID];
-      v25 = [v24 longLongValue] != 0;
-      [v3 setObject:v24 forKey:@"SyncPlaylistID"];
+      _defaultPlaylistPersistentID2 = [(NMSyncDefaults *)self _defaultPlaylistPersistentID];
+      v25 = [_defaultPlaylistPersistentID2 longLongValue] != 0;
+      [_companionSidePerDeviceDefaults setObject:_defaultPlaylistPersistentID2 forKey:@"SyncPlaylistID"];
       v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v25];
-      [v3 setObject:v26 forKey:@"SyncType"];
+      [_companionSidePerDeviceDefaults setObject:v26 forKey:@"SyncType"];
     }
 
-    [v3 setObject:&unk_286C8D568 forKey:@"SyncDataMigrationRevision"];
+    [_companionSidePerDeviceDefaults setObject:&unk_286C8D568 forKey:@"SyncDataMigrationRevision"];
     v27 = MEMORY[0x277CCABB0];
-    v28 = [MEMORY[0x277CBEAA8] date];
-    [v28 timeIntervalSinceReferenceDate];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    [date3 timeIntervalSinceReferenceDate];
     v29 = [v27 numberWithDouble:?];
-    [v3 setObject:v29 forKey:@"ModDate"];
+    [_companionSidePerDeviceDefaults setObject:v29 forKey:@"ModDate"];
 
-    v30 = [v3 synchronize];
+    synchronize3 = [_companionSidePerDeviceDefaults synchronize];
     v8 = 1;
   }
 
   if ([v4 unsignedIntegerValue] <= 2)
   {
-    v31 = [v3 integerForKey:@"SyncType"];
-    [v3 setObject:&unk_286C8D580 forKey:@"SyncDataMigrationRevision"];
+    v31 = [_companionSidePerDeviceDefaults integerForKey:@"SyncType"];
+    [_companionSidePerDeviceDefaults setObject:&unk_286C8D580 forKey:@"SyncDataMigrationRevision"];
     v32 = MEMORY[0x277CCABB0];
-    v33 = [MEMORY[0x277CBEAA8] date];
-    [v33 timeIntervalSinceReferenceDate];
+    date4 = [MEMORY[0x277CBEAA8] date];
+    [date4 timeIntervalSinceReferenceDate];
     v34 = [v32 numberWithDouble:?];
-    [v3 setObject:v34 forKey:@"ModDate"];
+    [_companionSidePerDeviceDefaults setObject:v34 forKey:@"ModDate"];
 
     if (v31 == 1)
     {
-      v35 = [v3 objectForKey:@"SyncPlaylistID"];
+      v35 = [_companionSidePerDeviceDefaults objectForKey:@"SyncPlaylistID"];
       if (v35 && (v36 = v35, [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v35, "longLongValue")}], v37 = objc_claimAutoreleasedReturnValue(), v36, v37))
       {
         v122[0] = v37;
-        v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v122 count:1];
+        array = [MEMORY[0x277CBEA60] arrayWithObjects:v122 count:1];
       }
 
       else
       {
-        v38 = [MEMORY[0x277CBEA60] array];
+        array = [MEMORY[0x277CBEA60] array];
       }
 
-      [(NMSyncDefaults *)self _setObject:v38 forKey:@"PinnedPlaylists"];
+      [(NMSyncDefaults *)self _setObject:array forKey:@"PinnedPlaylists"];
     }
 
     buf[0] = 0;
-    v39 = [v3 integerForKey:@"SyncAmountType" keyExistsAndHasValidFormat:buf];
+    assetSyncLimitType = [_companionSidePerDeviceDefaults integerForKey:@"SyncAmountType" keyExistsAndHasValidFormat:buf];
     if ((buf[0] & 1) == 0)
     {
-      v39 = [(NMSyncDefaults *)self assetSyncLimitType];
+      assetSyncLimitType = [(NMSyncDefaults *)self assetSyncLimitType];
     }
 
-    if (v39 == 1)
+    if (assetSyncLimitType == 1)
     {
       v118 = 0;
-      v40 = [v3 integerForKey:@"SyncAmount" keyExistsAndHasValidFormat:&v118];
+      v40 = [_companionSidePerDeviceDefaults integerForKey:@"SyncAmount" keyExistsAndHasValidFormat:&v118];
       if (v118)
       {
-        v41 = v40;
+        unsignedIntegerValue = v40;
       }
 
       else
       {
-        v42 = [(NMSyncDefaults *)self assetSyncLimit];
-        v41 = [v42 unsignedIntegerValue];
+        assetSyncLimit = [(NMSyncDefaults *)self assetSyncLimit];
+        unsignedIntegerValue = [assetSyncLimit unsignedIntegerValue];
       }
 
-      v43 = [(NMSyncDefaults *)self _spaceQuotaForNumberOfSongs:v41];
-      if (v43 != v41)
+      v43 = [(NMSyncDefaults *)self _spaceQuotaForNumberOfSongs:unsignedIntegerValue];
+      if (v43 != unsignedIntegerValue)
       {
         v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v43];
-        [v3 setObject:v44 forKey:@"SyncAmount"];
+        [_companionSidePerDeviceDefaults setObject:v44 forKey:@"SyncAmount"];
       }
     }
 
     if (buf[0] == 1)
     {
-      [v3 removeObjectForKey:@"SyncAmountType"];
+      [_companionSidePerDeviceDefaults removeObjectForKey:@"SyncAmountType"];
     }
 
-    v45 = [v3 synchronize];
+    synchronize4 = [_companionSidePerDeviceDefaults synchronize];
     v8 = 1;
   }
 
   v109 = v6;
   if ([v4 unsignedIntegerValue] <= 3)
   {
-    [v3 setObject:&unk_286C8D598 forKey:@"SyncDataMigrationRevision"];
+    [_companionSidePerDeviceDefaults setObject:&unk_286C8D598 forKey:@"SyncDataMigrationRevision"];
     v46 = MEMORY[0x277CCABB0];
-    v47 = [MEMORY[0x277CBEAA8] date];
-    [v47 timeIntervalSinceReferenceDate];
+    date5 = [MEMORY[0x277CBEAA8] date];
+    [date5 timeIntervalSinceReferenceDate];
     v48 = [v46 numberWithDouble:?];
-    [v3 setObject:v48 forKey:@"ModDate"];
+    [_companionSidePerDeviceDefaults setObject:v48 forKey:@"ModDate"];
 
-    v49 = [v3 objectForKey:@"MusicRecommendations"];
+    v49 = [_companionSidePerDeviceDefaults objectForKey:@"MusicRecommendations"];
     v50 = v49;
     if (v49)
     {
@@ -376,11 +376,11 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
       v53 = v52;
       v54 = v51;
       [v50 enumerateKeysAndObjectsUsingBlock:v115];
-      [v3 setObject:v54 forKey:@"StoreMusicRecommendations"];
-      [v3 setObject:v53 forKey:@"StoreMusicRecommendationsToExclude"];
+      [_companionSidePerDeviceDefaults setObject:v54 forKey:@"StoreMusicRecommendations"];
+      [_companionSidePerDeviceDefaults setObject:v53 forKey:@"StoreMusicRecommendationsToExclude"];
     }
 
-    v55 = [v3 objectForKey:@"PhoneDefaultsCapabilities"];
+    v55 = [_companionSidePerDeviceDefaults objectForKey:@"PhoneDefaultsCapabilities"];
     if (([v55 containsObject:@"UsesSplitMusicRecommendations"] & 1) == 0)
     {
       if (v55)
@@ -394,15 +394,15 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
         [MEMORY[0x277CBEA60] arrayWithObjects:&v121 count:1];
       }
       v56 = ;
-      [v3 setObject:v56 forKey:@"PhoneDefaultsCapabilities"];
+      [_companionSidePerDeviceDefaults setObject:v56 forKey:@"PhoneDefaultsCapabilities"];
     }
 
-    [v3 removeObjectForKey:@"LastRecommendationUpdateDate"];
-    v57 = [v3 synchronize];
+    [_companionSidePerDeviceDefaults removeObjectForKey:@"LastRecommendationUpdateDate"];
+    synchronize5 = [_companionSidePerDeviceDefaults synchronize];
     v58 = objc_alloc_init(MEMORY[0x277D2BA60]);
-    v59 = [v3 domain];
+    domain = [_companionSidePerDeviceDefaults domain];
     v60 = [MEMORY[0x277CBEB98] setWithObject:@"PhoneDefaultsCapabilities"];
-    [v58 synchronizeNanoDomain:v59 keys:v60];
+    [v58 synchronizeNanoDomain:domain keys:v60];
 
     v8 = 1;
   }
@@ -413,14 +413,14 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
     goto LABEL_66;
   }
 
-  [v3 setObject:&unk_286C8D5B0 forKey:@"SyncDataMigrationRevision"];
+  [_companionSidePerDeviceDefaults setObject:&unk_286C8D5B0 forKey:@"SyncDataMigrationRevision"];
   v61 = MEMORY[0x277CCABB0];
-  v62 = [MEMORY[0x277CBEAA8] date];
-  [v62 timeIntervalSinceReferenceDate];
+  date6 = [MEMORY[0x277CBEAA8] date];
+  [date6 timeIntervalSinceReferenceDate];
   v63 = [v61 numberWithDouble:?];
-  [v3 setObject:v63 forKey:@"ModDate"];
+  [_companionSidePerDeviceDefaults setObject:v63 forKey:@"ModDate"];
 
-  [v3 objectForKey:@"StoreMusicRecommendations"];
+  [_companionSidePerDeviceDefaults objectForKey:@"StoreMusicRecommendations"];
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
@@ -441,7 +441,7 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
 
         if ([*(*(&v111 + 1) + 8 * i) isEqualToString:@"HeavyRotation"])
         {
-          v69 = v64;
+          array2 = v64;
           goto LABEL_65;
         }
       }
@@ -456,69 +456,69 @@ uint64_t __32__NMSyncDefaults_sharedDefaults__block_invoke()
     }
   }
 
-  v69 = [v64 mutableCopy];
-  if (!v69)
+  array2 = [v64 mutableCopy];
+  if (!array2)
   {
-    v69 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
   }
 
-  [v69 addObject:NMSRecommendationRecentMusicIdentifier];
-  [v3 setObject:v69 forKey:@"StoreMusicRecommendations"];
+  [array2 addObject:NMSRecommendationRecentMusicIdentifier];
+  [_companionSidePerDeviceDefaults setObject:array2 forKey:@"StoreMusicRecommendations"];
 LABEL_65:
 
-  v70 = [v3 synchronize];
+  synchronize6 = [_companionSidePerDeviceDefaults synchronize];
   v71 = objc_alloc_init(MEMORY[0x277D2BA60]);
-  v72 = [v3 domain];
+  domain2 = [_companionSidePerDeviceDefaults domain];
   v73 = [MEMORY[0x277CBEB98] setWithObject:@"StoreMusicRecommendations"];
-  [v71 synchronizeNanoDomain:v72 keys:v73];
+  [v71 synchronizeNanoDomain:domain2 keys:v73];
 
   v8 = 1;
-  if (v3)
+  if (_companionSidePerDeviceDefaults)
   {
 LABEL_66:
     if ([v4 unsignedIntegerValue] <= 6)
     {
-      [v3 setObject:&unk_286C8D5C8 forKey:@"SyncDataMigrationRevision"];
+      [_companionSidePerDeviceDefaults setObject:&unk_286C8D5C8 forKey:@"SyncDataMigrationRevision"];
       v74 = MEMORY[0x277CCABB0];
-      v75 = [MEMORY[0x277CBEAA8] date];
-      [v75 timeIntervalSinceReferenceDate];
+      date7 = [MEMORY[0x277CBEAA8] date];
+      [date7 timeIntervalSinceReferenceDate];
       v76 = [v74 numberWithDouble:?];
-      [v3 setObject:v76 forKey:@"ModDate"];
+      [_companionSidePerDeviceDefaults setObject:v76 forKey:@"ModDate"];
 
       v77 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.Music"];
       v78 = v77;
       if (v77)
       {
         [v77 removeObjectForKey:@"AllowsCellularDataDownloads"];
-        v79 = [v78 synchronize];
+        synchronize7 = [v78 synchronize];
       }
 
-      v80 = [v3 synchronize];
+      synchronize8 = [_companionSidePerDeviceDefaults synchronize];
 
       v8 = 1;
     }
 
     if ([v4 unsignedIntegerValue] <= 7)
     {
-      [v3 setObject:&unk_286C8D5E0 forKey:@"SyncDataMigrationRevision"];
+      [_companionSidePerDeviceDefaults setObject:&unk_286C8D5E0 forKey:@"SyncDataMigrationRevision"];
       v81 = MEMORY[0x277CCABB0];
-      v82 = [MEMORY[0x277CBEAA8] date];
-      [v82 timeIntervalSinceReferenceDate];
+      date8 = [MEMORY[0x277CBEAA8] date];
+      [date8 timeIntervalSinceReferenceDate];
       v83 = [v81 numberWithDouble:?];
-      [v3 setObject:v83 forKey:@"ModDate"];
+      [_companionSidePerDeviceDefaults setObject:v83 forKey:@"ModDate"];
 
-      v84 = [v3 synchronize];
+      synchronize9 = [_companionSidePerDeviceDefaults synchronize];
       v8 = 1;
     }
 
     if ([v4 unsignedIntegerValue] <= 8)
     {
-      [v3 setObject:&unk_286C8D5F8 forKey:@"SyncDataMigrationRevision"];
+      [_companionSidePerDeviceDefaults setObject:&unk_286C8D5F8 forKey:@"SyncDataMigrationRevision"];
       v85 = MEMORY[0x277CCABB0];
-      v86 = [MEMORY[0x277CBEAA8] date];
-      [v86 timeIntervalSinceReferenceDate];
+      date9 = [MEMORY[0x277CBEAA8] date];
+      [date9 timeIntervalSinceReferenceDate];
       v87 = [v85 numberWithDouble:?];
-      [v3 setObject:v87 forKey:@"ModDate"];
+      [_companionSidePerDeviceDefaults setObject:v87 forKey:@"ModDate"];
 
       v107 = [(NMSyncDefaults *)self _objectForKey:@"WorkoutPlaylist"];
       v106 = [(NMSyncDefaults *)self _objectForKey:@"PinnedPlaylists"];
@@ -545,32 +545,32 @@ LABEL_66:
     v9 = &off_25B2CE000;
     if ([v4 unsignedIntegerValue] <= 9)
     {
-      [v3 setObject:&unk_286C8D610 forKey:@"SyncDataMigrationRevision"];
+      [_companionSidePerDeviceDefaults setObject:&unk_286C8D610 forKey:@"SyncDataMigrationRevision"];
       v96 = MEMORY[0x277CCABB0];
-      v97 = [MEMORY[0x277CBEAA8] date];
-      [v97 timeIntervalSinceReferenceDate];
+      date10 = [MEMORY[0x277CBEAA8] date];
+      [date10 timeIntervalSinceReferenceDate];
       v98 = [v96 numberWithDouble:?];
-      [v3 setObject:v98 forKey:@"ModDate"];
+      [_companionSidePerDeviceDefaults setObject:v98 forKey:@"ModDate"];
 
-      [v3 removeObjectForKey:@"AvailableMediaStorageOnWatch"];
-      v99 = [v3 synchronize];
+      [_companionSidePerDeviceDefaults removeObjectForKey:@"AvailableMediaStorageOnWatch"];
+      synchronize10 = [_companionSidePerDeviceDefaults synchronize];
       v8 = 1;
     }
 
     if ([v4 unsignedIntegerValue] <= 0xA)
     {
-      [v3 setObject:&unk_286C8D628 forKey:@"SyncDataMigrationRevision"];
+      [_companionSidePerDeviceDefaults setObject:&unk_286C8D628 forKey:@"SyncDataMigrationRevision"];
       v100 = MEMORY[0x277CCABB0];
-      v101 = [MEMORY[0x277CBEAA8] date];
-      [v101 timeIntervalSinceReferenceDate];
+      date11 = [MEMORY[0x277CBEAA8] date];
+      [date11 timeIntervalSinceReferenceDate];
       v102 = [v100 numberWithDouble:?];
-      [v3 setObject:v102 forKey:@"ModDate"];
+      [_companionSidePerDeviceDefaults setObject:v102 forKey:@"ModDate"];
 
-      v103 = [v3 objectForKey:@"RecommendationExpirationDate"];
-      [v3 setObject:v103 forKey:@"LibraryRecommendationExpirationDate"];
+      v103 = [_companionSidePerDeviceDefaults objectForKey:@"RecommendationExpirationDate"];
+      [_companionSidePerDeviceDefaults setObject:v103 forKey:@"LibraryRecommendationExpirationDate"];
 
-      [v3 removeObjectForKey:@"RecommendationExpirationDate"];
-      v104 = [v3 synchronize];
+      [_companionSidePerDeviceDefaults removeObjectForKey:@"RecommendationExpirationDate"];
+      synchronize11 = [_companionSidePerDeviceDefaults synchronize];
       v8 = 1;
     }
 
@@ -731,15 +731,15 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke(uint64_t a1, voi
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    array = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v6 = v5;
+  v6 = array;
 
   return v6;
 }
@@ -751,15 +751,15 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke(uint64_t a1, voi
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    array = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v6 = v5;
+  v6 = array;
 
   return v6;
 }
@@ -772,61 +772,61 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke(uint64_t a1, voi
   v6 = [v3 stringWithFormat:@"<%@:%p>", v5, self];
 
   v7 = MEMORY[0x277CCAB68];
-  v8 = [(NMSyncDefaults *)self musicRecommendationDict];
-  v9 = [(NMSyncDefaults *)self workoutPlaylistID];
-  v10 = [v7 stringWithFormat:@"Music Recommendations: %@, Workout Playlist ID: %@", v8, v9];
+  musicRecommendationDict = [(NMSyncDefaults *)self musicRecommendationDict];
+  workoutPlaylistID = [(NMSyncDefaults *)self workoutPlaylistID];
+  v10 = [v7 stringWithFormat:@"Music Recommendations: %@, Workout Playlist ID: %@", musicRecommendationDict, workoutPlaylistID];
 
   [v6 appendFormat:@" - Music <%@>", v10];
-  v11 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v12 = [NMSPodcastsDownloadSettings alloc];
   v13 = [(NMSyncDefaults *)self objectForKey:@"PodcastsUpNextDownloadSettings"];
   v14 = [(NMSPodcastsDownloadSettings *)v12 initWithCollectionType:0 dictionary:v13];
 
-  [v11 appendFormat:@"Up Next: %@", v14];
+  [string appendFormat:@"Up Next: %@", v14];
   v15 = [NMSPodcastsDownloadSettings alloc];
   v16 = [(NMSyncDefaults *)self objectForKey:@"PodcastsSavedEpisodesDownloadSettings"];
   v17 = [(NMSPodcastsDownloadSettings *)v15 initWithCollectionType:1 dictionary:v16];
 
-  [v11 appendFormat:@", Saved: %@", v17];
-  v18 = [MEMORY[0x277CBEB38] dictionary];
+  [string appendFormat:@", Saved: %@", v17];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = [(NMSyncDefaults *)self objectForKey:@"PodcastsStationDownloadSettings"];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __29__NMSyncDefaults_description__block_invoke;
   v32[3] = &unk_27993E5E8;
-  v20 = v18;
+  v20 = dictionary;
   v33 = v20;
   [v19 enumerateKeysAndObjectsUsingBlock:v32];
 
-  [v11 appendFormat:@", Stations: %@", v20];
-  v21 = [MEMORY[0x277CBEB38] dictionary];
+  [string appendFormat:@", Stations: %@", v20];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v22 = [(NMSyncDefaults *)self objectForKey:@"PodcastsShowDownloadSettings"];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __29__NMSyncDefaults_description__block_invoke_2;
   v30[3] = &unk_27993E5E8;
-  v23 = v21;
+  v23 = dictionary2;
   v31 = v23;
   [v22 enumerateKeysAndObjectsUsingBlock:v30];
 
-  [v11 appendFormat:@", Shows: %@", v23];
-  [v6 appendFormat:@" - Podcasts <%@>", v11];
+  [string appendFormat:@", Shows: %@", v23];
+  [v6 appendFormat:@" - Podcasts <%@>", string];
   v24 = [MEMORY[0x277CCAB68] stringWithFormat:@"Want to Read Enabled: %x", -[NMSyncDefaults wantToReadEnabled](self, "wantToReadEnabled")];
   if ([(NMSyncDefaults *)self wantToReadEnabled])
   {
-    v25 = [(NMSyncDefaults *)self wantToReadAudiobooks];
-    [v24 appendFormat:@", Want to Read Books:%@", v25];
+    wantToReadAudiobooks = [(NMSyncDefaults *)self wantToReadAudiobooks];
+    [v24 appendFormat:@", Want to Read Books:%@", wantToReadAudiobooks];
   }
 
   [v24 appendFormat:@", Reading Now Enabled: %x", -[NMSyncDefaults readingNowEnabled](self, "readingNowEnabled")];
   if ([(NMSyncDefaults *)self readingNowEnabled])
   {
-    v26 = [(NMSyncDefaults *)self readingNowAudiobooks];
-    [v24 appendFormat:@", Reading Now Books: %@", v26];
+    readingNowAudiobooks = [(NMSyncDefaults *)self readingNowAudiobooks];
+    [v24 appendFormat:@", Reading Now Books: %@", readingNowAudiobooks];
   }
 
-  v27 = [(NMSyncDefaults *)self pinnedAudiobooks];
-  [v24 appendFormat:@", Pinned Books: %@", v27];
+  pinnedAudiobooks = [(NMSyncDefaults *)self pinnedAudiobooks];
+  [v24 appendFormat:@", Pinned Books: %@", pinnedAudiobooks];
 
   [v6 appendFormat:@" - Books <%@>", v24];
   v28 = [v6 copy];
@@ -900,9 +900,9 @@ void __29__NMSyncDefaults_description__block_invoke_2(uint64_t a1, void *a2, voi
   [(NMSNotificationDispatcher *)self->_syncInfoRequestDateNotifier endWaitingForUpdates];
 }
 
-- (void)dispatcherDidReceiveNotificationFromRemoteDevice:(id)a3
+- (void)dispatcherDidReceiveNotificationFromRemoteDevice:(id)device
 {
-  if (self->_settingsNotifier == a3)
+  if (self->_settingsNotifier == device)
   {
     [(NMSyncDefaults *)self _reloadPropertiesFromDefaultsOnMainThread];
 
@@ -910,9 +910,9 @@ void __29__NMSyncDefaults_description__block_invoke_2(uint64_t a1, void *a2, voi
   }
 }
 
-- (void)dispatcherDidReceiveNotificationFromOtherProcess:(id)a3
+- (void)dispatcherDidReceiveNotificationFromOtherProcess:(id)process
 {
-  if (self->_settingsNotifier == a3)
+  if (self->_settingsNotifier == process)
   {
     [(NMSyncDefaults *)self _reloadPropertiesFromDefaultsOnMainThread];
   }
@@ -1112,36 +1112,36 @@ void __29__NMSyncDefaults_description__block_invoke_2(uint64_t a1, void *a2, voi
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_deviceHasCapability:(id)a3 forCapabilitiesKey:(id)a4
+- (BOOL)_deviceHasCapability:(id)capability forCapabilitiesKey:(id)key
 {
-  v6 = a3;
-  v7 = [(NMSyncDefaults *)self _objectForKey:a4];
-  LOBYTE(self) = [v7 containsObject:v6];
+  capabilityCopy = capability;
+  v7 = [(NMSyncDefaults *)self _objectForKey:key];
+  LOBYTE(self) = [v7 containsObject:capabilityCopy];
 
   return self;
 }
 
-- (void)_addCapability:(id)a3 forCapabilitiesKey:(id)a4
+- (void)_addCapability:(id)capability forCapabilitiesKey:(id)key
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NMSyncDefaults *)self _objectForKey:v7];
-  if (([v8 containsObject:v6] & 1) == 0)
+  capabilityCopy = capability;
+  keyCopy = key;
+  v8 = [(NMSyncDefaults *)self _objectForKey:keyCopy];
+  if (([v8 containsObject:capabilityCopy] & 1) == 0)
   {
     if (v8)
     {
-      v9 = [v8 arrayByAddingObject:v6];
+      v9 = [v8 arrayByAddingObject:capabilityCopy];
     }
 
     else
     {
-      v12[0] = v6;
+      v12[0] = capabilityCopy;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
     }
 
     v10 = v9;
-    [(NMSyncDefaults *)self _setObject:v9 forKey:v7];
+    [(NMSyncDefaults *)self _setObject:v9 forKey:keyCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1166,7 +1166,7 @@ void __29__NMSyncDefaults_description__block_invoke_2(uint64_t a1, void *a2, voi
   }
 }
 
-- (void)_perDeviceSettingsDidResetNotification:(id)a3
+- (void)_perDeviceSettingsDidResetNotification:(id)notification
 {
   v4 = NMLogForCategory(5);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1283,11 +1283,11 @@ void __49__NMSyncDefaults__companionSidePerDeviceDefaults__block_invoke_239(uint
 - (void)_writePropertiesToDefaults
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
-  v4 = v3;
-  if (v3)
+  _companionSidePerDeviceDefaults = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
+  v4 = _companionSidePerDeviceDefaults;
+  if (_companionSidePerDeviceDefaults)
   {
-    [v3 setObject:self->_assetSyncPlaylistPersistentID forKey:@"SyncPlaylistID"];
+    [_companionSidePerDeviceDefaults setObject:self->_assetSyncPlaylistPersistentID forKey:@"SyncPlaylistID"];
     [v4 setObject:self->_lastFullySentAssetSyncPlaylistPersistentID forKey:@"LastFullSyncPlaylistID"];
     [v4 setObject:self->_lastFullySentAssetSyncPlaylistVersion forKey:@"SyncPlaylistVers"];
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_assetSyncLimitType];
@@ -1299,17 +1299,17 @@ void __49__NMSyncDefaults__companionSidePerDeviceDefaults__block_invoke_239(uint
     [v4 setObject:self->_assetSyncLimit forKey:@"SyncAmount"];
     [v4 setObject:self->_pairingID forKey:@"PairingID"];
     v7 = MEMORY[0x277CCABB0];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v8 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v9 = [v7 numberWithDouble:?];
     [v4 setObject:v9 forKey:@"ModDate"];
 
-    v10 = [v4 synchronize];
+    synchronize = [v4 synchronize];
     v11 = NMLogForCategory(5);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B27B000, v11, OS_LOG_TYPE_DEFAULT, "[NMSyncDefaults] Non-NPS managed properties were updated: %@", &v13, 0xCu);
     }
 
@@ -1335,9 +1335,9 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
 - (void)_removeOldMusicRecommendationsInfoIfPossible
 {
   [(NMSyncDefaults *)self beginBatchUpdates];
-  v3 = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
-  v4 = [v3 synchronize];
-  v5 = [v3 objectForKey:@"SyncDataMigrationRevision"];
+  _companionSidePerDeviceDefaults = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
+  synchronize = [_companionSidePerDeviceDefaults synchronize];
+  v5 = [_companionSidePerDeviceDefaults objectForKey:@"SyncDataMigrationRevision"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1354,7 +1354,7 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
       _os_log_impl(&dword_25B27B000, v6, OS_LOG_TYPE_DEFAULT, "[NMSyncDefaults] The old musicRecommendations information has not been removed yet.", buf, 2u);
     }
 
-    v7 = [v3 objectForKey:@"PhoneDefaultsCapabilities"];
+    v7 = [_companionSidePerDeviceDefaults objectForKey:@"PhoneDefaultsCapabilities"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1362,7 +1362,7 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
       v7 = 0;
     }
 
-    v8 = [v3 objectForKey:@"WatchDefaultsCapabilities"];
+    v8 = [_companionSidePerDeviceDefaults objectForKey:@"WatchDefaultsCapabilities"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1372,15 +1372,15 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
 
     if ([v7 containsObject:@"UsesSplitMusicRecommendations"] && objc_msgSend(v8, "containsObject:", @"UsesSplitMusicRecommendations"))
     {
-      [v3 setObject:&unk_286C8D658 forKey:@"SyncDataMigrationRevision"];
+      [_companionSidePerDeviceDefaults setObject:&unk_286C8D658 forKey:@"SyncDataMigrationRevision"];
       v9 = MEMORY[0x277CCABB0];
-      v10 = [MEMORY[0x277CBEAA8] date];
-      [v10 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceReferenceDate];
       v11 = [v9 numberWithDouble:?];
-      [v3 setObject:v11 forKey:@"ModDate"];
+      [_companionSidePerDeviceDefaults setObject:v11 forKey:@"ModDate"];
 
-      [v3 removeObjectForKey:@"MusicRecommendations"];
-      v12 = [v3 synchronize];
+      [_companionSidePerDeviceDefaults removeObjectForKey:@"MusicRecommendations"];
+      synchronize2 = [_companionSidePerDeviceDefaults synchronize];
       v13 = NMLogForCategory(5);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -1390,23 +1390,23 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
     }
 
     v14 = objc_alloc_init(MEMORY[0x277D2BA60]);
-    v15 = [v3 domain];
+    domain = [_companionSidePerDeviceDefaults domain];
     v16 = [MEMORY[0x277CBEB98] setWithObject:@"PhoneDefaultsCapabilities"];
-    [v14 synchronizeNanoDomain:v15 keys:v16];
+    [v14 synchronizeNanoDomain:domain keys:v16];
   }
 
   [(NMSyncDefaults *)self endBatchUpdates];
 }
 
-- (unint64_t)_spaceQuotaForNumberOfSongs:(unint64_t)a3
+- (unint64_t)_spaceQuotaForNumberOfSongs:(unint64_t)songs
 {
   v3 = 2000;
-  if (a3 < 0xC9)
+  if (songs < 0xC9)
   {
     v3 = 1000;
   }
 
-  if (a3 >= 0x65)
+  if (songs >= 0x65)
   {
     return v3;
   }
@@ -1432,19 +1432,19 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   return v3;
 }
 
-- (id)_playlistPersistentIDForPlaylistName:(id)a3
+- (id)_playlistPersistentIDForPlaylistName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = MLFrameworkBundle();
-  v5 = [v4 localizedStringForKey:v3 value:&stru_286C836D8 table:@"MLLocalizable"];
+  v5 = [v4 localizedStringForKey:nameCopy value:&stru_286C836D8 table:@"MLLocalizable"];
 
   v6 = [MEMORY[0x277CD5E30] predicateWithValue:v5 forProperty:*MEMORY[0x277CD5930] comparisonType:0];
-  v7 = [MEMORY[0x277CD5E38] playlistsQuery];
-  [v7 addFilterPredicate:v6];
-  v8 = [v7 collectionPersistentIdentifiers];
-  v9 = [v8 firstObject];
+  playlistsQuery = [MEMORY[0x277CD5E38] playlistsQuery];
+  [playlistsQuery addFilterPredicate:v6];
+  collectionPersistentIdentifiers = [playlistsQuery collectionPersistentIdentifiers];
+  firstObject = [collectionPersistentIdentifiers firstObject];
 
-  return v9;
+  return firstObject;
 }
 
 - (void)_setNeedsSynchronize
@@ -1496,15 +1496,15 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   return v4;
 }
 
-- (void)setAssetSyncLimit:(id)a3
+- (void)setAssetSyncLimit:(id)limit
 {
-  v4 = a3;
+  limitCopy = limit;
   assetSyncLimit = self->_assetSyncLimit;
-  if (assetSyncLimit != v4)
+  if (assetSyncLimit != limitCopy)
   {
-    v8 = v4;
-    assetSyncLimit = [assetSyncLimit isEqual:v4];
-    v4 = v8;
+    v8 = limitCopy;
+    assetSyncLimit = [assetSyncLimit isEqual:limitCopy];
+    limitCopy = v8;
     if ((assetSyncLimit & 1) == 0)
     {
       v6 = [v8 copy];
@@ -1512,42 +1512,42 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
       self->_assetSyncLimit = v6;
 
       assetSyncLimit = [(NMSyncDefaults *)self _setNeedsSynchronize];
-      v4 = v8;
+      limitCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](assetSyncLimit, v4);
+  MEMORY[0x2821F96F8](assetSyncLimit, limitCopy);
 }
 
-- (void)setAssetSyncLimitType:(unint64_t)a3
+- (void)setAssetSyncLimitType:(unint64_t)type
 {
-  if (self->_assetSyncLimitType != a3)
+  if (self->_assetSyncLimitType != type)
   {
-    self->_assetSyncLimitType = a3;
+    self->_assetSyncLimitType = type;
     [(NMSyncDefaults *)self _setNeedsSynchronize];
   }
 }
 
-- (void)setAssetSyncType:(unint64_t)a3
+- (void)setAssetSyncType:(unint64_t)type
 {
-  if (self->_assetSyncType != a3)
+  if (self->_assetSyncType != type)
   {
-    self->_assetSyncType = a3;
+    self->_assetSyncType = type;
     [(NMSyncDefaults *)self _clearAssetSyncPlaylistDependentDefaults];
 
     [(NMSyncDefaults *)self _setNeedsSynchronize];
   }
 }
 
-- (void)setAssetSyncPlaylistPersistentID:(id)a3
+- (void)setAssetSyncPlaylistPersistentID:(id)d
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSNumber *)self->_assetSyncPlaylistPersistentID isEqualToNumber:v4])
+  dCopy = d;
+  if (![(NSNumber *)self->_assetSyncPlaylistPersistentID isEqualToNumber:dCopy])
   {
-    if (v4)
+    if (dCopy)
     {
-      v5 = v4;
+      v5 = dCopy;
     }
 
     else
@@ -1579,15 +1579,15 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastFullySentAssetSyncPlaylistPersistentID:(id)a3
+- (void)setLastFullySentAssetSyncPlaylistPersistentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   lastFullySentAssetSyncPlaylistPersistentID = self->_lastFullySentAssetSyncPlaylistPersistentID;
-  if (lastFullySentAssetSyncPlaylistPersistentID != v4)
+  if (lastFullySentAssetSyncPlaylistPersistentID != dCopy)
   {
-    v8 = v4;
-    lastFullySentAssetSyncPlaylistPersistentID = [lastFullySentAssetSyncPlaylistPersistentID isEqual:v4];
-    v4 = v8;
+    v8 = dCopy;
+    lastFullySentAssetSyncPlaylistPersistentID = [lastFullySentAssetSyncPlaylistPersistentID isEqual:dCopy];
+    dCopy = v8;
     if ((lastFullySentAssetSyncPlaylistPersistentID & 1) == 0)
     {
       v6 = [v8 copy];
@@ -1595,39 +1595,39 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
       self->_lastFullySentAssetSyncPlaylistPersistentID = v6;
 
       lastFullySentAssetSyncPlaylistPersistentID = [(NMSyncDefaults *)self _setNeedsSynchronize];
-      v4 = v8;
+      dCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](lastFullySentAssetSyncPlaylistPersistentID, v4);
+  MEMORY[0x2821F96F8](lastFullySentAssetSyncPlaylistPersistentID, dCopy);
 }
 
-- (void)setLastFullySentAssetSyncPlaylistVersion:(id)a3
+- (void)setLastFullySentAssetSyncPlaylistVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   lastFullySentAssetSyncPlaylistVersion = self->_lastFullySentAssetSyncPlaylistVersion;
-  if (lastFullySentAssetSyncPlaylistVersion != v5)
+  if (lastFullySentAssetSyncPlaylistVersion != versionCopy)
   {
-    v7 = v5;
-    lastFullySentAssetSyncPlaylistVersion = [lastFullySentAssetSyncPlaylistVersion isEqual:v5];
-    v5 = v7;
+    v7 = versionCopy;
+    lastFullySentAssetSyncPlaylistVersion = [lastFullySentAssetSyncPlaylistVersion isEqual:versionCopy];
+    versionCopy = v7;
     if ((lastFullySentAssetSyncPlaylistVersion & 1) == 0)
     {
-      objc_storeStrong(&self->_lastFullySentAssetSyncPlaylistVersion, a3);
+      objc_storeStrong(&self->_lastFullySentAssetSyncPlaylistVersion, version);
       lastFullySentAssetSyncPlaylistVersion = [(NMSyncDefaults *)self _setNeedsSynchronize];
-      v5 = v7;
+      versionCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](lastFullySentAssetSyncPlaylistVersion, v5);
+  MEMORY[0x2821F96F8](lastFullySentAssetSyncPlaylistVersion, versionCopy);
 }
 
-- (void)setPinnedPlaylists:(id)a3
+- (void)setPinnedPlaylists:(id)playlists
 {
-  v5 = a3;
-  if ([v5 count])
+  playlistsCopy = playlists;
+  if ([playlistsCopy count])
   {
-    v4 = [MEMORY[0x277D2B598] midDataArrayFromPlaylistPIDs:v5];
+    v4 = [MEMORY[0x277D2B598] midDataArrayFromPlaylistPIDs:playlistsCopy];
   }
 
   else
@@ -1636,7 +1636,7 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   }
 
   [(NMSyncDefaults *)self _setObject:v4 forKey:@"PinnedPlaylistMIDs"];
-  [(NMSyncDefaults *)self _setLegacyObject:v5 forKey:@"PinnedPlaylists" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
+  [(NMSyncDefaults *)self _setLegacyObject:playlistsCopy forKey:@"PinnedPlaylists" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
 }
 
 - (NSNumber)workoutPlaylistID
@@ -1647,13 +1647,13 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   return v3;
 }
 
-- (void)setWorkoutPlaylistID:(id)a3
+- (void)setWorkoutPlaylistID:(id)d
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  dCopy = d;
+  v6 = dCopy;
+  if (dCopy)
   {
-    v5 = [MEMORY[0x277D2B598] midDataFromPlaylistPID:v4];
+    v5 = [MEMORY[0x277D2B598] midDataFromPlaylistPID:dCopy];
   }
 
   else
@@ -1665,12 +1665,12 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   [(NMSyncDefaults *)self _setLegacyObject:v6 forKey:@"WorkoutPlaylist" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
 }
 
-- (void)setPinnedAlbums:(id)a3
+- (void)setPinnedAlbums:(id)albums
 {
-  v5 = a3;
-  if ([v5 count])
+  albumsCopy = albums;
+  if ([albumsCopy count])
   {
-    v4 = [MEMORY[0x277D2B598] midDataArrayFromAlbumPIDs:v5];
+    v4 = [MEMORY[0x277D2B598] midDataArrayFromAlbumPIDs:albumsCopy];
   }
 
   else
@@ -1679,7 +1679,7 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   }
 
   [(NMSyncDefaults *)self _setObject:v4 forKey:@"PinnedAlbumMIDs"];
-  [(NMSyncDefaults *)self _setLegacyObject:v5 forKey:@"PinnedAlbums" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
+  [(NMSyncDefaults *)self _setLegacyObject:albumsCopy forKey:@"PinnedAlbums" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
 }
 
 - (NSArray)pinnedPodcastFeedURLs
@@ -1803,25 +1803,25 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    array = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v6 = v5;
+  v6 = array;
 
   return v6;
 }
 
-- (void)setLibraryRecommendationAlbums:(id)a3
+- (void)setLibraryRecommendationAlbums:(id)albums
 {
-  v5 = a3;
-  if ([v5 count])
+  albumsCopy = albums;
+  if ([albumsCopy count])
   {
-    v4 = [MEMORY[0x277D2B598] midDataArrayFromAlbumPIDs:v5];
+    v4 = [MEMORY[0x277D2B598] midDataArrayFromAlbumPIDs:albumsCopy];
   }
 
   else
@@ -1830,7 +1830,7 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   }
 
   [(NMSyncDefaults *)self _setObject:v4 forKey:@"LibraryRecommendationAlbumMIDs"];
-  [(NMSyncDefaults *)self _setLegacyObject:v5 forKey:@"LibraryRecommendationAlbums" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
+  [(NMSyncDefaults *)self _setLegacyObject:albumsCopy forKey:@"LibraryRecommendationAlbums" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
 }
 
 - (NSArray)libraryRecommendationPlaylists
@@ -1840,25 +1840,25 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    array = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v6 = v5;
+  v6 = array;
 
   return v6;
 }
 
-- (void)setLibraryRecommendationPlaylists:(id)a3
+- (void)setLibraryRecommendationPlaylists:(id)playlists
 {
-  v5 = a3;
-  if ([v5 count])
+  playlistsCopy = playlists;
+  if ([playlistsCopy count])
   {
-    v4 = [MEMORY[0x277D2B598] midDataArrayFromPlaylistPIDs:v5];
+    v4 = [MEMORY[0x277D2B598] midDataArrayFromPlaylistPIDs:playlistsCopy];
   }
 
   else
@@ -1867,16 +1867,16 @@ void __41__NMSyncDefaults__migrateDataIfNecessary__block_invoke_338(uint64_t a1)
   }
 
   [(NMSyncDefaults *)self _setObject:v4 forKey:@"LibraryRecommendationPlaylistMIDs"];
-  [(NMSyncDefaults *)self _setLegacyObject:v5 forKey:@"LibraryRecommendationPlaylists" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
+  [(NMSyncDefaults *)self _setLegacyObject:playlistsCopy forKey:@"LibraryRecommendationPlaylists" ifRemoteDeviceMissingCapability:@"UsesMultiverseIdentifiers"];
 }
 
-- (void)setMusicRecommendationDict:(id)a3
+- (void)setMusicRecommendationDict:(id)dict
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictCopy = dict;
+  v5 = dictCopy;
+  if (dictCopy)
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dictCopy, "count")}];
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
@@ -1917,8 +1917,8 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
 
 - (BOOL)_continueUsingMusicRecommendationKey
 {
-  v2 = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
-  v3 = [v2 objectForKey:@"SyncDataMigrationRevision"];
+  _companionSidePerDeviceDefaults = [(NMSyncDefaults *)self _companionSidePerDeviceDefaults];
+  v3 = [_companionSidePerDeviceDefaults objectForKey:@"SyncDataMigrationRevision"];
   v4 = [v3 unsignedIntegerValue] < 5;
 
   return v4;
@@ -1943,12 +1943,12 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (void)setLibraryRecommendationExpirationDate:(id)a3
+- (void)setLibraryRecommendationExpirationDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v4 = MEMORY[0x277CCABB0];
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v5 = [v4 numberWithDouble:?];
   }
 
@@ -1980,12 +1980,12 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (void)setCatalogRecommendationsLastUpdateDate:(id)a3
+- (void)setCatalogRecommendationsLastUpdateDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v4 = MEMORY[0x277CCABB0];
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v5 = [v4 numberWithDouble:?];
   }
 
@@ -2017,9 +2017,9 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
   return v4;
 }
 
-- (id)_lastSyncInfoRequestDateWithPrefix:(id)a3 forBundleIdentifier:(id)a4
+- (id)_lastSyncInfoRequestDateWithPrefix:(id)prefix forBundleIdentifier:(id)identifier
 {
-  v5 = [(NMSyncDefaults *)self _defaultWithPrefix:a3 forBundleIdentifier:a4];
+  v5 = [(NMSyncDefaults *)self _defaultWithPrefix:prefix forBundleIdentifier:identifier];
   v6 = [(NMSyncDefaults *)self _objectForKey:v5];
   v7 = v6;
   v8 = MEMORY[0x277CBEAA8];
@@ -2038,12 +2038,12 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
   return v9;
 }
 
-- (void)_setLastSyncInfoRequestDate:(id)a3 prefix:(id)a4 forBundleIdentifier:(id)a5
+- (void)_setLastSyncInfoRequestDate:(id)date prefix:(id)prefix forBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v13 = [(NMSyncDefaults *)self _defaultWithPrefix:a4 forBundleIdentifier:a5];
+  dateCopy = date;
+  v13 = [(NMSyncDefaults *)self _defaultWithPrefix:prefix forBundleIdentifier:identifier];
   v9 = MEMORY[0x277CCABB0];
-  [v8 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v11 = v10;
 
   v12 = [v9 numberWithDouble:v11];
@@ -2058,224 +2058,224 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
   return v3;
 }
 
-- (id)_dateValueForKey:(id)a3 bundleID:(id)a4
+- (id)_dateValueForKey:(id)key bundleID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  keyCopy = key;
   v8 = [(NMSyncDefaults *)self _objectForKey:@"AppActivityStatus"];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:dCopy];
 
-  v10 = [v9 objectForKey:v7];
+  v10 = [v9 objectForKey:keyCopy];
 
   return v10;
 }
 
-- (void)_writeDate:(id)a3 forKey:(id)a4 bundleID:(id)a5
+- (void)_writeDate:(id)date forKey:(id)key bundleID:(id)d
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  keyCopy = key;
+  dCopy = d;
   v10 = [(NMSyncDefaults *)self _objectForKey:@"AppActivityStatus"];
   if (v10)
   {
     v11 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v10];
-    v12 = [v11 objectForKey:v9];
+    v12 = [v11 objectForKey:dCopy];
     v13 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v12];
-    [v13 setObject:v14 forKey:v8];
-    [v11 setObject:v13 forKey:v9];
+    [v13 setObject:dateCopy forKey:keyCopy];
+    [v11 setObject:v13 forKey:dCopy];
 
-    v9 = v13;
+    dCopy = v13;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:v14 forKey:v8];
-    v11 = [MEMORY[0x277CBEB38] dictionaryWithObject:v12 forKey:v9];
+    v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:dateCopy forKey:keyCopy];
+    v11 = [MEMORY[0x277CBEB38] dictionaryWithObject:v12 forKey:dCopy];
   }
 
   [(NMSyncDefaults *)self _setObject:v11 forKey:@"AppActivityStatus"];
 }
 
-- (void)clearAppActivityStatusDefaultsForBundleID:(id)a3
+- (void)clearAppActivityStatusDefaultsForBundleID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = NMLogForCategory(5);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&dword_25B27B000, v5, OS_LOG_TYPE_DEFAULT, "[NMSyncDefaults] Clearing app activity status defaults for %@", &v9, 0xCu);
   }
 
   v6 = [(NMSyncDefaults *)self _objectForKey:@"AppActivityStatus"];
   v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v6];
-  [v7 removeObjectForKey:v4];
+  [v7 removeObjectForKey:dCopy];
   [(NMSyncDefaults *)self _setObject:v7 forKey:@"AppActivityStatus"];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastUserLaunchDateForBundleID:(id)a3
+- (void)setLastUserLaunchDateForBundleID:(id)d
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [(NMSyncDefaults *)self _writeDate:v6 forKey:@"LastUserLaunchDate" bundleID:v5];
+  dCopy = d;
+  date = [v4 date];
+  [(NMSyncDefaults *)self _writeDate:date forKey:@"LastUserLaunchDate" bundleID:dCopy];
 }
 
-- (void)setLastUserPinningChangeDateForBundleID:(id)a3
+- (void)setLastUserPinningChangeDateForBundleID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(NMSyncDefaults *)self _writeDate:v5 forKey:@"LastUserPinningChangeDate" bundleID:v4];
+  dCopy = d;
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NMSyncDefaults *)self _writeDate:date forKey:@"LastUserPinningChangeDate" bundleID:dCopy];
 
   v6 = NMLogForCategory(12);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_25B27B000, v6, OS_LOG_TYPE_DEFAULT, "Set last user pinning change date for bundle %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastLocalPlaybackDateForBundleID:(id)a3
+- (void)setLastLocalPlaybackDateForBundleID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(NMSyncDefaults *)self _writeDate:v5 forKey:@"LastLocalPlaybackDate" bundleID:v4];
+  dCopy = d;
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NMSyncDefaults *)self _writeDate:date forKey:@"LastLocalPlaybackDate" bundleID:dCopy];
 
   v6 = NMLogForCategory(12);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_25B27B000, v6, OS_LOG_TYPE_DEFAULT, "Set last local playback date for bundle %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInstallDateForBundleID:(id)a3
+- (void)setInstallDateForBundleID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(NMSyncDefaults *)self _writeDate:v5 forKey:@"InstallDate" bundleID:v4];
+  dCopy = d;
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NMSyncDefaults *)self _writeDate:date forKey:@"InstallDate" bundleID:dCopy];
 
   v6 = NMLogForCategory(12);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_25B27B000, v6, OS_LOG_TYPE_DEFAULT, "Set install date for bundle %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastContentUsedDateForBundleID:(id)a3
+- (void)setLastContentUsedDateForBundleID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(NMSyncDefaults *)self _writeDate:v5 forKey:@"LastContentUsedDate" bundleID:v4];
+  dCopy = d;
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NMSyncDefaults *)self _writeDate:date forKey:@"LastContentUsedDate" bundleID:dCopy];
 
   v6 = NMLogForCategory(12);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_25B27B000, v6, OS_LOG_TYPE_DEFAULT, "Set last content used date for bundle %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)dormancyIntervalInHoursForBundleID:(id)a3
+- (int64_t)dormancyIntervalInHoursForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(NMSyncDefaults *)self _objectForKey:@"AppActivityStatus"];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:dCopy];
 
   v7 = [v6 objectForKey:@"HoursUntilDormant"];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v9 = 504;
+    integerValue = 504;
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (id)_defaultWithPrefix:(id)a3 forBundleIdentifier:(id)a4
+- (id)_defaultWithPrefix:(id)prefix forBundleIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"-%@", a4];
-  v8 = [v6 stringByAppendingString:v7];
+  prefixCopy = prefix;
+  identifier = [v5 stringWithFormat:@"-%@", identifier];
+  v8 = [prefixCopy stringByAppendingString:identifier];
 
   return v8;
 }
 
-- (id)_objectForKey:(id)a3
+- (id)_objectForKey:(id)key
 {
   v3 = MEMORY[0x277D2BA58];
-  v4 = a3;
+  keyCopy = key;
   v5 = [[v3 alloc] initWithDomain:@"com.apple.NanoMusicSync"];
-  v6 = [v5 synchronize];
-  v7 = [v5 objectForKey:v4];
+  synchronize = [v5 synchronize];
+  v7 = [v5 objectForKey:keyCopy];
 
   return v7;
 }
 
-- (void)_setLegacyObject:(id)a3 forKey:(id)a4 ifRemoteDeviceMissingCapability:(id)a5
+- (void)_setLegacyObject:(id)object forKey:(id)key ifRemoteDeviceMissingCapability:(id)capability
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [(NMSyncDefaults *)self _watchHasCapability:a5];
-  if (!v10 || v9)
+  objectCopy = object;
+  keyCopy = key;
+  v9 = [(NMSyncDefaults *)self _watchHasCapability:capability];
+  if (!objectCopy || v9)
   {
-    [(NMSyncDefaults *)self _removeObjectForKey:v8];
+    [(NMSyncDefaults *)self _removeObjectForKey:keyCopy];
   }
 
   else
   {
-    [(NMSyncDefaults *)self _setObject:v10 forKey:v8];
+    [(NMSyncDefaults *)self _setObject:objectCopy forKey:keyCopy];
   }
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4 shouldSynchronizeToPairedDevice:(BOOL)a5
+- (void)_setObject:(id)object forKey:(id)key shouldSynchronizeToPairedDevice:(BOOL)device
 {
-  v5 = a5;
+  deviceCopy = device;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
     v10 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.NanoMusicSync"];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 synchronize];
-      v13 = [v11 objectForKey:v9];
-      if (([v8 isEqual:v13] & 1) == 0)
+      synchronize = [v10 synchronize];
+      v13 = [v11 objectForKey:keyCopy];
+      if (([objectCopy isEqual:v13] & 1) == 0)
       {
-        [v11 setObject:v8 forKey:v9];
-        v14 = [v11 synchronize];
-        if (v5)
+        [v11 setObject:objectCopy forKey:keyCopy];
+        synchronize2 = [v11 synchronize];
+        if (deviceCopy)
         {
           v15 = objc_alloc_init(MEMORY[0x277D2BA60]);
-          v16 = [MEMORY[0x277CBEB98] setWithObject:v9];
+          v16 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
           [v15 synchronizeNanoDomain:@"com.apple.NanoMusicSync" keys:v16];
         }
 
@@ -2283,15 +2283,15 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412802;
-          v20 = v9;
+          v20 = keyCopy;
           v21 = 2112;
           v22 = v13;
           v23 = 2112;
-          v24 = v8;
+          v24 = objectCopy;
           _os_log_impl(&dword_25B27B000, v17, OS_LOG_TYPE_DEFAULT, "[NMSyncDefaults] updated value for key: %@ from old value: %@ to new value: %@", &v19, 0x20u);
         }
 
-        [(NMSyncDefaults *)self _notifyChangesForKey:v9];
+        [(NMSyncDefaults *)self _notifyChangesForKey:keyCopy];
       }
     }
 
@@ -2303,66 +2303,66 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
 
   else
   {
-    [(NMSyncDefaults *)self _removeObjectForKey:v9];
+    [(NMSyncDefaults *)self _removeObjectForKey:keyCopy];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeObjectForKey:(id)a3
+- (void)_removeObjectForKey:(id)key
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.NanoMusicSync"];
-  v6 = [v5 synchronize];
+  synchronize = [v5 synchronize];
   if (v5)
   {
-    v7 = [v5 objectForKey:v4];
+    v7 = [v5 objectForKey:keyCopy];
 
     if (v7)
     {
-      [v5 removeObjectForKey:v4];
-      v8 = [v5 synchronize];
+      [v5 removeObjectForKey:keyCopy];
+      synchronize2 = [v5 synchronize];
       v9 = objc_alloc_init(MEMORY[0x277D2BA60]);
-      v10 = [MEMORY[0x277CBEB98] setWithObject:v4];
+      v10 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
       [v9 synchronizeNanoDomain:@"com.apple.NanoMusicSync" keys:v10];
 
       v11 = NMLogForCategory(5);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = keyCopy;
         _os_log_impl(&dword_25B27B000, v11, OS_LOG_TYPE_DEFAULT, "[NMSyncDefaults] Removing value for key: %@", &v13, 0xCu);
       }
 
-      [(NMSyncDefaults *)self _notifyChangesForKey:v4];
+      [(NMSyncDefaults *)self _notifyChangesForKey:keyCopy];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value
 {
   v5 = MEMORY[0x277D2BA58];
-  v6 = a3;
+  keyCopy = key;
   v7 = [[v5 alloc] initWithDomain:@"com.apple.NanoMusicSync"];
-  v8 = [v7 synchronize];
+  synchronize = [v7 synchronize];
   v11 = 0;
-  v9 = [v7 BOOLForKey:v6 keyExistsAndHasValidFormat:&v11];
+  v9 = [v7 BOOLForKey:keyCopy keyExistsAndHasValidFormat:&v11];
 
   if (v11)
   {
-    a4 = v9;
+    value = v9;
   }
 
-  return a4;
+  return value;
 }
 
-- (void)_notifyChangesForKey:(id)a3
+- (void)_notifyChangesForKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(NSDictionary *)self->_notifiersDict objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_notifiersDict objectForKeyedSubscript:key];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -2399,29 +2399,29 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
 {
   if (self->_assetSyncType == 1)
   {
-    v3 = [(NMSyncDefaults *)self assetSyncPlaylistPersistentID];
-    if (v3)
+    assetSyncPlaylistPersistentID = [(NMSyncDefaults *)self assetSyncPlaylistPersistentID];
+    if (assetSyncPlaylistPersistentID)
     {
-      v4 = [(NMSyncDefaults *)self _associatedObject];
-      v5 = [v4 assetSyncPlaylist];
+      _associatedObject = [(NMSyncDefaults *)self _associatedObject];
+      assetSyncPlaylist = [_associatedObject assetSyncPlaylist];
 
-      if (v5 && (v6 = [v3 unsignedLongLongValue], v6 == objc_msgSend(v5, "persistentID")))
+      if (assetSyncPlaylist && (v6 = [assetSyncPlaylistPersistentID unsignedLongLongValue], v6 == objc_msgSend(assetSyncPlaylist, "persistentID")))
       {
-        v7 = v5;
+        v7 = assetSyncPlaylist;
       }
 
       else
       {
-        v8 = [MEMORY[0x277CD5E30] predicateWithValue:v3 forProperty:*MEMORY[0x277CD5940]];
-        v9 = [MEMORY[0x277CD5E38] playlistsQuery];
-        [v9 addFilterPredicate:v8];
-        v10 = [v9 collections];
-        v11 = [v10 firstObject];
+        v8 = [MEMORY[0x277CD5E30] predicateWithValue:assetSyncPlaylistPersistentID forProperty:*MEMORY[0x277CD5940]];
+        playlistsQuery = [MEMORY[0x277CD5E38] playlistsQuery];
+        [playlistsQuery addFilterPredicate:v8];
+        collections = [playlistsQuery collections];
+        firstObject = [collections firstObject];
 
-        v12 = [(NMSyncDefaults *)self _associatedObject];
-        [v12 setAssetSyncPlaylist:v11];
+        _associatedObject2 = [(NMSyncDefaults *)self _associatedObject];
+        [_associatedObject2 setAssetSyncPlaylist:firstObject];
 
-        v7 = v11;
+        v7 = firstObject;
       }
     }
 
@@ -2439,15 +2439,15 @@ void __45__NMSyncDefaults_setMusicRecommendationDict___block_invoke(uint64_t a1,
   return v7;
 }
 
-- (void)setAssetSyncPlaylist:(id)a3
+- (void)setAssetSyncPlaylist:(id)playlist
 {
-  v6 = a3;
-  v4 = [(NMSyncDefaults *)self _associatedObject];
-  [v4 setAssetSyncPlaylist:v6];
+  playlistCopy = playlist;
+  _associatedObject = [(NMSyncDefaults *)self _associatedObject];
+  [_associatedObject setAssetSyncPlaylist:playlistCopy];
 
-  if (v6)
+  if (playlistCopy)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "persistentID")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(playlistCopy, "persistentID")}];
   }
 
   else

@@ -10,9 +10,9 @@
   v4 = OBJC_IVAR____TtC11AskToDaemon23NotificationsController_userNotificationCenter;
   v5 = objc_allocWithZone(MEMORY[0x277CE2028]);
   v6 = sub_241165DA8();
-  v7 = [v5 initWithBundleIdentifier_];
+  initWithBundleIdentifier_ = [v5 initWithBundleIdentifier_];
 
-  *(&self->super.isa + v4) = v7;
+  *(&self->super.isa + v4) = initWithBundleIdentifier_;
   v9.receiver = self;
   v9.super_class = ObjectType;
   return [(NotificationsController *)&v9 init];

@@ -1,13 +1,13 @@
 @interface _MKScaleUnitsView
-- (BOOL)canDisplaySegment:(unint64_t)a3;
+- (BOOL)canDisplaySegment:(unint64_t)segment;
 - (NSString)zeroUnitsString;
 - (_MKScaleUnitsView)init;
-- (double)_widthForString:(id)a3 attributes:(id)a4;
-- (id)_legendStringForDistanceString:(id)a3 appendUnits:(BOOL)a4 index:(int)a5;
-- (id)_uncachedLegendStringsForDistanceString:(id)a3;
-- (void)_calculateLegend:(BOOL)a3;
-- (void)setUnits:(id)a3;
-- (void)setUseLightText:(BOOL)a3;
+- (double)_widthForString:(id)string attributes:(id)attributes;
+- (id)_legendStringForDistanceString:(id)string appendUnits:(BOOL)units index:(int)index;
+- (id)_uncachedLegendStringsForDistanceString:(id)string;
+- (void)_calculateLegend:(BOOL)legend;
+- (void)setUnits:(id)units;
+- (void)setUseLightText:(BOOL)text;
 @end
 
 @implementation _MKScaleUnitsView
@@ -19,8 +19,8 @@
   v2 = [(_MKScaleUnitsView *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(_MKScaleUnitsView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_MKScaleUnitsView *)v2 setBackgroundColor:clearColor];
 
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     strings = v2->_strings;
@@ -40,9 +40,9 @@
       v12 = objc_alloc_init(_MKLegendString);
       [(NSMutableArray *)v11 addObject:v12];
 
-      v13 = [(_MKScaleUnitsView *)v2 layer];
+      layer = [(_MKScaleUnitsView *)v2 layer];
       v14 = [(NSMutableArray *)v2->_strings objectAtIndexedSubscript:i];
-      [v13 addSublayer:v14];
+      [layer addSublayer:v14];
     }
 
     [(_MKScaleUnitsView *)v2 setUseLightText:0];
@@ -67,20 +67,20 @@
   return zeroUnitsString;
 }
 
-- (id)_legendStringForDistanceString:(id)a3 appendUnits:(BOOL)a4 index:(int)a5
+- (id)_legendStringForDistanceString:(id)string appendUnits:(BOOL)units index:(int)index
 {
-  v6 = a4;
-  v8 = a3;
-  if (a5 && self->_unitsString)
+  unitsCopy = units;
+  stringCopy = string;
+  if (index && self->_unitsString)
   {
-    v9 = [(NSMutableDictionary *)self->_legendStringForDistanceStringCache objectForKeyedSubscript:v8];
+    v9 = [(NSMutableDictionary *)self->_legendStringForDistanceStringCache objectForKeyedSubscript:stringCopy];
     if (!v9)
     {
-      v10 = [(_MKScaleUnitsView *)self _uncachedLegendStringsForDistanceString:v8];
-      [(NSMutableDictionary *)self->_legendStringForDistanceStringCache setObject:v10 forKeyedSubscript:v8];
+      v10 = [(_MKScaleUnitsView *)self _uncachedLegendStringsForDistanceString:stringCopy];
+      [(NSMutableDictionary *)self->_legendStringForDistanceStringCache setObject:v10 forKeyedSubscript:stringCopy];
     }
 
-    if (v6)
+    if (unitsCopy)
     {
       v11 = 3;
     }
@@ -90,21 +90,21 @@
       v11 = 0;
     }
 
-    v12 = [v9 objectAtIndexedSubscript:a5 + v11 - 1];
+    zeroUnitsString = [v9 objectAtIndexedSubscript:index + v11 - 1];
   }
 
   else
   {
-    v12 = [(_MKScaleUnitsView *)self zeroUnitsString];
+    zeroUnitsString = [(_MKScaleUnitsView *)self zeroUnitsString];
   }
 
-  return v12;
+  return zeroUnitsString;
 }
 
-- (id)_uncachedLegendStringsForDistanceString:(id)a3
+- (id)_uncachedLegendStringsForDistanceString:(id)string
 {
   v21[6] = *MEMORY[0x1E69E9840];
-  v4 = [(NSNumberFormatter *)self->_floatNumberFormatter numberFromString:a3];
+  v4 = [(NSNumberFormatter *)self->_floatNumberFormatter numberFromString:string];
   [v4 floatValue];
   v6 = v5;
 
@@ -134,16 +134,16 @@
   return v19;
 }
 
-- (void)setUseLightText:(BOOL)a3
+- (void)setUseLightText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v48[2] = *MEMORY[0x1E69E9840];
-  self->_useLightText = a3;
+  self->_useLightText = text;
   v5 = +[MKSystemController sharedInstance];
-  v6 = [v5 isGlassEnabled];
+  isGlassEnabled = [v5 isGlassEnabled];
 
   v7 = MEMORY[0x1E69658A8];
-  if (!v6)
+  if (!isGlassEnabled)
   {
     v7 = MEMORY[0x1E69658A0];
   }
@@ -170,19 +170,19 @@
   v17 = CTFontCreateWithFontDescriptor(v16, 0.0, 0);
   CFRelease(v16);
   v18 = *MEMORY[0x1E6965658];
-  if (v3)
+  if (textCopy)
   {
     v44[0] = v17;
     v19 = *MEMORY[0x1E69659D8];
     v43[0] = v18;
     v43[1] = v19;
-    v20 = [MEMORY[0x1E69DC888] whiteColor];
-    v44[1] = [v20 CGColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v44[1] = [whiteColor CGColor];
     v43[2] = *MEMORY[0x1E6965A58];
-    v21 = [MEMORY[0x1E69DC888] blackColor];
-    v22 = [v21 CGColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
     v43[3] = *MEMORY[0x1E69DF508];
-    v44[2] = v22;
+    v44[2] = cGColor;
     v44[3] = &unk_1F16118C0;
     v23 = MEMORY[0x1E695DF20];
     v24 = v44;
@@ -195,13 +195,13 @@
     v26 = *MEMORY[0x1E69659D8];
     v41[0] = v18;
     v41[1] = v26;
-    v20 = [MEMORY[0x1E69DC888] colorWithRed:0.282352954 green:0.270588249 blue:0.254901975 alpha:1.0];
-    v42[1] = [v20 CGColor];
+    whiteColor = [MEMORY[0x1E69DC888] colorWithRed:0.282352954 green:0.270588249 blue:0.254901975 alpha:1.0];
+    v42[1] = [whiteColor CGColor];
     v41[2] = *MEMORY[0x1E6965A58];
-    v21 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.5];
-    v27 = [v21 CGColor];
+    blackColor = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.5];
+    cGColor2 = [blackColor CGColor];
     v41[3] = *MEMORY[0x1E69DF508];
-    v42[2] = v27;
+    v42[2] = cGColor2;
     v42[3] = &unk_1F16118C0;
     v23 = MEMORY[0x1E695DF20];
     v24 = v42;
@@ -247,16 +247,16 @@
   [(_MKScaleUnitsView *)self _calculateLegend:1];
 }
 
-- (BOOL)canDisplaySegment:(unint64_t)a3
+- (BOOL)canDisplaySegment:(unint64_t)segment
 {
-  v3 = [(NSMutableArray *)self->_strings objectAtIndexedSubscript:a3 + 1];
-  v4 = [v3 string];
-  v5 = v4 != 0;
+  v3 = [(NSMutableArray *)self->_strings objectAtIndexedSubscript:segment + 1];
+  string = [v3 string];
+  v5 = string != 0;
 
   return v5;
 }
 
-- (void)_calculateLegend:(BOOL)a3
+- (void)_calculateLegend:(BOOL)legend
 {
   [(_MKScaleUnitsView *)self bounds];
   v43 = v5;
@@ -304,9 +304,9 @@
     v23 = [(NSMutableArray *)self->_strings objectAtIndexedSubscript:v14, 448];
 
     v24 = v22;
-    v25 = [v23 string];
-    v26 = [v25 string];
-    v27 = [v26 isEqual:v24];
+    string = [v23 string];
+    v25String = [string string];
+    v27 = [v25String isEqual:v24];
 
     if ((v27 & 1) == 0)
     {
@@ -387,20 +387,20 @@
   }
 }
 
-- (void)setUnits:(id)a3
+- (void)setUnits:(id)units
 {
-  v15 = a3;
-  v4 = [v15 objectAtIndexedSubscript:1];
-  v5 = [(_MKScaleUnitsView *)self unpaddedUnitsString];
-  v6 = [v4 isEqualToString:v5];
+  unitsCopy = units;
+  v4 = [unitsCopy objectAtIndexedSubscript:1];
+  unpaddedUnitsString = [(_MKScaleUnitsView *)self unpaddedUnitsString];
+  v6 = [v4 isEqualToString:unpaddedUnitsString];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v15 objectAtIndexedSubscript:1];
+    v7 = [unitsCopy objectAtIndexedSubscript:1];
     v8 = [@" " stringByAppendingString:v7];
     [(_MKScaleUnitsView *)self setUnitsString:v8];
 
-    v9 = [v15 objectAtIndexedSubscript:1];
+    v9 = [unitsCopy objectAtIndexedSubscript:1];
     [(_MKScaleUnitsView *)self setUnpaddedUnitsString:v9];
 
     [(_MKScaleUnitsView *)self _widthForString:self->_unitsString attributes:self->_legendAttributes];
@@ -408,13 +408,13 @@
     [(NSMutableDictionary *)self->_legendStringForDistanceStringCache removeAllObjects];
   }
 
-  v11 = [v15 objectAtIndexedSubscript:0];
-  v12 = [(_MKScaleUnitsView *)self legendBaseString];
-  v13 = [v11 isEqualToString:v12];
+  v11 = [unitsCopy objectAtIndexedSubscript:0];
+  legendBaseString = [(_MKScaleUnitsView *)self legendBaseString];
+  v13 = [v11 isEqualToString:legendBaseString];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [v15 objectAtIndexedSubscript:0];
+    v14 = [unitsCopy objectAtIndexedSubscript:0];
     [(_MKScaleUnitsView *)self setLegendBaseString:v14];
   }
 
@@ -423,13 +423,13 @@
   [(_MKScaleUnitsView *)self setNeedsDisplay];
 }
 
-- (double)_widthForString:(id)a3 attributes:(id)a4
+- (double)_widthForString:(id)string attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stringCopy = string;
+  attributesCopy = attributes;
+  if (stringCopy)
   {
-    v8 = [(NSMapTable *)self->_legendStringWidthCache objectForKey:v6];
+    v8 = [(NSMapTable *)self->_legendStringWidthCache objectForKey:stringCopy];
     v9 = v8;
     if (v8)
     {
@@ -439,11 +439,11 @@
 
     else
     {
-      [v6 sizeWithAttributes:v7];
+      [stringCopy sizeWithAttributes:attributesCopy];
       v11 = v12;
       legendStringWidthCache = self->_legendStringWidthCache;
       v14 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-      [(NSMapTable *)legendStringWidthCache setObject:v14 forKey:v6];
+      [(NSMapTable *)legendStringWidthCache setObject:v14 forKey:stringCopy];
     }
   }
 

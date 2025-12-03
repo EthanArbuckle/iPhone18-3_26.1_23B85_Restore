@@ -1,6 +1,6 @@
 @interface WBSCopyOnWriteState
 - (WBSCopyOnWriteState)init;
-- (id)forkIfNeededWithHandler:(id)a3;
+- (id)forkIfNeededWithHandler:(id)handler;
 - (void)decrementCount;
 - (void)incrementCount;
 @end
@@ -39,26 +39,26 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)forkIfNeededWithHandler:(id)a3
+- (id)forkIfNeededWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  os_unfair_lock_lock(&v5->_lock);
-  count = v5->_count;
+  handlerCopy = handler;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  count = selfCopy->_count;
   if (count < 2)
   {
-    v7 = v5;
+    v7 = selfCopy;
   }
 
   else
   {
-    v5->_count = count - 1;
+    selfCopy->_count = count - 1;
     v7 = objc_alloc_init(WBSCopyOnWriteState);
 
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
-  os_unfair_lock_unlock(&v5->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   return v7;
 }

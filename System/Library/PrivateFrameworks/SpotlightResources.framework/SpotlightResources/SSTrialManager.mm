@@ -1,8 +1,8 @@
 @interface SSTrialManager
-+ (BOOL)didAllNamespacesLoadForClient:(id)a3;
-+ (BOOL)isValidNamespace:(unsigned int)a3 forClient:(id)a4;
-+ (id)currentTrialManagerForClient:(id)a3;
-+ (id)getTTRLogsForClient:(id)a3;
++ (BOOL)didAllNamespacesLoadForClient:(id)client;
++ (BOOL)isValidNamespace:(unsigned int)namespace forClient:(id)client;
++ (id)currentTrialManagerForClient:(id)client;
++ (id)getTTRLogsForClient:(id)client;
 + (id)resolveMultipleSpotlightExperiments;
 + (id)sharedSpotlightKnowledgeTrialClient;
 + (id)sharedSpotlightKnowledgeTrialManager;
@@ -12,14 +12,14 @@
 + (id)sharedSpotlightRankingTrialManager;
 + (id)sharedSpotlightTrialClient;
 + (id)sharedSpotlightUITrialManager;
-+ (id)trialManagerForNamespaceId:(id)a3;
++ (id)trialManagerForNamespaceId:(id)id;
 + (void)resolveMultipleSpotlightExperiments;
 + (void)setTrialOverridePath;
-+ (void)setTrialUpdateHandler:(id)a3;
++ (void)setTrialUpdateHandler:(id)handler;
 - (id)description;
 - (id)getFactorDictionary;
-- (id)getLevelForFactor:(id)a3;
-- (void)loadWithUpdateHandler:(id)a3;
+- (id)getLevelForFactor:(id)factor;
+- (void)loadWithUpdateHandler:(id)handler;
 @end
 
 @implementation SSTrialManager
@@ -260,9 +260,9 @@ LABEL_18:
   return v9;
 }
 
-+ (void)setTrialUpdateHandler:(id)a3
++ (void)setTrialUpdateHandler:(id)handler
 {
-  sTrialUpdateHandler_0 = MEMORY[0x1B2704E40](a3, a2);
+  sTrialUpdateHandler_0 = MEMORY[0x1B2704E40](handler, a2);
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -292,25 +292,25 @@ uint64_t __53__SSTrialManager_sharedSpotlightKnowledgeTrialClient__block_invoke(
   return result;
 }
 
-+ (BOOL)isValidNamespace:(unsigned int)a3 forClient:(id)a4
++ (BOOL)isValidNamespace:(unsigned int)namespace forClient:(id)client
 {
-  v5 = a4;
-  if ([v5 isEqualToString:@"Spotlight"])
+  clientCopy = client;
+  if ([clientCopy isEqualToString:@"Spotlight"])
   {
-    v6 = (a3 & 0xFFFFFFFC) == 332;
+    v6 = (namespace & 0xFFFFFFFC) == 332;
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:@"SpotlightKnowledge"])
+  if ([clientCopy isEqualToString:@"SpotlightKnowledge"])
   {
-    v6 = a3 == 336;
+    v6 = namespace == 336;
 LABEL_5:
     v7 = v6;
     goto LABEL_11;
   }
 
-  v8 = [v5 isEqualToString:@"Mail"];
-  if (a3 == 337)
+  v8 = [clientCopy isEqualToString:@"Mail"];
+  if (namespace == 337)
   {
     v7 = v8;
   }
@@ -390,22 +390,22 @@ uint64_t __54__SSTrialManager_sharedSpotlightKnowledgeTrialManager__block_invoke
   return result;
 }
 
-+ (id)currentTrialManagerForClient:(id)a3
++ (id)currentTrialManagerForClient:(id)client
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Spotlight"])
+  clientCopy = client;
+  if ([clientCopy isEqualToString:@"Spotlight"])
   {
     v4 = +[SSTrialManager resolveMultipleSpotlightExperiments];
   }
 
-  else if ([v3 isEqualToString:@"Mail"])
+  else if ([clientCopy isEqualToString:@"Mail"])
   {
     v4 = +[SSTrialManager sharedSpotlightMailTrialManager];
   }
 
   else
   {
-    if (![v3 isEqualToString:@"SpotlightKnowledge"])
+    if (![clientCopy isEqualToString:@"SpotlightKnowledge"])
     {
       v7 = SRLogCategoryTrial();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -472,8 +472,8 @@ LABEL_15:
   [v3 addObject:v8];
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(SSTrialManager *)self getFactorDictionary];
-  v11 = [v9 initWithFormat:@"factor dictionary=%@", v10];
+  getFactorDictionary = [(SSTrialManager *)self getFactorDictionary];
+  v11 = [v9 initWithFormat:@"factor dictionary=%@", getFactorDictionary];
   [v3 addObject:v11];
 
   v12 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -484,18 +484,18 @@ LABEL_15:
   return v15;
 }
 
-+ (id)getTTRLogsForClient:(id)a3
++ (id)getTTRLogsForClient:(id)client
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&sTrialLock);
   if (sTrialManagerInstances)
   {
-    v4 = [sTrialManagerInstances objectForKeyedSubscript:v3];
+    v4 = [sTrialManagerInstances objectForKeyedSubscript:clientCopy];
 
     if (v4)
     {
-      v5 = [sTrialManagerInstances objectForKeyedSubscript:v3];
+      v5 = [sTrialManagerInstances objectForKeyedSubscript:clientCopy];
       v4 = [v5 copy];
     }
   }
@@ -549,10 +549,10 @@ LABEL_15:
   return v6;
 }
 
-- (id)getLevelForFactor:(id)a3
+- (id)getLevelForFactor:(id)factor
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"codepathIDs"])
+  factorCopy = factor;
+  if ([factorCopy isEqualToString:@"codepathIDs"])
   {
     v5 = SRLogCategoryTrial();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -564,7 +564,7 @@ LABEL_15:
   if (self->_hasActiveExperiment || self->_hasRollout || self->_hasOverride)
   {
     pthread_rwlock_rdlock(&sTrialCacheLock);
-    v6 = [(NSDictionary *)self->_cachedValuesForFactor objectForKey:v4];
+    v6 = [(NSDictionary *)self->_cachedValuesForFactor objectForKey:factorCopy];
     pthread_rwlock_unlock(&sTrialCacheLock);
     if (v6)
     {
@@ -574,7 +574,7 @@ LABEL_15:
     v7 = SRLogCategoryTrial();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(SSTrialManager *)v4 getLevelForFactor:v7, v8, v9, v10, v11, v12, v13];
+      [(SSTrialManager *)factorCopy getLevelForFactor:v7, v8, v9, v10, v11, v12, v13];
     }
   }
 
@@ -584,10 +584,10 @@ LABEL_13:
   return v6;
 }
 
-- (void)loadWithUpdateHandler:(id)a3
+- (void)loadWithUpdateHandler:(id)handler
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [(TRIClient *)self->_trialClient refresh];
   v5 = SRLogCategoryTrial();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -607,13 +607,13 @@ LABEL_13:
   {
     v8 = v7;
     self->_hasActiveExperiment = 1;
-    v9 = [v7 experimentId];
+    experimentId = [v7 experimentId];
     experimentId = self->_experimentId;
-    self->_experimentId = v9;
+    self->_experimentId = experimentId;
 
-    v11 = [v8 treatmentId];
+    treatmentId = [v8 treatmentId];
     treatmentId = self->_treatmentId;
-    self->_treatmentId = v11;
+    self->_treatmentId = treatmentId;
 
     self->_experimentDeploymentId = [v8 deploymentId];
     if (![(NSString *)self->_client isEqualToString:@"Spotlight"])
@@ -625,9 +625,9 @@ LABEL_13:
     v13 = sCurrentActiveTrialManagers;
     if (!sCurrentActiveTrialManagers)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v15 = sCurrentActiveTrialManagers;
-      sCurrentActiveTrialManagers = v14;
+      sCurrentActiveTrialManagers = dictionary;
 
       v13 = sCurrentActiveTrialManagers;
     }
@@ -691,11 +691,11 @@ LABEL_16:
         }
 
         v27 = *(*(&v67 + 1) + 8 * i);
-        v28 = [v27 factor];
-        v29 = [v28 name];
+        factor = [v27 factor];
+        name = [factor name];
 
-        v30 = [v27 level];
-        [v21 setObject:v30 forKey:v29];
+        level = [v27 level];
+        [v21 setObject:level forKey:name];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v67 objects:v80 count:16];
@@ -715,11 +715,11 @@ LABEL_16:
   if (v33)
   {
     self->_hasRollout = 1;
-    v35 = [v33 rolloutId];
+    rolloutId = [v33 rolloutId];
     rolloutId = self->_rolloutId;
-    self->_rolloutId = v35;
+    self->_rolloutId = rolloutId;
 
-    v37 = [v34 deploymentId];
+    deploymentId = [v34 deploymentId];
   }
 
   else
@@ -728,13 +728,13 @@ LABEL_16:
     v38 = self->_rolloutId;
     self->_rolloutId = 0;
 
-    v37 = -1;
+    deploymentId = -1;
   }
 
-  self->_rolloutDeploymentId = v37;
-  v39 = [MEMORY[0x1E696AC08] defaultManager];
+  self->_rolloutDeploymentId = deploymentId;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v66 = 0;
-  v40 = [v39 contentsOfDirectoryAtPath:sTrialOverrideDirectoryPath error:&v66];
+  v40 = [defaultManager contentsOfDirectoryAtPath:sTrialOverrideDirectoryPath error:&v66];
   v41 = v66;
 
   if (!v41)
@@ -797,19 +797,19 @@ LABEL_37:
     namespaceId = self->_namespaceId;
     if (namespaceId)
     {
-      v54 = [(NSString *)namespaceId UTF8String];
+      uTF8String = [(NSString *)namespaceId UTF8String];
     }
 
     else
     {
-      v54 = "?";
+      uTF8String = "?";
     }
 
     hasActiveExperiment = self->_hasActiveExperiment;
     hasRollout = self->_hasRollout;
     hasOverride = self->_hasOverride;
     *buf = 136315906;
-    v72 = v54;
+    v72 = uTF8String;
     v73 = 1024;
     v74 = hasActiveExperiment;
     v75 = 1024;
@@ -819,20 +819,20 @@ LABEL_37:
     _os_signpost_emit_with_name_impl(&dword_1AE58E000, v50, OS_SIGNPOST_EVENT, v52, "SRResourcesTrialUpdate", "ns:%s, exp:%d, ro:%d, over:%d", buf, 0x1Eu);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, self->_client, self->_namespaceId, self);
+    handlerCopy[2](handlerCopy, self->_client, self->_namespaceId, self);
   }
 
   v58 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)didAllNamespacesLoadForClient:(id)a3
++ (BOOL)didAllNamespacesLoadForClient:(id)client
 {
-  v3 = a3;
-  if (![v3 isEqualToString:@"Spotlight"])
+  clientCopy = client;
+  if (![clientCopy isEqualToString:@"Spotlight"])
   {
-    if ([v3 isEqualToString:@"SpotlightKnowledge"])
+    if ([clientCopy isEqualToString:@"SpotlightKnowledge"])
     {
       if ((trialFlagsForProcess() & 2) == 0)
       {
@@ -844,7 +844,7 @@ LABEL_37:
 
     else
     {
-      if (![v3 isEqualToString:@"Mail"] || (trialFlagsForProcess() & 4) == 0)
+      if (![clientCopy isEqualToString:@"Mail"] || (trialFlagsForProcess() & 4) == 0)
       {
         goto LABEL_19;
       }
@@ -853,7 +853,7 @@ LABEL_37:
     }
 
     v8 = v12;
-    v11 = [v12 wasLoadedSinceLaunch];
+    wasLoadedSinceLaunch = [v12 wasLoadedSinceLaunch];
 LABEL_25:
 
     goto LABEL_26;
@@ -892,34 +892,34 @@ LABEL_25:
       if ([v9 wasLoadedSinceLaunch])
       {
         v10 = +[SSTrialManager sharedSpotlightRankingTrialManager];
-        v11 = [v10 wasLoadedSinceLaunch];
+        wasLoadedSinceLaunch = [v10 wasLoadedSinceLaunch];
       }
 
       else
       {
-        v11 = 0;
+        wasLoadedSinceLaunch = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      wasLoadedSinceLaunch = 0;
     }
 
     goto LABEL_25;
   }
 
 LABEL_19:
-  v11 = 0;
+  wasLoadedSinceLaunch = 0;
 LABEL_26:
 
-  return v11;
+  return wasLoadedSinceLaunch;
 }
 
-+ (id)trialManagerForNamespaceId:(id)a3
++ (id)trialManagerForNamespaceId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"332"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"332"])
   {
     v4 = +[SSTrialManager sharedSpotlightModelTrialManager];
 LABEL_13:
@@ -927,31 +927,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"333"])
+  if ([idCopy isEqualToString:@"333"])
   {
     v4 = +[SSTrialManager sharedSpotlightUITrialManager];
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"334"])
+  if ([idCopy isEqualToString:@"334"])
   {
     v4 = +[SSTrialManager sharedSpotlightRankingTrialManager];
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"335"])
+  if ([idCopy isEqualToString:@"335"])
   {
     v4 = +[SSTrialManager sharedSpotlightPolicyTrialManager];
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"336"])
+  if ([idCopy isEqualToString:@"336"])
   {
     v4 = +[SSTrialManager sharedSpotlightKnowledgeTrialManager];
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"337"])
+  if ([idCopy isEqualToString:@"337"])
   {
     v4 = +[SSTrialManager sharedSpotlightMailTrialManager];
     goto LABEL_13;

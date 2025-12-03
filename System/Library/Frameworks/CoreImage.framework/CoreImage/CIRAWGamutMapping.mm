@@ -59,13 +59,13 @@
     v28 = [(NSDictionary *)self->inputRAWDictionary valueForKey:@"bknd"];
     if (v28)
     {
-      v29 = [v28 intValue];
+      intValue = [v28 intValue];
     }
 
     else
     {
       NSLog(&cfstr_Cirawgamutmapp.isa, @"bknd");
-      v29 = 0;
+      intValue = 0;
     }
 
     v30 = [(NSDictionary *)self->inputRAWDictionary valueForKey:@"btpnt"];
@@ -215,7 +215,7 @@ LABEL_34:
       return [(CIFilter *)self apply:v102 image:inputImage arguments:v103 inoutSpace:v104];
     }
 
-    if (v29 == 1)
+    if (intValue == 1)
     {
       v105 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_boostRGBLNoGamma];
       v125[0] = v95;
@@ -249,7 +249,7 @@ LABEL_34:
       return [(CIFilter *)self apply:v102 image:inputImage arguments:v103 inoutSpace:v104];
     }
 
-    if (!v29)
+    if (!intValue)
     {
       v102 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_boostRGB];
       v126[0] = v95;

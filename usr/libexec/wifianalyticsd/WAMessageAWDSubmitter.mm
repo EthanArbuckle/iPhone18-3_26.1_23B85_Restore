@@ -1,11 +1,11 @@
 @interface WAMessageAWDSubmitter
 - (WAMessageAWDSubmissionDelegate)submissionDelegate;
-- (id)submitMessage:(id)a3;
+- (id)submitMessage:(id)message;
 @end
 
 @implementation WAMessageAWDSubmitter
 
-- (id)submitMessage:(id)a3
+- (id)submitMessage:(id)message
 {
   v3 = NSStringFromSelector(a2);
   [NSException raise:NSInternalInconsistencyException format:@"Abstract. You must override %@ in a subclass", v3];

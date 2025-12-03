@@ -1,15 +1,15 @@
 @interface SUTSchemaTestExecutionEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
 - (SUTSchemaTestAssociatedSchemaIdentifier)testAssociatedSchemaIdentifier;
 - (SUTSchemaTestExecutionBegin)testExecutionBegin;
 - (SUTSchemaTestExecutionEnd)testExecutionEnd;
-- (SUTSchemaTestExecutionEvent)initWithDictionary:(id)a3;
-- (SUTSchemaTestExecutionEvent)initWithJSON:(id)a3;
+- (SUTSchemaTestExecutionEvent)initWithDictionary:(id)dictionary;
+- (SUTSchemaTestExecutionEvent)initWithJSON:(id)n;
 - (SUTSchemaTestOutcomeRecorded)testOutcomeRecorded;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -20,24 +20,24 @@
 - (void)deleteTestExecutionBegin;
 - (void)deleteTestExecutionEnd;
 - (void)deleteTestOutcomeRecorded;
-- (void)setTestAssociatedSchemaIdentifier:(id)a3;
-- (void)setTestExecutionBegin:(id)a3;
-- (void)setTestExecutionEnd:(id)a3;
-- (void)setTestOutcomeRecorded:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setTestAssociatedSchemaIdentifier:(id)identifier;
+- (void)setTestExecutionBegin:(id)begin;
+- (void)setTestExecutionEnd:(id)end;
+- (void)setTestOutcomeRecorded:(id)recorded;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUTSchemaTestExecutionEvent
 
-- (SUTSchemaTestExecutionEvent)initWithDictionary:(id)a3
+- (SUTSchemaTestExecutionEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = SUTSchemaTestExecutionEvent;
   v5 = [(SUTSchemaTestExecutionEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"metadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(SUTSchemaTestExecutionEvent *)v5 setMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"testExecutionBegin"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"testExecutionBegin"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(SUTSchemaTestExecutionEvent *)v5 setTestExecutionBegin:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"testExecutionEnd"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"testExecutionEnd"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(SUTSchemaTestExecutionEvent *)v5 setTestExecutionEnd:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"testAssociatedSchemaIdentifier"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"testAssociatedSchemaIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(SUTSchemaTestExecutionEvent *)v5 setTestAssociatedSchemaIdentifier:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"testOutcomeRecorded"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"testOutcomeRecorded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,30 +83,30 @@
   return v5;
 }
 
-- (SUTSchemaTestExecutionEvent)initWithJSON:(id)a3
+- (SUTSchemaTestExecutionEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUTSchemaTestExecutionEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUTSchemaTestExecutionEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUTSchemaTestExecutionEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -119,90 +119,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_metadata)
   {
-    v4 = [(SUTSchemaTestExecutionEvent *)self metadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    metadata = [(SUTSchemaTestExecutionEvent *)self metadata];
+    dictionaryRepresentation = [metadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"metadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"metadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"metadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"metadata"];
     }
   }
 
   if (self->_testAssociatedSchemaIdentifier)
   {
-    v7 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    testAssociatedSchemaIdentifier = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
+    dictionaryRepresentation2 = [testAssociatedSchemaIdentifier dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"testAssociatedSchemaIdentifier"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"testAssociatedSchemaIdentifier"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"testAssociatedSchemaIdentifier"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"testAssociatedSchemaIdentifier"];
     }
   }
 
   if (self->_testExecutionBegin)
   {
-    v10 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    testExecutionBegin = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
+    dictionaryRepresentation3 = [testExecutionBegin dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"testExecutionBegin"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"testExecutionBegin"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"testExecutionBegin"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"testExecutionBegin"];
     }
   }
 
   if (self->_testExecutionEnd)
   {
-    v13 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    testExecutionEnd = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
+    dictionaryRepresentation4 = [testExecutionEnd dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"testExecutionEnd"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"testExecutionEnd"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"testExecutionEnd"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"testExecutionEnd"];
     }
   }
 
   if (self->_testOutcomeRecorded)
   {
-    v16 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    testOutcomeRecorded = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
+    dictionaryRepresentation5 = [testOutcomeRecorded dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"testOutcomeRecorded"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"testOutcomeRecorded"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"testOutcomeRecorded"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"testOutcomeRecorded"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,34 +214,34 @@
   return v6 ^ [(SUTSchemaTestOutcomeRecorded *)self->_testOutcomeRecorded hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_28;
   }
 
-  v6 = [(SUTSchemaTestExecutionEvent *)self metadata];
-  v7 = [v4 metadata];
-  if ((v6 != 0) == (v7 == 0))
+  metadata = [(SUTSchemaTestExecutionEvent *)self metadata];
+  metadata2 = [equalCopy metadata];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(SUTSchemaTestExecutionEvent *)self metadata];
-  if (v8)
+  metadata3 = [(SUTSchemaTestExecutionEvent *)self metadata];
+  if (metadata3)
   {
-    v9 = v8;
-    v10 = [(SUTSchemaTestExecutionEvent *)self metadata];
-    v11 = [v4 metadata];
-    v12 = [v10 isEqual:v11];
+    v9 = metadata3;
+    metadata4 = [(SUTSchemaTestExecutionEvent *)self metadata];
+    metadata5 = [equalCopy metadata];
+    v12 = [metadata4 isEqual:metadata5];
 
     if (!v12)
     {
@@ -253,20 +253,20 @@
   {
   }
 
-  v6 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
-  v7 = [v4 testExecutionBegin];
-  if ((v6 != 0) == (v7 == 0))
+  metadata = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
+  metadata2 = [equalCopy testExecutionBegin];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
-  if (v13)
+  testExecutionBegin = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
+  if (testExecutionBegin)
   {
-    v14 = v13;
-    v15 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
-    v16 = [v4 testExecutionBegin];
-    v17 = [v15 isEqual:v16];
+    v14 = testExecutionBegin;
+    testExecutionBegin2 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
+    testExecutionBegin3 = [equalCopy testExecutionBegin];
+    v17 = [testExecutionBegin2 isEqual:testExecutionBegin3];
 
     if (!v17)
     {
@@ -278,20 +278,20 @@
   {
   }
 
-  v6 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
-  v7 = [v4 testExecutionEnd];
-  if ((v6 != 0) == (v7 == 0))
+  metadata = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
+  metadata2 = [equalCopy testExecutionEnd];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
-  if (v18)
+  testExecutionEnd = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
+  if (testExecutionEnd)
   {
-    v19 = v18;
-    v20 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
-    v21 = [v4 testExecutionEnd];
-    v22 = [v20 isEqual:v21];
+    v19 = testExecutionEnd;
+    testExecutionEnd2 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
+    testExecutionEnd3 = [equalCopy testExecutionEnd];
+    v22 = [testExecutionEnd2 isEqual:testExecutionEnd3];
 
     if (!v22)
     {
@@ -303,20 +303,20 @@
   {
   }
 
-  v6 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
-  v7 = [v4 testAssociatedSchemaIdentifier];
-  if ((v6 != 0) == (v7 == 0))
+  metadata = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
+  metadata2 = [equalCopy testAssociatedSchemaIdentifier];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
-  if (v23)
+  testAssociatedSchemaIdentifier = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
+  if (testAssociatedSchemaIdentifier)
   {
-    v24 = v23;
-    v25 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
-    v26 = [v4 testAssociatedSchemaIdentifier];
-    v27 = [v25 isEqual:v26];
+    v24 = testAssociatedSchemaIdentifier;
+    testAssociatedSchemaIdentifier2 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
+    testAssociatedSchemaIdentifier3 = [equalCopy testAssociatedSchemaIdentifier];
+    v27 = [testAssociatedSchemaIdentifier2 isEqual:testAssociatedSchemaIdentifier3];
 
     if (!v27)
     {
@@ -328,12 +328,12 @@
   {
   }
 
-  v6 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
-  v7 = [v4 testOutcomeRecorded];
-  if ((v6 != 0) != (v7 == 0))
+  metadata = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
+  metadata2 = [equalCopy testOutcomeRecorded];
+  if ((metadata != 0) != (metadata2 == 0))
   {
-    v28 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
-    if (!v28)
+    testOutcomeRecorded = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
+    if (!testOutcomeRecorded)
     {
 
 LABEL_31:
@@ -341,10 +341,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
-    v31 = [v4 testOutcomeRecorded];
-    v32 = [v30 isEqual:v31];
+    v29 = testOutcomeRecorded;
+    testOutcomeRecorded2 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
+    testOutcomeRecorded3 = [equalCopy testOutcomeRecorded];
+    v32 = [testOutcomeRecorded2 isEqual:testOutcomeRecorded3];
 
     if (v32)
     {
@@ -364,50 +364,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(SUTSchemaTestExecutionEvent *)self metadata];
+  toCopy = to;
+  metadata = [(SUTSchemaTestExecutionEvent *)self metadata];
 
-  if (v4)
+  if (metadata)
   {
-    v5 = [(SUTSchemaTestExecutionEvent *)self metadata];
+    metadata2 = [(SUTSchemaTestExecutionEvent *)self metadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
+  testExecutionBegin = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
 
-  if (v6)
+  if (testExecutionBegin)
   {
-    v7 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
+    testExecutionBegin2 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
+  testExecutionEnd = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
 
-  if (v8)
+  if (testExecutionEnd)
   {
-    v9 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
+    testExecutionEnd2 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
+  testAssociatedSchemaIdentifier = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
 
-  if (v10)
+  if (testAssociatedSchemaIdentifier)
   {
-    v11 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
+    testAssociatedSchemaIdentifier2 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
+  testOutcomeRecorded = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (testOutcomeRecorded)
   {
-    v14 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
+    testOutcomeRecorded2 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -436,9 +436,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setTestOutcomeRecorded:(id)a3
+- (void)setTestOutcomeRecorded:(id)recorded
 {
-  v4 = a3;
+  recordedCopy = recorded;
   testExecutionBegin = self->_testExecutionBegin;
   self->_testExecutionBegin = 0;
 
@@ -449,14 +449,14 @@ LABEL_29:
   self->_testAssociatedSchemaIdentifier = 0;
 
   v8 = 104;
-  if (!v4)
+  if (!recordedCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   testOutcomeRecorded = self->_testOutcomeRecorded;
-  self->_testOutcomeRecorded = v4;
+  self->_testOutcomeRecorded = recordedCopy;
 }
 
 - (void)deleteTestAssociatedSchemaIdentifier
@@ -484,9 +484,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setTestAssociatedSchemaIdentifier:(id)a3
+- (void)setTestAssociatedSchemaIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   testExecutionBegin = self->_testExecutionBegin;
   self->_testExecutionBegin = 0;
 
@@ -497,14 +497,14 @@ LABEL_29:
   self->_testOutcomeRecorded = 0;
 
   v8 = 103;
-  if (!v4)
+  if (!identifierCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   testAssociatedSchemaIdentifier = self->_testAssociatedSchemaIdentifier;
-  self->_testAssociatedSchemaIdentifier = v4;
+  self->_testAssociatedSchemaIdentifier = identifierCopy;
 }
 
 - (void)deleteTestExecutionEnd
@@ -532,9 +532,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setTestExecutionEnd:(id)a3
+- (void)setTestExecutionEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   testExecutionBegin = self->_testExecutionBegin;
   self->_testExecutionBegin = 0;
 
@@ -545,14 +545,14 @@ LABEL_29:
   self->_testOutcomeRecorded = 0;
 
   v8 = 102;
-  if (!v4)
+  if (!endCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   testExecutionEnd = self->_testExecutionEnd;
-  self->_testExecutionEnd = v4;
+  self->_testExecutionEnd = endCopy;
 }
 
 - (void)deleteTestExecutionBegin
@@ -580,9 +580,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setTestExecutionBegin:(id)a3
+- (void)setTestExecutionBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   testExecutionEnd = self->_testExecutionEnd;
   self->_testExecutionEnd = 0;
 
@@ -593,77 +593,77 @@ LABEL_29:
   self->_testOutcomeRecorded = 0;
 
   v8 = 101;
-  if (!v4)
+  if (!beginCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   testExecutionBegin = self->_testExecutionBegin;
-  self->_testExecutionBegin = v4;
+  self->_testExecutionBegin = beginCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(SUTSchemaTestExecutionEvent *)self whichEvent_Type];
-  if (v2 - 101 > 3)
+  whichEvent_Type = [(SUTSchemaTestExecutionEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 3)
   {
     return @"com.apple.aiml.siri.siriundertest.TestExecutionEvent";
   }
 
   else
   {
-    return off_1E78E7E20[v2 - 101];
+    return off_1E78E7E20[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = SUTSchemaTestExecutionEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(SUTSchemaTestExecutionEvent *)self metadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  metadata = [(SUTSchemaTestExecutionEvent *)self metadata];
+  v7 = [metadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SUTSchemaTestExecutionEvent *)self deleteMetadata];
   }
 
-  v9 = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  testExecutionBegin = [(SUTSchemaTestExecutionEvent *)self testExecutionBegin];
+  v10 = [testExecutionBegin applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SUTSchemaTestExecutionEvent *)self deleteTestExecutionBegin];
   }
 
-  v12 = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  testExecutionEnd = [(SUTSchemaTestExecutionEvent *)self testExecutionEnd];
+  v13 = [testExecutionEnd applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SUTSchemaTestExecutionEvent *)self deleteTestExecutionEnd];
   }
 
-  v15 = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  testAssociatedSchemaIdentifier = [(SUTSchemaTestExecutionEvent *)self testAssociatedSchemaIdentifier];
+  v16 = [testAssociatedSchemaIdentifier applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SUTSchemaTestExecutionEvent *)self deleteTestAssociatedSchemaIdentifier];
   }
 
-  v18 = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  testOutcomeRecorded = [(SUTSchemaTestExecutionEvent *)self testOutcomeRecorded];
+  v19 = [testOutcomeRecorded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(SUTSchemaTestExecutionEvent *)self deleteTestOutcomeRecorded];
   }
@@ -681,98 +681,98 @@ LABEL_29:
 
 - (int)componentName
 {
-  v2 = [(SUTSchemaTestExecutionEvent *)self metadata];
-  v3 = [v2 fingerprint];
+  metadata = [(SUTSchemaTestExecutionEvent *)self metadata];
+  fingerprint = [metadata fingerprint];
 
-  if (v3)
+  if (fingerprint)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [fingerprint value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [fingerprint value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 26;
+        LODWORD(value) = 26;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(SUTSchemaTestExecutionEvent *)self metadata];
-  v3 = [v2 fingerprint];
+  metadata = [(SUTSchemaTestExecutionEvent *)self metadata];
+  fingerprint = [metadata fingerprint];
 
-  if (!v3)
+  if (!fingerprint)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [fingerprint value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [fingerprint value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = fingerprint;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(SUTSchemaTestExecutionEvent *)self whichEvent_Type];
-  if (v3 - 101 > 3)
+  whichEvent_Type = [(SUTSchemaTestExecutionEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EB3A8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EB3A8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 3)
+  if (tag - 101 > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EB3C8[a3 - 101];
+    return off_1E78EB3C8[tag - 101];
   }
 }
 

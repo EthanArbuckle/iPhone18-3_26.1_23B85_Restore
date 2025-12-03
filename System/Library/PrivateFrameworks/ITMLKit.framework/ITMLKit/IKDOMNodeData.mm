@@ -1,18 +1,18 @@
 @interface IKDOMNodeData
-+ (id)jsNodeDataForNode:(id)a3;
++ (id)jsNodeDataForNode:(id)node;
 - (BOOL)containsUpdates;
 - (IKDOMNode)ownerJSNode;
-- (id)featureForName:(id)a3;
-- (void)setFeature:(id)a3 forName:(id)a4;
+- (id)featureForName:(id)name;
+- (void)setFeature:(id)feature forName:(id)name;
 @end
 
 @implementation IKDOMNodeData
 
-+ (id)jsNodeDataForNode:(id)a3
++ (id)jsNodeDataForNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = objc_alloc_init(IKDOMNodeData);
-  [(IKDOMNodeData *)v4 setOwnerJSNode:v3];
+  [(IKDOMNodeData *)v4 setOwnerJSNode:nodeCopy];
 
   return v4;
 }
@@ -27,36 +27,36 @@
   return [(IKDOMNodeData *)self isSubtreeUpdated];
 }
 
-- (void)setFeature:(id)a3 forName:(id)a4
+- (void)setFeature:(id)feature forName:(id)name
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(IKDOMNodeData *)self featuresMap];
+  featureCopy = feature;
+  nameCopy = name;
+  featuresMap = [(IKDOMNodeData *)self featuresMap];
 
-  if (!v7)
+  if (!featuresMap)
   {
     v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
     [(IKDOMNodeData *)self setFeaturesMap:v8];
   }
 
-  v9 = [(IKDOMNodeData *)self featuresMap];
-  v10 = v9;
-  if (v11)
+  featuresMap2 = [(IKDOMNodeData *)self featuresMap];
+  v10 = featuresMap2;
+  if (featureCopy)
   {
-    [v9 setObject:v11 forKey:v6];
+    [featuresMap2 setObject:featureCopy forKey:nameCopy];
   }
 
   else
   {
-    [v9 removeObjectForKey:v6];
+    [featuresMap2 removeObjectForKey:nameCopy];
   }
 }
 
-- (id)featureForName:(id)a3
+- (id)featureForName:(id)name
 {
-  v4 = a3;
-  v5 = [(IKDOMNodeData *)self featuresMap];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  featuresMap = [(IKDOMNodeData *)self featuresMap];
+  v6 = [featuresMap objectForKey:nameCopy];
 
   return v6;
 }

@@ -1,22 +1,22 @@
 @interface _UIViewControllerImmediateAnimationTransitionCoordinator
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5;
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion;
 - (CGAffineTransform)targetTransform;
-- (_UIViewControllerImmediateAnimationTransitionCoordinator)initWithContainerView:(id)a3;
+- (_UIViewControllerImmediateAnimationTransitionCoordinator)initWithContainerView:(id)view;
 @end
 
 @implementation _UIViewControllerImmediateAnimationTransitionCoordinator
 
-- (_UIViewControllerImmediateAnimationTransitionCoordinator)initWithContainerView:(id)a3
+- (_UIViewControllerImmediateAnimationTransitionCoordinator)initWithContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _UIViewControllerImmediateAnimationTransitionCoordinator;
   v5 = [(_UIViewControllerImmediateAnimationTransitionCoordinator *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (viewCopy)
     {
-      v6 = v4;
+      v6 = viewCopy;
     }
 
     else
@@ -31,19 +31,19 @@
   return v5;
 }
 
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  viewCopy = view;
+  animationCopy = animation;
+  completionCopy = completion;
+  if (animationCopy)
   {
-    v9[2](v9, self);
+    animationCopy[2](animationCopy, self);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, self);
+    completionCopy[2](completionCopy, self);
   }
 
   return 1;

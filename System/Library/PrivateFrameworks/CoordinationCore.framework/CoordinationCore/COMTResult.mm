@@ -1,15 +1,15 @@
 @interface COMTResult
-- (COMTResult)initWithCoder:(id)a3;
+- (COMTResult)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTResult
 
-- (COMTResult)initWithCoder:(id)a3
+- (COMTResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RA"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RA"];
 
   actionIdentifier = self->_actionIdentifier;
   self->_actionIdentifier = v5;
@@ -27,11 +27,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(COMTResult *)self actionIdentifier];
-  [v4 encodeObject:v5 forKey:@"RA"];
+  coderCopy = coder;
+  actionIdentifier = [(COMTResult *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"RA"];
 }
 
 @end

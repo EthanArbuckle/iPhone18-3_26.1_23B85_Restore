@@ -1,14 +1,14 @@
 @interface ForeheadWindow
-- (void)systemApertureLayoutDidChange:(id)a3;
+- (void)systemApertureLayoutDidChange:(id)change;
 @end
 
 @implementation ForeheadWindow
 
-- (void)systemApertureLayoutDidChange:(id)a3
+- (void)systemApertureLayoutDidChange:(id)change
 {
   sub_5D510();
   v4 = sub_BB0F0();
-  v5 = self;
+  selfCopy = self;
   sub_5CA88(v4);
 }
 

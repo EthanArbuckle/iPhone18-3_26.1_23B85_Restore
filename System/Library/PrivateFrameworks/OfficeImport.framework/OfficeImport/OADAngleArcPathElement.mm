@@ -1,17 +1,17 @@
 @interface OADAngleArcPathElement
 - (OADAdjustPoint)center;
 - (OADAdjustPoint)semiaxes;
-- (OADAngleArcPathElement)initWithCenter:(OADAdjustPoint)a3 semiaxes:(OADAdjustPoint)a4 startAngle:(OADAdjustCoord)a5 angleLength:(OADAdjustCoord)a6 connectedToPrevious:(BOOL)a7;
+- (OADAngleArcPathElement)initWithCenter:(OADAdjustPoint)center semiaxes:(OADAdjustPoint)semiaxes startAngle:(OADAdjustCoord)angle angleLength:(OADAdjustCoord)length connectedToPrevious:(BOOL)previous;
 @end
 
 @implementation OADAngleArcPathElement
 
-- (OADAngleArcPathElement)initWithCenter:(OADAdjustPoint)a3 semiaxes:(OADAdjustPoint)a4 startAngle:(OADAdjustCoord)a5 angleLength:(OADAdjustCoord)a6 connectedToPrevious:(BOOL)a7
+- (OADAngleArcPathElement)initWithCenter:(OADAdjustPoint)center semiaxes:(OADAdjustPoint)semiaxes startAngle:(OADAdjustCoord)angle angleLength:(OADAdjustCoord)length connectedToPrevious:(BOOL)previous
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = semiaxes.y;
+  x = semiaxes.x;
+  v11 = center.y;
+  v12 = center.x;
   v14.receiver = self;
   v14.super_class = OADAngleArcPathElement;
   result = [(OADAngleArcPathElement *)&v14 init];
@@ -21,9 +21,9 @@
     result->mCenter.y = v11;
     result->mSemiaxes.x = x;
     result->mSemiaxes.y = y;
-    result->mStartAngle = a5;
-    result->mAngleLength = a6;
-    result->mConnectedToPrevious = a7;
+    result->mStartAngle = angle;
+    result->mAngleLength = length;
+    result->mConnectedToPrevious = previous;
   }
 
   return result;

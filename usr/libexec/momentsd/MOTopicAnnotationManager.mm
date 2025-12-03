@@ -1,24 +1,24 @@
 @interface MOTopicAnnotationManager
-- (id)annotateBaseEvents:(id)a3 dateInterval:(id)a4;
-- (id)getBaseEvents:(id)a3;
+- (id)annotateBaseEvents:(id)events dateInterval:(id)interval;
+- (id)getBaseEvents:(id)events;
 @end
 
 @implementation MOTopicAnnotationManager
 
-- (id)getBaseEvents:(id)a3
+- (id)getBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 7];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)annotateBaseEvents:(id)a3 dateInterval:(id)a4
+- (id)annotateBaseEvents:(id)events dateInterval:(id)interval
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 count] && objc_msgSend(v5, "count") <= 1)
+  eventsCopy = events;
+  intervalCopy = interval;
+  if (eventsCopy && [eventsCopy count] && objc_msgSend(eventsCopy, "count") <= 1)
   {
     v9 = [MOEventBundle alloc];
     v10 = +[NSUUID UUID];
@@ -29,15 +29,15 @@
     v12 = [[MOAction alloc] initWithActionName:@"Topic of Interest" actionType:1 actionSubtype:2];
     [(MOEventBundle *)v7 setAction:v12];
 
-    v13 = [v5 firstObject];
-    v14 = [v13 eventIdentifier];
-    v15 = [(MOEventBundle *)v7 action];
-    [v15 setSourceEventIdentifier:v14];
+    firstObject = [eventsCopy firstObject];
+    eventIdentifier = [firstObject eventIdentifier];
+    action = [(MOEventBundle *)v7 action];
+    [action setSourceEventIdentifier:eventIdentifier];
 
-    v16 = [v5 firstObject];
-    v17 = [v5 firstObject];
-    v18 = [v17 scoredTopics];
-    v19 = [v16 displayNameOfScoredTopics:v18];
+    firstObject2 = [eventsCopy firstObject];
+    firstObject3 = [eventsCopy firstObject];
+    scoredTopics = [firstObject3 scoredTopics];
+    v19 = [firstObject2 displayNameOfScoredTopics:scoredTopics];
 
     v35 = v19;
     v20 = [v19 keysSortedByValueUsingComparator:&__block_literal_global_56];
@@ -85,13 +85,13 @@
     v30 = [v23 copy];
     [(MOEventBundle *)v7 setResources:v30];
 
-    [(MOEventBundle *)v7 setEvents:v5];
+    [(MOEventBundle *)v7 setEvents:eventsCopy];
     [(MOEventBundle *)v7 setPropertiesBasedOnEvents];
-    v31 = [v6 startDate];
-    [(MOEventBundle *)v7 setStartDate:v31];
+    startDate = [intervalCopy startDate];
+    [(MOEventBundle *)v7 setStartDate:startDate];
 
-    v32 = [v6 endDate];
-    [(MOEventBundle *)v7 setEndDate:v32];
+    endDate = [intervalCopy endDate];
+    [(MOEventBundle *)v7 setEndDate:endDate];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface STCommunicationSafetyResourcesURLGenerator
 + (id)communicationSafetySupportedCountryLanguagePairs;
 + (id)resourcesURL;
-+ (id)resourcesURLForCountryCode:(id)a3 languageCode:(id)a4;
++ (id)resourcesURLForCountryCode:(id)code languageCode:(id)languageCode;
 @end
 
 @implementation STCommunicationSafetyResourcesURLGenerator
@@ -26,11 +26,11 @@ void __94__STCommunicationSafetyResourcesURLGenerator_communicationSafetySupport
 
 + (id)resourcesURL
 {
-  v2 = [MEMORY[0x1E698DC80] sharedInstance];
-  v3 = [v2 primaryAuthKitAccount];
-  if (v3)
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
-    v4 = [v2 appleIDCountryCodeForAccount:v3];
+    v4 = [mEMORY[0x1E698DC80] appleIDCountryCodeForAccount:primaryAuthKitAccount];
     if (v4)
     {
       goto LABEL_8;
@@ -54,38 +54,38 @@ void __94__STCommunicationSafetyResourcesURLGenerator_communicationSafetySupport
 
   v4 = 0;
 LABEL_8:
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
-  v7 = [v6 languageCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  v8 = [objc_opt_class() resourcesURLForCountryCode:v4 languageCode:v7];
+  v8 = [objc_opt_class() resourcesURLForCountryCode:v4 languageCode:languageCode];
 
   return v8;
 }
 
-+ (id)resourcesURLForCountryCode:(id)a3 languageCode:(id)a4
++ (id)resourcesURLForCountryCode:(id)code languageCode:(id)languageCode
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  codeCopy = code;
+  languageCodeCopy = languageCode;
+  if (codeCopy)
   {
-    v7 = [objc_opt_class() communicationSafetySupportedCountryLanguagePairs];
-    v8 = [v7 objectForKey:v5];
+    communicationSafetySupportedCountryLanguagePairs = [objc_opt_class() communicationSafetySupportedCountryLanguagePairs];
+    v8 = [communicationSafetySupportedCountryLanguagePairs objectForKey:codeCopy];
 
     if (v8)
     {
-      v9 = [v8 containsObject:v6];
+      v9 = [v8 containsObject:languageCodeCopy];
       v10 = MEMORY[0x1E696AEC0];
       if (v9)
       {
-        v11 = [v5 lowercaseString];
-        v12 = [v10 stringWithFormat:@"%@-%@", v6, v11];
+        lowercaseString = [codeCopy lowercaseString];
+        v12 = [v10 stringWithFormat:@"%@-%@", languageCodeCopy, lowercaseString];
       }
 
       else
       {
-        v11 = [v8 firstObject];
-        v14 = [v5 lowercaseString];
-        v12 = [v10 stringWithFormat:@"%@-%@", v11, v14];
+        lowercaseString = [v8 firstObject];
+        lowercaseString2 = [codeCopy lowercaseString];
+        v12 = [v10 stringWithFormat:@"%@-%@", lowercaseString, lowercaseString2];
       }
 
       v13 = [@"https://www.apple.com/go/child-safety/rp/" stringByAppendingString:v12];

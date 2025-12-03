@@ -1,30 +1,30 @@
 @interface _HKClinicalRecordComparisonFilter
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)acceptsDataObject:(id)object;
 @end
 
 @implementation _HKClinicalRecordComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FHIRResource.identifier"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"FHIRResource.identifier"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"FHIRResource.resourceType"];
+    v4 = [pathCopy isEqualToString:@"FHIRResource.resourceType"];
   }
 
   return v4;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -32,7 +32,7 @@
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -40,63 +40,63 @@
   return [v3 setWithObject:v4];
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"FHIRResource.identifier"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"FHIRResource.identifier"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"FHIRResource.resourceType"])
+  else if ([pathCopy isEqualToString:@"FHIRResource.resourceType"])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKClinicalRecordComparisonFilter.m" lineNumber:62 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKClinicalRecordComparisonFilter.m" lineNumber:62 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKClinicalRecordComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(_HKComparisonFilter *)self keyPathIntegerValue];
-    if (v7 == 1)
+    v6 = objectCopy;
+    keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
+    if (keyPathIntegerValue == 1)
     {
-      v8 = [v6 FHIRResource];
-      v9 = [v8 resourceType];
+      fHIRResource = [v6 FHIRResource];
+      resourceType = [fHIRResource resourceType];
     }
 
     else
     {
-      if (v7)
+      if (keyPathIntegerValue)
       {
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"_HKClinicalRecordComparisonFilter.m" lineNumber:82 description:@"Unreachable code has been executed"];
+        fHIRResource = [MEMORY[0x1E696AAA8] currentHandler];
+        [fHIRResource handleFailureInMethod:a2 object:self file:@"_HKClinicalRecordComparisonFilter.m" lineNumber:82 description:@"Unreachable code has been executed"];
         v10 = 0;
         goto LABEL_9;
       }
 
-      v8 = [v6 FHIRResource];
-      v9 = [v8 identifier];
+      fHIRResource = [v6 FHIRResource];
+      resourceType = [fHIRResource identifier];
     }
 
-    v11 = v9;
-    v12 = [(_HKComparisonFilter *)self value];
-    v10 = HKComparisonResultMatchesPredicateOperator([v11 compare:v12], -[_HKComparisonFilter operatorType](self, "operatorType"));
+    v11 = resourceType;
+    value = [(_HKComparisonFilter *)self value];
+    v10 = HKComparisonResultMatchesPredicateOperator([v11 compare:value], -[_HKComparisonFilter operatorType](self, "operatorType"));
 
 LABEL_9:
     goto LABEL_10;

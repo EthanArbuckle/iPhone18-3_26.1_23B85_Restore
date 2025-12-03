@@ -1,11 +1,11 @@
 @interface LocalDraftsDeviceListener
-- (void)browser:(id)a3 didNotStartBrowsingForPeers:(id)a4;
-- (void)browser:(id)a3 foundPeer:(id)a4 withDiscoveryInfo:(id)a5;
-- (void)browser:(id)a3 lostPeer:(id)a4;
+- (void)browser:(id)browser didNotStartBrowsingForPeers:(id)peers;
+- (void)browser:(id)browser foundPeer:(id)peer withDiscoveryInfo:(id)info;
+- (void)browser:(id)browser lostPeer:(id)peer;
 - (void)dealloc;
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7;
-- (void)session:(id)a3 didReceiveCertificate:(id)a4 fromPeer:(id)a5 certificateHandler:(id)a6;
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5;
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error;
+- (void)session:(id)session didReceiveCertificate:(id)certificate fromPeer:(id)peer certificateHandler:(id)handler;
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer;
 @end
 
 @implementation LocalDraftsDeviceListener
@@ -14,48 +14,48 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC7NewsUI225LocalDraftsDeviceListener_serviceBrowser);
-  v5 = self;
+  selfCopy = self;
   [v4 stopBrowsingForPeers];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(LocalDraftsDeviceListener *)&v6 dealloc];
 }
 
-- (void)browser:(id)a3 didNotStartBrowsingForPeers:(id)a4
+- (void)browser:(id)browser didNotStartBrowsingForPeers:(id)peers
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  browserCopy = browser;
+  peersCopy = peers;
+  selfCopy = self;
   sub_21925C444();
 }
 
-- (void)browser:(id)a3 foundPeer:(id)a4 withDiscoveryInfo:(id)a5
+- (void)browser:(id)browser foundPeer:(id)peer withDiscoveryInfo:(id)info
 {
-  if (a5)
+  if (info)
   {
     sub_219BF5214();
   }
 
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_21925C58C(v8, v9);
+  browserCopy = browser;
+  peerCopy = peer;
+  selfCopy = self;
+  sub_21925C58C(browserCopy, peerCopy);
 }
 
-- (void)browser:(id)a3 lostPeer:(id)a4
+- (void)browser:(id)browser lostPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_21925C72C(v7);
+  browserCopy = browser;
+  peerCopy = peer;
+  selfCopy = self;
+  sub_21925C72C(peerCopy);
 }
 
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = self;
+  sessionCopy = session;
+  dataCopy = data;
+  peerCopy = peer;
+  selfCopy = self;
   v11 = sub_219BDBA04();
   v13 = v12;
 
@@ -63,14 +63,14 @@
   sub_2186C6190(v11, v13);
 }
 
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error
 {
   sub_21873F65C(0);
   MEMORY[0x28223BE20](v12 - 8);
   v14 = &v24 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   v15 = sub_219BF5414();
   v17 = v16;
-  if (a6)
+  if (l)
   {
     sub_219BDB8B4();
     v18 = sub_219BDB954();
@@ -83,18 +83,18 @@
     (*(*(v19 - 8) + 56))(v14, 1, 1, v19);
   }
 
-  v20 = a3;
-  v21 = a5;
-  v22 = a7;
-  v23 = self;
+  sessionCopy = session;
+  peerCopy = peer;
+  errorCopy = error;
+  selfCopy = self;
   sub_21925CB34(v15, v17, v14);
 
   sub_218838478(v14);
 }
 
-- (void)session:(id)a3 didReceiveCertificate:(id)a4 fromPeer:(id)a5 certificateHandler:(id)a6
+- (void)session:(id)session didReceiveCertificate:(id)certificate fromPeer:(id)peer certificateHandler:(id)handler
 {
-  v6 = _Block_copy(a6);
+  v6 = _Block_copy(handler);
   v6[2](v6, 1);
 
   _Block_release(v6);

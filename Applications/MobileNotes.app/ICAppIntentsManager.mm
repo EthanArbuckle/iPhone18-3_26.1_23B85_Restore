@@ -26,7 +26,7 @@
 
 - (void)registerDependencies
 {
-  v2 = self;
+  selfCopy = self;
   ICAppIntentsManager.registerDependencies()();
 }
 

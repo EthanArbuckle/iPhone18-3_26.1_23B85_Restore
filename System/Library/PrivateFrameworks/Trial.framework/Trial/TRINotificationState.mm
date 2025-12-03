@@ -1,17 +1,17 @@
 @interface TRINotificationState
-- (TRINotificationState)initWithToken:(int)a3;
+- (TRINotificationState)initWithToken:(int)token;
 @end
 
 @implementation TRINotificationState
 
-- (TRINotificationState)initWithToken:(int)a3
+- (TRINotificationState)initWithToken:(int)token
 {
   v5.receiver = self;
   v5.super_class = TRINotificationState;
   result = [(TRINotificationState *)&v5 init];
   if (result)
   {
-    result->_token = a3;
+    result->_token = token;
   }
 
   return result;

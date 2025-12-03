@@ -1,41 +1,41 @@
 @interface BPSFutureResult
-+ (id)failureWithError:(id)a3;
-+ (id)successWithValue:(id)a3;
-- (BPSFutureResult)initWithState:(int64_t)a3 value:(id)a4 error:(id)a5;
++ (id)failureWithError:(id)error;
++ (id)successWithValue:(id)value;
+- (BPSFutureResult)initWithState:(int64_t)state value:(id)value error:(id)error;
 @end
 
 @implementation BPSFutureResult
 
-- (BPSFutureResult)initWithState:(int64_t)a3 value:(id)a4 error:(id)a5
+- (BPSFutureResult)initWithState:(int64_t)state value:(id)value error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = BPSFutureResult;
   v11 = [(BPSFutureResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_state = a3;
-    objc_storeStrong(&v11->_error, a5);
-    objc_storeStrong(&v12->_value, a4);
+    v11->_state = state;
+    objc_storeStrong(&v11->_error, error);
+    objc_storeStrong(&v12->_value, value);
   }
 
   return v12;
 }
 
-+ (id)successWithValue:(id)a3
++ (id)successWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithState:0 value:v4 error:0];
+  valueCopy = value;
+  v5 = [[self alloc] initWithState:0 value:valueCopy error:0];
 
   return v5;
 }
 
-+ (id)failureWithError:(id)a3
++ (id)failureWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithState:1 value:0 error:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithState:1 value:0 error:errorCopy];
 
   return v5;
 }

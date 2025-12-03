@@ -1,39 +1,39 @@
 @interface AANearbyDeviceManagerDaemon
 + (id)sharedAANearbyDeviceManagerDaemon;
 - (AANearbyDeviceManagerDaemon)init;
-- (BOOL)_loadAADevicesPropertyFromPairedDeviceForDevice:(id)a3;
+- (BOOL)_loadAADevicesPropertyFromPairedDeviceForDevice:(id)device;
 - (NSMutableDictionary)nearbyDevicesMap;
-- (id)_caseDeviceWithPrimaryIdentifier:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (id)deviceWithBluetoothAddress:(id)a3;
-- (id)deviceWithIdentifier:(id)a3;
+- (id)_caseDeviceWithPrimaryIdentifier:(id)identifier;
+- (id)descriptionWithLevel:(int)level;
+- (id)deviceWithBluetoothAddress:(id)address;
+- (id)deviceWithIdentifier:(id)identifier;
 - (id)nearbyDevices;
 - (void)_aaPairedDeviceDiscoveryEnsureStarted;
 - (void)_aaPairedDeviceDiscoveryEnsureStopped;
 - (void)_activate;
 - (void)_batterMonitorEnsureStarted;
 - (void)_batterMonitorEnsureStopped;
-- (void)_cbDeviceFound:(id)a3;
-- (void)_cbDeviceLost:(id)a3;
+- (void)_cbDeviceFound:(id)found;
+- (void)_cbDeviceLost:(id)lost;
 - (void)_cbDiscoveryEnsureStarted;
 - (void)_cbDiscoveryEnsureStopped;
-- (void)_deviceRemovedWithIdentifier:(id)a3;
-- (void)_deviceUpdated:(id)a3;
+- (void)_deviceRemovedWithIdentifier:(id)identifier;
+- (void)_deviceUpdated:(id)updated;
 - (void)_ensureOSTransaction;
 - (void)_handleXPCLaunchEvent;
 - (void)_invalidate;
-- (void)_lookupPrimaryDeviceForCase:(id)a3 caseUpdated:(BOOL)a4;
-- (void)_nearbyDeviceLost:(id)a3;
-- (void)_nearbyDeviceUpdated:(id)a3;
+- (void)_lookupPrimaryDeviceForCase:(id)case caseUpdated:(BOOL)updated;
+- (void)_nearbyDeviceLost:(id)lost;
+- (void)_nearbyDeviceUpdated:(id)updated;
 - (void)_notifySubscribersInvalidated;
 - (void)_releaseOSTransaction;
-- (void)_updateForDeviceWithIdentifier:(id)a3 cbDevice:(id)a4 payload:(id)a5;
+- (void)_updateForDeviceWithIdentifier:(id)identifier cbDevice:(id)device payload:(id)payload;
 - (void)activate;
 - (void)invalidate;
-- (void)pairedDeviceLost:(id)a3;
-- (void)pairedDeviceUpdated:(id)a3;
-- (void)subscribeToNearbyDiscovery:(id)a3;
-- (void)unsubscribeFromNearbyDiscovery:(id)a3;
+- (void)pairedDeviceLost:(id)lost;
+- (void)pairedDeviceUpdated:(id)updated;
+- (void)subscribeToNearbyDiscovery:(id)discovery;
+- (void)unsubscribeFromNearbyDiscovery:(id)discovery;
 @end
 
 @implementation AANearbyDeviceManagerDaemon
@@ -68,7 +68,7 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v17 = 0;
   v18 = &v17;
@@ -79,11 +79,11 @@
   obj = 0;
   NSAppendPrintF_safe();
   objc_storeStrong(&v22, 0);
-  v4 = [(AANearbyDeviceManagerDaemon *)self nearbyDevices];
+  nearbyDevices = [(AANearbyDeviceManagerDaemon *)self nearbyDevices];
   v5 = v18;
   v15 = v18[5];
-  v6 = [v4 count];
-  v11 = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
+  v6 = [nearbyDevices count];
+  cbDiscovery = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
   NSAppendPrintF();
   objc_storeStrong(v5 + 5, v15);
 
@@ -92,7 +92,7 @@
   v14[2] = sub_1000D2430;
   v14[3] = &unk_1002BB308;
   v14[4] = &v17;
-  [v4 enumerateKeysAndObjectsUsingBlock:{v14, v6, v11}];
+  [nearbyDevices enumerateKeysAndObjectsUsingBlock:{v14, v6, cbDiscovery}];
   v7 = v18;
   v13 = v18[5];
   NSAppendPrintF();
@@ -110,13 +110,13 @@
 
 - (void)activate
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D2508;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_activate
@@ -139,13 +139,13 @@
 
 - (void)invalidate
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D2638;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_invalidate
@@ -169,15 +169,15 @@
     sub_1001FA01C();
   }
 
-  v3 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
-  xpc_set_event_stream_handler("com.apple.bluetooth.discovery", v3, &stru_1002BB328);
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  xpc_set_event_stream_handler("com.apple.bluetooth.discovery", dispatchQueue, &stru_1002BB328);
 }
 
 - (void)_ensureOSTransaction
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self transaction];
+  transaction = [(AANearbyDeviceManagerDaemon *)self transaction];
 
-  if (!v3)
+  if (!transaction)
   {
     if (dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
     {
@@ -187,9 +187,9 @@
     v4 = os_transaction_create();
     [(AANearbyDeviceManagerDaemon *)self setTransaction:v4];
 
-    v5 = [(AANearbyDeviceManagerDaemon *)self transaction];
+    transaction2 = [(AANearbyDeviceManagerDaemon *)self transaction];
 
-    if (!v5 && dword_1002F7380 <= 60 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
+    if (!transaction2 && dword_1002F7380 <= 60 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
     {
       sub_1001FA0B0();
     }
@@ -198,9 +198,9 @@
 
 - (void)_releaseOSTransaction
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self transaction];
+  transaction = [(AANearbyDeviceManagerDaemon *)self transaction];
 
-  if (v3)
+  if (transaction)
   {
     [(AANearbyDeviceManagerDaemon *)self setTransaction:0];
     if (dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
@@ -218,8 +218,8 @@
   }
 
   v3 = objc_alloc_init(CBDiscovery);
-  v4 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
-  [v3 setDispatchQueue:v4];
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  [v3 setDispatchQueue:dispatchQueue];
 
   [v3 setLabel:@"NearbyAudioAccessory"];
   [v3 setDiscoveryFlags:{objc_msgSend(v3, "discoveryFlags") | 0x8000}];
@@ -265,32 +265,32 @@
 
 - (void)_cbDiscoveryEnsureStopped
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
+  cbDiscovery = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
 
-  if (v3)
+  if (cbDiscovery)
   {
     if (dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
     {
       sub_1001FA268();
     }
 
-    v4 = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
-    [v4 invalidate];
+    cbDiscovery2 = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
+    [cbDiscovery2 invalidate];
 
     [(AANearbyDeviceManagerDaemon *)self setCbDiscovery:0];
   }
 }
 
-- (void)_cbDeviceLost:(id)a3
+- (void)_cbDeviceLost:(id)lost
 {
-  v7 = a3;
-  v4 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  lostCopy = lost;
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [v7 identifier];
-  if (v5)
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v6 = [(AANearbyDeviceManagerDaemon *)self deviceWithIdentifier:v5];
+    v6 = [(AANearbyDeviceManagerDaemon *)self deviceWithIdentifier:identifier];
     if (v6)
     {
       [(AANearbyDeviceManagerDaemon *)self _nearbyDeviceLost:v6];
@@ -303,16 +303,16 @@
   }
 }
 
-- (void)_updateForDeviceWithIdentifier:(id)a3 cbDevice:(id)a4 payload:(id)a5
+- (void)_updateForDeviceWithIdentifier:(id)identifier cbDevice:(id)device payload:(id)payload
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AANearbyDeviceManagerDaemon *)self deviceWithIdentifier:v18];
+  identifierCopy = identifier;
+  deviceCopy = device;
+  payloadCopy = payload;
+  v10 = [(AANearbyDeviceManagerDaemon *)self deviceWithIdentifier:identifierCopy];
   if (v10)
   {
     v11 = v10;
-    if ([(AANearbyDevice *)v10 updateWithCBDevice:v8])
+    if ([(AANearbyDevice *)v10 updateWithCBDevice:deviceCopy])
     {
       if (dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
       {
@@ -330,16 +330,16 @@
 
   else
   {
-    v11 = [[AANearbyDevice alloc] initWithIdentifier:v18];
+    v11 = [[AANearbyDevice alloc] initWithIdentifier:identifierCopy];
     [(AANearbyDeviceManagerDaemon *)self _deviceUpdated:v11];
-    v12 = [(AANearbyDevice *)v11 updateWithCBDevice:v8];
+    v12 = [(AANearbyDevice *)v11 updateWithCBDevice:deviceCopy];
     if (dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
     {
       sub_1001FA340();
     }
   }
 
-  v13 = [(AANearbyDevice *)v11 updateWithProximityPairingPayload:v9];
+  v13 = [(AANearbyDevice *)v11 updateWithProximityPairingPayload:payloadCopy];
   if (v13 && dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FA380();
@@ -356,8 +356,8 @@
     if (![(AANearbyDevice *)v11 isCase]&& [(AANearbyDeviceManagerDaemon *)self _loadAADevicesPropertyFromPairedDeviceForDevice:v11])
     {
       v16 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-      v17 = [(AANearbyDevice *)v11 bluetoothAddress];
-      [v16 handleHealthKitDataWritePropertyToggled:v17];
+      bluetoothAddress = [(AANearbyDevice *)v11 bluetoothAddress];
+      [v16 handleHealthKitDataWritePropertyToggled:bluetoothAddress];
     }
 
     if (v14)
@@ -369,9 +369,9 @@
 
 - (void)_batterMonitorEnsureStarted
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
+  batteryMonitor = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
 
-  if (!v3)
+  if (!batteryMonitor)
   {
     v4 = +[AABatteryMonitorDaemon sharedAABatteryMonitorDaemon];
     [(AANearbyDeviceManagerDaemon *)self setBatteryMonitor:v4];
@@ -380,79 +380,79 @@
 
 - (void)_batterMonitorEnsureStopped
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
+  batteryMonitor = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
 
-  if (v3)
+  if (batteryMonitor)
   {
-    v4 = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
-    [v4 invalidate];
+    batteryMonitor2 = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
+    [batteryMonitor2 invalidate];
 
     [(AANearbyDeviceManagerDaemon *)self setBatteryMonitor:0];
   }
 }
 
-- (void)_deviceUpdated:(id)a3
+- (void)_deviceUpdated:(id)updated
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v10;
-  nearbyDevicesMap = v4->_nearbyDevicesMap;
+  updatedCopy = updated;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = updatedCopy;
+  nearbyDevicesMap = selfCopy->_nearbyDevicesMap;
   if (!nearbyDevicesMap)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = v4->_nearbyDevicesMap;
-    v4->_nearbyDevicesMap = v7;
+    v8 = selfCopy->_nearbyDevicesMap;
+    selfCopy->_nearbyDevicesMap = v7;
 
     if (dword_1002F7380 <= 10 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    [(AANearbyDeviceManagerDaemon *)v4 _ensureOSTransaction];
-    nearbyDevicesMap = v4->_nearbyDevicesMap;
-    v5 = v10;
+    [(AANearbyDeviceManagerDaemon *)selfCopy _ensureOSTransaction];
+    nearbyDevicesMap = selfCopy->_nearbyDevicesMap;
+    v5 = updatedCopy;
   }
 
-  v9 = [v5 identifier];
-  [(NSMutableDictionary *)nearbyDevicesMap setObject:v10 forKeyedSubscript:v9];
+  identifier = [v5 identifier];
+  [(NSMutableDictionary *)nearbyDevicesMap setObject:updatedCopy forKeyedSubscript:identifier];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_deviceRemovedWithIdentifier:(id)a3
+- (void)_deviceRemovedWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  nearbyDevicesMap = v4->_nearbyDevicesMap;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nearbyDevicesMap = selfCopy->_nearbyDevicesMap;
   if (nearbyDevicesMap)
   {
-    [(NSMutableDictionary *)nearbyDevicesMap setObject:0 forKeyedSubscript:v7];
-    if (![(NSMutableDictionary *)v4->_nearbyDevicesMap count])
+    [(NSMutableDictionary *)nearbyDevicesMap setObject:0 forKeyedSubscript:identifierCopy];
+    if (![(NSMutableDictionary *)selfCopy->_nearbyDevicesMap count])
     {
       if (dword_1002F7380 <= 10 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
       }
 
-      v6 = v4->_nearbyDevicesMap;
-      v4->_nearbyDevicesMap = 0;
+      v6 = selfCopy->_nearbyDevicesMap;
+      selfCopy->_nearbyDevicesMap = 0;
 
-      [(AANearbyDeviceManagerDaemon *)v4 _releaseOSTransaction];
+      [(AANearbyDeviceManagerDaemon *)selfCopy _releaseOSTransaction];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)nearbyDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_nearbyDevicesMap)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_nearbyDevicesMap)
   {
-    v3 = [[NSMutableDictionary alloc] initWithDictionary:v2->_nearbyDevicesMap copyItems:1];
+    v3 = [[NSMutableDictionary alloc] initWithDictionary:selfCopy->_nearbyDevicesMap copyItems:1];
   }
 
   else
@@ -460,22 +460,22 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)deviceWithBluetoothAddress:(id)a3
+- (id)deviceWithBluetoothAddress:(id)address
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  addressCopy = address;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSMutableDictionary *)v5->_nearbyDevicesMap allValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)selfCopy->_nearbyDevicesMap allValues];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -485,14 +485,14 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 bluetoothAddress];
-        v12 = v4;
+        bluetoothAddress = [v10 bluetoothAddress];
+        v12 = addressCopy;
         v13 = v12;
-        if (v11 == v12)
+        if (bluetoothAddress == v12)
         {
 
 LABEL_15:
@@ -500,9 +500,9 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if ((v4 == 0) != (v11 != 0))
+        if ((addressCopy == 0) != (bluetoothAddress != 0))
         {
-          v14 = [v11 isEqual:v12];
+          v14 = [bluetoothAddress isEqual:v12];
 
           if (v14)
           {
@@ -515,7 +515,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -527,46 +527,46 @@ LABEL_15:
 
 LABEL_16:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)deviceWithIdentifier:(id)a3
+- (id)deviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_nearbyDevicesMap objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_nearbyDevicesMap objectForKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)_nearbyDeviceLost:(id)a3
+- (void)_nearbyDeviceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  [(AANearbyDeviceManagerDaemon *)self _deviceRemovedWithIdentifier:v5];
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  [(AANearbyDeviceManagerDaemon *)self _deviceRemovedWithIdentifier:identifier];
 
   if (dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FA3C0();
   }
 
-  v6 = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
-  [v6 nearbyDeviceLost:v4];
+  batteryMonitor = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
+  [batteryMonitor nearbyDeviceLost:lostCopy];
 
-  v7 = [(AANearbyDeviceManagerDaemon *)self subscribers];
+  subscribers = [(AANearbyDeviceManagerDaemon *)self subscribers];
 
-  if (v7)
+  if (subscribers)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [(AANearbyDeviceManagerDaemon *)self subscribers];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subscribers2 = [(AANearbyDeviceManagerDaemon *)self subscribers];
+    v9 = [subscribers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -577,13 +577,13 @@ LABEL_16:
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subscribers2);
           }
 
-          [*(*(&v13 + 1) + 8 * i) nearbyDeviceLost:v4];
+          [*(*(&v13 + 1) + 8 * i) nearbyDeviceLost:lostCopy];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [subscribers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -591,28 +591,28 @@ LABEL_16:
   }
 }
 
-- (void)_nearbyDeviceUpdated:(id)a3
+- (void)_nearbyDeviceUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   if (dword_1002F7380 <= 30 && (dword_1002F7380 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FA400();
   }
 
-  v5 = [v4 copy];
-  v6 = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
-  [v6 nearbyDeviceUpdated:v5];
+  v5 = [updatedCopy copy];
+  batteryMonitor = [(AANearbyDeviceManagerDaemon *)self batteryMonitor];
+  [batteryMonitor nearbyDeviceUpdated:v5];
 
-  v7 = [(AANearbyDeviceManagerDaemon *)self subscribers];
+  subscribers = [(AANearbyDeviceManagerDaemon *)self subscribers];
 
-  if (v7)
+  if (subscribers)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [(AANearbyDeviceManagerDaemon *)self subscribers];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subscribers2 = [(AANearbyDeviceManagerDaemon *)self subscribers];
+    v9 = [subscribers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -623,13 +623,13 @@ LABEL_16:
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subscribers2);
           }
 
           [*(*(&v13 + 1) + 8 * i) nearbyDeviceUpdated:v5];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [subscribers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -639,25 +639,25 @@ LABEL_16:
 
 - (NSMutableDictionary)nearbyDevicesMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_nearbyDevicesMap copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_nearbyDevicesMap copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)_caseDeviceWithPrimaryIdentifier:(id)a3
+- (id)_caseDeviceWithPrimaryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSMutableDictionary *)v5->_nearbyDevicesMap allValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)selfCopy->_nearbyDevicesMap allValues];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -667,14 +667,14 @@ LABEL_16:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 primaryDeviceIdentifier];
-        v12 = v4;
+        primaryDeviceIdentifier = [v10 primaryDeviceIdentifier];
+        v12 = identifierCopy;
         v13 = v12;
-        if (v11 == v12)
+        if (primaryDeviceIdentifier == v12)
         {
 
 LABEL_15:
@@ -682,9 +682,9 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if ((v4 == 0) != (v11 != 0))
+        if ((identifierCopy == 0) != (primaryDeviceIdentifier != 0))
         {
-          v14 = [v11 isEqual:v12];
+          v14 = [primaryDeviceIdentifier isEqual:v12];
 
           if (v14)
           {
@@ -697,7 +697,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -709,42 +709,42 @@ LABEL_15:
 
 LABEL_16:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)_lookupPrimaryDeviceForCase:(id)a3 caseUpdated:(BOOL)a4
+- (void)_lookupPrimaryDeviceForCase:(id)case caseUpdated:(BOOL)updated
 {
-  v6 = a3;
+  caseCopy = case;
   v7 = objc_alloc_init(CBDevice);
-  v8 = [v6 identifier];
-  [v7 setFindMyCaseIdentifier:v8];
+  identifier = [caseCopy identifier];
+  [v7 setFindMyCaseIdentifier:identifier];
 
-  v9 = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
+  cbDiscovery = [(AANearbyDeviceManagerDaemon *)self cbDiscovery];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000D3D90;
   v11[3] = &unk_1002BB350;
-  v14 = a4;
-  v12 = v6;
-  v13 = self;
-  v10 = v6;
-  [v9 devicesMatchingPropertiesOn:v7 exactMatch:1 completionHandler:v11];
+  updatedCopy = updated;
+  v12 = caseCopy;
+  selfCopy = self;
+  v10 = caseCopy;
+  [cbDiscovery devicesMatchingPropertiesOn:v7 exactMatch:1 completionHandler:v11];
 }
 
 - (void)_notifySubscribersInvalidated
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self subscribers];
+  subscribers = [(AANearbyDeviceManagerDaemon *)self subscribers];
 
-  if (v3)
+  if (subscribers)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(AANearbyDeviceManagerDaemon *)self subscribers];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    subscribers2 = [(AANearbyDeviceManagerDaemon *)self subscribers];
+    v5 = [subscribers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -756,7 +756,7 @@ LABEL_16:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subscribers2);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
@@ -766,14 +766,14 @@ LABEL_16:
           }
 
           [v9 aaNearbyDeviceDiscoveryInvalidated];
-          v10 = [(AANearbyDeviceManagerDaemon *)self subscribers];
-          [v10 removeObject:v9];
+          subscribers3 = [(AANearbyDeviceManagerDaemon *)self subscribers];
+          [subscribers3 removeObject:v9];
 
           v8 = v8 + 1;
         }
 
         while (v6 != v8);
-        v11 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v11 = [subscribers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
         v6 = v11;
       }
 
@@ -782,97 +782,97 @@ LABEL_16:
   }
 }
 
-- (void)subscribeToNearbyDiscovery:(id)a3
+- (void)subscribeToNearbyDiscovery:(id)discovery
 {
-  v4 = a3;
-  v5 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  discoveryCopy = discovery;
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D4164;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = discoveryCopy;
+  v6 = discoveryCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)unsubscribeFromNearbyDiscovery:(id)a3
+- (void)unsubscribeFromNearbyDiscovery:(id)discovery
 {
-  v4 = a3;
-  v5 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  discoveryCopy = discovery;
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D43C4;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = discoveryCopy;
+  v6 = discoveryCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (void)_aaPairedDeviceDiscoveryEnsureStarted
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self pairedDeviceDaemon];
-  [v3 subscribeToPairedDiscovery:self];
+  pairedDeviceDaemon = [(AANearbyDeviceManagerDaemon *)self pairedDeviceDaemon];
+  [pairedDeviceDaemon subscribeToPairedDiscovery:self];
 }
 
 - (void)_aaPairedDeviceDiscoveryEnsureStopped
 {
-  v3 = [(AANearbyDeviceManagerDaemon *)self pairedDeviceDaemon];
-  [v3 unsubscribeFromPairedDiscovery:self];
+  pairedDeviceDaemon = [(AANearbyDeviceManagerDaemon *)self pairedDeviceDaemon];
+  [pairedDeviceDaemon unsubscribeFromPairedDiscovery:self];
 }
 
-- (void)pairedDeviceUpdated:(id)a3
+- (void)pairedDeviceUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D45B8;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = updatedCopy;
+  selfCopy = self;
+  v6 = updatedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)pairedDeviceLost:(id)a3
+- (void)pairedDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F9E88;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = lostCopy;
+  selfCopy = self;
+  v6 = lostCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_cbDeviceFound:(id)a3
+- (void)_cbDeviceFound:(id)found
 {
-  v4 = a3;
-  v18 = self;
-  v5 = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  foundCopy = found;
+  selfCopy = self;
+  dispatchQueue = [(AANearbyDeviceManagerDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v19 = [v4 identifier];
-  if (v19)
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    v6 = [v4 bleAppleManufacturerData];
-    v7 = [AAManufacturerDataAdvertisement manufacturerDataWithData:v6];
+    bleAppleManufacturerData = [foundCopy bleAppleManufacturerData];
+    v7 = [AAManufacturerDataAdvertisement manufacturerDataWithData:bleAppleManufacturerData];
 
-    v8 = [v7 payloads];
+    payloads = [v7 payloads];
 
-    if (v8)
+    if (payloads)
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = [v7 payloads];
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      payloads2 = [v7 payloads];
+      v10 = [payloads2 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
       {
         v11 = v10;
@@ -883,24 +883,24 @@ LABEL_16:
           {
             if (*v21 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(payloads2);
             }
 
             v14 = *(*(&v20 + 1) + 8 * i);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v15 = [v4 discoveryFlags];
-              v16 = [v4 discoveryFlags];
+              discoveryFlags = [foundCopy discoveryFlags];
+              discoveryFlags2 = [foundCopy discoveryFlags];
               v17 = [v14 pid] - 8190 < 0x6E;
-              if ((v15 & 0x800000) != 0 || (v17 & (v16 >> 7)) != 0)
+              if ((discoveryFlags & 0x800000) != 0 || (v17 & (discoveryFlags2 >> 7)) != 0)
               {
-                [(AANearbyDeviceManagerDaemon *)v18 _updateForDeviceWithIdentifier:v19 cbDevice:v4 payload:v14];
+                [(AANearbyDeviceManagerDaemon *)selfCopy _updateForDeviceWithIdentifier:identifier cbDevice:foundCopy payload:v14];
               }
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v11 = [payloads2 countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v11);
@@ -909,12 +909,12 @@ LABEL_16:
   }
 }
 
-- (BOOL)_loadAADevicesPropertyFromPairedDeviceForDevice:(id)a3
+- (BOOL)_loadAADevicesPropertyFromPairedDeviceForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(AANearbyDeviceManagerDaemon *)self pairedDeviceDaemon];
-  v7 = [v6 deviceWithIdentifier:v5];
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  pairedDeviceDaemon = [(AANearbyDeviceManagerDaemon *)self pairedDeviceDaemon];
+  v7 = [pairedDeviceDaemon deviceWithIdentifier:identifier];
 
   if (v7)
   {
@@ -924,7 +924,7 @@ LABEL_16:
       LogPrintF();
     }
 
-    v8 = [v4 updateWithPairedDevice:{v7, v10}];
+    v8 = [deviceCopy updateWithPairedDevice:{v7, v10}];
   }
 
   else

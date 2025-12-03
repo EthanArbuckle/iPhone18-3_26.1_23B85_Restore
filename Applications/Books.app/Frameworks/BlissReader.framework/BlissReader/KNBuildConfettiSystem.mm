@@ -1,12 +1,12 @@
 @interface KNBuildConfettiSystem
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
 - (double)speedMax;
 @end
 
 @implementation KNBuildConfettiSystem
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point
 {
   TSURandomBetween();
   v4 = v3;
@@ -23,10 +23,10 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   [(KNBuildConfettiSystem *)self objectSize];
   v5 = v4;
   [(KNBuildConfettiSystem *)self slideSize];
@@ -49,26 +49,26 @@
   v16 = __sincos_stret(v15);
   v17 = v14;
   v18 = v38 * 20.0 * fabsf(v17);
-  v19 = [(KNBuildConfettiSystem *)self particlesWide];
-  v20 = [(KNBuildConfettiSystem *)self particlesHigh];
-  v21 = [(KNBuildConfettiSystem *)self particlesWide];
-  v22 = [(KNBuildConfettiSystem *)self particlesHigh];
-  if (v21 <= v22)
+  particlesWide = [(KNBuildConfettiSystem *)self particlesWide];
+  particlesHigh = [(KNBuildConfettiSystem *)self particlesHigh];
+  particlesWide2 = [(KNBuildConfettiSystem *)self particlesWide];
+  particlesHigh2 = [(KNBuildConfettiSystem *)self particlesHigh];
+  if (particlesWide2 <= particlesHigh2)
   {
-    v23 = v22;
+    v23 = particlesHigh2;
   }
 
   else
   {
-    v23 = v21;
+    v23 = particlesWide2;
   }
 
   v24 = 1.0 / (vcvtd_n_f64_u64(v23, 1uLL) + 20.0);
   v25.f64[0] = v16.__cosval;
   v25.f64[1] = v16.__sinval;
   v26 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(vcvt_f32_f64(vmulq_n_f64(v25, v37))), v38 * 20.0));
-  *&v25.f64[0] = v19;
-  *&v25.f64[1] = v20;
+  *&v25.f64[0] = particlesWide;
+  *&v25.f64[1] = particlesHigh;
   __asm { FMOV            V3.2D, #-0.5 }
 
   v32.f64[0] = x;
@@ -97,16 +97,16 @@
     v4 = v5;
   }
 
-  v6 = [(KNBuildConfettiSystem *)self particlesWide];
-  v7 = [(KNBuildConfettiSystem *)self particlesHigh];
-  if (v6 <= v7)
+  particlesWide = [(KNBuildConfettiSystem *)self particlesWide];
+  particlesHigh = [(KNBuildConfettiSystem *)self particlesHigh];
+  if (particlesWide <= particlesHigh)
   {
-    v8 = v7;
+    v8 = particlesHigh;
   }
 
   else
   {
-    v8 = v6;
+    v8 = particlesWide;
   }
 
   return v4 * 0.025 * (vcvtd_n_f64_u64(v8, 1uLL) + 20.0);

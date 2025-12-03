@@ -1,36 +1,36 @@
 @interface NWNetworkOfInterestManager
 - (BOOL)_connect;
-- (BOOL)_validateKeyPath:(id)a3;
+- (BOOL)_validateKeyPath:(id)path;
 - (BOOL)isClosing;
 - (NWNetworkOfInterestManager)init;
 - (id)delegate;
-- (void)_commonFinalizeRequestFor:(id)a3 orPredicate:(id)a4 options:(id)a5 isStaged:(BOOL)a6;
+- (void)_commonFinalizeRequestFor:(id)for orPredicate:(id)predicate options:(id)options isStaged:(BOOL)staged;
 - (void)_unloadState;
-- (void)auditableLinkQualityForNOI:(id)a3 reply:(id)a4;
-- (void)canUseOnAlternateNOI:(id)a3 appStates:(id)a4 reply:(id)a5;
-- (void)canUseOnAlternateNOI:(id)a3 apps:(id)a4 reply:(id)a5;
-- (void)dayOfWeekPredictionGroupingForNOI:(id)a3 reply:(id)a4;
+- (void)auditableLinkQualityForNOI:(id)i reply:(id)reply;
+- (void)canUseOnAlternateNOI:(id)i appStates:(id)states reply:(id)reply;
+- (void)canUseOnAlternateNOI:(id)i apps:(id)apps reply:(id)reply;
+- (void)dayOfWeekPredictionGroupingForNOI:(id)i reply:(id)reply;
 - (void)dealloc;
 - (void)destroy;
-- (void)errorPredictionsForNOI:(id)a3 reply:(id)a4;
-- (void)estimatedDataTransferTimeOnNOI:(id)a3 withPayloadInfo:(id)a4 reply:(id)a5;
-- (void)foregroundNetworkActivityUnderwayOn:(id)a3 reply:(id)a4;
-- (void)inquireNOIFor:(id)a3 orPredicate:(id)a4 requestedKeys:(id)a5 options:(id)a6 reply:(id)a7;
-- (void)instantQualityForNOI:(id)a3 reply:(id)a4;
-- (void)interfaceTimelineForNOI:(id)a3 reply:(id)a4;
-- (void)linkThroughputOnNOI:(id)a3 reply:(id)a4;
-- (void)networkAttachmentInfoForScopedNOI:(id)a3 reply:(id)a4;
-- (void)proxyHaveNOIs:(id)a3 tornDown:(BOOL)a4;
-- (void)proxyUpdateNOI:(id)a3 keyPath:(id)a4 change:(id)a5;
-- (void)setQueue:(id)a3;
-- (void)stopTrackingNOIs:(id)a3;
-- (void)trackAllBuiltinNOIsForInterfaceType:(int64_t)a3 options:(id)a4;
-- (void)trackCustomNOI:(id)a3 options:(id)a4;
-- (void)trackNOIAnyForInterfaceSubtype:(int64_t)a3 options:(id)a4;
-- (void)trackNOIAnyForInterfaceType:(int64_t)a3 options:(id)a4;
-- (void)trafficInvitesHourlyDistributionForNOI:(id)a3 reply:(id)a4;
-- (void)trainingProgressForNOI:(id)a3 reply:(id)a4;
-- (void)updatePredictionsForNOI:(id)a3 reply:(id)a4;
+- (void)errorPredictionsForNOI:(id)i reply:(id)reply;
+- (void)estimatedDataTransferTimeOnNOI:(id)i withPayloadInfo:(id)info reply:(id)reply;
+- (void)foregroundNetworkActivityUnderwayOn:(id)on reply:(id)reply;
+- (void)inquireNOIFor:(id)for orPredicate:(id)predicate requestedKeys:(id)keys options:(id)options reply:(id)reply;
+- (void)instantQualityForNOI:(id)i reply:(id)reply;
+- (void)interfaceTimelineForNOI:(id)i reply:(id)reply;
+- (void)linkThroughputOnNOI:(id)i reply:(id)reply;
+- (void)networkAttachmentInfoForScopedNOI:(id)i reply:(id)reply;
+- (void)proxyHaveNOIs:(id)is tornDown:(BOOL)down;
+- (void)proxyUpdateNOI:(id)i keyPath:(id)path change:(id)change;
+- (void)setQueue:(id)queue;
+- (void)stopTrackingNOIs:(id)is;
+- (void)trackAllBuiltinNOIsForInterfaceType:(int64_t)type options:(id)options;
+- (void)trackCustomNOI:(id)i options:(id)options;
+- (void)trackNOIAnyForInterfaceSubtype:(int64_t)subtype options:(id)options;
+- (void)trackNOIAnyForInterfaceType:(int64_t)type options:(id)options;
+- (void)trafficInvitesHourlyDistributionForNOI:(id)i reply:(id)reply;
+- (void)trainingProgressForNOI:(id)i reply:(id)reply;
+- (void)updatePredictionsForNOI:(id)i reply:(id)reply;
 @end
 
 @implementation NWNetworkOfInterestManager
@@ -128,8 +128,8 @@ uint64_t __38__NWNetworkOfInterestManager__connect__block_invoke()
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [(NSXPCConnection *)self->_connection exportedInterface];
-    [v14 setClasses:v13 forSelector:sel_haveNOIs_tornDown_ argumentIndex:0 ofReply:0];
+    exportedInterface = [(NSXPCConnection *)self->_connection exportedInterface];
+    [exportedInterface setClasses:v13 forSelector:sel_haveNOIs_tornDown_ argumentIndex:0 ofReply:0];
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
@@ -137,8 +137,8 @@ uint64_t __38__NWNetworkOfInterestManager__connect__block_invoke()
     v18 = objc_opt_class();
     v19 = [v15 setWithObjects:{v16, v17, v18, objc_opt_class(), 0}];
 
-    v20 = [(NSXPCConnection *)self->_connection exportedInterface];
-    [v20 setClasses:v19 forSelector:sel_updateNOI_keyPath_change_ argumentIndex:0 ofReply:0];
+    exportedInterface2 = [(NSXPCConnection *)self->_connection exportedInterface];
+    [exportedInterface2 setClasses:v19 forSelector:sel_updateNOI_keyPath_change_ argumentIndex:0 ofReply:0];
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
@@ -149,8 +149,8 @@ uint64_t __38__NWNetworkOfInterestManager__connect__block_invoke()
     v27 = objc_opt_class();
     v28 = [v21 setWithObjects:{v22, v23, v24, v25, v26, v27, objc_opt_class(), 0}];
 
-    v29 = [(NSXPCConnection *)self->_connection exportedInterface];
-    [v29 setClasses:v28 forSelector:sel_updateNOI_keyPath_change_ argumentIndex:2 ofReply:0];
+    exportedInterface3 = [(NSXPCConnection *)self->_connection exportedInterface];
+    [exportedInterface3 setClasses:v28 forSelector:sel_updateNOI_keyPath_change_ argumentIndex:2 ofReply:0];
 
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
@@ -160,8 +160,8 @@ uint64_t __38__NWNetworkOfInterestManager__connect__block_invoke()
     v35 = objc_opt_class();
     v36 = objc_opt_class();
     v37 = [v30 setWithObjects:{v31, v32, v33, v34, v35, v36, objc_opt_class(), 0}];
-    v38 = [(NSXPCConnection *)self->_connection remoteObjectInterface];
-    [v38 setClasses:v37 forSelector:sel_inquireNOIFor_orPredicate_requestedKeys_options_reply_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [(NSXPCConnection *)self->_connection remoteObjectInterface];
+    [remoteObjectInterface setClasses:v37 forSelector:sel_inquireNOIFor_orPredicate_requestedKeys_options_reply_ argumentIndex:0 ofReply:1];
 
     [(NSXPCConnection *)self->_connection resume];
     v39 = self->_connection;
@@ -182,7 +182,7 @@ uint64_t __38__NWNetworkOfInterestManager__connect__block_invoke()
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v53 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1C85F9000, v44, OS_LOG_TYPE_DEFAULT, "%p Failed to connect to remote service", buf, 0xCu);
       }
     }
@@ -211,10 +211,10 @@ uint64_t __38__NWNetworkOfInterestManager__connect__block_invoke()
 
 - (void)_unloadState
 {
-  v5 = [(NWNetworkOfInterestManager *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(NWNetworkOfInterestManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 performSelector:sel_didStopTrackingAllNOIs_ withObject:self->registryNOI];
+    [delegate performSelector:sel_didStopTrackingAllNOIs_ withObject:self->registryNOI];
   }
 
   service = self->_service;
@@ -298,32 +298,32 @@ void __38__NWNetworkOfInterestManager__connect__block_invoke_129(uint64_t a1, vo
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_commonFinalizeRequestFor:(id)a3 orPredicate:(id)a4 options:(id)a5 isStaged:(BOOL)a6
+- (void)_commonFinalizeRequestFor:(id)for orPredicate:(id)predicate options:(id)options isStaged:(BOOL)staged
 {
-  v6 = a6;
+  stagedCopy = staged;
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(NWNetworkOfInterestManager *)self service];
+  forCopy = for;
+  predicateCopy = predicate;
+  service = [(NWNetworkOfInterestManager *)self service];
 
-  if (!v11 && !v6)
+  if (!service && !stagedCopy)
   {
     [(NWNetworkOfInterestManager *)self _connect];
   }
 
-  v12 = [(NWNetworkOfInterestManager *)self service];
+  service2 = [(NWNetworkOfInterestManager *)self service];
 
-  if (v12)
+  if (service2)
   {
-    v13 = [(NWNetworkOfInterestManager *)self service];
-    [v13 subscribeToNOIsFor:v9 orPredicate:v10 options:0];
+    service3 = [(NWNetworkOfInterestManager *)self service];
+    [service3 subscribeToNOIsFor:forCopy orPredicate:predicateCopy options:0];
   }
 
   else
   {
-    if (v6)
+    if (stagedCopy)
     {
-      v14 = [MEMORY[0x1E695DFD8] setWithObject:v9];
+      v14 = [MEMORY[0x1E695DFD8] setWithObject:forCopy];
       [(NWNetworkOfInterestManager *)self proxyHaveNOIs:v14 tornDown:0];
     }
 
@@ -333,7 +333,7 @@ void __38__NWNetworkOfInterestManager__connect__block_invoke_129(uint64_t a1, vo
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 134217984;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1C85F9000, v14, OS_LOG_TYPE_DEFAULT, "%p Unable to work with remote service", &v16, 0xCu);
       }
     }
@@ -342,18 +342,18 @@ void __38__NWNetworkOfInterestManager__connect__block_invoke_129(uint64_t a1, vo
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_validateKeyPath:(id)a3
+- (BOOL)_validateKeyPath:(id)path
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [&unk_1F4841BA8 containsObject:v3];
+  pathCopy = path;
+  v4 = [&unk_1F4841BA8 containsObject:pathCopy];
   if ((v4 & 1) == 0)
   {
     v5 = noiLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = pathCopy;
       _os_log_impl(&dword_1C85F9000, v5, OS_LOG_TYPE_DEFAULT, "NWNetworkOfInterestManager: Invalid keypath: %@", &v8, 0xCu);
     }
   }
@@ -369,7 +369,7 @@ void __38__NWNetworkOfInterestManager__connect__block_invoke_129(uint64_t a1, vo
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C85F9000, v3, OS_LOG_TYPE_DEBUG, "> dealloc %p", buf, 0xCu);
   }
 
@@ -386,48 +386,48 @@ void __38__NWNetworkOfInterestManager__connect__block_invoke_129(uint64_t a1, vo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v5 = noiLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = queueCopy;
     _os_log_impl(&dword_1C85F9000, v5, OS_LOG_TYPE_DEBUG, "> setQueue:%@", &v8, 0xCu);
   }
 
   callerQueue = self->_callerQueue;
-  self->_callerQueue = v4;
+  self->_callerQueue = queueCopy;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trackNOIAnyForInterfaceType:(int64_t)a3 options:(id)a4
+- (void)trackNOIAnyForInterfaceType:(int64_t)type options:(id)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  optionsCopy = options;
   v7 = noiLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v15 = a3;
+    typeCopy = type;
     v16 = 2112;
-    v17 = v6;
+    v17 = optionsCopy;
     _os_log_impl(&dword_1C85F9000, v7, OS_LOG_TYPE_DEBUG, "> trackNOIAnyForInterfaceType:%ld options:%@", buf, 0x16u);
   }
 
-  v8 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__NWNetworkOfInterestManager_trackNOIAnyForInterfaceType_options___block_invoke;
   block[3] = &unk_1E8318EF0;
-  v12 = v6;
-  v13 = a3;
+  v12 = optionsCopy;
+  typeCopy2 = type;
   block[4] = self;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v9 = optionsCopy;
+  dispatch_async(callerQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -441,30 +441,30 @@ uint64_t __66__NWNetworkOfInterestManager_trackNOIAnyForInterfaceType_options___
   return [v3 _commonTrackRequestFor:v2 isAny:1 isBuiltin:0 options:v4 isCustom:0];
 }
 
-- (void)trackNOIAnyForInterfaceSubtype:(int64_t)a3 options:(id)a4
+- (void)trackNOIAnyForInterfaceSubtype:(int64_t)subtype options:(id)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  optionsCopy = options;
   v7 = noiLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v15 = a3;
+    subtypeCopy = subtype;
     v16 = 2112;
-    v17 = v6;
+    v17 = optionsCopy;
     _os_log_impl(&dword_1C85F9000, v7, OS_LOG_TYPE_DEBUG, "> trackNOIAnyForInterfaceSubtype:%ld options:%@", buf, 0x16u);
   }
 
-  v8 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__NWNetworkOfInterestManager_trackNOIAnyForInterfaceSubtype_options___block_invoke;
   block[3] = &unk_1E8318EF0;
-  v12 = v6;
-  v13 = a3;
+  v12 = optionsCopy;
+  subtypeCopy2 = subtype;
   block[4] = self;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v9 = optionsCopy;
+  dispatch_async(callerQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -478,30 +478,30 @@ uint64_t __69__NWNetworkOfInterestManager_trackNOIAnyForInterfaceSubtype_options
   return [v3 _commonTrackRequestFor:v2 isAny:1 isBuiltin:0 options:v4 isCustom:0];
 }
 
-- (void)trackAllBuiltinNOIsForInterfaceType:(int64_t)a3 options:(id)a4
+- (void)trackAllBuiltinNOIsForInterfaceType:(int64_t)type options:(id)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  optionsCopy = options;
   v7 = noiLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v15 = a3;
+    typeCopy = type;
     v16 = 2112;
-    v17 = v6;
+    v17 = optionsCopy;
     _os_log_impl(&dword_1C85F9000, v7, OS_LOG_TYPE_DEBUG, "> trackAllBuiltinNOIsForInterfaceType:%ld options:%@", buf, 0x16u);
   }
 
-  v8 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__NWNetworkOfInterestManager_trackAllBuiltinNOIsForInterfaceType_options___block_invoke;
   block[3] = &unk_1E8318EF0;
-  v12 = v6;
-  v13 = a3;
+  v12 = optionsCopy;
+  typeCopy2 = type;
   block[4] = self;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v9 = optionsCopy;
+  dispatch_async(callerQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -515,78 +515,78 @@ uint64_t __74__NWNetworkOfInterestManager_trackAllBuiltinNOIsForInterfaceType_op
   return [v3 _commonTrackRequestFor:v2 isAny:0 isBuiltin:1 options:v4 isCustom:0];
 }
 
-- (void)trackCustomNOI:(id)a3 options:(id)a4
+- (void)trackCustomNOI:(id)i options:(id)options
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  optionsCopy = options;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = iCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = optionsCopy;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> trackCustomNOI:%@ options:%@", buf, 0x16u);
   }
 
-  v9 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__NWNetworkOfInterestManager_trackCustomNOI_options___block_invoke;
   block[3] = &unk_1E8318F18;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v14 = optionsCopy;
+  v15 = iCopy;
+  v10 = iCopy;
+  v11 = optionsCopy;
+  dispatch_async(callerQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inquireNOIFor:(id)a3 orPredicate:(id)a4 requestedKeys:(id)a5 options:(id)a6 reply:(id)a7
+- (void)inquireNOIFor:(id)for orPredicate:(id)predicate requestedKeys:(id)keys options:(id)options reply:(id)reply
 {
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  forCopy = for;
+  predicateCopy = predicate;
+  keysCopy = keys;
+  optionsCopy = options;
+  replyCopy = reply;
   v17 = noiLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = MEMORY[0x1CCA78840](v16);
+    v18 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138413314;
-    v33 = v12;
+    v33 = forCopy;
     v34 = 2112;
-    v35 = v13;
+    v35 = predicateCopy;
     v36 = 2112;
-    v37 = v14;
+    v37 = keysCopy;
     v38 = 2112;
-    v39 = v15;
+    v39 = optionsCopy;
     v40 = 2048;
     v41 = v18;
     _os_log_impl(&dword_1C85F9000, v17, OS_LOG_TYPE_DEBUG, "> inquireNOIFor:%@ orPredicate:%@ requestedKeys:%@ options:%@ reply:%p", buf, 0x34u);
   }
 
-  v19 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __84__NWNetworkOfInterestManager_inquireNOIFor_orPredicate_requestedKeys_options_reply___block_invoke;
   v26[3] = &unk_1E8318F68;
   v26[4] = self;
-  v27 = v12;
-  v28 = v13;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
-  dispatch_async(v19, v26);
+  v27 = forCopy;
+  v28 = predicateCopy;
+  v29 = keysCopy;
+  v30 = optionsCopy;
+  v31 = replyCopy;
+  v20 = replyCopy;
+  v21 = optionsCopy;
+  v22 = keysCopy;
+  v23 = predicateCopy;
+  v24 = forCopy;
+  dispatch_async(callerQueue, v26);
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -670,33 +670,33 @@ void __84__NWNetworkOfInterestManager_inquireNOIFor_orPredicate_requestedKeys_op
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePredictionsForNOI:(id)a3 reply:(id)a4
+- (void)updatePredictionsForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> updatePredictionsForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__NWNetworkOfInterestManager_updatePredictionsForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -799,33 +799,33 @@ void __60__NWNetworkOfInterestManager_updatePredictionsForNOI_reply___block_invo
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)instantQualityForNOI:(id)a3 reply:(id)a4
+- (void)instantQualityForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> instantQualityForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__NWNetworkOfInterestManager_instantQualityForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -908,33 +908,33 @@ void __57__NWNetworkOfInterestManager_instantQualityForNOI_reply___block_invoke_
   (*(*(a1 + 48) + 16))(*(a1 + 48), [v2 integerValue], *(a1 + 40));
 }
 
-- (void)auditableLinkQualityForNOI:(id)a3 reply:(id)a4
+- (void)auditableLinkQualityForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> auditableLinkQualityForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__NWNetworkOfInterestManager_auditableLinkQualityForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1018,49 +1018,49 @@ void __63__NWNetworkOfInterestManager_auditableLinkQualityForNOI_reply___block_i
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)networkAttachmentInfoForScopedNOI:(id)a3 reply:(id)a4
+- (void)networkAttachmentInfoForScopedNOI:(id)i reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v23 = v6;
+    v23 = iCopy;
     v24 = 2048;
     v25 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> networkAttachmentInfoForScopedNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  if ([v6 scopedToLOI] == -1)
+  if ([iCopy scopedToLOI] == -1)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:45 userInfo:0];
-    v13 = [(NWNetworkOfInterestManager *)self callerQueue];
+    callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __70__NWNetworkOfInterestManager_networkAttachmentInfoForScopedNOI_reply___block_invoke_2;
     v16[3] = &unk_1E8318A00;
     v17 = v12;
-    v18 = v7;
-    v14 = v7;
+    v18 = replyCopy;
+    v14 = replyCopy;
     v11 = v12;
-    dispatch_async(v13, v16);
+    dispatch_async(callerQueue, v16);
   }
 
   else
   {
-    v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+    callerQueue2 = [(NWNetworkOfInterestManager *)self callerQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__NWNetworkOfInterestManager_networkAttachmentInfoForScopedNOI_reply___block_invoke;
     block[3] = &unk_1E8318FE0;
     block[4] = self;
-    v20 = v6;
-    v21 = v7;
-    v11 = v7;
-    dispatch_async(v10, block);
+    v20 = iCopy;
+    v21 = replyCopy;
+    v11 = replyCopy;
+    dispatch_async(callerQueue2, block);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1145,33 +1145,33 @@ void __70__NWNetworkOfInterestManager_networkAttachmentInfoForScopedNOI_reply___
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)linkThroughputOnNOI:(id)a3 reply:(id)a4
+- (void)linkThroughputOnNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> linkThroughputOnNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__NWNetworkOfInterestManager_linkThroughputOnNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1255,38 +1255,38 @@ void __56__NWNetworkOfInterestManager_linkThroughputOnNOI_reply___block_invoke_1
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)estimatedDataTransferTimeOnNOI:(id)a3 withPayloadInfo:(id)a4 reply:(id)a5
+- (void)estimatedDataTransferTimeOnNOI:(id)i withPayloadInfo:(id)info reply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  infoCopy = info;
+  replyCopy = reply;
   v11 = noiLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = MEMORY[0x1CCA78840](v10);
+    v12 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412802;
-    v23 = v8;
+    v23 = iCopy;
     v24 = 2112;
-    v25 = v9;
+    v25 = infoCopy;
     v26 = 2048;
     v27 = v12;
     _os_log_impl(&dword_1C85F9000, v11, OS_LOG_TYPE_DEBUG, "> estimatedDataTransferTimeOnNOI:%@ withPayloadInfo:%@ reply:%p", buf, 0x20u);
   }
 
-  v13 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__NWNetworkOfInterestManager_estimatedDataTransferTimeOnNOI_withPayloadInfo_reply___block_invoke;
   v18[3] = &unk_1E8319030;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
-  dispatch_async(v13, v18);
+  v19 = iCopy;
+  v20 = infoCopy;
+  v21 = replyCopy;
+  v14 = replyCopy;
+  v15 = infoCopy;
+  v16 = iCopy;
+  dispatch_async(callerQueue, v18);
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -1374,33 +1374,33 @@ void __83__NWNetworkOfInterestManager_estimatedDataTransferTimeOnNOI_withPayload
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)foregroundNetworkActivityUnderwayOn:(id)a3 reply:(id)a4
+- (void)foregroundNetworkActivityUnderwayOn:(id)on reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  onCopy = on;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = onCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> foregroundNetworkActivityUnderwayOn:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__NWNetworkOfInterestManager_foregroundNetworkActivityUnderwayOn_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = onCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = onCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1483,70 +1483,70 @@ void __72__NWNetworkOfInterestManager_foregroundNetworkActivityUnderwayOn_reply_
   (*(*(a1 + 48) + 16))(*(a1 + 48), [v2 integerValue] != 0, *(a1 + 40));
 }
 
-- (void)canUseOnAlternateNOI:(id)a3 apps:(id)a4 reply:(id)a5
+- (void)canUseOnAlternateNOI:(id)i apps:(id)apps reply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  appsCopy = apps;
+  replyCopy = reply;
   v11 = noiLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = MEMORY[0x1CCA78840](v10);
+    v12 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412802;
-    v19 = v8;
+    v19 = iCopy;
     v20 = 2112;
-    v21 = v9;
+    v21 = appsCopy;
     v22 = 2048;
     v23 = v12;
     _os_log_impl(&dword_1C85F9000, v11, OS_LOG_TYPE_DEBUG, "> canUseOnAlternateNOI:%@ apps:%@ reply:%p", buf, 0x20u);
   }
 
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__NWNetworkOfInterestManager_canUseOnAlternateNOI_apps_reply___block_invoke;
   v16[3] = &unk_1E8319058;
-  v17 = v13;
-  v14 = v13;
-  [v9 enumerateObjectsUsingBlock:v16];
-  [(NWNetworkOfInterestManager *)self canUseOnAlternateNOI:v8 appStates:v14 reply:v10];
+  v17 = dictionary;
+  v14 = dictionary;
+  [appsCopy enumerateObjectsUsingBlock:v16];
+  [(NWNetworkOfInterestManager *)self canUseOnAlternateNOI:iCopy appStates:v14 reply:replyCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)canUseOnAlternateNOI:(id)a3 appStates:(id)a4 reply:(id)a5
+- (void)canUseOnAlternateNOI:(id)i appStates:(id)states reply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  statesCopy = states;
+  replyCopy = reply;
   v11 = noiLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = MEMORY[0x1CCA78840](v10);
+    v12 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412802;
-    v23 = v8;
+    v23 = iCopy;
     v24 = 2112;
-    v25 = v9;
+    v25 = statesCopy;
     v26 = 2048;
     v27 = v12;
     _os_log_impl(&dword_1C85F9000, v11, OS_LOG_TYPE_DEBUG, "> canUseOnAlternateNOI:%@ appStates:%@ reply:%p", buf, 0x20u);
   }
 
-  v13 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __67__NWNetworkOfInterestManager_canUseOnAlternateNOI_appStates_reply___block_invoke;
   v18[3] = &unk_1E8319030;
   v18[4] = self;
-  v19 = v9;
-  v20 = v8;
-  v21 = v10;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
-  dispatch_async(v13, v18);
+  v19 = statesCopy;
+  v20 = iCopy;
+  v21 = replyCopy;
+  v14 = replyCopy;
+  v15 = iCopy;
+  v16 = statesCopy;
+  dispatch_async(callerQueue, v18);
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -1666,27 +1666,27 @@ void __67__NWNetworkOfInterestManager_canUseOnAlternateNOI_appStates_reply___blo
   }
 }
 
-- (void)stopTrackingNOIs:(id)a3
+- (void)stopTrackingNOIs:(id)is
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  isCopy = is;
   v5 = noiLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = isCopy;
     _os_log_impl(&dword_1C85F9000, v5, OS_LOG_TYPE_DEBUG, "> stopTrackingNOIs:%@", buf, 0xCu);
   }
 
-  v6 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__NWNetworkOfInterestManager_stopTrackingNOIs___block_invoke;
   v9[3] = &unk_1E8319080;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = isCopy;
+  v7 = isCopy;
+  dispatch_async(callerQueue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -1740,13 +1740,13 @@ void __47__NWNetworkOfInterestManager_stopTrackingNOIs___block_invoke(uint64_t a
     _os_log_impl(&dword_1C85F9000, v3, OS_LOG_TYPE_DEBUG, "> destroy", buf, 2u);
   }
 
-  v4 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__NWNetworkOfInterestManager_destroy__block_invoke;
   block[3] = &unk_1E8318E78;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(callerQueue, block);
 }
 
 uint64_t __37__NWNetworkOfInterestManager_destroy__block_invoke(uint64_t a1)
@@ -1758,33 +1758,33 @@ uint64_t __37__NWNetworkOfInterestManager_destroy__block_invoke(uint64_t a1)
   return [v2 _unloadState];
 }
 
-- (void)errorPredictionsForNOI:(id)a3 reply:(id)a4
+- (void)errorPredictionsForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> errorPredictionsForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__NWNetworkOfInterestManager_errorPredictionsForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1869,33 +1869,33 @@ void __59__NWNetworkOfInterestManager_errorPredictionsForNOI_reply___block_invok
   (*(v2 + 16))(v2, *(a1 + 40));
 }
 
-- (void)dayOfWeekPredictionGroupingForNOI:(id)a3 reply:(id)a4
+- (void)dayOfWeekPredictionGroupingForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> dayOfWeekPredictionGroupingForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__NWNetworkOfInterestManager_dayOfWeekPredictionGroupingForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1979,33 +1979,33 @@ void __70__NWNetworkOfInterestManager_dayOfWeekPredictionGroupingForNOI_reply___
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)trainingProgressForNOI:(id)a3 reply:(id)a4
+- (void)trainingProgressForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> trainingProgressForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__NWNetworkOfInterestManager_trainingProgressForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -2090,33 +2090,33 @@ void __59__NWNetworkOfInterestManager_trainingProgressForNOI_reply___block_invok
   (*(v2 + 16))(v2, *(a1 + 40));
 }
 
-- (void)trafficInvitesHourlyDistributionForNOI:(id)a3 reply:(id)a4
+- (void)trafficInvitesHourlyDistributionForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> trafficInvitesHourlyDistributionForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__NWNetworkOfInterestManager_trafficInvitesHourlyDistributionForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -2211,33 +2211,33 @@ void __75__NWNetworkOfInterestManager_trafficInvitesHourlyDistributionForNOI_rep
   }
 }
 
-- (void)interfaceTimelineForNOI:(id)a3 reply:(id)a4
+- (void)interfaceTimelineForNOI:(id)i reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v8 = noiLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v18 = v6;
+    v18 = iCopy;
     v19 = 2048;
     v20 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> interfaceTimelineForNOI:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__NWNetworkOfInterestManager_interfaceTimelineForNOI_reply___block_invoke;
   block[3] = &unk_1E8318FE0;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = iCopy;
+  v16 = replyCopy;
+  v11 = replyCopy;
+  v12 = iCopy;
+  dispatch_async(callerQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -2320,31 +2320,31 @@ void __60__NWNetworkOfInterestManager_interfaceTimelineForNOI_reply___block_invo
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)proxyHaveNOIs:(id)a3 tornDown:(BOOL)a4
+- (void)proxyHaveNOIs:(id)is tornDown:(BOOL)down
 {
-  v4 = a4;
+  downCopy = down;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  isCopy = is;
   v7 = noiLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = isCopy;
     v16 = 1024;
-    v17 = v4;
+    v17 = downCopy;
     _os_log_impl(&dword_1C85F9000, v7, OS_LOG_TYPE_DEBUG, ">> haveNOIs:%@ tornDown:%{BOOL}d", buf, 0x12u);
   }
 
-  v8 = [(NWNetworkOfInterestManager *)self callerQueue];
+  callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__NWNetworkOfInterestManager_proxyHaveNOIs_tornDown___block_invoke;
   block[3] = &unk_1E83190D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v4;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v12 = isCopy;
+  v13 = downCopy;
+  v9 = isCopy;
+  dispatch_async(callerQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -2576,36 +2576,36 @@ void __53__NWNetworkOfInterestManager_proxyHaveNOIs_tornDown___block_invoke_201(
   }
 }
 
-- (void)proxyUpdateNOI:(id)a3 keyPath:(id)a4 change:(id)a5
+- (void)proxyUpdateNOI:(id)i keyPath:(id)path change:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  pathCopy = path;
+  changeCopy = change;
   v11 = noiLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v19 = v8;
+    v19 = iCopy;
     v20 = 2112;
-    v21 = v9;
+    v21 = pathCopy;
     v22 = 2112;
-    v23 = v10;
+    v23 = changeCopy;
     _os_log_impl(&dword_1C85F9000, v11, OS_LOG_TYPE_DEBUG, ">> updateNOI:%@ keyPath:%@ change:%@", buf, 0x20u);
   }
 
-  if ([(NWNetworkOfInterestManager *)self _validateKeyPath:v9])
+  if ([(NWNetworkOfInterestManager *)self _validateKeyPath:pathCopy])
   {
-    v12 = [(NWNetworkOfInterestManager *)self callerQueue];
+    callerQueue = [(NWNetworkOfInterestManager *)self callerQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __60__NWNetworkOfInterestManager_proxyUpdateNOI_keyPath_change___block_invoke;
     v14[3] = &unk_1E8319120;
     v14[4] = self;
-    v15 = v10;
-    v16 = v8;
-    v17 = v9;
-    dispatch_async(v12, v14);
+    v15 = changeCopy;
+    v16 = iCopy;
+    v17 = pathCopy;
+    dispatch_async(callerQueue, v14);
   }
 
   v13 = *MEMORY[0x1E69E9840];

@@ -60,32 +60,32 @@
     {
       v10 = IOPSDrawingUnlimitedPower();
       v11 = [v9 objectForKeyedSubscript:@"FamilyCode"];
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
       v13 = [v9 objectForKeyedSubscript:@"IsWireless"];
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
 
 LABEL_14:
       goto LABEL_16;
     }
 
 LABEL_13:
-    v14 = 0;
-    v12 = 0;
+    bOOLValue = 0;
+    integerValue = 0;
     v10 = 0;
     goto LABEL_14;
   }
 
-  v14 = 0;
-  v12 = 0;
+  bOOLValue = 0;
+  integerValue = 0;
   v10 = 1;
 LABEL_16:
   v15 = _DKPluggedInMonitorLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = [MEMORY[0x277CCABB0] numberWithBool:v10];
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
-    v18 = [MEMORY[0x277CCABB0] numberWithBool:v14];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+    v18 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     v24 = 138543874;
     v25 = v16;
     v26 = 2114;
@@ -95,11 +95,11 @@ LABEL_16:
     _os_log_impl(&dword_22595A000, v15, OS_LOG_TYPE_DEFAULT, "Setting current state plugin:%{public}@, adapterType:%{public}@, wireless:%{public}@", &v24, 0x20u);
   }
 
-  v19 = [(_DKMonitor *)self currentEvent];
-  v20 = [_DKPluggedInMonitor _eventWithState:v10 adapterType:v12 isWireless:v14];
+  currentEvent = [(_DKMonitor *)self currentEvent];
+  v20 = [_DKPluggedInMonitor _eventWithState:v10 adapterType:integerValue isWireless:bOOLValue];
   if ([(_DKMonitor *)self historicalStateHasChanged:v20])
   {
-    v21 = [objc_opt_class() _BMEventWithState:v10 adapterType:v12 isWireless:v14];
+    v21 = [objc_opt_class() _BMEventWithState:v10 adapterType:integerValue isWireless:bOOLValue];
     [(BMSource *)self->_source sendEvent:v21];
   }
 
@@ -110,7 +110,7 @@ LABEL_16:
     v24 = 138412546;
     v25 = v20;
     v26 = 2112;
-    v27 = v19;
+    v27 = currentEvent;
     _os_log_impl(&dword_22595A000, v22, OS_LOG_TYPE_DEFAULT, "Setting current event: %@, previousEvent: %@", &v24, 0x16u);
   }
 
@@ -124,22 +124,22 @@ LABEL_16:
   if ([(_DKMonitor *)&v12 instantMonitorNeedsActivation])
   {
     v3 = BiomeLibrary();
-    v4 = [v3 Device];
-    v5 = [v4 Power];
-    v6 = [v5 PluggedIn];
-    v7 = [v6 source];
+    device = [v3 Device];
+    power = [device Power];
+    pluggedIn = [power PluggedIn];
+    source = [pluggedIn source];
     source = self->_source;
-    self->_source = v7;
+    self->_source = source;
 
     self->_enabled = 1;
-    v9 = [@"com.apple.system.powermanagement.poweradapter" UTF8String];
-    v10 = [(_DKMonitor *)self queue];
+    uTF8String = [@"com.apple.system.powermanagement.poweradapter" UTF8String];
+    queue = [(_DKMonitor *)self queue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __28___DKPluggedInMonitor_start__block_invoke;
     handler[3] = &unk_27856F408;
     handler[4] = self;
-    notify_register_dispatch(v9, &self->_pluggedInToken, v10, handler);
+    notify_register_dispatch(uTF8String, &self->_pluggedInToken, queue, handler);
 
     [(_DKPluggedInMonitor *)self setCurrentState];
   }
@@ -169,9 +169,9 @@ LABEL_16:
 - (void)synchronouslyReflectCurrentValue
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(_DKMonitor *)self currentEvent];
+  currentEvent = [(_DKMonitor *)self currentEvent];
 
-  if (!v2)
+  if (!currentEvent)
   {
     v3 = IOPSCopyPowerSourcesInfo();
     if (v3)

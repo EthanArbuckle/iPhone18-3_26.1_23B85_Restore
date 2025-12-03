@@ -1,104 +1,104 @@
 @interface TSTPivotOwner
-+ (id)enclosingGroupNameForGroupCellValue:(id)a3;
-- (BOOL)groupingColumnUidExists:(TSKUIDStruct)a3;
++ (id)enclosingGroupNameForGroupCellValue:(id)value;
+- (BOOL)groupingColumnUidExists:(TSKUIDStruct)exists;
 - (BOOL)p_commitSort;
 - (BOOL)p_commitSortAsync;
-- (BOOL)requiresUnwrapping:(TSUCellCoord)a3;
+- (BOOL)requiresUnwrapping:(TSUCellCoord)unwrapping;
 - (TSCECellTractRef)pivotSourceBodyTract;
 - (TSCECellTractRef)pivotSourceHeaderTract;
-- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)a3 withCalcEngine:(id)a4 recalcOptions:(TSCERecalculationState)a5;
+- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)at withCalcEngine:(id)engine recalcOptions:(TSCERecalculationState)options;
 - (TSKUIDStruct)ownerUID;
 - (TSKUIDStruct)pivotAggregateRuleChangeUID;
 - (TSKUIDStruct)pivotDataRefreshUID;
 - (TSKUIDStruct)pivotRowColumnRuleChangeUID;
 - (TSKUIDStruct)pivotSourceTableUID;
 - (TSKUIDStructTract)pivotSourceBodyUidTract;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortColumnsInMode:(SEL)a3 sortDirection:(unint64_t)a4 rowIndex:(int)a5 level:(unsigned int)a6 aggregateIndex:(unsigned __int8)a7 resetLabels:(unint64_t)a8;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortRowsInMode:(SEL)a3 sortDirection:(unint64_t)a4 columnIndex:(int)a5 level:(unsigned int)a6 aggregateIndex:(unsigned __int8)a7 resetLabels:(unint64_t)a8;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortColumnsInMode:(SEL)mode sortDirection:(unint64_t)direction rowIndex:(int)index level:(unsigned int)level aggregateIndex:(unsigned __int8)aggregateIndex resetLabels:(unint64_t)labels;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortRowsInMode:(SEL)mode sortDirection:(unint64_t)direction columnIndex:(int)index level:(unsigned int)level aggregateIndex:(unsigned __int8)aggregateIndex resetLabels:(unint64_t)labels;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)pivotColumnUIDs;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)pivotRowUIDs;
 - (TSTFormula)pivotSourceBodyReferenceEmbeddedInFormula;
 - (TSTPivotGroupingColumnOptionsMap)groupingColumnOptionsMapCopy;
-- (TSTPivotOwner)initWithTableModel:(id)a3;
-- (TSUModelColumnIndex)baseColumnIndexForGroupingAtColumnIndex:(unsigned __int16)a3;
-- (TSUModelColumnIndex)baseColumnIndexForGroupingAtRowIndex:(unsigned int)a3;
+- (TSTPivotOwner)initWithTableModel:(id)model;
+- (TSUModelColumnIndex)baseColumnIndexForGroupingAtColumnIndex:(unsigned __int16)index;
+- (TSUModelColumnIndex)baseColumnIndexForGroupingAtRowIndex:(unsigned int)index;
 - (id).cxx_construct;
-- (id)enclosingGroupNameForColumnIndex:(unsigned __int16)a3 level:(unsigned __int8)a4;
-- (id)enclosingGroupNameForRowIndex:(unsigned int)a3 level:(unsigned __int8)a4;
-- (id)filterSetForPivotDataTable:(id)a3;
-- (id)hiddenStatesForPivotDataTable:(id)a3;
+- (id)enclosingGroupNameForColumnIndex:(unsigned __int16)index level:(unsigned __int8)level;
+- (id)enclosingGroupNameForRowIndex:(unsigned int)index level:(unsigned __int8)level;
+- (id)filterSetForPivotDataTable:(id)table;
+- (id)hiddenStatesForPivotDataTable:(id)table;
 - (id)indexesForLeadingColumns;
-- (id)indexesForLeadingColumnsAtGroupLevel:(unsigned __int8)a3;
+- (id)indexesForLeadingColumnsAtGroupLevel:(unsigned __int8)level;
 - (id)indexesForLeadingRows;
-- (id)indexesForLeadingRowsAtGroupLevel:(unsigned __int8)a3;
-- (id)indexesForLeadingSummaryColumnsAtGroupLevel:(unsigned __int8)a3;
-- (id)indexesForLeadingSummaryRowsAtGroupLevel:(unsigned __int8)a3;
-- (id)lowestCategoryLevelAsLeadingColumnGroupName:(unsigned __int16)a3;
-- (id)lowestCategoryLevelAsLeadingRowGroupName:(unsigned int)a3;
-- (id)p_formulaForCellCoord:(TSKUIDStructCoord *)x2_0 runningTotalContext:(id)a4;
-- (id)p_referenceNodeFromTractRef:(id)a3;
-- (id)pivotOptionsForColumnGroupsAtLevel:(unsigned __int8)a3;
-- (id)pivotOptionsForGroupingColumn:(id)a3;
-- (id)pivotOptionsForRowGroupsAtLevel:(unsigned __int8)a3;
+- (id)indexesForLeadingRowsAtGroupLevel:(unsigned __int8)level;
+- (id)indexesForLeadingSummaryColumnsAtGroupLevel:(unsigned __int8)level;
+- (id)indexesForLeadingSummaryRowsAtGroupLevel:(unsigned __int8)level;
+- (id)lowestCategoryLevelAsLeadingColumnGroupName:(unsigned __int16)name;
+- (id)lowestCategoryLevelAsLeadingRowGroupName:(unsigned int)name;
+- (id)p_formulaForCellCoord:(TSKUIDStructCoord *)x2_0 runningTotalContext:(id)context;
+- (id)p_referenceNodeFromTractRef:(id)ref;
+- (id)pivotOptionsForColumnGroupsAtLevel:(unsigned __int8)level;
+- (id)pivotOptionsForGroupingColumn:(id)column;
+- (id)pivotOptionsForRowGroupsAtLevel:(unsigned __int8)level;
 - (id)pivotSourceRangeName;
-- (int)linkToCalcEngine:(id)a3 forTableModel:(id)a4;
-- (int)registerWithCalcEngine:(id)a3 forTableModel:(id)a4 baseOwnerUID:(const TSKUIDStruct *)a5;
-- (unsigned)columnGroupLevelForHeaderRow:(TSUViewRowIndex)a3;
-- (unsigned)rowGroupLevelForHeaderColumn:(TSUViewColumnIndex)a3;
-- (void)clearAllPivotHiddenAndFiltered:(BOOL)a3;
-- (void)collapseExpandChanged:(id)a3 forState:(id)a4;
-- (void)didChangeTableName:(id)a3 fromTableName:(id)a4 forTableUID:(TSKUIDStruct)a5;
+- (int)linkToCalcEngine:(id)engine forTableModel:(id)model;
+- (int)registerWithCalcEngine:(id)engine forTableModel:(id)model baseOwnerUID:(const TSKUIDStruct *)d;
+- (unsigned)columnGroupLevelForHeaderRow:(TSUViewRowIndex)row;
+- (unsigned)rowGroupLevelForHeaderColumn:(TSUViewColumnIndex)column;
+- (void)clearAllPivotHiddenAndFiltered:(BOOL)filtered;
+- (void)collapseExpandChanged:(id)changed forState:(id)state;
+- (void)didChangeTableName:(id)name fromTableName:(id)tableName forTableUID:(TSKUIDStruct)d;
 - (void)documentLocaleDidChange;
 - (void)filterSetUpdated;
-- (void)handlePivotSorting:(BOOL)a3;
-- (void)invalidateForCalcEngine:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_ensureHiddenStatesExistsWithPivotDataTable:(id)a3;
+- (void)handlePivotSorting:(BOOL)sorting;
+- (void)invalidateForCalcEngine:(id)engine;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_ensureHiddenStatesExistsWithPivotDataTable:(id)table;
 - (void)p_resetAllHiddenTotals;
 - (void)p_resetHiddenGrandTotals;
-- (void)p_resetHiddenTotalsForGroupingColumnUid:(const TSKUIDStruct *)a3 hideTotals:(BOOL)a4;
+- (void)p_resetHiddenTotalsForGroupingColumnUid:(const TSKUIDStruct *)uid hideTotals:(BOOL)totals;
 - (void)p_resetSortingStructures;
-- (void)p_resetSummaryFormulasForRunningTotalsOnly:(BOOL)a3 preservingStyles:(BOOL)a4;
+- (void)p_resetSummaryFormulasForRunningTotalsOnly:(BOOL)only preservingStyles:(BOOL)styles;
 - (void)p_setEmptyPivotTableLabels;
-- (void)p_setPivotHeaderCellsResettingPivotHidden:(BOOL)a3 preservingStyles:(BOOL)a4;
-- (void)p_sortFullTable:(unint64_t)a3;
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3 calcEngine:(id)a4;
+- (void)p_setPivotHeaderCellsResettingPivotHidden:(BOOL)hidden preservingStyles:(BOOL)styles;
+- (void)p_sortFullTable:(unint64_t)table;
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map calcEngine:(id)engine;
 - (void)resetBaseOwnerUID;
 - (void)resetCellsForNewPivotOrder;
 - (void)resetCellsForNewPivotRules;
 - (void)rewriteForPaste;
-- (void)saveToArchiver:(id)a3;
-- (void)setFilterSet:(id)a3 forPivotDataTable:(id)a4;
-- (void)setHidingGrandTotalColumns:(BOOL)a3;
-- (void)setHidingGrandTotalRows:(BOOL)a3;
-- (void)setPivotSourceBodyTract:(id)a3;
-- (void)setPivotSourceBodyUidTract:(TSKUIDStructTract *)a3;
-- (void)setPivotSourceHeaderTract:(id)a3;
-- (void)setPivotSourceTableName:(id)a3;
-- (void)setPivotSourceTableUID:(TSKUIDStruct)a3;
-- (void)setupAfterUnarchiveForPivotTable:(const TSKUIDStruct *)a3 pivotDataTable:(id)a4;
-- (void)sortColumnsByRowIndex:(unsigned int)a3 level:(unsigned __int8)a4 aggregateIndex:(unint64_t)a5 sortDirection:(int)a6;
-- (void)sortRowsByColumnIndex:(unsigned int)a3 level:(unsigned __int8)a4 aggregateIndex:(unint64_t)a5 sortDirection:(int)a6;
+- (void)saveToArchiver:(id)archiver;
+- (void)setFilterSet:(id)set forPivotDataTable:(id)table;
+- (void)setHidingGrandTotalColumns:(BOOL)columns;
+- (void)setHidingGrandTotalRows:(BOOL)rows;
+- (void)setPivotSourceBodyTract:(id)tract;
+- (void)setPivotSourceBodyUidTract:(TSKUIDStructTract *)tract;
+- (void)setPivotSourceHeaderTract:(id)tract;
+- (void)setPivotSourceTableName:(id)name;
+- (void)setPivotSourceTableUID:(TSKUIDStruct)d;
+- (void)setupAfterUnarchiveForPivotTable:(const TSKUIDStruct *)table pivotDataTable:(id)dataTable;
+- (void)sortColumnsByRowIndex:(unsigned int)index level:(unsigned __int8)level aggregateIndex:(unint64_t)aggregateIndex sortDirection:(int)direction;
+- (void)sortRowsByColumnIndex:(unsigned int)index level:(unsigned __int8)level aggregateIndex:(unint64_t)aggregateIndex sortDirection:(int)direction;
 - (void)unregisterFromCalcEngine;
 - (void)upgradeSourceTractsForAbsoluteRefs;
 - (void)upgradeSourceTractsForHostCellChange;
-- (void)writeResultsForCalcEngine:(id)a3;
+- (void)writeResultsForCalcEngine:(id)engine;
 @end
 
 @implementation TSTPivotOwner
 
-- (TSTPivotOwner)initWithTableModel:(id)a3
+- (TSTPivotOwner)initWithTableModel:(id)model
 {
-  v4 = a3;
-  v9 = objc_msgSend_context(v4, v5, v6, v7, v8);
+  modelCopy = model;
+  v9 = objc_msgSend_context(modelCopy, v5, v6, v7, v8);
   v64.receiver = self;
   v64.super_class = TSTPivotOwner;
   v10 = [(TSTPivotOwner *)&v64 initWithContext:v9];
 
   if (v10)
   {
-    v10->_tableModel = v4;
-    *&v63 = objc_msgSend_tableUID(v4, v11, v12, v13, v14);
+    v10->_tableModel = modelCopy;
+    *&v63 = objc_msgSend_tableUID(modelCopy, v11, v12, v13, v14);
     *(&v63 + 1) = v15;
     v10->_ownerUID._lower = sub_2212C4930(&v63, 0x11, v16, v17, v18);
     v10->_ownerUID._upper = v19;
@@ -109,19 +109,19 @@
 
     objc_msgSend_setUsesOnlyFixedCoords_(v10->_formulaStore, v25, 1, v26, v27);
     v28 = [TSTGroupBySet alloc];
-    *&v63 = objc_msgSend_tableUID(v4, v29, v30, v31, v32);
+    *&v63 = objc_msgSend_tableUID(modelCopy, v29, v30, v31, v32);
     *(&v63 + 1) = v33;
     v36 = objc_msgSend_initWithPivotTableUID_(v28, v33, &v63, v34, v35);
     groupBySet = v10->_groupBySet;
     v10->_groupBySet = v36;
 
     v38 = [TSTPivotGroupingColumnOptionsMap alloc];
-    v43 = objc_msgSend_context(v4, v39, v40, v41, v42);
+    v43 = objc_msgSend_context(modelCopy, v39, v40, v41, v42);
     v47 = objc_msgSend_initWithContext_(v38, v44, v43, v45, v46);
     groupingColumnOptionsMap = v10->_groupingColumnOptionsMap;
     v10->_groupingColumnOptionsMap = v47;
 
-    v53 = objc_msgSend_calcEngine(v4, v49, v50, v51, v52);
+    v53 = objc_msgSend_calcEngine(modelCopy, v49, v50, v51, v52);
     v58 = objc_msgSend_tableNameChangeDistributor(v53, v54, v55, v56, v57);
     objc_msgSend_addReceiver_(v58, v59, v10, v60, v61);
   }
@@ -144,10 +144,10 @@
   }
 }
 
-- (int)registerWithCalcEngine:(id)a3 forTableModel:(id)a4 baseOwnerUID:(const TSKUIDStruct *)a5
+- (int)registerWithCalcEngine:(id)engine forTableModel:(id)model baseOwnerUID:(const TSKUIDStruct *)d
 {
-  v8 = a3;
-  v13 = a4;
+  engineCopy = engine;
+  modelCopy = model;
   if (self->_calcEngine)
   {
     v14 = 1;
@@ -155,7 +155,7 @@
 
   else
   {
-    self->_calcEngine = v8;
+    self->_calcEngine = engineCopy;
     tableModel = self->_tableModel;
     if (!tableModel)
     {
@@ -173,10 +173,10 @@
     objc_msgSend_flushCachedIndexSets(v32, v33, v34, v35, v36);
 
     objc_msgSend_resetBaseOwnerUID(self, v37, v38, v39, v40);
-    objc_msgSend_registerWithCalcEngine_baseOwnerUID_(self->_groupBySet, v41, v8, a5, v42);
-    objc_msgSend_setCalcEngine_(self->_formulaStore, v43, v8, v44, v45);
+    objc_msgSend_registerWithCalcEngine_baseOwnerUID_(self->_groupBySet, v41, engineCopy, d, v42);
+    objc_msgSend_setCalcEngine_(self->_formulaStore, v43, engineCopy, v44, v45);
     LOWORD(v78) = 17;
-    v14 = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(self->_calcEngine, v46, self->_ownerUID._lower, self->_ownerUID._upper, self, 0, a5->_lower, a5->_upper, v78);
+    v14 = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(self->_calcEngine, v46, self->_ownerUID._lower, self->_ownerUID._upper, self, 0, d->_lower, d->_upper, v78);
     if (!v14)
     {
       v51 = objc_msgSend_tableInfo(self->_tableModel, v47, v48, v49, v50);
@@ -186,12 +186,12 @@
       {
         TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v81, 0, 1);
         v81.var1 = 1;
-        v61 = objc_msgSend_emptyReferenceSetWrapper(v8, v57, v58, v59, v60);
-        objc_msgSend_summaryModelIsCleanForSortPrecedentForTableUID_(TSCEHauntedOwner, v62, a5, v63, v64);
+        v61 = objc_msgSend_emptyReferenceSetWrapper(engineCopy, v57, v58, v59, v60);
+        objc_msgSend_summaryModelIsCleanForSortPrecedentForTableUID_(TSCEHauntedOwner, v62, d, v63, v64);
         objc_msgSend_insertCellRef_(v61, v65, v80, v66, v67);
         v80[0] = 0x300000000;
         TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v79, &v81);
-        objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(v8, v68, v80, &self->_ownerUID, v61, &v79);
+        objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(engineCopy, v68, v80, &self->_ownerUID, v61, &v79);
 
         objc_msgSend_registerAllFormulaToCalculationEngine(self->_formulaStore, v69, v70, v71, v72);
       }
@@ -204,10 +204,10 @@
   return v14;
 }
 
-- (int)linkToCalcEngine:(id)a3 forTableModel:(id)a4
+- (int)linkToCalcEngine:(id)engine forTableModel:(id)model
 {
-  v6 = a3;
-  v10 = a4;
+  engineCopy = engine;
+  modelCopy = model;
   if (self->_calcEngine)
   {
     v11 = 0;
@@ -215,7 +215,7 @@
 
   else
   {
-    self->_calcEngine = v6;
+    self->_calcEngine = engineCopy;
     if (!self->_tableModel)
     {
       v12 = MEMORY[0x277D81150];
@@ -226,7 +226,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
     }
 
-    objc_msgSend_setCalcEngine_(self->_formulaStore, v7, v6, v8, v9);
+    objc_msgSend_setCalcEngine_(self->_formulaStore, v7, engineCopy, v8, v9);
     v27 = objc_msgSend_tableInfo(self->_tableModel, v23, v24, v25, v26);
     v32 = objc_msgSend_translator(v27, v28, v29, v30, v31);
     objc_msgSend_flushCachedIndexSets(v32, v33, v34, v35, v36);
@@ -237,7 +237,7 @@
     v44 = objc_msgSend_tableUID(self->_tableModel, v40, v41, v42, v43);
     LOWORD(v66) = 17;
     v11 = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(calcEngine, v45, lower, upper, self, 0, v44, v45, v66);
-    v50 = objc_msgSend_tableInfo(v10, v46, v47, v48, v49);
+    v50 = objc_msgSend_tableInfo(modelCopy, v46, v47, v48, v49);
     isAPivotTable = objc_msgSend_isAPivotTable(v50, v51, v52, v53, v54);
     if (v11)
     {
@@ -251,7 +251,7 @@
 
     if (v56 == 1)
     {
-      v11 = objc_msgSend_linkToCalcEngine_(self->_groupBySet, v57, v6, v59, v60);
+      v11 = objc_msgSend_linkToCalcEngine_(self->_groupBySet, v57, engineCopy, v59, v60);
     }
 
     v61 = objc_msgSend_tableNameChangeDistributor(self->_calcEngine, v57, v58, v59, v60);
@@ -335,13 +335,13 @@ LABEL_14:
   return v25;
 }
 
-- (void)setPivotSourceBodyTract:(id)a3
+- (void)setPivotSourceBodyTract:(id)tract
 {
-  v7 = a3;
-  if (v7)
+  tractCopy = tract;
+  if (tractCopy)
   {
     v8 = [TSCEFormulaObject alloc];
-    TSCEFormulaCreationMagic::absColonTractRef(v7, &unk_2217E14B4, &v15);
+    TSCEFormulaCreationMagic::absColonTractRef(tractCopy, &unk_2217E14B4, &v15);
     TSCEFormulaCreationMagic::RANGE_TRACKING_FORMULA(&v15, v17, &v16);
     v12 = objc_msgSend_initWithCreator_(v8, v9, &v16, v10, v11);
 
@@ -354,13 +354,13 @@ LABEL_14:
   }
 }
 
-- (id)p_referenceNodeFromTractRef:(id)a3
+- (id)p_referenceNodeFromTractRef:(id)ref
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  refCopy = ref;
+  v9 = refCopy;
+  if (refCopy)
   {
-    v35 = objc_msgSend_tableUID(v4, v5, v6, v7, v8);
+    v35 = objc_msgSend_tableUID(refCopy, v5, v6, v7, v8);
     v36 = v10;
     v12 = objc_msgSend_tableModelForTableUID_withCalcEngine_(TSTTableModel, v10, &v35, self->_calcEngine, v11);
     v17 = objc_msgSend_columnRowUIDMap(v12, v13, v14, v15, v16);
@@ -465,13 +465,13 @@ LABEL_9:
   return calcEngine;
 }
 
-- (void)setPivotSourceHeaderTract:(id)a3
+- (void)setPivotSourceHeaderTract:(id)tract
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  tractCopy = tract;
+  v9 = tractCopy;
+  if (tractCopy)
   {
-    if ((objc_msgSend_spansAllColumns(v4, v5, v6, v7, v8) & 1) == 0)
+    if ((objc_msgSend_spansAllColumns(tractCopy, v5, v6, v7, v8) & 1) == 0)
     {
       v14 = MEMORY[0x277D81150];
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTPivotOwner setPivotSourceHeaderTract:]", v12, v13);
@@ -653,9 +653,9 @@ LABEL_9:
   return result;
 }
 
-- (void)setPivotSourceBodyUidTract:(TSKUIDStructTract *)a3
+- (void)setPivotSourceBodyUidTract:(TSKUIDStructTract *)tract
 {
-  if (a3->_colIdList.__begin_ == a3->_colIdList.__end_ && a3->_rowIdList.__begin_ == a3->_rowIdList.__end_)
+  if (tract->_colIdList.__begin_ == tract->_colIdList.__end_ && tract->_rowIdList.__begin_ == tract->_rowIdList.__end_)
   {
 
     objc_msgSend_setPivotSourceBodyTract_(self, a2, 0, v3, v4);
@@ -663,9 +663,9 @@ LABEL_9:
 
   else
   {
-    v23.var0 = objc_msgSend_pivotSourceTableUID(self, a2, a3, v3, v4);
+    v23.var0 = objc_msgSend_pivotSourceTableUID(self, a2, tract, v3, v4);
     v23.var1 = v7;
-    v9 = objc_msgSend_createFormulaForUIDTract_tableUID_(TSTFormulaStore, v7, a3, &v23, v8);
+    v9 = objc_msgSend_createFormulaForUIDTract_tableUID_(TSTFormulaStore, v7, tract, &v23, v8);
     calcEngine = self->_calcEngine;
     v22.coordinate = 0;
     v22._tableUID._lower = objc_msgSend_ownerUID(self, v11, v12, v13, v14);
@@ -859,14 +859,14 @@ LABEL_9:
   }
 }
 
-- (void)p_ensureHiddenStatesExistsWithPivotDataTable:(id)a3
+- (void)p_ensureHiddenStatesExistsWithPivotDataTable:(id)table
 {
-  v40 = a3;
+  tableCopy = table;
   v8 = objc_msgSend_hiddenStates(self->_groupBySet, v4, v5, v6, v7);
 
   if (!v8)
   {
-    v13 = objc_msgSend_hiddenStatesOwner(v40, v9, v10, v11, v12);
+    v13 = objc_msgSend_hiddenStatesOwner(tableCopy, v9, v10, v11, v12);
     v18 = objc_msgSend_hiddenStates(v13, v14, v15, v16, v17);
     objc_msgSend_setHiddenStates_(self->_groupBySet, v19, v18, v20, v21);
 
@@ -875,44 +875,44 @@ LABEL_9:
     if (!v26)
     {
       v27 = [TSTHiddenStates alloc];
-      v32 = objc_msgSend_hiddenStatesOwner(v40, v28, v29, v30, v31);
+      v32 = objc_msgSend_hiddenStatesOwner(tableCopy, v28, v29, v30, v31);
       v36 = objc_msgSend_initWithHiddenStatesOwner_(v27, v33, v32, v34, v35);
       objc_msgSend_setHiddenStates_(self->_groupBySet, v37, v36, v38, v39);
     }
   }
 }
 
-- (id)hiddenStatesForPivotDataTable:(id)a3
+- (id)hiddenStatesForPivotDataTable:(id)table
 {
-  v4 = a3;
-  objc_msgSend_p_ensureHiddenStatesExistsWithPivotDataTable_(self, v5, v4, v6, v7);
+  tableCopy = table;
+  objc_msgSend_p_ensureHiddenStatesExistsWithPivotDataTable_(self, v5, tableCopy, v6, v7);
   v12 = objc_msgSend_hiddenStates(self->_groupBySet, v8, v9, v10, v11);
 
   return v12;
 }
 
-- (id)filterSetForPivotDataTable:(id)a3
+- (id)filterSetForPivotDataTable:(id)table
 {
-  v4 = a3;
-  objc_msgSend_p_ensureHiddenStatesExistsWithPivotDataTable_(self, v5, v4, v6, v7);
+  tableCopy = table;
+  objc_msgSend_p_ensureHiddenStatesExistsWithPivotDataTable_(self, v5, tableCopy, v6, v7);
   v12 = objc_msgSend_hiddenStates(self->_groupBySet, v8, v9, v10, v11);
   v17 = objc_msgSend_filterSetForRows(v12, v13, v14, v15, v16);
 
   return v17;
 }
 
-- (void)setFilterSet:(id)a3 forPivotDataTable:(id)a4
+- (void)setFilterSet:(id)set forPivotDataTable:(id)table
 {
-  v36 = a3;
-  v6 = a4;
-  objc_msgSend_p_ensureHiddenStatesExistsWithPivotDataTable_(self, v7, v6, v8, v9);
+  setCopy = set;
+  tableCopy = table;
+  objc_msgSend_p_ensureHiddenStatesExistsWithPivotDataTable_(self, v7, tableCopy, v8, v9);
   v14 = objc_msgSend_hiddenStates(self->_groupBySet, v10, v11, v12, v13);
-  objc_msgSend_setFilterSetForRows_(v14, v15, v36, v16, v17);
+  objc_msgSend_setFilterSetForRows_(v14, v15, setCopy, v16, v17);
 
   v22 = objc_msgSend_hiddenStates(self->_groupBySet, v18, v19, v20, v21);
   objc_msgSend_filterSetUpdated(v22, v23, v24, v25, v26);
 
-  if (!v36 || !objc_msgSend_ruleCount(v36, v27, v28, v29, v30) || (objc_msgSend_isEnabled(v36, v27, v28, v29, v30) & 1) == 0)
+  if (!setCopy || !objc_msgSend_ruleCount(setCopy, v27, v28, v29, v30) || (objc_msgSend_isEnabled(setCopy, v27, v28, v29, v30) & 1) == 0)
   {
     v31 = objc_msgSend_hiddenStates(self->_groupBySet, v27, v28, v29, v30);
     objc_msgSend_clearAllFiltered(v31, v32, v33, v34, v35);
@@ -925,11 +925,11 @@ LABEL_9:
   objc_msgSend_filterSetUpdated(v9, v5, v6, v7, v8);
 }
 
-- (void)setPivotSourceTableUID:(TSKUIDStruct)a3
+- (void)setPivotSourceTableUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
-  objc_msgSend_willModify(self, a2, a3._lower, a3._upper, v3);
+  upper = d._upper;
+  lower = d._lower;
+  objc_msgSend_willModify(self, a2, d._lower, d._upper, v3);
   self->_pivotSourceTableUID._lower = lower;
   self->_pivotSourceTableUID._upper = upper;
   formulaStore = self->_formulaStore;
@@ -946,23 +946,23 @@ LABEL_9:
   }
 }
 
-- (void)setPivotSourceTableName:(id)a3
+- (void)setPivotSourceTableName:(id)name
 {
-  v14 = a3;
+  nameCopy = name;
   objc_msgSend_willModify(self, v4, v5, v6, v7);
-  v12 = objc_msgSend_copy(v14, v8, v9, v10, v11);
+  v12 = objc_msgSend_copy(nameCopy, v8, v9, v10, v11);
   pivotSourceTableName = self->_pivotSourceTableName;
   self->_pivotSourceTableName = v12;
 }
 
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3 calcEngine:(id)a4
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map calcEngine:(id)engine
 {
-  v6 = a4;
+  engineCopy = engine;
   v53 = 0;
   v54 = 0;
   v51.var0 = objc_msgSend_pivotSourceTableUID(self, v7, v8, v9, v10);
   v51.var1 = v11;
-  v12 = sub_221119F90(a3, &v51);
+  v12 = sub_221119F90(map, &v51);
   if (v12)
   {
     v15 = v12[4];
@@ -972,7 +972,7 @@ LABEL_9:
     if (v15 | v16)
     {
       objc_msgSend_setPivotSourceTableUID_(self, v13, v15, v16, v14);
-      v19 = objc_msgSend_tableModelForTableUID_withCalcEngine_(TSTTableModel, v17, &v53, v6, v18);
+      v19 = objc_msgSend_tableModelForTableUID_withCalcEngine_(TSTTableModel, v17, &v53, engineCopy, v18);
       v24 = v19;
       if (v19)
       {
@@ -987,8 +987,8 @@ LABEL_9:
         v50.coordinate = 0;
         v50._tableUID._lower = objc_msgSend_ownerUID(self, v29, v30, v31, v32);
         v50._tableUID._upper = v34;
-        TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v51, v6, &v50);
-        v38 = objc_msgSend_copyByRemappingOwnerUIDs_rewriteContext_outBadRefFound_(v33, v35, a3, &v51, &v52);
+        TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v51, engineCopy, &v50);
+        v38 = objc_msgSend_copyByRemappingOwnerUIDs_rewriteContext_outBadRefFound_(v33, v35, map, &v51, &v52);
         if ((v52 & 1) == 0)
         {
           objc_msgSend_setFormulaObject_atIndex_(self->_formulaStore, v36, v38, 1, v37);
@@ -1004,8 +1004,8 @@ LABEL_9:
         v50.coordinate = 0;
         v50._tableUID._lower = v44;
         v50._tableUID._upper = v45;
-        TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v51, v6, &v50);
-        v49 = objc_msgSend_copyByRemappingOwnerUIDs_rewriteContext_outBadRefFound_(v39, v46, a3, &v51, &v52);
+        TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v51, engineCopy, &v50);
+        v49 = objc_msgSend_copyByRemappingOwnerUIDs_rewriteContext_outBadRefFound_(v39, v46, map, &v51, &v52);
         if ((v52 & 1) == 0)
         {
           objc_msgSend_setFormulaObject_atIndex_(self->_formulaStore, v47, v49, 2, v48);
@@ -1022,22 +1022,22 @@ LABEL_9:
   return v5;
 }
 
-- (id)pivotOptionsForGroupingColumn:(id)a3
+- (id)pivotOptionsForGroupingColumn:(id)column
 {
-  v4 = a3;
+  columnCopy = column;
   groupingColumnOptionsMap = self->_groupingColumnOptionsMap;
-  v10 = objc_msgSend_groupingColumnUid(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_groupingColumnUid(columnCopy, v6, v7, v8, v9);
   v13 = objc_msgSend_pivotOptionsForUID_(groupingColumnOptionsMap, v11, v10, v11, v12);
 
   return v13;
 }
 
-- (id)pivotOptionsForColumnGroupsAtLevel:(unsigned __int8)a3
+- (id)pivotOptionsForColumnGroupsAtLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  v7 = objc_msgSend_columnGroupings(self, a2, a3, v3, v4);
+  levelCopy = level;
+  v7 = objc_msgSend_columnGroupings(self, a2, level, v3, v4);
   v12 = objc_msgSend_count(v7, v8, v9, v10, v11);
-  v13 = v5 - 1;
+  v13 = levelCopy - 1;
 
   if (v13 >= v12)
   {
@@ -1059,12 +1059,12 @@ LABEL_9:
   return v26;
 }
 
-- (id)pivotOptionsForRowGroupsAtLevel:(unsigned __int8)a3
+- (id)pivotOptionsForRowGroupsAtLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  v7 = objc_msgSend_rowGroupings(self, a2, a3, v3, v4);
+  levelCopy = level;
+  v7 = objc_msgSend_rowGroupings(self, a2, level, v3, v4);
   v12 = objc_msgSend_count(v7, v8, v9, v10, v11);
-  v13 = v5 - 1;
+  v13 = levelCopy - 1;
 
   if (v13 >= v12)
   {
@@ -1086,14 +1086,14 @@ LABEL_9:
   return v26;
 }
 
-- (BOOL)groupingColumnUidExists:(TSKUIDStruct)a3
+- (BOOL)groupingColumnUidExists:(TSKUIDStruct)exists
 {
-  upper = a3._upper;
-  lower = a3._lower;
+  upper = exists._upper;
+  lower = exists._lower;
   columnGroupings = self->_columnGroupings;
   if (columnGroupings)
   {
-    objc_msgSend_groupingColumnUidList(columnGroupings, a2, a3._lower, a3._upper, v3);
+    objc_msgSend_groupingColumnUidList(columnGroupings, a2, exists._lower, exists._upper, v3);
     if (v16 != v17)
     {
       v8 = v16;
@@ -1142,7 +1142,7 @@ LABEL_19:
     return 0;
   }
 
-  objc_msgSend_groupingColumnUidList(rowGroupings, a2, a3._lower, a3._upper, v3);
+  objc_msgSend_groupingColumnUidList(rowGroupings, a2, exists._lower, exists._upper, v3);
   if (v16 == v17)
   {
     v11 = 0;
@@ -1178,35 +1178,35 @@ LABEL_34:
   return v11;
 }
 
-- (void)setHidingGrandTotalColumns:(BOOL)a3
+- (void)setHidingGrandTotalColumns:(BOOL)columns
 {
-  if (self->_isHidingGrandTotalColumns != a3)
+  if (self->_isHidingGrandTotalColumns != columns)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
-    self->_isHidingGrandTotalColumns = a3;
+    objc_msgSend_willModify(self, a2, columns, v3, v4);
+    self->_isHidingGrandTotalColumns = columns;
 
     objc_msgSend_p_resetHiddenGrandTotals(self, v7, v8, v9, v10);
   }
 }
 
-- (void)setHidingGrandTotalRows:(BOOL)a3
+- (void)setHidingGrandTotalRows:(BOOL)rows
 {
-  if (self->_isHidingGrandTotalRows != a3)
+  if (self->_isHidingGrandTotalRows != rows)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
-    self->_isHidingGrandTotalRows = a3;
+    objc_msgSend_willModify(self, a2, rows, v3, v4);
+    self->_isHidingGrandTotalRows = rows;
 
     objc_msgSend_p_resetHiddenGrandTotals(self, v7, v8, v9, v10);
   }
 }
 
-- (void)p_resetSummaryFormulasForRunningTotalsOnly:(BOOL)a3 preservingStyles:(BOOL)a4
+- (void)p_resetSummaryFormulasForRunningTotalsOnly:(BOOL)only preservingStyles:(BOOL)styles
 {
-  v5 = a4;
-  v6 = a3;
-  hasRunningTotalAggregates = objc_msgSend_hasRunningTotalAggregates(self->_groupBySet, a2, a3, a4, v4);
+  stylesCopy = styles;
+  onlyCopy = only;
+  hasRunningTotalAggregates = objc_msgSend_hasRunningTotalAggregates(self->_groupBySet, a2, only, styles, v4);
   v13 = hasRunningTotalAggregates;
-  if (!v6 || hasRunningTotalAggregates)
+  if (!onlyCopy || hasRunningTotalAggregates)
   {
     v162 = objc_msgSend_tableInfo(self->_tableModel, v9, v10, v11, v12);
     v18 = objc_msgSend_pivotDataModel(v162, v14, v15, v16, v17);
@@ -1221,7 +1221,7 @@ LABEL_34:
     v47 = [TSTRunningTotalContext alloc];
     v52 = objc_msgSend_groupBySet(self, v48, v49, v50, v51);
     v156 = v37;
-    v160 = v6;
+    v160 = onlyCopy;
     v159 = objc_msgSend_initWithGroupBySet_(v47, v53, v52, v54, v55);
 
     v60 = objc_msgSend_count(self->_aggregates, v56, v57, v58, v59);
@@ -1277,7 +1277,7 @@ LABEL_34:
 
     v90 = v162;
     v91 = [TSTPivotCellSetter alloc];
-    v93 = objc_msgSend_initWithPivotTable_minion_preservingStyles_(v91, v92, v162, v161, v5);
+    v93 = objc_msgSend_initWithPivotTable_minion_preservingStyles_(v91, v92, v162, v161, stylesCopy);
     v94 = ((v157[1] - *v157) >> 4) - 1;
     v95 = ((v157[1] - *v157) >> 4) - v158;
     v96 = v95 >> 8;
@@ -1452,13 +1452,13 @@ LABEL_34:
   }
 }
 
-- (void)clearAllPivotHiddenAndFiltered:(BOOL)a3
+- (void)clearAllPivotHiddenAndFiltered:(BOOL)filtered
 {
-  v5 = a3;
-  v6 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  filteredCopy = filtered;
+  v6 = objc_msgSend_tableInfo(self->_tableModel, a2, filtered, v3, v4);
   v19 = objc_msgSend_hiddenStates(v6, v7, v8, v9, v10);
 
-  if (v5)
+  if (filteredCopy)
   {
     objc_msgSend_clearAllFiltered(v19, v11, v12, v13, v14);
   }
@@ -1521,19 +1521,19 @@ LABEL_34:
   }
 }
 
-- (void)p_resetHiddenTotalsForGroupingColumnUid:(const TSKUIDStruct *)a3 hideTotals:(BOOL)a4
+- (void)p_resetHiddenTotalsForGroupingColumnUid:(const TSKUIDStruct *)uid hideTotals:(BOOL)totals
 {
-  v5 = a4;
-  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, a4, v4);
+  totalsCopy = totals;
+  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, uid, totals, v4);
   v29 = objc_msgSend_hiddenStates(v8, v9, v10, v11, v12);
 
   v13 = objc_opt_new();
   v14 = objc_opt_new();
   v19 = objc_msgSend_groupBySet(self, v15, v16, v17, v18);
   v24 = objc_msgSend_tableInfo(self->_tableModel, v20, v21, v22, v23);
-  objc_msgSend_getPivotHidingIndexesForGroupingColumn_columns_rows_forHiding_forPivotTable_(v19, v25, a3, v14, v13, v5, v24);
+  objc_msgSend_getPivotHidingIndexesForGroupingColumn_columns_rows_forHiding_forPivotTable_(v19, v25, uid, v14, v13, totalsCopy, v24);
 
-  if (v5)
+  if (totalsCopy)
   {
     objc_msgSend_hideRowsAtIndexes_forAction_invalidate_(v29, v26, v13, 16, 1);
     objc_msgSend_hideColumnsAtIndexes_forAction_invalidate_(v29, v27, v14, 16, 1);
@@ -1546,17 +1546,17 @@ LABEL_34:
   }
 }
 
-+ (id)enclosingGroupNameForGroupCellValue:(id)a3
++ (id)enclosingGroupNameForGroupCellValue:(id)value
 {
-  v3 = a3;
-  if (objc_msgSend_valueType(v3, v4, v5, v6, v7))
+  valueCopy = value;
+  if (objc_msgSend_valueType(valueCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_displayString(v3, v8, v9, v10, v11);
+    v12 = objc_msgSend_displayString(valueCopy, v8, v9, v10, v11);
   }
 
   else
   {
-    v13 = objc_msgSend_locale(v3, v8, v9, v10, v11);
+    v13 = objc_msgSend_locale(valueCopy, v8, v9, v10, v11);
     v12 = objc_msgSend_localizedNameForBlankGroupForDocumentLocale_(TSTGroupBy, v14, v13, v15, v16);
   }
 
@@ -1575,12 +1575,12 @@ LABEL_34:
   return v17;
 }
 
-- (id)enclosingGroupNameForColumnIndex:(unsigned __int16)a3 level:(unsigned __int8)a4
+- (id)enclosingGroupNameForColumnIndex:(unsigned __int16)index level:(unsigned __int8)level
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, a4, v4);
-  v34 = objc_msgSend_columnUIDForColumnIndex_(v8, v9, v6, v10, v11);
+  levelCopy = level;
+  indexCopy = index;
+  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, index, level, v4);
+  v34 = objc_msgSend_columnUIDForColumnIndex_(v8, v9, indexCopy, v10, v11);
   v35 = v12;
 
   v15 = objc_msgSend_columnGroupUidForColumnUid_outAggregateIndex_(self->_groupBySet, v13, &v34, 0, v14);
@@ -1588,17 +1588,17 @@ LABEL_34:
   v21 = objc_msgSend_groupByForColumnGroups(self->_groupBySet, v16, v18, v19, v20, v34, v35);
   v24 = objc_msgSend_groupNodeForGroupUid_(v21, v22, v15, v17, v23);
 
-  v28 = objc_msgSend_groupValueAtLevel_(v24, v25, v5, v26, v27);
+  v28 = objc_msgSend_groupValueAtLevel_(v24, v25, levelCopy, v26, v27);
   v32 = objc_msgSend_enclosingGroupNameForGroupCellValue_(TSTPivotOwner, v29, v28, v30, v31);
 
   return v32;
 }
 
-- (id)enclosingGroupNameForRowIndex:(unsigned int)a3 level:(unsigned __int8)a4
+- (id)enclosingGroupNameForRowIndex:(unsigned int)index level:(unsigned __int8)level
 {
-  v5 = a4;
-  v6 = *&a3;
-  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, *&a3, a4, v4);
+  levelCopy = level;
+  v6 = *&index;
+  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, *&index, level, v4);
   v34 = objc_msgSend_rowUIDForRowIndex_(v8, v9, v6, v10, v11);
   v35 = v12;
 
@@ -1607,21 +1607,21 @@ LABEL_34:
   v21 = objc_msgSend_groupByForRowGroups(self->_groupBySet, v16, v18, v19, v20, v34, v35);
   v24 = objc_msgSend_groupNodeForGroupUid_(v21, v22, v15, v17, v23);
 
-  v28 = objc_msgSend_groupValueAtLevel_(v24, v25, v5, v26, v27);
+  v28 = objc_msgSend_groupValueAtLevel_(v24, v25, levelCopy, v26, v27);
   v32 = objc_msgSend_enclosingGroupNameForGroupCellValue_(TSTPivotOwner, v29, v28, v30, v31);
 
   return v32;
 }
 
-- (BOOL)requiresUnwrapping:(TSUCellCoord)a3
+- (BOOL)requiresUnwrapping:(TSUCellCoord)unwrapping
 {
-  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, *&a3, v3, v4);
+  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, *&unwrapping, v3, v4);
   v12 = objc_msgSend_numberOfHeaderRows(v7, v8, v9, v10, v11);
 
   v17 = objc_msgSend_tableInfo(self->_tableModel, v13, v14, v15, v16);
   v22 = objc_msgSend_numberOfHeaderColumns(v17, v18, v19, v20, v21);
 
-  v27 = v12 - 1 == a3.row && a3.column >= v22;
+  v27 = v12 - 1 == unwrapping.row && unwrapping.column >= v22;
   if (!v27 || objc_msgSend_count(self->_aggregates, v23, v24, v25, v26) != 1 || !objc_msgSend_count(self->_columnGroupings, v28, v29, v30, v31))
   {
     return 0;
@@ -1630,12 +1630,12 @@ LABEL_34:
   return objc_msgSend_hasHeaderRowForAggregateNames(self, v32, v33, v34, v35);
 }
 
-- (unsigned)columnGroupLevelForHeaderRow:(TSUViewRowIndex)a3
+- (unsigned)columnGroupLevelForHeaderRow:(TSUViewRowIndex)row
 {
-  v6 = objc_msgSend_tableInfo(self->_tableModel, a2, *&a3.var0, v3, v4);
-  if (objc_msgSend_numberOfHeaderRows(v6, v7, v8, v9, v10) > a3.var0)
+  v6 = objc_msgSend_tableInfo(self->_tableModel, a2, *&row.var0, v3, v4);
+  if (objc_msgSend_numberOfHeaderRows(v6, v7, v8, v9, v10) > row.var0)
   {
-    v11 = LOBYTE(a3.var0) + 1;
+    v11 = LOBYTE(row.var0) + 1;
   }
 
   else
@@ -1646,12 +1646,12 @@ LABEL_34:
   return v11;
 }
 
-- (unsigned)rowGroupLevelForHeaderColumn:(TSUViewColumnIndex)a3
+- (unsigned)rowGroupLevelForHeaderColumn:(TSUViewColumnIndex)column
 {
-  v6 = objc_msgSend_tableInfo(self->_tableModel, a2, *&a3.var0, v3, v4);
-  if (objc_msgSend_numberOfHeaderColumns(v6, v7, v8, v9, v10) > a3.var0)
+  v6 = objc_msgSend_tableInfo(self->_tableModel, a2, *&column.var0, v3, v4);
+  if (objc_msgSend_numberOfHeaderColumns(v6, v7, v8, v9, v10) > column.var0)
   {
-    v11 = LOBYTE(a3.var0) + 1;
+    v11 = LOBYTE(column.var0) + 1;
   }
 
   else
@@ -1662,11 +1662,11 @@ LABEL_34:
   return v11;
 }
 
-- (void)p_setPivotHeaderCellsResettingPivotHidden:(BOOL)a3 preservingStyles:(BOOL)a4
+- (void)p_setPivotHeaderCellsResettingPivotHidden:(BOOL)hidden preservingStyles:(BOOL)styles
 {
-  v396 = a4;
-  v361 = a3;
-  v369 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, a4, v4);
+  stylesCopy = styles;
+  hiddenCopy = hidden;
+  v369 = objc_msgSend_tableInfo(self->_tableModel, a2, hidden, styles, v4);
   v379 = objc_msgSend_translator(v369, v6, v7, v8, v9);
   v383 = objc_msgSend_count(self->_columnGroupings, v10, v11, v12, v13);
   v18 = objc_msgSend_count(self->_rowGroupings, v14, v15, v16, v17);
@@ -1683,7 +1683,7 @@ LABEL_34:
   v370 = v53;
   v382 = objc_msgSend_localizedStringForKey_value_table_(v53, v54, @"Grand Total", &stru_2834BADA0, @"TSTables");
   v55 = [TSTPivotCellSetter alloc];
-  v399 = objc_msgSend_initWithPivotTable_minion_preservingStyles_(v55, v56, v369, 0, v396);
+  v399 = objc_msgSend_initWithPivotTable_minion_preservingStyles_(v55, v56, v369, 0, stylesCopy);
   v384 = objc_opt_new();
   v395 = v23;
   if (v23)
@@ -1738,7 +1738,7 @@ LABEL_34:
     }
   }
 
-  v380 = self;
+  selfCopy = self;
   v367 = objc_msgSend_groupByForRowGroups(self->_groupBySet, v112, v113, v114, v115);
   if (v18)
   {
@@ -1749,7 +1749,7 @@ LABEL_34:
       v403 = 0u;
       v404 = 0u;
       TSKMakeUIDStructCoord();
-      v130 = objc_msgSend_tableModel(v380, v126, v127, v128, v129);
+      v130 = objc_msgSend_tableModel(selfCopy, v126, v127, v128, v129);
       v135 = objc_msgSend_tableInfo(v130, v131, v132, v133, v134);
       v139 = objc_msgSend_pivotHeaderColumnDisplayNameAtIndex_(v135, v136, v125, v137, v138);
 
@@ -1776,7 +1776,7 @@ LABEL_34:
     while (v18 != v125);
   }
 
-  v366 = objc_msgSend_groupByForColumnGroups(v380->_groupBySet, v120, v121, v122, v123);
+  v366 = objc_msgSend_groupByForColumnGroups(selfCopy->_groupBySet, v120, v121, v122, v123);
   v167 = v395;
   if (v383)
   {
@@ -1787,7 +1787,7 @@ LABEL_34:
       v403 = 0u;
       v404 = 0u;
       TSKMakeUIDStructCoord();
-      v174 = objc_msgSend_tableModel(v380, v170, v171, v172, v173);
+      v174 = objc_msgSend_tableModel(selfCopy, v170, v171, v172, v173);
       v179 = objc_msgSend_tableInfo(v174, v175, v176, v177, v178);
       v183 = objc_msgSend_pivotHeaderRowDisplayNameAtIndex_(v179, v180, v169, v181, v182);
 
@@ -1815,10 +1815,10 @@ LABEL_34:
     while (v383 != v169);
   }
 
-  v207 = v380;
-  if (objc_msgSend_hasHeaderColumnForAggregateNames(v380, v163, v164, v165, v166))
+  v207 = selfCopy;
+  if (objc_msgSend_hasHeaderColumnForAggregateNames(selfCopy, v163, v164, v165, v166))
   {
-    hasHeaderRowForAggregateNames = objc_msgSend_hasHeaderRowForAggregateNames(v380, v208, v209, v210, v211);
+    hasHeaderRowForAggregateNames = objc_msgSend_hasHeaderRowForAggregateNames(selfCopy, v208, v209, v210, v211);
     v213 = active ? 0 : hasHeaderRowForAggregateNames;
     if (v213 == 1)
     {
@@ -1875,7 +1875,7 @@ LABEL_34:
 LABEL_79:
 
       v226 = v249 + v364;
-      v207 = v380;
+      v207 = selfCopy;
       v167 = v395;
       if (v249 + v364 >= v362)
       {
@@ -1889,8 +1889,8 @@ LABEL_79:
     while (1)
     {
       v385 = objc_msgSend_indexesForLeadingRowsAtGroupLevel_(v379, v246, (v250 + 1), v247, v248);
-      groupingColumnOptionsMap = v380->_groupingColumnOptionsMap;
-      v256 = objc_msgSend_ruleAtIndex_(v380->_rowGroupings, v253, v250, v254, v255);
+      groupingColumnOptionsMap = selfCopy->_groupingColumnOptionsMap;
+      v256 = objc_msgSend_ruleAtIndex_(selfCopy->_rowGroupings, v253, v250, v254, v255);
       v261 = objc_msgSend_groupingColumnUid(v256, v257, v258, v259, v260);
       v264 = objc_msgSend_pivotOptionsForUID_(groupingColumnOptionsMap, v262, v261, v262, v263);
 
@@ -2007,7 +2007,7 @@ LABEL_75:
         }
       }
 
-      if (v396)
+      if (stylesCopy)
       {
         v277 = 0;
         goto LABEL_69;
@@ -2097,7 +2097,7 @@ LABEL_143:
 LABEL_142:
 
       ++v315;
-      v207 = v380;
+      v207 = selfCopy;
       v314 = v288;
       if (v317 == v368)
       {
@@ -2204,7 +2204,7 @@ LABEL_129:
         }
       }
 
-      if (v396)
+      if (stylesCopy)
       {
         v345 = 0;
         v344 = 0;
@@ -2241,7 +2241,7 @@ LABEL_141:
 
 LABEL_144:
   objc_msgSend_blockUntilCompleted(v399, v289, v290, v291, v292);
-  if (v361)
+  if (hiddenCopy)
   {
     objc_msgSend_clearAllPivotHiddenAndFiltered_(v207, v352, 0, v353, v354);
     objc_msgSend_p_resetAllHiddenTotals(v207, v355, v356, v357, v358);
@@ -2260,10 +2260,10 @@ LABEL_144:
   objc_msgSend_enumerateOptionsUsingBlock_(groupingColumnOptionsMap, v7, v10, v8, v9);
 }
 
-- (id)lowestCategoryLevelAsLeadingRowGroupName:(unsigned int)a3
+- (id)lowestCategoryLevelAsLeadingRowGroupName:(unsigned int)name
 {
-  v5 = *&a3;
-  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, *&a3, v3, v4);
+  v5 = *&name;
+  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, *&name, v3, v4);
   v12 = objc_msgSend_translator(v7, v8, v9, v10, v11);
   v17 = objc_msgSend_groupByForRowGroups(self->_groupBySet, v13, v14, v15, v16);
   v48[0] = objc_msgSend_rowUIDForRowIndex_(v7, v18, v5, v19, v20);
@@ -2326,13 +2326,13 @@ LABEL_9:
   return v44;
 }
 
-- (id)lowestCategoryLevelAsLeadingColumnGroupName:(unsigned __int16)a3
+- (id)lowestCategoryLevelAsLeadingColumnGroupName:(unsigned __int16)name
 {
-  v5 = a3;
-  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  nameCopy = name;
+  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, name, v3, v4);
   v12 = objc_msgSend_translator(v7, v8, v9, v10, v11);
   v17 = objc_msgSend_groupByForColumnGroups(self->_groupBySet, v13, v14, v15, v16);
-  v48[0] = objc_msgSend_columnUIDForColumnIndex_(v7, v18, v5, v19, v20);
+  v48[0] = objc_msgSend_columnUIDForColumnIndex_(v7, v18, nameCopy, v19, v20);
   v48[1] = v21;
   v23 = objc_msgSend_columnGroupUidForColumnUid_outAggregateIndex_(self->_groupBySet, v21, v48, 0, v22);
   v26 = objc_msgSend_groupNodeForGroupUid_(v17, v24, v23, v24, v25);
@@ -2350,7 +2350,7 @@ LABEL_9:
   {
     v37 = v35;
     v38 = objc_msgSend_indexesForLeadingColumnsAtGroupLevel_(v12, v31, v35, v32, v33, v46, v47);
-    v42 = objc_msgSend_containsIndex_(v38, v39, v5, v40, v41);
+    v42 = objc_msgSend_containsIndex_(v38, v39, nameCopy, v40, v41);
 
     if ((v42 & 1) == 0)
     {
@@ -2379,12 +2379,12 @@ LABEL_7:
   if (v36)
   {
 LABEL_9:
-    v43 = objc_msgSend_enclosingGroupNameForColumnIndex_level_(self, v31, v5, v36, v33);
+    v43 = objc_msgSend_enclosingGroupNameForColumnIndex_level_(self, v31, nameCopy, v36, v33);
   }
 
   else
   {
-    v43 = objc_msgSend_columnNameForColumnIndex_(v7, v31, v5, v32, v33);
+    v43 = objc_msgSend_columnNameForColumnIndex_(v7, v31, nameCopy, v32, v33);
   }
 
   v44 = v43;
@@ -2392,11 +2392,11 @@ LABEL_9:
   return v44;
 }
 
-- (TSUModelColumnIndex)baseColumnIndexForGroupingAtColumnIndex:(unsigned __int16)a3
+- (TSUModelColumnIndex)baseColumnIndexForGroupingAtColumnIndex:(unsigned __int16)index
 {
-  v5 = a3;
-  v7 = objc_msgSend_rowGroupings(self, a2, a3, v3, v4);
-  v11 = objc_msgSend_ruleAtIndex_(v7, v8, v5, v9, v10);
+  indexCopy = index;
+  v7 = objc_msgSend_rowGroupings(self, a2, index, v3, v4);
+  v11 = objc_msgSend_ruleAtIndex_(v7, v8, indexCopy, v9, v10);
 
   v16 = objc_msgSend_tableInfo(self->_tableModel, v12, v13, v14, v15);
   v21 = objc_msgSend_pivotDataModel(v16, v17, v18, v19, v20);
@@ -2407,10 +2407,10 @@ LABEL_9:
   return v16;
 }
 
-- (TSUModelColumnIndex)baseColumnIndexForGroupingAtRowIndex:(unsigned int)a3
+- (TSUModelColumnIndex)baseColumnIndexForGroupingAtRowIndex:(unsigned int)index
 {
-  v7 = objc_msgSend_columnGroupings(self, a2, *&a3, v3, v4);
-  v11 = objc_msgSend_ruleAtIndex_(v7, v8, a3, v9, v10);
+  v7 = objc_msgSend_columnGroupings(self, a2, *&index, v3, v4);
+  v11 = objc_msgSend_ruleAtIndex_(v7, v8, index, v9, v10);
 
   v16 = objc_msgSend_tableInfo(self->_tableModel, v12, v13, v14, v15);
   v21 = objc_msgSend_pivotDataModel(v16, v17, v18, v19, v20);
@@ -2421,9 +2421,9 @@ LABEL_9:
   return v16;
 }
 
-- (id)p_formulaForCellCoord:(TSKUIDStructCoord *)x2_0 runningTotalContext:(id)a4
+- (id)p_formulaForCellCoord:(TSKUIDStructCoord *)x2_0 runningTotalContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v224[0] = 0;
   v9 = objc_msgSend_categoryRefForUidCoord_outShowAsType_(self->_groupBySet, v7, x2_0, v224, v8);
   v13 = objc_msgSend_aggregateForUidCoord_(self->_groupBySet, v10, x2_0, v11, v12);
@@ -2556,7 +2556,7 @@ LABEL_9:
     v210[0] = objc_msgSend_runningTotalGroupingColumnUid(v13, v22, v23, v24, v25);
     v210[1] = v80;
     v83 = objc_msgSend_aggregateIndexForUidCoord_(self->_groupBySet, v80, x2_0, v81, v82);
-    if (objc_msgSend_isMissingRunningTotalFieldForAggIndex_(v6, v84, v83, v85, v86))
+    if (objc_msgSend_isMissingRunningTotalFieldForAggIndex_(contextCopy, v84, v83, v85, v86))
     {
       objc_msgSend_setType_(v9, v87, 240, v88, v89);
     }
@@ -2580,7 +2580,7 @@ LABEL_9:
     v208 = 0u;
     v209 = 0u;
     v27 = v179;
-    if (!v6 || (objc_msgSend_getPreviousUidCoordForAggIndex_fromNewUidCoord_addNewUidCoordEvenIfNotFound_(v6, v90, v83, x2_0, 1), v208 == 0) || v209 == 0)
+    if (!contextCopy || (objc_msgSend_getPreviousUidCoordForAggIndex_fromNewUidCoord_addNewUidCoordEvenIfNotFound_(contextCopy, v90, v83, x2_0, 1), v208 == 0) || v209 == 0)
     {
       if (v224[0] == 6)
       {
@@ -2668,7 +2668,7 @@ LABEL_41:
   v208 = 0u;
   v209 = 0u;
   v27 = v179;
-  if (!v6 || (objc_msgSend_getPreviousUidCoordForAggIndex_fromNewUidCoord_addNewUidCoordEvenIfNotFound_(v6, v35, v34, x2_0, 0), v208 == 0) || v209 == 0)
+  if (!contextCopy || (objc_msgSend_getPreviousUidCoordForAggIndex_fromNewUidCoord_addNewUidCoordEvenIfNotFound_(contextCopy, v35, v34, x2_0, 0), v208 == 0) || v209 == 0)
   {
 LABEL_18:
     v26 = 0;
@@ -2697,23 +2697,23 @@ LABEL_42:
   self->_resetHeaderLabelsAfterSort = 0;
 }
 
-- (void)sortRowsByColumnIndex:(unsigned int)a3 level:(unsigned __int8)a4 aggregateIndex:(unint64_t)a5 sortDirection:(int)a6
+- (void)sortRowsByColumnIndex:(unsigned int)index level:(unsigned __int8)level aggregateIndex:(unint64_t)aggregateIndex sortDirection:(int)direction
 {
-  v6 = *&a6;
-  v8 = a4;
-  v9 = *&a3;
+  v6 = *&direction;
+  levelCopy = level;
+  v9 = *&index;
   self->_autoImplicitSort = 0;
   self->_shouldSkipNextAsyncSort = 0;
-  objc_msgSend_p_resetSortingStructures(self, a2, *&a3, a4, a5);
+  objc_msgSend_p_resetSortingStructures(self, a2, *&index, level, aggregateIndex);
   v18 = 0;
-  if (v8 == 252)
+  if (levelCopy == 252)
   {
-    objc_msgSend_p_sortRowsInMode_sortDirection_columnIndex_level_aggregateIndex_resetLabels_(self, v11, 4, v6, v9, v8, a5, &v18);
+    objc_msgSend_p_sortRowsInMode_sortDirection_columnIndex_level_aggregateIndex_resetLabels_(self, v11, 4, v6, v9, levelCopy, aggregateIndex, &v18);
   }
 
   else
   {
-    objc_msgSend_p_sortRowsInMode_sortDirection_columnIndex_level_aggregateIndex_resetLabels_(self, v11, 3, v6, v9, v8, a5, &v18);
+    objc_msgSend_p_sortRowsInMode_sortDirection_columnIndex_level_aggregateIndex_resetLabels_(self, v11, 3, v6, v9, levelCopy, aggregateIndex, &v18);
   }
 
   v14 = __p;
@@ -2741,23 +2741,23 @@ LABEL_42:
   }
 }
 
-- (void)sortColumnsByRowIndex:(unsigned int)a3 level:(unsigned __int8)a4 aggregateIndex:(unint64_t)a5 sortDirection:(int)a6
+- (void)sortColumnsByRowIndex:(unsigned int)index level:(unsigned __int8)level aggregateIndex:(unint64_t)aggregateIndex sortDirection:(int)direction
 {
-  v6 = *&a6;
-  v8 = a4;
-  v9 = *&a3;
+  v6 = *&direction;
+  levelCopy = level;
+  v9 = *&index;
   self->_autoImplicitSort = 0;
   self->_shouldSkipNextAsyncSort = 0;
-  objc_msgSend_p_resetSortingStructures(self, a2, *&a3, a4, a5);
+  objc_msgSend_p_resetSortingStructures(self, a2, *&index, level, aggregateIndex);
   v18 = 0;
-  if (v8 == 252)
+  if (levelCopy == 252)
   {
-    objc_msgSend_p_sortColumnsInMode_sortDirection_rowIndex_level_aggregateIndex_resetLabels_(self, v11, 4, v6, v9, v8, a5, &v18);
+    objc_msgSend_p_sortColumnsInMode_sortDirection_rowIndex_level_aggregateIndex_resetLabels_(self, v11, 4, v6, v9, levelCopy, aggregateIndex, &v18);
   }
 
   else
   {
-    objc_msgSend_p_sortColumnsInMode_sortDirection_rowIndex_level_aggregateIndex_resetLabels_(self, v11, 3, v6, v9, v8, a5, &v18);
+    objc_msgSend_p_sortColumnsInMode_sortDirection_rowIndex_level_aggregateIndex_resetLabels_(self, v11, 3, v6, v9, levelCopy, aggregateIndex, &v18);
   }
 
   v14 = __p;
@@ -2785,9 +2785,9 @@ LABEL_42:
   }
 }
 
-- (void)handlePivotSorting:(BOOL)a3
+- (void)handlePivotSorting:(BOOL)sorting
 {
-  self->_autoImplicitSort = a3;
+  self->_autoImplicitSort = sorting;
   self->_shouldSkipNextAsyncSort = 0;
   if (self->_autoImplicitSort)
   {
@@ -2797,7 +2797,7 @@ LABEL_42:
   }
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortRowsInMode:(SEL)a3 sortDirection:(unint64_t)a4 columnIndex:(int)a5 level:(unsigned int)a6 aggregateIndex:(unsigned __int8)a7 resetLabels:(unint64_t)a8
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortRowsInMode:(SEL)mode sortDirection:(unint64_t)direction columnIndex:(int)index level:(unsigned int)level aggregateIndex:(unsigned __int8)aggregateIndex resetLabels:(unint64_t)labels
 {
   v123[6] = *MEMORY[0x277D85DE8];
   v115 = 0;
@@ -2811,13 +2811,13 @@ LABEL_42:
   v112 = &v111;
   v113 = 0x2020000000;
   v114 = 0;
-  v17 = a4 < 3;
-  v86 = objc_msgSend_tableInfo(self->_tableModel, a3, a4, *&a5, *&a6);
-  v84 = a6;
-  v85 = a5;
+  v17 = direction < 3;
+  v86 = objc_msgSend_tableInfo(self->_tableModel, mode, direction, *&index, *&level);
+  levelCopy = level;
+  indexCopy = index;
   v81 = a9;
-  v82 = a4;
-  v83 = a7;
+  directionCopy = direction;
+  aggregateIndexCopy = aggregateIndex;
   v25 = objc_msgSend_count(self->_aggregates, v18, v19, v20, v21);
   v110[0] = 0;
   v110[1] = 0;
@@ -2859,10 +2859,10 @@ LABEL_42:
   v103[3] = &unk_2834A52C0;
   v51 = v86;
   v104 = v51;
-  v105 = self;
+  selfCopy = self;
   v108 = v17;
   sub_2213357CC(v107, &v109);
-  v107[3] = a8;
+  v107[3] = labels;
   v52 = v80;
   v106 = v52;
   objc_msgSend_enumerateIndexesUsingBlock_(v50, v53, v103, v54, v55);
@@ -2878,16 +2878,16 @@ LABEL_42:
   v87[1] = 3321888768;
   v87[2] = sub_221331648;
   v87[3] = &unk_2834A5330;
-  v96 = v84;
-  v97 = v85;
+  v96 = levelCopy;
+  v97 = indexCopy;
   v87[4] = self;
-  v94 = a8;
+  labelsCopy = labels;
   v98 = v17;
   sub_2213357CC(v95, &v109);
   v71 = v51;
   v88 = v71;
-  v95[3] = v82;
-  v99 = v83;
+  v95[3] = directionCopy;
+  v99 = aggregateIndexCopy;
   v72 = v52;
   v89 = v72;
   v91 = &v100;
@@ -2933,7 +2933,7 @@ LABEL_42:
   return result;
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortColumnsInMode:(SEL)a3 sortDirection:(unint64_t)a4 rowIndex:(int)a5 level:(unsigned int)a6 aggregateIndex:(unsigned __int8)a7 resetLabels:(unint64_t)a8
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)p_sortColumnsInMode:(SEL)mode sortDirection:(unint64_t)direction rowIndex:(int)index level:(unsigned int)level aggregateIndex:(unsigned __int8)aggregateIndex resetLabels:(unint64_t)labels
 {
   v123[6] = *MEMORY[0x277D85DE8];
   v115 = 0;
@@ -2947,13 +2947,13 @@ LABEL_42:
   v112 = &v111;
   v113 = 0x2020000000;
   v114 = 0;
-  v17 = a4 < 3;
-  v86 = objc_msgSend_tableInfo(self->_tableModel, a3, a4, *&a5, *&a6);
-  v84 = a6;
-  v85 = a5;
+  v17 = direction < 3;
+  v86 = objc_msgSend_tableInfo(self->_tableModel, mode, direction, *&index, *&level);
+  levelCopy = level;
+  indexCopy = index;
   v81 = a9;
-  v82 = a4;
-  v83 = a7;
+  directionCopy = direction;
+  aggregateIndexCopy = aggregateIndex;
   v25 = objc_msgSend_count(self->_aggregates, v18, v19, v20, v21);
   v110[0] = 0;
   v110[1] = 0;
@@ -2995,10 +2995,10 @@ LABEL_42:
   v103[3] = &unk_2834A52C0;
   v51 = v86;
   v104 = v51;
-  v105 = self;
+  selfCopy = self;
   v108 = v17;
   sub_2213357CC(v107, &v109);
-  v107[3] = a8;
+  v107[3] = labels;
   v52 = v80;
   v106 = v52;
   objc_msgSend_enumerateIndexesUsingBlock_(v50, v53, v103, v54, v55);
@@ -3014,16 +3014,16 @@ LABEL_42:
   v87[1] = 3321888768;
   v87[2] = sub_2213324CC;
   v87[3] = &unk_2834A5330;
-  v96 = v84;
-  v97 = v85;
+  v96 = levelCopy;
+  v97 = indexCopy;
   v87[4] = self;
-  v94 = a8;
+  labelsCopy = labels;
   v98 = v17;
   sub_2213357CC(v95, &v109);
   v71 = v51;
   v88 = v71;
-  v95[3] = v82;
-  v99 = v83;
+  v95[3] = directionCopy;
+  v99 = aggregateIndexCopy;
   v72 = v52;
   v89 = v72;
   v91 = &v100;
@@ -3069,9 +3069,9 @@ LABEL_42:
   return result;
 }
 
-- (void)p_sortFullTable:(unint64_t)a3
+- (void)p_sortFullTable:(unint64_t)table
 {
-  if (a3 >= 3)
+  if (table >= 3)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTPivotOwner p_sortFullTable:]", v3, v4);
@@ -3081,24 +3081,24 @@ LABEL_42:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  v37 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  v37 = objc_msgSend_tableInfo(self->_tableModel, a2, table, v3, v4);
   if (objc_msgSend_isAPivotTable(v37, v18, v19, v20, v21) && (objc_msgSend_isEmptyPivot(v37, v22, v23, v24, v25) & 1) == 0)
   {
     v41 = 0;
-    objc_msgSend_p_sortRowsInMode_sortDirection_columnIndex_level_aggregateIndex_resetLabels_(self, v26, a3, 0, 0x7FFFLL, 255, 0, &v41);
+    objc_msgSend_p_sortRowsInMode_sortDirection_columnIndex_level_aggregateIndex_resetLabels_(self, v26, table, 0, 0x7FFFLL, 255, 0, &v41);
     v27 = v39;
     v28 = v40;
     v38 = 0;
-    objc_msgSend_p_sortColumnsInMode_sortDirection_rowIndex_level_aggregateIndex_resetLabels_(self, v29, a3, 0, 0x7FFFLL, 255, 0, &v38);
+    objc_msgSend_p_sortColumnsInMode_sortDirection_rowIndex_level_aggregateIndex_resetLabels_(self, v29, table, 0, 0x7FFFLL, 255, 0, &v38);
     v30 = v39;
     v31 = v40;
-    v32 = self;
-    objc_sync_enter(v32);
-    objc_msgSend_p_resetSortingStructures(v32, v33, v34, v35, v36);
-    v32->_resetHeaderLabelsAfterSort = (v41 | v38) & 1;
-    sub_2210BD068(&v32->_sortedRowUids.__begin_, v27, v28, (v28 - v27) >> 4);
-    sub_2210BD068(&v32->_sortedColumnUids.__begin_, v30, v31, (v31 - v30) >> 4);
-    objc_sync_exit(v32);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_msgSend_p_resetSortingStructures(selfCopy, v33, v34, v35, v36);
+    selfCopy->_resetHeaderLabelsAfterSort = (v41 | v38) & 1;
+    sub_2210BD068(&selfCopy->_sortedRowUids.__begin_, v27, v28, (v28 - v27) >> 4);
+    sub_2210BD068(&selfCopy->_sortedColumnUids.__begin_, v30, v31, (v31 - v30) >> 4);
+    objc_sync_exit(selfCopy);
 
     if (v27)
     {
@@ -3126,10 +3126,10 @@ LABEL_42:
 
   else
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_msgSend_p_resetSortingStructures(v6, v7, v8, v9, v10);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_msgSend_p_resetSortingStructures(selfCopy, v7, v8, v9, v10);
+    objc_sync_exit(selfCopy);
 
     return 0;
   }
@@ -3137,16 +3137,16 @@ LABEL_42:
 
 - (BOOL)p_commitSort
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v7 = objc_msgSend_tableInfo(v2->_tableModel, v3, v4, v5, v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_tableInfo(selfCopy->_tableModel, v3, v4, v5, v6);
   v12 = objc_msgSend_pivotOrder(v7, v8, v9, v10, v11);
   v16 = v12;
-  p_sortedRowUids = &v2->_sortedRowUids;
-  begin = v2->_sortedRowUids.__begin_;
-  end = v2->_sortedRowUids.__end_;
-  v20 = v2->_sortedColumnUids.__begin_;
-  v21 = v2->_sortedColumnUids.__end_;
+  p_sortedRowUids = &selfCopy->_sortedRowUids;
+  begin = selfCopy->_sortedRowUids.__begin_;
+  end = selfCopy->_sortedRowUids.__end_;
+  v20 = selfCopy->_sortedColumnUids.__begin_;
+  v21 = selfCopy->_sortedColumnUids.__end_;
   v22 = begin == end && v20 == v21;
   v23 = !v22;
   if (v22)
@@ -3164,34 +3164,34 @@ LABEL_42:
 
     if (v20 != v21)
     {
-      objc_msgSend_setTemporaryOrder_forDimension_(v16, v13, &v2->_sortedColumnUids, 1, v15);
+      objc_msgSend_setTemporaryOrder_forDimension_(v16, v13, &selfCopy->_sortedColumnUids, 1, v15);
     }
 
     v24 = objc_msgSend_translator(v7, v13, p_sortedRowUids, v14, v15);
     objc_msgSend_resetViewMap(v24, v25, v26, v27, v28);
 
-    if (v2->_resetHeaderLabelsAfterSort)
+    if (selfCopy->_resetHeaderLabelsAfterSort)
     {
-      objc_msgSend_p_setPivotHeaderCellsResettingPivotHidden_preservingStyles_(v2, v29, 0, 1, v30);
+      objc_msgSend_p_setPivotHeaderCellsResettingPivotHidden_preservingStyles_(selfCopy, v29, 0, 1, v30);
     }
 
-    objc_msgSend_p_resetSummaryFormulasForRunningTotalsOnly_preservingStyles_(v2, v29, 1, 1, v30);
+    objc_msgSend_p_resetSummaryFormulasForRunningTotalsOnly_preservingStyles_(selfCopy, v29, 1, 1, v30);
     objc_msgSend_setOrderUsingViewOrderForDimension_(v16, v31, 0, v32, v33);
     objc_msgSend_setOrderUsingViewOrderForDimension_(v16, v34, 1, v35, v36);
     objc_msgSend_filterSetUpdated(v7, v37, v38, v39, v40);
     v45 = objc_msgSend_translator(v7, v41, v42, v43, v44);
     objc_msgSend_resetViewMapAndNotify(v45, v46, v47, v48, v49);
 
-    v54 = objc_msgSend_calcEngine(v2->_tableModel, v50, v51, v52, v53);
-    v73[0] = objc_msgSend_tableUID(v2->_tableModel, v55, v56, v57, v58);
+    v54 = objc_msgSend_calcEngine(selfCopy->_tableModel, v50, v51, v52, v53);
+    v73[0] = objc_msgSend_tableUID(selfCopy->_tableModel, v55, v56, v57, v58);
     v73[1] = v59;
     objc_msgSend_pivotSortChangedPrecedentForTableUID_(TSCEHauntedOwner, v59, v73, v60, v61);
     objc_msgSend_markCellRefAsDirty_(v54, v62, v74, v63, v64);
   }
 
-  objc_msgSend_p_resetSortingStructures(v2, v65, v66, v67, v68);
+  objc_msgSend_p_resetSortingStructures(selfCopy, v65, v66, v67, v68);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v23;
 }
 
@@ -3216,10 +3216,10 @@ LABEL_42:
   return v10;
 }
 
-- (id)indexesForLeadingRowsAtGroupLevel:(unsigned __int8)a3
+- (id)indexesForLeadingRowsAtGroupLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  levelCopy = level;
+  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, level, v3, v4);
   v12 = objc_msgSend_groupByForRows(v7, v8, v9, v10, v11);
 
   v17 = objc_msgSend_count(self->_rowGroupings, v13, v14, v15, v16);
@@ -3247,7 +3247,7 @@ LABEL_42:
   v44 = v27;
   v70 = v44;
   v71 = &v73;
-  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v45, v5, v68, v46);
+  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v45, levelCopy, v68, v46);
   v51 = objc_msgSend_tableInfo(self->_tableModel, v47, v48, v49, v50);
   v56 = objc_msgSend_translator(v51, v52, v53, v54, v55);
   v60 = objc_msgSend_viewRowIndexesForUIDs_(v56, v57, (v74 + 6), v58, v59);
@@ -3274,10 +3274,10 @@ LABEL_42:
   return v66;
 }
 
-- (id)indexesForLeadingSummaryRowsAtGroupLevel:(unsigned __int8)a3
+- (id)indexesForLeadingSummaryRowsAtGroupLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  levelCopy = level;
+  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, level, v3, v4);
   v12 = objc_msgSend_groupByForRows(v7, v8, v9, v10, v11);
 
   v37 = 0;
@@ -3292,7 +3292,7 @@ LABEL_42:
   v36[2] = sub_2213335E8;
   v36[3] = &unk_278462E18;
   v36[4] = &v37;
-  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v13, v5, v36, v14);
+  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v13, levelCopy, v36, v14);
   v19 = objc_msgSend_tableInfo(self->_tableModel, v15, v16, v17, v18);
   v24 = objc_msgSend_translator(v19, v20, v21, v22, v23);
   v28 = objc_msgSend_viewRowIndexesForUIDs_(v24, v25, (v38 + 6), v26, v27);
@@ -3340,10 +3340,10 @@ LABEL_42:
   return v10;
 }
 
-- (id)indexesForLeadingColumnsAtGroupLevel:(unsigned __int8)a3
+- (id)indexesForLeadingColumnsAtGroupLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  levelCopy = level;
+  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, level, v3, v4);
   v12 = objc_msgSend_groupByForColumns(v7, v8, v9, v10, v11);
 
   v17 = objc_msgSend_count(self->_columnGroupings, v13, v14, v15, v16);
@@ -3371,7 +3371,7 @@ LABEL_42:
   v44 = v27;
   v70 = v44;
   v71 = &v73;
-  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v45, v5, v68, v46);
+  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v45, levelCopy, v68, v46);
   v51 = objc_msgSend_tableInfo(self->_tableModel, v47, v48, v49, v50);
   v56 = objc_msgSend_translator(v51, v52, v53, v54, v55);
   v60 = objc_msgSend_viewColumnIndexesForUIDs_(v56, v57, (v74 + 6), v58, v59);
@@ -3398,10 +3398,10 @@ LABEL_42:
   return v66;
 }
 
-- (id)indexesForLeadingSummaryColumnsAtGroupLevel:(unsigned __int8)a3
+- (id)indexesForLeadingSummaryColumnsAtGroupLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  levelCopy = level;
+  v7 = objc_msgSend_tableInfo(self->_tableModel, a2, level, v3, v4);
   v12 = objc_msgSend_groupByForColumns(v7, v8, v9, v10, v11);
 
   v37 = 0;
@@ -3416,7 +3416,7 @@ LABEL_42:
   v36[2] = sub_221333CA8;
   v36[3] = &unk_278462E18;
   v36[4] = &v37;
-  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v13, v5, v36, v14);
+  objc_msgSend_enumerateGroupsAtLevel_withBlock_(v12, v13, levelCopy, v36, v14);
   v19 = objc_msgSend_tableInfo(self->_tableModel, v15, v16, v17, v18);
   v24 = objc_msgSend_translator(v19, v20, v21, v22, v23);
   v28 = objc_msgSend_viewColumnIndexesForUIDs_(v24, v25, (v38 + 6), v26, v27);
@@ -3443,10 +3443,10 @@ LABEL_42:
   return v34;
 }
 
-- (void)collapseExpandChanged:(id)a3 forState:(id)a4
+- (void)collapseExpandChanged:(id)changed forState:(id)state
 {
-  v39 = a3;
-  if (objc_msgSend_count(v39, v5, v6, v7, v8))
+  changedCopy = changed;
+  if (objc_msgSend_count(changedCopy, v5, v6, v7, v8))
   {
     objc_msgSend_willModify(self, v9, v10, v11, v12);
     v17 = objc_msgSend_tableInfo(self->_tableModel, v13, v14, v15, v16);
@@ -3464,11 +3464,11 @@ LABEL_42:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[282], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[282], v6, v7);
 
   v9 = [TSTGroupingColumnList alloc];
   if (*(v8 + 40))
@@ -3582,7 +3582,7 @@ LABEL_42:
     v58[2] = sub_2213341FC;
     v58[3] = &unk_278462E40;
     v58[4] = self;
-    v47 = v4;
+    v47 = unarchiverCopy;
     v48 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v47, v49, v46, v48, 0, v58);
   }
@@ -3631,12 +3631,12 @@ LABEL_36:
   v51 = [TSTFormulaStore alloc];
   if (*(v8 + 80))
   {
-    v53 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v51, v52, &self->_ownerUID, *(v8 + 80), v4);
+    v53 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v51, v52, &self->_ownerUID, *(v8 + 80), unarchiverCopy);
   }
 
   else
   {
-    v53 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v51, v52, &self->_ownerUID, &TST::_FormulaStoreArchive_default_instance_, v4);
+    v53 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v51, v52, &self->_ownerUID, &TST::_FormulaStoreArchive_default_instance_, unarchiverCopy);
   }
 
   formulaStore = self->_formulaStore;
@@ -3646,33 +3646,33 @@ LABEL_36:
 LABEL_40:
 }
 
-- (void)setupAfterUnarchiveForPivotTable:(const TSKUIDStruct *)a3 pivotDataTable:(id)a4
+- (void)setupAfterUnarchiveForPivotTable:(const TSKUIDStruct *)table pivotDataTable:(id)dataTable
 {
-  v30 = a4;
-  if (v30)
+  dataTableCopy = dataTable;
+  if (dataTableCopy)
   {
     v6 = [TSTGroupBySet alloc];
-    v10 = objc_msgSend_initWithPivotTableUID_(v6, v7, a3, v8, v9);
+    v10 = objc_msgSend_initWithPivotTableUID_(v6, v7, table, v8, v9);
     groupBySet = self->_groupBySet;
     self->_groupBySet = v10;
 
-    objc_msgSend_restoreFromPivotDataTable_columnGroupings_rowGroupings_aggregates_flatteningDimension_(self->_groupBySet, v12, v30, self->_columnGroupings, self->_rowGroupings, self->_aggregates, self->_flatteningDimension);
-    v17 = objc_msgSend_hiddenStatesOwner(v30, v13, v14, v15, v16);
+    objc_msgSend_restoreFromPivotDataTable_columnGroupings_rowGroupings_aggregates_flatteningDimension_(self->_groupBySet, v12, dataTableCopy, self->_columnGroupings, self->_rowGroupings, self->_aggregates, self->_flatteningDimension);
+    v17 = objc_msgSend_hiddenStatesOwner(dataTableCopy, v13, v14, v15, v16);
     v22 = objc_msgSend_hiddenStates(v17, v18, v19, v20, v21);
     v27 = objc_msgSend_filterSetForRows(v22, v23, v24, v25, v26);
 
     if (v27)
     {
-      objc_msgSend_setFilterSet_forPivotDataTable_(self, v28, v27, v30, v29);
+      objc_msgSend_setFilterSet_forPivotDataTable_(self, v28, v27, dataTableCopy, v29);
     }
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v57 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v57, v4, sub_221335B78, off_2812E4498[282], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_221335B78, off_2812E4498[282], v5);
 
   rowGroupings = self->_rowGroupings;
   *(v6 + 16) |= 4u;
@@ -3689,7 +3689,7 @@ LABEL_40:
     *(v6 + 40) = v10;
   }
 
-  objc_msgSend_encodeToArchive_archiver_(rowGroupings, v7, v10, v57, v8);
+  objc_msgSend_encodeToArchive_archiver_(rowGroupings, v7, v10, archiverCopy, v8);
   columnGroupings = self->_columnGroupings;
   *(v6 + 16) |= 8u;
   v15 = *(v6 + 48);
@@ -3705,7 +3705,7 @@ LABEL_40:
     *(v6 + 48) = v15;
   }
 
-  objc_msgSend_encodeToArchive_archiver_(columnGroupings, v12, v15, v57, v13);
+  objc_msgSend_encodeToArchive_archiver_(columnGroupings, v12, v15, archiverCopy, v13);
   aggregates = self->_aggregates;
   *(v6 + 16) |= 0x10u;
   v20 = *(v6 + 56);
@@ -3721,10 +3721,10 @@ LABEL_40:
     *(v6 + 56) = v20;
   }
 
-  objc_msgSend_encodeToArchive_archiver_(aggregates, v17, v20, v57, v18);
+  objc_msgSend_encodeToArchive_archiver_(aggregates, v17, v20, archiverCopy, v18);
   if (objc_msgSend_count(self->_aggregates, v22, v23, v24, v25) >= 0xB)
   {
-    objc_msgSend_requiresDocumentVersion_(v57, v26, 0xD000000000002, v27, v28);
+    objc_msgSend_requiresDocumentVersion_(archiverCopy, v26, 0xD000000000002, v27, v28);
   }
 
   v29 = *(v6 + 16);
@@ -3827,7 +3827,7 @@ LABEL_40:
     *(v6 + 72) = v50;
   }
 
-  objc_msgSend_setStrongReference_message_(v57, v47, groupingColumnOptionsMap, v50, v48);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v47, groupingColumnOptionsMap, v50, v48);
   formulaStore = self->_formulaStore;
   if (formulaStore)
   {
@@ -3845,15 +3845,15 @@ LABEL_40:
       *(v6 + 80) = v55;
     }
 
-    objc_msgSend_saveToArchive_archiver_(formulaStore, v52, v55, v57, v53);
+    objc_msgSend_saveToArchive_archiver_(formulaStore, v52, v55, archiverCopy, v53);
   }
 }
 
-- (void)invalidateForCalcEngine:(id)a3
+- (void)invalidateForCalcEngine:(id)engine
 {
   if (self->_invalidateAfterAsyncSort)
   {
-    v24 = objc_msgSend_threadCollector(MEMORY[0x277D80630], a2, a3, v3, v4);
+    v24 = objc_msgSend_threadCollector(MEMORY[0x277D80630], a2, engine, v3, v4);
     v10 = objc_msgSend_tableInfo(self->_tableModel, v6, v7, v8, v9);
     v15 = objc_msgSend_range(v10, v11, v12, v13, v14);
     v17 = objc_msgSend_changeDescriptorWithType_cellRange_(TSTChangeDescriptor, v16, 14, v15, v16);
@@ -3865,17 +3865,17 @@ LABEL_40:
   }
 }
 
-- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)a3 withCalcEngine:(id)a4 recalcOptions:(TSCERecalculationState)a5
+- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)at withCalcEngine:(id)engine recalcOptions:(TSCERecalculationState)options
 {
-  v37 = a3;
-  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, *&a3, a4, *&a5.var0);
+  atCopy = at;
+  v8 = objc_msgSend_tableInfo(self->_tableModel, a2, *&at, engine, *&options.var0);
   if (objc_msgSend_isAPivotTable(v8, v9, v10, v11, v12))
   {
     isEmptyPivot = objc_msgSend_isEmptyPivot(self, v13, v14, v15, v16);
 
     if ((isEmptyPivot & 1) == 0)
     {
-      if ((*&a3 & 0x101FFFFFFFFFFFFLL) == 0x300000000)
+      if ((*&at & 0x101FFFFFFFFFFFFLL) == 0x300000000)
       {
         if (self->_autoImplicitSort)
         {
@@ -3883,7 +3883,7 @@ LABEL_40:
         }
       }
 
-      else if (objc_msgSend_indexFromCoord_(TSTFormulaStore, v18, &v37, v19, v20) >= 3)
+      else if (objc_msgSend_indexFromCoord_(TSTFormulaStore, v18, &atCopy, v19, v20) >= 3)
       {
         v25 = MEMORY[0x277D81150];
         v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSTPivotOwner evaluateFormulaAt:withCalcEngine:recalcOptions:]", v23, v24);
@@ -3900,12 +3900,12 @@ LABEL_40:
   {
   }
 
-  return a5;
+  return options;
 }
 
-- (void)writeResultsForCalcEngine:(id)a3
+- (void)writeResultsForCalcEngine:(id)engine
 {
-  v19 = objc_msgSend_tableInfo(self->_tableModel, a2, a3, v3, v4);
+  v19 = objc_msgSend_tableInfo(self->_tableModel, a2, engine, v3, v4);
   if (objc_msgSend_isAPivotTable(v19, v6, v7, v8, v9))
   {
     isEmptyPivot = objc_msgSend_isEmptyPivot(self, v10, v11, v12, v13);
@@ -3921,15 +3921,15 @@ LABEL_40:
   }
 }
 
-- (void)didChangeTableName:(id)a3 fromTableName:(id)a4 forTableUID:(TSKUIDStruct)a5
+- (void)didChangeTableName:(id)name fromTableName:(id)tableName forTableUID:(TSKUIDStruct)d
 {
-  upper = a5._upper;
-  lower = a5._lower;
-  v13 = a3;
-  v12 = a4;
+  upper = d._upper;
+  lower = d._lower;
+  nameCopy = name;
+  tableNameCopy = tableName;
   if (*&self->_pivotSourceTableUID == __PAIR128__(upper, lower))
   {
-    objc_msgSend_setPivotSourceTableName_(self, v9, v13, v10, v11);
+    objc_msgSend_setPivotSourceTableName_(self, v9, nameCopy, v10, v11);
   }
 }
 

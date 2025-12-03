@@ -4,10 +4,10 @@
 + (NSPredicate)predicateWithFormat:(NSString *)predicateFormat arguments:(va_list)argList;
 + (NSPredicate)predicateWithValue:(BOOL)value;
 + (void)initialize;
-- (NSPredicate)initWithCoder:(id)a3;
+- (NSPredicate)initWithCoder:(id)coder;
 - (NSPredicate)predicateWithSubstitutionVariables:(NSDictionary *)variables;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPredicate
@@ -84,24 +84,24 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 }
 
-- (NSPredicate)initWithCoder:(id)a3
+- (NSPredicate)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
   v5 = [(NSPredicate *)self init];
-  if (v5 && [a3 requiresSecureCoding])
+  if (v5 && [coder requiresSecureCoding])
   {
     *&v5->_predicateFlags |= 1u;
   }
@@ -109,7 +109,7 @@
   return v5;
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
   v6 = NSClassFromString(@"NSPredicate");
 

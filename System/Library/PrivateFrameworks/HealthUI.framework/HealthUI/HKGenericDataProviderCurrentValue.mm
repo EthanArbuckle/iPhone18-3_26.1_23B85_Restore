@@ -1,42 +1,42 @@
 @interface HKGenericDataProviderCurrentValue
-- (HKGenericDataProviderCurrentValue)initWithValue:(id)a3;
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7;
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3;
+- (HKGenericDataProviderCurrentValue)initWithValue:(id)value;
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache;
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache;
 @end
 
 @implementation HKGenericDataProviderCurrentValue
 
-- (HKGenericDataProviderCurrentValue)initWithValue:(id)a3
+- (HKGenericDataProviderCurrentValue)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(HKGenericDataProviderCurrentValue *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
   }
 
   return v7;
 }
 
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v13 unitForDisplayType:v14];
-  v16 = [v14 hk_valueFormatterForUnit:v15];
-  v17 = [v16 attributedStringFromValue:self->_value displayType:v14 unitController:v13 valueFont:v12 unitFont:v11];
+  unitFontCopy = unitFont;
+  fontCopy = font;
+  controllerCopy = controller;
+  typeCopy = type;
+  v15 = [controllerCopy unitForDisplayType:typeCopy];
+  v16 = [typeCopy hk_valueFormatterForUnit:v15];
+  v17 = [v16 attributedStringFromValue:self->_value displayType:typeCopy unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy];
 
   return v17;
 }
 
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(HKGenericDataProviderCurrentValue *)self date];
-  v6 = HKLastUpdatedText(v5, v4);
+  cacheCopy = cache;
+  date = [(HKGenericDataProviderCurrentValue *)self date];
+  v6 = HKLastUpdatedText(date, cacheCopy);
 
   return v6;
 }

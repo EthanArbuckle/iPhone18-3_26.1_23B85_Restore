@@ -1,26 +1,26 @@
 @interface INSetRelationshipIntent
 - (INModifyRelationship)targetRelationship;
-- (INSetRelationshipIntent)initWithContactIdentifiers:(id)a3 targetRelationship:(id)a4;
+- (INSetRelationshipIntent)initWithContactIdentifiers:(id)identifiers targetRelationship:(id)relationship;
 - (NSArray)contactIdentifiers;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setContactIdentifiers:(id)a3;
-- (void)setTargetRelationship:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setContactIdentifiers:(id)identifiers;
+- (void)setTargetRelationship:(id)relationship;
 @end
 
 @implementation INSetRelationshipIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSetRelationshipIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 contactIdentifiers];
-  v10 = INIntentSlotValueRedactedStringsFromStrings(v9, a3, v11);
+  idCopy = id;
+  _typedBackingStore = [(INSetRelationshipIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  contactIdentifiers = [_typedBackingStore contactIdentifiers];
+  v10 = INIntentSlotValueRedactedStringsFromStrings(contactIdentifiers, options, v11);
 
   [v8 setContactIdentifiers:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -30,29 +30,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"contactIdentifiers";
-  v3 = [(INSetRelationshipIntent *)self contactIdentifiers];
-  v4 = v3;
-  if (!v3)
+  contactIdentifiers = [(INSetRelationshipIntent *)self contactIdentifiers];
+  null = contactIdentifiers;
+  if (!contactIdentifiers)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"targetRelationship";
-  v11[0] = v4;
-  v5 = [(INSetRelationshipIntent *)self targetRelationship];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  targetRelationship = [(INSetRelationshipIntent *)self targetRelationship];
+  null2 = targetRelationship;
+  if (!targetRelationship)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!targetRelationship)
   {
   }
 
-  if (!v3)
+  if (!contactIdentifiers)
   {
   }
 
@@ -61,81 +61,81 @@
   return v7;
 }
 
-- (void)setTargetRelationship:(id)a3
+- (void)setTargetRelationship:(id)relationship
 {
-  v4 = a3;
-  v6 = [(INSetRelationshipIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToModifyRelationship(v4);
+  relationshipCopy = relationship;
+  _typedBackingStore = [(INSetRelationshipIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToModifyRelationship(relationshipCopy);
 
-  [v6 setTargetRelationship:v5];
+  [_typedBackingStore setTargetRelationship:v5];
 }
 
 - (INModifyRelationship)targetRelationship
 {
-  v2 = [(INSetRelationshipIntent *)self _typedBackingStore];
-  v3 = [v2 targetRelationship];
-  v4 = INIntentSlotValueTransformFromModifyRelationship(v3);
+  _typedBackingStore = [(INSetRelationshipIntent *)self _typedBackingStore];
+  targetRelationship = [_typedBackingStore targetRelationship];
+  v4 = INIntentSlotValueTransformFromModifyRelationship(targetRelationship);
 
   return v4;
 }
 
-- (void)setContactIdentifiers:(id)a3
+- (void)setContactIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v6 = [(INSetRelationshipIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToStrings(v4);
+  identifiersCopy = identifiers;
+  _typedBackingStore = [(INSetRelationshipIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToStrings(identifiersCopy);
 
-  [v6 setContactIdentifiers:v5];
+  [_typedBackingStore setContactIdentifiers:v5];
 }
 
 - (NSArray)contactIdentifiers
 {
-  v2 = [(INSetRelationshipIntent *)self _typedBackingStore];
-  v3 = [v2 contactIdentifiers];
-  v4 = INIntentSlotValueTransformFromStrings(v3);
+  _typedBackingStore = [(INSetRelationshipIntent *)self _typedBackingStore];
+  contactIdentifiers = [_typedBackingStore contactIdentifiers];
+  v4 = INIntentSlotValueTransformFromStrings(contactIdentifiers);
 
   return v4;
 }
 
-- (INSetRelationshipIntent)initWithContactIdentifiers:(id)a3 targetRelationship:(id)a4
+- (INSetRelationshipIntent)initWithContactIdentifiers:(id)identifiers targetRelationship:(id)relationship
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  relationshipCopy = relationship;
   v11.receiver = self;
   v11.super_class = INSetRelationshipIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INSetRelationshipIntent *)v8 setContactIdentifiers:v6];
-    [(INSetRelationshipIntent *)v9 setTargetRelationship:v7];
+    [(INSetRelationshipIntent *)v8 setContactIdentifiers:identifiersCopy];
+    [(INSetRelationshipIntent *)v9 setTargetRelationship:relationshipCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetRelationshipIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetRelationshipIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetRelationshipIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetRelationshipIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

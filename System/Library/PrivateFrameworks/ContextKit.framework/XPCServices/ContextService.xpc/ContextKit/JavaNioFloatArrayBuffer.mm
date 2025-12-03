@@ -1,10 +1,10 @@
 @interface JavaNioFloatArrayBuffer
 - (float)get;
-- (float)getWithInt:(int)a3;
+- (float)getWithInt:(int)int;
 - (id)compact;
 - (id)protectedArray;
-- (id)putWithFloat:(float)a3;
-- (id)putWithInt:(int)a3 withFloat:(float)a4;
+- (id)putWithFloat:(float)float;
+- (id)putWithInt:(int)int withFloat:(float)float;
 - (id)slice;
 - (int)protectedArrayOffset;
 - (void)dealloc;
@@ -83,7 +83,7 @@
   return *(&backingArray->super.size_ + v6 + 1);
 }
 
-- (float)getWithInt:(int)a3
+- (float)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   backingArray = self->backingArray_;
@@ -93,7 +93,7 @@
   }
 
   size = backingArray->super.size_;
-  v7 = (self->arrayOffset_ + a3);
+  v7 = (self->arrayOffset_ + int);
   if (v7 < 0 || v7 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
@@ -102,7 +102,7 @@
   return *(&backingArray->super.size_ + v7 + 1);
 }
 
-- (id)putWithFloat:(float)a3
+- (id)putWithFloat:(float)float
 {
   if (self->isReadOnly_)
   {
@@ -133,11 +133,11 @@ LABEL_11:
     IOSArray_throwOutOfBoundsWithMsg(size, (arrayOffset + position));
   }
 
-  *(&backingArray->super.size_ + v8 + 1) = a3;
+  *(&backingArray->super.size_ + v8 + 1) = float;
   return self;
 }
 
-- (id)putWithInt:(int)a3 withFloat:(float)a4
+- (id)putWithInt:(int)int withFloat:(float)float
 {
   if (self->isReadOnly_)
   {
@@ -153,13 +153,13 @@ LABEL_11:
   }
 
   size = backingArray->super.size_;
-  v9 = (self->arrayOffset_ + a3);
+  v9 = (self->arrayOffset_ + int);
   if (v9 < 0 || v9 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v9);
   }
 
-  *(&backingArray->super.size_ + v9 + 1) = a4;
+  *(&backingArray->super.size_ + v9 + 1) = float;
   return self;
 }
 

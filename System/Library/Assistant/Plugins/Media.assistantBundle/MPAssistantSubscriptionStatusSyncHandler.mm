@@ -1,6 +1,6 @@
 @interface MPAssistantSubscriptionStatusSyncHandler
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 - (void)syncDidEnd;
 @end
 
@@ -22,47 +22,47 @@
   self->_clientState = 0;
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (([a3 isEqualToString:self->_postAnchor] & 1) == 0)
+  infoCopy = info;
+  if (([anchor isEqualToString:self->_postAnchor] & 1) == 0)
   {
     v7 = MEMORY[0x277CBEBC0];
-    v8 = [MEMORY[0x277D472D0] uniqueObjectIdentifier];
-    v9 = [v7 URLWithString:v8];
+    uniqueObjectIdentifier = [MEMORY[0x277D472D0] uniqueObjectIdentifier];
+    v9 = [v7 URLWithString:uniqueObjectIdentifier];
     [(SADynamiteClientState *)self->_clientState setIdentifier:v9];
 
-    [v6 setObject:self->_clientState];
+    [infoCopy setObject:self->_clientState];
     v10 = _MPLogCategoryAssistant_Oversize();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SADynamiteClientState *)self->_clientState dictionary];
+      dictionary = [(SADynamiteClientState *)self->_clientState dictionary];
       v13 = 138477827;
-      v14 = v11;
+      v14 = dictionary;
       _os_log_impl(&dword_2334D9000, v10, OS_LOG_TYPE_DEFAULT, "Subscription Status Sync Handler (get): %{private}@", &v13, 0xCu);
     }
   }
 
-  [v6 setPostAnchor:self->_postAnchor];
+  [infoCopy setPostAnchor:self->_postAnchor];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info
 {
   v253[0] = *MEMORY[0x277D85DE8];
-  v221 = a3;
-  v220 = a4;
-  v218 = a5;
-  v219 = a6;
+  anchorCopy = anchor;
+  validityCopy = validity;
+  keyCopy = key;
+  infoCopy = info;
   v10 = _MPLogCategoryAssistant();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    *&buf[4] = v221;
+    *&buf[4] = anchorCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v220;
+    *&buf[14] = validityCopy;
     _os_log_impl(&dword_2334D9000, v10, OS_LOG_TYPE_DEFAULT, "Subscription Status Sync Handler (begin): anchor: %{private}@, validity: %{public}@", buf, 0x16u);
   }
 
@@ -86,19 +86,19 @@
   v217 = v12;
   if (dispatch_semaphore_wait(v12, v13))
   {
-    v14 = v221;
+    v14 = anchorCopy;
     postAnchor = self->_postAnchor;
     self->_postAnchor = v14;
     goto LABEL_209;
   }
 
-  v216 = [v230[5] allKeys];
+  allKeys = [v230[5] allKeys];
   v214 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
   v236 = v214;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v236 count:1];
-  v17 = [v216 sortedArrayUsingDescriptors:v16];
+  v17 = [allKeys sortedArrayUsingDescriptors:v16];
 
-  v18 = [MEMORY[0x277CCACA8] string];
+  string = [MEMORY[0x277CCACA8] string];
   v224 = 0u;
   v225 = 0u;
   v222 = 0u;
@@ -111,7 +111,7 @@
     do
     {
       v22 = 0;
-      v23 = v18;
+      v23 = string;
       do
       {
         if (*v223 != v21)
@@ -120,10 +120,10 @@
         }
 
         v24 = [v230[5] objectForKeyedSubscript:*(*(&v222 + 1) + 8 * v22)];
-        v18 = [v23 stringByAppendingFormat:@"%@:", v24];
+        string = [v23 stringByAppendingFormat:@"%@:", v24];
 
         ++v22;
-        v23 = v18;
+        v23 = string;
       }
 
       while (v20 != v22);
@@ -133,21 +133,21 @@
     while (v20);
   }
 
-  v215 = [v18 stringByAppendingString:@"END"];
+  v215 = [string stringByAppendingString:@"END"];
 
   v25 = MEMORY[0x277CCACA8];
-  v26 = [(SADynamiteClientState *)self->_clientState defaultUserState];
-  v27 = [v26 status];
-  v28 = [v27 isEqualToString:*MEMORY[0x277D47D60]];
-  v29 = [(SADynamiteClientState *)self->_clientState expirationDate];
-  v30 = [v29 date];
-  [v30 timeIntervalSinceReferenceDate];
+  defaultUserState = [(SADynamiteClientState *)self->_clientState defaultUserState];
+  status = [defaultUserState status];
+  v28 = [status isEqualToString:*MEMORY[0x277D47D60]];
+  expirationDate = [(SADynamiteClientState *)self->_clientState expirationDate];
+  date = [expirationDate date];
+  [date timeIntervalSinceReferenceDate];
   v32 = v31;
-  v33 = [(SADynamiteClientState *)self->_clientState defaultUserState];
-  v34 = [v33 userHistoryUnmodifiable];
-  v35 = [v25 stringWithFormat:@"FuseEligibility_%d_%f:PL_%@_UserAnchors_%@", v28, v32, v34, v215];
+  defaultUserState2 = [(SADynamiteClientState *)self->_clientState defaultUserState];
+  userHistoryUnmodifiable = [defaultUserState2 userHistoryUnmodifiable];
+  v215 = [v25 stringWithFormat:@"FuseEligibility_%d_%f:PL_%@_UserAnchors_%@", v28, v32, userHistoryUnmodifiable, v215];
 
-  v36 = v35;
+  v36 = v215;
   v248 = 0u;
   v247 = 0u;
   v246 = 0u;
@@ -164,7 +164,7 @@
   CC_SHA256_Init(&buf[8]);
   v37 = v36;
   v38 = v37;
-  v39 = [v37 UTF8String];
+  uTF8String = [v37 UTF8String];
   v40 = [v37 length];
   v41 = v40;
   if (*buf <= 3000)
@@ -173,9 +173,9 @@
     {
       if (!*buf)
       {
-        v77 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v78 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-        [v77 handleFailureInFunction:v78 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+        [currentHandler handleFailureInFunction:v78 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
         goto LABEL_108;
       }
@@ -202,7 +202,7 @@ LABEL_30:
             v71 = v41;
             do
             {
-              v72 = *v39++;
+              v72 = *uTF8String++;
               v70 |= v72 << v69;
               v69 += 8;
               --v71;
@@ -235,7 +235,7 @@ LABEL_30:
         }
 
         v47 = 8 * v44;
-        v48 = v39;
+        v48 = uTF8String;
         v49 = v238 & 0xFFFFFFFFFFFFFFLL;
         do
         {
@@ -255,7 +255,7 @@ LABEL_30:
         *&buf[32] = v55;
         *&buf[8] = v54 ^ v49;
         *&buf[16] = v56 ^ __ROR8__(v51, 47);
-        v39 += v45;
+        uTF8String += v45;
         *&v238 = (v45 + v42) << 56;
         v41 = v46;
       }
@@ -268,8 +268,8 @@ LABEL_30:
         v58 = *&buf[32];
         do
         {
-          v61 = *v39;
-          v39 += 8;
+          v61 = *uTF8String;
+          uTF8String += 8;
           v62 = v58 ^ v61;
           v63 = v57 + v59;
           v64 = v63 ^ __ROR8__(v59, 51);
@@ -298,7 +298,7 @@ LABEL_30:
 
     if (*buf != 2000)
     {
-      if (*buf != 3000 || !v39)
+      if (*buf != 3000 || !uTF8String)
       {
         goto LABEL_108;
       }
@@ -308,10 +308,10 @@ LABEL_30:
       *&buf[12] |= v75;
       if (v40 + DWORD2(v238) > 0xF)
       {
-        v86 = &v39[v40];
+        v86 = &uTF8String[v40];
         if (DWORD2(v238))
         {
-          memcpy(&buf[DWORD2(v238) + 32], v39, (16 - DWORD2(v238)));
+          memcpy(&buf[DWORD2(v238) + 32], uTF8String, (16 - DWORD2(v238)));
           HIDWORD(v87) = *&buf[16] - 2048144777 * *&buf[32];
           LODWORD(v87) = HIDWORD(v87);
           v88 = -1640531535 * (v87 >> 19);
@@ -324,12 +324,12 @@ LABEL_30:
           *&buf[24] = -1640531535 * (v87 >> 19);
           HIDWORD(v87) = *&buf[28] - 2048144777 * DWORD1(v238);
           LODWORD(v87) = HIDWORD(v87);
-          v39 += (16 - DWORD2(v238));
+          uTF8String += (16 - DWORD2(v238));
           *&buf[28] = -1640531535 * (v87 >> 19);
           DWORD2(v238) = 0;
         }
 
-        if (v39 <= v86 - 16)
+        if (uTF8String <= v86 - 16)
         {
           v89 = *&buf[16];
           v90 = *&buf[20];
@@ -337,40 +337,40 @@ LABEL_30:
           v92 = *&buf[28];
           do
           {
-            HIDWORD(v93) = v89 - 2048144777 * *v39;
+            HIDWORD(v93) = v89 - 2048144777 * *uTF8String;
             LODWORD(v93) = HIDWORD(v93);
             v89 = -1640531535 * (v93 >> 19);
-            HIDWORD(v93) = v90 - 2048144777 * *(v39 + 1);
+            HIDWORD(v93) = v90 - 2048144777 * *(uTF8String + 1);
             LODWORD(v93) = HIDWORD(v93);
             v90 = -1640531535 * (v93 >> 19);
-            HIDWORD(v93) = v91 - 2048144777 * *(v39 + 2);
+            HIDWORD(v93) = v91 - 2048144777 * *(uTF8String + 2);
             LODWORD(v93) = HIDWORD(v93);
             v91 = -1640531535 * (v93 >> 19);
-            HIDWORD(v93) = v92 - 2048144777 * *(v39 + 3);
+            HIDWORD(v93) = v92 - 2048144777 * *(uTF8String + 3);
             LODWORD(v93) = HIDWORD(v93);
             v92 = -1640531535 * (v93 >> 19);
-            v39 += 16;
+            uTF8String += 16;
           }
 
-          while (v39 <= v86 - 16);
+          while (uTF8String <= v86 - 16);
           *&buf[16] = v89;
           *&buf[20] = v90;
           *&buf[24] = v91;
           *&buf[28] = v92;
         }
 
-        if (v39 >= v86)
+        if (uTF8String >= v86)
         {
           goto LABEL_108;
         }
 
-        v76 = v86 - v39;
+        v76 = v86 - uTF8String;
         __memcpy_chk();
       }
 
       else
       {
-        memcpy(&buf[DWORD2(v238) + 32], v39, v40);
+        memcpy(&buf[DWORD2(v238) + 32], uTF8String, v40);
         v76 = DWORD2(v238) + v41;
       }
 
@@ -393,18 +393,18 @@ LABEL_107:
 
         if (v40 == 1)
         {
-          v80[16] = *v39;
+          v80[16] = *uTF8String;
           goto LABEL_107;
         }
 
 LABEL_91:
-        memcpy(v80 + 16, v39, v40);
+        memcpy(v80 + 16, uTF8String, v40);
         goto LABEL_107;
       }
 
       if (v40 == 2)
       {
-        v99 = *v39;
+        v99 = *uTF8String;
       }
 
       else
@@ -414,8 +414,8 @@ LABEL_91:
           goto LABEL_91;
         }
 
-        v99 = *v39;
-        v80[18] = v39[2];
+        v99 = *uTF8String;
+        v80[18] = uTF8String[2];
       }
 
       *(v80 + 8) = v99;
@@ -436,7 +436,7 @@ LABEL_91:
           LOBYTE(v84) = buf[16];
           v82 = HIBYTE(*&buf[16]);
           LOBYTE(v85) = buf[18];
-          v100 = *v39;
+          v100 = *uTF8String;
         }
 
         goto LABEL_97;
@@ -444,23 +444,23 @@ LABEL_91:
 
       LOBYTE(v84) = buf[16];
       v82 = HIBYTE(*&buf[16]);
-      v85 = *v39;
+      v85 = *uTF8String;
     }
 
     else
     {
       if (!buf[19])
       {
-        v84 = *v39;
-        v82 = *v39 >> 8;
-        v85 = HIWORD(*v39);
-        v100 = HIBYTE(*v39);
+        v84 = *uTF8String;
+        v82 = *uTF8String >> 8;
+        v85 = HIWORD(*uTF8String);
+        v100 = HIBYTE(*uTF8String);
         goto LABEL_97;
       }
 
       LOBYTE(v84) = buf[16];
-      LOBYTE(v82) = *v39;
-      v85 = *(v39 + 1);
+      LOBYTE(v82) = *uTF8String;
+      v85 = *(uTF8String + 1);
     }
 
     v100 = v85 >> 8;
@@ -471,8 +471,8 @@ LABEL_97:
     LODWORD(v103) = HIDWORD(v103);
     v104 = 5 * (v103 >> 19) - 430675100;
     *&buf[8] = v104;
-    v105 = &v39[-buf[19] + 4];
-    v106 = &v39[v83 - buf[19]];
+    v105 = &uTF8String[-buf[19] + 4];
+    v106 = &uTF8String[v83 - buf[19]];
     while (v105 < v106)
     {
       v107 = *v105;
@@ -512,13 +512,13 @@ LABEL_97:
     switch(*buf)
     {
       case 0xFA1:
-        CC_SHA1_Update(&buf[8], v39, v40);
+        CC_SHA1_Update(&buf[8], uTF8String, v40);
         break;
       case 0x10A0:
-        CC_SHA256_Update(&buf[8], v39, v40);
+        CC_SHA256_Update(&buf[8], uTF8String, v40);
         break;
       case 0x11A0:
-        CC_SHA512_Update(&buf[8], v39, v40);
+        CC_SHA512_Update(&buf[8], uTF8String, v40);
         break;
     }
 
@@ -529,13 +529,13 @@ LABEL_97:
   {
     if (*buf == 4000)
     {
-      CC_MD5_Update(&buf[8], v39, v40);
+      CC_MD5_Update(&buf[8], uTF8String, v40);
     }
 
     goto LABEL_108;
   }
 
-  if (!v39)
+  if (!uTF8String)
   {
     goto LABEL_108;
   }
@@ -543,26 +543,26 @@ LABEL_97:
   *&buf[8] += v40;
   if (v40 + DWORD2(v240) <= 0x1F)
   {
-    memcpy(&v238 + DWORD2(v240) + 8, v39, v40);
+    memcpy(&v238 + DWORD2(v240) + 8, uTF8String, v40);
     v81 = DWORD2(v240) + v41;
 LABEL_82:
     DWORD2(v240) = v81;
     goto LABEL_108;
   }
 
-  v94 = &v39[v40];
+  v94 = &uTF8String[v40];
   if (DWORD2(v240))
   {
-    memcpy(&v238 + DWORD2(v240) + 8, v39, (32 - DWORD2(v240)));
+    memcpy(&v238 + DWORD2(v240) + 8, uTF8String, (32 - DWORD2(v240)));
     *&buf[16] = 0x9E3779B185EBCA87 * __ROR8__(*&buf[16] - 0x3D4D51C2D82B14B1 * *(&v238 + 1), 33);
     *&buf[24] = 0x9E3779B185EBCA87 * __ROR8__(*&buf[24] - 0x3D4D51C2D82B14B1 * v239, 33);
     *&buf[32] = 0x9E3779B185EBCA87 * __ROR8__(*&buf[32] - 0x3D4D51C2D82B14B1 * *(&v239 + 1), 33);
     *&v238 = 0x9E3779B185EBCA87 * __ROR8__(v238 - 0x3D4D51C2D82B14B1 * v240, 33);
-    v39 += (32 - DWORD2(v240));
+    uTF8String += (32 - DWORD2(v240));
     DWORD2(v240) = 0;
   }
 
-  if ((v39 + 32) <= v94)
+  if ((uTF8String + 32) <= v94)
   {
     v96 = *&buf[24];
     v95 = *&buf[16];
@@ -570,23 +570,23 @@ LABEL_82:
     v97 = v238;
     do
     {
-      v95 = 0x9E3779B185EBCA87 * __ROR8__(v95 - 0x3D4D51C2D82B14B1 * *v39, 33);
-      v96 = 0x9E3779B185EBCA87 * __ROR8__(v96 - 0x3D4D51C2D82B14B1 * *(v39 + 1), 33);
-      v98 = 0x9E3779B185EBCA87 * __ROR8__(v98 - 0x3D4D51C2D82B14B1 * *(v39 + 2), 33);
-      v97 = 0x9E3779B185EBCA87 * __ROR8__(v97 - 0x3D4D51C2D82B14B1 * *(v39 + 3), 33);
-      v39 += 32;
+      v95 = 0x9E3779B185EBCA87 * __ROR8__(v95 - 0x3D4D51C2D82B14B1 * *uTF8String, 33);
+      v96 = 0x9E3779B185EBCA87 * __ROR8__(v96 - 0x3D4D51C2D82B14B1 * *(uTF8String + 1), 33);
+      v98 = 0x9E3779B185EBCA87 * __ROR8__(v98 - 0x3D4D51C2D82B14B1 * *(uTF8String + 2), 33);
+      v97 = 0x9E3779B185EBCA87 * __ROR8__(v97 - 0x3D4D51C2D82B14B1 * *(uTF8String + 3), 33);
+      uTF8String += 32;
     }
 
-    while (v39 <= v94 - 32);
+    while (uTF8String <= v94 - 32);
     *&buf[16] = v95;
     *&buf[24] = v96;
     *&buf[32] = v98;
     *&v238 = v97;
   }
 
-  if (v39 < v94)
+  if (uTF8String < v94)
   {
-    v81 = v94 - v39;
+    v81 = v94 - uTF8String;
     __memcpy_chk();
     goto LABEL_82;
   }
@@ -601,9 +601,9 @@ LABEL_108:
     {
       if (!*buf)
       {
-        v142 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v143 = [MEMORY[0x277CCACA8] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-        [v142 handleFailureInFunction:v143 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+        [currentHandler2 handleFailureInFunction:v143 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
         goto LABEL_155;
       }
@@ -979,9 +979,9 @@ LABEL_211:
       }
 
 LABEL_210:
-      v212 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v213 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-      [v212 handleFailureInFunction:v213 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+      [currentHandler3 handleFailureInFunction:v213 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
       v206 = &stru_2848D4AE0;
       goto LABEL_202;
@@ -1038,7 +1038,7 @@ LABEL_202:
   v207 = self->_postAnchor;
   self->_postAnchor = &v206->isa;
 
-  if (![(NSString *)self->_postAnchor isEqualToString:v221])
+  if (![(NSString *)self->_postAnchor isEqualToString:anchorCopy])
   {
     v208 = _MPLogCategoryAssistant();
     if (os_log_type_enabled(v208, OS_LOG_TYPE_DEFAULT))
@@ -1057,7 +1057,7 @@ LABEL_202:
     _os_log_impl(&dword_2334D9000, v209, OS_LOG_TYPE_DEFAULT, "Subscription Status Sync Handler (anchor): %{private}@", buf, 0xCu);
   }
 
-  postAnchor = v216;
+  postAnchor = allKeys;
 LABEL_209:
 
   _Block_object_dispose(&v229, 8);

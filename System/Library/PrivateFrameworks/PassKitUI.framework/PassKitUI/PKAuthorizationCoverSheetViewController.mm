@@ -1,48 +1,48 @@
 @interface PKAuthorizationCoverSheetViewController
-- (PKAuthorizationCoverSheetViewController)initWithDelegate:(id)a3 authenticator:(id)a4 passUniqueIdentifier:(id)a5 source:(int64_t)a6;
-- (id)_genericBiometricFailureLabelAccessibilityLabel:(BOOL)a3;
-- (id)_genericBiometricLabelAccessibilityLabel:(BOOL)a3;
-- (id)_genericBiometricUnavailableLabelAccessibilityLabel:(BOOL)a3;
-- (id)_passcodeLabelAccessibilityLabel:(BOOL)a3;
+- (PKAuthorizationCoverSheetViewController)initWithDelegate:(id)delegate authenticator:(id)authenticator passUniqueIdentifier:(id)identifier source:(int64_t)source;
+- (id)_genericBiometricFailureLabelAccessibilityLabel:(BOOL)label;
+- (id)_genericBiometricLabelAccessibilityLabel:(BOOL)label;
+- (id)_genericBiometricUnavailableLabelAccessibilityLabel:(BOOL)label;
+- (id)_passcodeLabelAccessibilityLabel:(BOOL)label;
 - (void)_animateInPasscodeViewController;
 - (void)_fallbackToPasscode;
 - (void)_presentPasscodeToExitLockout;
-- (void)_transitionToState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4;
+- (void)_transitionToState:(unint64_t)state animated:(BOOL)animated;
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event;
 - (void)dealloc;
 - (void)dismissPasscodeViewController;
-- (void)fadeInUIAnimated:(BOOL)a3 performSynchronizedAnimation:(id)a4;
-- (void)fadeOutUIWithCompletion:(id)a3;
+- (void)fadeInUIAnimated:(BOOL)animated performSynchronizedAnimation:(id)animation;
+- (void)fadeOutUIWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)loadView;
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5;
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply;
 - (void)startEvaluation;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAuthorizationCoverSheetViewController
 
-- (PKAuthorizationCoverSheetViewController)initWithDelegate:(id)a3 authenticator:(id)a4 passUniqueIdentifier:(id)a5 source:(int64_t)a6
+- (PKAuthorizationCoverSheetViewController)initWithDelegate:(id)delegate authenticator:(id)authenticator passUniqueIdentifier:(id)identifier source:(int64_t)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  authenticatorCopy = authenticator;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = PKAuthorizationCoverSheetViewController;
   v13 = [(PKAuthorizationCoverSheetViewController *)&v17 init];
   if (v13)
   {
-    v14 = [MEMORY[0x1E69B8A58] sharedInstance];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
     passLibrary = v13->_passLibrary;
-    v13->_passLibrary = v14;
+    v13->_passLibrary = mEMORY[0x1E69B8A58];
 
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v13->_authenticator, a4);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_authenticator, authenticator);
     [(PKAuthenticator *)v13->_authenticator setDelegate:v13];
-    objc_storeStrong(&v13->_passUniqueIdentifier, a5);
-    v13->_presentationSource = a6;
+    objc_storeStrong(&v13->_passUniqueIdentifier, identifier);
+    v13->_presentationSource = source;
   }
 
   return v13;
@@ -56,11 +56,11 @@
   [(PKAuthorizationCoverSheetViewController *)&v3 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKAuthorizationCoverSheetViewController;
-  [(PKAuthorizationCoverSheetViewController *)&v4 viewDidAppear:a3];
+  [(PKAuthorizationCoverSheetViewController *)&v4 viewDidAppear:appear];
   if (self->_isErrorRecovery)
   {
     AudioServicesPlaySystemSound(0x573u);
@@ -73,9 +73,9 @@
   v38.receiver = self;
   v38.super_class = PKAuthorizationCoverSheetViewController;
   [(PKAuthorizationCoverSheetViewController *)&v38 loadView];
-  v3 = [(PKAuthorizationCoverSheetViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKAuthorizationCoverSheetViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
   IsAvailable = PKSystemApertureIsAvailable();
   self->_shouldDrawGlyph = IsAvailable ^ 1;
@@ -85,7 +85,7 @@
     glyphView = self->_glyphView;
     self->_glyphView = v6;
 
-    [v3 addSubview:self->_glyphView];
+    [view addSubview:self->_glyphView];
   }
 
   v34 = PKLocalizedPaymentString(&cfstr_GenericPasscod.isa);
@@ -101,15 +101,15 @@
 
   v11 = [MEMORY[0x1E69DC740] pkui_plainConfigurationWithTitle:v34 font:v33 lineBreakMode:4 textAlignment:1];
   [v11 setContentInsets:{8.0, 25.0, 8.0, 25.0}];
-  v12 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [v11 setBaseForegroundColor:v12];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [v11 setBaseForegroundColor:systemWhiteColor];
 
   [v11 setTitleAlignment:2];
   [(UIButton *)self->_enterPasscodeButton setConfiguration:v11];
   [(UIButton *)self->_enterPasscodeButton addTarget:self action:sel__fallbackToPasscode forControlEvents:64];
   [(UIButton *)self->_enterPasscodeButton sizeToFit];
   [(UIButton *)self->_enterPasscodeButton setAlpha:0.0];
-  [v3 addSubview:self->_enterPasscodeButton];
+  [view addSubview:self->_enterPasscodeButton];
   v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleLabelView = self->_titleLabelView;
   self->_titleLabelView = v13;
@@ -118,8 +118,8 @@
   [(UILabel *)self->_titleLabelView setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_titleLabelView setTextAlignment:1];
   v15 = self->_titleLabelView;
-  v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v15 setTextColor:v16];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v15 setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_titleLabelView setNumberOfLines:2];
   v17 = self->_titleLabelView;
@@ -130,7 +130,7 @@
 
   [(UILabel *)self->_titleLabelView setLineBreakMode:4];
   [(UILabel *)self->_titleLabelView setIsAccessibilityElement:0];
-  [v3 addSubview:self->_titleLabelView];
+  [view addSubview:self->_titleLabelView];
   v21 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   subtitleLabelView = self->_subtitleLabelView;
   self->_subtitleLabelView = v21;
@@ -139,8 +139,8 @@
   [(UILabel *)self->_subtitleLabelView setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_subtitleLabelView setTextAlignment:1];
   v23 = self->_subtitleLabelView;
-  v24 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UILabel *)v23 setTextColor:v24];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UILabel *)v23 setTextColor:tertiaryLabelColor];
 
   [(UILabel *)self->_subtitleLabelView setNumberOfLines:2];
   v25 = self->_subtitleLabelView;
@@ -149,13 +149,13 @@
 
   [(UILabel *)self->_subtitleLabelView setLineBreakMode:4];
   [(UILabel *)self->_subtitleLabelView setIsAccessibilityElement:0];
-  [v3 addSubview:self->_subtitleLabelView];
-  v27 = [objc_alloc(MEMORY[0x1E69DC608]) initWithAccessibilityContainer:v3];
+  [view addSubview:self->_subtitleLabelView];
+  v27 = [objc_alloc(MEMORY[0x1E69DC608]) initWithAccessibilityContainer:view];
   textAccessibilityElement = self->_textAccessibilityElement;
   self->_textAccessibilityElement = v27;
 
   [(UIAccessibilityElement *)self->_textAccessibilityElement setAccessibilityTraits:*MEMORY[0x1E69DD9F0] | *MEMORY[0x1E69DDA38]];
-  v29 = [objc_alloc(MEMORY[0x1E69DC608]) initWithAccessibilityContainer:v3];
+  v29 = [objc_alloc(MEMORY[0x1E69DC608]) initWithAccessibilityContainer:view];
   passcodeAccessibilityElement = self->_passcodeAccessibilityElement;
   self->_passcodeAccessibilityElement = v29;
 
@@ -165,7 +165,7 @@
   v39[0] = self->_textAccessibilityElement;
   v39[1] = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
-  [v3 setAccessibilityElements:v32];
+  [view setAccessibilityElements:v32];
 
   [(PKAuthorizationCoverSheetViewController *)self _transitionToState:1 animated:0];
 }
@@ -175,22 +175,22 @@
   v53.receiver = self;
   v53.super_class = PKAuthorizationCoverSheetViewController;
   [(PKAuthorizationCoverSheetViewController *)&v53 viewWillLayoutSubviews];
-  v3 = [(PKAuthorizationCoverSheetViewController *)self view];
-  [v3 bounds];
+  view = [(PKAuthorizationCoverSheetViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v49 = v12;
-  v13 = [v3 readableContentGuide];
-  [v13 layoutFrame];
+  readableContentGuide = [view readableContentGuide];
+  [readableContentGuide layoutFrame];
   v15 = v14;
 
   v16 = fmin(v9, v15);
-  v17 = [(PKAuthorizationCoverSheetViewController *)self traitCollection];
-  v18 = [v17 preferredContentSizeCategory];
-  v19 = UIContentSizeCategoryCompareToCategory(v18, *MEMORY[0x1E69DDC30]);
+  traitCollection = [(PKAuthorizationCoverSheetViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v19 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC30]);
 
   [(UILabel *)self->_titleLabelView sizeThatFits:v16, 1.79769313e308];
   v21 = v20;
@@ -269,23 +269,23 @@
   passcodeViewController = self->_passcodeViewController;
   if (passcodeViewController)
   {
-    v47 = [(UIViewController *)passcodeViewController parentViewController];
+    parentViewController = [(UIViewController *)passcodeViewController parentViewController];
 
-    if (v47)
+    if (parentViewController)
     {
-      v48 = [(UIViewController *)self->_passcodeViewController view];
-      [v48 setFrame:{v5, v7, v9, rect}];
+      view2 = [(UIViewController *)self->_passcodeViewController view];
+      [view2 setFrame:{v5, v7, v9, rect}];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = PKAuthorizationCoverSheetViewController;
-  [(PKAuthorizationCoverSheetViewController *)&v5 traitCollectionDidChange:a3];
-  v4 = [(PKAuthorizationCoverSheetViewController *)self view];
-  [v4 layoutIfNeeded];
+  [(PKAuthorizationCoverSheetViewController *)&v5 traitCollectionDidChange:change];
+  view = [(PKAuthorizationCoverSheetViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (void)startEvaluation
@@ -328,10 +328,10 @@
       if (self->_presentationSource == 6)
       {
         v7 = [(PKPassLibrary *)self->_passLibrary passWithUniqueID:self->_passUniqueIdentifier];
-        v8 = [v7 secureElementPass];
+        secureElementPass = [v7 secureElementPass];
 
         v9 = PKLocalizedCredentialString(&cfstr_UwbBiolockoutP.isa);
-        if ([v8 isCarKeyPass])
+        if ([secureElementPass isCarKeyPass])
         {
           PKLocalizedCredentialString(&cfstr_CarKeyUwbBiolo.isa);
         }
@@ -358,7 +358,7 @@
       v15 = __58__PKAuthorizationCoverSheetViewController_startEvaluation__block_invoke;
       v16 = &unk_1E8012A70;
       objc_copyWeak(&v18, buf);
-      v17 = self;
+      selfCopy = self;
       [(PKAuthenticator *)authenticator evaluateRequest:v11 withCompletion:&v13];
       if (([MEMORY[0x1E69BC740] currentStateForPolicy:{10, v13, v14, v15, v16}] & 6) == 0)
       {
@@ -525,25 +525,25 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)fadeOutUIWithCompletion:(id)a3
+- (void)fadeOutUIWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKAuthorizationCoverSheetViewController *)self viewIfLoaded];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  viewIfLoaded = [(PKAuthorizationCoverSheetViewController *)self viewIfLoaded];
+  v6 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    v7 = [v5 layer];
+    layer = [viewIfLoaded layer];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __67__PKAuthorizationCoverSheetViewController_fadeOutUIWithCompletion___block_invoke;
     v8[3] = &unk_1E8010AD8;
-    v9 = v4;
-    [v7 pkui_animateToOpacity:v8 withCompletion:0.0];
+    v9 = completionCopy;
+    [layer pkui_animateToOpacity:v8 withCompletion:0.0];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -558,22 +558,22 @@ uint64_t __67__PKAuthorizationCoverSheetViewController_fadeOutUIWithCompletion__
   return result;
 }
 
-- (void)fadeInUIAnimated:(BOOL)a3 performSynchronizedAnimation:(id)a4
+- (void)fadeInUIAnimated:(BOOL)animated performSynchronizedAnimation:(id)animation
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  animationCopy = animation;
   if (!self->_shouldUIBeShown)
   {
     self->_shouldUIBeShown = 1;
-    aBlock = v6;
+    aBlock = animationCopy;
     if (self->_currentState == 6)
     {
       self->_isWaitingForPasscodeUI = 1;
-      v7 = _Block_copy(v6);
+      v7 = _Block_copy(animationCopy);
       performSynchronizedFadeInAnimationBlock = self->_performSynchronizedFadeInAnimationBlock;
       self->_performSynchronizedFadeInAnimationBlock = v7;
 
-      v6 = aBlock;
+      animationCopy = aBlock;
       if (!self->_passcodeViewController)
       {
         goto LABEL_11;
@@ -584,21 +584,21 @@ uint64_t __67__PKAuthorizationCoverSheetViewController_fadeOutUIWithCompletion__
 
     else
     {
-      if (v4)
+      if (animatedCopy)
       {
         [PKAuthorizationCoverSheetViewController _transitionToState:"_transitionToState:animated:" animated:?];
-        v6 = aBlock;
+        animationCopy = aBlock;
       }
 
-      if (v6)
+      if (animationCopy)
       {
         (*(aBlock + 2))();
       }
 
-      [(PKAuthorizationCoverSheetViewController *)self _transitionToState:self->_currentState animated:v4];
+      [(PKAuthorizationCoverSheetViewController *)self _transitionToState:self->_currentState animated:animatedCopy];
     }
 
-    v6 = aBlock;
+    animationCopy = aBlock;
   }
 
 LABEL_11:
@@ -711,25 +711,25 @@ void __72__PKAuthorizationCoverSheetViewController__presentPasscodeToExitLockout
   }
 }
 
-- (void)_transitionToState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_transitionToState:(unint64_t)state animated:(BOOL)animated
 {
   if (self->_isInvalid)
   {
     return;
   }
 
-  v6 = a4;
+  animatedCopy = animated;
   v7 = 0;
   v8 = 0;
   shouldDrawGlyph = self->_shouldDrawGlyph;
   v10 = 6;
-  if (a3 > 4)
+  if (state > 4)
   {
-    if (a3 <= 7)
+    if (state <= 7)
     {
-      if (a3 != 5)
+      if (state != 5)
       {
-        if (a3 != 6)
+        if (state != 6)
         {
           IsAvailable = PKPearlIsAvailable();
           v12 = 0;
@@ -750,7 +750,7 @@ void __72__PKAuthorizationCoverSheetViewController__presentPasscodeToExitLockout
           v56 = v17;
           v62 = 1;
 LABEL_27:
-          v20 = v6;
+          v20 = animatedCopy;
           if (!shouldDrawGlyph)
           {
             goto LABEL_69;
@@ -769,7 +769,7 @@ LABEL_27:
         v12 = 0;
         v56 = 6;
 LABEL_68:
-        v20 = v6;
+        v20 = animatedCopy;
         goto LABEL_69;
       }
 
@@ -795,7 +795,7 @@ LABEL_67:
       goto LABEL_68;
     }
 
-    if (a3 == 8)
+    if (state == 8)
     {
       LOBYTE(v14) = 0;
       v16 = 0;
@@ -810,7 +810,7 @@ LABEL_67:
       goto LABEL_68;
     }
 
-    if (a3 == 9)
+    if (state == 9)
     {
       if (PKPearlIsAvailable())
       {
@@ -838,7 +838,7 @@ LABEL_67:
         v15 = 1;
         v16 = 1;
         v57 = 1;
-        v20 = v6;
+        v20 = animatedCopy;
         if (!shouldDrawGlyph)
         {
           goto LABEL_56;
@@ -852,7 +852,7 @@ LABEL_67:
     {
       v13 = 0;
       v12 = 0;
-      if (a3 == 10)
+      if (state == 10)
       {
         v12 = [(PKAuthorizationCoverSheetViewController *)self _genericBiometricUnavailableLabelAccessibilityLabel:0];
         v8 = 1;
@@ -886,7 +886,7 @@ LABEL_45:
     v25 = 0;
     v15 = 1;
     v16 = v8;
-    v20 = v6;
+    v20 = animatedCopy;
     if (!shouldDrawGlyph)
     {
       goto LABEL_56;
@@ -895,9 +895,9 @@ LABEL_45:
     goto LABEL_55;
   }
 
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
       v12 = 0;
       v13 = 0;
@@ -915,7 +915,7 @@ LABEL_45:
 
     v13 = 0;
     v12 = 0;
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_45;
     }
@@ -933,7 +933,7 @@ LABEL_48:
 LABEL_54:
       v16 = 0;
       v62 = 0;
-      v20 = v6;
+      v20 = animatedCopy;
       goto LABEL_55;
     }
 
@@ -945,13 +945,13 @@ LABEL_65:
     goto LABEL_67;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v8 = 1;
     goto LABEL_48;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     v21 = PKPearlIsAvailable();
     v22 = 4;
@@ -961,7 +961,7 @@ LABEL_65:
     }
 
     v56 = v22;
-    v19 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -977,14 +977,14 @@ LABEL_65:
     }
 
     v56 = v18;
-    v19 = self;
+    selfCopy2 = self;
     if (self->_currentState == 9)
     {
       v12 = [(PKAuthorizationCoverSheetViewController *)self _genericBiometricFailureLabelAccessibilityLabel:0];
       v8 = 1;
       v60 = [(PKAuthorizationCoverSheetViewController *)self _genericBiometricFailureLabelAccessibilityLabel:1];
       v14 = 0;
-      v20 = v6;
+      v20 = animatedCopy;
       if (!shouldDrawGlyph)
       {
         v62 = 0;
@@ -1004,11 +1004,11 @@ LABEL_65:
     }
   }
 
-  v12 = [(PKAuthorizationCoverSheetViewController *)v19 _genericBiometricLabelAccessibilityLabel:0, v56];
+  v12 = [(PKAuthorizationCoverSheetViewController *)selfCopy2 _genericBiometricLabelAccessibilityLabel:0, v56];
   v15 = 1;
   v60 = [(PKAuthorizationCoverSheetViewController *)self _genericBiometricLabelAccessibilityLabel:1];
   v8 = 0;
-  v20 = v6;
+  v20 = animatedCopy;
   if (!shouldDrawGlyph)
   {
     LOBYTE(v14) = 0;
@@ -1110,7 +1110,7 @@ LABEL_75:
   aBlock[3] = &unk_1E8011C98;
   v32 = v12;
   v68 = v32;
-  v69 = self;
+  selfCopy3 = self;
   v33 = v13;
   v70 = v33;
   v34 = v31;
@@ -1120,40 +1120,40 @@ LABEL_75:
   if (v20 && self->_shouldUIBeShown)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v35 animations:0.25];
-    v37 = [(PKGlyphView *)self->_glyphView layer];
-    [v37 pkui_animateToOpacity:0 withCompletion:v26];
+    layer = [(PKGlyphView *)self->_glyphView layer];
+    [layer pkui_animateToOpacity:0 withCompletion:v26];
 
     v38 = 1088;
-    v39 = [(UIButton *)self->_enterPasscodeButton layer];
-    [v39 pkui_animateToOpacity:0 withCompletion:v27];
+    layer2 = [(UIButton *)self->_enterPasscodeButton layer];
+    [layer2 pkui_animateToOpacity:0 withCompletion:v27];
 
-    v40 = [(UILabel *)self->_titleLabelView layer];
-    [v40 pkui_animateToOpacity:0 withCompletion:v29];
+    layer3 = [(UILabel *)self->_titleLabelView layer];
+    [layer3 pkui_animateToOpacity:0 withCompletion:v29];
 
-    v41 = [(UILabel *)self->_subtitleLabelView layer];
-    [v41 pkui_animateToOpacity:0 withCompletion:v28];
+    layer4 = [(UILabel *)self->_subtitleLabelView layer];
+    [layer4 pkui_animateToOpacity:0 withCompletion:v28];
     v42 = 1;
   }
 
   else
   {
     (*(v35 + 2))(v35);
-    v43 = [(PKGlyphView *)self->_glyphView layer];
+    layer5 = [(PKGlyphView *)self->_glyphView layer];
     *&v44 = v26;
-    [v43 setOpacity:v44];
+    [layer5 setOpacity:v44];
 
     v38 = 1088;
-    v45 = [(UIButton *)self->_enterPasscodeButton layer];
+    layer6 = [(UIButton *)self->_enterPasscodeButton layer];
     *&v46 = v27;
-    [v45 setOpacity:v46];
+    [layer6 setOpacity:v46];
 
-    v47 = [(UILabel *)self->_titleLabelView layer];
+    layer7 = [(UILabel *)self->_titleLabelView layer];
     *&v48 = v29;
-    [v47 setOpacity:v48];
+    [layer7 setOpacity:v48];
 
-    v41 = [(UILabel *)self->_subtitleLabelView layer];
+    layer4 = [(UILabel *)self->_subtitleLabelView layer];
     *&v49 = v28;
-    [v41 setOpacity:v49];
+    [layer4 setOpacity:v49];
     v42 = 0;
   }
 
@@ -1201,9 +1201,9 @@ LABEL_75:
     if (v42)
     {
 LABEL_95:
-      v53 = [*(&self->super.super.super.isa + v38) layer];
-      v54 = [MEMORY[0x1E6979300] pkui_shakeAnimation];
-      v55 = [v53 pkui_addAdditiveAnimation:v54];
+      layer8 = [*(&self->super.super.super.isa + v38) layer];
+      pkui_shakeAnimation = [MEMORY[0x1E6979300] pkui_shakeAnimation];
+      v55 = [layer8 pkui_addAdditiveAnimation:pkui_shakeAnimation];
     }
   }
 
@@ -1220,7 +1220,7 @@ LABEL_97:
     }
   }
 
-  self->_currentState = a3;
+  self->_currentState = state;
 }
 
 void __71__PKAuthorizationCoverSheetViewController__transitionToState_animated___block_invoke(uint64_t a1)
@@ -1248,11 +1248,11 @@ void __71__PKAuthorizationCoverSheetViewController__transitionToState_animated__
   }
 }
 
-- (id)_genericBiometricLabelAccessibilityLabel:(BOOL)a3
+- (id)_genericBiometricLabelAccessibilityLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   IsAvailable = PKPearlIsAvailable();
-  if (v3)
+  if (labelCopy)
   {
     if (IsAvailable)
     {
@@ -1282,9 +1282,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)_passcodeLabelAccessibilityLabel:(BOOL)a3
+- (id)_passcodeLabelAccessibilityLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = @"PRIVACY_COVER_SHEET_PASSCODE_ACCESSIBILITY_TEXT";
   }
@@ -1299,11 +1299,11 @@ LABEL_10:
   return v4;
 }
 
-- (id)_genericBiometricFailureLabelAccessibilityLabel:(BOOL)a3
+- (id)_genericBiometricFailureLabelAccessibilityLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   IsAvailable = PKPearlIsAvailable();
-  if (v3)
+  if (labelCopy)
   {
     if (IsAvailable)
     {
@@ -1333,11 +1333,11 @@ LABEL_10:
   return v6;
 }
 
-- (id)_genericBiometricUnavailableLabelAccessibilityLabel:(BOOL)a3
+- (id)_genericBiometricUnavailableLabelAccessibilityLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   IsAvailable = PKPearlIsAvailable();
-  if (v3)
+  if (labelCopy)
   {
     if (IsAvailable)
     {
@@ -1395,16 +1395,16 @@ LABEL_10:
 
   if (isWaitingForPasscodeUI)
   {
-    v7 = [(UIViewController *)self->_passcodeViewController view];
-    v8 = [v7 layer];
-    [v8 setOpacity:0.0];
+    view = [(UIViewController *)self->_passcodeViewController view];
+    layer = [view layer];
+    [layer setOpacity:0.0];
     [(PKAuthorizationCoverSheetViewController *)self addChildViewController:self->_passcodeViewController];
-    v9 = [(PKAuthorizationCoverSheetViewController *)self view];
-    [v9 addSubview:v7];
+    view2 = [(PKAuthorizationCoverSheetViewController *)self view];
+    [view2 addSubview:view];
 
     [(UIViewController *)self->_passcodeViewController didMoveToParentViewController:self];
-    [v7 setNeedsLayout];
-    [v7 layoutIfNeeded];
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
     performSynchronizedFadeInAnimationBlock = self->_performSynchronizedFadeInAnimationBlock;
     if (performSynchronizedFadeInAnimationBlock)
     {
@@ -1418,7 +1418,7 @@ LABEL_10:
     v12[2] = __75__PKAuthorizationCoverSheetViewController__animateInPasscodeViewController__block_invoke_136;
     v12[3] = &unk_1E8010AD8;
     v13 = v4;
-    [v8 pkui_animateToOpacity:v12 withCompletion:1.0];
+    [layer pkui_animateToOpacity:v12 withCompletion:1.0];
   }
 
   else
@@ -1457,7 +1457,7 @@ void __75__PKAuthorizationCoverSheetViewController__animateInPasscodeViewControl
   }
 }
 
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
   if (!self->_authenticating)
@@ -1465,8 +1465,8 @@ void __75__PKAuthorizationCoverSheetViewController__animateInPasscodeViewControl
     return;
   }
 
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = event.var1;
+  var0 = event.var0;
   if (PKPearlIsAvailable())
   {
     v7 = (self->_coachingState - 3) < 2;
@@ -1587,16 +1587,16 @@ LABEL_31:
   [(PKAuthorizationCoverSheetViewController *)self _transitionToState:currentState animated:1];
 }
 
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  replyCopy = reply;
   if (self->_passcodeViewController)
   {
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
@@ -1609,9 +1609,9 @@ LABEL_31:
       _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "PKAuthorizationCoverSheetViewController: requested passcode presentation", v15, 2u);
     }
 
-    objc_storeStrong(&self->_passcodeViewController, a3);
+    objc_storeStrong(&self->_passcodeViewController, controller);
     [(UIViewController *)self->_passcodeViewController setModalPresentationStyle:5];
-    v13 = _Block_copy(v10);
+    v13 = _Block_copy(handlerCopy);
     showPasscodeUICompletion = self->_showPasscodeUICompletion;
     self->_showPasscodeUICompletion = v13;
 
@@ -1631,13 +1631,13 @@ LABEL_31:
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKAuthorizationCoverSheetViewController: Dismissing passcode view controller", v9, 2u);
   }
 
-  v4 = [(UIViewController *)self->_passcodeViewController parentViewController];
+  parentViewController = [(UIViewController *)self->_passcodeViewController parentViewController];
 
   passcodeViewController = self->_passcodeViewController;
-  if (v4)
+  if (parentViewController)
   {
-    v6 = [(UIViewController *)passcodeViewController view];
-    [v6 removeFromSuperview];
+    view = [(UIViewController *)passcodeViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_passcodeViewController removeFromParentViewController];
     [(UIViewController *)self->_passcodeViewController didMoveToParentViewController:0];
@@ -1645,8 +1645,8 @@ LABEL_31:
 
   else
   {
-    v7 = [(UIViewController *)passcodeViewController presentingViewController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(UIViewController *)passcodeViewController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   v8 = self->_passcodeViewController;

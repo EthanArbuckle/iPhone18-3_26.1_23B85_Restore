@@ -1,20 +1,20 @@
 @interface NEDNSProxyProvider
-- (BOOL)handleNewUDPFlow:(id)a3 initialRemoteFlowEndpoint:(id)a4;
+- (BOOL)handleNewUDPFlow:(id)flow initialRemoteFlowEndpoint:(id)endpoint;
 - (void)cancelProxyWithError:(NSError *)error;
 - (void)startProxyWithOptions:(NSDictionary *)options completionHandler:(void *)completionHandler;
 @end
 
 @implementation NEDNSProxyProvider
 
-- (BOOL)handleNewUDPFlow:(id)a3 initialRemoteFlowEndpoint:(id)a4
+- (BOOL)handleNewUDPFlow:(id)flow initialRemoteFlowEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEProvider *)self _callSwiftHandleNewUDPFlow:v6 initialRemoteFlowEndpoint:v7];
+  flowCopy = flow;
+  endpointCopy = endpoint;
+  v8 = [(NEProvider *)self _callSwiftHandleNewUDPFlow:flowCopy initialRemoteFlowEndpoint:endpointCopy];
   if (v8 == -1)
   {
-    v10 = [MEMORY[0x1E6977E20] endpointWithCEndpoint:v7];
-    v9 = [(NEDNSProxyProvider *)self handleNewUDPFlow:v6 initialRemoteEndpoint:v10];
+    v10 = [MEMORY[0x1E6977E20] endpointWithCEndpoint:endpointCopy];
+    v9 = [(NEDNSProxyProvider *)self handleNewUDPFlow:flowCopy initialRemoteEndpoint:v10];
   }
 
   else
@@ -28,8 +28,8 @@
 - (void)cancelProxyWithError:(NSError *)error
 {
   v4 = error;
-  v5 = [(NEProvider *)self context];
-  [v5 cancelWithError:v4];
+  context = [(NEProvider *)self context];
+  [context cancelWithError:v4];
 }
 
 - (void)startProxyWithOptions:(NSDictionary *)options completionHandler:(void *)completionHandler

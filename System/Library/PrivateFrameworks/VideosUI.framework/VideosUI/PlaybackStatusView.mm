@@ -1,16 +1,16 @@
 @interface PlaybackStatusView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (double)bottomMarginWithBaselineMargin:(double)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (double)bottomMarginWithBaselineMargin:(double)margin;
 @end
 
 @implementation PlaybackStatusView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1E37D2FC0(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  v8 = sub_1E37D2FC0(only, width, height);
   v10 = v9;
 
   v11 = v8;
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (double)bottomMarginWithBaselineMargin:(double)a3
+- (double)bottomMarginWithBaselineMargin:(double)margin
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E37D4154();
   v5 = v4;
 

@@ -1,8 +1,8 @@
 @interface FAAgeRangeDaemonConnection
-- (FAAgeRangeDaemonConnection)initWithListenerEndpoint:(id)a3;
+- (FAAgeRangeDaemonConnection)initWithListenerEndpoint:(id)endpoint;
 - (id)_connection;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_connectionInterruptionHandler;
 - (void)_connectionInvalidationHandler;
 - (void)dealloc;
@@ -10,16 +10,16 @@
 
 @implementation FAAgeRangeDaemonConnection
 
-- (FAAgeRangeDaemonConnection)initWithListenerEndpoint:(id)a3
+- (FAAgeRangeDaemonConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = FAAgeRangeDaemonConnection;
   v6 = [(FAAgeRangeDaemonConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listenerEndpoint, a3);
+    objc_storeStrong(&v6->_listenerEndpoint, endpoint);
     v7->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
@@ -30,25 +30,25 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B70B0000, a2, OS_LOG_TYPE_DEBUG, "%@ deallocated", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FAAgeRangeDaemonConnection *)self _connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(FAAgeRangeDaemonConnection *)self _connection];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FAAgeRangeDaemonConnection *)self _connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(FAAgeRangeDaemonConnection *)self _connection];
+  v6 = [_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

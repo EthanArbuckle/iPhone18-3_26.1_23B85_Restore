@@ -1,11 +1,11 @@
 @interface LinkActionURLQualifier
-- (BOOL)allowCopyingOfURL:(id)a3;
+- (BOOL)allowCopyingOfURL:(id)l;
 - (_TtC8StocksUI22LinkActionURLQualifier)init;
 @end
 
 @implementation LinkActionURLQualifier
 
-- (BOOL)allowCopyingOfURL:(id)a3
+- (BOOL)allowCopyingOfURL:(id)l
 {
   v3 = sub_220884E9C();
   v4 = *(v3 - 8);

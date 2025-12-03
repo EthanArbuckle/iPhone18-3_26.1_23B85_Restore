@@ -1,17 +1,17 @@
 @interface CNContactView
-+ (BOOL)isFixedValueProperty:(id)a3;
-+ (BOOL)isMultiValueProperty:(id)a3;
++ (BOOL)isFixedValueProperty:(id)property;
++ (BOOL)isMultiValueProperty:(id)property;
 + (id)addFieldCardProperties;
 + (id)allCardProperties;
 + (id)allImageProperties;
 + (id)cellIdentifierForActions;
 + (id)cellIdentifierForCardNamePickingGroup;
-+ (id)cellIdentifierForClass:(Class)a3;
++ (id)cellIdentifierForClass:(Class)class;
 + (id)cellIdentifierForContactContainerEditingGroup;
 + (id)cellIdentifierForDefaultAppGroup;
 + (id)cellIdentifierForDropdownMenuActions;
-+ (id)cellIdentifierForEditingProperty:(id)a3;
-+ (id)cellIdentifierForEditingPropertyItem:(id)a3;
++ (id)cellIdentifierForEditingProperty:(id)property;
++ (id)cellIdentifierForEditingPropertyItem:(id)item;
 + (id)cellIdentifierForFaceTimeGroup;
 + (id)cellIdentifierForGameCenterGroup;
 + (id)cellIdentifierForGroupMembershipEditingGroup;
@@ -21,7 +21,7 @@
 + (id)cellIdentifierForLinkedCardsGroup;
 + (id)cellIdentifierForLinkedCardsPlaceholderGroup;
 + (id)cellIdentifierForMeCardSharedProfileGroup;
-+ (id)cellIdentifierForProperty:(id)a3;
++ (id)cellIdentifierForProperty:(id)property;
 + (id)cellIdentifierForPropertyPlaceholder;
 + (id)cellIdentifierForSNaPGroup;
 + (id)cellIdentifierForSharedProfileBanner;
@@ -30,25 +30,25 @@
 + (id)cellIdentifierForStaticIdentityGroup;
 + (id)cellIdentifierForStaticIdentityPlaceholderGroup;
 + (id)defaultCardProperties;
-+ (id)namePropertiesForContact:(id)a3;
++ (id)namePropertiesForContact:(id)contact;
 + (id)optionalCardProperties;
 + (id)requiredNameProperties;
 - (CGSize)oldSize;
 - (CNContactHeaderView)defaultHeaderView;
-- (CNContactView)initWithFrame:(CGRect)a3 style:(int64_t)a4 contact:(id)a5;
-- (UIEdgeInsets)separatorInsetForCell:(id)a3;
+- (CNContactView)initWithFrame:(CGRect)frame style:(int64_t)style contact:(id)contact;
+- (UIEdgeInsets)separatorInsetForCell:(id)cell;
 - (void)_cnui_applyContactStyle;
-- (void)applyCellAppearance:(id)a3;
+- (void)applyCellAppearance:(id)appearance;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)registerContactCellClass:(Class)a3;
-- (void)setAttributesFromContactView:(id)a3 runningInContactsAppOniPad:(BOOL)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setEditing:(BOOL)a3;
+- (void)registerContactCellClass:(Class)class;
+- (void)setAttributesFromContactView:(id)view runningInContactsAppOniPad:(BOOL)pad;
+- (void)setBackgroundColor:(id)color;
+- (void)setEditing:(BOOL)editing;
 - (void)setNeedsUpdateVisibleCells;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFontColors;
 - (void)updateFontSizes;
 - (void)updateTableViewMetrics;
@@ -66,32 +66,32 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = CNContactView;
-  [(CNContactView *)&v11 touchesBegan:v6 withEvent:v7];
-  v8 = [(CNContactView *)self firstResponder];
+  [(CNContactView *)&v11 touchesBegan:beganCopy withEvent:eventCopy];
+  firstResponder = [(CNContactView *)self firstResponder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(CNContactView *)self superview];
-    [v10 touchesBegan:v6 withEvent:v7];
+    superview = [(CNContactView *)self superview];
+    [superview touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (UIEdgeInsets)separatorInsetForCell:(id)a3
+- (UIEdgeInsets)separatorInsetForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 contentView];
-  v6 = [v4 contentView];
-  v7 = [v6 layoutMarginsGuide];
-  [v7 layoutFrame];
-  [v5 convertRect:v4 toView:?];
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
+  contentView2 = [cellCopy contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
+  [contentView convertRect:cellCopy toView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -102,7 +102,7 @@
   v31.size.width = v13;
   v31.size.height = v15;
   MinX = CGRectGetMinX(v31);
-  [v4 frame];
+  [cellCopy frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -138,25 +138,25 @@
   return result;
 }
 
-- (void)applyCellAppearance:(id)a3
+- (void)applyCellAppearance:(id)appearance
 {
-  v24 = a3;
-  [v24 _cnui_applyContactStyle];
-  v4 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  appearanceCopy = appearance;
+  [appearanceCopy _cnui_applyContactStyle];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v24;
-    v6 = [(CNContactView *)self actionTextAttributes];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
+    v5 = appearanceCopy;
+    actionTextAttributes = [(CNContactView *)self actionTextAttributes];
+    v7 = [actionTextAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
     [v5 setActionsColor:v7];
 
-    v8 = [v5 labelLabel];
-    [v8 setNumberOfLines:v4 ^ 1];
+    labelLabel = [v5 labelLabel];
+    [labelLabel setNumberOfLines:ab_preferredContentSizeCategoryIsAccessibilityCategory ^ 1];
 
-    v9 = [v5 valueLabel];
+    valueLabel = [v5 valueLabel];
 
-    [v9 setNumberOfLines:v4 ^ 1];
+    [valueLabel setNumberOfLines:ab_preferredContentSizeCategoryIsAccessibilityCategory ^ 1];
   }
 
   else
@@ -167,20 +167,20 @@
       goto LABEL_6;
     }
 
-    v9 = [(CNContactView *)self separatorColor];
-    [v24 setEditorSeparatorColor:v9];
+    valueLabel = [(CNContactView *)self separatorColor];
+    [appearanceCopy setEditorSeparatorColor:valueLabel];
   }
 
 LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v24;
-    v11 = [v10 labelButton];
-    v12 = [v11 titleLabel];
-    [v12 setNumberOfLines:v4 ^ 1];
+    v10 = appearanceCopy;
+    labelButton = [v10 labelButton];
+    titleLabel = [labelButton titleLabel];
+    [titleLabel setNumberOfLines:ab_preferredContentSizeCategoryIsAccessibilityCategory ^ 1];
 
-    if (v4)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
       v13 = 0;
     }
@@ -190,19 +190,19 @@ LABEL_6:
       v13 = 4;
     }
 
-    v14 = [v10 labelButton];
-    v15 = [v14 titleLabel];
-    [v15 setLineBreakMode:v13];
+    labelButton2 = [v10 labelButton];
+    titleLabel2 = [labelButton2 titleLabel];
+    [titleLabel2 setLineBreakMode:v13];
 
-    [v10 setVseparatorHidden:v4];
+    [v10 setVseparatorHidden:ab_preferredContentSizeCategoryIsAccessibilityCategory];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v24;
-    v17 = [v16 valueLabel];
-    [v17 setNumberOfLines:0];
+    v16 = appearanceCopy;
+    valueLabel2 = [v16 valueLabel];
+    [valueLabel2 setNumberOfLines:0];
 
     [v16 setShouldUseMapTiles:{-[CNContactView shouldUseMapTiles](self, "shouldUseMapTiles")}];
   }
@@ -210,8 +210,8 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v24 label];
-    [v18 setNumberOfLines:v4 ^ 1];
+    label = [appearanceCopy label];
+    [label setNumberOfLines:ab_preferredContentSizeCategoryIsAccessibilityCategory ^ 1];
   }
 
   objc_opt_class();
@@ -219,33 +219,33 @@ LABEL_6:
   {
     v19 = MEMORY[0x1E69DB878];
     v20 = *MEMORY[0x1E69DDCF8];
-    v21 = v24;
+    v21 = appearanceCopy;
     v22 = [v19 ab_preferredFontForTextStyle:v20];
-    v23 = [v21 textField];
+    textField = [v21 textField];
 
-    [v23 setFont:v22];
+    [textField setFont:v22];
   }
 
-  if ([v24 isSelected])
+  if ([appearanceCopy isSelected])
   {
-    [v24 setSelected:0 animated:0];
-    [v24 setSelected:1 animated:0];
+    [appearanceCopy setSelected:0 animated:0];
+    [appearanceCopy setSelected:1 animated:0];
   }
 
   if ([(CNContactView *)self isEditing])
   {
-    [(CNContactView *)self separatorInsetForCell:v24];
-    [v24 setSeparatorInset:?];
+    [(CNContactView *)self separatorInsetForCell:appearanceCopy];
+    [appearanceCopy setSeparatorInset:?];
   }
 
-  [v24 setNeedsUpdateConstraints];
+  [appearanceCopy setNeedsUpdateConstraints];
 }
 
 - (void)updateFontSizes
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactView *)self defaultHeaderView];
-  [v3 updateFontSizes];
+  defaultHeaderView = [(CNContactView *)self defaultHeaderView];
+  [defaultHeaderView updateFontSizes];
 
   v4 = *MEMORY[0x1E69DDCF8];
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -253,9 +253,9 @@ LABEL_6:
   [(CNContactView *)self setEstimatedRowHeight:?];
 
   v11 = @"ABTextStyleAttributeName";
-  v6 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
   v7 = *MEMORY[0x1E69DDD80];
-  if (v6)
+  if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
   {
     v7 = v4;
   }
@@ -295,16 +295,16 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
 - (void)updateVisibleCellsIfNeeded
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactView *)self superview];
+  superview = [(CNContactView *)self superview];
 
-  if (v3 && self->_needsUpdateVisibleCells)
+  if (superview && self->_needsUpdateVisibleCells)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(CNContactView *)self visibleCells];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    visibleCells = [(CNContactView *)self visibleCells];
+    v5 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -316,7 +316,7 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(visibleCells);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -330,7 +330,7 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -370,14 +370,14 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
   v11 = *MEMORY[0x1E69DB650];
   v3 = v11;
   v4 = +[CNContactStyle currentStyle];
-  v5 = [v4 textColor];
-  v12[0] = v5;
+  textColor = [v4 textColor];
+  v12[0] = textColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   [self cn_updateDictionaryForKey:@"labelTextAttributes" withChanges:v6];
 
   v9 = v3;
-  v7 = [(UIView *)self tintColorOverride];
-  v10 = v7;
+  tintColorOverride = [(UIView *)self tintColorOverride];
+  v10 = tintColorOverride;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   [self cn_updateDictionaryForKey:@"actionTextAttributes" withChanges:v8];
 }
@@ -407,13 +407,13 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
     [(CNContactView *)self setOldSize:v10, v11];
   }
 
-  v12 = [(UIView *)self _cnui_contactStyle];
-  v13 = [v12 usesInsetPlatterStyle];
+  _cnui_contactStyle = [(UIView *)self _cnui_contactStyle];
+  usesInsetPlatterStyle = [_cnui_contactStyle usesInsetPlatterStyle];
 
-  if (v13)
+  if (usesInsetPlatterStyle)
   {
-    v14 = [(UIView *)self _cnui_contactStyle];
-    [v14 sectionMaximumPlatterWidth];
+    _cnui_contactStyle2 = [(UIView *)self _cnui_contactStyle];
+    [_cnui_contactStyle2 sectionMaximumPlatterWidth];
     v16 = v15;
 
     [(CNContactView *)self bounds];
@@ -428,11 +428,11 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v19 = [(UIView *)self _cnui_contactStyle];
-      [v19 sectionContentInset];
+      _cnui_contactStyle3 = [(UIView *)self _cnui_contactStyle];
+      [_cnui_contactStyle3 sectionContentInset];
       v21 = v20 * 0.5;
-      v22 = [(UIView *)self _cnui_contactStyle];
-      [v22 sectionContentInset];
+      _cnui_contactStyle4 = [(UIView *)self _cnui_contactStyle];
+      [_cnui_contactStyle4 sectionContentInset];
       v24 = v23 * 0.5;
     }
 
@@ -440,9 +440,9 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
     if ((v21 != v30 || v27 != 0.0 || v24 != v29 || v28 != 0.0) && ([(CNContactView *)self isEditing]& 1) == 0)
     {
       v31 = +[CNUIContactsEnvironment currentEnvironment];
-      v32 = [v31 runningInContactsAppOniPad];
+      runningInContactsAppOniPad = [v31 runningInContactsAppOniPad];
 
-      if (v32)
+      if (runningInContactsAppOniPad)
       {
         [(CNContactView *)self setLayoutMargins:0.0, v21, 0.0, v24];
         [(CNContactView *)self separatorInset];
@@ -459,23 +459,23 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
           v36 = *(MEMORY[0x1E69DDCE0] + 8);
           v37 = *(MEMORY[0x1E69DDCE0] + 16);
           v38 = *(MEMORY[0x1E69DDCE0] + 24);
-          v39 = self;
+          selfCopy2 = self;
         }
 
         else
         {
           v35 = 0.0;
           v37 = 0.0;
-          v39 = self;
+          selfCopy2 = self;
           v36 = v21;
           v38 = v24;
         }
 
-        [(CNContactView *)v39 _setSectionContentInset:v35, v36, v37, v38];
+        [(CNContactView *)selfCopy2 _setSectionContentInset:v35, v36, v37, v38];
       }
 
-      v40 = [(UIView *)self _cnui_contactStyle];
-      [v40 sectionCornerRadius];
+      _cnui_contactStyle5 = [(UIView *)self _cnui_contactStyle];
+      [_cnui_contactStyle5 sectionCornerRadius];
       [(CNContactView *)self _setSectionCornerRadius:?];
     }
   }
@@ -492,15 +492,15 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
   [(CNContactView *)self setNeedsUpdateVisibleCells];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v10.receiver = self;
   v10.super_class = CNContactView;
-  v4 = a3;
-  [(CNContactView *)&v10 setBackgroundColor:v4];
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:29];
+  colorCopy = color;
+  [(CNContactView *)&v10 setBackgroundColor:colorCopy];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:29];
 
   if (v7)
   {
@@ -508,82 +508,82 @@ void __32__CNContactView_updateFontSizes__block_invoke(uint64_t a1, void *a2)
     [(CNContactView *)self setTableHeaderBackgroundColor:v8];
   }
 
-  v9 = [(CNContactView *)self defaultHeaderView];
-  [v9 setBackgroundColor:v4];
+  defaultHeaderView = [(CNContactView *)self defaultHeaderView];
+  [defaultHeaderView setBackgroundColor:colorCopy];
 }
 
-- (void)setAttributesFromContactView:(id)a3 runningInContactsAppOniPad:(BOOL)a4
+- (void)setAttributesFromContactView:(id)view runningInContactsAppOniPad:(BOOL)pad
 {
-  v18 = a3;
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 featureFlags];
-  v8 = [v7 isFeatureEnabled:29];
+  viewCopy = view;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v8 = [featureFlags isFeatureEnabled:29];
 
   if (v8)
   {
-    v9 = +[CNUIColorRepository contactCardEditModeBackgroundColor];
+    backgroundColor = +[CNUIColorRepository contactCardEditModeBackgroundColor];
   }
 
   else
   {
-    if (a4)
+    if (pad)
     {
       goto LABEL_6;
     }
 
-    v9 = [v18 backgroundColor];
+    backgroundColor = [viewCopy backgroundColor];
   }
 
-  v10 = v9;
-  [(CNContactView *)self setBackgroundColor:v9];
+  v10 = backgroundColor;
+  [(CNContactView *)self setBackgroundColor:backgroundColor];
 
 LABEL_6:
-  v11 = [v18 separatorColor];
+  separatorColor = [viewCopy separatorColor];
 
-  if (v11)
+  if (separatorColor)
   {
-    v12 = [v18 separatorColor];
-    [(CNContactView *)self setSeparatorColor:v12];
+    separatorColor2 = [viewCopy separatorColor];
+    [(CNContactView *)self setSeparatorColor:separatorColor2];
   }
 
-  v13 = [v18 sectionBackgroundColor];
-  [(CNContactView *)self setSectionBackgroundColor:v13];
+  sectionBackgroundColor = [viewCopy sectionBackgroundColor];
+  [(CNContactView *)self setSectionBackgroundColor:sectionBackgroundColor];
 
-  v14 = [v18 selectedCellBackgroundColor];
-  [(CNContactView *)self setSelectedCellBackgroundColor:v14];
+  selectedCellBackgroundColor = [viewCopy selectedCellBackgroundColor];
+  [(CNContactView *)self setSelectedCellBackgroundColor:selectedCellBackgroundColor];
 
-  v15 = [v18 labelTextAttributes];
-  [(CNContactView *)self setLabelTextAttributes:v15];
+  labelTextAttributes = [viewCopy labelTextAttributes];
+  [(CNContactView *)self setLabelTextAttributes:labelTextAttributes];
 
-  v16 = [v18 valueTextAttributes];
-  [(CNContactView *)self setValueTextAttributes:v16];
+  valueTextAttributes = [viewCopy valueTextAttributes];
+  [(CNContactView *)self setValueTextAttributes:valueTextAttributes];
 
-  v17 = [v18 actionTextAttributes];
-  [(CNContactView *)self setActionTextAttributes:v17];
+  actionTextAttributes = [viewCopy actionTextAttributes];
+  [(CNContactView *)self setActionTextAttributes:actionTextAttributes];
 }
 
-- (void)registerContactCellClass:(Class)a3
+- (void)registerContactCellClass:(Class)class
 {
-  v5 = [objc_opt_class() cellIdentifierForClass:a3];
-  [(CNContactView *)self registerClass:a3 forCellReuseIdentifier:v5];
+  v5 = [objc_opt_class() cellIdentifierForClass:class];
+  [(CNContactView *)self registerClass:class forCellReuseIdentifier:v5];
 }
 
 - (CNContactHeaderView)defaultHeaderView
 {
-  v3 = [(CNContactView *)self customHeaderView];
-  if (v3)
+  customHeaderView = [(CNContactView *)self customHeaderView];
+  if (customHeaderView)
   {
-    v4 = v3;
+    v4 = customHeaderView;
     goto LABEL_3;
   }
 
-  v7 = [(CNContactView *)self delegate];
+  delegate = [(CNContactView *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNContactView *)self delegate];
-    v4 = [v9 viewForHeaderInTableView:self];
+    delegate2 = [(CNContactView *)self delegate];
+    v4 = [delegate2 viewForHeaderInTableView:self];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -607,14 +607,14 @@ LABEL_5:
 
 - (void)updateTableViewMetrics
 {
-  v6 = [(UIView *)self _cnui_contactStyle];
-  v3 = [v6 usesInsetPlatterStyle];
+  _cnui_contactStyle = [(UIView *)self _cnui_contactStyle];
+  usesInsetPlatterStyle = [_cnui_contactStyle usesInsetPlatterStyle];
   v4 = 0.0;
-  if (v3)
+  if (usesInsetPlatterStyle)
   {
-    v5 = [(CNContactView *)self isEditing];
+    isEditing = [(CNContactView *)self isEditing];
     v4 = 16.0;
-    if (v5)
+    if (isEditing)
     {
       v4 = 0.0;
     }
@@ -623,11 +623,11 @@ LABEL_5:
   [(CNContactView *)self setSectionHeaderHeight:v4];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v4.receiver = self;
   v4.super_class = CNContactView;
-  [(CNContactView *)&v4 setEditing:a3];
+  [(CNContactView *)&v4 setEditing:editing];
   [(CNContactView *)self updateTableViewMetrics];
 }
 
@@ -636,41 +636,41 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = CNContactView;
   [(UITableView *)&v7 _cnui_applyContactStyle];
-  v3 = [(UIView *)self _cnui_contactStyle];
-  v4 = [v3 backgroundColor];
+  _cnui_contactStyle = [(UIView *)self _cnui_contactStyle];
+  backgroundColor = [_cnui_contactStyle backgroundColor];
 
-  if (v4)
+  if (backgroundColor)
   {
-    v5 = [(UIView *)self _cnui_contactStyle];
-    v6 = [v5 backgroundColor];
-    [(CNContactView *)self setBackgroundColor:v6];
+    _cnui_contactStyle2 = [(UIView *)self _cnui_contactStyle];
+    backgroundColor2 = [_cnui_contactStyle2 backgroundColor];
+    [(CNContactView *)self setBackgroundColor:backgroundColor2];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = CNContactView;
-  [(CNMaskingTableView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(CNContactView *)self traitCollection];
-  -[CNContactView setCellLayoutMarginsFollowReadableWidth:](self, "setCellLayoutMarginsFollowReadableWidth:", [v4 userInterfaceIdiom] == 1);
+  [(CNMaskingTableView *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(CNContactView *)self traitCollection];
+  -[CNContactView setCellLayoutMarginsFollowReadableWidth:](self, "setCellLayoutMarginsFollowReadableWidth:", [traitCollection userInterfaceIdiom] == 1);
 }
 
-- (CNContactView)initWithFrame:(CGRect)a3 style:(int64_t)a4 contact:(id)a5
+- (CNContactView)initWithFrame:(CGRect)frame style:(int64_t)style contact:(id)contact
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v37[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  contactCopy = contact;
   v31.receiver = self;
   v31.super_class = CNContactView;
-  v13 = [(CNContactView *)&v31 initWithFrame:a4 style:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(CNContactView *)&v31 initWithFrame:style style:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_contact, a5);
+    objc_storeStrong(&height->_contact, contact);
     [(CNContactView *)v14 _setCellsSelfSize:1];
     [(CNContactView *)v14 setKeyboardDismissMode:2];
     [(CNContactView *)v14 setAllowsSelectionDuringEditing:1];
@@ -687,13 +687,13 @@ LABEL_5:
     [v16 _scaledValueForValue:44.0];
     [(CNContactView *)v14 setEstimatedRowHeight:?];
 
-    v17 = [(CNContactView *)v14 traitCollection];
-    -[CNContactView setCellLayoutMarginsFollowReadableWidth:](v14, "setCellLayoutMarginsFollowReadableWidth:", [v17 userInterfaceIdiom] == 1);
+    traitCollection = [(CNContactView *)v14 traitCollection];
+    -[CNContactView setCellLayoutMarginsFollowReadableWidth:](v14, "setCellLayoutMarginsFollowReadableWidth:", [traitCollection userInterfaceIdiom] == 1);
 
     v36 = @"ABTextStyleAttributeName";
-    v18 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+    ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
     v19 = *MEMORY[0x1E69DDD80];
-    if (v18)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
       v19 = v15;
     }
@@ -774,16 +774,16 @@ LABEL_5:
   return v14;
 }
 
-+ (BOOL)isFixedValueProperty:(id)a3
++ (BOOL)isFixedValueProperty:(id)property
 {
   v3 = isFixedValueProperty__onceToken;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     dispatch_once(&isFixedValueProperty__onceToken, &__block_literal_global_141);
   }
 
-  v5 = [isFixedValueProperty__fixedValueProperties containsObject:v4];
+  v5 = [isFixedValueProperty__fixedValueProperties containsObject:propertyCopy];
 
   return v5;
 }
@@ -810,16 +810,16 @@ void __38__CNContactView_isFixedValueProperty___block_invoke()
   isFixedValueProperty__fixedValueProperties = v7;
 }
 
-+ (BOOL)isMultiValueProperty:(id)a3
++ (BOOL)isMultiValueProperty:(id)property
 {
   v3 = isMultiValueProperty__onceToken;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     dispatch_once(&isMultiValueProperty__onceToken, &__block_literal_global_139);
   }
 
-  v5 = [isMultiValueProperty__singleValueProperties containsObject:v4];
+  v5 = [isMultiValueProperty__singleValueProperties containsObject:propertyCopy];
 
   return v5 ^ 1;
 }
@@ -1103,13 +1103,13 @@ void __39__CNContactView_requiredNameProperties__block_invoke()
   requiredNameProperties_properties = v14;
 }
 
-+ (id)namePropertiesForContact:(id)a3
++ (id)namePropertiesForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x1E695CD80];
-  if (v3)
+  if (contactCopy)
   {
-    v5 = [MEMORY[0x1E695CD80] nameOrderForContact:v3];
+    v5 = [MEMORY[0x1E695CD80] nameOrderForContact:contactCopy];
   }
 
   else
@@ -1208,25 +1208,25 @@ void __42__CNContactView_namePropertiesForContact___block_invoke()
   namePropertiesForContact__firstProperties = v8;
 }
 
-+ (id)cellIdentifierForClass:(Class)a3
++ (id)cellIdentifierForClass:(Class)class
 {
   v3 = MEMORY[0x1E696AEC0];
-  Name = class_getName(a3);
+  Name = class_getName(class);
 
   return [v3 stringWithCString:Name encoding:1];
 }
 
-+ (id)cellIdentifierForEditingProperty:(id)a3
++ (id)cellIdentifierForEditingProperty:(id)property
 {
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x1E695C330]] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C418]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C360]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C320]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"birthdays") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C1F0]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C3D0]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C2B0]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C1E0]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C3F8]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C3A8]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C370]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C200]) & 1) == 0)
+  propertyCopy = property;
+  if (([propertyCopy isEqualToString:*MEMORY[0x1E695C330]] & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C418]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C360]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C320]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", @"birthdays") & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C1F0]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C3D0]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C2B0]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C1E0]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C3F8]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C3A8]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C370]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C200]) & 1) == 0)
   {
-    v8 = [a1 nameProperties];
-    v9 = [v8 containsObject:v4];
+    nameProperties = [self nameProperties];
+    v9 = [nameProperties containsObject:propertyCopy];
 
     if ((v9 & 1) == 0)
     {
-      [v4 isEqualToString:*MEMORY[0x1E695C3C8]];
+      [propertyCopy isEqualToString:*MEMORY[0x1E695C3C8]];
     }
   }
 
@@ -1236,16 +1236,16 @@ void __42__CNContactView_namePropertiesForContact___block_invoke()
   return v6;
 }
 
-+ (id)cellIdentifierForEditingPropertyItem:(id)a3
++ (id)cellIdentifierForEditingPropertyItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 property];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E695C1C0]];
+  itemCopy = item;
+  property = [itemCopy property];
+  v5 = [property isEqualToString:*MEMORY[0x1E695C1C0]];
 
   if (v5)
   {
     objc_opt_class();
-    v6 = v3;
+    v6 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -1256,9 +1256,9 @@ void __42__CNContactView_namePropertiesForContact___block_invoke()
       v7 = 0;
     }
 
-    v8 = v7;
+    property2 = v7;
 
-    [v8 shouldShowLanguageLabel];
+    [property2 shouldShowLanguageLabel];
     v9 = objc_opt_class();
     v10 = [objc_opt_class() cellIdentifierForClass:v9];
   }
@@ -1266,8 +1266,8 @@ void __42__CNContactView_namePropertiesForContact___block_invoke()
   else
   {
     v11 = objc_opt_class();
-    v8 = [v3 property];
-    v10 = [v11 cellIdentifierForEditingProperty:v8];
+    property2 = [itemCopy property];
+    v10 = [v11 cellIdentifierForEditingProperty:property2];
   }
 
   v12 = v10;
@@ -1275,12 +1275,12 @@ void __42__CNContactView_namePropertiesForContact___block_invoke()
   return v12;
 }
 
-+ (id)cellIdentifierForProperty:(id)a3
++ (id)cellIdentifierForProperty:(id)property
 {
-  v3 = a3;
-  if (([v3 isEqualToString:*MEMORY[0x1E695C330]] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C208]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C360]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C3D0]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C2B0]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C320]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C1E0]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C3F8]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C200]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C3A8]) & 1) == 0)
+  propertyCopy = property;
+  if (([propertyCopy isEqualToString:*MEMORY[0x1E695C330]] & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C208]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C360]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C3D0]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C2B0]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C320]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C1E0]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C3F8]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C200]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C3A8]) & 1) == 0)
   {
-    [v3 isEqualToString:*MEMORY[0x1E695C3C8]];
+    [propertyCopy isEqualToString:*MEMORY[0x1E695C3C8]];
   }
 
   v4 = objc_opt_class();
@@ -1293,147 +1293,147 @@ void __42__CNContactView_namePropertiesForContact___block_invoke()
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForMeCardSharedProfileGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForSNaPGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForCardNamePickingGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForGameCenterGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForContactContainerEditingGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForStaticIdentityPlaceholderGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForStaticIdentityEditingGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForStaticIdentityGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForGroupMembershipPlaceholderGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForGroupMembershipEditingGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForGroupMembershipGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForLinkedCardsPlaceholderGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForLinkedCardsEditingGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForLinkedCardsGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForDefaultAppGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForFaceTimeGroup
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForPropertyPlaceholder
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForDropdownMenuActions
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForSplitActions
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 + (id)cellIdentifierForActions
 {
   v3 = objc_opt_class();
 
-  return [a1 cellIdentifierForClass:v3];
+  return [self cellIdentifierForClass:v3];
 }
 
 @end

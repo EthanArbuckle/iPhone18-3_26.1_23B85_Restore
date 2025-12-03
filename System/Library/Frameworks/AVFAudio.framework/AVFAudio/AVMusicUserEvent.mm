@@ -1,25 +1,25 @@
 @interface AVMusicUserEvent
 - (AVMusicUserEvent)initWithData:(NSData *)data;
-- (AVMusicUserEvent)initWithUserData:(MusicEventUserData *)a3;
+- (AVMusicUserEvent)initWithUserData:(MusicEventUserData *)data;
 @end
 
 @implementation AVMusicUserEvent
 
-- (AVMusicUserEvent)initWithUserData:(MusicEventUserData *)a3
+- (AVMusicUserEvent)initWithUserData:(MusicEventUserData *)data
 {
   v11.receiver = self;
   v11.super_class = AVMusicUserEvent;
   v4 = [(AVMusicUserEvent *)&v11 init];
   if (v4)
   {
-    length = a3->length;
+    length = data->length;
     v5 = objc_alloc_init(MEMORY[0x1E695DF88]);
     userData = v4->_userData;
     v4->_userData = v5;
 
     [(NSMutableData *)v4->_userData appendBytes:&length length:4];
     v7 = v4->_userData;
-    v8 = [MEMORY[0x1E695DEF0] dataWithBytes:a3->data length:a3->length];
+    v8 = [MEMORY[0x1E695DEF0] dataWithBytes:data->data length:data->length];
     [(NSMutableData *)v7 appendData:v8];
   }
 

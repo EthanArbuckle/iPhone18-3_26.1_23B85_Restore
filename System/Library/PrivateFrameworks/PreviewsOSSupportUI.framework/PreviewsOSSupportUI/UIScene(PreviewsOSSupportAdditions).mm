@@ -15,7 +15,7 @@
 
   v11[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [a1 _registerBSActionResponderArray:v9 forKey:v7];
+  [self _registerBSActionResponderArray:v9 forKey:v7];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -23,29 +23,29 @@
 - (void)uv_sendSceneAction:()PreviewsOSSupportAdditions
 {
   v4 = a3;
-  v6 = [a1 _FBSScene];
+  _FBSScene = [self _FBSScene];
   v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
 
-  [v6 sendActions:v5];
+  [_FBSScene sendActions:v5];
 }
 
 - (uint64_t)uv_previewAgentDisplaysUI
 {
-  v1 = [a1 _FBSScene];
-  v2 = [v1 specification];
+  _FBSScene = [self _FBSScene];
+  specification = [_FBSScene specification];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 previewAgentDisplaysUI];
+    previewAgentDisplaysUI = [specification previewAgentDisplaysUI];
   }
 
   else
   {
-    v3 = 0;
+    previewAgentDisplaysUI = 0;
   }
 
-  return v3;
+  return previewAgentDisplaysUI;
 }
 
 @end

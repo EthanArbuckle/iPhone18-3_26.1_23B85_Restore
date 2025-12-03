@@ -6,8 +6,8 @@
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  v3 = [(MPModelCurator *)v2 name:0x22203A656D614ELL];
+  selfCopy = self;
+  v3 = [(MPModelCurator *)selfCopy name:0x22203A656D614ELL];
   if (v3)
   {
     v4 = v3;

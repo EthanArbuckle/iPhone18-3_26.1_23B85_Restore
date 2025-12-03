@@ -3,14 +3,14 @@
 - (BOOL)hasReason;
 - (BOOL)hasSubtitle;
 - (BOOL)hasTitle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)contextEndDate;
 - (double)contextStartDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)preferredLayoutConfigsAtIndex:(id *)a1;
-- (uint64_t)addPreferredLayoutConfigs:(uint64_t)a1;
+- (id)preferredLayoutConfigsAtIndex:(id *)index;
+- (uint64_t)addPreferredLayoutConfigs:(uint64_t)configs;
 - (uint64_t)allowedOnHomeScreen;
 - (uint64_t)allowedOnLockscreen;
 - (uint64_t)allowedOnSpotlight;
@@ -44,13 +44,13 @@
 - (uint64_t)subtitle;
 - (uint64_t)title;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setPreferredLayoutConfigs:(uint64_t)a1;
-- (void)setReason:(uint64_t)a1;
-- (void)setSubtitle:(uint64_t)a1;
-- (void)setTitle:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setPreferredLayoutConfigs:(uint64_t)configs;
+- (void)setReason:(uint64_t)reason;
+- (void)setSubtitle:(uint64_t)subtitle;
+- (void)setTitle:(uint64_t)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBProactiveSuggestionUISpecification
@@ -77,9 +77,9 @@
 
 - (uint64_t)shouldClearOnEngagement
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 67));
+    return OUTLINED_FUNCTION_5(*(self + 67));
   }
 
   else
@@ -90,9 +90,9 @@
 
 - (uint64_t)allowedOnHomeScreen
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 64));
+    return OUTLINED_FUNCTION_5(*(self + 64));
   }
 
   else
@@ -103,9 +103,9 @@
 
 - (uint64_t)allowedOnLockscreen
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 65));
+    return OUTLINED_FUNCTION_5(*(self + 65));
   }
 
   else
@@ -126,9 +126,9 @@
 
 - (uint64_t)allowedOnSpotlight
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 66));
+    return OUTLINED_FUNCTION_5(*(self + 66));
   }
 
   else
@@ -179,9 +179,9 @@
 
 - (double)contextEndDate
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -192,9 +192,9 @@
 
 - (double)contextStartDate
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else
@@ -216,8 +216,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBProactiveSuggestionUISpecification;
   v4 = [(ATXPBProactiveSuggestionUISpecification *)&v8 description];
-  v5 = [(ATXPBProactiveSuggestionUISpecification *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBProactiveSuggestionUISpecification *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -225,12 +225,12 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   subtitle = self->_subtitle;
@@ -267,8 +267,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -384,10 +384,10 @@ LABEL_24:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
@@ -529,19 +529,19 @@ LABEL_22:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_subtitle copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_reason copyWithZone:a3];
+  v10 = [(NSString *)self->_reason copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -564,7 +564,7 @@ LABEL_22:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v17 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [(ATXPBProactiveSuggestionUISpecification *)v5 addPreferredLayoutConfigs:v17];
       }
 
@@ -671,16 +671,16 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
   title = self->_title;
-  if (title | *(v4 + 7))
+  if (title | *(equalCopy + 7))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -689,7 +689,7 @@ LABEL_16:
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 6))
+  if (subtitle | *(equalCopy + 6))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -698,7 +698,7 @@ LABEL_16:
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 5))
+  if (reason | *(equalCopy + 5))
   {
     if (![(NSString *)reason isEqual:?])
     {
@@ -707,7 +707,7 @@ LABEL_16:
   }
 
   preferredLayoutConfigs = self->_preferredLayoutConfigs;
-  if (preferredLayoutConfigs | *(v4 + 4))
+  if (preferredLayoutConfigs | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)preferredLayoutConfigs isEqual:?])
     {
@@ -717,88 +717,88 @@ LABEL_16:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 68) & 0x10) == 0)
+    if ((*(equalCopy + 68) & 0x10) == 0)
     {
       goto LABEL_56;
     }
 
-    v9 = *(v4 + 65);
+    v9 = *(equalCopy + 65);
     if (self->_allowedOnLockscreen)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 68) & 0x10) != 0)
+  else if ((*(equalCopy + 68) & 0x10) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 68) & 8) == 0)
+    if ((*(equalCopy + 68) & 8) == 0)
     {
       goto LABEL_56;
     }
 
-    v10 = *(v4 + 64);
+    v10 = *(equalCopy + 64);
     if (self->_allowedOnHomeScreen)
     {
-      if ((*(v4 + 64) & 1) == 0)
+      if ((*(equalCopy + 64) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 64))
+    else if (*(equalCopy + 64))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 68) & 8) != 0)
+  else if ((*(equalCopy + 68) & 8) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 68) & 0x20) == 0)
+    if ((*(equalCopy + 68) & 0x20) == 0)
     {
       goto LABEL_56;
     }
 
-    v11 = *(v4 + 66);
+    v11 = *(equalCopy + 66);
     if (self->_allowedOnSpotlight)
     {
-      if ((*(v4 + 66) & 1) == 0)
+      if ((*(equalCopy + 66) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 66))
+    else if (*(equalCopy + 66))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 68) & 0x20) != 0)
+  else if ((*(equalCopy + 68) & 0x20) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((*(v4 + 68) & 0x40) == 0)
+    if ((*(equalCopy + 68) & 0x40) == 0)
     {
       goto LABEL_18;
     }
@@ -808,21 +808,21 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if ((*(v4 + 68) & 0x40) == 0)
+  if ((*(equalCopy + 68) & 0x40) == 0)
   {
     goto LABEL_56;
   }
 
-  v12 = *(v4 + 67);
+  v12 = *(equalCopy + 67);
   if (self->_shouldClearOnEngagement)
   {
-    if ((*(v4 + 67) & 1) == 0)
+    if ((*(equalCopy + 67) & 1) == 0)
     {
       goto LABEL_56;
     }
   }
 
-  else if (*(v4 + 67))
+  else if (*(equalCopy + 67))
   {
     goto LABEL_56;
   }
@@ -830,34 +830,34 @@ LABEL_56:
 LABEL_18:
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_predictionReasons != *(v4 + 3))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_predictionReasons != *(equalCopy + 3))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_contextStartDate != *(v4 + 2))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_contextStartDate != *(equalCopy + 2))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_56;
   }
 
-  v13 = (*(v4 + 68) & 1) == 0;
+  v13 = (*(equalCopy + 68) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_contextEndDate != *(v4 + 1))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_contextEndDate != *(equalCopy + 1))
     {
       goto LABEL_56;
     }
@@ -1055,19 +1055,19 @@ LABEL_17:
   return result;
 }
 
-- (uint64_t)addPreferredLayoutConfigs:(uint64_t)a1
+- (uint64_t)addPreferredLayoutConfigs:(uint64_t)configs
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configs)
   {
     v5 = OUTLINED_FUNCTION_6();
     v10 = v6;
     if (!v5)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v8 = *(a1 + 32);
-      *(a1 + 32) = v7;
+      v8 = *(configs + 32);
+      *(configs + 32) = v7;
 
       v5 = OUTLINED_FUNCTION_6();
     }
@@ -1089,15 +1089,15 @@ LABEL_17:
   return result;
 }
 
-- (id)preferredLayoutConfigsAtIndex:(id *)a1
+- (id)preferredLayoutConfigsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[4] objectAtIndex:a2];
+    index = [index[4] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)setAllowedOnLockscreen:(uint64_t)result
@@ -1357,28 +1357,28 @@ LABEL_17:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (!a1)
+  if (!to)
   {
     goto LABEL_25;
   }
 
-  v4 = *(a1 + 56);
+  v4 = *(to + 56);
   v37 = v3;
   if (v4)
   {
     [(ATXPBProactiveSuggestionUISpecification *)v3 setTitle:v4];
   }
 
-  v5 = *(a1 + 48);
+  v5 = *(to + 48);
   if (v5)
   {
     [(ATXPBProactiveSuggestionUISpecification *)v37 setSubtitle:v5];
   }
 
-  v6 = *(a1 + 40);
+  v6 = *(to + 40);
   if (v6)
   {
     [(ATXPBProactiveSuggestionUISpecification *)v37 setReason:v6];
@@ -1397,7 +1397,7 @@ LABEL_17:
       v8 = v7;
       for (i = 0; i != v8; ++i)
       {
-        v10 = [(ATXPBProactiveSuggestionUISpecification *)a1 preferredLayoutConfigsAtIndex:?];
+        v10 = [(ATXPBProactiveSuggestionUISpecification *)to preferredLayoutConfigsAtIndex:?];
         [(ATXPBProactiveSuggestionUISpecification *)v37 addPreferredLayoutConfigs:v10];
       }
     }
@@ -1405,10 +1405,10 @@ LABEL_17:
 
   v11 = 0x1ECDF6000uLL;
   v12 = 68;
-  v13 = *(a1 + 68);
+  v13 = *(to + 68);
   if ((v13 & 0x10) != 0)
   {
-    v14 = *(a1 + 65);
+    v14 = *(to + 65);
     v15 = OUTLINED_FUNCTION_4_1(v37, 0x1ECDF6000);
     v17 = *(v15 + v16) | 0x10u;
     v3 = OUTLINED_FUNCTION_1_0(v15, v18);
@@ -1421,10 +1421,10 @@ LABEL_17:
   }
 
   v3 = v37;
-  if ((*(a1 + 68) & 8) != 0)
+  if ((*(to + 68) & 8) != 0)
   {
 LABEL_18:
-    v19 = *(a1 + 64);
+    v19 = *(to + 64);
     v20 = OUTLINED_FUNCTION_4_1(v3, v11);
     v22 = *(v20 + v21) | 8u;
     v3 = OUTLINED_FUNCTION_1_0(v20, v23);
@@ -1433,7 +1433,7 @@ LABEL_18:
 LABEL_19:
   if ((v13 & 0x20) != 0)
   {
-    v24 = *(a1 + 66);
+    v24 = *(to + 66);
     v25 = OUTLINED_FUNCTION_4_1(v3, v11);
     v27 = *(v25 + v26) | 0x20u;
     v3 = OUTLINED_FUNCTION_1_0(v25, v28);
@@ -1446,7 +1446,7 @@ LABEL_21:
       }
 
 LABEL_30:
-      v3[3] = *(a1 + 24);
+      v3[3] = *(to + 24);
       v34 = *(v3 + v12) | 4u;
       v3 = OUTLINED_FUNCTION_1_0(v3, v11);
       if ((v13 & 2) == 0)
@@ -1469,7 +1469,7 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  v29 = *(a1 + 67);
+  v29 = *(to + 67);
   v30 = OUTLINED_FUNCTION_4_1(v3, v11);
   v32 = *(v30 + v31) | 0x40u;
   v3 = OUTLINED_FUNCTION_1_0(v30, v33);
@@ -1485,49 +1485,49 @@ LABEL_22:
   }
 
 LABEL_31:
-  v3[2] = *(a1 + 16);
+  v3[2] = *(to + 16);
   v35 = *(v3 + v12) | 2u;
   v3 = OUTLINED_FUNCTION_1_0(v3, v11);
   if (v36)
   {
 LABEL_24:
-    v3[1] = *(a1 + 8);
+    v3[1] = *(to + 8);
     *(v3 + v12) |= 1u;
   }
 
 LABEL_25:
 }
 
-- (void)setTitle:(uint64_t)a1
+- (void)setTitle:(uint64_t)title
 {
-  if (a1)
+  if (title)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 56);
+    OUTLINED_FUNCTION_0_3(title, a2, 56);
   }
 }
 
-- (void)setSubtitle:(uint64_t)a1
+- (void)setSubtitle:(uint64_t)subtitle
 {
-  if (a1)
+  if (subtitle)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 48);
+    OUTLINED_FUNCTION_0_3(subtitle, a2, 48);
   }
 }
 
-- (void)setReason:(uint64_t)a1
+- (void)setReason:(uint64_t)reason
 {
-  if (a1)
+  if (reason)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 40);
+    OUTLINED_FUNCTION_0_3(reason, a2, 40);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!from)
   {
     goto LABEL_23;
   }
@@ -1535,19 +1535,19 @@ LABEL_25:
   v5 = v3[7];
   if (v5)
   {
-    objc_storeStrong((a1 + 56), v5);
+    objc_storeStrong((from + 56), v5);
   }
 
   v6 = *(v4 + 6);
   if (v6)
   {
-    objc_storeStrong((a1 + 48), v6);
+    objc_storeStrong((from + 48), v6);
   }
 
   v7 = *(v4 + 5);
   if (v7)
   {
-    objc_storeStrong((a1 + 40), v7);
+    objc_storeStrong((from + 40), v7);
   }
 
   v26 = 0u;
@@ -1569,7 +1569,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        [(ATXPBProactiveSuggestionUISpecification *)a1 addPreferredLayoutConfigs:?];
+        [(ATXPBProactiveSuggestionUISpecification *)from addPreferredLayoutConfigs:?];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -1641,8 +1641,8 @@ LABEL_20:
     }
 
 LABEL_29:
-    *(a1 + 16) = *(v4 + 2);
-    v22 = *(a1 + v14) | 2u;
+    *(from + 16) = *(v4 + 2);
+    v22 = *(from + v14) | 2u;
     OUTLINED_FUNCTION_2(v13);
     if ((v23 & 1) == 0)
     {
@@ -1653,8 +1653,8 @@ LABEL_29:
   }
 
 LABEL_28:
-  *(a1 + 24) = *(v4 + 3);
-  v21 = *(a1 + v14) | 4u;
+  *(from + 24) = *(v4 + 3);
+  v21 = *(from + v14) | 4u;
   OUTLINED_FUNCTION_2(v13);
   if ((v15 & 2) != 0)
   {
@@ -1665,8 +1665,8 @@ LABEL_21:
   if (v15)
   {
 LABEL_22:
-    *(a1 + 8) = *(v4 + 1);
-    *(a1 + v14) |= 1u;
+    *(from + 8) = *(v4 + 1);
+    *(from + v14) |= 1u;
   }
 
 LABEL_23:
@@ -1674,11 +1674,11 @@ LABEL_23:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPreferredLayoutConfigs:(uint64_t)a1
+- (void)setPreferredLayoutConfigs:(uint64_t)configs
 {
-  if (a1)
+  if (configs)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 32);
+    OUTLINED_FUNCTION_0_3(configs, a2, 32);
   }
 }
 

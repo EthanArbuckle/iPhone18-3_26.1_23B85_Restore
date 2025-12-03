@@ -5,10 +5,10 @@
 - (_TtC28LocalAuthenticationUIService21AngelSceneRemoteAlert)init;
 - (void)activate;
 - (void)deactivate;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)setPersistentIdentifier:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)setPersistentIdentifier:(id)identifier;
 @end
 
 @implementation AngelSceneRemoteAlert
@@ -42,9 +42,9 @@
   return v4;
 }
 
-- (void)setPersistentIdentifier:(id)a3
+- (void)setPersistentIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -73,13 +73,13 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   AngelSceneRemoteAlert.activate()();
 }
 
 - (void)deactivate
 {
-  v2 = self;
+  selfCopy = self;
   AngelSceneRemoteAlert.deactivate()();
 }
 
@@ -90,26 +90,26 @@
   return result;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   specialized AngelSceneRemoteAlert.remoteAlertHandleDidActivate(_:)();
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
+  deactivateCopy = deactivate;
+  selfCopy = self;
   specialized AngelSceneRemoteAlert.remoteAlertHandleDidDeactivate(_:)();
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  specialized AngelSceneRemoteAlert.remoteAlertHandle(_:didInvalidateWithError:)(a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  specialized AngelSceneRemoteAlert.remoteAlertHandle(_:didInvalidateWithError:)(error);
 }
 
 @end

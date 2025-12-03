@@ -1,26 +1,26 @@
 @interface IMActionShowLocation
 - (IMActionShowLocation)init;
-- (IMActionShowLocation)initWithLatitude:(id)a3 longitude:(id)a4 query:(id)a5 label:(id)a6 fallbackUrl:(id)a7;
+- (IMActionShowLocation)initWithLatitude:(id)latitude longitude:(id)longitude query:(id)query label:(id)label fallbackUrl:(id)url;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IMActionShowLocation
 
-- (IMActionShowLocation)initWithLatitude:(id)a3 longitude:(id)a4 query:(id)a5 label:(id)a6 fallbackUrl:(id)a7
+- (IMActionShowLocation)initWithLatitude:(id)latitude longitude:(id)longitude query:(id)query label:(id)label fallbackUrl:(id)url
 {
-  v8 = a6;
-  if (a5)
+  labelCopy = label;
+  if (query)
   {
     v12 = sub_1A88C82E8();
     v14 = v13;
-    if (v8)
+    if (labelCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v16 = 0;
-    if (a7)
+    if (url)
     {
       goto LABEL_4;
     }
@@ -32,35 +32,35 @@ LABEL_7:
 
   v12 = 0;
   v14 = 0;
-  if (!a6)
+  if (!label)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v8 = sub_1A88C82E8();
+  labelCopy = sub_1A88C82E8();
   v16 = v15;
-  if (!a7)
+  if (!url)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  a7 = sub_1A88C82E8();
+  url = sub_1A88C82E8();
   v18 = v17;
 LABEL_8:
-  v19 = a3;
-  v20 = a4;
-  *(self + OBJC_IVAR___IMActionShowLocation_latitude) = v19;
-  *(self + OBJC_IVAR___IMActionShowLocation_longitude) = v20;
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
+  *(self + OBJC_IVAR___IMActionShowLocation_latitude) = latitudeCopy;
+  *(self + OBJC_IVAR___IMActionShowLocation_longitude) = longitudeCopy;
   v21 = (self + OBJC_IVAR___IMActionShowLocation_query);
   *v21 = v12;
   v21[1] = v14;
   v22 = (self + OBJC_IVAR___IMActionShowLocation_label);
-  *v22 = v8;
+  *v22 = labelCopy;
   v22[1] = v16;
   v23 = (self + OBJC_IVAR___IMActionShowLocation_fallbackUrl);
-  *v23 = a7;
+  *v23 = url;
   v23[1] = v18;
   v25.receiver = self;
   v25.super_class = IMActionShowLocation;
@@ -69,7 +69,7 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A8770700();
 
   v3 = sub_1A88C8188();

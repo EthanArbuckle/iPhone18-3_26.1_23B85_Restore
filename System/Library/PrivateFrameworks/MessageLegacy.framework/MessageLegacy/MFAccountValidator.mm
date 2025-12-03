@@ -1,30 +1,30 @@
 @interface MFAccountValidator
 - (BOOL)accountIsValid;
 - (BOOL)accountSupportsSSL;
-- (MFAccountValidator)initWithPerformsValidationInBackground:(BOOL)a3;
+- (MFAccountValidator)initWithPerformsValidationInBackground:(BOOL)background;
 - (MFError)error;
 - (MFMonitoredInvocation)validationInvocation;
-- (void)_backgroundValidateAccountFinished:(id)a3 authSchemes:(id)a4;
-- (void)_validateAccount:(id)a3;
-- (void)_validateAccount:(id)a3 withFallbacks:(BOOL)a4;
-- (void)_validateAccountWithoutFallbacks:(id)a3;
+- (void)_backgroundValidateAccountFinished:(id)finished authSchemes:(id)schemes;
+- (void)_validateAccount:(id)account;
+- (void)_validateAccount:(id)account withFallbacks:(BOOL)fallbacks;
+- (void)_validateAccountWithoutFallbacks:(id)fallbacks;
 - (void)dealloc;
-- (void)validateAccount:(id)a3 useSSL:(BOOL)a4 withCompletion:(id)a5;
-- (void)validateAccountWithoutFallbacks:(id)a3;
-- (void)validateAccountWithoutFallbacks:(id)a3 withCompletion:(id)a4;
+- (void)validateAccount:(id)account useSSL:(BOOL)l withCompletion:(id)completion;
+- (void)validateAccountWithoutFallbacks:(id)fallbacks;
+- (void)validateAccountWithoutFallbacks:(id)fallbacks withCompletion:(id)completion;
 @end
 
 @implementation MFAccountValidator
 
-- (MFAccountValidator)initWithPerformsValidationInBackground:(BOOL)a3
+- (MFAccountValidator)initWithPerformsValidationInBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v6.receiver = self;
   v6.super_class = MFAccountValidator;
   result = [(MFAccountValidator *)&v6 init];
   if (result)
   {
-    if (v3)
+    if (backgroundCopy)
     {
       v5 = 16;
     }
@@ -61,80 +61,80 @@
   [(MFAccountValidator *)&v3 dealloc];
 }
 
-- (void)validateAccount:(id)a3 useSSL:(BOOL)a4 withCompletion:(id)a5
+- (void)validateAccount:(id)account useSSL:(BOOL)l withCompletion:(id)completion
 {
-  v6 = a4;
-  self->_account = a3;
-  self->_flags = (*&self->_flags & 0xFFFFFFFE | v6);
-  self->_completionBlock = [a5 copy];
+  lCopy = l;
+  self->_account = account;
+  self->_flags = (*&self->_flags & 0xFFFFFFFE | lCopy);
+  self->_completionBlock = [completion copy];
   account = self->_account;
 
   [(MFAccountValidator *)self _validateAccount:account withFallbacks:1];
 }
 
-- (void)validateAccountWithoutFallbacks:(id)a3
+- (void)validateAccountWithoutFallbacks:(id)fallbacks
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __54__MFAccountValidator_validateAccountWithoutFallbacks___block_invoke;
   v3[3] = &unk_2798B6498;
   v3[4] = self;
-  [(MFAccountValidator *)self validateAccountWithoutFallbacks:a3 withCompletion:v3];
+  [(MFAccountValidator *)self validateAccountWithoutFallbacks:fallbacks withCompletion:v3];
 }
 
-- (void)validateAccountWithoutFallbacks:(id)a3 withCompletion:(id)a4
+- (void)validateAccountWithoutFallbacks:(id)fallbacks withCompletion:(id)completion
 {
   account = self->_account;
-  if (account != a3)
+  if (account != fallbacks)
   {
 
-    self->_account = a3;
+    self->_account = fallbacks;
   }
 
-  self->_completionBlock = [a4 copy];
+  self->_completionBlock = [completion copy];
   v8 = self->_account;
 
   [(MFAccountValidator *)self _validateAccount:v8 withFallbacks:0];
 }
 
-- (void)_backgroundValidateAccountFinished:(id)a3 authSchemes:(id)a4
+- (void)_backgroundValidateAccountFinished:(id)finished authSchemes:(id)schemes
 {
   v6 = objc_opt_class();
   v7 = objc_opt_class();
-  v8 = [(MFActivityMonitor *)self->_accountValidationActivity error];
-  v9 = [v8 code];
+  error = [(MFActivityMonitor *)self->_accountValidationActivity error];
+  code = [error code];
   if (v6 == v7)
   {
 
-    self->_smtpServerValidationError = v8;
-    if (v9)
+    self->_smtpServerValidationError = error;
+    if (code)
     {
-      v11 = 0;
+      schemesCopy = 0;
     }
 
     else
     {
-      v11 = a4;
+      schemesCopy = schemes;
     }
 
-    self->_smtpServerAuthSchemes = v11;
+    self->_smtpServerAuthSchemes = schemesCopy;
   }
 
   else
   {
 
-    self->_incomingServerValidationError = v8;
-    if (v9)
+    self->_incomingServerValidationError = error;
+    if (code)
     {
-      v10 = 0;
+      schemesCopy2 = 0;
     }
 
     else
     {
-      v10 = a4;
+      schemesCopy2 = schemes;
     }
 
-    self->_incomingServerAuthSchemes = v10;
+    self->_incomingServerAuthSchemes = schemesCopy2;
   }
 
   self->_accountValidationActivity = 0;
@@ -144,12 +144,12 @@
   v12();
 }
 
-- (void)_validateAccount:(id)a3
+- (void)_validateAccount:(id)account
 {
   v41[16] = *MEMORY[0x277D85DE8];
   v34 = +[MFActivityMonitor currentMonitor];
   v35 = 0;
-  v5 = [a3 defaultConnectionSettings];
+  defaultConnectionSettings = [account defaultConnectionSettings];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   if (([objc_opt_class() isSSLEditable] & 1) == 0)
@@ -157,15 +157,15 @@
     self->_flags = (*&self->_flags & 0xFFFFFFFE | [objc_msgSend(objc_opt_class() predefinedValueForKey:{@"SSLEnabled", "BOOLValue"}]);
   }
 
-  v8 = [v34 shouldCancel];
-  v33 = self;
+  shouldCancel = [v34 shouldCancel];
+  selfCopy = self;
   flags = self->_flags;
-  if ((v8 & 1) != 0 || (*&flags & 1) == 0)
+  if ((shouldCancel & 1) != 0 || (*&flags & 1) == 0)
   {
     goto LABEL_93;
   }
 
-  v10 = _openConnectionForAccount(a3, 1, &v35);
+  v10 = _openConnectionForAccount(account, 1, &v35);
   v11 = 1;
   if (!v10)
   {
@@ -179,7 +179,7 @@
   if (!v10)
   {
 LABEL_93:
-    if ((*&flags & 1) != 0 || ([v34 shouldCancel] & 1) != 0 || (objc_msgSend(a3, "applySettingsAsDefault:", v5), (v10 = _openConnectionForAccount(a3, 0, &v35)) == 0))
+    if ((*&flags & 1) != 0 || ([v34 shouldCancel] & 1) != 0 || (objc_msgSend(account, "applySettingsAsDefault:", defaultConnectionSettings), (v10 = _openConnectionForAccount(account, 0, &v35)) == 0))
     {
       if (![objc_msgSend(objc_msgSend(v34 "error")])
       {
@@ -193,7 +193,7 @@ LABEL_93:
           v18 = MFLookupLocalizedString(@"CONNECTION_FAILED_MESSAGE_FORMAT", @"The %@ server “%@” is not responding. Check your network connection and that you entered the correct information in the “Incoming Mail Server” field.", @"Assistant");
         }
 
-        [v34 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1030, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v18, objc_msgSend(objc_opt_class(), "accountTypeString"), objc_msgSend(a3, "hostname")))}];
+        [v34 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1030, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v18, objc_msgSend(objc_opt_class(), "accountTypeString"), objc_msgSend(account, "hostname")))}];
       }
 
       v14 = 0;
@@ -201,9 +201,9 @@ LABEL_93:
     }
   }
 
-  [a3 applySettingsAsDefault:v35];
-  v14 = [MFAuthScheme authSchemesForAccount:a3 connection:v10];
-  if (([a3 requiresAuthentication] & 1) == 0 && (v6 != v7 || !objc_msgSend(a3, "shouldUseAuthentication")))
+  [account applySettingsAsDefault:v35];
+  v14 = [MFAuthScheme authSchemesForAccount:account connection:v10];
+  if (([account requiresAuthentication] & 1) == 0 && (v6 != v7 || !objc_msgSend(account, "shouldUseAuthentication")))
   {
 LABEL_86:
     _closeConnection(v10);
@@ -231,7 +231,7 @@ LABEL_86:
   {
     if (!v20)
     {
-      if ([a3 usesSSL])
+      if ([account usesSSL])
       {
         v22 = v32;
         if ([v19 indexOfObject:?] != 0x7FFFFFFFFFFFFFFFLL && v32 != 0)
@@ -305,7 +305,7 @@ LABEL_50:
     v22 = v26;
     if (!v22)
     {
-      if ([a3 requiresAuthentication])
+      if ([account requiresAuthentication])
       {
         v22 = v32;
       }
@@ -318,20 +318,20 @@ LABEL_50:
 
 LABEL_54:
     [v34 setError:0];
-    [a3 setPreferredAuthScheme:v22];
+    [account setPreferredAuthScheme:v22];
     if (v10)
     {
       goto LABEL_55;
     }
 
-    v10 = [objc_allocWithZone(objc_msgSend(a3 "connectionClass"))];
-    if ([v10 connectUsingAccount:a3])
+    v10 = [objc_allocWithZone(objc_msgSend(account "connectionClass"))];
+    if ([v10 connectUsingAccount:account])
     {
       if (v10)
       {
 LABEL_55:
         v27 = 0;
-        if (([v10 authenticateUsingAccount:a3] & 1) == 0)
+        if (([v10 authenticateUsingAccount:account] & 1) == 0)
         {
           goto LABEL_65;
         }
@@ -373,7 +373,7 @@ LABEL_56:
 
     v21 = 1;
 LABEL_68:
-    if ((*&v33->_flags & 8) != 0)
+    if ((*&selfCopy->_flags & 8) != 0)
     {
       v28 = v10;
       [v34 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1028, 0)}];
@@ -393,7 +393,7 @@ LABEL_68:
         v28 = v10;
         if (![v34 error])
         {
-          [v34 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1032, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", MFLookupLocalizedString(@"FAILED_LOGIN", @"The user name or password for “%@” is incorrect.", @"Delayed", objc_msgSend(a3, "username")))}];
+          [v34 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1032, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", MFLookupLocalizedString(@"FAILED_LOGIN", @"The user name or password for “%@” is incorrect.", @"Delayed", objc_msgSend(account, "username")))}];
           [v19 removeObject:v22];
 LABEL_84:
           v10 = 0;
@@ -401,10 +401,10 @@ LABEL_84:
           goto LABEL_81;
         }
 
-        if ([a3 shouldEnableAfterError:{objc_msgSend(v34, "error")}])
+        if ([account shouldEnableAfterError:{objc_msgSend(v34, "error")}])
         {
-          v29 = [a3 enableAccount];
-          v30 = v20 < 3 ? v29 : 0;
+          enableAccount = [account enableAccount];
+          v30 = v20 < 3 ? enableAccount : 0;
           if (v30)
           {
             goto LABEL_84;
@@ -435,12 +435,12 @@ LABEL_81:
 
 LABEL_90:
   v41[0] = 0;
-  [-[MFAccountValidator pep_getInvocation:](v33 pep_getInvocation:{v41), "_backgroundValidateAccountFinished:authSchemes:", a3, v14}];
+  [-[MFAccountValidator pep_getInvocation:](selfCopy pep_getInvocation:{v41), "_backgroundValidateAccountFinished:authSchemes:", account, v14}];
   [v41[0] performSelectorOnMainThread:sel_invoke withObject:0 waitUntilDone:1];
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_validateAccountWithoutFallbacks:(id)a3
+- (void)_validateAccountWithoutFallbacks:(id)fallbacks
 {
   v5 = +[MFActivityMonitor currentMonitor];
   v17 = 0;
@@ -448,18 +448,18 @@ LABEL_90:
   v7 = objc_opt_class();
   if (([v5 shouldCancel] & 1) == 0)
   {
-    v8 = _openConnectionForAccount(a3, [a3 usesSSL], &v17);
+    v8 = _openConnectionForAccount(fallbacks, [fallbacks usesSSL], &v17);
     if (v8)
     {
       v9 = v8;
       if (([v5 shouldCancel] & 1) == 0)
       {
-        if (([a3 requiresAuthentication] & 1) == 0 && (v6 != v7 || !objc_msgSend(a3, "shouldUseAuthentication")))
+        if (([fallbacks requiresAuthentication] & 1) == 0 && (v6 != v7 || !objc_msgSend(fallbacks, "shouldUseAuthentication")))
         {
           goto LABEL_20;
         }
 
-        v12 = [v9 authenticateUsingAccount:a3];
+        v12 = [v9 authenticateUsingAccount:fallbacks];
         if ((*&self->_flags & 8) != 0)
         {
           v14 = 1028;
@@ -473,7 +473,7 @@ LABEL_90:
             goto LABEL_19;
           }
 
-          v13 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"FAILED_LOGIN", @"The user name or password for “%@” is incorrect.", @"Delayed", objc_msgSend(a3, "username")];
+          v13 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"FAILED_LOGIN", @"The user name or password for “%@” is incorrect.", @"Delayed", objc_msgSend(fallbacks, "username")];
           v14 = 1032;
         }
 
@@ -501,30 +501,30 @@ LABEL_19:
     }
 
     v15 = MFLookupLocalizedString(v10, v11, @"Assistant");
-    [v5 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1030, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v15, objc_msgSend(objc_opt_class(), "accountTypeString"), objc_msgSend(a3, "hostname")))}];
+    [v5 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1030, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v15, objc_msgSend(objc_opt_class(), "accountTypeString"), objc_msgSend(fallbacks, "hostname")))}];
   }
 
 LABEL_20:
   v16 = 0;
-  [-[MFAccountValidator pep_getInvocation:](self pep_getInvocation:{&v16), "_backgroundValidateAccountFinished:authSchemes:", a3, 0}];
+  [-[MFAccountValidator pep_getInvocation:](self pep_getInvocation:{&v16), "_backgroundValidateAccountFinished:authSchemes:", fallbacks, 0}];
   [v16 performSelectorOnMainThread:sel_invoke withObject:0 waitUntilDone:1];
 }
 
-- (void)_validateAccount:(id)a3 withFallbacks:(BOOL)a4
+- (void)_validateAccount:(id)account withFallbacks:(BOOL)fallbacks
 {
   if (!self->_accountValidationActivity)
   {
     v5 = &selRef__validateAccount_;
-    if (!a4)
+    if (!fallbacks)
     {
       v5 = &selRef__validateAccountWithoutFallbacks_;
     }
 
-    v6 = [MFMonitoredInvocation invocationWithSelector:*v5 target:self object:a3 taskName:MFLookupLocalizedString(@"CHECKING_CONNECTION" priority:@"Checking connection" canBeCancelled:@"Assistant"), -1, 1];
+    v6 = [MFMonitoredInvocation invocationWithSelector:*v5 target:self object:account taskName:MFLookupLocalizedString(@"CHECKING_CONNECTION" priority:@"Checking connection" canBeCancelled:@"Assistant"), -1, 1];
 
-    v7 = [(MFMonitoredInvocation *)v6 monitor];
-    self->_accountValidationActivity = v7;
-    [(MFActivityMonitor *)v7 setCanBeCancelled:1];
+    monitor = [(MFMonitoredInvocation *)v6 monitor];
+    self->_accountValidationActivity = monitor;
+    [(MFActivityMonitor *)monitor setCanBeCancelled:1];
     if ([(MFAccountValidator *)self performsValidationInBackground])
     {
       v8 = +[MFInvocationQueue sharedInvocationQueue];

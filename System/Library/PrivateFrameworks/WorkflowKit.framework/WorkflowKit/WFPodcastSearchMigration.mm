@@ -1,16 +1,16 @@
 @interface WFPodcastSearchMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFPodcastSearchMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"900"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"900"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.searchitunes", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.searchitunes", migrationCopy);
   }
 
   else
@@ -23,7 +23,7 @@
 
 - (void)migrateWorkflow
 {
-  v2 = self;
+  selfCopy = self;
   v28 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
@@ -46,16 +46,16 @@
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
-        v9 = [(WFWorkflowMigration *)v2 actionParametersKey];
-        v10 = [v8 objectForKey:v9];
+        actionParametersKey = [(WFWorkflowMigration *)selfCopy actionParametersKey];
+        v10 = [v8 objectForKey:actionParametersKey];
 
-        v11 = [(WFWorkflowMigration *)v2 actionIdentifierKey];
-        v12 = [v8 objectForKeyedSubscript:v11];
+        actionIdentifierKey = [(WFWorkflowMigration *)selfCopy actionIdentifierKey];
+        v12 = [v8 objectForKeyedSubscript:actionIdentifierKey];
         if ([v12 isEqualToString:v6])
         {
           [v10 objectForKeyedSubscript:@"WFMediaType"];
           v13 = v10;
-          v14 = v2;
+          v14 = selfCopy;
           v15 = v4;
           v16 = v5;
           v18 = v17 = v6;
@@ -64,13 +64,13 @@
           v6 = v17;
           v5 = v16;
           v4 = v15;
-          v2 = v14;
+          selfCopy = v14;
           v10 = v13;
 
           if (v22)
           {
-            v19 = [(WFWorkflowMigration *)v2 actionIdentifierKey];
-            [v8 setObject:@"is.workflow.actions.searchpodcasts" forKeyedSubscript:v19];
+            actionIdentifierKey2 = [(WFWorkflowMigration *)selfCopy actionIdentifierKey];
+            [v8 setObject:@"is.workflow.actions.searchpodcasts" forKeyedSubscript:actionIdentifierKey2];
 
             [v10 removeObjectForKey:@"WFMediaType"];
           }
@@ -87,7 +87,7 @@
     while (v4);
   }
 
-  [(WFWorkflowMigration *)v2 finish];
+  [(WFWorkflowMigration *)selfCopy finish];
   v20 = *MEMORY[0x1E69E9840];
 }
 

@@ -1,20 +1,20 @@
 @interface CARSetupAppIconProgressView
-- (CARSetupAppIconProgressView)initWithFrame:(CGRect)a3;
+- (CARSetupAppIconProgressView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)micaPlayerDidStartPlaying:(id)a3;
-- (void)micaPlayerDidStopPlaying:(id)a3;
+- (void)micaPlayerDidStartPlaying:(id)playing;
+- (void)micaPlayerDidStopPlaying:(id)playing;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
 
 @implementation CARSetupAppIconProgressView
 
-- (CARSetupAppIconProgressView)initWithFrame:(CGRect)a3
+- (CARSetupAppIconProgressView)initWithFrame:(CGRect)frame
 {
   v21 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = CARSetupAppIconProgressView;
-  v3 = [(CARSetupAppIconProgressView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CARSetupAppIconProgressView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -43,14 +43,14 @@
     v10 = [v4 URLForResource:v7 withExtension:@"caar"];
 
     v11 = [CARMicaPlayer alloc];
-    v12 = [v10 path];
-    v13 = [(CARSetupAppIconProgressView *)v3 traitCollection];
-    [v13 displayScale];
-    v14 = [(CARMicaPlayer *)v11 initWithPath:v12 retinaScale:?];
+    path = [v10 path];
+    traitCollection = [(CARSetupAppIconProgressView *)v3 traitCollection];
+    [traitCollection displayScale];
+    v14 = [(CARMicaPlayer *)v11 initWithPath:path retinaScale:?];
 
     [(CARMicaPlayer *)v14 setDelegate:v3];
-    v15 = [(CARSetupAppIconProgressView *)v3 layer];
-    [(CARMicaPlayer *)v14 addToLayer:v15 onTop:1 gravity:*MEMORY[0x277CDA710]];
+    layer = [(CARSetupAppIconProgressView *)v3 layer];
+    [(CARMicaPlayer *)v14 addToLayer:layer onTop:1 gravity:*MEMORY[0x277CDA710]];
 
     [(CARSetupAppIconProgressView *)v3 setMicaPlayer:v14];
   }
@@ -64,24 +64,24 @@
   v5.receiver = self;
   v5.super_class = CARSetupAppIconProgressView;
   [(CARSetupAppIconProgressView *)&v5 layoutSubviews];
-  v3 = [(CARSetupAppIconProgressView *)self micaPlayer];
-  v4 = [(CARSetupAppIconProgressView *)self layer];
-  [v3 moveAndResizeWithinParentLayer:v4 usingGravity:*MEMORY[0x277CDA710] animate:0];
+  micaPlayer = [(CARSetupAppIconProgressView *)self micaPlayer];
+  layer = [(CARSetupAppIconProgressView *)self layer];
+  [micaPlayer moveAndResizeWithinParentLayer:layer usingGravity:*MEMORY[0x277CDA710] animate:0];
 }
 
 - (void)startAnimating
 {
-  v2 = [(CARSetupAppIconProgressView *)self micaPlayer];
-  [v2 play];
+  micaPlayer = [(CARSetupAppIconProgressView *)self micaPlayer];
+  [micaPlayer play];
 }
 
 - (void)stopAnimating
 {
-  v2 = [(CARSetupAppIconProgressView *)self micaPlayer];
-  [v2 pause];
+  micaPlayer = [(CARSetupAppIconProgressView *)self micaPlayer];
+  [micaPlayer pause];
 }
 
-- (void)micaPlayerDidStartPlaying:(id)a3
+- (void)micaPlayerDidStartPlaying:(id)playing
 {
   v3 = CARSetupLogForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -91,9 +91,9 @@
   }
 }
 
-- (void)micaPlayerDidStopPlaying:(id)a3
+- (void)micaPlayerDidStopPlaying:(id)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v4 = CARSetupLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -101,8 +101,8 @@
     _os_log_impl(&dword_242FD5000, v4, OS_LOG_TYPE_INFO, "finished playing app icon progress animation, looping", v5, 2u);
   }
 
-  [v3 setPlaybackTime:1.39];
-  [v3 play];
+  [playingCopy setPlaybackTime:1.39];
+  [playingCopy play];
 }
 
 @end

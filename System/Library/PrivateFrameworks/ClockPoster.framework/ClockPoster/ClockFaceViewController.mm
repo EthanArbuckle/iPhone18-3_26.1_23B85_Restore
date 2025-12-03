@@ -1,6 +1,6 @@
 @interface ClockFaceViewController
-- (_TtC11ClockPoster23ClockFaceViewController)initWithCoder:(id)a3;
-- (_TtC11ClockPoster23ClockFaceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11ClockPoster23ClockFaceViewController)initWithCoder:(id)coder;
+- (_TtC11ClockPoster23ClockFaceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -15,7 +15,7 @@
   [v2 setOverrideUserInterfaceStyle_];
 }
 
-- (_TtC11ClockPoster23ClockFaceViewController)initWithCoder:(id)a3
+- (_TtC11ClockPoster23ClockFaceViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster23ClockFaceViewController_isDisplayStyleRedMode) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster23ClockFaceViewController_canAnimateRedMode) = 0;
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC11ClockPoster23ClockFaceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11ClockPoster23ClockFaceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

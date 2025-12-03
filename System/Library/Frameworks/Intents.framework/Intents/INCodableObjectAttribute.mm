@@ -1,10 +1,10 @@
 @interface INCodableObjectAttribute
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (Class)_relationshipValueTransformerClass;
 - (Class)objectClass;
 - (Class)resolutionResultClass;
-- (INCodableObjectAttribute)initWithCoder:(id)a3;
+- (INCodableObjectAttribute)initWithCoder:(id)coder;
 - (NSValueTransformer)valueTransformer;
 - (id)__INCodableDescriptionKey;
 - (id)__INCodableDescriptionTypeKey;
@@ -12,25 +12,25 @@
 - (id)__INIntentResponseCodableDescriptionTypeKey;
 - (id)__INTypeCodableDescriptionKey;
 - (id)__INTypeCodableDescriptionTypeKey;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
 - (int64_t)valueType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableObjectAttribute
 
 - (NSValueTransformer)valueTransformer
 {
-  v2 = [(INCodableObjectAttribute *)self typeName];
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_IN%@ValueTransformer", v2];
+  typeName = [(INCodableObjectAttribute *)self typeName];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_IN%@ValueTransformer", typeName];
   v4 = [MEMORY[0x1E696B0A0] valueTransformerForName:v3];
   if (!v4)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INIntent%@SlotValueTransformer", v2];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INIntent%@SlotValueTransformer", typeName];
     v6 = objc_opt_class();
     v7 = NSClassFromString(v5);
     if (v7 && (v8 = v7, ([(objc_class *)v7 isSubclassOfClass:v6]& 1) != 0))
@@ -72,32 +72,32 @@
 
 - (int64_t)valueType
 {
-  v2 = [(INCodableObjectAttribute *)self valueTransformer];
-  if (v2 && (objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0))
+  valueTransformer = [(INCodableObjectAttribute *)self valueTransformer];
+  if (valueTransformer && (objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v3 = [objc_opt_class() _intents_valueType];
+    _intents_valueType = [objc_opt_class() _intents_valueType];
   }
 
   else
   {
-    v3 = 225;
+    _intents_valueType = 225;
   }
 
-  return v3;
+  return _intents_valueType;
 }
 
 - (Class)resolutionResultClass
 {
-  v2 = [(INCodableObjectAttribute *)self valueTransformer];
-  v3 = [objc_opt_class() _intents_resolutionResultClass];
+  valueTransformer = [(INCodableObjectAttribute *)self valueTransformer];
+  _intents_resolutionResultClass = [objc_opt_class() _intents_resolutionResultClass];
 
-  return v3;
+  return _intents_resolutionResultClass;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(INCodableObjectAttribute *)self typeName];
-  v4 = [v3 hash];
+  typeName = [(INCodableObjectAttribute *)self typeName];
+  v4 = [typeName hash];
   v7.receiver = self;
   v7.super_class = INCodableObjectAttribute;
   v5 = [(INCodableAttribute *)&v7 hash];
@@ -107,12 +107,12 @@
 
 - (Class)_relationshipValueTransformerClass
 {
-  v3 = [(INCodableObjectAttribute *)self objectClass];
-  if (v3 != objc_opt_class())
+  objectClass = [(INCodableObjectAttribute *)self objectClass];
+  if (objectClass != objc_opt_class())
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(INCodableAttribute *)self _typeString];
-    v6 = [v4 stringWithFormat:@"_INCodableObjectAttributeRelationship%@ValueTransformer", v5];
+    _typeString = [(INCodableAttribute *)self _typeString];
+    v6 = [v4 stringWithFormat:@"_INCodableObjectAttributeRelationship%@ValueTransformer", _typeString];
 
     v7 = objc_opt_class();
     v8 = NSClassFromString(v6);
@@ -144,37 +144,37 @@ LABEL_8:
 
 - (Class)objectClass
 {
-  v2 = [(INCodableObjectAttribute *)self valueTransformer];
-  v3 = [objc_opt_class() transformedValueClass];
+  valueTransformer = [(INCodableObjectAttribute *)self valueTransformer];
+  transformedValueClass = [objc_opt_class() transformedValueClass];
 
-  return v3;
+  return transformedValueClass;
 }
 
 - (id)__INCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableObjectAttributeTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableObjectAttributeTypeKey = [objc_opt_class() __INCodableObjectAttributeTypeKey];
 
-  return v3;
+  return __INCodableObjectAttributeTypeKey;
 }
 
-- (INCodableObjectAttribute)initWithCoder:(id)a3
+- (INCodableObjectAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = INCodableObjectAttribute;
-  v5 = [(INCodableAttribute *)&v12 initWithCoder:v4];
+  v5 = [(INCodableAttribute *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typeName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typeName"];
     typeName = v5->_typeName;
     v5->_typeName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_originalTypeName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_originalTypeName"];
     originalTypeName = v5->_originalTypeName;
     v5->_originalTypeName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"className"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"className"];
     if (v10)
     {
       objc_storeStrong(&v5->_typeName, v10);
@@ -184,31 +184,31 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableObjectAttribute;
-  v4 = a3;
-  [(INCodableAttribute *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_typeName forKey:{@"typeName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_originalTypeName forKey:@"_originalTypeName"];
+  coderCopy = coder;
+  [(INCodableAttribute *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_typeName forKey:{@"typeName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_originalTypeName forKey:@"_originalTypeName"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableObjectAttribute;
   v13 = 0;
-  v6 = [(INCodableAttribute *)&v12 widgetPlistableRepresentationWithParameters:a3 error:&v13];
+  v6 = [(INCodableAttribute *)&v12 widgetPlistableRepresentationWithParameters:parameters error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -227,35 +227,35 @@ LABEL_8:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = INCodableObjectAttribute;
-  v4 = [(INCodableAttribute *)&v8 copyWithZone:a3];
-  v5 = [(INCodableObjectAttribute *)self typeName];
-  [v4 setTypeName:v5];
+  v4 = [(INCodableAttribute *)&v8 copyWithZone:zone];
+  typeName = [(INCodableObjectAttribute *)self typeName];
+  [v4 setTypeName:typeName];
 
-  v6 = [(INCodableObjectAttribute *)self _originalTypeName];
-  [v4 _setOriginalTypeName:v6];
+  _originalTypeName = [(INCodableObjectAttribute *)self _originalTypeName];
+  [v4 _setOriginalTypeName:_originalTypeName];
 
   return v4;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = INCodableObjectAttribute;
-  v4 = [(INCodableAttribute *)&v15 dictionaryRepresentationWithLocalizer:a3];
-  v5 = [(INCodableObjectAttribute *)self typeName];
-  if ([v5 isEqualToString:@"Double"])
+  v4 = [(INCodableAttribute *)&v15 dictionaryRepresentationWithLocalizer:localizer];
+  typeName = [(INCodableObjectAttribute *)self typeName];
+  if ([typeName isEqualToString:@"Double"])
   {
     v6 = @"Decimal";
   }
 
   else
   {
-    if (![v5 isEqualToString:@"Long"])
+    if (![typeName isEqualToString:@"Long"])
     {
       goto LABEL_6;
     }
@@ -263,20 +263,20 @@ LABEL_8:
     v6 = @"Integer";
   }
 
-  v5 = v6;
+  typeName = v6;
 LABEL_6:
-  v7 = [(INCodableObjectAttribute *)self __INCodableDescriptionTypeKey];
-  v16 = v7;
+  __INCodableDescriptionTypeKey = [(INCodableObjectAttribute *)self __INCodableDescriptionTypeKey];
+  v16 = __INCodableDescriptionTypeKey;
   originalTypeName = self->_originalTypeName;
   if (originalTypeName)
   {
     v9 = 0;
   }
 
-  else if (v5)
+  else if (typeName)
   {
     v9 = 0;
-    originalTypeName = v5;
+    originalTypeName = typeName;
   }
 
   else
@@ -293,18 +293,18 @@ LABEL_6:
   {
   }
 
-  v12 = [v11 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v11 if_dictionaryWithNonEmptyValues];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(INCodableObjectAttribute *)self __INCodableDescriptionTypeKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  __INCodableDescriptionTypeKey = [(INCodableObjectAttribute *)self __INCodableDescriptionTypeKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTypeKey];
 
   if ([(NSString *)v6 isEqualToString:@"Decimal"]|| [(NSString *)v6 isEqualToString:@"TimeInterval"])
   {
@@ -332,28 +332,28 @@ LABEL_5:
 
   v11.receiver = self;
   v11.super_class = INCodableObjectAttribute;
-  [(INCodableAttribute *)&v11 updateWithDictionary:v4];
+  [(INCodableAttribute *)&v11 updateWithDictionary:dictionaryCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v6 = [(INCodableObjectAttribute *)self typeName];
-    if (v6 || ([v5 typeName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    typeName = [(INCodableObjectAttribute *)self typeName];
+    if (typeName || ([equalCopy typeName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [(INCodableObjectAttribute *)self typeName];
-      v8 = [v5 typeName];
-      v9 = [v7 isEqual:v8];
+      typeName2 = [(INCodableObjectAttribute *)self typeName];
+      typeName3 = [equalCopy typeName];
+      v9 = [typeName2 isEqual:typeName3];
 
-      if (v6)
+      if (typeName)
       {
 LABEL_9:
 
         v12.receiver = self;
         v12.super_class = INCodableObjectAttribute;
-        v10 = [(INCodableAttribute *)&v12 isEqual:v5]& v9;
+        v10 = [(INCodableAttribute *)&v12 isEqual:equalCopy]& v9;
         goto LABEL_10;
       }
     }
@@ -372,22 +372,22 @@ LABEL_10:
   return v10;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v17.receiver = a1;
+  representationCopy = representation;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___INCodableObjectAttribute;
   v18 = 0;
-  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v18);
+  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v18);
   v8 = v18;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -398,11 +398,11 @@ LABEL_10:
 
   else
   {
-    v12 = [v6 intents_stringForKey:@"typeName"];
+    v12 = [representationCopy intents_stringForKey:@"typeName"];
     v13 = v7[20];
     v7[20] = v12;
 
-    v14 = [v6 intents_stringForKey:@"_originalTypeName"];
+    v14 = [representationCopy intents_stringForKey:@"_originalTypeName"];
     v15 = v7[19];
     v7[19] = v14;
 
@@ -414,42 +414,42 @@ LABEL_10:
 
 - (id)__INTypeCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableObjectAttributeTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableObjectAttributeTypeKey = [objc_opt_class() __INCodableObjectAttributeTypeKey];
 
-  return v3;
+  return __INCodableObjectAttributeTypeKey;
 }
 
 - (id)__INTypeCodableDescriptionKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableObjectAttributeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableObjectAttributeKey = [objc_opt_class() __INCodableObjectAttributeKey];
 
-  return v3;
+  return __INCodableObjectAttributeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableObjectAttributeTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableObjectAttributeTypeKey = [objc_opt_class() __INCodableObjectAttributeTypeKey];
 
-  return v3;
+  return __INCodableObjectAttributeTypeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableObjectAttributeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableObjectAttributeKey = [objc_opt_class() __INCodableObjectAttributeKey];
 
-  return v3;
+  return __INCodableObjectAttributeKey;
 }
 
 - (id)__INCodableDescriptionKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableObjectAttributeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableObjectAttributeKey = [objc_opt_class() __INCodableObjectAttributeKey];
 
-  return v3;
+  return __INCodableObjectAttributeKey;
 }
 
 @end

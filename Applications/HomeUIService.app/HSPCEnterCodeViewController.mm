@@ -1,20 +1,20 @@
 @interface HSPCEnterCodeViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (HSPCEnterCodeViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (HSPCEnterCodeViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5;
-- (void)configureNextViewController:(id)a3;
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions;
+- (void)configureNextViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCEnterCodeViewController
 
-- (HSPCEnterCodeViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCEnterCodeViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a4;
+  configCopy = config;
   v16.receiver = self;
   v16.super_class = HSPCEnterCodeViewController;
-  v7 = [(HSPCTextFieldViewController *)&v16 initWithCoordinator:a3 config:v6 withTextFieldMinimumHeight:100.0];
+  v7 = [(HSPCTextFieldViewController *)&v16 initWithCoordinator:coordinator config:configCopy withTextFieldMinimumHeight:100.0];
   if (v7)
   {
     v8 = HULocalizedString();
@@ -23,11 +23,11 @@
     v9 = HULocalizedString();
     [(HSPCEnterCodeViewController *)v7 setSubtitle:v9];
 
-    v10 = [(HSPCTextFieldViewController *)v7 continueAction];
-    [v10 setEnabled:1];
+    continueAction = [(HSPCTextFieldViewController *)v7 continueAction];
+    [continueAction setEnabled:1];
 
     objc_opt_class();
-    v11 = v6;
+    v11 = configCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -54,33 +54,33 @@
   v11.receiver = self;
   v11.super_class = HSPCEnterCodeViewController;
   [(HSPCTextFieldViewController *)&v11 viewDidLoad];
-  v3 = [(HSPCTextFieldViewController *)self textField];
-  [v3 setKeyboardType:11];
+  textField = [(HSPCTextFieldViewController *)self textField];
+  [textField setKeyboardType:11];
 
-  v4 = [(HSPCTextFieldViewController *)self textField];
-  [v4 setTextAlignment:1];
+  textField2 = [(HSPCTextFieldViewController *)self textField];
+  [textField2 setTextAlignment:1];
 
   v5 = [UIFont monospacedDigitSystemFontOfSize:30.0 weight:UIFontWeightSemibold];
-  v6 = [(HSPCTextFieldViewController *)self textField];
-  [v6 setFont:v5];
+  textField3 = [(HSPCTextFieldViewController *)self textField];
+  [textField3 setFont:v5];
 
-  v7 = [(HSPCTextFieldViewController *)self textField];
-  [v7 setAdjustsFontSizeToFitWidth:1];
+  textField4 = [(HSPCTextFieldViewController *)self textField];
+  [textField4 setAdjustsFontSizeToFitWidth:1];
 
-  v8 = [(HSPCTextFieldViewController *)self textField];
-  [v8 setClearButtonMode:0];
+  textField5 = [(HSPCTextFieldViewController *)self textField];
+  [textField5 setClearButtonMode:0];
 
   v9 = +[UIColor redColor];
-  v10 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  [v10 setTextColor:v9];
+  footnoteLabel = [(HSPCTextFieldViewController *)self footnoteLabel];
+  [footnoteLabel setTextColor:v9];
 }
 
 - (id)commitConfiguration
 {
   objc_initWeak(&location, self);
-  v3 = [(HSPCTextFieldViewController *)self coordinator];
-  v4 = [(HSPCTextFieldViewController *)self textFieldText];
-  v5 = [v3 didReceiveSetupCode:v4 withPayload:0 fromViewController:self];
+  coordinator = [(HSPCTextFieldViewController *)self coordinator];
+  textFieldText = [(HSPCTextFieldViewController *)self textFieldText];
+  v5 = [coordinator didReceiveSetupCode:textFieldText withPayload:0 fromViewController:self];
   v6 = [v5 flatMap:&stru_1000C6918];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -95,11 +95,11 @@
   return v7;
 }
 
-- (void)configureNextViewController:(id)a3
+- (void)configureNextViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v6 = v3;
+  v6 = controllerCopy;
   if (objc_opt_isKindOfClass())
   {
     v4 = v6;
@@ -115,22 +115,22 @@
   [v5 setMode:0];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  [v11 setText:&stru_1000C89F8];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  footnoteLabel = [(HSPCTextFieldViewController *)self footnoteLabel];
+  [footnoteLabel setText:&stru_1000C89F8];
 
-  v12 = [v9 text];
-  v13 = [v10 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1000C89F8];
+  text = [fieldCopy text];
+  v13 = [stringCopy stringByReplacingOccurrencesOfString:@"-" withString:&stru_1000C89F8];
   v14 = [v13 stringByReplacingOccurrencesOfString:@" " withString:&stru_1000C89F8];
 
   v15 = +[NSCharacterSet decimalDigitCharacterSet];
-  v16 = [v15 invertedSet];
-  v17 = [v14 rangeOfCharacterFromSet:v16];
+  invertedSet = [v15 invertedSet];
+  v17 = [v14 rangeOfCharacterFromSet:invertedSet];
 
   if (v17 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -140,7 +140,7 @@
 
   if (length == 1)
   {
-    v18 = [v12 substringWithRange:{location, 1}];
+    v18 = [text substringWithRange:{location, 1}];
     if ([v18 isEqualToString:@"-"])
     {
 
@@ -149,7 +149,7 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v20 = [v12 substringWithRange:{location, 1}];
+    v20 = [text substringWithRange:{location, 1}];
     v21 = [v20 isEqualToString:@" "];
 
     if (v21)
@@ -159,9 +159,9 @@ LABEL_7:
   }
 
 LABEL_8:
-  v22 = [v12 stringByReplacingCharactersInRange:location withString:{length, v10}];
-  v23 = [v22 hf_extractDecimalDigits];
-  v24 = [v23 length];
+  v22 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
+  hf_extractDecimalDigits = [v22 hf_extractDecimalDigits];
+  v24 = [hf_extractDecimalDigits length];
 
   if (v24 <= 0x15)
   {
@@ -169,10 +169,10 @@ LABEL_8:
     v19 = [v22 isEqualToString:v25];
     if ((v19 & 1) == 0)
     {
-      [v9 setText:v25];
-      v26 = [v12 substringToIndex:location];
-      v27 = [v26 hf_extractDecimalDigits];
-      v28 = [v27 length];
+      [fieldCopy setText:v25];
+      v26 = [text substringToIndex:location];
+      hf_extractDecimalDigits2 = [v26 hf_extractDecimalDigits];
+      v28 = [hf_extractDecimalDigits2 length];
       v29 = v28 + [v14 length];
 
       if (v29 <= 20)
@@ -217,11 +217,11 @@ LABEL_8:
         v30 = 6;
       }
 
-      v31 = [v9 beginningOfDocument];
-      v32 = [v9 positionFromPosition:v31 offset:v29 + v30];
+      beginningOfDocument = [fieldCopy beginningOfDocument];
+      v32 = [fieldCopy positionFromPosition:beginningOfDocument offset:v29 + v30];
 
-      v33 = [v9 textRangeFromPosition:v32 toPosition:v32];
-      [v9 setSelectedTextRange:v33];
+      v33 = [fieldCopy textRangeFromPosition:v32 toPosition:v32];
+      [fieldCopy setSelectedTextRange:v33];
     }
   }
 
@@ -234,11 +234,11 @@ LABEL_26:
   return v19;
 }
 
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions
 {
-  v5 = a5;
+  actionsCopy = actions;
   v6 = [NSPredicate predicateWithFormat:@"identifier == %@", @"com.apple.menu.standard-edit"];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [actionsCopy filteredArrayUsingPredicate:v6];
 
   v8 = [UIMenu menuWithChildren:v7];
 

@@ -47,18 +47,18 @@
 
 - (__CFString)kt_hexString
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [MEMORY[0x1E696AD60] stringWithCapacity:{2 * objc_msgSend(a1, "length")}];
-    if ([a1 length])
+    v2 = [MEMORY[0x1E696AD60] stringWithCapacity:{2 * objc_msgSend(self, "length")}];
+    if ([self length])
     {
       v3 = 0;
       do
       {
-        -[__CFString appendFormat:](v2, "appendFormat:", @"%02X", *([a1 bytes] + v3++));
+        -[__CFString appendFormat:](v2, "appendFormat:", @"%02X", *([self bytes] + v3++));
       }
 
-      while (v3 < [a1 length]);
+      while (v3 < [self length]);
     }
   }
 
@@ -74,8 +74,8 @@
 {
   v6 = *MEMORY[0x1E69E9840];
   ccsha256_di();
-  [a1 length];
-  [a1 bytes];
+  [self length];
+  [self bytes];
   ccdigest();
   v2 = [MEMORY[0x1E695DEF0] dataWithBytes:&v5 length:32];
   v3 = *MEMORY[0x1E69E9840];
@@ -88,24 +88,24 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     v6 = [MEMORY[0x1E695DEF0] kt_dataWithUint64:objc_msgSend(v4 length:{"length"), 8}];
-    [v5 appendData:v6];
+    [data appendData:v6];
 
-    [v5 appendData:v4];
-    v7 = [MEMORY[0x1E695DEF0] kt_dataWithUint64:objc_msgSend(a1 length:{"length"), 8}];
-    [v5 appendData:v7];
+    [data appendData:v4];
+    v7 = [MEMORY[0x1E695DEF0] kt_dataWithUint64:objc_msgSend(self length:{"length"), 8}];
+    [data appendData:v7];
 
-    [v5 appendData:a1];
-    v8 = [v5 kt_sha256];
+    [data appendData:self];
+    kt_sha256 = [data kt_sha256];
   }
 
   else
   {
-    v8 = [a1 kt_sha256];
+    kt_sha256 = [self kt_sha256];
   }
 
-  return v8;
+  return kt_sha256;
 }
 
 + (id)kt_random

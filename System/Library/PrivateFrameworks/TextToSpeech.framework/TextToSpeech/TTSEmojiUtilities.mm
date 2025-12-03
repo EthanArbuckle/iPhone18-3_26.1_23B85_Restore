@@ -1,24 +1,24 @@
 @interface TTSEmojiUtilities
-+ (_NSRange)emojiRangeFromString:(id)a3 withSearchRange:(_NSRange)a4;
-+ (id)stringByRemovingEmojiCharacters:(id)a3;
-+ (id)stringByReplacingEmojiCharactersWithEmojiDescriptions:(id)a3 stringForPauses:(id)a4 language:(id)a5 rangeReplacements:(id)a6 appendEmojiSuffix:(BOOL)a7;
-+ (void)_initializeEmojiStructures:(id)a3;
-+ (void)enumerateEmojiCharactersInString:(id)a3 languageCode:(id)a4 withBlock:(id)a5;
++ (_NSRange)emojiRangeFromString:(id)string withSearchRange:(_NSRange)range;
++ (id)stringByRemovingEmojiCharacters:(id)characters;
++ (id)stringByReplacingEmojiCharactersWithEmojiDescriptions:(id)descriptions stringForPauses:(id)pauses language:(id)language rangeReplacements:(id)replacements appendEmojiSuffix:(BOOL)suffix;
++ (void)_initializeEmojiStructures:(id)structures;
++ (void)enumerateEmojiCharactersInString:(id)string languageCode:(id)code withBlock:(id)block;
 @end
 
 @implementation TTSEmojiUtilities
 
-+ (_NSRange)emojiRangeFromString:(id)a3 withSearchRange:(_NSRange)a4
++ (_NSRange)emojiRangeFromString:(id)string withSearchRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3010000000;
   v22 = &unk_1A95FC00D;
   v23 = xmmword_1A9586960;
-  v9 = objc_msgSend_substringWithRange_(v6, v7, location, length, v8);
+  v9 = objc_msgSend_substringWithRange_(stringCopy, v7, location, length, v8);
   objc_msgSend_length(v9, v10, v11, v12, v13);
   CEMEnumerateEmojiTokensInStringWithBlock();
   v14 = v20[4];
@@ -41,10 +41,10 @@
   return result;
 }
 
-+ (void)_initializeEmojiStructures:(id)a3
++ (void)_initializeEmojiStructures:(id)structures
 {
-  v3 = a3;
-  v8 = v3;
+  structuresCopy = structures;
+  v8 = structuresCopy;
   if (qword_1ED970FF0 != -1)
   {
     sub_1A9578200();
@@ -56,7 +56,7 @@
     goto LABEL_3;
   }
 
-  if (!v3)
+  if (!structuresCopy)
   {
 LABEL_3:
     v9 = objc_msgSend_currentLanguageCode(TTSSpeechManager, v4, v5, v6, v7);
@@ -74,11 +74,11 @@ LABEL_4:
   dispatch_sync(v10, block);
 }
 
-+ (id)stringByRemovingEmojiCharacters:(id)a3
++ (id)stringByRemovingEmojiCharacters:(id)characters
 {
-  v4 = a3;
-  objc_msgSend__initializeEmojiStructures_(a1, v5, 0, v6, v7);
-  v12 = objc_msgSend_mutableCopy(v4, v8, v9, v10, v11);
+  charactersCopy = characters;
+  objc_msgSend__initializeEmojiStructures_(self, v5, 0, v6, v7);
+  v12 = objc_msgSend_mutableCopy(charactersCopy, v8, v9, v10, v11);
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -94,7 +94,7 @@ LABEL_4:
   block[4] = &v23;
   dispatch_sync(qword_1ED9702A0, block);
   v13 = objc_autoreleasePoolPush();
-  objc_msgSend_length(v4, v14, v15, v16, v17);
+  objc_msgSend_length(charactersCopy, v14, v15, v16, v17);
   v18 = v24[3];
   v19 = v12;
   CEMEnumerateEmojiTokensInStringWithLocaleAndBlock();
@@ -112,14 +112,14 @@ LABEL_4:
   return v19;
 }
 
-+ (void)enumerateEmojiCharactersInString:(id)a3 languageCode:(id)a4 withBlock:(id)a5
++ (void)enumerateEmojiCharactersInString:(id)string languageCode:(id)code withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = a5;
-  if (v8)
+  stringCopy = string;
+  codeCopy = code;
+  blockCopy = block;
+  if (stringCopy)
   {
-    objc_msgSend__initializeEmojiStructures_(a1, v10, v9, v11, v12);
+    objc_msgSend__initializeEmojiStructures_(self, v10, codeCopy, v11, v12);
     v22 = 0;
     v23 = &v22;
     v24 = 0x2020000000;
@@ -130,9 +130,9 @@ LABEL_4:
     block[3] = &unk_1E787FF60;
     block[4] = &v22;
     dispatch_sync(qword_1ED9702A0, block);
-    objc_msgSend_length(v8, v14, v15, v16, v17);
+    objc_msgSend_length(stringCopy, v14, v15, v16, v17);
     v18 = v23[3];
-    v20 = v13;
+    v20 = blockCopy;
     CEMEnumerateEmojiTokensInStringWithLocaleAndBlock();
     v19 = v23[3];
     if (v19)
@@ -145,15 +145,15 @@ LABEL_4:
   }
 }
 
-+ (id)stringByReplacingEmojiCharactersWithEmojiDescriptions:(id)a3 stringForPauses:(id)a4 language:(id)a5 rangeReplacements:(id)a6 appendEmojiSuffix:(BOOL)a7
++ (id)stringByReplacingEmojiCharactersWithEmojiDescriptions:(id)descriptions stringForPauses:(id)pauses language:(id)language rangeReplacements:(id)replacements appendEmojiSuffix:(BOOL)suffix
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v18 = a6;
-  if (v11)
+  descriptionsCopy = descriptions;
+  pausesCopy = pauses;
+  languageCopy = language;
+  replacementsCopy = replacements;
+  if (descriptionsCopy)
   {
-    v19 = objc_msgSend_mutableCopy(v11, v14, v15, v16, v17);
+    v19 = objc_msgSend_mutableCopy(descriptionsCopy, v14, v15, v16, v17);
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x2020000000;
@@ -163,14 +163,14 @@ LABEL_4:
     v26[1] = 3221225472;
     v26[2] = sub_1A93436D8;
     v26[3] = &unk_1E78802C8;
-    v33 = a7;
-    v27 = v13;
-    v28 = v12;
-    v29 = v11;
+    suffixCopy = suffix;
+    v27 = languageCopy;
+    v28 = pausesCopy;
+    v29 = descriptionsCopy;
     v21 = v19;
     v30 = v21;
     v32 = v34;
-    v31 = v18;
+    v31 = replacementsCopy;
     objc_msgSend_enumerateEmojiCharactersInString_languageCode_withBlock_(v20, v22, v29, v27, v26);
     v23 = v31;
     v24 = v21;

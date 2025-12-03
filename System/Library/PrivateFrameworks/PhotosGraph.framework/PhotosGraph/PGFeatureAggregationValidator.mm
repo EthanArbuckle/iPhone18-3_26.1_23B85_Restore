@@ -1,89 +1,89 @@
 @interface PGFeatureAggregationValidator
-- (PGFeatureAggregationValidator)initWithPredicate:(id)a3 featureExtractor:(id)a4 featureExtractorType:(int64_t)a5 featureName:(id)a6;
-- (id)_composeFeatureExtractorWithGraph:(id)a3 error:(id *)a4;
+- (PGFeatureAggregationValidator)initWithPredicate:(id)predicate featureExtractor:(id)extractor featureExtractorType:(int64_t)type featureName:(id)name;
+- (id)_composeFeatureExtractorWithGraph:(id)graph error:(id *)error;
 - (int64_t)featureValidatorType;
-- (int64_t)isValidEntity:(id)a3 error:(id *)a4;
-- (int64_t)isValidEntity:(id)a3 graph:(id)a4 assetFetchOptionPropertySet:(id)a5 error:(id *)a6;
+- (int64_t)isValidEntity:(id)entity error:(id *)error;
+- (int64_t)isValidEntity:(id)entity graph:(id)graph assetFetchOptionPropertySet:(id)set error:(id *)error;
 @end
 
 @implementation PGFeatureAggregationValidator
 
-- (id)_composeFeatureExtractorWithGraph:(id)a3 error:(id *)a4
+- (id)_composeFeatureExtractorWithGraph:(id)graph error:(id *)error
 {
-  v7 = a3;
-  v8 = [(PGFeatureAggregationValidator *)self featureExtractorType];
-  if (v8 > 1)
+  graphCopy = graph;
+  featureExtractorType = [(PGFeatureAggregationValidator *)self featureExtractorType];
+  if (featureExtractorType > 1)
   {
-    if (v8 == 2)
+    if (featureExtractorType == 2)
     {
-      if (!v7)
+      if (!graphCopy)
       {
-        if (a4)
+        if (error)
         {
           v12 = @"Graph is invalid";
-          v13 = self;
+          selfCopy2 = self;
           v14 = 3;
           goto LABEL_15;
         }
 
 LABEL_16:
-        v4 = 0;
+        featureExtractor2 = 0;
         goto LABEL_17;
       }
 
       v15 = [PGFeatureExtractorGraphRelations alloc];
-      v10 = [(PGFeatureValidator *)self featureExtractor];
-      v11 = [(PGFeatureExtractorGraphRelations *)v15 initWithGraph:v7 featureExtractor:v10];
+      featureExtractor = [(PGFeatureValidator *)self featureExtractor];
+      v11 = [(PGFeatureExtractorGraphRelations *)v15 initWithGraph:graphCopy featureExtractor:featureExtractor];
     }
 
     else
     {
-      if (v8 != 3)
+      if (featureExtractorType != 3)
       {
         goto LABEL_17;
       }
 
       v9 = [PGFeatureExtractorFacesFromAssetAverage alloc];
-      v10 = [(PGFeatureValidator *)self featureExtractor];
-      v11 = [(PGFeatureExtractorFacesFromAssetAverage *)v9 initWithFaceFeatureExtractor:v10 name:@"FacesAverage"];
+      featureExtractor = [(PGFeatureValidator *)self featureExtractor];
+      v11 = [(PGFeatureExtractorFacesFromAssetAverage *)v9 initWithFaceFeatureExtractor:featureExtractor name:@"FacesAverage"];
     }
 
-    v4 = v11;
+    featureExtractor2 = v11;
 
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!featureExtractorType)
   {
-    if (a4)
+    if (error)
     {
       v12 = @"Unknown feature vector type is not supported";
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2;
 LABEL_15:
-      [(PGFeatureValidator *)v13 _generateErrorWithErrorCode:v14 errorMessage:v12];
-      *a4 = v4 = 0;
+      [(PGFeatureValidator *)selfCopy2 _generateErrorWithErrorCode:v14 errorMessage:v12];
+      *error = featureExtractor2 = 0;
       goto LABEL_17;
     }
 
     goto LABEL_16;
   }
 
-  if (v8 == 1)
+  if (featureExtractorType == 1)
   {
-    v4 = [(PGFeatureValidator *)self featureExtractor];
+    featureExtractor2 = [(PGFeatureValidator *)self featureExtractor];
   }
 
 LABEL_17:
 
-  return v4;
+  return featureExtractor2;
 }
 
-- (int64_t)isValidEntity:(id)a3 graph:(id)a4 assetFetchOptionPropertySet:(id)a5 error:(id *)a6
+- (int64_t)isValidEntity:(id)entity graph:(id)graph assetFetchOptionPropertySet:(id)set error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  entityCopy = entity;
+  graphCopy = graph;
+  setCopy = set;
   v12 = MEMORY[0x277CBEAD8];
   v13 = *MEMORY[0x277CBE658];
   v14 = MEMORY[0x277CCACA8];
@@ -95,9 +95,9 @@ LABEL_17:
   objc_exception_throw(v17);
 }
 
-- (int64_t)isValidEntity:(id)a3 error:(id *)a4
+- (int64_t)isValidEntity:(id)entity error:(id *)error
 {
-  v4 = a3;
+  entityCopy = entity;
   v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"isValidEntity:error method is not available. Please use isValidEntity:graph:assetFetchOptionPropertySet." userInfo:0];
   objc_exception_throw(v5);
 }
@@ -115,14 +115,14 @@ LABEL_17:
   objc_exception_throw(v7);
 }
 
-- (PGFeatureAggregationValidator)initWithPredicate:(id)a3 featureExtractor:(id)a4 featureExtractorType:(int64_t)a5 featureName:(id)a6
+- (PGFeatureAggregationValidator)initWithPredicate:(id)predicate featureExtractor:(id)extractor featureExtractorType:(int64_t)type featureName:(id)name
 {
   v8.receiver = self;
   v8.super_class = PGFeatureAggregationValidator;
-  result = [(PGFeatureValidator *)&v8 initWithPredicate:a3 featureExtractor:a4 featureName:a6];
+  result = [(PGFeatureValidator *)&v8 initWithPredicate:predicate featureExtractor:extractor featureName:name];
   if (result)
   {
-    result->_featureExtractorType = a5;
+    result->_featureExtractorType = type;
   }
 
   return result;

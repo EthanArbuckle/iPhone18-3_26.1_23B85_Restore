@@ -1,5 +1,5 @@
 @interface POKeyRequestJWT
-- (POKeyRequestJWT)initWithString:(id)a3;
+- (POKeyRequestJWT)initWithString:(id)string;
 - (id)description;
 - (id)mutableCopy;
 - (void)updateDecodedBody;
@@ -7,16 +7,16 @@
 
 @implementation POKeyRequestJWT
 
-- (POKeyRequestJWT)initWithString:(id)a3
+- (POKeyRequestJWT)initWithString:(id)string
 {
   v9.receiver = self;
   v9.super_class = POKeyRequestJWT;
-  v3 = [(POJWT *)&v9 initWithString:a3];
+  v3 = [(POJWT *)&v9 initWithString:string];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277CBEA90]);
-    v5 = [(POJWT *)v3 rawBody];
-    v6 = [v4 psso_initWithBase64URLEncodedString:v5];
+    rawBody = [(POJWT *)v3 rawBody];
+    v6 = [v4 psso_initWithBase64URLEncodedString:rawBody];
 
     if (v6)
     {
@@ -31,22 +31,22 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(POJWT *)self decodedHeader];
-  v5 = [(POKeyRequestJWT *)self decodedBody];
-  v6 = [(POJWT *)self stringRepresentation];
-  v7 = [v3 stringWithFormat:@"%@.%@\n%@", v4, v5, v6];
+  decodedHeader = [(POJWT *)self decodedHeader];
+  decodedBody = [(POKeyRequestJWT *)self decodedBody];
+  stringRepresentation = [(POJWT *)self stringRepresentation];
+  v7 = [v3 stringWithFormat:@"%@.%@\n%@", decodedHeader, decodedBody, stringRepresentation];
 
   return v7;
 }
 
 - (void)updateDecodedBody
 {
-  v3 = [(POJWT *)self rawBody];
-  if (v3)
+  rawBody = [(POJWT *)self rawBody];
+  if (rawBody)
   {
-    v4 = v3;
-    v5 = [(POJWT *)self decodedHeader];
-    v6 = [v5 cty];
+    v4 = rawBody;
+    decodedHeader = [(POJWT *)self decodedHeader];
+    v6 = [decodedHeader cty];
 
     if (!v6)
     {
@@ -54,8 +54,8 @@
       v8 = SecCFAllocatorZeroize();
       CFAllocatorSetDefault(v8);
       v9 = objc_alloc(MEMORY[0x277CBEA90]);
-      v10 = [(POJWT *)self rawBody];
-      v12 = [v9 psso_initWithBase64URLEncodedString:v10];
+      rawBody2 = [(POJWT *)self rawBody];
+      v12 = [v9 psso_initWithBase64URLEncodedString:rawBody2];
 
       if (v12)
       {
@@ -71,12 +71,12 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(POMutableKeyRequestJWT);
-  v4 = [(POKeyRequestJWT *)self decodedBody];
-  v5 = [v4 mutableCopy];
+  decodedBody = [(POKeyRequestJWT *)self decodedBody];
+  v5 = [decodedBody mutableCopy];
   [(POMutableKeyRequestJWT *)v3 setBody:v5];
 
-  v6 = [(POJWT *)self decodedHeader];
-  v7 = [v6 mutableCopy];
+  decodedHeader = [(POJWT *)self decodedHeader];
+  v7 = [decodedHeader mutableCopy];
   [(POMutableJWT *)v3 setHeader:v7];
 
   return v3;

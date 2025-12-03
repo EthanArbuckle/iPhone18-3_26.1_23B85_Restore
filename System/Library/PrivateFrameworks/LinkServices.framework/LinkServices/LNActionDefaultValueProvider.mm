@@ -1,83 +1,83 @@
 @interface LNActionDefaultValueProvider
-- (LNActionDefaultValueProvider)initWithActionIdentifier:(id)a3 actionMetadata:(id)a4;
-- (id)_loadActionMetadataWithProvider:(char)a3 retry:(void *)a4 error:;
-- (id)loadActionMetadataWithRetry:(BOOL)a3 error:(id *)a4;
-- (id)loadStaticDefaultValueForBundleIdentifier:(id)a3 error:(id *)a4;
-- (void)loadDefaultValuesWithCompletionHandler:(id)a3;
-- (void)loadSuggestedFocusActionsWithSuggestionContext:(id)a3 completion:(id)a4;
+- (LNActionDefaultValueProvider)initWithActionIdentifier:(id)identifier actionMetadata:(id)metadata;
+- (id)_loadActionMetadataWithProvider:(char)provider retry:(void *)retry error:;
+- (id)loadActionMetadataWithRetry:(BOOL)retry error:(id *)error;
+- (id)loadStaticDefaultValueForBundleIdentifier:(id)identifier error:(id *)error;
+- (void)loadDefaultValuesWithCompletionHandler:(id)handler;
+- (void)loadSuggestedFocusActionsWithSuggestionContext:(id)context completion:(id)completion;
 @end
 
 @implementation LNActionDefaultValueProvider
 
-- (id)loadActionMetadataWithRetry:(BOOL)a3 error:(id *)a4
+- (id)loadActionMetadataWithRetry:(BOOL)retry error:(id *)error
 {
-  v7 = [(LNActionDefaultValueProvider *)self actionMetadata];
+  actionMetadata = [(LNActionDefaultValueProvider *)self actionMetadata];
 
-  if (v7)
+  if (actionMetadata)
   {
-    v8 = [(LNActionDefaultValueProvider *)self actionMetadata];
+    actionMetadata2 = [(LNActionDefaultValueProvider *)self actionMetadata];
   }
 
   else
   {
     v9 = [[LNMetadataProvider alloc] initWithOptions:1];
     v15 = 0;
-    v8 = [(LNActionDefaultValueProvider *)self _loadActionMetadataWithProvider:v9 retry:a3 error:&v15];
+    actionMetadata2 = [(LNActionDefaultValueProvider *)self _loadActionMetadataWithProvider:v9 retry:retry error:&v15];
     v10 = v15;
     v11 = v10;
-    if (v8)
+    if (actionMetadata2)
     {
-      [(LNActionDefaultValueProvider *)self setActionMetadata:v8];
-      v12 = v8;
+      [(LNActionDefaultValueProvider *)self setActionMetadata:actionMetadata2];
+      v12 = actionMetadata2;
     }
 
-    else if (a4)
+    else if (error)
     {
       v13 = v10;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
-  return v8;
+  return actionMetadata2;
 }
 
-- (id)_loadActionMetadataWithProvider:(char)a3 retry:(void *)a4 error:
+- (id)_loadActionMetadataWithProvider:(char)provider retry:(void *)retry error:
 {
   v46 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = [a1 actionIdentifier];
-    v9 = [v8 bundleIdentifier];
-    v10 = [a1 actionIdentifier];
-    v11 = [v10 actionIdentifier];
+    actionIdentifier = [self actionIdentifier];
+    bundleIdentifier = [actionIdentifier bundleIdentifier];
+    actionIdentifier2 = [self actionIdentifier];
+    v10ActionIdentifier = [actionIdentifier2 actionIdentifier];
     v41 = 0;
-    v12 = [v7 actionForBundleIdentifier:v9 andActionIdentifier:v11 error:&v41];
+    v12 = [v7 actionForBundleIdentifier:bundleIdentifier andActionIdentifier:v10ActionIdentifier error:&v41];
     v13 = v41;
 
     if (v12)
     {
-      a1 = v12;
+      self = v12;
 LABEL_30:
 
       goto LABEL_31;
     }
 
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNMetadataProviderErrorDomain" code:9000 userInfo:0];
-    if ((a3 & 1) == 0)
+    if ((provider & 1) == 0)
     {
       v20 = getLNLogCategoryMetadata();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [a1 actionIdentifier];
+        actionIdentifier3 = [self actionIdentifier];
         *buf = 138543618;
-        v43 = v21;
+        v43 = actionIdentifier3;
         v44 = 2114;
         v45 = v13;
         _os_log_impl(&dword_19763D000, v20, OS_LOG_TYPE_ERROR, "Failed to find metadata for actionIdentifier %{public}@: %{public}@", buf, 0x16u);
       }
 
-      if (a4)
+      if (retry)
       {
         if (v13)
         {
@@ -89,13 +89,13 @@ LABEL_30:
           v22 = v14;
         }
 
-        a1 = 0;
-        *a4 = v22;
+        self = 0;
+        *retry = v22;
       }
 
       else
       {
-        a1 = 0;
+        self = 0;
       }
 
       goto LABEL_29;
@@ -105,9 +105,9 @@ LABEL_30:
     v15 = [v7 bundlesWithError:&v40];
     v16 = v40;
 
-    v17 = [a1 actionIdentifier];
-    v18 = [v17 bundleIdentifier];
-    v19 = [v15 containsObject:v18];
+    actionIdentifier4 = [self actionIdentifier];
+    bundleIdentifier2 = [actionIdentifier4 bundleIdentifier];
+    v19 = [v15 containsObject:bundleIdentifier2];
 
     if (v19)
     {
@@ -119,17 +119,17 @@ LABEL_30:
       v23 = getLNLogCategoryMetadata();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
-        v24 = [a1 actionIdentifier];
-        v25 = [v24 bundleIdentifier];
+        actionIdentifier5 = [self actionIdentifier];
+        bundleIdentifier3 = [actionIdentifier5 bundleIdentifier];
         *buf = 138543362;
-        v43 = v25;
+        v43 = bundleIdentifier3;
         _os_log_impl(&dword_19763D000, v23, OS_LOG_TYPE_INFO, "Forcing registration of %{public}@", buf, 0xCu);
       }
 
-      v26 = [a1 actionIdentifier];
-      v27 = [v26 bundleIdentifier];
+      actionIdentifier6 = [self actionIdentifier];
+      bundleIdentifier4 = [actionIdentifier6 bundleIdentifier];
       v39 = v16;
-      [v7 registerBundleWithIdentifier:v27 error:&v39];
+      [v7 registerBundleWithIdentifier:bundleIdentifier4 error:&v39];
       v13 = v39;
 
       v28 = getLNLogCategoryMetadata();
@@ -138,25 +138,25 @@ LABEL_30:
       {
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          v30 = [a1 actionIdentifier];
-          v31 = [v30 bundleIdentifier];
+          actionIdentifier7 = [self actionIdentifier];
+          bundleIdentifier5 = [actionIdentifier7 bundleIdentifier];
           *buf = 138543618;
-          v43 = v31;
+          v43 = bundleIdentifier5;
           v44 = 2114;
           v45 = v13;
           _os_log_impl(&dword_19763D000, v29, OS_LOG_TYPE_ERROR, "Failed to register %{public}@: %{public}@", buf, 0x16u);
         }
 
-        if (a4)
+        if (retry)
         {
           v32 = v13;
-          a1 = 0;
-          *a4 = v13;
+          self = 0;
+          *retry = v13;
         }
 
         else
         {
-          a1 = 0;
+          self = 0;
         }
 
         goto LABEL_28;
@@ -164,10 +164,10 @@ LABEL_30:
 
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [a1 actionIdentifier];
-        v34 = [v33 bundleIdentifier];
+        actionIdentifier8 = [self actionIdentifier];
+        bundleIdentifier6 = [actionIdentifier8 bundleIdentifier];
         *buf = 138543362;
-        v43 = v34;
+        v43 = bundleIdentifier6;
         _os_log_impl(&dword_19763D000, v29, OS_LOG_TYPE_DEFAULT, "Forced registration completed for %{public}@, retry metadata fetch", buf, 0xCu);
       }
 
@@ -177,13 +177,13 @@ LABEL_30:
     v35 = getLNLogCategoryMetadata();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [a1 actionIdentifier];
+      actionIdentifier9 = [self actionIdentifier];
       *buf = 138543362;
-      v43 = v36;
+      v43 = actionIdentifier9;
       _os_log_impl(&dword_19763D000, v35, OS_LOG_TYPE_DEFAULT, "Retrying metadata fetch for actionIdentifier %{public}@", buf, 0xCu);
     }
 
-    a1 = [(LNActionDefaultValueProvider *)a1 _loadActionMetadataWithProvider:v7 retry:0 error:a4];
+    self = [(LNActionDefaultValueProvider *)self _loadActionMetadataWithProvider:v7 retry:0 error:retry];
 LABEL_28:
 
 LABEL_29:
@@ -194,23 +194,23 @@ LABEL_31:
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (void)loadSuggestedFocusActionsWithSuggestionContext:(id)a3 completion:(id)a4
+- (void)loadSuggestedFocusActionsWithSuggestionContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__LNActionDefaultValueProvider_loadSuggestedFocusActionsWithSuggestionContext_completion___block_invoke;
   block[3] = &unk_1E74B2580;
-  v12 = v6;
-  v13 = v7;
+  v12 = contextCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = contextCopy;
+  v10 = completionCopy;
   dispatch_async(v8, block);
 }
 
@@ -249,28 +249,28 @@ void __90__LNActionDefaultValueProvider_loadSuggestedFocusActionsWithSuggestionC
   }
 }
 
-- (void)loadDefaultValuesWithCompletionHandler:(id)a3
+- (void)loadDefaultValuesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v22 = 0;
   v5 = [(LNActionDefaultValueProvider *)self loadActionMetadataWithRetry:1 error:&v22];
   v6 = v22;
   if (v5)
   {
-    v7 = [(LNActionDefaultValueProvider *)self actionIdentifier];
-    v8 = [v7 bundleIdentifier];
+    actionIdentifier = [(LNActionDefaultValueProvider *)self actionIdentifier];
+    bundleIdentifier = [actionIdentifier bundleIdentifier];
     v21 = 0;
-    v9 = [(LNActionDefaultValueProvider *)self loadStaticDefaultValueForBundleIdentifier:v8 error:&v21];
+    v9 = [(LNActionDefaultValueProvider *)self loadStaticDefaultValueForBundleIdentifier:bundleIdentifier error:&v21];
     v10 = v21;
 
     if (v9)
     {
-      v11 = [v5 parameters];
-      v12 = [v11 if_objectsPassingTest:&__block_literal_global_28];
-      v13 = [v11 count];
+      parameters = [v5 parameters];
+      v12 = [parameters if_objectsPassingTest:&__block_literal_global_28];
+      v13 = [parameters count];
       if (v13 == [v12 count])
       {
-        v4[2](v4, v9, 0);
+        handlerCopy[2](handlerCopy, v9, 0);
       }
 
       else
@@ -284,7 +284,7 @@ void __90__LNActionDefaultValueProvider_loadSuggestedFocusActionsWithSuggestionC
         v17 = v20;
         if (v17)
         {
-          (v4)[2](v4, 0, v17);
+          (handlerCopy)[2](handlerCopy, 0, v17);
         }
 
         else
@@ -293,7 +293,7 @@ void __90__LNActionDefaultValueProvider_loadSuggestedFocusActionsWithSuggestionC
           v18[1] = 3221225472;
           v18[2] = __71__LNActionDefaultValueProvider_loadDefaultValuesWithCompletionHandler___block_invoke_2;
           v18[3] = &unk_1E74B2530;
-          v19 = v4;
+          v19 = handlerCopy;
           [v16 fetchOptionsDefaultValueForAction:v9 completionHandler:v18];
         }
       }
@@ -301,24 +301,24 @@ void __90__LNActionDefaultValueProvider_loadSuggestedFocusActionsWithSuggestionC
 
     else
     {
-      (v4)[2](v4, 0, v10);
+      (handlerCopy)[2](handlerCopy, 0, v10);
     }
   }
 
   else
   {
-    (v4)[2](v4, 0, v6);
+    (handlerCopy)[2](handlerCopy, 0, v6);
   }
 }
 
-- (id)loadStaticDefaultValueForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)loadStaticDefaultValueForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v4 = [(LNActionDefaultValueProvider *)self loadActionMetadataWithRetry:1 error:a4];
+  v4 = [(LNActionDefaultValueProvider *)self loadActionMetadataWithRetry:1 error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 parameters];
-    v7 = [v6 if_objectsPassingTest:&__block_literal_global_13685];
+    parameters = [v4 parameters];
+    v7 = [parameters if_objectsPassingTest:&__block_literal_global_13685];
 
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
     v14[0] = MEMORY[0x1E69E9820];
@@ -430,14 +430,14 @@ id __80__LNActionDefaultValueProvider_loadStaticDefaultValueForBundleIdentifier_
   return v5;
 }
 
-- (LNActionDefaultValueProvider)initWithActionIdentifier:(id)a3 actionMetadata:(id)a4
+- (LNActionDefaultValueProvider)initWithActionIdentifier:(id)identifier actionMetadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"LNActionDefaultValueProvider.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionDefaultValueProvider.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
   }
 
   v15.receiver = self;
@@ -446,8 +446,8 @@ id __80__LNActionDefaultValueProvider_loadStaticDefaultValueForBundleIdentifier_
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_actionIdentifier, a3);
-    objc_storeStrong(&v11->_actionMetadata, a4);
+    objc_storeStrong(&v10->_actionIdentifier, identifier);
+    objc_storeStrong(&v11->_actionMetadata, metadata);
     v12 = v11;
   }
 

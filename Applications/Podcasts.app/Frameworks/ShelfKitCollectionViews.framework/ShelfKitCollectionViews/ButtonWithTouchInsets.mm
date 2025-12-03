@@ -1,17 +1,17 @@
 @interface ButtonWithTouchInsets
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ButtonWithTouchInsets
 
-- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews21ButtonWithTouchInsets_touchInsets;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -21,7 +21,7 @@
   return [(DynamicTypeButton *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews21ButtonWithTouchInsets)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews21ButtonWithTouchInsets_touchInsets;
   *v3 = 0u;
@@ -32,25 +32,25 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v7 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews21ButtonWithTouchInsets_touchInsets);
   if (self->super.fontUseCase[OBJC_IVAR____TtC23ShelfKitCollectionViews21ButtonWithTouchInsets_touchInsets + 24])
   {
     v19.receiver = self;
     v19.super_class = type metadata accessor for ButtonWithTouchInsets();
-    return [(ButtonWithTouchInsets *)&v19 pointInside:a4 withEvent:x, y];
+    return [(ButtonWithTouchInsets *)&v19 pointInside:event withEvent:x, y];
   }
 
   else
   {
     v11 = *v7;
     v10 = v7[1];
-    v12 = a4;
-    v13 = self;
-    [(ButtonWithTouchInsets *)v13 bounds];
+    eventCopy = event;
+    selfCopy = self;
+    [(ButtonWithTouchInsets *)selfCopy bounds];
     v21.origin.x = UIEdgeInsetsInsetRect(v14, v15, v16, v17, v11, v10);
     v20.x = x;
     v20.y = y;

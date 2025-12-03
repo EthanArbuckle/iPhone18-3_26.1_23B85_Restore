@@ -1,30 +1,30 @@
 @interface MKUserLocationHeadingConeLayer
-- (BOOL)_shouldShowHeadingForAccuracy:(double)a3;
-- (MKUserLocationHeadingConeLayer)initWithUserLocationView:(id)a3 shouldMatchAccuracyRadius:(BOOL)a4 minimumPresentationAngle:(double)a5;
-- (double)_opacityForAccuracy:(double)a3 locationAccuracy:(double)a4;
-- (id)_accuracyGradientLocationsForAccuracyRadius:(double)a3;
-- (id)_colorsForAccuracyRadius:(double)a3;
-- (void)_animateToOpacity:(double)a3 completion:(id)a4;
+- (BOOL)_shouldShowHeadingForAccuracy:(double)accuracy;
+- (MKUserLocationHeadingConeLayer)initWithUserLocationView:(id)view shouldMatchAccuracyRadius:(BOOL)radius minimumPresentationAngle:(double)angle;
+- (double)_opacityForAccuracy:(double)accuracy locationAccuracy:(double)locationAccuracy;
+- (id)_accuracyGradientLocationsForAccuracyRadius:(double)radius;
+- (id)_colorsForAccuracyRadius:(double)radius;
+- (void)_animateToOpacity:(double)opacity completion:(id)completion;
 - (void)_createMaskLayer;
 - (void)_updateColors;
-- (void)_updateHeadingMaskForAccuracy:(double)halfMinAngle previousAccuracy:(double)a4;
-- (void)_updateShowHeadingForAccuracy:(double)a3;
-- (void)animateToSetVisible:(BOOL)a3 completion:(id)a4;
-- (void)setAccuracyRadius:(double)a3 duration:(double)a4;
-- (void)setMapType:(unint64_t)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)updateHeading:(double)a3;
-- (void)updateHeadingAccuracy:(double)a3 previousAccuracy:(double)a4;
-- (void)updateTintColor:(id)a3;
+- (void)_updateHeadingMaskForAccuracy:(double)halfMinAngle previousAccuracy:(double)accuracy;
+- (void)_updateShowHeadingForAccuracy:(double)accuracy;
+- (void)animateToSetVisible:(BOOL)visible completion:(id)completion;
+- (void)setAccuracyRadius:(double)radius duration:(double)duration;
+- (void)setMapType:(unint64_t)type;
+- (void)setTraitCollection:(id)collection;
+- (void)updateHeading:(double)heading;
+- (void)updateHeadingAccuracy:(double)accuracy previousAccuracy:(double)previousAccuracy;
+- (void)updateTintColor:(id)color;
 @end
 
 @implementation MKUserLocationHeadingConeLayer
 
 - (void)_createMaskLayer
 {
-  v3 = [MEMORY[0x1E69794A0] layer];
+  layer = [MEMORY[0x1E69794A0] layer];
   maskLayer = self->_maskLayer;
-  self->_maskLayer = v3;
+  self->_maskLayer = layer;
 
   WeakRetained = objc_loadWeakRetained(&self->_userLocationView);
   [objc_opt_class() baseDiameter];
@@ -37,8 +37,8 @@
   [(CAShapeLayer *)self->_maskLayer setPosition:MidX, CGRectGetMidY(v15)];
   [(CAShapeLayer *)self->_maskLayer setAnchorPoint:0.5, 0.5];
   [(CAShapeLayer *)self->_maskLayer setFillColor:0];
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  -[CAShapeLayer setStrokeColor:](self->_maskLayer, "setStrokeColor:", [v9 CGColor]);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  -[CAShapeLayer setStrokeColor:](self->_maskLayer, "setStrokeColor:", [blackColor CGColor]);
 
   [(CAShapeLayer *)self->_maskLayer setLineWidth:33.0];
   v10 = MEMORY[0x1E69DC728];
@@ -53,7 +53,7 @@
 
 - (void)_updateColors
 {
-  v5 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
   [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:self->_traitCollection];
   v3 = [(MKUserLocationHeadingConeLayer *)self _colorsForAccuracyRadius:self->_lastAccuracyRadius];
   [(CAGradientLayer *)self setColors:v3];
@@ -61,35 +61,35 @@
   v4 = [(MKUserLocationHeadingConeLayer *)self _accuracyGradientLocationsForAccuracyRadius:self->_lastAccuracyRadius];
   [(CAGradientLayer *)self setLocations:v4];
 
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v5];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
 }
 
-- (void)animateToSetVisible:(BOOL)a3 completion:(id)a4
+- (void)animateToSetVisible:(BOOL)visible completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (visible)
   {
-    v7 = v6;
+    v7 = completionCopy;
     [(MKUserLocationHeadingConeLayer *)self _opacityForAccuracy:self->_headingAccuracy locationAccuracy:self->_lastAccuracyRadius];
     [(MKUserLocationHeadingConeLayer *)self _animateToOpacity:v7 completion:?];
   }
 
   else
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
-    (*(v6 + 2))(v6, 1);
+    v7 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
-  v6 = v7;
+  completionCopy = v7;
 LABEL_6:
 }
 
-- (void)setAccuracyRadius:(double)a3 duration:(double)a4
+- (void)setAccuracyRadius:(double)radius duration:(double)duration
 {
   v123[3] = *MEMORY[0x1E69E9840];
   if (!self->_shouldMatchAccuracyRadius)
@@ -99,27 +99,27 @@ LABEL_6:
 
   lastAccuracyRadius = self->_lastAccuracyRadius;
   minimumAccuracyRadius = self->_minimumAccuracyRadius;
-  if (minimumAccuracyRadius <= a3)
+  if (minimumAccuracyRadius <= radius)
   {
-    v8 = a3;
+    radiusCopy = radius;
   }
 
   else
   {
-    v8 = self->_minimumAccuracyRadius;
+    radiusCopy = self->_minimumAccuracyRadius;
   }
 
-  if (lastAccuracyRadius <= minimumAccuracyRadius && minimumAccuracyRadius >= a3)
+  if (lastAccuracyRadius <= minimumAccuracyRadius && minimumAccuracyRadius >= radius)
   {
-    self->_lastAccuracyRadius = v8;
+    self->_lastAccuracyRadius = radiusCopy;
     return;
   }
 
-  if (minimumAccuracyRadius < a3)
+  if (minimumAccuracyRadius < radius)
   {
-    v109 = v8 + 18.0;
+    v109 = radiusCopy + 18.0;
     v14 = v109 + v109;
-    v15 = (v8 + 18.0) * 0.5 + (v8 + 18.0) * 0.5;
+    v15 = (radiusCopy + 18.0) * 0.5 + (radiusCopy + 18.0) * 0.5;
   }
 
   else
@@ -147,7 +147,7 @@ LABEL_6:
   v17 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, v15, v15}];
   v18 = CGPathRetain([v17 CGPath]);
 
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     v19 = [(MKUserLocationHeadingConeLayer *)self animationForKey:@"accuracy"];
     v20 = v19;
@@ -163,7 +163,7 @@ LABEL_6:
       [v20 timeOffset];
       v16 = v25 - v26;
       [v20 duration];
-      a4 = v27;
+      duration = v27;
     }
   }
 
@@ -174,28 +174,28 @@ LABEL_6:
 
   [(MKUserLocationHeadingConeLayer *)self removeAnimationForKey:@"accuracy"];
   [(CAShapeLayer *)self->_maskLayer removeAnimationForKey:@"accuracy"];
-  v28 = [(MKUserLocationHeadingConeLayer *)self _accuracyGradientLocationsForAccuracyRadius:v8];
-  v29 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  v28 = [(MKUserLocationHeadingConeLayer *)self _accuracyGradientLocationsForAccuracyRadius:radiusCopy];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
   [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:self->_traitCollection];
-  if (lastAccuracyRadius <= minimumAccuracyRadius == minimumAccuracyRadius >= a3)
+  if (lastAccuracyRadius <= minimumAccuracyRadius == minimumAccuracyRadius >= radius)
   {
     v30 = 0;
   }
 
   else
   {
-    v30 = [(MKUserLocationHeadingConeLayer *)self _colorsForAccuracyRadius:v8];
+    v30 = [(MKUserLocationHeadingConeLayer *)self _colorsForAccuracyRadius:radiusCopy];
   }
 
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v29];
-  if (a4 > 0.0)
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
+  if (duration > 0.0)
   {
     v103 = v30;
     v104 = v28;
     v105 = v18;
-    v102 = v29;
+    v102 = currentTraitCollection;
     v123[0] = &unk_1F1611CB0;
-    v31 = v16 / a4;
+    v31 = v16 / duration;
     v32 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
     v123[1] = v32;
     v123[2] = &unk_1F1611C98;
@@ -203,13 +203,13 @@ LABEL_6:
 
     v33 = [MEMORY[0x1E6979390] animationWithKeyPath:@"bounds"];
     v34 = MEMORY[0x1E696B098];
-    v35 = [(CALayer *)self currentLayer];
-    [v35 bounds];
+    currentLayer = [(CALayer *)self currentLayer];
+    [currentLayer bounds];
     v36 = [v34 valueWithCGRect:?];
     v122[0] = v36;
     v37 = MEMORY[0x1E696B098];
-    v38 = [(CALayer *)self currentLayer];
-    [v38 bounds];
+    currentLayer2 = [(CALayer *)self currentLayer];
+    [currentLayer2 bounds];
     v39 = [v37 valueWithCGRect:?];
     v122[1] = v39;
     v40 = [MEMORY[0x1E696B098] valueWithCGRect:{0.0, 0.0, v14, v14}];
@@ -219,28 +219,28 @@ LABEL_6:
 
     [v33 setKeyTimes:v110];
     v42 = v33;
-    v43 = v42;
+    animation2 = v42;
     if (!self->_shouldMatchAccuracyRadius)
     {
 LABEL_39:
-      [v43 setRemovedOnCompletion:1];
-      [v43 setDuration:a4];
+      [animation2 setRemovedOnCompletion:1];
+      [animation2 setDuration:duration];
       if (v106 > 0.0)
       {
-        [v43 setBeginTime:v106];
+        [animation2 setBeginTime:v106];
       }
 
-      [(MKUserLocationHeadingConeLayer *)self addAnimation:v43 forKey:@"accuracy"];
+      [(MKUserLocationHeadingConeLayer *)self addAnimation:animation2 forKey:@"accuracy"];
 
       v68 = [MEMORY[0x1E6979390] animationWithKeyPath:@"bounds"];
       v69 = MEMORY[0x1E696B098];
-      v70 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      [v70 bounds];
+      currentLayer3 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      [currentLayer3 bounds];
       v71 = [v69 valueWithCGRect:?];
       v115[0] = v71;
       v72 = MEMORY[0x1E696B098];
-      v73 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      [v73 bounds];
+      currentLayer4 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      [currentLayer4 bounds];
       v74 = [v72 valueWithCGRect:?];
       v115[1] = v74;
       v75 = [MEMORY[0x1E696B098] valueWithCGRect:{0.0, 0.0, v15, v15}];
@@ -252,13 +252,13 @@ LABEL_39:
       [v68 setKeyTimes:v110];
       v77 = [MEMORY[0x1E6979390] animationWithKeyPath:@"position"];
       v78 = MEMORY[0x1E696B098];
-      v79 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      [v79 position];
+      currentLayer5 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      [currentLayer5 position];
       v80 = [v78 valueWithCGPoint:?];
       v114[0] = v80;
       v81 = MEMORY[0x1E696B098];
-      v82 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      [v82 position];
+      currentLayer6 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      [currentLayer6 position];
       v83 = [v81 valueWithCGPoint:?];
       v114[1] = v83;
       v61 = MidY;
@@ -270,10 +270,10 @@ LABEL_39:
 
       [v77 setKeyTimes:v110];
       v86 = [MEMORY[0x1E6979390] animationWithKeyPath:@"path"];
-      v87 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      v113[0] = [v87 path];
-      v88 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      v113[1] = [v88 path];
+      currentLayer7 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      v113[0] = [currentLayer7 path];
+      currentLayer8 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      v113[1] = [currentLayer8 path];
       v113[2] = v105;
       v89 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:3];
       [v86 setValues:v89];
@@ -281,13 +281,13 @@ LABEL_39:
       [v86 setKeyTimes:v110];
       v90 = [MEMORY[0x1E6979390] animationWithKeyPath:@"lineWidth"];
       v91 = MEMORY[0x1E696AD98];
-      v92 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      [v92 lineWidth];
+      currentLayer9 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      [currentLayer9 lineWidth];
       v93 = [v91 numberWithDouble:?];
       v112[0] = v93;
       v94 = MEMORY[0x1E696AD98];
-      v95 = [(CAShapeLayer *)self->_maskLayer currentLayer];
-      [v95 lineWidth];
+      currentLayer10 = [(CAShapeLayer *)self->_maskLayer currentLayer];
+      [currentLayer10 lineWidth];
       v96 = [v94 numberWithDouble:?];
       v112[1] = v96;
       v59 = v109;
@@ -297,37 +297,37 @@ LABEL_39:
       [v90 setValues:v98];
 
       [v90 setKeyTimes:v110];
-      v99 = [MEMORY[0x1E6979308] animation];
+      animation = [MEMORY[0x1E6979308] animation];
       v111[0] = v101;
       v111[1] = v77;
       v111[2] = v86;
       v111[3] = v90;
       v100 = [MEMORY[0x1E695DEC8] arrayWithObjects:v111 count:4];
-      [v99 setAnimations:v100];
+      [animation setAnimations:v100];
 
-      [v99 setRemovedOnCompletion:1];
-      [v99 setDuration:a4];
+      [animation setRemovedOnCompletion:1];
+      [animation setDuration:duration];
       if (v106 > 0.0)
       {
-        [v99 setBeginTime:v106];
+        [animation setBeginTime:v106];
       }
 
-      [(CAShapeLayer *)self->_maskLayer addAnimation:v99 forKey:@"accuracy"];
+      [(CAShapeLayer *)self->_maskLayer addAnimation:animation forKey:@"accuracy"];
 
       v18 = v105;
       v30 = v103;
       v28 = v104;
-      v29 = v102;
+      currentTraitCollection = v102;
       goto LABEL_44;
     }
 
     v44 = [MEMORY[0x1E6979390] animationWithKeyPath:@"locations"];
-    v45 = [(CALayer *)self currentLayer];
-    v46 = [v45 locations];
-    v121[0] = v46;
-    v47 = [(CALayer *)self currentLayer];
-    v48 = [v47 locations];
-    v121[1] = v48;
+    currentLayer11 = [(CALayer *)self currentLayer];
+    locations = [currentLayer11 locations];
+    v121[0] = locations;
+    currentLayer12 = [(CALayer *)self currentLayer];
+    locations2 = [currentLayer12 locations];
+    v121[1] = locations2;
     v121[2] = v104;
     v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v121 count:3];
     [v44 setValues:v49];
@@ -336,17 +336,17 @@ LABEL_39:
     if (v103)
     {
       v50 = [MEMORY[0x1E6979390] animationWithKeyPath:@"colors"];
-      v51 = [(CALayer *)self currentLayer];
-      v52 = [v51 colors];
-      v120[0] = v52;
-      v53 = [(CALayer *)self currentLayer];
-      v54 = [v53 colors];
-      v120[1] = v54;
+      currentLayer13 = [(CALayer *)self currentLayer];
+      colors = [currentLayer13 colors];
+      v120[0] = colors;
+      currentLayer14 = [(CALayer *)self currentLayer];
+      colors2 = [currentLayer14 colors];
+      v120[1] = colors2;
       v120[2] = v103;
       v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:3];
       [v50 setValues:v55];
 
-      if (minimumAccuracyRadius >= a3)
+      if (minimumAccuracyRadius >= radius)
       {
         v119[0] = &unk_1F1611CB0;
         v56 = 0.6;
@@ -391,7 +391,7 @@ LABEL_34:
     }
 
 LABEL_35:
-    v43 = [MEMORY[0x1E6979308] animation];
+    animation2 = [MEMORY[0x1E6979308] animation];
     if (v50)
     {
       v117[0] = v42;
@@ -412,7 +412,7 @@ LABEL_35:
     }
 
     v67 = [v64 arrayWithObjects:v65 count:v66];
-    [v43 setAnimations:v67];
+    [animation2 setAnimations:v67];
 
     goto LABEL_39;
   }
@@ -428,7 +428,7 @@ LABEL_44:
   [(CAShapeLayer *)self->_maskLayer setPosition:v60, v61];
   [(CAShapeLayer *)self->_maskLayer setPath:v18];
   [(CAShapeLayer *)self->_maskLayer setLineWidth:v59];
-  self->_lastAccuracyRadius = v8;
+  self->_lastAccuracyRadius = radiusCopy;
   if (self->_shouldMatchAccuracyRadius)
   {
     [(CAGradientLayer *)self setLocations:v28];
@@ -442,18 +442,18 @@ LABEL_44:
   CGPathRelease(v18);
 }
 
-- (void)_animateToOpacity:(double)a3 completion:(id)a4
+- (void)_animateToOpacity:(double)opacity completion:(id)completion
 {
   v6 = MEMORY[0x1E6979318];
-  v7 = a4;
+  completionCopy = completion;
   v16 = [v6 animationWithKeyPath:@"opacity"];
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(CALayer *)self currentLayer];
-  [v9 opacity];
+  currentLayer = [(CALayer *)self currentLayer];
+  [currentLayer opacity];
   v10 = [v8 numberWithFloat:?];
   [v16 setFromValue:v10];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:opacity];
   [v16 setToValue:v11];
 
   [v16 setFillMode:*MEMORY[0x1E69797E8]];
@@ -462,22 +462,22 @@ LABEL_44:
   [v16 setTimingFunction:v12];
 
   [v16 setRemovedOnCompletion:1];
-  [(CALayer *)self _mapkit_addAnimation:v16 forKey:@"fadeAnimation" completion:v7];
+  [(CALayer *)self _mapkit_addAnimation:v16 forKey:@"fadeAnimation" completion:completionCopy];
 
   v13 = +[MKThreadContext currentContext];
   [v13 _CA_setDisableActions:1];
 
-  *&v14 = a3;
+  *&v14 = opacity;
   [(MKUserLocationHeadingConeLayer *)self setOpacity:v14];
   v15 = +[MKThreadContext currentContext];
   [v15 _CA_setDisableActions:0];
 }
 
-- (double)_opacityForAccuracy:(double)a3 locationAccuracy:(double)a4
+- (double)_opacityForAccuracy:(double)accuracy locationAccuracy:(double)locationAccuracy
 {
-  v4 = [(MKUserLocationHeadingConeLayer *)self _shouldShowHeadingForAccuracy:self->_headingAccuracy, a4];
+  locationAccuracy = [(MKUserLocationHeadingConeLayer *)self _shouldShowHeadingForAccuracy:self->_headingAccuracy, locationAccuracy];
   result = 0.0;
-  if (v4)
+  if (locationAccuracy)
   {
     return 1.0;
   }
@@ -485,16 +485,16 @@ LABEL_44:
   return result;
 }
 
-- (void)_updateShowHeadingForAccuracy:(double)a3
+- (void)_updateShowHeadingForAccuracy:(double)accuracy
 {
-  [(MKUserLocationHeadingConeLayer *)self _opacityForAccuracy:a3 locationAccuracy:self->_lastAccuracyRadius];
+  [(MKUserLocationHeadingConeLayer *)self _opacityForAccuracy:accuracy locationAccuracy:self->_lastAccuracyRadius];
   v5 = v4;
   [(MKUserLocationHeadingConeLayer *)self opacity];
   if (vabdd_f64(v5, v6) >= 0.01)
   {
-    v7 = [(MKUserLocationHeadingConeLayer *)self superlayer];
+    superlayer = [(MKUserLocationHeadingConeLayer *)self superlayer];
 
-    if (v7)
+    if (superlayer)
     {
 
       [(MKUserLocationHeadingConeLayer *)self _animateToOpacity:0 completion:v5];
@@ -513,7 +513,7 @@ LABEL_44:
   }
 }
 
-- (void)_updateHeadingMaskForAccuracy:(double)halfMinAngle previousAccuracy:(double)a4
+- (void)_updateHeadingMaskForAccuracy:(double)halfMinAngle previousAccuracy:(double)accuracy
 {
   v24[2] = *MEMORY[0x1E69E9840];
   if (halfMinAngle < 0.0)
@@ -531,8 +531,8 @@ LABEL_44:
   v7 = (v5 + 270.0) / 360.0;
   v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeStart"];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(CAShapeLayer *)self->_maskLayer presentationLayer];
-  [v10 strokeStart];
+  presentationLayer = [(CAShapeLayer *)self->_maskLayer presentationLayer];
+  [presentationLayer strokeStart];
   v11 = [v9 numberWithDouble:?];
   [v8 setFromValue:v11];
 
@@ -541,29 +541,29 @@ LABEL_44:
 
   v13 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeEnd"];
   v14 = MEMORY[0x1E696AD98];
-  v15 = [(CAShapeLayer *)self->_maskLayer presentationLayer];
-  [v15 strokeEnd];
+  presentationLayer2 = [(CAShapeLayer *)self->_maskLayer presentationLayer];
+  [presentationLayer2 strokeEnd];
   v16 = [v14 numberWithDouble:?];
   [v13 setFromValue:v16];
 
   v17 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
   [v13 setToValue:v17];
 
-  v18 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v24[0] = v8;
   v24[1] = v13;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
-  [v18 setAnimations:v19];
+  [animation setAnimations:v19];
 
   LODWORD(v20) = 30.0;
   LODWORD(v21) = 30.0;
   LODWORD(v22) = 30.0;
-  [v18 setPreferredFrameRateRange:{v20, v21, v22}];
-  [v18 setFillMode:*MEMORY[0x1E69797D8]];
+  [animation setPreferredFrameRateRange:{v20, v21, v22}];
+  [animation setFillMode:*MEMORY[0x1E69797D8]];
   v23 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EA0]];
-  [v18 setTimingFunction:v23];
+  [animation setTimingFunction:v23];
 
-  [(CAShapeLayer *)self->_maskLayer addAnimation:v18 forKey:@"maskGroup"];
+  [(CAShapeLayer *)self->_maskLayer addAnimation:animation forKey:@"maskGroup"];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(CAShapeLayer *)self->_maskLayer setStrokeStart:v6];
@@ -571,42 +571,42 @@ LABEL_44:
   [MEMORY[0x1E6979518] commit];
 }
 
-- (BOOL)_shouldShowHeadingForAccuracy:(double)a3
+- (BOOL)_shouldShowHeadingForAccuracy:(double)accuracy
 {
-  if (a3 < 0.0)
+  if (accuracy < 0.0)
   {
     return 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_userLocationView);
-  v6 = [WeakRetained shouldDisplayInaccurateHeading];
-  if (a3 < 90.0)
+  shouldDisplayInaccurateHeading = [WeakRetained shouldDisplayInaccurateHeading];
+  if (accuracy < 90.0)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = v6;
+    v3 = shouldDisplayInaccurateHeading;
   }
 
   return v3;
 }
 
-- (void)updateHeadingAccuracy:(double)a3 previousAccuracy:(double)a4
+- (void)updateHeadingAccuracy:(double)accuracy previousAccuracy:(double)previousAccuracy
 {
-  self->_headingAccuracy = a3;
+  self->_headingAccuracy = accuracy;
   [MKUserLocationHeadingConeLayer _updateHeadingMaskForAccuracy:"_updateHeadingMaskForAccuracy:previousAccuracy:" previousAccuracy:?];
 
-  [(MKUserLocationHeadingConeLayer *)self _updateShowHeadingForAccuracy:a3];
+  [(MKUserLocationHeadingConeLayer *)self _updateShowHeadingForAccuracy:accuracy];
 }
 
-- (id)_accuracyGradientLocationsForAccuracyRadius:(double)a3
+- (id)_accuracyGradientLocationsForAccuracyRadius:(double)radius
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  if (self->_shouldMatchAccuracyRadius && self->_minimumAccuracyRadius < a3)
+  if (self->_shouldMatchAccuracyRadius && self->_minimumAccuracyRadius < radius)
   {
-    v3 = a3 / (a3 + 18.0);
+    v3 = radius / (radius + 18.0);
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:v3 * 0.45];
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:{v3, v4}];
     v8[1] = v5;
@@ -622,10 +622,10 @@ LABEL_44:
   return v6;
 }
 
-- (id)_colorsForAccuracyRadius:(double)a3
+- (id)_colorsForAccuracyRadius:(double)radius
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  if (self->_shouldMatchAccuracyRadius && self->_minimumAccuracyRadius < a3)
+  if (self->_shouldMatchAccuracyRadius && self->_minimumAccuracyRadius < radius)
   {
     v4 = flt_1A30F6C98[[(UITraitCollection *)self->_traitCollection userInterfaceStyle]== UIUserInterfaceStyleDark];
     mapType = self->_mapType;
@@ -644,13 +644,13 @@ LABEL_44:
 
   else
   {
-    v12 = [(UITraitCollection *)self->_traitCollection userInterfaceStyle];
+    userInterfaceStyle = [(UITraitCollection *)self->_traitCollection userInterfaceStyle];
     p_tintColor = &self->_tintColor;
     tintColor = self->_tintColor;
-    if (v12 == UIUserInterfaceStyleDark)
+    if (userInterfaceStyle == UIUserInterfaceStyleDark)
     {
       v9 = [(UIColor *)tintColor colorWithAlphaComponent:1.0];
-      v20 = [v9 CGColor];
+      cGColor = [v9 CGColor];
       v14 = self->_mapType;
       if (v14 - 1 < 4 || v14 == 107)
       {
@@ -663,7 +663,7 @@ LABEL_44:
       }
 
       v10 = [(UIColor *)*p_tintColor colorWithAlphaComponent:v15];
-      v11 = &v20;
+      v11 = &cGColor;
     }
 
     else
@@ -682,33 +682,33 @@ LABEL_44:
   return v17;
 }
 
-- (void)setMapType:(unint64_t)a3
+- (void)setMapType:(unint64_t)type
 {
-  if (self->_mapType != a3)
+  if (self->_mapType != type)
   {
-    self->_mapType = a3;
+    self->_mapType = type;
     [(MKUserLocationHeadingConeLayer *)self _updateColors];
   }
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  objc_storeStrong(&self->_traitCollection, a3);
+  objc_storeStrong(&self->_traitCollection, collection);
 
   [(MKUserLocationHeadingConeLayer *)self _updateColors];
 }
 
-- (void)updateTintColor:(id)a3
+- (void)updateTintColor:(id)color
 {
-  objc_storeStrong(&self->_tintColor, a3);
+  objc_storeStrong(&self->_tintColor, color);
 
   [(MKUserLocationHeadingConeLayer *)self _updateColors];
 }
 
-- (void)updateHeading:(double)a3
+- (void)updateHeading:(double)heading
 {
   memset(&v17, 0, sizeof(v17));
-  CATransform3DMakeRotation(&v17, a3 * 0.0174532925, 0.0, 0.0, 1.0);
+  CATransform3DMakeRotation(&v17, heading * 0.0174532925, 0.0, 0.0, 1.0);
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
   [v4 setFillMode:*MEMORY[0x1E69797D8]];
   v5 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EA0]];
@@ -723,11 +723,11 @@ LABEL_44:
   [v4 setToValue:v9];
 
   v10 = MEMORY[0x1E696B098];
-  v11 = [(MKUserLocationHeadingConeLayer *)self presentationLayer];
-  v12 = v11;
-  if (v11)
+  presentationLayer = [(MKUserLocationHeadingConeLayer *)self presentationLayer];
+  v12 = presentationLayer;
+  if (presentationLayer)
   {
-    [v11 transform];
+    [presentationLayer transform];
   }
 
   else
@@ -748,29 +748,29 @@ LABEL_44:
   [v15 _CA_setDisableActions:0];
 }
 
-- (MKUserLocationHeadingConeLayer)initWithUserLocationView:(id)a3 shouldMatchAccuracyRadius:(BOOL)a4 minimumPresentationAngle:(double)a5
+- (MKUserLocationHeadingConeLayer)initWithUserLocationView:(id)view shouldMatchAccuracyRadius:(BOOL)radius minimumPresentationAngle:(double)angle
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = MKUserLocationHeadingConeLayer;
   v9 = [(MKUserLocationHeadingConeLayer *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_userLocationView, v8);
-    v10->_shouldMatchAccuracyRadius = a4;
-    v10->_halfMinAngle = a5 * 0.5;
-    v11 = [MEMORY[0x1E69DC888] systemBlueColor];
+    objc_storeWeak(&v9->_userLocationView, viewCopy);
+    v10->_shouldMatchAccuracyRadius = radius;
+    v10->_halfMinAngle = angle * 0.5;
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
     tintColor = v10->_tintColor;
-    v10->_tintColor = v11;
+    v10->_tintColor = systemBlueColor;
 
     v20[0] = @"locations";
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v20[1] = @"colors";
-    v21[0] = v13;
-    v14 = [MEMORY[0x1E695DFB0] null];
-    v21[1] = v14;
+    v21[0] = null;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v21[1] = null2;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
     [(MKUserLocationHeadingConeLayer *)v10 setActions:v15];
 

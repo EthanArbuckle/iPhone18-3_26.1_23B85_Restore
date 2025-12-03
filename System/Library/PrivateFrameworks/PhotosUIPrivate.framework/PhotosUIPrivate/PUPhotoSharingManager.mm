@@ -1,176 +1,176 @@
 @interface PUPhotoSharingManager
 + (id)sharedInstance;
-- (BOOL)prepareForDismissingForced:(BOOL)a3;
+- (BOOL)prepareForDismissingForced:(BOOL)forced;
 - (PLProgressView)publishingProgressView;
-- (void)_addPublishingAgentIfNeeded:(id)a3;
+- (void)_addPublishingAgentIfNeeded:(id)needed;
 - (void)_cleanUpPublishingProgressView;
-- (void)_removePublishingAgent:(id)a3;
+- (void)_removePublishingAgent:(id)agent;
 - (void)_schedulePublishingProgressViewUpdate;
-- (void)_setDelaysAppSuspend:(BOOL)a3;
-- (void)_setFlag:(BOOL)a3 forReferenceCounter:(int64_t *)a4 performIfChanged:(id)a5;
-- (void)_updatePublishingProgressView:(id)a3;
+- (void)_setDelaysAppSuspend:(BOOL)suspend;
+- (void)_setFlag:(BOOL)flag forReferenceCounter:(int64_t *)counter performIfChanged:(id)changed;
+- (void)_updatePublishingProgressView:(id)view;
 - (void)cancelPublishing;
 - (void)dealloc;
-- (void)publishingAgentCancelButtonClicked:(id)a3;
-- (void)publishingAgentDidBeginPublishing:(id)a3;
-- (void)publishingAgentDidEndPublishing:(id)a3 error:(id)a4;
-- (void)publishingAgentDidEndRemaking:(id)a3 didSucceed:(BOOL)a4;
-- (void)publishingAgentDidStartRemaking:(id)a3;
-- (void)setRemaking:(BOOL)a3;
+- (void)publishingAgentCancelButtonClicked:(id)clicked;
+- (void)publishingAgentDidBeginPublishing:(id)publishing;
+- (void)publishingAgentDidEndPublishing:(id)publishing error:(id)error;
+- (void)publishingAgentDidEndRemaking:(id)remaking didSucceed:(BOOL)succeed;
+- (void)publishingAgentDidStartRemaking:(id)remaking;
+- (void)setRemaking:(BOOL)remaking;
 @end
 
 @implementation PUPhotoSharingManager
 
-- (void)publishingAgentCancelButtonClicked:(id)a3
+- (void)publishingAgentCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  [(PUPhotoSharingManager *)self _removePublishingAgent:v4];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x1E69BE210] object:v4];
+  clickedCopy = clicked;
+  [(PUPhotoSharingManager *)self _removePublishingAgent:clickedCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69BE210] object:clickedCopy];
 
-  v6 = [(PUPhotoSharingManager *)self _currentPublishingAgent];
+  _currentPublishingAgent = [(PUPhotoSharingManager *)self _currentPublishingAgent];
 
-  if (!v6)
+  if (!_currentPublishingAgent)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"PUPhotoSharingManagerDidEndPublishing" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"PUPhotoSharingManagerDidEndPublishing" object:0];
 
     [(PUPhotoSharingManager *)self _cleanUpPublishingProgressView];
   }
 }
 
-- (void)publishingAgentDidEndPublishing:(id)a3 error:(id)a4
+- (void)publishingAgentDidEndPublishing:(id)publishing error:(id)error
 {
-  v6 = a3;
-  [v6 showAlertWithError:a4];
-  [(PUPhotoSharingManager *)self _removePublishingAgent:v6];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:*MEMORY[0x1E69BE218] object:v6 userInfo:0];
+  publishingCopy = publishing;
+  [publishingCopy showAlertWithError:error];
+  [(PUPhotoSharingManager *)self _removePublishingAgent:publishingCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69BE218] object:publishingCopy userInfo:0];
 
-  v8 = [(PUPhotoSharingManager *)self _currentPublishingAgent];
+  _currentPublishingAgent = [(PUPhotoSharingManager *)self _currentPublishingAgent];
 
-  if (!v8)
+  if (!_currentPublishingAgent)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"PUPhotoSharingManagerDidEndPublishing" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"PUPhotoSharingManagerDidEndPublishing" object:0];
 
     [(PUPhotoSharingManager *)self _cleanUpPublishingProgressView];
   }
 }
 
-- (void)publishingAgentDidBeginPublishing:(id)a3
+- (void)publishingAgentDidBeginPublishing:(id)publishing
 {
-  v8 = a3;
-  [(PUPhotoSharingManager *)self _addPublishingAgentIfNeeded:v8];
+  publishingCopy = publishing;
+  [(PUPhotoSharingManager *)self _addPublishingAgentIfNeeded:publishingCopy];
   [(PUPhotoSharingManager *)self _setNetworkPromptShowing:1];
   [(PUPhotoSharingManager *)self _setDelaysAppSuspend:1];
   [*MEMORY[0x1E69DDA98] setStatusBarShowsProgress:1];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x1E69BE230] object:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69BE230] object:publishingCopy];
 
-  v5 = v8;
-  if (v8)
+  v5 = publishingCopy;
+  if (publishingCopy)
   {
-    v6 = [(PUPhotoSharingManager *)self _currentPublishingAgent];
-    if (v6 == v8)
+    _currentPublishingAgent = [(PUPhotoSharingManager *)self _currentPublishingAgent];
+    if (_currentPublishingAgent == publishingCopy)
     {
-      v7 = [v8 isVideoMedia];
+      isVideoMedia = [publishingCopy isVideoMedia];
 
-      v5 = v8;
-      if (v7)
+      v5 = publishingCopy;
+      if (isVideoMedia)
       {
         goto LABEL_6;
       }
 
       [(PUPhotoSharingManager *)self _schedulePublishingProgressViewUpdate];
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 postNotificationName:@"PUPhotoSharingManagerDidBeginPublishing" object:0];
+      _currentPublishingAgent = [MEMORY[0x1E696AD88] defaultCenter];
+      [_currentPublishingAgent postNotificationName:@"PUPhotoSharingManagerDidBeginPublishing" object:0];
     }
 
-    v5 = v8;
+    v5 = publishingCopy;
   }
 
 LABEL_6:
 }
 
-- (void)publishingAgentDidEndRemaking:(id)a3 didSucceed:(BOOL)a4
+- (void)publishingAgentDidEndRemaking:(id)remaking didSucceed:(BOOL)succeed
 {
-  v4 = a4;
+  succeedCopy = succeed;
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  remakingCopy = remaking;
   [(PUPhotoSharingManager *)self setRemaking:0];
   v10 = *MEMORY[0x1E69BE228];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:succeedCopy];
   v11[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:*MEMORY[0x1E69BE220] object:v6 userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69BE220] object:remakingCopy userInfo:v8];
 
-  if (!v4)
+  if (!succeedCopy)
   {
-    [(PUPhotoSharingManager *)self _removePublishingAgent:v6];
+    [(PUPhotoSharingManager *)self _removePublishingAgent:remakingCopy];
   }
 }
 
-- (void)publishingAgentDidStartRemaking:(id)a3
+- (void)publishingAgentDidStartRemaking:(id)remaking
 {
-  v8 = a3;
+  remakingCopy = remaking;
   [(PUPhotoSharingManager *)self setRemaking:1];
-  [(PUPhotoSharingManager *)self _addPublishingAgentIfNeeded:v8];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x1E69BE238] object:v8 userInfo:0];
+  [(PUPhotoSharingManager *)self _addPublishingAgentIfNeeded:remakingCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69BE238] object:remakingCopy userInfo:0];
 
-  v5 = v8;
-  if (v8)
+  v5 = remakingCopy;
+  if (remakingCopy)
   {
-    v6 = [(PUPhotoSharingManager *)self _currentPublishingAgent];
+    _currentPublishingAgent = [(PUPhotoSharingManager *)self _currentPublishingAgent];
 
-    v5 = v8;
-    if (v6 == v8)
+    v5 = remakingCopy;
+    if (_currentPublishingAgent == remakingCopy)
     {
       [(PUPhotoSharingManager *)self _schedulePublishingProgressViewUpdate];
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 postNotificationName:@"PUPhotoSharingManagerDidBeginPublishing" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"PUPhotoSharingManagerDidBeginPublishing" object:0];
 
-      v5 = v8;
+      v5 = remakingCopy;
     }
   }
 }
 
-- (void)_removePublishingAgent:(id)a3
+- (void)_removePublishingAgent:(id)agent
 {
-  v10 = a3;
-  v4 = [(NSMutableArray *)self->_publishingAgents containsObject:v10];
-  v5 = v10;
+  agentCopy = agent;
+  v4 = [(NSMutableArray *)self->_publishingAgents containsObject:agentCopy];
+  v5 = agentCopy;
   if (v4)
   {
-    [v10 setDelegate:0];
-    [(NSMutableArray *)self->_publishingAgents removeObject:v10];
-    if ([v10 deleteMediaFileAfterPublishing])
+    [agentCopy setDelegate:0];
+    [(NSMutableArray *)self->_publishingAgents removeObject:agentCopy];
+    if ([agentCopy deleteMediaFileAfterPublishing])
     {
-      v6 = [v10 mediaPath];
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
-      v8 = [v7 fileExistsAtPath:v6];
+      mediaPath = [agentCopy mediaPath];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v8 = [defaultManager fileExistsAtPath:mediaPath];
 
       if (v8)
       {
-        v9 = [MEMORY[0x1E696AC08] defaultManager];
-        [v9 removeItemAtPath:v6 error:0];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager2 removeItemAtPath:mediaPath error:0];
       }
     }
 
     [(PUPhotoSharingManager *)self _setNetworkPromptShowing:0];
     v4 = [(PUPhotoSharingManager *)self _setDelaysAppSuspend:0];
-    v5 = v10;
+    v5 = agentCopy;
   }
 
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)_addPublishingAgentIfNeeded:(id)a3
+- (void)_addPublishingAgentIfNeeded:(id)needed
 {
-  v7 = a3;
+  neededCopy = needed;
   publishingAgents = self->_publishingAgents;
   if (publishingAgents)
   {
@@ -185,9 +185,9 @@ LABEL_6:
   v6 = self->_publishingAgents;
   self->_publishingAgents = v5;
 
-  if (([(NSMutableArray *)self->_publishingAgents containsObject:v7]& 1) == 0)
+  if (([(NSMutableArray *)self->_publishingAgents containsObject:neededCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_publishingAgents addObject:v7];
+    [(NSMutableArray *)self->_publishingAgents addObject:neededCopy];
   }
 }
 
@@ -202,13 +202,13 @@ LABEL_6:
   self->_publishingProgressView = 0;
 }
 
-- (void)_updatePublishingProgressView:(id)a3
+- (void)_updatePublishingProgressView:(id)view
 {
-  v4 = [(PUPhotoSharingManager *)self _currentPublishingAgent];
-  v5 = v4;
-  if (v4)
+  _currentPublishingAgent = [(PUPhotoSharingManager *)self _currentPublishingAgent];
+  v5 = _currentPublishingAgent;
+  if (_currentPublishingAgent)
   {
-    [(PLProgressView *)self->_publishingProgressView updateUIForPublishingAgent:v4];
+    [(PLProgressView *)self->_publishingProgressView updateUIForPublishingAgent:_currentPublishingAgent];
     [(PUPhotoSharingManager *)self _schedulePublishingProgressViewUpdate];
   }
 
@@ -220,9 +220,9 @@ LABEL_6:
 
 - (void)_schedulePublishingProgressViewUpdate
 {
-  v3 = [(PUPhotoSharingManager *)self _currentPublishingAgent];
+  _currentPublishingAgent = [(PUPhotoSharingManager *)self _currentPublishingAgent];
 
-  if (v3)
+  if (_currentPublishingAgent)
   {
     [(NSTimer *)self->_publishingProgressTimer invalidate];
     v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__updatePublishingProgressView_ selector:0 userInfo:1 repeats:0.2];
@@ -239,16 +239,16 @@ LABEL_6:
   }
 }
 
-- (void)_setDelaysAppSuspend:(BOOL)a3
+- (void)_setDelaysAppSuspend:(BOOL)suspend
 {
-  v3 = a3;
+  suspendCopy = suspend;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PUPhotoSharingManager__setDelaysAppSuspend___block_invoke;
   v6[3] = &unk_1E7B7F020;
   v6[4] = self;
-  v5 = self;
-  [(PUPhotoSharingManager *)v5 _setFlag:v3 forReferenceCounter:&self->_appSuspensionCount performIfChanged:v6];
+  selfCopy = self;
+  [(PUPhotoSharingManager *)selfCopy _setFlag:suspendCopy forReferenceCounter:&self->_appSuspensionCount performIfChanged:v6];
 }
 
 uint64_t __46__PUPhotoSharingManager__setDelaysAppSuspend___block_invoke(uint64_t result, int a2)
@@ -284,11 +284,11 @@ void __50__PUPhotoSharingManager__setNetworkPromptShowing___block_invoke()
   JUMPOUT(0x1B8C6D860);
 }
 
-- (void)_setFlag:(BOOL)a3 forReferenceCounter:(int64_t *)a4 performIfChanged:(id)a5
+- (void)_setFlag:(BOOL)flag forReferenceCounter:(int64_t *)counter performIfChanged:(id)changed
 {
-  v7 = a5;
-  v8 = *a4;
-  if (a3)
+  changedCopy = changed;
+  v8 = *counter;
+  if (flag)
   {
     v9 = 1;
   }
@@ -306,7 +306,7 @@ void __50__PUPhotoSharingManager__setNetworkPromptShowing___block_invoke()
 
   v10 = __OFADD__(v8, v9);
   v11 = v8 + v9;
-  *a4 = v11;
+  *counter = v11;
   if ((v11 < 0) ^ v10 | (v11 == 0))
   {
     v12 = 0;
@@ -319,17 +319,17 @@ void __50__PUPhotoSharingManager__setNetworkPromptShowing___block_invoke()
 
 LABEL_8:
   v13 = v8 > 0;
-  if (v7 && v13 != v12)
+  if (changedCopy && v13 != v12)
   {
-    v14 = v7;
-    v7[2]();
-    v7 = v14;
+    v14 = changedCopy;
+    changedCopy[2]();
+    changedCopy = v14;
   }
 }
 
-- (BOOL)prepareForDismissingForced:(BOOL)a3
+- (BOOL)prepareForDismissingForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   v19 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableArray *)self->_publishingAgents copy];
   v14 = 0u;
@@ -354,7 +354,7 @@ LABEL_8:
         v11 = *(*(&v14 + 1) + 8 * i);
         if (([v11 isRemaking] & 1) == 0 && (objc_msgSend(v11, "isPublishing") & 1) == 0)
         {
-          if (!v3)
+          if (!forcedCopy)
           {
             v12 = 0;
             goto LABEL_14;
@@ -377,7 +377,7 @@ LABEL_8:
   v12 = 1;
 LABEL_14:
 
-  return v12 | v3;
+  return v12 | forcedCopy;
 }
 
 - (void)cancelPublishing
@@ -416,15 +416,15 @@ LABEL_14:
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:*MEMORY[0x1E69BE240] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69BE240] object:0];
 }
 
 - (PLProgressView)publishingProgressView
 {
-  v3 = [(PUPhotoSharingManager *)self _currentPublishingAgent];
+  _currentPublishingAgent = [(PUPhotoSharingManager *)self _currentPublishingAgent];
 
-  if (v3)
+  if (_currentPublishingAgent)
   {
     publishingProgressView = self->_publishingProgressView;
     if (!publishingProgressView)
@@ -447,16 +447,16 @@ LABEL_14:
   return v7;
 }
 
-- (void)setRemaking:(BOOL)a3
+- (void)setRemaking:(BOOL)remaking
 {
-  v3 = a3;
+  remakingCopy = remaking;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__PUPhotoSharingManager_setRemaking___block_invoke;
   v6[3] = &unk_1E7B7F020;
   v6[4] = self;
-  v5 = self;
-  [(PUPhotoSharingManager *)v5 _setFlag:v3 forReferenceCounter:&self->_videoRemakingCount performIfChanged:v6];
+  selfCopy = self;
+  [(PUPhotoSharingManager *)selfCopy _setFlag:remakingCopy forReferenceCounter:&self->_videoRemakingCount performIfChanged:v6];
 }
 
 - (void)dealloc

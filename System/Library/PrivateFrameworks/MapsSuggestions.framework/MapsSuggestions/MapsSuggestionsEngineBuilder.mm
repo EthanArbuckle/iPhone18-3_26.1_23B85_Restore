@@ -4,17 +4,17 @@
 - (MapsSuggestionsEngineBuilder)init;
 - (NSString)uniqueName;
 - (id)build;
-- (id)withDedupers:(id)a3;
+- (id)withDedupers:(id)dedupers;
 - (id)withFavorites;
-- (id)withImprovers:(id)a3;
-- (id)withLocationUpdater:(id)a3;
-- (id)withPostFilters:(id)a3;
-- (id)withPreFilters:(id)a3;
-- (id)withResourceDepot:(id)a3;
-- (id)withSourceClasses:(id)a3;
-- (id)withTitleFormatter:(id)a3 forType:(int64_t)a4;
-- (id)withoutPostFilters:(id)a3;
-- (id)withoutPreFilters:(id)a3;
+- (id)withImprovers:(id)improvers;
+- (id)withLocationUpdater:(id)updater;
+- (id)withPostFilters:(id)filters;
+- (id)withPreFilters:(id)filters;
+- (id)withResourceDepot:(id)depot;
+- (id)withSourceClasses:(id)classes;
+- (id)withTitleFormatter:(id)formatter forType:(int64_t)type;
+- (id)withoutPostFilters:(id)filters;
+- (id)withoutPreFilters:(id)filters;
 @end
 
 @implementation MapsSuggestionsEngineBuilder
@@ -102,13 +102,13 @@
 
 - (id)withFavorites
 {
-  v3 = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
-  v4 = [v3 containsObject:objc_opt_class()];
+  sourceClasses = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
+  v4 = [sourceClasses containsObject:objc_opt_class()];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
-    [v5 addObject:objc_opt_class()];
+    sourceClasses2 = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
+    [sourceClasses2 addObject:objc_opt_class()];
   }
 
   return self;
@@ -117,8 +117,8 @@
 - (id)build
 {
   v217[0] = *MEMORY[0x1E69E9840];
-  v3 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
-  v4 = v3 == 0;
+  resourceDepot = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+  v4 = resourceDepot == 0;
 
   oslog = GEOFindOrCreateLog();
   if (v4)
@@ -144,9 +144,9 @@
     v5 = oslog;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(MapsSuggestionsEngineBuilder *)self uniqueName];
+      uniqueName = [(MapsSuggestionsEngineBuilder *)self uniqueName];
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = uniqueName;
       *&buf[12] = 2080;
       *&buf[14] = "MapsSuggestionsEngineBuilding";
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -413,8 +413,8 @@
     v203 = 0u;
     v200 = 0u;
     v201 = 0u;
-    v89 = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
-    v90 = [v89 countByEnumeratingWithState:&v200 objects:v211 count:16];
+    includePreFilters = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
+    v90 = [includePreFilters countByEnumeratingWithState:&v200 objects:v211 count:16];
     if (v90)
     {
       v91 = *v201;
@@ -424,15 +424,15 @@
         {
           if (*v201 != v91)
           {
-            objc_enumerationMutation(v89);
+            objc_enumerationMutation(includePreFilters);
           }
 
           v93 = *(*(&v200 + 1) + 8 * i);
-          v94 = [(MapsSuggestionsEngineBuilder *)self strategy];
-          [v94 addPreFilter:v93];
+          strategy = [(MapsSuggestionsEngineBuilder *)self strategy];
+          [strategy addPreFilter:v93];
         }
 
-        v90 = [v89 countByEnumeratingWithState:&v200 objects:v211 count:16];
+        v90 = [includePreFilters countByEnumeratingWithState:&v200 objects:v211 count:16];
       }
 
       while (v90);
@@ -442,8 +442,8 @@
     v199 = 0u;
     v196 = 0u;
     v197 = 0u;
-    v95 = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
-    v96 = [v95 countByEnumeratingWithState:&v196 objects:v210 count:16];
+    includePostFilters = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
+    v96 = [includePostFilters countByEnumeratingWithState:&v196 objects:v210 count:16];
     if (v96)
     {
       v97 = *v197;
@@ -453,15 +453,15 @@
         {
           if (*v197 != v97)
           {
-            objc_enumerationMutation(v95);
+            objc_enumerationMutation(includePostFilters);
           }
 
           v99 = *(*(&v196 + 1) + 8 * j);
-          v100 = [(MapsSuggestionsEngineBuilder *)self strategy];
-          [v100 addPostFilter:v99];
+          strategy2 = [(MapsSuggestionsEngineBuilder *)self strategy];
+          [strategy2 addPostFilter:v99];
         }
 
-        v96 = [v95 countByEnumeratingWithState:&v196 objects:v210 count:16];
+        v96 = [includePostFilters countByEnumeratingWithState:&v196 objects:v210 count:16];
       }
 
       while (v96);
@@ -471,8 +471,8 @@
     v195 = 0u;
     v192 = 0u;
     v193 = 0u;
-    v101 = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
-    v102 = [v101 countByEnumeratingWithState:&v192 objects:v209 count:16];
+    includeImprovers = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
+    v102 = [includeImprovers countByEnumeratingWithState:&v192 objects:v209 count:16];
     if (v102)
     {
       v103 = *v193;
@@ -482,15 +482,15 @@
         {
           if (*v193 != v103)
           {
-            objc_enumerationMutation(v101);
+            objc_enumerationMutation(includeImprovers);
           }
 
           v105 = *(*(&v192 + 1) + 8 * k);
-          v106 = [(MapsSuggestionsEngineBuilder *)self strategy];
-          [v106 addImprover:v105];
+          strategy3 = [(MapsSuggestionsEngineBuilder *)self strategy];
+          [strategy3 addImprover:v105];
         }
 
-        v102 = [v101 countByEnumeratingWithState:&v192 objects:v209 count:16];
+        v102 = [includeImprovers countByEnumeratingWithState:&v192 objects:v209 count:16];
       }
 
       while (v102);
@@ -500,8 +500,8 @@
     v191 = 0u;
     v188 = 0u;
     v189 = 0u;
-    v107 = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
-    v108 = [v107 countByEnumeratingWithState:&v188 objects:v208 count:16];
+    includeDedupers = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
+    v108 = [includeDedupers countByEnumeratingWithState:&v188 objects:v208 count:16];
     if (v108)
     {
       v109 = *v189;
@@ -511,15 +511,15 @@
         {
           if (*v189 != v109)
           {
-            objc_enumerationMutation(v107);
+            objc_enumerationMutation(includeDedupers);
           }
 
           v111 = *(*(&v188 + 1) + 8 * m);
-          v112 = [(MapsSuggestionsEngineBuilder *)self strategy];
-          [v112 addDeduper:v111];
+          strategy4 = [(MapsSuggestionsEngineBuilder *)self strategy];
+          [strategy4 addDeduper:v111];
         }
 
-        v108 = [v107 countByEnumeratingWithState:&v188 objects:v208 count:16];
+        v108 = [includeDedupers countByEnumeratingWithState:&v188 objects:v208 count:16];
       }
 
       while (v108);
@@ -529,8 +529,8 @@
     v187 = 0u;
     v184 = 0u;
     v185 = 0u;
-    v113 = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
-    v114 = [v113 countByEnumeratingWithState:&v184 objects:v207 count:16];
+    excludePreFilters = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
+    v114 = [excludePreFilters countByEnumeratingWithState:&v184 objects:v207 count:16];
     if (v114)
     {
       v115 = *v185;
@@ -540,15 +540,15 @@
         {
           if (*v185 != v115)
           {
-            objc_enumerationMutation(v113);
+            objc_enumerationMutation(excludePreFilters);
           }
 
           v117 = *(*(&v184 + 1) + 8 * n);
-          v118 = [(MapsSuggestionsEngineBuilder *)self strategy];
-          [v118 removeFilter:v117];
+          strategy5 = [(MapsSuggestionsEngineBuilder *)self strategy];
+          [strategy5 removeFilter:v117];
         }
 
-        v114 = [v113 countByEnumeratingWithState:&v184 objects:v207 count:16];
+        v114 = [excludePreFilters countByEnumeratingWithState:&v184 objects:v207 count:16];
       }
 
       while (v114);
@@ -558,8 +558,8 @@
     v183 = 0u;
     v180 = 0u;
     v181 = 0u;
-    v119 = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
-    v120 = [v119 countByEnumeratingWithState:&v180 objects:v206 count:16];
+    excludePostFilters = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
+    v120 = [excludePostFilters countByEnumeratingWithState:&v180 objects:v206 count:16];
     if (v120)
     {
       v121 = *v181;
@@ -569,22 +569,22 @@
         {
           if (*v181 != v121)
           {
-            objc_enumerationMutation(v119);
+            objc_enumerationMutation(excludePostFilters);
           }
 
           v123 = *(*(&v180 + 1) + 8 * ii);
-          v124 = [(MapsSuggestionsEngineBuilder *)self strategy];
-          [v124 removeFilter:v123];
+          strategy6 = [(MapsSuggestionsEngineBuilder *)self strategy];
+          [strategy6 removeFilter:v123];
         }
 
-        v120 = [v119 countByEnumeratingWithState:&v180 objects:v206 count:16];
+        v120 = [excludePostFilters countByEnumeratingWithState:&v180 objects:v206 count:16];
       }
 
       while (v120);
     }
 
-    v125 = [(MapsSuggestionsEngineBuilder *)self locationUpdater];
-    v126 = v125 == 0;
+    locationUpdater = [(MapsSuggestionsEngineBuilder *)self locationUpdater];
+    v126 = locationUpdater == 0;
 
     if (v126)
     {
@@ -609,25 +609,25 @@
     }
 
     v135 = [MapsSuggestionsManager alloc];
-    v136 = [(MapsSuggestionsEngineBuilder *)self strategy];
-    v137 = [(MapsSuggestionsEngineBuilder *)self locationUpdater];
-    v138 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
-    v139 = [v138 oneNetworkRequester];
-    v140 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
-    v141 = [v140 oneFlightUpdater];
-    v142 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
-    v143 = [v142 oneVirtualGarage];
-    v144 = [(MapsSuggestionsManager *)v135 initWithStrategy:v136 locationUpdater:v137 network:v139 flightUpdater:v141 ETARequirements:oslog virtualGarage:v143];
+    strategy7 = [(MapsSuggestionsEngineBuilder *)self strategy];
+    locationUpdater2 = [(MapsSuggestionsEngineBuilder *)self locationUpdater];
+    resourceDepot2 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+    oneNetworkRequester = [resourceDepot2 oneNetworkRequester];
+    resourceDepot3 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+    oneFlightUpdater = [resourceDepot3 oneFlightUpdater];
+    resourceDepot4 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+    oneVirtualGarage = [resourceDepot4 oneVirtualGarage];
+    v144 = [(MapsSuggestionsManager *)v135 initWithStrategy:strategy7 locationUpdater:locationUpdater2 network:oneNetworkRequester flightUpdater:oneFlightUpdater ETARequirements:oslog virtualGarage:oneVirtualGarage];
 
-    v145 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
-    [v145 setOneSourceDelegate:v144];
+    resourceDepot5 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+    [resourceDepot5 setOneSourceDelegate:v144];
 
     v178 = 0u;
     v179 = 0u;
     v176 = 0u;
     v177 = 0u;
-    v146 = [(MapsSuggestionsEngineBuilder *)self titleFormatters];
-    v147 = [v146 countByEnumeratingWithState:&v176 objects:v205 count:16];
+    titleFormatters = [(MapsSuggestionsEngineBuilder *)self titleFormatters];
+    v147 = [titleFormatters countByEnumeratingWithState:&v176 objects:v205 count:16];
     if (v147)
     {
       v148 = *v177;
@@ -637,16 +637,16 @@
         {
           if (*v177 != v148)
           {
-            objc_enumerationMutation(v146);
+            objc_enumerationMutation(titleFormatters);
           }
 
           v150 = *(*(&v176 + 1) + 8 * jj);
-          v151 = [(MapsSuggestionsEngineBuilder *)self titleFormatters];
-          v152 = [v151 objectForKeyedSubscript:v150];
+          titleFormatters2 = [(MapsSuggestionsEngineBuilder *)self titleFormatters];
+          v152 = [titleFormatters2 objectForKeyedSubscript:v150];
           -[MapsSuggestionsManager setTitleFormatter:forType:](v144, v152, [v150 unsignedIntValue]);
         }
 
-        v147 = [v146 countByEnumeratingWithState:&v176 objects:v205 count:16];
+        v147 = [titleFormatters countByEnumeratingWithState:&v176 objects:v205 count:16];
       }
 
       while (v147);
@@ -657,9 +657,9 @@
     v173 = 0u;
     v174 = 0u;
     v175 = 0u;
-    v153 = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
-    obj = v153;
-    v154 = [v153 countByEnumeratingWithState:&v172 objects:v204 count:16];
+    sourceClasses = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
+    obj = sourceClasses;
+    v154 = [sourceClasses countByEnumeratingWithState:&v172 objects:v204 count:16];
     p_super = &v169->super;
     if (v154)
     {
@@ -692,7 +692,7 @@ LABEL_67:
           }
 
           v134 = 0;
-          v166 = obj;
+          resourceDepot7 = obj;
           goto LABEL_84;
         }
 
@@ -702,9 +702,9 @@ LABEL_67:
         }
 
         v159 = [v158 alloc];
-        v160 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+        resourceDepot6 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
         v161 = [v158 description];
-        v162 = [v159 initFromResourceDepot:v160 name:v161];
+        v162 = [v159 initFromResourceDepot:resourceDepot6 name:v161];
 
         [p_super attachSource:v162];
         objc_opt_class();
@@ -718,7 +718,7 @@ LABEL_77:
 
         if (v154 == ++v157)
         {
-          v153 = obj;
+          sourceClasses = obj;
           v154 = [obj countByEnumeratingWithState:&v172 objects:v204 count:16];
           if (v154)
           {
@@ -745,8 +745,8 @@ LABEL_77:
 LABEL_80:
 
     v165 = [MapsSuggestionsEngine alloc];
-    v166 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
-    v134 = [(MapsSuggestionsEngine *)v165 initWithEntryManager:v169 resourceDepot:v166];
+    resourceDepot7 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+    v134 = [(MapsSuggestionsEngine *)v165 initWithEntryManager:v169 resourceDepot:resourceDepot7];
 LABEL_84:
   }
 
@@ -760,13 +760,13 @@ LABEL_84:
   return [v2 description];
 }
 
-- (id)withResourceDepot:(id)a3
+- (id)withResourceDepot:(id)depot
 {
   v16 = *MEMORY[0x1E69E9840];
   [(MapsSuggestionsEngineBuilder *)self setResourceDepot:?];
-  if (a3)
+  if (depot)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -785,25 +785,25 @@ LABEL_84:
       _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. resourceDepot cannot be nil", &v8, 0x26u);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)withLocationUpdater:(id)a3
+- (id)withLocationUpdater:(id)updater
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+  updaterCopy = updater;
+  resourceDepot = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
 
-  if (v5)
+  if (resourceDepot)
   {
-    [(MapsSuggestionsEngineBuilder *)self setLocationUpdater:v4];
-    v6 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
-    [v6 setOneLocationUpdater:v4];
+    [(MapsSuggestionsEngineBuilder *)self setLocationUpdater:updaterCopy];
+    resourceDepot2 = [(MapsSuggestionsEngineBuilder *)self resourceDepot];
+    [resourceDepot2 setOneLocationUpdater:updaterCopy];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -822,21 +822,21 @@ LABEL_84:
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. resourceDepot cannot be nil. Did you attach a resourceDepot while constructing the EngineBuilder?", &v10, 0x26u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)withPreFilters:(id)a3
+- (id)withPreFilters:(id)filters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
+  filtersCopy = filters;
+  includePreFilters = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
 
-  if (!v5)
+  if (!includePreFilters)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(filtersCopy, "count")}];
     [(MapsSuggestionsEngineBuilder *)self setIncludePreFilters:v6];
   }
 
@@ -844,7 +844,7 @@ LABEL_84:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = filtersCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -860,13 +860,13 @@ LABEL_84:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
-        v13 = [v12 containsObject:v11];
+        includePreFilters2 = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
+        v13 = [includePreFilters2 containsObject:v11];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
-          [v14 addObject:v11];
+          includePreFilters3 = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
+          [includePreFilters3 addObject:v11];
         }
 
         ++v10;
@@ -879,21 +879,21 @@ LABEL_84:
     while (v8);
   }
 
-  v15 = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
-  [v15 minusSet:v7];
+  excludePreFilters = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
+  [excludePreFilters minusSet:v7];
 
   return self;
 }
 
-- (id)withPostFilters:(id)a3
+- (id)withPostFilters:(id)filters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
+  filtersCopy = filters;
+  includePostFilters = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
 
-  if (!v5)
+  if (!includePostFilters)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(filtersCopy, "count")}];
     [(MapsSuggestionsEngineBuilder *)self setIncludePostFilters:v6];
   }
 
@@ -901,7 +901,7 @@ LABEL_84:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = filtersCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -917,13 +917,13 @@ LABEL_84:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
-        v13 = [v12 containsObject:v11];
+        includePostFilters2 = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
+        v13 = [includePostFilters2 containsObject:v11];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
-          [v14 addObject:v11];
+          includePostFilters3 = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
+          [includePostFilters3 addObject:v11];
         }
 
         ++v10;
@@ -936,21 +936,21 @@ LABEL_84:
     while (v8);
   }
 
-  v15 = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
-  [v15 minusSet:v7];
+  excludePostFilters = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
+  [excludePostFilters minusSet:v7];
 
   return self;
 }
 
-- (id)withImprovers:(id)a3
+- (id)withImprovers:(id)improvers
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
+  improversCopy = improvers;
+  includeImprovers = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
 
-  if (!v5)
+  if (!includeImprovers)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(improversCopy, "count")}];
     [(MapsSuggestionsEngineBuilder *)self setIncludeImprovers:v6];
   }
 
@@ -958,7 +958,7 @@ LABEL_84:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = improversCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -974,13 +974,13 @@ LABEL_84:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
-        v13 = [v12 containsObject:v11];
+        includeImprovers2 = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
+        v13 = [includeImprovers2 containsObject:v11];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
-          [v14 addObject:v11];
+          includeImprovers3 = [(MapsSuggestionsEngineBuilder *)self includeImprovers];
+          [includeImprovers3 addObject:v11];
         }
 
         ++v10;
@@ -993,21 +993,21 @@ LABEL_84:
     while (v8);
   }
 
-  v15 = [(MapsSuggestionsEngineBuilder *)self excludeImprovers];
-  [v15 removeObjectsInArray:v7];
+  excludeImprovers = [(MapsSuggestionsEngineBuilder *)self excludeImprovers];
+  [excludeImprovers removeObjectsInArray:v7];
 
   return self;
 }
 
-- (id)withoutPreFilters:(id)a3
+- (id)withoutPreFilters:(id)filters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
+  filtersCopy = filters;
+  excludePreFilters = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
 
-  if (!v5)
+  if (!excludePreFilters)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(filtersCopy, "count")}];
     [(MapsSuggestionsEngineBuilder *)self setExcludePreFilters:v6];
   }
 
@@ -1015,7 +1015,7 @@ LABEL_84:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = filtersCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1031,13 +1031,13 @@ LABEL_84:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
-        v13 = [v12 containsObject:v11];
+        excludePreFilters2 = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
+        v13 = [excludePreFilters2 containsObject:v11];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
-          [v14 addObject:v11];
+          excludePreFilters3 = [(MapsSuggestionsEngineBuilder *)self excludePreFilters];
+          [excludePreFilters3 addObject:v11];
         }
 
         ++v10;
@@ -1050,21 +1050,21 @@ LABEL_84:
     while (v8);
   }
 
-  v15 = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
-  [v15 minusSet:v7];
+  includePreFilters = [(MapsSuggestionsEngineBuilder *)self includePreFilters];
+  [includePreFilters minusSet:v7];
 
   return self;
 }
 
-- (id)withoutPostFilters:(id)a3
+- (id)withoutPostFilters:(id)filters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
+  filtersCopy = filters;
+  excludePostFilters = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
 
-  if (!v5)
+  if (!excludePostFilters)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(filtersCopy, "count")}];
     [(MapsSuggestionsEngineBuilder *)self setExcludePostFilters:v6];
   }
 
@@ -1072,7 +1072,7 @@ LABEL_84:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = filtersCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1088,13 +1088,13 @@ LABEL_84:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
-        v13 = [v12 containsObject:v11];
+        excludePostFilters2 = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
+        v13 = [excludePostFilters2 containsObject:v11];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
-          [v14 addObject:v11];
+          excludePostFilters3 = [(MapsSuggestionsEngineBuilder *)self excludePostFilters];
+          [excludePostFilters3 addObject:v11];
         }
 
         ++v10;
@@ -1107,21 +1107,21 @@ LABEL_84:
     while (v8);
   }
 
-  v15 = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
-  [v15 minusSet:v7];
+  includePostFilters = [(MapsSuggestionsEngineBuilder *)self includePostFilters];
+  [includePostFilters minusSet:v7];
 
   return self;
 }
 
-- (id)withDedupers:(id)a3
+- (id)withDedupers:(id)dedupers
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
+  dedupersCopy = dedupers;
+  includeDedupers = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
 
-  if (!v5)
+  if (!includeDedupers)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dedupersCopy, "count")}];
     [(MapsSuggestionsEngineBuilder *)self setIncludeDedupers:v6];
   }
 
@@ -1129,7 +1129,7 @@ LABEL_84:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = dedupersCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1145,13 +1145,13 @@ LABEL_84:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
-        v13 = [v12 containsObject:v11];
+        includeDedupers2 = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
+        v13 = [includeDedupers2 containsObject:v11];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
-          [v14 addObject:v11];
+          includeDedupers3 = [(MapsSuggestionsEngineBuilder *)self includeDedupers];
+          [includeDedupers3 addObject:v11];
         }
 
         ++v10;
@@ -1164,21 +1164,21 @@ LABEL_84:
     while (v8);
   }
 
-  v15 = [(MapsSuggestionsEngineBuilder *)self excludeDedupers];
-  [v15 removeObjectsInArray:v7];
+  excludeDedupers = [(MapsSuggestionsEngineBuilder *)self excludeDedupers];
+  [excludeDedupers removeObjectsInArray:v7];
 
   return self;
 }
 
-- (id)withSourceClasses:(id)a3
+- (id)withSourceClasses:(id)classes
 {
   v23 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  classesCopy = classes;
+  v5 = [classesCopy countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v5)
   {
     v7 = *v17;
@@ -1191,7 +1191,7 @@ LABEL_84:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(classesCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
@@ -1200,25 +1200,25 @@ LABEL_84:
 
         if (v11)
         {
-          v12 = GEOFindOrCreateLog();
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+          sourceClasses = GEOFindOrCreateLog();
+          if (os_log_type_enabled(sourceClasses, OS_LOG_TYPE_DEBUG))
           {
             v13 = [v9 description];
             *buf = v15;
             v21 = v13;
-            _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "Engine already contains source %@", buf, 0xCu);
+            _os_log_impl(&dword_1C5126000, sourceClasses, OS_LOG_TYPE_DEBUG, "Engine already contains source %@", buf, 0xCu);
           }
         }
 
         else
         {
-          if (!v4)
+          if (!classesCopy)
           {
             goto LABEL_13;
           }
 
-          v12 = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
-          [v12 addObject:v9];
+          sourceClasses = [(MapsSuggestionsEngineBuilder *)self sourceClasses];
+          [sourceClasses addObject:v9];
         }
 
 LABEL_13:
@@ -1226,7 +1226,7 @@ LABEL_13:
       }
 
       while (v5 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v5 = [classesCopy countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v5);
@@ -1235,12 +1235,12 @@ LABEL_13:
   return self;
 }
 
-- (id)withTitleFormatter:(id)a3 forType:(int64_t)a4
+- (id)withTitleFormatter:(id)formatter forType:(int64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  formatterCopy = formatter;
+  v7 = formatterCopy;
+  if (!formatterCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1259,7 +1259,7 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (([v6 conformsToProtocol:&unk_1F44735C0] & 1) == 0 && (objc_msgSend(v7, "conformsToProtocol:", &unk_1F4475608) & 1) == 0)
+  if (([formatterCopy conformsToProtocol:&unk_1F44735C0] & 1) == 0 && (objc_msgSend(v7, "conformsToProtocol:", &unk_1F4475608) & 1) == 0)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1280,12 +1280,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [(MapsSuggestionsEngineBuilder *)self titleFormatters];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  titleFormatters = [(MapsSuggestionsEngineBuilder *)self titleFormatters];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [titleFormatters setObject:v7 forKeyedSubscript:v9];
 
 LABEL_11:
-  v11 = self;
+  selfCopy = self;
 
   return self;
 }

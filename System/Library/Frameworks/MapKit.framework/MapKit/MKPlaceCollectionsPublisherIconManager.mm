@@ -1,48 +1,48 @@
 @interface MKPlaceCollectionsPublisherIconManager
 + (id)sharedInstance;
 - (MKPlaceCollectionsPublisherIconManager)init;
-- (id)_iconForPublisherNamed:(id)a3 usingId:(unsigned int)a4 usingContentScale:(double)a5 usingSizeGroup:(unint64_t)a6 isNightMode:(BOOL)a7;
-- (id)iconForPublisherNamed:(id)a3 usingId:(unsigned int)a4 usingContentScale:(double)a5 usingSizeGroup:(unint64_t)a6 isNightMode:(BOOL)a7;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)iconForPublisherNamed:(id)a3 usingId:(unsigned int)a4 contentScale:(double)a5 onCompletion:(id)a6;
+- (id)_iconForPublisherNamed:(id)named usingId:(unsigned int)id usingContentScale:(double)scale usingSizeGroup:(unint64_t)group isNightMode:(BOOL)mode;
+- (id)iconForPublisherNamed:(id)named usingId:(unsigned int)id usingContentScale:(double)scale usingSizeGroup:(unint64_t)group isNightMode:(BOOL)mode;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)iconForPublisherNamed:(id)named usingId:(unsigned int)id contentScale:(double)scale onCompletion:(id)completion;
 @end
 
 @implementation MKPlaceCollectionsPublisherIconManager
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  objectCopy = object;
   v5 = MKGetCuratedCollectionsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = objectCopy;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_DEBUG, "[!]Publisher Cache is evicting: %@", &v6, 0xCu);
   }
 }
 
-- (id)_iconForPublisherNamed:(id)a3 usingId:(unsigned int)a4 usingContentScale:(double)a5 usingSizeGroup:(unint64_t)a6 isNightMode:(BOOL)a7
+- (id)_iconForPublisherNamed:(id)named usingId:(unsigned int)id usingContentScale:(double)scale usingSizeGroup:(unint64_t)group isNightMode:(BOOL)mode
 {
-  v9 = *&a4;
+  v9 = *&id;
   v28 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Logo: %d. Size:%lu", v9, a6];
-  v13 = [(NSCache *)self->_publisherIconCache objectForKey:v12];
+  namedCopy = named;
+  group = [MEMORY[0x1E696AEC0] stringWithFormat:@"Logo: %d. Size:%lu", v9, group];
+  v13 = [(NSCache *)self->_publisherIconCache objectForKey:group];
   v14 = MKGetCuratedCollectionsLog();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
   if (v13)
   {
     if (v15)
     {
-      v16 = [v13 publisherImage];
-      v17 = [v16 description];
+      publisherImage = [v13 publisherImage];
+      v17 = [publisherImage description];
       *buf = 138412290;
       v27 = v17;
       _os_log_impl(&dword_1A2EA0000, v14, OS_LOG_TYPE_DEBUG, "[✔]Publisher Icon Cache Hit. Returning image:%@", buf, 0xCu);
     }
 
-    v18 = [v13 publisherImage];
+    publisherImage2 = [v13 publisherImage];
   }
 
   else
@@ -53,31 +53,31 @@
       _os_log_impl(&dword_1A2EA0000, v14, OS_LOG_TYPE_DEBUG, "[X]Publisher Icon Cache Miss. Fetching image from icon pack.", buf, 2u);
     }
 
-    v19 = [MKIconManager imageForIconID:v9 contentScale:a6 sizeGroup:0 nightMode:a5];
-    [v19 setAccessibilityLabel:v11];
-    v20 = [[MKPublisherIcon alloc] initUsingName:v11 andImage:v19];
+    v19 = [MKIconManager imageForIconID:v9 contentScale:group sizeGroup:0 nightMode:scale];
+    [v19 setAccessibilityLabel:namedCopy];
+    v20 = [[MKPublisherIcon alloc] initUsingName:namedCopy andImage:v19];
     v21 = MKGetCuratedCollectionsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v20 publisherImage];
-      v23 = [v22 description];
+      publisherImage3 = [v20 publisherImage];
+      v23 = [publisherImage3 description];
       *buf = 138412290;
       v27 = v23;
       _os_log_impl(&dword_1A2EA0000, v21, OS_LOG_TYPE_DEBUG, "[✔]Publisher Icon Cache Updated. Returning image:%@", buf, 0xCu);
     }
 
-    v24 = [(MKPlaceCollectionsPublisherIconManager *)self publisherIconCache];
-    [v24 setObject:v20 forKey:v12];
+    publisherIconCache = [(MKPlaceCollectionsPublisherIconManager *)self publisherIconCache];
+    [publisherIconCache setObject:v20 forKey:group];
 
-    v18 = [v20 publisherImage];
+    publisherImage2 = [v20 publisherImage];
   }
 
-  return v18;
+  return publisherImage2;
 }
 
-- (id)iconForPublisherNamed:(id)a3 usingId:(unsigned int)a4 usingContentScale:(double)a5 usingSizeGroup:(unint64_t)a6 isNightMode:(BOOL)a7
+- (id)iconForPublisherNamed:(id)named usingId:(unsigned int)id usingContentScale:(double)scale usingSizeGroup:(unint64_t)group isNightMode:(BOOL)mode
 {
-  v12 = a3;
+  namedCopy = named;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -92,12 +92,12 @@
   block[3] = &unk_1E76CCEE0;
   v19 = &v24;
   objc_copyWeak(v20, &location);
-  v18 = v12;
-  v21 = a4;
-  v20[1] = *&a5;
-  v20[2] = a6;
-  v22 = a7;
-  v14 = v12;
+  v18 = namedCopy;
+  idCopy = id;
+  v20[1] = *&scale;
+  v20[2] = group;
+  modeCopy = mode;
+  v14 = namedCopy;
   dispatch_sync(publisherLogoImageQueue, block);
   v15 = v25[5];
 
@@ -117,10 +117,10 @@ void __117__MKPlaceCollectionsPublisherIconManager_iconForPublisherNamed_usingId
   *(v3 + 40) = v2;
 }
 
-- (void)iconForPublisherNamed:(id)a3 usingId:(unsigned int)a4 contentScale:(double)a5 onCompletion:(id)a6
+- (void)iconForPublisherNamed:(id)named usingId:(unsigned int)id contentScale:(double)scale onCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  namedCopy = named;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   publisherLogoImageQueue = self->_publisherLogoImageQueue;
   v15[0] = MEMORY[0x1E69E9820];
@@ -128,12 +128,12 @@ void __117__MKPlaceCollectionsPublisherIconManager_iconForPublisherNamed_usingId
   v15[2] = __98__MKPlaceCollectionsPublisherIconManager_iconForPublisherNamed_usingId_contentScale_onCompletion___block_invoke;
   v15[3] = &unk_1E76CCEB8;
   objc_copyWeak(v18, &location);
-  v19 = a4;
-  v18[1] = *&a5;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  idCopy = id;
+  v18[1] = *&scale;
+  v16 = namedCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = namedCopy;
   dispatch_async(publisherLogoImageQueue, v15);
 
   objc_destroyWeak(v18);

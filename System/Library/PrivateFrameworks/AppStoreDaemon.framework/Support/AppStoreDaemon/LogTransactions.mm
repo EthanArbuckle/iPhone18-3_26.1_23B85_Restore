@@ -1,11 +1,11 @@
 @interface LogTransactions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)formattedText;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LogTransactions
@@ -59,8 +59,8 @@
   v7.receiver = self;
   v7.super_class = LogTransactions;
   v3 = [(LogTransactions *)&v7 description];
-  v4 = [(LogTransactions *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(LogTransactions *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -78,12 +78,12 @@
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  for (i = a3; ; i = a3)
+  for (i = from; ; i = from)
   {
-    v6 = [i position];
-    if (v6 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+    position = [i position];
+    if (position >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
     {
       break;
     }
@@ -94,18 +94,18 @@
     while (1)
     {
       v18 = 0;
-      v10 = [a3 position] + 1;
-      if (v10 >= [a3 position] && (v11 = objc_msgSend(a3, "position") + 1, v11 <= objc_msgSend(a3, "length")))
+      v10 = [from position] + 1;
+      if (v10 >= [from position] && (v11 = objc_msgSend(from, "position") + 1, v11 <= objc_msgSend(from, "length")))
       {
-        v12 = [a3 data];
-        [v12 getBytes:&v18 range:{objc_msgSend(a3, "position"), 1}];
+        data = [from data];
+        [data getBytes:&v18 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v9 |= (v18 & 0x7F) << v7;
@@ -122,9 +122,9 @@
       }
     }
 
-    v14 = [a3 hasError] ? 0 : v9;
+    v14 = [from hasError] ? 0 : v9;
 LABEL_16:
-    if (([a3 hasError] & 1) != 0 || (v14 & 7) == 4)
+    if (([from hasError] & 1) != 0 || (v14 & 7) == 4)
     {
       break;
     }
@@ -148,13 +148,13 @@ LABEL_16:
     }
   }
 
-  LOBYTE(v16) = [a3 hasError] ^ 1;
+  LOBYTE(v16) = [from hasError] ^ 1;
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -187,9 +187,9 @@ LABEL_16:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -210,7 +210,7 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         sub_1004046FC(v5, v11);
 
         v10 = v10 + 1;
@@ -226,13 +226,13 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     transactionIDs = self->_transactionIDs;
-    if (transactionIDs | v4[1])
+    if (transactionIDs | equalCopy[1])
     {
       v6 = [(NSMutableArray *)transactionIDs isEqual:?];
     }

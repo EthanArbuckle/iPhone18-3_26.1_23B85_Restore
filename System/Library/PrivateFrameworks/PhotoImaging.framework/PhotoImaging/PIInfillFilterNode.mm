@@ -1,28 +1,28 @@
 @interface PIInfillFilterNode
-- (PIInfillFilterNode)initWithInputImage:(id)a3 inputMatte:(id)a4 infillAlgorithm:(int64_t)a5;
-- (PIInfillFilterNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
+- (PIInfillFilterNode)initWithInputImage:(id)image inputMatte:(id)matte infillAlgorithm:(int64_t)algorithm;
+- (PIInfillFilterNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
 - (id)inputImage;
 - (id)inputMatteImage;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 - (int64_t)infillAlgorithm;
 @end
 
 @implementation PIInfillFilterNode
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PIInfillFilterNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v17 = NUAssertLogger_6299();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -44,8 +44,8 @@
         v25 = dispatch_get_specific(*v19);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v25;
         v34 = 2114;
@@ -56,8 +56,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v24;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -68,32 +68,32 @@
 
   v5 = objc_alloc_init(PISegmentationInfillFilter);
   [(PISegmentationInfillFilter *)v5 setInfillAlgorithm:[(PIInfillFilterNode *)self infillAlgorithm]];
-  v6 = [(PIInfillFilterNode *)self inputImage];
+  inputImage = [(PIInfillFilterNode *)self inputImage];
   v31 = 0;
-  v7 = [v6 outputImage:&v31];
+  v7 = [inputImage outputImage:&v31];
   v8 = v31;
 
   if (v7)
   {
     [(PISegmentationInfillFilter *)v5 setInputImage:v7];
-    v9 = [(PIInfillFilterNode *)self inputMatteImage];
+    inputMatteImage = [(PIInfillFilterNode *)self inputMatteImage];
     v30 = 0;
-    v10 = [v9 outputImage:&v30];
+    inputImage2 = [inputMatteImage outputImage:&v30];
     v11 = v30;
 
-    if (v10)
+    if (inputImage2)
     {
-      [(PISegmentationInfillFilter *)v5 setInputMatteImage:v10];
-      v12 = [(PISegmentationInfillFilter *)v5 outputImage];
+      [(PISegmentationInfillFilter *)v5 setInputMatteImage:inputImage2];
+      outputImage = [(PISegmentationInfillFilter *)v5 outputImage];
     }
 
     else
     {
       v14 = MEMORY[0x1E69B3A48];
-      v15 = [(PIInfillFilterNode *)self inputMatteImage];
-      *a3 = [v14 errorWithCode:2 reason:@"Cannot evaluate input matte" object:v15 underlyingError:v11];
+      inputMatteImage2 = [(PIInfillFilterNode *)self inputMatteImage];
+      *image = [v14 errorWithCode:2 reason:@"Cannot evaluate input matte" object:inputMatteImage2 underlyingError:v11];
 
-      v12 = 0;
+      outputImage = 0;
     }
 
     v8 = v11;
@@ -102,21 +102,21 @@
   else
   {
     v13 = MEMORY[0x1E69B3A48];
-    v10 = [(PIInfillFilterNode *)self inputImage];
-    [v13 errorWithCode:2 reason:@"Cannot evaluate input" object:v10 underlyingError:v8];
-    *a3 = v12 = 0;
+    inputImage2 = [(PIInfillFilterNode *)self inputImage];
+    [v13 errorWithCode:2 reason:@"Cannot evaluate input" object:inputImage2 underlyingError:v8];
+    *image = outputImage = 0;
   }
 
-  return v12;
+  return outputImage;
 }
 
 - (int64_t)infillAlgorithm
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"infillAlgorithm"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"infillAlgorithm"];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 - (id)inputMatteImage
@@ -145,8 +145,8 @@
         v12 = dispatch_get_specific(*v6);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         v17 = 138543618;
         v18 = v12;
         v19 = 2114;
@@ -157,8 +157,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v17 = 138543362;
       v18 = v11;
       _os_log_error_impl(&dword_1C7694000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v17, 0xCu);
@@ -196,8 +196,8 @@
         v12 = dispatch_get_specific(*v6);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         v17 = 138543618;
         v18 = v12;
         v19 = 2114;
@@ -208,8 +208,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v17 = 138543362;
       v18 = v11;
       _os_log_error_impl(&dword_1C7694000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v17, 0xCu);
@@ -221,12 +221,12 @@
   return v2;
 }
 
-- (PIInfillFilterNode)initWithInputImage:(id)a3 inputMatte:(id)a4 infillAlgorithm:(int64_t)a5
+- (PIInfillFilterNode)initWithInputImage:(id)image inputMatte:(id)matte infillAlgorithm:(int64_t)algorithm
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  imageCopy = image;
+  matteCopy = matte;
+  if (!imageCopy)
   {
     v16 = NUAssertLogger_6299();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -237,7 +237,7 @@
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_6299();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -245,11 +245,11 @@
     {
       if (v21)
       {
-        v29 = dispatch_get_specific(*v18);
+        v29 = dispatch_get_specific(*callStackSymbols);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v18 = [v30 callStackSymbols];
-        v32 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v29;
         v43 = 2114;
@@ -260,10 +260,10 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v42 = v18;
+      v42 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -271,8 +271,8 @@
     goto LABEL_17;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = matteCopy;
+  if (!matteCopy)
   {
     v23 = NUAssertLogger_6299();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -283,7 +283,7 @@
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v25 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_6299();
     v26 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -291,8 +291,8 @@
     {
       if (v26)
       {
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v28 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v42 = v28;
         _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -304,11 +304,11 @@
 LABEL_17:
     if (v26)
     {
-      v33 = dispatch_get_specific(*v18);
+      v33 = dispatch_get_specific(*callStackSymbols);
       v34 = MEMORY[0x1E696AF00];
       v35 = v33;
-      v36 = [v34 callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v34 callStackSymbols];
+      v37 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v42 = v33;
       v43 = 2114;
@@ -322,14 +322,14 @@ LABEL_19:
   }
 
   v39[0] = @"infillAlgorithm";
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:algorithm];
   v39[1] = @"__dominantInputSettingsKey";
   v40[0] = v11;
   v40[1] = @"inputImage";
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v13 setObject:v8 forKeyedSubscript:@"inputImage"];
+  [v13 setObject:imageCopy forKeyedSubscript:@"inputImage"];
   [v13 setObject:v10 forKeyedSubscript:@"inputMatteImage"];
   v38.receiver = self;
   v38.super_class = PIInfillFilterNode;
@@ -338,11 +338,11 @@ LABEL_19:
   return v14;
 }
 
-- (PIInfillFilterNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIInfillFilterNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -381,8 +381,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -409,8 +409,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

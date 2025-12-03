@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInCardSecurityCode
-- (PKPaymentSetupFieldBuiltInCardSecurityCode)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInCardSecurityCode)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInCardSecurityCode
 
-- (PKPaymentSetupFieldBuiltInCardSecurityCode)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInCardSecurityCode)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInCardSecurityCode;
-  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"cardSecurityCode" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"cardSecurityCode" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_SecurityCode.isa, 0);

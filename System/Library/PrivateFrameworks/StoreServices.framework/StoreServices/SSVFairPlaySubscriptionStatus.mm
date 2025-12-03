@@ -1,7 +1,7 @@
 @interface SSVFairPlaySubscriptionStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SSVFairPlaySubscriptionStatus)initWithXPCEncoding:(id)a3;
+- (SSVFairPlaySubscriptionStatus)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
@@ -34,10 +34,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -45,17 +45,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_hasSubscriptionSlot == v4->_hasSubscriptionSlot && self->_hasSubscriptionLease == v4->_hasSubscriptionLease;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_hasSubscriptionSlot == equalCopy->_hasSubscriptionSlot && self->_hasSubscriptionLease == equalCopy->_hasSubscriptionLease;
   }
 
   return v5;
 }
 
-- (SSVFairPlaySubscriptionStatus)initWithXPCEncoding:(id)a3
+- (SSVFairPlaySubscriptionStatus)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSVFairPlaySubscriptionStatus;

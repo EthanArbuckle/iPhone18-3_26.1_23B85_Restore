@@ -1,12 +1,12 @@
 @interface UARPAssetMTIC
-- (BOOL)processAsset:(id)a3 tmapSnapshot:(id)a4;
-- (BOOL)writeSysdiagnoseMetrics:(id)a3 fileHandle:(id)a4 error:(id *)a5;
+- (BOOL)processAsset:(id)asset tmapSnapshot:(id)snapshot;
+- (BOOL)writeSysdiagnoseMetrics:(id)metrics fileHandle:(id)handle error:(id *)error;
 - (UARPAssetMTIC)init;
-- (id)setupEventFolder:(id)a3 sysdiagnoseFolder:(id)a4;
-- (void)contributeSysdiagnoseMetrics:(id)a3 eventFileURL:(id)a4;
+- (id)setupEventFolder:(id)folder sysdiagnoseFolder:(id)sysdiagnoseFolder;
+- (void)contributeSysdiagnoseMetrics:(id)metrics eventFileURL:(id)l;
 - (void)postToCoreAnalytics;
-- (void)prepareEventForSysdiagnose:(id)a3 sysdiagnoseFolder:(id)a4;
-- (void)prepareForSysdiagnose:(id)a3;
+- (void)prepareEventForSysdiagnose:(id)sysdiagnose sysdiagnoseFolder:(id)folder;
+- (void)prepareForSysdiagnose:(id)sysdiagnose;
 @end
 
 @implementation UARPAssetMTIC
@@ -30,19 +30,19 @@
   return v2;
 }
 
-- (BOOL)processAsset:(id)a3 tmapSnapshot:(id)a4
+- (BOOL)processAsset:(id)asset tmapSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v32 = a4;
-  v33 = self;
+  assetCopy = asset;
+  snapshotCopy = snapshot;
+  selfCopy = self;
   p_coreAnalyticsEvents = &self->_coreAnalyticsEvents;
   [(NSMutableArray *)self->_coreAnalyticsEvents removeAllObjects];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v29 = v6;
-  obj = [v6 payloads];
+  v29 = assetCopy;
+  obj = [assetCopy payloads];
   v35 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v35)
   {
@@ -67,7 +67,7 @@
           v44 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v12 = v32;
+          v12 = snapshotCopy;
           v13 = [v12 countByEnumeratingWithState:&v43 objects:v53 count:16];
           if (v13)
           {
@@ -83,8 +83,8 @@ LABEL_9:
               }
 
               v17 = *(*(&v43 + 1) + 8 * v16);
-              v18 = [v11 appleModelNumber];
-              v19 = [v17 isEqualAppleModel:v18];
+              appleModelNumber = [v11 appleModelNumber];
+              v19 = [v17 isEqualAppleModel:appleModelNumber];
 
               if (v19)
               {
@@ -113,23 +113,23 @@ LABEL_9:
             v21 = [v8 containsTLV:objc_opt_class()];
             if (v21)
             {
-              v22 = [v8 payloadData];
+              payloadData = [v8 payloadData];
               v10 = v36;
-              if (v22)
+              if (payloadData)
               {
-                v23 = [v20 expandMticData:v22 withEventID:{objc_msgSend(v21, "eventID")}];
+                v23 = [v20 expandMticData:payloadData withEventID:{objc_msgSend(v21, "eventID")}];
                 v24 = v23;
                 if (v23)
                 {
                   v25 = [v23 mutableCopy];
-                  v26 = [v11 appleModelNumber];
-                  [v25 setObject:v26 forKeyedSubscript:@"AppleModelNumber"];
+                  appleModelNumber2 = [v11 appleModelNumber];
+                  [v25 setObject:appleModelNumber2 forKeyedSubscript:@"AppleModelNumber"];
 
                   [(NSMutableArray *)*p_coreAnalyticsEvents addObject:v25];
                 }
               }
 
-              else if (os_log_type_enabled(v33->_log, OS_LOG_TYPE_ERROR))
+              else if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
               {
                 sub_100079FD8(&v37, v38);
               }
@@ -138,7 +138,7 @@ LABEL_9:
             else
             {
               v10 = v36;
-              if (os_log_type_enabled(v33->_log, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
               {
                 sub_10007A004(&v39, v40);
               }
@@ -151,14 +151,14 @@ LABEL_15:
 
 LABEL_22:
             v10 = v36;
-            if (os_log_type_enabled(v33->_log, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
             {
               sub_10007A030(&v41, v42);
             }
           }
         }
 
-        else if (os_log_type_enabled(v33->_log, OS_LOG_TYPE_ERROR))
+        else if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
         {
           sub_10007A004(&v47, v48);
         }
@@ -170,7 +170,7 @@ LABEL_22:
     while (v35);
   }
 
-  log = v33->_log;
+  log = selfCopy->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     sub_10007A05C(p_coreAnalyticsEvents, log);
@@ -216,9 +216,9 @@ LABEL_22:
   }
 }
 
-- (void)prepareForSysdiagnose:(id)a3
+- (void)prepareForSysdiagnose:(id)sysdiagnose
 {
-  v4 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -239,7 +239,7 @@ LABEL_22:
           objc_enumerationMutation(v5);
         }
 
-        [(UARPAssetMTIC *)self prepareEventForSysdiagnose:*(*(&v10 + 1) + 8 * v9) sysdiagnoseFolder:v4, v10];
+        [(UARPAssetMTIC *)self prepareEventForSysdiagnose:*(*(&v10 + 1) + 8 * v9) sysdiagnoseFolder:sysdiagnoseCopy, v10];
         v9 = v9 + 1;
       }
 
@@ -251,17 +251,17 @@ LABEL_22:
   }
 }
 
-- (void)prepareEventForSysdiagnose:(id)a3 sysdiagnoseFolder:(id)a4
+- (void)prepareEventForSysdiagnose:(id)sysdiagnose sysdiagnoseFolder:(id)folder
 {
-  v19 = a3;
-  v6 = a4;
-  if (v6)
+  sysdiagnoseCopy = sysdiagnose;
+  folderCopy = folder;
+  if (folderCopy)
   {
-    v7 = [v19 objectForKeyedSubscript:@"EventName"];
+    v7 = [sysdiagnoseCopy objectForKeyedSubscript:@"EventName"];
 
     if (v7)
     {
-      v8 = [(UARPAssetMTIC *)self setupEventFolder:v19 sysdiagnoseFolder:v6];
+      v8 = [(UARPAssetMTIC *)self setupEventFolder:sysdiagnoseCopy sysdiagnoseFolder:folderCopy];
       if (v8)
       {
         v18 = objc_alloc_init(NSDateFormatter);
@@ -269,7 +269,7 @@ LABEL_22:
         v9 = +[NSDate date];
         v10 = [v18 stringFromDate:v9];
 
-        v11 = [v19 mutableCopy];
+        v11 = [sysdiagnoseCopy mutableCopy];
         v12 = [v11 objectForKeyedSubscript:@"AppleModelNumber"];
         [v11 removeObjectForKey:@"AppleModelNumber"];
         v13 = [NSDictionary dictionaryWithDictionary:v11];
@@ -278,7 +278,7 @@ LABEL_22:
         [v14 appendString:@"-"];
         [v14 appendString:v10];
         [v14 appendString:@"-"];
-        v15 = [v19 objectForKeyedSubscript:@"EventName"];
+        v15 = [sysdiagnoseCopy objectForKeyedSubscript:@"EventName"];
         [v14 appendString:v15];
 
         [v14 appendString:@".log"];
@@ -290,15 +290,15 @@ LABEL_22:
   }
 }
 
-- (id)setupEventFolder:(id)a3 sysdiagnoseFolder:(id)a4
+- (id)setupEventFolder:(id)folder sysdiagnoseFolder:(id)sysdiagnoseFolder
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  sysdiagnoseFolderCopy = sysdiagnoseFolder;
   v8 = objc_opt_new();
-  [v8 addObject:v7];
+  [v8 addObject:sysdiagnoseFolderCopy];
 
   [v8 addObject:@"assets"];
-  v9 = [v6 objectForKeyedSubscript:@"EventName"];
+  v9 = [folderCopy objectForKeyedSubscript:@"EventName"];
   [v8 addObject:v9];
 
   v10 = [NSString pathWithComponents:v8];
@@ -306,7 +306,7 @@ LABEL_22:
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v12 = log;
-    v13 = [v6 objectForKeyedSubscript:@"EventName"];
+    v13 = [folderCopy objectForKeyedSubscript:@"EventName"];
     *buf = 136315650;
     v24 = "[UARPAssetMTIC setupEventFolder:sysdiagnoseFolder:]";
     v25 = 2112;
@@ -338,7 +338,7 @@ LABEL_22:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v20 = v18;
-        v21 = [v6 objectForKeyedSubscript:@"EventName"];
+        v21 = [folderCopy objectForKeyedSubscript:@"EventName"];
         *buf = 136315906;
         v24 = "[UARPAssetMTIC setupEventFolder:sysdiagnoseFolder:]";
         v25 = 2112;
@@ -357,22 +357,22 @@ LABEL_22:
   return v15;
 }
 
-- (void)contributeSysdiagnoseMetrics:(id)a3 eventFileURL:(id)a4
+- (void)contributeSysdiagnoseMetrics:(id)metrics eventFileURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v29 = 0;
-  v7 = [NSJSONSerialization dataWithJSONObject:a3 options:0 error:&v29];
+  v7 = [NSJSONSerialization dataWithJSONObject:metrics options:0 error:&v29];
   v8 = v29;
   if (v7)
   {
     v9 = +[NSFileManager defaultManager];
-    v10 = [v6 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    path = [lCopy path];
+    v11 = [v9 fileExistsAtPath:path];
 
-    if (v11 & 1) != 0 || (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v12 = objc_claimAutoreleasedReturnValue(), [v6 path], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "createFileAtPath:contents:attributes:", v13, 0, 0), v13, v12, (v14))
+    if (v11 & 1) != 0 || (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v12 = objc_claimAutoreleasedReturnValue(), [lCopy path], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "createFileAtPath:contents:attributes:", v13, 0, 0), v13, v12, (v14))
     {
       v28 = 0;
-      v15 = [NSFileHandle fileHandleForWritingToURL:v6 error:&v28];
+      v15 = [NSFileHandle fileHandleForWritingToURL:lCopy error:&v28];
       v16 = v28;
       if (v15)
       {
@@ -384,7 +384,7 @@ LABEL_22:
           log = self->_log;
           if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
           {
-            sub_10007A150(log, v6);
+            sub_10007A150(log, lCopy);
           }
         }
 
@@ -396,7 +396,7 @@ LABEL_22:
           v22 = self->_log;
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            sub_10007A1F0(v22, v6);
+            sub_10007A1F0(v22, lCopy);
           }
         }
       }
@@ -406,7 +406,7 @@ LABEL_22:
         v24 = self->_log;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          sub_10007A290(v24, v6);
+          sub_10007A290(v24, lCopy);
         }
       }
     }
@@ -431,32 +431,32 @@ LABEL_22:
   }
 }
 
-- (BOOL)writeSysdiagnoseMetrics:(id)a3 fileHandle:(id)a4 error:(id *)a5
+- (BOOL)writeSysdiagnoseMetrics:(id)metrics fileHandle:(id)handle error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  metricsCopy = metrics;
+  handleCopy = handle;
   v16 = 0;
   v17 = 0;
-  v9 = [v8 seekToEndReturningOffset:&v17 error:&v16];
+  v9 = [handleCopy seekToEndReturningOffset:&v17 error:&v16];
   v10 = v16;
   if ((v9 & 1) == 0)
   {
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
     v13 = v10;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_7;
   }
 
   v15 = 0;
-  v11 = [v8 writeData:v7 error:&v15];
+  v11 = [handleCopy writeData:metricsCopy error:&v15];
   v12 = v11;
-  if (a5 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
     goto LABEL_6;
   }

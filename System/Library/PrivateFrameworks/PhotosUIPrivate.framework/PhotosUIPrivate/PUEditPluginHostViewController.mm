@@ -1,6 +1,6 @@
 @interface PUEditPluginHostViewController
-- (BOOL)prepareForDismissingForced:(BOOL)a3;
-- (PUEditPluginHostViewController)initWithPlugin:(id)a3;
+- (BOOL)prepareForDismissingForced:(BOOL)forced;
+- (PUEditPluginHostViewController)initWithPlugin:(id)plugin;
 - (PUEditPluginHostViewControllerDataSource)dataSource;
 - (PUEditPluginHostViewControllerDelegate)delegate;
 - (UIBarButtonItem)redoBarButtonItem;
@@ -9,24 +9,24 @@
 - (id)_hostContext;
 - (int64_t)preferredUserInterfaceStyle;
 - (void)_addRemoteViewControllerIfNeeded;
-- (void)_beginContentEditingWithCompletionHandler:(id)a3 timeout:(double)a4;
+- (void)_beginContentEditingWithCompletionHandler:(id)handler timeout:(double)timeout;
 - (void)_beginDisablingIdleTimer;
 - (void)_dismiss;
 - (void)_endDisablingIdleTimerIfNecessary;
 - (void)_handleCancel;
-- (void)_handleCancelButton:(id)a3;
-- (void)_handleDoneButton:(id)a3;
-- (void)_queryShouldShowCancelConfirmationWithResponseHandler:(id)a3 timeout:(double)a4;
+- (void)_handleCancelButton:(id)button;
+- (void)_handleDoneButton:(id)button;
+- (void)_queryShouldShowCancelConfirmationWithResponseHandler:(id)handler timeout:(double)timeout;
 - (void)_setupUndoProxy;
-- (void)_updateBarButtonsWithUndoRedoVisible:(BOOL)a3;
+- (void)_updateBarButtonsWithUndoRedoVisible:(BOOL)visible;
 - (void)dealloc;
-- (void)handleRedoButton:(id)a3;
-- (void)handleUndoButton:(id)a3;
-- (void)loadRemoteViewControllerWithCompletionHandler:(id)a3;
+- (void)handleRedoButton:(id)button;
+- (void)handleUndoButton:(id)button;
+- (void)loadRemoteViewControllerWithCompletionHandler:(id)handler;
 - (void)loadView;
-- (void)queryHandlingCapabilityForAdjustmentData:(id)a3 withResponseHandler:(id)a4 timeout:(double)a5;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)queryHandlingCapabilityForAdjustmentData:(id)data withResponseHandler:(id)handler timeout:(double)timeout;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PUEditPluginHostViewController
@@ -59,16 +59,16 @@
   return WeakRetained;
 }
 
-- (void)handleRedoButton:(id)a3
+- (void)handleRedoButton:(id)button
 {
-  v3 = [(PUEditPluginHostViewController *)self undoProxy];
-  [v3 performRedo];
+  undoProxy = [(PUEditPluginHostViewController *)self undoProxy];
+  [undoProxy performRedo];
 }
 
-- (void)handleUndoButton:(id)a3
+- (void)handleUndoButton:(id)button
 {
-  v3 = [(PUEditPluginHostViewController *)self undoProxy];
-  [v3 performUndo];
+  undoProxy = [(PUEditPluginHostViewController *)self undoProxy];
+  [undoProxy performUndo];
 }
 
 void __61__PUEditPluginHostViewController_setUndoEnabled_redoEnabled___block_invoke(uint64_t a1)
@@ -96,29 +96,29 @@ uint64_t __50__PUEditPluginHostViewController_setShowUndoRedo___block_invoke(uin
   v6 = objc_opt_new();
   [(PUEditPluginHostViewController *)self setUndoProxy:v6];
   [v6 setTarget:self];
-  v3 = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
-  v4 = [v6 listenerEndpoint];
+  _extensionVendorProxy = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
+  listenerEndpoint = [v6 listenerEndpoint];
   v5 = +[PUPhotoEditProtoSettings sharedInstance];
-  [v3 setupUndoProxyWithXPCListenerEndpoint:v4 attemptUndoManagerAutoSetup:{objc_msgSend(v5, "attemptEditExtensionUndoAutoSetup")}];
+  [_extensionVendorProxy setupUndoProxyWithXPCListenerEndpoint:listenerEndpoint attemptUndoManagerAutoSetup:{objc_msgSend(v5, "attemptEditExtensionUndoAutoSetup")}];
 }
 
 - (void)_endDisablingIdleTimerIfNecessary
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:494 description:@"Must be on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:494 description:@"Must be on main thread"];
   }
 
-  v4 = [(PUEditPluginHostViewController *)self disablingIdleTimerToken];
-  if (v4)
+  disablingIdleTimerToken = [(PUEditPluginHostViewController *)self disablingIdleTimerToken];
+  if (disablingIdleTimerToken)
   {
-    v7 = v4;
-    v5 = [MEMORY[0x1E69C3358] sharedState];
-    [v5 endDisablingIdleTimer:v7];
+    v7 = disablingIdleTimerToken;
+    mEMORY[0x1E69C3358] = [MEMORY[0x1E69C3358] sharedState];
+    [mEMORY[0x1E69C3358] endDisablingIdleTimer:v7];
 
     [(PUEditPluginHostViewController *)self setDisablingIdleTimerToken:0];
-    v4 = v7;
+    disablingIdleTimerToken = v7;
   }
 }
 
@@ -126,42 +126,42 @@ uint64_t __50__PUEditPluginHostViewController_setShowUndoRedo___block_invoke(uin
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:486 description:@"Must be on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:486 description:@"Must be on main thread"];
   }
 
-  v4 = [(PUEditPluginHostViewController *)self disablingIdleTimerToken];
+  disablingIdleTimerToken = [(PUEditPluginHostViewController *)self disablingIdleTimerToken];
 
-  if (!v4)
+  if (!disablingIdleTimerToken)
   {
-    v7 = [MEMORY[0x1E69C3358] sharedState];
-    v5 = [v7 beginDisablingIdleTimerForReason:@"Editor (PUEditPluginHostViewController)"];
+    mEMORY[0x1E69C3358] = [MEMORY[0x1E69C3358] sharedState];
+    v5 = [mEMORY[0x1E69C3358] beginDisablingIdleTimerForReason:@"Editor (PUEditPluginHostViewController)"];
     [(PUEditPluginHostViewController *)self setDisablingIdleTimerToken:v5];
   }
 }
 
-- (void)_handleDoneButton:(id)a3
+- (void)_handleDoneButton:(id)button
 {
   if (![(PUEditPluginHostViewController *)self didHandleDone])
   {
     [(PUEditPluginHostViewController *)self setDidHandleDone:1];
     [(PUEditPluginHostViewController *)self _beginDisablingIdleTimer];
     v4 = +[PUPhotoEditProtoSettings sharedInstance];
-    v5 = [v4 lightModeEditor];
+    lightModeEditor = [v4 lightModeEditor];
 
-    v6 = [[PUProgressView alloc] initWithStyle:v5];
-    v7 = [(PUEditPluginHostViewController *)self view];
-    [(PUProgressView *)v6 showInView:v7 animated:1 afterDelay:0.0];
+    v6 = [[PUProgressView alloc] initWithStyle:lightModeEditor];
+    view = [(PUEditPluginHostViewController *)self view];
+    [(PUProgressView *)v6 showInView:view animated:1 afterDelay:0.0];
 
-    v8 = [(PUEditPluginHostViewController *)self _hostContext];
+    _hostContext = [(PUEditPluginHostViewController *)self _hostContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__PUEditPluginHostViewController__handleDoneButton___block_invoke;
     v10[3] = &unk_1E7B76B80;
     v10[4] = self;
-    [v8 setContentEditingOutputCommitHandler:v10];
-    v9 = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
-    [v9 finishContentEditing];
+    [_hostContext setContentEditingOutputCommitHandler:v10];
+    _extensionVendorProxy = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
+    [_extensionVendorProxy finishContentEditing];
   }
 }
 
@@ -319,16 +319,16 @@ void __52__PUEditPluginHostViewController__handleDoneButton___block_invoke_4(uin
 - (void)_handleCancel
 {
   [(PUEditPluginHostViewController *)self _endDisablingIdleTimerIfNecessary];
-  v3 = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
-  [v3 cancelContentEditingWithResponseHandler:&__block_literal_global_22451];
+  _extensionVendorProxy = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
+  [_extensionVendorProxy cancelContentEditingWithResponseHandler:&__block_literal_global_22451];
 
-  v4 = [(PUEditPluginHostViewController *)self delegate];
-  [v4 editPluginHostViewController:self didFinishWithCompletionType:0];
+  delegate = [(PUEditPluginHostViewController *)self delegate];
+  [delegate editPluginHostViewController:self didFinishWithCompletionType:0];
 }
 
-- (void)_handleCancelButton:(id)a3
+- (void)_handleCancelButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (![(PUEditPluginHostViewController *)self didHandleCancel])
   {
     [(PUEditPluginHostViewController *)self setDidHandleCancel:1];
@@ -339,7 +339,7 @@ void __52__PUEditPluginHostViewController__handleDoneButton___block_invoke_4(uin
       v5[2] = __54__PUEditPluginHostViewController__handleCancelButton___block_invoke;
       v5[3] = &unk_1E7B80088;
       v5[4] = self;
-      v6 = v4;
+      v6 = buttonCopy;
       [(PUEditPluginHostViewController *)self _queryShouldShowCancelConfirmationWithResponseHandler:v5 timeout:2.0];
     }
 
@@ -406,9 +406,9 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
   }
 }
 
-- (BOOL)prepareForDismissingForced:(BOOL)a3
+- (BOOL)prepareForDismissingForced:(BOOL)forced
 {
-  if (a3)
+  if (forced)
   {
     [(PUEditPluginHostViewController *)self _dismiss];
   }
@@ -432,9 +432,9 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
   return v3;
 }
 
-- (void)_updateBarButtonsWithUndoRedoVisible:(BOOL)a3
+- (void)_updateBarButtonsWithUndoRedoVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v38[1] = *MEMORY[0x1E69E9840];
   v5 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -459,25 +459,25 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
 
   v37 = v7;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
-  if (v3)
+  if (visibleCopy)
   {
     v33 = v8;
     if (MEMORY[0x1B8C6D660]())
     {
       v14 = objc_alloc(MEMORY[0x1E69DC708]);
-      v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.uturn.backward"];
-      v16 = [v14 initWithImage:v15 style:0 target:self action:sel_handleUndoButton_];
+      plainButtonConfiguration = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.uturn.backward"];
+      v16 = [v14 initWithImage:plainButtonConfiguration style:0 target:self action:sel_handleUndoButton_];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
       v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.uturn.backward.circle"];
-      [v15 setImage:v17];
+      [plainButtonConfiguration setImage:v17];
 
-      [v15 setContentInsets:{0.0, 4.0, 0.0, 4.0}];
+      [plainButtonConfiguration setContentInsets:{0.0, 4.0, 0.0, 4.0}];
       v18 = [MEMORY[0x1E69C3BE8] buttonWithWithCursorEffect:1 target:self action:sel_handleUndoButton_];
-      [v18 setConfiguration:v15];
+      [v18 setConfiguration:plainButtonConfiguration];
       v16 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v18];
     }
 
@@ -487,19 +487,19 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
     if (MEMORY[0x1B8C6D660]([v16 setEnabled:0]))
     {
       v20 = objc_alloc(MEMORY[0x1E69DC708]);
-      v21 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.uturn.forward"];
-      v22 = [v20 initWithImage:v21 style:0 target:self action:sel_handleRedoButton_];
+      plainButtonConfiguration2 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.uturn.forward"];
+      v22 = [v20 initWithImage:plainButtonConfiguration2 style:0 target:self action:sel_handleRedoButton_];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      plainButtonConfiguration2 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
       v23 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.uturn.forward.circle"];
-      [v21 setImage:v23];
+      [plainButtonConfiguration2 setImage:v23];
 
-      [v21 setContentInsets:{0.0, 4.0, 0.0, 4.0}];
+      [plainButtonConfiguration2 setContentInsets:{0.0, 4.0, 0.0, 4.0}];
       v24 = [MEMORY[0x1E69C3BE8] buttonWithWithCursorEffect:1 target:self action:sel_handleRedoButton_];
-      [v24 setConfiguration:v21];
+      [v24 setConfiguration:plainButtonConfiguration2];
       v22 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v24];
     }
 
@@ -532,44 +532,44 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
   }
 
   v29 = MEMORY[0x1B8C6D660]();
-  v30 = [(PUEditPluginHostViewController *)self navigationItem];
-  v31 = v30;
+  navigationItem = [(PUEditPluginHostViewController *)self navigationItem];
+  v31 = navigationItem;
   if (v29)
   {
-    [v30 setLeadingItemGroups:v9];
+    [navigationItem setLeadingItemGroups:v9];
   }
 
   else
   {
-    [v30 setLeftBarButtonItems:v8 animated:1];
+    [navigationItem setLeftBarButtonItems:v8 animated:1];
   }
 
-  v32 = [(PUEditPluginHostViewController *)self navigationItem];
-  [v32 setRightBarButtonItems:v13 animated:1];
+  navigationItem2 = [(PUEditPluginHostViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItems:v13 animated:1];
 }
 
 - (void)_dismiss
 {
-  v3 = [(PUEditPluginHostViewController *)self remoteViewController];
-  v8 = v3;
-  if (v3)
+  remoteViewController = [(PUEditPluginHostViewController *)self remoteViewController];
+  v8 = remoteViewController;
+  if (remoteViewController)
   {
-    if ([v3 isViewLoaded])
+    if ([remoteViewController isViewLoaded])
     {
-      v4 = [v8 view];
-      [v4 removeFromSuperview];
+      view = [v8 view];
+      [view removeFromSuperview];
     }
 
     [v8 removeFromParentViewController];
     [(PUEditPluginHostViewController *)self setRemoteViewController:0];
   }
 
-  v5 = [(PUEditPluginHostViewController *)self request];
-  if (v5)
+  request = [(PUEditPluginHostViewController *)self request];
+  if (request)
   {
-    v6 = [(PUEditPluginHostViewController *)self plugin];
-    v7 = [v6 extension];
-    [v7 cancelExtensionRequestWithIdentifier:v5];
+    plugin = [(PUEditPluginHostViewController *)self plugin];
+    extension = [plugin extension];
+    [extension cancelExtensionRequestWithIdentifier:request];
 
     [(PUEditPluginHostViewController *)self setRequest:0];
   }
@@ -577,27 +577,27 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
 
 - (id)_extensionVendorProxy
 {
-  v2 = [(PUEditPluginHostViewController *)self _hostContext];
-  v3 = [v2 _auxiliaryConnection];
-  v4 = [v3 remoteObjectProxy];
+  _hostContext = [(PUEditPluginHostViewController *)self _hostContext];
+  _auxiliaryConnection = [_hostContext _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  return v4;
+  return remoteObjectProxy;
 }
 
 - (id)_hostContext
 {
-  v4 = [(PUEditPluginHostViewController *)self plugin];
-  v5 = [v4 extension];
-  v6 = [(PUEditPluginHostViewController *)self request];
-  v7 = [v5 _extensionContextForUUID:v6];
+  plugin = [(PUEditPluginHostViewController *)self plugin];
+  extension = [plugin extension];
+  request = [(PUEditPluginHostViewController *)self request];
+  v7 = [extension _extensionContextForUUID:request];
 
   if (v7)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:268 description:{@"unexpected class %@", v7}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:268 description:{@"unexpected class %@", v7}];
     }
   }
 
@@ -613,63 +613,63 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "_addRemoteViewControllerIfNeeded", buf, 2u);
   }
 
-  v4 = [(PUEditPluginHostViewController *)self remoteViewController];
-  if (v4)
+  remoteViewController = [(PUEditPluginHostViewController *)self remoteViewController];
+  if (remoteViewController)
   {
     if ([(PUEditPluginHostViewController *)self isViewLoaded])
     {
-      v5 = [v4 parentViewController];
+      parentViewController = [remoteViewController parentViewController];
 
-      if (v5 != self)
+      if (parentViewController != self)
       {
-        [(PUEditPluginHostViewController *)self addChildViewController:v4];
-        v6 = [v4 view];
-        v7 = [(PUEditPluginHostViewController *)self view];
-        [v7 addSubview:v6];
+        [(PUEditPluginHostViewController *)self addChildViewController:remoteViewController];
+        view = [remoteViewController view];
+        view2 = [(PUEditPluginHostViewController *)self view];
+        [view2 addSubview:view];
 
-        [v4 didMoveToParentViewController:self];
-        v27 = _NSDictionaryOfVariableBindings(&cfstr_Remoteview.isa, v6, 0);
-        [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v8 = [MEMORY[0x1E695DF70] array];
-        v9 = [v6 centerXAnchor];
-        v10 = [(PUEditPluginHostViewController *)self view];
-        v11 = [v10 centerXAnchor];
-        v12 = [v9 constraintEqualToAnchor:v11];
+        [remoteViewController didMoveToParentViewController:self];
+        v27 = _NSDictionaryOfVariableBindings(&cfstr_Remoteview.isa, view, 0);
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
+        array = [MEMORY[0x1E695DF70] array];
+        centerXAnchor = [view centerXAnchor];
+        view3 = [(PUEditPluginHostViewController *)self view];
+        centerXAnchor2 = [view3 centerXAnchor];
+        v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
         LODWORD(v13) = 1148846080;
         [v12 setPriority:v13];
-        [v8 addObject:v12];
-        v14 = [v6 leadingAnchor];
-        v15 = [(PUEditPluginHostViewController *)self view];
-        v16 = [v15 safeAreaLayoutGuide];
-        v17 = [v16 leadingAnchor];
-        v18 = [v14 constraintEqualToAnchor:v17];
+        [array addObject:v12];
+        leadingAnchor = [view leadingAnchor];
+        view4 = [(PUEditPluginHostViewController *)self view];
+        safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+        leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+        v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
         LODWORD(v19) = 1132068864;
         [v18 setPriority:v19];
-        [v8 addObject:v18];
-        v20 = [v6 trailingAnchor];
-        v21 = [(PUEditPluginHostViewController *)self view];
-        v22 = [v21 safeAreaLayoutGuide];
-        v23 = [v22 trailingAnchor];
-        v24 = [v20 constraintEqualToAnchor:v23];
+        [array addObject:v18];
+        trailingAnchor = [view trailingAnchor];
+        view5 = [(PUEditPluginHostViewController *)self view];
+        safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+        trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+        v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
         LODWORD(v25) = 1132068864;
         [v24 setPriority:v25];
-        [v8 addObject:v24];
+        [array addObject:v24];
         v26 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[remoteView]|" options:0 metrics:0 views:v27];
-        [v8 addObjectsFromArray:v26];
+        [array addObjectsFromArray:v26];
 
-        [MEMORY[0x1E696ACD8] activateConstraints:v8];
+        [MEMORY[0x1E696ACD8] activateConstraints:array];
       }
     }
   }
 }
 
-- (void)_beginContentEditingWithCompletionHandler:(id)a3 timeout:(double)a4
+- (void)_beginContentEditingWithCompletionHandler:(id)handler timeout:(double)timeout
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  handlerCopy = handler;
   v7 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -686,7 +686,7 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
   aBlock[2] = __84__PUEditPluginHostViewController__beginContentEditingWithCompletionHandler_timeout___block_invoke;
   aBlock[3] = &unk_1E7B76B08;
   v23 = buf;
-  v8 = v6;
+  v8 = handlerCopy;
   v22 = v8;
   v9 = _Block_copy(aBlock);
   v10 = MEMORY[0x1E696ABC0];
@@ -695,8 +695,8 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   v12 = [v10 errorWithDomain:*MEMORY[0x1E696A250] code:4099 userInfo:v11];
 
-  v13 = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
-  if (v13)
+  _extensionVendorProxy = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
+  if (_extensionVendorProxy)
   {
     v14 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -705,8 +705,8 @@ void __54__PUEditPluginHostViewController__handleCancelButton___block_invoke_2(u
       _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "_beginContentEditingWithCompletionHandler - calling plugin's beginContentEditingWithCompletionHandler", v20, 2u);
     }
 
-    [v13 beginContentEditingWithCompletionHandler:v9];
-    v15 = dispatch_time(0, (a4 * 1000000000.0));
+    [_extensionVendorProxy beginContentEditingWithCompletionHandler:v9];
+    v15 = dispatch_time(0, (timeout * 1000000000.0));
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __84__PUEditPluginHostViewController__beginContentEditingWithCompletionHandler_timeout___block_invoke_233;
@@ -776,11 +776,11 @@ uint64_t __84__PUEditPluginHostViewController__beginContentEditingWithCompletion
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_queryShouldShowCancelConfirmationWithResponseHandler:(id)a3 timeout:(double)a4
+- (void)_queryShouldShowCancelConfirmationWithResponseHandler:(id)handler timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
-  if (v7)
+  handlerCopy = handler;
+  _extensionVendorProxy = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
+  if (_extensionVendorProxy)
   {
     v16[0] = 0;
     v16[1] = v16;
@@ -791,10 +791,10 @@ uint64_t __84__PUEditPluginHostViewController__beginContentEditingWithCompletion
     aBlock[2] = __96__PUEditPluginHostViewController__queryShouldShowCancelConfirmationWithResponseHandler_timeout___block_invoke;
     aBlock[3] = &unk_1E7B76AE0;
     v15 = v16;
-    v14 = v6;
+    v14 = handlerCopy;
     v8 = _Block_copy(aBlock);
-    [v7 queryShouldShowCancelConfirmationWithResponseHandler:v8];
-    v9 = dispatch_time(0, (a4 * 1000000000.0));
+    [_extensionVendorProxy queryShouldShowCancelConfirmationWithResponseHandler:v8];
+    v9 = dispatch_time(0, (timeout * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __96__PUEditPluginHostViewController__queryShouldShowCancelConfirmationWithResponseHandler_timeout___block_invoke_2;
@@ -806,9 +806,9 @@ uint64_t __84__PUEditPluginHostViewController__beginContentEditingWithCompletion
     _Block_object_dispose(v16, 8);
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -824,12 +824,12 @@ uint64_t __96__PUEditPluginHostViewController__queryShouldShowCancelConfirmation
   return result;
 }
 
-- (void)queryHandlingCapabilityForAdjustmentData:(id)a3 withResponseHandler:(id)a4 timeout:(double)a5
+- (void)queryHandlingCapabilityForAdjustmentData:(id)data withResponseHandler:(id)handler timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
-  if (v10)
+  dataCopy = data;
+  handlerCopy = handler;
+  _extensionVendorProxy = [(PUEditPluginHostViewController *)self _extensionVendorProxy];
+  if (_extensionVendorProxy)
   {
     v19[0] = 0;
     v19[1] = v19;
@@ -840,10 +840,10 @@ uint64_t __96__PUEditPluginHostViewController__queryShouldShowCancelConfirmation
     aBlock[2] = __103__PUEditPluginHostViewController_queryHandlingCapabilityForAdjustmentData_withResponseHandler_timeout___block_invoke;
     aBlock[3] = &unk_1E7B76AE0;
     v18 = v19;
-    v17 = v9;
+    v17 = handlerCopy;
     v11 = _Block_copy(aBlock);
-    [v10 queryHandlingCapabilityForAdjustmentData:v8 withResponseHandler:v11];
-    v12 = dispatch_time(0, (a5 * 1000000000.0));
+    [_extensionVendorProxy queryHandlingCapabilityForAdjustmentData:dataCopy withResponseHandler:v11];
+    v12 = dispatch_time(0, (timeout * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __103__PUEditPluginHostViewController_queryHandlingCapabilityForAdjustmentData_withResponseHandler_timeout___block_invoke_2;
@@ -855,9 +855,9 @@ uint64_t __96__PUEditPluginHostViewController__queryShouldShowCancelConfirmation
     _Block_object_dispose(v19, 8);
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -873,10 +873,10 @@ uint64_t __103__PUEditPluginHostViewController_queryHandlingCapabilityForAdjustm
   return result;
 }
 
-- (void)loadRemoteViewControllerWithCompletionHandler:(id)a3
+- (void)loadRemoteViewControllerWithCompletionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -884,14 +884,14 @@ uint64_t __103__PUEditPluginHostViewController_queryHandlingCapabilityForAdjustm
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "loadRemoteViewControllerWithCompletionHandler", buf, 2u);
   }
 
-  if (!v5)
+  if (!handlerCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUEditPluginHostViewController.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
-  v7 = [(PUEditPluginHostViewController *)self plugin];
-  v8 = [v7 extension];
+  plugin = [(PUEditPluginHostViewController *)self plugin];
+  extension = [plugin extension];
 
   objc_initWeak(&location, self);
   v29[0] = MEMORY[0x1E69E9820];
@@ -899,7 +899,7 @@ uint64_t __103__PUEditPluginHostViewController_queryHandlingCapabilityForAdjustm
   v29[2] = __80__PUEditPluginHostViewController_loadRemoteViewControllerWithCompletionHandler___block_invoke;
   v29[3] = &unk_1E7B769F0;
   objc_copyWeak(&v30, &location);
-  [v8 set_requestPostCompletionBlock:v29];
+  [extension set_requestPostCompletionBlock:v29];
   v9 = objc_alloc_init(MEMORY[0x1E696ACA0]);
   *buf = 0;
   v24 = buf;
@@ -932,12 +932,12 @@ uint64_t __103__PUEditPluginHostViewController_queryHandlingCapabilityForAdjustm
   v17[1] = 3221225472;
   v17[2] = __80__PUEditPluginHostViewController_loadRemoteViewControllerWithCompletionHandler___block_invoke_217;
   v17[3] = &unk_1E7B76AB8;
-  v15 = v5;
+  v15 = handlerCopy;
   v17[4] = self;
   v18 = v15;
   v19 = buf;
   v20 = a2;
-  [v8 instantiateViewControllerWithInputItems:v14 listenerEndpoint:0 connectionHandler:v17];
+  [extension instantiateViewControllerWithInputItems:v14 listenerEndpoint:0 connectionHandler:v17];
 
   _Block_object_dispose(buf, 8);
   objc_destroyWeak(&v30);
@@ -1099,24 +1099,24 @@ uint64_t __80__PUEditPluginHostViewController_loadRemoteViewControllerWithComple
   return v2();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PUEditPluginHostViewController;
-  [(PUEditPluginHostViewController *)&v6 viewDidDisappear:a3];
+  [(PUEditPluginHostViewController *)&v6 viewDidDisappear:disappear];
   if ((-[PUEditPluginHostViewController isBeingDismissed](self, "isBeingDismissed") & 1) != 0 || (-[PUEditPluginHostViewController navigationController](self, "navigationController"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isBeingDismissed], v4, v5))
   {
     [(PUEditPluginHostViewController *)self _dismiss];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = PUEditPluginHostViewController;
   [(PUEditPluginHostViewController *)&v5 viewWillAppear:?];
-  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:v3];
+  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:appearCopy];
   [(PUEditPluginHostViewController *)self _addRemoteViewControllerIfNeeded];
 }
 
@@ -1125,22 +1125,22 @@ uint64_t __80__PUEditPluginHostViewController_loadRemoteViewControllerWithComple
   v9.receiver = self;
   v9.super_class = PUEditPluginHostViewController;
   [(PUEditPluginHostViewController *)&v9 loadView];
-  v3 = [(PUEditPluginHostViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PUEditPluginHostViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(PUEditPluginHostViewController *)self plugin];
-  v6 = [v5 title];
+  plugin = [(PUEditPluginHostViewController *)self plugin];
+  title = [plugin title];
 
-  [(PUEditPluginHostViewController *)self setTitle:v6];
+  [(PUEditPluginHostViewController *)self setTitle:title];
   [(PUEditPluginHostViewController *)self _updateBarButtonsWithUndoRedoVisible:[(PUEditPluginHostViewController *)self showUndoRedoButtons]];
-  v7 = [(PUEditPluginHostViewController *)self _hostContext];
+  _hostContext = [(PUEditPluginHostViewController *)self _hostContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__PUEditPluginHostViewController_loadView__block_invoke;
   v8[3] = &unk_1E7B7F020;
   v8[4] = self;
-  [v7 setHideNavigationControllerHandler:v8];
+  [_hostContext setHideNavigationControllerHandler:v8];
 }
 
 void __42__PUEditPluginHostViewController_loadView__block_invoke_2(uint64_t a1)
@@ -1158,16 +1158,16 @@ void __42__PUEditPluginHostViewController_loadView__block_invoke_2(uint64_t a1)
   [(PUEditPluginHostViewController *)&v3 dealloc];
 }
 
-- (PUEditPluginHostViewController)initWithPlugin:(id)a3
+- (PUEditPluginHostViewController)initWithPlugin:(id)plugin
 {
-  v5 = a3;
+  pluginCopy = plugin;
   v9.receiver = self;
   v9.super_class = PUEditPluginHostViewController;
   v6 = [(PUEditPluginHostViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_plugin, a3);
+    objc_storeStrong(&v6->_plugin, plugin);
   }
 
   return v7;

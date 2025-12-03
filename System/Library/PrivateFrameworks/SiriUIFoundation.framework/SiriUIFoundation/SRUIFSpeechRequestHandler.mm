@@ -1,19 +1,19 @@
 @interface SRUIFSpeechRequestHandler
-- (SRUIFSpeechRequestHandler)initWithDelegate:(id)a3;
+- (SRUIFSpeechRequestHandler)initWithDelegate:(id)delegate;
 - (SRUIFSpeechRequestHandlerDelegate)delegate;
 - (id)prepareForNewSpeechRequest;
 - (void)_continuePendingSpeechRequest;
-- (void)_performOnCurrentSpeechDipatchGroup:(id)a3;
+- (void)_performOnCurrentSpeechDipatchGroup:(id)group;
 - (void)cancelSpeechRequest;
 - (void)discardCurrentSpeechGroup;
 - (void)nonSpeechRequestWillBegin;
 - (void)speechRecordingDidFail;
 - (void)speechRecordingWillBegin;
-- (void)startSpeechRequestWithSpeechFileAtURL:(id)a3 completion:(id)a4;
-- (void)startSpeechRequestWithSpeechRequestOptions:(id)a3 instrumentationTurn:(id)a4 isInitialBringUp:(BOOL)a5 completion:(id)a6;
+- (void)startSpeechRequestWithSpeechFileAtURL:(id)l completion:(id)completion;
+- (void)startSpeechRequestWithSpeechRequestOptions:(id)options instrumentationTurn:(id)turn isInitialBringUp:(BOOL)up completion:(id)completion;
 - (void)stopSpeechRequest;
-- (void)stopSpeechRequestWithOptions:(id)a3;
-- (void)updateSpeechRequestOptions:(id)a3;
+- (void)stopSpeechRequestWithOptions:(id)options;
+- (void)updateSpeechRequestOptions:(id)options;
 @end
 
 @implementation SRUIFSpeechRequestHandler
@@ -89,8 +89,8 @@
 - (void)nonSpeechRequestWillBegin
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SRUIFSpeechRequestHandler *)self delegate];
-  v4 = [v3 connectionForSpeechRequestHandler:self];
+  delegate = [(SRUIFSpeechRequestHandler *)self delegate];
+  v4 = [delegate connectionForSpeechRequestHandler:self];
 
   if ([v4 isRecording])
   {
@@ -155,65 +155,65 @@ void __54__SRUIFSpeechRequestHandler_discardCurrentSpeechGroup__block_invoke(uin
   }
 }
 
-- (SRUIFSpeechRequestHandler)initWithDelegate:(id)a3
+- (SRUIFSpeechRequestHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SRUIFSpeechRequestHandler;
   v5 = [(SRUIFSpeechRequestHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)startSpeechRequestWithSpeechRequestOptions:(id)a3 instrumentationTurn:(id)a4 isInitialBringUp:(BOOL)a5 completion:(id)a6
+- (void)startSpeechRequestWithSpeechRequestOptions:(id)options instrumentationTurn:(id)turn isInitialBringUp:(BOOL)up completion:(id)completion
 {
-  v7 = a5;
+  upCopy = up;
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SRUIFSpeechRequestHandler *)self _currentSpeechRequestGroup];
-  if (v13)
+  optionsCopy = options;
+  turnCopy = turn;
+  completionCopy = completion;
+  _currentSpeechRequestGroup = [(SRUIFSpeechRequestHandler *)self _currentSpeechRequestGroup];
+  if (_currentSpeechRequestGroup)
   {
-    v14 = [(SRUIFSpeechRequestHandler *)self delegate];
-    v15 = [v14 connectionForSpeechRequestHandler:self];
+    delegate = [(SRUIFSpeechRequestHandler *)self delegate];
+    v15 = [delegate connectionForSpeechRequestHandler:self];
 
     v16 = MEMORY[0x277CEF098];
     v17 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v11 turnIdentifier];
+      turnIdentifier = [turnCopy turnIdentifier];
       v33 = 136315394;
       v34 = "[SRUIFSpeechRequestHandler startSpeechRequestWithSpeechRequestOptions:instrumentationTurn:isInitialBringUp:completion:]";
       v35 = 2112;
-      v36 = v19;
+      v36 = turnIdentifier;
       _os_log_impl(&dword_26951F000, v18, OS_LOG_TYPE_DEFAULT, "%s #instrumentation Setting turn identifier for speech request %@", &v33, 0x16u);
     }
 
-    v20 = [v11 turnIdentifier];
-    [v10 setTurnIdentifier:v20];
+    turnIdentifier2 = [turnCopy turnIdentifier];
+    [optionsCopy setTurnIdentifier:turnIdentifier2];
 
     v21 = *v16;
     if (os_log_type_enabled(*v16, OS_LOG_TYPE_DEFAULT))
     {
       v22 = v21;
-      v23 = [v10 userProfileHeadphoneConnected];
+      userProfileHeadphoneConnected = [optionsCopy userProfileHeadphoneConnected];
       v33 = 136315394;
       v34 = "[SRUIFSpeechRequestHandler startSpeechRequestWithSpeechRequestOptions:instrumentationTurn:isInitialBringUp:completion:]";
       v35 = 1024;
-      LODWORD(v36) = v23;
+      LODWORD(v36) = userProfileHeadphoneConnected;
       _os_log_impl(&dword_26951F000, v22, OS_LOG_TYPE_DEFAULT, "%s #shih startSpeech headphone connected %d", &v33, 0x12u);
     }
 
     if (([v15 isRecording] & 1) == 0)
     {
-      v24 = [v15 startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:v10];
+      v24 = [v15 startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:optionsCopy];
       continuePendingRequest = self->_continuePendingRequest;
       if (continuePendingRequest)
       {
@@ -229,7 +229,7 @@ void __54__SRUIFSpeechRequestHandler_discardCurrentSpeechGroup__block_invoke(uin
           v33 = 136315394;
           v34 = "[SRUIFSpeechRequestHandler startSpeechRequestWithSpeechRequestOptions:instrumentationTurn:isInitialBringUp:completion:]";
           v35 = 1024;
-          LODWORD(v36) = v7;
+          LODWORD(v36) = upCopy;
           _os_log_impl(&dword_26951F000, v27, OS_LOG_TYPE_DEFAULT, "%s Captured pending speech request dispatch block. Is Initial Bring up %{BOOL}d", &v33, 0x12u);
         }
 
@@ -237,10 +237,10 @@ void __54__SRUIFSpeechRequestHandler_discardCurrentSpeechGroup__block_invoke(uin
         v29 = self->_continuePendingRequest;
         self->_continuePendingRequest = v28;
 
-        self->_sendContextBeforeContinuingSpeechRequest = !v7;
-        if (v12)
+        self->_sendContextBeforeContinuingSpeechRequest = !upCopy;
+        if (completionCopy)
         {
-          v12[2](v12, 0);
+          completionCopy[2](completionCopy, 0);
         }
       }
 
@@ -254,20 +254,20 @@ void __54__SRUIFSpeechRequestHandler_discardCurrentSpeechGroup__block_invoke(uin
         v31 = self->_continuePendingRequest;
         self->_continuePendingRequest = 0;
 
-        if (v12)
+        if (completionCopy)
         {
           v32 = [MEMORY[0x277CEF2A0] errorWithCode:2510 description:@"No AFConnection." underlyingError:0];
-          (v12)[2](v12, v32);
+          (completionCopy)[2](completionCopy, v32);
         }
       }
 
       goto LABEL_19;
     }
 
-    if (v12)
+    if (completionCopy)
     {
       v24 = [MEMORY[0x277CEF2A0] errorWithCode:2510 description:@"AFConnection is already recording." underlyingError:0];
-      (v12)[2](v12, v24);
+      (completionCopy)[2](completionCopy, v24);
 LABEL_19:
     }
 
@@ -280,7 +280,7 @@ LABEL_20:
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
     [SRUIFSpeechRequestHandler startSpeechRequestWithSpeechRequestOptions:v25 instrumentationTurn:? isInitialBringUp:? completion:?];
-    if (!v12)
+    if (!completionCopy)
     {
       goto LABEL_21;
     }
@@ -288,11 +288,11 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  if (v12)
+  if (completionCopy)
   {
 LABEL_11:
     v15 = [MEMORY[0x277CEF2A0] errorWithCode:2510 description:@"No speech request dispatch group." underlyingError:0];
-    (v12)[2](v12, v15);
+    (completionCopy)[2](completionCopy, v15);
     goto LABEL_20;
   }
 
@@ -301,19 +301,19 @@ LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSpeechRequestWithSpeechFileAtURL:(id)a3 completion:(id)a4
+- (void)startSpeechRequestWithSpeechFileAtURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SRUIFSpeechRequestHandler *)self _currentSpeechRequestGroup];
-  v9 = v8;
-  if (v8)
+  lCopy = l;
+  completionCopy = completion;
+  _currentSpeechRequestGroup = [(SRUIFSpeechRequestHandler *)self _currentSpeechRequestGroup];
+  v9 = _currentSpeechRequestGroup;
+  if (_currentSpeechRequestGroup)
   {
-    dispatch_group_enter(v8);
+    dispatch_group_enter(_currentSpeechRequestGroup);
   }
 
   objc_initWeak(&location, self);
-  v10 = [(SRUIFSpeechRequestHandler *)self delegate];
+  delegate = [(SRUIFSpeechRequestHandler *)self delegate];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__SRUIFSpeechRequestHandler_startSpeechRequestWithSpeechFileAtURL_completion___block_invoke;
@@ -321,11 +321,11 @@ LABEL_21:
   objc_copyWeak(&v18, &location);
   v11 = v9;
   v15 = v11;
-  v12 = v6;
+  v12 = lCopy;
   v16 = v12;
-  v13 = v7;
+  v13 = completionCopy;
   v17 = v13;
-  [v10 sendContextForSpeechRequestContinuationWithCompletion:v14];
+  [delegate sendContextForSpeechRequestContinuationWithCompletion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -380,13 +380,13 @@ uint64_t __78__SRUIFSpeechRequestHandler_startSpeechRequestWithSpeechFileAtURL_c
   if (self->_sendContextBeforeContinuingSpeechRequest)
   {
     objc_initWeak(buf, self);
-    v5 = [(SRUIFSpeechRequestHandler *)self delegate];
+    delegate = [(SRUIFSpeechRequestHandler *)self delegate];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__SRUIFSpeechRequestHandler_speechRecordingWillBegin__block_invoke;
     v7[3] = &unk_279C61870;
     objc_copyWeak(&v8, buf);
-    [v5 sendContextForSpeechRequestContinuationWithCompletion:v7];
+    [delegate sendContextForSpeechRequestContinuationWithCompletion:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(buf);
@@ -421,17 +421,17 @@ void __53__SRUIFSpeechRequestHandler_speechRecordingWillBegin__block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSpeechRequestWithOptions:(id)a3
+- (void)stopSpeechRequestWithOptions:(id)options
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[SRUIFSpeechRequestHandler stopSpeechRequestWithOptions:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = optionsCopy;
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -441,7 +441,7 @@ void __53__SRUIFSpeechRequestHandler_speechRecordingWillBegin__block_invoke(uint
   v8[2] = __58__SRUIFSpeechRequestHandler_stopSpeechRequestWithOptions___block_invoke;
   v8[3] = &unk_279C61898;
   objc_copyWeak(&v10, buf);
-  v6 = v4;
+  v6 = optionsCopy;
   v9 = v6;
   [(SRUIFSpeechRequestHandler *)self _performOnCurrentSpeechDipatchGroup:v8];
 
@@ -471,24 +471,24 @@ void __58__SRUIFSpeechRequestHandler_stopSpeechRequestWithOptions___block_invoke
     _os_log_impl(&dword_26951F000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v7, 0xCu);
   }
 
-  v4 = [(SRUIFSpeechRequestHandler *)self delegate];
-  v5 = [v4 connectionForSpeechRequestHandler:self];
+  delegate = [(SRUIFSpeechRequestHandler *)self delegate];
+  v5 = [delegate connectionForSpeechRequestHandler:self];
   [v5 stopSpeech];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSpeechRequestOptions:(id)a3
+- (void)updateSpeechRequestOptions:(id)options
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[SRUIFSpeechRequestHandler updateSpeechRequestOptions:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = optionsCopy;
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -498,7 +498,7 @@ void __58__SRUIFSpeechRequestHandler_stopSpeechRequestWithOptions___block_invoke
   v8[2] = __56__SRUIFSpeechRequestHandler_updateSpeechRequestOptions___block_invoke;
   v8[3] = &unk_279C61898;
   objc_copyWeak(&v10, buf);
-  v6 = v4;
+  v6 = optionsCopy;
   v9 = v6;
   [(SRUIFSpeechRequestHandler *)self _performOnCurrentSpeechDipatchGroup:v8];
 
@@ -517,11 +517,11 @@ void __56__SRUIFSpeechRequestHandler_updateSpeechRequestOptions___block_invoke(u
   [v4 updateSpeechOptions:*(a1 + 32)];
 }
 
-- (void)_performOnCurrentSpeechDipatchGroup:(id)a3
+- (void)_performOnCurrentSpeechDipatchGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(SRUIFSpeechRequestHandler *)self _currentSpeechRequestGroup];
-  if (v5)
+  groupCopy = group;
+  _currentSpeechRequestGroup = [(SRUIFSpeechRequestHandler *)self _currentSpeechRequestGroup];
+  if (_currentSpeechRequestGroup)
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x277D85DD0];
@@ -529,8 +529,8 @@ void __56__SRUIFSpeechRequestHandler_updateSpeechRequestOptions___block_invoke(u
     v7[2] = __65__SRUIFSpeechRequestHandler__performOnCurrentSpeechDipatchGroup___block_invoke;
     v7[3] = &unk_279C618C0;
     objc_copyWeak(&v10, &location);
-    v8 = v5;
-    v9 = v4;
+    v8 = _currentSpeechRequestGroup;
+    v9 = groupCopy;
     dispatch_group_notify(v8, MEMORY[0x277D85CD0], v7);
 
     objc_destroyWeak(&v10);
@@ -577,14 +577,14 @@ void __65__SRUIFSpeechRequestHandler__performOnCurrentSpeechDipatchGroup___block
     _os_log_impl(&dword_26951F000, v4, OS_LOG_TYPE_DEFAULT, "%s ", &v13, 0xCu);
   }
 
-  v5 = [(SRUIFSpeechRequestHandler *)self delegate];
-  [v5 speechRequestHandlerWillCancelSpeechRequest:self];
+  delegate = [(SRUIFSpeechRequestHandler *)self delegate];
+  [delegate speechRequestHandlerWillCancelSpeechRequest:self];
 
-  v6 = [(SRUIFSpeechRequestHandler *)self delegate];
-  v7 = [v6 connectionForSpeechRequestHandler:self];
+  delegate2 = [(SRUIFSpeechRequestHandler *)self delegate];
+  v7 = [delegate2 connectionForSpeechRequestHandler:self];
 
-  v8 = [(SRUIFSpeechRequestHandler *)self delegate];
-  v9 = [v8 speechRequestHandlerShouldRollBackRequestForSpeechCancellation:self];
+  delegate3 = [(SRUIFSpeechRequestHandler *)self delegate];
+  v9 = [delegate3 speechRequestHandlerShouldRollBackRequestForSpeechCancellation:self];
 
   if (v9)
   {
@@ -600,8 +600,8 @@ void __65__SRUIFSpeechRequestHandler__performOnCurrentSpeechDipatchGroup___block
   }
 
   [v7 cancelRequest];
-  v11 = [(SRUIFSpeechRequestHandler *)self delegate];
-  [v11 speechRequestHandlerDidCancelSpeechRequest:self];
+  delegate4 = [(SRUIFSpeechRequestHandler *)self delegate];
+  [delegate4 speechRequestHandlerDidCancelSpeechRequest:self];
 
   v12 = *MEMORY[0x277D85DE8];
 }

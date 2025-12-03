@@ -1,30 +1,30 @@
 @interface CCSetDiscoveryRequest
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation CCSetDiscoveryRequest
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CCSetDiscoveryRequest;
-  v5 = [(CCPeerToPeerMessage *)&v14 initFromDictionary:v4];
+  v5 = [(CCPeerToPeerMessage *)&v14 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"setIdentifiersToDiscover"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"setIdentifiersToDiscover"];
     v7 = v5[6];
     v5[6] = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"setDiscoveryRequestOptions"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"setDiscoveryRequestOptions"];
     *(v5 + 20) = v8;
 
-    v9 = [v4 objectForKeyedSubscript:@"startAfterSet"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"startAfterSet"];
     v10 = v5[7];
     v5[7] = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"sizeThreshold"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"sizeThreshold"];
     v12 = v5[8];
     v5[8] = v11;
   }
@@ -61,8 +61,8 @@
 
   v12.receiver = self;
   v12.super_class = CCSetDiscoveryRequest;
-  v9 = [(CCPeerToPeerMessage *)&v12 dictionaryRepresentation];
-  [v5 addEntriesFromDictionary:v9];
+  dictionaryRepresentation = [(CCPeerToPeerMessage *)&v12 dictionaryRepresentation];
+  [v5 addEntriesFromDictionary:dictionaryRepresentation];
 
   v10 = *MEMORY[0x1E69E9840];
 

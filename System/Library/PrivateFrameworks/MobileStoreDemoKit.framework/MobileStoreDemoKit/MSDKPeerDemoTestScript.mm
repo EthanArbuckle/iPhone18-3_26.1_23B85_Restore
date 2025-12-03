@@ -1,24 +1,24 @@
 @interface MSDKPeerDemoTestScript
-- (MSDKPeerDemoTestScript)initWithCoder:(id)a3;
-- (MSDKPeerDemoTestScript)initWithName:(id)a3 andMethods:(id)a4;
+- (MSDKPeerDemoTestScript)initWithCoder:(id)coder;
+- (MSDKPeerDemoTestScript)initWithName:(id)name andMethods:(id)methods;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSDKPeerDemoTestScript
 
-- (MSDKPeerDemoTestScript)initWithName:(id)a3 andMethods:(id)a4
+- (MSDKPeerDemoTestScript)initWithName:(id)name andMethods:(id)methods
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  methodsCopy = methods;
   v11.receiver = self;
   v11.super_class = MSDKPeerDemoTestScript;
   v8 = [(MSDKPeerDemoTestScript *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MSDKPeerDemoTestScript *)v8 setName:v6];
-    [(MSDKPeerDemoTestScript *)v9 setMethods:v7];
+    [(MSDKPeerDemoTestScript *)v8 setName:nameCopy];
+    [(MSDKPeerDemoTestScript *)v9 setMethods:methodsCopy];
   }
 
   return v9;
@@ -29,42 +29,42 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MSDKPeerDemoTestScript *)self name];
-  v7 = [(MSDKPeerDemoTestScript *)self methods];
-  v8 = [v3 stringWithFormat:@"<%@[%p]: Name=%@ Methods=%@>", v5, self, v6, v7];
+  name = [(MSDKPeerDemoTestScript *)self name];
+  methods = [(MSDKPeerDemoTestScript *)self methods];
+  v8 = [v3 stringWithFormat:@"<%@[%p]: Name=%@ Methods=%@>", v5, self, name, methods];
 
   return v8;
 }
 
-- (MSDKPeerDemoTestScript)initWithCoder:(id)a3
+- (MSDKPeerDemoTestScript)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MSDKPeerDemoTestScript;
   v5 = [(MSDKPeerDemoTestScript *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(MSDKPeerDemoTestScript *)v5 setName:v6];
 
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"testMethods"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"testMethods"];
     [(MSDKPeerDemoTestScript *)v5 setMethods:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MSDKPeerDemoTestScript *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(MSDKPeerDemoTestScript *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(MSDKPeerDemoTestScript *)self methods];
-  [v4 encodeObject:v6 forKey:@"testMethods"];
+  methods = [(MSDKPeerDemoTestScript *)self methods];
+  [coderCopy encodeObject:methods forKey:@"testMethods"];
 }
 
 @end

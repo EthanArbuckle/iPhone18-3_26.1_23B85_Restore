@@ -1,46 +1,46 @@
 @interface CNUIPRLikenessResolver
-+ (id)badgeCacheKeyForLikenessBadge:(id)a3;
++ (id)badgeCacheKeyForLikenessBadge:(id)badge;
 + (unint64_t)maxContacts;
 - (CNContactStore)contactStore;
 - (CNSchedulerProvider)schedulerProvider;
 - (CNUIPRLikenessProvider)loadingPlaceholderLikeness;
-- (CNUIPRLikenessResolver)initWithContactStore:(id)a3 scheduler:(id)a4;
-- (CNUIPRLikenessResolver)initWithContactStore:(id)a3 scheduler:(id)a4 meMonitor:(id)a5;
-- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)a3 capacity:(unint64_t)a4;
-- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)a3 capacity:(unint64_t)a4 schedulerProvider:(id)a5;
-- (id)badgeObservableWithLikenessBadge:(id)a3 workScheduler:(id)a4;
-- (id)badgeWithLikenessBadge:(id)a3;
-- (id)basicMonogramFromString:(id)a3 color:(id)a4;
-- (id)basicMonogramObservableFromString:(id)a3 color:(id)a4;
-- (id)likenessForContact:(id)a3 error:(id *)a4;
-- (id)likenessForContact:(id)a3 options:(id)a4 error:(id *)a5;
+- (CNUIPRLikenessResolver)initWithContactStore:(id)store scheduler:(id)scheduler;
+- (CNUIPRLikenessResolver)initWithContactStore:(id)store scheduler:(id)scheduler meMonitor:(id)monitor;
+- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity;
+- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity schedulerProvider:(id)provider;
+- (id)badgeObservableWithLikenessBadge:(id)badge workScheduler:(id)scheduler;
+- (id)badgeWithLikenessBadge:(id)badge;
+- (id)basicMonogramFromString:(id)string color:(id)color;
+- (id)basicMonogramObservableFromString:(id)string color:(id)color;
+- (id)likenessForContact:(id)contact error:(id *)error;
+- (id)likenessForContact:(id)contact options:(id)options error:(id *)error;
 - (id)likenessLookup;
-- (id)likenessesForContact:(id)a3 options:(id)a4 workScheduler:(id)a5;
-- (id)likenessesForContacts:(id)a3 options:(id)a4 error:(id)a5;
-- (id)resolveLikenessesForContacts:(id)a3 workScheduler:(id)a4 withContentHandler:(id)a5;
+- (id)likenessesForContact:(id)contact options:(id)options workScheduler:(id)scheduler;
+- (id)likenessesForContacts:(id)contacts options:(id)options error:(id)error;
+- (id)resolveLikenessesForContacts:(id)contacts workScheduler:(id)scheduler withContentHandler:(id)handler;
 - (int64_t)prohibitedSources;
 - (void)dealloc;
-- (void)setPlaceholderProviderFactory:(id)a3;
-- (void)setProhibitedSources:(int64_t)a3;
+- (void)setPlaceholderProviderFactory:(id)factory;
+- (void)setProhibitedSources:(int64_t)sources;
 @end
 
 @implementation CNUIPRLikenessResolver
 
 - (CNContactStore)contactStore
 {
-  v2 = [(CNUIPRLikenessResolver *)self likenessLookup];
-  v3 = [v2 contactStore];
+  likenessLookup = [(CNUIPRLikenessResolver *)self likenessLookup];
+  contactStore = [likenessLookup contactStore];
 
-  return v3;
+  return contactStore;
 }
 
 - (id)likenessLookup
 {
   objc_opt_class();
-  v3 = [(CNUIPRLikenessResolver *)self likenessResolver];
+  likenessResolver = [(CNUIPRLikenessResolver *)self likenessResolver];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = likenessResolver;
   }
 
   else
@@ -66,72 +66,72 @@
   }
 }
 
-- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)a3 capacity:(unint64_t)a4
+- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity
 {
   v6 = MEMORY[0x1E6996820];
-  v7 = a3;
-  v8 = [v6 defaultProvider];
-  v9 = [(CNUIPRLikenessResolver *)self initWithLikenessResolver:v7 capacity:a4 schedulerProvider:v8];
+  resolverCopy = resolver;
+  defaultProvider = [v6 defaultProvider];
+  v9 = [(CNUIPRLikenessResolver *)self initWithLikenessResolver:resolverCopy capacity:capacity schedulerProvider:defaultProvider];
 
   return v9;
 }
 
-- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)a3 capacity:(unint64_t)a4 schedulerProvider:(id)a5
+- (CNUIPRLikenessResolver)initWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity schedulerProvider:(id)provider
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  resolverCopy = resolver;
+  providerCopy = provider;
   v44.receiver = self;
   v44.super_class = CNUIPRLikenessResolver;
   v11 = [(CNUIPRLikenessResolver *)&v44 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_likenessResolver, a3);
-    v13 = [MEMORY[0x1E6996660] atomicCache];
+    objc_storeStrong(&v11->_likenessResolver, resolver);
+    atomicCache = [MEMORY[0x1E6996660] atomicCache];
     workTrackingCache = v12->_workTrackingCache;
-    v12->_workTrackingCache = v13;
+    v12->_workTrackingCache = atomicCache;
 
     v15 = objc_alloc_init(MEMORY[0x1E6996878]);
     lock = v12->_lock;
     v12->_lock = v15;
 
     v17 = objc_alloc(MEMORY[0x1E6996660]);
-    v18 = [MEMORY[0x1E6996660] boundingStrategyWithCapacity:a4];
+    v18 = [MEMORY[0x1E6996660] boundingStrategyWithCapacity:capacity];
     v45[0] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-    v20 = [MEMORY[0x1E6996660] atomicCacheScheduler];
-    v21 = [v17 initWithBoundingStrategies:v19 resourceScheduler:v20];
+    atomicCacheScheduler = [MEMORY[0x1E6996660] atomicCacheScheduler];
+    v21 = [v17 initWithBoundingStrategies:v19 resourceScheduler:atomicCacheScheduler];
     likenessProviderCache = v12->_likenessProviderCache;
     v12->_likenessProviderCache = v21;
 
-    v23 = [v9 placeholderProviderFactory];
+    placeholderProviderFactory = [resolverCopy placeholderProviderFactory];
     placeholderProviderFactory = v12->_placeholderProviderFactory;
-    v12->_placeholderProviderFactory = v23;
+    v12->_placeholderProviderFactory = placeholderProviderFactory;
 
-    v25 = [v10 mainThreadScheduler];
-    v26 = [v10 newSynchronousSerialSchedulerWithName:@"com.apple.contacts.ContactsUICore._CNUIPRLikenessCachingResolver"];
-    v27 = [v10 immediateScheduler];
+    mainThreadScheduler = [providerCopy mainThreadScheduler];
+    v26 = [providerCopy newSynchronousSerialSchedulerWithName:@"com.apple.contacts.ContactsUICore._CNUIPRLikenessCachingResolver"];
+    immediateScheduler = [providerCopy immediateScheduler];
     v28 = objc_alloc(MEMORY[0x1E6996820]);
     v41 = v26;
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __78__CNUIPRLikenessResolver_initWithLikenessResolver_capacity_schedulerProvider___block_invoke;
     v42[3] = &unk_1E76E89B0;
-    v43 = v25;
+    v43 = mainThreadScheduler;
     v37 = MEMORY[0x1E69E9820];
     v38 = 3221225472;
     v39 = __78__CNUIPRLikenessResolver_initWithLikenessResolver_capacity_schedulerProvider___block_invoke_2;
     v40 = &unk_1E76E89B0;
     v29 = v26;
-    v30 = v25;
-    v31 = [v28 initWithBackgroundScheduler:v30 mainThreadScheduler:v30 immediateScheduler:v27 serialSchedulerProvider:v42 synchronousSerialSchedulerProvider:&v37 readerWriterSchedulerProvider:&__block_literal_global_26];
+    v30 = mainThreadScheduler;
+    v31 = [v28 initWithBackgroundScheduler:v30 mainThreadScheduler:v30 immediateScheduler:immediateScheduler serialSchedulerProvider:v42 synchronousSerialSchedulerProvider:&v37 readerWriterSchedulerProvider:&__block_literal_global_26];
     mainThreadSchedulerProvider = v12->_mainThreadSchedulerProvider;
     v12->_mainThreadSchedulerProvider = v31;
 
-    v33 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v34 = [v33 notificationCenter];
-    [v34 addObserver:v12 selector:sel_databaseChanged_ name:*MEMORY[0x1E695C3D8] object:0];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    notificationCenter = [currentEnvironment notificationCenter];
+    [notificationCenter addObserver:v12 selector:sel_databaseChanged_ name:*MEMORY[0x1E695C3D8] object:0];
 
     v35 = v12;
   }
@@ -149,18 +149,18 @@ id __78__CNUIPRLikenessResolver_initWithLikenessResolver_capacity_schedulerProvi
 - (void)dealloc
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 notificationCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E695C3D8] object:0];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  notificationCenter = [currentEnvironment notificationCenter];
+  [notificationCenter removeObserver:self name:*MEMORY[0x1E695C3D8] object:0];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CNUIPRLikenessResolver *)self workTrackingCache];
-  v6 = [v5 allObjects];
+  workTrackingCache = [(CNUIPRLikenessResolver *)self workTrackingCache];
+  allObjects = [workTrackingCache allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -172,14 +172,14 @@ id __78__CNUIPRLikenessResolver_initWithLikenessResolver_capacity_schedulerProvi
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) cancel];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -190,11 +190,11 @@ id __78__CNUIPRLikenessResolver_initWithLikenessResolver_capacity_schedulerProvi
   [(CNUIPRLikenessResolver *)&v11 dealloc];
 }
 
-- (id)resolveLikenessesForContacts:(id)a3 workScheduler:(id)a4 withContentHandler:(id)a5
+- (id)resolveLikenessesForContacts:(id)contacts workScheduler:(id)scheduler withContentHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  schedulerCopy = scheduler;
+  handlerCopy = handler;
+  contactsCopy = contacts;
   v11 = +[CNUICoreLogProvider likenesses_os_log];
   v12 = os_signpost_id_generate(v11);
 
@@ -206,28 +206,28 @@ id __78__CNUIPRLikenessResolver_initWithLikenessResolver_capacity_schedulerProvi
     _os_signpost_emit_with_name_impl(&dword_1A31E6000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "Resolve Likeness", "", buf, 2u);
   }
 
-  v15 = [v10 _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
+  v15 = [contactsCopy _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
 
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __88__CNUIPRLikenessResolver_resolveLikenessesForContacts_workScheduler_withContentHandler___block_invoke;
   v32[3] = &unk_1E76E89F8;
   v32[4] = self;
-  v33 = v8;
-  v16 = v8;
+  v33 = schedulerCopy;
+  v16 = schedulerCopy;
   v17 = [v15 _cn_map:v32];
 
   v18 = MEMORY[0x1E6996798];
-  v19 = [(CNUIPRLikenessResolver *)self mainThreadSchedulerProvider];
-  v20 = [v18 combineLatest:v17 resultScheduler:v16 schedulerProvider:v19];
+  mainThreadSchedulerProvider = [(CNUIPRLikenessResolver *)self mainThreadSchedulerProvider];
+  v20 = [v18 combineLatest:v17 resultScheduler:v16 schedulerProvider:mainThreadSchedulerProvider];
   v21 = MEMORY[0x1E69967A0];
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __88__CNUIPRLikenessResolver_resolveLikenessesForContacts_workScheduler_withContentHandler___block_invoke_2;
   v29 = &unk_1E76E8A20;
-  v30 = v9;
+  v30 = handlerCopy;
   v31 = v12;
-  v22 = v9;
+  v22 = handlerCopy;
   v23 = [v21 observerWithResultBlock:&v26];
   v24 = [v20 subscribe:{v23, v26, v27, v28, v29}];
 
@@ -249,16 +249,16 @@ void __88__CNUIPRLikenessResolver_resolveLikenessesForContacts_workScheduler_wit
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)likenessesForContact:(id)a3 options:(id)a4 workScheduler:(id)a5
+- (id)likenessesForContact:(id)contact options:(id)options workScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CNUIPRLikenessResolver *)self likenessResolver];
+  contactCopy = contact;
+  optionsCopy = options;
+  schedulerCopy = scheduler;
+  likenessResolver = [(CNUIPRLikenessResolver *)self likenessResolver];
 
-  if (v11)
+  if (likenessResolver)
   {
-    v12 = [objc_opt_class() _cacheKeyForContact:v8];
+    v12 = [objc_opt_class() _cacheKeyForContact:contactCopy];
     v13 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -271,28 +271,28 @@ void __88__CNUIPRLikenessResolver_resolveLikenessesForContacts_workScheduler_wit
       [CNUIPRLikenessResolver likenessesForContact:options:workScheduler:];
     }
 
-    v15 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
-    v16 = [v15 objectForKey:v12];
+    likenessProviderCache = [(CNUIPRLikenessResolver *)self likenessProviderCache];
+    v16 = [likenessProviderCache objectForKey:v12];
 
     if (v16)
     {
-      v17 = [MEMORY[0x1E6996798] observableWithResult:v16];
+      emptyObservable = [MEMORY[0x1E6996798] observableWithResult:v16];
     }
 
     else
     {
-      v35 = v9;
+      v35 = optionsCopy;
       v18 = +[CNUICoreLogProvider likenesses_os_log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         [CNUIPRLikenessResolver likenessesForContact:options:workScheduler:];
       }
 
-      v19 = [(CNUIPRLikenessResolver *)self mainThreadSchedulerProvider];
-      v34 = [MEMORY[0x1E696AFB0] UUID];
-      v33 = v19;
-      v20 = [(CNReplaySubject *)[CNUIPRLikenessResolverReplaySubject alloc] initWithCapacity:1 schedulerProvider:v19];
-      v32 = [(CNUIPRLikenessResolver *)self loadingPlaceholderLikeness];
+      mainThreadSchedulerProvider = [(CNUIPRLikenessResolver *)self mainThreadSchedulerProvider];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v33 = mainThreadSchedulerProvider;
+      v20 = [(CNReplaySubject *)[CNUIPRLikenessResolverReplaySubject alloc] initWithCapacity:1 schedulerProvider:mainThreadSchedulerProvider];
+      loadingPlaceholderLikeness = [(CNUIPRLikenessResolver *)self loadingPlaceholderLikeness];
       [(CNReplaySubject *)v20 observerDidReceiveResult:?];
       v21 = +[CNUICoreLogProvider likenesses_os_log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -300,9 +300,9 @@ void __88__CNUIPRLikenessResolver_resolveLikenessesForContacts_workScheduler_wit
         [CNUIPRLikenessResolver likenessesForContact:options:workScheduler:];
       }
 
-      v22 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
-      v23 = [(CNUIPRLikenessResolver *)self workTrackingCache];
-      v24 = [(CNUIPRLikenessResolver *)self lock];
+      likenessProviderCache2 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
+      workTrackingCache = [(CNUIPRLikenessResolver *)self workTrackingCache];
+      lock = [(CNUIPRLikenessResolver *)self lock];
       v49[0] = 0;
       v49[1] = v49;
       v49[2] = 0x2020000000;
@@ -312,38 +312,38 @@ void __88__CNUIPRLikenessResolver_resolveLikenessesForContacts_workScheduler_wit
       v39[2] = __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler___block_invoke;
       v39[3] = &unk_1E76E8A70;
       v39[4] = self;
-      v40 = v8;
+      v40 = contactCopy;
       v41 = v35;
       v25 = v20;
       v42 = v25;
-      v31 = v22;
+      v31 = likenessProviderCache2;
       v43 = v31;
       v44 = v12;
-      v26 = v24;
+      v26 = lock;
       v45 = v26;
-      v27 = v23;
+      v27 = workTrackingCache;
       v46 = v27;
-      v28 = v34;
+      v28 = uUID;
       v47 = v28;
       v48 = v49;
-      v29 = [v10 performCancelableBlock:v39];
+      v29 = [schedulerCopy performCancelableBlock:v39];
       v36 = v27;
       v37 = v28;
       v38 = v29;
       CNRunWithLock();
-      v17 = v25;
+      emptyObservable = v25;
 
       _Block_object_dispose(v49, 8);
-      v9 = v35;
+      optionsCopy = v35;
     }
   }
 
   else
   {
-    v17 = [MEMORY[0x1E6996798] emptyObservable];
+    emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
   }
 
-  return v17;
+  return emptyObservable;
 }
 
 void __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler___block_invoke(uint64_t a1)
@@ -399,25 +399,25 @@ uint64_t __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler
   return result;
 }
 
-- (id)basicMonogramObservableFromString:(id)a3 color:(id)a4
+- (id)basicMonogramObservableFromString:(id)string color:(id)color
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNUIPRLikenessResolver *)self likenessResolver];
-  v9 = [v8 basicMonogramObservableFromString:v7 color:v6];
+  colorCopy = color;
+  stringCopy = string;
+  likenessResolver = [(CNUIPRLikenessResolver *)self likenessResolver];
+  v9 = [likenessResolver basicMonogramObservableFromString:stringCopy color:colorCopy];
 
   return v9;
 }
 
-- (id)badgeObservableWithLikenessBadge:(id)a3 workScheduler:(id)a4
+- (id)badgeObservableWithLikenessBadge:(id)badge workScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNUIPRLikenessResolver *)self likenessResolver];
+  badgeCopy = badge;
+  schedulerCopy = scheduler;
+  likenessResolver = [(CNUIPRLikenessResolver *)self likenessResolver];
 
-  if (v8)
+  if (likenessResolver)
   {
-    v9 = [objc_opt_class() badgeCacheKeyForLikenessBadge:v6];
+    v9 = [objc_opt_class() badgeCacheKeyForLikenessBadge:badgeCopy];
     v10 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -430,12 +430,12 @@ uint64_t __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler
       [CNUIPRLikenessResolver badgeObservableWithLikenessBadge:workScheduler:];
     }
 
-    v12 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
-    v13 = [v12 objectForKey:v9];
+    likenessProviderCache = [(CNUIPRLikenessResolver *)self likenessProviderCache];
+    v13 = [likenessProviderCache objectForKey:v9];
 
     if (v13)
     {
-      v14 = [MEMORY[0x1E6996798] observableWithResult:v13];
+      emptyObservable = [MEMORY[0x1E6996798] observableWithResult:v13];
     }
 
     else
@@ -446,11 +446,11 @@ uint64_t __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler
         [CNUIPRLikenessResolver badgeObservableWithLikenessBadge:workScheduler:];
       }
 
-      v16 = [(CNUIPRLikenessResolver *)self mainThreadSchedulerProvider];
-      v31 = [MEMORY[0x1E696AFB0] UUID];
-      v30 = v16;
-      v17 = [(CNReplaySubject *)[CNUIPRLikenessResolverReplaySubject alloc] initWithCapacity:1 schedulerProvider:v16];
-      v29 = [(CNUIPRLikenessResolver *)self loadingPlaceholderLikeness];
+      mainThreadSchedulerProvider = [(CNUIPRLikenessResolver *)self mainThreadSchedulerProvider];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v30 = mainThreadSchedulerProvider;
+      v17 = [(CNReplaySubject *)[CNUIPRLikenessResolverReplaySubject alloc] initWithCapacity:1 schedulerProvider:mainThreadSchedulerProvider];
+      loadingPlaceholderLikeness = [(CNUIPRLikenessResolver *)self loadingPlaceholderLikeness];
       [(CNReplaySubject *)v17 observerDidReceiveResult:?];
       v18 = +[CNUICoreLogProvider likenesses_os_log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -458,9 +458,9 @@ uint64_t __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler
         [CNUIPRLikenessResolver likenessesForContact:options:workScheduler:];
       }
 
-      v19 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
-      v20 = [(CNUIPRLikenessResolver *)self workTrackingCache];
-      v21 = [(CNUIPRLikenessResolver *)self lock];
+      likenessProviderCache2 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
+      workTrackingCache = [(CNUIPRLikenessResolver *)self workTrackingCache];
+      lock = [(CNUIPRLikenessResolver *)self lock];
       v44[0] = 0;
       v44[1] = v44;
       v44[2] = 0x2020000000;
@@ -470,25 +470,25 @@ uint64_t __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler
       v35[2] = __73__CNUIPRLikenessResolver_badgeObservableWithLikenessBadge_workScheduler___block_invoke;
       v35[3] = &unk_1E76E8AC0;
       v35[4] = self;
-      v36 = v6;
+      v36 = badgeCopy;
       v37 = v9;
       v22 = v17;
       v38 = v22;
-      v28 = v19;
+      v28 = likenessProviderCache2;
       v39 = v28;
-      v23 = v21;
+      v23 = lock;
       v40 = v23;
-      v24 = v20;
+      v24 = workTrackingCache;
       v41 = v24;
-      v25 = v31;
+      v25 = uUID;
       v42 = v25;
       v43 = v44;
-      v26 = [v7 performCancelableBlock:v35];
+      v26 = [schedulerCopy performCancelableBlock:v35];
       v32 = v24;
       v33 = v25;
       v34 = v26;
       CNRunWithLock();
-      v14 = v22;
+      emptyObservable = v22;
 
       _Block_object_dispose(v44, 8);
     }
@@ -496,10 +496,10 @@ uint64_t __69__CNUIPRLikenessResolver_likenessesForContact_options_workScheduler
 
   else
   {
-    v14 = [MEMORY[0x1E6996798] emptyObservable];
+    emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
   }
 
-  return v14;
+  return emptyObservable;
 }
 
 void __73__CNUIPRLikenessResolver_badgeObservableWithLikenessBadge_workScheduler___block_invoke(uint64_t a1)
@@ -537,21 +537,21 @@ uint64_t __73__CNUIPRLikenessResolver_badgeObservableWithLikenessBadge_workSched
   return result;
 }
 
-+ (id)badgeCacheKeyForLikenessBadge:(id)a3
++ (id)badgeCacheKeyForLikenessBadge:(id)badge
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 imageData];
-  v5 = [v4 _cn_md5Hash];
-  v6 = [v5 _cn_hexString];
-  v7 = [v3 stringWithFormat:@"Badge-%@", v6];
+  imageData = [badge imageData];
+  _cn_md5Hash = [imageData _cn_md5Hash];
+  _cn_hexString = [_cn_md5Hash _cn_hexString];
+  v7 = [v3 stringWithFormat:@"Badge-%@", _cn_hexString];
 
   return v7;
 }
 
-- (id)badgeWithLikenessBadge:(id)a3
+- (id)badgeWithLikenessBadge:(id)badge
 {
-  v4 = a3;
-  v5 = [objc_opt_class() badgeCacheKeyForLikenessBadge:v4];
+  badgeCopy = badge;
+  v5 = [objc_opt_class() badgeCacheKeyForLikenessBadge:badgeCopy];
   v6 = +[CNUICoreLogProvider likenesses_os_log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -564,17 +564,17 @@ uint64_t __73__CNUIPRLikenessResolver_badgeObservableWithLikenessBadge_workSched
     [CNUIPRLikenessResolver badgeObservableWithLikenessBadge:workScheduler:];
   }
 
-  v8 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
+  likenessProviderCache = [(CNUIPRLikenessResolver *)self likenessProviderCache];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__CNUIPRLikenessResolver_badgeWithLikenessBadge___block_invoke;
   v13[3] = &unk_1E76E8AE8;
   v14 = v5;
-  v15 = self;
-  v16 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v16 = badgeCopy;
+  v9 = badgeCopy;
   v10 = v5;
-  v11 = [v8 objectForKey:v10 onCacheMiss:v13];
+  v11 = [likenessProviderCache objectForKey:v10 onCacheMiss:v13];
 
   return v11;
 }
@@ -593,30 +593,30 @@ id __49__CNUIPRLikenessResolver_badgeWithLikenessBadge___block_invoke(uint64_t a
   return v4;
 }
 
-- (id)basicMonogramFromString:(id)a3 color:(id)a4
+- (id)basicMonogramFromString:(id)string color:(id)color
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNUIPRLikenessResolver *)self likenessResolver];
-  v9 = [v8 basicMonogramFromString:v7 color:v6];
+  colorCopy = color;
+  stringCopy = string;
+  likenessResolver = [(CNUIPRLikenessResolver *)self likenessResolver];
+  v9 = [likenessResolver basicMonogramFromString:stringCopy color:colorCopy];
 
   return v9;
 }
 
-- (id)likenessForContact:(id)a3 error:(id *)a4
+- (id)likenessForContact:(id)contact error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNUIPRLikenessResolver *)self likenessResolver];
-  v8 = [v7 likenessForContact:v6 options:0 error:a4];
+  contactCopy = contact;
+  likenessResolver = [(CNUIPRLikenessResolver *)self likenessResolver];
+  v8 = [likenessResolver likenessForContact:contactCopy options:0 error:error];
 
   return v8;
 }
 
-- (id)likenessForContact:(id)a3 options:(id)a4 error:(id *)a5
+- (id)likenessForContact:(id)contact options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() _cacheKeyForContact:v8];
+  contactCopy = contact;
+  optionsCopy = options;
+  v10 = [objc_opt_class() _cacheKeyForContact:contactCopy];
   v11 = +[CNUICoreLogProvider likenesses_os_log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -629,20 +629,20 @@ id __49__CNUIPRLikenessResolver_badgeWithLikenessBadge___block_invoke(uint64_t a
     [CNUIPRLikenessResolver likenessesForContact:options:workScheduler:];
   }
 
-  v13 = [(CNUIPRLikenessResolver *)self likenessProviderCache];
+  likenessProviderCache = [(CNUIPRLikenessResolver *)self likenessProviderCache];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __59__CNUIPRLikenessResolver_likenessForContact_options_error___block_invoke;
   v19[3] = &unk_1E76E8B10;
   v20 = v10;
-  v21 = self;
-  v22 = v8;
-  v23 = v9;
-  v24 = a5;
-  v14 = v9;
-  v15 = v8;
+  selfCopy = self;
+  v22 = contactCopy;
+  v23 = optionsCopy;
+  errorCopy = error;
+  v14 = optionsCopy;
+  v15 = contactCopy;
   v16 = v10;
-  v17 = [v13 objectForKey:v16 onCacheMiss:v19];
+  v17 = [likenessProviderCache objectForKey:v16 onCacheMiss:v19];
 
   return v17;
 }
@@ -661,19 +661,19 @@ id __59__CNUIPRLikenessResolver_likenessForContact_options_error___block_invoke(
   return v4;
 }
 
-- (id)likenessesForContacts:(id)a3 options:(id)a4 error:(id)a5
+- (id)likenessesForContacts:(id)contacts options:(id)options error:(id)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
+  optionsCopy = options;
+  contactsCopy = contacts;
+  v9 = [contactsCopy _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__CNUIPRLikenessResolver_likenessesForContacts_options_error___block_invoke;
   v13[3] = &unk_1E76E89F8;
   v13[4] = self;
-  v14 = v7;
-  v10 = v7;
+  v14 = optionsCopy;
+  v10 = optionsCopy;
   v11 = [v9 _cn_map:v13];
 
   return v11;
@@ -681,58 +681,58 @@ id __59__CNUIPRLikenessResolver_likenessForContact_options_error___block_invoke(
 
 - (CNUIPRLikenessProvider)loadingPlaceholderLikeness
 {
-  v2 = [(CNUIPRLikenessResolver *)self likenessResolver];
-  v3 = [v2 loadingPlaceholderLikeness];
+  likenessResolver = [(CNUIPRLikenessResolver *)self likenessResolver];
+  loadingPlaceholderLikeness = [likenessResolver loadingPlaceholderLikeness];
 
-  return v3;
+  return loadingPlaceholderLikeness;
 }
 
-- (void)setProhibitedSources:(int64_t)a3
+- (void)setProhibitedSources:(int64_t)sources
 {
-  v4 = [(CNUIPRLikenessResolver *)self likenessLookup];
-  [v4 setProhibitedSources:a3];
+  likenessLookup = [(CNUIPRLikenessResolver *)self likenessLookup];
+  [likenessLookup setProhibitedSources:sources];
 }
 
 - (int64_t)prohibitedSources
 {
-  v2 = [(CNUIPRLikenessResolver *)self likenessLookup];
-  v3 = [v2 prohibitedSources];
+  likenessLookup = [(CNUIPRLikenessResolver *)self likenessLookup];
+  prohibitedSources = [likenessLookup prohibitedSources];
 
-  return v3;
+  return prohibitedSources;
 }
 
-- (void)setPlaceholderProviderFactory:(id)a3
+- (void)setPlaceholderProviderFactory:(id)factory
 {
-  objc_storeStrong(&self->_placeholderProviderFactory, a3);
-  v5 = a3;
-  v6 = [(CNUIPRLikenessResolver *)self likenessLookup];
-  [v6 setPlaceholderProviderFactory:v5];
+  objc_storeStrong(&self->_placeholderProviderFactory, factory);
+  factoryCopy = factory;
+  likenessLookup = [(CNUIPRLikenessResolver *)self likenessLookup];
+  [likenessLookup setPlaceholderProviderFactory:factoryCopy];
 }
 
 - (CNSchedulerProvider)schedulerProvider
 {
-  v2 = [(CNUIPRLikenessResolver *)self likenessLookup];
-  v3 = [v2 schedulerProvider];
+  likenessLookup = [(CNUIPRLikenessResolver *)self likenessLookup];
+  schedulerProvider = [likenessLookup schedulerProvider];
 
-  return v3;
+  return schedulerProvider;
 }
 
-- (CNUIPRLikenessResolver)initWithContactStore:(id)a3 scheduler:(id)a4
+- (CNUIPRLikenessResolver)initWithContactStore:(id)store scheduler:(id)scheduler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CNUIPRLikenessLookup alloc] initWithContactStore:v7 scheduler:v6];
+  schedulerCopy = scheduler;
+  storeCopy = store;
+  v8 = [[CNUIPRLikenessLookup alloc] initWithContactStore:storeCopy scheduler:schedulerCopy];
 
   v9 = [(CNUIPRLikenessResolver *)self initWithLikenessResolver:v8];
   return v9;
 }
 
-- (CNUIPRLikenessResolver)initWithContactStore:(id)a3 scheduler:(id)a4 meMonitor:(id)a5
+- (CNUIPRLikenessResolver)initWithContactStore:(id)store scheduler:(id)scheduler meMonitor:(id)monitor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CNUIPRLikenessLookup alloc] initWithContactStore:v10 scheduler:v9 meMonitor:v8];
+  monitorCopy = monitor;
+  schedulerCopy = scheduler;
+  storeCopy = store;
+  v11 = [[CNUIPRLikenessLookup alloc] initWithContactStore:storeCopy scheduler:schedulerCopy meMonitor:monitorCopy];
 
   v12 = [(CNUIPRLikenessResolver *)self initWithLikenessResolver:v11];
   return v12;

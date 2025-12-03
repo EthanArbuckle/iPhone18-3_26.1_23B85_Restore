@@ -20,9 +20,9 @@
   v17 = v16;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v18 = [v11 icLayoutManager];
-    v19 = [v11 textContainer];
-    [v18 ensureLayoutForTextContainer:v19];
+    icLayoutManager = [v11 icLayoutManager];
+    textContainer = [v11 textContainer];
+    [icLayoutManager ensureLayoutForTextContainer:textContainer];
   }
 
   [v11 clampTextView];
@@ -39,25 +39,25 @@
   v31 = v30;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v32 = [v11 icTextLayoutManager];
+    icTextLayoutManager = [v11 icTextLayoutManager];
     v33 = v23;
     v34 = v27;
-    v35 = [v32 characterRangeForBoundingRect:{v29, v31, v23, v27}];
+    v35 = [icTextLayoutManager characterRangeForBoundingRect:{v29, v31, v23, v27}];
     v37 = v36;
   }
 
   else
   {
-    v32 = [v11 icLayoutManager];
-    v38 = [v11 textContainer];
+    icTextLayoutManager = [v11 icLayoutManager];
+    textContainer2 = [v11 textContainer];
     v33 = v23;
     v34 = v27;
-    v35 = [v32 glyphRangeForBoundingRect:v38 inTextContainer:{v29, v31, v23, v27}];
+    v35 = [icTextLayoutManager glyphRangeForBoundingRect:textContainer2 inTextContainer:{v29, v31, v23, v27}];
     v37 = v39;
 
-    [v32 ensureGlyphsForCharacterRange:{a4, a5}];
-    [v32 setShouldManuallyRenderSeparateSubviews:1];
-    [v32 setIsDraggingChecklistItem:1];
+    [icTextLayoutManager ensureGlyphsForCharacterRange:{a4, a5}];
+    [icTextLayoutManager setShouldManuallyRenderSeparateSubviews:1];
+    [icTextLayoutManager setIsDraggingChecklistItem:1];
   }
 
   [v11 ic_rectForRange:{a4, a5}];
@@ -71,7 +71,7 @@
   v95[1] = 3221225472;
   v95[2] = __129__ICTextController_ICChecklistSortAnimation__performAnimatedSortForTrackedParagraphs_expandedRange_textView_sortChecklistsBlock___block_invoke;
   v95[3] = &unk_2781AED10;
-  v95[4] = a1;
+  v95[4] = self;
   v46 = v11;
   v98 = v35;
   v99 = v37;
@@ -91,17 +91,17 @@
   [v48 setFrame:{v67, v44, v69, v68}];
   [v46 addSubview:v48];
   v51 = a4;
-  [a1 addImageViewsBeforeSortIfNecessaryForTrackedInfos:v47 textView:v46 textContainerOrigin:v74 todoUUIDsToImageViews:{v15, v17}];
+  [self addImageViewsBeforeSortIfNecessaryForTrackedInfos:v47 textView:v46 textContainerOrigin:v74 todoUUIDsToImageViews:{v15, v17}];
   v73[2](v73);
 
-  v52 = [v46 icLayoutManager];
-  [v52 ensureLayoutForCharacterRange:{v51, v49}];
+  icLayoutManager2 = [v46 icLayoutManager];
+  [icLayoutManager2 ensureLayoutForCharacterRange:{v51, v49}];
   v53 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v13, "count")}];
   v86[0] = MEMORY[0x277D85DD0];
   v86[1] = 3221225472;
   v86[2] = __129__ICTextController_ICChecklistSortAnimation__performAnimatedSortForTrackedParagraphs_expandedRange_textView_sortChecklistsBlock___block_invoke_2;
   v86[3] = &unk_2781AED10;
-  v86[4] = a1;
+  v86[4] = self;
   v54 = v46;
   v87 = v54;
   v89 = v35;
@@ -115,9 +115,9 @@
   [v13 enumerateObjectsUsingBlock:v86];
 
   v56 = v47;
-  [a1 addImageViewsAfterSortIfNecessaryForTrackedInfos:v55 existingInfos:v47 textView:v54 textContainerOrigin:v74 todoUUIDsToImageViews:{v15, v17}];
-  [v52 setShouldManuallyRenderSeparateSubviews:0];
-  [v52 setIsDraggingChecklistItem:0];
+  [self addImageViewsAfterSortIfNecessaryForTrackedInfos:v55 existingInfos:v47 textView:v54 textContainerOrigin:v74 todoUUIDsToImageViews:{v15, v17}];
+  [icLayoutManager2 setShouldManuallyRenderSeparateSubviews:0];
+  [icLayoutManager2 setIsDraggingChecklistItem:0];
   LODWORD(v57) = 1051260355;
   LODWORD(v58) = 1045220557;
   LODWORD(v59) = 1.0;
@@ -127,7 +127,7 @@
   v80[1] = 3221225472;
   v80[2] = __129__ICTextController_ICChecklistSortAnimation__performAnimatedSortForTrackedParagraphs_expandedRange_textView_sortChecklistsBlock___block_invoke_3;
   v80[3] = &unk_2781AED38;
-  v80[4] = a1;
+  v80[4] = self;
   v81 = v55;
   v82 = v54;
   v84 = v15;
@@ -137,14 +137,14 @@
   v75[1] = 3221225472;
   v75[2] = __129__ICTextController_ICChecklistSortAnimation__performAnimatedSortForTrackedParagraphs_expandedRange_textView_sortChecklistsBlock___block_invoke_4;
   v75[3] = &unk_2781AC878;
-  v76 = v52;
+  v76 = icLayoutManager2;
   v77 = v48;
   v78 = v83;
   v79 = v82;
   v62 = v82;
   v63 = v83;
   v64 = v48;
-  v65 = v52;
+  v65 = icLayoutManager2;
   v66 = v55;
   [v61 ic_animateWithDuration:v60 timingFunction:v80 animations:v75 completion:0.35];
 }
@@ -157,7 +157,7 @@
   v15[1] = 3221225472;
   v15[2] = __147__ICTextController_ICChecklistSortAnimation__addImageViewsBeforeSortIfNecessaryForTrackedInfos_textView_textContainerOrigin_todoUUIDsToImageViews___block_invoke;
   v15[3] = &unk_2781AED60;
-  v18 = a1;
+  selfCopy = self;
   v19 = a2;
   v16 = v11;
   v17 = v12;
@@ -177,7 +177,7 @@
   v19[3] = &unk_2781AED88;
   v20 = v15;
   v21 = v13;
-  v23 = a1;
+  selfCopy = self;
   v24 = a2;
   v22 = v14;
   v16 = v14;
@@ -194,7 +194,7 @@
   v16[1] = 3221225472;
   v16[2] = __126__ICTextController_ICChecklistSortAnimation__setFinalFramesForSortedInfos_textView_textContainerOrigin_todoUUIDsToImageViews___block_invoke;
   v16[3] = &unk_2781AED88;
-  v16[4] = a1;
+  v16[4] = self;
   v17 = v12;
   v18 = v13;
   v19 = a2;
@@ -230,7 +230,7 @@
   v21 = NSIntersectionRange(v61, v62).length;
   if (v21)
   {
-    v22 = [v18 ic_platformAppearanceObject];
+    ic_platformAppearanceObject = [v18 ic_platformAppearanceObject];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __127__ICTextController_ICChecklistSortAnimation__imageInfoForTrackedParagraph_textView_characterRangeToRender_visibleRectToRender___block_invoke;
@@ -241,7 +241,7 @@
     v46 = location;
     v47 = length - (length > 1);
     v45 = &v54;
-    [v22 ic_performAsCurrent:v41];
+    [ic_platformAppearanceObject ic_performAsCurrent:v41];
   }
 
   else
@@ -249,17 +249,17 @@
     v23 = v49;
     *(v49 + 2) = v40;
     *(v23 + 3) = v39;
-    v24 = [v17 characterRange];
-    if (v24 + v25 <= a9)
+    characterRange = [v17 characterRange];
+    if (characterRange + v25 <= a9)
     {
       v28 = v49;
-      *(v49 + 4) = a1;
+      *(v49 + 4) = self;
       v28[5] = a2;
     }
 
     else
     {
-      v63.origin.x = a1;
+      v63.origin.x = self;
       v63.origin.y = a2;
       v63.size.width = a3;
       v63.size.height = a4;
@@ -277,17 +277,17 @@
   v30[4] = v31;
   v30[5] = v32;
   [(ICTrackedParagraphImageInfo *)v29 setImage:v55[5]];
-  v33 = [0 firstObject];
-  [v33 ic_rectValue];
+  firstObject = [0 firstObject];
+  [firstObject ic_rectValue];
   [(ICTrackedParagraphImageInfo *)v29 setBoundingRect:?];
 
   [(ICTrackedParagraphImageInfo *)v29 setTrackedParagraph:v17];
   [(ICTrackedParagraphImageInfo *)v29 setRect:*(v49 + 4), *(v49 + 5), *(v49 + 6), *(v49 + 7)];
-  v34 = [v17 paragraph];
-  v35 = [v34 todo];
-  v36 = [v35 uuid];
-  v37 = [v36 UUIDString];
-  [(ICTrackedParagraphImageInfo *)v29 setUuid:v37];
+  paragraph = [v17 paragraph];
+  todo = [paragraph todo];
+  uuid = [todo uuid];
+  uUIDString = [uuid UUIDString];
+  [(ICTrackedParagraphImageInfo *)v29 setUuid:uUIDString];
 
   [(ICTrackedParagraphImageInfo *)v29 setEstimated:v21 == 0];
   _Block_object_dispose(&v48, 8);

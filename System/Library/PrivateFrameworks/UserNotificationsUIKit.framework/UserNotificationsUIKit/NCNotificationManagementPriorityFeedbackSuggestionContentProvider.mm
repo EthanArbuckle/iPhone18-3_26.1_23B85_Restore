@@ -1,25 +1,25 @@
 @interface NCNotificationManagementPriorityFeedbackSuggestionContentProvider
-- (NCNotificationManagementPriorityFeedbackSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6;
+- (NCNotificationManagementPriorityFeedbackSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate;
 - (id)auxiliaryOptionActions;
-- (void)handleNegativeAction:(id)a3;
-- (void)handlePositiveAction:(id)a3;
+- (void)handleNegativeAction:(id)action;
+- (void)handlePositiveAction:(id)action;
 @end
 
 @implementation NCNotificationManagementPriorityFeedbackSuggestionContentProvider
 
-- (NCNotificationManagementPriorityFeedbackSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6
+- (NCNotificationManagementPriorityFeedbackSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate
 {
-  v10 = a4;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = NCNotificationManagementPriorityFeedbackSuggestionContentProvider;
-  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:a3 bundleDisplayName:v10 managementDelegate:a5 suggestionDelegate:a6];
+  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:request bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate];
   if (v11)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = NCUserNotificationsUIKitFrameworkBundle();
     v14 = [v13 localizedStringForKey:@"NOTIFICATION_MANAGEMENT_PRIORITY_FEEDBACK_SUGGESTION" value:&stru_282FE84F8 table:0];
-    v15 = [v12 stringWithFormat:v14, v10, v10];
-    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:v15];
+    nameCopy = [v12 stringWithFormat:v14, nameCopy, nameCopy];
+    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v11;
@@ -78,34 +78,34 @@ void __91__NCNotificationManagementPriorityFeedbackSuggestionContentProvider_aux
   [WeakRetained handleNegativeAction:v4];
 }
 
-- (void)handlePositiveAction:(id)a3
+- (void)handlePositiveAction:(id)action
 {
-  v9 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
   v4 = [NCSummarizationFeedbackManager alloc];
-  v5 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v6 = [(NCSummarizationFeedbackManager *)v4 initWithRequest:v5 isShowingStackSummary:0];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  v6 = [(NCSummarizationFeedbackManager *)v4 initWithRequest:notificationRequest isShowingStackSummary:0];
   [(NCSummarizationFeedbackManager *)v6 recordInternalPriorityFeedbackEvent:4];
 
   v7 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.proactive.PersonalizationPortrait"];
   [v7 setInteger:0 forKey:@"PriorityFeedbackSuggestionIgnoreCount"];
 
-  v8 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v9 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v8];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
-- (void)handleNegativeAction:(id)a3
+- (void)handleNegativeAction:(id)action
 {
-  v9 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
   v4 = [NCSummarizationFeedbackManager alloc];
-  v5 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v6 = [(NCSummarizationFeedbackManager *)v4 initWithRequest:v5 isShowingStackSummary:0];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  v6 = [(NCSummarizationFeedbackManager *)v4 initWithRequest:notificationRequest isShowingStackSummary:0];
   [(NCSummarizationFeedbackManager *)v6 recordInternalPriorityFeedbackEvent:5];
 
   v7 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.proactive.PersonalizationPortrait"];
   [v7 setInteger:0 forKey:@"PriorityFeedbackSuggestionIgnoreCount"];
 
-  v8 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v9 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v8];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
 @end

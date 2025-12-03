@@ -1,20 +1,20 @@
 @interface PTGlobalCinematographyMetadataVersion1
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)maximumRackFocusPullTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumRackFocusPullTime;
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4;
-- (PTGlobalCinematographyMetadataVersion1)initWithData:(id)a3;
-- (PTGlobalCinematographyMetadataVersion1)initWithMinorVersion:(unsigned int)a3;
-- (void)setMaximumRackFocusPullTime:(id *)a3;
-- (void)setMinimumRackFocusPullTime:(id *)a3;
+- (BOOL)writeToData:(id)data withOptions:(id)options;
+- (PTGlobalCinematographyMetadataVersion1)initWithData:(id)data;
+- (PTGlobalCinematographyMetadataVersion1)initWithMinorVersion:(unsigned int)version;
+- (void)setMaximumRackFocusPullTime:(id *)time;
+- (void)setMinimumRackFocusPullTime:(id *)time;
 @end
 
 @implementation PTGlobalCinematographyMetadataVersion1
 
-- (PTGlobalCinematographyMetadataVersion1)initWithMinorVersion:(unsigned int)a3
+- (PTGlobalCinematographyMetadataVersion1)initWithMinorVersion:(unsigned int)version
 {
   v8.receiver = self;
   v8.super_class = PTGlobalCinematographyMetadataVersion1;
-  v3 = [(PTGlobalCinematographyMetadata *)&v8 initWithMajorVersion:1 minorVersion:*&a3];
+  v3 = [(PTGlobalCinematographyMetadata *)&v8 initWithMajorVersion:1 minorVersion:*&version];
   if (v3)
   {
     CMTimeMake(&v7, 1, 3);
@@ -38,10 +38,10 @@
   return self;
 }
 
-- (void)setMinimumRackFocusPullTime:(id *)a3
+- (void)setMinimumRackFocusPullTime:(id *)time
 {
-  var3 = a3->var3;
-  *(&self->_focusPullerResistance + 1) = *&a3->var0;
+  var3 = time->var3;
+  *(&self->_focusPullerResistance + 1) = *&time->var0;
   *&self->_minimumRackFocusPullTime.flags = var3;
 }
 
@@ -52,22 +52,22 @@
   return self;
 }
 
-- (void)setMaximumRackFocusPullTime:(id *)a3
+- (void)setMaximumRackFocusPullTime:(id *)time
 {
-  var3 = a3->var3;
-  *(&self->_minimumRackFocusPullTime.epoch + 4) = *&a3->var0;
+  var3 = time->var3;
+  *(&self->_minimumRackFocusPullTime.epoch + 4) = *&time->var0;
   *&self->_maximumRackFocusPullTime.flags = var3;
 }
 
-- (PTGlobalCinematographyMetadataVersion1)initWithData:(id)a3
+- (PTGlobalCinematographyMetadataVersion1)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = bswap32(v5[3]);
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = bswap32(bytes[3]);
   v61.receiver = self;
   v61.super_class = PTGlobalCinematographyMetadataVersion1;
   v7 = [(PTGlobalCinematographyMetadata *)&v61 initWithMajorVersion:1 minorVersion:v6];
-  if (v7 && (v8 = bswap32(*v5), [v4 length] == v8) && (v8 & 7) == 0 && -[PTGlobalCinematographyMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalCinematographyMetadata majorVersion](v7, "majorVersion") == bswap32(v5[2]))
+  if (v7 && (v8 = bswap32(*bytes), [dataCopy length] == v8) && (v8 & 7) == 0 && -[PTGlobalCinematographyMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalCinematographyMetadata majorVersion](v7, "majorVersion") == bswap32(bytes[2]))
   {
     [OUTLINED_FUNCTION_4_0() getFloatParameter:1 fromPairs:? numPairs:? didFindValue:?];
     v7->_focusPullerAlpha = v9;
@@ -96,18 +96,18 @@
   return v49;
 }
 
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4
+- (BOOL)writeToData:(id)data withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTGlobalCinematographyMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
-  if ([v6 length] >= v8 && -[PTGlobalCinematographyMetadata majorVersion](self, "majorVersion") == 1)
+  dataCopy = data;
+  optionsCopy = options;
+  v8 = [(PTGlobalCinematographyMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
+  if ([dataCopy length] >= v8 && -[PTGlobalCinematographyMetadata majorVersion](self, "majorVersion") == 1)
   {
-    v9 = [v6 mutableBytes];
-    *v9 = bswap32([(PTGlobalCinematographyMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7]);
-    v9[1] = 1735683683;
-    v9[2] = bswap32([(PTGlobalCinematographyMetadata *)self majorVersion]);
-    v9[3] = bswap32([(PTGlobalCinematographyMetadata *)self minorVersion]);
+    mutableBytes = [dataCopy mutableBytes];
+    *mutableBytes = bswap32([(PTGlobalCinematographyMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy]);
+    mutableBytes[1] = 1735683683;
+    mutableBytes[2] = bswap32([(PTGlobalCinematographyMetadata *)self majorVersion]);
+    mutableBytes[3] = bswap32([(PTGlobalCinematographyMetadata *)self minorVersion]);
     *&v10 = OUTLINED_FUNCTION_2_2(16);
     [v11 appendFloatParameter:1 value:v10 toOutput:?];
     *&v12 = OUTLINED_FUNCTION_2_2(20);
@@ -120,8 +120,8 @@
     [v19 appendCMTimeParameter:5 value:v18 scale:? toOutput:?];
     *&v20 = OUTLINED_FUNCTION_2_2(76);
     [v21 appendFloatParameter:6 value:v20 toOutput:?];
-    v22 = v9 - [v6 bytes] + 16;
-    v23 = v22 == [(PTGlobalCinematographyMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
+    v22 = mutableBytes - [dataCopy bytes] + 16;
+    v23 = v22 == [(PTGlobalCinematographyMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
   }
 
   else

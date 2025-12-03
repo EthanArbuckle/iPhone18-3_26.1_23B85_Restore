@@ -11,26 +11,26 @@
   {
     if (a4)
     {
-      return [a1 setObject:? forKey:?];
+      return [self setObject:? forKey:?];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)getOrCreateObjectForKey:()PKMutableDictionaryAdditions creationBlock:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 objectForKeyedSubscript:v6];
+  v8 = [self objectForKeyedSubscript:v6];
 
   if (!v8)
   {
     v9 = v7[2](v7);
-    [a1 setObject:v9 forKeyedSubscript:v6];
+    [self setObject:v9 forKeyedSubscript:v6];
   }
 
-  v10 = [a1 objectForKeyedSubscript:v6];
+  v10 = [self objectForKeyedSubscript:v6];
 
   return v10;
 }

@@ -1,23 +1,23 @@
 @interface VSAudioSession
 + (id)sharedInstance;
-+ (int64_t)_VSAudioCategoryForActivity:(int64_t)a3;
++ (int64_t)_VSAudioCategoryForActivity:(int64_t)activity;
 - (VSAudioSession)init;
-- (int64_t)_nextActivityForActive:(BOOL)a3 activity:(int64_t)a4 serverActivity:(int64_t)a5;
+- (int64_t)_nextActivityForActive:(BOOL)active activity:(int64_t)activity serverActivity:(int64_t)serverActivity;
 - (int64_t)_safeServerGeneration;
-- (void)_audioSessionInterrupted:(id)a3;
-- (void)_mediaServicesWereReset:(id)a3;
-- (void)_safeSetActive:(BOOL)a3 withActivity:(int64_t)a4;
-- (void)_safeSetBluetoothInputAllowed:(BOOL)a3;
-- (void)_safeSetCategoryForActivity:(int64_t)a3;
+- (void)_audioSessionInterrupted:(id)interrupted;
+- (void)_mediaServicesWereReset:(id)reset;
+- (void)_safeSetActive:(BOOL)active withActivity:(int64_t)activity;
+- (void)_safeSetBluetoothInputAllowed:(BOOL)allowed;
+- (void)_safeSetCategoryForActivity:(int64_t)activity;
 - (void)_safeSetupAudioSession;
-- (void)_setCategoryForActivity:(int64_t)a3;
+- (void)_setCategoryForActivity:(int64_t)activity;
 - (void)_setupAudioSession;
 - (void)dealloc;
 @end
 
 @implementation VSAudioSession
 
-- (void)_safeSetBluetoothInputAllowed:(BOOL)a3
+- (void)_safeSetBluetoothInputAllowed:(BOOL)allowed
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -25,26 +25,26 @@
   v4[2] = sub_1000EA220;
   v4[3] = &unk_1000FEA90;
   v4[4] = self;
-  v5 = a3;
+  allowedCopy = allowed;
   dispatch_sync(queue, v4);
 }
 
-- (void)_safeSetActive:(BOOL)a3 withActivity:(int64_t)a4
+- (void)_safeSetActive:(BOOL)active withActivity:(int64_t)activity
 {
-  if (a4)
+  if (activity)
   {
-    v5 = a3;
+    activeCopy = active;
     v7 = VSGetLogDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v9 = "INACTIVE";
-      if (v5)
+      if (activeCopy)
       {
         v9 = "ACTIVE";
       }
 
       *buf = 67109378;
-      v13 = a4;
+      activityCopy = activity;
       v14 = 2080;
       v15 = v9;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "#AudioSession : activity %d --> %s\n", buf, 0x12u);
@@ -55,14 +55,14 @@
     block[1] = 3221225472;
     block[2] = sub_1000EA514;
     block[3] = &unk_1000FEA68;
-    v11 = v5;
+    v11 = activeCopy;
     block[4] = self;
-    block[5] = a4;
+    block[5] = activity;
     dispatch_sync(queue, block);
   }
 }
 
-- (void)_safeSetCategoryForActivity:(int64_t)a3
+- (void)_safeSetCategoryForActivity:(int64_t)activity
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -70,7 +70,7 @@
   v4[2] = sub_1000EA8BC;
   v4[3] = &unk_1000FEA40;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = activity;
   dispatch_sync(queue, v4);
 }
 
@@ -104,14 +104,14 @@
   dispatch_sync(queue, block);
 }
 
-- (int64_t)_nextActivityForActive:(BOOL)a3 activity:(int64_t)a4 serverActivity:(int64_t)a5
+- (int64_t)_nextActivityForActive:(BOOL)active activity:(int64_t)activity serverActivity:(int64_t)serverActivity
 {
   activityBag = self->_activityBag;
-  if (a3)
+  if (active)
   {
     if (activityBag)
     {
-      if ((a4 & 1) == 0)
+      if ((activity & 1) == 0)
       {
         goto LABEL_4;
       }
@@ -121,24 +121,24 @@
     {
       activityBag = CFBagCreateMutable(kCFAllocatorDefault, 0, 0);
       self->_activityBag = activityBag;
-      if ((a4 & 1) == 0)
+      if ((activity & 1) == 0)
       {
 LABEL_4:
-        if ((a4 & 2) == 0)
+        if ((activity & 2) == 0)
         {
-          return a5 | a4;
+          return serverActivity | activity;
         }
 
 LABEL_5:
         CFBagAddValue(self->_activityBag, 2);
-        return a5 | a4;
+        return serverActivity | activity;
       }
     }
 
     CFBagAddValue(activityBag, 1);
-    if ((a4 & 2) == 0)
+    if ((activity & 2) == 0)
     {
-      return a5 | a4;
+      return serverActivity | activity;
     }
 
     goto LABEL_5;
@@ -158,10 +158,10 @@ LABEL_28:
 
 LABEL_29:
 
-    return a5;
+    return serverActivity;
   }
 
-  if ((a4 & 1) == 0)
+  if ((activity & 1) == 0)
   {
     goto LABEL_12;
   }
@@ -173,13 +173,13 @@ LABEL_29:
     CFBagRemoveValue(self->_activityBag, 1);
     if (v10 == 1)
     {
-      a5 &= ~1uLL;
+      serverActivity &= ~1uLL;
     }
 
 LABEL_12:
-    if ((a4 & 2) == 0)
+    if ((activity & 2) == 0)
     {
-      return a5;
+      return serverActivity;
     }
 
 LABEL_13:
@@ -190,10 +190,10 @@ LABEL_13:
       CFBagRemoveValue(self->_activityBag, 2);
       if (v12 == 1)
       {
-        return a5 & 0xFFFFFFFFFFFFFFFDLL;
+        return serverActivity & 0xFFFFFFFFFFFFFFFDLL;
       }
 
-      return a5;
+      return serverActivity;
     }
 
     v13 = VSGetLogDefault();
@@ -215,17 +215,17 @@ LABEL_13:
     _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "#AudioSession active count went negative for input!\n", v20, 2u);
   }
 
-  if ((a4 & 2) != 0)
+  if ((activity & 2) != 0)
   {
     goto LABEL_13;
   }
 
-  return a5;
+  return serverActivity;
 }
 
-- (void)_setCategoryForActivity:(int64_t)a3
+- (void)_setCategoryForActivity:(int64_t)activity
 {
-  v4 = [VSAudioSession _VSAudioCategoryForActivity:a3];
+  v4 = [VSAudioSession _VSAudioCategoryForActivity:activity];
   if (v4)
   {
     v5 = v4;
@@ -262,9 +262,9 @@ LABEL_13:
         v13 = VSGetLogDefault();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v12 code];
+          code = [v12 code];
           *buf = 134217984;
-          v23 = v18;
+          v23 = code;
           _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "#AudioSession error %ld setting audio category\n", buf, 0xCu);
         }
       }
@@ -282,9 +282,9 @@ LABEL_13:
           {
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
             {
-              v17 = [v12 code];
+              code2 = [v12 code];
               *buf = 134217984;
-              v23 = v17;
+              v23 = code2;
               _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "#AudioSession error %ld setting bluetooth allowability\n", buf, 0xCu);
             }
           }
@@ -346,9 +346,9 @@ LABEL_13:
       v6 = VSGetLogDefault();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v7 = [v5 code];
+        code = [v5 code];
         *buf = 134217984;
-        v10 = v7;
+        v10 = code;
         _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "#AudioSession error setting HW sample rate: %ld\n", buf, 0xCu);
       }
     }
@@ -357,7 +357,7 @@ LABEL_13:
   }
 }
 
-- (void)_mediaServicesWereReset:(id)a3
+- (void)_mediaServicesWereReset:(id)reset
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -368,13 +368,13 @@ LABEL_13:
   dispatch_async(queue, block);
 }
 
-- (void)_audioSessionInterrupted:(id)a3
+- (void)_audioSessionInterrupted:(id)interrupted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:AVAudioSessionInterruptionTypeKey];
-  v6 = [v5 integerValue];
+  userInfo = [interrupted userInfo];
+  v5 = [userInfo objectForKey:AVAudioSessionInterruptionTypeKey];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -423,16 +423,16 @@ LABEL_13:
   return v2;
 }
 
-+ (int64_t)_VSAudioCategoryForActivity:(int64_t)a3
++ (int64_t)_VSAudioCategoryForActivity:(int64_t)activity
 {
-  if (a3)
+  if (activity)
   {
     return 2;
   }
 
   else
   {
-    return (a3 >> 1) & 1;
+    return (activity >> 1) & 1;
   }
 }
 

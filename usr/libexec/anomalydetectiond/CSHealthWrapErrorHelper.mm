@@ -1,31 +1,31 @@
 @interface CSHealthWrapErrorHelper
-+ (void)assignError:(id *)a3 code:(int)a4 format:(id)a5;
-+ (void)assignError:(id *)a3 code:(int64_t)a4 description:(id)a5;
++ (void)assignError:(id *)error code:(int)code format:(id)format;
++ (void)assignError:(id *)error code:(int64_t)code description:(id)description;
 @end
 
 @implementation CSHealthWrapErrorHelper
 
-+ (void)assignError:(id *)a3 code:(int64_t)a4 description:(id)a5
++ (void)assignError:(id *)error code:(int64_t)code description:(id)description
 {
-  if (a3)
+  if (error)
   {
     v11 = NSLocalizedDescriptionKey;
-    v12 = a5;
-    v7 = a5;
-    v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    v9 = [NSError errorWithDomain:@"com.apple.coresafety.healthwrap" code:a4 userInfo:v8];
+    descriptionCopy = description;
+    descriptionCopy2 = description;
+    v8 = [NSDictionary dictionaryWithObjects:&descriptionCopy forKeys:&v11 count:1];
+    v9 = [NSError errorWithDomain:@"com.apple.coresafety.healthwrap" code:code userInfo:v8];
 
     v10 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 }
 
-+ (void)assignError:(id *)a3 code:(int)a4 format:(id)a5
++ (void)assignError:(id *)error code:(int)code format:(id)format
 {
-  v8 = a5;
-  v9 = [[NSString alloc] initWithFormat:v8 arguments:&v10];
+  formatCopy = format;
+  v9 = [[NSString alloc] initWithFormat:formatCopy arguments:&v10];
 
-  [a1 assignError:a3 code:a4 description:v9];
+  [self assignError:error code:code description:v9];
 }
 
 @end

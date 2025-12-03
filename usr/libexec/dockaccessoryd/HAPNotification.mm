@@ -1,15 +1,15 @@
 @interface HAPNotification
-+ (id)typeToString:(unint64_t)a3;
-+ (void)postNotification:(id)a3 object:(id)a4 userInfo:(id)a5;
++ (id)typeToString:(unint64_t)string;
++ (void)postNotification:(id)notification object:(id)object userInfo:(id)info;
 @end
 
 @implementation HAPNotification
 
-+ (void)postNotification:(id)a3 object:(id)a4 userInfo:(id)a5
++ (void)postNotification:(id)notification object:(id)object userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  notificationCopy = notification;
+  objectCopy = object;
+  infoCopy = info;
   v10 = sub_10007FAA0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -17,31 +17,31 @@
     v13 = 138544130;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = notificationCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = objectCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = infoCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%{public}@CoreHAP - Sending notification %@ with object %@ and userInfo %@", &v13, 0x2Au);
   }
 
   v12 = +[NSNotificationCenter defaultCenter];
-  [v12 postNotificationName:v7 object:v8 userInfo:v9];
+  [v12 postNotificationName:notificationCopy object:objectCopy userInfo:infoCopy];
 }
 
-+ (id)typeToString:(unint64_t)a3
++ (id)typeToString:(unint64_t)string
 {
-  if (a3 - 1 >= 4)
+  if (string - 1 >= 4)
   {
-    v4 = [NSString stringWithFormat:@"Unknown Reachability Notification type %ld", a3];
+    string = [NSString stringWithFormat:@"Unknown Reachability Notification type %ld", string];
   }
 
   else
   {
-    v4 = off_100273598[a3 - 1];
+    string = off_100273598[string - 1];
   }
 
-  return v4;
+  return string;
 }
 
 @end

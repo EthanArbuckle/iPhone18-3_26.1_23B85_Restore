@@ -6,7 +6,7 @@
 - (void)_bootstrapSoundDetection;
 - (void)_soundDetectionSettingsDidUpdate;
 - (void)_startupSoundDetectionUIServer;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)dealloc;
 @end
 
@@ -48,49 +48,49 @@ uint64_t __38__AXBSoundDetectionManager_controller__block_invoke()
 - (void)_bootstrapSoundDetection
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x29EDBDDB8] sharedInstance];
+  mEMORY[0x29EDBDDB8] = [MEMORY[0x29EDBDDB8] sharedInstance];
   v21[0] = MEMORY[0x29EDCA5F8];
   v21[1] = 3221225472;
   v21[2] = __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke;
   v21[3] = &unk_29F2A4D08;
   objc_copyWeak(&v22, &location);
-  [v3 registerUpdateBlock:v21 forRetrieveSelector:sel_ultronSupportEnabled withListener:self];
+  [mEMORY[0x29EDBDDB8] registerUpdateBlock:v21 forRetrieveSelector:sel_ultronSupportEnabled withListener:self];
 
-  v4 = [MEMORY[0x29EDBDDB8] sharedInstance];
+  mEMORY[0x29EDBDDB8]2 = [MEMORY[0x29EDBDDB8] sharedInstance];
   v19[0] = MEMORY[0x29EDCA5F8];
   v19[1] = 3221225472;
   v19[2] = __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_2;
   v19[3] = &unk_29F2A4D08;
   objc_copyWeak(&v20, &location);
-  [v4 registerUpdateBlock:v19 forRetrieveSelector:sel_ultronIsRunning withListener:self];
+  [mEMORY[0x29EDBDDB8]2 registerUpdateBlock:v19 forRetrieveSelector:sel_ultronIsRunning withListener:self];
 
-  v5 = [MEMORY[0x29EDBDDB8] sharedInstance];
+  mEMORY[0x29EDBDDB8]3 = [MEMORY[0x29EDBDDB8] sharedInstance];
   v17[0] = MEMORY[0x29EDCA5F8];
   v17[1] = 3221225472;
   v17[2] = __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_3;
   v17[3] = &unk_29F2A4D08;
   objc_copyWeak(&v18, &location);
-  [v5 registerUpdateBlock:v17 forRetrieveSelector:sel_soundDetectionState withListener:self];
+  [mEMORY[0x29EDBDDB8]3 registerUpdateBlock:v17 forRetrieveSelector:sel_soundDetectionState withListener:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _updateSoundDetection, *MEMORY[0x29EDC83E8], 0, 1028);
-  v7 = [MEMORY[0x29EDBDFA0] sharedInstance];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
   v15[0] = MEMORY[0x29EDCA5F8];
   v15[1] = 3221225472;
   v15[2] = __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_4;
   v15[3] = &unk_29F2A4D08;
   objc_copyWeak(&v16, &location);
-  [v7 registerUpdateBlock:v15 forRetrieveSelector:sel_assistiveTouchSwitches withListener:self];
+  [mEMORY[0x29EDBDFA0] registerUpdateBlock:v15 forRetrieveSelector:sel_assistiveTouchSwitches withListener:self];
 
   v8 = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(v8, self, _updateSoundDetection, *MEMORY[0x29EDC83E0], 0, 1028);
-  v9 = [MEMORY[0x29EDBDFA0] sharedInstance];
+  mEMORY[0x29EDBDFA0]2 = [MEMORY[0x29EDBDFA0] sharedInstance];
   v10 = MEMORY[0x29EDCA5F8];
   v11 = 3221225472;
   v12 = __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5;
   v13 = &unk_29F2A4D08;
   objc_copyWeak(&v14, &location);
-  [v9 registerUpdateBlock:&v10 forRetrieveSelector:sel_assistiveTouchActionsBySoundAction withListener:self];
+  [mEMORY[0x29EDBDFA0]2 registerUpdateBlock:&v10 forRetrieveSelector:sel_assistiveTouchActionsBySoundAction withListener:self];
 
   [(AXBSoundDetectionManager *)self _soundDetectionSettingsDidUpdate:v10];
   objc_destroyWeak(&v14);
@@ -151,10 +151,10 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
     _os_log_impl(&dword_29BBBD000, v3, OS_LOG_TYPE_DEFAULT, "Sound detection settings did update", buf, 2u);
   }
 
-  v4 = [MEMORY[0x29EDBDDB8] sharedInstance];
-  v5 = [v4 ultronSupportEnabled];
+  mEMORY[0x29EDBDDB8] = [MEMORY[0x29EDBDDB8] sharedInstance];
+  ultronSupportEnabled = [mEMORY[0x29EDBDDB8] ultronSupportEnabled];
 
-  if ((v5 & 1) != 0 || [(AXBSoundDetectionManager *)self _shouldArmSoundRecognition]|| [(AXBSoundDetectionManager *)self _shouldArmVoiceTriggers])
+  if ((ultronSupportEnabled & 1) != 0 || [(AXBSoundDetectionManager *)self _shouldArmSoundRecognition]|| [(AXBSoundDetectionManager *)self _shouldArmVoiceTriggers])
   {
     v6 = dispatch_get_global_queue(21, 0);
     block[0] = MEMORY[0x29EDCA5F8];
@@ -172,18 +172,18 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
   }
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
   v10 = *MEMORY[0x29EDCA608];
   soundDetectionClient = self->_soundDetectionClient;
-  if (soundDetectionClient == a3 && soundDetectionClient != 0)
+  if (soundDetectionClient == client && soundDetectionClient != 0)
   {
     v6 = AXLogUltron();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [MEMORY[0x29EDBDDB8] sharedInstance];
+      mEMORY[0x29EDBDDB8] = [MEMORY[0x29EDBDDB8] sharedInstance];
       v9[0] = 67109120;
-      v9[1] = [v7 ultronSupportEnabled];
+      v9[1] = [mEMORY[0x29EDBDDB8] ultronSupportEnabled];
       _os_log_impl(&dword_29BBBD000, v6, OS_LOG_TYPE_INFO, "Ultron client interrupted, restart: %d", v9, 8u);
     }
 
@@ -210,10 +210,10 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
     [(AXUIClient *)self->_soundDetectionClient setDelegate:self];
   }
 
-  v6 = [MEMORY[0x29EDBDDB8] sharedInstance];
-  v7 = [v6 ultronSupportEnabled];
+  mEMORY[0x29EDBDDB8] = [MEMORY[0x29EDBDDB8] sharedInstance];
+  ultronSupportEnabled = [mEMORY[0x29EDBDDB8] ultronSupportEnabled];
 
-  if (v7)
+  if (ultronSupportEnabled)
   {
     v8 = AXLogUltron();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -223,8 +223,8 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
     }
 
     v9 = self->_soundDetectionClient;
-    v10 = [MEMORY[0x29EDBD688] mainAccessQueue];
-    [(AXUIClient *)v9 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10000 targetAccessQueue:v10 completion:0];
+    mainAccessQueue = [MEMORY[0x29EDBD688] mainAccessQueue];
+    [(AXUIClient *)v9 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10000 targetAccessQueue:mainAccessQueue completion:0];
   }
 
   if ([(AXBSoundDetectionManager *)self _shouldArmSoundRecognition])
@@ -237,8 +237,8 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
     }
 
     v12 = self->_soundDetectionClient;
-    v13 = [MEMORY[0x29EDBD688] mainAccessQueue];
-    [(AXUIClient *)v12 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10001 targetAccessQueue:v13 completion:0];
+    mainAccessQueue2 = [MEMORY[0x29EDBD688] mainAccessQueue];
+    [(AXUIClient *)v12 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10001 targetAccessQueue:mainAccessQueue2 completion:0];
   }
 
   if ([(AXBSoundDetectionManager *)self _shouldArmVoiceTriggers])
@@ -250,23 +250,23 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
     }
 
     v15 = self->_soundDetectionClient;
-    v16 = [MEMORY[0x29EDBD688] mainAccessQueue];
-    [(AXUIClient *)v15 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10002 targetAccessQueue:v16 completion:0];
+    mainAccessQueue3 = [MEMORY[0x29EDBD688] mainAccessQueue];
+    [(AXUIClient *)v15 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10002 targetAccessQueue:mainAccessQueue3 completion:0];
   }
 }
 
 - (BOOL)_shouldArmSoundRecognition
 {
-  v2 = [MEMORY[0x29EDBDDB8] sharedInstance];
-  if ([v2 soundDetectionState] == 1)
+  mEMORY[0x29EDBDDB8] = [MEMORY[0x29EDBDDB8] sharedInstance];
+  if ([mEMORY[0x29EDBDDB8] soundDetectionState] == 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x29EDBDDB8] sharedInstance];
-    v3 = [v4 soundDetectionState] == 2;
+    mEMORY[0x29EDBDDB8]2 = [MEMORY[0x29EDBDDB8] sharedInstance];
+    v3 = [mEMORY[0x29EDBDDB8]2 soundDetectionState] == 2;
   }
 
   return v3;
@@ -281,10 +281,10 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v2 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    v3 = [v2 assistiveTouchSwitches];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    assistiveTouchSwitches = [mEMORY[0x29EDBDFA0] assistiveTouchSwitches];
 
-    v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v4 = [assistiveTouchSwitches countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v4)
     {
       v5 = v4;
@@ -297,11 +297,11 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
         {
           if (*v19 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(assistiveTouchSwitches);
           }
 
-          v9 = [*(*(&v18 + 1) + 8 * v8) source];
-          v10 = [v9 isEqualToString:v7];
+          source = [*(*(&v18 + 1) + 8 * v8) source];
+          v10 = [source isEqualToString:v7];
 
           if (v10)
           {
@@ -318,7 +318,7 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
         }
 
         while (v5 != v8);
-        v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v5 = [assistiveTouchSwitches countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v5)
         {
           continue;
@@ -332,14 +332,14 @@ void __52__AXBSoundDetectionManager__bootstrapSoundDetection__block_invoke_5(uin
   v11 = _AXSAssistiveTouchEnabled();
   if (v11)
   {
-    v12 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    v13 = [v12 assistiveTouchActionsBySoundAction];
-    v14 = [v13 count];
+    mEMORY[0x29EDBDFA0]2 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    assistiveTouchActionsBySoundAction = [mEMORY[0x29EDBDFA0]2 assistiveTouchActionsBySoundAction];
+    v14 = [assistiveTouchActionsBySoundAction count];
 
     if (v14)
     {
-      v3 = AXLogUltron();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+      assistiveTouchSwitches = AXLogUltron();
+      if (os_log_type_enabled(assistiveTouchSwitches, OS_LOG_TYPE_DEBUG))
       {
         [AXBSoundDetectionManager _shouldArmVoiceTriggers];
       }

@@ -1,43 +1,43 @@
 @interface SBSplitDisplayItemPulseTransitionSwitcherModifier
-- (CGRect)frameForShelf:(id)a3;
-- (SBSplitDisplayItemPulseTransitionSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 layoutRole:(int64_t)a5 chamoisWindowingUIEnabled:(BOOL)a6;
-- (double)backgroundOpacityForIndex:(unint64_t)a3;
+- (CGRect)frameForShelf:(id)shelf;
+- (SBSplitDisplayItemPulseTransitionSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout layoutRole:(int64_t)role chamoisWindowingUIEnabled:(BOOL)enabled;
+- (double)backgroundOpacityForIndex:(unint64_t)index;
 - (id)_previousHomeAffordanceAppLayout;
 - (id)appLayoutsToResignActive;
-- (id)containerLeafAppLayoutForShelf:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)a3;
+- (id)containerLeafAppLayoutForShelf:(id)shelf;
+- (id)handleTransitionEvent:(id)event;
+- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)shelf;
 - (id)topMostLayoutElements;
 - (id)visibleHomeAffordanceLayoutElements;
 @end
 
 @implementation SBSplitDisplayItemPulseTransitionSwitcherModifier
 
-- (SBSplitDisplayItemPulseTransitionSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 layoutRole:(int64_t)a5 chamoisWindowingUIEnabled:(BOOL)a6
+- (SBSplitDisplayItemPulseTransitionSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout layoutRole:(int64_t)role chamoisWindowingUIEnabled:(BOOL)enabled
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  layoutCopy = layout;
   v19.receiver = self;
   v19.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
   v13 = [(SBSwitcherModifier *)&v19 init];
   if (v13)
   {
-    if (!v12)
+    if (!layoutCopy)
     {
       [SBSplitDisplayItemPulseTransitionSwitcherModifier initWithTransitionID:a2 appLayout:v13 layoutRole:? chamoisWindowingUIEnabled:?];
     }
 
-    if (!a5)
+    if (!role)
     {
       [SBSplitDisplayItemPulseTransitionSwitcherModifier initWithTransitionID:a2 appLayout:v13 layoutRole:? chamoisWindowingUIEnabled:?];
     }
 
-    objc_storeStrong(&v13->_appLayout, a4);
-    v13->_layoutRole = a5;
-    v13->_isChamoisWindowingUIEnabled = a6;
-    v14 = [v12 leafAppLayoutForRole:a5];
-    v15 = [v12 itemForLayoutRole:a5];
-    v16 = [[SBPulseTransitionSwitcherModifier alloc] initWithTransitionID:v11 appLayout:v14];
+    objc_storeStrong(&v13->_appLayout, layout);
+    v13->_layoutRole = role;
+    v13->_isChamoisWindowingUIEnabled = enabled;
+    v14 = [layoutCopy leafAppLayoutForRole:role];
+    v15 = [layoutCopy itemForLayoutRole:role];
+    v16 = [[SBPulseTransitionSwitcherModifier alloc] initWithTransitionID:dCopy appLayout:v14];
     v17 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:v15 wrappingModifier:v16];
     [(SBSplitDisplayItemSwitcherModifier *)v17 setCompletesWhenGesturePossible:1];
     [(SBChainableModifier *)v13 addChildModifier:v17];
@@ -46,16 +46,16 @@
   return v13;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleTransitionEvent:v4];
-  self->_floatingConfiguration = [v4 toFloatingConfiguration];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleTransitionEvent:eventCopy];
+  self->_floatingConfiguration = [eventCopy toFloatingConfiguration];
+  phase = [eventCopy phase];
 
-  if (v6 == 1)
+  if (phase == 1)
   {
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:8 updateMode:2];
     v8 = SBAppendSwitcherModifierResponse(v7, v5);
@@ -70,29 +70,29 @@
 {
   v7.receiver = self;
   v7.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
-  v3 = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v7 visibleHomeAffordanceLayoutElements];
-  v4 = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self _previousHomeAffordanceAppLayout];
-  v5 = [v3 setByAddingObject:v4];
+  visibleHomeAffordanceLayoutElements = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v7 visibleHomeAffordanceLayoutElements];
+  _previousHomeAffordanceAppLayout = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self _previousHomeAffordanceAppLayout];
+  v5 = [visibleHomeAffordanceLayoutElements setByAddingObject:_previousHomeAffordanceAppLayout];
 
   return v5;
 }
 
-- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)a3
+- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)shelf
 {
-  v4 = a3;
-  if ([v4 layoutRole] == 3)
+  shelfCopy = shelf;
+  if ([shelfCopy layoutRole] == 3)
   {
-    v5 = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self _previousHomeAffordanceAppLayout];
+    _previousHomeAffordanceAppLayout = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self _previousHomeAffordanceAppLayout];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
-    v5 = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v8 homeAffordanceLayoutElementToPortalIntoShelf:v4];
+    _previousHomeAffordanceAppLayout = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v8 homeAffordanceLayoutElementToPortalIntoShelf:shelfCopy];
   }
 
-  v6 = v5;
+  v6 = _previousHomeAffordanceAppLayout;
 
   return v6;
 }
@@ -126,9 +126,9 @@ uint64_t __85__SBSplitDisplayItemPulseTransitionSwitcherModifier__previousHomeAf
   return v4 ^ 1;
 }
 
-- (id)containerLeafAppLayoutForShelf:(id)a3
+- (id)containerLeafAppLayoutForShelf:(id)shelf
 {
-  if ([a3 layoutRole] == 3)
+  if ([shelf layoutRole] == 3)
   {
     v4 = 0;
   }
@@ -159,19 +159,19 @@ uint64_t __84__SBSplitDisplayItemPulseTransitionSwitcherModifier_containerLeafAp
   return v4 ^ 1;
 }
 
-- (CGRect)frameForShelf:(id)a3
+- (CGRect)frameForShelf:(id)shelf
 {
   v20.receiver = self;
   v20.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
-  v4 = a3;
-  [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v20 frameForShelf:v4];
+  shelfCopy = shelf;
+  [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v20 frameForShelf:shelfCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 layoutRole];
+  layoutRole = [shelfCopy layoutRole];
 
-  if (v13 == 3)
+  if (layoutRole == 3)
   {
     [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self floatingApplicationFrameInInterfaceOrientation:[(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self switcherInterfaceOrientation] floatingConfiguration:self->_floatingConfiguration];
     v6 = v6 + v14;
@@ -193,14 +193,14 @@ uint64_t __84__SBSplitDisplayItemPulseTransitionSwitcherModifier_containerLeafAp
 {
   v14.receiver = self;
   v14.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
-  v3 = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v14 topMostLayoutElements];
+  topMostLayoutElements = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v14 topMostLayoutElements];
   appLayout = self->_appLayout;
   if (self->_layoutRole == 4)
   {
     v5 = [(SBAppLayout *)appLayout leafAppLayoutForRole:?];
-    v6 = [v3 sb_arrayByInsertingOrMovingObject:v5 toIndex:0];
+    v6 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v5 toIndex:0];
 
-    v3 = v6;
+    topMostLayoutElements = v6;
   }
 
   else
@@ -213,7 +213,7 @@ uint64_t __84__SBSplitDisplayItemPulseTransitionSwitcherModifier_containerLeafAp
     v7 = [(SBAppLayout *)appLayout appLayoutWithItemsPassingTest:v13];
     if (v7)
     {
-      v8 = [v3 indexOfObjectPassingTest:&__block_literal_global_299];
+      v8 = [topMostLayoutElements indexOfObjectPassingTest:&__block_literal_global_299];
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = 0;
@@ -224,14 +224,14 @@ uint64_t __84__SBSplitDisplayItemPulseTransitionSwitcherModifier_containerLeafAp
         v9 = v8 + 1;
       }
 
-      v10 = [v3 sb_arrayByInsertingOrMovingObject:v7 toIndex:v9];
+      v10 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v7 toIndex:v9];
 
       v11 = [(SBAppLayout *)self->_appLayout leafAppLayoutForRole:self->_layoutRole];
-      v3 = [v10 sb_arrayByInsertingOrMovingObject:v11 toIndex:v9];
+      topMostLayoutElements = [v10 sb_arrayByInsertingOrMovingObject:v11 toIndex:v9];
     }
   }
 
-  return v3;
+  return topMostLayoutElements;
 }
 
 uint64_t __74__SBSplitDisplayItemPulseTransitionSwitcherModifier_topMostLayoutElements__block_invoke(uint64_t a1, void *a2)
@@ -246,17 +246,17 @@ uint64_t __74__SBSplitDisplayItemPulseTransitionSwitcherModifier_topMostLayoutEl
   return v4 ^ 1;
 }
 
-- (double)backgroundOpacityForIndex:(unint64_t)a3
+- (double)backgroundOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = 0.0;
   if (![(SBAppLayout *)self->_appLayout isOrContainsAppLayout:v6])
   {
     v10.receiver = self;
     v10.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
-    [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v10 backgroundOpacityForIndex:a3];
+    [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v10 backgroundOpacityForIndex:index];
     v7 = v8;
   }
 
@@ -267,7 +267,7 @@ uint64_t __74__SBSplitDisplayItemPulseTransitionSwitcherModifier_topMostLayoutEl
 {
   if (self->_isChamoisWindowingUIEnabled)
   {
-    v4 = MEMORY[0x277CBEC10];
+    appLayoutsToResignActive = MEMORY[0x277CBEC10];
   }
 
   else
@@ -276,10 +276,10 @@ uint64_t __74__SBSplitDisplayItemPulseTransitionSwitcherModifier_topMostLayoutEl
     v8 = v3;
     v6.receiver = self;
     v6.super_class = SBSplitDisplayItemPulseTransitionSwitcherModifier;
-    v4 = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v6 appLayoutsToResignActive];
+    appLayoutsToResignActive = [(SBSplitDisplayItemPulseTransitionSwitcherModifier *)&v6 appLayoutsToResignActive];
   }
 
-  return v4;
+  return appLayoutsToResignActive;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 appLayout:(uint64_t)a2 layoutRole:chamoisWindowingUIEnabled:.cold.1(uint64_t a1, uint64_t a2)

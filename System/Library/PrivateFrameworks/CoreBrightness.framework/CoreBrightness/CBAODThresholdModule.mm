@@ -1,60 +1,60 @@
 @interface CBAODThresholdModule
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (BOOL)thresholdsCrossedForLux:(float)a3;
-- (CBAODThresholdModule)initWithQueue:(id)a3;
-- (id)copyPdeltaThresholdsForLux:(float)a3;
-- (id)copyPropertyForKey:(id)a3;
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (BOOL)thresholdsCrossedForLux:(float)lux;
+- (CBAODThresholdModule)initWithQueue:(id)queue;
+- (id)copyPdeltaThresholdsForLux:(float)lux;
+- (id)copyPropertyForKey:(id)key;
 - (void)checkBootArgsConfiguration;
 - (void)dealloc;
 - (void)reevaluateALSThresholds;
-- (void)sendNotificationForKey:(id)a3 andValue:(id)a4;
-- (void)updateALSThresholdsWithBrightness:(float)a3 brightnessLimit:(float)a4 lux:(float)a5;
+- (void)sendNotificationForKey:(id)key andValue:(id)value;
+- (void)updateALSThresholdsWithBrightness:(float)brightness brightnessLimit:(float)limit lux:(float)lux;
 @end
 
 @implementation CBAODThresholdModule
 
-- (CBAODThresholdModule)initWithQueue:(id)a3
+- (CBAODThresholdModule)initWithQueue:(id)queue
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  if (!a3)
+  queueCopy = queue;
+  if (!queue)
   {
     __assert_rtn("[CBAODThresholdModule initWithQueue:]", "CBAODThresholdModule.m", 54, "queue");
   }
 
-  v7.receiver = v10;
+  v7.receiver = selfCopy;
   v7.super_class = CBAODThresholdModule;
-  v10 = [(CBModule *)&v7 initWithQueue:v8];
-  if (v10)
+  selfCopy = [(CBModule *)&v7 initWithQueue:queueCopy];
+  if (selfCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.AOD.ThresholdModule", "default");
-    v10->super._logHandle = v3;
-    v10->_Pthreshold_dim = 0.25;
-    v10->_Pthreshold_dim_lowLux = 0.2;
-    v10->_Pthreshold_brighten = 0.1;
-    v10->_Pthreshold_brighten_lowLux = 0.15;
-    v10->_AP_Pthreshold_dim = 0.2;
-    v10->_AP_Pthreshold_brighten = 0.1;
-    v10->_minNits = 2.0;
-    v10->_maxNits = 1060.0;
-    v10->_currentLux = -1.0;
-    v10->_currentBrightness = -1.0;
-    v10->_currentBrightnessLimit = -1.0;
-    v10->_brightenLuxThreshold = -1.0;
-    v10->_dimLuxThreshold = -1.0;
-    v10->_brightenLuxThresholdOverriden = 0;
-    v10->_dimLuxThresholdOverriden = 0;
+    selfCopy->super._logHandle = v3;
+    selfCopy->_Pthreshold_dim = 0.25;
+    selfCopy->_Pthreshold_dim_lowLux = 0.2;
+    selfCopy->_Pthreshold_brighten = 0.1;
+    selfCopy->_Pthreshold_brighten_lowLux = 0.15;
+    selfCopy->_AP_Pthreshold_dim = 0.2;
+    selfCopy->_AP_Pthreshold_brighten = 0.1;
+    selfCopy->_minNits = 2.0;
+    selfCopy->_maxNits = 1060.0;
+    selfCopy->_currentLux = -1.0;
+    selfCopy->_currentBrightness = -1.0;
+    selfCopy->_currentBrightnessLimit = -1.0;
+    selfCopy->_brightenLuxThreshold = -1.0;
+    selfCopy->_dimLuxThreshold = -1.0;
+    selfCopy->_brightenLuxThresholdOverriden = 0;
+    selfCopy->_dimLuxThresholdOverriden = 0;
     v4 = !CBU_IsWatch();
-    v10->_useDynamicThresholds = v4;
+    selfCopy->_useDynamicThresholds = v4;
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10->_alsServiceClients = v5;
-    [(CBAODThresholdModule *)v10 checkBootArgsConfiguration];
+    selfCopy->_alsServiceClients = v5;
+    [(CBAODThresholdModule *)selfCopy checkBootArgsConfiguration];
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)checkBootArgsConfiguration
@@ -196,76 +196,76 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](self->_alsServiceClients).n128_u64[0];
-  v5->_alsServiceClients = 0;
-  v3.receiver = v5;
+  selfCopy->_alsServiceClients = 0;
+  v3.receiver = selfCopy;
   v3.super_class = CBAODThresholdModule;
   [(CBModule *)&v3 dealloc];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0;
-  if ([a4 isEqualToString:@"AODPerceptualBrightenThreshold"])
+  if ([key isEqualToString:@"AODPerceptualBrightenThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_Pthreshold_brighten = fmaxf(fminf(v4, 1.0), 0.0);
       [(CBAODThresholdModule *)self reevaluateALSThresholds];
       v15 = 1;
     }
   }
 
-  else if ([a4 isEqualToString:@"AODPerceptualBrightenLowLuxThreshold"])
+  else if ([key isEqualToString:@"AODPerceptualBrightenLowLuxThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_Pthreshold_brighten_lowLux = fmaxf(fminf(v5, 1.0), 0.0);
       [(CBAODThresholdModule *)self reevaluateALSThresholds];
       v15 = 1;
     }
   }
 
-  else if ([a4 isEqualToString:@"AODPerceptualDimThreshold"])
+  else if ([key isEqualToString:@"AODPerceptualDimThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_Pthreshold_dim = fmaxf(fminf(v6, 1.0), 0.0);
       [(CBAODThresholdModule *)self reevaluateALSThresholds];
       v15 = 1;
     }
   }
 
-  else if ([a4 isEqualToString:@"AODPerceptualDimLowLuxThreshold"])
+  else if ([key isEqualToString:@"AODPerceptualDimLowLuxThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_Pthreshold_dim_lowLux = fmaxf(fminf(v7, 1.0), 0.0);
       [(CBAODThresholdModule *)self reevaluateALSThresholds];
       v15 = 1;
     }
   }
 
-  else if ([a4 isEqualToString:@"ALSLuxBrightenThreshold"])
+  else if ([key isEqualToString:@"ALSLuxBrightenThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       if (v8 >= 0.0)
       {
-        [a3 floatValue];
+        [property floatValue];
         self->_brightenLuxThreshold = v9;
         self->_brightenLuxThresholdOverriden = 1;
         [(CBAODThresholdModule *)self reevaluateALSThresholds];
@@ -280,15 +280,15 @@
     }
   }
 
-  else if ([a4 isEqualToString:@"ALSLuxDimThreshold"])
+  else if ([key isEqualToString:@"ALSLuxDimThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       if (v10 >= 0.0)
       {
-        [a3 floatValue];
+        [property floatValue];
         self->_dimLuxThreshold = v11;
         self->_dimLuxThresholdOverriden = 1;
         [(CBAODThresholdModule *)self reevaluateALSThresholds];
@@ -327,7 +327,7 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v19, a4, a3);
+      __os_log_helper_16_2_2_8_64_8_64(v19, key, property);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "key = %@ property = %@", v19, 0x16u);
     }
   }
@@ -336,16 +336,16 @@
   return v15 & 1;
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
-  if ([a3 isEqualToString:@"ALSLuxBrightenThreshold"])
+  if ([key isEqualToString:@"ALSLuxBrightenThreshold"])
   {
     v3 = objc_alloc(MEMORY[0x1E696AD98]);
     *&v4 = self->_brightenLuxThreshold;
     return [v3 initWithFloat:v4];
   }
 
-  else if ([a3 isEqualToString:@"ALSLuxDimThreshold"])
+  else if ([key isEqualToString:@"ALSLuxDimThreshold"])
   {
     v5 = objc_alloc(MEMORY[0x1E696AD98]);
     *&v6 = self->_dimLuxThreshold;
@@ -358,7 +358,7 @@
   }
 }
 
-- (void)sendNotificationForKey:(id)a3 andValue:(id)a4
+- (void)sendNotificationForKey:(id)key andValue:(id)value
 {
   if (self->super._notificationBlock)
   {
@@ -366,11 +366,11 @@
   }
 }
 
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v10 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  if (([(__IOHIDServiceClient *)a3 conformsToUsagePage:65280 usage:4]& 1) != 0)
+  if (([(__IOHIDServiceClient *)client conformsToUsagePage:65280 usage:4]& 1) != 0)
   {
     if (self->super._logHandle)
     {
@@ -394,13 +394,13 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v9, a3);
+      __os_log_helper_16_2_1_8_64(v9, client);
       _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Get ALS service - save it! %@", v9, 0xCu);
     }
 
-    if (([(NSMutableArray *)self->_alsServiceClients containsObject:a3]& 1) == 0)
+    if (([(NSMutableArray *)self->_alsServiceClients containsObject:client]& 1) == 0)
     {
-      [(NSMutableArray *)self->_alsServiceClients addObject:a3];
+      [(NSMutableArray *)self->_alsServiceClients addObject:client];
     }
 
     v7 = 1;
@@ -410,11 +410,11 @@
   return v7 & 1;
 }
 
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v10 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  if (([(NSMutableArray *)self->_alsServiceClients containsObject:a3]& 1) != 0)
+  if (([(NSMutableArray *)self->_alsServiceClients containsObject:client]& 1) != 0)
   {
     if (self->super._logHandle)
     {
@@ -438,11 +438,11 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v9, a3);
+      __os_log_helper_16_2_1_8_64(v9, client);
       _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Remove ALS service! %@", v9, 0xCu);
     }
 
-    [(NSMutableArray *)self->_alsServiceClients removeObject:a3];
+    [(NSMutableArray *)self->_alsServiceClients removeObject:client];
     v7 = 1;
   }
 
@@ -461,30 +461,30 @@
   }
 }
 
-- (void)updateALSThresholdsWithBrightness:(float)a3 brightnessLimit:(float)a4 lux:(float)a5
+- (void)updateALSThresholdsWithBrightness:(float)brightness brightnessLimit:(float)limit lux:(float)lux
 {
   v76 = *MEMORY[0x1E69E9840];
-  v70 = self;
+  selfCopy = self;
   v69 = a2;
-  v68 = a3;
-  v67 = a4;
-  v66 = a5;
-  self->_currentLux = a5;
-  v70->_currentBrightness = v68;
-  v70->_currentBrightnessLimit = v67;
-  if (v70->_useDynamicThresholds)
+  brightnessCopy = brightness;
+  limitCopy = limit;
+  luxCopy = lux;
+  self->_currentLux = lux;
+  selfCopy->_currentBrightness = brightnessCopy;
+  selfCopy->_currentBrightnessLimit = limitCopy;
+  if (selfCopy->_useDynamicThresholds)
   {
-    maxNits = v70->_maxNits;
+    maxNits = selfCopy->_maxNits;
     [+[CBAODState sharedInstance](CBAODState maxAODNits];
     v65 = fminf(maxNits, v5);
-    minNits = v70->_minNits;
+    minNits = selfCopy->_minNits;
     [+[CBAODState sharedInstance](CBAODState minAODNits];
     v64 = fmaxf(minNits, *&v6);
     v63 = v65;
-    *&v6 = v67;
-    if (v67 > 0.0)
+    *&v6 = limitCopy;
+    if (limitCopy > 0.0)
     {
-      *&v6 = fminf(v63, v67);
+      *&v6 = fminf(v63, limitCopy);
       v63 = *&v6;
     }
 
@@ -496,36 +496,36 @@
     }
 
     v63 = fmaxf(v63, v64);
-    v62 = BULuminanceToPerceptual(v68, v64, v65);
-    Pthreshold_brighten = v70->_Pthreshold_brighten;
-    Pthreshold_dim = v70->_Pthreshold_dim;
+    v62 = BULuminanceToPerceptual(brightnessCopy, v64, v65);
+    Pthreshold_brighten = selfCopy->_Pthreshold_brighten;
+    Pthreshold_dim = selfCopy->_Pthreshold_dim;
     v36 = -[NSMutableArray count]([+[CBAODState sharedInstance](CBAODState thresholdsLuxBuckets], "count");
     if (v36 == -[NSMutableArray count](-[CBAODState thresholdsDeltaPBrightenBuckets](+[CBAODState sharedInstance](CBAODState, "sharedInstance"), "thresholdsDeltaPBrightenBuckets"), "count") && (v35 = -[NSMutableArray count]([+[CBAODState sharedInstance](CBAODState thresholdsDeltaPBrightenBuckets], "count"), v35 == [(NSMutableArray *)[+[CBAODState sharedInstance](CBAODState thresholdsDeltaPDimBuckets] count])
     {
       [-[NSMutableArray lastObject](-[CBAODState thresholdsLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
       v9 = *&v10;
-      *&v10 = v66;
-      if (v66 <= v9)
+      *&v10 = luxCopy;
+      if (luxCopy <= v9)
       {
         for (i = 0; i < ([(NSMutableArray *)[+[CBAODState thresholdsLuxBuckets:v10]] count]- 1); ++i)
         {
           [-[NSMutableArray objectAtIndexedSubscript:](-[CBAODState thresholdsLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
           v14 = *&v10;
-          *&v10 = v66;
-          if (v66 >= v14)
+          *&v10 = luxCopy;
+          if (luxCopy >= v14)
           {
             [-[NSMutableArray objectAtIndexedSubscript:](-[CBAODState thresholdsLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
             v15 = *&v10;
-            *&v10 = v66;
-            if (v66 < v15)
+            *&v10 = luxCopy;
+            if (luxCopy < v15)
             {
               [-[NSMutableArray objectAtIndexedSubscript:](-[CBAODState thresholdsDeltaPBrightenBuckets](+[CBAODState sharedInstance](CBAODState sharedInstance];
               Pthreshold_brighten = v16;
               [-[NSMutableArray objectAtIndexedSubscript:](-[CBAODState thresholdsDeltaPDimBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
               Pthreshold_dim = v17;
-              if (v70->super._logHandle)
+              if (selfCopy->super._logHandle)
               {
-                logHandle = v70->super._logHandle;
+                logHandle = selfCopy->super._logHandle;
               }
 
               else
@@ -538,7 +538,7 @@
               v55 = OS_LOG_TYPE_INFO;
               if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
               {
-                __os_log_helper_16_0_4_8_0_4_0_8_0_8_0(v74, COERCE__INT64(v66), i, COERCE__INT64(Pthreshold_brighten), COERCE__INT64(Pthreshold_dim));
+                __os_log_helper_16_0_4_8_0_4_0_8_0_8_0(v74, COERCE__INT64(luxCopy), i, COERCE__INT64(Pthreshold_brighten), COERCE__INT64(Pthreshold_dim));
                 _os_log_impl(&dword_1DE8E5000, v56, v55, "AOP thresholds: lux %f - bucket[%d] => AOP P delta thresholds: Brighten = %f; Dim = %f", v74, 0x26u);
               }
             }
@@ -552,9 +552,9 @@
         Pthreshold_brighten = v11;
         [-[NSMutableArray lastObject](-[CBAODState thresholdsDeltaPDimBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
         Pthreshold_dim = v12;
-        if (v70->super._logHandle)
+        if (selfCopy->super._logHandle)
         {
-          v34 = v70->super._logHandle;
+          v34 = selfCopy->super._logHandle;
         }
 
         else
@@ -577,7 +577,7 @@
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
           [-[NSMutableArray lastObject](-[CBAODState thresholdsLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
-          __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v75, COERCE__INT64(v66), COERCE__INT64(v13), COERCE__INT64(Pthreshold_brighten), COERCE__INT64(Pthreshold_dim));
+          __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v75, COERCE__INT64(luxCopy), COERCE__INT64(v13), COERCE__INT64(Pthreshold_brighten), COERCE__INT64(Pthreshold_dim));
           _os_log_impl(&dword_1DE8E5000, oslog, type, "AOP thresholds: lux %f > %f => AOP P delta thresholds: Brighten = %f; Dim = %f", v75, 0x2Au);
         }
       }
@@ -585,9 +585,9 @@
 
     else
     {
-      if (v70->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v30 = v70->super._logHandle;
+        v30 = selfCopy->super._logHandle;
       }
 
       else
@@ -654,23 +654,23 @@
       v46 = 0.0;
     }
 
-    v44 = v66 * 1.15;
-    v43 = v66 * 0.85;
-    v48 = fminf(150000.0, fmaxf(v48, v66 * 1.15));
-    v46 = fmaxf(0.0, fminf(v46, v66 * 0.85));
-    if (!v70->_brightenLuxThresholdOverriden)
+    v44 = luxCopy * 1.15;
+    v43 = luxCopy * 0.85;
+    v48 = fminf(150000.0, fmaxf(v48, luxCopy * 1.15));
+    v46 = fmaxf(0.0, fminf(v46, luxCopy * 0.85));
+    if (!selfCopy->_brightenLuxThresholdOverriden)
     {
-      v70->_brightenLuxThreshold = v48;
+      selfCopy->_brightenLuxThreshold = v48;
     }
 
-    if (!v70->_dimLuxThresholdOverriden)
+    if (!selfCopy->_dimLuxThresholdOverriden)
     {
-      v70->_dimLuxThreshold = v46;
+      selfCopy->_dimLuxThreshold = v46;
     }
 
-    if (v70->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v25 = v70->super._logHandle;
+      v25 = selfCopy->super._logHandle;
     }
 
     else
@@ -692,12 +692,12 @@
     v41 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_8_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0(v72, COERCE__INT64(v70->_brightenLuxThreshold), COERCE__INT64(v70->_dimLuxThreshold), COERCE__INT64(v50), COERCE__INT64(v49), COERCE__INT64(v66), COERCE__INT64(v68), COERCE__INT64(v63), COERCE__INT64(v67));
+      __os_log_helper_16_0_8_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0(v72, COERCE__INT64(selfCopy->_brightenLuxThreshold), COERCE__INT64(selfCopy->_dimLuxThreshold), COERCE__INT64(v50), COERCE__INT64(v49), COERCE__INT64(luxCopy), COERCE__INT64(brightnessCopy), COERCE__INT64(v63), COERCE__INT64(limitCopy));
       _os_log_debug_impl(&dword_1DE8E5000, v42, v41, "AOP thresholds: lux brighten = %f, dim = %f; nits brighten = %f, dim = %f; Current lux = %f, current nits = %f; Nits cap = %f, brt limit = %f", v72, 0x52u);
     }
 
     memset(v39, 0, sizeof(v39));
-    obj = v70->_alsServiceClients;
+    obj = selfCopy->_alsServiceClients;
     v23 = [(NSMutableArray *)obj countByEnumeratingWithState:v39 objects:v71 count:16];
     if (v23)
     {
@@ -714,8 +714,8 @@
 
         v40 = 0;
         v40 = *(v39[1] + 8 * v20);
-        [v40 setProperty:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", (v70->_brightenLuxThreshold * 4294967300.0)), @"ALSLuxBrightenThreshold"}];
-        [v40 setProperty:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", (v70->_dimLuxThreshold * 4294967300.0)), @"ALSLuxDimThreshold"}];
+        [v40 setProperty:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", (selfCopy->_brightenLuxThreshold * 4294967300.0)), @"ALSLuxBrightenThreshold"}];
+        [v40 setProperty:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", (selfCopy->_dimLuxThreshold * 4294967300.0)), @"ALSLuxDimThreshold"}];
         ++v20;
         if (v18 + 1 >= v21)
         {
@@ -733,10 +733,10 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyPdeltaThresholdsForLux:(float)a3
+- (id)copyPdeltaThresholdsForLux:(float)lux
 {
   v36 = *MEMORY[0x1E69E9840];
-  self->_currentLux = a3;
+  self->_currentLux = lux;
   AP_Pthreshold_brighten = self->_AP_Pthreshold_brighten;
   AP_Pthreshold_dim = self->_AP_Pthreshold_dim;
   if (self->_useDynamicThresholds)
@@ -746,20 +746,20 @@
     {
       [-[NSMutableArray lastObject](-[CBAODState thresholdsAPLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
       v3 = *&v4;
-      *&v4 = a3;
-      if (a3 <= v3)
+      *&v4 = lux;
+      if (lux <= v3)
       {
         for (i = 0; i < ([(NSMutableArray *)[+[CBAODState thresholdsAPLuxBuckets:v4]] count]- 1); ++i)
         {
           [-[NSMutableArray objectAtIndexedSubscript:](-[CBAODState thresholdsAPLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
           v8 = *&v4;
-          *&v4 = a3;
-          if (a3 >= v8)
+          *&v4 = lux;
+          if (lux >= v8)
           {
             [-[NSMutableArray objectAtIndexedSubscript:](-[CBAODState thresholdsAPLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
             v9 = *&v4;
-            *&v4 = a3;
-            if (a3 < v9)
+            *&v4 = lux;
+            if (lux < v9)
             {
               [-[NSMutableArray objectAtIndexedSubscript:](-[CBAODState thresholdsAPDeltaPBrightenBuckets](+[CBAODState sharedInstance](CBAODState sharedInstance];
               AP_Pthreshold_brighten = v10;
@@ -778,7 +778,7 @@
 
               if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
               {
-                __os_log_helper_16_0_4_8_0_4_0_8_0_8_0(v34, COERCE__INT64(a3), i, COERCE__INT64(AP_Pthreshold_brighten), COERCE__INT64(AP_Pthreshold_dim));
+                __os_log_helper_16_0_4_8_0_4_0_8_0_8_0(v34, COERCE__INT64(lux), i, COERCE__INT64(AP_Pthreshold_brighten), COERCE__INT64(AP_Pthreshold_dim));
                 _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "AP thresholds: lux %f - bucket[%d] => CoreBrightness-AP side P delta thresholds: Brighten = %f; Dim = %f", v34, 0x26u);
               }
             }
@@ -815,7 +815,7 @@
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
           [-[NSMutableArray lastObject](-[CBAODState thresholdsAPLuxBuckets](+[CBAODState sharedInstance](CBAODState "sharedInstance")];
-          __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v35, COERCE__INT64(a3), COERCE__INT64(v7), COERCE__INT64(AP_Pthreshold_brighten), COERCE__INT64(AP_Pthreshold_dim));
+          __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v35, COERCE__INT64(lux), COERCE__INT64(v7), COERCE__INT64(AP_Pthreshold_brighten), COERCE__INT64(AP_Pthreshold_dim));
           _os_log_debug_impl(&dword_1DE8E5000, v22, OS_LOG_TYPE_DEBUG, "AP thresholds: lux %f > %f => CoreBrightness-AP side P delta thresholds: Brighten = %f; Dim = %f", v35, 0x2Au);
         }
       }
@@ -864,15 +864,15 @@
   return v25;
 }
 
-- (BOOL)thresholdsCrossedForLux:(float)a3
+- (BOOL)thresholdsCrossedForLux:(float)lux
 {
   if (self->_dimLuxThreshold < 0.0 || self->_brightenLuxThreshold < 0.0)
   {
     return 1;
   }
 
-  v4 = a3 <= self->_dimLuxThreshold;
-  if (a3 >= self->_brightenLuxThreshold)
+  v4 = lux <= self->_dimLuxThreshold;
+  if (lux >= self->_brightenLuxThreshold)
   {
     return 1;
   }

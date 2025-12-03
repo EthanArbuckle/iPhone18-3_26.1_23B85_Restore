@@ -1,39 +1,39 @@
 @interface BMOasisAnalyticsUUID128
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsUUID128)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMOasisAnalyticsUUID128)initWithValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsUUID128)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMOasisAnalyticsUUID128)initWithValue:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)value;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsUUID128
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsUUID128 *)self value];
-    v7 = [v5 value];
-    if (v6 == v7)
+    v5 = equalCopy;
+    value = [(BMOasisAnalyticsUUID128 *)self value];
+    value2 = [v5 value];
+    if (value == value2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMOasisAnalyticsUUID128 *)self value];
-      v9 = [v5 value];
-      v10 = [v8 isEqual:v9];
+      value3 = [(BMOasisAnalyticsUUID128 *)self value];
+      value4 = [v5 value];
+      v10 = [value3 isEqual:value4];
     }
   }
 
@@ -64,19 +64,19 @@
 - (id)jsonDictionary
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BMOasisAnalyticsUUID128 *)self value];
-  v3 = [v2 UUIDString];
+  value = [(BMOasisAnalyticsUUID128 *)self value];
+  uUIDString = [value UUIDString];
 
   v8 = @"value";
-  v4 = v3;
-  if (!v3)
+  null = uUIDString;
+  if (!uUIDString)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v9[0] = v4;
+  v9[0] = null;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  if (!v3)
+  if (!uUIDString)
   {
   }
 
@@ -85,10 +85,10 @@
   return v5;
 }
 
-- (BMOasisAnalyticsUUID128)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMOasisAnalyticsUUID128)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"value"];
+  v6 = [dictionary objectForKeyedSubscript:@"value"];
   if (v6)
   {
     objc_opt_class();
@@ -154,12 +154,12 @@ LABEL_5:
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsUUID128 *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_raw_value)
   {
@@ -167,9 +167,9 @@ LABEL_5:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v20.receiver = self;
   v20.super_class = BMOasisAnalyticsUUID128;
   v5 = [(BMEventBase *)&v20 init];
@@ -178,12 +178,12 @@ LABEL_5:
     goto LABEL_25;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -194,18 +194,18 @@ LABEL_5:
       while (1)
       {
         v21 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v21 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v21 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v21 & 0x7F) << v7;
@@ -222,9 +222,9 @@ LABEL_5:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -247,13 +247,13 @@ LABEL_16:
         goto LABEL_24;
       }
 
-      v17 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v17 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_24:
     v18 = 0;
@@ -271,27 +271,27 @@ LABEL_25:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMOasisAnalyticsUUID128 *)self value];
-  v5 = [v3 initWithFormat:@"BMOasisAnalyticsUUID128 with value: %@", v4];
+  value = [(BMOasisAnalyticsUUID128 *)self value];
+  v5 = [v3 initWithFormat:@"BMOasisAnalyticsUUID128 with value: %@", value];
 
   return v5;
 }
 
-- (BMOasisAnalyticsUUID128)initWithValue:(id)a3
+- (BMOasisAnalyticsUUID128)initWithValue:(id)value
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = BMOasisAnalyticsUUID128;
   v5 = [(BMEventBase *)&v10 init];
   if (v5)
   {
     v5->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v4)
+    if (valueCopy)
     {
       v11[0] = 0;
       v11[1] = 0;
-      [v4 getUUIDBytes:v11];
+      [valueCopy getUUIDBytes:v11];
       v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v11 length:16];
       raw_value = v5->_raw_value;
       v5->_raw_value = v6;
@@ -332,9 +332,9 @@ LABEL_25:
   return v3;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -342,8 +342,8 @@ LABEL_25:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsUUID128 alloc] initByReadFrom:v7];
     v4 = v8;

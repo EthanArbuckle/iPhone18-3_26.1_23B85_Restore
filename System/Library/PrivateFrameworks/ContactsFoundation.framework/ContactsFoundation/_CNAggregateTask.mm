@@ -1,23 +1,23 @@
 @interface _CNAggregateTask
 - (BOOL)cancel;
-- (_CNAggregateTask)initWithName:(id)a3 tasks:(id)a4;
+- (_CNAggregateTask)initWithName:(id)name tasks:(id)tasks;
 - (id)description;
-- (id)run:(id *)a3;
-- (id)runSubtask:(id)a3 error:(id *)a4;
+- (id)run:(id *)run;
+- (id)runSubtask:(id)subtask error:(id *)error;
 - (void)cancelSubtasks;
 @end
 
 @implementation _CNAggregateTask
 
-- (_CNAggregateTask)initWithName:(id)a3 tasks:(id)a4
+- (_CNAggregateTask)initWithName:(id)name tasks:(id)tasks
 {
-  v6 = a4;
+  tasksCopy = tasks;
   v12.receiver = self;
   v12.super_class = _CNAggregateTask;
-  v7 = [(CNTask *)&v12 initWithName:a3];
+  v7 = [(CNTask *)&v12 initWithName:name];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [tasksCopy copy];
     tasks = v7->_tasks;
     v7->_tasks = v8;
 
@@ -29,23 +29,23 @@
 
 - (id)description
 {
-  v3 = [(CNTask *)self name];
-  v4 = [(_CNAggregateTask *)self tasks];
-  v5 = [CNDescriptionBuilder descriptionForObject:self withNamesAndObjects:@"name", v3, @"subtasks", v4, 0];
+  name = [(CNTask *)self name];
+  tasks = [(_CNAggregateTask *)self tasks];
+  v5 = [CNDescriptionBuilder descriptionForObject:self withNamesAndObjects:@"name", name, @"subtasks", tasks, 0];
 
   return v5;
 }
 
-- (id)run:(id *)a3
+- (id)run:(id *)run
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(_CNAggregateTask *)self tasks];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  tasks = [(_CNAggregateTask *)self tasks];
+  v7 = [tasks countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -54,30 +54,30 @@
 LABEL_3:
     v11 = 0;
     v12 = v9;
-    v13 = v5;
+    v13 = null;
     while (1)
     {
       if (*v20 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(tasks);
       }
 
       v14 = *(*(&v19 + 1) + 8 * v11);
       v18 = v12;
-      v5 = [(_CNAggregateTask *)self runSubtask:v14 error:&v18];
+      null = [(_CNAggregateTask *)self runSubtask:v14 error:&v18];
       v9 = v18;
 
-      if (!v5)
+      if (!null)
       {
         break;
       }
 
       ++v11;
       v12 = v9;
-      v13 = v5;
+      v13 = null;
       if (v8 == v11)
       {
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [tasks countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -93,23 +93,23 @@ LABEL_3:
     v9 = 0;
   }
 
-  v15 = [CNFoundationError ifResultIsNil:v5 setOutputError:a3 toError:v9];
+  v15 = [CNFoundationError ifResultIsNil:null setOutputError:run toError:v9];
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (id)runSubtask:(id)a3 error:(id *)a4
+- (id)runSubtask:(id)subtask error:(id *)error
 {
-  v6 = a3;
+  subtaskCopy = subtask;
   if ([(CNTask *)self isCancelled])
   {
     v7 = +[CNFoundationError userCanceledError];
-    if (a4)
+    if (error)
     {
       v7 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
     v8 = 0;
@@ -117,7 +117,7 @@ LABEL_3:
 
   else
   {
-    v8 = [v6 run:a4];
+    v8 = [subtaskCopy run:error];
   }
 
   return v8;
@@ -127,13 +127,13 @@ LABEL_3:
 {
   v5.receiver = self;
   v5.super_class = _CNAggregateTask;
-  v3 = [(CNTask *)&v5 cancel];
-  if (v3)
+  cancel = [(CNTask *)&v5 cancel];
+  if (cancel)
   {
     [(_CNAggregateTask *)self cancelSubtasks];
   }
 
-  return v3;
+  return cancel;
 }
 
 - (void)cancelSubtasks
@@ -143,8 +143,8 @@ LABEL_3:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(_CNAggregateTask *)self tasks];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  tasks = [(_CNAggregateTask *)self tasks];
+  v3 = [tasks countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -156,14 +156,14 @@ LABEL_3:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tasks);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) cancel];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [tasks countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

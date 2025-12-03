@@ -1,34 +1,34 @@
 @interface HSDiscoveredAccessoryGridContentItemManager
 - (HSDiscoveredAccessoryFilter)discoveredAccessoryFilter;
-- (HSDiscoveredAccessoryGridContentItemManager)initWithAccessoryBrowsingManager:(id)a3 delegate:(id)a4 discoveredAccessoryFilter:(id)a5;
+- (HSDiscoveredAccessoryGridContentItemManager)initWithAccessoryBrowsingManager:(id)manager delegate:(id)delegate discoveredAccessoryFilter:(id)filter;
 - (id)_buildItemProvidersWithoutHome;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (void)_registerForExternalUpdates;
-- (void)_reloadDiscoveredAccessoryItemProviderWithSenderSelector:(SEL)a3;
+- (void)_reloadDiscoveredAccessoryItemProviderWithSenderSelector:(SEL)selector;
 - (void)_unregisterForExternalUpdates;
 @end
 
 @implementation HSDiscoveredAccessoryGridContentItemManager
 
-- (HSDiscoveredAccessoryGridContentItemManager)initWithAccessoryBrowsingManager:(id)a3 delegate:(id)a4 discoveredAccessoryFilter:(id)a5
+- (HSDiscoveredAccessoryGridContentItemManager)initWithAccessoryBrowsingManager:(id)manager delegate:(id)delegate discoveredAccessoryFilter:(id)filter
 {
-  v9 = a3;
-  v10 = a5;
+  managerCopy = manager;
+  filterCopy = filter;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10005CDB8;
   v17[3] = &unk_1000C7D10;
-  v11 = v9;
+  v11 = managerCopy;
   v18 = v11;
-  v12 = v10;
+  v12 = filterCopy;
   v19 = v12;
   v16.receiver = self;
   v16.super_class = HSDiscoveredAccessoryGridContentItemManager;
-  v13 = [(HSDiscoveredAccessoryGridContentItemManager *)&v16 initWithDelegate:a4 shouldGroupByRoom:0 itemProvidersCreator:v17];
+  v13 = [(HSDiscoveredAccessoryGridContentItemManager *)&v16 initWithDelegate:delegate shouldGroupByRoom:0 itemProvidersCreator:v17];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_accessoryBrowsingManager, a3);
+    objc_storeStrong(&v13->_accessoryBrowsingManager, manager);
     objc_storeWeak(&v14->_discoveredAccessoryFilter, v12);
   }
 
@@ -40,8 +40,8 @@
   v4.receiver = self;
   v4.super_class = HSDiscoveredAccessoryGridContentItemManager;
   [(HSDiscoveredAccessoryGridContentItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HSDiscoveredAccessoryGridContentItemManager *)self accessoryBrowsingManager];
-  [v3 addBrowsingObserver:self];
+  accessoryBrowsingManager = [(HSDiscoveredAccessoryGridContentItemManager *)self accessoryBrowsingManager];
+  [accessoryBrowsingManager addBrowsingObserver:self];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -49,15 +49,15 @@
   v4.receiver = self;
   v4.super_class = HSDiscoveredAccessoryGridContentItemManager;
   [(HSDiscoveredAccessoryGridContentItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HSDiscoveredAccessoryGridContentItemManager *)self accessoryBrowsingManager];
-  [v3 removeBrowsingObserver:self];
+  accessoryBrowsingManager = [(HSDiscoveredAccessoryGridContentItemManager *)self accessoryBrowsingManager];
+  [accessoryBrowsingManager removeBrowsingObserver:self];
 }
 
 - (id)_buildItemProvidersWithoutHome
 {
   v3 = [HFDiscoveredAccessoryItemProvider alloc];
-  v4 = [(HSDiscoveredAccessoryGridContentItemManager *)self accessoryBrowsingManager];
-  v5 = [v3 initWithAccessoryBrowsingManager:v4];
+  accessoryBrowsingManager = [(HSDiscoveredAccessoryGridContentItemManager *)self accessoryBrowsingManager];
+  v5 = [v3 initWithAccessoryBrowsingManager:accessoryBrowsingManager];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -71,17 +71,17 @@
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[NSMutableArray array];
-  v5 = [v3 na_filter:&stru_1000C7D30];
+  v5 = [itemsCopy na_filter:&stru_1000C7D30];
   if ([v5 count])
   {
     v6 = [[HFMutableItemSection alloc] initWithIdentifier:@"HSDiscoveredAccessoryGridContentUnpairedSectionIdentifier"];
-    v7 = [v5 allObjects];
-    v8 = [objc_opt_class() _discoveredAccessoryItemComparator];
-    v9 = [v7 sortedArrayUsingComparator:v8];
+    allObjects = [v5 allObjects];
+    _discoveredAccessoryItemComparator = [objc_opt_class() _discoveredAccessoryItemComparator];
+    v9 = [allObjects sortedArrayUsingComparator:_discoveredAccessoryItemComparator];
     [v6 setItems:v9];
 
     v10 = HULocalizedString();
@@ -90,13 +90,13 @@
     [v4 addObject:v6];
   }
 
-  v11 = [v3 na_setByRemovingObjectsFromSet:v5];
+  v11 = [itemsCopy na_setByRemovingObjectsFromSet:v5];
   if ([v11 count])
   {
     v12 = [[HFMutableItemSection alloc] initWithIdentifier:@"HSDiscoveredAccessoryGridContentPairedSectionIdentifier"];
-    v13 = [v11 allObjects];
-    v14 = [objc_opt_class() _discoveredAccessoryItemComparator];
-    v15 = [v13 sortedArrayUsingComparator:v14];
+    allObjects2 = [v11 allObjects];
+    _discoveredAccessoryItemComparator2 = [objc_opt_class() _discoveredAccessoryItemComparator];
+    v15 = [allObjects2 sortedArrayUsingComparator:_discoveredAccessoryItemComparator2];
     [v12 setItems:v15];
 
     v16 = HULocalizedString();
@@ -108,10 +108,10 @@
   return v4;
 }
 
-- (void)_reloadDiscoveredAccessoryItemProviderWithSenderSelector:(SEL)a3
+- (void)_reloadDiscoveredAccessoryItemProviderWithSenderSelector:(SEL)selector
 {
-  v5 = [(HSDiscoveredAccessoryGridContentItemManager *)self itemProviders];
-  v6 = [v5 na_firstObjectPassingTest:&stru_1000C7DB0];
+  itemProviders = [(HSDiscoveredAccessoryGridContentItemManager *)self itemProviders];
+  v6 = [itemProviders na_firstObjectPassingTest:&stru_1000C7DB0];
 
   if (v6)
   {

@@ -1,26 +1,26 @@
 @interface MTRAccessGrant
-+ (id)accessGrantForAllNodesWithPrivilege:(unsigned __int8)a3;
-+ (id)accessGrantForCASEAuthenticatedTag:(id)a3 privilege:(unsigned __int8)a4;
-+ (id)accessGrantForGroupID:(id)a3 privilege:(unsigned __int8)a4;
-+ (id)accessGrantForNodeID:(id)a3 privilege:(unsigned __int8)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)accessGrantForAllNodesWithPrivilege:(unsigned __int8)privilege;
++ (id)accessGrantForCASEAuthenticatedTag:(id)tag privilege:(unsigned __int8)privilege;
++ (id)accessGrantForGroupID:(id)d privilege:(unsigned __int8)privilege;
++ (id)accessGrantForNodeID:(id)d privilege:(unsigned __int8)privilege;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation MTRAccessGrant
 
-+ (id)accessGrantForNodeID:(id)a3 privilege:(unsigned __int8)a4
++ (id)accessGrantForNodeID:(id)d privilege:(unsigned __int8)privilege
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 unsignedLongLongValue];
-  if ((v6 - 1) >= 0xFFFFFFEFFFFFFFFFLL)
+  dCopy = d;
+  unsignedLongLongValue = [dCopy unsignedLongLongValue];
+  if ((unsignedLongLongValue - 1) >= 0xFFFFFFEFFFFFFFFFLL)
   {
     v10 = sub_2393D9044(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v14 = v6;
+      v14 = unsignedLongLongValue;
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_ERROR, "MTRAccessGrant provided non-operational node ID: 0x%llx", buf, 0xCu);
     }
 
@@ -35,8 +35,8 @@
   else
   {
     v7 = [MTRAccessGrant alloc];
-    v8 = [v5 copy];
-    v9 = sub_239215B7C(v7, v8, a4, 2);
+    v8 = [dCopy copy];
+    v9 = sub_239215B7C(v7, v8, privilege, 2);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -44,13 +44,13 @@
   return v9;
 }
 
-+ (id)accessGrantForCASEAuthenticatedTag:(id)a3 privilege:(unsigned __int8)a4
++ (id)accessGrantForCASEAuthenticatedTag:(id)tag privilege:(unsigned __int8)privilege
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 unsignedLongLongValue];
-  v7 = v6;
-  if (HIDWORD(v6))
+  tagCopy = tag;
+  unsignedLongLongValue = [tagCopy unsignedLongLongValue];
+  v7 = unsignedLongLongValue;
+  if (HIDWORD(unsignedLongLongValue))
   {
     v11 = sub_2393D9044(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -68,11 +68,11 @@
     goto LABEL_11;
   }
 
-  if (v6)
+  if (unsignedLongLongValue)
   {
     v8 = [MTRAccessGrant alloc];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v7 | 0xFFFFFFFD00000000];
-    v10 = sub_239215B7C(v8, v9, a4, 2);
+    0xFFFFFFFD00000000 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v7 | 0xFFFFFFFD00000000];
+    v10 = sub_239215B7C(v8, 0xFFFFFFFD00000000, privilege, 2);
 
     goto LABEL_13;
   }
@@ -100,13 +100,13 @@ LABEL_13:
   return v10;
 }
 
-+ (id)accessGrantForGroupID:(id)a3 privilege:(unsigned __int8)a4
++ (id)accessGrantForGroupID:(id)d privilege:(unsigned __int8)privilege
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 unsignedLongLongValue];
-  v7 = v6;
-  if (v6 >= 0x10000)
+  dCopy = d;
+  unsignedLongLongValue = [dCopy unsignedLongLongValue];
+  v7 = unsignedLongLongValue;
+  if (unsignedLongLongValue >= 0x10000)
   {
     v11 = sub_2393D9044(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -124,11 +124,11 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if (v6)
+  if (unsignedLongLongValue)
   {
     v8 = [MTRAccessGrant alloc];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v7 | 0xFFFFFFFFFFFF0000];
-    v10 = sub_239215B7C(v8, v9, a4, 3);
+    0xFFFFFFFFFFFF0000 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v7 | 0xFFFFFFFFFFFF0000];
+    v10 = sub_239215B7C(v8, 0xFFFFFFFFFFFF0000, privilege, 3);
 
     goto LABEL_13;
   }
@@ -156,27 +156,27 @@ LABEL_13:
   return v10;
 }
 
-+ (id)accessGrantForAllNodesWithPrivilege:(unsigned __int8)a3
++ (id)accessGrantForAllNodesWithPrivilege:(unsigned __int8)privilege
 {
-  v3 = sub_239215B7C([MTRAccessGrant alloc], 0, a3, 2);
+  v3 = sub_239215B7C([MTRAccessGrant alloc], 0, privilege, 2);
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v8 = v5;
+    v8 = equalCopy;
     v9 = v8;
     subjectID = self->_subjectID;
     v11 = subjectID;
     if (!subjectID)
     {
-      v3 = [v8 subjectID];
-      if (!v3)
+      subjectID = [v8 subjectID];
+      if (!subjectID)
       {
         goto LABEL_10;
       }
@@ -184,8 +184,8 @@ LABEL_13:
       v11 = self->_subjectID;
     }
 
-    v12 = [v9 subjectID];
-    v13 = [(NSNumber *)v11 isEqual:v12];
+    subjectID2 = [v9 subjectID];
+    v13 = [(NSNumber *)v11 isEqual:subjectID2];
 
     if (subjectID)
     {
@@ -241,14 +241,14 @@ LABEL_14:
   subjectID = self->_subjectID;
   if (subjectID)
   {
-    v4 = [(NSNumber *)subjectID unsignedLongLongValue];
-    if (v4 < 0xFFFFFFFFFFFF0000)
+    unsignedLongLongValue = [(NSNumber *)subjectID unsignedLongLongValue];
+    if (unsignedLongLongValue < 0xFFFFFFFFFFFF0000)
     {
       v5 = MEMORY[0x277CCACA8];
-      v10 = v4;
+      v10 = unsignedLongLongValue;
       v12 = v2;
       v9 = objc_opt_class();
-      if (HIDWORD(v4) == 4294967293)
+      if (HIDWORD(unsignedLongLongValue) == 4294967293)
       {
         v6 = @"<%@ nodes with CASE Authenticated Tag 0x%08x can %@>";
       }
@@ -262,7 +262,7 @@ LABEL_14:
     else
     {
       v5 = MEMORY[0x277CCACA8];
-      v10 = v4;
+      v10 = unsignedLongLongValue;
       v12 = v2;
       v9 = objc_opt_class();
       v6 = @"<%@ group 0x%x can %@>";

@@ -1,11 +1,11 @@
 @interface DNDSAppForegroundTriggerManager
 - (DNDSAppForegroundTriggerManager)init;
 - (DNDSAppForegroundTriggerManagerDataSource)dataSource;
-- (void)_coalescingQueue_coalesceWithTriggerConfiguration:(id)a3 event:(id)a4;
+- (void)_coalescingQueue_coalesceWithTriggerConfiguration:(id)configuration event:(id)event;
 - (void)_coalescingQueue_resetCoalescingTimer;
-- (void)_configureAppForegroundTriggerWithConfiguration:(id)a3;
-- (void)_refreshIfNeccessaryForEvent:(id)a3;
-- (void)_refreshWithTriggerConfiguration:(id)a3 event:(id)a4;
+- (void)_configureAppForegroundTriggerWithConfiguration:(id)configuration;
+- (void)_refreshIfNeccessaryForEvent:(id)event;
+- (void)_refreshWithTriggerConfiguration:(id)configuration event:(id)event;
 - (void)refresh;
 @end
 
@@ -27,9 +27,9 @@
     coalescingQueue = v2->_coalescingQueue;
     v2->_coalescingQueue = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sinks = v2->_sinks;
-    v2->_sinks = v8;
+    v2->_sinks = dictionary;
   }
 
   return v2;
@@ -54,20 +54,20 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshWithTriggerConfiguration:(id)a3 event:(id)a4
+- (void)_refreshWithTriggerConfiguration:(id)configuration event:(id)event
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v44 = a4;
+  configurationCopy = configuration;
+  eventCopy = event;
   [(DNDSAppForegroundTriggerManager *)self dataSource];
   v58 = 0;
   v47 = v46 = self;
   v7 = [v47 triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.app-launch" error:&v58];
   v8 = v58;
   v9 = MEMORY[0x277CBEB98];
-  v45 = v6;
-  v10 = [v6 triggeringBundleIdentifiers];
-  v48 = [v9 setWithArray:v10];
+  v45 = configurationCopy;
+  triggeringBundleIdentifiers = [configurationCopy triggeringBundleIdentifiers];
+  v48 = [v9 setWithArray:triggeringBundleIdentifiers];
 
   v56 = 0u;
   v57 = 0u;
@@ -89,17 +89,17 @@
         }
 
         v16 = *(*(&v54 + 1) + 8 * i);
-        v17 = [v16 source];
-        v18 = [v17 deviceIdentifier];
+        source = [v16 source];
+        deviceIdentifier = [source deviceIdentifier];
 
-        if (!v18)
+        if (!deviceIdentifier)
         {
-          v19 = [v16 details];
-          v20 = [v19 identifier];
+          details = [v16 details];
+          identifier = [details identifier];
 
-          if ([v20 hasSuffix:@".donotdisturb.trigger"])
+          if ([identifier hasSuffix:@".donotdisturb.trigger"])
           {
-            v21 = [v20 stringByReplacingOccurrencesOfString:@".donotdisturb.trigger" withString:&stru_285C26090];
+            v21 = [identifier stringByReplacingOccurrencesOfString:@".donotdisturb.trigger" withString:&stru_285C26090];
 
             if (([v48 containsObject:v21] & 1) == 0)
             {
@@ -111,9 +111,9 @@
                 _os_log_impl(&dword_24912E000, v22, OS_LOG_TYPE_DEFAULT, "Don't have trigger for identifier '%@'. Invalidating...", buf, 0xCu);
               }
 
-              v23 = [v16 UUID];
+              uUID = [v16 UUID];
               v53 = v8;
-              v24 = [v47 triggerManager:v46 invalidateModeAssertionWithUUID:v23 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.app-launch" error:&v53];
+              v24 = [v47 triggerManager:v46 invalidateModeAssertionWithUUID:uUID reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.app-launch" error:&v53];
               v25 = v53;
 
               v8 = v25;
@@ -122,7 +122,7 @@
 
           else
           {
-            v21 = v20;
+            v21 = identifier;
           }
         }
       }
@@ -133,29 +133,29 @@
     while (v13);
   }
 
-  if (v44)
+  if (eventCopy)
   {
     v26 = DNDSLogAppForegroundTrigger;
     v27 = v45;
     if (os_log_type_enabled(DNDSLogAppForegroundTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v60 = v44;
+      v60 = eventCopy;
       _os_log_impl(&dword_24912E000, v26, OS_LOG_TYPE_DEFAULT, "Refreshing with event %@", buf, 0xCu);
     }
 
-    v28 = [v44 eventBody];
-    v29 = [v28 isStarting];
+    eventBody = [eventCopy eventBody];
+    isStarting = [eventBody isStarting];
 
-    v30 = [v44 eventBody];
-    v31 = [v30 bundleID];
+    eventBody2 = [eventCopy eventBody];
+    bundleID = [eventBody2 bundleID];
 
-    v32 = [v45 modeIdentifierForBundleIdentifier:v31];
+    v32 = [v45 modeIdentifierForBundleIdentifier:bundleID];
     v33 = v32;
-    if (v29)
+    if (isStarting)
     {
       v34 = objc_alloc_init(MEMORY[0x277D05A40]);
-      v35 = [v31 stringByAppendingString:@".donotdisturb.trigger"];
+      v35 = [bundleID stringByAppendingString:@".donotdisturb.trigger"];
       [v34 setIdentifier:v35];
 
       [v34 setLifetime:0];
@@ -176,13 +176,13 @@
       v50[3] = &unk_278F8A0B0;
       v51 = v32;
       v38 = [v11 bs_filter:v50];
-      v39 = [v38 firstObject];
+      firstObject = [v38 firstObject];
 
-      if (v39)
+      if (firstObject)
       {
-        v40 = [v39 UUID];
+        uUID2 = [firstObject UUID];
         v49 = v8;
-        v41 = [v47 triggerManager:v46 invalidateModeAssertionWithUUID:v40 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.app-launch" error:&v49];
+        v41 = [v47 triggerManager:v46 invalidateModeAssertionWithUUID:uUID2 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.app-launch" error:&v49];
         v42 = v49;
 
         v8 = v42;
@@ -209,37 +209,37 @@ uint64_t __74__DNDSAppForegroundTriggerManager__refreshWithTriggerConfiguration_
   return v5;
 }
 
-- (void)_configureAppForegroundTriggerWithConfiguration:(id)a3
+- (void)_configureAppForegroundTriggerWithConfiguration:(id)configuration
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 triggeringBundleIdentifiers];
-  v7 = v6;
-  if (v6)
+  configurationCopy = configuration;
+  triggeringBundleIdentifiers = [configurationCopy triggeringBundleIdentifiers];
+  v7 = triggeringBundleIdentifiers;
+  if (triggeringBundleIdentifiers)
   {
-    v8 = v6;
+    array = triggeringBundleIdentifiers;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
-  v10 = [(DNDSAppForegroundTriggerConfiguration *)self->_currentTriggerConfiguration triggeringBundleIdentifiers];
-  v11 = v10;
-  if (v10)
+  triggeringBundleIdentifiers2 = [(DNDSAppForegroundTriggerConfiguration *)self->_currentTriggerConfiguration triggeringBundleIdentifiers];
+  v11 = triggeringBundleIdentifiers2;
+  if (triggeringBundleIdentifiers2)
   {
-    v12 = v10;
+    array2 = triggeringBundleIdentifiers2;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
   }
 
-  v13 = v12;
+  v13 = array2;
 
   v14 = [(NSMutableDictionary *)self->_sinks objectForKeyedSubscript:@"system"];
   if (([v9 isEqual:v13] & 1) == 0)
@@ -247,7 +247,7 @@ uint64_t __74__DNDSAppForegroundTriggerManager__refreshWithTriggerConfiguration_
     [(NSMutableDictionary *)self->_sinks setObject:0 forKeyedSubscript:@"system"];
     [v14 cancel];
 
-    objc_storeStrong(&self->_currentTriggerConfiguration, a3);
+    objc_storeStrong(&self->_currentTriggerConfiguration, configuration);
     v14 = 0;
   }
 
@@ -262,7 +262,7 @@ uint64_t __74__DNDSAppForegroundTriggerManager__refreshWithTriggerConfiguration_
 
   else
   {
-    v23 = v5;
+    v23 = configurationCopy;
     v15 = DNDSLogAppForegroundTrigger;
     if (os_log_type_enabled(DNDSLogAppForegroundTrigger, OS_LOG_TYPE_DEFAULT))
     {
@@ -272,10 +272,10 @@ uint64_t __74__DNDSAppForegroundTriggerManager__refreshWithTriggerConfiguration_
     }
 
     v16 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:@"com.apple.donotdisturb.appLaunch" targetQueue:self->_biomeQueue];
-    v17 = [MEMORY[0x277CF1B58] appLaunch];
-    v18 = [v17 publisher];
+    appLaunch = [MEMORY[0x277CF1B58] appLaunch];
+    publisher = [appLaunch publisher];
     v19 = [MEMORY[0x277CBEB98] setWithArray:v9];
-    v20 = [v18 filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:v19];
+    v20 = [publisher filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:v19];
     v21 = [v20 subscribeOn:v16];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -285,7 +285,7 @@ uint64_t __74__DNDSAppForegroundTriggerManager__refreshWithTriggerConfiguration_
     v14 = [v21 sinkWithCompletion:&__block_literal_global_1 receiveInput:v24];
 
     [(NSMutableDictionary *)self->_sinks setObject:v14 forKeyedSubscript:@"system"];
-    v5 = v23;
+    configurationCopy = v23;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -348,9 +348,9 @@ void __83__DNDSAppForegroundTriggerManager__configureAppForegroundTriggerWithCon
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshIfNeccessaryForEvent:(id)a3
+- (void)_refreshIfNeccessaryForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = [WeakRetained appForegroundTriggerConfigurationForAppForegroundTriggerManager:self];
 
@@ -361,44 +361,44 @@ void __83__DNDSAppForegroundTriggerManager__configureAppForegroundTriggerWithCon
   block[3] = &unk_278F89E30;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = eventCopy;
+  v8 = eventCopy;
   v9 = v6;
   dispatch_async(coalescingQueue, block);
 }
 
-- (void)_coalescingQueue_coalesceWithTriggerConfiguration:(id)a3 event:(id)a4
+- (void)_coalescingQueue_coalesceWithTriggerConfiguration:(id)configuration event:(id)event
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  eventCopy = event;
   latestEvent = self->_latestEvent;
   if (latestEvent)
   {
-    v9 = [(BMStoreEvent *)latestEvent eventBody];
-    v10 = [v9 bundleID];
-    v11 = [v7 eventBody];
-    v12 = [v11 bundleID];
-    v13 = [v10 isEqualToString:v12];
+    eventBody = [(BMStoreEvent *)latestEvent eventBody];
+    bundleID = [eventBody bundleID];
+    eventBody2 = [eventCopy eventBody];
+    bundleID2 = [eventBody2 bundleID];
+    v13 = [bundleID isEqualToString:bundleID2];
 
     if ((v13 & 1) == 0)
     {
       [(DNDSAppForegroundTriggerManager *)self _coalescingQueue_resetCoalescingTimer];
-      [(DNDSAppForegroundTriggerManager *)self _coalescingQueue_refreshWithTriggerConfiguration:v6];
+      [(DNDSAppForegroundTriggerManager *)self _coalescingQueue_refreshWithTriggerConfiguration:configurationCopy];
       v14 = DNDSLogAppForegroundTrigger;
       if (os_log_type_enabled(DNDSLogAppForegroundTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v15 = self->_latestEvent;
         v16 = v14;
-        v17 = [(BMStoreEvent *)v15 eventBody];
+        eventBody3 = [(BMStoreEvent *)v15 eventBody];
         *buf = 138543362;
-        v29 = v17;
+        v29 = eventBody3;
         _os_log_impl(&dword_24912E000, v16, OS_LOG_TYPE_DEFAULT, "reset coalescing timer due to bundleID change; updated assertions for app launch event: event=%{public}@", buf, 0xCu);
       }
     }
   }
 
-  objc_storeStrong(&self->_latestEvent, a4);
+  objc_storeStrong(&self->_latestEvent, event);
   if (!self->_coalescingTimer)
   {
     v18 = os_transaction_create();
@@ -418,7 +418,7 @@ void __83__DNDSAppForegroundTriggerManager__configureAppForegroundTriggerWithCon
     v26[2] = __91__DNDSAppForegroundTriggerManager__coalescingQueue_coalesceWithTriggerConfiguration_event___block_invoke;
     v26[3] = &unk_278F89F48;
     v26[4] = self;
-    v27 = v6;
+    v27 = configurationCopy;
     dispatch_source_set_event_handler(v24, v26);
     dispatch_resume(self->_coalescingTimer);
   }

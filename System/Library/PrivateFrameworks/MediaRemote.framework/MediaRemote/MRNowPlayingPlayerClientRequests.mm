@@ -1,28 +1,28 @@
 @interface MRNowPlayingPlayerClientRequests
-- (MRNowPlayingPlayerClientRequests)initWithPlayerPath:(id)a3;
+- (MRNowPlayingPlayerClientRequests)initWithPlayerPath:(id)path;
 - (MRPlaybackQueue)playbackQueue;
 - (MRPlayer)playerProperties;
 - (NSArray)supportedCommands;
 - (id)debugDescription;
 - (unsigned)playbackState;
-- (void)_handleEnqueuedPlaybackQueueRequest:(void *)a3 completion:;
-- (void)_onSerialQueue_updatePlaybackQueueIfUninitialized:(void *)a1;
-- (void)_onSerialQueue_updateSupportedCommandsIfUninitialized:(void *)a1;
+- (void)_handleEnqueuedPlaybackQueueRequest:(void *)request completion:;
+- (void)_onSerialQueue_updatePlaybackQueueIfUninitialized:(void *)uninitialized;
+- (void)_onSerialQueue_updateSupportedCommandsIfUninitialized:(void *)uninitialized;
 - (void)dealloc;
-- (void)enqueuePlaybackQueueRequest:(id)a3 completion:(id)a4;
-- (void)handlePlaybackStateRequestWithCompletion:(id)a3;
-- (void)handlePlayerPropertiesRequestWithCompletion:(id)a3;
-- (void)handleSupportedCommandsRequestWithCompletion:(id)a3;
+- (void)enqueuePlaybackQueueRequest:(id)request completion:(id)completion;
+- (void)handlePlaybackStateRequestWithCompletion:(id)completion;
+- (void)handlePlayerPropertiesRequestWithCompletion:(id)completion;
+- (void)handleSupportedCommandsRequestWithCompletion:(id)completion;
 - (void)restoreNowPlayingClientState;
-- (void)setPlaybackQueue:(id)a3;
-- (void)setPlayerProperties:(id)a3;
-- (void)setSupportedCommands:(id)a3;
-- (void)updateContentItemArtwork:(id)a3;
-- (void)updateContentItems:(id)a3;
-- (void)updatePlaybackQueue:(uint64_t)a1;
-- (void)updatePlaybackQueueIfUninitialized:(id)a3;
-- (void)updatePlaybackStateIfUninitialized:(unsigned int)a3;
-- (void)updateSupportedCommandsIfUninitialized:(id)a3;
+- (void)setPlaybackQueue:(id)queue;
+- (void)setPlayerProperties:(id)properties;
+- (void)setSupportedCommands:(id)commands;
+- (void)updateContentItemArtwork:(id)artwork;
+- (void)updateContentItems:(id)items;
+- (void)updatePlaybackQueue:(uint64_t)queue;
+- (void)updatePlaybackQueueIfUninitialized:(id)uninitialized;
+- (void)updatePlaybackStateIfUninitialized:(unsigned int)uninitialized;
+- (void)updateSupportedCommandsIfUninitialized:(id)uninitialized;
 @end
 
 @implementation MRNowPlayingPlayerClientRequests
@@ -57,20 +57,20 @@ void __49__MRNowPlayingPlayerClientRequests_playbackQueue__block_invoke(uint64_t
   *(v3 + 40) = v2;
 }
 
-- (MRNowPlayingPlayerClientRequests)initWithPlayerPath:(id)a3
+- (MRNowPlayingPlayerClientRequests)initWithPlayerPath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = MRNowPlayingPlayerClientRequests;
   v7 = [(MRNowPlayingPlayerClientRequests *)&v19 init];
   if (v7)
   {
-    if (([v6 isResolved] & 1) == 0)
+    if (([pathCopy isResolved] & 1) == 0)
     {
-      [(MRNowPlayingPlayerClientRequests *)a2 initWithPlayerPath:v7, v6];
+      [(MRNowPlayingPlayerClientRequests *)a2 initWithPlayerPath:v7, pathCopy];
     }
 
-    objc_storeStrong(&v7->_playerPath, a3);
+    objc_storeStrong(&v7->_playerPath, path);
     v8 = objc_opt_class();
     Name = class_getName(v8);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -83,7 +83,7 @@ void __49__MRNowPlayingPlayerClientRequests_playbackQueue__block_invoke(uint64_t
     responseQueue = v7->_responseQueue;
     v7->_responseQueue = v14;
 
-    v16 = [[MRPlaybackQueueSubscriptionController alloc] initWithPlayerPath:v6];
+    v16 = [[MRPlaybackQueueSubscriptionController alloc] initWithPlayerPath:pathCopy];
     subscriptionController = v7->_subscriptionController;
     v7->_subscriptionController = v16;
   }
@@ -93,8 +93,8 @@ void __49__MRNowPlayingPlayerClientRequests_playbackQueue__block_invoke(uint64_t
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MRNowPlayingPlayerClientRequests;
@@ -162,12 +162,12 @@ void __53__MRNowPlayingPlayerClientRequests_setPlaybackState___block_invoke(uint
   return v3;
 }
 
-- (void)setSupportedCommands:(id)a3
+- (void)setSupportedCommands:(id)commands
 {
-  v4 = a3;
+  commandsCopy = commands;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = commandsCopy;
+  v6 = commandsCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -215,12 +215,12 @@ void __53__MRNowPlayingPlayerClientRequests_supportedCommands__block_invoke(uint
   *(v3 + 40) = v2;
 }
 
-- (void)setPlaybackQueue:(id)a3
+- (void)setPlaybackQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = queueCopy;
+  v6 = queueCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -238,12 +238,12 @@ void __53__MRNowPlayingPlayerClientRequests_setPlaybackQueue___block_invoke(uint
   *(v4 + 8) = v3;
 }
 
-- (void)setPlayerProperties:(id)a3
+- (void)setPlayerProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = propertiesCopy;
+  v6 = propertiesCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -291,12 +291,12 @@ void __52__MRNowPlayingPlayerClientRequests_playerProperties__block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (void)updateContentItems:(id)a3
+- (void)updateContentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = itemsCopy;
+  v6 = itemsCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -358,17 +358,17 @@ void __55__MRNowPlayingPlayerClientRequests_updateContentItems___block_invoke(ui
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateContentItemArtwork:(id)a3
+- (void)updateContentItemArtwork:(id)artwork
 {
-  v4 = a3;
+  artworkCopy = artwork;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__MRNowPlayingPlayerClientRequests_updateContentItemArtwork___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = artworkCopy;
+  v6 = artworkCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -528,21 +528,21 @@ void __56__MRNowPlayingPlayerClientRequests_updatePlaybackQueue___block_invoke(u
   }
 }
 
-- (void)updatePlaybackQueueIfUninitialized:(id)a3
+- (void)updatePlaybackQueueIfUninitialized:(id)uninitialized
 {
-  v4 = a3;
+  uninitializedCopy = uninitialized;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__MRNowPlayingPlayerClientRequests_updatePlaybackQueueIfUninitialized___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = uninitializedCopy;
+  v6 = uninitializedCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)updatePlaybackStateIfUninitialized:(unsigned int)a3
+- (void)updatePlaybackStateIfUninitialized:(unsigned int)uninitialized
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -550,38 +550,38 @@ void __56__MRNowPlayingPlayerClientRequests_updatePlaybackQueue___block_invoke(u
   v4[2] = __71__MRNowPlayingPlayerClientRequests_updatePlaybackStateIfUninitialized___block_invoke;
   v4[3] = &unk_1E769E760;
   v4[4] = self;
-  v5 = a3;
+  uninitializedCopy = uninitialized;
   dispatch_sync(serialQueue, v4);
 }
 
-- (void)updateSupportedCommandsIfUninitialized:(id)a3
+- (void)updateSupportedCommandsIfUninitialized:(id)uninitialized
 {
-  v4 = a3;
+  uninitializedCopy = uninitialized;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__MRNowPlayingPlayerClientRequests_updateSupportedCommandsIfUninitialized___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = uninitializedCopy;
+  v6 = uninitializedCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)enqueuePlaybackQueueRequest:(id)a3 completion:(id)a4
+- (void)enqueuePlaybackQueueRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__MRNowPlayingPlayerClientRequests_enqueuePlaybackQueueRequest_completion___block_invoke;
   block[3] = &unk_1E769E410;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -653,11 +653,11 @@ void __75__MRNowPlayingPlayerClientRequests_enqueuePlaybackQueueRequest_completi
   }
 }
 
-- (void)_handleEnqueuedPlaybackQueueRequest:(void *)a3 completion:
+- (void)_handleEnqueuedPlaybackQueueRequest:(void *)request completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
     v32 = 0;
     v33 = &v32;
@@ -665,16 +665,16 @@ void __75__MRNowPlayingPlayerClientRequests_enqueuePlaybackQueueRequest_completi
     v35 = __Block_byref_object_copy__40;
     v36 = __Block_byref_object_dispose__40;
     v37 = 0;
-    v7 = [a1 playbackQueue];
+    playbackQueue = [self playbackQueue];
     v26 = 0;
     v27 = &v26;
     v28 = 0x3032000000;
     v29 = __Block_byref_object_copy__40;
     v30 = __Block_byref_object_dispose__40;
-    v31 = MRPlaybackQueueCreateFromCache(v7, v5, 0, *(a1 + 104));
+    v31 = MRPlaybackQueueCreateFromCache(playbackQueue, v5, 0, *(self + 104));
     if (v27[5])
     {
-      if (!v6)
+      if (!requestCopy)
       {
         goto LABEL_9;
       }
@@ -688,8 +688,8 @@ void __75__MRNowPlayingPlayerClientRequests_enqueuePlaybackQueueRequest_completi
       v24[2] = 0x2020000000;
       v25 = 1;
       v9 = MRGetSharedService();
-      v10 = *(a1 + 104);
-      v11 = *(a1 + 48);
+      v10 = *(self + 104);
+      v11 = *(self + 48);
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __83__MRNowPlayingPlayerClientRequests__handleEnqueuedPlaybackQueueRequest_completion___block_invoke;
@@ -697,14 +697,14 @@ void __75__MRNowPlayingPlayerClientRequests_enqueuePlaybackQueueRequest_completi
       v22 = &v26;
       v23 = &v32;
       v21 = v24;
-      v19[4] = a1;
+      v19[4] = self;
       v12 = v8;
       v20 = v12;
       MRMediaRemoteServiceRequestNowPlayingPlaybackQueue(v9, v5, v10, v11, v19);
       v13 = dispatch_time(0, 3000000000);
       if (dispatch_semaphore_wait(v12, v13))
       {
-        v14 = *(a1 + 48);
+        v14 = *(self + 48);
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __83__MRNowPlayingPlayerClientRequests__handleEnqueuedPlaybackQueueRequest_completion___block_invoke_2;
@@ -716,13 +716,13 @@ void __75__MRNowPlayingPlayerClientRequests_enqueuePlaybackQueueRequest_completi
       }
 
       _Block_object_dispose(v24, 8);
-      if (!v6)
+      if (!requestCopy)
       {
         goto LABEL_9;
       }
     }
 
-    v6[2](v6, v27[5], v33[5]);
+    requestCopy[2](requestCopy, v27[5], v33[5]);
 LABEL_9:
     _Block_object_dispose(&v26, 8);
 
@@ -762,10 +762,10 @@ void __83__MRNowPlayingPlayerClientRequests__handleEnqueuedPlaybackQueueRequest_
   }
 }
 
-- (void)handleSupportedCommandsRequestWithCompletion:(id)a3
+- (void)handleSupportedCommandsRequestWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(MRNowPlayingPlayerClientRequests *)a2 handleSupportedCommandsRequestWithCompletion:?];
   }
@@ -776,8 +776,8 @@ void __83__MRNowPlayingPlayerClientRequests__handleEnqueuedPlaybackQueueRequest_
   v8[2] = __81__MRNowPlayingPlayerClientRequests_handleSupportedCommandsRequestWithCompletion___block_invoke;
   v8[3] = &unk_1E769A0A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_sync(serialQueue, v8);
 }
 
@@ -825,10 +825,10 @@ void __81__MRNowPlayingPlayerClientRequests_handleSupportedCommandsRequestWithCo
   }
 }
 
-- (void)handlePlaybackStateRequestWithCompletion:(id)a3
+- (void)handlePlaybackStateRequestWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(MRNowPlayingPlayerClientRequests *)a2 handlePlaybackStateRequestWithCompletion:?];
   }
@@ -839,8 +839,8 @@ void __81__MRNowPlayingPlayerClientRequests_handleSupportedCommandsRequestWithCo
   v8[2] = __77__MRNowPlayingPlayerClientRequests_handlePlaybackStateRequestWithCompletion___block_invoke;
   v8[3] = &unk_1E769A0A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_sync(serialQueue, v8);
 }
 
@@ -935,10 +935,10 @@ void __77__MRNowPlayingPlayerClientRequests_handlePlaybackStateRequestWithComple
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handlePlayerPropertiesRequestWithCompletion:(id)a3
+- (void)handlePlayerPropertiesRequestWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(MRNowPlayingPlayerClientRequests *)a2 handlePlayerPropertiesRequestWithCompletion:?];
   }
@@ -949,8 +949,8 @@ void __77__MRNowPlayingPlayerClientRequests_handlePlaybackStateRequestWithComple
   v8[2] = __80__MRNowPlayingPlayerClientRequests_handlePlayerPropertiesRequestWithCompletion___block_invoke;
   v8[3] = &unk_1E769A0A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_sync(serialQueue, v8);
 }
 
@@ -1077,30 +1077,30 @@ void __64__MRNowPlayingPlayerClientRequests_restoreNowPlayingClientState__block_
   [*(*(a1 + 32) + 56) removeAllObjects];
 }
 
-- (void)updatePlaybackQueue:(uint64_t)a1
+- (void)updatePlaybackQueue:(uint64_t)queue
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (queue)
   {
-    v5 = *(a1 + 40);
+    v5 = *(queue + 40);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__MRNowPlayingPlayerClientRequests_updatePlaybackQueue___block_invoke;
     v6[3] = &unk_1E769A4A0;
-    v6[4] = a1;
+    v6[4] = queue;
     v7 = v3;
     dispatch_sync(v5, v6);
   }
 }
 
-- (void)_onSerialQueue_updatePlaybackQueueIfUninitialized:(void *)a1
+- (void)_onSerialQueue_updatePlaybackQueueIfUninitialized:(void *)uninitialized
 {
   v3 = a2;
-  if (a1 && !a1[1])
+  if (uninitialized && !uninitialized[1])
   {
     v4 = v3;
-    [a1 setPlaybackQueue:v3];
+    [uninitialized setPlaybackQueue:v3];
     v3 = v4;
   }
 }
@@ -1119,13 +1119,13 @@ _DWORD *__71__MRNowPlayingPlayerClientRequests_updatePlaybackStateIfUninitialize
   return result;
 }
 
-- (void)_onSerialQueue_updateSupportedCommandsIfUninitialized:(void *)a1
+- (void)_onSerialQueue_updateSupportedCommandsIfUninitialized:(void *)uninitialized
 {
   v3 = a2;
-  if (a1 && !a1[3])
+  if (uninitialized && !uninitialized[3])
   {
     v4 = v3;
-    [a1 setSupportedCommands:v3];
+    [uninitialized setSupportedCommands:v3];
     v3 = v4;
   }
 }

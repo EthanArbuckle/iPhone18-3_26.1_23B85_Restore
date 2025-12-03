@@ -1,35 +1,35 @@
 @interface VCPCNNPetsKeypointsDetector
-- (VCPCNNPetsKeypointsDetector)initWithForceCPU:(BOOL)a3 sharedModel:(BOOL)a4;
+- (VCPCNNPetsKeypointsDetector)initWithForceCPU:(BOOL)u sharedModel:(BOOL)model;
 - (id).cxx_construct;
-- (int)analyzeFrame:(__CVBuffer *)a3 withBox:(id)a4 keypoints:(id)a5;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 box:(id)a7;
-- (int)parseHeatmap2Keypoints:(id)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame withBox:(id)box keypoints:(id)keypoints;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width box:(id)box;
+- (int)parseHeatmap2Keypoints:(id)keypoints;
 - (void)dealloc;
 @end
 
 @implementation VCPCNNPetsKeypointsDetector
 
-- (VCPCNNPetsKeypointsDetector)initWithForceCPU:(BOOL)a3 sharedModel:(BOOL)a4
+- (VCPCNNPetsKeypointsDetector)initWithForceCPU:(BOOL)u sharedModel:(BOOL)model
 {
-  v4 = a4;
-  v5 = a3;
+  modelCopy = model;
+  uCopy = u;
   v36[2] = *MEMORY[0x1E69E9840];
   v34.receiver = self;
   v34.super_class = VCPCNNPetsKeypointsDetector;
   v6 = [(VCPCNNPetsKeypointsDetector *)&v34 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v8 = [v7 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v9 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pet_pose.espresso.net" relativeToURL:v8];
+    v9 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pet_pose.espresso.net" relativeToURL:resourceURL];
     v10 = [VCPCNNModelEspresso alloc];
     v35[0] = @"forceCPU";
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:uCopy];
     v36[0] = v11;
     v35[1] = @"sharedContext";
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:modelCopy];
     v36[1] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
     v14 = [(VCPCNNModelEspresso *)v10 initWithParameters:v9 inputNames:0 outputNames:0 properties:v13];
@@ -136,18 +136,18 @@ LABEL_24:
   [(VCPCNNPetsKeypointsDetector *)&v4 dealloc];
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data
 {
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -158,7 +158,7 @@ LABEL_24:
   }
 
   v8 = Height;
-  v9 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v9 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v23 = v9;
   if (v9)
   {
@@ -171,14 +171,14 @@ LABEL_24:
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    bzero(a4, 3 * 4 * Width * v8);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    bzero(data, 3 * 4 * Width * v8);
     if (v8 >= 1)
     {
       v15 = 0;
-      v16 = &a4[2 * v8 * Width];
-      v17 = &a4[v8 * Width];
+      v16 = &data[2 * v8 * Width];
+      v17 = &data[v8 * Width];
       v18 = 4 * Width;
       do
       {
@@ -199,7 +199,7 @@ LABEL_24:
             LOBYTE(v22) = BaseAddress[(v19 * 4) + 2];
             v14 = (*&v22 / 255.0 + -0.405999988) / 0.224999994;
             *&v14 = v14;
-            a4[v19++] = *&v14;
+            data[v19++] = *&v14;
             --v20;
           }
 
@@ -208,7 +208,7 @@ LABEL_24:
 
         BaseAddress += BytesPerRow;
         ++v15;
-        a4 = (a4 + v18);
+        data = (data + v18);
         v17 = (v17 + v18);
         v16 = (v16 + v18);
       }
@@ -226,16 +226,16 @@ LABEL_24:
   return v10;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 box:(id)a7
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width box:(id)box
 {
-  v7 = *&a6;
-  v8 = *&a5;
-  v12 = a7;
-  v13 = v12;
-  if (a3)
+  v7 = *&width;
+  v8 = *&height;
+  boxCopy = box;
+  v13 = boxCopy;
+  if (input)
   {
     cf = 0;
-    [v12 minX];
+    [boxCopy minX];
     v15 = v14;
     [v13 minY];
     v17 = v16;
@@ -250,10 +250,10 @@ LABEL_24:
     v28.size.width = (v19 - v21);
     v28.size.height = (v23 - v24);
     v28.origin.x = v15;
-    v25 = Scaler::ScaleCropped(&self->_scaler, v28, a4, &cf, v7, v8, 1111970369);
+    v25 = Scaler::ScaleCropped(&self->_scaler, v28, buffer, &cf, v7, v8, 1111970369);
     if (!v25)
     {
-      v25 = [(VCPCNNPetsKeypointsDetector *)self copyImage:cf toData:a3];
+      v25 = [(VCPCNNPetsKeypointsDetector *)self copyImage:cf toData:input];
     }
 
     if (cf)
@@ -270,10 +270,10 @@ LABEL_24:
   return v25;
 }
 
-- (int)parseHeatmap2Keypoints:(id)a3
+- (int)parseHeatmap2Keypoints:(id)keypoints
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  keypointsCopy = keypoints;
   modelEspresso = self->_modelEspresso;
   if (!modelEspresso)
   {
@@ -418,7 +418,7 @@ LABEL_10:
       v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
       v39[2] = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
-      [v34 addObject:v28];
+      [keypointsCopy addObject:v28];
 
       ++v12;
       v11 += v6 * v9;
@@ -433,13 +433,13 @@ LABEL_36:
   return v29;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withBox:(id)a4 keypoints:(id)a5
+- (int)analyzeFrame:(__CVBuffer *)frame withBox:(id)box keypoints:(id)keypoints
 {
-  v8 = a4;
-  v9 = a5;
+  boxCopy = box;
+  keypointsCopy = keypoints;
   v10 = objc_autoreleasePoolPush();
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
   if (Height >= Width)
   {
     v13 = Width;
@@ -452,13 +452,13 @@ LABEL_36:
 
   if (v13 >= 64)
   {
-    v14 = [(VCPCNNPetsKeypointsDetector *)self createInput:self->_inputData withBuffer:a3 cnnInputHeight:self->_inputHeight cnnInputWidth:self->_inputWidth box:v8];
+    v14 = [(VCPCNNPetsKeypointsDetector *)self createInput:self->_inputData withBuffer:frame cnnInputHeight:self->_inputHeight cnnInputWidth:self->_inputWidth box:boxCopy];
     if (!v14)
     {
       v14 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
       if (!v14)
       {
-        v14 = [(VCPCNNPetsKeypointsDetector *)self parseHeatmap2Keypoints:v9];
+        v14 = [(VCPCNNPetsKeypointsDetector *)self parseHeatmap2Keypoints:keypointsCopy];
       }
     }
   }

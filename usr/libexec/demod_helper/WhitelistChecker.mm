@@ -1,19 +1,19 @@
 @interface WhitelistChecker
-- (BOOL)annotated:(id)a3;
-- (BOOL)checkFile_WatchAndTV:(id)a3 withMetaData:(id)a4;
-- (BOOL)checkFile_iOS:(id)a3 withMetaData:(id)a4;
-- (BOOL)checkFile_macOS:(id)a3 withMetaData:(id)a4;
-- (BOOL)file:(id)a3 blacklisted:(id)a4;
-- (BOOL)file:(id)a3 whitelisted:(id)a4;
-- (BOOL)handleSystemContainerFiles:(id)a3 withMetadata:(id)a4;
+- (BOOL)annotated:(id)annotated;
+- (BOOL)checkFile_WatchAndTV:(id)v withMetaData:(id)data;
+- (BOOL)checkFile_iOS:(id)s withMetaData:(id)data;
+- (BOOL)checkFile_macOS:(id)s withMetaData:(id)data;
+- (BOOL)file:(id)file blacklisted:(id)blacklisted;
+- (BOOL)file:(id)file whitelisted:(id)whitelisted;
+- (BOOL)handleSystemContainerFiles:(id)files withMetadata:(id)metadata;
 - (BOOL)load;
-- (BOOL)loadFromFile:(id)a3;
-- (BOOL)shouldRestoreSystemContainer_WatchAndTV:(id)a3 shared:(BOOL)a4;
-- (BOOL)shouldRestoreSystemContainer_iOS:(id)a3 shared:(BOOL)a4;
+- (BOOL)loadFromFile:(id)file;
+- (BOOL)shouldRestoreSystemContainer_WatchAndTV:(id)v shared:(BOOL)shared;
+- (BOOL)shouldRestoreSystemContainer_iOS:(id)s shared:(BOOL)shared;
 - (WhitelistChecker)init;
-- (id)checkManifest:(id)a3;
-- (id)createFullPathList:(id)a3 rootPath:(id)a4 isAllowList:(BOOL)a5;
-- (id)getRealPathForFile:(id)a3 withMetaData:(id)a4;
+- (id)checkManifest:(id)manifest;
+- (id)createFullPathList:(id)list rootPath:(id)path isAllowList:(BOOL)allowList;
+- (id)getRealPathForFile:(id)file withMetaData:(id)data;
 @end
 
 @implementation WhitelistChecker
@@ -35,12 +35,12 @@
 - (BOOL)load
 {
   v3 = +[MSDPlatform sharedInstance];
-  v4 = [v3 macOS];
+  macOS = [v3 macOS];
 
-  if (v4)
+  if (macOS)
   {
-    v5 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByStandardizingPath];
-    v20[0] = v5;
+    stringByStandardizingPath = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByStandardizingPath];
+    v20[0] = stringByStandardizingPath;
     v20[1] = @"/Library/Apple";
     v6 = [NSArray arrayWithObjects:v20 count:2];
     v7 = [NSSet setWithArray:v6];
@@ -64,9 +64,9 @@
       v16 = sub_1000177C8();
       [(WhitelistChecker *)self setDomains:v16];
 
-      v17 = [(WhitelistChecker *)self domains];
+      domains = [(WhitelistChecker *)self domains];
 
-      if (v17)
+      if (domains)
       {
         return 1;
       }
@@ -76,17 +76,17 @@
     }
   }
 
-  v11 = [(WhitelistChecker *)self domainsPlistFilePath];
-  v12 = [MSDDomainsPlistPatcher patchDomainsPlist:v11];
+  domainsPlistFilePath = [(WhitelistChecker *)self domainsPlistFilePath];
+  v12 = [MSDDomainsPlistPatcher patchDomainsPlist:domainsPlistFilePath];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v13 = [v12 objectForKey:@"SystemDomains"];
     v14 = [NSDictionary dictionaryWithDictionary:v13];
     [(WhitelistChecker *)self setDomains:v14];
 
-    v15 = [(WhitelistChecker *)self domains];
+    domains2 = [(WhitelistChecker *)self domains];
 
-    if (v15)
+    if (domains2)
     {
 
       return 1;
@@ -104,29 +104,29 @@
     v19 = sub_100021268();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      sub_1000324D4(v11, v19);
+      sub_1000324D4(domainsPlistFilePath, v19);
     }
   }
 
   return 0;
 }
 
-- (BOOL)loadFromFile:(id)a3
+- (BOOL)loadFromFile:(id)file
 {
-  [(WhitelistChecker *)self setDomainsPlistFilePath:a3];
+  [(WhitelistChecker *)self setDomainsPlistFilePath:file];
 
   return [(WhitelistChecker *)self load];
 }
 
-- (id)checkManifest:(id)a3
+- (id)checkManifest:(id)manifest
 {
-  v4 = a3;
+  manifestCopy = manifest;
   v5 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = manifestCopy;
   v25 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (!v25)
   {
@@ -150,10 +150,10 @@
       v10 = *(*(&v26 + 1) + 8 * i);
       v11 = [v6 objectForKey:{v10, v22}];
       v12 = [(WhitelistChecker *)self getRealPathForFile:v10 withMetaData:v11];
-      v13 = [p_vtable + 37 sharedInstance];
-      v14 = [v13 macOS];
+      sharedInstance = [p_vtable + 37 sharedInstance];
+      macOS = [sharedInstance macOS];
 
-      if (v14)
+      if (macOS)
       {
         if ([(WhitelistChecker *)self checkFile_macOS:v12 withMetaData:v11])
         {
@@ -163,8 +163,8 @@
         goto LABEL_15;
       }
 
-      v15 = [p_vtable + 37 sharedInstance];
-      if ([v15 iOS])
+      sharedInstance2 = [p_vtable + 37 sharedInstance];
+      if ([sharedInstance2 iOS])
       {
 
 LABEL_12:
@@ -172,8 +172,8 @@ LABEL_12:
         goto LABEL_14;
       }
 
-      v16 = [p_vtable + 37 sharedInstance];
-      v17 = [v16 rOS];
+      sharedInstance3 = [p_vtable + 37 sharedInstance];
+      v17 = [sharedInstance3 rOS];
 
       if (v17)
       {
@@ -223,24 +223,24 @@ LABEL_20:
   return v20;
 }
 
-- (BOOL)checkFile_macOS:(id)a3 withMetaData:(id)a4
+- (BOOL)checkFile_macOS:(id)s withMetaData:(id)data
 {
-  v5 = a3;
-  v6 = [(WhitelistChecker *)self blackListedPaths];
-  v7 = [v6 containsObject:v5];
+  sCopy = s;
+  blackListedPaths = [(WhitelistChecker *)self blackListedPaths];
+  v7 = [blackListedPaths containsObject:sCopy];
 
   return v7 ^ 1;
 }
 
-- (BOOL)checkFile_iOS:(id)a3 withMetaData:(id)a4
+- (BOOL)checkFile_iOS:(id)s withMetaData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  dataCopy = data;
   v8 = [NSArray arrayWithObjects:@"/var/mobile/Media", @"/var/mobile/Library/Backup/SystemContainers/", @"/var/mobile/Library/IdentityServices/Persistence/DoNotBackup", @"/var/root/Library/Backup/SystemContainers/", @"/var/wireless/Library/Preferences/com.apple.awdd.persistent.plist", @"/var/wireless/Library/Preferences/com.apple.awdd.plist", @"/var/MobileSoftwareUpdate/.MAAMigrated.plist", @"/var/MobileAsset/PreinstalledAssetsV2/InstallWithOs", @"/var/mobile/Library/Mobile Documents", 0];
-  if (![(WhitelistChecker *)self file:v6 whitelisted:v8]&& ![(WhitelistChecker *)self annotated:v7])
+  if (![(WhitelistChecker *)self file:sCopy whitelisted:v8]&& ![(WhitelistChecker *)self annotated:dataCopy])
   {
     v31 = v8;
-    v32 = v7;
+    v32 = dataCopy;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -259,8 +259,8 @@ LABEL_20:
     v38 = 0;
     v10 = 0;
     v35 = *v42;
-    v36 = v6;
-    v33 = self;
+    v36 = sCopy;
+    selfCopy = self;
     while (1)
     {
       v11 = 0;
@@ -273,8 +273,8 @@ LABEL_20:
 
         v12 = *(*(&v41 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = [(WhitelistChecker *)self domains];
-        v15 = [v14 objectForKey:v12];
+        domains = [(WhitelistChecker *)self domains];
+        v15 = [domains objectForKey:v12];
 
         v16 = [v15 objectForKey:@"RootPath"];
         if (!v16)
@@ -323,19 +323,19 @@ LABEL_20:
           goto LABEL_16;
         }
 
-        if ([(WhitelistChecker *)self file:v6 whitelisted:v22])
+        if ([(WhitelistChecker *)self file:sCopy whitelisted:v22])
         {
           v23 = [v15 objectForKey:@"RelativePathsNotToRestore"];
 
           v24 = [(WhitelistChecker *)self createFullPathList:v23 rootPath:v16 isAllowList:0];
 
-          if ([(WhitelistChecker *)self file:v6 blacklisted:v24])
+          if ([(WhitelistChecker *)self file:sCopy blacklisted:v24])
           {
             v25 = sub_100021268();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v46 = v6;
+              v46 = sCopy;
               v47 = 2114;
               v48 = v12;
               _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ is black listed in %{public}@", buf, 0x16u);
@@ -348,7 +348,7 @@ LABEL_20:
             v10 = v22;
             v13 = v40;
             v27 = v25;
-            self = v33;
+            self = selfCopy;
 LABEL_16:
 
             v28 = 0;
@@ -376,12 +376,12 @@ LABEL_20:
         if (!v28)
         {
           v39 = v26;
-          v6 = v36;
+          sCopy = v36;
           goto LABEL_33;
         }
 
         v11 = v11 + 1;
-        v6 = v36;
+        sCopy = v36;
       }
 
       while (v37 != v11);
@@ -392,7 +392,7 @@ LABEL_20:
 LABEL_33:
 
         v8 = v31;
-        v7 = v32;
+        dataCopy = v32;
         v9 = v38;
         goto LABEL_34;
       }
@@ -407,32 +407,32 @@ LABEL_34:
   return v39 & 1;
 }
 
-- (BOOL)checkFile_WatchAndTV:(id)a3 withMetaData:(id)a4
+- (BOOL)checkFile_WatchAndTV:(id)v withMetaData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WhitelistChecker *)self domains];
-  v9 = [v8 objectForKey:@"ContentRootDomain"];
+  vCopy = v;
+  dataCopy = data;
+  domains = [(WhitelistChecker *)self domains];
+  v9 = [domains objectForKey:@"ContentRootDomain"];
   v10 = [NSMutableArray arrayWithArray:v9];
 
   v11 = [NSArray arrayWithObjects:@"/var/mobile/Media", @"/var/containers/", 0];
   [v10 addObject:@"/var/mobile/Library/"];
-  if ([(WhitelistChecker *)self file:v6 whitelisted:v11]|| [(WhitelistChecker *)self annotated:v7])
+  if ([(WhitelistChecker *)self file:vCopy whitelisted:v11]|| [(WhitelistChecker *)self annotated:dataCopy])
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = [(WhitelistChecker *)self file:v6 whitelisted:v10];
+    v12 = [(WhitelistChecker *)self file:vCopy whitelisted:v10];
   }
 
   return v12;
 }
 
-- (BOOL)annotated:(id)a3
+- (BOOL)annotated:(id)annotated
 {
-  v3 = a3;
+  annotatedCopy = annotated;
   v4 = +[MSDPlatform sharedInstance];
   if ([v4 iOS])
   {
@@ -467,7 +467,7 @@ LABEL_34:
     }
   }
 
-  v9 = [v3 objectForKey:@"MSDManifestFileExtendedAttributes"];
+  v9 = [annotatedCopy objectForKey:@"MSDManifestFileExtendedAttributes"];
 
   v13 = 0;
   if (v9)
@@ -488,17 +488,17 @@ LABEL_34:
   return v13;
 }
 
-- (id)createFullPathList:(id)a3 rootPath:(id)a4 isAllowList:(BOOL)a5
+- (id)createFullPathList:(id)list rootPath:(id)path isAllowList:(BOOL)allowList
 {
-  v19 = a5;
-  v6 = a3;
-  v21 = a4;
+  allowListCopy = allowList;
+  listCopy = list;
+  pathCopy = path;
   v22 = [NSMutableArray arrayWithCapacity:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = listCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -522,7 +522,7 @@ LABEL_34:
 
         if ([v16 length])
         {
-          v17 = [v21 stringByAppendingPathComponent:v16];
+          v17 = [pathCopy stringByAppendingPathComponent:v16];
           [v22 addObject:v17];
         }
 
@@ -535,23 +535,23 @@ LABEL_34:
     while (v8);
   }
 
-  if (v19 && ![v22 count])
+  if (allowListCopy && ![v22 count])
   {
-    [v22 addObject:v21];
+    [v22 addObject:pathCopy];
   }
 
   return v22;
 }
 
-- (BOOL)file:(id)a3 whitelisted:(id)a4
+- (BOOL)file:(id)file whitelisted:(id)whitelisted
 {
-  v5 = a3;
+  fileCopy = file;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  whitelistedCopy = whitelisted;
+  v7 = [whitelistedCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -562,18 +562,18 @@ LABEL_34:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(whitelistedCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (![v5 rangeOfString:{v11, v14}] || !objc_msgSend(v11, "rangeOfString:", v5))
+        if (![fileCopy rangeOfString:{v11, v14}] || !objc_msgSend(v11, "rangeOfString:", fileCopy))
         {
           v12 = 1;
           goto LABEL_13;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [whitelistedCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       v12 = 0;
       if (v8)
       {
@@ -594,15 +594,15 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)file:(id)a3 blacklisted:(id)a4
+- (BOOL)file:(id)file blacklisted:(id)blacklisted
 {
-  v5 = a3;
+  fileCopy = file;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  blacklistedCopy = blacklisted;
+  v7 = [blacklistedCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -613,25 +613,25 @@ LABEL_13:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(blacklistedCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        if (![v5 rangeOfString:{v11, v20}])
+        if (![fileCopy rangeOfString:{v11, v20}])
         {
           v13 = v12;
-          v14 = [v5 length];
+          v14 = [fileCopy length];
           if (v14 == [v11 length])
           {
             v16 = 1;
             goto LABEL_14;
           }
 
-          v15 = [v5 length];
+          v15 = [fileCopy length];
           if (v15 > [v11 length])
           {
             v16 = 1;
-            v17 = [v5 substringWithRange:{v13, 1}];
+            v17 = [fileCopy substringWithRange:{v13, 1}];
             v18 = [v17 isEqualToString:@"/"];
 
             if (v18)
@@ -642,7 +642,7 @@ LABEL_13:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [blacklistedCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v8)
       {
         continue;
@@ -658,38 +658,38 @@ LABEL_14:
   return v16;
 }
 
-- (id)getRealPathForFile:(id)a3 withMetaData:(id)a4
+- (id)getRealPathForFile:(id)file withMetaData:(id)data
 {
-  v5 = a3;
-  v6 = [a4 valueForKey:@"MSDManifestFileAttributes"];
+  fileCopy = file;
+  v6 = [data valueForKey:@"MSDManifestFileAttributes"];
   v7 = [v6 valueForKey:@"NSFileType"];
   if (([v7 isEqualToString:@"NSFileTypeRegular"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"NSFileTypeDirectory"))
   {
-    v8 = [v5 stringByStandardizingPath];
-    if (([v5 isEqualToString:v8] & 1) == 0)
+    stringByStandardizingPath = [fileCopy stringByStandardizingPath];
+    if (([fileCopy isEqualToString:stringByStandardizingPath] & 1) == 0)
     {
       v9 = sub_100021268();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        sub_10003254C(v5, v8, v9);
+        sub_10003254C(fileCopy, stringByStandardizingPath, v9);
       }
     }
   }
 
   else
   {
-    v8 = v5;
+    stringByStandardizingPath = fileCopy;
   }
 
-  return v8;
+  return stringByStandardizingPath;
 }
 
-- (BOOL)shouldRestoreSystemContainer_iOS:(id)a3 shared:(BOOL)a4
+- (BOOL)shouldRestoreSystemContainer_iOS:(id)s shared:(BOOL)shared
 {
-  v4 = a3;
+  sCopy = s;
   v16 = 0;
   v15 = 0;
-  [v4 cStringUsingEncoding:4];
+  [sCopy cStringUsingEncoding:4];
   v5 = container_create_or_lookup_path_for_current_user();
   if (v5 && v15 == 1)
   {
@@ -708,7 +708,7 @@ LABEL_14:
         *buf = 136315394;
         v18 = "[WhitelistChecker shouldRestoreSystemContainer_iOS:shared:]";
         v19 = 2114;
-        v20 = v4;
+        v20 = sCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s:Container check failed for %{public}@. But still restoring.", buf, 0x16u);
       }
     }
@@ -725,20 +725,20 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)shouldRestoreSystemContainer_WatchAndTV:(id)a3 shared:(BOOL)a4
+- (BOOL)shouldRestoreSystemContainer_WatchAndTV:(id)v shared:(BOOL)shared
 {
-  v5 = a3;
-  v6 = [(WhitelistChecker *)self domains];
-  v7 = [v6 objectForKey:@"SystemContainerDomain"];
+  vCopy = v;
+  domains = [(WhitelistChecker *)self domains];
+  v7 = [domains objectForKey:@"SystemContainerDomain"];
 
-  LOBYTE(v6) = [v7 containsObject:v5];
-  return v6;
+  LOBYTE(domains) = [v7 containsObject:vCopy];
+  return domains;
 }
 
-- (BOOL)handleSystemContainerFiles:(id)a3 withMetadata:(id)a4
+- (BOOL)handleSystemContainerFiles:(id)files withMetadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  filesCopy = files;
+  metadataCopy = metadata;
   v7 = +[MSDPlatform sharedInstance];
   v8 = [v7 iOS];
 
@@ -793,10 +793,10 @@ LABEL_14:
         }
 
         v17 = *(*(&v40 + 1) + 8 * i);
-        if ([v5 rangeOfString:v17] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([filesCopy rangeOfString:v17] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v18 = v6;
-          v19 = [v5 stringByReplacingOccurrencesOfString:v17 withString:&stru_1000519D0];
+          v18 = metadataCopy;
+          v19 = [filesCopy stringByReplacingOccurrencesOfString:v17 withString:&stru_1000519D0];
           v20 = 1;
           goto LABEL_20;
         }
@@ -812,7 +812,7 @@ LABEL_14:
     }
   }
 
-  v18 = v6;
+  v18 = metadataCopy;
   v19 = 0;
   v20 = 0;
 LABEL_20:
@@ -835,9 +835,9 @@ LABEL_20:
         }
 
         v25 = *(*(&v36 + 1) + 8 * j);
-        if ([v5 rangeOfString:v25] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([filesCopy rangeOfString:v25] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v28 = [v5 stringByReplacingOccurrencesOfString:v25 withString:&stru_1000519D0];
+          v28 = [filesCopy stringByReplacingOccurrencesOfString:v25 withString:&stru_1000519D0];
 
           v26 = 0;
           v19 = v28;
@@ -863,7 +863,7 @@ LABEL_20:
   }
 
 LABEL_31:
-  v27 = [v5 componentsSeparatedByString:@"/"];
+  v27 = [filesCopy componentsSeparatedByString:@"/"];
   if ([v27 count] != v35 || (objc_msgSend(v34, "annotated:", v18) & 1) != 0)
   {
 LABEL_33:
@@ -890,7 +890,7 @@ LABEL_33:
   v32 = sub_100021268();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
-    sub_1000325D4(v5, v32);
+    sub_1000325D4(filesCopy, v32);
   }
 
   LOBYTE(v26) = 0;

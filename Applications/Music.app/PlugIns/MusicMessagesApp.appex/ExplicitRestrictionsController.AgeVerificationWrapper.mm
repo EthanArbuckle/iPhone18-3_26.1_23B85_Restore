@@ -1,6 +1,6 @@
 @interface ExplicitRestrictionsController.AgeVerificationWrapper
 - (_TtCC9MusicCore30ExplicitRestrictionsControllerP33_49A4F392108DD8BCF77701E27C86571422AgeVerificationWrapper)init;
-- (void)cloudServiceSetupViewControllerDidDismiss:(id)a3;
+- (void)cloudServiceSetupViewControllerDidDismiss:(id)dismiss;
 - (void)dealloc;
 @end
 
@@ -10,7 +10,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtCC9MusicCore30ExplicitRestrictionsControllerP33_49A4F392108DD8BCF77701E27C86571422AgeVerificationWrapper_completion);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     sub_10000DE64(v4);
@@ -23,12 +23,12 @@
   [(ExplicitRestrictionsController.AgeVerificationWrapper *)&v6 dealloc];
 }
 
-- (void)cloudServiceSetupViewControllerDidDismiss:(id)a3
+- (void)cloudServiceSetupViewControllerDidDismiss:(id)dismiss
 {
   sub_100006F10(0, &qword_1006372C0);
   v4 = swift_allocObject();
   *(v4 + 16) = self;
-  v5 = self;
+  selfCopy = self;
   static OS_dispatch_queue.asyncOnMainIfNeeded(_:)(sub_1002153C4, v4);
 }
 

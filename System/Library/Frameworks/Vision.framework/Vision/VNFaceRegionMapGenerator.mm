@@ -1,8 +1,8 @@
 @interface VNFaceRegionMapGenerator
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -15,27 +15,27 @@
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v176 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a7;
-  v15 = a9;
-  v140 = [(VNDetector *)self validatedImageBufferFromOptions:v13 error:a8];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v140 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (!v140)
   {
     v97 = 0;
     goto LABEL_109;
   }
 
-  v138 = [VNValidationUtilities originatingRequestSpecifierInOptions:v13 error:a8];
+  v138 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v138)
   {
     v97 = 0;
     goto LABEL_108;
   }
 
-  v139 = VNCloneFaceObservationFromOptions(v13, a8);
+  v139 = VNCloneFaceObservationFromOptions(optionsCopy, error);
   if (!v139)
   {
     v97 = 0;
@@ -52,8 +52,8 @@
   v153 = 0;
   std::vector<_Geometry2D_point2D_>::resize(&__p);
   v18 = __p;
-  v19 = [v139 landmarkPoints65];
-  memcpy(v18, [v19 bytes], 0x1F8uLL);
+  landmarkPoints65 = [v139 landmarkPoints65];
+  memcpy(v18, [landmarkPoints65 bytes], 0x1F8uLL);
 
   v20 = v152;
   if (v18 != v152)
@@ -86,9 +86,9 @@
     goto LABEL_89;
   }
 
-  v132 = v15;
-  v133 = v14;
-  v134 = v13;
+  v132 = handlerCopy;
+  v133 = recorderCopy;
+  v134 = optionsCopy;
   v135 = FaceRegionMap_addForeheadLandmarks(&v159);
   if ((v135 & 0x80) == 0)
   {
@@ -145,8 +145,8 @@
 
   while (v27 != 256);
   v129 = v18;
-  v130 = self;
-  v131 = a8;
+  selfCopy = self;
+  errorCopy = error;
   v33 = v28;
   MEMORY[0x1AC5587B0](v30, v31);
   v34 = 0;
@@ -395,16 +395,16 @@ LABEL_34:
   while (v141 != 255);
   free(v142);
   free(__Ca);
-  self = v130;
-  a8 = v131;
+  self = selfCopy;
+  error = errorCopy;
   v18 = v129;
 LABEL_82:
   v96 = v135;
 LABEL_83:
   v23 = v159;
-  v14 = v133;
-  v13 = v134;
-  v15 = v132;
+  recorderCopy = v133;
+  optionsCopy = v134;
+  handlerCopy = v132;
   if (v159)
   {
 LABEL_89:
@@ -484,7 +484,7 @@ LABEL_90:
     }
 
     v109 = [VNFaceRegionMap alloc];
-    v110 = [v138 requestRevision];
+    requestRevision = [v138 requestRevision];
     [v139 boundingBox];
     v112 = v111;
     v114 = v113;
@@ -495,8 +495,8 @@ LABEL_90:
     LODWORD(v122) = v121;
     LODWORD(v124) = v123;
     LODWORD(v126) = v125;
-    v127 = [(VNFaceRegionMap *)v109 initWithRequestRevision:v110 regionMap:v150 deallocateBuffer:1 userBBox:v102 alignedBBox:v112 valueToLabelMap:v114, v116, v118, v120, v122, v124, v126];
-    [v139 setFaceRegionMap:v127];
+    v126 = [(VNFaceRegionMap *)v109 initWithRequestRevision:requestRevision regionMap:v150 deallocateBuffer:1 userBBox:v102 alignedBBox:v112 valueToLabelMap:v114, v116, v118, v120, v122, v124, v126];
+    [v139 setFaceRegionMap:v126];
     v169 = v139;
     v97 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v169 count:1];
 
@@ -509,10 +509,10 @@ LABEL_106:
     }
   }
 
-  else if (a8)
+  else if (error)
   {
     VNErrorForCVMLStatus(v96);
-    *a8 = v97 = 0;
+    *error = v97 = 0;
     if (v18)
     {
       goto LABEL_106;
@@ -547,11 +547,11 @@ LABEL_109:
   [(VNDetector *)&v5 dealloc];
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = VNFaceRegionMapGenerator;
-  if (![(VNDetector *)&v10 completeInitializationForSession:a3 error:?])
+  if (![(VNDetector *)&v10 completeInitializationForSession:session error:?])
   {
     return 0;
   }
@@ -562,7 +562,7 @@ LABEL_109:
   aBlock[3] = &unk_1E77B5998;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = VNExecuteBlock(v6, a4);
+  v7 = VNExecuteBlock(v6, error);
 
   return v7;
 }
@@ -586,11 +586,11 @@ uint64_t __67__VNFaceRegionMapGenerator_completeInitializationForSession_error__
   return 0;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 

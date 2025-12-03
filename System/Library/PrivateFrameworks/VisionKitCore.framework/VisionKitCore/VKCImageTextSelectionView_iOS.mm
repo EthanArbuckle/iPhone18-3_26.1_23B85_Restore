@@ -2,54 +2,54 @@
 + (BOOL)processHasSnapshotDragEntitlement;
 - (BOOL)becomeFirstResponder;
 - (BOOL)hasText;
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4;
-- (BOOL)longPressHandler:(id)a3 gestureRecognizer:(id)a4 shouldRecieveTouch:(id)a5;
-- (BOOL)longPressHandler:(id)a3 gestureRecognizer:(id)a4 shouldRequireFailureOfGestureRecognizer:(id)a5;
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point;
+- (BOOL)longPressHandler:(id)handler gestureRecognizer:(id)recognizer shouldRecieveTouch:(id)touch;
+- (BOOL)longPressHandler:(id)handler gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (NSArray)gesturesForFailureRequirements;
 - (UITextInputDelegate)inputDelegate;
 - (UITextPosition)beginningOfDocument;
 - (UITextPosition)endOfDocument;
-- (VKCImageTextSelectionView_iOS)initWithCoder:(id)a3;
-- (VKCImageTextSelectionView_iOS)initWithFrame:(CGRect)a3;
+- (VKCImageTextSelectionView_iOS)initWithCoder:(id)coder;
+- (VKCImageTextSelectionView_iOS)initWithFrame:(CGRect)frame;
 - (VKCTextPointerTrackingView)textPointerTrackingView;
 - (id)_accessibilityUserTestingChildren;
 - (id)_rvItemForSelectedRange;
-- (id)_rvItemInRange:(_NSRange)a3;
-- (id)_textImageFromRect:(CGRect)a3;
+- (id)_rvItemInRange:(_NSRange)range;
+- (id)_textImageFromRect:(CGRect)rect;
 - (id)_textRangeForActions;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)selectedTextPathsConvertedToView:(id)a3;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)selectedTextPathsConvertedToView:(id)view;
 - (id)targetedDragPreviewForCurrentSelection;
 - (id)targetedDragPreviewWithLabelsForCurrentSelection;
 - (id)text;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
 - (int64_t)_availableTextServices;
 - (unint64_t)currentDraggedRectEdge;
-- (void)_addShortcut:(id)a3;
-- (void)_define:(id)a3;
-- (void)_lookup:(id)a3;
-- (void)_share:(id)a3;
-- (void)_translate:(id)a3;
+- (void)_addShortcut:(id)shortcut;
+- (void)_define:(id)_define;
+- (void)_lookup:(id)_lookup;
+- (void)_share:(id)_share;
+- (void)_translate:(id)_translate;
 - (void)beginSelectionChange;
 - (void)commonInit;
-- (void)copy:(id)a3;
-- (void)didLongPress:(id)a3;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
+- (void)copy:(id)copy;
+- (void)didLongPress:(id)press;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
 - (void)endSelectionChange;
-- (void)presentShareSheetForCustomStrings:(id)a3 attributedString:(id)a4;
-- (void)selectAll:(id)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setLongPressDataDetectorsInTextMode:(BOOL)a3;
-- (void)setRecognitionResult:(id)a3;
-- (void)setSelectedTextRange:(id)a3;
-- (void)setSelectedVKRange:(id)a3;
+- (void)presentShareSheetForCustomStrings:(id)strings attributedString:(id)string;
+- (void)selectAll:(id)all;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setHidden:(BOOL)hidden;
+- (void)setLongPressDataDetectorsInTextMode:(BOOL)mode;
+- (void)setRecognitionResult:(id)result;
+- (void)setSelectedTextRange:(id)range;
+- (void)setSelectedVKRange:(id)range;
 - (void)suppressSelectionViewGrabbers;
 - (void)updateSelectionRectsForWindowChange;
-- (void)useInteractionOptions:(unint64_t)a3;
+- (void)useInteractionOptions:(unint64_t)options;
 @end
 
 @implementation VKCImageTextSelectionView_iOS
@@ -86,11 +86,11 @@
   self->_initializationComplete = 1;
 }
 
-- (VKCImageTextSelectionView_iOS)initWithFrame:(CGRect)a3
+- (VKCImageTextSelectionView_iOS)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VKCImageTextSelectionView_iOS;
-  v3 = [(VKCImageTextSelectionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKCImageTextSelectionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -100,11 +100,11 @@
   return v4;
 }
 
-- (VKCImageTextSelectionView_iOS)initWithCoder:(id)a3
+- (VKCImageTextSelectionView_iOS)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = VKCImageTextSelectionView_iOS;
-  v3 = [(VKCImageTextSelectionView_iOS *)&v6 initWithCoder:a3];
+  v3 = [(VKCImageTextSelectionView_iOS *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -114,21 +114,21 @@
   return v4;
 }
 
-- (void)useInteractionOptions:(unint64_t)a3
+- (void)useInteractionOptions:(unint64_t)options
 {
-  v3 = a3;
-  v5 = [(VKCImageTextSelectionView_iOS *)self textInteraction];
+  optionsCopy = options;
+  textInteraction = [(VKCImageTextSelectionView_iOS *)self textInteraction];
 
-  if (v5)
+  if (textInteraction)
   {
-    v6 = [(VKCImageTextSelectionView_iOS *)self textInteraction];
-    [(VKCImageTextSelectionView_iOS *)self removeInteraction:v6];
+    textInteraction2 = [(VKCImageTextSelectionView_iOS *)self textInteraction];
+    [(VKCImageTextSelectionView_iOS *)self removeInteraction:textInteraction2];
   }
 
-  if (v3)
+  if (optionsCopy)
   {
     v7 = [MEMORY[0x1E69DD110] textInteractionForMode:1001];
-    if ((v3 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       v12 = v7;
       [v7 _setAllowsSelectionCommands:1];
@@ -149,15 +149,15 @@
   v8 = +[VKTextRange emptyRange];
   [(VKCImageTextSelectionView_iOS *)self setSelectedTextRange:v8];
 
-  v9 = [(VKCImageTextSelectionView_iOS *)self dragInteraction];
+  dragInteraction = [(VKCImageTextSelectionView_iOS *)self dragInteraction];
 
-  if (v9)
+  if (dragInteraction)
   {
-    v10 = [(VKCImageTextSelectionView_iOS *)self dragInteraction];
-    [(VKCImageTextSelectionView_iOS *)self removeInteraction:v10];
+    dragInteraction2 = [(VKCImageTextSelectionView_iOS *)self dragInteraction];
+    [(VKCImageTextSelectionView_iOS *)self removeInteraction:dragInteraction2];
   }
 
-  if ((v3 & 4) == 0)
+  if ((optionsCopy & 4) == 0)
   {
     v11 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:self];
     [v11 setEnabled:1];
@@ -170,17 +170,17 @@
 {
   v8.receiver = self;
   v8.super_class = VKCImageTextSelectionView_iOS;
-  v2 = [(VKCImageTextSelectionView_iOS *)&v8 _availableTextServices];
-  if (!v2)
+  _availableTextServices = [(VKCImageTextSelectionView_iOS *)&v8 _availableTextServices];
+  if (!_availableTextServices)
   {
     if ([MEMORY[0x1E69DC938] vk_isiPad])
     {
       return 0;
     }
 
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.ScreenshotServicesService"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
     if (!v5)
     {
@@ -189,78 +189,78 @@
 
     else
     {
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      v2 = [v6 _availableTextServices];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      _availableTextServices = [mEMORY[0x1E69DC668] _availableTextServices];
     }
   }
 
-  return v2;
+  return _availableTextServices;
 }
 
 - (void)beginSelectionChange
 {
   [(VKCImageTextSelectionView_iOS *)self setBeginSelectionChangedCalled:1];
   [(VKCImageTextSelectionView_iOS *)self setDraggedRectEdge:[(VKCImageTextSelectionView_iOS *)self currentDraggedRectEdge]];
-  v3 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  [(VKCImageTextSelectionView_iOS *)self setPreSelectionChangeSelectedRange:v3];
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  [(VKCImageTextSelectionView_iOS *)self setPreSelectionChangeSelectedRange:selectedVKRange];
 }
 
 - (void)endSelectionChange
 {
   [(VKCImageTextSelectionView_iOS *)self setDraggedRectEdge:0];
-  v3 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  [(VKCImageTextSelectionView_iOS *)self setPreSelectionChangeSelectedRange:v3];
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  [(VKCImageTextSelectionView_iOS *)self setPreSelectionChangeSelectedRange:selectedVKRange];
 
   [(VKCImageTextSelectionView_iOS *)self setBeginSelectionChangedCalled:0];
 
   [(VKCImageTextSelectionView *)self sendAnalyticsEventWithSelector:0 type:0 source:1];
 }
 
-- (void)setSelectedVKRange:(id)a3
+- (void)setSelectedVKRange:(id)range
 {
-  v4 = a3;
-  v5 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
-  [v5 selectionWillChange:self];
+  rangeCopy = range;
+  inputDelegate = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
+  [inputDelegate selectionWillChange:self];
 
   [(VKCImageTextSelectionView_iOS *)self setManuallySettingSelectedRange:1];
-  [(VKCImageTextSelectionView_iOS *)self setSelectedTextRange:v4];
+  [(VKCImageTextSelectionView_iOS *)self setSelectedTextRange:rangeCopy];
 
   [(VKCImageTextSelectionView_iOS *)self setManuallySettingSelectedRange:0];
-  v6 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
-  [v6 selectionDidChange:self];
+  inputDelegate2 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
+  [inputDelegate2 selectionDidChange:self];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v7.receiver = self;
   v7.super_class = VKCImageTextSelectionView_iOS;
-  [(VKCImageTextSelectionView_iOS *)&v7 setHidden:a3];
-  v4 = [(VKCImageTextSelectionView_iOS *)self textInteraction];
+  [(VKCImageTextSelectionView_iOS *)&v7 setHidden:hidden];
+  textInteraction = [(VKCImageTextSelectionView_iOS *)self textInteraction];
   if ([(VKCImageTextSelectionView_iOS *)self isHidden])
   {
-    [(VKCImageTextSelectionView_iOS *)self removeInteraction:v4];
+    [(VKCImageTextSelectionView_iOS *)self removeInteraction:textInteraction];
   }
 
   else
   {
-    v5 = [(VKCImageTextSelectionView_iOS *)self interactions];
-    v6 = [v5 containsObject:v4];
+    interactions = [(VKCImageTextSelectionView_iOS *)self interactions];
+    v6 = [interactions containsObject:textInteraction];
 
     if ((v6 & 1) == 0)
     {
-      [(VKCImageTextSelectionView_iOS *)self addInteraction:v4];
+      [(VKCImageTextSelectionView_iOS *)self addInteraction:textInteraction];
     }
   }
 }
 
-- (id)_textImageFromRect:(CGRect)a3
+- (id)_textImageFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-  v9 = [v8 viewForImageSnapshotForTextSelectionView:self];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  v9 = [textSelectionDelegate viewForImageSnapshotForTextSelectionView:self];
 
   [(VKCImageTextSelectionView_iOS *)self convertRect:v9 toView:x, y, width, height];
   v10 = [v9 vk_renderImageFromViewBackingStoreWithSubrect:?];
@@ -268,25 +268,25 @@
   return v10;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  allCopy = all;
   v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v5, OS_LOG_TYPE_DEFAULT, "Select All: %@", &v8, 0xCu);
   }
 
-  v6 = [(VKCImageTextSelectionView *)self documentRange];
-  [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:v6];
+  documentRange = [(VKCImageTextSelectionView *)self documentRange];
+  [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:documentRange];
 
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(documentRange) = objc_opt_isKindOfClass();
 
-  if (v6)
+  if (documentRange)
   {
     v7 = 1;
   }
@@ -299,38 +299,38 @@
   [(VKCImageTextSelectionView *)self sendAnalyticsEventWithSelector:0 type:2 source:v7];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  copyCopy = copy;
   v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v5, OS_LOG_TYPE_DEFAULT, "Copy: %@", buf, 0xCu);
   }
 
-  v6 = [(VKCImageTextSelectionView_iOS *)self _textRangeForActions];
-  v7 = [(VKCImageTextSelectionView *)self selectedText];
-  v8 = [(VKCImageTextSelectionView *)self attributedTextInRange:v6];
-  v9 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-  v10 = [v9 textSelectionView:self updateStringForCopy:v7];
+  _textRangeForActions = [(VKCImageTextSelectionView_iOS *)self _textRangeForActions];
+  selectedText = [(VKCImageTextSelectionView *)self selectedText];
+  v8 = [(VKCImageTextSelectionView *)self attributedTextInRange:_textRangeForActions];
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  v10 = [textSelectionDelegate textSelectionView:self updateStringForCopy:selectedText];
 
-  v11 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-  v12 = [v11 textSelectionView:self updateAttributedStringForCopy:v8];
+  textSelectionDelegate2 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  v12 = [textSelectionDelegate2 textSelectionView:self updateAttributedStringForCopy:v8];
 
   v13 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v10];
   [v13 registerObject:v12 visibility:0];
-  v14 = [MEMORY[0x1E69DCD50] generalPasteboard];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
   v17 = v13;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-  [v14 setItemProviders:v15];
+  [generalPasteboard setItemProviders:v15];
 
   objc_opt_class();
-  LOBYTE(v14) = objc_opt_isKindOfClass();
+  LOBYTE(generalPasteboard) = objc_opt_isKindOfClass();
 
-  if (v14)
+  if (generalPasteboard)
   {
     v16 = 1;
   }
@@ -345,20 +345,20 @@
 
 - (NSArray)gesturesForFailureRequirements
 {
-  v3 = [(VKCImageTextSelectionView_iOS *)self textInteraction];
-  v4 = [v3 gesturesForFailureRequirements];
-  v5 = [(VKCImageTextSelectionView_iOS *)self longPressGR];
-  v6 = [v4 vk_arrayByAddingNonNilObject:v5];
+  textInteraction = [(VKCImageTextSelectionView_iOS *)self textInteraction];
+  gesturesForFailureRequirements = [textInteraction gesturesForFailureRequirements];
+  longPressGR = [(VKCImageTextSelectionView_iOS *)self longPressGR];
+  v6 = [gesturesForFailureRequirements vk_arrayByAddingNonNilObject:longPressGR];
 
   return v6;
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VKCImageBaseOverlayView *)self contentsRect];
   v16.origin.x = v8;
   v16.origin.y = v9;
@@ -370,100 +370,100 @@
   v15.size.height = height;
   if (!CGRectEqualToRect(v15, v16))
   {
-    v12 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
-    [v12 textWillChange:self];
+    inputDelegate = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
+    [inputDelegate textWillChange:self];
 
     v14.receiver = self;
     v14.super_class = VKCImageTextSelectionView_iOS;
     [(VKCImageBaseOverlayView *)&v14 setContentsRect:x, y, width, height];
-    v13 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
-    [v13 textDidChange:self];
+    inputDelegate2 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
+    [inputDelegate2 textDidChange:self];
   }
 }
 
-- (void)setRecognitionResult:(id)a3
+- (void)setRecognitionResult:(id)result
 {
   v8.receiver = self;
   v8.super_class = VKCImageTextSelectionView_iOS;
-  v4 = a3;
-  [(VKCImageTextSelectionView *)&v8 setRecognitionResult:v4];
+  resultCopy = result;
+  [(VKCImageTextSelectionView *)&v8 setRecognitionResult:resultCopy];
   v5 = [VKTextInputStringTokenizer alloc];
-  v6 = [(VKTextInputStringTokenizer *)v5 initWithTextInput:self recognitionResult:v4, v8.receiver, v8.super_class];
+  v6 = [(VKTextInputStringTokenizer *)v5 initWithTextInput:self recognitionResult:resultCopy, v8.receiver, v8.super_class];
   [(VKCImageTextSelectionView_iOS *)self setTokenizer:v6];
 
-  [v4 setTextDelegate:self];
-  v7 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
-  [v7 textDidChange:self];
+  [resultCopy setTextDelegate:self];
+  inputDelegate = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
+  [inputDelegate textDidChange:self];
 
   [(VKCImageTextSelectionView_iOS *)self setAccessibilityElements:0];
 }
 
-- (void)setLongPressDataDetectorsInTextMode:(BOOL)a3
+- (void)setLongPressDataDetectorsInTextMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v6.receiver = self;
   v6.super_class = VKCImageTextSelectionView_iOS;
   [(VKCImageTextSelectionView *)&v6 setLongPressDataDetectorsInTextMode:?];
-  v5 = [(VKCImageTextSelectionView_iOS *)self longPressGR];
-  [v5 setEnabled:v3];
+  longPressGR = [(VKCImageTextSelectionView_iOS *)self longPressGR];
+  [longPressGR setEnabled:modeCopy];
 }
 
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  y = point.y;
+  x = point.x;
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
 
-  if (!v7)
+  if (!textSelectionDelegate)
   {
     return 1;
   }
 
-  v8 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-  v9 = [v8 textSelectionView:self shouldBeginAtPoint:{x, y}];
+  textSelectionDelegate2 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  v9 = [textSelectionDelegate2 textSelectionView:self shouldBeginAtPoint:{x, y}];
 
   return v9;
 }
 
 - (void)updateSelectionRectsForWindowChange
 {
-  v3 = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
-  v2 = [v3 selectionView];
-  [v2 updateSelectionRects];
+  interactionAssistant = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
+  selectionView = [interactionAssistant selectionView];
+  [selectionView updateSelectionRects];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([v7 type] == 11 && (vk_isSeedBuild() & 1) == 0)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([eventCopy type] == 11 && (vk_isSeedBuild() & 1) == 0)
   {
     [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:x, y];
     v15 = v14;
     v17 = v16;
-    v18 = [(VKCImageBaseOverlayView *)self recognitionResult];
-    v19 = [v18 allLineQuads];
+    recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+    allLineQuads = [recognitionResult allLineQuads];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __51__VKCImageTextSelectionView_iOS_hitTest_withEvent___block_invoke;
     v27[3] = &__block_descriptor_48_e23_B32__0__VKQuad_8Q16_B24l;
     v27[4] = v15;
     v27[5] = v17;
-    v8 = [v19 vk_objectPassingTest:v27];
+    textPointerTrackingView3 = [allLineQuads vk_objectPassingTest:v27];
 
-    if (v8)
+    if (textPointerTrackingView3)
     {
       [(VKCImageBaseOverlayView *)self contentsRect];
-      v20 = [v8 quadByConvertingFromNormalizedRectToView:self contentsRect:?];
-      v21 = [(VKCImageTextSelectionView_iOS *)self textPointerTrackingView];
-      v22 = [v21 quad];
-      v23 = VKMNearlyEqualVKQuads(v22, v20);
+      v20 = [textPointerTrackingView3 quadByConvertingFromNormalizedRectToView:self contentsRect:?];
+      textPointerTrackingView = [(VKCImageTextSelectionView_iOS *)self textPointerTrackingView];
+      quad = [textPointerTrackingView quad];
+      v23 = VKMNearlyEqualVKQuads(quad, v20);
 
       if (!v23)
       {
-        v24 = [(VKCImageTextSelectionView_iOS *)self textPointerTrackingView];
-        [v24 removeFromSuperview];
+        textPointerTrackingView2 = [(VKCImageTextSelectionView_iOS *)self textPointerTrackingView];
+        [textPointerTrackingView2 removeFromSuperview];
 
         v25 = [[VKCTextPointerTrackingView alloc] initWithQuad:v20];
         [(VKCImageTextSelectionView_iOS *)self addSubview:v25];
@@ -474,52 +474,52 @@
 
   else
   {
-    v8 = [(VKCImageTextSelectionView_iOS *)self textPointerTrackingView];
-    [v8 removeFromSuperview];
+    textPointerTrackingView3 = [(VKCImageTextSelectionView_iOS *)self textPointerTrackingView];
+    [textPointerTrackingView3 removeFromSuperview];
   }
 
   v26.receiver = self;
   v26.super_class = VKCImageTextSelectionView_iOS;
-  v9 = [(VKCImageTextSelectionView_iOS *)&v26 hitTest:v7 withEvent:x, y];
-  if (!v9)
+  selfCopy = [(VKCImageTextSelectionView_iOS *)&v26 hitTest:eventCopy withEvent:x, y];
+  if (!selfCopy)
   {
     if (-[VKCImageTextSelectionView longPressDataDetectorsInTextMode](self, "longPressDataDetectorsInTextMode") && (-[VKCImageTextSelectionView textSelectionDelegate](self, "textSelectionDelegate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 textSelectionView:self dataDetectorExistsAtPoint:{x, y}], v10, v11))
     {
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   if (vk_isSeedBuild())
   {
-    v12 = [v7 buttonMask];
-    if (v9 == self && v12 == 2 && ![(VKCImageTextSelectionView *)self containsTextAtPoint:x, y])
+    buttonMask = [eventCopy buttonMask];
+    if (selfCopy == self && buttonMask == 2 && ![(VKCImageTextSelectionView *)self containsTextAtPoint:x, y])
     {
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)longPressHandler:(id)a3 gestureRecognizer:(id)a4 shouldRequireFailureOfGestureRecognizer:(id)a5
+- (BOOL)longPressHandler:(id)handler gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(VKCImageTextSelectionView_iOS *)self longPressGR];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  longPressGR = [(VKCImageTextSelectionView_iOS *)self longPressGR];
 
-  if (v9 == v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (longPressGR == recognizerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v7 locationInView:self];
+    [recognizerCopy locationInView:self];
     v11 = v10;
     v13 = v12;
-    v14 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-    v15 = [v14 textSelectionView:self dataDetectorExistsAtPoint:{v11, v13}] ^ 1;
+    textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+    v15 = [textSelectionDelegate textSelectionView:self dataDetectorExistsAtPoint:{v11, v13}] ^ 1;
   }
 
   else
@@ -530,17 +530,17 @@
   return v15;
 }
 
-- (BOOL)longPressHandler:(id)a3 gestureRecognizer:(id)a4 shouldRecieveTouch:(id)a5
+- (BOOL)longPressHandler:(id)handler gestureRecognizer:(id)recognizer shouldRecieveTouch:(id)touch
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(VKCImageTextSelectionView_iOS *)self longPressGR];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  longPressGR = [(VKCImageTextSelectionView_iOS *)self longPressGR];
 
-  if (v9 == v8)
+  if (longPressGR == recognizerCopy)
   {
-    v11 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-    [v7 locationInView:self];
-    v10 = [v11 textSelectionView:self dataDetectorExistsAtPoint:?];
+    textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+    [touchCopy locationInView:self];
+    v10 = [textSelectionDelegate textSelectionView:self dataDetectorExistsAtPoint:?];
   }
 
   else
@@ -551,112 +551,112 @@
   return v10;
 }
 
-- (void)didLongPress:(id)a3
+- (void)didLongPress:(id)press
 {
-  v5 = a3;
-  if ([v5 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    v4 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-    [v5 locationInView:self];
-    [v4 textSelectionView:self requestsDataDetectorActivationAtPoint:?];
+    textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+    [pressCopy locationInView:self];
+    [textSelectionDelegate textSelectionView:self requestsDataDetectorActivationAtPoint:?];
   }
 }
 
-- (void)_addShortcut:(id)a3
+- (void)_addShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  shortcutCopy = shortcut;
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__VKCImageTextSelectionView_iOS__addShortcut___block_invoke;
   v7[3] = &unk_1E7BE4768;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 textSelectionView:self prepareForCalloutAction:sel__addShortcut_ completion:v7];
+  v8 = shortcutCopy;
+  v6 = shortcutCopy;
+  [textSelectionDelegate textSelectionView:self prepareForCalloutAction:sel__addShortcut_ completion:v7];
 }
 
-- (void)_lookup:(id)a3
+- (void)_lookup:(id)_lookup
 {
-  v4 = a3;
+  _lookupCopy = _lookup;
   if (vk_isCameraApp())
   {
-    v5 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-    v6 = [v5 isEmpty];
+    selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+    isEmpty = [selectedVKRange isEmpty];
 
-    if (v6)
+    if (isEmpty)
     {
-      v7 = [(VKCImageTextSelectionView *)self documentRange];
-      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:v7];
+      documentRange = [(VKCImageTextSelectionView *)self documentRange];
+      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:documentRange];
     }
   }
 
-  v8 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__VKCImageTextSelectionView_iOS__lookup___block_invoke;
   v10[3] = &unk_1E7BE4768;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 textSelectionView:self prepareForCalloutAction:sel__lookup_ completion:v10];
+  v11 = _lookupCopy;
+  v9 = _lookupCopy;
+  [textSelectionDelegate textSelectionView:self prepareForCalloutAction:sel__lookup_ completion:v10];
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
-  v4 = a3;
+  _defineCopy = _define;
   if (vk_isCameraApp())
   {
-    v5 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-    v6 = [v5 isEmpty];
+    selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+    isEmpty = [selectedVKRange isEmpty];
 
-    if (v6)
+    if (isEmpty)
     {
-      v7 = [(VKCImageTextSelectionView *)self documentRange];
-      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:v7];
+      documentRange = [(VKCImageTextSelectionView *)self documentRange];
+      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:documentRange];
     }
   }
 
-  v8 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__VKCImageTextSelectionView_iOS__define___block_invoke;
   v10[3] = &unk_1E7BE4768;
-  v11 = v4;
-  v12 = self;
-  v9 = v4;
-  [v8 textSelectionView:self prepareForCalloutAction:sel__define_ completion:v10];
+  v11 = _defineCopy;
+  selfCopy = self;
+  v9 = _defineCopy;
+  [textSelectionDelegate textSelectionView:self prepareForCalloutAction:sel__define_ completion:v10];
 }
 
-- (void)_translate:(id)a3
+- (void)_translate:(id)_translate
 {
-  v4 = a3;
+  _translateCopy = _translate;
   if (vk_isCameraApp())
   {
-    v5 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-    v6 = [v5 isEmpty];
+    selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+    isEmpty = [selectedVKRange isEmpty];
 
-    if (v6)
+    if (isEmpty)
     {
-      v7 = [(VKCImageTextSelectionView *)self documentRange];
-      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:v7];
+      documentRange = [(VKCImageTextSelectionView *)self documentRange];
+      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:documentRange];
     }
   }
 
-  v8 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__VKCImageTextSelectionView_iOS__translate___block_invoke;
   v10[3] = &unk_1E7BE4768;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 textSelectionView:self prepareForCalloutAction:sel__translate_ completion:v10];
+  v11 = _translateCopy;
+  v9 = _translateCopy;
+  [textSelectionDelegate textSelectionView:self prepareForCalloutAction:sel__translate_ completion:v10];
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v4 = a3;
+  _shareCopy = _share;
   v21 = 0;
   v22 = &v21;
   v23 = 0x4010000000;
@@ -666,18 +666,18 @@
   v26 = v5;
   if (vk_isCameraApp())
   {
-    v6 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-    v7 = [v6 isEmpty];
+    selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+    isEmpty = [selectedVKRange isEmpty];
 
-    if (v7)
+    if (isEmpty)
     {
-      v8 = [(VKCImageTextSelectionView *)self documentRange];
-      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:v8];
+      documentRange = [(VKCImageTextSelectionView *)self documentRange];
+      [(VKCImageTextSelectionView_iOS *)self setSelectedVKRange:documentRange];
     }
   }
 
-  v9 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  v10 = [(VKCImageTextSelectionView *)self selectionRectsForRange:v9];
+  selectedVKRange2 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  v10 = [(VKCImageTextSelectionView *)self selectionRectsForRange:selectedVKRange2];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __40__VKCImageTextSelectionView_iOS__share___block_invoke;
@@ -687,47 +687,47 @@
 
   if (!CGRectIsNull(v22[1]))
   {
-    v11 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-    v12 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-    v13 = [v12 nsRangeArray];
+    textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+    selectedVKRange3 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+    nsRangeArray = [selectedVKRange3 nsRangeArray];
     p_x = &v22->origin.x;
-    v15 = [(VKCImageTextSelectionView *)self selectedText];
-    v16 = [(VKCImageTextSelectionView *)self selectedAttributedText];
-    LODWORD(p_x) = [v11 textSelectionView:self shouldHandleShareWithRanges:v13 boundingRect:v15 selectedText:v16 selectedAttributedText:{p_x[4], p_x[5], p_x[6], p_x[7]}];
+    selectedText = [(VKCImageTextSelectionView *)self selectedText];
+    selectedAttributedText = [(VKCImageTextSelectionView *)self selectedAttributedText];
+    LODWORD(p_x) = [textSelectionDelegate textSelectionView:self shouldHandleShareWithRanges:nsRangeArray boundingRect:selectedText selectedText:selectedAttributedText selectedAttributedText:{p_x[4], p_x[5], p_x[6], p_x[7]}];
 
     if (p_x)
     {
-      v17 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+      textSelectionDelegate2 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __40__VKCImageTextSelectionView_iOS__share___block_invoke_2;
       v18[3] = &unk_1E7BE4768;
       v18[4] = self;
-      v19 = v4;
-      [v17 textSelectionView:self prepareForCalloutAction:sel__share_ completion:v18];
+      v19 = _shareCopy;
+      [textSelectionDelegate2 textSelectionView:self prepareForCalloutAction:sel__share_ completion:v18];
     }
   }
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)presentShareSheetForCustomStrings:(id)a3 attributedString:(id)a4
+- (void)presentShareSheetForCustomStrings:(id)strings attributedString:(id)string
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-  v9 = [v8 presentingViewControllerForTextSelectionView:self];
-  if (v9)
+  stringsCopy = strings;
+  stringCopy = string;
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  rootViewController = [textSelectionDelegate presentingViewControllerForTextSelectionView:self];
+  if (rootViewController)
   {
   }
 
   else
   {
-    v10 = [(VKCImageTextSelectionView_iOS *)self window];
-    v9 = [v10 rootViewController];
+    window = [(VKCImageTextSelectionView_iOS *)self window];
+    rootViewController = [window rootViewController];
 
-    if (!v9)
+    if (!rootViewController)
     {
       goto LABEL_7;
     }
@@ -748,8 +748,8 @@
   v12 = *(MEMORY[0x1E695F050] + 16);
   v31 = *MEMORY[0x1E695F050];
   v32 = v12;
-  v13 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  v14 = [(VKCImageTextSelectionView *)self selectionRectsForRange:v13];
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  v14 = [(VKCImageTextSelectionView *)self selectionRectsForRange:selectedVKRange];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __84__VKCImageTextSelectionView_iOS_presentShareSheetForCustomStrings_attributedString___block_invoke;
@@ -758,8 +758,8 @@
   [v14 enumerateObjectsUsingBlock:v25];
 
   v15 = objc_alloc(MEMORY[0x1E69CD9F8]);
-  v27[0] = v7;
-  v27[1] = v6;
+  v27[0] = stringCopy;
+  v27[1] = stringsCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v17 = [v15 initWithActivityItems:v16 applicationActivities:MEMORY[0x1E695E0F0]];
 
@@ -771,13 +771,13 @@
   v20 = *(*(&buf + 1) + 40);
   v21 = *(*(&buf + 1) + 48);
   v22 = *(*(&buf + 1) + 56);
-  v23 = [v17 popoverPresentationController];
-  [v23 setSourceRect:{v19, v20, v21, v22}];
+  popoverPresentationController = [v17 popoverPresentationController];
+  [popoverPresentationController setSourceRect:{v19, v20, v21, v22}];
 
-  v24 = [v17 popoverPresentationController];
-  [v24 setSourceView:self];
+  popoverPresentationController2 = [v17 popoverPresentationController];
+  [popoverPresentationController2 setSourceView:self];
 
-  [v9 presentViewController:v17 animated:1 completion:0];
+  [rootViewController presentViewController:v17 animated:1 completion:0];
   _Block_object_dispose(&buf, 8);
 
 LABEL_7:
@@ -785,32 +785,32 @@ LABEL_7:
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(VKCImageTextSelectionView_iOS *)self isFirstResponder];
+  isFirstResponder = [(VKCImageTextSelectionView_iOS *)self isFirstResponder];
   v9.receiver = self;
   v9.super_class = VKCImageTextSelectionView_iOS;
-  v4 = [(VKCImageTextSelectionView_iOS *)&v9 becomeFirstResponder];
-  if ((v3 & 1) == 0 && [(VKCImageTextSelectionView_iOS *)self isFirstResponder])
+  becomeFirstResponder = [(VKCImageTextSelectionView_iOS *)&v9 becomeFirstResponder];
+  if ((isFirstResponder & 1) == 0 && [(VKCImageTextSelectionView_iOS *)self isFirstResponder])
   {
-    v5 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
-    [v5 selectionWillChange:self];
+    inputDelegate = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
+    [inputDelegate selectionWillChange:self];
 
-    v6 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-    [(VKCImageTextSelectionView_iOS *)self setSelectedTextRange:v6];
+    selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+    [(VKCImageTextSelectionView_iOS *)self setSelectedTextRange:selectedVKRange];
 
-    v7 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
-    [v7 selectionDidChange:self];
+    inputDelegate2 = [(VKCImageTextSelectionView_iOS *)self inputDelegate];
+    [inputDelegate2 selectionDidChange:self];
   }
 
-  return v4;
+  return becomeFirstResponder;
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(UITextRange *)self->_selectedTextRange isEqual:v5]& 1) == 0)
+  rangeCopy = range;
+  if (([(UITextRange *)self->_selectedTextRange isEqual:rangeCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_selectedTextRange, a3);
+    objc_storeStrong(&self->_selectedTextRange, range);
     if (![(VKCImageTextSelectionView_iOS *)self beginSelectionChangedCalled]&& ![(VKCImageTextSelectionView_iOS *)self manuallySettingSelectedRange]&& [(VKCImageTextSelectionView_iOS *)self initializationComplete])
     {
       [(VKCImageTextSelectionView *)self sendAnalyticsEventWithSelector:0 type:0 source:3];
@@ -820,104 +820,104 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4335000, v6, OS_LOG_TYPE_DEFAULT, "Text Selection Changed: %@", &v8, 0xCu);
     }
 
-    v7 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-    [v7 textSelectionView:self selectionDidChange:v5];
+    textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+    [textSelectionDelegate textSelectionView:self selectionDidChange:rangeCopy];
   }
 }
 
 - (UITextPosition)beginningOfDocument
 {
-  v2 = [(VKCImageTextSelectionView *)self documentRange];
-  v3 = [v2 start];
+  documentRange = [(VKCImageTextSelectionView *)self documentRange];
+  start = [documentRange start];
 
-  return v3;
+  return start;
 }
 
 - (UITextPosition)endOfDocument
 {
-  v2 = [(VKCImageTextSelectionView *)self documentRange];
-  v3 = [v2 end];
+  documentRange = [(VKCImageTextSelectionView *)self documentRange];
+  v3 = [documentRange end];
 
   return v3;
 }
 
 - (id)text
 {
-  v2 = [(VKCImageBaseOverlayView *)self recognitionResult];
-  v3 = [v2 text];
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+  text = [recognitionResult text];
 
-  return v3;
+  return text;
 }
 
 - (BOOL)hasText
 {
-  v2 = [(VKCImageTextSelectionView_iOS *)self text];
-  v3 = [v2 length] != 0;
+  text = [(VKCImageTextSelectionView_iOS *)self text];
+  v3 = [text length] != 0;
 
   return v3;
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[VKTextRange alloc] initWithStart:v6 end:v5];
+  toPositionCopy = toPosition;
+  positionCopy = position;
+  v7 = [[VKTextRange alloc] initWithStart:positionCopy end:toPositionCopy];
 
   return v7;
 }
 
 - (unint64_t)currentDraggedRectEdge
 {
-  v2 = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
+  interactionAssistant = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 currentDraggedHandle];
+    currentDraggedHandle = [interactionAssistant currentDraggedHandle];
   }
 
   else
   {
-    v3 = 0;
+    currentDraggedHandle = 0;
   }
 
-  return v3;
+  return currentDraggedHandle;
 }
 
 - (id)_textRangeForActions
 {
-  v3 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  if (-[VKCImageTextSelectionView_iOS useFullDocumentRangeForEmptySelection](self, "useFullDocumentRangeForEmptySelection") && [v3 isEmpty])
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  if (-[VKCImageTextSelectionView_iOS useFullDocumentRangeForEmptySelection](self, "useFullDocumentRangeForEmptySelection") && [selectedVKRange isEmpty])
   {
-    v4 = [(VKCImageTextSelectionView *)self documentRange];
+    documentRange = [(VKCImageTextSelectionView *)self documentRange];
 
-    v3 = v4;
+    selectedVKRange = documentRange;
   }
 
-  return v3;
+  return selectedVKRange;
 }
 
 - (id)_rvItemForSelectedRange
 {
-  v3 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  v4 = [v3 nsRange];
-  v6 = [(VKCImageTextSelectionView_iOS *)self _rvItemInRange:v4, v5];
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  nsRange = [selectedVKRange nsRange];
+  v6 = [(VKCImageTextSelectionView_iOS *)self _rvItemInRange:nsRange, v5];
 
   return v6;
 }
 
-- (id)_rvItemInRange:(_NSRange)a3
+- (id)_rvItemInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_alloc(MEMORY[0x1E69C7518]);
-  v7 = [(VKCImageTextSelectionView_iOS *)self text];
-  v8 = [v6 initWithText:v7 selectedRange:{location, length}];
+  text = [(VKCImageTextSelectionView_iOS *)self text];
+  v8 = [v6 initWithText:text selectedRange:{location, length}];
 
-  v9 = [(VKCImageTextSelectionView *)self textQueryProvider];
-  [v8 setTextQueryProvider:v9];
+  textQueryProvider = [(VKCImageTextSelectionView *)self textQueryProvider];
+  [v8 setTextQueryProvider:textQueryProvider];
 
   return v8;
 }
@@ -932,32 +932,32 @@ LABEL_7:
   return processHasSnapshotDragEntitlement_sHasEntitlement;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   if (([objc_opt_class() processHasSnapshotDragEntitlement] & 1) != 0 || (-[VKCImageBaseOverlayView analysisResult](self, "analysisResult"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "request"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasImageData"), v7, v6, v8))
   {
-    v9 = [(VKCImageTextSelectionView_iOS *)self targetedDragPreviewForCurrentSelection];
+    targetedDragPreviewForCurrentSelection = [(VKCImageTextSelectionView_iOS *)self targetedDragPreviewForCurrentSelection];
   }
 
   else
   {
-    v9 = [(VKCImageTextSelectionView_iOS *)self targetedDragPreviewWithLabelsForCurrentSelection];
+    targetedDragPreviewForCurrentSelection = [(VKCImageTextSelectionView_iOS *)self targetedDragPreviewWithLabelsForCurrentSelection];
   }
 
-  return v9;
+  return targetedDragPreviewForCurrentSelection;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(VKCImageTextSelectionView *)self selectedText];
-  [v5 locationInView:self];
+  sessionCopy = session;
+  selectedText = [(VKCImageTextSelectionView *)self selectedText];
+  [sessionCopy locationInView:self];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  v12 = [(VKCImageTextSelectionView *)self selectionRectsForRange:v11];
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  v12 = [(VKCImageTextSelectionView *)self selectionRectsForRange:selectedVKRange];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __74__VKCImageTextSelectionView_iOS_dragInteraction_itemsForBeginningSession___block_invoke;
@@ -966,14 +966,14 @@ LABEL_7:
   v24[5] = v10;
   v13 = [v12 vk_containsObjectPassingTest:v24];
 
-  if (v13 && [v6 length])
+  if (v13 && [selectedText length])
   {
-    v14 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-    v15 = [(VKCImageTextSelectionView *)self attributedTextInRange:v14];
+    selectedVKRange2 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+    v15 = [(VKCImageTextSelectionView *)self attributedTextInRange:selectedVKRange2];
 
     v16 = objc_alloc(MEMORY[0x1E696ACA0]);
-    v17 = [(VKCImageTextSelectionView *)self selectedText];
-    v18 = [v16 initWithObject:v17];
+    selectedText2 = [(VKCImageTextSelectionView *)self selectedText];
+    v18 = [v16 initWithObject:selectedText2];
 
     [v18 registerObject:v15 visibility:0];
     v19 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:v18];
@@ -1001,36 +1001,36 @@ LABEL_7:
   return v21;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v5, OS_LOG_TYPE_DEFAULT, "Beginning VisionKit Text Drag: %@", &v6, 0xCu);
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
   v9 = *MEMORY[0x1E69E9840];
   v6 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v6, OS_LOG_TYPE_DEFAULT, "VisionKit Text Drag Did End: %@", &v7, 0xCu);
   }
 }
 
 - (id)targetedDragPreviewWithLabelsForCurrentSelection
 {
-  v3 = [(VKCImageBaseOverlayView *)self recognitionResult];
-  v4 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
   [(VKCImageBaseOverlayView *)self contentsRect];
-  v5 = [v3 selectionRectsForRange:v4 documentView:self contentRect:1 addTranscript:?];
+  v5 = [recognitionResult selectionRectsForRange:selectedVKRange documentView:self contentRect:1 addTranscript:?];
 
   v6 = [(VKCImageTextSelectionView_iOS *)self selectedTextPathsConvertedToView:self];
   [v6 bounds];
@@ -1056,8 +1056,8 @@ LABEL_7:
   v24 = v23;
   [v5 enumerateObjectsUsingBlock:v31];
   v25 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v26 = [MEMORY[0x1E69DC888] clearColor];
-  [v25 setBackgroundColor:v26];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v25 setBackgroundColor:clearColor];
 
   v27 = objc_alloc(MEMORY[0x1E69DD068]);
   v28 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:self center:{v19, v21}];
@@ -1068,8 +1068,8 @@ LABEL_7:
 
 - (id)targetedDragPreviewForCurrentSelection
 {
-  v3 = [(VKCImageTextSelectionView *)self textSelectionDelegate];
-  v4 = [v3 viewForImageSnapshotForTextSelectionView:self];
+  textSelectionDelegate = [(VKCImageTextSelectionView *)self textSelectionDelegate];
+  v4 = [textSelectionDelegate viewForImageSnapshotForTextSelectionView:self];
 
   if (v4 && (-[VKCImageBaseOverlayView analysisResult](self, "analysisResult"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasImageData], v5, (v6 & 1) == 0))
   {
@@ -1098,36 +1098,36 @@ LABEL_7:
     v12 = VKMCenterOfRect(v8, v9, v10, v11);
     v14 = v13;
     v15 = [(VKCImageBaseOverlayView *)self normalizedPathFromViewPath:v7];
-    v16 = [(VKCImageBaseOverlayView *)self analysisResult];
+    analysisResult = [(VKCImageBaseOverlayView *)self analysisResult];
     [v15 bounds];
-    v17 = [v16 imageFromNormalizedSubrect:?];
+    v17 = [analysisResult imageFromNormalizedSubrect:?];
 
-    v18 = [v17 vk_imageView];
-    [v18 bounds];
+    vk_imageView = [v17 vk_imageView];
+    [vk_imageView bounds];
     v19 = [v15 vk_pathByFittingToRect:?];
     v20 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
     [v20 setVisiblePath:v19];
     v21 = objc_alloc(MEMORY[0x1E69DD068]);
     v22 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:self center:{v12, v14}];
-    v23 = [v21 initWithView:v18 parameters:v20 target:v22];
+    v23 = [v21 initWithView:vk_imageView parameters:v20 target:v22];
   }
 
   return v23;
 }
 
-- (id)selectedTextPathsConvertedToView:(id)a3
+- (id)selectedTextPathsConvertedToView:(id)view
 {
-  v4 = a3;
-  v5 = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
-  v6 = [(VKCImageTextSelectionView *)self selectionRectsForRange:v5];
+  viewCopy = view;
+  selectedVKRange = [(VKCImageTextSelectionView_iOS *)self selectedVKRange];
+  v6 = [(VKCImageTextSelectionView *)self selectionRectsForRange:selectedVKRange];
 
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __66__VKCImageTextSelectionView_iOS_selectedTextPathsConvertedToView___block_invoke;
   v14 = &unk_1E7BE7378;
-  v15 = v4;
-  v16 = self;
-  v7 = v4;
+  v15 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
   v8 = [v6 vk_compactMap:&v11];
   v9 = [MEMORY[0x1E69DC728] vk_groupAndRoundPaths:v8 radius:0.0 offset:{0.0, v11, v12, v13, v14}];
 
@@ -1140,12 +1140,12 @@ LABEL_7:
   accessibilityElements = self->_accessibilityElements;
   if (!accessibilityElements)
   {
-    v49 = [MEMORY[0x1E695DF70] array];
-    v4 = [(VKCImageBaseOverlayView *)self recognitionResult];
-    v5 = [v4 sourceVNDocument];
+    array = [MEMORY[0x1E695DF70] array];
+    recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+    sourceVNDocument = [recognitionResult sourceVNDocument];
 
-    v51 = v5;
-    [v5 blocksWithTypes:2 inRegion:{0.0, 0.0, 1.0, 1.0}];
+    v51 = sourceVNDocument;
+    [sourceVNDocument blocksWithTypes:2 inRegion:{0.0, 0.0, 1.0, 1.0}];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -1182,8 +1182,8 @@ LABEL_7:
             v58 = 0u;
             v59 = 0u;
             v47 = v15;
-            v50 = [v15 getChildren];
-            v16 = [v50 countByEnumeratingWithState:&v56 objects:v65 count:16];
+            getChildren = [v15 getChildren];
+            v16 = [getChildren countByEnumeratingWithState:&v56 objects:v65 count:16];
             if (v16)
             {
               v17 = v16;
@@ -1194,12 +1194,12 @@ LABEL_7:
                 {
                   if (*v57 != v18)
                   {
-                    objc_enumerationMutation(v50);
+                    objc_enumerationMutation(getChildren);
                   }
 
                   v20 = *(*(&v56 + 1) + 8 * i);
-                  v21 = [v20 string];
-                  v22 = [v21 length];
+                  string = [v20 string];
+                  v22 = [string length];
 
                   if (v22)
                   {
@@ -1261,16 +1261,16 @@ LABEL_7:
                     if (!CGRectIsEmpty(v71))
                     {
                       v39 = [[VKCImageTextSelectionViewAccessibilityElement alloc] initWithAccessibilityContainer:self];
-                      v40 = [v20 string];
-                      [(VKCImageTextSelectionViewAccessibilityElement *)v39 setAccessibilityValue:v40];
+                      string2 = [v20 string];
+                      [(VKCImageTextSelectionViewAccessibilityElement *)v39 setAccessibilityValue:string2];
 
                       [(VKCImageTextSelectionViewAccessibilityElement *)v39 setAccessibilityFrameInContainerSpace:x, y, width, height];
-                      [v49 addObject:v39];
+                      [array addObject:v39];
                     }
                   }
                 }
 
-                v17 = [v50 countByEnumeratingWithState:&v56 objects:v65 count:16];
+                v17 = [getChildren countByEnumeratingWithState:&v56 objects:v65 count:16];
               }
 
               while (v17);
@@ -1291,7 +1291,7 @@ LABEL_7:
       while (v7);
     }
 
-    v41 = [v49 copy];
+    v41 = [array copy];
     v42 = self->_accessibilityElements;
     self->_accessibilityElements = v41;
 
@@ -1303,14 +1303,14 @@ LABEL_7:
 
 - (void)suppressSelectionViewGrabbers
 {
-  v3 = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
-  v4 = [v3 selectionView];
-  v5 = [v4 obtainGrabberSuppressionAssertion];
-  [(VKCImageTextSelectionView_iOS *)self setTextSelectionGrabberSuppression:v5];
+  interactionAssistant = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
+  selectionView = [interactionAssistant selectionView];
+  obtainGrabberSuppressionAssertion = [selectionView obtainGrabberSuppressionAssertion];
+  [(VKCImageTextSelectionView_iOS *)self setTextSelectionGrabberSuppression:obtainGrabberSuppressionAssertion];
 
-  v7 = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
-  v6 = [v7 selectionView];
-  [v6 layoutChangedByScrolling:0];
+  interactionAssistant2 = [(VKCImageTextSelectionView_iOS *)self interactionAssistant];
+  selectionView2 = [interactionAssistant2 selectionView];
+  [selectionView2 layoutChangedByScrolling:0];
 }
 
 - (UITextInputDelegate)inputDelegate

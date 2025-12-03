@@ -1,8 +1,8 @@
 @interface _UIViewControllerTransitionContext
 - (CGAffineTransform)_affineTransform;
-- (CGAffineTransform)finalTransformForViewController:(SEL)a3;
-- (CGRect)finalFrameForViewController:(id)a3;
-- (CGRect)initialFrameForViewController:(id)a3;
+- (CGAffineTransform)finalTransformForViewController:(SEL)controller;
+- (CGRect)finalFrameForViewController:(id)controller;
+- (CGRect)initialFrameForViewController:(id)controller;
 - (UIView)containerView;
 - (UIViewControllerAnimatedTransitioning)_animator;
 - (UIViewControllerInteractiveTransitioning)_interactor;
@@ -10,26 +10,26 @@
 - (id)_transitionCoordinator;
 - (int64_t)_alongsideAnimationsCount;
 - (void)__runAlongsideAnimations;
-- (void)_addInteractiveUpdateHandler:(id)a3;
-- (void)_disableInteractionForViews:(id)a3;
+- (void)_addInteractiveUpdateHandler:(id)handler;
+- (void)_disableInteractionForViews:(id)views;
 - (void)_enableInteractionForDisabledViews;
-- (void)_interactivityDidChange:(BOOL)a3;
+- (void)_interactivityDidChange:(BOOL)change;
 - (void)_runAlongsideCompletions;
 - (void)_runInvalidationHandlers;
-- (void)_setAnimator:(id)a3;
-- (void)_setInteractor:(id)a3;
-- (void)_setInterruptible:(BOOL)a3;
-- (void)_setPerformingLayoutToLayoutTransition:(BOOL)a3;
-- (void)_setTransitionIsCompleting:(BOOL)a3;
-- (void)_setTransitionIsInFlight:(BOOL)a3;
-- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)a3;
+- (void)_setAnimator:(id)animator;
+- (void)_setInteractor:(id)interactor;
+- (void)_setInterruptible:(BOOL)interruptible;
+- (void)_setPerformingLayoutToLayoutTransition:(BOOL)transition;
+- (void)_setTransitionIsCompleting:(BOOL)completing;
+- (void)_setTransitionIsInFlight:(BOOL)flight;
+- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)complete;
 - (void)cancelInteractiveTransition;
-- (void)completeTransition:(BOOL)a3;
+- (void)completeTransition:(BOOL)transition;
 - (void)dealloc;
 - (void)finishInteractiveTransition;
 - (void)pauseInteractiveTransition;
-- (void)setTransitionWasCancelled:(BOOL)a3;
-- (void)updateInteractiveTransition:(double)a3;
+- (void)setTransitionWasCancelled:(BOOL)cancelled;
+- (void)updateInteractiveTransition:(double)transition;
 @end
 
 @implementation _UIViewControllerTransitionContext
@@ -69,23 +69,23 @@
   auxContext = self->__auxContext;
   if (auxContext)
   {
-    v4 = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _systemAlongsideAnimations];
+    _systemAlongsideAnimations = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _systemAlongsideAnimations];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62___UIViewControllerTransitionContext___runAlongsideAnimations__block_invoke;
     v11[3] = &unk_1E70F3590;
     v11[4] = self;
-    [(_UIViewControllerTransitionCoordinator *)auxContext _applyBlocks:v4 releaseBlocks:v11];
+    [(_UIViewControllerTransitionCoordinator *)auxContext _applyBlocks:_systemAlongsideAnimations releaseBlocks:v11];
 
     v5 = 0;
-    v6 = 0;
+    _alongsideAnimations = 0;
     do
     {
-      v7 = v6;
+      v7 = _alongsideAnimations;
       v8 = v5;
-      v6 = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _alongsideAnimations];
+      _alongsideAnimations = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _alongsideAnimations];
 
-      if (!v6)
+      if (!_alongsideAnimations)
       {
         break;
       }
@@ -96,7 +96,7 @@
       v10[2] = __62___UIViewControllerTransitionContext___runAlongsideAnimations__block_invoke_2;
       v10[3] = &unk_1E70F3590;
       v10[4] = self;
-      [(_UIViewControllerTransitionCoordinator *)v9 _applyBlocks:v6 releaseBlocks:v10];
+      [(_UIViewControllerTransitionCoordinator *)v9 _applyBlocks:_alongsideAnimations releaseBlocks:v10];
       v5 = 1;
     }
 
@@ -112,13 +112,13 @@
   auxContext = self->__auxContext;
   if (auxContext)
   {
-    v4 = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _alongsideCompletions];
+    _alongsideCompletions = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _alongsideCompletions];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __62___UIViewControllerTransitionContext__runAlongsideCompletions__block_invoke;
     v5[3] = &unk_1E70F3590;
     v5[4] = self;
-    [(_UIViewControllerTransitionCoordinator *)auxContext _applyBlocks:v4 releaseBlocks:v5];
+    [(_UIViewControllerTransitionCoordinator *)auxContext _applyBlocks:_alongsideCompletions releaseBlocks:v5];
 
     [(_UIViewControllerTransitionCoordinator *)self->__auxContext _setInteractiveChangeHandlers:0];
   }
@@ -129,13 +129,13 @@
   auxContext = self->__auxContext;
   if (auxContext)
   {
-    v4 = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _invalidationHandlers];
+    _invalidationHandlers = [(_UIViewControllerTransitionCoordinator *)self->__auxContext _invalidationHandlers];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __62___UIViewControllerTransitionContext__runInvalidationHandlers__block_invoke;
     v5[3] = &unk_1E70F3590;
     v5[4] = self;
-    [(_UIViewControllerTransitionCoordinator *)auxContext _applyVoidBlocks:v4 releaseBlocks:v5];
+    [(_UIViewControllerTransitionCoordinator *)auxContext _applyVoidBlocks:_invalidationHandlers releaseBlocks:v5];
   }
 }
 
@@ -199,19 +199,19 @@
   return WeakRetained;
 }
 
-- (void)_setAnimator:(id)a3
+- (void)_setAnimator:(id)animator
 {
-  obj = a3;
-  v4 = [(_UIViewControllerTransitionContext *)self _animator];
-  if (v4 != obj)
+  obj = animator;
+  _animator = [(_UIViewControllerTransitionContext *)self _animator];
+  if (_animator != obj)
   {
     objc_storeWeak(&self->__animator, obj);
-    if (v4)
+    if (_animator)
     {
-      v5 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:v4];
+      v5 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:_animator];
       if (v5 == self)
       {
-        objc_setAssociatedObject(v4, &_UIAnimationControllerAssociatedTransitionContextKey, 0, 1);
+        objc_setAssociatedObject(_animator, &_UIAnimationControllerAssociatedTransitionContextKey, 0, 1);
       }
     }
 
@@ -222,9 +222,9 @@
   }
 }
 
-- (void)_setInteractor:(id)a3
+- (void)_setInteractor:(id)interactor
 {
-  obj = a3;
+  obj = interactor;
   WeakRetained = objc_loadWeakRetained(&self->__interactor);
 
   v5 = obj;
@@ -258,16 +258,16 @@
       *&self->_transitionContextFlags = *&self->_transitionContextFlags & 0xFD | v9;
       if (objc_opt_respondsToSelector())
       {
-        v10 = [obj wantsInteractiveStart];
+        wantsInteractiveStart = [obj wantsInteractiveStart];
       }
 
       else
       {
-        v10 = 1;
+        wantsInteractiveStart = 1;
       }
 
-      [(_UIViewControllerTransitionContext *)self _setInitiallyInteractive:v10];
-      [(_UIViewControllerTransitionContext *)self _setCurrentlyInteractive:v10];
+      [(_UIViewControllerTransitionContext *)self _setInitiallyInteractive:wantsInteractiveStart];
+      [(_UIViewControllerTransitionContext *)self _setCurrentlyInteractive:wantsInteractiveStart];
       v11 = objc_getAssociatedObject(obj, &_UIInteractionControllerAssociatedTransitionContextsKey);
       if (!v11)
       {
@@ -284,25 +284,25 @@
 
 - (CGAffineTransform)_affineTransform
 {
-  v4 = [(_UIViewControllerTransitionContext *)self _animator];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0 && ([v4 window], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  _animator = [(_UIViewControllerTransitionContext *)self _animator];
+  if (_animator && (objc_opt_respondsToSelector() & 1) != 0 && ([_animator window], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 _fromWindowOrientation];
-    if (v7)
+    _fromWindowOrientation = [v5 _fromWindowOrientation];
+    if (_fromWindowOrientation)
     {
-      v8 = v7;
-      v9 = [v6 _toWindowOrientation];
+      v8 = _fromWindowOrientation;
+      _toWindowOrientation = [v6 _toWindowOrientation];
       v10 = 0.0;
       v11 = 0.0;
-      if (v9 != 1)
+      if (_toWindowOrientation != 1)
       {
-        if (v9 == 3)
+        if (_toWindowOrientation == 3)
         {
           v11 = 1.57079633;
         }
 
-        else if (v9 == 4)
+        else if (_toWindowOrientation == 4)
         {
           v11 = -1.57079633;
         }
@@ -310,7 +310,7 @@
         else
         {
           v11 = 3.14159265;
-          if (v9 != 2)
+          if (_toWindowOrientation != 2)
           {
             v11 = 0.0;
           }
@@ -377,14 +377,14 @@
   return result;
 }
 
-- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)a3
+- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)complete
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(_UIViewControllerTransitionContext *)self _initiallyInteractive])
   {
-    v5 = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
+    _interactiveUpdateHandlers = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
 
-    if (v5)
+    if (_interactiveUpdateHandlers)
     {
       *&self->_transitionContextFlags &= ~0x10u;
       v11 = 0u;
@@ -407,7 +407,7 @@
               objc_enumerationMutation(v6);
             }
 
-            (*(*(*(&v11 + 1) + 8 * v10++) + 16))(a3);
+            (*(*(*(&v11 + 1) + 8 * v10++) + 16))(complete);
           }
 
           while (v8 != v10);
@@ -464,37 +464,37 @@
   }
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0)
+  if (transition < 0.0)
   {
-    a3 = 0.0;
+    transition = 0.0;
   }
 
-  if (a3 <= 1.0)
+  if (transition <= 1.0)
   {
-    v4 = a3;
+    transitionCopy = transition;
   }
 
   else
   {
-    v4 = 1.0;
+    transitionCopy = 1.0;
   }
 
   if ([(_UIViewControllerTransitionContext *)self _state]== 1)
   {
     if ([(_UIViewControllerTransitionContext *)self isCurrentlyInteractive])
     {
-      v5 = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
-      if (v5)
+      _interactiveUpdateHandlers = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
+      if (_interactiveUpdateHandlers)
       {
         previousPercentComplete = self->_previousPercentComplete;
 
-        if (previousPercentComplete != v4)
+        if (previousPercentComplete != transitionCopy)
         {
           *&self->_transitionContextFlags &= ~0x10u;
-          self->_previousPercentComplete = v4;
+          self->_previousPercentComplete = transitionCopy;
           v14 = 0u;
           v15 = 0u;
           v16 = 0u;
@@ -517,7 +517,7 @@
 
                 v12 = *(*(&v14 + 1) + 8 * v11);
                 [(_UIViewControllerTransitionContext *)self _percentOffset];
-                (*(v12 + 16))(v12, 0, 0, self, v4 + v13);
+                (*(v12 + 16))(v12, 0, 0, self, transitionCopy + v13);
                 ++v11;
               }
 
@@ -558,15 +558,15 @@
       self->__completionCurve = [v6 completionCurve];
     }
 
-    v7 = [(_UIViewControllerTransitionContext *)self isCurrentlyInteractive];
-    if (!v7 && [(_UIViewControllerTransitionContext *)self _state]!= 4)
+    isCurrentlyInteractive = [(_UIViewControllerTransitionContext *)self isCurrentlyInteractive];
+    if (!isCurrentlyInteractive && [(_UIViewControllerTransitionContext *)self _state]!= 4)
     {
       goto LABEL_21;
     }
 
-    v8 = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
+    _interactiveUpdateHandlers = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
 
-    if (v8)
+    if (_interactiveUpdateHandlers)
     {
       v16 = 0u;
       v17 = 0u;
@@ -597,7 +597,7 @@
       }
     }
 
-    if (v7 && [(_UIViewControllerTransitionContext *)self _state]!= 4)
+    if (isCurrentlyInteractive && [(_UIViewControllerTransitionContext *)self _state]!= 4)
     {
       [(_UIViewControllerTransitionContext *)self _interactivityDidChange:0];
     }
@@ -651,9 +651,9 @@ LABEL_21:
 
     if ([(_UIViewControllerTransitionContext *)self isCurrentlyInteractive]|| [(_UIViewControllerTransitionContext *)self _state]== 4)
     {
-      v12 = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
+      _interactiveUpdateHandlers = [(_UIViewControllerTransitionContext *)self _interactiveUpdateHandlers];
 
-      if (v12)
+      if (_interactiveUpdateHandlers)
       {
         v20 = 0u;
         v21 = 0u;
@@ -703,55 +703,55 @@ LABEL_21:
   }
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
   if ((*&self->_transitionContextFlags & 0x20) == 0)
   {
-    v3 = a3;
+    transitionCopy = transition;
     *&self->_transitionContextFlags |= 0x20u;
     _UIQOSExcludeCommitFromGlitchTrackingIfUnmanaged();
-    v12 = self;
-    v5 = [(_UIViewControllerTransitionContext *)v12 _animator];
-    [(_UIViewControllerTransitionContext *)v12 _runInvalidationHandlers];
+    selfCopy = self;
+    _animator = [(_UIViewControllerTransitionContext *)selfCopy _animator];
+    [(_UIViewControllerTransitionContext *)selfCopy _runInvalidationHandlers];
     if (objc_opt_respondsToSelector())
     {
-      [v5 _animationWillEnd:v12 didComplete:v3];
+      [_animator _animationWillEnd:selfCopy didComplete:transitionCopy];
     }
 
-    v6 = v12;
-    willCompleteHandler = v12->__willCompleteHandler;
+    v6 = selfCopy;
+    willCompleteHandler = selfCopy->__willCompleteHandler;
     if (willCompleteHandler)
     {
       v8 = _Block_copy(willCompleteHandler);
-      v8[2](v8, v12, v3);
+      v8[2](v8, selfCopy, transitionCopy);
 
-      v6 = v12;
+      v6 = selfCopy;
     }
 
     completionHandler = v6->__completionHandler;
     if (completionHandler)
     {
-      completionHandler[2](completionHandler, v12, v3);
-      v6 = v12;
+      completionHandler[2](completionHandler, selfCopy, transitionCopy);
+      v6 = selfCopy;
     }
 
     [(_UIViewControllerTransitionContext *)v6 _runAlongsideCompletions];
-    didCompleteHandler = v12->__didCompleteHandler;
+    didCompleteHandler = selfCopy->__didCompleteHandler;
     if (didCompleteHandler)
     {
-      didCompleteHandler[2](didCompleteHandler, v12, v3);
+      didCompleteHandler[2](didCompleteHandler, selfCopy, transitionCopy);
     }
 
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (_animator && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v5 animationEnded:v3];
+      [_animator animationEnded:transitionCopy];
     }
 
     v11 = objc_opt_self();
   }
 }
 
-- (CGRect)initialFrameForViewController:(id)a3
+- (CGRect)initialFrameForViewController:(id)controller
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -764,7 +764,7 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)finalFrameForViewController:(id)a3
+- (CGRect)finalFrameForViewController:(id)controller
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -777,7 +777,7 @@ LABEL_21:
   return result;
 }
 
-- (CGAffineTransform)finalTransformForViewController:(SEL)a3
+- (CGAffineTransform)finalTransformForViewController:(SEL)controller
 {
   v4 = MEMORY[0x1E695EFD0];
   v5 = *(MEMORY[0x1E695EFD0] + 16);
@@ -787,9 +787,9 @@ LABEL_21:
   return self;
 }
 
-- (void)setTransitionWasCancelled:(BOOL)a3
+- (void)setTransitionWasCancelled:(BOOL)cancelled
 {
-  if (a3)
+  if (cancelled)
   {
     v3 = 8;
   }
@@ -802,19 +802,19 @@ LABEL_21:
   *&self->_transitionContextFlags = *&self->_transitionContextFlags & 0xF7 | v3;
 }
 
-- (void)_setTransitionIsInFlight:(BOOL)a3
+- (void)_setTransitionIsInFlight:(BOOL)flight
 {
-  v3 = a3;
+  flightCopy = flight;
   if ([(_UIViewControllerTransitionContext *)self _state]!= 4)
   {
 
-    [(_UIViewControllerTransitionContext *)self _setState:v3];
+    [(_UIViewControllerTransitionContext *)self _setState:flightCopy];
   }
 }
 
-- (void)_setTransitionIsCompleting:(BOOL)a3
+- (void)_setTransitionIsCompleting:(BOOL)completing
 {
-  if (a3)
+  if (completing)
   {
     v3 = 16;
   }
@@ -827,9 +827,9 @@ LABEL_21:
   *&self->_transitionContextFlags = *&self->_transitionContextFlags & 0xEF | v3;
 }
 
-- (void)_setInterruptible:(BOOL)a3
+- (void)_setInterruptible:(BOOL)interruptible
 {
-  if (a3)
+  if (interruptible)
   {
     v3 = 64;
   }
@@ -842,9 +842,9 @@ LABEL_21:
   *&self->_transitionContextFlags = *&self->_transitionContextFlags & 0xBF | v3;
 }
 
-- (void)_setPerformingLayoutToLayoutTransition:(BOOL)a3
+- (void)_setPerformingLayoutToLayoutTransition:(BOOL)transition
 {
-  if (a3)
+  if (transition)
   {
     v3 = 0x80;
   }
@@ -857,14 +857,14 @@ LABEL_21:
   *&self->_transitionContextFlags = v3 & 0x80 | *&self->_transitionContextFlags & 0x7F;
 }
 
-- (void)_interactivityDidChange:(BOOL)a3
+- (void)_interactivityDidChange:(BOOL)change
 {
-  [(_UIViewControllerTransitionContext *)self _setCurrentlyInteractive:a3];
+  [(_UIViewControllerTransitionContext *)self _setCurrentlyInteractive:change];
   auxContext = self->__auxContext;
   if (auxContext)
   {
-    v5 = [(_UIViewControllerTransitionCoordinator *)auxContext _interactiveChangeHandlers];
-    if (v5)
+    _interactiveChangeHandlers = [(_UIViewControllerTransitionCoordinator *)auxContext _interactiveChangeHandlers];
+    if (_interactiveChangeHandlers)
     {
       v6 = self->__auxContext;
       v7[0] = MEMORY[0x1E69E9820];
@@ -872,7 +872,7 @@ LABEL_21:
       v7[2] = __62___UIViewControllerTransitionContext__interactivityDidChange___block_invoke;
       v7[3] = &unk_1E70F3590;
       v7[4] = self;
-      [(_UIViewControllerTransitionCoordinator *)v6 _applyBlocks:v5 releaseBlocks:v7];
+      [(_UIViewControllerTransitionCoordinator *)v6 _applyBlocks:_interactiveChangeHandlers releaseBlocks:v7];
     }
   }
 }
@@ -882,8 +882,8 @@ LABEL_21:
   result = self->__auxContext;
   if (result)
   {
-    v3 = [result _alongsideAnimations];
-    v4 = [v3 count];
+    _alongsideAnimations = [result _alongsideAnimations];
+    v4 = [_alongsideAnimations count];
 
     return v4;
   }
@@ -891,12 +891,12 @@ LABEL_21:
   return result;
 }
 
-- (void)_disableInteractionForViews:(id)a3
+- (void)_disableInteractionForViews:(id)views
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewsCopy = views;
   [(_UIViewControllerTransitionContext *)self _enableInteractionForDisabledViews];
-  objc_storeStrong(&self->_disabledViews, a3);
+  objc_storeStrong(&self->_disabledViews, views);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -928,22 +928,22 @@ LABEL_21:
   }
 }
 
-- (void)_addInteractiveUpdateHandler:(id)a3
+- (void)_addInteractiveUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   interactiveUpdateHandlers = self->__interactiveUpdateHandlers;
-  aBlock = v4;
+  aBlock = handlerCopy;
   if (!interactiveUpdateHandlers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->__interactiveUpdateHandlers;
     self->__interactiveUpdateHandlers = v6;
 
-    v4 = aBlock;
+    handlerCopy = aBlock;
     interactiveUpdateHandlers = self->__interactiveUpdateHandlers;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(handlerCopy);
   [(NSMutableArray *)interactiveUpdateHandlers addObject:v8];
 }
 

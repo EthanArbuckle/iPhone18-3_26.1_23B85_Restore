@@ -1,6 +1,6 @@
 @interface InputUIApp
 - (InputUIApp)init;
-- (void)inputSystemService:(id)a3 prepareForInputSession:(id)a4 options:(id)a5;
+- (void)inputSystemService:(id)service prepareForInputSession:(id)session options:(id)options;
 - (void)pauseTextInputService;
 - (void)resumeTextInputService;
 - (void)waitForSpringBoardToForegroundInputUIScene;
@@ -36,9 +36,9 @@
     inputLaunchAngelService = v2->_inputLaunchAngelService;
     v2->_inputLaunchAngelService = v9;
 
-    v11 = [(RTIInputSystemUIService *)v2->_inputLaunchAngelService rtiService];
+    rtiService = [(RTIInputSystemUIService *)v2->_inputLaunchAngelService rtiService];
     textInputService = v2->_textInputService;
-    v2->_textInputService = v11;
+    v2->_textInputService = rtiService;
 
     [(RTIInputSystemService *)v2->_textInputService setDelegate:v2->_systemDelegateMultiplexer];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -58,9 +58,9 @@
     v19 = NSClassFromString(@"UIKeyboardUIService");
     if (v19)
     {
-      v20 = [(objc_class *)v19 sharedService];
+      sharedService = [(objc_class *)v19 sharedService];
       keyboardUIService = v2->_keyboardUIService;
-      v2->_keyboardUIService = v20;
+      v2->_keyboardUIService = sharedService;
     }
 
     if (os_variant_has_internal_diagnostics())
@@ -126,8 +126,8 @@
       v2->_autofillUIServiceDelegate = v35;
 
       v37 = v2->_autofillUIServiceDelegate;
-      v38 = [(RTIInputSystemUIService *)v2->_autofillUILaunchAngelService rtiService];
-      [v38 setDelegate:v37];
+      rtiService2 = [(RTIInputSystemUIService *)v2->_autofillUILaunchAngelService rtiService];
+      [rtiService2 setDelegate:v37];
 
       v39 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
       v40 = dispatch_queue_create("com.apple.inputservice.AutoFillUIService", v39);
@@ -155,13 +155,13 @@
       v43 = v41;
       _Block_object_dispose(&v56, 8);
       v44 = [v41 alloc];
-      v45 = [(InputUIApp *)v2 autofillUIServiceQueue];
-      v46 = [v44 initDefaultServiceWithServiceQueue:v45];
+      autofillUIServiceQueue = [(InputUIApp *)v2 autofillUIServiceQueue];
+      v46 = [v44 initDefaultServiceWithServiceQueue:autofillUIServiceQueue];
       autofillUIServiceListener = v2->_autofillUIServiceListener;
       v2->_autofillUIServiceListener = v46;
 
-      v48 = [(RTIInputSystemUIService *)v2->_autofillUILaunchAngelService rtiService];
-      [v48 setEnabled:1];
+      rtiService3 = [(RTIInputSystemUIService *)v2->_autofillUILaunchAngelService rtiService];
+      [rtiService3 setEnabled:1];
     }
   }
 
@@ -171,8 +171,8 @@
 - (void)pauseTextInputService
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(InputUIApp *)self servicePausedLock];
-  [v3 lock];
+  servicePausedLock = [(InputUIApp *)self servicePausedLock];
+  [servicePausedLock lock];
 
   if (![(InputUIApp *)self isServicePaused])
   {
@@ -195,17 +195,17 @@
       self->_sceneCreationSemaphore = v8;
     }
 
-    v10 = [(InputUIApp *)self sessionCoordinatorQueue];
+    sessionCoordinatorQueue = [(InputUIApp *)self sessionCoordinatorQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100001A5C;
     block[3] = &unk_100020500;
     block[4] = self;
-    dispatch_async(v10, block);
+    dispatch_async(sessionCoordinatorQueue, block);
   }
 
-  v11 = [(InputUIApp *)self servicePausedLock];
-  [v11 unlock];
+  servicePausedLock2 = [(InputUIApp *)self servicePausedLock];
+  [servicePausedLock2 unlock];
 }
 
 - (void)waitForSpringBoardToForegroundInputUIScene
@@ -229,8 +229,8 @@
 - (void)resumeTextInputService
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(InputUIApp *)self servicePausedLock];
-  [v3 lock];
+  servicePausedLock = [(InputUIApp *)self servicePausedLock];
+  [servicePausedLock lock];
 
   if ([(InputUIApp *)self isServicePaused])
   {
@@ -254,21 +254,21 @@
     [(InputUIApp *)self setServicePaused:0];
   }
 
-  v9 = [(InputUIApp *)self servicePausedLock];
-  [v9 unlock];
+  servicePausedLock2 = [(InputUIApp *)self servicePausedLock];
+  [servicePausedLock2 unlock];
 }
 
-- (void)inputSystemService:(id)a3 prepareForInputSession:(id)a4 options:(id)a5
+- (void)inputSystemService:(id)service prepareForInputSession:(id)session options:(id)options
 {
-  v9 = a5;
+  optionsCopy = options;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v9 enhancedWindowingModeEnabled];
+    enhancedWindowingModeEnabled = [optionsCopy enhancedWindowingModeEnabled];
   }
 
   else
   {
-    v5 = 0;
+    enhancedWindowingModeEnabled = 0;
   }
 
   v6 = [NSClassFromString(@"_UIKeyboardArbiterClientInputUIHost") performSelector:"automaticSharedArbiterClient"];
@@ -277,7 +277,7 @@
     v7 = [v6 performSelector:"presentationModeManager"];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [NSNumber numberWithBool:v5];
+      v8 = [NSNumber numberWithBool:enhancedWindowingModeEnabled];
       [v7 performSelector:"_enhancedWindowingModeEnabledDidChange:" withObject:v8];
     }
   }

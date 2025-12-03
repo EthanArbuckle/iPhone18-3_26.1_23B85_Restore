@@ -1,23 +1,23 @@
 @interface NSError
-+ (id)errorUsingError:(id)a3 withUnderyingError:(id)a4;
++ (id)errorUsingError:(id)error withUnderyingError:(id)underyingError;
 @end
 
 @implementation NSError
 
-+ (id)errorUsingError:(id)a3 withUnderyingError:(id)a4
++ (id)errorUsingError:(id)error withUnderyingError:(id)underyingError
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  errorCopy = error;
+  underyingErrorCopy = underyingError;
+  v7 = underyingErrorCopy;
+  if (errorCopy)
   {
-    if (v6)
+    if (underyingErrorCopy)
     {
-      v8 = [v5 userInfo];
-      if (v8)
+      userInfo = [errorCopy userInfo];
+      if (userInfo)
       {
-        v9 = [v5 userInfo];
-        v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
+        userInfo2 = [errorCopy userInfo];
+        v10 = [NSMutableDictionary dictionaryWithDictionary:userInfo2];
       }
 
       else
@@ -26,20 +26,20 @@
       }
 
       [v10 setObject:v7 forKeyedSubscript:NSUnderlyingErrorKey];
-      v13 = [v5 userInfo];
-      v14 = [v13 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+      userInfo3 = [errorCopy userInfo];
+      v14 = [userInfo3 objectForKeyedSubscript:NSLocalizedDescriptionKey];
       if (v14)
       {
         v15 = v14;
-        v16 = [v7 userInfo];
-        v17 = [v16 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+        userInfo4 = [v7 userInfo];
+        v17 = [userInfo4 objectForKeyedSubscript:NSLocalizedDescriptionKey];
 
         if (v17)
         {
-          v18 = [v5 userInfo];
-          v19 = [v18 objectForKeyedSubscript:NSLocalizedDescriptionKey];
-          v20 = [v7 userInfo];
-          v21 = [v20 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+          userInfo5 = [errorCopy userInfo];
+          v19 = [userInfo5 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+          userInfo6 = [v7 userInfo];
+          v21 = [userInfo6 objectForKeyedSubscript:NSLocalizedDescriptionKey];
           v22 = [NSString stringWithFormat:@"%@ (due '%@')", v19, v21];
           [v10 setObject:v22 forKeyedSubscript:NSLocalizedDescriptionKey];
 
@@ -51,36 +51,36 @@
       {
       }
 
-      v23 = [v7 userInfo];
-      v24 = [v23 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+      userInfo7 = [v7 userInfo];
+      v24 = [userInfo7 objectForKeyedSubscript:NSLocalizedDescriptionKey];
 
       if (!v24)
       {
 LABEL_17:
-        v25 = [v5 domain];
-        v12 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v25, [v5 code], v10);
+        domain = [errorCopy domain];
+        v12 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [errorCopy code], v10);
 
         goto LABEL_19;
       }
 
-      v18 = [v7 userInfo];
-      v19 = [v18 objectForKeyedSubscript:NSLocalizedDescriptionKey];
-      v20 = [NSString stringWithFormat:@"due '%@'", v19];
-      [v10 setObject:v20 forKeyedSubscript:NSLocalizedDescriptionKey];
+      userInfo5 = [v7 userInfo];
+      v19 = [userInfo5 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+      userInfo6 = [NSString stringWithFormat:@"due '%@'", v19];
+      [v10 setObject:userInfo6 forKeyedSubscript:NSLocalizedDescriptionKey];
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v11 = v5;
+    v11 = errorCopy;
 LABEL_8:
     v12 = v11;
     goto LABEL_19;
   }
 
-  if (v6)
+  if (underyingErrorCopy)
   {
-    v11 = v6;
+    v11 = underyingErrorCopy;
     goto LABEL_8;
   }
 

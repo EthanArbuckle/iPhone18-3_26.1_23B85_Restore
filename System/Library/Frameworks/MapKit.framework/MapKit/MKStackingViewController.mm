@@ -1,39 +1,39 @@
 @interface MKStackingViewController
 - (BOOL)_isSafeToPerformLayout;
-- (BOOL)isViewVisbile:(id)a3 percentageTreshold:(double)a4;
+- (BOOL)isViewVisbile:(id)visbile percentageTreshold:(double)treshold;
 - (MKStackingViewControllerDelegate)stackingDelegate;
-- (double)_fittingHeightForView:(id)a3;
-- (double)stackView:(id)a3 distanceBetweenUpperView:(id)a4 andLowerView:(id)a5;
-- (void)_addPreferredHeightConstraintForViewControllerIfNeeded:(id)a3;
+- (double)_fittingHeightForView:(id)view;
+- (double)stackView:(id)view distanceBetweenUpperView:(id)upperView andLowerView:(id)lowerView;
+- (void)_addPreferredHeightConstraintForViewControllerIfNeeded:(id)needed;
 - (void)_callViewControllersLayoutDelegateIfNeeded;
-- (void)_removePreferredHeightConstraintFromViewController:(id)a3;
+- (void)_removePreferredHeightConstraintFromViewController:(id)controller;
 - (void)_sendScrollnotification;
 - (void)_setOverlayViewFrame;
-- (void)_setPreferredHeight:(double)a3 forViewController:(id)a4;
-- (void)_setScrollEnabled:(BOOL)a3 forcedUpdate:(BOOL)a4;
-- (void)_setUpEnteringViewController:(id)a3;
+- (void)_setPreferredHeight:(double)height forViewController:(id)controller;
+- (void)_setScrollEnabled:(BOOL)enabled forcedUpdate:(BOOL)update;
+- (void)_setUpEnteringViewController:(id)controller;
 - (void)_updateFixedHeightAwareControllers;
-- (void)_updateStackViewSubviewsAndChildVCsEntering:(id)a3 exiting:(id)a4;
+- (void)_updateStackViewSubviewsAndChildVCsEntering:(id)entering exiting:(id)exiting;
 - (void)_updateViewControllerVisibilityAfterPositionChange;
 - (void)dealloc;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)removeOverlayViewAnimated:(BOOL)a3;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setOverlayView:(id)a3 withOriginY:(double)a4;
-- (void)setStackingDelegate:(id)a3;
-- (void)setViewControllers:(id)a3;
-- (void)setWidthConstraintConstant:(double)a3;
-- (void)stackViewNeedsLayout:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)removeOverlayViewAnimated:(BOOL)animated;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setOverlayView:(id)view withOriginY:(double)y;
+- (void)setStackingDelegate:(id)delegate;
+- (void)setViewControllers:(id)controllers;
+- (void)setWidthConstraintConstant:(double)constant;
+- (void)stackViewNeedsLayout:(id)layout;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -46,9 +46,9 @@
   return WeakRetained;
 }
 
-- (BOOL)isViewVisbile:(id)a3 percentageTreshold:(double)a4
+- (BOOL)isViewVisbile:(id)visbile percentageTreshold:(double)treshold
 {
-  v6 = a3;
+  visbileCopy = visbile;
   if (self->_isScrollDisabled)
   {
     v7 = &OBJC_IVAR___MKStackingViewController__stackView;
@@ -65,8 +65,8 @@
   v13 = v12;
   v15 = v14;
   contentView = self->_contentView;
-  [v6 bounds];
-  [(_MKStackingContentView *)contentView convertRect:v6 fromView:?];
+  [visbileCopy bounds];
+  [(_MKStackingContentView *)contentView convertRect:visbileCopy fromView:?];
   v29.origin.x = v17;
   v29.origin.y = v18;
   v29.size.width = v19;
@@ -81,11 +81,11 @@
   v23 = 0.0;
   if (!IsNull)
   {
-    [v6 bounds];
+    [visbileCopy bounds];
     v23 = height / v24;
   }
 
-  v25 = v23 >= a4;
+  v25 = v23 >= treshold;
 
   return v25;
 }
@@ -93,12 +93,12 @@
 - (void)_updateViewControllerVisibilityAfterPositionChange
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(MKStackingViewController *)self stackingDelegate];
+  stackingDelegate = [(MKStackingViewController *)self stackingDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MKStackingViewController *)self stackingDelegate];
+    stackingDelegate2 = [(MKStackingViewController *)self stackingDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
@@ -123,32 +123,32 @@
             }
 
             v11 = *(*(&v22 + 1) + 8 * i);
-            v12 = [(MKStackingViewController *)self stackingDelegate];
-            [v12 stackingViewController:self minimumVisibleSurfacePercentForAnalyticsSelection:v11];
+            stackingDelegate3 = [(MKStackingViewController *)self stackingDelegate];
+            [stackingDelegate3 stackingViewController:self minimumVisibleSurfacePercentForAnalyticsSelection:v11];
             v14 = v13;
 
-            v15 = [v11 view];
-            v16 = [(MKStackingViewController *)self isViewVisbile:v15 percentageTreshold:v14];
+            view = [v11 view];
+            v16 = [(MKStackingViewController *)self isViewVisbile:view percentageTreshold:v14];
 
             minimallyVisibleViews = self->_minimallyVisibleViews;
-            v18 = [v11 view];
-            LODWORD(minimallyVisibleViews) = [(NSHashTable *)minimallyVisibleViews containsObject:v18];
+            view2 = [v11 view];
+            LODWORD(minimallyVisibleViews) = [(NSHashTable *)minimallyVisibleViews containsObject:view2];
 
             if (v16 != minimallyVisibleViews)
             {
               v19 = self->_minimallyVisibleViews;
-              v20 = [v11 view];
+              view3 = [v11 view];
               if (v16)
               {
-                [(NSHashTable *)v19 addObject:v20];
+                [(NSHashTable *)v19 addObject:view3];
 
-                v20 = [(MKStackingViewController *)self stackingDelegate];
-                [v20 stackingViewController:self didShowMinimumVisibleSurfacePercentForAnalyticsSelection:v11];
+                view3 = [(MKStackingViewController *)self stackingDelegate];
+                [view3 stackingViewController:self didShowMinimumVisibleSurfacePercentForAnalyticsSelection:v11];
               }
 
               else
               {
-                [(NSHashTable *)v19 removeObject:v20];
+                [(NSHashTable *)v19 removeObject:view3];
               }
             }
           }
@@ -164,13 +164,13 @@
 
 - (void)_sendScrollnotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"MKStackingScrollNotification" object:self->_scrollView];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MKStackingScrollNotification" object:self->_scrollView];
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
   [(UIScrollView *)self->_scrollView adjustedContentInset];
@@ -178,55 +178,55 @@
   [(UIScrollView *)self->_scrollView adjustedContentInset];
   scrollView = self->_scrollView;
 
-  [(UIScrollView *)scrollView setContentOffset:v3 animated:v8, v6 - v9];
+  [(UIScrollView *)scrollView setContentOffset:animatedCopy animated:v8, v6 - v9];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = [(MKStackingViewController *)self stackingDelegate];
+  stackingDelegate = [(MKStackingViewController *)self stackingDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MKStackingViewController *)self stackingDelegate];
-    [v6 stackingViewControllerDidEndScroll:self];
+    stackingDelegate2 = [(MKStackingViewController *)self stackingDelegate];
+    [stackingDelegate2 stackingViewControllerDidEndScroll:self];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
-    v10 = v6;
-    v7 = [(MKStackingViewController *)self stackingDelegate];
+    v10 = draggingCopy;
+    stackingDelegate = [(MKStackingViewController *)self stackingDelegate];
     v8 = objc_opt_respondsToSelector();
 
-    v6 = v10;
+    draggingCopy = v10;
     if (v8)
     {
-      v9 = [(MKStackingViewController *)self stackingDelegate];
-      [v9 stackingViewControllerDidEndScroll:self];
+      stackingDelegate2 = [(MKStackingViewController *)self stackingDelegate];
+      [stackingDelegate2 stackingViewControllerDidEndScroll:self];
 
-      v6 = v10;
+      draggingCopy = v10;
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(MKStackingViewController *)self _updateViewControllerVisibilityAfterPositionChange];
-  v4 = [(MKStackingViewController *)self stackingDelegate];
+  stackingDelegate = [(MKStackingViewController *)self stackingDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MKStackingViewController *)self stackingDelegate];
-    [v6 stackingViewControllerWillBeginScroll:self];
+    stackingDelegate2 = [(MKStackingViewController *)self stackingDelegate];
+    [stackingDelegate2 stackingViewControllerWillBeginScroll:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(MKStackingViewController *)self _didScroll];
 
@@ -280,30 +280,30 @@
     if ([(MKStackingViewController *)self _isSafeToPerformLayout])
     {
       v5 = MEMORY[0x1E695DFD8];
-      v6 = [(MKStackingViewController *)self viewControllers];
-      v7 = [v5 setWithArray:v6];
+      viewControllers = [(MKStackingViewController *)self viewControllers];
+      v7 = [v5 setWithArray:viewControllers];
       [(MKStackingViewController *)self _updateStackViewSubviewsAndChildVCsEntering:v7 exiting:0];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = MKStackingViewController;
-  [(MKStackingViewController *)&v3 viewWillAppear:a3];
+  [(MKStackingViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MKStackingViewController;
-  [(MKStackingViewController *)&v7 viewDidAppear:a3];
+  [(MKStackingViewController *)&v7 viewDidAppear:appear];
   if (self->_needsToPerformLayout && [(MKStackingViewController *)self _isSafeToPerformLayout])
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = [(MKStackingViewController *)self viewControllers];
-    v6 = [v4 setWithArray:v5];
+    viewControllers = [(MKStackingViewController *)self viewControllers];
+    v6 = [v4 setWithArray:viewControllers];
     [(MKStackingViewController *)self _updateStackViewSubviewsAndChildVCsEntering:v6 exiting:0];
   }
 
@@ -325,13 +325,13 @@
   overlayView = self->_overlayView;
   if (overlayView)
   {
-    v6 = [(UIView *)overlayView superview];
-    v7 = [(MKStackingViewController *)self view];
+    superview = [(UIView *)overlayView superview];
+    view = [(MKStackingViewController *)self view];
 
-    if (v6 != v7)
+    if (superview != view)
     {
-      v8 = [(MKStackingViewController *)self view];
-      [v8 addSubview:self->_overlayView];
+      view2 = [(MKStackingViewController *)self view];
+      [view2 addSubview:self->_overlayView];
 
       [(MKStackingViewController *)self _setOverlayViewFrame];
     }
@@ -341,8 +341,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(MKStackingViewController *)self viewControllers];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  viewControllers = [(MKStackingViewController *)self viewControllers];
+  v10 = [viewControllers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -354,15 +354,15 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(viewControllers);
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
         if ([v14 conformsToProtocol:&unk_1F16E5078])
         {
-          v15 = [v14 requiresPreferredContentSizeInStackingView];
+          requiresPreferredContentSizeInStackingView = [v14 requiresPreferredContentSizeInStackingView];
 
-          if (v15 && [v14 isViewLoaded])
+          if (requiresPreferredContentSizeInStackingView && [v14 isViewLoaded])
           {
             [v14 preferredContentSize];
             [(MKStackingViewController *)self _setPreferredHeight:v14 forViewController:v16];
@@ -377,7 +377,7 @@
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [viewControllers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -388,66 +388,66 @@
   [(MKStackingViewController *)&v17 updateViewConstraints];
 }
 
-- (void)_removePreferredHeightConstraintFromViewController:(id)a3
+- (void)_removePreferredHeightConstraintFromViewController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   v4 = [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints objectForKey:?];
   if (v4)
   {
-    [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints removeObjectForKey:v6];
-    v5 = [v6 view];
-    [v5 removeConstraint:v4];
+    [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints removeObjectForKey:controllerCopy];
+    view = [controllerCopy view];
+    [view removeConstraint:v4];
   }
 }
 
-- (void)_addPreferredHeightConstraintForViewControllerIfNeeded:(id)a3
+- (void)_addPreferredHeightConstraintForViewControllerIfNeeded:(id)needed
 {
-  v9 = a3;
-  if ([v9 conformsToProtocol:&unk_1F16E5078] && objc_msgSend(v9, "requiresPreferredContentSizeInStackingView") && objc_msgSend(v9, "isViewLoaded"))
+  neededCopy = needed;
+  if ([neededCopy conformsToProtocol:&unk_1F16E5078] && objc_msgSend(neededCopy, "requiresPreferredContentSizeInStackingView") && objc_msgSend(neededCopy, "isViewLoaded"))
   {
-    v4 = [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints objectForKey:v9];
+    v4 = [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints objectForKey:neededCopy];
     if (!v4)
     {
       if (!self->_viewControllersToPreferredHeightConstraints)
       {
-        v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+        strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
         viewControllersToPreferredHeightConstraints = self->_viewControllersToPreferredHeightConstraints;
-        self->_viewControllersToPreferredHeightConstraints = v5;
+        self->_viewControllersToPreferredHeightConstraints = strongToStrongObjectsMapTable;
       }
 
-      v7 = [v9 view];
-      v8 = [v7 heightAnchor];
-      v4 = [v8 constraintEqualToConstant:0.0];
+      view = [neededCopy view];
+      heightAnchor = [view heightAnchor];
+      v4 = [heightAnchor constraintEqualToConstant:0.0];
 
       [v4 setActive:1];
-      [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints setObject:v4 forKey:v9];
+      [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints setObject:v4 forKey:neededCopy];
     }
   }
 }
 
-- (void)_setPreferredHeight:(double)a3 forViewController:(id)a4
+- (void)_setPreferredHeight:(double)height forViewController:(id)controller
 {
-  v6 = [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints objectForKey:a4];
+  v6 = [(NSMapTable *)self->_viewControllersToPreferredHeightConstraints objectForKey:controller];
   [v6 constant];
-  if (v7 != a3)
+  if (v7 != height)
   {
-    v8 = [MEMORY[0x1E69DD250] _currentAnimationAttributes];
-    if (v8)
+    _currentAnimationAttributes = [MEMORY[0x1E69DD250] _currentAnimationAttributes];
+    if (_currentAnimationAttributes)
     {
       v9 = MEMORY[0x1E69DD250];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __66__MKStackingViewController__setPreferredHeight_forViewController___block_invoke;
       v10[3] = &unk_1E76C8808;
-      v13 = a3;
+      heightCopy = height;
       v11 = v6;
-      v12 = self;
-      [v9 _animateWithAttributes:v8 animations:v10 completion:0];
+      selfCopy = self;
+      [v9 _animateWithAttributes:_currentAnimationAttributes animations:v10 completion:0];
     }
 
     else
     {
-      [v6 setConstant:a3];
+      [v6 setConstant:height];
     }
   }
 }
@@ -459,15 +459,15 @@ void __66__MKStackingViewController__setPreferredHeight_forViewController___bloc
   [v2 layoutIfNeeded];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = MKStackingViewController;
-  [(MKStackingViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(MKStackingViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   if (!self->_isSettingStackedViews)
   {
-    v5 = v4;
+    v5 = containerCopy;
     if (![v5 conformsToProtocol:&unk_1F16E5078])
     {
 LABEL_6:
@@ -475,9 +475,9 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v6 = [v5 requiresPreferredContentSizeInStackingView];
+    requiresPreferredContentSizeInStackingView = [v5 requiresPreferredContentSizeInStackingView];
 
-    if (v6)
+    if (requiresPreferredContentSizeInStackingView)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -495,8 +495,8 @@ LABEL_7:
 
 - (void)_setOverlayViewFrame
 {
-  v3 = [(MKStackingViewController *)self view];
-  [v3 bounds];
+  view = [(MKStackingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -519,16 +519,16 @@ LABEL_7:
   [(UIView *)overlayView setFrame:0.0, overlayViewOriginY, Width, v16];
 }
 
-- (void)removeOverlayViewAnimated:(BOOL)a3
+- (void)removeOverlayViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(_MKStackView *)self->_stackView stackedSubviews];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  stackedSubviews = [(_MKStackView *)self->_stackView stackedSubviews];
+  v6 = [stackedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -539,11 +539,11 @@ LABEL_7:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stackedSubviews);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if (v3)
+        if (animatedCopy)
         {
           if ([*(*(&v16 + 1) + 8 * i) isHidden])
           {
@@ -561,7 +561,7 @@ LABEL_7:
         [v10 setHidden:0];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [stackedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -574,7 +574,7 @@ LABEL_7:
   v15[4] = self;
   v12 = MEMORY[0x1A58E9F30](v15);
   v13 = v12;
-  if (v3)
+  if (animatedCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -633,43 +633,43 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
   }
 }
 
-- (void)setOverlayView:(id)a3 withOriginY:(double)a4
+- (void)setOverlayView:(id)view withOriginY:(double)y
 {
-  v7 = a3;
+  viewCopy = view;
   overlayView = self->_overlayView;
-  if (overlayView != v7)
+  if (overlayView != viewCopy)
   {
-    v11 = v7;
+    v11 = viewCopy;
     [(UIView *)overlayView removeFromSuperview];
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
     [(UIView *)self->_overlayView setTranslatesAutoresizingMaskIntoConstraints:0];
-    self->_overlayViewOriginY = a4;
-    v9 = [(MKStackingViewController *)self isViewLoaded];
-    v7 = v11;
-    if (v9)
+    self->_overlayViewOriginY = y;
+    isViewLoaded = [(MKStackingViewController *)self isViewLoaded];
+    viewCopy = v11;
+    if (isViewLoaded)
     {
       if (self->_overlayView)
       {
         [(MKStackingViewController *)self _setOverlayViewFrame];
-        v10 = [(MKStackingViewController *)self view];
-        [v10 _mapkit_setNeedsUpdateConstraints];
+        view = [(MKStackingViewController *)self view];
+        [view _mapkit_setNeedsUpdateConstraints];
 
-        v7 = v11;
+        viewCopy = v11;
       }
     }
   }
 }
 
-- (void)_setUpEnteringViewController:(id)a3
+- (void)_setUpEnteringViewController:(id)controller
 {
-  v7 = a3;
-  if ([v7 isViewLoaded])
+  controllerCopy = controller;
+  if ([controllerCopy isViewLoaded])
   {
-    v4 = [v7 view];
+    view = [controllerCopy view];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = view;
     }
 
     else
@@ -682,10 +682,10 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
     [v6 setScrollEnabled:0];
   }
 
-  [(MKStackingViewController *)self _addPreferredHeightConstraintForViewControllerIfNeeded:v7];
+  [(MKStackingViewController *)self _addPreferredHeightConstraintForViewControllerIfNeeded:controllerCopy];
 }
 
-- (double)stackView:(id)a3 distanceBetweenUpperView:(id)a4 andLowerView:(id)a5
+- (double)stackView:(id)view distanceBetweenUpperView:(id)upperView andLowerView:(id)lowerView
 {
   if (!self->_mayWantSpearators)
   {
@@ -693,9 +693,9 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
   }
 
   viewsToViewControllers = self->_viewsToViewControllers;
-  v8 = a5;
-  v9 = [(NSMapTable *)viewsToViewControllers objectForKey:a4];
-  v10 = [(NSMapTable *)self->_viewsToViewControllers objectForKey:v8];
+  lowerViewCopy = lowerView;
+  v9 = [(NSMapTable *)viewsToViewControllers objectForKey:upperView];
+  v10 = [(NSMapTable *)self->_viewsToViewControllers objectForKey:lowerViewCopy];
 
   if (!(v9 | v10))
   {
@@ -714,33 +714,33 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
   if (self->_needToCallViewControllerLayoutDelegate)
   {
     self->_needToCallViewControllerLayoutDelegate = 0;
-    v3 = [(MKStackingViewController *)self stackingDelegate];
+    stackingDelegate = [(MKStackingViewController *)self stackingDelegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(MKStackingViewController *)self stackingDelegate];
-      [v5 stackingViewControllerDidLayoutViewControllers:self];
+      stackingDelegate2 = [(MKStackingViewController *)self stackingDelegate];
+      [stackingDelegate2 stackingViewControllerDidLayoutViewControllers:self];
     }
   }
 }
 
-- (void)_updateStackViewSubviewsAndChildVCsEntering:(id)a3 exiting:(id)a4
+- (void)_updateStackViewSubviewsAndChildVCsEntering:(id)entering exiting:(id)exiting
 {
   v94 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  enteringCopy = entering;
+  exitingCopy = exiting;
   self->_needsToPerformLayout = 0;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  if ([enteringCopy count] || objc_msgSend(exitingCopy, "count"))
   {
-    v57 = v6;
+    v57 = enteringCopy;
     v58 = objc_alloc_init(MEMORY[0x1E695DF70]);
     self->_needToCallViewControllerLayoutDelegate = 1;
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v8 = v6;
+    v8 = enteringCopy;
     v9 = [v8 countByEnumeratingWithState:&v83 objects:v93 count:16];
     if (v9)
     {
@@ -765,14 +765,14 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
     }
 
     v54 = v8;
-    v56 = v7;
+    v56 = exitingCopy;
 
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v13 = [(MKStackingViewController *)self viewControllers];
-    v14 = [v13 countByEnumeratingWithState:&v79 objects:v92 count:16];
+    viewControllers = [(MKStackingViewController *)self viewControllers];
+    v14 = [viewControllers countByEnumeratingWithState:&v79 objects:v92 count:16];
     if (v14)
     {
       v15 = v14;
@@ -783,23 +783,23 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
         {
           if (*v80 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(viewControllers);
           }
 
           v18 = *(*(&v79 + 1) + 8 * j);
           stackView = self->_stackView;
-          v20 = [v18 view];
-          [(_MKStackView *)stackView addSubview:v20];
+          view = [v18 view];
+          [(_MKStackView *)stackView addSubview:view];
 
           viewsToViewControllers = self->_viewsToViewControllers;
-          v22 = [v18 view];
-          [(NSMapTable *)viewsToViewControllers setObject:v18 forKey:v22];
+          view2 = [v18 view];
+          [(NSMapTable *)viewsToViewControllers setObject:v18 forKey:view2];
 
-          v23 = [v18 view];
-          [v58 addObject:v23];
+          view3 = [v18 view];
+          [v58 addObject:view3];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v79 objects:v92 count:16];
+        v15 = [viewControllers countByEnumeratingWithState:&v79 objects:v92 count:16];
       }
 
       while (v15);
@@ -809,7 +809,7 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v7 = v56;
+    exitingCopy = v56;
     v24 = v56;
     v25 = [v24 countByEnumeratingWithState:&v75 objects:v91 count:16];
     if (v25)
@@ -937,8 +937,8 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v48 = [(MKStackingViewController *)self viewControllers];
-    v49 = [v48 countByEnumeratingWithState:&v59 objects:v87 count:16];
+    viewControllers2 = [(MKStackingViewController *)self viewControllers];
+    v49 = [viewControllers2 countByEnumeratingWithState:&v59 objects:v87 count:16];
     if (v49)
     {
       v50 = v49;
@@ -949,13 +949,13 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
         {
           if (*v60 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(viewControllers2);
           }
 
           [*(*(&v59 + 1) + 8 * jj) didMoveToParentViewController:self];
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v59 objects:v87 count:16];
+        v50 = [viewControllers2 countByEnumeratingWithState:&v59 objects:v87 count:16];
       }
 
       while (v50);
@@ -963,40 +963,40 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
 
     if ([v37 count] || objc_msgSend(v42, "count"))
     {
-      v53 = [(MKStackingViewController *)self view];
-      [v53 _mapkit_setNeedsLayout];
+      view4 = [(MKStackingViewController *)self view];
+      [view4 _mapkit_setNeedsLayout];
     }
 
-    v6 = v57;
+    enteringCopy = v57;
   }
 }
 
-- (void)stackViewNeedsLayout:(id)a3
+- (void)stackViewNeedsLayout:(id)layout
 {
-  v4 = [(MKStackingViewController *)self view];
-  v3 = [v4 superview];
-  [v3 _mapkit_layoutIfNeeded];
+  view = [(MKStackingViewController *)self view];
+  superview = [view superview];
+  [superview _mapkit_layoutIfNeeded];
 }
 
-- (void)setStackingDelegate:(id)a3
+- (void)setStackingDelegate:(id)delegate
 {
-  v6 = a3;
-  v4 = objc_storeWeak(&self->_stackingDelegate, v6);
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_stackingDelegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   self->_mayWantSpearators = v5 & 1;
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_viewControllers] & 1) == 0)
+  controllersCopy = controllers;
+  if (([controllersCopy isEqualToArray:self->_viewControllers] & 1) == 0)
   {
     v6 = MEMORY[0x1E695E0F0];
-    if (v5)
+    if (controllersCopy)
     {
-      v7 = v5;
+      v7 = controllersCopy;
     }
 
     else
@@ -1020,7 +1020,7 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
     [v11 minusSet:v10];
     v12 = [v10 mutableCopy];
     [v12 minusSet:v8];
-    objc_storeStrong(&self->_viewControllers, a3);
+    objc_storeStrong(&self->_viewControllers, controllers);
     [(MKStackingViewController *)self _updateFixedHeightAwareControllers];
     if ([(MKStackingViewController *)self _isSafeToPerformLayout])
     {
@@ -1101,91 +1101,91 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
   }
 }
 
-- (void)setWidthConstraintConstant:(double)a3
+- (void)setWidthConstraintConstant:(double)constant
 {
-  v5 = [(MKStackingViewController *)self view];
+  view = [(MKStackingViewController *)self view];
 
-  if (v5)
+  if (view)
   {
     v6 = self->_stackView;
     stackViewWidthConstraint = self->_stackViewWidthConstraint;
     v15 = v6;
     if (stackViewWidthConstraint)
     {
-      [(NSLayoutConstraint *)stackViewWidthConstraint setConstant:a3];
+      [(NSLayoutConstraint *)stackViewWidthConstraint setConstant:constant];
     }
 
     else
     {
-      v8 = [(_MKStackView *)v6 widthAnchor];
-      v9 = [v8 constraintEqualToConstant:a3];
+      widthAnchor = [(_MKStackView *)v6 widthAnchor];
+      v9 = [widthAnchor constraintEqualToConstant:constant];
       v10 = self->_stackViewWidthConstraint;
       self->_stackViewWidthConstraint = v9;
     }
 
-    [(NSLayoutConstraint *)self->_widthConstraint setConstant:a3];
+    [(NSLayoutConstraint *)self->_widthConstraint setConstant:constant];
     [(NSLayoutConstraint *)self->_stackViewWidthConstraint setActive:1];
-    v11 = [(_MKStackingContentView *)self->_contentView bottomConstraint];
-    v12 = [v11 isActive];
+    bottomConstraint = [(_MKStackingContentView *)self->_contentView bottomConstraint];
+    isActive = [bottomConstraint isActive];
 
-    v13 = [(_MKStackingContentView *)self->_contentView bottomConstraint];
-    [v13 setActive:0];
+    bottomConstraint2 = [(_MKStackingContentView *)self->_contentView bottomConstraint];
+    [bottomConstraint2 setActive:0];
 
     [(UIView *)v15 _mapkit_setNeedsLayout];
     [(UIView *)v15 _mapkit_layoutIfNeeded];
-    v14 = [(_MKStackingContentView *)self->_contentView bottomConstraint];
-    [v14 setActive:v12];
+    bottomConstraint3 = [(_MKStackingContentView *)self->_contentView bottomConstraint];
+    [bottomConstraint3 setActive:isActive];
   }
 }
 
-- (double)_fittingHeightForView:(id)a3
+- (double)_fittingHeightForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = 0.0;
-  if ([v3 conformsToProtocol:&unk_1F161E998])
+  if ([viewCopy conformsToProtocol:&unk_1F161E998])
   {
-    [v3 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    [viewCopy sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v4 = v5;
   }
 
   return v4;
 }
 
-- (void)_setScrollEnabled:(BOOL)a3 forcedUpdate:(BOOL)a4
+- (void)_setScrollEnabled:(BOOL)enabled forcedUpdate:(BOOL)update
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v25[4] = *MEMORY[0x1E69E9840];
-  if (a4 || self->_isScrollDisabled == a3)
+  if (update || self->_isScrollDisabled == enabled)
   {
-    self->_isScrollDisabled = !a3;
+    self->_isScrollDisabled = !enabled;
     [(MKStackingViewController *)self _updateFixedHeightAwareControllers];
     if (self->_stackView)
     {
       contentView = self->_contentView;
       if (contentView)
       {
-        if (v4)
+        if (enabledCopy)
         {
           [(_MKStackingContentView *)contentView setBottomView:self->_scrollView];
           [(UIScrollView *)self->_scrollView addSubview:self->_stackView];
           v20 = MEMORY[0x1E696ACD8];
           stackView = self->_stackView;
           v8 = self->_scrollView;
-          v24 = [(_MKStackView *)stackView topAnchor];
-          v23 = [(UIScrollView *)v8 topAnchor];
-          v22 = [v24 constraintEqualToAnchor:v23];
+          topAnchor = [(_MKStackView *)stackView topAnchor];
+          topAnchor2 = [(UIScrollView *)v8 topAnchor];
+          v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v25[0] = v22;
-          v21 = [(_MKStackView *)self->_stackView leftAnchor];
-          v9 = [(UIScrollView *)v8 leftAnchor];
-          v10 = [v21 constraintEqualToAnchor:v9];
+          leftAnchor = [(_MKStackView *)self->_stackView leftAnchor];
+          leftAnchor2 = [(UIScrollView *)v8 leftAnchor];
+          v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
           v25[1] = v10;
-          v11 = [(UIScrollView *)v8 bottomAnchor];
-          v12 = [(_MKStackView *)self->_stackView bottomAnchor];
-          v13 = [v11 constraintEqualToAnchor:v12];
+          bottomAnchor = [(UIScrollView *)v8 bottomAnchor];
+          bottomAnchor2 = [(_MKStackView *)self->_stackView bottomAnchor];
+          v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           v25[2] = v13;
-          v14 = [(UIScrollView *)v8 rightAnchor];
-          v15 = [(_MKStackView *)self->_stackView rightAnchor];
-          v16 = [v14 constraintEqualToAnchor:v15];
+          rightAnchor = [(UIScrollView *)v8 rightAnchor];
+          rightAnchor2 = [(_MKStackView *)self->_stackView rightAnchor];
+          v16 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
           v25[3] = v16;
           v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
           [v20 activateConstraints:v17];
@@ -1206,16 +1206,16 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
 
 - (BOOL)_isSafeToPerformLayout
 {
-  v3 = [(MKStackingViewController *)self isViewLoaded];
-  if (v3)
+  isViewLoaded = [(MKStackingViewController *)self isViewLoaded];
+  if (isViewLoaded)
   {
-    v4 = [(MKStackingViewController *)self view];
-    v5 = [v4 window];
+    view = [(MKStackingViewController *)self view];
+    window = [view window];
 
-    LOBYTE(v3) = v5 || (stackViewWidthConstraint = self->_stackViewWidthConstraint) != 0 && [(NSLayoutConstraint *)stackViewWidthConstraint isActive];
+    LOBYTE(isViewLoaded) = window || (stackViewWidthConstraint = self->_stackViewWidthConstraint) != 0 && [(NSLayoutConstraint *)stackViewWidthConstraint isActive];
   }
 
-  return v3;
+  return isViewLoaded;
 }
 
 - (void)viewDidLoad
@@ -1231,11 +1231,11 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
   [(UIScrollView *)self->_scrollView setDelegate:self];
   [(UIScrollView *)self->_scrollView setPreservesSuperviewLayoutMargins:1];
   [(MKStackingViewController *)self _setScrollEnabled:!self->_isScrollDisabled forcedUpdate:1];
-  v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   minimallyVisibleViews = self->_minimallyVisibleViews;
-  self->_minimallyVisibleViews = v5;
+  self->_minimallyVisibleViews = weakObjectsHashTable;
 
-  v7 = [(_MKStackView *)self->_stackView widthAnchor];
+  widthAnchor = [(_MKStackView *)self->_stackView widthAnchor];
   [(_MKStackingContentView *)self->_contentView frame];
   Width = CGRectGetWidth(v15);
   v9 = 260.0;
@@ -1245,13 +1245,13 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
     v9 = CGRectGetWidth(v16);
   }
 
-  v10 = [v7 constraintEqualToConstant:v9];
+  v10 = [widthAnchor constraintEqualToConstant:v9];
   widthConstraint = self->_widthConstraint;
   self->_widthConstraint = v10;
 
-  v12 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+  weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
   viewsToViewControllers = self->_viewsToViewControllers;
-  self->_viewsToViewControllers = v12;
+  self->_viewsToViewControllers = weakToWeakObjectsMapTable;
 }
 
 - (void)loadView
@@ -1277,8 +1277,8 @@ void __54__MKStackingViewController_removeOverlayViewAnimated___block_invoke_2(u
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UIScrollView *)self->_scrollView setDelegate:0];
   v4.receiver = self;

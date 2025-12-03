@@ -1,59 +1,59 @@
 @interface TSWPTextWrapper
-+ (double)unobstructedSpanForPath:(id)a3 startingSpan:(CGRect)a4 columnBounds:(CGRect)a5;
-+ (unsigned)p_wrappedSubrectsForRectGPC:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] polygon:(id)a5 type:(int)a6 skipHint:(double *)a7;
-+ (unsigned)p_wrappedSubrectsForRectOptimized:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] polygon:(id)a5 type:(int)a6 skipHint:(double *)a7;
-+ (unsigned)splitLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] polygon:(id)a5 type:(int)a6 skipHint:(double *)a7;
++ (double)unobstructedSpanForPath:(id)path startingSpan:(CGRect)span columnBounds:(CGRect)bounds;
++ (unsigned)p_wrappedSubrectsForRectGPC:(CGRect)c lineSegmentRects:(CGRect)rects[128] polygon:(id)polygon type:(int)type skipHint:(double *)hint;
++ (unsigned)p_wrappedSubrectsForRectOptimized:(CGRect)optimized lineSegmentRects:(CGRect)rects[128] polygon:(id)polygon type:(int)type skipHint:(double *)hint;
++ (unsigned)splitLine:(CGRect)line lineSegmentRects:(CGRect)rects[128] polygon:(id)polygon type:(int)type skipHint:(double *)hint;
 @end
 
 @implementation TSWPTextWrapper
 
-+ (unsigned)splitLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] polygon:(id)a5 type:(int)a6 skipHint:(double *)a7
++ (unsigned)splitLine:(CGRect)line lineSegmentRects:(CGRect)rects[128] polygon:(id)polygon type:(int)type skipHint:(double *)hint
 {
-  v8 = *&a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ([a5 intersectsSelf])
+  v8 = *&type;
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
+  if ([polygon intersectsSelf])
   {
 
-    return [a1 p_wrappedSubrectsForRectGPC:a4 lineSegmentRects:a5 polygon:v8 type:a7 skipHint:{x, y, width, height}];
+    return [self p_wrappedSubrectsForRectGPC:rects lineSegmentRects:polygon polygon:v8 type:hint skipHint:{x, y, width, height}];
   }
 
   else
   {
 
-    return [a1 p_wrappedSubrectsForRectOptimized:a4 lineSegmentRects:a5 polygon:v8 type:a7 skipHint:{x, y, width, height}];
+    return [self p_wrappedSubrectsForRectOptimized:rects lineSegmentRects:polygon polygon:v8 type:hint skipHint:{x, y, width, height}];
   }
 }
 
-+ (unsigned)p_wrappedSubrectsForRectGPC:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] polygon:(id)a5 type:(int)a6 skipHint:(double *)a7
++ (unsigned)p_wrappedSubrectsForRectGPC:(CGRect)c lineSegmentRects:(CGRect)rects[128] polygon:(id)polygon type:(int)type skipHint:(double *)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = [a5 polygon];
+  height = c.size.height;
+  width = c.size.width;
+  y = c.origin.y;
+  x = c.origin.x;
+  polygon = [polygon polygon];
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
   v30.size.height = height;
   v16 = polygonFromRect(v30);
-  if (a7)
+  if (hint)
   {
-    *a7 = 1.0;
+    *hint = 1.0;
   }
 
-  TSDgpc_polygon_clip(a6 != 0, v16, v15, v29);
+  TSDgpc_polygon_clip(type != 0, v16, polygon, v29);
   TSDgpc_free_polygon(v16);
   free(v16);
-  v17 = wrappedSubrectsFromPolygon(v29, &a4->origin.x, x, y, width, height);
+  v17 = wrappedSubrectsFromPolygon(v29, &rects->origin.x, x, y, width, height);
   v18 = v17;
-  if (a7)
+  if (hint)
   {
     if (!v17)
     {
-      [a5 bounds];
+      [polygon bounds];
       MaxY = CGRectGetMaxY(v31);
       v32.origin.x = x;
       v32.origin.y = y;
@@ -72,8 +72,8 @@
         v34.size.width = width;
         v34.size.height = v20;
         v21 = polygonFromRect(v34);
-        TSDgpc_polygon_clip(3u, v21, v15, v29);
-        TSDgpc_polygon_clip(0, v29, v15, v29);
+        TSDgpc_polygon_clip(3u, v21, polygon, v29);
+        TSDgpc_polygon_clip(0, v29, polygon, v29);
         v35.origin.x = x;
         v35.origin.y = y;
         v35.size.width = width;
@@ -126,7 +126,7 @@
           v26 = fmax(floor(v25 - CGRectGetMaxY(v38)), 1.0);
         }
 
-        *a7 = v26;
+        *hint = v26;
         TSDgpc_free_polygon(v21);
         free(v21);
       }
@@ -137,13 +137,13 @@
   return v18;
 }
 
-+ (double)unobstructedSpanForPath:(id)a3 startingSpan:(CGRect)a4 columnBounds:(CGRect)a5
++ (double)unobstructedSpanForPath:(id)path startingSpan:(CGRect)span columnBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MaxY = CGRectGetMaxY(a5);
+  height = span.size.height;
+  width = span.size.width;
+  y = span.origin.y;
+  x = span.origin.x;
+  MaxY = CGRectGetMaxY(bounds);
   v33.origin.x = x;
   v33.origin.y = y;
   v33.size.width = width;
@@ -153,7 +153,7 @@
   v34.origin.y = y;
   v34.size.width = width;
   v11 = polygonFromRect(v34);
-  v12 = polygonFromBezier(a3);
+  v12 = polygonFromBezier(path);
   TSDgpc_polygon_clip(1u, v11, v12, v12);
   TSDgpc_free_polygon(v11);
   free(v11);
@@ -220,7 +220,7 @@
     height = v30;
     v39.size.height = v30;
     MinY = CGRectGetMinY(v39);
-    if (MinY > CGRectGetMaxY(a5))
+    if (MinY > CGRectGetMaxY(bounds))
     {
       goto LABEL_11;
     }
@@ -240,39 +240,39 @@ LABEL_11:
   return v27;
 }
 
-+ (unsigned)p_wrappedSubrectsForRectOptimized:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] polygon:(id)a5 type:(int)a6 skipHint:(double *)a7
++ (unsigned)p_wrappedSubrectsForRectOptimized:(CGRect)optimized lineSegmentRects:(CGRect)rects[128] polygon:(id)polygon type:(int)type skipHint:(double *)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a7)
+  height = optimized.size.height;
+  width = optimized.size.width;
+  y = optimized.origin.y;
+  x = optimized.origin.x;
+  if (hint)
   {
-    *a7 = 1.0;
+    *hint = 1.0;
   }
 
-  MaxY = CGRectGetMaxY(a3);
+  MaxY = CGRectGetMaxY(optimized);
   v101.origin.x = x;
   rect = y;
   v101.origin.y = y;
   v101.size.width = width;
   v101.size.height = height;
   MinY = CGRectGetMinY(v101);
-  [a5 bounds];
+  [polygon bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v91 = v21;
-  v22 = [a5 polygon];
-  if (!v22)
+  polygon = [polygon polygon];
+  if (!polygon)
   {
-    a4->origin.x = x;
+    rects->origin.x = x;
     LODWORD(v29) = 1;
     v28 = rect;
     goto LABEL_131;
   }
 
-  v23 = v22;
+  v23 = polygon;
   rect2 = v20;
   v93 = x;
   v94 = height;
@@ -291,12 +291,12 @@ LABEL_11:
   v123.size.height = v91;
   if (!CGRectIntersectsRect(v102, v123))
   {
-    if (a6 != 1)
+    if (type != 1)
     {
       goto LABEL_103;
     }
 
-    a4->origin.x = x;
+    rects->origin.x = x;
     LODWORD(v29) = 1;
     v28 = rect;
     goto LABEL_131;
@@ -313,14 +313,14 @@ LABEL_11:
   v104.size.height = v91;
   if (v24 >= CGRectGetMinY(v104) || (v25 = v18, v105.origin.x = v93, v105.size.height = v94, v105.origin.y = rect, v105.size.width = width, v26 = CGRectGetMaxY(v105), v106.origin.x = v16, v106.origin.y = v25, v106.size.width = v20, v106.size.height = v91, v26 <= CGRectGetMaxY(v106)))
   {
-    v92 = a4;
+    rectsCopy = rects;
     if (*v23 >= 1)
     {
       v30 = 0;
       v31 = 0;
       rect2a = 0;
       v32 = 0;
-      if (a6 == 1)
+      if (type == 1)
       {
         v33 = 1;
       }
@@ -385,15 +385,15 @@ LABEL_11:
 
         else
         {
-          v49 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPTextWrapper p_wrappedSubrectsForRectOptimized:lineSegmentRects:polygon:type:skipHint:]"];
-          [v49 handleFailureInFunction:v50 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextWrapper.mm"), 484, @"Invalid number of vertices in polygon."}];
+          [currentHandler handleFailureInFunction:v50 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextWrapper.mm"), 484, @"Invalid number of vertices in polygon."}];
           v40 = &KNEffectIsActionEffect_onceToken;
           v44 = 0;
         }
 
         v51 = 0;
-        if (a6 == 1)
+        if (type == 1)
         {
           v52 = 0;
         }
@@ -647,7 +647,7 @@ LABEL_105:
     v113.size.width = width;
     v113.size.height = v94;
     MinX = CGRectGetMinX(v113);
-    v78 = !a6 || *+[TSWPTextWrapper p_wrappedSubrectsForRectOptimized:lineSegmentRects:polygon:type:skipHint:]::markers == 1;
+    v78 = !type || *+[TSWPTextWrapper p_wrappedSubrectsForRectOptimized:lineSegmentRects:polygon:type:skipHint:]::markers == 1;
     if (v32)
     {
       v79 = 0;
@@ -697,7 +697,7 @@ LABEL_105:
             v117.size.width = width;
             v117.size.height = v94;
             v85 = CGRectGetHeight(v117);
-            v86 = &v92[v29++];
+            v86 = &rectsCopy[v29++];
             v86->origin.x = MinX;
             v86->origin.y = v84;
             v86->size.width = v83 - MinX;
@@ -761,18 +761,18 @@ LABEL_105:
     v121.size.width = width;
     v121.size.height = v94;
     height = CGRectGetHeight(v121);
-    a4 = &v92[v29];
+    rects = &rectsCopy[v29];
     LODWORD(v29) = v29 + 1;
-    a4->origin.x = MinX;
+    rects->origin.x = MinX;
     width = v88;
 LABEL_131:
-    a4->origin.y = v28;
-    a4->size.width = width;
-    a4->size.height = height;
+    rects->origin.y = v28;
+    rects->size.width = width;
+    rects->size.height = height;
     return v29;
   }
 
-  if (a6 != 1)
+  if (type != 1)
   {
 LABEL_103:
     LODWORD(v29) = 0;
@@ -817,11 +817,11 @@ LABEL_103:
 
   else
   {
-    a4->origin.x = v93;
-    a4->origin.y = rect;
+    rects->origin.x = v93;
+    rects->origin.y = rect;
     v29 = 1;
-    a4->size.width = v90;
-    a4->size.height = v94;
+    rects->size.width = v90;
+    rects->size.height = v94;
   }
 
   v122.origin.x = v98;
@@ -830,9 +830,9 @@ LABEL_103:
   v122.size.height = v94;
   if (CGRectGetWidth(v122) > 0.0)
   {
-    a4 += v29;
+    rects += v29;
     LODWORD(v29) = v29 + 1;
-    a4->origin.x = v98;
+    rects->origin.x = v98;
     goto LABEL_131;
   }
 

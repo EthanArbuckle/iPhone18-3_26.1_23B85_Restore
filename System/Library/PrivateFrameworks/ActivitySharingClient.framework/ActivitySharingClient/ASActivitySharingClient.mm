@@ -1,7 +1,7 @@
 @interface ASActivitySharingClient
 - (ASActivitySharingClient)init;
-- (void)appBadgeCountWithCompletion:(id)a3;
-- (void)areMultipleDevicesSharingDataForSnapshotIndex:(id)a3 completion:(id)a4;
+- (void)appBadgeCountWithCompletion:(id)completion;
+- (void)areMultipleDevicesSharingDataForSnapshotIndex:(id)index completion:(id)completion;
 @end
 
 @implementation ASActivitySharingClient
@@ -21,23 +21,23 @@
   return v2;
 }
 
-- (void)areMultipleDevicesSharingDataForSnapshotIndex:(id)a3 completion:(id)a4
+- (void)areMultipleDevicesSharingDataForSnapshotIndex:(id)index completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  -[_ASActivitySharingClient areMultipleDevicesSharingDataForSnapshotIndex:completion:](activitySharingClient, "areMultipleDevicesSharingDataForSnapshotIndex:completion:", [a3 intValue], v6);
+  completionCopy = completion;
+  -[_ASActivitySharingClient areMultipleDevicesSharingDataForSnapshotIndex:completion:](activitySharingClient, "areMultipleDevicesSharingDataForSnapshotIndex:completion:", [index intValue], completionCopy);
 }
 
-- (void)appBadgeCountWithCompletion:(id)a3
+- (void)appBadgeCountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   activitySharingClient = self->_activitySharingClient;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ASActivitySharingClient_appBadgeCountWithCompletion___block_invoke;
   v7[3] = &unk_278C49F20;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(_ASActivitySharingClient *)activitySharingClient appBadgeCountWithCompletion:v7];
 }
 

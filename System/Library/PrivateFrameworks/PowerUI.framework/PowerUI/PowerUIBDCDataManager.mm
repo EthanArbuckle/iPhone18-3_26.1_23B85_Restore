@@ -1,6 +1,6 @@
 @interface PowerUIBDCDataManager
 + (PowerUIBDCDataManager)sharedInstance;
-- (BOOL)promptBDCToQueryState:(id)a3;
+- (BOOL)promptBDCToQueryState:(id)state;
 - (PowerUIBDCDataManager)init;
 - (id)getBDCDataDictTemplate;
 - (id)getNextBDCDataDict;
@@ -31,9 +31,9 @@
     bdcCallbackSemaphore = v2->_bdcCallbackSemaphore;
     v2->_bdcCallbackSemaphore = v6;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     dataQueue = v2->_dataQueue;
-    v2->_dataQueue = v8;
+    v2->_dataQueue = array;
   }
 
   return v2;
@@ -61,11 +61,11 @@ void __39__PowerUIBDCDataManager_sharedInstance__block_invoke()
   }
 }
 
-- (BOOL)promptBDCToQueryState:(id)a3
+- (BOOL)promptBDCToQueryState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_bdcDataLock);
-  [(NSMutableArray *)self->_dataQueue addObject:v4];
+  [(NSMutableArray *)self->_dataQueue addObject:stateCopy];
   os_unfair_lock_unlock(&self->_bdcDataLock);
   v5 = [(PowerUIBDCDataManager *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -90,7 +90,7 @@ void __39__PowerUIBDCDataManager_sharedInstance__block_invoke()
     os_unfair_lock_lock(&self->_bdcDataLock);
     if ([(NSMutableArray *)self->_dataQueue count])
     {
-      [(NSMutableArray *)self->_dataQueue removeObject:v4];
+      [(NSMutableArray *)self->_dataQueue removeObject:stateCopy];
     }
 
     os_unfair_lock_unlock(&self->_bdcDataLock);
@@ -113,7 +113,7 @@ void __39__PowerUIBDCDataManager_sharedInstance__block_invoke()
   os_unfair_lock_lock(&self->_bdcDataLock);
   if ([(NSMutableArray *)self->_dataQueue count])
   {
-    v3 = [(NSMutableArray *)self->_dataQueue objectAtIndex:0];
+    getBDCDataDictTemplate = [(NSMutableArray *)self->_dataQueue objectAtIndex:0];
     [(NSMutableArray *)self->_dataQueue removeObjectAtIndex:0];
     os_unfair_lock_unlock(&self->_bdcDataLock);
   }
@@ -127,24 +127,24 @@ void __39__PowerUIBDCDataManager_sharedInstance__block_invoke()
       [(PowerUIBDCDataManager *)v4 getNextBDCDataDict];
     }
 
-    v3 = [(PowerUIBDCDataManager *)self getBDCDataDictTemplate];
+    getBDCDataDictTemplate = [(PowerUIBDCDataManager *)self getBDCDataDictTemplate];
   }
 
-  return v3;
+  return getBDCDataDictTemplate;
 }
 
 - (id)getBDCDataDictTemplate
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  [v2 setObject:&unk_282D4E9C8 forKeyedSubscript:@"MessageVersion"];
-  [v2 setObject:&unk_282D4E9E0 forKeyedSubscript:@"ChargingState"];
-  [v2 setObject:&unk_282D4E9E0 forKeyedSubscript:@"InflowState"];
-  [v2 setObject:&unk_282D4E9E0 forKeyedSubscript:@"ChargeLimit"];
-  [v2 setObject:&unk_282D4E9E0 forKeyedSubscript:@"CheckPoint"];
-  [v2 setObject:&unk_282D4E9E0 forKeyedSubscript:@"ModeOfOperation"];
-  [v2 setObject:&unk_282D4E9E0 forKeyedSubscript:@"DecisionMaker"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_282D4E9C8 forKeyedSubscript:@"MessageVersion"];
+  [dictionary setObject:&unk_282D4E9E0 forKeyedSubscript:@"ChargingState"];
+  [dictionary setObject:&unk_282D4E9E0 forKeyedSubscript:@"InflowState"];
+  [dictionary setObject:&unk_282D4E9E0 forKeyedSubscript:@"ChargeLimit"];
+  [dictionary setObject:&unk_282D4E9E0 forKeyedSubscript:@"CheckPoint"];
+  [dictionary setObject:&unk_282D4E9E0 forKeyedSubscript:@"ModeOfOperation"];
+  [dictionary setObject:&unk_282D4E9E0 forKeyedSubscript:@"DecisionMaker"];
 
-  return v2;
+  return dictionary;
 }
 
 @end

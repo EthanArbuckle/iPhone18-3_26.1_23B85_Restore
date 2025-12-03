@@ -1,13 +1,13 @@
 @interface RPNWNearbyInvitationDiscoverySession
 - (RPNWNearbyInvitationDiscoverySession)init;
 - (id)description;
-- (void)addMappingForDevice:(id)a3 endpointID:(id)a4;
+- (void)addMappingForDevice:(id)device endpointID:(id)d;
 - (void)dealloc;
 - (void)removeAllDevices;
-- (void)removeDevice:(id)a3;
+- (void)removeDevice:(id)device;
 - (void)startDiscovery;
 - (void)stopDiscovery;
-- (void)updateMappingForDevice:(id)a3;
+- (void)updateMappingForDevice:(id)device;
 @end
 
 @implementation RPNWNearbyInvitationDiscoverySession
@@ -46,27 +46,27 @@
   return v3;
 }
 
-- (void)addMappingForDevice:(id)a3 endpointID:(id)a4
+- (void)addMappingForDevice:(id)device endpointID:(id)d
 {
-  if ([RPNWNearbyInvitationEndpoint addEndpointMapping:a3 endpointID:a4 applicationService:self->_applicationService discoverySessionID:self->_discoverySessionID])
+  if ([RPNWNearbyInvitationEndpoint addEndpointMapping:device endpointID:d applicationService:self->_applicationService discoverySessionID:self->_discoverySessionID])
   {
 
     [(RPNWNearbyInvitationDiscoverySession *)self updateClientBrowseResult];
   }
 }
 
-- (void)updateMappingForDevice:(id)a3
+- (void)updateMappingForDevice:(id)device
 {
-  if ([RPNWNearbyInvitationEndpoint updateEndpointMapping:a3 discoverySessionID:self->_discoverySessionID])
+  if ([RPNWNearbyInvitationEndpoint updateEndpointMapping:device discoverySessionID:self->_discoverySessionID])
   {
 
     [(RPNWNearbyInvitationDiscoverySession *)self updateClientBrowseResult];
   }
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
-  if ([RPNWNearbyInvitationEndpoint removeEndpointMapping:a3 discoverySessionID:self->_discoverySessionID])
+  if ([RPNWNearbyInvitationEndpoint removeEndpointMapping:device discoverySessionID:self->_discoverySessionID])
   {
 
     [(RPNWNearbyInvitationDiscoverySession *)self updateClientBrowseResult];

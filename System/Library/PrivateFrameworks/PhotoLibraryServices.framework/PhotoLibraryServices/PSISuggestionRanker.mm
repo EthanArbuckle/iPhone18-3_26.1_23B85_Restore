@@ -1,31 +1,31 @@
 @interface PSISuggestionRanker
-+ (BOOL)_suggestionIsOCRSuggestion:(id)a3;
-+ (BOOL)_suggestionIsPrimaryPersonOrPetSuggestion:(id)a3;
-+ (double)_averageGroupRankingScoreForSuggestion:(id)a3;
-+ (double)_percentOverlapWithCompletionText:(id)a3 suggestionQuery:(id)a4 minPercentOverlapForPrioritization:(double)a5;
-+ (double)initialSuggestionScoreForIndexCategory:(unint64_t)a3;
-+ (double)suggestionScoreForIndexCategory:(unint64_t)a3;
-+ (id)_dedupeNaturalLanguageDateAndMonthOrYearDateSuggestions:(id)a3;
-+ (id)_rankedSearchSuggestionsFromSuggestions:(id)a3 queryAssetCount:(unint64_t)a4 queryCollectionCount:(unint64_t)a5 suggestionType:(unint64_t)a6 suggestionQuery:(id)a7;
-+ (id)rankedSearchSuggestionsFromSuggestionCandidates:(id)a3 suggestionType:(unint64_t)a4 queryAssetCount:(unint64_t)a5 queryCollectionCount:(unint64_t)a6 suggestionLimit:(unint64_t)a7 suggestionQuery:(id)a8;
-+ (id)sortedSuggestionsFromSuggestions:(id)a3;
-+ (unint64_t)_characterLengthForSuggestion:(id)a3 suggestionQuery:(id)a4;
-+ (unint64_t)_countBasedPriorityForSuggestion:(id)a3 queryAssetCount:(unint64_t)a4 queryCollectionCount:(unint64_t)a5;
-+ (unint64_t)_countOfOCRSuggestionsInSuggestions:(id)a3;
-+ (void)_rankedSuggestionsFromRankedSuggestionsBySuggestionCategoryType:(id)a3 orderedSuggestionCategoryTypes:(id)a4 maxSuggestions:(unint64_t)a5 suggestionQuery:(id)a6 suggestionType:(unint64_t)a7 rankedSuggestions:(id)a8 resumingIndex:(unint64_t)a9 completion:(id)a10;
++ (BOOL)_suggestionIsOCRSuggestion:(id)suggestion;
++ (BOOL)_suggestionIsPrimaryPersonOrPetSuggestion:(id)suggestion;
++ (double)_averageGroupRankingScoreForSuggestion:(id)suggestion;
++ (double)_percentOverlapWithCompletionText:(id)text suggestionQuery:(id)query minPercentOverlapForPrioritization:(double)prioritization;
++ (double)initialSuggestionScoreForIndexCategory:(unint64_t)category;
++ (double)suggestionScoreForIndexCategory:(unint64_t)category;
++ (id)_dedupeNaturalLanguageDateAndMonthOrYearDateSuggestions:(id)suggestions;
++ (id)_rankedSearchSuggestionsFromSuggestions:(id)suggestions queryAssetCount:(unint64_t)count queryCollectionCount:(unint64_t)collectionCount suggestionType:(unint64_t)type suggestionQuery:(id)query;
++ (id)rankedSearchSuggestionsFromSuggestionCandidates:(id)candidates suggestionType:(unint64_t)type queryAssetCount:(unint64_t)count queryCollectionCount:(unint64_t)collectionCount suggestionLimit:(unint64_t)limit suggestionQuery:(id)query;
++ (id)sortedSuggestionsFromSuggestions:(id)suggestions;
++ (unint64_t)_characterLengthForSuggestion:(id)suggestion suggestionQuery:(id)query;
++ (unint64_t)_countBasedPriorityForSuggestion:(id)suggestion queryAssetCount:(unint64_t)count queryCollectionCount:(unint64_t)collectionCount;
++ (unint64_t)_countOfOCRSuggestionsInSuggestions:(id)suggestions;
++ (void)_rankedSuggestionsFromRankedSuggestionsBySuggestionCategoryType:(id)type orderedSuggestionCategoryTypes:(id)types maxSuggestions:(unint64_t)suggestions suggestionQuery:(id)query suggestionType:(unint64_t)suggestionType rankedSuggestions:(id)rankedSuggestions resumingIndex:(unint64_t)index completion:(id)self0;
 @end
 
 @implementation PSISuggestionRanker
 
-+ (unint64_t)_countOfOCRSuggestionsInSuggestions:(id)a3
++ (unint64_t)_countOfOCRSuggestionsInSuggestions:(id)suggestions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [suggestionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,13 +37,13 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
-        v7 += [a1 _suggestionIsOCRSuggestion:*(*(&v11 + 1) + 8 * i)];
+        v7 += [self _suggestionIsOCRSuggestion:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [suggestionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -57,39 +57,39 @@
   return v7;
 }
 
-+ (BOOL)_suggestionIsOCRSuggestion:(id)a3
++ (BOOL)_suggestionIsOCRSuggestion:(id)suggestion
 {
-  v3 = [a3 suggestionComponents];
-  v4 = [v3 firstObject];
+  suggestionComponents = [suggestion suggestionComponents];
+  firstObject = [suggestionComponents firstObject];
 
-  v5 = [v4 indexCategory] == 1203 || objc_msgSend(v4, "indexCategory") == 1205 || objc_msgSend(v4, "indexCategory") == 1204;
+  v5 = [firstObject indexCategory] == 1203 || objc_msgSend(firstObject, "indexCategory") == 1205 || objc_msgSend(firstObject, "indexCategory") == 1204;
   return v5;
 }
 
-+ (BOOL)_suggestionIsPrimaryPersonOrPetSuggestion:(id)a3
++ (BOOL)_suggestionIsPrimaryPersonOrPetSuggestion:(id)suggestion
 {
-  v3 = [a3 suggestionComponents];
-  v4 = [v3 firstObject];
+  suggestionComponents = [suggestion suggestionComponents];
+  firstObject = [suggestionComponents firstObject];
 
-  v5 = [v4 indexCategory];
-  v6 = [v4 indexCategory];
-  v8 = v5 == 1300 || v6 == 1330;
+  indexCategory = [firstObject indexCategory];
+  indexCategory2 = [firstObject indexCategory];
+  v8 = indexCategory == 1300 || indexCategory2 == 1330;
 
   return v8;
 }
 
-+ (id)_dedupeNaturalLanguageDateAndMonthOrYearDateSuggestions:(id)a3
++ (id)_dedupeNaturalLanguageDateAndMonthOrYearDateSuggestions:(id)suggestions
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  suggestionsCopy = suggestions;
+  if ([suggestionsCopy count])
   {
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v36 = v3;
-    v4 = v3;
+    v36 = suggestionsCopy;
+    v4 = suggestionsCopy;
     v5 = [v4 countByEnumeratingWithState:&v51 objects:v62 count:16];
     if (v5)
     {
@@ -115,8 +115,8 @@ LABEL_4:
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v10 = [v9 suggestionComponents];
-        v11 = [v10 countByEnumeratingWithState:&v47 objects:v61 count:16];
+        suggestionComponents = [v9 suggestionComponents];
+        v11 = [suggestionComponents countByEnumeratingWithState:&v47 objects:v61 count:16];
         if (v11)
         {
           v12 = v11;
@@ -127,19 +127,19 @@ LABEL_4:
             {
               if (*v48 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(suggestionComponents);
               }
 
               if ([*(*(&v47 + 1) + 8 * i) indexCategory] == 1102)
               {
-                v15 = [v9 contentString];
+                contentString = [v9 contentString];
 
-                v38 = v15;
+                v38 = contentString;
                 goto LABEL_18;
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v47 objects:v61 count:16];
+            v12 = [suggestionComponents countByEnumeratingWithState:&v47 objects:v61 count:16];
             if (v12)
             {
               continue;
@@ -196,8 +196,8 @@ LABEL_18:
             v40 = 0u;
             v41 = 0u;
             v42 = 0u;
-            v23 = [v22 suggestionComponents];
-            v24 = [v23 countByEnumeratingWithState:&v39 objects:v59 count:16];
+            suggestionComponents2 = [v22 suggestionComponents];
+            v24 = [suggestionComponents2 countByEnumeratingWithState:&v39 objects:v59 count:16];
             if (v24)
             {
               v25 = v24;
@@ -208,7 +208,7 @@ LABEL_31:
               {
                 if (*v40 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(suggestionComponents2);
                 }
 
                 v28 = *(*(&v39 + 1) + 8 * v27);
@@ -219,7 +219,7 @@ LABEL_31:
 
                 if (v25 == ++v27)
                 {
-                  v25 = [v23 countByEnumeratingWithState:&v39 objects:v59 count:16];
+                  v25 = [suggestionComponents2 countByEnumeratingWithState:&v39 objects:v59 count:16];
                   if (v25)
                   {
                     goto LABEL_31;
@@ -229,8 +229,8 @@ LABEL_31:
                 }
               }
 
-              v29 = [v22 contentString];
-              v30 = [v29 length];
+              contentString2 = [v22 contentString];
+              v30 = [contentString2 length];
               v31 = [v38 length];
 
               if (v30 == v31)
@@ -238,8 +238,8 @@ LABEL_31:
                 goto LABEL_44;
               }
 
-              v32 = [v22 contentString];
-              v33 = [v38 containsString:v32];
+              contentString3 = [v22 contentString];
+              v33 = [v38 containsString:contentString3];
 
               if (!v33)
               {
@@ -288,7 +288,7 @@ LABEL_44:
       v16 = v4;
     }
 
-    v3 = v36;
+    suggestionsCopy = v36;
   }
 
   else
@@ -299,18 +299,18 @@ LABEL_44:
   return v16;
 }
 
-+ (double)initialSuggestionScoreForIndexCategory:(unint64_t)a3
++ (double)initialSuggestionScoreForIndexCategory:(unint64_t)category
 {
-  if (a3 > 1499)
+  if (category > 1499)
   {
-    if (a3 > 1799)
+    if (category > 1799)
     {
-      if (a3 < 1804)
+      if (category < 1804)
       {
         return 0.85;
       }
 
-      if (a3 != 2600 && a3 != 2601)
+      if (category != 2600 && category != 2601)
       {
         return 0.0;
       }
@@ -318,15 +318,15 @@ LABEL_44:
       return 0.95;
     }
 
-    if (a3 <= 1599)
+    if (category <= 1599)
     {
-      if (a3 == 1500 || a3 == 1501)
+      if (category == 1500 || category == 1501)
       {
         return 0.95;
       }
     }
 
-    else if (a3 == 1600 || a3 == 1601 || a3 == 1610)
+    else if (category == 1600 || category == 1601 || category == 1610)
     {
       return 0.85;
     }
@@ -334,16 +334,16 @@ LABEL_44:
     return 0.0;
   }
 
-  if (a3 <= 1102)
+  if (category <= 1102)
   {
-    if (a3 <= 1000)
+    if (category <= 1000)
     {
-      if (a3 == 5)
+      if (category == 5)
       {
         return 0.75;
       }
 
-      if (a3 != 1000)
+      if (category != 1000)
       {
         return 0.0;
       }
@@ -351,14 +351,14 @@ LABEL_44:
       return 0.95;
     }
 
-    if (a3 == 1001)
+    if (category == 1001)
     {
       return 0.65;
     }
 
-    if (a3 != 1101)
+    if (category != 1101)
     {
-      if (a3 == 1102)
+      if (category == 1102)
       {
         return 0.8;
       }
@@ -369,9 +369,9 @@ LABEL_44:
     return 0.25;
   }
 
-  if (a3 <= 1104)
+  if (category <= 1104)
   {
-    if (a3 == 1103)
+    if (category == 1103)
     {
       return 0.6;
     }
@@ -379,15 +379,15 @@ LABEL_44:
     return 0.5;
   }
 
-  if (a3 == 1105)
+  if (category == 1105)
   {
     return 0.5;
   }
 
   result = 1.0;
-  if (a3 != 1300)
+  if (category != 1300)
   {
-    if (a3 == 1330)
+    if (category == 1330)
     {
       return 0.95;
     }
@@ -398,16 +398,16 @@ LABEL_44:
   return result;
 }
 
-+ (double)suggestionScoreForIndexCategory:(unint64_t)a3
++ (double)suggestionScoreForIndexCategory:(unint64_t)category
 {
   result = 1.0;
-  if (a3 > 1510)
+  if (category > 1510)
   {
-    if (a3 > 1899)
+    if (category > 1899)
     {
-      if (a3 <= 1999)
+      if (category <= 1999)
       {
-        switch(a3)
+        switch(category)
         {
           case 0x76CuLL:
           case 0x76DuLL:
@@ -439,11 +439,11 @@ LABEL_44:
         return result;
       }
 
-      if (a3 > 2500)
+      if (category > 2500)
       {
-        if (a3 <= 2699)
+        if (category <= 2699)
         {
-          if (a3 != 2501 && a3 != 2600 && a3 != 2601)
+          if (category != 2501 && category != 2600 && category != 2601)
           {
             return result;
           }
@@ -451,18 +451,18 @@ LABEL_44:
           return 0.4;
         }
 
-        if (a3 <= 2899)
+        if (category <= 2899)
         {
-          if (a3 == 2800)
+          if (category == 2800)
           {
             result = 0.0;
           }
 
-          v4 = a3 == 2700;
+          v4 = category == 2700;
           goto LABEL_82;
         }
 
-        if (a3 != 2900 && a3 != 2901)
+        if (category != 2900 && category != 2901)
         {
           return result;
         }
@@ -470,16 +470,16 @@ LABEL_44:
 
       else
       {
-        if (a3 <= 2299)
+        if (category <= 2299)
         {
-          if (a3 != 2000)
+          if (category != 2000)
           {
-            if (a3 == 2100)
+            if (category == 2100)
             {
               return 0.0;
             }
 
-            if (a3 != 2200)
+            if (category != 2200)
             {
               return result;
             }
@@ -490,11 +490,11 @@ LABEL_44:
           return 0.65;
         }
 
-        if (a3 > 2400)
+        if (category > 2400)
         {
-          if (a3 != 2401)
+          if (category != 2401)
           {
-            if (a3 != 2500)
+            if (category != 2500)
             {
               return result;
             }
@@ -505,12 +505,12 @@ LABEL_44:
 
         else
         {
-          if (a3 == 2300)
+          if (category == 2300)
           {
             return 0.25;
           }
 
-          if (a3 != 2400)
+          if (category != 2400)
           {
             return result;
           }
@@ -520,33 +520,33 @@ LABEL_44:
       return 0.3;
     }
 
-    if (a3 <= 1600)
+    if (category <= 1600)
     {
-      if (a3 > 1530)
+      if (category > 1530)
       {
-        if (a3 > 1540)
+        if (category > 1540)
         {
-          if (a3 != 1541 && a3 != 1600)
+          if (category != 1541 && category != 1600)
           {
             return result;
           }
         }
 
-        else if (a3 != 1531 && a3 != 1540)
+        else if (category != 1531 && category != 1540)
         {
           return result;
         }
       }
 
-      else if (a3 > 1520)
+      else if (category > 1520)
       {
-        if (a3 != 1521 && a3 != 1530)
+        if (category != 1521 && category != 1530)
         {
           return result;
         }
       }
 
-      else if (a3 != 1511 && a3 != 1520)
+      else if (category != 1511 && category != 1520)
       {
         return result;
       }
@@ -554,17 +554,17 @@ LABEL_44:
       return 0.4;
     }
 
-    if (a3 > 1700)
+    if (category > 1700)
     {
-      if (a3 <= 1800)
+      if (category <= 1800)
       {
-        if (a3 != 1701 && a3 != 1800)
+        if (category != 1701 && category != 1800)
         {
           return result;
         }
       }
 
-      else if (a3 != 1801 && a3 != 1802 && a3 != 1803)
+      else if (category != 1801 && category != 1802 && category != 1803)
       {
         return result;
       }
@@ -572,9 +572,9 @@ LABEL_44:
       return 0.4;
     }
 
-    if (a3 <= 1610)
+    if (category <= 1610)
     {
-      if (a3 != 1601 && a3 != 1610)
+      if (category != 1601 && category != 1610)
       {
         return result;
       }
@@ -582,12 +582,12 @@ LABEL_44:
       return 0.4;
     }
 
-    if (a3 == 1611)
+    if (category == 1611)
     {
       return 0.4;
     }
 
-    if (a3 != 1700)
+    if (category != 1700)
     {
       return result;
     }
@@ -595,20 +595,20 @@ LABEL_44:
     return 0.65;
   }
 
-  if (a3 > 1100)
+  if (category > 1100)
   {
-    if (a3 <= 1203)
+    if (category <= 1203)
     {
-      if (a3 <= 1106)
+      if (category <= 1106)
       {
-        if (a3 <= 1103)
+        if (category <= 1103)
         {
           return 0.7;
         }
 
-        if (a3 != 1104 && a3 != 1105)
+        if (category != 1104 && category != 1105)
         {
-          v4 = a3 == 1106;
+          v4 = category == 1106;
 LABEL_82:
           if (v4)
           {
@@ -619,30 +619,30 @@ LABEL_82:
         }
       }
 
-      else if (a3 <= 1199)
+      else if (category <= 1199)
       {
-        if (a3 == 1109)
+        if (category == 1109)
         {
           result = 0.0;
         }
 
-        if (a3 == 1108)
+        if (category == 1108)
         {
           result = 0.0;
         }
 
-        v4 = a3 == 1107;
+        v4 = category == 1107;
         goto LABEL_82;
       }
 
       return 0.35;
     }
 
-    if (a3 > 1399)
+    if (category > 1399)
     {
-      if (a3 > 1499)
+      if (category > 1499)
       {
-        if (a3 != 1500 && a3 != 1501 && a3 != 1510)
+        if (category != 1500 && category != 1501 && category != 1510)
         {
           return result;
         }
@@ -650,7 +650,7 @@ LABEL_82:
         return 0.4;
       }
 
-      switch(a3)
+      switch(category)
       {
         case 0x578uLL:
           return 0.2;
@@ -663,11 +663,11 @@ LABEL_82:
       return result;
     }
 
-    if (a3 > 1319)
+    if (category > 1319)
     {
-      if (a3 - 1330 >= 2)
+      if (category - 1330 >= 2)
       {
-        if (a3 == 1320 || a3 == 1321)
+        if (category == 1320 || category == 1321)
         {
           return 0.9;
         }
@@ -678,12 +678,12 @@ LABEL_82:
 
     else
     {
-      if (a3 == 1204 || a3 == 1205)
+      if (category == 1204 || category == 1205)
       {
         return 0.35;
       }
 
-      if (a3 != 1310)
+      if (category != 1310)
       {
         return result;
       }
@@ -692,9 +692,9 @@ LABEL_82:
     return 0.8;
   }
 
-  if (a3 <= 999)
+  if (category <= 999)
   {
-    switch(a3)
+    switch(category)
     {
       case 0uLL:
       case 0xBuLL:
@@ -740,14 +740,14 @@ LABEL_82:
     return result;
   }
 
-  if (a3 <= 1005)
+  if (category <= 1005)
   {
-    if (a3 > 1002)
+    if (category > 1002)
     {
       return 0.4;
     }
 
-    if (a3 != 1000 && a3 != 1001)
+    if (category != 1000 && category != 1001)
     {
       return result;
     }
@@ -755,23 +755,23 @@ LABEL_82:
     return 0.65;
   }
 
-  if (a3 <= 1008)
+  if (category <= 1008)
   {
-    if (a3 != 1006)
+    if (category != 1006)
     {
-      if (a3 == 1008)
+      if (category == 1008)
       {
         result = 0.0;
       }
 
-      v4 = a3 == 1007;
+      v4 = category == 1007;
       goto LABEL_82;
     }
 
     return 0.4;
   }
 
-  switch(a3)
+  switch(category)
   {
     case 0x3F1uLL:
       return 0.65;
@@ -784,44 +784,44 @@ LABEL_82:
   return result;
 }
 
-+ (unint64_t)_characterLengthForSuggestion:(id)a3 suggestionQuery:(id)a4
++ (unint64_t)_characterLengthForSuggestion:(id)suggestion suggestionQuery:(id)query
 {
-  v5 = a3;
-  v6 = [a4 suggestionOptions];
-  v7 = [v6 searchSuggestionType];
+  suggestionCopy = suggestion;
+  suggestionOptions = [query suggestionOptions];
+  searchSuggestionType = [suggestionOptions searchSuggestionType];
 
-  if (v7 == 2)
+  if (searchSuggestionType == 2)
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v5 contentString];
-    v8 = [v9 length];
+    contentString = [suggestionCopy contentString];
+    v8 = [contentString length];
   }
 
   return v8;
 }
 
-+ (double)_percentOverlapWithCompletionText:(id)a3 suggestionQuery:(id)a4 minPercentOverlapForPrioritization:(double)a5
++ (double)_percentOverlapWithCompletionText:(id)text suggestionQuery:(id)query minPercentOverlapForPrioritization:(double)prioritization
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 suggestionOptions];
-  v10 = [v9 searchSuggestionType];
+  textCopy = text;
+  queryCopy = query;
+  suggestionOptions = [queryCopy suggestionOptions];
+  searchSuggestionType = [suggestionOptions searchSuggestionType];
 
   v11 = 0.0;
-  if (v10 == 2)
+  if (searchSuggestionType == 2)
   {
     goto LABEL_19;
   }
 
-  v12 = [v7 contentString];
-  v13 = [v12 length];
+  contentString = [textCopy contentString];
+  v13 = [contentString length];
 
-  [v8 completionSuggestionTexts];
+  [queryCopy completionSuggestionTexts];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -846,31 +846,31 @@ LABEL_82:
 
       v18 = *(*(&v37 + 1) + 8 * i);
       v36 = [v18 length];
-      v19 = [v7 suggestionComponents];
-      v20 = [v19 firstObject];
-      v21 = [v20 matchType];
+      suggestionComponents = [textCopy suggestionComponents];
+      firstObject = [suggestionComponents firstObject];
+      matchType = [firstObject matchType];
 
-      v22 = [v7 contentString];
-      v23 = [v22 lowercaseString];
-      v24 = [v18 lowercaseString];
-      if (v21 != 3)
+      contentString2 = [textCopy contentString];
+      lowercaseString = [contentString2 lowercaseString];
+      lowercaseString2 = [v18 lowercaseString];
+      if (matchType != 3)
       {
-        if ([v23 hasPrefix:v24])
+        if ([lowercaseString hasPrefix:lowercaseString2])
         {
         }
 
         else
         {
-          v26 = [v7 contentString];
-          [v26 lowercaseString];
+          contentString3 = [textCopy contentString];
+          [contentString3 lowercaseString];
           v27 = v14;
-          v28 = v7;
-          v30 = v29 = v8;
-          v31 = [v18 lowercaseString];
-          v34 = [v30 isEqualToString:v31];
+          v28 = textCopy;
+          v30 = v29 = queryCopy;
+          lowercaseString3 = [v18 lowercaseString];
+          v34 = [v30 isEqualToString:lowercaseString3];
 
-          v8 = v29;
-          v7 = v28;
+          queryCopy = v29;
+          textCopy = v28;
           v14 = v27;
           v16 = v33;
 
@@ -886,7 +886,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v25 = [v23 containsString:v24];
+      v25 = [lowercaseString containsString:lowercaseString2];
 
       v11 = 0.0;
       if (v25)
@@ -895,7 +895,7 @@ LABEL_13:
       }
 
 LABEL_14:
-      if (v11 >= a5)
+      if (v11 >= prioritization)
       {
         goto LABEL_18;
       }
@@ -912,16 +912,16 @@ LABEL_19:
   return v11;
 }
 
-+ (double)_averageGroupRankingScoreForSuggestion:(id)a3
++ (double)_averageGroupRankingScoreForSuggestion:(id)suggestion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 suggestionComponents];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  suggestionComponents = [suggestionCopy suggestionComponents];
+  v6 = [suggestionComponents countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -933,17 +933,17 @@ LABEL_19:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(suggestionComponents);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         [v11 score];
         v13 = v12;
-        [a1 suggestionScoreForIndexCategory:{objc_msgSend(v11, "indexCategory")}];
+        [self suggestionScoreForIndexCategory:{objc_msgSend(v11, "indexCategory")}];
         v9 = v9 + v14 + v13;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [suggestionComponents countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -954,8 +954,8 @@ LABEL_19:
       goto LABEL_13;
     }
 
-    v5 = [v4 suggestionComponents];
-    v15 = v9 / [v5 count];
+    suggestionComponents = [suggestionCopy suggestionComponents];
+    v15 = v9 / [suggestionComponents count];
   }
 
   else
@@ -967,20 +967,20 @@ LABEL_13:
   return v15;
 }
 
-+ (unint64_t)_countBasedPriorityForSuggestion:(id)a3 queryAssetCount:(unint64_t)a4 queryCollectionCount:(unint64_t)a5
++ (unint64_t)_countBasedPriorityForSuggestion:(id)suggestion queryAssetCount:(unint64_t)count queryCollectionCount:(unint64_t)collectionCount
 {
-  v7 = a3;
-  v8 = v7;
+  suggestionCopy = suggestion;
+  v8 = suggestionCopy;
   v9 = 0.0;
   v10 = 0.0;
-  if (a4)
+  if (count)
   {
-    v10 = [v7 matchedAssetsCount] / a4;
+    v10 = [suggestionCopy matchedAssetsCount] / count;
   }
 
-  if (a5)
+  if (collectionCount)
   {
-    v9 = [v8 matchedCollectionsCount] / a5;
+    v9 = [v8 matchedCollectionsCount] / collectionCount;
   }
 
   if (v10 <= 0.0)
@@ -1035,20 +1035,20 @@ LABEL_13:
   return v13;
 }
 
-+ (id)_rankedSearchSuggestionsFromSuggestions:(id)a3 queryAssetCount:(unint64_t)a4 queryCollectionCount:(unint64_t)a5 suggestionType:(unint64_t)a6 suggestionQuery:(id)a7
++ (id)_rankedSearchSuggestionsFromSuggestions:(id)suggestions queryAssetCount:(unint64_t)count queryCollectionCount:(unint64_t)collectionCount suggestionType:(unint64_t)type suggestionQuery:(id)query
 {
-  v12 = a7;
+  queryCopy = query;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __131__PSISuggestionRanker__rankedSearchSuggestionsFromSuggestions_queryAssetCount_queryCollectionCount_suggestionType_suggestionQuery___block_invoke;
   v16[3] = &unk_1E756B748;
-  v19 = a4;
-  v20 = a5;
-  v17 = v12;
-  v18 = a1;
-  v21 = a6;
-  v13 = v12;
-  v14 = [a3 sortedArrayUsingComparator:v16];
+  countCopy = count;
+  collectionCountCopy = collectionCount;
+  v17 = queryCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v13 = queryCopy;
+  v14 = [suggestions sortedArrayUsingComparator:v16];
 
   return v14;
 }
@@ -1181,9 +1181,9 @@ LABEL_6:
   return v23;
 }
 
-+ (id)sortedSuggestionsFromSuggestions:(id)a3
++ (id)sortedSuggestionsFromSuggestions:(id)suggestions
 {
-  v3 = [a3 mutableCopy];
+  v3 = [suggestions mutableCopy];
   [v3 sortUsingComparator:&__block_literal_global_35568];
   v4 = [v3 copy];
 
@@ -1232,41 +1232,41 @@ uint64_t __56__PSISuggestionRanker_sortedSuggestionsFromSuggestions___block_invo
   return v6;
 }
 
-+ (void)_rankedSuggestionsFromRankedSuggestionsBySuggestionCategoryType:(id)a3 orderedSuggestionCategoryTypes:(id)a4 maxSuggestions:(unint64_t)a5 suggestionQuery:(id)a6 suggestionType:(unint64_t)a7 rankedSuggestions:(id)a8 resumingIndex:(unint64_t)a9 completion:(id)a10
++ (void)_rankedSuggestionsFromRankedSuggestionsBySuggestionCategoryType:(id)type orderedSuggestionCategoryTypes:(id)types maxSuggestions:(unint64_t)suggestions suggestionQuery:(id)query suggestionType:(unint64_t)suggestionType rankedSuggestions:(id)rankedSuggestions resumingIndex:(unint64_t)index completion:(id)self0
 {
   v54 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v15 = a4;
-  v40 = a6;
-  v16 = a8;
-  v17 = a10;
-  if ([v16 count] >= a5)
+  typeCopy = type;
+  typesCopy = types;
+  queryCopy = query;
+  rankedSuggestionsCopy = rankedSuggestions;
+  completionCopy = completion;
+  if ([rankedSuggestionsCopy count] >= suggestions)
   {
-    (*(v17 + 2))(v17, 0, MEMORY[0x1E695E0F0], 0);
+    (*(completionCopy + 2))(completionCopy, 0, MEMORY[0x1E695E0F0], 0);
     goto LABEL_49;
   }
 
-  v18 = a9;
-  if ([v15 count] <= a9)
+  indexCopy = index;
+  if ([typesCopy count] <= index)
   {
-    v18 = 0;
+    indexCopy = 0;
   }
 
-  if (v18 >= [v15 count])
+  if (indexCopy >= [typesCopy count])
   {
-    v29 = v18;
+    v29 = indexCopy;
     goto LABEL_33;
   }
 
-  v37 = v17;
-  v38 = v15;
+  v37 = completionCopy;
+  v38 = typesCopy;
   v41 = 0;
   v19 = 0;
   do
   {
-    v42 = v18;
-    v20 = [v15 objectAtIndexedSubscript:{v18, v37}];
-    v21 = [v39 objectForKeyedSubscript:v20];
+    v42 = indexCopy;
+    v20 = [typesCopy objectAtIndexedSubscript:{indexCopy, v37}];
+    v21 = [typeCopy objectForKeyedSubscript:v20];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
@@ -1287,18 +1287,18 @@ LABEL_8:
         }
 
         v27 = *(*(&v48 + 1) + 8 * v26);
-        if ([v16 count] >= a5)
+        if ([rankedSuggestionsCopy count] >= suggestions)
         {
           break;
         }
 
-        if (([v16 containsObject:v27] & 1) == 0)
+        if (([rankedSuggestionsCopy containsObject:v27] & 1) == 0)
         {
-          if (![a1 _suggestionIsPrimaryPersonOrPetSuggestion:v27])
+          if (![self _suggestionIsPrimaryPersonOrPetSuggestion:v27])
           {
-            if (![a1 _suggestionIsOCRSuggestion:v27] || !objc_msgSend(a1, "_countOfOCRSuggestionsInSuggestions:", v16))
+            if (![self _suggestionIsOCRSuggestion:v27] || !objc_msgSend(self, "_countOfOCRSuggestionsInSuggestions:", rankedSuggestionsCopy))
             {
-              [v16 addObject:v27];
+              [rankedSuggestionsCopy addObject:v27];
               v41 = 1;
               break;
             }
@@ -1310,15 +1310,15 @@ LABEL_8:
           {
             if (!v19)
             {
-              [v16 addObject:v27];
+              [rankedSuggestionsCopy addObject:v27];
               v19 = 1;
               goto LABEL_22;
             }
 
-            [a1 _percentOverlapWithCompletionText:v27 suggestionQuery:v40 minPercentOverlapForPrioritization:0.25];
+            [self _percentOverlapWithCompletionText:v27 suggestionQuery:queryCopy minPercentOverlapForPrioritization:0.25];
             if (v28 >= 0.25)
             {
-              [v16 addObject:v27];
+              [rankedSuggestionsCopy addObject:v27];
               ++v19;
 LABEL_22:
               v41 = 1;
@@ -1341,21 +1341,21 @@ LABEL_23:
     }
 
     v29 = v42;
-    v18 = v42 + 1;
-    v15 = v38;
+    indexCopy = v42 + 1;
+    typesCopy = v38;
   }
 
   while (v42 + 1 < [v38 count]);
   if (v41)
   {
     v30 = 1;
-    v17 = v37;
+    completionCopy = v37;
     goto LABEL_48;
   }
 
-  v17 = v37;
+  completionCopy = v37;
 LABEL_33:
-  if ([v16 count] >= a5)
+  if ([rankedSuggestionsCopy count] >= suggestions)
   {
     v30 = 0;
   }
@@ -1363,7 +1363,7 @@ LABEL_33:
   else
   {
     v43 = v29;
-    [v39 objectForKeyedSubscript:&unk_1F0FBC220];
+    [typeCopy objectForKeyedSubscript:&unk_1F0FBC220];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -1384,14 +1384,14 @@ LABEL_36:
         }
 
         v36 = *(*(&v44 + 1) + 8 * v35);
-        if ([v16 count] >= a5)
+        if ([rankedSuggestionsCopy count] >= suggestions)
         {
           break;
         }
 
-        if (([v16 containsObject:v36] & 1) == 0)
+        if (([rankedSuggestionsCopy containsObject:v36] & 1) == 0)
         {
-          [v16 addObject:v36];
+          [rankedSuggestionsCopy addObject:v36];
           v30 = 1;
         }
 
@@ -1417,26 +1417,26 @@ LABEL_36:
   }
 
 LABEL_48:
-  (*(v17 + 2))(v17, v30 & 1, v16, v29 + 1);
+  (*(completionCopy + 2))(completionCopy, v30 & 1, rankedSuggestionsCopy, v29 + 1);
 LABEL_49:
 }
 
-+ (id)rankedSearchSuggestionsFromSuggestionCandidates:(id)a3 suggestionType:(unint64_t)a4 queryAssetCount:(unint64_t)a5 queryCollectionCount:(unint64_t)a6 suggestionLimit:(unint64_t)a7 suggestionQuery:(id)a8
++ (id)rankedSearchSuggestionsFromSuggestionCandidates:(id)candidates suggestionType:(unint64_t)type queryAssetCount:(unint64_t)count queryCollectionCount:(unint64_t)collectionCount suggestionLimit:(unint64_t)limit suggestionQuery:(id)query
 {
-  v14 = a3;
-  v15 = a8;
-  if ([v14 count])
+  candidatesCopy = candidates;
+  queryCopy = query;
+  if ([candidatesCopy count])
   {
-    v16 = [v14 objectForKeyedSubscript:&unk_1F0FBC208];
+    v16 = [candidatesCopy objectForKeyedSubscript:&unk_1F0FBC208];
     v33 = v16;
     if (v16)
     {
-      v17 = [a1 _dedupeNaturalLanguageDateAndMonthOrYearDateSuggestions:v16];
-      v18 = [v14 mutableCopy];
+      v17 = [self _dedupeNaturalLanguageDateAndMonthOrYearDateSuggestions:v16];
+      v18 = [candidatesCopy mutableCopy];
       [v18 setObject:v17 forKeyedSubscript:&unk_1F0FBC208];
       v19 = [v18 copy];
-      v20 = v14;
-      v14 = v19;
+      v20 = candidatesCopy;
+      candidatesCopy = v19;
     }
 
     v58 = 0;
@@ -1448,18 +1448,18 @@ LABEL_49:
     v50[1] = 3221225472;
     v50[2] = __155__PSISuggestionRanker_rankedSearchSuggestionsFromSuggestionCandidates_suggestionType_queryAssetCount_queryCollectionCount_suggestionLimit_suggestionQuery___block_invoke;
     v50[3] = &unk_1E756B6D8;
-    v54 = a1;
-    v55 = a5;
-    v56 = a6;
-    v57 = a4;
-    v22 = v15;
+    selfCopy = self;
+    countCopy = count;
+    collectionCountCopy = collectionCount;
+    typeCopy = type;
+    v22 = queryCopy;
     v51 = v22;
     v34 = v21;
     v52 = v34;
     v53 = &v58;
-    [v14 enumerateKeysAndObjectsUsingBlock:v50];
-    v24 = a4 == 2 && a7 > 1;
-    v25 = a7 - v24;
+    [candidatesCopy enumerateKeysAndObjectsUsingBlock:v50];
+    v24 = type == 2 && limit > 1;
+    v25 = limit - v24;
     if (v59[3] >= v25)
     {
       v26 = v25;
@@ -1470,7 +1470,7 @@ LABEL_49:
       v26 = v59[3];
     }
 
-    v27 = [a1 _orderedSuggestionCategoryTypes];
+    _orderedSuggestionCategoryTypes = [self _orderedSuggestionCategoryTypes];
     *buf = 0;
     v45 = buf;
     v46 = 0x3032000000;
@@ -1501,15 +1501,15 @@ LABEL_49:
       v35[4] = buf;
       v35[5] = &v40;
       v35[6] = &v36;
-      [a1 _rankedSuggestionsFromRankedSuggestionsBySuggestionCategoryType:v34 orderedSuggestionCategoryTypes:v27 maxSuggestions:v26 suggestionQuery:v22 suggestionType:a4 rankedSuggestions:v28 resumingIndex:v29 completion:v35];
-      if (a4 == 2)
+      [self _rankedSuggestionsFromRankedSuggestionsBySuggestionCategoryType:v34 orderedSuggestionCategoryTypes:_orderedSuggestionCategoryTypes maxSuggestions:v26 suggestionQuery:v22 suggestionType:type rankedSuggestions:v28 resumingIndex:v29 completion:v35];
+      if (type == 2)
       {
         break;
       }
     }
 
     while ((v41[3] & 1) != 0);
-    v30 = [a1 sortedSuggestionsFromSuggestions:*(v45 + 5)];
+    v30 = [self sortedSuggestionsFromSuggestions:*(v45 + 5)];
     _Block_object_dispose(&v36, 8);
     _Block_object_dispose(&v40, 8);
     _Block_object_dispose(buf, 8);

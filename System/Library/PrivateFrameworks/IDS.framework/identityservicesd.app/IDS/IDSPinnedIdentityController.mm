@@ -1,12 +1,12 @@
 @interface IDSPinnedIdentityController
 + (IDSPinnedIdentityController)sharedInstance;
-- (BOOL)foundPersistedIdentityForEndpoint:(id)a3 forService:(id)a4;
+- (BOOL)foundPersistedIdentityForEndpoint:(id)endpoint forService:(id)service;
 - (IDSPinnedIdentityController)init;
-- (IDSPinnedIdentityController)initWithPersister:(id)a3;
-- (void)_persistIdentity:(id)a3;
-- (void)fetchAllPinnedIdentitiesWithCompletion:(id)a3;
-- (void)fetchIdentityForPinningWithCompletion:(id)a3;
-- (void)pinIdentityBlob:(id)a3 withCompletion:(id)a4;
+- (IDSPinnedIdentityController)initWithPersister:(id)persister;
+- (void)_persistIdentity:(id)identity;
+- (void)fetchAllPinnedIdentitiesWithCompletion:(id)completion;
+- (void)fetchIdentityForPinningWithCompletion:(id)completion;
+- (void)pinIdentityBlob:(id)blob withCompletion:(id)completion;
 @end
 
 @implementation IDSPinnedIdentityController
@@ -36,38 +36,38 @@
   return v9;
 }
 
-- (IDSPinnedIdentityController)initWithPersister:(id)a3
+- (IDSPinnedIdentityController)initWithPersister:(id)persister
 {
-  v5 = a3;
+  persisterCopy = persister;
   v9.receiver = self;
   v9.super_class = IDSPinnedIdentityController;
   v6 = [(IDSPinnedIdentityController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identityPersister, a3);
+    objc_storeStrong(&v6->_identityPersister, persister);
   }
 
   return v7;
 }
 
-- (void)fetchIdentityForPinningWithCompletion:(id)a3
+- (void)fetchIdentityForPinningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSPinnedIdentityController *)self systemMonitor];
-  v6 = [v5 isUnderFirstDataProtectionLock];
+  completionCopy = completion;
+  systemMonitor = [(IDSPinnedIdentityController *)self systemMonitor];
+  isUnderFirstDataProtectionLock = [systemMonitor isUnderFirstDataProtectionLock];
 
-  if (!v6)
+  if (!isUnderFirstDataProtectionLock)
   {
-    v9 = [(IDSPinnedIdentityController *)self serviceController];
-    v8 = [v9 allPinningEnforcedServices];
+    serviceController = [(IDSPinnedIdentityController *)self serviceController];
+    allPinningEnforcedServices = [serviceController allPinningEnforcedServices];
 
-    v10 = [(IDSPinnedIdentityController *)self pushHandler];
-    v11 = [v10 pushToken];
+    pushHandler = [(IDSPinnedIdentityController *)self pushHandler];
+    pushToken = [pushHandler pushToken];
 
-    v12 = [(IDSPinnedIdentityController *)self registrationKeyManager];
+    registrationKeyManager = [(IDSPinnedIdentityController *)self registrationKeyManager];
     v45 = 0;
-    v13 = [v12 publicMessageProtectionIdentityDataToRegisterWithError:&v45];
+    v13 = [registrationKeyManager publicMessageProtectionIdentityDataToRegisterWithError:&v45];
     v14 = v45;
 
     if (v14)
@@ -78,16 +78,16 @@
         sub_10092E980();
       }
 
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0, v14);
+        completionCopy[2](completionCopy, 0, v14);
       }
 
       goto LABEL_44;
     }
 
-    v16 = [v13 publicNGMIdentityData];
-    if (!v16)
+    publicNGMIdentityData = [v13 publicNGMIdentityData];
+    if (!publicNGMIdentityData)
     {
       v34 = +[IDSFoundationLog IDSPinnedIdentity];
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -95,13 +95,13 @@
         sub_10092EAD0();
       }
 
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_43;
       }
 
       v17 = [NSError errorWithDomain:@"IDSPinnedIdentityError" code:1 userInfo:0];
-      v4[2](v4, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
 LABEL_42:
 
 LABEL_43:
@@ -111,14 +111,14 @@ LABEL_44:
     }
 
     v37 = v13;
-    v39 = v11;
+    v39 = pushToken;
     v17 = objc_alloc_init(NSMutableArray);
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v38 = v8;
-    v18 = v8;
+    v38 = allPinningEnforcedServices;
+    v18 = allPinningEnforcedServices;
     v19 = [v18 countByEnumeratingWithState:&v41 objects:v48 count:16];
     if (v19)
     {
@@ -135,10 +135,10 @@ LABEL_44:
 
           v23 = *(*(&v41 + 1) + 8 * i);
           v24 = objc_alloc_init(IDSPinnedIdentityMetadata);
-          v25 = [v23 identifier];
-          [v24 setService:v25];
+          identifier = [v23 identifier];
+          [v24 setService:identifier];
 
-          [v24 setIdentity:v16];
+          [v24 setIdentity:publicNGMIdentityData];
           [v17 addObject:v24];
         }
 
@@ -149,11 +149,11 @@ LABEL_44:
     }
 
     v26 = objc_alloc_init(IDSPinnedIdentities);
-    v11 = v39;
+    pushToken = v39;
     [v26 setPushToken:v39];
     [v26 setPinnedIdentityMetadatas:v17];
-    v27 = [v26 pushToken];
-    if (v27 && (v28 = v27, [v26 pinnedIdentityMetadatas], v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v29))
+    pushToken2 = [v26 pushToken];
+    if (pushToken2 && (v28 = pushToken2, [v26 pinnedIdentityMetadatas], v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v29))
     {
       v40 = 0;
       v30 = [NSKeyedArchiver archivedDataWithRootObject:v26 requiringSecureCoding:1 error:&v40];
@@ -166,13 +166,13 @@ LABEL_44:
           sub_10092E9BC();
         }
 
-        v8 = v38;
-        v11 = v39;
+        allPinningEnforcedServices = v38;
+        pushToken = v39;
         v14 = 0;
         v13 = v37;
-        if (v4)
+        if (completionCopy)
         {
-          v4[2](v4, 0, v31);
+          completionCopy[2](completionCopy, 0, v31);
         }
       }
 
@@ -187,14 +187,14 @@ LABEL_44:
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Successfully created identity to pin. { pinnedIdentity: %@ }", buf, 0xCu);
         }
 
-        v8 = v38;
+        allPinningEnforcedServices = v38;
         v14 = 0;
-        if (v4)
+        if (completionCopy)
         {
-          (v4)[2](v4, v35, 0);
+          (completionCopy)[2](completionCopy, v35, 0);
         }
 
-        v11 = v39;
+        pushToken = v39;
         v13 = v37;
       }
     }
@@ -208,15 +208,15 @@ LABEL_44:
       }
 
       v13 = v37;
-      v8 = v38;
+      allPinningEnforcedServices = v38;
       v14 = 0;
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_41;
       }
 
       v31 = [NSError errorWithDomain:@"IDSPinnedIdentityError" code:1 userInfo:0];
-      v4[2](v4, 0, v31);
+      completionCopy[2](completionCopy, 0, v31);
     }
 
 LABEL_41:
@@ -229,20 +229,20 @@ LABEL_41:
     sub_10092EB0C();
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v8 = [NSError errorWithDomain:@"IDSPinnedIdentityError" code:5 userInfo:0];
-    v4[2](v4, 0, v8);
+    allPinningEnforcedServices = [NSError errorWithDomain:@"IDSPinnedIdentityError" code:5 userInfo:0];
+    completionCopy[2](completionCopy, 0, allPinningEnforcedServices);
 LABEL_45:
   }
 }
 
-- (void)pinIdentityBlob:(id)a3 withCompletion:(id)a4
+- (void)pinIdentityBlob:(id)blob withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  blobCopy = blob;
   v19 = 0;
-  v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v19];
+  v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:blobCopy error:&v19];
 
   v9 = v19;
   if (v9)
@@ -253,9 +253,9 @@ LABEL_45:
       sub_10092EB48();
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v9);
+      completionCopy[2](completionCopy, v9);
     }
 
     goto LABEL_25;
@@ -269,7 +269,7 @@ LABEL_45:
       sub_10092EC30();
     }
 
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_25;
     }
@@ -277,14 +277,14 @@ LABEL_45:
     v16 = 2;
 LABEL_24:
     v18 = [NSError errorWithDomain:@"IDSPinnedIdentityError" code:v16 userInfo:0];
-    v6[2](v6, v18);
+    completionCopy[2](completionCopy, v18);
 
     goto LABEL_25;
   }
 
-  v11 = [v8 pushToken];
+  pushToken = [v8 pushToken];
 
-  if (!v11)
+  if (!pushToken)
   {
     v17 = +[IDSFoundationLog IDSPinnedIdentity];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -292,7 +292,7 @@ LABEL_24:
       sub_10092EBF4();
     }
 
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_25;
     }
@@ -301,11 +301,11 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v12 = [v8 pinnedIdentityMetadatas];
+  pinnedIdentityMetadatas = [v8 pinnedIdentityMetadatas];
 
   v13 = +[IDSFoundationLog IDSPinnedIdentity];
   v14 = v13;
-  if (v12)
+  if (pinnedIdentityMetadatas)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -315,7 +315,7 @@ LABEL_24:
     }
 
     [(IDSPinnedIdentityController *)self _persistIdentity:v8];
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_25;
   }
 
@@ -324,7 +324,7 @@ LABEL_24:
     sub_10092EBB8();
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v16 = 4;
     goto LABEL_24;
@@ -333,26 +333,26 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_persistIdentity:(id)a3
+- (void)_persistIdentity:(id)identity
 {
   identityPersister = self->_identityPersister;
-  v4 = a3;
-  v6 = [v4 pinnedIdentityMetadatas];
-  v5 = [v4 pushToken];
+  identityCopy = identity;
+  pinnedIdentityMetadatas = [identityCopy pinnedIdentityMetadatas];
+  pushToken = [identityCopy pushToken];
 
-  [(IDSPersistentMap *)identityPersister setObject:v6 forKey:v5];
+  [(IDSPersistentMap *)identityPersister setObject:pinnedIdentityMetadatas forKey:pushToken];
 }
 
-- (BOOL)foundPersistedIdentityForEndpoint:(id)a3 forService:(id)a4
+- (BOOL)foundPersistedIdentityForEndpoint:(id)endpoint forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 pushToken];
-  v9 = [(IDSPersistentMap *)self->_identityPersister objectForKey:v8];
+  endpointCopy = endpoint;
+  serviceCopy = service;
+  pushToken = [endpointCopy pushToken];
+  v9 = [(IDSPersistentMap *)self->_identityPersister objectForKey:pushToken];
   v10 = v9;
   if (v9)
   {
-    v38 = v8;
+    v38 = pushToken;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
@@ -373,8 +373,8 @@ LABEL_4:
         }
 
         v16 = *(*(&v39 + 1) + 8 * v15);
-        v17 = [v16 service];
-        v18 = [v17 isEqualToString:v7];
+        service = [v16 service];
+        v18 = [service isEqualToString:serviceCopy];
 
         if (v18)
         {
@@ -400,16 +400,16 @@ LABEL_4:
         goto LABEL_19;
       }
 
-      v20 = [v6 publicDeviceIdentityContainer];
-      v21 = [v20 ngmPublicDeviceIdentity];
+      publicDeviceIdentityContainer = [endpointCopy publicDeviceIdentityContainer];
+      ngmPublicDeviceIdentity = [publicDeviceIdentityContainer ngmPublicDeviceIdentity];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
       {
-        v23 = [v6 publicDeviceIdentityContainer];
-        v24 = [v23 ngmPublicDeviceIdentity];
-        v25 = [v19 identity];
-        v26 = [v24 isIdenticalIdentityTo:v25];
+        publicDeviceIdentityContainer2 = [endpointCopy publicDeviceIdentityContainer];
+        ngmPublicDeviceIdentity2 = [publicDeviceIdentityContainer2 ngmPublicDeviceIdentity];
+        identity = [v19 identity];
+        v26 = [ngmPublicDeviceIdentity2 isIdenticalIdentityTo:identity];
 
         if ((v26 & 1) == 0)
         {
@@ -419,18 +419,18 @@ LABEL_4:
 
       else
       {
-        v32 = [v6 serializedNGMDeviceIdentity];
-        v33 = [v19 identity];
-        v34 = [v32 isEqualToData:v33];
+        serializedNGMDeviceIdentity = [endpointCopy serializedNGMDeviceIdentity];
+        identity2 = [v19 identity];
+        v34 = [serializedNGMDeviceIdentity isEqualToData:identity2];
 
         if ((v34 & 1) == 0)
         {
 LABEL_14:
           v27 = +[IDSFoundationLog IDSPinnedIdentity];
-          v8 = v38;
+          pushToken = v38;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            sub_10092EC6C(v19, v6);
+            sub_10092EC6C(v19, endpointCopy);
           }
 
           if ((_os_feature_enabled_impl() & 1) == 0)
@@ -452,16 +452,16 @@ LABEL_14:
       v28 = +[IDSFoundationLog IDSPinnedIdentity];
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v19 identity];
-        v36 = [v6 serializedNGMDeviceIdentity];
+        identity3 = [v19 identity];
+        serializedNGMDeviceIdentity2 = [endpointCopy serializedNGMDeviceIdentity];
         *buf = 138412546;
-        v44 = v35;
+        v44 = identity3;
         v45 = 2112;
-        v46 = v36;
+        v46 = serializedNGMDeviceIdentity2;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Pinned identity matches endpoint identity. { pinnedIdentity: %@, endointIdentity: %@ }", buf, 0x16u);
       }
 
-      v8 = v38;
+      pushToken = v38;
       goto LABEL_37;
     }
 
@@ -474,7 +474,7 @@ LABEL_19:
       sub_10092ED10();
     }
 
-    v8 = v38;
+    pushToken = v38;
     if (_os_feature_enabled_impl())
     {
       v19 = 0;
@@ -524,16 +524,16 @@ LABEL_40:
   return v30;
 }
 
-- (void)fetchAllPinnedIdentitiesWithCompletion:(id)a3
+- (void)fetchAllPinnedIdentitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(IDSPersistentMap *)self->_identityPersister allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [(IDSPersistentMap *)self->_identityPersister allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -545,7 +545,7 @@ LABEL_40:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
@@ -559,13 +559,13 @@ LABEL_40:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  v4[2](v4, v5, 0);
+  completionCopy[2](completionCopy, v5, 0);
 }
 
 @end

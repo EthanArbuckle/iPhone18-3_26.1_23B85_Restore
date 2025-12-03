@@ -1,31 +1,31 @@
 @interface GKRealTimeMultiplayerCancelBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
 - (id)removeAndReturnAssociatedInvite;
 - (void)assembleBulletin;
-- (void)copyDataFromAssociatedBulletin:(id)a3;
+- (void)copyDataFromAssociatedBulletin:(id)bulletin;
 @end
 
 @implementation GKRealTimeMultiplayerCancelBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d %s", "GKRealTimeMultiplayerBulletin.m", 1042, "+[GKRealTimeMultiplayerCancelBulletin loadBulletinsForPushNotification:withHandler:]");
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100194B20;
   v10[3] = &unk_100361270;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = notificationCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = notificationCopy;
   [GKActivity named:v7 execute:v10];
 }
 
-- (void)copyDataFromAssociatedBulletin:(id)a3
+- (void)copyDataFromAssociatedBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -38,17 +38,17 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKRealTimeMultiplayerCancelBulletin copyDataFromAssociatedBulletin", v11, 2u);
   }
 
-  v7 = [v4 originatorPlayer];
-  [(GKGameplayBulletin *)self setOriginatorPlayer:v7];
+  originatorPlayer = [bulletinCopy originatorPlayer];
+  [(GKGameplayBulletin *)self setOriginatorPlayer:originatorPlayer];
 
-  v8 = [v4 gameName];
-  [(GKBulletin *)self setGameName:v8];
+  gameName = [bulletinCopy gameName];
+  [(GKBulletin *)self setGameName:gameName];
 
-  v9 = [v4 originatorPlayerID];
-  [(GKGameplayBulletin *)self setOriginatorPlayerID:v9];
+  originatorPlayerID = [bulletinCopy originatorPlayerID];
+  [(GKGameplayBulletin *)self setOriginatorPlayerID:originatorPlayerID];
 
-  v10 = [v4 gameDescriptor];
-  [(GKBulletin *)self setGameDescriptor:v10];
+  gameDescriptor = [bulletinCopy gameDescriptor];
+  [(GKBulletin *)self setGameDescriptor:gameDescriptor];
 }
 
 - (void)assembleBulletin
@@ -70,12 +70,12 @@
 
   [(GKBulletin *)self setBulletinType:404];
   v6 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings KETTLE_GAME_INVITE_NOTIFICATION_TITLE];
-  v7 = [(GKBulletin *)self gameName];
-  v8 = [NSString localizedStringWithFormat:v6, v7];
+  gameName = [(GKBulletin *)self gameName];
+  v8 = [NSString localizedStringWithFormat:v6, gameName];
   [(GKBulletin *)self setTitle:v8];
 
-  v9 = [(GKGameplayBulletin *)self originatorPlayer];
-  v10 = [v9 displayNameWithOptions:0];
+  originatorPlayer = [(GKGameplayBulletin *)self originatorPlayer];
+  v10 = [originatorPlayer displayNameWithOptions:0];
 
   if (v10)
   {
@@ -126,9 +126,9 @@
         }
 
         v11 = [v6 objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
-        v12 = [v11 sessionToken];
-        v13 = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
-        v14 = [v12 isEqualToData:v13];
+        sessionToken = [v11 sessionToken];
+        sessionToken2 = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
+        v14 = [sessionToken isEqualToData:sessionToken2];
 
         if (v14)
         {

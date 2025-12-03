@@ -1,21 +1,21 @@
 @interface GsmCellMeasResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBsic:(BOOL)a3;
-- (void)setHasRxlev:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBsic:(BOOL)bsic;
+- (void)setHasRxlev:(BOOL)rxlev;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GsmCellMeasResult
 
-- (void)setHasBsic:(BOOL)a3
+- (void)setHasBsic:(BOOL)bsic
 {
-  if (a3)
+  if (bsic)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRxlev:(BOOL)a3
+- (void)setHasRxlev:(BOOL)rxlev
 {
-  if (a3)
+  if (rxlev)
   {
     v3 = 4;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = GsmCellMeasResult;
   v3 = [(GsmCellMeasResult *)&v7 description];
-  v4 = [(GsmCellMeasResult *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(GsmCellMeasResult *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -96,16 +96,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     arfcn = self->_arfcn;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -126,26 +126,26 @@ LABEL_3:
 
   bsic = self->_bsic;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     rxlev = self->_rxlev;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_arfcn;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_arfcn;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -164,21 +164,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_bsic;
-  *(v4 + 20) |= 2u;
+  toCopy[3] = self->_bsic;
+  *(toCopy + 20) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[4] = self->_rxlev;
-    *(v4 + 20) |= 4u;
+    toCopy[4] = self->_rxlev;
+    *(toCopy + 20) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -215,23 +215,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_arfcn != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_arfcn != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_16:
     v5 = 0;
@@ -240,21 +240,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_bsic != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_bsic != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 4) == 0;
+  v5 = (*(equalCopy + 20) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_rxlev != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_rxlev != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
@@ -307,15 +307,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_arfcn = *(v4 + 2);
+    self->_arfcn = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -328,17 +328,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 2) == 0)
+  else if ((*(fromCopy + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_bsic = *(v4 + 3);
+  self->_bsic = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 20) & 4) != 0)
+  if ((*(fromCopy + 20) & 4) != 0)
   {
 LABEL_4:
-    self->_rxlev = *(v4 + 4);
+    self->_rxlev = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

@@ -1,51 +1,51 @@
 @interface EKConflictDetails
-+ (double)_maxRangeLengthForRule:(id)a3;
-+ (id)_dateRangeToScanForConflictsForEvent:(id)a3 dateForNow:(id)a4;
-+ (id)dateRangeToScanForConflictsForEvent:(id)a3;
-+ (id)infoWithConflicts:(int64_t)a3 needsAction:(int64_t)a4 event:(id)a5;
-+ (id)infoWithConflictsInSeries:(int64_t)a3 outOf:(int64_t)a4 withPeriod:(id)a5 conflictingDates:(id)a6;
-- (EKConflictDetails)initWithConflictingDates:(id)a3 conflictingEvents:(id)a4 needsActionEvents:(id)a5 totalOccurrencesInSeries:(unint64_t)a6 conflictPeriodForSeries:(id)a7;
++ (double)_maxRangeLengthForRule:(id)rule;
++ (id)_dateRangeToScanForConflictsForEvent:(id)event dateForNow:(id)now;
++ (id)dateRangeToScanForConflictsForEvent:(id)event;
++ (id)infoWithConflicts:(int64_t)conflicts needsAction:(int64_t)action event:(id)event;
++ (id)infoWithConflictsInSeries:(int64_t)series outOf:(int64_t)of withPeriod:(id)period conflictingDates:(id)dates;
+- (EKConflictDetails)initWithConflictingDates:(id)dates conflictingEvents:(id)events needsActionEvents:(id)actionEvents totalOccurrencesInSeries:(unint64_t)series conflictPeriodForSeries:(id)forSeries;
 @end
 
 @implementation EKConflictDetails
 
-+ (id)infoWithConflictsInSeries:(int64_t)a3 outOf:(int64_t)a4 withPeriod:(id)a5 conflictingDates:(id)a6
++ (id)infoWithConflictsInSeries:(int64_t)series outOf:(int64_t)of withPeriod:(id)period conflictingDates:(id)dates
 {
-  v9 = a6;
-  v10 = a5;
+  datesCopy = dates;
+  periodCopy = period;
   v11 = objc_opt_new();
-  [v11 setTotalOccurrencesInSeries:a4];
-  [v11 setTotalConflictsInSeries:a3];
-  [v11 setConflictPeriodForSeries:v10];
+  [v11 setTotalOccurrencesInSeries:of];
+  [v11 setTotalConflictsInSeries:series];
+  [v11 setConflictPeriodForSeries:periodCopy];
 
-  [v11 setConflictingDates:v9];
+  [v11 setConflictingDates:datesCopy];
 
   return v11;
 }
 
-+ (id)infoWithConflicts:(int64_t)a3 needsAction:(int64_t)a4 event:(id)a5
++ (id)infoWithConflicts:(int64_t)conflicts needsAction:(int64_t)action event:(id)event
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  eventCopy = event;
   v8 = objc_opt_new();
-  if (v7)
+  if (eventCopy)
   {
-    v17[0] = v7;
+    v17[0] = eventCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     [v8 setConflictingEvents:v9];
 
-    v16 = v7;
+    v16 = eventCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     [v8 setNeedsActionEvents:v10];
 
-    v11 = [v7 startDate];
-    v15 = v11;
+    startDate = [eventCopy startDate];
+    v15 = startDate;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     [v8 setConflictingDates:v12];
   }
 
-  [v8 setTotalConflictingEvents:a3];
-  [v8 setTotalNeedsActionEvents:a4];
+  [v8 setTotalConflictingEvents:conflicts];
+  [v8 setTotalNeedsActionEvents:action];
   [v8 setTotalOccurrencesInSeries:1];
   [v8 setTotalConflictsInSeries:1];
 
@@ -54,79 +54,79 @@
   return v8;
 }
 
-- (EKConflictDetails)initWithConflictingDates:(id)a3 conflictingEvents:(id)a4 needsActionEvents:(id)a5 totalOccurrencesInSeries:(unint64_t)a6 conflictPeriodForSeries:(id)a7
+- (EKConflictDetails)initWithConflictingDates:(id)dates conflictingEvents:(id)events needsActionEvents:(id)actionEvents totalOccurrencesInSeries:(unint64_t)series conflictPeriodForSeries:(id)forSeries
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  datesCopy = dates;
+  eventsCopy = events;
+  actionEventsCopy = actionEvents;
+  forSeriesCopy = forSeries;
   v20.receiver = self;
   v20.super_class = EKConflictDetails;
   v17 = [(EKConflictDetails *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_conflictingDates, a3);
-    objc_storeStrong(&v18->_conflictingEvents, a4);
-    objc_storeStrong(&v18->_needsActionEvents, a5);
-    v18->_totalOccurrencesInSeries = a6;
-    objc_storeStrong(&v18->_conflictPeriodForSeries, a7);
-    v18->_totalConflictsInSeries = [v13 count];
-    v18->_totalConflictingEvents = [v14 count];
-    v18->_totalNeedsActionEvents = [v15 count];
+    objc_storeStrong(&v17->_conflictingDates, dates);
+    objc_storeStrong(&v18->_conflictingEvents, events);
+    objc_storeStrong(&v18->_needsActionEvents, actionEvents);
+    v18->_totalOccurrencesInSeries = series;
+    objc_storeStrong(&v18->_conflictPeriodForSeries, forSeries);
+    v18->_totalConflictsInSeries = [datesCopy count];
+    v18->_totalConflictingEvents = [eventsCopy count];
+    v18->_totalNeedsActionEvents = [actionEventsCopy count];
   }
 
   return v18;
 }
 
-+ (id)dateRangeToScanForConflictsForEvent:(id)a3
++ (id)dateRangeToScanForConflictsForEvent:(id)event
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [a1 _dateRangeToScanForConflictsForEvent:v5 dateForNow:v6];
+  eventCopy = event;
+  date = [v4 date];
+  v7 = [self _dateRangeToScanForConflictsForEvent:eventCopy dateForNow:date];
 
   return v7;
 }
 
-+ (id)_dateRangeToScanForConflictsForEvent:(id)a3 dateForNow:(id)a4
++ (id)_dateRangeToScanForConflictsForEvent:(id)event dateForNow:(id)now
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recurrenceRules];
-  v9 = [v8 firstObject];
+  eventCopy = event;
+  nowCopy = now;
+  recurrenceRules = [eventCopy recurrenceRules];
+  firstObject = [recurrenceRules firstObject];
 
-  v10 = v7;
-  v11 = [v6 endDateUnadjustedForLegacyClients];
-  if ([v11 CalIsBeforeDate:v10])
+  v10 = nowCopy;
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+  if ([endDateUnadjustedForLegacyClients CalIsBeforeDate:v10])
   {
-    v12 = v10;
+    startDate = v10;
   }
 
   else
   {
-    v12 = [v6 startDate];
+    startDate = [eventCopy startDate];
   }
 
-  v13 = v12;
+  v13 = startDate;
 
-  [a1 _maxRangeLengthForRule:v9];
+  [self _maxRangeLengthForRule:firstObject];
   v14 = [MEMORY[0x1E6992F70] rangeWithStartDate:v13 duration:?];
 
   return v14;
 }
 
-+ (double)_maxRangeLengthForRule:(id)a3
++ (double)_maxRangeLengthForRule:(id)rule
 {
-  v3 = a3;
-  v4 = v3;
+  ruleCopy = rule;
+  v4 = ruleCopy;
   v5 = 31536000.0;
-  if (v3)
+  if (ruleCopy)
   {
-    v6 = [v3 frequency];
-    if (v6 <= 2)
+    frequency = [ruleCopy frequency];
+    if (frequency <= 2)
     {
-      v5 = dbl_1A81C3F20[v6];
+      v5 = dbl_1A81C3F20[frequency];
     }
   }
 

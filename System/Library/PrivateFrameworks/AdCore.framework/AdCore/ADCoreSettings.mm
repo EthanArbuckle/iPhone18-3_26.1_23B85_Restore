@@ -29,23 +29,23 @@
 - (id)adprivacydBag;
 - (id)deviceDescription;
 - (int)connectionType;
-- (int)deviceRunStateForBundleIdentifier:(id)a3;
+- (int)deviceRunStateForBundleIdentifier:(id)identifier;
 - (int)maxSegmentSendInterval;
 - (int)segmentRetrievalInterval;
 - (void)reloadNoServicesRestrictions;
-- (void)reloadStorefront:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setITunesStorefront:(id)a3;
-- (void)setStorefrontLocalizationLanguage:(id)a3;
+- (void)reloadStorefront:(id)storefront;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setITunesStorefront:(id)storefront;
+- (void)setStorefrontLocalizationLanguage:(id)language;
 @end
 
 @implementation ADCoreSettings
 
 - (void)reloadNoServicesRestrictions
 {
-  v3 = [(ADCoreSettings *)self adprivacydBag];
-  v4 = [(ADCoreSettings *)self iTunesStoreAccount];
-  v5 = [v4 ams_isInRestrictedRegionWithBag:v3 waitForSync:0];
+  adprivacydBag = [(ADCoreSettings *)self adprivacydBag];
+  iTunesStoreAccount = [(ADCoreSettings *)self iTunesStoreAccount];
+  v5 = [iTunesStoreAccount ams_isInRestrictedRegionWithBag:adprivacydBag waitForSync:0];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__ADCoreSettings_reloadNoServicesRestrictions__block_invoke;
@@ -69,22 +69,22 @@ uint64_t __32__ADCoreSettings_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(ADCoreSettings *)&v19 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 operatingSystemVersionString];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    operatingSystemVersionString = [processInfo operatingSystemVersionString];
     osVersionAndBuild = v2->_osVersionAndBuild;
-    v2->_osVersionAndBuild = v4;
+    v2->_osVersionAndBuild = operatingSystemVersionString;
 
     v2->_runState = 1;
-    v6 = [(ADCoreSettings *)v2 deviceDescription];
+    deviceDescription = [(ADCoreSettings *)v2 deviceDescription];
     deviceModel = v2->_deviceModel;
-    v2->_deviceModel = v6;
+    v2->_deviceModel = deviceDescription;
 
     iTunesStorefront = v2->_iTunesStorefront;
     v2->_iTunesStorefront = @"NONE";
 
-    v9 = [(ADCoreSettings *)v2 iTunesStoreAccount];
-    v10 = [(ADCoreSettings *)v2 adprivacydBag];
-    v11 = [v9 ams_isInRestrictedRegionWithBag:v10 waitForSync:0];
+    iTunesStoreAccount = [(ADCoreSettings *)v2 iTunesStoreAccount];
+    adprivacydBag = [(ADCoreSettings *)v2 adprivacydBag];
+    v11 = [iTunesStoreAccount ams_isInRestrictedRegionWithBag:adprivacydBag waitForSync:0];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __22__ADCoreSettings_init__block_invoke;
@@ -97,10 +97,10 @@ uint64_t __32__ADCoreSettings_sharedInstance__block_invoke(uint64_t a1)
     v12->_adServerTimeoutInterval = 30.0;
     v12->_NSURLConnectionTimeout = 30.0;
     v12->_NSURLTransactionTimeout = 60.0;
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v14 = [v13 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleIdentifier = v12->_bundleIdentifier;
-    v12->_bundleIdentifier = v14;
+    v12->_bundleIdentifier = bundleIdentifier;
 
     if (!v12->_bundleIdentifier)
     {
@@ -130,7 +130,7 @@ uint64_t __32__ADCoreSettings_sharedInstance__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__ADCoreSettings_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken_4 != -1)
   {
     dispatch_once(&sharedInstance__onceToken_4, block);
@@ -143,13 +143,13 @@ uint64_t __32__ADCoreSettings_sharedInstance__block_invoke(uint64_t a1)
 
 - (NSString)iTunesAccountDSID
 {
-  v2 = [(ADCoreSettings *)self iTunesStoreAccount];
-  v3 = [v2 ams_DSID];
-  v4 = [v3 stringValue];
+  iTunesStoreAccount = [(ADCoreSettings *)self iTunesStoreAccount];
+  ams_DSID = [iTunesStoreAccount ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  if (v4)
+  if (stringValue)
   {
-    v5 = v4;
+    v5 = stringValue;
   }
 
   else
@@ -164,10 +164,10 @@ uint64_t __32__ADCoreSettings_sharedInstance__block_invoke(uint64_t a1)
 
 - (ACAccount)iTunesStoreAccount
 {
-  v2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
 - (id)adprivacydBag
@@ -222,45 +222,45 @@ void __22__ADCoreSettings_init__block_invoke(uint64_t a1, void *a2, void *a3)
 
 - (NSString)shortBuildVersion
 {
-  v2 = [(ADCoreSettings *)self longBuildVersion];
-  if (v2)
+  longBuildVersion = [(ADCoreSettings *)self longBuildVersion];
+  if (longBuildVersion)
   {
     v10 = 0;
     v3 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"([0-9]+)([A-Z])" options:1 error:&v10];
     v4 = v10;
-    v5 = [v3 rangeOfFirstMatchInString:v2 options:0 range:{0, objc_msgSend(v2, "length")}];
+    v5 = [v3 rangeOfFirstMatchInString:longBuildVersion options:0 range:{0, objc_msgSend(longBuildVersion, "length")}];
     if (!v4 && (v5 != 0x7FFFFFFFFFFFFFFFLL || v6 != 0))
     {
-      v8 = [v2 substringWithRange:{v5, v6}];
+      v8 = [longBuildVersion substringWithRange:{v5, v6}];
 
-      v2 = v8;
+      longBuildVersion = v8;
     }
   }
 
-  return v2;
+  return longBuildVersion;
 }
 
 - (NSString)shortModelType
 {
-  v2 = [(ADCoreSettings *)self deviceModel];
-  v3 = [v2 lowercaseString];
+  deviceModel = [(ADCoreSettings *)self deviceModel];
+  lowercaseString = [deviceModel lowercaseString];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF MATCHES %@", @"([a-z]+)([0-9]{1, 2})([, ])([0-9]{1, 2})"];
-  if ([v4 evaluateWithObject:v3])
+  if ([v4 evaluateWithObject:lowercaseString])
   {
     v13 = 0;
     v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"([a-z]+)" options:1 error:&v13];
     v6 = v13;
-    v7 = [v5 rangeOfFirstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v7 = [v5 rangeOfFirstMatchInString:lowercaseString options:0 range:{0, objc_msgSend(lowercaseString, "length")}];
     if (!v6 && (v7 != 0x7FFFFFFFFFFFFFFFLL || v8 != 0))
     {
-      v10 = [v3 substringWithRange:{v7, v8}];
+      v10 = [lowercaseString substringWithRange:{v7, v8}];
 
-      v3 = v10;
+      lowercaseString = v10;
     }
 
-    v3 = v3;
-    v11 = v3;
+    lowercaseString = lowercaseString;
+    v11 = lowercaseString;
   }
 
   else
@@ -293,22 +293,22 @@ void __22__ADCoreSettings_init__block_invoke(uint64_t a1, void *a2, void *a3)
 
 - (NSString)iTunesStorefront
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_iTunesStorefront;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_iTunesStorefront;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setITunesStorefront:(id)a3
+- (void)setITunesStorefront:(id)storefront
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v7)
+  storefrontCopy = storefront;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (storefrontCopy)
   {
-    objc_storeStrong(&v5->_iTunesStorefront, a3);
+    objc_storeStrong(&selfCopy->_iTunesStorefront, storefront);
   }
 
   else
@@ -316,56 +316,56 @@ void __22__ADCoreSettings_init__block_invoke(uint64_t a1, void *a2, void *a3)
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"No iTunes Storefront provided. Updating Storefront information via the bag. This will incur a performance hit."];
     _ADLog(@"iAdSettingsLogging", v6, 0);
 
-    [(ADCoreSettings *)v5 reloadStorefront:0];
+    [(ADCoreSettings *)selfCopy reloadStorefront:0];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)storefrontLocalizationLanguage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_storefrontLocalizationLanguage;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_storefrontLocalizationLanguage;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setStorefrontLocalizationLanguage:(id)a3
+- (void)setStorefrontLocalizationLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   obj = self;
   objc_sync_enter(obj);
   storefrontLocalizationLanguage = obj->_storefrontLocalizationLanguage;
-  obj->_storefrontLocalizationLanguage = v4;
+  obj->_storefrontLocalizationLanguage = languageCopy;
 
   objc_sync_exit(obj);
 }
 
 - (ACAccount)iCloudAccount
 {
-  v2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiCloudAccount];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
 
-  return v3;
+  return ams_activeiCloudAccount;
 }
 
 - (NSString)iCloudAccountIdentifier
 {
-  v2 = [(ADCoreSettings *)self iCloudAccount];
-  v3 = [v2 identifier];
+  iCloudAccount = [(ADCoreSettings *)self iCloudAccount];
+  identifier = [iCloudAccount identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)iCloudDSID
 {
-  v2 = [(ADCoreSettings *)self iCloudAccount];
-  v3 = [v2 ams_DSID];
-  v4 = [v3 stringValue];
+  iCloudAccount = [(ADCoreSettings *)self iCloudAccount];
+  ams_DSID = [iCloudAccount ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)customJinglePayload
@@ -585,31 +585,31 @@ LABEL_25:
 
 - (BOOL)isManagediTunesAccount
 {
-  v2 = [(ADCoreSettings *)self iTunesStoreAccount];
-  v3 = [v2 ams_isManagedAppleID];
+  iTunesStoreAccount = [(ADCoreSettings *)self iTunesStoreAccount];
+  ams_isManagedAppleID = [iTunesStoreAccount ams_isManagedAppleID];
 
-  return v3;
+  return ams_isManagedAppleID;
 }
 
 - (BOOL)isManagediCloudAccount
 {
-  v2 = [(ADCoreSettings *)self iCloudAccount];
-  v3 = [v2 ams_isManagedAppleID];
+  iCloudAccount = [(ADCoreSettings *)self iCloudAccount];
+  ams_isManagedAppleID = [iCloudAccount ams_isManagedAppleID];
 
-  return v3;
+  return ams_isManagedAppleID;
 }
 
 - (BOOL)educationModeEnabled
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isSharedIPad];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isSharedIPad = [mEMORY[0x277D77BF8] isSharedIPad];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:isSharedIPad];
   v6 = [v4 stringWithFormat:@"educationModeEnabled %@", v5];
   _ADLog(@"iAdSettingsLogging", v6, 0);
 
-  return v3;
+  return isSharedIPad;
 }
 
 - (BOOL)isProtoTeenState
@@ -620,14 +620,14 @@ LABEL_25:
   return v3;
 }
 
-- (int)deviceRunStateForBundleIdentifier:(id)a3
+- (int)deviceRunStateForBundleIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CC1E70] bundleRecordWithBundleIdentifier:a3 allowPlaceholder:0 error:0];
-  v4 = [v3 signerIdentity];
-  v5 = v4;
-  if (v4)
+  v3 = [MEMORY[0x277CC1E70] bundleRecordWithBundleIdentifier:identifier allowPlaceholder:0 error:0];
+  signerIdentity = [v3 signerIdentity];
+  v5 = signerIdentity;
+  if (signerIdentity)
   {
-    [v4 rangeOfString:@"Apple iPhone OS Application Signing"];
+    [signerIdentity rangeOfString:@"Apple iPhone OS Application Signing"];
     v7 = v6 == 0;
   }
 
@@ -651,29 +651,29 @@ LABEL_25:
 
 - (NSString)bundleIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_bundleIdentifier;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_bundleIdentifier;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_bundleIdentifier, a3);
-  v5->_runState = [(ADCoreSettings *)v5 deviceRunStateForBundleIdentifier:v6];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_bundleIdentifier, identifier);
+  selfCopy->_runState = [(ADCoreSettings *)selfCopy deviceRunStateForBundleIdentifier:identifierCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (float)timezone
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v4 = [v3 secondsFromGMTForDate:v2] / 3600.0;
+  date = [MEMORY[0x277CBEAA8] date];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  v4 = [systemTimeZone secondsFromGMTForDate:date] / 3600.0;
 
   return v4;
 }
@@ -696,33 +696,33 @@ void __46__ADCoreSettings_reloadNoServicesRestrictions__block_invoke(uint64_t a1
   objc_sync_exit(v6);
 }
 
-- (void)reloadStorefront:(id)a3
+- (void)reloadStorefront:(id)storefront
 {
-  v4 = a3;
+  storefrontCopy = storefront;
   v5 = objc_autoreleasePoolPush();
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loading the storefront from the AMS framework."];
   _ADLog(@"iAdSettingsLogging", v6, 0);
 
-  v7 = [(ADCoreSettings *)self iTunesStoreAccount];
-  if (!v7)
+  iTunesStoreAccount = [(ADCoreSettings *)self iTunesStoreAccount];
+  if (!iTunesStoreAccount)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"No active account. Getting storefront from local account."];
     _ADLog(@"iAdSettingsLogging", v8, 0);
 
-    v9 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-    v7 = [v9 ams_localiTunesAccount];
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    iTunesStoreAccount = [ams_sharedAccountStore ams_localiTunesAccount];
   }
 
-  v10 = [v7 ams_storefront];
-  v11 = v10;
-  if (v10 && ([v10 isEqualToString:&stru_2850FB348] & 1) == 0)
+  ams_storefront = [iTunesStoreAccount ams_storefront];
+  v11 = ams_storefront;
+  if (ams_storefront && ([ams_storefront isEqualToString:&stru_2850FB348] & 1) == 0)
   {
     [(ADCoreSettings *)self setITunesStorefront:v11];
     ADSaveToPromotedContentKeychain(v11, @"APIDAccountsSettings.storefront");
-    v16 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v16 postNotificationName:@"kADIDManager_ChangedNotification" object:@"com.apple.AdLib"];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"kADIDManager_ChangedNotification" object:@"com.apple.AdLib"];
 
-    if (!v4)
+    if (!storefrontCopy)
     {
       goto LABEL_7;
     }
@@ -734,22 +734,22 @@ void __46__ADCoreSettings_reloadNoServicesRestrictions__block_invoke(uint64_t a1
   _ADLog(@"iAdSettingsLogging", v12, 16);
 
   [(ADCoreSettings *)self setITunesStorefront:@"NONE"];
-  v13 = [(ADCoreSettings *)self adprivacydBag];
-  v14 = [v13 URLForKey:@"partiality-segment"];
-  v15 = [v14 valuePromise];
+  adprivacydBag = [(ADCoreSettings *)self adprivacydBag];
+  v14 = [adprivacydBag URLForKey:@"partiality-segment"];
+  valuePromise = [v14 valuePromise];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __35__ADCoreSettings_reloadStorefront___block_invoke;
   v17[3] = &unk_278C55460;
-  v18 = v7;
-  v19 = self;
-  [v15 addFinishBlock:v17];
+  v18 = iTunesStoreAccount;
+  selfCopy = self;
+  [valuePromise addFinishBlock:v17];
 
-  if (v4)
+  if (storefrontCopy)
   {
 LABEL_6:
-    v4[2](v4);
+    storefrontCopy[2](storefrontCopy);
   }
 
 LABEL_7:
@@ -793,29 +793,29 @@ void __35__ADCoreSettings_reloadStorefront___block_invoke(uint64_t a1, void *a2,
 - (BOOL)isAccountRestricted
 {
   v3 = +[ADIDManager sharedInstance];
-  v4 = [v3 activeDSIDRecord];
+  activeDSIDRecord = [v3 activeDSIDRecord];
 
   v5 = +[ADCoreSettings sharedInstance];
-  v6 = [v5 educationModeEnabled];
+  educationModeEnabled = [v5 educationModeEnabled];
 
   v7 = +[ADCoreSettings sharedInstance];
-  v8 = [v7 isManagedAppleID];
+  isManagedAppleID = [v7 isManagedAppleID];
 
   v9 = +[ADCoreSettings sharedInstance];
-  v10 = [v9 isProtoU13state];
+  isProtoU13state = [v9 isProtoU13state];
 
   v11 = +[ADCoreSettings sharedInstance];
-  v12 = [v11 isProtoTeenState];
+  isProtoTeenState = [v11 isProtoTeenState];
 
-  v13 = v6 | v8 | v10 | v12;
-  if (!v4)
+  v13 = educationModeEnabled | isManagedAppleID | isProtoU13state | isProtoTeenState;
+  if (!activeDSIDRecord)
   {
     goto LABEL_6;
   }
 
-  if (([v4 accountIsU13] & 1) == 0 && (objc_msgSend(v4, "accountIsU18") & 1) == 0)
+  if (([activeDSIDRecord accountIsU13] & 1) == 0 && (objc_msgSend(activeDSIDRecord, "accountIsU18") & 1) == 0)
   {
-    v13 |= [v4 accountAgeUnknown] | v10 | v12;
+    v13 |= [activeDSIDRecord accountAgeUnknown] | isProtoU13state | isProtoTeenState;
 LABEL_6:
     v14 = v13 ^ 1;
     goto LABEL_7;
@@ -844,17 +844,17 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v4 = *MEMORY[0x277D25D28];
-  v5 = [v3 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
+  v5 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
 
   if ((v5 & 1) != 0 || [(ADCoreSettings *)self isAccountRestricted])
   {
     return 0;
   }
 
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v8 effectiveBoolValueForSetting:v4] == 1;
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:v4] == 1;
 
   return v6;
 }
@@ -862,17 +862,17 @@ LABEL_7:
 - (int)connectionType
 {
   v2 = +[ADNetworkController sharedNetworkController];
-  v3 = [v2 networkType];
+  networkType = [v2 networkType];
 
-  return v3;
+  return networkType;
 }
 
 - (NSString)localeIdentifier
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  return v3;
+  return localeIdentifier;
 }
 
 - (int)segmentRetrievalInterval
@@ -881,11 +881,11 @@ LABEL_7:
   {
     v5 = +[ADCoreDefaults sharedInstance];
     v6 = [v5 stringForKey:@"adprivacydSegmentInterval"];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
 
-    if (v7)
+    if (integerValue)
     {
-      return v7;
+      return integerValue;
     }
 
     else
@@ -903,11 +903,11 @@ LABEL_7:
   {
     v5 = +[ADCoreDefaults sharedInstance];
     v6 = [v5 stringForKey:@"adprivacydMaxSegmentSendInterval"];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
 
-    if (v7)
+    if (integerValue)
     {
-      return v7;
+      return integerValue;
     }
 
     else

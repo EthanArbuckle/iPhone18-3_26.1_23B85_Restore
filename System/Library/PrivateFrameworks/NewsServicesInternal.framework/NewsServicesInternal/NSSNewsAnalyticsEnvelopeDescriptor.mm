@@ -1,6 +1,6 @@
 @interface NSSNewsAnalyticsEnvelopeDescriptor
 - (NSSNewsAnalyticsEnvelopeDescriptor)init;
-- (NSSNewsAnalyticsEnvelopeDescriptor)initWithContentType:(int)a3 contentTypeVersion:(int)a4 contentTypeMinorVersion:(int)a5 contentTypePatchVersion:(int)a6;
+- (NSSNewsAnalyticsEnvelopeDescriptor)initWithContentType:(int)type contentTypeVersion:(int)version contentTypeMinorVersion:(int)minorVersion contentTypePatchVersion:(int)patchVersion;
 @end
 
 @implementation NSSNewsAnalyticsEnvelopeDescriptor
@@ -31,17 +31,17 @@
   objc_exception_throw(v6);
 }
 
-- (NSSNewsAnalyticsEnvelopeDescriptor)initWithContentType:(int)a3 contentTypeVersion:(int)a4 contentTypeMinorVersion:(int)a5 contentTypePatchVersion:(int)a6
+- (NSSNewsAnalyticsEnvelopeDescriptor)initWithContentType:(int)type contentTypeVersion:(int)version contentTypeMinorVersion:(int)minorVersion contentTypePatchVersion:(int)patchVersion
 {
   v11.receiver = self;
   v11.super_class = NSSNewsAnalyticsEnvelopeDescriptor;
   result = [(NSSNewsAnalyticsEnvelopeDescriptor *)&v11 init];
   if (result)
   {
-    result->_contentType = a3;
-    result->_contentTypeVersion = a4;
-    result->_contentTypeMinorVersion = a5;
-    result->_contentTypePatchVersion = a6;
+    result->_contentType = type;
+    result->_contentTypeVersion = version;
+    result->_contentTypeMinorVersion = minorVersion;
+    result->_contentTypePatchVersion = patchVersion;
   }
 
   return result;

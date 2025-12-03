@@ -1,25 +1,25 @@
 @interface WFShareActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithExtensionItems:(id)a3 error:(id)a4;
-- (void)presentExtensionViewControllerForItems:(id)a3 extensionBundleIdentifier:(id)a4 extensionPointIdentifier:(id)a5 isContentManaged:(BOOL)a6;
-- (void)prewarmInput:(id)a3 completion:(id)a4;
-- (void)showWithArchivedItems:(id)a3 isContentManaged:(BOOL)a4 extensionBundleIdentifier:(id)a5 extensionPointIdentifier:(id)a6 completionHandler:(id)a7;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithExtensionItems:(id)items error:(id)error;
+- (void)presentExtensionViewControllerForItems:(id)items extensionBundleIdentifier:(id)identifier extensionPointIdentifier:(id)pointIdentifier isContentManaged:(BOOL)managed;
+- (void)prewarmInput:(id)input completion:(id)completion;
+- (void)showWithArchivedItems:(id)items isContentManaged:(BOOL)managed extensionBundleIdentifier:(id)identifier extensionPointIdentifier:(id)pointIdentifier completionHandler:(id)handler;
 @end
 
 @implementation WFShareActionUIKitUserInterface
 
-- (void)prewarmInput:(id)a3 completion:(id)a4
+- (void)prewarmInput:(id)input completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v16 = a4;
+  inputCopy = input;
+  completionCopy = completion;
   v6 = dispatch_group_create();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 items];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  items = [inputCopy items];
+  v8 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -31,7 +31,7 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(items);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
@@ -47,7 +47,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -57,10 +57,10 @@
   block[1] = 3221225472;
   block[2] = __59__WFShareActionUIKitUserInterface_prewarmInput_completion___block_invoke_2;
   block[3] = &unk_278C375C8;
-  v18 = v5;
-  v19 = v16;
-  v13 = v5;
-  v14 = v16;
+  v18 = inputCopy;
+  v19 = completionCopy;
+  v13 = inputCopy;
+  v14 = completionCopy;
   dispatch_group_notify(v6, MEMORY[0x277D85CD0], block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -73,18 +73,18 @@ void __59__WFShareActionUIKitUserInterface_prewarmInput_completion___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__WFShareActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFShareActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -99,66 +99,66 @@ uint64_t __75__WFShareActionUIKitUserInterface_cancelPresentationWithCompletionH
   return v4();
 }
 
-- (void)finishWithExtensionItems:(id)a3 error:(id)a4
+- (void)finishWithExtensionItems:(id)items error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFShareActionUIKitUserInterface *)self completionHandler];
+  itemsCopy = items;
+  errorCopy = error;
+  completionHandler = [(WFShareActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFShareActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFShareActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, itemsCopy, errorCopy);
   }
 
   [(WFShareActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithArchivedItems:(id)a3 isContentManaged:(BOOL)a4 extensionBundleIdentifier:(id)a5 extensionPointIdentifier:(id)a6 completionHandler:(id)a7
+- (void)showWithArchivedItems:(id)items isContentManaged:(BOOL)managed extensionBundleIdentifier:(id)identifier extensionPointIdentifier:(id)pointIdentifier completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  itemsCopy = items;
+  identifierCopy = identifier;
+  pointIdentifierCopy = pointIdentifier;
+  handlerCopy = handler;
+  if (itemsCopy)
   {
-    if (v15)
+    if (pointIdentifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:331 description:{@"Invalid parameter not satisfying: %@", @"extensionPointIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:331 description:{@"Invalid parameter not satisfying: %@", @"extensionPointIdentifier"}];
 
-    if (v16)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_4;
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"archivedItems"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"archivedItems"}];
 
-  if (!v15)
+  if (!pointIdentifierCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v16)
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  [(WFShareActionUIKitUserInterface *)self setCompletionHandler:v16];
+  [(WFShareActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   v17 = MEMORY[0x277CCAAC8];
   v18 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   v25[0] = MEMORY[0x277D85DD0];
@@ -166,12 +166,12 @@ LABEL_4:
   v25[2] = __143__WFShareActionUIKitUserInterface_showWithArchivedItems_isContentManaged_extensionBundleIdentifier_extensionPointIdentifier_completionHandler___block_invoke;
   v25[3] = &unk_278C36C70;
   v25[4] = self;
-  v26 = v14;
-  v27 = v15;
-  v28 = a4;
-  v19 = v15;
-  v20 = v14;
-  v21 = [v17 wf_securelyUnarchiveObjectWithData:v13 allowedClasses:v18 completionHandler:v25];
+  v26 = identifierCopy;
+  v27 = pointIdentifierCopy;
+  managedCopy = managed;
+  v19 = pointIdentifierCopy;
+  v20 = identifierCopy;
+  v21 = [v17 wf_securelyUnarchiveObjectWithData:itemsCopy allowedClasses:v18 completionHandler:v25];
 }
 
 void __143__WFShareActionUIKitUserInterface_showWithArchivedItems_isContentManaged_extensionBundleIdentifier_extensionPointIdentifier_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -225,16 +225,16 @@ uint64_t __90__WFShareActionUIKitUserInterface_presentActivityViewControllerForI
   return [v5 finishWithExtensionItems:v6 error:v7];
 }
 
-- (void)presentExtensionViewControllerForItems:(id)a3 extensionBundleIdentifier:(id)a4 extensionPointIdentifier:(id)a5 isContentManaged:(BOOL)a6
+- (void)presentExtensionViewControllerForItems:(id)items extensionBundleIdentifier:(id)identifier extensionPointIdentifier:(id)pointIdentifier isContentManaged:(BOOL)managed
 {
   v96 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v63 = a5;
-  v61 = v9;
-  if (v9)
+  itemsCopy = items;
+  identifierCopy = identifier;
+  pointIdentifierCopy = pointIdentifier;
+  v61 = itemsCopy;
+  if (itemsCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -242,35 +242,35 @@ uint64_t __90__WFShareActionUIKitUserInterface_presentActivityViewControllerForI
 
   else
   {
-    v44 = v10;
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+    v44 = identifierCopy;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"items"}];
 
-    v10 = v44;
+    identifierCopy = v44;
     if (v44)
     {
       goto LABEL_3;
     }
   }
 
-  v46 = v10;
-  v47 = [MEMORY[0x277CCA890] currentHandler];
-  [v47 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"extensionBundleIdentifier"}];
+  v46 = identifierCopy;
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"extensionBundleIdentifier"}];
 
-  v10 = v46;
+  identifierCopy = v46;
 LABEL_3:
-  if (!v63)
+  if (!pointIdentifierCopy)
   {
-    v48 = v10;
-    v49 = [MEMORY[0x277CCA890] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"extensionPointIdentifier"}];
+    v48 = identifierCopy;
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFShareActionUIKitUserInterface.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"extensionPointIdentifier"}];
 
-    v10 = v48;
+    identifierCopy = v48;
   }
 
   v76 = 0;
-  v57 = v10;
-  v62 = [MEMORY[0x277CCA9C8] extensionWithIdentifier:v10 error:&v76];
+  v57 = identifierCopy;
+  v62 = [MEMORY[0x277CCA9C8] extensionWithIdentifier:identifierCopy error:&v76];
   v58 = v76;
   if (!v62)
   {
@@ -296,13 +296,13 @@ LABEL_3:
   v73[2] = 0x3032000000;
   v73[3] = __Block_byref_object_copy__2913;
   v73[4] = __Block_byref_object_dispose__2914;
-  v74 = v9;
+  v74 = itemsCopy;
   v11 = v74;
-  if (!v9)
+  if (!itemsCopy)
   {
-    v50 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSArray * _Nonnull WFActivityItemValuesFromContentItems(NSArray<WFContentItem *> * _Nonnull __strong)"];
-    [v50 handleFailureInFunction:v51 file:@"WFShareActionUIKitUserInterface.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"contentItems"}];
+    [currentHandler4 handleFailureInFunction:v51 file:@"WFShareActionUIKitUserInterface.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"contentItems"}];
   }
 
   v12 = objc_alloc(MEMORY[0x277D546D8]);
@@ -316,28 +316,28 @@ LABEL_3:
   v15 = [v11 if_compactMap:buf];
 
   v16 = v15;
-  v60 = v63;
+  v60 = pointIdentifierCopy;
   v64 = v16;
   if (!v16)
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NSArray<NSExtensionItem *> * _Nonnull WFExtensionItemsForActivityItemValues(NSArray * _Nonnull __strong, NSString * _Nonnull __strong, BOOL)"}];
-    [v52 handleFailureInFunction:v53 file:@"WFShareActionUIKitUserInterface.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"activityItemValues"}];
+    [currentHandler5 handleFailureInFunction:v53 file:@"WFShareActionUIKitUserInterface.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"activityItemValues"}];
 
-    if (v63)
+    if (pointIdentifierCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_47:
-    v54 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
     v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NSArray<NSExtensionItem *> * _Nonnull WFExtensionItemsForActivityItemValues(NSArray * _Nonnull __strong, NSString * _Nonnull __strong, BOOL)"}];
-    [v54 handleFailureInFunction:v55 file:@"WFShareActionUIKitUserInterface.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"extensionPointIdentifier"}];
+    [currentHandler6 handleFailureInFunction:v55 file:@"WFShareActionUIKitUserInterface.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"extensionPointIdentifier"}];
 
     goto LABEL_10;
   }
 
-  if (!v63)
+  if (!pointIdentifierCopy)
   {
     goto LABEL_47;
   }
@@ -471,7 +471,7 @@ LABEL_41:
   v77[1] = 3221225472;
   v77[2] = __WFExtensionItemsForActivityItemValues_block_invoke;
   v77[3] = &__block_descriptor_33_e32_v32__0__NSExtensionItem_8Q16_B24l;
-  v78 = a6;
+  managedCopy = managed;
   [v28 enumerateObjectsUsingBlock:v77];
 
   v35 = *MEMORY[0x277CCA0F8];
@@ -497,7 +497,7 @@ LABEL_41:
   v41 = v39;
   v66 = v41;
   v67 = v62;
-  v68 = self;
+  selfCopy = self;
   v42 = v28;
   v69 = v42;
   v70 = v60;

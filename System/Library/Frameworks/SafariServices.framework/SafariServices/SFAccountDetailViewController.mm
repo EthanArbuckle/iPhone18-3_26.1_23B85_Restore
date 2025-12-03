@@ -1,31 +1,31 @@
 @interface SFAccountDetailViewController
 - (BOOL)_canUserDeleteSavedAccount;
 - (BOOL)_shouldShowAccountOptionsHeader;
-- (BOOL)_shouldShowMenuForItemIdentifier:(int64_t)a3;
+- (BOOL)_shouldShowMenuForItemIdentifier:(int64_t)identifier;
 - (BOOL)_shouldShowSecurityRecommendationSection;
-- (BOOL)_shouldUseZeroHeightHeaderForSectionType:(int64_t)a3;
-- (BOOL)dataSource:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)_shouldUseZeroHeightHeaderForSectionType:(int64_t)type;
+- (BOOL)dataSource:(id)source canEditRowAtIndexPath:(id)path;
 - (BOOL)shouldSuppressAccountManagerLockedView;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (SFAccountDetailViewController)initWithSavedAccount:(id)a3 passwordWarning:(id)a4 options:(unint64_t)a5;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (SFAccountDetailViewController)initWithSavedAccount:(id)account passwordWarning:(id)warning options:(unint64_t)options;
 - (SFAccountDetailViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_accountHeaderSectionFooterView;
 - (id)_airDropMenu;
 - (id)_allSharedCredentialGroupsMenu;
-- (id)_cellForIdentifier:(id)a3 indexPath:(id)a4;
+- (id)_cellForIdentifier:(id)identifier indexPath:(id)path;
 - (id)_cellsThatChangeAppearanceOnEdit;
 - (id)_createShareBarButtonItem;
-- (id)_deleteCellForTableView:(id)a3;
-- (id)_deletePasskeyCellForTableView:(id)a3;
-- (id)_deletePasswordCellForTableView:(id)a3 shouldRemoveTOTPGenerator:(BOOL)a4;
-- (id)_footerTextForLastOneTimeShareDate:(id)a3;
+- (id)_deleteCellForTableView:(id)view;
+- (id)_deletePasskeyCellForTableView:(id)view;
+- (id)_deletePasswordCellForTableView:(id)view shouldRemoveTOTPGenerator:(BOOL)generator;
+- (id)_footerTextForLastOneTimeShareDate:(id)date;
 - (id)_groupPickerTableViewCell;
-- (id)_groupSectionValueStyleTableViewCellWithText:(id)a3 secondaryText:(id)a4;
-- (id)_indexPathForEditMenuInteraction:(id)a3 withConfiguration:(id)a4;
+- (id)_groupSectionValueStyleTableViewCellWithText:(id)text secondaryText:(id)secondaryText;
+- (id)_indexPathForEditMenuInteraction:(id)interaction withConfiguration:(id)configuration;
 - (id)_lastModifiedDateString;
 - (id)_moveRecentlyDeletedAccountToMyPasswordsCell;
 - (id)_newSecretEntryAlertController;
@@ -38,131 +38,131 @@
 - (id)_passwordGenerator;
 - (id)_passwordWarningManager;
 - (id)_recoverRecentlyDeletedAccountCell;
-- (id)_savedAccountWebsiteCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_securePasswordPlaceholderText:(id)a3;
+- (id)_savedAccountWebsiteCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_securePasswordPlaceholderText:(id)text;
 - (id)_securityRecommendationSubtitleString;
 - (id)_subtitleStringForSignInWithAppleUpgrade;
 - (id)_subtitleStringForStrongPasswordUpgrade;
-- (id)dataSource:(id)a3 footerTextForSection:(int64_t)a4;
-- (id)dataSource:(id)a3 headerTextForSection:(int64_t)a4;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)presentationAnchorForAccountAuthenticationModificationController:(id)a3;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)_itemTypeForIdentifier:(id)a3;
+- (id)dataSource:(id)source footerTextForSection:(int64_t)section;
+- (id)dataSource:(id)source headerTextForSection:(int64_t)section;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)presentationAnchorForAccountAuthenticationModificationController:(id)controller;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)_itemTypeForIdentifier:(id)identifier;
 - (int64_t)_listContentTextAlignmentOfCellsInDeleteAccountSection;
-- (int64_t)_sectionTypeForSection:(int64_t)a3;
+- (int64_t)_sectionTypeForSection:(int64_t)section;
 - (int64_t)_textAlignmentOfCellsInDeleteAccountSection;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)QRCodeScannerViewController:(id)a3 didScanQRCodeWithURLValue:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)QRCodeScannerViewController:(id)controller didScanQRCodeWithURLValue:(id)value;
 - (void)_accountStoreDidUpdate;
-- (void)_addAccountUpgradeItemsForSectionType:(int64_t)a3 toSnapshot:(id)a4;
-- (void)_addGroupCellsToSnapshot:(id)a3;
-- (void)_addNotesSectionToSnapshot:(id)a3;
-- (void)_addTOTPGenerator:(id)a3;
-- (void)_addTOTPGeneratorsToSnapshot:(id)a3;
-- (void)_cancelBarButtonItemTapped:(id)a3;
+- (void)_addAccountUpgradeItemsForSectionType:(int64_t)type toSnapshot:(id)snapshot;
+- (void)_addGroupCellsToSnapshot:(id)snapshot;
+- (void)_addNotesSectionToSnapshot:(id)snapshot;
+- (void)_addTOTPGenerator:(id)generator;
+- (void)_addTOTPGeneratorsToSnapshot:(id)snapshot;
+- (void)_cancelBarButtonItemTapped:(id)tapped;
 - (void)_cancelChangesAndFinishEditing;
 - (void)_completedSignInWithAppleUpgrade;
 - (void)_completedStrongPasswordUpgrade;
-- (void)_configureCell:(id)a3 withText:(id)a4 detailText:(id)a5 detailPlaceholderText:(id)a6 secureEntry:(BOOL)a7;
-- (void)_configureDeleteSectionInSnapshot:(id)a3;
-- (void)_configureHeaderViewCell:(id)a3;
-- (void)_configurePasswordCell:(id)a3;
+- (void)_configureCell:(id)cell withText:(id)text detailText:(id)detailText detailPlaceholderText:(id)placeholderText secureEntry:(BOOL)entry;
+- (void)_configureDeleteSectionInSnapshot:(id)snapshot;
+- (void)_configureHeaderViewCell:(id)cell;
+- (void)_configurePasswordCell:(id)cell;
 - (void)_configureSecurityRecommendationInfoCell;
-- (void)_configureUserCell:(id)a3;
-- (void)_deleteTOTPGenerator:(id)a3;
-- (void)_deleteTOTPGeneratorWithConfirmation:(id)a3;
+- (void)_configureUserCell:(id)cell;
+- (void)_deleteTOTPGenerator:(id)generator;
+- (void)_deleteTOTPGeneratorWithConfirmation:(id)confirmation;
 - (void)_fillPassword;
 - (void)_fillUsername;
 - (void)_fillVerificationCode;
-- (void)_handleLongPressGesture:(id)a3;
+- (void)_handleLongPressGesture:(id)gesture;
 - (void)_hideSecurityRecommendation;
 - (void)_initiateChangeToStrongPassword;
 - (void)_initiateUpgradeToSignInWithApple;
 - (void)_moveSavedAccountToMyPasswords;
 - (void)_openChangePasswordURLInWebBrowser;
-- (void)_openURLInSafariViewController:(id)a3 shouldSupressPasswordUpdatePrompts:(BOOL)a4;
+- (void)_openURLInSafariViewController:(id)controller shouldSupressPasswordUpdatePrompts:(BOOL)prompts;
 - (void)_permanentlyDeleteAllCredentials;
 - (void)_permanentlyDeletePasskey;
 - (void)_permanentlyDeletePassword;
 - (void)_popViewController;
-- (void)_presentConfirmationAlertToShareSavedAccountToGroup:(id)a3;
+- (void)_presentConfirmationAlertToShareSavedAccountToGroup:(id)group;
 - (void)_presentDialogToConfirmCancelEditing;
-- (void)_presentErrorAlertForFailingToMoveAccountToGroup:(id)a3;
+- (void)_presentErrorAlertForFailingToMoveAccountToGroup:(id)group;
 - (void)_presentErrorAlertForFailingToRecoverRecentlyDeletedSavedAccount;
 - (void)_presentHideSecurityRecommendationConfirmationAlert;
 - (void)_presentMoveRecentlyDeletedSavedAccountToMyPasswordsConfirmationAlert;
-- (void)_presentSoftDeleteErrorAlertForCredentialTypes:(int64_t)a3;
-- (void)_processAccountStoreUpdateWithSavedAccounts:(id)a3;
+- (void)_presentSoftDeleteErrorAlertForCredentialTypes:(int64_t)types;
+- (void)_processAccountStoreUpdateWithSavedAccounts:(id)accounts;
 - (void)_recoverSavedAccount;
-- (void)_reloadDiffableDataSourceAnimated:(BOOL)a3;
-- (void)_reloadDiffableDataSourceOnInternalQueueAnimated:(BOOL)a3;
+- (void)_reloadDiffableDataSourceAnimated:(BOOL)animated;
+- (void)_reloadDiffableDataSourceOnInternalQueueAnimated:(BOOL)animated;
 - (void)_reloadPasskeySectionFooters;
 - (void)_replaceAddPasswordButtonWithPasswordCell;
 - (void)_revealPasswordIfNecessary;
 - (void)_saveAccountAndFinishEditing;
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setHighLyLegibleFontForDetailTextInCell:(id)a3;
-- (void)_shareBarButtonItemTapped:(id)a3;
-- (void)_sharePasswordWithAuthenticationContext:(id)a3 popoverPresentationControllerConfiguration:(id)a4;
-- (void)_sharePasswordWithPopoverPresentationControllerConfiguration:(id)a3;
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)_setHighLyLegibleFontForDetailTextInCell:(id)cell;
+- (void)_shareBarButtonItemTapped:(id)tapped;
+- (void)_sharePasswordWithAuthenticationContext:(id)context popoverPresentationControllerConfiguration:(id)configuration;
+- (void)_sharePasswordWithPopoverPresentationControllerConfiguration:(id)configuration;
 - (void)_showChangePasswordSafariViewController;
-- (void)_showConfirmationToDeleteCredentialTypes:(int64_t)a3;
+- (void)_showConfirmationToDeleteCredentialTypes:(int64_t)types;
 - (void)_showConfirmationToDeletePasswordAndTOTPGenerator;
-- (void)_showConfirmationToPermanentlyDeleteCredentialTypes:(int64_t)a3;
+- (void)_showConfirmationToPermanentlyDeleteCredentialTypes:(int64_t)types;
 - (void)_showConfirmationToPermanentlyDeletePasswordAndTOTPGenerator;
-- (void)_showConfirmationToSoftDeleteCredentialTypes:(int64_t)a3;
+- (void)_showConfirmationToSoftDeleteCredentialTypes:(int64_t)types;
 - (void)_showConfirmationToSoftDeletePasswordAndTOTPGenerator;
-- (void)_softDeletePasskeyWithCompletionHandler:(id)a3;
-- (void)_softDeletePasswordWithCompletionHandler:(id)a3;
-- (void)_textFieldChanged:(id)a3;
+- (void)_softDeletePasskeyWithCompletionHandler:(id)handler;
+- (void)_softDeletePasswordWithCompletionHandler:(id)handler;
+- (void)_textFieldChanged:(id)changed;
 - (void)_updateAccountModificationOptions;
-- (void)_updateAddButtonsInAccountOptionsSectionForSnapshot:(id)a3;
-- (void)_updateAddPasswordButton:(BOOL)a3 forSnapshot:(id)a4;
+- (void)_updateAddButtonsInAccountOptionsSectionForSnapshot:(id)snapshot;
+- (void)_updateAddPasswordButton:(BOOL)button forSnapshot:(id)snapshot;
 - (void)_updateCachedTOTPGenerators;
 - (void)_updateHeaderViewCell;
-- (void)_updateIconForCell:(id)a3;
-- (void)_updatePasswordFieldTextSuggestions:(id)a3;
+- (void)_updateIconForCell:(id)cell;
+- (void)_updatePasswordFieldTextSuggestions:(id)suggestions;
 - (void)_updateSavedAccountChangeRequest;
 - (void)_updateWarningForSavedAccount;
-- (void)accountAuthenticationModificationController:(id)a3 didFailRequest:(id)a4 withError:(id)a5;
-- (void)accountAuthenticationModificationController:(id)a3 didSuccessfullyCompleteRequest:(id)a4 withUserInfo:(id)a5;
-- (void)accountDetailHeaderViewCell:(id)a3 titleTextFieldDidChange:(id)a4;
-- (void)accountModificationExtensionManagerExtensionListDidChange:(id)a3;
-- (void)dataSource:(id)a3 commitEditingStyle:(int64_t)a4 forItemIdentifier:(id)a5;
+- (void)accountAuthenticationModificationController:(id)controller didFailRequest:(id)request withError:(id)error;
+- (void)accountAuthenticationModificationController:(id)controller didSuccessfullyCompleteRequest:(id)request withUserInfo:(id)info;
+- (void)accountDetailHeaderViewCell:(id)cell titleTextFieldDidChange:(id)change;
+- (void)accountModificationExtensionManagerExtensionListDidChange:(id)change;
+- (void)dataSource:(id)source commitEditingStyle:(int64_t)style forItemIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)linkableFooterViewDidInteractWithLink:(id)a3;
-- (void)noteTableViewCellTextViewTapped:(id)a3;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)linkableFooterViewDidInteractWithLink:(id)link;
+- (void)noteTableViewCellTextViewTapped:(id)tapped;
 - (void)passwordManagerWillLock;
-- (void)returnKeyActivatedInAccountDetailHeaderViewCell:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)totpMigrationController:(id)a3 presentDetailsForSavedAccount:(id)a4;
-- (void)totpMigrationController:(id)a3 presentPickerForGenerator:(id)a4;
-- (void)totpMigrationControllerFinishedImport:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)returnKeyActivatedInAccountDetailHeaderViewCell:(id)cell;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)totpMigrationController:(id)controller presentDetailsForSavedAccount:(id)account;
+- (void)totpMigrationController:(id)controller presentPickerForGenerator:(id)generator;
+- (void)totpMigrationControllerFinishedImport:(id)import;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFAccountDetailViewController
 
-- (SFAccountDetailViewController)initWithSavedAccount:(id)a3 passwordWarning:(id)a4 options:(unint64_t)a5
+- (SFAccountDetailViewController)initWithSavedAccount:(id)account passwordWarning:(id)warning options:(unint64_t)options
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  accountCopy = account;
+  warningCopy = warning;
   v11 = [(SFAccountDetailViewController *)self initWithStyle:+[_SFAccountManagerAppearanceValues preferencesTableViewStyle]];
   v12 = v11;
   if (v11)
   {
-    v13 = [(SFAccountDetailViewController *)v11 navigationItem];
-    v12->_options = a5;
+    navigationItem = [(SFAccountDetailViewController *)v11 navigationItem];
+    v12->_options = options;
     if ([(SFAccountDetailViewController *)v12 _allowEditing])
     {
       v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:2 target:v12 action:sel__editBarButtonItemTapped_];
@@ -170,9 +170,9 @@
       v12->_editBarButtonItem = v14;
 
       [(UIBarButtonItem *)v12->_editBarButtonItem setAccessibilityIdentifier:@"PasswordDetailViewNavigationBarEditButton"];
-      v16 = [(SFAccountDetailViewController *)v12 _createShareBarButtonItem];
+      _createShareBarButtonItem = [(SFAccountDetailViewController *)v12 _createShareBarButtonItem];
       shareBarButtonItem = v12->_shareBarButtonItem;
-      v12->_shareBarButtonItem = v16;
+      v12->_shareBarButtonItem = _createShareBarButtonItem;
 
       [(UIBarButtonItem *)v12->_shareBarButtonItem setAccessibilityIdentifier:@"PasswordDetailViewNavigationBarShareButton"];
       v18 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v12 action:sel__cancelBarButtonItemTapped_];
@@ -185,8 +185,8 @@
       v12->_doneBarButtonItem = v20;
 
       [(UIBarButtonItem *)v12->_doneBarButtonItem setAccessibilityIdentifier:@"PasswordDetailViewNavigationBarDoneButton"];
-      v22 = [MEMORY[0x1E69B1B18] sharedFeatureManager];
-      if ([v22 isAirDropPasswordsAvailable])
+      mEMORY[0x1E69B1B18] = [MEMORY[0x1E69B1B18] sharedFeatureManager];
+      if ([mEMORY[0x1E69B1B18] isAirDropPasswordsAvailable])
       {
         v34 = v12->_editBarButtonItem;
         v35 = v12->_shareBarButtonItem;
@@ -204,21 +204,21 @@
       }
 
       v26 = [v23 arrayWithObjects:v24 count:{v25, v33, v34, v35, v36}];
-      [v13 setRightBarButtonItems:v26];
+      [navigationItem setRightBarButtonItems:v26];
     }
 
-    -[UIBarButtonItem setEnabled:](v12->_shareBarButtonItem, "setEnabled:", [v9 isOneTimeSharable]);
+    -[UIBarButtonItem setEnabled:](v12->_shareBarButtonItem, "setEnabled:", [accountCopy isOneTimeSharable]);
     if ([(SFAccountDetailViewController *)v12 _allowAuditing])
     {
-      v27 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v27 addObserver:v12 selector:sel__accountStoreDidUpdate name:*MEMORY[0x1E69C8D50] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v12 selector:sel__accountStoreDidUpdate name:*MEMORY[0x1E69C8D50] object:0];
     }
 
-    objc_storeStrong(&v12->_savedAccount, a3);
-    v28 = [v13 backBarButtonItem];
-    [v28 setAccessibilityIdentifier:@"PasswordDetailViewNavigationBarBackButton"];
+    objc_storeStrong(&v12->_savedAccount, account);
+    backBarButtonItem = [navigationItem backBarButtonItem];
+    [backBarButtonItem setAccessibilityIdentifier:@"PasswordDetailViewNavigationBarBackButton"];
 
-    objc_storeStrong(&v12->_passwordWarning, a4);
+    objc_storeStrong(&v12->_passwordWarning, warning);
     v29 = objc_alloc_init(MEMORY[0x1E695A908]);
     accountAuthenticationModificationController = v12->_accountAuthenticationModificationController;
     v12->_accountAuthenticationModificationController = v29;
@@ -251,18 +251,18 @@
 
 - (id)_passwordAuditor
 {
-  v2 = [(SFAccountDetailViewController *)self _passwordWarningManager];
-  v3 = [v2 passwordAuditor];
+  _passwordWarningManager = [(SFAccountDetailViewController *)self _passwordWarningManager];
+  passwordAuditor = [_passwordWarningManager passwordAuditor];
 
-  return v3;
+  return passwordAuditor;
 }
 
 - (id)_passwordEvaluator
 {
-  v2 = [(SFAccountDetailViewController *)self _passwordWarningManager];
-  v3 = [v2 passwordEvaluator];
+  _passwordWarningManager = [(SFAccountDetailViewController *)self _passwordWarningManager];
+  passwordEvaluator = [_passwordWarningManager passwordEvaluator];
 
-  return v3;
+  return passwordEvaluator;
 }
 
 - (id)_passwordGenerator
@@ -288,29 +288,29 @@
   v16.super_class = SFAccountDetailViewController;
   [(SFAccountDetailViewController *)&v16 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69B1BC8]);
-  v4 = [(SFAccountDetailViewController *)self tableView];
+  tableView = [(SFAccountDetailViewController *)self tableView];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __44__SFAccountDetailViewController_viewDidLoad__block_invoke;
   v14 = &unk_1E848FBA8;
   objc_copyWeak(&v15, &location);
-  v5 = [v3 initWithTableView:v4 cellProvider:&v11];
+  v5 = [v3 initWithTableView:tableView cellProvider:&v11];
   tableViewDiffableDataSource = self->_tableViewDiffableDataSource;
   self->_tableViewDiffableDataSource = v5;
 
   [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource setDelegate:self, v11, v12, v13, v14];
   [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource setDefaultRowAnimation:0];
-  v7 = [(SFAccountDetailViewController *)self tableView];
+  tableView2 = [(SFAccountDetailViewController *)self tableView];
   if (_SFDeviceIsPad())
   {
-    [v7 setCellLayoutMarginsFollowReadableWidth:1];
+    [tableView2 setCellLayoutMarginsFollowReadableWidth:1];
   }
 
-  [v7 setAllowsSelectionDuringEditing:1];
-  [v7 _setTopPadding:20.0];
-  [v7 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v7 setAccessibilityIdentifier:@"PasswordDetailView"];
-  [v7 registerClass:objc_opt_class() forCellReuseIdentifier:@"NotesCell"];
+  [tableView2 setAllowsSelectionDuringEditing:1];
+  [tableView2 _setTopPadding:20.0];
+  [tableView2 setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView2 setAccessibilityIdentifier:@"PasswordDetailView"];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"NotesCell"];
   if ([(SFAccountDetailViewController *)self _allowAuditing]&& !self->_passwordWarning)
   {
     [(SFAccountDetailViewController *)self _updateWarningForSavedAccount];
@@ -320,11 +320,11 @@
   editMenuInteraction = self->_editMenuInteraction;
   self->_editMenuInteraction = v8;
 
-  [v7 addInteraction:self->_editMenuInteraction];
+  [tableView2 addInteraction:self->_editMenuInteraction];
   if (self->_isForFillingIndividualAccountFields)
   {
     v10 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel__handleLongPressGesture_];
-    [v7 addGestureRecognizer:v10];
+    [tableView2 addGestureRecognizer:v10];
   }
 
   objc_destroyWeak(&v15);
@@ -341,24 +341,24 @@ id __44__SFAccountDetailViewController_viewDidLoad__block_invoke(uint64_t a1, ui
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = SFAccountDetailViewController;
-  [(SFAccountDetailViewController *)&v10 viewWillAppear:a3];
+  [(SFAccountDetailViewController *)&v10 viewWillAppear:appear];
   [(SFAccountDetailViewController *)self _reloadDiffableDataSourceOnInternalQueueAnimated:0];
   objc_initWeak(&location, self);
-  v4 = [MEMORY[0x1E695A960] sharedManager];
-  [v4 addChangeObserver:self];
+  mEMORY[0x1E695A960] = [MEMORY[0x1E695A960] sharedManager];
+  [mEMORY[0x1E695A960] addChangeObserver:self];
 
-  v5 = [MEMORY[0x1E695A960] sharedManager];
-  v6 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  mEMORY[0x1E695A960]2 = [MEMORY[0x1E695A960] sharedManager];
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__SFAccountDetailViewController_viewWillAppear___block_invoke;
   v7[3] = &unk_1E848FBD0;
   objc_copyWeak(&v8, &location);
-  [v5 extensionForDomain:v6 completionHandler:v7];
+  [mEMORY[0x1E695A960]2 extensionForDomain:highLevelDomain completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -390,9 +390,9 @@ uint64_t __48__SFAccountDetailViewController_viewWillAppear___block_invoke_2(uin
   return [v2 _reloadDiffableDataSourceAnimated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (self->_showsChangePasswordControllerOnAppearance)
   {
     self->_showsChangePasswordControllerOnAppearance = 0;
@@ -401,23 +401,23 @@ uint64_t __48__SFAccountDetailViewController_viewWillAppear___block_invoke_2(uin
 
   v5.receiver = self;
   v5.super_class = SFAccountDetailViewController;
-  [(SFAccountDetailViewController *)&v5 viewDidAppear:v3];
+  [(SFAccountDetailViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SFAccountDetailViewController;
-  [(SFAccountDetailViewController *)&v5 viewDidDisappear:a3];
-  v4 = [MEMORY[0x1E695A960] sharedManager];
-  [v4 removeChangeObserver:self];
+  [(SFAccountDetailViewController *)&v5 viewDidDisappear:disappear];
+  mEMORY[0x1E695A960] = [MEMORY[0x1E695A960] sharedManager];
+  [mEMORY[0x1E695A960] removeChangeObserver:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SFAccountDetailViewController;
-  [(SFAccountDetailViewController *)&v4 viewWillDisappear:a3];
+  [(SFAccountDetailViewController *)&v4 viewWillDisappear:disappear];
   [(SFAccountDetailViewController *)self safari_dismissPresentedAlert];
 }
 
@@ -450,16 +450,16 @@ void __55__SFAccountDetailViewController__accountStoreDidUpdate__block_invoke(ui
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_processAccountStoreUpdateWithSavedAccounts:(id)a3
+- (void)_processAccountStoreUpdateWithSavedAccounts:(id)accounts
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountsCopy = accounts;
   WeakRetained = objc_loadWeakRetained(&self->_changePasswordSafariViewController);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v4;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -477,9 +477,9 @@ void __55__SFAccountDetailViewController__accountStoreDidUpdate__block_invoke(ui
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [(WBSSavedAccount *)self->_savedAccount uniqueIdentifierForPasswordManagerLegacy];
-        v13 = [v11 uniqueIdentifierForPasswordManagerLegacy];
-        v14 = [v12 isEqualToString:v13];
+        uniqueIdentifierForPasswordManagerLegacy = [(WBSSavedAccount *)self->_savedAccount uniqueIdentifierForPasswordManagerLegacy];
+        uniqueIdentifierForPasswordManagerLegacy2 = [v11 uniqueIdentifierForPasswordManagerLegacy];
+        v14 = [uniqueIdentifierForPasswordManagerLegacy isEqualToString:uniqueIdentifierForPasswordManagerLegacy2];
 
         if (v14)
         {
@@ -489,9 +489,9 @@ void __55__SFAccountDetailViewController__accountStoreDidUpdate__block_invoke(ui
             goto LABEL_21;
           }
 
-          v15 = [(WBSSavedAccount *)self->_savedAccount password];
-          v16 = [v11 password];
-          v17 = [v15 isEqualToString:v16];
+          password = [(WBSSavedAccount *)self->_savedAccount password];
+          password2 = [v11 password];
+          v17 = [password isEqualToString:password2];
 
           v8 = 1;
           if ((v17 & 1) == 0)
@@ -499,12 +499,12 @@ void __55__SFAccountDetailViewController__accountStoreDidUpdate__block_invoke(ui
             if (WeakRetained)
             {
               [WeakRetained setDismissButtonStyle:0];
-              v18 = [(SFAccountDetailViewController *)self _passwordEvaluator];
-              v19 = [v11 password];
-              v20 = [v18 evaluatePassword:v19];
-              v21 = [v20 strength];
+              _passwordEvaluator = [(SFAccountDetailViewController *)self _passwordEvaluator];
+              password3 = [v11 password];
+              v20 = [_passwordEvaluator evaluatePassword:password3];
+              strength = [v20 strength];
 
-              if (v21 == 2)
+              if (strength == 2)
               {
                 self->_completedUpgradeToStrongPassword = 1;
                 v22 = objc_loadWeakRetained(&self->_delegate);
@@ -559,24 +559,24 @@ LABEL_23:
 
 - (void)_popViewController
 {
-  v3 = [(SFAccountDetailViewController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(SFAccountDetailViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v4 == self)
+  if (topViewController == self)
   {
-    v6 = [(SFAccountDetailViewController *)self navigationController];
-    v5 = [v6 popViewControllerAnimated:1];
+    navigationController2 = [(SFAccountDetailViewController *)self navigationController];
+    v5 = [navigationController2 popViewControllerAnimated:1];
   }
 }
 
 - (void)_showChangePasswordSafariViewController
 {
-  v3 = [(SFAccountDetailViewController *)self _changePasswordURL];
-  if (v3)
+  _changePasswordURL = [(SFAccountDetailViewController *)self _changePasswordURL];
+  if (_changePasswordURL)
   {
-    v7 = v3;
-    v4 = [(UIViewController *)self safari_checkForAbilityToOpenWebContentAndNotifyIfNecessary:v3];
-    v3 = v7;
+    v7 = _changePasswordURL;
+    v4 = [(UIViewController *)self safari_checkForAbilityToOpenWebContentAndNotifyIfNecessary:_changePasswordURL];
+    _changePasswordURL = v7;
     if (v4)
     {
       v5 = objc_alloc_init(SFSafariViewControllerConfiguration);
@@ -588,7 +588,7 @@ LABEL_23:
       [(SFAccountDetailViewController *)self presentViewController:v6 animated:1 completion:0];
       objc_storeWeak(&self->_changePasswordSafariViewController, v6);
 
-      v3 = v7;
+      _changePasswordURL = v7;
     }
   }
 }
@@ -596,47 +596,47 @@ LABEL_23:
 - (void)_openChangePasswordURLInWebBrowser
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v4 = [(SFAccountDetailViewController *)self _changePasswordURL];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  _changePasswordURL = [(SFAccountDetailViewController *)self _changePasswordURL];
   v6 = *MEMORY[0x1E6963560];
   v7[0] = MEMORY[0x1E695E118];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  [v3 _sf_openURL:v4 withOptions:v5 completionHandler:0];
+  [defaultWorkspace _sf_openURL:_changePasswordURL withOptions:v5 completionHandler:0];
 }
 
 - (void)_cancelChangesAndFinishEditing
 {
   [(SFAccountDetailViewController *)self _setEditing:0 animated:1];
-  v3 = [(WBSSavedAccount *)self->_savedAccount user];
-  v4 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
-  [v4 setText:v3];
+  user = [(WBSSavedAccount *)self->_savedAccount user];
+  editableTextField = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  [editableTextField setText:user];
 
-  v5 = [(WBSSavedAccount *)self->_savedAccount password];
-  v6 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-  [v6 setText:v5];
+  password = [(WBSSavedAccount *)self->_savedAccount password];
+  editableTextField2 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  [editableTextField2 setText:password];
 
-  v7 = [(WBSSavedAccount *)self->_savedAccount notesEntry];
-  v8 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
-  [v8 setText:v7];
+  notesEntry = [(WBSSavedAccount *)self->_savedAccount notesEntry];
+  textView = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+  [textView setText:notesEntry];
 
-  v9 = [(SFAccountNoteTableViewCell *)self->_notesCell textDidChange];
+  textDidChange = [(SFAccountNoteTableViewCell *)self->_notesCell textDidChange];
 
-  if (v9)
+  if (textDidChange)
   {
-    v10 = [(SFAccountNoteTableViewCell *)self->_notesCell textDidChange];
-    v10[2]();
+    textDidChange2 = [(SFAccountNoteTableViewCell *)self->_notesCell textDidChange];
+    textDidChange2[2]();
   }
 
-  v11 = [(WBSSavedAccount *)self->_savedAccount customTitle];
-  v12 = [(SFAccountHeaderViewCell *)self->_headerCell titleTextField];
-  [v12 setText:v11];
+  customTitle = [(WBSSavedAccount *)self->_savedAccount customTitle];
+  titleTextField = [(SFAccountHeaderViewCell *)self->_headerCell titleTextField];
+  [titleTextField setText:customTitle];
 
   headerCell = self->_headerCell;
 
   [(SFAccountDetailViewController *)self _configureHeaderViewCell:headerCell];
 }
 
-- (void)_cancelBarButtonItemTapped:(id)a3
+- (void)_cancelBarButtonItemTapped:(id)tapped
 {
   [(SFAccountDetailViewController *)self _updateSavedAccountChangeRequest];
   if ([(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest hasChanges])
@@ -683,24 +683,24 @@ LABEL_23:
   [(SFAccountDetailViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)_shareBarButtonItemTapped:(id)a3
+- (void)_shareBarButtonItemTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__SFAccountDetailViewController__shareBarButtonItemTapped___block_invoke;
   v6[3] = &unk_1E848FC20;
-  v7 = v4;
-  v5 = v4;
+  v7 = tappedCopy;
+  v5 = tappedCopy;
   [(SFAccountDetailViewController *)self _sharePasswordWithPopoverPresentationControllerConfiguration:v6];
 }
 
 - (id)_allSharedCredentialGroupsMenu
 {
   v41 = *MEMORY[0x1E69E9840];
-  v27 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
-  v2 = [(WBSSavedAccount *)self->_savedAccount isSavedInPersonalKeychain];
+  isSavedInPersonalKeychain = [(WBSSavedAccount *)self->_savedAccount isSavedInPersonalKeychain];
   v24 = _WBSLocalizedString();
   v3 = MEMORY[0x1E69DC628];
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person"];
@@ -709,24 +709,24 @@ LABEL_23:
   v36[2] = __63__SFAccountDetailViewController__allSharedCredentialGroupsMenu__block_invoke;
   v36[3] = &unk_1E848FC48;
   objc_copyWeak(&v37, &location);
-  v38 = v2;
+  v38 = isSavedInPersonalKeychain;
   v25 = [v3 actionWithTitle:v24 image:v4 identifier:0 handler:v36];
 
-  [v25 setState:v2];
-  if ((v2 & 1) != 0 || ([MEMORY[0x1E69C8A38] sharedStore], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "_canMoveSavedAccount:toGroupWithID:", self->_savedAccount, 0), v5, (v6 & 1) == 0))
+  [v25 setState:isSavedInPersonalKeychain];
+  if ((isSavedInPersonalKeychain & 1) != 0 || ([MEMORY[0x1E69C8A38] sharedStore], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "_canMoveSavedAccount:toGroupWithID:", self->_savedAccount, 0), v5, (v6 & 1) == 0))
   {
     [v25 setAttributes:1];
   }
 
-  [v27 addObject:v25];
-  v7 = [MEMORY[0x1E69C88E8] sharedProvider];
-  v8 = [v7 cachedGroups];
+  [array addObject:v25];
+  mEMORY[0x1E69C88E8] = [MEMORY[0x1E69C88E8] sharedProvider];
+  cachedGroups = [mEMORY[0x1E69C88E8] cachedGroups];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v8;
+  obj = cachedGroups;
   v9 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v9)
   {
@@ -741,12 +741,12 @@ LABEL_23:
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
-        v14 = [v12 groupID];
-        v15 = [v13 isEqualToString:v14];
+        sharedGroupID = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
+        groupID = [v12 groupID];
+        v15 = [sharedGroupID isEqualToString:groupID];
 
         v16 = MEMORY[0x1E69DC628];
-        v17 = [v12 displayName];
+        displayName = [v12 displayName];
         v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.2"];
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
@@ -755,7 +755,7 @@ LABEL_23:
         objc_copyWeak(&v30, &location);
         v31 = v15;
         v29[4] = v12;
-        v19 = [v16 actionWithTitle:v17 image:v18 identifier:0 handler:v29];
+        v19 = [v16 actionWithTitle:displayName image:v18 identifier:0 handler:v29];
 
         [v19 setState:v15];
         if ((v15 & 1) != 0 || ([MEMORY[0x1E69C8A38] sharedStore], v20 = objc_claimAutoreleasedReturnValue(), savedAccount = self->_savedAccount, objc_msgSend(v12, "groupID"), v22 = objc_claimAutoreleasedReturnValue(), LOBYTE(savedAccount) = objc_msgSend(v20, "_canMoveSavedAccount:toGroupWithID:", savedAccount, v22), v22, v20, (savedAccount & 1) == 0))
@@ -763,7 +763,7 @@ LABEL_23:
           [v19 setAttributes:1];
         }
 
-        [v27 addObject:v19];
+        [array addObject:v19];
 
         objc_destroyWeak(&v30);
       }
@@ -777,7 +777,7 @@ LABEL_23:
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
 
-  return v27;
+  return array;
 }
 
 void __63__SFAccountDetailViewController__allSharedCredentialGroupsMenu__block_invoke(uint64_t a1)
@@ -852,44 +852,44 @@ void __45__SFAccountDetailViewController__airDropMenu__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_presentConfirmationAlertToShareSavedAccountToGroup:(id)a3
+- (void)_presentConfirmationAlertToShareSavedAccountToGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(WBSPasswordWarning *)self->_passwordWarning issueTypes];
-  v6 = [(WBSSavedAccount *)self->_savedAccount isSavedInPersonalKeychain];
-  v7 = [(SFAccountDetailViewController *)self _passwordWarningManager];
-  v8 = [MEMORY[0x1E69C8A38] sharedStore];
-  v37 = v4;
-  v9 = [v4 groupID];
-  v10 = [v8 savedAccountsForGroupID:v9];
-  v11 = [v7 savedAccountsFromGroup:v10 containsPasswordFromSavedAccount:self->_savedAccount];
+  groupCopy = group;
+  issueTypes = [(WBSPasswordWarning *)self->_passwordWarning issueTypes];
+  isSavedInPersonalKeychain = [(WBSSavedAccount *)self->_savedAccount isSavedInPersonalKeychain];
+  _passwordWarningManager = [(SFAccountDetailViewController *)self _passwordWarningManager];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  v37 = groupCopy;
+  groupID = [groupCopy groupID];
+  v10 = [mEMORY[0x1E69C8A38] savedAccountsForGroupID:groupID];
+  v11 = [_passwordWarningManager savedAccountsFromGroup:v10 containsPasswordFromSavedAccount:self->_savedAccount];
 
-  v12 = 0;
-  if ((v5 & 1) != 0 && v6 && (v11 & 1) == 0)
+  localizedAlertWarningForSharingReusedPassword = 0;
+  if ((issueTypes & 1) != 0 && isSavedInPersonalKeychain && (v11 & 1) == 0)
   {
-    v12 = [(WBSPasswordWarning *)self->_passwordWarning localizedAlertWarningForSharingReusedPassword];
+    localizedAlertWarningForSharingReusedPassword = [(WBSPasswordWarning *)self->_passwordWarning localizedAlertWarningForSharingReusedPassword];
   }
 
-  v13 = [MEMORY[0x1E69C88E8] sharedProvider];
-  v14 = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
-  v15 = [v13 cachedGroupWithID:v14];
+  mEMORY[0x1E69C88E8] = [MEMORY[0x1E69C88E8] sharedProvider];
+  sharedGroupID = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
+  v15 = [mEMORY[0x1E69C88E8] cachedGroupWithID:sharedGroupID];
 
-  v16 = [v15 displayName];
-  v17 = [v37 displayName];
-  v18 = v17;
-  if (v17 && v16)
+  displayName = [v15 displayName];
+  displayName2 = [v37 displayName];
+  v18 = displayName2;
+  if (displayName2 && displayName)
   {
-    v19 = [MEMORY[0x1E69BC7B0] confirmationAlertSubtitleForMovingSavedAccount:self->_savedAccount fromGroupWithName:v16];
+    v19 = [MEMORY[0x1E69BC7B0] confirmationAlertSubtitleForMovingSavedAccount:self->_savedAccount fromGroupWithName:displayName];
   }
 
-  else if (v16)
+  else if (displayName)
   {
     v19 = [MEMORY[0x1E69BC7B0] confirmationAlertSubtitleForMovingSavedAccount:self->_savedAccount toMyPasswordsFromGroup:v15];
   }
 
-  else if (v17)
+  else if (displayName2)
   {
-    v19 = [MEMORY[0x1E69BC7B0] confirmationAlertSubtitleForMovingSavedAccount:self->_savedAccount fromMyPasswordsToGroupWithName:v17];
+    v19 = [MEMORY[0x1E69BC7B0] confirmationAlertSubtitleForMovingSavedAccount:self->_savedAccount fromMyPasswordsToGroupWithName:displayName2];
   }
 
   else
@@ -898,9 +898,9 @@ void __45__SFAccountDetailViewController__airDropMenu__block_invoke(uint64_t a1)
   }
 
   v35 = v19;
-  if (v12)
+  if (localizedAlertWarningForSharingReusedPassword)
   {
-    v20 = v12;
+    v20 = localizedAlertWarningForSharingReusedPassword;
   }
 
   else
@@ -912,7 +912,7 @@ void __45__SFAccountDetailViewController__airDropMenu__block_invoke(uint64_t a1)
   v22 = [MEMORY[0x1E69BC7B0] alertTitleForMovingSavedAccount:self->_savedAccount toGroupWithName:v18];
   v34 = v21;
   v23 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v22 message:v21 imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
-  if ([v12 length])
+  if ([localizedAlertWarningForSharingReusedPassword length])
   {
     v24 = MEMORY[0x1E69DC648];
     v25 = _WBSLocalizedString();
@@ -1009,20 +1009,20 @@ uint64_t __85__SFAccountDetailViewController__presentConfirmationAlertToShareSav
   return [v2 _reloadDiffableDataSourceOnInternalQueueAnimated:0];
 }
 
-- (void)_presentErrorAlertForFailingToMoveAccountToGroup:(id)a3
+- (void)_presentErrorAlertForFailingToMoveAccountToGroup:(id)group
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69BC7B0];
-  v5 = a3;
-  v6 = [v4 alertTitleForFailingToMoveToGroup];
+  groupCopy = group;
+  alertTitleForFailingToMoveToGroup = [v4 alertTitleForFailingToMoveToGroup];
   v7 = MEMORY[0x1E69BC7B0];
   v18[0] = self->_savedAccount;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v9 = [v5 displayName];
+  displayName = [groupCopy displayName];
 
-  v10 = [v7 alertSubtitleForFailingToMoveSavedAccounts:v8 toGroupWithName:v9];
+  v10 = [v7 alertSubtitleForFailingToMoveSavedAccounts:v8 toGroupWithName:displayName];
 
-  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v6 message:v10 imageNamed:@"alert-passwords" preferredStyle:1];
+  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:alertTitleForFailingToMoveToGroup message:v10 imageNamed:@"alert-passwords" preferredStyle:1];
   v12 = MEMORY[0x1E69DC648];
   v13 = _WBSLocalizedString();
   v16[0] = MEMORY[0x1E69E9820];
@@ -1037,59 +1037,59 @@ uint64_t __85__SFAccountDetailViewController__presentConfirmationAlertToShareSav
   [(SFAccountDetailViewController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v35[1] = *MEMORY[0x1E69E9840];
   if ([(SFAccountDetailViewController *)self _allowEditing])
   {
     v32.receiver = self;
     v32.super_class = SFAccountDetailViewController;
-    [(SFAccountDetailViewController *)&v32 setEditing:v5 animated:v4];
+    [(SFAccountDetailViewController *)&v32 setEditing:editingCopy animated:animatedCopy];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__SFAccountDetailViewController__setEditing_animated___block_invoke;
     block[3] = &unk_1E848FD38;
     block[4] = self;
-    v31 = v5;
+    v31 = editingCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    if (v5)
+    if (editingCopy)
     {
       [(SFAccountDetailViewController *)self _revealPasswordIfNecessary];
-      v7 = [(SFAccountDetailViewController *)self navigationItem];
-      [v7 setLeftBarButtonItem:self->_cancelBarButtonItem animated:v4];
+      navigationItem = [(SFAccountDetailViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:self->_cancelBarButtonItem animated:animatedCopy];
       v35[0] = self->_doneBarButtonItem;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
-      [v7 setRightBarButtonItems:v8 animated:v4];
+      [navigationItem setRightBarButtonItems:v8 animated:animatedCopy];
 
-      v9 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
-      v10 = [v9 text];
+      editableTextField = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+      text = [editableTextField text];
       userForEditing = self->_userForEditing;
-      self->_userForEditing = v10;
+      self->_userForEditing = text;
 
-      v12 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-      v13 = [v12 text];
+      editableTextField2 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+      text2 = [editableTextField2 text];
       passwordForEditing = self->_passwordForEditing;
-      self->_passwordForEditing = v13;
+      self->_passwordForEditing = text2;
 
-      v15 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
-      v16 = [v15 text];
+      textView = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+      text3 = [textView text];
       notesForEditing = self->_notesForEditing;
-      self->_notesForEditing = v16;
+      self->_notesForEditing = text3;
 
-      v18 = [(SFAccountHeaderViewCell *)self->_headerCell titleTextField];
-      v19 = [v18 text];
+      titleTextField = [(SFAccountHeaderViewCell *)self->_headerCell titleTextField];
+      text4 = [titleTextField text];
       titleForEditing = self->_titleForEditing;
-      self->_titleForEditing = v19;
+      self->_titleForEditing = text4;
     }
 
     else
     {
-      v7 = [(SFAccountDetailViewController *)self navigationItem];
-      [v7 setLeftBarButtonItem:0 animated:v4];
-      v21 = [MEMORY[0x1E69B1B18] sharedFeatureManager];
-      if ([v21 isAirDropPasswordsAvailable])
+      navigationItem = [(SFAccountDetailViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:0 animated:animatedCopy];
+      mEMORY[0x1E69B1B18] = [MEMORY[0x1E69B1B18] sharedFeatureManager];
+      if ([mEMORY[0x1E69B1B18] isAirDropPasswordsAvailable])
       {
         shareBarButtonItem = self->_shareBarButtonItem;
         v34[0] = self->_editBarButtonItem;
@@ -1108,7 +1108,7 @@ uint64_t __85__SFAccountDetailViewController__presentConfirmationAlertToShareSav
       }
 
       v26 = [v23 arrayWithObjects:p_editBarButtonItem count:v25];
-      [v7 setRightBarButtonItems:v26 animated:v4];
+      [navigationItem setRightBarButtonItems:v26 animated:animatedCopy];
 
       v27 = self->_userForEditing;
       self->_userForEditing = 0;
@@ -1119,7 +1119,7 @@ uint64_t __85__SFAccountDetailViewController__presentConfirmationAlertToShareSav
       v29 = self->_notesForEditing;
       self->_notesForEditing = 0;
 
-      v18 = self->_titleForEditing;
+      titleTextField = self->_titleForEditing;
       self->_titleForEditing = 0;
     }
   }
@@ -1192,21 +1192,21 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
   return v5;
 }
 
-- (void)_updateAddPasswordButton:(BOOL)a3 forSnapshot:(id)a4
+- (void)_updateAddPasswordButton:(BOOL)button forSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = a4;
-  v8 = v5;
-  if (v4)
+  buttonCopy = button;
+  snapshotCopy = snapshot;
+  v8 = snapshotCopy;
+  if (buttonCopy)
   {
-    [v5 insertSectionsWithIdentifiers:&unk_1F5023788 beforeSectionWithIdentifier:&unk_1F5022C48];
+    [snapshotCopy insertSectionsWithIdentifiers:&unk_1F5023788 beforeSectionWithIdentifier:&unk_1F5022C48];
     [v8 appendItemsWithIdentifiers:&unk_1F50237A0 intoSectionWithIdentifier:&unk_1F5022C60];
   }
 
   else
   {
-    v6 = [v5 sectionIdentifiers];
-    v7 = [v6 containsObject:&unk_1F5022C60];
+    sectionIdentifiers = [snapshotCopy sectionIdentifiers];
+    v7 = [sectionIdentifiers containsObject:&unk_1F5022C60];
 
     if (v7)
     {
@@ -1226,33 +1226,33 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SFAccountDetailViewController;
   [(SFAccountDetailViewController *)&v4 dealloc];
 }
 
-- (void)_handleLongPressGesture:(id)a3
+- (void)_handleLongPressGesture:(id)gesture
 {
-  v14 = a3;
-  if ([v14 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v4 = [(SFAccountDetailViewController *)self tableView];
-    [v14 locationInView:v4];
+    tableView = [(SFAccountDetailViewController *)self tableView];
+    [gestureCopy locationInView:tableView];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(SFAccountDetailViewController *)self tableView];
-    v10 = [v9 indexPathForRowAtPoint:{v6, v8}];
+    tableView2 = [(SFAccountDetailViewController *)self tableView];
+    v10 = [tableView2 indexPathForRowAtPoint:{v6, v8}];
 
     if (v10)
     {
       [(UIEditMenuInteraction *)self->_editMenuInteraction dismissMenu];
       v11 = MEMORY[0x1E69DC9D8];
-      v12 = [(SFAccountDetailViewController *)self tableView];
-      [v12 rectForRowAtIndexPath:v10];
+      tableView3 = [(SFAccountDetailViewController *)self tableView];
+      [tableView3 rectForRowAtIndexPath:v10];
       UIRectGetCenter();
       v13 = [v11 configurationWithIdentifier:v10 sourcePoint:?];
 
@@ -1261,13 +1261,13 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
   }
 }
 
-- (id)_cellForIdentifier:(id)a3 indexPath:(id)a4
+- (id)_cellForIdentifier:(id)identifier indexPath:(id)path
 {
   v154[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v8 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v6];
+  v8 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:identifierCopy];
   if ([(SFAccountDetailViewController *)self isEditing])
   {
     v9 = 2;
@@ -1293,8 +1293,8 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
   switch(v8)
   {
     case 0:
-      v11 = [(SFAccountDetailViewController *)self tableView];
-      v12 = [v11 dequeueReusableCellWithIdentifier:@"AccountHeaderCell"];
+      tableView = [(SFAccountDetailViewController *)self tableView];
+      v12 = [tableView dequeueReusableCellWithIdentifier:@"AccountHeaderCell"];
       v13 = v12;
       if (!v12)
       {
@@ -1310,22 +1310,22 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
       [(SFAccountDetailViewController *)self _configureHeaderViewCell:self->_headerCell];
       goto LABEL_19;
     case 1:
-      v66 = [(SFAccountDetailViewController *)self tableView];
-      v57 = [v66 dequeueReusableCellWithIdentifier:@"editableTableViewCell"];
+      tableView2 = [(SFAccountDetailViewController *)self tableView];
+      v57 = [tableView2 dequeueReusableCellWithIdentifier:@"editableTableViewCell"];
 
       if (!v57)
       {
         if ([(SFAccountDetailViewController *)self _allowEditing])
         {
-          v67 = [(SFAccountDetailViewController *)self isEditing];
+          isEditing = [(SFAccountDetailViewController *)self isEditing];
         }
 
         else
         {
-          v67 = 0;
+          isEditing = 0;
         }
 
-        v57 = [[SFEditableTableViewCell alloc] initWithEnabledState:v67];
+        v57 = [[SFEditableTableViewCell alloc] initWithEnabledState:isEditing];
       }
 
       [(SFAccountDetailViewController *)self _configureUserCell:v57];
@@ -1333,21 +1333,21 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
       userCell = self->_userCell;
       self->_userCell = v133;
 
-      v135 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
-      [v135 setDelegate:self];
+      editableTextField = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+      [editableTextField setDelegate:self];
 
       [(SFEditableTableViewCell *)self->_userCell setEnabled:[(SFAccountDetailViewController *)self isEditing]];
       break;
     case 2:
-      v49 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+      valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
       v50 = _WBSLocalizedString();
-      [v49 setText:v50];
+      [valueCellConfiguration setText:v50];
 
-      v51 = [(SFAccountDetailViewController *)self _passkeyCreationDateString];
-      [v49 setSecondaryText:v51];
+      _passkeyCreationDateString = [(SFAccountDetailViewController *)self _passkeyCreationDateString];
+      [valueCellConfiguration setSecondaryText:_passkeyCreationDateString];
 
-      v52 = [(SFAccountDetailViewController *)self tableView];
-      v53 = [v52 dequeueReusableCellWithIdentifier:@"PasskeyCell"];
+      tableView3 = [(SFAccountDetailViewController *)self tableView];
+      v53 = [tableView3 dequeueReusableCellWithIdentifier:@"PasskeyCell"];
       v54 = v53;
       if (v53)
       {
@@ -1361,25 +1361,25 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
 
       v57 = v55;
 
-      [(SFEditableTableViewCell *)v57 setContentConfiguration:v49];
+      [(SFEditableTableViewCell *)v57 setContentConfiguration:valueCellConfiguration];
       break;
     case 3:
-      v62 = [(SFAccountDetailViewController *)self tableView];
-      v57 = [v62 dequeueReusableCellWithIdentifier:@"editableTableViewCell"];
+      tableView4 = [(SFAccountDetailViewController *)self tableView];
+      v57 = [tableView4 dequeueReusableCellWithIdentifier:@"editableTableViewCell"];
 
       if (!v57)
       {
         if ([(SFAccountDetailViewController *)self _allowEditing])
         {
-          v63 = [(SFAccountDetailViewController *)self isEditing];
+          isEditing2 = [(SFAccountDetailViewController *)self isEditing];
         }
 
         else
         {
-          v63 = 0;
+          isEditing2 = 0;
         }
 
-        v57 = [[SFEditableTableViewCell alloc] initWithEnabledState:v63];
+        v57 = [[SFEditableTableViewCell alloc] initWithEnabledState:isEditing2];
       }
 
       [(SFAccountDetailViewController *)self _configurePasswordCell:v57];
@@ -1387,28 +1387,28 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
       passwordCell = self->_passwordCell;
       self->_passwordCell = v125;
 
-      v127 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-      [v127 setDelegate:self];
+      editableTextField2 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+      [editableTextField2 setDelegate:self];
 
       v128 = MEMORY[0x1E69DB878];
-      v129 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-      v130 = [v129 font];
-      [v130 pointSize];
+      editableTextField3 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+      font = [editableTextField3 font];
+      [font pointSize];
       v131 = [v128 monospacedSystemFontOfSize:? weight:?];
-      v132 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-      [v132 setFont:v131];
+      editableTextField4 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+      [editableTextField4 setFont:v131];
 
       [(SFEditableTableViewCell *)self->_passwordCell setEnabled:[(SFAccountDetailViewController *)self isEditing]];
       break;
     case 4:
-      v15 = [(SFAccountDetailViewController *)self _groupPickerTableViewCell];
+      _groupPickerTableViewCell = [(SFAccountDetailViewController *)self _groupPickerTableViewCell];
       goto LABEL_64;
     case 5:
-      v15 = [(SFAccountDetailViewController *)self _originalContributorCell];
+      _groupPickerTableViewCell = [(SFAccountDetailViewController *)self _originalContributorCell];
       goto LABEL_64;
     case 6:
-      v74 = [(SFAccountDetailViewController *)self tableView];
-      v75 = [v74 dequeueReusableCellWithIdentifier:@"TOTPCell"];
+      tableView5 = [(SFAccountDetailViewController *)self tableView];
+      v75 = [tableView5 dequeueReusableCellWithIdentifier:@"TOTPCell"];
       v76 = v75;
       if (v75)
       {
@@ -1422,7 +1422,7 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
 
       v57 = v77;
 
-      [(SFEditableTableViewCell *)v57 configureWithGenerator:v6];
+      [(SFEditableTableViewCell *)v57 configureWithGenerator:identifierCopy];
       isForFillingIndividualAccountFields = self->_isForFillingIndividualAccountFields;
       if (isForFillingIndividualAccountFields)
       {
@@ -1450,8 +1450,8 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
 
       else
       {
-        v107 = [(SFAccountDetailViewController *)self tableView];
-        v108 = [v107 dequeueReusableCellWithIdentifier:@"TOTPSetupCell"];
+        tableView6 = [(SFAccountDetailViewController *)self tableView];
+        v108 = [tableView6 dequeueReusableCellWithIdentifier:@"TOTPSetupCell"];
         v109 = v108;
         if (v108)
         {
@@ -1466,40 +1466,40 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
         v65 = v110;
 
         v136 = _WBSLocalizedString();
-        v137 = [v65 textLabel];
-        [v137 setText:v136];
+        textLabel = [v65 textLabel];
+        [textLabel setText:v136];
 
-        v138 = [v65 detailTextLabel];
-        [v138 setText:0];
+        detailTextLabel = [v65 detailTextLabel];
+        [detailTextLabel setText:0];
 
-        v139 = [v65 detailTextLabel];
-        [v139 setAttributedText:0];
+        detailTextLabel2 = [v65 detailTextLabel];
+        [detailTextLabel2 setAttributedText:0];
 
-        v140 = [v65 editableTextField];
-        [v140 setText:0];
+        editableTextField5 = [v65 editableTextField];
+        [editableTextField5 setText:0];
 
-        v141 = [v65 textLabel];
-        [v141 setNumberOfLines:0];
+        textLabel2 = [v65 textLabel];
+        [textLabel2 setNumberOfLines:0];
 
         v142 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-        v143 = [v65 textLabel];
-        [v143 setTintColor:v142];
+        textLabel3 = [v65 textLabel];
+        [textLabel3 setTintColor:v142];
 
-        v144 = [v65 textLabel];
-        [v144 _setTextColorFollowsTintColor:1];
+        textLabel4 = [v65 textLabel];
+        [textLabel4 _setTextColorFollowsTintColor:1];
 
         objc_storeStrong(&self->_setupTOTPCodeCell, v65);
         setupTOTPCodeCell = self->_setupTOTPCodeCell;
       }
 
-      v145 = [(UITableViewCell *)setupTOTPCodeCell textLabel];
-      [v145 setTintAdjustmentMode:v9];
+      textLabel5 = [(UITableViewCell *)setupTOTPCodeCell textLabel];
+      [textLabel5 setTintAdjustmentMode:v9];
 
       v57 = self->_setupTOTPCodeCell;
       break;
     case 8:
-      v95 = [(SFAccountDetailViewController *)self tableView];
-      v96 = [v95 dequeueReusableCellWithIdentifier:@"TOTPDeleteCell"];
+      tableView7 = [(SFAccountDetailViewController *)self tableView];
+      v96 = [tableView7 dequeueReusableCellWithIdentifier:@"TOTPDeleteCell"];
       v97 = v96;
       if (v96)
       {
@@ -1514,20 +1514,20 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
       v57 = v98;
 
       v119 = _WBSLocalizedString();
-      v120 = [(SFEditableTableViewCell *)v57 textLabel];
-      [v120 setText:v119];
+      textLabel6 = [(SFEditableTableViewCell *)v57 textLabel];
+      [textLabel6 setText:v119];
 
-      v121 = [MEMORY[0x1E69DC888] systemRedColor];
-      v122 = [(SFEditableTableViewCell *)v57 textLabel];
-      [v122 setTextColor:v121];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      textLabel7 = [(SFEditableTableViewCell *)v57 textLabel];
+      [textLabel7 setTextColor:systemRedColor];
 
-      v123 = [(SFEditableTableViewCell *)v57 textLabel];
-      [v123 setNumberOfLines:0];
+      textLabel8 = [(SFEditableTableViewCell *)v57 textLabel];
+      [textLabel8 setNumberOfLines:0];
 
       break;
     case 9:
-      v45 = [(SFAccountDetailViewController *)self tableView];
-      v46 = [v45 dequeueReusableCellWithIdentifier:@"AddPasswordCell"];
+      tableView8 = [(SFAccountDetailViewController *)self tableView];
+      v46 = [tableView8 dequeueReusableCellWithIdentifier:@"AddPasswordCell"];
       v47 = v46;
       if (v46)
       {
@@ -1542,18 +1542,18 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
       v57 = v48;
 
       v111 = _WBSLocalizedString();
-      v112 = [(SFEditableTableViewCell *)v57 textLabel];
-      [v112 setText:v111];
+      textLabel9 = [(SFEditableTableViewCell *)v57 textLabel];
+      [textLabel9 setText:v111];
 
-      v113 = [(SFEditableTableViewCell *)v57 textLabel];
-      [v113 _setTextColorFollowsTintColor:1];
+      textLabel10 = [(SFEditableTableViewCell *)v57 textLabel];
+      [textLabel10 _setTextColorFollowsTintColor:1];
 
-      v114 = [(SFEditableTableViewCell *)v57 textLabel];
-      [v114 setNumberOfLines:0];
+      textLabel11 = [(SFEditableTableViewCell *)v57 textLabel];
+      [textLabel11 setNumberOfLines:0];
 
       v115 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-      v116 = [(SFEditableTableViewCell *)v57 textLabel];
-      [v116 setTintColor:v115];
+      textLabel12 = [(SFEditableTableViewCell *)v57 textLabel];
+      [textLabel12 setTintColor:v115];
 
       break;
     case 10:
@@ -1565,24 +1565,24 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
         self->_securityRecommendationInfoCell = v79;
 
         [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setDelegate:self];
-        v81 = [(WBSPasswordWarning *)self->_passwordWarning issueTypes];
+        issueTypes = [(WBSPasswordWarning *)self->_passwordWarning issueTypes];
         v151[0] = @"priority";
-        v82 = [(WBSPasswordWarning *)self->_passwordWarning severity];
+        severity = [(WBSPasswordWarning *)self->_passwordWarning severity];
         v83 = @"standard";
-        if (v82 == 1)
+        if (severity == 1)
         {
           v83 = @"high";
         }
 
         v152[0] = v83;
         v151[1] = @"domain";
-        v84 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
-        v152[1] = v84;
+        highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+        v152[1] = highLevelDomain;
         v151[2] = @"user";
-        v85 = [(WBSSavedAccount *)self->_savedAccount user];
-        v86 = v85;
+        user = [(WBSSavedAccount *)self->_savedAccount user];
+        v86 = user;
         v87 = @"true";
-        if (v81)
+        if (issueTypes)
         {
           v88 = @"true";
         }
@@ -1592,12 +1592,12 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
           v88 = @"false";
         }
 
-        v152[2] = v85;
+        v152[2] = user;
         v152[3] = v88;
         v151[3] = @"reused";
         v151[4] = @"weak";
         v151[5] = @"compromised";
-        if ((v81 & 2) != 0)
+        if ((issueTypes & 2) != 0)
         {
           v89 = @"true";
         }
@@ -1607,7 +1607,7 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
           v89 = @"false";
         }
 
-        if ((v81 & 0xC) == 0)
+        if ((issueTypes & 0xC) == 0)
         {
           v87 = @"false";
         }
@@ -1618,11 +1618,11 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
         v91 = WBSMakeAccessibilityIdentifier();
         [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setAccessibilityIdentifier:v91];
 
-        v92 = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell titleLabel];
-        [v92 setAccessibilityIdentifier:@"PasswordDetailViewSecurityRecommendationsCellTitle"];
+        titleLabel = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell titleLabel];
+        [titleLabel setAccessibilityIdentifier:@"PasswordDetailViewSecurityRecommendationsCellTitle"];
 
-        v93 = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell subtitleLabel];
-        [v93 setAccessibilityIdentifier:@"PasswordDetailViewSecurityRecommendationsCellSubtitle"];
+        subtitleLabel = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell subtitleLabel];
+        [subtitleLabel setAccessibilityIdentifier:@"PasswordDetailViewSecurityRecommendationsCellSubtitle"];
       }
 
       [(SFAccountDetailViewController *)self _configureSecurityRecommendationInfoCell];
@@ -1636,26 +1636,26 @@ uint64_t __54__SFAccountDetailViewController__setEditing_animated___block_invoke
         v23 = self->_upgradeToSignInWithAppleCell;
         self->_upgradeToSignInWithAppleCell = v22;
 
-        v24 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
-        [v24 _setTextColorFollowsTintColor:1];
+        textLabel13 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
+        [textLabel13 _setTextColorFollowsTintColor:1];
 
         v25 = _WBSLocalizedString();
-        v26 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
-        [v26 setText:v25];
+        textLabel14 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
+        [textLabel14 setText:v25];
 
-        v27 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
-        [v27 setNumberOfLines:0];
+        textLabel15 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
+        [textLabel15 setNumberOfLines:0];
 
         [(UITableViewCell *)self->_upgradeToSignInWithAppleCell setAccessibilityIdentifier:@"PasswordDetailViewSignInWithAppleUpgradeCell"];
         v28 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-        v29 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
-        [v29 setTintColor:v28];
+        textLabel16 = [(UITableViewCell *)self->_upgradeToSignInWithAppleCell textLabel];
+        [textLabel16 setTintColor:v28];
 
         upgradeToSignInWithAppleCell = self->_upgradeToSignInWithAppleCell;
       }
 
-      v30 = [(UITableViewCell *)upgradeToSignInWithAppleCell textLabel];
-      [v30 setTintAdjustmentMode:v9];
+      textLabel17 = [(UITableViewCell *)upgradeToSignInWithAppleCell textLabel];
+      [textLabel17 setTintAdjustmentMode:v9];
 
 LABEL_19:
       v31 = *(&self->super.super.super.super.isa + v14);
@@ -1669,37 +1669,37 @@ LABEL_19:
         v35 = self->_changeToStrongPasswordCell;
         self->_changeToStrongPasswordCell = v34;
 
-        v36 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
-        [v36 _setTextColorFollowsTintColor:1];
+        textLabel18 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
+        [textLabel18 _setTextColorFollowsTintColor:1];
 
         v37 = objc_alloc(MEMORY[0x1E696AAB0]);
         v38 = _WBSLocalizedString();
         v39 = [v37 initWithString:v38 attributes:v10];
-        v40 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
-        [v40 setAttributedText:v39];
+        textLabel19 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
+        [textLabel19 setAttributedText:v39];
 
-        v41 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
-        [v41 setNumberOfLines:0];
+        textLabel20 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
+        [textLabel20 setNumberOfLines:0];
 
         [(UITableViewCell *)self->_changeToStrongPasswordCell setAccessibilityIdentifier:@"PasswordDetailViewChangeToStrongPasswordUpgradeCell"];
         v42 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-        v43 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
-        [v43 setTintColor:v42];
+        textLabel21 = [(UITableViewCell *)self->_changeToStrongPasswordCell textLabel];
+        [textLabel21 setTintColor:v42];
 
         changeToStrongPasswordCell = self->_changeToStrongPasswordCell;
       }
 
-      v44 = [(UITableViewCell *)changeToStrongPasswordCell textLabel];
-      [v44 setTintAdjustmentMode:v9];
+      textLabel22 = [(UITableViewCell *)changeToStrongPasswordCell textLabel];
+      [textLabel22 setTintAdjustmentMode:v9];
 
 LABEL_62:
       v31 = *(&self->super.super.super.super.isa + v32);
 LABEL_63:
-      v15 = v31;
+      _groupPickerTableViewCell = v31;
       goto LABEL_64;
     case 13:
-      v70 = [(SFAccountDetailViewController *)self tableView];
-      v71 = [v70 dequeueReusableCellWithIdentifier:@"changePassword"];
+      tableView9 = [(SFAccountDetailViewController *)self tableView];
+      v71 = [tableView9 dequeueReusableCellWithIdentifier:@"changePassword"];
       v72 = v71;
       if (!v71)
       {
@@ -1712,30 +1712,30 @@ LABEL_63:
       }
 
       [(UITableViewCell *)self->_changePasswordOnWebsiteCell setAccessibilityIdentifier:@"ChangePasswordOnWebsiteCell"];
-      v73 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
-      [v73 setTintAdjustmentMode:v9];
+      textLabel23 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
+      [textLabel23 setTintAdjustmentMode:v9];
 
       [(WBSPasswordWarning *)self->_passwordWarning issueTypes];
       v100 = _WBSLocalizedString();
       v101 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v100 attributes:v10];
-      v102 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
-      [v102 setAttributedText:v101];
+      textLabel24 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
+      [textLabel24 setAttributedText:v101];
 
-      v103 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
-      [v103 setNumberOfLines:0];
+      textLabel25 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
+      [textLabel25 setNumberOfLines:0];
 
-      v104 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
-      [v104 _setTextColorFollowsTintColor:1];
+      textLabel26 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
+      [textLabel26 _setTextColorFollowsTintColor:1];
 
       v105 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-      v106 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
-      [v106 setTintColor:v105];
+      textLabel27 = [(UITableViewCell *)self->_changePasswordOnWebsiteCell textLabel];
+      [textLabel27 setTintColor:v105];
 
       v57 = self->_changePasswordOnWebsiteCell;
       break;
     case 14:
-      v16 = [(SFAccountDetailViewController *)self tableView];
-      v17 = [v16 dequeueReusableCellWithIdentifier:@"NotesCell"];
+      tableView10 = [(SFAccountDetailViewController *)self tableView];
+      v17 = [tableView10 dequeueReusableCellWithIdentifier:@"NotesCell"];
       notesCell = self->_notesCell;
       self->_notesCell = v17;
 
@@ -1743,16 +1743,16 @@ LABEL_63:
       notesForEditing = self->_notesForEditing;
       if (notesForEditing)
       {
-        v20 = self->_notesForEditing;
+        notesEntry = self->_notesForEditing;
       }
 
       else
       {
-        v20 = [(WBSSavedAccount *)self->_savedAccount notesEntry];
+        notesEntry = [(WBSSavedAccount *)self->_savedAccount notesEntry];
       }
 
-      v124 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
-      [v124 setText:v20];
+      textView = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+      [textView setText:notesEntry];
 
       if (!notesForEditing)
       {
@@ -1768,47 +1768,47 @@ LABEL_63:
       objc_destroyWeak(&v147);
       break;
     case 15:
-      v56 = [(SFAccountDetailViewController *)self tableView];
-      v57 = [(SFAccountDetailViewController *)self _savedAccountWebsiteCellForTableView:v56 atIndexPath:v7];
+      tableView11 = [(SFAccountDetailViewController *)self tableView];
+      v57 = [(SFAccountDetailViewController *)self _savedAccountWebsiteCellForTableView:tableView11 atIndexPath:pathCopy];
 
       v149 = @"domain";
-      v58 = [(SFEditableTableViewCell *)v57 textLabel];
-      v59 = [v58 text];
-      v150 = v59;
+      textLabel28 = [(SFEditableTableViewCell *)v57 textLabel];
+      text = [textLabel28 text];
+      v150 = text;
       v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
       v61 = WBSMakeAccessibilityIdentifier();
       [(SFEditableTableViewCell *)v57 setAccessibilityIdentifier:v61];
 
       break;
     case 16:
-      v15 = [(SFAccountDetailViewController *)self _recoverRecentlyDeletedAccountCell];
+      _groupPickerTableViewCell = [(SFAccountDetailViewController *)self _recoverRecentlyDeletedAccountCell];
       goto LABEL_64;
     case 17:
-      v15 = [(SFAccountDetailViewController *)self _moveRecentlyDeletedAccountToMyPasswordsCell];
+      _groupPickerTableViewCell = [(SFAccountDetailViewController *)self _moveRecentlyDeletedAccountToMyPasswordsCell];
 LABEL_64:
-      v57 = v15;
+      v57 = _groupPickerTableViewCell;
       break;
     case 18:
-      v78 = [(SFAccountDetailViewController *)self tableView];
-      v57 = [(SFAccountDetailViewController *)self _deletePasskeyCellForTableView:v78];
+      tableView12 = [(SFAccountDetailViewController *)self tableView];
+      v57 = [(SFAccountDetailViewController *)self _deletePasskeyCellForTableView:tableView12];
 
       [(SFEditableTableViewCell *)v57 setAccessibilityIdentifier:@"AccountDetailViewDeletePasskeyCell"];
       break;
     case 19:
-      v99 = [(SFAccountDetailViewController *)self tableView];
-      v57 = [(SFAccountDetailViewController *)self _deletePasswordCellForTableView:v99 shouldRemoveTOTPGenerator:0];
+      tableView13 = [(SFAccountDetailViewController *)self tableView];
+      v57 = [(SFAccountDetailViewController *)self _deletePasswordCellForTableView:tableView13 shouldRemoveTOTPGenerator:0];
 
       [(SFEditableTableViewCell *)v57 setAccessibilityIdentifier:@"AccountDetailViewDeletePasswordCell"];
       break;
     case 20:
-      v68 = [(SFAccountDetailViewController *)self tableView];
-      v57 = [(SFAccountDetailViewController *)self _deletePasswordCellForTableView:v68 shouldRemoveTOTPGenerator:1];
+      tableView14 = [(SFAccountDetailViewController *)self tableView];
+      v57 = [(SFAccountDetailViewController *)self _deletePasswordCellForTableView:tableView14 shouldRemoveTOTPGenerator:1];
 
       [(SFEditableTableViewCell *)v57 setAccessibilityIdentifier:@"AccountDetailViewDeletePasswordAndVerificationCodeCell"];
       break;
     case 21:
-      v69 = [(SFAccountDetailViewController *)self tableView];
-      v57 = [(SFAccountDetailViewController *)self _deleteCellForTableView:v69];
+      tableView15 = [(SFAccountDetailViewController *)self tableView];
+      v57 = [(SFAccountDetailViewController *)self _deleteCellForTableView:tableView15];
 
       [(SFEditableTableViewCell *)v57 setAccessibilityIdentifier:@"AccountDetailViewDeleteCell"];
       break;
@@ -1851,31 +1851,31 @@ void __62__SFAccountDetailViewController__cellForIdentifier_indexPath___block_in
   }
 }
 
-- (void)_reloadDiffableDataSourceOnInternalQueueAnimated:(BOOL)a3
+- (void)_reloadDiffableDataSourceOnInternalQueueAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __82__SFAccountDetailViewController__reloadDiffableDataSourceOnInternalQueueAnimated___block_invoke;
   v3[3] = &unk_1E848FD38;
   v3[4] = self;
-  v4 = a3;
+  animatedCopy = animated;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)_reloadDiffableDataSourceAnimated:(BOOL)a3
+- (void)_reloadDiffableDataSourceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v44 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69955A0]);
   [v5 appendSectionsWithIdentifiers:&unk_1F50237D0];
   [v5 appendItemsWithIdentifiers:&unk_1F50237E8];
   [v5 reconfigureItemsWithIdentifiers:&unk_1F5023800];
-  v6 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
-  if (v6 > 3)
+  credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+  if (credentialTypes > 3)
   {
-    if ((v6 - 8) >= 2)
+    if ((credentialTypes - 8) >= 2)
     {
-      if (v6 == 4)
+      if (credentialTypes == 4)
       {
         goto LABEL_56;
       }
@@ -1886,7 +1886,7 @@ void __62__SFAccountDetailViewController__cellForIdentifier_indexPath___block_in
     goto LABEL_12;
   }
 
-  switch(v6)
+  switch(credentialTypes)
   {
     case 1:
 LABEL_12:
@@ -1923,9 +1923,9 @@ LABEL_17:
   }
 
 LABEL_18:
-  v10 = [(WBSSavedAccount *)self->_savedAccount password];
+  password = [(WBSSavedAccount *)self->_savedAccount password];
 
-  if (v10)
+  if (password)
   {
     [v5 reconfigureItemsWithIdentifiers:&unk_1F50238C0];
   }
@@ -1943,8 +1943,8 @@ LABEL_18:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v11 = [(WBSSavedAccount *)self->_savedAccount userVisibleSites];
-      v12 = [v11 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      userVisibleSites = [(WBSSavedAccount *)self->_savedAccount userVisibleSites];
+      v12 = [userVisibleSites countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1955,7 +1955,7 @@ LABEL_18:
           {
             if (*v36 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(userVisibleSites);
             }
 
             v42 = *(*(&v35 + 1) + 8 * i);
@@ -1963,7 +1963,7 @@ LABEL_18:
             [v5 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:&unk_1F5022C48];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          v13 = [userVisibleSites countByEnumeratingWithState:&v35 objects:v43 count:16];
         }
 
         while (v13);
@@ -1971,10 +1971,10 @@ LABEL_18:
 
       [v5 appendSectionsWithIdentifiers:&unk_1F5023938];
       [v5 appendItemsWithIdentifiers:&unk_1F5023950 intoSectionWithIdentifier:&unk_1F5022C78];
-      v3 = v3;
+      animatedCopy = animatedCopy;
     }
 
-    [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource applySnapshot:v5 animatingDifferences:v3];
+    [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource applySnapshot:v5 animatingDifferences:animatedCopy];
   }
 
   else
@@ -2010,14 +2010,14 @@ LABEL_18:
 
     if ([(WBSSavedAccount *)self->_savedAccount hasValidWebsite])
     {
-      v29 = v3;
+      v29 = animatedCopy;
       [v5 appendSectionsWithIdentifiers:&unk_1F5023968];
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v20 = [(WBSSavedAccount *)self->_savedAccount userVisibleSites];
-      v21 = [v20 countByEnumeratingWithState:&v31 objects:v41 count:16];
+      userVisibleSites2 = [(WBSSavedAccount *)self->_savedAccount userVisibleSites];
+      v21 = [userVisibleSites2 countByEnumeratingWithState:&v31 objects:v41 count:16];
       if (v21)
       {
         v22 = v21;
@@ -2028,7 +2028,7 @@ LABEL_18:
           {
             if (*v32 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(userVisibleSites2);
             }
 
             v40 = *(*(&v31 + 1) + 8 * j);
@@ -2036,19 +2036,19 @@ LABEL_18:
             [v5 appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:&unk_1F5022C48];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v31 objects:v41 count:16];
+          v22 = [userVisibleSites2 countByEnumeratingWithState:&v31 objects:v41 count:16];
         }
 
         while (v22);
       }
 
-      v3 = v29;
+      animatedCopy = v29;
     }
 
     if ([(WBSSavedAccount *)self->_savedAccount credentialTypes]== 2)
     {
-      v26 = [(WBSSavedAccount *)self->_savedAccount passkeyRelyingPartyID];
-      v39 = v26;
+      passkeyRelyingPartyID = [(WBSSavedAccount *)self->_savedAccount passkeyRelyingPartyID];
+      v39 = passkeyRelyingPartyID;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
       [v5 appendItemsWithIdentifiers:v27 intoSectionWithIdentifier:&unk_1F5022C48];
     }
@@ -2060,48 +2060,48 @@ LABEL_18:
     v30[2] = __67__SFAccountDetailViewController__reloadDiffableDataSourceAnimated___block_invoke;
     v30[3] = &unk_1E848F810;
     v30[4] = self;
-    [(SFTableViewDiffableDataSource *)tableViewDiffableDataSource applySnapshot:v5 animatingDifferences:v3 completion:v30];
+    [(SFTableViewDiffableDataSource *)tableViewDiffableDataSource applySnapshot:v5 animatingDifferences:animatedCopy completion:v30];
   }
 
 LABEL_56:
 }
 
-- (void)_addGroupCellsToSnapshot:(id)a3
+- (void)_addGroupCellsToSnapshot:(id)snapshot
 {
-  v7 = a3;
-  v4 = [MEMORY[0x1E69C88E8] sharedProvider];
-  v5 = [v4 cachedGroups];
-  v6 = [v5 count];
+  snapshotCopy = snapshot;
+  mEMORY[0x1E69C88E8] = [MEMORY[0x1E69C88E8] sharedProvider];
+  cachedGroups = [mEMORY[0x1E69C88E8] cachedGroups];
+  v6 = [cachedGroups count];
 
   if (v6)
   {
-    [v7 appendItemsWithIdentifiers:&unk_1F5023980 intoSectionWithIdentifier:&unk_1F5022CA8];
-    [v7 reconfigureItemsWithIdentifiers:&unk_1F5023998];
+    [snapshotCopy appendItemsWithIdentifiers:&unk_1F5023980 intoSectionWithIdentifier:&unk_1F5022CA8];
+    [snapshotCopy reconfigureItemsWithIdentifiers:&unk_1F5023998];
   }
 
   if ([(WBSSavedAccount *)self->_savedAccount isSavedInSharedGroup])
   {
-    [v7 appendItemsWithIdentifiers:&unk_1F50239B0 intoSectionWithIdentifier:&unk_1F5022CA8];
+    [snapshotCopy appendItemsWithIdentifiers:&unk_1F50239B0 intoSectionWithIdentifier:&unk_1F5022CA8];
   }
 }
 
-- (void)_configureDeleteSectionInSnapshot:(id)a3
+- (void)_configureDeleteSectionInSnapshot:(id)snapshot
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  snapshotCopy = snapshot;
   if ([(WBSSavedAccount *)self->_savedAccount canUserEditSavedAccount]&& !self->_isForFillingIndividualAccountFields)
   {
-    v5 = [(WBSSavedAccount *)self->_savedAccount isRecentlyDeleted];
+    isRecentlyDeleted = [(WBSSavedAccount *)self->_savedAccount isRecentlyDeleted];
     savedAccount = self->_savedAccount;
-    if (v5)
+    if (isRecentlyDeleted)
     {
       if ([(WBSSavedAccount *)savedAccount canUserEditSavedAccount])
       {
-        [v4 appendSectionsWithIdentifiers:&unk_1F50239C8];
-        [v4 appendItemsWithIdentifiers:&unk_1F50239E0 intoSectionWithIdentifier:&unk_1F5022C78];
+        [snapshotCopy appendSectionsWithIdentifiers:&unk_1F50239C8];
+        [snapshotCopy appendItemsWithIdentifiers:&unk_1F50239E0 intoSectionWithIdentifier:&unk_1F5022C78];
         if ([(WBSSavedAccount *)self->_savedAccount isSavedInSharedGroup]&& [(WBSSavedAccount *)self->_savedAccount isCurrentUserOriginalContributor])
         {
-          [v4 appendItemsWithIdentifiers:&unk_1F50239F8 intoSectionWithIdentifier:&unk_1F5022C78];
+          [snapshotCopy appendItemsWithIdentifiers:&unk_1F50239F8 intoSectionWithIdentifier:&unk_1F5022C78];
         }
 
         v7 = &unk_1F5023A10;
@@ -2111,19 +2111,19 @@ LABEL_56:
 
     else
     {
-      v8 = [(WBSSavedAccount *)savedAccount credentialTypes];
-      if (v8 <= 9)
+      credentialTypes = [(WBSSavedAccount *)savedAccount credentialTypes];
+      if (credentialTypes <= 9)
       {
-        if (((1 << v8) & 0x306) != 0)
+        if (((1 << credentialTypes) & 0x306) != 0)
         {
-          [v4 appendSectionsWithIdentifiers:&unk_1F5023A28];
+          [snapshotCopy appendSectionsWithIdentifiers:&unk_1F5023A28];
           v7 = &unk_1F5023A40;
 LABEL_12:
-          [v4 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&unk_1F5022C78];
+          [snapshotCopy appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&unk_1F5022C78];
           goto LABEL_17;
         }
 
-        if (((1 << v8) & 0x18) != 0)
+        if (((1 << credentialTypes) & 0x18) != 0)
         {
           v9 = [(NSArray *)self->_TOTPGenerators count];
           v10 = &unk_1F5022D68;
@@ -2134,7 +2134,7 @@ LABEL_12:
 
           v12[0] = v10;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-          [v4 appendItemsWithIdentifiers:v11 intoSectionWithIdentifier:&unk_1F5022C60];
+          [snapshotCopy appendItemsWithIdentifiers:v11 intoSectionWithIdentifier:&unk_1F5022C60];
         }
       }
     }
@@ -2143,17 +2143,17 @@ LABEL_12:
 LABEL_17:
 }
 
-- (id)_groupSectionValueStyleTableViewCellWithText:(id)a3 secondaryText:(id)a4
+- (id)_groupSectionValueStyleTableViewCellWithText:(id)text secondaryText:(id)secondaryText
 {
   v6 = MEMORY[0x1E69DCC28];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 valueCellConfiguration];
-  [v9 setText:v8];
+  secondaryTextCopy = secondaryText;
+  textCopy = text;
+  valueCellConfiguration = [v6 valueCellConfiguration];
+  [valueCellConfiguration setText:textCopy];
 
-  [v9 setSecondaryText:v7];
-  v10 = [(SFAccountDetailViewController *)self tableView];
-  v11 = [v10 dequeueReusableCellWithIdentifier:@"sharedGroupValueCell"];
+  [valueCellConfiguration setSecondaryText:secondaryTextCopy];
+  tableView = [(SFAccountDetailViewController *)self tableView];
+  v11 = [tableView dequeueReusableCellWithIdentifier:@"sharedGroupValueCell"];
   v12 = v11;
   if (v11)
   {
@@ -2167,7 +2167,7 @@ LABEL_17:
 
   v14 = v13;
 
-  [v14 setContentConfiguration:v9];
+  [v14 setContentConfiguration:valueCellConfiguration];
 
   return v14;
 }
@@ -2183,32 +2183,32 @@ LABEL_17:
   return passwordWarning;
 }
 
-- (void)_addAccountUpgradeItemsForSectionType:(int64_t)a3 toSnapshot:(id)a4
+- (void)_addAccountUpgradeItemsForSectionType:(int64_t)type toSnapshot:(id)snapshot
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  snapshotCopy = snapshot;
   if ([(SFAccountDetailViewController *)self _allowAuditing]&& ([(WBSSavedAccount *)self->_savedAccount isRecentlyDeleted]& 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v8 = [v6 sectionIdentifiers];
-    v9 = [v8 indexOfObject:v7];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    sectionIdentifiers = [snapshotCopy sectionIdentifiers];
+    v9 = [sectionIdentifiers indexOfObject:v7];
 
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v12[0] = v7;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-      [v6 appendSectionsWithIdentifiers:v10];
+      [snapshotCopy appendSectionsWithIdentifiers:v10];
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
-      [v6 appendItemsWithIdentifiers:&unk_1F5023A58 intoSectionWithIdentifier:v7];
-      [v6 reconfigureItemsWithIdentifiers:&unk_1F5023A70];
+      [snapshotCopy appendItemsWithIdentifiers:&unk_1F5023A58 intoSectionWithIdentifier:v7];
+      [snapshotCopy reconfigureItemsWithIdentifiers:&unk_1F5023A70];
     }
 
     if (self->_eligibleToUpgradeToSignInWithApple)
     {
-      [v6 appendItemsWithIdentifiers:&unk_1F5023A88 intoSectionWithIdentifier:v7];
+      [snapshotCopy appendItemsWithIdentifiers:&unk_1F5023A88 intoSectionWithIdentifier:v7];
     }
 
     if (self->_eligibleToChangeToStrongPassword)
@@ -2221,16 +2221,16 @@ LABEL_17:
       v11 = &unk_1F5023AB8;
     }
 
-    [v6 appendItemsWithIdentifiers:v11 intoSectionWithIdentifier:v7];
+    [snapshotCopy appendItemsWithIdentifiers:v11 intoSectionWithIdentifier:v7];
   }
 }
 
-- (void)_updateAddButtonsInAccountOptionsSectionForSnapshot:(id)a3
+- (void)_updateAddButtonsInAccountOptionsSectionForSnapshot:(id)snapshot
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = [(SFAccountDetailViewController *)self _allowEditing]&& ![(NSArray *)self->_TOTPGenerators count]&& [(WBSSavedAccount *)self->_savedAccount credentialTypes]!= 2;
-  v6 = [v4 indexOfItemIdentifier:&unk_1F5022DE0];
+  v6 = [snapshotCopy indexOfItemIdentifier:&unk_1F5022DE0];
   v7 = v6 == 0x7FFFFFFFFFFFFFFFLL || v5;
   if (((v5 ^ (v6 == 0x7FFFFFFFFFFFFFFFLL)) & 1) == 0)
   {
@@ -2244,62 +2244,62 @@ LABEL_17:
     {
       if ((v7 & 1) == 0)
       {
-        [v4 deleteItemsWithIdentifiers:&unk_1F5023B18];
+        [snapshotCopy deleteItemsWithIdentifiers:&unk_1F5023B18];
       }
 
       goto LABEL_30;
     }
 
-    if ([v4 indexOfSectionIdentifier:&unk_1F5022DF8] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([snapshotCopy indexOfSectionIdentifier:&unk_1F5022DF8] != 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_22:
-      v11 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
-      if ((v11 - 8) >= 2)
+      credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+      if ((credentialTypes - 8) >= 2)
       {
-        if (v11 == 3)
+        if (credentialTypes == 3)
         {
-          [v4 insertItemsWithIdentifiers:&unk_1F5023B00 afterItemWithIdentifier:&unk_1F5022CC0];
+          [snapshotCopy insertItemsWithIdentifiers:&unk_1F5023B00 afterItemWithIdentifier:&unk_1F5022CC0];
         }
 
-        else if (v11 == 1)
+        else if (credentialTypes == 1)
         {
           goto LABEL_25;
         }
 
 LABEL_30:
-        if ([v4 indexOfSectionIdentifier:&unk_1F5022DF8] != 0x7FFFFFFFFFFFFFFFLL && !objc_msgSend(v4, "numberOfItemsInSection:", &unk_1F5022DF8))
+        if ([snapshotCopy indexOfSectionIdentifier:&unk_1F5022DF8] != 0x7FFFFFFFFFFFFFFFLL && !objc_msgSend(snapshotCopy, "numberOfItemsInSection:", &unk_1F5022DF8))
         {
           v15 = &unk_1F5022DF8;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-          [v4 deleteSectionsWithIdentifiers:v14];
+          [snapshotCopy deleteSectionsWithIdentifiers:v14];
         }
 
         goto LABEL_33;
       }
 
 LABEL_25:
-      v12 = [v4 itemIdentifiersInSectionWithIdentifier:&unk_1F5022DF8];
+      v12 = [snapshotCopy itemIdentifiersInSectionWithIdentifier:&unk_1F5022DF8];
       if ([v12 count])
       {
-        v13 = [v12 firstObject];
-        [v4 insertItemsWithIdentifiers:&unk_1F5023AD0 beforeItemWithIdentifier:v13];
+        firstObject = [v12 firstObject];
+        [snapshotCopy insertItemsWithIdentifiers:&unk_1F5023AD0 beforeItemWithIdentifier:firstObject];
       }
 
       else
       {
-        [v4 appendItemsWithIdentifiers:&unk_1F5023AE8 intoSectionWithIdentifier:&unk_1F5022DF8];
+        [snapshotCopy appendItemsWithIdentifiers:&unk_1F5023AE8 intoSectionWithIdentifier:&unk_1F5022DF8];
       }
 
       goto LABEL_30;
     }
 
-    if ([v4 indexOfSectionIdentifier:&unk_1F5022C48] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([snapshotCopy indexOfSectionIdentifier:&unk_1F5022C48] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v4 indexOfSectionIdentifier:&unk_1F5022C78] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([snapshotCopy indexOfSectionIdentifier:&unk_1F5022C78] == 0x7FFFFFFFFFFFFFFFLL)
       {
         v16 = &unk_1F5022DF8;
         v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-        [v4 appendSectionsWithIdentifiers:v9];
+        [snapshotCopy appendSectionsWithIdentifiers:v9];
 LABEL_21:
 
         goto LABEL_22;
@@ -2317,38 +2317,38 @@ LABEL_21:
       v10 = &unk_1F5022C48;
     }
 
-    [v4 insertSectionsWithIdentifiers:v9 beforeSectionWithIdentifier:v10];
+    [snapshotCopy insertSectionsWithIdentifiers:v9 beforeSectionWithIdentifier:v10];
     goto LABEL_21;
   }
 
 LABEL_33:
 }
 
-- (void)_addTOTPGeneratorsToSnapshot:(id)a3
+- (void)_addTOTPGeneratorsToSnapshot:(id)snapshot
 {
-  v7 = a3;
-  v4 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
-  if (v4 == 3)
+  snapshotCopy = snapshot;
+  credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+  if (credentialTypes == 3)
   {
-    [v7 insertItemsWithIdentifiers:self->_TOTPGenerators afterItemWithIdentifier:&unk_1F5022CC0];
+    [snapshotCopy insertItemsWithIdentifiers:self->_TOTPGenerators afterItemWithIdentifier:&unk_1F5022CC0];
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (credentialTypes == 2)
   {
-    [v7 insertSectionsWithIdentifiers:&unk_1F5023B48 beforeSectionWithIdentifier:&unk_1F5022CA8];
+    [snapshotCopy insertSectionsWithIdentifiers:&unk_1F5023B48 beforeSectionWithIdentifier:&unk_1F5022CA8];
     goto LABEL_7;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = credentialTypes == 1;
+  v6 = snapshotCopy;
   if (v5)
   {
-    [v7 insertSectionsWithIdentifiers:&unk_1F5023B30 afterSectionWithIdentifier:&unk_1F5022CA8];
+    [snapshotCopy insertSectionsWithIdentifiers:&unk_1F5023B30 afterSectionWithIdentifier:&unk_1F5022CA8];
 LABEL_7:
-    [v7 appendItemsWithIdentifiers:self->_TOTPGenerators intoSectionWithIdentifier:&unk_1F5022C30];
+    [snapshotCopy appendItemsWithIdentifiers:self->_TOTPGenerators intoSectionWithIdentifier:&unk_1F5022C30];
 LABEL_9:
-    v6 = v7;
+    v6 = snapshotCopy;
   }
 }
 
@@ -2360,14 +2360,14 @@ LABEL_9:
     v3 = _WBSLocalizedString();
     [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setTitle:v3];
 
-    v4 = [(SFAccountDetailViewController *)self _subtitleStringForSignInWithAppleUpgrade];
+    _subtitleStringForSignInWithAppleUpgrade = [(SFAccountDetailViewController *)self _subtitleStringForSignInWithAppleUpgrade];
 LABEL_5:
-    v6 = v4;
-    [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setSubtitle:v4];
+    v6 = _subtitleStringForSignInWithAppleUpgrade;
+    [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setSubtitle:_subtitleStringForSignInWithAppleUpgrade];
 
-    v7 = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell subtitleLabel];
-    v8 = [v7 layer];
-    [v8 setDisableUpdateMask:0];
+    subtitleLabel = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell subtitleLabel];
+    layer = [subtitleLabel layer];
+    [layer setDisableUpdateMask:0];
 
     securityRecommendationInfoCell = self->_securityRecommendationInfoCell;
 
@@ -2381,7 +2381,7 @@ LABEL_5:
     v5 = _WBSLocalizedString();
     [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setTitle:v5];
 
-    v4 = [(SFAccountDetailViewController *)self _subtitleStringForStrongPasswordUpgrade];
+    _subtitleStringForSignInWithAppleUpgrade = [(SFAccountDetailViewController *)self _subtitleStringForStrongPasswordUpgrade];
     goto LABEL_5;
   }
 
@@ -2400,21 +2400,21 @@ LABEL_5:
   v12 = [v11 imageWithTintColor:v18 renderingMode:1];
   [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setIcon:v12];
 
-  v13 = [(WBSPasswordWarning *)self->_passwordWarning localizedShortDescriptivePhrase];
-  [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setTitle:v13];
+  localizedShortDescriptivePhrase = [(WBSPasswordWarning *)self->_passwordWarning localizedShortDescriptivePhrase];
+  [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setTitle:localizedShortDescriptivePhrase];
 
-  v14 = [(SFAccountDetailViewController *)self _securityRecommendationSubtitleString];
-  [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setSubtitle:v14];
+  _securityRecommendationSubtitleString = [(SFAccountDetailViewController *)self _securityRecommendationSubtitleString];
+  [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setSubtitle:_securityRecommendationSubtitleString];
 
   [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell setShowsHideButton:[(WBSPasswordWarning *)self->_passwordWarning hasBeenHidden]^ 1];
-  v15 = [MEMORY[0x1E695E000] pm_defaults];
-  LOBYTE(v12) = [v15 pm_passwordManagerIsInDemoMode];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  LOBYTE(v12) = [pm_defaults pm_passwordManagerIsInDemoMode];
 
   if ((v12 & 1) == 0)
   {
-    v16 = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell subtitleLabel];
-    v17 = [v16 layer];
-    [v17 setDisableUpdateMask:18];
+    subtitleLabel2 = [(SFSecurityRecommendationInfoCell *)self->_securityRecommendationInfoCell subtitleLabel];
+    layer2 = [subtitleLabel2 layer];
+    [layer2 setDisableUpdateMask:18];
   }
 }
 
@@ -2469,62 +2469,62 @@ LABEL_5:
   return v4;
 }
 
-- (void)_configureUserCell:(id)a3
+- (void)_configureUserCell:(id)cell
 {
-  v10 = a3;
+  cellCopy = cell;
   v4 = _WBSLocalizedString();
   userForEditing = self->_userForEditing;
-  v6 = userForEditing;
+  user = userForEditing;
   if (!userForEditing)
   {
-    v6 = [(WBSSavedAccount *)self->_savedAccount user];
+    user = [(WBSSavedAccount *)self->_savedAccount user];
   }
 
   v7 = _WBSLocalizedString();
-  [(SFAccountDetailViewController *)self _configureCell:v10 withText:v4 detailText:v6 detailPlaceholderText:v7 secureEntry:0];
+  [(SFAccountDetailViewController *)self _configureCell:cellCopy withText:v4 detailText:user detailPlaceholderText:v7 secureEntry:0];
 
   if (!userForEditing)
   {
   }
 
-  [v10 setAccessibilityIdentifier:@"PasswordDetailViewUsernameCell"];
-  v8 = [v10 textLabel];
-  [v8 setAccessibilityIdentifier:@"PasswordDetailViewUsernameLabel"];
+  [cellCopy setAccessibilityIdentifier:@"PasswordDetailViewUsernameCell"];
+  textLabel = [cellCopy textLabel];
+  [textLabel setAccessibilityIdentifier:@"PasswordDetailViewUsernameLabel"];
 
   if (self->_isForFillingIndividualAccountFields)
   {
     v9 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-    [v10 setOverrideEditableTextFieldTextColor:v9];
+    [cellCopy setOverrideEditableTextFieldTextColor:v9];
   }
 
   else
   {
-    [v10 setOverrideEditableTextFieldTextColor:0];
+    [cellCopy setOverrideEditableTextFieldTextColor:0];
   }
 }
 
-- (id)_securePasswordPlaceholderText:(id)a3
+- (id)_securePasswordPlaceholderText:(id)text
 {
-  v3 = [a3 safari_numberOfComposedCharacters];
+  safari_numberOfComposedCharacters = [text safari_numberOfComposedCharacters];
 
-  return [&stru_1F4FE9E38 stringByPaddingToLength:v3 withString:@"•" startingAtIndex:0];
+  return [&stru_1F4FE9E38 stringByPaddingToLength:safari_numberOfComposedCharacters withString:@"•" startingAtIndex:0];
 }
 
-- (void)_configurePasswordCell:(id)a3
+- (void)_configurePasswordCell:(id)cell
 {
-  v15 = a3;
+  cellCopy = cell;
   passwordForEditing = self->_passwordForEditing;
   if (passwordForEditing)
   {
-    v5 = passwordForEditing;
+    password = passwordForEditing;
   }
 
   else
   {
-    v5 = [(WBSSavedAccount *)self->_savedAccount password];
+    password = [(WBSSavedAccount *)self->_savedAccount password];
   }
 
-  v6 = v5;
+  v6 = password;
   if (self->_showPasswordAsBulletsWhenNotEditing && ![(SFAccountDetailViewController *)self isEditing])
   {
     v7 = [(SFAccountDetailViewController *)self _securePasswordPlaceholderText:v6];
@@ -2544,122 +2544,122 @@ LABEL_5:
 
   v9 = _WBSLocalizedString();
   v10 = _WBSLocalizedString();
-  v11 = [MEMORY[0x1E695E000] pm_defaults];
-  -[SFAccountDetailViewController _configureCell:withText:detailText:detailPlaceholderText:secureEntry:](self, "_configureCell:withText:detailText:detailPlaceholderText:secureEntry:", v15, v9, v8, v10, [v11 pm_passwordManagerIsInDemoMode] ^ 1);
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  -[SFAccountDetailViewController _configureCell:withText:detailText:detailPlaceholderText:secureEntry:](self, "_configureCell:withText:detailText:detailPlaceholderText:secureEntry:", cellCopy, v9, v8, v10, [pm_defaults pm_passwordManagerIsInDemoMode] ^ 1);
 
-  [v15 setAccessibilityIdentifier:@"PasswordDetailViewPasswordCell"];
-  v12 = [v15 textLabel];
-  [v12 setAccessibilityIdentifier:@"PasswordDetailViewUsernameLabel"];
+  [cellCopy setAccessibilityIdentifier:@"PasswordDetailViewPasswordCell"];
+  textLabel = [cellCopy textLabel];
+  [textLabel setAccessibilityIdentifier:@"PasswordDetailViewUsernameLabel"];
 
   if (self->_completedUpgradeToSignInWithApple)
   {
-    v13 = 0;
+    isEditing = 0;
   }
 
   else
   {
-    v13 = [(SFAccountDetailViewController *)self isEditing];
+    isEditing = [(SFAccountDetailViewController *)self isEditing];
   }
 
-  [v15 setEnabled:v13];
-  [(SFAccountDetailViewController *)self _setHighLyLegibleFontForDetailTextInCell:v15];
+  [cellCopy setEnabled:isEditing];
+  [(SFAccountDetailViewController *)self _setHighLyLegibleFontForDetailTextInCell:cellCopy];
   if (self->_isForFillingIndividualAccountFields)
   {
     v14 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-    [v15 setOverrideEditableTextFieldTextColor:v14];
+    [cellCopy setOverrideEditableTextFieldTextColor:v14];
   }
 
   else
   {
-    [v15 setOverrideEditableTextFieldTextColor:0];
+    [cellCopy setOverrideEditableTextFieldTextColor:0];
   }
 }
 
-- (void)_setHighLyLegibleFontForDetailTextInCell:(id)a3
+- (void)_setHighLyLegibleFontForDetailTextInCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if ([(SFAccountDetailViewController *)self _allowEditing])
   {
-    v11 = [(SFAccountDetailViewController *)self _editableCellWithCell:v4];
+    detailTextLabel = [(SFAccountDetailViewController *)self _editableCellWithCell:cellCopy];
 
-    v5 = [v11 editableTextField];
+    editableTextField = [detailTextLabel editableTextField];
     v6 = MEMORY[0x1E69DB878];
-    v7 = [v5 font];
-    v8 = [v6 _sf_highLegibilityAlternateFont:v7];
+    font = [editableTextField font];
+    v8 = [v6 _sf_highLegibilityAlternateFont:font];
 
     if (v8)
     {
-      [v5 setFont:v8];
+      [editableTextField setFont:v8];
     }
   }
 
   else
   {
-    v11 = [v4 detailTextLabel];
+    detailTextLabel = [cellCopy detailTextLabel];
 
     v9 = MEMORY[0x1E69DB878];
-    v10 = [v11 font];
-    v5 = [v9 _sf_highLegibilityAlternateFont:v10];
+    font2 = [detailTextLabel font];
+    editableTextField = [v9 _sf_highLegibilityAlternateFont:font2];
 
-    if (v5)
+    if (editableTextField)
     {
-      [v11 setFont:v5];
+      [detailTextLabel setFont:editableTextField];
     }
   }
 }
 
-- (void)_configureCell:(id)a3 withText:(id)a4 detailText:(id)a5 detailPlaceholderText:(id)a6 secureEntry:(BOOL)a7
+- (void)_configureCell:(id)cell withText:(id)text detailText:(id)detailText detailPlaceholderText:(id)placeholderText secureEntry:(BOOL)entry
 {
-  v7 = a7;
-  v17 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v14 textLabel];
-  [v15 setText:v13];
+  entryCopy = entry;
+  placeholderTextCopy = placeholderText;
+  detailTextCopy = detailText;
+  textCopy = text;
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:textCopy];
 
-  v16 = [v14 editableTextField];
+  editableTextField = [cellCopy editableTextField];
 
-  [v16 setText:v12];
-  [v16 setSecureTextEntry:v7];
-  [v16 setDisplaySecureTextUsingPlainText:v7];
+  [editableTextField setText:detailTextCopy];
+  [editableTextField setSecureTextEntry:entryCopy];
+  [editableTextField setDisplaySecureTextUsingPlainText:entryCopy];
   if ([(SFAccountDetailViewController *)self _allowEditing])
   {
-    [v16 addTarget:self action:sel__textFieldChanged_ forControlEvents:0x20000];
-    [v16 setPlaceholder:v17];
+    [editableTextField addTarget:self action:sel__textFieldChanged_ forControlEvents:0x20000];
+    [editableTextField setPlaceholder:placeholderTextCopy];
   }
 }
 
-- (id)_savedAccountWebsiteCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_savedAccountWebsiteCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+  viewCopy = view;
+  pathCopy = path;
+  credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
   savedAccount = self->_savedAccount;
-  if (v8 == 2)
+  if (credentialTypes == 2)
   {
-    v10 = [(WBSSavedAccount *)savedAccount passkeyRelyingPartyID];
+    passkeyRelyingPartyID = [(WBSSavedAccount *)savedAccount passkeyRelyingPartyID];
   }
 
   else
   {
-    v11 = [(WBSSavedAccount *)savedAccount userVisibleSites];
-    v10 = [v11 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    userVisibleSites = [(WBSSavedAccount *)savedAccount userVisibleSites];
+    passkeyRelyingPartyID = [userVisibleSites objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
-  v12 = [v6 dequeueReusableCellWithIdentifier:@"site"];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"site"];
   if (!v12)
   {
     v12 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"site"];
   }
 
-  v13 = [v12 textLabel];
-  [v13 setText:v10];
+  textLabel = [v12 textLabel];
+  [textLabel setText:passkeyRelyingPartyID];
 
-  if (([(SFAccountDetailViewController *)self _allowEditing]|| [(SFAccountDetailViewController *)self _allowAuditing]) && v10)
+  if (([(SFAccountDetailViewController *)self _allowEditing]|| [(SFAccountDetailViewController *)self _allowAuditing]) && passkeyRelyingPartyID)
   {
     v14 = MEMORY[0x1E695DFF8];
-    v15 = [@"https://" stringByAppendingString:v10];
+    v15 = [@"https://" stringByAppendingString:passkeyRelyingPartyID];
     v16 = [v14 URLWithString:v15];
 
     if (v16)
@@ -2706,35 +2706,35 @@ void __82__SFAccountDetailViewController__savedAccountWebsiteCellForTableView_at
   }
 }
 
-- (id)_deleteCellForTableView:(id)a3
+- (id)_deleteCellForTableView:(id)view
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"deleteAccount"];
+  v4 = [view dequeueReusableCellWithIdentifier:@"deleteAccount"];
   if (!v4)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"deleteAccount"];
   }
 
-  v5 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
-  if (v5 > 7)
+  credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+  if (credentialTypes > 7)
   {
-    if ((v5 - 8) > 1)
+    if ((credentialTypes - 8) > 1)
     {
       goto LABEL_10;
     }
   }
 
-  else if (v5 != 1 && v5 != 2 && v5 != 3)
+  else if (credentialTypes != 1 && credentialTypes != 2 && credentialTypes != 3)
   {
     goto LABEL_10;
   }
 
   v6 = _WBSLocalizedString();
-  v7 = [v4 textLabel];
-  [v7 setText:v6];
+  textLabel = [v4 textLabel];
+  [textLabel setText:v6];
 
 LABEL_10:
-  v8 = [(SFAccountDetailViewController *)self _canUserDeleteSavedAccount];
-  if (v8)
+  _canUserDeleteSavedAccount = [(SFAccountDetailViewController *)self _canUserDeleteSavedAccount];
+  if (_canUserDeleteSavedAccount)
   {
     v9 = 0;
   }
@@ -2744,93 +2744,93 @@ LABEL_10:
     v9 = 2;
   }
 
-  v10 = [v4 textLabel];
-  [v10 setTintAdjustmentMode:v9];
+  textLabel2 = [v4 textLabel];
+  [textLabel2 setTintAdjustmentMode:v9];
 
-  v11 = [v4 textLabel];
-  [v11 setEnabled:v8];
+  textLabel3 = [v4 textLabel];
+  [textLabel3 setEnabled:_canUserDeleteSavedAccount];
 
-  v12 = [MEMORY[0x1E69DC888] systemRedColor];
-  v13 = [v4 textLabel];
-  [v13 setTextColor:v12];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  textLabel4 = [v4 textLabel];
+  [textLabel4 setTextColor:systemRedColor];
 
-  v14 = [(SFAccountDetailViewController *)self _textAlignmentOfCellsInDeleteAccountSection];
-  v15 = [v4 textLabel];
-  [v15 setTextAlignment:v14];
+  _textAlignmentOfCellsInDeleteAccountSection = [(SFAccountDetailViewController *)self _textAlignmentOfCellsInDeleteAccountSection];
+  textLabel5 = [v4 textLabel];
+  [textLabel5 setTextAlignment:_textAlignmentOfCellsInDeleteAccountSection];
 
-  v16 = [v4 textLabel];
-  [v16 setNumberOfLines:0];
+  textLabel6 = [v4 textLabel];
+  [textLabel6 setNumberOfLines:0];
 
   return v4;
 }
 
 - (BOOL)_canUserDeleteSavedAccount
 {
-  v3 = [(WBSSavedAccount *)self->_savedAccount canUserEditSavedAccount];
-  if (v3)
+  canUserEditSavedAccount = [(WBSSavedAccount *)self->_savedAccount canUserEditSavedAccount];
+  if (canUserEditSavedAccount)
   {
     if ([(WBSSavedAccount *)self->_savedAccount isRecentlyDeleted])
     {
       savedAccount = self->_savedAccount;
 
-      LOBYTE(v3) = [(WBSSavedAccount *)savedAccount isCurrentUserOriginalContributor];
+      LOBYTE(canUserEditSavedAccount) = [(WBSSavedAccount *)savedAccount isCurrentUserOriginalContributor];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(canUserEditSavedAccount) = 1;
     }
   }
 
-  return v3;
+  return canUserEditSavedAccount;
 }
 
-- (void)_configureHeaderViewCell:(id)a3
+- (void)_configureHeaderViewCell:(id)cell
 {
-  v12 = a3;
-  [v12 setDelegate:self];
-  v4 = [(WBSSavedAccount *)self->_savedAccount userVisibleDomain];
-  v5 = [(WBSSavedAccount *)self->_savedAccount customTitle];
-  [v12 setHeaderTitleForHighLevelDomain:v4 customTitle:v5];
+  cellCopy = cell;
+  [cellCopy setDelegate:self];
+  userVisibleDomain = [(WBSSavedAccount *)self->_savedAccount userVisibleDomain];
+  customTitle = [(WBSSavedAccount *)self->_savedAccount customTitle];
+  [cellCopy setHeaderTitleForHighLevelDomain:userVisibleDomain customTitle:customTitle];
 
   titleForEditing = self->_titleForEditing;
   if (titleForEditing)
   {
-    v7 = [v12 titleTextField];
-    [v7 setText:titleForEditing];
+    titleTextField = [cellCopy titleTextField];
+    [titleTextField setText:titleForEditing];
   }
 
-  [(SFAccountDetailViewController *)self _updateIconForCell:v12];
-  v8 = [(SFAccountDetailViewController *)self _lastModifiedDateString];
-  [v12 setLastModifiedDateString:v8];
+  [(SFAccountDetailViewController *)self _updateIconForCell:cellCopy];
+  _lastModifiedDateString = [(SFAccountDetailViewController *)self _lastModifiedDateString];
+  [cellCopy setLastModifiedDateString:_lastModifiedDateString];
 
-  v9 = [(WBSSavedAccount *)self->_savedAccount customTitle];
-  v10 = [v9 copy];
+  customTitle2 = [(WBSSavedAccount *)self->_savedAccount customTitle];
+  v10 = [customTitle2 copy];
   v11 = self->_titleForEditing;
   self->_titleForEditing = v10;
 
   [(SFAccountDetailViewController *)self _updateHeaderViewCell];
-  [v12 setSavedAccount:self->_savedAccount];
+  [cellCopy setSavedAccount:self->_savedAccount];
 }
 
-- (void)_updateIconForCell:(id)a3
+- (void)_updateIconForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  cellCopy = cell;
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
     v7 = [WeakRetained iconControllerForAccountDetailViewController:self];
-    v8 = [v7 backgroundColorForDomain:v5];
-    [v4 setMonogramBackgroundColor:v8];
+    v8 = [v7 backgroundColorForDomain:highLevelDomain];
+    [cellCopy setMonogramBackgroundColor:v8];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__SFAccountDetailViewController__updateIconForCell___block_invoke;
     v10[3] = &unk_1E848F598;
-    v11 = v4;
+    v11 = cellCopy;
     v12 = v7;
-    v13 = v5;
+    v13 = highLevelDomain;
     v9 = v7;
     [v9 iconForDomain:v13 responseHandler:v10];
   }
@@ -2838,7 +2838,7 @@ LABEL_10:
   else
   {
     v9 = +[_SFAccountManagerAppearanceValues defaultMonogramBackgroundColor];
-    [v4 setMonogramBackgroundColor:v9];
+    [cellCopy setMonogramBackgroundColor:v9];
   }
 }
 
@@ -2886,18 +2886,18 @@ void __52__SFAccountDetailViewController__updateIconForCell___block_invoke_2(uin
   }
 }
 
-- (id)_deletePasswordCellForTableView:(id)a3 shouldRemoveTOTPGenerator:(BOOL)a4
+- (id)_deletePasswordCellForTableView:(id)view shouldRemoveTOTPGenerator:(BOOL)generator
 {
-  v4 = a4;
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"removePassword"];
+  generatorCopy = generator;
+  v5 = [view dequeueReusableCellWithIdentifier:@"removePassword"];
   if (v5)
   {
-    if (v4)
+    if (generatorCopy)
     {
 LABEL_3:
       v6 = _WBSLocalizedString();
-      v7 = [v5 textLabel];
-      [v7 setText:v6];
+      textLabel = [v5 textLabel];
+      [textLabel setText:v6];
       goto LABEL_6;
     }
   }
@@ -2905,49 +2905,49 @@ LABEL_3:
   else
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"removePassword"];
-    if (v4)
+    if (generatorCopy)
     {
       goto LABEL_3;
     }
   }
 
   v6 = _WBSLocalizedString();
-  v7 = [v5 textLabel];
-  [v7 setText:v6];
-  v8 = [v5 textLabel];
-  [v8 setText:v6];
+  textLabel = [v5 textLabel];
+  [textLabel setText:v6];
+  textLabel2 = [v5 textLabel];
+  [textLabel2 setText:v6];
 
 LABEL_6:
-  v9 = [MEMORY[0x1E69DC888] systemRedColor];
-  v10 = [v5 textLabel];
-  [v10 setTextColor:v9];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  textLabel3 = [v5 textLabel];
+  [textLabel3 setTextColor:systemRedColor];
 
-  v11 = [v5 textLabel];
-  [v11 setNumberOfLines:0];
+  textLabel4 = [v5 textLabel];
+  [textLabel4 setNumberOfLines:0];
 
   return v5;
 }
 
-- (id)_deletePasskeyCellForTableView:(id)a3
+- (id)_deletePasskeyCellForTableView:(id)view
 {
-  v3 = [a3 dequeueReusableCellWithIdentifier:@"removePasskey"];
+  v3 = [view dequeueReusableCellWithIdentifier:@"removePasskey"];
   if (!v3)
   {
     v3 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"removePasskey"];
   }
 
   v4 = _WBSLocalizedString();
-  v5 = [v3 textLabel];
-  [v5 setText:v4];
-  v6 = [v3 textLabel];
-  [v6 setText:v4];
+  textLabel = [v3 textLabel];
+  [textLabel setText:v4];
+  textLabel2 = [v3 textLabel];
+  [textLabel2 setText:v4];
 
-  v7 = [MEMORY[0x1E69DC888] systemRedColor];
-  v8 = [v3 textLabel];
-  [v8 setTextColor:v7];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  textLabel3 = [v3 textLabel];
+  [textLabel3 setTextColor:systemRedColor];
 
-  v9 = [v3 textLabel];
-  [v9 setNumberOfLines:0];
+  textLabel4 = [v3 textLabel];
+  [textLabel4 setNumberOfLines:0];
 
   return v3;
 }
@@ -2958,36 +2958,36 @@ LABEL_6:
   v3 = _WBSLocalizedString();
   if ([(WBSSavedAccount *)self->_savedAccount isSavedInSharedGroup])
   {
-    v4 = [MEMORY[0x1E69C88E8] sharedProvider];
-    v5 = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
-    v6 = [v4 cachedGroupWithID:v5];
-    v7 = [v6 displayName];
+    mEMORY[0x1E69C88E8] = [MEMORY[0x1E69C88E8] sharedProvider];
+    sharedGroupID = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
+    v6 = [mEMORY[0x1E69C88E8] cachedGroupWithID:sharedGroupID];
+    displayName = [v6 displayName];
   }
 
   else
   {
-    v7 = _WBSLocalizedString();
+    displayName = _WBSLocalizedString();
   }
 
-  v8 = [(SFAccountDetailViewController *)self _groupSectionValueStyleTableViewCellWithText:v3 secondaryText:v7];
+  v8 = [(SFAccountDetailViewController *)self _groupSectionValueStyleTableViewCellWithText:v3 secondaryText:displayName];
 
   return v8;
 }
 
 - (id)_originalContributorCell
 {
-  v3 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
   v4 = _WBSLocalizedString();
-  [v3 setText:v4];
+  [valueCellConfiguration setText:v4];
 
-  v5 = [MEMORY[0x1E695A968] sharedManager];
-  v6 = [(WBSSavedAccount *)self->_savedAccount originalContributorParticipantID];
-  v7 = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
-  v8 = [v5 displayNameForOriginalContributorParticipantID:v6 inGroupID:v7];
-  [v3 setSecondaryText:v8];
+  mEMORY[0x1E695A968] = [MEMORY[0x1E695A968] sharedManager];
+  originalContributorParticipantID = [(WBSSavedAccount *)self->_savedAccount originalContributorParticipantID];
+  sharedGroupID = [(WBSSavedAccount *)self->_savedAccount sharedGroupID];
+  v8 = [mEMORY[0x1E695A968] displayNameForOriginalContributorParticipantID:originalContributorParticipantID inGroupID:sharedGroupID];
+  [valueCellConfiguration setSecondaryText:v8];
 
-  v9 = [(SFAccountDetailViewController *)self tableView];
-  v10 = [v9 dequeueReusableCellWithIdentifier:@"originalContributor"];
+  tableView = [(SFAccountDetailViewController *)self tableView];
+  v10 = [tableView dequeueReusableCellWithIdentifier:@"originalContributor"];
   v11 = v10;
   if (v10)
   {
@@ -3001,15 +3001,15 @@ LABEL_6:
 
   v13 = v12;
 
-  [v13 setContentConfiguration:v3];
+  [v13 setContentConfiguration:valueCellConfiguration];
 
   return v13;
 }
 
 - (id)_recoverRecentlyDeletedAccountCell
 {
-  v3 = [(SFAccountDetailViewController *)self tableView];
-  v4 = [v3 dequeueReusableCellWithIdentifier:@"RecoverRecentlyDeletedAccount"];
+  tableView = [(SFAccountDetailViewController *)self tableView];
+  v4 = [tableView dequeueReusableCellWithIdentifier:@"RecoverRecentlyDeletedAccount"];
   v5 = v4;
   if (v4)
   {
@@ -3023,31 +3023,31 @@ LABEL_6:
 
   v7 = v6;
 
-  v8 = [MEMORY[0x1E69DCC28] cellConfiguration];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   if ([(WBSSavedAccount *)self->_savedAccount isSavedInSharedGroup])
   {
     [(WBSSavedAccount *)self->_savedAccount isCurrentUserOriginalContributor];
   }
 
   v9 = _WBSLocalizedString();
-  [v8 setText:v9];
+  [cellConfiguration setText:v9];
   v10 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-  v11 = [v8 textProperties];
-  [v11 setColor:v10];
+  textProperties = [cellConfiguration textProperties];
+  [textProperties setColor:v10];
 
-  v12 = [(SFAccountDetailViewController *)self _listContentTextAlignmentOfCellsInDeleteAccountSection];
-  v13 = [v8 textProperties];
-  [v13 setAlignment:v12];
+  _listContentTextAlignmentOfCellsInDeleteAccountSection = [(SFAccountDetailViewController *)self _listContentTextAlignmentOfCellsInDeleteAccountSection];
+  textProperties2 = [cellConfiguration textProperties];
+  [textProperties2 setAlignment:_listContentTextAlignmentOfCellsInDeleteAccountSection];
 
-  [v7 setContentConfiguration:v8];
+  [v7 setContentConfiguration:cellConfiguration];
 
   return v7;
 }
 
 - (id)_moveRecentlyDeletedAccountToMyPasswordsCell
 {
-  v3 = [(SFAccountDetailViewController *)self tableView];
-  v4 = [v3 dequeueReusableCellWithIdentifier:@"MoveRecentlyDeletedAccountToMyPasswords"];
+  tableView = [(SFAccountDetailViewController *)self tableView];
+  v4 = [tableView dequeueReusableCellWithIdentifier:@"MoveRecentlyDeletedAccountToMyPasswords"];
   v5 = v4;
   if (v4)
   {
@@ -3061,35 +3061,35 @@ LABEL_6:
 
   v7 = v6;
 
-  v8 = [MEMORY[0x1E69DCC28] cellConfiguration];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   v9 = _WBSLocalizedString();
-  [v8 setText:v9];
+  [cellConfiguration setText:v9];
 
-  v10 = [MEMORY[0x1E69DC888] tintColor];
-  v11 = [v8 textProperties];
-  [v11 setColor:v10];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
+  textProperties = [cellConfiguration textProperties];
+  [textProperties setColor:tintColor];
 
-  v12 = [(SFAccountDetailViewController *)self _listContentTextAlignmentOfCellsInDeleteAccountSection];
-  v13 = [v8 textProperties];
-  [v13 setAlignment:v12];
+  _listContentTextAlignmentOfCellsInDeleteAccountSection = [(SFAccountDetailViewController *)self _listContentTextAlignmentOfCellsInDeleteAccountSection];
+  textProperties2 = [cellConfiguration textProperties];
+  [textProperties2 setAlignment:_listContentTextAlignmentOfCellsInDeleteAccountSection];
 
-  [v7 setContentConfiguration:v8];
+  [v7 setContentConfiguration:cellConfiguration];
 
   return v7;
 }
 
 - (int64_t)_listContentTextAlignmentOfCellsInDeleteAccountSection
 {
-  v2 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
-  v3 = [v2 numberOfItemsInSection:&unk_1F5022C78] < 2;
+  snapshot = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
+  v3 = [snapshot numberOfItemsInSection:&unk_1F5022C78] < 2;
 
   return v3;
 }
 
 - (int64_t)_textAlignmentOfCellsInDeleteAccountSection
 {
-  v2 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
-  if ([v2 numberOfItemsInSection:&unk_1F5022C78] <= 1)
+  snapshot = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
+  if ([snapshot numberOfItemsInSection:&unk_1F5022C78] <= 1)
   {
     v3 = 1;
   }
@@ -3104,26 +3104,26 @@ LABEL_6:
 
 - (id)_cellsThatChangeAppearanceOnEdit
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  [v2 addObjectsFromArray:&unk_1F5023B60];
-  [v2 addObjectsFromArray:&unk_1F5023B78];
-  [v2 addObjectsFromArray:&unk_1F5023B90];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:&unk_1F5023B60];
+  [array addObjectsFromArray:&unk_1F5023B78];
+  [array addObjectsFromArray:&unk_1F5023B90];
 
-  return v2;
+  return array;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
   v9 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v8];
 
   if (v9 > 19)
   {
     if (v9 == 20)
     {
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       [(SFAccountDetailViewController *)self _showConfirmationToDeletePasswordAndTOTPGenerator];
       goto LABEL_33;
     }
@@ -3133,18 +3133,18 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    v12 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
-    if (v12 == 3)
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+    if (credentialTypes == 3)
     {
-      v10 = self;
+      selfCopy3 = self;
       v11 = 3;
       goto LABEL_18;
     }
 
-    if (v12 != 2)
+    if (credentialTypes != 2)
     {
-      if (v12 != 1)
+      if (credentialTypes != 1)
       {
         goto LABEL_33;
       }
@@ -3153,25 +3153,25 @@ LABEL_6:
     }
 
 LABEL_17:
-    v10 = self;
+    selfCopy3 = self;
     v11 = 2;
     goto LABEL_18;
   }
 
   if (v9 == 18)
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     goto LABEL_17;
   }
 
   if (v9 == 19)
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 LABEL_5:
-    v10 = self;
+    selfCopy3 = self;
     v11 = 1;
 LABEL_18:
-    [(SFAccountDetailViewController *)v10 _showConfirmationToDeleteCredentialTypes:v11];
+    [(SFAccountDetailViewController *)selfCopy3 _showConfirmationToDeleteCredentialTypes:v11];
     goto LABEL_33;
   }
 
@@ -3185,9 +3185,9 @@ LABEL_12:
 
     else if (v9 == 8)
     {
-      v13 = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
-      v14 = [v13 firstObject];
-      [(SFAccountDetailViewController *)self _deleteTOTPGeneratorWithConfirmation:v14];
+      totpGenerators = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
+      firstObject = [totpGenerators firstObject];
+      [(SFAccountDetailViewController *)self _deleteTOTPGeneratorWithConfirmation:firstObject];
     }
 
     goto LABEL_32;
@@ -3199,14 +3199,14 @@ LABEL_12:
     {
       if (v9 == 16)
       {
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         [(SFAccountDetailViewController *)self _recoverSavedAccount];
         goto LABEL_33;
       }
 
       if (v9 == 17)
       {
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         [(SFAccountDetailViewController *)self _presentMoveRecentlyDeletedSavedAccountToMyPasswordsConfirmationAlert];
         goto LABEL_33;
       }
@@ -3216,7 +3216,7 @@ LABEL_12:
 
     if (v9 == 13)
     {
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       if ([MEMORY[0x1E696AAE8] safari_isSafariViewServiceBundle])
       {
         [(SFAccountDetailViewController *)self _openChangePasswordURLInWebBrowser];
@@ -3235,15 +3235,15 @@ LABEL_12:
         goto LABEL_43;
       }
 
-      [v6 deselectRowAtIndexPath:v7 animated:1];
-      v30 = [(WBSSavedAccount *)self->_savedAccount notesEntry];
-      v31 = [v30 length];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+      notesEntry = [(WBSSavedAccount *)self->_savedAccount notesEntry];
+      v31 = [notesEntry length];
 
       if (!v31)
       {
         [(SFAccountDetailViewController *)self _setEditing:1 animated:1];
-        v32 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
-        [v32 becomeFirstResponder];
+        textView = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+        [textView becomeFirstResponder];
       }
     }
   }
@@ -3255,19 +3255,19 @@ LABEL_12:
       if (v9 == 4)
       {
 LABEL_32:
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         goto LABEL_33;
       }
 
       if (v9 == 7)
       {
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         self->_didAcceptTOTPQRCode = 0;
         v37 = _WBSLocalizedString();
         v15 = MEMORY[0x1E696AEC0];
         v16 = _WBSLocalizedString();
-        v17 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
-        v36 = [v15 stringWithFormat:v16, v17];
+        highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+        v36 = [v15 stringWithFormat:v16, highLevelDomain];
 
         v18 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v37 message:v36 imageNamed:@"alert-passwords" preferredStyle:0];
         v19 = MEMORY[0x1E69DC648];
@@ -3303,7 +3303,7 @@ LABEL_32:
         v29 = [v26 actionWithTitle:v27 style:1 handler:v38];
         [v28 addAction:v29];
 
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         [(SFAccountDetailViewController *)self presentViewController:v28 animated:1 completion:0];
 
         goto LABEL_33;
@@ -3328,14 +3328,14 @@ LABEL_43:
 
       if ([(SFAccountDetailViewController *)self _shouldShowMenuForItemIdentifier:v9])
       {
-        v33 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
-        [v33 setSelectedRange:{0, 0}];
+        textView2 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+        [textView2 setSelectedRange:{0, 0}];
 
         [(UIEditMenuInteraction *)self->_editMenuInteraction dismissMenu];
         v34 = MEMORY[0x1E69DC9D8];
-        [v6 rectForRowAtIndexPath:v7];
+        [viewCopy rectForRowAtIndexPath:pathCopy];
         UIRectGetCenter();
-        v35 = [v34 configurationWithIdentifier:v7 sourcePoint:?];
+        v35 = [v34 configurationWithIdentifier:pathCopy sourcePoint:?];
         [(UIEditMenuInteraction *)self->_editMenuInteraction presentEditMenuWithConfiguration:v35];
 
         goto LABEL_33;
@@ -3344,7 +3344,7 @@ LABEL_43:
       goto LABEL_32;
     }
 
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     if (v9 == 11)
     {
       [(SFAccountDetailViewController *)self _initiateUpgradeToSignInWithApple];
@@ -3420,12 +3420,12 @@ void __74__SFAccountDetailViewController__replaceAddPasswordButtonWithPasswordCe
   [v3 _updatePasswordFieldTextSuggestions:v4];
 }
 
-- (BOOL)_shouldShowMenuForItemIdentifier:(int64_t)a3
+- (BOOL)_shouldShowMenuForItemIdentifier:(int64_t)identifier
 {
   v3 = 1;
-  if (a3 > 5)
+  if (identifier > 5)
   {
-    if (a3 != 6 && a3 != 15)
+    if (identifier != 6 && identifier != 15)
     {
       return 0;
     }
@@ -3433,15 +3433,15 @@ void __74__SFAccountDetailViewController__replaceAddPasswordButtonWithPasswordCe
 
   else
   {
-    if (a3 == 1)
+    if (identifier == 1)
     {
-      v4 = [(WBSSavedAccount *)self->_savedAccount user];
-      v3 = [v4 length] != 0;
+      user = [(WBSSavedAccount *)self->_savedAccount user];
+      v3 = [user length] != 0;
 
       return v3;
     }
 
-    if (a3 != 3)
+    if (identifier != 3)
     {
       return 0;
     }
@@ -3456,14 +3456,14 @@ void __74__SFAccountDetailViewController__replaceAddPasswordButtonWithPasswordCe
   {
     self->_showPasswordAsBulletsWhenNotEditing = 0;
     passwordForEditing = self->_passwordForEditing;
-    v5 = passwordForEditing;
+    password = passwordForEditing;
     if (!passwordForEditing)
     {
-      v5 = [(WBSSavedAccount *)self->_savedAccount password];
+      password = [(WBSSavedAccount *)self->_savedAccount password];
     }
 
-    v4 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-    [v4 setText:v5];
+    editableTextField = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+    [editableTextField setText:password];
 
     if (!passwordForEditing)
     {
@@ -3471,47 +3471,47 @@ void __74__SFAccountDetailViewController__replaceAddPasswordButtonWithPasswordCe
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[SFAccountDetailViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v5 section]) == 8)
+  pathCopy = path;
+  if (-[SFAccountDetailViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]) == 8)
   {
-    v6 = [(WBSSavedAccount *)self->_savedAccount credentialTypes]!= 2;
+    isEditing = [(WBSSavedAccount *)self->_savedAccount credentialTypes]!= 2;
   }
 
   else
   {
-    v7 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:v5];
+    v7 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
     v8 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v7];
 
     if (v8 == 6)
     {
-      v6 = [(SFAccountDetailViewController *)self isEditing];
+      isEditing = [(SFAccountDetailViewController *)self isEditing];
     }
 
     else
     {
-      v6 = 0;
+      isEditing = 0;
     }
   }
 
-  v9 = v6;
+  v9 = isEditing;
 
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v5 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:a4];
+  v5 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:path];
   v6 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v5];
 
   return v6 == 15 || v6 == 6;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v8 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:a4];
+  viewCopy = view;
+  v8 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:path];
   v7 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v8];
 
   LOBYTE(v8) = 0;
@@ -3524,18 +3524,18 @@ void __74__SFAccountDetailViewController__replaceAddPasswordButtonWithPasswordCe
         goto LABEL_15;
       }
 
-      if (!-[SFAccountDetailViewController _allowEditing](self, "_allowEditing") || ([v6 isEditing] & 1) != 0)
+      if (!-[SFAccountDetailViewController _allowEditing](self, "_allowEditing") || ([viewCopy isEditing] & 1) != 0)
       {
         LOBYTE(v8) = 0;
         goto LABEL_15;
       }
 
-      v9 = [(WBSSavedAccount *)self->_savedAccount isCurrentUserOriginalContributor];
+      isCurrentUserOriginalContributor = [(WBSSavedAccount *)self->_savedAccount isCurrentUserOriginalContributor];
       goto LABEL_8;
     }
 
 LABEL_14:
-    LODWORD(v8) = [v6 isEditing] ^ 1;
+    LODWORD(v8) = [viewCopy isEditing] ^ 1;
     goto LABEL_15;
   }
 
@@ -3554,9 +3554,9 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v9 = [(SFAccountDetailViewController *)self _canUserDeleteSavedAccount];
+      isCurrentUserOriginalContributor = [(SFAccountDetailViewController *)self _canUserDeleteSavedAccount];
 LABEL_8:
-      LOBYTE(v8) = v9;
+      LOBYTE(v8) = isCurrentUserOriginalContributor;
       goto LABEL_15;
     }
 
@@ -3568,14 +3568,14 @@ LABEL_15:
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = [(SFAccountDetailViewController *)self _sectionTypeForSection:a4];
+  v5 = [(SFAccountDetailViewController *)self _sectionTypeForSection:section];
   if (v5 != 1)
   {
     if (!v5 && !self->_isForFillingIndividualAccountFields)
     {
-      v6 = [(SFAccountDetailViewController *)self _accountHeaderSectionFooterView];
+      _accountHeaderSectionFooterView = [(SFAccountDetailViewController *)self _accountHeaderSectionFooterView];
       goto LABEL_7;
     }
 
@@ -3585,37 +3585,37 @@ LABEL_15:
   if (self->_isForFillingIndividualAccountFields)
   {
 LABEL_6:
-    v6 = 0;
+    _accountHeaderSectionFooterView = 0;
     goto LABEL_7;
   }
 
-  v6 = [(SFAccountDetailViewController *)self _passkeySectionFooterView];
+  _accountHeaderSectionFooterView = [(SFAccountDetailViewController *)self _passkeySectionFooterView];
 LABEL_7:
 
-  return v6;
+  return _accountHeaderSectionFooterView;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SFAccountDetailViewController *)self tableView];
-  v12 = [v11 isEditing];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  actionsCopy = actions;
+  tableView = [(SFAccountDetailViewController *)self tableView];
+  isEditing = [tableView isEditing];
 
-  if (v12)
+  if (isEditing)
   {
     v13 = [MEMORY[0x1E69DCC60] menuWithChildren:MEMORY[0x1E695E0F0]];
     goto LABEL_18;
   }
 
-  v14 = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:v8 withConfiguration:v9];
+  v14 = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:interactionCopy withConfiguration:configurationCopy];
   if (v14)
   {
     objc_initWeak(location, self);
     v15 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:v14];
     v16 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v15];
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"doc.on.doc"];
     if (v16 > 5)
     {
@@ -3630,7 +3630,7 @@ LABEL_7:
         v36 = v15;
         objc_copyWeak(&v37, location);
         v30 = [v28 actionWithTitle:v29 image:v18 identifier:0 handler:&v32];
-        [v17 addObject:{v30, v32, v33, v34, v35}];
+        [array addObject:{v30, v32, v33, v34, v35}];
 
         objc_destroyWeak(&v37);
         goto LABEL_16;
@@ -3647,7 +3647,7 @@ LABEL_7:
         objc_copyWeak(&v40, location);
         v39 = v14;
         v25 = [v23 actionWithTitle:v24 image:v18 identifier:0 handler:v38];
-        [v17 addObject:v25];
+        [array addObject:v25];
 
         v26 = &v40;
 LABEL_14:
@@ -3668,7 +3668,7 @@ LABEL_14:
         v43[3] = &unk_1E848FC70;
         objc_copyWeak(&v44, location);
         v22 = [v27 actionWithTitle:v20 image:v18 identifier:0 handler:v43];
-        [v17 addObject:v22];
+        [array addObject:v22];
         goto LABEL_13;
       }
 
@@ -3683,7 +3683,7 @@ LABEL_14:
         v41[3] = &unk_1E848FC70;
         objc_copyWeak(&v42, location);
         v22 = [v19 actionWithTitle:v20 image:v18 identifier:0 handler:v41];
-        [v17 addObject:v22];
+        [array addObject:v22];
 LABEL_13:
 
         v26 = (v21 + 4);
@@ -3692,7 +3692,7 @@ LABEL_13:
     }
 
 LABEL_16:
-    v13 = [MEMORY[0x1E69DCC60] menuWithChildren:v17];
+    v13 = [MEMORY[0x1E69DCC60] menuWithChildren:array];
 
     objc_destroyWeak(location);
     goto LABEL_17;
@@ -3781,13 +3781,13 @@ void __91__SFAccountDetailViewController_editMenuInteraction_menuForConfiguratio
   }
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  v5 = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:a3 withConfiguration:a4];
+  v5 = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:interaction withConfiguration:configuration];
   if (v5)
   {
-    v6 = [(SFAccountDetailViewController *)self tableView];
-    [v6 rectForRowAtIndexPath:v5];
+    tableView = [(SFAccountDetailViewController *)self tableView];
+    [tableView rectForRowAtIndexPath:v5];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -3813,53 +3813,53 @@ void __91__SFAccountDetailViewController_editMenuInteraction_menuForConfiguratio
   return result;
 }
 
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:a3 withConfiguration:a4, a5];
-  if (v6)
+  animator = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:interaction withConfiguration:configuration, animator];
+  if (animator)
   {
-    v9 = v6;
-    v7 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:v6];
+    v9 = animator;
+    v7 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource itemIdentifierForIndexPath:animator];
     v8 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v7];
 
-    v6 = v9;
+    animator = v9;
     if (v8 == 3)
     {
       [(SFAccountDetailViewController *)self _revealPasswordIfNecessary];
-      v6 = v9;
+      animator = v9;
     }
   }
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:a3 withConfiguration:a4, a5];
-  if (v6)
+  animator = [(SFAccountDetailViewController *)self _indexPathForEditMenuInteraction:interaction withConfiguration:configuration, animator];
+  if (animator)
   {
-    v8 = v6;
-    v7 = [(SFAccountDetailViewController *)self tableView];
-    [v7 deselectRowAtIndexPath:v8 animated:1];
+    v8 = animator;
+    tableView = [(SFAccountDetailViewController *)self tableView];
+    [tableView deselectRowAtIndexPath:v8 animated:1];
 
-    v6 = v8;
+    animator = v8;
   }
 }
 
-- (id)_indexPathForEditMenuInteraction:(id)a3 withConfiguration:(id)a4
+- (id)_indexPathForEditMenuInteraction:(id)interaction withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [a4 identifier];
+  interactionCopy = interaction;
+  identifier = [configuration identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = identifier;
   }
 
   else
   {
-    v9 = [(SFAccountDetailViewController *)self tableView];
-    v10 = [(SFAccountDetailViewController *)self tableView];
-    [v6 locationInView:v10];
-    v8 = [v9 indexPathForRowAtPoint:?];
+    tableView = [(SFAccountDetailViewController *)self tableView];
+    tableView2 = [(SFAccountDetailViewController *)self tableView];
+    [interactionCopy locationInView:tableView2];
+    v8 = [tableView indexPathForRowAtPoint:?];
   }
 
   return v8;
@@ -3868,19 +3868,19 @@ void __91__SFAccountDetailViewController_editMenuInteraction_menuForConfiguratio
 - (void)_updateHeaderViewCell
 {
   headerCell = self->_headerCell;
-  v4 = [(WBSSavedAccount *)self->_savedAccount userVisibleDomain];
-  [(SFAccountHeaderViewCell *)headerCell setHeaderTitleForHighLevelDomain:v4 customTitle:self->_titleForEditing];
+  userVisibleDomain = [(WBSSavedAccount *)self->_savedAccount userVisibleDomain];
+  [(SFAccountHeaderViewCell *)headerCell setHeaderTitleForHighLevelDomain:userVisibleDomain customTitle:self->_titleForEditing];
 }
 
-- (BOOL)_shouldUseZeroHeightHeaderForSectionType:(int64_t)a3
+- (BOOL)_shouldUseZeroHeightHeaderForSectionType:(int64_t)type
 {
-  if ((a3 - 1) < 2)
+  if ((type - 1) < 2)
   {
     return self->_isForFillingIndividualAccountFields;
   }
 
   result = 1;
-  if (a3 && a3 != 4)
+  if (type && type != 4)
   {
     return 0;
   }
@@ -3888,9 +3888,9 @@ void __91__SFAccountDetailViewController_editMenuInteraction_menuForConfiguratio
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if ([(SFAccountDetailViewController *)self _shouldUseZeroHeightHeaderForSectionType:[(SFAccountDetailViewController *)self _sectionTypeForSection:a4]])
+  if ([(SFAccountDetailViewController *)self _shouldUseZeroHeightHeaderForSectionType:[(SFAccountDetailViewController *)self _sectionTypeForSection:section]])
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   }
@@ -3903,9 +3903,9 @@ void __91__SFAccountDetailViewController_editMenuInteraction_menuForConfiguratio
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(SFAccountDetailViewController *)self _shouldUseZeroHeightHeaderForSectionType:[(SFAccountDetailViewController *)self _sectionTypeForSection:a4]];
+  v4 = [(SFAccountDetailViewController *)self _shouldUseZeroHeightHeaderForSectionType:[(SFAccountDetailViewController *)self _sectionTypeForSection:section]];
   result = *MEMORY[0x1E69DE3D0];
   if (v4)
   {
@@ -3915,53 +3915,53 @@ void __91__SFAccountDetailViewController_editMenuInteraction_menuForConfiguratio
   return result;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v10 = a3;
-  v4 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  editingCopy = editing;
+  editableTextField = [(SFEditableTableViewCell *)self->_userCell editableTextField];
 
-  if (v4 == v10)
+  if (editableTextField == editingCopy)
   {
     WeakRetained = [(SFEditableTableViewCell *)self->_userCell editableTextField];
-    v8 = [WeakRetained text];
+    text = [WeakRetained text];
     v9 = 1136;
   }
 
   else
   {
-    v5 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+    editableTextField2 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
 
-    if (v5 != v10)
+    if (editableTextField2 != editingCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_secretEntryAlertController);
-      v7 = [WeakRetained textFields];
-      [v7 firstObject];
+      textFields = [WeakRetained textFields];
+      [textFields firstObject];
 
       goto LABEL_7;
     }
 
     WeakRetained = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-    v8 = [WeakRetained text];
+    text = [WeakRetained text];
     v9 = 1144;
   }
 
-  v7 = *(&self->super.super.super.super.isa + v9);
-  *(&self->super.super.super.super.isa + v9) = v8;
+  textFields = *(&self->super.super.super.super.isa + v9);
+  *(&self->super.super.super.super.isa + v9) = text;
 LABEL_7:
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  returnCopy = return;
+  editableTextField = [(SFEditableTableViewCell *)self->_userCell editableTextField];
 
   passwordCell = self->_passwordCell;
-  if (v5 == v4)
+  if (editableTextField == returnCopy)
   {
     if (passwordCell)
     {
-      v9 = [(SFEditableTableViewCell *)passwordCell editableTextField];
-      [v9 becomeFirstResponder];
+      editableTextField2 = [(SFEditableTableViewCell *)passwordCell editableTextField];
+      [editableTextField2 becomeFirstResponder];
 
       goto LABEL_9;
     }
@@ -3969,17 +3969,17 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = [(SFEditableTableViewCell *)passwordCell editableTextField];
-  v8 = v7;
-  if (v7 != v4)
+  editableTextField3 = [(SFEditableTableViewCell *)passwordCell editableTextField];
+  v8 = editableTextField3;
+  if (editableTextField3 != returnCopy)
   {
 
     goto LABEL_8;
   }
 
-  v10 = [(UIBarButtonItem *)self->_doneBarButtonItem isEnabled];
+  isEnabled = [(UIBarButtonItem *)self->_doneBarButtonItem isEnabled];
 
-  if (v10)
+  if (isEnabled)
   {
 LABEL_7:
     [(SFAccountDetailViewController *)self _saveAccountAndFinishEditing];
@@ -3988,14 +3988,14 @@ LABEL_7:
 
 LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_secretEntryAlertController);
-  v12 = [WeakRetained textFields];
-  v13 = [v12 firstObject];
+  textFields = [WeakRetained textFields];
+  firstObject = [textFields firstObject];
 
-  if (v13 == v4)
+  if (firstObject == returnCopy)
   {
     v16 = objc_alloc(MEMORY[0x1E69C8A60]);
-    v17 = [v4 text];
-    v18 = [v16 initWithUserProvidedString:v17];
+    text = [returnCopy text];
+    v18 = [v16 initWithUserProvidedString:text];
     [(SFAccountDetailViewController *)self _addTOTPGenerator:v18];
 
     v14 = 1;
@@ -4010,12 +4010,12 @@ LABEL_10:
   return v14;
 }
 
-- (void)_updatePasswordFieldTextSuggestions:(id)a3
+- (void)_updatePasswordFieldTextSuggestions:(id)suggestions
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v5 length];
+  suggestionsCopy = suggestions;
+  text = [suggestionsCopy text];
+  v6 = [text length];
 
   if (v6)
   {
@@ -4024,11 +4024,11 @@ LABEL_10:
 
   else
   {
-    v8 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
-    v9 = [v8 safari_bestURLForUserTypedString];
+    highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+    safari_bestURLForUserTypedString = [highLevelDomain safari_bestURLForUserTypedString];
 
     v10 = +[_SFFormDataController sharedController];
-    v11 = [v10 autoGeneratedPasswordForURL:v9 respectingPasswordRequirements:0 maxLength:-1];
+    v11 = [v10 autoGeneratedPasswordForURL:safari_bestURLForUserTypedString respectingPasswordRequirements:0 maxLength:-1];
 
     if (v11)
     {
@@ -4051,10 +4051,10 @@ LABEL_10:
   v16[1] = 3221225472;
   v16[2] = __69__SFAccountDetailViewController__updatePasswordFieldTextSuggestions___block_invoke;
   v16[3] = &unk_1E848F548;
-  v17 = v4;
+  v17 = suggestionsCopy;
   v18 = v7;
   v14 = v7;
-  v15 = v4;
+  v15 = suggestionsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v16);
 }
 
@@ -4064,26 +4064,26 @@ void __69__SFAccountDetailViewController__updatePasswordFieldTextSuggestions___b
   [v2 setSuggestions:*(a1 + 40)];
 }
 
-- (void)_textFieldChanged:(id)a3
+- (void)_textFieldChanged:(id)changed
 {
-  v16 = a3;
-  v4 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  changedCopy = changed;
+  editableTextField = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
 
-  if (v4 == v16)
+  if (editableTextField == changedCopy)
   {
-    [(SFAccountDetailViewController *)self _updatePasswordFieldTextSuggestions:v16];
+    [(SFAccountDetailViewController *)self _updatePasswordFieldTextSuggestions:changedCopy];
   }
 
-  v5 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
-  if (v5 == v16)
+  editableTextField2 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  if (editableTextField2 == changedCopy)
   {
 
     goto LABEL_10;
   }
 
-  v6 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  editableTextField3 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
 
-  if (v6 == v16)
+  if (editableTextField3 == changedCopy)
   {
 LABEL_10:
     [(SFAccountDetailViewController *)self _updateSavedAccountChangeRequest];
@@ -4092,25 +4092,25 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = [(SFAccountHeaderViewCell *)self->_headerCell editableTextField];
+  editableTextField4 = [(SFAccountHeaderViewCell *)self->_headerCell editableTextField];
 
-  if (v7 == v16)
+  if (editableTextField4 == changedCopy)
   {
     [(SFAccountDetailViewController *)self _updateHeaderViewCell];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_secretEntryAlertController);
-  v9 = [WeakRetained textFields];
-  v10 = [v9 firstObject];
+  textFields = [WeakRetained textFields];
+  firstObject = [textFields firstObject];
 
-  if (v10 == v16)
+  if (firstObject == changedCopy)
   {
     v11 = objc_alloc(MEMORY[0x1E69C8A60]);
-    v12 = [v16 text];
-    v13 = [v11 initWithUserProvidedString:v12];
-    v14 = [WeakRetained actions];
-    v15 = [v14 lastObject];
-    [v15 setEnabled:v13 != 0];
+    text = [changedCopy text];
+    v13 = [v11 initWithUserProvidedString:text];
+    actions = [WeakRetained actions];
+    lastObject = [actions lastObject];
+    [lastObject setEnabled:v13 != 0];
   }
 
 LABEL_11:
@@ -4125,9 +4125,9 @@ LABEL_11:
 
   else
   {
-    v4 = [MEMORY[0x1E69C87F8] dateFormatterWithDynamicContext];
-    v5 = [(WBSSavedAccount *)self->_savedAccount lastModifiedDate];
-    v6 = [v4 stringFromDate:v5];
+    dateFormatterWithDynamicContext = [MEMORY[0x1E69C87F8] dateFormatterWithDynamicContext];
+    lastModifiedDate = [(WBSSavedAccount *)self->_savedAccount lastModifiedDate];
+    v6 = [dateFormatterWithDynamicContext stringFromDate:lastModifiedDate];
 
     if (v6)
     {
@@ -4147,9 +4147,9 @@ LABEL_11:
 
 - (id)_passkeyCreationDateString
 {
-  v3 = [MEMORY[0x1E69C87F8] dateFormatterWithStandaloneContext];
-  v4 = [(WBSSavedAccount *)self->_savedAccount creationDateForPasskey];
-  v5 = [v3 stringFromDate:v4];
+  dateFormatterWithStandaloneContext = [MEMORY[0x1E69C87F8] dateFormatterWithStandaloneContext];
+  creationDateForPasskey = [(WBSSavedAccount *)self->_savedAccount creationDateForPasskey];
+  v5 = [dateFormatterWithStandaloneContext stringFromDate:creationDateForPasskey];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = _WBSLocalizedString();
@@ -4158,23 +4158,23 @@ LABEL_11:
   return v8;
 }
 
-- (int64_t)_sectionTypeForSection:(int64_t)a3
+- (int64_t)_sectionTypeForSection:(int64_t)section
 {
-  v4 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
-  v5 = [v4 sectionIdentifiers];
-  v6 = [v5 objectAtIndexedSubscript:a3];
-  v7 = [v6 integerValue];
+  snapshot = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v6 = [sectionIdentifiers objectAtIndexedSubscript:section];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (int64_t)_itemTypeForIdentifier:(id)a3
+- (int64_t)_itemTypeForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = 15;
+    integerValue = 15;
   }
 
   else
@@ -4182,16 +4182,16 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = 6;
+      integerValue = 6;
     }
 
     else
     {
-      v4 = [v3 integerValue];
+      integerValue = [identifierCopy integerValue];
     }
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_updateSavedAccountChangeRequest
@@ -4207,25 +4207,25 @@ LABEL_11:
   }
 
   [(WBSSavedAccountChangeRequest *)savedAccountChangeRequest setSavedAccount:self->_savedAccount];
-  v6 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
-  v7 = [v6 text];
-  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setUser:v7];
+  editableTextField = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  text = [editableTextField text];
+  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setUser:text];
 
-  v8 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
-  v9 = [v8 text];
-  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setPassword:v9];
+  editableTextField2 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  text2 = [editableTextField2 text];
+  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setPassword:text2];
 
-  v10 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
-  v11 = [v10 text];
-  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setNotesEntry:v11];
+  textView = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+  text3 = [textView text];
+  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setNotesEntry:text3];
 
-  v12 = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
-  v13 = [v12 firstObject];
-  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setTotpGenerator:v13];
+  totpGenerators = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
+  firstObject = [totpGenerators firstObject];
+  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setTotpGenerator:firstObject];
 
-  v15 = [(SFAccountHeaderViewCell *)self->_headerCell titleTextField];
-  v14 = [v15 text];
-  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setCustomTitle:v14];
+  titleTextField = [(SFAccountHeaderViewCell *)self->_headerCell titleTextField];
+  text4 = [titleTextField text];
+  [(WBSSavedAccountChangeRequest *)self->_savedAccountChangeRequest setCustomTitle:text4];
 }
 
 - (void)_saveAccountAndFinishEditing
@@ -4233,8 +4233,8 @@ LABEL_11:
   self->_showPasswordAsBulletsWhenNotEditing = 0;
   [(SFAccountHeaderViewCell *)self->_headerCell commitCustomTitle];
   [(SFAccountDetailViewController *)self _updateSavedAccountChangeRequest];
-  v3 = [MEMORY[0x1E69C8A38] sharedStore];
-  [v3 changeSavedAccountWithRequest:self->_savedAccountChangeRequest];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  [mEMORY[0x1E69C8A38] changeSavedAccountWithRequest:self->_savedAccountChangeRequest];
 
   [(SFAccountDetailViewController *)self _setEditing:0 animated:1];
   if ([(WBSSavedAccount *)self->_savedAccount credentialTypes]== 2)
@@ -4249,14 +4249,14 @@ LABEL_11:
 - (void)_updateWarningForSavedAccount
 {
   objc_initWeak(&location, self);
-  v3 = [(SFAccountDetailViewController *)self _passwordWarningManager];
+  _passwordWarningManager = [(SFAccountDetailViewController *)self _passwordWarningManager];
   savedAccount = self->_savedAccount;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__SFAccountDetailViewController__updateWarningForSavedAccount__block_invoke;
   v5[3] = &unk_1E848FDB0;
   objc_copyWeak(&v6, &location);
-  [v3 getWarningForSavedAccount:savedAccount completionHandler:v5];
+  [_passwordWarningManager getWarningForSavedAccount:savedAccount completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -4273,20 +4273,20 @@ void __62__SFAccountDetailViewController__updateWarningForSavedAccount__block_in
   }
 }
 
-- (void)_addTOTPGenerator:(id)a3
+- (void)_addTOTPGenerator:(id)generator
 {
-  if (a3)
+  if (generator)
   {
     v4 = MEMORY[0x1E69C8A38];
-    v5 = a3;
-    v6 = [v4 sharedStore];
+    generatorCopy = generator;
+    sharedStore = [v4 sharedStore];
     savedAccount = self->_savedAccount;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__SFAccountDetailViewController__addTOTPGenerator___block_invoke;
     v8[3] = &unk_1E848F810;
     v8[4] = self;
-    [v6 saveTOTPGenerator:v5 forSavedAccount:savedAccount completionHandler:v8];
+    [sharedStore saveTOTPGenerator:generatorCopy forSavedAccount:savedAccount completionHandler:v8];
   }
 }
 
@@ -4323,11 +4323,11 @@ void __51__SFAccountDetailViewController__addTOTPGenerator___block_invoke_2(uint
   [*(*(a1 + 32) + 1208) applySnapshot:v4 animatingDifferences:1];
 }
 
-- (void)_deleteTOTPGenerator:(id)a3
+- (void)_deleteTOTPGenerator:(id)generator
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
-  [v5 removeTOTPGeneratorForSavedAccount:self->_savedAccount];
+  generatorCopy = generator;
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  [mEMORY[0x1E69C8A38] removeTOTPGeneratorForSavedAccount:self->_savedAccount];
 
   [(SFAccountDetailViewController *)self _updateCachedTOTPGenerators];
   v7[0] = MEMORY[0x1E69E9820];
@@ -4335,8 +4335,8 @@ void __51__SFAccountDetailViewController__addTOTPGenerator___block_invoke_2(uint
   v7[2] = __54__SFAccountDetailViewController__deleteTOTPGenerator___block_invoke;
   v7[3] = &unk_1E848F548;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = generatorCopy;
+  v6 = generatorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -4390,21 +4390,21 @@ void __54__SFAccountDetailViewController__deleteTOTPGenerator___block_invoke(uin
 - (void)_updateCachedTOTPGenerators
 {
   v3 = MEMORY[0x1E695DFD8];
-  v7 = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
-  v4 = [v3 setWithArray:v7];
-  v5 = [v4 allObjects];
+  totpGenerators = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
+  v4 = [v3 setWithArray:totpGenerators];
+  allObjects = [v4 allObjects];
   TOTPGenerators = self->_TOTPGenerators;
-  self->_TOTPGenerators = v5;
+  self->_TOTPGenerators = allObjects;
 }
 
 - (id)_newSecretEntryAlertController
 {
   v3 = MEMORY[0x1E69DC650];
   v4 = _WBSLocalizedString();
-  v5 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
   v6 = MEMORY[0x1E696AEC0];
   v7 = _WBSLocalizedString();
-  v8 = [v6 stringWithFormat:v7, v5];
+  v8 = [v6 stringWithFormat:v7, highLevelDomain];
 
   v9 = [v3 alertControllerWithTitle:v4 message:v8 imageNamed:@"alert-passwords" preferredStyle:1];
 
@@ -4433,7 +4433,7 @@ void __54__SFAccountDetailViewController__deleteTOTPGenerator___block_invoke(uin
   v20[3] = &unk_1E848F780;
   v16 = v12;
   v21 = v16;
-  v22 = self;
+  selfCopy = self;
   v17 = [v14 actionWithTitle:v15 style:0 handler:v20];
 
   [v17 setEnabled:0];
@@ -4471,27 +4471,27 @@ void __63__SFAccountDetailViewController__newSecretEntryAlertController__block_i
   [*(a1 + 32) dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_deleteTOTPGeneratorWithConfirmation:(id)a3
+- (void)_deleteTOTPGeneratorWithConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   v5 = [MEMORY[0x1E695A9A0] configurationForDeleting:1 fromSavedAccount:self->_savedAccount];
   v6 = MEMORY[0x1E69DC650];
-  v7 = [v5 title];
-  v8 = [v5 subtitle];
-  v9 = [v6 alertControllerWithTitle:v7 message:v8 imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
+  title = [v5 title];
+  subtitle = [v5 subtitle];
+  v9 = [v6 alertControllerWithTitle:title message:subtitle imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
 
   v10 = MEMORY[0x1E69DC648];
-  v11 = [v5 buttonTitle];
+  buttonTitle = [v5 buttonTitle];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___block_invoke;
   v31[3] = &unk_1E848FE00;
   v31[4] = self;
-  v12 = v4;
+  v12 = confirmationCopy;
   v32 = v12;
   v13 = v9;
   v33 = v13;
-  v14 = [v10 actionWithTitle:v11 style:2 handler:v31];
+  v14 = [v10 actionWithTitle:buttonTitle style:2 handler:v31];
   [v13 addAction:v14];
 
   if ([(WBSSavedAccount *)self->_savedAccount hasValidWebsite])
@@ -4504,7 +4504,7 @@ void __63__SFAccountDetailViewController__newSecretEntryAlertController__block_i
     v28[3] = &unk_1E848F780;
     v17 = v13;
     v29 = v17;
-    v30 = self;
+    selfCopy = self;
     v18 = [v15 actionWithTitle:v16 style:0 handler:v28];
     [v17 addAction:v18];
   }
@@ -4551,18 +4551,18 @@ void __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___
   [v1 _openURLInSafariViewController:v3 shouldSupressPasswordUpdatePrompts:1];
 }
 
-- (void)_addNotesSectionToSnapshot:(id)a3
+- (void)_addNotesSectionToSnapshot:(id)snapshot
 {
-  v14 = a3;
-  v4 = [v14 sectionIdentifiers];
-  v5 = [v4 containsObject:&unk_1F5022DE0];
+  snapshotCopy = snapshot;
+  sectionIdentifiers = [snapshotCopy sectionIdentifiers];
+  v5 = [sectionIdentifiers containsObject:&unk_1F5022DE0];
 
   if ((v5 & 1) == 0)
   {
-    if (!self->_isForFillingIndividualAccountFields || ([v14 sectionIdentifiers], v6 = objc_claimAutoreleasedReturnValue(), v7 = &unk_1F5022C90, v8 = objc_msgSend(v6, "containsObject:", &unk_1F5022C90), v6, (v8 & 1) == 0) && (objc_msgSend(v14, "sectionIdentifiers"), v9 = objc_claimAutoreleasedReturnValue(), v7 = &unk_1F5022C60, v10 = objc_msgSend(v9, "containsObject:", &unk_1F5022C60), v9, (v10 & 1) == 0))
+    if (!self->_isForFillingIndividualAccountFields || ([snapshotCopy sectionIdentifiers], v6 = objc_claimAutoreleasedReturnValue(), v7 = &unk_1F5022C90, v8 = objc_msgSend(v6, "containsObject:", &unk_1F5022C90), v6, (v8 & 1) == 0) && (objc_msgSend(snapshotCopy, "sectionIdentifiers"), v9 = objc_claimAutoreleasedReturnValue(), v7 = &unk_1F5022C60, v10 = objc_msgSend(v9, "containsObject:", &unk_1F5022C60), v9, (v10 & 1) == 0))
     {
-      v11 = [v14 sectionIdentifiers];
-      v12 = [v11 containsObject:&unk_1F5022C30];
+      sectionIdentifiers2 = [snapshotCopy sectionIdentifiers];
+      v12 = [sectionIdentifiers2 containsObject:&unk_1F5022C30];
       v13 = &unk_1F5022CA8;
       if (v12)
       {
@@ -4572,36 +4572,36 @@ void __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___
       v7 = v13;
     }
 
-    [v14 insertSectionsWithIdentifiers:&unk_1F5023C80 afterSectionWithIdentifier:v7];
-    [v14 appendItemsWithIdentifiers:&unk_1F5023C98 intoSectionWithIdentifier:&unk_1F5022DE0];
-    [v14 reconfigureItemsWithIdentifiers:&unk_1F5023CB0];
+    [snapshotCopy insertSectionsWithIdentifiers:&unk_1F5023C80 afterSectionWithIdentifier:v7];
+    [snapshotCopy appendItemsWithIdentifiers:&unk_1F5023C98 intoSectionWithIdentifier:&unk_1F5022DE0];
+    [snapshotCopy reconfigureItemsWithIdentifiers:&unk_1F5023CB0];
   }
 }
 
-- (void)_openURLInSafariViewController:(id)a3 shouldSupressPasswordUpdatePrompts:(BOOL)a4
+- (void)_openURLInSafariViewController:(id)controller shouldSupressPasswordUpdatePrompts:(BOOL)prompts
 {
-  v4 = a4;
-  v8 = a3;
+  promptsCopy = prompts;
+  controllerCopy = controller;
   if ([(UIViewController *)self safari_checkForAbilityToOpenWebContentAndNotifyIfNecessary:?])
   {
     v6 = objc_alloc_init(SFSafariViewControllerConfiguration);
-    [(SFSafariViewControllerConfiguration *)v6 _setPerformingAccountSecurityUpgrade:v4];
-    v7 = [[SFSafariViewController alloc] initWithURL:v8 configuration:v6];
+    [(SFSafariViewControllerConfiguration *)v6 _setPerformingAccountSecurityUpgrade:promptsCopy];
+    v7 = [[SFSafariViewController alloc] initWithURL:controllerCopy configuration:v6];
     [(SFSafariViewController *)v7 setModalPresentationStyle:1];
     [(SFSafariViewController *)v7 setModalInPresentation:1];
     [(SFAccountDetailViewController *)self presentViewController:v7 animated:1 completion:0];
   }
 }
 
-- (id)_footerTextForLastOneTimeShareDate:(id)a3
+- (id)_footerTextForLastOneTimeShareDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = a3;
+    dateCopy = date;
     v5 = _WBSLocalizedString();
-    v6 = [MEMORY[0x1E69C87F8] dateFormatterWithDynamicContext];
-    v7 = [v6 stringFromDate:v4];
+    dateFormatterWithDynamicContext = [MEMORY[0x1E69C87F8] dateFormatterWithDynamicContext];
+    v7 = [dateFormatterWithDynamicContext stringFromDate:dateCopy];
 
     v8 = [v3 localizedStringWithFormat:v5, v7];
   }
@@ -4624,38 +4624,38 @@ void __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___
     [v6 addIndex:v4];
   }
 
-  v5 = [(SFAccountDetailViewController *)self tableView];
-  [v5 _reloadSectionHeaderFooters:v6 withRowAnimation:5];
+  tableView = [(SFAccountDetailViewController *)self tableView];
+  [tableView _reloadSectionHeaderFooters:v6 withRowAnimation:5];
 }
 
 - (id)_accountHeaderSectionFooterView
 {
   if ([(WBSSavedAccount *)self->_savedAccount credentialTypes]== 2)
   {
-    v3 = [(SFAccountDetailViewController *)self _passkeyFooterView];
+    _passkeyFooterView = [(SFAccountDetailViewController *)self _passkeyFooterView];
   }
 
   else
   {
-    v3 = 0;
+    _passkeyFooterView = 0;
   }
 
-  return v3;
+  return _passkeyFooterView;
 }
 
 - (id)_passkeySectionFooterView
 {
   if ([(WBSSavedAccount *)self->_savedAccount credentialTypes]== 3)
   {
-    v3 = [(SFAccountDetailViewController *)self _passkeyFooterView];
+    _passkeyFooterView = [(SFAccountDetailViewController *)self _passkeyFooterView];
   }
 
   else
   {
-    v3 = 0;
+    _passkeyFooterView = 0;
   }
 
-  return v3;
+  return _passkeyFooterView;
 }
 
 - (id)_passkeyFooterView
@@ -4676,34 +4676,34 @@ void __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___
       [(_SFTableLinkableFooterView *)self->_passkeyFooterView setDelegate:self];
     }
 
-    v6 = [(WBSSavedAccount *)self->_savedAccount lastOneTimeShareDateForPasskey];
+    lastOneTimeShareDateForPasskey = [(WBSSavedAccount *)self->_savedAccount lastOneTimeShareDateForPasskey];
 
-    if (v6)
+    if (lastOneTimeShareDateForPasskey)
     {
-      v7 = [(WBSSavedAccount *)self->_savedAccount lastOneTimeShareDateForPasskey];
-      v8 = [(SFAccountDetailViewController *)self _footerTextForLastOneTimeShareDate:v7];
+      lastOneTimeShareDateForPasskey2 = [(WBSSavedAccount *)self->_savedAccount lastOneTimeShareDateForPasskey];
+      v8 = [(SFAccountDetailViewController *)self _footerTextForLastOneTimeShareDate:lastOneTimeShareDateForPasskey2];
 
       if (v8)
       {
         v9 = MEMORY[0x1E696AEC0];
-        v10 = [MEMORY[0x1E695A990] footerString];
-        v11 = [v9 stringWithFormat:@"%@\n\n%@", v8, v10];
+        footerString = [MEMORY[0x1E695A990] footerString];
+        footerString2 = [v9 stringWithFormat:@"%@\n\n%@", v8, footerString];
       }
 
       else
       {
-        v11 = [MEMORY[0x1E695A990] footerString];
+        footerString2 = [MEMORY[0x1E695A990] footerString];
       }
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695A990] footerString];
+      footerString2 = [MEMORY[0x1E695A990] footerString];
     }
 
-    v12 = [(_SFTableLinkableFooterView *)self->_passkeyFooterView textLabel];
-    v13 = [v12 text];
-    v14 = [v13 isEqualToString:v11];
+    textLabel = [(_SFTableLinkableFooterView *)self->_passkeyFooterView textLabel];
+    text = [textLabel text];
+    v14 = [text isEqualToString:footerString2];
 
     if ((v14 & 1) == 0)
     {
@@ -4711,9 +4711,9 @@ void __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___
     }
 
     v15 = self->_passkeyFooterView;
-    v16 = [MEMORY[0x1E695A990] footerLearnMoreLinkBindingString];
-    v17 = [MEMORY[0x1E695A990] footerLearnMoreLinkString];
-    [(_SFTableLinkableFooterView *)v15 setText:v11 linkPlaceholderString:v16 linkReplacementString:v17];
+    footerLearnMoreLinkBindingString = [MEMORY[0x1E695A990] footerLearnMoreLinkBindingString];
+    footerLearnMoreLinkString = [MEMORY[0x1E695A990] footerLearnMoreLinkString];
+    [(_SFTableLinkableFooterView *)v15 setText:footerString2 linkPlaceholderString:footerLearnMoreLinkBindingString linkReplacementString:footerLearnMoreLinkString];
 
     v3 = self->_passkeyFooterView;
   }
@@ -4748,9 +4748,9 @@ void __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___
   }
 }
 
-- (void)linkableFooterViewDidInteractWithLink:(id)a3
+- (void)linkableFooterViewDidInteractWithLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v5 = objc_alloc_init(MEMORY[0x1E695A998]);
   objc_initWeak(&location, v5);
   v6 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -4762,8 +4762,8 @@ void __70__SFAccountDetailViewController__deleteTOTPGeneratorWithConfirmation___
   objc_copyWeak(&v16, &location);
   v8 = [v7 actionWithHandler:&v12];
   v9 = [v6 initWithBarButtonSystemItem:0 primaryAction:{v8, v12, v13, v14, v15}];
-  v10 = [v5 navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [v5 navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 
   v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
   [(SFAccountDetailViewController *)self presentViewController:v11 animated:1 completion:0];
@@ -4778,9 +4778,9 @@ void __71__SFAccountDetailViewController_linkableFooterViewDidInteractWithLink__
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_sharePasswordWithPopoverPresentationControllerConfiguration:(id)a3
+- (void)_sharePasswordWithPopoverPresentationControllerConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[_SFAirDropAccountSharingAuthenticationContext alloc] initWithSavedAccount:self->_savedAccount];
   self->_isOneTimeSharingAccount = 1;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4789,8 +4789,8 @@ void __71__SFAccountDetailViewController_linkableFooterViewDidInteractWithLink__
   v8[3] = &unk_1E848FE28;
   v8[4] = self;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = configurationCopy;
+  v6 = configurationCopy;
   v7 = v5;
   [_SFSettingsAuthentication authenticateForSettings:v7 allowAuthenticationReuse:0 completionHandler:v8];
 }
@@ -4817,16 +4817,16 @@ void __94__SFAccountDetailViewController__sharePasswordWithPopoverPresentationCo
   }
 }
 
-- (void)_sharePasswordWithAuthenticationContext:(id)a3 popoverPresentationControllerConfiguration:(id)a4
+- (void)_sharePasswordWithAuthenticationContext:(id)context popoverPresentationControllerConfiguration:(id)configuration
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([a3 hasBeenAuthenticated])
+  configurationCopy = configuration;
+  if ([context hasBeenAuthenticated])
   {
     v7 = [objc_alloc(MEMORY[0x1E69C8E20]) initWithSavedPassword:self->_savedAccount];
     v8 = objc_alloc(MEMORY[0x1E69CD9F8]);
-    v9 = [v7 urlRepresentationForAirDrop];
-    v16[0] = v9;
+    urlRepresentationForAirDrop = [v7 urlRepresentationForAirDrop];
+    v16[0] = urlRepresentationForAirDrop;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v11 = [v8 initWithActivityItems:v10 applicationActivities:0];
 
@@ -4836,11 +4836,11 @@ void __94__SFAccountDetailViewController__sharePasswordWithPopoverPresentationCo
 
     [v11 setExcludedActivityCategories:3];
     [v11 setModalPresentationStyle:7];
-    v13 = [v11 popoverPresentationController];
-    [v13 setPermittedArrowDirections:1];
-    if (v6)
+    popoverPresentationController = [v11 popoverPresentationController];
+    [popoverPresentationController setPermittedArrowDirections:1];
+    if (configurationCopy)
     {
-      v6[2](v6, v13);
+      configurationCopy[2](configurationCopy, popoverPresentationController);
     }
 
     v14[0] = MEMORY[0x1E69E9820];
@@ -4868,9 +4868,9 @@ void __116__SFAccountDetailViewController__sharePasswordWithAuthenticationContex
   [v5 postNotificationName:@"_SFShowAccountManagerLockedViewIfNeededNotification" object:0];
 }
 
-- (id)dataSource:(id)a3 headerTextForSection:(int64_t)a4
+- (id)dataSource:(id)source headerTextForSection:(int64_t)section
 {
-  v5 = [(SFAccountDetailViewController *)self _sectionTypeForSection:a4];
+  v5 = [(SFAccountDetailViewController *)self _sectionTypeForSection:section];
   v6 = 0;
   if (v5 <= 5)
   {
@@ -4920,8 +4920,8 @@ LABEL_17:
     case 7:
       goto LABEL_17;
     case 8:
-      v7 = [(WBSSavedAccount *)self->_savedAccount sites];
-      [v7 count];
+      sites = [(WBSSavedAccount *)self->_savedAccount sites];
+      [sites count];
       v6 = _WBSLocalizedString();
 
       break;
@@ -4932,42 +4932,42 @@ LABEL_18:
   return v6;
 }
 
-- (id)dataSource:(id)a3 footerTextForSection:(int64_t)a4
+- (id)dataSource:(id)source footerTextForSection:(int64_t)section
 {
-  if ([(SFAccountDetailViewController *)self _sectionTypeForSection:a4]== 9 && [(WBSSavedAccount *)self->_savedAccount isRecentlyDeleted])
+  if ([(SFAccountDetailViewController *)self _sectionTypeForSection:section]== 9 && [(WBSSavedAccount *)self->_savedAccount isRecentlyDeleted])
   {
-    v5 = [(WBSSavedAccount *)self->_savedAccount pm_recentlyDeletedDetailViewDeleteSectionFooter];
+    pm_recentlyDeletedDetailViewDeleteSectionFooter = [(WBSSavedAccount *)self->_savedAccount pm_recentlyDeletedDetailViewDeleteSectionFooter];
   }
 
   else
   {
-    v5 = 0;
+    pm_recentlyDeletedDetailViewDeleteSectionFooter = 0;
   }
 
-  return v5;
+  return pm_recentlyDeletedDetailViewDeleteSectionFooter;
 }
 
-- (void)dataSource:(id)a3 commitEditingStyle:(int64_t)a4 forItemIdentifier:(id)a5
+- (void)dataSource:(id)source commitEditingStyle:(int64_t)style forItemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:v8];
-  v10 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource indexPathForItemIdentifier:v8];
+  sourceCopy = source;
+  identifierCopy = identifier;
+  v9 = [(SFAccountDetailViewController *)self _itemTypeForIdentifier:identifierCopy];
+  v10 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource indexPathForItemIdentifier:identifierCopy];
   if (v9 == 15)
   {
     objc_initWeak(&location, self);
-    v11 = [MEMORY[0x1E69C8A38] sharedStore];
-    v12 = [(WBSSavedAccount *)self->_savedAccount sites];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
+    mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+    sites = [(WBSSavedAccount *)self->_savedAccount sites];
+    v13 = [sites objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
     savedAccount = self->_savedAccount;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __81__SFAccountDetailViewController_dataSource_commitEditingStyle_forItemIdentifier___block_invoke;
     v15[3] = &unk_1E848FB68;
     objc_copyWeak(&v18, &location);
-    v16 = v8;
+    v16 = identifierCopy;
     v17 = v10;
-    [v11 removeSite:v13 fromSavedAccountWithPassword:savedAccount withCompletion:v15];
+    [mEMORY[0x1E69C8A38] removeSite:v13 fromSavedAccountWithPassword:savedAccount withCompletion:v15];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -5018,23 +5018,23 @@ void __81__SFAccountDetailViewController_dataSource_commitEditingStyle_forItemId
   [v11 _reloadSectionHeaderFooters:v10 withRowAnimation:5];
 }
 
-- (BOOL)dataSource:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)dataSource:(id)source canEditRowAtIndexPath:(id)path
 {
   tableViewDiffableDataSource = self->_tableViewDiffableDataSource;
-  v6 = a4;
-  v7 = [(SFTableViewDiffableDataSource *)tableViewDiffableDataSource snapshot];
-  v8 = [v7 sectionIdentifiers];
-  v9 = [v6 section];
+  pathCopy = path;
+  snapshot = [(SFTableViewDiffableDataSource *)tableViewDiffableDataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  section = [pathCopy section];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
-  v11 = [v10 integerValue];
+  v10 = [sectionIdentifiers objectAtIndexedSubscript:section];
+  integerValue = [v10 integerValue];
 
-  if (v11 == 8)
+  if (integerValue == 8)
   {
     if ([(WBSSavedAccount *)self->_savedAccount credentialTypes]!= 2)
     {
-      v14 = [(WBSSavedAccount *)self->_savedAccount sites];
-      v13 = [v14 count] > 1;
+      sites = [(WBSSavedAccount *)self->_savedAccount sites];
+      v13 = [sites count] > 1;
 
       return v13;
     }
@@ -5042,12 +5042,12 @@ void __81__SFAccountDetailViewController_dataSource_commitEditingStyle_forItemId
     return 0;
   }
 
-  if (v11 == 7)
+  if (integerValue == 7)
   {
     return 1;
   }
 
-  if (v11)
+  if (integerValue)
   {
     return 0;
   }
@@ -5057,11 +5057,11 @@ void __81__SFAccountDetailViewController_dataSource_commitEditingStyle_forItemId
 
 - (void)_updateAccountModificationOptions
 {
-  v3 = [(NSExtension *)self->_accountModificationExtension attributes];
-  if ([v3 safari_BOOLForKey:*MEMORY[0x1E69C8E38]])
+  attributes = [(NSExtension *)self->_accountModificationExtension attributes];
+  if ([attributes safari_BOOLForKey:*MEMORY[0x1E69C8E38]])
   {
-    v4 = [MEMORY[0x1E69C88B8] sharedMonitor];
-    self->_eligibleToChangeToStrongPassword = [v4 isKeychainSyncEnabled];
+    mEMORY[0x1E69C88B8] = [MEMORY[0x1E69C88B8] sharedMonitor];
+    self->_eligibleToChangeToStrongPassword = [mEMORY[0x1E69C88B8] isKeychainSyncEnabled];
   }
 
   else
@@ -5069,7 +5069,7 @@ void __81__SFAccountDetailViewController_dataSource_commitEditingStyle_forItemId
     self->_eligibleToChangeToStrongPassword = 0;
   }
 
-  v5 = [v3 safari_stringForKey:*MEMORY[0x1E69C8E48]];
+  v5 = [attributes safari_stringForKey:*MEMORY[0x1E69C8E48]];
   rulesForStrongPasswordChange = self->_rulesForStrongPasswordChange;
   self->_rulesForStrongPasswordChange = v5;
 
@@ -5079,26 +5079,26 @@ void __81__SFAccountDetailViewController_dataSource_commitEditingStyle_forItemId
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x1E695E000] pm_defaults];
-  v8 = [v7 pm_passwordManagerIsInDemoMode];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  pm_passwordManagerIsInDemoMode = [pm_defaults pm_passwordManagerIsInDemoMode];
 
-  if (v8)
+  if (pm_passwordManagerIsInDemoMode)
   {
-    self->_eligibleToUpgradeToSignInWithApple = [v3 safari_BOOLForKey:*MEMORY[0x1E69C8E40]];
+    self->_eligibleToUpgradeToSignInWithApple = [attributes safari_BOOLForKey:*MEMORY[0x1E69C8E40]];
 LABEL_8:
     [(SFAccountDetailViewController *)self _reloadDiffableDataSourceOnInternalQueueAnimated:0];
     goto LABEL_9;
   }
 
   [(SFAccountDetailViewController *)self _reloadDiffableDataSourceOnInternalQueueAnimated:0];
-  if ([v3 safari_BOOLForKey:*MEMORY[0x1E69C8E40]])
+  if ([attributes safari_BOOLForKey:*MEMORY[0x1E69C8E40]])
   {
     v9 = objc_alloc_init(MEMORY[0x1E698DCE0]);
     v10 = MEMORY[0x1E696AAE8];
-    v11 = [(NSExtension *)self->_accountModificationExtension _plugIn];
-    v12 = [v11 containingUrl];
-    v13 = [v10 bundleWithURL:v12];
-    v14 = [v13 bundleIdentifier];
+    _plugIn = [(NSExtension *)self->_accountModificationExtension _plugIn];
+    containingUrl = [_plugIn containingUrl];
+    v13 = [v10 bundleWithURL:containingUrl];
+    bundleIdentifier = [v13 bundleIdentifier];
 
     objc_initWeak(&location, self);
     v15[0] = MEMORY[0x1E69E9820];
@@ -5106,7 +5106,7 @@ LABEL_8:
     v15[2] = __66__SFAccountDetailViewController__updateAccountModificationOptions__block_invoke;
     v15[3] = &unk_1E848FE78;
     objc_copyWeak(&v16, &location);
-    [v9 getCredentialStateForClientID:v14 completion:v15];
+    [v9 getCredentialStateForClientID:bundleIdentifier completion:v15];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -5136,13 +5136,13 @@ void __66__SFAccountDetailViewController__updateAccountModificationOptions__bloc
 - (void)_initiateUpgradeToSignInWithApple
 {
   v3 = objc_alloc(MEMORY[0x1E695A910]);
-  v4 = [(WBSSavedAccount *)self->_savedAccount user];
-  v5 = [(WBSSavedAccount *)self->_savedAccount password];
+  user = [(WBSSavedAccount *)self->_savedAccount user];
+  password = [(WBSSavedAccount *)self->_savedAccount password];
   accountModificationExtension = self->_accountModificationExtension;
   v7 = objc_alloc(MEMORY[0x1E695A920]);
-  v8 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
-  v9 = [v7 initWithIdentifier:v8 type:0];
-  v10 = [v3 initWithUser:v4 password:v5 extension:accountModificationExtension serviceIdentifier:v9 userInfo:0];
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  v9 = [v7 initWithIdentifier:highLevelDomain type:0];
+  v10 = [v3 initWithUser:user password:password extension:accountModificationExtension serviceIdentifier:v9 userInfo:0];
 
   [(ASAccountAuthenticationModificationController *)self->_accountAuthenticationModificationController performRequest:v10];
 }
@@ -5150,20 +5150,20 @@ void __66__SFAccountDetailViewController__updateAccountModificationOptions__bloc
 - (void)_initiateChangeToStrongPassword
 {
   v3 = objc_alloc(MEMORY[0x1E695A918]);
-  v4 = [(WBSSavedAccount *)self->_savedAccount user];
-  v5 = [(WBSSavedAccount *)self->_savedAccount password];
+  user = [(WBSSavedAccount *)self->_savedAccount user];
+  password = [(WBSSavedAccount *)self->_savedAccount password];
   accountModificationExtension = self->_accountModificationExtension;
   v7 = objc_alloc(MEMORY[0x1E695A920]);
-  v8 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
-  v9 = [v7 initWithIdentifier:v8 type:0];
-  v10 = [v3 initWithUser:v4 password:v5 extension:accountModificationExtension serviceIdentifier:v9 userInfo:0];
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  v9 = [v7 initWithIdentifier:highLevelDomain type:0];
+  v10 = [v3 initWithUser:user password:password extension:accountModificationExtension serviceIdentifier:v9 userInfo:0];
 
   [(ASAccountAuthenticationModificationController *)self->_accountAuthenticationModificationController performRequest:v10];
 }
 
-- (void)accountAuthenticationModificationController:(id)a3 didSuccessfullyCompleteRequest:(id)a4 withUserInfo:(id)a5
+- (void)accountAuthenticationModificationController:(id)controller didSuccessfullyCompleteRequest:(id)request withUserInfo:(id)info
 {
-  v6 = a4;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -5188,14 +5188,14 @@ void __66__SFAccountDetailViewController__updateAccountModificationOptions__bloc
     [WeakRetained setSavedAccountToRemoveAfterCompletedUpgradeInDetailView:self->_savedAccount];
   }
 
-  v4 = [MEMORY[0x1E69C8A38] sharedStore];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
   savedAccount = self->_savedAccount;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__SFAccountDetailViewController__completedSignInWithAppleUpgrade__block_invoke;
   v6[3] = &unk_1E848F810;
   v6[4] = self;
-  [v4 removeCredentialTypes:1 forSavedAccount:savedAccount completionHandler:v6];
+  [mEMORY[0x1E69C8A38] removeCredentialTypes:1 forSavedAccount:savedAccount completionHandler:v6];
 }
 
 void __65__SFAccountDetailViewController__completedSignInWithAppleUpgrade__block_invoke(uint64_t a1)
@@ -5231,12 +5231,12 @@ void __65__SFAccountDetailViewController__completedSignInWithAppleUpgrade__block
   [(SFAccountDetailViewController *)self _reloadDiffableDataSourceOnInternalQueueAnimated:0];
 }
 
-- (void)accountAuthenticationModificationController:(id)a3 didFailRequest:(id)a4 withError:(id)a5
+- (void)accountAuthenticationModificationController:(id)controller didFailRequest:(id)request withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  controllerCopy = controller;
+  requestCopy = request;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = WBS_LOG_CHANNEL_PREFIXAccountAuthenticationModificationExtension();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -5245,19 +5245,19 @@ void __65__SFAccountDetailViewController__completedSignInWithAppleUpgrade__block
     }
   }
 
-  if ([v10 code] != 1)
+  if ([errorCopy code] != 1)
   {
-    v12 = [v10 userInfo];
-    v13 = [v12 objectForKey:*MEMORY[0x1E695A8F8]];
+    userInfo = [errorCopy userInfo];
+    v13 = [userInfo objectForKey:*MEMORY[0x1E695A8F8]];
 
-    if ([v10 code] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if ([errorCopy code] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v22 = MEMORY[0x1E69DC650];
       v23 = MEMORY[0x1E696AEC0];
       v24 = _WBSLocalizedString();
-      v25 = [(NSExtension *)self->_accountModificationExtension _plugIn];
-      v26 = [v25 localizedContainingName];
-      v27 = [v23 stringWithFormat:v24, v26];
+      _plugIn = [(NSExtension *)self->_accountModificationExtension _plugIn];
+      localizedContainingName = [_plugIn localizedContainingName];
+      v27 = [v23 stringWithFormat:v24, localizedContainingName];
       v20 = [v22 alertControllerWithTitle:0 message:v27 imageNamed:@"alert-passwords" preferredStyle:1];
 
       v21 = MEMORY[0x1E69DC648];
@@ -5268,9 +5268,9 @@ void __65__SFAccountDetailViewController__completedSignInWithAppleUpgrade__block
       v14 = MEMORY[0x1E69DC650];
       v15 = MEMORY[0x1E696AEC0];
       v16 = _WBSLocalizedString();
-      v17 = [(NSExtension *)self->_accountModificationExtension _plugIn];
-      v18 = [v17 localizedContainingName];
-      v19 = [v15 stringWithFormat:v16, v18];
+      _plugIn2 = [(NSExtension *)self->_accountModificationExtension _plugIn];
+      localizedContainingName2 = [_plugIn2 localizedContainingName];
+      v19 = [v15 stringWithFormat:v16, localizedContainingName2];
       v20 = [v14 alertControllerWithTitle:v19 message:v13 imageNamed:@"alert-passwords" preferredStyle:1];
 
       v21 = MEMORY[0x1E69DC648];
@@ -5284,26 +5284,26 @@ void __65__SFAccountDetailViewController__completedSignInWithAppleUpgrade__block
   }
 }
 
-- (id)presentationAnchorForAccountAuthenticationModificationController:(id)a3
+- (id)presentationAnchorForAccountAuthenticationModificationController:(id)controller
 {
-  v3 = [(SFAccountDetailViewController *)self view];
-  v4 = [v3 window];
+  view = [(SFAccountDetailViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (void)accountModificationExtensionManagerExtensionListDidChange:(id)a3
+- (void)accountModificationExtensionManagerExtensionListDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E695A960] sharedManager];
-  v6 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  mEMORY[0x1E695A960] = [MEMORY[0x1E695A960] sharedManager];
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__SFAccountDetailViewController_accountModificationExtensionManagerExtensionListDidChange___block_invoke;
   v7[3] = &unk_1E848FBD0;
   objc_copyWeak(&v8, &location);
-  [v5 extensionForDomain:v6 completionHandler:v7];
+  [mEMORY[0x1E695A960] extensionForDomain:highLevelDomain completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -5354,21 +5354,21 @@ uint64_t __91__SFAccountDetailViewController_accountModificationExtensionManager
 {
   v3 = [MEMORY[0x1E695A9A0] configurationForDeleting:0 fromSavedAccount:self->_savedAccount];
   v4 = MEMORY[0x1E69DC650];
-  v5 = [v3 title];
-  v6 = [v3 subtitle];
-  v7 = [v4 alertControllerWithTitle:v5 message:v6 imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
+  title = [v3 title];
+  subtitle = [v3 subtitle];
+  v7 = [v4 alertControllerWithTitle:title message:subtitle imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
 
-  v8 = [v7 view];
-  [v8 setAccessibilityIdentifier:@"DeletePasswordAndTOTPGeneratorConfirmation"];
+  view = [v7 view];
+  [view setAccessibilityIdentifier:@"DeletePasswordAndTOTPGeneratorConfirmation"];
 
   v9 = MEMORY[0x1E69DC648];
-  v10 = [v3 buttonTitle];
+  buttonTitle = [v3 buttonTitle];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__SFAccountDetailViewController__showConfirmationToPermanentlyDeletePasswordAndTOTPGenerator__block_invoke;
   v15[3] = &unk_1E848FBF8;
   v15[4] = self;
-  v11 = [v9 actionWithTitle:v10 style:2 handler:v15];
+  v11 = [v9 actionWithTitle:buttonTitle style:2 handler:v15];
   [v7 addAction:v11];
 
   v12 = MEMORY[0x1E69DC648];
@@ -5383,21 +5383,21 @@ uint64_t __91__SFAccountDetailViewController_accountModificationExtensionManager
 {
   v3 = [MEMORY[0x1E695A9A0] configurationForDeleting:0 fromSavedAccount:self->_savedAccount];
   v4 = MEMORY[0x1E69DC650];
-  v5 = [v3 title];
-  v6 = [v3 subtitle];
-  v7 = [v4 alertControllerWithTitle:v5 message:v6 imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
+  title = [v3 title];
+  subtitle = [v3 subtitle];
+  v7 = [v4 alertControllerWithTitle:title message:subtitle imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
 
-  v8 = [v7 view];
-  [v8 setAccessibilityIdentifier:@"SoftDeletePasswordAndTOTPGeneratorConfirmation"];
+  view = [v7 view];
+  [view setAccessibilityIdentifier:@"SoftDeletePasswordAndTOTPGeneratorConfirmation"];
 
   v9 = MEMORY[0x1E69DC648];
-  v10 = [v3 buttonTitle];
+  buttonTitle = [v3 buttonTitle];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__SFAccountDetailViewController__showConfirmationToSoftDeletePasswordAndTOTPGenerator__block_invoke;
   v15[3] = &unk_1E848FBF8;
   v15[4] = self;
-  v11 = [v9 actionWithTitle:v10 style:2 handler:v15];
+  v11 = [v9 actionWithTitle:buttonTitle style:2 handler:v15];
   [v7 addAction:v11];
 
   v12 = MEMORY[0x1E69DC648];
@@ -5408,25 +5408,25 @@ uint64_t __91__SFAccountDetailViewController_accountModificationExtensionManager
   [(SFAccountDetailViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_showConfirmationToDeleteCredentialTypes:(int64_t)a3
+- (void)_showConfirmationToDeleteCredentialTypes:(int64_t)types
 {
   if (([(WBSSavedAccount *)self->_savedAccount isRecentlyDeleted]& 1) != 0)
   {
 
-    [(SFAccountDetailViewController *)self _showConfirmationToPermanentlyDeleteCredentialTypes:a3];
+    [(SFAccountDetailViewController *)self _showConfirmationToPermanentlyDeleteCredentialTypes:types];
   }
 
   else
   {
 
-    [(SFAccountDetailViewController *)self _showConfirmationToSoftDeleteCredentialTypes:a3];
+    [(SFAccountDetailViewController *)self _showConfirmationToSoftDeleteCredentialTypes:types];
   }
 }
 
-- (void)_showConfirmationToPermanentlyDeleteCredentialTypes:(int64_t)a3
+- (void)_showConfirmationToPermanentlyDeleteCredentialTypes:(int64_t)types
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 3)
+  if (types == 3)
   {
     v9 = MEMORY[0x1E695A9A0];
     v23[0] = self->_savedAccount;
@@ -5436,7 +5436,7 @@ uint64_t __91__SFAccountDetailViewController_accountModificationExtensionManager
 
   else
   {
-    if (a3 == 2)
+    if (types == 2)
     {
       v5 = MEMORY[0x1E695A9A0];
       savedAccount = self->_savedAccount;
@@ -5445,7 +5445,7 @@ uint64_t __91__SFAccountDetailViewController_accountModificationExtensionManager
 
     else
     {
-      if (a3 != 1)
+      if (types != 1)
       {
         v8 = 0;
         goto LABEL_9;
@@ -5461,22 +5461,22 @@ uint64_t __91__SFAccountDetailViewController_accountModificationExtensionManager
 
 LABEL_9:
   v11 = MEMORY[0x1E69DC650];
-  v12 = [v8 title];
-  v13 = [v8 subtitle];
-  v14 = [v11 alertControllerWithTitle:v12 message:v13 imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
+  title = [v8 title];
+  subtitle = [v8 subtitle];
+  v14 = [v11 alertControllerWithTitle:title message:subtitle imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
 
-  v15 = [v14 view];
-  [v15 setAccessibilityIdentifier:@"DeleteCredentialConfirmation"];
+  view = [v14 view];
+  [view setAccessibilityIdentifier:@"DeleteCredentialConfirmation"];
 
   v16 = MEMORY[0x1E69DC648];
-  v17 = [v8 buttonTitle];
+  buttonTitle = [v8 buttonTitle];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __85__SFAccountDetailViewController__showConfirmationToPermanentlyDeleteCredentialTypes___block_invoke;
   v22[3] = &unk_1E848FEC0;
   v22[4] = self;
-  v22[5] = a3;
-  v18 = [v16 actionWithTitle:v17 style:2 handler:v22];
+  v22[5] = types;
+  v18 = [v16 actionWithTitle:buttonTitle style:2 handler:v22];
   [v14 addAction:v18];
 
   v19 = MEMORY[0x1E69DC648];
@@ -5518,8 +5518,8 @@ void __85__SFAccountDetailViewController__showConfirmationToPermanentlyDeleteCre
 
 - (void)_permanentlyDeletePassword
 {
-  v3 = [(SFAccountDetailViewController *)self _passwordWarningManager];
-  [v3 removeWarningForSavedAccount:self->_savedAccount];
+  _passwordWarningManager = [(SFAccountDetailViewController *)self _passwordWarningManager];
+  [_passwordWarningManager removeWarningForSavedAccount:self->_savedAccount];
 
   passwordWarning = self->_passwordWarning;
   self->_passwordWarning = 0;
@@ -5527,32 +5527,32 @@ void __85__SFAccountDetailViewController__showConfirmationToPermanentlyDeleteCre
   passwordCell = self->_passwordCell;
   self->_passwordCell = 0;
 
-  v6 = [MEMORY[0x1E69C8A38] sharedStore];
-  [v6 removeCredentialTypes:1 forSavedAccount:self->_savedAccount completionHandler:&__block_literal_global_811];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  [mEMORY[0x1E69C8A38] removeCredentialTypes:1 forSavedAccount:self->_savedAccount completionHandler:&__block_literal_global_811];
 }
 
 - (void)_permanentlyDeletePasskey
 {
-  v3 = [MEMORY[0x1E69C8A38] sharedStore];
-  [v3 removeCredentialTypes:2 forSavedAccount:self->_savedAccount completionHandler:&__block_literal_global_813];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  [mEMORY[0x1E69C8A38] removeCredentialTypes:2 forSavedAccount:self->_savedAccount completionHandler:&__block_literal_global_813];
 }
 
 - (void)_permanentlyDeleteAllCredentials
 {
-  v3 = [MEMORY[0x1E69C8A38] sharedStore];
-  [v3 removeCredentialTypes:3 forSavedAccount:self->_savedAccount completionHandler:&__block_literal_global_815];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  [mEMORY[0x1E69C8A38] removeCredentialTypes:3 forSavedAccount:self->_savedAccount completionHandler:&__block_literal_global_815];
 }
 
-- (void)_showConfirmationToSoftDeleteCredentialTypes:(int64_t)a3
+- (void)_showConfirmationToSoftDeleteCredentialTypes:(int64_t)types
 {
-  if (a3 == 1)
+  if (types == 1)
   {
     v6 = 0;
     goto LABEL_5;
   }
 
   v5 = 0;
-  if (a3 == 2)
+  if (types == 2)
   {
     v6 = 2;
 LABEL_5:
@@ -5560,22 +5560,22 @@ LABEL_5:
   }
 
   v7 = MEMORY[0x1E69DC650];
-  v8 = [v5 title];
-  v9 = [v5 subtitle];
-  v10 = [v7 alertControllerWithTitle:v8 message:v9 imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
+  title = [v5 title];
+  subtitle = [v5 subtitle];
+  v10 = [v7 alertControllerWithTitle:title message:subtitle imageNamed:@"alert-passwords" preferredStyle:_SFDeviceAlertStyle()];
 
-  v11 = [v10 view];
-  [v11 setAccessibilityIdentifier:@"DeleteCredentialConfirmation"];
+  view = [v10 view];
+  [view setAccessibilityIdentifier:@"DeleteCredentialConfirmation"];
 
   v12 = MEMORY[0x1E69DC648];
-  v13 = [v5 buttonTitle];
+  buttonTitle = [v5 buttonTitle];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__SFAccountDetailViewController__showConfirmationToSoftDeleteCredentialTypes___block_invoke;
   v18[3] = &unk_1E848FEC0;
   v18[4] = self;
-  v18[5] = a3;
-  v14 = [v12 actionWithTitle:v13 style:2 handler:v18];
+  v18[5] = types;
+  v14 = [v12 actionWithTitle:buttonTitle style:2 handler:v18];
   [v10 addAction:v14];
 
   v15 = MEMORY[0x1E69DC648];
@@ -5666,19 +5666,19 @@ void __78__SFAccountDetailViewController__showConfirmationToSoftDeleteCredential
   }
 }
 
-- (void)_softDeletePasswordWithCompletionHandler:(id)a3
+- (void)_softDeletePasswordWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
+  handlerCopy = handler;
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
   savedAccount = self->_savedAccount;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__SFAccountDetailViewController__softDeletePasswordWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E848FF80;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 _moveCredentialTypesToRecentlyDeleted:1 fromSavedAccount:savedAccount completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [mEMORY[0x1E69C8A38] _moveCredentialTypesToRecentlyDeleted:1 fromSavedAccount:savedAccount completionHandler:v8];
 }
 
 void __74__SFAccountDetailViewController__softDeletePasswordWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -5728,21 +5728,21 @@ uint64_t __74__SFAccountDetailViewController__softDeletePasswordWithCompletionHa
   }
 }
 
-- (void)_softDeletePasskeyWithCompletionHandler:(id)a3
+- (void)_softDeletePasskeyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
+  handlerCopy = handler;
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
   savedAccount = self->_savedAccount;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__SFAccountDetailViewController__softDeletePasskeyWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E848FFA8;
-  v9 = v4;
-  v7 = v4;
-  [v5 _moveCredentialTypesToRecentlyDeleted:1 fromSavedAccount:savedAccount completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [mEMORY[0x1E69C8A38] _moveCredentialTypesToRecentlyDeleted:1 fromSavedAccount:savedAccount completionHandler:v8];
 }
 
-- (void)_presentSoftDeleteErrorAlertForCredentialTypes:(int64_t)a3
+- (void)_presentSoftDeleteErrorAlertForCredentialTypes:(int64_t)types
 {
   v4 = _WBSLocalizedString();
   v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v4 message:0 imageNamed:@"alert-passwords" preferredStyle:1];
@@ -5762,14 +5762,14 @@ uint64_t __74__SFAccountDetailViewController__softDeletePasswordWithCompletionHa
 
 - (void)_recoverSavedAccount
 {
-  v3 = [MEMORY[0x1E69C8A38] sharedStore];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
   savedAccount = self->_savedAccount;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__SFAccountDetailViewController__recoverSavedAccount__block_invoke;
   v5[3] = &unk_1E848FA00;
   v5[4] = self;
-  [v3 _recoverRecentlyDeletedSavedAccount:savedAccount completionHandler:v5];
+  [mEMORY[0x1E69C8A38] _recoverRecentlyDeletedSavedAccount:savedAccount completionHandler:v5];
 }
 
 void __53__SFAccountDetailViewController__recoverSavedAccount__block_invoke(uint64_t a1, char a2)
@@ -5808,9 +5808,9 @@ uint64_t __53__SFAccountDetailViewController__recoverSavedAccount__block_invoke_
 {
   v3 = [MEMORY[0x1E69BC7C8] alertTitleAndMessageForRecoveringSavedAccountToMyPasswords:self->_savedAccount];
   v4 = MEMORY[0x1E69DC650];
-  v5 = [v3 first];
-  v6 = [v3 second];
-  v7 = [v4 alertControllerWithTitle:v5 message:v6 imageNamed:@"alert-passwords" preferredStyle:1];
+  first = [v3 first];
+  second = [v3 second];
+  v7 = [v4 alertControllerWithTitle:first message:second imageNamed:@"alert-passwords" preferredStyle:1];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69DC648];
@@ -5846,14 +5846,14 @@ void __102__SFAccountDetailViewController__presentMoveRecentlyDeletedSavedAccoun
 
 - (void)_moveSavedAccountToMyPasswords
 {
-  v3 = [MEMORY[0x1E69C8A38] sharedStore];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
   savedAccount = self->_savedAccount;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__SFAccountDetailViewController__moveSavedAccountToMyPasswords__block_invoke;
   v5[3] = &unk_1E848FA00;
   v5[4] = self;
-  [v3 _moveSavedAccount:savedAccount toGroupWithID:0 completionHandler:v5];
+  [mEMORY[0x1E69C8A38] _moveSavedAccount:savedAccount toGroupWithID:0 completionHandler:v5];
 }
 
 void __63__SFAccountDetailViewController__moveSavedAccountToMyPasswords__block_invoke(uint64_t a1, char a2)
@@ -5904,8 +5904,8 @@ uint64_t __63__SFAccountDetailViewController__moveSavedAccountToMyPasswords__blo
 
 - (BOOL)_shouldShowAccountOptionsHeader
 {
-  v3 = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
-  v4 = [v3 itemIdentifiersInSectionWithIdentifier:&unk_1F5022DF8];
+  snapshot = [(SFTableViewDiffableDataSource *)self->_tableViewDiffableDataSource snapshot];
+  v4 = [snapshot itemIdentifiersInSectionWithIdentifier:&unk_1F5022DF8];
   v5 = [v4 count];
 
   if (v5 <= 1)
@@ -5922,14 +5922,14 @@ uint64_t __63__SFAccountDetailViewController__moveSavedAccountToMyPasswords__blo
   return v6;
 }
 
-- (void)QRCodeScannerViewController:(id)a3 didScanQRCodeWithURLValue:(id)a4
+- (void)QRCodeScannerViewController:(id)controller didScanQRCodeWithURLValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  controllerCopy = controller;
+  valueCopy = value;
+  v8 = valueCopy;
   if (!self->_didAcceptTOTPQRCode)
   {
-    if ([v7 safari_isOTPAuthMigrationURL])
+    if ([valueCopy safari_isOTPAuthMigrationURL])
     {
       if (self->_totpMigrationNavigationController)
       {
@@ -5943,14 +5943,14 @@ uint64_t __63__SFAccountDetailViewController__moveSavedAccountToMyPasswords__blo
       if (self->_totpMigrationController)
       {
         self->_didAcceptTOTPQRCode = 1;
-        v11 = [(PMTOTPMigrationController *)self->_totpMigrationController numberOfCodes];
+        numberOfCodes = [(PMTOTPMigrationController *)self->_totpMigrationController numberOfCodes];
         v12 = self->_totpMigrationController;
-        if (v11 != 1)
+        if (numberOfCodes != 1)
         {
           [(PMTOTPMigrationController *)v12 setDelegate:self];
           v24 = objc_alloc(MEMORY[0x1E69DCCD8]);
-          v25 = [(PMTOTPMigrationController *)self->_totpMigrationController viewController];
-          v26 = [v24 initWithRootViewController:v25];
+          viewController = [(PMTOTPMigrationController *)self->_totpMigrationController viewController];
+          v26 = [v24 initWithRootViewController:viewController];
           totpMigrationNavigationController = self->_totpMigrationNavigationController;
           self->_totpMigrationNavigationController = v26;
 
@@ -5964,10 +5964,10 @@ uint64_t __63__SFAccountDetailViewController__moveSavedAccountToMyPasswords__blo
           goto LABEL_14;
         }
 
-        v13 = [(PMTOTPMigrationController *)v12 totpGenerators];
-        v14 = [v13 firstObject];
+        totpGenerators = [(PMTOTPMigrationController *)v12 totpGenerators];
+        firstObject = [totpGenerators firstObject];
 
-        if (v14)
+        if (firstObject)
         {
           goto LABEL_9;
         }
@@ -5977,9 +5977,9 @@ uint64_t __63__SFAccountDetailViewController__moveSavedAccountToMyPasswords__blo
     v15 = [objc_alloc(MEMORY[0x1E69C8A60]) initWithOTPAuthURL:v8];
     if (v15)
     {
-      v14 = v15;
+      firstObject = v15;
 LABEL_9:
-      [(SFAccountDetailViewController *)self _addTOTPGenerator:v14];
+      [(SFAccountDetailViewController *)self _addTOTPGenerator:firstObject];
       self->_didAcceptTOTPQRCode = 1;
       [(SFAccountDetailViewController *)self dismissViewControllerAnimated:1 completion:0];
 
@@ -6007,7 +6007,7 @@ LABEL_9:
     v23 = [v20 actionWithTitle:v21 style:0 handler:&v28];
     [v22 addAction:{v23, v28, v29, v30, v31}];
 
-    [v6 presentViewController:v22 animated:1 completion:0];
+    [controllerCopy presentViewController:v22 animated:1 completion:0];
   }
 
 LABEL_14:
@@ -6066,14 +6066,14 @@ void __84__SFAccountDetailViewController__presentHideSecurityRecommendationConfi
 - (void)_hideSecurityRecommendation
 {
   v3 = [objc_alloc(MEMORY[0x1E69C89A0]) initWithIssueTypes:{-[WBSPasswordWarning issueTypes](self->_passwordWarning, "issueTypes")}];
-  v4 = [MEMORY[0x1E69C8A38] sharedStore];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
   savedAccount = self->_savedAccount;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__SFAccountDetailViewController__hideSecurityRecommendation__block_invoke;
   v6[3] = &unk_1E848F810;
   v6[4] = self;
-  [v4 saveHideMarker:v3 forSavedAccount:savedAccount completionHandler:v6];
+  [mEMORY[0x1E69C8A38] saveHideMarker:v3 forSavedAccount:savedAccount completionHandler:v6];
 }
 
 void __60__SFAccountDetailViewController__hideSecurityRecommendation__block_invoke(uint64_t a1)
@@ -6095,103 +6095,103 @@ void __60__SFAccountDetailViewController__hideSecurityRecommendation__block_invo
 
 - (void)passwordManagerWillLock
 {
-  v3 = [(SFAccountDetailViewController *)self tableView];
-  v4 = [v3 contextMenuInteraction];
-  [v4 dismissMenu];
+  tableView = [(SFAccountDetailViewController *)self tableView];
+  contextMenuInteraction = [tableView contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 
   editMenuInteraction = self->_editMenuInteraction;
 
   [(UIEditMenuInteraction *)editMenuInteraction dismissMenu];
 }
 
-- (void)noteTableViewCellTextViewTapped:(id)a3
+- (void)noteTableViewCellTextViewTapped:(id)tapped
 {
   if (([(SFAccountDetailViewController *)self isEditing]& 1) == 0)
   {
-    v4 = [(WBSSavedAccount *)self->_savedAccount notesEntry];
-    v5 = [v4 length];
+    notesEntry = [(WBSSavedAccount *)self->_savedAccount notesEntry];
+    v5 = [notesEntry length];
 
     if (!v5)
     {
       [(SFAccountDetailViewController *)self _setEditing:1 animated:1];
-      v6 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
-      [v6 becomeFirstResponder];
+      textView = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+      [textView becomeFirstResponder];
     }
   }
 }
 
-- (void)accountDetailHeaderViewCell:(id)a3 titleTextFieldDidChange:(id)a4
+- (void)accountDetailHeaderViewCell:(id)cell titleTextFieldDidChange:(id)change
 {
-  v5 = [a4 text];
+  text = [change text];
   titleForEditing = self->_titleForEditing;
-  self->_titleForEditing = v5;
+  self->_titleForEditing = text;
 
   [(SFAccountDetailViewController *)self _updateHeaderViewCell];
 }
 
-- (void)returnKeyActivatedInAccountDetailHeaderViewCell:(id)a3
+- (void)returnKeyActivatedInAccountDetailHeaderViewCell:(id)cell
 {
-  v3 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
-  [v3 becomeFirstResponder];
+  editableTextField = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  [editableTextField becomeFirstResponder];
 }
 
-- (void)totpMigrationControllerFinishedImport:(id)a3
+- (void)totpMigrationControllerFinishedImport:(id)import
 {
-  v8 = a3;
-  v4 = [(SFAccountDetailViewController *)self presentedViewController];
-  if (v4 != self->_totpMigrationNavigationController)
+  importCopy = import;
+  presentedViewController = [(SFAccountDetailViewController *)self presentedViewController];
+  if (presentedViewController != self->_totpMigrationNavigationController)
   {
     goto LABEL_2;
   }
 
   totpMigrationController = self->_totpMigrationController;
 
-  v5 = v8;
-  if (totpMigrationController == v8)
+  v5 = importCopy;
+  if (totpMigrationController == importCopy)
   {
     [(SFAccountDetailViewController *)self dismissViewControllerAnimated:1 completion:0];
     totpMigrationNavigationController = self->_totpMigrationNavigationController;
     self->_totpMigrationNavigationController = 0;
 
-    v4 = self->_totpMigrationController;
+    presentedViewController = self->_totpMigrationController;
     self->_totpMigrationController = 0;
 LABEL_2:
 
-    v5 = v8;
+    v5 = importCopy;
   }
 }
 
-- (void)totpMigrationController:(id)a3 presentDetailsForSavedAccount:(id)a4
+- (void)totpMigrationController:(id)controller presentDetailsForSavedAccount:(id)account
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SFAccountDetailViewController *)self presentedViewController];
-  v8 = v7;
-  if (v7 != self->_totpMigrationNavigationController)
+  controllerCopy = controller;
+  accountCopy = account;
+  presentedViewController = [(SFAccountDetailViewController *)self presentedViewController];
+  v8 = presentedViewController;
+  if (presentedViewController != self->_totpMigrationNavigationController)
   {
     goto LABEL_2;
   }
 
   totpMigrationController = self->_totpMigrationController;
 
-  if (totpMigrationController == v10)
+  if (totpMigrationController == controllerCopy)
   {
-    v8 = [[SFAccountDetailViewController alloc] initWithSavedAccount:v6 passwordWarning:0 options:0];
+    v8 = [[SFAccountDetailViewController alloc] initWithSavedAccount:accountCopy passwordWarning:0 options:0];
     [(UINavigationController *)self->_totpMigrationNavigationController pushViewController:v8 animated:1];
 LABEL_2:
   }
 }
 
-- (void)totpMigrationController:(id)a3 presentPickerForGenerator:(id)a4
+- (void)totpMigrationController:(id)controller presentPickerForGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFAccountDetailViewController *)self presentedViewController];
-  if (v8 == self->_totpMigrationNavigationController)
+  controllerCopy = controller;
+  generatorCopy = generator;
+  presentedViewController = [(SFAccountDetailViewController *)self presentedViewController];
+  if (presentedViewController == self->_totpMigrationNavigationController)
   {
     totpMigrationController = self->_totpMigrationController;
 
-    if (totpMigrationController == v6)
+    if (totpMigrationController == controllerCopy)
     {
       v10 = objc_alloc_init(SFAccountPickerConfiguration);
       v11 = _WBSLocalizedString();
@@ -6203,13 +6203,13 @@ LABEL_2:
       [(SFAccountPickerConfiguration *)v10 setMinimumNumberOfCredentialsToShowLikelyMatchesSection:1];
       [(SFAccountPickerConfiguration *)v10 setShouldEnableAddingNewPasswordsIfPossible:1];
       [(SFAccountPickerConfiguration *)v10 setShouldHideCreatePasswordsInSettingsHint:1];
-      v13 = [v7 heuristicallyDeterminedServiceNameHints];
-      v14 = [v13 count];
+      heuristicallyDeterminedServiceNameHints = [generatorCopy heuristicallyDeterminedServiceNameHints];
+      v14 = [heuristicallyDeterminedServiceNameHints count];
 
       if (v14)
       {
-        v15 = [v7 heuristicallyDeterminedServiceNameHints];
-        [(SFAccountPickerConfiguration *)v10 setServiceNameHintStrings:v15];
+        heuristicallyDeterminedServiceNameHints2 = [generatorCopy heuristicallyDeterminedServiceNameHints];
+        [(SFAccountPickerConfiguration *)v10 setServiceNameHintStrings:heuristicallyDeterminedServiceNameHints2];
       }
 
       v16 = [SFAccountPickerViewController alloc];
@@ -6217,9 +6217,9 @@ LABEL_2:
       v21 = 3221225472;
       v22 = __83__SFAccountDetailViewController_totpMigrationController_presentPickerForGenerator___block_invoke;
       v23 = &unk_1E848FFF8;
-      v17 = v6;
+      v17 = controllerCopy;
       v24 = v17;
-      v25 = v7;
+      v25 = generatorCopy;
       v18 = [(SFAccountPickerViewController *)v16 initWithConfiguration:v10 completionHandler:&v20];
       v19 = [(PMTOTPMigrationController *)v17 viewController:v20];
       [v19 presentViewController:v18 animated:1 completion:0];

@@ -7,7 +7,7 @@
 + (void)initialize
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [ML3OrderingTerm orderingTermWithProperty:@"position"];
     v5[0] = v2;

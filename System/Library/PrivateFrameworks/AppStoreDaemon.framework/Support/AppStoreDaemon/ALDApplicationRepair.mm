@@ -3,11 +3,11 @@
 - (NSArray)repairedBundleIDs;
 - (NSString)repairType;
 - (_TtC9appstored20ALDApplicationRepair)init;
-- (_TtC9appstored20ALDApplicationRepair)initWithFairPlayStatus:(int)a3;
-- (void)repairApplication:(ApplicationProxy *)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setLogKey:(id)a3;
-- (void)setRepairedBundleIDs:(id)a3;
+- (_TtC9appstored20ALDApplicationRepair)initWithFairPlayStatus:(int)status;
+- (void)repairApplication:(ApplicationProxy *)application completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setLogKey:(id)key;
+- (void)setRepairedBundleIDs:(id)ds;
 @end
 
 @implementation ALDApplicationRepair
@@ -28,9 +28,9 @@
   return v2.super.isa;
 }
 
-- (void)setRepairedBundleIDs:(id)a3
+- (void)setRepairedBundleIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -50,19 +50,19 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_delegate) = a3;
+  *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_delegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setLogKey:(id)a3
+- (void)setLogKey:(id)key
 {
   v4 = *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_logKey);
-  *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_logKey) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_logKey) = key;
+  keyCopy = key;
 }
 
 - (NSString)repairType
@@ -81,26 +81,26 @@
   return v2;
 }
 
-- (_TtC9appstored20ALDApplicationRepair)initWithFairPlayStatus:(int)a3
+- (_TtC9appstored20ALDApplicationRepair)initWithFairPlayStatus:(int)status
 {
   *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_repairedBundleIDs) = 0;
   *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_delegate) = 0;
   *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_logKey) = 0;
   *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_repairType) = xmmword_1004366F0;
-  *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_fairPlayStatus) = a3;
+  *(self + OBJC_IVAR____TtC9appstored20ALDApplicationRepair_fairPlayStatus) = status;
   v4.receiver = self;
   v4.super_class = type metadata accessor for ALDApplicationRepair();
   return [(ALDApplicationRepair *)&v4 init];
 }
 
-- (void)repairApplication:(ApplicationProxy *)a3 completionHandler:(id)a4
+- (void)repairApplication:(ApplicationProxy *)application completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = application;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -115,8 +115,8 @@
   v14[3] = 0;
   v14[4] = &unk_1004366D0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004344E0, v14);
 }
 

@@ -1,20 +1,20 @@
 @interface NPKProtoPasscodeUpgradeFlowShouldExitRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPending:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPending:(BOOL)pending;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPasscodeUpgradeFlowShouldExitRequest
 
-- (void)setHasPending:(BOOL)a3
+- (void)setHasPending:(BOOL)pending
 {
-  if (a3)
+  if (pending)
   {
     v3 = 2;
   }
@@ -33,87 +33,87 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPasscodeUpgradeFlowShouldExitRequest;
   v4 = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)&v8 description];
-  v5 = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_passcodeChanged];
-    [v3 setObject:v4 forKey:@"passcodeChanged"];
+    [dictionary setObject:v4 forKey:@"passcodeChanged"];
   }
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v6 forKey:@"pending"];
+    [dictionary setObject:v6 forKey:@"pending"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     passcodeChanged = self->_passcodeChanged;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_passcodeChanged;
-    v4[20] |= 1u;
+    toCopy[16] = self->_passcodeChanged;
+    toCopy[20] |= 1u;
   }
 
   if (self->_errorData)
   {
-    v5 = v4;
-    [v4 setErrorData:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setErrorData:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[17] = self->_pending;
-    v4[20] |= 2u;
+    toCopy[17] = self->_pending;
+    toCopy[20] |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -121,7 +121,7 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NSData *)self->_errorData copyWithZone:a3];
+  v7 = [(NSData *)self->_errorData copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -134,30 +134,30 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = *(v4 + 20);
+  v6 = *(equalCopy + 20);
   if ((has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v6 = *(v4 + 16);
+  v6 = *(equalCopy + 16);
   if (self->_passcodeChanged)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
       goto LABEL_13;
     }
@@ -173,7 +173,7 @@ LABEL_3:
   }
 
   errorData = self->_errorData;
-  if (!(errorData | *(v4 + 1)))
+  if (!(errorData | *(equalCopy + 1)))
   {
     goto LABEL_7;
   }
@@ -187,20 +187,20 @@ LABEL_13:
 
   has = self->_has;
 LABEL_7:
-  v8 = (*(v4 + 20) & 2) == 0;
+  v8 = (*(equalCopy + 20) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) != 0)
+    if ((*(equalCopy + 20) & 2) != 0)
     {
       if (self->_pending)
       {
-        if (*(v4 + 17))
+        if (*(equalCopy + 17))
         {
           goto LABEL_19;
         }
       }
 
-      else if (!*(v4 + 17))
+      else if (!*(equalCopy + 17))
       {
 LABEL_19:
         v8 = 1;
@@ -242,25 +242,25 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[20])
+  fromCopy = from;
+  if (fromCopy[20])
   {
-    self->_passcodeChanged = v4[16];
+    self->_passcodeChanged = fromCopy[16];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)self setErrorData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((v4[20] & 2) != 0)
+  if ((fromCopy[20] & 2) != 0)
   {
-    self->_pending = v4[17];
+    self->_pending = fromCopy[17];
     *&self->_has |= 2u;
   }
 }

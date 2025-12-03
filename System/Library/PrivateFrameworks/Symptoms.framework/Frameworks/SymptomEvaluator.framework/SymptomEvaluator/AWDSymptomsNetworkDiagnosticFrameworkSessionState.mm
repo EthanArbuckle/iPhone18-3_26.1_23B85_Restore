@@ -1,23 +1,23 @@
 @interface AWDSymptomsNetworkDiagnosticFrameworkSessionState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInState:(id)a3;
+- (int)StringAsInState:(id)state;
 - (int)inState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInState:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInState:(BOOL)state;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkDiagnosticFrameworkSessionState
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)setHasInState:(BOOL)a3
+- (void)setHasInState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -58,25 +58,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsInState:(id)a3
+- (int)StringAsInState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Idle"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Idle"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Alerted"])
+  else if ([stateCopy isEqualToString:@"Alerted"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Running"])
+  else if ([stateCopy isEqualToString:@"Running"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Diagnosing"])
+  else if ([stateCopy isEqualToString:@"Diagnosing"])
   {
     v4 = 4;
   }
@@ -95,20 +95,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkDiagnosticFrameworkSessionState;
   v4 = [(AWDSymptomsNetworkDiagnosticFrameworkSessionState *)&v8 description];
-  v5 = [(AWDSymptomsNetworkDiagnosticFrameworkSessionState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkDiagnosticFrameworkSessionState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v8 forKey:@"timestamp"];
+    [dictionary setObject:v8 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -139,35 +139,35 @@ LABEL_3:
     v10 = off_27898F560[v9];
   }
 
-  [v3 setObject:v10 forKey:@"inState"];
+  [dictionary setObject:v10 forKey:@"inState"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_stateHeldForSecs];
-    [v3 setObject:v5 forKey:@"stateHeldForSecs"];
+    [dictionary setObject:v5 forKey:@"stateHeldForSecs"];
   }
 
 LABEL_5:
   symptomName = self->_symptomName;
   if (symptomName)
   {
-    [v3 setObject:symptomName forKey:@"symptomName"];
+    [dictionary setObject:symptomName forKey:@"symptomName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -188,31 +188,31 @@ LABEL_3:
 
   inState = self->_inState;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     stateHeldForSecs = self->_stateHeldForSecs;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_symptomName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 40) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -231,27 +231,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_inState;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 6) = self->_inState;
+  *(toCopy + 40) |= 4u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[1] = self->_stateHeldForSecs;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_stateHeldForSecs;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_5:
   if (self->_symptomName)
   {
-    v6 = v4;
-    [v4 setSymptomName:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSymptomName:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) == 0)
@@ -289,31 +289,31 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_symptomName copyWithZone:a3];
+  v8 = [(NSString *)self->_symptomName copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_19:
     v7 = 0;
@@ -322,32 +322,32 @@ LABEL_19:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_inState != *(v4 + 6))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_inState != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_stateHeldForSecs != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_stateHeldForSecs != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_19;
   }
 
   symptomName = self->_symptomName;
-  if (symptomName | *(v4 + 4))
+  if (symptomName | *(equalCopy + 4))
   {
     v7 = [(NSString *)symptomName isEqual:?];
   }
@@ -402,15 +402,15 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_symptomName hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -423,26 +423,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 4) == 0)
+  else if ((*(fromCopy + 40) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_inState = *(v4 + 6);
+  self->_inState = *(fromCopy + 6);
   *&self->_has |= 4u;
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
 LABEL_4:
-    self->_stateHeldForSecs = *(v4 + 1);
+    self->_stateHeldForSecs = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDSymptomsNetworkDiagnosticFrameworkSessionState *)self setSymptomName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

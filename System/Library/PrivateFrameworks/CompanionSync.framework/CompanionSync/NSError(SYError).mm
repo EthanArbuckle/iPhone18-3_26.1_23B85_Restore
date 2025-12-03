@@ -8,7 +8,7 @@
 + (id)errorWithSYError:()SYError userInfo:
 {
   v6 = a4;
-  v7 = [[a1 alloc] initWithSYError:a3 userInfo:v6];
+  v7 = [[self alloc] initWithSYError:a3 userInfo:v6];
 
   return v7;
 }
@@ -184,7 +184,7 @@ LABEL_50:
   }
 
 LABEL_51:
-  v15 = [a1 initWithDomain:@"SYErrorDomain" code:a3 userInfo:v9];
+  v15 = [self initWithDomain:@"SYErrorDomain" code:a3 userInfo:v9];
 
   return v15;
 }

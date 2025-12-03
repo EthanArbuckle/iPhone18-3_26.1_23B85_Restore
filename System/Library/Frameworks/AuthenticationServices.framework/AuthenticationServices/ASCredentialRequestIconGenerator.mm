@@ -3,29 +3,29 @@
 + (UIImage)passwordManagerIcon;
 + (UIImage)systemPasskeyIcon;
 + (UIImage)systemPasswordIcon;
-+ (id)_iconForPasswordProviderBundleIdentifier:(id)a3;
-+ (id)_imageForIcon:(id)a3 size:(CGSize)a4;
-+ (id)_systemImageNamed:(id)a3;
-+ (id)iconForApplicationIdentifier:(id)a3 size:(CGSize)a4;
-+ (id)iconForData:(id)a3 scale:(double)a4 size:(CGSize)a5;
-+ (id)passwordManagerIconWithSize:(CGSize)a3;
++ (id)_iconForPasswordProviderBundleIdentifier:(id)identifier;
++ (id)_imageForIcon:(id)icon size:(CGSize)size;
++ (id)_systemImageNamed:(id)named;
++ (id)iconForApplicationIdentifier:(id)identifier size:(CGSize)size;
++ (id)iconForData:(id)data scale:(double)scale size:(CGSize)size;
++ (id)passwordManagerIconWithSize:(CGSize)size;
 @end
 
 @implementation ASCredentialRequestIconGenerator
 
 + (UIImage)passwordManagerIcon
 {
-  if (![MEMORY[0x1E69C8880] isPasswordsAppInstalled] || (objc_msgSend(a1, "iconForApplicationIdentifier:size:", *MEMORY[0x1E69C8CC0], 128.0, 128.0), (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![MEMORY[0x1E69C8880] isPasswordsAppInstalled] || (objc_msgSend(self, "iconForApplicationIdentifier:size:", *MEMORY[0x1E69C8CC0], 128.0, 128.0), (_keychainIcon = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [a1 _keychainIcon];
+    _keychainIcon = [self _keychainIcon];
   }
 
-  return v3;
+  return _keychainIcon;
 }
 
 + (UIImage)systemPasskeyIcon
 {
-  v2 = [a1 _systemImageNamed:@"person.badge.key.fill"];
+  v2 = [self _systemImageNamed:@"person.badge.key.fill"];
   v3 = [v2 imageWithAlignmentRectInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   return v3;
@@ -42,18 +42,18 @@
 + (UIImage)alternativeSecurityKeysIcon
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [MEMORY[0x1E696AAE8] as_authenticationServicesBundle];
-  v4 = [v2 imageNamed:@"SecurityKeysIcon" inBundle:v3];
+  as_authenticationServicesBundle = [MEMORY[0x1E696AAE8] as_authenticationServicesBundle];
+  v4 = [v2 imageNamed:@"SecurityKeysIcon" inBundle:as_authenticationServicesBundle];
 
   return v4;
 }
 
-+ (id)iconForApplicationIdentifier:(id)a3 size:(CGSize)a4
++ (id)iconForApplicationIdentifier:(id)identifier size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if ([*MEMORY[0x1E69C8D30] isEqualToString:v7])
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  if ([*MEMORY[0x1E69C8D30] isEqualToString:identifierCopy])
   {
     v8 = WBS_LOG_CHANNEL_PREFIXAuthorization();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -67,15 +67,15 @@
   else
   {
     v17 = 0;
-    v10 = [MEMORY[0x1E6963620] bundleRecordWithApplicationIdentifier:v7 error:&v17];
+    v10 = [MEMORY[0x1E6963620] bundleRecordWithApplicationIdentifier:identifierCopy error:&v17];
     v11 = v17;
     if (v10)
     {
       v12 = objc_alloc(MEMORY[0x1E69A8A00]);
-      v13 = [v10 bundleIdentifier];
-      v14 = [v12 initWithBundleIdentifier:v13];
+      bundleIdentifier = [v10 bundleIdentifier];
+      v14 = [v12 initWithBundleIdentifier:bundleIdentifier];
 
-      v9 = [a1 _imageForIcon:v14 size:{width, height}];
+      v9 = [self _imageForIcon:v14 size:{width, height}];
     }
 
     else
@@ -93,22 +93,22 @@
   return v9;
 }
 
-+ (id)passwordManagerIconWithSize:(CGSize)a3
++ (id)passwordManagerIconWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [a1 passwordManagerIcon];
-  v6 = [v5 imageByPreparingThumbnailOfSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  passwordManagerIcon = [self passwordManagerIcon];
+  v6 = [passwordManagerIcon imageByPreparingThumbnailOfSize:{width, height}];
 
   return v6;
 }
 
-+ (id)iconForData:(id)a3 scale:(double)a4 size:(CGSize)a5
++ (id)iconForData:(id)data scale:(double)scale size:(CGSize)size
 {
-  height = a5.height;
+  height = size.height;
   v24[1] = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E69DCAB8] imageWithData:a3 scale:{a4, a5.width}];
-  v8 = [v7 CGImage];
+  v7 = [MEMORY[0x1E69DCAB8] imageWithData:data scale:{scale, size.width}];
+  cGImage = [v7 CGImage];
   [v7 scale];
   v10 = v9;
   [v7 size];
@@ -124,13 +124,13 @@
   v16 = height * v11;
   if (CGFloatNearlyEqualToFloat())
   {
-    v17 = [objc_alloc(MEMORY[0x1E69A8988]) initWithCGImage:v8 scale:v10];
+    v17 = [objc_alloc(MEMORY[0x1E69A8988]) initWithCGImage:cGImage scale:v10];
     v18 = objc_alloc(MEMORY[0x1E69A8A00]);
     v24[0] = v17;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     v20 = [v18 initWithImages:v19];
 
-    v21 = [a1 _imageForIcon:v20 size:{v16, height}];
+    v21 = [self _imageForIcon:v20 size:{v16, height}];
   }
 
   else
@@ -143,47 +143,47 @@
   return v21;
 }
 
-+ (id)_imageForIcon:(id)a3 size:(CGSize)a4
++ (id)_imageForIcon:(id)icon size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v20[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69DCEB0];
-  v7 = a3;
-  v8 = [v6 mainScreen];
-  [v8 scale];
+  iconCopy = icon;
+  mainScreen = [v6 mainScreen];
+  [mainScreen scale];
   v10 = v9;
 
   v11 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:width scale:{height, v10}];
-  v12 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  [v11 setAppearance:{objc_msgSend(v12, "userInterfaceStyle") == 2}];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  [v11 setAppearance:{objc_msgSend(currentTraitCollection, "userInterfaceStyle") == 2}];
 
   [v11 setShouldApplyMask:1];
   [v11 setShape:1];
   v20[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  [v7 prepareImagesForImageDescriptors:v13];
+  [iconCopy prepareImagesForImageDescriptors:v13];
 
-  v14 = [v7 imageForImageDescriptor:v11];
+  v14 = [iconCopy imageForImageDescriptor:v11];
 
   v15 = MEMORY[0x1E69DCAB8];
-  v16 = [v14 CGImage];
+  cGImage = [v14 CGImage];
   [v14 scale];
-  v17 = [v15 imageWithCGImage:v16 scale:0 orientation:?];
+  v17 = [v15 imageWithCGImage:cGImage scale:0 orientation:?];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-+ (id)_iconForPasswordProviderBundleIdentifier:(id)a3
++ (id)_iconForPasswordProviderBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69DCAB8];
   v4 = MEMORY[0x1E69DCEB0];
-  v5 = a3;
-  v6 = [v4 mainScreen];
-  [v6 scale];
-  v7 = [v3 _applicationIconImageForBundleIdentifier:v5 format:0 scale:?];
+  identifierCopy = identifier;
+  mainScreen = [v4 mainScreen];
+  [mainScreen scale];
+  v7 = [v3 _applicationIconImageForBundleIdentifier:identifierCopy format:0 scale:?];
 
   if (!v7)
   {
@@ -197,10 +197,10 @@
   return v7;
 }
 
-+ (id)_systemImageNamed:(id)a3
++ (id)_systemImageNamed:(id)named
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3];
+  namedCopy = named;
+  v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:namedCopy];
   v5 = v4;
   if (v4)
   {
@@ -210,8 +210,8 @@
   else
   {
     v7 = MEMORY[0x1E69DCAB8];
-    v8 = [MEMORY[0x1E696AAE8] as_authenticationServicesBundle];
-    v6 = [v7 imageNamed:v3 inBundle:v8];
+    as_authenticationServicesBundle = [MEMORY[0x1E696AAE8] as_authenticationServicesBundle];
+    v6 = [v7 imageNamed:namedCopy inBundle:as_authenticationServicesBundle];
   }
 
   return v6;

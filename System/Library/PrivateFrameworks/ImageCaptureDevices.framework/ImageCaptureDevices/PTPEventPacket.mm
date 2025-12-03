@@ -1,127 +1,127 @@
 @interface PTPEventPacket
-- (PTPEventPacket)initWithDictionary:(id)a3;
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4;
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4 parameter1:(unsigned int)a5;
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4 parameter1:(unsigned int)a5 parameter2:(unsigned int)a6;
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4 parameter1:(unsigned int)a5 parameter2:(unsigned int)a6 parameter3:(unsigned int)a7;
-- (PTPEventPacket)initWithTCPBuffer:(void *)a3;
-- (PTPEventPacket)initWithUSBBuffer:(void *)a3;
+- (PTPEventPacket)initWithDictionary:(id)dictionary;
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d;
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d parameter1:(unsigned int)parameter1;
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d parameter1:(unsigned int)parameter1 parameter2:(unsigned int)parameter2;
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d parameter1:(unsigned int)parameter1 parameter2:(unsigned int)parameter2 parameter3:(unsigned int)parameter3;
+- (PTPEventPacket)initWithTCPBuffer:(void *)buffer;
+- (PTPEventPacket)initWithUSBBuffer:(void *)buffer;
 - (id)contentForTCP;
 - (id)contentForUSB;
-- (id)contentForUSBUsingBuffer:(void *)a3 capacity:(unsigned int)a4;
+- (id)contentForUSBUsingBuffer:(void *)buffer capacity:(unsigned int)capacity;
 - (id)description;
 - (id)eventPacketDictionary;
 @end
 
 @implementation PTPEventPacket
 
-- (PTPEventPacket)initWithDictionary:(id)a3
+- (PTPEventPacket)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PTPEventPacket;
   v5 = [(PTPEventPacket *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventCode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventCode"];
     v5->_eventCode = [v6 unsignedShortValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"transactionID"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"transactionID"];
     v5->_transactionID = [v7 unsignedIntValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"numParameters"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numParameters"];
     v5->_numParameters = [v8 unsignedIntValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"parameter0"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"parameter0"];
     v5->_parameters[0] = [v9 unsignedIntValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"parameter1"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"parameter1"];
     v5->_parameters[1] = [v10 unsignedIntValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"parameter2"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"parameter2"];
     v5->_parameters[2] = [v11 unsignedIntValue];
   }
 
   return v5;
 }
 
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d
 {
   v7.receiver = self;
   v7.super_class = PTPEventPacket;
   result = [(PTPEventPacket *)&v7 init];
   if (result)
   {
-    result->_eventCode = a3;
-    result->_transactionID = a4;
+    result->_eventCode = code;
+    result->_transactionID = d;
     result->_numParameters = 0;
   }
 
   return result;
 }
 
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4 parameter1:(unsigned int)a5
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d parameter1:(unsigned int)parameter1
 {
   v9.receiver = self;
   v9.super_class = PTPEventPacket;
   result = [(PTPEventPacket *)&v9 init];
   if (result)
   {
-    result->_eventCode = a3;
-    result->_transactionID = a4;
-    result->_parameters[0] = a5;
+    result->_eventCode = code;
+    result->_transactionID = d;
+    result->_parameters[0] = parameter1;
     result->_numParameters = 1;
   }
 
   return result;
 }
 
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4 parameter1:(unsigned int)a5 parameter2:(unsigned int)a6
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d parameter1:(unsigned int)parameter1 parameter2:(unsigned int)parameter2
 {
   v11.receiver = self;
   v11.super_class = PTPEventPacket;
   result = [(PTPEventPacket *)&v11 init];
   if (result)
   {
-    result->_eventCode = a3;
-    result->_transactionID = a4;
-    result->_parameters[0] = a5;
-    result->_parameters[1] = a6;
+    result->_eventCode = code;
+    result->_transactionID = d;
+    result->_parameters[0] = parameter1;
+    result->_parameters[1] = parameter2;
     result->_numParameters = 2;
   }
 
   return result;
 }
 
-- (PTPEventPacket)initWithEventCode:(unsigned __int16)a3 transactionID:(unsigned int)a4 parameter1:(unsigned int)a5 parameter2:(unsigned int)a6 parameter3:(unsigned int)a7
+- (PTPEventPacket)initWithEventCode:(unsigned __int16)code transactionID:(unsigned int)d parameter1:(unsigned int)parameter1 parameter2:(unsigned int)parameter2 parameter3:(unsigned int)parameter3
 {
   v13.receiver = self;
   v13.super_class = PTPEventPacket;
   result = [(PTPEventPacket *)&v13 init];
   if (result)
   {
-    result->_eventCode = a3;
-    result->_transactionID = a4;
-    result->_parameters[0] = a5;
-    result->_parameters[1] = a6;
-    result->_parameters[2] = a7;
+    result->_eventCode = code;
+    result->_transactionID = d;
+    result->_parameters[0] = parameter1;
+    result->_parameters[1] = parameter2;
+    result->_parameters[2] = parameter3;
     result->_numParameters = 3;
   }
 
   return result;
 }
 
-- (PTPEventPacket)initWithTCPBuffer:(void *)a3
+- (PTPEventPacket)initWithTCPBuffer:(void *)buffer
 {
-  v3 = *a3;
-  if ((*a3 - 27) >= 0xFFFFFFF3 && *(a3 + 1) == 8)
+  v3 = *buffer;
+  if ((*buffer - 27) >= 0xFFFFFFF3 && *(buffer + 1) == 8)
   {
     v11.receiver = self;
     v11.super_class = PTPEventPacket;
     v7 = [(PTPEventPacket *)&v11 init];
     if (v7)
     {
-      v10 = a3 + 8;
+      v10 = buffer + 8;
       v7->_eventCode = ReadUInt16(&v10);
       v7->_transactionID = ReadUInt32(&v10);
       v7->_numParameters = (v3 - 14) >> 2;
@@ -138,28 +138,28 @@
     }
 
     self = v7;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (PTPEventPacket)initWithUSBBuffer:(void *)a3
+- (PTPEventPacket)initWithUSBBuffer:(void *)buffer
 {
-  v3 = *a3;
-  if ((*a3 - 25) >= 0xFFFFFFF3 && *(a3 + 2) == 4)
+  v3 = *buffer;
+  if ((*buffer - 25) >= 0xFFFFFFF3 && *(buffer + 2) == 4)
   {
     v11.receiver = self;
     v11.super_class = PTPEventPacket;
     v7 = [(PTPEventPacket *)&v11 init];
     if (v7)
     {
-      v10 = a3 + 6;
+      v10 = buffer + 6;
       v7->_eventCode = ReadUInt16(&v10);
       v7->_transactionID = ReadUInt32(&v10);
       v7->_numParameters = (v3 - 12) >> 2;
@@ -176,32 +176,32 @@
     }
 
     self = v7;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)contentForTCP
 {
   v3 = (4 * self->_numParameters + 14);
   v4 = [PTPWrappedBytes wrappedBytesWithCapacity:v3];
-  v7 = [v4 mutableBytes];
-  WriteUInt32(&v7, v3);
-  WriteUInt32(&v7, 8);
-  WriteUInt16(&v7, self->_eventCode);
-  WriteUInt32(&v7, self->_transactionID);
+  mutableBytes = [v4 mutableBytes];
+  WriteUInt32(&mutableBytes, v3);
+  WriteUInt32(&mutableBytes, 8);
+  WriteUInt16(&mutableBytes, self->_eventCode);
+  WriteUInt32(&mutableBytes, self->_transactionID);
   if (self->_numParameters >= 1)
   {
     v5 = 0;
     do
     {
-      WriteUInt32(&v7, self->_parameters[v5++]);
+      WriteUInt32(&mutableBytes, self->_parameters[v5++]);
     }
 
     while (v5 < self->_numParameters);
@@ -216,17 +216,17 @@
 {
   v3 = (4 * self->_numParameters + 12);
   v4 = [PTPWrappedBytes wrappedBytesWithCapacity:v3];
-  v7 = [v4 mutableBytes];
-  WriteUInt32(&v7, v3);
-  WriteUInt16(&v7, 4);
-  WriteUInt16(&v7, self->_eventCode);
-  WriteUInt32(&v7, self->_transactionID);
+  mutableBytes = [v4 mutableBytes];
+  WriteUInt32(&mutableBytes, v3);
+  WriteUInt16(&mutableBytes, 4);
+  WriteUInt16(&mutableBytes, self->_eventCode);
+  WriteUInt32(&mutableBytes, self->_transactionID);
   if (self->_numParameters >= 1)
   {
     v5 = 0;
     do
     {
-      WriteUInt32(&v7, self->_parameters[v5++]);
+      WriteUInt32(&mutableBytes, self->_parameters[v5++]);
     }
 
     while (v5 < self->_numParameters);
@@ -237,23 +237,23 @@
   return v4;
 }
 
-- (id)contentForUSBUsingBuffer:(void *)a3 capacity:(unsigned int)a4
+- (id)contentForUSBUsingBuffer:(void *)buffer capacity:(unsigned int)capacity
 {
   v4 = (4 * self->_numParameters + 12);
-  if (v4 <= a4)
+  if (v4 <= capacity)
   {
-    v9 = a3;
-    v5 = [PTPWrappedBytes wrappedBytesWithBytes:a3 capacity:a4];
-    WriteUInt32(&v9, v4);
-    WriteUInt16(&v9, 4);
-    WriteUInt16(&v9, self->_eventCode);
-    WriteUInt32(&v9, self->_transactionID);
+    bufferCopy = buffer;
+    v5 = [PTPWrappedBytes wrappedBytesWithBytes:buffer capacity:capacity];
+    WriteUInt32(&bufferCopy, v4);
+    WriteUInt16(&bufferCopy, 4);
+    WriteUInt16(&bufferCopy, self->_eventCode);
+    WriteUInt32(&bufferCopy, self->_transactionID);
     if (self->_numParameters >= 1)
     {
       v7 = 0;
       do
       {
-        WriteUInt32(&v9, self->_parameters[v7++]);
+        WriteUInt32(&bufferCopy, self->_parameters[v7++]);
       }
 
       while (v7 < self->_numParameters);

@@ -1,9 +1,9 @@
 @interface WATextHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WATextHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WATextHeaderView)initWithFrame:(CGRect)frame;
 - (double)_headerHeight;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation WATextHeaderView
@@ -16,11 +16,11 @@
   return 40.0;
 }
 
-- (WATextHeaderView)initWithFrame:(CGRect)a3
+- (WATextHeaderView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = WATextHeaderView;
-  v3 = [(WATextHeaderView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WATextHeaderView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -46,17 +46,17 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  [(UILabel *)self->_headerLabel setText:a3];
+  [(UILabel *)self->_headerLabel setText:text];
 
   [(WATextHeaderView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(WATextHeaderView *)self _headerHeight:a3.width];
+  width = fits.width;
+  [(WATextHeaderView *)self _headerHeight:fits.width];
   v5 = v4;
   v6 = width;
   result.height = v5;

@@ -1,8 +1,8 @@
 @interface MRAVOutputDeviceDescription
-- (BOOL)containsUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MRAVOutputDeviceDescription)initWithAVDescription:(id)a3;
-- (MRAVOutputDeviceDescription)initWithDescriptor:(id)a3;
+- (BOOL)containsUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (MRAVOutputDeviceDescription)initWithAVDescription:(id)description;
+- (MRAVOutputDeviceDescription)initWithDescriptor:(id)descriptor;
 - (NSString)composedTypeDescription;
 - (_MRAVOutputDeviceDescriptorProtobuf)descriptor;
 - (id)description;
@@ -19,22 +19,22 @@
 
   [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setDeviceSubType:[(MRAVOutputDeviceDescription *)self deviceSubtype]];
   [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setDeviceType:[(MRAVOutputDeviceDescription *)self deviceType]];
-  v5 = [(MRAVOutputDeviceDescription *)self name];
-  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setName:v5];
+  name = [(MRAVOutputDeviceDescription *)self name];
+  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setName:name];
 
-  v6 = [(MRAVOutputDeviceDescription *)self modelID];
-  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setModelID:v6];
+  modelID = [(MRAVOutputDeviceDescription *)self modelID];
+  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setModelID:modelID];
 
-  v7 = [(MRAVOutputDeviceDescription *)self roomName];
-  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setRoomName:v7];
+  roomName = [(MRAVOutputDeviceDescription *)self roomName];
+  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setRoomName:roomName];
 
-  v8 = [(MRAVOutputDeviceDescription *)self roomID];
-  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setRoomID:v8];
+  roomID = [(MRAVOutputDeviceDescription *)self roomID];
+  [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setRoomID:roomID];
 
   [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setClusterType:[(MRAVOutputDeviceDescription *)self clusterType]];
   [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setIsClusterLeader:[(MRAVOutputDeviceDescription *)self isClusterLeader]];
-  v9 = [(MRAVOutputDeviceDescription *)self subComponents];
-  v10 = [v9 msv_map:&__block_literal_global_1];
+  subComponents = [(MRAVOutputDeviceDescription *)self subComponents];
+  v10 = [subComponents msv_map:&__block_literal_global_1];
   v11 = [v10 mutableCopy];
   [(_MRAVOutputDeviceDescriptorProtobuf *)v3 setAllClusterMembers:v11];
 
@@ -43,41 +43,41 @@
   return v3;
 }
 
-- (MRAVOutputDeviceDescription)initWithAVDescription:(id)a3
+- (MRAVOutputDeviceDescription)initWithAVDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v11.receiver = self;
   v11.super_class = MRAVOutputDeviceDescription;
   v5 = [(MRAVOutputDeviceDescription *)&v11 init];
   if (v5)
   {
-    v6 = [[MRAVConcreteOutputDeviceDescriptionImpl alloc] initWithAVDescription:v4];
+    v6 = [[MRAVConcreteOutputDeviceDescriptionImpl alloc] initWithAVDescription:descriptionCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 
-    v8 = [(MRAVOutputDeviceDescriptionImpl *)v5->_impl subComponents];
+    subComponents = [(MRAVOutputDeviceDescriptionImpl *)v5->_impl subComponents];
     subComponents = v5->_subComponents;
-    v5->_subComponents = v8;
+    v5->_subComponents = subComponents;
   }
 
   return v5;
 }
 
-- (MRAVOutputDeviceDescription)initWithDescriptor:(id)a3
+- (MRAVOutputDeviceDescription)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v11.receiver = self;
   v11.super_class = MRAVOutputDeviceDescription;
   v5 = [(MRAVOutputDeviceDescription *)&v11 init];
   if (v5)
   {
-    v6 = [[MRAVDistantOutputDeviceDescriptionImpl alloc] initWithDescriptor:v4];
+    v6 = [[MRAVDistantOutputDeviceDescriptionImpl alloc] initWithDescriptor:descriptorCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 
-    v8 = [(MRAVOutputDeviceDescriptionImpl *)v5->_impl subComponents];
+    subComponents = [(MRAVOutputDeviceDescriptionImpl *)v5->_impl subComponents];
     subComponents = v5->_subComponents;
-    v5->_subComponents = v8;
+    v5->_subComponents = subComponents;
   }
 
   return v5;
@@ -87,13 +87,13 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRAVOutputDeviceDescription *)self name];
+  name = [(MRAVOutputDeviceDescription *)self name];
   v6 = [(MRAVOutputDeviceDescription *)self uid];
   v7 = MRAVOutputDeviceTypeCopyDescription([(MRAVOutputDeviceDescription *)self deviceType]);
   v8 = MRAVOutputDeviceSubtypeCopyDescription([(MRAVOutputDeviceDescription *)self deviceSubtype]);
-  v9 = [(MRAVOutputDeviceDescription *)self modelID];
-  v10 = [(MRAVOutputDeviceDescription *)self roomName];
-  v11 = [(MRAVOutputDeviceDescription *)self roomID];
+  modelID = [(MRAVOutputDeviceDescription *)self modelID];
+  roomName = [(MRAVOutputDeviceDescription *)self roomName];
+  roomID = [(MRAVOutputDeviceDescription *)self roomID];
   v12 = [(MRAVOutputDeviceDescription *)self clusterType]- 1;
   if (v12 > 2)
   {
@@ -105,7 +105,7 @@
     v13 = off_1E769A190[v12];
   }
 
-  v14 = [v3 stringWithFormat:@"<%@:%p %@:%@ %@:%@:%@ room=%@:%@ clusterType=%@>", v4, self, v5, v6, v7, v8, v9, v10, v11, v13];
+  v14 = [v3 stringWithFormat:@"<%@:%p %@:%@ %@:%@:%@ room=%@:%@ clusterType=%@>", v4, self, name, v6, v7, v8, modelID, roomName, roomID, v13];
 
   return v14;
 }
@@ -129,10 +129,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -142,7 +142,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(MRAVOutputDeviceDescription *)self uid];
       v7 = [(MRAVOutputDeviceDescription *)v5 uid];
 
@@ -166,24 +166,24 @@
   return v3;
 }
 
-- (BOOL)containsUID:(id)a3
+- (BOOL)containsUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(MRAVOutputDeviceDescription *)self uid];
-  if ([v5 isEqualToString:v4])
+  if ([v5 isEqualToString:dCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(MRAVOutputDeviceDescription *)self subComponents];
+    subComponents = [(MRAVOutputDeviceDescription *)self subComponents];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__MRAVOutputDeviceDescription_containsUID___block_invoke;
     v10[3] = &unk_1E769A150;
-    v11 = v4;
-    v8 = [v7 msv_firstWhere:v10];
+    v11 = dCopy;
+    v8 = [subComponents msv_firstWhere:v10];
     v6 = v8 != 0;
   }
 

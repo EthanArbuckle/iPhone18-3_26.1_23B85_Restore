@@ -1,21 +1,21 @@
 @interface CNMeCardSharingOnboardingAvatarCarouselViewController
 - (CNMeCardSharingOnboardingAvatarCarouselItem)selectedItem;
-- (CNMeCardSharingOnboardingAvatarCarouselViewController)initWithContact:(id)a3 avatarRecord:(id)a4 logger:(id)a5;
+- (CNMeCardSharingOnboardingAvatarCarouselViewController)initWithContact:(id)contact avatarRecord:(id)record logger:(id)logger;
 - (CNMeCardSharingOnboardingAvatarCarouselViewControllerDelegate)delegate;
-- (id)animojiItemWithRecord:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)contactImageItemWithContact:(id)a3;
+- (id)animojiItemWithRecord:(id)record;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)contactImageItemWithContact:(id)contact;
 - (id)itemsForNoAnimojiAndNoPhoto;
-- (id)monogramImageItemWithContact:(id)a3;
+- (id)monogramImageItemWithContact:(id)contact;
 - (id)standardItems;
 - (void)buildItems;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)notifyDelegateOfUpdateToCenterMostItem;
 - (void)reloadForUpdatedContactPhoto;
 - (void)reloadForUpdatedMonogram;
-- (void)scrollToItemAtIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)scrollToItemAtIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -28,25 +28,25 @@
   return WeakRetained;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v13 = a4;
-  v5 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
-  v6 = [v5 selectedPageIndex];
+  pathCopy = path;
+  layout = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
+  selectedPageIndex = [layout selectedPageIndex];
 
   v7 = [(NSArray *)self->_items indexOfObject:self->_photoPickerItem];
-  if (v6 < [(NSArray *)self->_items count])
+  if (selectedPageIndex < [(NSArray *)self->_items count])
   {
-    v8 = [(NSArray *)self->_items objectAtIndexedSubscript:v6];
+    v8 = [(NSArray *)self->_items objectAtIndexedSubscript:selectedPageIndex];
     v9 = v8;
     if (v8 == self->_photoPickerItem)
     {
-      v10 = [v13 row];
+      v10 = [pathCopy row];
 
       if (v10 == v7)
       {
-        v11 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self delegate];
-        [v11 avatarCarouselViewControllerDidTapPhotoPickerCell:self];
+        delegate = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self delegate];
+        [delegate avatarCarouselViewControllerDidTapPhotoPickerCell:self];
 LABEL_7:
 
         goto LABEL_8;
@@ -58,8 +58,8 @@ LABEL_7:
     }
 
     collectionView = self->_collectionView;
-    v11 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
-    [v11 pageOffsetForIndex:{objc_msgSend(v13, "row")}];
+    delegate = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
+    [delegate pageOffsetForIndex:{objc_msgSend(pathCopy, "row")}];
     [(UICollectionView *)collectionView setContentOffset:1 animated:?];
     goto LABEL_7;
   }
@@ -67,43 +67,43 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[CNMeCardSharingOnboardingAvatarCarouselCell cellIdentifier];
-  v9 = [v6 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [v7 item]);
-  v11 = [MEMORY[0x1E696AFB0] UUID];
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [pathCopy item]);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   [v10 imageInsetPercentage];
   [v9 setImageInsetPercentage:?];
-  [v9 setDisplaySessionUUID:v11];
-  v12 = [v10 cachedImage];
+  [v9 setDisplaySessionUUID:uUID];
+  cachedImage = [v10 cachedImage];
 
-  if (v12)
+  if (cachedImage)
   {
-    v13 = [v10 cachedImage];
-    [v9 setImage:v13];
+    cachedImage2 = [v10 cachedImage];
+    [v9 setImage:cachedImage2];
   }
 
   else
   {
     [v9 setImage:0];
     objc_initWeak(&location, v10);
-    v14 = [v10 imageProvider];
+    imageProvider = [v10 imageProvider];
 
-    if (v14)
+    if (imageProvider)
     {
-      v15 = [v10 imageProvider];
+      imageProvider2 = [v10 imageProvider];
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
       v20 = __95__CNMeCardSharingOnboardingAvatarCarouselViewController_collectionView_cellForItemAtIndexPath___block_invoke;
       v21 = &unk_1E74E2F50;
       objc_copyWeak(&v24, &location);
       v22 = v9;
-      v23 = v11;
-      (v15)[2](v15, &v18);
+      v23 = uUID;
+      (imageProvider2)[2](imageProvider2, &v18);
 
       objc_destroyWeak(&v24);
     }
@@ -111,8 +111,8 @@ LABEL_8:
     objc_destroyWeak(&location);
   }
 
-  v16 = [v10 title];
-  [v9 setTitle:v16];
+  title = [v10 title];
+  [v9 setTitle:title];
 
   return v9;
 }
@@ -131,31 +131,31 @@ void __95__CNMeCardSharingOnboardingAvatarCarouselViewController_collectionView_
   }
 }
 
-- (void)scrollToItemAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)scrollToItemAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(NSArray *)self->_items count]> a3)
+  animatedCopy = animated;
+  if ([(NSArray *)self->_items count]> index)
   {
     collectionView = self->_collectionView;
-    v8 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
-    [v8 pageOffsetForIndex:a3];
-    [(UICollectionView *)collectionView setContentOffset:v4 animated:?];
+    layout = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
+    [layout pageOffsetForIndex:index];
+    [(UICollectionView *)collectionView setContentOffset:animatedCopy animated:?];
   }
 }
 
 - (CNMeCardSharingOnboardingAvatarCarouselItem)selectedItem
 {
-  v3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
-  v4 = [v3 selectedPageIndex];
+  layout = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
+  selectedPageIndex = [layout selectedPageIndex];
 
-  if (v4 >= [(NSArray *)self->_items count])
+  if (selectedPageIndex >= [(NSArray *)self->_items count])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:v4];
+    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:selectedPageIndex];
   }
 
   return v5;
@@ -163,27 +163,27 @@ void __95__CNMeCardSharingOnboardingAvatarCarouselViewController_collectionView_
 
 - (void)notifyDelegateOfUpdateToCenterMostItem
 {
-  v3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self selectedItem];
-  if (v3)
+  selectedItem = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self selectedItem];
+  if (selectedItem)
   {
-    v5 = v3;
-    v4 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self delegate];
-    [v4 avatarCarouselViewControllerDidUpdateCenterMostItem:v5];
+    v5 = selectedItem;
+    delegate = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self delegate];
+    [delegate avatarCarouselViewControllerDidUpdateCenterMostItem:v5];
 
-    v3 = v5;
+    selectedItem = v5;
   }
 }
 
-- (id)animojiItemWithRecord:(id)a3
+- (id)animojiItemWithRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = [CNMeCardSharingOnboardingAvatarCarouselItem alloc];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__CNMeCardSharingOnboardingAvatarCarouselViewController_animojiItemWithRecord___block_invoke;
   v8[3] = &unk_1E74E2F28;
-  v9 = v3;
-  v5 = v3;
+  v9 = recordCopy;
+  v5 = recordCopy;
   v6 = [(CNMeCardSharingOnboardingAvatarCarouselItem *)v4 initWithImageInsetPercentage:v8 imageProvider:0.1];
   [(CNMeCardSharingOnboardingAvatarCarouselItem *)v6 setImageType:3];
 
@@ -234,15 +234,15 @@ void __79__CNMeCardSharingOnboardingAvatarCarouselViewController_animojiItemWith
   [v6 imageForRecord:*(a1 + 32) scope:v9 handler:v3];
 }
 
-- (id)monogramImageItemWithContact:(id)a3
+- (id)monogramImageItemWithContact:(id)contact
 {
-  v4 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self contact];
-  v5 = [v4 mutableCopy];
+  contact = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self contact];
+  v5 = [contact mutableCopy];
 
   [v5 removePhoto];
   v6 = +[CNAvatarImageRendererSettings defaultSettings];
   v7 = [[CNAvatarImageRenderer alloc] initWithSettings:v6];
-  v8 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self monogramColor];
+  monogramColor = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self monogramColor];
   v9 = self->_layout;
   v10 = [CNMeCardSharingOnboardingAvatarCarouselItem alloc];
   v17 = MEMORY[0x1E69E9820];
@@ -250,12 +250,12 @@ void __79__CNMeCardSharingOnboardingAvatarCarouselViewController_animojiItemWith
   v19 = __86__CNMeCardSharingOnboardingAvatarCarouselViewController_monogramImageItemWithContact___block_invoke;
   v20 = &unk_1E74E2F00;
   v21 = v9;
-  v22 = v8;
+  v22 = monogramColor;
   v23 = v7;
   v24 = v5;
   v11 = v5;
   v12 = v7;
-  v13 = v8;
+  v13 = monogramColor;
   v14 = v9;
   v15 = [(CNMeCardSharingOnboardingAvatarCarouselItem *)v10 initWithImageInsetPercentage:&v17 imageProvider:0.0];
   [(CNMeCardSharingOnboardingAvatarCarouselItem *)v15 setImageType:2, v17, v18, v19, v20];
@@ -295,10 +295,10 @@ void __86__CNMeCardSharingOnboardingAvatarCarouselViewController_monogramImageIt
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (id)contactImageItemWithContact:(id)a3
+- (id)contactImageItemWithContact:(id)contact
 {
-  v4 = a3;
-  v5 = [[CNMeCardSharingContactAvatarProvider alloc] initWithContact:v4];
+  contactCopy = contact;
+  v5 = [[CNMeCardSharingContactAvatarProvider alloc] initWithContact:contactCopy];
 
   v6 = self->_layout;
   v7 = [CNMeCardSharingOnboardingAvatarCarouselItem alloc];
@@ -308,7 +308,7 @@ void __86__CNMeCardSharingOnboardingAvatarCarouselViewController_monogramImageIt
   v12[3] = &unk_1E74E2ED8;
   v13 = v5;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v8 = v6;
   v9 = v5;
   v10 = [(CNMeCardSharingOnboardingAvatarCarouselItem *)v7 initWithImageInsetPercentage:v12 imageProvider:0.0];
@@ -383,8 +383,8 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
   }
 
   v10 = *p_photoItem;
-  v6 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
-  [v6 pageOffsetForIndex:{-[NSArray indexOfObject:](self->_items, "indexOfObject:", v10)}];
+  layout = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self layout];
+  [layout pageOffsetForIndex:{-[NSArray indexOfObject:](self->_items, "indexOfObject:", v10)}];
   v8 = v7;
 
   [(UICollectionView *)self->_collectionView contentOffset];
@@ -401,7 +401,7 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
 
 - (id)standardItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(CNContact *)self->_contact imageDataAvailable])
   {
     v4 = [(CNContact *)self->_contact rawImageType]!= 2;
@@ -425,7 +425,7 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
       animojiItem = self->_animojiItem;
     }
 
-    [v3 addObject:animojiItem];
+    [array addObject:animojiItem];
   }
 
   if (v4)
@@ -441,7 +441,7 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
       photoItem = self->_photoItem;
     }
 
-    [v3 addObject:photoItem];
+    [array addObject:photoItem];
   }
 
   monogramItem = self->_monogramItem;
@@ -455,7 +455,7 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
     monogramItem = self->_monogramItem;
   }
 
-  [v3 addObject:monogramItem];
+  [array addObject:monogramItem];
   v14 = [CNMeCardSharingOnboardingAvatarCarouselItem alloc];
   v15 = CNContactsUIBundle();
   v16 = [v15 localizedStringForKey:@"SHARING_ONBOARDING_VIEW_MORE" value:&stru_1F0CE7398 table:@"Localized"];
@@ -465,8 +465,8 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
   self->_photoPickerItem = v17;
   v19 = v17;
 
-  [v3 addObject:v19];
-  v20 = [v3 copy];
+  [array addObject:v19];
+  v20 = [array copy];
 
   return v20;
 }
@@ -502,18 +502,18 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
 {
   if (self->_avatarRecord || [(CNContact *)self->_contact imageDataAvailable])
   {
-    v3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self standardItems];
+    standardItems = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self standardItems];
   }
 
   else
   {
-    v3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self itemsForNoAnimojiAndNoPhoto];
+    standardItems = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self itemsForNoAnimojiAndNoPhoto];
   }
 
   items = self->_items;
-  self->_items = v3;
+  self->_items = standardItems;
 
-  MEMORY[0x1EEE66BB8](v3, items);
+  MEMORY[0x1EEE66BB8](standardItems, items);
 }
 
 - (void)viewWillLayoutSubviews
@@ -521,25 +521,25 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
   v27.receiver = self;
   v27.super_class = CNMeCardSharingOnboardingAvatarCarouselViewController;
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)&v27 viewWillLayoutSubviews];
-  v3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
-  [v3 bounds];
+  view = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
+  [view bounds];
   v5 = v4;
-  v6 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
-  [v6 bounds];
+  view2 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
+  [view2 bounds];
   v8 = floor(v5 - v7);
 
   v9 = floor(v8 * 0.5 * 0.5) + -10.0;
-  v10 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
-  [v10 bounds];
+  view3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
+  [view3 bounds];
   v12 = v11;
-  v13 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
-  [v13 bounds];
+  view4 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
+  [view4 bounds];
   [(UICollectionViewFlowLayout *)self->_layout setItemSize:v12, v14];
 
   [(UICollectionViewFlowLayout *)self->_layout setMinimumLineSpacing:v9];
   [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self->_layout invalidateLayout];
-  v15 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
-  [v15 bounds];
+  view5 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
+  [view5 bounds];
   [(UICollectionView *)self->_collectionView setFrame:?];
 
   [(UICollectionView *)self->_collectionView setContentInset:0.0, 0.0, 0.0, v8 * 0.5];
@@ -550,24 +550,24 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
   v20 = -(v18 - v17);
   [(UICollectionViewFlowLayout *)self->_layout itemSize];
   v22 = v19 - v21;
-  v23 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
-  [v23 _setInterpageSpacing:{v20, 0.0}];
+  collectionView = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
+  [collectionView _setInterpageSpacing:{v20, 0.0}];
 
-  v24 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
-  [v24 _setPagingOrigin:{v22 * -0.5, 0.0}];
+  collectionView2 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
+  [collectionView2 _setPagingOrigin:{v22 * -0.5, 0.0}];
 
-  v25 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
-  [v25 _setFirstPageOffset:{-(v8 * 0.5), 0.0}];
+  collectionView3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
+  [collectionView3 _setFirstPageOffset:{-(v8 * 0.5), 0.0}];
 
-  v26 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
-  [v26 setContentOffset:{-(v8 * 0.5), 0.0}];
+  collectionView4 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self collectionView];
+  [collectionView4 setContentOffset:{-(v8 * 0.5), 0.0}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CNMeCardSharingOnboardingAvatarCarouselViewController;
-  [(CNMeCardSharingOnboardingAvatarCarouselViewController *)&v4 viewWillAppear:a3];
+  [(CNMeCardSharingOnboardingAvatarCarouselViewController *)&v4 viewWillAppear:appear];
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self notifyDelegateOfUpdateToCenterMostItem];
 }
 
@@ -584,22 +584,22 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
   [(UICollectionViewFlowLayout *)self->_layout setMinimumInteritemSpacing:0.0];
   [(UICollectionViewFlowLayout *)self->_layout setMinimumLineSpacing:0.0];
   v5 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v6 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
-  [v6 bounds];
+  view = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
+  [view bounds];
   v7 = [v5 initWithFrame:self->_layout collectionViewLayout:?];
   collectionView = self->_collectionView;
   self->_collectionView = v7;
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setDataSource:self];
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setPagingEnabled:1];
   [(UICollectionView *)self->_collectionView setShowsVerticalScrollIndicator:0];
   [(UICollectionView *)self->_collectionView setShowsHorizontalScrollIndicator:0];
-  v10 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
-  [v10 addSubview:self->_collectionView];
+  view2 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self view];
+  [view2 addSubview:self->_collectionView];
 
   v11 = self->_collectionView;
   v12 = objc_opt_class();
@@ -609,24 +609,24 @@ void __85__CNMeCardSharingOnboardingAvatarCarouselViewController_contactImageIte
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self buildItems];
 }
 
-- (CNMeCardSharingOnboardingAvatarCarouselViewController)initWithContact:(id)a3 avatarRecord:(id)a4 logger:(id)a5
+- (CNMeCardSharingOnboardingAvatarCarouselViewController)initWithContact:(id)contact avatarRecord:(id)record logger:(id)logger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contactCopy = contact;
+  recordCopy = record;
+  loggerCopy = logger;
   v19.receiver = self;
   v19.super_class = CNMeCardSharingOnboardingAvatarCarouselViewController;
   v12 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)&v19 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_avatarRecord, a4);
-    objc_storeStrong(&v13->_contact, a3);
-    objc_storeStrong(&v13->_logger, a5);
-    v14 = [MEMORY[0x1E69BDC50] availableColors];
-    v15 = [v14 firstObject];
+    objc_storeStrong(&v12->_avatarRecord, record);
+    objc_storeStrong(&v13->_contact, contact);
+    objc_storeStrong(&v13->_logger, logger);
+    availableColors = [MEMORY[0x1E69BDC50] availableColors];
+    firstObject = [availableColors firstObject];
     monogramColor = v13->_monogramColor;
-    v13->_monogramColor = v15;
+    v13->_monogramColor = firstObject;
 
     v17 = v13;
   }

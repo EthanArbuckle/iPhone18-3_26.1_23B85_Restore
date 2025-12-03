@@ -1,70 +1,70 @@
 @interface _TVNavigationCrossfadeAnimator
-+ (void)_beginCrossfadeAnimationFromView:(id)a3 toView:(id)a4 containerView:(id)a5 delay:(double)a6 fadeOutFromView:(BOOL)a7 removeFromView:(BOOL)a8 completion:(id)a9;
-- (void)_beginCrossfadeAnimationFromViewController:(id)a3 toViewController:(id)a4 containerView:(id)a5 completion:(id)a6;
-- (void)animateTransition:(id)a3;
++ (void)_beginCrossfadeAnimationFromView:(id)view toView:(id)toView containerView:(id)containerView delay:(double)delay fadeOutFromView:(BOOL)fromView removeFromView:(BOOL)removeFromView completion:(id)completion;
+- (void)_beginCrossfadeAnimationFromViewController:(id)controller toViewController:(id)viewController containerView:(id)view completion:(id)completion;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _TVNavigationCrossfadeAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v7 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52___TVNavigationCrossfadeAnimator_animateTransition___block_invoke;
   v9[3] = &unk_279D6E7F8;
-  v10 = v4;
-  v8 = v4;
-  [(_TVNavigationCrossfadeAnimator *)self _beginCrossfadeAnimationFromViewController:v7 toViewController:v6 containerView:v5 completion:v9];
+  v10 = transitionCopy;
+  v8 = transitionCopy;
+  [(_TVNavigationCrossfadeAnimator *)self _beginCrossfadeAnimationFromViewController:v7 toViewController:v6 containerView:containerView completion:v9];
 }
 
-+ (void)_beginCrossfadeAnimationFromView:(id)a3 toView:(id)a4 containerView:(id)a5 delay:(double)a6 fadeOutFromView:(BOOL)a7 removeFromView:(BOOL)a8 completion:(id)a9
++ (void)_beginCrossfadeAnimationFromView:(id)view toView:(id)toView containerView:(id)containerView delay:(double)delay fadeOutFromView:(BOOL)fromView removeFromView:(BOOL)removeFromView completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
-  v18 = a5;
-  [v18 bounds];
-  [v16 setFrame:?];
-  [v16 setAlpha:0.0];
-  [v18 addSubview:v16];
+  viewCopy = view;
+  toViewCopy = toView;
+  completionCopy = completion;
+  containerViewCopy = containerView;
+  [containerViewCopy bounds];
+  [toViewCopy setFrame:?];
+  [toViewCopy setAlpha:0.0];
+  [containerViewCopy addSubview:toViewCopy];
 
   v19 = MEMORY[0x277D75D18];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __136___TVNavigationCrossfadeAnimator__beginCrossfadeAnimationFromView_toView_containerView_delay_fadeOutFromView_removeFromView_completion___block_invoke;
   v27[3] = &unk_279D6E930;
-  v30 = a7;
-  v28 = v15;
-  v29 = v16;
+  fromViewCopy = fromView;
+  v28 = viewCopy;
+  v29 = toViewCopy;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __136___TVNavigationCrossfadeAnimator__beginCrossfadeAnimationFromView_toView_containerView_delay_fadeOutFromView_removeFromView_completion___block_invoke_2;
   v23[3] = &unk_279D6E958;
-  v26 = a8;
+  removeFromViewCopy = removeFromView;
   v24 = v28;
-  v25 = v17;
-  v20 = v17;
+  v25 = completionCopy;
+  v20 = completionCopy;
   v21 = v28;
-  v22 = v16;
-  [v19 animateWithDuration:2 delay:v27 options:v23 animations:0.5 completion:a6];
+  v22 = toViewCopy;
+  [v19 animateWithDuration:2 delay:v27 options:v23 animations:0.5 completion:delay];
 }
 
-- (void)_beginCrossfadeAnimationFromViewController:(id)a3 toViewController:(id)a4 containerView:(id)a5 completion:(id)a6
+- (void)_beginCrossfadeAnimationFromViewController:(id)controller toViewController:(id)viewController containerView:(id)view completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  viewCopy = view;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   v14 = objc_opt_class();
-  v16 = [v13 view];
+  view = [controllerCopy view];
 
-  v15 = [v12 view];
+  view2 = [viewControllerCopy view];
 
-  [v14 _beginCrossfadeAnimationFromView:v16 toView:v15 containerView:v11 delay:self->_fadeOutFromView fadeOutFromView:1 removeFromView:v10 completion:0.0];
+  [v14 _beginCrossfadeAnimationFromView:view toView:view2 containerView:viewCopy delay:self->_fadeOutFromView fadeOutFromView:1 removeFromView:completionCopy completion:0.0];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface EKEventConferenceDetailItem
-- (BOOL)conferenceCellShouldPresentShareSheet:(id)a3;
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)conferenceCellShouldPresentShareSheet:(id)sheet;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)owningViewController;
-- (void)conferenceCell:(id)a3 requestPresentShareSheetWithActivityItems:(id)a4 withPopoverSourceView:(id)a5;
-- (void)conferenceCellUpdated:(id)a3;
+- (void)conferenceCell:(id)cell requestPresentShareSheetWithActivityItems:(id)items withPopoverSourceView:(id)view;
+- (void)conferenceCellUpdated:(id)updated;
 - (void)reset;
 @end
 
@@ -16,43 +16,43 @@
   self->_cell = 0;
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  if (!MEMORY[0x1D38B98D0](self, a2, a3, a4, a5))
+  if (!MEMORY[0x1D38B98D0](self, a2, event, calendar, preview))
   {
     return 0;
   }
 
-  v6 = [(EKEventDetailItem *)self delegate];
+  delegate = [(EKEventDetailItem *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(EKEventDetailItem *)self delegate];
-    v9 = [v8 showsDetectedConferenceItem];
+    delegate2 = [(EKEventDetailItem *)self delegate];
+    showsDetectedConferenceItem = [delegate2 showsDetectedConferenceItem];
   }
 
   else
   {
-    v9 = 0;
+    showsDetectedConferenceItem = 0;
   }
 
-  v11 = [(EKEvent *)self->super._event virtualConference];
-  if (v11)
+  virtualConference = [(EKEvent *)self->super._event virtualConference];
+  if (virtualConference)
   {
     v10 = 1;
   }
 
   else
   {
-    v12 = [(EKEvent *)self->super._event conferenceURLForDisplay];
-    v10 = (v12 != 0) & v9;
+    conferenceURLForDisplay = [(EKEvent *)self->super._event conferenceURLForDisplay];
+    v10 = (conferenceURLForDisplay != 0) & showsDetectedConferenceItem;
   }
 
   return v10;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -71,21 +71,21 @@
 
 - (id)owningViewController
 {
-  v3 = [(EKEventDetailItem *)self delegate];
-  v4 = [v3 viewControllerForEventItem:self];
+  delegate = [(EKEventDetailItem *)self delegate];
+  v4 = [delegate viewControllerForEventItem:self];
 
   return v4;
 }
 
-- (void)conferenceCellUpdated:(id)a3
+- (void)conferenceCellUpdated:(id)updated
 {
-  v3 = [(EKEventDetailItem *)self delegate];
-  [v3 eventDetailItemWantsRefeshForHeightChange];
+  delegate = [(EKEventDetailItem *)self delegate];
+  [delegate eventDetailItemWantsRefeshForHeightChange];
 }
 
-- (BOOL)conferenceCellShouldPresentShareSheet:(id)a3
+- (BOOL)conferenceCellShouldPresentShareSheet:(id)sheet
 {
-  v4 = [(EKEventDetailItem *)self delegate];
+  delegate = [(EKEventDetailItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -93,23 +93,23 @@
     return 1;
   }
 
-  v6 = [(EKEventDetailItem *)self delegate];
-  v7 = [v6 eventDetailItemShouldPresentShareSheet:self];
+  delegate2 = [(EKEventDetailItem *)self delegate];
+  v7 = [delegate2 eventDetailItemShouldPresentShareSheet:self];
 
   return v7;
 }
 
-- (void)conferenceCell:(id)a3 requestPresentShareSheetWithActivityItems:(id)a4 withPopoverSourceView:(id)a5
+- (void)conferenceCell:(id)cell requestPresentShareSheetWithActivityItems:(id)items withPopoverSourceView:(id)view
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(EKEventDetailItem *)self delegate];
+  itemsCopy = items;
+  viewCopy = view;
+  delegate = [(EKEventDetailItem *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(EKEventDetailItem *)self delegate];
-    [v10 eventDetailItem:self requestPresentShareSheetWithActivityItems:v11 withPopoverSourceView:v7];
+    delegate2 = [(EKEventDetailItem *)self delegate];
+    [delegate2 eventDetailItem:self requestPresentShareSheetWithActivityItems:itemsCopy withPopoverSourceView:viewCopy];
   }
 }
 

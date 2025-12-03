@@ -1,28 +1,28 @@
 @interface CCUIAnimationCustomTimingFunctionParameters
-+ (id)functionWithControlPoint1:(CGPoint)a3 controlPoint2:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)functionWithControlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)controlPoint1;
 - (CGPoint)controlPoint2;
 - (NSString)description;
-- (id)_initWithControlPoint1:(CGPoint)a3 controlPoint2:(CGPoint)a4;
+- (id)_initWithControlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2;
 - (unint64_t)hash;
 @end
 
 @implementation CCUIAnimationCustomTimingFunctionParameters
 
-+ (id)functionWithControlPoint1:(CGPoint)a3 controlPoint2:(CGPoint)a4
++ (id)functionWithControlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2
 {
-  v4 = [[a1 alloc] _initWithControlPoint1:a3.x controlPoint2:{a3.y, a4.x, a4.y}];
+  v4 = [[self alloc] _initWithControlPoint1:point1.x controlPoint2:{point1.y, point2.x, point2.y}];
 
   return v4;
 }
 
-- (id)_initWithControlPoint1:(CGPoint)a3 controlPoint2:(CGPoint)a4
+- (id)_initWithControlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = point2.y;
+  x = point2.x;
+  v6 = point1.y;
+  v7 = point1.x;
   v9.receiver = self;
   v9.super_class = CCUIAnimationCustomTimingFunctionParameters;
   result = [(CCUIAnimationCustomTimingFunctionParameters *)&v9 init];
@@ -44,27 +44,27 @@
   v4 = [v3 appendPoint:@"Control Point 1" withName:?];
   [(CCUIAnimationCustomTimingFunctionParameters *)self controlPoint2];
   v5 = [v3 appendPoint:@"Control Point 2" withName:?];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   [(CCUIAnimationCustomTimingFunctionParameters *)self controlPoint1];
-  v4 = [v3 appendCGPoint:?];
+  v4 = [builder appendCGPoint:?];
   [(CCUIAnimationCustomTimingFunctionParameters *)self controlPoint2];
-  v5 = [v3 appendCGPoint:?];
-  v6 = [v3 hash];
+  v5 = [builder appendCGPoint:?];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -74,7 +74,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(CCUIAnimationCustomTimingFunctionParameters *)self controlPoint1];
       v7 = v6;
       v9 = v8;

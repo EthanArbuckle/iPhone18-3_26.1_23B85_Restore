@@ -1,17 +1,17 @@
 @interface CKVideoCancelActionMenuItemView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKVideoCancelActionMenuItemView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKVideoCancelActionMenuItemView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 @end
 
 @implementation CKVideoCancelActionMenuItemView
 
-- (CKVideoCancelActionMenuItemView)initWithFrame:(CGRect)a3
+- (CKVideoCancelActionMenuItemView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = CKVideoCancelActionMenuItemView;
-  v3 = [(CKVideoCancelActionMenuItemView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKVideoCancelActionMenuItemView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD298]);
@@ -28,16 +28,16 @@
 
     v8 = [v7 initWithImage:CKVideoCancelActionMenuItemViewMask_sMask];
     [(CKVideoCancelActionMenuItemView *)v3 setMaskView:v8];
-    v9 = [v6 layer];
-    v10 = [v8 layer];
-    [v9 setMask:v10];
+    layer = [v6 layer];
+    layer2 = [v8 layer];
+    [layer setMask:layer2];
 
     v11 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"ActionMenuCancelGlyph"];
     v12 = [v11 imageWithRenderingMode:2];
 
     v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v12];
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    [v13 setTintColor:v14];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v13 setTintColor:whiteColor];
 
     [(CKVideoCancelActionMenuItemView *)v3 setXView:v13];
     [(CKVideoCancelActionMenuItemView *)v3 addSubview:v13];
@@ -46,7 +46,7 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 36.0;
   v4 = 36.0;
@@ -65,13 +65,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKVideoCancelActionMenuItemView *)self blurView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  blurView = [(CKVideoCancelActionMenuItemView *)self blurView];
+  [blurView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CKVideoCancelActionMenuItemView *)self maskView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  maskView = [(CKVideoCancelActionMenuItemView *)self maskView];
+  [maskView setFrame:{v4, v6, v8, v10}];
 
-  v13 = [(CKVideoCancelActionMenuItemView *)self xView];
+  xView = [(CKVideoCancelActionMenuItemView *)self xView];
   v16.origin.x = v4;
   v16.origin.y = v6;
   v16.size.width = v8;
@@ -81,26 +81,26 @@
   v17.origin.y = v6;
   v17.size.width = v8;
   v17.size.height = v10;
-  [v13 setCenter:{MidX, CGRectGetMidY(v17)}];
+  [xView setCenter:{MidX, CGRectGetMidY(v17)}];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
     v11 = v4;
     v12 = v5;
-    v6 = a4;
-    self->_highlighted = a3;
+    animatedCopy = animated;
+    self->_highlighted = highlighted;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__CKVideoCancelActionMenuItemView_setHighlighted_animated___block_invoke;
     v9[3] = &unk_1E72ED8D8;
-    v10 = a3;
+    highlightedCopy = highlighted;
     v9[4] = self;
     v7 = _Block_copy(v9);
     v8 = v7;
-    if (v6)
+    if (animatedCopy)
     {
       [CKActionMenuItem animate:v7 completion:0];
     }

@@ -1,45 +1,45 @@
 @interface AEExplorerViewController
-- (AEExplorerViewController)initWithPackageTransport:(id)a3 mediaProvider:(id)a4 dataSourceManager:(id)a5 additionalGestureRecognizers:(id)a6;
+- (AEExplorerViewController)initWithPackageTransport:(id)transport mediaProvider:(id)provider dataSourceManager:(id)manager additionalGestureRecognizers:(id)recognizers;
 - (AEExplorerViewControllerDelegate)delegate;
-- (BOOL)confirmAsset:(id)a3 matchesView:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)layout:(id)a3 shouldShowCloudDecorationAtIndexPath:(PXSimpleIndexPath *)a4;
-- (BOOL)layout:(id)a3 shouldShowLoopDecorationAtIndexPath:(PXSimpleIndexPath *)a4;
-- (BOOL)layout:(id)a3 shouldShowVideoDecorationAtIndexPath:(PXSimpleIndexPath *)a4;
-- (CGPoint)tilingController:(id)a3 initialVisibleOriginForLayout:(id)a4;
+- (BOOL)confirmAsset:(id)asset matchesView:(id)view;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)layout:(id)layout shouldShowCloudDecorationAtIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)layout:(id)layout shouldShowLoopDecorationAtIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)layout:(id)layout shouldShowVideoDecorationAtIndexPath:(PXSimpleIndexPath *)path;
+- (CGPoint)tilingController:(id)controller initialVisibleOriginForLayout:(id)layout;
 - (CGSize)_maximumThumbnailSize;
-- (id)_createNewLayoutForDataSource:(id)a3;
+- (id)_createNewLayoutForDataSource:(id)source;
 - (id)_currentDataSource;
 - (id)_stagedAssetUUIDs;
-- (id)_thumbnailResourcesIndexSetForAssets:(id)a3;
-- (id)_validateAssetReference:(id)a3 forScrollViewPoint:(CGPoint)a4;
-- (id)contentAssetReferenceAtPoint:(CGPoint)a3 outContentFrame:(CGRect *)a4;
-- (id)prepareForPhotoLibraryChange:(id)a3;
+- (id)_thumbnailResourcesIndexSetForAssets:(id)assets;
+- (id)_validateAssetReference:(id)reference forScrollViewPoint:(CGPoint)point;
+- (id)contentAssetReferenceAtPoint:(CGPoint)point outContentFrame:(CGRect *)frame;
+- (id)prepareForPhotoLibraryChange:(id)change;
 - (id)scrollView;
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4;
-- (id)tilingController:(id)a3 transitionAnimationCoordinatorForChange:(id)a4;
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change;
+- (id)tilingController:(id)controller transitionAnimationCoordinatorForChange:(id)change;
 - (int64_t)_currentLayoutStyle;
-- (int64_t)_layoutStyleForSize:(CGSize)a3;
-- (void)_addThumbnailIndexes:(id)a3;
-- (void)_attachGestureRecognizersIfNeeded:(void *)a3;
-- (void)_cancelExpectedAssetUUIDs:(id)a3;
+- (int64_t)_layoutStyleForSize:(CGSize)size;
+- (void)_addThumbnailIndexes:(id)indexes;
+- (void)_attachGestureRecognizersIfNeeded:(void *)needed;
+- (void)_cancelExpectedAssetUUIDs:(id)ds;
 - (void)_computeInitialResourcesIndexSetAsync;
-- (void)_configureReviewControllerWithAssetReference:(id)a3;
+- (void)_configureReviewControllerWithAssetReference:(id)reference;
 - (void)_dismissReviewScreenViewController;
-- (void)_handleInProgressPackageGenerator:(id)a3 suppressLivePhotoContent:(BOOL)a4 mediaOrigin:(int64_t)a5 completionHandler:(id)a6;
-- (void)_handleTransportStagingUpdateWithDataSource:(id)a3;
-- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)a3 suppressLivePhoto:(BOOL)a4 mediaOrigin:(int64_t)a5;
-- (void)_presentConfidentialityAlertWithConfirmAction:(id)a3 abortAction:(id)a4;
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7;
-- (void)assetsScene:(id)a3 willTransitionToDataSource:(id)a4;
-- (void)associateAsset:(id)a3 withTile:(void *)a4;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
+- (void)_handleInProgressPackageGenerator:(id)generator suppressLivePhotoContent:(BOOL)content mediaOrigin:(int64_t)origin completionHandler:(id)handler;
+- (void)_handleTransportStagingUpdateWithDataSource:(id)source;
+- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)asset suppressLivePhoto:(BOOL)photo mediaOrigin:(int64_t)origin;
+- (void)_presentConfidentialityAlertWithConfirmAction:(id)action abortAction:(id)abortAction;
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d;
+- (void)assetsScene:(id)scene willTransitionToDataSource:(id)source;
+- (void)associateAsset:(id)asset withTile:(void *)tile;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 - (void)dealloc;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
 - (void)loadView;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
 - (void)viewWillLayoutSubviews;
@@ -47,30 +47,30 @@
 
 @implementation AEExplorerViewController
 
-- (BOOL)confirmAsset:(id)a3 matchesView:(id)a4
+- (BOOL)confirmAsset:(id)asset matchesView:(id)view
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
+  viewCopy = view;
+  v6 = viewCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (asset && viewCopy)
   {
-    v8 = a3;
-    v9 = [v6 associatedAssetUUID];
-    v10 = [v8 uuid];
+    assetCopy = asset;
+    associatedAssetUUID = [v6 associatedAssetUUID];
+    uuid = [assetCopy uuid];
 
-    v7 = [v10 isEqualToString:v9];
+    v7 = [uuid isEqualToString:associatedAssetUUID];
     if ((v7 & 1) == 0)
     {
       v11 = PLAssetExplorerGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         v14 = 138543874;
-        v15 = v10;
+        v15 = uuid;
         v16 = 2114;
         v17 = v6;
         v18 = 2114;
-        v19 = v9;
+        v19 = associatedAssetUUID;
         _os_log_impl(&dword_2411DE000, v11, OS_LOG_TYPE_FAULT, "Outgoing asset mismatch. Tried to confirm asset with UUID %{public}@ but view (=%{public}@)'s associated asset UUID is %{public}@", &v14, 0x20u);
       }
     }
@@ -80,15 +80,15 @@
   return v7;
 }
 
-- (void)associateAsset:(id)a3 withTile:(void *)a4
+- (void)associateAsset:(id)asset withTile:(void *)tile
 {
-  if (a3)
+  if (asset)
   {
-    v5 = a3;
-    v7 = [a4 view];
-    v6 = [v5 uuid];
+    assetCopy = asset;
+    view = [tile view];
+    uuid = [assetCopy uuid];
 
-    [v7 setAssociatedAssetUUID:v6];
+    [view setAssociatedAssetUUID:uuid];
   }
 }
 
@@ -99,63 +99,63 @@
   return WeakRetained;
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  v7 = [(AEExplorerViewController *)self _sceneController];
-  v8 = *&a4->var1[5];
-  v18 = *&a4->var1[3];
+  _sceneController = [(AEExplorerViewController *)self _sceneController];
+  v8 = *&identifier->var1[5];
+  v18 = *&identifier->var1[3];
   v19 = v8;
-  v20 = *&a4->var1[7];
-  v21 = a4->var1[9];
-  v9 = *&a4->var1[1];
-  v16 = *&a4->var0;
+  v20 = *&identifier->var1[7];
+  v21 = identifier->var1[9];
+  v9 = *&identifier->var1[1];
+  v16 = *&identifier->var0;
   v17 = v9;
-  if ([v7 providesTileForIdentifier:&v16])
+  if ([_sceneController providesTileForIdentifier:&v16])
   {
-    v10 = *&a4->var1[5];
-    v18 = *&a4->var1[3];
+    v10 = *&identifier->var1[5];
+    v18 = *&identifier->var1[3];
     v19 = v10;
-    v20 = *&a4->var1[7];
-    v21 = a4->var1[9];
-    v11 = *&a4->var1[1];
-    v16 = *&a4->var0;
+    v20 = *&identifier->var1[7];
+    v21 = identifier->var1[9];
+    v11 = *&identifier->var1[1];
+    v16 = *&identifier->var0;
     v17 = v11;
-    [v7 checkInTile:a3 withIdentifier:&v16];
+    [_sceneController checkInTile:tile withIdentifier:&v16];
   }
 
   else
   {
-    v12 = a3;
-    if (a4->var1[0] == 795209731)
+    tileCopy = tile;
+    if (identifier->var1[0] == 795209731)
     {
-      v13 = [v7 viewTileReusePool];
-      [v13 checkInReusableObject:v12];
+      viewTileReusePool = [_sceneController viewTileReusePool];
+      [viewTileReusePool checkInReusableObject:tileCopy];
     }
 
-    v14 = [v12 view];
-    [v14 removeFromSuperview];
+    view = [tileCopy view];
+    [view removeFromSuperview];
 
-    v15 = [(AEExplorerViewController *)self _tilesInUse];
-    [v15 removeObject:v12];
+    _tilesInUse = [(AEExplorerViewController *)self _tilesInUse];
+    [_tilesInUse removeObject:tileCopy];
   }
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v6 = a4;
-  v7 = [(AEExplorerViewController *)self _sceneController];
-  v8 = a3->var1[1];
-  v9 = a3->var1[2];
-  v11 = a3->var1[3];
-  v10 = a3->var1[4];
+  layoutCopy = layout;
+  _sceneController = [(AEExplorerViewController *)self _sceneController];
+  v8 = identifier->var1[1];
+  v9 = identifier->var1[2];
+  v11 = identifier->var1[3];
+  v10 = identifier->var1[4];
   if (v8 != *MEMORY[0x277D3CF78] && v11 != 0x7FFFFFFFFFFFFFFFLL && v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [v6 dataSource];
+    dataSource = [layoutCopy dataSource];
     *&v32 = v8;
     *(&v32 + 1) = v9;
     *&v33 = v11;
     *(&v33 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-    v14 = [v15 assetAtItemIndexPath:&v32];
+    v14 = [dataSource assetAtItemIndexPath:&v32];
   }
 
   else
@@ -163,26 +163,26 @@
     v14 = 0;
   }
 
-  v16 = *&a3->var1[5];
-  v34 = *&a3->var1[3];
+  v16 = *&identifier->var1[5];
+  v34 = *&identifier->var1[3];
   v35 = v16;
-  v36 = *&a3->var1[7];
-  v37 = a3->var1[9];
-  v17 = *&a3->var1[1];
-  v32 = *&a3->var0;
+  v36 = *&identifier->var1[7];
+  v37 = identifier->var1[9];
+  v17 = *&identifier->var1[1];
+  v32 = *&identifier->var0;
   v33 = v17;
-  if ([v7 providesTileForIdentifier:&v32])
+  if ([_sceneController providesTileForIdentifier:&v32])
   {
-    v18 = *&a3->var1[5];
-    v34 = *&a3->var1[3];
+    v18 = *&identifier->var1[5];
+    v34 = *&identifier->var1[3];
     v35 = v18;
-    v36 = *&a3->var1[7];
-    v37 = a3->var1[9];
-    v19 = *&a3->var1[1];
-    v32 = *&a3->var0;
+    v36 = *&identifier->var1[7];
+    v37 = identifier->var1[9];
+    v19 = *&identifier->var1[1];
+    v32 = *&identifier->var0;
     v33 = v19;
-    v20 = [v7 checkOutTileForIdentifier:&v32 layout:v6];
-    if (a3->var0 == 5 && a3->var1[0] == *MEMORY[0x277D3CC58])
+    v20 = [_sceneController checkOutTileForIdentifier:&v32 layout:layoutCopy];
+    if (identifier->var0 == 5 && identifier->var1[0] == *MEMORY[0x277D3CC58])
     {
       [(AEExplorerViewController *)self _attachGestureRecognizersIfNeeded:v20];
     }
@@ -192,12 +192,12 @@
 
   else
   {
-    v21 = a3->var1[0];
-    v31 = v6;
+    v21 = identifier->var1[0];
+    v31 = layoutCopy;
     if (v21 == 795209731)
     {
-      v24 = [v7 viewTileReusePool];
-      v20 = [v24 checkOutReusableObjectWithReuseIdentifier:795209736];
+      viewTileReusePool = [_sceneController viewTileReusePool];
+      v20 = [viewTileReusePool checkOutReusableObjectWithReuseIdentifier:795209736];
     }
 
     else
@@ -207,55 +207,55 @@
         abort();
       }
 
-      v22 = [(AEExplorerViewController *)self _progressModel];
-      v23 = [v22 progressSnapshot];
+      _progressModel = [(AEExplorerViewController *)self _progressModel];
+      progressSnapshot = [_progressModel progressSnapshot];
       *&v32 = v8;
       *(&v32 + 1) = v9;
       *&v33 = v11;
       *(&v33 + 1) = v10;
-      v24 = [v23 progressForIndexPath:&v32];
+      viewTileReusePool = [progressSnapshot progressForIndexPath:&v32];
 
       v25 = [AEProgressIndicatorView alloc];
-      v26 = [(AEProgressIndicatorView *)v25 initWithFrame:v24 progress:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+      v26 = [(AEProgressIndicatorView *)v25 initWithFrame:viewTileReusePool progress:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
       v20 = [[AEGenericViewTile alloc] initWithView:v26];
     }
 
-    v27 = [(AEExplorerViewController *)self _tilesInUse];
-    [v27 addObject:v20];
+    _tilesInUse = [(AEExplorerViewController *)self _tilesInUse];
+    [_tilesInUse addObject:v20];
 
-    v28 = [(AEExplorerViewController *)self _scrollViewController];
-    v29 = [(AEGenericViewTile *)v20 view];
-    [v28 ae_ensureSubview:v29];
+    _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+    view = [(AEGenericViewTile *)v20 view];
+    [_scrollViewController ae_ensureSubview:view];
 
     [(AEExplorerViewController *)self associateAsset:v14 withTile:v20];
-    v6 = v31;
+    layoutCopy = v31;
   }
 
   return v20;
 }
 
-- (void)_attachGestureRecognizersIfNeeded:(void *)a3
+- (void)_attachGestureRecognizersIfNeeded:(void *)needed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 view];
-  v5 = [v4 gestureRecognizers];
-  v6 = [v5 count];
+  view = [needed view];
+  gestureRecognizers = [view gestureRecognizers];
+  v6 = [gestureRecognizers count];
 
   if (!v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTap_];
     [v7 setNumberOfTapsRequired:1];
     [v7 setDelegate:self];
-    [v4 addGestureRecognizer:v7];
+    [view addGestureRecognizer:v7];
     v8 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_handleLongPress_];
-    [v4 addGestureRecognizer:v8];
-    [v4 setUserInteractionEnabled:1];
-    v9 = [(AEExplorerViewController *)self _clientGestureRecognizers];
+    [view addGestureRecognizer:v8];
+    [view setUserInteractionEnabled:1];
+    _clientGestureRecognizers = [(AEExplorerViewController *)self _clientGestureRecognizers];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v10 = [_clientGestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -267,14 +267,14 @@
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(_clientGestureRecognizers);
           }
 
           [*(*(&v15 + 1) + 8 * v13++) requireGestureRecognizerToFail:v8];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [_clientGestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -284,15 +284,15 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tilingController:(id)a3 transitionAnimationCoordinatorForChange:(id)a4
+- (id)tilingController:(id)controller transitionAnimationCoordinatorForChange:(id)change
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AEExplorerViewController *)self _sceneController];
-  v9 = [v8 tilingController:v7 transitionAnimationCoordinatorForChange:v6];
+  changeCopy = change;
+  controllerCopy = controller;
+  _sceneController = [(AEExplorerViewController *)self _sceneController];
+  v9 = [_sceneController tilingController:controllerCopy transitionAnimationCoordinatorForChange:changeCopy];
 
-  v10 = [(AEExplorerViewController *)self _currentDataSource];
-  v11 = [(AEExplorerViewController *)self _createNewLayoutForDataSource:v10];
+  _currentDataSource = [(AEExplorerViewController *)self _currentDataSource];
+  v11 = [(AEExplorerViewController *)self _createNewLayoutForDataSource:_currentDataSource];
 
   v12 = [[AEDelegatingTransitionAnimationCoordinator alloc] initWithWrappedCoordinator:v9];
   [(AEDelegatingTransitionAnimationCoordinator *)v12 setEnableDoubleSidedAnimations:0];
@@ -300,19 +300,19 @@
   return v12;
 }
 
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AEExplorerViewController *)self _sceneController];
-  v9 = [v8 tilingController:v7 tileIdentifierConverterForChange:v6];
+  changeCopy = change;
+  controllerCopy = controller;
+  _sceneController = [(AEExplorerViewController *)self _sceneController];
+  v9 = [_sceneController tilingController:controllerCopy tileIdentifierConverterForChange:changeCopy];
 
   return v9;
 }
 
-- (BOOL)layout:(id)a3 shouldShowCloudDecorationAtIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)layout:(id)layout shouldShowCloudDecorationAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = a3;
+  layoutCopy = layout;
   if ([(AEExplorerViewController *)self _fakeAllCloudAndVideo])
   {
     LOBYTE(v7) = 1;
@@ -320,15 +320,15 @@
 
   else
   {
-    v8 = [(AEExplorerViewController *)self _missingThumbnailAssetIndexes];
-    v9 = v8;
-    if (v8 && [v8 containsIndex:a4->item])
+    _missingThumbnailAssetIndexes = [(AEExplorerViewController *)self _missingThumbnailAssetIndexes];
+    v9 = _missingThumbnailAssetIndexes;
+    if (_missingThumbnailAssetIndexes && [_missingThumbnailAssetIndexes containsIndex:path->item])
     {
-      v10 = [v6 progressSnapshot];
-      v11 = *&a4->item;
-      v13[0] = *&a4->dataSourceIdentifier;
+      progressSnapshot = [layoutCopy progressSnapshot];
+      v11 = *&path->item;
+      v13[0] = *&path->dataSourceIdentifier;
       v13[1] = v11;
-      v7 = [v10 hasProgressForIndexPath:v13] ^ 1;
+      v7 = [progressSnapshot hasProgressForIndexPath:v13] ^ 1;
     }
 
     else
@@ -340,13 +340,13 @@
   return v7;
 }
 
-- (BOOL)layout:(id)a3 shouldShowLoopDecorationAtIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)layout:(id)layout shouldShowLoopDecorationAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v11[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&path->item;
+  v11[0] = *&path->dataSourceIdentifier;
   v11[1] = v6;
-  v7 = [v5 assetAtItemIndexPath:v11];
+  v7 = [dataSource assetAtItemIndexPath:v11];
   if (layout_shouldShowLoopDecorationAtIndexPath__onceToken != -1)
   {
     dispatch_once(&layout_shouldShowLoopDecorationAtIndexPath__onceToken, &__block_literal_global_304);
@@ -364,9 +364,9 @@ void __71__AEExplorerViewController_layout_shouldShowLoopDecorationAtIndexPath__
   layout_shouldShowLoopDecorationAtIndexPath__canShowLoopBadges = [v0 BOOLForKey:@"AssetExplorer_ShowLoopBadges"];
 }
 
-- (BOOL)layout:(id)a3 shouldShowVideoDecorationAtIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)layout:(id)layout shouldShowVideoDecorationAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = a3;
+  layoutCopy = layout;
   if ([(AEExplorerViewController *)self _fakeAllCloudAndVideo])
   {
     v7 = 1;
@@ -374,11 +374,11 @@ void __71__AEExplorerViewController_layout_shouldShowLoopDecorationAtIndexPath__
 
   else
   {
-    v8 = [v6 dataSource];
-    v9 = *&a4->item;
-    v12[0] = *&a4->dataSourceIdentifier;
+    dataSource = [layoutCopy dataSource];
+    v9 = *&path->item;
+    v12[0] = *&path->dataSourceIdentifier;
     v12[1] = v9;
-    v10 = [v8 assetAtItemIndexPath:v12];
+    v10 = [dataSource assetAtItemIndexPath:v12];
     v7 = [v10 playbackStyle] == 4;
   }
 
@@ -392,14 +392,14 @@ void __71__AEExplorerViewController_layout_shouldShowLoopDecorationAtIndexPath__
     dispatch_once(&_computeInitialResourcesIndexSetAsync_predicate, &__block_literal_global_301);
   }
 
-  v3 = [(AEExplorerViewController *)self _dataSourceManager];
-  v4 = [v3 photosDataSource];
-  v5 = [v4 assetsInSection:0];
-  v6 = [v5 fetchedObjects];
+  _dataSourceManager = [(AEExplorerViewController *)self _dataSourceManager];
+  photosDataSource = [_dataSourceManager photosDataSource];
+  v5 = [photosDataSource assetsInSection:0];
+  fetchedObjects = [v5 fetchedObjects];
 
-  if ([v6 count])
+  if ([fetchedObjects count])
   {
-    v7 = [v6 count];
+    v7 = [fetchedObjects count];
     v8 = 0;
     if (v7 >= 5)
     {
@@ -414,12 +414,12 @@ void __71__AEExplorerViewController_layout_shouldShowLoopDecorationAtIndexPath__
     do
     {
       v10 = &v8[v9];
-      if (&v8[v9] > [v6 count])
+      if (&v8[v9] > [fetchedObjects count])
       {
         break;
       }
 
-      v11 = [v6 subarrayWithRange:{v8, v9}];
+      v11 = [fetchedObjects subarrayWithRange:{v8, v9}];
       objc_initWeak(&location, self);
       v12 = _computeInitialResourcesIndexSetAsync__serialQueue;
       v17[0] = MEMORY[0x277D85DD0];
@@ -431,10 +431,10 @@ void __71__AEExplorerViewController_layout_shouldShowLoopDecorationAtIndexPath__
       v18 = v13;
       v19[1] = v8;
       dispatch_async(v12, v17);
-      v14 = [v6 count];
+      v14 = [fetchedObjects count];
       if (v10 < v14)
       {
-        v15 = [v6 count];
+        v15 = [fetchedObjects count];
         v16 = v9 + v9;
         if (v16 >= (v15 - v10))
         {
@@ -491,36 +491,36 @@ uint64_t __65__AEExplorerViewController__computeInitialResourcesIndexSetAsync__b
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_addThumbnailIndexes:(id)a3
+- (void)_addThumbnailIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(AEExplorerViewController *)self _missingThumbnailAssetIndexes];
-  v6 = [v5 mutableCopy];
+  indexesCopy = indexes;
+  _missingThumbnailAssetIndexes = [(AEExplorerViewController *)self _missingThumbnailAssetIndexes];
+  v6 = [_missingThumbnailAssetIndexes mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    indexSet = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
   }
 
-  v10 = v8;
+  v10 = indexSet;
 
-  [v10 addIndexes:v4];
+  [v10 addIndexes:indexesCopy];
   [(AEExplorerViewController *)self _setMissingThumbnailAssetIndexes:v10];
-  v9 = [(PXTilingController *)self->__tilingController currentLayout];
-  [v9 invalidateLayout];
+  currentLayout = [(PXTilingController *)self->__tilingController currentLayout];
+  [currentLayout invalidateLayout];
 }
 
-- (id)_thumbnailResourcesIndexSetForAssets:(id)a3
+- (id)_thumbnailResourcesIndexSetForAssets:(id)assets
 {
-  v3 = a3;
-  if ([v3 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v4 = [MEMORY[0x277CD9980] indexesForAssetsWithoutThumbnails:v3 requestType:1];
+    v4 = [MEMORY[0x277CD9980] indexesForAssetsWithoutThumbnails:assetsCopy requestType:1];
   }
 
   else
@@ -531,9 +531,9 @@ uint64_t __65__AEExplorerViewController__computeInitialResourcesIndexSetAsync__b
   return v4;
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -547,13 +547,13 @@ uint64_t __65__AEExplorerViewController__computeInitialResourcesIndexSetAsync__b
   block[4] = self;
   block[5] = &v16;
   dispatch_sync(MEMORY[0x277D85CD0], block);
-  v5 = [v4 changeDetailsForFetchResult:v17[5]];
+  v5 = [changeCopy changeDetailsForFetchResult:v17[5]];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 fetchResultAfterChanges];
-    v8 = [v7 fetchedObjects];
-    v9 = [(AEExplorerViewController *)self _thumbnailResourcesIndexSetForAssets:v8];
+    fetchResultAfterChanges = [v5 fetchResultAfterChanges];
+    fetchedObjects = [fetchResultAfterChanges fetchedObjects];
+    v9 = [(AEExplorerViewController *)self _thumbnailResourcesIndexSetForAssets:fetchedObjects];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -580,9 +580,9 @@ void __57__AEExplorerViewController_prepareForPhotoLibraryChange___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (void)assetsScene:(id)a3 willTransitionToDataSource:(id)a4
+- (void)assetsScene:(id)scene willTransitionToDataSource:(id)source
 {
-  v5 = [(AEExplorerViewController *)self _pendingMissingThumbnailAssetIndexes:a3];
+  v5 = [(AEExplorerViewController *)self _pendingMissingThumbnailAssetIndexes:scene];
   if (v5)
   {
     [(AEExplorerViewController *)self _setMissingThumbnailAssetIndexes:v5];
@@ -592,12 +592,12 @@ void __57__AEExplorerViewController_prepareForPhotoLibraryChange___block_invoke(
   MEMORY[0x2821F96F8]();
 }
 
-- (CGPoint)tilingController:(id)a3 initialVisibleOriginForLayout:(id)a4
+- (CGPoint)tilingController:(id)controller initialVisibleOriginForLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AEExplorerViewController *)self _sceneController];
-  [v8 tilingController:v7 initialVisibleOriginForLayout:v6];
+  layoutCopy = layout;
+  controllerCopy = controller;
+  _sceneController = [(AEExplorerViewController *)self _sceneController];
+  [_sceneController tilingController:controllerCopy initialVisibleOriginForLayout:layoutCopy];
   v10 = v9;
   v12 = v11;
 
@@ -608,69 +608,69 @@ void __57__AEExplorerViewController_prepareForPhotoLibraryChange___block_invoke(
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (AEExplorerViewControllerProgressViewModelObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (AEExplorerViewControllerProgressViewModelObserverContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v15 = v8;
-    v10 = [(AEExplorerViewController *)self _tilingController];
-    v9 = [v10 targetLayout];
+    v15 = observableCopy;
+    _tilingController = [(AEExplorerViewController *)self _tilingController];
+    targetLayout = [_tilingController targetLayout];
 
-    v11 = [v9 dataSource];
-    v12 = [v11 identifier];
+    dataSource = [targetLayout dataSource];
+    identifier = [dataSource identifier];
 
-    v13 = [(AEExplorerViewController *)self _progressModel];
-    v14 = [v13 progressSnapshot];
+    _progressModel = [(AEExplorerViewController *)self _progressModel];
+    progressSnapshot = [_progressModel progressSnapshot];
 
-    if ([v14 correspondingDataSourceIdentifier] == v12)
+    if ([progressSnapshot correspondingDataSourceIdentifier] == identifier)
     {
-      [v9 setProgressSnapshot:v14];
+      [targetLayout setProgressSnapshot:progressSnapshot];
     }
 
     goto LABEL_9;
   }
 
-  if ((v6 & 1) != 0 && AEExplorerViewControllerPackageTransportObserverContext == a5)
+  if ((changeCopy & 1) != 0 && AEExplorerViewControllerPackageTransportObserverContext == context)
   {
-    v15 = v8;
-    v9 = [(AEExplorerViewController *)self _currentDataSource];
-    [(AEExplorerViewController *)self _handleTransportStagingUpdateWithDataSource:v9];
+    v15 = observableCopy;
+    targetLayout = [(AEExplorerViewController *)self _currentDataSource];
+    [(AEExplorerViewController *)self _handleTransportStagingUpdateWithDataSource:targetLayout];
 LABEL_9:
 
-    v8 = v15;
+    observableCopy = v15;
   }
 
 LABEL_10:
 }
 
-- (void)_handleTransportStagingUpdateWithDataSource:(id)a3
+- (void)_handleTransportStagingUpdateWithDataSource:(id)source
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 identifier];
-  v20 = v4;
-  v5 = [v4 photosDataSource];
-  v6 = [(AEExplorerViewController *)self _sceneController];
-  v19 = [v6 selectionManager];
+  sourceCopy = source;
+  [sourceCopy identifier];
+  v20 = sourceCopy;
+  photosDataSource = [sourceCopy photosDataSource];
+  _sceneController = [(AEExplorerViewController *)self _sceneController];
+  selectionManager = [_sceneController selectionManager];
 
-  v18 = [(AEExplorerViewController *)self _packageTransport];
-  v7 = [v18 orderedStagedIdentifiers];
+  _packageTransport = [(AEExplorerViewController *)self _packageTransport];
+  orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [orderedStagedIdentifiers countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    indexPathSet = 0;
     v11 = *v27;
     do
     {
@@ -678,18 +678,18 @@ LABEL_10:
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(orderedStagedIdentifiers);
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v5 indexPathForFirstAsset];
-        v15 = [v5 indexPathForAssetWithUUID:v13 orBurstIdentifier:0 hintIndexPath:v14 hintCollection:0];
+        indexPathForFirstAsset = [photosDataSource indexPathForFirstAsset];
+        v15 = [photosDataSource indexPathForAssetWithUUID:v13 orBurstIdentifier:0 hintIndexPath:indexPathForFirstAsset hintCollection:0];
 
         if (v15)
         {
-          if (!v10)
+          if (!indexPathSet)
           {
-            v10 = [MEMORY[0x277D3CD78] indexPathSet];
+            indexPathSet = [MEMORY[0x277D3CD78] indexPathSet];
           }
 
           v24 = 0u;
@@ -697,11 +697,11 @@ LABEL_10:
           PXSimpleIndexPathFromIndexPath();
           v23[0] = v24;
           v23[1] = v25;
-          [v10 addIndexPath:v23];
+          [indexPathSet addIndexPath:v23];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [orderedStagedIdentifiers countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -709,32 +709,32 @@ LABEL_10:
 
   else
   {
-    v10 = 0;
+    indexPathSet = 0;
   }
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __72__AEExplorerViewController__handleTransportStagingUpdateWithDataSource___block_invoke;
   v21[3] = &unk_278CC7490;
-  v22 = v10;
-  v16 = v10;
-  [v19 performChanges:v21];
+  v22 = indexPathSet;
+  v16 = indexPathSet;
+  [selectionManager performChanges:v21];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contentAssetReferenceAtPoint:(CGPoint)a3 outContentFrame:(CGRect *)a4
+- (id)contentAssetReferenceAtPoint:(CGPoint)point outContentFrame:(CGRect *)frame
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(AEExplorerViewController *)self _scrollViewController];
-  v9 = [v8 scrollView];
+  y = point.y;
+  x = point.x;
+  _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
-  v10 = [(AEExplorerViewController *)self _scrollViewController];
-  v11 = [v10 contentCoordinateSpace];
+  _scrollViewController2 = [(AEExplorerViewController *)self _scrollViewController];
+  contentCoordinateSpace = [_scrollViewController2 contentCoordinateSpace];
 
-  v12 = [(AEExplorerViewController *)self _tilingController];
-  [v11 convertPoint:v9 fromCoordinateSpace:{x, y}];
+  _tilingController = [(AEExplorerViewController *)self _tilingController];
+  [contentCoordinateSpace convertPoint:scrollView fromCoordinateSpace:{x, y}];
   v36 = 0;
   v37 = &v36;
   v38 = 0xE010000000;
@@ -762,22 +762,22 @@ LABEL_10:
   v29[2] = __73__AEExplorerViewController_contentAssetReferenceAtPoint_outContentFrame___block_invoke;
   v29[3] = &unk_278CC7468;
   v29[4] = &v36;
-  if (v12 && (v13 = *MEMORY[0x277D3CF88], v14 = *(MEMORY[0x277D3CF88] + 8), v15 = *(MEMORY[0x277D3CF88] + 16), v16 = *(MEMORY[0x277D3CF88] + 24), [v12 hitTestTileAtPoint:v29 padding:? passingTest:?], v30))
+  if (_tilingController && (v13 = *MEMORY[0x277D3CF88], v14 = *(MEMORY[0x277D3CF88] + 8), v15 = *(MEMORY[0x277D3CF88] + 16), v16 = *(MEMORY[0x277D3CF88] + 24), [_tilingController hitTestTileAtPoint:v29 padding:? passingTest:?], v30))
   {
     v26 = v31;
     v27 = v32;
-    v17 = [v12 currentLayout];
-    v18 = [v17 dataSource];
+    currentLayout = [_tilingController currentLayout];
+    dataSource = [currentLayout dataSource];
     v28[0] = v26;
     v28[1] = v27;
-    v19 = [v18 assetReferenceAtItemIndexPath:v28];
-    if (a4)
+    v19 = [dataSource assetReferenceAtItemIndexPath:v28];
+    if (frame)
     {
-      [v11 convertRect:v9 toCoordinateSpace:{v37[4], v37[5], v37[6], v37[7]}];
-      a4->origin.x = v20;
-      a4->origin.y = v21;
-      a4->size.width = v22;
-      a4->size.height = v23;
+      [contentCoordinateSpace convertRect:scrollView toCoordinateSpace:{v37[4], v37[5], v37[6], v37[7]}];
+      frame->origin.x = v20;
+      frame->origin.y = v21;
+      frame->size.width = v22;
+      frame->size.height = v23;
     }
 
     v24 = [(AEExplorerViewController *)self _validateAssetReference:v19 forScrollViewPoint:x, y];
@@ -825,45 +825,45 @@ uint64_t __73__AEExplorerViewController_contentAssetReferenceAtPoint_outContentF
   return 1;
 }
 
-- (id)_validateAssetReference:(id)a3 forScrollViewPoint:(CGPoint)a4
+- (id)_validateAssetReference:(id)reference forScrollViewPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  y = point.y;
+  x = point.x;
+  referenceCopy = reference;
+  v8 = referenceCopy;
+  if (referenceCopy)
   {
-    v9 = [v7 asset];
-    v10 = [(AEExplorerViewController *)self _scrollViewController];
-    v11 = [v10 scrollView];
+    asset = [referenceCopy asset];
+    _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+    scrollView = [_scrollViewController scrollView];
 
-    v12 = [v11 window];
-    [v12 convertPoint:v11 fromView:{x, y}];
-    v13 = [v12 hitTest:0 withEvent:?];
-    [(AEExplorerViewController *)self confirmAsset:v9 matchesView:v13];
+    window = [scrollView window];
+    [window convertPoint:scrollView fromView:{x, y}];
+    v13 = [window hitTest:0 withEvent:?];
+    [(AEExplorerViewController *)self confirmAsset:asset matchesView:v13];
     v14 = v8;
   }
 
   return v8;
 }
 
-- (id)_createNewLayoutForDataSource:(id)a3
+- (id)_createNewLayoutForDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(AEExplorerViewController *)self _currentLayoutStyle];
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v6 statusBarOrientation];
+  sourceCopy = source;
+  _currentLayoutStyle = [(AEExplorerViewController *)self _currentLayoutStyle];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  v8 = [[AESceneGroupedTilingLayout alloc] initWithDataSource:v4 layoutStyle:v5 orientation:v7];
-  v9 = [(AEExplorerViewController *)self _progressModel];
-  v10 = [v9 progressSnapshot];
+  v8 = [[AESceneGroupedTilingLayout alloc] initWithDataSource:sourceCopy layoutStyle:_currentLayoutStyle orientation:statusBarOrientation];
+  _progressModel = [(AEExplorerViewController *)self _progressModel];
+  progressSnapshot = [_progressModel progressSnapshot];
 
-  v11 = [v10 correspondingDataSourceIdentifier];
-  v12 = [v4 identifier];
+  correspondingDataSourceIdentifier = [progressSnapshot correspondingDataSourceIdentifier];
+  identifier = [sourceCopy identifier];
 
-  if (v11 == v12)
+  if (correspondingDataSourceIdentifier == identifier)
   {
-    [(AESceneGroupedTilingLayout *)v8 setProgressSnapshot:v10];
+    [(AESceneGroupedTilingLayout *)v8 setProgressSnapshot:progressSnapshot];
   }
 
   [(AESceneGroupedTilingLayout *)v8 setDelegate:self];
@@ -873,31 +873,31 @@ uint64_t __73__AEExplorerViewController_contentAssetReferenceAtPoint_outContentF
 
 - (id)_currentDataSource
 {
-  v2 = [(AEExplorerViewController *)self _sceneController];
-  v3 = [v2 dataSourceManager];
-  v4 = [v3 dataSource];
+  _sceneController = [(AEExplorerViewController *)self _sceneController];
+  dataSourceManager = [_sceneController dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  return v4;
+  return dataSource;
 }
 
 - (int64_t)_currentLayoutStyle
 {
-  v3 = [(AEExplorerViewController *)self view];
-  [v3 bounds];
+  view = [(AEExplorerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
   return [(AEExplorerViewController *)self _layoutStyleForSize:v5, v7];
 }
 
-- (int64_t)_layoutStyleForSize:(CGSize)a3
+- (int64_t)_layoutStyleForSize:(CGSize)size
 {
-  v3 = [(AEExplorerViewController *)self px_screen:a3.width];
+  v3 = [(AEExplorerViewController *)self px_screen:size.width];
   [v3 _referenceBounds];
   v5 = v4;
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (AEIsModernAspectScreen_onceToken != -1)
   {
@@ -916,7 +916,7 @@ uint64_t __73__AEExplorerViewController_contentAssetReferenceAtPoint_outContentF
     v9 = 0;
   }
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return v8;
   }
@@ -927,37 +927,37 @@ uint64_t __73__AEExplorerViewController_contentAssetReferenceAtPoint_outContentF
   }
 }
 
-- (void)_handleInProgressPackageGenerator:(id)a3 suppressLivePhotoContent:(BOOL)a4 mediaOrigin:(int64_t)a5 completionHandler:(id)a6
+- (void)_handleInProgressPackageGenerator:(id)generator suppressLivePhotoContent:(BOOL)content mediaOrigin:(int64_t)origin completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 sourceAssetReference];
-  v13 = [(AEExplorerViewController *)self _packageTransport];
-  v14 = [(AEExplorerViewController *)self _progressModel];
-  v22 = [v11 progress];
-  [v14 setProgress:v22 forAssetReference:v12];
-  v15 = [v12 asset];
-  v16 = [v15 uuid];
+  handlerCopy = handler;
+  generatorCopy = generator;
+  sourceAssetReference = [generatorCopy sourceAssetReference];
+  _packageTransport = [(AEExplorerViewController *)self _packageTransport];
+  _progressModel = [(AEExplorerViewController *)self _progressModel];
+  progress = [generatorCopy progress];
+  [_progressModel setProgress:progress forAssetReference:sourceAssetReference];
+  asset = [sourceAssetReference asset];
+  uuid = [asset uuid];
 
-  [v13 addPendingPackageIdentifier:v16];
+  [_packageTransport addPendingPackageIdentifier:uuid];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __117__AEExplorerViewController__handleInProgressPackageGenerator_suppressLivePhotoContent_mediaOrigin_completionHandler___block_invoke;
   v23[3] = &unk_278CC7418;
-  v29 = v10;
-  v30 = a5;
-  v31 = a4;
-  v24 = v13;
-  v25 = v16;
-  v26 = v12;
-  v27 = self;
-  v28 = v14;
-  v17 = v14;
-  v18 = v12;
-  v19 = v16;
-  v20 = v13;
-  v21 = v10;
-  [v11 retrieveGeneratedPackageWithCompletion:v23];
+  v29 = handlerCopy;
+  originCopy = origin;
+  contentCopy = content;
+  v24 = _packageTransport;
+  v25 = uuid;
+  v26 = sourceAssetReference;
+  selfCopy = self;
+  v28 = _progressModel;
+  v17 = _progressModel;
+  v18 = sourceAssetReference;
+  v19 = uuid;
+  v20 = _packageTransport;
+  v21 = handlerCopy;
+  [generatorCopy retrieveGeneratedPackageWithCompletion:v23];
 }
 
 void __117__AEExplorerViewController__handleInProgressPackageGenerator_suppressLivePhotoContent_mediaOrigin_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, char a4)
@@ -1034,18 +1034,18 @@ LABEL_17:
 
 - (id)scrollView
 {
-  v2 = [(AEExplorerViewController *)self _scrollViewController];
-  v3 = [v2 scrollView];
+  _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
-  return v3;
+  return scrollView;
 }
 
 - (CGSize)_maximumThumbnailSize
 {
-  v2 = [MEMORY[0x277D3B228] defaultFormatChooser];
-  v3 = [v2 masterThumbnailFormat];
+  defaultFormatChooser = [MEMORY[0x277D3B228] defaultFormatChooser];
+  masterThumbnailFormat = [defaultFormatChooser masterThumbnailFormat];
 
-  [v3 sizeWithFallBackSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  [masterThumbnailFormat sizeWithFallBackSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v5 = v4;
   v7 = v6;
 
@@ -1056,20 +1056,20 @@ LABEL_17:
   return result;
 }
 
-- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)a3 suppressLivePhoto:(BOOL)a4 mediaOrigin:(int64_t)a5
+- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)asset suppressLivePhoto:(BOOL)photo mediaOrigin:(int64_t)origin
 {
-  v8 = a3;
-  v9 = [(AEExplorerViewController *)self _packageTransport];
-  v10 = [(AEExplorerViewController *)self _cameraPackageGenerator];
+  assetCopy = asset;
+  _packageTransport = [(AEExplorerViewController *)self _packageTransport];
+  _cameraPackageGenerator = [(AEExplorerViewController *)self _cameraPackageGenerator];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __109__AEExplorerViewController__immediatelyGenerateAndStagePackageFromReviewAsset_suppressLivePhoto_mediaOrigin___block_invoke;
   v12[3] = &unk_278CC73F0;
-  v15 = a4;
-  v13 = v9;
-  v14 = a5;
-  v11 = v9;
-  [v10 generatePackageFromReviewAsset:v8 withCompletionHandler:v12];
+  photoCopy = photo;
+  v13 = _packageTransport;
+  originCopy = origin;
+  v11 = _packageTransport;
+  [_cameraPackageGenerator generatePackageFromReviewAsset:assetCopy withCompletionHandler:v12];
 }
 
 void __109__AEExplorerViewController__immediatelyGenerateAndStagePackageFromReviewAsset_suppressLivePhoto_mediaOrigin___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1122,43 +1122,43 @@ void *__109__AEExplorerViewController__immediatelyGenerateAndStagePackageFromRev
 
 - (void)_dismissReviewScreenViewController
 {
-  v3 = [(AEExplorerViewController *)self _reviewController];
-  if (v3)
+  _reviewController = [(AEExplorerViewController *)self _reviewController];
+  if (_reviewController)
   {
-    v4 = v3;
+    v4 = _reviewController;
     [(AEExplorerViewController *)self _dismissViewControllerAboveKeyboardAnimated:1];
     [(AEExplorerViewController *)self _setReviewController:0];
-    v3 = v4;
+    _reviewController = v4;
   }
 }
 
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v38 = [(AEExplorerViewController *)self _stagedAssetUUIDs];
-  v13 = [v38 mutableCopy];
-  [v13 minusSet:v10];
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dCopy = d;
+  _stagedAssetUUIDs = [(AEExplorerViewController *)self _stagedAssetUUIDs];
+  v13 = [_stagedAssetUUIDs mutableCopy];
+  [v13 minusSet:dsCopy];
   if ([v13 count])
   {
     [(AEExplorerViewController *)self _cancelExpectedAssetUUIDs:v13];
   }
 
-  v40 = [(AEExplorerViewController *)self _packageTransport];
-  v14 = [v40 packagesWithLivePhotoContent];
-  v39 = v14;
-  if ([v14 count])
+  _packageTransport = [(AEExplorerViewController *)self _packageTransport];
+  packagesWithLivePhotoContent = [_packageTransport packagesWithLivePhotoContent];
+  v39 = packagesWithLivePhotoContent;
+  if ([packagesWithLivePhotoContent count])
   {
-    v36 = v12;
-    v37 = v10;
+    v36 = dCopy;
+    v37 = dsCopy;
     v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v16 = v14;
+    v16 = packagesWithLivePhotoContent;
     v17 = [v16 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (!v17)
     {
@@ -1177,12 +1177,12 @@ void *__109__AEExplorerViewController__immediatelyGenerateAndStagePackageFromRev
         }
 
         v21 = *(*(&v45 + 1) + 8 * i);
-        v22 = [v21 identifier];
-        v23 = [v11 containsObject:v22];
-        v24 = [v21 containsSuppressedLivePhoto];
+        identifier = [v21 identifier];
+        v23 = [iDsCopy containsObject:identifier];
+        containsSuppressedLivePhoto = [v21 containsSuppressedLivePhoto];
         if (v23)
         {
-          if ((v24 & 1) == 0)
+          if ((containsSuppressedLivePhoto & 1) == 0)
           {
             v25 = [v21 mutableCopy];
             [v25 beginSupressingLivePhoto];
@@ -1193,7 +1193,7 @@ void *__109__AEExplorerViewController__immediatelyGenerateAndStagePackageFromRev
           }
         }
 
-        else if (v24)
+        else if (containsSuppressedLivePhoto)
         {
           v25 = [v21 mutableCopy];
           [v25 endSuppressingLivePhoto];
@@ -1206,8 +1206,8 @@ LABEL_15:
 
         if ([v15 count])
         {
-          v26 = [v15 allObjects];
-          [v40 stagePackages:v26];
+          allObjects = [v15 allObjects];
+          [_packageTransport stagePackages:allObjects];
         }
       }
 
@@ -1216,22 +1216,22 @@ LABEL_15:
       {
 LABEL_20:
 
-        v12 = v36;
-        v10 = v37;
-        v14 = v39;
+        dCopy = v36;
+        dsCopy = v37;
+        packagesWithLivePhotoContent = v39;
         break;
       }
     }
   }
 
-  if ([v12 count])
+  if ([dCopy count])
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v27 = [v12 allKeys];
-    v28 = [v27 countByEnumeratingWithState:&v41 objects:v49 count:16];
+    allKeys = [dCopy allKeys];
+    v28 = [allKeys countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v28)
     {
       v29 = v28;
@@ -1242,22 +1242,22 @@ LABEL_20:
         {
           if (*v42 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(allKeys);
           }
 
           v32 = *(*(&v41 + 1) + 8 * j);
-          v33 = [v11 containsObject:v32];
-          v34 = [v12 objectForKeyedSubscript:v32];
+          v33 = [iDsCopy containsObject:v32];
+          v34 = [dCopy objectForKeyedSubscript:v32];
           [(AEExplorerViewController *)self _immediatelyGenerateAndStagePackageFromReviewAsset:v34 suppressLivePhoto:v33 mediaOrigin:0];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v29 = [allKeys countByEnumeratingWithState:&v41 objects:v49 count:16];
       }
 
       while (v29);
     }
 
-    v14 = v39;
+    packagesWithLivePhotoContent = v39;
   }
 
   [(AEExplorerViewController *)self _dismissReviewScreenViewController];
@@ -1265,18 +1265,18 @@ LABEL_20:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentConfidentialityAlertWithConfirmAction:(id)a3 abortAction:(id)a4
+- (void)_presentConfidentialityAlertWithConfirmAction:(id)action abortAction:(id)abortAction
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D750F8];
-  v7 = a4;
-  v8 = a3;
+  abortActionCopy = abortAction;
+  actionCopy = action;
   v9 = PULocalizedString();
-  v10 = [v6 actionWithTitle:v9 style:0 handler:v8];
+  v10 = [v6 actionWithTitle:v9 style:0 handler:actionCopy];
 
   v11 = MEMORY[0x277D750F8];
   v12 = PULocalizedString();
-  v13 = [v11 actionWithTitle:v12 style:0 handler:v7];
+  v13 = [v11 actionWithTitle:v12 style:0 handler:abortActionCopy];
 
   v14 = MEMORY[0x277D3CC18];
   v18[0] = v10;
@@ -1288,90 +1288,90 @@ LABEL_20:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureReviewControllerWithAssetReference:(id)a3
+- (void)_configureReviewControllerWithAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(AEExplorerViewController *)self _dataSourceManager];
-  v6 = [(AEExplorerViewController *)self _tilingController];
-  v7 = [v6 targetLayout];
+  referenceCopy = reference;
+  _dataSourceManager = [(AEExplorerViewController *)self _dataSourceManager];
+  _tilingController = [(AEExplorerViewController *)self _tilingController];
+  targetLayout = [_tilingController targetLayout];
 
-  v23 = v7;
-  v8 = [v7 dataSource];
-  v9 = v8;
-  if (v8)
+  v23 = targetLayout;
+  dataSource = [targetLayout dataSource];
+  v9 = dataSource;
+  if (dataSource)
   {
-    [v8 indexPathForAssetReference:v4];
+    [dataSource indexPathForAssetReference:referenceCopy];
   }
 
   v10 = PXIndexPathFromSimpleIndexPath();
-  v11 = [(AEExplorerViewController *)self _stagedAssetUUIDs];
-  v12 = [MEMORY[0x277D3CC20] sharedInstance];
-  v22 = v4;
-  v13 = [v12 maxMessagesAssetLimit];
+  _stagedAssetUUIDs = [(AEExplorerViewController *)self _stagedAssetUUIDs];
+  mEMORY[0x277D3CC20] = [MEMORY[0x277D3CC20] sharedInstance];
+  v22 = referenceCopy;
+  maxMessagesAssetLimit = [mEMORY[0x277D3CC20] maxMessagesAssetLimit];
 
-  v14 = [objc_alloc(MEMORY[0x277D3D030]) initWithAssetsDataSourceManager:v5];
+  v14 = [objc_alloc(MEMORY[0x277D3D030]) initWithAssetsDataSourceManager:_dataSourceManager];
   v15 = objc_alloc_init(MEMORY[0x277D3D038]);
   v16 = objc_alloc_init(AEReviewAssetProvider);
-  v17 = v5;
+  v17 = _dataSourceManager;
   v18 = objc_alloc(MEMORY[0x277D3D020]);
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:maxMessagesAssetLimit];
   LOBYTE(v21) = 0;
-  v20 = [v18 initWithDataSourceManager:v14 mediaProvider:v15 reviewAssetProvider:v16 initialIndexPath:v10 initialSelectedAssetUUIDs:v11 initialDisabledLivePhotoAssetUUIDs:0 selectionCountLimit:v19 sourceType:0 lowMemoryMode:v21 options:0];
+  v20 = [v18 initWithDataSourceManager:v14 mediaProvider:v15 reviewAssetProvider:v16 initialIndexPath:v10 initialSelectedAssetUUIDs:_stagedAssetUUIDs initialDisabledLivePhotoAssetUUIDs:0 selectionCountLimit:v19 sourceType:0 lowMemoryMode:v21 options:0];
 
   [v20 setDelegate:self];
   [(AEExplorerViewController *)self _setReviewController:v20];
 }
 
-- (void)_cancelExpectedAssetUUIDs:(id)a3
+- (void)_cancelExpectedAssetUUIDs:(id)ds
 {
-  v7 = a3;
-  if ([v7 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v4 = [(AEExplorerViewController *)self _packageTransport];
-    v5 = [v7 allObjects];
-    [v4 unstagePackagesWithIdentifiers:v5];
+    _packageTransport = [(AEExplorerViewController *)self _packageTransport];
+    allObjects = [dsCopy allObjects];
+    [_packageTransport unstagePackagesWithIdentifiers:allObjects];
 
-    v6 = [(AEExplorerViewController *)self _progressModel];
-    [v6 cancelProgressForAssetUUIDs:v7];
+    _progressModel = [(AEExplorerViewController *)self _progressModel];
+    [_progressModel cancelProgressForAssetUUIDs:dsCopy];
   }
 }
 
 - (id)_stagedAssetUUIDs
 {
-  v2 = [(AEExplorerViewController *)self _packageTransport];
-  v3 = [v2 expectedPackageIdentifiers];
+  _packageTransport = [(AEExplorerViewController *)self _packageTransport];
+  expectedPackageIdentifiers = [_packageTransport expectedPackageIdentifiers];
 
-  return v3;
+  return expectedPackageIdentifiers;
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v9 = a3;
-  if ([v9 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    v4 = [(AEExplorerViewController *)self _scrollViewController];
-    v5 = [v4 scrollView];
+    _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+    scrollView = [_scrollViewController scrollView];
 
-    [v9 locationInView:v5];
+    [pressCopy locationInView:scrollView];
     v6 = [(AEExplorerViewController *)self contentAssetReferenceAtPoint:0 outContentFrame:?];
     if (v6)
     {
       [(AEExplorerViewController *)self _configureReviewControllerWithAssetReference:v6];
-      v7 = [(AEExplorerViewController *)self _reviewController];
-      v8 = [(AEExplorerViewController *)self _presentViewControllerAboveKeyboard:v7 animated:1];
+      _reviewController = [(AEExplorerViewController *)self _reviewController];
+      v8 = [(AEExplorerViewController *)self _presentViewControllerAboveKeyboard:_reviewController animated:1];
     }
   }
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v7 = a3;
-  if ([v7 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v4 = [(AEExplorerViewController *)self _scrollViewController];
-    v5 = [v4 scrollView];
+    _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+    scrollView = [_scrollViewController scrollView];
 
-    [v7 locationInView:v5];
+    [tapCopy locationInView:scrollView];
     v6 = [(AEExplorerViewController *)self contentAssetReferenceAtPoint:0 outContentFrame:?];
     if (v6)
     {
@@ -1380,28 +1380,28 @@ LABEL_20:
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(AEExplorerViewController *)self _scrollViewController];
-  v6 = [v5 scrollView];
+  beginCopy = begin;
+  _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
-  v7 = [(AEExplorerViewController *)self _scrollViewController];
-  v8 = [v7 contentCoordinateSpace];
+  _scrollViewController2 = [(AEExplorerViewController *)self _scrollViewController];
+  contentCoordinateSpace = [_scrollViewController2 contentCoordinateSpace];
 
-  v9 = [(AEExplorerViewController *)self _tilingController];
-  [v4 locationInView:v6];
+  _tilingController = [(AEExplorerViewController *)self _tilingController];
+  [beginCopy locationInView:scrollView];
   v11 = v10;
   v13 = v12;
 
-  [v8 convertPoint:v6 fromCoordinateSpace:{v11, v13}];
-  if (v9)
+  [contentCoordinateSpace convertPoint:scrollView fromCoordinateSpace:{v11, v13}];
+  if (_tilingController)
   {
     v14 = *MEMORY[0x277D3CF88];
     v15 = *(MEMORY[0x277D3CF88] + 8);
     v16 = *(MEMORY[0x277D3CF88] + 16);
     v17 = *(MEMORY[0x277D3CF88] + 24);
-    [v9 hitTestTileAtPoint:&__block_literal_global_1092 padding:? passingTest:?];
+    [_tilingController hitTestTileAtPoint:&__block_literal_global_1092 padding:? passingTest:?];
   }
 
   return 0;
@@ -1412,30 +1412,30 @@ LABEL_20:
   v13.receiver = self;
   v13.super_class = AEExplorerViewController;
   [(AEExplorerViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(AEExplorerViewController *)self _tilingController];
-  v4 = [v3 targetLayout];
+  _tilingController = [(AEExplorerViewController *)self _tilingController];
+  targetLayout = [_tilingController targetLayout];
 
-  v5 = [v4 layoutStyle];
-  v6 = [(AEExplorerViewController *)self _currentLayoutStyle];
-  v7 = [v4 isPortraitOrientation];
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  v9 = [v8 statusBarOrientation];
+  layoutStyle = [targetLayout layoutStyle];
+  _currentLayoutStyle = [(AEExplorerViewController *)self _currentLayoutStyle];
+  isPortraitOrientation = [targetLayout isPortraitOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  if (v6 == v5)
+  if (_currentLayoutStyle == layoutStyle)
   {
-    if (v7 != (v9 - 1) < 2)
+    if (isPortraitOrientation != (statusBarOrientation - 1) < 2)
     {
-      [v4 setPortraitOrientation:(v9 - 1) < 2];
+      [targetLayout setPortraitOrientation:(statusBarOrientation - 1) < 2];
     }
   }
 
   else
   {
-    v10 = [(AEExplorerViewController *)self _sceneController];
-    v11 = [(AEExplorerViewController *)self _currentDataSource];
-    v12 = [(AEExplorerViewController *)self _createNewLayoutForDataSource:v11];
+    _sceneController = [(AEExplorerViewController *)self _sceneController];
+    _currentDataSource = [(AEExplorerViewController *)self _currentDataSource];
+    v12 = [(AEExplorerViewController *)self _createNewLayoutForDataSource:_currentDataSource];
 
-    [v10 transitionToLayout:v12];
+    [_sceneController transitionToLayout:v12];
   }
 }
 
@@ -1444,14 +1444,14 @@ LABEL_20:
   v11.receiver = self;
   v11.super_class = AEExplorerViewController;
   [(AEExplorerViewController *)&v11 viewSafeAreaInsetsDidChange];
-  v3 = [(AEExplorerViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(AEExplorerViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(AEExplorerViewController *)self _scrollViewController];
-  [v10 setContentInset:{v5, v7, 0.0, v9}];
+  _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+  [_scrollViewController setContentInset:{v5, v7, 0.0, v9}];
 }
 
 - (void)viewDidLoad
@@ -1460,33 +1460,33 @@ LABEL_20:
   v38.receiver = self;
   v38.super_class = AEExplorerViewController;
   [(AEExplorerViewController *)&v38 viewDidLoad];
-  v3 = [(AEExplorerViewController *)self _dataSourceManager];
-  v4 = [v3 dataSource];
+  _dataSourceManager = [(AEExplorerViewController *)self _dataSourceManager];
+  dataSource = [_dataSourceManager dataSource];
 
-  v5 = [(AEExplorerViewController *)self _currentLayoutStyle];
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v6 statusBarOrientation];
+  _currentLayoutStyle = [(AEExplorerViewController *)self _currentLayoutStyle];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  v8 = [[AESceneGroupedTilingLayout alloc] initWithDataSource:v4 layoutStyle:v5 orientation:v7];
-  v9 = [(AEProgressViewModel *)self->__progressModel progressSnapshot];
-  [(AESceneGroupedTilingLayout *)v8 setProgressSnapshot:v9];
+  v8 = [[AESceneGroupedTilingLayout alloc] initWithDataSource:dataSource layoutStyle:_currentLayoutStyle orientation:statusBarOrientation];
+  progressSnapshot = [(AEProgressViewModel *)self->__progressModel progressSnapshot];
+  [(AESceneGroupedTilingLayout *)v8 setProgressSnapshot:progressSnapshot];
 
   [(AESceneGroupedTilingLayout *)v8 setDelegate:self];
-  v10 = [(AEExplorerViewController *)self _scrollViewController];
+  _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
   v11 = [objc_alloc(MEMORY[0x277D3CC30]) initWithLayout:v8];
-  [v11 setScrollController:v10];
-  v12 = [(AEExplorerViewController *)self _tileAnimator];
-  [v11 setTileAnimator:v12];
+  [v11 setScrollController:_scrollViewController];
+  _tileAnimator = [(AEExplorerViewController *)self _tileAnimator];
+  [v11 setTileAnimator:_tileAnimator];
 
   [v11 setScrollDelegate:self];
   [v11 setTileSource:self];
   [v11 setTransitionDelegate:self];
   [(AEExplorerViewController *)self _setTilingController:v11];
   v13 = objc_alloc([(AEExplorerViewController *)self assetsSceneClass]);
-  v14 = [(AEExplorerViewController *)self _tilingController];
-  v15 = [(AEExplorerViewController *)self _mediaProvider];
-  v16 = [(AEExplorerViewController *)self _dataSourceManager];
-  v17 = [v13 initWithTilingController:v14 mediaProvider:v15 dataSourceManager:v16 delegate:self];
+  _tilingController = [(AEExplorerViewController *)self _tilingController];
+  _mediaProvider = [(AEExplorerViewController *)self _mediaProvider];
+  _dataSourceManager2 = [(AEExplorerViewController *)self _dataSourceManager];
+  v17 = [v13 initWithTilingController:_tilingController mediaProvider:_mediaProvider dataSourceManager:_dataSourceManager2 delegate:self];
 
   [v17 setAnimatesContent:1];
   [v17 setAutoplayBehavior:3];
@@ -1494,7 +1494,7 @@ LABEL_20:
   v19 = v18;
   v21 = v20;
   v22 = PLAssetExplorerGetLog();
-  v33 = v10;
+  v33 = _scrollViewController;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v43.width = v19;
@@ -1506,18 +1506,18 @@ LABEL_20:
   }
 
   [v17 setMaximumImageSize:{v19, v21}];
-  v24 = [v17 viewTileReusePool];
-  [AEDecorativeTileSource registerCommonDecorativeTilesToReusePool:v24];
+  viewTileReusePool = [v17 viewTileReusePool];
+  [AEDecorativeTileSource registerCommonDecorativeTilesToReusePool:viewTileReusePool];
   [(AEExplorerViewController *)self _setSceneController:v17];
-  v25 = v4;
-  [(AEExplorerViewController *)self _handleTransportStagingUpdateWithDataSource:v4];
-  v26 = [(AEExplorerViewController *)self view];
-  v27 = [(AEExplorerViewController *)self _clientGestureRecognizers];
+  v25 = dataSource;
+  [(AEExplorerViewController *)self _handleTransportStagingUpdateWithDataSource:dataSource];
+  view = [(AEExplorerViewController *)self view];
+  _clientGestureRecognizers = [(AEExplorerViewController *)self _clientGestureRecognizers];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v28 = [v27 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  v28 = [_clientGestureRecognizers countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v28)
   {
     v29 = v28;
@@ -1529,14 +1529,14 @@ LABEL_20:
       {
         if (*v35 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(_clientGestureRecognizers);
         }
 
-        [v26 addGestureRecognizer:*(*(&v34 + 1) + 8 * v31++)];
+        [view addGestureRecognizer:*(*(&v34 + 1) + 8 * v31++)];
       }
 
       while (v29 != v31);
-      v29 = [v27 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v29 = [_clientGestureRecognizers countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v29);
@@ -1547,51 +1547,51 @@ LABEL_20:
 
 - (void)loadView
 {
-  v3 = [(AEExplorerViewController *)self _scrollViewController];
-  v5 = [v3 scrollView];
+  _scrollViewController = [(AEExplorerViewController *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [scrollView setBackgroundColor:clearColor];
 
-  [v5 setShowsVerticalScrollIndicator:0];
-  [v5 setShowsHorizontalScrollIndicator:0];
-  [v5 setUserInteractionEnabled:1];
-  [(AEExplorerViewController *)self setView:v5];
+  [scrollView setShowsVerticalScrollIndicator:0];
+  [scrollView setShowsHorizontalScrollIndicator:0];
+  [scrollView setUserInteractionEnabled:1];
+  [(AEExplorerViewController *)self setView:scrollView];
 }
 
 - (void)dealloc
 {
   [(AEExplorerViewController *)self _dismissViewControllerAboveKeyboardAnimated:0];
-  v3 = [MEMORY[0x277CD9948] px_deprecated_appPhotoLibrary];
-  [v3 px_unregisterChangeObserver:self];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x277CD9948] px_deprecated_appPhotoLibrary];
+  [px_deprecated_appPhotoLibrary px_unregisterChangeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AEExplorerViewController;
   [(AEExplorerViewController *)&v4 dealloc];
 }
 
-- (AEExplorerViewController)initWithPackageTransport:(id)a3 mediaProvider:(id)a4 dataSourceManager:(id)a5 additionalGestureRecognizers:(id)a6
+- (AEExplorerViewController)initWithPackageTransport:(id)transport mediaProvider:(id)provider dataSourceManager:(id)manager additionalGestureRecognizers:(id)recognizers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  transportCopy = transport;
+  providerCopy = provider;
+  managerCopy = manager;
+  recognizersCopy = recognizers;
   v30.receiver = self;
   v30.super_class = AEExplorerViewController;
   v15 = [(AEExplorerViewController *)&v30 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->__packageTransport, a3);
+    objc_storeStrong(&v15->__packageTransport, transport);
     [(AEPackageTransport *)v16->__packageTransport registerChangeObserver:v16 context:AEExplorerViewControllerPackageTransportObserverContext];
-    objc_storeStrong(&v16->__dataSourceManager, a5);
-    objc_storeStrong(&v16->__mediaProvider, a4);
-    objc_storeStrong(&v16->__clientGestureRecognizers, a6);
+    objc_storeStrong(&v16->__dataSourceManager, manager);
+    objc_storeStrong(&v16->__mediaProvider, provider);
+    objc_storeStrong(&v16->__clientGestureRecognizers, recognizers);
     [(AEExplorerViewController *)v16 _computeInitialResourcesIndexSetAsync];
-    v17 = [MEMORY[0x277CD9948] px_deprecated_appPhotoLibrary];
-    [v17 px_registerChangeObserver:v16];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x277CD9948] px_deprecated_appPhotoLibrary];
+    [px_deprecated_appPhotoLibrary px_registerChangeObserver:v16];
 
-    v18 = [[AEProgressViewModel alloc] initWithDataSourceManager:v13];
+    v18 = [[AEProgressViewModel alloc] initWithDataSourceManager:managerCopy];
     progressModel = v16->__progressModel;
     v16->__progressModel = v18;
 

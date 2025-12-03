@@ -1,12 +1,12 @@
 @interface LoggingSupport_OSLogCoder
 - (void)_initBlob;
-- (void)appendBytes:(const void *)a3 length:(unint64_t)a4;
+- (void)appendBytes:(const void *)bytes length:(unint64_t)length;
 - (void)setPublic;
 @end
 
 @implementation LoggingSupport_OSLogCoder
 
-- (void)appendBytes:(const void *)a3 length:(unint64_t)a4
+- (void)appendBytes:(const void *)bytes length:(unint64_t)length
 {
   fmt_cmd = self->_fmt_cmd;
   if ((*fmt_cmd & 7) == 0)
@@ -24,8 +24,8 @@
   {
     written = self->_written;
     maxsz = self->_maxsz;
-    v11 = written + a4;
-    if (__CFADD__(written, a4) || (!(v11 >> 16) ? (v12 = v11 >= maxsz) : (v12 = 1), v12))
+    v11 = written + length;
+    if (__CFADD__(written, length) || (!(v11 >> 16) ? (v12 = v11 >= maxsz) : (v12 = 1), v12))
     {
       self->_truncated = 1;
       LOWORD(v11) = maxsz;
@@ -37,12 +37,12 @@
       ob_len = ob->ob_len;
       if (v13 > ob->ob_size - ob_len - !ob->ob_binary)
       {
-        os_trace_blob_add_slow(ob, a3, v13);
+        os_trace_blob_add_slow(ob, bytes, v13);
       }
 
       else
       {
-        memcpy(&ob->var0.ob_b[ob_len], a3, v13);
+        memcpy(&ob->var0.ob_b[ob_len], bytes, v13);
         v15 = ob->ob_len + v13;
         ob->ob_len = v15;
         if (!ob->ob_binary)

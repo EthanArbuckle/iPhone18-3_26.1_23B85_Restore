@@ -1,62 +1,62 @@
 @interface _INPBUpdateAlarmIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBUpdateAlarmIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBUpdateAlarmIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsOperation:(id)a3;
+- (int)StringAsOperation:(id)operation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOperation:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOperation:(int)operation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBUpdateAlarmIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBUpdateAlarmIntent *)self alarm];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"alarm"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  alarm = [(_INPBUpdateAlarmIntent *)self alarm];
+  dictionaryRepresentation = [alarm dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"alarm"];
 
-  v6 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"alarmSearch"];
+  alarmSearch = [(_INPBUpdateAlarmIntent *)self alarmSearch];
+  dictionaryRepresentation2 = [alarmSearch dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"alarmSearch"];
 
-  v8 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBUpdateAlarmIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBUpdateAlarmIntent *)self hasOperation])
   {
-    v10 = [(_INPBUpdateAlarmIntent *)self operation];
-    if (v10 == 1)
+    operation = [(_INPBUpdateAlarmIntent *)self operation];
+    if (operation == 1)
     {
       v11 = @"UPDATE_LABEL";
     }
 
-    else if (v10 == 2)
+    else if (operation == 2)
     {
       v11 = @"UPDATE_TIME";
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", operation];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"operation"];
+    [dictionary setObject:v11 forKeyedSubscript:@"operation"];
   }
 
-  v12 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"proposedLabel"];
+  proposedLabel = [(_INPBUpdateAlarmIntent *)self proposedLabel];
+  dictionaryRepresentation4 = [proposedLabel dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"proposedLabel"];
 
-  v14 = [(_INPBUpdateAlarmIntent *)self proposedTime];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"proposedTime"];
+  proposedTime = [(_INPBUpdateAlarmIntent *)self proposedTime];
+  dictionaryRepresentation5 = [proposedTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"proposedTime"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -79,28 +79,28 @@
   return v7 ^ v8 ^ [(_INPBDateTimeRange *)self->_proposedTime hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_INPBUpdateAlarmIntent *)self alarm];
-  v6 = [v4 alarm];
-  if ((v5 != 0) == (v6 == 0))
+  alarm = [(_INPBUpdateAlarmIntent *)self alarm];
+  alarm2 = [equalCopy alarm];
+  if ((alarm != 0) == (alarm2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(_INPBUpdateAlarmIntent *)self alarm];
-  if (v7)
+  alarm3 = [(_INPBUpdateAlarmIntent *)self alarm];
+  if (alarm3)
   {
-    v8 = v7;
-    v9 = [(_INPBUpdateAlarmIntent *)self alarm];
-    v10 = [v4 alarm];
-    v11 = [v9 isEqual:v10];
+    v8 = alarm3;
+    alarm4 = [(_INPBUpdateAlarmIntent *)self alarm];
+    alarm5 = [equalCopy alarm];
+    v11 = [alarm4 isEqual:alarm5];
 
     if (!v11)
     {
@@ -112,20 +112,20 @@
   {
   }
 
-  v5 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
-  v6 = [v4 alarmSearch];
-  if ((v5 != 0) == (v6 == 0))
+  alarm = [(_INPBUpdateAlarmIntent *)self alarmSearch];
+  alarm2 = [equalCopy alarmSearch];
+  if ((alarm != 0) == (alarm2 == 0))
   {
     goto LABEL_30;
   }
 
-  v12 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
-  if (v12)
+  alarmSearch = [(_INPBUpdateAlarmIntent *)self alarmSearch];
+  if (alarmSearch)
   {
-    v13 = v12;
-    v14 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
-    v15 = [v4 alarmSearch];
-    v16 = [v14 isEqual:v15];
+    v13 = alarmSearch;
+    alarmSearch2 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
+    alarmSearch3 = [equalCopy alarmSearch];
+    v16 = [alarmSearch2 isEqual:alarmSearch3];
 
     if (!v16)
     {
@@ -137,20 +137,20 @@
   {
   }
 
-  v5 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  alarm = [(_INPBUpdateAlarmIntent *)self intentMetadata];
+  alarm2 = [equalCopy intentMetadata];
+  if ((alarm != 0) == (alarm2 == 0))
   {
     goto LABEL_30;
   }
 
-  v17 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
-  if (v17)
+  intentMetadata = [(_INPBUpdateAlarmIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v18 = v17;
-    v19 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
-    v20 = [v4 intentMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMetadata;
+    intentMetadata2 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v21 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v21)
     {
@@ -162,38 +162,38 @@
   {
   }
 
-  v22 = [(_INPBUpdateAlarmIntent *)self hasOperation];
-  if (v22 != [v4 hasOperation])
+  hasOperation = [(_INPBUpdateAlarmIntent *)self hasOperation];
+  if (hasOperation != [equalCopy hasOperation])
   {
     goto LABEL_31;
   }
 
   if ([(_INPBUpdateAlarmIntent *)self hasOperation])
   {
-    if ([v4 hasOperation])
+    if ([equalCopy hasOperation])
     {
       operation = self->_operation;
-      if (operation != [v4 operation])
+      if (operation != [equalCopy operation])
       {
         goto LABEL_31;
       }
     }
   }
 
-  v5 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
-  v6 = [v4 proposedLabel];
-  if ((v5 != 0) == (v6 == 0))
+  alarm = [(_INPBUpdateAlarmIntent *)self proposedLabel];
+  alarm2 = [equalCopy proposedLabel];
+  if ((alarm != 0) == (alarm2 == 0))
   {
     goto LABEL_30;
   }
 
-  v24 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
-  if (v24)
+  proposedLabel = [(_INPBUpdateAlarmIntent *)self proposedLabel];
+  if (proposedLabel)
   {
-    v25 = v24;
-    v26 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
-    v27 = [v4 proposedLabel];
-    v28 = [v26 isEqual:v27];
+    v25 = proposedLabel;
+    proposedLabel2 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
+    proposedLabel3 = [equalCopy proposedLabel];
+    v28 = [proposedLabel2 isEqual:proposedLabel3];
 
     if (!v28)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(_INPBUpdateAlarmIntent *)self proposedTime];
-  v6 = [v4 proposedTime];
-  if ((v5 != 0) != (v6 == 0))
+  alarm = [(_INPBUpdateAlarmIntent *)self proposedTime];
+  alarm2 = [equalCopy proposedTime];
+  if ((alarm != 0) != (alarm2 == 0))
   {
-    v29 = [(_INPBUpdateAlarmIntent *)self proposedTime];
-    if (!v29)
+    proposedTime = [(_INPBUpdateAlarmIntent *)self proposedTime];
+    if (!proposedTime)
     {
 
 LABEL_34:
@@ -218,10 +218,10 @@ LABEL_34:
       goto LABEL_32;
     }
 
-    v30 = v29;
-    v31 = [(_INPBUpdateAlarmIntent *)self proposedTime];
-    v32 = [v4 proposedTime];
-    v33 = [v31 isEqual:v32];
+    v30 = proposedTime;
+    proposedTime2 = [(_INPBUpdateAlarmIntent *)self proposedTime];
+    proposedTime3 = [equalCopy proposedTime];
+    v33 = [proposedTime2 isEqual:proposedTime3];
 
     if (v33)
     {
@@ -241,16 +241,16 @@ LABEL_32:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBUpdateAlarmIntent allocWithZone:](_INPBUpdateAlarmIntent init];
-  v6 = [(_INPBAlarm *)self->_alarm copyWithZone:a3];
+  v6 = [(_INPBAlarm *)self->_alarm copyWithZone:zone];
   [(_INPBUpdateAlarmIntent *)v5 setAlarm:v6];
 
-  v7 = [(_INPBAlarmSearch *)self->_alarmSearch copyWithZone:a3];
+  v7 = [(_INPBAlarmSearch *)self->_alarmSearch copyWithZone:zone];
   [(_INPBUpdateAlarmIntent *)v5 setAlarmSearch:v7];
 
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBUpdateAlarmIntent *)v5 setIntentMetadata:v8];
 
   if ([(_INPBUpdateAlarmIntent *)self hasOperation])
@@ -258,63 +258,63 @@ LABEL_32:
     [(_INPBUpdateAlarmIntent *)v5 setOperation:[(_INPBUpdateAlarmIntent *)self operation]];
   }
 
-  v9 = [(_INPBDataString *)self->_proposedLabel copyWithZone:a3];
+  v9 = [(_INPBDataString *)self->_proposedLabel copyWithZone:zone];
   [(_INPBUpdateAlarmIntent *)v5 setProposedLabel:v9];
 
-  v10 = [(_INPBDateTimeRange *)self->_proposedTime copyWithZone:a3];
+  v10 = [(_INPBDateTimeRange *)self->_proposedTime copyWithZone:zone];
   [(_INPBUpdateAlarmIntent *)v5 setProposedTime:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBUpdateAlarmIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBUpdateAlarmIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBUpdateAlarmIntent)initWithCoder:(id)a3
+- (_INPBUpdateAlarmIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBUpdateAlarmIntent *)self initWithData:v6];
+    self = [(_INPBUpdateAlarmIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
-  v4 = [(_INPBUpdateAlarmIntent *)self alarm];
+  toCopy = to;
+  alarm = [(_INPBUpdateAlarmIntent *)self alarm];
 
-  if (v4)
+  if (alarm)
   {
-    v5 = [(_INPBUpdateAlarmIntent *)self alarm];
+    alarm2 = [(_INPBUpdateAlarmIntent *)self alarm];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
+  alarmSearch = [(_INPBUpdateAlarmIntent *)self alarmSearch];
 
-  if (v6)
+  if (alarmSearch)
   {
-    v7 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
+    alarmSearch2 = [(_INPBUpdateAlarmIntent *)self alarmSearch];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
+  intentMetadata = [(_INPBUpdateAlarmIntent *)self intentMetadata];
 
-  if (v8)
+  if (intentMetadata)
   {
-    v9 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBUpdateAlarmIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -324,33 +324,33 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
+  proposedLabel = [(_INPBUpdateAlarmIntent *)self proposedLabel];
 
-  if (v11)
+  if (proposedLabel)
   {
-    v12 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
+    proposedLabel2 = [(_INPBUpdateAlarmIntent *)self proposedLabel];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBUpdateAlarmIntent *)self proposedTime];
+  proposedTime = [(_INPBUpdateAlarmIntent *)self proposedTime];
 
-  v14 = v16;
-  if (v13)
+  v14 = toCopy;
+  if (proposedTime)
   {
-    v15 = [(_INPBUpdateAlarmIntent *)self proposedTime];
+    proposedTime2 = [(_INPBUpdateAlarmIntent *)self proposedTime];
     PBDataWriterWriteSubmessage();
 
-    v14 = v16;
+    v14 = toCopy;
   }
 }
 
-- (int)StringAsOperation:(id)a3
+- (int)StringAsOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v4 = 1;
-  if (([v3 isEqualToString:@"UPDATE_LABEL"] & 1) == 0)
+  if (([operationCopy isEqualToString:@"UPDATE_LABEL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"UPDATE_TIME"])
+    if ([operationCopy isEqualToString:@"UPDATE_TIME"])
     {
       v4 = 2;
     }
@@ -364,10 +364,10 @@ LABEL_32:
   return v4;
 }
 
-- (void)setOperation:(int)a3
+- (void)setOperation:(int)operation
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (operation == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -375,7 +375,7 @@ LABEL_32:
   else
   {
     *&self->_has = has | 1;
-    self->_operation = a3;
+    self->_operation = operation;
   }
 }
 

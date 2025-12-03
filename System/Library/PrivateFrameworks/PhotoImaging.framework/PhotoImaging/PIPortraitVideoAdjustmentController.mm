@@ -2,22 +2,22 @@
 - (NSArray)disparityKeyframes;
 - (NSDictionary)cinematographyState;
 - (NSNumber)aperture;
-- (id)_keyframesForKey:(id)a3 class:(Class)a4;
-- (id)pasteKeysForMediaType:(int64_t)a3;
+- (id)_keyframesForKey:(id)key class:(Class)class;
+- (id)pasteKeysForMediaType:(int64_t)type;
 - (id)visualInputKeys;
 - (int64_t)debugMode;
 - (unint64_t)renderingVersionAtCapture;
-- (void)_setKeyframes:(id)a3 forKey:(id)a4;
-- (void)setAperture:(id)a3;
-- (void)setCinematographyState:(id)a3;
-- (void)setDebugMode:(int64_t)a3;
-- (void)setRenderingVersionAtCapture:(unint64_t)a3;
-- (void)trimToTimeRange:(id *)a3 usingScript:(id)a4;
+- (void)_setKeyframes:(id)keyframes forKey:(id)key;
+- (void)setAperture:(id)aperture;
+- (void)setCinematographyState:(id)state;
+- (void)setDebugMode:(int64_t)mode;
+- (void)setRenderingVersionAtCapture:(unint64_t)capture;
+- (void)trimToTimeRange:(id *)range usingScript:(id)script;
 @end
 
 @implementation PIPortraitVideoAdjustmentController
 
-- (id)pasteKeysForMediaType:(int64_t)a3
+- (id)pasteKeysForMediaType:(int64_t)type
 {
   v6[2] = *MEMORY[0x1E69E9840];
   v3 = +[PIAdjustmentController enabledKey];
@@ -28,32 +28,32 @@
   return v4;
 }
 
-- (void)trimToTimeRange:(id *)a3 usingScript:(id)a4
+- (void)trimToTimeRange:(id *)range usingScript:(id)script
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PIPortraitVideoAdjustmentController *)self cinematographyState];
-  if (v7)
+  scriptCopy = script;
+  cinematographyState = [(PIPortraitVideoAdjustmentController *)self cinematographyState];
+  if (cinematographyState)
   {
-    v8 = *&a3->var0.var3;
-    *&range.start.value = *&a3->var0.var0;
+    v8 = *&range->var0.var3;
+    *&range.start.value = *&range->var0.var0;
     *&range.start.epoch = v8;
-    *&range.duration.timescale = *&a3->var1.var1;
-    v9 = [v6 changesDictionaryTrimmedByTimeRange:&range];
+    *&range.duration.timescale = *&range->var1.var1;
+    v9 = [scriptCopy changesDictionaryTrimmedByTimeRange:&range];
     [(PIPortraitVideoAdjustmentController *)self setCinematographyState:v9];
   }
 
-  v10 = [(PIPortraitVideoAdjustmentController *)self disparityKeyframes];
-  if (v10)
+  disparityKeyframes = [(PIPortraitVideoAdjustmentController *)self disparityKeyframes];
+  if (disparityKeyframes)
   {
-    v24 = v7;
+    v24 = cinematographyState;
     v11 = objc_opt_new();
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v23 = v10;
-    v12 = v10;
+    v23 = disparityKeyframes;
+    v12 = disparityKeyframes;
     v13 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v13)
     {
@@ -80,17 +80,17 @@
             memset(&time, 0, sizeof(time));
           }
 
-          v18 = *&a3->var0.var3;
-          *&range.start.value = *&a3->var0.var0;
+          v18 = *&range->var0.var3;
+          *&range.start.value = *&range->var0.var0;
           *&range.start.epoch = v18;
-          *&range.duration.timescale = *&a3->var1.var1;
+          *&range.duration.timescale = *&range->var1.var1;
           if (CMTimeRangeContainsTime(&range, &time))
           {
             v19 = [PIScalarKeyframe alloc];
             if (v17)
             {
               time = *(v17 + 16);
-              rhs = a3->var0;
+              rhs = range->var0;
               CMTimeSubtract(&range.start, &time, &rhs);
               v20 = *(v17 + 8);
             }
@@ -98,7 +98,7 @@
             else
             {
               memset(&time, 0, sizeof(time));
-              rhs = a3->var0;
+              rhs = range->var0;
               CMTimeSubtract(&range.start, &time, &rhs);
               v20 = 0.0;
             }
@@ -119,76 +119,76 @@
     }
 
     [(PIPortraitVideoAdjustmentController *)self setDisparityKeyframes:v11];
-    v7 = v24;
-    v10 = v23;
+    cinematographyState = v24;
+    disparityKeyframes = v23;
   }
 }
 
 - (id)visualInputKeys
 {
-  v2 = [(PIAdjustmentController *)self inputKeys];
-  v3 = [v2 mutableCopy];
+  inputKeys = [(PIAdjustmentController *)self inputKeys];
+  v3 = [inputKeys mutableCopy];
 
   [v3 removeObject:@"cinematographyState"];
 
   return v3;
 }
 
-- (void)setRenderingVersionAtCapture:(unint64_t)a3
+- (void)setRenderingVersionAtCapture:(unint64_t)capture
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  [v4 setObject:v5 forKeyedSubscript:@"renderingVersionAtCapture"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:capture];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  [adjustment setObject:v5 forKeyedSubscript:@"renderingVersionAtCapture"];
 }
 
 - (unint64_t)renderingVersionAtCapture
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [v2 objectForKeyedSubscript:@"renderingVersionAtCapture"];
-  v4 = [v3 unsignedIntegerValue];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = [adjustment objectForKeyedSubscript:@"renderingVersionAtCapture"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setDebugMode:(int64_t)a3
+- (void)setDebugMode:(int64_t)mode
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  [v4 setObject:v5 forKeyedSubscript:@"debugMode"];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  [adjustment setObject:v5 forKeyedSubscript:@"debugMode"];
 }
 
 - (int64_t)debugMode
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [v2 objectForKeyedSubscript:@"debugMode"];
-  v4 = [v3 unsignedIntValue];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = [adjustment objectForKeyedSubscript:@"debugMode"];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)setCinematographyState:(id)a3
+- (void)setCinematographyState:(id)state
 {
-  v4 = a3;
-  v5 = [(PIAdjustmentController *)self adjustment];
-  [v5 setObject:v4 forKeyedSubscript:@"cinematographyState"];
+  stateCopy = state;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  [adjustment setObject:stateCopy forKeyedSubscript:@"cinematographyState"];
 }
 
 - (NSDictionary)cinematographyState
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [v2 objectForKeyedSubscript:@"cinematographyState"];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = [adjustment objectForKeyedSubscript:@"cinematographyState"];
 
   return v3;
 }
 
-- (void)setAperture:(id)a3
+- (void)setAperture:(id)aperture
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  apertureCopy = aperture;
+  if (apertureCopy)
   {
     v5 = [PIScalarKeyframe alloc];
-    [v4 floatValue];
+    [apertureCopy floatValue];
     v9 = *MEMORY[0x1E6960CC0];
     v10 = *(MEMORY[0x1E6960CC0] + 16);
     v7 = [(PIScalarKeyframe *)v5 initWithTime:&v9 value:v6];
@@ -206,10 +206,10 @@
 - (NSNumber)aperture
 {
   v2 = [(PIPortraitVideoAdjustmentController *)self _keyframesForKey:@"apertureKeyframes" class:objc_opt_class()];
-  v3 = [v2 firstObject];
-  if (v3)
+  firstObject = [v2 firstObject];
+  if (firstObject)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithDouble:v3[1]];
+    v4 = [MEMORY[0x1E696AD98] numberWithDouble:firstObject[1]];
   }
 
   else
@@ -227,19 +227,19 @@
   return [(PIPortraitVideoAdjustmentController *)self _keyframesForKey:@"disparityKeyframes" class:v3];
 }
 
-- (void)_setKeyframes:(id)a3 forKey:(id)a4
+- (void)_setKeyframes:(id)keyframes forKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyframesCopy = keyframes;
+  keyCopy = key;
+  if (keyframesCopy)
   {
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(keyframesCopy, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v6;
+    v9 = keyframesCopy;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -255,8 +255,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * v13) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * v13) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
 
           ++v13;
         }
@@ -268,33 +268,33 @@
       while (v11);
     }
 
-    v15 = [(PIAdjustmentController *)self adjustment];
-    [v15 setObject:v8 forKeyedSubscript:v7];
+    adjustment = [(PIAdjustmentController *)self adjustment];
+    [adjustment setObject:v8 forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v16 = [(PIAdjustmentController *)self adjustment];
-    [v16 setObject:0 forKeyedSubscript:v7];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
+    [adjustment2 setObject:0 forKeyedSubscript:keyCopy];
   }
 }
 
-- (id)_keyframesForKey:(id)a3 class:(Class)a4
+- (id)_keyframesForKey:(id)key class:(Class)class
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PIAdjustmentController *)self adjustment];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v8 = [adjustment objectForKeyedSubscript:keyCopy];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [(PIAdjustmentController *)self adjustment];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
+    v11 = [adjustment2 objectForKeyedSubscript:keyCopy];
 
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
@@ -310,8 +310,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [[a4 alloc] initWithDictionaryRepresentation:*(*(&v19 + 1) + 8 * i)];
-          [v9 addObject:v16];
+          v16 = [[class alloc] initWithDictionaryRepresentation:*(*(&v19 + 1) + 8 * i)];
+          [array addObject:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -320,7 +320,7 @@
       while (v13);
     }
 
-    v17 = [v9 copy];
+    v17 = [array copy];
   }
 
   else

@@ -1,28 +1,28 @@
 @interface _SFPBRequestUserReportCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRequestUserReportCommand)initWithDictionary:(id)a3;
-- (_SFPBRequestUserReportCommand)initWithFacade:(id)a3;
-- (_SFPBRequestUserReportCommand)initWithJSON:(id)a3;
+- (_SFPBRequestUserReportCommand)initWithDictionary:(id)dictionary;
+- (_SFPBRequestUserReportCommand)initWithFacade:(id)facade;
+- (_SFPBRequestUserReportCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRequestUserReportCommand
 
-- (_SFPBRequestUserReportCommand)initWithFacade:(id)a3
+- (_SFPBRequestUserReportCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRequestUserReportCommand *)self init];
   if (v5)
   {
-    v6 = [v4 userReportRequest];
+    userReportRequest = [facadeCopy userReportRequest];
 
-    if (v6)
+    if (userReportRequest)
     {
       v7 = [_SFPBUserReportRequest alloc];
-      v8 = [v4 userReportRequest];
-      v9 = [(_SFPBUserReportRequest *)v7 initWithFacade:v8];
+      userReportRequest2 = [facadeCopy userReportRequest];
+      v9 = [(_SFPBUserReportRequest *)v7 initWithFacade:userReportRequest2];
       [(_SFPBRequestUserReportCommand *)v5 setUserReportRequest:v9];
     }
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (_SFPBRequestUserReportCommand)initWithDictionary:(id)a3
+- (_SFPBRequestUserReportCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRequestUserReportCommand;
   v5 = [(_SFPBRequestUserReportCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userReportRequest"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userReportRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (_SFPBRequestUserReportCommand)initWithJSON:(id)a3
+- (_SFPBRequestUserReportCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRequestUserReportCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRequestUserReportCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRequestUserReportCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,38 +90,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_userReportRequest)
   {
-    v4 = [(_SFPBRequestUserReportCommand *)self userReportRequest];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    userReportRequest = [(_SFPBRequestUserReportCommand *)self userReportRequest];
+    dictionaryRepresentation = [userReportRequest dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"userReportRequest"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"userReportRequest"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"userReportRequest"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"userReportRequest"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRequestUserReportCommand *)self userReportRequest];
-    v6 = [v4 userReportRequest];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    userReportRequest = [(_SFPBRequestUserReportCommand *)self userReportRequest];
+    userReportRequest2 = [equalCopy userReportRequest];
+    v7 = userReportRequest2;
+    if ((userReportRequest != 0) != (userReportRequest2 == 0))
     {
-      v8 = [(_SFPBRequestUserReportCommand *)self userReportRequest];
-      if (!v8)
+      userReportRequest3 = [(_SFPBRequestUserReportCommand *)self userReportRequest];
+      if (!userReportRequest3)
       {
 
 LABEL_10:
@@ -129,10 +129,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRequestUserReportCommand *)self userReportRequest];
-      v11 = [v4 userReportRequest];
-      v12 = [v10 isEqual:v11];
+      v9 = userReportRequest3;
+      userReportRequest4 = [(_SFPBRequestUserReportCommand *)self userReportRequest];
+      userReportRequest5 = [equalCopy userReportRequest];
+      v12 = [userReportRequest4 isEqual:userReportRequest5];
 
       if (v12)
       {
@@ -151,11 +151,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRequestUserReportCommand *)self userReportRequest];
-  if (v4)
+  toCopy = to;
+  userReportRequest = [(_SFPBRequestUserReportCommand *)self userReportRequest];
+  if (userReportRequest)
   {
     PBDataWriterWriteSubmessage();
   }

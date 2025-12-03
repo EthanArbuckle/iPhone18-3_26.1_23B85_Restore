@@ -1,14 +1,14 @@
 @interface PaymentSheetRequest
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PaymentSheetRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_10021E13C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_10021E13C(coderCopy);
 }
 
 @end

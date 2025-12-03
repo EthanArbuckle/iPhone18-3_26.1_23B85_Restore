@@ -1,30 +1,30 @@
 @interface MSCLOAuthWebViewController
-- (MSCLOAuthWebViewController)initWithAuthURL:(id)a3 redirectURL:(id)a4;
-- (void)_endAuthenticationWithError:(id)a3;
+- (MSCLOAuthWebViewController)initWithAuthURL:(id)l redirectURL:(id)rL;
+- (void)_endAuthenticationWithError:(id)error;
 - (void)cancelAuthentication;
 - (void)startAuthentication;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
 @end
 
 @implementation MSCLOAuthWebViewController
 
-- (MSCLOAuthWebViewController)initWithAuthURL:(id)a3 redirectURL:(id)a4
+- (MSCLOAuthWebViewController)initWithAuthURL:(id)l redirectURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v14.receiver = self;
   v14.super_class = MSCLOAuthWebViewController;
   v8 = [(MSCLOAuthWebViewController *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     authURL = v8->_authURL;
     v8->_authURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [rLCopy copy];
     redirectURL = v8->_redirectURL;
     v8->_redirectURL = v11;
   }
@@ -87,8 +87,8 @@
   v13.receiver = self;
   v13.super_class = MSCLOAuthWebViewController;
   [(MSCLOAuthWebViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(MSCLOAuthWebViewController *)self view];
-  [v3 bounds];
+  view = [(MSCLOAuthWebViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -96,8 +96,8 @@
 
   [(WKWebView *)self->_webView setFrame:v5, v7, v9, v11];
   [(UIActivityIndicatorView *)self->_activityIndicator setFrame:v5, v7, v9, v11];
-  v12 = [(MSCLOAuthWebViewController *)self view];
-  [v12 bringSubviewToFront:self->_activityIndicator];
+  view2 = [(MSCLOAuthWebViewController *)self view];
+  [view2 bringSubviewToFront:self->_activityIndicator];
 }
 
 - (void)viewDidLoad
@@ -105,23 +105,23 @@
   v17.receiver = self;
   v17.super_class = MSCLOAuthWebViewController;
   [(MSCLOAuthWebViewController *)&v17 viewDidLoad];
-  v3 = [(MSCLOAuthWebViewController *)self view];
+  view = [(MSCLOAuthWebViewController *)self view];
   v4 = +[UIColor whiteColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [WKWebView alloc];
-  v6 = [(MSCLOAuthWebViewController *)self view];
-  [v6 bounds];
+  view2 = [(MSCLOAuthWebViewController *)self view];
+  [view2 bounds];
   v7 = [v5 initWithFrame:?];
 
   [(WKWebView *)v7 setNavigationDelegate:self];
-  v8 = [(MSCLOAuthWebViewController *)self view];
-  [v8 addSubview:v7];
+  view3 = [(MSCLOAuthWebViewController *)self view];
+  [view3 addSubview:v7];
 
   v9 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(UIActivityIndicatorView *)v9 setHidesWhenStopped:1];
-  v10 = [(MSCLOAuthWebViewController *)self view];
-  [v10 addSubview:v9];
+  view4 = [(MSCLOAuthWebViewController *)self view];
+  [view4 addSubview:v9];
 
   webView = self->_webView;
   self->_webView = v7;
@@ -131,39 +131,39 @@
   self->_activityIndicator = v9;
   v14 = v9;
 
-  v15 = [(MSCLOAuthWebViewController *)self navigationItem];
+  navigationItem = [(MSCLOAuthWebViewController *)self navigationItem];
   v16 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelAuthentication"];
 
-  [v15 setLeftBarButtonItem:v16];
+  [navigationItem setLeftBarButtonItem:v16];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
   if (!self->_interceptedRedirectURL)
   {
-    [(MSCLOAuthWebViewController *)self _endAuthenticationWithError:a5, a4];
+    [(MSCLOAuthWebViewController *)self _endAuthenticationWithError:error, navigation];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v20 = a5;
-  v7 = [a4 request];
-  v8 = [v7 URL];
+  handlerCopy = handler;
+  request = [action request];
+  v8 = [request URL];
 
-  v9 = [v8 host];
-  v10 = [v9 lowercaseString];
+  host = [v8 host];
+  lowercaseString = [host lowercaseString];
 
-  v11 = [v8 path];
-  v12 = [v11 lowercaseString];
+  path = [v8 path];
+  lowercaseString2 = [path lowercaseString];
 
-  v13 = [(NSURL *)self->_redirectURL host];
-  v14 = [v13 lowercaseString];
+  host2 = [(NSURL *)self->_redirectURL host];
+  lowercaseString3 = [host2 lowercaseString];
 
-  v15 = [(NSURL *)self->_redirectURL path];
-  v16 = [v15 lowercaseString];
+  path2 = [(NSURL *)self->_redirectURL path];
+  lowercaseString4 = [path2 lowercaseString];
 
-  if ([v10 isEqualToString:v14] && objc_msgSend(v12, "isEqualToString:", v16))
+  if ([lowercaseString isEqualToString:lowercaseString3] && objc_msgSend(lowercaseString2, "isEqualToString:", lowercaseString4))
   {
     v17 = [v8 copy];
     interceptedRedirectURL = self->_interceptedRedirectURL;
@@ -177,21 +177,21 @@
     v19 = 1;
   }
 
-  v20[2](v20, v19);
+  handlerCopy[2](handlerCopy, v19);
   if (self->_interceptedRedirectURL)
   {
     [(MSCLOAuthWebViewController *)self _endAuthenticationWithError:0];
   }
 }
 
-- (void)_endAuthenticationWithError:(id)a3
+- (void)_endAuthenticationWithError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   [(MSCLOAuthWebViewController *)self setAuthenticating:0];
-  v4 = [(MSCLOAuthWebViewController *)self completionBlock];
-  if (v4)
+  completionBlock = [(MSCLOAuthWebViewController *)self completionBlock];
+  if (completionBlock)
   {
-    v5 = v8;
+    v5 = errorCopy;
     v6 = v5;
     if (!v5)
     {
@@ -207,7 +207,7 @@
     }
 
     v7 = [(NSURL *)self->_interceptedRedirectURL copy];
-    (v4)[2](v4, v7, v5);
+    (completionBlock)[2](completionBlock, v7, v5);
   }
 }
 

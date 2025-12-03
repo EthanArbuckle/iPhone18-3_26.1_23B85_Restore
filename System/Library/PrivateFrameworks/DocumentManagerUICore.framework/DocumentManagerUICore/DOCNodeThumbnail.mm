@@ -2,54 +2,54 @@
 - (BOOL)hasFinishedTryingToFetchCorrectThumbnail;
 - (BOOL)isLoading;
 - (BOOL)isRepresentativeIcon;
-- (BOOL)registerGenerationCompletionHandler:(id)a3;
+- (BOOL)registerGenerationCompletionHandler:(id)handler;
 - (CGSize)size;
-- (DOCNodeThumbnail)initWithGenerator:(id)a3 node:(id)a4 descriptor:(id)a5 fallback:(id)a6;
+- (DOCNodeThumbnail)initWithGenerator:(id)generator node:(id)node descriptor:(id)descriptor fallback:(id)fallback;
 - (DOCThumbnailGenerator)generator;
 - (UIImage)thumbnail;
-- (id)averageColorInRect:(CGRect)a3;
+- (id)averageColorInRect:(CGRect)rect;
 - (void)_callGenerationCompletionHandlers;
 - (void)_cancelCurrentRequest;
-- (void)_fetchThumbnailWithOptions:(unint64_t)a3;
+- (void)_fetchThumbnailWithOptions:(unint64_t)options;
 - (void)_notifyListeners;
-- (void)addListener:(id)a3;
-- (void)fetchWithOptions:(unint64_t)a3;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener;
+- (void)fetchWithOptions:(unint64_t)options;
+- (void)removeListener:(id)listener;
 - (void)scheduleUpdateIfNeeded;
-- (void)setFallback:(id)a3;
+- (void)setFallback:(id)fallback;
 - (void)setNeedsUpdate;
-- (void)thumbnailLoaded:(id)a3;
-- (void)thumbnailOperationDidLoadThumbnail:(id)a3 representativeIcon:(BOOL)a4;
+- (void)thumbnailLoaded:(id)loaded;
+- (void)thumbnailOperationDidLoadThumbnail:(id)thumbnail representativeIcon:(BOOL)icon;
 - (void)thumbnailOperationFailedToLoadThumbnail;
-- (void)updateNodeThumbnailIdentifierTo:(id)a3;
+- (void)updateNodeThumbnailIdentifierTo:(id)to;
 @end
 
 @implementation DOCNodeThumbnail
 
-- (DOCNodeThumbnail)initWithGenerator:(id)a3 node:(id)a4 descriptor:(id)a5 fallback:(id)a6
+- (DOCNodeThumbnail)initWithGenerator:(id)generator node:(id)node descriptor:(id)descriptor fallback:(id)fallback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  generatorCopy = generator;
+  nodeCopy = node;
+  descriptorCopy = descriptor;
+  fallbackCopy = fallback;
   v23.receiver = self;
   v23.super_class = DOCNodeThumbnail;
   v14 = [(DOCNodeThumbnail *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_generator, v10);
-    objc_storeStrong(&v15->_descriptor, a5);
-    objc_storeStrong(&v15->_fallback, a6);
+    objc_storeWeak(&v14->_generator, generatorCopy);
+    objc_storeStrong(&v15->_descriptor, descriptor);
+    objc_storeStrong(&v15->_fallback, fallback);
     *&v15->_representativeIcon = 0;
-    v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     listeners = v15->_listeners;
-    v15->_listeners = v16;
+    v15->_listeners = weakObjectsHashTable;
 
-    objc_storeStrong(&v15->_node, a4);
-    v18 = [v11 thumbnailIdentifier];
+    objc_storeStrong(&v15->_node, node);
+    thumbnailIdentifier = [nodeCopy thumbnailIdentifier];
     nodeThumbnailIdentifier = v15->_nodeThumbnailIdentifier;
-    v15->_nodeThumbnailIdentifier = v18;
+    v15->_nodeThumbnailIdentifier = thumbnailIdentifier;
 
     v20 = objc_opt_new();
     generationCompletionHandlers = v15->_generationCompletionHandlers;
@@ -69,27 +69,27 @@
   return result;
 }
 
-- (void)setFallback:(id)a3
+- (void)setFallback:(id)fallback
 {
-  v8 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_fallback == v8)
+  fallbackCopy = fallback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fallback == fallbackCopy)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v6 = [(DOCNodeThumbnail *)v5 fallback];
-    [v6 removeListener:v5];
+    fallback = [(DOCNodeThumbnail *)selfCopy fallback];
+    [fallback removeListener:selfCopy];
 
-    objc_storeStrong(&v5->_fallback, a3);
-    v7 = [(DOCNodeThumbnail *)v5 fallback];
-    [v7 addListener:v5];
+    objc_storeStrong(&selfCopy->_fallback, fallback);
+    fallback2 = [(DOCNodeThumbnail *)selfCopy fallback];
+    [fallback2 addListener:selfCopy];
 
-    objc_sync_exit(v5);
-    [(DOCNodeThumbnail *)v5 thumbnailLoaded:v8];
+    objc_sync_exit(selfCopy);
+    [(DOCNodeThumbnail *)selfCopy thumbnailLoaded:fallbackCopy];
   }
 }
 
@@ -103,111 +103,111 @@
 
 - (BOOL)isLoading
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DOCNodeThumbnail *)v2 currentRequest];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentRequest = [(DOCNodeThumbnail *)selfCopy currentRequest];
 
-  if (v3)
+  if (currentRequest)
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(isLoading) = 1;
   }
 
   else
   {
-    v5 = [(DOCNodeThumbnail *)v2 thumbnailImage];
+    thumbnailImage = [(DOCNodeThumbnail *)selfCopy thumbnailImage];
 
-    if (v5)
+    if (thumbnailImage)
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(isLoading) = 0;
     }
 
     else
     {
-      v6 = [(DOCNodeThumbnail *)v2 fallback];
-      v4 = [v6 isLoading];
+      fallback = [(DOCNodeThumbnail *)selfCopy fallback];
+      isLoading = [fallback isLoading];
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return isLoading;
 }
 
 - (BOOL)isRepresentativeIcon
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DOCNodeThumbnail *)v2 thumbnailImage];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  thumbnailImage = [(DOCNodeThumbnail *)selfCopy thumbnailImage];
 
-  if (v3)
+  if (thumbnailImage)
   {
-    LOBYTE(v4) = v2->_representativeIcon;
-    objc_sync_exit(v2);
+    LOBYTE(isRepresentativeIcon) = selfCopy->_representativeIcon;
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v5 = [(DOCNodeThumbnail *)v2 fallback];
-    objc_sync_exit(v2);
+    fallback = [(DOCNodeThumbnail *)selfCopy fallback];
+    objc_sync_exit(selfCopy);
 
-    v4 = [(DOCNodeThumbnail *)v5 isRepresentativeIcon];
-    v2 = v5;
+    isRepresentativeIcon = [(DOCNodeThumbnail *)fallback isRepresentativeIcon];
+    selfCopy = fallback;
   }
 
-  return v4 & 1;
+  return isRepresentativeIcon & 1;
 }
 
-- (id)averageColorInRect:(CGRect)a3
+- (id)averageColorInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(DOCNodeThumbnail *)self isRepresentativeIcon])
   {
-    v8 = [(DOCNodeThumbnail *)self thumbnail];
-    v9 = [v8 doc_averageColorInRect:{x, y, width, height}];
+    thumbnail = [(DOCNodeThumbnail *)self thumbnail];
+    whiteColor = [thumbnail doc_averageColorInRect:{x, y, width, height}];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  return v9;
+  return whiteColor;
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  if (v4)
+  listenerCopy = listener;
+  if (listenerCopy)
   {
-    v7 = v4;
-    v5 = [(DOCNodeThumbnail *)self listeners];
-    objc_sync_enter(v5);
-    v6 = [(DOCNodeThumbnail *)self listeners];
-    [v6 addObject:v7];
+    v7 = listenerCopy;
+    listeners = [(DOCNodeThumbnail *)self listeners];
+    objc_sync_enter(listeners);
+    listeners2 = [(DOCNodeThumbnail *)self listeners];
+    [listeners2 addObject:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(listeners);
+    listenerCopy = v7;
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v8 = a3;
-  v4 = [(DOCNodeThumbnail *)self listeners];
-  objc_sync_enter(v4);
-  if (v8)
+  listenerCopy = listener;
+  listeners = [(DOCNodeThumbnail *)self listeners];
+  objc_sync_enter(listeners);
+  if (listenerCopy)
   {
-    v5 = [(DOCNodeThumbnail *)self listeners];
-    [v5 removeObject:v8];
+    listeners2 = [(DOCNodeThumbnail *)self listeners];
+    [listeners2 removeObject:listenerCopy];
   }
 
-  v6 = [(DOCNodeThumbnail *)self listeners];
-  v7 = [v6 count];
+  listeners3 = [(DOCNodeThumbnail *)self listeners];
+  v7 = [listeners3 count];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(listeners);
   if (!v7)
   {
     [(DOCNodeThumbnail *)self _cancelCurrentRequest];
@@ -216,75 +216,75 @@
 
 - (BOOL)hasFinishedTryingToFetchCorrectThumbnail
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DOCNodeThumbnail *)v2 currentRequest];
-  v4 = v3 == 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentRequest = [(DOCNodeThumbnail *)selfCopy currentRequest];
+  v4 = currentRequest == 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (UIImage)thumbnail
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DOCNodeThumbnail *)v2 thumbnailImage];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  thumbnailImage = [(DOCNodeThumbnail *)selfCopy thumbnailImage];
+  if (thumbnailImage)
   {
-    objc_sync_exit(v2);
-    v4 = v2;
+    objc_sync_exit(selfCopy);
+    fallback = selfCopy;
   }
 
   else
   {
-    v4 = [(DOCNodeThumbnail *)v2 fallback];
-    objc_sync_exit(v2);
+    fallback = [(DOCNodeThumbnail *)selfCopy fallback];
+    objc_sync_exit(selfCopy);
 
-    v3 = [v4 thumbnail];
+    thumbnailImage = [fallback thumbnail];
   }
 
-  [(DOCNodeThumbnail *)v2 scheduleUpdateIfNeeded];
-  v5 = [(DOCNodeThumbnail *)v2 generator];
-  [v5 markThumbnailAsRecentlyUsed:v2];
+  [(DOCNodeThumbnail *)selfCopy scheduleUpdateIfNeeded];
+  generator = [(DOCNodeThumbnail *)selfCopy generator];
+  [generator markThumbnailAsRecentlyUsed:selfCopy];
 
-  return v3;
+  return thumbnailImage;
 }
 
-- (void)thumbnailLoaded:(id)a3
+- (void)thumbnailLoaded:(id)loaded
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(DOCNodeThumbnail *)v4 thumbnailImage];
+  loadedCopy = loaded;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  thumbnailImage = [(DOCNodeThumbnail *)selfCopy thumbnailImage];
 
-  objc_sync_exit(v4);
-  if (!v5)
+  objc_sync_exit(selfCopy);
+  if (!thumbnailImage)
   {
-    [(DOCNodeThumbnail *)v4 _notifyListeners];
+    [(DOCNodeThumbnail *)selfCopy _notifyListeners];
   }
 }
 
-- (void)thumbnailOperationDidLoadThumbnail:(id)a3 representativeIcon:(BOOL)a4
+- (void)thumbnailOperationDidLoadThumbnail:(id)thumbnail representativeIcon:(BOOL)icon
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v7->_representativeIcon = a4;
-  currentRequest = v7->_currentRequest;
-  v7->_currentRequest = 0;
+  thumbnailCopy = thumbnail;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_representativeIcon = icon;
+  currentRequest = selfCopy->_currentRequest;
+  selfCopy->_currentRequest = 0;
 
-  [(DOCNodeThumbnail *)v7 _callGenerationCompletionHandlers];
-  thumbnailImage = v7->_thumbnailImage;
-  v7->_thumbnailImage = v6;
-  v10 = v6;
+  [(DOCNodeThumbnail *)selfCopy _callGenerationCompletionHandlers];
+  thumbnailImage = selfCopy->_thumbnailImage;
+  selfCopy->_thumbnailImage = thumbnailCopy;
+  v10 = thumbnailCopy;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__DOCNodeThumbnail_thumbnailOperationDidLoadThumbnail_representativeIcon___block_invoke;
   block[3] = &unk_278FB38C0;
-  block[4] = v7;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -300,72 +300,72 @@
   objc_sync_exit(obj);
 }
 
-- (void)fetchWithOptions:(unint64_t)a3
+- (void)fetchWithOptions:(unint64_t)options
 {
   obj = self;
   objc_sync_enter(obj);
-  [(DOCNodeThumbnail *)obj _fetchThumbnailWithOptions:a3];
+  [(DOCNodeThumbnail *)obj _fetchThumbnailWithOptions:options];
   objc_sync_exit(obj);
 }
 
-- (void)_fetchThumbnailWithOptions:(unint64_t)a3
+- (void)_fetchThumbnailWithOptions:(unint64_t)options
 {
-  v3 = a3;
-  v5 = [(DOCNodeThumbnail *)self node];
-  v6 = v5;
-  if ((v3 & 2) != 0)
+  optionsCopy = options;
+  node = [(DOCNodeThumbnail *)self node];
+  v6 = node;
+  if ((optionsCopy & 2) != 0)
   {
     goto LABEL_5;
   }
 
-  v7 = v5;
+  v7 = node;
   if ([v7 isActionable])
   {
-    v8 = [v7 providerDomainID];
+    providerDomainID = [v7 providerDomainID];
     v9 = DOCProviderDomainIDIsSharedServerDomainID();
 
     if ((v9 & 1) == 0)
     {
 
-      if ((v3 & 1) == 0)
+      if ((optionsCopy & 1) == 0)
       {
         goto LABEL_6;
       }
 
 LABEL_9:
-      v13 = self;
-      objc_sync_enter(v13);
-      if (v13->_currentRequest || v13->_thumbnailImage)
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      if (selfCopy->_currentRequest || selfCopy->_thumbnailImage)
       {
-        objc_sync_exit(v13);
+        objc_sync_exit(selfCopy);
         goto LABEL_12;
       }
 
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
 
 LABEL_6:
       [(DOCNodeThumbnail *)self _cancelCurrentRequest];
       WeakRetained = objc_loadWeakRetained(&self->_generator);
-      v13 = [WeakRetained thumbnailGenerator];
+      selfCopy = [WeakRetained thumbnailGenerator];
 
-      v14 = [DOCThumbnailRequest requestForNode:self->_node descriptor:self->_descriptor thumbnailGenerator:v13];
-      v15 = self;
-      objc_sync_enter(v15);
-      objc_storeStrong(&v15->_currentRequest, v14);
-      objc_sync_exit(v15);
+      v14 = [DOCThumbnailRequest requestForNode:self->_node descriptor:self->_descriptor thumbnailGenerator:selfCopy];
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      objc_storeStrong(&selfCopy2->_currentRequest, v14);
+      objc_sync_exit(selfCopy2);
 
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __47__DOCNodeThumbnail__fetchThumbnailWithOptions___block_invoke;
       v20[3] = &unk_278FB38C0;
-      v20[4] = v15;
+      v20[4] = selfCopy2;
       [v14 setThumbnailGenerationRequiresDownloadHandler:v20];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __47__DOCNodeThumbnail__fetchThumbnailWithOptions___block_invoke_2;
       v17[3] = &unk_278FB3918;
       v18 = v14;
-      v19 = v15;
+      v19 = selfCopy2;
       v16 = v14;
       [v16 generateThumbnailWithCompletionHandler:v17];
 
@@ -373,13 +373,13 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v10 = [v7 fpfs_fpItem];
-    v11 = [v10 doc_isSMBSharepoint];
+    fpfs_fpItem = [v7 fpfs_fpItem];
+    doc_isSMBSharepoint = [fpfs_fpItem doc_isSMBSharepoint];
 
-    if (v11)
+    if (doc_isSMBSharepoint)
     {
 LABEL_5:
-      if ((v3 & 1) == 0)
+      if ((optionsCopy & 1) == 0)
       {
         goto LABEL_6;
       }
@@ -447,10 +447,10 @@ void __47__DOCNodeThumbnail__fetchThumbnailWithOptions___block_invoke_2(uint64_t
 - (void)_callGenerationCompletionHandlers
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_generationCompletionHandlers copy];
-  [(NSMutableArray *)v2->_generationCompletionHandlers removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_generationCompletionHandlers copy];
+  [(NSMutableArray *)selfCopy->_generationCompletionHandlers removeAllObjects];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
@@ -481,24 +481,24 @@ void __47__DOCNodeThumbnail__fetchThumbnailWithOptions___block_invoke_2(uint64_t
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerGenerationCompletionHandler:(id)a3
+- (BOOL)registerGenerationCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  currentRequest = v5->_currentRequest;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentRequest = selfCopy->_currentRequest;
   if (currentRequest)
   {
-    generationCompletionHandlers = v5->_generationCompletionHandlers;
-    v8 = _Block_copy(v4);
+    generationCompletionHandlers = selfCopy->_generationCompletionHandlers;
+    v8 = _Block_copy(handlerCopy);
     [(NSMutableArray *)generationCompletionHandlers addObject:v8];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return currentRequest != 0;
 }
@@ -519,17 +519,17 @@ void __47__DOCNodeThumbnail__fetchThumbnailWithOptions___block_invoke_2(uint64_t
 - (void)_notifyListeners
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(DOCNodeThumbnail *)self listeners];
-  objc_sync_enter(v3);
-  v4 = [(DOCNodeThumbnail *)self listeners];
-  v5 = [v4 allObjects];
+  listeners = [(DOCNodeThumbnail *)self listeners];
+  objc_sync_enter(listeners);
+  listeners2 = [(DOCNodeThumbnail *)self listeners];
+  allObjects = [listeners2 allObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(listeners);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v7)
   {
@@ -564,7 +564,7 @@ void __47__DOCNodeThumbnail__fetchThumbnailWithOptions___block_invoke_2(uint64_t
           v24 = 2048;
           v25 = v12;
           v26 = 2112;
-          v27 = self;
+          selfCopy = self;
           _os_log_debug_impl(&dword_249CE0000, v14, OS_LOG_TYPE_DEBUG, "Notifying <%@: %p> that the thumbnail for %@ successfully loaded", buf, 0x20u);
         }
 
@@ -582,21 +582,21 @@ void __47__DOCNodeThumbnail__fetchThumbnailWithOptions___block_invoke_2(uint64_t
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateNodeThumbnailIdentifierTo:(id)a3
+- (void)updateNodeThumbnailIdentifierTo:(id)to
 {
-  v8 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DOCNodeThumbnail *)v5 nodeThumbnailIdentifier];
-  v7 = [v8 isEqual:v6];
+  toCopy = to;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nodeThumbnailIdentifier = [(DOCNodeThumbnail *)selfCopy nodeThumbnailIdentifier];
+  v7 = [toCopy isEqual:nodeThumbnailIdentifier];
 
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&v5->_nodeThumbnailIdentifier, a3);
-    [(DOCNodeThumbnail *)v5 setNeedsUpdate];
+    objc_storeStrong(&selfCopy->_nodeThumbnailIdentifier, to);
+    [(DOCNodeThumbnail *)selfCopy setNeedsUpdate];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (DOCThumbnailGenerator)generator

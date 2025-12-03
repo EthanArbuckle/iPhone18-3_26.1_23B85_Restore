@@ -1,5 +1,5 @@
 @interface GKMonteCarloStrategist
-- (BOOL)validateGameModel:(id)a3;
+- (BOOL)validateGameModel:(id)model;
 - (GKGameModel)gameModel;
 - (GKMonteCarloStrategist)init;
 - (GKRandom)randomSource;
@@ -9,8 +9,8 @@
 - (void)dealloc;
 - (void)setBudget:(NSUInteger)budget;
 - (void)setExplorationParameter:(NSUInteger)explorationParameter;
-- (void)setGameModel:(id)a3;
-- (void)setRandomSource:(id)a3;
+- (void)setGameModel:(id)model;
+- (void)setRandomSource:(id)source;
 @end
 
 @implementation GKMonteCarloStrategist
@@ -31,19 +31,19 @@
   return v4;
 }
 
-- (void)setGameModel:(id)a3
+- (void)setGameModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
+  modelCopy = model;
+  v5 = modelCopy;
   monteCarloStrategist = self->_monteCarloStrategist;
   if (monteCarloStrategist)
   {
-    v10 = v4;
-    if (v4)
+    v10 = modelCopy;
+    if (modelCopy)
     {
-      v4 = [(GKMonteCarloStrategist *)self validateGameModel:v4];
+      modelCopy = [(GKMonteCarloStrategist *)self validateGameModel:modelCopy];
       v5 = v10;
-      if ((v4 & 1) == 0)
+      if ((modelCopy & 1) == 0)
       {
         goto LABEL_7;
       }
@@ -65,7 +65,7 @@
 
 LABEL_7:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](modelCopy, v5);
 }
 
 - (GKRandom)randomSource
@@ -84,15 +84,15 @@ LABEL_7:
   return v4;
 }
 
-- (void)setRandomSource:(id)a3
+- (void)setRandomSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   monteCarloStrategist = self->_monteCarloStrategist;
   if (monteCarloStrategist)
   {
-    v7 = v5;
-    objc_storeStrong(&monteCarloStrategist->var1, a3);
-    v5 = v7;
+    v7 = sourceCopy;
+    objc_storeStrong(&monteCarloStrategist->var1, source);
+    sourceCopy = v7;
   }
 }
 
@@ -168,10 +168,10 @@ LABEL_7:
   [(GKMonteCarloStrategist *)&v4 dealloc];
 }
 
-- (BOOL)validateGameModel:(id)a3
+- (BOOL)validateGameModel:(id)model
 {
-  v3 = a3;
-  if (!v3)
+  modelCopy = model;
+  if (!modelCopy)
   {
     v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"No game model set for GKMonteCarloStrategist game model must be set before attempting to find a move" userInfo:0];;
     objc_exception_throw(v5);
@@ -195,14 +195,14 @@ LABEL_7:
 {
   if (self->_monteCarloStrategist)
   {
-    v3 = [(GKMonteCarloStrategist *)self gameModel];
-    v4 = [(GKMonteCarloStrategist *)self validateGameModel:v3];
+    gameModel = [(GKMonteCarloStrategist *)self gameModel];
+    v4 = [(GKMonteCarloStrategist *)self validateGameModel:gameModel];
 
     if (v4)
     {
-      v5 = [(GKMonteCarloStrategist *)self randomSource];
+      randomSource = [(GKMonteCarloStrategist *)self randomSource];
 
-      if (!v5)
+      if (!randomSource)
       {
         v6 = objc_alloc_init(GKARC4RandomSource);
         [(GKMonteCarloStrategist *)self setRandomSource:v6];

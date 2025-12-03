@@ -1,8 +1,8 @@
 @interface ICDocCamImageQuadEditViewController
 - (CGRect)imageFrameInOverlayCoordinates;
 - (CGRect)rectAvailableForDefaultRect;
-- (CGRect)unitImageRectForOverlayRect:(CGRect)a3;
-- (ICDocCamImageQuadEditViewController)initWithImage:(id)a3 quad:(id)a4 scanDataDelegate:(id)a5 orientation:(int64_t)a6 completionHandler:(id)a7;
+- (CGRect)unitImageRectForOverlayRect:(CGRect)rect;
+- (ICDocCamImageQuadEditViewController)initWithImage:(id)image quad:(id)quad scanDataDelegate:(id)delegate orientation:(int64_t)orientation completionHandler:(id)handler;
 - (NSLayoutConstraint)placardTopConstraint;
 - (UILabel)userPromptLabel;
 - (UIView)placard;
@@ -11,53 +11,53 @@
 - (id)finalQuad;
 - (id)finalQuadFromOverlay;
 - (id)quadForOverlay;
-- (id)quadForOverlay:(id)a3;
-- (id)uiInitialQuadForOverlay:(id)a3;
-- (id)uiQuadForOverlay:(id)a3;
-- (id)viewForZoomingInScrollView:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)callCompletionHandler:(BOOL)a3 withImage:(id)a4 quad:(id)a5 preparingForDismissal:(BOOL)a6;
-- (void)cancelButtonPressed:(id)a3;
+- (id)quadForOverlay:(id)overlay;
+- (id)uiInitialQuadForOverlay:(id)overlay;
+- (id)uiQuadForOverlay:(id)overlay;
+- (id)viewForZoomingInScrollView:(id)view;
+- (void)applicationWillResignActive:(id)active;
+- (void)callCompletionHandler:(BOOL)handler withImage:(id)image quad:(id)quad preparingForDismissal:(BOOL)dismissal;
+- (void)cancelButtonPressed:(id)pressed;
 - (void)centerAndScaleImageInScrollView;
 - (void)dealloc;
-- (void)overlayDidLayout:(id)a3;
+- (void)overlayDidLayout:(id)layout;
 - (void)prepareForDismissal;
 - (void)refreshNavigationBar;
-- (void)saveButtonPressed:(id)a3;
-- (void)scanWasDeleted:(id)a3;
-- (void)selectedKnobDidChange:(id)a3;
-- (void)selectedKnobDidPanToRect:(CGRect)a3;
+- (void)saveButtonPressed:(id)pressed;
+- (void)scanWasDeleted:(id)deleted;
+- (void)selectedKnobDidChange:(id)change;
+- (void)selectedKnobDidPanToRect:(CGRect)rect;
 - (void)setUpImageView;
 - (void)setupAccessibility;
 - (void)updateFonts;
 - (void)updateOverlayScrimMask;
 - (void)updateToAspectFitIfNecessary;
 - (void)updateTopConstraintForPlacard;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICDocCamImageQuadEditViewController
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICDocCamImageQuadEditViewController;
   [(ICDocCamImageQuadEditViewController *)&v4 dealloc];
 }
 
-- (ICDocCamImageQuadEditViewController)initWithImage:(id)a3 quad:(id)a4 scanDataDelegate:(id)a5 orientation:(int64_t)a6 completionHandler:(id)a7
+- (ICDocCamImageQuadEditViewController)initWithImage:(id)image quad:(id)quad scanDataDelegate:(id)delegate orientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  imageCopy = image;
+  quadCopy = quad;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v54.receiver = self;
   v54.super_class = ICDocCamImageQuadEditViewController;
@@ -68,7 +68,7 @@
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!imageCopy)
   {
     v19 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@
       [(ICDocCamImageQuadEditViewController *)v19 initWithImage:v20 quad:v21 scanDataDelegate:v22 orientation:v23 completionHandler:v24, v25, v26];
     }
 
-    if (v16)
+    if (handlerCopy)
     {
       goto LABEL_11;
     }
@@ -84,7 +84,7 @@
     goto LABEL_8;
   }
 
-  if (!v16)
+  if (!handlerCopy)
   {
 LABEL_8:
     v27 = os_log_create("com.apple.documentcamera", "");
@@ -95,7 +95,7 @@ LABEL_8:
   }
 
 LABEL_11:
-  v35 = [v14 copy];
+  v35 = [quadCopy copy];
   quad = v18->_quad;
   v18->_quad = v35;
 
@@ -117,16 +117,16 @@ LABEL_11:
   }
 
   [(ICDocCamImageQuad *)v37 clampQuadToRect:0.0, 0.0, 1.0, 1.0];
-  v18->_orientation = a6;
-  [(ICDocCamImageQuad *)v18->_quad applyOrientation:a6 boundingBox:0.0, 0.0, 1.0, 1.0];
-  v41 = [v14 copy];
+  v18->_orientation = orientation;
+  [(ICDocCamImageQuad *)v18->_quad applyOrientation:orientation boundingBox:0.0, 0.0, 1.0, 1.0];
+  v41 = [quadCopy copy];
   initialQuad = v18->_initialQuad;
   v18->_initialQuad = v41;
 
   [(ICDocCamImageQuad *)v18->_initialQuad clampQuadToRect:0.0, 0.0, 1.0, 1.0];
   [(ICDocCamImageQuad *)v18->_initialQuad applyOrientation:v18->_orientation boundingBox:0.0, 0.0, 1.0, 1.0];
-  objc_storeStrong(&v18->_image, a3);
-  v43 = [v16 copy];
+  objc_storeStrong(&v18->_image, image);
+  v43 = [handlerCopy copy];
   completionHandler = v18->_completionHandler;
   v18->_completionHandler = v43;
 
@@ -134,20 +134,20 @@ LABEL_11:
   overlayMask = v18->_overlayMask;
   v18->_overlayMask = v45;
 
-  v47 = [MEMORY[0x277D75348] whiteColor];
-  -[CAShapeLayer setFillColor:](v18->_overlayMask, "setFillColor:", [v47 CGColor]);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  -[CAShapeLayer setFillColor:](v18->_overlayMask, "setFillColor:", [whiteColor CGColor]);
 
   v48 = objc_alloc_init(MEMORY[0x277D75208]);
   overlayMaskPath = v18->_overlayMaskPath;
   v18->_overlayMaskPath = v48;
 
-  objc_storeStrong(&v18->_scanDataDelegate, a5);
+  objc_storeStrong(&v18->_scanDataDelegate, delegate);
   v18->_shouldAdjustForApectFitIfNecessary = 1;
   [(ICDocCamImageQuadEditOverlay *)v18->_overlay knobHeight];
   v18->_knobHeight = v50;
-  v51 = [(ICDocCamImageQuadEditOverlay *)v18->_overlay knobColor];
+  knobColor = [(ICDocCamImageQuadEditOverlay *)v18->_overlay knobColor];
   knobColor = v18->_knobColor;
-  v18->_knobColor = v51;
+  v18->_knobColor = knobColor;
 
   v18->_didPressSave = 0;
   v18->_didCallCompletion = 0;
@@ -172,97 +172,97 @@ LABEL_16:
     [MEMORY[0x277D75348] dc_editBackgroundColor];
   }
   v3 = ;
-  v4 = [(ICDocCamImageQuadEditViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(ICDocCamImageQuadEditViewController *)self view];
+  [view setBackgroundColor:v3];
 
   [(ICDocCamImageQuadEditViewController *)self refreshNavigationBar];
   [(ICDocCamImageQuadEditViewController *)self setUpImageView];
   v5 = objc_alloc(MEMORY[0x277D75D18]);
-  v6 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v6 frame];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView frame];
   v7 = [v5 initWithFrame:?];
 
-  v8 = [(ICDocCamImageQuadEditViewController *)self backgroundImageView];
-  [v7 addSubview:v8];
+  backgroundImageView = [(ICDocCamImageQuadEditViewController *)self backgroundImageView];
+  [v7 addSubview:backgroundImageView];
 
-  v9 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v7 addSubview:v9];
+  imageView2 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [v7 addSubview:imageView2];
 
-  v10 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v10 setMinimumZoomScale:0.01];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView setMinimumZoomScale:0.01];
 
-  v11 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v11 setMaximumZoomScale:20.0];
+  scrollView2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView2 setMaximumZoomScale:20.0];
 
-  v12 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v12 bounds];
+  imageView3 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView3 bounds];
   v14 = v13;
   v16 = v15;
-  v17 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v17 setContentSize:{v14, v16}];
+  scrollView3 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView3 setContentSize:{v14, v16}];
 
-  v18 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v18 addSubview:v7];
+  scrollView4 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView4 addSubview:v7];
 
-  v19 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v19 setDelegate:self];
+  scrollView5 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView5 setDelegate:self];
 
-  v20 = [(ICDocCamImageQuadEditViewController *)self quad];
-  v21 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  [v21 setQuad:v20];
+  quad = [(ICDocCamImageQuadEditViewController *)self quad];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  [overlay setQuad:quad];
 
-  v22 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  [v22 setDelegate:self];
+  overlay2 = [(ICDocCamImageQuadEditViewController *)self overlay];
+  [overlay2 setDelegate:self];
 
-  v23 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v24 = [(ICDocCamImageQuadEditViewController *)self image];
-  [v23 setImage:v24 orientation:{-[ICDocCamImageQuadEditViewController orientation](self, "orientation")}];
+  overlay3 = [(ICDocCamImageQuadEditViewController *)self overlay];
+  image = [(ICDocCamImageQuadEditViewController *)self image];
+  [overlay3 setImage:image orientation:{-[ICDocCamImageQuadEditViewController orientation](self, "orientation")}];
 
-  v25 = [(ICDocCamImageQuadEditViewController *)self placard];
-  v26 = [v25 layer];
-  [v26 setCornerRadius:16.0];
+  placard = [(ICDocCamImageQuadEditViewController *)self placard];
+  layer = [placard layer];
+  [layer setCornerRadius:16.0];
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 addObserver:self selector:sel_scanWasDeleted_ name:@"DCScanWasDeletedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_scanWasDeleted_ name:@"DCScanWasDeletedNotification" object:0];
 
-  v28 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v28 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
 
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v29 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
   [(ICDocCamImageQuadEditViewController *)self setupAccessibility];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = ICDocCamImageQuadEditViewController;
   [(ICDocCamImageQuadEditViewController *)&v6 viewWillAppear:?];
-  v5 = [(ICDocCamImageQuadEditViewController *)self navigationController];
-  [v5 setNavigationBarHidden:1 animated:v3];
+  navigationController = [(ICDocCamImageQuadEditViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:appearCopy];
 
   [(ICDocCamImageQuadEditViewController *)self updateFonts];
   [(ICDocCamImageQuadEditViewController *)self updateTopConstraintForPlacard];
   [(ICDocCamImageQuadEditViewController *)self setDidCallCompletion:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = ICDocCamImageQuadEditViewController;
-  [(ICDocCamImageQuadEditViewController *)&v18 viewDidAppear:a3];
-  v4 = [(ICDocCamImageQuadEditViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 interfaceOrientation];
+  [(ICDocCamImageQuadEditViewController *)&v18 viewDidAppear:appear];
+  view = [(ICDocCamImageQuadEditViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  v7 = [(ICDocCamImageQuadEditViewController *)self startOrientationIsPortrait];
-  LOBYTE(v5) = [v7 BOOLValue];
+  startOrientationIsPortrait = [(ICDocCamImageQuadEditViewController *)self startOrientationIsPortrait];
+  LOBYTE(window) = [startOrientationIsPortrait BOOLValue];
 
-  if ((v5 & 1) == 0)
+  if ((window & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:(v6 - 1) < 2];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:(interfaceOrientation - 1) < 2];
     [(ICDocCamImageQuadEditViewController *)self setStartOrientationIsPortrait:v8];
   }
 
@@ -273,10 +273,10 @@ LABEL_16:
   v15[3] = &unk_278F92ED8;
   objc_copyWeak(&v16, &location);
   dc_dispatchMainAfterDelay(v15, 5.0);
-  v9 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v10 = [v9 accessibilityElements];
-  v11 = [v10 firstObject];
-  UIAccessibilityPostNotification(*MEMORY[0x277D76488], v11);
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  accessibilityElements = [overlay accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
+  UIAccessibilityPostNotification(*MEMORY[0x277D76488], firstObject);
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -284,9 +284,9 @@ LABEL_16:
   v14[3] = &unk_278F92C70;
   v14[4] = self;
   dc_dispatchMainAfterDelay(v14, 1.0);
-  v12 = [(ICDocCamImageQuadEditViewController *)self view];
-  v13 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-  [v12 bringSubviewToFront:v13];
+  view2 = [(ICDocCamImageQuadEditViewController *)self view];
+  quadEditNavigationBar = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+  [view2 bringSubviewToFront:quadEditNavigationBar];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -351,7 +351,7 @@ void __53__ICDocCamImageQuadEditViewController_viewDidAppear___block_invoke_4(ui
 
 - (void)setUpImageView
 {
-  v15 = [(ICDocCamImageQuadEditViewController *)self image];
+  image = [(ICDocCamImageQuadEditViewController *)self image];
   v3 = [ICDocCamImageQuadEditImageView alloc];
   v4 = *MEMORY[0x277CBF3A0];
   v5 = *(MEMORY[0x277CBF3A0] + 8);
@@ -359,12 +359,12 @@ void __53__ICDocCamImageQuadEditViewController_viewDidAppear___block_invoke_4(ui
   v7 = *(MEMORY[0x277CBF3A0] + 24);
   v8 = [(ICDocCamImageQuadEditImageView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], v5, v6, v7];
   v9 = [[ICDocCamImageQuadEditImageView alloc] initWithFrame:v4, v5, v6, v7];
-  [(ICDocCamImageQuadEditImageView *)v8 setImage:v15 orientation:[(ICDocCamImageQuadEditViewController *)self orientation]];
-  [(ICDocCamImageQuadEditImageView *)v9 setImage:v15 orientation:[(ICDocCamImageQuadEditViewController *)self orientation]];
+  [(ICDocCamImageQuadEditImageView *)v8 setImage:image orientation:[(ICDocCamImageQuadEditViewController *)self orientation]];
+  [(ICDocCamImageQuadEditImageView *)v9 setImage:image orientation:[(ICDocCamImageQuadEditViewController *)self orientation]];
   matched = dc_clockwiseRotationsFromUpToMatchOrientation([(ICDocCamImageQuadEditViewController *)self orientation]);
-  [v15 size];
+  [image size];
   v12 = v11;
-  [v15 size];
+  [image size];
   if (matched)
   {
     v14 = v12;
@@ -390,23 +390,23 @@ void __53__ICDocCamImageQuadEditViewController_viewDidAppear___block_invoke_4(ui
 - (void)refreshNavigationBar
 {
   v56[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+  quadEditNavigationBar = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
 
-  if (!v3)
+  if (!quadEditNavigationBar)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75780]);
     [(ICDocCamImageQuadEditViewController *)self setQuadEditNavigationBar:v4];
 
-    v5 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    quadEditNavigationBar2 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    [quadEditNavigationBar2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(ICDocCamImageQuadEditViewController *)self view];
-    v7 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    [v6 addSubview:v7];
+    view = [(ICDocCamImageQuadEditViewController *)self view];
+    quadEditNavigationBar3 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    [view addSubview:quadEditNavigationBar3];
 
-    v8 = [(ICDocCamImageQuadEditViewController *)self view];
-    v9 = [v8 window];
-    v10 = [v9 interfaceOrientation] - 1;
+    view2 = [(ICDocCamImageQuadEditViewController *)self view];
+    window = [view2 window];
+    v10 = [window interfaceOrientation] - 1;
 
     if (v10 > 1)
     {
@@ -420,33 +420,33 @@ void __53__ICDocCamImageQuadEditViewController_viewDidAppear___block_invoke_4(ui
 
     v12 = v11;
     v47 = MEMORY[0x277CCAAD0];
-    v54 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    v52 = [v54 topAnchor];
-    v53 = [(ICDocCamImageQuadEditViewController *)self view];
-    v51 = [v53 safeAreaLayoutGuide];
-    v50 = [v51 topAnchor];
-    v49 = [v52 constraintEqualToAnchor:v50 constant:v12];
+    quadEditNavigationBar4 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    topAnchor = [quadEditNavigationBar4 topAnchor];
+    view3 = [(ICDocCamImageQuadEditViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v12];
     v56[0] = v49;
-    v48 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    v45 = [v48 leadingAnchor];
-    v46 = [(ICDocCamImageQuadEditViewController *)self view];
-    v44 = [v46 safeAreaLayoutGuide];
-    v43 = [v44 leadingAnchor];
-    v13 = [v45 constraintEqualToAnchor:v43];
+    quadEditNavigationBar5 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    leadingAnchor = [quadEditNavigationBar5 leadingAnchor];
+    view4 = [(ICDocCamImageQuadEditViewController *)self view];
+    safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v56[1] = v13;
-    v14 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    v15 = [v14 trailingAnchor];
-    v16 = [(ICDocCamImageQuadEditViewController *)self view];
-    v17 = [v16 safeAreaLayoutGuide];
-    v18 = [v17 trailingAnchor];
-    v19 = [v15 constraintEqualToAnchor:v18];
+    quadEditNavigationBar6 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    trailingAnchor = [quadEditNavigationBar6 trailingAnchor];
+    view5 = [(ICDocCamImageQuadEditViewController *)self view];
+    safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v56[2] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:3];
     [v47 activateConstraints:v20];
 
-    v21 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
+    navigationItem = [(ICDocCamImageQuadEditViewController *)self navigationItem];
 
-    if (!v21)
+    if (!navigationItem)
     {
       v22 = os_log_create("com.apple.documentcamera", "");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -455,68 +455,68 @@ void __53__ICDocCamImageQuadEditViewController_viewDidAppear___block_invoke_4(ui
       }
     }
 
-    v30 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
-    v55 = v30;
+    navigationItem2 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
+    v55 = navigationItem2;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
-    v32 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    [v32 setItems:v31];
+    quadEditNavigationBar7 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    [quadEditNavigationBar7 setItems:v31];
 
     v33 = [objc_alloc(MEMORY[0x277D76220]) initWithScrollView:self->_scrollView edge:1 style:2];
-    v34 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    [v34 addInteraction:v33];
+    quadEditNavigationBar8 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    [quadEditNavigationBar8 addInteraction:v33];
   }
 
   if ([(ICDocCamImageQuadEditViewController *)self inCaptureMode])
   {
     v35 = [DCLocalization localizedStringForKey:@"Retake" value:@"Retake" table:@"Localizable"];
-    v36 = [DCLocalization localizedStringForKey:@"Keep" value:@"Keep" table:@"Localizable"];
+    navigationItem6 = [DCLocalization localizedStringForKey:@"Keep" value:@"Keep" table:@"Localizable"];
     v37 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v35 style:0 target:self action:sel_cancelButtonPressed_];
-    v38 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
-    [v38 setLeftBarButtonItem:v37];
+    navigationItem3 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
+    [navigationItem3 setLeftBarButtonItem:v37];
 
-    v39 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v36 style:0 target:self action:sel_saveButtonPressed_];
-    v40 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
-    [v40 setRightBarButtonItem:v39];
+    v39 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:navigationItem6 style:0 target:self action:sel_saveButtonPressed_];
+    navigationItem4 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItem:v39];
   }
 
   else
   {
     v41 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed_];
-    v42 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
-    [v42 setLeftBarButtonItem:v41];
+    navigationItem5 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
+    [navigationItem5 setLeftBarButtonItem:v41];
 
     v35 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_saveButtonPressed_];
-    v36 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
-    [v36 setRightBarButtonItem:v35];
+    navigationItem6 = [(ICDocCamImageQuadEditViewController *)self navigationItem];
+    [navigationItem6 setRightBarButtonItem:v35];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(ICDocCamImageQuadEditViewController *)self adjustedQuad];
-  [(ICDocCamImageQuadEditViewController *)self setQuad:v8];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  adjustedQuad = [(ICDocCamImageQuadEditViewController *)self adjustedQuad];
+  [(ICDocCamImageQuadEditViewController *)self setQuad:adjustedQuad];
 
-  if ([v7 isAnimated])
+  if ([coordinatorCopy isAnimated])
   {
-    v9 = [(ICDocCamImageQuadEditViewController *)self overlay];
-    [v9 unselectAllKnobs];
+    overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+    [overlay unselectAllKnobs];
 
-    v10 = [(ICDocCamImageQuadEditViewController *)self overlay];
-    [v10 setHidden:1];
+    overlay2 = [(ICDocCamImageQuadEditViewController *)self overlay];
+    [overlay2 setHidden:1];
 
-    v11 = [(ICDocCamImageQuadEditViewController *)self imageView];
-    v12 = [(ICDocCamImageQuadEditViewController *)self imageView];
-    [v12 bounds];
+    imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+    imageView2 = [(ICDocCamImageQuadEditViewController *)self imageView];
+    [imageView2 bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(ICDocCamImageQuadEditViewController *)self imageView];
-    v22 = [v21 superview];
-    [v11 convertRect:v22 toView:{v14, v16, v18, v20}];
+    imageView3 = [(ICDocCamImageQuadEditViewController *)self imageView];
+    superview = [imageView3 superview];
+    [imageView convertRect:superview toView:{v14, v16, v18, v20}];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -525,20 +525,20 @@ void __53__ICDocCamImageQuadEditViewController_viewDidAppear___block_invoke_4(ui
     v31 = [[ICDocCamImageQuadEditOverlay alloc] initWithFrame:v24, v26, v28, v30];
     [(ICDocCamImageQuadEditOverlay *)v31 setAutoresizingMask:18];
     [(ICDocCamImageQuadEditOverlay *)v31 setIsTempOverlay:1];
-    v32 = [(ICDocCamImageQuadEditViewController *)self overlay];
-    -[ICDocCamImageQuadEditOverlay setTempOverlayQuadIsValid:](v31, "setTempOverlayQuadIsValid:", [v32 isQuadValid]);
+    overlay3 = [(ICDocCamImageQuadEditViewController *)self overlay];
+    -[ICDocCamImageQuadEditOverlay setTempOverlayQuadIsValid:](v31, "setTempOverlayQuadIsValid:", [overlay3 isQuadValid]);
 
-    v33 = [(ICDocCamImageQuadEditViewController *)self adjustedQuad];
-    [(ICDocCamImageQuadEditOverlay *)v31 setQuad:v33];
+    adjustedQuad2 = [(ICDocCamImageQuadEditViewController *)self adjustedQuad];
+    [(ICDocCamImageQuadEditOverlay *)v31 setQuad:adjustedQuad2];
 
     [(ICDocCamImageQuadEditOverlay *)v31 setDelegate:self];
     [(ICDocCamImageQuadEditOverlay *)v31 setImage:0 orientation:[(ICDocCamImageQuadEditViewController *)self orientation]];
-    v34 = [(ICDocCamImageQuadEditViewController *)self imageView];
-    v35 = [v34 superview];
-    [v35 addSubview:v31];
+    imageView4 = [(ICDocCamImageQuadEditViewController *)self imageView];
+    superview2 = [imageView4 superview];
+    [superview2 addSubview:v31];
 
-    v36 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-    [v36 zoomScale];
+    scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+    [scrollView zoomScale];
     [ICDocCamImageQuadEditOverlay setTempOverlayMagnification:v31 animationDuration:"setTempOverlayMagnification:animationDuration:"];
 
     v41[0] = MEMORY[0x277D85DD0];
@@ -554,13 +554,13 @@ void __53__ICDocCamImageQuadEditViewController_viewDidAppear___block_invoke_4(ui
     v39[4] = self;
     v40 = v42;
     v37 = v42;
-    [v7 animateAlongsideTransition:v41 completion:v39];
+    [coordinatorCopy animateAlongsideTransition:v41 completion:v39];
   }
 
   [(ICDocCamImageQuadEditViewController *)self updateTopConstraintForPlacard];
   v38.receiver = self;
   v38.super_class = ICDocCamImageQuadEditViewController;
-  [(ICDocCamImageQuadEditViewController *)&v38 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ICDocCamImageQuadEditViewController *)&v38 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __90__ICDocCamImageQuadEditViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -597,16 +597,16 @@ uint64_t __90__ICDocCamImageQuadEditViewController_viewWillTransitionToSize_with
 
 - (void)updateTopConstraintForPlacard
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self view];
-  v4 = [v3 window];
-  v5 = ([v4 interfaceOrientation] - 1) < 2;
+  view = [(ICDocCamImageQuadEditViewController *)self view];
+  window = [view window];
+  v5 = ([window interfaceOrientation] - 1) < 2;
 
-  v6 = [(ICDocCamImageQuadEditViewController *)self view];
-  [_TtC14DocumentCamera22DCLiquidGlassConstants topPlacardSpacingFor:v6 isPortrait:v5];
+  view2 = [(ICDocCamImageQuadEditViewController *)self view];
+  [_TtC14DocumentCamera22DCLiquidGlassConstants topPlacardSpacingFor:view2 isPortrait:v5];
   v8 = v7;
 
-  v9 = [(ICDocCamImageQuadEditViewController *)self placardTopConstraint];
-  [v9 setConstant:v8];
+  placardTopConstraint = [(ICDocCamImageQuadEditViewController *)self placardTopConstraint];
+  [placardTopConstraint setConstant:v8];
 }
 
 - (void)viewDidLayoutSubviews
@@ -617,36 +617,36 @@ uint64_t __90__ICDocCamImageQuadEditViewController_viewWillTransitionToSize_with
   [(ICDocCamImageQuadEditViewController *)self centerAndScaleImageInScrollView];
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  [v3 unselectAllKnobs];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  [overlay unselectAllKnobs];
 }
 
-- (CGRect)unitImageRectForOverlayRect:(CGRect)a3
+- (CGRect)unitImageRectForOverlayRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v9 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v8 convertRect:v9 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [overlay convertRect:scrollView toView:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v19 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v18 convertRect:v19 fromView:{v11, v13, v15, v17}];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  scrollView2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [imageView convertRect:scrollView2 fromView:{v11, v13, v15, v17}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v28 frame];
+  imageView2 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView2 frame];
   DCTSDNormalizedSubrectInRect(v21, v23, v25, v27);
   v30 = v29;
   v32 = v31;
@@ -666,23 +666,23 @@ uint64_t __90__ICDocCamImageQuadEditViewController_viewWillTransitionToSize_with
 
 - (CGRect)imageFrameInOverlayCoordinates
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v4 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v4 bounds];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  imageView2 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView2 bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v3 convertRect:v13 toView:{v6, v8, v10, v12}];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [imageView convertRect:scrollView toView:{v6, v8, v10, v12}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v23 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v22 convertRect:v23 fromView:{v15, v17, v19, v21}];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  scrollView2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [overlay convertRect:scrollView2 fromView:{v15, v17, v19, v21}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -701,34 +701,34 @@ uint64_t __90__ICDocCamImageQuadEditViewController_viewWillTransitionToSize_with
 
 - (double)currentZoomFactorForOverlay
 {
-  v2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v2 zoomScale];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView zoomScale];
   v4 = v3;
 
   return v4;
 }
 
-- (id)quadForOverlay:(id)a3
+- (id)quadForOverlay:(id)overlay
 {
-  v4 = a3;
+  overlayCopy = overlay;
   [(ICDocCamImageQuadEditViewController *)self refreshNavigationBar];
-  v5 = [(ICDocCamImageQuadEditViewController *)self quad];
+  quad = [(ICDocCamImageQuadEditViewController *)self quad];
 
-  if (v5)
+  if (quad)
   {
-    v6 = [(ICDocCamImageQuadEditViewController *)self uiQuadForOverlay:v4];
+    v6 = [(ICDocCamImageQuadEditViewController *)self uiQuadForOverlay:overlayCopy];
   }
 
   else
   {
-    v7 = [(ICDocCamImageQuadEditViewController *)self overlay];
-    [v7 frame];
+    overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+    [overlay frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    [v16 frame];
+    quadEditNavigationBar = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    [quadEditNavigationBar frame];
     v21 = DCTSDRectSubtractingRect(v9, v11, v13, v15, v17, v18, v19, v20);
     v23 = v22;
     v25 = v24;
@@ -756,14 +756,14 @@ uint64_t __90__ICDocCamImageQuadEditViewController_viewWillTransitionToSize_with
 - (CGRect)rectAvailableForDefaultRect
 {
   [(ICDocCamImageQuadEditViewController *)self refreshNavigationBar];
-  v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  [v3 frame];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  [overlay frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-  [v12 frame];
+  quadEditNavigationBar = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+  [quadEditNavigationBar frame];
   v17 = DCTSDRectSubtractingRect(v5, v7, v9, v11, v13, v14, v15, v16);
   v19 = v18;
   v21 = v20;
@@ -780,17 +780,17 @@ uint64_t __90__ICDocCamImageQuadEditViewController_viewWillTransitionToSize_with
   return result;
 }
 
-- (void)selectedKnobDidChange:(id)a3
+- (void)selectedKnobDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = [(ICDocCamImageQuadEditViewController *)self view];
-    v5 = [(ICDocCamImageQuadEditViewController *)self overlay];
-    [v4 bringSubviewToFront:v5];
+    view = [(ICDocCamImageQuadEditViewController *)self view];
+    overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+    [view bringSubviewToFront:overlay];
 
-    v6 = [(ICDocCamImageQuadEditViewController *)self view];
-    v7 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-    [v6 bringSubviewToFront:v7];
+    view2 = [(ICDocCamImageQuadEditViewController *)self view];
+    quadEditNavigationBar = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+    [view2 bringSubviewToFront:quadEditNavigationBar];
   }
 
   v9[0] = MEMORY[0x277D85DD0];
@@ -818,93 +818,93 @@ void __61__ICDocCamImageQuadEditViewController_selectedKnobDidChange___block_inv
   [v1 setHidden:1];
 }
 
-- (void)selectedKnobDidPanToRect:(CGRect)a3
+- (void)selectedKnobDidPanToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v9 = [(ICDocCamImageQuadEditViewController *)self view];
-  [v8 convertRect:v9 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  view = [(ICDocCamImageQuadEditViewController *)self view];
+  [overlay convertRect:view toView:{x, y, width, height}];
 
   [(ICDocCamImageQuadEditViewController *)self setDidAdjustQuad:1];
 
   [(ICDocCamImageQuadEditViewController *)self updateOverlayScrimMask];
 }
 
-- (void)overlayDidLayout:(id)a3
+- (void)overlayDidLayout:(id)layout
 {
-  [a3 unselectAllKnobs];
+  [layout unselectAllKnobs];
   [(ICDocCamImageQuadEditViewController *)self updateOverlayScrimMask];
-  v5 = [(ICDocCamImageQuadEditViewController *)self view];
-  v4 = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
-  [v5 bringSubviewToFront:v4];
+  view = [(ICDocCamImageQuadEditViewController *)self view];
+  quadEditNavigationBar = [(ICDocCamImageQuadEditViewController *)self quadEditNavigationBar];
+  [view bringSubviewToFront:quadEditNavigationBar];
 }
 
 - (void)updateOverlayScrimMask
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v4 = [v3 adjustedQuad];
-  v5 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v6 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v24 = [v4 quadByConvertingFromView:v5 toView:v6 isNormalized:0];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  adjustedQuad = [overlay adjustedQuad];
+  overlay2 = [(ICDocCamImageQuadEditViewController *)self overlay];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  v24 = [adjustedQuad quadByConvertingFromView:overlay2 toView:imageView isNormalized:0];
 
-  v7 = [(ICDocCamImageQuadEditViewController *)self overlayMaskPath];
-  [v7 removeAllPoints];
+  overlayMaskPath = [(ICDocCamImageQuadEditViewController *)self overlayMaskPath];
+  [overlayMaskPath removeAllPoints];
   [v24 topLeft];
-  [v7 moveToPoint:?];
+  [overlayMaskPath moveToPoint:?];
   [v24 topRight];
-  [v7 addLineToPoint:?];
+  [overlayMaskPath addLineToPoint:?];
   [v24 bottomRight];
-  [v7 addLineToPoint:?];
+  [overlayMaskPath addLineToPoint:?];
   [v24 bottomLeft];
-  [v7 addLineToPoint:?];
-  [v7 closePath];
-  v8 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v9 = [v8 layer];
-  [v9 bounds];
+  [overlayMaskPath addLineToPoint:?];
+  [overlayMaskPath closePath];
+  imageView2 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  layer = [imageView2 layer];
+  [layer bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(ICDocCamImageQuadEditViewController *)self overlayMask];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  overlayMask = [(ICDocCamImageQuadEditViewController *)self overlayMask];
+  [overlayMask setFrame:{v11, v13, v15, v17}];
 
-  v19 = [v7 CGPath];
-  v20 = [(ICDocCamImageQuadEditViewController *)self overlayMask];
-  [v20 setPath:v19];
+  cGPath = [overlayMaskPath CGPath];
+  overlayMask2 = [(ICDocCamImageQuadEditViewController *)self overlayMask];
+  [overlayMask2 setPath:cGPath];
 
-  v21 = [(ICDocCamImageQuadEditViewController *)self overlayMask];
-  v22 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v23 = [v22 layer];
-  [v23 setMask:v21];
+  overlayMask3 = [(ICDocCamImageQuadEditViewController *)self overlayMask];
+  imageView3 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  layer2 = [imageView3 layer];
+  [layer2 setMask:overlayMask3];
 }
 
 - (void)centerAndScaleImageInScrollView
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 interfaceOrientation] - 1;
+  view = [(ICDocCamImageQuadEditViewController *)self view];
+  window = [view window];
+  v5 = [window interfaceOrientation] - 1;
 
-  v6 = [(ICDocCamImageQuadEditViewController *)self startOrientationIsPortrait];
-  v7 = [v6 BOOLValue];
+  startOrientationIsPortrait = [(ICDocCamImageQuadEditViewController *)self startOrientationIsPortrait];
+  bOOLValue = [startOrientationIsPortrait BOOLValue];
 
-  v8 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v8 bounds];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView bounds];
   v10 = v9;
-  v11 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v11 frame];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView frame];
   v13 = v10 / v12;
 
-  v14 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v14 bounds];
+  scrollView2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView2 bounds];
   v16 = v15;
-  v17 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v17 frame];
+  imageView2 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView2 frame];
   v19 = v16 / v18;
 
-  v20 = [(ICDocCamImageQuadEditViewController *)self showImageAsAspectFit];
+  showImageAsAspectFit = [(ICDocCamImageQuadEditViewController *)self showImageAsAspectFit];
   if (v19 >= v13)
   {
     v21 = v13;
@@ -925,7 +925,7 @@ void __61__ICDocCamImageQuadEditViewController_selectedKnobDidChange___block_inv
     v22 = v13;
   }
 
-  if ((v20 | ((v5 < 2) ^ v7)))
+  if ((showImageAsAspectFit | ((v5 < 2) ^ bOOLValue)))
   {
     v23 = v21;
   }
@@ -935,36 +935,36 @@ void __61__ICDocCamImageQuadEditViewController_selectedKnobDidChange___block_inv
     v23 = v22;
   }
 
-  v24 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v24 setZoomScale:v23];
+  scrollView3 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView3 setZoomScale:v23];
 
-  v25 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  v26 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v26 center];
+  scrollView4 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  imageView3 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView3 center];
   v28 = v27;
   v30 = v29;
-  v31 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v32 = [v31 superview];
-  [v25 convertPoint:v32 fromView:{v28, v30}];
+  imageView4 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  superview = [imageView4 superview];
+  [scrollView4 convertPoint:superview fromView:{v28, v30}];
   v34 = v33;
   v36 = v35;
 
-  v37 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v37 contentOffset];
+  scrollView5 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView5 contentOffset];
 
-  v38 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v38 center];
+  scrollView6 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView6 center];
   v40 = -(v39 - v34);
 
-  v41 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v41 center];
+  scrollView7 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView7 center];
   v43 = -(v42 - v36);
 
-  v44 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v44 setContentOffset:{v40, v43}];
+  scrollView8 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView8 setContentOffset:{v40, v43}];
 
-  v45 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  [v45 layoutIfNeeded];
+  scrollView9 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  [scrollView9 layoutIfNeeded];
 
   [(ICDocCamImageQuadEditViewController *)self updateOverlayScrimMask];
 
@@ -978,41 +978,41 @@ void __61__ICDocCamImageQuadEditViewController_selectedKnobDidChange___block_inv
     [(ICDocCamImageQuadEditViewController *)self setShouldAdjustForApectFitIfNecessary:0];
     if (![(ICDocCamImageQuadEditViewController *)self showImageAsAspectFit])
     {
-      v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-      [v3 setNeedsLayout];
+      overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+      [overlay setNeedsLayout];
 
-      v4 = [(ICDocCamImageQuadEditViewController *)self overlay];
-      [v4 layoutIfNeeded];
+      overlay2 = [(ICDocCamImageQuadEditViewController *)self overlay];
+      [overlay2 layoutIfNeeded];
 
-      v5 = [(ICDocCamImageQuadEditViewController *)self overlay];
-      v6 = [v5 containsPointOutsideOfOverlayBounds];
+      overlay3 = [(ICDocCamImageQuadEditViewController *)self overlay];
+      containsPointOutsideOfOverlayBounds = [overlay3 containsPointOutsideOfOverlayBounds];
 
-      if ((v6 & 1) == 0)
+      if ((containsPointOutsideOfOverlayBounds & 1) == 0)
       {
         [(ICDocCamImageQuadEditViewController *)self setShowImageAsAspectFit:1];
         [(ICDocCamImageQuadEditViewController *)self centerAndScaleImageInScrollView];
-        v7 = [(ICDocCamImageQuadEditViewController *)self overlay];
-        [v7 setNeedsLayout];
+        overlay4 = [(ICDocCamImageQuadEditViewController *)self overlay];
+        [overlay4 setNeedsLayout];
 
-        v8 = [(ICDocCamImageQuadEditViewController *)self overlay];
-        [v8 layoutIfNeeded];
+        overlay5 = [(ICDocCamImageQuadEditViewController *)self overlay];
+        [overlay5 layoutIfNeeded];
       }
     }
   }
 }
 
-- (id)uiInitialQuadForOverlay:(id)a3
+- (id)uiInitialQuadForOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(ICDocCamImageQuadEditViewController *)self initialQuad];
-  v6 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v7 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  v8 = [v5 quadByConvertingFromView:v6 toView:v7 isNormalized:1];
+  overlayCopy = overlay;
+  initialQuad = [(ICDocCamImageQuadEditViewController *)self initialQuad];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  v8 = [initialQuad quadByConvertingFromView:imageView toView:scrollView isNormalized:1];
 
-  v9 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  v10 = [v8 quadByConvertingFromView:v9 toView:v4 isNormalized:0];
+  scrollView2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  v10 = [v8 quadByConvertingFromView:scrollView2 toView:overlayCopy isNormalized:0];
 
-  [v4 bounds];
+  [overlayCopy bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -1023,18 +1023,18 @@ void __61__ICDocCamImageQuadEditViewController_selectedKnobDidChange___block_inv
   return v10;
 }
 
-- (id)uiQuadForOverlay:(id)a3
+- (id)uiQuadForOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(ICDocCamImageQuadEditViewController *)self quad];
-  v6 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v7 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  v8 = [v5 quadByConvertingFromView:v6 toView:v7 isNormalized:1];
+  overlayCopy = overlay;
+  quad = [(ICDocCamImageQuadEditViewController *)self quad];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  v8 = [quad quadByConvertingFromView:imageView toView:scrollView isNormalized:1];
 
-  v9 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  v10 = [v8 quadByConvertingFromView:v9 toView:v4 isNormalized:0];
+  scrollView2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  v10 = [v8 quadByConvertingFromView:scrollView2 toView:overlayCopy isNormalized:0];
 
-  [v4 bounds];
+  [overlayCopy bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -1047,25 +1047,25 @@ void __61__ICDocCamImageQuadEditViewController_selectedKnobDidChange___block_inv
 
 - (id)adjustedQuad
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v4 = [v3 adjustedQuad];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  adjustedQuad = [overlay adjustedQuad];
 
-  v5 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v6 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  v7 = [v4 quadByConvertingFromView:v5 toView:v6 isNormalized:0];
+  overlay2 = [(ICDocCamImageQuadEditViewController *)self overlay];
+  scrollView = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  v7 = [adjustedQuad quadByConvertingFromView:overlay2 toView:scrollView isNormalized:0];
 
-  v8 = [(ICDocCamImageQuadEditViewController *)self scrollView];
-  v9 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v10 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  [v10 frame];
-  v13 = [v7 normalizedQuadByConvertingFromView:v8 toView:v9 toViewSize:{v11, v12}];
+  scrollView2 = [(ICDocCamImageQuadEditViewController *)self scrollView];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  imageView2 = [(ICDocCamImageQuadEditViewController *)self imageView];
+  [imageView2 frame];
+  v13 = [v7 normalizedQuadByConvertingFromView:scrollView2 toView:imageView toViewSize:{v11, v12}];
 
   [v13 flipPointsWithSourceFrame:{0.0, 0.0, 1.0, 1.0}];
-  v14 = [(ICDocCamImageQuadEditViewController *)self image];
-  [v14 size];
+  image = [(ICDocCamImageQuadEditViewController *)self image];
+  [image size];
   v16 = v15;
-  v17 = [(ICDocCamImageQuadEditViewController *)self image];
-  [v17 size];
+  image2 = [(ICDocCamImageQuadEditViewController *)self image];
+  [image2 size];
   [v13 setBoundingBox:{0.0, 0.0, v16, v18}];
 
   return v13;
@@ -1075,66 +1075,66 @@ void __61__ICDocCamImageQuadEditViewController_selectedKnobDidChange___block_inv
 {
   if ([(ICDocCamImageQuadEditViewController *)self didAdjustQuad]|| ([(ICDocCamImageQuadEditViewController *)self quad], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(ICDocCamImageQuadEditViewController *)self adjustedQuad];
+    adjustedQuad = [(ICDocCamImageQuadEditViewController *)self adjustedQuad];
   }
 
   else
   {
     v4 = v3;
-    v5 = [(ICDocCamImageQuadEditViewController *)self quad];
+    adjustedQuad = [(ICDocCamImageQuadEditViewController *)self quad];
   }
 
-  [v5 removeOrientation:-[ICDocCamImageQuadEditViewController orientation](self boundingBox:{"orientation"), 0.0, 0.0, 1.0, 1.0}];
-  [v5 orientIfNecessary];
+  [adjustedQuad removeOrientation:-[ICDocCamImageQuadEditViewController orientation](self boundingBox:{"orientation"), 0.0, 0.0, 1.0, 1.0}];
+  [adjustedQuad orientIfNecessary];
 
-  return v5;
+  return adjustedQuad;
 }
 
-- (void)saveButtonPressed:(id)a3
+- (void)saveButtonPressed:(id)pressed
 {
-  v4 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v5 = [v4 isDraggingKnob];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  isDraggingKnob = [overlay isDraggingKnob];
 
-  if ((v5 & 1) == 0)
+  if ((isDraggingKnob & 1) == 0)
   {
     [(ICDocCamImageQuadEditViewController *)self setDidPressSave:1];
-    v7 = [(ICDocCamImageQuadEditViewController *)self image];
-    v6 = [(ICDocCamImageQuadEditViewController *)self finalQuad];
-    [(ICDocCamImageQuadEditViewController *)self callCompletionHandler:1 withImage:v7 quad:v6 preparingForDismissal:0];
+    image = [(ICDocCamImageQuadEditViewController *)self image];
+    finalQuad = [(ICDocCamImageQuadEditViewController *)self finalQuad];
+    [(ICDocCamImageQuadEditViewController *)self callCompletionHandler:1 withImage:image quad:finalQuad preparingForDismissal:0];
   }
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
-  v4 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v5 = [v4 isDraggingKnob];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  isDraggingKnob = [overlay isDraggingKnob];
 
-  if ((v5 & 1) == 0)
+  if ((isDraggingKnob & 1) == 0)
   {
 
     [(ICDocCamImageQuadEditViewController *)self callCompletionHandler:0 withImage:0 quad:0 preparingForDismissal:0];
   }
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self imageView];
-  v4 = [v3 superview];
+  imageView = [(ICDocCamImageQuadEditViewController *)self imageView];
+  superview = [imageView superview];
 
-  return v4;
+  return superview;
 }
 
-- (void)scanWasDeleted:(id)a3
+- (void)scanWasDeleted:(id)deleted
 {
-  v4 = [a3 object];
-  v5 = [v4 identifier];
+  object = [deleted object];
+  identifier = [object identifier];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ICDocCamImageQuadEditViewController_scanWasDeleted___block_invoke;
   v7[3] = &unk_278F92DE8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = identifier;
+  v6 = identifier;
   dc_performBlockOnMainThread(v7);
 }
 
@@ -1155,21 +1155,21 @@ void __54__ICDocCamImageQuadEditViewController_scanWasDeleted___block_invoke(uin
 
 - (void)setupAccessibility
 {
-  v2 = [(ICDocCamImageQuadEditViewController *)self userPromptLabel];
-  [v2 setIsAccessibilityElement:0];
+  userPromptLabel = [(ICDocCamImageQuadEditViewController *)self userPromptLabel];
+  [userPromptLabel setIsAccessibilityElement:0];
 }
 
 - (void)updateFonts
 {
   v4 = [MEMORY[0x277D74300] dc_preferredFontForTextStyle:*MEMORY[0x277D76918] adjustedForDefaultSize:16.0];
-  v3 = [(ICDocCamImageQuadEditViewController *)self userPromptLabel];
-  [v3 setFont:v4];
+  userPromptLabel = [(ICDocCamImageQuadEditViewController *)self userPromptLabel];
+  [userPromptLabel setFont:v4];
 }
 
 - (id)quadForOverlay
 {
-  v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-  v4 = [(ICDocCamImageQuadEditViewController *)self quadForOverlay:v3];
+  overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+  v4 = [(ICDocCamImageQuadEditViewController *)self quadForOverlay:overlay];
 
   return v4;
 }
@@ -1178,41 +1178,41 @@ void __54__ICDocCamImageQuadEditViewController_scanWasDeleted___block_invoke(uin
 {
   if ([(ICDocCamImageQuadEditViewController *)self didPressSave]&& [(ICDocCamImageQuadEditViewController *)self didAdjustQuad])
   {
-    v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-    v4 = [v3 adjustedQuad];
+    overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+    adjustedQuad = [overlay adjustedQuad];
   }
 
   else
   {
-    v3 = [(ICDocCamImageQuadEditViewController *)self overlay];
-    v4 = [(ICDocCamImageQuadEditViewController *)self uiInitialQuadForOverlay:v3];
+    overlay = [(ICDocCamImageQuadEditViewController *)self overlay];
+    adjustedQuad = [(ICDocCamImageQuadEditViewController *)self uiInitialQuadForOverlay:overlay];
   }
 
-  v5 = v4;
+  v5 = adjustedQuad;
 
   return v5;
 }
 
-- (void)callCompletionHandler:(BOOL)a3 withImage:(id)a4 quad:(id)a5 preparingForDismissal:(BOOL)a6
+- (void)callCompletionHandler:(BOOL)handler withImage:(id)image quad:(id)quad preparingForDismissal:(BOOL)dismissal
 {
-  v6 = a6;
-  v8 = a3;
-  v12 = a4;
-  v10 = a5;
+  dismissalCopy = dismissal;
+  handlerCopy = handler;
+  imageCopy = image;
+  quadCopy = quad;
   if (![(ICDocCamImageQuadEditViewController *)self didCallCompletion])
   {
     [(ICDocCamImageQuadEditViewController *)self setDidCallCompletion:1];
-    v11 = [(ICDocCamImageQuadEditViewController *)self completionHandler];
-    (v11)[2](v11, v8, v12, v10, v6);
+    completionHandler = [(ICDocCamImageQuadEditViewController *)self completionHandler];
+    (completionHandler)[2](completionHandler, handlerCopy, imageCopy, quadCopy, dismissalCopy);
   }
 }
 
 - (void)prepareForDismissal
 {
   [(ICDocCamImageQuadEditViewController *)self setDidPressSave:1];
-  v4 = [(ICDocCamImageQuadEditViewController *)self image];
-  v3 = [(ICDocCamImageQuadEditViewController *)self finalQuad];
-  [(ICDocCamImageQuadEditViewController *)self callCompletionHandler:1 withImage:v4 quad:v3 preparingForDismissal:1];
+  image = [(ICDocCamImageQuadEditViewController *)self image];
+  finalQuad = [(ICDocCamImageQuadEditViewController *)self finalQuad];
+  [(ICDocCamImageQuadEditViewController *)self callCompletionHandler:1 withImage:image quad:finalQuad preparingForDismissal:1];
 }
 
 - (UIView)placard

@@ -1,25 +1,25 @@
 @interface NTKCaliforniaColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesRestrictedByDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)colorNameForColor:(unint64_t)a3;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_orderedValuesRestrictedByDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)colorNameForColor:(unint64_t)color;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)pigmentEditOption;
 @end
 
 @implementation NTKCaliforniaColorEditOption
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  if ((![v4 supportsPDRCapability:3503302961] || NTKGizmoOrCompanionAreRussian(v4)) && -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") == 3009)
+  deviceCopy = device;
+  if ((![deviceCopy supportsPDRCapability:3503302961] || NTKGizmoOrCompanionAreRussian(deviceCopy)) && -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") == 3009)
   {
     goto LABEL_18;
   }
 
-  if (([v4 supportsPDRCapability:2919474315] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:2919474315] & 1) == 0)
   {
     if (_NTKNewToHunterCaliforniaColors_onceToken != -1)
     {
@@ -35,7 +35,7 @@
     }
   }
 
-  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v4) & 1) != 0 || ([v4 collectionType] == 9 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3005) && (objc_msgSend(v4, "collectionType") == 10 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3006) && (objc_msgSend(v4, "collectionType") == 7 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3007) && (objc_msgSend(v4, "collectionType") == 8 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3008))
+  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(deviceCopy) & 1) != 0 || ([deviceCopy collectionType] == 9 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3005) && (objc_msgSend(deviceCopy, "collectionType") == 10 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3006) && (objc_msgSend(deviceCopy, "collectionType") == 7 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3007) && (objc_msgSend(deviceCopy, "collectionType") == 8 || -[NTKCaliforniaColorEditOption californiaColor](self, "californiaColor") != 3008))
   {
     v7 = 1;
   }
@@ -49,14 +49,14 @@ LABEL_18:
   return v7;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__NTKCaliforniaColorEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __56__NTKCaliforniaColorEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __56__NTKCaliforniaColorEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -90,44 +90,44 @@ id __56__NTKCaliforniaColorEditOption__orderedValuesForDevice___block_invoke(uin
   return v8;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
-  v6 = [a1 _orderedValuesRestrictedByDevice:v4];
+  v6 = [self _orderedValuesRestrictedByDevice:deviceCopy];
   [v5 addObjectsFromArray:v6];
 
-  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v4) & 1) != 0 || [v4 collectionType] == 10 || NTKShowHardwareSpecificFaces())
+  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(deviceCopy) & 1) != 0 || [deviceCopy collectionType] == 10 || NTKShowHardwareSpecificFaces())
   {
     [v5 addObject:&unk_284185548];
   }
 
-  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v4) & 1) != 0 || [v4 collectionType] == 9 || NTKShowHardwareSpecificFaces())
+  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(deviceCopy) & 1) != 0 || [deviceCopy collectionType] == 9 || NTKShowHardwareSpecificFaces())
   {
     [v5 addObject:&unk_284185560];
   }
 
-  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v4) & 1) != 0 || [v4 collectionType] == 7 || NTKShowHardwareSpecificFaces())
+  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(deviceCopy) & 1) != 0 || [deviceCopy collectionType] == 7 || NTKShowHardwareSpecificFaces())
   {
     [v5 addObject:&unk_284185530];
   }
 
-  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v4) & 1) != 0 || [v4 collectionType] == 8 || NTKShowHardwareSpecificFaces())
+  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(deviceCopy) & 1) != 0 || [deviceCopy collectionType] == 8 || NTKShowHardwareSpecificFaces())
   {
     [v5 addObject:&unk_284185518];
   }
 
-  v7 = [a1 _curatedColorValuesForDevice:v4];
+  v7 = [self _curatedColorValuesForDevice:deviceCopy];
   [v5 addObjectsFromArray:v7];
 
-  if ([v4 supportsPDRCapability:3503302961] && (NTKGizmoOrCompanionAreRussian(v4) & 1) == 0)
+  if ([deviceCopy supportsPDRCapability:3503302961] && (NTKGizmoOrCompanionAreRussian(deviceCopy) & 1) == 0)
   {
     [v5 addObject:&unk_284185500];
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___NTKCaliforniaColorEditOption;
-  v8 = objc_msgSendSuper2(&v11, sel___orderedValuesForDevice_, v4);
+  v8 = objc_msgSendSuper2(&v11, sel___orderedValuesForDevice_, deviceCopy);
   v9 = [v8 mutableCopy];
 
   [v9 removeObjectsInArray:v5];
@@ -182,14 +182,14 @@ id __61__NTKCaliforniaColorEditOption__curatedColorValuesForDevice___block_invok
   return v2;
 }
 
-+ (id)_orderedValuesRestrictedByDevice:(id)a3
++ (id)_orderedValuesRestrictedByDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__NTKCaliforniaColorEditOption__orderedValuesRestrictedByDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __65__NTKCaliforniaColorEditOption__orderedValuesRestrictedByDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __65__NTKCaliforniaColorEditOption__orderedValuesRestrictedByDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -241,17 +241,17 @@ id __65__NTKCaliforniaColorEditOption__orderedValuesRestrictedByDevice___block_i
   return v3;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
-  if (a3 - 3000 >= 0xF)
+  deviceCopy = device;
+  if (value - 3000 >= 0xF)
   {
-    v6 = [NTKFaceColorEditOption _snapshotKeyForValue:a3 forDevice:v5];
+    v6 = [NTKFaceColorEditOption _snapshotKeyForValue:value forDevice:deviceCopy];
   }
 
   else
   {
-    v6 = off_278785EA8[a3 - 3000];
+    v6 = off_278785EA8[value - 3000];
   }
 
   return v6;
@@ -322,16 +322,16 @@ void __60__NTKCaliforniaColorEditOption__valueToFaceBundleStringDict__block_invo
   _valueToFaceBundleStringDict_valueToFaceBundleString_1632 = v2;
 }
 
-+ (id)colorNameForColor:(unint64_t)a3
++ (id)colorNameForColor:(unint64_t)color
 {
-  if (a3 - 3000 > 0xE)
+  if (color - 3000 > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_278785F20[a3 - 3000];
+    return off_278785F20[color - 3000];
   }
 }
 

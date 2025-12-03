@@ -5,7 +5,7 @@
 - (id)CPObfuscatedDescriptionObject;
 - (void)configureResponse;
 - (void)dealloc;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation NMSIncomingRequest
@@ -29,8 +29,8 @@
 - (void)dealloc
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_7() pbRequest];
+  selfCopy = self;
+  pbRequest = [OUTLINED_FUNCTION_7() pbRequest];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   OUTLINED_FUNCTION_5_0();
@@ -50,17 +50,17 @@
     [(NMSOutgoingResponse *)v3 setTargetDeviceIDs:v4];
   }
 
-  v5 = [(NMSIncomingRequest *)self idsContext];
-  [(NMSOutgoingResponse *)v3 setIdsContext:v5];
+  idsContext = [(NMSIncomingRequest *)self idsContext];
+  [(NMSOutgoingResponse *)v3 setIdsContext:idsContext];
 
   response = self->_response;
   self->_response = v3;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v5 = a3;
-  objc_storeStrong(&self->_data, a3);
+  dataCopy = data;
+  objc_storeStrong(&self->_data, data);
   WeakRetained = objc_loadWeakRetained(&self->_messageCenter);
   v7 = [WeakRetained _pbMappingForMessageID:self->_messageID];
 
@@ -92,10 +92,10 @@
   v11.super_class = NMSIncomingRequest;
   v4 = [(NMSIncomingRequest *)&v11 description];
   v5 = NMSPriorityString([(NMSIncomingRequest *)self priority]);
-  v6 = [(NMSIncomingRequest *)self messageID];
-  v7 = [(NMSIncomingRequest *)self idsIdentifier];
-  v8 = [(NMSIncomingRequest *)self data];
-  v9 = [v3 initWithFormat:@"%@ {%@ priority, messageID=%hu, idsID=%@, data=%lu bytes}", v4, v5, v6, v7, objc_msgSend(v8, "length")];
+  messageID = [(NMSIncomingRequest *)self messageID];
+  idsIdentifier = [(NMSIncomingRequest *)self idsIdentifier];
+  data = [(NMSIncomingRequest *)self data];
+  v9 = [v3 initWithFormat:@"%@ {%@ priority, messageID=%hu, idsID=%@, data=%lu bytes}", v4, v5, messageID, idsIdentifier, objc_msgSend(data, "length")];
 
   return v9;
 }
@@ -126,8 +126,8 @@
     [(NMSObfuscatableDescription *)v3 addDescription:@"Protobuf class" value:@"none"];
   }
 
-  v9 = [(NMSIncomingRequest *)self idsIdentifier];
-  [(NMSObfuscatableDescription *)v3 addDescription:@"IDS ID" value:v9];
+  idsIdentifier = [(NMSIncomingRequest *)self idsIdentifier];
+  [(NMSObfuscatableDescription *)v3 addDescription:@"IDS ID" value:idsIdentifier];
 
   if ([(NMSIncomingRequest *)self expectsResponse])
   {
@@ -140,11 +140,11 @@
   }
 
   [(NMSObfuscatableDescription *)v3 addDescription:@"Expects response" value:v10];
-  v11 = [(NMSIncomingRequest *)self data];
-  [(NMSObfuscatableDescription *)v3 addObfuscatedDescription:@"Data" value:v11];
+  data = [(NMSIncomingRequest *)self data];
+  [(NMSObfuscatableDescription *)v3 addObfuscatedDescription:@"Data" value:data];
 
-  v12 = [(NMSIncomingRequest *)self response];
-  [(NMSObfuscatableDescription *)v3 addObfuscatedDescription:@"Response message" value:v12];
+  response = [(NMSIncomingRequest *)self response];
+  [(NMSObfuscatableDescription *)v3 addObfuscatedDescription:@"Response message" value:response];
 
   return v3;
 }

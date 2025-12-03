@@ -1,13 +1,13 @@
 @interface SBSRemoteContentHostInterfaceShim
-+ (void)getContentBoundsWithBlock:(id)a3 interface:(id)a4;
++ (void)getContentBoundsWithBlock:(id)block interface:(id)interface;
 @end
 
 @implementation SBSRemoteContentHostInterfaceShim
 
-+ (void)getContentBoundsWithBlock:(id)a3 interface:(id)a4
++ (void)getContentBoundsWithBlock:(id)block interface:(id)interface
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  interfaceCopy = interface;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,9 +19,9 @@
   v9[1] = 3221225472;
   v9[2] = sub_10000FFA4;
   v9[3] = &unk_1000190D0;
-  v10 = v5;
-  v8 = v5;
-  [v6 getContentBoundsWithReplyBlock:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [interfaceCopy getContentBoundsWithReplyBlock:v9];
 }
 
 @end

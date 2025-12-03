@@ -1,33 +1,33 @@
 @interface SFResultsReceivedAfterTimeoutFeedback
-- (SFResultsReceivedAfterTimeoutFeedback)initWithCoder:(id)a3;
-- (SFResultsReceivedAfterTimeoutFeedback)initWithResults:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFResultsReceivedAfterTimeoutFeedback)initWithCoder:(id)coder;
+- (SFResultsReceivedAfterTimeoutFeedback)initWithResults:(id)results;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFResultsReceivedAfterTimeoutFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFResultsReceivedAfterTimeoutFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_results forKey:{@"_results", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_results forKey:{@"_results", v5.receiver, v5.super_class}];
 }
 
-- (SFResultsReceivedAfterTimeoutFeedback)initWithCoder:(id)a3
+- (SFResultsReceivedAfterTimeoutFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SFResultsReceivedAfterTimeoutFeedback;
-  v5 = [(SFFeedback *)&v12 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_results"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_results"];
     results = v5->_results;
     v5->_results = v9;
   }
@@ -35,28 +35,28 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SFResultsReceivedAfterTimeoutFeedback;
-  v4 = [(SFFeedback *)&v9 copyWithZone:a3];
-  v5 = [(SFResultsReceivedAfterTimeoutFeedback *)self results];
-  v6 = [v5 copy];
+  v4 = [(SFFeedback *)&v9 copyWithZone:zone];
+  results = [(SFResultsReceivedAfterTimeoutFeedback *)self results];
+  v6 = [results copy];
   v7 = v4[3];
   v4[3] = v6;
 
   return v4;
 }
 
-- (SFResultsReceivedAfterTimeoutFeedback)initWithResults:(id)a3
+- (SFResultsReceivedAfterTimeoutFeedback)initWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = SFResultsReceivedAfterTimeoutFeedback;
   v5 = [(SFFeedback *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resultsCopy copy];
     results = v5->_results;
     v5->_results = v6;
   }

@@ -1,18 +1,18 @@
 @interface DSXPCServer
 - (DSXPCServer)init;
 - (void)_activate;
-- (void)_deviceFoundHandler:(id)a3;
-- (void)_deviceLostHandler:(id)a3;
+- (void)_deviceFoundHandler:(id)handler;
+- (void)_deviceLostHandler:(id)handler;
 - (void)_ensureAdvertiserStarted;
 - (void)_ensureAdvertiserStopped;
 - (void)_ensureScannerStarted;
 - (void)_ensureScannerStopped;
-- (void)_handleXPCConnection:(id)a3;
+- (void)_handleXPCConnection:(id)connection;
 - (void)_invalidate;
-- (void)_receivedXPCObject:(id)a3;
+- (void)_receivedXPCObject:(id)object;
 - (void)activate;
 - (void)invalidate;
-- (void)removeXPCConnection:(id)a3;
+- (void)removeXPCConnection:(id)connection;
 - (void)updateAdvertiser;
 - (void)updateScanner;
 @end
@@ -185,16 +185,16 @@ uint64_t __23__DSXPCServer_activate__block_invoke(uint64_t result)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_receivedXPCObject:(id)a3
+- (void)_receivedXPCObject:(id)object
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   if (MEMORY[0x24C1EF810]() == MEMORY[0x277D86450])
   {
-    [(DSXPCServer *)self _handleXPCConnection:v4];
+    [(DSXPCServer *)self _handleXPCConnection:objectCopy];
   }
 
-  else if (v4 == MEMORY[0x277D863F8])
+  else if (objectCopy == MEMORY[0x277D863F8])
   {
     if (onceTokenDSXPCServer != -1)
     {
@@ -221,7 +221,7 @@ uint64_t __23__DSXPCServer_activate__block_invoke(uint64_t result)
     {
       v6 = v5;
       v9 = 136315138;
-      v10 = MEMORY[0x24C1EF710](v4);
+      v10 = MEMORY[0x24C1EF710](objectCopy);
       _os_log_impl(&dword_249027000, v6, OS_LOG_TYPE_ERROR, "XPC Listener error, received XPC object :%s", &v9, 0xCu);
     }
   }
@@ -229,16 +229,16 @@ uint64_t __23__DSXPCServer_activate__block_invoke(uint64_t result)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleXPCConnection:(id)a3
+- (void)_handleXPCConnection:(id)connection
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(dispatchQueue);
   v9 = objc_alloc_init(DSXPCConnection);
   [(DSXPCConnection *)v9 setXpcDaemonServer:self];
   [(DSXPCConnection *)v9 setDispatchQueue:self->_dispatchQueue];
-  [(DSXPCConnection *)v9 setPid:xpc_connection_get_pid(v5)];
-  [(DSXPCConnection *)v9 setXpcConnection:v5];
+  [(DSXPCConnection *)v9 setPid:xpc_connection_get_pid(connectionCopy)];
+  [(DSXPCConnection *)v9 setXpcConnection:connectionCopy];
 
   [(DSXPCConnection *)v9 activate];
   xpcConnections = self->_xpcConnections;
@@ -254,12 +254,12 @@ uint64_t __23__DSXPCServer_activate__block_invoke(uint64_t result)
   [(NSMutableSet *)xpcConnections addObject:v9];
 }
 
-- (void)removeXPCConnection:(id)a3
+- (void)removeXPCConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  [(NSMutableSet *)self->_xpcConnections removeObject:v4];
+  [(NSMutableSet *)self->_xpcConnections removeObject:connectionCopy];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -291,18 +291,18 @@ LABEL_16:
       }
 
       v12 = *(*(&v16 + 1) + 8 * i);
-      v13 = [v12 kappaSession];
+      kappaSession = [v12 kappaSession];
 
-      if (v13)
+      if (kappaSession)
       {
         v9 = 0;
       }
 
       else
       {
-        v14 = [v12 motionSession];
+        motionSession = [v12 motionSession];
 
-        v10 &= v14 == 0;
+        v10 &= motionSession == 0;
       }
     }
 
@@ -339,9 +339,9 @@ LABEL_17:
     self->_shouldAdvertiseDSAction = 1;
   }
 
-  v4 = [(DSDeviceContext *)v3 vehicleState];
+  vehicleState = [(DSDeviceContext *)v3 vehicleState];
 
-  if (v4 == 1)
+  if (vehicleState == 1)
   {
     self->_shouldAdvertiseDSInfo = 1;
   }
@@ -450,15 +450,15 @@ LABEL_17:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 kappaSession];
+        kappaSession = [v8 kappaSession];
 
         p_shouldScanDSAction = &self->_shouldScanDSAction;
-        if (!v9)
+        if (!kappaSession)
         {
-          v11 = [v8 motionSession];
+          motionSession = [v8 motionSession];
 
           p_shouldScanDSAction = &self->_shouldScanDSInfo;
-          if (!v11)
+          if (!motionSession)
           {
             continue;
           }
@@ -563,21 +563,21 @@ LABEL_17:
   }
 }
 
-- (void)_deviceFoundHandler:(id)a3
+- (void)_deviceFoundHandler:(id)handler
 {
   cohortManager = self->_cohortManager;
   if (cohortManager)
   {
-    [(DSCohortManager *)cohortManager deviceFound:a3];
+    [(DSCohortManager *)cohortManager deviceFound:handler];
   }
 }
 
-- (void)_deviceLostHandler:(id)a3
+- (void)_deviceLostHandler:(id)handler
 {
   cohortManager = self->_cohortManager;
   if (cohortManager)
   {
-    [(DSCohortManager *)cohortManager deviceLost:a3];
+    [(DSCohortManager *)cohortManager deviceLost:handler];
   }
 }
 

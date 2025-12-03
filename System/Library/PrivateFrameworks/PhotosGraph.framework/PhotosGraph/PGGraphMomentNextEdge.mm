@@ -1,15 +1,15 @@
 @interface PGGraphMomentNextEdge
 + (id)filter;
-- (id)initFromMomentNode:(id)a3 toMomentNode:(id)a4;
+- (id)initFromMomentNode:(id)node toMomentNode:(id)momentNode;
 @end
 
 @implementation PGGraphMomentNextEdge
 
-- (id)initFromMomentNode:(id)a3 toMomentNode:(id)a4
+- (id)initFromMomentNode:(id)node toMomentNode:(id)momentNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphMomentNextEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:momentNode];
 }
 
 + (id)filter

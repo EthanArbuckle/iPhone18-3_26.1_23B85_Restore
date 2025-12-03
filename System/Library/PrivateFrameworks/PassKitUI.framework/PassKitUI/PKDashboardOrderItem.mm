@@ -1,40 +1,40 @@
 @interface PKDashboardOrderItem
-- (PKDashboardOrderItem)initWithSearchOrderResult:(id)a3;
+- (PKDashboardOrderItem)initWithSearchOrderResult:(id)result;
 @end
 
 @implementation PKDashboardOrderItem
 
-- (PKDashboardOrderItem)initWithSearchOrderResult:(id)a3
+- (PKDashboardOrderItem)initWithSearchOrderResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v19.receiver = self;
   v19.super_class = PKDashboardOrderItem;
   v5 = [(PKDashboardOrderItem *)&v19 init];
   if (v5)
   {
-    v6 = [v4 uri];
+    v6 = [resultCopy uri];
     uri = v5->_uri;
     v5->_uri = v6;
 
-    v8 = [v4 orderTypeIdentifier];
+    orderTypeIdentifier = [resultCopy orderTypeIdentifier];
     orderTypeIdentifier = v5->_orderTypeIdentifier;
-    v5->_orderTypeIdentifier = v8;
+    v5->_orderTypeIdentifier = orderTypeIdentifier;
 
-    v10 = [v4 orderIdentifier];
+    orderIdentifier = [resultCopy orderIdentifier];
     orderIdentifier = v5->_orderIdentifier;
-    v5->_orderIdentifier = v10;
+    v5->_orderIdentifier = orderIdentifier;
 
-    v12 = [v4 displayName];
+    displayName = [resultCopy displayName];
     displayName = v5->_displayName;
-    v5->_displayName = v12;
+    v5->_displayName = displayName;
 
-    v14 = [v4 contentDescription];
+    contentDescription = [resultCopy contentDescription];
     contentDescription = v5->_contentDescription;
-    v5->_contentDescription = v14;
+    v5->_contentDescription = contentDescription;
 
-    v16 = [v4 thumbnailData];
+    thumbnailData = [resultCopy thumbnailData];
     thumbnailData = v5->_thumbnailData;
-    v5->_thumbnailData = v16;
+    v5->_thumbnailData = thumbnailData;
   }
 
   return v5;

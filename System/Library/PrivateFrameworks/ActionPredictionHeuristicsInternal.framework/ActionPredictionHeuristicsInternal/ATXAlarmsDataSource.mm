@@ -1,30 +1,30 @@
 @interface ATXAlarmsDataSource
-- (ATXAlarmsDataSource)initWithDevice:(id)a3;
-- (void)alarmsFromDate:(id)a3 toDate:(id)a4 completionHandler:(id)a5;
+- (ATXAlarmsDataSource)initWithDevice:(id)device;
+- (void)alarmsFromDate:(id)date toDate:(id)toDate completionHandler:(id)handler;
 @end
 
 @implementation ATXAlarmsDataSource
 
-- (ATXAlarmsDataSource)initWithDevice:(id)a3
+- (ATXAlarmsDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXAlarmsDataSource;
   v6 = [(ATXAlarmsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)alarmsFromDate:(id)a3 toDate:(id)a4 completionHandler:(id)a5
+- (void)alarmsFromDate:(id)date toDate:(id)toDate completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  toDateCopy = toDate;
+  handlerCopy = handler;
   if ((ATXHeuristicCanLearnFromApp(&unk_2850BA2F0) & 1) == 0)
   {
     v20 = __atxlog_handle_heuristic();
@@ -37,13 +37,13 @@
     goto LABEL_7;
   }
 
-  [v7 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v11 = v10;
-  [v8 timeIntervalSinceReferenceDate];
+  [toDateCopy timeIntervalSinceReferenceDate];
   if (v11 > v12)
   {
 LABEL_7:
-    (*(v9 + 2))(v9, MEMORY[0x277CBEBF8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], 0);
     goto LABEL_8;
   }
 
@@ -55,7 +55,7 @@ LABEL_7:
   v32 = __Block_byref_object_copy__8;
   v33 = __Block_byref_object_dispose__8;
   v34 = 0;
-  v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:v8];
+  v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:toDateCopy];
   v16 = [v13 nextAlarmsInRange:v15 maxCount:100 includeSleepAlarm:1];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -71,7 +71,7 @@ LABEL_7:
   v23[1] = 3221225472;
   v23[2] = __63__ATXAlarmsDataSource_alarmsFromDate_toDate_completionHandler___block_invoke_16;
   v23[3] = &unk_278C3D1A8;
-  v24 = v9;
+  v24 = handlerCopy;
   v25 = buf;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;

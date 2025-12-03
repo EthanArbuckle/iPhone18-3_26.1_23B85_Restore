@@ -1,6 +1,6 @@
 @interface BWTextLocalizationInferenceConfiguration
 + (id)configuration;
-- (BWTextLocalizationInferenceConfiguration)initWithInferenceType:(int)a3 version:(id)a4;
+- (BWTextLocalizationInferenceConfiguration)initWithInferenceType:(int)type version:(id)version;
 @end
 
 @implementation BWTextLocalizationInferenceConfiguration
@@ -17,12 +17,12 @@
   return v2;
 }
 
-- (BWTextLocalizationInferenceConfiguration)initWithInferenceType:(int)a3 version:(id)a4
+- (BWTextLocalizationInferenceConfiguration)initWithInferenceType:(int)type version:(id)version
 {
-  v4 = *&a4.var0;
+  v4 = *&version.var0;
   v26.receiver = self;
   v26.super_class = BWTextLocalizationInferenceConfiguration;
-  v5 = [(BWInferenceConfiguration *)&v26 initWithInferenceType:*&a3];
+  v5 = [(BWInferenceConfiguration *)&v26 initWithInferenceType:*&type];
   v6 = v5;
   if (v5)
   {

@@ -1,10 +1,10 @@
 @interface PickerSelectLoggingCardViewController
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -12,20 +12,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E1B6D80();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  sub_29E1B6FA8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E1B6FA8(viewCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);
@@ -33,52 +33,52 @@
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  sub_29E1B7684(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E1B7684(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v7 = sub_29E2BCFB4();
   v8 = *(v7 - 8);
   MEMORY[0x2A1C7C4A8](v7);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v11 = a4;
-  v12 = self;
-  [v11 _setShouldHaveFullLengthBottomSeparator_];
+  cellCopy = cell;
+  selfCopy = self;
+  [cellCopy _setShouldHaveFullLengthBottomSeparator_];
   v13 = sub_29E1B6D04();
   v14 = *&v13[OBJC_IVAR____TtC24MenstrualCyclesAppPlugin23PickerSelectLoggingCell_picker];
 
-  if (*(&v12->super.super.super._responderFlags + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37PickerSelectLoggingCardViewController_pickedIndex))
+  if (*(&selfCopy->super.super.super._responderFlags + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37PickerSelectLoggingCardViewController_pickedIndex))
   {
     __break(1u);
   }
 
   else
   {
-    [v14 selectRow:*(&v12->super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37PickerSelectLoggingCardViewController_pickedIndex) inComponent:0 animated:0];
+    [v14 selectRow:*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37PickerSelectLoggingCardViewController_pickedIndex) inComponent:0 animated:0];
 
     (*(v8 + 8))(v10, v7);
   }
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   result = swift_unknownObjectWeakLoadStrong();
   if (result)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = sub_29E20A410();
     swift_unknownObjectRelease();
 
@@ -95,11 +95,11 @@
   return result;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  sub_29E1B7CA0(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E1B7CA0(row);
   v10 = v9;
 
   if (v10)
@@ -115,11 +115,11 @@
   return v11;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  sub_29E1B7F10(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E1B7F10(row);
 }
 
 @end

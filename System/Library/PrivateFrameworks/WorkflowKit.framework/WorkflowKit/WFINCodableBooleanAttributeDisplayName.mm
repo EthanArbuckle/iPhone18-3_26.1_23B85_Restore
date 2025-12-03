@@ -1,42 +1,42 @@
 @interface WFINCodableBooleanAttributeDisplayName
-- (WFINCodableBooleanAttributeDisplayName)initWithAttribute:(id)a3 isOn:(BOOL)a4;
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4;
+- (WFINCodableBooleanAttributeDisplayName)initWithAttribute:(id)attribute isOn:(BOOL)on;
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number;
 @end
 
 @implementation WFINCodableBooleanAttributeDisplayName
 
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number
 {
-  v5 = a3;
-  v6 = [(WFINCodableBooleanAttributeDisplayName *)self isOn];
-  v7 = [(WFINCodableBooleanAttributeDisplayName *)self attribute];
-  v8 = [v5 stringLocalizer];
+  contextCopy = context;
+  isOn = [(WFINCodableBooleanAttributeDisplayName *)self isOn];
+  attribute = [(WFINCodableBooleanAttributeDisplayName *)self attribute];
+  stringLocalizer = [contextCopy stringLocalizer];
 
-  if (v6)
+  if (isOn)
   {
-    [v7 localizedTrueDisplayNameWithLocalizer:v8];
+    [attribute localizedTrueDisplayNameWithLocalizer:stringLocalizer];
   }
 
   else
   {
-    [v7 localizedFalseDisplayNameWithLocalizer:v8];
+    [attribute localizedFalseDisplayNameWithLocalizer:stringLocalizer];
   }
   v9 = ;
 
   return v9;
 }
 
-- (WFINCodableBooleanAttributeDisplayName)initWithAttribute:(id)a3 isOn:(BOOL)a4
+- (WFINCodableBooleanAttributeDisplayName)initWithAttribute:(id)attribute isOn:(BOOL)on
 {
-  v7 = a3;
+  attributeCopy = attribute;
   v12.receiver = self;
   v12.super_class = WFINCodableBooleanAttributeDisplayName;
   v8 = [(WFINCodableBooleanAttributeDisplayName *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_attribute, a3);
-    v9->_isOn = a4;
+    objc_storeStrong(&v8->_attribute, attribute);
+    v9->_isOn = on;
     v10 = v9;
   }
 

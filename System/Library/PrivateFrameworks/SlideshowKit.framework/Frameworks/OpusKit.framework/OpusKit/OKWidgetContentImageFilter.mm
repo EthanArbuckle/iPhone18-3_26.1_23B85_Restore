@@ -1,11 +1,11 @@
 @interface OKWidgetContentImageFilter
-+ (id)filterWithImageURL:(id)a3;
++ (id)filterWithImageURL:(id)l;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setSettingInputImageURL:(id)a3;
+- (void)setSettingInputImageURL:(id)l;
 @end
 
 @implementation OKWidgetContentImageFilter
@@ -34,7 +34,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetContentImageFilter;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"inputImageURL";
@@ -45,7 +45,7 @@
   return v2;
 }
 
-- (void)setSettingInputImageURL:(id)a3
+- (void)setSettingInputImageURL:(id)l
 {
   inputImageURL = self->_inputImageURL;
   if (inputImageURL)
@@ -90,18 +90,18 @@
   return result;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentImageFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentImageFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-+ (id)filterWithImageURL:(id)a3
++ (id)filterWithImageURL:(id)l
 {
   v4 = objc_alloc_init(OKWidgetContentImageFilter);
-  -[OKWidgetContentImageFilter setInputImageURL:](v4, "setInputImageURL:", [MEMORY[0x277CBEBC0] URLWithString:a3]);
+  -[OKWidgetContentImageFilter setInputImageURL:](v4, "setInputImageURL:", [MEMORY[0x277CBEBC0] URLWithString:l]);
 
   return v4;
 }

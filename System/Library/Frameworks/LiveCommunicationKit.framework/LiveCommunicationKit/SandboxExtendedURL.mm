@@ -2,7 +2,7 @@
 - (NSString)description;
 - (_TtC20LiveCommunicationKit18SandboxExtendedURL)init;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SandboxExtendedURL
@@ -12,13 +12,13 @@
   ObjectType = swift_getObjectType();
   if (self->url[OBJC_IVAR____TtC20LiveCommunicationKit18SandboxExtendedURL_sandboxExtensionHandle])
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = *(&self->super.isa + OBJC_IVAR____TtC20LiveCommunicationKit18SandboxExtendedURL_sandboxExtensionHandle);
-    v6 = self;
+    selfCopy2 = self;
     sandbox_extension_release();
   }
 
@@ -27,16 +27,16 @@
   [(SandboxExtendedURL *)&v7 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SandboxExtendedURL.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SandboxExtendedURL.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SandboxExtendedURL.description.getter();
 
   v3 = sub_238B6C844();

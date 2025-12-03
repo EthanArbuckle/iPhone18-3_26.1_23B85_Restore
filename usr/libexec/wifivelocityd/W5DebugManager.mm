@@ -1,46 +1,46 @@
 @interface W5DebugManager
 + (BOOL)__getEAPOLDebugFlagsEnabled;
-+ (BOOL)__setEAPOLDebugFlagsEnabled:(BOOL)a3 error:(id *)a4;
-+ (id)__valueForKey:(id)a3 domain:(id)a4;
-+ (void)__bluetoothLoggingEnabledWithQueue:(id)a3 reply:(id)a4;
-+ (void)__dnsLoggingEnabledWithQueue:(id)a3 reply:(id)a4;
-+ (void)__eapolLoggingEnabledWithQueue:(id)a3 reply:(id)a4;
-+ (void)__ios__setWiFiLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5;
-+ (void)__ios_wifiLoggingEnabledWithQueue:(id)a3 reply:(id)a4;
-+ (void)__mostRecentLogWithSuffix:(id)a3 logPath:(id)a4 queue:(id)a5 reply:(id)a6;
-+ (void)__openDirectoryLoggingEnabledWithQueue:(id)a3 reply:(id)a4;
-+ (void)__setAirPlayLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5;
-+ (void)__setDHCPLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5;
-+ (void)__setDNSLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5;
-+ (void)__setEAPOLLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5;
-+ (void)__setOpenDirectoryLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5;
-+ (void)__setValue:(id)a3 key:(id)a4 domain:(id)a5;
-+ (void)setOSLogPreferenceLevel:(id)a3 enableOvserizeMessages:(BOOL)a4 subsystem:(id)a5;
-- (W5DebugManager)initWithDiagnosticsModeManager:(id)a3 statusManager:(id)a4;
-- (id)queryDebugConfigurationAndReturnError:(id *)a3;
-- (void)__queryMegaWiFiProfileInstalledAndReply:(id)a3;
-- (void)__queryNoLoggingWiFiProfileInstalledAndReply:(id)a3;
-- (void)__setMegaWiFiProfileInstalled:(BOOL)a3 reply:(id)a4;
-- (void)__setNoLoggingWiFiProfileInstalled:(BOOL)a3 reply:(id)a4;
++ (BOOL)__setEAPOLDebugFlagsEnabled:(BOOL)enabled error:(id *)error;
++ (id)__valueForKey:(id)key domain:(id)domain;
++ (void)__bluetoothLoggingEnabledWithQueue:(id)queue reply:(id)reply;
++ (void)__dnsLoggingEnabledWithQueue:(id)queue reply:(id)reply;
++ (void)__eapolLoggingEnabledWithQueue:(id)queue reply:(id)reply;
++ (void)__ios__setWiFiLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply;
++ (void)__ios_wifiLoggingEnabledWithQueue:(id)queue reply:(id)reply;
++ (void)__mostRecentLogWithSuffix:(id)suffix logPath:(id)path queue:(id)queue reply:(id)reply;
++ (void)__openDirectoryLoggingEnabledWithQueue:(id)queue reply:(id)reply;
++ (void)__setAirPlayLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply;
++ (void)__setDHCPLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply;
++ (void)__setDNSLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply;
++ (void)__setEAPOLLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply;
++ (void)__setOpenDirectoryLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply;
++ (void)__setValue:(id)value key:(id)key domain:(id)domain;
++ (void)setOSLogPreferenceLevel:(id)level enableOvserizeMessages:(BOOL)messages subsystem:(id)subsystem;
+- (W5DebugManager)initWithDiagnosticsModeManager:(id)manager statusManager:(id)statusManager;
+- (id)queryDebugConfigurationAndReturnError:(id *)error;
+- (void)__queryMegaWiFiProfileInstalledAndReply:(id)reply;
+- (void)__queryNoLoggingWiFiProfileInstalledAndReply:(id)reply;
+- (void)__setMegaWiFiProfileInstalled:(BOOL)installed reply:(id)reply;
+- (void)__setNoLoggingWiFiProfileInstalled:(BOOL)installed reply:(id)reply;
 - (void)dealloc;
-- (void)queryDebugConfigurationAndReply:(id)a3;
-- (void)queryDiagnosticsModeAndReply:(id)a3;
-- (void)querySTBCAndReply:(id)a3;
-- (void)setDebugConfiguration:(id)a3 reply:(id)a4;
-- (void)setDiagnosticsMode:(id)a3 reply:(id)a4;
-- (void)setSTBCEnabled:(BOOL)a3 reply:(id)a4;
+- (void)queryDebugConfigurationAndReply:(id)reply;
+- (void)queryDiagnosticsModeAndReply:(id)reply;
+- (void)querySTBCAndReply:(id)reply;
+- (void)setDebugConfiguration:(id)configuration reply:(id)reply;
+- (void)setDiagnosticsMode:(id)mode reply:(id)reply;
+- (void)setSTBCEnabled:(BOOL)enabled reply:(id)reply;
 @end
 
 @implementation W5DebugManager
 
-- (W5DebugManager)initWithDiagnosticsModeManager:(id)a3 statusManager:(id)a4
+- (W5DebugManager)initWithDiagnosticsModeManager:(id)manager statusManager:(id)statusManager
 {
   v9.receiver = self;
   v9.super_class = W5DebugManager;
   v6 = [(W5DebugManager *)&v9 init];
-  if (v6 && (v7 = dispatch_queue_create("com.apple.wifivelocity.debug", 0), (v6->_queue = v7) != 0) && (v6->_diagnosticsModeManager = a3) != 0)
+  if (v6 && (v7 = dispatch_queue_create("com.apple.wifivelocity.debug", 0), (v6->_queue = v7) != 0) && (v6->_diagnosticsModeManager = manager) != 0)
   {
-    v6->_statusManager = a4;
+    v6->_statusManager = statusManager;
   }
 
   else
@@ -65,7 +65,7 @@
   [(W5DebugManager *)&v4 dealloc];
 }
 
-- (void)queryDebugConfigurationAndReply:(id)a3
+- (void)queryDebugConfigurationAndReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -73,11 +73,11 @@
   v4[2] = sub_100038AD8;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
-- (id)queryDebugConfigurationAndReturnError:(id *)a3
+- (id)queryDebugConfigurationAndReturnError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -110,12 +110,12 @@
 
   v7 = v14[5];
   v8 = v20[5];
-  if (a3)
+  if (error)
   {
     v9 = v14[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
   }
 
@@ -125,36 +125,36 @@
   return v10;
 }
 
-- (void)setDebugConfiguration:(id)a3 reply:(id)a4
+- (void)setDebugConfiguration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000398F4;
   block[3] = &unk_1000E1CC0;
-  block[4] = a3;
+  block[4] = configuration;
   block[5] = self;
-  block[6] = a4;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)querySTBCAndReply:(id)a3
+- (void)querySTBCAndReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(reply + 2))(reply, 0, 0);
   }
 }
 
-- (void)setSTBCEnabled:(BOOL)a3 reply:(id)a4
+- (void)setSTBCEnabled:(BOOL)enabled reply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(reply + 2))(reply, 0);
   }
 }
 
-- (void)queryDiagnosticsModeAndReply:(id)a3
+- (void)queryDiagnosticsModeAndReply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   v6[0] = _NSConcreteStackBlock;
@@ -162,11 +162,11 @@
   v6[2] = sub_10003A424;
   v6[3] = &unk_1000E1C70;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = reply;
   dispatch_async(global_queue, v6);
 }
 
-- (void)setDiagnosticsMode:(id)a3 reply:(id)a4
+- (void)setDiagnosticsMode:(id)mode reply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
@@ -174,25 +174,25 @@
   block[2] = sub_10003A530;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = mode;
+  block[6] = reply;
   dispatch_async(global_queue, block);
 }
 
-+ (void)setOSLogPreferenceLevel:(id)a3 enableOvserizeMessages:(BOOL)a4 subsystem:(id)a5
++ (void)setOSLogPreferenceLevel:(id)level enableOvserizeMessages:(BOOL)messages subsystem:(id)subsystem
 {
-  v5 = a4;
-  v7 = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/Library/Preferences/Logging/Subsystems/%@.plist" isDirectory:a5], 0];
+  messagesCopy = messages;
+  v7 = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/Library/Preferences/Logging/Subsystems/%@.plist" isDirectory:subsystem], 0];
   v8 = +[NSMutableDictionary dictionary];
   [v8 setDictionary:{+[NSDictionary dictionaryWithContentsOfURL:](NSDictionary, "dictionaryWithContentsOfURL:", v7)}];
   v9 = +[NSMutableDictionary dictionary];
   [v9 setDictionary:{objc_msgSend(v8, "objectForKeyedSubscript:", @"DEFAULT-OPTIONS"}];
   v10 = +[NSMutableDictionary dictionary];
   [v10 setDictionary:{objc_msgSend(v8, "objectForKeyedSubscript:", @"Level"}];
-  [v10 setObject:a3 forKeyedSubscript:@"Enable"];
-  [v10 setObject:a3 forKeyedSubscript:@"Persist"];
+  [v10 setObject:level forKeyedSubscript:@"Enable"];
+  [v10 setObject:level forKeyedSubscript:@"Persist"];
   v11 = &kCFBooleanTrue;
-  if (!v5)
+  if (!messagesCopy)
   {
     v11 = &kCFBooleanFalse;
   }
@@ -204,38 +204,38 @@
   [v8 writeToURL:v7 atomically:1];
 }
 
-+ (void)__ios_wifiLoggingEnabledWithQueue:(id)a3 reply:(id)a4
++ (void)__ios_wifiLoggingEnabledWithQueue:(id)queue reply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003A8A0;
   block[3] = &unk_1000E2248;
-  block[4] = a4;
+  block[4] = reply;
   dispatch_async(global_queue, block);
 }
 
-+ (void)__ios__setWiFiLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5
++ (void)__ios__setWiFiLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003AA44;
   block[3] = &unk_1000E2620;
-  v10 = a3;
-  block[4] = a1;
-  block[5] = a5;
+  enabledCopy = enabled;
+  block[4] = self;
+  block[5] = reply;
   dispatch_async(global_queue, block);
 }
 
-+ (BOOL)__setEAPOLDebugFlagsEnabled:(BOOL)a3 error:(id *)a4
++ (BOOL)__setEAPOLDebugFlagsEnabled:(BOOL)enabled error:(id *)error
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = SCPreferencesCreate(kCFAllocatorDefault, [+[NSProcessInfo processName] processInfo];
   v7 = v6;
   if (v6 && SCPreferencesLock(v6, 1u))
   {
-    if (SCPreferencesSetValue(v7, @"LogFlags", [NSNumber numberWithInt:(v5 << 31 >> 31)]) && SCPreferencesCommitChanges(v7) && SCPreferencesApplyChanges(v7))
+    if (SCPreferencesSetValue(v7, @"LogFlags", [NSNumber numberWithInt:(enabledCopy << 31 >> 31)]) && SCPreferencesCommitChanges(v7) && SCPreferencesApplyChanges(v7))
     {
       v8 = 0;
     }
@@ -246,7 +246,7 @@
     }
 
     SCPreferencesUnlock(v7);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -255,7 +255,7 @@
   else
   {
     v8 = SCError();
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -265,7 +265,7 @@
   {
     v10 = NSLocalizedFailureReasonErrorKey;
     v11 = @"err";
-    *a4 = [NSError errorWithDomain:kCFErrorDomainSystemConfiguration code:v8 userInfo:[NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1]];
+    *error = [NSError errorWithDomain:kCFErrorDomainSystemConfiguration code:v8 userInfo:[NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1]];
   }
 
 LABEL_10:
@@ -291,58 +291,58 @@ LABEL_10:
   return v4;
 }
 
-+ (void)__eapolLoggingEnabledWithQueue:(id)a3 reply:(id)a4
++ (void)__eapolLoggingEnabledWithQueue:(id)queue reply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003AE08;
   v7[3] = &unk_1000E1C70;
-  v7[4] = a1;
-  v7[5] = a4;
+  v7[4] = self;
+  v7[5] = reply;
   dispatch_async(global_queue, v7);
 }
 
-+ (void)__setEAPOLLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5
++ (void)__setEAPOLLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003AF50;
   block[3] = &unk_1000E2620;
-  v10 = a3;
-  block[4] = a1;
-  block[5] = a5;
+  enabledCopy = enabled;
+  block[4] = self;
+  block[5] = reply;
   dispatch_async(global_queue, block);
 }
 
-+ (void)__dnsLoggingEnabledWithQueue:(id)a3 reply:(id)a4
++ (void)__dnsLoggingEnabledWithQueue:(id)queue reply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B0E0;
   block[3] = &unk_1000E2248;
-  block[4] = a4;
+  block[4] = reply;
   dispatch_async(global_queue, block);
 }
 
-+ (void)__setDNSLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5
++ (void)__setDNSLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10003B320;
   v5[3] = &unk_1000E2648;
-  v6 = a3;
-  v5[4] = a1;
-  v5[5] = a4;
-  v5[6] = a5;
-  [a1 __dnsLoggingEnabledWithQueue:a4 reply:v5];
+  enabledCopy = enabled;
+  v5[4] = self;
+  v5[5] = queue;
+  v5[6] = reply;
+  [self __dnsLoggingEnabledWithQueue:queue reply:v5];
 }
 
-+ (void)__setDHCPLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5
++ (void)__setDHCPLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply
 {
-  if (a3)
+  if (enabled)
   {
     v6 = "IPConfiguration: verbose mode enabled";
   }
@@ -352,7 +352,7 @@ LABEL_10:
     v6 = "IPConfiguration: verbose mode disabled";
   }
 
-  if (a3)
+  if (enabled)
   {
     v7 = @"1";
   }
@@ -365,47 +365,47 @@ LABEL_10:
   syslog(2, v6);
   v8[0] = @"setverbose";
   v8[1] = v7;
-  [NSTask runTaskWithLaunchPath:@"/usr/sbin/ipconfig" arguments:[NSArray arrayWithObjects:v8 count:2] reply:a5];
+  [NSTask runTaskWithLaunchPath:@"/usr/sbin/ipconfig" arguments:[NSArray arrayWithObjects:v8 count:2] reply:reply];
 }
 
-+ (void)__mostRecentLogWithSuffix:(id)a3 logPath:(id)a4 queue:(id)a5 reply:(id)a6
++ (void)__mostRecentLogWithSuffix:(id)suffix logPath:(id)path queue:(id)queue reply:(id)reply
 {
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
   v12[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [NSMutableData data:a3];
-  v10 = dispatch_io_create_with_path(0, [a4 UTF8String], 0, 0, &_dispatch_main_q, &stru_1000E2688);
+  v9 = [NSMutableData data:suffix];
+  v10 = dispatch_io_create_with_path(0, [path UTF8String], 0, 0, &_dispatch_main_q, &stru_1000E2688);
   dispatch_io_set_high_water(v10, 0x3E8uLL);
   io_handler[0] = _NSConcreteStackBlock;
   io_handler[1] = 3221225472;
   io_handler[2] = sub_10003B5D0;
   io_handler[3] = &unk_1000E26B0;
-  io_handler[7] = a6;
+  io_handler[7] = reply;
   io_handler[8] = v12;
   io_handler[4] = v10;
   io_handler[5] = v9;
-  io_handler[6] = a3;
+  io_handler[6] = suffix;
   dispatch_io_read(v10, 0, 0xFFFFFFFFFFFFFFFFLL, &_dispatch_main_q, io_handler);
   _Block_object_dispose(v12, 8);
 }
 
-+ (void)__openDirectoryLoggingEnabledWithQueue:(id)a3 reply:(id)a4
++ (void)__openDirectoryLoggingEnabledWithQueue:(id)queue reply:(id)reply
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10003B870;
   v4[3] = &unk_1000E26D8;
-  v4[4] = a3;
-  v4[5] = a4;
-  [W5DebugManager __mostRecentLogWithSuffix:&off_1000F3F90 logPath:@"/var/log/opendirectoryd.log" queue:a3 reply:v4];
+  v4[4] = queue;
+  v4[5] = reply;
+  [W5DebugManager __mostRecentLogWithSuffix:&off_1000F3F90 logPath:@"/var/log/opendirectoryd.log" queue:queue reply:v4];
 }
 
-+ (void)__setOpenDirectoryLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5
++ (void)__setOpenDirectoryLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply
 {
   v8 = @"set";
   v9 = @"log";
-  if (a3)
+  if (enabled)
   {
     v6 = @"debug";
   }
@@ -417,12 +417,12 @@ LABEL_10:
 
   v10 = v6;
   v7 = [NSArray arrayWithObjects:&v8 count:3];
-  [NSTask runTaskWithLaunchPath:@"/usr/bin/odutil" arguments:v7 reply:a5, v8, v9];
+  [NSTask runTaskWithLaunchPath:@"/usr/bin/odutil" arguments:v7 reply:reply, v8, v9];
 }
 
-+ (id)__valueForKey:(id)a3 domain:(id)a4
++ (id)__valueForKey:(id)key domain:(id)domain
 {
-  result = CFPreferencesCopyAppValue(a3, a4);
+  result = CFPreferencesCopyAppValue(key, domain);
   if (result)
   {
 
@@ -432,92 +432,92 @@ LABEL_10:
   return result;
 }
 
-+ (void)__setValue:(id)a3 key:(id)a4 domain:(id)a5
++ (void)__setValue:(id)value key:(id)key domain:(id)domain
 {
-  CFPreferencesSetAppValue(a4, a3, a5);
+  CFPreferencesSetAppValue(key, value, domain);
 
-  CFPreferencesAppSynchronize(a5);
+  CFPreferencesAppSynchronize(domain);
 }
 
-+ (void)__bluetoothLoggingEnabledWithQueue:(id)a3 reply:(id)a4
++ (void)__bluetoothLoggingEnabledWithQueue:(id)queue reply:(id)reply
 {
-  v6 = [objc_msgSend(a1 __valueForKey:@"ShouldLog" domain:{@"com.apple.wirelessproxd.debug", "BOOLValue"}];
-  v7 = [objc_msgSend(a1 __valueForKey:@"DiagnosticMode" domain:{@"com.apple.MobileBluetooth.debug", "BOOLValue"}];
-  v8 = [objc_msgSend(a1 __valueForKey:@"DefaultLevel" domain:{@"com.apple.MobileBluetooth.debug", "isEqualToString:", @"Info"}];
-  v9 = [objc_msgSend(a1 __valueForKey:@"HCITraces" domain:{@"com.apple.MobileBluetooth.debug", "objectForKey:", @"StackDebugEnabled"}];
+  v6 = [objc_msgSend(self __valueForKey:@"ShouldLog" domain:{@"com.apple.wirelessproxd.debug", "BOOLValue"}];
+  v7 = [objc_msgSend(self __valueForKey:@"DiagnosticMode" domain:{@"com.apple.MobileBluetooth.debug", "BOOLValue"}];
+  v8 = [objc_msgSend(self __valueForKey:@"DefaultLevel" domain:{@"com.apple.MobileBluetooth.debug", "isEqualToString:", @"Info"}];
+  v9 = [objc_msgSend(self __valueForKey:@"HCITraces" domain:{@"com.apple.MobileBluetooth.debug", "objectForKey:", @"StackDebugEnabled"}];
   if (v9)
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  v11 = [objc_msgSend(objc_msgSend(a1 __valueForKey:@"LE" domain:{@"com.apple.MobileBluetooth.debug", "objectForKey:", @"DebugLevel", "isEqualToString:", @"Info"}];
-  if (a4)
+  v11 = [objc_msgSend(objc_msgSend(self __valueForKey:@"LE" domain:{@"com.apple.MobileBluetooth.debug", "objectForKey:", @"DebugLevel", "isEqualToString:", @"Info"}];
+  if (reply)
   {
-    v12 = *(a4 + 2);
+    v12 = *(reply + 2);
 
-    v12(a4, 0, v6 & v7 & v8 & v10 & v11);
+    v12(reply, 0, v6 & v7 & v8 & bOOLValue & v11);
   }
 }
 
-+ (void)__setAirPlayLoggingEnabled:(BOOL)a3 queue:(id)a4 reply:(id)a5
++ (void)__setAirPlayLoggingEnabled:(BOOL)enabled queue:(id)queue reply:(id)reply
 {
-  if (a3)
+  if (enabled)
   {
-    [W5DebugManager __enableAirPlayLoggingWithQueue:a4 reply:a5];
+    [W5DebugManager __enableAirPlayLoggingWithQueue:queue reply:reply];
   }
 
   else
   {
-    [W5DebugManager __disableAirPlayLoggingWithQueue:a4 reply:a5];
+    [W5DebugManager __disableAirPlayLoggingWithQueue:queue reply:reply];
   }
 }
 
-- (void)__queryMegaWiFiProfileInstalledAndReply:(id)a3
+- (void)__queryMegaWiFiProfileInstalledAndReply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C220;
   block[3] = &unk_1000E2248;
-  block[4] = a3;
+  block[4] = reply;
   dispatch_async(global_queue, block);
 }
 
-- (void)__setMegaWiFiProfileInstalled:(BOOL)a3 reply:(id)a4
+- (void)__setMegaWiFiProfileInstalled:(BOOL)installed reply:(id)reply
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10003C3E4;
   v4[3] = &unk_1000E2700;
-  v5 = a3;
-  v4[4] = a4;
+  installedCopy = installed;
+  v4[4] = reply;
   [(W5DebugManager *)self __queryMegaWiFiProfileInstalledAndReply:v4];
 }
 
-- (void)__queryNoLoggingWiFiProfileInstalledAndReply:(id)a3
+- (void)__queryNoLoggingWiFiProfileInstalledAndReply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C5D4;
   block[3] = &unk_1000E2248;
-  block[4] = a3;
+  block[4] = reply;
   dispatch_async(global_queue, block);
 }
 
-- (void)__setNoLoggingWiFiProfileInstalled:(BOOL)a3 reply:(id)a4
+- (void)__setNoLoggingWiFiProfileInstalled:(BOOL)installed reply:(id)reply
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10003C798;
   v4[3] = &unk_1000E2700;
-  v5 = a3;
-  v4[4] = a4;
+  installedCopy = installed;
+  v4[4] = reply;
   [(W5DebugManager *)self __queryNoLoggingWiFiProfileInstalledAndReply:v4];
 }
 

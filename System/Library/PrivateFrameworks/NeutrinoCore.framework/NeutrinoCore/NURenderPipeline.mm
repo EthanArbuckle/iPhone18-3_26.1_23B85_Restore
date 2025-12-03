@@ -1,52 +1,52 @@
 @interface NURenderPipeline
-- (id)_processedRenderNodeForComposition:(id)a3 input:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (id)_runPipelineFiltersForRenderNode:(id)a3 composition:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (id)processedRenderNodeForComposition:(id)a3 pipelineState:(id)a4 extentPolicy:(id)a5 error:(id *)a6;
+- (id)_processedRenderNodeForComposition:(id)composition input:(id)input pipelineState:(id)state error:(id *)error;
+- (id)_runPipelineFiltersForRenderNode:(id)node composition:(id)composition pipelineState:(id)state error:(id *)error;
+- (id)processedRenderNodeForComposition:(id)composition pipelineState:(id)state extentPolicy:(id)policy error:(id *)error;
 @end
 
 @implementation NURenderPipeline
 
-- (id)_runPipelineFiltersForRenderNode:(id)a3 composition:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)_runPipelineFiltersForRenderNode:(id)node composition:(id)composition pipelineState:(id)state error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[NURenderPipelineHelper alloc] initWithPipelineState:v11];
+  nodeCopy = node;
+  compositionCopy = composition;
+  stateCopy = state;
+  v12 = [[NURenderPipelineHelper alloc] initWithPipelineState:stateCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v21 = v11;
-  v13 = [v11 pipelineFilters];
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v21 = stateCopy;
+  pipelineFilters = [stateCopy pipelineFilters];
+  v14 = [pipelineFilters countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
     v15 = v14;
     v16 = *v23;
 LABEL_3:
     v17 = 0;
-    v18 = v9;
+    v18 = nodeCopy;
     while (1)
     {
       if (*v23 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(pipelineFilters);
       }
 
-      v19 = [*(*(&v22 + 1) + 8 * v17) filterBlock];
-      v9 = (v19)[2](v19, v12, v10, v18, a6);
+      filterBlock = [*(*(&v22 + 1) + 8 * v17) filterBlock];
+      nodeCopy = (filterBlock)[2](filterBlock, v12, compositionCopy, v18, error);
 
-      if (!v9)
+      if (!nodeCopy)
       {
         break;
       }
 
       ++v17;
-      v18 = v9;
+      v18 = nodeCopy;
       if (v15 == v17)
       {
-        v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v15 = [pipelineFilters countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v15)
         {
           goto LABEL_3;
@@ -57,15 +57,15 @@ LABEL_3:
     }
   }
 
-  return v9;
+  return nodeCopy;
 }
 
-- (id)_processedRenderNodeForComposition:(id)a3 input:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)_processedRenderNodeForComposition:(id)composition input:(id)input pipelineState:(id)state error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  compositionCopy = composition;
+  inputCopy = input;
+  stateCopy = state;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_31249);
@@ -108,8 +108,8 @@ LABEL_8:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v19 callStackSymbols];
+      v22 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v22;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -125,8 +125,8 @@ LABEL_8:
     v25 = MEMORY[0x1E696AF00];
     v26 = specific;
     v27 = v23;
-    v28 = [v25 callStackSymbols];
-    v29 = [v28 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v25 callStackSymbols];
+    v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v37 = specific;
     v38 = 2114;
@@ -140,32 +140,32 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderPipeline _processedRenderNodeForComposition:input:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipeline.m", 52, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v32, v33, v34, v35, v31);
 }
 
-- (id)processedRenderNodeForComposition:(id)a3 pipelineState:(id)a4 extentPolicy:(id)a5 error:(id *)a6
+- (id)processedRenderNodeForComposition:(id)composition pipelineState:(id)state extentPolicy:(id)policy error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(NURenderPipeline *)self _processedRenderNodeForComposition:v10 input:0 pipelineState:v11 error:a6];
+  compositionCopy = composition;
+  stateCopy = state;
+  policyCopy = policy;
+  v13 = [(NURenderPipeline *)self _processedRenderNodeForComposition:compositionCopy input:0 pipelineState:stateCopy error:error];
   if (v13)
   {
-    v14 = [(NURenderPipeline *)self _runPipelineFiltersForRenderNode:v13 composition:v10 pipelineState:v11 error:a6];
+    v14 = [(NURenderPipeline *)self _runPipelineFiltersForRenderNode:v13 composition:compositionCopy pipelineState:stateCopy error:error];
 
     if (v14)
     {
       v15 = objc_opt_new();
-      if ([v11 enableTransparency])
+      if ([stateCopy enableTransparency])
       {
         [v15 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"renderTransparencyOpaque"];
       }
 
-      if ([v11 enforceEvenDimensions])
+      if ([stateCopy enforceEvenDimensions])
       {
         [v15 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"enforceEvenDimensions"];
       }
 
-      if (v12)
+      if (policyCopy)
       {
-        [v15 setObject:v12 forKeyedSubscript:@"extentPolicy"];
+        [v15 setObject:policyCopy forKeyedSubscript:@"extentPolicy"];
       }
 
       v16 = [NUPipelineOutputNode alloc];

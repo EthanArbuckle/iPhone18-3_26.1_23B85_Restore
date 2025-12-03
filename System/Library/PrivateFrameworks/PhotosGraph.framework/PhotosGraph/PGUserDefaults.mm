@@ -48,23 +48,23 @@
 + (unint64_t)minimumNumberOfVisibleItems;
 + (void)_registerDefaults;
 + (void)initialize;
-+ (void)setExtendedCurationOptions:(id)a3;
++ (void)setExtendedCurationOptions:(id)options;
 @end
 
 @implementation PGUserDefaults
 
 + (int64_t)retrievalThresholdForCLIPTrendsMemories
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"retrievalThresholdForCLIPTrendsMemories"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"retrievalThresholdForCLIPTrendsMemories"];
 
   return v3;
 }
 
 + (double)minimumCumulativeDistributionOfAreaFrequency
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"minimumCumulativeDistributionOfAreaFrequency"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"minimumCumulativeDistributionOfAreaFrequency"];
   v4 = v3;
 
   return v4;
@@ -72,8 +72,8 @@
 
 + (double)minimumCumulativeDistributionOfCityFrequency
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"minimumCumulativeDistributionOfCityFrequency"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"minimumCumulativeDistributionOfCityFrequency"];
   v4 = v3;
 
   return v4;
@@ -81,8 +81,8 @@
 
 + (double)minimumCumulativeDistributionOfPersonWithTripFrequency
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"minimumCumulativeDistributionOfPersonWithTripFrequency"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"minimumCumulativeDistributionOfPersonWithTripFrequency"];
   v4 = v3;
 
   return v4;
@@ -90,8 +90,8 @@
 
 + (double)minimumCumulativeDistributionOfPersonWithNamedPersonFrequency
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"minimumCumulativeDistributionOfPersonWithNamedPersonFrequency"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"minimumCumulativeDistributionOfPersonWithNamedPersonFrequency"];
   v4 = v3;
 
   return v4;
@@ -99,8 +99,8 @@
 
 + (double)minimumCumulativeDistributionOfPersonFrequency
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"minimumCumulativeDistributionOfPersonFrequency"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"minimumCumulativeDistributionOfPersonFrequency"];
   v4 = v3;
 
   return v4;
@@ -108,24 +108,24 @@
 
 + (BOOL)useAOIsInExtendedTokens
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"useAOIsInExtendedTokens"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"useAOIsInExtendedTokens"];
 
   return v3;
 }
 
 + (BOOL)enableMomentCLIPFeatureGraphIngest
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableMomentCLIPFeatureGraphIngest"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableMomentCLIPFeatureGraphIngest"];
 
   return v3;
 }
 
 + (double)usersPetsInferenceMinimumLifespanYears
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"usersPetsInferenceMinimumLifespanYears"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"usersPetsInferenceMinimumLifespanYears"];
   v4 = v3;
 
   return v4;
@@ -133,8 +133,8 @@
 
 + (double)usersPetsInferenceRecencyThresholdFromLatestMomentDateYears
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"usersPetsInferenceRecencyThresholdYears"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"usersPetsInferenceRecencyThresholdYears"];
   v4 = v3;
 
   return v4;
@@ -142,8 +142,8 @@
 
 + (double)usersChildrenInferenceMinimumLifespanYears
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"usersChildrenInferenceMinimumLifespanYears"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"usersChildrenInferenceMinimumLifespanYears"];
   v4 = v3;
 
   return v4;
@@ -151,8 +151,8 @@
 
 + (double)usersChildrenInferenceRecencyThresholdFromLatestMomentDateYears
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"usersChildrenInferenceRecencyThresholdYears"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"usersChildrenInferenceRecencyThresholdYears"];
   v4 = v3;
 
   return v4;
@@ -160,24 +160,24 @@
 
 + (BOOL)wallpaperSkipSettlingEffectScoreGating
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGWallpaperSkipSettlingEffectScoreGating"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGWallpaperSkipSettlingEffectScoreGating"];
 
   return v3;
 }
 
 + (BOOL)useIconicScoreForTrips
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGCuratedLibraryTripKeyAssetUseIconicScore"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGCuratedLibraryTripKeyAssetUseIconicScore"];
 
   return v3;
 }
 
 + (double)relationshipTagMinConfidenceThreshold
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"PGRelationshipTagMinConfidenceThreshold"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PGRelationshipTagMinConfidenceThreshold"];
   v4 = v3;
 
   return v4;
@@ -185,99 +185,99 @@
 
 + (BOOL)useMeaningEdgeForEventLabelingAlgorithm
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGUseMeaningEdgeForEventLabelingAlgorithm"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGUseMeaningEdgeForEventLabelingAlgorithm"];
 
   return v3;
 }
 
 + (BOOL)shouldDisableContentClassificationTask
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGShouldDisableContentClassificationTask"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGShouldDisableContentClassificationTask"];
 
   return v3;
 }
 
 + (BOOL)musicCurationAllowExplicitMusicContent
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPGMusicCurationAllowExplicitMusicContent"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPGMusicCurationAllowExplicitMusicContent"];
 
   return v3;
 }
 
 + (BOOL)musicCurationShouldUseOldStylePreviewURL
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPGMusicCurationShouldUseOldStylePreviewURL"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPGMusicCurationShouldUseOldStylePreviewURL"];
 
   return v3;
 }
 
 + (unint64_t)minimumNumberOfVisibleItems
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PGMinimumNumberOfVisibleItems"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PGMinimumNumberOfVisibleItems"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 + (unint64_t)maximumNumberOfVisibleItems
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PGMaximumNumberOfVisibleItems"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PGMaximumNumberOfVisibleItems"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 + (unint64_t)maximumNumberOfVisibleRegularItems
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PGMaximumNumberOfVisibleRegularItems"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PGMaximumNumberOfVisibleRegularItems"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-+ (void)setExtendedCurationOptions:(id)a3
++ (void)setExtendedCurationOptions:(id)options
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"extendedCurationOptions"];
+  optionsCopy = options;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:optionsCopy forKey:@"extendedCurationOptions"];
 }
 
 + (NSDictionary)extendedCurationOptions
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"extendedCurationOptions"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"extendedCurationOptions"];
 
   return v3;
 }
 
 + (BOOL)isPhotosChallengeEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"photosChallengeProfileEnabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"photosChallengeProfileEnabled"];
 
   return v3;
 }
 
 + (BOOL)onThisDayHighlightKeyAssetRotationIsEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGOnThisDayHighlightKeyAssetRotationIsEnabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGOnThisDayHighlightKeyAssetRotationIsEnabled"];
 
   return v3;
 }
 
 + (double)graphConsistencyPercentageThresholdForTTR
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"PGGraphConsistencyPercentageThresholdForTTR"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PGGraphConsistencyPercentageThresholdForTTR"];
   v4 = v3;
 
   return v4;
@@ -285,113 +285,113 @@
 
 + (BOOL)graphConsistencyNotificationIsEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGGraphConsistencyNotificationIsEnabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGGraphConsistencyNotificationIsEnabled"];
 
   return v3;
 }
 
 + (BOOL)graphConsistencyCheckIsEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGGraphConsistencyCheckIsEnabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGGraphConsistencyCheckIsEnabled"];
 
   return v3;
 }
 
 + (BOOL)suppressGraphLiveUpdate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGSuppressGraphLiveUpdate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGSuppressGraphLiveUpdate"];
 
   return v3;
 }
 
 + (BOOL)isMemoryElectionDisabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"disableMemoryElection"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"disableMemoryElection"];
 
   return v3;
 }
 
 + (BOOL)isPublicEventsEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enablePublicEvents"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enablePublicEvents"];
 
   return v3;
 }
 
 + (BOOL)boundTextFeaturesPerEvent
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PGBoundPHTextFeatures"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PGBoundPHTextFeatures"];
 
   return v3;
 }
 
 + (unint64_t)maximumNumberOfTextFeaturesPerEvent
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PGMaximumNumberOfTextFeaturesPerEvent"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PGMaximumNumberOfTextFeaturesPerEvent"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 + (BOOL)isRelationshipFilteredOutInferencesIngestAllowed
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ingestRelationshipFilteredOutInferences"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ingestRelationshipFilteredOutInferences"];
 
   return v3;
 }
 
 + (BOOL)isRelationshipSignalPropertiesIngestAllowed
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ingestRelationshipSignalProperties"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ingestRelationshipSignalProperties"];
 
   return v3;
 }
 
 + (BOOL)isRelationshipInferenceDisabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"relationshipInferenceDisabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"relationshipInferenceDisabled"];
 
   return v3;
 }
 
 + (BOOL)isAutonamingFilteredOutInferencesIngestAllowed
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ingestAutonamingFilteredOutInferences"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ingestAutonamingFilteredOutInferences"];
 
   return v3;
 }
 
 + (BOOL)isAutonamingSignalPropertiesIngestAllowed
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ingestAutonamingSignalProperties"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ingestAutonamingSignalProperties"];
 
   return v3;
 }
 
 + (BOOL)isAutonamingDisabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"autonamingDisabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"autonamingDisabled"];
 
   return v3;
 }
 
 + (double)minimumRatioOfFocusedPersonFacesPerAssetForMultipleFocusedPersonsFacedAssets
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"PGPeopleMemoryMinimumRatioOfFocusedPersonFacesPerAssetForMultipleFocusedPersonsFacedAssets"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PGPeopleMemoryMinimumRatioOfFocusedPersonFacesPerAssetForMultipleFocusedPersonsFacedAssets"];
   v4 = v3;
 
   return v4;
@@ -399,59 +399,59 @@
 
 + (unint64_t)maximumNumberOfFacesPerAssetForSingleFocusedPersonFacedAssets
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PGPeopleMemoryMaximumNumberOfFacesPerAssetForSingleFocusedPersonFacedAssets"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PGPeopleMemoryMaximumNumberOfFacesPerAssetForSingleFocusedPersonFacedAssets"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 + (BOOL)isMemoriesLivingOnFeedbackEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PGMemoriesLivingOnFeedbackEnabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PGMemoriesLivingOnFeedbackEnabled"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(standardUserDefaults) = [v3 BOOLValue];
+  return standardUserDefaults;
 }
 
 + (BOOL)isMemoriesNotificationDisabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"notificationDisabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"notificationDisabled"];
 
   return v3;
 }
 
 + (unint64_t)minimumNumberOfCuratedAssetsForInterestingMoments
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 + (BOOL)isAlwaysShowingHolidayCalendarEvents
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"alwaysShowHolidayCalendarEvents"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"alwaysShowHolidayCalendarEvents"];
 
   return v3;
 }
 
 + (BOOL)isShowingHolidayCalendarEvents
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"showHolidayCalendarEvents"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"showHolidayCalendarEvents"];
 
   return v3;
 }
 
 + (BOOL)useExtendedCurationAssetCountForLocationTitles
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPGUseExtendedCurationAssetCountForLocationTitles"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPGUseExtendedCurationAssetCountForLocationTitles"];
 
   return v3;
 }
@@ -486,7 +486,7 @@
   }
 
   v5 = PGIsAppleInternal_isAppleInternal;
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v7 = MEMORY[0x277CBEC38];
   v8 = MEMORY[0x277CBEC28];
   v18[2] = MEMORY[0x277CBEC28];
@@ -569,17 +569,17 @@
   v17[40] = @"minimumCumulativeDistributionOfAreaFrequency";
   v18[40] = &unk_2844872D8;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:41];
-  [v6 registerDefaults:v15];
+  [standardUserDefaults registerDefaults:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___PGUserDefaults;
   objc_msgSendSuper2(&v3, sel_initialize);
-  [a1 _registerDefaults];
+  [self _registerDefaults];
 }
 
 @end

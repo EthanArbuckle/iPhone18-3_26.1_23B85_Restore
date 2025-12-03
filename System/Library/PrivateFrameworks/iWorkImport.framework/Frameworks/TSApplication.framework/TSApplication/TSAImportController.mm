@@ -1,66 +1,66 @@
 @interface TSAImportController
-- (BOOL)_saveContextToTemporaryURL:(id)a3 passphrase:(id)a4 originalURL:(id)a5 documentUUID:(id)a6 error:(id *)a7;
+- (BOOL)_saveContextToTemporaryURL:(id)l passphrase:(id)passphrase originalURL:(id)rL documentUUID:(id)d error:(id *)error;
 - (BOOL)areNewExternalReferencesToDataAllowed;
 - (Class)importerClass;
 - (NSDictionary)additionalDocumentPropertiesForWrite;
 - (NSDictionary)additionalDocumentSupportPropertiesForWrite;
 - (TSADocumentPassphraseProvider)passphraseProvider;
 - (TSADocumentRoot)documentRoot;
-- (TSAImportController)initWithPath:(id)a3 documentType:(id)a4 delegate:(id)a5;
+- (TSAImportController)initWithPath:(id)path documentType:(id)type delegate:(id)delegate;
 - (TSUImage)documentPreviewImage;
-- (id)additionalResourceRequestsForObjectContext:(id)a3;
-- (id)displayNameForURL:(id)a3;
-- (id)importErrorWithCode:(int64_t)a3 description:(id)a4 failureReason:(id)a5 underlyingError:(id)a6;
-- (id)importWithCompletionQueue:(id)a3 completionHandler:(id)a4;
+- (id)additionalResourceRequestsForObjectContext:(id)context;
+- (id)displayNameForURL:(id)l;
+- (id)importErrorWithCode:(int64_t)code description:(id)description failureReason:(id)reason underlyingError:(id)error;
+- (id)importWithCompletionQueue:(id)queue completionHandler:(id)handler;
 - (id)name;
 - (id)obscuredProgressImage;
 - (id)packageDataForWrite;
-- (id)templateDocumentWithName:(id)a3 variantIndex:(unint64_t)a4;
+- (id)templateDocumentWithName:(id)name variantIndex:(unint64_t)index;
 - (int64_t)documentTypeCategory;
-- (void)_beginImportWithProgress:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)_continueImportWithProgress:(id)a3 success:(BOOL)a4 error:(id)a5 completedSteps:(int)a6 completionQueue:(id)a7 completionHandler:(id)a8;
-- (void)_performImportWithProgress:(id)a3 completedSteps:(int)a4 completionQueue:(id)a5 completionHandler:(id)a6;
+- (void)_beginImportWithProgress:(id)progress completionQueue:(id)queue completionHandler:(id)handler;
+- (void)_continueImportWithProgress:(id)progress success:(BOOL)success error:(id)error completedSteps:(int)steps completionQueue:(id)queue completionHandler:(id)handler;
+- (void)_performImportWithProgress:(id)progress completedSteps:(int)steps completionQueue:(id)queue completionHandler:(id)handler;
 - (void)_setBuildVersionHistory;
-- (void)_setPresentedItemURL:(id)a3;
-- (void)addIncompatibleMediaContainer:(id)a3 incompatibleData:(id)a4 compatibilityLevel:(int64_t)a5;
-- (void)addPersistenceWarnings:(id)a3;
-- (void)addWarning:(id)a3;
+- (void)_setPresentedItemURL:(id)l;
+- (void)addIncompatibleMediaContainer:(id)container incompatibleData:(id)data compatibilityLevel:(int64_t)level;
+- (void)addPersistenceWarnings:(id)warnings;
+- (void)addWarning:(id)warning;
 - (void)cancelImport;
 - (void)dealloc;
-- (void)finishImportWithProgress:(id)a3 success:(BOOL)a4 error:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
-- (void)importWithProgress:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
+- (void)finishImportWithProgress:(id)progress success:(BOOL)success error:(id)error completionQueue:(id)queue completionHandler:(id)handler;
+- (void)importWithProgress:(id)progress completionQueue:(id)queue completionHandler:(id)handler;
 - (void)prepareDocumentPreviewImage;
-- (void)prepareForImportDisplayingProgress:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)presentPersistenceError:(id)a3;
-- (void)presentedItemDidMoveToURL:(id)a3;
-- (void)relinquishPresentedItemToWriter:(id)a3;
-- (void)retrievePassphraseForEncryptedDocumentWithImporter:(id)a3 completion:(id)a4;
+- (void)prepareForImportDisplayingProgress:(id)progress completionQueue:(id)queue completionHandler:(id)handler;
+- (void)presentPersistenceError:(id)error;
+- (void)presentedItemDidMoveToURL:(id)l;
+- (void)relinquishPresentedItemToWriter:(id)writer;
+- (void)retrievePassphraseForEncryptedDocumentWithImporter:(id)importer completion:(id)completion;
 @end
 
 @implementation TSAImportController
 
-- (TSAImportController)initWithPath:(id)a3 documentType:(id)a4 delegate:(id)a5
+- (TSAImportController)initWithPath:(id)path documentType:(id)type delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
-  if (v8)
+  pathCopy = path;
+  typeCopy = type;
+  delegateCopy = delegate;
+  if (pathCopy)
   {
     v66.receiver = self;
     v66.super_class = TSAImportController;
     v16 = [(TSAImportController *)&v66 init];
     if (v16)
     {
-      v17 = objc_msgSend_copy(v8, v13, v14, v15);
+      v17 = objc_msgSend_copy(pathCopy, v13, v14, v15);
       v18 = *(v16 + 12);
       *(v16 + 12) = v17;
 
-      v22 = objc_msgSend_copy(v9, v19, v20, v21);
+      v22 = objc_msgSend_copy(typeCopy, v19, v20, v21);
       v23 = *(v16 + 18);
       *(v16 + 18) = v22;
 
-      *(v16 + 11) = v12;
-      v24 = v8;
+      *(v16 + 11) = delegateCopy;
+      v24 = pathCopy;
       v28 = objc_msgSend_pathExtension(v24, v25, v26, v27);
       v31 = objc_msgSend_caseInsensitiveCompare_(v28, v29, @"zip", v30);
 
@@ -94,7 +94,7 @@
     }
 
     self = v16;
-    v55 = self;
+    selfCopy = self;
   }
 
   else
@@ -105,10 +105,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v56, v61, v57, v60, 95, 0, "Path for document to import is nil");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v62, v63, v64);
-    v55 = 0;
+    selfCopy = 0;
   }
 
-  return v55;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -160,10 +160,10 @@
   return v16;
 }
 
-- (id)importWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (id)importWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v10 = objc_msgSend_discreteProgressWithTotalUnitCount_(MEMORY[0x277CCAC48], v8, 100, v9);
   objc_initWeak(&location, self);
   v15 = MEMORY[0x277D85DD0];
@@ -172,19 +172,19 @@
   v18 = &unk_27A6B0550;
   objc_copyWeak(&v19, &location);
   objc_msgSend_setCancellationHandler_(v10, v11, &v15, v12);
-  objc_msgSend_importWithProgress_completionQueue_completionHandler_(self, v13, v10, v6, v7, v15, v16, v17, v18);
+  objc_msgSend_importWithProgress_completionQueue_completionHandler_(self, v13, v10, queueCopy, handlerCopy, v15, v16, v17, v18);
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 
   return v10;
 }
 
-- (id)displayNameForURL:(id)a3
+- (id)displayNameForURL:(id)l
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
+  lCopy = l;
   v9 = objc_msgSend_defaultManager(v4, v6, v7, v8);
-  v13 = objc_msgSend_path(v5, v10, v11, v12);
+  v13 = objc_msgSend_path(lCopy, v10, v11, v12);
 
   v16 = objc_msgSend_displayNameAtPath_(v9, v14, v13, v15);
 
@@ -213,11 +213,11 @@
   return v6;
 }
 
-- (void)prepareForImportDisplayingProgress:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)prepareForImportDisplayingProgress:(id)progress completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = a5;
+  progressCopy = progress;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self->_importer)
   {
     v14 = MEMORY[0x277D81150];
@@ -264,7 +264,7 @@
     v128[1] = 3221225472;
     v128[2] = sub_2760BFF3C;
     v128[3] = &unk_27A6B0578;
-    v59 = v8;
+    v59 = progressCopy;
     v129 = v59;
     v62 = objc_msgSend_addProgressObserverBlock_(v58, v60, v128, v61);
     objc_msgSend_setProgressContext_(self->_importer, v63, v58, v64);
@@ -273,10 +273,10 @@
     v123[2] = sub_2760BFF90;
     v123[3] = &unk_27A6B05C8;
     v124 = v59;
-    v125 = self;
-    v65 = v13;
+    selfCopy = self;
+    v65 = handlerCopy;
     v127 = v65;
-    v66 = v9;
+    v66 = queueCopy;
     v126 = v66;
     v67 = MEMORY[0x277C95D60](v123);
     if (!objc_msgSend_conformsToProtocol_(self->_importer, v68, &unk_28854A6F8, v69))
@@ -288,7 +288,7 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v70 = v8;
+    v70 = progressCopy;
     v71 = self->_importer;
     v122 = 0;
     v121 = 0;
@@ -308,11 +308,11 @@ LABEL_35:
         v119 = v67;
         v120 = v65;
         v118 = v66;
-        v99 = self;
+        selfCopy2 = self;
         v100 = v107;
-        objc_msgSend_retrievePassphraseForEncryptedDocumentWithImporter_completion_(v99, v101, v107, v117);
+        objc_msgSend_retrievePassphraseForEncryptedDocumentWithImporter_completion_(selfCopy2, v101, v107, v117);
 
-        v8 = v70;
+        progressCopy = v70;
 LABEL_34:
 
         goto LABEL_35;
@@ -320,7 +320,7 @@ LABEL_34:
 
       if (v74)
       {
-        v8 = v70;
+        progressCopy = v70;
         v79 = v74;
         objc_msgSend_importErrorWithCode_description_failureReason_underlyingError_(self, v80, 0, 0, v79, 0);
       }
@@ -330,7 +330,7 @@ LABEL_34:
         v102 = objc_msgSend_tsu_resourcesBundle(MEMORY[0x277CCA8D8], v75, v76, v77);
         v106 = objc_msgSend_localizedStringForKey_value_table_(v102, v103, @"The document can\\U2019t be opened because it uses an unsupported method of encryption.", &stru_288512028, @"TSApplication");
 
-        v8 = v70;
+        progressCopy = v70;
         v79 = v106;
         objc_msgSend_importErrorWithCode_description_failureReason_underlyingError_(self, v104, 0, 0, v106, 0);
       }
@@ -358,7 +358,7 @@ LABEL_34:
     else if (v74)
     {
       v98 = objc_msgSend_importErrorWithCode_description_failureReason_underlyingError_(self, v75, 0, 0, v74, 0);
-      v8 = v70;
+      progressCopy = v70;
       if (v65)
       {
         if (v66)
@@ -382,14 +382,14 @@ LABEL_34:
     else
     {
       v67[2](v67);
-      v8 = v70;
+      progressCopy = v70;
     }
 
     v100 = v107;
     goto LABEL_34;
   }
 
-  v81 = v8;
+  v81 = progressCopy;
   v82 = MEMORY[0x277D81150];
   v83 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v56, "[TSAImportController prepareForImportDisplayingProgress:completionQueue:completionHandler:]", v57);
   v86 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v84, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAImportController.m", v85);
@@ -400,47 +400,47 @@ LABEL_34:
   v58 = objc_msgSend_localizedStringForKey_value_table_(v94, v95, @"The file format is invalid.", &stru_288512028, @"TSApplication");
 
   v97 = objc_msgSend_importErrorWithCode_description_failureReason_underlyingError_(self, v96, 0, 0, v58, 0);
-  if (v13)
+  if (handlerCopy)
   {
-    if (v9)
+    if (queueCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_2760C02E8;
       block[3] = &unk_27A6B02C0;
-      v110 = v13;
+      v110 = handlerCopy;
       v97 = v97;
       v109 = v97;
-      dispatch_async(v9, block);
+      dispatch_async(queueCopy, block);
     }
 
     else
     {
-      (*(v13 + 2))(v13, 0, v97);
+      (*(handlerCopy + 2))(handlerCopy, 0, v97);
     }
   }
 
-  v8 = v81;
+  progressCopy = v81;
 LABEL_36:
 }
 
-- (void)importWithProgress:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)importWithProgress:(id)progress completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  progressCopy = progress;
+  queueCopy = queue;
+  handlerCopy = handler;
   v14 = objc_msgSend_importQueue(self, v11, v12, v13);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_2760C0408;
   v19[3] = &unk_27A6B0640;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v20 = progressCopy;
+  v21 = queueCopy;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = queueCopy;
+  v17 = progressCopy;
   objc_msgSend_prepareForImportDisplayingProgress_completionQueue_completionHandler_(self, v18, v17, v14, v19);
 }
 
@@ -455,10 +455,10 @@ LABEL_36:
   return v16;
 }
 
-- (void)retrievePassphraseForEncryptedDocumentWithImporter:(id)a3 completion:(id)a4
+- (void)retrievePassphraseForEncryptedDocumentWithImporter:(id)importer completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  importerCopy = importer;
+  completionCopy = completion;
   v7 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSAImportController retrievePassphraseForEncryptedDocumentWithImporter:completion:]", v9);
   v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAImportController.m", v12);
@@ -479,11 +479,11 @@ LABEL_36:
   objc_exception_throw(v29);
 }
 
-- (void)_beginImportWithProgress:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)_beginImportWithProgress:(id)progress completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
+  progressCopy = progress;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (TSAImportCat_init_token != -1)
   {
     sub_27610CB78();
@@ -501,7 +501,7 @@ LABEL_36:
     }
 
 LABEL_10:
-    v12[2](v12, 0, v17, &unk_28850F810);
+    handlerCopy[2](handlerCopy, 0, v17, &unk_28850F810);
     goto LABEL_21;
   }
 
@@ -517,8 +517,8 @@ LABEL_10:
   }
 
 LABEL_5:
-  v127 = v8;
-  v128 = v9;
+  v127 = progressCopy;
+  v128 = queueCopy;
   objc_storeStrong(&self->_temporaryDirectory, v16);
   v21 = objc_msgSend_tsa_sharedPropertiesProvider(TSABaseApplicationDelegate, v18, v19, v20);
   v25 = objc_msgSend_stringByDeletingLastPathComponent(self->_sourcePath, v22, v23, v24);
@@ -555,9 +555,9 @@ LABEL_5:
     v129[1] = 3221225472;
     v129[2] = sub_2760C0F5C;
     v129[3] = &unk_27A6B06B8;
-    v131 = v12;
+    v131 = handlerCopy;
     v130 = v16;
-    objc_msgSend__continueImportWithProgress_success_error_completedSteps_completionQueue_completionHandler_(self, v74, v8, 1, 0, 0, v128, v129);
+    objc_msgSend__continueImportWithProgress_success_error_completedSteps_completionQueue_completionHandler_(self, v74, progressCopy, 1, 0, 0, v128, v129);
   }
 
   else
@@ -584,10 +584,10 @@ LABEL_5:
     v133[2] = sub_2760C0CDC;
     v133[3] = &unk_27A6B0690;
     v133[4] = self;
-    v134 = v8;
+    v134 = progressCopy;
     v138 = &v139;
     v135 = v128;
-    v137 = v12;
+    v137 = handlerCopy;
     v136 = v16;
     v86 = MEMORY[0x277C95D60](v133);
     v87 = *(v140 + 6);
@@ -630,40 +630,40 @@ LABEL_5:
     }
 
     _Block_object_dispose(&v139, 8);
-    v8 = v127;
+    progressCopy = v127;
   }
 
-  v9 = v128;
+  queueCopy = v128;
 LABEL_21:
 }
 
-- (void)_continueImportWithProgress:(id)a3 success:(BOOL)a4 error:(id)a5 completedSteps:(int)a6 completionQueue:(id)a7 completionHandler:(id)a8
+- (void)_continueImportWithProgress:(id)progress success:(BOOL)success error:(id)error completedSteps:(int)steps completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = *&a6;
-  v12 = a4;
-  v22 = a3;
-  v14 = a5;
-  v15 = a7;
-  v19 = a8;
-  if (v12)
+  v10 = *&steps;
+  successCopy = success;
+  progressCopy = progress;
+  errorCopy = error;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (successCopy)
   {
-    objc_msgSend__performImportWithProgress_completedSteps_completionQueue_completionHandler_(self, v16, v22, v10, v15, v19);
+    objc_msgSend__performImportWithProgress_completedSteps_completionQueue_completionHandler_(self, v16, progressCopy, v10, queueCopy, handlerCopy);
   }
 
   else
   {
-    if (objc_msgSend_tsu_isOutOfSpaceError(v14, v16, v17, v18) && (objc_opt_respondsToSelector() & 1) != 0)
+    if (objc_msgSend_tsu_isOutOfSpaceError(errorCopy, v16, v17, v18) && (objc_opt_respondsToSelector() & 1) != 0)
     {
       objc_msgSend_importControllerDidRunOutOfSpace_(self->_delegate, v20, self, v21);
     }
 
-    objc_msgSend_finishImportWithProgress_success_error_completionQueue_completionHandler_(self, v20, v22, 0, v14, v15, v19);
+    objc_msgSend_finishImportWithProgress_success_error_completionQueue_completionHandler_(self, v20, progressCopy, 0, errorCopy, queueCopy, handlerCopy);
   }
 }
 
-- (id)templateDocumentWithName:(id)a3 variantIndex:(unint64_t)a4
+- (id)templateDocumentWithName:(id)name variantIndex:(unint64_t)index
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSAImportController templateDocumentWithName:variantIndex:]", v7);
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAImportController.m", v10);
@@ -684,24 +684,24 @@ LABEL_21:
   objc_exception_throw(v27);
 }
 
-- (BOOL)_saveContextToTemporaryURL:(id)a3 passphrase:(id)a4 originalURL:(id)a5 documentUUID:(id)a6 error:(id *)a7
+- (BOOL)_saveContextToTemporaryURL:(id)l passphrase:(id)passphrase originalURL:(id)rL documentUUID:(id)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v17 = a6;
-  if (v13 && !objc_msgSend_setPassphrase_(self->_documentContext, v15, v13, v16))
+  lCopy = l;
+  passphraseCopy = passphrase;
+  rLCopy = rL;
+  dCopy = d;
+  if (passphraseCopy && !objc_msgSend_setPassphrase_(self->_documentContext, v15, passphraseCopy, v16))
   {
     LOBYTE(v44) = 0;
   }
 
   else
   {
-    objc_msgSend_beginSaveToURL_updateType_packageType_documentUUID_(self->_documentContext, v15, v12, 4, 2, v17);
-    objc_msgSend_beginWriteWithOriginalURL_(self->_documentContext, v18, v14, v19);
+    objc_msgSend_beginSaveToURL_updateType_packageType_documentUUID_(self->_documentContext, v15, lCopy, 4, 2, dCopy);
+    objc_msgSend_beginWriteWithOriginalURL_(self->_documentContext, v18, rLCopy, v19);
     documentContext = self->_documentContext;
     v24 = objc_msgSend_decryptionKey(documentContext, v21, v22, v23);
-    v26 = objc_msgSend_writeToURL_encryptionKey_error_(documentContext, v25, v12, v24, a7);
+    v26 = objc_msgSend_writeToURL_encryptionKey_error_(documentContext, v25, lCopy, v24, error);
 
     if ((objc_msgSend_isPasswordProtected(self, v27, v28, v29) & 1) == 0)
     {
@@ -715,7 +715,7 @@ LABEL_21:
       }
     }
 
-    v44 = objc_msgSend_endWriteWithSuccess_error_(self->_documentContext, v30, v26, a7);
+    v44 = objc_msgSend_endWriteWithSuccess_error_(self->_documentContext, v30, v26, error);
     objc_msgSend_endSaveWithSuccess_(self->_documentContext, v45, v44, v46);
   }
 
@@ -740,11 +740,11 @@ LABEL_21:
   }
 }
 
-- (void)_performImportWithProgress:(id)a3 completedSteps:(int)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)_performImportWithProgress:(id)progress completedSteps:(int)steps completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  progressCopy = progress;
+  queueCopy = queue;
+  handlerCopy = handler;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -761,8 +761,8 @@ LABEL_21:
   v40[2] = sub_2760C17B8;
   v40[3] = &unk_27A6B0758;
   v40[4] = self;
-  v44 = a4;
-  v16 = v10;
+  stepsCopy = steps;
+  v16 = progressCopy;
   v41 = v16;
   v42 = &v51;
   v43 = &v45;
@@ -801,7 +801,7 @@ LABEL_21:
     (v17)[2](v17, v15);
   }
 
-  objc_msgSend_finishImportWithProgress_success_error_completionQueue_completionHandler_(self, v38, v16, *(v52 + 24), v46[5], v11, v12);
+  objc_msgSend_finishImportWithProgress_success_error_completionQueue_completionHandler_(self, v38, v16, *(v52 + 24), v46[5], queueCopy, handlerCopy);
 
   _Block_object_dispose(&v45, 8);
   _Block_object_dispose(&v51, 8);
@@ -855,35 +855,35 @@ LABEL_21:
   return v16;
 }
 
-- (void)finishImportWithProgress:(id)a3 success:(BOOL)a4 error:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)finishImportWithProgress:(id)progress success:(BOOL)success error:(id)error completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a4;
+  successCopy = success;
   v69 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v18 = a7;
+  progressCopy = progress;
+  errorCopy = error;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (TSAImportCat_init_token != -1)
   {
     sub_27610CC98();
   }
 
-  isCancelled = objc_msgSend_isCancelled(v12, v15, v16, v17);
-  v59 = v14;
-  v23 = v12;
-  if (!v13 && isCancelled)
+  isCancelled = objc_msgSend_isCancelled(progressCopy, v15, v16, v17);
+  v59 = queueCopy;
+  v23 = progressCopy;
+  if (!errorCopy && isCancelled)
   {
-    v13 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v20, *MEMORY[0x277CCA050], 3072, 0);
+    errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v20, *MEMORY[0x277CCA050], 3072, 0);
   }
 
-  if (v13)
+  if (errorCopy)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = v10;
+    v24 = successCopy;
   }
 
   v25 = objc_msgSend_documentRoot(self, v20, v21, v22);
@@ -928,7 +928,7 @@ LABEL_21:
     objc_msgSend_cleanupForImportFailure(v25, v36, v37, v38);
     v42 = v23;
     v43 = v59;
-    if (objc_msgSend_tsu_isOutOfSpaceError(v13, v44, v45, v46) && (objc_opt_respondsToSelector() & 1) != 0)
+    if (objc_msgSend_tsu_isOutOfSpaceError(errorCopy, v44, v45, v46) && (objc_opt_respondsToSelector() & 1) != 0)
     {
       objc_msgSend_importControllerDidRunOutOfSpace_(self->_delegate, v39, self, v41);
     }
@@ -940,7 +940,7 @@ LABEL_21:
   v54 = objc_msgSend_calculationEngine(v25, v51, v52, v53);
   objc_msgSend_resumeRecalculation(v54, v55, v56, v57);
 
-  if (v18)
+  if (handlerCopy)
   {
     if (v43)
     {
@@ -949,9 +949,9 @@ LABEL_21:
       block[2] = sub_2760C2B88;
       block[3] = &unk_27A6B0780;
       v63 = v24;
-      v62 = v18;
+      v62 = handlerCopy;
       block[4] = self;
-      v61 = v13;
+      v61 = errorCopy;
       dispatch_async(v43, block);
     }
 
@@ -967,7 +967,7 @@ LABEL_21:
         temporaryURL = 0;
       }
 
-      (*(v18 + 2))(v18, temporaryURL, v13);
+      (*(handlerCopy + 2))(handlerCopy, temporaryURL, errorCopy);
     }
   }
 }
@@ -995,22 +995,22 @@ LABEL_21:
   }
 }
 
-- (id)importErrorWithCode:(int64_t)a3 description:(id)a4 failureReason:(id)a5 underlyingError:(id)a6
+- (id)importErrorWithCode:(int64_t)code description:(id)description failureReason:(id)reason underlyingError:(id)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v15 = v11;
-  if (v10)
+  descriptionCopy = description;
+  reasonCopy = reason;
+  errorCopy = error;
+  v15 = errorCopy;
+  if (reasonCopy)
   {
-    if (v11)
+    if (errorCopy)
     {
 LABEL_3:
       v22 = *MEMORY[0x277CCA7E8];
       v23[0] = v15;
       v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v23, &v22, 1);
-      objc_msgSend_tsu_errorWithDomain_code_alertTitle_alertMessage_userInfo_(MEMORY[0x277CCA9B8], v17, @"com.apple.iWork.TSApplication", a3, v9, v10, v16);
+      objc_msgSend_tsu_errorWithDomain_code_alertTitle_alertMessage_userInfo_(MEMORY[0x277CCA9B8], v17, @"com.apple.iWork.TSApplication", code, descriptionCopy, reasonCopy, v16);
       goto LABEL_6;
     }
   }
@@ -1018,7 +1018,7 @@ LABEL_3:
   else
   {
     v18 = objc_msgSend_tsu_resourcesBundle(MEMORY[0x277CCA8D8], v12, v13, v14);
-    v10 = objc_msgSend_localizedStringForKey_value_table_(v18, v19, @"An error occurred.", &stru_288512028, @"TSApplication");
+    reasonCopy = objc_msgSend_localizedStringForKey_value_table_(v18, v19, @"An error occurred.", &stru_288512028, @"TSApplication");
 
     if (v15)
     {
@@ -1027,40 +1027,40 @@ LABEL_3:
   }
 
   v16 = 0;
-  objc_msgSend_tsu_errorWithDomain_code_alertTitle_alertMessage_userInfo_(MEMORY[0x277CCA9B8], v12, @"com.apple.iWork.TSApplication", a3, v9, v10, 0);
+  objc_msgSend_tsu_errorWithDomain_code_alertTitle_alertMessage_userInfo_(MEMORY[0x277CCA9B8], v12, @"com.apple.iWork.TSApplication", code, descriptionCopy, reasonCopy, 0);
   v20 = LABEL_6:;
 
   return v20;
 }
 
-- (void)relinquishPresentedItemToWriter:(id)a3
+- (void)relinquishPresentedItemToWriter:(id)writer
 {
   deferredWriters = self->_deferredWriters;
-  v7 = objc_msgSend_copy(a3, a2, a3, v3);
+  v7 = objc_msgSend_copy(writer, a2, writer, v3);
   objc_msgSend_addObject_(deferredWriters, v5, v7, v6);
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (objc_opt_respondsToSelector())
   {
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = sub_2760C2EF4;
     v10 = &unk_27A6B0248;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = lCopy;
     dispatch_async(MEMORY[0x277D85CD0], &v7);
   }
 
-  objc_msgSend__setPresentedItemURL_(self, v5, v4, v6, v7, v8, v9, v10, v11);
+  objc_msgSend__setPresentedItemURL_(self, v5, lCopy, v6, v7, v8, v9, v10, selfCopy);
 }
 
-- (void)_setPresentedItemURL:(id)a3
+- (void)_setPresentedItemURL:(id)l
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if (objc_msgSend_needsFileCoordination(self, v5, v6, v7))
   {
     if (self->_presentedItemURL)
@@ -1103,15 +1103,15 @@ LABEL_3:
       }
     }
 
-    if (v4)
+    if (lCopy)
     {
       objc_msgSend_addFilePresenter_(MEMORY[0x277CCA9E8], v8, self, v10);
     }
   }
 
-  if (self->_presentedItemURL != v4)
+  if (self->_presentedItemURL != lCopy)
   {
-    v24 = objc_msgSend_copy(v4, v8, v9, v10);
+    v24 = objc_msgSend_copy(lCopy, v8, v9, v10);
     presentedItemURL = self->_presentedItemURL;
     self->_presentedItemURL = v24;
   }
@@ -1125,20 +1125,20 @@ LABEL_3:
   return v8;
 }
 
-- (void)addWarning:(id)a3
+- (void)addWarning:(id)warning
 {
-  v4 = a3;
-  v22 = v4;
+  warningCopy = warning;
+  v22 = warningCopy;
   if (!self->_importWarnings)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     importWarnings = self->_importWarnings;
     self->_importWarnings = v8;
 
-    v4 = v22;
+    warningCopy = v22;
   }
 
-  v10 = objc_msgSend_message(v4, v5, v6, v7);
+  v10 = objc_msgSend_message(warningCopy, v5, v6, v7);
 
   if (!v10)
   {
@@ -1153,9 +1153,9 @@ LABEL_3:
   objc_msgSend_addObject_(self->_importWarnings, v11, v22, v12);
 }
 
-- (void)addIncompatibleMediaContainer:(id)a3 incompatibleData:(id)a4 compatibilityLevel:(int64_t)a5
+- (void)addIncompatibleMediaContainer:(id)container incompatibleData:(id)data compatibilityLevel:(int64_t)level
 {
-  v7 = objc_msgSend_documentRoot(self, a2, a3, a4, a5);
+  v7 = objc_msgSend_documentRoot(self, a2, container, data, level);
   objc_msgSend_setNeedsMediaCompatibilityUpgrade_(v7, v5, 1, v6);
 }
 
@@ -1183,34 +1183,34 @@ LABEL_3:
   return v8;
 }
 
-- (id)additionalResourceRequestsForObjectContext:(id)a3
+- (id)additionalResourceRequestsForObjectContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   objc_opt_class();
-  v7 = objc_msgSend_documentObject(v3, v4, v5, v6);
+  v7 = objc_msgSend_documentObject(contextCopy, v4, v5, v6);
   v8 = TSUDynamicCast();
 
-  v11 = objc_msgSend_additionalResourceRequestsForObjectContext_(v8, v9, v3, v10);
+  v11 = objc_msgSend_additionalResourceRequestsForObjectContext_(v8, v9, contextCopy, v10);
 
   return v11;
 }
 
-- (void)presentPersistenceError:(id)a3
+- (void)presentPersistenceError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v9 = objc_msgSend_sharedDelegate(TSABaseApplicationDelegate, v4, v5, v6);
-  objc_msgSend_persistenceError_(v9, v7, v3, v8);
+  objc_msgSend_persistenceError_(v9, v7, errorCopy, v8);
 }
 
-- (void)addPersistenceWarnings:(id)a3
+- (void)addPersistenceWarnings:(id)warnings
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  warningsCopy = warnings;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v16, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(warningsCopy, v5, &v12, v16, 16);
   if (v6)
   {
     v9 = v6;
@@ -1222,14 +1222,14 @@ LABEL_3:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(warningsCopy);
         }
 
         objc_msgSend_addWarning_(self, v7, *(*(&v12 + 1) + 8 * v11++), v8);
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v12, v16, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(warningsCopy, v7, &v12, v16, 16);
     }
 
     while (v9);

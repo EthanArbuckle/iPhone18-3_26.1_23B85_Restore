@@ -1,18 +1,18 @@
 @interface CRLSVGToBezierPathConverter
-+ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)a3;
-+ (CGPath)newPathFromSVGPathString:(id)a3 shouldClosePathAtEnd:(BOOL)a4;
-+ (CGPath)newPathFromSVGPolygonString:(id)a3;
-+ (CGPath)newPathFromSVGPolylineString:(id)a3;
-- (id)bezierPathFromSVGData:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
++ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)string;
++ (CGPath)newPathFromSVGPathString:(id)string shouldClosePathAtEnd:(BOOL)end;
++ (CGPath)newPathFromSVGPolygonString:(id)string;
++ (CGPath)newPathFromSVGPolylineString:(id)string;
+- (id)bezierPathFromSVGData:(id)data;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation CRLSVGToBezierPathConverter
 
-- (id)bezierPathFromSVGData:(id)a3
+- (id)bezierPathFromSVGData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(CRLBezierPath);
   mFileBezierPath = self->mFileBezierPath;
   self->mFileBezierPath = v5;
@@ -31,7 +31,7 @@
   self->mViewBox.origin = CGRectZero.origin;
   self->mViewBox.size = size;
   self->mUsesEvenOdd = 0;
-  v10 = [[NSXMLParser alloc] initWithData:v4];
+  v10 = [[NSXMLParser alloc] initWithData:dataCopy];
 
   [v10 setDelegate:self];
   if ([v10 parse] && (objc_msgSend(v10, "parserError"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
@@ -93,22 +93,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v179 = a3;
-  v12 = a4;
-  v178 = a5;
-  v177 = a6;
-  v13 = a7;
-  v14 = [v13 objectForKeyedSubscript:@"style"];
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
+  v14 = [attributesCopy objectForKeyedSubscript:@"style"];
   v180 = v14;
   if (v14)
   {
     v15 = v14;
-    v174 = v12;
-    v175 = self;
-    v181 = v13;
-    v16 = [v13 mutableCopy];
+    v174 = elementCopy;
+    selfCopy = self;
+    v181 = attributesCopy;
+    v16 = [attributesCopy mutableCopy];
     [v15 componentsSeparatedByString:@";"];
     v188 = 0u;
     v189 = 0u;
@@ -197,22 +197,22 @@ LABEL_13:
     }
 
     v35 = v16;
-    v13 = v35;
-    v12 = v174;
-    self = v175;
+    attributesCopy = v35;
+    elementCopy = v174;
+    self = selfCopy;
   }
 
-  if ([v12 isEqualToString:@"svg"])
+  if ([elementCopy isEqualToString:@"svg"])
   {
-    v36 = [v13 objectForKeyedSubscript:@"preserveAspectRatio"];
+    v36 = [attributesCopy objectForKeyedSubscript:@"preserveAspectRatio"];
     v37 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
     v38 = [v36 componentsSeparatedByCharactersInSet:v37];
 
-    v182 = v13;
+    v182 = attributesCopy;
     if (![v38 count])
     {
 LABEL_58:
-      v52 = [v13 objectForKeyedSubscript:@"viewBox"];
+      v52 = [attributesCopy objectForKeyedSubscript:@"viewBox"];
       v53 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
       v45 = [v52 componentsSeparatedByCharactersInSet:v53];
 
@@ -314,9 +314,9 @@ LABEL_58:
       {
 LABEL_70:
 
-        v13 = v182;
+        attributesCopy = v182;
 LABEL_71:
-        v67 = [v13 objectForKeyedSubscript:@"style"];
+        v67 = [attributesCopy objectForKeyedSubscript:@"style"];
         if (v67)
         {
           v187 = 0;
@@ -396,39 +396,39 @@ LABEL_71:
     }
 
 LABEL_57:
-    v13 = v182;
+    attributesCopy = v182;
     goto LABEL_58;
   }
 
 LABEL_76:
   v71 = v180;
-  if ([(NSString *)self->mHiddenOnTag isEqualToString:v12])
+  if ([(NSString *)self->mHiddenOnTag isEqualToString:elementCopy])
   {
     ++self->mHiddenOnTagNestedCount;
   }
 
   if (!self->mHiddenOnTag)
   {
-    v72 = [v13 objectForKeyedSubscript:@"display"];
+    v72 = [attributesCopy objectForKeyedSubscript:@"display"];
     if ([v72 isEqualToString:@"none"])
     {
 
 LABEL_82:
-      v74 = [v12 copy];
+      v74 = [elementCopy copy];
       mHiddenOnTag = self->mHiddenOnTag;
       self->mHiddenOnTag = v74;
 
       goto LABEL_121;
     }
 
-    v73 = [v12 isEqualToString:@"pattern"];
+    v73 = [elementCopy isEqualToString:@"pattern"];
 
     if (v73)
     {
       goto LABEL_82;
     }
 
-    if ([v12 isEqualToString:@"g"])
+    if ([elementCopy isEqualToString:@"g"])
     {
       v76 = *&self->mGroupedAffineTransform.c;
       *&buf.a = *&self->mGroupedAffineTransform.a;
@@ -440,11 +440,11 @@ LABEL_82:
       *&t2.tx = *&CGAffineTransformIdentity.tx;
       if (CGAffineTransformEqualToTransform(&buf, &t2))
       {
-        v78 = [v13 objectForKeyedSubscript:@"transform"];
+        v78 = [attributesCopy objectForKeyedSubscript:@"transform"];
 
         if (v78)
         {
-          v79 = [v13 objectForKeyedSubscript:@"transform"];
+          v79 = [attributesCopy objectForKeyedSubscript:@"transform"];
           [CRLSVGToBezierPathConverter transformFromSVGTransformAttributeString:v79];
           v80 = *&buf.c;
           *&self->mGroupedAffineTransform.a = *&buf.a;
@@ -459,20 +459,20 @@ LABEL_82:
       }
     }
 
-    v81 = [v12 isEqualToString:@"line"];
-    if ([v12 isEqualToString:@"path"])
+    v81 = [elementCopy isEqualToString:@"line"];
+    if ([elementCopy isEqualToString:@"path"])
     {
-      v82 = [v13 objectForKeyedSubscript:@"d"];
+      v82 = [attributesCopy objectForKeyedSubscript:@"d"];
       v83 = [CRLSVGToBezierPathConverter newPathFromSVGPathString:v82 shouldClosePathAtEnd:v81 ^ 1];
     }
 
     else
     {
-      if (![v12 isEqualToString:@"polyline"])
+      if (![elementCopy isEqualToString:@"polyline"])
       {
-        if ([v12 isEqualToString:@"polygon"])
+        if ([elementCopy isEqualToString:@"polygon"])
         {
-          v111 = [v13 objectForKeyedSubscript:@"points"];
+          v111 = [attributesCopy objectForKeyedSubscript:@"points"];
           Mutable = [CRLSVGToBezierPathConverter newPathFromSVGPolygonString:v111];
 
           if (!v81)
@@ -485,18 +485,18 @@ LABEL_82:
         {
           if (!v81)
           {
-            if ([v12 isEqualToString:@"rect"])
+            if ([elementCopy isEqualToString:@"rect"])
             {
-              v122 = [v13 objectForKeyedSubscript:@"width"];
+              v122 = [attributesCopy objectForKeyedSubscript:@"width"];
               [v122 floatValue];
-              v123 = [v13 objectForKeyedSubscript:@"height"];
+              v123 = [attributesCopy objectForKeyedSubscript:@"height"];
               [v123 floatValue];
 
               memset(&buf, 0, sizeof(buf));
-              v124 = [v13 objectForKeyedSubscript:@"x"];
+              v124 = [attributesCopy objectForKeyedSubscript:@"x"];
               [v124 floatValue];
               v126 = v125;
-              v127 = [v13 objectForKeyedSubscript:@"y"];
+              v127 = [attributesCopy objectForKeyedSubscript:@"y"];
               [v127 floatValue];
               CGAffineTransformMakeTranslation(&buf, v126, v128);
 
@@ -504,27 +504,27 @@ LABEL_82:
               v131 = v130;
               v133 = v132;
               v135 = v134;
-              v136 = [v13 objectForKeyedSubscript:@"rx"];
+              v136 = [attributesCopy objectForKeyedSubscript:@"rx"];
               [v136 crl_CGFloatValue];
-              v138 = [CRLBezierPath bezierPathWithLegacyRoundedRect:v129 cornerRadius:v131, v133, v135, v137];
-              v139 = CGPathRetain([v138 CGPath]);
+              v137 = [CRLBezierPath bezierPathWithLegacyRoundedRect:v129 cornerRadius:v131, v133, v135, v137];
+              v139 = CGPathRetain([v137 CGPath]);
 
               Mutable = CGPathCreateCopyByTransformingPath(v139, &buf);
               CGPathRelease(v139);
               goto LABEL_108;
             }
 
-            if ([v12 isEqualToString:@"circle"])
+            if ([elementCopy isEqualToString:@"circle"])
             {
-              v140 = [v13 objectForKeyedSubscript:@"r"];
+              v140 = [attributesCopy objectForKeyedSubscript:@"r"];
               [v140 floatValue];
               v142 = v141;
 
-              v143 = [v13 objectForKeyedSubscript:@"cx"];
+              v143 = [attributesCopy objectForKeyedSubscript:@"cx"];
               [v143 floatValue];
               v145 = v144 - v142;
 
-              v146 = [v13 objectForKeyedSubscript:@"cy"];
+              v146 = [attributesCopy objectForKeyedSubscript:@"cy"];
               [v146 floatValue];
               v148 = v147 - v142;
 
@@ -536,25 +536,25 @@ LABEL_82:
 
             else
             {
-              if (![v12 isEqualToString:@"ellipse"])
+              if (![elementCopy isEqualToString:@"ellipse"])
               {
                 Mutable = CGPathCreateMutable();
                 goto LABEL_108;
               }
 
-              v161 = [v13 objectForKeyedSubscript:@"rx"];
+              v161 = [attributesCopy objectForKeyedSubscript:@"rx"];
               [v161 floatValue];
               v163 = v162;
 
-              v164 = [v13 objectForKeyedSubscript:@"ry"];
+              v164 = [attributesCopy objectForKeyedSubscript:@"ry"];
               [v164 floatValue];
               v166 = v165;
 
-              v167 = [v13 objectForKeyedSubscript:@"cx"];
+              v167 = [attributesCopy objectForKeyedSubscript:@"cx"];
               [v167 floatValue];
               v169 = v168 - v163;
 
-              v170 = [v13 objectForKeyedSubscript:@"cy"];
+              v170 = [attributesCopy objectForKeyedSubscript:@"cy"];
               [v170 floatValue];
               v172 = v171 - v166;
 
@@ -564,36 +564,36 @@ LABEL_82:
               v151 = v172;
             }
 
-            v173 = [CRLBezierPath bezierPathWithOvalInRect:v150, v151, v149, v152];
-            Mutable = [v173 CGPath];
+            v152 = [CRLBezierPath bezierPathWithOvalInRect:v150, v151, v149, v152];
+            Mutable = [v152 CGPath];
 
             CGPathRetain(Mutable);
             goto LABEL_108;
           }
 
           Mutable = CGPathCreateMutable();
-          v112 = [v13 objectForKeyedSubscript:@"x1"];
+          v112 = [attributesCopy objectForKeyedSubscript:@"x1"];
           [v112 floatValue];
           v114 = v113;
-          v115 = [v13 objectForKeyedSubscript:@"y1"];
+          v115 = [attributesCopy objectForKeyedSubscript:@"y1"];
           [v115 floatValue];
           CGPathMoveToPoint(Mutable, 0, v114, v116);
 
-          v117 = [v13 objectForKeyedSubscript:@"x2"];
+          v117 = [attributesCopy objectForKeyedSubscript:@"x2"];
           [v117 floatValue];
           v119 = v118;
-          v120 = [v13 objectForKeyedSubscript:@"y2"];
+          v120 = [attributesCopy objectForKeyedSubscript:@"y2"];
           [v120 floatValue];
           CGPathAddLineToPoint(Mutable, 0, v119, v121);
         }
 
 LABEL_93:
-        v176 = self;
-        v85 = [v13 objectForKeyedSubscript:@"stroke-width"];
-        v86 = [v13 objectForKeyedSubscript:@"stroke-linecap"];
-        v87 = [v13 objectForKeyedSubscript:@"stroke-linejoin"];
-        v183 = v13;
-        v88 = [v13 objectForKeyedSubscript:@"stroke-miterlimit"];
+        selfCopy2 = self;
+        v85 = [attributesCopy objectForKeyedSubscript:@"stroke-width"];
+        v86 = [attributesCopy objectForKeyedSubscript:@"stroke-linecap"];
+        v87 = [attributesCopy objectForKeyedSubscript:@"stroke-linejoin"];
+        v183 = attributesCopy;
+        v88 = [attributesCopy objectForKeyedSubscript:@"stroke-miterlimit"];
         v89 = 1.0;
         if (v85 && ([v85 isEqualToString:&stru_1018BCA28] & 1) == 0)
         {
@@ -705,24 +705,24 @@ LABEL_104:
           [v93 setMiterLimit:v94];
         }
 
-        v95 = [v93 strokedCopy];
-        Mutable = [v95 CGPath];
+        strokedCopy = [v93 strokedCopy];
+        Mutable = [strokedCopy CGPath];
 
         CGPathRetain(Mutable);
-        self = v176;
+        self = selfCopy2;
         v71 = v180;
-        v13 = v183;
+        attributesCopy = v183;
 LABEL_108:
         v96 = *&self->mGroupedAffineTransform.c;
         *&buf.a = *&self->mGroupedAffineTransform.a;
         *&buf.c = v96;
         *&buf.tx = *&self->mGroupedAffineTransform.tx;
-        v97 = [v13 objectForKeyedSubscript:@"transform"];
+        v97 = [attributesCopy objectForKeyedSubscript:@"transform"];
 
         if (v97)
         {
           memset(&t2, 0, sizeof(t2));
-          v98 = [v13 objectForKeyedSubscript:@"transform"];
+          v98 = [attributesCopy objectForKeyedSubscript:@"transform"];
           [CRLSVGToBezierPathConverter transformFromSVGTransformAttributeString:v98];
 
           t1 = buf;
@@ -793,7 +793,7 @@ LABEL_120:
         goto LABEL_121;
       }
 
-      v82 = [v13 objectForKeyedSubscript:@"points"];
+      v82 = [attributesCopy objectForKeyedSubscript:@"points"];
       v83 = [CRLSVGToBezierPathConverter newPathFromSVGPolylineString:v82];
     }
 
@@ -810,10 +810,10 @@ LABEL_120:
 LABEL_121:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v7 = a4;
-  if ([(NSString *)self->mHiddenOnTag isEqualToString:v7])
+  elementCopy = element;
+  if ([(NSString *)self->mHiddenOnTag isEqualToString:elementCopy])
   {
     mHiddenOnTagNestedCount = self->mHiddenOnTagNestedCount;
     if (mHiddenOnTagNestedCount)
@@ -828,7 +828,7 @@ LABEL_121:
     }
   }
 
-  if ([v7 isEqualToString:@"g"])
+  if ([elementCopy isEqualToString:@"g"])
   {
     v10 = *&self->mGroupedAffineTransform.c;
     *&t1.a = *&self->mGroupedAffineTransform.a;
@@ -859,15 +859,15 @@ LABEL_121:
   }
 }
 
-+ (CGPath)newPathFromSVGPathString:(id)a3 shouldClosePathAtEnd:(BOOL)a4
++ (CGPath)newPathFromSVGPathString:(id)string shouldClosePathAtEnd:(BOOL)end
 {
-  v52 = a4;
-  v4 = a3;
+  endCopy = end;
+  stringCopy = string;
   Mutable = CGPathCreateMutable();
   v56 = CGPointZero;
   *y = CGPointZero;
-  v53 = v4;
-  v6 = [NSScanner scannerWithString:v4];
+  v53 = stringCopy;
+  v6 = [NSScanner scannerWithString:stringCopy];
   v72 = *asc_101466690;
   v73 = 2883717;
   v7 = [NSString stringWithCharacters:&v72 length:6];
@@ -1332,7 +1332,7 @@ LABEL_123:
   [v6 isAtEnd];
   v9 = 1;
 LABEL_3:
-  if (v52 && (v11 & 0xFFDF) != 0x5A)
+  if (endCopy && (v11 & 0xFFDF) != 0x5A)
   {
     MutableCopy = CGPathCreateMutableCopy(Mutable);
     CGPathRelease(Mutable);
@@ -1372,12 +1372,12 @@ LABEL_3:
   return Mutable;
 }
 
-+ (CGPath)newPathFromSVGPolylineString:(id)a3
++ (CGPath)newPathFromSVGPolylineString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   Mutable = CGPathCreateMutable();
   v12 = CGPointZero;
-  v5 = [NSScanner scannerWithString:v3];
+  v5 = [NSScanner scannerWithString:stringCopy];
   v13 = *asc_101466690;
   v14 = 2883717;
   v6 = [NSString stringWithCharacters:&v13 length:6];
@@ -1437,16 +1437,16 @@ LABEL_18:
   return Mutable;
 }
 
-+ (CGPath)newPathFromSVGPolygonString:(id)a3
++ (CGPath)newPathFromSVGPolygonString:(id)string
 {
-  v3 = [CRLSVGToBezierPathConverter newPathFromSVGPolylineString:a3];
+  v3 = [CRLSVGToBezierPathConverter newPathFromSVGPolylineString:string];
   MutableCopy = CGPathCreateMutableCopy(v3);
   CGPathRelease(v3);
   CGPathCloseSubpath(MutableCopy);
   return MutableCopy;
 }
 
-+ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)a3
++ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)string
 {
   v5 = a4;
   v103 = 0;

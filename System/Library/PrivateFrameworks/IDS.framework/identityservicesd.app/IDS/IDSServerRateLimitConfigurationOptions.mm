@@ -1,11 +1,11 @@
 @interface IDSServerRateLimitConfigurationOptions
 - (IDSServerRateLimitConfigurationOptions)init;
-- (IDSServerRateLimitConfigurationOptions)initWithService:(id)a3;
+- (IDSServerRateLimitConfigurationOptions)initWithService:(id)service;
 @end
 
 @implementation IDSServerRateLimitConfigurationOptions
 
-- (IDSServerRateLimitConfigurationOptions)initWithService:(id)a3
+- (IDSServerRateLimitConfigurationOptions)initWithService:(id)service
 {
   v4 = sub_100936B38();
   v5 = (self + OBJC_IVAR___IDSServerRateLimitConfigurationOptions_service);

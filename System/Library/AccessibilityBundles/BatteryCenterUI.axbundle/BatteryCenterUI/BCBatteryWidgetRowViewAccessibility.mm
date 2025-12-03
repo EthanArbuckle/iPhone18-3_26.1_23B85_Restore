@@ -1,25 +1,25 @@
 @interface BCBatteryWidgetRowViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation BCBatteryWidgetRowViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BCBatteryWidgetRowView" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BCBatteryWidgetRowView" hasInstanceMethod:@"glyphImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BCBatteryWidgetRowView" hasInstanceVariable:@"_percentCharge" withType:"NSUInteger"];
-  [v3 validateClass:@"BCBatteryWidgetRowView" hasInstanceVariable:@"_charging" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BCBatteryWidgetRowView" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BCBatteryWidgetRowView" hasInstanceMethod:@"glyphImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BCBatteryWidgetRowView" hasInstanceVariable:@"_percentCharge" withType:"NSUInteger"];
+  [validationsCopy validateClass:@"BCBatteryWidgetRowView" hasInstanceVariable:@"_charging" withType:"B"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(BCBatteryWidgetRowViewAccessibility *)self safeValueForKey:@"name"];
   v4 = [(BCBatteryWidgetRowViewAccessibility *)self safeValueForKey:@"glyphImage"];
-  v7 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   v5 = __UIAXStringForVariables();
 
   return v5;

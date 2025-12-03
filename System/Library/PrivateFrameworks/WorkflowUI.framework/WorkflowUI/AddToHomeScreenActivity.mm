@@ -1,11 +1,11 @@
 @interface AddToHomeScreenActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIViewController)activityViewController;
 - (id)_systemImageName;
-- (void)activityDidFinish:(BOOL)a3;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)activityDidFinish:(BOOL)finish;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation AddToHomeScreenActivity
@@ -19,7 +19,7 @@
 
 - (NSString)activityTitle
 {
-  v2 = self;
+  selfCopy = self;
   AddToHomeScreenActivity.activityTitle.getter();
   v4 = v3;
 
@@ -43,30 +43,30 @@
   return v2;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   sub_2749FCF84();
 
   return 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   sub_2749FCF84();
 }
 
 - (UIViewController)activityViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AddToHomeScreenActivity.activityViewController.getter();
 
   return v3;
 }
 
-- (void)activityDidFinish:(BOOL)a3
+- (void)activityDidFinish:(BOOL)finish
 {
-  v4 = self;
-  AddToHomeScreenActivity.activityDidFinish(_:)(a3);
+  selfCopy = self;
+  AddToHomeScreenActivity.activityDidFinish(_:)(finish);
 }
 
 @end

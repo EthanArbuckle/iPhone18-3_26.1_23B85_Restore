@@ -1,17 +1,17 @@
 @interface UIStatusBarDateTimeItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (double)extraRightPadding;
 - (id)accessibilityHUDRepresentation;
-- (void)setFrame:(CGRect)a3;
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5;
+- (void)setFrame:(CGRect)frame;
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration;
 @end
 
 @implementation UIStatusBarDateTimeItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
-  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:objc_msgSend(objc_opt_class() encoding:{"_cStringFromData:", v5), 4}];
+  rawData = [data rawData];
+  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:objc_msgSend(objc_opt_class() encoding:{"_cStringFromData:", rawData), 4}];
   v7 = [v6 isEqualToString:self->_dateTimeString];
   if ((v7 & 1) == 0)
   {
@@ -21,23 +21,23 @@
   return v7 ^ 1;
 }
 
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  visibleCopy = visible;
   if (self->_useCustomFadeAnimation)
   {
-    if ([(UIStatusBarItemView *)self isVisible]!= a3)
+    if ([(UIStatusBarItemView *)self isVisible]!= visible)
     {
-      [(UIStatusBarItemView *)self setVisible:v10 settingAlpha:0];
-      if (a5 <= 0.0)
+      [(UIStatusBarItemView *)self setVisible:visibleCopy settingAlpha:0];
+      if (duration <= 0.0)
       {
-        v12 = [(UIStatusBarItemView *)self isVisible];
+        isVisible = [(UIStatusBarItemView *)self isVisible];
         v13 = 0.0;
-        if (v12)
+        if (isVisible)
         {
           v13 = 1.0;
         }
@@ -56,10 +56,10 @@
         v15[1] = 3221225472;
         v15[2] = __57__UIStatusBarDateTimeItemView_setVisible_frame_duration___block_invoke_2;
         v15[3] = &unk_1E7119868;
-        v16 = v10;
-        *&v15[5] = a5;
+        v16 = visibleCopy;
+        *&v15[5] = duration;
         v15[4] = self;
-        [UIView animateWithDuration:32 delay:v17 options:v15 animations:a5 * 0.2 completion:0.0];
+        [UIView animateWithDuration:32 delay:v17 options:v15 animations:duration * 0.2 completion:0.0];
       }
     }
 
@@ -70,7 +70,7 @@
   {
     v14.receiver = self;
     v14.super_class = UIStatusBarDateTimeItemView;
-    [(UIStatusBarItemView *)&v14 setVisible:a3 frame:a4.origin.x duration:a4.origin.y, a4.size.width, a4.size.height, a5];
+    [(UIStatusBarItemView *)&v14 setVisible:visible frame:frame.origin.x duration:frame.origin.y, frame.size.width, frame.size.height, duration];
   }
 }
 
@@ -92,12 +92,12 @@ uint64_t __57__UIStatusBarDateTimeItemView_setVisible_frame_duration___block_inv
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -113,13 +113,13 @@ uint64_t __57__UIStatusBarDateTimeItemView_setVisible_frame_duration___block_inv
   v21.size.height = v15;
   if (!CGRectEqualToRect(v20, v21))
   {
-    v16 = [(UIView *)self _screen];
-    v17 = [objc_opt_self() mainScreen];
+    _screen = [(UIView *)self _screen];
+    mainScreen = [objc_opt_self() mainScreen];
 
-    if (v16 == v17)
+    if (_screen == mainScreen)
     {
-      v18 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v18 postNotificationName:@"UIStatusBarTimeItemViewDidMoveNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"UIStatusBarTimeItemViewDidMoveNotification" object:0];
     }
   }
 }

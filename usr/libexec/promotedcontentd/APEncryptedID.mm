@@ -1,54 +1,54 @@
 @interface APEncryptedID
-- (APEncryptedID)initWithIDAccountPrivate:(id)a3;
-- (id)encryptStringForAdServing:(id)a3 name:(id)a4;
+- (APEncryptedID)initWithIDAccountPrivate:(id)private;
+- (id)encryptStringForAdServing:(id)serving name:(id)name;
 @end
 
 @implementation APEncryptedID
 
-- (APEncryptedID)initWithIDAccountPrivate:(id)a3
+- (APEncryptedID)initWithIDAccountPrivate:(id)private
 {
-  v4 = a3;
+  privateCopy = private;
   v32.receiver = self;
   v32.super_class = APEncryptedID;
   v5 = [(APEncryptedID *)&v32 init];
   if (v5)
   {
-    v6 = [v4 iAdID];
+    iAdID = [privateCopy iAdID];
     unencryptedIAdID = v5->_unencryptedIAdID;
-    v5->_unencryptedIAdID = v6;
+    v5->_unencryptedIAdID = iAdID;
 
-    v8 = [v4 deviceNewsPlusSubscriberID];
-    v9 = [v8 UUIDString];
-    v10 = [(APEncryptedID *)v5 encryptStringForAdServing:v9 name:@"deviceNewsPlusSubscriberID"];
+    deviceNewsPlusSubscriberID = [privateCopy deviceNewsPlusSubscriberID];
+    uUIDString = [deviceNewsPlusSubscriberID UUIDString];
+    v10 = [(APEncryptedID *)v5 encryptStringForAdServing:uUIDString name:@"deviceNewsPlusSubscriberID"];
     deviceNewsPlusSubscriberID = v5->_deviceNewsPlusSubscriberID;
     v5->_deviceNewsPlusSubscriberID = v10;
 
-    v12 = [v4 anonymousDemandID];
-    v13 = [v12 UUIDString];
-    v14 = [(APEncryptedID *)v5 encryptStringForAdServing:v13 name:@"anonymousDemandID"];
+    anonymousDemandID = [privateCopy anonymousDemandID];
+    uUIDString2 = [anonymousDemandID UUIDString];
+    v14 = [(APEncryptedID *)v5 encryptStringForAdServing:uUIDString2 name:@"anonymousDemandID"];
     anonymousDemandID = v5->_anonymousDemandID;
     v5->_anonymousDemandID = v14;
 
-    v16 = [v4 contentID];
-    v17 = [v16 UUIDString];
-    v18 = [(APEncryptedID *)v5 encryptStringForAdServing:v17 name:@"contentID"];
+    contentID = [privateCopy contentID];
+    uUIDString3 = [contentID UUIDString];
+    v18 = [(APEncryptedID *)v5 encryptStringForAdServing:uUIDString3 name:@"contentID"];
     contentID = v5->_contentID;
     v5->_contentID = v18;
 
-    v20 = [v4 DPID];
-    v21 = [(APEncryptedID *)v5 encryptStringForAdServing:v20 name:@"DPID"];
+    dPID = [privateCopy DPID];
+    v21 = [(APEncryptedID *)v5 encryptStringForAdServing:dPID name:@"DPID"];
     DPID = v5->_DPID;
     v5->_DPID = v21;
 
-    v23 = [v4 iAdID];
-    v24 = [v23 UUIDString];
-    v25 = [(APEncryptedID *)v5 encryptStringForAdServing:v24 name:@"iAdID"];
+    iAdID2 = [privateCopy iAdID];
+    uUIDString4 = [iAdID2 UUIDString];
+    v25 = [(APEncryptedID *)v5 encryptStringForAdServing:uUIDString4 name:@"iAdID"];
     iAdID = v5->_iAdID;
     v5->_iAdID = v25;
 
-    v27 = [v4 toroID];
-    v28 = [v27 UUIDString];
-    v29 = [(APEncryptedID *)v5 encryptStringForAdServing:v28 name:@"toroID"];
+    toroID = [privateCopy toroID];
+    uUIDString5 = [toroID UUIDString];
+    v29 = [(APEncryptedID *)v5 encryptStringForAdServing:uUIDString5 name:@"toroID"];
     toroID = v5->_toroID;
     v5->_toroID = v29;
   }
@@ -56,13 +56,13 @@
   return v5;
 }
 
-- (id)encryptStringForAdServing:(id)a3 name:(id)a4
+- (id)encryptStringForAdServing:(id)serving name:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  servingCopy = serving;
+  nameCopy = name;
   if (qword_1004E6A38)
   {
-    if (v5)
+    if (servingCopy)
     {
       goto LABEL_3;
     }
@@ -72,7 +72,7 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v16 = v6;
+      v16 = nameCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Cannot encrypt a nil string of key: %{public}@", buf, 0xCu);
     }
 
@@ -80,20 +80,20 @@ LABEL_9:
   }
 
   qword_1004E6A38 = SecKeyCreateRSAPublicKey();
-  if (!v5)
+  if (!servingCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  v7 = [v5 dataUsingEncoding:4];
+  v7 = [servingCopy dataUsingEncoding:4];
   if (!v7)
   {
     v12 = APLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v16 = v6;
+      v16 = nameCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to Base64 for %{public}@", buf, 0xCu);
     }
 

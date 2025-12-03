@@ -1,30 +1,30 @@
 @interface RCPTimelineView
 - (RCPTimelineViewDelegate)delegate;
-- (double)xForTimestamp:(unint64_t)a3;
-- (id)cropHead:(BOOL)a3;
-- (void)dragAtLocation:(CGPoint)a3;
-- (void)dragBeganAtLocation:(CGPoint)a3 hitThreshold:(double)a4;
-- (void)drawRect:(CGRect)a3;
+- (double)xForTimestamp:(unint64_t)timestamp;
+- (id)cropHead:(BOOL)head;
+- (void)dragAtLocation:(CGPoint)location;
+- (void)dragBeganAtLocation:(CGPoint)location hitThreshold:(double)threshold;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setRecapMovie:(id)a3;
-- (void)setTime:(unint64_t)a3;
+- (void)setRecapMovie:(id)movie;
+- (void)setTime:(unint64_t)time;
 - (void)setup;
 - (void)startPlayback;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateCropUI;
 @end
 
 @implementation RCPTimelineView
 
-- (void)setRecapMovie:(id)a3
+- (void)setRecapMovie:(id)movie
 {
-  objc_storeStrong(&self->_recapMovie, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_recapMovie, movie);
+  movieCopy = movie;
   [(RCPTimelineView *)self setStartCropTimestamp:[(RCPMovie *)self->_recapMovie startTimestamp]];
-  v6 = [(RCPMovie *)self->_recapMovie endTimestamp];
+  endTimestamp = [(RCPMovie *)self->_recapMovie endTimestamp];
 
-  [(RCPTimelineView *)self setEndCropTimestamp:v6];
+  [(RCPTimelineView *)self setEndCropTimestamp:endTimestamp];
   [(RCPTimelineView *)self setup];
 
   [(RCPTimelineView *)self setNeedsDisplay:1];
@@ -33,11 +33,11 @@
 - (void)setup
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(RCPTimelineView *)self layer];
-  [v3 setMasksToBounds:1];
+  layer = [(RCPTimelineView *)self layer];
+  [layer setMasksToBounds:1];
 
-  v4 = [(RCPTimelineView *)self layer];
-  [v4 setCornerRadius:10.0];
+  layer2 = [(RCPTimelineView *)self layer];
+  [layer2 setCornerRadius:10.0];
 
   v5 = [(RCPTimelineView *)self cropHead:0];
   cropStartHead = self->_cropStartHead;
@@ -47,9 +47,9 @@
   cropEndHead = self->_cropEndHead;
   self->_cropEndHead = v7;
 
-  v9 = [MEMORY[0x277CD9ED0] layer];
+  layer3 = [MEMORY[0x277CD9ED0] layer];
   playbackHead = self->_playbackHead;
-  self->_playbackHead = v9;
+  self->_playbackHead = layer3;
 
   [(RCPTimelineView *)self bounds];
   [(CALayer *)self->_playbackHead setFrame:0.0, 0.0, 2.0];
@@ -57,8 +57,8 @@
   v13[0] = xmmword_261A04060;
   v13[1] = unk_261A04070;
   [(CALayer *)self->_playbackHead setBackgroundColor:CGColorCreate(DeviceRGB, v13)];
-  v12 = [(RCPTimelineView *)self layer];
-  [v12 addSublayer:self->_playbackHead];
+  layer4 = [(RCPTimelineView *)self layer];
+  [layer4 addSublayer:self->_playbackHead];
 
   [(RCPTimelineView *)self setTime:[(RCPTimelineView *)self startCropTimestamp]];
   [(RCPTimelineView *)self startPlayback];
@@ -66,25 +66,25 @@
 
 - (void)startPlayback
 {
-  v3 = [(RCPTimelineView *)self recapMovie];
-  v4 = [v3 eventStream];
-  v5 = [v4 environment];
+  recapMovie = [(RCPTimelineView *)self recapMovie];
+  eventStream = [recapMovie eventStream];
+  environment = [eventStream environment];
 
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v14[3] = [(RCPTimelineView *)self startCropTimestamp];
-  v6 = [(RCPTimelineView *)self endCropTimestamp];
-  v7 = [(RCPTimelineView *)self startCropTimestamp];
-  v8 = [(RCPTimelineView *)self endCropTimestamp];
-  v9 = [(RCPTimelineView *)self startCropTimestamp];
-  [v5 timeScale];
+  endCropTimestamp = [(RCPTimelineView *)self endCropTimestamp];
+  startCropTimestamp = [(RCPTimelineView *)self startCropTimestamp];
+  endCropTimestamp2 = [(RCPTimelineView *)self endCropTimestamp];
+  startCropTimestamp2 = [(RCPTimelineView *)self startCropTimestamp];
+  [environment timeScale];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __32__RCPTimelineView_startPlayback__block_invoke;
   v13[3] = &unk_279AF1228;
   v13[5] = v14;
-  v13[6] = ((5 * (v6 - v7)) / (v10 * (60 * (v8 - v9)) / 1000000000.0));
+  v13[6] = ((5 * (endCropTimestamp - startCropTimestamp)) / (v10 * (60 * (endCropTimestamp2 - startCropTimestamp2)) / 1000000000.0));
   v13[4] = self;
   v11 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:1 repeats:v13 block:0.0166666667];
   playbackTimer = self->_playbackTimer;
@@ -107,14 +107,14 @@ void __32__RCPTimelineView_startPlayback__block_invoke(uint64_t a1)
   }
 }
 
-- (id)cropHead:(BOOL)a3
+- (id)cropHead:(BOOL)head
 {
-  v3 = a3;
+  headCopy = head;
   v22 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CD9F90]);
   Mutable = CGPathCreateMutable();
   v7 = Mutable;
-  if (v3)
+  if (headCopy)
   {
     v8 = -5.0;
   }
@@ -124,7 +124,7 @@ void __32__RCPTimelineView_startPlayback__block_invoke(uint64_t a1)
     v8 = 5.0;
   }
 
-  if (v3)
+  if (headCopy)
   {
     v9 = 1.0;
   }
@@ -161,23 +161,23 @@ void __32__RCPTimelineView_startPlayback__block_invoke(uint64_t a1)
   v16 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [v16 addSublayer:v14];
   [v16 addSublayer:v5];
-  v17 = [(RCPTimelineView *)self layer];
-  [v17 addSublayer:v16];
+  layer = [(RCPTimelineView *)self layer];
+  [layer addSublayer:v16];
 
   return v16;
 }
 
-- (double)xForTimestamp:(unint64_t)a3
+- (double)xForTimestamp:(unint64_t)timestamp
 {
   [(RCPTimelineView *)self bounds];
-  v6 = a3;
+  timestampCopy = timestamp;
   v7 = 8.0 / (v5 + -32.0);
-  v8 = [(RCPTimelineView *)self recapMovie];
-  v9 = v6 - [v8 startTimestamp];
-  v10 = [(RCPTimelineView *)self recapMovie];
-  v11 = [v10 endTimestamp];
-  v12 = [(RCPTimelineView *)self recapMovie];
-  v13 = v9 / (v11 - [v12 startTimestamp]);
+  recapMovie = [(RCPTimelineView *)self recapMovie];
+  v9 = timestampCopy - [recapMovie startTimestamp];
+  recapMovie2 = [(RCPTimelineView *)self recapMovie];
+  endTimestamp = [recapMovie2 endTimestamp];
+  recapMovie3 = [(RCPTimelineView *)self recapMovie];
+  v13 = v9 / (endTimestamp - [recapMovie3 startTimestamp]);
 
   v14 = v7 + 1.0;
   if (v7 + 1.0 >= v13)
@@ -199,37 +199,37 @@ void __32__RCPTimelineView_startPlayback__block_invoke(uint64_t a1)
   return (v16 + -48.0) * v15 + 24.0;
 }
 
-- (void)setTime:(unint64_t)a3
+- (void)setTime:(unint64_t)time
 {
-  v5 = [(RCPTimelineView *)self startCropTimestamp];
-  v6 = [(RCPTimelineView *)self endCropTimestamp];
-  if (v6 >= a3)
+  startCropTimestamp = [(RCPTimelineView *)self startCropTimestamp];
+  endCropTimestamp = [(RCPTimelineView *)self endCropTimestamp];
+  if (endCropTimestamp >= time)
   {
-    v7 = a3;
+    timeCopy = time;
   }
 
   else
   {
-    v7 = v6;
+    timeCopy = endCropTimestamp;
   }
 
-  if (v5 <= v7)
+  if (startCropTimestamp <= timeCopy)
   {
-    v8 = v7;
+    v8 = timeCopy;
   }
 
   else
   {
-    v8 = v5;
+    v8 = startCropTimestamp;
   }
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   self->_time = v8;
-  v9 = [(RCPTimelineView *)self recapMovie];
-  v10 = [v9 eventStream];
-  v11 = [v10 events];
-  v12 = [v11 count];
+  recapMovie = [(RCPTimelineView *)self recapMovie];
+  eventStream = [recapMovie eventStream];
+  events = [eventStream events];
+  v12 = [events count];
 
   if (v12 >= 2)
   {
@@ -237,8 +237,8 @@ void __32__RCPTimelineView_startPlayback__block_invoke(uint64_t a1)
     v14 = v13 + -1.0;
     [(RCPTimelineView *)self bounds];
     [(CALayer *)self->_playbackHead setFrame:v14, 0.0, 2.0];
-    v15 = [(RCPTimelineView *)self delegate];
-    [v15 timelineView:self didSetTime:v8];
+    delegate = [(RCPTimelineView *)self delegate];
+    [delegate timelineView:self didSetTime:v8];
 
     [(RCPTimelineView *)self updateCropUI];
   }
@@ -269,38 +269,38 @@ void __32__RCPTimelineView_startPlayback__block_invoke(uint64_t a1)
   [(RCPTimelineView *)self setTime:self->_time];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [began anyObject];
+  [anyObject locationInView:self];
   [RCPTimelineView dragBeganAtLocation:"dragBeganAtLocation:hitThreshold:" hitThreshold:?];
 }
 
-- (void)dragBeganAtLocation:(CGPoint)a3 hitThreshold:(double)a4
+- (void)dragBeganAtLocation:(CGPoint)location hitThreshold:(double)threshold
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(NSTimer *)self->_playbackTimer invalidate];
   playbackTimer = self->_playbackTimer;
   self->_playbackTimer = 0;
 
   [(CALayer *)self->_cropStartHead position];
-  if (vabdd_f64(x + a4, v9) < a4)
+  if (vabdd_f64(x + threshold, v9) < threshold)
   {
     goto LABEL_2;
   }
 
   [(CALayer *)self->_cropEndHead position];
-  if (vabdd_f64(x - a4, v11) < a4)
+  if (vabdd_f64(x - threshold, v11) < threshold)
   {
     goto LABEL_4;
   }
 
   [(CALayer *)self->_playbackHead position];
-  if (vabdd_f64(x, v12) >= a4)
+  if (vabdd_f64(x, v12) >= threshold)
   {
     [(CALayer *)self->_cropStartHead position];
-    if (vabdd_f64(x, v13) < a4)
+    if (vabdd_f64(x, v13) < threshold)
     {
 LABEL_2:
       v10 = 1;
@@ -310,7 +310,7 @@ LABEL_5:
     }
 
     [(CALayer *)self->_cropEndHead position];
-    if (vabdd_f64(x, v14) < a4)
+    if (vabdd_f64(x, v14) < threshold)
     {
 LABEL_4:
       v10 = 2;
@@ -324,24 +324,24 @@ LABEL_6:
   [(RCPTimelineView *)self dragAtLocation:x, y];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
   [(RCPTimelineView *)self dragAtLocation:?];
 }
 
-- (void)dragAtLocation:(CGPoint)a3
+- (void)dragAtLocation:(CGPoint)location
 {
-  v4 = a3.x + -24.0;
+  v4 = location.x + -24.0;
   [(RCPTimelineView *)self bounds];
   v6 = v4 / (v5 + -48.0);
-  v7 = [(RCPTimelineView *)self recapMovie];
-  v8 = [v7 startTimestamp];
-  v9 = [(RCPTimelineView *)self recapMovie];
-  v10 = [v9 endTimestamp];
-  v11 = [(RCPTimelineView *)self recapMovie];
-  v12 = v8 + v6 * (v10 - [v11 startTimestamp]);
+  recapMovie = [(RCPTimelineView *)self recapMovie];
+  startTimestamp = [recapMovie startTimestamp];
+  recapMovie2 = [(RCPTimelineView *)self recapMovie];
+  endTimestamp = [recapMovie2 endTimestamp];
+  recapMovie3 = [(RCPTimelineView *)self recapMovie];
+  v12 = startTimestamp + v6 * (endTimestamp - [recapMovie3 startTimestamp]);
 
   draggingHandle = self->_draggingHandle;
   if (draggingHandle == 2)
@@ -372,12 +372,12 @@ LABEL_6:
   [(RCPTimelineView *)self updateCropUI];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v70 = *MEMORY[0x277D85DE8];
   v67.receiver = self;
   v67.super_class = RCPTimelineView;
@@ -389,15 +389,15 @@ LABEL_6:
   v71.size.width = width;
   v71.size.height = height;
   CGContextFillRect(CurrentContext, v71);
-  v9 = [(RCPTimelineView *)self recapMovie];
-  v10 = [v9 eventStream];
-  v11 = [v10 events];
-  v12 = [v11 count];
+  recapMovie = [(RCPTimelineView *)self recapMovie];
+  eventStream = [recapMovie eventStream];
+  events = [eventStream events];
+  v12 = [events count];
 
   if (v12 >= 2)
   {
-    v58 = [MEMORY[0x277CBEB18] array];
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    array = [MEMORY[0x277CBEB18] array];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     [(RCPTimelineView *)self bounds];
     v15 = v14;
     c = CurrentContext;
@@ -406,12 +406,12 @@ LABEL_6:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v16 = [(RCPTimelineView *)self recapMovie];
-    v17 = [v16 eventStream];
-    v18 = [v17 events];
+    recapMovie2 = [(RCPTimelineView *)self recapMovie];
+    eventStream2 = [recapMovie2 eventStream];
+    events2 = [eventStream2 events];
 
-    obj = v18;
-    v56 = [v18 countByEnumeratingWithState:&v63 objects:v69 count:16];
+    obj = events2;
+    v56 = [events2 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v56)
     {
       v54 = *v64;
@@ -428,13 +428,13 @@ LABEL_6:
 
           v57 = v20;
           v21 = *(*(&v63 + 1) + 8 * v20);
-          v22 = [v21 timestamp];
-          v23 = [(RCPTimelineView *)self recapMovie];
-          v24 = (v22 - [v23 startTimestamp]);
-          v25 = [(RCPTimelineView *)self recapMovie];
-          v26 = [v25 endTimestamp];
-          v27 = [(RCPTimelineView *)self recapMovie];
-          v28 = v24 / (v26 - [v27 startTimestamp]) * v19 + 24.0;
+          timestamp = [v21 timestamp];
+          recapMovie3 = [(RCPTimelineView *)self recapMovie];
+          v24 = (timestamp - [recapMovie3 startTimestamp]);
+          recapMovie4 = [(RCPTimelineView *)self recapMovie];
+          endTimestamp = [recapMovie4 endTimestamp];
+          recapMovie5 = [(RCPTimelineView *)self recapMovie];
+          v28 = v24 / (endTimestamp - [recapMovie5 startTimestamp]) * v19 + 24.0;
 
           v72.origin.x = v28 + -3.0;
           v72.origin.y = 3.0;
@@ -455,13 +455,13 @@ LABEL_6:
               v34 = IOHIDEventGetIntegerValue();
 
               v35 = [MEMORY[0x277CCABB0] numberWithInteger:IntegerValue];
-              v36 = [v13 objectForKeyedSubscript:v35];
+              v36 = [dictionary objectForKeyedSubscript:v35];
 
               -[RCPTimelineView xForTimestamp:](self, "xForTimestamp:", [v21 timestamp]);
               if (v34)
               {
                 v39 = [MEMORY[0x277CCABB0] numberWithInteger:IntegerValue];
-                [v13 removeObjectForKey:v39];
+                [dictionary removeObjectForKey:v39];
               }
 
               else
@@ -477,11 +477,11 @@ LABEL_6:
                   v36 = objc_alloc_init(RCPEventTrack);
                   [(RCPEventTrack *)v36 setStartX:v38];
                   [(RCPEventTrack *)v36 setEndX:v38 + 2.0];
-                  -[RCPEventTrack setTrackY:](v36, "setTrackY:", [v13 count]);
+                  -[RCPEventTrack setTrackY:](v36, "setTrackY:", [dictionary count]);
                   v40 = [MEMORY[0x277CCABB0] numberWithInteger:IntegerValue];
-                  [v13 setObject:v36 forKeyedSubscript:v40];
+                  [dictionary setObject:v36 forKeyedSubscript:v40];
 
-                  [v58 addObject:v36];
+                  [array addObject:v36];
                 }
               }
 
@@ -506,7 +506,7 @@ LABEL_6:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v41 = v58;
+    v41 = array;
     v42 = [v41 countByEnumeratingWithState:&v59 objects:v68 count:16];
     if (v42)
     {

@@ -1,5 +1,5 @@
 @interface NTKBigNumeralsDigitalColorPalette
-+ (id)multicolorAxialGradientLayerForColor:(unint64_t)a3 device:(id)a4;
++ (id)multicolorAxialGradientLayerForColor:(unint64_t)color device:(id)device;
 - (id)_hourDigits;
 - (id)_minuteDigits;
 @end
@@ -11,15 +11,15 @@
   if ([(NTKBigNumeralsDigitalColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKBigNumeralsDigitalColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKBigNumeralsDigitalColorPalette *)self primaryShiftedColor];
+    primaryColor = [(NTKBigNumeralsDigitalColorPalette *)self primaryShiftedColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_minuteDigits
@@ -27,22 +27,22 @@
   if ([(NTKBigNumeralsDigitalColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKBigNumeralsDigitalColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKBigNumeralsDigitalColorPalette *)self primaryColor];
+    primaryColor = [(NTKBigNumeralsDigitalColorPalette *)self primaryColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
-+ (id)multicolorAxialGradientLayerForColor:(unint64_t)a3 device:(id)a4
++ (id)multicolorAxialGradientLayerForColor:(unint64_t)color device:(id)device
 {
-  if (a3 == 3012)
+  if (color == 3012)
   {
-    v6 = [NTKPrideColorUtils axialColorGradientLayer:0 forDevice:a4, v4];
+    v6 = [NTKPrideColorUtils axialColorGradientLayer:0 forDevice:device, v4];
   }
 
   else

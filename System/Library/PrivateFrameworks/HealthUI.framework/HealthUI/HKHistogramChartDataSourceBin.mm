@@ -1,5 +1,5 @@
 @interface HKHistogramChartDataSourceBin
-- (HKHistogramChartDataSourceBin)initWithValues:(id)a3;
+- (HKHistogramChartDataSourceBin)initWithValues:(id)values;
 - (NSArray)values;
 - (NSNumber)averageValue;
 - (NSNumber)maximumValue;
@@ -92,15 +92,15 @@
   return v4;
 }
 
-- (HKHistogramChartDataSourceBin)initWithValues:(id)a3
+- (HKHistogramChartDataSourceBin)initWithValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = HKHistogramChartDataSourceBin;
   v5 = [(HKHistogramChartDataSourceBin *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithArray:v4];
+    v6 = [MEMORY[0x1E695DF70] arrayWithArray:valuesCopy];
     backingValues = v5->_backingValues;
     v5->_backingValues = v6;
   }

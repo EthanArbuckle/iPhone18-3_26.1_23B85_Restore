@@ -1,14 +1,14 @@
 @interface LoadingTableViewCell
-- (_TtC8NewsFeed20LoadingTableViewCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed20LoadingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed20LoadingTableViewCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed20LoadingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation LoadingTableViewCell
 
-- (_TtC8NewsFeed20LoadingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed20LoadingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D726207C();
   }
@@ -22,7 +22,7 @@
   return sub_1D6B32BFC(v4, v5);
 }
 
-- (_TtC8NewsFeed20LoadingTableViewCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed20LoadingTableViewCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8NewsFeed20LoadingTableViewCell_activityIndicatorView;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DC638]) initWithFrame_];
@@ -38,8 +38,8 @@
   v2 = v13.receiver;
   [(LoadingTableViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed20LoadingTableViewCell_activityIndicatorView];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

@@ -1,9 +1,9 @@
 @interface SSFileProviderUtilities
 + (id)allFileProviderDomains;
-+ (id)domainWithIds:(id)a3;
-+ (id)domainsForProviderWithTopLevelBundleId:(id)a3;
++ (id)domainWithIds:(id)ids;
++ (id)domainsForProviderWithTopLevelBundleId:(id)id;
 + (id)domainsSupportingSearchOnServer;
-+ (void)fetchDomainsSupportingSearchOnServerWithCompletionBlock:(id)a3;
++ (void)fetchDomainsSupportingSearchOnServerWithCompletionBlock:(id)block;
 + (void)initialize;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __37__SSFileProviderUtilities_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -61,16 +61,16 @@ void __37__SSFileProviderUtilities_initialize__block_invoke_2(uint64_t a1, void 
   [v10 updateWithDomains:v11];
 }
 
-+ (void)fetchDomainsSupportingSearchOnServerWithCompletionBlock:(id)a3
++ (void)fetchDomainsSupportingSearchOnServerWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [_domainsByIDLock lock];
   v5 = _domainsFetchedOnce;
   [_domainsByIDLock unlock];
   if (v5 == 1)
   {
-    v6 = [a1 domainsSupportingSearchOnServer];
-    v4[2](v4, v6);
+    domainsSupportingSearchOnServer = [self domainsSupportingSearchOnServer];
+    blockCopy[2](blockCopy, domainsSupportingSearchOnServer);
   }
 
   else
@@ -80,7 +80,7 @@ void __37__SSFileProviderUtilities_initialize__block_invoke_2(uint64_t a1, void 
     v12[2] = 0x3032000000;
     v12[3] = __Block_byref_object_copy__0;
     v12[4] = __Block_byref_object_dispose__0;
-    v13 = _Block_copy(v4);
+    v13 = _Block_copy(blockCopy);
     v7 = dispatch_queue_create("file provider fetch domains queue", 0);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -208,14 +208,14 @@ void __83__SSFileProviderUtilities_fetchDomainsSupportingSearchOnServerWithCompl
 {
   v17 = *MEMORY[0x1E69E9840];
   [_domainsByIDLock lock];
-  v2 = [_domainsByID allValues];
+  allValues = [_domainsByID allValues];
   [_domainsByIDLock unlock];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -251,25 +251,25 @@ void __83__SSFileProviderUtilities_fetchDomainsSupportingSearchOnServerWithCompl
 + (id)allFileProviderDomains
 {
   [_domainsByIDLock lock];
-  v2 = [_domainsByID allValues];
+  allValues = [_domainsByID allValues];
   [_domainsByIDLock unlock];
 
-  return v2;
+  return allValues;
 }
 
-+ (id)domainsForProviderWithTopLevelBundleId:(id)a3
++ (id)domainsForProviderWithTopLevelBundleId:(id)id
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idCopy = id;
   [_domainsByIDLock lock];
-  v4 = [_domainsByID allValues];
+  allValues = [_domainsByID allValues];
   [_domainsByIDLock unlock];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -285,12 +285,12 @@ void __83__SSFileProviderUtilities_fetchDomainsSupportingSearchOnServerWithCompl
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 topLevelBundleIdentifier];
-        if ([v12 isEqualToString:v3])
+        topLevelBundleIdentifier = [v11 topLevelBundleIdentifier];
+        if ([topLevelBundleIdentifier isEqualToString:idCopy])
         {
-          v13 = [v11 isHidden];
+          isHidden = [v11 isHidden];
 
-          if ((v13 & 1) == 0)
+          if ((isHidden & 1) == 0)
           {
             [v5 addObject:v11];
           }
@@ -312,17 +312,17 @@ void __83__SSFileProviderUtilities_fetchDomainsSupportingSearchOnServerWithCompl
   return v5;
 }
 
-+ (id)domainWithIds:(id)a3
++ (id)domainWithIds:(id)ids
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idsCopy = ids;
   [_domainsByIDLock lock];
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = idsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

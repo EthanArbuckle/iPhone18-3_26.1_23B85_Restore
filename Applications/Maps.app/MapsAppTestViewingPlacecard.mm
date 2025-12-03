@@ -7,11 +7,11 @@
 
 - (void)placecardDidPresent
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestMaximizePlaceCardAnimated:1];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestMaximizePlaceCardAnimated:1];
 
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 objectForKeyedSubscript:@"duration"];
+  options = [(MapsAppTest *)self options];
+  v5 = [options objectForKeyedSubscript:@"duration"];
   [v5 doubleValue];
   v7 = v6;
 

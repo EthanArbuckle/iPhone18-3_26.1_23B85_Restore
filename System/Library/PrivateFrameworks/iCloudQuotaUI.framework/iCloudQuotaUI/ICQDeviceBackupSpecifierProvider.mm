@@ -1,44 +1,44 @@
 @interface ICQDeviceBackupSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (BOOL)handleURL:(id)a3;
-- (ICQDeviceBackupSpecifierProvider)initWithAccount:(id)a3 presenter:(id)a4;
-- (ICQDeviceBackupSpecifierProvider)initWithAccountManager:(id)a3;
+- (BOOL)handleURL:(id)l;
+- (ICQDeviceBackupSpecifierProvider)initWithAccount:(id)account presenter:(id)presenter;
+- (ICQDeviceBackupSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
-- (id)_backupDevicesSpecififers:(id)a3;
-- (id)_valueForBackUpDevice:(id)a3;
+- (id)_backupDevicesSpecififers:(id)specififers;
+- (id)_valueForBackUpDevice:(id)device;
 - (void)_fetchBackupInfo;
 - (void)_handleLocalDeviceDeeplink;
 - (void)_reloadSpecifiers;
 - (void)_startObservingBackupChanges;
 - (void)dealloc;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadFinished:(id)a3;
-- (void)loadStarted:(id)a3;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadFinished:(id)finished;
+- (void)loadStarted:(id)started;
 @end
 
 @implementation ICQDeviceBackupSpecifierProvider
 
-- (ICQDeviceBackupSpecifierProvider)initWithAccountManager:(id)a3
+- (ICQDeviceBackupSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v4 = [a3 accounts];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [manager accounts];
+  v5 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
   v6 = [(ICQDeviceBackupSpecifierProvider *)self initWithAccount:v5 presenter:0];
 
   return v6;
 }
 
-- (ICQDeviceBackupSpecifierProvider)initWithAccount:(id)a3 presenter:(id)a4
+- (ICQDeviceBackupSpecifierProvider)initWithAccount:(id)account presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = ICQDeviceBackupSpecifierProvider;
   v9 = [(ICQDeviceBackupSpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeWeak(&v10->_listController, v8);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeWeak(&v10->_listController, presenterCopy);
     v10->_isBackupRequestInProgress = 0;
     [(ICQDeviceBackupSpecifierProvider *)v10 _fetchBackupInfo];
     [(ICQDeviceBackupSpecifierProvider *)v10 _startObservingBackupChanges];
@@ -51,8 +51,8 @@
 {
   if (self->_backupChangesNotificationObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_backupChangesNotificationObserver name:@"BackupInfoDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_backupChangesNotificationObserver name:@"BackupInfoDidChange" object:0];
 
     backupChangesNotificationObserver = self->_backupChangesNotificationObserver;
     self->_backupChangesNotificationObserver = 0;
@@ -77,15 +77,15 @@
   backupInfo = self->_backupInfo;
   if (backupInfo)
   {
-    v7 = [(ICQBackupInfo *)backupInfo deviceGroups];
+    deviceGroups = [(ICQBackupInfo *)backupInfo deviceGroups];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __46__ICQDeviceBackupSpecifierProvider_specifiers__block_invoke;
     v16[3] = &unk_27A65AC38;
     v8 = v5;
     v17 = v8;
-    v18 = self;
-    [v7 enumerateObjectsUsingBlock:v16];
+    selfCopy = self;
+    [deviceGroups enumerateObjectsUsingBlock:v16];
 
     v9 = [v8 copy];
     v10 = self->_specifiers;
@@ -101,8 +101,8 @@ LABEL_7:
   {
     v11 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"BACKUP_DEVICES_GROUP"];
     v19[0] = v11;
-    v12 = [(ICQDeviceBackupSpecifierProvider *)self _specifierForSpinner];
-    v19[1] = v12;
+    _specifierForSpinner = [(ICQDeviceBackupSpecifierProvider *)self _specifierForSpinner];
+    v19[1] = _specifierForSpinner;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v14 = self->_specifiers;
     self->_specifiers = v13;
@@ -144,21 +144,21 @@ void __46__ICQDeviceBackupSpecifierProvider_specifiers__block_invoke(uint64_t a1
   }
 }
 
-- (id)_backupDevicesSpecififers:(id)a3
+- (id)_backupDevicesSpecififers:(id)specififers
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  specififersCopy = specififers;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 backupDevices];
+  backupDevices = [specififersCopy backupDevices];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __62__ICQDeviceBackupSpecifierProvider__backupDevicesSpecififers___block_invoke;
   v14 = &unk_27A65AC60;
-  v15 = self;
+  selfCopy = self;
   v16 = v6;
   v8 = v6;
-  [v7 enumerateObjectsUsingBlock:&v11];
+  [backupDevices enumerateObjectsUsingBlock:&v11];
 
   v9 = [v8 copy];
 
@@ -198,25 +198,25 @@ void __62__ICQDeviceBackupSpecifierProvider__backupDevicesSpecififers___block_in
   [*(a1 + 40) addObject:v11];
 }
 
-- (id)_valueForBackUpDevice:(id)a3
+- (id)_valueForBackUpDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 target];
+  deviceCopy = device;
+  target = [deviceCopy target];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && ([v3 target], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((isKindOfClass & 1) != 0 && ([deviceCopy target], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v6 storageUsedLabel];
+    storageUsedLabel = [v6 storageUsedLabel];
   }
 
   else
   {
-    v8 = &stru_28844FC60;
+    storageUsedLabel = &stru_28844FC60;
   }
 
-  return v8;
+  return storageUsedLabel;
 }
 
 - (void)_fetchBackupInfo
@@ -281,7 +281,7 @@ void *__52__ICQDeviceBackupSpecifierProvider__fetchBackupInfo__block_invoke_56(u
   [WeakRetained reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
 }
 
-- (void)loadStarted:(id)a3
+- (void)loadStarted:(id)started
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -291,7 +291,7 @@ void *__52__ICQDeviceBackupSpecifierProvider__fetchBackupInfo__block_invoke_56(u
   }
 }
 
-- (void)loadFinished:(id)a3
+- (void)loadFinished:(id)finished
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -301,15 +301,15 @@ void *__52__ICQDeviceBackupSpecifierProvider__fetchBackupInfo__block_invoke_56(u
   }
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  errorCopy = error;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Backup info RUI view load failed with error: %@", &v6, 0xCu);
   }
 }
@@ -319,14 +319,14 @@ void *__52__ICQDeviceBackupSpecifierProvider__fetchBackupInfo__block_invoke_56(u
   if (!self->_backupChangesNotificationObserver)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __64__ICQDeviceBackupSpecifierProvider__startObservingBackupChanges__block_invoke;
     v7[3] = &unk_27A65ACB0;
     objc_copyWeak(&v8, &location);
-    v5 = [v3 addObserverForName:@"BackupInfoDidChange" object:0 queue:v4 usingBlock:v7];
+    v5 = [defaultCenter addObserverForName:@"BackupInfoDidChange" object:0 queue:mainQueue usingBlock:v7];
     backupChangesNotificationObserver = self->_backupChangesNotificationObserver;
     self->_backupChangesNotificationObserver = v5;
 
@@ -350,9 +350,9 @@ void __64__ICQDeviceBackupSpecifierProvider__startObservingBackupChanges__block_
   [WeakRetained _fetchBackupInfo];
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   resourceDictionary = self->_resourceDictionary;
   self->_resourceDictionary = v4;
 

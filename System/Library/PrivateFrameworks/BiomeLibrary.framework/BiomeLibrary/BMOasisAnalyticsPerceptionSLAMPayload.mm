@@ -1,38 +1,38 @@
 @interface BMOasisAnalyticsPerceptionSLAMPayload
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsPerceptionSLAMPayload)initWithContextSnapshot:(id)a3 submapCreated:(id)a4 submapUpdated:(id)a5 submapLoaded:(id)a6 trackingLost:(id)a7 trackingState:(id)a8 relocalizationSucceeded:(id)a9;
-- (BMOasisAnalyticsPerceptionSLAMPayload)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsPerceptionSLAMPayload)initWithContextSnapshot:(id)snapshot submapCreated:(id)created submapUpdated:(id)updated submapLoaded:(id)loaded trackingLost:(id)lost trackingState:(id)state relocalizationSucceeded:(id)succeeded;
+- (BMOasisAnalyticsPerceptionSLAMPayload)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsPerceptionSLAMPayload
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
-    v7 = [v5 contextSnapshot];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    contextSnapshot = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
+    contextSnapshot2 = [v5 contextSnapshot];
+    v8 = contextSnapshot2;
+    if (contextSnapshot == contextSnapshot2)
     {
     }
 
     else
     {
-      v9 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
-      v10 = [v5 contextSnapshot];
-      v11 = [v9 isEqual:v10];
+      contextSnapshot3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
+      contextSnapshot4 = [v5 contextSnapshot];
+      v11 = [contextSnapshot3 isEqual:contextSnapshot4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
-    v14 = [v5 submapCreated];
-    v15 = v14;
-    if (v13 == v14)
+    submapCreated = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
+    submapCreated2 = [v5 submapCreated];
+    v15 = submapCreated2;
+    if (submapCreated == submapCreated2)
     {
     }
 
     else
     {
-      v16 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
-      v17 = [v5 submapCreated];
-      v18 = [v16 isEqual:v17];
+      submapCreated3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
+      submapCreated4 = [v5 submapCreated];
+      v18 = [submapCreated3 isEqual:submapCreated4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
-    v20 = [v5 submapUpdated];
-    v21 = v20;
-    if (v19 == v20)
+    submapUpdated = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
+    submapUpdated2 = [v5 submapUpdated];
+    v21 = submapUpdated2;
+    if (submapUpdated == submapUpdated2)
     {
     }
 
     else
     {
-      v22 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
-      v23 = [v5 submapUpdated];
-      v24 = [v22 isEqual:v23];
+      submapUpdated3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
+      submapUpdated4 = [v5 submapUpdated];
+      v24 = [submapUpdated3 isEqual:submapUpdated4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
-    v26 = [v5 submapLoaded];
-    v27 = v26;
-    if (v25 == v26)
+    submapLoaded = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
+    submapLoaded2 = [v5 submapLoaded];
+    v27 = submapLoaded2;
+    if (submapLoaded == submapLoaded2)
     {
     }
 
     else
     {
-      v28 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
-      v29 = [v5 submapLoaded];
-      v30 = [v28 isEqual:v29];
+      submapLoaded3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
+      submapLoaded4 = [v5 submapLoaded];
+      v30 = [submapLoaded3 isEqual:submapLoaded4];
 
       if (!v30)
       {
@@ -97,18 +97,18 @@
       }
     }
 
-    v31 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
-    v32 = [v5 trackingLost];
-    v33 = v32;
-    if (v31 == v32)
+    trackingLost = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
+    trackingLost2 = [v5 trackingLost];
+    v33 = trackingLost2;
+    if (trackingLost == trackingLost2)
     {
     }
 
     else
     {
-      v34 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
-      v35 = [v5 trackingLost];
-      v36 = [v34 isEqual:v35];
+      trackingLost3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
+      trackingLost4 = [v5 trackingLost];
+      v36 = [trackingLost3 isEqual:trackingLost4];
 
       if (!v36)
       {
@@ -116,18 +116,18 @@
       }
     }
 
-    v37 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
-    v38 = [v5 trackingState];
-    v39 = v38;
-    if (v37 == v38)
+    trackingState = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
+    trackingState2 = [v5 trackingState];
+    v39 = trackingState2;
+    if (trackingState == trackingState2)
     {
     }
 
     else
     {
-      v40 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
-      v41 = [v5 trackingState];
-      v42 = [v40 isEqual:v41];
+      trackingState3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
+      trackingState4 = [v5 trackingState];
+      v42 = [trackingState3 isEqual:trackingState4];
 
       if (!v42)
       {
@@ -139,18 +139,18 @@ LABEL_26:
       }
     }
 
-    v44 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
-    v45 = [v5 relocalizationSucceeded];
-    if (v44 == v45)
+    relocalizationSucceeded = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
+    relocalizationSucceeded2 = [v5 relocalizationSucceeded];
+    if (relocalizationSucceeded == relocalizationSucceeded2)
     {
       v12 = 1;
     }
 
     else
     {
-      v46 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
-      v47 = [v5 relocalizationSucceeded];
-      v12 = [v46 isEqual:v47];
+      relocalizationSucceeded3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
+      relocalizationSucceeded4 = [v5 relocalizationSucceeded];
+      v12 = [relocalizationSucceeded3 isEqual:relocalizationSucceeded4];
     }
 
     goto LABEL_26;
@@ -165,99 +165,99 @@ LABEL_27:
 - (id)jsonDictionary
 {
   v33[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
-  v4 = [v3 jsonDictionary];
+  contextSnapshot = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
+  jsonDictionary = [contextSnapshot jsonDictionary];
 
-  v5 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
-  v6 = [v5 jsonDictionary];
+  submapCreated = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
+  jsonDictionary2 = [submapCreated jsonDictionary];
 
-  v7 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
-  v8 = [v7 jsonDictionary];
+  submapUpdated = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
+  jsonDictionary3 = [submapUpdated jsonDictionary];
 
-  v9 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
-  v10 = [v9 jsonDictionary];
+  submapLoaded = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
+  jsonDictionary4 = [submapLoaded jsonDictionary];
 
-  v11 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
-  v12 = [v11 jsonDictionary];
+  trackingLost = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
+  jsonDictionary5 = [trackingLost jsonDictionary];
 
-  v13 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
-  v14 = [v13 jsonDictionary];
+  trackingState = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
+  jsonDictionary6 = [trackingState jsonDictionary];
 
-  v15 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
-  v16 = [v15 jsonDictionary];
+  relocalizationSucceeded = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
+  jsonDictionary7 = [relocalizationSucceeded jsonDictionary];
 
   v32[0] = @"contextSnapshot";
-  v17 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v17;
-  v33[0] = v17;
+  v29 = null;
+  v33[0] = null;
   v32[1] = @"submapCreated";
-  v18 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v18;
-  v33[1] = v18;
+  v28 = null2;
+  v33[1] = null2;
   v32[2] = @"submapUpdated";
-  v19 = v8;
-  if (!v8)
+  null3 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v4;
-  v27 = v19;
-  v33[2] = v19;
+  v31 = jsonDictionary;
+  v27 = null3;
+  v33[2] = null3;
   v32[3] = @"submapLoaded";
-  v20 = v10;
-  if (!v10)
+  null4 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v6;
-  v33[3] = v20;
+  v30 = jsonDictionary2;
+  v33[3] = null4;
   v32[4] = @"trackingLost";
-  v21 = v12;
-  if (!v12)
+  null5 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[4] = v21;
+  v33[4] = null5;
   v32[5] = @"trackingState";
-  v22 = v14;
-  if (!v14)
+  null6 = jsonDictionary6;
+  if (!jsonDictionary6)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[5] = v22;
+  v33[5] = null6;
   v32[6] = @"relocalizationSucceeded";
-  v23 = v16;
-  if (!v16)
+  null7 = jsonDictionary7;
+  if (!jsonDictionary7)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[6] = v23;
+  v33[6] = null7;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:7];
-  if (v16)
+  if (jsonDictionary7)
   {
-    if (v14)
+    if (jsonDictionary6)
     {
       goto LABEL_17;
     }
 
 LABEL_27:
 
-    if (v12)
+    if (jsonDictionary5)
     {
       goto LABEL_18;
     }
@@ -265,13 +265,13 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (!v14)
+  if (!jsonDictionary6)
   {
     goto LABEL_27;
   }
 
 LABEL_17:
-  if (v12)
+  if (jsonDictionary5)
   {
     goto LABEL_18;
   }
@@ -279,11 +279,11 @@ LABEL_17:
 LABEL_28:
 
 LABEL_18:
-  if (!v10)
+  if (!jsonDictionary4)
   {
   }
 
-  if (v8)
+  if (jsonDictionary3)
   {
     if (v30)
     {
@@ -319,39 +319,39 @@ LABEL_23:
   return v24;
 }
 
-- (BMOasisAnalyticsPerceptionSLAMPayload)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsPerceptionSLAMPayload)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"contextSnapshot"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"contextSnapshot"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"submapCreated"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"submapCreated"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v66 = 0;
 LABEL_7:
-      v10 = [v6 objectForKeyedSubscript:@"submapUpdated"];
-      v67 = self;
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"submapUpdated"];
+      errorCopy2 = self;
       if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v65 = 0;
 LABEL_10:
-        v11 = [v6 objectForKeyedSubscript:@"submapLoaded"];
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"submapLoaded"];
         if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v61 = 0;
 LABEL_13:
-          v12 = [v6 objectForKeyedSubscript:@"trackingLost"];
+          v12 = [dictionaryCopy objectForKeyedSubscript:@"trackingLost"];
           v62 = v8;
           if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v60 = 0;
 LABEL_16:
-            v13 = [v6 objectForKeyedSubscript:@"trackingState"];
-            v56 = a4;
+            v13 = [dictionaryCopy objectForKeyedSubscript:@"trackingState"];
+            errorCopy = error;
             if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v54 = 0;
@@ -367,23 +367,23 @@ LABEL_16:
               v37 = v69;
               if (v37)
               {
-                if (a4)
+                if (error)
                 {
                   v37 = v37;
-                  *a4 = v37;
+                  *error = v37;
                 }
 
                 goto LABEL_88;
               }
 
 LABEL_19:
-              v14 = [v6 objectForKeyedSubscript:@"relocalizationSucceeded"];
+              v14 = [dictionaryCopy objectForKeyedSubscript:@"relocalizationSucceeded"];
               if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v15 = 0;
 LABEL_22:
-                a4 = [(BMOasisAnalyticsPerceptionSLAMPayload *)v67 initWithContextSnapshot:v62 submapCreated:v66 submapUpdated:v65 submapLoaded:v61 trackingLost:v60 trackingState:v54 relocalizationSucceeded:v15];
-                v67 = a4;
+                error = [(BMOasisAnalyticsPerceptionSLAMPayload *)errorCopy2 initWithContextSnapshot:v62 submapCreated:v66 submapUpdated:v65 submapLoaded:v61 trackingLost:v60 trackingState:v54 relocalizationSucceeded:v15];
+                errorCopy2 = error;
 LABEL_79:
 
                 goto LABEL_80;
@@ -402,18 +402,18 @@ LABEL_79:
                   goto LABEL_22;
                 }
 
-                if (v56)
+                if (errorCopy)
                 {
                   v43 = v43;
-                  *v56 = v43;
+                  *errorCopy = v43;
                 }
 
 LABEL_78:
-                a4 = 0;
+                error = 0;
                 goto LABEL_79;
               }
 
-              if (a4)
+              if (error)
               {
                 v53 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v51 = *MEMORY[0x1E698F240];
@@ -421,17 +421,17 @@ LABEL_78:
                 v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"relocalizationSucceeded"];
                 v76 = v15;
                 v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-                *v56 = [v53 initWithDomain:v51 code:2 userInfo:v48];
+                *errorCopy = [v53 initWithDomain:v51 code:2 userInfo:v48];
 
                 goto LABEL_78;
               }
 
 LABEL_88:
-              a4 = 0;
+              error = 0;
               goto LABEL_80;
             }
 
-            if (a4)
+            if (error)
             {
               v52 = objc_alloc(MEMORY[0x1E696ABC0]);
               v47 = *MEMORY[0x1E698F240];
@@ -439,8 +439,8 @@ LABEL_88:
               v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"trackingState"];
               v78 = v54;
               v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-              a4 = 0;
-              *v56 = [v52 initWithDomain:v47 code:2 userInfo:v14];
+              error = 0;
+              *errorCopy = [v52 initWithDomain:v47 code:2 userInfo:v14];
 LABEL_80:
             }
 
@@ -462,22 +462,22 @@ LABEL_82:
             if (v32)
             {
               v17 = v66;
-              if (a4)
+              if (error)
               {
                 v32 = v32;
-                *a4 = v32;
+                *error = v32;
               }
 
-              a4 = 0;
+              error = 0;
               goto LABEL_82;
             }
 
             goto LABEL_16;
           }
 
-          if (a4)
+          if (error)
           {
-            v44 = a4;
+            errorCopy3 = error;
             v45 = objc_alloc(MEMORY[0x1E696ABC0]);
             v55 = *MEMORY[0x1E698F240];
             v79 = *MEMORY[0x1E696A578];
@@ -485,8 +485,8 @@ LABEL_82:
             v80 = v60;
             v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
             v46 = [v45 initWithDomain:v55 code:2 userInfo:v13];
-            a4 = 0;
-            *v44 = v46;
+            error = 0;
+            *errorCopy3 = v46;
             goto LABEL_81;
           }
 
@@ -507,22 +507,22 @@ LABEL_83:
           if (v26)
           {
             v17 = v66;
-            if (a4)
+            if (error)
             {
               v26 = v26;
-              *a4 = v26;
+              *error = v26;
             }
 
-            a4 = 0;
+            error = 0;
             goto LABEL_83;
           }
 
           goto LABEL_13;
         }
 
-        if (a4)
+        if (error)
         {
-          v59 = a4;
+          errorCopy4 = error;
           v38 = objc_alloc(MEMORY[0x1E696ABC0]);
           v64 = v8;
           v39 = *MEMORY[0x1E698F240];
@@ -533,8 +533,8 @@ LABEL_83:
           v40 = v39;
           v8 = v64;
           v41 = [v38 initWithDomain:v40 code:2 userInfo:v12];
-          a4 = 0;
-          *v59 = v41;
+          error = 0;
+          *errorCopy4 = v41;
           goto LABEL_70;
         }
 
@@ -542,7 +542,7 @@ LABEL_61:
         v17 = v66;
 LABEL_84:
 
-        self = v67;
+        self = errorCopy2;
         goto LABEL_85;
       }
 
@@ -556,22 +556,22 @@ LABEL_84:
         if (v19)
         {
           v17 = v66;
-          if (a4)
+          if (error)
           {
             v19 = v19;
-            *a4 = v19;
+            *error = v19;
           }
 
-          a4 = 0;
+          error = 0;
           goto LABEL_84;
         }
 
         goto LABEL_10;
       }
 
-      if (a4)
+      if (error)
       {
-        v58 = a4;
+        errorCopy5 = error;
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v63 = v8;
         v34 = *MEMORY[0x1E698F240];
@@ -582,8 +582,8 @@ LABEL_84:
         v35 = v34;
         v8 = v63;
         v36 = [v33 initWithDomain:v35 code:2 userInfo:v11];
-        a4 = 0;
-        *v58 = v36;
+        error = 0;
+        *errorCopy5 = v36;
         goto LABEL_61;
       }
 
@@ -602,13 +602,13 @@ LABEL_85:
       v18 = v73;
       if (v18)
       {
-        if (a4)
+        if (error)
         {
           v18 = v18;
-          *a4 = v18;
+          *error = v18;
         }
 
-        a4 = 0;
+        error = 0;
         goto LABEL_85;
       }
 
@@ -617,9 +617,9 @@ LABEL_85:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
-      v57 = a4;
+      errorCopy6 = error;
       v27 = objc_alloc(MEMORY[0x1E696ABC0]);
       v28 = v8;
       v29 = *MEMORY[0x1E698F240];
@@ -630,8 +630,8 @@ LABEL_85:
       v30 = v29;
       v8 = v28;
       v31 = [v27 initWithDomain:v30 code:2 userInfo:v10];
-      a4 = 0;
-      *v57 = v31;
+      error = 0;
+      *errorCopy6 = v31;
       goto LABEL_85;
     }
 
@@ -649,22 +649,22 @@ LABEL_86:
     v16 = v74;
     if (v16)
     {
-      if (a4)
+      if (error)
       {
         v16 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_86;
     }
 
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
-    v20 = a4;
+    errorCopy7 = error;
     v21 = objc_alloc(MEMORY[0x1E696ABC0]);
     v22 = *MEMORY[0x1E698F240];
     v87 = *MEMORY[0x1E696A578];
@@ -674,82 +674,82 @@ LABEL_86:
     v24 = v22;
     v8 = v23;
     v25 = [v21 initWithDomain:v24 code:2 userInfo:v9];
-    a4 = 0;
-    *v20 = v25;
+    error = 0;
+    *errorCopy7 = v25;
     goto LABEL_86;
   }
 
 LABEL_87:
 
   v49 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsPerceptionSLAMPayload *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_contextSnapshot)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsContextSnapshotEvent *)self->_contextSnapshot writeTo:v4];
+    [(BMOasisAnalyticsContextSnapshotEvent *)self->_contextSnapshot writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_submapCreated)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsSubmapCreatedEvent *)self->_submapCreated writeTo:v4];
+    [(BMOasisAnalyticsSubmapCreatedEvent *)self->_submapCreated writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_submapUpdated)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsSubmapUpdatedEvent *)self->_submapUpdated writeTo:v4];
+    [(BMOasisAnalyticsSubmapUpdatedEvent *)self->_submapUpdated writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_submapLoaded)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsSubmapLoadedEvent *)self->_submapLoaded writeTo:v4];
+    [(BMOasisAnalyticsSubmapLoadedEvent *)self->_submapLoaded writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_trackingLost)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsTrackingLostEvent *)self->_trackingLost writeTo:v4];
+    [(BMOasisAnalyticsTrackingLostEvent *)self->_trackingLost writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_trackingState)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsTrackingStateEvent *)self->_trackingState writeTo:v4];
+    [(BMOasisAnalyticsTrackingStateEvent *)self->_trackingState writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_relocalizationSucceeded)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsRelocalizationSucceededEvent *)self->_relocalizationSucceeded writeTo:v4];
+    [(BMOasisAnalyticsRelocalizationSucceededEvent *)self->_relocalizationSucceeded writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMOasisAnalyticsPerceptionSLAMPayload;
   v5 = [(BMEventBase *)&v22 init];
@@ -758,12 +758,12 @@ LABEL_87:
     goto LABEL_54;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -774,18 +774,18 @@ LABEL_87:
       while (1)
       {
         LOBYTE(v23) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23 & 0x7F) << v7;
@@ -802,9 +802,9 @@ LABEL_87:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -822,7 +822,7 @@ LABEL_16:
               goto LABEL_53;
             }
 
-            v16 = [[BMOasisAnalyticsContextSnapshotEvent alloc] initByReadFrom:v4];
+            v16 = [[BMOasisAnalyticsContextSnapshotEvent alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_53;
@@ -838,7 +838,7 @@ LABEL_16:
               goto LABEL_53;
             }
 
-            v16 = [[BMOasisAnalyticsSubmapCreatedEvent alloc] initByReadFrom:v4];
+            v16 = [[BMOasisAnalyticsSubmapCreatedEvent alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_53;
@@ -854,7 +854,7 @@ LABEL_16:
               goto LABEL_53;
             }
 
-            v16 = [[BMOasisAnalyticsSubmapUpdatedEvent alloc] initByReadFrom:v4];
+            v16 = [[BMOasisAnalyticsSubmapUpdatedEvent alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_53;
@@ -878,7 +878,7 @@ LABEL_16:
             goto LABEL_53;
           }
 
-          v16 = [[BMOasisAnalyticsTrackingStateEvent alloc] initByReadFrom:v4];
+          v16 = [[BMOasisAnalyticsTrackingStateEvent alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_53;
@@ -907,7 +907,7 @@ LABEL_39:
             goto LABEL_53;
           }
 
-          v16 = [[BMOasisAnalyticsRelocalizationSucceededEvent alloc] initByReadFrom:v4];
+          v16 = [[BMOasisAnalyticsRelocalizationSucceededEvent alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_53;
@@ -926,7 +926,7 @@ LABEL_39:
           goto LABEL_53;
         }
 
-        v16 = [[BMOasisAnalyticsSubmapLoadedEvent alloc] initByReadFrom:v4];
+        v16 = [[BMOasisAnalyticsSubmapLoadedEvent alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_53;
@@ -949,7 +949,7 @@ LABEL_39:
           goto LABEL_53;
         }
 
-        v16 = [[BMOasisAnalyticsTrackingLostEvent alloc] initByReadFrom:v4];
+        v16 = [[BMOasisAnalyticsTrackingLostEvent alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_53;
@@ -963,13 +963,13 @@ LABEL_39:
 
       PBReaderRecallMark();
 LABEL_51:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_53:
     v20 = 0;
@@ -987,40 +987,40 @@ LABEL_54:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
-  v5 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
-  v6 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
-  v7 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
-  v8 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
-  v9 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
-  v10 = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
-  v11 = [v3 initWithFormat:@"BMOasisAnalyticsPerceptionSLAMPayload with contextSnapshot: %@, submapCreated: %@, submapUpdated: %@, submapLoaded: %@, trackingLost: %@, trackingState: %@, relocalizationSucceeded: %@", v4, v5, v6, v7, v8, v9, v10];
+  contextSnapshot = [(BMOasisAnalyticsPerceptionSLAMPayload *)self contextSnapshot];
+  submapCreated = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapCreated];
+  submapUpdated = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapUpdated];
+  submapLoaded = [(BMOasisAnalyticsPerceptionSLAMPayload *)self submapLoaded];
+  trackingLost = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingLost];
+  trackingState = [(BMOasisAnalyticsPerceptionSLAMPayload *)self trackingState];
+  relocalizationSucceeded = [(BMOasisAnalyticsPerceptionSLAMPayload *)self relocalizationSucceeded];
+  v11 = [v3 initWithFormat:@"BMOasisAnalyticsPerceptionSLAMPayload with contextSnapshot: %@, submapCreated: %@, submapUpdated: %@, submapLoaded: %@, trackingLost: %@, trackingState: %@, relocalizationSucceeded: %@", contextSnapshot, submapCreated, submapUpdated, submapLoaded, trackingLost, trackingState, relocalizationSucceeded];
 
   return v11;
 }
 
-- (BMOasisAnalyticsPerceptionSLAMPayload)initWithContextSnapshot:(id)a3 submapCreated:(id)a4 submapUpdated:(id)a5 submapLoaded:(id)a6 trackingLost:(id)a7 trackingState:(id)a8 relocalizationSucceeded:(id)a9
+- (BMOasisAnalyticsPerceptionSLAMPayload)initWithContextSnapshot:(id)snapshot submapCreated:(id)created submapUpdated:(id)updated submapLoaded:(id)loaded trackingLost:(id)lost trackingState:(id)state relocalizationSucceeded:(id)succeeded
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v21 = a6;
-  v20 = a7;
-  v16 = a8;
-  v17 = a9;
+  snapshotCopy = snapshot;
+  createdCopy = created;
+  updatedCopy = updated;
+  loadedCopy = loaded;
+  lostCopy = lost;
+  stateCopy = state;
+  succeededCopy = succeeded;
   v25.receiver = self;
   v25.super_class = BMOasisAnalyticsPerceptionSLAMPayload;
   v18 = [(BMEventBase *)&v25 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_contextSnapshot, a3);
-    objc_storeStrong(&v18->_submapCreated, a4);
-    objc_storeStrong(&v18->_submapUpdated, a5);
-    objc_storeStrong(&v18->_submapLoaded, a6);
-    objc_storeStrong(&v18->_trackingLost, a7);
-    objc_storeStrong(&v18->_trackingState, a8);
-    objc_storeStrong(&v18->_relocalizationSucceeded, a9);
+    objc_storeStrong(&v18->_contextSnapshot, snapshot);
+    objc_storeStrong(&v18->_submapCreated, created);
+    objc_storeStrong(&v18->_submapUpdated, updated);
+    objc_storeStrong(&v18->_submapLoaded, loaded);
+    objc_storeStrong(&v18->_trackingLost, lost);
+    objc_storeStrong(&v18->_trackingState, state);
+    objc_storeStrong(&v18->_relocalizationSucceeded, succeeded);
   }
 
   return v18;
@@ -1143,9 +1143,9 @@ id __48__BMOasisAnalyticsPerceptionSLAMPayload_columns__block_invoke(uint64_t a1
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1153,8 +1153,8 @@ id __48__BMOasisAnalyticsPerceptionSLAMPayload_columns__block_invoke(uint64_t a1
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsPerceptionSLAMPayload alloc] initByReadFrom:v7];
     v4 = v8;

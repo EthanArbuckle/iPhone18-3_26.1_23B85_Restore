@@ -1,41 +1,41 @@
 @interface NTKDeviceSpecificFacesArrayGalleryCollection
-- (NTKDeviceSpecificFacesArrayGalleryCollection)initWithDevice:(id)a3;
-- (id)facesForDevice:(id)a3;
+- (NTKDeviceSpecificFacesArrayGalleryCollection)initWithDevice:(id)device;
+- (id)facesForDevice:(id)device;
 - (id)title;
-- (void)loadFacesWithCompletion:(id)a3;
+- (void)loadFacesWithCompletion:(id)completion;
 @end
 
 @implementation NTKDeviceSpecificFacesArrayGalleryCollection
 
-- (NTKDeviceSpecificFacesArrayGalleryCollection)initWithDevice:(id)a3
+- (NTKDeviceSpecificFacesArrayGalleryCollection)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKDeviceSpecificFacesArrayGalleryCollection;
   v6 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)loadFacesWithCompletion:(id)a3
+- (void)loadFacesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)self device];
+  completionCopy = completion;
+  device = [(NTKDeviceSpecificFacesArrayGalleryCollection *)self device];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__NTKDeviceSpecificFacesArrayGalleryCollection_loadFacesWithCompletion___block_invoke;
   aBlock[3] = &unk_2787826A0;
   objc_copyWeak(&v14, &location);
-  v6 = v5;
+  v6 = device;
   v11 = v6;
-  v12 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = completionCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   v9 = NTKFacesArrayGalleryCollectionLoadQueue();
@@ -127,7 +127,7 @@ void __72__NTKDeviceSpecificFacesArrayGalleryCollection_loadFacesWithCompletion_
   return &stru_284110E98;
 }
 
-- (id)facesForDevice:(id)a3
+- (id)facesForDevice:(id)device
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

@@ -1,21 +1,21 @@
 @interface CAMModeSelectTitleView
-- (CAMModeSelectTitleView)initWithFrame:(CGRect)a3;
+- (CAMModeSelectTitleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTextColor:(id)a3;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation CAMModeSelectTitleView
 
-- (CAMModeSelectTitleView)initWithFrame:(CGRect)a3
+- (CAMModeSelectTitleView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = CAMModeSelectTitleView;
-  v3 = [(CAMModeSelectTitleView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMModeSelectTitleView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     textColor = v3->_textColor;
-    v3->_textColor = v4;
+    v3->_textColor = whiteColor;
 
     v6 = objc_alloc(MEMORY[0x1E69DCC10]);
     v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -23,8 +23,8 @@
     v3->__titleLabel = v7;
 
     [(UILabel *)v3->__titleLabel setTextAlignment:0];
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v3->__titleLabel setTextColor:v9];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v3->__titleLabel setTextColor:whiteColor2];
 
     v10 = [MEMORY[0x1E69DB878] systemFontOfSize:72.0 weight:*MEMORY[0x1E69DB958]];
     [(UILabel *)v3->__titleLabel setFont:v10];
@@ -36,12 +36,12 @@
   return v3;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     titleLabel = self->__titleLabel;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -70,8 +70,8 @@ void __39__CAMModeSelectTitleView_setTextColor___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMModeSelectTitleView *)self _titleLabel];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  _titleLabel = [(CAMModeSelectTitleView *)self _titleLabel];
+  [_titleLabel setFrame:{v4, v6, v8, v10}];
 }
 
 @end

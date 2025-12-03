@@ -1,15 +1,15 @@
 @interface JavaUtilRegexMatchResultImpl
 - (id)group;
-- (id)groupWithInt:(int)a3;
-- (int)endWithInt:(int)a3;
+- (id)groupWithInt:(int)int;
+- (int)endWithInt:(int)int;
 - (int)groupCount;
-- (int)startWithInt:(int)a3;
+- (int)startWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilRegexMatchResultImpl
 
-- (int)endWithInt:(int)a3
+- (int)endWithInt:(int)int
 {
   offsets = self->offsets_;
   if (!offsets)
@@ -17,11 +17,11 @@
     JreThrowNullPointerException();
   }
 
-  v4 = (2 * a3) | 1;
+  v4 = (2 * int) | 1;
   size = offsets->super.size_;
-  if (2 * a3 < 0 || v4 >= size)
+  if (2 * int < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (2 * a3) | 1);
+    IOSArray_throwOutOfBoundsWithMsg(size, (2 * int) | 1);
   }
 
   return *(&offsets->super.size_ + v4 + 1);
@@ -35,13 +35,13 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaUtilRegexMatchResultImpl *)self start];
+  start = [(JavaUtilRegexMatchResultImpl *)self start];
   v5 = [(JavaUtilRegexMatchResultImpl *)self end];
 
-  return [(NSString *)text substring:v4 endIndex:v5];
+  return [(NSString *)text substring:start endIndex:v5];
 }
 
-- (id)groupWithInt:(int)a3
+- (id)groupWithInt:(int)int
 {
   offsets = self->offsets_;
   if (!offsets)
@@ -49,10 +49,10 @@
     goto LABEL_16;
   }
 
-  v5 = 2 * a3;
-  v6 = 2 * a3;
+  v5 = 2 * int;
+  v6 = 2 * int;
   size = offsets->super.size_;
-  if (2 * a3 < 0 || v5 >= size)
+  if (2 * int < 0 || v5 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v5);
   }
@@ -91,7 +91,7 @@ LABEL_16:
   return offsets->super.size_ / 2 - 1;
 }
 
-- (int)startWithInt:(int)a3
+- (int)startWithInt:(int)int
 {
   offsets = self->offsets_;
   if (!offsets)
@@ -99,11 +99,11 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  v4 = 2 * a3;
+  v4 = 2 * int;
   size = offsets->super.size_;
-  if (2 * a3 < 0 || v4 >= size)
+  if (2 * int < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (2 * a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (2 * int));
   }
 
   return *(&offsets->super.size_ + v4 + 1);

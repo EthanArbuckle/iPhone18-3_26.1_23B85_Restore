@@ -1,20 +1,20 @@
 @interface AFSpeakableUtteranceParser
-+ (id)parseUserGeneratedMessage:(id)a3;
++ (id)parseUserGeneratedMessage:(id)message;
 - (AFSpeakableUtteranceParser)init;
-- (AFSpeakableUtteranceParser)initWithLocale:(id)a3;
+- (AFSpeakableUtteranceParser)initWithLocale:(id)locale;
 - (BOOL)handleTTSCodes;
 - (BOOL)handlesFunctions;
-- (id)_handleControlCodeAtIndex:(unsigned int)a3 withBuffer:(id *)a4 totalLength:(unint64_t)a5 consumedLength:(unsigned int *)a6 hadEmpties:(BOOL *)a7 containsPrivacySensitiveContents:(BOOL *)a8 externalProviders:(BOOL *)a9;
-- (id)_handleOptionalAtIndex:(unsigned int)a3 withBuffer:(id *)a4 totalLength:(unint64_t)a5 consumedLength:(unsigned int *)a6 containsPrivacySensitiveContents:(BOOL *)a7 externalProviders:(BOOL *)a8;
-- (id)_handleProviderAtIndex:(unsigned int)a3 withBuffer:(id *)a4 totalLength:(unint64_t)a5 consumedLength:(unsigned int *)a6 containsPrivacySensitiveContents:(BOOL *)a7 hadEmpties:(BOOL *)a8 externalProviders:(BOOL *)a9;
-- (id)parseStringRemovingControlCharacters:(id)a3 error:(id *)a4;
-- (id)parseStringRemovingControlCharacters:(id)a3 error:(id *)a4 containsPrivacySensitiveContents:(BOOL *)a5;
-- (id)parseStringWithFormat:(id)a3 error:(id *)a4 containsPrivacySensitiveContents:(BOOL *)a5 hasExternalDomains:(BOOL *)a6;
-- (id)parseStringWithFormat:(id)a3 error:(id *)a4 hasExternalDomains:(BOOL *)a5;
-- (id)parseStringWithFormat:(id)a3 includeControlCharacters:(BOOL)a4 error:(id *)a5 hadEmpties:(BOOL *)a6 containsPrivacySensitiveContents:(BOOL *)a7 externalProviders:(BOOL *)a8;
-- (void)registerProvider:(id)a3 forNamespace:(id)a4;
-- (void)setHandleTTSCodes:(BOOL)a3;
-- (void)setHandlesFunctions:(BOOL)a3;
+- (id)_handleControlCodeAtIndex:(unsigned int)index withBuffer:(id *)buffer totalLength:(unint64_t)length consumedLength:(unsigned int *)consumedLength hadEmpties:(BOOL *)empties containsPrivacySensitiveContents:(BOOL *)contents externalProviders:(BOOL *)providers;
+- (id)_handleOptionalAtIndex:(unsigned int)index withBuffer:(id *)buffer totalLength:(unint64_t)length consumedLength:(unsigned int *)consumedLength containsPrivacySensitiveContents:(BOOL *)contents externalProviders:(BOOL *)providers;
+- (id)_handleProviderAtIndex:(unsigned int)index withBuffer:(id *)buffer totalLength:(unint64_t)length consumedLength:(unsigned int *)consumedLength containsPrivacySensitiveContents:(BOOL *)contents hadEmpties:(BOOL *)empties externalProviders:(BOOL *)providers;
+- (id)parseStringRemovingControlCharacters:(id)characters error:(id *)error;
+- (id)parseStringRemovingControlCharacters:(id)characters error:(id *)error containsPrivacySensitiveContents:(BOOL *)contents;
+- (id)parseStringWithFormat:(id)format error:(id *)error containsPrivacySensitiveContents:(BOOL *)contents hasExternalDomains:(BOOL *)domains;
+- (id)parseStringWithFormat:(id)format error:(id *)error hasExternalDomains:(BOOL *)domains;
+- (id)parseStringWithFormat:(id)format includeControlCharacters:(BOOL)characters error:(id *)error hadEmpties:(BOOL *)empties containsPrivacySensitiveContents:(BOOL *)contents externalProviders:(BOOL *)providers;
+- (void)registerProvider:(id)provider forNamespace:(id)namespace;
+- (void)setHandleTTSCodes:(BOOL)codes;
+- (void)setHandlesFunctions:(BOOL)functions;
 @end
 
 @implementation AFSpeakableUtteranceParser
@@ -35,63 +35,63 @@
   return v3;
 }
 
-- (id)parseStringRemovingControlCharacters:(id)a3 error:(id *)a4 containsPrivacySensitiveContents:(BOOL *)a5
+- (id)parseStringRemovingControlCharacters:(id)characters error:(id *)error containsPrivacySensitiveContents:(BOOL *)contents
 {
-  if (a5)
+  if (contents)
   {
-    *a5 = 0;
+    *contents = 0;
   }
 
   v7 = 0;
-  v5 = [AFSpeakableUtteranceParser parseStringWithFormat:"parseStringWithFormat:includeControlCharacters:error:hadEmpties:containsPrivacySensitiveContents:externalProviders:" includeControlCharacters:a3 error:0 hadEmpties:a4 containsPrivacySensitiveContents:&v7 externalProviders:?];
+  v5 = [AFSpeakableUtteranceParser parseStringWithFormat:"parseStringWithFormat:includeControlCharacters:error:hadEmpties:containsPrivacySensitiveContents:externalProviders:" includeControlCharacters:characters error:0 hadEmpties:error containsPrivacySensitiveContents:&v7 externalProviders:?];
 
   return v5;
 }
 
-- (id)parseStringRemovingControlCharacters:(id)a3 error:(id *)a4
+- (id)parseStringRemovingControlCharacters:(id)characters error:(id *)error
 {
   v6 = 0;
-  v4 = [(AFSpeakableUtteranceParser *)self parseStringWithFormat:a3 includeControlCharacters:0 error:a4 hadEmpties:&v6 containsPrivacySensitiveContents:&v6 externalProviders:0];
+  v4 = [(AFSpeakableUtteranceParser *)self parseStringWithFormat:characters includeControlCharacters:0 error:error hadEmpties:&v6 containsPrivacySensitiveContents:&v6 externalProviders:0];
 
   return v4;
 }
 
-- (id)parseStringWithFormat:(id)a3 error:(id *)a4 containsPrivacySensitiveContents:(BOOL *)a5 hasExternalDomains:(BOOL *)a6
+- (id)parseStringWithFormat:(id)format error:(id *)error containsPrivacySensitiveContents:(BOOL *)contents hasExternalDomains:(BOOL *)domains
 {
-  if (a5)
+  if (contents)
   {
-    *a5 = 0;
+    *contents = 0;
   }
 
   v8 = 0;
-  v6 = [(AFSpeakableUtteranceParser *)self _parseStringWithFormat:a3 error:a4 hadEmpties:&v8 containsPrivacySensitiveContents:a5 externalProviders:a6];
+  v6 = [(AFSpeakableUtteranceParser *)self _parseStringWithFormat:format error:error hadEmpties:&v8 containsPrivacySensitiveContents:contents externalProviders:domains];
 
   return v6;
 }
 
-- (id)parseStringWithFormat:(id)a3 error:(id *)a4 hasExternalDomains:(BOOL *)a5
+- (id)parseStringWithFormat:(id)format error:(id *)error hasExternalDomains:(BOOL *)domains
 {
   v7 = 0;
-  v5 = [(AFSpeakableUtteranceParser *)self _parseStringWithFormat:a3 error:a4 hadEmpties:&v7 + 1 containsPrivacySensitiveContents:&v7 externalProviders:a5];
+  v5 = [(AFSpeakableUtteranceParser *)self _parseStringWithFormat:format error:error hadEmpties:&v7 + 1 containsPrivacySensitiveContents:&v7 externalProviders:domains];
 
   return v5;
 }
 
-- (id)parseStringWithFormat:(id)a3 includeControlCharacters:(BOOL)a4 error:(id *)a5 hadEmpties:(BOOL *)a6 containsPrivacySensitiveContents:(BOOL *)a7 externalProviders:(BOOL *)a8
+- (id)parseStringWithFormat:(id)format includeControlCharacters:(BOOL)characters error:(id *)error hadEmpties:(BOOL *)empties containsPrivacySensitiveContents:(BOOL *)contents externalProviders:(BOOL *)providers
 {
-  v11 = a4;
-  v13 = a3;
-  v14 = v13;
-  if (a7)
+  charactersCopy = characters;
+  formatCopy = format;
+  v14 = formatCopy;
+  if (contents)
   {
-    *a7 = 0;
+    *contents = 0;
   }
 
-  v15 = [(__CFString *)v13 length];
+  v15 = [(__CFString *)formatCopy length];
   v16 = [MEMORY[0x1E696AD60] stringWithCapacity:v15];
   if (v15)
   {
-    v32 = a7;
+    contentsCopy = contents;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -182,9 +182,9 @@
           v33[1] = v39;
           v33[2] = v40;
           v33[3] = v41;
-          v27 = [(AFSpeakableUtteranceParser *)self _handleControlCodeAtIndex:v21 + 1 withBuffer:v33 totalLength:v15 consumedLength:&v36 hadEmpties:a6 containsPrivacySensitiveContents:&v35 externalProviders:a8];
+          v27 = [(AFSpeakableUtteranceParser *)self _handleControlCodeAtIndex:v21 + 1 withBuffer:v33 totalLength:v15 consumedLength:&v36 hadEmpties:empties containsPrivacySensitiveContents:&v35 externalProviders:providers];
           v28 = v27;
-          if (v11 && [v27 length])
+          if (charactersCopy && [v27 length])
           {
             [(__CFString *)v16 appendString:v28];
           }
@@ -212,9 +212,9 @@ LABEL_32:
       if (v15 <= v21)
       {
         v14 = v31;
-        if (v32 != 0 && (v20 & 1) != 0)
+        if (contentsCopy != 0 && (v20 & 1) != 0)
         {
-          *v32 = 1;
+          *contentsCopy = 1;
         }
 
         break;
@@ -225,45 +225,45 @@ LABEL_32:
   return v16;
 }
 
-- (id)_handleControlCodeAtIndex:(unsigned int)a3 withBuffer:(id *)a4 totalLength:(unint64_t)a5 consumedLength:(unsigned int *)a6 hadEmpties:(BOOL *)a7 containsPrivacySensitiveContents:(BOOL *)a8 externalProviders:(BOOL *)a9
+- (id)_handleControlCodeAtIndex:(unsigned int)index withBuffer:(id *)buffer totalLength:(unint64_t)length consumedLength:(unsigned int *)consumedLength hadEmpties:(BOOL *)empties containsPrivacySensitiveContents:(BOOL *)contents externalProviders:(BOOL *)providers
 {
-  if (!a6)
+  if (!consumedLength)
   {
     __assert_rtn("[AFSpeakableUtteranceParser _handleControlCodeAtIndex:withBuffer:totalLength:consumedLength:hadEmpties:containsPrivacySensitiveContents:externalProviders:]", "AFSpeakableUtteranceParser.m", 270, "consumed && Need to provide a consumer.");
   }
 
-  if (a8)
+  if (contents)
   {
-    *a8 = 0;
+    *contents = 0;
   }
 
-  if (a5 - 1 <= a3 || (var1 = a4->var4.var1, var1 <= a3))
+  if (length - 1 <= index || (var1 = buffer->var4.var1, var1 <= index))
   {
 LABEL_21:
     v27 = &stru_1F0512680;
     goto LABEL_22;
   }
 
-  var2 = a4->var2;
+  var2 = buffer->var2;
   if (var2)
   {
-    v18 = var2[a4->var4.var0 + a3];
+    v18 = var2[buffer->var4.var0 + index];
   }
 
   else
   {
-    var3 = a4->var3;
+    var3 = buffer->var3;
     if (var3)
     {
-      v18 = var3[a4->var4.var0 + a3];
+      v18 = var3[buffer->var4.var0 + index];
     }
 
     else
     {
-      if (a4->var6 <= a3 || (var5 = a4->var5, var5 > a3))
+      if (buffer->var6 <= index || (var5 = buffer->var5, var5 > index))
       {
-        v21 = a3 - 4;
-        if (a3 < 4)
+        v21 = index - 4;
+        if (index < 4)
         {
           v21 = 0;
         }
@@ -273,15 +273,15 @@ LABEL_21:
           var1 = v21 + 64;
         }
 
-        a4->var5 = v21;
-        a4->var6 = var1;
+        buffer->var5 = v21;
+        buffer->var6 = var1;
         v48.length = var1 - v21;
-        v48.location = a4->var4.var0 + v21;
-        CFStringGetCharacters(a4->var1, v48, a4->var0);
-        var5 = a4->var5;
+        v48.location = buffer->var4.var0 + v21;
+        CFStringGetCharacters(buffer->var1, v48, buffer->var0);
+        var5 = buffer->var5;
       }
 
-      v18 = a4->var0[a3 - var5];
+      v18 = buffer->var0[index - var5];
     }
   }
 
@@ -289,54 +289,54 @@ LABEL_21:
   {
     if (v18 == 91)
     {
-      ++*a6;
-      v22 = *&a4->var3;
-      v43 = *&a4->var1;
+      ++*consumedLength;
+      v22 = *&buffer->var3;
+      v43 = *&buffer->var1;
       v44 = v22;
-      v45 = *&a4->var4.var1;
-      var6 = a4->var6;
-      v23 = *&a4->var0[40];
-      v39 = *&a4->var0[32];
+      v45 = *&buffer->var4.var1;
+      var6 = buffer->var6;
+      v23 = *&buffer->var0[40];
+      v39 = *&buffer->var0[32];
       v40 = v23;
-      v24 = *&a4->var0[56];
-      v41 = *&a4->var0[48];
+      v24 = *&buffer->var0[56];
+      v41 = *&buffer->var0[48];
       v42 = v24;
-      v25 = *&a4->var0[8];
-      v35 = *a4->var0;
+      v25 = *&buffer->var0[8];
+      v35 = *buffer->var0;
       v36 = v25;
-      v26 = *&a4->var0[24];
-      v37 = *&a4->var0[16];
+      v26 = *&buffer->var0[24];
+      v37 = *&buffer->var0[16];
       v38 = v26;
-      v27 = [(AFSpeakableUtteranceParser *)self _handleOptionalAtIndex:a3 + 1 withBuffer:&v35 totalLength:a5 consumedLength:a6 containsPrivacySensitiveContents:a8 externalProviders:a9];
+      v27 = [(AFSpeakableUtteranceParser *)self _handleOptionalAtIndex:index + 1 withBuffer:&v35 totalLength:length consumedLength:consumedLength containsPrivacySensitiveContents:contents externalProviders:providers];
       goto LABEL_22;
     }
 
     goto LABEL_21;
   }
 
-  ++*a6;
-  v29 = *&a4->var3;
-  v43 = *&a4->var1;
+  ++*consumedLength;
+  v29 = *&buffer->var3;
+  v43 = *&buffer->var1;
   v44 = v29;
-  v45 = *&a4->var4.var1;
-  var6 = a4->var6;
-  v30 = *&a4->var0[40];
-  v39 = *&a4->var0[32];
+  v45 = *&buffer->var4.var1;
+  var6 = buffer->var6;
+  v30 = *&buffer->var0[40];
+  v39 = *&buffer->var0[32];
   v40 = v30;
-  v31 = *&a4->var0[56];
-  v41 = *&a4->var0[48];
+  v31 = *&buffer->var0[56];
+  v41 = *&buffer->var0[48];
   v42 = v31;
-  v32 = *&a4->var0[8];
-  v35 = *a4->var0;
+  v32 = *&buffer->var0[8];
+  v35 = *buffer->var0;
   v36 = v32;
-  v33 = *&a4->var0[24];
-  v37 = *&a4->var0[16];
+  v33 = *&buffer->var0[24];
+  v37 = *&buffer->var0[16];
   v38 = v33;
-  v27 = [(AFSpeakableUtteranceParser *)self _handleProviderAtIndex:a3 + 1 withBuffer:&v35 totalLength:a5 consumedLength:a6 containsPrivacySensitiveContents:a8 hadEmpties:a7 externalProviders:a9];
+  v27 = [(AFSpeakableUtteranceParser *)self _handleProviderAtIndex:index + 1 withBuffer:&v35 totalLength:length consumedLength:consumedLength containsPrivacySensitiveContents:contents hadEmpties:empties externalProviders:providers];
   v34 = [(__CFString *)v27 length];
-  if (a7 && !v34)
+  if (empties && !v34)
   {
-    *a7 = 1;
+    *empties = 1;
   }
 
 LABEL_22:
@@ -344,63 +344,63 @@ LABEL_22:
   return v27;
 }
 
-- (id)_handleOptionalAtIndex:(unsigned int)a3 withBuffer:(id *)a4 totalLength:(unint64_t)a5 consumedLength:(unsigned int *)a6 containsPrivacySensitiveContents:(BOOL *)a7 externalProviders:(BOOL *)a8
+- (id)_handleOptionalAtIndex:(unsigned int)index withBuffer:(id *)buffer totalLength:(unint64_t)length consumedLength:(unsigned int *)consumedLength containsPrivacySensitiveContents:(BOOL *)contents externalProviders:(BOOL *)providers
 {
-  if (a7)
+  if (contents)
   {
-    *a7 = 0;
+    *contents = 0;
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v16 = a5 - 1;
-  if (a5 - 1 <= a3)
+  v16 = length - 1;
+  if (length - 1 <= index)
   {
     v18 = &stru_1F0512680;
     goto LABEL_30;
   }
 
-  v28 = a8;
-  v17 = a3;
+  providersCopy = providers;
+  indexCopy = index;
   v18 = &stru_1F0512680;
   while (1)
   {
-    var1 = a4->var4.var1;
-    if (var1 > v17)
+    var1 = buffer->var4.var1;
+    if (var1 > indexCopy)
     {
       break;
     }
 
     v21 = 0;
-    ++*a6;
+    ++*consumedLength;
 LABEL_20:
     [v15 appendFormat:@"%C", v21];
-    v17 = ++a3;
-    if (v16 <= a3)
+    indexCopy = ++index;
+    if (v16 <= index)
     {
       goto LABEL_30;
     }
   }
 
-  var2 = a4->var2;
+  var2 = buffer->var2;
   if (var2)
   {
-    v21 = var2[a4->var4.var0 + v17];
+    v21 = var2[buffer->var4.var0 + indexCopy];
   }
 
   else
   {
-    var3 = a4->var3;
+    var3 = buffer->var3;
     if (var3)
     {
-      v21 = var3[a4->var4.var0 + v17];
+      v21 = var3[buffer->var4.var0 + indexCopy];
     }
 
     else
     {
-      if (a4->var6 <= v17 || (var5 = a4->var5, var5 > v17))
+      if (buffer->var6 <= indexCopy || (var5 = buffer->var5, var5 > indexCopy))
       {
-        v24 = v17 - 4;
-        if (a3 < 4)
+        v24 = indexCopy - 4;
+        if (index < 4)
         {
           v24 = 0;
         }
@@ -410,26 +410,26 @@ LABEL_20:
           var1 = v24 + 64;
         }
 
-        a4->var5 = v24;
-        a4->var6 = var1;
+        buffer->var5 = v24;
+        buffer->var6 = var1;
         v31.length = var1 - v24;
-        v31.location = a4->var4.var0 + v24;
-        CFStringGetCharacters(a4->var1, v31, a4->var0);
-        var5 = a4->var5;
+        v31.location = buffer->var4.var0 + v24;
+        CFStringGetCharacters(buffer->var1, v31, buffer->var0);
+        var5 = buffer->var5;
       }
 
-      v21 = a4->var0[v17 - var5];
+      v21 = buffer->var0[indexCopy - var5];
     }
   }
 
-  ++*a6;
+  ++*consumedLength;
   if (v21 != 93)
   {
     goto LABEL_20;
   }
 
   v29 = 0;
-  v25 = [(AFSpeakableUtteranceParser *)self parseStringWithFormat:v15 includeControlCharacters:1 error:0 hadEmpties:&v29 + 1 containsPrivacySensitiveContents:&v29 externalProviders:v28];
+  v25 = [(AFSpeakableUtteranceParser *)self parseStringWithFormat:v15 includeControlCharacters:1 error:0 hadEmpties:&v29 + 1 containsPrivacySensitiveContents:&v29 externalProviders:providersCopy];
   v26 = v25;
   if ((v29 & 0x100) != 0)
   {
@@ -438,9 +438,9 @@ LABEL_20:
 
   else
   {
-    if (a7 && (v29 & 1) != 0)
+    if (contents && (v29 & 1) != 0)
     {
-      *a7 = 1;
+      *contents = 1;
     }
 
     v18 = v25;
@@ -451,65 +451,65 @@ LABEL_30:
   return v18;
 }
 
-- (id)_handleProviderAtIndex:(unsigned int)a3 withBuffer:(id *)a4 totalLength:(unint64_t)a5 consumedLength:(unsigned int *)a6 containsPrivacySensitiveContents:(BOOL *)a7 hadEmpties:(BOOL *)a8 externalProviders:(BOOL *)a9
+- (id)_handleProviderAtIndex:(unsigned int)index withBuffer:(id *)buffer totalLength:(unint64_t)length consumedLength:(unsigned int *)consumedLength containsPrivacySensitiveContents:(BOOL *)contents hadEmpties:(BOOL *)empties externalProviders:(BOOL *)providers
 {
-  if (a7)
+  if (contents)
   {
-    *a7 = 0;
+    *contents = 0;
   }
 
   v16 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v17 = a3;
-  if (a3 >= a5)
+  indexCopy2 = index;
+  if (index >= length)
   {
     v18 = &stru_1F0512680;
     goto LABEL_24;
   }
 
-  v43 = a8;
-  v44 = self;
-  v45 = a7;
+  emptiesCopy = empties;
+  selfCopy = self;
+  contentsCopy = contents;
   v18 = &stru_1F0512680;
   while (1)
   {
-    var1 = a4->var4.var1;
-    if (var1 > v17)
+    var1 = buffer->var4.var1;
+    if (var1 > indexCopy2)
     {
       break;
     }
 
     v21 = 0;
-    ++*a6;
-    ++a3;
+    ++*consumedLength;
+    ++index;
 LABEL_21:
     [v16 appendFormat:@"%C", v21];
-    v17 = a3;
-    if (a3 >= a5)
+    indexCopy2 = index;
+    if (index >= length)
     {
       goto LABEL_24;
     }
   }
 
-  var2 = a4->var2;
+  var2 = buffer->var2;
   if (var2)
   {
-    LOWORD(v21) = var2[a4->var4.var0 + v17];
+    LOWORD(v21) = var2[buffer->var4.var0 + indexCopy2];
   }
 
   else
   {
-    var3 = a4->var3;
+    var3 = buffer->var3;
     if (var3)
     {
-      LOWORD(v21) = var3[a4->var4.var0 + v17];
+      LOWORD(v21) = var3[buffer->var4.var0 + indexCopy2];
     }
 
     else
     {
-      if (a4->var6 <= v17 || (var5 = a4->var5, var5 > v17))
+      if (buffer->var6 <= indexCopy2 || (var5 = buffer->var5, var5 > indexCopy2))
       {
-        v24 = v17 - 4;
-        if (a3 < 4)
+        v24 = indexCopy2 - 4;
+        if (index < 4)
         {
           v24 = 0;
         }
@@ -519,20 +519,20 @@ LABEL_21:
           var1 = v24 + 64;
         }
 
-        a4->var5 = v24;
-        a4->var6 = var1;
+        buffer->var5 = v24;
+        buffer->var6 = var1;
         v50.length = var1 - v24;
-        v50.location = a4->var4.var0 + v24;
-        CFStringGetCharacters(a4->var1, v50, a4->var0);
-        var5 = a4->var5;
+        v50.location = buffer->var4.var0 + v24;
+        CFStringGetCharacters(buffer->var1, v50, buffer->var0);
+        var5 = buffer->var5;
       }
 
-      LOWORD(v21) = a4->var0[v17 - var5];
+      LOWORD(v21) = buffer->var0[indexCopy2 - var5];
     }
   }
 
-  ++*a6;
-  ++a3;
+  ++*consumedLength;
+  ++index;
   v21 = v21;
   if (v21 != 35)
   {
@@ -544,24 +544,24 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a9 && !*a9 && ([v16 isEqualToString:@"tts"] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"fn") & 1) == 0)
+  if (providers && !*providers && ([v16 isEqualToString:@"tts"] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"fn") & 1) == 0)
   {
-    *a9 = 1;
+    *providers = 1;
   }
 
   v26 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v27 = 0;
   while (2)
   {
-    v28 = a4->var4.var1;
-    if (v28 <= a3)
+    v28 = buffer->var4.var1;
+    if (v28 <= index)
     {
       v31 = 0;
       v30 = 0;
-      ++*a6;
+      ++*consumedLength;
 LABEL_51:
       v36 = v30;
-      ++a3;
+      ++index;
       [v26 appendFormat:@"%C", v30];
       v37 = v31 << 31 >> 31;
       if (v36 == 123)
@@ -576,26 +576,26 @@ LABEL_51:
     break;
   }
 
-  v29 = a4->var2;
+  v29 = buffer->var2;
   if (v29)
   {
-    v30 = v29[a4->var4.var0 + a3];
+    v30 = v29[buffer->var4.var0 + index];
   }
 
   else
   {
-    v32 = a4->var3;
+    v32 = buffer->var3;
     if (v32)
     {
-      v30 = v32[a4->var4.var0 + a3];
+      v30 = v32[buffer->var4.var0 + index];
     }
 
     else
     {
-      if (a4->var6 <= a3 || (v33 = a4->var5, v33 > a3))
+      if (buffer->var6 <= index || (v33 = buffer->var5, v33 > index))
       {
-        v34 = a3 - 4;
-        if (a3 < 4)
+        v34 = index - 4;
+        if (index < 4)
         {
           v34 = 0;
         }
@@ -605,19 +605,19 @@ LABEL_51:
           v28 = v34 + 64;
         }
 
-        a4->var5 = v34;
-        a4->var6 = v28;
+        buffer->var5 = v34;
+        buffer->var6 = v28;
         v51.length = v28 - v34;
-        v51.location = a4->var4.var0 + v34;
-        CFStringGetCharacters(a4->var1, v51, a4->var0);
-        v33 = a4->var5;
+        v51.location = buffer->var4.var0 + v34;
+        CFStringGetCharacters(buffer->var1, v51, buffer->var0);
+        v33 = buffer->var5;
       }
 
-      v30 = a4->var0[a3 - v33];
+      v30 = buffer->var0[index - v33];
     }
   }
 
-  ++*a6;
+  ++*consumedLength;
   v31 = v30 == 125;
   if (v30 != 125 || v27 != 0)
   {
@@ -626,7 +626,7 @@ LABEL_51:
 
   v48 = 0;
   v47 = 0;
-  v38 = [(AFSpeakableUtteranceParser *)self _parseStringWithFormat:v26 error:&v47 hadEmpties:v43 containsPrivacySensitiveContents:&v48 externalProviders:a9];
+  v38 = [(AFSpeakableUtteranceParser *)self _parseStringWithFormat:v26 error:&v47 hadEmpties:emptiesCopy containsPrivacySensitiveContents:&v48 externalProviders:providers];
   v39 = v47;
   v40 = v39;
   if (v39)
@@ -635,7 +635,7 @@ LABEL_51:
   }
 
   v46 = 0;
-  v41 = [(NSMutableDictionary *)v44->_providers objectForKey:v16];
+  v41 = [(NSMutableDictionary *)selfCopy->_providers objectForKey:v16];
   if (!v41)
   {
     goto LABEL_61;
@@ -662,17 +662,17 @@ LABEL_61:
 LABEL_62:
   if (v48)
   {
-    if (!v45)
+    if (!contentsCopy)
     {
       goto LABEL_68;
     }
 
 LABEL_67:
-    *v45 = 1;
+    *contentsCopy = 1;
     goto LABEL_68;
   }
 
-  if (v45 && (v46 & 1) != 0)
+  if (contentsCopy && (v46 & 1) != 0)
   {
     goto LABEL_67;
   }
@@ -685,10 +685,10 @@ LABEL_24:
   return v18;
 }
 
-- (void)setHandlesFunctions:(BOOL)a3
+- (void)setHandlesFunctions:(BOOL)functions
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 && ![(AFSpeakableUtteranceParser *)self handlesFunctions])
+  if (functions && ![(AFSpeakableUtteranceParser *)self handlesFunctions])
   {
     functionHandler = self->_functionHandler;
     if (!functionHandler)
@@ -742,9 +742,9 @@ LABEL_24:
   }
 }
 
-- (void)setHandleTTSCodes:(BOOL)a3
+- (void)setHandleTTSCodes:(BOOL)codes
 {
-  if (a3 && ![(AFSpeakableUtteranceParser *)self handleTTSCodes])
+  if (codes && ![(AFSpeakableUtteranceParser *)self handleTTSCodes])
   {
     v4 = objc_alloc_init(_AFSpeakableUtterancePassThroughProvider);
     [(AFSpeakableUtteranceParser *)self registerProvider:v4 forNamespace:@"tts"];
@@ -757,31 +757,31 @@ LABEL_24:
   }
 }
 
-- (void)registerProvider:(id)a3 forNamespace:(id)a4
+- (void)registerProvider:(id)provider forNamespace:(id)namespace
 {
-  v9 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  namespaceCopy = namespace;
   providers = self->_providers;
-  if (v9)
+  if (providerCopy)
   {
-    [(NSMutableDictionary *)providers setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)providers setObject:providerCopy forKey:namespaceCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)providers removeObjectForKey:v6];
+    [(NSMutableDictionary *)providers removeObjectForKey:namespaceCopy];
   }
 
   functionHandler = self->_functionHandler;
-  if (functionHandler && functionHandler != v9)
+  if (functionHandler && functionHandler != providerCopy)
   {
-    [functionHandler registerProvider:v9 forNamespace:v6];
+    [functionHandler registerProvider:providerCopy forNamespace:namespaceCopy];
   }
 }
 
-- (AFSpeakableUtteranceParser)initWithLocale:(id)a3
+- (AFSpeakableUtteranceParser)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = AFSpeakableUtteranceParser;
   v5 = [(AFSpeakableUtteranceParser *)&v11 init];
@@ -791,18 +791,18 @@ LABEL_24:
     providers = v5->_providers;
     v5->_providers = v6;
 
-    if (v4)
+    if (localeCopy)
     {
-      v8 = v4;
+      currentLocale = localeCopy;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF58] currentLocale];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     }
 
     locale = v5->_locale;
-    v5->_locale = v8;
+    v5->_locale = currentLocale;
 
     if ([objc_opt_class() _shouldAutomaticallyProvideFunctions])
     {
@@ -815,16 +815,16 @@ LABEL_24:
 
 - (AFSpeakableUtteranceParser)init
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [(AFSpeakableUtteranceParser *)self initWithLocale:v3];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [(AFSpeakableUtteranceParser *)self initWithLocale:currentLocale];
 
   return v4;
 }
 
-+ (id)parseUserGeneratedMessage:(id)a3
++ (id)parseUserGeneratedMessage:(id)message
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   if (parseUserGeneratedMessage__onceToken != -1)
   {
     dispatch_once(&parseUserGeneratedMessage__onceToken, &__block_literal_global_12861);
@@ -832,14 +832,14 @@ LABEL_24:
 
   if (parseUserGeneratedMessage__AXSpeechTransformTextHandle)
   {
-    v4 = parseUserGeneratedMessage__AXSpeechTransformTextHandle(v3, 3);
+    v4 = parseUserGeneratedMessage__AXSpeechTransformTextHandle(messageCopy, 3);
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
       v8 = 136315394;
       v9 = "+[AFSpeakableUtteranceParser parseUserGeneratedMessage:]";
       v10 = 2112;
-      v11 = v3;
+      v11 = messageCopy;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s User Generated Message: %@", &v8, 0x16u);
       v5 = AFSiriLogContextConnection;
     }

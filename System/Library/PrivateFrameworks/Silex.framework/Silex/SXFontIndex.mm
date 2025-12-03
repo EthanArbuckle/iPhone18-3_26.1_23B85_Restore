@@ -1,24 +1,24 @@
 @interface SXFontIndex
-- (BOOL)fontFamilyName:(id)a3 matchesFontAttributes:(id)a4;
-- (SXFontIndex)initWithFontFamilyProviders:(id)a3;
-- (id)fontAttributesForFontName:(id)a3;
-- (id)fontFaceForFontAttributes:(id)a3 size:(int64_t)a4;
-- (id)fontNameForFontAttributes:(id)a3 size:(int64_t)a4;
-- (id)fontsForFamilyProviders:(id)a3;
-- (void)addFontFamilyProvider:(id)a3;
+- (BOOL)fontFamilyName:(id)name matchesFontAttributes:(id)attributes;
+- (SXFontIndex)initWithFontFamilyProviders:(id)providers;
+- (id)fontAttributesForFontName:(id)name;
+- (id)fontFaceForFontAttributes:(id)attributes size:(int64_t)size;
+- (id)fontNameForFontAttributes:(id)attributes size:(int64_t)size;
+- (id)fontsForFamilyProviders:(id)providers;
+- (void)addFontFamilyProvider:(id)provider;
 @end
 
 @implementation SXFontIndex
 
-- (SXFontIndex)initWithFontFamilyProviders:(id)a3
+- (SXFontIndex)initWithFontFamilyProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v15.receiver = self;
   v15.super_class = SXFontIndex;
   v5 = [(SXFontIndex *)&v15 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithArray:v4];
+    v6 = [MEMORY[0x1E695DF70] arrayWithArray:providersCopy];
     fontFamilyProviders = v5->_fontFamilyProviders;
     v5->_fontFamilyProviders = v6;
 
@@ -30,7 +30,7 @@
     fontToAttributeIndex = v5->_fontToAttributeIndex;
     v5->_fontToAttributeIndex = v10;
 
-    v12 = [(SXFontIndex *)v5 fontsForFamilyProviders:v4];
+    v12 = [(SXFontIndex *)v5 fontsForFamilyProviders:providersCopy];
     fonts = v5->_fonts;
     v5->_fonts = v12;
   }
@@ -38,13 +38,13 @@
   return v5;
 }
 
-- (void)addFontFamilyProvider:(id)a3
+- (void)addFontFamilyProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
-    v4 = a3;
-    v5 = [(SXFontIndex *)self fontFamilyProviders];
-    [v5 addObject:v4];
+    providerCopy = provider;
+    fontFamilyProviders = [(SXFontIndex *)self fontFamilyProviders];
+    [fontFamilyProviders addObject:providerCopy];
 
     v6 = [(SXFontIndex *)self fontsForFamilyProviders:self->_fontFamilyProviders];
     fonts = self->_fonts;
@@ -57,26 +57,26 @@
   }
 }
 
-- (id)fontNameForFontAttributes:(id)a3 size:(int64_t)a4
+- (id)fontNameForFontAttributes:(id)attributes size:(int64_t)size
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
-    v7 = [[SXFontIndexCacheKey alloc] initWithFontAttributes:v6 fontSize:a4];
+    v7 = [[SXFontIndexCacheKey alloc] initWithFontAttributes:attributesCopy fontSize:size];
     v8 = [(NSCache *)self->_attributeToFontIndex objectForKey:v7];
     if (!v8)
     {
-      v9 = [v6 familyName];
-      if (!v9 || [v6 width] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v6, "weight") == 0x7FFFFFFFFFFFFFFFLL)
+      familyName = [attributesCopy familyName];
+      if (!familyName || [attributesCopy width] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(attributesCopy, "weight") == 0x7FFFFFFFFFFFFFFFLL)
       {
       }
 
       else
       {
-        v11 = [v6 style];
+        style = [attributesCopy style];
 
-        if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+        if (style != 0x7FFFFFFFFFFFFFFFLL)
         {
           v29 = 0u;
           v30 = 0u;
@@ -100,22 +100,22 @@
                 }
 
                 v17 = *(*(&v27 + 1) + 8 * i);
-                if ([(SXFontIndex *)self fontFamilyName:v17 matchesFontAttributes:v6])
+                if ([(SXFontIndex *)self fontFamilyName:v17 matchesFontAttributes:attributesCopy])
                 {
                   v18 = [(NSDictionary *)self->_fonts objectForKey:v17];
-                  [v18 fontFaceWithAttributes:v6 size:a4];
-                  v19 = self;
-                  v20 = v6;
+                  [v18 fontFaceWithAttributes:attributesCopy size:size];
+                  selfCopy = self;
+                  v20 = attributesCopy;
                   v21 = v12;
-                  v23 = v22 = a4;
-                  v24 = [v23 fontName];
+                  v23 = v22 = size;
+                  fontName = [v23 fontName];
                   v25 = v8;
-                  v8 = v24;
+                  v8 = fontName;
 
-                  a4 = v22;
+                  size = v22;
                   v12 = v21;
-                  v6 = v20;
-                  self = v19;
+                  attributesCopy = v20;
+                  self = selfCopy;
                 }
               }
 
@@ -149,16 +149,16 @@ LABEL_10:
   return v8;
 }
 
-- (id)fontFaceForFontAttributes:(id)a3 size:(int64_t)a4
+- (id)fontFaceForFontAttributes:(id)attributes size:(int64_t)size
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 familyName];
-  if (v7 && [v6 width] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v6, "weight") != 0x7FFFFFFFFFFFFFFFLL)
+  attributesCopy = attributes;
+  familyName = [attributesCopy familyName];
+  if (familyName && [attributesCopy width] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(attributesCopy, "weight") != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v6 style];
+    style = [attributesCopy style];
 
-    if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+    if (style == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_5;
     }
@@ -167,8 +167,8 @@ LABEL_10:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = self->_fonts;
-    v11 = [(NSDictionary *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    familyName = self->_fonts;
+    v11 = [(NSDictionary *)familyName countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -179,20 +179,20 @@ LABEL_10:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(familyName);
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
-          if ([(SXFontIndex *)self fontFamilyName:v15 matchesFontAttributes:v6, v17])
+          if ([(SXFontIndex *)self fontFamilyName:v15 matchesFontAttributes:attributesCopy, v17])
           {
             v16 = [(NSDictionary *)self->_fonts objectForKey:v15];
-            v8 = [v16 fontFaceWithAttributes:v6 size:a4];
+            v8 = [v16 fontFaceWithAttributes:attributesCopy size:size];
 
             goto LABEL_6;
           }
         }
 
-        v12 = [(NSDictionary *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [(NSDictionary *)familyName countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v12)
         {
           continue;
@@ -210,16 +210,16 @@ LABEL_6:
   return v8;
 }
 
-- (id)fontAttributesForFontName:(id)a3
+- (id)fontAttributesForFontName:(id)name
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     goto LABEL_24;
   }
 
-  v5 = [(NSCache *)self->_fontToAttributeIndex objectForKey:v4];
+  v5 = [(NSCache *)self->_fontToAttributeIndex objectForKey:nameCopy];
   if (v5)
   {
     goto LABEL_25;
@@ -240,7 +240,7 @@ LABEL_24:
   }
 
   v23 = 0;
-  v20 = self;
+  selfCopy = self;
   v21 = *v29;
   obj = v6;
   do
@@ -257,8 +257,8 @@ LABEL_24:
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = [v8 fontFaces];
-      v10 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      fontFaces = [v8 fontFaces];
+      v10 = [fontFaces countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v10)
       {
         v11 = v10;
@@ -269,23 +269,23 @@ LABEL_24:
           {
             if (*v25 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(fontFaces);
             }
 
             v14 = *(*(&v24 + 1) + 8 * j);
-            v15 = [v14 fontName];
-            v16 = [v15 isEqualToString:v4];
+            fontName = [v14 fontName];
+            v16 = [fontName isEqualToString:nameCopy];
 
             if (v16)
             {
-              v17 = [v14 fontAttributes];
+              fontAttributes = [v14 fontAttributes];
 
-              v23 = v17;
+              v23 = fontAttributes;
               goto LABEL_18;
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v11 = [fontFaces countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v11)
           {
             continue;
@@ -295,7 +295,7 @@ LABEL_24:
         }
 
 LABEL_18:
-        self = v20;
+        self = selfCopy;
       }
     }
 
@@ -307,7 +307,7 @@ LABEL_18:
   v5 = v23;
   if (v23)
   {
-    [(NSCache *)self->_fontToAttributeIndex setObject:v23 forKey:v4];
+    [(NSCache *)self->_fontToAttributeIndex setObject:v23 forKey:nameCopy];
   }
 
 LABEL_25:
@@ -315,16 +315,16 @@ LABEL_25:
   return v5;
 }
 
-- (id)fontsForFamilyProviders:(id)a3
+- (id)fontsForFamilyProviders:(id)providers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  providersCopy = providers;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = providersCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
@@ -344,8 +344,8 @@ LABEL_25:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v9 fontFamilies];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        fontFamilies = [v9 fontFamilies];
+        v11 = [fontFamilies countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -356,15 +356,15 @@ LABEL_25:
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(fontFamilies);
               }
 
               v15 = *(*(&v19 + 1) + 8 * j);
-              v16 = [v15 familyName];
-              [v4 setObject:v15 forKey:v16];
+              familyName = [v15 familyName];
+              [dictionary setObject:v15 forKey:familyName];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [fontFamilies countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v12);
@@ -377,24 +377,24 @@ LABEL_25:
     while (v6);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (BOOL)fontFamilyName:(id)a3 matchesFontAttributes:(id)a4
+- (BOOL)fontFamilyName:(id)name matchesFontAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 familyName];
-  if ([v7 isEqualToString:v5])
+  nameCopy = name;
+  attributesCopy = attributes;
+  familyName = [attributesCopy familyName];
+  if ([familyName isEqualToString:nameCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v6 familyName];
-    v10 = [v9 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F532F6C0];
-    v8 = [v10 isEqualToString:v5];
+    familyName2 = [attributesCopy familyName];
+    v10 = [familyName2 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F532F6C0];
+    v8 = [v10 isEqualToString:nameCopy];
   }
 
   return v8;

@@ -7,29 +7,29 @@
 + (id)hk_dateIntervalWithValueRange:()HealthUIAdditions
 {
   v3 = a3;
-  v4 = [v3 startDate];
-  if (v4)
+  startDate = [v3 startDate];
+  if (startDate)
   {
   }
 
   else
   {
-    v5 = [v3 endDate];
+    endDate = [v3 endDate];
 
-    if (!v5)
+    if (!endDate)
     {
       goto LABEL_5;
     }
   }
 
   v6 = objc_alloc(MEMORY[0x1E696AB80]);
-  v7 = [v3 startDate];
-  v8 = [v3 endDate];
-  v5 = [v6 initWithStartDate:v7 endDate:v8];
+  startDate2 = [v3 startDate];
+  endDate2 = [v3 endDate];
+  endDate = [v6 initWithStartDate:startDate2 endDate:endDate2];
 
 LABEL_5:
 
-  return v5;
+  return endDate;
 }
 
 @end

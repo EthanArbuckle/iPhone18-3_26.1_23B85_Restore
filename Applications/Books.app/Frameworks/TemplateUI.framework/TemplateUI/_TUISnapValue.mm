@@ -1,15 +1,15 @@
 @interface _TUISnapValue
-- (BOOL)isEqual:(id)a3;
-- (_TUISnapValue)initWithOther:(id)a3;
-- (_TUISnapValue)initWithValue:(double)a3;
-- (_TUISnapValue)valueWithIdentifier:(id)a3;
-- (_TUISnapValue)valueWithMax:(double)a3;
-- (_TUISnapValue)valueWithStep:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (_TUISnapValue)initWithOther:(id)other;
+- (_TUISnapValue)initWithValue:(double)value;
+- (_TUISnapValue)valueWithIdentifier:(id)identifier;
+- (_TUISnapValue)valueWithMax:(double)max;
+- (_TUISnapValue)valueWithStep:(double)step;
 @end
 
 @implementation _TUISnapValue
 
-- (_TUISnapValue)initWithValue:(double)a3
+- (_TUISnapValue)initWithValue:(double)value
 {
   v8.receiver = self;
   v8.super_class = _TUISnapValue;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_value = a3;
+    v4->_value = value;
     identifier = v4->_identifier;
     v4->_identifier = 0;
 
@@ -27,37 +27,37 @@
   return v5;
 }
 
-- (_TUISnapValue)initWithOther:(id)a3
+- (_TUISnapValue)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v12.receiver = self;
   v12.super_class = _TUISnapValue;
   v5 = [(_TUISnapValue *)&v12 init];
   if (v5)
   {
-    [v4 value];
+    [otherCopy value];
     v5->_value = v6;
-    v7 = [v4 identifier];
+    identifier = [otherCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v7;
+    v5->_identifier = identifier;
 
-    [v4 step];
+    [otherCopy step];
     v5->_step = v9;
-    [v4 max];
+    [otherCopy max];
     v5->_max = v10;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self == v4;
-  if (v4 && self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  v6 = self == equalCopy;
+  if (equalCopy && self != equalCopy)
   {
-    if (self->_value == v4->_value && TUICGFloatIsEqualFloatOrBothNaN(self->_step, v4->_step) && TUICGFloatIsEqualFloatOrBothNaN(self->_max, v5->_max))
+    if (self->_value == equalCopy->_value && TUICGFloatIsEqualFloatOrBothNaN(self->_step, equalCopy->_step) && TUICGFloatIsEqualFloatOrBothNaN(self->_max, v5->_max))
     {
       identifier = self->_identifier;
       if (identifier == v5->_identifier)
@@ -80,28 +80,28 @@
   return v6;
 }
 
-- (_TUISnapValue)valueWithIdentifier:(id)a3
+- (_TUISnapValue)valueWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [[_TUISnapValue alloc] initWithOther:self];
   identifier = v5->_identifier;
-  v5->_identifier = v4;
+  v5->_identifier = identifierCopy;
 
   return v5;
 }
 
-- (_TUISnapValue)valueWithStep:(double)a3
+- (_TUISnapValue)valueWithStep:(double)step
 {
   v4 = [[_TUISnapValue alloc] initWithOther:self];
-  v4->_step = a3;
+  v4->_step = step;
 
   return v4;
 }
 
-- (_TUISnapValue)valueWithMax:(double)a3
+- (_TUISnapValue)valueWithMax:(double)max
 {
   v4 = [[_TUISnapValue alloc] initWithOther:self];
-  v4->_max = a3;
+  v4->_max = max;
 
   return v4;
 }

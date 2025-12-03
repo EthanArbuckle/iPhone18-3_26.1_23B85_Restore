@@ -1,17 +1,17 @@
 @interface MSCRODMobileBrailleDisplay
-+ (id)_displayWithIOElement:(id)a3 driverIdentifier:(id)a4 modelIdentifier:(id)a5 mainSize:(id)a6 statusSize:(id)a7 inputMode:(id)a8 delegate:(id)a9 reconnectionEnabled:(BOOL)a10;
-+ (id)displayWithIOElement:(id)a3 cachedInfo:(id)a4 delegate:(id)a5 reconnectionEnabled:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)_displayWithIOElement:(id)element driverIdentifier:(id)identifier modelIdentifier:(id)modelIdentifier mainSize:(id)size statusSize:(id)statusSize inputMode:(id)mode delegate:(id)delegate reconnectionEnabled:(BOOL)self0;
++ (id)displayWithIOElement:(id)element cachedInfo:(id)info delegate:(id)delegate reconnectionEnabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresPersistentConnection;
-- (id)_initWithDriver:(id)a3 driverIdentifier:(id)a4 ioElement:(id)a5 delegate:(id)a6;
-- (id)_initWithDriver:(id)a3 driverIdentifier:(id)a4 modelIdentifier:(id)a5 ioElement:(id)a6 mainSize:(int64_t)a7 statusSize:(int64_t)a8 inputMode:(int)a9 delegate:(id)a10 reconnectionEnabled:(BOOL)a11;
+- (id)_initWithDriver:(id)driver driverIdentifier:(id)identifier ioElement:(id)element delegate:(id)delegate;
+- (id)_initWithDriver:(id)driver driverIdentifier:(id)identifier modelIdentifier:(id)modelIdentifier ioElement:(id)element mainSize:(int64_t)size statusSize:(int64_t)statusSize inputMode:(int)mode delegate:(id)self0 reconnectionEnabled:(BOOL)self1;
 - (id)bluetoothAddress;
 - (id)configuration;
 - (id)description;
-- (void)_delayedAddDeviceNotification:(id)a3;
-- (void)_delayedDeviceUpdatedNotification:(id)a3;
+- (void)_delayedAddDeviceNotification:(id)notification;
+- (void)_delayedDeviceUpdatedNotification:(id)notification;
 - (void)_delayedDisplayLoad;
-- (void)_delayedRemoveDeviceNotification:(id)a3;
+- (void)_delayedRemoveDeviceNotification:(id)notification;
 - (void)_reconnectionEventHandler;
 - (void)_reconnectionTriggeredHandler;
 - (void)_reloadDriver;
@@ -21,26 +21,26 @@
 - (void)_startWatchingForDevices;
 - (void)_stopWatchingForDevices;
 - (void)_unloadHandler;
-- (void)addDeviceFailedNotification:(id)a3;
+- (void)addDeviceFailedNotification:(id)notification;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeDeviceNotification:(id)a3;
+- (void)removeDeviceNotification:(id)notification;
 - (void)sleep;
 - (void)unsleep;
 @end
 
 @implementation MSCRODMobileBrailleDisplay
 
-+ (id)displayWithIOElement:(id)a3 cachedInfo:(id)a4 delegate:(id)a5 reconnectionEnabled:(BOOL)a6
++ (id)displayWithIOElement:(id)element cachedInfo:(id)info delegate:(id)delegate reconnectionEnabled:(BOOL)enabled
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  elementCopy = element;
+  infoCopy = info;
+  delegateCopy = delegate;
   objc_opt_class();
-  v12 = [v10 objectForKey:kSCROBrailleDisplayDriverIdentifier];
+  v12 = [infoCopy objectForKey:kSCROBrailleDisplayDriverIdentifier];
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v10 objectForKey:kSCROBrailleDisplayModelIdentifier];
+    v13 = [infoCopy objectForKey:kSCROBrailleDisplayModelIdentifier];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 
@@ -48,29 +48,29 @@
     }
 
     objc_opt_class();
-    v14 = [v10 objectForKey:kSCROBrailleDisplayMainSize];
+    v14 = [infoCopy objectForKey:kSCROBrailleDisplayMainSize];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 
       v14 = 0;
     }
 
-    v15 = [v10 objectForKey:kSCROBrailleDisplayStatusSize];
+    v15 = [infoCopy objectForKey:kSCROBrailleDisplayStatusSize];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 
       v15 = 0;
     }
 
-    v16 = [v10 objectForKey:kSCROBrailleDisplayBrailleInputMode];
+    v16 = [infoCopy objectForKey:kSCROBrailleDisplayBrailleInputMode];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 
       v16 = 0;
     }
 
-    LOBYTE(v19) = a6;
-    v17 = [MSCRODMobileBrailleDisplay _displayWithIOElement:v9 driverIdentifier:v12 modelIdentifier:v13 mainSize:v14 statusSize:v15 inputMode:v16 delegate:v11 reconnectionEnabled:v19];
+    LOBYTE(v19) = enabled;
+    v17 = [MSCRODMobileBrailleDisplay _displayWithIOElement:elementCopy driverIdentifier:v12 modelIdentifier:v13 mainSize:v14 statusSize:v15 inputMode:v16 delegate:delegateCopy reconnectionEnabled:v19];
   }
 
   else
@@ -81,44 +81,44 @@
   return v17;
 }
 
-+ (id)_displayWithIOElement:(id)a3 driverIdentifier:(id)a4 modelIdentifier:(id)a5 mainSize:(id)a6 statusSize:(id)a7 inputMode:(id)a8 delegate:(id)a9 reconnectionEnabled:(BOOL)a10
++ (id)_displayWithIOElement:(id)element driverIdentifier:(id)identifier modelIdentifier:(id)modelIdentifier mainSize:(id)size statusSize:(id)statusSize inputMode:(id)mode delegate:(id)delegate reconnectionEnabled:(BOOL)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  elementCopy = element;
+  identifierCopy = identifier;
+  modelIdentifierCopy = modelIdentifier;
+  sizeCopy = size;
+  statusSizeCopy = statusSize;
+  modeCopy = mode;
+  delegateCopy = delegate;
   v22 = 0;
-  if (v15 && v16)
+  if (elementCopy && identifierCopy)
   {
-    if (![v15 conformsToProtocol:&OBJC_PROTOCOL___SCROIOBluetoothElementProtocol])
+    if (![elementCopy conformsToProtocol:&OBJC_PROTOCOL___SCROIOBluetoothElementProtocol])
     {
       v22 = 0;
       goto LABEL_40;
     }
 
-    v23 = [NSBundle brailleDriverBundleWithIdentifier:v16];
+    v23 = [NSBundle brailleDriverBundleWithIdentifier:identifierCopy];
     v55 = v23;
     if (v23)
     {
-      v24 = [v23 principalClass];
-      if (([SCROBrailleDisplay brailleDriverClassIsValid:v24]& 1) != 0)
+      principalClass = [v23 principalClass];
+      if (([SCROBrailleDisplay brailleDriverClassIsValid:principalClass]& 1) != 0)
       {
-        v53 = v17;
-        v25 = [objc_allocWithZone(v24) init];
+        v53 = modelIdentifierCopy;
+        v25 = [objc_allocWithZone(principalClass) init];
         v26 = v25;
         if (v25)
         {
           if ([v25 interfaceVersion]== 4)
           {
             v51 = objc_allocWithZone(objc_opt_class());
-            v27 = [v18 integerValue];
-            v28 = [v19 integerValue];
-            LOBYTE(v49) = a10;
-            LODWORD(v48) = [v20 integerValue];
-            v22 = [v51 _initWithDriver:v26 driverIdentifier:v16 modelIdentifier:v53 ioElement:v15 mainSize:v27 statusSize:v28 inputMode:v48 delegate:v21 reconnectionEnabled:v49];
+            integerValue = [sizeCopy integerValue];
+            integerValue2 = [statusSizeCopy integerValue];
+            LOBYTE(v49) = enabled;
+            LODWORD(v48) = [modeCopy integerValue];
+            v22 = [v51 _initWithDriver:v26 driverIdentifier:identifierCopy modelIdentifier:v53 ioElement:elementCopy mainSize:integerValue statusSize:integerValue2 inputMode:v48 delegate:delegateCopy reconnectionEnabled:v49];
             v29 = AXLogBrailleHW();
             v30 = v26;
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -137,15 +137,15 @@
           }
 
           v44 = +[AXSubsystemBrailleHardware sharedInstance];
-          v45 = [v44 ignoreLogging];
+          ignoreLogging = [v44 ignoreLogging];
 
-          if (v45)
+          if (ignoreLogging)
           {
 LABEL_29:
             v22 = 0;
             v30 = v26;
 LABEL_30:
-            v17 = v53;
+            modelIdentifierCopy = v53;
 LABEL_38:
 
             goto LABEL_39;
@@ -156,7 +156,7 @@ LABEL_38:
 
           v43 = AXOSLogLevelFromAXLogLevel();
           v30 = v26;
-          v17 = v53;
+          modelIdentifierCopy = v53;
           if (!os_log_type_enabled(v42, v43))
           {
             goto LABEL_36;
@@ -176,9 +176,9 @@ LABEL_38:
         else
         {
           v39 = +[AXSubsystemBrailleHardware sharedInstance];
-          v40 = [v39 ignoreLogging];
+          ignoreLogging2 = [v39 ignoreLogging];
 
-          if (v40)
+          if (ignoreLogging2)
           {
             goto LABEL_29;
           }
@@ -188,7 +188,7 @@ LABEL_38:
 
           v43 = AXOSLogLevelFromAXLogLevel();
           v30 = 0;
-          v17 = v53;
+          modelIdentifierCopy = v53;
           if (!os_log_type_enabled(v42, v43))
           {
             goto LABEL_36;
@@ -213,9 +213,9 @@ LABEL_36:
       }
 
       v36 = +[AXSubsystemBrailleHardware sharedInstance];
-      v37 = [v36 ignoreLogging];
+      ignoreLogging3 = [v36 ignoreLogging];
 
-      if (v37)
+      if (ignoreLogging3)
       {
 LABEL_18:
         v22 = 0;
@@ -246,9 +246,9 @@ LABEL_39:
     else
     {
       v31 = +[AXSubsystemBrailleHardware sharedInstance];
-      v32 = [v31 ignoreLogging];
+      ignoreLogging4 = [v31 ignoreLogging];
 
-      if (v32)
+      if (ignoreLogging4)
       {
         goto LABEL_18;
       }
@@ -283,28 +283,28 @@ LABEL_40:
   return v22;
 }
 
-- (id)_initWithDriver:(id)a3 driverIdentifier:(id)a4 ioElement:(id)a5 delegate:(id)a6
+- (id)_initWithDriver:(id)driver driverIdentifier:(id)identifier ioElement:(id)element delegate:(id)delegate
 {
   LOBYTE(v8) = 1;
   LODWORD(v7) = 0;
-  return [(MSCRODMobileBrailleDisplay *)self _initWithDriver:a3 driverIdentifier:a4 modelIdentifier:0 ioElement:a5 mainSize:0 statusSize:0 inputMode:v7 delegate:a6 reconnectionEnabled:v8];
+  return [(MSCRODMobileBrailleDisplay *)self _initWithDriver:driver driverIdentifier:identifier modelIdentifier:0 ioElement:element mainSize:0 statusSize:0 inputMode:v7 delegate:delegate reconnectionEnabled:v8];
 }
 
-- (id)_initWithDriver:(id)a3 driverIdentifier:(id)a4 modelIdentifier:(id)a5 ioElement:(id)a6 mainSize:(int64_t)a7 statusSize:(int64_t)a8 inputMode:(int)a9 delegate:(id)a10 reconnectionEnabled:(BOOL)a11
+- (id)_initWithDriver:(id)driver driverIdentifier:(id)identifier modelIdentifier:(id)modelIdentifier ioElement:(id)element mainSize:(int64_t)size statusSize:(int64_t)statusSize inputMode:(int)mode delegate:(id)self0 reconnectionEnabled:(BOOL)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  driverCopy = driver;
+  identifierCopy = identifier;
+  modelIdentifierCopy = modelIdentifier;
   v24.receiver = self;
   v24.super_class = MSCRODMobileBrailleDisplay;
-  v20 = [(MSCRODMobileBrailleDisplay *)&v24 _initWithDriver:v17 driverIdentifier:v18 ioElement:a6 delegate:a10];
+  v20 = [(MSCRODMobileBrailleDisplay *)&v24 _initWithDriver:driverCopy driverIdentifier:identifierCopy ioElement:element delegate:delegate];
   v21 = AXLogBrailleHW();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v26 = v17;
+    v26 = driverCopy;
     v27 = 2112;
-    v28 = v18;
+    v28 = identifierCopy;
     v29 = 2048;
     v30 = v20;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "_initWithDriver call with driver: %@, driverIdentifier: %@, display: %p", buf, 0x20u);
@@ -312,11 +312,11 @@ LABEL_40:
 
   if (v20)
   {
-    v20[232] = a11;
-    objc_storeStrong(&v20[OBJC_IVAR___SCROBrailleDisplay__driverModelIdentifier], a5);
-    *&v20[OBJC_IVAR___SCROBrailleDisplay__mainSize] = a7;
-    *&v20[OBJC_IVAR___SCROBrailleDisplay__statusSize] = a8;
-    *&v20[OBJC_IVAR___SCROBrailleDisplay__brailleInputMode] = a9;
+    v20[232] = enabled;
+    objc_storeStrong(&v20[OBJC_IVAR___SCROBrailleDisplay__driverModelIdentifier], modelIdentifier);
+    *&v20[OBJC_IVAR___SCROBrailleDisplay__mainSize] = size;
+    *&v20[OBJC_IVAR___SCROBrailleDisplay__statusSize] = statusSize;
+    *&v20[OBJC_IVAR___SCROBrailleDisplay__brailleInputMode] = mode;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v20, sub_100008754, kAXSVoiceOverTouchBrailleReconnectionTriggeredNotification, 0, 1028);
   }
@@ -390,7 +390,7 @@ LABEL_40:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating braille display [%{public}@]", &v15, 0xCu);
   }
 
@@ -434,7 +434,7 @@ LABEL_40:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 134217984;
-    v16 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "_brailleDriver set to nil in invalidate for Display %p", &v15, 0xCu);
   }
 
@@ -450,7 +450,7 @@ LABEL_40:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v42 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_brailleDriver == nil in _runThread for %p", buf, 0xCu);
     }
   }
@@ -459,7 +459,7 @@ LABEL_40:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting thread for: %@", buf, 0xCu);
   }
 
@@ -480,7 +480,7 @@ LABEL_40:
       v13 = [NSNumber numberWithBool:v10];
       v14 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v9 transport]);
       *buf = 138412802;
-      v42 = self;
+      selfCopy3 = self;
       v43 = 2112;
       v44 = v13;
       v45 = 2112;
@@ -489,14 +489,14 @@ LABEL_40:
     }
 
     self->_isDriverLoading = 1;
-    v15 = [v9 bluetoothAddress];
-    v16 = sub_100009178(v15);
+    bluetoothAddress = [v9 bluetoothAddress];
+    v16 = sub_100009178(bluetoothAddress);
 
     v17 = AXLogBrailleHW();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = v16;
+      selfCopy3 = v16;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "_isDriverLoading set to YES in _runThread - device: %@", buf, 0xCu);
     }
 
@@ -507,15 +507,15 @@ LABEL_40:
 
     v31 = v10;
     v32 = v8;
-    v18 = [(MSCRODMobileBrailleDisplay *)v16 address];
+    address = [(MSCRODMobileBrailleDisplay *)v16 address];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v19 = +[BluetoothManager sharedInstance];
-    v20 = [v19 connectingDevices];
+    connectingDevices = [v19 connectingDevices];
 
-    v21 = [v20 countByEnumeratingWithState:&v37 objects:buf count:16];
+    v21 = [connectingDevices countByEnumeratingWithState:&v37 objects:buf count:16];
     if (v21)
     {
       v22 = v21;
@@ -526,11 +526,11 @@ LABEL_40:
         {
           if (*v38 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(connectingDevices);
           }
 
-          v25 = [*(*(&v37 + 1) + 8 * i) address];
-          v26 = [v18 isEqualToString:v25];
+          address2 = [*(*(&v37 + 1) + 8 * i) address];
+          v26 = [address isEqualToString:address2];
 
           if (v26)
           {
@@ -540,7 +540,7 @@ LABEL_40:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v37 objects:buf count:16];
+        v22 = [connectingDevices countByEnumeratingWithState:&v37 objects:buf count:16];
         if (v22)
         {
           continue;
@@ -594,36 +594,36 @@ LABEL_30:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 134217984;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_brailleDriver == nil in _setupDriverSupport for Display %p", &v22, 0xCu);
     }
 
     v4 = *&self->SCROBrailleDisplay_opaque[v3];
   }
 
-  v6 = [v4 modelIdentifier];
+  modelIdentifier = [v4 modelIdentifier];
   v7 = *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__driverModelIdentifier];
-  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__driverModelIdentifier] = v6;
+  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__driverModelIdentifier] = modelIdentifier;
 
-  v8 = [*&self->SCROBrailleDisplay_opaque[v3] mainSize];
+  mainSize = [*&self->SCROBrailleDisplay_opaque[v3] mainSize];
   v9 = OBJC_IVAR___SCROBrailleDisplay__mainSize;
-  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__mainSize] = v8 & ~(v8 >> 63);
-  v10 = [*&self->SCROBrailleDisplay_opaque[v3] statusSize];
+  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__mainSize] = mainSize & ~(mainSize >> 63);
+  statusSize = [*&self->SCROBrailleDisplay_opaque[v3] statusSize];
   v11 = OBJC_IVAR___SCROBrailleDisplay__statusSize;
-  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__statusSize] = v10 & ~(v10 >> 63);
-  v12 = [*&self->SCROBrailleDisplay_opaque[v3] postsKeyboardEvents];
-  self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__postsKeyboardEvents] = v12;
-  v13 = [*&self->SCROBrailleDisplay_opaque[v3] brailleInputMode];
-  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__brailleInputMode] = v13;
+  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__statusSize] = statusSize & ~(statusSize >> 63);
+  postsKeyboardEvents = [*&self->SCROBrailleDisplay_opaque[v3] postsKeyboardEvents];
+  self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__postsKeyboardEvents] = postsKeyboardEvents;
+  brailleInputMode = [*&self->SCROBrailleDisplay_opaque[v3] brailleInputMode];
+  *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__brailleInputMode] = brailleInputMode;
   v14 = [objc_allocWithZone(SCROBrailleLine) initWithDriver:*&self->SCROBrailleDisplay_opaque[v3] mainSize:*&self->SCROBrailleDisplay_opaque[v9] statusSize:*&self->SCROBrailleDisplay_opaque[v11]];
   v15 = OBJC_IVAR___SCROBrailleDisplay__brailleLine;
   v16 = *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__brailleLine];
   *&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__brailleLine] = v14;
 
   [*&self->SCROBrailleDisplay_opaque[v15] setTranslationDelegate:self];
-  v17 = [*&self->SCROBrailleDisplay_opaque[v3] isInputEnabled];
+  isInputEnabled = [*&self->SCROBrailleDisplay_opaque[v3] isInputEnabled];
   v18 = OBJC_IVAR___SCROBrailleDisplay__inputEnabled;
-  self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__inputEnabled] = v17;
+  self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__inputEnabled] = isInputEnabled;
   v19 = OBJC_IVAR___SCROBrailleDisplay__runLoop;
   if (*&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__runLoop])
   {
@@ -712,7 +712,7 @@ LABEL_30:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_brailleDriver == nil in _reconnectionEventHandler for Display %p", buf, 0xCu);
     }
   }
@@ -723,11 +723,11 @@ LABEL_30:
     v6 = [NSNumber numberWithBool:self->_isDriverLoading];
     v7 = [NSNumber numberWithBool:self->_isDriverLoaded];
     *buf = 138412802;
-    v22 = v6;
+    selfCopy = v6;
     v23 = 2112;
     v24 = v7;
     v25 = 2112;
-    v26 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling reconnection[%@:%@]: %@", buf, 0x20u);
   }
 
@@ -754,7 +754,7 @@ LABEL_30:
     {
       v13 = [NSNumber numberWithBool:v9];
       *buf = 138412290;
-      v22 = v13;
+      selfCopy = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Is device valid for reconnection: %@", buf, 0xCu);
     }
 
@@ -768,8 +768,8 @@ LABEL_30:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "_isDriverLoading set to YES in _reconnectionEventHandler", buf, 2u);
       }
 
-      v15 = [v11 bluetoothAddress];
-      v16 = sub_100009178(v15);
+      bluetoothAddress = [v11 bluetoothAddress];
+      v16 = sub_100009178(bluetoothAddress);
 
       v17 = +[MSCRODBrailleConnectionHelper sharedHelper];
       v18[0] = _NSConcreteStackBlock;
@@ -809,11 +809,11 @@ LABEL_30:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = [NSNumber numberWithDouble:self->_reconnectionInterval];
-      v5 = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
+      bluetoothAddress = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
       v6 = 138412546;
       v7 = v4;
       v8 = 2112;
-      v9 = v5;
+      v9 = bluetoothAddress;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Change reconnection timer to %@ %@", &v6, 0x16u);
     }
   }
@@ -823,13 +823,13 @@ LABEL_30:
 {
   if (self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__isValid] == 1)
   {
-    v3 = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
-    if (v3)
+    bluetoothAddress = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
+    if (bluetoothAddress)
     {
-      v4 = v3;
+      v4 = bluetoothAddress;
       v5 = +[AXSettings sharedInstance];
-      v6 = [v5 voiceOverBrailleDisconnectOnSleep];
-      v7 = [v6 objectForKeyedSubscript:v4];
+      voiceOverBrailleDisconnectOnSleep = [v5 voiceOverBrailleDisconnectOnSleep];
+      v7 = [voiceOverBrailleDisconnectOnSleep objectForKeyedSubscript:v4];
 
       if (v7)
       {
@@ -872,7 +872,7 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v37 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_brailleDriver == nil in _reloadDriver for Display %@", buf, 0xCu);
     }
   }
@@ -885,11 +885,11 @@ LABEL_12:
       v6 = [NSNumber numberWithBool:self->_isDriverLoading];
       v7 = [NSNumber numberWithBool:self->_isDriverLoaded];
       *buf = 138412802;
-      v37 = v6;
+      selfCopy3 = v6;
       v38 = 2112;
-      v39 = v7;
+      selfCopy5 = v7;
       v40 = 2114;
-      v41 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Not reloading driver: %@/%@ [%{public}@]", buf, 0x20u);
     }
   }
@@ -900,7 +900,7 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v37 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Reloading braille driver for display [%{public}@]", buf, 0xCu);
     }
 
@@ -918,9 +918,9 @@ LABEL_12:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v37 = v5;
+        selfCopy3 = v5;
         v38 = 2048;
-        v39 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "_brailleDriver set to nil (from %p) in _reloadDriver for Display %p", buf, 0x16u);
       }
 
@@ -935,8 +935,8 @@ LABEL_12:
       }
 
       context = objc_autoreleasePoolPush();
-      v13 = [v35 bluetoothAddress];
-      v14 = sub_100009178(v13);
+      bluetoothAddress = [v35 bluetoothAddress];
+      v14 = sub_100009178(bluetoothAddress);
 
       if ([(MSCRODMobileBrailleDisplay *)v14 connected])
       {
@@ -959,7 +959,7 @@ LABEL_12:
             v22 = v21;
             v23 = [NSNumber numberWithInt:v22];
             *buf = 138412290;
-            v37 = v23;
+            selfCopy3 = v23;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Braille driver load succeeded: %@ in _reloadDriver", buf, 0xCu);
           }
         }
@@ -972,7 +972,7 @@ LABEL_12:
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v37 = v14;
+              selfCopy3 = v14;
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Disconnecting in reload from [%{public}@]", buf, 0xCu);
             }
 
@@ -983,7 +983,7 @@ LABEL_12:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v37 = v14;
+            selfCopy3 = v14;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Reconnecting braille services to device [%{public}@]", buf, 0xCu);
           }
 
@@ -1026,9 +1026,9 @@ LABEL_12:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v37 = v5;
+        selfCopy3 = v5;
         v38 = 2048;
-        v39 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "_brailleDriver set to %@ in _reloadDriver for Display %p", buf, 0x16u);
       }
 
@@ -1076,22 +1076,22 @@ LABEL_12:
 
 - (id)bluetoothAddress
 {
-  v3 = [(MSCRODMobileBrailleDisplay *)self ioElement];
+  ioElement = [(MSCRODMobileBrailleDisplay *)self ioElement];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MSCRODMobileBrailleDisplay *)self ioElement];
-    v6 = [v5 bluetoothAddress];
+    ioElement2 = [(MSCRODMobileBrailleDisplay *)self ioElement];
+    bluetoothAddress = [ioElement2 bluetoothAddress];
   }
 
   else
   {
-    v6 = 0;
+    bluetoothAddress = 0;
   }
 
-  return v6;
+  return bluetoothAddress;
 }
 
 - (void)_startWatchingForDevices
@@ -1105,13 +1105,13 @@ LABEL_12:
   }
 
   v5 = +[BluetoothManager sharedInstance];
-  v6 = [v5 pairedDevices];
+  pairedDevices = [v5 pairedDevices];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = pairedDevices;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
@@ -1131,9 +1131,9 @@ LABEL_12:
         v13 = *(*(&v22 + 1) + 8 * i);
         if ([v13 connected])
         {
-          v14 = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
-          v15 = [v13 address];
-          v16 = [v14 isEqualToString:v15];
+          bluetoothAddress = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
+          address = [v13 address];
+          v16 = [bluetoothAddress isEqualToString:address];
 
           if (v16)
           {
@@ -1146,8 +1146,8 @@ LABEL_12:
             }
 
             v18 = self->_bluetoothConnectedDevices;
-            v19 = [v13 address];
-            [(NSMutableDictionary *)v18 setObject:v13 forKey:v19];
+            address2 = [v13 address];
+            [(NSMutableDictionary *)v18 setObject:v13 forKey:address2];
           }
         }
       }
@@ -1180,19 +1180,19 @@ LABEL_12:
   self->_bluetoothConnectedDevices = 0;
 }
 
-- (void)addDeviceFailedNotification:(id)a3
+- (void)addDeviceFailedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 address];
-  v7 = v6;
-  if (v5 && v6 && ![v5 connected])
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  address = [object address];
+  v7 = address;
+  if (object && address && ![object connected])
   {
     v10 = +[MSCRODBrailleConnectionHelper sharedHelper];
-    [v10 handleBluetoothConnectionEventForQueue:v5 forceProcess:0];
+    [v10 handleBluetoothConnectionEventForQueue:object forceProcess:0];
 
-    v11 = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
-    v12 = [v11 isEqualToString:v7];
+    bluetoothAddress = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
+    v12 = [bluetoothAddress isEqualToString:v7];
 
     if (v12)
     {
@@ -1201,9 +1201,9 @@ LABEL_12:
       {
         v14 = [NSNumber numberWithBool:self->_isReconnectionEnabled];
         v15 = 138412802;
-        v16 = v4;
+        v16 = notificationCopy;
         v17 = 2114;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "FAILED: Add device failed: Reset reconnect %@ [%{public}@] - %{public}@", &v15, 0x20u);
@@ -1218,11 +1218,11 @@ LABEL_12:
     v8 = AXLogBrailleHW();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 connected]);
+      v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [object connected]);
       v15 = 138412802;
-      v16 = v5;
+      v16 = object;
       v17 = 2112;
-      v18 = v7;
+      selfCopy = v7;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Delayed device remove not processing: %@/%@/%@", &v15, 0x20u);
@@ -1230,18 +1230,18 @@ LABEL_12:
   }
 }
 
-- (void)_delayedAddDeviceNotification:(id)a3
+- (void)_delayedAddDeviceNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 address];
-  v7 = v6;
-  if (v5)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  address = [object address];
+  v7 = address;
+  if (object)
   {
-    if (v6)
+    if (address)
     {
-      v8 = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
-      v9 = [v8 isEqualToString:v7];
+      bluetoothAddress = [(MSCRODMobileBrailleDisplay *)self bluetoothAddress];
+      v9 = [bluetoothAddress isEqualToString:v7];
 
       if (v9)
       {
@@ -1250,16 +1250,16 @@ LABEL_12:
         {
           v11 = [NSNumber numberWithBool:self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__isValid]];
           *buf = 138543874;
-          v31 = self;
+          selfCopy = self;
           v32 = 2114;
-          v33 = v4;
+          v33 = notificationCopy;
           v34 = 2112;
           v35 = v11;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SUCCESS: Connection success for display [%{public}@] - %{public}@ valid: %@", buf, 0x20u);
         }
 
         v12 = +[MSCRODBrailleConnectionHelper sharedHelper];
-        [v12 handleBluetoothConnectionEventForQueue:v5];
+        [v12 handleBluetoothConnectionEventForQueue:object];
 
         if (self->_isDriverLoading)
         {
@@ -1281,7 +1281,7 @@ LABEL_12:
 
           if (!v16)
           {
-            [(NSMutableDictionary *)self->_bluetoothConnectedDevices setObject:v5 forKey:v7];
+            [(NSMutableDictionary *)self->_bluetoothConnectedDevices setObject:object forKey:v7];
           }
 
           v17 = OBJC_IVAR___SCROBrailleDisplay__ioElement;
@@ -1295,11 +1295,11 @@ LABEL_12:
             v18 = 1056896;
           }
 
-          v19 = [v5 connectedServices];
-          v20 = [*&self->SCROBrailleDisplay_opaque[v17] bluetoothAddress];
-          v21 = [v7 isEqualToString:v20];
-          v22 = v19 & v18;
-          if ((v19 & v18) != 0)
+          connectedServices = [object connectedServices];
+          bluetoothAddress2 = [*&self->SCROBrailleDisplay_opaque[v17] bluetoothAddress];
+          v21 = [v7 isEqualToString:bluetoothAddress2];
+          v22 = connectedServices & v18;
+          if ((connectedServices & v18) != 0)
           {
             v23 = v21;
           }
@@ -1315,9 +1315,9 @@ LABEL_12:
             v29 = [NSNumber numberWithBool:v23];
             v25 = [NSNumber numberWithUnsignedInteger:v18];
             v26 = [NSNumber numberWithBool:v22 != 0];
-            v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 connectedServices]);
+            v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [object connectedServices]);
             *buf = 138413314;
-            v31 = v29;
+            selfCopy = v29;
             v32 = 2112;
             v33 = v25;
             v34 = 2112;
@@ -1325,7 +1325,7 @@ LABEL_12:
             v36 = 2112;
             v37 = v27;
             v38 = 2048;
-            v39 = self;
+            selfCopy2 = self;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Should reload: %@ required service: %@ service connected: %@, connected services: %@, device: %p", buf, 0x34u);
           }
         }
@@ -1347,26 +1347,26 @@ LABEL_12:
   }
 }
 
-- (void)removeDeviceNotification:(id)a3
+- (void)removeDeviceNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = AXLogBrailleHW();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device remove: %@", &v6, 0xCu);
   }
 
-  [(MSCRODMobileBrailleDisplay *)self performSelectorOnMainThread:"_delayedRemoveDeviceNotification:" withObject:v4 waitUntilDone:0];
+  [(MSCRODMobileBrailleDisplay *)self performSelectorOnMainThread:"_delayedRemoveDeviceNotification:" withObject:notificationCopy waitUntilDone:0];
 }
 
-- (void)_delayedRemoveDeviceNotification:(id)a3
+- (void)_delayedRemoveDeviceNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [v4 address];
-  v6 = v5;
-  if (v4 && v5 && ![v4 connected])
+  object = [notification object];
+  address = [object address];
+  v6 = address;
+  if (object && address && ![object connected])
   {
     v12 = OBJC_IVAR___SCROBrailleDisplay__contentLock;
     [*&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__contentLock] lock];
@@ -1386,22 +1386,22 @@ LABEL_12:
       [(NSMutableDictionary *)self->_bluetoothConnectedDevices removeObjectForKey:v6];
     }
 
-    v7 = [*&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__ioElement] bluetoothAddress];
+    bluetoothAddress = [*&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__ioElement] bluetoothAddress];
     v15 = AXLogBrailleHW();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v7;
+      v24 = bluetoothAddress;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Handling device removal: %@", &v23, 0xCu);
     }
 
     [*&self->SCROBrailleDisplay_opaque[v12] unlock];
-    if (!v7 || ![v6 isEqualToString:v7] || (+[BluetoothManager sharedInstance](BluetoothManager, "sharedInstance"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "available"), v16, !v17))
+    if (!bluetoothAddress || ![v6 isEqualToString:bluetoothAddress] || (+[BluetoothManager sharedInstance](BluetoothManager, "sharedInstance"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "available"), v16, !v17))
     {
       v8 = AXLogBrailleHW();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [NSNumber numberWithInt:v7 == 0];
+        v19 = [NSNumber numberWithInt:bluetoothAddress == 0];
         v20 = +[BluetoothManager sharedInstance];
         v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v20 available]);
         v23 = 138413058;
@@ -1409,7 +1409,7 @@ LABEL_12:
         v25 = 2112;
         v26 = v6;
         v27 = 2112;
-        v28 = v7;
+        v28 = bluetoothAddress;
         v29 = 2112;
         v30 = v21;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_delayedRemoveDeviceNotification: bluetoothAddress == nil (%@) or address (%@) != bluetoothAddress (%@) or BluetoothManager.sharedInstance not available (%@)", &v23, 0x2Au);
@@ -1418,19 +1418,19 @@ LABEL_12:
       goto LABEL_22;
     }
 
-    if ([v4 paired])
+    if ([object paired])
     {
       v18 = AXLogBrailleHW();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138412290;
-        v24 = v4;
+        v24 = object;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Device still paired after disconnect, commencing reconnect strategy: %@", &v23, 0xCu);
       }
 
       [(MSCRODMobileBrailleDisplay *)self _enableReconnectionTimer:self->_isReconnectionEnabled];
       v8 = +[MSCRODBrailleConnectionHelper sharedHelper];
-      [v8 handleBluetoothConnectionEventForQueue:v4];
+      [v8 handleBluetoothConnectionEventForQueue:object];
       goto LABEL_22;
     }
 
@@ -1446,7 +1446,7 @@ LABEL_22:
     }
 
     v23 = 138412290;
-    v24 = v7;
+    v24 = bluetoothAddress;
     v9 = "Removing address from preferences: %@";
     v10 = v8;
     v11 = 12;
@@ -1455,18 +1455,18 @@ LABEL_6:
     goto LABEL_22;
   }
 
-  v7 = AXLogBrailleHW();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  bluetoothAddress = AXLogBrailleHW();
+  if (os_log_type_enabled(bluetoothAddress, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [NSNumber numberWithBool:[v4 connected]];
+    v8 = [NSNumber numberWithBool:[object connected]];
     v23 = 138412802;
-    v24 = v4;
+    v24 = object;
     v25 = 2112;
     v26 = v6;
     v27 = 2112;
     v28 = v8;
     v9 = "Delayed device remove not processing: %@/%@/%@";
-    v10 = v7;
+    v10 = bluetoothAddress;
     v11 = 32;
     goto LABEL_6;
   }
@@ -1474,7 +1474,7 @@ LABEL_6:
 LABEL_23:
 }
 
-- (void)_delayedDeviceUpdatedNotification:(id)a3
+- (void)_delayedDeviceUpdatedNotification:(id)notification
 {
   WeakRetained = objc_loadWeakRetained(&self->SCROBrailleDisplay_opaque[OBJC_IVAR___SCROBrailleDisplay__delegate]);
   [WeakRetained configurationChangedForBrailleDisplay:self];
@@ -1530,34 +1530,34 @@ LABEL_23:
 
   if (!v11)
   {
-    v30 = [NSNumber numberWithUnsignedInteger:0];
-    [v13 setObject:v30 forKey:kSCROBrailleDisplayTransport];
+    manufacturerName = [NSNumber numberWithUnsignedInteger:0];
+    [v13 setObject:manufacturerName forKey:kSCROBrailleDisplayTransport];
     goto LABEL_28;
   }
 
   v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 identifier]);
   [v13 setObject:v16 forKey:kSCROBrailleDisplayToken];
 
-  v17 = [v11 transport];
-  v18 = [NSNumber numberWithUnsignedInteger:v17];
+  transport = [v11 transport];
+  v18 = [NSNumber numberWithUnsignedInteger:transport];
   [v13 setObject:v18 forKey:kSCROBrailleDisplayTransport];
 
-  v19 = v17 > 0x20 || ((1 << v17) & 0x100000104) == 0;
+  v19 = transport > 0x20 || ((1 << transport) & 0x100000104) == 0;
   if (!v19 && (([v11 conformsToProtocol:&OBJC_PROTOCOL___SCROIOBluetoothElementProtocol] & 1) != 0 || objc_msgSend(v11, "conformsToProtocol:", &OBJC_PROTOCOL___SCROIOBTLESerialElementProtocol)))
   {
-    v20 = [v11 bluetoothAddress];
-    if (v20)
+    bluetoothAddress = [v11 bluetoothAddress];
+    if (bluetoothAddress)
     {
-      [v13 setObject:v20 forKey:kSCROBrailleDisplayBluetoothAddress];
+      [v13 setObject:bluetoothAddress forKey:kSCROBrailleDisplayBluetoothAddress];
     }
 
-    v21 = sub_100009178(v20);
+    v21 = sub_100009178(bluetoothAddress);
     v22 = v21;
     if (v21)
     {
       v23 = v7;
       v24 = Copy;
-      v25 = [v21 name];
+      name = [v21 name];
     }
 
     else
@@ -1569,8 +1569,8 @@ LABEL_23:
 
       v23 = v7;
       v24 = Copy;
-      v25 = [v11 productName];
-      if (!v25)
+      name = [v11 productName];
+      if (!name)
       {
 LABEL_23:
 
@@ -1582,7 +1582,7 @@ LABEL_24:
       }
     }
 
-    [v13 setObject:v25 forKey:kSCROBrailleDisplayBluetoothName];
+    [v13 setObject:name forKey:kSCROBrailleDisplayBluetoothName];
     goto LABEL_23;
   }
 
@@ -1597,11 +1597,11 @@ LABEL_25:
   v28 = [NSString stringWithFormat:@"%@, %@", v26, v27];
   [v13 setObject:v28 forKeyedSubscript:kSCROBrailleDisplayBrailleVendorProductId];
 
-  v29 = [v11 productName];
-  [v13 setObject:v29 forKeyedSubscript:kSCROBrailleDisplayBrailleProductName];
+  productName = [v11 productName];
+  [v13 setObject:productName forKeyedSubscript:kSCROBrailleDisplayBrailleProductName];
 
-  v30 = [v11 manufacturerName];
-  [v13 setObject:v30 forKeyedSubscript:kSCROBrailleDisplayBrailleManufacturerName];
+  manufacturerName = [v11 manufacturerName];
+  [v13 setObject:manufacturerName forKeyedSubscript:kSCROBrailleDisplayBrailleManufacturerName];
 LABEL_28:
 
 LABEL_29:
@@ -1617,31 +1617,31 @@ LABEL_29:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(MSCRODMobileBrailleDisplay *)self configuration];
-  v5 = [v4 objectForKeyedSubscript:kSCROBrailleDisplayBluetoothAddress];
-  v6 = [(MSCRODMobileBrailleDisplay *)self configuration];
-  v7 = [v6 objectForKeyedSubscript:kSCROBrailleDisplayModelIdentifier];
-  v8 = [(MSCRODMobileBrailleDisplay *)self configuration];
-  v9 = [v8 objectForKeyedSubscript:kSCROBrailleDisplayTransport];
+  configuration = [(MSCRODMobileBrailleDisplay *)self configuration];
+  v5 = [configuration objectForKeyedSubscript:kSCROBrailleDisplayBluetoothAddress];
+  configuration2 = [(MSCRODMobileBrailleDisplay *)self configuration];
+  v7 = [configuration2 objectForKeyedSubscript:kSCROBrailleDisplayModelIdentifier];
+  configuration3 = [(MSCRODMobileBrailleDisplay *)self configuration];
+  v9 = [configuration3 objectForKeyedSubscript:kSCROBrailleDisplayTransport];
   v10 = [NSString stringWithFormat:@"%@[%p]\n\tBT Address: %@\n\tDriver Model: %@\n\tTransport: %@", v3, self, v5, v7, v9];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v5 = v4;
-  v6 = [(MSCRODMobileBrailleDisplay *)self configuration];
-  v7 = [v5 configuration];
+  v5 = equalCopy;
+  configuration = [(MSCRODMobileBrailleDisplay *)self configuration];
+  configuration2 = [v5 configuration];
 
-  LOBYTE(v5) = [v6 isEqual:v7];
+  LOBYTE(v5) = [configuration isEqual:configuration2];
   if (v5)
   {
     v8 = 1;

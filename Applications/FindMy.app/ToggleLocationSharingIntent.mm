@@ -1,8 +1,8 @@
 @interface ToggleLocationSharingIntent
 - (ToggleLocationSharingIntent)init;
-- (ToggleLocationSharingIntent)initWithCoder:(id)a3;
-- (ToggleLocationSharingIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (ToggleLocationSharingIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (ToggleLocationSharingIntent)initWithCoder:(id)coder;
+- (ToggleLocationSharingIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (ToggleLocationSharingIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation ToggleLocationSharingIntent
@@ -14,12 +14,12 @@
   return [(ToggleLocationSharingIntent *)&v3 init];
 }
 
-- (ToggleLocationSharingIntent)initWithCoder:(id)a3
+- (ToggleLocationSharingIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ToggleLocationSharingIntent();
-  v4 = a3;
-  v5 = [(ToggleLocationSharingIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ToggleLocationSharingIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -28,48 +28,48 @@
   return v5;
 }
 
-- (ToggleLocationSharingIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (ToggleLocationSharingIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    storeCopy = store;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    storeCopy2 = store;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ToggleLocationSharingIntent();
-  v9 = [(ToggleLocationSharingIntent *)&v11 initWithIdentifier:v7 backingStore:a4];
+  v9 = [(ToggleLocationSharingIntent *)&v11 initWithIdentifier:v7 backingStore:store];
 
   return v9;
 }
 
-- (ToggleLocationSharingIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (ToggleLocationSharingIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
-  if (a5)
+  if (name)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-    v8 = a3;
-    v9 = a4;
+    domainCopy = domain;
+    verbCopy = verb;
     v10.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v11 = a3;
-    v12 = a4;
+    domainCopy2 = domain;
+    verbCopy2 = verb;
     v10.super.isa = 0;
   }
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for ToggleLocationSharingIntent();
-  v13 = [(ToggleLocationSharingIntent *)&v15 initWithDomain:a3 verb:a4 parametersByName:v10.super.isa];
+  v13 = [(ToggleLocationSharingIntent *)&v15 initWithDomain:domain verb:verb parametersByName:v10.super.isa];
 
   return v13;
 }

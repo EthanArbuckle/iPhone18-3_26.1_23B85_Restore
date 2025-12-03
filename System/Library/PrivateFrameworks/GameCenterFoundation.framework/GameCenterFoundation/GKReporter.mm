@@ -11,26 +11,26 @@
 - (void)reportAuthenticateResponseDuration;
 - (void)reportConnectingDevicesDuration;
 - (void)reportCurrentRealtimeMatchPersistenceDuration;
-- (void)reportDurationForEvent:(id)a3 eventType:(id)a4 withStartTimestamp:(double)a5;
-- (void)reportEvent:(id)a3 eventType:(id)a4 duration:(double)a5 refApp:(id)a6;
-- (void)reportEvent:(id)a3 payload:(id)a4;
-- (void)reportEvent:(id)a3 reportable:(id)a4;
-- (void)reportEvent:(id)a3 target:(id)a4 keyPath:(id)a5;
-- (void)reportEvent:(id)a3 type:(id)a4;
-- (void)reportEvent:(id)a3 type:(id)a4 adamID:(id)a5;
-- (void)reportEvent:(id)a3 type:(id)a4 bundleID:(id)a5;
-- (void)reportEvent:(id)a3 type:(id)a4 count:(int64_t)a5;
-- (void)reportEvent:(id)a3 type:(id)a4 friendsPlayedThisGame:(id)a5;
-- (void)reportEvent:(id)a3 type:(id)a4 inboxFriendRequestCount:(int64_t)a5;
-- (void)reportEvent:(id)a3 type:(id)a4 payload:(id)a5;
-- (void)reportEvent:(id)a3 type:(id)a4 scoreRank:(id)a5;
-- (void)reportEvent:(id)a3 type:(id)a4 startTime:(id)a5 refApp:(id)a6;
+- (void)reportDurationForEvent:(id)event eventType:(id)type withStartTimestamp:(double)timestamp;
+- (void)reportEvent:(id)event eventType:(id)type duration:(double)duration refApp:(id)app;
+- (void)reportEvent:(id)event payload:(id)payload;
+- (void)reportEvent:(id)event reportable:(id)reportable;
+- (void)reportEvent:(id)event target:(id)target keyPath:(id)path;
+- (void)reportEvent:(id)event type:(id)type;
+- (void)reportEvent:(id)event type:(id)type adamID:(id)d;
+- (void)reportEvent:(id)event type:(id)type bundleID:(id)d;
+- (void)reportEvent:(id)event type:(id)type count:(int64_t)count;
+- (void)reportEvent:(id)event type:(id)type friendsPlayedThisGame:(id)game;
+- (void)reportEvent:(id)event type:(id)type inboxFriendRequestCount:(int64_t)count;
+- (void)reportEvent:(id)event type:(id)type payload:(id)payload;
+- (void)reportEvent:(id)event type:(id)type scoreRank:(id)rank;
+- (void)reportEvent:(id)event type:(id)type startTime:(id)time refApp:(id)app;
 - (void)reportInviteeUILaunchDuration;
 - (void)reportMessageInviteProcessingDuration;
-- (void)reportOnboardingEventForType:(id)a3 withStartTimestamp:(double)a4 refApp:(id)a5;
-- (void)reportPlayerAuthenticationFailure:(id)a3;
+- (void)reportOnboardingEventForType:(id)type withStartTimestamp:(double)timestamp refApp:(id)app;
+- (void)reportPlayerAuthenticationFailure:(id)failure;
 - (void)reportProgramaticInviteDuration;
-- (void)reportScreenTimeEventForType:(id)a3 withStartTimestamp:(double)a4;
+- (void)reportScreenTimeEventForType:(id)type withStartTimestamp:(double)timestamp;
 - (void)reportTotalInviteReceivedDuration;
 @end
 
@@ -57,11 +57,11 @@ uint64_t __22__GKReporter_reporter__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)reportEvent:(id)a3 payload:(id)a4
+- (void)reportEvent:(id)event payload:(id)payload
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -71,9 +71,9 @@ uint64_t __22__GKReporter_reporter__block_invoke()
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v5;
+    v11 = eventCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = payloadCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "GKReporter: report domain: %@, payload: %@", &v10, 0x16u);
   }
 
@@ -82,98 +82,98 @@ uint64_t __22__GKReporter_reporter__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4
+- (void)reportEvent:(id)event type:(id)type
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"eventType";
-  v12[0] = a4;
+  v12[0] = type;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  typeCopy = type;
+  eventCopy = event;
   v9 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(GKReporter *)self reportEvent:v8 payload:v9];
+  [(GKReporter *)self reportEvent:eventCopy payload:v9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 startTime:(id)a5 refApp:(id)a6
+- (void)reportEvent:(id)event type:(id)type startTime:(id)time refApp:(id)app
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a6;
+  eventCopy = event;
+  typeCopy = type;
+  appCopy = app;
   v12 = MEMORY[0x277CBEAA8];
-  v13 = a5;
+  timeCopy = time;
   v14 = [v12 now];
-  [v14 timeIntervalSinceDate:v13];
+  [v14 timeIntervalSinceDate:timeCopy];
   v16 = v15;
 
   if ([(GKReporter *)self isTimeSpanValid:v16 maxDuration:3600.0])
   {
-    [(GKReporter *)self reportEvent:v17 eventType:v10 duration:v11 refApp:v16];
+    [(GKReporter *)self reportEvent:eventCopy eventType:typeCopy duration:appCopy refApp:v16];
   }
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 bundleID:(id)a5
+- (void)reportEvent:(id)event type:(id)type bundleID:(id)d
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v13[0] = @"eventType";
   v13[1] = @"bundleID";
-  v14[0] = a4;
-  v14[1] = a5;
+  v14[0] = type;
+  v14[1] = d;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  typeCopy = type;
+  eventCopy = event;
   v11 = [v7 dictionaryWithObjects:v14 forKeys:v13 count:2];
 
   AnalyticsSendEvent();
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 adamID:(id)a5
+- (void)reportEvent:(id)event type:(id)type adamID:(id)d
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (d)
   {
     v17[0] = @"eventType";
     v17[1] = @"adamID";
-    v18[0] = a4;
-    v8 = a4;
-    v9 = a3;
-    v10 = [a5 stringValue];
-    v18[1] = v10;
-    v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
+    v18[0] = type;
+    typeCopy = type;
+    eventCopy = event;
+    stringValue = [d stringValue];
+    v18[1] = stringValue;
+    eventCopy2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-    [(GKReporter *)self reportEvent:v9 payload:v11];
+    [(GKReporter *)self reportEvent:eventCopy payload:eventCopy2];
   }
 
   else
   {
     v15 = @"eventType";
-    v16 = a4;
+    typeCopy2 = type;
     v12 = MEMORY[0x277CBEAC0];
-    v13 = a4;
-    v11 = a3;
-    v10 = [v12 dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+    typeCopy3 = type;
+    eventCopy2 = event;
+    stringValue = [v12 dictionaryWithObjects:&typeCopy2 forKeys:&v15 count:1];
 
-    [(GKReporter *)self reportEvent:v11 payload:v10];
+    [(GKReporter *)self reportEvent:eventCopy2 payload:stringValue];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 payload:(id)a5
+- (void)reportEvent:(id)event type:(id)type payload:(id)payload
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4)
+  eventCopy = event;
+  payloadCopy = payload;
+  v10 = payloadCopy;
+  if (type)
   {
     v16 = @"eventType";
-    v17[0] = a4;
+    v17[0] = type;
     v11 = MEMORY[0x277CBEAC0];
-    v12 = a4;
+    typeCopy = type;
     v13 = [v11 dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
     v14 = [v13 mutableCopy];
@@ -182,108 +182,108 @@ uint64_t __22__GKReporter_reporter__block_invoke()
 
   else
   {
-    v14 = v9;
+    v14 = payloadCopy;
   }
 
-  [(GKReporter *)self reportEvent:v8 payload:v14];
+  [(GKReporter *)self reportEvent:eventCopy payload:v14];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 friendsPlayedThisGame:(id)a5
+- (void)reportEvent:(id)event type:(id)type friendsPlayedThisGame:(id)game
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"eventType";
   v14[1] = @"friendsPlayedThisGame";
-  v15[0] = a4;
-  v15[1] = a5;
+  v15[0] = type;
+  v15[1] = game;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  gameCopy = game;
+  typeCopy = type;
+  eventCopy = event;
   v12 = [v8 dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [(GKReporter *)self reportEvent:v11 payload:v12];
+  [(GKReporter *)self reportEvent:eventCopy payload:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 count:(int64_t)a5
+- (void)reportEvent:(id)event type:(id)type count:(int64_t)count
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"eventType";
   v14[1] = @"count";
-  v15[0] = a4;
+  v15[0] = type;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 numberWithInteger:a5];
+  typeCopy = type;
+  eventCopy = event;
+  v11 = [v8 numberWithInteger:count];
   v15[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [(GKReporter *)self reportEvent:v10 payload:v12];
+  [(GKReporter *)self reportEvent:eventCopy payload:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 inboxFriendRequestCount:(int64_t)a5
+- (void)reportEvent:(id)event type:(id)type inboxFriendRequestCount:(int64_t)count
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"eventType";
   v14[1] = @"inboxFriendRequestCount";
-  v15[0] = a4;
+  v15[0] = type;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 numberWithInteger:a5];
+  typeCopy = type;
+  eventCopy = event;
+  v11 = [v8 numberWithInteger:count];
   v15[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [(GKReporter *)self reportEvent:v10 payload:v12];
+  [(GKReporter *)self reportEvent:eventCopy payload:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 type:(id)a4 scoreRank:(id)a5
+- (void)reportEvent:(id)event type:(id)type scoreRank:(id)rank
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"eventType";
   v14[1] = @"scoreRank";
-  v15[0] = a4;
-  v15[1] = a5;
+  v15[0] = type;
+  v15[1] = rank;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  rankCopy = rank;
+  typeCopy = type;
+  eventCopy = event;
   v12 = [v8 dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [(GKReporter *)self reportEvent:v11 payload:v12];
+  [(GKReporter *)self reportEvent:eventCopy payload:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 target:(id)a4 keyPath:(id)a5
+- (void)reportEvent:(id)event target:(id)target keyPath:(id)path
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 valueForKeyPath:v8];
-  v14 = v8;
+  pathCopy = path;
+  eventCopy = event;
+  v10 = [target valueForKeyPath:pathCopy];
+  v14 = pathCopy;
   v11 = [v10 description];
   v15[0] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  [(GKReporter *)self reportEvent:v9 payload:v12];
+  [(GKReporter *)self reportEvent:eventCopy payload:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEvent:(id)a3 reportable:(id)a4
+- (void)reportEvent:(id)event reportable:(id)reportable
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() reportableKeyPaths];
+  eventCopy = event;
+  reportableCopy = reportable;
+  reportableKeyPaths = [objc_opt_class() reportableKeyPaths];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [reportableKeyPaths countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -295,18 +295,18 @@ uint64_t __22__GKReporter_reporter__block_invoke()
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reportableKeyPaths);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
         v13 = +[GKReporter reporter];
-        [v13 reportEvent:v5 target:v6 keyPath:v12];
+        [v13 reportEvent:eventCopy target:reportableCopy keyPath:v12];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [reportableKeyPaths countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -461,16 +461,16 @@ uint64_t __22__GKReporter_reporter__block_invoke()
   }
 }
 
-- (void)reportScreenTimeEventForType:(id)a3 withStartTimestamp:(double)a4
+- (void)reportScreenTimeEventForType:(id)type withStartTimestamp:(double)timestamp
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = CFAbsoluteTimeGetCurrent() - a4;
+  typeCopy = type;
+  v7 = CFAbsoluteTimeGetCurrent() - timestamp;
   if ([(GKReporter *)self isTimeSpanValid:v7 maxDuration:600.0])
   {
     v11[0] = @"eventType";
     v11[1] = @"timeSpan";
-    v12[0] = v6;
+    v12[0] = typeCopy;
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
     v12[1] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
@@ -480,57 +480,57 @@ uint64_t __22__GKReporter_reporter__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportOnboardingEventForType:(id)a3 withStartTimestamp:(double)a4 refApp:(id)a5
+- (void)reportOnboardingEventForType:(id)type withStartTimestamp:(double)timestamp refApp:(id)app
 {
-  v10 = a3;
-  v8 = a5;
-  v9 = CFAbsoluteTimeGetCurrent() - a4;
+  typeCopy = type;
+  appCopy = app;
+  v9 = CFAbsoluteTimeGetCurrent() - timestamp;
   if ([(GKReporter *)self isTimeSpanValid:v9 maxDuration:900.0])
   {
-    [(GKReporter *)self reportEvent:@"com.apple.GameKit.Onboarding" eventType:v10 duration:v8 refApp:v9];
+    [(GKReporter *)self reportEvent:@"com.apple.GameKit.Onboarding" eventType:typeCopy duration:appCopy refApp:v9];
   }
 }
 
-- (void)reportEvent:(id)a3 eventType:(id)a4 duration:(double)a5 refApp:(id)a6
+- (void)reportEvent:(id)event eventType:(id)type duration:(double)duration refApp:(id)app
 {
   v10 = MEMORY[0x277CBEB38];
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  appCopy = app;
+  typeCopy = type;
+  eventCopy = event;
   v16 = objc_alloc_init(v10);
-  [v16 setObject:v12 forKeyedSubscript:@"eventType"];
+  [v16 setObject:typeCopy forKeyedSubscript:@"eventType"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   [v16 setObject:v14 forKeyedSubscript:@"timeSpan"];
 
-  [v16 setObject:v11 forKeyedSubscript:@"refApp"];
+  [v16 setObject:appCopy forKeyedSubscript:@"refApp"];
   v15 = [v16 copy];
-  [(GKReporter *)self reportEvent:v13 payload:v15];
+  [(GKReporter *)self reportEvent:eventCopy payload:v15];
 }
 
-- (void)reportDurationForEvent:(id)a3 eventType:(id)a4 withStartTimestamp:(double)a5
+- (void)reportDurationForEvent:(id)event eventType:(id)type withStartTimestamp:(double)timestamp
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = CFAbsoluteTimeGetCurrent() - a5;
+  eventCopy = event;
+  typeCopy = type;
+  v10 = CFAbsoluteTimeGetCurrent() - timestamp;
   if ([(GKReporter *)self isTimeSpanValid:v10 maxDuration:3600.0])
   {
     v14[0] = @"eventType";
     v14[1] = @"timeSpan";
-    v15[0] = v9;
+    v15[0] = typeCopy;
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
     v15[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    [(GKReporter *)self reportEvent:v8 payload:v12];
+    [(GKReporter *)self reportEvent:eventCopy payload:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportPlayerAuthenticationFailure:(id)a3
+- (void)reportPlayerAuthenticationFailure:(id)failure
 {
-  v4 = [a3 code] - 5000;
+  v4 = [failure code] - 5000;
   if (v4 > 0xAA)
   {
     v5 = @"GKReporterPlayerAuthenticationFailureUnknownReason";

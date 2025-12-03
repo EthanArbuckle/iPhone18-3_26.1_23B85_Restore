@@ -1,11 +1,11 @@
 @interface ICProgressIndicatorTracker
 - (ICProgressIndicatorTracker)init;
-- (ICProgressIndicatorTracker)initWithDelegate:(id)a3;
+- (ICProgressIndicatorTracker)initWithDelegate:(id)delegate;
 - (ICProgressIndicatorTrackerDelegate)delegate;
 - (void)invalidate;
 - (void)progressIndicatorShouldUpdate;
-- (void)setMakingProgress:(BOOL)a3;
-- (void)setProgressIndicatorShouldAnimate:(BOOL)a3;
+- (void)setMakingProgress:(BOOL)progress;
+- (void)setProgressIndicatorShouldAnimate:(BOOL)animate;
 @end
 
 @implementation ICProgressIndicatorTracker
@@ -17,16 +17,16 @@
   return 0;
 }
 
-- (ICProgressIndicatorTracker)initWithDelegate:(id)a3
+- (ICProgressIndicatorTracker)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = ICProgressIndicatorTracker;
   v5 = [(ICProgressIndicatorTracker *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(ICProgressIndicatorTracker *)v5 setDelegate:v4];
+    [(ICProgressIndicatorTracker *)v5 setDelegate:delegateCopy];
     v7 = [[ICSelectorDelayer alloc] initWithTarget:v6 selector:"progressIndicatorShouldUpdate" delay:0 waitToFireUntilRequestsStop:1 callOnMainThread:0.1];
     [(ICProgressIndicatorTracker *)v6 setProgressIndicatorShouldStartDelayer:v7];
 
@@ -40,55 +40,55 @@
 - (void)invalidate
 {
   [(ICProgressIndicatorTracker *)self setDelegate:0];
-  v3 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStartDelayer];
-  [v3 cancelPreviousFireRequests];
+  progressIndicatorShouldStartDelayer = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStartDelayer];
+  [progressIndicatorShouldStartDelayer cancelPreviousFireRequests];
 
-  v4 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
-  [v4 cancelPreviousFireRequests];
+  progressIndicatorShouldStopDelayer = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
+  [progressIndicatorShouldStopDelayer cancelPreviousFireRequests];
 }
 
-- (void)setMakingProgress:(BOOL)a3
+- (void)setMakingProgress:(BOOL)progress
 {
-  if (self->_makingProgress != a3)
+  if (self->_makingProgress != progress)
   {
     v26 = v9;
     v27 = v5;
     v28 = v4;
     v29 = v3;
-    v11 = a3;
+    progressCopy = progress;
     v13 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_1004E03BC(v11, v13);
+      sub_1004E03BC(progressCopy, v13);
     }
 
-    self->_makingProgress = v11;
-    v14 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStartDelayer];
-    v15 = v14;
-    if (v11)
+    self->_makingProgress = progressCopy;
+    progressIndicatorShouldStartDelayer = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStartDelayer];
+    v15 = progressIndicatorShouldStartDelayer;
+    if (progressCopy)
     {
-      [v14 requestFire];
+      [progressIndicatorShouldStartDelayer requestFire];
 
-      v16 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
-      [v16 cancelPreviousFireRequests];
+      progressIndicatorShouldStopDelayer = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
+      [progressIndicatorShouldStopDelayer cancelPreviousFireRequests];
     }
 
     else
     {
-      [v14 cancelPreviousFireRequests];
+      [progressIndicatorShouldStartDelayer cancelPreviousFireRequests];
 
-      v17 = [(ICProgressIndicatorTracker *)self progressIndicatorStartDate];
-      if (v17)
+      progressIndicatorStartDate = [(ICProgressIndicatorTracker *)self progressIndicatorStartDate];
+      if (progressIndicatorStartDate)
       {
-        v18 = v17;
-        v19 = [(ICProgressIndicatorTracker *)self progressIndicatorStartDate];
-        [v19 timeIntervalSinceNow];
+        v18 = progressIndicatorStartDate;
+        progressIndicatorStartDate2 = [(ICProgressIndicatorTracker *)self progressIndicatorStartDate];
+        [progressIndicatorStartDate2 timeIntervalSinceNow];
         v21 = v20;
 
         if (v21 <= -1.0)
         {
-          v25 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
-          [v25 cancelPreviousFireRequests];
+          progressIndicatorShouldStopDelayer2 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
+          [progressIndicatorShouldStopDelayer2 cancelPreviousFireRequests];
 
           [(ICProgressIndicatorTracker *)self setProgressIndicatorShouldAnimate:0];
           [(ICProgressIndicatorTracker *)self setProgressIndicatorStartDate:0];
@@ -107,31 +107,31 @@
       v24 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer:v10];
       [v24 setDelay:v23];
 
-      v16 = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
-      [v16 requestFire];
+      progressIndicatorShouldStopDelayer = [(ICProgressIndicatorTracker *)self progressIndicatorShouldStopDelayer];
+      [progressIndicatorShouldStopDelayer requestFire];
     }
   }
 }
 
-- (void)setProgressIndicatorShouldAnimate:(BOOL)a3
+- (void)setProgressIndicatorShouldAnimate:(BOOL)animate
 {
-  if (self->_progressIndicatorShouldAnimate != a3)
+  if (self->_progressIndicatorShouldAnimate != animate)
   {
     v10 = v3;
     v11 = v4;
-    v5 = a3;
+    animateCopy = animate;
     v7 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_1004E0434(v5, v7);
+      sub_1004E0434(animateCopy, v7);
     }
 
-    self->_progressIndicatorShouldAnimate = v5;
+    self->_progressIndicatorShouldAnimate = animateCopy;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10010BF70;
     v8[3] = &unk_100646080;
-    v9 = v5;
+    v9 = animateCopy;
     v8[4] = self;
     dispatch_async(&_dispatch_main_q, v8);
   }
@@ -139,9 +139,9 @@
 
 - (void)progressIndicatorShouldUpdate
 {
-  v3 = [(ICProgressIndicatorTracker *)self makingProgress];
+  makingProgress = [(ICProgressIndicatorTracker *)self makingProgress];
 
-  [(ICProgressIndicatorTracker *)self setProgressIndicatorShouldAnimate:v3];
+  [(ICProgressIndicatorTracker *)self setProgressIndicatorShouldAnimate:makingProgress];
 }
 
 - (ICProgressIndicatorTrackerDelegate)delegate

@@ -1,24 +1,24 @@
 @interface PKPeerPaymentBankLookupRequest
-- (PKPeerPaymentBankLookupRequest)initWithCountryCode:(id)a3 query:(id)a4;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentBankLookupRequest)initWithCountryCode:(id)code query:(id)query;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentBankLookupRequest
 
-- (PKPeerPaymentBankLookupRequest)initWithCountryCode:(id)a3 query:(id)a4
+- (PKPeerPaymentBankLookupRequest)initWithCountryCode:(id)code query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  queryCopy = query;
   v14.receiver = self;
   v14.super_class = PKPeerPaymentBankLookupRequest;
   v8 = [(PKOverlayableWebServiceRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [codeCopy copy];
     countryCode = v8->_countryCode;
     v8->_countryCode = v9;
 
-    v11 = [v7 copy];
+    v11 = [queryCopy copy];
     query = v8->_query;
     v8->_query = v11;
   }
@@ -26,13 +26,13 @@
   return v8;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -52,7 +52,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -95,7 +95,7 @@ LABEL_14:
     v21[0] = countryCode;
     v21[1] = query;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-    v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B47F0 queryParameters:v11 appleAccountInformation:v8];
+    v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B47F0 queryParameters:v11 appleAccountInformation:v8];
     [v12 setHTTPMethod:@"GET"];
 
     v13 = [v12 copy];

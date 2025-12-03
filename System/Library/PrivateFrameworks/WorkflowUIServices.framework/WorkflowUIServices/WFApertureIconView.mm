@@ -1,26 +1,26 @@
 @interface WFApertureIconView
-+ (CGSize)opticalAlignmentForSymbol:(id)a3;
-+ (id)configurationForSymbol:(id)a3;
-+ (id)downscaledImageForOriginalImage:(id)a3;
-+ (id)preferredImageForSymbolName:(id)a3;
++ (CGSize)opticalAlignmentForSymbol:(id)symbol;
++ (id)configurationForSymbol:(id)symbol;
++ (id)downscaledImageForOriginalImage:(id)image;
++ (id)preferredImageForSymbolName:(id)name;
 - (BOOL)inSiri;
 - (CGSize)resolution;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)keyColor;
-- (WFApertureIconView)initWithApplicationBundleIdentifier:(id)a3;
-- (WFApertureIconView)initWithIcon:(id)a3;
-- (id)iconStackPlatterColorForImage:(id)a3;
+- (WFApertureIconView)initWithApplicationBundleIdentifier:(id)identifier;
+- (WFApertureIconView)initWithIcon:(id)icon;
+- (id)iconStackPlatterColorForImage:(id)image;
 - (id)symbolColor;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBlendedBorderLayerHidden:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIcon:(id)a3 animated:(BOOL)a4;
-- (void)setIcon:(id)a3 associatedAppBundleIdentifier:(id)a4 animated:(BOOL)a5;
-- (void)setIconImage:(id)a3 associatedIcon:(id)a4 style:(int64_t)a5 previousIconStyle:(int64_t)a6 animated:(BOOL)a7;
-- (void)setMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)setSymbolColorOverride:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBlendedBorderLayerHidden:(BOOL)hidden;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setIcon:(id)icon animated:(BOOL)animated;
+- (void)setIcon:(id)icon associatedAppBundleIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)setIconImage:(id)image associatedIcon:(id)icon style:(int64_t)style previousIconStyle:(int64_t)iconStyle animated:(BOOL)animated;
+- (void)setMode:(int64_t)mode animated:(BOOL)animated;
+- (void)setSymbolColorOverride:(id)override;
 @end
 
 @implementation WFApertureIconView
@@ -36,40 +36,40 @@
 
 - (void)dealloc
 {
-  v3 = [(WFApertureIconView *)self iconImageView];
-  v4 = [v3 layer];
-  [v4 removeObserver:self forKeyPath:@"allowsEdgeAntialiasing"];
+  iconImageView = [(WFApertureIconView *)self iconImageView];
+  layer = [iconImageView layer];
+  [layer removeObserver:self forKeyPath:@"allowsEdgeAntialiasing"];
 
   v5.receiver = self;
   v5.super_class = WFApertureIconView;
   [(WFApertureIconView *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v16 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(WFApertureIconView *)self iconImageView];
-  v12 = [v11 layer];
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  iconImageView = [(WFApertureIconView *)self iconImageView];
+  layer = [iconImageView layer];
 
-  if (v12 != v10)
+  if (layer != objectCopy)
   {
     goto LABEL_2;
   }
 
-  v13 = [v16 isEqualToString:@"allowsEdgeAntialiasing"];
+  v13 = [pathCopy isEqualToString:@"allowsEdgeAntialiasing"];
 
   if (v13)
   {
-    v14 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-    v15 = [v14 BOOLValue];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    bOOLValue = [v14 BOOLValue];
 
-    if ((v15 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v11 = [(WFApertureIconView *)self iconImageView];
-      v12 = [v11 layer];
-      [v12 setAllowsEdgeAntialiasing:1];
+      iconImageView = [(WFApertureIconView *)self iconImageView];
+      layer = [iconImageView layer];
+      [layer setAllowsEdgeAntialiasing:1];
 LABEL_2:
     }
   }
@@ -77,72 +77,72 @@ LABEL_2:
 
 - (BOOL)inSiri
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69E0F68]];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:*MEMORY[0x1E69E0F68]];
 
   return v4;
 }
 
-- (void)setSymbolColorOverride:(id)a3
+- (void)setSymbolColorOverride:(id)override
 {
-  v6 = a3;
-  objc_storeStrong(&self->_symbolColorOverride, a3);
+  overrideCopy = override;
+  objc_storeStrong(&self->_symbolColorOverride, override);
   if ([(WFApertureIconView *)self isEnabled])
   {
-    v5 = [(WFApertureIconView *)self iconImageView];
-    [v5 setTintColor:v6];
+    iconImageView = [(WFApertureIconView *)self iconImageView];
+    [iconImageView setTintColor:overrideCopy];
   }
 }
 
 - (id)symbolColor
 {
-  v3 = [(WFApertureIconView *)self symbolColorOverride];
-  v4 = v3;
-  if (v3)
+  symbolColorOverride = [(WFApertureIconView *)self symbolColorOverride];
+  v4 = symbolColorOverride;
+  if (symbolColorOverride)
   {
-    v5 = v3;
+    primaryColor = symbolColorOverride;
   }
 
   else
   {
-    v5 = [(WFApertureIconView *)self primaryColor];
+    primaryColor = [(WFApertureIconView *)self primaryColor];
   }
 
-  v6 = v5;
+  v6 = primaryColor;
 
   return v6;
 }
 
 - (UIColor)keyColor
 {
-  v3 = [(WFApertureIconView *)self keyColorOverride];
-  v4 = v3;
-  if (v3)
+  keyColorOverride = [(WFApertureIconView *)self keyColorOverride];
+  v4 = keyColorOverride;
+  if (keyColorOverride)
   {
-    v5 = v3;
+    primaryColor = keyColorOverride;
   }
 
   else
   {
-    v5 = [(WFApertureIconView *)self primaryColor];
+    primaryColor = [(WFApertureIconView *)self primaryColor];
   }
 
-  v6 = v5;
+  v6 = primaryColor;
 
   return v6;
 }
 
-- (id)iconStackPlatterColorForImage:(id)a3
+- (id)iconStackPlatterColorForImage:(id)image
 {
-  v4 = a3;
-  v5 = [(WFApertureIconView *)self icon];
-  if (v5)
+  imageCopy = image;
+  icon = [(WFApertureIconView *)self icon];
+  if (icon)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = icon;
     }
 
     else
@@ -158,21 +158,21 @@ LABEL_2:
 
   v7 = v6;
 
-  v8 = [v7 bundleIdentifier];
+  bundleIdentifier = [v7 bundleIdentifier];
 
-  if (v8)
+  if (bundleIdentifier)
   {
-    v9 = v8;
+    associatedAppBundleIdentifier = bundleIdentifier;
   }
 
   else
   {
-    v9 = [(WFApertureIconView *)self associatedAppBundleIdentifier];
+    associatedAppBundleIdentifier = [(WFApertureIconView *)self associatedAppBundleIdentifier];
   }
 
-  v10 = v9;
+  v10 = associatedAppBundleIdentifier;
 
-  v11 = [(WFApertureIconView *)self primaryColor];
+  primaryColor = [(WFApertureIconView *)self primaryColor];
   if (([(WFApertureIconView *)self iconStyle]== 2 || [(WFApertureIconView *)self iconStyle]== 3) && v10 && (v7 || [(WFApertureIconView *)self iconStyle]!= 1))
   {
     v12 = objc_alloc_init(MEMORY[0x1E69E0988]);
@@ -180,62 +180,62 @@ LABEL_2:
     v14 = v13;
     if (v13 && ([v13 backgroundGradient], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
     {
-      v16 = [v14 backgroundGradient];
-      v17 = [v16 baseColor];
-      v18 = [v17 UIColor];
+      backgroundGradient = [v14 backgroundGradient];
+      baseColor = [backgroundGradient baseColor];
+      uIColor = [baseColor UIColor];
     }
 
     else
     {
-      if (!v4)
+      if (!imageCopy)
       {
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v16 = [objc_alloc(MEMORY[0x1E69E0B58]) initWithPlatformImage:v4];
-      v17 = [WFJoeColorUtility colorForImage:v16];
-      v19 = [v17 UIColor];
-      v18 = [v19 colorWithAlphaComponent:1.0];
+      backgroundGradient = [objc_alloc(MEMORY[0x1E69E0B58]) initWithPlatformImage:imageCopy];
+      baseColor = [WFJoeColorUtility colorForImage:backgroundGradient];
+      uIColor2 = [baseColor UIColor];
+      uIColor = [uIColor2 colorWithAlphaComponent:1.0];
 
-      v11 = v19;
+      primaryColor = uIColor2;
     }
 
-    v11 = v18;
+    primaryColor = uIColor;
     goto LABEL_20;
   }
 
 LABEL_21:
-  if (CGColorGetNumberOfComponents([v11 CGColor]) == 4)
+  if (CGColorGetNumberOfComponents([primaryColor CGColor]) == 4)
   {
-    Components = CGColorGetComponents([v11 CGColor]);
-    [v11 _luminance];
+    Components = CGColorGetComponents([primaryColor CGColor]);
+    [primaryColor _luminance];
     v22 = [MEMORY[0x1E69DC888] colorWithRed:(0.5 - v21 + *Components) * 0.3 green:(0.5 - v21 + Components[1]) * 0.3 blue:(0.5 - v21 + Components[2]) * 0.3 alpha:1.0];
   }
 
   else
   {
-    v23 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v22 = [v23 colorWithAlphaComponent:0.4];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v22 = [systemGrayColor colorWithAlphaComponent:0.4];
   }
 
   return v22;
 }
 
-- (void)setBlendedBorderLayerHidden:(BOOL)a3
+- (void)setBlendedBorderLayerHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(WFApertureIconView *)self iconBlendedBorderLayer];
+  hiddenCopy = hidden;
+  iconBlendedBorderLayer = [(WFApertureIconView *)self iconBlendedBorderLayer];
 
-  if (!v5 && !v3)
+  if (!iconBlendedBorderLayer && !hiddenCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E6979398]);
-    v7 = [(WFApertureIconView *)self iconImageView];
-    [v7 bounds];
+    iconImageView = [(WFApertureIconView *)self iconImageView];
+    [iconImageView bounds];
     v9 = v8;
-    v10 = [(WFApertureIconView *)self iconImageView];
-    [v10 bounds];
+    iconImageView2 = [(WFApertureIconView *)self iconImageView];
+    [iconImageView2 bounds];
     [(CALayer *)v6 setFrame:0.0, 0.0, v9];
 
     [(CALayer *)v6 setCornerCurve:*MEMORY[0x1E69796E8]];
@@ -247,33 +247,33 @@ LABEL_21:
     self->_iconBlendedBorderLayer = v6;
   }
 
-  v13 = [(WFApertureIconView *)self iconBlendedBorderLayer];
-  v14 = [v13 superlayer];
-  v15 = (v14 != 0) ^ v3;
+  iconBlendedBorderLayer2 = [(WFApertureIconView *)self iconBlendedBorderLayer];
+  superlayer = [iconBlendedBorderLayer2 superlayer];
+  v15 = (superlayer != 0) ^ hiddenCopy;
 
   if ((v15 & 1) == 0)
   {
-    if (v3)
+    if (hiddenCopy)
     {
-      v18 = [(WFApertureIconView *)self iconBlendedBorderLayer];
-      [v18 removeFromSuperlayer];
+      iconBlendedBorderLayer3 = [(WFApertureIconView *)self iconBlendedBorderLayer];
+      [iconBlendedBorderLayer3 removeFromSuperlayer];
     }
 
     else
     {
-      v18 = [(WFApertureIconView *)self iconImageView];
-      v16 = [v18 layer];
-      v17 = [(WFApertureIconView *)self iconBlendedBorderLayer];
-      [v16 addSublayer:v17];
+      iconBlendedBorderLayer3 = [(WFApertureIconView *)self iconImageView];
+      layer = [iconBlendedBorderLayer3 layer];
+      iconBlendedBorderLayer4 = [(WFApertureIconView *)self iconBlendedBorderLayer];
+      [layer addSublayer:iconBlendedBorderLayer4];
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_enabled = a3;
-  if (a3)
+  animatedCopy = animated;
+  self->_enabled = enabled;
+  if (enabled)
   {
     [(WFApertureIconView *)self symbolColor];
   }
@@ -284,7 +284,7 @@ LABEL_21:
   }
   v6 = ;
   v7 = v6;
-  if (v4)
+  if (animatedCopy)
   {
     v8 = MEMORY[0x1E69DD250];
     v10[0] = MEMORY[0x1E69E9820];
@@ -298,8 +298,8 @@ LABEL_21:
 
   else
   {
-    v9 = [(WFApertureIconView *)self iconImageView];
-    [v9 setTintColor:v7];
+    iconImageView = [(WFApertureIconView *)self iconImageView];
+    [iconImageView setTintColor:v7];
   }
 }
 
@@ -309,30 +309,30 @@ void __42__WFApertureIconView_setEnabled_animated___block_invoke(uint64_t a1)
   [v2 setTintColor:*(a1 + 40)];
 }
 
-- (void)setMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(WFApertureIconView *)self mode]!= a3)
+  animatedCopy = animated;
+  if ([(WFApertureIconView *)self mode]!= mode)
   {
-    self->_mode = a3;
-    v7 = [(WFApertureIconView *)self iconImageViewContainer];
-    v8 = [v7 layer];
-    [v8 removeAllAnimations];
+    self->_mode = mode;
+    iconImageViewContainer = [(WFApertureIconView *)self iconImageViewContainer];
+    layer = [iconImageViewContainer layer];
+    [layer removeAllAnimations];
 
-    v9 = [(WFApertureIconView *)self iconImageView];
-    v10 = [v9 layer];
-    [v10 removeAllAnimations];
+    iconImageView = [(WFApertureIconView *)self iconImageView];
+    layer2 = [iconImageView layer];
+    [layer2 removeAllAnimations];
 
-    v11 = [(WFApertureIconView *)self colorViewContainer];
-    v12 = [v11 layer];
-    [v12 removeAllAnimations];
+    colorViewContainer = [(WFApertureIconView *)self colorViewContainer];
+    layer3 = [colorViewContainer layer];
+    [layer3 removeAllAnimations];
 
-    v13 = [(WFApertureIconView *)self colorView];
-    v14 = [v13 layer];
-    [v14 removeAllAnimations];
+    colorView = [(WFApertureIconView *)self colorView];
+    layer4 = [colorView layer];
+    [layer4 removeAllAnimations];
 
-    v15 = [(WFApertureIconView *)self iconImageViewContainer];
-    v16 = [v15 layer];
+    iconImageViewContainer2 = [(WFApertureIconView *)self iconImageViewContainer];
+    layer5 = [iconImageViewContainer2 layer];
     v74 = *(MEMORY[0x1E69792E8] + 80);
     v95 = *(MEMORY[0x1E69792E8] + 64);
     v75 = v95;
@@ -349,10 +349,10 @@ void __42__WFApertureIconView_setEnabled_animated___block_invoke(uint64_t a1)
     *&v93.tx = *(MEMORY[0x1E69792E8] + 32);
     v69 = *&v93.tx;
     v94 = v68;
-    [v16 setTransform:&v93];
+    [layer5 setTransform:&v93];
 
-    v17 = [(WFApertureIconView *)self iconImageView];
-    v18 = [v17 layer];
+    iconImageView2 = [(WFApertureIconView *)self iconImageView];
+    layer6 = [iconImageView2 layer];
     v95 = v75;
     v96 = v74;
     v97 = v73;
@@ -361,10 +361,10 @@ void __42__WFApertureIconView_setEnabled_animated___block_invoke(uint64_t a1)
     *&v93.c = v70;
     *&v93.tx = v69;
     v94 = v68;
-    [v18 setTransform:&v93];
+    [layer6 setTransform:&v93];
 
-    v19 = [(WFApertureIconView *)self colorViewContainer];
-    v20 = [v19 layer];
+    colorViewContainer2 = [(WFApertureIconView *)self colorViewContainer];
+    layer7 = [colorViewContainer2 layer];
     v95 = v75;
     v96 = v74;
     v97 = v73;
@@ -373,10 +373,10 @@ void __42__WFApertureIconView_setEnabled_animated___block_invoke(uint64_t a1)
     *&v93.c = v70;
     *&v93.tx = v69;
     v94 = v68;
-    [v20 setTransform:&v93];
+    [layer7 setTransform:&v93];
 
-    v21 = [(WFApertureIconView *)self colorView];
-    v22 = [v21 layer];
+    colorView2 = [(WFApertureIconView *)self colorView];
+    layer8 = [colorView2 layer];
     v95 = v75;
     v96 = v74;
     v97 = v73;
@@ -385,15 +385,15 @@ void __42__WFApertureIconView_setEnabled_animated___block_invoke(uint64_t a1)
     *&v93.c = v70;
     *&v93.tx = v69;
     v94 = v68;
-    [v22 setTransform:&v93];
+    [layer8 setTransform:&v93];
 
-    v23 = [(WFApertureIconView *)self icon];
-    if (v23)
+    icon = [(WFApertureIconView *)self icon];
+    if (icon)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = v23;
+        v24 = icon;
       }
 
       else
@@ -409,32 +409,32 @@ void __42__WFApertureIconView_setEnabled_animated___block_invoke(uint64_t a1)
 
     v25 = v24;
 
-    v26 = [v25 bundleIdentifier];
+    bundleIdentifier = [v25 bundleIdentifier];
 
-    if (v26)
+    if (bundleIdentifier)
     {
-      v27 = v26;
+      associatedAppBundleIdentifier = bundleIdentifier;
     }
 
     else
     {
-      v27 = [(WFApertureIconView *)self associatedAppBundleIdentifier];
+      associatedAppBundleIdentifier = [(WFApertureIconView *)self associatedAppBundleIdentifier];
     }
 
-    v28 = v27;
+    v28 = associatedAppBundleIdentifier;
 
     if ([(WFApertureIconView *)self iconStyle]!= 2 && [(WFApertureIconView *)self iconStyle]!= 3)
     {
       v41 = 0;
-      if (a3 == 1)
+      if (mode == 1)
       {
 LABEL_19:
-        v45 = [(WFApertureIconView *)self colorView];
+        colorView3 = [(WFApertureIconView *)self colorView];
         v46 = [(WFApertureIconView *)self iconStackPlatterColorForImage:v41];
-        [v45 setBackgroundColor:v46];
+        [colorView3 setBackgroundColor:v46];
 
-        v47 = [(WFApertureIconView *)self colorView];
-        [v47 setHidden:0];
+        colorView4 = [(WFApertureIconView *)self colorView];
+        [colorView4 setHidden:0];
 
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
@@ -448,7 +448,7 @@ LABEL_19:
         memset(&v85, 0, sizeof(v85));
         [(WFApertureIconView *)self bounds];
         CGAffineTransformMakeTranslation(&v85, 0.0, v50 * 0.17);
-        if (v4)
+        if (animatedCopy)
         {
           v51 = dispatch_time(0, 170000000);
           block[0] = MEMORY[0x1E69E9820];
@@ -460,19 +460,19 @@ LABEL_19:
           v83 = v93;
           v84 = v85;
           dispatch_after(v51, MEMORY[0x1E69E96A0], block);
-          v52 = v82;
+          colorViewContainer3 = v82;
         }
 
         else
         {
           v48[2](v48);
-          v53 = [(WFApertureIconView *)self iconImageViewContainer];
+          iconImageViewContainer3 = [(WFApertureIconView *)self iconImageViewContainer];
           v80 = v93;
-          [v53 setTransform:&v80];
+          [iconImageViewContainer3 setTransform:&v80];
 
-          v52 = [(WFApertureIconView *)self colorViewContainer];
+          colorViewContainer3 = [(WFApertureIconView *)self colorViewContainer];
           v80 = v85;
-          [v52 setTransform:&v80];
+          [colorViewContainer3 setTransform:&v80];
         }
 
 LABEL_41:
@@ -488,7 +488,7 @@ LABEL_38:
       v79[4] = self;
       v66 = _Block_copy(v79);
       v48 = v66;
-      if (v4)
+      if (animatedCopy)
       {
         v67 = MEMORY[0x1E69DD250];
         v77[0] = MEMORY[0x1E69E9820];
@@ -502,45 +502,45 @@ LABEL_38:
         v76[3] = &unk_1E8307EB0;
         v76[4] = self;
         [v67 animateWithSpringDuration:4 bounce:v77 initialSpringVelocity:v76 delay:0.5 options:0.0 animations:0.0 completion:0.0];
-        v52 = v78;
+        colorViewContainer3 = v78;
       }
 
       else
       {
         v66[2](v66);
-        v52 = [(WFApertureIconView *)self colorView];
-        [v52 setHidden:1];
+        colorViewContainer3 = [(WFApertureIconView *)self colorView];
+        [colorViewContainer3 setHidden:1];
       }
 
       goto LABEL_41;
     }
 
-    if (a3 == 1)
+    if (mode == 1)
     {
       v29 = [MEMORY[0x1E69E0B58] applicationIconImageForBundleIdentifier:v28 format:0];
-      v30 = [v29 UIImage];
+      uIImage = [v29 UIImage];
 
       v31 = objc_alloc(MEMORY[0x1E69DCAE0]);
-      v32 = [(WFApertureIconView *)self iconImageView];
-      [v32 bounds];
+      iconImageView3 = [(WFApertureIconView *)self iconImageView];
+      [iconImageView3 bounds];
       v33 = [v31 initWithFrame:?];
 
-      [v33 setImage:v30];
-      v34 = [v33 layer];
-      [v34 setCornerCurve:*MEMORY[0x1E69796E8]];
+      [v33 setImage:uIImage];
+      layer9 = [v33 layer];
+      [layer9 setCornerCurve:*MEMORY[0x1E69796E8]];
 
-      v35 = [v33 layer];
-      v36 = [(WFApertureIconView *)self iconImageView];
-      v37 = [v36 layer];
-      [v37 cornerRadius];
-      [v35 setCornerRadius:?];
+      layer10 = [v33 layer];
+      iconImageView4 = [(WFApertureIconView *)self iconImageView];
+      layer11 = [iconImageView4 layer];
+      [layer11 cornerRadius];
+      [layer10 setCornerRadius:?];
 
-      v38 = [v33 layer];
-      [v38 setAllowsEdgeAntialiasing:1];
+      layer12 = [v33 layer];
+      [layer12 setAllowsEdgeAntialiasing:1];
 
       [v33 setAlpha:0.0];
-      v39 = [(WFApertureIconView *)self iconImageView];
-      [v39 addSubview:v33];
+      iconImageView5 = [(WFApertureIconView *)self iconImageView];
+      [iconImageView5 addSubview:v33];
 
       v40 = MEMORY[0x1E69DD250];
       v91[0] = MEMORY[0x1E69E9820];
@@ -553,8 +553,8 @@ LABEL_38:
       v87[2] = __39__WFApertureIconView_setMode_animated___block_invoke_2;
       v87[3] = &unk_1E8307E10;
       v88 = v92;
-      v89 = self;
-      v41 = v30;
+      selfCopy = self;
+      v41 = uIImage;
       v90 = v41;
       v42 = v92;
       [v40 animateWithDuration:v91 animations:v87 completion:0.25];
@@ -563,13 +563,13 @@ LABEL_38:
       goto LABEL_19;
     }
 
-    v43 = [(WFApertureIconView *)self icon];
-    if (v43)
+    icon2 = [(WFApertureIconView *)self icon];
+    if (icon2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v44 = v43;
+        v44 = icon2;
       }
 
       else
@@ -585,13 +585,13 @@ LABEL_38:
 
     v54 = v44;
 
-    v55 = [(WFApertureIconView *)self icon];
-    if (v55)
+    icon3 = [(WFApertureIconView *)self icon];
+    if (icon3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v56 = v55;
+        v56 = icon3;
       }
 
       else
@@ -610,11 +610,11 @@ LABEL_38:
     if (v54 && (-[WFApertureIconView icon](self, "icon"), v58 = objc_claimAutoreleasedReturnValue(), v59 = [v58 hasClearBackground], v58, v59))
     {
       v60 = objc_opt_class();
-      v61 = [v54 symbolName];
-      v41 = [v60 preferredImageForSymbolName:v61];
+      symbolName = [v54 symbolName];
+      v41 = [v60 preferredImageForSymbolName:symbolName];
 
-      v62 = [(WFApertureIconView *)self iconImageView];
-      [v62 setImage:v41];
+      iconImageView6 = [(WFApertureIconView *)self iconImageView];
+      [iconImageView6 setImage:v41];
     }
 
     else
@@ -628,15 +628,15 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v62 = [v57 associatedLogo];
-      if (v62)
+      iconImageView6 = [v57 associatedLogo];
+      if (iconImageView6)
       {
         v63 = objc_opt_class();
-        v64 = [v62 UIImage];
-        v41 = [v63 downscaledImageForOriginalImage:v64];
+        uIImage2 = [iconImageView6 UIImage];
+        v41 = [v63 downscaledImageForOriginalImage:uIImage2];
 
-        v65 = [(WFApertureIconView *)self iconImageView];
-        [v65 setImage:v41];
+        iconImageView7 = [(WFApertureIconView *)self iconImageView];
+        [iconImageView7 setImage:v41];
       }
 
       else
@@ -806,20 +806,20 @@ void __39__WFApertureIconView_setMode_animated___block_invoke_8(uint64_t a1)
   [v2 setTransform:v4];
 }
 
-- (void)setIconImage:(id)a3 associatedIcon:(id)a4 style:(int64_t)a5 previousIconStyle:(int64_t)a6 animated:(BOOL)a7
+- (void)setIconImage:(id)image associatedIcon:(id)icon style:(int64_t)style previousIconStyle:(int64_t)iconStyle animated:(BOOL)animated
 {
-  v7 = a7;
+  animatedCopy = animated;
   v54[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  if (v7)
+  imageCopy = image;
+  iconCopy = icon;
+  if (animatedCopy)
   {
     if ([(WFApertureIconView *)self mode])
     {
       v14 = 1;
     }
 
-    else if (a6 == 1 && a5 == 1)
+    else if (iconStyle == 1 && style == 1)
     {
       v14 = 3;
     }
@@ -840,10 +840,10 @@ void __39__WFApertureIconView_setMode_animated___block_invoke_8(uint64_t a1)
   aBlock[2] = __83__WFApertureIconView_setIconImage_associatedIcon_style_previousIconStyle_animated___block_invoke;
   aBlock[3] = &unk_1E8308650;
   aBlock[4] = self;
-  v16 = v13;
+  v16 = iconCopy;
   v51 = v16;
-  v53 = a5;
-  v17 = v12;
+  styleCopy = style;
+  v17 = imageCopy;
   v52 = v17;
   v18 = _Block_copy(aBlock);
   v19 = v18;
@@ -859,11 +859,11 @@ void __39__WFApertureIconView_setMode_animated___block_invoke_8(uint64_t a1)
       [v20 setValue:v21 forKey:*MEMORY[0x1E6979B48]];
       [v20 setValue:@"default" forKey:*MEMORY[0x1E6979BA0]];
       [v20 setValue:@"default" forKey:*MEMORY[0x1E6979B60]];
-      v22 = [(WFApertureIconView *)self iconImageView];
-      v23 = [v22 layer];
+      iconImageView = [(WFApertureIconView *)self iconImageView];
+      layer = [iconImageView layer];
       v54[0] = v20;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
-      [v23 setFilters:v24];
+      [layer setFilters:v24];
 
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
@@ -1167,23 +1167,23 @@ void __83__WFApertureIconView_setIconImage_associatedIcon_style_previousIconStyl
   }
 }
 
-- (void)setIcon:(id)a3 animated:(BOOL)a4
+- (void)setIcon:(id)icon animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v97 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  iconCopy = icon;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(WFApertureIconView *)self icon];
-  v8 = [v6 isEqual:v7];
+  icon = [(WFApertureIconView *)self icon];
+  v8 = [iconCopy isEqual:icon];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(WFApertureIconView *)self iconStyle];
-    v86 = v6;
+    iconStyle = [(WFApertureIconView *)self iconStyle];
+    v86 = iconCopy;
     if (v86)
     {
       objc_opt_class();
-      v10 = v86;
+      gradient = v86;
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass)
       {
@@ -1240,56 +1240,56 @@ void __83__WFApertureIconView_setIconImage_associatedIcon_style_previousIconStyl
 
       v21 = v20;
 
-      v82 = v9;
+      v82 = iconStyle;
       if (isKindOfClass)
       {
         v22 = objc_alloc_init(MEMORY[0x1E69E0988]);
-        v23 = [v19 bundleIdentifier];
-        v24 = [v22 colorsForBundleIdentifier:v23 error:0];
+        bundleIdentifier = [v19 bundleIdentifier];
+        v24 = [v22 colorsForBundleIdentifier:bundleIdentifier error:0];
 
         if (!v24)
         {
           goto LABEL_27;
         }
 
-        v25 = [v24 backgroundGradient];
+        backgroundGradient = [v24 backgroundGradient];
 
-        if (v25)
+        if (backgroundGradient)
         {
-          v26 = [v24 backgroundGradient];
-          v27 = [v26 startColor];
-          [v27 UIColor];
-          v28 = v4;
+          backgroundGradient2 = [v24 backgroundGradient];
+          startColor = [backgroundGradient2 startColor];
+          [startColor UIColor];
+          v28 = animatedCopy;
           v30 = v29 = v22;
           [(WFApertureIconView *)self setPrimaryColor:v30];
 
           v22 = v29;
-          v4 = v28;
+          animatedCopy = v28;
           goto LABEL_28;
         }
 
-        v36 = [v24 tintColor];
+        tintColor = [v24 tintColor];
 
-        if (v36)
+        if (tintColor)
         {
-          v26 = [v24 tintColor];
-          v27 = [v26 UIColor];
-          [(WFApertureIconView *)self setPrimaryColor:v27];
+          backgroundGradient2 = [v24 tintColor];
+          startColor = [backgroundGradient2 UIColor];
+          [(WFApertureIconView *)self setPrimaryColor:startColor];
         }
 
         else
         {
 LABEL_27:
-          v26 = [v84 image];
-          v27 = [WFJoeColorUtility colorForImage:v26];
-          [v27 UIColor];
+          backgroundGradient2 = [v84 image];
+          startColor = [WFJoeColorUtility colorForImage:backgroundGradient2];
+          [startColor UIColor];
           v37 = v80 = v22;
           [v37 colorWithAlphaComponent:1.0];
           v38 = v21;
-          v40 = v39 = v4;
+          v40 = v39 = animatedCopy;
           [(WFApertureIconView *)self setPrimaryColor:v40];
 
-          v4 = v39;
+          animatedCopy = v39;
           v21 = v38;
 
           v22 = v80;
@@ -1301,7 +1301,7 @@ LABEL_28:
         icon = [v19 associatedLogo];
         if ([(WFApertureIconView *)self inSiri]|| !icon)
         {
-          v47 = v4;
+          v47 = animatedCopy;
           if ([(WFApertureIconView *)self inSiri])
           {
             v48 = 2;
@@ -1312,46 +1312,46 @@ LABEL_28:
             v48 = 0;
           }
 
-          v44 = [v19 bundleIdentifier];
-          v49 = [MEMORY[0x1E696AAE8] mainBundle];
-          v50 = [v49 bundleIdentifier];
-          v51 = [v50 isEqualToString:*MEMORY[0x1E69E0F70]];
+          bundleIdentifier2 = [v19 bundleIdentifier];
+          mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+          bundleIdentifier3 = [mainBundle bundleIdentifier];
+          v51 = [bundleIdentifier3 isEqualToString:*MEMORY[0x1E69E0F70]];
 
           if (v51)
           {
             v52 = MEMORY[0x1E698B0D0];
-            v53 = [v19 bundleIdentifier];
-            v54 = [v52 applicationWithBundleIdentifier:v53];
+            bundleIdentifier4 = [v19 bundleIdentifier];
+            v54 = [v52 applicationWithBundleIdentifier:bundleIdentifier4];
 
             if ([v54 isHidden])
             {
 
-              v44 = @"INVALID_BUNDLE_ID";
+              bundleIdentifier2 = @"INVALID_BUNDLE_ID";
             }
 
-            v4 = v47;
+            animatedCopy = v47;
             v31 = v83;
           }
 
           else
           {
-            v4 = v47;
+            animatedCopy = v47;
             v31 = v83;
           }
 
-          v55 = [MEMORY[0x1E69E0B58] applicationIconImageForBundleIdentifier:v44 format:v48];
-          v45 = [v55 UIImage];
+          v55 = [MEMORY[0x1E69E0B58] applicationIconImageForBundleIdentifier:bundleIdentifier2 format:v48];
+          uIImage = [v55 UIImage];
 
-          if (!v45)
+          if (!uIImage)
           {
             v57 = getWFGeneralLogObject();
             if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
             {
-              v58 = [v19 bundleIdentifier];
+              bundleIdentifier5 = [v19 bundleIdentifier];
               *buf = 136315394;
               v94 = "[WFApertureIconView setIcon:animated:]";
               v95 = 2112;
-              v96 = v58;
+              v96 = bundleIdentifier5;
               _os_log_impl(&dword_1C830A000, v57, OS_LOG_TYPE_ERROR, "%s Failed to load application icon for bundle ID: %@", buf, 0x16u);
             }
 
@@ -1366,10 +1366,10 @@ LABEL_28:
         else
         {
           v42 = objc_opt_class();
-          v43 = [icon UIImage];
-          v44 = [v42 downscaledImageForOriginalImage:v43];
+          uIImage2 = [icon UIImage];
+          bundleIdentifier2 = [v42 downscaledImageForOriginalImage:uIImage2];
 
-          v45 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{-[__CFString CGImage](v44, "CGImage")}];
+          uIImage = [MEMORY[0x1E69DCAB8] imageWithCGImage:{-[__CFString CGImage](bundleIdentifier2, "CGImage")}];
           v46 = 3;
           v31 = v83;
         }
@@ -1384,9 +1384,9 @@ LABEL_28:
         if ([v19 hasClearBackground])
         {
           [v19 hasClearBackground];
-          v32 = [v21 symbolColor];
-          v33 = [v32 UIColor];
-          [(WFApertureIconView *)self setPrimaryColor:v33];
+          symbolColor = [v21 symbolColor];
+          uIColor = [symbolColor UIColor];
+          [(WFApertureIconView *)self setPrimaryColor:uIColor];
           v85 = v19;
 LABEL_63:
 
@@ -1398,15 +1398,15 @@ LABEL_63:
           v59 = v85;
           if (v85)
           {
-            v9 = v82;
+            iconStyle = v82;
             if ([v19 hasClearBackground])
             {
               v77 = objc_opt_class();
-              v78 = [v85 symbolName];
-              v79 = [v77 preferredImageForSymbolName:v78];
+              symbolName = [v85 symbolName];
+              v79 = [v77 preferredImageForSymbolName:symbolName];
 
               v46 = 2;
-              [(WFApertureIconView *)self setIconImage:v79 associatedIcon:v19 style:2 previousIconStyle:v82 animated:v4];
+              [(WFApertureIconView *)self setIconImage:v79 associatedIcon:v19 style:2 previousIconStyle:v82 animated:animatedCopy];
 
               v19 = 0;
               v60 = 0;
@@ -1417,7 +1417,7 @@ LABEL_63:
           else
           {
             v85 = 0;
-            v9 = v82;
+            iconStyle = v82;
           }
 
 LABEL_48:
@@ -1427,11 +1427,11 @@ LABEL_48:
           block[2] = __39__WFApertureIconView_setIcon_animated___block_invoke;
           block[3] = &unk_1E8307D20;
           v88 = v86;
-          v89 = self;
+          selfCopy = self;
           v46 = 1;
           v90 = 1;
-          v91 = v9;
-          v92 = v4;
+          v91 = iconStyle;
+          v92 = animatedCopy;
           v67 = MEMORY[0x1E69E96A0];
           dispatch_after(v66, MEMORY[0x1E69E96A0], block);
 
@@ -1449,21 +1449,21 @@ LABEL_67:
         }
 
 LABEL_23:
-        v34 = [v31 background];
-        v81 = v4;
+        background = [v31 background];
+        v81 = animatedCopy;
         v85 = v21;
-        if (v34)
+        if (background)
         {
-          v35 = v34;
+          background2 = background;
         }
 
         else
         {
-          v35 = [v21 background];
-          if (!v35)
+          background2 = [v21 background];
+          if (!background2)
           {
             v72 = 0;
-            v32 = 0;
+            symbolColor = 0;
             goto LABEL_59;
           }
         }
@@ -1472,7 +1472,7 @@ LABEL_23:
         v68 = objc_opt_isKindOfClass();
         if (v68)
         {
-          v69 = v35;
+          v69 = background2;
         }
 
         else
@@ -1482,11 +1482,11 @@ LABEL_23:
 
         v70 = v69;
 
-        v32 = v35;
+        symbolColor = background2;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v71 = v32;
+          v71 = symbolColor;
         }
 
         else
@@ -1498,28 +1498,28 @@ LABEL_23:
 
         if (v68)
         {
-          v73 = [v32 color];
+          color = [symbolColor color];
           v74 = 0;
-          v33 = v32;
+          uIColor = symbolColor;
 LABEL_60:
-          v75 = [v73 UIColor];
-          [(WFApertureIconView *)self setPrimaryColor:v75];
+          uIColor2 = [color UIColor];
+          [(WFApertureIconView *)self setPrimaryColor:uIColor2];
 
           if (v74)
           {
 
-            v73 = v10;
+            color = gradient;
           }
 
-          v4 = v81;
+          animatedCopy = v81;
           v31 = v83;
           goto LABEL_63;
         }
 
 LABEL_59:
-        v10 = [v72 gradient];
-        v73 = [v10 darkBaseColor];
-        v33 = 0;
+        gradient = [v72 gradient];
+        color = [gradient darkBaseColor];
+        uIColor = 0;
         v74 = 1;
         goto LABEL_60;
       }
@@ -1532,23 +1532,23 @@ LABEL_59:
 
       if (v84)
       {
-        v61 = [v84 image];
-        v62 = [WFJoeColorUtility colorForImage:v61];
-        v63 = [v62 UIColor];
-        v64 = [v63 colorWithAlphaComponent:1.0];
+        image = [v84 image];
+        v62 = [WFJoeColorUtility colorForImage:image];
+        uIColor3 = [v62 UIColor];
+        v64 = [uIColor3 colorWithAlphaComponent:1.0];
         [(WFApertureIconView *)self setPrimaryColor:v64];
 
         v31 = 0;
         v85 = 0;
 LABEL_64:
         icon = [v19 image];
-        v45 = [icon UIImage];
+        uIImage = [icon UIImage];
         v56 = 0;
         v46 = 1;
         v84 = v19;
 LABEL_65:
 
-        [(WFApertureIconView *)self setIconImage:v45 associatedIcon:v19 style:v46 previousIconStyle:v82 animated:v4];
+        [(WFApertureIconView *)self setIconImage:uIImage associatedIcon:v19 style:v46 previousIconStyle:v82 animated:animatedCopy];
         v19 = v56;
         v60 = v84;
         v59 = v85;
@@ -1556,8 +1556,8 @@ LABEL_65:
       }
     }
 
-    v65 = [MEMORY[0x1E69DC888] whiteColor];
-    [(WFApertureIconView *)self setPrimaryColor:v65];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(WFApertureIconView *)self setPrimaryColor:whiteColor];
 
     v85 = 0;
     v31 = 0;
@@ -1573,12 +1573,12 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
   [*(a1 + 40) setIconImage:v2 associatedIcon:*(a1 + 32) style:*(a1 + 48) previousIconStyle:*(a1 + 56) animated:*(a1 + 64)];
 }
 
-- (void)setIcon:(id)a3 associatedAppBundleIdentifier:(id)a4 animated:(BOOL)a5
+- (void)setIcon:(id)icon associatedAppBundleIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  [(WFApertureIconView *)self setIcon:a3 animated:v5];
-  [(WFApertureIconView *)self setAssociatedAppBundleIdentifier:v8];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  [(WFApertureIconView *)self setIcon:icon animated:animatedCopy];
+  [(WFApertureIconView *)self setAssociatedAppBundleIdentifier:identifierCopy];
 }
 
 - (void)layoutSubviews
@@ -1587,18 +1587,18 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
   v111.receiver = self;
   v111.super_class = WFApertureIconView;
   [(WFApertureIconView *)&v111 layoutSubviews];
-  v3 = [(WFApertureIconView *)self iconImageView];
-  v4 = [v3 layer];
-  v114[0] = v4;
-  v5 = [(WFApertureIconView *)self iconImageViewContainer];
-  v6 = [v5 layer];
-  v114[1] = v6;
-  v7 = [(WFApertureIconView *)self colorView];
-  v8 = [v7 layer];
-  v114[2] = v8;
-  v9 = [(WFApertureIconView *)self colorViewContainer];
-  v10 = [v9 layer];
-  v114[3] = v10;
+  iconImageView = [(WFApertureIconView *)self iconImageView];
+  layer = [iconImageView layer];
+  v114[0] = layer;
+  iconImageViewContainer = [(WFApertureIconView *)self iconImageViewContainer];
+  layer2 = [iconImageViewContainer layer];
+  v114[1] = layer2;
+  colorView = [(WFApertureIconView *)self colorView];
+  layer3 = [colorView layer];
+  v114[2] = layer3;
+  colorViewContainer = [(WFApertureIconView *)self colorViewContainer];
+  layer4 = [colorViewContainer layer];
+  v114[3] = layer4;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v114 count:4];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1668,9 +1668,9 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
     while (v15);
   }
 
-  v21 = [(WFApertureIconView *)self inSiri];
+  inSiri = [(WFApertureIconView *)self inSiri];
   v22 = MEMORY[0x1E695EFF8];
-  if (v21 || ([(WFApertureIconView *)self bounds], v23 > 25.0))
+  if (inSiri || ([(WFApertureIconView *)self bounds], v23 > 25.0))
   {
     [(WFApertureIconView *)self bounds];
     v25 = v24;
@@ -1683,13 +1683,13 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
   {
     if ([(WFApertureIconView *)self iconStyle]== 2 && ([(WFApertureIconView *)self icon], v30 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v30, (isKindOfClass & 1) != 0))
     {
-      v32 = [(WFApertureIconView *)self icon];
-      if (v32)
+      icon = [(WFApertureIconView *)self icon];
+      if (icon)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v33 = v32;
+          v33 = icon;
         }
 
         else
@@ -1705,37 +1705,37 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
 
       v38 = v33;
 
-      v39 = [(WFApertureIconView *)self iconImageView];
-      [v39 intrinsicContentSize];
+      iconImageView2 = [(WFApertureIconView *)self iconImageView];
+      [iconImageView2 intrinsicContentSize];
       v25 = v40;
       v27 = v41;
 
       [(WFApertureIconView *)self bounds];
       [(WFApertureIconView *)self bounds];
-      v42 = [(WFApertureIconView *)self traitCollection];
-      [v42 displayScale];
+      traitCollection = [(WFApertureIconView *)self traitCollection];
+      [traitCollection displayScale];
       BSPointRoundForScale();
 
       v43 = objc_opt_class();
-      v44 = [v38 symbolName];
+      symbolName = [v38 symbolName];
 
-      [v43 opticalAlignmentForSymbol:v44];
-      v37 = [(WFApertureIconView *)self traitCollection];
-      [v37 displayScale];
+      [v43 opticalAlignmentForSymbol:symbolName];
+      traitCollection2 = [(WFApertureIconView *)self traitCollection];
+      [traitCollection2 displayScale];
     }
 
     else
     {
       [(WFApertureIconView *)self iconStyle];
-      v34 = [(WFApertureIconView *)self traitCollection];
-      [v34 displayScale];
+      traitCollection3 = [(WFApertureIconView *)self traitCollection];
+      [traitCollection3 displayScale];
       BSSizeCeilForScale();
       v25 = v35;
       v27 = v36;
 
       [(WFApertureIconView *)self bounds];
-      v37 = [(WFApertureIconView *)self traitCollection];
-      [v37 displayScale];
+      traitCollection2 = [(WFApertureIconView *)self traitCollection];
+      [traitCollection2 displayScale];
     }
 
     BSPointRoundForScale();
@@ -1743,17 +1743,17 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
     v29 = v46;
   }
 
-  v47 = [(WFApertureIconView *)self iconImageViewContainer];
-  [v47 setFrame:{v28, v29, v25, v27}];
+  iconImageViewContainer2 = [(WFApertureIconView *)self iconImageViewContainer];
+  [iconImageViewContainer2 setFrame:{v28, v29, v25, v27}];
 
   v93 = v28;
   v91 = v29;
   if ([(WFApertureIconView *)self iconStyle]== 3)
   {
-    v48 = [(WFApertureIconView *)self mode];
+    mode = [(WFApertureIconView *)self mode];
     v49 = *v22;
     v50 = v22[1];
-    if (!v48)
+    if (!mode)
     {
       v115.origin.x = *v22;
       v115.origin.y = v22[1];
@@ -1765,8 +1765,8 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
       y = v116.origin.y;
       width = v116.size.width;
       height = v116.size.height;
-      v56 = [(WFApertureIconView *)self iconImageView];
-      [v56 setFrame:{x, y, width, height}];
+      iconImageView3 = [(WFApertureIconView *)self iconImageView];
+      [iconImageView3 setFrame:{x, y, width, height}];
       goto LABEL_29;
     }
   }
@@ -1777,13 +1777,13 @@ void __39__WFApertureIconView_setIcon_animated___block_invoke(uint64_t a1)
     v50 = v22[1];
   }
 
-  v56 = [(WFApertureIconView *)self iconImageView];
-  [v56 setFrame:{v49, v50, v25, v27}];
+  iconImageView3 = [(WFApertureIconView *)self iconImageView];
+  [iconImageView3 setFrame:{v49, v50, v25, v27}];
   v51 = v27;
 LABEL_29:
 
-  v57 = [(WFApertureIconView *)self iconImageView];
-  [v57 bounds];
+  iconImageView4 = [(WFApertureIconView *)self iconImageView];
+  [iconImageView4 bounds];
   v117.origin.x = v49;
   v117.origin.y = v50;
   v118 = CGRectInset(v117, -0.1, -0.1);
@@ -1791,42 +1791,42 @@ LABEL_29:
   v59 = v118.origin.y;
   v60 = v118.size.width;
   v61 = v118.size.height;
-  v62 = [(WFApertureIconView *)self iconBlendedBorderLayer];
-  [v62 setFrame:{v58, v59, v60, v61}];
+  iconBlendedBorderLayer = [(WFApertureIconView *)self iconBlendedBorderLayer];
+  [iconBlendedBorderLayer setFrame:{v58, v59, v60, v61}];
 
-  v63 = [(WFApertureIconView *)self colorViewContainer];
-  [v63 setFrame:{v93, v91, v25, v51}];
+  colorViewContainer2 = [(WFApertureIconView *)self colorViewContainer];
+  [colorViewContainer2 setFrame:{v93, v91, v25, v51}];
 
-  v64 = [(WFApertureIconView *)self colorView];
-  [v64 setFrame:{v49, v50, v25, v51}];
+  colorView2 = [(WFApertureIconView *)self colorView];
+  [colorView2 setFrame:{v49, v50, v25, v51}];
 
   v65 = v25 * *MEMORY[0x1E69E0FE0];
-  v66 = [(WFApertureIconView *)self iconImageView];
-  v67 = [v66 layer];
-  [v67 setCornerRadius:v65];
+  iconImageView5 = [(WFApertureIconView *)self iconImageView];
+  layer5 = [iconImageView5 layer];
+  [layer5 setCornerRadius:v65];
 
-  v68 = [(WFApertureIconView *)self iconBlendedBorderLayer];
-  [v68 setCornerRadius:v65];
+  iconBlendedBorderLayer2 = [(WFApertureIconView *)self iconBlendedBorderLayer];
+  [iconBlendedBorderLayer2 setCornerRadius:v65];
 
-  v69 = [(WFApertureIconView *)self colorView];
-  v70 = [v69 layer];
-  [v70 setCornerRadius:v65];
+  colorView3 = [(WFApertureIconView *)self colorView];
+  layer6 = [colorView3 layer];
+  [layer6 setCornerRadius:v65];
 
   [(WFApertureIconView *)self bounds];
   v72 = v71;
-  v73 = [(WFApertureIconView *)self iconBlendedBorderLayer];
-  v74 = v73;
+  iconBlendedBorderLayer3 = [(WFApertureIconView *)self iconBlendedBorderLayer];
+  v74 = iconBlendedBorderLayer3;
   if (v72 <= 25.0)
   {
-    v75 = [(WFApertureIconView *)self traitCollection];
-    [v75 displayScale];
+    traitCollection4 = [(WFApertureIconView *)self traitCollection];
+    [traitCollection4 displayScale];
     BSFloatRoundForScale();
     [v74 setBorderWidth:?];
   }
 
   else
   {
-    [v73 setBorderWidth:0.75];
+    [iconBlendedBorderLayer3 setBorderWidth:0.75];
   }
 
   v97 = 0u;
@@ -1883,19 +1883,19 @@ LABEL_29:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (![(WFApertureIconView *)self inSiri])
   {
-    v10 = [(WFApertureIconView *)self icon];
-    if (v10)
+    icon = [(WFApertureIconView *)self icon];
+    if (icon)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = icon;
       }
 
       else
@@ -1911,13 +1911,13 @@ LABEL_29:
 
     v12 = v11;
 
-    v13 = [(WFApertureIconView *)self icon];
-    if (v13)
+    icon2 = [(WFApertureIconView *)self icon];
+    if (icon2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = v13;
+        v14 = icon2;
       }
 
       else
@@ -1952,8 +1952,8 @@ LABEL_29:
 
     if ([(WFApertureIconView *)self iconStyle]== 2)
     {
-      v16 = [v12 symbolName];
-      v17 = unfilledVariantForSymbolName(v16);
+      symbolName = [v12 symbolName];
+      v17 = unfilledVariantForSymbolName(symbolName);
 
       v9 = 24.0;
       v7 = 24.0;
@@ -1994,8 +1994,8 @@ LABEL_23:
     if (v15 && [(WFApertureIconView *)self iconStyle]== 3)
     {
       v25 = sizeThatFits__horizontalWidthIncreaseOverrideMapping;
-      v26 = [v15 bundleIdentifier];
-      v27 = [v25 objectForKeyedSubscript:v26];
+      bundleIdentifier = [v15 bundleIdentifier];
+      v27 = [v25 objectForKeyedSubscript:bundleIdentifier];
       [v27 floatValue];
       v29 = v28;
 
@@ -2043,11 +2043,11 @@ void __35__WFApertureIconView_sizeThatFits___block_invoke()
   sizeThatFits__horizontalWidthIncreaseOverrideMapping = v2;
 }
 
-- (WFApertureIconView)initWithApplicationBundleIdentifier:(id)a3
+- (WFApertureIconView)initWithApplicationBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69E0960];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithBundleIdentifier:v5];
+  identifierCopy = identifier;
+  v6 = [[v4 alloc] initWithBundleIdentifier:identifierCopy];
 
   v7 = [(WFApertureIconView *)self initWithIcon:v6];
   if (v7)
@@ -2058,9 +2058,9 @@ void __35__WFApertureIconView_sizeThatFits___block_invoke()
   return v7;
 }
 
-- (WFApertureIconView)initWithIcon:(id)a3
+- (WFApertureIconView)initWithIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v31.receiver = self;
   v31.super_class = WFApertureIconView;
   v5 = [(WFApertureIconView *)&v31 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -2069,60 +2069,60 @@ void __35__WFApertureIconView_sizeThatFits___block_invoke()
   {
     v5->_mode = 0;
     v5->_iconStyle = 0;
-    v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
     primaryColor = v6->_primaryColor;
-    v6->_primaryColor = v7;
+    v6->_primaryColor = systemWhiteColor;
 
     v6->_enabled = 1;
     [(WFApertureIconView *)v6 setUserInteractionEnabled:0];
     v9 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 24.0, 24.0}];
-    v10 = [v9 layer];
-    [v10 setAllowsEdgeAntialiasing:1];
+    layer = [v9 layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
-    v11 = [v9 layer];
-    [v11 setShadowRadius:6.0];
+    layer2 = [v9 layer];
+    [layer2 setShadowRadius:6.0];
 
-    v12 = [v9 layer];
+    layer3 = [v9 layer];
     LODWORD(v13) = 1051931443;
-    [v12 setShadowOpacity:v13];
+    [layer3 setShadowOpacity:v13];
 
     [(WFApertureIconView *)v6 addSubview:v9];
     objc_storeStrong(&v6->_iconImageViewContainer, v9);
     v14 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{0.0, 0.0, 24.0, 24.0}];
     [v14 setContentMode:1];
-    v15 = [v14 layer];
+    layer4 = [v14 layer];
     v16 = *MEMORY[0x1E69796E8];
-    [v15 setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer4 setCornerCurve:*MEMORY[0x1E69796E8]];
 
-    v17 = [v14 layer];
-    [v17 setAllowsEdgeAntialiasing:1];
+    layer5 = [v14 layer];
+    [layer5 setAllowsEdgeAntialiasing:1];
 
     [v9 addSubview:v14];
     objc_storeStrong(&v6->_iconImageView, v14);
     v18 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 24.0, 24.0}];
-    v19 = [v18 layer];
-    [v19 setAllowsEdgeAntialiasing:1];
+    layer6 = [v18 layer];
+    [layer6 setAllowsEdgeAntialiasing:1];
 
     [(WFApertureIconView *)v6 insertSubview:v18 atIndex:0];
     objc_storeStrong(&v6->_colorViewContainer, v18);
     v20 = objc_opt_new();
     [v20 setHidden:1];
-    v21 = [v20 layer];
-    [v21 setCornerCurve:v16];
+    layer7 = [v20 layer];
+    [layer7 setCornerCurve:v16];
 
-    v22 = [v20 layer];
-    [v22 setMasksToBounds:1];
+    layer8 = [v20 layer];
+    [layer8 setMasksToBounds:1];
 
-    v23 = [v20 layer];
-    [v23 setAllowsEdgeAntialiasing:1];
+    layer9 = [v20 layer];
+    [layer9 setAllowsEdgeAntialiasing:1];
 
     [v18 addSubview:v20];
     objc_storeStrong(&v6->_colorView, v20);
-    v24 = [(WFApertureIconView *)v6 iconImageView];
-    v25 = [v24 layer];
-    [v25 addObserver:v6 forKeyPath:@"allowsEdgeAntialiasing" options:1 context:0];
+    iconImageView = [(WFApertureIconView *)v6 iconImageView];
+    layer10 = [iconImageView layer];
+    [layer10 addObserver:v6 forKeyPath:@"allowsEdgeAntialiasing" options:1 context:0];
 
-    [(WFApertureIconView *)v6 setIcon:v4 animated:0];
+    [(WFApertureIconView *)v6 setIcon:iconCopy animated:0];
     if ([(WFApertureIconView *)v6 inSiri])
     {
       v26 = dispatch_time(0, 300000000);
@@ -2140,32 +2140,32 @@ void __35__WFApertureIconView_sizeThatFits___block_invoke()
   return v6;
 }
 
-+ (id)downscaledImageForOriginalImage:(id)a3
++ (id)downscaledImageForOriginalImage:(id)image
 {
   v3 = MEMORY[0x1E69DCEB0];
-  v4 = a3;
-  v5 = [v3 mainScreen];
-  [v5 scale];
+  imageCopy = image;
+  mainScreen = [v3 mainScreen];
+  [mainScreen scale];
   v7 = v6;
   v11.width = 36.0;
   v11.height = 36.0;
   UIGraphicsBeginImageContextWithOptions(v11, 0, v7);
 
-  [v4 drawInRect:{0.0, 0.0, 36.0, 36.0}];
+  [imageCopy drawInRect:{0.0, 0.0, 36.0, 36.0}];
   v8 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v8;
 }
 
-+ (id)preferredImageForSymbolName:(id)a3
++ (id)preferredImageForSymbolName:(id)name
 {
-  v4 = unfilledVariantForSymbolName(a3);
+  v4 = unfilledVariantForSymbolName(name);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__WFApertureIconView_preferredImageForSymbolName___block_invoke;
   aBlock[3] = &__block_descriptor_40_e27___UIImage_16__0__NSString_8l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   if (([&unk_1F4819B08 containsObject:v4] & 1) != 0 || (objc_msgSend(v4, "stringByAppendingString:", @".fill"), v6 = objc_claimAutoreleasedReturnValue(), v5[2](v5, v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
@@ -2196,9 +2196,9 @@ id __50__WFApertureIconView_preferredImageForSymbolName___block_invoke(uint64_t 
   return v7;
 }
 
-+ (CGSize)opticalAlignmentForSymbol:(id)a3
++ (CGSize)opticalAlignmentForSymbol:(id)symbol
 {
-  v3 = unfilledVariantForSymbolName(a3);
+  v3 = unfilledVariantForSymbolName(symbol);
   if (opticalAlignmentForSymbol__onceToken != -1)
   {
     dispatch_once(&opticalAlignmentForSymbol__onceToken, &__block_literal_global_138);
@@ -2259,9 +2259,9 @@ void __48__WFApertureIconView_opticalAlignmentForSymbol___block_invoke()
   opticalAlignmentForSymbol__opticalAlignmentOverrideMapping = v8;
 }
 
-+ (id)configurationForSymbol:(id)a3
++ (id)configurationForSymbol:(id)symbol
 {
-  v3 = unfilledVariantForSymbolName(a3);
+  v3 = unfilledVariantForSymbolName(symbol);
   if (configurationForSymbol__onceToken != -1)
   {
     dispatch_once(&configurationForSymbol__onceToken, &__block_literal_global_72);

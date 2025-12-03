@@ -16,11 +16,11 @@
   v9[3] = &unk_279E45068;
   v9[4] = &v10;
   v4 = [MEMORY[0x277CD9E48] rc_displayWithFramesPerSecond:0 handlerBlock:v9];
-  [v4 addToRunLoop:a1 forMode:*MEMORY[0x277CBE738]];
+  [v4 addToRunLoop:self forMode:*MEMORY[0x277CBE738]];
   Current = CFAbsoluteTimeGetCurrent();
   do
   {
-    [a1 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.05)}];
+    [self runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.05)}];
     if (v11[3])
     {
       break;

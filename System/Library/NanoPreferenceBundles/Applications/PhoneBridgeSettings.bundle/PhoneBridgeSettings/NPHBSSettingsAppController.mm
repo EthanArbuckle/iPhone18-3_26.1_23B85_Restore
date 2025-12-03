@@ -2,18 +2,18 @@
 + (BOOL)_activeWatchHasTelephony;
 - (BOOL)suppressAllMirrorSpecifiers;
 - (id)_activeWatchIsProvisioned;
-- (id)_carrierDirectCallingAllowed:(id)a3;
-- (id)_incomingCallSoundEnabled:(id)a3;
-- (id)_incomingCallVibrationEnabled:(id)a3;
+- (id)_carrierDirectCallingAllowed:(id)allowed;
+- (id)_incomingCallSoundEnabled:(id)enabled;
+- (id)_incomingCallVibrationEnabled:(id)enabled;
 - (id)applicationGroupSpecifiers;
 - (id)localizedMirroringDetailFooter;
 - (id)localizedPaneTitle;
-- (void)_cellularPlanInfoDidChange:(id)a3;
+- (void)_cellularPlanInfoDidChange:(id)change;
 - (void)_removeThumperItems;
-- (void)_setCarrierDirectCallingAllowed:(id)a3 specifier:(id)a4;
-- (void)_setIncomingCallSoundEnabled:(id)a3 specifier:(id)a4;
-- (void)_setIncomingCallVibrationEnabled:(id)a3 specifier:(id)a4;
-- (void)_updateWiFiCallingFooter:(id)a3 accountsSupported:(BOOL)a4 wifiString:(id)a5;
+- (void)_setCarrierDirectCallingAllowed:(id)allowed specifier:(id)specifier;
+- (void)_setIncomingCallSoundEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setIncomingCallVibrationEnabled:(id)enabled specifier:(id)specifier;
+- (void)_updateWiFiCallingFooter:(id)footer accountsSupported:(BOOL)supported wifiString:(id)string;
 - (void)openFaceTimeSettings;
 - (void)openPhoneWiFiCallingSettings;
 - (void)prepareSpecifiersMetadata;
@@ -56,10 +56,10 @@
 
 - (BOOL)suppressAllMirrorSpecifiers
 {
-  v2 = [(NPHBSSettingsAppController *)self bbSectionInfo];
-  v3 = [v2 allowsNotifications];
+  bbSectionInfo = [(NPHBSSettingsAppController *)self bbSectionInfo];
+  allowsNotifications = [bbSectionInfo allowsNotifications];
 
-  return v3 ^ 1;
+  return allowsNotifications ^ 1;
 }
 
 - (void)prepareSpecifiersMetadata
@@ -114,11 +114,11 @@
   {
     if ([objc_opt_class() _activeWatchHasTelephony])
     {
-      v16 = [(NPHBSSettingsAppController *)self _activeWatchIsProvisioned];
-      v17 = v16;
-      if (v16)
+      _activeWatchIsProvisioned = [(NPHBSSettingsAppController *)self _activeWatchIsProvisioned];
+      v17 = _activeWatchIsProvisioned;
+      if (_activeWatchIsProvisioned)
       {
-        if ([v16 BOOLValue])
+        if ([_activeWatchIsProvisioned BOOLValue])
         {
           [(NPHBSSettingsAppController *)self _removeThumperItems];
         }
@@ -167,16 +167,16 @@
   }
 }
 
-- (void)_cellularPlanInfoDidChange:(id)a3
+- (void)_cellularPlanInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[NPHBSSettingsAppController _cellularPlanInfoDidChange:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%s - notification: %@", buf, 0x16u);
   }
 
@@ -191,8 +191,8 @@
 - (id)_activeWatchIsProvisioned
 {
   v2 = +[NPHCellularBridgeUIManager sharedInstance];
-  v3 = [v2 cellularPlans];
-  if (v3)
+  cellularPlans = [v2 cellularPlans];
+  if (cellularPlans)
   {
     v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 cellularPlanIsSetUp]);
   }
@@ -205,53 +205,53 @@
   return v4;
 }
 
-- (void)_updateWiFiCallingFooter:(id)a3 accountsSupported:(BOOL)a4 wifiString:(id)a5
+- (void)_updateWiFiCallingFooter:(id)footer accountsSupported:(BOOL)supported wifiString:(id)string
 {
-  v6 = a4;
-  v25 = a3;
-  v8 = a5;
+  supportedCopy = supported;
+  footerCopy = footer;
+  stringCopy = string;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v25 setObject:v10 forKeyedSubscript:PSFooterCellClassGroupKey];
+  [footerCopy setObject:v10 forKeyedSubscript:PSFooterCellClassGroupKey];
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = v11;
-  if (v6)
+  if (supportedCopy)
   {
     v13 = [v11 localizedStringForKey:@"THUMPER_CALLING_EMERGENCY_ADDRESS_UPDATE" value:&stru_8AC0 table:0];
 
     v14 = [NSBundle bundleForClass:objc_opt_class()];
-    v15 = [NSString stringWithFormat:@"THUMPER_CALLING_PHONE_SETTINGS_%@", v8];
+    stringCopy = [NSString stringWithFormat:@"THUMPER_CALLING_PHONE_SETTINGS_%@", stringCopy];
 
-    v16 = [v14 localizedStringForKey:v15 value:&stru_8AC0 table:0];
+    v16 = [v14 localizedStringForKey:stringCopy value:&stru_8AC0 table:0];
 
     v17 = @"openPhoneWiFiCallingSettings";
   }
 
   else
   {
-    v18 = [NSString stringWithFormat:@"THUMPER_CALLING_NEED_ACCOUNTS_SUPPORT_%@", v8];
+    stringCopy2 = [NSString stringWithFormat:@"THUMPER_CALLING_NEED_ACCOUNTS_SUPPORT_%@", stringCopy];
 
-    v13 = [v12 localizedStringForKey:v18 value:&stru_8AC0 table:0];
+    v13 = [v12 localizedStringForKey:stringCopy2 value:&stru_8AC0 table:0];
 
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v14 localizedStringForKey:@"THUMPER_CALLING_FACETIME_SETTINGS" value:&stru_8AC0 table:0];
     v17 = @"openFaceTimeSettings";
   }
 
-  [v25 setObject:v17 forKeyedSubscript:PSFooterHyperlinkViewActionKey];
+  [footerCopy setObject:v17 forKeyedSubscript:PSFooterHyperlinkViewActionKey];
   v19 = [NSString stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@" error:0, v16];
 
   v20 = [v19 rangeOfString:v16 options:4];
   v22 = v21;
-  [v25 setObject:v19 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+  [footerCopy setObject:v19 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
   v27.location = v20;
   v27.length = v22;
   v23 = NSStringFromRange(v27);
-  [v25 setObject:v23 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
+  [footerCopy setObject:v23 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
   v24 = [NSValue valueWithNonretainedObject:self];
-  [v25 setObject:v24 forKeyedSubscript:PSFooterHyperlinkViewTargetKey];
+  [footerCopy setObject:v24 forKeyedSubscript:PSFooterHyperlinkViewTargetKey];
 }
 
 - (void)openFaceTimeSettings
@@ -276,9 +276,9 @@
   return v3;
 }
 
-- (void)_setIncomingCallSoundEnabled:(id)a3 specifier:(id)a4
+- (void)_setIncomingCallSoundEnabled:(id)enabled specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([enabled BOOLValue])
   {
     v4 = 1;
   }
@@ -292,7 +292,7 @@
   [v5 _setCurrentToneWatchAlertPolicy:v4 forAlertType:1];
 }
 
-- (id)_incomingCallSoundEnabled:(id)a3
+- (id)_incomingCallSoundEnabled:(id)enabled
 {
   v3 = +[TLToneManager sharedToneManager];
   v4 = [v3 _currentToneWatchAlertPolicyForAlertType:1];
@@ -309,9 +309,9 @@
   return [NSNumber numberWithBool:v4 != &dword_0 + 2];
 }
 
-- (void)_setIncomingCallVibrationEnabled:(id)a3 specifier:(id)a4
+- (void)_setIncomingCallVibrationEnabled:(id)enabled specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([enabled BOOLValue])
   {
     v4 = 1;
   }
@@ -325,7 +325,7 @@
   [v5 _setCurrentVibrationWatchAlertPolicy:v4 forAlertType:1];
 }
 
-- (id)_incomingCallVibrationEnabled:(id)a3
+- (id)_incomingCallVibrationEnabled:(id)enabled
 {
   v3 = +[TLVibrationManager sharedVibrationManager];
   v4 = [v3 _currentVibrationWatchAlertPolicyForAlertType:1];
@@ -342,14 +342,14 @@
   return [NSNumber numberWithBool:v4 != &dword_0 + 2];
 }
 
-- (void)_setCarrierDirectCallingAllowed:(id)a3 specifier:(id)a4
+- (void)_setCarrierDirectCallingAllowed:(id)allowed specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [allowed BOOLValue];
 
-  [TUCallCapabilities setThumperCallingAllowedOnDefaultPairedSecondaryDevice:v4];
+  [TUCallCapabilities setThumperCallingAllowedOnDefaultPairedSecondaryDevice:bOOLValue];
 }
 
-- (id)_carrierDirectCallingAllowed:(id)a3
+- (id)_carrierDirectCallingAllowed:(id)allowed
 {
   v3 = +[TUCallCapabilities isThumperCallingAllowedOnDefaultPairedSecondaryDevice];
 

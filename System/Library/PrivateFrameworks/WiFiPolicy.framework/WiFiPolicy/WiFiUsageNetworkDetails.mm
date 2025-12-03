@@ -1,20 +1,20 @@
 @interface WiFiUsageNetworkDetails
-- (BOOL)isCurrentBssOnChannel:(id)a3;
-- (WiFiUsageNetworkDetails)initWithNetworkName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isCurrentBssOnChannel:(id)channel;
+- (WiFiUsageNetworkDetails)initWithNetworkName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)redactedDescription;
-- (void)addDownloadSpeed:(double)a3;
+- (void)addDownloadSpeed:(double)speed;
 @end
 
 @implementation WiFiUsageNetworkDetails
 
-- (WiFiUsageNetworkDetails)initWithNetworkName:(id)a3
+- (WiFiUsageNetworkDetails)initWithNetworkName:(id)name
 {
   v8.receiver = self;
   v8.super_class = WiFiUsageNetworkDetails;
-  v3 = a3;
+  nameCopy = name;
   v4 = [(WiFiUsageNetworkDetails *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [nameCopy copy];
 
   networkName = v4->_networkName;
   v4->_networkName = v5;
@@ -25,18 +25,18 @@
 - (id)redactedDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(WiFiUsageBssDetails *)self->_connectedBss redactedDescription];
-  v4 = [v2 stringWithFormat:@"NetworkName:REDACTED BSSDetails:%@", v3];
+  redactedDescription = [(WiFiUsageBssDetails *)self->_connectedBss redactedDescription];
+  v4 = [v2 stringWithFormat:@"NetworkName:REDACTED BSSDetails:%@", redactedDescription];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(WiFiUsageNetworkDetails *)self networkName];
-  v6 = [v4 initWithNetworkName:v5];
+  networkName = [(WiFiUsageNetworkDetails *)self networkName];
+  v6 = [v4 initWithNetworkName:networkName];
 
   [v6 setIsKnown:self->_isKnown];
   [v6 setIsOpen:self->_isOpen];
@@ -172,27 +172,27 @@
   return v6;
 }
 
-- (void)addDownloadSpeed:(double)a3
+- (void)addDownloadSpeed:(double)speed
 {
   downloadSpeedResults = self->_downloadSpeedResults;
   if (!downloadSpeedResults)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_downloadSpeedResults;
-    self->_downloadSpeedResults = v6;
+    self->_downloadSpeedResults = array;
 
     downloadSpeedResults = self->_downloadSpeedResults;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:speed];
   [(NSMutableArray *)downloadSpeedResults addObject:v8];
 }
 
-- (BOOL)isCurrentBssOnChannel:(id)a3
+- (BOOL)isCurrentBssOnChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(WiFiUsageNetworkDetails *)self connectedBss];
-  v6 = [v5 isOnChannel:v4];
+  channelCopy = channel;
+  connectedBss = [(WiFiUsageNetworkDetails *)self connectedBss];
+  v6 = [connectedBss isOnChannel:channelCopy];
 
   return v6;
 }

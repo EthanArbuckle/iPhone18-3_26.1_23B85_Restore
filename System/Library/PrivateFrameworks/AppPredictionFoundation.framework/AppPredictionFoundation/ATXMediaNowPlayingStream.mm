@@ -1,25 +1,25 @@
 @interface ATXMediaNowPlayingStream
-- (BOOL)_shouldPairStartEvent:(id)a3 withEndEvent:(id)a4;
-- (id)getATXMediaNowPlayingEventFromBiomeEvent:(id)a3;
-- (int64_t)atxPlaybackStateFromBMPlaybackState:(int)a3;
-- (void)enumerateEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 ascending:(BOOL)a6 block:(id)a7;
+- (BOOL)_shouldPairStartEvent:(id)event withEndEvent:(id)endEvent;
+- (id)getATXMediaNowPlayingEventFromBiomeEvent:(id)event;
+- (int64_t)atxPlaybackStateFromBMPlaybackState:(int)state;
+- (void)enumerateEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block ascending:(BOOL)ascending block:(id)a7;
 @end
 
 @implementation ATXMediaNowPlayingStream
 
-- (void)enumerateEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 ascending:(BOOL)a6 block:(id)a7
+- (void)enumerateEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block ascending:(BOOL)ascending block:(id)a7
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  ascendingCopy = ascending;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
   v16 = a7;
-  if ([v13 compare:v14] != -1)
+  if ([dateCopy compare:endDateCopy] != -1)
   {
     [ATXMediaNowPlayingStream enumerateEventsFromStartDate:a2 endDate:self filterBlock:? ascending:? block:?];
   }
 
-  v17 = [(ATXMediaNowPlayingStream *)self _publisherWithStartDate:v13 endDate:v14 shouldReverse:!v8];
+  v17 = [(ATXMediaNowPlayingStream *)self _publisherWithStartDate:dateCopy endDate:endDateCopy shouldReverse:!ascendingCopy];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -32,8 +32,8 @@
   v21[3] = &unk_278590628;
   v21[4] = self;
   v24 = v26;
-  v25 = v8;
-  v18 = v15;
+  v25 = ascendingCopy;
+  v18 = blockCopy;
   v22 = v18;
   v19 = v16;
   v23 = v19;
@@ -161,43 +161,43 @@ LABEL_24:
   return v24;
 }
 
-- (BOOL)_shouldPairStartEvent:(id)a3 withEndEvent:(id)a4
+- (BOOL)_shouldPairStartEvent:(id)event withEndEvent:(id)endEvent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bundleID];
-  v8 = [v6 bundleID];
-  v9 = [v7 isEqualToString:v8];
+  eventCopy = event;
+  endEventCopy = endEvent;
+  bundleID = [eventCopy bundleID];
+  bundleID2 = [endEventCopy bundleID];
+  v9 = [bundleID isEqualToString:bundleID2];
 
-  v10 = [v5 title];
-  if (v10)
+  title = [eventCopy title];
+  if (title)
   {
-    v11 = v10;
-    v12 = [v6 title];
+    v11 = title;
+    title2 = [endEventCopy title];
 
-    if (v12)
+    if (title2)
     {
-      v13 = [v5 title];
-      v14 = [v6 title];
-      v15 = [v13 isEqualToString:v14];
+      title3 = [eventCopy title];
+      title4 = [endEventCopy title];
+      v15 = [title3 isEqualToString:title4];
 
       v9 &= v15;
     }
   }
 
-  v16 = [v5 playbackState];
-  v17 = [v6 playbackState];
-  v18 = [v5 startTime];
-  v19 = [v6 startTime];
-  v20 = [v18 compare:v19];
+  playbackState = [eventCopy playbackState];
+  playbackState2 = [endEventCopy playbackState];
+  startTime = [eventCopy startTime];
+  startTime2 = [endEventCopy startTime];
+  v20 = [startTime compare:startTime2];
 
-  v22 = v20 == -1 && v16 != v17;
+  v22 = v20 == -1 && playbackState != playbackState2;
   return v22 & v9;
 }
 
-- (int64_t)atxPlaybackStateFromBMPlaybackState:(int)a3
+- (int64_t)atxPlaybackStateFromBMPlaybackState:(int)state
 {
-  v3 = (a3 - 1);
+  v3 = (state - 1);
   if (v3 < 5)
   {
     return v3 + 1;
@@ -209,17 +209,17 @@ LABEL_24:
   }
 }
 
-- (id)getATXMediaNowPlayingEventFromBiomeEvent:(id)a3
+- (id)getATXMediaNowPlayingEventFromBiomeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [ATXMediaNowPlayingEvent alloc];
-  v6 = [v4 absoluteTimestamp];
-  v7 = [v4 absoluteTimestamp];
-  v8 = [v4 bundleID];
-  v9 = [v4 title];
-  v10 = [v4 playbackState];
+  absoluteTimestamp = [eventCopy absoluteTimestamp];
+  absoluteTimestamp2 = [eventCopy absoluteTimestamp];
+  bundleID = [eventCopy bundleID];
+  title = [eventCopy title];
+  playbackState = [eventCopy playbackState];
 
-  v11 = [(ATXMediaNowPlayingEvent *)v5 initWithStartTime:v6 endTime:v7 bundleID:v8 title:v9 playbackState:[(ATXMediaNowPlayingStream *)self atxPlaybackStateFromBMPlaybackState:v10]];
+  v11 = [(ATXMediaNowPlayingEvent *)v5 initWithStartTime:absoluteTimestamp endTime:absoluteTimestamp2 bundleID:bundleID title:title playbackState:[(ATXMediaNowPlayingStream *)self atxPlaybackStateFromBMPlaybackState:playbackState]];
 
   return v11;
 }

@@ -1,57 +1,57 @@
 @interface FPItemCollection
 + (BOOL)isEnumerationSuspended;
-+ (id)_bouncedItem:(id)a3 withinItems:(id)a4;
++ (id)_bouncedItem:(id)item withinItems:(id)items;
 + (id)activeCollections;
-+ (void)addActiveCollection:(id)a3;
-+ (void)consumeUpdates:(id)a3 deletes:(id)a4;
++ (void)addActiveCollection:(id)collection;
++ (void)consumeUpdates:(id)updates deletes:(id)deletes;
 + (void)initialize;
 + (void)refreshActiveCollectionsForDecorationChange;
-+ (void)removeActiveCollection:(id)a3;
-+ (void)replacePlaceholders:(id)a3 withActualItems:(id)a4 deletedIDs:(id)a5;
++ (void)removeActiveCollection:(id)collection;
++ (void)replacePlaceholders:(id)placeholders withActualItems:(id)items deletedIDs:(id)ds;
 + (void)resumeVendorEnumeration;
-- (BOOL)_isUsingDataSource:(id)a3;
-- (BOOL)isHiddenItem:(id)a3;
-- (BOOL)shouldConsiderUsingPlaceholder:(id)a3 forItem:(id)a4 skipForwardFormerID:(BOOL *)a5;
-- (FPItemCollection)initWithPacing:(BOOL)a3;
+- (BOOL)_isUsingDataSource:(id)source;
+- (BOOL)isHiddenItem:(id)item;
+- (BOOL)shouldConsiderUsingPlaceholder:(id)placeholder forItem:(id)item skipForwardFormerID:(BOOL *)d;
+- (FPItemCollection)initWithPacing:(BOOL)pacing;
 - (FPItemCollectionMinimalDelegate)delegate;
 - (NSArray)items;
 - (id)_itemsMutableCopy;
-- (id)_reorderWithPlaceholdersLast:(id)a3;
+- (id)_reorderWithPlaceholdersLast:(id)last;
 - (id)_t_items;
-- (id)computeIndexPathsBasedDiffsWithOldItems:(id)a3 futureItems:(id)a4;
+- (id)computeIndexPathsBasedDiffsWithOldItems:(id)items futureItems:(id)futureItems;
 - (id)computeItemIDBasedDiffs;
-- (id)createDataSourceWithSortDescriptors:(id)a3;
-- (id)indexPathFromIndex:(int64_t)a3;
-- (id)indexPathsFromIndexSet:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
+- (id)createDataSourceWithSortDescriptors:(id)descriptors;
+- (id)indexPathFromIndex:(int64_t)index;
+- (id)indexPathsFromIndexSet:(id)set;
+- (id)itemAtIndexPath:(id)path;
 - (id)scopedSearchQuery;
 - (int64_t)_numberOfItems;
 - (int64_t)numberOfItems;
-- (unint64_t)_indexOfItem:(id)a3;
-- (unint64_t)_indexOfItemID:(id)a3;
+- (unint64_t)_indexOfItem:(id)item;
+- (unint64_t)_indexOfItemID:(id)d;
 - (void)_cancelStartTime;
 - (void)_flushPendingUpdates;
-- (void)_receivedBatchWithUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4 forceFlush:(BOOL)a5 dropForReplacedPlaceholders:(BOOL)a6;
-- (void)_replaceContentsWithVendorItems:(id)a3;
+- (void)_receivedBatchWithUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers forceFlush:(BOOL)flush dropForReplacedPlaceholders:(BOOL)placeholders;
+- (void)_replaceContentsWithVendorItems:(id)items;
 - (void)_restartObservation;
-- (void)_restartObservationWithReason:(id)a3;
+- (void)_restartObservationWithReason:(id)reason;
 - (void)_startObserving;
 - (void)_startRegathering;
-- (void)_updateObservedItem:(id)a3;
-- (void)dataSource:(id)a3 receivedUpdatedItems:(id)a4 deletedItems:(id)a5 hasMoreChanges:(BOOL)a6;
-- (void)dataSource:(id)a3 replaceContentsWithItems:(id)a4 hasMoreChanges:(BOOL)a5;
-- (void)dataSource:(id)a3 wasInvalidatedWithError:(id)a4;
+- (void)_updateObservedItem:(id)item;
+- (void)dataSource:(id)source receivedUpdatedItems:(id)items deletedItems:(id)deletedItems hasMoreChanges:(BOOL)changes;
+- (void)dataSource:(id)source replaceContentsWithItems:(id)items hasMoreChanges:(BOOL)changes;
+- (void)dataSource:(id)source wasInvalidatedWithError:(id)error;
 - (void)dealloc;
-- (void)forceRefreshOfItemWithItemID:(id)a3;
-- (void)reachabilityMonitor:(id)a3 didChangeReachabilityStatusTo:(BOOL)a4;
-- (void)receivedBatchWithUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4;
-- (void)receivedBatchWithUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4 hasMoreChanges:(BOOL)a5;
-- (void)reorderItemsWithSortDescriptors:(id)a3;
-- (void)replacePlaceholders:(id)a3 withActualItems:(id)a4 deletedIDs:(id)a5;
+- (void)forceRefreshOfItemWithItemID:(id)d;
+- (void)reachabilityMonitor:(id)monitor didChangeReachabilityStatusTo:(BOOL)to;
+- (void)receivedBatchWithUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers;
+- (void)receivedBatchWithUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers hasMoreChanges:(BOOL)changes;
+- (void)reorderItemsWithSortDescriptors:(id)descriptors;
+- (void)replacePlaceholders:(id)placeholders withActualItems:(id)items deletedIDs:(id)ds;
 - (void)resumeUpdates;
-- (void)sendIndexPathBasedDiffs:(id)a3;
-- (void)sendItemIDBasedDiffs:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)sendIndexPathBasedDiffs:(id)diffs;
+- (void)sendItemIDBasedDiffs:(id)diffs;
+- (void)setDelegate:(id)delegate;
 - (void)startObserving;
 - (void)stopObserving;
 - (void)suspendUpdates;
@@ -348,8 +348,8 @@ uint64_t __34__FPItemCollection__numberOfItems__block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [a1 activeCollections];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  activeCollections = [self activeCollections];
+  v3 = [activeCollections countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -360,20 +360,20 @@ uint64_t __34__FPItemCollection__numberOfItems__block_invoke(uint64_t a1)
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeCollections);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
-        v8 = [v7 workingQueue];
+        workingQueue = [v7 workingQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __63__FPItemCollection_refreshActiveCollectionsForDecorationChange__block_invoke;
         block[3] = &unk_1E79399B0;
         block[4] = v7;
-        dispatch_async(v8, block);
+        dispatch_async(workingQueue, block);
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [activeCollections countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -412,9 +412,9 @@ uint64_t __37__FPItemCollection_activeCollections__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (FPItemCollection)initWithPacing:(BOOL)a3
+- (FPItemCollection)initWithPacing:(BOOL)pacing
 {
-  v3 = a3;
+  pacingCopy = pacing;
   v40.receiver = self;
   v40.super_class = FPItemCollection;
   v4 = [(FPItemCollection *)&v40 init];
@@ -424,9 +424,9 @@ uint64_t __37__FPItemCollection_activeCollections__block_invoke(uint64_t a1)
     v4->_gathering = 1;
     v4->_regathering = 1;
     v4->_hasMoreUpdates = 1;
-    v6 = [MEMORY[0x1E695DEC8] fp_sortDescriptorByDisplayName];
+    fp_sortDescriptorByDisplayName = [MEMORY[0x1E695DEC8] fp_sortDescriptorByDisplayName];
     sortDescriptors = v5->_sortDescriptors;
-    v5->_sortDescriptors = v6;
+    v5->_sortDescriptors = fp_sortDescriptorByDisplayName;
 
     v5->_shouldRetryOnceAfterCrash = 1;
     v8 = objc_opt_new();
@@ -460,7 +460,7 @@ uint64_t __37__FPItemCollection_activeCollections__block_invoke(uint64_t a1)
     v5->_itemAccessQueue = v21;
 
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.FileProvider.ItemCollection.update-queue (%p)", v5];
-    v24 = [v23 UTF8String];
+    uTF8String = [v23 UTF8String];
     v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     if (itemCollectionUpdateQueue_once != -1)
     {
@@ -468,11 +468,11 @@ uint64_t __37__FPItemCollection_activeCollections__block_invoke(uint64_t a1)
     }
 
     v26 = itemCollectionUpdateQueue_updateQueue;
-    v27 = dispatch_queue_create_with_target_V2(v24, v25, v26);
+    v27 = dispatch_queue_create_with_target_V2(uTF8String, v25, v26);
     updateQueue = v5->_updateQueue;
     v5->_updateQueue = v27;
 
-    if (v3)
+    if (pacingCopy)
     {
       v29 = 0.5;
     }
@@ -514,15 +514,15 @@ void __35__FPItemCollection_initWithPacing___block_invoke(uint64_t a1)
   [WeakRetained _flushPendingUpdates];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v7 = a3;
-  objc_storeWeak(&self->_delegate, v7);
-  if (v7)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  if (delegateCopy)
   {
-    if ([v7 conformsToProtocol:&unk_1F1FDA230])
+    if ([delegateCopy conformsToProtocol:&unk_1F1FDA230])
     {
-      v4 = v7;
+      v4 = delegateCopy;
     }
 
     else
@@ -531,10 +531,10 @@ void __35__FPItemCollection_initWithPacing___block_invoke(uint64_t a1)
     }
 
     objc_storeWeak(&self->_itemIDBasedDelegate, v4);
-    if ([v7 conformsToProtocol:&unk_1F1FE2D68])
+    if ([delegateCopy conformsToProtocol:&unk_1F1FE2D68])
     {
       p_indexPathBasedDelegate = &self->_indexPathBasedDelegate;
-      v6 = v7;
+      v6 = delegateCopy;
       goto LABEL_9;
     }
   }
@@ -550,7 +550,7 @@ LABEL_9:
   objc_storeWeak(p_indexPathBasedDelegate, v6);
 }
 
-- (void)reachabilityMonitor:(id)a3 didChangeReachabilityStatusTo:(BOOL)a4
+- (void)reachabilityMonitor:(id)monitor didChangeReachabilityStatusTo:(BOOL)to
 {
   updateQueue = self->_updateQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -558,7 +558,7 @@ LABEL_9:
   v5[2] = __70__FPItemCollection_reachabilityMonitor_didChangeReachabilityStatusTo___block_invoke;
   v5[3] = &unk_1E793AE88;
   v5[4] = self;
-  v6 = a4;
+  toCopy = to;
   dispatch_async(updateQueue, v5);
 }
 
@@ -632,21 +632,21 @@ void __34__FPItemCollection_startObserving__block_invoke_135(uint64_t a1)
   }
 }
 
-- (void)dataSource:(id)a3 replaceContentsWithItems:(id)a4 hasMoreChanges:(BOOL)a5
+- (void)dataSource:(id)source replaceContentsWithItems:(id)items hasMoreChanges:(BOOL)changes
 {
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  itemsCopy = items;
   updateQueue = self->_updateQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__FPItemCollection_dataSource_replaceContentsWithItems_hasMoreChanges___block_invoke;
   v13[3] = &unk_1E793B9A8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a5;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = sourceCopy;
+  changesCopy = changes;
+  v15 = itemsCopy;
+  v11 = itemsCopy;
+  v12 = sourceCopy;
   dispatch_async(updateQueue, v13);
 }
 
@@ -667,24 +667,24 @@ uint64_t __71__FPItemCollection_dataSource_replaceContentsWithItems_hasMoreChang
   return result;
 }
 
-- (void)dataSource:(id)a3 receivedUpdatedItems:(id)a4 deletedItems:(id)a5 hasMoreChanges:(BOOL)a6
+- (void)dataSource:(id)source receivedUpdatedItems:(id)items deletedItems:(id)deletedItems hasMoreChanges:(BOOL)changes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sourceCopy = source;
+  itemsCopy = items;
+  deletedItemsCopy = deletedItems;
   updateQueue = self->_updateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__FPItemCollection_dataSource_receivedUpdatedItems_deletedItems_hasMoreChanges___block_invoke;
   block[3] = &unk_1E793CC38;
   block[4] = self;
-  v18 = v10;
-  v21 = a6;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = sourceCopy;
+  changesCopy = changes;
+  v19 = itemsCopy;
+  v20 = deletedItemsCopy;
+  v14 = deletedItemsCopy;
+  v15 = itemsCopy;
+  v16 = sourceCopy;
   dispatch_async(updateQueue, block);
 }
 
@@ -704,11 +704,11 @@ uint64_t __80__FPItemCollection_dataSource_receivedUpdatedItems_deletedItems_has
   return result;
 }
 
-- (void)dataSource:(id)a3 wasInvalidatedWithError:(id)a4
+- (void)dataSource:(id)source wasInvalidatedWithError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  sourceCopy = source;
+  errorCopy = error;
+  if (!errorCopy)
   {
     [FPItemCollection dataSource:a2 wasInvalidatedWithError:self];
   }
@@ -719,10 +719,10 @@ uint64_t __80__FPItemCollection_dataSource_receivedUpdatedItems_deletedItems_has
   block[2] = __55__FPItemCollection_dataSource_wasInvalidatedWithError___block_invoke;
   block[3] = &unk_1E7939090;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = sourceCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = sourceCopy;
   dispatch_async(updateQueue, block);
 }
 
@@ -825,11 +825,11 @@ void __55__FPItemCollection_dataSource_wasInvalidatedWithError___block_invoke_2(
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reorderItemsWithSortDescriptors:(id)a3
+- (void)reorderItemsWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  descriptorsCopy = descriptors;
+  v5 = descriptorsCopy;
+  if (descriptorsCopy)
   {
     updateQueue = self->_updateQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -837,7 +837,7 @@ void __55__FPItemCollection_dataSource_wasInvalidatedWithError___block_invoke_2(
     v7[2] = __52__FPItemCollection_reorderItemsWithSortDescriptors___block_invoke;
     v7[3] = &unk_1E79390B8;
     v7[4] = self;
-    v8 = v4;
+    v8 = descriptorsCopy;
     dispatch_async(updateQueue, v7);
   }
 }
@@ -879,9 +879,9 @@ void __52__FPItemCollection_reorderItemsWithSortDescriptors___block_invoke(uint6
   return [(FPItemCollection *)self _numberOfItems];
 }
 
-- (unint64_t)_indexOfItemID:(id)a3
+- (unint64_t)_indexOfItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -891,10 +891,10 @@ void __52__FPItemCollection_reorderItemsWithSortDescriptors___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __35__FPItemCollection__indexOfItemID___block_invoke;
   block[3] = &unk_1E793A190;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(itemAccessQueue, block);
   v7 = v13[3];
 
@@ -909,9 +909,9 @@ uint64_t __35__FPItemCollection__indexOfItemID___block_invoke(void *a1)
   return result;
 }
 
-- (unint64_t)_indexOfItem:(id)a3
+- (unint64_t)_indexOfItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -921,10 +921,10 @@ uint64_t __35__FPItemCollection__indexOfItemID___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __33__FPItemCollection__indexOfItem___block_invoke;
   block[3] = &unk_1E793A190;
-  v10 = v4;
+  v10 = itemCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(itemAccessQueue, block);
   v7 = v13[3];
 
@@ -939,9 +939,9 @@ uint64_t __33__FPItemCollection__indexOfItem___block_invoke(void *a1)
   return result;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_workingQueue);
   v10 = 0;
   v11 = &v10;
@@ -949,7 +949,7 @@ uint64_t __33__FPItemCollection__indexOfItem___block_invoke(void *a1)
   v13 = __Block_byref_object_copy__17;
   v14 = __Block_byref_object_dispose__17;
   v15 = 0;
-  v5 = [v4 indexAtPosition:0];
+  v5 = [pathCopy indexAtPosition:0];
   itemAccessQueue = self->_itemAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -984,8 +984,8 @@ unint64_t __36__FPItemCollection_itemAtIndexPath___block_invoke(void *a1)
 
 - (id)_t_items
 {
-  v2 = [(_FPItemList *)self->_currentItems allObjects];
-  v3 = [v2 copy];
+  allObjects = [(_FPItemList *)self->_currentItems allObjects];
+  v3 = [allObjects copy];
 
   return v3;
 }
@@ -1022,9 +1022,9 @@ uint64_t __37__FPItemCollection__itemsMutableCopy__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)_isUsingDataSource:(id)a3
+- (BOOL)_isUsingDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_not_V2(self->_workingQueue);
   v11 = 0;
   v12 = &v11;
@@ -1035,15 +1035,15 @@ uint64_t __37__FPItemCollection__itemsMutableCopy__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__FPItemCollection__isUsingDataSource___block_invoke;
   block[3] = &unk_1E793A190;
-  v9 = v4;
+  v9 = sourceCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = sourceCopy;
   dispatch_sync(updateQueue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(sourceCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return sourceCopy;
 }
 
 uint64_t __39__FPItemCollection__isUsingDataSource___block_invoke(uint64_t a1)
@@ -1053,23 +1053,23 @@ uint64_t __39__FPItemCollection__isUsingDataSource___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)replacePlaceholders:(id)a3 withActualItems:(id)a4 deletedIDs:(id)a5
+- (void)replacePlaceholders:(id)placeholders withActualItems:(id)items deletedIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeholdersCopy = placeholders;
+  itemsCopy = items;
+  dsCopy = ds;
   updateQueue = self->_updateQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__FPItemCollection_replacePlaceholders_withActualItems_deletedIDs___block_invoke;
   v15[3] = &unk_1E7939738;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = placeholdersCopy;
+  v17 = itemsCopy;
+  v18 = dsCopy;
+  v12 = dsCopy;
+  v13 = itemsCopy;
+  v14 = placeholdersCopy;
   dispatch_sync(updateQueue, v15);
 }
 
@@ -1182,11 +1182,11 @@ void __67__FPItemCollection_replacePlaceholders_withActualItems_deletedIDs___blo
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateObservedItem:(id)a3
+- (void)_updateObservedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(self->_updateQueue);
-  [(FPItemCollection *)self updateRootItem:v4];
+  [(FPItemCollection *)self updateRootItem:itemCopy];
   if (self->_observing)
   {
     workingQueue = self->_workingQueue;
@@ -1194,8 +1194,8 @@ void __67__FPItemCollection_replacePlaceholders_withActualItems_deletedIDs___blo
     v6[1] = 3221225472;
     v6[2] = __40__FPItemCollection__updateObservedItem___block_invoke;
     v6[3] = &unk_1E79390B8;
-    v7 = v4;
-    v8 = self;
+    v7 = itemCopy;
+    selfCopy = self;
     dispatch_async(workingQueue, v6);
   }
 }
@@ -1218,52 +1218,52 @@ void __40__FPItemCollection__updateObservedItem___block_invoke(uint64_t a1)
   }
 }
 
-- (void)receivedBatchWithUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4 hasMoreChanges:(BOOL)a5
+- (void)receivedBatchWithUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers hasMoreChanges:(BOOL)changes
 {
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  identifiersCopy = identifiers;
   updateQueue = self->_updateQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__FPItemCollection_receivedBatchWithUpdatedItems_deletedItemsIdentifiers_hasMoreChanges___block_invoke;
   v13[3] = &unk_1E793B9A8;
-  v16 = a5;
+  changesCopy = changes;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = itemsCopy;
+  v15 = identifiersCopy;
+  v11 = identifiersCopy;
+  v12 = itemsCopy;
   dispatch_async(updateQueue, v13);
 }
 
-- (void)receivedBatchWithUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4
+- (void)receivedBatchWithUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  identifiersCopy = identifiers;
   updateQueue = self->_updateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__FPItemCollection_receivedBatchWithUpdatedItems_deletedItemsIdentifiers___block_invoke;
   block[3] = &unk_1E7939090;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemsCopy;
+  v13 = identifiersCopy;
+  v9 = identifiersCopy;
+  v10 = itemsCopy;
   dispatch_async(updateQueue, block);
 }
 
-- (void)forceRefreshOfItemWithItemID:(id)a3
+- (void)forceRefreshOfItemWithItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   updateQueue = self->_updateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(updateQueue, v7);
 }
 
@@ -1325,20 +1325,20 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_receivedBatchWithUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4 forceFlush:(BOOL)a5 dropForReplacedPlaceholders:(BOOL)a6
+- (void)_receivedBatchWithUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers forceFlush:(BOOL)flush dropForReplacedPlaceholders:(BOOL)placeholders
 {
-  v6 = a6;
-  v122 = a5;
+  placeholdersCopy = placeholders;
+  flushCopy = flush;
   v187 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  itemsCopy = items;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(self->_updateQueue);
-  obj = v9;
+  obj = itemsCopy;
   if (self->_observing)
   {
-    v11 = [v9 count];
-    v123 = v10;
-    v12 = [v10 count];
+    v11 = [itemsCopy count];
+    v123 = identifiersCopy;
+    v12 = [identifiersCopy count];
     section = __fp_create_section();
     v13 = fp_current_or_default_log();
     v14 = v12 + v11;
@@ -1349,25 +1349,25 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
       *&v180[8] = 2048;
       v181 = v14;
       *v182 = 2048;
-      *&v182[2] = [v10 count];
+      *&v182[2] = [identifiersCopy count];
       v183 = 2112;
-      v184 = self;
+      selfCopy = self;
       v185 = 1024;
-      v186 = v122;
+      v186 = flushCopy;
       _os_log_debug_impl(&dword_1AAAE1000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx received %ld updates (deleted %ld) for %@ (forceFlush:%d)", buf, 0x30u);
     }
 
     v121 = v14;
-    v139 = self;
+    selfCopy2 = self;
 
     v133 = objc_opt_new();
-    v15 = self;
-    if ([obj count] == 1 && !objc_msgSend(v10, "count"))
+    selfCopy4 = self;
+    if ([obj count] == 1 && !objc_msgSend(identifiersCopy, "count"))
     {
       v24 = [obj objectAtIndexedSubscript:0];
       v16 = [(FPItemCollection *)self isRootItem:v24];
 
-      v15 = self;
+      selfCopy4 = self;
     }
 
     else
@@ -1376,25 +1376,25 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
     }
 
     v120 = v16;
-    v17 = v15->_regathering && !v16;
-    if (v17 || v6)
+    v17 = selfCopy4->_regathering && !v16;
+    if (v17 || placeholdersCopy)
     {
       v18 = +[FPStitchingManager sharedInstance];
-      v19 = [v18 allPlaceholderItemsByParentIdentifierAndName];
+      allPlaceholderItemsByParentIdentifierAndName = [v18 allPlaceholderItemsByParentIdentifierAndName];
 
-      if ([v19 count])
+      if ([allPlaceholderItemsByParentIdentifierAndName count])
       {
         v20 = MEMORY[0x1E695DF70];
         if (v17)
         {
-          v21 = [v19 allValues];
-          v22 = [v20 arrayWithArray:v21];
+          allValues = [allPlaceholderItemsByParentIdentifierAndName allValues];
+          v22 = [v20 arrayWithArray:allValues];
         }
 
         else
         {
-          v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(obj, "count")}];
-          v22 = v21;
+          allValues = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(obj, "count")}];
+          v22 = allValues;
         }
 
         v166 = 0u;
@@ -1417,7 +1417,7 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
 
               v29 = *(*(&v164 + 1) + 8 * i);
               v30 = [FPStitchingManager parentIdNameKeyForItem:v29];
-              v31 = [v19 objectForKey:v30];
+              v31 = [allPlaceholderItemsByParentIdentifierAndName objectForKey:v30];
               v32 = v31 == 0;
 
               if (v32)
@@ -1436,21 +1436,21 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
       }
 
       v33 = +[FPStitchingManager sharedInstance];
-      v34 = [v33 allDeletedIDs];
+      allDeletedIDs = [v33 allDeletedIDs];
 
-      if ([v34 count])
+      if ([allDeletedIDs count])
       {
-        v35 = [v123 arrayByAddingObjectsFromArray:v34];
+        v35 = [v123 arrayByAddingObjectsFromArray:allDeletedIDs];
 
         v123 = v35;
       }
     }
 
-    if (v6)
+    if (placeholdersCopy)
     {
       v137 = objc_opt_new();
       v36 = +[FPStitchingManager sharedInstance];
-      v37 = [v36 allPlaceholderReplacementsIDs];
+      allPlaceholderReplacementsIDs = [v36 allPlaceholderReplacementsIDs];
 
       v38 = objc_opt_new();
       v162 = 0u;
@@ -1472,16 +1472,16 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
             }
 
             v43 = *(*(&v160 + 1) + 8 * j);
-            v44 = [v43 formerItemID];
-            if (v44)
+            formerItemID = [v43 formerItemID];
+            if (formerItemID)
             {
-              v45 = [v43 itemID];
-              v46 = [v37 containsObject:v45];
+              itemID = [v43 itemID];
+              v46 = [allPlaceholderReplacementsIDs containsObject:itemID];
 
               if (v46)
               {
-                v47 = [v43 formerItemID];
-                [v38 addObject:v47];
+                formerItemID2 = [v43 formerItemID];
+                [v38 addObject:formerItemID2];
               }
             }
           }
@@ -1511,8 +1511,8 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
             }
 
             v52 = *(*(&v156 + 1) + 8 * k);
-            v53 = [v52 itemID];
-            v54 = [v38 containsObject:v53];
+            itemID2 = [v52 itemID];
+            v54 = [v38 containsObject:itemID2];
 
             if (v54)
             {
@@ -1541,23 +1541,23 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
     }
 
     v56 = +[FPStitchingManager sharedInstance];
-    v129 = [v56 stitchedFieldsAndItemsByItemIDs];
+    stitchedFieldsAndItemsByItemIDs = [v56 stitchedFieldsAndItemsByItemIDs];
 
     v57 = +[FPStitchingManager sharedInstance];
-    v58 = [(FPItemCollection *)v139 enumeratedItemID];
-    v124 = [v57 stitchedItemsForParentID:v58];
+    enumeratedItemID = [(FPItemCollection *)selfCopy2 enumeratedItemID];
+    v124 = [v57 stitchedItemsForParentID:enumeratedItemID];
 
     if ([v124 count])
     {
       v59 = fp_current_or_default_log();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
       {
-        v60 = [(FPItemCollection *)v139 enumeratedItemID];
-        [FPItemCollection _receivedBatchWithUpdatedItems:v60 deletedItemsIdentifiers:v124 forceFlush:v175 dropForReplacedPlaceholders:v59];
+        enumeratedItemID2 = [(FPItemCollection *)selfCopy2 enumeratedItemID];
+        [FPItemCollection _receivedBatchWithUpdatedItems:enumeratedItemID2 deletedItemsIdentifiers:v124 forceFlush:v175 dropForReplacedPlaceholders:v59];
       }
 
       v61 = [MEMORY[0x1E695DF70] arrayWithArray:obj];
-      v62 = [obj fp_itemIDs];
+      fp_itemIDs = [obj fp_itemIDs];
       v154 = 0u;
       v155 = 0u;
       v152 = 0u;
@@ -1577,8 +1577,8 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
             }
 
             v67 = *(*(&v152 + 1) + 8 * m);
-            v68 = [v67 itemID];
-            v69 = [v62 containsObject:v68];
+            itemID3 = [v67 itemID];
+            v69 = [fp_itemIDs containsObject:itemID3];
 
             if (v69)
             {
@@ -1652,8 +1652,8 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
           v147 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v76 = [v74 itemID];
-          v77 = [v129 objectForKeyedSubscript:v76];
+          itemID4 = [v74 itemID];
+          v77 = [stitchedFieldsAndItemsByItemIDs objectForKeyedSubscript:itemID4];
 
           v78 = [v77 countByEnumeratingWithState:&v144 objects:v172 count:16];
           if (v78)
@@ -1674,8 +1674,8 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
                 v84 = fp_current_or_default_log();
                 if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
                 {
-                  v85 = [v74 itemID];
-                  [FPItemCollection _receivedBatchWithUpdatedItems:v85 deletedItemsIdentifiers:v170 forceFlush:&v171 dropForReplacedPlaceholders:v84];
+                  itemID5 = [v74 itemID];
+                  [FPItemCollection _receivedBatchWithUpdatedItems:itemID5 deletedItemsIdentifiers:v170 forceFlush:&v171 dropForReplacedPlaceholders:v84];
                 }
 
                 [v74 overrideFields:v82 ofItem:v83];
@@ -1687,36 +1687,36 @@ uint64_t __49__FPItemCollection_forceRefreshOfItemWithItemID___block_invoke_2(vo
             while (v78);
           }
 
-          v86 = [v74 itemID];
-          v87 = [v86 providerID];
+          itemID6 = [v74 itemID];
+          providerID = [itemID6 providerID];
 
-          v88 = [v133 objectForKeyedSubscript:v87];
+          v88 = [v133 objectForKeyedSubscript:providerID];
           if (!v88)
           {
             v89 = MEMORY[0x1E696AD98];
             v90 = +[FPReachabilityMonitor sharedReachabilityMonitor];
-            v88 = [v89 numberWithBool:{objc_msgSend(v90, "isNetworkReachableForBundle:", v87)}];
+            v88 = [v89 numberWithBool:{objc_msgSend(v90, "isNetworkReachableForBundle:", providerID)}];
 
-            [v133 setObject:v88 forKeyedSubscript:v87];
+            [v133 setObject:v88 forKeyedSubscript:providerID];
           }
 
           [v74 setOffline:{objc_msgSend(v88, "BOOLValue") ^ 1}];
-          v91 = [v74 parentItemIdentifier];
-          if (![v91 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
+          parentItemIdentifier = [v74 parentItemIdentifier];
+          if (![parentItemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
           {
 
 LABEL_96:
-            if ([(FPItemCollection *)v139 isRootItem:v74])
+            if ([(FPItemCollection *)selfCopy2 isRootItem:v74])
             {
-              [(FPItemCollection *)v139 _updateObservedItem:v74];
+              [(FPItemCollection *)selfCopy2 _updateObservedItem:v74];
               goto LABEL_118;
             }
 
-            v134 = [v74 itemID];
-            v95 = v139;
+            itemID7 = [v74 itemID];
+            v95 = selfCopy2;
             objc_sync_enter(v95);
-            v132 = v139->_itemFilteringPredicate;
-            v131 = v139->_additionalItemFilteringPredicate;
+            v132 = selfCopy2->_itemFilteringPredicate;
+            v131 = selfCopy2->_additionalItemFilteringPredicate;
             objc_sync_exit(v95);
 
             v96 = [(FPItemCollection *)v95 isCollectionValidForItem:v74];
@@ -1740,10 +1740,10 @@ LABEL_96:
             }
 
             v97 = [(FPItemCollection *)v95 isHiddenItem:v74];
-            v98 = [v74 formerItemID];
-            if ((v96 & v127 & HIDWORD(v127)) == 1 && (!v97 || v139->_showHiddenFiles))
+            formerItemID3 = [v74 formerItemID];
+            if ((v96 & v127 & HIDWORD(v127)) == 1 && (!v97 || selfCopy2->_showHiddenFiles))
             {
-              v99 = [(NSMutableDictionary *)v139->_formerItemsIdentifiers objectForKey:v134];
+              v99 = [(NSMutableDictionary *)selfCopy2->_formerItemsIdentifiers objectForKey:itemID7];
 
               if (v99)
               {
@@ -1751,7 +1751,7 @@ LABEL_96:
                 if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  *v180 = v134;
+                  *v180 = itemID7;
                   v101 = v100;
                   v102 = "[DEBUG] not interested in superseded itemID %@";
                   v103 = 12;
@@ -1761,14 +1761,14 @@ LABEL_96:
                 goto LABEL_116;
               }
 
-              if (v98)
+              if (formerItemID3)
               {
-                [(NSMutableDictionary *)v139->_formerItemsIdentifiers setObject:v134 forKey:v98];
-                [(NSMutableDictionary *)v139->_updatedItemsByIdentifiers removeObjectForKey:v98];
+                [(NSMutableDictionary *)selfCopy2->_formerItemsIdentifiers setObject:itemID7 forKey:formerItemID3];
+                [(NSMutableDictionary *)selfCopy2->_updatedItemsByIdentifiers removeObjectForKey:formerItemID3];
               }
 
-              [(NSMutableDictionary *)v139->_updatedItemsByIdentifiers setObject:v74 forKeyedSubscript:v134];
-              [(NSMutableSet *)v139->_deletedItemsIdentifiers removeObject:v134];
+              [(NSMutableDictionary *)selfCopy2->_updatedItemsByIdentifiers setObject:v74 forKeyedSubscript:itemID7];
+              [(NSMutableSet *)selfCopy2->_deletedItemsIdentifiers removeObject:itemID7];
             }
 
             else
@@ -1795,12 +1795,12 @@ LABEL_96:
 
               else
               {
-                [(NSMutableDictionary *)v139->_updatedItemsByIdentifiers removeObjectForKey:v134];
-                [(NSMutableSet *)v139->_deletedItemsIdentifiers addObject:v134];
-                if (v98)
+                [(NSMutableDictionary *)selfCopy2->_updatedItemsByIdentifiers removeObjectForKey:itemID7];
+                [(NSMutableSet *)selfCopy2->_deletedItemsIdentifiers addObject:itemID7];
+                if (formerItemID3)
                 {
-                  [(NSMutableSet *)v139->_deletedItemsIdentifiers addObject:v98];
-                  [(NSMutableDictionary *)v139->_formerItemsIdentifiers setObject:v134 forKey:v98];
+                  [(NSMutableSet *)selfCopy2->_deletedItemsIdentifiers addObject:formerItemID3];
+                  [(NSMutableDictionary *)selfCopy2->_formerItemsIdentifiers setObject:itemID7 forKey:formerItemID3];
                 }
 
                 v100 = fp_current_or_default_log();
@@ -1830,14 +1830,14 @@ LABEL_116:
             goto LABEL_118;
           }
 
-          v92 = [v74 isFolder];
+          isFolder = [v74 isFolder];
 
-          if (!v92)
+          if (!isFolder)
           {
             goto LABEL_96;
           }
 
-          v93 = [(FPAppRegistry *)v139->_appRegistry promoteItemToAppLibraryIfNeeded:v74];
+          v93 = [(FPAppRegistry *)selfCopy2->_appRegistry promoteItemToAppLibraryIfNeeded:v74];
           v94 = v93 == 0;
 
           if (!v94)
@@ -1863,8 +1863,8 @@ LABEL_118:
     v143 = 0u;
     v140 = 0u;
     v141 = 0u;
-    v10 = v123;
-    v104 = [v10 countByEnumeratingWithState:&v140 objects:v169 count:16];
+    identifiersCopy = v123;
+    v104 = [identifiersCopy countByEnumeratingWithState:&v140 objects:v169 count:16];
     if (v104)
     {
       v105 = *v141;
@@ -1874,13 +1874,13 @@ LABEL_118:
         {
           if (*v141 != v105)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(identifiersCopy);
           }
 
           v107 = *(*(&v140 + 1) + 8 * ii);
           v108 = objc_autoreleasePoolPush();
-          [(NSMutableDictionary *)v139->_updatedItemsByIdentifiers removeObjectForKey:v107];
-          [(NSMutableSet *)v139->_deletedItemsIdentifiers addObject:v107];
+          [(NSMutableDictionary *)selfCopy2->_updatedItemsByIdentifiers removeObjectForKey:v107];
+          [(NSMutableSet *)selfCopy2->_deletedItemsIdentifiers addObject:v107];
           v109 = fp_current_or_default_log();
           if (os_log_type_enabled(v109, OS_LOG_TYPE_DEBUG))
           {
@@ -1889,11 +1889,11 @@ LABEL_118:
             _os_log_debug_impl(&dword_1AAAE1000, v109, OS_LOG_TYPE_DEBUG, "[DEBUG] deleted item: %@", buf, 0xCu);
           }
 
-          v110 = [(NSMutableDictionary *)v139->_formerItemsIdentifiers objectForKey:v107];
+          v110 = [(NSMutableDictionary *)selfCopy2->_formerItemsIdentifiers objectForKey:v107];
           if (v110)
           {
-            [(NSMutableDictionary *)v139->_updatedItemsByIdentifiers removeObjectForKey:v110];
-            [(NSMutableSet *)v139->_deletedItemsIdentifiers addObject:v110];
+            [(NSMutableDictionary *)selfCopy2->_updatedItemsByIdentifiers removeObjectForKey:v110];
+            [(NSMutableSet *)selfCopy2->_deletedItemsIdentifiers addObject:v110];
             v111 = fp_current_or_default_log();
             if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
             {
@@ -1906,7 +1906,7 @@ LABEL_118:
           objc_autoreleasePoolPop(v108);
         }
 
-        v104 = [v10 countByEnumeratingWithState:&v140 objects:v169 count:16];
+        v104 = [identifiersCopy countByEnumeratingWithState:&v140 objects:v169 count:16];
       }
 
       while (v104);
@@ -1916,21 +1916,21 @@ LABEL_118:
     [v112 attachProgressToItemsIfNeeded:obj];
 
     v113 = v121 == 0 || v120;
-    if (v139->_gathering)
+    if (selfCopy2->_gathering)
     {
       v114 = !v113;
     }
 
     else
     {
-      v114 = !v139->_regathering && !v113;
-      if (!v139->_regathering)
+      v114 = !selfCopy2->_regathering && !v113;
+      if (!selfCopy2->_regathering)
       {
         goto LABEL_145;
       }
     }
 
-    if (!v139->_hasMoreUpdates)
+    if (!selfCopy2->_hasMoreUpdates)
     {
       v116 = fp_current_or_default_log();
       if (os_log_type_enabled(v116, OS_LOG_TYPE_DEBUG))
@@ -1944,8 +1944,8 @@ LABEL_118:
 LABEL_145:
     if (!v114)
     {
-      v115 = fp_current_or_default_log();
-      if (os_log_type_enabled(v115, OS_LOG_TYPE_DEBUG))
+      eventBlock = fp_current_or_default_log();
+      if (os_log_type_enabled(eventBlock, OS_LOG_TYPE_DEBUG))
       {
         [FPItemCollection _receivedBatchWithUpdatedItems:deletedItemsIdentifiers:forceFlush:dropForReplacedPlaceholders:];
       }
@@ -1957,19 +1957,19 @@ LABEL_151:
     v117 = fp_current_or_default_log();
     if (os_log_type_enabled(v117, OS_LOG_TYPE_DEBUG))
     {
-      [FPItemCollection _receivedBatchWithUpdatedItems:v122 deletedItemsIdentifiers:v139 forceFlush:? dropForReplacedPlaceholders:?];
+      [FPItemCollection _receivedBatchWithUpdatedItems:flushCopy deletedItemsIdentifiers:selfCopy2 forceFlush:? dropForReplacedPlaceholders:?];
     }
 
-    v139->_flushableRegatheringGeneration = v139->_regatheringGeneration;
-    updatePacer = v139->_updatePacer;
-    if (!v122)
+    selfCopy2->_flushableRegatheringGeneration = selfCopy2->_regatheringGeneration;
+    updatePacer = selfCopy2->_updatePacer;
+    if (!flushCopy)
     {
       [(FPPacer *)updatePacer signalWithTransferredQoSIfImmediate];
       goto LABEL_157;
     }
 
-    v115 = [(FPPacer *)updatePacer eventBlock];
-    (*(v115 + 16))();
+    eventBlock = [(FPPacer *)updatePacer eventBlock];
+    (*(eventBlock + 16))();
 LABEL_155:
 
 LABEL_157:
@@ -1987,36 +1987,36 @@ LABEL_158:
   v119 = *MEMORY[0x1E69E9840];
 }
 
-- (id)indexPathFromIndex:(int64_t)a3
+- (id)indexPathFromIndex:(int64_t)index
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1260 description:@"invalid index"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1260 description:@"invalid index"];
   }
 
   v10[0] = 0;
-  v10[1] = a3;
+  v10[1] = index;
   v7 = [MEMORY[0x1E696AC88] indexPathWithIndexes:v10 length:2];
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)indexPathsFromIndexSet:(id)a3
+- (id)indexPathsFromIndexSet:(id)set
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  setCopy = set;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(setCopy, "count")}];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __43__FPItemCollection_indexPathsFromIndexSet___block_invoke;
   v10[3] = &unk_1E793CC88;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v5 enumerateIndexesUsingBlock:v10];
+  selfCopy = self;
+  [setCopy enumerateIndexesUsingBlock:v10];
 
   v8 = v7;
   return v7;
@@ -2029,24 +2029,24 @@ void __43__FPItemCollection_indexPathsFromIndexSet___block_invoke(uint64_t a1, u
   [v2 addObject:v3];
 }
 
-+ (id)_bouncedItem:(id)a3 withinItems:(id)a4
++ (id)_bouncedItem:(id)item withinItems:(id)items
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [v7 filename];
+  itemCopy = item;
+  itemsCopy = items;
+  v7 = itemCopy;
+  filename = [v7 filename];
   v38 = 0;
-  v9 = [v8 fp_stringByDeletingPathBounceNo:&v38 andPathExtension:0 isFolder:{objc_msgSend(v7, "isFolder")}];
+  v9 = [filename fp_stringByDeletingPathBounceNo:&v38 andPathExtension:0 isFolder:{objc_msgSend(v7, "isFolder")}];
   v10 = v38;
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = v6;
+  v11 = itemsCopy;
   v12 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
-  v13 = v11;
+  uRLByDeletingLastPathComponent = v11;
   v14 = v7;
   if (!v12)
   {
@@ -2067,27 +2067,27 @@ void __43__FPItemCollection_indexPathsFromIndexSet___block_invoke(uint64_t a1, u
       }
 
       v19 = *(*(&v34 + 1) + 8 * i);
-      v20 = [v19 filename];
+      filename2 = [v19 filename];
       v33 = 0;
-      v21 = [v20 fp_stringByDeletingPathBounceNo:&v33 andPathExtension:0 isFolder:{objc_msgSend(v19, "isFolder")}];
+      v21 = [filename2 fp_stringByDeletingPathBounceNo:&v33 andPathExtension:0 isFolder:{objc_msgSend(v19, "isFolder")}];
       v22 = v33;
 
       if (![v9 localizedCaseInsensitiveCompare:v21])
       {
-        v23 = [v22 unsignedIntValue];
-        if (v16 > v23)
+        unsignedIntValue = [v22 unsignedIntValue];
+        if (v16 > unsignedIntValue)
         {
-          v23 = v16;
+          unsignedIntValue = v16;
         }
 
-        if (v23 <= 1)
+        if (unsignedIntValue <= 1)
         {
           v16 = 1;
         }
 
         else
         {
-          v16 = v23;
+          v16 = unsignedIntValue;
         }
       }
     }
@@ -2106,18 +2106,18 @@ void __43__FPItemCollection_indexPathsFromIndexSet___block_invoke(uint64_t a1, u
     v24 = [v9 fp_bouncedNameWithIndex:v16 + 1 isDir:{objc_msgSend(v14, "isFolder")}];
     [v14 setDisplayName:v24];
 
-    v25 = [v14 displayName];
-    [v14 setFilename:v25];
+    displayName = [v14 displayName];
+    [v14 setFilename:displayName];
 
-    v26 = [v14 fileURL];
+    fileURL = [v14 fileURL];
 
-    if (v26)
+    if (fileURL)
     {
-      v27 = [v14 fileURL];
-      v13 = [v27 URLByDeletingLastPathComponent];
+      fileURL2 = [v14 fileURL];
+      uRLByDeletingLastPathComponent = [fileURL2 URLByDeletingLastPathComponent];
 
-      v28 = [v14 filename];
-      v29 = [v13 URLByAppendingPathComponent:v28];
+      filename3 = [v14 filename];
+      v29 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:filename3];
       [v14 setFileURL:v29];
 
 LABEL_17:
@@ -2129,15 +2129,15 @@ LABEL_17:
   return v14;
 }
 
-- (id)_reorderWithPlaceholdersLast:(id)a3
+- (id)_reorderWithPlaceholdersLast:(id)last
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  lastCopy = last;
+  v4 = [lastCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2148,21 +2148,21 @@ LABEL_17:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(lastCopy);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) state])
         {
 
-          v9 = [v3 fp_filter:&__block_literal_global_172];
-          v10 = [v3 fp_filter:&__block_literal_global_174];
+          v9 = [lastCopy fp_filter:&__block_literal_global_172];
+          v10 = [lastCopy fp_filter:&__block_literal_global_174];
           v8 = [v9 arrayByAddingObjectsFromArray:v10];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [lastCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -2172,7 +2172,7 @@ LABEL_17:
     }
   }
 
-  v8 = v3;
+  v8 = lastCopy;
 LABEL_11:
 
   v11 = *MEMORY[0x1E69E9840];
@@ -2180,22 +2180,22 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)shouldConsiderUsingPlaceholder:(id)a3 forItem:(id)a4 skipForwardFormerID:(BOOL *)a5
+- (BOOL)shouldConsiderUsingPlaceholder:(id)placeholder forItem:(id)item skipForwardFormerID:(BOOL *)d
 {
-  v8 = a3;
-  *a5 = 0;
+  placeholderCopy = placeholder;
+  *d = 0;
   pendingItemsStitching = self->_pendingItemsStitching;
-  v10 = a4;
-  v11 = [v8 itemID];
-  v12 = [(NSMutableDictionary *)pendingItemsStitching objectForKey:v11];
+  itemCopy = item;
+  itemID = [placeholderCopy itemID];
+  v12 = [(NSMutableDictionary *)pendingItemsStitching objectForKey:itemID];
 
-  v13 = [v8 itemID];
-  v14 = [v10 itemID];
+  itemID2 = [placeholderCopy itemID];
+  itemID3 = [itemCopy itemID];
 
-  v15 = [v13 isEqual:v14];
-  v16 = [v8 formerItemID];
+  v15 = [itemID2 isEqual:itemID3];
+  formerItemID = [placeholderCopy formerItemID];
 
-  if ([v8 isPlaceholder])
+  if ([placeholderCopy isPlaceholder])
   {
     v17 = v15 ^ 1;
     if ((v15 ^ 1))
@@ -2204,16 +2204,16 @@ LABEL_11:
     }
 
 LABEL_6:
-    if (v16)
+    if (formerItemID)
     {
       v17 = 1;
-      *a5 = 1;
+      *d = 1;
     }
 
     goto LABEL_9;
   }
 
-  if (!((v12 == 0) & ~[v8 isBusy] | v15 & 1))
+  if (!((v12 == 0) & ~[placeholderCopy isBusy] | v15 & 1))
   {
     v17 = 1;
     goto LABEL_9;
@@ -2230,11 +2230,11 @@ LABEL_9:
   return v17;
 }
 
-- (id)computeIndexPathsBasedDiffsWithOldItems:(id)a3 futureItems:(id)a4
+- (id)computeIndexPathsBasedDiffsWithOldItems:(id)items futureItems:(id)futureItems
 {
   v77 = *MEMORY[0x1E69E9840];
-  v60 = a3;
-  v61 = a4;
+  itemsCopy = items;
+  futureItemsCopy = futureItems;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   [v6 setMovedSourceIndexPaths:v7];
@@ -2251,12 +2251,12 @@ LABEL_9:
   v11 = objc_opt_new();
   [v6 setUpdatedIndexes:v11];
 
-  v54 = [v6 movedSourceIndexPaths];
-  v53 = [v6 movedDestinationIndexPaths];
-  v58 = [v6 deletedIndexes];
-  v57 = [v6 insertedIndexes];
+  movedSourceIndexPaths = [v6 movedSourceIndexPaths];
+  movedDestinationIndexPaths = [v6 movedDestinationIndexPaths];
+  deletedIndexes = [v6 deletedIndexes];
+  insertedIndexes = [v6 insertedIndexes];
   v52 = v6;
-  v59 = [v6 updatedIndexes];
+  updatedIndexes = [v6 updatedIndexes];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
@@ -2282,8 +2282,8 @@ LABEL_9:
         if (v19 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v20 = v19;
-          [v60 removeObjectWithID:v17];
-          [v58 addIndex:v20];
+          [itemsCopy removeObjectWithID:v17];
+          [deletedIndexes addIndex:v20];
         }
 
         objc_autoreleasePoolPop(v18);
@@ -2316,41 +2316,41 @@ LABEL_9:
 
         v25 = *(*(&v66 + 1) + 8 * j);
         v26 = objc_autoreleasePoolPush();
-        v27 = [v25 itemID];
-        [v60 removeObjectWithID:v27];
+        itemID = [v25 itemID];
+        [itemsCopy removeObjectWithID:itemID];
 
-        v28 = [v61 indexOfObject:v25];
+        v28 = [futureItemsCopy indexOfObject:v25];
         v29 = [(FPItemCollection *)self _indexOfItem:v25];
         if (v29 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v30 = v57;
+          v30 = insertedIndexes;
           if (v28 != 0x7FFFFFFFFFFFFFFFLL)
           {
             goto LABEL_23;
           }
 
-          v31 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v31 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1681 description:{@"item %@ doesn't belong in collection %@?", v25, self}];
-          v30 = v57;
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1681 description:{@"item %@ doesn't belong in collection %@?", v25, self}];
+          v30 = insertedIndexes;
           goto LABEL_22;
         }
 
         v32 = v29;
         if (v28 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v33 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v33 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1688 description:@"we just inserted this item"];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1688 description:@"we just inserted this item"];
         }
 
-        v30 = v59;
+        v30 = updatedIndexes;
         if (v32 != v28)
         {
           v34 = [(FPItemCollection *)self indexPathFromIndex:v32];
-          [v54 addObject:v34];
+          [movedSourceIndexPaths addObject:v34];
 
-          v31 = [(FPItemCollection *)self indexPathFromIndex:v28];
-          [v53 addObject:v31];
-          v30 = v59;
+          currentHandler = [(FPItemCollection *)self indexPathFromIndex:v28];
+          [movedDestinationIndexPaths addObject:currentHandler];
+          v30 = updatedIndexes;
 LABEL_22:
         }
 
@@ -2369,8 +2369,8 @@ LABEL_23:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v35 = [v60 allObjects];
-  v36 = [v35 countByEnumeratingWithState:&v62 objects:v74 count:16];
+  allObjects = [itemsCopy allObjects];
+  v36 = [allObjects countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (v36)
   {
     v37 = v36;
@@ -2381,22 +2381,22 @@ LABEL_23:
       {
         if (*v63 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(allObjects);
         }
 
         v40 = *(*(&v62 + 1) + 8 * k);
         v41 = objc_autoreleasePoolPush();
         v42 = [(FPItemCollection *)self _indexOfItem:v40];
-        v43 = [v61 indexOfObject:v40];
+        v43 = [futureItemsCopy indexOfObject:v40];
         if (v43 == 0x7FFFFFFFFFFFFFFFLL)
         {
           if (v42 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v44 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v44 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1708 description:@"item doesn't belong anywhere"];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler3 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1708 description:@"item doesn't belong anywhere"];
           }
 
-          v45 = v58;
+          v45 = deletedIndexes;
           v46 = v42;
         }
 
@@ -2406,13 +2406,13 @@ LABEL_23:
           if (v42 != v43)
           {
             v48 = [(FPItemCollection *)self indexPathFromIndex:v42];
-            [v54 addObject:v48];
+            [movedSourceIndexPaths addObject:v48];
 
             v49 = [(FPItemCollection *)self indexPathFromIndex:v47];
-            [v53 addObject:v49];
+            [movedDestinationIndexPaths addObject:v49];
           }
 
-          v45 = v59;
+          v45 = updatedIndexes;
           v46 = v47;
         }
 
@@ -2420,7 +2420,7 @@ LABEL_23:
         objc_autoreleasePoolPop(v41);
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v62 objects:v74 count:16];
+      v37 = [allObjects countByEnumeratingWithState:&v62 objects:v74 count:16];
     }
 
     while (v37);
@@ -2431,30 +2431,30 @@ LABEL_23:
   return v52;
 }
 
-- (void)sendIndexPathBasedDiffs:(id)a3
+- (void)sendIndexPathBasedDiffs:(id)diffs
 {
-  v4 = a3;
-  v5 = [v4 movedSourceIndexPaths];
-  v6 = [v4 movedDestinationIndexPaths];
-  v7 = [v4 deletedIndexes];
-  v8 = [v4 insertedIndexes];
-  v9 = [v4 updatedIndexes];
+  diffsCopy = diffs;
+  movedSourceIndexPaths = [diffsCopy movedSourceIndexPaths];
+  movedDestinationIndexPaths = [diffsCopy movedDestinationIndexPaths];
+  deletedIndexes = [diffsCopy deletedIndexes];
+  insertedIndexes = [diffsCopy insertedIndexes];
+  updatedIndexes = [diffsCopy updatedIndexes];
 
   WeakRetained = objc_loadWeakRetained(&self->_indexPathBasedDelegate);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__FPItemCollection_sendIndexPathBasedDiffs___block_invoke;
   aBlock[3] = &unk_1E793CCF8;
-  v11 = v7;
+  v11 = deletedIndexes;
   v24 = v11;
   v12 = WeakRetained;
   v25 = v12;
-  v26 = self;
-  v13 = v8;
+  selfCopy = self;
+  v13 = insertedIndexes;
   v27 = v13;
-  v14 = v5;
+  v14 = movedSourceIndexPaths;
   v28 = v14;
-  v15 = v6;
+  v15 = movedDestinationIndexPaths;
   v29 = v15;
   v16 = _Block_copy(aBlock);
   v17 = [v11 count];
@@ -2464,15 +2464,15 @@ LABEL_23:
     [v12 collection:self didPerformBatchUpdateWithReplayBlock:v16];
   }
 
-  if ([v9 count])
+  if ([updatedIndexes count])
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __44__FPItemCollection_sendIndexPathBasedDiffs___block_invoke_207;
     v19[3] = &unk_1E7939090;
-    v20 = v9;
+    v20 = updatedIndexes;
     v21 = v12;
-    v22 = self;
+    selfCopy2 = self;
     [v21 collection:self didPerformBatchUpdateWithReplayBlock:v19];
   }
 }
@@ -2541,12 +2541,12 @@ void __44__FPItemCollection_sendIndexPathBasedDiffs___block_invoke_207(void *a1)
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(NSMutableSet *)self->_deletedItemsIdentifiers allObjects];
-  v5 = [v4 mutableCopy];
+  allObjects = [(NSMutableSet *)self->_deletedItemsIdentifiers allObjects];
+  v5 = [allObjects mutableCopy];
   [v3 setDeletedItemIDs:v5];
 
-  v6 = [(NSMutableDictionary *)self->_updatedItemsByIdentifiers allValues];
-  v7 = [v6 mutableCopy];
+  allValues = [(NSMutableDictionary *)self->_updatedItemsByIdentifiers allValues];
+  v7 = [allValues mutableCopy];
   [v3 setUpdatedItems:v7];
 
   v8 = objc_opt_new();
@@ -2556,8 +2556,8 @@ void __44__FPItemCollection_sendIndexPathBasedDiffs___block_invoke_207(void *a1)
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [(NSMutableDictionary *)self->_updatedItemsByIdentifiers allValues];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_updatedItemsByIdentifiers allValues];
+  v10 = [allValues2 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2568,31 +2568,31 @@ void __44__FPItemCollection_sendIndexPathBasedDiffs___block_invoke_207(void *a1)
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues2);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 formerItemID];
-        if (v15)
+        formerItemID = [v14 formerItemID];
+        if (formerItemID)
         {
-          v16 = v15;
+          v16 = formerItemID;
           currentItems = self->_currentItems;
-          v18 = [v14 formerItemID];
-          v19 = [(_FPItemList *)currentItems indexOfItemID:v18];
+          formerItemID2 = [v14 formerItemID];
+          v19 = [(_FPItemList *)currentItems indexOfItemID:formerItemID2];
 
           if (v19 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v20 = [v3 replacedItemsByFormerID];
-            v21 = [v14 formerItemID];
-            [v20 setObject:v14 forKeyedSubscript:v21];
+            replacedItemsByFormerID = [v3 replacedItemsByFormerID];
+            formerItemID3 = [v14 formerItemID];
+            [replacedItemsByFormerID setObject:v14 forKeyedSubscript:formerItemID3];
 
-            v22 = [v3 updatedItems];
-            [v22 removeObject:v14];
+            updatedItems = [v3 updatedItems];
+            [updatedItems removeObject:v14];
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v11 = [allValues2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v11);
@@ -2603,50 +2603,50 @@ void __44__FPItemCollection_sendIndexPathBasedDiffs___block_invoke_207(void *a1)
   return v3;
 }
 
-- (void)sendItemIDBasedDiffs:(id)a3
+- (void)sendItemIDBasedDiffs:(id)diffs
 {
-  v4 = a3;
+  diffsCopy = diffs;
   WeakRetained = objc_loadWeakRetained(&self->_itemIDBasedDelegate);
-  v5 = [v4 updatedItems];
-  v6 = [v4 replacedItemsByFormerID];
-  v7 = [v4 deletedItemIDs];
+  updatedItems = [diffsCopy updatedItems];
+  replacedItemsByFormerID = [diffsCopy replacedItemsByFormerID];
+  deletedItemIDs = [diffsCopy deletedItemIDs];
 
-  [WeakRetained collection:self didUpdateItems:v5 replaceItemsByFormerID:v6 deleteItemsWithIDs:v7];
+  [WeakRetained collection:self didUpdateItems:updatedItems replaceItemsByFormerID:replacedItemsByFormerID deleteItemsWithIDs:deletedItemIDs];
 }
 
-- (id)createDataSourceWithSortDescriptors:(id)a3
+- (id)createDataSourceWithSortDescriptors:(id)descriptors
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1797 description:@"UNREACHABLE: should be overriden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1797 description:@"UNREACHABLE: should be overriden"];
 
   return 0;
 }
 
 - (id)scopedSearchQuery
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1802 description:@"UNREACHABLE: should be overriden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPItemCollection.m" lineNumber:1802 description:@"UNREACHABLE: should be overriden"];
 
   return 0;
 }
 
-- (BOOL)isHiddenItem:(id)a3
+- (BOOL)isHiddenItem:(id)item
 {
-  v3 = a3;
-  if (([v3 fileSystemFlags] & 8) != 0)
+  itemCopy = item;
+  if (([itemCopy fileSystemFlags] & 8) != 0)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 creationDate];
-  if (!v4)
+  creationDate = [itemCopy creationDate];
+  if (!creationDate)
   {
     goto LABEL_6;
   }
 
-  v5 = v4;
-  v6 = [v3 creationDate];
-  [v6 timeIntervalSinceNow];
+  v5 = creationDate;
+  creationDate2 = [itemCopy creationDate];
+  [creationDate2 timeIntervalSinceNow];
   v8 = fabs(v7);
 
   if (v8 >= 10.0)
@@ -2654,9 +2654,9 @@ void __44__FPItemCollection_sendIndexPathBasedDiffs___block_invoke_207(void *a1)
     goto LABEL_6;
   }
 
-  v9 = [v3 filename];
-  v10 = [v9 pathExtension];
-  v11 = [v10 hasPrefix:@"sb-"];
+  filename = [itemCopy filename];
+  pathExtension = [filename pathExtension];
+  v11 = [pathExtension hasPrefix:@"sb-"];
 
   if (v11)
   {
@@ -2673,11 +2673,11 @@ LABEL_6:
   return v12;
 }
 
-+ (void)consumeUpdates:(id)a3 deletes:(id)a4
++ (void)consumeUpdates:(id)updates deletes:(id)deletes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  deletesCopy = deletes;
   section = __fp_create_section();
   v24 = section;
   v9 = fp_current_or_default_log();
@@ -2686,9 +2686,9 @@ LABEL_6:
     *buf = 134218498;
     v27 = section;
     v28 = 2112;
-    v29 = v6;
+    v29 = updatesCopy;
     v30 = 2112;
-    v31 = v7;
+    v31 = deletesCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx stitching notifications (updated:%@ deleted:%@)", buf, 0x20u);
   }
 
@@ -2696,8 +2696,8 @@ LABEL_6:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a1 activeCollections];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  activeCollections = [self activeCollections];
+  v11 = [activeCollections countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v11)
   {
     v12 = *v21;
@@ -2707,22 +2707,22 @@ LABEL_6:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(activeCollections);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 updateQueue];
+        updateQueue = [v14 updateQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __43__FPItemCollection_consumeUpdates_deletes___block_invoke;
         block[3] = &unk_1E7939090;
         block[4] = v14;
-        v18 = v6;
-        v19 = v7;
-        dispatch_async(v15, block);
+        v18 = updatesCopy;
+        v19 = deletesCopy;
+        dispatch_async(updateQueue, block);
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v11 = [activeCollections countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v11);
@@ -2754,18 +2754,18 @@ void __43__FPItemCollection_consumeUpdates_deletes___block_invoke(uint64_t *a1)
   }
 }
 
-+ (void)replacePlaceholders:(id)a3 withActualItems:(id)a4 deletedIDs:(id)a5
++ (void)replacePlaceholders:(id)placeholders withActualItems:(id)items deletedIDs:(id)ds
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeholdersCopy = placeholders;
+  itemsCopy = items;
+  dsCopy = ds;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [a1 activeCollections];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  activeCollections = [self activeCollections];
+  v12 = [activeCollections countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2777,14 +2777,14 @@ void __43__FPItemCollection_consumeUpdates_deletes___block_invoke(uint64_t *a1)
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(activeCollections);
         }
 
-        [*(*(&v17 + 1) + 8 * v15++) replacePlaceholders:v8 withActualItems:v9 deletedIDs:v10];
+        [*(*(&v17 + 1) + 8 * v15++) replacePlaceholders:placeholdersCopy withActualItems:itemsCopy deletedIDs:dsCopy];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [activeCollections countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
@@ -2838,7 +2838,7 @@ void __44__FPItemCollection_suspendVendorEnumeration__block_invoke()
   block[2] = __43__FPItemCollection_resumeVendorEnumeration__block_invoke;
   block[3] = &unk_1E793CD20;
   block[6] = a2;
-  block[7] = a1;
+  block[7] = self;
   block[4] = &v15;
   block[5] = &v19;
   dispatch_sync(_collectionsQueue, block);
@@ -2863,13 +2863,13 @@ void __44__FPItemCollection_suspendVendorEnumeration__block_invoke()
           }
 
           v6 = *(*(&v10 + 1) + 8 * i);
-          v7 = [v6 updateQueue];
+          updateQueue = [v6 updateQueue];
           v9[0] = MEMORY[0x1E69E9820];
           v9[1] = 3221225472;
           v9[2] = __43__FPItemCollection_resumeVendorEnumeration__block_invoke_220;
           v9[3] = &unk_1E79399B0;
           v9[4] = v6;
-          dispatch_sync(v7, v9);
+          dispatch_sync(updateQueue, v9);
         }
 
         v3 = [v2 countByEnumeratingWithState:&v10 objects:v25 count:16];
@@ -2916,16 +2916,16 @@ void __43__FPItemCollection_resumeVendorEnumeration__block_invoke_220(uint64_t a
   [v1 enumerationMightHaveResumed];
 }
 
-+ (void)addActiveCollection:(id)a3
++ (void)addActiveCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = _collectionsQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__FPItemCollection_addActiveCollection___block_invoke;
   block[3] = &unk_1E79399B0;
-  v7 = v3;
-  v5 = v3;
+  v7 = collectionCopy;
+  v5 = collectionCopy;
   dispatch_sync(v4, block);
 }
 
@@ -2978,16 +2978,16 @@ uint64_t __40__FPItemCollection_addActiveCollection___block_invoke_3(uint64_t a1
   return result;
 }
 
-+ (void)removeActiveCollection:(id)a3
++ (void)removeActiveCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = _collectionsQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__FPItemCollection_removeActiveCollection___block_invoke;
   block[3] = &unk_1E79399B0;
-  v7 = v3;
-  v5 = v3;
+  v7 = collectionCopy;
+  v5 = collectionCopy;
   dispatch_sync(v4, block);
 }
 
@@ -3005,17 +3005,17 @@ uint64_t __43__FPItemCollection_removeActiveCollection___block_invoke(uint64_t a
   return result;
 }
 
-- (void)_replaceContentsWithVendorItems:(id)a3
+- (void)_replaceContentsWithVendorItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   updateQueue = self->_updateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__FPItemCollection__replaceContentsWithVendorItems___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_async(updateQueue, v7);
 }
 
@@ -3053,17 +3053,17 @@ FPItem *__52__FPItemCollection__replaceContentsWithVendorItems___block_invoke_2(
   return v3;
 }
 
-- (void)_restartObservationWithReason:(id)a3
+- (void)_restartObservationWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   workingQueue = self->_workingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__FPItemCollection__restartObservationWithReason___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(workingQueue, v7);
 }
 

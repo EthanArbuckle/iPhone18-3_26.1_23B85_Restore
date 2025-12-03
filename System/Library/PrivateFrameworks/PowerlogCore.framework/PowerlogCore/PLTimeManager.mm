@@ -3,20 +3,20 @@
 - (PLSQLiteConnection)connection;
 - (PLStorageOperator)storageOperator;
 - (PLTimeManager)init;
-- (double)hourBucketBaseSnapOffsetWithMonotonicTime:(int64_t)a3;
-- (double)hourBucketBaseSnapOffsetWithMonotonicTimeNow:(int64_t)a3;
-- (double)timeOffsetForTimeReference:(int64_t)a3;
-- (double)timeZoneHourBucketShift:(double)a3;
-- (id)bucketNSDate:(id)a3 withBucketInterval:(int)a4;
-- (id)convertTime:(id)a3 fromTimeReference:(int64_t)a4 toTimeReference:(int64_t)a5;
-- (id)currentTimeFromTimeReference:(int64_t)a3 toTimeReference:(int64_t)a4;
+- (double)hourBucketBaseSnapOffsetWithMonotonicTime:(int64_t)time;
+- (double)hourBucketBaseSnapOffsetWithMonotonicTimeNow:(int64_t)now;
+- (double)timeOffsetForTimeReference:(int64_t)reference;
+- (double)timeZoneHourBucketShift:(double)shift;
+- (id)bucketNSDate:(id)date withBucketInterval:(int)interval;
+- (id)convertTime:(id)time fromTimeReference:(int64_t)reference toTimeReference:(int64_t)timeReference;
+- (id)currentTimeFromTimeReference:(int64_t)reference toTimeReference:(int64_t)timeReference;
 - (id)initialMonotonicTime;
 - (id)storageQueue;
 - (void)getBootSessionUUID;
 - (void)initializeTimeOffsets;
 - (void)logTimeEntry;
-- (void)registerForTimeChangedCallbackWithIdentifier:(id)a3 forTimeReference:(int64_t)a4 usingBlock:(id)a5;
-- (void)unregisterForTimeChangedCallbackWithIdentifier:(id)a3 forTimeReference:(int64_t)a4;
+- (void)registerForTimeChangedCallbackWithIdentifier:(id)identifier forTimeReference:(int64_t)reference usingBlock:(id)block;
+- (void)unregisterForTimeChangedCallbackWithIdentifier:(id)identifier forTimeReference:(int64_t)reference;
 @end
 
 @implementation PLTimeManager
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __31__PLTimeManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -130,8 +130,8 @@ uint64_t __21__PLTimeManager_init__block_invoke_25(uint64_t a1)
 
 - (void)getBootSessionUUID
 {
-  v3 = [(PLTimeManager *)self timeReferences];
-  v2 = [v3 objectForKeyedSubscript:&unk_1F5405A90];
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v2 = [timeReferences objectForKeyedSubscript:&unk_1F5405A90];
   [v2 setRebootOccurred:{+[PLUtilities deviceRebooted](PLUtilities, "deviceRebooted")}];
 }
 
@@ -146,37 +146,37 @@ uint64_t __21__PLTimeManager_init__block_invoke_25(uint64_t a1)
 
   v4 = [(PLOperator *)PLStorageOperator entryKeyForType:@"EventForward" andName:@"TimeOffset"];
   v5 = +[PowerlogCore sharedCore];
-  v6 = [v5 storage];
+  storage = [v5 storage];
   v34 = v4;
-  v7 = [v6 lastEntriesForKey:v4 count:3 withFilters:0];
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  v7 = [storage lastEntriesForKey:v4 count:3 withFilters:0];
+  reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v10 = [(PLTimeManager *)self timeReferences];
-  v11 = [v10 objectForKeyedSubscript:&unk_1F5405A78];
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v11 = [timeReferences objectForKeyedSubscript:&unk_1F5405A78];
   [v11 setOffset:0.0];
 
-  v12 = [(PLTimeManager *)self timeReferences];
-  v13 = [v12 objectForKeyedSubscript:&unk_1F5405A90];
-  [v13 initializeOffsetWithEntries:v9];
+  timeReferences2 = [(PLTimeManager *)self timeReferences];
+  v13 = [timeReferences2 objectForKeyedSubscript:&unk_1F5405A90];
+  [v13 initializeOffsetWithEntries:allObjects];
 
-  v14 = [(PLTimeManager *)self timeReferences];
-  v15 = [v14 objectForKeyedSubscript:&unk_1F5405AA8];
-  [v15 initializeOffsetWithEntries:v9];
+  timeReferences3 = [(PLTimeManager *)self timeReferences];
+  v15 = [timeReferences3 objectForKeyedSubscript:&unk_1F5405AA8];
+  [v15 initializeOffsetWithEntries:allObjects];
 
-  v16 = [(PLTimeManager *)self timeReferences];
-  v17 = [v16 objectForKeyedSubscript:&unk_1F5405AC0];
-  v33 = v9;
-  [v17 initializeOffsetWithEntries:v9];
+  timeReferences4 = [(PLTimeManager *)self timeReferences];
+  v17 = [timeReferences4 objectForKeyedSubscript:&unk_1F5405AC0];
+  v33 = allObjects;
+  [v17 initializeOffsetWithEntries:allObjects];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v18 = [(PLTimeManager *)self timeReferences];
-  v19 = [v18 allValues];
+  timeReferences5 = [(PLTimeManager *)self timeReferences];
+  allValues = [timeReferences5 allValues];
 
-  v20 = [v19 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  v20 = [allValues countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v20)
   {
     v21 = v20;
@@ -188,7 +188,7 @@ uint64_t __21__PLTimeManager_init__block_invoke_25(uint64_t a1)
       {
         if (*v40 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allValues);
         }
 
         v24 = *(*(&v39 + 1) + 8 * v23);
@@ -201,7 +201,7 @@ uint64_t __21__PLTimeManager_init__block_invoke_25(uint64_t a1)
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v21 = [allValues countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v21);
@@ -211,10 +211,10 @@ uint64_t __21__PLTimeManager_init__block_invoke_25(uint64_t a1)
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v25 = [(PLTimeManager *)self timeReferences];
-  v26 = [v25 allValues];
+  timeReferences6 = [(PLTimeManager *)self timeReferences];
+  allValues2 = [timeReferences6 allValues];
 
-  v27 = [v26 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  v27 = [allValues2 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v27)
   {
     v28 = v27;
@@ -226,7 +226,7 @@ uint64_t __21__PLTimeManager_init__block_invoke_25(uint64_t a1)
       {
         if (*v36 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allValues2);
         }
 
         v31 = *(*(&v35 + 1) + 8 * v30);
@@ -244,7 +244,7 @@ uint64_t __21__PLTimeManager_init__block_invoke_25(uint64_t a1)
       }
 
       while (v28 != v30);
-      v28 = [v26 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v28 = [allValues2 countByEnumeratingWithState:&v35 objects:v43 count:16];
     }
 
     while (v28);
@@ -313,100 +313,100 @@ BOOL __37__PLTimeManager_initialMonotonicTime__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (double)timeOffsetForTimeReference:(int64_t)a3
+- (double)timeOffsetForTimeReference:(int64_t)reference
 {
-  v4 = [(PLTimeManager *)self timeReferences];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:reference];
+  v6 = [timeReferences objectForKeyedSubscript:v5];
   [v6 offset];
   v8 = v7;
 
   return v8;
 }
 
-- (id)currentTimeFromTimeReference:(int64_t)a3 toTimeReference:(int64_t)a4
+- (id)currentTimeFromTimeReference:(int64_t)reference toTimeReference:(int64_t)timeReference
 {
-  v7 = [(PLTimeManager *)self timeReferences];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 currentTime];
-  v11 = [(PLTimeManager *)self convertTime:v10 fromTimeReference:a3 toTimeReference:a4];
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:reference];
+  v9 = [timeReferences objectForKeyedSubscript:v8];
+  currentTime = [v9 currentTime];
+  v11 = [(PLTimeManager *)self convertTime:currentTime fromTimeReference:reference toTimeReference:timeReference];
 
   return v11;
 }
 
-- (id)convertTime:(id)a3 fromTimeReference:(int64_t)a4 toTimeReference:(int64_t)a5
+- (id)convertTime:(id)time fromTimeReference:(int64_t)reference toTimeReference:(int64_t)timeReference
 {
-  v8 = a3;
-  v9 = [(PLTimeManager *)self timeReferences];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  v11 = [v9 objectForKeyedSubscript:v10];
-  v12 = [(PLTimeManager *)self timeReferences];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v14 = [v12 objectForKeyedSubscript:v13];
-  v15 = [v14 removeTimeOffsetFromReferenceTime:v8];
+  timeCopy = time;
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:timeReference];
+  v11 = [timeReferences objectForKeyedSubscript:v10];
+  timeReferences2 = [(PLTimeManager *)self timeReferences];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:reference];
+  v14 = [timeReferences2 objectForKeyedSubscript:v13];
+  v15 = [v14 removeTimeOffsetFromReferenceTime:timeCopy];
 
   v16 = [v11 addTimeOffsetToMonotonicTime:v15];
 
   return v16;
 }
 
-- (void)registerForTimeChangedCallbackWithIdentifier:(id)a3 forTimeReference:(int64_t)a4 usingBlock:(id)a5
+- (void)registerForTimeChangedCallbackWithIdentifier:(id)identifier forTimeReference:(int64_t)reference usingBlock:(id)block
 {
-  v16 = a3;
-  v8 = a5;
-  v9 = [(PLTimeManager *)self timeReferences];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  identifierCopy = identifier;
+  blockCopy = block;
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:reference];
+  v11 = [timeReferences objectForKeyedSubscript:v10];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PLTimeManager *)self timeReferences];
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v15 = [v13 objectForKeyedSubscript:v14];
-    [v15 registerForTimeChangedCallbackWithIdentifier:v16 usingBlock:v8];
+    timeReferences2 = [(PLTimeManager *)self timeReferences];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:reference];
+    v15 = [timeReferences2 objectForKeyedSubscript:v14];
+    [v15 registerForTimeChangedCallbackWithIdentifier:identifierCopy usingBlock:blockCopy];
   }
 }
 
-- (void)unregisterForTimeChangedCallbackWithIdentifier:(id)a3 forTimeReference:(int64_t)a4
+- (void)unregisterForTimeChangedCallbackWithIdentifier:(id)identifier forTimeReference:(int64_t)reference
 {
-  v13 = a3;
-  v6 = [(PLTimeManager *)self timeReferences];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:reference];
+  v8 = [timeReferences objectForKeyedSubscript:v7];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(PLTimeManager *)self timeReferences];
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v12 = [v10 objectForKeyedSubscript:v11];
-    [v12 unregisterForTimeChangedCallbackWithIdentifier:v13];
+    timeReferences2 = [(PLTimeManager *)self timeReferences];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:reference];
+    v12 = [timeReferences2 objectForKeyedSubscript:v11];
+    [v12 unregisterForTimeChangedCallbackWithIdentifier:identifierCopy];
   }
 }
 
-- (id)bucketNSDate:(id)a3 withBucketInterval:(int)a4
+- (id)bucketNSDate:(id)date withBucketInterval:(int)interval
 {
   v5 = MEMORY[0x1E695DF00];
-  [a3 timeIntervalSince1970];
-  v7 = (v6 / a4 * a4);
+  [date timeIntervalSince1970];
+  v7 = (v6 / interval * interval);
 
   return [v5 dateWithTimeIntervalSince1970:v7];
 }
 
-- (double)hourBucketBaseSnapOffsetWithMonotonicTimeNow:(int64_t)a3
+- (double)hourBucketBaseSnapOffsetWithMonotonicTimeNow:(int64_t)now
 {
-  if (!a3)
+  if (!now)
   {
     return 0.0;
   }
 
-  v5 = [MEMORY[0x1E695DF00] monotonicDate];
-  v6 = [(PLTimeManager *)self convertTime:v5 fromTimeReference:0 toTimeReference:a3];
+  monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
+  v6 = [(PLTimeManager *)self convertTime:monotonicDate fromTimeReference:0 toTimeReference:now];
   v7 = [(PLTimeManager *)self bucketNSDate:v6 withBucketInterval:3600];
-  v8 = [(PLTimeManager *)self bucketNSDate:v5 withBucketInterval:3600];
-  v9 = [(PLTimeManager *)self convertTime:v8 fromTimeReference:0 toTimeReference:a3];
+  v8 = [(PLTimeManager *)self bucketNSDate:monotonicDate withBucketInterval:3600];
+  v9 = [(PLTimeManager *)self convertTime:v8 fromTimeReference:0 toTimeReference:now];
   [v9 timeIntervalSinceDate:v7];
   if (v10 >= 0.0)
   {
@@ -418,7 +418,7 @@ BOOL __37__PLTimeManager_initialMonotonicTime__block_invoke_2(uint64_t a1)
     v11 = v10 + 3600.0;
   }
 
-  if (a3 == 1)
+  if (now == 1)
   {
     [(PLTimeManager *)self timeZoneHourBucketShift:v11];
     v11 = v12;
@@ -427,11 +427,11 @@ BOOL __37__PLTimeManager_initialMonotonicTime__block_invoke_2(uint64_t a1)
   return v11;
 }
 
-- (double)timeZoneHourBucketShift:(double)a3
+- (double)timeZoneHourBucketShift:(double)shift
 {
-  v4 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  v5 = [v4 secondsFromGMT];
-  HIDWORD(v6) = -2023406815 * v5 + 9544368;
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  secondsFromGMT = [systemTimeZone secondsFromGMT];
+  HIDWORD(v6) = -2023406815 * secondsFromGMT + 9544368;
   LODWORD(v6) = HIDWORD(v6);
   if ((v6 >> 4) >= 0x123457)
   {
@@ -458,11 +458,11 @@ BOOL __37__PLTimeManager_initialMonotonicTime__block_invoke_2(uint64_t a1)
 
     if (timeZoneHourBucketShift__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"OffsetComputation: secondsFromGMT: %ld timeZoneDelta: %f", v5, *&v7];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"OffsetComputation: secondsFromGMT: %ld timeZoneDelta: %f", secondsFromGMT, *&v7];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLTimeManager.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimeManager timeZoneHourBucketShift:]"];
-      [PLCoreStorage logMessage:v9 fromFile:v11 fromFunction:v12 fromLineNumber:246];
+      [PLCoreStorage logMessage:v9 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:246];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -473,12 +473,12 @@ BOOL __37__PLTimeManager_initialMonotonicTime__block_invoke_2(uint64_t a1)
   }
 
   v14 = -v7;
-  if (v7 >= a3)
+  if (v7 >= shift)
   {
     v14 = v7;
   }
 
-  v15 = v14 + a3;
+  v15 = v14 + shift;
 
   return v15;
 }
@@ -490,11 +490,11 @@ BOOL __41__PLTimeManager_timeZoneHourBucketShift___block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)hourBucketBaseSnapOffsetWithMonotonicTime:(int64_t)a3
+- (double)hourBucketBaseSnapOffsetWithMonotonicTime:(int64_t)time
 {
-  v4 = [(PLTimeManager *)self timeReferences];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  timeReferences = [(PLTimeManager *)self timeReferences];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:time];
+  v6 = [timeReferences objectForKeyedSubscript:v5];
   [v6 getHourBucketOffset];
   v8 = v7;
 
@@ -534,25 +534,25 @@ BOOL __77__PLTimeManager_bucketTimeStampForDate_withTimeReference_withBucketInte
   v22 = *MEMORY[0x1E69E9840];
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd") || +[PLUtilities shouldLogPreUnlockTelemetry])
   {
-    v3 = PLLogTimeManager();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    dictionary = PLLogTimeManager();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1D8611000, v3, OS_LOG_TYPE_INFO, "Do not log to time offset table in pre unlock or in helperd case", buf, 2u);
+      _os_log_impl(&dword_1D8611000, dictionary, OS_LOG_TYPE_INFO, "Do not log to time offset table in pre unlock or in helperd case", buf, 2u);
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(PLTimeManager *)self timeReferences];
-    v5 = [v4 allValues];
+    timeReferences = [(PLTimeManager *)self timeReferences];
+    allValues = [timeReferences allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -563,7 +563,7 @@ BOOL __77__PLTimeManager_bucketTimeStampForDate_withTimeReference_withBucketInte
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
@@ -572,19 +572,19 @@ BOOL __77__PLTimeManager_bucketTimeStampForDate_withTimeReference_withBucketInte
             v11 = MEMORY[0x1E696AD98];
             [v10 offset];
             v12 = [v11 numberWithDouble:?];
-            v13 = [v10 entryDefinitionKey];
-            [v3 setObject:v12 forKeyedSubscript:v13];
+            entryDefinitionKey = [v10 entryDefinitionKey];
+            [dictionary setObject:v12 forKeyedSubscript:entryDefinitionKey];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v7);
     }
 
-    v14 = [(PLTimeManager *)self storageOperator];
-    [v14 logEventForwardTimeOffset:v3];
+    storageOperator = [(PLTimeManager *)self storageOperator];
+    [storageOperator logEventForwardTimeOffset:dictionary];
   }
 
   v15 = *MEMORY[0x1E69E9840];

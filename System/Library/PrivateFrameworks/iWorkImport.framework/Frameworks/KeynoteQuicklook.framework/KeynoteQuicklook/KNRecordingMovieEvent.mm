@@ -1,45 +1,45 @@
 @interface KNRecordingMovieEvent
-- (BOOL)isEqual:(id)a3;
-- (KNRecordingMovieEvent)initWithStartTime:(double)a3 movieInfo:(id)a4 movieSlideNodeUUID:(id)a5 didPlayAcrossSlides:(BOOL)a6 movieEventType:(int64_t)a7 movieEventValue:(double)a8;
+- (BOOL)isEqual:(id)equal;
+- (KNRecordingMovieEvent)initWithStartTime:(double)time movieInfo:(id)info movieSlideNodeUUID:(id)d didPlayAcrossSlides:(BOOL)slides movieEventType:(int64_t)type movieEventValue:(double)value;
 - (TSDMovieInfo)movieInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNRecordingMovieEvent
 
-- (KNRecordingMovieEvent)initWithStartTime:(double)a3 movieInfo:(id)a4 movieSlideNodeUUID:(id)a5 didPlayAcrossSlides:(BOOL)a6 movieEventType:(int64_t)a7 movieEventValue:(double)a8
+- (KNRecordingMovieEvent)initWithStartTime:(double)time movieInfo:(id)info movieSlideNodeUUID:(id)d didPlayAcrossSlides:(BOOL)slides movieEventType:(int64_t)type movieEventValue:(double)value
 {
-  v14 = a4;
-  v15 = a5;
+  infoCopy = info;
+  dCopy = d;
   v26.receiver = self;
   v26.super_class = KNRecordingMovieEvent;
-  v16 = [(KNRecordingEvent *)&v26 initWithStartTime:a3];
+  v16 = [(KNRecordingEvent *)&v26 initWithStartTime:time];
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x277D80868]);
-    inited = objc_msgSend_initWeakReferenceWithObject_(v17, v18, v14);
+    inited = objc_msgSend_initWeakReferenceWithObject_(v17, v18, infoCopy);
     movieInfoReference = v16->_movieInfoReference;
     v16->_movieInfoReference = inited;
 
-    v23 = objc_msgSend_copy(v15, v21, v22);
+    v23 = objc_msgSend_copy(dCopy, v21, v22);
     movieSlideNodeUUID = v16->_movieSlideNodeUUID;
     v16->_movieSlideNodeUUID = v23;
 
-    v16->_didPlayAcrossSlides = a6;
-    v16->_movieEventType = a7;
-    v16->_movieEventValue = a8;
+    v16->_didPlayAcrossSlides = slides;
+    v16->_movieEventType = type;
+    v16->_movieEventValue = value;
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNRecordingMovieEvent, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNRecordingMovieEvent, a2, zone);
   objc_msgSend_startTime(self, v5, v6);
   v8 = v7;
   v11 = objc_msgSend_movieInfo(self, v9, v10);
@@ -79,12 +79,12 @@
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v38.receiver = self;
   v38.super_class = KNRecordingMovieEvent;
-  if (![(KNRecordingEvent *)&v38 isEqual:v4])
+  if (![(KNRecordingEvent *)&v38 isEqual:equalCopy])
   {
     v25 = 0;
     goto LABEL_12;
@@ -162,15 +162,15 @@ LABEL_12:
   return v5;
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track
 {
-  v8 = a4;
+  unarchiverCopy = unarchiver;
   v30.receiver = self;
   v30.super_class = KNRecordingMovieEvent;
-  [(KNRecordingEvent *)&v30 loadFromMessage:a3 unarchiver:v8 parentEventTrack:a5];
-  if (*(a3 + 6))
+  [(KNRecordingEvent *)&v30 loadFromMessage:message unarchiver:unarchiverCopy parentEventTrack:track];
+  if (*(message + 6))
   {
-    v10 = *(a3 + 6);
+    v10 = *(message + 6);
   }
 
   else
@@ -187,7 +187,7 @@ LABEL_12:
     v29[2] = sub_275DC9DBC;
     v29[3] = &unk_27A6982D0;
     v29[4] = self;
-    v18 = v8;
+    v18 = unarchiverCopy;
     v19 = objc_opt_class();
     objc_msgSend_readWeakLazyReferenceMessage_class_protocol_completion_(v18, v20, v17, v19, 0, v29);
     v16 = 0;
@@ -206,7 +206,7 @@ LABEL_12:
     v28[2] = sub_275DC9DD4;
     v28[3] = &unk_27A6982D0;
     v28[4] = self;
-    v13 = v8;
+    v13 = unarchiverCopy;
     v14 = objc_opt_class();
     objc_msgSend_readWeakLazyReferenceMessage_class_protocol_completion_(v13, v15, v12, v14, 0, v28);
     v16 = 1;
@@ -216,7 +216,7 @@ LABEL_12:
 LABEL_9:
   if ((*(v10 + 16) & 4) != 0)
   {
-    v21 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(v8, v9, *(v10 + 5));
+    v21 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiverCopy, v9, *(v10 + 5));
     v24 = objc_msgSend_copy(v21, v22, v23);
     movieSlideNodeUUID = self->_movieSlideNodeUUID;
     self->_movieSlideNodeUUID = v24;
@@ -237,24 +237,24 @@ LABEL_9:
   self->_movieEventValue = *(v10 + 6);
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v27.receiver = self;
   v27.super_class = KNRecordingMovieEvent;
-  [(KNRecordingEvent *)&v27 saveToMessage:a3 archiver:v6];
-  *(a3 + 4) |= 8u;
-  v8 = *(a3 + 6);
+  [(KNRecordingEvent *)&v27 saveToMessage:message archiver:archiverCopy];
+  *(message + 4) |= 8u;
+  v8 = *(message + 6);
   if (!v8)
   {
-    v9 = *(a3 + 1);
+    v9 = *(message + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v8 = sub_275E21070(v9);
-    *(a3 + 6) = v8;
+    *(message + 6) = v8;
   }
 
   movieInfoReference = self->_movieInfoReference;
@@ -283,7 +283,7 @@ LABEL_9:
   if (v12)
   {
 LABEL_14:
-    objc_msgSend_setWeakLazyReference_message_(v6, v7, movieInfoReference, v12);
+    objc_msgSend_setWeakLazyReference_message_(archiverCopy, v7, movieInfoReference, v12);
     goto LABEL_15;
   }
 
@@ -295,7 +295,7 @@ LABEL_14:
 
   v14 = MEMORY[0x277C8F050](v13);
   *(v8 + 32) = v14;
-  objc_msgSend_setWeakLazyReference_message_(v6, v15, movieInfoReference, v14);
+  objc_msgSend_setWeakLazyReference_message_(archiverCopy, v15, movieInfoReference, v14);
 LABEL_15:
   movieSlideNodeUUID = self->_movieSlideNodeUUID;
   if (movieSlideNodeUUID)
@@ -314,7 +314,7 @@ LABEL_15:
       *(v8 + 40) = v20;
     }
 
-    objc_msgSend_setWeakReferenceToObjectUUID_message_(v6, v16, movieSlideNodeUUID, v20);
+    objc_msgSend_setWeakReferenceToObjectUUID_message_(archiverCopy, v16, movieSlideNodeUUID, v20);
   }
 
   v22 = objc_msgSend_movieEventType(self, v16, v17);

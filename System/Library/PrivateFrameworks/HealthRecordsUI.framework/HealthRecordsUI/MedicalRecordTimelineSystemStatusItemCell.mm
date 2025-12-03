@@ -1,10 +1,10 @@
 @interface MedicalRecordTimelineSystemStatusItemCell
-- (_TtC15HealthRecordsUI41MedicalRecordTimelineSystemStatusItemCell)initWithCoder:(id)a3;
+- (_TtC15HealthRecordsUI41MedicalRecordTimelineSystemStatusItemCell)initWithCoder:(id)coder;
 @end
 
 @implementation MedicalRecordTimelineSystemStatusItemCell
 
-- (_TtC15HealthRecordsUI41MedicalRecordTimelineSystemStatusItemCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI41MedicalRecordTimelineSystemStatusItemCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI41MedicalRecordTimelineSystemStatusItemCell____lazy_storage___spinner) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI41MedicalRecordTimelineSystemStatusItemCell____lazy_storage___titleLabel) = 0;

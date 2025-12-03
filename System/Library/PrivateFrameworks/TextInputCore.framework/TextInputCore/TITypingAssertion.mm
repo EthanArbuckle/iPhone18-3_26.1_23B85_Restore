@@ -3,11 +3,11 @@
 - (TITypingAssertion)init;
 - (void)dealloc;
 - (void)restResetTouches;
-- (void)restTouchEndWithPathIndex:(int64_t)a3;
-- (void)restTouchStartWithPathIndex:(int64_t)a3;
-- (void)setActive:(BOOL)a3;
-- (void)timerFired:(id)a3;
-- (void)touchWithDuration:(double)a3 reason:(int64_t)a4;
+- (void)restTouchEndWithPathIndex:(int64_t)index;
+- (void)restTouchStartWithPathIndex:(int64_t)index;
+- (void)setActive:(BOOL)active;
+- (void)timerFired:(id)fired;
+- (void)touchWithDuration:(double)duration reason:(int64_t)reason;
 @end
 
 @implementation TITypingAssertion
@@ -24,37 +24,37 @@
   return v3;
 }
 
-- (void)touchWithDuration:(double)a3 reason:(int64_t)a4
+- (void)touchWithDuration:(double)duration reason:(int64_t)reason
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (a4 == 1 && !self->_active)
+    if (reason == 1 && !self->_active)
     {
-      v7 = [(TITypingAssertion *)self pointerClientController];
-      [v7 autohidePointerForReason:1];
+      pointerClientController = [(TITypingAssertion *)self pointerClientController];
+      [pointerClientController autohidePointerForReason:1];
     }
 
     [(TITypingAssertion *)self setActive:1];
-    v8 = [(TITypingAssertion *)self timer];
-    v9 = [v8 isValid];
+    timer = [(TITypingAssertion *)self timer];
+    isValid = [timer isValid];
 
-    if (v9)
+    if (isValid)
     {
-      v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-      v10 = [(TITypingAssertion *)self timer];
-      v11 = [v10 fireDate];
-      v12 = [v11 laterDate:v14];
+      v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:duration];
+      timer2 = [(TITypingAssertion *)self timer];
+      fireDate = [timer2 fireDate];
+      v12 = [fireDate laterDate:v14];
 
       if (v12 == v14)
       {
-        v13 = [(TITypingAssertion *)self timer];
-        [v13 setFireDate:v14];
+        timer3 = [(TITypingAssertion *)self timer];
+        [timer3 setFireDate:v14];
       }
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_timerFired_ selector:0 userInfo:0 repeats:a3];
+      v14 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_timerFired_ selector:0 userInfo:0 repeats:duration];
       [(TITypingAssertion *)self setTimer:v14];
     }
   }
@@ -65,34 +65,34 @@
   }
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   [(TITypingAssertion *)self setActive:0];
-  v4 = [(TITypingAssertion *)self timer];
-  [v4 invalidate];
+  timer = [(TITypingAssertion *)self timer];
+  [timer invalidate];
 
   [(TITypingAssertion *)self setTimer:0];
 }
 
-- (void)restTouchEndWithPathIndex:(int64_t)a3
+- (void)restTouchEndWithPathIndex:(int64_t)index
 {
   if (self->_restingPathIndices)
   {
-    v5 = [(TITypingAssertion *)self isActive];
+    isActive = [(TITypingAssertion *)self isActive];
     restingPathIndices = self->_restingPathIndices;
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [(NSMutableSet *)restingPathIndices removeObject:v7];
 
-    v8 = [(TITypingAssertion *)self isActive];
-    if (v5 != v8)
+    isActive2 = [(TITypingAssertion *)self isActive];
+    if (isActive != isActive2)
     {
 
-      [(TITypingAssertion *)self _sbsSetTypingActive:v8];
+      [(TITypingAssertion *)self _sbsSetTypingActive:isActive2];
     }
   }
 }
 
-- (void)restTouchStartWithPathIndex:(int64_t)a3
+- (void)restTouchStartWithPathIndex:(int64_t)index
 {
   if (!self->_restingPathIndices)
   {
@@ -101,16 +101,16 @@
     self->_restingPathIndices = v5;
   }
 
-  v7 = [(TITypingAssertion *)self isActive];
+  isActive = [(TITypingAssertion *)self isActive];
   v8 = self->_restingPathIndices;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [(NSMutableSet *)v8 addObject:v9];
 
-  v10 = [(TITypingAssertion *)self isActive];
-  if (v7 != v10)
+  isActive2 = [(TITypingAssertion *)self isActive];
+  if (isActive != isActive2)
   {
 
-    [(TITypingAssertion *)self _sbsSetTypingActive:v10];
+    [(TITypingAssertion *)self _sbsSetTypingActive:isActive2];
   }
 }
 
@@ -118,30 +118,30 @@
 {
   if (self->_restingPathIndices)
   {
-    v3 = [(TITypingAssertion *)self isActive];
+    isActive = [(TITypingAssertion *)self isActive];
     restingPathIndices = self->_restingPathIndices;
     self->_restingPathIndices = 0;
 
-    v5 = [(TITypingAssertion *)self isActive];
-    if (v3 != v5)
+    isActive2 = [(TITypingAssertion *)self isActive];
+    if (isActive != isActive2)
     {
 
-      [(TITypingAssertion *)self _sbsSetTypingActive:v5];
+      [(TITypingAssertion *)self _sbsSetTypingActive:isActive2];
     }
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v5 = [(TITypingAssertion *)self isActive];
-    self->_active = a3;
-    v6 = [(TITypingAssertion *)self isActive];
-    if (v5 != v6)
+    isActive = [(TITypingAssertion *)self isActive];
+    self->_active = active;
+    isActive2 = [(TITypingAssertion *)self isActive];
+    if (isActive != isActive2)
     {
 
-      [(TITypingAssertion *)self _sbsSetTypingActive:v6];
+      [(TITypingAssertion *)self _sbsSetTypingActive:isActive2];
     }
   }
 }

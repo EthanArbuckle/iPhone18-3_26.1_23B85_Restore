@@ -1,65 +1,65 @@
 @interface MBUEAPlugin
-- (BOOL)_isWithinBackupPeriodOnPower:(BOOL)a3;
+- (BOOL)_isWithinBackupPeriodOnPower:(BOOL)power;
 - (BOOL)_isWithinPasscodeChangedWindow;
-- (BOOL)_updateEnabledStateForAccount:(id)a3;
+- (BOOL)_updateEnabledStateForAccount:(id)account;
 - (BOOL)_updateGlobalEnabledState;
 - (BOOL)isOnPower;
-- (MBUEAPlugin)initWithEventQueue:(id)a3;
+- (MBUEAPlugin)initWithEventQueue:(id)queue;
 - (id)_lastBackupDate;
-- (void)_boostBackgroundRestore:(unint64_t)a3;
+- (void)_boostBackgroundRestore:(unint64_t)restore;
 - (void)_boostManualBackup;
-- (void)_clearEnabledStateForAccount:(id)a3;
-- (void)_handleAccountChange:(int64_t)a3 account:(id)a4;
+- (void)_clearEnabledStateForAccount:(id)account;
+- (void)_handleAccountChange:(int64_t)change account:(id)account;
 - (void)_install;
-- (void)_notifyDaemonOfAccountChange:(id)a3;
-- (void)_pcTimerFired:(id)a3;
+- (void)_notifyDaemonOfAccountChange:(id)change;
+- (void)_pcTimerFired:(id)fired;
 - (void)_refetchAllAccounts;
 - (void)_stateDidChange;
 - (void)_updatePCTimer;
 - (void)cancel;
 - (void)dealloc;
-- (void)managerDidLoseConnectionToService:(id)a3;
+- (void)managerDidLoseConnectionToService:(id)service;
 - (void)notifyDaemonOfPasscodeChange;
 - (void)notifyDaemonThatDeviceIsLocking;
 - (void)notifyDaemonThatDeviceIsUnlocked;
-- (void)setIsLocked:(BOOL)a3;
-- (void)setIsOnCellular:(BOOL)a3;
-- (void)setIsOnPower:(BOOL)a3;
-- (void)setIsOnWiFi:(BOOL)a3;
+- (void)setIsLocked:(BOOL)locked;
+- (void)setIsOnCellular:(BOOL)cellular;
+- (void)setIsOnPower:(BOOL)power;
+- (void)setIsOnWiFi:(BOOL)fi;
 @end
 
 @implementation MBUEAPlugin
 
 - (void)_stateDidChange
 {
-  v3 = [(MBUEAPlugin *)self isEnabled];
-  v4 = [(MBUEAPlugin *)self isOnPower];
-  v5 = [(MBUEAPlugin *)self isLocked];
-  v6 = [(MBUEAPlugin *)self isOnWiFi];
-  v7 = [(MBUEAPlugin *)self isOnCellular];
-  v8 = [(MBUEAPlugin *)self isBackupOnCellularEnabled];
+  isEnabled = [(MBUEAPlugin *)self isEnabled];
+  isOnPower = [(MBUEAPlugin *)self isOnPower];
+  isLocked = [(MBUEAPlugin *)self isLocked];
+  isOnWiFi = [(MBUEAPlugin *)self isOnWiFi];
+  isOnCellular = [(MBUEAPlugin *)self isOnCellular];
+  isBackupOnCellularEnabled = [(MBUEAPlugin *)self isBackupOnCellularEnabled];
   v9 = CFPreferencesCopyValue(@"AllowBackupOnBattery", @"com.apple.MobileBackup", @"mobile", kCFPreferencesCurrentHost);
-  v10 = [v9 BOOLValue];
-  v11 = [(MBUEAPlugin *)self _isWithinPasscodeChangedWindow];
-  if (!v3 || !((v4 | v11 | v10) & v5) || ((v6 | v7 & v8) & 1) == 0)
+  bOOLValue = [v9 BOOLValue];
+  _isWithinPasscodeChangedWindow = [(MBUEAPlugin *)self _isWithinPasscodeChangedWindow];
+  if (!isEnabled || !((isOnPower | _isWithinPasscodeChangedWindow | bOOLValue) & isLocked) || ((isOnWiFi | isOnCellular & isBackupOnCellularEnabled) & 1) == 0)
   {
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67110656;
-      v17 = v3;
+      v17 = isEnabled;
       v18 = 1024;
-      v19 = v4;
+      v19 = isOnPower;
       v20 = 1024;
-      v21 = v10;
+      v21 = bOOLValue;
       v22 = 1024;
-      v23 = v5;
+      v23 = isLocked;
       v24 = 1024;
-      v25 = v6;
+      v25 = isOnWiFi;
       v26 = 1024;
-      v27 = v7;
+      v27 = isOnCellular;
       v28 = 1024;
-      v29 = v8;
+      v29 = isBackupOnCellularEnabled;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEBUG, "Not waking up backupd, enabled:%d, onPower:%d(%d), locked:%d, onWiFi:%d, onCellular:%d, backupOnCellularEnabled:%d", buf, 0x2Cu);
       goto LABEL_10;
     }
@@ -69,7 +69,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ((v11 & 1) == 0 && [(MBUEAPlugin *)self _isWithinBackupPeriodOnPower:v4])
+  if ((_isWithinPasscodeChangedWindow & 1) == 0 && [(MBUEAPlugin *)self _isWithinBackupPeriodOnPower:isOnPower])
   {
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -118,22 +118,22 @@ LABEL_12:
   return v3 & 1;
 }
 
-- (MBUEAPlugin)initWithEventQueue:(id)a3
+- (MBUEAPlugin)initWithEventQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     sub_ABE0();
   }
 
-  v6 = v5;
+  v6 = queueCopy;
   v20.receiver = self;
   v20.super_class = MBUEAPlugin;
   v7 = [(MBUEAPlugin *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_eventQueue, a3);
+    objc_storeStrong(&v7->_eventQueue, queue);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_BACKGROUND, 0);
 
@@ -312,7 +312,7 @@ LABEL_12:
   self->_passcodeChangedToken = -1;
   v16 = PABSUserChangedPasscodeNotification;
   v17 = v16;
-  v18 = [v16 UTF8String];
+  uTF8String = [v16 UTF8String];
   eventQueue = self->_eventQueue;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
@@ -321,7 +321,7 @@ LABEL_12:
   objc_copyWeak(&v59, &location);
   v42 = v16;
   v58 = v42;
-  v20 = notify_register_dispatch(v18, &self->_passcodeChangedToken, eventQueue, handler);
+  v20 = notify_register_dispatch(uTF8String, &self->_passcodeChangedToken, eventQueue, handler);
   if (v20)
   {
     self->_passcodeChangedToken = -1;
@@ -421,14 +421,14 @@ LABEL_12:
   }
 
   v32 = kMBManagerManualBackupStartedNotification;
-  v33 = [kMBManagerManualBackupStartedNotification UTF8String];
+  uTF8String2 = [kMBManagerManualBackupStartedNotification UTF8String];
   v34 = self->_eventQueue;
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_3458;
   v46[3] = &unk_144E8;
   objc_copyWeak(&v47, &location);
-  v35 = notify_register_dispatch(v33, &self->_manualBackupStartedToken, v34, v46);
+  v35 = notify_register_dispatch(uTF8String2, &self->_manualBackupStartedToken, v34, v46);
   if (v35)
   {
     self->_manualBackupStartedToken = -1;
@@ -469,7 +469,7 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)_boostBackgroundRestore:(unint64_t)a3
+- (void)_boostBackgroundRestore:(unint64_t)restore
 {
   dispatch_assert_queue_V2(self->_eventQueue);
   restoreStateChangedToken = self->_restoreStateChangedToken;
@@ -483,9 +483,9 @@ LABEL_12:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v16 = kMBManagerRestoreStateChangedNotification;
+        restoreCopy = kMBManagerRestoreStateChangedNotification;
         v17 = 1024;
-        LODWORD(v18) = state;
+        LODWORD(restoreCopy2) = state;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "notify_get_state for %{public}@ failed: %du", buf, 0x12u);
         _MBLog();
       }
@@ -498,7 +498,7 @@ LABEL_12:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v16 = a3;
+        restoreCopy = restore;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Attempting to boost background restore (%llu)", buf, 0xCu);
         _MBLog();
       }
@@ -508,22 +508,22 @@ LABEL_12:
       v11[1] = 3221225472;
       v11[2] = sub_3968;
       v11[3] = &unk_145D8;
-      v12[1] = a3;
+      v12[1] = restore;
       objc_copyWeak(v12, &location);
       [(MBManager *)manager boostBackgroundRestoreWithCompletionHandler:v11];
       objc_destroyWeak(v12);
       objc_destroyWeak(&location);
     }
 
-    else if (a3)
+    else if (restore)
     {
       v10 = MBGetDefaultLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v16 = state64;
+        restoreCopy = state64;
         v17 = 2048;
-        v18 = a3;
+        restoreCopy2 = restore;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Not boosting background restore for restoreState:%llu (%llu)", buf, 0x16u);
         _MBLog();
       }
@@ -592,10 +592,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_isWithinBackupPeriodOnPower:(BOOL)a3
+- (BOOL)_isWithinBackupPeriodOnPower:(BOOL)power
 {
-  v4 = [(MBUEAPlugin *)self _lastBackupDate];
-  if (v4)
+  _lastBackupDate = [(MBUEAPlugin *)self _lastBackupDate];
+  if (_lastBackupDate)
   {
     v5 = +[NSDate now];
     v6 = CFPreferencesCopyValue(@"BackupPeriod", @"com.apple.MobileBackup", @"mobile", kCFPreferencesCurrentHost);
@@ -624,13 +624,13 @@ LABEL_12:
       v14 = 604800.0;
     }
 
-    [v5 timeIntervalSinceDate:v4];
+    [v5 timeIntervalSinceDate:_lastBackupDate];
     v16 = v15;
     v17 = MBGetDefaultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v20 = v4;
+      v20 = _lastBackupDate;
       v21 = 2048;
       v22 = v9;
       v23 = 2048;
@@ -646,7 +646,7 @@ LABEL_12:
 
     else
     {
-      v10 = (v16 < v14) & ~a3;
+      v10 = (v16 < v14) & ~power;
     }
   }
 
@@ -689,16 +689,16 @@ LABEL_12:
   return 1;
 }
 
-- (void)setIsOnPower:(BOOL)a3
+- (void)setIsOnPower:(BOOL)power
 {
-  if ((atomic_exchange(&self->_isOnPower, a3) & 1) != a3)
+  if ((atomic_exchange(&self->_isOnPower, power) & 1) != power)
   {
-    v3 = a3;
+    powerCopy = power;
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v7 = v3;
+      v7 = powerCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "isOnPower changed: %d", buf, 8u);
       _MBLog();
     }
@@ -707,16 +707,16 @@ LABEL_12:
   }
 }
 
-- (void)setIsLocked:(BOOL)a3
+- (void)setIsLocked:(BOOL)locked
 {
-  if ((atomic_exchange(&self->_isLocked, a3) & 1) != a3)
+  if ((atomic_exchange(&self->_isLocked, locked) & 1) != locked)
   {
-    v3 = a3;
+    lockedCopy = locked;
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v7 = v3;
+      v7 = lockedCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "isLocked changed: %d", buf, 8u);
       _MBLog();
     }
@@ -725,16 +725,16 @@ LABEL_12:
   }
 }
 
-- (void)setIsOnWiFi:(BOOL)a3
+- (void)setIsOnWiFi:(BOOL)fi
 {
-  if ((atomic_exchange(&self->_isOnWiFi, a3) & 1) != a3)
+  if ((atomic_exchange(&self->_isOnWiFi, fi) & 1) != fi)
   {
-    v3 = a3;
+    fiCopy = fi;
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v7 = v3;
+      v7 = fiCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "isOnWiFi changed: %d", buf, 8u);
       _MBLog();
     }
@@ -743,16 +743,16 @@ LABEL_12:
   }
 }
 
-- (void)setIsOnCellular:(BOOL)a3
+- (void)setIsOnCellular:(BOOL)cellular
 {
-  if ((atomic_exchange(&self->_isOnCellular, a3) & 1) != a3)
+  if ((atomic_exchange(&self->_isOnCellular, cellular) & 1) != cellular)
   {
-    v3 = a3;
+    cellularCopy = cellular;
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v7 = v3;
+      v7 = cellularCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "isOnCellular changed: %d", buf, 8u);
       _MBLog();
     }
@@ -764,9 +764,9 @@ LABEL_12:
 - (void)_updatePCTimer
 {
   dispatch_assert_queue_V2(self->_eventQueue);
-  v3 = [(MBUEAPlugin *)self isEnabled];
+  isEnabled = [(MBUEAPlugin *)self isEnabled];
   pcTimer = self->_pcTimer;
-  if (v3)
+  if (isEnabled)
   {
     if (!pcTimer)
     {
@@ -789,7 +789,7 @@ LABEL_12:
   }
 }
 
-- (void)_pcTimerFired:(id)a3
+- (void)_pcTimerFired:(id)fired
 {
   dispatch_assert_queue_V2(self->_eventQueue);
   v4 = MBGetDefaultLog();
@@ -813,18 +813,18 @@ LABEL_12:
   [(MBUEAPlugin *)self _updatePCTimer];
 }
 
-- (void)_handleAccountChange:(int64_t)a3 account:(id)a4
+- (void)_handleAccountChange:(int64_t)change account:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   eventQueue = self->_eventQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_4A70;
   block[3] = &unk_14668;
-  v11 = self;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  changeCopy = change;
+  v10 = accountCopy;
+  v8 = accountCopy;
   dispatch_async(eventQueue, block);
 }
 
@@ -861,13 +861,13 @@ LABEL_12:
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
-        v9 = [v8 identifier];
+        identifier = [v8 identifier];
         v10 = [v8 isEnabledForDataclass:v6];
-        v11 = [v8 aa_isPrimaryEmailVerified];
-        v12 = v11;
+        aa_isPrimaryEmailVerified = [v8 aa_isPrimaryEmailVerified];
+        v12 = aa_isPrimaryEmailVerified;
         if (v10)
         {
-          v13 = v11 == 0;
+          v13 = aa_isPrimaryEmailVerified == 0;
         }
 
         else
@@ -877,7 +877,7 @@ LABEL_12:
 
         if (!v13)
         {
-          [v24 addObject:v9];
+          [v24 addObject:identifier];
         }
 
         manager = self->_manager;
@@ -904,7 +904,7 @@ LABEL_12:
 
         else if (v15)
         {
-          [v23 addObject:v9];
+          [v23 addObject:identifier];
           v15 = &dword_0 + 1;
         }
 
@@ -912,7 +912,7 @@ LABEL_12:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v33 = v9;
+          v33 = identifier;
           v34 = 1024;
           *v35 = v10;
           *&v35[4] = 1024;
@@ -922,7 +922,7 @@ LABEL_12:
           _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Found account %@ (%d,%d,%d)", buf, 0x1Eu);
           v21 = v12;
           v22 = v15;
-          v19 = v9;
+          v19 = identifier;
           v20 = v10;
           _MBLog();
         }
@@ -938,22 +938,22 @@ LABEL_12:
   [(MBUEAPlugin *)self setAccountsWithBackupOnCellularEnabled:v23];
 }
 
-- (BOOL)_updateEnabledStateForAccount:(id)a3
+- (BOOL)_updateEnabledStateForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   dispatch_assert_queue_V2(self->_eventQueue);
-  v5 = [v4 identifier];
-  if (!v5)
+  identifier = [accountCopy identifier];
+  if (!identifier)
   {
     [(MBUEAPlugin *)self _refetchAllAccounts];
     v8 = 1;
     goto LABEL_27;
   }
 
-  v6 = [v4 aa_isPrimaryEmailVerified];
-  if (v6)
+  aa_isPrimaryEmailVerified = [accountCopy aa_isPrimaryEmailVerified];
+  if (aa_isPrimaryEmailVerified)
   {
-    v7 = [v4 isEnabledForDataclass:kAccountDataclassBackup];
+    v7 = [accountCopy isEnabledForDataclass:kAccountDataclassBackup];
   }
 
   else
@@ -961,8 +961,8 @@ LABEL_12:
     v7 = 0;
   }
 
-  v9 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
-  v10 = [v9 containsObject:v5];
+  accountsWithBackupEnabled = [(MBUEAPlugin *)self accountsWithBackupEnabled];
+  v10 = [accountsWithBackupEnabled containsObject:identifier];
 
   if (!v7 || (v10 & 1) != 0)
   {
@@ -971,20 +971,20 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v11 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
-    [v11 removeObject:v5];
+    accountsWithBackupEnabled2 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
+    [accountsWithBackupEnabled2 removeObject:identifier];
   }
 
   else
   {
-    v11 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
-    [v11 addObject:v5];
+    accountsWithBackupEnabled2 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
+    [accountsWithBackupEnabled2 addObject:identifier];
   }
 
 LABEL_12:
   manager = self->_manager;
   v23 = 0;
-  v13 = [(MBManager *)manager isBackupOnCellularAllowedWithAccount:v4 error:&v23];
+  v13 = [(MBManager *)manager isBackupOnCellularAllowedWithAccount:accountCopy error:&v23];
   v14 = v23;
   if (v14)
   {
@@ -992,11 +992,11 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v25 = v4;
+      v25 = accountCopy;
       v26 = 2112;
       *v27 = v14;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "Failed to check if backup on cellular is allowed for %@: %@", buf, 0x16u);
-      v21 = v4;
+      v21 = accountCopy;
       v22 = v14;
       _MBLog();
     }
@@ -1005,12 +1005,12 @@ LABEL_12:
   }
 
   v16 = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled:v21];
-  v17 = [v16 containsObject:v5];
+  v17 = [v16 containsObject:identifier];
 
   if (v13 && (v17 & 1) == 0)
   {
-    v18 = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
-    [v18 addObject:v5];
+    accountsWithBackupOnCellularEnabled = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
+    [accountsWithBackupOnCellularEnabled addObject:identifier];
 LABEL_21:
 
     goto LABEL_22;
@@ -1018,8 +1018,8 @@ LABEL_21:
 
   if (!(v13 & 1 | ((v17 & 1) == 0)))
   {
-    v18 = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
-    [v18 removeObject:v5];
+    accountsWithBackupOnCellularEnabled = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
+    [accountsWithBackupOnCellularEnabled removeObject:identifier];
     goto LABEL_21;
   }
 
@@ -1031,11 +1031,11 @@ LABEL_22:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v25 = v5;
+      v25 = identifier;
       v26 = 1024;
       *v27 = v7;
       *&v27[4] = 1024;
-      *&v27[6] = v6;
+      *&v27[6] = aa_isPrimaryEmailVerified;
       v28 = 1024;
       v29 = v13;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Updating state for account:%@ (%d,%d,%d)", buf, 0x1Eu);
@@ -1047,29 +1047,29 @@ LABEL_27:
   return v8 & 1;
 }
 
-- (void)_clearEnabledStateForAccount:(id)a3
+- (void)_clearEnabledStateForAccount:(id)account
 {
   eventQueue = self->_eventQueue;
-  v5 = a3;
+  accountCopy = account;
   dispatch_assert_queue_V2(eventQueue);
-  v6 = [v5 identifier];
+  identifier = [accountCopy identifier];
 
-  if (v6)
+  if (identifier)
   {
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v6;
+      v11 = identifier;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Clearing account %@", buf, 0xCu);
       _MBLog();
     }
 
-    v8 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
-    [v8 removeObject:v6];
+    accountsWithBackupEnabled = [(MBUEAPlugin *)self accountsWithBackupEnabled];
+    [accountsWithBackupEnabled removeObject:identifier];
 
-    v9 = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
-    [v9 removeObject:v6];
+    accountsWithBackupOnCellularEnabled = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
+    [accountsWithBackupOnCellularEnabled removeObject:identifier];
   }
 
   else
@@ -1081,13 +1081,13 @@ LABEL_27:
 - (BOOL)_updateGlobalEnabledState
 {
   dispatch_assert_queue_V2(self->_eventQueue);
-  v3 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
-  v4 = [v3 count];
+  accountsWithBackupEnabled = [(MBUEAPlugin *)self accountsWithBackupEnabled];
+  v4 = [accountsWithBackupEnabled count];
 
   if (v4)
   {
-    v5 = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
-    v6 = [v5 count] != 0;
+    accountsWithBackupOnCellularEnabled = [(MBUEAPlugin *)self accountsWithBackupOnCellularEnabled];
+    v6 = [accountsWithBackupOnCellularEnabled count] != 0;
   }
 
   else
@@ -1095,13 +1095,13 @@ LABEL_27:
     v6 = 0;
   }
 
-  v7 = [(ACMonitoredAccountStore *)self->_accountStore aa_primaryAppleAccount];
-  v8 = [v7 identifier];
+  aa_primaryAppleAccount = [(ACMonitoredAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  identifier = [aa_primaryAppleAccount identifier];
 
-  if (v8)
+  if (identifier)
   {
-    v9 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
-    v10 = [v9 containsObject:v8];
+    accountsWithBackupEnabled2 = [(MBUEAPlugin *)self accountsWithBackupEnabled];
+    v10 = [accountsWithBackupEnabled2 containsObject:identifier];
   }
 
   else
@@ -1275,9 +1275,9 @@ LABEL_36:
   return (v28 | v6) & 1;
 }
 
-- (void)_notifyDaemonOfAccountChange:(id)a3
+- (void)_notifyDaemonOfAccountChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_eventQueue);
   if (sub_42D0())
   {
@@ -1287,7 +1287,7 @@ LABEL_36:
     v6[2] = sub_59E8;
     v6[3] = &unk_14690;
     v6[4] = self;
-    v7 = v4;
+    v7 = changeCopy;
     dispatch_async(notificationQueue, v6);
   }
 }
@@ -1329,7 +1329,7 @@ LABEL_36:
   dispatch_async(notificationQueue, block);
 }
 
-- (void)managerDidLoseConnectionToService:(id)a3
+- (void)managerDidLoseConnectionToService:(id)service
 {
   if ([(MBUEAPlugin *)self wakeBackupOnDisconnect])
   {

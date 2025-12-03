@@ -1,12 +1,12 @@
 @interface PDDPClass
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPClass
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PDDPClass;
   v3 = [(PDDPClass *)&v7 description];
-  v4 = [(PDDPClass *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPClass *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -41,15 +41,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v8 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v10 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   displayName = self->_displayName;
@@ -67,8 +67,8 @@
   entityMeta = self->_entityMeta;
   if (entityMeta)
   {
-    v14 = [(PDDPEntityMeta *)entityMeta dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"entity_meta"];
+    dictionaryRepresentation3 = [(PDDPEntityMeta *)entityMeta dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"entity_meta"];
   }
 
   iconIdentifier = self->_iconIdentifier;
@@ -80,157 +80,157 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_classId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_className)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateCreated)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateLastModified)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_entityMeta)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_iconIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_classId)
   {
-    [v4 setClassId:?];
-    v4 = v5;
+    [toCopy setClassId:?];
+    toCopy = v5;
   }
 
   if (self->_className)
   {
     [v5 setClassName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateCreated)
   {
     [v5 setDateCreated:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateLastModified)
   {
     [v5 setDateLastModified:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayName)
   {
     [v5 setDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locationId)
   {
     [v5 setLocationId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_entityMeta)
   {
     [v5 setEntityMeta:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_iconIdentifier)
   {
     [v5 setIconIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_classId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_classId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_className copyWithZone:a3];
+  v8 = [(NSString *)self->_className copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_displayName copyWithZone:a3];
+  v14 = [(NSString *)self->_displayName copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSString *)self->_locationId copyWithZone:a3];
+  v16 = [(NSString *)self->_locationId copyWithZone:zone];
   v17 = v5[8];
   v5[8] = v16;
 
-  v18 = [(PDDPEntityMeta *)self->_entityMeta copyWithZone:a3];
+  v18 = [(PDDPEntityMeta *)self->_entityMeta copyWithZone:zone];
   v19 = v5[6];
   v5[6] = v18;
 
-  v20 = [(NSString *)self->_iconIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_iconIdentifier copyWithZone:zone];
   v21 = v5[7];
   v5[7] = v20;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((classId = self->_classId, !(classId | v4[1])) || -[NSString isEqual:](classId, "isEqual:")) && ((className = self->_className, !(className | v4[2])) || -[NSString isEqual:](className, "isEqual:")) && ((dateCreated = self->_dateCreated, !(dateCreated | v4[3])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | v4[4])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")) && ((displayName = self->_displayName, !(displayName | v4[5])) || -[NSString isEqual:](displayName, "isEqual:")) && ((locationId = self->_locationId, !(locationId | v4[8])) || -[NSString isEqual:](locationId, "isEqual:")) && ((entityMeta = self->_entityMeta, !(entityMeta | v4[6])) || -[PDDPEntityMeta isEqual:](entityMeta, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((classId = self->_classId, !(classId | equalCopy[1])) || -[NSString isEqual:](classId, "isEqual:")) && ((className = self->_className, !(className | equalCopy[2])) || -[NSString isEqual:](className, "isEqual:")) && ((dateCreated = self->_dateCreated, !(dateCreated | equalCopy[3])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | equalCopy[4])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")) && ((displayName = self->_displayName, !(displayName | equalCopy[5])) || -[NSString isEqual:](displayName, "isEqual:")) && ((locationId = self->_locationId, !(locationId | equalCopy[8])) || -[NSString isEqual:](locationId, "isEqual:")) && ((entityMeta = self->_entityMeta, !(entityMeta | equalCopy[6])) || -[PDDPEntityMeta isEqual:](entityMeta, "isEqual:")))
   {
     iconIdentifier = self->_iconIdentifier;
-    if (iconIdentifier | v4[7])
+    if (iconIdentifier | equalCopy[7])
     {
       v13 = [(NSString *)iconIdentifier isEqual:?];
     }
@@ -261,21 +261,21 @@
   return v9 ^ [(NSString *)self->_iconIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v10 = a3;
-  if (v10[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(PDDPClass *)self setClassId:?];
   }
 
-  if (v10[2])
+  if (fromCopy[2])
   {
     [(PDDPClass *)self setClassName:?];
   }
 
   dateCreated = self->_dateCreated;
-  v5 = v10[3];
+  v5 = fromCopy[3];
   if (dateCreated)
   {
     if (v5)
@@ -290,7 +290,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  v7 = v10[4];
+  v7 = fromCopy[4];
   if (dateLastModified)
   {
     if (v7)
@@ -304,18 +304,18 @@
     [(PDDPClass *)self setDateLastModified:?];
   }
 
-  if (v10[5])
+  if (fromCopy[5])
   {
     [(PDDPClass *)self setDisplayName:?];
   }
 
-  if (v10[8])
+  if (fromCopy[8])
   {
     [(PDDPClass *)self setLocationId:?];
   }
 
   entityMeta = self->_entityMeta;
-  v9 = v10[6];
+  v9 = fromCopy[6];
   if (entityMeta)
   {
     if (v9)
@@ -329,7 +329,7 @@
     [(PDDPClass *)self setEntityMeta:?];
   }
 
-  if (v10[7])
+  if (fromCopy[7])
   {
     [(PDDPClass *)self setIconIdentifier:?];
   }

@@ -1,56 +1,56 @@
 @interface SUICVoiceSelectionPresenter
-- (SUICVoiceSelectionPresenter)initWithDataManaging:(id)a3 view:(id)a4 delegate:(id)a5 voicePreviewing:(id)a6 recognitionLanguage:(id)a7;
+- (SUICVoiceSelectionPresenter)initWithDataManaging:(id)managing view:(id)view delegate:(id)delegate voicePreviewing:(id)previewing recognitionLanguage:(id)language;
 - (SUICVoiceSelectionPresenterDelegate)delegate;
 - (SUICVoiceSelectionViewModel)voiceSelectionViewModel;
-- (id)_localizedDisplayNameForLanguageCode:(id)a3;
+- (id)_localizedDisplayNameForLanguageCode:(id)code;
 - (void)_determineVoiceOrdering;
-- (void)_logVoicePreview:(id)a3;
-- (void)_previewVoice:(id)a3 completion:(id)a4;
-- (void)_processVoiceSelection:(id)a3 completion:(id)a4;
-- (void)selectRandomVoiceWithCompletion:(id)a3;
+- (void)_logVoicePreview:(id)preview;
+- (void)_previewVoice:(id)voice completion:(id)completion;
+- (void)_processVoiceSelection:(id)selection completion:(id)completion;
+- (void)selectRandomVoiceWithCompletion:(id)completion;
 - (void)stopVoicePreview;
-- (void)voicePreviewerAudioOutputDidChangePowerLevel:(float)a3;
-- (void)voiceSelectionDataProviderVoiceCollectionDidChange:(id)a3;
-- (void)voiceSelectionView:(id)a3 receivedRequestToSelectLanguage:(id)a4;
-- (void)voiceSelectionView:(id)a3 receivedRequestToSelectVoice:(id)a4;
+- (void)voicePreviewerAudioOutputDidChangePowerLevel:(float)level;
+- (void)voiceSelectionDataProviderVoiceCollectionDidChange:(id)change;
+- (void)voiceSelectionView:(id)view receivedRequestToSelectLanguage:(id)language;
+- (void)voiceSelectionView:(id)view receivedRequestToSelectVoice:(id)voice;
 @end
 
 @implementation SUICVoiceSelectionPresenter
 
-- (SUICVoiceSelectionPresenter)initWithDataManaging:(id)a3 view:(id)a4 delegate:(id)a5 voicePreviewing:(id)a6 recognitionLanguage:(id)a7
+- (SUICVoiceSelectionPresenter)initWithDataManaging:(id)managing view:(id)view delegate:(id)delegate voicePreviewing:(id)previewing recognitionLanguage:(id)language
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  managingCopy = managing;
+  viewCopy = view;
+  delegateCopy = delegate;
+  previewingCopy = previewing;
+  languageCopy = language;
   v21.receiver = self;
   v21.super_class = SUICVoiceSelectionPresenter;
   v18 = [(SUICVoiceSelectionPresenter *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_dataManager, a3);
-    objc_storeStrong(&v19->_view, a4);
-    objc_storeWeak(&v19->_delegate, v15);
-    objc_storeStrong(&v19->_voicePreviewer, a6);
+    objc_storeStrong(&v18->_dataManager, managing);
+    objc_storeStrong(&v19->_view, view);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    objc_storeStrong(&v19->_voicePreviewer, previewing);
     [(SUICVoicePreviewing *)v19->_voicePreviewer setDelegate:v19];
     [(SUICVoiceSelectionPresenter *)v19 _determineVoiceOrdering];
     [(SUICVoiceSelectionDataManaging *)v19->_dataManager setVoiceSelectionDataProviderObserver:v19];
     [(SUICVoiceSelectionDisplaying *)v19->_view setVoiceSelectionEventHandler:v19];
     [(SUICVoiceSelectionDisplaying *)v19->_view setVoiceSelectionViewModelProvider:v19];
-    [(SUICVoiceSelectionDataManaging *)v19->_dataManager setRecognitionLanguageCode:v17];
+    [(SUICVoiceSelectionDataManaging *)v19->_dataManager setRecognitionLanguageCode:languageCopy];
   }
 
   return v19;
 }
 
-- (void)selectRandomVoiceWithCompletion:(id)a3
+- (void)selectRandomVoiceWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SUICVoiceSelectionDataManaging *)self->_dataManager voiceSelectionVoiceCollection];
-  v6 = [v5 randomVoice];
+  completionCopy = completion;
+  voiceSelectionVoiceCollection = [(SUICVoiceSelectionDataManaging *)self->_dataManager voiceSelectionVoiceCollection];
+  randomVoice = [voiceSelectionVoiceCollection randomVoice];
 
   self->_isRandomVoiceSelection = 1;
   v7 = *MEMORY[0x1E698D0A0];
@@ -59,7 +59,7 @@
     *buf = 136315394;
     v14 = "[SUICVoiceSelectionPresenter selectRandomVoiceWithCompletion:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = randomVoice;
     _os_log_impl(&dword_1C432B000, v7, OS_LOG_TYPE_DEFAULT, "%s Randomly selected voice:%@", buf, 0x16u);
   }
 
@@ -67,10 +67,10 @@
   v10[1] = 3221225472;
   v10[2] = __63__SUICVoiceSelectionPresenter_selectRandomVoiceWithCompletion___block_invoke;
   v10[3] = &unk_1E81E81F0;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
+  v11 = randomVoice;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = randomVoice;
   [(SUICVoiceSelectionPresenter *)self _processVoiceSelection:v9 completion:v10];
 }
 
@@ -136,41 +136,41 @@ void __63__SUICVoiceSelectionPresenter_selectRandomVoiceWithCompletion___block_i
   }
 }
 
-- (void)voiceSelectionDataProviderVoiceCollectionDidChange:(id)a3
+- (void)voiceSelectionDataProviderVoiceCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 voiceSelectionVoiceCollection];
+  voiceSelectionVoiceCollection = [changeCopy voiceSelectionVoiceCollection];
 
-  v7 = [v6 currentVoice];
-  [WeakRetained presenter:self didChangeVoiceSelection:v7];
+  currentVoice = [voiceSelectionVoiceCollection currentVoice];
+  [WeakRetained presenter:self didChangeVoiceSelection:currentVoice];
 
   view = self->_view;
 
   [(SUICVoiceSelectionDisplaying *)view voiceSelectionViewModelDidChange];
 }
 
-- (void)voiceSelectionView:(id)a3 receivedRequestToSelectVoice:(id)a4
+- (void)voiceSelectionView:(id)view receivedRequestToSelectVoice:(id)voice
 {
-  v5 = [a4 voiceInfo];
-  [(SUICVoiceSelectionPresenter *)self _processVoiceSelection:v5 completion:0];
+  voiceInfo = [voice voiceInfo];
+  [(SUICVoiceSelectionPresenter *)self _processVoiceSelection:voiceInfo completion:0];
 }
 
-- (void)_processVoiceSelection:(id)a3 completion:(id)a4
+- (void)_processVoiceSelection:(id)selection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   dataManager = self->_dataManager;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__SUICVoiceSelectionPresenter__processVoiceSelection_completion___block_invoke;
   v11[3] = &unk_1E81E8218;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
   v11[4] = self;
   objc_copyWeak(&v14, &location);
-  v10 = v6;
+  v10 = selectionCopy;
   v12 = v10;
   [(SUICVoiceSelectionDataManaging *)dataManager changeSiriVoiceToVoice:v10 completion:v11];
 
@@ -203,15 +203,15 @@ void __65__SUICVoiceSelectionPresenter__processVoiceSelection_completion___block
   }
 }
 
-- (void)_previewVoice:(id)a3 completion:(id)a4
+- (void)_previewVoice:(id)voice completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (([(AFVoiceInfo *)self->_voiceBeingPreviewed isEqual:v7]& 1) != 0)
+  voiceCopy = voice;
+  completionCopy = completion;
+  if (([(AFVoiceInfo *)self->_voiceBeingPreviewed isEqual:voiceCopy]& 1) != 0)
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
 
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
@@ -222,8 +222,8 @@ void __65__SUICVoiceSelectionPresenter__processVoiceSelection_completion___block
 
   else
   {
-    objc_storeStrong(&self->_voiceBeingPreviewed, a3);
-    [(SUICVoiceSelectionPresenter *)self _logVoicePreview:v7];
+    objc_storeStrong(&self->_voiceBeingPreviewed, voice);
+    [(SUICVoiceSelectionPresenter *)self _logVoicePreview:voiceCopy];
     objc_initWeak(&location, self);
     voicePreviewer = self->_voicePreviewer;
     v10[0] = MEMORY[0x1E69E9820];
@@ -231,8 +231,8 @@ void __65__SUICVoiceSelectionPresenter__processVoiceSelection_completion___block
     v10[2] = __56__SUICVoiceSelectionPresenter__previewVoice_completion___block_invoke;
     v10[3] = &unk_1E81E8268;
     objc_copyWeak(&v13, &location);
-    v11 = v7;
-    v12 = v8;
+    v11 = voiceCopy;
+    v12 = completionCopy;
     [(SUICVoicePreviewing *)voicePreviewer previewVoice:v11 completion:v10];
 
     objc_destroyWeak(&v13);
@@ -283,11 +283,11 @@ void __56__SUICVoiceSelectionPresenter__previewVoice_completion___block_invoke_2
   }
 }
 
-- (void)voiceSelectionView:(id)a3 receivedRequestToSelectLanguage:(id)a4
+- (void)voiceSelectionView:(id)view receivedRequestToSelectLanguage:(id)language
 {
   dataManager = self->_dataManager;
-  v5 = [a4 languageCode];
-  [(SUICVoiceSelectionDataManaging *)dataManager changeSiriDialectLanguageToLanguageIdentifiedByLanguageCode:v5 completion:&__block_literal_global_4];
+  languageCode = [language languageCode];
+  [(SUICVoiceSelectionDataManaging *)dataManager changeSiriDialectLanguageToLanguageIdentifiedByLanguageCode:languageCode completion:&__block_literal_global_4];
 }
 
 void __82__SUICVoiceSelectionPresenter_voiceSelectionView_receivedRequestToSelectLanguage___block_invoke(uint64_t a1, char a2, void *a3)
@@ -311,24 +311,24 @@ void __82__SUICVoiceSelectionPresenter_voiceSelectionView_receivedRequestToSelec
 - (SUICVoiceSelectionViewModel)voiceSelectionViewModel
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(SUICVoiceSelectionPresenter *)self _voiceCollection];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 languageCode];
-  v6 = [(SUICVoiceSelectionPresenter *)self _localizedDisplayNameForLanguageCode:v5];
+  _voiceCollection = [(SUICVoiceSelectionPresenter *)self _voiceCollection];
+  array = [MEMORY[0x1E695DF70] array];
+  languageCode = [_voiceCollection languageCode];
+  v6 = [(SUICVoiceSelectionPresenter *)self _localizedDisplayNameForLanguageCode:languageCode];
 
   v7 = [SUICVoiceSelectionViewModelLanguage alloc];
-  v8 = [v3 languageCode];
+  languageCode2 = [_voiceCollection languageCode];
   v36 = v6;
-  v9 = [(SUICVoiceSelectionViewModelLanguage *)v7 initWithLanguageCode:v8 localizedDisplayName:v6 isCurrentOutputLanguage:1];
+  v9 = [(SUICVoiceSelectionViewModelLanguage *)v7 initWithLanguageCode:languageCode2 localizedDisplayName:v6 isCurrentOutputLanguage:1];
 
   v35 = v9;
-  [v4 addObject:v9];
+  [array addObject:v9];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = [v3 dialectLanguageCodes];
-  v11 = [v10 countByEnumeratingWithState:&v37 objects:v47 count:16];
+  dialectLanguageCodes = [_voiceCollection dialectLanguageCodes];
+  v11 = [dialectLanguageCodes countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v11)
   {
     v12 = v11;
@@ -339,33 +339,33 @@ void __82__SUICVoiceSelectionPresenter_voiceSelectionView_receivedRequestToSelec
       {
         if (*v38 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(dialectLanguageCodes);
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
         v16 = [(SUICVoiceSelectionPresenter *)self _localizedDisplayNameForLanguageCode:v15];
         v17 = [[SUICVoiceSelectionViewModelLanguage alloc] initWithLanguageCode:v15 localizedDisplayName:v16 isCurrentOutputLanguage:0];
-        [v4 addObject:v17];
+        [array addObject:v17];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v37 objects:v47 count:16];
+      v12 = [dialectLanguageCodes countByEnumeratingWithState:&v37 objects:v47 count:16];
     }
 
     while (v12);
   }
 
-  [v4 sortUsingComparator:&__block_literal_global_17];
+  [array sortUsingComparator:&__block_literal_global_17];
   reverseVoiceOrder = self->_reverseVoiceOrder;
-  v18 = v3;
+  v18 = _voiceCollection;
   v19 = [MEMORY[0x1E695DFA8] set];
-  v20 = [v18 alternativeVoices];
-  [v19 unionSet:v20];
+  alternativeVoices = [v18 alternativeVoices];
+  [v19 unionSet:alternativeVoices];
 
   v34 = v18;
-  v21 = [v18 currentVoice];
-  if (v21)
+  currentVoice = [v18 currentVoice];
+  if (currentVoice)
   {
-    [v19 addObject:v21];
+    [v19 addObject:currentVoice];
   }
 
   v22 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v19, "count")}];
@@ -388,7 +388,7 @@ void __82__SUICVoiceSelectionPresenter_voiceSelectionView_receivedRequestToSelec
           objc_enumerationMutation(v23);
         }
 
-        v28 = [[SUICVoiceSelectionViewModelVoice alloc] initWithVoice:*(*(&v43 + 1) + 8 * j) isCurrentSiriVoice:*(*(&v43 + 1) + 8 * j) == v21];
+        v28 = [[SUICVoiceSelectionViewModelVoice alloc] initWithVoice:*(*(&v43 + 1) + 8 * j) isCurrentSiriVoice:*(*(&v43 + 1) + 8 * j) == currentVoice];
         [v22 addObject:v28];
       }
 
@@ -398,15 +398,15 @@ void __82__SUICVoiceSelectionPresenter_voiceSelectionView_receivedRequestToSelec
     while (v25);
   }
 
-  v29 = [v22 allObjects];
+  allObjects = [v22 allObjects];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = ___SUICGetViewModelVoicesForVoiceCollection_block_invoke;
   v41[3] = &__block_descriptor_33_e11_q24__0_8_16l;
   v42 = reverseVoiceOrder;
-  v30 = [v29 sortedArrayUsingComparator:v41];
+  v30 = [allObjects sortedArrayUsingComparator:v41];
 
-  v31 = [[SUICVoiceSelectionViewModel alloc] initWithLanguages:v4 voices:v30];
+  v31 = [[SUICVoiceSelectionViewModel alloc] initWithLanguages:array voices:v30];
 
   return v31;
 }
@@ -421,33 +421,33 @@ uint64_t __54__SUICVoiceSelectionPresenter_voiceSelectionViewModel__block_invoke
   return v7;
 }
 
-- (id)_localizedDisplayNameForLanguageCode:(id)a3
+- (id)_localizedDisplayNameForLanguageCode:(id)code
 {
   v3 = MEMORY[0x1E698D178];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 localizedNameForSiriLanguage:v4 inDisplayLanguage:0];
+  codeCopy = code;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance localizedNameForSiriLanguage:codeCopy inDisplayLanguage:0];
 
   return v6;
 }
 
-- (void)voicePreviewerAudioOutputDidChangePowerLevel:(float)a3
+- (void)voicePreviewerAudioOutputDidChangePowerLevel:(float)level
 {
-  v5 = [(SUICVoiceSelectionPresenter *)self delegate];
+  delegate = [(SUICVoiceSelectionPresenter *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(SUICVoiceSelectionPresenter *)self delegate];
-    *&v7 = a3;
-    [v8 presenter:self didChangeAudioOutputPowerLevel:v7];
+    delegate2 = [(SUICVoiceSelectionPresenter *)self delegate];
+    *&v7 = level;
+    [delegate2 presenter:self didChangeAudioOutputPowerLevel:v7];
   }
 }
 
-- (void)_logVoicePreview:(id)a3
+- (void)_logVoicePreview:(id)preview
 {
-  v4 = a3;
-  v3 = v4;
+  previewCopy = preview;
+  v3 = previewCopy;
   AnalyticsSendEventLazy();
 }
 

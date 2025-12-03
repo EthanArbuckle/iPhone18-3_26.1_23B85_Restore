@@ -1,23 +1,23 @@
 @interface PLPositionalBC7ImageTable
-- (CGImage)createImageWithIdentifier:(id)a3 orIndex:(unint64_t)a4;
-- (id)debugImageDataAtIndex:(unint64_t)a3;
-- (void)getImageDataOffset:(int64_t *)a3 size:(CGSize *)a4 bytesPerRow:(unint64_t *)a5 fromEntryFooter:(PLImageTableEntryFooter_s *)a6;
+- (CGImage)createImageWithIdentifier:(id)identifier orIndex:(unint64_t)index;
+- (id)debugImageDataAtIndex:(unint64_t)index;
+- (void)getImageDataOffset:(int64_t *)offset size:(CGSize *)size bytesPerRow:(unint64_t *)row fromEntryFooter:(PLImageTableEntryFooter_s *)footer;
 @end
 
 @implementation PLPositionalBC7ImageTable
 
-- (CGImage)createImageWithIdentifier:(id)a3 orIndex:(unint64_t)a4
+- (CGImage)createImageWithIdentifier:(id)identifier orIndex:(unint64_t)index
 {
   v42 = *MEMORY[0x1E69E9840];
   if (self->super.super._readOnly)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
   }
 
-  else if (self->super.super._entryCapacity <= a4)
+  else if (self->super.super._entryCapacity <= index)
   {
     return 0;
   }
@@ -42,7 +42,7 @@
 
   v7 = v6;
   v8 = 0;
-  if ([(PLPositionalImageTable *)self readImageDataAtIndex:a4 intoBuffer:v6 bytesRead:&v26 imageWidth:&v30 + 4 imageHeight:&v30 imageDataWidth:&v29 + 4 imageDataHeight:&v29 startingOffset:&v27 bytesPerRow:&v28 uuidBytes:0])
+  if ([(PLPositionalImageTable *)self readImageDataAtIndex:index intoBuffer:v6 bytesRead:&v26 imageWidth:&v30 + 4 imageHeight:&v30 imageDataWidth:&v29 + 4 imageDataHeight:&v29 startingOffset:&v27 bytesPerRow:&v28 uuidBytes:0])
   {
     v9 = HIDWORD(v30) + 6;
     if (SHIDWORD(v30) >= -3)
@@ -129,18 +129,18 @@
   return v8;
 }
 
-- (id)debugImageDataAtIndex:(unint64_t)a3
+- (id)debugImageDataAtIndex:(unint64_t)index
 {
   v27 = *MEMORY[0x1E69E9840];
   if (self->super.super._readOnly)
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_13;
     }
   }
 
-  else if (self->super.super._entryCapacity <= a3)
+  else if (self->super.super._entryCapacity <= index)
   {
 LABEL_13:
     v8 = 0;
@@ -159,7 +159,7 @@ LABEL_13:
   }
 
   v6 = v5;
-  v7 = [(PLPositionalImageTable *)self readImageDataAtIndex:a3 intoBuffer:v5 bytesRead:&v14 imageWidth:&v18 + 4 imageHeight:&v18 imageDataWidth:&v17 + 4 imageDataHeight:&v17 startingOffset:&v15 bytesPerRow:&v16 uuidBytes:0];
+  v7 = [(PLPositionalImageTable *)self readImageDataAtIndex:index intoBuffer:v5 bytesRead:&v14 imageWidth:&v18 + 4 imageHeight:&v18 imageDataWidth:&v17 + 4 imageDataHeight:&v17 startingOffset:&v15 bytesPerRow:&v16 uuidBytes:0];
   v8 = 0;
   if (v7)
   {
@@ -197,10 +197,10 @@ LABEL_14:
   return v8;
 }
 
-- (void)getImageDataOffset:(int64_t *)a3 size:(CGSize *)a4 bytesPerRow:(unint64_t *)a5 fromEntryFooter:(PLImageTableEntryFooter_s *)a6
+- (void)getImageDataOffset:(int64_t *)offset size:(CGSize *)size bytesPerRow:(unint64_t *)row fromEntryFooter:(PLImageTableEntryFooter_s *)footer
 {
-  var1 = a6->var1;
-  var2 = a6->var2;
+  var1 = footer->var1;
+  var2 = footer->var2;
   v9 = var1 + 3;
   v8 = var1 < -3;
   v10 = var1 + 6;
@@ -218,10 +218,10 @@ LABEL_14:
     v13 = v12;
   }
 
-  *a3 = 0;
-  *a5 = 4 * v11;
-  a4->width = v11;
-  a4->height = (v13 & 0xFFFFFFFC);
+  *offset = 0;
+  *row = 4 * v11;
+  size->width = v11;
+  size->height = (v13 & 0xFFFFFFFC);
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface UICoverSheetButton
-- (BOOL)clickInteractionShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UICoverSheetButton)initWithFrame:(CGRect)a3;
+- (BOOL)clickInteractionShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UICoverSheetButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
-- (id)_backgroundEffectsWithBrightness:(double)a3;
+- (id)_backgroundEffectsWithBrightness:(double)brightness;
 - (id)_firstActivationDurationStat;
-- (id)_interactionCountStatWithActivation:(BOOL)a3;
+- (id)_interactionCountStatWithActivation:(BOOL)activation;
 - (id)_interactionDurationStat;
-- (id)_maxForceStatWithActivation:(BOOL)a3;
-- (id)highlightEffectForClickInteraction:(id)a3;
-- (unint64_t)_clickInteractionDefaultDriverType:(id)a3;
-- (void)_animateEffectUpdateWithProgress:(double)a3 ended:(BOOL)a4;
-- (void)clickInteraction:(id)a3 didObserveForce:(double)maxForceDuringInteraction;
-- (void)clickInteractionDidClickUp:(id)a3;
-- (void)clickInteractionDidEnd:(id)a3;
+- (id)_maxForceStatWithActivation:(BOOL)activation;
+- (id)highlightEffectForClickInteraction:(id)interaction;
+- (unint64_t)_clickInteractionDefaultDriverType:(id)type;
+- (void)_animateEffectUpdateWithProgress:(double)progress ended:(BOOL)ended;
+- (void)clickInteraction:(id)interaction didObserveForce:(double)maxForceDuringInteraction;
+- (void)clickInteractionDidClickUp:(id)up;
+- (void)clickInteractionDidEnd:(id)end;
 - (void)layoutIfNeededAnimated;
 - (void)layoutSubviews;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setPronounced:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldUseContinuousCorners:(BOOL)a3;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setPronounced:(BOOL)pronounced;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldUseContinuousCorners:(BOOL)corners;
 @end
 
 @implementation UICoverSheetButton
 
-- (UICoverSheetButton)initWithFrame:(CGRect)a3
+- (UICoverSheetButton)initWithFrame:(CGRect)frame
 {
   v36.receiver = self;
   v36.super_class = UICoverSheetButton;
-  v3 = [(UIControl *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -75,11 +75,11 @@
     *(v3 + 59) = v18;
 
     v20 = [UIColor colorWithRed:0.03125 green:0.03125 blue:0.03125 alpha:1.0];
-    v21 = [*(v3 + 59) contentView];
-    [v21 setBackgroundColor:v20];
+    contentView = [*(v3 + 59) contentView];
+    [contentView setBackgroundColor:v20];
 
-    v22 = [*(v3 + 59) contentView];
-    [v22 setAlpha:0.0];
+    contentView2 = [*(v3 + 59) contentView];
+    [contentView2 setAlpha:0.0];
 
     v23 = [[UIImageView alloc] initWithFrame:v8, v10, v12, v14];
     v24 = +[UIColor clearColor];
@@ -142,54 +142,54 @@ LABEL_5:
   return v3;
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setShouldUseContinuousCorners:(BOOL)a3
+- (void)setShouldUseContinuousCorners:(BOOL)corners
 {
-  if ([(UICoverSheetButton *)self shouldUseContinuousCorners]!= a3)
+  if ([(UICoverSheetButton *)self shouldUseContinuousCorners]!= corners)
   {
-    self->_shouldUseContinuousCorners = a3;
+    self->_shouldUseContinuousCorners = corners;
 
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(UIControl *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(UIControl *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = UICoverSheetButton;
-    [(UIControl *)&v5 setSelected:v3];
+    [(UIControl *)&v5 setSelected:selectedCopy];
     [(UIView *)self setNeedsLayout];
     [(UICoverSheetButton *)self layoutIfNeededAnimated];
   }
 }
 
-- (void)setPronounced:(BOOL)a3
+- (void)setPronounced:(BOOL)pronounced
 {
-  if ([(UICoverSheetButton *)self isPronounced]!= a3)
+  if ([(UICoverSheetButton *)self isPronounced]!= pronounced)
   {
-    self->_pronounced = a3;
+    self->_pronounced = pronounced;
     [(UIView *)self setNeedsLayout];
 
     [(UICoverSheetButton *)self layoutIfNeededAnimated];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = vaddq_f64(vaddq_f64(*&self->_edgeInsets.top, *&self->_edgeInsets.bottom), vdupq_n_s64(0x4049000000000000uLL));
   v4 = v3.f64[1];
@@ -208,23 +208,23 @@ LABEL_5:
     [(UICoverSheetButton *)self isPronounced];
   }
 
-  v3 = [(UIControl *)self isSelected];
-  if (v3)
+  isSelected = [(UIControl *)self isSelected];
+  if (isSelected)
   {
-    v4 = [(UICoverSheetButton *)self selectedImage];
+    selectedImage = [(UICoverSheetButton *)self selectedImage];
     v5 = &OBJC_IVAR___UICoverSheetButton__selectedBackgroundEffects;
     p_contentView = &self->_contentView;
-    [(UIImageView *)self->_contentView setImage:v4];
-    v7 = [(UICoverSheetButton *)self selectedTintColor];
-    [(UIView *)self->_contentView setTintColor:v7];
+    [(UIImageView *)self->_contentView setImage:selectedImage];
+    selectedTintColor = [(UICoverSheetButton *)self selectedTintColor];
+    [(UIView *)self->_contentView setTintColor:selectedTintColor];
   }
 
   else
   {
-    v4 = [(UICoverSheetButton *)self image];
+    selectedImage = [(UICoverSheetButton *)self image];
     v5 = &OBJC_IVAR___UICoverSheetButton__backgroundEffects;
     p_contentView = &self->_contentView;
-    [(UIImageView *)self->_contentView setImage:v4];
+    [(UIImageView *)self->_contentView setImage:selectedImage];
     [(UIView *)self->_contentView setTintColor:0];
   }
 
@@ -260,8 +260,8 @@ LABEL_5:
   v16 = v15 + highlightProgress * (CGRectGetHeight(v55) * 1.6 - v15);
   v17 = x + width * 0.5;
   v18 = y + height * 0.5;
-  v19 = [(UIView *)self traitCollection];
-  [v19 displayScale];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale(0.0, 0.0, v14, v16, v17, v18, v20);
   v22 = v21;
   v24 = v23;
@@ -293,8 +293,8 @@ LABEL_5:
   [(UIImageView *)*p_contentView sizeThatFits:width, height];
   v34 = v33 + v49 * (v33 * 1.6 - v33);
   v36 = v35 + v49 * (v35 * 1.6 - v35);
-  v37 = [(UIView *)self traitCollection];
-  [v37 displayScale];
+  traitCollection2 = [(UIView *)self traitCollection];
+  [traitCollection2 displayScale];
   UIRectCenteredAboutPointScale(0.0, 0.0, v34, v36, v17, v18, v38);
   v40 = v39;
   v42 = v41;
@@ -302,11 +302,11 @@ LABEL_5:
   v46 = v45;
 
   [(UIImageView *)*p_contentView setFrame:v40, v42, v44, v46];
-  v47 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
-  [v47 setAlpha:v49 * 0.5 + 0.0];
+  contentView = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+  [contentView setAlpha:v49 * 0.5 + 0.0];
 
-  v48 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
-  [v48 setHidden:v3];
+  contentView2 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+  [contentView2 setHidden:isSelected];
 }
 
 uint64_t __36__UICoverSheetButton_layoutSubviews__block_invoke(uint64_t a1)
@@ -322,9 +322,9 @@ uint64_t __36__UICoverSheetButton_layoutSubviews__block_invoke(uint64_t a1)
   return [v14 setFrame:{v3 + v11, v5 + v10, v7 - (v11 + v13), v9 - (v10 + v12)}];
 }
 
-- (id)highlightEffectForClickInteraction:(id)a3
+- (id)highlightEffectForClickInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v5 = [_UIPercentDrivenInteractionEffect alloc];
   v8[0] = MEMORY[0x1E69E9820];
@@ -350,20 +350,20 @@ void __57__UICoverSheetButton_highlightEffectForClickInteraction___block_invoke(
   [WeakRetained _animateEffectUpdateWithProgress:v6 ended:v5];
 }
 
-- (void)_animateEffectUpdateWithProgress:(double)a3 ended:(BOOL)a4
+- (void)_animateEffectUpdateWithProgress:(double)progress ended:(BOOL)ended
 {
-  v4 = a3 + a3 + 18.0;
+  v4 = progress + progress + 18.0;
   v5[1] = 3221225472;
   v5[0] = MEMORY[0x1E69E9820];
   v5[2] = __61__UICoverSheetButton__animateEffectUpdateWithProgress_ended___block_invoke;
   v5[3] = &unk_1E70F32F0;
-  if (a4)
+  if (ended)
   {
     v4 = v4 + 4.0;
   }
 
   v5[4] = self;
-  *&v5[5] = a3;
+  *&v5[5] = progress;
   [UIView _animateUsingSpringWithTension:0 friction:v5 interactive:0 animations:500.0 completion:v4];
 }
 
@@ -394,42 +394,42 @@ uint64_t __61__UICoverSheetButton__animateEffectUpdateWithProgress_ended___block
   return [v3 layoutIfNeeded];
 }
 
-- (BOOL)clickInteractionShouldBegin:(id)a3
+- (BOOL)clickInteractionShouldBegin:(id)begin
 {
   clickInteraction = self->_clickInteraction;
-  if (clickInteraction == a3)
+  if (clickInteraction == begin)
   {
     self->_interactive = 1;
     self->_didActivateDuringInteraction = 0;
     self->_maxForceDuringInteraction = 0.0;
     [(UIView *)self setNeedsLayout];
     [(UICoverSheetButton *)self layoutIfNeededAnimated];
-    v6 = [(UICoverSheetButton *)self _interactionDurationStat];
-    [v6 startTimingForObject:self];
+    _interactionDurationStat = [(UICoverSheetButton *)self _interactionDurationStat];
+    [_interactionDurationStat startTimingForObject:self];
 
-    v7 = [(UICoverSheetButton *)self _firstActivationDurationStat];
-    [v7 startTimingForObject:self];
+    _firstActivationDurationStat = [(UICoverSheetButton *)self _firstActivationDurationStat];
+    [_firstActivationDurationStat startTimingForObject:self];
   }
 
-  return clickInteraction == a3;
+  return clickInteraction == begin;
 }
 
-- (void)clickInteractionDidClickUp:(id)a3
+- (void)clickInteractionDidClickUp:(id)up
 {
-  if (self->_clickInteraction == a3)
+  if (self->_clickInteraction == up)
   {
     [(UICoverSheetButton *)self setSelected:[(UIControl *)self isSelected]^ 1];
     [(UIControl *)self sendActionsForControlEvents:0x2000];
     if (self->_interactive)
     {
       self->_didActivateDuringInteraction = 1;
-      v4 = [(UICoverSheetButton *)self _firstActivationDurationStat];
-      [v4 recordTimingForObject:self];
+      _firstActivationDurationStat = [(UICoverSheetButton *)self _firstActivationDurationStat];
+      [_firstActivationDurationStat recordTimingForObject:self];
     }
   }
 }
 
-- (void)clickInteraction:(id)a3 didObserveForce:(double)maxForceDuringInteraction
+- (void)clickInteraction:(id)interaction didObserveForce:(double)maxForceDuringInteraction
 {
   if (self->_interactive)
   {
@@ -442,9 +442,9 @@ uint64_t __61__UICoverSheetButton__animateEffectUpdateWithProgress_ended___block
   }
 }
 
-- (void)clickInteractionDidEnd:(id)a3
+- (void)clickInteractionDidEnd:(id)end
 {
-  if (self->_clickInteraction == a3)
+  if (self->_clickInteraction == end)
   {
     v5 = [(UICoverSheetButton *)self _interactionCountStatWithActivation:self->_didActivateDuringInteraction];
     [v5 incrementValueBy:1];
@@ -457,20 +457,20 @@ uint64_t __61__UICoverSheetButton__animateEffectUpdateWithProgress_ended___block
     self->_maxForceDuringInteraction = 0.0;
     [(UIView *)self setNeedsLayout];
     [(UICoverSheetButton *)self layoutIfNeededAnimated];
-    v7 = [(UICoverSheetButton *)self _interactionDurationStat];
-    [v7 recordTimingForObject:self];
+    _interactionDurationStat = [(UICoverSheetButton *)self _interactionDurationStat];
+    [_interactionDurationStat recordTimingForObject:self];
 
-    v8 = [(UICoverSheetButton *)self _firstActivationDurationStat];
-    [v8 cancelTimingForObject:self];
+    _firstActivationDurationStat = [(UICoverSheetButton *)self _firstActivationDurationStat];
+    [_firstActivationDurationStat cancelTimingForObject:self];
   }
 }
 
-- (unint64_t)_clickInteractionDefaultDriverType:(id)a3
+- (unint64_t)_clickInteractionDefaultDriverType:(id)type
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 forceTouchCapability];
+  traitCollection = [(UIView *)self traitCollection];
+  forceTouchCapability = [traitCollection forceTouchCapability];
 
-  if (v4 == 2)
+  if (forceTouchCapability == 2)
   {
     return 4;
   }
@@ -502,7 +502,7 @@ uint64_t __44__UICoverSheetButton_layoutIfNeededAnimated__block_invoke(uint64_t 
   return [UIView _modifyAnimationsWithPreferredFrameRateRange:1048613 updateReason:v3 animations:*&v4.minimum, *&v4.maximum, *&v4.preferred];
 }
 
-- (id)_backgroundEffectsWithBrightness:(double)a3
+- (id)_backgroundEffectsWithBrightness:(double)brightness
 {
   v13[5] = *MEMORY[0x1E69E9840];
   v4 = [UIBlurEffect effectWithBlurRadius:30.0];
@@ -514,20 +514,20 @@ uint64_t __44__UICoverSheetButton_layoutIfNeededAnimated__block_invoke(uint64_t 
   v13[2] = v8;
   v9 = [UIColorEffect colorEffectSaturate:2.8];
   v13[3] = v9;
-  v10 = [UIColorEffect colorEffectBrightness:a3];
+  v10 = [UIColorEffect colorEffectBrightness:brightness];
   v13[4] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:5];
 
   return v11;
 }
 
-- (id)_interactionCountStatWithActivation:(BOOL)a3
+- (id)_interactionCountStatWithActivation:(BOOL)activation
 {
-  v3 = a3;
-  v4 = [(UICoverSheetButton *)self statisticsIdentifier];
-  if (v4)
+  activationCopy = activation;
+  statisticsIdentifier = [(UICoverSheetButton *)self statisticsIdentifier];
+  if (statisticsIdentifier)
   {
-    v5 = [_UIStatistics coverSheetButtonInteractionCountWithActivation:v3 category:v4];
+    v5 = [_UIStatistics coverSheetButtonInteractionCountWithActivation:activationCopy category:statisticsIdentifier];
   }
 
   else
@@ -540,10 +540,10 @@ uint64_t __44__UICoverSheetButton_layoutIfNeededAnimated__block_invoke(uint64_t 
 
 - (id)_interactionDurationStat
 {
-  v2 = [(UICoverSheetButton *)self statisticsIdentifier];
-  if (v2)
+  statisticsIdentifier = [(UICoverSheetButton *)self statisticsIdentifier];
+  if (statisticsIdentifier)
   {
-    v3 = [_UIStatistics coverSheetButtonInteractionDurationWithCategory:v2];
+    v3 = [_UIStatistics coverSheetButtonInteractionDurationWithCategory:statisticsIdentifier];
   }
 
   else
@@ -556,10 +556,10 @@ uint64_t __44__UICoverSheetButton_layoutIfNeededAnimated__block_invoke(uint64_t 
 
 - (id)_firstActivationDurationStat
 {
-  v2 = [(UICoverSheetButton *)self statisticsIdentifier];
-  if (v2)
+  statisticsIdentifier = [(UICoverSheetButton *)self statisticsIdentifier];
+  if (statisticsIdentifier)
   {
-    v3 = [_UIStatistics coverSheetButtonFirstActivationDurationWithCategory:v2];
+    v3 = [_UIStatistics coverSheetButtonFirstActivationDurationWithCategory:statisticsIdentifier];
   }
 
   else
@@ -570,13 +570,13 @@ uint64_t __44__UICoverSheetButton_layoutIfNeededAnimated__block_invoke(uint64_t 
   return v3;
 }
 
-- (id)_maxForceStatWithActivation:(BOOL)a3
+- (id)_maxForceStatWithActivation:(BOOL)activation
 {
-  v3 = a3;
-  v4 = [(UICoverSheetButton *)self statisticsIdentifier];
-  if (v4)
+  activationCopy = activation;
+  statisticsIdentifier = [(UICoverSheetButton *)self statisticsIdentifier];
+  if (statisticsIdentifier)
   {
-    v5 = [_UIStatistics coverSheetButtonMaximumForceWithActivation:v3 category:v4];
+    v5 = [_UIStatistics coverSheetButtonMaximumForceWithActivation:activationCopy category:statisticsIdentifier];
   }
 
   else

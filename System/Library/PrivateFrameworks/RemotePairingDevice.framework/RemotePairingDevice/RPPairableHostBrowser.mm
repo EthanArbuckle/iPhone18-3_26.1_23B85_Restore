@@ -7,13 +7,13 @@
 
 - (void)startBrowsing
 {
-  v2 = self;
+  selfCopy = self;
   RPPairableHostBrowser.startBrowsing()();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   RPPairableHostBrowser.cancel()();
 }
 

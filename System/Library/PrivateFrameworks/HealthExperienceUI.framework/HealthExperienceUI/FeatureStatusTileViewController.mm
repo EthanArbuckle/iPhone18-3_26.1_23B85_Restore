@@ -1,7 +1,7 @@
 @interface FeatureStatusTileViewController
-- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didSelectCell:(id)a3 in:(id)a4;
+- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didSelectCell:(id)cell in:(id)in;
 - (void)viewDidLoad;
 @end
 
@@ -9,26 +9,26 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA42A240();
 }
 
-- (void)didSelectCell:(id)a3 in:(id)a4
+- (void)didSelectCell:(id)cell in:(id)in
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  cellCopy = cell;
+  inCopy = in;
+  selfCopy = self;
   v9 = sub_1BA42A144();
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
 
-  v10 = *(&v8->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31FeatureStatusTileViewController____lazy_storage___featureStatusPlatformView);
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31FeatureStatusTileViewController____lazy_storage___featureStatusPlatformView);
   sub_1BA0C1E78();
 }
 
-- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v6 = self + OBJC_IVAR____TtC18HealthExperienceUI31FeatureStatusTileViewController_context;
@@ -36,7 +36,7 @@
     *(v6 + 1) = 0u;
     *(v6 + 4) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31FeatureStatusTileViewController____lazy_storage___featureStatusPlatformView) = 0;
-    v7 = a4;
+    bundleCopy = bundle;
     v8 = sub_1BA4A6758();
   }
 
@@ -47,18 +47,18 @@
     *(v9 + 1) = 0u;
     *(v9 + 4) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31FeatureStatusTileViewController____lazy_storage___featureStatusPlatformView) = 0;
-    v10 = a4;
+    bundleCopy2 = bundle;
     v8 = 0;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for FeatureStatusTileViewController();
-  v11 = [(FeatureStatusTileViewController *)&v13 initWithNibName:v8 bundle:a4];
+  v11 = [(FeatureStatusTileViewController *)&v13 initWithNibName:v8 bundle:bundle];
 
   return v11;
 }
 
-- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI31FeatureStatusTileViewController)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC18HealthExperienceUI31FeatureStatusTileViewController_context;
   *v4 = 0u;
@@ -67,8 +67,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31FeatureStatusTileViewController____lazy_storage___featureStatusPlatformView) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FeatureStatusTileViewController();
-  v5 = a3;
-  v6 = [(FeatureStatusTileViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(FeatureStatusTileViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,38 +1,38 @@
 @interface SOKerberosHelper
-- (BOOL)_testForUPNForUser:(id)a3;
-- (BOOL)authenticate:(gss_cred_id_t_desc_struct *)a3 toServer:(id)a4 returningToken:(id *)a5 andError:(id *)a6;
-- (BOOL)changePasswordForUPN:(id)a3 realm:(id)a4 withOldPassword:(id)a5 withNewPassword:(id)a6 withError:(id *)a7;
-- (BOOL)getPACForCred:(gss_cred_id_t_desc_struct *)a3 pac:(id *)a4;
-- (BOOL)validatePassword:(id)a3 forUser:(id)a4;
-- (gss_cred_id_t_desc_struct)acquireCredentialForUPN:(id)a3;
-- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)a3;
-- (gss_cred_id_t_desc_struct)createCredential:(id)a3 withOptions:(id)a4 andError:(id *)a5;
+- (BOOL)_testForUPNForUser:(id)user;
+- (BOOL)authenticate:(gss_cred_id_t_desc_struct *)authenticate toServer:(id)server returningToken:(id *)token andError:(id *)error;
+- (BOOL)changePasswordForUPN:(id)n realm:(id)realm withOldPassword:(id)password withNewPassword:(id)newPassword withError:(id *)error;
+- (BOOL)getPACForCred:(gss_cred_id_t_desc_struct *)cred pac:(id *)pac;
+- (BOOL)validatePassword:(id)password forUser:(id)user;
+- (gss_cred_id_t_desc_struct)acquireCredentialForUPN:(id)n;
+- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)d;
+- (gss_cred_id_t_desc_struct)createCredential:(id)credential withOptions:(id)options andError:(id *)error;
 - (id)listCredentials;
-- (unsigned)createGSSName:(id)a3 gname:(gss_name_t_desc_struct *)a4 error:(id *)a5;
+- (unsigned)createGSSName:(id)name gname:(gss_name_t_desc_struct *)gname error:(id *)error;
 - (void)destroyAllCredentials;
-- (void)destroyCredential:(id)a3;
-- (void)destroyCredentialForUPN:(id)a3;
+- (void)destroyCredential:(id)credential;
+- (void)destroyCredentialForUPN:(id)n;
 @end
 
 @implementation SOKerberosHelper
 
-- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)a3
+- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosHelper acquireCredentialForUUID:];
   }
 
-  if (!v3)
+  if (!dCopy)
   {
     v8 = 0;
     goto LABEL_19;
   }
 
-  v5 = [v3 UUIDString];
-  if (([(__CFString *)v5 isEqualToString:&stru_285206D08]& 1) != 0 || (v6 = CFUUIDCreateFromString(0, v5)) == 0)
+  uUIDString = [dCopy UUIDString];
+  if (([(__CFString *)uUIDString isEqualToString:&stru_285206D08]& 1) != 0 || (v6 = CFUUIDCreateFromString(0, uUIDString)) == 0)
   {
     *lifetime = 0;
     goto LABEL_14;
@@ -46,8 +46,8 @@
   {
 LABEL_14:
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v3 UUIDString];
-    v13 = [v11 stringWithFormat:@"failed to find credential: %@", v12];
+    uUIDString2 = [dCopy UUIDString];
+    v13 = [v11 stringWithFormat:@"failed to find credential: %@", uUIDString2];
 
     v14 = SO_LOG_SOKerberosHelper();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -81,9 +81,9 @@ LABEL_19:
   return v8;
 }
 
-- (gss_cred_id_t_desc_struct)acquireCredentialForUPN:(id)a3
+- (gss_cred_id_t_desc_struct)acquireCredentialForUPN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -94,7 +94,7 @@ LABEL_19:
   output_cred_handle = 0;
   v13 = 0;
   desired_name = 0;
-  v6 = [(SOKerberosHelper *)self createGSSName:v4 gname:&desired_name error:&v13];
+  v6 = [(SOKerberosHelper *)self createGSSName:nCopy gname:&desired_name error:&v13];
 
   v7 = v13;
   v8 = v7;
@@ -133,13 +133,13 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_testForUPNForUser:(id)a3
+- (BOOL)_testForUPNForUser:(id)user
 {
   v3 = MEMORY[0x277CCAC68];
   v14 = 0;
-  v4 = a3;
+  userCopy = user;
   v5 = [v3 regularExpressionWithPattern:@"@" options:1 error:&v14];
-  v6 = [v5 numberOfMatchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v6 = [v5 numberOfMatchesInString:userCopy options:0 range:{0, objc_msgSend(userCopy, "length")}];
 
   v7 = SO_LOG_SOKerberosHelper();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -166,13 +166,13 @@ LABEL_6:
   return v6 > 1;
 }
 
-- (BOOL)changePasswordForUPN:(id)a3 realm:(id)a4 withOldPassword:(id)a5 withNewPassword:(id)a6 withError:(id *)a7
+- (BOOL)changePasswordForUPN:(id)n realm:(id)realm withOldPassword:(id)password withNewPassword:(id)newPassword withError:(id *)error
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  passwordCopy = password;
+  newPasswordCopy = newPassword;
+  realmCopy = realm;
+  nCopy = n;
   v16 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -180,25 +180,25 @@ LABEL_6:
   }
 
   error = 0;
-  [v14 UTF8String];
+  [realmCopy UTF8String];
 
   __ApplePrivate_gsskrb5_set_default_realm();
   v25[0] = @"kGSSChangePasswordOldPassword";
   v25[1] = @"kGSSChangePasswordNewPassword";
-  v26[0] = v12;
-  v26[1] = v13;
+  v26[0] = passwordCopy;
+  v26[1] = newPasswordCopy;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
   name = 0;
-  v18 = [(SOKerberosHelper *)self createGSSName:v15 gname:&name error:a7];
+  v18 = [(SOKerberosHelper *)self createGSSName:nCopy gname:&name error:error];
 
   if (v18)
   {
-    if (*a7)
+    if (*error)
     {
       v19 = SO_LOG_SOKerberosHelper();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [SOKerberosHelper changePasswordForUPN:a7 realm:? withOldPassword:? withNewPassword:? withError:?];
+        [SOKerberosHelper changePasswordForUPN:error realm:? withOldPassword:? withNewPassword:? withError:?];
       }
     }
   }
@@ -211,10 +211,10 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    if (a7)
+    if (error)
     {
       v20 = 0;
-      *a7 = error;
+      *error = error;
       goto LABEL_9;
     }
 
@@ -228,11 +228,11 @@ LABEL_9:
   return v20;
 }
 
-- (BOOL)validatePassword:(id)a3 forUser:(id)a4
+- (BOOL)validatePassword:(id)password forUser:(id)user
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  passwordCopy = password;
+  userCopy = user;
   v8 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -263,17 +263,17 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v14 = [(SOKerberosHelper *)self _testForUPNForUser:v7];
+  v14 = [(SOKerberosHelper *)self _testForUPNForUser:userCopy];
   v15 = context;
-  v16 = [v7 UTF8String];
+  uTF8String = [userCopy UTF8String];
   if (v14)
   {
-    v17 = krb5_parse_name_flags(v15, v16, 4, &v30);
+    v17 = krb5_parse_name_flags(v15, uTF8String, 4, &v30);
   }
 
   else
   {
-    v17 = krb5_parse_name(v15, v16, &v30);
+    v17 = krb5_parse_name(v15, uTF8String, &v30);
   }
 
   v18 = v17;
@@ -311,8 +311,8 @@ LABEL_18:
   krb5_get_init_creds_opt_set_forwardable(opt, 1);
   v21 = context;
   v22 = v30;
-  v23 = [v6 UTF8String];
-  init_creds_password = krb5_get_init_creds_password(v21, creds, v22, v23, 0, 0, 0, 0, opt);
+  uTF8String2 = [passwordCopy UTF8String];
+  init_creds_password = krb5_get_init_creds_password(v21, creds, v22, uTF8String2, 0, 0, 0, 0, opt);
   krb5_get_init_creds_opt_free(context, opt);
   if (init_creds_password)
   {
@@ -347,9 +347,9 @@ LABEL_19:
   return v20;
 }
 
-- (unsigned)createGSSName:(id)a3 gname:(gss_name_t_desc_struct *)a4 error:(id *)a5
+- (unsigned)createGSSName:(id)name gname:(gss_name_t_desc_struct *)gname error:(id *)error
 {
-  v7 = a3;
+  nameCopy = name;
   v8 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -358,13 +358,13 @@ LABEL_19:
 
   minor_status = 0;
   error = 0;
-  v9 = [v7 componentsSeparatedByString:@"@"];
+  v9 = [nameCopy componentsSeparatedByString:@"@"];
   v10 = [v9 count] - 1;
 
   if (v10 < 2)
   {
-    v14 = GSSCreateName(v7, MEMORY[0x277CCAF00], &error);
-    *a4 = v14;
+    v14 = GSSCreateName(nameCopy, MEMORY[0x277CCAF00], &error);
+    *gname = v14;
     if (v14)
     {
       v12 = 0;
@@ -378,9 +378,9 @@ LABEL_19:
         [SOKerberosHelper createGSSName:? gname:? error:?];
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = error;
+        *error = error;
       }
 
       else
@@ -395,7 +395,7 @@ LABEL_19:
   else
   {
     v18 = 0;
-    v11 = krb5_parse_name_flags(0, [v7 UTF8String], 4, &v18);
+    v11 = krb5_parse_name_flags(0, [nameCopy UTF8String], 4, &v18);
     if (v11)
     {
       v12 = v11;
@@ -412,7 +412,7 @@ LABEL_12:
 
     input_name_buffer.length = 8;
     input_name_buffer.value = &v18;
-    v12 = gss_import_name(&minor_status, &input_name_buffer, MEMORY[0x277CCAF28], a4);
+    v12 = gss_import_name(&minor_status, &input_name_buffer, MEMORY[0x277CCAF28], gname);
     if (v12)
     {
       v13 = SO_LOG_SOKerberosHelper();
@@ -430,10 +430,10 @@ LABEL_19:
   return v12;
 }
 
-- (gss_cred_id_t_desc_struct)createCredential:(id)a3 withOptions:(id)a4 andError:(id *)a5
+- (gss_cred_id_t_desc_struct)createCredential:(id)credential withOptions:(id)options andError:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  optionsCopy = options;
+  credentialCopy = credential;
   v10 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -444,23 +444,23 @@ LABEL_19:
   output_cred_handle = 0;
   minor_status = 0;
   desired_name = 0;
-  v11 = [(SOKerberosHelper *)self createGSSName:v9 gname:&desired_name error:a5];
+  v11 = [(SOKerberosHelper *)self createGSSName:credentialCopy gname:&desired_name error:error];
 
   if (v11)
   {
-    if (*a5)
+    if (*error)
     {
       v12 = SO_LOG_SOKerberosHelper();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [SOKerberosHelper changePasswordForUPN:a5 realm:? withOldPassword:? withNewPassword:? withError:?];
+        [SOKerberosHelper changePasswordForUPN:error realm:? withOldPassword:? withNewPassword:? withError:?];
       }
     }
   }
 
   else
   {
-    v15 = gss_aapl_initial_cred(desired_name, MEMORY[0x277CCAF18], v8, &output_cred_handle, &error);
+    v15 = gss_aapl_initial_cred(desired_name, MEMORY[0x277CCAF18], optionsCopy, &output_cred_handle, &error);
     gss_release_name(&minor_status, &desired_name);
     if (!v15)
     {
@@ -474,10 +474,10 @@ LABEL_19:
       [SOKerberosHelper createCredential:? withOptions:? andError:?];
     }
 
-    if (a5)
+    if (error)
     {
       v13 = 0;
-      *a5 = error;
+      *error = error;
       goto LABEL_9;
     }
 
@@ -505,25 +505,25 @@ uint64_t __41__SOKerberosHelper_destroyAllCredentials__block_invoke(uint64_t a1,
   return gss_destroy_cred(&min_stat, &cred_handle);
 }
 
-- (void)destroyCredential:(id)a3
+- (void)destroyCredential:(id)credential
 {
-  v3 = a3;
+  credentialCopy = credential;
   v4 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosHelper destroyCredential:];
   }
 
-  if (v3)
+  if (credentialCopy)
   {
     min_stat = 0;
     cred_handle = 0;
-    v5 = [v3 UUIDString];
-    if (([(__CFString *)v5 isEqualToString:&stru_285206D08]& 1) != 0)
+    uUIDString = [credentialCopy UUIDString];
+    if (([(__CFString *)uUIDString isEqualToString:&stru_285206D08]& 1) != 0)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [v3 UUIDString];
-      v8 = [v6 stringWithFormat:@"failed to find credential to destroy: %@", v7];
+      uUIDString2 = [credentialCopy UUIDString];
+      v8 = [v6 stringWithFormat:@"failed to find credential to destroy: %@", uUIDString2];
 
       v9 = SO_LOG_SOKerberosHelper();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -535,7 +535,7 @@ LABEL_12:
 
     else
     {
-      v10 = CFUUIDCreateFromString(0, v5);
+      v10 = CFUUIDCreateFromString(0, uUIDString);
       if (v10)
       {
         v11 = v10;
@@ -554,8 +554,8 @@ LABEL_12:
       }
 
       v12 = MEMORY[0x277CCACA8];
-      v13 = [v3 UUIDString];
-      v8 = [v12 stringWithFormat:@"failed to find credential to destroy: %@", v13];
+      uUIDString3 = [credentialCopy UUIDString];
+      v8 = [v12 stringWithFormat:@"failed to find credential to destroy: %@", uUIDString3];
 
       v9 = SO_LOG_SOKerberosHelper();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -568,19 +568,19 @@ LABEL_14:
   }
 }
 
-- (void)destroyCredentialForUPN:(id)a3
+- (void)destroyCredentialForUPN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosHelper destroyCredentialForUPN:];
   }
 
-  if (v4)
+  if (nCopy)
   {
     min_stat = 0;
-    v7 = [(SOKerberosHelper *)self acquireCredentialForUPN:v4];
+    v7 = [(SOKerberosHelper *)self acquireCredentialForUPN:nCopy];
     if (v7)
     {
       gss_destroy_cred(&min_stat, &v7);
@@ -601,10 +601,10 @@ LABEL_14:
   }
 }
 
-- (BOOL)authenticate:(gss_cred_id_t_desc_struct *)a3 toServer:(id)a4 returningToken:(id *)a5 andError:(id *)a6
+- (BOOL)authenticate:(gss_cred_id_t_desc_struct *)authenticate toServer:(id)server returningToken:(id *)token andError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  serverCopy = server;
   v10 = SO_LOG_SOKerberosHelper();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -616,13 +616,13 @@ LABEL_14:
   buffer.value = 0;
   minor_status = 0;
   error = 0;
-  v11 = GSSCreateName(v9, MEMORY[0x277CCAEF8], &error);
+  v11 = GSSCreateName(serverCopy, MEMORY[0x277CCAEF8], &error);
   input_name = v11;
   if (v11)
   {
     v12 = v11;
-    v13 = [v9 lowercaseString];
-    if ([v13 hasPrefix:@"http"])
+    lowercaseString = [serverCopy lowercaseString];
+    if ([lowercaseString hasPrefix:@"http"])
     {
       v14 = MEMORY[0x277CCAF40];
     }
@@ -632,7 +632,7 @@ LABEL_14:
       v14 = MEMORY[0x277CCAF18];
     }
 
-    inited = gss_init_sec_context(&minor_status, a3, &context_handle, v12, v14, 0x803Eu, 0xFFFFFFFF, 0, 0, 0, &buffer, 0, 0);
+    inited = gss_init_sec_context(&minor_status, authenticate, &context_handle, v12, v14, 0x803Eu, 0xFFFFFFFF, 0, 0, 0, &buffer, 0, 0);
     v16 = inited < 2;
     if (inited >= 2)
     {
@@ -642,7 +642,7 @@ LABEL_14:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v33 = v9;
+        v33 = serverCopy;
         v34 = 1024;
         v35 = v21;
         v36 = 1024;
@@ -652,10 +652,10 @@ LABEL_14:
         _os_log_error_impl(&dword_24006C000, v23, OS_LOG_TYPE_ERROR, "gss_init_sec_context failed server: %@, maj_stat: %d, min_stat: %d, %{public}@", buf, 0x22u);
       }
 
-      if (a6)
+      if (error)
       {
         v24 = v22;
-        *a6 = v22;
+        *error = v22;
       }
 
       else
@@ -676,7 +676,7 @@ LABEL_14:
 
       v18 = objc_alloc(MEMORY[0x277CBEA90]);
       v19 = [v18 initWithBytes:buffer.value length:buffer.length];
-      *a5 = v19;
+      *token = v19;
     }
 
     gss_release_name(&minor_status, &input_name);
@@ -688,13 +688,13 @@ LABEL_14:
     v20 = SO_LOG_SOKerberosHelper();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [SOKerberosHelper authenticate:v9 toServer:&error returningToken:? andError:?];
+      [SOKerberosHelper authenticate:serverCopy toServer:&error returningToken:? andError:?];
     }
 
-    if (a6)
+    if (error)
     {
       v16 = 0;
-      *a6 = error;
+      *error = error;
     }
 
     else
@@ -757,7 +757,7 @@ void __35__SOKerberosHelper_listCredentials__block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (BOOL)getPACForCred:(gss_cred_id_t_desc_struct *)a3 pac:(id *)a4
+- (BOOL)getPACForCred:(gss_cred_id_t_desc_struct *)cred pac:(id *)pac
 {
   v47 = *MEMORY[0x277D85DE8];
   v6 = SO_LOG_SOKerberosHelper();
@@ -766,9 +766,9 @@ void __35__SOKerberosHelper_listCredentials__block_invoke(uint64_t a1, uint64_t 
     [SOKerberosHelper getPACForCred:pac:];
   }
 
-  if (a4)
+  if (pac)
   {
-    *a4 = 0;
+    *pac = 0;
   }
 
   v45 = 0;
@@ -788,7 +788,7 @@ void __35__SOKerberosHelper_listCredentials__block_invoke(uint64_t a1, uint64_t 
   v32 = 0;
   v31 = 0;
   memset(creds, 0, sizeof(creds));
-  if (!a3)
+  if (!cred)
   {
     v7 = SO_LOG_SOKerberosHelper();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -813,7 +813,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = GSSCredentialCopyUUID(a3);
+  v11 = GSSCredentialCopyUUID(cred);
   if (!v11)
   {
     v14 = SO_LOG_SOKerberosHelper();
@@ -995,9 +995,9 @@ LABEL_11:
             get_kerbvalidationinfo(v32, v31, v27);
             if (!v24)
             {
-              if (a4)
+              if (pac)
               {
-                *a4 = [[SOKerberosPacData alloc] initWithValidationInfo:v27, "krbtgt", realm, 0];
+                *pac = [[SOKerberosPacData alloc] initWithValidationInfo:v27, "krbtgt", realm, 0];
               }
 
               free_kerbvalidationinfo(v27);

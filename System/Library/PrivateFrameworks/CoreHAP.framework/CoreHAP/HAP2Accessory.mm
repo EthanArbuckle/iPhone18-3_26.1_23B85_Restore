@@ -1,10 +1,10 @@
 @interface HAP2Accessory
-+ (BOOL)validateAccessoryInformationService:(id)a3;
-+ (BOOL)validateDiscoveredServices:(id)a3 isPrimary:(BOOL)a4;
-+ (BOOL)validateProtocolInformationService:(id)a3;
-+ (HAP2Accessory)accessoryWithAccessoryServer:(id)a3 instanceID:(unint64_t)a4 discoveredServices:(id)a5;
-- (BOOL)updateDiscoveredServices:(id)a3;
-- (HAP2Accessory)initWithAccessoryServer:(id)a3 instanceID:(unint64_t)a4 discoveredServices:(id)a5;
++ (BOOL)validateAccessoryInformationService:(id)service;
++ (BOOL)validateDiscoveredServices:(id)services isPrimary:(BOOL)primary;
++ (BOOL)validateProtocolInformationService:(id)service;
++ (HAP2Accessory)accessoryWithAccessoryServer:(id)server instanceID:(unint64_t)d discoveredServices:(id)services;
+- (BOOL)updateDiscoveredServices:(id)services;
+- (HAP2Accessory)initWithAccessoryServer:(id)server instanceID:(unint64_t)d discoveredServices:(id)services;
 - (HAP2AccessoryDelegate)delegate;
 - (HAP2PairedAccessoryServerPrivate)accessoryServerPrivate;
 - (NSArray)services;
@@ -15,27 +15,27 @@
 - (NSString)productData;
 - (NSString)serialNumber;
 - (double)sleepInterval;
-- (id)disableNotificationsForCharacteristics:(id)a3 completion:(id)a4;
-- (id)enableNotificationsForCharacteristics:(id)a3 completion:(id)a4;
-- (id)identifyWithCompletion:(id)a3;
+- (id)disableNotificationsForCharacteristics:(id)characteristics completion:(id)completion;
+- (id)enableNotificationsForCharacteristics:(id)characteristics completion:(id)completion;
+- (id)identifyWithCompletion:(id)completion;
 - (id)internalSleepInterval;
-- (id)readValuesForCharacteristics:(id)a3 timeout:(double)a4 completion:(id)a5;
-- (id)writeValuesForCharacteristics:(id)a3 timeout:(double)a4 completion:(id)a5;
+- (id)readValuesForCharacteristics:(id)characteristics timeout:(double)timeout completion:(id)completion;
+- (id)writeValuesForCharacteristics:(id)characteristics timeout:(double)timeout completion:(id)completion;
 - (unint64_t)category;
 - (unint64_t)connectionState;
-- (void)_handleUpdatedAccessoryInformationService:(id)a3;
-- (void)_handleUpdatedAccessoryRuntimeInformationService:(id)a3;
-- (void)_updateDiscoveredServices:(id)a3;
-- (void)characteristicValueChanged:(id)a3;
-- (void)setFirmwareVersion:(id)a3;
-- (void)setInternalSleepInterval:(id)a3;
-- (void)setManufacturer:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setName:(id)a3;
-- (void)setProductData:(id)a3;
-- (void)setSerialNumber:(id)a3;
-- (void)setServices:(id)a3;
-- (void)updateConnectionState:(unint64_t)a3;
+- (void)_handleUpdatedAccessoryInformationService:(id)service;
+- (void)_handleUpdatedAccessoryRuntimeInformationService:(id)service;
+- (void)_updateDiscoveredServices:(id)services;
+- (void)characteristicValueChanged:(id)changed;
+- (void)setFirmwareVersion:(id)version;
+- (void)setInternalSleepInterval:(id)interval;
+- (void)setManufacturer:(id)manufacturer;
+- (void)setModel:(id)model;
+- (void)setName:(id)name;
+- (void)setProductData:(id)data;
+- (void)setSerialNumber:(id)number;
+- (void)setServices:(id)services;
+- (void)updateConnectionState:(unint64_t)state;
 @end
 
 @implementation HAP2Accessory
@@ -54,9 +54,9 @@
   return WeakRetained;
 }
 
-- (void)_updateDiscoveredServices:(id)a3
+- (void)_updateDiscoveredServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -69,9 +69,9 @@
   v12 = __Block_byref_object_copy__17482;
   v13 = __Block_byref_object_dispose__17483;
   v14 = 0;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(HAP2Accessory *)self services];
-  [HAPService hap2_mergeServices:v6 discoveredServices:v4 mergedServices:v5];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(servicesCopy, "count")}];
+  services = [(HAP2Accessory *)self services];
+  [HAPService hap2_mergeServices:services discoveredServices:servicesCopy mergedServices:v5];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -121,15 +121,15 @@ void __43__HAP2Accessory__updateDiscoveredServices___block_invoke(uint64_t a1, v
 LABEL_6:
 }
 
-- (void)_handleUpdatedAccessoryRuntimeInformationService:(id)a3
+- (void)_handleUpdatedAccessoryRuntimeInformationService:(id)service
 {
-  v4 = [a3 characteristics];
+  characteristics = [service characteristics];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__HAP2Accessory__handleUpdatedAccessoryRuntimeInformationService___block_invoke;
   v5[3] = &unk_2786D60B0;
   v5[4] = self;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v5];
+  [characteristics hmf_enumerateWithAutoreleasePoolUsingBlock:v5];
 }
 
 void __66__HAP2Accessory__handleUpdatedAccessoryRuntimeInformationService___block_invoke(uint64_t a1, void *a2)
@@ -161,25 +161,25 @@ void __66__HAP2Accessory__handleUpdatedAccessoryRuntimeInformationService___bloc
   }
 }
 
-- (void)_handleUpdatedAccessoryInformationService:(id)a3
+- (void)_handleUpdatedAccessoryInformationService:(id)service
 {
-  v4 = [a3 characteristics];
+  characteristics = [service characteristics];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__HAP2Accessory__handleUpdatedAccessoryInformationService___block_invoke;
   v8[3] = &unk_2786D60B0;
   v8[4] = self;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
+  [characteristics hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
 
   if ([(HAP2Accessory *)self isPrimary])
   {
-    v5 = [(HAP2Accessory *)self name];
+    name = [(HAP2Accessory *)self name];
 
-    if (!v5)
+    if (!name)
     {
-      v6 = [(HAP2Accessory *)self accessoryServer];
-      v7 = [v6 name];
-      [(HAP2Accessory *)self setName:v7];
+      accessoryServer = [(HAP2Accessory *)self accessoryServer];
+      name2 = [accessoryServer name];
+      [(HAP2Accessory *)self setName:name2];
     }
   }
 }
@@ -310,51 +310,51 @@ void __59__HAP2Accessory__handleUpdatedAccessoryInformationService___block_invok
   }
 }
 
-- (void)characteristicValueChanged:(id)a3
+- (void)characteristicValueChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [(HAP2Accessory *)self delegate];
+  changedCopy = changed;
+  delegate = [(HAP2Accessory *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 accessory:self didNotifyForUpdatedValuesOnCharacteristic:v5];
+    [delegate accessory:self didNotifyForUpdatedValuesOnCharacteristic:changedCopy];
   }
 }
 
-- (BOOL)updateDiscoveredServices:(id)a3
+- (BOOL)updateDiscoveredServices:(id)services
 {
-  v4 = a3;
-  v5 = [objc_opt_class() validateDiscoveredServices:v4 isPrimary:{-[HAP2Accessory isPrimary](self, "isPrimary")}];
+  servicesCopy = services;
+  v5 = [objc_opt_class() validateDiscoveredServices:servicesCopy isPrimary:{-[HAP2Accessory isPrimary](self, "isPrimary")}];
   if (v5)
   {
-    [(HAP2Accessory *)self _updateDiscoveredServices:v4];
-    v6 = [(HAP2Accessory *)self delegate];
+    [(HAP2Accessory *)self _updateDiscoveredServices:servicesCopy];
+    delegate = [(HAP2Accessory *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 accessoryDidUpdateServices:self];
+      [delegate accessoryDidUpdateServices:self];
     }
   }
 
   return v5;
 }
 
-- (void)updateConnectionState:(unint64_t)a3
+- (void)updateConnectionState:(unint64_t)state
 {
-  v4 = [(HAP2Accessory *)self delegate];
+  delegate = [(HAP2Accessory *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 accessoryDidUpdateConnectionState:self];
+    [delegate accessoryDidUpdateConnectionState:self];
   }
 }
 
-- (id)disableNotificationsForCharacteristics:(id)a3 completion:(id)a4
+- (id)disableNotificationsForCharacteristics:(id)characteristics completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAP2Accessory *)self accessoryServerPrivate];
-  v9 = v8;
-  if (v8)
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
+  accessoryServerPrivate = [(HAP2Accessory *)self accessoryServerPrivate];
+  v9 = accessoryServerPrivate;
+  if (accessoryServerPrivate)
   {
-    v10 = [v8 disableNotificationsForCharacteristics:v6 completion:v7];
+    v10 = [accessoryServerPrivate disableNotificationsForCharacteristics:characteristicsCopy completion:completionCopy];
   }
 
   else
@@ -364,7 +364,7 @@ void __59__HAP2Accessory__handleUpdatedAccessoryInformationService___block_invok
     block[1] = 3221225472;
     block[2] = __67__HAP2Accessory_disableNotificationsForCharacteristics_completion___block_invoke;
     block[3] = &unk_2786D6490;
-    v14 = v7;
+    v14 = completionCopy;
     dispatch_async(v11, block);
 
     v10 = +[HAP2Cancelable ignore];
@@ -380,15 +380,15 @@ void __67__HAP2Accessory_disableNotificationsForCharacteristics_completion___blo
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)enableNotificationsForCharacteristics:(id)a3 completion:(id)a4
+- (id)enableNotificationsForCharacteristics:(id)characteristics completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAP2Accessory *)self accessoryServerPrivate];
-  v9 = v8;
-  if (v8)
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
+  accessoryServerPrivate = [(HAP2Accessory *)self accessoryServerPrivate];
+  v9 = accessoryServerPrivate;
+  if (accessoryServerPrivate)
   {
-    v10 = [v8 enableNotificationsForCharacteristics:v6 completion:v7];
+    v10 = [accessoryServerPrivate enableNotificationsForCharacteristics:characteristicsCopy completion:completionCopy];
   }
 
   else
@@ -398,7 +398,7 @@ void __67__HAP2Accessory_disableNotificationsForCharacteristics_completion___blo
     block[1] = 3221225472;
     block[2] = __66__HAP2Accessory_enableNotificationsForCharacteristics_completion___block_invoke;
     block[3] = &unk_2786D6490;
-    v14 = v7;
+    v14 = completionCopy;
     dispatch_async(v11, block);
 
     v10 = +[HAP2Cancelable ignore];
@@ -414,15 +414,15 @@ void __66__HAP2Accessory_enableNotificationsForCharacteristics_completion___bloc
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)writeValuesForCharacteristics:(id)a3 timeout:(double)a4 completion:(id)a5
+- (id)writeValuesForCharacteristics:(id)characteristics timeout:(double)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HAP2Accessory *)self accessoryServerPrivate];
-  v11 = v10;
-  if (v10)
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
+  accessoryServerPrivate = [(HAP2Accessory *)self accessoryServerPrivate];
+  v11 = accessoryServerPrivate;
+  if (accessoryServerPrivate)
   {
-    v12 = [v10 writeValuesForCharacteristics:v8 timeout:v9 completion:a4];
+    v12 = [accessoryServerPrivate writeValuesForCharacteristics:characteristicsCopy timeout:completionCopy completion:timeout];
   }
 
   else
@@ -432,7 +432,7 @@ void __66__HAP2Accessory_enableNotificationsForCharacteristics_completion___bloc
     block[1] = 3221225472;
     block[2] = __66__HAP2Accessory_writeValuesForCharacteristics_timeout_completion___block_invoke;
     block[3] = &unk_2786D6490;
-    v16 = v9;
+    v16 = completionCopy;
     dispatch_async(v13, block);
 
     v12 = +[HAP2Cancelable ignore];
@@ -448,15 +448,15 @@ void __66__HAP2Accessory_writeValuesForCharacteristics_timeout_completion___bloc
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)readValuesForCharacteristics:(id)a3 timeout:(double)a4 completion:(id)a5
+- (id)readValuesForCharacteristics:(id)characteristics timeout:(double)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HAP2Accessory *)self accessoryServerPrivate];
-  v11 = v10;
-  if (v10)
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
+  accessoryServerPrivate = [(HAP2Accessory *)self accessoryServerPrivate];
+  v11 = accessoryServerPrivate;
+  if (accessoryServerPrivate)
   {
-    v12 = [v10 readValuesForCharacteristics:v8 timeout:v9 completion:a4];
+    v12 = [accessoryServerPrivate readValuesForCharacteristics:characteristicsCopy timeout:completionCopy completion:timeout];
   }
 
   else
@@ -466,7 +466,7 @@ void __66__HAP2Accessory_writeValuesForCharacteristics_timeout_completion___bloc
     block[1] = 3221225472;
     block[2] = __65__HAP2Accessory_readValuesForCharacteristics_timeout_completion___block_invoke;
     block[3] = &unk_2786D6490;
-    v16 = v9;
+    v16 = completionCopy;
     dispatch_async(v13, block);
 
     v12 = +[HAP2Cancelable ignore];
@@ -482,9 +482,9 @@ void __65__HAP2Accessory_readValuesForCharacteristics_timeout_completion___block
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)identifyWithCompletion:(id)a3
+- (id)identifyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -496,18 +496,18 @@ void __65__HAP2Accessory_readValuesForCharacteristics_timeout_completion___block
   objc_exception_throw(v10);
 }
 
-- (void)setServices:(id)a3
+- (void)setServices:(id)services
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  servicesCopy = services;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__HAP2Accessory_setServices___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = servicesCopy;
+  v6 = servicesCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __29__HAP2Accessory_setServices___block_invoke(uint64_t a1)
@@ -528,14 +528,14 @@ uint64_t __29__HAP2Accessory_setServices___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__17482;
   v11 = __Block_byref_object_dispose__17483;
   v12 = 0;
-  v3 = [(HAP2Accessory *)self propertyLock];
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __25__HAP2Accessory_services__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -543,18 +543,18 @@ uint64_t __29__HAP2Accessory_setServices___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setProductData:(id)a3
+- (void)setProductData:(id)data
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  dataCopy = data;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__HAP2Accessory_setProductData___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = dataCopy;
+  v6 = dataCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __32__HAP2Accessory_setProductData___block_invoke(uint64_t a1)
@@ -577,14 +577,14 @@ uint64_t __32__HAP2Accessory_setProductData___block_invoke(uint64_t a1)
     v10 = __Block_byref_object_copy__17482;
     v11 = __Block_byref_object_dispose__17483;
     v12 = 0;
-    v3 = [(HAP2Accessory *)self propertyLock];
+    propertyLock = [(HAP2Accessory *)self propertyLock];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __28__HAP2Accessory_productData__block_invoke;
     v6[3] = &unk_2786D6E60;
     v6[4] = self;
     v6[5] = &v7;
-    [v3 performReadingBlock:v6];
+    [propertyLock performReadingBlock:v6];
 
     v4 = v8[5];
     _Block_object_dispose(&v7, 8);
@@ -608,18 +608,18 @@ uint64_t __28__HAP2Accessory_productData__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setInternalSleepInterval:(id)a3
+- (void)setInternalSleepInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  intervalCopy = interval;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HAP2Accessory_setInternalSleepInterval___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = intervalCopy;
+  v6 = intervalCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __42__HAP2Accessory_setInternalSleepInterval___block_invoke(uint64_t a1)
@@ -640,14 +640,14 @@ uint64_t __42__HAP2Accessory_setInternalSleepInterval___block_invoke(uint64_t a1
   v10 = __Block_byref_object_copy__17482;
   v11 = __Block_byref_object_dispose__17483;
   v12 = 0;
-  v3 = [(HAP2Accessory *)self propertyLock];
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__HAP2Accessory_internalSleepInterval__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -657,25 +657,25 @@ uint64_t __42__HAP2Accessory_setInternalSleepInterval___block_invoke(uint64_t a1
 
 - (double)sleepInterval
 {
-  v2 = [(HAP2Accessory *)self internalSleepIntervalMs];
-  [HAPAccessoryReachabilityProfile timeIntervalFromMillisecondNumberValue:v2];
+  internalSleepIntervalMs = [(HAP2Accessory *)self internalSleepIntervalMs];
+  [HAPAccessoryReachabilityProfile timeIntervalFromMillisecondNumberValue:internalSleepIntervalMs];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setFirmwareVersion:(id)a3
+- (void)setFirmwareVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  versionCopy = version;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__HAP2Accessory_setFirmwareVersion___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = versionCopy;
+  v6 = versionCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __36__HAP2Accessory_setFirmwareVersion___block_invoke(uint64_t a1)
@@ -696,14 +696,14 @@ uint64_t __36__HAP2Accessory_setFirmwareVersion___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__17482;
   v11 = __Block_byref_object_dispose__17483;
   v12 = 0;
-  v3 = [(HAP2Accessory *)self propertyLock];
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__HAP2Accessory_firmwareVersion__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -721,18 +721,18 @@ uint64_t __32__HAP2Accessory_firmwareVersion__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setSerialNumber:(id)a3
+- (void)setSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  numberCopy = number;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__HAP2Accessory_setSerialNumber___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = numberCopy;
+  v6 = numberCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __33__HAP2Accessory_setSerialNumber___block_invoke(uint64_t a1)
@@ -753,14 +753,14 @@ uint64_t __33__HAP2Accessory_setSerialNumber___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__17482;
   v11 = __Block_byref_object_dispose__17483;
   v12 = 0;
-  v3 = [(HAP2Accessory *)self propertyLock];
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__HAP2Accessory_serialNumber__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -778,18 +778,18 @@ uint64_t __29__HAP2Accessory_serialNumber__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setManufacturer:(id)a3
+- (void)setManufacturer:(id)manufacturer
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  manufacturerCopy = manufacturer;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__HAP2Accessory_setManufacturer___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = manufacturerCopy;
+  v6 = manufacturerCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __33__HAP2Accessory_setManufacturer___block_invoke(uint64_t a1)
@@ -810,14 +810,14 @@ uint64_t __33__HAP2Accessory_setManufacturer___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__17482;
   v11 = __Block_byref_object_dispose__17483;
   v12 = 0;
-  v3 = [(HAP2Accessory *)self propertyLock];
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__HAP2Accessory_manufacturer__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -835,18 +835,18 @@ uint64_t __29__HAP2Accessory_manufacturer__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  modelCopy = model;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__HAP2Accessory_setModel___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = modelCopy;
+  v6 = modelCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __26__HAP2Accessory_setModel___block_invoke(uint64_t a1)
@@ -867,14 +867,14 @@ uint64_t __26__HAP2Accessory_setModel___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__17482;
   v11 = __Block_byref_object_dispose__17483;
   v12 = 0;
-  v3 = [(HAP2Accessory *)self propertyLock];
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __22__HAP2Accessory_model__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -892,18 +892,18 @@ uint64_t __22__HAP2Accessory_model__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(HAP2Accessory *)self propertyLock];
+  nameCopy = name;
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__HAP2Accessory_setName___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = nameCopy;
+  v6 = nameCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 uint64_t __25__HAP2Accessory_setName___block_invoke(uint64_t a1)
@@ -924,14 +924,14 @@ uint64_t __25__HAP2Accessory_setName___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__17482;
   v11 = __Block_byref_object_dispose__17483;
   v12 = 0;
-  v3 = [(HAP2Accessory *)self propertyLock];
+  propertyLock = [(HAP2Accessory *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __21__HAP2Accessory_name__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -951,24 +951,24 @@ uint64_t __21__HAP2Accessory_name__block_invoke(uint64_t a1)
 
 - (unint64_t)category
 {
-  v2 = [(HAP2Accessory *)self accessoryServer];
-  v3 = [v2 category];
+  accessoryServer = [(HAP2Accessory *)self accessoryServer];
+  category = [accessoryServer category];
 
-  return v3;
+  return category;
 }
 
 - (unint64_t)connectionState
 {
-  v2 = [(HAP2Accessory *)self accessoryServer];
-  v3 = [v2 connectionState];
+  accessoryServer = [(HAP2Accessory *)self accessoryServer];
+  connectionState = [accessoryServer connectionState];
 
-  return v3;
+  return connectionState;
 }
 
-- (HAP2Accessory)initWithAccessoryServer:(id)a3 instanceID:(unint64_t)a4 discoveredServices:(id)a5
+- (HAP2Accessory)initWithAccessoryServer:(id)server instanceID:(unint64_t)d discoveredServices:(id)services
 {
-  v8 = a3;
-  v9 = a5;
+  serverCopy = server;
+  servicesCopy = services;
   v21.receiver = self;
   v21.super_class = HAP2Accessory;
   v10 = [(HAP2Accessory *)&v21 init];
@@ -978,38 +978,38 @@ uint64_t __21__HAP2Accessory_name__block_invoke(uint64_t a1)
     propertyLock = v10->_propertyLock;
     v10->_propertyLock = v11;
 
-    objc_storeWeak(&v10->_accessoryServerPrivate, v8);
-    v10->_instanceID = a4;
+    objc_storeWeak(&v10->_accessoryServerPrivate, serverCopy);
+    v10->_instanceID = d;
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v8 deviceID];
-    v15 = [v14 deviceIDString];
-    v16 = [v13 stringWithFormat:@"%@+%lu", v15, a4];
+    deviceID = [serverCopy deviceID];
+    deviceIDString = [deviceID deviceIDString];
+    v16 = [v13 stringWithFormat:@"%@+%lu", deviceIDString, d];
     identifier = v10->_identifier;
     v10->_identifier = v16;
 
-    if ([v9 count])
+    if ([servicesCopy count])
     {
-      [(HAP2Accessory *)v10 _updateDiscoveredServices:v9];
+      [(HAP2Accessory *)v10 _updateDiscoveredServices:servicesCopy];
     }
 
     else
     {
-      v18 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
       services = v10->_services;
-      v10->_services = v18;
+      v10->_services = array;
     }
   }
 
   return v10;
 }
 
-+ (HAP2Accessory)accessoryWithAccessoryServer:(id)a3 instanceID:(unint64_t)a4 discoveredServices:(id)a5
++ (HAP2Accessory)accessoryWithAccessoryServer:(id)server instanceID:(unint64_t)d discoveredServices:(id)services
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 conformsToProtocol:&unk_283EB63D0])
+  serverCopy = server;
+  servicesCopy = services;
+  if ([serverCopy conformsToProtocol:&unk_283EB63D0])
   {
-    v10 = v8;
+    v10 = serverCopy;
   }
 
   else
@@ -1018,9 +1018,9 @@ uint64_t __21__HAP2Accessory_name__block_invoke(uint64_t a1)
   }
 
   v11 = v10;
-  if (v11 && [a1 validateDiscoveredServices:v9 isPrimary:a4 == 1])
+  if (v11 && [self validateDiscoveredServices:servicesCopy isPrimary:d == 1])
   {
-    v12 = [[HAP2Accessory alloc] initWithAccessoryServer:v11 instanceID:a4 discoveredServices:v9];
+    v12 = [[HAP2Accessory alloc] initWithAccessoryServer:v11 instanceID:d discoveredServices:servicesCopy];
   }
 
   else
@@ -1031,9 +1031,9 @@ uint64_t __21__HAP2Accessory_name__block_invoke(uint64_t a1)
   return v12;
 }
 
-+ (BOOL)validateProtocolInformationService:(id)a3
++ (BOOL)validateProtocolInformationService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1042,14 +1042,14 @@ uint64_t __21__HAP2Accessory_name__block_invoke(uint64_t a1)
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [v3 characteristics];
+  characteristics = [serviceCopy characteristics];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__HAP2Accessory_validateProtocolInformationService___block_invoke;
   v9[3] = &unk_2786D5800;
   v9[4] = &v14;
   v9[5] = &v10;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  [characteristics hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 
   if (v11[3])
   {
@@ -1148,9 +1148,9 @@ LABEL_11:
 LABEL_13:
 }
 
-+ (BOOL)validateAccessoryInformationService:(id)a3
++ (BOOL)validateAccessoryInformationService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -1183,7 +1183,7 @@ LABEL_13:
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v4 = [v3 characteristics];
+  characteristics = [serviceCopy characteristics];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__HAP2Accessory_validateAccessoryInformationService___block_invoke;
@@ -1196,7 +1196,7 @@ LABEL_13:
   v10[9] = &v21;
   v10[10] = &v17;
   v10[11] = v15;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+  [characteristics hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
 
   if (v12[3])
   {
@@ -1689,10 +1689,10 @@ LABEL_83:
 LABEL_81:
 }
 
-+ (BOOL)validateDiscoveredServices:(id)a3 isPrimary:(BOOL)a4
++ (BOOL)validateDiscoveredServices:(id)services isPrimary:(BOOL)primary
 {
-  v4 = a4;
-  v6 = a3;
+  primaryCopy = primary;
+  servicesCopy = services;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1723,7 +1723,7 @@ LABEL_81:
   v18[5] = &v19;
   v18[6] = &v29;
   v18[7] = &v23;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
+  [servicesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
   if (v20[3])
   {
     goto LABEL_36;
@@ -1752,7 +1752,7 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (!v4)
+  if (!primaryCopy)
   {
     goto LABEL_11;
   }
@@ -1793,7 +1793,7 @@ LABEL_36:
   }
 
 LABEL_11:
-  if (![a1 validateAccessoryInformationService:v7] || v30[5] && !objc_msgSend(a1, "validateProtocolInformationService:"))
+  if (![self validateAccessoryInformationService:v7] || v30[5] && !objc_msgSend(self, "validateProtocolInformationService:"))
   {
     goto LABEL_36;
   }
@@ -1810,14 +1810,14 @@ LABEL_11:
     v49 = &v48;
     v50 = 0x2020000000;
     v51 = 0;
-    v11 = [v10 characteristics];
+    characteristics = [v10 characteristics];
     *buf = MEMORY[0x277D85DD0];
     v43 = 3221225472;
     v44 = __validateAccessoryRuntimeInformationService_block_invoke;
     v45 = &unk_2786D5800;
     v46 = &v52;
     v47 = &v48;
-    [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:buf];
+    [characteristics hmf_enumerateWithAutoreleasePoolUsingBlock:buf];
 
     if (*(v49 + 24) == 1)
     {

@@ -1,14 +1,14 @@
 @interface UIBezierPath
-+ (UIBezierPath)bezierPathWithPoints:(id)a3;
-+ (id)smoothPathForFingerPath:(id)a3;
-+ (void)_enumerateShapeRecognizersUsingBlock:(id)a3;
-+ (void)_enumerateShapeSimplifiersUsingBlock:(id)a3;
-+ (void)_enumerateShapeSmoothersUsingBlock:(id)a3;
++ (UIBezierPath)bezierPathWithPoints:(id)points;
++ (id)smoothPathForFingerPath:(id)path;
++ (void)_enumerateShapeRecognizersUsingBlock:(id)block;
++ (void)_enumerateShapeSimplifiersUsingBlock:(id)block;
++ (void)_enumerateShapeSmoothersUsingBlock:(id)block;
 - (BOOL)_gaxIsSimpleRectangle;
-- (BOOL)containsPath:(id)a3 withMarginOfError:(double)a4;
-- (BOOL)intersectsPath:(id)a3;
-- (BOOL)isEqualPoints:(id)a3;
-- (CGPoint)_pointOnPathAtIntersectionOfCenterAndPoint:(CGPoint)a3;
+- (BOOL)containsPath:(id)path withMarginOfError:(double)error;
+- (BOOL)intersectsPath:(id)path;
+- (BOOL)isEqualPoints:(id)points;
+- (CGPoint)_pointOnPathAtIntersectionOfCenterAndPoint:(CGPoint)point;
 - (CGPoint)bottomLeftPoint;
 - (CGPoint)bottomLeftPointOnPath;
 - (CGPoint)bottomRightPoint;
@@ -18,73 +18,73 @@
 - (CGPoint)topLeftPointOnPath;
 - (CGPoint)topRightPoint;
 - (CGPoint)topRightPointOnPath;
-- (UIBezierPath)bezierPathWithUniformInset:(double)a3;
-- (double)distanceFromStartingPointForPointWithElementIndex:(unint64_t)a3;
+- (UIBezierPath)bezierPathWithUniformInset:(double)inset;
+- (double)distanceFromStartingPointForPointWithElementIndex:(unint64_t)index;
 - (double)length;
 - (id)_gaxPathContext;
-- (id)bezierPathByApplyingTransformation:(id)a3;
-- (id)bezierPathConstrainedToFrame:(CGRect)a3;
+- (id)bezierPathByApplyingTransformation:(id)transformation;
+- (id)bezierPathConstrainedToFrame:(CGRect)frame;
 - (id)description;
-- (id)equivalentPathForDirection:(int)a3;
-- (id)equivalentPathStartingWithElementAtIndex:(unint64_t)a3;
-- (id)equivalentPathStartingWithFirstElementMatchingCondition:(id)a3;
+- (id)equivalentPathForDirection:(int)direction;
+- (id)equivalentPathStartingWithElementAtIndex:(unint64_t)index;
+- (id)equivalentPathStartingWithFirstElementMatchingCondition:(id)condition;
 - (int)direction;
 - (unint64_t)numberOfElements;
-- (void)_gaxSetSimpleRectangle:(BOOL)a3;
-- (void)appendElementOfType:(int)a3 withSinglePoint:(CGPoint)a4;
+- (void)_gaxSetSimpleRectangle:(BOOL)rectangle;
+- (void)appendElementOfType:(int)type withSinglePoint:(CGPoint)point;
 - (void)copyBezierPathPointsExcludingControlPoints;
-- (void)enumerateElementsUsingBlock:(id)a3;
-- (void)enumerateLinePointsContextsUsingBlock:(id)a3;
-- (void)enumerateLineSegmentContextsUsingBlock:(id)a3;
+- (void)enumerateElementsUsingBlock:(id)block;
+- (void)enumerateLinePointsContextsUsingBlock:(id)block;
+- (void)enumerateLineSegmentContextsUsingBlock:(id)block;
 @end
 
 @implementation UIBezierPath
 
-+ (void)_enumerateShapeSimplifiersUsingBlock:(id)a3
++ (void)_enumerateShapeSimplifiersUsingBlock:(id)block
 {
   v6 = 0;
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_class();
-  (*(a3 + 2))(v4, v5, &v6);
+  (*(block + 2))(blockCopy, v5, &v6);
 }
 
-+ (void)_enumerateShapeRecognizersUsingBlock:(id)a3
++ (void)_enumerateShapeRecognizersUsingBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v6 = 0;
   v4 = objc_opt_class();
-  v3[2](v3, v4, &v6);
+  blockCopy[2](blockCopy, v4, &v6);
   if ((v6 & 1) == 0)
   {
     v5 = objc_opt_class();
-    v3[2](v3, v5, &v6);
+    blockCopy[2](blockCopy, v5, &v6);
   }
 }
 
-+ (void)_enumerateShapeSmoothersUsingBlock:(id)a3
++ (void)_enumerateShapeSmoothersUsingBlock:(id)block
 {
   v6 = 0;
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_class();
-  (*(a3 + 2))(v4, v5, &v6);
+  (*(block + 2))(blockCopy, v5, &v6);
 }
 
-+ (id)smoothPathForFingerPath:(id)a3
++ (id)smoothPathForFingerPath:(id)path
 {
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_1AD30;
   v26 = sub_1AD40;
-  v4 = a3;
-  v27 = v4;
+  pathCopy = path;
+  v27 = pathCopy;
   v5 = objc_autoreleasePoolPush();
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1AD48;
   v21[3] = &unk_5D818;
   v21[4] = &v22;
-  [a1 _enumerateShapeSimplifiersUsingBlock:v21];
+  [self _enumerateShapeSimplifiersUsingBlock:v21];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -114,7 +114,7 @@
   v10[6] = v18;
   v10[7] = &v12;
   v10[8] = v11;
-  [a1 _enumerateShapeRecognizersUsingBlock:v10];
+  [self _enumerateShapeRecognizersUsingBlock:v10];
   v6 = v13[5];
   if (v6 && v6 != v23[5])
   {
@@ -126,7 +126,7 @@
   v9[2] = sub_1B108;
   v9[3] = &unk_5D818;
   v9[4] = &v22;
-  [a1 _enumerateShapeSmoothersUsingBlock:v9];
+  [self _enumerateShapeSmoothersUsingBlock:v9];
   _Block_object_dispose(v11, 8);
   _Block_object_dispose(&v12, 8);
 
@@ -140,13 +140,13 @@
   return v7;
 }
 
-+ (UIBezierPath)bezierPathWithPoints:(id)a3
++ (UIBezierPath)bezierPathWithPoints:(id)points
 {
-  v3 = a3;
+  pointsCopy = points;
   v4 = +[UIBezierPath bezierPath];
-  if (v3)
+  if (pointsCopy)
   {
-    [v3 CGPointValue];
+    [pointsCopy CGPointValue];
     [v4 moveToPoint:?];
     v10 = &v13;
     v5 = v12;
@@ -208,10 +208,10 @@
   return v2;
 }
 
-- (void)enumerateElementsUsingBlock:(id)a3
+- (void)enumerateElementsUsingBlock:(id)block
 {
-  v5 = self;
-  v6 = a3;
+  selfCopy = self;
+  blockCopy = block;
   [(UIBezierPath *)self CGPath];
   AX_CGPathEnumerateElementsUsingBlock();
 }
@@ -334,9 +334,9 @@
 
 - (double)length
 {
-  v2 = [(UIBezierPath *)self _gaxPathContext];
+  _gaxPathContext = [(UIBezierPath *)self _gaxPathContext];
   v3 = 0.0;
-  if ([v2 linePointsContexts])
+  if ([_gaxPathContext linePointsContexts])
   {
     Count = AXCArrayGetCount();
     if (Count)
@@ -355,21 +355,21 @@
   return v3;
 }
 
-- (double)distanceFromStartingPointForPointWithElementIndex:(unint64_t)a3
+- (double)distanceFromStartingPointForPointWithElementIndex:(unint64_t)index
 {
-  v4 = [(UIBezierPath *)self _gaxPathContext];
-  v5 = [v4 linePointsContexts];
-  v6 = [v4 linePointsIndicesPerElementIndices];
+  _gaxPathContext = [(UIBezierPath *)self _gaxPathContext];
+  linePointsContexts = [_gaxPathContext linePointsContexts];
+  linePointsIndicesPerElementIndices = [_gaxPathContext linePointsIndicesPerElementIndices];
   v7 = 0.0;
-  if (v5 && v6 && AXCArrayGetCount() > a3)
+  if (linePointsContexts && linePointsIndicesPerElementIndices && AXCArrayGetCount() > index)
   {
-    if (AXCArrayGetCount() <= a3)
+    if (AXCArrayGetCount() <= index)
     {
       AXCArrayGetCount();
       _AXAssert();
     }
 
-    v8 = *(_AXCArrayGetUnderlyingArray() + 8 * a3);
+    v8 = *(_AXCArrayGetUnderlyingArray() + 8 * index);
     if (v8 < AXCArrayGetCount())
     {
       if (v8 >= AXCArrayGetCount())
@@ -385,21 +385,21 @@
   return v7;
 }
 
-- (BOOL)containsPath:(id)a3 withMarginOfError:(double)a4
+- (BOOL)containsPath:(id)path withMarginOfError:(double)error
 {
-  v6 = a3;
+  pathCopy = path;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  if (a4 == 0.0 && -[UIBezierPath _gaxIsSimpleRectangle](self, "_gaxIsSimpleRectangle") && [v6 _gaxIsSimpleRectangle])
+  if (error == 0.0 && -[UIBezierPath _gaxIsSimpleRectangle](self, "_gaxIsSimpleRectangle") && [pathCopy _gaxIsSimpleRectangle])
   {
     [(UIBezierPath *)self bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [v6 bounds];
+    [pathCopy bounds];
     v27.origin.x = v15;
     v27.origin.y = v16;
     v27.size.width = v17;
@@ -419,10 +419,10 @@
     v21[1] = 3221225472;
     v21[2] = sub_28400;
     v21[3] = &unk_5DD28;
-    *&v21[6] = a4;
+    *&v21[6] = error;
     v21[4] = self;
     v21[5] = &v22;
-    [v6 enumerateElementsUsingBlock:v21];
+    [pathCopy enumerateElementsUsingBlock:v21];
     v19 = *(v23 + 24);
   }
 
@@ -431,21 +431,21 @@
   return v19 & 1;
 }
 
-- (BOOL)intersectsPath:(id)a3
+- (BOOL)intersectsPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (-[UIBezierPath _gaxIsSimpleRectangle](self, "_gaxIsSimpleRectangle") && [v4 _gaxIsSimpleRectangle])
+  if (-[UIBezierPath _gaxIsSimpleRectangle](self, "_gaxIsSimpleRectangle") && [pathCopy _gaxIsSimpleRectangle])
   {
     [(UIBezierPath *)self bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v4 bounds];
+    [pathCopy bounds];
     v29.origin.x = v13;
     v29.origin.y = v14;
     v29.size.width = v15;
@@ -464,7 +464,7 @@
     v21[1] = 3221225472;
     v21[2] = sub_286A8;
     v21[3] = &unk_5DD50;
-    v18 = v4;
+    v18 = pathCopy;
     v22 = v18;
     v23 = &v24;
     [(UIBezierPath *)self enumerateElementsUsingBlock:v21];
@@ -489,7 +489,7 @@
 
 - (int)direction
 {
-  v2 = self;
+  selfCopy = self;
   [(UIBezierPath *)self boundsCenter];
   v7 = 0;
   v8 = &v7;
@@ -502,17 +502,17 @@
   v6[4] = &v7;
   v6[5] = v3;
   v6[6] = v4;
-  [(UIBezierPath *)v2 enumerateLineSegmentContextsUsingBlock:v6];
-  LODWORD(v2) = v8[3] < 0.0;
+  [(UIBezierPath *)selfCopy enumerateLineSegmentContextsUsingBlock:v6];
+  LODWORD(selfCopy) = v8[3] < 0.0;
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (id)equivalentPathForDirection:(int)a3
+- (id)equivalentPathForDirection:(int)direction
 {
-  if ([(UIBezierPath *)self direction]== a3)
+  if ([(UIBezierPath *)self direction]== direction)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
@@ -520,10 +520,10 @@
     v5 = AXCArrayCreate();
     v6 = AXCArrayCreate();
     v7 = v6;
-    v4 = 0;
+    selfCopy = 0;
     if (v5 && v6)
     {
-      v4 = +[UIBezierPath bezierPath];
+      selfCopy = +[UIBezierPath bezierPath];
       v21 = 0;
       v22 = &v21;
       v23 = 0x2020000000;
@@ -572,16 +572,16 @@
             v18 = v16[1];
             if (v14 == 1)
             {
-              [(UIBezierPath *)v4 appendElementOfType:(v9 & 1) == 0 withSinglePoint:v17, v18];
+              [(UIBezierPath *)selfCopy appendElementOfType:(v9 & 1) == 0 withSinglePoint:v17, v18];
               v9 = 0;
             }
 
             else if (!v14)
             {
-              [(UIBezierPath *)v4 appendElementOfType:1 withSinglePoint:v17, v18];
+              [(UIBezierPath *)selfCopy appendElementOfType:1 withSinglePoint:v17, v18];
               if (v10)
               {
-                [(UIBezierPath *)v4 closePath];
+                [(UIBezierPath *)selfCopy closePath];
               }
 
               v10 = 0;
@@ -611,15 +611,15 @@
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (UIBezierPath)bezierPathWithUniformInset:(double)a3
+- (UIBezierPath)bezierPathWithUniformInset:(double)inset
 {
   if ([(UIBezierPath *)self _gaxIsSimpleRectangle])
   {
     [(UIBezierPath *)self bounds];
-    v12 = CGRectInset(v11, a3, a3);
+    v12 = CGRectInset(v11, inset, inset);
     v5 = [UIBezierPath bezierPathWithRect:v12.origin.x, v12.origin.y, v12.size.width, v12.size.height];
   }
 
@@ -632,23 +632,23 @@
     v9[3] = &unk_5DDC0;
     v9[4] = v6;
     v9[5] = v7;
-    *&v9[6] = a3;
+    *&v9[6] = inset;
     v5 = [(UIBezierPath *)self bezierPathByApplyingTransformation:v9];
   }
 
   return v5;
 }
 
-- (id)bezierPathByApplyingTransformation:(id)a3
+- (id)bezierPathByApplyingTransformation:(id)transformation
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_28E3C;
   v9[3] = &unk_5DDE8;
-  v11 = a3;
+  transformationCopy = transformation;
   v4 = objc_opt_new();
   v10 = v4;
-  v5 = v11;
+  v5 = transformationCopy;
   [(UIBezierPath *)self enumerateElementsUsingBlock:v9];
   v6 = v10;
   v7 = v4;
@@ -656,7 +656,7 @@
   return v4;
 }
 
-- (id)equivalentPathStartingWithElementAtIndex:(unint64_t)a3
+- (id)equivalentPathStartingWithElementAtIndex:(unint64_t)index
 {
   v18[0] = 0;
   v18[1] = v18;
@@ -667,7 +667,7 @@
   v14[2] = sub_29054;
   v14[3] = &unk_5DE10;
   v16 = v18;
-  v17 = a3;
+  indexCopy = index;
   v5 = objc_opt_new();
   v15 = v5;
   [(UIBezierPath *)self enumerateElementsUsingBlock:v14];
@@ -676,7 +676,7 @@
   v10[2] = sub_29114;
   v10[3] = &unk_5DE10;
   v12 = v18;
-  v13 = a3;
+  indexCopy2 = index;
   v6 = v5;
   v11 = v6;
   [(UIBezierPath *)self enumerateElementsUsingBlock:v10];
@@ -688,7 +688,7 @@
   return v8;
 }
 
-- (id)equivalentPathStartingWithFirstElementMatchingCondition:(id)a3
+- (id)equivalentPathStartingWithFirstElementMatchingCondition:(id)condition
 {
   v13 = 0;
   v14 = &v13;
@@ -698,8 +698,8 @@
   v8 = 3221225472;
   v9 = sub_29320;
   v10 = &unk_5DE38;
-  v4 = a3;
-  v11 = v4;
+  conditionCopy = condition;
+  v11 = conditionCopy;
   v12 = &v13;
   [(UIBezierPath *)self enumerateElementsUsingBlock:&v7];
   if (v14[3] == 0x7FFFFFFFFFFFFFFFLL)
@@ -717,12 +717,12 @@
   return v5;
 }
 
-- (id)bezierPathConstrainedToFrame:(CGRect)a3
+- (id)bezierPathConstrainedToFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIBezierPath *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -738,9 +738,9 @@
   v86.size.height = v15;
   if (CGRectContainsRect(v76, v86))
   {
-    v16 = self;
+    selfCopy = self;
 LABEL_3:
-    v17 = v16;
+    v17 = selfCopy;
     goto LABEL_16;
   }
 
@@ -769,7 +769,7 @@ LABEL_3:
     v88.size.width = width;
     v88.size.height = height;
     v79 = CGRectIntersection(v78, v88);
-    v16 = [UIBezierPath bezierPathWithRect:v79.origin.x, v79.origin.y, v79.size.width, v79.size.height];
+    selfCopy = [UIBezierPath bezierPathWithRect:v79.origin.x, v79.origin.y, v79.size.width, v79.size.height];
     goto LABEL_3;
   }
 
@@ -959,11 +959,11 @@ LABEL_16:
   return v17;
 }
 
-- (void)enumerateLinePointsContextsUsingBlock:(id)a3
+- (void)enumerateLinePointsContextsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(UIBezierPath *)self _gaxPathContext];
-  if ([v5 linePointsContexts])
+  blockCopy = block;
+  _gaxPathContext = [(UIBezierPath *)self _gaxPathContext];
+  if ([_gaxPathContext linePointsContexts])
   {
     Count = AXCArrayGetCount();
     if (Count)
@@ -993,12 +993,12 @@ LABEL_16:
           v12 = *(UnderlyingArray + v9 + 32);
           v15 = *(UnderlyingArray + v9 + 16);
           v16 = v12;
-          v13 = v4[2];
+          v13 = blockCopy[2];
           v14[0] = *(UnderlyingArray + v9);
           v14[1] = v15;
           v14[2] = v12;
           v14[3] = v14[0];
-          v13(v4, v14, v10++, &v17);
+          v13(blockCopy, v14, v10++, &v17);
           if (v10 >= v7)
           {
             break;
@@ -1013,7 +1013,7 @@ LABEL_16:
   }
 }
 
-- (void)enumerateLineSegmentContextsUsingBlock:(id)a3
+- (void)enumerateLineSegmentContextsUsingBlock:(id)block
 {
   v13[0] = 0;
   v13[1] = v13;
@@ -1031,8 +1031,8 @@ LABEL_16:
   v5[2] = sub_2A458;
   v5[3] = &unk_5DF08;
   v7 = v9;
-  v4 = a3;
-  v6 = v4;
+  blockCopy = block;
+  v6 = blockCopy;
   v8 = v13;
   [(UIBezierPath *)self enumerateLinePointsContextsUsingBlock:v5];
 
@@ -1040,13 +1040,13 @@ LABEL_16:
   _Block_object_dispose(v13, 8);
 }
 
-- (void)appendElementOfType:(int)a3 withSinglePoint:(CGPoint)a4
+- (void)appendElementOfType:(int)type withSinglePoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  if (a3 != 1)
+  y = point.y;
+  x = point.x;
+  if (type != 1)
   {
-    if (a3)
+    if (type)
     {
       return;
     }
@@ -1084,7 +1084,7 @@ LABEL_5:
 
 - (id)description
 {
-  v3 = [(UIBezierPath *)self copyBezierPathPointsExcludingControlPoints];
+  copyBezierPathPointsExcludingControlPoints = [(UIBezierPath *)self copyBezierPathPointsExcludingControlPoints];
   AXCArraySort();
   v14.receiver = self;
   v14.super_class = UIBezierPath;
@@ -1121,16 +1121,16 @@ LABEL_5:
     }
   }
 
-  CFRelease(v3);
+  CFRelease(copyBezierPathPointsExcludingControlPoints);
 
   return v5;
 }
 
-- (BOOL)isEqualPoints:(id)a3
+- (BOOL)isEqualPoints:(id)points
 {
-  v4 = a3;
-  v5 = [(UIBezierPath *)self copyBezierPathPointsExcludingControlPoints];
-  v6 = [v4 copyBezierPathPointsExcludingControlPoints];
+  pointsCopy = points;
+  copyBezierPathPointsExcludingControlPoints = [(UIBezierPath *)self copyBezierPathPointsExcludingControlPoints];
+  copyBezierPathPointsExcludingControlPoints2 = [pointsCopy copyBezierPathPointsExcludingControlPoints];
   Count = AXCArrayGetCount();
   v8 = AXCArrayGetCount();
   v9 = Count == v8;
@@ -1175,8 +1175,8 @@ LABEL_5:
   else
   {
 LABEL_11:
-    CFRelease(v5);
-    CFRelease(v6);
+    CFRelease(copyBezierPathPointsExcludingControlPoints);
+    CFRelease(copyBezierPathPointsExcludingControlPoints2);
   }
 
   return v9;
@@ -1185,38 +1185,38 @@ LABEL_11:
 - (BOOL)_gaxIsSimpleRectangle
 {
   v2 = objc_getAssociatedObject(self, &unk_42050);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_gaxSetSimpleRectangle:(BOOL)a3
+- (void)_gaxSetSimpleRectangle:(BOOL)rectangle
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:rectangle];
   objc_setAssociatedObject(self, &unk_42050, v4, &dword_0 + 1);
 }
 
 - (id)_gaxPathContext
 {
   v3 = objc_getAssociatedObject(self, &unk_42051);
-  v4 = [(GAXPathContext *)v3 lastSeenCGPath];
-  v5 = [(UIBezierPath *)self CGPath];
-  if (v4 == v5)
+  lastSeenCGPath = [(GAXPathContext *)v3 lastSeenCGPath];
+  cGPath = [(UIBezierPath *)self CGPath];
+  if (lastSeenCGPath == cGPath)
   {
     v6 = v3;
   }
 
   else
   {
-    v6 = [[GAXPathContext alloc] initWithLastSeenCGPath:v5];
+    v6 = [[GAXPathContext alloc] initWithLastSeenCGPath:cGPath];
 
     if (v6)
     {
       [(UIBezierPath *)self boundsCenter];
       v8 = v7;
       v10 = v9;
-      v11 = [(GAXPathContext *)v6 linePointsContexts];
-      v12 = [(GAXPathContext *)v6 linePointsIndicesPerElementIndices];
+      linePointsContexts = [(GAXPathContext *)v6 linePointsContexts];
+      linePointsIndicesPerElementIndices = [(GAXPathContext *)v6 linePointsIndicesPerElementIndices];
       v26[0] = 0;
       v26[1] = v26;
       v26[2] = 0x2020000000;
@@ -1234,8 +1234,8 @@ LABEL_11:
       v23[5] = v24;
       v23[6] = v8;
       v23[7] = v10;
-      v23[8] = v11;
-      v23[9] = v12;
+      v23[8] = linePointsContexts;
+      v23[9] = linePointsIndicesPerElementIndices;
       v21[0] = 0;
       v21[1] = v21;
       v21[2] = 0x3010000000;
@@ -1267,10 +1267,10 @@ LABEL_11:
   return v6;
 }
 
-- (CGPoint)_pointOnPathAtIntersectionOfCenterAndPoint:(CGPoint)a3
+- (CGPoint)_pointOnPathAtIntersectionOfCenterAndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIBezierPath *)self boundsCenter];
   v5 = v4;
   v7 = v6;

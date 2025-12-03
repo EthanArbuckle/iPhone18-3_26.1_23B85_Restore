@@ -1,14 +1,14 @@
 @interface IPv6PrefixWrapper
-- (IPv6PrefixWrapper)initWithPrefix:(id *)a3;
+- (IPv6PrefixWrapper)initWithPrefix:(id *)prefix;
 - (void)dealloc;
 @end
 
 @implementation IPv6PrefixWrapper
 
-- (IPv6PrefixWrapper)initWithPrefix:(id *)a3
+- (IPv6PrefixWrapper)initWithPrefix:(id *)prefix
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prefix)
   {
     return 0;
   }
@@ -22,7 +22,7 @@
     v4->_ipv6Prefix = v5;
     if (v5)
     {
-      *v5 = *a3;
+      *v5 = *prefix;
       return v4;
     }
 

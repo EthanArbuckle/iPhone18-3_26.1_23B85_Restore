@@ -1,20 +1,20 @@
 @interface PXSurveyQuestionWallpaperConfiguration
-- (BOOL)needsQuestionInvalidationForChange:(id)a3;
+- (BOOL)needsQuestionInvalidationForChange:(id)change;
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionWallpaperConfiguration)init;
-- (PXSurveyQuestionWallpaperConfiguration)initWithTitle:(id)a3 asset:(id)a4;
+- (PXSurveyQuestionWallpaperConfiguration)initWithTitle:(id)title asset:(id)asset;
 - (UIView)contentView;
-- (void)layoutContentViewInRect:(CGRect)a3;
+- (void)layoutContentViewInRect:(CGRect)rect;
 @end
 
 @implementation PXSurveyQuestionWallpaperConfiguration
 
-- (BOOL)needsQuestionInvalidationForChange:(id)a3
+- (BOOL)needsQuestionInvalidationForChange:(id)change
 {
-  v3 = [a3 changeDetailsForObject:self->_asset];
-  v4 = [v3 objectWasDeleted];
+  v3 = [change changeDetailsForObject:self->_asset];
+  objectWasDeleted = [v3 objectWasDeleted];
 
-  return v4;
+  return objectWasDeleted;
 }
 
 - (CGRect)contentRectForOneUp
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (void)layoutContentViewInRect:(CGRect)a3
+- (void)layoutContentViewInRect:(CGRect)rect
 {
   [MEMORY[0x1E69DCEB0] px_mainScreen];
   [objc_claimAutoreleasedReturnValue() bounds];
@@ -47,8 +47,8 @@
     self->_wallpaperView = v4;
 
     [(PXWallpaperSuggestionView *)self->_wallpaperView setShowClockOverlay:0];
-    v6 = [(PXSurveyQuestionWallpaperConfiguration *)self asset];
-    [(PXWallpaperSuggestionView *)self->_wallpaperView setAsset:v6];
+    asset = [(PXSurveyQuestionWallpaperConfiguration *)self asset];
+    [(PXWallpaperSuggestionView *)self->_wallpaperView setAsset:asset];
 
     wallpaperView = self->_wallpaperView;
   }
@@ -58,26 +58,26 @@
 
 - (PXSurveyQuestionWallpaperConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionWallpaperConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionWallpaperConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionWallpaperConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionWallpaperConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionWallpaperConfiguration)initWithTitle:(id)a3 asset:(id)a4
+- (PXSurveyQuestionWallpaperConfiguration)initWithTitle:(id)title asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = PXSurveyQuestionWallpaperConfiguration;
   v8 = [(PXSurveyQuestionWallpaperConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    objc_storeStrong(&v8->_asset, a4);
+    objc_storeStrong(&v8->_asset, asset);
     v8->_isStale = 0;
   }
 

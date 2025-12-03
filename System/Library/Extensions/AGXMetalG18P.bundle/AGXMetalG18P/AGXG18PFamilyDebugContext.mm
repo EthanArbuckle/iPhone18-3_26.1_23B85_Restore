@@ -1,5 +1,5 @@
 @interface AGXG18PFamilyDebugContext
-- (AGXG18PFamilyDebugContext)initWithCommandBuffer:(id)a3;
+- (AGXG18PFamilyDebugContext)initWithCommandBuffer:(id)buffer;
 - (void)dealloc;
 - (void)endEncoding;
 @end
@@ -28,11 +28,11 @@
   [(IOGPUMetalDebugCommandEncoder *)&v4 dealloc];
 }
 
-- (AGXG18PFamilyDebugContext)initWithCommandBuffer:(id)a3
+- (AGXG18PFamilyDebugContext)initWithCommandBuffer:(id)buffer
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyDebugContext;
-  v3 = [(IOGPUMetalDebugCommandEncoder *)&v7 initWithCommandBuffer:a3];
+  v3 = [(IOGPUMetalDebugCommandEncoder *)&v7 initWithCommandBuffer:buffer];
   if (v3)
   {
     v4 = malloc_type_calloc(0x10uLL, 1uLL, 0x108004020793F04uLL);

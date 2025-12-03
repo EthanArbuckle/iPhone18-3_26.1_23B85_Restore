@@ -29,12 +29,12 @@
         v9 = *(*(&v11 + 1) + 8 * v8);
         if ([v9 changeType] == 1)
         {
-          [a1 removeObjectAtIndex:{objc_msgSend(v9, "index")}];
+          [self removeObjectAtIndex:{objc_msgSend(v9, "index")}];
         }
 
         else
         {
-          [a1 insertObject:objc_msgSend(v9 atIndex:{"object"), objc_msgSend(v9, "index")}];
+          [self insertObject:objc_msgSend(v9 atIndex:{"object"), objc_msgSend(v9, "index")}];
         }
 
         ++v8;

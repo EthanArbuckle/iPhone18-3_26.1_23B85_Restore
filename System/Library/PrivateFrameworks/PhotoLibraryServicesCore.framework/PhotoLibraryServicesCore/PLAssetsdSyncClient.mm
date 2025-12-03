@@ -1,15 +1,15 @@
 @interface PLAssetsdSyncClient
-- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)a3;
-- (void)updateRestoredAssetWithUUID:(id)a3 paths:(id)a4 fixAddedDate:(BOOL)a5;
+- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)albums;
+- (void)updateRestoredAssetWithUUID:(id)d paths:(id)paths fixAddedDate:(BOOL)date;
 @end
 
 @implementation PLAssetsdSyncClient
 
-- (void)updateRestoredAssetWithUUID:(id)a3 paths:(id)a4 fixAddedDate:(BOOL)a5
+- (void)updateRestoredAssetWithUUID:(id)d paths:(id)paths fixAddedDate:(BOOL)date
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  pathsCopy = paths;
   v31 = 0u;
   *sel = 0u;
   v30 = 0u;
@@ -24,7 +24,7 @@
     os_activity_scope_enter(v12, (&v31 + 8));
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3254779904;
   v21[2] = __70__PLAssetsdSyncClient_updateRestoredAssetWithUUID_paths_fixAddedDate___block_invoke_7;
@@ -34,12 +34,12 @@
   v26 = v31;
   v27 = *sel;
   v28 = a2;
-  v15 = v9;
+  v15 = dCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = pathsCopy;
   v23 = v16;
-  v29 = a5;
-  [v14 remoteObjectProxyWithErrorHandler:&__block_literal_global_6_1078 handler:v21];
+  dateCopy = date;
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_6_1078 handler:v21];
 
   if (v30 == 1)
   {
@@ -104,7 +104,7 @@ void __70__PLAssetsdSyncClient_updateRestoredAssetWithUUID_paths_fixAddedDate___
   }
 }
 
-- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)a3
+- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)albums
 {
   v26 = *MEMORY[0x1E69E9840];
   v22 = 0u;
@@ -121,7 +121,7 @@ void __70__PLAssetsdSyncClient_updateRestoredAssetWithUUID_paths_fixAddedDate___
     os_activity_scope_enter(v7, (&v22 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3254779904;
   v14[2] = __58__PLAssetsdSyncClient_finalizeOTARestoreRecreatingAlbums___block_invoke_1;
@@ -131,8 +131,8 @@ void __70__PLAssetsdSyncClient_updateRestoredAssetWithUUID_paths_fixAddedDate___
   v17 = v22;
   v18 = *sel;
   v19 = a2;
-  v20 = a3;
-  [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_1091 handler:v14];
+  albumsCopy = albums;
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_1091 handler:v14];
 
   if (v21 == 1)
   {

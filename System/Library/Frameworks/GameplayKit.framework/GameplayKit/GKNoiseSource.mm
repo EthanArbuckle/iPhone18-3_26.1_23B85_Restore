@@ -1,8 +1,8 @@
 @interface GKNoiseSource
 - (double)valueAt:(GKNoiseSource *)self;
 - (id)cloneModule;
-- (id)inputModuleAtIndex:(int)a3;
-- (void)setInputModule:(id)a3 atIndex:(int)a4;
+- (id)inputModuleAtIndex:(int)index;
+- (void)setInputModule:(id)module atIndex:(int)index;
 @end
 
 @implementation GKNoiseSource
@@ -20,7 +20,7 @@
   objc_exception_throw(v8);
 }
 
-- (id)inputModuleAtIndex:(int)a3
+- (id)inputModuleAtIndex:(int)index
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = MEMORY[0x277CCACA8];
@@ -33,9 +33,9 @@
   objc_exception_throw(v9);
 }
 
-- (void)setInputModule:(id)a3 atIndex:(int)a4
+- (void)setInputModule:(id)module atIndex:(int)index
 {
-  v5 = a3;
+  moduleCopy = module;
   v6 = MEMORY[0x277CBEAD8];
   v7 = MEMORY[0x277CCACA8];
   v8 = objc_opt_class();

@@ -48,7 +48,7 @@ LABEL_8:
   v3 = MEMORY[0x277CBFBB0];
   v4 = a3;
   v41 = [v3 alloc];
-  v40 = [v4 cfAbsTimestamp];
+  cfAbsTimestamp = [v4 cfAbsTimestamp];
   [v4 machContinuousTimestamp_s];
   v6 = v5;
   [v4 sampleInterval_s];
@@ -76,14 +76,14 @@ LABEL_8:
   v29 = v28;
   [v4 quaternionW];
   v31 = [v23 initWithX:v25 Y:v27 Z:v29 W:v30];
-  v32 = [v4 referenceFrameContinuity];
-  v33 = [v4 referenceFrame];
-  v34 = [v4 staticFlag];
-  v35 = [v4 mountState];
-  v36 = [v4 zupt];
-  v37 = [v4 dotBiasChange];
+  referenceFrameContinuity = [v4 referenceFrameContinuity];
+  referenceFrame = [v4 referenceFrame];
+  staticFlag = [v4 staticFlag];
+  mountState = [v4 mountState];
+  zupt = [v4 zupt];
+  dotBiasChange = [v4 dotBiasChange];
 
-  v38 = [v41 initWithTimestamp:v40 machContinuousTimestamp:v15 sampleInterval:v22 deltaPosition:v31 deltaVelocity:v32 quaternion:v33 referenceFrameContinuity:v6 referenceFrame:v8 staticFlag:v34 mountState:v35 zupt:v36 dotBiasChange:v37 calibration:0];
+  v38 = [v41 initWithTimestamp:cfAbsTimestamp machContinuousTimestamp:v15 sampleInterval:v22 deltaPosition:v31 deltaVelocity:referenceFrameContinuity quaternion:referenceFrame referenceFrameContinuity:v6 referenceFrame:v8 staticFlag:staticFlag mountState:mountState zupt:zupt dotBiasChange:dotBiasChange calibration:0];
 
   return v38;
 }
@@ -92,7 +92,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTBackgroundInertialOdometrySampleMO managedObjectWithCLBackgroundInertialOdometrySample:a1 inManagedObjectContext:a3];
+    v3 = [RTBackgroundInertialOdometrySampleMO managedObjectWithCLBackgroundInertialOdometrySample:self inManagedObjectContext:a3];
   }
 
   else

@@ -1,11 +1,11 @@
 @interface RenderBoxView
 + (Class)layerClass;
 - (BOOL)isOpaque;
-- (void)RBLayer:(id)a3 draw:(id)a4;
+- (void)RBLayer:(id)layer draw:(id)draw;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)setNeedsDisplay;
-- (void)setOpaque:(BOOL)a3;
+- (void)setOpaque:(BOOL)opaque;
 @end
 
 @implementation RenderBoxView
@@ -24,57 +24,57 @@
   return [(RenderBoxView *)&v3 isOpaque];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
-  v4 = self;
-  v5 = [(RenderBoxView *)v4 layer];
-  [v5 setOpaque_];
+  opaqueCopy = opaque;
+  selfCopy = self;
+  layer = [(RenderBoxView *)selfCopy layer];
+  [layer setOpaque_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for RenderBoxView();
-  [(RenderBoxView *)&v6 setOpaque:v3];
+  [(RenderBoxView *)&v6 setOpaque:opaqueCopy];
 }
 
 - (void)setNeedsDisplay
 {
-  v3 = self;
-  v2 = [(RenderBoxView *)v3 layer];
-  [v2 setNeedsDisplay];
+  selfCopy = self;
+  layer = [(RenderBoxView *)selfCopy layer];
+  [layer setNeedsDisplay];
 }
 
 - (void)didMoveToWindow
 {
-  v8 = self;
-  v2 = [(RenderBoxView *)v8 window];
-  if (v2)
+  selfCopy = self;
+  window = [(RenderBoxView *)selfCopy window];
+  if (window)
   {
-    v3 = v2;
-    v4 = [(RenderBoxView *)v8 layer];
-    v5 = [v3 screen];
-    [v5 scale];
+    v3 = window;
+    layer = [(RenderBoxView *)selfCopy layer];
+    screen = [v3 screen];
+    [screen scale];
     v7 = v6;
 
-    [v4 setContentsScale_];
-    [(RenderBoxView *)v8 setNeedsDisplay];
+    [layer setContentsScale_];
+    [(RenderBoxView *)selfCopy setNeedsDisplay];
   }
 }
 
-- (void)RBLayer:(id)a3 draw:(id)a4
+- (void)RBLayer:(id)layer draw:(id)draw
 {
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x60);
-  v6 = a4;
-  v7 = self;
-  v5(v6);
+  drawCopy = draw;
+  selfCopy = self;
+  v5(drawCopy);
 }
 
 - (void)dealloc
 {
-  v2 = self;
-  v3 = [(RenderBoxView *)v2 layer];
-  [v3 waitUntilAsyncRenderingCompleted];
+  selfCopy = self;
+  layer = [(RenderBoxView *)selfCopy layer];
+  [layer waitUntilAsyncRenderingCompleted];
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for RenderBoxView();
   [(RenderBoxView *)&v4 dealloc];
 }

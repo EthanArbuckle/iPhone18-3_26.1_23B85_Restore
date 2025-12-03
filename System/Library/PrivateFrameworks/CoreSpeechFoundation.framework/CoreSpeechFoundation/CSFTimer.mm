@@ -1,9 +1,9 @@
 @interface CSFTimer
 - (BOOL)_armTimer;
-- (CSFTimer)initWithContext:(id)a3 queue:(id)a4 eventHandler:(id)a5;
+- (CSFTimer)initWithContext:(id)context queue:(id)queue eventHandler:(id)handler;
 - (void)_disarmTimer;
 - (void)cancel;
-- (void)resume:(id)a3;
+- (void)resume:(id)resume;
 @end
 
 @implementation CSFTimer
@@ -19,17 +19,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)resume:(id)a3
+- (void)resume:(id)resume
 {
-  v4 = a3;
+  resumeCopy = resume;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __19__CSFTimer_resume___block_invoke;
   v7[3] = &unk_1E865CB90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resumeCopy;
+  v6 = resumeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -57,12 +57,12 @@ uint64_t __19__CSFTimer_resume___block_invoke(uint64_t a1)
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(CSFTimer *)self context];
-      v7 = [v6 identifier];
+      context = [(CSFTimer *)self context];
+      identifier = [context identifier];
       v9 = 136315394;
       v10 = "[CSFTimer _disarmTimer]";
       v11 = 2112;
-      v12 = v7;
+      v12 = identifier;
       _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s [%@] Canceling timer", &v9, 0x16u);
 
       timer = self->_timer;
@@ -88,12 +88,12 @@ uint64_t __19__CSFTimer_resume___block_invoke(uint64_t a1)
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(CSFTimer *)self context];
-      v7 = [v6 identifier];
+      context = [(CSFTimer *)self context];
+      identifier = [context identifier];
       *buf = 136315394;
       v22 = "[CSFTimer _armTimer]";
       v23 = 2112;
-      v24 = v7;
+      v24 = identifier;
       _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s [%@] Not resuming timer in cancelled state", buf, 0x16u);
     }
   }
@@ -119,12 +119,12 @@ uint64_t __19__CSFTimer_resume___block_invoke(uint64_t a1)
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(CSFTimer *)self context];
-      v17 = [v16 identifier];
+      context2 = [(CSFTimer *)self context];
+      identifier2 = [context2 identifier];
       *buf = 136315394;
       v22 = "[CSFTimer _armTimer]";
       v23 = 2112;
-      v24 = v17;
+      v24 = identifier2;
       _os_log_impl(&dword_1DDA4B000, v15, OS_LOG_TYPE_DEFAULT, "%s [%@] Resuming timer", buf, 0x16u);
     }
 
@@ -143,38 +143,38 @@ uint64_t __21__CSFTimer__armTimer__block_invoke(uint64_t a1)
   return v2();
 }
 
-- (CSFTimer)initWithContext:(id)a3 queue:(id)a4 eventHandler:(id)a5
+- (CSFTimer)initWithContext:(id)context queue:(id)queue eventHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = CSFTimer;
   v12 = [(CSFTimer *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    if (!v9)
+    if (!contextCopy)
     {
       __assert_rtn("[CSFTimer initWithContext:queue:eventHandler:]", "CSFTimer.m", 41, "context");
     }
 
-    if (!v11)
+    if (!handlerCopy)
     {
       __assert_rtn("[CSFTimer initWithContext:queue:eventHandler:]", "CSFTimer.m", 42, "eventHandler");
     }
 
-    if (!v10)
+    if (!queueCopy)
     {
       __assert_rtn("[CSFTimer initWithContext:queue:eventHandler:]", "CSFTimer.m", 43, "queue");
     }
 
-    objc_storeStrong(&v12->_context, a3);
-    v14 = MEMORY[0x1E12BA300](v11);
+    objc_storeStrong(&v12->_context, context);
+    v14 = MEMORY[0x1E12BA300](handlerCopy);
     eventHandler = v13->_eventHandler;
     v13->_eventHandler = v14;
 
-    objc_storeStrong(&v13->_queue, a4);
+    objc_storeStrong(&v13->_queue, queue);
   }
 
   return v13;

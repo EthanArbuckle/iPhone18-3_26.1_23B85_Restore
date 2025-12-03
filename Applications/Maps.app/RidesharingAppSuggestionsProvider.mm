@@ -1,10 +1,10 @@
 @interface RidesharingAppSuggestionsProvider
 + (id)sharedProvider;
-- (id)_applicationsAfterFilteringOutInstalledApplicationsFromApplications:(id)a3;
-- (id)partitionedApplicationSuggestionsFromSuggestions:(id)a3;
-- (void)_fetchAppDataForAppIDs:(id)a3 withCompletion:(id)a4;
-- (void)_fetchAppIDsForSource:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 withCompletion:(id)a5;
-- (void)fetchSuggestedAppsForSource:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 withCompletion:(id)a5;
+- (id)_applicationsAfterFilteringOutInstalledApplicationsFromApplications:(id)applications;
+- (id)partitionedApplicationSuggestionsFromSuggestions:(id)suggestions;
+- (void)_fetchAppDataForAppIDs:(id)ds withCompletion:(id)completion;
+- (void)_fetchAppIDsForSource:(CLLocationCoordinate2D)source destination:(CLLocationCoordinate2D)destination withCompletion:(id)completion;
+- (void)fetchSuggestedAppsForSource:(CLLocationCoordinate2D)source destination:(CLLocationCoordinate2D)destination withCompletion:(id)completion;
 @end
 
 @implementation RidesharingAppSuggestionsProvider
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100DEDDB0;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195F228 != -1)
   {
     dispatch_once(&qword_10195F228, block);
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (id)partitionedApplicationSuggestionsFromSuggestions:(id)a3
+- (id)partitionedApplicationSuggestionsFromSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [(RidesharingAppSuggestionsProvider *)self _applicationsAfterFilteringOutInstalledApplicationsFromApplications:v4];
-  v6 = [v4 mutableCopy];
+  suggestionsCopy = suggestions;
+  v5 = [(RidesharingAppSuggestionsProvider *)self _applicationsAfterFilteringOutInstalledApplicationsFromApplications:suggestionsCopy];
+  v6 = [suggestionsCopy mutableCopy];
 
   [v6 removeObjectsInArray:v5];
   v7 = [[RidesharingPartitionedAppSuggestions alloc] initWithInstalledSuggestions:v6 notInstalledSuggestions:v5];
@@ -38,15 +38,15 @@
   return v7;
 }
 
-- (id)_applicationsAfterFilteringOutInstalledApplicationsFromApplications:(id)a3
+- (id)_applicationsAfterFilteringOutInstalledApplicationsFromApplications:(id)applications
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  applicationsCopy = applications;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [applicationsCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = applicationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -79,10 +79,10 @@
   return v11;
 }
 
-- (void)_fetchAppDataForAppIDs:(id)a3 withCompletion:(id)a4
+- (void)_fetchAppDataForAppIDs:(id)ds withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   v7 = +[MKAppleMediaServices sharedInstance];
   v8 = +[UIScreen mainScreen];
   [v8 scale];
@@ -91,18 +91,18 @@
   v12[1] = 3221225472;
   v12[2] = sub_100DEE0FC;
   v12[3] = &unk_10165EB78;
-  v13 = v5;
-  v11 = v5;
-  [v7 appleMediaServicesResultsWithIdentifiers:v6 artworkSize:1 screenScale:5 type:v12 source:62.0 completion:{62.0, v10}];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v7 appleMediaServicesResultsWithIdentifiers:dsCopy artworkSize:1 screenScale:5 type:v12 source:62.0 completion:{62.0, v10}];
 }
 
-- (void)_fetchAppIDsForSource:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 withCompletion:(id)a5
+- (void)_fetchAppIDsForSource:(CLLocationCoordinate2D)source destination:(CLLocationCoordinate2D)destination withCompletion:(id)completion
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3.longitude;
-  v8 = a3.latitude;
-  v10 = a5;
+  longitude = destination.longitude;
+  latitude = destination.latitude;
+  v7 = source.longitude;
+  v8 = source.latitude;
+  completionCopy = completion;
   v11 = [NSString stringWithFormat:@"%f, %f", *&v8, *&v7];
   v12 = [NSString stringWithFormat:@"%f, %f", *&latitude, *&longitude];
   v13 = objc_alloc_init(SSMutableURLRequestProperties);
@@ -121,24 +121,24 @@
   v16[2] = sub_100DEE2FC;
   v16[3] = &unk_101655228;
   v16[4] = self;
-  v17 = v10;
-  v15 = v10;
+  v17 = completionCopy;
+  v15 = completionCopy;
   [v14 startWithConnectionResponseBlock:v16];
 }
 
-- (void)fetchSuggestedAppsForSource:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 withCompletion:(id)a5
+- (void)fetchSuggestedAppsForSource:(CLLocationCoordinate2D)source destination:(CLLocationCoordinate2D)destination withCompletion:(id)completion
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3.longitude;
-  v8 = a3.latitude;
-  v10 = a5;
+  longitude = destination.longitude;
+  latitude = destination.latitude;
+  v7 = source.longitude;
+  v8 = source.latitude;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100DEE7C4;
   v12[3] = &unk_10165E308;
-  v11 = v10;
+  v11 = completionCopy;
   v13 = v11;
   objc_copyWeak(&v14, &location);
   [(RidesharingAppSuggestionsProvider *)self _fetchAppIDsForSource:v12 destination:v8 withCompletion:v7, latitude, longitude];

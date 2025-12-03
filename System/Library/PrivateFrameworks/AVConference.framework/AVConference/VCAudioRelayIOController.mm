@@ -3,37 +3,37 @@
 + (id)sharedInstanceNull;
 + (id)sharedInstanceRemoteFacing;
 + (void)initializeStateStrings;
-- (BOOL)addClient:(id)a3;
+- (BOOL)addClient:(id)client;
 - (BOOL)handleTransitionPrepareToStarting;
-- (BOOL)removeClient:(id)a3;
-- (BOOL)startRelayIO:(id)a3;
-- (BOOL)stateIdleWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5;
-- (BOOL)statePrepareWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5;
-- (BOOL)stateRunningWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5;
-- (BOOL)stateStartingWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5;
-- (BOOL)updateStateWithClient:(id)a3;
+- (BOOL)removeClient:(id)client;
+- (BOOL)startRelayIO:(id)o;
+- (BOOL)stateIdleWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state;
+- (BOOL)statePrepareWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state;
+- (BOOL)stateRunningWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state;
+- (BOOL)stateStartingWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state;
+- (BOOL)updateStateWithClient:(id)client;
 - (NSString)description;
-- (VCAudioRelayIOController)initWithRelayType:(unsigned int)a3 relayIOType:(unsigned int)a4;
-- (id)newControllerSettingsWithNewClient:(id)a3;
-- (id)newRelayIOWithCompletionHandler:(id)a3;
+- (VCAudioRelayIOController)initWithRelayType:(unsigned int)type relayIOType:(unsigned int)oType;
+- (id)newControllerSettingsWithNewClient:(id)client;
+- (id)newRelayIOWithCompletionHandler:(id)handler;
 - (unsigned)channelsPerFrame;
-- (unsigned)computeSamplePerFrameWithControllerSampleRate:(unsigned int)a3;
+- (unsigned)computeSamplePerFrameWithControllerSampleRate:(unsigned int)rate;
 - (void)_cleanupDeadClients;
-- (void)addStartingClient:(id)a3 controllerSettings:(id)a4;
+- (void)addStartingClient:(id)client controllerSettings:(id)settings;
 - (void)dealloc;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
-- (void)flushEventQueue:(opaqueCMSimpleQueue *)a3;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
+- (void)flushEventQueue:(opaqueCMSimpleQueue *)queue;
 - (void)handleTransitionPrepareToStarting;
 - (void)loadRelay;
-- (void)processEventQueue:(AudioEventQueue_t *)a3 clientList:(id)a4;
-- (void)registerClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4;
-- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)a3;
+- (void)processEventQueue:(AudioEventQueue_t *)queue clientList:(id)list;
+- (void)registerClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO;
+- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)o;
 - (void)resetAudioTimestamps;
-- (void)startClient:(id)a3;
-- (void)stopClient:(id)a3;
-- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4;
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4;
-- (void)waitIdleForClient:(id)a3;
+- (void)startClient:(id)client;
+- (void)stopClient:(id)client;
+- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO;
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings;
+- (void)waitIdleForClient:(id)client;
 @end
 
 @implementation VCAudioRelayIOController
@@ -106,7 +106,7 @@ void __46__VCAudioRelayIOController_sharedInstanceNull__block_invoke()
   }
 }
 
-- (VCAudioRelayIOController)initWithRelayType:(unsigned int)a3 relayIOType:(unsigned int)a4
+- (VCAudioRelayIOController)initWithRelayType:(unsigned int)type relayIOType:(unsigned int)oType
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -115,8 +115,8 @@ void __46__VCAudioRelayIOController_sharedInstanceNull__block_invoke()
   v7 = v6;
   if (v6)
   {
-    v6->_relayType = a3;
-    v6->_relayIOType = a4;
+    v6->_relayType = type;
+    v6->_relayIOType = oType;
     v6->_startingIOClients = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7->_allClients = objc_alloc_init(MEMORY[0x1E695DF70]);
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(62);
@@ -221,9 +221,9 @@ void __46__VCAudioRelayIOController_sharedInstanceNull__block_invoke()
   objc_sync_exit(v3);
 }
 
-- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)a3
+- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)o
 {
-  for (i = &a3->clientIOList; ; i = &a3->clientIOList)
+  for (i = &o->clientIOList; ; i = &o->clientIOList)
   {
     v5 = VCSingleLinkedListPop(i);
     if (!v5)
@@ -235,29 +235,29 @@ void __46__VCAudioRelayIOController_sharedInstanceNull__block_invoke()
   }
 }
 
-- (BOOL)addClient:(id)a3
+- (BOOL)addClient:(id)client
 {
   v5 = [(NSMutableArray *)self->_allClients containsObject:?];
   if ((v5 & 1) == 0)
   {
-    [(NSMutableArray *)self->_allClients addObject:a3];
+    [(NSMutableArray *)self->_allClients addObject:client];
   }
 
   return v5 ^ 1;
 }
 
-- (void)waitIdleForClient:(id)a3
+- (void)waitIdleForClient:(id)client
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (([a3 direction] & 2) == 0)
+  if (([client direction] & 2) == 0)
   {
     goto LABEL_17;
   }
 
   v5 = dispatch_time(0, 1000000000);
-  if (!dispatch_semaphore_wait(*([a3 sinkIO] + 16), v5))
+  if (!dispatch_semaphore_wait(*([client sinkIO] + 16), v5))
   {
-    dispatch_semaphore_signal(*([a3 sinkIO] + 16));
+    dispatch_semaphore_signal(*([client sinkIO] + 16));
     goto LABEL_17;
   }
 
@@ -276,9 +276,9 @@ void __46__VCAudioRelayIOController_sharedInstanceNull__block_invoke()
         *&v25[22] = 1024;
         LODWORD(v26) = 359;
         WORD2(v26) = 2048;
-        *(&v26 + 6) = a3;
+        *(&v26 + 6) = client;
         HIWORD(v26) = 2048;
-        v27 = [a3 sinkIO];
+        selfCopy2 = [client sinkIO];
         v9 = " [%s] %s:%d Sink run lock semaphore was not signaled! client=%p sinkIO=%p";
         v10 = v8;
         v11 = 48;
@@ -315,11 +315,11 @@ LABEL_14:
         WORD2(v26) = 2112;
         *(&v26 + 6) = v6;
         HIWORD(v26) = 2048;
-        v27 = self;
+        selfCopy2 = self;
         *v28 = 2048;
-        *&v28[2] = a3;
+        *&v28[2] = client;
         *&v28[10] = 2048;
-        *&v28[12] = [a3 sinkIO];
+        *&v28[12] = [client sinkIO];
         v9 = " [%s] %s:%d %@(%p) Sink run lock semaphore was not signaled! client=%p sinkIO=%p";
         v10 = v13;
         v11 = 68;
@@ -337,15 +337,15 @@ LABEL_14:
   }
 
 LABEL_17:
-  if (([a3 direction] & 1) == 0)
+  if (([client direction] & 1) == 0)
   {
     return;
   }
 
   v14 = dispatch_time(0, 1000000000);
-  if (!dispatch_semaphore_wait(*([a3 sourceIO] + 16), v14))
+  if (!dispatch_semaphore_wait(*([client sourceIO] + 16), v14))
   {
-    dispatch_semaphore_signal(*([a3 sourceIO] + 16));
+    dispatch_semaphore_signal(*([client sourceIO] + 16));
     return;
   }
 
@@ -363,7 +363,7 @@ LABEL_17:
       goto LABEL_31;
     }
 
-    v18 = [a3 sourceIO];
+    sourceIO = [client sourceIO];
     *v25 = 136316162;
     *&v25[4] = v16;
     *&v25[12] = 2080;
@@ -371,9 +371,9 @@ LABEL_17:
     *&v25[22] = 1024;
     LODWORD(v26) = 374;
     WORD2(v26) = 2048;
-    *(&v26 + 6) = a3;
+    *(&v26 + 6) = client;
     HIWORD(v26) = 2048;
-    v27 = v18;
+    selfCopy2 = sourceIO;
     v19 = " [%s] %s:%d Source run lock semaphore was not signaled! client=%p sourceIO=%p";
     v20 = v17;
     v21 = 48;
@@ -403,7 +403,7 @@ LABEL_17:
       goto LABEL_31;
     }
 
-    v24 = [a3 sourceIO];
+    sourceIO2 = [client sourceIO];
     *v25 = 136316674;
     *&v25[4] = v22;
     *&v25[12] = 2080;
@@ -413,11 +413,11 @@ LABEL_17:
     WORD2(v26) = 2112;
     *(&v26 + 6) = v15;
     HIWORD(v26) = 2048;
-    v27 = self;
+    selfCopy2 = self;
     *v28 = 2048;
-    *&v28[2] = a3;
+    *&v28[2] = client;
     *&v28[10] = 2048;
-    *&v28[12] = v24;
+    *&v28[12] = sourceIO2;
     v19 = " [%s] %s:%d %@(%p) Source run lock semaphore was not signaled! client=%p sourceIO=%p";
     v20 = v23;
     v21 = 68;
@@ -434,24 +434,24 @@ LABEL_31:
   }
 }
 
-- (BOOL)removeClient:(id)a3
+- (BOOL)removeClient:(id)client
 {
   v5 = [(NSMutableArray *)self->_allClients containsObject:?];
   if (v5)
   {
-    if (([a3 direction] & 2) != 0)
+    if (([client direction] & 2) != 0)
     {
-      -[VCAudioRelayIOController unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [a3 sinkIO], &self->_sinkData);
+      -[VCAudioRelayIOController unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [client sinkIO], &self->_sinkData);
     }
 
-    if ([a3 direction])
+    if ([client direction])
     {
-      -[VCAudioRelayIOController unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [a3 sourceIO], &self->_sourceData);
+      -[VCAudioRelayIOController unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [client sourceIO], &self->_sourceData);
     }
 
-    [(VCAudioRelayIOController *)self waitIdleForClient:a3];
-    [(NSMutableArray *)self->_allClients removeObject:a3];
-    [(NSMutableArray *)self->_startingIOClients removeObject:a3];
+    [(VCAudioRelayIOController *)self waitIdleForClient:client];
+    [(NSMutableArray *)self->_allClients removeObject:client];
+    [(NSMutableArray *)self->_startingIOClients removeObject:client];
   }
 
   return v5;
@@ -460,7 +460,7 @@ LABEL_31:
 - (void)_cleanupDeadClients
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -534,7 +534,7 @@ LABEL_19:
                 v27 = 2112;
                 v28 = v11;
                 v29 = 2048;
-                v30 = self;
+                selfCopy = self;
                 v31 = 2048;
                 v32 = v10;
                 v14 = v13;
@@ -545,7 +545,7 @@ LABEL_19:
             }
           }
 
-          [v3 setObject:v10 atIndexedSubscript:{objc_msgSend(v3, "count")}];
+          [array setObject:v10 atIndexedSubscript:{objc_msgSend(array, "count")}];
         }
 
         ++v9;
@@ -559,7 +559,7 @@ LABEL_19:
     while (v19);
   }
 
-  [(NSMutableArray *)self->_allClients removeObjectsInArray:v3];
+  [(NSMutableArray *)self->_allClients removeObjectsInArray:array];
 }
 
 - (unsigned)channelsPerFrame
@@ -602,7 +602,7 @@ LABEL_19:
   return v6;
 }
 
-- (unsigned)computeSamplePerFrameWithControllerSampleRate:(unsigned int)a3
+- (unsigned)computeSamplePerFrameWithControllerSampleRate:(unsigned int)rate
 {
   v20 = *MEMORY[0x1E69E9840];
   v16 = 0u;
@@ -618,7 +618,7 @@ LABEL_19:
 
   v6 = v5;
   v7 = *v17;
-  v8 = a3;
+  rateCopy = rate;
   v9 = -1;
   do
   {
@@ -629,9 +629,9 @@ LABEL_19:
         objc_enumerationMutation(allClients);
       }
 
-      v11 = [*(*(&v16 + 1) + 8 * i) clientFormat];
-      LODWORD(v12) = *(v11 + 40);
-      v13 = vcvtad_u64_f64(v8 * v12 / *v11);
+      clientFormat = [*(*(&v16 + 1) + 8 * i) clientFormat];
+      LODWORD(v12) = *(clientFormat + 40);
+      v13 = vcvtad_u64_f64(rateCopy * v12 / *clientFormat);
       if (v9 >= v13)
       {
         v9 = v13;
@@ -645,24 +645,24 @@ LABEL_19:
   return v9;
 }
 
-- (id)newControllerSettingsWithNewClient:(id)a3
+- (id)newControllerSettingsWithNewClient:(id)client
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a3)
+  clientCopy = client;
+  if (!client)
   {
-    v5 = [(NSMutableArray *)self->_allClients lastObject];
+    clientCopy = [(NSMutableArray *)self->_allClients lastObject];
   }
 
-  v6 = [v5 clientFormat];
+  clientFormat = [clientCopy clientFormat];
   v19 = 0;
   v10 = 0;
   v11 = 0x40D7700000000000;
   v18 = 0;
   v12[1] = 0x296C70636DLL;
-  if (v6)
+  if (clientFormat)
   {
-    v7 = *v6;
+    v7 = *clientFormat;
   }
 
   else
@@ -671,23 +671,23 @@ LABEL_19:
   }
 
   *v12 = v7;
-  v16 = [(VCAudioRelayIOController *)self channelsPerFrame];
+  channelsPerFrame = [(VCAudioRelayIOController *)self channelsPerFrame];
   v17 = 32;
   v14 = 1;
-  v15 = 4 * (v16 & 0x7FFFFFF);
+  v15 = 4 * (channelsPerFrame & 0x7FFFFFF);
   v13 = v15;
   LODWORD(v19) = [(VCAudioRelayIOController *)self computeSamplePerFrameWithControllerSampleRate:v7];
-  if (v5)
+  if (clientCopy)
   {
-    LODWORD(v10) = [a3 remoteCodecType];
-    [a3 remoteCodecSampleRate];
+    LODWORD(v10) = [client remoteCodecType];
+    [client remoteCodecSampleRate];
     v11 = v8;
   }
 
   return [[VCAudioRelayIOControllerSettings alloc] initWithAudioFormat:v12 remoteCodecInfo:&v10];
 }
 
-- (BOOL)startRelayIO:(id)a3
+- (BOOL)startRelayIO:(id)o
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v11[0] = 0;
@@ -695,12 +695,12 @@ LABEL_19:
   relay = self->_relay;
   if (relayIOType == 1)
   {
-    [(VCAudioRelay *)relay setRemoteIO:a3 withError:v11];
+    [(VCAudioRelay *)relay setRemoteIO:o withError:v11];
   }
 
   else
   {
-    [(VCAudioRelay *)relay setClientIO:a3 withError:v11];
+    [(VCAudioRelay *)relay setClientIO:o withError:v11];
   }
 
   v6 = v11[0];
@@ -761,7 +761,7 @@ uint64_t __41__VCAudioRelayIOController_startRelayIO___block_invoke(uint64_t a1)
   return v6();
 }
 
-- (id)newRelayIOWithCompletionHandler:(id)a3
+- (id)newRelayIOWithCompletionHandler:(id)handler
 {
   v5 = objc_alloc_init(VCAudioRelayIO);
   [(VCAudioRelayIO *)v5 setClientFormat:[(VCAudioRelayIOControllerSettings *)self->_currentSettings audioFormat]];
@@ -770,7 +770,7 @@ uint64_t __41__VCAudioRelayIOController_startRelayIO___block_invoke(uint64_t a1)
   [(VCAudioRelayIO *)v5 setSpeakerCallback:VCAudioRelayIOController_PullAudioSamples];
   [(VCAudioRelayIO *)v5 setSpeakerCallbackContext:&self->_sourceData];
   [(VCAudioRelayIO *)v5 setUsePacketThread:1];
-  [(VCAudioRelayIO *)v5 setStartCompletionHandler:a3];
+  [(VCAudioRelayIO *)v5 setStartCompletionHandler:handler];
   [(VCAudioRelayIO *)v5 setUpdateRemoteCodecInfoContext:self];
   [(VCAudioRelayIO *)v5 setUpdateRemoteCodecInfoCallback:VCAudioRelayIOController_UpdateRemoteCodecInfo];
   return v5;
@@ -783,10 +783,10 @@ uint64_t __41__VCAudioRelayIOController_startRelayIO___block_invoke(uint64_t a1)
   VCAudioIOControllerIOState_ResetControllerTime(&self->_sourceData.timestampInitialized);
 }
 
-- (void)registerClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4
+- (void)registerClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = VCAudioIOControllerIOState_NewAudioEvent(0, a3);
+  v7 = VCAudioIOControllerIOState_NewAudioEvent(0, o);
   v18 = v7;
   v8 = dispatch_time(0, 1000000000);
   if (dispatch_semaphore_wait(*(v7[1] + 16), v8))
@@ -806,7 +806,7 @@ uint64_t __41__VCAudioRelayIOController_startRelayIO___block_invoke(uint64_t a1)
           v23 = 1024;
           v24 = 529;
           v25 = 2048;
-          v26 = a3;
+          oCopy = o;
           v12 = " [%s] %s:%d Wait on run lock semaphore timed out! clientIO=%p";
           v13 = v11;
           v14 = 38;
@@ -841,11 +841,11 @@ LABEL_12:
           v23 = 1024;
           v24 = 529;
           v25 = 2112;
-          v26 = v9;
+          oCopy = v9;
           v27 = 2048;
-          v28 = self;
+          selfCopy = self;
           v29 = 2048;
-          v30 = a3;
+          oCopy2 = o;
           v12 = " [%s] %s:%d %@(%p) Wait on run lock semaphore timed out! clientIO=%p";
           v13 = v16;
           v14 = 58;
@@ -857,7 +857,7 @@ LABEL_12:
 
   if (self->_state == 4)
   {
-    if (CMSimpleQueueEnqueue(a4->eventQueue, v7))
+    if (CMSimpleQueueEnqueue(iO->eventQueue, v7))
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -874,18 +874,18 @@ LABEL_12:
 
   else
   {
-    VCAudioIOControllerIOState_RegisterClientIO(a4, &v18);
+    VCAudioIOControllerIOState_RegisterClientIO(iO, &v18);
   }
 }
 
-- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4
+- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v6 = VCAudioIOControllerIOState_NewAudioEvent(1, a3);
+  v6 = VCAudioIOControllerIOState_NewAudioEvent(1, o);
   v8[0] = v6;
   if (self->_state == 4)
   {
-    if (CMSimpleQueueEnqueue(a4->eventQueue, v6))
+    if (CMSimpleQueueEnqueue(iO->eventQueue, v6))
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -902,17 +902,17 @@ LABEL_12:
 
   else
   {
-    VCAudioIOControllerIOState_UnregisterClientIO(a4, v8);
+    VCAudioIOControllerIOState_UnregisterClientIO(iO, v8);
   }
 }
 
-- (BOOL)stateIdleWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5
+- (BOOL)stateIdleWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state
 {
-  *a5 = 1;
-  if ([(NSMutableArray *)self->_allClients count:a3])
+  *state = 1;
+  if ([(NSMutableArray *)self->_allClients count:settings])
   {
     [(VCAudioRelayIOController *)self loadRelay];
-    *a5 = 2;
+    *state = 2;
   }
 
   else
@@ -926,11 +926,11 @@ LABEL_12:
 - (BOOL)handleTransitionPrepareToStarting
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(VCAudioRelayIOControllerSettings *)self->_currentSettings audioFormat];
-  samplesPerFrame = v3->samplesPerFrame;
-  v5 = *&v3->format.mSampleRate;
-  v6 = *&v3->format.mBytesPerPacket;
-  *&v16.mBitsPerChannel = *&v3->format.mBitsPerChannel;
+  audioFormat = [(VCAudioRelayIOControllerSettings *)self->_currentSettings audioFormat];
+  samplesPerFrame = audioFormat->samplesPerFrame;
+  v5 = *&audioFormat->format.mSampleRate;
+  v6 = *&audioFormat->format.mBytesPerPacket;
+  *&v16.mBitsPerChannel = *&audioFormat->format.mBitsPerChannel;
   *&v16.mSampleRate = v5;
   *&v16.mBytesPerPacket = v6;
   if (!VCAudioBufferList_Allocate(&v16, samplesPerFrame, &self->_sourceData.secondarySampleBuffer))
@@ -970,7 +970,7 @@ LABEL_23:
     while (v9);
   }
 
-  v12 = VCAudioLimiter_Allocate(v3);
+  v12 = VCAudioLimiter_Allocate(audioFormat);
   self->_sourceData.audioLimiter = v12;
   if (!v12)
   {
@@ -1077,61 +1077,61 @@ uint64_t __61__VCAudioRelayIOController_handleTransitionPrepareToStarting__block
   return [*(a1 + 32) updateStateWithClient:0];
 }
 
-- (BOOL)statePrepareWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5
+- (BOOL)statePrepareWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state
 {
-  if (![(NSMutableArray *)self->_allClients count:a3])
+  if (![(NSMutableArray *)self->_allClients count:settings])
   {
     [(VCAudioRelayIOController *)self unloadRelay];
     v8 = 1;
     goto LABEL_5;
   }
 
-  self->_currentSettings = a3;
+  self->_currentSettings = settings;
   if ([(VCAudioRelayIOController *)self handleTransitionPrepareToStarting])
   {
     v8 = 3;
 LABEL_5:
-    *a5 = v8;
+    *state = v8;
     return 1;
   }
 
   return 0;
 }
 
-- (void)addStartingClient:(id)a3 controllerSettings:(id)a4
+- (void)addStartingClient:(id)client controllerSettings:(id)settings
 {
-  if (a3 && ([(NSMutableArray *)self->_startingIOClients containsObject:?]& 1) == 0)
+  if (client && ([(NSMutableArray *)self->_startingIOClients containsObject:?]& 1) == 0)
   {
-    [objc_msgSend(a3 "delegate")];
-    if ([a3 direction])
+    [objc_msgSend(client "delegate")];
+    if ([client direction])
     {
-      -[VCAudioRelayIOController registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [a3 sourceIO], &self->_sourceData);
+      -[VCAudioRelayIOController registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [client sourceIO], &self->_sourceData);
     }
 
-    if (([a3 direction] & 2) != 0)
+    if (([client direction] & 2) != 0)
     {
-      -[VCAudioRelayIOController registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [a3 sinkIO], &self->_sinkData);
+      -[VCAudioRelayIOController registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [client sinkIO], &self->_sinkData);
     }
 
-    [(NSMutableArray *)self->_startingIOClients addObject:a3];
+    [(NSMutableArray *)self->_startingIOClients addObject:client];
   }
 
   if (self->_relayIOType == 1)
   {
-    v7 = [(VCAudioRelayIOControllerSettings *)self->_currentSettings remoteCodecInfo];
-    v8 = [(VCAudioRelay *)self->_relay remoteIO];
+    remoteCodecInfo = [(VCAudioRelayIOControllerSettings *)self->_currentSettings remoteCodecInfo];
+    remoteIO = [(VCAudioRelay *)self->_relay remoteIO];
 
-    [(VCAudioRelayIO *)v8 setRemoteCodecInfo:v7];
+    [(VCAudioRelayIO *)remoteIO setRemoteCodecInfo:remoteCodecInfo];
   }
 }
 
-- (BOOL)stateStartingWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5
+- (BOOL)stateStartingWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state
 {
   v22 = *MEMORY[0x1E69E9840];
-  *a5 = 3;
-  if (!memcmp(-[VCAudioRelayIOControllerSettings audioFormat](self->_currentSettings, "audioFormat"), [a3 audioFormat], 0x28uLL) && -[NSMutableArray count](self->_allClients, "count"))
+  *state = 3;
+  if (!memcmp(-[VCAudioRelayIOControllerSettings audioFormat](self->_currentSettings, "audioFormat"), [settings audioFormat], 0x28uLL) && -[NSMutableArray count](self->_allClients, "count"))
   {
-    [(VCAudioRelayIOController *)self addStartingClient:a4 controllerSettings:a3];
+    [(VCAudioRelayIOController *)self addStartingClient:client controllerSettings:settings];
   }
 
   else
@@ -1174,19 +1174,19 @@ LABEL_5:
     VCAudioLimiter_Stop(self->_sourceData.audioLimiter);
     VCAudioDucker_Destroy(&self->_sourceData.audioLimiter);
     VCAudioBufferList_Destroy(&self->_sourceData.secondarySampleBuffer);
-    *a5 = 2;
+    *state = 2;
   }
 
   return 1;
 }
 
-- (BOOL)stateRunningWithControllerSettings:(id)a3 client:(id)a4 newState:(unsigned int *)a5
+- (BOOL)stateRunningWithControllerSettings:(id)settings client:(id)client newState:(unsigned int *)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  *a5 = 4;
-  if (!memcmp(-[VCAudioRelayIOControllerSettings audioFormat](self->_currentSettings, "audioFormat"), [a3 audioFormat], 0x28uLL) && -[NSMutableArray count](self->_allClients, "count"))
+  *state = 4;
+  if (!memcmp(-[VCAudioRelayIOControllerSettings audioFormat](self->_currentSettings, "audioFormat"), [settings audioFormat], 0x28uLL) && -[NSMutableArray count](self->_allClients, "count"))
   {
-    [(VCAudioRelayIOController *)self addStartingClient:a4 controllerSettings:a3];
+    [(VCAudioRelayIOController *)self addStartingClient:client controllerSettings:settings];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -1220,19 +1220,19 @@ LABEL_5:
 
   else
   {
-    *a5 = 3;
+    *state = 3;
   }
 
   return 1;
 }
 
-- (BOOL)updateStateWithClient:(id)a3
+- (BOOL)updateStateWithClient:(id)client
 {
   v60 = *MEMORY[0x1E69E9840];
   v42 = 0;
   [(VCAudioRelayIOController *)self _cleanupDeadClients];
-  v41 = a3;
-  v5 = [(VCAudioRelayIOController *)self newControllerSettingsWithNewClient:a3];
+  clientCopy = client;
+  v5 = [(VCAudioRelayIOController *)self newControllerSettingsWithNewClient:client];
   v40 = v5;
   do
   {
@@ -1253,9 +1253,9 @@ LABEL_5:
           v47 = 1024;
           v48 = 748;
           v49 = 2112;
-          v50 = self;
+          selfCopy3 = self;
           v51 = 2112;
-          v52 = v16;
+          selfCopy4 = v16;
           v53 = 1024;
           *v54 = state;
           v11 = v15;
@@ -1289,9 +1289,9 @@ LABEL_5:
           v47 = 1024;
           v48 = 748;
           v49 = 2112;
-          v50 = v6;
+          selfCopy3 = v6;
           v51 = 2048;
-          v52 = self;
+          selfCopy4 = self;
           v53 = 2112;
           *v54 = self;
           *&v54[8] = 2112;
@@ -1313,7 +1313,7 @@ LABEL_11:
     {
       if (v18 == 3)
       {
-        v20 = [(VCAudioRelayIOController *)self stateStartingWithControllerSettings:v5 client:v41 newState:&v42];
+        v20 = [(VCAudioRelayIOController *)self stateStartingWithControllerSettings:v5 client:clientCopy newState:&v42];
       }
 
       else
@@ -1323,13 +1323,13 @@ LABEL_11:
           goto LABEL_22;
         }
 
-        v20 = [(VCAudioRelayIOController *)self stateRunningWithControllerSettings:v5 client:v41 newState:&v42];
+        v20 = [(VCAudioRelayIOController *)self stateRunningWithControllerSettings:v5 client:clientCopy newState:&v42];
       }
     }
 
     else if (v18 == 1)
     {
-      v20 = [(VCAudioRelayIOController *)self stateIdleWithControllerSettings:v5 client:v41 newState:&v42];
+      v20 = [(VCAudioRelayIOController *)self stateIdleWithControllerSettings:v5 client:clientCopy newState:&v42];
     }
 
     else
@@ -1339,7 +1339,7 @@ LABEL_11:
         goto LABEL_22;
       }
 
-      v20 = [(VCAudioRelayIOController *)self statePrepareWithControllerSettings:v5 client:v41 newState:&v42];
+      v20 = [(VCAudioRelayIOController *)self statePrepareWithControllerSettings:v5 client:clientCopy newState:&v42];
     }
 
     v19 = v20;
@@ -1376,9 +1376,9 @@ LABEL_22:
       v47 = 1024;
       v48 = 767;
       v49 = 2112;
-      v50 = self;
+      selfCopy3 = self;
       v51 = 2112;
-      v52 = v35;
+      selfCopy4 = v35;
       v53 = 1024;
       *v54 = v39;
       *&v54[4] = 2112;
@@ -1420,9 +1420,9 @@ LABEL_22:
       v47 = 1024;
       v48 = 767;
       v49 = 2112;
-      v50 = v24;
+      selfCopy3 = v24;
       v51 = 2048;
-      v52 = self;
+      selfCopy4 = self;
       v53 = 2112;
       *v54 = self;
       *&v54[8] = 2112;
@@ -1451,7 +1451,7 @@ LABEL_34:
   return v19;
 }
 
-- (void)processEventQueue:(AudioEventQueue_t *)a3 clientList:(id)a4
+- (void)processEventQueue:(AudioEventQueue_t *)queue clientList:(id)list
 {
   v19 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -1462,7 +1462,7 @@ LABEL_34:
     v6 = micro();
   }
 
-  v7 = VCAudioEventQueue_Dequeue(a3, &v17);
+  v7 = VCAudioEventQueue_Dequeue(queue, &v17);
   for (i = 0; v7; ++i)
   {
     v16 = v18;
@@ -1470,26 +1470,26 @@ LABEL_34:
     {
       if (v17 == 2)
       {
-        [a4 removeObject:v18];
+        [list removeObject:v18];
         goto LABEL_9;
       }
 
       if (v17 == 1)
       {
-        [a4 addObject:v18];
+        [list addObject:v18];
 LABEL_9:
       }
     }
 
     LODWORD(v17) = 0;
     v18 = 0;
-    v7 = VCAudioEventQueue_Dequeue(a3, &v17);
+    v7 = VCAudioEventQueue_Dequeue(queue, &v17);
   }
 
   LogProfileTimeOverLimit(v6, v7, v8, v9, v10, v11, v12, v13, v14, "[VCAudioRelayIOController processEventQueue:clientList:]");
 }
 
-- (void)flushEventQueue:(opaqueCMSimpleQueue *)a3
+- (void)flushEventQueue:(opaqueCMSimpleQueue *)queue
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = 0.0;
@@ -1499,7 +1499,7 @@ LABEL_9:
   }
 
   v5 = objc_opt_new();
-  v6 = CMSimpleQueueDequeue(a3);
+  v6 = CMSimpleQueueDequeue(queue);
   v18[0] = v6;
   for (i = 0; v6; v18[0] = v6)
   {
@@ -1512,16 +1512,16 @@ LABEL_9:
 
     VCAudioIOControllerIOState_ReleaseAudioEvent(v18, v9 ^ 1);
     ++i;
-    v6 = CMSimpleQueueDequeue(a3);
+    v6 = CMSimpleQueueDequeue(queue);
   }
 
   LogProfileTimeOverLimit(v4, v10, v11, v12, v13, v14, v15, v16, v17, "[VCAudioRelayIOController flushEventQueue:]");
 }
 
-- (void)startClient:(id)a3
+- (void)startClient:(id)client
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (client)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1529,7 +1529,7 @@ LABEL_9:
     block[2] = __40__VCAudioRelayIOController_startClient___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = client;
     dispatch_async(dispatchQueue, block);
   }
 }
@@ -1553,10 +1553,10 @@ uint64_t __40__VCAudioRelayIOController_startClient___block_invoke(uint64_t a1)
   return [v3 didStart:0 error:0];
 }
 
-- (void)stopClient:(id)a3
+- (void)stopClient:(id)client
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (client)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1564,7 +1564,7 @@ uint64_t __40__VCAudioRelayIOController_startClient___block_invoke(uint64_t a1)
     block[2] = __39__VCAudioRelayIOController_stopClient___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = client;
     dispatch_async(dispatchQueue, block);
   }
 }
@@ -1582,21 +1582,21 @@ uint64_t __39__VCAudioRelayIOController_stopClient___block_invoke(uint64_t a1)
   return [v3 didStop:v2 error:0];
 }
 
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings
 {
-  [a3 setDirection:a4->var0];
-  [a3 setSpatialAudioDisabled:a4->var1];
-  [a3 setIsVoiceActivityEnabled:a4->var2];
-  var3 = a4->var3;
+  [client setDirection:settings->var0];
+  [client setSpatialAudioDisabled:settings->var1];
+  [client setIsVoiceActivityEnabled:settings->var2];
+  var3 = settings->var3;
 
-  [a3 setIsMediaPriorityEnabled:var3];
+  [client setIsMediaPriorityEnabled:var3];
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   v10 = *MEMORY[0x1E69E9840];
-  codecType = a3->codecType;
-  sampleRate = a3->sampleRate;
+  codecType = codec->codecType;
+  sampleRate = codec->sampleRate;
   dispatchQueue = self->_dispatchQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -1604,7 +1604,7 @@ uint64_t __39__VCAudioRelayIOController_stopClient___block_invoke(uint64_t a1)
   v6[3] = &unk_1E85F4090;
   v6[4] = self;
   v7 = codecType;
-  v8 = *(&a3->codecType + 1);
+  v8 = *(&codec->codecType + 1);
   v9 = sampleRate;
   dispatch_async(dispatchQueue, v6);
 }

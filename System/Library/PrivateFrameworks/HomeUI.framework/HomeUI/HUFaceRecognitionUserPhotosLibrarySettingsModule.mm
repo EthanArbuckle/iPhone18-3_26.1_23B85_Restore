@@ -1,67 +1,67 @@
 @interface HUFaceRecognitionUserPhotosLibrarySettingsModule
-- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)a3;
-- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)_updatePhotosLibrarySettingsForItem:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)didSelectItem:(id)a3;
+- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)updater;
+- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)_updatePhotosLibrarySettingsForItem:(id)item;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)didSelectItem:(id)item;
 - (id)itemProviders;
 @end
 
 @implementation HUFaceRecognitionUserPhotosLibrarySettingsModule
 
-- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUFaceRecognitionUserPhotosLibrarySettingsModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
   }
 
   return v9;
 }
 
-- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)a3
+- (HUFaceRecognitionUserPhotosLibrarySettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionUserPhotosLibrarySettingsModule.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionUserPhotosLibrarySettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionUserPhotosLibrarySettingsModule.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionUserPhotosLibrarySettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (id)didSelectItem:(id)a3
+- (id)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self allowPhotosLibraryAccessItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  allowPhotosLibraryAccessItemProvider = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self allowPhotosLibraryAccessItemProvider];
+  items = [allowPhotosLibraryAccessItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   if (v7)
   {
-    v8 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessNever];
-    if ([v4 isEqual:v8])
+    photoLibraryAccessNever = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessNever];
+    if ([itemCopy isEqual:photoLibraryAccessNever])
     {
 
 LABEL_5:
-      v10 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self _updatePhotosLibrarySettingsForItem:v4];
+      futureWithNoResult = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self _updatePhotosLibrarySettingsForItem:itemCopy];
       goto LABEL_7;
     }
 
-    v9 = [MEMORY[0x277D14CE8] isCloudPhotosOn];
+    isCloudPhotosOn = [MEMORY[0x277D14CE8] isCloudPhotosOn];
 
-    if (v9)
+    if (isCloudPhotosOn)
     {
       goto LABEL_5;
     }
   }
 
-  v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_7:
-  v11 = v10;
+  v11 = futureWithNoResult;
 
   return v11;
 }
@@ -76,16 +76,16 @@ LABEL_7:
 
   else
   {
-    v5 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
-    v6 = [v5 currentUser];
+    home = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
+    currentUser = [home currentUser];
 
-    v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
+    v7 = [MEMORY[0x277CBEB98] setWithObject:currentUser];
     v8 = objc_alloc(MEMORY[0x277D14B38]);
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __65__HUFaceRecognitionUserPhotosLibrarySettingsModule_itemProviders__block_invoke;
     v41[3] = &unk_277DB8648;
-    v9 = v6;
+    v9 = currentUser;
     v42 = v9;
     v10 = v7;
     v43 = v10;
@@ -118,16 +118,16 @@ LABEL_7:
 
     v20 = objc_alloc(MEMORY[0x277D14B40]);
     v21 = MEMORY[0x277CBEB98];
-    v22 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessNever];
-    v23 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessOnlyMe];
-    v24 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessEveryoneInThisHome];
-    v25 = [v21 setWithObjects:{v22, v23, v24, 0, v32, v33, v34, v35}];
+    photoLibraryAccessNever = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessNever];
+    photoLibraryAccessOnlyMe = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessOnlyMe];
+    photoLibraryAccessEveryoneInThisHome = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self photoLibraryAccessEveryoneInThisHome];
+    v25 = [v21 setWithObjects:{photoLibraryAccessNever, photoLibraryAccessOnlyMe, photoLibraryAccessEveryoneInThisHome, 0, v32, v33, v34, v35}];
     v26 = [v20 initWithItems:v25];
     [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self setAllowPhotosLibraryAccessItemProvider:v26];
 
     v27 = MEMORY[0x277CBEB98];
-    v28 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self allowPhotosLibraryAccessItemProvider];
-    v29 = [v27 setWithObjects:{v28, 0}];
+    allowPhotosLibraryAccessItemProvider = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self allowPhotosLibraryAccessItemProvider];
+    v29 = [v27 setWithObjects:{allowPhotosLibraryAccessItemProvider, 0}];
     v30 = self->_itemProviders;
     self->_itemProviders = v29;
 
@@ -248,14 +248,14 @@ id __65__HUFaceRecognitionUserPhotosLibrarySettingsModule_itemProviders__block_i
   return v11;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v4 = objc_opt_new();
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUFaceRecognitionAllowPhotosLibraryAccessSectionIdentifier"];
-  v6 = [(HFItemModule *)self allItems];
-  v7 = [v6 allObjects];
-  v8 = [MEMORY[0x277D14778] itemResultManualSortComparator];
-  v9 = [v7 sortedArrayUsingComparator:v8];
+  allItems = [(HFItemModule *)self allItems];
+  allObjects = [allItems allObjects];
+  itemResultManualSortComparator = [MEMORY[0x277D14778] itemResultManualSortComparator];
+  v9 = [allObjects sortedArrayUsingComparator:itemResultManualSortComparator];
   [v5 setItems:v9];
 
   if (![(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self shouldUseProxCardPresentationStyle])
@@ -264,7 +264,7 @@ id __65__HUFaceRecognitionUserPhotosLibrarySettingsModule_itemProviders__block_i
     [v5 setHeaderTitle:v10];
 
     v11 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionUsePhotosLibrarySectionFooterPhotosLink", @"HUFaceRecognitionUsePhotosLibrarySectionFooterPhotosLink", 1);
-    v12 = [MEMORY[0x277CBEBC0] hf_photosLibraryPeopleAlbumURL];
+    hf_photosLibraryPeopleAlbumURL = [MEMORY[0x277CBEBC0] hf_photosLibraryPeopleAlbumURL];
     v13 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionPhotosLibraryAccessFooter", @"HUFaceRecognitionPhotosLibraryAccessFooter", 1);
     if (([MEMORY[0x277D14CE8] isCloudPhotosOn] & 1) == 0)
     {
@@ -275,7 +275,7 @@ id __65__HUFaceRecognitionUserPhotosLibrarySettingsModule_itemProviders__block_i
       v13 = v16;
     }
 
-    v17 = [MEMORY[0x277CCA898] hf_attributedLinkStringForString:v13 linkString:v11 linkURL:v12];
+    v17 = [MEMORY[0x277CCA898] hf_attributedLinkStringForString:v13 linkString:v11 linkURL:hf_photosLibraryPeopleAlbumURL];
     [v5 setAttributedFooterTitle:v17];
   }
 
@@ -284,71 +284,71 @@ id __65__HUFaceRecognitionUserPhotosLibrarySettingsModule_itemProviders__block_i
   return v4;
 }
 
-- (id)_updatePhotosLibrarySettingsForItem:(id)a3
+- (id)_updatePhotosLibrarySettingsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-  v7 = [v6 BOOLValue];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_14;
   }
 
-  v9 = [v4 latestResults];
-  v10 = [v9 objectForKeyedSubscript:@"faceRecognitionPhotosLibrarySettingsKey"];
+  latestResults2 = [itemCopy latestResults];
+  v10 = [latestResults2 objectForKeyedSubscript:@"faceRecognitionPhotosLibrarySettingsKey"];
 
-  v11 = [v10 unsignedIntegerValue];
-  if (v11 > 1)
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  if (unsignedIntegerValue > 1)
   {
-    if (v11 == 2)
+    if (unsignedIntegerValue == 2)
     {
-      v12 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
-      v13 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
-      v14 = [v13 currentUser];
-      v15 = v12;
-      v16 = v14;
+      home = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
+      home2 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
+      currentUser = [home2 currentUser];
+      v15 = home;
+      v16 = currentUser;
       v17 = 1;
       goto LABEL_11;
     }
 
-    if (v11 == 3)
+    if (unsignedIntegerValue == 3)
     {
-      v12 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
-      v13 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
-      v14 = [v13 currentUser];
-      v15 = v12;
-      v16 = v14;
+      home = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
+      home2 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
+      currentUser = [home2 currentUser];
+      v15 = home;
+      v16 = currentUser;
       v17 = 1;
       v18 = 1;
 LABEL_12:
-      v8 = [v15 hf_setPhotosLibrarySettingsForUser:v16 importPhotosLibraryEnabled:v17 shareFacesEnabled:v18];
+      futureWithNoResult = [v15 hf_setPhotosLibrarySettingsForUser:v16 importPhotosLibraryEnabled:v17 shareFacesEnabled:v18];
 
       goto LABEL_13;
     }
   }
 
-  else if (v11 == 1)
+  else if (unsignedIntegerValue == 1)
   {
-    v12 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
-    v13 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
-    v14 = [v13 currentUser];
-    v15 = v12;
-    v16 = v14;
+    home = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
+    home2 = [(HUFaceRecognitionUserPhotosLibrarySettingsModule *)self home];
+    currentUser = [home2 currentUser];
+    v15 = home;
+    v16 = currentUser;
     v17 = 0;
 LABEL_11:
     v18 = 0;
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_13:
 
 LABEL_14:
 
-  return v8;
+  return futureWithNoResult;
 }
 
 @end

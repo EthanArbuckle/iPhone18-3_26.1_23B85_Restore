@@ -1,12 +1,12 @@
 @interface GEOWiFiQualityServiceRequester
-- (id)_validateResponse:(id)a3;
+- (id)_validateResponse:(id)response;
 @end
 
 @implementation GEOWiFiQualityServiceRequester
 
-- (id)_validateResponse:(id)a3
+- (id)_validateResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

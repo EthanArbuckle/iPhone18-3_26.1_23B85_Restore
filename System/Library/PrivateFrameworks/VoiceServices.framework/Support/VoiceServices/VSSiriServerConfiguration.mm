@@ -1,19 +1,19 @@
 @interface VSSiriServerConfiguration
 + (id)defaultConfig;
-- (double)timeoutForAppId:(id)a3;
+- (double)timeoutForAppId:(id)id;
 @end
 
 @implementation VSSiriServerConfiguration
 
-- (double)timeoutForAppId:(id)a3
+- (double)timeoutForAppId:(id)id
 {
-  v3 = [MEMORY[0x277D799C0] isHomeHub];
+  isHomeHub = [MEMORY[0x277D799C0] isHomeHub];
   result = 5.0;
-  if ((v3 & 1) == 0)
+  if ((isHomeHub & 1) == 0)
   {
-    v5 = [MEMORY[0x277D799C0] isWatch];
+    isWatch = [MEMORY[0x277D799C0] isWatch];
     result = 1.0;
-    if (v5)
+    if (isWatch)
     {
       return 5.0;
     }

@@ -1,5 +1,5 @@
 @interface CPSPermissionsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axVisualEffectContentView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
@@ -7,12 +7,12 @@
 
 @implementation CPSPermissionsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CPSPermissionsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CPSPermissionsViewController" hasInstanceVariable:@"_notificationItemView" withType:"CPSPermissionItemView"];
-  [v3 validateClass:@"CPSPermissionsViewController" hasInstanceVariable:@"_locationConfirmationItemView" withType:"CPSPermissionItemView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CPSPermissionsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CPSPermissionsViewController" hasInstanceVariable:@"_notificationItemView" withType:"CPSPermissionItemView"];
+  [validationsCopy validateClass:@"CPSPermissionsViewController" hasInstanceVariable:@"_locationConfirmationItemView" withType:"CPSPermissionItemView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,9 +23,9 @@
   v3 = [(CPSPermissionsViewControllerAccessibility *)self safeUIViewForKey:@"view"];
   v4 = [(CPSPermissionsViewControllerAccessibility *)self safeValueForKey:@"_notificationItemView"];
   v5 = [(CPSPermissionsViewControllerAccessibility *)self safeValueForKey:@"_locationConfirmationItemView"];
-  v6 = [(CPSPermissionsViewControllerAccessibility *)self _axVisualEffectContentView];
-  v7 = [v6 subviews];
-  v8 = [v7 mutableCopy];
+  _axVisualEffectContentView = [(CPSPermissionsViewControllerAccessibility *)self _axVisualEffectContentView];
+  subviews = [_axVisualEffectContentView subviews];
+  v8 = [subviews mutableCopy];
 
   [v8 axSafelyAddObject:v5];
   [v8 axSafelyAddObject:v4];
@@ -37,9 +37,9 @@
   v2 = [(CPSPermissionsViewControllerAccessibility *)self safeUIViewForKey:@"view"];
   v3 = [v2 _accessibilityFindSubviewDescendant:&__block_literal_global_0];
 
-  v4 = [v3 contentView];
+  contentView = [v3 contentView];
 
-  return v4;
+  return contentView;
 }
 
 uint64_t __71__CPSPermissionsViewControllerAccessibility__axVisualEffectContentView__block_invoke(uint64_t a1, void *a2)

@@ -1,16 +1,16 @@
 @interface AWDIDSWiFiSetupAttempt
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSWiFiSetupAttempt
@@ -23,9 +23,9 @@
   [(AWDIDSWiFiSetupAttempt *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -77,11 +77,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -100,7 +100,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type), @"type"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type), @"type"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -114,24 +114,24 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_result), @"result"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_result), @"result"}];
   }
 
 LABEL_6:
   client = self->_client;
   if (client)
   {
-    [v3 setObject:client forKey:@"client"];
+    [dictionary setObject:client forKey:@"client"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -188,13 +188,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 48) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 48) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -213,8 +213,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_type;
-  *(a3 + 48) |= 8u;
+  *(to + 4) = self->_type;
+  *(to + 48) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -228,26 +228,26 @@ LABEL_4:
   }
 
 LABEL_10:
-  *(a3 + 1) = self->_duration;
-  *(a3 + 48) |= 1u;
+  *(to + 1) = self->_duration;
+  *(to + 48) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
-    *(a3 + 2) = self->_result;
-    *(a3 + 48) |= 2u;
+    *(to + 2) = self->_result;
+    *(to + 48) |= 2u;
   }
 
 LABEL_6:
   client = self->_client;
   if (client)
   {
-    [a3 setClient:client];
+    [to setClient:client];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -298,25 +298,25 @@ LABEL_5:
 
 LABEL_6:
 
-  v6[5] = [(NSString *)self->_client copyWithZone:a3];
+  v6[5] = [(NSString *)self->_client copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 48) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 48) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 4) != 0)
+    else if ((*(equal + 48) & 4) != 0)
     {
 LABEL_24:
       LOBYTE(v5) = 0;
@@ -325,45 +325,45 @@ LABEL_24:
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 48) & 8) == 0 || self->_type != *(a3 + 4))
+      if ((*(equal + 48) & 8) == 0 || self->_type != *(equal + 4))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 8) != 0)
+    else if ((*(equal + 48) & 8) != 0)
     {
       goto LABEL_24;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
       goto LABEL_24;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_result != *(a3 + 2))
+      if ((*(equal + 48) & 2) == 0 || self->_result != *(equal + 2))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
       goto LABEL_24;
     }
 
     client = self->_client;
-    if (client | *(a3 + 5))
+    if (client | *(equal + 5))
     {
 
       LOBYTE(v5) = [(NSString *)client isEqual:?];
@@ -432,14 +432,14 @@ LABEL_5:
   return v7 ^ v6 ^ v8 ^ v9 ^ [(NSString *)self->_client hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 48);
+    v3 = *(from + 48);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -452,14 +452,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 48) & 8) == 0)
+  else if ((*(from + 48) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_type = *(a3 + 4);
+  self->_type = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -472,17 +472,17 @@ LABEL_4:
   }
 
 LABEL_10:
-  self->_duration = *(a3 + 1);
+  self->_duration = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 48) & 2) != 0)
+  if ((*(from + 48) & 2) != 0)
   {
 LABEL_5:
-    self->_result = *(a3 + 2);
+    self->_result = *(from + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_6:
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDIDSWiFiSetupAttempt *)self setClient:?];
   }

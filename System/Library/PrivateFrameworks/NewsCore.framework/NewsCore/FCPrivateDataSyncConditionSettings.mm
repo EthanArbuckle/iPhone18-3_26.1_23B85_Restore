@@ -8,18 +8,18 @@
 - (BOOL)isSatisfied
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 isPrivateDataSyncingEnabled];
+  isPrivateDataSyncingEnabled = [v2 isPrivateDataSyncingEnabled];
 
-  return v3;
+  return isPrivateDataSyncingEnabled;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = +[FCAppleAccount sharedAccount];
-  v5 = [v4 isPrivateDataSyncingEnabled];
+  isPrivateDataSyncingEnabled = [v4 isPrivateDataSyncingEnabled];
   v6 = @"NO";
-  if (v5)
+  if (isPrivateDataSyncingEnabled)
   {
     v6 = @"YES";
   }

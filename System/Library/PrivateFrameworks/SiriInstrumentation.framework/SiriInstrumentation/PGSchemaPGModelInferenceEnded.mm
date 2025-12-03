@@ -1,26 +1,26 @@
 @interface PGSchemaPGModelInferenceEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PGSchemaPGModelInferenceEnded)initWithDictionary:(id)a3;
-- (PGSchemaPGModelInferenceEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PGSchemaPGModelInferenceEnded)initWithDictionary:(id)dictionary;
+- (PGSchemaPGModelInferenceEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PGSchemaPGModelInferenceEnded
 
-- (PGSchemaPGModelInferenceEnded)initWithDictionary:(id)a3
+- (PGSchemaPGModelInferenceEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PGSchemaPGModelInferenceEnded;
   v5 = [(PGSchemaPGModelInferenceEnded *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PGSchemaPGModelInferenceEnded *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"transcriptEventId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"transcriptEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PGSchemaPGModelInferenceEnded *)v5 setTranscriptEventId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"modelIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"modelIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PGSchemaPGModelInferenceEnded)initWithJSON:(id)a3
+- (PGSchemaPGModelInferenceEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PGSchemaPGModelInferenceEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PGSchemaPGModelInferenceEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PGSchemaPGModelInferenceEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,49 +86,49 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(PGSchemaPGModelInferenceEnded *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(PGSchemaPGModelInferenceEnded *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_modelIdentifier)
   {
-    v7 = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"modelIdentifier"];
+    modelIdentifier = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
+    v8 = [modelIdentifier copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"modelIdentifier"];
   }
 
   if (self->_transcriptEventId)
   {
-    v9 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    transcriptEventId = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
+    dictionaryRepresentation2 = [transcriptEventId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"transcriptEventId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"transcriptEventId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"transcriptEventId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"transcriptEventId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -138,28 +138,28 @@
   return v4 ^ [(NSString *)self->_modelIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PGSchemaPGModelInferenceEnded *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PGSchemaPGModelInferenceEnded *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PGSchemaPGModelInferenceEnded *)self linkId];
-  if (v7)
+  linkId3 = [(PGSchemaPGModelInferenceEnded *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(PGSchemaPGModelInferenceEnded *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(PGSchemaPGModelInferenceEnded *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -171,20 +171,20 @@
   {
   }
 
-  v5 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
-  v6 = [v4 transcriptEventId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
+  linkId2 = [equalCopy transcriptEventId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
-  if (v12)
+  transcriptEventId = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
+  if (transcriptEventId)
   {
-    v13 = v12;
-    v14 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
-    v15 = [v4 transcriptEventId];
-    v16 = [v14 isEqual:v15];
+    v13 = transcriptEventId;
+    transcriptEventId2 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
+    transcriptEventId3 = [equalCopy transcriptEventId];
+    v16 = [transcriptEventId2 isEqual:transcriptEventId3];
 
     if (!v16)
     {
@@ -196,12 +196,12 @@
   {
   }
 
-  v5 = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
-  v6 = [v4 modelIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
+  linkId2 = [equalCopy modelIdentifier];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v17 = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
-    if (!v17)
+    modelIdentifier = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
+    if (!modelIdentifier)
     {
 
 LABEL_20:
@@ -209,10 +209,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
-    v20 = [v4 modelIdentifier];
-    v21 = [v19 isEqual:v20];
+    v18 = modelIdentifier;
+    modelIdentifier2 = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
+    modelIdentifier3 = [equalCopy modelIdentifier];
+    v21 = [modelIdentifier2 isEqual:modelIdentifier3];
 
     if (v21)
     {
@@ -232,55 +232,55 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(PGSchemaPGModelInferenceEnded *)self linkId];
+  toCopy = to;
+  linkId = [(PGSchemaPGModelInferenceEnded *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(PGSchemaPGModelInferenceEnded *)self linkId];
+    linkId2 = [(PGSchemaPGModelInferenceEnded *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
+  transcriptEventId = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
 
-  if (v6)
+  if (transcriptEventId)
   {
-    v7 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
+    transcriptEventId2 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
+  modelIdentifier = [(PGSchemaPGModelInferenceEnded *)self modelIdentifier];
 
-  v9 = v10;
-  if (v8)
+  v9 = toCopy;
+  if (modelIdentifier)
   {
     PBDataWriterWriteStringField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = PGSchemaPGModelInferenceEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(PGSchemaPGModelInferenceEnded *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(PGSchemaPGModelInferenceEnded *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PGSchemaPGModelInferenceEnded *)self deleteLinkId];
   }
 
-  v9 = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  transcriptEventId = [(PGSchemaPGModelInferenceEnded *)self transcriptEventId];
+  v10 = [transcriptEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PGSchemaPGModelInferenceEnded *)self deleteTranscriptEventId];
   }

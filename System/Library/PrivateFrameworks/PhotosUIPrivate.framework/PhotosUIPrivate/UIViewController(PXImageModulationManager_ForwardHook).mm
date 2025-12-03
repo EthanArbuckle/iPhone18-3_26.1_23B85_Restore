@@ -6,11 +6,11 @@
 
 - (double)px_effectiveImageModulationIntensityWithProposedValue:()PXImageModulationManager_ForwardHook
 {
-  v3 = [a1 pu_modalTransition];
-  v4 = v3;
-  if (v3)
+  pu_modalTransition = [self pu_modalTransition];
+  v4 = pu_modalTransition;
+  if (pu_modalTransition)
   {
-    [v3 imageModulationIntensity];
+    [pu_modalTransition imageModulationIntensity];
     a2 = v5;
   }
 

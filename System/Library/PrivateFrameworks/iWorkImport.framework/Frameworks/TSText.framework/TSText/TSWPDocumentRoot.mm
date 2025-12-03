@@ -3,42 +3,42 @@
 - (BOOL)containsVerticalText;
 - (BOOL)has_30356142_build;
 - (BOOL)isChangeTrackingEnabled;
-- (BOOL)isIgnoringWord:(id)a3;
-- (BOOL)isSectionTemplateInfo:(id)a3;
-- (BOOL)validatedLoadFromUnarchiver:(id)a3;
+- (BOOL)isIgnoringWord:(id)word;
+- (BOOL)isSectionTemplateInfo:(id)info;
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver;
 - (TSULocale)typesettingLocale;
 - (id)documentId;
-- (id)p_fontsInStylesheetUsingBlock:(id)a3;
+- (id)p_fontsInStylesheetUsingBlock:(id)block;
 - (id)unavailableDocumentFonts;
-- (int)verticalAlignmentForTextStorage:(id)a3;
-- (void)addIgnoredWord:(id)a3;
+- (int)verticalAlignmentForTextStorage:(id)storage;
+- (void)addIgnoredWord:(id)word;
 - (void)documentDidLoad;
-- (void)fontUpdatedForStyleClient:(id)a3;
-- (void)removeIgnoredWord:(id)a3;
-- (void)setLaysOutBodyVertically:(BOOL)a3;
+- (void)fontUpdatedForStyleClient:(id)client;
+- (void)removeIgnoredWord:(id)word;
+- (void)setLaysOutBodyVertically:(BOOL)vertically;
 - (void)willClose;
 @end
 
 @implementation TSWPDocumentRoot
 
-- (BOOL)validatedLoadFromUnarchiver:(id)a3
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_sourceType(v4, v5, v6) == 1)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_sourceType(unarchiverCopy, v5, v6) == 1)
   {
-    v9 = objc_msgSend_fileFormatVersion(v4, v7, v8);
+    v9 = objc_msgSend_fileFormatVersion(unarchiverCopy, v7, v8);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_276DD66EC;
     v14[3] = &unk_27A6F4710;
     v14[4] = self;
     v14[5] = v9;
-    objc_msgSend_addFinalizeHandler_(v4, v10, v14);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v10, v14);
   }
 
   v13.receiver = self;
   v13.super_class = TSWPDocumentRoot;
-  v11 = [(TSWPDocumentRoot *)&v13 validatedLoadFromUnarchiver:v4];
+  v11 = [(TSWPDocumentRoot *)&v13 validatedLoadFromUnarchiver:unarchiverCopy];
 
   return v11;
 }
@@ -124,38 +124,38 @@ LABEL_18:
   [(TSCKDocumentRoot *)&v2 willClose];
 }
 
-- (void)addIgnoredWord:(id)a3
+- (void)addIgnoredWord:(id)word
 {
-  v11 = a3;
-  if (objc_msgSend_length(v11, v4, v5))
+  wordCopy = word;
+  if (objc_msgSend_length(wordCopy, v4, v5))
   {
     ignoredWords = self->_ignoredWords;
-    v9 = objc_msgSend_lowercaseString(v11, v6, v7);
+    v9 = objc_msgSend_lowercaseString(wordCopy, v6, v7);
     objc_msgSend_addObject_(ignoredWords, v10, v9);
   }
 }
 
-- (void)removeIgnoredWord:(id)a3
+- (void)removeIgnoredWord:(id)word
 {
-  v11 = a3;
-  if (objc_msgSend_length(v11, v4, v5))
+  wordCopy = word;
+  if (objc_msgSend_length(wordCopy, v4, v5))
   {
     ignoredWords = self->_ignoredWords;
-    v9 = objc_msgSend_lowercaseString(v11, v6, v7);
+    v9 = objc_msgSend_lowercaseString(wordCopy, v6, v7);
     objc_msgSend_removeObject_(ignoredWords, v10, v9);
   }
 }
 
-- (BOOL)isIgnoringWord:(id)a3
+- (BOOL)isIgnoringWord:(id)word
 {
   ignoredWords = self->_ignoredWords;
-  v4 = objc_msgSend_lowercaseString(a3, a2, a3);
+  v4 = objc_msgSend_lowercaseString(word, a2, word);
   LOBYTE(ignoredWords) = objc_msgSend_containsObject_(ignoredWords, v5, v4);
 
   return ignoredWords;
 }
 
-- (void)setLaysOutBodyVertically:(BOOL)a3
+- (void)setLaysOutBodyVertically:(BOOL)vertically
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPDocumentRoot setLaysOutBodyVertically:]");
@@ -226,9 +226,9 @@ LABEL_18:
   return v6;
 }
 
-- (id)p_fontsInStylesheetUsingBlock:(id)a3
+- (id)p_fontsInStylesheetUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v8 = objc_msgSend_stylesheet(self, v6, v7);
   v9 = objc_autoreleasePoolPush();
@@ -241,7 +241,7 @@ LABEL_18:
       v20[1] = 3221225472;
       v20[2] = sub_276E21F00;
       v20[3] = &unk_27A6F5140;
-      v11 = v4;
+      v11 = blockCopy;
       v20[4] = v5;
       v21 = v11;
       objc_msgSend_enumerateStylesUsingBlock_(v8, v12, v20);
@@ -323,10 +323,10 @@ LABEL_18:
   objc_exception_throw(v19);
 }
 
-- (int)verticalAlignmentForTextStorage:(id)a3
+- (int)verticalAlignmentForTextStorage:(id)storage
 {
-  v5 = a3;
-  if (!v5)
+  storageCopy = storage;
+  if (!storageCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, "[TSWPDocumentRoot verticalAlignmentForTextStorage:]");
@@ -336,7 +336,7 @@ LABEL_18:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  v13 = objc_msgSend_wpKind(v5, v3, v4);
+  v13 = objc_msgSend_wpKind(storageCopy, v3, v4);
   if (v13 > 7)
   {
     v23 = MEMORY[0x277D81150];
@@ -356,7 +356,7 @@ LABEL_5:
   }
 
   objc_opt_class();
-  v19 = objc_msgSend_parentInfo(v5, v17, v18);
+  v19 = objc_msgSend_parentInfo(storageCopy, v17, v18);
   v20 = TSUDynamicCast();
 
   if (v20)
@@ -395,9 +395,9 @@ LABEL_6:
   return v8;
 }
 
-- (void)fontUpdatedForStyleClient:(id)a3
+- (void)fontUpdatedForStyleClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPDocumentRoot fontUpdatedForStyleClient:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPDocumentRoot.m");
@@ -418,7 +418,7 @@ LABEL_6:
   objc_exception_throw(v22);
 }
 
-- (BOOL)isSectionTemplateInfo:(id)a3
+- (BOOL)isSectionTemplateInfo:(id)info
 {
   v3 = TSDTopmostInfoFromInfo();
   v6 = objc_msgSend_parentInfo(v3, v4, v5);

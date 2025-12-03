@@ -1,9 +1,9 @@
 @interface PIDisparitySampleJob
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)sampleTime;
-- (BOOL)render:(id *)a3;
+- (BOOL)render:(id *)render;
 - (CGRect)sampleRect;
 - (id)result;
-- (void)setSampleTime:(id *)a3;
+- (void)setSampleTime:(id *)time;
 @end
 
 @implementation PIDisparitySampleJob
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (void)setSampleTime:(id *)a3
+- (void)setSampleTime:(id *)time
 {
-  var3 = a3->var3;
-  *(&self->_sampledDisparityValue + 1) = *&a3->var0;
+  var3 = time->var3;
+  *(&self->_sampledDisparityValue + 1) = *&time->var0;
   *&self->_sampleTime.flags = var3;
 }
 
@@ -35,10 +35,10 @@
   return self;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v19 = NUAssertLogger_800();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -60,8 +60,8 @@
         v27 = dispatch_get_specific(*v21);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v27;
         v34 = 2114;
@@ -72,8 +72,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v26;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -82,21 +82,21 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderJob *)self outputVideo];
-  if (v5)
+  outputVideo = [(NURenderJob *)self outputVideo];
+  if (outputVideo)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C4F68]) initWithAsset:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C4F68]) initWithAsset:outputVideo];
     if (v6)
     {
       [(PIDisparitySampleJob *)self sampleTime];
-      if ([v6 startReadingFrames:2 atTime:buf error:a3])
+      if ([v6 startReadingFrames:2 atTime:buf error:render])
       {
-        v7 = [v6 nextFrame];
-        if (v7)
+        nextFrame = [v6 nextFrame];
+        if (nextFrame)
         {
           [v6 stopReadingFrames];
-          v8 = [v7 disparityBuffer];
-          if (v8 && CVPixelBufferGetPixelFormatType(v8) == 1751411059)
+          disparityBuffer = [nextFrame disparityBuffer];
+          if (disparityBuffer && CVPixelBufferGetPixelFormatType(disparityBuffer) == 1751411059)
           {
             [(PIDisparitySampleJob *)self sampleRect];
             PTDisparityInNormalizedRectFromPixelBuffer();
@@ -108,18 +108,18 @@ LABEL_15:
           }
 
           v14 = MEMORY[0x1E69B3A48];
-          v15 = [v5 description];
+          v15 = [outputVideo description];
           v16 = [v14 invalidError:@"Incompatible disparity buffer" object:v15];
         }
 
         else
         {
           v17 = MEMORY[0x1E69B3A48];
-          v15 = [v5 description];
+          v15 = [outputVideo description];
           v16 = [v17 failureError:@"Failed to read video frame" object:v15];
         }
 
-        *a3 = v16;
+        *render = v16;
 
         v9 = 0;
         goto LABEL_15;
@@ -129,8 +129,8 @@ LABEL_15:
     else
     {
       v12 = MEMORY[0x1E69B3A48];
-      v13 = [v5 description];
-      *a3 = [v12 failureError:@"Failed to make asset reader for video" object:v13];
+      v13 = [outputVideo description];
+      *render = [v12 failureError:@"Failed to make asset reader for video" object:v13];
     }
 
     v9 = 0;
@@ -141,7 +141,7 @@ LABEL_16:
 
   v10 = MEMORY[0x1E69B3A48];
   v11 = [(NURenderJob *)self description];
-  *a3 = [v10 failureError:@"Failed to find output video asset" object:v11];
+  *render = [v10 failureError:@"Failed to find output video asset" object:v11];
 
   v9 = 0;
 LABEL_17:

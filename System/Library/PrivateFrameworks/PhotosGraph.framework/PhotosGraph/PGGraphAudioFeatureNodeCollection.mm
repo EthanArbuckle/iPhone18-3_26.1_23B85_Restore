@@ -1,6 +1,6 @@
 @interface PGGraphAudioFeatureNodeCollection
-+ (id)audioFeatureNodesForLabel:(id)a3 inGraph:(id)a4;
-+ (id)audioFeatureNodesForLabels:(id)a3 inGraph:(id)a4;
++ (id)audioFeatureNodesForLabel:(id)label inGraph:(id)graph;
++ (id)audioFeatureNodesForLabels:(id)labels inGraph:(id)graph;
 - (PGGraphMomentNodeCollection)momentNodes;
 @end
 
@@ -14,20 +14,20 @@
   return v4;
 }
 
-+ (id)audioFeatureNodesForLabels:(id)a3 inGraph:(id)a4
++ (id)audioFeatureNodesForLabels:(id)labels inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphAudioFeatureNode filterForAudioFeatureLabels:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphAudioFeatureNode filterForAudioFeatureLabels:labels];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-+ (id)audioFeatureNodesForLabel:(id)a3 inGraph:(id)a4
++ (id)audioFeatureNodesForLabel:(id)label inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphAudioFeatureNode filterForAudioFeatureLabel:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphAudioFeatureNode filterForAudioFeatureLabel:label];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

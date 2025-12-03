@@ -1,13 +1,13 @@
 @interface PLVideoChoosingAndAvailabilitySupport
-- (BOOL)_checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:(id)a3;
+- (BOOL)_checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:(id)needed;
 - (CGSize)size;
 - (NSArray)resourcesNeedingRepair;
-- (PLVideoChoosingAndAvailabilitySupport)initWithContext:(id)a3 assetInformation:(id)a4 options:(id)a5 size:(CGSize)a6;
+- (PLVideoChoosingAndAvailabilitySupport)initWithContext:(id)context assetInformation:(id)information options:(id)options size:(CGSize)size;
 - (id)_acceptableResourceVersions;
-- (id)_ensureOriginalsAreHighestQuality:(id)a3;
-- (id)chooseResourceWithLoadingMode:(int64_t *)a3 needsAdjustmentData:(BOOL *)a4 error:(id *)a5;
-- (int64_t)_optimalLoadingModeForResource:(id)a3;
-- (unsigned)_videoQualityLevelForRequestFallbackToMediumPolicy:(int64_t *)a3;
+- (id)_ensureOriginalsAreHighestQuality:(id)quality;
+- (id)chooseResourceWithLoadingMode:(int64_t *)mode needsAdjustmentData:(BOOL *)data error:(id *)error;
+- (int64_t)_optimalLoadingModeForResource:(id)resource;
+- (unsigned)_videoQualityLevelForRequestFallbackToMediumPolicy:(int64_t *)policy;
 @end
 
 @implementation PLVideoChoosingAndAvailabilitySupport
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (id)chooseResourceWithLoadingMode:(int64_t *)a3 needsAdjustmentData:(BOOL *)a4 error:(id *)a5
+- (id)chooseResourceWithLoadingMode:(int64_t *)mode needsAdjustmentData:(BOOL *)data error:(id *)error
 {
   v93[1] = *MEMORY[0x1E69E9840];
-  v7 = [(PLVideoChoosingAndAvailabilitySupport *)self _acceptableResourceVersions];
-  v8 = [(PLVideoResourceContext *)self->_context videoResourcesMatchingVersions:v7];
+  _acceptableResourceVersions = [(PLVideoChoosingAndAvailabilitySupport *)self _acceptableResourceVersions];
+  v8 = [(PLVideoResourceContext *)self->_context videoResourcesMatchingVersions:_acceptableResourceVersions];
   if ([v8 count])
   {
     v74 = 0;
@@ -36,63 +36,63 @@
     v9 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E69BFF48];
     v92 = *MEMORY[0x1E696A278];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"zero videos found matching resource versions: %@", v7];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"zero videos found matching resource versions: %@", _acceptableResourceVersions];
     v93[0] = v11;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v93 forKeys:&v92 count:1];
-    v13 = v12 = a5;
+    v13 = v12 = error;
     v74 = [v9 errorWithDomain:v10 code:47017 userInfo:v13];
 
-    a5 = v12;
+    error = v12;
   }
 
   if ([v8 count] && -[PLVideoChoosingOptions restrictToPlayableOnCurrentDevice](self->_options, "restrictToPlayableOnCurrentDevice"))
   {
     v14 = [[PLVideoPlaybackResourceChoiceOptimizer alloc] initWithVideoResources:v8];
-    v15 = [(PLVideoPlaybackResourceChoiceOptimizer *)v14 preferredVideoResources];
+    preferredVideoResources = [(PLVideoPlaybackResourceChoiceOptimizer *)v14 preferredVideoResources];
 
-    if (![v15 count])
+    if (![preferredVideoResources count])
     {
       v16 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E69BFF48];
       v90[0] = *MEMORY[0x1E696A278];
       [MEMORY[0x1E696AEC0] stringWithFormat:@"zero playable videos found"];
-      v19 = v18 = a5;
+      v19 = v18 = error;
       v90[1] = @"PLZeroPlayableVideosErrorKey";
       v91[0] = v19;
       v91[1] = MEMORY[0x1E695E118];
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v91 forKeys:v90 count:2];
       v21 = [v16 errorWithDomain:v17 code:47017 userInfo:v20];
 
-      a5 = v18;
+      error = v18;
       v74 = v21;
     }
 
-    v8 = v15;
+    v8 = preferredVideoResources;
   }
 
   if ([v8 count] && -[PLVideoChoosingOptions restrictToStreamable](self->_options, "restrictToStreamable"))
   {
     v22 = [[PLVideoStreamingResourceChoiceOptimizer alloc] initWithVideoResources:v8];
-    v23 = [(PLVideoStreamingResourceChoiceOptimizer *)v22 preferredVideoResources];
+    preferredVideoResources2 = [(PLVideoStreamingResourceChoiceOptimizer *)v22 preferredVideoResources];
 
-    if (![v23 count])
+    if (![preferredVideoResources2 count])
     {
       v24 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E69BFF48];
       v88[0] = *MEMORY[0x1E696A278];
       [MEMORY[0x1E696AEC0] stringWithFormat:@"zero streamable videos found"];
-      v27 = v26 = a5;
+      v27 = v26 = error;
       v88[1] = @"PLZeroStreamableVideosErrorKey";
       v89[0] = v27;
       v89[1] = MEMORY[0x1E695E118];
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:2];
       v29 = [v24 errorWithDomain:v25 code:47017 userInfo:v28];
 
-      a5 = v26;
+      error = v26;
       v74 = v29;
     }
 
-    v8 = v23;
+    v8 = preferredVideoResources2;
   }
 
   if ([v8 count])
@@ -101,24 +101,24 @@
     v30 = [(PLVideoChoosingAndAvailabilitySupport *)self _videoQualityLevelForRequestFallbackToMediumPolicy:&v75];
     v31 = [(PLVideoChoosingAndAvailabilitySupport *)self _ensureOriginalsAreHighestQuality:v8];
 
-    v73 = [v31 lastObject];
+    lastObject = [v31 lastObject];
     v69 = v30;
-    if (v30 <= 1 && ([(PLVideoChoosingOptions *)self->_options isStreamingAllowed]& 1) == 0 && [(PLVideoChoosingOptions *)self->_options hasValidTimeRange]&& _resourceIsOriginalSlomo(v73, self->_assetInformation))
+    if (v30 <= 1 && ([(PLVideoChoosingOptions *)self->_options isStreamingAllowed]& 1) == 0 && [(PLVideoChoosingOptions *)self->_options hasValidTimeRange]&& _resourceIsOriginalSlomo(lastObject, self->_assetInformation))
     {
       v75 = 1;
     }
 
-    v32 = [v31 reverseObjectEnumerator];
-    v33 = [v32 nextObject];
-    if (v33)
+    reverseObjectEnumerator = [v31 reverseObjectEnumerator];
+    nextObject = [reverseObjectEnumerator nextObject];
+    if (nextObject)
     {
-      v34 = v33;
-      v35 = 0;
+      nextObject3 = nextObject;
+      onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent = 0;
       v36 = 0;
-      v70 = v7;
+      v70 = _acceptableResourceVersions;
       while (1)
       {
-        v37 = v34;
+        v37 = nextObject3;
         while ([v37 storeClassID] == 3 && ((objc_msgSend(v37, "isOriginalVideo") & 1) != 0 || objc_msgSend(v37, "isOriginalVideoComplement")) && (-[PLVideoChoosingOptions isExplicitUserAction](self->_options, "isExplicitUserAction") & 1) == 0)
         {
           v38 = PLImageManagerGetLog();
@@ -128,10 +128,10 @@
             _os_log_impl(&dword_19BF1F000, v38, OS_LOG_TYPE_DEFAULT, "Skipping syndication original video, because the request intent is not a user click", buf, 2u);
           }
 
-          v39 = [v32 nextObject];
+          nextObject2 = [reverseObjectEnumerator nextObject];
 
-          v37 = v39;
-          if (!v39)
+          v37 = nextObject2;
+          if (!nextObject2)
           {
             goto LABEL_58;
           }
@@ -139,7 +139,7 @@
 
         if (v75 && [v37 matchesOrExceedsQualityLevel:2])
         {
-          v40 = v75 == 1 ? [v35 isLargeQuality] : 0;
+          v40 = v75 == 1 ? [onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent isLargeQuality] : 0;
           v41 = 1;
         }
 
@@ -149,7 +149,7 @@
           v41 = 0;
         }
 
-        if (v37 != v73 && (v41 | [v37 matchesOrExceedsQualityLevel:v69]) != 1)
+        if (v37 != lastObject && (v41 | [v37 matchesOrExceedsQualityLevel:v69]) != 1)
         {
           break;
         }
@@ -174,52 +174,52 @@
             v45 = v37;
 
             v36 = v44;
-            v35 = v45;
+            onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent = v45;
           }
         }
 
-        v7 = v70;
+        _acceptableResourceVersions = v70;
         if (([v37 isLocallyAvailable] & 1) == 0 && (objc_msgSend(v37, "isStreamable") & 1) == 0 && (objc_msgSend(v37, "isDownloadable") & 1) == 0 && (objc_msgSend(v37, "isLocallyGeneratable") & 1) == 0)
         {
           v46 = PLImageManagerGetLog();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
-            v67 = [(PLVideoChoosingAssetInformation *)self->_assetInformation uuid];
-            v66 = [v37 isLocallyAvailable];
+            uuid = [(PLVideoChoosingAssetInformation *)self->_assetInformation uuid];
+            isLocallyAvailable = [v37 isLocallyAvailable];
             log = v46;
-            v47 = [v37 isStreamable];
-            v65 = [v37 isDownloadable];
-            v48 = [v37 isLocallyGeneratable];
+            isStreamable = [v37 isStreamable];
+            isDownloadable = [v37 isDownloadable];
+            isLocallyGeneratable = [v37 isLocallyGeneratable];
             *buf = 138544386;
-            v79 = v67;
+            v79 = uuid;
             v80 = 1024;
-            v81 = v66;
+            v81 = isLocallyAvailable;
             v82 = 1024;
-            v83 = v47;
+            v83 = isStreamable;
             v46 = log;
             v84 = 1024;
-            v85 = v65;
-            v7 = v70;
+            v85 = isDownloadable;
+            _acceptableResourceVersions = v70;
             v86 = 1024;
-            v87 = v48;
+            v87 = isLocallyGeneratable;
             _os_log_impl(&dword_19BF1F000, log, OS_LOG_TYPE_ERROR, "Asset %{public}@ video resource is inaccessible (available=%d, streamable=%d, downloadable=%d, generatable=%d", buf, 0x24u);
           }
 
           [(NSMutableArray *)self->_resourcesNeedingRepair addObject:v37];
         }
 
-        v34 = [v32 nextObject];
+        nextObject3 = [reverseObjectEnumerator nextObject];
 
-        if (!v34)
+        if (!nextObject3)
         {
           v37 = 0;
           goto LABEL_58;
         }
       }
 
-      v7 = v70;
+      _acceptableResourceVersions = v70;
 LABEL_58:
-      if (v35)
+      if (onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent)
       {
         goto LABEL_64;
       }
@@ -233,12 +233,12 @@ LABEL_58:
 
     if (![(PLVideoChoosingOptions *)self->_options videoVersion]&& [(PLVideoChoosingAssetInformation *)self->_assetInformation hasAdjustments]&& [(PLVideoChoosingAssetInformation *)self->_assetInformation isPhotoIris])
     {
-      v35 = [(PLVideoResourceContext *)self->_context onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent];
+      onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent = [(PLVideoResourceContext *)self->_context onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent];
     }
 
     else
     {
-      v35 = 0;
+      onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent = 0;
     }
 
 LABEL_64:
@@ -247,7 +247,7 @@ LABEL_64:
   }
 
   v36 = 0;
-  v35 = 0;
+  onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent = 0;
   v31 = v8;
 LABEL_65:
   if (![v31 count] && !-[PLVideoChoosingOptions videoVersion](self->_options, "videoVersion") && -[PLVideoChoosingAssetInformation hasAdjustments](self->_assetInformation, "hasAdjustments") && (-[PLVideoChoosingAssetInformation shouldUseNonAdjustedVersion](self->_assetInformation, "shouldUseNonAdjustedVersion") & 1) == 0 && -[PLVideoChoosingAssetInformation isOriginalSlomo](self->_assetInformation, "isOriginalSlomo"))
@@ -260,22 +260,22 @@ LABEL_65:
       v52 = PLImageManagerGetLog();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
-        v53 = [(PLVideoChoosingAssetInformation *)self->_assetInformation uuid];
+        uuid2 = [(PLVideoChoosingAssetInformation *)self->_assetInformation uuid];
         *buf = 138543362;
-        v79 = v53;
+        v79 = uuid2;
         _os_log_impl(&dword_19BF1F000, v52, OS_LOG_TYPE_ERROR, "Slomo asset (%{public}@) with non-standard adjustment format is missing renders, optimistically returning original video and adjustment data", buf, 0xCu);
       }
 
       v54 = [v49 objectAtIndexedSubscript:v51];
 
       v36 = [(PLVideoChoosingAndAvailabilitySupport *)self _optimalLoadingModeForResource:v54];
-      v35 = v54;
+      onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent = v54;
     }
   }
 
-  if (v35)
+  if (onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent)
   {
-    if (_resourceIsOriginalSlomo(v35, self->_assetInformation))
+    if (_resourceIsOriginalSlomo(onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent, self->_assetInformation))
     {
       v55 = [(PLVideoChoosingOptions *)self->_options videoVersion]== 0;
     }
@@ -285,13 +285,13 @@ LABEL_65:
       v55 = 0;
     }
 
-    v61 = a3;
-    v60 = a4;
+    modeCopy2 = mode;
+    dataCopy2 = data;
     v56 = v74;
-    if (a3)
+    if (mode)
     {
 LABEL_84:
-      *v61 = v36;
+      *modeCopy2 = v36;
     }
   }
 
@@ -311,54 +311,54 @@ LABEL_84:
     }
 
     v55 = 0;
-    v61 = a3;
-    v60 = a4;
-    if (a3)
+    modeCopy2 = mode;
+    dataCopy2 = data;
+    if (mode)
     {
       goto LABEL_84;
     }
   }
 
-  if (v60)
+  if (dataCopy2)
   {
-    *v60 = v55;
+    *dataCopy2 = v55;
   }
 
-  if (a5)
+  if (error)
   {
     v62 = v56;
-    *a5 = v56;
+    *error = v56;
   }
 
-  v63 = v35;
+  v63 = onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent;
 
-  return v35;
+  return onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent;
 }
 
-- (int64_t)_optimalLoadingModeForResource:(id)a3
+- (int64_t)_optimalLoadingModeForResource:(id)resource
 {
-  v4 = a3;
-  if ([v4 isLocallyAvailable] && -[PLVideoChoosingAndAvailabilitySupport _checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:](self, "_checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:", v4) && !-[PLVideoChoosingOptions restrictToStreamable](self->_options, "restrictToStreamable"))
+  resourceCopy = resource;
+  if ([resourceCopy isLocallyAvailable] && -[PLVideoChoosingAndAvailabilitySupport _checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:](self, "_checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:", resourceCopy) && !-[PLVideoChoosingOptions restrictToStreamable](self->_options, "restrictToStreamable"))
   {
     v5 = 5;
   }
 
-  else if ([v4 isLocallyGeneratable] && !-[PLVideoChoosingOptions restrictToStreamable](self->_options, "restrictToStreamable"))
+  else if ([resourceCopy isLocallyGeneratable] && !-[PLVideoChoosingOptions restrictToStreamable](self->_options, "restrictToStreamable"))
   {
     v5 = 4;
   }
 
-  else if (-[PLVideoChoosingOptions isStreamingAllowed](self->_options, "isStreamingAllowed") && [v4 isStreamable] && !_resourceIsOriginalSlomo(v4, self->_assetInformation))
+  else if (-[PLVideoChoosingOptions isStreamingAllowed](self->_options, "isStreamingAllowed") && [resourceCopy isStreamable] && !_resourceIsOriginalSlomo(resourceCopy, self->_assetInformation))
   {
     v5 = 3;
   }
 
-  else if ([v4 isDownloadable] && (-[PLVideoChoosingOptions isNetworkAccessAllowed](self->_options, "isNetworkAccessAllowed") & 1) != 0)
+  else if ([resourceCopy isDownloadable] && (-[PLVideoChoosingOptions isNetworkAccessAllowed](self->_options, "isNetworkAccessAllowed") & 1) != 0)
   {
     v5 = 2;
   }
 
-  else if ([v4 isDownloadable])
+  else if ([resourceCopy isDownloadable])
   {
     v5 = [(PLVideoChoosingOptions *)self->_options isNetworkAccessAllowed]^ 1;
   }
@@ -371,10 +371,10 @@ LABEL_84:
   return v5;
 }
 
-- (BOOL)_checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:(id)a3
+- (BOOL)_checkIsReallyLocallyAvailableAndAddToRepairListIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(PLVideoResourceContext *)self->_context validateResource:v4];
+  neededCopy = needed;
+  v5 = [(PLVideoResourceContext *)self->_context validateResource:neededCopy];
   if ((v5 & 1) == 0)
   {
     v6 = PLImageManagerGetLog();
@@ -384,22 +384,22 @@ LABEL_84:
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "Video resource local availability is incorrect", v8, 2u);
     }
 
-    [(NSMutableArray *)self->_resourcesNeedingRepair addObject:v4];
+    [(NSMutableArray *)self->_resourcesNeedingRepair addObject:neededCopy];
   }
 
   return v5;
 }
 
-- (id)_ensureOriginalsAreHighestQuality:(id)a3
+- (id)_ensureOriginalsAreHighestQuality:(id)quality
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  qualityCopy = quality;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = qualityCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -449,7 +449,7 @@ LABEL_84:
   return v4;
 }
 
-- (unsigned)_videoQualityLevelForRequestFallbackToMediumPolicy:(int64_t *)a3
+- (unsigned)_videoQualityLevelForRequestFallbackToMediumPolicy:(int64_t *)policy
 {
   v18 = *MEMORY[0x1E69E9840];
   if (_videoQualityLevelForRequestFallbackToMediumPolicy__onceToken != -1)
@@ -461,10 +461,10 @@ LABEL_84:
   {
     if ([(PLVideoChoosingOptions *)self->_options videoDeliveryMode]!= 3 || ((width = self->_size.width, v9 = self->_size.height, width == *MEMORY[0x1E695F060]) ? (v10 = v9 == *(MEMORY[0x1E695F060] + 8)) : (v10 = 0), v10))
     {
-      v13 = [(PLVideoChoosingOptions *)self->_options videoDeliveryMode];
-      if (v13 > 2)
+      videoDeliveryMode = [(PLVideoChoosingOptions *)self->_options videoDeliveryMode];
+      if (videoDeliveryMode > 2)
       {
-        if (v13 == 3)
+        if (videoDeliveryMode == 3)
         {
           if ((+[PLPrefetchConfiguration defaultPrefetchOptimizeMode]- 1) >= 2)
           {
@@ -472,40 +472,40 @@ LABEL_84:
           }
         }
 
-        else if (v13 != 4)
+        else if (videoDeliveryMode != 4)
         {
           goto LABEL_32;
         }
 
-        v13 = 0;
-        v5 = 1;
-        if (!a3)
+        videoDeliveryMode = 0;
+        unsignedIntValue = 1;
+        if (!policy)
         {
-          return v5;
+          return unsignedIntValue;
         }
 
         goto LABEL_36;
       }
 
-      if (!v13)
+      if (!videoDeliveryMode)
       {
 LABEL_29:
-        v5 = 0;
-        if (!a3)
+        unsignedIntValue = 0;
+        if (!policy)
         {
-          return v5;
+          return unsignedIntValue;
         }
 
         goto LABEL_36;
       }
 
-      if (v13 == 2)
+      if (videoDeliveryMode == 2)
       {
-        v13 = 0;
-        v5 = 3;
-        if (!a3)
+        videoDeliveryMode = 0;
+        unsignedIntValue = 3;
+        if (!policy)
         {
-          return v5;
+          return unsignedIntValue;
         }
 
         goto LABEL_36;
@@ -527,45 +527,45 @@ LABEL_29:
       [(PLVideoResourceContext *)self->_context sizeThresholdForHighQuality];
       if (height > v12)
       {
-        v13 = 0;
+        videoDeliveryMode = 0;
         goto LABEL_29;
       }
     }
 
 LABEL_32:
-    v13 = [(PLVideoChoosingOptions *)self->_options isMediumHighQualityAllowed];
-    if (v13)
+    videoDeliveryMode = [(PLVideoChoosingOptions *)self->_options isMediumHighQualityAllowed];
+    if (videoDeliveryMode)
     {
-      v5 = 1;
+      unsignedIntValue = 1;
     }
 
     else
     {
-      v5 = 2;
+      unsignedIntValue = 2;
     }
 
-    if (!a3)
+    if (!policy)
     {
-      return v5;
+      return unsignedIntValue;
     }
 
 LABEL_36:
-    *a3 = v13;
-    return v5;
+    *policy = videoDeliveryMode;
+    return unsignedIntValue;
   }
 
-  v5 = [_videoQualityLevelForRequestFallbackToMediumPolicy__forceVideoQualityLevelNum unsignedIntValue];
+  unsignedIntValue = [_videoQualityLevelForRequestFallbackToMediumPolicy__forceVideoQualityLevelNum unsignedIntValue];
   v6 = PLImageManagerGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5 > 3)
+    if (unsignedIntValue > 3)
     {
       v7 = @"large";
     }
 
     else
     {
-      v7 = off_1E7566390[v5];
+      v7 = off_1E7566390[unsignedIntValue];
     }
 
     v14 = v7;
@@ -574,7 +574,7 @@ LABEL_36:
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Forcing video quality level to %@", &v16, 0xCu);
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
 void __92__PLVideoChoosingAndAvailabilitySupport__videoQualityLevelForRequestFallbackToMediumPolicy___block_invoke()
@@ -587,11 +587,11 @@ void __92__PLVideoChoosingAndAvailabilitySupport__videoQualityLevelForRequestFal
 
 - (id)_acceptableResourceVersions
 {
-  v3 = [(PLVideoChoosingAssetInformation *)self->_assetInformation hasAdjustments];
-  v4 = [(PLVideoChoosingOptions *)self->_options videoVersion];
-  if (v3)
+  hasAdjustments = [(PLVideoChoosingAssetInformation *)self->_assetInformation hasAdjustments];
+  videoVersion = [(PLVideoChoosingOptions *)self->_options videoVersion];
+  if (hasAdjustments)
   {
-    v5 = v4 == 0;
+    v5 = videoVersion == 0;
   }
 
   else
@@ -610,7 +610,7 @@ void __92__PLVideoChoosingAndAvailabilitySupport__videoQualityLevelForRequestFal
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!videoVersion)
   {
 LABEL_10:
     v6 = &unk_1F0FC0210;
@@ -618,7 +618,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v4 != 1)
+  if (videoVersion != 1)
   {
     v8 = &unk_1F0FC0228;
     goto LABEL_15;
@@ -627,7 +627,7 @@ LABEL_10:
   v6 = &unk_1F0FC01E0;
   v7 = &unk_1F0FC01C8;
 LABEL_11:
-  if (v3)
+  if (hasAdjustments)
   {
     v6 = v7;
   }
@@ -645,22 +645,22 @@ LABEL_15:
   return v2;
 }
 
-- (PLVideoChoosingAndAvailabilitySupport)initWithContext:(id)a3 assetInformation:(id)a4 options:(id)a5 size:(CGSize)a6
+- (PLVideoChoosingAndAvailabilitySupport)initWithContext:(id)context assetInformation:(id)information options:(id)options size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
+  informationCopy = information;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = PLVideoChoosingAndAvailabilitySupport;
   v15 = [(PLVideoChoosingAndAvailabilitySupport *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    objc_storeStrong(&v16->_assetInformation, a4);
-    objc_storeStrong(&v16->_options, a5);
+    objc_storeStrong(&v15->_context, context);
+    objc_storeStrong(&v16->_assetInformation, information);
+    objc_storeStrong(&v16->_options, options);
     v16->_size.width = width;
     v16->_size.height = height;
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);

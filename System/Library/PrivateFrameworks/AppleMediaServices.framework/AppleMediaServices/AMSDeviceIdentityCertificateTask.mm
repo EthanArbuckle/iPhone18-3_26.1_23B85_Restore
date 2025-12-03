@@ -1,8 +1,8 @@
 @interface AMSDeviceIdentityCertificateTask
-- (AMSDeviceIdentityCertificateTask)initWithBag:(id)a3;
+- (AMSDeviceIdentityCertificateTask)initWithBag:(id)bag;
 - (id)performDeviceIdentityRequestForAbsinthe;
 - (id)performDeviceIdentityRequestForFraudReport;
-- (id)performDeviceIdentityRequestWithBaaOptions:(id)a3 ttlBagKey:(id)a4 logInformation:(id)a5;
+- (id)performDeviceIdentityRequestWithBaaOptions:(id)options ttlBagKey:(id)key logInformation:(id)information;
 @end
 
 @implementation AMSDeviceIdentityCertificateTask
@@ -40,15 +40,15 @@
   v3 = AMSLogKey();
   v4 = [(AMSDeviceIdentityCertificateTask *)self bag];
   v5 = [v4 BOOLForKey:@"fsr-ucrt-device-ids-disabled"];
-  v6 = [v5 valuePromise];
+  valuePromise = [v5 valuePromise];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityRequestForFraudReport__block_invoke;
   v10[3] = &unk_1E73B3190;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v7 = v3;
-  v8 = [v6 continueWithBlock:v10];
+  v8 = [valuePromise continueWithBlock:v10];
 
   return v8;
 }
@@ -148,29 +148,29 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
   return v21;
 }
 
-- (AMSDeviceIdentityCertificateTask)initWithBag:(id)a3
+- (AMSDeviceIdentityCertificateTask)initWithBag:(id)bag
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bagCopy = bag;
   v26.receiver = self;
   v26.super_class = AMSDeviceIdentityCertificateTask;
   v7 = [(AMSTask *)&v26 init];
   if (v7)
   {
-    if (!v6)
+    if (!bagCopy)
     {
       v8 = +[AMSUnitTests isRunningUnitTests];
       v9 = +[AMSLogConfig sharedConfig];
-      v10 = v9;
+      defaultCenter = v9;
       if (v8)
       {
         if (!v9)
         {
-          v10 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v11 = [v10 OSLogObject];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v12 = AMSLogKey();
           v13 = MEMORY[0x1E696AEC0];
@@ -189,7 +189,7 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
           v16 = ;
           *buf = 138543362;
           v28 = v16;
-          _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@Bag wasn't provided. No identity request can be performed with this instance.", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Bag wasn't provided. No identity request can be performed with this instance.", buf, 0xCu);
           if (v12)
           {
 
@@ -197,20 +197,20 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
           }
         }
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        v17 = +[AMSLogConfig sharedConfig];
-        [v10 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v17 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
       }
 
       else
       {
         if (!v9)
         {
-          v10 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v17 = [v10 OSLogObject];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+        oSLogObject2 = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v18 = AMSLogKey();
           v19 = MEMORY[0x1E696AEC0];
@@ -229,7 +229,7 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
           v22 = ;
           *buf = 138543362;
           v28 = v22;
-          _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_FAULT, "%{public}@Bag wasn't provided. No identity request can be performed with this instance.", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Bag wasn't provided. No identity request can be performed with this instance.", buf, 0xCu);
           if (v18)
           {
 
@@ -239,7 +239,7 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
       }
     }
 
-    objc_storeStrong(&v7->_bag, a3);
+    objc_storeStrong(&v7->_bag, bag);
     v23 = dispatch_queue_create("com.apple.AppleMediaServices.deviceIdentityRequest", 0);
     requestQueue = v7->_requestQueue;
     v7->_requestQueue = v23;
@@ -248,12 +248,12 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
   return v7;
 }
 
-- (id)performDeviceIdentityRequestWithBaaOptions:(id)a3 ttlBagKey:(id)a4 logInformation:(id)a5
+- (id)performDeviceIdentityRequestWithBaaOptions:(id)options ttlBagKey:(id)key logInformation:(id)information
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  keyCopy = key;
+  informationCopy = information;
   v11 = AMSSetLogKeyIfNeeded();
   v12 = [(AMSDeviceIdentityCertificateTask *)self bag];
   if (v12)
@@ -266,10 +266,10 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
     v25[3] = &unk_1E73B6C78;
     objc_copyWeak(&v31, location);
     v26 = v11;
-    v27 = v10;
+    v27 = informationCopy;
     v28 = v12;
-    v29 = v9;
-    v30 = v8;
+    v29 = keyCopy;
+    v30 = optionsCopy;
     v14 = [(AMSMutableLazyPromise *)v13 initWithBlock:v25];
 
     objc_destroyWeak(&v31);
@@ -284,8 +284,8 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = AMSLogKey();
       v18 = MEMORY[0x1E696AEC0];
@@ -304,7 +304,7 @@ id __94__AMSDeviceIdentityCertificateTask_AMSFraudReport__performDeviceIdentityR
       v21 = ;
       LODWORD(location[0]) = 138543362;
       *(location + 4) = v21;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@Bag wasn't provided. No identity request will be performed.", location, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Bag wasn't provided. No identity request will be performed.", location, 0xCu);
       if (v17)
       {
 

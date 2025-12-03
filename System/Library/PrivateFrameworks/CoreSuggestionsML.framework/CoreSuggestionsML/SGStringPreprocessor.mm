@@ -1,66 +1,66 @@
 @interface SGStringPreprocessor
 - (SGStringPreprocessor)init;
-- (id)characterSetFromString:(id)a3;
-- (unsigned)bufferPtrWithMinimumLength:(unint64_t)a3;
-- (void)combineDakutenAndHandakuten:(id)a3;
-- (void)finalizeForWordPieceCaseInsensitive:(id)a3;
-- (void)finalizeForWordPieceCaseSensitive:(id)a3;
-- (void)mergeAnyConsecutiveCharacters:(id)a3;
-- (void)mergeAnyConsecutiveNonalphabeticCharactersWithExceptions:(id)a3 withValue:(id)a4;
-- (void)mergeNumbersSeparatedByASCIISpace:(id)a3;
-- (void)mergeTwoOrMoreConsecutiveCharacters:(id)a3;
-- (void)removeCharacters:(id)a3 withExceptions:(id)a4 fromString:(id)a5;
-- (void)removeCharacters:(id)a3 withValue:(id)a4;
-- (void)removeDuplicateWhitespace:(id)a3;
-- (void)removeEmojiModifyingCharactersWithExceptions:(id)a3 withValue:(id)a4;
-- (void)removeEmojisWithExceptions:(id)a3 withValue:(id)a4;
-- (void)removeNonASCII:(id)a3;
-- (void)removeNonBaseCharacters:(id)a3;
-- (void)removeNonBasicMultilingualPlane:(id)a3;
-- (void)removeNonEmojiSymbolsWithExceptions:(id)a3 withValue:(id)a4;
-- (void)removePunctuation:(id)a3;
-- (void)removePunctuationWithExceptions:(id)a3 withValue:(id)a4;
-- (void)removeSpacingModifierLetters:(id)a3;
-- (void)removeSymbols:(id)a3;
-- (void)removeSymbolsWithExceptions:(id)a3 withValue:(id)a4;
-- (void)replace:(id)a3 withBuffer:(unsigned __int16 *)a4 toIndex:(unint64_t)a5;
-- (void)replaceAllWhitespaceWithSpaces:(id)a3;
-- (void)replaceCharactersWithSpaces:(id)a3 withValue:(id)a4;
-- (void)replaceContactNamesWithString:(id)a3 withValue:(id)a4;
-- (void)replaceLinksWithString:(id)a3 withValue:(id)a4;
-- (void)replaceNumbersWithString:(id)a3 withValue:(id)a4;
-- (void)separateCharacter:(id)a3 withValue:(id)a4;
-- (void)separateFrenchElisions:(id)a3;
-- (void)stripCombiningMarks:(id)a3;
-- (void)stripNonBaseCharacters:(id)a3;
-- (void)transformFullwidthToHalfwidth:(id)a3;
-- (void)transformFullwidthToHalfwidthASCII:(id)a3;
-- (void)transformHalfwidthToFullwidthCJK:(id)a3;
+- (id)characterSetFromString:(id)string;
+- (unsigned)bufferPtrWithMinimumLength:(unint64_t)length;
+- (void)combineDakutenAndHandakuten:(id)handakuten;
+- (void)finalizeForWordPieceCaseInsensitive:(id)insensitive;
+- (void)finalizeForWordPieceCaseSensitive:(id)sensitive;
+- (void)mergeAnyConsecutiveCharacters:(id)characters;
+- (void)mergeAnyConsecutiveNonalphabeticCharactersWithExceptions:(id)exceptions withValue:(id)value;
+- (void)mergeNumbersSeparatedByASCIISpace:(id)space;
+- (void)mergeTwoOrMoreConsecutiveCharacters:(id)characters;
+- (void)removeCharacters:(id)characters withExceptions:(id)exceptions fromString:(id)string;
+- (void)removeCharacters:(id)characters withValue:(id)value;
+- (void)removeDuplicateWhitespace:(id)whitespace;
+- (void)removeEmojiModifyingCharactersWithExceptions:(id)exceptions withValue:(id)value;
+- (void)removeEmojisWithExceptions:(id)exceptions withValue:(id)value;
+- (void)removeNonASCII:(id)i;
+- (void)removeNonBaseCharacters:(id)characters;
+- (void)removeNonBasicMultilingualPlane:(id)plane;
+- (void)removeNonEmojiSymbolsWithExceptions:(id)exceptions withValue:(id)value;
+- (void)removePunctuation:(id)punctuation;
+- (void)removePunctuationWithExceptions:(id)exceptions withValue:(id)value;
+- (void)removeSpacingModifierLetters:(id)letters;
+- (void)removeSymbols:(id)symbols;
+- (void)removeSymbolsWithExceptions:(id)exceptions withValue:(id)value;
+- (void)replace:(id)replace withBuffer:(unsigned __int16 *)buffer toIndex:(unint64_t)index;
+- (void)replaceAllWhitespaceWithSpaces:(id)spaces;
+- (void)replaceCharactersWithSpaces:(id)spaces withValue:(id)value;
+- (void)replaceContactNamesWithString:(id)string withValue:(id)value;
+- (void)replaceLinksWithString:(id)string withValue:(id)value;
+- (void)replaceNumbersWithString:(id)string withValue:(id)value;
+- (void)separateCharacter:(id)character withValue:(id)value;
+- (void)separateFrenchElisions:(id)elisions;
+- (void)stripCombiningMarks:(id)marks;
+- (void)stripNonBaseCharacters:(id)characters;
+- (void)transformFullwidthToHalfwidth:(id)halfwidth;
+- (void)transformFullwidthToHalfwidthASCII:(id)i;
+- (void)transformHalfwidthToFullwidthCJK:(id)k;
 @end
 
 @implementation SGStringPreprocessor
 
-- (void)finalizeForWordPieceCaseSensitive:(id)a3
+- (void)finalizeForWordPieceCaseSensitive:(id)sensitive
 {
-  v3 = a3;
-  v4 = [v3 stringByFoldingWithOptions:128 locale:0];
-  [v3 setString:v4];
+  sensitiveCopy = sensitive;
+  v4 = [sensitiveCopy stringByFoldingWithOptions:128 locale:0];
+  [sensitiveCopy setString:v4];
 }
 
-- (void)finalizeForWordPieceCaseInsensitive:(id)a3
+- (void)finalizeForWordPieceCaseInsensitive:(id)insensitive
 {
-  v3 = a3;
-  v4 = [(__CFString *)v3 stringByFoldingWithOptions:128 locale:0];
-  [(__CFString *)v3 setString:v4];
-  CFStringLowercase(v3, 0);
+  insensitiveCopy = insensitive;
+  v4 = [(__CFString *)insensitiveCopy stringByFoldingWithOptions:128 locale:0];
+  [(__CFString *)insensitiveCopy setString:v4];
+  CFStringLowercase(insensitiveCopy, 0);
 }
 
-- (void)replaceContactNamesWithString:(id)a3 withValue:(id)a4
+- (void)replaceContactNamesWithString:(id)string withValue:(id)value
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 componentsSeparatedByString:@""];;
+  stringCopy = string;
+  valueCopy = value;
+  v7 = [valueCopy componentsSeparatedByString:@""];;
   if ([v7 count] == 2)
   {
     v8 = [v7 objectAtIndexedSubscript:0];
@@ -84,7 +84,7 @@
     v11 = v10;
     _Block_object_dispose(&v22, 8);
     v12 = [[v10 alloc] initWithLanguage:v8];
-    v13 = [v12 detectNames:v5 algorithm:0];
+    v13 = [v12 detectNames:stringCopy algorithm:0];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -96,7 +96,7 @@
     v17[2] = __64__SGStringPreprocessor_replaceContactNamesWithString_withValue___block_invoke;
     v17[3] = &unk_278EB7750;
     p_buf = &buf;
-    v18 = v5;
+    v18 = stringCopy;
     v15 = v9;
     v19 = v15;
     v21 = v14;
@@ -108,7 +108,7 @@
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = valueCopy;
     _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[SGStringPreprocessingTransformer replaceContactNamesWithString:withValue:] - Incorrect format for value: %@", &buf, 0xCu);
   }
 
@@ -129,17 +129,17 @@ void __64__SGStringPreprocessor_replaceContactNamesWithString_withValue___block_
   *(*(*(a1 + 48) + 8) + 24) += v7 - v9;
 }
 
-- (void)combineDakutenAndHandakuten:(id)a3
+- (void)combineDakutenAndHandakuten:(id)handakuten
 {
-  v4 = a3;
-  v5 = [v4 length];
+  handakutenCopy = handakuten;
+  v5 = [handakutenCopy length];
   if (!v5)
   {
     goto LABEL_55;
   }
 
   v6 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v5];
-  v7 = v4;
+  v7 = handakutenCopy;
   v8 = objc_opt_self();
 
   if (!v8)
@@ -178,7 +178,7 @@ LABEL_52:
   }
 
   v32 = v7;
-  v33 = self;
+  selfCopy = self;
   v12 = 0;
   v13 = 0;
   v14 = 0;
@@ -347,23 +347,23 @@ LABEL_42:
 
   if (v18)
   {
-    [(SGStringPreprocessor *)v33 replace:v32 withBuffer:v6 toIndex:v17];
+    [(SGStringPreprocessor *)selfCopy replace:v32 withBuffer:v6 toIndex:v17];
   }
 
 LABEL_55:
 }
 
-- (void)transformHalfwidthToFullwidthCJK:(id)a3
+- (void)transformHalfwidthToFullwidthCJK:(id)k
 {
-  v4 = a3;
-  v5 = [v4 length];
+  kCopy = k;
+  v5 = [kCopy length];
   if (!v5)
   {
     goto LABEL_39;
   }
 
   v6 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v5];
-  v7 = v4;
+  v7 = kCopy;
   v8 = objc_opt_self();
 
   if (!v8)
@@ -505,9 +505,9 @@ LABEL_38:
 LABEL_39:
 }
 
-- (void)transformFullwidthToHalfwidthASCII:(id)a3
+- (void)transformFullwidthToHalfwidthASCII:(id)i
 {
-  v3 = a3;
+  iCopy = i;
   v4 = objc_opt_self();
 
   if (v4)
@@ -520,16 +520,16 @@ LABEL_39:
     v28 = 0u;
     *buffer = 0u;
     v26 = 0u;
-    Length = CFStringGetLength(v3);
-    v33 = v3;
+    Length = CFStringGetLength(iCopy);
+    v33 = iCopy;
     v36 = 0;
     v37 = Length;
-    CharactersPtr = CFStringGetCharactersPtr(v3);
+    CharactersPtr = CFStringGetCharactersPtr(iCopy);
     CStringPtr = 0;
     v34 = CharactersPtr;
     if (!CharactersPtr)
     {
-      CStringPtr = CFStringGetCStringPtr(v3, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(iCopy, 0x600u);
     }
 
     v35 = CStringPtr;
@@ -576,7 +576,7 @@ LABEL_12:
             if (v16 != v15)
             {
               v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharactersNoCopy:&v24 length:1 freeWhenDone:0];
-              [(__CFString *)v3 replaceCharactersInRange:v9 withString:1, v17];
+              [(__CFString *)iCopy replaceCharactersInRange:v9 withString:1, v17];
             }
 
             goto LABEL_19;
@@ -626,49 +626,49 @@ LABEL_19:
   }
 }
 
-- (void)transformFullwidthToHalfwidth:(id)a3
+- (void)transformFullwidthToHalfwidth:(id)halfwidth
 {
-  v3 = a3;
+  halfwidthCopy = halfwidth;
   v4.location = 0;
-  v4.length = [(__CFString *)v3 length];
-  CFStringTransform(v3, &v4, *MEMORY[0x277CBF0A8], 0);
+  v4.length = [(__CFString *)halfwidthCopy length];
+  CFStringTransform(halfwidthCopy, &v4, *MEMORY[0x277CBF0A8], 0);
 }
 
-- (void)removeSymbolsWithExceptions:(id)a3 withValue:(id)a4
+- (void)removeSymbolsWithExceptions:(id)exceptions withValue:(id)value
 {
   v6 = MEMORY[0x277CCA900];
-  v7 = a4;
-  v8 = a3;
-  v10 = [v6 symbolCharacterSet];
-  v9 = [(SGStringPreprocessor *)self characterSetFromString:v7];
+  valueCopy = value;
+  exceptionsCopy = exceptions;
+  symbolCharacterSet = [v6 symbolCharacterSet];
+  v9 = [(SGStringPreprocessor *)self characterSetFromString:valueCopy];
 
-  [(SGStringPreprocessor *)self removeCharacters:v10 withExceptions:v9 fromString:v8];
+  [(SGStringPreprocessor *)self removeCharacters:symbolCharacterSet withExceptions:v9 fromString:exceptionsCopy];
 }
 
-- (void)removeSymbols:(id)a3
+- (void)removeSymbols:(id)symbols
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 symbolCharacterSet];
-  [(SGStringPreprocessor *)self removeCharacters:v6 withExceptions:0 fromString:v5];
+  symbolsCopy = symbols;
+  symbolCharacterSet = [v4 symbolCharacterSet];
+  [(SGStringPreprocessor *)self removeCharacters:symbolCharacterSet withExceptions:0 fromString:symbolsCopy];
 }
 
-- (void)removePunctuationWithExceptions:(id)a3 withValue:(id)a4
+- (void)removePunctuationWithExceptions:(id)exceptions withValue:(id)value
 {
   v6 = MEMORY[0x277CCA900];
-  v7 = a4;
-  v8 = a3;
-  v10 = [v6 punctuationCharacterSet];
-  v9 = [(SGStringPreprocessor *)self characterSetFromString:v7];
+  valueCopy = value;
+  exceptionsCopy = exceptions;
+  punctuationCharacterSet = [v6 punctuationCharacterSet];
+  v9 = [(SGStringPreprocessor *)self characterSetFromString:valueCopy];
 
-  [(SGStringPreprocessor *)self removeCharacters:v10 withExceptions:v9 fromString:v8];
+  [(SGStringPreprocessor *)self removeCharacters:punctuationCharacterSet withExceptions:v9 fromString:exceptionsCopy];
 }
 
-- (void)replaceAllWhitespaceWithSpaces:(id)a3
+- (void)replaceAllWhitespaceWithSpaces:(id)spaces
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = v3;
+  spacesCopy = spaces;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = spacesCopy;
   v6 = objc_opt_self();
 
   if (v6)
@@ -766,7 +766,7 @@ LABEL_19:
         }
 
 LABEL_14:
-        if (CFCharacterSetIsCharacterMember(v4, v16))
+        if (CFCharacterSetIsCharacterMember(whitespaceAndNewlineCharacterSet, v16))
         {
           [(__CFString *)v5 replaceCharactersInRange:v11 withString:1, @" ", v23, v24, v25, v26, v27, v28, v29, v30];
         }
@@ -781,12 +781,12 @@ LABEL_14:
   }
 }
 
-- (void)removeNonEmojiSymbolsWithExceptions:(id)a3 withValue:(id)a4
+- (void)removeNonEmojiSymbolsWithExceptions:(id)exceptions withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
-  v9 = [MEMORY[0x277CCA900] symbolCharacterSet];
+  exceptionsCopy = exceptions;
+  valueCopy = value;
+  v8 = [exceptionsCopy length];
+  symbolCharacterSet = [MEMORY[0x277CCA900] symbolCharacterSet];
   if (v8)
   {
     v10 = _PASCharacterSetWithCharactersInString();
@@ -803,14 +803,14 @@ LABEL_14:
   v19 = 0x2020000000;
   v20 = 0;
   v14 = MEMORY[0x277D85DD0];
-  v12 = v9;
+  v12 = symbolCharacterSet;
   v15 = v12;
   v13 = v10;
   v16 = v13;
   _PASIterateLongChars();
   if (v18[3] != v8)
   {
-    [(SGStringPreprocessor *)self replace:v6 withBuffer:v11 toIndex:v14, 3221225472, __70__SGStringPreprocessor_removeNonEmojiSymbolsWithExceptions_withValue___block_invoke, &unk_278EB7598, v12, v13, &v17, v11];
+    [(SGStringPreprocessor *)self replace:exceptionsCopy withBuffer:v11 toIndex:v14, 3221225472, __70__SGStringPreprocessor_removeNonEmojiSymbolsWithExceptions_withValue___block_invoke, &unk_278EB7598, v12, v13, &v17, v11];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -827,11 +827,11 @@ const __CFCharacterSet *__70__SGStringPreprocessor_removeNonEmojiSymbolsWithExce
   return result;
 }
 
-- (void)removeEmojisWithExceptions:(id)a3 withValue:(id)a4
+- (void)removeEmojisWithExceptions:(id)exceptions withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  exceptionsCopy = exceptions;
+  valueCopy = value;
+  v8 = [exceptionsCopy length];
   if (v8)
   {
     v9 = _PASCharacterSetWithCharactersInString();
@@ -851,7 +851,7 @@ const __CFCharacterSet *__70__SGStringPreprocessor_removeNonEmojiSymbolsWithExce
   _PASIterateLongChars();
   if (v13[3] != v8)
   {
-    [(SGStringPreprocessor *)self replace:v6 withBuffer:v10 toIndex:?];
+    [(SGStringPreprocessor *)self replace:exceptionsCopy withBuffer:v10 toIndex:?];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -868,12 +868,12 @@ const __CFCharacterSet *__61__SGStringPreprocessor_removeEmojisWithExceptions_wi
   return result;
 }
 
-- (void)removeEmojiModifyingCharactersWithExceptions:(id)a3 withValue:(id)a4
+- (void)removeEmojiModifyingCharactersWithExceptions:(id)exceptions withValue:(id)value
 {
-  v9 = a3;
-  v6 = a4;
+  exceptionsCopy = exceptions;
+  valueCopy = value;
   v7 = _PASCharacterSetWithCharactersInString();
-  if ([v6 length])
+  if ([valueCopy length])
   {
     v8 = _PASCharacterSetWithCharactersInString();
   }
@@ -883,41 +883,41 @@ const __CFCharacterSet *__61__SGStringPreprocessor_removeEmojisWithExceptions_wi
     v8 = 0;
   }
 
-  [(SGStringPreprocessor *)self removeCharacters:v7 withExceptions:v8 fromString:v9];
+  [(SGStringPreprocessor *)self removeCharacters:v7 withExceptions:v8 fromString:exceptionsCopy];
 }
 
-- (void)removeNonBaseCharacters:(id)a3
+- (void)removeNonBaseCharacters:(id)characters
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 nonBaseCharacterSet];
-  [(SGStringPreprocessor *)self removeCharacters:v6 withExceptions:0 fromString:v5];
+  charactersCopy = characters;
+  nonBaseCharacterSet = [v4 nonBaseCharacterSet];
+  [(SGStringPreprocessor *)self removeCharacters:nonBaseCharacterSet withExceptions:0 fromString:charactersCopy];
 }
 
-- (void)stripNonBaseCharacters:(id)a3
+- (void)stripNonBaseCharacters:(id)characters
 {
-  v4 = a3;
-  [(SGStringPreprocessor *)self decomposeStringWithCompatibilityMapping:v4];
-  [(SGStringPreprocessor *)self removeNonBaseCharacters:v4];
+  charactersCopy = characters;
+  [(SGStringPreprocessor *)self decomposeStringWithCompatibilityMapping:charactersCopy];
+  [(SGStringPreprocessor *)self removeNonBaseCharacters:charactersCopy];
 }
 
-- (void)stripCombiningMarks:(id)a3
+- (void)stripCombiningMarks:(id)marks
 {
-  v3 = a3;
+  marksCopy = marks;
   v4.location = 0;
-  v4.length = [(__CFString *)v3 length];
-  CFStringTransform(v3, &v4, *MEMORY[0x277CBF100], 0);
+  v4.length = [(__CFString *)marksCopy length];
+  CFStringTransform(marksCopy, &v4, *MEMORY[0x277CBF100], 0);
 }
 
-- (void)removeNonBasicMultilingualPlane:(id)a3
+- (void)removeNonBasicMultilingualPlane:(id)plane
 {
-  v4 = a3;
-  v5 = [v4 length];
+  planeCopy = plane;
+  v5 = [planeCopy length];
   if (v5)
   {
     v6 = v5;
     v7 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v5];
-    v8 = v4;
+    v8 = planeCopy;
     v9 = objc_opt_self();
 
     if (v9)
@@ -1047,25 +1047,25 @@ LABEL_32:
   }
 }
 
-- (void)replaceLinksWithString:(id)a3 withValue:(id)a4
+- (void)replaceLinksWithString:(id)string withValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 length];
+  stringCopy = string;
+  valueCopy = value;
+  v9 = [valueCopy length];
   if (v9 >= 5)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:507 description:{@"Invalid parameter not satisfying: %@", @"valueLen <= patternLen"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:507 description:{@"Invalid parameter not satisfying: %@", @"valueLen <= patternLen"}];
   }
 
-  v10 = [v7 length];
+  v10 = [stringCopy length];
   if (!v10)
   {
     goto LABEL_55;
   }
 
   v11 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v10];
-  v12 = v7;
+  v12 = stringCopy;
   v13 = objc_opt_self();
 
   if (!v13)
@@ -1103,7 +1103,7 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  v33 = self;
+  selfCopy = self;
   v17 = 0;
   v18 = 0;
   v19 = 0;
@@ -1187,7 +1187,7 @@ LABEL_15:
       v11[v17] = v22;
       if (v19 == 4)
       {
-        [v8 getCharacters:&v11[v17 - 3] range:{0, v9}];
+        [valueCopy getCharacters:&v11[v17 - 3] range:{0, v9}];
         v17 = v17 - 3 + v9;
         ++v18;
         v20 = 1;
@@ -1195,7 +1195,7 @@ LABEL_15:
         if (v18 == Length)
         {
 
-          v31 = v33;
+          v31 = selfCopy;
 LABEL_54:
           [(SGStringPreprocessor *)v31 replace:v12 withBuffer:v11 toIndex:v17];
           goto LABEL_55;
@@ -1252,7 +1252,7 @@ LABEL_48:
 
   while (v18 != Length);
 
-  v31 = v33;
+  v31 = selfCopy;
   if (v34)
   {
     goto LABEL_54;
@@ -1261,18 +1261,18 @@ LABEL_48:
 LABEL_55:
 }
 
-- (void)mergeAnyConsecutiveNonalphabeticCharactersWithExceptions:(id)a3 withValue:(id)a4
+- (void)mergeAnyConsecutiveNonalphabeticCharactersWithExceptions:(id)exceptions withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  exceptionsCopy = exceptions;
+  valueCopy = value;
+  v8 = [exceptionsCopy length];
   if (v8)
   {
     v9 = v8;
-    v10 = [MEMORY[0x277CCA900] letterCharacterSet];
-    if ([v7 length])
+    letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
+    if ([valueCopy length])
     {
-      v11 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:v7];
+      v11 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:valueCopy];
     }
 
     else
@@ -1289,12 +1289,12 @@ LABEL_55:
     v15[1] = v15;
     v15[2] = 0x2020000000;
     v16 = 0;
-    v13 = v10;
+    v13 = letterCharacterSet;
     v14 = v11;
     _PASIterateLongChars();
     if (v18[3] != v9)
     {
-      [(SGStringPreprocessor *)self replace:v6 withBuffer:v12 toIndex:?];
+      [(SGStringPreprocessor *)self replace:exceptionsCopy withBuffer:v12 toIndex:?];
     }
 
     _Block_object_dispose(v15, 8);
@@ -1314,10 +1314,10 @@ const __CFCharacterSet *__91__SGStringPreprocessor_mergeAnyConsecutiveNonalphabe
   return result;
 }
 
-- (void)mergeAnyConsecutiveCharacters:(id)a3
+- (void)mergeAnyConsecutiveCharacters:(id)characters
 {
-  v4 = a3;
-  v5 = [v4 length];
+  charactersCopy = characters;
+  v5 = [charactersCopy length];
   if (v5)
   {
     v6 = v5;
@@ -1333,7 +1333,7 @@ const __CFCharacterSet *__91__SGStringPreprocessor_mergeAnyConsecutiveNonalphabe
     _PASIterateLongChars();
     if (v11[3] != v6)
     {
-      [(SGStringPreprocessor *)self replace:v4 withBuffer:v7 toIndex:?];
+      [(SGStringPreprocessor *)self replace:charactersCopy withBuffer:v7 toIndex:?];
     }
 
     _Block_object_dispose(v8, 8);
@@ -1356,10 +1356,10 @@ void *__54__SGStringPreprocessor_mergeAnyConsecutiveCharacters___block_invoke(vo
   return result;
 }
 
-- (void)mergeTwoOrMoreConsecutiveCharacters:(id)a3
+- (void)mergeTwoOrMoreConsecutiveCharacters:(id)characters
 {
-  v4 = a3;
-  v5 = [v4 length];
+  charactersCopy = characters;
+  v5 = [charactersCopy length];
   if (v5)
   {
     v6 = v5;
@@ -1380,7 +1380,7 @@ void *__54__SGStringPreprocessor_mergeAnyConsecutiveCharacters___block_invoke(vo
     _PASIterateLongChars();
     if (v14[3] != v6)
     {
-      [(SGStringPreprocessor *)self replace:v4 withBuffer:v7 toIndex:v8, 3221225472, __60__SGStringPreprocessor_mergeTwoOrMoreConsecutiveCharacters___block_invoke, &unk_278EB76B0, v11, v9, &v13, v7];
+      [(SGStringPreprocessor *)self replace:charactersCopy withBuffer:v7 toIndex:v8, 3221225472, __60__SGStringPreprocessor_mergeTwoOrMoreConsecutiveCharacters___block_invoke, &unk_278EB76B0, v11, v9, &v13, v7];
     }
 
     _Block_object_dispose(v9, 8);
@@ -1405,25 +1405,25 @@ void *__60__SGStringPreprocessor_mergeTwoOrMoreConsecutiveCharacters___block_inv
   return result;
 }
 
-- (void)replaceNumbersWithString:(id)a3 withValue:(id)a4
+- (void)replaceNumbersWithString:(id)string withValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 length] != 1)
+  stringCopy = string;
+  valueCopy = value;
+  if ([valueCopy length] != 1)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"value.length == 1"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"value.length == 1"}];
   }
 
-  v9 = [v7 length];
+  v9 = [stringCopy length];
   if (v9)
   {
     v10 = v9;
-    v11 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    if (([v8 characterAtIndex:0] & 0xF800 | 0x400) == 0xDC00)
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    if (([valueCopy characterAtIndex:0] & 0xF800 | 0x400) == 0xDC00)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"!CFUniCharIsSurrogateHighCharacter(replacement) && !CFUniCharIsSurrogateLowCharacter(replacement)"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"!CFUniCharIsSurrogateHighCharacter(replacement) && !CFUniCharIsSurrogateLowCharacter(replacement)"}];
     }
 
     v25 = 0;
@@ -1442,11 +1442,11 @@ void *__60__SGStringPreprocessor_mergeTwoOrMoreConsecutiveCharacters___block_inv
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v12 = v11;
+    v12 = decimalDigitCharacterSet;
     _PASIterateLongChars();
     if (*(v16 + 24) == 1)
     {
-      [(SGStringPreprocessor *)self replace:v7 withBuffer:v26[3] toIndex:v22[3]];
+      [(SGStringPreprocessor *)self replace:stringCopy withBuffer:v26[3] toIndex:v22[3]];
     }
 
     _Block_object_dispose(&v15, 8);
@@ -1485,14 +1485,14 @@ void *__59__SGStringPreprocessor_replaceNumbersWithString_withValue___block_invo
   return result;
 }
 
-- (void)mergeNumbersSeparatedByASCIISpace:(id)a3
+- (void)mergeNumbersSeparatedByASCIISpace:(id)space
 {
-  v4 = a3;
-  v5 = [v4 length];
+  spaceCopy = space;
+  v5 = [spaceCopy length];
   if (v5)
   {
     v6 = v5;
-    v7 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
     v8 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v6];
     v14 = 0;
     v15 = &v14;
@@ -1506,11 +1506,11 @@ void *__59__SGStringPreprocessor_replaceNumbersWithString_withValue___block_invo
     v10[1] = v10;
     v10[2] = 0x2020000000;
     v11 = 0;
-    v9 = v7;
+    v9 = decimalDigitCharacterSet;
     _PASIterateLongChars();
     if (v15[3] != v6)
     {
-      [(SGStringPreprocessor *)self replace:v4 withBuffer:v8 toIndex:?];
+      [(SGStringPreprocessor *)self replace:spaceCopy withBuffer:v8 toIndex:?];
     }
 
     _Block_object_dispose(v10, 8);
@@ -1533,16 +1533,16 @@ void *__58__SGStringPreprocessor_mergeNumbersSeparatedByASCIISpace___block_invok
   return result;
 }
 
-- (void)removeDuplicateWhitespace:(id)a3
+- (void)removeDuplicateWhitespace:(id)whitespace
 {
-  v4 = a3;
-  v5 = [v4 length];
+  whitespaceCopy = whitespace;
+  v5 = [whitespaceCopy length];
   if (v5)
   {
     v6 = v5;
-    v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
     v8 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v6];
-    v9 = v4;
+    v9 = whitespaceCopy;
     v10 = objc_opt_self();
 
     if (v10)
@@ -1569,8 +1569,8 @@ void *__58__SGStringPreprocessor_mergeNumbersSeparatedByASCIISpace___block_invok
 
       v30 = v9;
       v31 = v6;
-      v32 = self;
-      v33 = v4;
+      selfCopy = self;
+      v33 = whitespaceCopy;
       v47 = 0;
       v48 = 0;
       v44 = CStringPtr;
@@ -1646,7 +1646,7 @@ void *__58__SGStringPreprocessor_mergeNumbersSeparatedByASCIISpace___block_invok
           }
 
 LABEL_15:
-          v23 = [v7 characterIsMember:{v22, v30, v31, v32, v33, *buffer, *&buffer[4], v35, v36, v37, v38, v39, v40, v41}];
+          v23 = [whitespaceAndNewlineCharacterSet characterIsMember:{v22, v30, v31, selfCopy, v33, *buffer, *&buffer[4], v35, v36, v37, v38, v39, v40, v41}];
           if ((v17 & v23 & 1) == 0)
           {
             v8[v15++] = v22;
@@ -1665,8 +1665,8 @@ LABEL_15:
 
       v15 = 0;
 LABEL_33:
-      self = v32;
-      v4 = v33;
+      self = selfCopy;
+      whitespaceCopy = v33;
       v9 = v30;
       v6 = v31;
     }
@@ -1683,36 +1683,36 @@ LABEL_33:
   }
 }
 
-- (void)removeSpacingModifierLetters:(id)a3
+- (void)removeSpacingModifierLetters:(id)letters
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
+  lettersCopy = letters;
   v6 = [v4 characterSetWithRange:{688, 64}];
-  [(SGStringPreprocessor *)self removeCharacters:v6 withExceptions:0 fromString:v5];
+  [(SGStringPreprocessor *)self removeCharacters:v6 withExceptions:0 fromString:lettersCopy];
 }
 
-- (void)removePunctuation:(id)a3
+- (void)removePunctuation:(id)punctuation
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 punctuationCharacterSet];
-  [(SGStringPreprocessor *)self removeCharacters:v6 withExceptions:0 fromString:v5];
+  punctuationCopy = punctuation;
+  punctuationCharacterSet = [v4 punctuationCharacterSet];
+  [(SGStringPreprocessor *)self removeCharacters:punctuationCharacterSet withExceptions:0 fromString:punctuationCopy];
 }
 
-- (void)removeNonASCII:(id)a3
+- (void)removeNonASCII:(id)i
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
+  iCopy = i;
   v7 = [v4 characterSetWithRange:{0, 128}];
-  v6 = [v7 invertedSet];
-  [(SGStringPreprocessor *)self removeCharacters:v6 withExceptions:0 fromString:v5];
+  invertedSet = [v7 invertedSet];
+  [(SGStringPreprocessor *)self removeCharacters:invertedSet withExceptions:0 fromString:iCopy];
 }
 
-- (void)replaceCharactersWithSpaces:(id)a3 withValue:(id)a4
+- (void)replaceCharactersWithSpaces:(id)spaces withValue:(id)value
 {
-  v6 = a3;
-  v9 = [(SGStringPreprocessor *)self characterSetFromString:a4];
-  v7 = v6;
+  spacesCopy = spaces;
+  v9 = [(SGStringPreprocessor *)self characterSetFromString:value];
+  v7 = spacesCopy;
   v8 = v9;
   _PASIterateLongChars();
 }
@@ -1730,18 +1730,18 @@ uint64_t __62__SGStringPreprocessor_replaceCharactersWithSpaces_withValue___bloc
   return result;
 }
 
-- (void)removeCharacters:(id)a3 withValue:(id)a4
+- (void)removeCharacters:(id)characters withValue:(id)value
 {
-  v6 = a3;
-  v7 = [(SGStringPreprocessor *)self characterSetFromString:a4];
-  [(SGStringPreprocessor *)self removeCharacters:v7 withExceptions:0 fromString:v6];
+  charactersCopy = characters;
+  v7 = [(SGStringPreprocessor *)self characterSetFromString:value];
+  [(SGStringPreprocessor *)self removeCharacters:v7 withExceptions:0 fromString:charactersCopy];
 }
 
-- (void)separateFrenchElisions:(id)a3
+- (void)separateFrenchElisions:(id)elisions
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  elisionsCopy = elisions;
+  v5 = [elisionsCopy length];
   if (v5)
   {
     v6 = v5;
@@ -1754,7 +1754,7 @@ uint64_t __62__SGStringPreprocessor_replaceCharactersWithSpaces_withValue___bloc
     v43[2] = xmmword_278EB75D8;
     v43[3] = *&off_278EB75E8;
     v7 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v5];
-    v8 = v4;
+    v8 = elisionsCopy;
     v9 = objc_opt_self();
 
     if (v9)
@@ -1779,8 +1779,8 @@ uint64_t __62__SGStringPreprocessor_replaceCharactersWithSpaces_withValue___bloc
         CStringPtr = CFStringGetCStringPtr(v8, 0x600u);
       }
 
-      v26 = v4;
-      v27 = self;
+      v26 = elisionsCopy;
+      selfCopy = self;
       v41 = 0;
       v42 = 0;
       v38 = CStringPtr;
@@ -1860,7 +1860,7 @@ uint64_t __62__SGStringPreprocessor_replaceCharactersWithSpaces_withValue___bloc
                 }
               }
 
-              v7 = [(SGStringPreprocessor *)v27 bufferPtrWithMinimumLength:++v6];
+              v7 = [(SGStringPreprocessor *)selfCopy bufferPtrWithMinimumLength:++v6];
               *&v7[v13] = 2097191;
               v22 = v13 + 2;
               goto LABEL_34;
@@ -1882,8 +1882,8 @@ LABEL_34:
 
       v22 = 0;
 LABEL_39:
-      v4 = v26;
-      self = v27;
+      elisionsCopy = v26;
+      self = selfCopy;
       v6 = v25;
     }
 
@@ -1905,17 +1905,17 @@ LABEL_39:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separateCharacter:(id)a3 withValue:(id)a4
+- (void)separateCharacter:(id)character withValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 length] != 1)
+  characterCopy = character;
+  valueCopy = value;
+  if ([valueCopy length] != 1)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"value.length == 1"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"value.length == 1"}];
   }
 
-  v9 = [v7 length];
+  v9 = [characterCopy length];
   if (!v9)
   {
     goto LABEL_46;
@@ -1923,15 +1923,15 @@ LABEL_39:
 
   v10 = v9;
   theSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v11 = [v8 characterAtIndex:0];
+  v11 = [valueCopy characterAtIndex:0];
   if ((v11 & 0xF800 | 0x400) == 0xDC00)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"!CFUniCharIsSurrogateHighCharacter(separator) && !CFUniCharIsSurrogateLowCharacter(separator)"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"!CFUniCharIsSurrogateHighCharacter(separator) && !CFUniCharIsSurrogateLowCharacter(separator)"}];
   }
 
   v12 = [(SGStringPreprocessor *)self bufferPtrWithMinimumLength:v10];
-  v13 = v7;
+  v13 = characterCopy;
   v14 = objc_opt_self();
 
   if (!v14)
@@ -1970,8 +1970,8 @@ LABEL_42:
   }
 
   v37 = v13;
-  v38 = v8;
-  v39 = self;
+  v38 = valueCopy;
+  selfCopy = self;
   v18 = 0;
   v19 = 0;
   v20 = 0;
@@ -2062,7 +2062,7 @@ LABEL_25:
     if ((v20 & 1) == 0)
     {
       v10 = v40 + 2;
-      v12 = [(SGStringPreprocessor *)v39 bufferPtrWithMinimumLength:v40 + 2];
+      v12 = [(SGStringPreprocessor *)selfCopy bufferPtrWithMinimumLength:v40 + 2];
       v33 = &v12[v19];
       *v33 = 32;
       v33[1] = v11;
@@ -2077,7 +2077,7 @@ LABEL_25:
 
       v34 = v37;
 
-      v8 = v38;
+      valueCopy = v38;
       goto LABEL_44;
     }
 
@@ -2091,11 +2091,11 @@ LABEL_26:
   while (Length != v18);
   v34 = v37;
 
-  v8 = v38;
+  valueCopy = v38;
   if (v41)
   {
 LABEL_44:
-    [(SGStringPreprocessor *)v39 replace:v34 withBuffer:v12 toIndex:v19];
+    [(SGStringPreprocessor *)selfCopy replace:v34 withBuffer:v12 toIndex:v19];
   }
 
 LABEL_45:
@@ -2103,13 +2103,13 @@ LABEL_45:
 LABEL_46:
 }
 
-- (id)characterSetFromString:(id)a3
+- (id)characterSetFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] == 1)
+  stringCopy = string;
+  if ([stringCopy length] == 1)
   {
     v4 = MEMORY[0x277CCA900];
-    v5 = [v3 characterAtIndex:0];
+    v5 = [stringCopy characterAtIndex:0];
 
     v6 = [v4 characterSetWithRange:{v5, 1}];
   }
@@ -2122,12 +2122,12 @@ LABEL_46:
   return v6;
 }
 
-- (void)removeCharacters:(id)a3 withExceptions:(id)a4 fromString:(id)a5
+- (void)removeCharacters:(id)characters withExceptions:(id)exceptions fromString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 length];
+  charactersCopy = characters;
+  exceptionsCopy = exceptions;
+  stringCopy = string;
+  v11 = [stringCopy length];
   if (v11)
   {
     v12 = v11;
@@ -2137,12 +2137,12 @@ LABEL_46:
     v19 = 0x2020000000;
     v20 = 0;
     v14 = MEMORY[0x277D85DD0];
-    v15 = v8;
-    v16 = v9;
+    v15 = charactersCopy;
+    v16 = exceptionsCopy;
     _PASIterateLongChars();
     if (v18[3] != v12)
     {
-      [(SGStringPreprocessor *)self replace:v10 withBuffer:v13 toIndex:v14, 3221225472, __67__SGStringPreprocessor_removeCharacters_withExceptions_fromString___block_invoke, &unk_278EB7598, v15, v16, &v17, v13];
+      [(SGStringPreprocessor *)self replace:stringCopy withBuffer:v13 toIndex:v14, 3221225472, __67__SGStringPreprocessor_removeCharacters_withExceptions_fromString___block_invoke, &unk_278EB7598, v15, v16, &v17, v13];
     }
 
     _Block_object_dispose(&v17, 8);
@@ -2160,17 +2160,17 @@ const __CFCharacterSet *__67__SGStringPreprocessor_removeCharacters_withExceptio
   return result;
 }
 
-- (void)replace:(id)a3 withBuffer:(unsigned __int16 *)a4 toIndex:(unint64_t)a5
+- (void)replace:(id)replace withBuffer:(unsigned __int16 *)buffer toIndex:(unint64_t)index
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithCharactersNoCopy:a4 length:a5 freeWhenDone:0];
-  CFStringReplaceAll(v8, v9);
+  replaceCopy = replace;
+  v9 = [[v7 alloc] initWithCharactersNoCopy:buffer length:index freeWhenDone:0];
+  CFStringReplaceAll(replaceCopy, v9);
 }
 
-- (unsigned)bufferPtrWithMinimumLength:(unint64_t)a3
+- (unsigned)bufferPtrWithMinimumLength:(unint64_t)length
 {
-  v4 = 2 * a3;
+  v4 = 2 * length;
   v5 = [(NSMutableData *)self->_buffer length];
   v6 = v4 - v5;
   if (v4 > v5)

@@ -1,7 +1,7 @@
 @interface ASAuthorizationSingleSignOnProvider
 + (ASAuthorizationSingleSignOnProvider)authorizationProviderWithIdentityProviderURL:(NSURL *)url;
 - (ASAuthorizationSingleSignOnProvider)init;
-- (ASAuthorizationSingleSignOnProvider)initWithURL:(id)a3;
+- (ASAuthorizationSingleSignOnProvider)initWithURL:(id)l;
 - (ASAuthorizationSingleSignOnRequest)createRequest;
 @end
 
@@ -10,7 +10,7 @@
 + (ASAuthorizationSingleSignOnProvider)authorizationProviderWithIdentityProviderURL:(NSURL *)url
 {
   v4 = url;
-  v5 = [[a1 alloc] initWithURL:v4];
+  v5 = [[self alloc] initWithURL:v4];
 
   return v5;
 }
@@ -22,16 +22,16 @@
   return 0;
 }
 
-- (ASAuthorizationSingleSignOnProvider)initWithURL:(id)a3
+- (ASAuthorizationSingleSignOnProvider)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = ASAuthorizationSingleSignOnProvider;
   v6 = [(ASAuthorizationSingleSignOnProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;

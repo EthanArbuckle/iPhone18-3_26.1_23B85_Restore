@@ -6,7 +6,7 @@
 
 - (void)configureWithCurrentWorkout
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017548C();
 }
 

@@ -6,7 +6,7 @@
 
 + (uint64_t)_web_valueWithCGRect:()_web_Extensions
 {
-  *v5 = a1;
+  *v5 = self;
   *&v5[1] = a2;
   *&v5[2] = a3;
   *&v5[3] = a4;

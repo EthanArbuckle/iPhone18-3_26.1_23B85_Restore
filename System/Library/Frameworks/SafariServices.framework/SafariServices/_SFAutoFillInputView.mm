@@ -1,38 +1,38 @@
 @interface _SFAutoFillInputView
 - (CGSize)_currentKeyboardSize;
-- (_SFAutoFillInputView)initWithHostString:(id)a3 credentialSource:(id)a4 suggestion:(id)a5 customTitle:(id)a6;
-- (_SFAutoFillInputView)initWithIntroductionViewController:(id)a3;
-- (_SFAutoFillInputView)initWithStreamlinedAutoFillViewController:(id)a3 suggestion:(id)a4;
-- (_SFAutoFillInputView)initWithStreamlinedStrongPasswordViewController:(id)a3;
+- (_SFAutoFillInputView)initWithHostString:(id)string credentialSource:(id)source suggestion:(id)suggestion customTitle:(id)title;
+- (_SFAutoFillInputView)initWithIntroductionViewController:(id)controller;
+- (_SFAutoFillInputView)initWithStreamlinedAutoFillViewController:(id)controller suggestion:(id)suggestion;
+- (_SFAutoFillInputView)initWithStreamlinedStrongPasswordViewController:(id)controller;
 - (_SFAutoFillInputViewDelegate)delegate;
-- (id)_initWithViewController:(id)a3;
+- (id)_initWithViewController:(id)controller;
 - (void)_commonInit;
-- (void)_fillCredential:(id)a3;
+- (void)_fillCredential:(id)credential;
 - (void)_preferredContentSizeCategoryDidChange;
-- (void)_replaceContentsOfViewWithViewController:(id)a3;
-- (void)_showMorePasswords:(id)a3;
-- (void)_showStandardKeyboard:(id)a3;
+- (void)_replaceContentsOfViewWithViewController:(id)controller;
+- (void)_showMorePasswords:(id)passwords;
+- (void)_showStandardKeyboard:(id)keyboard;
 - (void)_updateDynamicConstraints;
 - (void)_updateFillCredentialButtonLabelMetrics;
 - (void)_updateKeyboardHeight;
 - (void)_updateKeyboardMetricsAndInterfaceOrientationIfNeeded;
-- (void)replaceContentsOfViewWithStreamlinedStrongPasswordViewController:(id)a3;
-- (void)replaceContentsOfViewWithStrongPasswordIntroductionViewController:(id)a3;
-- (void)streamlinedStrongPasswordViewController:(id)a3 shouldFillStrongPasswordWithFormat:(unint64_t)a4;
-- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)a3;
+- (void)replaceContentsOfViewWithStreamlinedStrongPasswordViewController:(id)controller;
+- (void)replaceContentsOfViewWithStrongPasswordIntroductionViewController:(id)controller;
+- (void)streamlinedStrongPasswordViewController:(id)controller shouldFillStrongPasswordWithFormat:(unint64_t)format;
+- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)password;
 - (void)updateConstraints;
-- (void)updateSuggestionIfNecessary:(id)a3;
+- (void)updateSuggestionIfNecessary:(id)necessary;
 @end
 
 @implementation _SFAutoFillInputView
 
-- (_SFAutoFillInputView)initWithHostString:(id)a3 credentialSource:(id)a4 suggestion:(id)a5 customTitle:(id)a6
+- (_SFAutoFillInputView)initWithHostString:(id)string credentialSource:(id)source suggestion:(id)suggestion customTitle:(id)title
 {
   v103[17] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  sourceCopy = source;
+  suggestionCopy = suggestion;
+  titleCopy = title;
   v102.receiver = self;
   v102.super_class = _SFAutoFillInputView;
   v14 = *MEMORY[0x1E695F058];
@@ -43,20 +43,20 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_suggestion, a5);
-    v20 = [v10 copy];
+    objc_storeStrong(&v18->_suggestion, suggestion);
+    v20 = [stringCopy copy];
     hostString = v19->_hostString;
     v19->_hostString = v20;
 
-    v22 = [v11 copy];
+    v22 = [sourceCopy copy];
     credentialSource = v19->_credentialSource;
     v19->_credentialSource = v22;
 
-    v24 = [v13 length];
-    v99 = v13;
+    v24 = [titleCopy length];
+    v99 = titleCopy;
     if (v24)
     {
-      v25 = [v13 copy];
+      v25 = [titleCopy copy];
     }
 
     else
@@ -64,8 +64,8 @@
       v25 = 0;
     }
 
-    v100 = v11;
-    v101 = v10;
+    v100 = sourceCopy;
+    v101 = stringCopy;
     objc_storeStrong(&v19->_customTitle, v25);
     if (v24)
     {
@@ -86,8 +86,8 @@
     [(UILabel *)v19->_explanationLabel setFont:v30];
 
     [(UILabel *)v19->_explanationLabel setAdjustsFontForContentSizeCategory:1];
-    v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v19->_explanationLabel setTextColor:v31];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v19->_explanationLabel setTextColor:secondaryLabelColor];
 
     v32 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_25];
     v33 = UIKeyboardGetKeyboardKeyImage();
@@ -118,151 +118,151 @@
     v19->_fillCredentialButton = v39;
 
     [(UIButton *)v19->_fillCredentialButton setAccessibilityIdentifier:@"CredentialUsernameButton"];
-    v95 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v95 setButtonSize:3];
-    [(UIButton *)v19->_fillCredentialButton setConfiguration:v95];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setButtonSize:3];
+    [(UIButton *)v19->_fillCredentialButton setConfiguration:filledButtonConfiguration];
     [(UIButton *)v19->_fillCredentialButton setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v41) = 1148846080;
     [(UIButton *)v19->_fillCredentialButton setContentHuggingPriority:0 forAxis:v41];
     [(_SFAutoFillInputView *)v19 addSubview:v19->_fillCredentialButton];
-    [(_SFAutoFillInputView *)v19 updateSuggestionIfNecessary:v12];
+    [(_SFAutoFillInputView *)v19 updateSuggestionIfNecessary:suggestionCopy];
     [(_SFAutoFillInputView *)v19 addSubview:v19->_explanationLabel];
     [(UIInputView *)v19 setAllowsSelfSizing:1];
     [(_SFAutoFillInputView *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v42 = [(UIButton *)v19->_fillCredentialButton widthAnchor];
-    v43 = [(_SFAutoFillInputView *)v19 widthAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    widthAnchor = [(UIButton *)v19->_fillCredentialButton widthAnchor];
+    widthAnchor2 = [(_SFAutoFillInputView *)v19 widthAnchor];
+    v44 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
     LODWORD(v45) = 1144750080;
     v84 = v44;
     [v44 setPriority:v45];
     v77 = MEMORY[0x1E696ACD8];
-    v94 = [(UILabel *)v19->_explanationLabel topAnchor];
-    v93 = [(_SFAutoFillInputView *)v19 topAnchor];
-    v92 = [v94 constraintEqualToAnchor:v93 constant:20.0];
+    topAnchor = [(UILabel *)v19->_explanationLabel topAnchor];
+    topAnchor2 = [(_SFAutoFillInputView *)v19 topAnchor];
+    v92 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
     v103[0] = v92;
-    v91 = [(UILabel *)v19->_explanationLabel bottomAnchor];
-    v90 = [(UIButton *)v19->_fillCredentialButton topAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90 constant:-20.0];
+    bottomAnchor = [(UILabel *)v19->_explanationLabel bottomAnchor];
+    topAnchor3 = [(UIButton *)v19->_fillCredentialButton topAnchor];
+    v89 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-20.0];
     v103[1] = v89;
-    v88 = [(UILabel *)v19->_explanationLabel centerXAnchor];
-    v87 = [(_SFAutoFillInputView *)v19 centerXAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87];
+    centerXAnchor = [(UILabel *)v19->_explanationLabel centerXAnchor];
+    centerXAnchor2 = [(_SFAutoFillInputView *)v19 centerXAnchor];
+    v86 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v103[2] = v86;
-    v85 = [(UILabel *)v19->_explanationLabel leadingAnchor];
-    v83 = [(_SFAutoFillInputView *)v19 leadingAnchor];
-    v82 = [v85 constraintGreaterThanOrEqualToAnchor:v83 constant:16.0];
+    leadingAnchor = [(UILabel *)v19->_explanationLabel leadingAnchor];
+    leadingAnchor2 = [(_SFAutoFillInputView *)v19 leadingAnchor];
+    v82 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:16.0];
     v103[3] = v82;
-    v81 = [(UILabel *)v19->_explanationLabel trailingAnchor];
-    v80 = [(_SFAutoFillInputView *)v19 trailingAnchor];
-    v79 = [v81 constraintGreaterThanOrEqualToAnchor:v80 constant:-16.0];
+    trailingAnchor = [(UILabel *)v19->_explanationLabel trailingAnchor];
+    trailingAnchor2 = [(_SFAutoFillInputView *)v19 trailingAnchor];
+    v79 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:-16.0];
     v103[4] = v79;
-    v78 = [(UILabel *)v19->_explanationLabel widthAnchor];
-    v76 = [v78 constraintLessThanOrEqualToConstant:420.0];
+    widthAnchor3 = [(UILabel *)v19->_explanationLabel widthAnchor];
+    v76 = [widthAnchor3 constraintLessThanOrEqualToConstant:420.0];
     v103[5] = v76;
-    v75 = [(UIButton *)v19->_fillCredentialButton bottomAnchor];
-    v74 = [(_SFAutoFillInputView *)v19 bottomAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74 constant:-78.0];
+    bottomAnchor2 = [(UIButton *)v19->_fillCredentialButton bottomAnchor];
+    bottomAnchor3 = [(_SFAutoFillInputView *)v19 bottomAnchor];
+    v73 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-78.0];
     v103[6] = v73;
-    v72 = [(UIButton *)v19->_fillCredentialButton centerXAnchor];
-    v71 = [(_SFAutoFillInputView *)v19 centerXAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    centerXAnchor3 = [(UIButton *)v19->_fillCredentialButton centerXAnchor];
+    centerXAnchor4 = [(_SFAutoFillInputView *)v19 centerXAnchor];
+    v70 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v103[7] = v70;
     v103[8] = v44;
-    v69 = [(UIButton *)v19->_keyboardButton bottomAnchor];
-    v68 = [(_SFAutoFillInputView *)v19 bottomAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68];
+    bottomAnchor4 = [(UIButton *)v19->_keyboardButton bottomAnchor];
+    bottomAnchor5 = [(_SFAutoFillInputView *)v19 bottomAnchor];
+    v67 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v103[9] = v67;
-    v66 = [(UIButton *)v19->_keyboardButton leftAnchor];
-    v65 = [(_SFAutoFillInputView *)v19 leftAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    leftAnchor = [(UIButton *)v19->_keyboardButton leftAnchor];
+    leftAnchor2 = [(_SFAutoFillInputView *)v19 leftAnchor];
+    v64 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v103[10] = v64;
-    v63 = [(UIButton *)v19->_keyboardButton widthAnchor];
-    v62 = [v63 constraintEqualToConstant:60.0];
+    widthAnchor4 = [(UIButton *)v19->_keyboardButton widthAnchor];
+    v62 = [widthAnchor4 constraintEqualToConstant:60.0];
     v103[11] = v62;
-    v61 = [(UIButton *)v19->_keyboardButton heightAnchor];
-    v60 = [v61 constraintEqualToConstant:66.0];
+    heightAnchor = [(UIButton *)v19->_keyboardButton heightAnchor];
+    v60 = [heightAnchor constraintEqualToConstant:66.0];
     v103[12] = v60;
-    v59 = [(UIButton *)v19->_otherPasswordsButton bottomAnchor];
-    v58 = [(_SFAutoFillInputView *)v19 bottomAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    bottomAnchor6 = [(UIButton *)v19->_otherPasswordsButton bottomAnchor];
+    bottomAnchor7 = [(_SFAutoFillInputView *)v19 bottomAnchor];
+    v57 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v103[13] = v57;
-    v46 = [(UIButton *)v19->_otherPasswordsButton rightAnchor];
-    v47 = [(_SFAutoFillInputView *)v19 rightAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    rightAnchor = [(UIButton *)v19->_otherPasswordsButton rightAnchor];
+    rightAnchor2 = [(_SFAutoFillInputView *)v19 rightAnchor];
+    v48 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v103[14] = v48;
-    v49 = [(UIButton *)v19->_otherPasswordsButton widthAnchor];
-    v50 = [v49 constraintEqualToConstant:60.0];
+    widthAnchor5 = [(UIButton *)v19->_otherPasswordsButton widthAnchor];
+    v50 = [widthAnchor5 constraintEqualToConstant:60.0];
     v103[15] = v50;
-    v51 = [(UIButton *)v19->_otherPasswordsButton heightAnchor];
-    v52 = [v51 constraintEqualToConstant:66.0];
+    heightAnchor2 = [(UIButton *)v19->_otherPasswordsButton heightAnchor];
+    v52 = [heightAnchor2 constraintEqualToConstant:66.0];
     v103[16] = v52;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:17];
-    v54 = v53 = v12;
+    v54 = v53 = suggestionCopy;
     [v77 activateConstraints:v54];
 
-    v12 = v53;
+    suggestionCopy = v53;
     [(_SFAutoFillInputView *)v19 _commonInit];
     [(UIButton *)v19->_fillCredentialButton addTarget:v19 action:sel__fillCredential_ forControlEvents:0x2000];
     [(UIButton *)v19->_keyboardButton addTarget:v19 action:sel__showStandardKeyboard_ forControlEvents:0x2000];
     [(UIButton *)v19->_otherPasswordsButton addTarget:v19 action:sel__showMorePasswords_ forControlEvents:0x2000];
     v55 = v19;
 
-    v11 = v100;
-    v10 = v101;
-    v13 = v99;
+    sourceCopy = v100;
+    stringCopy = v101;
+    titleCopy = v99;
   }
 
   return v19;
 }
 
-- (_SFAutoFillInputView)initWithIntroductionViewController:(id)a3
+- (_SFAutoFillInputView)initWithIntroductionViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(_SFAutoFillInputView *)self _initWithViewController:v5];
+  controllerCopy = controller;
+  v6 = [(_SFAutoFillInputView *)self _initWithViewController:controllerCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 93, a3);
+    objc_storeStrong(v6 + 93, controller);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (_SFAutoFillInputView)initWithStreamlinedAutoFillViewController:(id)a3 suggestion:(id)a4
+- (_SFAutoFillInputView)initWithStreamlinedAutoFillViewController:(id)controller suggestion:(id)suggestion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_SFAutoFillInputView *)self _initWithViewController:v7];
+  controllerCopy = controller;
+  suggestionCopy = suggestion;
+  v9 = [(_SFAutoFillInputView *)self _initWithViewController:controllerCopy];
   if (v9)
   {
-    [v7 setDelegate:v9];
-    objc_storeStrong(&v9->_streamlinedAutoFillViewController, a3);
-    objc_storeStrong(&v9->_suggestion, a4);
+    [controllerCopy setDelegate:v9];
+    objc_storeStrong(&v9->_streamlinedAutoFillViewController, controller);
+    objc_storeStrong(&v9->_suggestion, suggestion);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (_SFAutoFillInputView)initWithStreamlinedStrongPasswordViewController:(id)a3
+- (_SFAutoFillInputView)initWithStreamlinedStrongPasswordViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(_SFAutoFillInputView *)self _initWithViewController:v5];
+  controllerCopy = controller;
+  v6 = [(_SFAutoFillInputView *)self _initWithViewController:controllerCopy];
   if (v6)
   {
-    [v5 setDelegate:v6];
-    objc_storeStrong(&v6->_streamlinedStrongPasswordViewController, a3);
+    [controllerCopy setDelegate:v6];
+    objc_storeStrong(&v6->_streamlinedStrongPasswordViewController, controller);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (id)_initWithViewController:(id)a3
+- (id)_initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(UIInputView *)self initWithFrame:1 inputViewStyle:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
@@ -273,16 +273,16 @@
     dynamicConstraints = v6->_dynamicConstraints;
     v6->_dynamicConstraints = v7;
 
-    v9 = [v4 view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(_SFAutoFillInputView *)v6 addSubview:v9];
-    v10 = [(_SFAutoFillInputView *)v6 heightAnchor];
-    v11 = [v10 constraintLessThanOrEqualToConstant:100.0];
+    view = [controllerCopy view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(_SFAutoFillInputView *)v6 addSubview:view];
+    heightAnchor = [(_SFAutoFillInputView *)v6 heightAnchor];
+    v11 = [heightAnchor constraintLessThanOrEqualToConstant:100.0];
     heightConstraint = v6->_heightConstraint;
     v6->_heightConstraint = v11;
 
     v13 = MEMORY[0x1E696ACD8];
-    v14 = [MEMORY[0x1E696ACD8] safari_constraintsMatchingFrameOfView:v9 withFrameOfView:v6];
+    v14 = [MEMORY[0x1E696ACD8] safari_constraintsMatchingFrameOfView:view withFrameOfView:v6];
     v15 = [v14 arrayByAddingObject:v6->_heightConstraint];
     [v13 activateConstraints:v15];
 
@@ -304,45 +304,45 @@
   v4 = [(_SFAutoFillInputView *)self registerForTraitChanges:v3 withTarget:self action:sel__preferredContentSizeCategoryDidChange];
 }
 
-- (void)replaceContentsOfViewWithStreamlinedStrongPasswordViewController:(id)a3
+- (void)replaceContentsOfViewWithStreamlinedStrongPasswordViewController:(id)controller
 {
-  v4 = a3;
-  [(_SFAutoFillInputView *)self _replaceContentsOfViewWithViewController:v4];
+  controllerCopy = controller;
+  [(_SFAutoFillInputView *)self _replaceContentsOfViewWithViewController:controllerCopy];
   streamlinedStrongPasswordViewController = self->_streamlinedStrongPasswordViewController;
-  self->_streamlinedStrongPasswordViewController = v4;
-  v6 = v4;
+  self->_streamlinedStrongPasswordViewController = controllerCopy;
+  v6 = controllerCopy;
 
   [(PMSafariStreamlinedStrongPasswordViewController *)v6 setDelegate:self];
 }
 
-- (void)replaceContentsOfViewWithStrongPasswordIntroductionViewController:(id)a3
+- (void)replaceContentsOfViewWithStrongPasswordIntroductionViewController:(id)controller
 {
-  v4 = a3;
-  [(_SFAutoFillInputView *)self _replaceContentsOfViewWithViewController:v4];
+  controllerCopy = controller;
+  [(_SFAutoFillInputView *)self _replaceContentsOfViewWithViewController:controllerCopy];
   strongPasswordIntroductionViewController = self->_strongPasswordIntroductionViewController;
-  self->_strongPasswordIntroductionViewController = v4;
-  v6 = v4;
+  self->_strongPasswordIntroductionViewController = controllerCopy;
+  v6 = controllerCopy;
 
-  v7 = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)v6 view];
-  [v7 setNeedsUpdateConstraints];
+  view = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)v6 view];
+  [view setNeedsUpdateConstraints];
 
-  v8 = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)v6 view];
+  view2 = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)v6 view];
 
-  [v8 layoutIfNeeded];
+  [view2 layoutIfNeeded];
 }
 
-- (void)_replaceContentsOfViewWithViewController:(id)a3
+- (void)_replaceContentsOfViewWithViewController:(id)controller
 {
   streamlinedAutoFillViewController = self->_streamlinedAutoFillViewController;
-  v5 = a3;
-  v6 = [(PMSafariStreamlinedAutoFillViewController *)streamlinedAutoFillViewController view];
-  [v6 removeFromSuperview];
+  controllerCopy = controller;
+  view = [(PMSafariStreamlinedAutoFillViewController *)streamlinedAutoFillViewController view];
+  [view removeFromSuperview];
 
-  v7 = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)self->_strongPasswordIntroductionViewController view];
-  [v7 removeFromSuperview];
+  view2 = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)self->_strongPasswordIntroductionViewController view];
+  [view2 removeFromSuperview];
 
-  v8 = [(PMSafariStreamlinedStrongPasswordViewController *)self->_streamlinedStrongPasswordViewController view];
-  [v8 removeFromSuperview];
+  view3 = [(PMSafariStreamlinedStrongPasswordViewController *)self->_streamlinedStrongPasswordViewController view];
+  [view3 removeFromSuperview];
 
   v9 = self->_streamlinedAutoFillViewController;
   self->_streamlinedAutoFillViewController = 0;
@@ -353,12 +353,12 @@
   streamlinedStrongPasswordViewController = self->_streamlinedStrongPasswordViewController;
   self->_streamlinedStrongPasswordViewController = 0;
 
-  v14 = [v5 view];
+  view4 = [controllerCopy view];
 
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(_SFAutoFillInputView *)self addSubview:v14];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(_SFAutoFillInputView *)self addSubview:view4];
   v12 = MEMORY[0x1E696ACD8];
-  v13 = [MEMORY[0x1E696ACD8] safari_constraintsMatchingFrameOfView:v14 withFrameOfView:self];
+  v13 = [MEMORY[0x1E696ACD8] safari_constraintsMatchingFrameOfView:view4 withFrameOfView:self];
   [v12 activateConstraints:v13];
 
   [(_SFAutoFillInputView *)self setNeedsUpdateConstraints];
@@ -374,31 +374,31 @@
   [(_SFAutoFillInputView *)&v3 updateConstraints];
 }
 
-- (void)updateSuggestionIfNecessary:(id)a3
+- (void)updateSuggestionIfNecessary:(id)necessary
 {
-  v37 = a3;
-  v5 = [(_SFTextSuggestion *)self->_suggestion savedAccountMatch];
-  if (!v5 || (v6 = v5, [v37 savedAccountMatch], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "savedAccount"), v8 = objc_claimAutoreleasedReturnValue(), -[_SFTextSuggestion savedAccountMatch](self->_suggestion, "savedAccountMatch"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "savedAccount"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isEqual:", v10), v10, v9, v8, v7, v6, v11))
+  necessaryCopy = necessary;
+  savedAccountMatch = [(_SFTextSuggestion *)self->_suggestion savedAccountMatch];
+  if (!savedAccountMatch || (v6 = savedAccountMatch, [necessaryCopy savedAccountMatch], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "savedAccount"), v8 = objc_claimAutoreleasedReturnValue(), -[_SFTextSuggestion savedAccountMatch](self->_suggestion, "savedAccountMatch"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "savedAccount"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isEqual:", v10), v10, v9, v8, v7, v6, v11))
   {
-    v12 = [(_SFTextSuggestion *)self->_suggestion credentialIdentity];
-    if ([v12 type] == 2)
+    credentialIdentity = [(_SFTextSuggestion *)self->_suggestion credentialIdentity];
+    if ([credentialIdentity type] == 2)
     {
-      v13 = [(_SFTextSuggestion *)self->_suggestion credentialIdentity];
-      if ([v13 isExternal])
+      credentialIdentity2 = [(_SFTextSuggestion *)self->_suggestion credentialIdentity];
+      if ([credentialIdentity2 isExternal])
       {
-        v14 = [v37 savedAccountMatch];
+        savedAccountMatch2 = [necessaryCopy savedAccountMatch];
 
-        if (v14)
+        if (savedAccountMatch2)
         {
           goto LABEL_24;
         }
 
 LABEL_9:
-        objc_storeStrong(&self->_suggestion, a3);
-        v15 = [v37 savedAccountMatch];
-        v16 = [v15 autoFillPasskey];
+        objc_storeStrong(&self->_suggestion, necessary);
+        savedAccountMatch3 = [necessaryCopy savedAccountMatch];
+        autoFillPasskey = [savedAccountMatch3 autoFillPasskey];
 
-        if (v16)
+        if (autoFillPasskey)
         {
           v17 = MEMORY[0x1E696AEC0];
           v18 = _WBSLocalizedString();
@@ -420,7 +420,7 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        if (!self->_credentialSource || ([v37 credentialIdentity], v21 = objc_claimAutoreleasedReturnValue(), v21, !v21))
+        if (!self->_credentialSource || ([necessaryCopy credentialIdentity], v21 = objc_claimAutoreleasedReturnValue(), v21, !v21))
         {
           v27 = MEMORY[0x1E696AEC0];
           v28 = _WBSLocalizedString();
@@ -436,28 +436,28 @@ LABEL_23:
           [(UILabel *)self->_explanationLabel setText:v19];
           v31 = MEMORY[0x1E696AEC0];
           v32 = _WBSLocalizedString();
-          v33 = [v37 displayText];
-          v34 = [v31 localizedStringWithFormat:v32, v33];
+          displayText = [necessaryCopy displayText];
+          v34 = [v31 localizedStringWithFormat:v32, displayText];
 
-          v35 = [(UIButton *)self->_fillCredentialButton configuration];
-          [v35 setTitle:v34];
-          [(UIButton *)self->_fillCredentialButton setConfiguration:v35];
+          configuration = [(UIButton *)self->_fillCredentialButton configuration];
+          [configuration setTitle:v34];
+          [(UIButton *)self->_fillCredentialButton setConfiguration:configuration];
 
           goto LABEL_24;
         }
 
         [MEMORY[0x1E69E30A8] keychainSyncEnabled];
-        v22 = [v37 credentialIdentity];
-        v23 = [v22 owningExtensionState];
+        credentialIdentity3 = [necessaryCopy credentialIdentity];
+        owningExtensionState = [credentialIdentity3 owningExtensionState];
 
-        v24 = [v37 credentialIdentity];
-        v25 = [v24 type];
+        credentialIdentity4 = [necessaryCopy credentialIdentity];
+        type = [credentialIdentity4 type];
 
-        switch(v25)
+        switch(type)
         {
           case 4:
             v26 = MEMORY[0x1E696AEC0];
-            if (!v23)
+            if (!owningExtensionState)
             {
               goto LABEL_32;
             }
@@ -465,7 +465,7 @@ LABEL_23:
             break;
           case 2:
             v26 = MEMORY[0x1E696AEC0];
-            if (!v23)
+            if (!owningExtensionState)
             {
               goto LABEL_32;
             }
@@ -473,7 +473,7 @@ LABEL_23:
             break;
           case 1:
             v26 = MEMORY[0x1E696AEC0];
-            if (v23)
+            if (owningExtensionState)
             {
               break;
             }
@@ -510,27 +510,27 @@ LABEL_24:
     [(NSMutableArray *)self->_dynamicConstraints removeAllObjects];
   }
 
-  v4 = [*MEMORY[0x1E69DDA98] interfaceOrientation];
+  interfaceOrientation = [*MEMORY[0x1E69DDA98] interfaceOrientation];
   if (self->_fillCredentialButton)
   {
-    v5 = v4;
-    v6 = [(_SFAutoFillInputView *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+    v5 = interfaceOrientation;
+    traitCollection = [(_SFAutoFillInputView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
       dynamicConstraints = self->_dynamicConstraints;
-      v10 = [(UIButton *)self->_fillCredentialButton heightAnchor];
-      v11 = [v10 constraintGreaterThanOrEqualToConstant:50.0];
+      heightAnchor = [(UIButton *)self->_fillCredentialButton heightAnchor];
+      v11 = [heightAnchor constraintGreaterThanOrEqualToConstant:50.0];
     }
 
     else
     {
       IsPad = _SFDeviceIsPad();
       dynamicConstraints = self->_dynamicConstraints;
-      v13 = [(UIButton *)self->_fillCredentialButton heightAnchor];
-      v10 = v13;
+      heightAnchor2 = [(UIButton *)self->_fillCredentialButton heightAnchor];
+      heightAnchor = heightAnchor2;
       if ((IsPad & 1) != 0 || (v5 - 1) <= 1)
       {
         v14 = &_SFAutoFillInputViewDefaultButonHeight;
@@ -541,7 +541,7 @@ LABEL_24:
         v14 = &_SFAutoFillInputViewDefaultButonHeightLandscapePhone;
       }
 
-      v11 = [v13 constraintEqualToConstant:*v14];
+      v11 = [heightAnchor2 constraintEqualToConstant:*v14];
     }
 
     v15 = v11;
@@ -552,13 +552,13 @@ LABEL_24:
     fillCredentialButton = self->_fillCredentialButton;
     if (v16)
     {
-      v19 = [(UIButton *)fillCredentialButton leadingAnchor];
-      v20 = [(_SFAutoFillInputView *)self leadingAnchor];
-      v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20 constant:16.0];
+      leadingAnchor = [(UIButton *)fillCredentialButton leadingAnchor];
+      leadingAnchor2 = [(_SFAutoFillInputView *)self leadingAnchor];
+      v21 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:16.0];
       v26[0] = v21;
-      v22 = [(UIButton *)self->_fillCredentialButton trailingAnchor];
-      v23 = [(_SFAutoFillInputView *)self trailingAnchor];
-      v24 = [v22 constraintLessThanOrEqualToAnchor:v23 constant:-16.0];
+      trailingAnchor = [(UIButton *)self->_fillCredentialButton trailingAnchor];
+      trailingAnchor2 = [(_SFAutoFillInputView *)self trailingAnchor];
+      v24 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-16.0];
       v26[1] = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
       [(NSMutableArray *)v17 addObjectsFromArray:v25];
@@ -568,9 +568,9 @@ LABEL_24:
 
     else
     {
-      v19 = [(UIButton *)fillCredentialButton widthAnchor];
-      v20 = [v19 constraintLessThanOrEqualToConstant:343.0];
-      [(NSMutableArray *)v17 addObject:v20];
+      leadingAnchor = [(UIButton *)fillCredentialButton widthAnchor];
+      leadingAnchor2 = [leadingAnchor constraintLessThanOrEqualToConstant:343.0];
+      [(NSMutableArray *)v17 addObject:leadingAnchor2];
     }
   }
 
@@ -579,12 +579,12 @@ LABEL_24:
 
 - (void)_updateFillCredentialButtonLabelMetrics
 {
-  v7 = [(_SFAutoFillInputView *)self traitCollection];
-  v3 = [(UIButton *)self->_fillCredentialButton titleLabel];
-  [v3 setTextAlignment:1];
-  v4 = [(UIButton *)self->_fillCredentialButton configuration];
-  v5 = [v7 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+  traitCollection = [(_SFAutoFillInputView *)self traitCollection];
+  titleLabel = [(UIButton *)self->_fillCredentialButton titleLabel];
+  [titleLabel setTextAlignment:1];
+  configuration = [(UIButton *)self->_fillCredentialButton configuration];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v6 = 1;
   }
@@ -594,9 +594,9 @@ LABEL_24:
     v6 = 5;
   }
 
-  [v4 setTitleLineBreakMode:v6];
+  [configuration setTitleLineBreakMode:v6];
 
-  [(UIButton *)self->_fillCredentialButton setConfiguration:v4];
+  [(UIButton *)self->_fillCredentialButton setConfiguration:configuration];
 }
 
 - (void)_preferredContentSizeCategoryDidChange
@@ -606,13 +606,13 @@ LABEL_24:
   [(_SFAutoFillInputView *)self setNeedsUpdateConstraints];
 }
 
-- (void)_fillCredential:(id)a3
+- (void)_fillCredential:(id)credential
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained autoFillTextSuggestion:self->_suggestion];
 }
 
-- (void)_showMorePasswords:(id)a3
+- (void)_showMorePasswords:(id)passwords
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -621,7 +621,7 @@ LABEL_24:
   }
 }
 
-- (void)_showStandardKeyboard:(id)a3
+- (void)_showStandardKeyboard:(id)keyboard
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -661,10 +661,10 @@ LABEL_24:
 
 - (void)_updateKeyboardMetricsAndInterfaceOrientationIfNeeded
 {
-  v3 = [*MEMORY[0x1E69DDA98] interfaceOrientation];
-  if (v3 != self->_currentInterfaceOrientation)
+  interfaceOrientation = [*MEMORY[0x1E69DDA98] interfaceOrientation];
+  if (interfaceOrientation != self->_currentInterfaceOrientation)
   {
-    self->_currentInterfaceOrientation = v3;
+    self->_currentInterfaceOrientation = interfaceOrientation;
     v4 = [_SFKeyboardGeometry keyboardGeometryForInterfaceOrientation:1];
     [v4 sizeWithBar];
     self->_portraitKeyboardSize.width = v5;
@@ -687,13 +687,13 @@ LABEL_24:
   }
 }
 
-- (void)streamlinedStrongPasswordViewController:(id)a3 shouldFillStrongPasswordWithFormat:(unint64_t)a4
+- (void)streamlinedStrongPasswordViewController:(id)controller shouldFillStrongPasswordWithFormat:(unint64_t)format
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained autoFillStrongPasswordWithFormat:a4];
+  [WeakRetained autoFillStrongPasswordWithFormat:format];
 }
 
-- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)a3
+- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)password
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained autoFillInputViewShouldClose:self];

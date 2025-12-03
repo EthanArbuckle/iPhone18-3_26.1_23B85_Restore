@@ -1,12 +1,12 @@
 @interface InteractiveProductReviewsShelfHeaderView
-- (_TtC18ASMessagesProvider40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation InteractiveProductReviewsShelfHeaderView
 
-- (_TtC18ASMessagesProvider40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18ASMessagesProvider40InteractiveProductReviewsShelfHeaderView_currentState;
   *v3 = 0u;
@@ -35,7 +35,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2A7A40();
 }
 

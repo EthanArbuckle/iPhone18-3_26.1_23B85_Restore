@@ -1,16 +1,16 @@
 @interface PXLinkPresentationConfiguration
-- (PXLinkPresentationConfiguration)initWithKeyAsset:(id)a3;
+- (PXLinkPresentationConfiguration)initWithKeyAsset:(id)asset;
 @end
 
 @implementation PXLinkPresentationConfiguration
 
-- (PXLinkPresentationConfiguration)initWithKeyAsset:(id)a3
+- (PXLinkPresentationConfiguration)initWithKeyAsset:(id)asset
 {
-  v6 = a3;
-  if (!v6)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXLinkPresentationActivityItemProvider.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"keyAsset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLinkPresentationActivityItemProvider.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"keyAsset"}];
   }
 
   v11.receiver = self;
@@ -19,7 +19,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_keyAsset, a3);
+    objc_storeStrong(&v7->_keyAsset, asset);
   }
 
   return v8;

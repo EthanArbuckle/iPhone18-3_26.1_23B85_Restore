@@ -1,7 +1,7 @@
 @interface TUAnimationFloatFunction
 - (TUAnimationFloatFunction)init;
-- (TUAnimationFloatFunction)initWithTimingFunction:(id)a3 startValue:(double)a4 endValue:(double)a5 speed:(double)a6;
-- (double)solveForTime:(double)a3;
+- (TUAnimationFloatFunction)initWithTimingFunction:(id)function startValue:(double)value endValue:(double)endValue speed:(double)speed;
+- (double)solveForTime:(double)time;
 @end
 
 @implementation TUAnimationFloatFunction
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (TUAnimationFloatFunction)initWithTimingFunction:(id)a3 startValue:(double)a4 endValue:(double)a5 speed:(double)a6
+- (TUAnimationFloatFunction)initWithTimingFunction:(id)function startValue:(double)value endValue:(double)endValue speed:(double)speed
 {
-  v10 = a3;
+  functionCopy = function;
   v15.receiver = self;
   v15.super_class = TUAnimationFloatFunction;
   v11 = [(TUAnimationFloatFunction *)&v15 init];
   if (v11)
   {
-    if (v10)
+    if (functionCopy)
     {
-      v12 = v10;
+      v12 = functionCopy;
     }
 
     else
@@ -44,15 +44,15 @@
     timingFunction = v11->_timingFunction;
     v11->_timingFunction = v12;
 
-    v11->_startValue = a4;
-    v11->_endValue = a5;
-    v11->_speed = a6;
+    v11->_startValue = value;
+    v11->_endValue = endValue;
+    v11->_speed = speed;
   }
 
   return v11;
 }
 
-- (double)solveForTime:(double)a3
+- (double)solveForTime:(double)time
 {
   [(TUAnimationFloatFunction *)self startValue];
   v6 = v5;
@@ -60,9 +60,9 @@
   v8 = v7;
   [(TUAnimationFloatFunction *)self startValue];
   v10 = v9;
-  v11 = [(TUAnimationFloatFunction *)self timingFunction];
+  timingFunction = [(TUAnimationFloatFunction *)self timingFunction];
   [(TUAnimationFloatFunction *)self speed];
-  v13 = v12 * a3;
+  v13 = v12 * time;
   v14 = 0.0;
   if (v13 >= 0.0)
   {
@@ -74,7 +74,7 @@
   }
 
   *&v14 = v14;
-  [v11 _solveForInput:v14];
+  [timingFunction _solveForInput:v14];
   v16 = v6 + (v8 - v10) * v15;
 
   return v16;

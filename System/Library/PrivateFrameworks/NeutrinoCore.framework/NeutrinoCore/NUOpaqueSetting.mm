@@ -1,29 +1,29 @@
 @interface NUOpaqueSetting
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4;
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error;
 + (id)supportedAttributes;
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4;
-- (BOOL)validateAttribute:(id)a3 value:(id)a4 error:(id *)a5;
-- (BOOL)validatePlistCompatibility:(id)a3 error:(id *)a4;
-- (id)deserialize:(id)a3 error:(id *)a4;
-- (id)serialize:(id)a3 error:(id *)a4;
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error;
+- (BOOL)validateAttribute:(id)attribute value:(id)value error:(id *)error;
+- (BOOL)validatePlistCompatibility:(id)compatibility error:(id *)error;
+- (id)deserialize:(id)deserialize error:(id *)error;
+- (id)serialize:(id)serialize error:(id *)error;
 @end
 
 @implementation NUOpaqueSetting
 
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  [v6 setObject:@"opaque" forKeyedSubscript:@"isa"];
-  LOBYTE(a4) = [(NUSetting *)self serializeAttributesIntoDictionary:v6 error:a4];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy setObject:@"opaque" forKeyedSubscript:@"isa"];
+  LOBYTE(error) = [(NUSetting *)self serializeAttributesIntoDictionary:dictionaryCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)deserialize:(id)a3 error:(id *)a4
+- (id)deserialize:(id)deserialize error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  deserializeCopy = deserialize;
+  if (!deserializeCopy)
   {
     v7 = NUAssertLogger_25303();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -44,8 +44,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v21;
         v41 = 2114;
@@ -56,8 +56,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -66,7 +66,7 @@
     _NUAssertFailHandler("[NUOpaqueSetting deserialize:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 1341, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "object != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v14 = NUAssertLogger_25303();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -87,8 +87,8 @@
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v31 callStackSymbols];
+        v34 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v30;
         v41 = 2114;
@@ -99,8 +99,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -109,15 +109,15 @@
     _NUAssertFailHandler("[NUOpaqueSetting deserialize:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 1342, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "error != NULL");
   }
 
-  return v5;
+  return deserializeCopy;
 }
 
-- (id)serialize:(id)a3 error:(id *)a4
+- (id)serialize:(id)serialize error:(id *)error
 {
-  v6 = a3;
-  if ([(NUOpaqueSetting *)self validatePlistCompatibility:v6 error:a4])
+  serializeCopy = serialize;
+  if ([(NUOpaqueSetting *)self validatePlistCompatibility:serializeCopy error:error])
   {
-    v7 = v6;
+    v7 = serializeCopy;
   }
 
   else
@@ -128,14 +128,14 @@
   return v7;
 }
 
-- (BOOL)validateAttribute:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)validateAttribute:(id)attribute value:(id)value error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"required"])
+  attributeCopy = attribute;
+  valueCopy = value;
+  if ([attributeCopy isEqualToString:@"required"])
   {
     v17 = 0;
-    v10 = [NUModel validateBool:v9 error:&v17];
+    v10 = [NUModel validateBool:valueCopy error:&v17];
 
     if (v10)
     {
@@ -145,11 +145,11 @@
     else
     {
       v12 = v17;
-      v13 = [NUError errorWithCode:2 reason:@"Invalid attribute value" object:v8 underlyingError:v12];
+      v13 = [NUError errorWithCode:2 reason:@"Invalid attribute value" object:attributeCopy underlyingError:v12];
       v14 = v13;
 
       v11 = 0;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -157,17 +157,17 @@
   {
     v16.receiver = self;
     v16.super_class = NUOpaqueSetting;
-    v11 = [(NUSetting *)&v16 validateAttribute:v8 value:v9 error:a5];
+    v11 = [(NUSetting *)&v16 validateAttribute:attributeCopy value:valueCopy error:error];
   }
 
   return v11;
 }
 
-- (BOOL)validatePlistCompatibility:(id)a3 error:(id *)a4
+- (BOOL)validatePlistCompatibility:(id)compatibility error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  compatibilityCopy = compatibility;
+  if (!compatibilityCopy)
   {
     v9 = NUAssertLogger_25303();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -188,8 +188,8 @@
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v23;
         v43 = 2114;
@@ -200,8 +200,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -210,7 +210,7 @@
     _NUAssertFailHandler("[NUOpaqueSetting validatePlistCompatibility:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 1291, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "object != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v16 = NUAssertLogger_25303();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -231,8 +231,8 @@
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v33 callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v32;
         v43 = 2114;
@@ -243,8 +243,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -253,31 +253,31 @@
     _NUAssertFailHandler("[NUOpaqueSetting validatePlistCompatibility:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 1292, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != NULL");
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x1E696AE40] propertyList:v5 isValidForFormat:100];
+  v6 = compatibilityCopy;
+  v7 = [MEMORY[0x1E696AE40] propertyList:compatibilityCopy isValidForFormat:100];
   if ((v7 & 1) == 0)
   {
-    *a4 = [NUError invalidError:@"Object is not plist-compatible" object:v6];
+    *error = [NUError invalidError:@"Object is not plist-compatible" object:v6];
   }
 
   return v7;
 }
 
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v11 = 0;
-  v7 = [a1 deserializeAttributesFromDictionary:v6 error:&v11];
+  v7 = [self deserializeAttributesFromDictionary:dictionaryCopy error:&v11];
   v8 = v11;
   if (v7)
   {
-    v9 = [[a1 alloc] initWithAttributes:v7];
+    v9 = [[self alloc] initWithAttributes:v7];
   }
 
   else
   {
-    [NUError errorWithCode:1 reason:@"Failed to deserialized attributes" object:v6 underlyingError:v8];
-    *a4 = v9 = 0;
+    [NUError errorWithCode:1 reason:@"Failed to deserialized attributes" object:dictionaryCopy underlyingError:v8];
+    *error = v9 = 0;
   }
 
   return v9;

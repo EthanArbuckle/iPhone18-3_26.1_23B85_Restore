@@ -1,30 +1,30 @@
 @interface DBStatusBarStateProvider
-+ (BOOL)_showIndicatorForData:(id)a3;
-+ (int64_t)_sensorIndicatorTypeForData:(id)a3;
++ (BOOL)_showIndicatorForData:(id)data;
++ (int64_t)_sensorIndicatorTypeForData:(id)data;
 - ($6C45178016D353444451090973A2A97F)_generateData;
 - (BOOL)_isAnnounceNotificationsEnabledForSystemSettings;
 - (BOOL)_radarItemEnabled;
 - (BOOL)_radarItemVisible;
 - (BOOL)inCallServiceActive;
 - (DBEnvironment)environment;
-- (DBStatusBarStateProvider)initWithEnvironment:(id)a3;
-- (int)_statusBarNetworkTypeForSystemStatusNetworkType:(unint64_t)a3;
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5;
-- (void)_batteryDataUpdatedWithData:(id)a3;
-- (void)_callingDataUpdatedWithData:(id)a3;
-- (void)_etcChanged:(id)a3;
+- (DBStatusBarStateProvider)initWithEnvironment:(id)environment;
+- (int)_statusBarNetworkTypeForSystemStatusNetworkType:(unint64_t)type;
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides;
+- (void)_batteryDataUpdatedWithData:(id)data;
+- (void)_callingDataUpdatedWithData:(id)data;
+- (void)_etcChanged:(id)changed;
 - (void)_fetchAnnounceNotificationsSetting;
-- (void)_getAnnounceNotificationsData:(id *)a3;
-- (void)_getBatteryData:(id *)a3;
-- (void)_getETCData:(id *)a3;
-- (void)_getFocusData:(id *)a3;
-- (void)_getMediaData:(id *)a3;
-- (void)_getTTRData:(id *)a3;
-- (void)_getTelephonyData:(id *)a3;
-- (void)_getTimeData:(id *)a3;
-- (void)_getVoiceControlData:(id *)a3;
-- (void)_localeChanged:(id)a3;
-- (void)_mediaDataUpdatedWithData:(id)a3;
+- (void)_getAnnounceNotificationsData:(id *)data;
+- (void)_getBatteryData:(id *)data;
+- (void)_getETCData:(id *)data;
+- (void)_getFocusData:(id *)data;
+- (void)_getMediaData:(id *)data;
+- (void)_getTTRData:(id *)data;
+- (void)_getTelephonyData:(id *)data;
+- (void)_getTimeData:(id *)data;
+- (void)_getVoiceControlData:(id *)data;
+- (void)_localeChanged:(id)changed;
+- (void)_mediaDataUpdatedWithData:(id)data;
 - (void)_resetTimeDateFormatter;
 - (void)_resetTimeUpdateTimer;
 - (void)_setSensorActivityIndicator;
@@ -33,28 +33,28 @@
 - (void)_setupCallingDomain;
 - (void)_setupETC;
 - (void)_setupMediaDomain;
-- (void)_setupProviderIfNeededForDataType:(unint64_t)a3;
+- (void)_setupProviderIfNeededForDataType:(unint64_t)type;
 - (void)_setupTelephonyDomain;
 - (void)_setupTime;
 - (void)_setupVoiceControlDomain;
 - (void)_setupWifiDomain;
-- (void)_telephonyDataUpdatedWithData:(id)a3;
-- (void)_timeZoneChanged:(id)a3;
-- (void)_updateETCStateWithSession:(id)a3;
-- (void)_voiceControlDataUpdatedWithData:(id)a3;
-- (void)_wifiDataUpdatedWithData:(id)a3;
-- (void)focusStatusUpdated:(id)a3;
-- (void)getStatusBarData:(id *)a3;
+- (void)_telephonyDataUpdatedWithData:(id)data;
+- (void)_timeZoneChanged:(id)changed;
+- (void)_updateETCStateWithSession:(id)session;
+- (void)_voiceControlDataUpdatedWithData:(id)data;
+- (void)_wifiDataUpdatedWithData:(id)data;
+- (void)focusStatusUpdated:(id)updated;
+- (void)getStatusBarData:(id *)data;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preferences:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4;
-- (void)setAcceptsDNDStateUpdates:(BOOL)a3;
-- (void)setActiveBundleIdentifier:(id)a3;
-- (void)setNowRecordingBundleIdentifier:(id)a3;
-- (void)subscribeForDataType:(unint64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preferences:(id)preferences announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed;
+- (void)setAcceptsDNDStateUpdates:(BOOL)updates;
+- (void)setActiveBundleIdentifier:(id)identifier;
+- (void)setNowRecordingBundleIdentifier:(id)identifier;
+- (void)subscribeForDataType:(unint64_t)type;
 - (void)updateStatusBarData;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4;
-- (void)workspace:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings;
+- (void)workspace:(id)workspace stateDidChangeFromState:(id)state toState:(id)toState;
 @end
 
 @implementation DBStatusBarStateProvider
@@ -306,36 +306,36 @@
 
 - (BOOL)inCallServiceActive
 {
-  v3 = [(DBStatusBarStateProvider *)self callingData];
-  v4 = [v3 activeCallAttributions];
-  if ([v4 count])
+  callingData = [(DBStatusBarStateProvider *)self callingData];
+  activeCallAttributions = [callingData activeCallAttributions];
+  if ([activeCallAttributions count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(DBStatusBarStateProvider *)self callingData];
-    v7 = [v6 ringingCallAttributions];
-    if ([v7 count])
+    callingData2 = [(DBStatusBarStateProvider *)self callingData];
+    ringingCallAttributions = [callingData2 ringingCallAttributions];
+    if ([ringingCallAttributions count])
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [(DBStatusBarStateProvider *)self callingData];
-      v9 = [v8 activeVideoConferenceAttributions];
-      if ([v9 count])
+      callingData3 = [(DBStatusBarStateProvider *)self callingData];
+      activeVideoConferenceAttributions = [callingData3 activeVideoConferenceAttributions];
+      if ([activeVideoConferenceAttributions count])
       {
         v5 = 1;
       }
 
       else
       {
-        v10 = [(DBStatusBarStateProvider *)self callingData];
-        v11 = [v10 ringingVideoConferenceAttributions];
-        v5 = [v11 count] != 0;
+        callingData4 = [(DBStatusBarStateProvider *)self callingData];
+        ringingVideoConferenceAttributions = [callingData4 ringingVideoConferenceAttributions];
+        v5 = [ringingVideoConferenceAttributions count] != 0;
       }
     }
   }
@@ -345,7 +345,7 @@
 
 - (void)_resetTimeUpdateTimer
 {
-  v1 = [a1 cachedTimeString];
+  cachedTimeString = [self cachedTimeString];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_1(&dword_248146000, v2, v3, "Cached time string is empty or nil: %@", v4, v5, v6, v7, v8);
 }
@@ -364,22 +364,22 @@ void __47__DBStatusBarStateProvider__setupCallingDomain__block_invoke(uint64_t a
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (DBStatusBarStateProvider)initWithEnvironment:(id)a3
+- (DBStatusBarStateProvider)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = DBStatusBarStateProvider;
   v5 = [(DBStatusBarStateProvider *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v5->_environment, environmentCopy);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     stateObservers = v6->_stateObservers;
-    v6->_stateObservers = v7;
+    v6->_stateObservers = weakObjectsHashTable;
 
-    v9 = [v4 workspace];
-    [v9 addObserver:v6];
+    workspace = [environmentCopy workspace];
+    [workspace addObserver:v6];
 
     v10 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.springboard"];
     springBoardDefaults = v6->_springBoardDefaults;
@@ -403,9 +403,9 @@ void __47__DBStatusBarStateProvider__setupCallingDomain__block_invoke(uint64_t a
 
 - (void)_setSensorActivityIndicator
 {
-  v3 = [MEMORY[0x277D6BFF0] sensorActivityIndicator];
+  sensorActivityIndicator = [MEMORY[0x277D6BFF0] sensorActivityIndicator];
 
-  if (!v3)
+  if (!sensorActivityIndicator)
   {
     v4 = objc_alloc_init(DBStatusBarSensorIndicatorView);
     [(DBStatusBarSensorIndicatorView *)v4 setFrame:0.0, 0.0, 4.0, 4.0];
@@ -417,16 +417,16 @@ void __47__DBStatusBarStateProvider__setupCallingDomain__block_invoke(uint64_t a
   }
 }
 
-- (void)_setupProviderIfNeededForDataType:(unint64_t)a3
+- (void)_setupProviderIfNeededForDataType:(unint64_t)type
 {
-  v3 = a3;
-  if (a3)
+  typeCopy = type;
+  if (type)
   {
     [(DBStatusBarStateProvider *)self _setupTime];
-    if ((v3 & 2) == 0)
+    if ((typeCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((typeCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -435,16 +435,16 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((type & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [(DBStatusBarStateProvider *)self _setupWifiDomain];
-  if ((v3 & 4) == 0)
+  if ((typeCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 0x400) == 0)
+    if ((typeCopy & 0x400) == 0)
     {
       goto LABEL_5;
     }
@@ -454,10 +454,10 @@ LABEL_4:
 
 LABEL_15:
   [(DBStatusBarStateProvider *)self _setupTelephonyDomain];
-  if ((v3 & 0x400) == 0)
+  if ((typeCopy & 0x400) == 0)
   {
 LABEL_5:
-    if ((v3 & 8) == 0)
+    if ((typeCopy & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -467,10 +467,10 @@ LABEL_5:
 
 LABEL_16:
   [(DBStatusBarStateProvider *)self _setupVoiceControlDomain];
-  if ((v3 & 8) == 0)
+  if ((typeCopy & 8) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x10) == 0)
+    if ((typeCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -480,10 +480,10 @@ LABEL_6:
 
 LABEL_17:
   [(DBStatusBarStateProvider *)self _setupBatteryDomain];
-  if ((v3 & 0x10) == 0)
+  if ((typeCopy & 0x10) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x20) == 0)
+    if ((typeCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -493,10 +493,10 @@ LABEL_7:
 
 LABEL_18:
   [(DBStatusBarStateProvider *)self _setupETC];
-  if ((v3 & 0x20) == 0)
+  if ((typeCopy & 0x20) == 0)
   {
 LABEL_8:
-    if ((v3 & 0x40) == 0)
+    if ((typeCopy & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -506,10 +506,10 @@ LABEL_8:
 
 LABEL_19:
   [(DBStatusBarStateProvider *)self setAcceptsDNDStateUpdates:1];
-  if ((v3 & 0x40) == 0)
+  if ((typeCopy & 0x40) == 0)
   {
 LABEL_9:
-    if ((v3 & 0x80) == 0)
+    if ((typeCopy & 0x80) == 0)
     {
       goto LABEL_10;
     }
@@ -519,17 +519,17 @@ LABEL_9:
 
 LABEL_20:
   [(DBStatusBarStateProvider *)self setHasSetupTTR:1];
-  if ((v3 & 0x80) == 0)
+  if ((typeCopy & 0x80) == 0)
   {
 LABEL_10:
-    if ((v3 & 0x100) == 0)
+    if ((typeCopy & 0x100) == 0)
     {
       goto LABEL_11;
     }
 
 LABEL_22:
     [(DBStatusBarStateProvider *)self _setupCallingDomain];
-    if ((v3 & 0x200) == 0)
+    if ((typeCopy & 0x200) == 0)
     {
       return;
     }
@@ -540,13 +540,13 @@ LABEL_22:
 LABEL_21:
   [(DBStatusBarStateProvider *)self _setSensorActivityIndicator];
   [(DBStatusBarStateProvider *)self _setupMediaDomain];
-  if ((v3 & 0x100) != 0)
+  if ((typeCopy & 0x100) != 0)
   {
     goto LABEL_22;
   }
 
 LABEL_11:
-  if ((v3 & 0x200) == 0)
+  if ((typeCopy & 0x200) == 0)
   {
     return;
   }
@@ -556,12 +556,12 @@ LABEL_23:
   [(DBStatusBarStateProvider *)self _setupAnnounceNotificationsSetting];
 }
 
-- (void)setActiveBundleIdentifier:(id)a3
+- (void)setActiveBundleIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_activeBundleIdentifier isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     activeBundleIdentifier = self->_activeBundleIdentifier;
     self->_activeBundleIdentifier = v4;
 
@@ -569,12 +569,12 @@ LABEL_23:
   }
 }
 
-- (void)setNowRecordingBundleIdentifier:(id)a3
+- (void)setNowRecordingBundleIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_nowRecordingBundleIdentifier isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     nowRecordingBundleIdentifier = self->_nowRecordingBundleIdentifier;
     self->_nowRecordingBundleIdentifier = v4;
 
@@ -582,18 +582,18 @@ LABEL_23:
   }
 }
 
-- (void)subscribeForDataType:(unint64_t)a3
+- (void)subscribeForDataType:(unint64_t)type
 {
-  [(DBStatusBarStateProvider *)self _setupProviderIfNeededForDataType:a3];
+  [(DBStatusBarStateProvider *)self _setupProviderIfNeededForDataType:type];
 
   [(DBStatusBarStateProvider *)self updateStatusBarData];
 }
 
-- (void)getStatusBarData:(id *)a3
+- (void)getStatusBarData:(id *)data
 {
   v5 = *MEMORY[0x277D85DE8];
   [(DBStatusBarStateProvider *)self _generateData];
-  memcpy(a3, v4, sizeof($6C45178016D353444451090973A2A97F));
+  memcpy(data, v4, sizeof($6C45178016D353444451090973A2A97F));
 }
 
 - (void)_setupTime
@@ -601,11 +601,11 @@ LABEL_23:
   if (![(DBStatusBarStateProvider *)self hasSetupTime])
   {
     [(DBStatusBarStateProvider *)self setHasSetupTime:1];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__localeChanged_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__localeChanged_ name:*MEMORY[0x277CBE620] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__timeZoneChanged_ name:*MEMORY[0x277CBE780] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__timeZoneChanged_ name:*MEMORY[0x277CBE780] object:0];
 
     [(DBStatusBarStateProvider *)self _resetTimeDateFormatter];
 
@@ -616,17 +616,17 @@ LABEL_23:
 - (void)_resetTimeDateFormatter
 {
   v3 = MEMORY[0x277CF0BF0];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 formatterForDateAsTimeNoAMPMWithLocale:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [v3 formatterForDateAsTimeNoAMPMWithLocale:currentLocale];
   [(DBStatusBarStateProvider *)self setTimeItemDateFormatter:v4];
 }
 
-- (void)_getTimeData:(id *)a3
+- (void)_getTimeData:(id *)data
 {
-  a3->var0[0] = 1;
-  var2 = a3->var2;
-  v5 = [(DBStatusBarStateProvider *)self cachedTimeString];
-  v6 = [v5 getCString:var2 maxLength:64 encoding:4];
+  data->var0[0] = 1;
+  var2 = data->var2;
+  cachedTimeString = [(DBStatusBarStateProvider *)self cachedTimeString];
+  v6 = [cachedTimeString getCString:var2 maxLength:64 encoding:4];
 
   if (v6)
   {
@@ -656,9 +656,9 @@ LABEL_23:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(DBStatusBarStateProvider *)self voiceControlDomain];
+    voiceControlDomain = [(DBStatusBarStateProvider *)self voiceControlDomain];
 
-    if (!v3)
+    if (!voiceControlDomain)
     {
       objc_initWeak(&location, self);
       v4 = objc_alloc_init(MEMORY[0x277D6BBA0]);
@@ -695,39 +695,39 @@ void __52__DBStatusBarStateProvider__setupVoiceControlDomain__block_invoke(uint6
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_getVoiceControlData:(id *)a3
+- (void)_getVoiceControlData:(id *)data
 {
   if ([(STVoiceControlStatusDomainData *)self->_voiceControlDomainData isVoiceControlActive]&& _AXSCommandAndControlCarPlayEnabled())
   {
-    a3->var0[41] = 1;
-    v5 = [(STVoiceControlStatusDomainData *)self->_voiceControlDomainData listeningState];
-    v6 = (v5 == 2) << 6;
-    if (v5 == 1)
+    data->var0[41] = 1;
+    listeningState = [(STVoiceControlStatusDomainData *)self->_voiceControlDomainData listeningState];
+    v6 = (listeningState == 2) << 6;
+    if (listeningState == 1)
     {
       v6 = 32;
     }
 
-    *(a3 + 2529) = v6 | *(a3 + 2529) & 0x9F;
+    *(data + 2529) = v6 | *(data + 2529) & 0x9F;
   }
 
   else
   {
-    a3->var0[41] = 0;
+    data->var0[41] = 0;
   }
 }
 
-- (void)_voiceControlDataUpdatedWithData:(id)a3
+- (void)_voiceControlDataUpdatedWithData:(id)data
 {
-  [(DBStatusBarStateProvider *)self setVoiceControlDomainData:a3];
+  [(DBStatusBarStateProvider *)self setVoiceControlDomainData:data];
 
   [(DBStatusBarStateProvider *)self updateStatusBarData];
 }
 
 - (void)_setupWifiDomain
 {
-  v3 = [(DBStatusBarStateProvider *)self wifiDomain];
+  wifiDomain = [(DBStatusBarStateProvider *)self wifiDomain];
 
-  if (!v3)
+  if (!wifiDomain)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc_init(MEMORY[0x277D6BBB0]);
@@ -763,18 +763,18 @@ void __44__DBStatusBarStateProvider__setupWifiDomain__block_invoke(uint64_t a1, 
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_wifiDataUpdatedWithData:(id)a3
+- (void)_wifiDataUpdatedWithData:(id)data
 {
-  [(DBStatusBarStateProvider *)self setWifiData:a3];
+  [(DBStatusBarStateProvider *)self setWifiData:data];
 
   [(DBStatusBarStateProvider *)self updateStatusBarData];
 }
 
 - (void)_setupTelephonyDomain
 {
-  v3 = [(DBStatusBarStateProvider *)self telephonyDomain];
+  telephonyDomain = [(DBStatusBarStateProvider *)self telephonyDomain];
 
-  if (!v3)
+  if (!telephonyDomain)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc_init(MEMORY[0x277D6BB90]);
@@ -810,82 +810,82 @@ void __49__DBStatusBarStateProvider__setupTelephonyDomain__block_invoke(uint64_t
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_telephonyDataUpdatedWithData:(id)a3
+- (void)_telephonyDataUpdatedWithData:(id)data
 {
-  [(DBStatusBarStateProvider *)self setTelephonyData:a3];
+  [(DBStatusBarStateProvider *)self setTelephonyData:data];
 
   [(DBStatusBarStateProvider *)self updateStatusBarData];
 }
 
-- (void)_getTelephonyData:(id *)a3
+- (void)_getTelephonyData:(id *)data
 {
-  v5 = [(DBStatusBarStateProvider *)self telephonyData];
-  v21 = [v5 primarySIMInfo];
+  telephonyData = [(DBStatusBarStateProvider *)self telephonyData];
+  primarySIMInfo = [telephonyData primarySIMInfo];
 
-  v6 = [v21 serviceState];
-  if (v6 == 2)
+  serviceState = [primarySIMInfo serviceState];
+  if (serviceState == 2)
   {
-    a3->var6 = [v21 signalStrengthBars];
-    if ([v21 dataNetworkType])
+    data->var6 = [primarySIMInfo signalStrengthBars];
+    if ([primarySIMInfo dataNetworkType])
     {
-      a3->var0[9] = 1;
-      a3->var21 = -[DBStatusBarStateProvider _statusBarNetworkTypeForSystemStatusNetworkType:](self, "_statusBarNetworkTypeForSystemStatusNetworkType:", [v21 dataNetworkType]);
+      data->var0[9] = 1;
+      data->var21 = -[DBStatusBarStateProvider _statusBarNetworkTypeForSystemStatusNetworkType:](self, "_statusBarNetworkTypeForSystemStatusNetworkType:", [primarySIMInfo dataNetworkType]);
     }
 
     else
     {
-      a3->var0[9] = 0;
+      data->var0[9] = 0;
     }
 
-    a3->var0[6] = 1;
-    a3->var0[4] = 1;
+    data->var0[6] = 1;
+    data->var0[4] = 1;
   }
 
   else
   {
-    if (v6 == 1)
+    if (serviceState == 1)
     {
-      a3->var14 = 5;
+      data->var14 = 5;
     }
 
     else
     {
-      a3->var14 = 1;
+      data->var14 = 1;
     }
 
-    a3->var0[4] = 1;
-    a3->var0[6] = 1;
+    data->var0[4] = 1;
+    data->var0[6] = 1;
   }
 
-  v7 = [(DBStatusBarStateProvider *)self telephonyData];
-  v8 = [v7 isDualSIMEnabled];
+  telephonyData2 = [(DBStatusBarStateProvider *)self telephonyData];
+  isDualSIMEnabled = [telephonyData2 isDualSIMEnabled];
 
-  if (v8)
+  if (isDualSIMEnabled)
   {
-    v9 = [(DBStatusBarStateProvider *)self telephonyData];
-    v10 = [v9 secondarySIMInfo];
+    telephonyData3 = [(DBStatusBarStateProvider *)self telephonyData];
+    secondarySIMInfo = [telephonyData3 secondarySIMInfo];
 
-    if (v10)
+    if (secondarySIMInfo)
     {
-      *(a3 + 3160) |= 4u;
+      *(data + 3160) |= 4u;
       v11 = 1;
-      a3->var0[5] = 1;
-      a3->var0[7] = 1;
-      v12 = [v10 serviceState];
-      switch(v12)
+      data->var0[5] = 1;
+      data->var0[7] = 1;
+      serviceState2 = [secondarySIMInfo serviceState];
+      switch(serviceState2)
       {
         case 0:
 LABEL_16:
           v13 = 2076;
 LABEL_19:
-          *&a3->var0[v13] = v11;
+          *&data->var0[v13] = v11;
           break;
         case 2:
-          a3->var7 = [v10 signalStrengthBars];
-          if ([v10 dataNetworkType])
+          data->var7 = [secondarySIMInfo signalStrengthBars];
+          if ([secondarySIMInfo dataNetworkType])
           {
-            a3->var0[10] = 1;
-            v11 = -[DBStatusBarStateProvider _statusBarNetworkTypeForSystemStatusNetworkType:](self, "_statusBarNetworkTypeForSystemStatusNetworkType:", [v10 dataNetworkType]);
+            data->var0[10] = 1;
+            v11 = -[DBStatusBarStateProvider _statusBarNetworkTypeForSystemStatusNetworkType:](self, "_statusBarNetworkTypeForSystemStatusNetworkType:", [secondarySIMInfo dataNetworkType]);
             v13 = 2100;
             goto LABEL_19;
           }
@@ -898,23 +898,23 @@ LABEL_19:
     }
   }
 
-  v14 = [(DBStatusBarStateProvider *)self wifiData];
-  if (v14)
+  wifiData = [(DBStatusBarStateProvider *)self wifiData];
+  if (wifiData)
   {
-    v15 = v14;
-    v16 = [(DBStatusBarStateProvider *)self wifiData];
-    v17 = [v16 isWifiActive];
+    v15 = wifiData;
+    wifiData2 = [(DBStatusBarStateProvider *)self wifiData];
+    isWifiActive = [wifiData2 isWifiActive];
 
-    if (v17)
+    if (isWifiActive)
     {
-      v18 = [(DBStatusBarStateProvider *)self wifiData];
-      a3->var19 = [v18 signalStrengthBars];
+      wifiData3 = [(DBStatusBarStateProvider *)self wifiData];
+      data->var19 = [wifiData3 signalStrengthBars];
 
-      a3->var0[9] = 1;
-      v19 = [(DBStatusBarStateProvider *)self wifiData];
-      LODWORD(v18) = [v19 isAssociatedToIOSHotspot];
+      data->var0[9] = 1;
+      wifiData4 = [(DBStatusBarStateProvider *)self wifiData];
+      LODWORD(wifiData3) = [wifiData4 isAssociatedToIOSHotspot];
 
-      if (v18)
+      if (wifiData3)
       {
         v20 = 6;
       }
@@ -924,35 +924,35 @@ LABEL_19:
         v20 = 5;
       }
 
-      a3->var21 = v20;
+      data->var21 = v20;
     }
   }
 }
 
-- (int)_statusBarNetworkTypeForSystemStatusNetworkType:(unint64_t)a3
+- (int)_statusBarNetworkTypeForSystemStatusNetworkType:(unint64_t)type
 {
-  if (a3 - 2 > 0xE)
+  if (type - 2 > 0xE)
   {
     return 7;
   }
 
   else
   {
-    return dword_24839BA08[a3 - 2];
+    return dword_24839BA08[type - 2];
   }
 }
 
 - (void)_setupBatteryDomain
 {
-  v3 = [(DBStatusBarStateProvider *)self batteryDomain];
+  batteryDomain = [(DBStatusBarStateProvider *)self batteryDomain];
 
-  if (!v3)
+  if (!batteryDomain)
   {
-    v4 = [(DBStatusBarStateProvider *)self environment];
-    v5 = [v4 environmentConfiguration];
-    v6 = [v5 isConnectedWirelessly];
+    environment = [(DBStatusBarStateProvider *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    isConnectedWirelessly = [environmentConfiguration isConnectedWirelessly];
 
-    if (v6)
+    if (isConnectedWirelessly)
     {
       objc_initWeak(&location, self);
       v7 = objc_alloc_init(MEMORY[0x277D6B928]);
@@ -989,45 +989,45 @@ void __47__DBStatusBarStateProvider__setupBatteryDomain__block_invoke(uint64_t a
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_batteryDataUpdatedWithData:(id)a3
+- (void)_batteryDataUpdatedWithData:(id)data
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(DBStatusBarStateProvider *)self setBatteryData:v4];
+  dataCopy = data;
+  [(DBStatusBarStateProvider *)self setBatteryData:dataCopy];
   v5 = DBLogForCategory(6uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = dataCopy;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Battery data updated: %{public}@", &v6, 0xCu);
   }
 
   [(DBStatusBarStateProvider *)self updateStatusBarData];
 }
 
-- (void)_getBatteryData:(id *)a3
+- (void)_getBatteryData:(id *)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(DBStatusBarStateProvider *)self batteryData];
+  batteryData = [(DBStatusBarStateProvider *)self batteryData];
 
-  if (v5)
+  if (batteryData)
   {
-    a3->var0[12] = 1;
-    v6 = [(DBStatusBarStateProvider *)self batteryData];
-    a3->var24 = [v6 chargingState];
+    data->var0[12] = 1;
+    batteryData2 = [(DBStatusBarStateProvider *)self batteryData];
+    data->var24 = [batteryData2 chargingState];
 
-    v7 = [(DBStatusBarStateProvider *)self batteryData];
-    a3->var23 = [v7 percentCharge];
+    batteryData3 = [(DBStatusBarStateProvider *)self batteryData];
+    data->var23 = [batteryData3 percentCharge];
 
-    v8 = [(DBStatusBarStateProvider *)self batteryData];
-    *(a3 + 2536) = *(a3 + 2536) & 0xFE | [v8 isBatterySaverModeActive];
+    batteryData4 = [(DBStatusBarStateProvider *)self batteryData];
+    *(data + 2536) = *(data + 2536) & 0xFE | [batteryData4 isBatterySaverModeActive];
 
     v9 = DBLogForCategory(6uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      var24 = a3->var24;
-      var23 = a3->var23;
-      v12 = *(a3 + 2536) & 1;
+      var24 = data->var24;
+      var23 = data->var23;
+      v12 = *(data + 2536) & 1;
       v13[0] = 67240704;
       v13[1] = var24;
       v14 = 1026;
@@ -1040,7 +1040,7 @@ void __47__DBStatusBarStateProvider__setupBatteryDomain__block_invoke(uint64_t a
 
   else
   {
-    a3->var0[12] = 0;
+    data->var0[12] = 0;
   }
 }
 
@@ -1048,30 +1048,30 @@ void __47__DBStatusBarStateProvider__setupBatteryDomain__block_invoke(uint64_t a
 {
   if (![(DBStatusBarStateProvider *)self hasSetupETC])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277CF8920];
-    v5 = [(DBStatusBarStateProvider *)self environment];
-    v6 = [v5 environmentConfiguration];
-    v7 = [v6 session];
-    [v3 addObserver:self selector:sel__etcChanged_ name:v4 object:v7];
+    environment = [(DBStatusBarStateProvider *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    session = [environmentConfiguration session];
+    [defaultCenter addObserver:self selector:sel__etcChanged_ name:v4 object:session];
 
-    v10 = [(DBStatusBarStateProvider *)self environment];
-    v8 = [v10 environmentConfiguration];
-    v9 = [v8 session];
-    [(DBStatusBarStateProvider *)self _updateETCStateWithSession:v9];
+    environment2 = [(DBStatusBarStateProvider *)self environment];
+    environmentConfiguration2 = [environment2 environmentConfiguration];
+    session2 = [environmentConfiguration2 session];
+    [(DBStatusBarStateProvider *)self _updateETCStateWithSession:session2];
   }
 }
 
-- (void)_etcChanged:(id)a3
+- (void)_etcChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__DBStatusBarStateProvider__etcChanged___block_invoke;
   v6[3] = &unk_278F014B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1081,34 +1081,34 @@ void __40__DBStatusBarStateProvider__etcChanged___block_invoke(uint64_t a1)
   [*(a1 + 40) _updateETCStateWithSession:v2];
 }
 
-- (void)_updateETCStateWithSession:(id)a3
+- (void)_updateETCStateWithSession:(id)session
 {
-  v4 = [a3 electronicTollCollectionAvailable];
-  [(DBStatusBarStateProvider *)self setEtcStatus:v4];
+  electronicTollCollectionAvailable = [session electronicTollCollectionAvailable];
+  [(DBStatusBarStateProvider *)self setEtcStatus:electronicTollCollectionAvailable];
 
   [(DBStatusBarStateProvider *)self updateStatusBarData];
 }
 
-- (void)_getETCData:(id *)a3
+- (void)_getETCData:(id *)data
 {
-  v5 = [(DBStatusBarStateProvider *)self etcStatus];
+  etcStatus = [(DBStatusBarStateProvider *)self etcStatus];
 
-  if (v5)
+  if (etcStatus)
   {
-    a3->var0[35] = 1;
-    v6 = [(DBStatusBarStateProvider *)self etcStatus];
-    *(a3 + 3149) = *(a3 + 3149) & 0xFE | [v6 BOOLValue];
+    data->var0[35] = 1;
+    etcStatus2 = [(DBStatusBarStateProvider *)self etcStatus];
+    *(data + 3149) = *(data + 3149) & 0xFE | [etcStatus2 BOOLValue];
   }
 
   else
   {
-    a3->var0[35] = 0;
+    data->var0[35] = 0;
   }
 }
 
-- (void)setAcceptsDNDStateUpdates:(BOOL)a3
+- (void)setAcceptsDNDStateUpdates:(BOOL)updates
 {
-  self->_acceptsDNDStateUpdates = a3;
+  self->_acceptsDNDStateUpdates = updates;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__DBStatusBarStateProvider_setAcceptsDNDStateUpdates___block_invoke;
@@ -1117,16 +1117,16 @@ void __40__DBStatusBarStateProvider__etcChanged___block_invoke(uint64_t a1)
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)focusStatusUpdated:(id)a3
+- (void)focusStatusUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__DBStatusBarStateProvider_focusStatusUpdated___block_invoke;
   v6[3] = &unk_278F014B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = updatedCopy;
+  selfCopy = self;
+  v5 = updatedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1166,41 +1166,41 @@ uint64_t __47__DBStatusBarStateProvider_focusStatusUpdated___block_invoke(uint64
   return [*(a1 + 40) updateStatusBarData];
 }
 
-- (void)_getFocusData:(id *)a3
+- (void)_getFocusData:(id *)data
 {
   if (![(DBStatusBarStateProvider *)self acceptsDNDStateUpdates])
   {
-    a3->var0[2] = 0;
-    v9 = a3 + 2529;
-    v7 = *(a3 + 2529);
+    data->var0[2] = 0;
+    v9 = data + 2529;
+    v7 = *(data + 2529);
 LABEL_8:
     *v9 = v7 | 0x80;
     return;
   }
 
-  v5 = [(DBStatusBarStateProvider *)self activeModeSymbolName];
-  v6 = [v5 length];
+  activeModeSymbolName = [(DBStatusBarStateProvider *)self activeModeSymbolName];
+  v6 = [activeModeSymbolName length];
 
-  a3->var0[2] = v6 != 0;
-  v7 = *(a3 + 2529);
+  data->var0[2] = v6 != 0;
+  v7 = *(data + 2529);
   if (!v6)
   {
-    v9 = a3 + 2529;
+    v9 = data + 2529;
     goto LABEL_8;
   }
 
-  *(a3 + 2529) = v7 & 0x7F;
-  v10 = [(DBStatusBarStateProvider *)self activeModeSymbolName];
-  v8 = v10;
-  [v10 cStringUsingEncoding:4];
+  *(data + 2529) = v7 & 0x7F;
+  activeModeSymbolName2 = [(DBStatusBarStateProvider *)self activeModeSymbolName];
+  v8 = activeModeSymbolName2;
+  [activeModeSymbolName2 cStringUsingEncoding:4];
   __strcpy_chk();
 }
 
-- (void)_getTTRData:(id *)a3
+- (void)_getTTRData:(id *)data
 {
-  v5 = [(DBStatusBarStateProvider *)self _radarItemEnabled];
-  a3->var0[34] = v5;
-  if (v5)
+  _radarItemEnabled = [(DBStatusBarStateProvider *)self _radarItemEnabled];
+  data->var0[34] = _radarItemEnabled;
+  if (_radarItemEnabled)
   {
     if ([(DBStatusBarStateProvider *)self _radarItemVisible])
     {
@@ -1218,14 +1218,14 @@ LABEL_8:
     v6 = 0;
   }
 
-  *(a3 + 3149) = *(a3 + 3149) & 0xFD | v6;
+  *(data + 3149) = *(data + 3149) & 0xFD | v6;
 }
 
 - (void)_setupMediaDomain
 {
-  v3 = [(DBStatusBarStateProvider *)self mediaDomain];
+  mediaDomain = [(DBStatusBarStateProvider *)self mediaDomain];
 
-  if (!v3)
+  if (!mediaDomain)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc_init(MEMORY[0x277D6B9B0]);
@@ -1261,16 +1261,16 @@ void __45__DBStatusBarStateProvider__setupMediaDomain__block_invoke(uint64_t a1,
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_mediaDataUpdatedWithData:(id)a3
+- (void)_mediaDataUpdatedWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__DBStatusBarStateProvider__mediaDataUpdatedWithData___block_invoke;
   v6[3] = &unk_278F014B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dataCopy;
+  v5 = dataCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1365,15 +1365,15 @@ LABEL_21:
   [*(a1 + 32) updateStatusBarData];
 }
 
-- (void)_getMediaData:(id *)a3
+- (void)_getMediaData:(id *)data
 {
-  v5 = [(DBStatusBarStateProvider *)self mediaData];
+  mediaData = [(DBStatusBarStateProvider *)self mediaData];
 
-  if (v5)
+  if (mediaData)
   {
     v6 = objc_opt_class();
-    v7 = [(DBStatusBarStateProvider *)self mediaData];
-    v8 = [v6 _showIndicatorForData:v7];
+    mediaData2 = [(DBStatusBarStateProvider *)self mediaData];
+    v8 = [v6 _showIndicatorForData:mediaData2];
   }
 
   else
@@ -1381,32 +1381,32 @@ LABEL_21:
     v8 = 0;
   }
 
-  a3->var0[28] = v8;
+  data->var0[28] = v8;
 }
 
-+ (BOOL)_showIndicatorForData:(id)a3
++ (BOOL)_showIndicatorForData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 audioRecordingAttributions];
-  if ([v4 count])
+  dataCopy = data;
+  audioRecordingAttributions = [dataCopy audioRecordingAttributions];
+  if ([audioRecordingAttributions count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 cameraCaptureAttributions];
-    v5 = [v6 count] != 0;
+    cameraCaptureAttributions = [dataCopy cameraCaptureAttributions];
+    v5 = [cameraCaptureAttributions count] != 0;
   }
 
   return v5;
 }
 
-+ (int64_t)_sensorIndicatorTypeForData:(id)a3
++ (int64_t)_sensorIndicatorTypeForData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 cameraCaptureAttributions];
-  v5 = [v4 count];
+  dataCopy = data;
+  cameraCaptureAttributions = [dataCopy cameraCaptureAttributions];
+  v5 = [cameraCaptureAttributions count];
 
   if (v5)
   {
@@ -1415,8 +1415,8 @@ LABEL_21:
 
   else
   {
-    v7 = [v3 audioRecordingAttributions];
-    v6 = [v7 count] != 0;
+    audioRecordingAttributions = [dataCopy audioRecordingAttributions];
+    v6 = [audioRecordingAttributions count] != 0;
   }
 
   return v6;
@@ -1424,9 +1424,9 @@ LABEL_21:
 
 - (void)_setupCallingDomain
 {
-  v3 = [(DBStatusBarStateProvider *)self callingDomain];
+  callingDomain = [(DBStatusBarStateProvider *)self callingDomain];
 
-  if (!v3)
+  if (!callingDomain)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc_init(MEMORY[0x277D6B940]);
@@ -1448,23 +1448,23 @@ LABEL_21:
   }
 }
 
-- (void)_callingDataUpdatedWithData:(id)a3
+- (void)_callingDataUpdatedWithData:(id)data
 {
-  [(DBStatusBarStateProvider *)self setCallingData:a3];
+  [(DBStatusBarStateProvider *)self setCallingData:data];
 
   [(DBStatusBarStateProvider *)self updateStatusBarData];
 }
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __95__DBStatusBarStateProvider_userNotificationSettingsCenter_didUpdateNotificationSystemSettings___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = settingsCopy;
+  v6 = settingsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1483,9 +1483,9 @@ uint64_t __95__DBStatusBarStateProvider_userNotificationSettingsCenter_didUpdate
 
 - (void)_fetchAnnounceNotificationsSetting
 {
-  v4 = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
-  v3 = [v4 notificationSystemSettings];
-  self->_cachedCarPlayAnnounceSetting = [v3 announcementCarPlaySetting];
+  currentNotificationSettingsCenter = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  self->_cachedCarPlayAnnounceSetting = [notificationSystemSettings announcementCarPlaySetting];
 }
 
 - (void)_setupAnnounceNotificationsSetting
@@ -1522,15 +1522,15 @@ void __62__DBStatusBarStateProvider__setupAnnounceNotificationsSetting__block_in
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_getAnnounceNotificationsData:(id *)a3
+- (void)_getAnnounceNotificationsData:(id *)data
 {
   if ([(DBStatusBarStateProvider *)self _isAnnounceNotificationsEnabledForSystemSettings])
   {
-    v5 = [(DBStatusBarStateProvider *)self siriPreferences];
-    v6 = [v5 announceNotificationsInCarPlayTemporarilyDisabled];
+    siriPreferences = [(DBStatusBarStateProvider *)self siriPreferences];
+    announceNotificationsInCarPlayTemporarilyDisabled = [siriPreferences announceNotificationsInCarPlayTemporarilyDisabled];
 
-    v7 = (v6 & 1) == 0;
-    if (v6)
+    v7 = (announceNotificationsInCarPlayTemporarilyDisabled & 1) == 0;
+    if (announceNotificationsInCarPlayTemporarilyDisabled)
     {
       v8 = 0;
     }
@@ -1547,64 +1547,64 @@ void __62__DBStatusBarStateProvider__setupAnnounceNotificationsSetting__block_in
     v8 = 0;
   }
 
-  a3->var0[38] = v7;
-  *(a3 + 3149) = *(a3 + 3149) & 0xFB | v8;
+  data->var0[38] = v7;
+  *(data + 3149) = *(data + 3149) & 0xFB | v8;
 }
 
 - (void)invalidate
 {
-  v3 = [(DBStatusBarStateProvider *)self timeUpdateTimer];
-  [v3 invalidate];
+  timeUpdateTimer = [(DBStatusBarStateProvider *)self timeUpdateTimer];
+  [timeUpdateTimer invalidate];
 
-  v4 = [(DBStatusBarStateProvider *)self telephonyDomain];
-  [v4 invalidate];
+  telephonyDomain = [(DBStatusBarStateProvider *)self telephonyDomain];
+  [telephonyDomain invalidate];
 
-  v5 = [(DBStatusBarStateProvider *)self batteryDomain];
-  [v5 invalidate];
+  batteryDomain = [(DBStatusBarStateProvider *)self batteryDomain];
+  [batteryDomain invalidate];
 
-  v6 = [(DBStatusBarStateProvider *)self wifiDomain];
-  [v6 invalidate];
+  wifiDomain = [(DBStatusBarStateProvider *)self wifiDomain];
+  [wifiDomain invalidate];
 
-  v7 = [(DBStatusBarStateProvider *)self mediaDomain];
-  [v7 invalidate];
+  mediaDomain = [(DBStatusBarStateProvider *)self mediaDomain];
+  [mediaDomain invalidate];
 
-  v8 = [(DBStatusBarStateProvider *)self callingDomain];
-  [v8 invalidate];
+  callingDomain = [(DBStatusBarStateProvider *)self callingDomain];
+  [callingDomain invalidate];
 
-  v9 = [(DBStatusBarStateProvider *)self voiceControlDomain];
-  [v9 invalidate];
+  voiceControlDomain = [(DBStatusBarStateProvider *)self voiceControlDomain];
+  [voiceControlDomain invalidate];
 
-  v10 = [(DBStatusBarStateProvider *)self springBoardDefaults];
+  springBoardDefaults = [(DBStatusBarStateProvider *)self springBoardDefaults];
 
-  if (v10)
+  if (springBoardDefaults)
   {
-    v11 = [(DBStatusBarStateProvider *)self springBoardDefaults];
-    [v11 removeObserver:self forKeyPath:@"SBShowStatusBarOverridesForRecording"];
+    springBoardDefaults2 = [(DBStatusBarStateProvider *)self springBoardDefaults];
+    [springBoardDefaults2 removeObserver:self forKeyPath:@"SBShowStatusBarOverridesForRecording"];
 
     [(DBStatusBarStateProvider *)self setSpringBoardDefaults:0];
   }
 }
 
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides
 {
-  if ([(DBStatusBarStateProvider *)self inCallServiceActive:a3])
+  if ([(DBStatusBarStateProvider *)self inCallServiceActive:bar])
   {
-    v6 = [(DBStatusBarStateProvider *)self activeBundleIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.InCallService"];
+    activeBundleIdentifier = [(DBStatusBarStateProvider *)self activeBundleIdentifier];
+    v7 = [activeBundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
     return (v7 & 1) == 0;
   }
 
-  v9 = [(DBStatusBarStateProvider *)self nowRecordingBundleIdentifier];
-  if (!v9)
+  nowRecordingBundleIdentifier = [(DBStatusBarStateProvider *)self nowRecordingBundleIdentifier];
+  if (!nowRecordingBundleIdentifier)
   {
     return 0;
   }
 
-  v10 = v9;
-  v11 = [(DBStatusBarStateProvider *)self activeBundleIdentifier];
-  v12 = [(DBStatusBarStateProvider *)self nowRecordingBundleIdentifier];
-  v13 = [v11 isEqualToString:v12];
+  v10 = nowRecordingBundleIdentifier;
+  activeBundleIdentifier2 = [(DBStatusBarStateProvider *)self activeBundleIdentifier];
+  nowRecordingBundleIdentifier2 = [(DBStatusBarStateProvider *)self nowRecordingBundleIdentifier];
+  v13 = [activeBundleIdentifier2 isEqualToString:nowRecordingBundleIdentifier2];
 
   if (v13)
   {
@@ -1614,13 +1614,13 @@ void __62__DBStatusBarStateProvider__setupAnnounceNotificationsSetting__block_in
   return 4;
 }
 
-- (void)workspace:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5
+- (void)workspace:(id)workspace stateDidChangeFromState:(id)state toState:(id)toState
 {
-  v6 = [a5 activeBundleIdentifier];
-  [(DBStatusBarStateProvider *)self setActiveBundleIdentifier:v6];
+  activeBundleIdentifier = [toState activeBundleIdentifier];
+  [(DBStatusBarStateProvider *)self setActiveBundleIdentifier:activeBundleIdentifier];
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1643,7 +1643,7 @@ uint64_t __43__DBStatusBarStateProvider__localeChanged___block_invoke(uint64_t a
   return [*(a1 + 32) _resetTimeUpdateTimer];
 }
 
-- (void)_timeZoneChanged:(id)a3
+- (void)_timeZoneChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1665,7 +1665,7 @@ uint64_t __45__DBStatusBarStateProvider__timeZoneChanged___block_invoke(uint64_t
   return [*(a1 + 32) _resetTimeUpdateTimer];
 }
 
-- (void)preferences:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4
+- (void)preferences:(id)preferences announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1687,19 +1687,19 @@ uint64_t __97__DBStatusBarStateProvider_preferences_announceNotificationsInCarPl
   return [*(a1 + 32) updateStatusBarData];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  changeCopy = change;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__DBStatusBarStateProvider_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_278F015F8;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
+  v13 = pathCopy;
+  v14 = changeCopy;
+  selfCopy = self;
+  v10 = changeCopy;
+  v11 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

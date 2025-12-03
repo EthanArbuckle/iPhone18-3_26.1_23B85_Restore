@@ -1,120 +1,120 @@
 @interface PKModifyStrokesCommand
-+ (id)commandForErasingAllStrokesInDrawing:(id)a3;
-+ (id)commandForErasingStrokes:(id)a3 drawing:(id)a4;
-+ (id)commandForMakingStrokeVisible:(id)a3 drawing:(id)a4 hiding:(BOOL)a5;
-+ (id)commandForMakingStrokesVisible:(id)a3 drawing:(id)a4 hiding:(BOOL)a5;
-- (PKModifyStrokesCommand)initWithStrokes:(id)a3 drawingUUID:(id)a4 actionName:(id)a5 hiding:(BOOL)a6;
++ (id)commandForErasingAllStrokesInDrawing:(id)drawing;
++ (id)commandForErasingStrokes:(id)strokes drawing:(id)drawing;
++ (id)commandForMakingStrokeVisible:(id)visible drawing:(id)drawing hiding:(BOOL)hiding;
++ (id)commandForMakingStrokesVisible:(id)visible drawing:(id)drawing hiding:(BOOL)hiding;
+- (PKModifyStrokesCommand)initWithStrokes:(id)strokes drawingUUID:(id)d actionName:(id)name hiding:(BOOL)hiding;
 - (id)description;
-- (id)invertedInDrawing:(id)a3;
-- (void)applyToDrawing:(id)a3;
+- (id)invertedInDrawing:(id)drawing;
+- (void)applyToDrawing:(id)drawing;
 @end
 
 @implementation PKModifyStrokesCommand
 
-+ (id)commandForMakingStrokeVisible:(id)a3 drawing:(id)a4 hiding:(BOOL)a5
++ (id)commandForMakingStrokeVisible:(id)visible drawing:(id)drawing hiding:(BOOL)hiding
 {
-  v5 = a5;
+  hidingCopy = hiding;
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  visibleCopy = visible;
+  drawingCopy = drawing;
   v9 = _PencilKitBundle();
   v10 = [v9 localizedStringForKey:@"Stroke" value:@"Stroke" table:@"Localizable"];
 
   v11 = [PKModifyStrokesCommand alloc];
-  v16[0] = v7;
+  v16[0] = visibleCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v13 = [v8 uuid];
-  v14 = [(PKModifyStrokesCommand *)v11 initWithStrokes:v12 drawingUUID:v13 actionName:v10 hiding:v5];
+  uuid = [drawingCopy uuid];
+  v14 = [(PKModifyStrokesCommand *)v11 initWithStrokes:v12 drawingUUID:uuid actionName:v10 hiding:hidingCopy];
 
   return v14;
 }
 
-+ (id)commandForMakingStrokesVisible:(id)a3 drawing:(id)a4 hiding:(BOOL)a5
++ (id)commandForMakingStrokesVisible:(id)visible drawing:(id)drawing hiding:(BOOL)hiding
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  hidingCopy = hiding;
+  visibleCopy = visible;
+  drawingCopy = drawing;
   v9 = _PencilKitBundle();
   v10 = [v9 localizedStringForKey:@"Added strokes" value:@"Added strokes" table:@"Localizable"];
 
   v11 = [PKModifyStrokesCommand alloc];
-  v12 = [v8 uuid];
-  v13 = [(PKModifyStrokesCommand *)v11 initWithStrokes:v7 drawingUUID:v12 actionName:v10 hiding:v5];
+  uuid = [drawingCopy uuid];
+  v13 = [(PKModifyStrokesCommand *)v11 initWithStrokes:visibleCopy drawingUUID:uuid actionName:v10 hiding:hidingCopy];
 
   return v13;
 }
 
-+ (id)commandForErasingAllStrokesInDrawing:(id)a3
++ (id)commandForErasingAllStrokesInDrawing:(id)drawing
 {
-  v3 = a3;
+  drawingCopy = drawing;
   v4 = _PencilKitBundle();
   v5 = [v4 localizedStringForKey:@"Erase All" value:@"Erase All" table:@"Localizable"];
 
   v6 = [PKModifyStrokesCommand alloc];
-  v7 = [v3 strokes];
-  v8 = [v3 uuid];
-  v9 = [(PKModifyStrokesCommand *)v6 initWithStrokes:v7 drawingUUID:v8 actionName:v5 hiding:1];
+  strokes = [drawingCopy strokes];
+  uuid = [drawingCopy uuid];
+  v9 = [(PKModifyStrokesCommand *)v6 initWithStrokes:strokes drawingUUID:uuid actionName:v5 hiding:1];
 
   return v9;
 }
 
-+ (id)commandForErasingStrokes:(id)a3 drawing:(id)a4
++ (id)commandForErasingStrokes:(id)strokes drawing:(id)drawing
 {
-  v5 = a3;
-  v6 = a4;
+  strokesCopy = strokes;
+  drawingCopy = drawing;
   v7 = _PencilKitBundle();
   v8 = [v7 localizedStringForKey:@"Erase" value:@"Erase" table:@"Localizable"];
 
   v9 = [PKModifyStrokesCommand alloc];
-  v10 = [v6 uuid];
-  v11 = [(PKModifyStrokesCommand *)v9 initWithStrokes:v5 drawingUUID:v10 actionName:v8 hiding:1];
+  uuid = [drawingCopy uuid];
+  v11 = [(PKModifyStrokesCommand *)v9 initWithStrokes:strokesCopy drawingUUID:uuid actionName:v8 hiding:1];
 
   return v11;
 }
 
-- (PKModifyStrokesCommand)initWithStrokes:(id)a3 drawingUUID:(id)a4 actionName:(id)a5 hiding:(BOOL)a6
+- (PKModifyStrokesCommand)initWithStrokes:(id)strokes drawingUUID:(id)d actionName:(id)name hiding:(BOOL)hiding
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  strokesCopy = strokes;
+  dCopy = d;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = PKModifyStrokesCommand;
-  v13 = [(PKUndoCommand *)&v17 initWithDrawingUUID:v11 actionName:v12];
+  v13 = [(PKUndoCommand *)&v17 initWithDrawingUUID:dCopy actionName:nameCopy];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [strokesCopy copy];
     strokes = v13->_strokes;
     v13->_strokes = v14;
 
-    v13->_hide = a6;
+    v13->_hide = hiding;
   }
 
   return v13;
 }
 
-- (id)invertedInDrawing:(id)a3
+- (id)invertedInDrawing:(id)drawing
 {
-  v4 = [(PKModifyStrokesCommand *)self hide];
+  hide = [(PKModifyStrokesCommand *)self hide];
   v5 = [PKModifyStrokesCommand alloc];
-  v6 = [(PKModifyStrokesCommand *)self strokes];
-  v7 = [(PKUndoCommand *)self drawingUUID];
-  v8 = [(PKUndoCommand *)self actionName];
-  v9 = [(PKModifyStrokesCommand *)v5 initWithStrokes:v6 drawingUUID:v7 actionName:v8 hiding:!v4];
+  strokes = [(PKModifyStrokesCommand *)self strokes];
+  drawingUUID = [(PKUndoCommand *)self drawingUUID];
+  actionName = [(PKUndoCommand *)self actionName];
+  v9 = [(PKModifyStrokesCommand *)v5 initWithStrokes:strokes drawingUUID:drawingUUID actionName:actionName hiding:!hide];
 
   return v9;
 }
 
-- (void)applyToDrawing:(id)a3
+- (void)applyToDrawing:(id)drawing
 {
-  v8 = a3;
-  v4 = [v8 uuid];
-  v5 = [(PKUndoCommand *)self drawingUUID];
-  v6 = [v4 isEqual:v5];
+  drawingCopy = drawing;
+  uuid = [drawingCopy uuid];
+  drawingUUID = [(PKUndoCommand *)self drawingUUID];
+  v6 = [uuid isEqual:drawingUUID];
 
   if (v6)
   {
-    v7 = [(PKModifyStrokesCommand *)self strokes];
-    [v8 setStrokes:v7 hidden:{-[PKModifyStrokesCommand hide](self, "hide")}];
+    strokes = [(PKModifyStrokesCommand *)self strokes];
+    [drawingCopy setStrokes:strokes hidden:{-[PKModifyStrokesCommand hide](self, "hide")}];
   }
 }
 
@@ -123,10 +123,10 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PKModifyStrokesCommand *)self hide];
-  v7 = [(PKUndoCommand *)self drawingUUID];
-  v8 = [(PKModifyStrokesCommand *)self strokes];
-  v9 = [v3 stringWithFormat:@"<%@ %p hide=%d drawing=%@ %@>", v5, self, v6, v7, v8];
+  hide = [(PKModifyStrokesCommand *)self hide];
+  drawingUUID = [(PKUndoCommand *)self drawingUUID];
+  strokes = [(PKModifyStrokesCommand *)self strokes];
+  v9 = [v3 stringWithFormat:@"<%@ %p hide=%d drawing=%@ %@>", v5, self, hide, drawingUUID, strokes];
 
   return v9;
 }

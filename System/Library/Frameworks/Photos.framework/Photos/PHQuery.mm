@@ -1,203 +1,203 @@
 @interface PHQuery
-+ (BOOL)_isKindOfMomentOrAlbumEntity:(id)a3;
-+ (BOOL)_validateLocalIdentifiers:(id)a3 compatibilityWithFetchType:(id)a4;
-+ (BOOL)isToManySelfInPredicate:(id)a3;
-+ (id)_assetIDsFromAssets:(id)a3 anyAsset:(id *)a4;
-+ (id)_containerIdentifierForFetchType:(id)a3 predicate:(id)a4 outRelationship:(id *)a5;
-+ (id)_defaultFetchOptionsForIdentifiedAssetsQueryInPhotoLibrary:(id)a3;
-+ (id)_fetchOptionsForFetchingAssetsFromAssetCollection:(id)a3 options:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)_fetchOptionsForFetchingAssetsFromImportSessions:(id)a3 options:(id)a4;
-+ (id)_filterPredicateFromFetchOptionsPredicate:(id)a3 options:(id)a4 phClass:(Class)a5;
++ (BOOL)_isKindOfMomentOrAlbumEntity:(id)entity;
++ (BOOL)_validateLocalIdentifiers:(id)identifiers compatibilityWithFetchType:(id)type;
++ (BOOL)isToManySelfInPredicate:(id)predicate;
++ (id)_assetIDsFromAssets:(id)assets anyAsset:(id *)asset;
++ (id)_containerIdentifierForFetchType:(id)type predicate:(id)predicate outRelationship:(id *)relationship;
++ (id)_defaultFetchOptionsForIdentifiedAssetsQueryInPhotoLibrary:(id)library;
++ (id)_fetchOptionsForFetchingAssetsFromAssetCollection:(id)collection options:(id)options changeDetectionCriteria:(id)criteria;
++ (id)_fetchOptionsForFetchingAssetsFromImportSessions:(id)sessions options:(id)options;
++ (id)_filterPredicateFromFetchOptionsPredicate:(id)predicate options:(id)options phClass:(Class)class;
 + (id)_guestAssetOnlyPredicate;
-+ (id)_queryForAssetResourceUploadJobsWithOptions:(id)a3 configuration:(id)a4 predicate:(id)a5;
-+ (id)_queryForAssetsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)_queryForPersonsInAssetsWithObjectIDs:(id)a3 withOptions:(id)a4;
-+ (id)_queryForPersonsWithFaceRelationshipPredicate:(id)a3 options:(id)a4;
-+ (id)_queryForRootCollectionListWithRootFolder:(id)a3 options:(id)a4;
-+ (id)_relationshipForFetchType:(id)a3 predicate:(id)a4;
-+ (id)_transformedSortDescriptors:(id)a3 forFetchType:(id)a4;
-+ (id)combinedFetchRequestForQueries:(id)a3;
-+ (id)defaultSortDescriptorForFetchType:(id)a3 predicate:(id)a4 ascending:(BOOL)a5;
-+ (id)fetchRootFolderIDForAlbumKind:(int)a3 photoLibrary:(id)a4;
-+ (id)identificationBlockForAlbumSortKey:(unsigned int)a3;
-+ (id)identificationBlockForAssetCollectionType:(int64_t)a3;
-+ (id)identificationBlockForSmartAlbumKind:(int)a3;
-+ (id)queryForAcknowledgeableAssetResourceUploadJobsWithConfiguration:(id)a3 options:(id)a4;
-+ (id)queryForActiveLibraryScopeWithOptions:(id)a3;
-+ (id)queryForAllAssetsAssociatedWithMemory:(id)a3 options:(id)a4;
-+ (id)queryForAllAssetsInYearRepresentedByYearHighlight:(id)a3 options:(id)a4;
-+ (id)queryForAllTripHighlightsContainingAssetUUIDs:(id)a3 options:(id)a4;
-+ (id)queryForAnsweredQuestionsWithOptions:(id)a3;
-+ (id)queryForAnsweredYesOrNoQuestionsWithOptions:(id)a3;
-+ (id)queryForAnyCinematicVideosNeedingDeferredProcessingWithOtions:(id)a3;
-+ (id)queryForAssetCollectionsContainingAsset:(id)a3 withType:(int64_t)a4 options:(id)a5;
-+ (id)queryForAssetCollectionsContainingAssets:(id)a3 withType:(int64_t)a4 options:(id)a5;
-+ (id)queryForAssetCollectionsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForAssetCollectionsWithObjectIDs:(id)a3 options:(id)a4;
-+ (id)queryForAssetCollectionsWithType:(int64_t)a3 localIdentifiers:(id)a4 options:(id)a5;
-+ (id)queryForAssetCollectionsWithType:(int64_t)a3 subtype:(int64_t)a4 options:(id)a5;
-+ (id)queryForAssetResourceUploadJobConfigurationsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForAssetResourceUploadJobConfigurationsWithOptions:(id)a3;
-+ (id)queryForAssetResourceUploadJobsWithConfiguration:(id)a3 states:(id)a4 options:(id)a5;
-+ (id)queryForAssetsAssociatedWithMomentsOfMemory:(id)a3 options:(id)a4;
-+ (id)queryForAssetsCaptured:(BOOL)a3 orEdited:(BOOL)a4 onThisCameraSinceDate:(id)a5 options:(id)a6;
-+ (id)queryForAssetsForCloudFeedEntry:(id)a3 options:(id)a4;
-+ (id)queryForAssetsForComment:(id)a3 options:(id)a4;
-+ (id)queryForAssetsForFaceGroups:(id)a3 options:(id)a4;
-+ (id)queryForAssetsForFaces:(id)a3 options:(id)a4;
-+ (id)queryForAssetsForKeywords:(id)a3 options:(id)a4;
-+ (id)queryForAssetsForPTPWithOptions:(id)a3;
-+ (id)queryForAssetsForPersons:(id)a3 options:(id)a4;
-+ (id)queryForAssetsFromCameraSinceDate:(id)a3 options:(id)a4;
-+ (id)queryForAssetsInAssetCollection:(id)a3 options:(id)a4;
-+ (id)queryForAssetsInBoundingBoxWithTopLeftLocation:(id)a3 bottomRightLocation:(id)a4 options:(id)a5;
-+ (id)queryForAssetsInConversations:(id)a3 options:(id)a4;
-+ (id)queryForAssetsInImportSessions:(id)a3 options:(id)a4;
-+ (id)queryForAssetsInLibraryScope:(id)a3 options:(id)a4;
-+ (id)queryForAssetsInPreviewStateInLibraryScope:(id)a3 options:(id)a4;
-+ (id)queryForAssetsInPreviewStateWithSuggestedByClientTypes:(id)a3 options:(id)a4;
-+ (id)queryForAssetsInUtilityCollectionWithType:(unsigned __int16)a3 options:(id)a4;
-+ (id)queryForAssetsUsingSearchIndexLookupIdentifier:(id)a3 options:(id)a4;
-+ (id)queryForAssetsWithBurstIdentifier:(id)a3 options:(id)a4;
-+ (id)queryForAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)a3 inLibraryScope:(id)a4 options:(id)a5;
-+ (id)queryForAssetsWithMediaType:(int64_t)a3 options:(id)a4;
-+ (id)queryForAssetsWithObjectIDs:(id)a3 options:(id)a4;
-+ (id)queryForAssetsWithOptions:(id)a3;
-+ (id)queryForAssociatedPersonForFaceGroup:(id)a3 withOptions:(id)a4;
-+ (id)queryForChildrenDayGroupHighlightsForPhotosHighlight:(id)a3 options:(id)a4;
-+ (id)queryForChildrenHighlightsForPhotosHighlight:(id)a3 options:(id)a4;
-+ (id)queryForCloudSharedAlbumInvitationRecordsForCloudSharedAlbum:(id)a3 options:(id)a4;
-+ (id)queryForCloudSharedAlbumInvitationRecordsWithOptions:(id)a3;
-+ (id)queryForCloudSharedAlbumsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForCollageAssetsInDayHighlight:(id)a3 options:(id)a4;
-+ (id)queryForCollectionListContainingCollection:(id)a3 options:(id)a4;
-+ (id)queryForCollectionListsWithType:(int64_t)a3 localIdentifiers:(id)a4 options:(id)a5;
-+ (id)queryForCollectionListsWithType:(int64_t)a3 subtype:(int64_t)a4 options:(id)a5;
-+ (id)queryForCollectionsInCollectionList:(id)a3 options:(id)a4;
-+ (id)queryForCommentsForAsset:(id)a3 options:(id)a4;
-+ (id)queryForCommentsForCloudFeedEntry:(id)a3 options:(id)a4;
-+ (id)queryForCommentsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForContributorForComment:(id)a3 options:(id)a4;
-+ (id)queryForConversationsWithOptions:(id)a3;
-+ (id)queryForCuratedAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)queryForCuratedAssetsInMomentShare:(id)a3 options:(id)a4;
-+ (id)queryForCuratedAssetsInPhotosHighlight:(id)a3 options:(id)a4;
-+ (id)queryForCurrentUserParticipantInShare:(id)a3 options:(id)a4;
-+ (id)queryForCustomUserAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)queryForEmptyFaceGroupsWithOptions:(id)a3;
-+ (id)queryForEntriesFromEarliestDate:(id)a3 latestDate:(id)a4 filter:(int64_t)a5 options:(id)a6;
-+ (id)queryForEntryWithLocalIdentifier:(id)a3 options:(id)a4;
-+ (id)queryForExtendedCuratedAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)queryForFaceCropsForPerson:(id)a3 options:(id)a4;
-+ (id)queryForFaceCropsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForFaceCropsWithOptions:(id)a3;
-+ (id)queryForFaceGroupsForPerson:(id)a3 options:(id)a4;
-+ (id)queryForFaceGroupsWithFace:(id)a3 options:(id)a4;
-+ (id)queryForFaceGroupsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForFaceGroupsWithOptions:(id)a3;
-+ (id)queryForFacesForPerson:(id)a3 options:(id)a4;
-+ (id)queryForFacesInAsset:(id)a3 options:(id)a4;
-+ (id)queryForFacesInAssets:(id)a3 options:(id)a4;
-+ (id)queryForFacesInFaceGroup:(id)a3 options:(id)a4;
-+ (id)queryForFacesOnAssetWithFace:(id)a3 options:(id)a4;
-+ (id)queryForFacesOnFaceCrop:(id)a3 options:(id)a4;
-+ (id)queryForFacesWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForFacesWithOptions:(id)a3;
-+ (id)queryForFacesWithVuObservationIDs:(id)a3 options:(id)a4;
-+ (id)queryForGuestAssetsInCollectionContainingAsset:(id)a3 options:(id)a4;
-+ (id)queryForGuestAssetsWithOptions:(id)a3;
-+ (id)queryForImportSessionsWithOptions:(id)a3;
-+ (id)queryForInFlightJobCountWithConfiguration:(id)a3 options:(id)a4;
-+ (id)queryForInvalidMergeCandidatePersonsForPerson:(id)a3 options:(id)a4;
-+ (id)queryForKeyAssetForPerson:(id)a3 options:(id)a4;
-+ (id)queryForKeyAssetInMemory:(id)a3 options:(id)a4;
-+ (id)queryForKeyAssetInPhotosHighlight:(id)a3 options:(id)a4;
-+ (id)queryForKeyAssetsInAssetCollection:(id)a3 options:(id)a4;
-+ (id)queryForKeyAssetsInCollectionShare:(id)a3 options:(id)a4;
-+ (id)queryForKeyAssetsInMomentShare:(id)a3 options:(id)a4;
-+ (id)queryForKeyAssetsInSuggestion:(id)a3 options:(id)a4;
-+ (id)queryForKeyFaceForFaceGroup:(id)a3 options:(id)a4;
-+ (id)queryForKeyFaceOnPerson:(id)a3 options:(id)a4;
-+ (id)queryForKeySharingSuggestionAssetsInHighlight:(id)a3 options:(id)a4;
-+ (id)queryForKeywordsForAsset:(id)a3 options:(id)a4;
-+ (id)queryForKeywordsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForKeywordsWithOptions:(id)a3;
-+ (id)queryForKeywordsWithTitles:(id)a3 options:(id)a4;
-+ (id)queryForLibraryScopesWithOptions:(id)a3;
-+ (id)queryForLikesForAsset:(id)a3 options:(id)a4;
-+ (id)queryForLikesForCloudFeedEntry:(id)a3 options:(id)a4;
-+ (id)queryForMemoriesWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForMergeCandidatePersonsForPerson:(id)a3 options:(id)a4;
-+ (id)queryForMergeCandidateWithConfidencePersonsForPerson:(id)a3 options:(id)a4;
-+ (id)queryForMomentListsWithSubType:(int64_t)a3 containingMoment:(id)a4;
-+ (id)queryForMomentListsWithSubType:(int64_t)a3 options:(id)a4;
-+ (id)queryForMomentsBackingMemory:(id)a3;
-+ (id)queryForMomentsBackingSuggestion:(id)a3;
-+ (id)queryForMomentsContainingAssetsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForMomentsContainingAssetsWithOIDs:(id)a3 options:(id)a4;
-+ (id)queryForMomentsForFacesWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForMomentsForPersonsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForMomentsInMomentList:(id)a3 options:(id)a4;
-+ (id)queryForMomentsInPhotosHighlight:(id)a3;
-+ (id)queryForMomentsWithOptions:(id)a3;
-+ (id)queryForMovieCuratedAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)queryForOwnerParticipantInShare:(id)a3 options:(id)a4;
-+ (id)queryForParentDayGroupHighlightForPhotosHighlight:(id)a3 options:(id)a4;
-+ (id)queryForParentHighlightForPhotosHighlight:(id)a3 options:(id)a4;
-+ (id)queryForParentHighlightsForPhotosHighlights:(id)a3 options:(id)a4;
-+ (id)queryForPendingLibraryScopeInvitationWithOptions:(id)a3;
-+ (id)queryForPersonForFaceCrop:(id)a3 options:(id)a4;
-+ (id)queryForPersonWithFace:(id)a3 options:(id)a4;
-+ (id)queryForPersonWithShareParticipant:(id)a3 options:(id)a4;
-+ (id)queryForPersonsInAsset:(id)a3 options:(id)a4;
-+ (id)queryForPersonsInAssets:(id)a3 withOptions:(id)a4;
-+ (id)queryForPersonsInAssetsFetchResult:(id)a3 withOptions:(id)a4;
-+ (id)queryForPersonsWithContactIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForPersonsWithFaces:(id)a3 options:(id)a4;
-+ (id)queryForPersonsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForPersonsWithMdIDs:(id)a3 options:(id)a4;
-+ (id)queryForPersonsWithNonNilUserFeedbackWithTypes:(id)a3 options:(id)a4;
-+ (id)queryForPersonsWithObjectIDs:(id)a3 options:(id)a4;
-+ (id)queryForPersonsWithOptions:(id)a3;
-+ (id)queryForPersonsWithQuestionType:(unsigned __int16)a3 options:(id)a4;
-+ (id)queryForPersonsWithType:(int64_t)a3 options:(id)a4;
-+ (id)queryForPhotosHighlightsContainingMoments:(id)a3;
-+ (id)queryForPreviewLibraryScopeWithOptions:(id)a3;
-+ (id)queryForProjectsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForQuestionsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForQuestionsWithOptions:(id)a3;
-+ (id)queryForQuestionsWithState:(unsigned __int16)a3 options:(id)a4;
-+ (id)queryForReferencedAssetsWithOptions:(id)a3;
-+ (id)queryForRejectedFacesOnPerson:(id)a3 options:(id)a4;
-+ (id)queryForRejectedPersonsForFace:(id)a3 options:(id)a4;
-+ (id)queryForRepresentativeAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)queryForRepresentativeAssetsInSuggestion:(id)a3 options:(id)a4;
-+ (id)queryForRetryableAssetResourceUploadJobsWithConfiguration:(id)a3 options:(id)a4;
-+ (id)queryForRootAlbumCollectionListWithOptions:(id)a3;
-+ (id)queryForRootProjectCollectionListWithOptions:(id)a3;
-+ (id)queryForShareParticipantWithPerson:(id)a3 options:(id)a4;
-+ (id)queryForShareParticipantsInShare:(id)a3 options:(id)a4;
-+ (id)queryForShareParticipantsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)queryForShareParticipantsWithParticipantIDs:(id)a3 options:(id)a4;
-+ (id)queryForSingletonFacesWithOptions:(id)a3;
-+ (id)queryForSuggestionsWithFeaturedState:(unsigned __int16)a3 types:(id)a4 options:(id)a5;
-+ (id)queryForSuggestionsWithOptions:(id)a3;
-+ (id)queryForSuggestionsWithState:(unsigned __int16)a3 options:(id)a4;
-+ (id)queryForSuggestionsWithState:(unsigned __int16)a3 type:(unsigned __int16)a4 subtype:(unsigned __int16)a5 options:(id)a6;
-+ (id)queryForSuggestionsWithTypes:(id)a3 options:(id)a4;
-+ (id)queryForTopLevelCollectionsMatchingPredicate:(id)a3 options:(id)a4;
-+ (id)queryForTopLevelUserCollectionsWithOptions:(id)a3;
-+ (id)queryForType:(id)a3 withBasePredicate:(id)a4 inLibrary:(id)a5;
-+ (id)queryForType:(id)a3 withBasePredicate:(id)a4 seedOIDs:(id)a5 inLibrary:(id)a6;
-+ (id)queryForType:(id)a3 withIdentifiers:(id)a4 identifierKeyPath:(id)a5 options:(id)a6;
-+ (id)queryForType:(id)a3 withLocalIdentifiers:(id)a4 options:(id)a5;
-+ (id)queryForUserCuratedAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)queryForVisibleAssetsWithObjectIDs:(id)a3 options:(id)a4;
-+ (id)queryforLibraryScopesWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (unsigned)_excludeMaskForUserLibraryWithFetchOptions:(id)a3;
-+ (void)_setLibraryScopeDefaultSortDescriptor:(id)a3;
++ (id)_queryForAssetResourceUploadJobsWithOptions:(id)options configuration:(id)configuration predicate:(id)predicate;
++ (id)_queryForAssetsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)_queryForPersonsInAssetsWithObjectIDs:(id)ds withOptions:(id)options;
++ (id)_queryForPersonsWithFaceRelationshipPredicate:(id)predicate options:(id)options;
++ (id)_queryForRootCollectionListWithRootFolder:(id)folder options:(id)options;
++ (id)_relationshipForFetchType:(id)type predicate:(id)predicate;
++ (id)_transformedSortDescriptors:(id)descriptors forFetchType:(id)type;
++ (id)combinedFetchRequestForQueries:(id)queries;
++ (id)defaultSortDescriptorForFetchType:(id)type predicate:(id)predicate ascending:(BOOL)ascending;
++ (id)fetchRootFolderIDForAlbumKind:(int)kind photoLibrary:(id)library;
++ (id)identificationBlockForAlbumSortKey:(unsigned int)key;
++ (id)identificationBlockForAssetCollectionType:(int64_t)type;
++ (id)identificationBlockForSmartAlbumKind:(int)kind;
++ (id)queryForAcknowledgeableAssetResourceUploadJobsWithConfiguration:(id)configuration options:(id)options;
++ (id)queryForActiveLibraryScopeWithOptions:(id)options;
++ (id)queryForAllAssetsAssociatedWithMemory:(id)memory options:(id)options;
++ (id)queryForAllAssetsInYearRepresentedByYearHighlight:(id)highlight options:(id)options;
++ (id)queryForAllTripHighlightsContainingAssetUUIDs:(id)ds options:(id)options;
++ (id)queryForAnsweredQuestionsWithOptions:(id)options;
++ (id)queryForAnsweredYesOrNoQuestionsWithOptions:(id)options;
++ (id)queryForAnyCinematicVideosNeedingDeferredProcessingWithOtions:(id)otions;
++ (id)queryForAssetCollectionsContainingAsset:(id)asset withType:(int64_t)type options:(id)options;
++ (id)queryForAssetCollectionsContainingAssets:(id)assets withType:(int64_t)type options:(id)options;
++ (id)queryForAssetCollectionsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForAssetCollectionsWithObjectIDs:(id)ds options:(id)options;
++ (id)queryForAssetCollectionsWithType:(int64_t)type localIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForAssetCollectionsWithType:(int64_t)type subtype:(int64_t)subtype options:(id)options;
++ (id)queryForAssetResourceUploadJobConfigurationsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForAssetResourceUploadJobConfigurationsWithOptions:(id)options;
++ (id)queryForAssetResourceUploadJobsWithConfiguration:(id)configuration states:(id)states options:(id)options;
++ (id)queryForAssetsAssociatedWithMomentsOfMemory:(id)memory options:(id)options;
++ (id)queryForAssetsCaptured:(BOOL)captured orEdited:(BOOL)edited onThisCameraSinceDate:(id)date options:(id)options;
++ (id)queryForAssetsForCloudFeedEntry:(id)entry options:(id)options;
++ (id)queryForAssetsForComment:(id)comment options:(id)options;
++ (id)queryForAssetsForFaceGroups:(id)groups options:(id)options;
++ (id)queryForAssetsForFaces:(id)faces options:(id)options;
++ (id)queryForAssetsForKeywords:(id)keywords options:(id)options;
++ (id)queryForAssetsForPTPWithOptions:(id)options;
++ (id)queryForAssetsForPersons:(id)persons options:(id)options;
++ (id)queryForAssetsFromCameraSinceDate:(id)date options:(id)options;
++ (id)queryForAssetsInAssetCollection:(id)collection options:(id)options;
++ (id)queryForAssetsInBoundingBoxWithTopLeftLocation:(id)location bottomRightLocation:(id)rightLocation options:(id)options;
++ (id)queryForAssetsInConversations:(id)conversations options:(id)options;
++ (id)queryForAssetsInImportSessions:(id)sessions options:(id)options;
++ (id)queryForAssetsInLibraryScope:(id)scope options:(id)options;
++ (id)queryForAssetsInPreviewStateInLibraryScope:(id)scope options:(id)options;
++ (id)queryForAssetsInPreviewStateWithSuggestedByClientTypes:(id)types options:(id)options;
++ (id)queryForAssetsInUtilityCollectionWithType:(unsigned __int16)type options:(id)options;
++ (id)queryForAssetsUsingSearchIndexLookupIdentifier:(id)identifier options:(id)options;
++ (id)queryForAssetsWithBurstIdentifier:(id)identifier options:(id)options;
++ (id)queryForAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)contributor inLibraryScope:(id)scope options:(id)options;
++ (id)queryForAssetsWithMediaType:(int64_t)type options:(id)options;
++ (id)queryForAssetsWithObjectIDs:(id)ds options:(id)options;
++ (id)queryForAssetsWithOptions:(id)options;
++ (id)queryForAssociatedPersonForFaceGroup:(id)group withOptions:(id)options;
++ (id)queryForChildrenDayGroupHighlightsForPhotosHighlight:(id)highlight options:(id)options;
++ (id)queryForChildrenHighlightsForPhotosHighlight:(id)highlight options:(id)options;
++ (id)queryForCloudSharedAlbumInvitationRecordsForCloudSharedAlbum:(id)album options:(id)options;
++ (id)queryForCloudSharedAlbumInvitationRecordsWithOptions:(id)options;
++ (id)queryForCloudSharedAlbumsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForCollageAssetsInDayHighlight:(id)highlight options:(id)options;
++ (id)queryForCollectionListContainingCollection:(id)collection options:(id)options;
++ (id)queryForCollectionListsWithType:(int64_t)type localIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForCollectionListsWithType:(int64_t)type subtype:(int64_t)subtype options:(id)options;
++ (id)queryForCollectionsInCollectionList:(id)list options:(id)options;
++ (id)queryForCommentsForAsset:(id)asset options:(id)options;
++ (id)queryForCommentsForCloudFeedEntry:(id)entry options:(id)options;
++ (id)queryForCommentsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForContributorForComment:(id)comment options:(id)options;
++ (id)queryForConversationsWithOptions:(id)options;
++ (id)queryForCuratedAssetsInMemory:(id)memory options:(id)options;
++ (id)queryForCuratedAssetsInMomentShare:(id)share options:(id)options;
++ (id)queryForCuratedAssetsInPhotosHighlight:(id)highlight options:(id)options;
++ (id)queryForCurrentUserParticipantInShare:(id)share options:(id)options;
++ (id)queryForCustomUserAssetsInMemory:(id)memory options:(id)options;
++ (id)queryForEmptyFaceGroupsWithOptions:(id)options;
++ (id)queryForEntriesFromEarliestDate:(id)date latestDate:(id)latestDate filter:(int64_t)filter options:(id)options;
++ (id)queryForEntryWithLocalIdentifier:(id)identifier options:(id)options;
++ (id)queryForExtendedCuratedAssetsInMemory:(id)memory options:(id)options;
++ (id)queryForFaceCropsForPerson:(id)person options:(id)options;
++ (id)queryForFaceCropsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForFaceCropsWithOptions:(id)options;
++ (id)queryForFaceGroupsForPerson:(id)person options:(id)options;
++ (id)queryForFaceGroupsWithFace:(id)face options:(id)options;
++ (id)queryForFaceGroupsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForFaceGroupsWithOptions:(id)options;
++ (id)queryForFacesForPerson:(id)person options:(id)options;
++ (id)queryForFacesInAsset:(id)asset options:(id)options;
++ (id)queryForFacesInAssets:(id)assets options:(id)options;
++ (id)queryForFacesInFaceGroup:(id)group options:(id)options;
++ (id)queryForFacesOnAssetWithFace:(id)face options:(id)options;
++ (id)queryForFacesOnFaceCrop:(id)crop options:(id)options;
++ (id)queryForFacesWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForFacesWithOptions:(id)options;
++ (id)queryForFacesWithVuObservationIDs:(id)ds options:(id)options;
++ (id)queryForGuestAssetsInCollectionContainingAsset:(id)asset options:(id)options;
++ (id)queryForGuestAssetsWithOptions:(id)options;
++ (id)queryForImportSessionsWithOptions:(id)options;
++ (id)queryForInFlightJobCountWithConfiguration:(id)configuration options:(id)options;
++ (id)queryForInvalidMergeCandidatePersonsForPerson:(id)person options:(id)options;
++ (id)queryForKeyAssetForPerson:(id)person options:(id)options;
++ (id)queryForKeyAssetInMemory:(id)memory options:(id)options;
++ (id)queryForKeyAssetInPhotosHighlight:(id)highlight options:(id)options;
++ (id)queryForKeyAssetsInAssetCollection:(id)collection options:(id)options;
++ (id)queryForKeyAssetsInCollectionShare:(id)share options:(id)options;
++ (id)queryForKeyAssetsInMomentShare:(id)share options:(id)options;
++ (id)queryForKeyAssetsInSuggestion:(id)suggestion options:(id)options;
++ (id)queryForKeyFaceForFaceGroup:(id)group options:(id)options;
++ (id)queryForKeyFaceOnPerson:(id)person options:(id)options;
++ (id)queryForKeySharingSuggestionAssetsInHighlight:(id)highlight options:(id)options;
++ (id)queryForKeywordsForAsset:(id)asset options:(id)options;
++ (id)queryForKeywordsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForKeywordsWithOptions:(id)options;
++ (id)queryForKeywordsWithTitles:(id)titles options:(id)options;
++ (id)queryForLibraryScopesWithOptions:(id)options;
++ (id)queryForLikesForAsset:(id)asset options:(id)options;
++ (id)queryForLikesForCloudFeedEntry:(id)entry options:(id)options;
++ (id)queryForMemoriesWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForMergeCandidatePersonsForPerson:(id)person options:(id)options;
++ (id)queryForMergeCandidateWithConfidencePersonsForPerson:(id)person options:(id)options;
++ (id)queryForMomentListsWithSubType:(int64_t)type containingMoment:(id)moment;
++ (id)queryForMomentListsWithSubType:(int64_t)type options:(id)options;
++ (id)queryForMomentsBackingMemory:(id)memory;
++ (id)queryForMomentsBackingSuggestion:(id)suggestion;
++ (id)queryForMomentsContainingAssetsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForMomentsContainingAssetsWithOIDs:(id)ds options:(id)options;
++ (id)queryForMomentsForFacesWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForMomentsForPersonsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForMomentsInMomentList:(id)list options:(id)options;
++ (id)queryForMomentsInPhotosHighlight:(id)highlight;
++ (id)queryForMomentsWithOptions:(id)options;
++ (id)queryForMovieCuratedAssetsInMemory:(id)memory options:(id)options;
++ (id)queryForOwnerParticipantInShare:(id)share options:(id)options;
++ (id)queryForParentDayGroupHighlightForPhotosHighlight:(id)highlight options:(id)options;
++ (id)queryForParentHighlightForPhotosHighlight:(id)highlight options:(id)options;
++ (id)queryForParentHighlightsForPhotosHighlights:(id)highlights options:(id)options;
++ (id)queryForPendingLibraryScopeInvitationWithOptions:(id)options;
++ (id)queryForPersonForFaceCrop:(id)crop options:(id)options;
++ (id)queryForPersonWithFace:(id)face options:(id)options;
++ (id)queryForPersonWithShareParticipant:(id)participant options:(id)options;
++ (id)queryForPersonsInAsset:(id)asset options:(id)options;
++ (id)queryForPersonsInAssets:(id)assets withOptions:(id)options;
++ (id)queryForPersonsInAssetsFetchResult:(id)result withOptions:(id)options;
++ (id)queryForPersonsWithContactIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForPersonsWithFaces:(id)faces options:(id)options;
++ (id)queryForPersonsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForPersonsWithMdIDs:(id)ds options:(id)options;
++ (id)queryForPersonsWithNonNilUserFeedbackWithTypes:(id)types options:(id)options;
++ (id)queryForPersonsWithObjectIDs:(id)ds options:(id)options;
++ (id)queryForPersonsWithOptions:(id)options;
++ (id)queryForPersonsWithQuestionType:(unsigned __int16)type options:(id)options;
++ (id)queryForPersonsWithType:(int64_t)type options:(id)options;
++ (id)queryForPhotosHighlightsContainingMoments:(id)moments;
++ (id)queryForPreviewLibraryScopeWithOptions:(id)options;
++ (id)queryForProjectsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForQuestionsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForQuestionsWithOptions:(id)options;
++ (id)queryForQuestionsWithState:(unsigned __int16)state options:(id)options;
++ (id)queryForReferencedAssetsWithOptions:(id)options;
++ (id)queryForRejectedFacesOnPerson:(id)person options:(id)options;
++ (id)queryForRejectedPersonsForFace:(id)face options:(id)options;
++ (id)queryForRepresentativeAssetsInMemory:(id)memory options:(id)options;
++ (id)queryForRepresentativeAssetsInSuggestion:(id)suggestion options:(id)options;
++ (id)queryForRetryableAssetResourceUploadJobsWithConfiguration:(id)configuration options:(id)options;
++ (id)queryForRootAlbumCollectionListWithOptions:(id)options;
++ (id)queryForRootProjectCollectionListWithOptions:(id)options;
++ (id)queryForShareParticipantWithPerson:(id)person options:(id)options;
++ (id)queryForShareParticipantsInShare:(id)share options:(id)options;
++ (id)queryForShareParticipantsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForShareParticipantsWithParticipantIDs:(id)ds options:(id)options;
++ (id)queryForSingletonFacesWithOptions:(id)options;
++ (id)queryForSuggestionsWithFeaturedState:(unsigned __int16)state types:(id)types options:(id)options;
++ (id)queryForSuggestionsWithOptions:(id)options;
++ (id)queryForSuggestionsWithState:(unsigned __int16)state options:(id)options;
++ (id)queryForSuggestionsWithState:(unsigned __int16)state type:(unsigned __int16)type subtype:(unsigned __int16)subtype options:(id)options;
++ (id)queryForSuggestionsWithTypes:(id)types options:(id)options;
++ (id)queryForTopLevelCollectionsMatchingPredicate:(id)predicate options:(id)options;
++ (id)queryForTopLevelUserCollectionsWithOptions:(id)options;
++ (id)queryForType:(id)type withBasePredicate:(id)predicate inLibrary:(id)library;
++ (id)queryForType:(id)type withBasePredicate:(id)predicate seedOIDs:(id)ds inLibrary:(id)library;
++ (id)queryForType:(id)type withIdentifiers:(id)identifiers identifierKeyPath:(id)path options:(id)options;
++ (id)queryForType:(id)type withLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)queryForUserCuratedAssetsInMemory:(id)memory options:(id)options;
++ (id)queryForVisibleAssetsWithObjectIDs:(id)ds options:(id)options;
++ (id)queryforLibraryScopesWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (unsigned)_excludeMaskForUserLibraryWithFetchOptions:(id)options;
++ (void)_setLibraryScopeDefaultSortDescriptor:(id)descriptor;
 + (void)photoLibraryWasAccessed;
-- (BOOL)evaluateWithObject:(id)a3;
+- (BOOL)evaluateWithObject:(id)object;
 - (BOOL)overrideResultClassWithFetchType;
 - (NSDictionary)filteringRelationshipsIndexValueByBaseEntityName;
 - (NSFetchRequest)fetchRequest;
@@ -208,28 +208,28 @@
 - (NSSet)filteringOids;
 - (NSString)combinedQueryKeyPath;
 - (NSString)shortDescription;
-- (id)_createFetchRequestIncludingBasePredicate:(BOOL)a3;
-- (id)_effectiveDefaultSortDescriptorReversingOrder:(BOOL)a3;
+- (id)_createFetchRequestIncludingBasePredicate:(BOOL)predicate;
+- (id)_effectiveDefaultSortDescriptorReversingOrder:(BOOL)order;
 - (id)_effectiveSortDescriptors;
-- (id)_globalPredicatesForPHClass:(Class)a3;
-- (id)_substitutedChangeTrackingKeyPathFromKeyPath:(id)a3;
+- (id)_globalPredicatesForPHClass:(Class)class;
+- (id)_substitutedChangeTrackingKeyPathFromKeyPath:(id)path;
 - (id)combinedQueryGroupKey;
 - (id)containerIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)effectivePredicateForPHClass:(Class)a3 includingBasePredicate:(BOOL)a4;
+- (id)effectivePredicateForPHClass:(Class)class includingBasePredicate:(BOOL)predicate;
 - (id)executeQuery;
-- (id)initForType:(id)a3 withBasePredicate:(id)a4 seedOIDs:(id)a5 inLibrary:(id)a6;
-- (id)updatedQueryWithChange:(id)a3;
+- (id)initForType:(id)type withBasePredicate:(id)predicate seedOIDs:(id)ds inLibrary:(id)library;
+- (id)updatedQueryWithChange:(id)change;
 - (int64_t)collectionFetchType;
 - (void)_prepareCombinedQueryKeys;
 - (void)_prepareContainerInfo;
 - (void)_prepareFilteringAttributes;
-- (void)_setIdentificationBlock:(id)a3;
-- (void)setFetchOptions:(id)a3;
-- (void)visitPredicate:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (void)_setIdentificationBlock:(id)block;
+- (void)setFetchOptions:(id)options;
+- (void)visitPredicate:(id)predicate;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation PHQuery
@@ -238,8 +238,8 @@
 {
   if (PLPlatformPhotosAccessLoggingSupported())
   {
-    v2 = [MEMORY[0x1E69BF2B0] sharedInstance];
-    [v2 logPhotosAccessWithSelfAuditToken];
+    mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
+    [mEMORY[0x1E69BF2B0] logPhotosAccessWithSelfAuditToken];
   }
 }
 
@@ -259,15 +259,15 @@
   else
   {
     v5 = [PHFetchResult alloc];
-    v6 = [(PHQuery *)self photoLibrary];
-    v4 = [(PHFetchResult *)v5 initWithQuery:self library:v6];
+    photoLibrary = [(PHQuery *)self photoLibrary];
+    v4 = [(PHFetchResult *)v5 initWithQuery:self library:photoLibrary];
   }
 
   if (MEMORY[0x19EAF3390]())
   {
-    v7 = [(PHFetchResult *)v4 query];
-    v8 = [v7 fetchType];
-    if (v8 == @"PHAsset")
+    query = [(PHFetchResult *)v4 query];
+    fetchType = [query fetchType];
+    if (fetchType == @"PHAsset")
     {
       v9 = [(PHFetchResult *)v4 count];
 
@@ -300,22 +300,22 @@ PHFetchResult *__23__PHQuery_executeQuery__block_invoke(uint64_t a1)
 - (id)_effectiveSortDescriptors
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PHQuery *)self fetchOptions];
-  v4 = [v3 sortDescriptors];
+  fetchOptions = [(PHQuery *)self fetchOptions];
+  sortDescriptors = [fetchOptions sortDescriptors];
 
-  v5 = [(PHQuery *)self fetchOptions];
-  v6 = [v5 internalSortDescriptors];
+  fetchOptions2 = [(PHQuery *)self fetchOptions];
+  internalSortDescriptors = [fetchOptions2 internalSortDescriptors];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = self->_containerCollection;
-    if (v4)
+    if (sortDescriptors)
     {
 LABEL_3:
-      v8 = [objc_opt_class() _transformedSortDescriptors:v4 forFetchType:self->_fetchType];
+      v8 = [objc_opt_class() _transformedSortDescriptors:sortDescriptors forFetchType:self->_fetchType];
 LABEL_7:
-      v9 = v8;
+      effectiveCustomSortDescriptors = v8;
       goto LABEL_8;
     }
   }
@@ -323,28 +323,28 @@ LABEL_7:
   else
   {
     v7 = 0;
-    if (v4)
+    if (sortDescriptors)
     {
       goto LABEL_3;
     }
   }
 
-  if (v6)
+  if (internalSortDescriptors)
   {
-    v8 = v6;
+    v8 = internalSortDescriptors;
     goto LABEL_7;
   }
 
   if ([(PHCollection *)self->_containerCollection isUserSmartAlbum])
   {
     v20 = [MEMORY[0x1E69BE430] sortDescriptorsForAlbumKind:1507];
-    v9 = [v20 mutableCopy];
+    effectiveCustomSortDescriptors = [v20 mutableCopy];
 
     if ([(PHCollection *)self->_containerCollection customSortKey]== 5 || [(PHCollection *)self->_containerCollection customSortKey]== 101)
     {
       v21 = MEMORY[0x1E696AEB0];
       v22 = @"additionalAttributes.title";
-      v23 = 1;
+      customSortAscending = 1;
     }
 
     else
@@ -355,23 +355,23 @@ LABEL_7:
       }
 
       v31 = MEMORY[0x1E696AEB0];
-      v23 = [(PHCollection *)self->_containerCollection customSortAscending];
+      customSortAscending = [(PHCollection *)self->_containerCollection customSortAscending];
       v22 = @"dateCreated";
       v21 = v31;
     }
 
-    v24 = [v21 sortDescriptorWithKey:v22 ascending:v23];
-    [v9 insertObject:v24 atIndex:0];
+    v24 = [v21 sortDescriptorWithKey:v22 ascending:customSortAscending];
+    [effectiveCustomSortDescriptors insertObject:v24 atIndex:0];
   }
 
   else if ([(PHCollection *)v7 assetCollectionType]== 12 && [(PHCollection *)self->_containerCollection customSortKey]== 6)
   {
-    v25 = [(PHCollection *)self->_containerCollection customSortAscending];
+    customSortAscending2 = [(PHCollection *)self->_containerCollection customSortAscending];
     if ([(PHCollection *)v7 assetCollectionSubtype]== 102)
     {
-      v24 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"cloudBatchPublishDate" ascending:v25];
+      v24 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"cloudBatchPublishDate" ascending:customSortAscending2];
       v39[0] = v24;
-      v26 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:v25];
+      v26 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:customSortAscending2];
       v39[1] = v26;
       v27 = MEMORY[0x1E695DEC8];
       v28 = v39;
@@ -379,49 +379,49 @@ LABEL_7:
 
     else
     {
-      v24 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:v25];
+      v24 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:customSortAscending2];
       v38[0] = v24;
-      v26 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:v25];
+      v26 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:customSortAscending2];
       v38[1] = v26;
       v27 = MEMORY[0x1E695DEC8];
       v28 = v38;
     }
 
-    v9 = [v27 arrayWithObjects:v28 count:2];
+    effectiveCustomSortDescriptors = [v27 arrayWithObjects:v28 count:2];
   }
 
   else
   {
-    v9 = [(PHCollection *)self->_containerCollection effectiveCustomSortDescriptors];
-    v29 = [(PHQuery *)self fetchOptions];
-    v24 = -[PHQuery _effectiveDefaultSortDescriptorReversingOrder:](self, "_effectiveDefaultSortDescriptorReversingOrder:", [v29 reverseDefaultSortDescriptors]);
+    effectiveCustomSortDescriptors = [(PHCollection *)self->_containerCollection effectiveCustomSortDescriptors];
+    fetchOptions3 = [(PHQuery *)self fetchOptions];
+    v24 = -[PHQuery _effectiveDefaultSortDescriptorReversingOrder:](self, "_effectiveDefaultSortDescriptorReversingOrder:", [fetchOptions3 reverseDefaultSortDescriptors]);
 
-    if (v24 && v9)
+    if (v24 && effectiveCustomSortDescriptors)
     {
-      v30 = [v9 arrayByAddingObject:v24];
+      v30 = [effectiveCustomSortDescriptors arrayByAddingObject:v24];
 
-      v9 = v30;
+      effectiveCustomSortDescriptors = v30;
     }
 
-    else if (v24 && !v9)
+    else if (v24 && !effectiveCustomSortDescriptors)
     {
       v37 = v24;
-      v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
+      effectiveCustomSortDescriptors = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
     }
   }
 
 LABEL_8:
-  v10 = [(PHQuery *)self fetchOptions];
-  v11 = [v10 reverseSortOrder];
+  fetchOptions4 = [(PHQuery *)self fetchOptions];
+  reverseSortOrder = [fetchOptions4 reverseSortOrder];
 
-  if (v11)
+  if (reverseSortOrder)
   {
-    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(effectiveCustomSortDescriptors, "count")}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = v9;
+    v13 = effectiveCustomSortDescriptors;
     v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v14)
     {
@@ -436,8 +436,8 @@ LABEL_8:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * i) reversedSortDescriptor];
-          [v12 addObject:v18];
+          reversedSortDescriptor = [*(*(&v32 + 1) + 8 * i) reversedSortDescriptor];
+          [v12 addObject:reversedSortDescriptor];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -449,7 +449,7 @@ LABEL_8:
 
   else
   {
-    v12 = v9;
+    v12 = effectiveCustomSortDescriptors;
   }
 
   return v12;
@@ -502,14 +502,14 @@ LABEL_8:
 
 - (NSPredicate)filterPredicate
 {
-  v3 = [(PHQuery *)self fetchOptions];
-  v4 = [v3 predicate];
-  if (v4 != self->_cachedFetchOptionsPredicate)
+  fetchOptions = [(PHQuery *)self fetchOptions];
+  predicate = [fetchOptions predicate];
+  if (predicate != self->_cachedFetchOptionsPredicate)
   {
-    objc_storeStrong(&self->_cachedFetchOptionsPredicate, v4);
+    objc_storeStrong(&self->_cachedFetchOptionsPredicate, predicate);
     if (self->_cachedFetchOptionsPredicate)
     {
-      v5 = [objc_opt_class() _filterPredicateFromFetchOptionsPredicate:self->_cachedFetchOptionsPredicate options:v3 phClass:{+[PHPhotoLibrary classForFetchType:](PHPhotoLibrary, "classForFetchType:", self->_fetchType)}];
+      v5 = [objc_opt_class() _filterPredicateFromFetchOptionsPredicate:self->_cachedFetchOptionsPredicate options:fetchOptions phClass:{+[PHPhotoLibrary classForFetchType:](PHPhotoLibrary, "classForFetchType:", self->_fetchType)}];
     }
 
     else
@@ -537,44 +537,44 @@ LABEL_8:
 
 - (void)_prepareContainerInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_preparedContainerInfo)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_preparedContainerInfo)
   {
-    if ([(PHQuery *)v2 collectionFetchType]== 3)
+    if ([(PHQuery *)selfCopy collectionFetchType]== 3)
     {
       v3 = objc_opt_class();
-      fetchType = v2->_fetchType;
-      basePredicate = v2->_basePredicate;
+      fetchType = selfCopy->_fetchType;
+      basePredicate = selfCopy->_basePredicate;
       v11 = 0;
       v6 = [v3 _containerIdentifierForFetchType:fetchType predicate:basePredicate outRelationship:&v11];
       v7 = v11;
-      containerIdentifier = v2->_containerIdentifier;
-      v2->_containerIdentifier = v6;
+      containerIdentifier = selfCopy->_containerIdentifier;
+      selfCopy->_containerIdentifier = v6;
 
-      containerRelationship = v2->_containerRelationship;
-      v2->_containerRelationship = v7;
+      containerRelationship = selfCopy->_containerRelationship;
+      selfCopy->_containerRelationship = v7;
     }
 
     else
     {
-      if (![(PHQuery *)v2 _isUserSmartAlbum])
+      if (![(PHQuery *)selfCopy _isUserSmartAlbum])
       {
 LABEL_7:
-        v2->_preparedContainerInfo = 1;
+        selfCopy->_preparedContainerInfo = 1;
         goto LABEL_8;
       }
 
-      v10 = [(PHObject *)v2->_containerCollection objectID];
-      containerRelationship = v2->_containerIdentifier;
-      v2->_containerIdentifier = v10;
+      objectID = [(PHObject *)selfCopy->_containerCollection objectID];
+      containerRelationship = selfCopy->_containerIdentifier;
+      selfCopy->_containerIdentifier = objectID;
     }
 
     goto LABEL_7;
   }
 
 LABEL_8:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)overrideResultClassWithFetchType
@@ -583,15 +583,15 @@ LABEL_8:
   v6[0] = @"PHMomentList";
   v6[1] = @"PHSocialGroup";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  v4 = [(PHQuery *)self fetchType];
-  LOBYTE(self) = [v3 containsObject:v4];
+  fetchType = [(PHQuery *)self fetchType];
+  LOBYTE(self) = [v3 containsObject:fetchType];
 
   return self;
 }
 
-- (void)_setIdentificationBlock:(id)a3
+- (void)_setIdentificationBlock:(id)block
 {
-  self->_identificationBlock = [a3 copy];
+  self->_identificationBlock = [block copy];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -601,11 +601,11 @@ LABEL_8:
   v10.receiver = self;
   v10.super_class = PHQuery;
   v3 = [(PHQuery *)&v10 description];
-  v4 = [(PHQuery *)self fetchOptions];
-  v5 = [v4 shortDescription];
-  v6 = [(PHQuery *)self fetchType];
-  v7 = [(PHQuery *)self basePredicate];
-  v8 = [v3 stringByAppendingFormat:@" opts=%@, type=%@, base=%@", v5, v6, objc_opt_class()];
+  fetchOptions = [(PHQuery *)self fetchOptions];
+  shortDescription = [fetchOptions shortDescription];
+  fetchType = [(PHQuery *)self fetchType];
+  basePredicate = [(PHQuery *)self basePredicate];
+  v8 = [v3 stringByAppendingFormat:@" opts=%@, type=%@, base=%@", shortDescription, fetchType, objc_opt_class()];
 
   return v8;
 }
@@ -619,33 +619,33 @@ LABEL_8:
   return v2;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  expressionCopy = expression;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412546;
     v16 = objc_opt_class();
     v17 = 2112;
-    v18 = v4;
+    v18 = expressionCopy;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "PHQuery visitPredicateExpression: %@ %@", &v15, 0x16u);
   }
 
-  v6 = [v4 expressionType];
-  if (v6 > 0x14)
+  expressionType = [expressionCopy expressionType];
+  if (expressionType > 0x14)
   {
     goto LABEL_13;
   }
 
-  if (((1 << v6) & 0x1048F7) != 0)
+  if (((1 << expressionType) & 0x1048F7) != 0)
   {
     v7 = 0;
     goto LABEL_6;
   }
 
-  if (((1 << v6) & 0x408) == 0)
+  if (((1 << expressionType) & 0x408) == 0)
   {
 LABEL_13:
     filteringKeys = self->_filteringKeys;
@@ -658,12 +658,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [v4 keyPath];
-  v10 = [v9 length];
+  keyPath = [expressionCopy keyPath];
+  v10 = [keyPath length];
   v7 = v10 == 0;
   if (v10)
   {
-    v11 = [(PHQuery *)self _substitutedChangeTrackingKeyPathFromKeyPath:v9];
+    v11 = [(PHQuery *)self _substitutedChangeTrackingKeyPathFromKeyPath:keyPath];
     if ([v11 rangeOfString:@"."] == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableSet *)self->_filteringKeys addObject:v11];
@@ -704,36 +704,36 @@ LABEL_6:
 LABEL_15:
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  operatorCopy = operator;
   v4 = PLBackendGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138412546;
     v6 = objc_opt_class();
     v7 = 2112;
-    v8 = v3;
+    v8 = operatorCopy;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_DEBUG, "PHQuery visitPredicateOperator: %@ %@", &v5, 0x16u);
   }
 }
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
     v37 = objc_opt_class();
     v38 = 2112;
-    v39 = v4;
+    v39 = predicateCopy;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "PHQuery visitPredicate: %@ %@", buf, 0x16u);
   }
 
-  if ([PHQuery isToManySelfInPredicate:v4])
+  if ([PHQuery isToManySelfInPredicate:predicateCopy])
   {
     self->_containsToManySelfInPredicate = 1;
     v6 = PLBackendGetLog();
@@ -747,15 +747,15 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
-    v8 = [v7 leftExpression];
-    v9 = [v7 rightExpression];
-    if (([v8 expressionType] == 10 || objc_msgSend(v8, "expressionType") == 3) && !objc_msgSend(v9, "expressionType"))
+    v7 = predicateCopy;
+    leftExpression = [v7 leftExpression];
+    rightExpression = [v7 rightExpression];
+    if (([leftExpression expressionType] == 10 || objc_msgSend(leftExpression, "expressionType") == 3) && !objc_msgSend(rightExpression, "expressionType"))
     {
-      v10 = [v8 keyPath];
-      if ([v10 length])
+      keyPath = [leftExpression keyPath];
+      if ([keyPath length])
       {
-        v11 = [(PHQuery *)self _substitutedChangeTrackingKeyPathFromKeyPath:v10];
+        v11 = [(PHQuery *)self _substitutedChangeTrackingKeyPathFromKeyPath:keyPath];
         v12 = v11;
         if (!v11 || [v11 rangeOfString:@"."] != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -779,24 +779,24 @@ LABEL_15:
           v17 = _Block_copy(aBlock);
           if (v12)
           {
-            v18 = [v9 constantValue];
+            constantValue = [rightExpression constantValue];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17[2](v17, v18);
+              v17[2](v17, constantValue);
             }
 
-            else if ([v18 conformsToProtocol:&unk_1F1036760])
+            else if ([constantValue conformsToProtocol:&unk_1F1036760])
             {
               v26 = v12;
-              v27 = v10;
-              v28 = v9;
+              v27 = keyPath;
+              v28 = rightExpression;
               v31 = 0u;
               v32 = 0u;
               v29 = 0u;
               v30 = 0u;
-              v25 = v18;
-              v19 = v18;
+              v25 = constantValue;
+              v19 = constantValue;
               v20 = [v19 countByEnumeratingWithState:&v29 objects:v35 count:16];
               if (v20)
               {
@@ -825,10 +825,10 @@ LABEL_15:
                 while (v21);
               }
 
-              v9 = v28;
+              rightExpression = v28;
               v12 = v26;
-              v10 = v27;
-              v18 = v25;
+              keyPath = v27;
+              constantValue = v25;
             }
           }
         }
@@ -846,39 +846,39 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
   [*(*(a1 + 32) + 192) addObject:v5];
 }
 
-- (id)_substitutedChangeTrackingKeyPathFromKeyPath:(id)a3
+- (id)_substitutedChangeTrackingKeyPathFromKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSFetchRequest *)self->_fetchRequest entity];
-  v7 = [v4 componentsSeparatedByString:@"."];
-  v8 = v4;
+  entity = [(NSFetchRequest *)self->_fetchRequest entity];
+  v7 = [pathCopy componentsSeparatedByString:@"."];
+  v8 = pathCopy;
   if ([v7 count] == 2)
   {
-    v9 = [v6 name];
-    v10 = [MEMORY[0x1E69BE540] entityName];
-    v11 = [v9 isEqualToString:v10];
+    name = [entity name];
+    entityName = [MEMORY[0x1E69BE540] entityName];
+    v11 = [name isEqualToString:entityName];
 
-    v8 = v4;
+    v8 = pathCopy;
     if (v11)
     {
       v12 = [v7 objectAtIndexedSubscript:0];
       v13 = [v7 objectAtIndexedSubscript:1];
-      v14 = [v6 relationshipsByName];
+      relationshipsByName = [entity relationshipsByName];
       v28 = v12;
-      v15 = [v14 objectForKeyedSubscript:v12];
+      v15 = [relationshipsByName objectForKeyedSubscript:v12];
 
-      v16 = [v15 destinationEntity];
-      v17 = [v16 propertiesByName];
+      destinationEntity = [v15 destinationEntity];
+      propertiesByName = [destinationEntity propertiesByName];
       v27 = v13;
-      v18 = [v17 objectForKeyedSubscript:v13];
+      v18 = [propertiesByName objectForKeyedSubscript:v13];
 
-      v19 = [v18 userInfo];
-      v20 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69BE9F8]];
+      userInfo = [v18 userInfo];
+      v20 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BE9F8]];
       LODWORD(v12) = [v20 BOOLValue];
 
-      v21 = [v18 userInfo];
-      v22 = [v21 objectForKeyedSubscript:*MEMORY[0x1E69BE8E0]];
+      userInfo2 = [v18 userInfo];
+      v22 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69BE8E0]];
 
       if (v12)
       {
@@ -888,11 +888,11 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
 
       else
       {
-        v8 = v4;
+        v8 = pathCopy;
         if (v22)
         {
-          v23 = [v6 propertiesByName];
-          v24 = [v23 objectForKeyedSubscript:v22];
+          propertiesByName2 = [entity propertiesByName];
+          v24 = [propertiesByName2 objectForKeyedSubscript:v22];
 
           if (v24)
           {
@@ -908,7 +908,7 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
               _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_ERROR, "Unable to find target property defined by userInfo key PHQueryChangeTrackingFilteringAssetAttributesSubstituteProperty.", buf, 2u);
             }
 
-            v8 = v4;
+            v8 = pathCopy;
           }
         }
       }
@@ -923,20 +923,20 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
 - (void)_prepareFilteringAttributes
 {
   v76[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_preparedFilteringAttributes)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_preparedFilteringAttributes)
   {
-    v2->_preparedFilteringAttributes = 1;
-    v61 = v2;
-    v59 = [(PHQuery *)v2 fetchRequest];
-    v56 = [v59 entityName];
-    v55 = [(PHQuery *)v2 containerRelationship];
-    v3 = [v55 name];
-    v51 = v3;
-    if (v3)
+    selfCopy->_preparedFilteringAttributes = 1;
+    v61 = selfCopy;
+    fetchRequest = [(PHQuery *)selfCopy fetchRequest];
+    entityName = [fetchRequest entityName];
+    containerRelationship = [(PHQuery *)selfCopy containerRelationship];
+    name = [containerRelationship name];
+    v51 = name;
+    if (name)
     {
-      v76[0] = v3;
+      v76[0] = name;
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:1];
     }
 
@@ -946,16 +946,16 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
     }
 
     v52 = v4;
-    v2->_objectToContainerRelationshipIndexValue = [MEMORY[0x1E69BE6F8] indexValueForRelationshipNames:? entity:?];
-    v54 = [v55 inverseRelationship];
-    v5 = [v54 entity];
-    v53 = [v5 name];
+    selfCopy->_objectToContainerRelationshipIndexValue = [MEMORY[0x1E69BE6F8] indexValueForRelationshipNames:? entity:?];
+    inverseRelationship = [containerRelationship inverseRelationship];
+    entity = [inverseRelationship entity];
+    name2 = [entity name];
 
-    v6 = [v54 name];
-    v49 = v6;
-    if (v6)
+    name3 = [inverseRelationship name];
+    v49 = name3;
+    if (name3)
     {
-      v75 = v6;
+      v75 = name3;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
     }
 
@@ -973,20 +973,20 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
     v10 = PLBackendGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v59 predicate];
+      predicate = [fetchRequest predicate];
       *buf = 138412290;
-      v74 = v11;
+      v74 = predicate;
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_DEBUG, "\n\n*** PHQuery acceptVisitor: %@", buf, 0xCu);
     }
 
-    v12 = [v59 predicate];
-    [v12 acceptVisitor:v61 flags:1];
+    predicate2 = [fetchRequest predicate];
+    [predicate2 acceptVisitor:v61 flags:1];
 
     if (v61->_filteringOids && v61->_filteringObjectKeyPaths)
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       filteringRelationshipsIndexValueByBaseEntityName = v61->_filteringRelationshipsIndexValueByBaseEntityName;
-      v61->_filteringRelationshipsIndexValueByBaseEntityName = v13;
+      v61->_filteringRelationshipsIndexValueByBaseEntityName = dictionary;
 
       v68 = 0u;
       v69 = 0u;
@@ -1008,22 +1008,22 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
             }
 
             v17 = *(*(&v66 + 1) + 8 * i);
-            v18 = [v59 entity];
-            v19 = [v18 ph_relationshipDescriptionsForKeyPath:v17];
+            entity2 = [fetchRequest entity];
+            v19 = [entity2 ph_relationshipDescriptionsForKeyPath:v17];
 
-            v20 = [v19 lastObject];
-            v21 = [v20 inverseRelationship];
+            lastObject = [v19 lastObject];
+            inverseRelationship2 = [lastObject inverseRelationship];
 
-            if (v21)
+            if (inverseRelationship2)
             {
-              v22 = [v21 entity];
-              v23 = [v22 name];
+              entity3 = [inverseRelationship2 entity];
+              name4 = [entity3 name];
 
-              v24 = [v21 name];
-              v25 = v24;
-              if (v24)
+              name5 = [inverseRelationship2 name];
+              v25 = name5;
+              if (name5)
               {
-                v71 = v24;
+                v71 = name5;
                 v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
               }
 
@@ -1032,16 +1032,16 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
                 v26 = MEMORY[0x1E695E0F0];
               }
 
-              v27 = [MEMORY[0x1E69BE6F8] indexValueForRelationshipNames:v26 entity:v23];
-              v28 = [v21 entity];
-              v29 = [v28 ph_baseEntity];
-              v30 = [v29 name];
+              v27 = [MEMORY[0x1E69BE6F8] indexValueForRelationshipNames:v26 entity:name4];
+              entity4 = [inverseRelationship2 entity];
+              ph_baseEntity = [entity4 ph_baseEntity];
+              name6 = [ph_baseEntity name];
 
-              v31 = [(NSMutableDictionary *)v61->_filteringRelationshipsIndexValueByBaseEntityName objectForKeyedSubscript:v30];
-              v32 = [v31 unsignedLongLongValue];
+              v31 = [(NSMutableDictionary *)v61->_filteringRelationshipsIndexValueByBaseEntityName objectForKeyedSubscript:name6];
+              unsignedLongLongValue = [v31 unsignedLongLongValue];
 
-              v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v32 | v27];
-              [(NSMutableDictionary *)v61->_filteringRelationshipsIndexValueByBaseEntityName setObject:v33 forKeyedSubscript:v30];
+              v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue | v27];
+              [(NSMutableDictionary *)v61->_filteringRelationshipsIndexValueByBaseEntityName setObject:v33 forKeyedSubscript:name6];
             }
           }
 
@@ -1063,8 +1063,8 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v36 = [v59 sortDescriptors];
-    v37 = [v36 countByEnumeratingWithState:&v62 objects:v70 count:16];
+    sortDescriptors = [fetchRequest sortDescriptors];
+    v37 = [sortDescriptors countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (v37)
     {
       v38 = *v63;
@@ -1074,7 +1074,7 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
         {
           if (*v63 != v38)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(sortDescriptors);
           }
 
           v40 = [*(*(&v62 + 1) + 8 * j) key];
@@ -1090,7 +1090,7 @@ void __26__PHQuery_visitPredicate___block_invoke(uint64_t a1, void *a2)
           [v34 addObject:v40];
         }
 
-        v37 = [v36 countByEnumeratingWithState:&v62 objects:v70 count:16];
+        v37 = [sortDescriptors countByEnumeratingWithState:&v62 objects:v70 count:16];
         if (v37)
         {
           continue;
@@ -1106,12 +1106,12 @@ LABEL_37:
     v42 = v61->_filteringKeys;
     if (v42)
     {
-      v43 = [(NSMutableSet *)v42 allObjects];
-      v61->_filteringAttributesIndexValue = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:v43 entity:v56];
-      v61->_filteringRelationshipsIndexValue = [MEMORY[0x1E69BE6F8] indexValueForRelationshipNames:v43 entity:v56];
+      allObjects = [(NSMutableSet *)v42 allObjects];
+      v61->_filteringAttributesIndexValue = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:allObjects entity:entityName];
+      v61->_filteringRelationshipsIndexValue = [MEMORY[0x1E69BE6F8] indexValueForRelationshipNames:allObjects entity:entityName];
       v44 = MEMORY[0x1E69BE6F8];
-      v45 = [v34 allObjects];
-      v61->_sortingAttributesIndexValue = [v44 indexValueForRelationshipNames:v45 entity:v56];
+      allObjects2 = [v34 allObjects];
+      v61->_sortingAttributesIndexValue = [v44 indexValueForRelationshipNames:allObjects2 entity:entityName];
 
       v35 = v61;
     }
@@ -1127,17 +1127,17 @@ LABEL_39:
     containerIdentifier = v35->_containerIdentifier;
     if (containerIdentifier)
     {
-      v47 = [(NSManagedObjectID *)containerIdentifier entity];
-      v48 = [v47 name];
+      entity5 = [(NSManagedObjectID *)containerIdentifier entity];
+      name7 = [entity5 name];
 
-      v61->_containerSortingAttributesIndexValue = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:&unk_1F102E180 entity:v48];
-      v61->_containerUserQueryIndexValue = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:&unk_1F102E198 entity:v48];
+      v61->_containerSortingAttributesIndexValue = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:&unk_1F102E180 entity:name7];
+      v61->_containerUserQueryIndexValue = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:&unk_1F102E198 entity:name7];
     }
 
-    v2 = v61;
+    selfCopy = v61;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDictionary)filteringRelationshipsIndexValueByBaseEntityName
@@ -1191,15 +1191,15 @@ LABEL_39:
 - (void)_prepareCombinedQueryKeys
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_preparedCombinedQueryKeys)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_preparedCombinedQueryKeys)
   {
-    v2->_preparedCombinedQueryKeys = 1;
-    containerCollection = v2->_containerCollection;
-    if ((!containerCollection || [(PHCollection *)containerCollection collectionHasFixedOrder]) && !v2->_seedOIDs)
+    selfCopy->_preparedCombinedQueryKeys = 1;
+    containerCollection = selfCopy->_containerCollection;
+    if ((!containerCollection || [(PHCollection *)containerCollection collectionHasFixedOrder]) && !selfCopy->_seedOIDs)
     {
-      v4 = [(PHQuery *)v2 basePredicate];
+      basePredicate = [(PHQuery *)selfCopy basePredicate];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1208,20 +1208,20 @@ LABEL_22:
         goto LABEL_28;
       }
 
-      v5 = [(PHQuery *)v2 fetchOptions];
-      v6 = [v5 fetchLimit];
+      fetchOptions = [(PHQuery *)selfCopy fetchOptions];
+      fetchLimit = [fetchOptions fetchLimit];
 
-      if (!v6)
+      if (!fetchLimit)
       {
-        v4 = [(PHQuery *)v2 basePredicate];
-        if ([v4 predicateOperatorType] != 4 || objc_msgSend(v4, "comparisonPredicateModifier"))
+        basePredicate = [(PHQuery *)selfCopy basePredicate];
+        if ([basePredicate predicateOperatorType] != 4 || objc_msgSend(basePredicate, "comparisonPredicateModifier"))
         {
           goto LABEL_27;
         }
 
-        v7 = [v4 leftExpression];
-        v8 = [v4 rightExpression];
-        if ([v7 expressionType] != 3 || objc_msgSend(v8, "expressionType"))
+        leftExpression = [basePredicate leftExpression];
+        rightExpression = [basePredicate rightExpression];
+        if ([leftExpression expressionType] != 3 || objc_msgSend(rightExpression, "expressionType"))
         {
 LABEL_26:
 
@@ -1229,41 +1229,41 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v9 = [v8 constantValue];
+        constantValue = [rightExpression constantValue];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v8 constantValue];
+          constantValue2 = [rightExpression constantValue];
         }
 
         else
         {
-          v10 = 0;
+          constantValue2 = 0;
         }
 
-        v11 = [v7 keyPath];
-        v12 = [objc_opt_class() _relationshipForFetchType:v2->_fetchType predicate:v4];
-        if (!v10 || ![v11 length] || !v12 || (objc_msgSend(v12, "isToMany") & 1) != 0)
+        keyPath = [leftExpression keyPath];
+        v12 = [objc_opt_class() _relationshipForFetchType:selfCopy->_fetchType predicate:basePredicate];
+        if (!constantValue2 || ![keyPath length] || !v12 || (objc_msgSend(v12, "isToMany") & 1) != 0)
         {
 LABEL_25:
 
           goto LABEL_26;
         }
 
-        v13 = [(PHQuery *)v2 _createFetchRequestIncludingBasePredicate:0];
+        v13 = [(PHQuery *)selfCopy _createFetchRequestIncludingBasePredicate:0];
         if (v13)
         {
           v14 = MEMORY[0x1E696AE18];
-          v15 = [v11 stringByAppendingString:@" == %@"];
+          v15 = [keyPath stringByAppendingString:@" == %@"];
           v24 = [v14 predicateWithFormat:v15, MEMORY[0x1E695E118]];
 
-          v16 = [v13 predicate];
-          if (v16)
+          predicate = [v13 predicate];
+          if (predicate)
           {
             v22 = MEMORY[0x1E696AB28];
             v25[0] = v24;
-            v21 = [v13 predicate];
-            v25[1] = v21;
+            predicate2 = [v13 predicate];
+            v25[1] = predicate2;
             v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
             v23 = [v22 andPredicateWithSubpredicates:v17];
           }
@@ -1275,12 +1275,12 @@ LABEL_25:
 
           [v13 setPredicate:v23];
           v18 = [[_PHFetchRequestWrapper alloc] initWithFetchRequest:v13 containerIdentifier:0 fetchPropertySets:0];
-          combinedQueryGroupKey = v2->_combinedQueryGroupKey;
-          v2->_combinedQueryGroupKey = v18;
+          combinedQueryGroupKey = selfCopy->_combinedQueryGroupKey;
+          selfCopy->_combinedQueryGroupKey = v18;
           v20 = v18;
 
-          objc_storeStrong(&v2->_combinedQueryKeyPath, v11);
-          objc_storeStrong(&v2->_combinedQuerySeparatingIdentifier, v10);
+          objc_storeStrong(&selfCopy->_combinedQueryKeyPath, keyPath);
+          objc_storeStrong(&selfCopy->_combinedQuerySeparatingIdentifier, constantValue2);
 
           goto LABEL_25;
         }
@@ -1291,63 +1291,63 @@ LABEL_25:
   }
 
 LABEL_28:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)evaluateWithObject:(id)a3
+- (BOOL)evaluateWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PHQuery *)self fetchRequest];
-  v6 = [v5 predicate];
+  objectCopy = object;
+  fetchRequest = [(PHQuery *)self fetchRequest];
+  predicate = [fetchRequest predicate];
 
-  LOBYTE(v5) = [v6 evaluateWithObject:v4];
-  return v5;
+  LOBYTE(fetchRequest) = [predicate evaluateWithObject:objectCopy];
+  return fetchRequest;
 }
 
-- (id)effectivePredicateForPHClass:(Class)a3 includingBasePredicate:(BOOL)a4
+- (id)effectivePredicateForPHClass:(Class)class includingBasePredicate:(BOOL)predicate
 {
-  v4 = a4;
+  predicateCopy = predicate;
   v66[2] = *MEMORY[0x1E69E9840];
-  v7 = [(PHQuery *)self photoLibrary];
-  v8 = [v7 managedObjectContextForCurrentQueueQoS];
+  photoLibrary = [(PHQuery *)self photoLibrary];
+  managedObjectContextForCurrentQueueQoS = [photoLibrary managedObjectContextForCurrentQueueQoS];
 
-  v9 = [(PHQuery *)self filterPredicate];
-  v10 = [(PHQuery *)self fetchOptions];
-  v11 = [v10 internalPredicate];
+  filterPredicate = [(PHQuery *)self filterPredicate];
+  fetchOptions = [(PHQuery *)self fetchOptions];
+  internalPredicate = [fetchOptions internalPredicate];
 
-  v12 = [(PHQuery *)self fetchOptions];
-  v13 = [v12 internalInclusionPredicate];
+  fetchOptions2 = [(PHQuery *)self fetchOptions];
+  internalInclusionPredicate = [fetchOptions2 internalInclusionPredicate];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0;
   basePredicate = self->_basePredicate;
-  if (basePredicate && v4)
+  if (basePredicate && predicateCopy)
   {
     v15 = basePredicate;
     [v14 addObject:v15];
   }
 
-  v17 = v9;
-  if (v9 || (v17 = v11) != 0)
+  v17 = filterPredicate;
+  if (filterPredicate || (v17 = internalPredicate) != 0)
   {
     [v14 addObject:v17];
   }
 
-  v18 = [(PHQuery *)self fetchOptions];
-  v19 = [v18 isExclusivePredicate];
+  fetchOptions3 = [(PHQuery *)self fetchOptions];
+  isExclusivePredicate = [fetchOptions3 isExclusivePredicate];
 
-  if ((v19 & 1) == 0)
+  if ((isExclusivePredicate & 1) == 0)
   {
-    v20 = [(PHQuery *)self _globalPredicatesForPHClass:a3];
+    v20 = [(PHQuery *)self _globalPredicatesForPHClass:class];
     [v14 addObjectsFromArray:v20];
   }
 
-  v21 = [(objc_class *)a3 managedEntityName];
+  managedEntityName = [(objc_class *)class managedEntityName];
   v22 = PLSafeEntityForNameInManagedObjectContext();
 
   if (v22)
   {
-    v23 = [MEMORY[0x1E69BE458] entityName];
+    entityName = [MEMORY[0x1E69BE458] entityName];
     v24 = PLSafeEntityForNameInManagedObjectContext();
 
     if (v24)
@@ -1356,27 +1356,27 @@ LABEL_28:
       v64 = v15;
       if (v25)
       {
-        v63 = v13;
+        v63 = internalInclusionPredicate;
         if ([v22 isKindOfEntity:v24] && !-[PHQuery _includesCameraRoll](self, "_includesCameraRoll"))
         {
           v61 = v25;
-          v26 = [(PHQuery *)self fetchOptions];
-          if (!v26)
+          fetchOptions4 = [(PHQuery *)self fetchOptions];
+          if (!fetchOptions4)
           {
-            v26 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+            fetchOptions4 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
           }
 
-          v27 = [v26 photoLibrary];
+          photoLibrary2 = [fetchOptions4 photoLibrary];
 
-          if (!v27)
+          if (!photoLibrary2)
           {
-            [v26 setPhotoLibrary:self->_photoLibrary];
+            [fetchOptions4 setPhotoLibrary:self->_photoLibrary];
           }
 
-          v28 = [v26 photoLibrary];
+          photoLibrary3 = [fetchOptions4 photoLibrary];
           photoLibrary = self->_photoLibrary;
 
-          if (v28 != photoLibrary)
+          if (photoLibrary3 != photoLibrary)
           {
             v30 = PLPhotoKitGetLog();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
@@ -1386,14 +1386,14 @@ LABEL_28:
             }
           }
 
-          v31 = v26;
-          v32 = [v31 photoLibrary];
+          v31 = fetchOptions4;
+          photoLibrary4 = [v31 photoLibrary];
 
-          if (!v32)
+          if (!photoLibrary4)
           {
-            v58 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v59 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSPredicate *_predicateForFilteringCollections(PHFetchOptions *__strong)"];
-            [v58 handleFailureInFunction:v59 file:@"PHQuery.m" lineNumber:3033 description:{@"Invalid parameter not satisfying: %@", @"fetchOptions.photoLibrary != nil"}];
+            [currentHandler handleFailureInFunction:v59 file:@"PHQuery.m" lineNumber:3033 description:{@"Invalid parameter not satisfying: %@", @"fetchOptions.photoLibrary != nil"}];
           }
 
           v33 = MEMORY[0x1E69BE458];
@@ -1477,11 +1477,11 @@ LABEL_28:
           v25 = v61;
         }
 
-        v62 = v11;
+        v62 = internalPredicate;
         v47 = v25;
         if ([v22 isKindOfEntity:v25])
         {
-          v48 = [v9 description];
+          v48 = [filterPredicate description];
           v49 = [v48 containsString:@"cloudRelationshipState"];
 
           if ((v49 & 1) == 0)
@@ -1500,7 +1500,7 @@ LABEL_28:
 
         v53 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v14];
         v25 = v53;
-        v13 = v63;
+        internalInclusionPredicate = v63;
         if (v63)
         {
           v54 = MEMORY[0x1E696AB28];
@@ -1513,7 +1513,7 @@ LABEL_28:
         }
 
         v24 = v51;
-        v11 = v62;
+        internalPredicate = v62;
       }
 
       else
@@ -1538,88 +1538,88 @@ LABEL_28:
   return v25;
 }
 
-- (id)_globalPredicatesForPHClass:(Class)a3
+- (id)_globalPredicatesForPHClass:(Class)class
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(PHQuery *)self fetchOptions];
-  v7 = [v6 includeTrashedAssets];
-  if ([(objc_class *)a3 managedObjectSupportsTrashedState]&& (v7 & 1) == 0)
+  array = [MEMORY[0x1E695DF70] array];
+  fetchOptions = [(PHQuery *)self fetchOptions];
+  includeTrashedAssets = [fetchOptions includeTrashedAssets];
+  if ([(objc_class *)class managedObjectSupportsTrashedState]&& (includeTrashedAssets & 1) == 0)
   {
-    v8 = [MEMORY[0x1E69BE540] predicateToExcludeTrashedAssets];
-    [v5 addObject:v8];
+    predicateToExcludeTrashedAssets = [MEMORY[0x1E69BE540] predicateToExcludeTrashedAssets];
+    [array addObject:predicateToExcludeTrashedAssets];
   }
 
-  v9 = [v6 includeHiddenAssets];
-  if ([(objc_class *)a3 managedObjectSupportsHiddenState]&& (v9 & 1) == 0)
+  includeHiddenAssets = [fetchOptions includeHiddenAssets];
+  if ([(objc_class *)class managedObjectSupportsHiddenState]&& (includeHiddenAssets & 1) == 0)
   {
-    v10 = [MEMORY[0x1E69BE540] predicateToExcludeHiddenAssets];
-    [v5 addObject:v10];
+    predicateToExcludeHiddenAssets = [MEMORY[0x1E69BE540] predicateToExcludeHiddenAssets];
+    [array addObject:predicateToExcludeHiddenAssets];
   }
 
-  v11 = [v6 includeTrashedShares];
-  if ([(objc_class *)a3 managedObjectSupportsShareTrashedState]&& (v11 & 1) == 0)
+  includeTrashedShares = [fetchOptions includeTrashedShares];
+  if ([(objc_class *)class managedObjectSupportsShareTrashedState]&& (includeTrashedShares & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69BE7D0] predicateToExcludeTrashedShares];
-    [v5 addObject:v12];
+    predicateToExcludeTrashedShares = [MEMORY[0x1E69BE7D0] predicateToExcludeTrashedShares];
+    [array addObject:predicateToExcludeTrashedShares];
   }
 
-  v13 = [v6 includeExpiredShares];
-  if ([(objc_class *)a3 managedObjectSupportsShareExpiredState]&& (v13 & 1) == 0)
+  includeExpiredShares = [fetchOptions includeExpiredShares];
+  if ([(objc_class *)class managedObjectSupportsShareExpiredState]&& (includeExpiredShares & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69BE7D0] predicateToExcludeExpiredShares];
-    [v5 addObject:v14];
+    predicateToExcludeExpiredShares = [MEMORY[0x1E69BE7D0] predicateToExcludeExpiredShares];
+    [array addObject:predicateToExcludeExpiredShares];
   }
 
-  v15 = [v6 includeExitingShares];
-  if ([(objc_class *)a3 managedObjectSupportsShareExitingState]&& (v15 & 1) == 0)
+  includeExitingShares = [fetchOptions includeExitingShares];
+  if ([(objc_class *)class managedObjectSupportsShareExitingState]&& (includeExitingShares & 1) == 0)
   {
-    v16 = [MEMORY[0x1E69BE4E8] predicateToExcludeExitingLibraryScopes];
-    [v5 addObject:v16];
+    predicateToExcludeExitingLibraryScopes = [MEMORY[0x1E69BE4E8] predicateToExcludeExitingLibraryScopes];
+    [array addObject:predicateToExcludeExitingLibraryScopes];
   }
 
-  v17 = [v6 includePendingShares];
-  if ([(objc_class *)a3 managedObjectSupportsSharePendingState])
+  includePendingShares = [fetchOptions includePendingShares];
+  if ([(objc_class *)class managedObjectSupportsSharePendingState])
   {
-    if ((v17 & 1) == 0)
+    if ((includePendingShares & 1) == 0)
     {
-      v18 = [MEMORY[0x1E69BE7D0] predicateToExcludePendingShares];
-      [v5 addObject:v18];
+      predicateToExcludePendingShares = [MEMORY[0x1E69BE7D0] predicateToExcludePendingShares];
+      [array addObject:predicateToExcludePendingShares];
     }
 
-    v19 = [MEMORY[0x1E69BE7D0] predicateToExcludeUnknownShares];
-    [v5 addObject:v19];
+    predicateToExcludeUnknownShares = [MEMORY[0x1E69BE7D0] predicateToExcludeUnknownShares];
+    [array addObject:predicateToExcludeUnknownShares];
   }
 
-  v20 = [v6 includeOnlyAssetsAllowedForAnalysis];
-  if ([(objc_class *)a3 managedObjectSupportsAllowedForAnalysis]&& v20)
+  includeOnlyAssetsAllowedForAnalysis = [fetchOptions includeOnlyAssetsAllowedForAnalysis];
+  if ([(objc_class *)class managedObjectSupportsAllowedForAnalysis]&& includeOnlyAssetsAllowedForAnalysis)
   {
-    v21 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAssets];
-    [v5 addObject:v21];
+    predicateToIncludeOnlyAllowedForAnalysisAssets = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAssets];
+    [array addObject:predicateToIncludeOnlyAllowedForAnalysisAssets];
   }
 
-  v22 = [v6 includeOnlyContentContributedByCurrentUser];
-  v23 = [v6 includeBothPrivateAssetsAndSharedContentContributedByCurrentUser];
-  if ([(objc_class *)a3 managedObjectSupportsContributor])
+  includeOnlyContentContributedByCurrentUser = [fetchOptions includeOnlyContentContributedByCurrentUser];
+  includeBothPrivateAssetsAndSharedContentContributedByCurrentUser = [fetchOptions includeBothPrivateAssetsAndSharedContentContributedByCurrentUser];
+  if ([(objc_class *)class managedObjectSupportsContributor])
   {
-    if (v22)
+    if (includeOnlyContentContributedByCurrentUser)
     {
-      v24 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
+      predicateToIncludeOnlyContentContributedByCurrentUser = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
 LABEL_38:
-      v31 = v24;
-      [v5 addObject:v24];
+      v31 = predicateToIncludeOnlyContentContributedByCurrentUser;
+      [array addObject:predicateToIncludeOnlyContentContributedByCurrentUser];
 
       goto LABEL_39;
     }
 
-    if (v23)
+    if (includeBothPrivateAssetsAndSharedContentContributedByCurrentUser)
     {
-      v24 = [MEMORY[0x1E69BE540] predicateToIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser];
+      predicateToIncludeOnlyContentContributedByCurrentUser = [MEMORY[0x1E69BE540] predicateToIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser];
       goto LABEL_38;
     }
 
-    v25 = [v6 useNoIndexOnSharingFilter];
-    if ([v6 sharingFilter] != 2)
+    useNoIndexOnSharingFilter = [fetchOptions useNoIndexOnSharingFilter];
+    if ([fetchOptions sharingFilter] != 2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1627,40 +1627,40 @@ LABEL_38:
         v26 = self->_containerCollection;
         if ([(PHCollection *)v26 assetCollectionType]== 2)
         {
-          v25 |= [(PHCollection *)v26 assetCollectionSubtype]== 209;
+          useNoIndexOnSharingFilter |= [(PHCollection *)v26 assetCollectionSubtype]== 209;
         }
       }
     }
 
-    v27 = [v6 sharingFilter];
-    if (v27 == 1)
+    sharingFilter = [fetchOptions sharingFilter];
+    if (sharingFilter == 1)
     {
       v28 = MEMORY[0x1E69BE540];
-      v29 = v25 & 1;
+      v29 = useNoIndexOnSharingFilter & 1;
       v30 = 1;
       goto LABEL_37;
     }
 
-    if (!v27)
+    if (!sharingFilter)
     {
       v28 = MEMORY[0x1E69BE540];
-      v29 = v25 & 1;
+      v29 = useNoIndexOnSharingFilter & 1;
       v30 = 0;
 LABEL_37:
-      v24 = [v28 predicateForAssetSharingFilter:v30 noindex:v29];
+      predicateToIncludeOnlyContentContributedByCurrentUser = [v28 predicateForAssetSharingFilter:v30 noindex:v29];
       goto LABEL_38;
     }
   }
 
 LABEL_39:
-  if ([(objc_class *)a3 managedObjectSupportsVisibilityState])
+  if ([(objc_class *)class managedObjectSupportsVisibilityState])
   {
-    if (([v6 includeDuplicateAssets] & 1) == 0)
+    if (([fetchOptions includeDuplicateAssets] & 1) == 0)
     {
-      v32 = [(PHQuery *)self photoLibrary];
-      v33 = [v32 isCloudPhotoLibraryEnabled];
+      photoLibrary = [(PHQuery *)self photoLibrary];
+      isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-      if ((v33 & 1) == 0)
+      if ((isCloudPhotoLibraryEnabled & 1) == 0)
       {
         v34 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(visibilityState) = %d", 0];
         v35 = MEMORY[0x1E696AB28];
@@ -1670,185 +1670,185 @@ LABEL_39:
         v38 = [v36 arrayByAddingObjectsFromArray:v37];
         v39 = [v35 orPredicateWithSubpredicates:v38];
 
-        [v5 addObject:v39];
+        [array addObject:v39];
       }
     }
   }
 
-  if (-[objc_class managedObjectSupportsDuplicateVisibilityState](a3, "managedObjectSupportsDuplicateVisibilityState") && [v6 excludeDuplicateAssetVisibilityStateHidden])
+  if (-[objc_class managedObjectSupportsDuplicateVisibilityState](class, "managedObjectSupportsDuplicateVisibilityState") && [fetchOptions excludeDuplicateAssetVisibilityStateHidden])
   {
-    v40 = [MEMORY[0x1E69BE540] predicateToExcludeDuplicateAssetVisibilityStateHidden];
-    [v5 addObject:v40];
+    predicateToExcludeDuplicateAssetVisibilityStateHidden = [MEMORY[0x1E69BE540] predicateToExcludeDuplicateAssetVisibilityStateHidden];
+    [array addObject:predicateToExcludeDuplicateAssetVisibilityStateHidden];
   }
 
-  if (-[objc_class managedObjectSupportsDuplicateVisibilityState](a3, "managedObjectSupportsDuplicateVisibilityState") && [v6 includeDuplicateAssetVisibilityStateMostRelevant])
+  if (-[objc_class managedObjectSupportsDuplicateVisibilityState](class, "managedObjectSupportsDuplicateVisibilityState") && [fetchOptions includeDuplicateAssetVisibilityStateMostRelevant])
   {
-    v41 = [MEMORY[0x1E69BE540] predicateToIncludeDuplicateAssetVisibilityStateMostRelevant];
-    [v5 addObject:v41];
+    predicateToIncludeDuplicateAssetVisibilityStateMostRelevant = [MEMORY[0x1E69BE540] predicateToIncludeDuplicateAssetVisibilityStateMostRelevant];
+    [array addObject:predicateToIncludeDuplicateAssetVisibilityStateMostRelevant];
   }
 
-  if (-[objc_class managedObjectSupportsAssetStacks](a3, "managedObjectSupportsAssetStacks") && [v6 excludeNonVisibleStackedAssets])
+  if (-[objc_class managedObjectSupportsAssetStacks](class, "managedObjectSupportsAssetStacks") && [fetchOptions excludeNonVisibleStackedAssets])
   {
-    v42 = [MEMORY[0x1E69BE540] predicateToExcludeNonVisibleStackedAssets];
-    [v5 addObject:v42];
+    predicateToExcludeNonVisibleStackedAssets = [MEMORY[0x1E69BE540] predicateToExcludeNonVisibleStackedAssets];
+    [array addObject:predicateToExcludeNonVisibleStackedAssets];
   }
 
-  if (-[objc_class managedObjectSupportsPendingState](a3, "managedObjectSupportsPendingState") && ([v6 includePendingMemories] & 1) == 0)
+  if (-[objc_class managedObjectSupportsPendingState](class, "managedObjectSupportsPendingState") && ([fetchOptions includePendingMemories] & 1) == 0)
   {
     v43 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(pendingState) != %d", 1];
-    [v5 addObject:v43];
+    [array addObject:v43];
   }
 
-  if (-[objc_class managedObjectSupportsPendingState](a3, "managedObjectSupportsPendingState") && ([v6 includeLocalMemories] & 1) == 0)
+  if (-[objc_class managedObjectSupportsPendingState](class, "managedObjectSupportsPendingState") && ([fetchOptions includeLocalMemories] & 1) == 0)
   {
     v44 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(pendingState) != %d", 2];
-    [v5 addObject:v44];
+    [array addObject:v44];
   }
 
-  if (-[objc_class managedObjectSupportsCreationType](a3, "managedObjectSupportsCreationType") && ([v6 includeStoryMemories] & 1) == 0)
+  if (-[objc_class managedObjectSupportsCreationType](class, "managedObjectSupportsCreationType") && ([fetchOptions includeStoryMemories] & 1) == 0)
   {
     v45 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(creationType) != %d", 1];
-    [v5 addObject:v45];
+    [array addObject:v45];
   }
 
-  if (-[objc_class managedObjectSupportsPendingState](a3, "managedObjectSupportsPendingState") && ([v6 includeSourceMemories] & 1) == 0)
+  if (-[objc_class managedObjectSupportsPendingState](class, "managedObjectSupportsPendingState") && ([fetchOptions includeSourceMemories] & 1) == 0)
   {
     v46 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == nil", @"targetUserEditedMemory"];
-    [v5 addObject:v46];
+    [array addObject:v46];
   }
 
-  if (-[objc_class managedObjectSupportsRejectedState](a3, "managedObjectSupportsRejectedState") && ([v6 includeRejectedMemories] & 1) == 0)
+  if (-[objc_class managedObjectSupportsRejectedState](class, "managedObjectSupportsRejectedState") && ([fetchOptions includeRejectedMemories] & 1) == 0)
   {
     v47 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(rejected) == NO"];
-    [v5 addObject:v47];
+    [array addObject:v47];
   }
 
-  if ([(objc_class *)a3 managedObjectSupportsPersonFilters])
+  if ([(objc_class *)class managedObjectSupportsPersonFilters])
   {
-    v48 = [PHQueryPersonContext subpredicatesForFetchOptions:v6];
-    [v5 addObjectsFromArray:v48];
-    v49 = [PHQueryPersonContext fetchOptionsWithOverriddenChangeDetectionCriteriaIfNecessary:v6];
+    v48 = [PHQueryPersonContext subpredicatesForFetchOptions:fetchOptions];
+    [array addObjectsFromArray:v48];
+    v49 = [PHQueryPersonContext fetchOptionsWithOverriddenChangeDetectionCriteriaIfNecessary:fetchOptions];
 
     [(PHQuery *)self setFetchOptions:v49];
-    v6 = v49;
+    fetchOptions = v49;
   }
 
-  if (-[objc_class managedObjectSupportsKeyFaces](a3, "managedObjectSupportsKeyFaces") && [v6 includeOnlyPersonsWithVisibleKeyFaces])
+  if (-[objc_class managedObjectSupportsKeyFaces](class, "managedObjectSupportsKeyFaces") && [fetchOptions includeOnlyPersonsWithVisibleKeyFaces])
   {
-    v50 = [MEMORY[0x1E69BE608] predicateForVisibleKeyFace];
-    [v5 addObject:v50];
+    predicateForVisibleKeyFace = [MEMORY[0x1E69BE608] predicateForVisibleKeyFace];
+    [array addObject:predicateForVisibleKeyFace];
   }
 
-  if (-[objc_class managedObjectSupportsMontage](a3, "managedObjectSupportsMontage") && [v6 excludeMontageAssets])
+  if (-[objc_class managedObjectSupportsMontage](class, "managedObjectSupportsMontage") && [fetchOptions excludeMontageAssets])
   {
     v51 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(additionalAttributes.montage) == nil"];
-    [v5 addObject:v51];
+    [array addObject:v51];
   }
 
-  if (-[objc_class managedObjectSupportsScreenshot](a3, "managedObjectSupportsScreenshot") && [v6 excludeScreenshotAssets])
+  if (-[objc_class managedObjectSupportsScreenshot](class, "managedObjectSupportsScreenshot") && [fetchOptions excludeScreenshotAssets])
   {
     v52 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == NO", @"isDetectedScreenshot"];
-    [v5 addObject:v52];
+    [array addObject:v52];
   }
 
-  if (-[objc_class managedObjectSupportsBursts](a3, "managedObjectSupportsBursts") && ([v6 includeAllBurstAssets] & 1) == 0)
+  if (-[objc_class managedObjectSupportsBursts](class, "managedObjectSupportsBursts") && ([fetchOptions includeAllBurstAssets] & 1) == 0)
   {
-    v53 = [(PHQuery *)self containerIdentifier];
-    if (!v53 || (v54 = objc_opt_class(), [v53 entity], v55 = objc_claimAutoreleasedReturnValue(), LODWORD(v54) = objc_msgSend(v54, "_isKindOfMomentOrAlbumEntity:", v55), v55, !v54) || (-[PHQuery containerRelationship](self, "containerRelationship"), v56 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v56, "inverseRelationship"), v57 = objc_claimAutoreleasedReturnValue(), v56, objc_msgSend(v57, "name"), v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_msgSend(v58, "isEqualToString:", @"assets"), v58, v57, (v59 & 1) == 0))
+    containerIdentifier = [(PHQuery *)self containerIdentifier];
+    if (!containerIdentifier || (v54 = objc_opt_class(), [containerIdentifier entity], v55 = objc_claimAutoreleasedReturnValue(), LODWORD(v54) = objc_msgSend(v54, "_isKindOfMomentOrAlbumEntity:", v55), v55, !v54) || (-[PHQuery containerRelationship](self, "containerRelationship"), v56 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v56, "inverseRelationship"), v57 = objc_claimAutoreleasedReturnValue(), v56, objc_msgSend(v57, "name"), v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_msgSend(v58, "isEqualToString:", @"assets"), v58, v57, (v59 & 1) == 0))
     {
-      v60 = [MEMORY[0x1E69BE540] predicateToExcludeNonvisibleBurstAssets];
-      [v5 addObject:v60];
+      predicateToExcludeNonvisibleBurstAssets = [MEMORY[0x1E69BE540] predicateToExcludeNonvisibleBurstAssets];
+      [array addObject:predicateToExcludeNonvisibleBurstAssets];
     }
   }
 
-  if (-[objc_class managedObjectSupportsFaceState](a3, "managedObjectSupportsFaceState") && v6 && ([v6 includeNonvisibleFaces] & 1) == 0)
+  if (-[objc_class managedObjectSupportsFaceState](class, "managedObjectSupportsFaceState") && fetchOptions && ([fetchOptions includeNonvisibleFaces] & 1) == 0)
   {
-    v61 = [MEMORY[0x1E69BE3D0] predicatesToExcludeNonVisibleFaces];
-    [v5 addObjectsFromArray:v61];
+    predicatesToExcludeNonVisibleFaces = [MEMORY[0x1E69BE3D0] predicatesToExcludeNonVisibleFaces];
+    [array addObjectsFromArray:predicatesToExcludeNonVisibleFaces];
   }
 
-  if (-[objc_class managedObjectSupportsFaceState](a3, "managedObjectSupportsFaceState") && [v6 includeOnlyFacesNeedingFaceCrop])
+  if (-[objc_class managedObjectSupportsFaceState](class, "managedObjectSupportsFaceState") && [fetchOptions includeOnlyFacesNeedingFaceCrop])
   {
-    v62 = [MEMORY[0x1E69BE3D0] predicatesForFacesNeedingFaceCropGeneration];
-    [v5 addObjectsFromArray:v62];
+    predicatesForFacesNeedingFaceCropGeneration = [MEMORY[0x1E69BE3D0] predicatesForFacesNeedingFaceCropGeneration];
+    [array addObjectsFromArray:predicatesForFacesNeedingFaceCropGeneration];
   }
 
-  if (-[objc_class managedObjectSupportsFaceState](a3, "managedObjectSupportsFaceState") && [v6 includeOnlyFacesWithFaceprints])
+  if (-[objc_class managedObjectSupportsFaceState](class, "managedObjectSupportsFaceState") && [fetchOptions includeOnlyFacesWithFaceprints])
   {
     v63 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(faceprint) != nil"];
-    [v5 addObject:v63];
+    [array addObject:v63];
   }
 
-  if (-[objc_class managedObjectSupportsFaceState](a3, "managedObjectSupportsFaceState") && [v6 includeOnlyFacesInFaceGroups])
+  if (-[objc_class managedObjectSupportsFaceState](class, "managedObjectSupportsFaceState") && [fetchOptions includeOnlyFacesInFaceGroups])
   {
     v64 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(faceGroup) != nil"];
-    [v5 addObject:v64];
+    [array addObject:v64];
   }
 
-  if ([(objc_class *)a3 managedObjectSupportsSavedAssetType])
+  if ([(objc_class *)class managedObjectSupportsSavedAssetType])
   {
-    v65 = [(PHQuery *)self photoLibrary];
-    v66 = [v65 isCloudPhotoLibraryEnabled];
+    photoLibrary2 = [(PHQuery *)self photoLibrary];
+    isCloudPhotoLibraryEnabled2 = [photoLibrary2 isCloudPhotoLibraryEnabled];
 
-    if (v66)
+    if (isCloudPhotoLibraryEnabled2)
     {
       v67 = [MEMORY[0x1E69BF328] subpredicatesForExcludeMask:{objc_msgSend(MEMORY[0x1E69BF328], "maskForPhotoStreamAsset")}];
-      [v5 addObjectsFromArray:v67];
+      [array addObjectsFromArray:v67];
     }
   }
 
-  if (-[objc_class managedObjectSupportsAdjustments](a3, "managedObjectSupportsAdjustments") && [v6 includeRecentlyEditedSmartAlbum])
+  if (-[objc_class managedObjectSupportsAdjustments](class, "managedObjectSupportsAdjustments") && [fetchOptions includeRecentlyEditedSmartAlbum])
   {
-    v68 = [MEMORY[0x1E69BE540] predicateToExcludeCameraAutoAdjustments];
-    [v5 addObject:v68];
+    predicateToExcludeCameraAutoAdjustments = [MEMORY[0x1E69BE540] predicateToExcludeCameraAutoAdjustments];
+    [array addObject:predicateToExcludeCameraAutoAdjustments];
   }
 
-  v69 = [v6 photoLibrary];
-  v70 = [v69 type];
+  photoLibrary3 = [fetchOptions photoLibrary];
+  type = [photoLibrary3 type];
 
-  if (!v70)
+  if (!type)
   {
-    if (![(objc_class *)a3 managedObjectSupportsSavedAssetType])
+    if (![(objc_class *)class managedObjectSupportsSavedAssetType])
     {
       goto LABEL_111;
     }
 
-    v74 = [PHQuery _excludeMaskForUserLibraryWithFetchOptions:v6];
+    v74 = [PHQuery _excludeMaskForUserLibraryWithFetchOptions:fetchOptions];
     goto LABEL_110;
   }
 
-  v71 = [v6 photoLibrary];
-  v72 = [v71 type];
+  photoLibrary4 = [fetchOptions photoLibrary];
+  type2 = [photoLibrary4 type];
 
-  if (v72 == 1)
+  if (type2 == 1)
   {
-    v73 = [v6 includePlaceholderAssets];
-    if ([(objc_class *)a3 managedObjectSupportsSavedAssetType])
+    includePlaceholderAssets = [fetchOptions includePlaceholderAssets];
+    if ([(objc_class *)class managedObjectSupportsSavedAssetType])
     {
       BYTE2(v100) = 1;
       LOWORD(v100) = 257;
       HIDWORD(v99) = 16843009;
-      BYTE3(v99) = v73 ^ 1;
+      BYTE3(v99) = includePlaceholderAssets ^ 1;
       BYTE2(v99) = 0;
       LOWORD(v99) = 257;
       v74 = [MEMORY[0x1E69BF328] validatedSavedAssetTypeMaskUnknown:1 photoBooth:1 photoStream:1 camera:1 cloudShared:1 cameraConnectionKit:1 cloudPhotoLibrary:v99 wallpaper_UNUSED:v100 momentShared:? placeholder:? referenced:? alternate:? guest:? companionSynced:? recovered:? collectionShare:? legacyImport:?];
 LABEL_110:
       v75 = [MEMORY[0x1E69BF328] subpredicatesForExcludeMask:v74];
-      [v5 addObjectsFromArray:v75];
+      [array addObjectsFromArray:v75];
     }
   }
 
 LABEL_111:
-  if (![(objc_class *)a3 managedObjectSupportsDetectionType])
+  if (![(objc_class *)class managedObjectSupportsDetectionType])
   {
     goto LABEL_122;
   }
 
-  v76 = [v6 includedDetectionTypes];
-  v77 = v76;
-  if (v76)
+  includedDetectionTypes = [fetchOptions includedDetectionTypes];
+  v77 = includedDetectionTypes;
+  if (includedDetectionTypes)
   {
-    v78 = v76;
+    v78 = includedDetectionTypes;
   }
 
   else
@@ -1856,7 +1856,7 @@ LABEL_111:
     v78 = +[PHFetchOptions defaultDetectionTypes];
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v79 = 0x1E69BE3D0;
 LABEL_119:
@@ -1864,13 +1864,13 @@ LABEL_119:
     if (v80)
     {
       v81 = v80;
-      [v5 addObject:v80];
+      [array addObject:v80];
     }
 
     goto LABEL_121;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v79 = 0x1E69BE608;
     goto LABEL_119;
@@ -1879,31 +1879,31 @@ LABEL_119:
 LABEL_121:
 
 LABEL_122:
-  if ([(objc_class *)a3 managedObjectSupportsBodyDetection])
+  if ([(objc_class *)class managedObjectSupportsBodyDetection])
   {
-    v82 = [PHFace faceFetchTypeForOptions:v6];
+    v82 = [PHFace faceFetchTypeForOptions:fetchOptions];
     v83 = [MEMORY[0x1E69BE3D0] predicateForFetchType:v82];
-    [v5 _pl_addNonNilObject:v83];
+    [array _pl_addNonNilObject:v83];
   }
 
-  if (-[objc_class managedObjectSupportsTorsoOnly](a3, "managedObjectSupportsTorsoOnly") && (!v6 || ([v6 includeTorsoOnlyPerson] & 1) == 0))
+  if (-[objc_class managedObjectSupportsTorsoOnly](class, "managedObjectSupportsTorsoOnly") && (!fetchOptions || ([fetchOptions includeTorsoOnlyPerson] & 1) == 0))
   {
-    v84 = [MEMORY[0x1E69BE608] predicateToExcludeTorsoOnlyPerson];
-    [v5 addObject:v84];
+    predicateToExcludeTorsoOnlyPerson = [MEMORY[0x1E69BE608] predicateToExcludeTorsoOnlyPerson];
+    [array addObject:predicateToExcludeTorsoOnlyPerson];
   }
 
-  if (-[objc_class managedObjectSupportsSharingComposition](a3, "managedObjectSupportsSharingComposition") && v6 && [v6 sharingFilter] != 2)
+  if (-[objc_class managedObjectSupportsSharingComposition](class, "managedObjectSupportsSharingComposition") && fetchOptions && [fetchOptions sharingFilter] != 2)
   {
-    v85 = -[objc_class fetchPredicateForSharingFilter:](a3, "fetchPredicateForSharingFilter:", [v6 sharingFilter]);
+    v85 = -[objc_class fetchPredicateForSharingFilter:](class, "fetchPredicateForSharingFilter:", [fetchOptions sharingFilter]);
     if (v85)
     {
-      [v5 addObject:v85];
+      [array addObject:v85];
     }
   }
 
-  if ([(objc_class *)a3 managedObjectSupportsSensitivityAnalysis])
+  if ([(objc_class *)class managedObjectSupportsSensitivityAnalysis])
   {
-    if ([v6 excludeSensitiveAndUnprocessedAssets])
+    if ([fetchOptions excludeSensitiveAndUnprocessedAssets])
     {
       getSCSensitivityAnalysisClass_36607();
       if (objc_opt_respondsToSelector())
@@ -1914,8 +1914,8 @@ LABEL_122:
         if (v86)
         {
           v88 = MEMORY[0x1E696AB28];
-          v89 = [MEMORY[0x1E69BE540] predicateForAssetsIncompletelyProcessedForSensitivity];
-          v90 = [v88 notPredicateWithSubpredicate:v89];
+          predicateForAssetsIncompletelyProcessedForSensitivity = [MEMORY[0x1E69BE540] predicateForAssetsIncompletelyProcessedForSensitivity];
+          v90 = [v88 notPredicateWithSubpredicate:predicateForAssetsIncompletelyProcessedForSensitivity];
           v104[0] = v90;
           v91 = MEMORY[0x1E696AB28];
           v92 = [getSCSensitivityAnalysisClass_36607() fetchExclusionPredicateWithCompactAnalysisKeyPath:@"compactSCSensitivityAnalysis"];
@@ -1924,7 +1924,7 @@ LABEL_122:
           v94 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:2];
           v95 = [v88 andPredicateWithSubpredicates:v94];
 
-          [v5 addObject:v95];
+          [array addObject:v95];
         }
 
         if (v87)
@@ -1941,31 +1941,31 @@ LABEL_122:
     }
   }
 
-  v97 = v5;
+  v97 = array;
 
-  return v5;
+  return array;
 }
 
-- (void)setFetchOptions:(id)a3
+- (void)setFetchOptions:(id)options
 {
-  v4 = a3;
-  if (v4)
+  optionsCopy = options;
+  if (optionsCopy)
   {
-    v10 = v4;
-    v5 = [v4 copy];
+    v10 = optionsCopy;
+    v5 = [optionsCopy copy];
     fetchOptions = self->_fetchOptions;
     self->_fetchOptions = v5;
 
-    v7 = [v10 photoLibrary];
+    photoLibrary = [v10 photoLibrary];
 
-    v4 = v10;
-    if (v7)
+    optionsCopy = v10;
+    if (photoLibrary)
     {
-      v8 = [v10 photoLibrary];
+      photoLibrary2 = [v10 photoLibrary];
       photoLibrary = self->_photoLibrary;
-      self->_photoLibrary = v8;
+      self->_photoLibrary = photoLibrary2;
 
-      v4 = v10;
+      optionsCopy = v10;
     }
   }
 }
@@ -1978,37 +1978,37 @@ LABEL_122:
   return containerRelationship;
 }
 
-- (id)_effectiveDefaultSortDescriptorReversingOrder:(BOOL)a3
+- (id)_effectiveDefaultSortDescriptorReversingOrder:(BOOL)order
 {
-  v3 = a3;
-  v5 = [(PHQuery *)self basePredicate];
+  orderCopy = order;
+  basePredicate = [(PHQuery *)self basePredicate];
 
-  if (!v5 || (v6 = objc_opt_class(), -[PHQuery fetchType](self, "fetchType"), v7 = objc_claimAutoreleasedReturnValue(), -[PHQuery basePredicate](self, "basePredicate"), v8 = objc_claimAutoreleasedReturnValue(), [v6 defaultSortDescriptorForFetchType:v7 predicate:v8 ascending:!v3], v9 = objc_claimAutoreleasedReturnValue(), v8, v7, !v9))
+  if (!basePredicate || (v6 = objc_opt_class(), -[PHQuery fetchType](self, "fetchType"), v7 = objc_claimAutoreleasedReturnValue(), -[PHQuery basePredicate](self, "basePredicate"), v8 = objc_claimAutoreleasedReturnValue(), [v6 defaultSortDescriptorForFetchType:v7 predicate:v8 ascending:!orderCopy], defaultSortDescriptor = objc_claimAutoreleasedReturnValue(), v8, v7, !defaultSortDescriptor))
   {
-    v9 = [(PHCollection *)self->_containerCollection defaultSortDescriptor];
+    defaultSortDescriptor = [(PHCollection *)self->_containerCollection defaultSortDescriptor];
   }
 
-  return v9;
+  return defaultSortDescriptor;
 }
 
-- (id)_createFetchRequestIncludingBasePredicate:(BOOL)a3
+- (id)_createFetchRequestIncludingBasePredicate:(BOOL)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [(PHQuery *)self fetchOptions];
-  v6 = [v5 relatedEntityName];
+  fetchOptions = [(PHQuery *)self fetchOptions];
+  relatedEntityName = [fetchOptions relatedEntityName];
 
   v7 = [PHPhotoLibrary classForFetchType:self->_fetchType];
-  v8 = [(objc_class *)v7 managedEntityName];
-  if (v6)
+  managedEntityName = [(objc_class *)v7 managedEntityName];
+  if (relatedEntityName)
   {
-    v9 = [v5 relatedRelationshipProperty];
+    relatedRelationshipProperty = [fetchOptions relatedRelationshipProperty];
 
-    if (v9)
+    if (relatedRelationshipProperty)
     {
-      v10 = [v5 relatedEntityName];
+      relatedEntityName2 = [fetchOptions relatedEntityName];
 
-      v8 = v10;
+      managedEntityName = relatedEntityName2;
     }
 
     else
@@ -2017,80 +2017,80 @@ LABEL_122:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v43 = v5;
+        v43 = fetchOptions;
         _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_ERROR, "fetchOptions.relatedEntityName supplied without a .relatedRelationshipProperty: %@", buf, 0xCu);
       }
     }
   }
 
-  v12 = [(PHQuery *)self photoLibrary];
-  v13 = [v12 managedObjectContextForCurrentQueueQoS];
+  photoLibrary = [(PHQuery *)self photoLibrary];
+  managedObjectContextForCurrentQueueQoS = [photoLibrary managedObjectContextForCurrentQueueQoS];
   v14 = PLSafeEntityForNameInManagedObjectContext();
   if (v14)
   {
     v15 = objc_opt_new();
     [v15 setEntity:v14];
-    v16 = [(PHQuery *)self effectivePredicateForPHClass:v7 includingBasePredicate:v3];
+    v16 = [(PHQuery *)self effectivePredicateForPHClass:v7 includingBasePredicate:predicateCopy];
     if (v16)
     {
       [v15 setPredicate:v16];
     }
 
-    v17 = [(PHQuery *)self propertiesToGroupBy];
-    if ([v17 count])
+    propertiesToGroupBy = [(PHQuery *)self propertiesToGroupBy];
+    if ([propertiesToGroupBy count])
     {
       v35 = v16;
-      v38 = v12;
+      v38 = photoLibrary;
       [v15 setResultType:2];
-      v36 = v17;
-      [v15 setPropertiesToGroupBy:v17];
+      v36 = propertiesToGroupBy;
+      [v15 setPropertiesToGroupBy:propertiesToGroupBy];
       v18 = objc_alloc_init(MEMORY[0x1E695D5C8]);
       [v18 setName:@"objectID"];
-      v19 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-      [v18 setExpression:v19];
+      expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+      [v18 setExpression:expressionForEvaluatedObject];
 
       [v18 setExpressionResultType:2000];
       v41 = v18;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
-      v21 = [(PHQuery *)self propertiesToFetchWhenGrouping];
-      v22 = [v21 count];
+      propertiesToFetchWhenGrouping = [(PHQuery *)self propertiesToFetchWhenGrouping];
+      v22 = [propertiesToFetchWhenGrouping count];
 
       if (v22)
       {
-        v23 = [(PHQuery *)self propertiesToFetchWhenGrouping];
-        v24 = [v20 arrayByAddingObjectsFromArray:v23];
+        propertiesToFetchWhenGrouping2 = [(PHQuery *)self propertiesToFetchWhenGrouping];
+        v24 = [v20 arrayByAddingObjectsFromArray:propertiesToFetchWhenGrouping2];
 
         v20 = v24;
       }
 
       [v15 setPropertiesToFetch:v20];
 
-      v17 = v36;
-      v12 = v38;
+      propertiesToGroupBy = v36;
+      photoLibrary = v38;
       v16 = v35;
     }
 
-    else if (v6)
+    else if (relatedEntityName)
     {
       [v15 setResultType:2];
       v25 = objc_alloc_init(MEMORY[0x1E695D5C8]);
       [v25 setName:@"objectID"];
-      v39 = v12;
+      v39 = photoLibrary;
       v26 = MEMORY[0x1E696ABC8];
-      [v5 relatedRelationshipProperty];
-      v37 = v17;
+      [fetchOptions relatedRelationshipProperty];
+      v37 = propertiesToGroupBy;
       v28 = v27 = v16;
       v29 = [v26 expressionForKeyPath:v28];
       [v25 setExpression:v29];
 
       v16 = v27;
-      v17 = v37;
+      propertiesToGroupBy = v37;
       [v25 setExpressionResultType:2000];
       v40 = v25;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
       [v15 setPropertiesToFetch:v30];
 
-      v12 = v39;
+      photoLibrary = v39;
     }
 
     else
@@ -2100,18 +2100,18 @@ LABEL_122:
 
     [v15 setIncludesPropertyValues:0];
     [v15 setIncludesPendingChanges:0];
-    v31 = [(PHQuery *)self _effectiveSortDescriptors];
-    [v15 setSortDescriptors:v31];
-    v32 = [v5 fetchLimit];
-    if (v32)
+    _effectiveSortDescriptors = [(PHQuery *)self _effectiveSortDescriptors];
+    [v15 setSortDescriptors:_effectiveSortDescriptors];
+    fetchLimit = [fetchOptions fetchLimit];
+    if (fetchLimit)
     {
-      [v15 setFetchLimit:v32];
+      [v15 setFetchLimit:fetchLimit];
     }
 
-    v33 = [v5 fetchOffset];
-    if (v33)
+    fetchOffset = [fetchOptions fetchOffset];
+    if (fetchOffset)
     {
-      [v15 setFetchOffset:v33];
+      [v15 setFetchOffset:fetchOffset];
     }
   }
 
@@ -2123,48 +2123,48 @@ LABEL_122:
   return v15;
 }
 
-- (id)updatedQueryWithChange:(id)a3
+- (id)updatedQueryWithChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   if (!self->_containerCollection)
   {
     goto LABEL_14;
   }
 
-  v6 = [v4 changeDetailsForObject:?];
-  v7 = [v6 objectAfterChanges];
-  if (!(v6 | v7))
+  v6 = [changeCopy changeDetailsForObject:?];
+  objectAfterChanges = [v6 objectAfterChanges];
+  if (!(v6 | objectAfterChanges))
   {
-    v8 = [(PHQuery *)self fetchOptions];
-    v9 = [v8 changeDetectionCriteria];
-    v10 = [(PHQuery *)self photoLibrary];
-    v11 = [v10 managedObjectContext];
-    v12 = [v5 intersectsWithDetectionCriteria:v9 managedObjectContext:v11];
+    fetchOptions = [(PHQuery *)self fetchOptions];
+    changeDetectionCriteria = [fetchOptions changeDetectionCriteria];
+    photoLibrary = [(PHQuery *)self photoLibrary];
+    managedObjectContext = [photoLibrary managedObjectContext];
+    v12 = [v5 intersectsWithDetectionCriteria:changeDetectionCriteria managedObjectContext:managedObjectContext];
 
     if (!v12)
     {
 LABEL_13:
 
 LABEL_14:
-      v13 = self;
+      selfCopy = self;
       goto LABEL_15;
     }
 
-    v7 = self->_containerCollection;
+    objectAfterChanges = self->_containerCollection;
   }
 
-  if (!v7)
+  if (!objectAfterChanges)
   {
     goto LABEL_13;
   }
 
-  v13 = [(PHQuery *)self copy];
-  [(PHQuery *)v13 _setContainerCollection:v7];
+  selfCopy = [(PHQuery *)self copy];
+  [(PHQuery *)selfCopy _setContainerCollection:objectAfterChanges];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v7;
+    v14 = objectAfterChanges;
   }
 
   else
@@ -2178,39 +2178,39 @@ LABEL_14:
     v16 = objc_alloc_init(MEMORY[0x1E69BE700]);
     v28 = MEMORY[0x1E69BE708];
     v29 = v16;
-    v17 = [v15 userQuery];
-    v18 = [v15 photoLibrary];
-    v19 = [v18 photoLibrary];
-    v20 = [v28 predicateForQuery:v17 inLibrary:v19 changeDetectionCriteria:v16];
-    [(PHQuery *)v13 _setBasePredicate:v20];
+    userQuery = [v15 userQuery];
+    photoLibrary2 = [v15 photoLibrary];
+    v18PhotoLibrary = [photoLibrary2 photoLibrary];
+    v20 = [v28 predicateForQuery:userQuery inLibrary:v18PhotoLibrary changeDetectionCriteria:v16];
+    [(PHQuery *)selfCopy _setBasePredicate:v20];
 
     v21 = MEMORY[0x1E69BE708];
-    v22 = [v15 userQuery];
-    v23 = [v21 includesHiddenAssetsInQuery:v22];
+    userQuery2 = [v15 userQuery];
+    v23 = [v21 includesHiddenAssetsInQuery:userQuery2];
 
-    v24 = [(PHQuery *)v13 fetchOptions];
-    [v24 setIncludeHiddenAssets:v23];
+    fetchOptions2 = [(PHQuery *)selfCopy fetchOptions];
+    [fetchOptions2 setIncludeHiddenAssets:v23];
 
     v25 = [[PHQueryChangeDetectionCriteria alloc] initWithPLQueryChangeDetectionCriteria:v29];
-    v26 = [(PHQuery *)v13 fetchOptions];
-    [v26 setChangeDetectionCriteria:v25];
+    fetchOptions3 = [(PHQuery *)selfCopy fetchOptions];
+    [fetchOptions3 setChangeDetectionCriteria:v25];
   }
 
-  if (!v13)
+  if (!selfCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initForType:self->_fetchType withBasePredicate:self->_basePredicate inLibrary:self->_photoLibrary];
-  v5 = [(PHQuery *)self fetchOptions];
-  [v4 setFetchOptions:v5];
+  fetchOptions = [(PHQuery *)self fetchOptions];
+  [v4 setFetchOptions:fetchOptions];
 
   [v4 _setIncludesCameraRoll:{-[PHQuery _includesCameraRoll](self, "_includesCameraRoll")}];
   v6 = [(PHCollection *)self->_containerCollection copy];
@@ -2218,39 +2218,39 @@ LABEL_15:
 
   [v4 _setCollectionFetchType:{-[PHQuery collectionFetchType](self, "collectionFetchType")}];
   [v4 _setIdentificationBlock:self->_identificationBlock];
-  v7 = [(PHQuery *)self propertiesToGroupBy];
-  [v4 setPropertiesToGroupBy:v7];
+  propertiesToGroupBy = [(PHQuery *)self propertiesToGroupBy];
+  [v4 setPropertiesToGroupBy:propertiesToGroupBy];
 
-  v8 = [(PHQuery *)self propertiesToFetchWhenGrouping];
-  [v4 setPropertiesToFetchWhenGrouping:v8];
+  propertiesToFetchWhenGrouping = [(PHQuery *)self propertiesToFetchWhenGrouping];
+  [v4 setPropertiesToFetchWhenGrouping:propertiesToFetchWhenGrouping];
 
   objc_storeStrong(v4 + 35, self->_searchIndexLookupIdentifier);
   return v4;
 }
 
-- (id)initForType:(id)a3 withBasePredicate:(id)a4 seedOIDs:(id)a5 inLibrary:(id)a6
+- (id)initForType:(id)type withBasePredicate:(id)predicate seedOIDs:(id)ds inLibrary:(id)library
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  predicateCopy = predicate;
+  dsCopy = ds;
+  libraryCopy = library;
   v24.receiver = self;
   v24.super_class = PHQuery;
   v15 = [(PHQuery *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fetchType, a3);
-    objc_storeStrong(&v16->_basePredicate, a4);
-    objc_storeStrong(&v16->_seedOIDs, a5);
-    objc_storeStrong(&v16->_photoLibrary, a6);
-    v17 = [(PHPhotoLibrary *)v16->_photoLibrary librarySpecificFetchOptions];
+    objc_storeStrong(&v15->_fetchType, type);
+    objc_storeStrong(&v16->_basePredicate, predicate);
+    objc_storeStrong(&v16->_seedOIDs, ds);
+    objc_storeStrong(&v16->_photoLibrary, library);
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)v16->_photoLibrary librarySpecificFetchOptions];
     fetchOptions = v16->_fetchOptions;
-    v16->_fetchOptions = v17;
+    v16->_fetchOptions = librarySpecificFetchOptions;
 
-    if (v11)
+    if (typeCopy)
     {
-      if (v14)
+      if (libraryCopy)
       {
         goto LABEL_4;
       }
@@ -2276,11 +2276,11 @@ LABEL_4:
   return v16;
 }
 
-+ (id)identificationBlockForAssetCollectionType:(int64_t)a3
++ (id)identificationBlockForAssetCollectionType:(int64_t)type
 {
-  if (a3 <= 0xD && ((0x3FDFu >> a3) & 1) != 0)
+  if (type <= 0xD && ((0x3FDFu >> type) & 1) != 0)
   {
-    v3 = _Block_copy(*off_1E75A8F00[a3]);
+    v3 = _Block_copy(*off_1E75A8F00[type]);
   }
 
   else
@@ -2305,21 +2305,21 @@ LABEL_4:
   return v6;
 }
 
-+ (id)identificationBlockForAlbumSortKey:(unsigned int)a3
++ (id)identificationBlockForAlbumSortKey:(unsigned int)key
 {
   v3 = 0;
-  if (a3 > 3)
+  if (key > 3)
   {
-    if (a3 > 5)
+    if (key > 5)
     {
-      if (a3 == 6)
+      if (key == 6)
       {
         v4 = &PHQueryForAssetsInAlbum_SortKeyPublishDate;
       }
 
       else
       {
-        if (a3 != 101)
+        if (key != 101)
         {
           goto LABEL_19;
         }
@@ -2328,7 +2328,7 @@ LABEL_4:
       }
     }
 
-    else if (a3 == 4)
+    else if (key == 4)
     {
       v4 = &PHQueryForAssetsInAlbum_SortKeyTrashDate;
     }
@@ -2339,9 +2339,9 @@ LABEL_4:
     }
   }
 
-  else if (a3 > 1)
+  else if (key > 1)
   {
-    if (a3 == 2)
+    if (key == 2)
     {
       v4 = &PHQueryForAssetsInAlbum_SortKeyLastModifiedDate;
     }
@@ -2352,9 +2352,9 @@ LABEL_4:
     }
   }
 
-  else if (a3)
+  else if (key)
   {
-    if (a3 != 1)
+    if (key != 1)
     {
       goto LABEL_19;
     }
@@ -2386,25 +2386,25 @@ LABEL_19:
   return v7;
 }
 
-+ (id)identificationBlockForSmartAlbumKind:(int)a3
++ (id)identificationBlockForSmartAlbumKind:(int)kind
 {
   v3 = 0;
-  if (a3 <= 1549)
+  if (kind <= 1549)
   {
-    if (a3 > 1501)
+    if (kind > 1501)
     {
-      if (a3 > 1506)
+      if (kind > 1506)
       {
-        if (a3 > 1508)
+        if (kind > 1508)
         {
-          if (a3 == 1509)
+          if (kind == 1509)
           {
             v4 = PHQueryForAssetInAlbumKind_ConversationAlbum;
           }
 
           else
           {
-            if (a3 != 1510)
+            if (kind != 1510)
             {
               goto LABEL_111;
             }
@@ -2413,7 +2413,7 @@ LABEL_19:
           }
         }
 
-        else if (a3 == 1507)
+        else if (kind == 1507)
         {
           v4 = PHQueryForAssetInAlbumKind_UserSmartAlbum;
         }
@@ -2424,9 +2424,9 @@ LABEL_19:
         }
       }
 
-      else if (a3 > 1504)
+      else if (kind > 1504)
       {
-        if (a3 == 1505)
+        if (kind == 1505)
         {
           v4 = PHQueryForAssetInAlbumKind_CloudSharedAlbum;
         }
@@ -2437,14 +2437,14 @@ LABEL_19:
         }
       }
 
-      else if (a3 == 1502)
+      else if (kind == 1502)
       {
         v4 = PHQueryForAssetInAlbumKind_PictureFrame;
       }
 
       else
       {
-        if (a3 != 1503)
+        if (kind != 1503)
         {
           goto LABEL_111;
         }
@@ -2453,11 +2453,11 @@ LABEL_19:
       }
     }
 
-    else if (a3 > 999)
+    else if (kind > 999)
     {
-      if (a3 > 1499)
+      if (kind > 1499)
       {
-        if (a3 == 1500)
+        if (kind == 1500)
         {
           v4 = PHQueryForAssetInAlbumKind_PhotoStream;
         }
@@ -2468,14 +2468,14 @@ LABEL_19:
         }
       }
 
-      else if (a3 == 1000)
+      else if (kind == 1000)
       {
         v4 = PHQueryForAssetInAlbumKind_SavedPhotos;
       }
 
       else
       {
-        if (a3 != 1100)
+        if (kind != 1100)
         {
           goto LABEL_111;
         }
@@ -2484,16 +2484,16 @@ LABEL_19:
       }
     }
 
-    else if (a3 > 14)
+    else if (kind > 14)
     {
-      if (a3 == 15)
+      if (kind == 15)
       {
         v4 = PHQueryForAssetInAlbumKind_LegacyFaces;
       }
 
       else
       {
-        if (a3 != 16)
+        if (kind != 16)
         {
           goto LABEL_111;
         }
@@ -2502,14 +2502,14 @@ LABEL_19:
       }
     }
 
-    else if (a3 == 2)
+    else if (kind == 2)
     {
       v4 = PHQueryForAssetInAlbumKind_Regular;
     }
 
     else
     {
-      if (a3 != 12)
+      if (kind != 12)
       {
         goto LABEL_111;
       }
@@ -2520,13 +2520,13 @@ LABEL_19:
     goto LABEL_110;
   }
 
-  if (a3 > 3570)
+  if (kind > 3570)
   {
-    if (a3 > 4000)
+    if (kind > 4000)
     {
-      if (a3 > 4003)
+      if (kind > 4003)
       {
-        switch(a3)
+        switch(kind)
         {
           case 4004:
             v4 = PHQueryForAssetInAlbumKind_EventsSmartFolder;
@@ -2542,12 +2542,12 @@ LABEL_19:
         }
       }
 
-      else if (a3 == 4001)
+      else if (kind == 4001)
       {
         v4 = PHQueryForAssetInAlbumKind_FacesStandIn;
       }
 
-      else if (a3 == 4002)
+      else if (kind == 4002)
       {
         v4 = PHQueryForAssetInAlbumKind_EventsStandIn;
       }
@@ -2558,14 +2558,14 @@ LABEL_19:
       }
     }
 
-    else if (a3 > 3997)
+    else if (kind > 3997)
     {
-      if (a3 == 3998)
+      if (kind == 3998)
       {
         v4 = PHQueryForAssetInAlbumKind_ProjectAlbumRootFolder;
       }
 
-      else if (a3 == 3999)
+      else if (kind == 3999)
       {
         v4 = PHQueryForAssetInAlbumKind_RootFolder;
       }
@@ -2578,7 +2578,7 @@ LABEL_19:
 
     else
     {
-      switch(a3)
+      switch(kind)
       {
         case 3571:
           v4 = PHQueryForAssetInAlbumKind_SyncProgressAlbum;
@@ -2599,7 +2599,7 @@ LABEL_110:
     goto LABEL_111;
   }
 
-  switch(a3)
+  switch(kind)
   {
     case 1550:
       v4 = PHQueryForAssetInAlbumKind_1WaySyncAlbum;
@@ -2701,8 +2701,8 @@ LABEL_110:
       v4 = PHQueryForAssetInAlbumKind_AllPhotosAlbum;
       goto LABEL_110;
     case 1629:
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:5173 description:@"Unreachable Code: Attempting to get id for DEPRECATED Shared Library Album"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:5173 description:@"Unreachable Code: Attempting to get id for DEPRECATED Shared Library Album"];
 
       v3 = 0;
       break;
@@ -2761,20 +2761,20 @@ LABEL_111:
   return v10;
 }
 
-+ (id)queryForAssetsInUtilityCollectionWithType:(unsigned __int16)a3 options:(id)a4
++ (id)queryForAssetsInUtilityCollectionWithType:(unsigned __int16)type options:(id)options
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [PHUtilityCollection searchLookupIdentifierForUtilityCollectionType:v4];
+  typeCopy = type;
+  optionsCopy = options;
+  v7 = [PHUtilityCollection searchLookupIdentifierForUtilityCollectionType:typeCopy];
   if (v7)
   {
-    v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-    v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v8];
+    v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+    v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v8];
 
-    v10 = [a1 queryForAssetsUsingSearchIndexLookupIdentifier:v7 options:v9];
+    v10 = [self queryForAssetsUsingSearchIndexLookupIdentifier:v7 options:v9];
     [v10 setFetchOptions:v9];
 
-    v6 = v9;
+    optionsCopy = v9;
   }
 
   else
@@ -2785,140 +2785,140 @@ LABEL_111:
   return v10;
 }
 
-+ (id)queryForAssetsUsingSearchIndexLookupIdentifier:(id)a3 options:(id)a4
++ (id)queryForAssetsUsingSearchIndexLookupIdentifier:(id)identifier options:(id)options
 {
-  v6 = a3;
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:a4 object:0];
-  v8 = [a1 queryForType:@"PHAsset" withBasePredicate:0 inLibrary:v7];
+  identifierCopy = identifier;
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:options object:0];
+  v8 = [self queryForType:@"PHAsset" withBasePredicate:0 inLibrary:v7];
 
   v9 = v8[35];
-  v8[35] = v6;
+  v8[35] = identifierCopy;
 
   return v8;
 }
 
-+ (id)queryForPendingLibraryScopeInvitationWithOptions:(id)a3
++ (id)queryForPendingLibraryScopeInvitationWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
-  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v4 photoLibrary:v5];
+  optionsCopy = options;
+  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v5];
 
-  [a1 _setLibraryScopeDefaultSortDescriptor:v6];
+  [self _setLibraryScopeDefaultSortDescriptor:v6];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %d && %K == %d && %K == %d", @"scopeType", &unk_1F102D250, @"status", 2, @"localPublishState", 2, @"previewState", 0];
   v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [a1 queryForType:@"PHLibraryScope" withBasePredicate:v7 inLibrary:v8];
+  v9 = [self queryForType:@"PHLibraryScope" withBasePredicate:v7 inLibrary:v8];
 
   [v9 setFetchOptions:v6];
 
   return v9;
 }
 
-+ (id)queryForPreviewLibraryScopeWithOptions:(id)a3
++ (id)queryForPreviewLibraryScopeWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
-  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v4 photoLibrary:v5];
+  optionsCopy = options;
+  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v5];
 
-  [a1 _setLibraryScopeDefaultSortDescriptor:v6];
-  v7 = [MEMORY[0x1E69BE4E8] predicateForPreviewLibraryScope];
+  [self _setLibraryScopeDefaultSortDescriptor:v6];
+  predicateForPreviewLibraryScope = [MEMORY[0x1E69BE4E8] predicateForPreviewLibraryScope];
   v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [a1 queryForType:@"PHLibraryScope" withBasePredicate:v7 inLibrary:v8];
+  v9 = [self queryForType:@"PHLibraryScope" withBasePredicate:predicateForPreviewLibraryScope inLibrary:v8];
 
   [v9 setFetchOptions:v6];
 
   return v9;
 }
 
-+ (id)queryForActiveLibraryScopeWithOptions:(id)a3
++ (id)queryForActiveLibraryScopeWithOptions:(id)options
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
-  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v4 photoLibrary:v5];
+  optionsCopy = options;
+  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v5];
 
-  [a1 _setLibraryScopeDefaultSortDescriptor:v6];
+  [self _setLibraryScopeDefaultSortDescriptor:v6];
   v7 = MEMORY[0x1E696AB28];
-  v8 = [MEMORY[0x1E69BE4E8] predicateForActiveLibraryScope];
-  v15[0] = v8;
+  predicateForActiveLibraryScope = [MEMORY[0x1E69BE4E8] predicateForActiveLibraryScope];
+  v15[0] = predicateForActiveLibraryScope;
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d || %K == %d", @"status", 1, @"status", 3];
   v15[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v11 = [v7 andPredicateWithSubpredicates:v10];
 
   v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v13 = [a1 queryForType:@"PHLibraryScope" withBasePredicate:v11 inLibrary:v12];
+  v13 = [self queryForType:@"PHLibraryScope" withBasePredicate:v11 inLibrary:v12];
 
   [v13 setFetchOptions:v6];
 
   return v13;
 }
 
-+ (id)queryForLibraryScopesWithOptions:(id)a3
++ (id)queryForLibraryScopesWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
-  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v4 photoLibrary:v5];
+  optionsCopy = options;
+  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v5];
 
-  [a1 _setLibraryScopeDefaultSortDescriptor:v6];
+  [self _setLibraryScopeDefaultSortDescriptor:v6];
   v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v8 = [a1 queryForType:@"PHLibraryScope" withBasePredicate:0 inLibrary:v7];
+  v8 = [self queryForType:@"PHLibraryScope" withBasePredicate:0 inLibrary:v7];
 
   [v8 setFetchOptions:v6];
 
   return v8;
 }
 
-+ (id)queryforLibraryScopesWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryforLibraryScopesWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v8];
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v8];
 
-  [a1 _setLibraryScopeDefaultSortDescriptor:v9];
-  v10 = [a1 queryForType:@"PHLibraryScope" withLocalIdentifiers:v7 options:v9];
+  [self _setLibraryScopeDefaultSortDescriptor:v9];
+  v10 = [self queryForType:@"PHLibraryScope" withLocalIdentifiers:identifiersCopy options:v9];
 
   [v10 setFetchOptions:v9];
 
   return v10;
 }
 
-+ (void)_setLibraryScopeDefaultSortDescriptor:(id)a3
++ (void)_setLibraryScopeDefaultSortDescriptor:(id)descriptor
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (([v3 hasAnySortDescriptors] & 1) == 0)
+  descriptorCopy = descriptor;
+  if (([descriptorCopy hasAnySortDescriptors] & 1) == 0)
   {
     v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
     v6[0] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
-    [v3 setSortDescriptors:v5];
+    [descriptorCopy setSortDescriptors:v5];
   }
 }
 
-+ (id)queryForEntryWithLocalIdentifier:(id)a3 options:(id)a4
++ (id)queryForEntryWithLocalIdentifier:(id)identifier options:(id)options
 {
-  v5 = a4;
-  v6 = [(PHObject *)PHCloudFeedEntry uuidFromLocalIdentifier:a3];
+  optionsCopy = options;
+  v6 = [(PHObject *)PHCloudFeedEntry uuidFromLocalIdentifier:identifier];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", v6];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:0];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v9 = [PHQuery queryForType:@"PHCloudFeedEntry" withBasePredicate:v7 inLibrary:v8];
 
-  [v9 setFetchOptions:v5];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForEntriesFromEarliestDate:(id)a3 latestDate:(id)a4 filter:(int64_t)a5 options:(id)a6
++ (id)queryForEntriesFromEarliestDate:(id)date latestDate:(id)latestDate filter:(int64_t)filter options:(id)options
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v9)
+  dateCopy = date;
+  latestDateCopy = latestDate;
+  optionsCopy = options;
+  if (dateCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %@", @"entryDate", v9];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %@", @"entryDate", dateCopy];
   }
 
   else
@@ -2926,9 +2926,9 @@ LABEL_111:
     [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
   v12 = ;
-  if (v10)
+  if (latestDateCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K <= %@", @"entryDate", v10];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K <= %@", @"entryDate", latestDateCopy];
   }
 
   else
@@ -2936,17 +2936,17 @@ LABEL_111:
     [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
   v13 = ;
-  if ((a5 - 1) >= 5)
+  if ((filter - 1) >= 5)
   {
-    v14 = 0;
+    filterCopy = 0;
   }
 
   else
   {
-    v14 = a5;
+    filterCopy = filter;
   }
 
-  v15 = [MEMORY[0x1E69BE320] notificationPredicateForFilter:v14];
+  v15 = [MEMORY[0x1E69BE320] notificationPredicateForFilter:filterCopy];
   v16 = MEMORY[0x1E696AB28];
   v22[0] = v12;
   v22[1] = v13;
@@ -2954,395 +2954,395 @@ LABEL_111:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
   v18 = [v16 andPredicateWithSubpredicates:v17];
 
-  v19 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v11 object:0];
+  v19 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v20 = [PHQuery queryForType:@"PHCloudFeedEntry" withBasePredicate:v18 inLibrary:v19];
 
-  [v20 setFetchOptions:v11];
+  [v20 setFetchOptions:optionsCopy];
 
   return v20;
 }
 
-+ (id)queryForCommentsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForCommentsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a4;
-  v7 = [v5 setWithArray:a3];
+  optionsCopy = options;
+  v7 = [v5 setWithArray:identifiers];
   v8 = [(PHObject *)PHAssetComment uuidsFromLocalIdentifiers:v7];
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"cloudGUID", v8];
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v11 = [PHQuery queryForType:@"PHAssetComment" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForLikesForCloudFeedEntry:(id)a3 options:(id)a4
++ (id)queryForLikesForCloudFeedEntry:(id)entry options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K == %@", @"cloudFeedLikeCommentEntry", v8];
+  optionsCopy = options;
+  entryCopy = entry;
+  objectID = [entryCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K == %@", @"cloudFeedLikeCommentEntry", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:entryCopy];
 
   v11 = [PHQuery queryForType:@"PHAssetComment" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForLikesForAsset:(id)a3 options:(id)a4
++ (id)queryForLikesForAsset:(id)asset options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K == %@", @"likedAsset", v8];
+  optionsCopy = options;
+  assetCopy = asset;
+  objectID = [assetCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K == %@", @"likedAsset", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:assetCopy];
 
   v11 = [PHQuery queryForType:@"PHAssetComment" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForCommentsForCloudFeedEntry:(id)a3 options:(id)a4
++ (id)queryForCommentsForCloudFeedEntry:(id)entry options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K == %@", @"cloudFeedCommentEntry", v8];
+  optionsCopy = options;
+  entryCopy = entry;
+  objectID = [entryCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K == %@", @"cloudFeedCommentEntry", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:entryCopy];
 
   v11 = [PHQuery queryForType:@"PHAssetComment" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForCommentsForAsset:(id)a3 options:(id)a4
++ (id)queryForCommentsForAsset:(id)asset options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K == %@", @"commentedAsset", v8];
+  optionsCopy = options;
+  assetCopy = asset;
+  objectID = [assetCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K == %@", @"commentedAsset", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:assetCopy];
 
   v11 = [PHQuery queryForType:@"PHAssetComment" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForQuestionsWithState:(unsigned __int16)a3 options:(id)a4
++ (id)queryForQuestionsWithState:(unsigned __int16)state options:(id)options
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"state = %d", v4];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHQuestion" withBasePredicate:v7 inLibrary:v8];
-  [v9 setFetchOptions:v6];
+  optionsCopy = options;
+  stateCopy = [v5 predicateWithFormat:@"state = %d", stateCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHQuestion" withBasePredicate:stateCopy inLibrary:v8];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForAnsweredQuestionsWithOptions:(id)a3
++ (id)queryForAnsweredQuestionsWithOptions:(id)options
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  optionsCopy = options;
   v5 = [v3 predicateWithFormat:@"state = %d OR state = %d OR state = %d", 2, 3, 1];
-  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
+  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v7 = [PHQuery queryForType:@"PHQuestion" withBasePredicate:v5 inLibrary:v6];
-  [v7 setFetchOptions:v4];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForAnsweredYesOrNoQuestionsWithOptions:(id)a3
++ (id)queryForAnsweredYesOrNoQuestionsWithOptions:(id)options
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  optionsCopy = options;
   v5 = [v3 predicateWithFormat:@"state = %d OR state = %d", 2, 3];
-  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
+  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v7 = [PHQuery queryForType:@"PHQuestion" withBasePredicate:v5 inLibrary:v6];
-  [v7 setFetchOptions:v4];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForQuestionsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForQuestionsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
   v4 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (identifiers)
   {
-    v5 = a3;
+    identifiersCopy = identifiers;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    identifiersCopy = MEMORY[0x1E695E0F0];
   }
 
-  v6 = a4;
-  v7 = [v4 predicateWithFormat:@"uuid IN (%@)", v5];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHQuestion" withBasePredicate:v7 inLibrary:v8];
-  [v9 setFetchOptions:v6];
+  optionsCopy = options;
+  identifiersCopy = [v4 predicateWithFormat:@"uuid IN (%@)", identifiersCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHQuestion" withBasePredicate:identifiersCopy inLibrary:v8];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForQuestionsWithOptions:(id)a3
++ (id)queryForQuestionsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHQuestion" withBasePredicate:0 inLibrary:v4];
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForKeywordsForAsset:(id)a3 options:(id)a4
++ (id)queryForKeywordsForAsset:(id)asset options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"ANY assetAttributes.asset = %@", v8];
+  optionsCopy = options;
+  assetCopy = asset;
+  objectID = [assetCopy objectID];
+  v9 = [v5 predicateWithFormat:@"ANY assetAttributes.asset = %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:assetCopy];
 
   v11 = [PHQuery queryForType:@"PHKeyword" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForKeywordsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForKeywordsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHKeyword" withLocalIdentifiers:a3 options:v6];
-  [v7 setFetchOptions:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHKeyword" withLocalIdentifiers:identifiers options:optionsCopy];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForKeywordsWithTitles:(id)a3 options:(id)a4
++ (id)queryForKeywordsWithTitles:(id)titles options:(id)options
 {
   v4 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (titles)
   {
-    v5 = a3;
+    titlesCopy = titles;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    titlesCopy = MEMORY[0x1E695E0F0];
   }
 
-  v6 = a4;
-  v7 = [v4 predicateWithFormat:@"%K IN %@", @"title", v5];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHKeyword" withBasePredicate:v7 inLibrary:v8];
-  [v9 setFetchOptions:v6];
+  optionsCopy = options;
+  titlesCopy = [v4 predicateWithFormat:@"%K IN %@", @"title", titlesCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHKeyword" withBasePredicate:titlesCopy inLibrary:v8];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForKeywordsWithOptions:(id)a3
++ (id)queryForKeywordsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHKeyword" withBasePredicate:0 inLibrary:v4];
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForProjectsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForProjectsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a4;
-  v6 = [PHQuery queryForAssetCollectionsWithType:10 localIdentifiers:a3 options:v5];
-  [v6 setFetchOptions:v5];
+  optionsCopy = options;
+  v6 = [PHQuery queryForAssetCollectionsWithType:10 localIdentifiers:identifiers options:optionsCopy];
+  [v6 setFetchOptions:optionsCopy];
 
   return v6;
 }
 
-+ (id)queryForConversationsWithOptions:(id)a3
++ (id)queryForConversationsWithOptions:(id)options
 {
-  v3 = a3;
-  [v3 hasAnySortDescriptors];
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  [optionsCopy hasAnySortDescriptors];
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHConversation" withBasePredicate:0 inLibrary:v4];
 
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForImportSessionsWithOptions:(id)a3
++ (id)queryForImportSessionsWithOptions:(id)options
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  optionsCopy = options;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:1];
-  if (([v3 hasAnySortDescriptors] & 1) == 0 && v4)
+  if (([optionsCopy hasAnySortDescriptors] & 1) == 0 && v4)
   {
-    if (v3)
+    if (optionsCopy)
     {
-      v5 = [v3 copy];
+      v5 = [optionsCopy copy];
 
-      v3 = v5;
+      optionsCopy = v5;
     }
 
     else
     {
-      v3 = objc_opt_new();
+      optionsCopy = objc_opt_new();
     }
 
     v10[0] = v4;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [v3 setInternalSortDescriptors:v6];
+    [optionsCopy setInternalSortDescriptors:v6];
   }
 
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v8 = [PHQuery queryForType:@"PHImportSession" withBasePredicate:0 inLibrary:v7];
 
-  [v8 setFetchOptions:v3];
+  [v8 setFetchOptions:optionsCopy];
 
   return v8;
 }
 
-+ (id)queryForSuggestionsWithFeaturedState:(unsigned __int16)a3 types:(id)a4 options:(id)a5
++ (id)queryForSuggestionsWithFeaturedState:(unsigned __int16)state types:(id)types options:(id)options
 {
-  v6 = a3;
+  stateCopy = state;
   v19[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AE18];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 predicateWithFormat:@"%K = %d", @"featuredState", v6];
+  optionsCopy = options;
+  typesCopy = types;
+  stateCopy = [v7 predicateWithFormat:@"%K = %d", @"featuredState", stateCopy];
   v11 = MEMORY[0x1E695E0F0];
-  if (v9)
+  if (typesCopy)
   {
-    v11 = v9;
+    v11 = typesCopy;
   }
 
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"type", v11];
 
   v13 = MEMORY[0x1E696AB28];
-  v19[0] = v10;
+  v19[0] = stateCopy;
   v19[1] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [v13 andPredicateWithSubpredicates:v14];
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:0];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v17 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:v15 inLibrary:v16];
 
-  [v17 setFetchOptions:v8];
+  [v17 setFetchOptions:optionsCopy];
 
   return v17;
 }
 
-+ (id)queryForSuggestionsWithTypes:(id)a3 options:(id)a4
++ (id)queryForSuggestionsWithTypes:(id)types options:(id)options
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (types)
   {
-    v5 = a3;
+    typesCopy = types;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    typesCopy = MEMORY[0x1E695E0F0];
   }
 
-  v6 = a4;
-  v7 = [v4 predicateWithFormat:@"%K IN %@", @"type", v5];
+  optionsCopy = options;
+  typesCopy = [v4 predicateWithFormat:@"%K IN %@", @"type", typesCopy];
   v8 = MEMORY[0x1E696AB28];
-  v14[0] = v7;
+  v14[0] = typesCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10 = [v8 andPredicateWithSubpredicates:v9];
-  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v12 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:v10 inLibrary:v11];
 
-  [v12 setFetchOptions:v6];
+  [v12 setFetchOptions:optionsCopy];
 
   return v12;
 }
 
-+ (id)queryForSuggestionsWithState:(unsigned __int16)a3 type:(unsigned __int16)a4 subtype:(unsigned __int16)a5 options:(id)a6
++ (id)queryForSuggestionsWithState:(unsigned __int16)state type:(unsigned __int16)type subtype:(unsigned __int16)subtype options:(id)options
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
+  subtypeCopy = subtype;
+  typeCopy = type;
+  stateCopy = state;
   v20[2] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E696AE18];
-  v10 = a6;
-  v11 = [v9 predicateWithFormat:@"%K = %d", @"state", v8];
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"type", v7];
-  v20[0] = v11;
-  v20[1] = v12;
+  optionsCopy = options;
+  stateCopy = [v9 predicateWithFormat:@"%K = %d", @"state", stateCopy];
+  typeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"type", typeCopy];
+  v20[0] = stateCopy;
+  v20[1] = typeCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
-  if (v6)
+  if (subtypeCopy)
   {
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"subtype", v6];
-    v15 = [v13 arrayByAddingObject:v14];
+    subtypeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"subtype", subtypeCopy];
+    v15 = [v13 arrayByAddingObject:subtypeCopy];
 
     v13 = v15;
   }
 
   v16 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v13];
-  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v10 object:0];
+  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v18 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:v16 inLibrary:v17];
 
-  [v18 setFetchOptions:v10];
+  [v18 setFetchOptions:optionsCopy];
 
   return v18;
 }
 
-+ (id)queryForSuggestionsWithState:(unsigned __int16)a3 options:(id)a4
++ (id)queryForSuggestionsWithState:(unsigned __int16)state options:(id)options
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"state = %d", v4];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:v7 inLibrary:v8];
+  optionsCopy = options;
+  stateCopy = [v5 predicateWithFormat:@"state = %d", stateCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:stateCopy inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForSuggestionsWithOptions:(id)a3
++ (id)queryForSuggestionsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:0 inLibrary:v4];
 
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForShareParticipantWithPerson:(id)a3 options:(id)a4
++ (id)queryForShareParticipantWithPerson:(id)person options:(id)options
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectID];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
 
-  if (v7)
+  if (objectID)
   {
-    v8 = [v6 objectID];
-    v18[0] = v8;
+    objectID2 = [personCopy objectID];
+    v18[0] = objectID2;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
 
     v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"person", v9];
@@ -3360,29 +3360,29 @@ LABEL_111:
     v10 = [MEMORY[0x1E696AE18] predicateWithValue:0];
   }
 
-  v12 = [v6 photoLibrary];
+  photoLibrary = [personCopy photoLibrary];
 
-  v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v12];
+  v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v14 = [v13 photoLibrary];
-  v15 = [PHQuery queryForType:@"PHShareParticipant" withBasePredicate:v10 inLibrary:v14];
+  photoLibrary2 = [v13 photoLibrary];
+  v15 = [PHQuery queryForType:@"PHShareParticipant" withBasePredicate:v10 inLibrary:photoLibrary2];
 
   [v15 setFetchOptions:v13];
 
   return v15;
 }
 
-+ (id)queryForCurrentUserParticipantInShare:(id)a3 options:(id)a4
++ (id)queryForCurrentUserParticipantInShare:(id)share options:(id)options
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  shareCopy = share;
   v8 = [v5 predicateWithFormat:@"%K == YES", @"isCurrentUser"];
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v7 objectID];
+  objectID = [shareCopy objectID];
 
-  v11 = [v9 predicateWithFormat:@"%K == %@", @"share", v10];
+  v11 = [v9 predicateWithFormat:@"%K == %@", @"share", objectID];
 
   v12 = MEMORY[0x1E696AB28];
   v18[0] = v8;
@@ -3390,26 +3390,26 @@ LABEL_111:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [v12 andPredicateWithSubpredicates:v13];
 
-  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v16 = [PHQuery queryForType:@"PHShareParticipant" withBasePredicate:v14 inLibrary:v15];
 
-  [v6 setFetchLimit:1];
-  [v16 setFetchOptions:v6];
+  [optionsCopy setFetchLimit:1];
+  [v16 setFetchOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForOwnerParticipantInShare:(id)a3 options:(id)a4
++ (id)queryForOwnerParticipantInShare:(id)share options:(id)options
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  shareCopy = share;
   v8 = [v5 predicateWithFormat:@"%K == %d", @"role", 1];
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v7 objectID];
+  objectID = [shareCopy objectID];
 
-  v11 = [v9 predicateWithFormat:@"%K == %@", @"share", v10];
+  v11 = [v9 predicateWithFormat:@"%K == %@", @"share", objectID];
 
   v12 = MEMORY[0x1E696AB28];
   v18[0] = v8;
@@ -3417,284 +3417,284 @@ LABEL_111:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [v12 andPredicateWithSubpredicates:v13];
 
-  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v16 = [PHQuery queryForType:@"PHShareParticipant" withBasePredicate:v14 inLibrary:v15];
 
-  [v6 setFetchLimit:1];
-  [v16 setFetchOptions:v6];
+  [optionsCopy setFetchLimit:1];
+  [v16 setFetchOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForContributorForComment:(id)a3 options:(id)a4
++ (id)queryForContributorForComment:(id)comment options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K CONTAINS %@", @"collectionShareComments", v8];
+  optionsCopy = options;
+  commentCopy = comment;
+  objectID = [commentCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K CONTAINS %@", @"collectionShareComments", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:commentCopy];
 
   v11 = [PHQuery queryForType:@"PHShareParticipant" withBasePredicate:v9 inLibrary:v10];
 
-  [v6 setFetchLimit:1];
-  [v11 setFetchOptions:v6];
+  [optionsCopy setFetchLimit:1];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForShareParticipantsWithParticipantIDs:(id)a3 options:(id)a4
++ (id)queryForShareParticipantsWithParticipantIDs:(id)ds options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"%K IN %@", @"participantID", a3];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  optionsCopy = options;
+  v7 = [v5 predicateWithFormat:@"%K IN %@", @"participantID", ds];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v9 = [PHQuery queryForType:@"PHShareParticipant" withBasePredicate:v7 inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForShareParticipantsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForShareParticipantsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHShareParticipant" withLocalIdentifiers:a3 options:v6];
-  [v7 setFetchOptions:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHShareParticipant" withLocalIdentifiers:identifiers options:optionsCopy];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForShareParticipantsInShare:(id)a3 options:(id)a4
++ (id)queryForShareParticipantsInShare:(id)share options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K == %@", @"share", v8];
+  optionsCopy = options;
+  shareCopy = share;
+  objectID = [shareCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K == %@", @"share", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:shareCopy];
 
   v11 = [PHQuery queryForType:@"PHShareParticipant" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForPersonsWithNonNilUserFeedbackWithTypes:(id)a3 options:(id)a4
++ (id)queryForPersonsWithNonNilUserFeedbackWithTypes:(id)types options:(id)options
 {
   v4 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (types)
   {
-    v5 = a3;
+    typesCopy = types;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    typesCopy = MEMORY[0x1E695E0F0];
   }
 
-  v6 = a4;
-  v7 = [v4 predicateWithFormat:@"ANY userFeedbacks.feature IN %@", v5];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v7 inLibrary:v8];
+  optionsCopy = options;
+  typesCopy = [v4 predicateWithFormat:@"ANY userFeedbacks.feature IN %@", typesCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:typesCopy inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
   [v9 _setCollectionFetchType:2];
 
   return v9;
 }
 
-+ (id)queryForFaceCropsForPerson:(id)a3 options:(id)a4
++ (id)queryForFaceCropsForPerson:(id)person options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K == %@", @"person", v8];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K == %@", @"person", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
 
   v11 = [PHQuery queryForType:@"PHFaceCrop" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForFaceCropsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForFaceCropsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHFaceCrop" withLocalIdentifiers:a3 options:v6];
-  [v7 setFetchOptions:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHFaceCrop" withLocalIdentifiers:identifiers options:optionsCopy];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForFaceCropsWithOptions:(id)a3
++ (id)queryForFaceCropsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHFaceCrop" withBasePredicate:0 inLibrary:v4];
 
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForInvalidMergeCandidatePersonsForPerson:(id)a3 options:(id)a4
++ (id)queryForInvalidMergeCandidatePersonsForPerson:(id)person options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"invalidMergeCandidates CONTAINS %@", v8];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
+  v9 = [v5 predicateWithFormat:@"invalidMergeCandidates CONTAINS %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
 
   v11 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForMergeCandidateWithConfidencePersonsForPerson:(id)a3 options:(id)a4
++ (id)queryForMergeCandidateWithConfidencePersonsForPerson:(id)person options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K CONTAINS %@", @"mergeCandidatesWithConfidence", v8];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K CONTAINS %@", @"mergeCandidatesWithConfidence", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
 
   v11 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForMergeCandidatePersonsForPerson:(id)a3 options:(id)a4
++ (id)queryForMergeCandidatePersonsForPerson:(id)person options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"mergeCandidates CONTAINS %@", v8];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
+  v9 = [v5 predicateWithFormat:@"mergeCandidates CONTAINS %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
 
   v11 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForAssociatedPersonForFaceGroup:(id)a3 withOptions:(id)a4
++ (id)queryForAssociatedPersonForFaceGroup:(id)group withOptions:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"associatedFaceGroup = %@", v8];
+  optionsCopy = options;
+  groupCopy = group;
+  objectID = [groupCopy objectID];
+  v9 = [v5 predicateWithFormat:@"associatedFaceGroup = %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:groupCopy];
 
   v11 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForEmptyFaceGroupsWithOptions:(id)a3
++ (id)queryForEmptyFaceGroupsWithOptions:(id)options
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  optionsCopy = options;
   v5 = [v3 predicateWithFormat:@"%K.@count == 0", @"detectedFaces"];
-  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
+  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v7 = [PHQuery queryForType:@"PHFaceGroup" withBasePredicate:v5 inLibrary:v6];
 
-  [v7 setFetchOptions:v4];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForFaceGroupsWithFace:(id)a3 options:(id)a4
++ (id)queryForFaceGroupsWithFace:(id)face options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K CONTAINS %@", @"detectedFaces", v8];
+  optionsCopy = options;
+  faceCopy = face;
+  objectID = [faceCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K CONTAINS %@", @"detectedFaces", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:faceCopy];
 
   v11 = [PHQuery queryForType:@"PHFaceGroup" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForFaceGroupsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForFaceGroupsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHFaceGroup" withLocalIdentifiers:a3 options:v6];
-  [v7 setFetchOptions:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHFaceGroup" withLocalIdentifiers:identifiers options:optionsCopy];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForFaceGroupsForPerson:(id)a3 options:(id)a4
++ (id)queryForFaceGroupsForPerson:(id)person options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"ANY %K.%K = %@", @"detectedFaces", @"personForFace", v8];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
+  v9 = [v5 predicateWithFormat:@"ANY %K.%K = %@", @"detectedFaces", @"personForFace", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
 
   v11 = [PHQuery queryForType:@"PHFaceGroup" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForFaceGroupsWithOptions:(id)a3
++ (id)queryForFaceGroupsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHFaceGroup" withBasePredicate:0 inLibrary:v4];
 
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForAssetsForFaces:(id)a3 options:(id)a4
++ (id)queryForAssetsForFaces:(id)faces options:(id)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  facesCopy = faces;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = facesCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -3711,8 +3711,8 @@ LABEL_111:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 objectID];
-        [v7 addObject:v15];
+        objectID = [v14 objectID];
+        [array addObject:objectID];
 
         if (!v11)
         {
@@ -3731,27 +3731,27 @@ LABEL_111:
     v11 = 0;
   }
 
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"detectedFaces", v7, v20];
-  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v11];
+  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"detectedFaces", array, v20];
+  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:v11];
   v18 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v16 inLibrary:v17];
 
-  [v18 setFetchOptions:v6];
+  [v18 setFetchOptions:optionsCopy];
   [v18 _setCollectionFetchType:2];
 
   return v18;
 }
 
-+ (id)queryForAssetsForFaceGroups:(id)a3 options:(id)a4
++ (id)queryForAssetsForFaceGroups:(id)groups options:(id)options
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  groupsCopy = groups;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = v5;
+  v8 = groupsCopy;
   v9 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v9)
   {
@@ -3766,8 +3766,8 @@ LABEL_111:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v35 + 1) + 8 * i) objectID];
-        [v7 addObject:v13];
+        objectID = [*(*(&v35 + 1) + 8 * i) objectID];
+        [array addObject:objectID];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -3776,22 +3776,22 @@ LABEL_111:
     while (v10);
   }
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"faceGroup", v7];
-  v15 = [v8 firstObject];
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v15];
+  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"faceGroup", array];
+  firstObject = [v8 firstObject];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:firstObject];
 
   v29 = v14;
   v17 = [PHQuery queryForType:@"PHFace" withBasePredicate:v14 inLibrary:v16];
-  v30 = v6;
-  [v17 setFetchOptions:v6];
+  v30 = optionsCopy;
+  [v17 setFetchOptions:optionsCopy];
   [v17 _setCollectionFetchType:2];
-  v18 = [v17 executeQuery];
-  v19 = [MEMORY[0x1E695DF70] array];
+  executeQuery = [v17 executeQuery];
+  array2 = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v20 = v18;
+  v20 = executeQuery;
   v21 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v21)
   {
@@ -3806,8 +3806,8 @@ LABEL_111:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v31 + 1) + 8 * j) objectID];
-        [v19 addObject:v25];
+        objectID2 = [*(*(&v31 + 1) + 8 * j) objectID];
+        [array2 addObject:objectID2];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -3816,7 +3816,7 @@ LABEL_111:
     while (v22);
   }
 
-  v26 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"detectedFaces", v19];
+  v26 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"detectedFaces", array2];
   v27 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v26 inLibrary:v16];
   [v27 setFetchOptions:v30];
   [v27 _setCollectionFetchType:2];
@@ -3824,32 +3824,32 @@ LABEL_111:
   return v27;
 }
 
-+ (id)queryForKeyAssetForPerson:(id)a3 options:(id)a4
++ (id)queryForKeyAssetForPerson:(id)person options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"ANY %K.%K = %@", @"detectedFaces", @"personBeingKeyFace", v8];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
+  v9 = [v5 predicateWithFormat:@"ANY %K.%K = %@", @"detectedFaces", @"personBeingKeyFace", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
 
   v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:v10];
 
   return v11;
 }
 
-+ (id)queryForAssetsForPersons:(id)a3 options:(id)a4
++ (id)queryForAssetsForPersons:(id)persons options:(id)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  personsCopy = persons;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = personsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -3866,8 +3866,8 @@ LABEL_111:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 objectID];
-        [v7 addObject:v15];
+        objectID = [v14 objectID];
+        [array addObject:objectID];
 
         if (!v11)
         {
@@ -3886,27 +3886,27 @@ LABEL_111:
     v11 = 0;
   }
 
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K.%K IN %@", @"detectedFaces", @"personForFace", v7];
-  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v11];
+  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K.%K IN %@", @"detectedFaces", @"personForFace", array];
+  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:v11];
   v18 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v16 inLibrary:v17];
 
-  [v18 setFetchOptions:v6];
+  [v18 setFetchOptions:optionsCopy];
   [v18 _setCollectionFetchType:2];
 
   return v18;
 }
 
-+ (id)queryForPersonForFaceCrop:(id)a3 options:(id)a4
++ (id)queryForPersonForFaceCrop:(id)crop options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"faceCrops CONTAINS %@", v8];
+  optionsCopy = options;
+  cropCopy = crop;
+  objectID = [cropCopy objectID];
+  v9 = [v5 predicateWithFormat:@"faceCrops CONTAINS %@", objectID];
 
-  v10 = [v7 photoLibrary];
+  photoLibrary = [cropCopy photoLibrary];
 
-  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v10];
+  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
   [v11 setMinimumVerifiedFaceCount:0];
   [v11 setMinimumUnverifiedFaceCount:0];
@@ -3919,36 +3919,36 @@ LABEL_111:
   return v13;
 }
 
-+ (id)queryForRejectedPersonsForFace:(id)a3 options:(id)a4
++ (id)queryForRejectedPersonsForFace:(id)face options:(id)options
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectID];
-  v10 = [v6 predicateWithFormat:@"rejectedFaces CONTAINS %@", v9];
+  optionsCopy = options;
+  faceCopy = face;
+  objectID = [faceCopy objectID];
+  v10 = [v6 predicateWithFormat:@"rejectedFaces CONTAINS %@", objectID];
 
-  v11 = [v8 photoLibrary];
+  photoLibrary = [faceCopy photoLibrary];
 
-  v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v11];
+  v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
   [v12 setMinimumVerifiedFaceCount:0];
   [v12 setMinimumUnverifiedFaceCount:0];
-  v13 = [a1 _queryForPersonsWithFaceRelationshipPredicate:v10 options:v12];
+  v13 = [self _queryForPersonsWithFaceRelationshipPredicate:v10 options:v12];
 
   return v13;
 }
 
-+ (id)queryForPersonsWithFaces:(id)a3 options:(id)a4
++ (id)queryForPersonsWithFaces:(id)faces options:(id)options
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  facesCopy = faces;
+  optionsCopy = options;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = facesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -3965,8 +3965,8 @@ LABEL_111:
 
         v14 = *(*(&v23 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v14 objectID];
-        [v8 addObject:v16];
+        objectID = [v14 objectID];
+        [v8 addObject:objectID];
 
         objc_autoreleasePoolPop(v15);
       }
@@ -3978,43 +3978,43 @@ LABEL_111:
   }
 
   v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"detectedFaces", v8, v23];
-  v18 = [v9 firstObject];
-  v19 = [v18 photoLibrary];
-  v20 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v19];
+  firstObject = [v9 firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v20 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v21 = [a1 _queryForPersonsWithFaceRelationshipPredicate:v17 options:v20];
+  v21 = [self _queryForPersonsWithFaceRelationshipPredicate:v17 options:v20];
 
   return v21;
 }
 
-+ (id)queryForPersonWithFace:(id)a3 options:(id)a4
++ (id)queryForPersonWithFace:(id)face options:(id)options
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectID];
-  v10 = [v6 predicateWithFormat:@"%K CONTAINS %@", @"detectedFaces", v9];
+  optionsCopy = options;
+  faceCopy = face;
+  objectID = [faceCopy objectID];
+  v10 = [v6 predicateWithFormat:@"%K CONTAINS %@", @"detectedFaces", objectID];
 
-  v11 = [v8 photoLibrary];
+  photoLibrary = [faceCopy photoLibrary];
 
-  v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v11];
+  v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v13 = [a1 _queryForPersonsWithFaceRelationshipPredicate:v10 options:v12];
+  v13 = [self _queryForPersonsWithFaceRelationshipPredicate:v10 options:v12];
 
   return v13;
 }
 
-+ (id)queryForPersonWithShareParticipant:(id)a3 options:(id)a4
++ (id)queryForPersonWithShareParticipant:(id)participant options:(id)options
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectID];
+  optionsCopy = options;
+  participantCopy = participant;
+  objectID = [participantCopy objectID];
 
-  if (v7)
+  if (objectID)
   {
-    v8 = [v6 objectID];
-    v18[0] = v8;
+    objectID2 = [participantCopy objectID];
+    v18[0] = objectID2;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
 
     v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"shareParticipant", v9];
@@ -4032,66 +4032,66 @@ LABEL_111:
     v10 = [MEMORY[0x1E696AE18] predicateWithValue:0];
   }
 
-  v12 = [v6 photoLibrary];
+  photoLibrary = [participantCopy photoLibrary];
 
-  v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v12];
+  v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v14 = [v13 photoLibrary];
-  v15 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v10 inLibrary:v14];
+  photoLibrary2 = [v13 photoLibrary];
+  v15 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v10 inLibrary:photoLibrary2];
 
   [v15 setFetchOptions:v13];
 
   return v15;
 }
 
-+ (id)queryForPersonsWithContactIdentifiers:(id)a3 options:(id)a4
++ (id)queryForPersonsWithContactIdentifiers:(id)identifiers options:(id)options
 {
   v4 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (identifiers)
   {
-    v5 = a3;
+    identifiersCopy = identifiers;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    identifiersCopy = MEMORY[0x1E695E0F0];
   }
 
-  v6 = a4;
-  v7 = [v4 predicateWithFormat:@"personUri IN (%@)", v5];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v7 inLibrary:v8];
+  optionsCopy = options;
+  identifiersCopy = [v4 predicateWithFormat:@"personUri IN (%@)", identifiersCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:identifiersCopy inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)_queryForPersonsWithFaceRelationshipPredicate:(id)a3 options:(id)a4
++ (id)_queryForPersonsWithFaceRelationshipPredicate:(id)predicate options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:0];
-  v8 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v6 inLibrary:v7];
+  optionsCopy = options;
+  predicateCopy = predicate;
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v8 = [PHQuery queryForType:@"PHPerson" withBasePredicate:predicateCopy inLibrary:v7];
 
-  [v8 setFetchOptions:v5];
+  [v8 setFetchOptions:optionsCopy];
   [v8 _setCollectionFetchType:2];
 
   return v8;
 }
 
-+ (id)queryForPersonsWithMdIDs:(id)a3 options:(id)a4
++ (id)queryForPersonsWithMdIDs:(id)ds options:(id)options
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  optionsCopy = options;
+  if ([dsCopy count])
   {
     v7 = MEMORY[0x1E696AB28];
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil", @"mdID"];
     v18[0] = v8;
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN (%@)", @"mdID", v5];
-    v18[1] = v9;
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN (%@)", @"mdID", dsCopy];
+    v18[1] = dsCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     v11 = [v7 andPredicateWithSubpredicates:v10];
   }
@@ -4109,25 +4109,25 @@ LABEL_111:
     v11 = [MEMORY[0x1E696AE18] predicateWithValue:0];
   }
 
-  v13 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v13 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v14 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v11 inLibrary:v13];
 
-  [v14 setFetchOptions:v6];
+  [v14 setFetchOptions:optionsCopy];
 
   return v14;
 }
 
-+ (id)queryForPersonsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForPersonsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v9)
   {
@@ -4174,80 +4174,80 @@ LABEL_111:
   }
 
   v16 = v14;
-  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v17 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v18 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v16 inLibrary:v17];
 
-  [v18 setFetchOptions:v6];
+  [v18 setFetchOptions:optionsCopy];
 
   return v18;
 }
 
-+ (id)_queryForPersonsInAssetsWithObjectIDs:(id)a3 withOptions:(id)a4
++ (id)_queryForPersonsInAssetsWithObjectIDs:(id)ds withOptions:(id)options
 {
   v4 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (ds)
   {
-    v5 = a3;
+    dsCopy = ds;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    dsCopy = MEMORY[0x1E695E0F0];
   }
 
-  v6 = a4;
-  v7 = [v4 predicateWithFormat:@"ANY %K.%K IN %@", @"detectedFaces", @"assetForFace", v5];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v7 inLibrary:v8];
+  optionsCopy = options;
+  dsCopy = [v4 predicateWithFormat:@"ANY %K.%K IN %@", @"detectedFaces", @"assetForFace", dsCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:dsCopy inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
   [v9 _setCollectionFetchType:2];
 
   return v9;
 }
 
-+ (id)queryForPersonsInAssetsFetchResult:(id)a3 withOptions:(id)a4
++ (id)queryForPersonsInAssetsFetchResult:(id)result withOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 firstObject];
-  v9 = [v8 photoLibrary];
-  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v9];
+  optionsCopy = options;
+  resultCopy = result;
+  firstObject = [resultCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v11 = [a1 _assetIDsFromAssets:v7 anyAsset:0];
+  v11 = [self _assetIDsFromAssets:resultCopy anyAsset:0];
 
-  v12 = [a1 _queryForPersonsInAssetsWithObjectIDs:v11 withOptions:v10];
+  v12 = [self _queryForPersonsInAssetsWithObjectIDs:v11 withOptions:v10];
 
   return v12;
 }
 
-+ (id)queryForPersonsInAssets:(id)a3 withOptions:(id)a4
++ (id)queryForPersonsInAssets:(id)assets withOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 firstObject];
-  v9 = [v8 photoLibrary];
-  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v9];
+  optionsCopy = options;
+  assetsCopy = assets;
+  firstObject = [assetsCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v11 = [v7 _pl_map:&__block_literal_global_851];
+  v11 = [assetsCopy _pl_map:&__block_literal_global_851];
 
-  v12 = [a1 _queryForPersonsInAssetsWithObjectIDs:v11 withOptions:v10];
+  v12 = [self _queryForPersonsInAssetsWithObjectIDs:v11 withOptions:v10];
 
   return v12;
 }
 
-+ (id)queryForPersonsInAsset:(id)a3 options:(id)a4
++ (id)queryForPersonsInAsset:(id)asset options:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (asset)
   {
-    v12 = a3;
+    assetCopy = asset;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a4;
-    v8 = a3;
-    v9 = [v6 arrayWithObjects:&v12 count:1];
+    optionsCopy = options;
+    assetCopy2 = asset;
+    v9 = [v6 arrayWithObjects:&assetCopy count:1];
 
-    v10 = [a1 queryForPersonsInAssets:v9 withOptions:{v7, v12, v13}];
+    v10 = [self queryForPersonsInAssets:v9 withOptions:{optionsCopy, assetCopy, v13}];
   }
 
   else
@@ -4258,45 +4258,45 @@ LABEL_111:
   return v10;
 }
 
-+ (id)queryForPersonsWithObjectIDs:(id)a3 options:(id)a4
++ (id)queryForPersonsWithObjectIDs:(id)ds options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
-  if (!v6)
+  dsCopy = ds;
+  optionsCopy = options;
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  if (!dsCopy)
   {
-    v6 = [MEMORY[0x1E695DEC8] array];
+    dsCopy = [MEMORY[0x1E695DEC8] array];
   }
 
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v6];
-  v10 = [a1 queryForType:@"PHPerson" withBasePredicate:v9 seedOIDs:0 inLibrary:v8];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", dsCopy];
+  v10 = [self queryForType:@"PHPerson" withBasePredicate:dsCopy seedOIDs:0 inLibrary:v8];
 
-  [v10 setFetchOptions:v7];
+  [v10 setFetchOptions:optionsCopy];
 
   return v10;
 }
 
-+ (id)queryForPersonsWithQuestionType:(unsigned __int16)a3 options:(id)a4
++ (id)queryForPersonsWithQuestionType:(unsigned __int16)type options:(id)options
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"questionType == %d", v4];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v7 inLibrary:v8];
+  optionsCopy = options;
+  typeCopy = [v5 predicateWithFormat:@"questionType == %d", typeCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:typeCopy inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForPersonsWithType:(int64_t)a3 options:(id)a4
++ (id)queryForPersonsWithType:(int64_t)type options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  if (a3)
+  optionsCopy = options;
+  if (type)
   {
-    [v5 predicateWithFormat:@"type == %d", a3];
+    [v5 predicateWithFormat:@"type == %d", type];
   }
 
   else
@@ -4304,38 +4304,38 @@ LABEL_111:
     [v5 predicateWithFormat:@"noindex:(type) == %d", 0];
   }
   v7 = ;
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v9 = [PHQuery queryForType:@"PHPerson" withBasePredicate:v7 inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForPersonsWithOptions:(id)a3
++ (id)queryForPersonsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHPerson" withBasePredicate:0 inLibrary:v4];
 
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForKeyFaceOnPerson:(id)a3 options:(id)a4
++ (id)queryForKeyFaceOnPerson:(id)person options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 photoLibrary];
-  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v7];
+  optionsCopy = options;
+  personCopy = person;
+  photoLibrary = [personCopy photoLibrary];
+  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
   [v8 setIncludeNonvisibleFaces:0];
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v6 objectID];
-  v11 = [v9 predicateWithFormat:@"%K == %@", @"personBeingKeyFace", v10];
+  objectID = [personCopy objectID];
+  v11 = [v9 predicateWithFormat:@"%K == %@", @"personBeingKeyFace", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:v6];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:personCopy];
 
   v13 = [PHQuery queryForType:@"PHFace" withBasePredicate:v11 inLibrary:v12];
 
@@ -4344,61 +4344,61 @@ LABEL_111:
   return v13;
 }
 
-+ (id)queryForRejectedFacesOnPerson:(id)a3 options:(id)a4
++ (id)queryForRejectedFacesOnPerson:(id)person options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"rejectedPersons CONTAINS %@", v8];
+  optionsCopy = options;
+  personCopy = person;
+  objectID = [personCopy objectID];
+  v9 = [v5 predicateWithFormat:@"rejectedPersons CONTAINS %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
 
   v11 = [PHQuery queryForType:@"PHFace" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForFacesOnFaceCrop:(id)a3 options:(id)a4
++ (id)queryForFacesOnFaceCrop:(id)crop options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"faceCrop == %@", v8];
+  optionsCopy = options;
+  cropCopy = crop;
+  objectID = [cropCopy objectID];
+  v9 = [v5 predicateWithFormat:@"faceCrop == %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:cropCopy];
 
   v11 = [PHQuery queryForType:@"PHFace" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForFacesOnAssetWithFace:(id)a3 options:(id)a4
++ (id)queryForFacesOnAssetWithFace:(id)face options:(id)options
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  faceCopy = face;
+  optionsCopy = options;
   v7 = MEMORY[0x1E696AB28];
   v8 = MEMORY[0x1E696AE18];
-  v9 = [v5 objectID];
-  v10 = [v8 predicateWithFormat:@"%K CONTAINS %@", @"assetForFace.detectedFaces", v9];
+  objectID = [faceCopy objectID];
+  v10 = [v8 predicateWithFormat:@"%K CONTAINS %@", @"assetForFace.detectedFaces", objectID];
   v30[0] = v10;
   v11 = MEMORY[0x1E696AE18];
-  v12 = [v5 objectID];
-  v13 = [v11 predicateWithFormat:@"%K CONTAINS %@", @"assetForTemporalDetectedFaces.temporalDetectedFaces", v12];
+  objectID2 = [faceCopy objectID];
+  v13 = [v11 predicateWithFormat:@"%K CONTAINS %@", @"assetForTemporalDetectedFaces.temporalDetectedFaces", objectID2];
   v30[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v15 = [v7 orPredicateWithSubpredicates:v14];
 
-  if (v6)
+  if (optionsCopy)
   {
-    v16 = [v6 includeMediaAnalysisProcessingRangeTypes] & 1;
+    v16 = [optionsCopy includeMediaAnalysisProcessingRangeTypes] & 1;
   }
 
   else
@@ -4406,8 +4406,8 @@ LABEL_111:
     v16 = 1;
   }
 
-  v17 = [v6 includeMediaAnalysisProcessingRangeTypes];
-  if (v16 && (v17 & 2) != 0)
+  includeMediaAnalysisProcessingRangeTypes = [optionsCopy includeMediaAnalysisProcessingRangeTypes];
+  if (v16 && (includeMediaAnalysisProcessingRangeTypes & 2) != 0)
   {
     v18 = [MEMORY[0x1E696AE18] predicateWithValue:1];
     goto LABEL_12;
@@ -4427,15 +4427,15 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if ((v17 & 2) != 0)
+  if ((includeMediaAnalysisProcessingRangeTypes & 2) != 0)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0", @"duration"];
     goto LABEL_11;
   }
 
 LABEL_16:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:4120 description:{@"Invalid parameter not satisfying: %@", @"durationPredicate != nil"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:4120 description:{@"Invalid parameter not satisfying: %@", @"durationPredicate != nil"}];
 
   v19 = 0;
 LABEL_13:
@@ -4445,118 +4445,118 @@ LABEL_13:
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   v22 = [v20 andPredicateWithSubpredicates:v21];
 
-  v23 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
+  v23 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:faceCopy];
   v24 = [PHQuery queryForType:@"PHFace" withBasePredicate:v22 inLibrary:v23];
 
-  [v24 setFetchOptions:v6];
+  [v24 setFetchOptions:optionsCopy];
   [v24 _setCollectionFetchType:2];
 
   return v24;
 }
 
-+ (id)queryForFacesWithVuObservationIDs:(id)a3 options:(id)a4
++ (id)queryForFacesWithVuObservationIDs:(id)ds options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (ds)
   {
-    v6 = a3;
+    dsCopy = ds;
   }
 
   else
   {
-    v6 = MEMORY[0x1E695E0F0];
+    dsCopy = MEMORY[0x1E695E0F0];
   }
 
-  v7 = a4;
-  v8 = [v5 predicateWithFormat:@"%K IN %@", @"vuObservationID", v6];
-  v9 = [v7 photoLibrary];
-  v10 = [a1 queryForType:@"PHFace" withBasePredicate:v8 inLibrary:v9];
+  optionsCopy = options;
+  dsCopy = [v5 predicateWithFormat:@"%K IN %@", @"vuObservationID", dsCopy];
+  photoLibrary = [optionsCopy photoLibrary];
+  v10 = [self queryForType:@"PHFace" withBasePredicate:dsCopy inLibrary:photoLibrary];
 
-  [v10 setFetchOptions:v7];
+  [v10 setFetchOptions:optionsCopy];
 
   return v10;
 }
 
-+ (id)queryForFacesWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForFacesWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHFace" withLocalIdentifiers:a3 options:v6];
-  [v7 setFetchOptions:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHFace" withLocalIdentifiers:identifiers options:optionsCopy];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForKeyFaceForFaceGroup:(id)a3 options:(id)a4
++ (id)queryForKeyFaceForFaceGroup:(id)group options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"faceGroupBeingKeyFace == %@", v8];
+  optionsCopy = options;
+  groupCopy = group;
+  objectID = [groupCopy objectID];
+  v9 = [v5 predicateWithFormat:@"faceGroupBeingKeyFace == %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:groupCopy];
 
   v11 = [PHQuery queryForType:@"PHFace" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForFacesInFaceGroup:(id)a3 options:(id)a4
++ (id)queryForFacesInFaceGroup:(id)group options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"faceGroup = %@", v8];
+  optionsCopy = options;
+  groupCopy = group;
+  objectID = [groupCopy objectID];
+  v9 = [v5 predicateWithFormat:@"faceGroup = %@", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:groupCopy];
 
   v11 = [PHQuery queryForType:@"PHFace" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForFacesForPerson:(id)a3 options:(id)a4
++ (id)queryForFacesForPerson:(id)person options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  personCopy = person;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (![v6 includeMediaAnalysisProcessingRangeTypes] || (objc_msgSend(v6, "includeMediaAnalysisProcessingRangeTypes") & 1) != 0)
+  if (![optionsCopy includeMediaAnalysisProcessingRangeTypes] || (objc_msgSend(optionsCopy, "includeMediaAnalysisProcessingRangeTypes") & 1) != 0)
   {
     v8 = MEMORY[0x1E696AE18];
-    v9 = [v5 objectID];
-    v10 = [v8 predicateWithFormat:@"%K = %@", @"personForFace", v9];
+    objectID = [personCopy objectID];
+    v10 = [v8 predicateWithFormat:@"%K = %@", @"personForFace", objectID];
     [v7 addObject:v10];
   }
 
-  if (([v6 includeMediaAnalysisProcessingRangeTypes] & 2) != 0)
+  if (([optionsCopy includeMediaAnalysisProcessingRangeTypes] & 2) != 0)
   {
     v11 = MEMORY[0x1E696AE18];
-    v12 = [v5 objectID];
-    v13 = [v11 predicateWithFormat:@"%K = %@", @"personForTemporalDetectedFaces", v12];
+    objectID2 = [personCopy objectID];
+    v13 = [v11 predicateWithFormat:@"%K = %@", @"personForTemporalDetectedFaces", objectID2];
     [v7 addObject:v13];
   }
 
   v14 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v7];
-  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
+  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
   v16 = [PHQuery queryForType:@"PHFace" withBasePredicate:v14 inLibrary:v15];
 
-  [v16 setFetchOptions:v6];
+  [v16 setFetchOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForFacesInAssets:(id)a3 options:(id)a4
++ (id)queryForFacesInAssets:(id)assets options:(id)options
 {
-  v5 = a4;
-  v6 = [a3 fetchedObjectIDs];
-  if (v6)
+  optionsCopy = options;
+  fetchedObjectIDs = [assets fetchedObjectIDs];
+  if (fetchedObjectIDs)
   {
-    v7 = v6;
+    v7 = fetchedObjectIDs;
   }
 
   else
@@ -4565,82 +4565,82 @@ LABEL_13:
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!v5 || ([v5 includeMediaAnalysisProcessingRangeTypes] & 1) != 0)
+  if (!optionsCopy || ([optionsCopy includeMediaAnalysisProcessingRangeTypes] & 1) != 0)
   {
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"assetForFace", v7];
     [v8 addObject:v9];
   }
 
-  if (([v5 includeMediaAnalysisProcessingRangeTypes] & 2) != 0)
+  if (([optionsCopy includeMediaAnalysisProcessingRangeTypes] & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"assetForTemporalDetectedFaces", v7];
     [v8 addObject:v10];
   }
 
   v11 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v8];
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:0];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v13 = [PHQuery queryForType:@"PHFace" withBasePredicate:v11 inLibrary:v12];
 
-  [v13 setFetchOptions:v5];
+  [v13 setFetchOptions:optionsCopy];
 
   return v13;
 }
 
-+ (id)queryForFacesInAsset:(id)a3 options:(id)a4
++ (id)queryForFacesInAsset:(id)asset options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!v6 || ([v6 includeMediaAnalysisProcessingRangeTypes] & 1) != 0)
+  if (!optionsCopy || ([optionsCopy includeMediaAnalysisProcessingRangeTypes] & 1) != 0)
   {
     v8 = MEMORY[0x1E696AE18];
-    v9 = [v5 objectID];
-    v10 = [v8 predicateWithFormat:@"%K = %@", @"assetForFace", v9];
+    objectID = [assetCopy objectID];
+    v10 = [v8 predicateWithFormat:@"%K = %@", @"assetForFace", objectID];
     [v7 addObject:v10];
   }
 
-  if (([v6 includeMediaAnalysisProcessingRangeTypes] & 2) != 0)
+  if (([optionsCopy includeMediaAnalysisProcessingRangeTypes] & 2) != 0)
   {
     v11 = MEMORY[0x1E696AE18];
-    v12 = [v5 objectID];
-    v13 = [v11 predicateWithFormat:@"%K = %@", @"assetForTemporalDetectedFaces", v12];
+    objectID2 = [assetCopy objectID];
+    v13 = [v11 predicateWithFormat:@"%K = %@", @"assetForTemporalDetectedFaces", objectID2];
     [v7 addObject:v13];
   }
 
   v14 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v7];
-  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
+  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:assetCopy];
   v16 = [PHQuery queryForType:@"PHFace" withBasePredicate:v14 inLibrary:v15];
 
-  [v16 setFetchOptions:v6];
+  [v16 setFetchOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForSingletonFacesWithOptions:(id)a3
++ (id)queryForSingletonFacesWithOptions:(id)options
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  optionsCopy = options;
   v6 = [v4 predicateWithFormat:@"%K == NULL", @"faceGroup"];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NULL", @"personForFace", v6];
   v13[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v9 = [v3 andPredicateWithSubpredicates:v8];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:0];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v11 = [PHQuery queryForType:@"PHFace" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v5];
+  [v11 setFetchOptions:optionsCopy];
   [v11 _setCollectionFetchType:2];
 
   return v11;
 }
 
-+ (id)queryForFacesWithOptions:(id)a3
++ (id)queryForFacesWithOptions:(id)options
 {
-  v3 = a3;
-  if ([v3 includeMediaAnalysisProcessingRangeTypes] == 1)
+  optionsCopy = options;
+  if ([optionsCopy includeMediaAnalysisProcessingRangeTypes] == 1)
   {
     v4 = @"%K == 0.0";
 LABEL_5:
@@ -4648,7 +4648,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 includeMediaAnalysisProcessingRangeTypes] == 2)
+  if ([optionsCopy includeMediaAnalysisProcessingRangeTypes] == 2)
   {
     v4 = @"%K > 0.0";
     goto LABEL_5;
@@ -4656,20 +4656,20 @@ LABEL_5:
 
   v5 = 0;
 LABEL_7:
-  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v7 = [PHQuery queryForType:@"PHFace" withBasePredicate:v5 inLibrary:v6];
 
-  [v7 setFetchOptions:v3];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForMomentListsWithSubType:(int64_t)a3 options:(id)a4
++ (id)queryForMomentListsWithSubType:(int64_t)type options:(id)options
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:0];
-  switch(a3)
+  optionsCopy = options;
+  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  switch(type)
   {
     case 1:
       v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 1];
@@ -4696,7 +4696,7 @@ LABEL_7:
       v10 = &v17;
       break;
     default:
-      [v5 hasAnySortDescriptors];
+      [optionsCopy hasAnySortDescriptors];
       v13 = 0;
       v8 = 0;
       goto LABEL_11;
@@ -4704,67 +4704,67 @@ LABEL_7:
 
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-  if (([v5 hasAnySortDescriptors] & 1) == 0 && v13)
+  if (([optionsCopy hasAnySortDescriptors] & 1) == 0 && v13)
   {
-    v14 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v6];
+    v14 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v6];
 
     [v14 setInternalSortDescriptors:v13];
-    v5 = v14;
+    optionsCopy = v14;
   }
 
 LABEL_11:
-  [v8 setFetchOptions:v5];
+  [v8 setFetchOptions:optionsCopy];
   v15 = v8;
 
   return v8;
 }
 
-+ (id)queryForMomentListsWithSubType:(int64_t)a3 containingMoment:(id)a4
++ (id)queryForMomentListsWithSubType:(int64_t)type containingMoment:(id)moment
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  momentCopy = moment;
+  v6 = momentCopy;
+  if (type == 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = MEMORY[0x1E696AE18];
-    v17 = [v5 objectID];
-    v9 = [v16 predicateWithFormat:@"(kind == %d) AND (moments CONTAINS %@)", 1, v17];
+    objectID = [momentCopy objectID];
+    v9 = [v16 predicateWithFormat:@"(kind == %d) AND (moments CONTAINS %@)", 1, objectID];
 
     v18 = MEMORY[0x1E696AE18];
-    v19 = [v6 objectID];
-    v14 = [v18 predicateWithFormat:@"(kind == %d) AND (moments CONTAINS %@)", 2, v19];
+    objectID2 = [v6 objectID];
+    v14 = [v18 predicateWithFormat:@"(kind == %d) AND (moments CONTAINS %@)", 2, objectID2];
 
     v20 = MEMORY[0x1E696AB28];
     v26[0] = v9;
     v26[1] = v14;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     v22 = [v20 orPredicateWithSubpredicates:v21];
-    v23 = [v6 photoLibrary];
-    v11 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v22 inLibrary:v23];
+    photoLibrary = [v6 photoLibrary];
+    v11 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v22 inLibrary:photoLibrary];
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
     v12 = MEMORY[0x1E696AE18];
-    v13 = [v5 objectID];
-    v14 = [v12 predicateWithFormat:@"(kind == %d) AND (SUBQUERY(childPhotosHighlights, $cph, SUBQUERY($cph.childPhotosHighlights, $ccph, ANY $ccph.moments == %@).@count > 0).@count > 0)", 2, v13];
+    objectID3 = [momentCopy objectID];
+    v14 = [v12 predicateWithFormat:@"(kind == %d) AND (SUBQUERY(childPhotosHighlights, $cph, SUBQUERY($cph.childPhotosHighlights, $ccph, ANY $ccph.moments == %@).@count > 0).@count > 0)", 2, objectID3];
 
-    v15 = [v6 photoLibrary];
-    v11 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v14 inLibrary:v15];
+    photoLibrary2 = [v6 photoLibrary];
+    v11 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v14 inLibrary:photoLibrary2];
 
     v9 = 0;
   }
 
   else
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v7 = MEMORY[0x1E696AE18];
-      v8 = [v5 objectID];
-      v9 = [v7 predicateWithFormat:@"(kind == %d) AND (SUBQUERY(childPhotosHighlights, $cph, ANY $cph.moments == %@).@count > 0)", 1, v8];
+      objectID4 = [momentCopy objectID];
+      v9 = [v7 predicateWithFormat:@"(kind == %d) AND (SUBQUERY(childPhotosHighlights, $cph, ANY $cph.moments == %@).@count > 0)", 1, objectID4];
 
-      v10 = [v6 photoLibrary];
-      v11 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v9 inLibrary:v10];
+      photoLibrary3 = [v6 photoLibrary];
+      v11 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v9 inLibrary:photoLibrary3];
     }
 
     else
@@ -4781,91 +4781,91 @@ LABEL_11:
   return v11;
 }
 
-+ (id)queryForTopLevelCollectionsMatchingPredicate:(id)a3 options:(id)a4
++ (id)queryForTopLevelCollectionsMatchingPredicate:(id)predicate options:(id)options
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v8 = [v7 albumRootFolderObjectID];
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"parentFolder", v8];
+  predicateCopy = predicate;
+  optionsCopy = options;
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  albumRootFolderObjectID = [v7 albumRootFolderObjectID];
+  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"parentFolder", albumRootFolderObjectID];
   v10 = MEMORY[0x1E696AB28];
   v19[0] = v9;
-  v19[1] = v5;
+  v19[1] = predicateCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v12 = [v10 andPredicateWithSubpredicates:v11];
 
   v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"parentFolder" ascending:1];
-  if (([v6 hasAnySortDescriptors] & 1) == 0 && v13)
+  if (([optionsCopy hasAnySortDescriptors] & 1) == 0 && v13)
   {
-    v14 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v7];
+    v14 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v7];
 
     v18 = v13;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
     [v14 setInternalSortDescriptors:v15];
 
-    v6 = v14;
+    optionsCopy = v14;
   }
 
   v16 = [PHQuery queryForType:@"PHCollection" withBasePredicate:v12 inLibrary:v7];
-  [v16 setFetchOptions:v6];
+  [v16 setFetchOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForTopLevelUserCollectionsWithOptions:(id)a3
++ (id)queryForTopLevelUserCollectionsWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[PHCollection predicateForUserCollections];
-  v6 = [a1 queryForTopLevelCollectionsMatchingPredicate:v5 options:v4];
+  v6 = [self queryForTopLevelCollectionsMatchingPredicate:v5 options:optionsCopy];
 
   return v6;
 }
 
-+ (id)_queryForRootCollectionListWithRootFolder:(id)a3 options:(id)a4
++ (id)_queryForRootCollectionListWithRootFolder:(id)folder options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"self = %@", a3];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHCollectionList" withBasePredicate:v7 inLibrary:v8];
+  optionsCopy = options;
+  folder = [v5 predicateWithFormat:@"self = %@", folder];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHCollectionList" withBasePredicate:folder inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForRootProjectCollectionListWithOptions:(id)a3
++ (id)queryForRootProjectCollectionListWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
-  v6 = [v5 projectAlbumRootFolderObjectID];
+  optionsCopy = options;
+  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  projectAlbumRootFolderObjectID = [v5 projectAlbumRootFolderObjectID];
 
-  v7 = [a1 _queryForRootCollectionListWithRootFolder:v6 options:v4];
+  v7 = [self _queryForRootCollectionListWithRootFolder:projectAlbumRootFolderObjectID options:optionsCopy];
 
   return v7;
 }
 
-+ (id)queryForRootAlbumCollectionListWithOptions:(id)a3
++ (id)queryForRootAlbumCollectionListWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
-  v6 = [v5 albumRootFolderObjectID];
+  optionsCopy = options;
+  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  albumRootFolderObjectID = [v5 albumRootFolderObjectID];
 
-  v7 = [a1 _queryForRootCollectionListWithRootFolder:v6 options:v4];
+  v7 = [self _queryForRootCollectionListWithRootFolder:albumRootFolderObjectID options:optionsCopy];
 
   return v7;
 }
 
-+ (id)fetchRootFolderIDForAlbumKind:(int)a3 photoLibrary:(id)a4
++ (id)fetchRootFolderIDForAlbumKind:(int)kind photoLibrary:(id)library
 {
-  v4 = *&a3;
+  v4 = *&kind;
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 photoLibraryForCurrentQueueQoS];
+  libraryCopy = library;
+  photoLibraryForCurrentQueueQoS = [libraryCopy photoLibraryForCurrentQueueQoS];
   v7 = MEMORY[0x1E695D5E0];
-  v8 = [MEMORY[0x1E69BE558] entityName];
-  v9 = [v7 fetchRequestWithEntityName:v8];
+  entityName = [MEMORY[0x1E69BE558] entityName];
+  v9 = [v7 fetchRequestWithEntityName:entityName];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", v4];
   [v9 setIncludesPropertyValues:0];
@@ -4889,7 +4889,7 @@ LABEL_11:
   v18[2] = __54__PHQuery_fetchRootFolderIDForAlbumKind_photoLibrary___block_invoke;
   v18[3] = &unk_1E75A9D58;
   v21 = &v29;
-  v11 = v6;
+  v11 = photoLibraryForCurrentQueueQoS;
   v19 = v11;
   v12 = v9;
   v20 = v12;
@@ -4898,7 +4898,7 @@ LABEL_11:
   v13 = v30[5];
   if (v13)
   {
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
   }
 
   else
@@ -4912,13 +4912,13 @@ LABEL_11:
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_ERROR, "Failed to fetch root folder %@", buf, 0xCu);
     }
 
-    v14 = 0;
+    firstObject = 0;
   }
 
   _Block_object_dispose(&v23, 8);
   _Block_object_dispose(&v29, 8);
 
-  return v14;
+  return firstObject;
 }
 
 void __54__PHQuery_fetchRootFolderIDForAlbumKind_photoLibrary___block_invoke(uint64_t a1)
@@ -4934,18 +4934,18 @@ void __54__PHQuery_fetchRootFolderIDForAlbumKind_photoLibrary___block_invoke(uin
   *(v6 + 40) = v5;
 }
 
-+ (id)queryForCollectionListsWithType:(int64_t)a3 subtype:(int64_t)a4 options:(id)a5
++ (id)queryForCollectionListsWithType:(int64_t)type subtype:(int64_t)subtype options:(id)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = _fetchTypeForCollectionListTypeAndSubtype(a3);
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:0];
-  if (a3 == 3)
+  optionsCopy = options;
+  v9 = _fetchTypeForCollectionListTypeAndSubtype(type);
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  if (type == 3)
   {
-    switch(a4)
+    switch(subtype)
     {
       case 0x7FFFFFFFFFFFFFFFLL:
-        if ([v8 includeFavoriteMemoriesCollectionList])
+        if ([optionsCopy includeFavoriteMemoriesCollectionList])
         {
           v15 = [&unk_1F102E1F8 arrayByAddingObject:&unk_1F102D238];
         }
@@ -4967,8 +4967,8 @@ void __54__PHQuery_fetchRootFolderIDForAlbumKind_photoLibrary___block_invoke(uin
         v14 = 4004;
         break;
       default:
-        v16 = [v8 includeFavoriteMemoriesCollectionList];
-        if (a4 != 1000000202 || !v16)
+        includeFavoriteMemoriesCollectionList = [optionsCopy includeFavoriteMemoriesCollectionList];
+        if (subtype != 1000000202 || !includeFavoriteMemoriesCollectionList)
         {
           v23 = PLPhotoKitGetLog();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -4976,7 +4976,7 @@ void __54__PHQuery_fetchRootFolderIDForAlbumKind_photoLibrary___block_invoke(uin
             *buf = 67109376;
             v26 = 3;
             v27 = 1024;
-            v28 = a4;
+            subtypeCopy = subtype;
             _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_ERROR, "Unsupported fetch for collections with type %d and subtype %d", buf, 0xEu);
           }
 
@@ -4993,35 +4993,35 @@ void __54__PHQuery_fetchRootFolderIDForAlbumKind_photoLibrary___block_invoke(uin
 LABEL_16:
     v11 = v17;
 LABEL_19:
-    v18 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:0];
+    v18 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
     v12 = [PHQuery queryForType:v9 withBasePredicate:v11 inLibrary:v18];
 
     v19 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"kind" ascending:1];
-    if (([v8 hasAnySortDescriptors] & 1) == 0 && v19)
+    if (([optionsCopy hasAnySortDescriptors] & 1) == 0 && v19)
     {
-      v20 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v8 photoLibrary:v10];
+      v20 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v10];
 
       v24 = v19;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
       [v20 setInternalSortDescriptors:v21];
 
-      v8 = v20;
+      optionsCopy = v20;
     }
 
-    [v12 setFetchOptions:v8];
+    [v12 setFetchOptions:optionsCopy];
 
     goto LABEL_23;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
-    v12 = [a1 queryForMomentListsWithSubType:a4 options:v8];
+    v12 = [self queryForMomentListsWithSubType:subtype options:optionsCopy];
     goto LABEL_24;
   }
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind IN %@", &unk_1F102E1E0];
   v12 = [PHQuery queryForType:v9 withBasePredicate:v11 inLibrary:v10];
-  [v12 setFetchOptions:v8];
+  [v12 setFetchOptions:optionsCopy];
 LABEL_23:
 
 LABEL_24:
@@ -5029,39 +5029,39 @@ LABEL_24:
   return v12;
 }
 
-+ (id)queryForCollectionListsWithType:(int64_t)a3 localIdentifiers:(id)a4 options:(id)a5
++ (id)queryForCollectionListsWithType:(int64_t)type localIdentifiers:(id)identifiers options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = _fetchTypeForCollectionListTypeAndSubtype(a3);
-  v11 = [a1 queryForType:v10 withLocalIdentifiers:v9 options:v8];
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  v10 = _fetchTypeForCollectionListTypeAndSubtype(type);
+  v11 = [self queryForType:v10 withLocalIdentifiers:identifiersCopy options:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForCollectionListContainingCollection:(id)a3 options:(id)a4
++ (id)queryForCollectionListContainingCollection:(id)collection options:(id)options
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  collectionCopy = collection;
+  optionsCopy = options;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 assetCollectionType] == 3)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [collectionCopy assetCollectionType] == 3)
   {
     v7 = MEMORY[0x1E696AE18];
-    v8 = [v5 objectID];
-    v9 = [v7 predicateWithFormat:@"SUBQUERY(childPhotosHighlights, $cph, ANY $cph.moments == %@).@count > 0", v8];
+    objectID = [collectionCopy objectID];
+    v9 = [v7 predicateWithFormat:@"SUBQUERY(childPhotosHighlights, $cph, ANY $cph.moments == %@).@count > 0", objectID];
 
     v10 = MEMORY[0x1E696AE18];
-    v11 = [v5 objectID];
-    v12 = [v10 predicateWithFormat:@"SUBQUERY(childPhotosHighlights, $cph, SUBQUERY($cph.childPhotosHighlights, $ccph, ANY $ccph.moments == %@).@count > 0).@count > 0", v11];
+    objectID2 = [collectionCopy objectID];
+    photoLibrary2 = [v10 predicateWithFormat:@"SUBQUERY(childPhotosHighlights, $cph, SUBQUERY($cph.childPhotosHighlights, $ccph, ANY $ccph.moments == %@).@count > 0).@count > 0", objectID2];
 
     v13 = MEMORY[0x1E696AB28];
     v28[0] = v9;
-    v28[1] = v12;
+    v28[1] = photoLibrary2;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
     v15 = [v13 orPredicateWithSubpredicates:v14];
-    v16 = [v5 photoLibrary];
-    v17 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v15 inLibrary:v16];
+    photoLibrary = [collectionCopy photoLibrary];
+    v17 = [PHQuery queryForType:@"PHMomentList" withBasePredicate:v15 inLibrary:photoLibrary];
 
     goto LABEL_10;
   }
@@ -5070,10 +5070,10 @@ LABEL_24:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v20 = MEMORY[0x1E696AE18];
-    v21 = [v5 objectID];
-    v9 = [v20 predicateWithFormat:@"childCollections CONTAINS %@", v21];
+    objectID3 = [collectionCopy objectID];
+    v9 = [v20 predicateWithFormat:@"childCollections CONTAINS %@", objectID3];
 
-    if (([v6 includeRootFolder] & 1) == 0)
+    if (([optionsCopy includeRootFolder] & 1) == 0)
     {
       v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT kind IN %@", &unk_1F102E1C8];
       v23 = MEMORY[0x1E696AB28];
@@ -5085,11 +5085,11 @@ LABEL_24:
       v9 = v25;
     }
 
-    v12 = [v5 photoLibrary];
-    v17 = [PHQuery queryForType:@"PHCollectionList" withBasePredicate:v9 inLibrary:v12];
+    photoLibrary2 = [collectionCopy photoLibrary];
+    v17 = [PHQuery queryForType:@"PHCollectionList" withBasePredicate:v9 inLibrary:photoLibrary2];
 LABEL_10:
 
-    if (!v6)
+    if (!optionsCopy)
     {
       goto LABEL_12;
     }
@@ -5098,13 +5098,13 @@ LABEL_10:
   }
 
   v18 = [MEMORY[0x1E696AE18] predicateWithValue:0];
-  v19 = [v5 photoLibrary];
-  v17 = [PHQuery queryForType:@"PHCollectionList" withBasePredicate:v18 inLibrary:v19];
+  photoLibrary3 = [collectionCopy photoLibrary];
+  v17 = [PHQuery queryForType:@"PHCollectionList" withBasePredicate:v18 inLibrary:photoLibrary3];
 
-  if (v6)
+  if (optionsCopy)
   {
 LABEL_11:
-    [v17 setFetchOptions:v6];
+    [v17 setFetchOptions:optionsCopy];
   }
 
 LABEL_12:
@@ -5112,54 +5112,54 @@ LABEL_12:
   return v17;
 }
 
-+ (id)queryForCollectionsInCollectionList:(id)a3 options:(id)a4
++ (id)queryForCollectionsInCollectionList:(id)list options:(id)options
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 collectionListType] == 1)
+  listCopy = list;
+  optionsCopy = options;
+  if ([listCopy collectionListType] == 1)
   {
-    v7 = [PHQuery queryForMomentsInMomentList:v5 options:v6];
+    v7 = [PHQuery queryForMomentsInMomentList:listCopy options:optionsCopy];
     v8 = PHQueryForCollectionsInMomentList;
 LABEL_3:
     v9 = _Block_copy(v8);
     goto LABEL_4;
   }
 
-  if ([v5 collectionListType] == 3 && objc_msgSend(v5, "collectionListSubtype") == 200)
+  if ([listCopy collectionListType] == 3 && objc_msgSend(listCopy, "collectionListSubtype") == 200)
   {
-    v7 = [PHQuery queryForAssetCollectionsWithType:1 subtype:3 options:v6];
+    v7 = [PHQuery queryForAssetCollectionsWithType:1 subtype:3 options:optionsCopy];
     v8 = PHQueryForCollectionsInSmartFolderEvents;
     goto LABEL_3;
   }
 
-  if ([v5 collectionListType] == 3 && objc_msgSend(v5, "collectionListSubtype") == 201)
+  if ([listCopy collectionListType] == 3 && objc_msgSend(listCopy, "collectionListSubtype") == 201)
   {
-    v7 = [PHQuery queryForAssetCollectionsWithType:1 subtype:4 options:v6];
+    v7 = [PHQuery queryForAssetCollectionsWithType:1 subtype:4 options:optionsCopy];
     v8 = PHQueryForCollectionsInSmartFolderFaces;
     goto LABEL_3;
   }
 
-  if ([v5 collectionListType] == 3 && objc_msgSend(v5, "collectionListSubtype") == 1000000202)
+  if ([listCopy collectionListType] == 3 && objc_msgSend(listCopy, "collectionListSubtype") == 1000000202)
   {
-    v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
+    v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:listCopy];
     v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"favorite != 0 AND rejected == 0"];
-    v13 = [v6 sharingFilter];
-    if (v13 == 2)
+    sharingFilter = [optionsCopy sharingFilter];
+    if (sharingFilter == 2)
     {
       v18 = [MEMORY[0x1E696AE18] predicateWithValue:1];
     }
 
     else
     {
-      if (v13 == 1)
+      if (sharingFilter == 1)
       {
         [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"sharingComposition", 1];
       }
 
       else
       {
-        if (v13)
+        if (sharingFilter)
         {
           v19 = 0;
           goto LABEL_29;
@@ -5179,20 +5179,20 @@ LABEL_29:
     v22 = [v20 andPredicateWithSubpredicates:v21];
 
     v7 = [PHQuery queryForType:@"PHMemory" withBasePredicate:v22 inLibrary:v11];
-    if (([v6 hasAnySortDescriptors] & 1) == 0)
+    if (([optionsCopy hasAnySortDescriptors] & 1) == 0)
     {
-      v23 = [v5 photoLibrary];
-      v24 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v23];
+      photoLibrary = [listCopy photoLibrary];
+      v24 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
       v25 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
       v27 = v25;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
 
       [v24 setInternalSortDescriptors:v26];
-      v6 = v24;
+      optionsCopy = v24;
     }
 
-    [v7 setFetchOptions:v6];
+    [v7 setFetchOptions:optionsCopy];
     v9 = _Block_copy(PHQueryForCollectionsInSmartFolderFavoriteMemories);
 
 LABEL_4:
@@ -5206,92 +5206,92 @@ LABEL_4:
   }
 
   v14 = MEMORY[0x1E696AE18];
-  v15 = [v5 objectID];
-  v10 = [v14 predicateWithFormat:@"parentFolder = %@", v15];
+  objectID = [listCopy objectID];
+  v10 = [v14 predicateWithFormat:@"parentFolder = %@", objectID];
 
   v9 = _Block_copy(PHQueryForCollectionsInFolder);
 LABEL_19:
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:listCopy];
   v7 = [PHQuery queryForType:@"PHCollection" withBasePredicate:v10 inLibrary:v16];
 
-  if (v6)
+  if (optionsCopy)
   {
-    [v7 setFetchOptions:v6];
+    [v7 setFetchOptions:optionsCopy];
   }
 
 LABEL_21:
-  [v7 _setContainerCollection:v5];
+  [v7 _setContainerCollection:listCopy];
   [v7 _setIdentificationBlock:v9];
 
   return v7;
 }
 
-+ (id)queryForInFlightJobCountWithConfiguration:(id)a3 options:(id)a4
++ (id)queryForInFlightJobCountWithConfiguration:(id)configuration options:(id)options
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  configurationCopy = configuration;
   v9 = [v6 predicateWithFormat:@"%K == %hu", @"state", 1];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %hu", @"state", 2];
   v11 = MEMORY[0x1E696AB28];
-  v12 = [MEMORY[0x1E69BE270] predicateForAcknowledgeableJobs];
-  v17[0] = v12;
+  predicateForAcknowledgeableJobs = [MEMORY[0x1E69BE270] predicateForAcknowledgeableJobs];
+  v17[0] = predicateForAcknowledgeableJobs;
   v17[1] = v9;
   v17[2] = v10;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
   v14 = [v11 orPredicateWithSubpredicates:v13];
 
-  v15 = [a1 _queryForAssetResourceUploadJobsWithOptions:v7 configuration:v8 predicate:v14];
+  v15 = [self _queryForAssetResourceUploadJobsWithOptions:optionsCopy configuration:configurationCopy predicate:v14];
 
   return v15;
 }
 
-+ (id)queryForAcknowledgeableAssetResourceUploadJobsWithConfiguration:(id)a3 options:(id)a4
++ (id)queryForAcknowledgeableAssetResourceUploadJobsWithConfiguration:(id)configuration options:(id)options
 {
   v6 = MEMORY[0x1E69BE270];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 predicateForAcknowledgeableJobs];
-  v10 = [a1 _queryForAssetResourceUploadJobsWithOptions:v7 configuration:v8 predicate:v9];
+  optionsCopy = options;
+  configurationCopy = configuration;
+  predicateForAcknowledgeableJobs = [v6 predicateForAcknowledgeableJobs];
+  v10 = [self _queryForAssetResourceUploadJobsWithOptions:optionsCopy configuration:configurationCopy predicate:predicateForAcknowledgeableJobs];
 
   return v10;
 }
 
-+ (id)queryForAssetResourceUploadJobsWithConfiguration:(id)a3 states:(id)a4 options:(id)a5
++ (id)queryForAssetResourceUploadJobsWithConfiguration:(id)configuration states:(id)states options:(id)options
 {
   v8 = MEMORY[0x1E696AE18];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 predicateWithFormat:@"%K IN %@", @"state", a4];
-  v12 = [a1 _queryForAssetResourceUploadJobsWithOptions:v9 configuration:v10 predicate:v11];
+  optionsCopy = options;
+  configurationCopy = configuration;
+  states = [v8 predicateWithFormat:@"%K IN %@", @"state", states];
+  v12 = [self _queryForAssetResourceUploadJobsWithOptions:optionsCopy configuration:configurationCopy predicate:states];
 
   return v12;
 }
 
-+ (id)_queryForAssetResourceUploadJobsWithOptions:(id)a3 configuration:(id)a4 predicate:(id)a5
++ (id)_queryForAssetResourceUploadJobsWithOptions:(id)options configuration:(id)configuration predicate:(id)predicate
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
+  optionsCopy = options;
+  predicateCopy = predicate;
+  configurationCopy = configuration;
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v11 = MEMORY[0x1E696AE18];
-  v12 = [v9 objectID];
+  objectID = [configurationCopy objectID];
 
-  v13 = [v11 predicateWithFormat:@"configuration = %@", v12];
+  v13 = [v11 predicateWithFormat:@"configuration = %@", objectID];
 
-  if (v8)
+  if (predicateCopy)
   {
     v14 = MEMORY[0x1E696AB28];
     v19[0] = v13;
-    v19[1] = v8;
+    v19[1] = predicateCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v16 = [v14 andPredicateWithSubpredicates:v15];
 
     v17 = [PHQuery queryForType:@"PHAssetResourceUploadJob" withBasePredicate:v16 inLibrary:v10];
 
-    if (!v7)
+    if (!optionsCopy)
     {
       goto LABEL_4;
     }
@@ -5300,10 +5300,10 @@ LABEL_21:
   }
 
   v17 = [PHQuery queryForType:@"PHAssetResourceUploadJob" withBasePredicate:v13 inLibrary:v10];
-  if (v7)
+  if (optionsCopy)
   {
 LABEL_3:
-    [v17 setFetchOptions:v7];
+    [v17 setFetchOptions:optionsCopy];
   }
 
 LABEL_4:
@@ -5311,12 +5311,12 @@ LABEL_4:
   return v17;
 }
 
-+ (id)queryForRetryableAssetResourceUploadJobsWithConfiguration:(id)a3 options:(id)a4
++ (id)queryForRetryableAssetResourceUploadJobsWithConfiguration:(id)configuration options:(id)options
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  configurationCopy = configuration;
   v9 = [v6 predicateWithFormat:@"%K == %hu", @"state", 3];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %hu", @"clientStatus", 0];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"attemptCount", 0];
@@ -5327,67 +5327,67 @@ LABEL_4:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
   v14 = [v12 andPredicateWithSubpredicates:v13];
 
-  v15 = [a1 _queryForAssetResourceUploadJobsWithOptions:v7 configuration:v8 predicate:v14];
+  v15 = [self _queryForAssetResourceUploadJobsWithOptions:optionsCopy configuration:configurationCopy predicate:v14];
 
   return v15;
 }
 
-+ (id)queryForAssetResourceUploadJobConfigurationsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForAssetResourceUploadJobConfigurationsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"uuid IN (%@)", a3];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHAssetResourceUploadJobConfiguration" withBasePredicate:v7 inLibrary:v8];
-  [v9 setFetchOptions:v6];
+  optionsCopy = options;
+  identifiers = [v5 predicateWithFormat:@"uuid IN (%@)", identifiers];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHAssetResourceUploadJobConfiguration" withBasePredicate:identifiers inLibrary:v8];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForAssetResourceUploadJobConfigurationsWithOptions:(id)a3
++ (id)queryForAssetResourceUploadJobConfigurationsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHAssetResourceUploadJobConfiguration" withBasePredicate:0 inLibrary:v4];
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForMomentsContainingAssetsWithOIDs:(id)a3 options:(id)a4
++ (id)queryForMomentsContainingAssetsWithOIDs:(id)ds options:(id)options
 {
   v4 = MEMORY[0x1E696AE18];
-  if (a3)
+  if (ds)
   {
-    v5 = a3;
+    dsCopy = ds;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    dsCopy = MEMORY[0x1E695E0F0];
   }
 
-  v6 = a4;
-  v7 = [v4 predicateWithFormat:@"ANY assets IN %@", v5];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v7 inLibrary:v8];
+  optionsCopy = options;
+  dsCopy = [v4 predicateWithFormat:@"ANY assets IN %@", dsCopy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v9 = [PHQuery queryForType:@"PHMoment" withBasePredicate:dsCopy inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForMomentsContainingAssetsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForMomentsContainingAssetsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -5413,21 +5413,21 @@ LABEL_4:
   }
 
   v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY assets.uuid IN %@", v7];
-  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v16 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v14 inLibrary:v15];
 
-  [v16 setFetchOptions:v6];
+  [v16 setFetchOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForMomentsForPersonsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForMomentsForPersonsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  if (identifiersCopy)
   {
-    v7 = v5;
+    v7 = identifiersCopy;
   }
 
   else
@@ -5435,10 +5435,10 @@ LABEL_4:
     v7 = MEMORY[0x1E695E0F0];
   }
 
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  if (!v6)
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  if (!optionsCopy)
   {
-    v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v8];
+    optionsCopy = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v8];
   }
 
   v22 = 0;
@@ -5447,20 +5447,20 @@ LABEL_4:
   v25 = __Block_byref_object_copy__36903;
   v26 = __Block_byref_object_dispose__36904;
   v27 = 0;
-  v9 = [v8 photoLibrary];
-  v10 = [v9 managedObjectContext];
+  photoLibrary = [v8 photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __65__PHQuery_queryForMomentsForPersonsWithLocalIdentifiers_options___block_invoke;
   v17[3] = &unk_1E75AA158;
   v11 = v7;
   v18 = v11;
-  v12 = v6;
+  v12 = optionsCopy;
   v19 = v12;
-  v13 = v10;
+  v13 = managedObjectContext;
   v20 = v13;
   v21 = &v22;
-  [v9 performBlockAndWait:v17];
+  [photoLibrary performBlockAndWait:v17];
   if (v23[5])
   {
     v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v23[5]];
@@ -5532,17 +5532,17 @@ void __65__PHQuery_queryForMomentsForPersonsWithLocalIdentifiers_options___block
   *(v18 + 40) = v16;
 }
 
-+ (id)queryForMomentsForFacesWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForMomentsForFacesWithLocalIdentifiers:(id)identifiers options:(id)options
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v5;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -5560,7 +5560,7 @@ void __65__PHQuery_queryForMomentsForPersonsWithLocalIdentifiers_options___block
         v13 = [(PHObject *)PHFace uuidFromLocalIdentifier:*(*(&v21 + 1) + 8 * i)];
         if (v13)
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -5570,49 +5570,49 @@ void __65__PHQuery_queryForMomentsForPersonsWithLocalIdentifiers_options___block
     while (v10);
   }
 
-  v14 = [v6 verifiedPersonTypes];
-  if (v14)
+  verifiedPersonTypes = [optionsCopy verifiedPersonTypes];
+  if (verifiedPersonTypes)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(assets, $a, SUBQUERY($a.%K, $f, $f.%K IN %@ AND $f.%K IN %@).@count != 0).@count != 0", @"detectedFaces", @"uuid", v7, @"personForFace.verifiedType", v14];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(assets, $a, SUBQUERY($a.%K, $f, $f.%K IN %@ AND $f.%K IN %@).@count != 0).@count != 0", @"detectedFaces", @"uuid", array, @"personForFace.verifiedType", verifiedPersonTypes];
   }
 
   else
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(assets, $a, SUBQUERY($a.%K, $f, $f.%K IN %@).@count != 0).@count != 0", @"detectedFaces", @"uuid", v7, v19, v20];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(assets, $a, SUBQUERY($a.%K, $f, $f.%K IN %@).@count != 0).@count != 0", @"detectedFaces", @"uuid", array, v19, v20];
   }
   v15 = ;
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v17 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v15 inLibrary:v16];
 
-  [v17 setFetchOptions:v6];
+  [v17 setFetchOptions:optionsCopy];
   [v17 _setCollectionFetchType:2];
 
   return v17;
 }
 
-+ (id)queryForMomentsInMomentList:(id)a3 options:(id)a4
++ (id)queryForMomentsInMomentList:(id)list options:(id)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
-  if ([v5 collectionListSubtype] == 1)
+  listCopy = list;
+  optionsCopy = options;
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:listCopy];
+  if ([listCopy collectionListSubtype] == 1)
   {
     v8 = MEMORY[0x1E696AE18];
-    v9 = [v5 objectID];
-    [v8 predicateWithFormat:@"highlight.parentPhotosHighlight == %@", v9];
+    objectID = [listCopy objectID];
+    [v8 predicateWithFormat:@"highlight.parentPhotosHighlight == %@", objectID];
     goto LABEL_5;
   }
 
-  if ([v5 collectionListSubtype] == 2)
+  if ([listCopy collectionListSubtype] == 2)
   {
     v10 = MEMORY[0x1E696AE18];
-    v9 = [v5 objectID];
-    [v10 predicateWithFormat:@"highlight.parentPhotosHighlight.parentPhotosHighlight == %@", v9];
+    objectID = [listCopy objectID];
+    [v10 predicateWithFormat:@"highlight.parentPhotosHighlight.parentPhotosHighlight == %@", objectID];
     v11 = LABEL_5:;
     v12 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v11 inLibrary:v7];
 
-    if (!v6)
+    if (!optionsCopy)
     {
       goto LABEL_7;
     }
@@ -5620,7 +5620,7 @@ void __65__PHQuery_queryForMomentsForPersonsWithLocalIdentifiers_options___block
     goto LABEL_6;
   }
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported collectionListSubtype: %li for querying moments within a moment list.", objc_msgSend(v5, "collectionListSubtype")];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported collectionListSubtype: %li for querying moments within a moment list.", objc_msgSend(listCopy, "collectionListSubtype")];
   v15 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
@@ -5630,10 +5630,10 @@ void __65__PHQuery_queryForMomentsForPersonsWithLocalIdentifiers_options___block
   }
 
   v12 = 0;
-  if (v6)
+  if (optionsCopy)
   {
 LABEL_6:
-    [v12 setFetchOptions:v6];
+    [v12 setFetchOptions:optionsCopy];
   }
 
 LABEL_7:
@@ -5641,17 +5641,17 @@ LABEL_7:
   return v12;
 }
 
-+ (id)queryForMomentsInPhotosHighlight:(id)a3
++ (id)queryForMomentsInPhotosHighlight:(id)highlight
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 photoLibrary];
+  highlightCopy = highlight;
+  photoLibrary = [highlightCopy photoLibrary];
   v5 = MEMORY[0x1E696AE18];
-  v6 = [v3 objectID];
-  v7 = [v5 predicateWithFormat:@"highlight = %@", v6];
+  objectID = [highlightCopy objectID];
+  v7 = [v5 predicateWithFormat:@"highlight = %@", objectID];
 
-  LODWORD(v6) = [v3 isSharingSuggestion];
-  if (v6)
+  LODWORD(objectID) = [highlightCopy isSharingSuggestion];
+  if (objectID)
   {
     v8 = MEMORY[0x1E696AB28];
     v14[0] = v7;
@@ -5663,80 +5663,80 @@ LABEL_7:
     v7 = v11;
   }
 
-  v12 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v7 inLibrary:v4];
+  v12 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v7 inLibrary:photoLibrary];
 
   return v12;
 }
 
-+ (id)queryForChildrenDayGroupHighlightsForPhotosHighlight:(id)a3 options:(id)a4
++ (id)queryForChildrenDayGroupHighlightsForPhotosHighlight:(id)highlight options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v6 predicateWithFormat:@"parentDayGroupPhotosHighlight = %@", v8];
-  v10 = [v7 photoLibrary];
+  highlightCopy = highlight;
+  objectID = [highlightCopy objectID];
+  v9 = [v6 predicateWithFormat:@"parentDayGroupPhotosHighlight = %@", objectID];
+  photoLibrary = [highlightCopy photoLibrary];
 
-  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:v10];
+  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:photoLibrary];
 
-  if (v5)
+  if (optionsCopy)
   {
-    [v11 setFetchOptions:v5];
+    [v11 setFetchOptions:optionsCopy];
   }
 
   return v11;
 }
 
-+ (id)queryForParentDayGroupHighlightForPhotosHighlight:(id)a3 options:(id)a4
++ (id)queryForParentDayGroupHighlightForPhotosHighlight:(id)highlight options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v6 predicateWithFormat:@"ANY childDayGroupPhotosHighlights = %@", v8];
-  v10 = [v7 photoLibrary];
+  highlightCopy = highlight;
+  objectID = [highlightCopy objectID];
+  v9 = [v6 predicateWithFormat:@"ANY childDayGroupPhotosHighlights = %@", objectID];
+  photoLibrary = [highlightCopy photoLibrary];
 
-  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:v10];
+  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:photoLibrary];
 
-  if (v5)
+  if (optionsCopy)
   {
-    [v11 setFetchOptions:v5];
+    [v11 setFetchOptions:optionsCopy];
   }
 
   return v11;
 }
 
-+ (id)queryForChildrenHighlightsForPhotosHighlight:(id)a3 options:(id)a4
++ (id)queryForChildrenHighlightsForPhotosHighlight:(id)highlight options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v6 predicateWithFormat:@"parentPhotosHighlight = %@", v8];
-  v10 = [v7 photoLibrary];
+  highlightCopy = highlight;
+  objectID = [highlightCopy objectID];
+  v9 = [v6 predicateWithFormat:@"parentPhotosHighlight = %@", objectID];
+  photoLibrary = [highlightCopy photoLibrary];
 
-  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:v10];
+  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:photoLibrary];
 
-  if (v5)
+  if (optionsCopy)
   {
-    [v11 setFetchOptions:v5];
+    [v11 setFetchOptions:optionsCopy];
   }
 
   return v11;
 }
 
-+ (id)queryForParentHighlightsForPhotosHighlights:(id)a3 options:(id)a4
++ (id)queryForParentHighlightsForPhotosHighlights:(id)highlights options:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [v6 photoLibrary];
+  highlightsCopy = highlights;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
+  photoLibrary = [optionsCopy photoLibrary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v5;
+  v9 = highlightsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -5752,13 +5752,13 @@ LABEL_7:
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        if (!v8)
+        if (!photoLibrary)
         {
-          v8 = [*(*(&v19 + 1) + 8 * i) photoLibrary];
+          photoLibrary = [*(*(&v19 + 1) + 8 * i) photoLibrary];
         }
 
-        v15 = [v14 objectID];
-        [v7 addObject:v15];
+        objectID = [v14 objectID];
+        [array addObject:objectID];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -5767,51 +5767,51 @@ LABEL_7:
     while (v11);
   }
 
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY childPhotosHighlights IN %@", v7];
-  v17 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v16 inLibrary:v8];
+  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY childPhotosHighlights IN %@", array];
+  v17 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v16 inLibrary:photoLibrary];
 
-  if (v6)
+  if (optionsCopy)
   {
-    [v17 setFetchOptions:v6];
+    [v17 setFetchOptions:optionsCopy];
   }
 
   return v17;
 }
 
-+ (id)queryForParentHighlightForPhotosHighlight:(id)a3 options:(id)a4
++ (id)queryForParentHighlightForPhotosHighlight:(id)highlight options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v6 predicateWithFormat:@"ANY childPhotosHighlights = %@", v8];
-  v10 = [v7 photoLibrary];
+  highlightCopy = highlight;
+  objectID = [highlightCopy objectID];
+  v9 = [v6 predicateWithFormat:@"ANY childPhotosHighlights = %@", objectID];
+  photoLibrary = [highlightCopy photoLibrary];
 
-  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:v10];
+  v11 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v9 inLibrary:photoLibrary];
 
-  if (v5)
+  if (optionsCopy)
   {
-    [v11 setFetchOptions:v5];
+    [v11 setFetchOptions:optionsCopy];
   }
 
   return v11;
 }
 
-+ (id)queryForPhotosHighlightsContainingMoments:(id)a3
++ (id)queryForPhotosHighlightsContainingMoments:(id)moments
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  momentsCopy = moments;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = momentsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    photoLibrary = 0;
     v9 = *v17;
     do
     {
@@ -5823,12 +5823,12 @@ LABEL_7:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 objectID];
-        [v4 addObject:v12];
+        objectID = [v11 objectID];
+        [array addObject:objectID];
 
-        if (!v8)
+        if (!photoLibrary)
         {
-          v8 = [v11 photoLibrary];
+          photoLibrary = [v11 photoLibrary];
         }
       }
 
@@ -5840,62 +5840,62 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    photoLibrary = 0;
   }
 
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY moments IN %@", v4];
-  v14 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v13 inLibrary:v8];
+  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY moments IN %@", array];
+  v14 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v13 inLibrary:photoLibrary];
 
   return v14;
 }
 
-+ (id)queryForMomentsBackingSuggestion:(id)a3
++ (id)queryForMomentsBackingSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v3 predicateForAllMomentsFromRepresentativeAssets];
+  suggestionCopy = suggestion;
+  photoLibrary = [suggestionCopy photoLibrary];
+  predicateForAllMomentsFromRepresentativeAssets = [suggestionCopy predicateForAllMomentsFromRepresentativeAssets];
 
-  v6 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v5 inLibrary:v4];
+  v6 = [PHQuery queryForType:@"PHMoment" withBasePredicate:predicateForAllMomentsFromRepresentativeAssets inLibrary:photoLibrary];
 
   [v6 _setCollectionFetchType:2];
 
   return v6;
 }
 
-+ (id)queryForMomentsBackingMemory:(id)a3
++ (id)queryForMomentsBackingMemory:(id)memory
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v3 predicateForAllMomentsFromRepresentativeAssets];
+  memoryCopy = memory;
+  photoLibrary = [memoryCopy photoLibrary];
+  predicateForAllMomentsFromRepresentativeAssets = [memoryCopy predicateForAllMomentsFromRepresentativeAssets];
 
-  v6 = [PHQuery queryForType:@"PHMoment" withBasePredicate:v5 inLibrary:v4];
+  v6 = [PHQuery queryForType:@"PHMoment" withBasePredicate:predicateForAllMomentsFromRepresentativeAssets inLibrary:photoLibrary];
 
   [v6 _setCollectionFetchType:2];
 
   return v6;
 }
 
-+ (id)queryForMomentsWithOptions:(id)a3
++ (id)queryForMomentsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHMoment" withBasePredicate:0 inLibrary:v4];
 
-  if (v3)
+  if (optionsCopy)
   {
-    [v5 setFetchOptions:v3];
+    [v5 setFetchOptions:optionsCopy];
   }
 
   return v5;
 }
 
-+ (id)queryForAssetCollectionsWithObjectIDs:(id)a3 options:(id)a4
++ (id)queryForAssetCollectionsWithObjectIDs:(id)ds options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dsCopy = ds;
+  optionsCopy = options;
+  if (dsCopy)
   {
-    v8 = v6;
+    v8 = dsCopy;
   }
 
   else
@@ -5904,52 +5904,52 @@ LABEL_7:
   }
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v8];
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
-  v11 = [a1 queryForType:@"PHAssetCollection" withBasePredicate:v9 inLibrary:v10];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v11 = [self queryForType:@"PHAssetCollection" withBasePredicate:v9 inLibrary:v10];
 
-  if (v7)
+  if (optionsCopy)
   {
-    [v11 setFetchOptions:v7];
+    [v11 setFetchOptions:optionsCopy];
   }
 
   return v11;
 }
 
-+ (id)queryForAssetCollectionsWithType:(int64_t)a3 subtype:(int64_t)a4 options:(id)a5
++ (id)queryForAssetCollectionsWithType:(int64_t)type subtype:(int64_t)subtype options:(id)options
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  if (a3 == 1 && a4 == 101)
+  optionsCopy = options;
+  if (type == 1 && subtype == 101)
   {
-    v8 = [MEMORY[0x1E69BF2F0] clientIsAllowedToFetchCollectionShares];
-    if (v8)
+    clientIsAllowedToFetchCollectionShares = [MEMORY[0x1E69BF2F0] clientIsAllowedToFetchCollectionShares];
+    if (clientIsAllowedToFetchCollectionShares)
     {
-      a4 = 101;
+      subtype = 101;
     }
 
     else
     {
-      a4 = 102;
+      subtype = 102;
     }
 
-    if (v8)
+    if (clientIsAllowedToFetchCollectionShares)
     {
-      a3 = 1;
+      type = 1;
     }
 
     else
     {
-      a3 = 12;
+      type = 12;
     }
   }
 
-  v9 = _fetchTypeForAssetCollectionTypeAndSubtype(a3, a4);
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
+  v9 = _fetchTypeForAssetCollectionTypeAndSubtype(type, subtype);
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   if (v9)
   {
-    v11 = v7;
+    v11 = optionsCopy;
     v12 = dyld_program_sdk_at_least();
-    if (a4)
+    if (subtype)
     {
       v13 = 1;
     }
@@ -5961,17 +5961,17 @@ LABEL_7:
 
     if (v13)
     {
-      v14 = a4;
+      subtypeCopy = subtype;
     }
 
     else
     {
-      v14 = 0x7FFFFFFFFFFFFFFFLL;
+      subtypeCopy = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (a3 <= 0xC)
+    if (type <= 0xC)
     {
-      if (((1 << a3) & 0x798) != 0)
+      if (((1 << type) & 0x798) != 0)
       {
 LABEL_18:
         v15 = MEMORY[0x1E696AE18];
@@ -5983,17 +5983,17 @@ LABEL_119:
         goto LABEL_120;
       }
 
-      if (a3 == 6)
+      if (type == 6)
       {
-        if (v14 <= 1000000302)
+        if (subtypeCopy <= 1000000302)
         {
-          if (v14 == 1000000301)
+          if (subtypeCopy == 1000000301)
           {
             [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", 0, v54];
             goto LABEL_118;
           }
 
-          if (v14 == 1000000302)
+          if (subtypeCopy == 1000000302)
           {
             v24 = MEMORY[0x1E696AE18];
             v25 = 1;
@@ -6003,7 +6003,7 @@ LABEL_119:
 
         else
         {
-          switch(v14)
+          switch(subtypeCopy)
           {
             case 0x3B9ACB2FLL:
               goto LABEL_67;
@@ -6030,15 +6030,15 @@ LABEL_84:
         *buf = 67109376;
         *&buf[4] = 6;
         v58 = 1024;
-        v59 = v14;
+        subtypeCopy2 = subtypeCopy;
 LABEL_82:
         _os_log_impl(&dword_19C86F000, v28, OS_LOG_TYPE_ERROR, "Unsupported fetch for asset collections with type %d and subtype %d", buf, 0xEu);
         goto LABEL_83;
       }
 
-      if (a3 == 12)
+      if (type == 12)
       {
-        switch(v14)
+        switch(subtypeCopy)
         {
           case 0x66:
             v22 = MEMORY[0x1E696AE18];
@@ -6064,30 +6064,30 @@ LABEL_61:
         *buf = 67109376;
         *&buf[4] = 12;
         v58 = 1024;
-        v59 = v14;
+        subtypeCopy2 = subtypeCopy;
         goto LABEL_82;
       }
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_164;
       }
 
-      if (v14 > 99)
+      if (subtypeCopy > 99)
       {
-        if (v14 <= 1000000000)
+        if (subtypeCopy <= 1000000000)
         {
-          if (v14 == 100)
+          if (subtypeCopy == 100)
           {
             v24 = MEMORY[0x1E696AE18];
             v25 = 1500;
             goto LABEL_117;
           }
 
-          if (v14 == 101)
+          if (subtypeCopy == 101)
           {
             v24 = MEMORY[0x1E696AE18];
             v25 = 1505;
@@ -6097,7 +6097,7 @@ LABEL_61:
 
         else
         {
-          switch(v14)
+          switch(subtypeCopy)
           {
             case 0x3B9ACA01:
               v24 = MEMORY[0x1E696AE18];
@@ -6117,9 +6117,9 @@ LABEL_164:
         goto LABEL_99;
       }
 
-      if (v14 > 3)
+      if (subtypeCopy > 3)
       {
-        switch(v14)
+        switch(subtypeCopy)
         {
           case 4:
             v24 = MEMORY[0x1E696AE18];
@@ -6140,9 +6140,9 @@ LABEL_117:
         goto LABEL_99;
       }
 
-      if (v14 != 2)
+      if (subtypeCopy != 2)
       {
-        if (v14 == 3)
+        if (subtypeCopy == 3)
         {
           v24 = MEMORY[0x1E696AE18];
           v25 = 1551;
@@ -6159,7 +6159,7 @@ LABEL_99:
         *buf = 67109376;
         *&buf[4] = 1;
         v58 = 1024;
-        v59 = v14;
+        subtypeCopy2 = subtypeCopy;
         goto LABEL_162;
       }
 
@@ -6169,20 +6169,20 @@ LABEL_67:
       goto LABEL_117;
     }
 
-    v26 = [PHSmartAlbum albumKindFromSmartAlbumSubtype:v14];
-    v55 = [v26 integerValue];
+    v26 = [PHSmartAlbum albumKindFromSmartAlbumSubtype:subtypeCopy];
+    integerValue = [v26 integerValue];
 
-    if (v14 <= 220)
+    if (subtypeCopy <= 220)
     {
-      if ((v14 - 200) < 0x14)
+      if ((subtypeCopy - 200) < 0x14)
       {
 LABEL_44:
         v24 = MEMORY[0x1E696AE18];
-        v25 = v55;
+        v25 = integerValue;
         goto LABEL_117;
       }
 
-      if (v14 == 220)
+      if (subtypeCopy == 220)
       {
         if (v11 && ![v11 includeScreenRecordingsSmartAlbum])
         {
@@ -6192,7 +6192,7 @@ LABEL_44:
             *buf = 67109376;
             *&buf[4] = 2;
             v58 = 1024;
-            v59 = 220;
+            subtypeCopy2 = 220;
             goto LABEL_191;
           }
 
@@ -6207,16 +6207,16 @@ LABEL_192:
       goto LABEL_160;
     }
 
-    if (v14 > 1000000211)
+    if (subtypeCopy > 1000000211)
     {
-      if (v14 > 1000000217)
+      if (subtypeCopy > 1000000217)
       {
-        if ((v14 - 1000000218) < 2)
+        if ((subtypeCopy - 1000000218) < 2)
         {
           goto LABEL_44;
         }
 
-        if (v14 == 0x7FFFFFFFFFFFFFFFLL)
+        if (subtypeCopy == 0x7FFFFFFFFFFFFFFFLL)
         {
           if (_os_feature_enabled_impl())
           {
@@ -6303,24 +6303,24 @@ LABEL_192:
 LABEL_120:
           v20 = [PHQuery queryForType:v9 withBasePredicate:v31 inLibrary:v10];
 
-          v21 = [PHQuery identificationBlockForAssetCollectionType:a3];
-          if (a4 == 1000000001 && a3 == 1)
+          v21 = [PHQuery identificationBlockForAssetCollectionType:type];
+          if (subtype == 1000000001 && type == 1)
           {
             [v20 _setIncludesCameraRoll:1];
             goto LABEL_123;
           }
 
           v32 = 0;
-          if (a3 > 8)
+          if (type > 8)
           {
-            if (a3 == 9)
+            if (type == 9)
             {
               v33 = MEMORY[0x1E696AEB0];
               v34 = @"startDate";
               goto LABEL_136;
             }
 
-            if (a3 != 12)
+            if (type != 12)
             {
               goto LABEL_138;
             }
@@ -6331,14 +6331,14 @@ LABEL_120:
 
           else
           {
-            if (a3 != 1)
+            if (type != 1)
             {
-              if (a3 != 2)
+              if (type != 2)
               {
                 goto LABEL_138;
               }
 
-              if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+              if (subtype != 0x7FFFFFFFFFFFFFFFLL)
               {
 LABEL_123:
                 v32 = 0;
@@ -6355,10 +6355,10 @@ LABEL_138:
                 }
 
                 v38 = v11;
-                v7 = v38;
-                if (a3 != 6)
+                optionsCopy = v38;
+                if (type != 6)
                 {
-                  if (a3 == 2 && a4 == 219)
+                  if (type == 2 && subtype == 219)
                   {
                     *buf = @"PHAssetPropertySetSpatialMedia";
                     v39 = buf;
@@ -6368,19 +6368,19 @@ LABEL_138:
 LABEL_149:
 
 LABEL_154:
-                  [v20 setFetchOptions:v7];
+                  [v20 setFetchOptions:optionsCopy];
 
                   goto LABEL_155;
                 }
 
-                v40 = [v38 sharingFilter];
-                if (v40 == 2)
+                sharingFilter = [v38 sharingFilter];
+                if (sharingFilter == 2)
                 {
                   v60 = @"PHPhotosHighlightPropertySetPrivateOrShared";
                   v39 = &v60;
                 }
 
-                else if (v40 == 1)
+                else if (sharingFilter == 1)
                 {
                   v61 = @"PHPhotosHighlightPropertySetOnlyShared";
                   v39 = &v61;
@@ -6388,7 +6388,7 @@ LABEL_154:
 
                 else
                 {
-                  if (v40)
+                  if (sharingFilter)
                   {
                     goto LABEL_149;
                   }
@@ -6402,10 +6402,10 @@ LABEL_152:
 
                 if (v41)
                 {
-                  v42 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v10];
+                  v42 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v10];
 
                   [v42 addFetchPropertySets:v41];
-                  v7 = v42;
+                  optionsCopy = v42;
                 }
 
                 goto LABEL_154;
@@ -6416,7 +6416,7 @@ LABEL_152:
               goto LABEL_136;
             }
 
-            if ((a4 - 3) < 2)
+            if ((subtype - 3) < 2)
             {
               v33 = MEMORY[0x1E696AEB0];
               v34 = @"syncEventOrderKey";
@@ -6425,7 +6425,7 @@ LABEL_136:
               goto LABEL_137;
             }
 
-            if (a4 != 101)
+            if (subtype != 101)
             {
               goto LABEL_123;
             }
@@ -6443,12 +6443,12 @@ LABEL_137:
         goto LABEL_160;
       }
 
-      if (v14 == 1000000212)
+      if (subtypeCopy == 1000000212)
       {
         goto LABEL_44;
       }
 
-      if (v14 == 1000000214)
+      if (subtypeCopy == 1000000214)
       {
         if (![v11 includeSharedLibrarySharingSuggestionsSmartAlbum])
         {
@@ -6458,7 +6458,7 @@ LABEL_137:
             *buf = 67109376;
             *&buf[4] = 2;
             v58 = 1024;
-            v59 = 1000000214;
+            subtypeCopy2 = 1000000214;
             goto LABEL_191;
           }
 
@@ -6467,11 +6467,11 @@ LABEL_137:
 
 LABEL_115:
         v24 = MEMORY[0x1E696AE18];
-        v25 = v55;
+        v25 = integerValue;
         goto LABEL_117;
       }
 
-      if (v14 != 1000000215)
+      if (subtypeCopy != 1000000215)
       {
 LABEL_160:
         v30 = PLPhotoKitGetLog();
@@ -6483,7 +6483,7 @@ LABEL_160:
         *buf = 67109376;
         *&buf[4] = 2;
         v58 = 1024;
-        v59 = v14;
+        subtypeCopy2 = subtypeCopy;
 LABEL_162:
         _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_ERROR, "Unsupported fetch for asset collections with type %d and subtype %d", buf, 0xEu);
 LABEL_163:
@@ -6510,14 +6510,14 @@ LABEL_163:
       *buf = 67109376;
       *&buf[4] = 2;
       v58 = 1024;
-      v59 = 1000000215;
+      subtypeCopy2 = 1000000215;
     }
 
     else
     {
-      if (v14 <= 1000000203)
+      if (subtypeCopy <= 1000000203)
       {
-        switch(v14)
+        switch(subtypeCopy)
         {
           case 221:
             goto LABEL_44;
@@ -6539,7 +6539,7 @@ LABEL_163:
               *buf = 67109376;
               *&buf[4] = 2;
               v58 = 1024;
-              v59 = 1000000203;
+              subtypeCopy2 = 1000000203;
               goto LABEL_191;
             }
 
@@ -6549,9 +6549,9 @@ LABEL_163:
         goto LABEL_160;
       }
 
-      if (v14 > 1000000205)
+      if (subtypeCopy > 1000000205)
       {
-        if (v14 == 1000000206)
+        if (subtypeCopy == 1000000206)
         {
           if (![v11 includeRecentlyEditedSmartAlbum])
           {
@@ -6561,7 +6561,7 @@ LABEL_163:
               *buf = 67109376;
               *&buf[4] = 2;
               v58 = 1024;
-              v59 = 1000000206;
+              subtypeCopy2 = 1000000206;
               goto LABEL_191;
             }
 
@@ -6571,7 +6571,7 @@ LABEL_163:
           goto LABEL_115;
         }
 
-        if (v14 != 1000000211)
+        if (subtypeCopy != 1000000211)
         {
           goto LABEL_160;
         }
@@ -6590,12 +6590,12 @@ LABEL_163:
         *buf = 67109376;
         *&buf[4] = 2;
         v58 = 1024;
-        v59 = 1000000211;
+        subtypeCopy2 = 1000000211;
       }
 
       else
       {
-        if (v14 == 1000000204)
+        if (subtypeCopy == 1000000204)
         {
           goto LABEL_44;
         }
@@ -6614,7 +6614,7 @@ LABEL_163:
         *buf = 67109376;
         *&buf[4] = 2;
         v58 = 1024;
-        v59 = 1000000205;
+        subtypeCopy2 = 1000000205;
       }
     }
 
@@ -6627,9 +6627,9 @@ LABEL_191:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109376;
-    *&buf[4] = a3;
+    *&buf[4] = type;
     v58 = 1024;
-    v59 = a4;
+    subtypeCopy2 = subtype;
     _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "Unsupported fetch for asset collections with type %d and subtype %d (no fetch type)", buf, 0xEu);
   }
 
@@ -6643,23 +6643,23 @@ LABEL_155:
   return v20;
 }
 
-+ (id)queryForAssetCollectionsWithType:(int64_t)a3 localIdentifiers:(id)a4 options:(id)a5
++ (id)queryForAssetCollectionsWithType:(int64_t)type localIdentifiers:(id)identifiers options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = _fetchTypeForAssetCollectionTypeAndSubtype(a3, 0x7FFFFFFFFFFFFFFFLL);
-  v11 = [a1 queryForType:v10 withLocalIdentifiers:v9 options:v8];
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  v10 = _fetchTypeForAssetCollectionTypeAndSubtype(type, 0x7FFFFFFFFFFFFFFFLL);
+  v11 = [self queryForType:v10 withLocalIdentifiers:identifiersCopy options:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForAssetCollectionsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForAssetCollectionsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  v9 = [PHObject identifierCodeFromLocalIdentifier:v8];
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  firstObject = [identifiersCopy firstObject];
+  v9 = [PHObject identifierCodeFromLocalIdentifier:firstObject];
 
   if (!v9)
   {
@@ -6677,22 +6677,22 @@ LABEL_9:
     v21[2] = __64__PHQuery_queryForAssetCollectionsWithLocalIdentifiers_options___block_invoke;
     v21[3] = &unk_1E75A8D50;
     v22 = v10;
-    v11 = v10;
-    v19 = [v6 _pl_filter:v21];
-    v17 = [a1 queryForType:v11 withLocalIdentifiers:v19 options:v7];
+    firstObject2 = v10;
+    v19 = [identifiersCopy _pl_filter:v21];
+    v17 = [self queryForType:firstObject2 withLocalIdentifiers:v19 options:optionsCopy];
 
     v12 = v22;
     goto LABEL_10;
   }
 
-  v11 = [v6 firstObject];
+  firstObject2 = [identifiersCopy firstObject];
   pl_dispatch_once();
   v12 = handleUnsupportedAssetCollectionFetchTypeForLocalIdentifier_pl_once_object_47;
-  v13 = [PHObject identifierCodeFromLocalIdentifier:v11];
+  v13 = [PHObject identifierCodeFromLocalIdentifier:firstObject2];
   v14 = [(__CFString *)v12 objectForKeyedSubscript:v13];
   if (v14)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ to fetch asset collection with local identifier (%@) with invalid fetch type: %@", @"Failed", v11, v14];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ to fetch asset collection with local identifier (%@) with invalid fetch type: %@", @"Failed", firstObject2, v14];
     v16 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -6726,17 +6726,17 @@ BOOL __64__PHQuery_queryForAssetCollectionsWithLocalIdentifiers_options___block_
   return v6;
 }
 
-+ (BOOL)_validateLocalIdentifiers:(id)a3 compatibilityWithFetchType:(id)a4
++ (BOOL)_validateLocalIdentifiers:(id)identifiers compatibilityWithFetchType:(id)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  typeCopy = type;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  obj = identifiersCopy;
+  v7 = [identifiersCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
     v9 = v7;
@@ -6756,7 +6756,7 @@ BOOL __64__PHQuery_queryForAssetCollectionsWithLocalIdentifiers_options___block_
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = [PHObject identifierCodeFromLocalIdentifier:v13, v18];
         v15 = [PHPhotoLibrary fetchTypeForLocalIdentifierCode:v14];
-        if (([v15 isEqualToString:v6] & 1) == 0)
+        if (([v15 isEqualToString:typeCopy] & 1) == 0)
         {
           v16 = PLPhotoKitGetLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -6764,7 +6764,7 @@ BOOL __64__PHQuery_queryForAssetCollectionsWithLocalIdentifiers_options___block_
             *buf = v18;
             v25 = v13;
             v26 = 2112;
-            v27 = v6;
+            v27 = typeCopy;
             _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "Invalid localIdentifier %@ passed to query for %@", buf, 0x16u);
           }
 
@@ -6786,22 +6786,22 @@ BOOL __64__PHQuery_queryForAssetCollectionsWithLocalIdentifiers_options___block_
   return v11 & 1;
 }
 
-+ (id)queryForAssetCollectionsContainingAssets:(id)a3 withType:(int64_t)a4 options:(id)a5
++ (id)queryForAssetCollectionsContainingAssets:(id)assets withType:(int64_t)type options:(id)options
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  optionsCopy = options;
   v22 = 0;
-  v9 = [a1 _assetIDsFromAssets:a3 anyAsset:&v22];
+  v9 = [self _assetIDsFromAssets:assets anyAsset:&v22];
   v10 = v22;
-  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:v10];
+  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:v10];
   if (![v9 count])
   {
     goto LABEL_15;
   }
 
-  if (a4 <= 5)
+  if (type <= 5)
   {
-    switch(a4)
+    switch(type)
     {
       case 1:
         v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY assets IN %@", v9];
@@ -6822,9 +6822,9 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  if (a4 > 7)
+  if (type > 7)
   {
-    if (a4 == 8)
+    if (type == 8)
     {
       v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"keyAssets", v9];
       v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"representativeSuggestionAssets", v9];
@@ -6839,7 +6839,7 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    if (a4 == 9)
+    if (type == 9)
     {
       v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"assets", v9];
       v15 = @"PHImportSession";
@@ -6853,14 +6853,14 @@ LABEL_14:
       v12 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4 > 0xD)
+        if (type > 0xD)
         {
           v20 = 0;
         }
 
         else
         {
-          v20 = off_1E75A8E78[a4];
+          v20 = off_1E75A8E78[type];
         }
 
         v21 = v20;
@@ -6878,7 +6878,7 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  if (a4 == 6)
+  if (type == 6)
   {
     v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY assets IN %@", v9];
     v15 = @"PHPhotosHighlight";
@@ -6892,18 +6892,18 @@ LABEL_18:
 
 LABEL_21:
 LABEL_22:
-  [v14 setFetchOptions:v8];
+  [v14 setFetchOptions:optionsCopy];
 
   return v14;
 }
 
-+ (id)queryForAllTripHighlightsContainingAssetUUIDs:(id)a3 options:(id)a4
++ (id)queryForAllTripHighlightsContainingAssetUUIDs:(id)ds options:(id)options
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  dsCopy = ds;
+  if (dsCopy)
   {
-    v6 = v5;
+    v6 = dsCopy;
   }
 
   else
@@ -6912,55 +6912,55 @@ LABEL_22:
   }
 
   v7 = MEMORY[0x1E696AE18];
-  v8 = a4;
+  optionsCopy = options;
   v9 = [v7 predicateWithFormat:@"ANY %K.%K IN %@", @"dayGroupAssets", @"uuid", v6];
-  v10 = [MEMORY[0x1E69BE6B8] predicateForAllTripHighlights];
+  predicateForAllTripHighlights = [MEMORY[0x1E69BE6B8] predicateForAllTripHighlights];
   v11 = MEMORY[0x1E696AB28];
   v17[0] = v9;
-  v17[1] = v10;
+  v17[1] = predicateForAllTripHighlights;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v13 = [v11 andPredicateWithSubpredicates:v12];
 
-  v14 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:0];
+  v14 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v15 = [PHQuery queryForType:@"PHPhotosHighlight" withBasePredicate:v13 inLibrary:v14];
-  [v15 setFetchOptions:v8];
+  [v15 setFetchOptions:optionsCopy];
 
   return v15;
 }
 
-+ (id)queryForAssetCollectionsContainingAsset:(id)a3 withType:(int64_t)a4 options:(id)a5
++ (id)queryForAssetCollectionsContainingAsset:(id)asset withType:(int64_t)type options:(id)options
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 objectID];
+  assetCopy = asset;
+  optionsCopy = options;
+  objectID = [assetCopy objectID];
 
-  if (!v9)
+  if (!objectID)
   {
     v20 = 0;
     goto LABEL_23;
   }
 
-  v10 = [v7 photoLibrary];
-  if (a4 <= 6)
+  photoLibrary = [assetCopy photoLibrary];
+  if (type <= 6)
   {
-    switch(a4)
+    switch(type)
     {
       case 1:
         v27 = MEMORY[0x1E696AE18];
-        v22 = [v7 objectID];
-        v23 = [v27 predicateWithFormat:@"assets CONTAINS %@", v22];
+        objectID2 = [assetCopy objectID];
+        v23 = [v27 predicateWithFormat:@"assets CONTAINS %@", objectID2];
         v24 = @"PHAlbum";
         goto LABEL_21;
       case 3:
         goto LABEL_14;
       case 6:
         v21 = MEMORY[0x1E696AE18];
-        v22 = [v7 objectID];
-        v23 = [v21 predicateWithFormat:@"assets CONTAINS %@", v22];
+        objectID2 = [assetCopy objectID];
+        v23 = [v21 predicateWithFormat:@"assets CONTAINS %@", objectID2];
         v24 = @"PHPhotosHighlight";
 LABEL_21:
-        v20 = [PHQuery queryForType:v24 withBasePredicate:v23 inLibrary:v10];
+        v20 = [PHQuery queryForType:v24 withBasePredicate:v23 inLibrary:photoLibrary];
 
         goto LABEL_22;
     }
@@ -6972,14 +6972,14 @@ LABEL_16:
       v28 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4 > 0xD)
+        if (type > 0xD)
         {
           v29 = 0;
         }
 
         else
         {
-          v29 = off_1E75A8E78[a4];
+          v29 = off_1E75A8E78[type];
         }
 
         v32 = v29;
@@ -6993,22 +6993,22 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  if (a4 > 8)
+  if (type > 8)
   {
-    if (a4 == 9)
+    if (type == 9)
     {
       v30 = MEMORY[0x1E696AE18];
-      v22 = [v7 objectID];
-      v23 = [v30 predicateWithFormat:@"%K CONTAINS %@", @"assets", v22];
+      objectID2 = [assetCopy objectID];
+      v23 = [v30 predicateWithFormat:@"%K CONTAINS %@", @"assets", objectID2];
       v24 = @"PHImportSession";
       goto LABEL_21;
     }
 
-    if (a4 == 12)
+    if (type == 12)
     {
       v25 = MEMORY[0x1E696AE18];
-      v22 = [v7 objectID];
-      v23 = [v25 predicateWithFormat:@"%K CONTAINS %@", @"collectionShareAssets", v22];
+      objectID2 = [assetCopy objectID];
+      v23 = [v25 predicateWithFormat:@"%K CONTAINS %@", @"collectionShareAssets", objectID2];
       v24 = @"PHCollectionShare";
       goto LABEL_21;
     }
@@ -7016,23 +7016,23 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a4 == 7)
+  if (type == 7)
   {
 LABEL_14:
     v26 = MEMORY[0x1E696AE18];
-    v22 = [v7 objectID];
-    v23 = [v26 predicateWithFormat:@"assets CONTAINS %@", v22];
+    objectID2 = [assetCopy objectID];
+    v23 = [v26 predicateWithFormat:@"assets CONTAINS %@", objectID2];
     v24 = @"PHMoment";
     goto LABEL_21;
   }
 
   v11 = MEMORY[0x1E696AE18];
-  v12 = [v7 objectID];
-  v13 = [v11 predicateWithFormat:@"%K CONTAINS %@", @"keyAssets", v12];
+  objectID3 = [assetCopy objectID];
+  v13 = [v11 predicateWithFormat:@"%K CONTAINS %@", @"keyAssets", objectID3];
 
   v14 = MEMORY[0x1E696AE18];
-  v15 = [v7 objectID];
-  v16 = [v14 predicateWithFormat:@"%K CONTAINS %@", @"representativeSuggestionAssets", v15];
+  objectID4 = [assetCopy objectID];
+  v16 = [v14 predicateWithFormat:@"%K CONTAINS %@", @"representativeSuggestionAssets", objectID4];
 
   v17 = MEMORY[0x1E696AB28];
   v35[0] = v13;
@@ -7040,59 +7040,59 @@ LABEL_14:
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
   v19 = [v17 orPredicateWithSubpredicates:v18];
 
-  v20 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:v19 inLibrary:v10];
+  v20 = [PHQuery queryForType:@"PHSuggestion" withBasePredicate:v19 inLibrary:photoLibrary];
 
 LABEL_22:
 LABEL_23:
-  [v20 setFetchOptions:v8];
+  [v20 setFetchOptions:optionsCopy];
 
   return v20;
 }
 
-+ (id)queryForAssetsForCloudFeedEntry:(id)a3 options:(id)a4
++ (id)queryForAssetsForCloudFeedEntry:(id)entry options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v5 predicateWithFormat:@"%K == %@", @"cloudFeedAssetsEntry", v8];
+  optionsCopy = options;
+  entryCopy = entry;
+  objectID = [entryCopy objectID];
+  v9 = [v5 predicateWithFormat:@"%K == %@", @"cloudFeedAssetsEntry", objectID];
 
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:entryCopy];
 
   v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:v10];
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForAssetsForComment:(id)a3 options:(id)a4
++ (id)queryForAssetsForComment:(id)comment options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v7 objectID];
-  v10 = [v5 predicateWithFormat:@"%K CONTAINS %@ OR %K CONTAINS %@", @"likeComments", v8, @"cloudComments", v9];
+  optionsCopy = options;
+  commentCopy = comment;
+  objectID = [commentCopy objectID];
+  objectID2 = [commentCopy objectID];
+  v10 = [v5 predicateWithFormat:@"%K CONTAINS %@ OR %K CONTAINS %@", @"likeComments", objectID, @"cloudComments", objectID2];
 
-  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:commentCopy];
 
   v12 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v10 inLibrary:v11];
-  [v12 setFetchOptions:v6];
+  [v12 setFetchOptions:optionsCopy];
 
   return v12;
 }
 
-+ (id)queryForAssetsInPreviewStateWithSuggestedByClientTypes:(id)a3 options:(id)a4
++ (id)queryForAssetsInPreviewStateWithSuggestedByClientTypes:(id)types options:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  typesCopy = types;
+  optionsCopy = options;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(typesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -7119,20 +7119,20 @@ LABEL_23:
   }
 
   v14 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v7];
-  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  v15 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v16 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v14 inLibrary:v15];
 
-  [v16 setFetchOptions:v6];
+  [v16 setFetchOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForAssetsInPreviewStateInLibraryScope:(id)a3 options:(id)a4
++ (id)queryForAssetsInPreviewStateInLibraryScope:(id)scope options:(id)options
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _participationStateFromLibraryScope:v7];
+  optionsCopy = options;
+  scopeCopy = scope;
+  v8 = [self _participationStateFromLibraryScope:scopeCopy];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"activeLibraryScopeParticipationState", v8];
   v10 = PLManagedAssetPredicateToFetchAllAssetsInLibraryScopePreviewState();
   v11 = MEMORY[0x1E696AB28];
@@ -7141,30 +7141,30 @@ LABEL_23:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v13 = [v11 andPredicateWithSubpredicates:v12];
 
-  v14 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v14 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:scopeCopy];
 
   v15 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v13 inLibrary:v14];
 
-  [v15 setFetchOptions:v6];
+  [v15 setFetchOptions:optionsCopy];
 
   return v15;
 }
 
-+ (id)queryForAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)a3 inLibraryScope:(id)a4 options:(id)a5
++ (id)queryForAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)contributor inLibraryScope:(id)scope options:(id)options
 {
-  v6 = a3;
+  contributorCopy = contributor;
   v20[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AE18];
-  v8 = a5;
-  v9 = [a4 objectID];
-  v10 = [v7 predicateWithFormat:@"libraryScope == %@", v9];
+  optionsCopy = options;
+  objectID = [scope objectID];
+  v10 = [v7 predicateWithFormat:@"libraryScope == %@", objectID];
 
   v11 = MEMORY[0x1E696AB28];
-  if (v6)
+  if (contributorCopy)
   {
     v20[0] = v10;
-    v12 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
-    v20[1] = v12;
+    predicateToIncludeOnlyContentContributedByCurrentUser = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
+    v20[1] = predicateToIncludeOnlyContentContributedByCurrentUser;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v14 = [v11 andPredicateWithSubpredicates:v13];
   }
@@ -7172,8 +7172,8 @@ LABEL_23:
   else
   {
     v19[0] = v10;
-    v12 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
-    v13 = [v11 notPredicateWithSubpredicate:v12];
+    predicateToIncludeOnlyContentContributedByCurrentUser = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
+    v13 = [v11 notPredicateWithSubpredicate:predicateToIncludeOnlyContentContributedByCurrentUser];
     v19[1] = v13;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v14 = [v11 andPredicateWithSubpredicates:v15];
@@ -7181,77 +7181,77 @@ LABEL_23:
     v10 = v15;
   }
 
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:0];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v17 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v14 inLibrary:v16];
 
-  [v17 setFetchOptions:v8];
+  [v17 setFetchOptions:optionsCopy];
 
   return v17;
 }
 
-+ (id)queryForAssetsInLibraryScope:(id)a3 options:(id)a4
++ (id)queryForAssetsInLibraryScope:(id)scope options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _participationStateFromLibraryScope:v7];
+  optionsCopy = options;
+  scopeCopy = scope;
+  v8 = [self _participationStateFromLibraryScope:scopeCopy];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"activeLibraryScopeParticipationState", v8];
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:scopeCopy];
 
   v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v6];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForAssetsCaptured:(BOOL)a3 orEdited:(BOOL)a4 onThisCameraSinceDate:(id)a5 options:(id)a6
++ (id)queryForAssetsCaptured:(BOOL)captured orEdited:(BOOL)edited onThisCameraSinceDate:(id)date options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
+  editedCopy = edited;
+  capturedCopy = captured;
   v33[4] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  if (!v11)
+  dateCopy = date;
+  optionsCopy = options;
+  if (!dateCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2418 description:{@"Invalid parameter not satisfying: %@", @"date != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2418 description:{@"Invalid parameter not satisfying: %@", @"date != nil"}];
   }
 
-  v13 = [v12 photoLibrary];
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v13)
+  if (!photoLibrary)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2419 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2419 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary != nil"}];
   }
 
-  [v11 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v14 >= 0.0)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2420 description:{@"Invalid parameter not satisfying: %@", @"date.timeIntervalSinceNow < 0"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2420 description:{@"Invalid parameter not satisfying: %@", @"date.timeIntervalSinceNow < 0"}];
   }
 
-  v15 = [v12 internalPredicate];
+  internalPredicate = [optionsCopy internalPredicate];
 
-  if (v15)
+  if (internalPredicate)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2421 description:{@"Invalid parameter not satisfying: %@", @"options.internalPredicate == nil"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2421 description:{@"Invalid parameter not satisfying: %@", @"options.internalPredicate == nil"}];
   }
 
-  if (v8 == v7)
+  if (capturedCopy == editedCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2422 description:{@"Invalid parameter not satisfying: %@", @"captured != edited"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2422 description:{@"Invalid parameter not satisfying: %@", @"captured != edited"}];
   }
 
-  v16 = [v12 copy];
-  if (!v8)
+  v16 = [optionsCopy copy];
+  if (!capturedCopy)
   {
     v18 = 0;
-    v17 = 0;
-    if (!v7)
+    dateCopy = 0;
+    if (!editedCopy)
     {
       goto LABEL_16;
     }
@@ -7259,24 +7259,24 @@ LABEL_23:
     goto LABEL_15;
   }
 
-  v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"dateCreated", v11];
+  dateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"dateCreated", dateCopy];
   v18 = [MEMORY[0x1E69BE540] predicateForUnadjustedAssetsWithKeyPathToAsset:0];
-  if (v7)
+  if (editedCopy)
   {
 LABEL_15:
-    v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"adjustmentTimestamp", v11];
+    dateCopy2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"adjustmentTimestamp", dateCopy];
 
     v20 = [MEMORY[0x1E69BE540] predicateForAdjustedAssetsWithKeyPathToAsset:0];
 
     v18 = v20;
-    v17 = v19;
+    dateCopy = dateCopy2;
   }
 
 LABEL_16:
   v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %d", @"currentSleetCast", 0];
   v22 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForCameraAsset"), 1}];
   v23 = MEMORY[0x1E696AB28];
-  v33[0] = v17;
+  v33[0] = dateCopy;
   v33[1] = v18;
   v33[2] = v21;
   v33[3] = v22;
@@ -7284,49 +7284,49 @@ LABEL_16:
   v25 = [v23 andPredicateWithSubpredicates:v24];
 
   [v16 setInternalPredicate:v25];
-  v26 = [a1 queryForAssetsWithOptions:v16];
+  v26 = [self queryForAssetsWithOptions:v16];
 
   return v26;
 }
 
-+ (id)queryForAssetsFromCameraSinceDate:(id)a3 options:(id)a4
++ (id)queryForAssetsFromCameraSinceDate:(id)date options:(id)options
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dateCopy = date;
+  optionsCopy = options;
+  if (!dateCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2387 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2387 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
   if (+[PHPhotoLibrary isMultiLibraryModeEnabled])
   {
-    v9 = [v8 photoLibrary];
+    photoLibrary = [optionsCopy photoLibrary];
 
-    if (!v9)
+    if (!photoLibrary)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2389 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2389 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary"}];
     }
   }
 
-  v10 = [v8 copy];
+  v10 = [optionsCopy copy];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"addedDate", v7];
+  dateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"addedDate", dateCopy];
   v12 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForCameraAsset"), 1}];
   v13 = MEMORY[0x1E696AB28];
-  v26[0] = v11;
+  v26[0] = dateCopy;
   v26[1] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
   v15 = [v13 andPredicateWithSubpredicates:v14];
 
-  v16 = [v10 internalPredicate];
-  v17 = v16;
-  if (v16)
+  internalPredicate = [v10 internalPredicate];
+  v17 = internalPredicate;
+  if (internalPredicate)
   {
     v18 = MEMORY[0x1E696AB28];
-    v25[0] = v16;
+    v25[0] = internalPredicate;
     v25[1] = v15;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     v20 = [v18 andPredicateWithSubpredicates:v19];
@@ -7338,27 +7338,27 @@ LABEL_16:
     [v10 setInternalPredicate:v15];
   }
 
-  v21 = [a1 queryForAssetsWithOptions:v10];
+  v21 = [self queryForAssetsWithOptions:v10];
 
   return v21;
 }
 
-+ (id)queryForAllAssetsInYearRepresentedByYearHighlight:(id)a3 options:(id)a4
++ (id)queryForAllAssetsInYearRepresentedByYearHighlight:(id)highlight options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 kind] == 2)
+  highlightCopy = highlight;
+  optionsCopy = options;
+  if ([highlightCopy kind] == 2)
   {
-    v8 = [v6 photoLibrary];
-    v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v8];
+    photoLibrary = [highlightCopy photoLibrary];
+    v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
     v10 = MEMORY[0x1E696AE18];
-    v11 = [v6 objectID];
-    v12 = [v10 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight.parentPhotosHighlight = %@", v11];
+    objectID = [highlightCopy objectID];
+    v12 = [v10 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight.parentPhotosHighlight = %@", objectID];
     [v9 setInternalPredicate:v12];
 
-    v13 = [a1 queryForAssetsWithOptions:v9];
-    v7 = v9;
+    v13 = [self queryForAssetsWithOptions:v9];
+    optionsCopy = v9;
   }
 
   else
@@ -7369,40 +7369,40 @@ LABEL_16:
   return v13;
 }
 
-+ (id)queryForReferencedAssetsWithOptions:(id)a3
++ (id)queryForReferencedAssetsWithOptions:(id)options
 {
   v3 = MEMORY[0x1E69BF2B8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v6 setComparator:1];
   [v6 setKey:6];
   [v5 addSingleQueries:v6];
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v8 = objc_alloc_init(MEMORY[0x1E69BE700]);
   v9 = MEMORY[0x1E69BE708];
-  v10 = [v7 photoLibrary];
-  v11 = [v9 predicateForQuery:v5 inLibrary:v10 changeDetectionCriteria:v8];
+  photoLibrary = [v7 photoLibrary];
+  v11 = [v9 predicateForQuery:v5 inLibrary:photoLibrary changeDetectionCriteria:v8];
 
   v12 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v7];
-  [v12 setFetchOptions:v4];
+  [v12 setFetchOptions:optionsCopy];
 
   v13 = [[PHQueryChangeDetectionCriteria alloc] initWithPLQueryChangeDetectionCriteria:v8];
   if (v13)
   {
-    v14 = [v12 fetchOptions];
-    [v14 setChangeDetectionCriteria:v13];
+    fetchOptions = [v12 fetchOptions];
+    [fetchOptions setChangeDetectionCriteria:v13];
   }
 
   return v12;
 }
 
-+ (id)queryForAssetsForKeywords:(id)a3 options:(id)a4
++ (id)queryForAssetsForKeywords:(id)keywords options:(id)options
 {
-  v5 = a3;
-  if (v5)
+  keywordsCopy = keywords;
+  if (keywordsCopy)
   {
-    v6 = v5;
+    v6 = keywordsCopy;
   }
 
   else
@@ -7410,85 +7410,85 @@ LABEL_16:
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  v7 = a4;
+  optionsCopy = options;
   v8 = [v6 _pl_map:&__block_literal_global_526];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@", @"additionalAttributes.keywords", v8];
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:v10];
 
-  [v11 setFetchOptions:v7];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForKeyAssetsInAssetCollection:(id)a3 options:(id)a4
++ (id)queryForKeyAssetsInAssetCollection:(id)collection options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 assetCollectionType] == 8)
+  collectionCopy = collection;
+  optionsCopy = options;
+  if ([collectionCopy assetCollectionType] == 8)
   {
-    v7 = [PHQuery queryForKeyAssetsInSuggestion:v5 options:v6];
+    v7 = [PHQuery queryForKeyAssetsInSuggestion:collectionCopy options:optionsCopy];
     v8 = v7;
     v9 = PHQueryForKeyAssetsInSuggestion;
   }
 
-  else if ([v5 assetCollectionType] == 7)
+  else if ([collectionCopy assetCollectionType] == 7)
   {
-    v7 = [PHQuery queryForKeyAssetsInMomentShare:v5 options:v6];
+    v7 = [PHQuery queryForKeyAssetsInMomentShare:collectionCopy options:optionsCopy];
     v8 = v7;
     v9 = PHQueryForKeyAssetsInMomentShare;
   }
 
-  else if ([v5 assetCollectionType] == 12)
+  else if ([collectionCopy assetCollectionType] == 12)
   {
-    v7 = [PHQuery queryForKeyAssetsInCollectionShare:v5 options:v6];
+    v7 = [PHQuery queryForKeyAssetsInCollectionShare:collectionCopy options:optionsCopy];
     v8 = v7;
     v9 = PHQueryForKeyAssetsInCollectionShare;
   }
 
   else
   {
-    if ([v5 assetCollectionType] != 6 || objc_msgSend(v5, "assetCollectionSubtype") != 1000000302 || !objc_msgSend(v5, "isSharingSuggestion"))
+    if ([collectionCopy assetCollectionType] != 6 || objc_msgSend(collectionCopy, "assetCollectionSubtype") != 1000000302 || !objc_msgSend(collectionCopy, "isSharingSuggestion"))
     {
-      if ([v5 canContainCustomKeyAssets])
+      if ([collectionCopy canContainCustomKeyAssets])
       {
         v11 = MEMORY[0x1E696AE18];
-        v12 = [v5 objectID];
-        v13 = [v11 predicateWithFormat:@"%K CONTAINS %@", @"albumsBeingKeyAssets", v12];
+        objectID = [collectionCopy objectID];
+        v13 = [v11 predicateWithFormat:@"%K CONTAINS %@", @"albumsBeingKeyAssets", objectID];
 
-        v14 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
+        v14 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:collectionCopy];
         v8 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v13 inLibrary:v14];
 
-        v15 = [v5 photoLibrary];
-        v16 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v15];
+        photoLibrary = [collectionCopy photoLibrary];
+        v16 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
         [v8 setFetchOptions:v16];
         [v8 _setIdentificationBlock:PHQueryForKeyAssetsInAssetCollection];
       }
 
-      else if ([v5 assetCollectionType] == 3)
+      else if ([collectionCopy assetCollectionType] == 3)
       {
         v8 = 0;
       }
 
       else
       {
-        v17 = [v5 photoLibrary];
-        v18 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v17];
+        photoLibrary2 = [collectionCopy photoLibrary];
+        v18 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary2];
 
-        v19 = [v18 fetchLimit];
+        fetchLimit = [v18 fetchLimit];
         v20 = +[PHQuery maxKeyAssets];
-        if (v19 >= v20)
+        if (fetchLimit >= v20)
         {
           v21 = v20;
         }
 
         else
         {
-          v21 = v19;
+          v21 = fetchLimit;
         }
 
-        if (v19)
+        if (fetchLimit)
         {
           v22 = v21;
         }
@@ -7499,15 +7499,15 @@ LABEL_16:
         }
 
         [v18 setFetchLimit:v22];
-        [v18 setReverseSortOrder:{objc_msgSend(v18, "reverseSortOrder") ^ objc_msgSend(v5, "keyAssetsAtEnd")}];
-        v8 = [PHQuery queryForAssetsInAssetCollection:v5 options:v18];
-        v6 = v18;
+        [v18 setReverseSortOrder:{objc_msgSend(v18, "reverseSortOrder") ^ objc_msgSend(collectionCopy, "keyAssetsAtEnd")}];
+        v8 = [PHQuery queryForAssetsInAssetCollection:collectionCopy options:v18];
+        optionsCopy = v18;
       }
 
       goto LABEL_8;
     }
 
-    v7 = [PHQuery queryForKeySharingSuggestionAssetsInHighlight:v5 options:v6];
+    v7 = [PHQuery queryForKeySharingSuggestionAssetsInHighlight:collectionCopy options:optionsCopy];
     v8 = v7;
     v9 = PHQueryForKeySharingSuggestionAssetsInHighlight;
   }
@@ -7518,26 +7518,26 @@ LABEL_8:
   return v8;
 }
 
-+ (id)queryForKeySharingSuggestionAssetsInHighlight:(id)a3 options:(id)a4
++ (id)queryForKeySharingSuggestionAssetsInHighlight:(id)highlight options:(id)options
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 assetCollectionSubtype] == 1000000302)
+  highlightCopy = highlight;
+  optionsCopy = options;
+  if ([highlightCopy assetCollectionSubtype] == 1000000302)
   {
-    v7 = [v5 photoLibrary];
-    v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v7];
+    photoLibrary = [highlightCopy photoLibrary];
+    v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = MEMORY[0x1E696AE18];
-    v11 = [v5 objectID];
-    v12 = [v10 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight == %@", v11];
-    [v9 addObject:v12];
+    objectID = [highlightCopy objectID];
+    v12 = [v10 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight == %@", objectID];
+    [array addObject:v12];
 
     v13 = PLManagedAssetPredicateToFetchAssetsSuggestedForSharing();
-    [v9 addObject:v13];
+    [array addObject:v13];
 
-    v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v9];
+    v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
     [v8 setInternalPredicate:v14];
 
     [v8 setSharingFilter:0];
@@ -7548,7 +7548,7 @@ LABEL_8:
 
     v17 = [PHQuery queryForAssetsWithOptions:v8];
 
-    v6 = v8;
+    optionsCopy = v8;
   }
 
   else
@@ -7559,13 +7559,13 @@ LABEL_8:
   return v17;
 }
 
-+ (id)queryForKeyAssetsInCollectionShare:(id)a3 options:(id)a4
++ (id)queryForKeyAssetsInCollectionShare:(id)share options:(id)options
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 photoLibrary];
-  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v7];
+  optionsCopy = options;
+  shareCopy = share;
+  photoLibrary = [shareCopy photoLibrary];
+  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
   [v8 setFetchLimit:1];
   v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"cloudBatchPublishDate" ascending:0];
@@ -7575,27 +7575,27 @@ LABEL_8:
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   [v8 setInternalSortDescriptors:v11];
 
-  v12 = [PHQuery queryForAssetsInAssetCollection:v6 options:v8];
+  v12 = [PHQuery queryForAssetsInAssetCollection:shareCopy options:v8];
 
   return v12;
 }
 
-+ (id)queryForKeyAssetsInMomentShare:(id)a3 options:(id)a4
++ (id)queryForKeyAssetsInMomentShare:(id)share options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 preview];
-  v8 = [v7 keyAssetIdentifier];
-  if (v8)
+  shareCopy = share;
+  optionsCopy = options;
+  preview = [shareCopy preview];
+  keyAssetIdentifier = [preview keyAssetIdentifier];
+  if (keyAssetIdentifier)
   {
-    v9 = [v5 photoLibrary];
-    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v9];
+    photoLibrary = [shareCopy photoLibrary];
+    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid == %@ OR cloudAssetGUID == %@", v8, v8];
+    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid == %@ OR cloudAssetGUID == %@", keyAssetIdentifier, keyAssetIdentifier];
     [v10 setInternalPredicate:v11];
-    v12 = [PHQuery queryForAssetsInAssetCollection:v5 options:v10];
+    v12 = [PHQuery queryForAssetsInAssetCollection:shareCopy options:v10];
 
-    v6 = v10;
+    optionsCopy = v10;
   }
 
   else
@@ -7606,45 +7606,45 @@ LABEL_8:
   return v12;
 }
 
-+ (id)queryForAssetsWithBurstIdentifier:(id)a3 options:(id)a4
++ (id)queryForAssetsWithBurstIdentifier:(id)identifier options:(id)options
 {
   v5 = MEMORY[0x1E69BE540];
-  v6 = a4;
-  v7 = [v5 predicateForBurstAssetsWithBurstUUID:a3];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+  optionsCopy = options;
+  v7 = [v5 predicateForBurstAssetsWithBurstUUID:identifier];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v9 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v7 inLibrary:v8];
 
-  [v9 setFetchOptions:v6];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForVisibleAssetsWithObjectIDs:(id)a3 options:(id)a4
++ (id)queryForVisibleAssetsWithObjectIDs:(id)ds options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
-  if (!v6)
+  dsCopy = ds;
+  optionsCopy = options;
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  if (!dsCopy)
   {
-    v6 = [MEMORY[0x1E695DEC8] array];
+    dsCopy = [MEMORY[0x1E695DEC8] array];
   }
 
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v6];
-  v10 = [a1 queryForType:@"PHAsset" withBasePredicate:v9 seedOIDs:0 inLibrary:v8];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", dsCopy];
+  v10 = [self queryForType:@"PHAsset" withBasePredicate:dsCopy seedOIDs:0 inLibrary:v8];
 
-  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v8];
+  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v8];
 
   [v10 setFetchOptions:v11];
 
   return v10;
 }
 
-+ (id)queryForAssetsWithObjectIDs:(id)a3 options:(id)a4
++ (id)queryForAssetsWithObjectIDs:(id)ds options:(id)options
 {
-  v5 = a3;
-  if (v5)
+  dsCopy = ds;
+  if (dsCopy)
   {
-    v6 = v5;
+    v6 = dsCopy;
   }
 
   else
@@ -7652,12 +7652,12 @@ LABEL_8:
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  v7 = a4;
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
+  optionsCopy = options;
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v6];
   v10 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 seedOIDs:0 inLibrary:v8];
 
-  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v8];
+  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v8];
 
   [v11 setIncludeTrashedAssets:1];
   [v11 setIncludeAllBurstAssets:1];
@@ -7667,116 +7667,116 @@ LABEL_8:
   return v10;
 }
 
-+ (id)queryForGuestAssetsInCollectionContainingAsset:(id)a3 options:(id)a4
++ (id)queryForGuestAssetsInCollectionContainingAsset:(id)asset options:(id)options
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  [v6 fetchPropertySetsIfNeeded];
-  v7 = [v6 curationProperties];
+  optionsCopy = options;
+  assetCopy = asset;
+  [assetCopy fetchPropertySetsIfNeeded];
+  curationProperties = [assetCopy curationProperties];
 
-  v8 = [v7 syndicationIdentifier];
+  syndicationIdentifier = [curationProperties syndicationIdentifier];
 
   v9 = PLSearchableIdentifierFromMessagesSyndicationID();
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"additionalAttributes.syndicationIdentifier CONTAINS %@", v9];
-  v11 = [v5 internalPredicate];
+  internalPredicate = [optionsCopy internalPredicate];
 
-  if (v11)
+  if (internalPredicate)
   {
     v12 = MEMORY[0x1E696AB28];
-    v13 = [v5 internalPredicate];
-    v18[0] = v13;
+    internalPredicate2 = [optionsCopy internalPredicate];
+    v18[0] = internalPredicate2;
     v18[1] = v10;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     v15 = [v12 andPredicateWithSubpredicates:v14];
-    [v5 setInternalPredicate:v15];
+    [optionsCopy setInternalPredicate:v15];
   }
 
   else
   {
-    [v5 setInternalPredicate:v10];
+    [optionsCopy setInternalPredicate:v10];
   }
 
-  v16 = [PHQuery queryForGuestAssetsWithOptions:v5];
+  v16 = [PHQuery queryForGuestAssetsWithOptions:optionsCopy];
 
   return v16;
 }
 
-+ (id)queryForGuestAssetsWithOptions:(id)a3
++ (id)queryForGuestAssetsWithOptions:(id)options
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
+  optionsCopy = options;
+  v5 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v6 = MEMORY[0x1E696AB28];
-  v7 = [a1 _guestAssetOnlyPredicate];
-  v14[0] = v7;
+  _guestAssetOnlyPredicate = [self _guestAssetOnlyPredicate];
+  v14[0] = _guestAssetOnlyPredicate;
   v8 = +[PHAsset filterPredicateToExcludeNoSyndicationAssets];
   v14[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v10 = [v6 andPredicateWithSubpredicates:v9];
 
   v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v10 inLibrary:v5];
-  if (!v4 || ![v4 includeAssetSourceTypes])
+  if (!optionsCopy || ![optionsCopy includeAssetSourceTypes])
   {
-    v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v4 photoLibrary:v5];
+    v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v5];
 
     [v12 setIncludeAssetSourceTypes:1];
-    v4 = v12;
+    optionsCopy = v12;
   }
 
-  [v11 setFetchOptions:v4];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForAnyCinematicVideosNeedingDeferredProcessingWithOtions:(id)a3
++ (id)queryForAnyCinematicVideosNeedingDeferredProcessingWithOtions:(id)otions
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  otionsCopy = otions;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:otionsCopy object:0];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d AND %K = %d", @"depthType", 2, @"deferredProcessingNeeded", 2];
   v6 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v5 inLibrary:v4];
-  if (!v3)
+  if (!otionsCopy)
   {
-    v3 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v4];
+    otionsCopy = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v4];
   }
 
-  [v3 setFetchLimit:1];
-  [v6 setFetchOptions:v3];
+  [otionsCopy setFetchLimit:1];
+  [v6 setFetchOptions:otionsCopy];
 
   return v6;
 }
 
-+ (id)queryForAssetsForPTPWithOptions:(id)a3
++ (id)queryForAssetsForPTPWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
-  v5 = [v4 photoLibrary];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  photoLibrary = [v4 photoLibrary];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__36903;
   v20 = __Block_byref_object_dispose__36904;
   v21 = 0;
-  v6 = [v5 managedObjectContext];
+  managedObjectContext = [photoLibrary managedObjectContext];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__PHQuery_queryForAssetsForPTPWithOptions___block_invoke;
   v12[3] = &unk_1E75AA3F8;
   v15 = &v16;
-  v7 = v6;
+  v7 = managedObjectContext;
   v13 = v7;
-  v8 = v5;
+  v8 = photoLibrary;
   v14 = v8;
   [v7 performBlockAndWait:v12];
   v9 = [PHPTPFetches predicateForAssetsExposedByPHPTPExcludingObjectIDs:v17[5]];
   v10 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:v4];
-  if (!v3)
+  if (!optionsCopy)
   {
-    v3 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v4];
+    optionsCopy = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v4];
   }
 
-  [v3 setIncludeAllBurstAssets:1];
-  [v10 setFetchOptions:v3];
+  [optionsCopy setIncludeAllBurstAssets:1];
+  [v10 setFetchOptions:optionsCopy];
 
   _Block_object_dispose(&v16, 8);
 
@@ -7790,80 +7790,80 @@ uint64_t __43__PHQuery_queryForAssetsForPTPWithOptions___block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)queryForAssetsWithOptions:(id)a3
++ (id)queryForAssetsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHAsset" withBasePredicate:0 inLibrary:v4];
-  if (!v3 || ![v3 includeAssetSourceTypes])
+  if (!optionsCopy || ![optionsCopy includeAssetSourceTypes])
   {
-    v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v3 photoLibrary:v4];
+    v6 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v4];
 
     [v6 setIncludeAssetSourceTypes:1];
-    v3 = v6;
+    optionsCopy = v6;
   }
 
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForCloudSharedAlbumInvitationRecordsForCloudSharedAlbum:(id)a3 options:(id)a4
++ (id)queryForCloudSharedAlbumInvitationRecordsForCloudSharedAlbum:(id)album options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:v6];
+  optionsCopy = options;
+  albumCopy = album;
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:albumCopy];
   v8 = MEMORY[0x1E696AE18];
-  v9 = [v6 cloudGUID];
+  cloudGUID = [albumCopy cloudGUID];
 
-  v10 = [v8 predicateWithFormat:@"%K = %@", @"albumGUID", v9];
+  v10 = [v8 predicateWithFormat:@"%K = %@", @"albumGUID", cloudGUID];
 
   v11 = [PHQuery queryForType:@"PHCloudSharedAlbumInvitationRecord" withBasePredicate:v10 inLibrary:v7];
-  if (!v5)
+  if (!optionsCopy)
   {
-    v5 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v7];
+    optionsCopy = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v7];
   }
 
-  [v11 setFetchOptions:v5];
+  [v11 setFetchOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)queryForCloudSharedAlbumInvitationRecordsWithOptions:(id)a3
++ (id)queryForCloudSharedAlbumInvitationRecordsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v5 = [PHQuery queryForType:@"PHCloudSharedAlbumInvitationRecord" withBasePredicate:0 inLibrary:v4];
-  if (!v3)
+  if (!optionsCopy)
   {
-    v3 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v4];
+    optionsCopy = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v4];
   }
 
-  [v5 setFetchOptions:v3];
+  [v5 setFetchOptions:optionsCopy];
 
   return v5;
 }
 
-+ (id)queryForCloudSharedAlbumsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForCloudSharedAlbumsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHCloudSharedAlbum" withLocalIdentifiers:a3 options:v6];
-  [v7 setFetchOptions:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHCloudSharedAlbum" withLocalIdentifiers:identifiers options:optionsCopy];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)_queryForAssetsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)_queryForAssetsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHAsset" withLocalIdentifiers:a3 options:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHAsset" withLocalIdentifiers:identifiers options:optionsCopy];
   v8 = objc_opt_class();
-  v9 = [v6 photoLibrary];
-  v10 = [v8 _defaultFetchOptionsForIdentifiedAssetsQueryInPhotoLibrary:v9];
+  photoLibrary = [optionsCopy photoLibrary];
+  v10 = [v8 _defaultFetchOptionsForIdentifiedAssetsQueryInPhotoLibrary:photoLibrary];
 
-  if (v6)
+  if (optionsCopy)
   {
-    [v10 mergeWithFetchOptions:v6];
+    [v10 mergeWithFetchOptions:optionsCopy];
   }
 
   [v7 setFetchOptions:v10];
@@ -7871,21 +7871,21 @@ uint64_t __43__PHQuery_queryForAssetsForPTPWithOptions___block_invoke(uint64_t a
   return v7;
 }
 
-+ (id)_defaultFetchOptionsForIdentifiedAssetsQueryInPhotoLibrary:(id)a3
++ (id)_defaultFetchOptionsForIdentifiedAssetsQueryInPhotoLibrary:(id)library
 {
-  v3 = [PHFetchOptions fetchOptionsWithPhotoLibrary:a3 orObject:0];
+  v3 = [PHFetchOptions fetchOptionsWithPhotoLibrary:library orObject:0];
   [v3 setIncludeDuplicateAssets:1];
   [v3 setIncludeHiddenAssets:1];
 
   return v3;
 }
 
-+ (id)queryForType:(id)a3 withLocalIdentifiers:(id)a4 options:(id)a5
++ (id)queryForType:(id)type withLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v10 isEqualToString:@"PHPerson"])
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PHPerson"])
   {
     v11 = @"personUUID";
   }
@@ -7895,24 +7895,24 @@ uint64_t __43__PHQuery_queryForAssetsForPTPWithOptions___block_invoke(uint64_t a
     v11 = @"uuid";
   }
 
-  v12 = [a1 queryForType:v10 withIdentifiers:v9 identifierKeyPath:v11 options:v8];
+  v12 = [self queryForType:typeCopy withIdentifiers:identifiersCopy identifierKeyPath:v11 options:optionsCopy];
 
   return v12;
 }
 
-+ (id)queryForType:(id)a3 withIdentifiers:(id)a4 identifierKeyPath:(id)a5 options:(id)a6
++ (id)queryForType:(id)type withIdentifiers:(id)identifiers identifierKeyPath:(id)path options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  pathCopy = path;
+  optionsCopy = options;
+  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = v10;
+  v14 = identifiersCopy;
   v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v15)
   {
@@ -7946,129 +7946,129 @@ uint64_t __43__PHQuery_queryForAssetsForPTPWithOptions___block_invoke(uint64_t a
     v20 = v13;
   }
 
-  v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN (%@)", v11, v20, v25];
-  v22 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v12 object:0];
-  v23 = [PHQuery queryForType:v9 withBasePredicate:v21 inLibrary:v22];
+  v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN (%@)", pathCopy, v20, v25];
+  v22 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v23 = [PHQuery queryForType:typeCopy withBasePredicate:v21 inLibrary:v22];
 
-  [v23 setFetchOptions:v12];
+  [v23 setFetchOptions:optionsCopy];
 
   return v23;
 }
 
-+ (id)queryForAssetsWithMediaType:(int64_t)a3 options:(id)a4
++ (id)queryForAssetsWithMediaType:(int64_t)type options:(id)options
 {
-  v5 = a4;
-  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:0];
-  if (a3 >= 4)
+  optionsCopy = options;
+  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  if (type >= 4)
   {
     v7 = 3;
   }
 
   else
   {
-    v7 = (0x2000100000003uLL >> (16 * a3)) & 3;
+    v7 = (0x2000100000003uLL >> (16 * type)) & 3;
   }
 
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", v7];
   v9 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v8 inLibrary:v6];
 
-  if (!v5 || ![v5 includeAssetSourceTypes])
+  if (!optionsCopy || ![optionsCopy includeAssetSourceTypes])
   {
-    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v6];
+    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v6];
 
     [v10 setIncludeAssetSourceTypes:1];
-    v5 = v10;
+    optionsCopy = v10;
   }
 
-  [v9 setFetchOptions:v5];
+  [v9 setFetchOptions:optionsCopy];
 
   return v9;
 }
 
-+ (id)queryForCustomUserAssetsInMemory:(id)a3 options:(id)a4
++ (id)queryForCustomUserAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 4)
+  optionsCopy = options;
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2021 description:@"Fetching for user curated assets is only supported in a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2021 description:@"Fetching for user curated assets is only supported in a memory"];
   }
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v8 objectID];
-  v11 = [v9 predicateWithFormat:@"%K CONTAINS %@", @"memoriesBeingCustomUserAssets", v10];
+  objectID = [memoryCopy objectID];
+  v11 = [v9 predicateWithFormat:@"%K CONTAINS %@", @"memoriesBeingCustomUserAssets", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
   v13 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v12];
 
-  [v13 _setContainerCollection:v8];
-  [v13 setFetchOptions:v7];
+  [v13 _setContainerCollection:memoryCopy];
+  [v13 setFetchOptions:optionsCopy];
 
   return v13;
 }
 
-+ (id)queryForUserCuratedAssetsInMemory:(id)a3 options:(id)a4
++ (id)queryForUserCuratedAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 4)
+  optionsCopy = options;
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:2008 description:@"Fetching for user curated assets is only supported in a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:2008 description:@"Fetching for user curated assets is only supported in a memory"];
   }
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v8 objectID];
-  v11 = [v9 predicateWithFormat:@"memoriesBeingUserCuratedAssets CONTAINS %@", v10];
+  objectID = [memoryCopy objectID];
+  v11 = [v9 predicateWithFormat:@"memoriesBeingUserCuratedAssets CONTAINS %@", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
   v13 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v12];
 
-  v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v13 _setContainerCollection:v8];
+  [v13 _setContainerCollection:memoryCopy];
   [v13 setFetchOptions:v14];
 
   return v13;
 }
 
-+ (id)queryForMovieCuratedAssetsInMemory:(id)a3 options:(id)a4
++ (id)queryForMovieCuratedAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 4)
+  optionsCopy = options;
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1994 description:@"Fetching for movie curated assets is only supported in a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1994 description:@"Fetching for movie curated assets is only supported in a memory"];
   }
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v8 objectID];
-  v11 = [v9 predicateWithFormat:@"memoriesBeingMovieCuratedAssets CONTAINS %@", v10];
+  objectID = [memoryCopy objectID];
+  v11 = [v9 predicateWithFormat:@"memoriesBeingMovieCuratedAssets CONTAINS %@", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
   v13 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v12];
 
-  v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v13 _setContainerCollection:v8];
+  [v13 _setContainerCollection:memoryCopy];
   [v13 setFetchOptions:v14];
 
   return v13;
 }
 
-+ (id)queryForAssetsInAssetCollection:(id)a3 options:(id)a4
++ (id)queryForAssetsInAssetCollection:(id)collection options:(id)options
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v6];
-  if ([v6 assetCollectionType] == 3)
+  collectionCopy = collection;
+  optionsCopy = options;
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:collectionCopy];
+  if ([collectionCopy assetCollectionType] == 3)
   {
     v9 = MEMORY[0x1E696AE18];
-    v10 = [v6 objectID];
-    v11 = [v9 predicateWithFormat:@"moment = %@", v10];
+    objectID = [collectionCopy objectID];
+    predicateForAllAssets = [v9 predicateWithFormat:@"moment = %@", objectID];
 
     v12 = PHQueryForAssetsInMoment;
 LABEL_12:
@@ -8080,121 +8080,121 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v6 assetCollectionType] == 7)
+  if ([collectionCopy assetCollectionType] == 7)
   {
     v13 = MEMORY[0x1E696AE18];
-    v14 = [v6 objectID];
-    v11 = [v13 predicateWithFormat:@"momentShare = %@", v14];
+    objectID2 = [collectionCopy objectID];
+    predicateForAllAssets = [v13 predicateWithFormat:@"momentShare = %@", objectID2];
 
     v12 = PHQueryForAssetsInMomentShare;
     goto LABEL_12;
   }
 
-  if ([v6 assetCollectionType] == 12 || objc_msgSend(v6, "assetCollectionType") == 1 && objc_msgSend(v6, "assetCollectionSubtype") == 101 && (objc_msgSend(MEMORY[0x1E69BF2F0], "clientIsAllowedToFetchCollectionShares") & 1) == 0)
+  if ([collectionCopy assetCollectionType] == 12 || objc_msgSend(collectionCopy, "assetCollectionType") == 1 && objc_msgSend(collectionCopy, "assetCollectionSubtype") == 101 && (objc_msgSend(MEMORY[0x1E69BF2F0], "clientIsAllowedToFetchCollectionShares") & 1) == 0)
   {
     v15 = MEMORY[0x1E696AE18];
-    v16 = [v6 objectID];
-    v11 = [v15 predicateWithFormat:@"collectionShare = %@", v16];
+    objectID3 = [collectionCopy objectID];
+    predicateForAllAssets = [v15 predicateWithFormat:@"collectionShare = %@", objectID3];
 
     v12 = PHQueryForAssetsInCollectionShare;
     goto LABEL_12;
   }
 
-  if ([v6 assetCollectionType] == 4)
+  if ([collectionCopy assetCollectionType] == 4)
   {
-    v11 = [v6 predicateForAllAssetsWithLibrary:v8];
+    predicateForAllAssets = [collectionCopy predicateForAllAssetsWithLibrary:v8];
     v12 = PHQueryForAssetsInMemory;
     goto LABEL_12;
   }
 
-  if ([v6 assetCollectionType] == 2)
+  if ([collectionCopy assetCollectionType] == 2)
   {
-    v24 = [v6 plAlbumKind];
-    if (v24 == 1507)
+    plAlbumKind = [collectionCopy plAlbumKind];
+    if (plAlbumKind == 1507)
     {
-      v25 = [v6 userQuery];
+      userQuery = [collectionCopy userQuery];
       v19 = objc_alloc_init(MEMORY[0x1E69BE700]);
       v26 = MEMORY[0x1E69BE708];
-      v27 = [v6 photoLibrary];
-      v28 = [v27 photoLibrary];
-      v11 = [v26 predicateForQuery:v25 inLibrary:v28 changeDetectionCriteria:v19];
+      photoLibrary = [collectionCopy photoLibrary];
+      v27PhotoLibrary = [photoLibrary photoLibrary];
+      predicateForAllAssets = [v26 predicateForQuery:userQuery inLibrary:v27PhotoLibrary changeDetectionCriteria:v19];
 
       v18 = _Block_copy(PHQueryForAssetsInUserSmartAlbum);
     }
 
     else
     {
-      v29 = v24;
-      v11 = [MEMORY[0x1E69BE430] predicateForAlbumKind:v24 includeGuest:{objc_msgSend(v7, "includeGuestAssets")}];
-      v18 = [a1 identificationBlockForSmartAlbumKind:v29];
-      if ([v7 hasAnySortDescriptors])
+      v29 = plAlbumKind;
+      predicateForAllAssets = [MEMORY[0x1E69BE430] predicateForAlbumKind:plAlbumKind includeGuest:{objc_msgSend(optionsCopy, "includeGuestAssets")}];
+      v18 = [self identificationBlockForSmartAlbumKind:v29];
+      if ([optionsCopy hasAnySortDescriptors])
       {
         goto LABEL_14;
       }
 
-      v30 = [v6 photoLibrary];
-      v31 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v30];
+      photoLibrary2 = [collectionCopy photoLibrary];
+      v31 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary2];
 
       v32 = [MEMORY[0x1E69BE430] sortDescriptorsForAlbumKind:v29];
       [v31 setInternalSortDescriptors:v32];
 
       v19 = 0;
-      v7 = v31;
+      optionsCopy = v31;
     }
   }
 
   else
   {
-    if ([v6 assetCollectionType] == 6 && objc_msgSend(v6, "isSharingSuggestion"))
+    if ([collectionCopy assetCollectionType] == 6 && objc_msgSend(collectionCopy, "isSharingSuggestion"))
     {
-      v11 = _predicateForAssetsInSharedLibrarySharingSuggestionWithOptions(v6);
+      predicateForAllAssets = _predicateForAssetsInSharedLibrarySharingSuggestionWithOptions(collectionCopy);
       v12 = PHQueryForAssetsInSharedLibrarySuggestion;
       goto LABEL_12;
     }
 
-    if ([v6 assetCollectionType] == 6)
+    if ([collectionCopy assetCollectionType] == 6)
     {
-      v11 = _predicateForAssetsInPhotosHighlightWithOptions(v6, v7);
+      predicateForAllAssets = _predicateForAssetsInPhotosHighlightWithOptions(collectionCopy, optionsCopy);
       v12 = PHQueryForAssetsInPhotosHighlight;
       goto LABEL_12;
     }
 
-    if ([v6 assetCollectionType] == 8)
+    if ([collectionCopy assetCollectionType] == 8)
     {
-      v11 = [v6 predicateForAllAssets];
+      predicateForAllAssets = [collectionCopy predicateForAllAssets];
       v12 = PHQueryForAssetsInSuggestion;
       goto LABEL_12;
     }
 
-    if ([v6 assetCollectionType] == 9)
+    if ([collectionCopy assetCollectionType] == 9)
     {
       v33 = MEMORY[0x1E696AE18];
-      v34 = [v6 objectID];
-      v11 = [v33 predicateWithFormat:@"%K = %@", @"importSession", v34];
+      objectID4 = [collectionCopy objectID];
+      predicateForAllAssets = [v33 predicateWithFormat:@"%K = %@", @"importSession", objectID4];
 
       v12 = PHQueryForAssetsInImportSession;
       goto LABEL_12;
     }
 
-    if ([v6 assetCollectionType] == 13)
+    if ([collectionCopy assetCollectionType] == 13)
     {
       v35 = MEMORY[0x1E696AE18];
-      v36 = [v6 objectID];
-      v11 = [v35 predicateWithFormat:@"%K = %@", @"conversation", v36];
+      objectID5 = [collectionCopy objectID];
+      predicateForAllAssets = [v35 predicateWithFormat:@"%K = %@", @"conversation", objectID5];
 
       v12 = PHQueryForAssetsInConversation;
       goto LABEL_12;
     }
 
-    if ([v6 assetCollectionSubtype] != 1000000601 || objc_msgSend(v7, "sharingFilter") == 2)
+    if ([collectionCopy assetCollectionSubtype] != 1000000601 || objc_msgSend(optionsCopy, "sharingFilter") == 2)
     {
-      if (v6)
+      if (collectionCopy)
       {
         v37 = MEMORY[0x1E696AE18];
-        v38 = [v6 objectID];
-        v11 = [v37 predicateWithFormat:@"albums CONTAINS %@", v38];
+        objectID6 = [collectionCopy objectID];
+        predicateForAllAssets = [v37 predicateWithFormat:@"albums CONTAINS %@", objectID6];
 
-        v17 = [a1 identificationBlockForAlbumSortKey:{objc_msgSend(v6, "customSortKey")}];
+        v17 = [self identificationBlockForAlbumSortKey:{objc_msgSend(collectionCopy, "customSortKey")}];
         goto LABEL_13;
       }
 
@@ -8207,23 +8207,23 @@ LABEL_14:
       }
     }
 
-    v11 = [MEMORY[0x1E696AE18] predicateWithValue:0];
+    predicateForAllAssets = [MEMORY[0x1E696AE18] predicateWithValue:0];
     v19 = 0;
     v18 = 0;
   }
 
 LABEL_15:
-  v20 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v8];
-  v21 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v6 options:v7 changeDetectionCriteria:v19];
+  v20 = [PHQuery queryForType:@"PHAsset" withBasePredicate:predicateForAllAssets inLibrary:v8];
+  v21 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:collectionCopy options:optionsCopy changeDetectionCriteria:v19];
 
-  [v20 _setContainerCollection:v6];
+  [v20 _setContainerCollection:collectionCopy];
   if (!v18)
   {
     v22 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v41 = v6;
+      v41 = collectionCopy;
       v42 = 2112;
       v43 = v21;
       _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_ERROR, "Missing identification block for asset collection: %@ with options: %@", buf, 0x16u);
@@ -8239,17 +8239,17 @@ LABEL_15:
   return v20;
 }
 
-+ (id)queryForAssetsInConversations:(id)a3 options:(id)a4
++ (id)queryForAssetsInConversations:(id)conversations options:(id)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  conversationsCopy = conversations;
+  optionsCopy = options;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(conversationsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = conversationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -8264,8 +8264,8 @@ LABEL_15:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) objectID];
-        [v8 addObject:v14];
+        objectID = [*(*(&v20 + 1) + 8 * i) objectID];
+        [v8 addObject:objectID];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -8275,9 +8275,9 @@ LABEL_15:
   }
 
   v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"importSessionID", v8, v20];
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v17 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v15 inLibrary:v16];
-  v18 = [a1 _fetchOptionsForFetchingAssetsFromImportSessions:v8 options:v7];
+  v18 = [self _fetchOptionsForFetchingAssetsFromImportSessions:v8 options:optionsCopy];
 
   [v17 _setContainerCollection:0];
   [v17 setFetchOptions:v18];
@@ -8285,17 +8285,17 @@ LABEL_15:
   return v17;
 }
 
-+ (id)queryForAssetsInImportSessions:(id)a3 options:(id)a4
++ (id)queryForAssetsInImportSessions:(id)sessions options:(id)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  sessionsCopy = sessions;
+  optionsCopy = options;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sessionsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = sessionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -8310,8 +8310,8 @@ LABEL_15:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) objectID];
-        [v8 addObject:v14];
+        objectID = [*(*(&v20 + 1) + 8 * i) objectID];
+        [v8 addObject:objectID];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -8321,9 +8321,9 @@ LABEL_15:
   }
 
   v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"importSession IN %@", v8];
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v17 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v15 inLibrary:v16];
-  v18 = [a1 _fetchOptionsForFetchingAssetsFromImportSessions:v9 options:v7];
+  v18 = [self _fetchOptionsForFetchingAssetsFromImportSessions:v9 options:optionsCopy];
 
   [v17 _setContainerCollection:0];
   [v17 setFetchOptions:v18];
@@ -8334,98 +8334,98 @@ LABEL_15:
 + (id)_guestAssetOnlyPredicate
 {
   v2 = MEMORY[0x1E69BF328];
-  v3 = [MEMORY[0x1E69BF328] maskForGuestAsset];
+  maskForGuestAsset = [MEMORY[0x1E69BF328] maskForGuestAsset];
 
-  return [v2 predicateForIncludeMask:v3 useIndex:1];
+  return [v2 predicateForIncludeMask:maskForGuestAsset useIndex:1];
 }
 
-+ (id)queryForAssetsInBoundingBoxWithTopLeftLocation:(id)a3 bottomRightLocation:(id)a4 options:(id)a5
++ (id)queryForAssetsInBoundingBoxWithTopLeftLocation:(id)location bottomRightLocation:(id)rightLocation options:(id)options
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696ABC8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  optionsCopy = options;
+  rightLocationCopy = rightLocation;
+  locationCopy = location;
   v11 = [v7 expressionForKeyPath:@"boundedByRect"];
   v12 = MEMORY[0x1E696ABC8];
-  v19[0] = v10;
-  v19[1] = v9;
+  v19[0] = locationCopy;
+  v19[1] = rightLocationCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v14 = [v12 expressionForConstantValue:v13];
 
   v15 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v11 rightExpression:v14 modifier:0 type:2000 options:0];
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:0];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   v17 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v15 inLibrary:v16];
 
-  [v17 setFetchOptions:v8];
+  [v17 setFetchOptions:optionsCopy];
 
   return v17;
 }
 
-+ (id)queryForCollageAssetsInDayHighlight:(id)a3 options:(id)a4
++ (id)queryForCollageAssetsInDayHighlight:(id)highlight options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 kind])
+  highlightCopy = highlight;
+  optionsCopy = options;
+  if ([highlightCopy kind])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = +[PHPhotosHighlight collageAssetsInverseRelationshipPredicateForDayHighlight:forHighlightFilter:](PHPhotosHighlight, "collageAssetsInverseRelationshipPredicateForDayHighlight:forHighlightFilter:", v5, [v6 sharingFilter]);
-    v9 = [v5 photoLibrary];
-    v7 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v8 inLibrary:v9];
+    v8 = +[PHPhotosHighlight collageAssetsInverseRelationshipPredicateForDayHighlight:forHighlightFilter:](PHPhotosHighlight, "collageAssetsInverseRelationshipPredicateForDayHighlight:forHighlightFilter:", highlightCopy, [optionsCopy sharingFilter]);
+    photoLibrary = [highlightCopy photoLibrary];
+    v7 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v8 inLibrary:photoLibrary];
 
-    [v6 setUseNoIndexOnSharingFilter:1];
-    [v7 _setContainerCollection:v5];
-    [v7 setFetchOptions:v6];
+    [optionsCopy setUseNoIndexOnSharingFilter:1];
+    [v7 _setContainerCollection:highlightCopy];
+    [v7 setFetchOptions:optionsCopy];
   }
 
   return v7;
 }
 
-+ (id)queryForKeyAssetInPhotosHighlight:(id)a3 options:(id)a4
++ (id)queryForKeyAssetInPhotosHighlight:(id)highlight options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 6)
+  optionsCopy = options;
+  highlightCopy = highlight;
+  if ([highlightCopy assetCollectionType] != 6)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1824 description:@"Expected input collection to be a PhotosHighlight"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1824 description:@"Expected input collection to be a PhotosHighlight"];
   }
 
-  v9 = +[PHPhotosHighlight keyAssetInverseRelationshipPredicateForHighlight:forHighlightFilter:](PHPhotosHighlight, "keyAssetInverseRelationshipPredicateForHighlight:forHighlightFilter:", v8, [v7 sharingFilter]);
-  v10 = [v8 photoLibrary];
-  v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:v10];
-  v12 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v9 = +[PHPhotosHighlight keyAssetInverseRelationshipPredicateForHighlight:forHighlightFilter:](PHPhotosHighlight, "keyAssetInverseRelationshipPredicateForHighlight:forHighlightFilter:", highlightCopy, [optionsCopy sharingFilter]);
+  photoLibrary = [highlightCopy photoLibrary];
+  v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:photoLibrary];
+  v12 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:highlightCopy options:optionsCopy changeDetectionCriteria:0];
 
   [v12 setSortDescriptors:0];
   [v12 setInternalSortDescriptors:0];
-  [v11 _setContainerCollection:v8];
+  [v11 _setContainerCollection:highlightCopy];
 
   [v11 setFetchOptions:v12];
 
   return v11;
 }
 
-+ (id)queryForCuratedAssetsInMomentShare:(id)a3 options:(id)a4
++ (id)queryForCuratedAssetsInMomentShare:(id)share options:(id)options
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 preview];
-  v8 = [v7 curatedAssetIdentifiers];
-  if ([v8 count])
+  shareCopy = share;
+  optionsCopy = options;
+  preview = [shareCopy preview];
+  curatedAssetIdentifiers = [preview curatedAssetIdentifiers];
+  if ([curatedAssetIdentifiers count])
   {
-    v9 = [v5 photoLibrary];
-    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v9];
+    photoLibrary = [shareCopy photoLibrary];
+    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@ OR cloudAssetGUID IN %@", v8, v8];
+    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@ OR cloudAssetGUID IN %@", curatedAssetIdentifiers, curatedAssetIdentifiers];
     [v10 setInternalPredicate:v11];
-    v12 = [PHQuery queryForAssetsInAssetCollection:v5 options:v10];
+    v12 = [PHQuery queryForAssetsInAssetCollection:shareCopy options:v10];
 
-    v6 = v10;
+    optionsCopy = v10;
   }
 
   else
@@ -8436,31 +8436,31 @@ LABEL_15:
       *buf = 136315394;
       v16 = "+[PHQuery queryForCuratedAssetsInMomentShare:options:]";
       v17 = 2048;
-      v18 = v5;
+      v18 = shareCopy;
       _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_ERROR, "%s no curated assets in momentShare %p", buf, 0x16u);
     }
 
-    v12 = [PHQuery queryForAssetsWithObjectIDs:0 options:v6];
+    v12 = [PHQuery queryForAssetsWithObjectIDs:0 options:optionsCopy];
   }
 
   return v12;
 }
 
-+ (id)queryForCuratedAssetsInPhotosHighlight:(id)a3 options:(id)a4
++ (id)queryForCuratedAssetsInPhotosHighlight:(id)highlight options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = _predicateForAssetsInPhotosHighlightWithOptions(v6, v7);
+  highlightCopy = highlight;
+  optionsCopy = options;
+  v8 = _predicateForAssetsInPhotosHighlightWithOptions(highlightCopy, optionsCopy);
   if (v8)
   {
-    v9 = [v6 photoLibrary];
-    v10 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v8 inLibrary:v9];
-    v11 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v6 options:v7 changeDetectionCriteria:0];
+    photoLibrary = [highlightCopy photoLibrary];
+    v10 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v8 inLibrary:photoLibrary];
+    v11 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:highlightCopy options:optionsCopy changeDetectionCriteria:0];
 
-    [v10 _setContainerCollection:v6];
+    [v10 _setContainerCollection:highlightCopy];
     [v10 setFetchOptions:v11];
 
-    v7 = v11;
+    optionsCopy = v11;
   }
 
   else
@@ -8471,270 +8471,270 @@ LABEL_15:
   return v10;
 }
 
-+ (id)queryForRepresentativeAssetsInMemory:(id)a3 options:(id)a4
++ (id)queryForRepresentativeAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 4)
+  optionsCopy = options;
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1777 description:@"Fetching for representative assets is only supported in a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1777 description:@"Fetching for representative assets is only supported in a memory"];
   }
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v8 objectID];
-  v11 = [v9 predicateWithFormat:@"memoriesBeingRepresentativeAssets CONTAINS %@", v10];
+  objectID = [memoryCopy objectID];
+  v11 = [v9 predicateWithFormat:@"memoriesBeingRepresentativeAssets CONTAINS %@", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
   v13 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v12];
 
-  v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v13 _setContainerCollection:v8];
+  [v13 _setContainerCollection:memoryCopy];
   [v13 setFetchOptions:v14];
 
   return v13;
 }
 
-+ (id)queryForRepresentativeAssetsInSuggestion:(id)a3 options:(id)a4
++ (id)queryForRepresentativeAssetsInSuggestion:(id)suggestion options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 8)
+  optionsCopy = options;
+  suggestionCopy = suggestion;
+  if ([suggestionCopy assetCollectionType] != 8)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1763 description:@"Fetching for representative assets by suggestionsBeingRepresentativeAssets is only supported in a suggestion"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1763 description:@"Fetching for representative assets by suggestionsBeingRepresentativeAssets is only supported in a suggestion"];
   }
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v8 objectID];
-  v11 = [v9 predicateWithFormat:@"suggestionsBeingRepresentativeAssets CONTAINS %@", v10];
+  objectID = [suggestionCopy objectID];
+  v11 = [v9 predicateWithFormat:@"suggestionsBeingRepresentativeAssets CONTAINS %@", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:suggestionCopy];
   v13 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v12];
 
-  v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:suggestionCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v13 _setContainerCollection:v8];
+  [v13 _setContainerCollection:suggestionCopy];
   [v13 setFetchOptions:v14];
 
   return v13;
 }
 
-+ (id)queryForKeyAssetsInSuggestion:(id)a3 options:(id)a4
++ (id)queryForKeyAssetsInSuggestion:(id)suggestion options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 8)
+  optionsCopy = options;
+  suggestionCopy = suggestion;
+  if ([suggestionCopy assetCollectionType] != 8)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1749 description:@"Fetching for key assets by suggestionsBeingKeyAssets is only supported in a suggestion"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1749 description:@"Fetching for key assets by suggestionsBeingKeyAssets is only supported in a suggestion"];
   }
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v8 objectID];
-  v11 = [v9 predicateWithFormat:@"suggestionsBeingKeyAssets CONTAINS %@", v10];
+  objectID = [suggestionCopy objectID];
+  v11 = [v9 predicateWithFormat:@"suggestionsBeingKeyAssets CONTAINS %@", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:suggestionCopy];
   v13 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v12];
 
-  v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:suggestionCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v13 _setContainerCollection:v8];
+  [v13 _setContainerCollection:suggestionCopy];
   [v13 setFetchOptions:v14];
 
   return v13;
 }
 
-+ (id)queryForAssetsAssociatedWithMomentsOfMemory:(id)a3 options:(id)a4
++ (id)queryForAssetsAssociatedWithMomentsOfMemory:(id)memory options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 4)
+  optionsCopy = options;
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1737 description:@"queryForAssetsAssociatedWithMomentsOfMemory is only supported for a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1737 description:@"queryForAssetsAssociatedWithMomentsOfMemory is only supported for a memory"];
   }
 
-  v9 = [v8 predicateForAssetsContainedInMomentsFromRepresentativeAssets];
-  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
-  v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v9 inLibrary:v10];
+  predicateForAssetsContainedInMomentsFromRepresentativeAssets = [memoryCopy predicateForAssetsContainedInMomentsFromRepresentativeAssets];
+  v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
+  v11 = [PHQuery queryForType:@"PHAsset" withBasePredicate:predicateForAssetsContainedInMomentsFromRepresentativeAssets inLibrary:v10];
 
-  v12 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v12 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v11 _setContainerCollection:v8];
+  [v11 _setContainerCollection:memoryCopy];
   [v11 setFetchOptions:v12];
 
   return v11;
 }
 
-+ (id)queryForAllAssetsAssociatedWithMemory:(id)a3 options:(id)a4
++ (id)queryForAllAssetsAssociatedWithMemory:(id)memory options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 4)
+  optionsCopy = options;
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1725 description:@"Fetching for all associated assets for a memory is only supported for a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1725 description:@"Fetching for all associated assets for a memory is only supported for a memory"];
   }
 
-  v9 = [v8 objectID];
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K CONTAINS %@ OR %K CONTAINS %@", @"memoriesBeingExtendedCuratedAssets", v9, @"memoriesBeingRepresentativeAssets", v9];
-  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  objectID = [memoryCopy objectID];
+  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K CONTAINS %@ OR %K CONTAINS %@", @"memoriesBeingExtendedCuratedAssets", objectID, @"memoriesBeingRepresentativeAssets", objectID];
+  v11 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
   v12 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v10 inLibrary:v11];
 
-  v13 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v13 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v12 _setContainerCollection:v8];
+  [v12 _setContainerCollection:memoryCopy];
   [v12 setFetchOptions:v13];
 
   return v12;
 }
 
-+ (id)queryForKeyAssetInMemory:(id)a3 options:(id)a4
++ (id)queryForKeyAssetInMemory:(id)memory options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 assetCollectionType] != 4)
+  optionsCopy = options;
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1712 description:@"Fetching for curated assets is only supported in a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1712 description:@"Fetching for curated assets is only supported in a memory"];
   }
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v8 objectID];
-  v11 = [v9 predicateWithFormat:@"memoriesBeingKeyAsset CONTAINS %@", v10];
+  objectID = [memoryCopy objectID];
+  v11 = [v9 predicateWithFormat:@"memoriesBeingKeyAsset CONTAINS %@", objectID];
 
-  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v8];
+  v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
   v13 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v11 inLibrary:v12];
 
-  v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v8 options:v7 changeDetectionCriteria:0];
+  v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-  [v13 _setContainerCollection:v8];
+  [v13 _setContainerCollection:memoryCopy];
   [v13 setFetchOptions:v14];
 
   return v13;
 }
 
-+ (id)queryForExtendedCuratedAssetsInMemory:(id)a3 options:(id)a4
++ (id)queryForExtendedCuratedAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 assetCollectionType] != 4)
+  memoryCopy = memory;
+  optionsCopy = options;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1692 description:@"Fetching for curated assets is only supported in a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1692 description:@"Fetching for curated assets is only supported in a memory"];
   }
 
-  if ([v7 isTransient])
+  if ([memoryCopy isTransient])
   {
-    v9 = [v7 queryForExtendedCuratedAssetsWithOptions:v8];
+    v9 = [memoryCopy queryForExtendedCuratedAssetsWithOptions:optionsCopy];
   }
 
   else
   {
     v10 = MEMORY[0x1E696AE18];
-    v11 = [v7 objectID];
-    v12 = [v10 predicateWithFormat:@"memoriesBeingExtendedCuratedAssets CONTAINS %@", v11];
+    objectID = [memoryCopy objectID];
+    v12 = [v10 predicateWithFormat:@"memoriesBeingExtendedCuratedAssets CONTAINS %@", objectID];
 
-    v13 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:v7];
+    v13 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
     v9 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v12 inLibrary:v13];
 
-    v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v7 options:v8 changeDetectionCriteria:0];
+    v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-    [v9 _setContainerCollection:v7];
+    [v9 _setContainerCollection:memoryCopy];
     [v9 setFetchOptions:v14];
 
-    v8 = v14;
+    optionsCopy = v14;
   }
 
   return v9;
 }
 
-+ (id)queryForCuratedAssetsInMemory:(id)a3 options:(id)a4
++ (id)queryForCuratedAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 assetCollectionType] != 4)
+  memoryCopy = memory;
+  optionsCopy = options;
+  if ([memoryCopy assetCollectionType] != 4)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1672 description:@"Fetching for curated assets is only supported in a memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1672 description:@"Fetching for curated assets is only supported in a memory"];
   }
 
-  if ([v7 isTransient])
+  if ([memoryCopy isTransient])
   {
-    v9 = [v7 queryForCuratedAssetsWithOptions:v8];
+    v9 = [memoryCopy queryForCuratedAssetsWithOptions:optionsCopy];
   }
 
   else
   {
     v10 = MEMORY[0x1E696AE18];
-    v11 = [v7 objectID];
-    v12 = [v10 predicateWithFormat:@"memoriesBeingCuratedAssets CONTAINS %@", v11];
+    objectID = [memoryCopy objectID];
+    v12 = [v10 predicateWithFormat:@"memoriesBeingCuratedAssets CONTAINS %@", objectID];
 
-    v13 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v8 object:v7];
+    v13 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:memoryCopy];
     v9 = [PHQuery queryForType:@"PHAsset" withBasePredicate:v12 inLibrary:v13];
 
-    v14 = [a1 _fetchOptionsForFetchingAssetsFromAssetCollection:v7 options:v8 changeDetectionCriteria:0];
+    v14 = [self _fetchOptionsForFetchingAssetsFromAssetCollection:memoryCopy options:optionsCopy changeDetectionCriteria:0];
 
-    [v9 _setContainerCollection:v7];
+    [v9 _setContainerCollection:memoryCopy];
     [v9 setFetchOptions:v14];
 
-    v8 = v14;
+    optionsCopy = v14;
   }
 
   return v9;
 }
 
-+ (id)queryForMemoriesWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)queryForMemoriesWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 queryForType:@"PHMemory" withLocalIdentifiers:a3 options:v6];
-  [v7 setFetchOptions:v6];
+  optionsCopy = options;
+  v7 = [self queryForType:@"PHMemory" withLocalIdentifiers:identifiers options:optionsCopy];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)_assetIDsFromAssets:(id)a3 anyAsset:(id *)a4
++ (id)_assetIDsFromAssets:(id)assets anyAsset:(id *)asset
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetsCopy = assets;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 fetchedObjectIDs];
+    fetchedObjectIDs = [assetsCopy fetchedObjectIDs];
   }
 
   else
   {
-    v6 = 0;
+    fetchedObjectIDs = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && !v6)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && !fetchedObjectIDs)
   {
-    v7 = [v5 objectIDs];
-    v6 = [v7 array];
+    objectIDs = [assetsCopy objectIDs];
+    fetchedObjectIDs = [objectIDs array];
   }
 
-  if (v6)
+  if (fetchedObjectIDs)
   {
-    if (a4)
+    if (asset)
     {
       memset(v19, 0, sizeof(v19));
-      if ([v5 countByEnumeratingWithState:v19 objects:v24 count:16])
+      if ([assetsCopy countByEnumeratingWithState:v19 objects:v24 count:16])
       {
-        *a4 = **(&v19[0] + 1);
+        *asset = **(&v19[0] + 1);
       }
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    fetchedObjectIDs = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v5;
+    v8 = assetsCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v9)
     {
@@ -8751,17 +8751,17 @@ LABEL_15:
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 objectID];
+          objectID = [v14 objectID];
 
-          if (v15)
+          if (objectID)
           {
-            v16 = [v14 objectID];
-            [v6 addObject:v16];
+            objectID2 = [v14 objectID];
+            [fetchedObjectIDs addObject:objectID2];
 
-            if (!((a4 == 0) | v11 & 1))
+            if (!((asset == 0) | v11 & 1))
             {
               v17 = v14;
-              *a4 = v14;
+              *asset = v14;
               v11 = 1;
             }
           }
@@ -8774,36 +8774,36 @@ LABEL_15:
     }
   }
 
-  return v6;
+  return fetchedObjectIDs;
 }
 
-+ (id)_fetchOptionsForFetchingAssetsFromAssetCollection:(id)a3 options:(id)a4 changeDetectionCriteria:(id)a5
++ (id)_fetchOptionsForFetchingAssetsFromAssetCollection:(id)collection options:(id)options changeDetectionCriteria:(id)criteria
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 photoLibrary];
-  if (v12)
+  collectionCopy = collection;
+  optionsCopy = options;
+  criteriaCopy = criteria;
+  photoLibrary = [collectionCopy photoLibrary];
+  if (photoLibrary)
   {
     goto LABEL_2;
   }
 
-  v13 = [v10 photoLibrary];
+  photoLibrary2 = [optionsCopy photoLibrary];
 
-  if (!v13)
+  if (!photoLibrary2)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PHQuery.m" lineNumber:1564 description:{@"Invalid parameter not satisfying: %@", @"assetCollection.photoLibrary || options.photoLibrary"}];
+    photoLibrary = [MEMORY[0x1E696AAA8] currentHandler];
+    [photoLibrary handleFailureInMethod:a2 object:self file:@"PHQuery.m" lineNumber:1564 description:{@"Invalid parameter not satisfying: %@", @"assetCollection.photoLibrary || options.photoLibrary"}];
 LABEL_2:
   }
 
-  if ([v9 assetCollectionType] == 1)
+  if ([collectionCopy assetCollectionType] == 1)
   {
-    if ([v9 assetCollectionSubtype] == 100)
+    if ([collectionCopy assetCollectionSubtype] == 100)
     {
-      v14 = [v9 photoLibrary];
-      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v14];
+      photoLibrary3 = [collectionCopy photoLibrary];
+      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary3];
 
       if (([v15 hasAnySortDescriptors] & 1) == 0)
       {
@@ -8821,25 +8821,25 @@ LABEL_2:
     }
 
 LABEL_37:
-    v15 = v10;
+    v15 = optionsCopy;
     goto LABEL_38;
   }
 
-  if ([v9 assetCollectionType] == 2)
+  if ([collectionCopy assetCollectionType] == 2)
   {
-    if ([v9 assetCollectionSubtype] == 205)
+    if ([collectionCopy assetCollectionSubtype] == 205)
     {
-      v19 = [v9 photoLibrary];
-      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v19];
+      photoLibrary4 = [collectionCopy photoLibrary];
+      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary4];
 
       [v15 setIncludeHiddenAssets:1];
       goto LABEL_38;
     }
 
-    if ([v9 assetCollectionSubtype] == 1000000201)
+    if ([collectionCopy assetCollectionSubtype] == 1000000201)
     {
-      v21 = [v9 photoLibrary];
-      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v21];
+      photoLibrary5 = [collectionCopy photoLibrary];
+      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary5];
 
       [v15 setIncludeHiddenAssets:1];
 LABEL_17:
@@ -8847,12 +8847,12 @@ LABEL_17:
       goto LABEL_38;
     }
 
-    if ([v9 assetCollectionSubtype] != 1000000204)
+    if ([collectionCopy assetCollectionSubtype] != 1000000204)
     {
-      if ([v9 assetCollectionSubtype] == 1000000219)
+      if ([collectionCopy assetCollectionSubtype] == 1000000219)
       {
-        v27 = [v9 photoLibrary];
-        v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v27];
+        photoLibrary6 = [collectionCopy photoLibrary];
+        v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary6];
 
         [v15 setIsExclusivePredicate:1];
         goto LABEL_38;
@@ -8861,29 +8861,29 @@ LABEL_17:
       goto LABEL_37;
     }
 
-    v25 = [v9 userQuery];
-    v26 = [v9 photoLibrary];
-    v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v26];
+    userQuery = [collectionCopy userQuery];
+    photoLibrary7 = [collectionCopy photoLibrary];
+    v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary7];
 
-    [v15 setIncludeHiddenAssets:{objc_msgSend(MEMORY[0x1E69BE708], "includesHiddenAssetsKeyInQuery:", v25)}];
+    [v15 setIncludeHiddenAssets:{objc_msgSend(MEMORY[0x1E69BE708], "includesHiddenAssetsKeyInQuery:", userQuery)}];
     goto LABEL_25;
   }
 
-  if ([v9 assetCollectionType] == 12)
+  if ([collectionCopy assetCollectionType] == 12)
   {
-    v20 = [v9 photoLibrary];
-    v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v20];
+    photoLibrary8 = [collectionCopy photoLibrary];
+    v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary8];
 
     [v15 setIncludeCollectionShareAssets:1];
     goto LABEL_38;
   }
 
-  if ([v9 assetCollectionType] != 4 && objc_msgSend(v9, "assetCollectionType") != 7 && objc_msgSend(v9, "assetCollectionType") != 8)
+  if ([collectionCopy assetCollectionType] != 4 && objc_msgSend(collectionCopy, "assetCollectionType") != 7 && objc_msgSend(collectionCopy, "assetCollectionType") != 8)
   {
-    if ([v9 assetCollectionType] == 9)
+    if ([collectionCopy assetCollectionType] == 9)
     {
-      v28 = [v9 photoLibrary];
-      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v28];
+      photoLibrary9 = [collectionCopy photoLibrary];
+      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary9];
 
       if ([v15 hasAnySortDescriptors])
       {
@@ -8898,21 +8898,21 @@ LABEL_17:
 
     else
     {
-      if ([v9 assetCollectionType] == 3)
+      if ([collectionCopy assetCollectionType] == 3)
       {
-        v32 = [v9 photoLibrary];
-        v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v32];
+        photoLibrary10 = [collectionCopy photoLibrary];
+        v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary10];
 
         goto LABEL_17;
       }
 
-      if ([v9 assetCollectionType] != 6)
+      if ([collectionCopy assetCollectionType] != 6)
       {
         goto LABEL_37;
       }
 
-      v33 = [v9 photoLibrary];
-      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v33];
+      photoLibrary11 = [collectionCopy photoLibrary];
+      v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary11];
 
       if ([v15 hasAnySortDescriptors])
       {
@@ -8925,16 +8925,16 @@ LABEL_17:
       v31 = &v38;
     }
 
-    v25 = [v30 arrayWithObjects:v31 count:1];
+    userQuery = [v30 arrayWithObjects:v31 count:1];
 
-    [v15 setInternalSortDescriptors:v25];
+    [v15 setInternalSortDescriptors:userQuery];
 LABEL_25:
 
     goto LABEL_38;
   }
 
-  v22 = [v9 photoLibrary];
-  v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v22];
+  photoLibrary12 = [collectionCopy photoLibrary];
+  v15 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary12];
 
   if (([v15 hasAnySortDescriptors] & 1) == 0)
   {
@@ -8945,13 +8945,13 @@ LABEL_25:
   }
 
 LABEL_38:
-  if (v11)
+  if (criteriaCopy)
   {
-    v34 = [[PHQueryChangeDetectionCriteria alloc] initWithPLQueryChangeDetectionCriteria:v11];
+    v34 = [[PHQueryChangeDetectionCriteria alloc] initWithPLQueryChangeDetectionCriteria:criteriaCopy];
     if (v34)
     {
-      v35 = [v9 photoLibrary];
-      v36 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v15 photoLibrary:v35];
+      photoLibrary13 = [collectionCopy photoLibrary];
+      v36 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v15 photoLibrary:photoLibrary13];
 
       [v36 setChangeDetectionCriteria:v34];
       v15 = v36;
@@ -8961,13 +8961,13 @@ LABEL_38:
   return v15;
 }
 
-+ (id)_fetchOptionsForFetchingAssetsFromImportSessions:(id)a3 options:(id)a4
++ (id)_fetchOptionsForFetchingAssetsFromImportSessions:(id)sessions options:(id)options
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 firstObject];
-  v7 = [v6 photoLibrary];
-  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v7];
+  optionsCopy = options;
+  firstObject = [sessions firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
   if (([v8 hasAnySortDescriptors] & 1) == 0)
   {
@@ -8981,11 +8981,11 @@ LABEL_38:
   return v8;
 }
 
-+ (BOOL)isToManySelfInPredicate:(id)a3
++ (BOOL)isToManySelfInPredicate:(id)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
-  v4 = v3;
+  v4 = predicateCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -9000,8 +9000,8 @@ LABEL_38:
 
   if (v6)
   {
-    v7 = [v6 leftExpression];
-    v8 = [v7 expressionType] == 1 && objc_msgSend(v6, "predicateOperatorType") == 10 && objc_msgSend(v6, "comparisonPredicateModifier");
+    leftExpression = [v6 leftExpression];
+    v8 = [leftExpression expressionType] == 1 && objc_msgSend(v6, "predicateOperatorType") == 10 && objc_msgSend(v6, "comparisonPredicateModifier");
   }
 
   else
@@ -9012,30 +9012,30 @@ LABEL_38:
   return v8;
 }
 
-+ (id)combinedFetchRequestForQueries:(id)a3
++ (id)combinedFetchRequestForQueries:(id)queries
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 fetchType];
-  v6 = [PHPhotoLibrary classForFetchType:v5];
+  queriesCopy = queries;
+  firstObject = [queriesCopy firstObject];
+  fetchType = [firstObject fetchType];
+  v6 = [PHPhotoLibrary classForFetchType:fetchType];
 
-  v7 = [(objc_class *)v6 managedEntityName];
-  v8 = [v4 photoLibrary];
-  v9 = [v8 managedObjectContextForCurrentQueueQoS];
-  v40 = v7;
+  managedEntityName = [(objc_class *)v6 managedEntityName];
+  photoLibrary = [firstObject photoLibrary];
+  managedObjectContextForCurrentQueueQoS = [photoLibrary managedObjectContextForCurrentQueueQoS];
+  v40 = managedEntityName;
   v10 = PLSafeEntityForNameInManagedObjectContext();
 
   v11 = objc_opt_new();
   v39 = v10;
   [v11 setEntity:v10];
-  v12 = [v4 combinedQueryKeyPath];
-  v13 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v3, "count")}];
+  combinedQueryKeyPath = [firstObject combinedQueryKeyPath];
+  v13 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(queriesCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v14 = v3;
+  v14 = queriesCopy;
   v15 = [v14 countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v15)
   {
@@ -9050,8 +9050,8 @@ LABEL_38:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v41 + 1) + 8 * i) combinedQuerySeparatingIdentifier];
-        [v13 addObject:v19];
+        combinedQuerySeparatingIdentifier = [*(*(&v41 + 1) + 8 * i) combinedQuerySeparatingIdentifier];
+        [v13 addObject:combinedQuerySeparatingIdentifier];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v41 objects:v48 count:16];
@@ -9060,8 +9060,8 @@ LABEL_38:
     while (v16);
   }
 
-  v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN (%@)", v12, v13];
-  v21 = [v4 effectivePredicateForPHClass:v6 includingBasePredicate:0];
+  v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN (%@)", combinedQueryKeyPath, v13];
+  v21 = [firstObject effectivePredicateForPHClass:v6 includingBasePredicate:0];
   v22 = v21;
   if (v21)
   {
@@ -9078,13 +9078,13 @@ LABEL_38:
     [v11 setResultType:2];
     v26 = objc_alloc_init(MEMORY[0x1E695D5C8]);
     [v26 setName:@"objectID"];
-    v27 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-    [v26 setExpression:v27];
+    expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+    [v26 setExpression:expressionForEvaluatedObject];
 
     [v26 setExpressionResultType:2000];
     v28 = objc_alloc_init(MEMORY[0x1E695D5C8]);
-    [v28 setName:v12];
-    v29 = [MEMORY[0x1E696ABC8] expressionForKeyPath:v12];
+    [v28 setName:combinedQueryKeyPath];
+    v29 = [MEMORY[0x1E696ABC8] expressionForKeyPath:combinedQueryKeyPath];
     [v28 setExpression:v29];
 
     [v28 setExpressionResultType:2000];
@@ -9093,17 +9093,17 @@ LABEL_38:
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
     [v11 setPropertiesToFetch:v30];
 
-    v31 = [v4 _effectiveSortDescriptors];
-    [v11 setSortDescriptors:v31];
-    if ([v4 _isAlbumContentSort] && objc_msgSend(v4, "_isAlbumContentTitleSort"))
+    _effectiveSortDescriptors = [firstObject _effectiveSortDescriptors];
+    [v11 setSortDescriptors:_effectiveSortDescriptors];
+    if ([firstObject _isAlbumContentSort] && objc_msgSend(firstObject, "_isAlbumContentTitleSort"))
     {
-      v32 = [v11 relationshipKeyPathsForPrefetching];
-      if (([v32 containsObject:@"additionalAttributes.title"] & 1) == 0)
+      relationshipKeyPathsForPrefetching = [v11 relationshipKeyPathsForPrefetching];
+      if (([relationshipKeyPathsForPrefetching containsObject:@"additionalAttributes.title"] & 1) == 0)
       {
-        v36 = v32;
-        if ([v32 count])
+        v36 = relationshipKeyPathsForPrefetching;
+        if ([relationshipKeyPathsForPrefetching count])
         {
-          [v32 arrayByAddingObject:@"additionalAttributes.title"];
+          [relationshipKeyPathsForPrefetching arrayByAddingObject:@"additionalAttributes.title"];
         }
 
         else
@@ -9114,7 +9114,7 @@ LABEL_38:
         v34 = ;
         [v11 setRelationshipKeyPathsForPrefetching:v34];
 
-        v32 = v36;
+        relationshipKeyPathsForPrefetching = v36;
       }
     }
 
@@ -9131,22 +9131,22 @@ LABEL_38:
   return v33;
 }
 
-+ (unsigned)_excludeMaskForUserLibraryWithFetchOptions:(id)a3
++ (unsigned)_excludeMaskForUserLibraryWithFetchOptions:(id)options
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  optionsCopy = options;
+  v4 = optionsCopy;
+  if (optionsCopy)
   {
-    v5 = [v3 includeAssetSourceTypes];
+    includeAssetSourceTypes = [optionsCopy includeAssetSourceTypes];
   }
 
   else
   {
-    v5 = 0;
+    includeAssetSourceTypes = 0;
   }
 
-  v6 = (v5 & 2) == 0 && v5 != 0;
-  v7 = (v5 & 4) == 0 && v5 != 0;
+  v6 = (includeAssetSourceTypes & 2) == 0 && includeAssetSourceTypes != 0;
+  v7 = (includeAssetSourceTypes & 4) == 0 && includeAssetSourceTypes != 0;
   if (v4)
   {
     v8 = [v4 includeGuestAssets] ^ 1;
@@ -9158,15 +9158,15 @@ LABEL_38:
   }
 
   BYTE2(v12) = v7;
-  BYTE1(v12) = ((v5 & 0x100) == 0) & ~[v4 includeCollectionShareAssets];
+  BYTE1(v12) = ((includeAssetSourceTypes & 0x100) == 0) & ~[v4 includeCollectionShareAssets];
   LOBYTE(v12) = 1;
-  HIBYTE(v11) = (v5 & 0x40) == 0;
+  HIBYTE(v11) = (includeAssetSourceTypes & 0x40) == 0;
   BYTE6(v11) = v8;
-  BYTE5(v11) = (v5 & 0x10) == 0;
+  BYTE5(v11) = (includeAssetSourceTypes & 0x10) == 0;
   BYTE4(v11) = 0;
   LODWORD(v11) = 16842752;
   v9 = [MEMORY[0x1E69BF328] validatedSavedAssetTypeMaskUnknown:0 photoBooth:0 photoStream:0 camera:0 cloudShared:v6 cameraConnectionKit:0 cloudPhotoLibrary:v11 wallpaper_UNUSED:v12 momentShared:? placeholder:? referenced:? alternate:? guest:? companionSynced:? recovered:? collectionShare:? legacyImport:?];
-  if (v5 && (v5 & 1) == 0)
+  if (includeAssetSourceTypes && (includeAssetSourceTypes & 1) == 0)
   {
     v9 |= [MEMORY[0x1E69BF328] maskForUserLibrary];
   }
@@ -9174,22 +9174,22 @@ LABEL_38:
   return v9;
 }
 
-+ (BOOL)_isKindOfMomentOrAlbumEntity:(id)a3
++ (BOOL)_isKindOfMomentOrAlbumEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   if (_isKindOfMomentOrAlbumEntity__onceToken != -1)
   {
     dispatch_once(&_isKindOfMomentOrAlbumEntity__onceToken, &__block_literal_global_37224);
   }
 
-  if ([v3 isKindOfEntity:_isKindOfMomentOrAlbumEntity__momentEntity])
+  if ([entityCopy isKindOfEntity:_isKindOfMomentOrAlbumEntity__momentEntity])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isKindOfEntity:_isKindOfMomentOrAlbumEntity__albumEntity];
+    v4 = [entityCopy isKindOfEntity:_isKindOfMomentOrAlbumEntity__albumEntity];
   }
 
   return v4;
@@ -9211,23 +9211,23 @@ void __40__PHQuery__isKindOfMomentOrAlbumEntity___block_invoke()
   _isKindOfMomentOrAlbumEntity__albumEntity = v5;
 }
 
-+ (id)_filterPredicateFromFetchOptionsPredicate:(id)a3 options:(id)a4 phClass:(Class)a5
++ (id)_filterPredicateFromFetchOptionsPredicate:(id)predicate options:(id)options phClass:(Class)class
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = predicateCopy;
     v11 = objc_opt_new();
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v25 = v10;
-    v12 = [v10 subpredicates];
-    v13 = [v12 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    subpredicates = [v10 subpredicates];
+    v13 = [subpredicates countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v13)
     {
       v14 = v13;
@@ -9238,14 +9238,14 @@ void __40__PHQuery__isKindOfMomentOrAlbumEntity___block_invoke()
         {
           if (*v27 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subpredicates);
           }
 
-          v17 = [a1 _filterPredicateFromFetchOptionsPredicate:*(*(&v26 + 1) + 8 * i) options:v9 phClass:a5];
+          v17 = [self _filterPredicateFromFetchOptionsPredicate:*(*(&v26 + 1) + 8 * i) options:optionsCopy phClass:class];
           [v11 addObject:v17];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v26 objects:v32 count:16];
+        v14 = [subpredicates countByEnumeratingWithState:&v26 objects:v32 count:16];
       }
 
       while (v14);
@@ -9262,18 +9262,18 @@ void __40__PHQuery__isKindOfMomentOrAlbumEntity___block_invoke()
       goto LABEL_16;
     }
 
-    v18 = [(objc_class *)a5 fetchPredicateFromComparisonPredicate:v8 options:v9];
+    v18 = [(objc_class *)class fetchPredicateFromComparisonPredicate:predicateCopy options:optionsCopy];
   }
 
   if (!v18)
   {
 LABEL_16:
     v30 = @"predicate";
-    v31 = v8;
+    v31 = predicateCopy;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [v8 predicateFormat];
-    v23 = [v21 stringWithFormat:@"Unsupported predicate in fetch options: %@", v22];
+    predicateFormat = [predicateCopy predicateFormat];
+    v23 = [v21 stringWithFormat:@"Unsupported predicate in fetch options: %@", predicateFormat];
 
     v24 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v23 userInfo:v20];
     objc_exception_throw(v24);
@@ -9282,34 +9282,34 @@ LABEL_16:
   return v18;
 }
 
-+ (id)_containerIdentifierForFetchType:(id)a3 predicate:(id)a4 outRelationship:(id *)a5
++ (id)_containerIdentifierForFetchType:(id)type predicate:(id)predicate outRelationship:(id *)relationship
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  predicateCopy = predicate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = 0;
-    v10 = 0;
+    keyPath = 0;
     goto LABEL_9;
   }
 
-  v9 = [v8 leftExpression];
-  if ([v9 expressionType] != 3)
+  leftExpression = [predicateCopy leftExpression];
+  if ([leftExpression expressionType] != 3)
   {
     v16 = 0;
-    v10 = 0;
+    keyPath = 0;
     goto LABEL_15;
   }
 
-  v10 = [v9 keyPath];
+  keyPath = [leftExpression keyPath];
 
-  if (!v10)
+  if (!keyPath)
   {
     v16 = 0;
 LABEL_9:
-    v19 = 0;
-    if (!a5)
+    constantValue2 = 0;
+    if (!relationship)
     {
       goto LABEL_11;
     }
@@ -9318,54 +9318,54 @@ LABEL_9:
   }
 
   v11 = [(objc_class *)[PHPhotoLibrary classForFetchType:?]];
-  v12 = [MEMORY[0x1E69BE578] managedObjectModel];
-  v13 = [v12 entitiesByName];
-  v14 = [v13 objectForKey:v11];
+  managedObjectModel = [MEMORY[0x1E69BE578] managedObjectModel];
+  entitiesByName = [managedObjectModel entitiesByName];
+  v14 = [entitiesByName objectForKey:v11];
 
-  v15 = [v14 relationshipsByName];
-  v16 = [v15 objectForKey:v10];
+  relationshipsByName = [v14 relationshipsByName];
+  v16 = [relationshipsByName objectForKey:keyPath];
 
   if (!v16)
   {
     goto LABEL_9;
   }
 
-  v9 = [v8 rightExpression];
-  if (![v9 expressionType])
+  leftExpression = [predicateCopy rightExpression];
+  if (![leftExpression expressionType])
   {
-    v17 = [v9 constantValue];
+    constantValue = [leftExpression constantValue];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v19 = [v9 constantValue];
+      constantValue2 = [leftExpression constantValue];
       goto LABEL_16;
     }
   }
 
 LABEL_15:
-  v19 = 0;
+  constantValue2 = 0;
 LABEL_16:
 
-  if (a5)
+  if (relationship)
   {
 LABEL_10:
     v20 = v16;
-    *a5 = v16;
+    *relationship = v16;
   }
 
 LABEL_11:
 
-  return v19;
+  return constantValue2;
 }
 
-+ (id)_transformedSortDescriptors:(id)a3 forFetchType:(id)a4
++ (id)_transformedSortDescriptors:(id)descriptors forFetchType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 mutableCopy];
-  v8 = [PHPhotoLibrary classForFetchType:v5];
+  typeCopy = type;
+  descriptorsCopy = descriptors;
+  v7 = [descriptorsCopy mutableCopy];
+  v8 = [PHPhotoLibrary classForFetchType:typeCopy];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -9374,7 +9374,7 @@ LABEL_11:
   v13 = v8;
   v9 = v7;
   v12 = v9;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [descriptorsCopy enumerateObjectsUsingBlock:v11];
 
   return v9;
 }
@@ -9406,17 +9406,17 @@ void __52__PHQuery__transformedSortDescriptors_forFetchType___block_invoke(uint6
   }
 }
 
-+ (id)defaultSortDescriptorForFetchType:(id)a3 predicate:(id)a4 ascending:(BOOL)a5
++ (id)defaultSortDescriptorForFetchType:(id)type predicate:(id)predicate ascending:(BOOL)ascending
 {
-  v5 = a5;
-  v6 = [a1 _relationshipForFetchType:a3 predicate:a4];
-  v7 = [v6 inverseRelationship];
-  v8 = v7;
-  if (v7 && [v7 isToMany] && objc_msgSend(v8, "isOrdered"))
+  ascendingCopy = ascending;
+  v6 = [self _relationshipForFetchType:type predicate:predicate];
+  inverseRelationship = [v6 inverseRelationship];
+  v8 = inverseRelationship;
+  if (inverseRelationship && [inverseRelationship isToMany] && objc_msgSend(v8, "isOrdered"))
   {
     v9 = MEMORY[0x1E696AEB0];
-    v10 = [v6 name];
-    v11 = [v9 sortDescriptorWithKey:v10 ascending:v5];
+    name = [v6 name];
+    v11 = [v9 sortDescriptorWithKey:name ascending:ascendingCopy];
   }
 
   else
@@ -9427,63 +9427,63 @@ void __52__PHQuery__transformedSortDescriptors_forFetchType___block_invoke(uint6
   return v11;
 }
 
-+ (id)_relationshipForFetchType:(id)a3 predicate:(id)a4
++ (id)_relationshipForFetchType:(id)type predicate:(id)predicate
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  predicateCopy = predicate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = 0;
+    keyPath = 0;
     goto LABEL_7;
   }
 
-  v7 = [v6 leftExpression];
-  if ([v7 expressionType] == 3)
+  leftExpression = [predicateCopy leftExpression];
+  if ([leftExpression expressionType] == 3)
   {
-    v8 = [v7 keyPath];
+    keyPath = [leftExpression keyPath];
     goto LABEL_4;
   }
 
-  if ([v7 expressionType] == 4)
+  if ([leftExpression expressionType] == 4)
   {
-    v9 = [v7 function];
-    v11 = [v9 lowercaseString];
-    if (![v11 isEqualToString:@"noindex:"])
+    function = [leftExpression function];
+    lowercaseString = [function lowercaseString];
+    if (![lowercaseString isEqualToString:@"noindex:"])
     {
-      v8 = 0;
+      keyPath = 0;
       v13 = 0;
       goto LABEL_15;
     }
 
-    v14 = [v7 arguments];
-    v15 = [v14 count];
+    arguments = [leftExpression arguments];
+    v15 = [arguments count];
 
     if (v15 == 1)
     {
-      v16 = [v7 arguments];
-      v17 = [v16 firstObject];
+      arguments2 = [leftExpression arguments];
+      firstObject = [arguments2 firstObject];
 
-      if ([v17 expressionType] == 3)
+      if ([firstObject expressionType] == 3)
       {
-        v8 = [v17 keyPath];
+        keyPath = [firstObject keyPath];
       }
 
       else
       {
-        v8 = 0;
+        keyPath = 0;
       }
 
 LABEL_4:
-      if (v8)
+      if (keyPath)
       {
-        v7 = [(objc_class *)[PHPhotoLibrary classForFetchType:?]];
-        v9 = [MEMORY[0x1E69BE578] managedObjectModel];
-        v10 = [v9 entitiesByName];
-        v11 = [v10 objectForKey:v7];
+        leftExpression = [(objc_class *)[PHPhotoLibrary classForFetchType:?]];
+        function = [MEMORY[0x1E69BE578] managedObjectModel];
+        entitiesByName = [function entitiesByName];
+        lowercaseString = [entitiesByName objectForKey:leftExpression];
 
-        v12 = [v11 relationshipsByName];
-        v13 = [v12 objectForKey:v8];
+        relationshipsByName = [lowercaseString relationshipsByName];
+        v13 = [relationshipsByName objectForKey:keyPath];
 
 LABEL_15:
         goto LABEL_16;
@@ -9495,7 +9495,7 @@ LABEL_7:
     }
   }
 
-  v8 = 0;
+  keyPath = 0;
   v13 = 0;
 LABEL_16:
 
@@ -9504,23 +9504,23 @@ LABEL_17:
   return v13;
 }
 
-+ (id)queryForType:(id)a3 withBasePredicate:(id)a4 seedOIDs:(id)a5 inLibrary:(id)a6
++ (id)queryForType:(id)type withBasePredicate:(id)predicate seedOIDs:(id)ds inLibrary:(id)library
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initForType:v13 withBasePredicate:v12 seedOIDs:v11 inLibrary:v10];
+  libraryCopy = library;
+  dsCopy = ds;
+  predicateCopy = predicate;
+  typeCopy = type;
+  v14 = [[self alloc] initForType:typeCopy withBasePredicate:predicateCopy seedOIDs:dsCopy inLibrary:libraryCopy];
 
   return v14;
 }
 
-+ (id)queryForType:(id)a3 withBasePredicate:(id)a4 inLibrary:(id)a5
++ (id)queryForType:(id)type withBasePredicate:(id)predicate inLibrary:(id)library
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initForType:v10 withBasePredicate:v9 inLibrary:v8];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  typeCopy = type;
+  v11 = [[self alloc] initForType:typeCopy withBasePredicate:predicateCopy inLibrary:libraryCopy];
 
   return v11;
 }

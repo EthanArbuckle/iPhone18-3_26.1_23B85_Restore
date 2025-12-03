@@ -1,43 +1,43 @@
 @interface UISelectionGrabber
 + (id)_grabberDot;
 - (BOOL)autoscrolled;
-- (BOOL)clipDot:(CGRect)a3;
-- (BOOL)dotIsVisibleInDocument:(CGRect)a3;
+- (BOOL)clipDot:(CGRect)dot;
+- (BOOL)dotIsVisibleInDocument:(CGRect)document;
 - (BOOL)inputViewIsChanging;
 - (BOOL)isRotating;
 - (BOOL)isScaling;
 - (BOOL)isScrolling;
-- (BOOL)scroller:(id)a3 fullyContainSelectionRect:(CGRect)a4;
-- (UISelectionGrabber)initWithFrame:(CGRect)a3;
+- (BOOL)scroller:(id)scroller fullyContainSelectionRect:(CGRect)rect;
+- (UISelectionGrabber)initWithFrame:(CGRect)frame;
 - (double)_defaultDotWidth;
-- (id)bezierPathFromCustomPath:(id)a3;
+- (id)bezierPathFromCustomPath:(id)path;
 - (id)fillColor;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)animateGrabberInWithCompletion:(id)a3;
-- (void)animateGrabberOutWithCompletion:(id)a3;
+- (void)animateGrabberInWithCompletion:(id)completion;
+- (void)animateGrabberOutWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)drawRect:(CGRect)a3;
-- (void)redrawDotForScale:(double)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)redrawDotForScale:(double)scale;
 - (void)removeFromSuperview;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setCustomPath:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)transitionDot:(int64_t)a3 completion:(id)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setCustomPath:(id)path;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)transitionDot:(int64_t)dot completion:(id)completion;
 - (void)updateDot;
 - (void)updatePathForBoundsChangeIfNecessary;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UISelectionGrabber
 
-- (UISelectionGrabber)initWithFrame:(CGRect)a3
+- (UISelectionGrabber)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UISelectionGrabber;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -61,61 +61,61 @@
 
 - (BOOL)isScrolling
 {
-  v2 = [(UISelectionGrabber *)self hostView];
-  v3 = [v2 isScrolling];
+  hostView = [(UISelectionGrabber *)self hostView];
+  isScrolling = [hostView isScrolling];
 
-  return v3;
+  return isScrolling;
 }
 
 - (BOOL)isScaling
 {
-  v2 = [(UISelectionGrabber *)self hostView];
-  v3 = [v2 scaling];
+  hostView = [(UISelectionGrabber *)self hostView];
+  scaling = [hostView scaling];
 
-  return v3;
+  return scaling;
 }
 
 - (BOOL)isRotating
 {
-  v2 = [(UISelectionGrabber *)self hostView];
-  v3 = [v2 rotating];
+  hostView = [(UISelectionGrabber *)self hostView];
+  rotating = [hostView rotating];
 
-  return v3;
+  return rotating;
 }
 
 - (BOOL)inputViewIsChanging
 {
-  v2 = [(UISelectionGrabber *)self hostView];
-  v3 = [v2 inputViewIsChanging];
+  hostView = [(UISelectionGrabber *)self hostView];
+  inputViewIsChanging = [hostView inputViewIsChanging];
 
-  return v3;
+  return inputViewIsChanging;
 }
 
 - (BOOL)autoscrolled
 {
-  v2 = [(UISelectionGrabber *)self hostView];
-  v3 = [v2 autoscrolled];
+  hostView = [(UISelectionGrabber *)self hostView];
+  autoscrolled = [hostView autoscrolled];
 
-  return v3;
+  return autoscrolled;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   [(UIImageView *)self->m_dotView setHidden:?];
   v5.receiver = self;
   v5.super_class = UISelectionGrabber;
-  [(UIView *)&v5 setHidden:v3];
+  [(UIView *)&v5 setHidden:hiddenCopy];
 }
 
-- (void)setCustomPath:(id)a3
+- (void)setCustomPath:(id)path
 {
-  v9 = a3;
+  pathCopy = path;
   if (([(UISelectionGrabberCustomPath *)self->_customPath isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_customPath, a3);
-    v5 = [(UISelectionGrabber *)self shapeLayer];
-    v6 = v5;
+    objc_storeStrong(&self->_customPath, path);
+    shapeLayer = [(UISelectionGrabber *)self shapeLayer];
+    v6 = shapeLayer;
     if (self->_customPath)
     {
       v7 = [(UISelectionGrabber *)self bezierPathFromCustomPath:?];
@@ -123,24 +123,24 @@
 
       [(UISelectionGrabberCustomPath *)self->_customPath lineWidth];
       [v6 setLineWidth:?];
-      v8 = [(UISelectionGrabber *)self fillColor];
-      [v6 setStrokeColor:{objc_msgSend(v8, "cgColor")}];
+      fillColor = [(UISelectionGrabber *)self fillColor];
+      [v6 setStrokeColor:{objc_msgSend(fillColor, "cgColor")}];
     }
 
     else
     {
-      [v5 setPath:?];
+      [shapeLayer setPath:?];
     }
 
     [(UIView *)self setNeedsDisplay];
   }
 }
 
-- (id)bezierPathFromCustomPath:(id)a3
+- (id)bezierPathFromCustomPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UISelectionGrabber *)self hostView];
-  v6 = [v4 bezierPathForHostView:v5 targetView:self];
+  pathCopy = path;
+  hostView = [(UISelectionGrabber *)self hostView];
+  v6 = [pathCopy bezierPathForHostView:hostView targetView:self];
 
   return v6;
 }
@@ -153,33 +153,33 @@
   [(UIView *)&v3 removeFromSuperview];
 }
 
-- (BOOL)clipDot:(CGRect)a3
+- (BOOL)clipDot:(CGRect)dot
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UISelectionGrabber *)self hostView];
-  v9 = [v8 selectionView];
-  v10 = [v9 selection];
-  v11 = [v10 document];
+  height = dot.size.height;
+  width = dot.size.width;
+  y = dot.origin.y;
+  x = dot.origin.x;
+  hostView = [(UISelectionGrabber *)self hostView];
+  selectionView = [hostView selectionView];
+  selection = [selectionView selection];
+  document = [selection document];
 
-  if ([v11 _usesAsynchronousProtocol] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([document _usesAsynchronousProtocol] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v49.origin.x = x;
     v49.origin.y = y;
     v49.size.width = width;
     v49.size.height = height;
-    v12 = v11;
+    v12 = document;
     [v12 unobscuredContentRect];
     [(UIView *)self convertRect:v12 fromView:?];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
     [(UIView *)self frame];
-    [v21 convertRect:0 toView:?];
+    [superview convertRect:0 toView:?];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -208,7 +208,7 @@
     }
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) != 0 && (v50.origin.x = x, v50.origin.y = y, v50.size.width = width, v50.size.height = height, [v11 visibleRect], objc_msgSend(v11, "convertRect:toView:", 0), v32 = v31, v34 = v33, v36 = v35, v38 = v37, -[UIView superview](self, "superview"), v39 = objc_claimAutoreleasedReturnValue(), -[UIView frame](self, "frame"), objc_msgSend(v39, "convertRect:toView:", 0), v41 = v40, v43 = v42, v45 = v44, v47 = v46, v39, v53.origin.x = v32, v53.origin.y = v34, v53.size.width = v36, v53.size.height = v38, v56.origin.x = v41, v56.origin.y = v43, v56.size.width = v45, v56.size.height = v47, CGRectIntersectsRect(v53, v56)))
+  else if ((objc_opt_respondsToSelector() & 1) != 0 && (v50.origin.x = x, v50.origin.y = y, v50.size.width = width, v50.size.height = height, [document visibleRect], objc_msgSend(document, "convertRect:toView:", 0), v32 = v31, v34 = v33, v36 = v35, v38 = v37, -[UIView superview](self, "superview"), v39 = objc_claimAutoreleasedReturnValue(), -[UIView frame](self, "frame"), objc_msgSend(v39, "convertRect:toView:", 0), v41 = v40, v43 = v42, v45 = v44, v47 = v46, v39, v53.origin.x = v32, v53.origin.y = v34, v53.size.width = v36, v53.size.height = v38, v56.origin.x = v41, v56.origin.y = v43, v56.size.width = v45, v56.size.height = v47, CGRectIntersectsRect(v53, v56)))
   {
     v54.origin.x = v32;
     v54.origin.y = v34;
@@ -225,20 +225,20 @@
   return v30;
 }
 
-- (BOOL)dotIsVisibleInDocument:(CGRect)a3
+- (BOOL)dotIsVisibleInDocument:(CGRect)document
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(UISelectionGrabber *)self hostView];
-  v8 = [v7 selectionView];
-  v9 = [v8 selection];
-  v10 = [v9 document];
+  height = document.size.height;
+  width = document.size.width;
+  y = document.origin.y;
+  x = document.origin.x;
+  hostView = [(UISelectionGrabber *)self hostView];
+  selectionView = [hostView selectionView];
+  selection = [selectionView selection];
+  document = [selection document];
 
-  if ([v10 _usesAsynchronousProtocol] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([document _usesAsynchronousProtocol] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v11 = v10;
+    v11 = document;
     [v11 unobscuredContentRect];
     [v11 convertRect:0 toView:?];
     v13 = v12;
@@ -249,14 +249,14 @@
 
   else
   {
-    if (![v10 conformsToProtocol:&unk_1EFE8E9A0] || (objc_opt_respondsToSelector() & 1) == 0)
+    if (![document conformsToProtocol:&unk_1EFE8E9A0] || (objc_opt_respondsToSelector() & 1) == 0)
     {
       v24 = 0;
       goto LABEL_9;
     }
 
-    [v10 visibleRect];
-    [v10 convertRect:0 toView:?];
+    [document visibleRect];
+    [document convertRect:0 toView:?];
     v13 = v20;
     v15 = v21;
     v17 = v22;
@@ -277,24 +277,24 @@ LABEL_9:
   return v24;
 }
 
-- (BOOL)scroller:(id)a3 fullyContainSelectionRect:(CGRect)a4
+- (BOOL)scroller:(id)scroller fullyContainSelectionRect:(CGRect)rect
 {
-  height = a4.size.height;
-  x = a4.origin.x;
-  width = a4.size.width;
-  v32 = a4.origin.y + 1.0;
-  v6 = a3;
-  v7 = [(UISelectionGrabber *)self hostView];
-  v8 = [v7 selectionView];
-  UIRoundToViewScale(v8);
+  height = rect.size.height;
+  x = rect.origin.x;
+  width = rect.size.width;
+  v32 = rect.origin.y + 1.0;
+  scrollerCopy = scroller;
+  hostView = [(UISelectionGrabber *)self hostView];
+  selectionView = [hostView selectionView];
+  UIRoundToViewScale(selectionView);
   rect2 = height - (v9 + 1.0);
 
-  [v6 bounds];
+  [scrollerCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v6 contentInset];
+  [scrollerCopy contentInset];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -327,17 +327,17 @@ LABEL_9:
 {
   if ([(UISelectionGrabber *)self isDotted])
   {
-    v3 = [(UISelectionGrabber *)self hostView];
-    v4 = [v3 superview];
+    hostView = [(UISelectionGrabber *)self hostView];
+    superview = [hostView superview];
 
-    if (v4)
+    if (superview)
     {
-      v5 = [(UIView *)self window];
+      window = [(UIView *)self window];
 
-      if (v5)
+      if (window)
       {
-        v6 = [(UIView *)self window];
-        [v6 convertRect:self toView:{0.0, 0.0, 1.0, 1.0}];
+        window2 = [(UIView *)self window];
+        [window2 convertRect:self toView:{0.0, 0.0, 1.0, 1.0}];
         v8 = v7;
         v10 = v9;
       }
@@ -355,9 +355,9 @@ LABEL_9:
       if (!self->m_dotView)
       {
         v15 = [UISelectionGrabberDot alloc];
-        v16 = [(UISelectionGrabber *)self hostView];
-        v17 = [v16 container];
-        v18 = [(UISelectionGrabberDot *)v15 initWithFrame:v17 container:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+        hostView2 = [(UISelectionGrabber *)self hostView];
+        container = [hostView2 container];
+        v18 = [(UISelectionGrabberDot *)v15 initWithFrame:container container:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
         m_dotView = self->m_dotView;
         self->m_dotView = v18;
 
@@ -419,27 +419,27 @@ LABEL_22:
       }
 
 LABEL_25:
-      v35 = [(UIView *)self _enclosingScrollableScrollerIncludingSelf];
-      if (v35)
+      _enclosingScrollableScrollerIncludingSelf = [(UIView *)self _enclosingScrollableScrollerIncludingSelf];
+      if (_enclosingScrollableScrollerIncludingSelf)
       {
-        v36 = [(UIView *)self _enclosingScrollerIncludingSelf];
+        _enclosingScrollerIncludingSelf = [(UIView *)self _enclosingScrollerIncludingSelf];
       }
 
       else
       {
-        v36 = 0;
+        _enclosingScrollerIncludingSelf = 0;
       }
 
       objc_opt_class();
-      v187 = v35;
+      v187 = _enclosingScrollableScrollerIncludingSelf;
       if (objc_opt_isKindOfClass())
       {
-        v37 = v35;
+        v37 = _enclosingScrollableScrollerIncludingSelf;
       }
 
       else
       {
-        v37 = v36;
+        v37 = _enclosingScrollerIncludingSelf;
       }
 
       v38 = v37;
@@ -453,16 +453,16 @@ LABEL_25:
         goto LABEL_43;
       }
 
-      v46 = [(UISelectionGrabber *)self hostView];
-      v47 = [v46 selectionView];
-      if ([v47 alertFlattened])
+      hostView3 = [(UISelectionGrabber *)self hostView];
+      selectionView = [hostView3 selectionView];
+      if ([selectionView alertFlattened])
       {
         goto LABEL_42;
       }
 
-      v48 = [(UISelectionGrabber *)self hostView];
-      v49 = [v48 selectionView];
-      if ([v49 activeFlattened])
+      hostView4 = [(UISelectionGrabber *)self hostView];
+      selectionView2 = [hostView4 selectionView];
+      if ([selectionView2 activeFlattened])
       {
 LABEL_41:
 
@@ -470,97 +470,97 @@ LABEL_42:
         goto LABEL_43;
       }
 
-      v50 = [(UISelectionGrabber *)self hostView];
-      v51 = [v50 selectionView];
-      if ([v51 sheetFlattened])
+      hostView5 = [(UISelectionGrabber *)self hostView];
+      selectionView3 = [hostView5 selectionView];
+      if ([selectionView3 sheetFlattened])
       {
 LABEL_40:
 
         goto LABEL_41;
       }
 
-      v181 = v50;
-      v52 = [(UISelectionGrabber *)self hostView];
-      v53 = [v52 selectionView];
-      if ([v53 popoverFlattened])
+      v181 = hostView5;
+      hostView6 = [(UISelectionGrabber *)self hostView];
+      selectionView4 = [hostView6 selectionView];
+      if ([selectionView4 popoverFlattened])
       {
 LABEL_39:
 
-        v50 = v181;
+        hostView5 = v181;
         goto LABEL_40;
       }
 
-      v175 = v53;
-      v178 = v52;
-      v172 = [(UISelectionGrabber *)self hostView];
-      v54 = [v172 selectionView];
-      if (([v54 navigationTransitionFlattened] & 1) != 0 || -[UISelectionGrabber dotIsVisibleInDocument:](self, "dotIsVisibleInDocument:", v40, v42, v44, v186))
+      v175 = selectionView4;
+      v178 = hostView6;
+      hostView7 = [(UISelectionGrabber *)self hostView];
+      selectionView5 = [hostView7 selectionView];
+      if (([selectionView5 navigationTransitionFlattened] & 1) != 0 || -[UISelectionGrabber dotIsVisibleInDocument:](self, "dotIsVisibleInDocument:", v40, v42, v44, v186))
       {
 
-        v52 = v178;
+        hostView6 = v178;
         goto LABEL_39;
       }
 
-      v171 = [(UIView *)self window];
-      v169 = [v171 _isTextEffectsWindow];
-      if (v169)
+      window3 = [(UIView *)self window];
+      _isTextEffectsWindow = [window3 _isTextEffectsWindow];
+      if (_isTextEffectsWindow)
       {
-        v159 = [(UIView *)self window];
+        window4 = [(UIView *)self window];
         objc_opt_class();
-        v166 = v159;
+        v166 = window4;
         if (objc_opt_isKindOfClass())
         {
-          v170 = 1;
+          v186 = 1;
           goto LABEL_134;
         }
       }
 
-      v168 = [(UISelectionGrabber *)self hostView];
-      v167 = [v168 inGesture];
-      if ((v167 & 1) != 0 || (-[UISelectionGrabber hostView](self, "hostView"), v163 = objc_claimAutoreleasedReturnValue(), [v163 selectionView], v162 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v162, "interactionAssistant"), v161 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v161, "inGesture")))
+      hostView8 = [(UISelectionGrabber *)self hostView];
+      inGesture = [hostView8 inGesture];
+      if ((inGesture & 1) != 0 || (-[UISelectionGrabber hostView](self, "hostView"), v163 = objc_claimAutoreleasedReturnValue(), [v163 selectionView], v162 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v162, "interactionAssistant"), v161 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v161, "inGesture")))
       {
-        v165 = [(UISelectionGrabber *)self hostView];
-        v164 = [v165 selectionView];
-        v160 = [v164 interactionAssistant];
-        if ([v160 containerIsTextField])
+        hostView9 = [(UISelectionGrabber *)self hostView];
+        selectionView6 = [hostView9 selectionView];
+        interactionAssistant = [selectionView6 interactionAssistant];
+        if ([interactionAssistant containerIsTextField])
         {
 
-          v170 = 0;
+          v186 = 0;
         }
 
         else
         {
-          v170 = [(UISelectionGrabber *)self clipDot:v40, v42, v44, v186];
+          v186 = [(UISelectionGrabber *)self clipDot:v40, v42, v44, v186];
         }
 
-        if (v167)
+        if (inGesture)
         {
 
-          if (!v169)
+          if (!_isTextEffectsWindow)
           {
 LABEL_135:
 
-            if (!v170)
+            if (!v186)
             {
-              v55 = 0;
+              selfCopy3 = 0;
 LABEL_44:
               v56 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-              v57 = [v56 currentState];
-              if (v55)
+              currentState = [v56 currentState];
+              if (selfCopy3)
               {
                 goto LABEL_45;
               }
 
-              if ((v57 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+              if ((currentState & 0xFFFFFFFFFFFFFFFDLL) == 0)
               {
-                v58 = [v56 inputViews];
-                v59 = [v58 inputAccessoryView];
+                inputViews = [v56 inputViews];
+                inputAccessoryView = [inputViews inputAccessoryView];
 
-                if (-[UIView isDescendantOfView:](self, "isDescendantOfView:", v59) && ([v59 bounds], v176 = v42, v179 = v40, v61 = v60, v173 = v44, v63 = v62, v64 = v14, v66 = v65, v182 = v8, v68 = v67, -[UIView convertRect:toView:](self, "convertRect:toView:", v59, v29, v30, v13, v64), v192.origin.x = v69, v192.origin.y = v70, v192.size.width = v71, v192.size.height = v72, v190.origin.x = v61, v190.origin.y = v63, v44 = v173, v190.size.width = v66, v14 = v64, v42 = v176, v40 = v179, v190.size.height = v68, v8 = v182, CGRectIntersectsRect(v190, v192)))
+                if (-[UIView isDescendantOfView:](self, "isDescendantOfView:", inputAccessoryView) && ([inputAccessoryView bounds], v176 = v42, v179 = v40, v61 = v60, v173 = v44, v63 = v62, v64 = v14, v66 = v65, v182 = v8, v68 = v67, -[UIView convertRect:toView:](self, "convertRect:toView:", inputAccessoryView, v29, v30, v13, v64), v192.origin.x = v69, v192.origin.y = v70, v192.size.width = v71, v192.size.height = v72, v190.origin.x = v61, v190.origin.y = v63, v44 = v173, v190.size.width = v66, v14 = v64, v42 = v176, v40 = v179, v190.size.height = v68, v8 = v182, CGRectIntersectsRect(v190, v192)))
                 {
-                  v55 = v59;
+                  selfCopy3 = inputAccessoryView;
 
-                  if (v55)
+                  if (selfCopy3)
                   {
                     goto LABEL_45;
                   }
@@ -573,34 +573,34 @@ LABEL_44:
 
               if ([(UISelectionGrabber *)self isRotating]|| [(UISelectionGrabber *)self inputViewIsChanging])
               {
-                v73 = [v56 inputViews];
-                v74 = [v73 inputAccessoryView];
+                inputViews2 = [v56 inputViews];
+                inputAccessoryView2 = [inputViews2 inputAccessoryView];
 
-                if (![(UIView *)self isDescendantOfView:v74]|| ([(UIView *)v74 bounds], v177 = v42, v180 = v40, v76 = v75, v77 = v14, v79 = v78, v183 = v8, v81 = v80, v174 = v44, v83 = v82, [(UIView *)self convertRect:v74 toView:v29, v30, v13, v77], v193.origin.x = v84, v193.origin.y = v85, v193.size.width = v86, v193.size.height = v87, v191.origin.x = v76, v191.origin.y = v79, v14 = v77, v42 = v177, v40 = v180, v191.size.width = v81, v8 = v183, v191.size.height = v83, v44 = v174, v88 = CGRectIntersectsRect(v191, v193), v89 = v74, !v88))
+                if (![(UIView *)self isDescendantOfView:inputAccessoryView2]|| ([(UIView *)inputAccessoryView2 bounds], v177 = v42, v180 = v40, v76 = v75, v77 = v14, v79 = v78, v183 = v8, v81 = v80, v174 = v44, v83 = v82, [(UIView *)self convertRect:inputAccessoryView2 toView:v29, v30, v13, v77], v193.origin.x = v84, v193.origin.y = v85, v193.size.width = v86, v193.size.height = v87, v191.origin.x = v76, v191.origin.y = v79, v14 = v77, v42 = v177, v40 = v180, v191.size.width = v81, v8 = v183, v191.size.height = v83, v44 = v174, v88 = CGRectIntersectsRect(v191, v193), selfCopy = inputAccessoryView2, !v88))
                 {
-                  if (v36)
+                  if (_enclosingScrollerIncludingSelf)
                   {
-                    v89 = v36;
+                    selfCopy = _enclosingScrollerIncludingSelf;
                   }
 
                   else
                   {
-                    v89 = self;
+                    selfCopy = self;
                   }
                 }
 
-                v55 = v89;
+                selfCopy3 = selfCopy;
 
-                if (v55)
+                if (selfCopy3)
                 {
 LABEL_78:
-                  if (!v55)
+                  if (!selfCopy3)
                   {
                     goto LABEL_79;
                   }
 
 LABEL_45:
-                  if (v55 != v36)
+                  if (selfCopy3 != _enclosingScrollerIncludingSelf)
                   {
                     goto LABEL_82;
                   }
@@ -611,50 +611,50 @@ LABEL_45:
 
               else
               {
-                v55 = 0;
+                selfCopy3 = 0;
               }
 
-              if (v36)
+              if (_enclosingScrollerIncludingSelf)
               {
                 if ([(UISelectionGrabber *)self isScrolling]|| [(UISelectionGrabber *)self isScaling])
                 {
-                  v55 = v36;
+                  selfCopy3 = _enclosingScrollerIncludingSelf;
 LABEL_67:
                   if (objc_opt_respondsToSelector())
                   {
-                    v90 = [(UISelectionGrabber *)v55 _getDelegateZoomView];
-                    if (([v90 _usesAsynchronousProtocol] & 1) == 0 && (!-[UIView isDescendantOfView:](self, "isDescendantOfView:", v90) || (objc_msgSend(v90, "isDescendantOfView:", v55) & 1) == 0))
+                    _getDelegateZoomView = [(UISelectionGrabber *)selfCopy3 _getDelegateZoomView];
+                    if (([_getDelegateZoomView _usesAsynchronousProtocol] & 1) == 0 && (!-[UIView isDescendantOfView:](self, "isDescendantOfView:", _getDelegateZoomView) || (objc_msgSend(_getDelegateZoomView, "isDescendantOfView:", selfCopy3) & 1) == 0))
                     {
 
                       goto LABEL_82;
                     }
 
-                    v91 = v90;
+                    v91 = _getDelegateZoomView;
 
-                    v55 = v91;
+                    selfCopy3 = v91;
                     if (!v91)
                     {
 LABEL_79:
-                      v92 = [(UISelectionGrabber *)self hostView];
-                      v93 = [v92 selectionView];
-                      v94 = [v93 interactionAssistant];
-                      v95 = [v94 externalInteractions];
+                      hostView10 = [(UISelectionGrabber *)self hostView];
+                      selectionView7 = [hostView10 selectionView];
+                      interactionAssistant2 = [selectionView7 interactionAssistant];
+                      externalInteractions = [interactionAssistant2 externalInteractions];
 
-                      if (v95)
+                      if (externalInteractions)
                       {
-                        v55 = [(UIView *)self _enclosingScrollerIncludingSelf];
+                        selfCopy3 = [(UIView *)self _enclosingScrollerIncludingSelf];
                       }
 
                       else
                       {
-                        v55 = 0;
+                        selfCopy3 = 0;
                       }
                     }
                   }
 
 LABEL_82:
-                  v96 = [(UISelectionGrabber *)self customPath];
-                  if (v96)
+                  customPath = [(UISelectionGrabber *)self customPath];
+                  if (customPath)
                   {
                     v184 = v13;
                     v97 = v8;
@@ -663,29 +663,29 @@ LABEL_82:
                     v101 = v100;
                     if ([(UISelectionGrabber *)self isPointedDown])
                     {
-                      [v96 topPoint];
+                      [customPath topPoint];
                     }
 
                     else
                     {
-                      [v96 bottomPoint];
+                      [customPath bottomPoint];
                     }
 
                     v104 = v102;
                     v105 = v103;
                     if ([(UISelectionGrabber *)self isPointedDown])
                     {
-                      [v96 bottomPoint];
+                      [customPath bottomPoint];
                     }
 
                     else
                     {
-                      [v96 topPoint];
+                      [customPath topPoint];
                     }
 
                     v108 = v106;
                     v109 = v107;
-                    [v96 lineWidth];
+                    [customPath lineWidth];
                     v111 = v104 - v108;
                     v112 = v105 - v109;
                     v113 = *(MEMORY[0x1E695EFF8] + 8);
@@ -715,20 +715,20 @@ LABEL_82:
                     v186 = v122;
                   }
 
-                  if (!v55)
+                  if (!selfCopy3)
                   {
-                    v55 = [v56 containerView];
+                    selfCopy3 = [v56 containerView];
                   }
 
-                  if ([(UIResponder *)v55 _usesAsynchronousProtocol]&& (objc_opt_respondsToSelector() & 1) != 0)
+                  if ([(UIResponder *)selfCopy3 _usesAsynchronousProtocol]&& (objc_opt_respondsToSelector() & 1) != 0)
                   {
-                    v123 = [(UISelectionGrabber *)v55 unscaledView];
+                    unscaledView = [(UISelectionGrabber *)selfCopy3 unscaledView];
 
-                    v55 = v123;
+                    selfCopy3 = unscaledView;
                   }
 
-                  v124 = v36;
-                  if (v55 == self || ([(UIView *)self window], v125 = objc_claimAutoreleasedReturnValue(), v125, !v125))
+                  v124 = _enclosingScrollerIncludingSelf;
+                  if (selfCopy3 == self || ([(UIView *)self window], v125 = objc_claimAutoreleasedReturnValue(), v125, !v125))
                   {
                     v126 = v56;
                     v129 = v38;
@@ -737,51 +737,51 @@ LABEL_82:
                   else
                   {
                     v126 = v56;
-                    v127 = [(UIView *)v55 window];
-                    v128 = [(UIView *)self window];
+                    window5 = [(UIView *)selfCopy3 window];
+                    window6 = [(UIView *)self window];
 
                     v129 = v38;
-                    v130 = v55;
-                    if (v127 == v128)
+                    v130 = selfCopy3;
+                    if (window5 == window6)
                     {
                       v141 = v29;
                       v142 = v30;
                       v143 = v13;
                       v144 = v14;
-                      v145 = self;
+                      selfCopy2 = self;
                     }
 
                     else
                     {
-                      v131 = [(UIView *)v55 window];
-                      v132 = [(UIView *)self window];
-                      [v131 convertRect:v132 fromWindow:{v40, v42, v44, v186}];
+                      window7 = [(UIView *)selfCopy3 window];
+                      window8 = [(UIView *)self window];
+                      [window7 convertRect:window8 fromWindow:{v40, v42, v44, v186}];
                       v134 = v133;
                       v136 = v135;
                       v138 = v137;
                       v140 = v139;
 
-                      v130 = v55;
+                      v130 = selfCopy3;
                       v141 = v134;
                       v142 = v136;
                       v143 = v138;
                       v144 = v140;
-                      v145 = 0;
+                      selfCopy2 = 0;
                     }
 
-                    [(UIView *)v130 convertRect:v145 fromView:v141, v142, v143, v144];
+                    [(UIView *)v130 convertRect:selfCopy2 fromView:v141, v142, v143, v144];
                     v29 = v146;
                     v30 = v147;
                     v13 = v148;
                     v14 = v149;
                   }
 
-                  v150 = [(UISelectionGrabber *)self hostView];
-                  v151 = [v150 selectionView];
-                  v152 = [v151 interactionAssistant];
-                  v153 = [v152 cursorVisible];
+                  hostView11 = [(UISelectionGrabber *)self hostView];
+                  selectionView8 = [hostView11 selectionView];
+                  interactionAssistant3 = [selectionView8 interactionAssistant];
+                  cursorVisible = [interactionAssistant3 cursorVisible];
 
-                  if (v153)
+                  if (cursorVisible)
                   {
                     v154 = 1.0;
                   }
@@ -793,7 +793,7 @@ LABEL_82:
 
                   [(UIView *)self->m_dotView setAlpha:v154];
                   [(UIView *)self setAlpha:v154];
-                  if (!v96)
+                  if (!customPath)
                   {
                     if ([(UISelectionGrabber *)self isVertical])
                     {
@@ -806,16 +806,16 @@ LABEL_82:
                     }
                   }
 
-                  v155 = [(UIView *)self->m_dotView superview];
+                  superview2 = [(UIView *)self->m_dotView superview];
 
-                  if (v155 == v55)
+                  if (superview2 == selfCopy3)
                   {
                     [(UISelectionGrabberDot *)self->m_dotView setFrame:v29, v30, v13, v14];
                   }
 
                   else
                   {
-                    [(UIView *)v55 addSubview:self->m_dotView];
+                    [(UIView *)selfCopy3 addSubview:self->m_dotView];
                     v188[0] = MEMORY[0x1E69E9820];
                     v188[1] = 3221225472;
                     v188[2] = __31__UISelectionGrabber_updateDot__block_invoke;
@@ -828,10 +828,10 @@ LABEL_82:
                     [UIView performWithoutAnimation:v188];
                   }
 
-                  v156 = [(UIView *)self layer];
-                  v157 = [v156 contents];
+                  layer = [(UIView *)self layer];
+                  contents = [layer contents];
 
-                  if (!v157)
+                  if (!contents)
                   {
                     [(UIView *)self setNeedsDisplay];
                   }
@@ -860,14 +860,14 @@ LABEL_82:
                   }
                 }
 
-                v55 = v38;
+                selfCopy3 = v38;
               }
 
               goto LABEL_78;
             }
 
 LABEL_43:
-            v55 = self;
+            selfCopy3 = self;
             goto LABEL_44;
           }
 
@@ -879,10 +879,10 @@ LABEL_134:
 
       else
       {
-        v170 = 0;
+        v186 = 0;
       }
 
-      if ((v169 & 1) == 0)
+      if ((_isTextEffectsWindow & 1) == 0)
       {
         goto LABEL_135;
       }
@@ -896,25 +896,25 @@ LABEL_134:
   [(UIView *)v11 removeFromSuperview];
 }
 
-- (void)redrawDotForScale:(double)a3
+- (void)redrawDotForScale:(double)scale
 {
   m_dotView = self->m_dotView;
   [(UIView *)self _currentScreenScale];
-  v6 = v5 * a3;
+  v6 = v5 * scale;
 
   [(UISelectionGrabberDot *)m_dotView redrawRasterizedImageForScale:v6];
 }
 
-- (void)animateGrabberInWithCompletion:(id)a3
+- (void)animateGrabberInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   LODWORD(v5) = 1053609165;
   LODWORD(v6) = 1058642330;
   LODWORD(v7) = 1.0;
   LODWORD(v8) = 1.0;
   v9 = [MEMORY[0x1E69793D0] functionWithControlPoints:v5 :v7 :v6 :v8];
-  v10 = [(UIView *)self layer];
-  [v10 bounds];
+  layer = [(UIView *)self layer];
+  [layer bounds];
   v43 = v12;
   v44 = v11;
   v14 = v13;
@@ -923,8 +923,8 @@ LABEL_134:
   v41 = v14 * 0.8;
   v42 = v14;
   v40 = (v14 - v14 * 0.8) * 0.5;
-  v17 = [(UIView *)self->m_dotView layer];
-  [v17 bounds];
+  layer2 = [(UIView *)self->m_dotView layer];
+  [layer2 bounds];
   v19 = v18;
   v39 = v20;
   v22 = v21;
@@ -951,8 +951,8 @@ LABEL_134:
   [v26 setFrameInterval:0.0166666667];
   [v26 setDuration:0.25];
   [v26 setTimingFunction:v9];
-  v29 = [(UIView *)self->m_dotView layer];
-  [v29 addAnimation:v26 forKey:@"dotView transition in"];
+  layer3 = [(UIView *)self->m_dotView layer];
+  [layer3 addAnimation:v26 forKey:@"dotView transition in"];
 
   v30 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v30 setFromValue:&unk_1EFE335F8];
@@ -960,8 +960,8 @@ LABEL_134:
   [v30 setFrameInterval:0.0166666667];
   [v30 setDuration:0.25];
   [v30 setTimingFunction:v9];
-  v31 = [(UIView *)self->m_dotView layer];
-  [v31 addAnimation:v30 forKey:@"dotView opacity transition in"];
+  layer4 = [(UIView *)self->m_dotView layer];
+  [layer4 addAnimation:v30 forKey:@"dotView opacity transition in"];
 
   v32 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
   v33 = [MEMORY[0x1E696B098] valueWithCGRect:{v40, (v16 - v16 * 0.8) * 0.5, v41, v16 * 0.8}];
@@ -973,19 +973,19 @@ LABEL_134:
   [v32 setFrameInterval:0.0166666667];
   [v32 setDuration:0.25];
   [v32 setTimingFunction:v9];
-  if (v4)
+  if (completionCopy)
   {
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __53__UISelectionGrabber_animateGrabberInWithCompletion___block_invoke;
     v45[3] = &unk_1E70F3608;
-    v46 = v4;
+    v46 = completionCopy;
     v35 = [_UISelectionGrabberAnimationDelegate delegateWithCompletionBlock:v45];
     [v32 setDelegate:v35];
   }
 
-  v36 = [(UIView *)self layer];
-  [v36 addAnimation:v32 forKey:@"stemView transition in"];
+  layer5 = [(UIView *)self layer];
+  [layer5 addAnimation:v32 forKey:@"stemView transition in"];
 
   v37 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v37 setFromValue:&unk_1EFE335F8];
@@ -993,27 +993,27 @@ LABEL_134:
   [v37 setFrameInterval:0.0166666667];
   [v37 setDuration:0.25];
   [v37 setTimingFunction:v9];
-  v38 = [(UIView *)self layer];
-  [v38 addAnimation:v37 forKey:@"stemView opacity transition in"];
+  layer6 = [(UIView *)self layer];
+  [layer6 addAnimation:v37 forKey:@"stemView opacity transition in"];
 }
 
-- (void)animateGrabberOutWithCompletion:(id)a3
+- (void)animateGrabberOutWithCompletion:(id)completion
 {
-  v50 = a3;
+  completionCopy = completion;
   LODWORD(v4) = 1053609165;
   LODWORD(v5) = 1058642330;
   LODWORD(v6) = 1.0;
   LODWORD(v7) = 1.0;
   v8 = [MEMORY[0x1E69793D0] functionWithControlPoints:v4 :v6 :v5 :v7];
-  v9 = [(UIView *)self layer];
-  [v9 bounds];
+  layer = [(UIView *)self layer];
+  [layer bounds];
   v48 = v11;
   v49 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(UIView *)self->m_dotView layer];
-  [v16 bounds];
+  layer2 = [(UIView *)self->m_dotView layer];
+  [layer2 bounds];
   v47 = v17;
   v46 = v18;
   v20 = v19;
@@ -1031,8 +1031,8 @@ LABEL_134:
   }
 
   v45 = (v15 - v15 * 0.8) * 0.5;
-  v24 = [(UIView *)self->m_dotView layer];
-  [v24 setBounds:{(v20 - v20 * 0.8) * 0.5, v23, v20 * 0.8, v22 * 0.8}];
+  layer3 = [(UIView *)self->m_dotView layer];
+  [layer3 setBounds:{(v20 - v20 * 0.8) * 0.5, v23, v20 * 0.8, v22 * 0.8}];
 
   v25 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
   v26 = [MEMORY[0x1E696B098] valueWithCGRect:{v47, v46, v20, v22}];
@@ -1059,8 +1059,8 @@ LABEL_134:
   v29 = [_UISelectionGrabberAnimationDelegate delegateWithCompletionBlock:v59];
   [v25 setDelegate:v29];
 
-  v30 = [(UIView *)self->m_dotView layer];
-  [v30 addAnimation:v25 forKey:@"dotView transition out"];
+  layer4 = [(UIView *)self->m_dotView layer];
+  [layer4 addAnimation:v25 forKey:@"dotView transition out"];
 
   v31 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v31 setFromValue:&unk_1EFE2EE58];
@@ -1078,12 +1078,12 @@ LABEL_134:
   v32 = [_UISelectionGrabberAnimationDelegate delegateWithCompletionBlock:v58];
   [v31 setDelegate:v32];
 
-  v33 = [(UIView *)self->m_dotView layer];
-  [v33 addAnimation:v31 forKey:@"dotView opacity transition out"];
+  layer5 = [(UIView *)self->m_dotView layer];
+  [layer5 addAnimation:v31 forKey:@"dotView opacity transition out"];
 
-  v34 = [(UIView *)self layer];
+  layer6 = [(UIView *)self layer];
   v35 = (v13 - v13 * 0.8) * 0.5;
-  [v34 setBounds:{v35, v45, v13 * 0.8, v15 * 0.8}];
+  [layer6 setBounds:{v35, v45, v13 * 0.8, v15 * 0.8}];
 
   v36 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
   v37 = [MEMORY[0x1E696B098] valueWithCGRect:{v49, v48, v13, v15}];
@@ -1106,13 +1106,13 @@ LABEL_134:
   v56 = v13;
   v57 = v15;
   v52[4] = self;
-  v53 = v50;
-  v39 = v50;
+  v53 = completionCopy;
+  v39 = completionCopy;
   v40 = [_UISelectionGrabberAnimationDelegate delegateWithCompletionBlock:v52];
   [v36 setDelegate:v40];
 
-  v41 = [(UIView *)self layer];
-  [v41 addAnimation:v36 forKey:@"stemView transition out"];
+  layer7 = [(UIView *)self layer];
+  [layer7 addAnimation:v36 forKey:@"stemView transition out"];
 
   v42 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v42 setFromValue:&unk_1EFE2EE58];
@@ -1130,8 +1130,8 @@ LABEL_134:
   v43 = [_UISelectionGrabberAnimationDelegate delegateWithCompletionBlock:v51];
   [v42 setDelegate:v43];
 
-  v44 = [(UIView *)self layer];
-  [v44 addAnimation:v42 forKey:@"stemView opacity transition out"];
+  layer8 = [(UIView *)self layer];
+  [layer8 addAnimation:v42 forKey:@"stemView opacity transition out"];
 }
 
 void __54__UISelectionGrabber_animateGrabberOutWithCompletion___block_invoke(double *a1, char a2)
@@ -1202,31 +1202,31 @@ void __54__UISelectionGrabber_animateGrabberOutWithCompletion___block_invoke_4(u
   [v5 removeAnimationForKey:@"stemView opacity transition out"];
 }
 
-- (void)transitionDot:(int64_t)a3 completion:(id)a4
+- (void)transitionDot:(int64_t)dot completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 2)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (dot == 2)
   {
-    v8 = v6;
-    [(UISelectionGrabber *)self animateGrabberOutWithCompletion:v6];
+    v8 = completionCopy;
+    [(UISelectionGrabber *)self animateGrabberOutWithCompletion:completionCopy];
   }
 
-  else if (a3 == 1)
+  else if (dot == 1)
   {
-    v8 = v6;
-    [(UISelectionGrabber *)self animateGrabberInWithCompletion:v6];
+    v8 = completionCopy;
+    [(UISelectionGrabber *)self animateGrabberInWithCompletion:completionCopy];
   }
 
   else
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
 
-    v8 = v6;
-    (*(v6 + 2))(v6);
+    v8 = completionCopy;
+    (*(completionCopy + 2))(completionCopy);
   }
 
   v7 = v8;
@@ -1238,27 +1238,27 @@ LABEL_8:
   v7.receiver = self;
   v7.super_class = UISelectionGrabber;
   [(UIView *)&v7 _dynamicUserInterfaceTraitDidChange];
-  v3 = [(UISelectionGrabber *)self customPath];
+  customPath = [(UISelectionGrabber *)self customPath];
 
-  if (v3)
+  if (customPath)
   {
-    v4 = [(UISelectionGrabber *)self fillColor];
-    v5 = [v4 cgColor];
-    v6 = [(UISelectionGrabber *)self shapeLayer];
-    [v6 setStrokeColor:v5];
+    fillColor = [(UISelectionGrabber *)self fillColor];
+    cgColor = [fillColor cgColor];
+    shapeLayer = [(UISelectionGrabber *)self shapeLayer];
+    [shapeLayer setStrokeColor:cgColor];
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v9.receiver = self;
   v9.super_class = UISelectionGrabber;
-  [(UIView *)&v9 willMoveToWindow:v4];
-  if (v4)
+  [(UIView *)&v9 willMoveToWindow:windowCopy];
+  if (windowCopy)
   {
-    v5 = [v4 screen];
-    [v5 scale];
+    screen = [windowCopy screen];
+    [screen scale];
     self->m_screenScale = v6;
 
     [(UISelectionGrabber *)self updatePathForBoundsChangeIfNecessary];
@@ -1266,8 +1266,8 @@ LABEL_8:
 
   else
   {
-    v7 = [objc_opt_self() mainScreen];
-    [v7 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     self->m_screenScale = v8;
   }
 }
@@ -1279,20 +1279,20 @@ LABEL_8:
   [(UISelectionGrabber *)self updatePathForBoundsChangeIfNecessary];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIView *)self window];
-  [v8 convertRect:self toView:{0.0, 0.0, 1.0, 1.0}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  window = [(UIView *)self window];
+  [window convertRect:self toView:{0.0, 0.0, 1.0, 1.0}];
   v10 = v9;
 
   if (v10 == 1.0)
   {
-    v11 = [(UIView *)self window];
-    x = pixelAlignedRectForRect(v11);
+    window2 = [(UIView *)self window];
+    x = pixelAlignedRectForRect(window2);
     y = v12;
     width = v13;
     height = v14;
@@ -1304,59 +1304,59 @@ LABEL_8:
   [(UISelectionGrabber *)self updateDot];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = UISelectionGrabber;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(UISelectionGrabber *)self updatePathForBoundsChangeIfNecessary];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = UISelectionGrabber;
-  [(UIView *)&v4 setCenter:a3.x, a3.y];
+  [(UIView *)&v4 setCenter:center.x, center.y];
   [(UISelectionGrabber *)self updatePathForBoundsChangeIfNecessary];
 }
 
 - (void)updatePathForBoundsChangeIfNecessary
 {
-  v3 = [(UISelectionGrabber *)self customPath];
+  customPath = [(UISelectionGrabber *)self customPath];
 
-  if (v3)
+  if (customPath)
   {
-    v7 = [(UISelectionGrabber *)self customPath];
-    v4 = [(UISelectionGrabber *)self bezierPathFromCustomPath:v7];
-    v5 = [v4 CGPath];
-    v6 = [(UISelectionGrabber *)self shapeLayer];
-    [v6 setPath:v5];
+    customPath2 = [(UISelectionGrabber *)self customPath];
+    v4 = [(UISelectionGrabber *)self bezierPathFromCustomPath:customPath2];
+    cGPath = [v4 CGPath];
+    shapeLayer = [(UISelectionGrabber *)self shapeLayer];
+    [shapeLayer setPath:cGPath];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(UISelectionGrabber *)self customPath:a3.origin.x];
+  v4 = [(UISelectionGrabber *)self customPath:rect.origin.x];
 
   if (!v4)
   {
-    v17 = [(UISelectionGrabber *)self fillColor];
+    fillColor = [(UISelectionGrabber *)self fillColor];
     [(UIView *)self bounds];
     x = v5;
     y = v7;
     width = v9;
     height = v11;
-    v13 = [(UIView *)self _screen];
-    [v13 scale];
+    _screen = [(UIView *)self _screen];
+    [_screen scale];
     v15 = v14;
 
     if (v15 <= 1.0)
     {
-      v16 = [v17 colorWithAlphaComponent:0.5];
+      v16 = [fillColor colorWithAlphaComponent:0.5];
       [v16 set];
 
       UIRectFillUsingOperation(1, x, y, width, height);
-      [v17 set];
+      [fillColor set];
       v19.origin.x = x;
       v19.origin.y = y;
       v19.size.width = width;
@@ -1370,7 +1370,7 @@ LABEL_8:
 
     else
     {
-      [v17 set];
+      [fillColor set];
     }
 
     UIRectFillUsingOperation(1, x, y, width, height);
@@ -1379,12 +1379,12 @@ LABEL_8:
 
 - (id)fillColor
 {
-  v2 = [(UISelectionGrabber *)self hostView];
-  v3 = [v2 container];
+  hostView = [(UISelectionGrabber *)self hostView];
+  container = [hostView container];
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 selectionBarColor];
+    [container selectionBarColor];
   }
 
   else

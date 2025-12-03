@@ -1,35 +1,35 @@
 @interface DOCErrorStore
-+ (id)_augmentedErrorForError:(id)a3 localizedDescription:(id)a4 recoverySuggestion:(id)a5;
-+ (id)augmentedErrorForError:(id)a3;
++ (id)_augmentedErrorForError:(id)error localizedDescription:(id)description recoverySuggestion:(id)suggestion;
++ (id)augmentedErrorForError:(id)error;
 @end
 
 @implementation DOCErrorStore
 
-+ (id)augmentedErrorForError:(id)a3
++ (id)augmentedErrorForError:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E696A798]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E696A798]];
 
   if (v6)
   {
-    v7 = [v4 code];
-    if (v7 > 56)
+    code = [errorCopy code];
+    if (code > 56)
     {
-      if (v7 == 57)
+      if (code == 57)
       {
         v9 = _DocumentManagerBundle();
         v22 = [v9 localizedStringForKey:@"POSIX.ENOTCONN.title" value:@"There was a problem connecting to the server." table:@"LocalizableErrors"];
         v23 = _DocumentManagerBundle();
         v24 = [v23 localizedStringForKey:@"POSIX.ENOTCONN.recovery" value:@"Check the server name or IP address table:{and then try again. If you continue to have problems, contact your system administrator.", @"LocalizableErrors"}];
-        v21 = [a1 _augmentedErrorForError:v4 localizedDescription:v22 recoverySuggestion:v24];
+        v21 = [self _augmentedErrorForError:errorCopy localizedDescription:v22 recoverySuggestion:v24];
 
 LABEL_28:
         goto LABEL_29;
       }
 
-      if (v7 == 80)
+      if (code == 80)
       {
         v8 = _DocumentManagerBundle();
         v9 = v8;
@@ -39,7 +39,7 @@ LABEL_28:
       }
     }
 
-    else if (v7 == 5 || v7 == 9)
+    else if (code == 5 || code == 9)
     {
       v8 = _DocumentManagerBundle();
       v9 = v8;
@@ -48,7 +48,7 @@ LABEL_9:
       v13 = @"The operation can’t be completed because an unexpected error occurred.";
 LABEL_27:
       v25 = [v8 localizedStringForKey:v10 value:v13 table:@"LocalizableErrors"];
-      v21 = [a1 _augmentedErrorForError:v4 localizedDescription:v25 recoverySuggestion:0];
+      v21 = [self _augmentedErrorForError:errorCopy localizedDescription:v25 recoverySuggestion:0];
 
       goto LABEL_28;
     }
@@ -56,12 +56,12 @@ LABEL_27:
 
   else
   {
-    v11 = [v4 domain];
-    v12 = [v11 isEqualToString:*MEMORY[0x1E696A250]];
+    domain2 = [errorCopy domain];
+    v12 = [domain2 isEqualToString:*MEMORY[0x1E696A250]];
 
     if (v12)
     {
-      if ([v4 code] == 4097)
+      if ([errorCopy code] == 4097)
       {
         v8 = _DocumentManagerBundle();
         v9 = v8;
@@ -72,13 +72,13 @@ LABEL_27:
 
     else
     {
-      v14 = [v4 domain];
-      v15 = [v14 isEqualToString:*MEMORY[0x1E696A978]];
+      domain3 = [errorCopy domain];
+      v15 = [domain3 isEqualToString:*MEMORY[0x1E696A978]];
 
       if (v15)
       {
-        v16 = [v4 code];
-        if (v16 == -1000)
+        code2 = [errorCopy code];
+        if (code2 == -1000)
         {
           v8 = _DocumentManagerBundle();
           v9 = v8;
@@ -87,7 +87,7 @@ LABEL_27:
           goto LABEL_27;
         }
 
-        if (v16 == -1002)
+        if (code2 == -1002)
         {
           v8 = _DocumentManagerBundle();
           v9 = v8;
@@ -99,10 +99,10 @@ LABEL_27:
 
       else
       {
-        v17 = [v4 domain];
-        v18 = [v17 isEqualToString:*MEMORY[0x1E6967190]];
+        domain4 = [errorCopy domain];
+        v18 = [domain4 isEqualToString:*MEMORY[0x1E6967190]];
 
-        if (v18 && [v4 code] == -2001)
+        if (v18 && [errorCopy code] == -2001)
         {
           v8 = _DocumentManagerBundle();
           v9 = v8;
@@ -125,7 +125,7 @@ LABEL_27:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v27 = 138412290;
-    v28 = v4;
+    v28 = errorCopy;
     _os_log_impl(&dword_1E57D8000, v20, OS_LOG_TYPE_INFO, "No replacement error found for error: %@", &v27, 0xCu);
   }
 
@@ -135,27 +135,27 @@ LABEL_29:
   return v21;
 }
 
-+ (id)_augmentedErrorForError:(id)a3 localizedDescription:(id)a4 recoverySuggestion:(id)a5
++ (id)_augmentedErrorForError:(id)error localizedDescription:(id)description recoverySuggestion:(id)suggestion
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  descriptionCopy = description;
+  suggestionCopy = suggestion;
   v10 = MEMORY[0x1E695DF90];
   v11 = *MEMORY[0x1E696AA08];
   v32[0] = *MEMORY[0x1E696A578];
   v32[1] = v11;
-  v33[0] = v8;
-  v33[1] = v7;
+  v33[0] = descriptionCopy;
+  v33[1] = errorCopy;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v13 = [v10 dictionaryWithDictionary:v12];
 
   if (DOCIsInternalBuild())
   {
     v14 = &stru_1F5F4AEF8;
-    if (v9)
+    if (suggestionCopy)
     {
-      v15 = v9;
+      v15 = suggestionCopy;
     }
 
     else
@@ -163,16 +163,16 @@ LABEL_29:
       v15 = &stru_1F5F4AEF8;
     }
 
-    v16 = [v7 code];
-    v17 = [v7 userInfo];
-    if (v17)
+    code = [errorCopy code];
+    userInfo = [errorCopy userInfo];
+    if (userInfo)
     {
-      v31 = [v7 userInfo];
-      if ([v31 count])
+      userInfo2 = [errorCopy userInfo];
+      if ([userInfo2 count])
       {
         v18 = MEMORY[0x1E696AEC0];
-        v30 = [v7 userInfo];
-        v14 = [v18 stringWithFormat:@"\n\n%@", v30];
+        userInfo3 = [errorCopy userInfo];
+        v14 = [v18 stringWithFormat:@"\n\n%@", userInfo3];
         v19 = 1;
       }
 
@@ -187,44 +187,44 @@ LABEL_29:
       v19 = 0;
     }
 
-    v20 = [v7 domain];
-    v21 = [(__CFString *)v15 stringByAppendingFormat:@"\n\n[INTERNAL BUILD]\nError %ld%@ (%@)", v16, v14, v20];
+    domain = [errorCopy domain];
+    v21 = [(__CFString *)v15 stringByAppendingFormat:@"\n\n[INTERNAL BUILD]\nError %ld%@ (%@)", code, v14, domain];
 
     if (v19)
     {
     }
 
-    if (v17)
+    if (userInfo)
     {
     }
 
-    v9 = v21;
+    suggestionCopy = v21;
   }
 
-  if (v9)
+  if (suggestionCopy)
   {
-    [v13 setObject:v9 forKey:*MEMORY[0x1E696A598]];
+    [v13 setObject:suggestionCopy forKey:*MEMORY[0x1E696A598]];
   }
 
-  v22 = [v7 localizedRecoveryOptions];
+  localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
 
-  if (v22)
+  if (localizedRecoveryOptions)
   {
-    v23 = [v7 localizedRecoveryOptions];
-    [v13 setObject:v23 forKey:*MEMORY[0x1E696A590]];
+    localizedRecoveryOptions2 = [errorCopy localizedRecoveryOptions];
+    [v13 setObject:localizedRecoveryOptions2 forKey:*MEMORY[0x1E696A590]];
   }
 
-  v24 = [v7 recoveryAttempter];
+  recoveryAttempter = [errorCopy recoveryAttempter];
 
-  if (v24)
+  if (recoveryAttempter)
   {
-    v25 = [v7 recoveryAttempter];
-    [v13 setObject:v25 forKey:*MEMORY[0x1E696A8A8]];
+    recoveryAttempter2 = [errorCopy recoveryAttempter];
+    [v13 setObject:recoveryAttempter2 forKey:*MEMORY[0x1E696A8A8]];
   }
 
   v26 = MEMORY[0x1E696ABC0];
-  v27 = [v7 domain];
-  v28 = [v26 errorWithDomain:v27 code:objc_msgSend(v7 userInfo:{"code"), v13}];
+  domain2 = [errorCopy domain];
+  v28 = [v26 errorWithDomain:domain2 code:objc_msgSend(errorCopy userInfo:{"code"), v13}];
 
   return v28;
 }

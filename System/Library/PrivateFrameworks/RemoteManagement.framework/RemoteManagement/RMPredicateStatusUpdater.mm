@@ -1,8 +1,8 @@
 @interface RMPredicateStatusUpdater
 + (RMPredicateStatusUpdater)sharedUpdater;
-- (BOOL)_updatePredicateStatusWithFetchPredicate:(id)a3;
-- (BOOL)notifyPredicateStatusDidChangeForManagementSourceIdentifier:(id)a3;
-- (RMPredicateStatusUpdater)initWithPersistentContainer:(id)a3;
+- (BOOL)_updatePredicateStatusWithFetchPredicate:(id)predicate;
+- (BOOL)notifyPredicateStatusDidChangeForManagementSourceIdentifier:(id)identifier;
+- (RMPredicateStatusUpdater)initWithPersistentContainer:(id)container;
 @end
 
 @implementation RMPredicateStatusUpdater
@@ -19,55 +19,55 @@
   return v3;
 }
 
-- (RMPredicateStatusUpdater)initWithPersistentContainer:(id)a3
+- (RMPredicateStatusUpdater)initWithPersistentContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = RMPredicateStatusUpdater;
   v6 = [(RMPredicateStatusUpdater *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentContainer, a3);
+    objc_storeStrong(&v6->_persistentContainer, container);
   }
 
   return v7;
 }
 
-- (BOOL)notifyPredicateStatusDidChangeForManagementSourceIdentifier:(id)a3
+- (BOOL)notifyPredicateStatusDidChangeForManagementSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[RMLog predicateStatusUpdater];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Posting notification for management source: %{public}@", buf, 0xCu);
   }
 
-  v6 = [NSPredicate predicateWithFormat:@"%K == %@", @"identifier", v4];
-  v7 = [(RMPredicateStatusUpdater *)self _updatePredicateStatusWithFetchPredicate:v6];
+  identifierCopy = [NSPredicate predicateWithFormat:@"%K == %@", @"identifier", identifierCopy];
+  v7 = [(RMPredicateStatusUpdater *)self _updatePredicateStatusWithFetchPredicate:identifierCopy];
 
   return v7;
 }
 
-- (BOOL)_updatePredicateStatusWithFetchPredicate:(id)a3
+- (BOOL)_updatePredicateStatusWithFetchPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_new();
-  v6 = [(RMPredicateStatusUpdater *)self persistentContainer];
-  v7 = [v6 newBackgroundContext];
+  persistentContainer = [(RMPredicateStatusUpdater *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
-  [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+  [newBackgroundContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10005DA6C;
   v15[3] = &unk_1000D1270;
-  v8 = v4;
+  v8 = predicateCopy;
   v16 = v8;
   v9 = v5;
   v17 = v9;
-  [v7 performBlockAndWait:v15];
+  [newBackgroundContext performBlockAndWait:v15];
   v10 = [v9 count];
   if (v10)
   {

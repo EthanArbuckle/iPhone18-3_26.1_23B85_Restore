@@ -1,31 +1,31 @@
 @interface HPBooleanSettingValue
-- (BOOL)isEqual:(id)a3;
-- (HPBooleanSettingValue)initWithCoder:(id)a3;
-- (HPBooleanSettingValue)initWithKeyPath:(id)a3 BOOLValue:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (HPBooleanSettingValue)initWithCoder:(id)coder;
+- (HPBooleanSettingValue)initWithKeyPath:(id)path BOOLValue:(BOOL)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HPBooleanSettingValue
 
-- (HPBooleanSettingValue)initWithKeyPath:(id)a3 BOOLValue:(BOOL)a4
+- (HPBooleanSettingValue)initWithKeyPath:(id)path BOOLValue:(BOOL)value
 {
   v6.receiver = self;
   v6.super_class = HPBooleanSettingValue;
-  result = [(HPSettingValue *)&v6 initWithKeyPath:a3];
+  result = [(HPSettingValue *)&v6 initWithKeyPath:path];
   if (result)
   {
-    result->_BOOLeanValue = a4;
+    result->_BOOLeanValue = value;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -35,8 +35,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HPBooleanSettingValue *)v4 BOOLeanValue];
-      v6 = v5 ^ [(HPBooleanSettingValue *)self BOOLeanValue]^ 1;
+      bOOLeanValue = [(HPBooleanSettingValue *)equalCopy BOOLeanValue];
+      v6 = bOOLeanValue ^ [(HPBooleanSettingValue *)self BOOLeanValue]^ 1;
     }
 
     else
@@ -56,30 +56,30 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[HPBooleanSettingValue BOOLeanValue](self, "BOOLeanValue")}];
-  [v5 encodeObject:v6 forKey:@"setting.BOOLkey"];
+  [coderCopy encodeObject:v6 forKey:@"setting.BOOLkey"];
 
-  v7 = [(HPSettingValue *)self keyPath];
-  [v5 encodeObject:v7 forKey:@"setting.keypath"];
+  keyPath = [(HPSettingValue *)self keyPath];
+  [coderCopy encodeObject:keyPath forKey:@"setting.keypath"];
 }
 
-- (HPBooleanSettingValue)initWithCoder:(id)a3
+- (HPBooleanSettingValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HPSettingValue *)self keyPath];
+  coderCopy = coder;
+  keyPath = [(HPSettingValue *)self keyPath];
   v10.receiver = self;
   v10.super_class = HPBooleanSettingValue;
-  v6 = [(HPSettingValue *)&v10 initWithKeyPath:v5];
+  v6 = [(HPSettingValue *)&v10 initWithKeyPath:keyPath];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.BOOLkey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.BOOLkey"];
     v6->_BOOLeanValue = [v7 BOOLValue];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
     [(HPSettingValue *)v6 setKeyPath:v8];
   }
 
@@ -89,15 +89,15 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HPSettingValue *)self keyPath];
-  v5 = [(HPBooleanSettingValue *)self BOOLeanValue];
+  keyPath = [(HPSettingValue *)self keyPath];
+  bOOLeanValue = [(HPBooleanSettingValue *)self BOOLeanValue];
   v6 = @"NO";
-  if (v5)
+  if (bOOLeanValue)
   {
     v6 = @"YES";
   }
 
-  v7 = [v3 stringWithFormat:@"\n KeyPath %@ \n Boolean Value %@", v4, v6];
+  v7 = [v3 stringWithFormat:@"\n KeyPath %@ \n Boolean Value %@", keyPath, v6];
 
   return v7;
 }

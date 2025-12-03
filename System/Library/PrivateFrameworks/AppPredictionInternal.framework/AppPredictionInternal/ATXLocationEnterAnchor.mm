@@ -1,25 +1,25 @@
 @interface ATXLocationEnterAnchor
 + (id)sampleEvent;
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5;
-+ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)a3;
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector;
++ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)observer;
 @end
 
 @implementation ATXLocationEnterAnchor
 
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector
 {
   v6 = MEMORY[0x277CCAB98];
-  v7 = a3;
-  v8 = [v6 defaultCenter];
-  [v8 addObserver:v7 selector:a4 name:*MEMORY[0x277D41CA0] object:0];
+  observerCopy = observer;
+  defaultCenter = [v6 defaultCenter];
+  [defaultCenter addObserver:observerCopy selector:selector name:*MEMORY[0x277D41CA0] object:0];
 }
 
-+ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)a3
++ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)observer
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:*MEMORY[0x277D41CA0] object:0];
+  observerCopy = observer;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:observerCopy name:*MEMORY[0x277D41CA0] object:0];
 }
 
 + (id)sampleEvent

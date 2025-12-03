@@ -1,164 +1,164 @@
 @interface MDMCheckInRequest
 + (id)_createNoInstallationError;
-+ (id)_requestDataWithRequestDict:(id)a3 enrollmentID:(id)a4 topic:(id)a5 pushMagic:(id)a6 isUserEnrollment:(BOOL)a7 messageType:(id)a8 channelType:(unint64_t)a9 error:(id *)a10;
++ (id)_requestDataWithRequestDict:(id)dict enrollmentID:(id)d topic:(id)topic pushMagic:(id)magic isUserEnrollment:(BOOL)enrollment messageType:(id)type channelType:(unint64_t)channelType error:(id *)self0;
 + (id)_userFieldsForRequest;
-+ (void)_checkInRequestAtURL:(id)a3 identity:(__SecIdentity *)a4 pinnedSecCertificateRefs:(id)a5 pinningRevocationCheckRequired:(BOOL)a6 signMessage:(BOOL)a7 isUserEnrollment:(BOOL)a8 enrollmentID:(id)a9 topic:(id)a10 pushMagic:(id)a11 rmAccountID:(id)a12 messageType:(id)a13 requestDict:(id)a14 channelType:(unint64_t)a15 isCheckout:(BOOL)a16 isShortTransaction:(BOOL)a17 completionHandler:(id)a18;
-+ (void)executeRequestForMessageType:(id)a3 channelType:(unint64_t)a4 requestDict:(id)a5 isCheckout:(BOOL)a6 shouldIncludeTopic:(BOOL)a7 shouldIncludePushMagic:(BOOL)a8 isEnrollmentRequired:(BOOL)a9 isShortTransaction:(BOOL)a10 completionHandler:(id)a11;
++ (void)_checkInRequestAtURL:(id)l identity:(__SecIdentity *)identity pinnedSecCertificateRefs:(id)refs pinningRevocationCheckRequired:(BOOL)required signMessage:(BOOL)message isUserEnrollment:(BOOL)enrollment enrollmentID:(id)d topic:(id)self0 pushMagic:(id)self1 rmAccountID:(id)self2 messageType:(id)self3 requestDict:(id)self4 channelType:(unint64_t)self5 isCheckout:(BOOL)self6 isShortTransaction:(BOOL)self7 completionHandler:(id)self8;
++ (void)executeRequestForMessageType:(id)type channelType:(unint64_t)channelType requestDict:(id)dict isCheckout:(BOOL)checkout shouldIncludeTopic:(BOOL)topic shouldIncludePushMagic:(BOOL)magic isEnrollmentRequired:(BOOL)required isShortTransaction:(BOOL)self0 completionHandler:(id)self1;
 @end
 
 @implementation MDMCheckInRequest
 
-+ (void)executeRequestForMessageType:(id)a3 channelType:(unint64_t)a4 requestDict:(id)a5 isCheckout:(BOOL)a6 shouldIncludeTopic:(BOOL)a7 shouldIncludePushMagic:(BOOL)a8 isEnrollmentRequired:(BOOL)a9 isShortTransaction:(BOOL)a10 completionHandler:(id)a11
++ (void)executeRequestForMessageType:(id)type channelType:(unint64_t)channelType requestDict:(id)dict isCheckout:(BOOL)checkout shouldIncludeTopic:(BOOL)topic shouldIncludePushMagic:(BOOL)magic isEnrollmentRequired:(BOOL)required isShortTransaction:(BOOL)self0 completionHandler:(id)self1
 {
-  v11 = a8;
-  v12 = a7;
+  magicCopy = magic;
+  topicCopy = topic;
   v57 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v53 = a5;
-  v17 = a11;
+  typeCopy = type;
+  dictCopy = dict;
+  handlerCopy = handler;
   v18 = +[MDMConfiguration sharedConfiguration];
   [v18 refreshDetailsFromDisk];
-  if (a9)
+  if (required)
   {
-    v19 = [v18 managingProfileIdentifier];
+    managingProfileIdentifier = [v18 managingProfileIdentifier];
 
-    if (!v19)
+    if (!managingProfileIdentifier)
     {
-      v39 = [a1 _createNoInstallationError];
-      (*(v17 + 2))(v17, 0, 0, v39);
+      _createNoInstallationError = [self _createNoInstallationError];
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, _createNoInstallationError);
 
-      v32 = v53;
+      v32 = dictCopy;
       goto LABEL_17;
     }
   }
 
-  v50 = v17;
-  v46 = a6;
-  v52 = a1;
-  v20 = [v18 checkInURL];
-  v21 = [v18 copyMemberQueueIdentity];
-  v22 = [v18 checkInPinnedSecCertificateRefs];
-  v23 = [v18 pinningRevocationCheckRequired];
-  v24 = [v18 signMessage];
-  v45 = [v18 isUserEnrollment];
-  v51 = [v18 enrollmentID];
-  if (v12)
+  v50 = handlerCopy;
+  checkoutCopy = checkout;
+  selfCopy = self;
+  checkInURL = [v18 checkInURL];
+  copyMemberQueueIdentity = [v18 copyMemberQueueIdentity];
+  checkInPinnedSecCertificateRefs = [v18 checkInPinnedSecCertificateRefs];
+  pinningRevocationCheckRequired = [v18 pinningRevocationCheckRequired];
+  signMessage = [v18 signMessage];
+  isUserEnrollment = [v18 isUserEnrollment];
+  enrollmentID = [v18 enrollmentID];
+  if (topicCopy)
   {
-    v25 = [v18 topic];
-    if (!v11)
+    topic = [v18 topic];
+    if (!magicCopy)
     {
 LABEL_5:
-      v26 = 0;
+      pushMagic = 0;
       goto LABEL_8;
     }
   }
 
   else
   {
-    v25 = 0;
-    if (!v11)
+    topic = 0;
+    if (!magicCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v26 = [v18 pushMagic];
+  pushMagic = [v18 pushMagic];
 LABEL_8:
-  v49 = v26;
-  v27 = [v18 rmAccountID];
-  v28 = v27;
-  v54 = v16;
-  if (v20 && v21)
+  v49 = pushMagic;
+  rmAccountID = [v18 rmAccountID];
+  v28 = rmAccountID;
+  v54 = typeCopy;
+  if (checkInURL && copyMemberQueueIdentity)
   {
-    v43 = v24;
-    v44 = v23;
-    v29 = v20;
-    v30 = v22;
+    v43 = signMessage;
+    v44 = pinningRevocationCheckRequired;
+    v29 = checkInURL;
+    v30 = checkInPinnedSecCertificateRefs;
     v31 = *DMCLogObjects();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v56 = a4;
+      channelTypeCopy = channelType;
       _os_log_impl(&dword_22E997000, v31, OS_LOG_TYPE_INFO, "Calling checkInRequestAtURL - channel type: %lu", buf, 0xCu);
     }
 
-    v17 = v50;
-    BYTE1(v42) = a10;
-    LOBYTE(v42) = v46;
-    v32 = v53;
+    handlerCopy = v50;
+    BYTE1(v42) = transaction;
+    LOBYTE(v42) = checkoutCopy;
+    v32 = dictCopy;
     v41 = v28;
     v33 = v28;
     v34 = v49;
-    v40 = v25;
-    v35 = v25;
-    v36 = v51;
-    [v52 _checkInRequestAtURL:v29 identity:v21 pinnedSecCertificateRefs:v30 pinningRevocationCheckRequired:v44 signMessage:v43 isUserEnrollment:v45 enrollmentID:v51 topic:v40 pushMagic:v49 rmAccountID:v41 messageType:v54 requestDict:v53 channelType:a4 isCheckout:v42 isShortTransaction:v50 completionHandler:?];
-    CFRelease(v21);
+    v40 = topic;
+    v35 = topic;
+    v36 = enrollmentID;
+    [selfCopy _checkInRequestAtURL:v29 identity:copyMemberQueueIdentity pinnedSecCertificateRefs:v30 pinningRevocationCheckRequired:v44 signMessage:v43 isUserEnrollment:isUserEnrollment enrollmentID:enrollmentID topic:v40 pushMagic:v49 rmAccountID:v41 messageType:v54 requestDict:dictCopy channelType:channelType isCheckout:v42 isShortTransaction:v50 completionHandler:?];
+    CFRelease(copyMemberQueueIdentity);
   }
 
   else
   {
-    v48 = v27;
-    v29 = v20;
-    v35 = v25;
-    v30 = v22;
-    if (v21)
+    v48 = rmAccountID;
+    v29 = checkInURL;
+    v35 = topic;
+    v30 = checkInPinnedSecCertificateRefs;
+    if (copyMemberQueueIdentity)
     {
-      CFRelease(v21);
+      CFRelease(copyMemberQueueIdentity);
     }
 
-    v37 = [v52 _createNoInstallationError];
-    v17 = v50;
-    (*(v50 + 2))(v50, 0, 0, v37);
+    _createNoInstallationError2 = [selfCopy _createNoInstallationError];
+    handlerCopy = v50;
+    (*(v50 + 2))(v50, 0, 0, _createNoInstallationError2);
 
-    v32 = v53;
-    v36 = v51;
+    v32 = dictCopy;
+    v36 = enrollmentID;
     v33 = v48;
     v34 = v49;
   }
 
-  v16 = v54;
+  typeCopy = v54;
 LABEL_17:
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_checkInRequestAtURL:(id)a3 identity:(__SecIdentity *)a4 pinnedSecCertificateRefs:(id)a5 pinningRevocationCheckRequired:(BOOL)a6 signMessage:(BOOL)a7 isUserEnrollment:(BOOL)a8 enrollmentID:(id)a9 topic:(id)a10 pushMagic:(id)a11 rmAccountID:(id)a12 messageType:(id)a13 requestDict:(id)a14 channelType:(unint64_t)a15 isCheckout:(BOOL)a16 isShortTransaction:(BOOL)a17 completionHandler:(id)a18
++ (void)_checkInRequestAtURL:(id)l identity:(__SecIdentity *)identity pinnedSecCertificateRefs:(id)refs pinningRevocationCheckRequired:(BOOL)required signMessage:(BOOL)message isUserEnrollment:(BOOL)enrollment enrollmentID:(id)d topic:(id)self0 pushMagic:(id)self1 rmAccountID:(id)self2 messageType:(id)self3 requestDict:(id)self4 channelType:(unint64_t)self5 isCheckout:(BOOL)self6 isShortTransaction:(BOOL)self7 completionHandler:(id)self8
 {
-  v39 = a7;
-  v40 = a8;
-  v38 = a6;
+  messageCopy = message;
+  enrollmentCopy = enrollment;
+  requiredCopy = required;
   v50 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v42 = a5;
-  v41 = a12;
-  v20 = a13;
-  v21 = a18;
-  v22 = a14;
-  v23 = a11;
-  v24 = a10;
-  v25 = a9;
+  lCopy = l;
+  refsCopy = refs;
+  iDCopy = iD;
+  typeCopy = type;
+  handlerCopy = handler;
+  dictCopy = dict;
+  magicCopy = magic;
+  topicCopy = topic;
+  dCopy = d;
   v26 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v49 = v20;
+    v49 = typeCopy;
     _os_log_impl(&dword_22E997000, v26, OS_LOG_TYPE_DEFAULT, "Running CheckIn Request to MDM service with MessageType: %{public}@", buf, 0xCu);
   }
 
   v47 = 0;
-  v27 = [a1 _requestDataWithRequestDict:v22 enrollmentID:v25 topic:v24 pushMagic:v23 isUserEnrollment:v40 messageType:v20 channelType:a15 error:&v47];
+  v27 = [self _requestDataWithRequestDict:dictCopy enrollmentID:dCopy topic:topicCopy pushMagic:magicCopy isUserEnrollment:enrollmentCopy messageType:typeCopy channelType:channelType error:&v47];
 
   v28 = v47;
   if (v27)
   {
-    v30 = v41;
-    v29 = v42;
-    BYTE2(v36) = a17;
-    BYTE1(v36) = a16;
-    LOBYTE(v36) = !a16;
-    v31 = v43;
-    v32 = [MDMHTTPTransaction initWithURL:"initWithURL:data:identity:pinnedCertificates:pinningRevocationCheckRequired:signMessage:isCheckin:isCheckout:isShortTransaction:rmAccountID:" data:v43 identity:v27 pinnedCertificates:a4 pinningRevocationCheckRequired:v42 signMessage:v38 isCheckin:v39 isCheckout:v36 isShortTransaction:v41 rmAccountID:?];
+    v30 = iDCopy;
+    v29 = refsCopy;
+    BYTE2(v36) = transaction;
+    BYTE1(v36) = checkout;
+    LOBYTE(v36) = !checkout;
+    v31 = lCopy;
+    v32 = [MDMHTTPTransaction initWithURL:"initWithURL:data:identity:pinnedCertificates:pinningRevocationCheckRequired:signMessage:isCheckin:isCheckout:isShortTransaction:rmAccountID:" data:lCopy identity:v27 pinnedCertificates:identity pinningRevocationCheckRequired:refsCopy signMessage:requiredCopy isCheckin:messageCopy isCheckout:v36 isShortTransaction:iDCopy rmAccountID:?];
     if ([MEMORY[0x277D03500] shouldSimulateMDMCommunication])
     {
       v33 = +[(DMCHTTPTransaction *)MDMHTTPTransaction];
@@ -170,17 +170,17 @@ LABEL_17:
     v44[2] = __261__MDMCheckInRequest__checkInRequestAtURL_identity_pinnedSecCertificateRefs_pinningRevocationCheckRequired_signMessage_isUserEnrollment_enrollmentID_topic_pushMagic_rmAccountID_messageType_requestDict_channelType_isCheckout_isShortTransaction_completionHandler___block_invoke;
     v44[3] = &unk_278856D40;
     v45 = v32;
-    v46 = v21;
+    v46 = handlerCopy;
     v34 = v32;
     [(DMCHTTPTransaction *)v34 performCompletionBlock:v44];
   }
 
   else
   {
-    (*(v21 + 2))(v21, 0, 0, v28);
-    v29 = v42;
-    v31 = v43;
-    v30 = v41;
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v28);
+    v29 = refsCopy;
+    v31 = lCopy;
+    v30 = iDCopy;
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -266,25 +266,25 @@ LABEL_15:
   v11[2] = *MEMORY[0x277D85DE8];
   DMCLKLogoutSupportClass();
   v2 = objc_opt_new();
-  v3 = [v2 isCurrentUserAnonymous];
+  isCurrentUserAnonymous = [v2 isCurrentUserAnonymous];
 
-  if (v3)
+  if (isCurrentUserAnonymous)
   {
-    v4 = @"Temporary Session";
+    username = @"Temporary Session";
   }
 
   else
   {
-    v5 = [MEMORY[0x277D77BF8] sharedManager];
-    v6 = [v5 currentUser];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentUser = [mEMORY[0x277D77BF8] currentUser];
 
-    v4 = [v6 username];
+    username = [currentUser username];
   }
 
   v10[0] = @"UserID";
   v10[1] = @"UserShortName";
   v11[0] = @"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
-  v11[1] = v4;
+  v11[1] = username;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -292,66 +292,66 @@ LABEL_15:
   return v7;
 }
 
-+ (id)_requestDataWithRequestDict:(id)a3 enrollmentID:(id)a4 topic:(id)a5 pushMagic:(id)a6 isUserEnrollment:(BOOL)a7 messageType:(id)a8 channelType:(unint64_t)a9 error:(id *)a10
++ (id)_requestDataWithRequestDict:(id)dict enrollmentID:(id)d topic:(id)topic pushMagic:(id)magic isUserEnrollment:(BOOL)enrollment messageType:(id)type channelType:(unint64_t)channelType error:(id *)self0
 {
-  v11 = a7;
-  v16 = a9;
-  v17 = a10;
+  enrollmentCopy = enrollment;
+  channelTypeCopy2 = channelType;
+  errorCopy2 = error;
   v39[2] = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  v23 = v22;
-  if (v11)
+  dictCopy = dict;
+  dCopy = d;
+  topicCopy = topic;
+  magicCopy = magic;
+  typeCopy = type;
+  v23 = typeCopy;
+  if (enrollmentCopy)
   {
     v38[0] = @"MessageType";
     v38[1] = @"EnrollmentID";
-    v39[0] = v22;
-    v39[1] = v19;
-    v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
-    v25 = [v24 mutableCopy];
+    v39[0] = typeCopy;
+    v39[1] = dCopy;
+    deviceUDID = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
+    v25 = [deviceUDID mutableCopy];
   }
 
   else
   {
     v36[0] = @"MessageType";
     v36[1] = @"UDID";
-    v37[0] = v22;
-    v24 = [MEMORY[0x277D03530] deviceUDID];
-    v37[1] = v24;
+    v37[0] = typeCopy;
+    deviceUDID = [MEMORY[0x277D03530] deviceUDID];
+    v37[1] = deviceUDID;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
     v25 = [v26 mutableCopy];
 
-    v17 = a10;
-    v16 = a9;
+    errorCopy2 = error;
+    channelTypeCopy2 = channelType;
   }
 
-  [v25 setObject:v20 forKeyedSubscript:@"Topic"];
-  [v25 setObject:v21 forKeyedSubscript:@"PushMagic"];
-  if (v18)
+  [v25 setObject:topicCopy forKeyedSubscript:@"Topic"];
+  [v25 setObject:magicCopy forKeyedSubscript:@"PushMagic"];
+  if (dictCopy)
   {
-    [v25 addEntriesFromDictionary:v18];
+    [v25 addEntriesFromDictionary:dictCopy];
   }
 
-  if (v16 == 1)
+  if (channelTypeCopy2 == 1)
   {
-    v27 = [a1 _userFieldsForRequest];
-    [v25 addEntriesFromDictionary:v27];
+    _userFieldsForRequest = [self _userFieldsForRequest];
+    [v25 addEntriesFromDictionary:_userFieldsForRequest];
   }
 
   v28 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
     v29 = v28;
-    v30 = [v25 allKeys];
+    allKeys = [v25 allKeys];
     *buf = 138543362;
-    v35 = v30;
+    v35 = allKeys;
     _os_log_impl(&dword_22E997000, v29, OS_LOG_TYPE_DEBUG, "MDMCheckInRequest: Creating request data with dictionary with keys: %{public}@", buf, 0xCu);
   }
 
-  v31 = [MEMORY[0x277CCAC58] dataWithPropertyList:v25 format:100 options:0 error:v17];
+  v31 = [MEMORY[0x277CCAC58] dataWithPropertyList:v25 format:100 options:0 error:errorCopy2];
 
   v32 = *MEMORY[0x277D85DE8];
 

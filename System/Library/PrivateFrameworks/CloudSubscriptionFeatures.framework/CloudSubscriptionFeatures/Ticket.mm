@@ -2,14 +2,14 @@
 - (NSString)description;
 - (NSString)ticket;
 - (_TtC25CloudSubscriptionFeatures6Ticket)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Ticket
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DF50948C();
 
   v3 = sub_1DF564914();
@@ -35,11 +35,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DF509C70(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1DF509C70(coderCopy);
 }
 
 - (_TtC25CloudSubscriptionFeatures6Ticket)init

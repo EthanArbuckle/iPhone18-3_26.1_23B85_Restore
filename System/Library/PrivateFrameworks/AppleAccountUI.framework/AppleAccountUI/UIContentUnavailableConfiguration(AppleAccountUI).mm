@@ -7,36 +7,36 @@
 
 + (id)signInNotAvailable
 {
-  v2 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-  v3 = [a1 _appleIDImage];
-  [v2 setImage:v3];
+  emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+  _appleIDImage = [self _appleIDImage];
+  [emptyConfiguration setImage:_appleIDImage];
 
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
   v5 = [v4 localizedStringForKey:@"SIGN_IN_GUEST_MODE_RESTRICTED" value:&stru_1F447F790 table:@"Localizable"];
-  [v2 setText:v5];
+  [emptyConfiguration setText:v5];
 
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
   v7 = [v6 localizedStringForKey:@"SIGN_IN_GUEST_MODE_SECONDARY_TEXT" value:&stru_1F447F790 table:@"Localizable"];
-  [v2 setSecondaryText:v7];
+  [emptyConfiguration setSecondaryText:v7];
 
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  v9 = [v2 textProperties];
-  [v9 setColor:v8];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textProperties = [emptyConfiguration textProperties];
+  [textProperties setColor:labelColor];
 
-  [v2 setAlignment:0];
+  [emptyConfiguration setAlignment:0];
 
-  return v2;
+  return emptyConfiguration;
 }
 
 + (id)_appleIDImage
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v0 = [MEMORY[0x1E69DC888] whiteColor];
-  v1 = [MEMORY[0x1E69DC888] labelColor];
-  v2 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:v0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v2 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:whiteColor];
   v3 = MEMORY[0x1E69DCAD8];
-  v10[0] = v0;
-  v10[1] = v1;
+  v10[0] = whiteColor;
+  v10[1] = labelColor;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v5 = [v3 configurationWithPaletteColors:v4];
   v6 = [v2 configurationByApplyingConfiguration:v5];

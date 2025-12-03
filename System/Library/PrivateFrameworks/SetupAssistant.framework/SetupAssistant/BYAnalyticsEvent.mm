@@ -17,9 +17,9 @@
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(BYAnalyticsEvent *)self name];
-  v6 = [(BYAnalyticsEvent *)self payload];
-  v7 = [v4 stringWithFormat:@"%@ %@ (%@)", v5, v6, v3];
+  name = [(BYAnalyticsEvent *)self name];
+  payload = [(BYAnalyticsEvent *)self payload];
+  v7 = [v4 stringWithFormat:@"%@ %@ (%@)", name, payload, v3];
 
   return v7;
 }

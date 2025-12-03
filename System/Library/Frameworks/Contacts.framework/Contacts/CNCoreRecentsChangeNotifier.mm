@@ -1,6 +1,6 @@
 @interface CNCoreRecentsChangeNotifier
-+ (id)acceptedIntroductionsNotifierWithBlock:(id)a3;
-- (CNCoreRecentsChangeNotifier)initWithNotification:(__CFString *)a3 block:(id)a4;
++ (id)acceptedIntroductionsNotifierWithBlock:(id)block;
+- (CNCoreRecentsChangeNotifier)initWithNotification:(__CFString *)notification block:(id)block;
 - (void)_notifyObserver;
 - (void)dealloc;
 - (void)startObserving;
@@ -12,14 +12,14 @@
 - (void)startObserving
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v4 = [(CNCoreRecentsChangeNotifier *)self notification];
+  notification = [(CNCoreRecentsChangeNotifier *)self notification];
 
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, __notificationHandler, v4, 0, 1026);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, __notificationHandler, notification, 0, 1026);
 }
 
-+ (id)acceptedIntroductionsNotifierWithBlock:(id)a3
++ (id)acceptedIntroductionsNotifierWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [CNCoreRecentsChangeNotifier alloc];
   v10 = 0;
   v11 = &v10;
@@ -45,22 +45,22 @@
     _Unwind_Resume(MDItemUniqueIdentifier_cold_1);
   }
 
-  v6 = [(CNCoreRecentsChangeNotifier *)v4 initWithNotification:*v5 block:v3];
+  v6 = [(CNCoreRecentsChangeNotifier *)v4 initWithNotification:*v5 block:blockCopy];
 
   return v6;
 }
 
-- (CNCoreRecentsChangeNotifier)initWithNotification:(__CFString *)a3 block:(id)a4
+- (CNCoreRecentsChangeNotifier)initWithNotification:(__CFString *)notification block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = CNCoreRecentsChangeNotifier;
   v7 = [(CNCoreRecentsChangeNotifier *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_notification = a3;
-    v9 = [v6 copy];
+    v7->_notification = notification;
+    v9 = [blockCopy copy];
     notifyBlock = v8->_notifyBlock;
     v8->_notifyBlock = v9;
   }
@@ -71,15 +71,15 @@
 - (void)stopObserving
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v4 = [(CNCoreRecentsChangeNotifier *)self notification];
+  notification = [(CNCoreRecentsChangeNotifier *)self notification];
 
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v4, 0);
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, notification, 0);
 }
 
 - (void)_notifyObserver
 {
-  v2 = [(CNCoreRecentsChangeNotifier *)self notifyBlock];
-  v2[2]();
+  notifyBlock = [(CNCoreRecentsChangeNotifier *)self notifyBlock];
+  notifyBlock[2]();
 }
 
 - (void)dealloc

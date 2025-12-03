@@ -1,61 +1,61 @@
 @interface GKGame
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
 + (BOOL)isFirstParty;
 + (BOOL)isGameCenter;
-+ (BOOL)isNewsApp:(id)a3;
++ (BOOL)isNewsApp:(id)app;
 + (BOOL)isPreferences;
 + (id)createNonStaticCurrentGame;
 + (id)currentGame;
-+ (id)currentGameIncludingGameCenter:(BOOL)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (void)loadGamesWithBundleIDs:(id)a3 withCompletionHandler:(id)a4;
-+ (void)setCurrentGameFromInternal:(id)a3 serverEnvironment:(int64_t)a4;
-+ (void)setTestGameWith:(id)a3 protocolVersions:(id)a4 andCompletionHandler:(id)a5;
-+ (void)updateGames:(id)a3 withCompletionHandler:(id)a4;
++ (id)currentGameIncludingGameCenter:(BOOL)center;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (void)loadGamesWithBundleIDs:(id)ds withCompletionHandler:(id)handler;
++ (void)setCurrentGameFromInternal:(id)internal serverEnvironment:(int64_t)environment;
++ (void)setTestGameWith:(id)with protocolVersions:(id)versions andCompletionHandler:(id)handler;
++ (void)updateGames:(id)games withCompletionHandler:(id)handler;
 - (BOOL)isAppStore;
 - (BOOL)isContacts;
 - (BOOL)isDaemon;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGameCenter;
 - (BOOL)isGameCenterHostingContainer;
 - (BOOL)isGameControllerDaemon;
 - (BOOL)isInternalTestApp;
 - (BOOL)isNewsApp;
 - (BOOL)isSpringBoard;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (GKGame)init;
-- (GKGame)initWithCoder:(id)a3;
-- (GKGame)initWithInternalRepresentation:(id)a3;
+- (GKGame)initWithCoder:(id)coder;
+- (GKGame)initWithInternalRepresentation:(id)representation;
 - (GKGameDescriptor)gameDescriptor;
 - (GKGameInfo)gameInfo;
 - (GKUtilityService)utilityService;
 - (NSDictionary)gameDescriptorDictionary;
 - (NSURL)storeURL;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getGameMatchesForAchievement:(id)a3 handler:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getGameMatchesForAchievement:(id)achievement handler:(id)handler;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKGame
 
 - (NSURL)storeURL
 {
-  v2 = [(GKGame *)self internal];
-  v3 = [v2 storeURL];
+  internal = [(GKGame *)self internal];
+  storeURL = [internal storeURL];
 
-  return v3;
+  return storeURL;
 }
 
 - (GKUtilityService)utilityService
 {
   v2 = +[GKDaemonProxy daemonProxy];
-  v3 = [v2 utilityService];
+  utilityService = [v2 utilityService];
 
-  return v3;
+  return utilityService;
 }
 
 + (BOOL)isPreferences
@@ -106,15 +106,15 @@ void __22__GKGame_isGameCenter__block_invoke()
   isGameCenter_sGameCenter = [v0 isGameCenter];
 }
 
-+ (BOOL)isNewsApp:(id)a3
++ (BOOL)isNewsApp:(id)app
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"com.apple.news";
   v8[1] = @"com.apple.news.gamecentertest";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  appCopy = app;
   v5 = [v3 arrayWithObjects:v8 count:2];
-  LOBYTE(v3) = [v5 containsObject:v4];
+  LOBYTE(v3) = [v5 containsObject:appCopy];
 
   v6 = *MEMORY[0x277D85DE8];
   return v3;
@@ -122,50 +122,50 @@ void __22__GKGame_isGameCenter__block_invoke()
 
 - (BOOL)isSpringBoard
 {
-  v2 = [(GKGame *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.springboard"];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
   return v3;
 }
 
 - (BOOL)isGameControllerDaemon
 {
-  v2 = [(GKGame *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.GameController.gamecontrollerd"];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.GameController.gamecontrollerd"];
 
   return v3;
 }
 
 - (BOOL)isDaemon
 {
-  v2 = [(GKGame *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.gamed"];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.gamed"];
 
   return v3;
 }
 
 - (BOOL)isGameCenter
 {
-  v2 = [(GKGame *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.gamecenter"];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.gamecenter"];
 
   return v3;
 }
 
 - (BOOL)isAppStore
 {
-  v3 = [(GKGame *)self bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.AppStore"];
-  v5 = [(GKGame *)self bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.TVAppStore"];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.AppStore"];
+  bundleIdentifier2 = [(GKGame *)self bundleIdentifier];
+  v6 = [bundleIdentifier2 isEqualToString:@"com.apple.TVAppStore"];
 
   return v4 | v6;
 }
 
 - (BOOL)isGameCenterHostingContainer
 {
-  v2 = [(GKGame *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.GameCenterUI.GameCenterHostingContainer"];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.GameCenterUI.GameCenterHostingContainer"];
 
   return v3;
 }
@@ -173,8 +173,8 @@ void __22__GKGame_isGameCenter__block_invoke()
 - (BOOL)isContacts
 {
   v2 = MEMORY[0x277CCA8D8];
-  v3 = [(GKGame *)self bundleIdentifier];
-  LOBYTE(v2) = [v2 _gkBundleIdentifierIsRelatedToContactsUI:v3];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  LOBYTE(v2) = [v2 _gkBundleIdentifierIsRelatedToContactsUI:bundleIdentifier];
 
   return v2;
 }
@@ -187,8 +187,8 @@ void __22__GKGame_isGameCenter__block_invoke()
   }
 
   v3 = isInternalTestApp_sInternalTestAppIdentifiers;
-  v4 = [(GKGame *)self bundleIdentifier];
-  LOBYTE(v3) = [v3 containsObject:v4];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  LOBYTE(v3) = [v3 containsObject:bundleIdentifier];
 
   return v3;
 }
@@ -210,8 +210,8 @@ void __27__GKGame_isInternalTestApp__block_invoke()
 
 - (BOOL)isNewsApp
 {
-  v2 = [(GKGame *)self bundleIdentifier];
-  v3 = [GKGame isNewsApp:v2];
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  v3 = [GKGame isNewsApp:bundleIdentifier];
 
   return v3;
 }
@@ -222,7 +222,7 @@ void __27__GKGame_isInternalTestApp__block_invoke()
   block[1] = 3221225472;
   block[2] = __21__GKGame_currentGame__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentGame_sDispatchOnceToken != -1)
   {
     dispatch_once(&currentGame_sDispatchOnceToken, block);
@@ -242,19 +242,19 @@ uint64_t __21__GKGame_currentGame__block_invoke(uint64_t a1)
 
 + (id)createNonStaticCurrentGame
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
   v3 = +[(GKInternalRepresentation *)GKGameInternal];
-  v4 = [v2 bundleIdentifier];
-  [v3 setBundleIdentifier:v4];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v3 setBundleIdentifier:bundleIdentifier];
 
-  v5 = [v2 _gkBundleVersion];
-  [v3 setBundleVersion:v5];
+  _gkBundleVersion = [mainBundle _gkBundleVersion];
+  [v3 setBundleVersion:_gkBundleVersion];
 
-  v6 = [v2 _gkBundleShortVersion];
-  [v3 setShortBundleVersion:v6];
+  _gkBundleShortVersion = [mainBundle _gkBundleShortVersion];
+  [v3 setShortBundleVersion:_gkBundleShortVersion];
 
-  v7 = [v2 _gkLocalizedName];
-  [v3 setName:v7];
+  _gkLocalizedName = [mainBundle _gkLocalizedName];
+  [v3 setName:_gkLocalizedName];
 
   [v3 setPlatform:{+[GKGameDescriptor currentPlatform](GKGameDescriptor, "currentPlatform")}];
   v8 = [[GKGame alloc] initWithInternalRepresentation:v3];
@@ -262,14 +262,14 @@ uint64_t __21__GKGame_currentGame__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (id)currentGameIncludingGameCenter:(BOOL)a3
++ (id)currentGameIncludingGameCenter:(BOOL)center
 {
   if (currentGameIncludingGameCenter__sDispatchOnceToken != -1)
   {
     +[GKGame currentGameIncludingGameCenter:];
   }
 
-  if (currentGameIncludingGameCenter__isGameCenter == 1 && !a3)
+  if (currentGameIncludingGameCenter__isGameCenter == 1 && !center)
   {
     v4 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -314,16 +314,16 @@ void __41__GKGame_currentGameIncludingGameCenter___block_invoke()
   currentGameIncludingGameCenter__sCurrentGame = v6;
 }
 
-+ (void)setCurrentGameFromInternal:(id)a3 serverEnvironment:(int64_t)a4
++ (void)setCurrentGameFromInternal:(id)internal serverEnvironment:(int64_t)environment
 {
-  v6 = a3;
-  v7 = [v6 bundleIdentifier];
+  internalCopy = internal;
+  bundleIdentifier = [internalCopy bundleIdentifier];
 
-  if (v7)
+  if (bundleIdentifier)
   {
-    v8 = [a1 currentGame];
-    [v8 setEnvironment:a4];
-    [v8 setInternal:v6];
+    currentGame = [self currentGame];
+    [currentGame setEnvironment:environment];
+    [currentGame setInternal:internalCopy];
   }
 
   else
@@ -337,17 +337,17 @@ void __41__GKGame_currentGameIncludingGameCenter___block_invoke()
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [GKGame setCurrentGameFromInternal:v6 serverEnvironment:v9];
+      [GKGame setCurrentGameFromInternal:internalCopy serverEnvironment:v9];
     }
   }
 }
 
-- (GKGame)initWithInternalRepresentation:(id)a3
+- (GKGame)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
-    v4 = +[(GKInternalRepresentation *)GKGameInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKGameInternal];
   }
 
   v8.receiver = self;
@@ -356,7 +356,7 @@ void __41__GKGame_currentGameIncludingGameCenter___block_invoke()
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_internal, v4);
+    objc_storeStrong(&v5->_internal, representationCopy);
   }
 
   return v6;
@@ -370,48 +370,48 @@ void __41__GKGame_currentGameIncludingGameCenter___block_invoke()
   return v4;
 }
 
-- (GKGame)initWithCoder:(id)a3
+- (GKGame)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
   v6 = [(GKGame *)self initWithInternalRepresentation:v5];
   if (v6)
   {
-    v6->_environment = [v4 decodeIntegerForKey:@"environment"];
+    v6->_environment = [coderCopy decodeIntegerForKey:@"environment"];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(GKGame *)self internal];
-  [v5 encodeObject:v4 forKey:@"internal"];
+  coderCopy = coder;
+  internal = [(GKGame *)self internal];
+  [coderCopy encodeObject:internal forKey:@"internal"];
 
-  [v5 encodeInteger:-[GKGame environment](self forKey:{"environment"), @"environment"}];
+  [coderCopy encodeInteger:-[GKGame environment](self forKey:{"environment"), @"environment"}];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(GKGame *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKGame *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKGame *)self internal];
-    v7 = [v5 internal];
+    v5 = equalCopy;
+    internal = [(GKGame *)self internal];
+    internal2 = [v5 internal];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [internal isEqual:internal2];
   }
 
   else
@@ -427,21 +427,21 @@ void __41__GKGame_currentGameIncludingGameCenter___block_invoke()
   v13.receiver = self;
   v13.super_class = GKGame;
   v3 = [(GKGame *)&v13 description];
-  v4 = [(GKGame *)self bundleIdentifier];
-  v5 = [(GKGame *)self adamID];
-  v6 = [(GKGame *)self shortBundleVersion];
-  v7 = [(GKGame *)self bundleVersion];
-  v8 = [(GKGame *)self externalVersion];
-  v9 = [(GKGame *)self name];
-  if (v9)
+  bundleIdentifier = [(GKGame *)self bundleIdentifier];
+  adamID = [(GKGame *)self adamID];
+  shortBundleVersion = [(GKGame *)self shortBundleVersion];
+  bundleVersion = [(GKGame *)self bundleVersion];
+  externalVersion = [(GKGame *)self externalVersion];
+  name = [(GKGame *)self name];
+  if (name)
   {
-    v10 = [(GKGame *)self name];
-    v11 = [v3 stringByAppendingFormat:@"bundleID:%@ adamID:%@ shortBundleVersion:%@ bundleVersion:%@ externalVersion:%@ (%@)", v4, v5, v6, v7, v8, v10];
+    name2 = [(GKGame *)self name];
+    v11 = [v3 stringByAppendingFormat:@"bundleID:%@ adamID:%@ shortBundleVersion:%@ bundleVersion:%@ externalVersion:%@ (%@)", bundleIdentifier, adamID, shortBundleVersion, bundleVersion, externalVersion, name2];
   }
 
   else
   {
-    v11 = [v3 stringByAppendingFormat:@"bundleID:%@ adamID:%@ shortBundleVersion:%@ bundleVersion:%@ externalVersion:%@ (%@)", v4, v5, v6, v7, v8, @"<no metadata>"];
+    v11 = [v3 stringByAppendingFormat:@"bundleID:%@ adamID:%@ shortBundleVersion:%@ bundleVersion:%@ externalVersion:%@ (%@)", bundleIdentifier, adamID, shortBundleVersion, bundleVersion, externalVersion, @"<no metadata>"];
   }
 
   return v11;
@@ -449,72 +449,72 @@ void __41__GKGame_currentGameIncludingGameCenter___block_invoke()
 
 - (GKGameDescriptor)gameDescriptor
 {
-  v2 = [(GKGame *)self internal];
-  v3 = [v2 gameDescriptor];
+  internal = [(GKGame *)self internal];
+  gameDescriptor = [internal gameDescriptor];
 
-  return v3;
+  return gameDescriptor;
 }
 
 - (NSDictionary)gameDescriptorDictionary
 {
-  v2 = [(GKGame *)self internal];
-  v3 = [v2 serverRepresentation];
+  internal = [(GKGame *)self internal];
+  serverRepresentation = [internal serverRepresentation];
 
-  return v3;
+  return serverRepresentation;
 }
 
 - (GKGameInfo)gameInfo
 {
-  v5 = [(GKGame *)self internal];
-  retstr->var0 = [v5 supportsLeaderboards];
-  retstr->var1 = [v5 supportsLeaderboardSets];
-  retstr->var2 = [v5 supportsAchievements];
-  retstr->var3 = [v5 supportsMultiplayer];
-  retstr->var5 = [v5 isArcadeGame];
-  retstr->var6 = [v5 supportsChallenges];
-  retstr->var7 = [v5 hasAggregateLeaderboard];
-  retstr->var8 = [v5 numberOfCategories];
-  retstr->var9 = [v5 numberOfLeaderboardSets];
-  retstr->var10 = [v5 numberOfAchievements];
-  retstr->var11 = [v5 maxAchievementPoints];
-  retstr->var4 = [v5 supportsTurnBasedMultiplayer];
+  internal = [(GKGame *)self internal];
+  retstr->var0 = [internal supportsLeaderboards];
+  retstr->var1 = [internal supportsLeaderboardSets];
+  retstr->var2 = [internal supportsAchievements];
+  retstr->var3 = [internal supportsMultiplayer];
+  retstr->var5 = [internal isArcadeGame];
+  retstr->var6 = [internal supportsChallenges];
+  retstr->var7 = [internal hasAggregateLeaderboard];
+  retstr->var8 = [internal numberOfCategories];
+  retstr->var9 = [internal numberOfLeaderboardSets];
+  retstr->var10 = [internal numberOfAchievements];
+  retstr->var11 = [internal maxAchievementPoints];
+  retstr->var4 = [internal supportsTurnBasedMultiplayer];
 
   return result;
 }
 
-+ (void)loadGamesWithBundleIDs:(id)a3 withCompletionHandler:(id)a4
++ (void)loadGamesWithBundleIDs:(id)ds withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKGame.m", 310, "+[GKGame loadGamesWithBundleIDs:withCompletionHandler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
-  v9 = [v5 count];
+  v9 = [dsCopy count];
   if (v9 >= 1)
   {
     v10 = v9;
-    v11 = [MEMORY[0x277CBEB98] setWithArray:v5];
-    v12 = [v11 allObjects];
+    v11 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
+    allObjects = [v11 allObjects];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __55__GKGame_loadGamesWithBundleIDs_withCompletionHandler___block_invoke;
     v17[3] = &unk_2785DDBE8;
-    v18 = v12;
+    v18 = allObjects;
     v19 = v8;
     v21 = v10;
-    v20 = v5;
-    v13 = v12;
+    v20 = dsCopy;
+    v13 = allObjects;
     [v19 perform:v17];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __55__GKGame_loadGamesWithBundleIDs_withCompletionHandler___block_invoke_3;
     v14[3] = &unk_2785DDC10;
-    v16 = v6;
+    v16 = handlerCopy;
     v15 = v8;
     [v15 notifyOnMainQueueWithBlock:v14];
   }
@@ -616,39 +616,39 @@ void __55__GKGame_loadGamesWithBundleIDs_withCompletionHandler___block_invoke_3(
   (*(v2 + 16))(v2, v4, v5);
 }
 
-+ (void)updateGames:(id)a3 withCompletionHandler:(id)a4
++ (void)updateGames:(id)games withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  gamesCopy = games;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKGame.m", 351, "+[GKGame updateGames:withCompletionHandler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
-  v9 = [v5 count];
+  v9 = [gamesCopy count];
   if (v9 >= 1)
   {
     v10 = v9;
-    v11 = [v5 _gkDistinctValuesForKeyPath:@"bundleIdentifier"];
-    v12 = [v11 allObjects];
+    v11 = [gamesCopy _gkDistinctValuesForKeyPath:@"bundleIdentifier"];
+    allObjects = [v11 allObjects];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __44__GKGame_updateGames_withCompletionHandler___block_invoke;
     v17[3] = &unk_2785DDBE8;
-    v18 = v12;
+    v18 = allObjects;
     v21 = v10;
-    v19 = v5;
+    v19 = gamesCopy;
     v20 = v8;
-    v13 = v12;
+    v13 = allObjects;
     [v20 perform:v17];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __44__GKGame_updateGames_withCompletionHandler___block_invoke_3;
     v14[3] = &unk_2785DDC10;
-    v16 = v6;
+    v16 = handlerCopy;
     v15 = v8;
     [v15 notifyOnMainQueueWithBlock:v14];
   }
@@ -767,9 +767,9 @@ void __44__GKGame_updateGames_withCompletionHandler___block_invoke_3(uint64_t a1
   (*(v1 + 16))(v1, v2);
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKGame;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -780,7 +780,7 @@ void __44__GKGame_updateGames_withCompletionHandler___block_invoke_3(uint64_t a1
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -788,7 +788,7 @@ void __44__GKGame_updateGames_withCompletionHandler___block_invoke_3(uint64_t a1
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKGame;
@@ -801,14 +801,14 @@ void __44__GKGame_updateGames_withCompletionHandler___block_invoke_3(uint64_t a1
 
   else
   {
-    v8 = [(GKGame *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKGame *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKGame;
@@ -819,18 +819,18 @@ void __44__GKGame_updateGames_withCompletionHandler___block_invoke_3(uint64_t a1
 
   else
   {
-    v6 = [(GKGame *)self forwardingTargetForSelector:a3];
+    v6 = [(GKGame *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -841,7 +841,7 @@ void __44__GKGame_updateGames_withCompletionHandler___block_invoke_3(uint64_t a1
       if (v4)
       {
 
-        LOBYTE(v4) = [GKGameInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKGameInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -854,38 +854,38 @@ void __44__GKGame_updateGames_withCompletionHandler___block_invoke_3(uint64_t a1
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKGame *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKGame *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKGame *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKGame *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
-- (void)getGameMatchesForAchievement:(id)a3 handler:(id)a4
+- (void)getGameMatchesForAchievement:(id)achievement handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  achievementCopy = achievement;
   v8 = +[GKDaemonProxy proxyForLocalPlayer];
-  v9 = [v8 gameStatService];
-  v10 = [(GKGame *)self gameDescriptor];
+  gameStatService = [v8 gameStatService];
+  gameDescriptor = [(GKGame *)self gameDescriptor];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__GKGame_GKEntitled__getGameMatchesForAchievement_handler___block_invoke;
   v12[3] = &unk_2785DDC38;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v9 getRecentMatchesForGameDescriptor:v10 achievementIdentifier:v7 handler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [gameStatService getRecentMatchesForGameDescriptor:gameDescriptor achievementIdentifier:achievementCopy handler:v12];
 }
 
 void __59__GKGame_GKEntitled__getGameMatchesForAchievement_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -947,28 +947,28 @@ void __59__GKGame_GKEntitled__getGameMatchesForAchievement_handler___block_invok
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setTestGameWith:(id)a3 protocolVersions:(id)a4 andCompletionHandler:(id)a5
++ (void)setTestGameWith:(id)with protocolVersions:(id)versions andCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  withCopy = with;
+  versionsCopy = versions;
+  handlerCopy = handler;
   v10 = +[GKGame currentGame];
-  v11 = [v10 internal];
+  internal = [v10 internal];
 
-  [v11 setBundleVersion:v7];
-  [v11 setShortBundleVersion:v7];
+  [internal setBundleVersion:withCopy];
+  [internal setShortBundleVersion:withCopy];
   v12 = +[GKDaemonProxy daemonProxy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __80__GKGame_GameKitPrivate__setTestGameWith_protocolVersions_andCompletionHandler___block_invoke;
   v16[3] = &unk_2785DDC60;
-  v17 = v7;
-  v18 = v8;
-  v19 = v9;
-  v13 = v9;
-  v14 = v8;
-  v15 = v7;
-  [v12 setTestGame:v11 protocolVersion:v14 reply:v16];
+  v17 = withCopy;
+  v18 = versionsCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = versionsCopy;
+  v15 = withCopy;
+  [v12 setTestGame:internal protocolVersion:v14 reply:v16];
 }
 
 void __80__GKGame_GameKitPrivate__setTestGameWith_protocolVersions_andCompletionHandler___block_invoke(uint64_t a1, void *a2)

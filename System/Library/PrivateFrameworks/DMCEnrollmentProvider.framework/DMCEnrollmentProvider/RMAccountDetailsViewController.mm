@@ -1,19 +1,19 @@
 @interface RMAccountDetailsViewController
 - (id)_specifiersForAccount;
-- (id)accountDescription:(id)a3;
-- (id)accountEmail:(id)a3;
+- (id)accountDescription:(id)description;
+- (id)accountEmail:(id)email;
 - (id)specifiers;
 - (void)_processUserInfoDictionary;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RMAccountDetailsViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RMAccountDetailsViewController;
-  [(RMAccountDetailsViewController *)&v4 viewWillAppear:a3];
+  [(RMAccountDetailsViewController *)&v4 viewWillAppear:appear];
   if (([(RMAccountDetailsViewController *)self isMovingToParentViewController]& 1) == 0)
   {
     [(RMAccountDetailsViewController *)self reloadSpecifiers];
@@ -27,9 +27,9 @@
   if (!v4)
   {
     [(RMAccountDetailsViewController *)self _processUserInfoDictionary];
-    v5 = [(RMAccountDetailsViewController *)self _specifiersForAccount];
+    _specifiersForAccount = [(RMAccountDetailsViewController *)self _specifiersForAccount];
     v6 = *(&self->super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.super.isa + v3) = _specifiersForAccount;
 
     v4 = *(&self->super.super.super.super.super.super.isa + v3);
   }
@@ -39,21 +39,21 @@
 
 - (void)_processUserInfoDictionary
 {
-  v3 = [(RMAccountDetailsViewController *)self account];
+  account = [(RMAccountDetailsViewController *)self account];
 
-  if (!v3)
+  if (!account)
   {
-    v9 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-    v4 = [v9 objectForKeyedSubscript:*MEMORY[0x277CE8550]];
+    userInfo = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+    v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE8550]];
     [(RMAccountDetailsViewController *)self setAccount:v4];
 
-    v5 = [(RMAccountDetailsViewController *)self account];
+    account2 = [(RMAccountDetailsViewController *)self account];
 
-    if (!v5)
+    if (!account2)
     {
-      v6 = [v9 objectForKeyedSubscript:*MEMORY[0x277CE8548]];
-      v7 = [(ACUIViewController *)self accountStore];
-      v8 = [v7 accountWithIdentifier:v6];
+      v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE8548]];
+      accountStore = [(ACUIViewController *)self accountStore];
+      v8 = [accountStore accountWithIdentifier:v6];
       [(RMAccountDetailsViewController *)self setAccount:v8];
     }
   }
@@ -72,35 +72,35 @@
   v9 = [v7 preferenceSpecifierNamed:v8 target:self set:0 get:sel_accountDescription_ detail:0 cell:4 edit:0];
 
   v10 = DMCLocalizedString();
-  v11 = [(RMAccountDetailsViewController *)self account];
-  v12 = [v11 dmc_enrollmentToken];
-  v13 = [RMDeviceIDCell specifierWithTitle:v10 value:v12];
+  account = [(RMAccountDetailsViewController *)self account];
+  dmc_enrollmentToken = [account dmc_enrollmentToken];
+  v13 = [RMDeviceIDCell specifierWithTitle:v10 value:dmc_enrollmentToken];
 
   v17[0] = v3;
   v17[1] = v6;
   v17[2] = v9;
-  v14 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  v17[3] = v14;
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  v17[3] = emptyGroupSpecifier;
   v17[4] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:5];
 
   return v15;
 }
 
-- (id)accountEmail:(id)a3
+- (id)accountEmail:(id)email
 {
-  v3 = [(RMAccountDetailsViewController *)self account];
-  v4 = [v3 username];
+  account = [(RMAccountDetailsViewController *)self account];
+  username = [account username];
 
-  return v4;
+  return username;
 }
 
-- (id)accountDescription:(id)a3
+- (id)accountDescription:(id)description
 {
-  v3 = [(RMAccountDetailsViewController *)self account];
-  v4 = [v3 accountDescription];
+  account = [(RMAccountDetailsViewController *)self account];
+  accountDescription = [account accountDescription];
 
-  return v4;
+  return accountDescription;
 }
 
 @end

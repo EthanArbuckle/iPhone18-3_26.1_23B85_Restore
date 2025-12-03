@@ -1,41 +1,41 @@
 @interface MCUIUserEnrollmentAccountSpecifierProvider
-- (void)_verifyDevicePasscodeWithPresentingViewController:(id)a3 completionHandler:(id)a4;
-- (void)didAcceptEnteredPIN:(id)a3;
+- (void)_verifyDevicePasscodeWithPresentingViewController:(id)controller completionHandler:(id)handler;
+- (void)didAcceptEnteredPIN:(id)n;
 - (void)didCancelEnteringPIN;
-- (void)preflightsAccountDeletion:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
+- (void)preflightsAccountDeletion:(id)deletion presentingViewController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation MCUIUserEnrollmentAccountSpecifierProvider
 
-- (void)preflightsAccountDeletion:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
+- (void)preflightsAccountDeletion:(id)deletion presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v12 mc_isUserEnrollmentAccount] && objc_msgSend(v12, "aa_isAccountClass:", *MEMORY[0x277CEC680]) && (objc_msgSend(MEMORY[0x277D262A0], "sharedConnection"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isPasscodeSet"), v10, (v11 & 1) != 0))
+  deletionCopy = deletion;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if ([deletionCopy mc_isUserEnrollmentAccount] && objc_msgSend(deletionCopy, "aa_isAccountClass:", *MEMORY[0x277CEC680]) && (objc_msgSend(MEMORY[0x277D262A0], "sharedConnection"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isPasscodeSet"), v10, (v11 & 1) != 0))
   {
-    [(MCUIUserEnrollmentAccountSpecifierProvider *)self _verifyDevicePasscodeWithPresentingViewController:v8 completionHandler:v9];
+    [(MCUIUserEnrollmentAccountSpecifierProvider *)self _verifyDevicePasscodeWithPresentingViewController:controllerCopy completionHandler:handlerCopy];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    v9[2](v9, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)_verifyDevicePasscodeWithPresentingViewController:(id)a3 completionHandler:(id)a4
+- (void)_verifyDevicePasscodeWithPresentingViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __114__MCUIUserEnrollmentAccountSpecifierProvider__verifyDevicePasscodeWithPresentingViewController_completionHandler___block_invoke;
   block[3] = &unk_279862178;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -92,14 +92,14 @@ uint64_t __114__MCUIUserEnrollmentAccountSpecifierProvider__verifyDevicePasscode
   return result;
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
-  v4 = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
+  devicePasscodeVerificationCompletionHandler = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
 
-  if (v4)
+  if (devicePasscodeVerificationCompletionHandler)
   {
-    v5 = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
-    v5[2](v5, 1);
+    devicePasscodeVerificationCompletionHandler2 = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
+    devicePasscodeVerificationCompletionHandler2[2](devicePasscodeVerificationCompletionHandler2, 1);
 
     [(MCUIUserEnrollmentAccountSpecifierProvider *)self setDevicePasscodeVerificationCompletionHandler:0];
   }
@@ -107,12 +107,12 @@ uint64_t __114__MCUIUserEnrollmentAccountSpecifierProvider__verifyDevicePasscode
 
 - (void)didCancelEnteringPIN
 {
-  v3 = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
+  devicePasscodeVerificationCompletionHandler = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
 
-  if (v3)
+  if (devicePasscodeVerificationCompletionHandler)
   {
-    v4 = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
-    v4[2](v4, 0);
+    devicePasscodeVerificationCompletionHandler2 = [(MCUIUserEnrollmentAccountSpecifierProvider *)self devicePasscodeVerificationCompletionHandler];
+    devicePasscodeVerificationCompletionHandler2[2](devicePasscodeVerificationCompletionHandler2, 0);
 
     [(MCUIUserEnrollmentAccountSpecifierProvider *)self setDevicePasscodeVerificationCompletionHandler:0];
   }

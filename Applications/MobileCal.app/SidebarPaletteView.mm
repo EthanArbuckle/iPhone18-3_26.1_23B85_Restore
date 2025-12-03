@@ -1,28 +1,28 @@
 @interface SidebarPaletteView
 - (BOOL)showsHeader;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SidebarPaletteView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SidebarPaletteView)initWithFrame:(CGRect)frame;
 - (void)cellTapped;
 - (void)layoutSubviews;
-- (void)setSegmentedControl:(id)a3;
-- (void)setShowIdentity:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)updateIdentity:(id)a3;
+- (void)setSegmentedControl:(id)control;
+- (void)setShowIdentity:(BOOL)identity;
+- (void)setTitle:(id)title;
+- (void)updateIdentity:(id)identity;
 @end
 
 @implementation SidebarPaletteView
 
-- (SidebarPaletteView)initWithFrame:(CGRect)a3
+- (SidebarPaletteView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SidebarPaletteView;
-  v3 = [(SidebarPaletteView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SidebarPaletteView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UINavigationBarAppearance);
-    v5 = [v4 largeTitleTextAttributes];
+    largeTitleTextAttributes = [v4 largeTitleTextAttributes];
     titleAttributes = v3->_titleAttributes;
-    v3->_titleAttributes = v5;
+    v3->_titleAttributes = largeTitleTextAttributes;
 
     v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     titleLabel = v3->_titleLabel;
@@ -36,8 +36,8 @@
 
 - (BOOL)showsHeader
 {
-  v2 = [(SidebarPaletteView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 0;
+  traitCollection = [(SidebarPaletteView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 0;
 
   return v3;
 }
@@ -147,10 +147,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(SidebarPaletteView *)self showsHeader])
   {
     if (self->_showIdentity)
@@ -187,12 +187,12 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_titleLabel setText:a3];
-  v4 = [(SidebarPaletteView *)self window];
-  v5 = [(SidebarPaletteView *)self traitCollection];
-  v6 = paletteTitleFont(v4, v5);
+  [(UILabel *)self->_titleLabel setText:title];
+  window = [(SidebarPaletteView *)self window];
+  traitCollection = [(SidebarPaletteView *)self traitCollection];
+  v6 = paletteTitleFont(window, traitCollection);
   [(UILabel *)self->_titleLabel setFont:v6];
 
   titleLabel = self->_titleLabel;
@@ -200,40 +200,40 @@
   [(UILabel *)titleLabel sizeToFit];
 }
 
-- (void)setSegmentedControl:(id)a3
+- (void)setSegmentedControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   segmentedControl = self->_segmentedControl;
-  if (segmentedControl != v4)
+  if (segmentedControl != controlCopy)
   {
-    v6 = v4;
+    v6 = controlCopy;
     if (segmentedControl)
     {
       segmentedControl = [(UISegmentedControl *)segmentedControl removeFromSuperview];
-      v4 = v6;
+      controlCopy = v6;
     }
 
-    self->_segmentedControl = v4;
-    if (v4)
+    self->_segmentedControl = controlCopy;
+    if (controlCopy)
     {
       segmentedControl = [(SidebarPaletteView *)self addSubview:v6];
-      v4 = v6;
+      controlCopy = v6;
     }
   }
 
-  _objc_release_x1(segmentedControl, v4);
+  _objc_release_x1(segmentedControl, controlCopy);
 }
 
-- (void)setShowIdentity:(BOOL)a3
+- (void)setShowIdentity:(BOOL)identity
 {
-  v3 = a3;
-  self->_showIdentity = a3;
+  identityCopy = identity;
+  self->_showIdentity = identity;
   if ([(SidebarPaletteView *)self showsHeader])
   {
-    if (v3)
+    if (identityCopy)
     {
-      v5 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
-      [(SidebarPaletteView *)self updateIdentity:v5];
+      sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+      [(SidebarPaletteView *)self updateIdentity:sourceForSelectedIdentity];
 
       titleLabel = self->_titleLabel;
 
@@ -250,12 +250,12 @@
   }
 }
 
-- (void)updateIdentity:(id)a3
+- (void)updateIdentity:(id)identity
 {
   identityCell = self->_identityCell;
-  v5 = a3;
+  identityCopy = identity;
   [(IdentitySwitcherCell *)identityCell removeFromSuperview];
-  v6 = [IdentitySwitcherCell cellForSource:v5 withModel:self->_model inTableView:0];
+  v6 = [IdentitySwitcherCell cellForSource:identityCopy withModel:self->_model inTableView:0];
 
   v7 = self->_identityCell;
   self->_identityCell = v6;
@@ -265,8 +265,8 @@
   v8 = +[UIColor tableCellGroupedBackgroundColor];
   [(IdentitySwitcherCell *)self->_identityCell setBackgroundColor:v8];
 
-  v9 = [(IdentitySwitcherCell *)self->_identityCell layer];
-  [v9 setCornerRadius:10.0];
+  layer = [(IdentitySwitcherCell *)self->_identityCell layer];
+  [layer setCornerRadius:10.0];
 
   v10 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"cellTapped"];
   [(IdentitySwitcherCell *)self->_identityCell addGestureRecognizer:v10];
@@ -275,8 +275,8 @@
 
 - (void)cellTapped
 {
-  v3 = [(SidebarPaletteView *)self delegate];
-  [v3 palette:self identitySwitcherTapped:self->_identityCell];
+  delegate = [(SidebarPaletteView *)self delegate];
+  [delegate palette:self identitySwitcherTapped:self->_identityCell];
 }
 
 @end

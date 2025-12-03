@@ -1,8 +1,8 @@
 @interface AVOutputDeviceDiscoverySessionAvailableOutputDevices
-+ (AVOutputDeviceDiscoverySessionAvailableOutputDevices)outputDeviceDiscoverySessionAvailableOutputDevicesWithAvailableFigEndpoints:(id)a3;
++ (AVOutputDeviceDiscoverySessionAvailableOutputDevices)outputDeviceDiscoverySessionAvailableOutputDevicesWithAvailableFigEndpoints:(id)endpoints;
 - (AVOutputDeviceDiscoverySessionAvailableOutputDevices)init;
-- (AVOutputDeviceDiscoverySessionAvailableOutputDevices)initWithOutputDeviceDiscoverySessionAvailableOutputDevicesImpl:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVOutputDeviceDiscoverySessionAvailableOutputDevices)initWithOutputDeviceDiscoverySessionAvailableOutputDevicesImpl:(id)impl;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)otherDevices;
 - (NSArray)recentlyUsedDevices;
 - (void)_loadOutputDevices;
@@ -109,9 +109,9 @@ uint64_t __74__AVOutputDeviceDiscoverySessionAvailableOutputDevices__loadOutputD
   return [v4 localizedStandardCompare:v5];
 }
 
-+ (AVOutputDeviceDiscoverySessionAvailableOutputDevices)outputDeviceDiscoverySessionAvailableOutputDevicesWithAvailableFigEndpoints:(id)a3
++ (AVOutputDeviceDiscoverySessionAvailableOutputDevices)outputDeviceDiscoverySessionAvailableOutputDevicesWithAvailableFigEndpoints:(id)endpoints
 {
-  v3 = [[AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl alloc] initWithAvailableFigEndpoints:a3];
+  v3 = [[AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl alloc] initWithAvailableFigEndpoints:endpoints];
   v4 = [[AVOutputDeviceDiscoverySessionAvailableOutputDevices alloc] initWithOutputDeviceDiscoverySessionAvailableOutputDevicesImpl:v3];
 
   return v4;
@@ -125,7 +125,7 @@ uint64_t __74__AVOutputDeviceDiscoverySessionAvailableOutputDevices__loadOutputD
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -133,16 +133,16 @@ uint64_t __74__AVOutputDeviceDiscoverySessionAvailableOutputDevices__loadOutputD
     return 0;
   }
 
-  v5 = -[NSArray isEqualToArray:](-[AVOutputDeviceDiscoverySessionAvailableOutputDevices recentlyUsedDevices](self, "recentlyUsedDevices"), "isEqualToArray:", [a3 recentlyUsedDevices]);
-  return v5 & -[NSArray isEqualToArray:](-[AVOutputDeviceDiscoverySessionAvailableOutputDevices otherDevices](self, "otherDevices"), "isEqualToArray:", [a3 otherDevices]);
+  v5 = -[NSArray isEqualToArray:](-[AVOutputDeviceDiscoverySessionAvailableOutputDevices recentlyUsedDevices](self, "recentlyUsedDevices"), "isEqualToArray:", [equal recentlyUsedDevices]);
+  return v5 & -[NSArray isEqualToArray:](-[AVOutputDeviceDiscoverySessionAvailableOutputDevices otherDevices](self, "otherDevices"), "isEqualToArray:", [equal otherDevices]);
 }
 
-- (AVOutputDeviceDiscoverySessionAvailableOutputDevices)initWithOutputDeviceDiscoverySessionAvailableOutputDevicesImpl:(id)a3
+- (AVOutputDeviceDiscoverySessionAvailableOutputDevices)initWithOutputDeviceDiscoverySessionAvailableOutputDevicesImpl:(id)impl
 {
   v8.receiver = self;
   v8.super_class = AVOutputDeviceDiscoverySessionAvailableOutputDevices;
   v4 = [(AVOutputDeviceDiscoverySessionAvailableOutputDevices *)&v8 init];
-  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceDiscoverySessionAvailableOutputDevicesInternal), (v4->_availableOutputDevices = v5) != 0) && (v4->_availableOutputDevices->impl = a3) != 0)
+  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceDiscoverySessionAvailableOutputDevicesInternal), (v4->_availableOutputDevices = v5) != 0) && (v4->_availableOutputDevices->impl = impl) != 0)
   {
     v6 = v4;
   }

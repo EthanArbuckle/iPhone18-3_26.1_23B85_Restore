@@ -1,20 +1,20 @@
 @interface BuddyCameraButtonViewControllerWrapper
 - (BuddyCameraButtonViewControllerDelegate)delegate;
-- (void)cameraButtonBuddyViewControllerDidFinish:(id)a3;
-- (void)createViewController:(id)a3;
+- (void)cameraButtonBuddyViewControllerDidFinish:(id)finish;
+- (void)createViewController:(id)controller;
 @end
 
 @implementation BuddyCameraButtonViewControllerWrapper
 
-- (void)createViewController:(id)a3
+- (void)createViewController:(id)controller
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v13 = objc_alloc_init(sub_1000F7718());
-  [v13 setDelegate:v15];
-  objc_initWeak(&from, v15);
+  [v13 setDelegate:selfCopy];
+  objc_initWeak(&from, selfCopy);
   v3 = v13;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -33,14 +33,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)cameraButtonBuddyViewControllerDidFinish:(id)a3
+- (void)cameraButtonBuddyViewControllerDidFinish:(id)finish
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyCameraButtonViewControllerWrapper *)v6 delegate];
-  [(BuddyCameraButtonViewControllerDelegate *)v3 cameraButtonViewControllerDidFinish:location[0], v3];
+  objc_storeStrong(location, finish);
+  delegate = [(BuddyCameraButtonViewControllerWrapper *)selfCopy delegate];
+  [(BuddyCameraButtonViewControllerDelegate *)delegate cameraButtonViewControllerDidFinish:location[0], delegate];
   objc_storeStrong(&v4, 0);
   objc_storeStrong(location, 0);
 }

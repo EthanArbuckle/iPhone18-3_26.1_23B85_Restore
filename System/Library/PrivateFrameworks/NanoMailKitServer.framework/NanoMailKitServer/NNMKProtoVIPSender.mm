@@ -1,15 +1,15 @@
 @interface NNMKProtoVIPSender
-+ (id)protoVIP:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoVIP:(id)p;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)vipSender;
 - (unint64_t)hash;
-- (void)addEmailAddresses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEmailAddresses:(id)addresses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoVIPSender
@@ -17,55 +17,55 @@
 - (id)vipSender
 {
   v3 = objc_alloc_init(NNMKVIPSender);
-  v4 = [(NNMKProtoVIPSender *)self name];
-  [(NNMKVIPSender *)v3 setName:v4];
+  name = [(NNMKProtoVIPSender *)self name];
+  [(NNMKVIPSender *)v3 setName:name];
 
-  v5 = [(NNMKProtoVIPSender *)self displayName];
-  [(NNMKVIPSender *)v3 setDisplayName:v5];
+  displayName = [(NNMKProtoVIPSender *)self displayName];
+  [(NNMKVIPSender *)v3 setDisplayName:displayName];
 
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(NNMKProtoVIPSender *)self emailAddresses];
-  v8 = [v6 setWithArray:v7];
+  emailAddresses = [(NNMKProtoVIPSender *)self emailAddresses];
+  v8 = [v6 setWithArray:emailAddresses];
   [(NNMKVIPSender *)v3 setEmailAddresses:v8];
 
   return v3;
 }
 
-+ (id)protoVIP:(id)a3
++ (id)protoVIP:(id)p
 {
-  v3 = a3;
+  pCopy = p;
   v4 = objc_alloc_init(NNMKProtoVIPSender);
-  v5 = [v3 name];
-  [(NNMKProtoVIPSender *)v4 setName:v5];
+  name = [pCopy name];
+  [(NNMKProtoVIPSender *)v4 setName:name];
 
-  v6 = [v3 displayName];
-  [(NNMKProtoVIPSender *)v4 setDisplayName:v6];
+  displayName = [pCopy displayName];
+  [(NNMKProtoVIPSender *)v4 setDisplayName:displayName];
 
-  v7 = [v3 emailAddresses];
+  emailAddresses = [pCopy emailAddresses];
 
-  v8 = [v7 allObjects];
-  v9 = [v8 mutableCopy];
+  allObjects = [emailAddresses allObjects];
+  v9 = [allObjects mutableCopy];
   [(NNMKProtoVIPSender *)v4 setEmailAddresses:v9];
 
   return v4;
 }
 
-- (void)addEmailAddresses:(id)a3
+- (void)addEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   emailAddresses = self->_emailAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!emailAddresses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_emailAddresses;
     self->_emailAddresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     emailAddresses = self->_emailAddresses;
   }
 
-  [(NSMutableArray *)emailAddresses addObject:v4];
+  [(NSMutableArray *)emailAddresses addObject:addressesCopy];
 }
 
 - (id)description
@@ -74,20 +74,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoVIPSender;
   v4 = [(NNMKProtoVIPSender *)&v8 description];
-  v5 = [(NNMKProtoVIPSender *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoVIPSender *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   displayName = self->_displayName;
@@ -105,10 +105,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -154,44 +154,44 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_name)
   {
-    [v8 setName:?];
+    [toCopy setName:?];
   }
 
   if (self->_displayName)
   {
-    [v8 setDisplayName:?];
+    [toCopy setDisplayName:?];
   }
 
   if ([(NNMKProtoVIPSender *)self emailAddressesCount])
   {
-    [v8 clearEmailAddresses];
-    v4 = [(NNMKProtoVIPSender *)self emailAddressesCount];
-    if (v4)
+    [toCopy clearEmailAddresses];
+    emailAddressesCount = [(NNMKProtoVIPSender *)self emailAddressesCount];
+    if (emailAddressesCount)
     {
-      v5 = v4;
+      v5 = emailAddressesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NNMKProtoVIPSender *)self emailAddressesAtIndex:i];
-        [v8 addEmailAddresses:v7];
+        [toCopy addEmailAddresses:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -215,7 +215,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addEmailAddresses:v15];
 
         ++v14;
@@ -232,13 +232,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | v4[3])) || -[NSString isEqual:](name, "isEqual:")) && ((displayName = self->_displayName, !(displayName | v4[1])) || -[NSString isEqual:](displayName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | equalCopy[3])) || -[NSString isEqual:](name, "isEqual:")) && ((displayName = self->_displayName, !(displayName | equalCopy[1])) || -[NSString isEqual:](displayName, "isEqual:")))
   {
     emailAddresses = self->_emailAddresses;
-    if (emailAddresses | v4[2])
+    if (emailAddresses | equalCopy[2])
     {
       v8 = [(NSMutableArray *)emailAddresses isEqual:?];
     }
@@ -264,16 +264,16 @@
   return v4 ^ [(NSMutableArray *)self->_emailAddresses hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(NNMKProtoVIPSender *)self setName:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoVIPSender *)self setDisplayName:?];
   }
@@ -282,7 +282,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

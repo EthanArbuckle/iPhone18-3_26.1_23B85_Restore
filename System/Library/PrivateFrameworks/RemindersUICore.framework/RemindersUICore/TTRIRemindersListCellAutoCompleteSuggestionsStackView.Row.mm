@@ -1,19 +1,19 @@
 @interface TTRIRemindersListCellAutoCompleteSuggestionsStackView.Row
 - (NSArray)accessibilityUserInputLabels;
 - (NSString)accessibilityLabel;
-- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithArrangedSubviews:(id)a3;
-- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithCoder:(id)a3;
-- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithFrame:(CGRect)a3;
+- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithArrangedSubviews:(id)subviews;
+- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithCoder:(id)coder;
+- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithFrame:(CGRect)frame;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityElementDidLoseFocus;
-- (void)didHover:(id)a3;
-- (void)didTap:(id)a3;
+- (void)didHover:(id)hover;
+- (void)didTap:(id)tap;
 - (void)layoutSubviews;
 @end
 
 @implementation TTRIRemindersListCellAutoCompleteSuggestionsStackView.Row
 
-- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithCoder:(id)a3
+- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row_suggestionDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -38,23 +38,23 @@
   return result;
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   sub_21D6AF760();
 }
 
-- (void)didHover:(id)a3
+- (void)didHover:(id)hover
 {
-  v4 = a3;
-  v5 = self;
-  sub_21D6AD6E0(v4);
+  hoverCopy = hover;
+  selfCopy = self;
+  sub_21D6AD6E0(hoverCopy);
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListCellAutoCompleteSuggestionsStackView.Row.accessibilityLabel.getter();
   v4 = v3;
 
@@ -73,7 +73,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListCellAutoCompleteSuggestionsStackView.Row.accessibilityUserInputLabels.getter();
 
   if (v3)
@@ -91,7 +91,7 @@
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListCellAutoCompleteSuggestionsStackView.Row.accessibilityElementDidBecomeFocused()();
 }
 
@@ -107,18 +107,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListCellAutoCompleteSuggestionsStackView.Row.layoutSubviews()();
 }
 
-- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithFrame:(CGRect)a3
+- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithArrangedSubviews:(id)a3
+- (_TtCC15RemindersUICore53TTRIRemindersListCellAutoCompleteSuggestionsStackView3Row)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

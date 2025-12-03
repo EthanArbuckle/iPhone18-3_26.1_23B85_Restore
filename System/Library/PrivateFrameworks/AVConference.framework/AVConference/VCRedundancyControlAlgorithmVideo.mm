@@ -1,28 +1,28 @@
 @interface VCRedundancyControlAlgorithmVideo
-- ($BACB928BC0970026F35E6219D6E28B55)setUpFeedbackAnalyzerConfigWithFrameBasedFECEnabled:(SEL)a3;
+- ($BACB928BC0970026F35E6219D6E28B55)setUpFeedbackAnalyzerConfigWithFrameBasedFECEnabled:(SEL)enabled;
 - ($EFC350629329D7EA4758EE5353B94EAC)getFecLevelPerFrameSizeVector;
-- (VCRedundancyControlAlgorithmVideo)initWithRedundancyControllerMode:(int)a3 maxAllowedRedundancyPercentage:(unsigned int)a4 mediaControlInfoFECFeedbackVersion:(unsigned __int8)a5 isFrameBasedFECEnabled:(BOOL)a6;
+- (VCRedundancyControlAlgorithmVideo)initWithRedundancyControllerMode:(int)mode maxAllowedRedundancyPercentage:(unsigned int)percentage mediaControlInfoFECFeedbackVersion:(unsigned __int8)version isFrameBasedFECEnabled:(BOOL)enabled;
 - (unsigned)computeRedundancyWithBurstyLoss;
 - (unsigned)computeRedundancyWithLossPercentage;
-- (void)checkAndEnablePersonaBDATv2RedundancyWithStats:(tagVCStatisticsMessage *)a3;
-- (void)checkForRedundancyFreeze:(tagVCStatisticsMessage *)a3;
+- (void)checkAndEnablePersonaBDATv2RedundancyWithStats:(tagVCStatisticsMessage *)stats;
+- (void)checkForRedundancyFreeze:(tagVCStatisticsMessage *)freeze;
 - (void)dealloc;
-- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)a3;
-- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)a3;
-- (void)processRTCPPSFBStatistics:(tagVCStatisticsMessage *)a3;
-- (void)processTargetBitrateUpdate:(tagVCStatisticsMessage *)a3;
+- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)processRTCPPSFBStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)processTargetBitrateUpdate:(tagVCStatisticsMessage *)update;
 - (void)reset;
-- (void)stateFrozen:(tagVCStatisticsMessage *)a3;
-- (void)stateRunning:(tagVCStatisticsMessage *)a3;
-- (void)updateBurstyLoss:(unsigned int)a3;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)stateFrozen:(tagVCStatisticsMessage *)frozen;
+- (void)stateRunning:(tagVCStatisticsMessage *)running;
+- (void)updateBurstyLoss:(unsigned int)loss;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControlAlgorithmVideo
 
-- (VCRedundancyControlAlgorithmVideo)initWithRedundancyControllerMode:(int)a3 maxAllowedRedundancyPercentage:(unsigned int)a4 mediaControlInfoFECFeedbackVersion:(unsigned __int8)a5 isFrameBasedFECEnabled:(BOOL)a6
+- (VCRedundancyControlAlgorithmVideo)initWithRedundancyControllerMode:(int)mode maxAllowedRedundancyPercentage:(unsigned int)percentage mediaControlInfoFECFeedbackVersion:(unsigned __int8)version isFrameBasedFECEnabled:(BOOL)enabled
 {
-  v6 = a6;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = VCRedundancyControlAlgorithmVideo;
@@ -30,9 +30,9 @@
   v11 = v10;
   if (v10)
   {
-    v10->_redundancyMode = a3;
+    v10->_redundancyMode = mode;
     v10->_redundancyPercentage = 0;
-    v10->_maxAllowedRedundancyPercentage = a4;
+    v10->_maxAllowedRedundancyPercentage = percentage;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v12 = VRTraceErrorLogLevelToCSTR();
@@ -46,23 +46,23 @@
         *&buf[22] = 1024;
         LODWORD(v19) = 76;
         WORD2(v19) = 1024;
-        *(&v19 + 6) = a4;
+        *(&v19 + 6) = percentage;
         _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Setting maxAllowedRedundancyPercentage = %d", buf, 0x22u);
       }
     }
 
-    v11->_mediaControlInfoFECFeedbackVersion = a5;
+    v11->_mediaControlInfoFECFeedbackVersion = version;
     *buf = -1;
     *&buf[8] = -1;
     *&buf[16] = 0xAAAAAAAAAAAAAAAALL;
     *&v19 = -1;
     *(&v19 + 1) = -1;
     v20 = 0xAAAAAAAAAAAAAAAALL;
-    [(VCRedundancyControlAlgorithmVideo *)v11 setUpFeedbackAnalyzerConfigWithFrameBasedFECEnabled:v6];
+    [(VCRedundancyControlAlgorithmVideo *)v11 setUpFeedbackAnalyzerConfigWithFrameBasedFECEnabled:enabledCopy];
     v11->_isRedundancyStrategyResetPending = 0;
     VCFECFeedbackAnalyzer_Create(*MEMORY[0x1E695E480], &v11->_feedbackAnalyzer, buf);
     *&v11->_freezeReason = 0xFFFFFFFFLL;
-    if (a3 == 9)
+    if (mode == 9)
     {
       v14 = 8;
     }
@@ -73,7 +73,7 @@
     }
 
     v11->_lossFeedbackPackingLength = v14;
-    v11->_isFrameBasedFECEnabled = v6;
+    v11->_isFrameBasedFECEnabled = enabledCopy;
     if (v11->_redundancyMode == 10)
     {
       [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-red-plr-threshold-for-bdatv2" userDefaultKey:0 defaultValue:&unk_1F5798550 isDoubleType:{1), "doubleValue"}];
@@ -99,7 +99,7 @@
   [(VCRedundancyControlAlgorithmVideo *)&v4 dealloc];
 }
 
-- ($BACB928BC0970026F35E6219D6E28B55)setUpFeedbackAnalyzerConfigWithFrameBasedFECEnabled:(SEL)a3
+- ($BACB928BC0970026F35E6219D6E28B55)setUpFeedbackAnalyzerConfigWithFrameBasedFECEnabled:(SEL)enabled
 {
   *&retstr->var2 = 0u;
   *&retstr->var4 = 0u;
@@ -156,10 +156,10 @@
   return result;
 }
 
-- (void)stateRunning:(tagVCStatisticsMessage *)a3
+- (void)stateRunning:(tagVCStatisticsMessage *)running
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3->var0.feedback.videoReceivedPackets)
+  if (running->var0.feedback.videoReceivedPackets)
   {
     self->_freezeReason = 0;
   }
@@ -197,7 +197,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       freezeReason = self->_freezeReason;
-      videoReceivedPackets = a3->var0.feedback.videoReceivedPackets;
+      videoReceivedPackets = running->var0.feedback.videoReceivedPackets;
       offChannelTimeRatio = self->_offChannelTimeRatio;
       v11 = atomic_load(&self->_isRedundancyStrategyResetPending);
       v12 = 136316674;
@@ -221,7 +221,7 @@ LABEL_8:
   self->_state = 1;
 }
 
-- (void)stateFrozen:(tagVCStatisticsMessage *)a3
+- (void)stateFrozen:(tagVCStatisticsMessage *)frozen
 {
   v23 = *MEMORY[0x1E69E9840];
   freezeReason = self->_freezeReason;
@@ -233,7 +233,7 @@ LABEL_8:
     }
   }
 
-  else if (a3->var0.feedback.videoReceivedPackets)
+  else if (frozen->var0.feedback.videoReceivedPackets)
   {
     return;
   }
@@ -245,7 +245,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v8 = self->_freezeReason;
-      videoReceivedPackets = a3->var0.feedback.videoReceivedPackets;
+      videoReceivedPackets = frozen->var0.feedback.videoReceivedPackets;
       offChannelTimeRatio = self->_offChannelTimeRatio;
       v11 = 136316418;
       v12 = v6;
@@ -267,54 +267,54 @@ LABEL_8:
   [(VCRedundancyControlAlgorithmVideo *)self reset];
 }
 
-- (void)checkForRedundancyFreeze:(tagVCStatisticsMessage *)a3
+- (void)checkForRedundancyFreeze:(tagVCStatisticsMessage *)freeze
 {
   v29 = *MEMORY[0x1E69E9840];
   state = self->_state;
   if (state == 1)
   {
-    v10 = *(&a3->var0.addRemoveEndPoint + 19);
-    v26 = *(&a3->var0.addRemoveEndPoint + 17);
+    v10 = *(&freeze->var0.addRemoveEndPoint + 19);
+    v26 = *(&freeze->var0.addRemoveEndPoint + 17);
     v27 = v10;
-    v28 = *(&a3->var0.addRemoveEndPoint + 21);
-    v11 = *(&a3->var0.addRemoveEndPoint + 11);
-    v22 = *(&a3->var0.addRemoveEndPoint + 9);
+    v28 = *(&freeze->var0.addRemoveEndPoint + 21);
+    v11 = *(&freeze->var0.addRemoveEndPoint + 11);
+    v22 = *(&freeze->var0.addRemoveEndPoint + 9);
     v23 = v11;
-    v12 = *(&a3->var0.addRemoveEndPoint + 15);
-    v24 = *(&a3->var0.addRemoveEndPoint + 13);
+    v12 = *(&freeze->var0.addRemoveEndPoint + 15);
+    v24 = *(&freeze->var0.addRemoveEndPoint + 13);
     v25 = v12;
-    v13 = *(&a3->var0.addRemoveEndPoint + 3);
-    v18 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v13 = *(&freeze->var0.addRemoveEndPoint + 3);
+    v18 = *&freeze->var0.rtcpRR.lastSequenceNumber;
     v19 = v13;
-    v14 = *(&a3->var0.addRemoveEndPoint + 7);
-    v20 = *(&a3->var0.addRemoveEndPoint + 5);
+    v14 = *(&freeze->var0.addRemoveEndPoint + 7);
+    v20 = *(&freeze->var0.addRemoveEndPoint + 5);
     v21 = v14;
-    v15 = *&a3->isVCRCInternal;
-    v16 = *&a3->type;
+    v15 = *&freeze->isVCRCInternal;
+    v16 = *&freeze->type;
     v17 = v15;
     [(VCRedundancyControlAlgorithmVideo *)self stateFrozen:&v16];
   }
 
   else if (!state)
   {
-    v4 = *(&a3->var0.addRemoveEndPoint + 19);
-    v26 = *(&a3->var0.addRemoveEndPoint + 17);
+    v4 = *(&freeze->var0.addRemoveEndPoint + 19);
+    v26 = *(&freeze->var0.addRemoveEndPoint + 17);
     v27 = v4;
-    v28 = *(&a3->var0.addRemoveEndPoint + 21);
-    v5 = *(&a3->var0.addRemoveEndPoint + 11);
-    v22 = *(&a3->var0.addRemoveEndPoint + 9);
+    v28 = *(&freeze->var0.addRemoveEndPoint + 21);
+    v5 = *(&freeze->var0.addRemoveEndPoint + 11);
+    v22 = *(&freeze->var0.addRemoveEndPoint + 9);
     v23 = v5;
-    v6 = *(&a3->var0.addRemoveEndPoint + 15);
-    v24 = *(&a3->var0.addRemoveEndPoint + 13);
+    v6 = *(&freeze->var0.addRemoveEndPoint + 15);
+    v24 = *(&freeze->var0.addRemoveEndPoint + 13);
     v25 = v6;
-    v7 = *(&a3->var0.addRemoveEndPoint + 3);
-    v18 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v7 = *(&freeze->var0.addRemoveEndPoint + 3);
+    v18 = *&freeze->var0.rtcpRR.lastSequenceNumber;
     v19 = v7;
-    v8 = *(&a3->var0.addRemoveEndPoint + 7);
-    v20 = *(&a3->var0.addRemoveEndPoint + 5);
+    v8 = *(&freeze->var0.addRemoveEndPoint + 7);
+    v20 = *(&freeze->var0.addRemoveEndPoint + 5);
     v21 = v8;
-    v9 = *&a3->isVCRCInternal;
-    v16 = *&a3->type;
+    v9 = *&freeze->isVCRCInternal;
+    v16 = *&freeze->type;
     v17 = v9;
     [(VCRedundancyControlAlgorithmVideo *)self stateRunning:&v16];
   }
@@ -344,88 +344,88 @@ LABEL_8:
   VCFECFeedbackAnalyzer_CleanHistory(self->_feedbackAnalyzer);
 }
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v35 = *MEMORY[0x1E69E9840];
-  type = a3->type;
-  if (a3->type == 13)
+  type = statistics->type;
+  if (statistics->type == 13)
   {
-    v16 = *(&a3->var0.addRemoveEndPoint + 19);
-    v32 = *(&a3->var0.addRemoveEndPoint + 17);
+    v16 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v32 = *(&statistics->var0.addRemoveEndPoint + 17);
     v33 = v16;
-    v34 = *(&a3->var0.addRemoveEndPoint + 21);
-    v17 = *(&a3->var0.addRemoveEndPoint + 11);
-    v28 = *(&a3->var0.addRemoveEndPoint + 9);
+    v34 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v17 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v28 = *(&statistics->var0.addRemoveEndPoint + 9);
     v29 = v17;
-    v18 = *(&a3->var0.addRemoveEndPoint + 15);
-    v30 = *(&a3->var0.addRemoveEndPoint + 13);
+    v18 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v30 = *(&statistics->var0.addRemoveEndPoint + 13);
     v31 = v18;
-    v19 = *(&a3->var0.addRemoveEndPoint + 3);
-    v24 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v19 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v24 = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v25 = v19;
-    v20 = *(&a3->var0.addRemoveEndPoint + 7);
-    v26 = *(&a3->var0.addRemoveEndPoint + 5);
+    v20 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v26 = *(&statistics->var0.addRemoveEndPoint + 5);
     v27 = v20;
-    v21 = *&a3->isVCRCInternal;
-    v22 = *&a3->type;
+    v21 = *&statistics->isVCRCInternal;
+    v22 = *&statistics->type;
     v23 = v21;
     [(VCRedundancyControlAlgorithmVideo *)self processRTCPPSFBStatistics:&v22];
   }
 
   else if (type == 11)
   {
-    v10 = *(&a3->var0.addRemoveEndPoint + 19);
-    v32 = *(&a3->var0.addRemoveEndPoint + 17);
+    v10 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v32 = *(&statistics->var0.addRemoveEndPoint + 17);
     v33 = v10;
-    v34 = *(&a3->var0.addRemoveEndPoint + 21);
-    v11 = *(&a3->var0.addRemoveEndPoint + 11);
-    v28 = *(&a3->var0.addRemoveEndPoint + 9);
+    v34 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v11 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v28 = *(&statistics->var0.addRemoveEndPoint + 9);
     v29 = v11;
-    v12 = *(&a3->var0.addRemoveEndPoint + 15);
-    v30 = *(&a3->var0.addRemoveEndPoint + 13);
+    v12 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v30 = *(&statistics->var0.addRemoveEndPoint + 13);
     v31 = v12;
-    v13 = *(&a3->var0.addRemoveEndPoint + 3);
-    v24 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v13 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v24 = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v25 = v13;
-    v14 = *(&a3->var0.addRemoveEndPoint + 7);
-    v26 = *(&a3->var0.addRemoveEndPoint + 5);
+    v14 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v26 = *(&statistics->var0.addRemoveEndPoint + 5);
     v27 = v14;
-    v15 = *&a3->isVCRCInternal;
-    v22 = *&a3->type;
+    v15 = *&statistics->isVCRCInternal;
+    v22 = *&statistics->type;
     v23 = v15;
     [(VCRedundancyControlAlgorithmVideo *)self processNWConnectionStatistics:&v22];
   }
 
   else if (type == 3)
   {
-    v4 = *(&a3->var0.addRemoveEndPoint + 19);
-    v32 = *(&a3->var0.addRemoveEndPoint + 17);
+    v4 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v32 = *(&statistics->var0.addRemoveEndPoint + 17);
     v33 = v4;
-    v34 = *(&a3->var0.addRemoveEndPoint + 21);
-    v5 = *(&a3->var0.addRemoveEndPoint + 11);
-    v28 = *(&a3->var0.addRemoveEndPoint + 9);
+    v34 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v5 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v28 = *(&statistics->var0.addRemoveEndPoint + 9);
     v29 = v5;
-    v6 = *(&a3->var0.addRemoveEndPoint + 15);
-    v30 = *(&a3->var0.addRemoveEndPoint + 13);
+    v6 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v30 = *(&statistics->var0.addRemoveEndPoint + 13);
     v31 = v6;
-    v7 = *(&a3->var0.addRemoveEndPoint + 3);
-    v24 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v7 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v24 = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v25 = v7;
-    v8 = *(&a3->var0.addRemoveEndPoint + 7);
-    v26 = *(&a3->var0.addRemoveEndPoint + 5);
+    v8 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v26 = *(&statistics->var0.addRemoveEndPoint + 5);
     v27 = v8;
-    v9 = *&a3->isVCRCInternal;
-    v22 = *&a3->type;
+    v9 = *&statistics->isVCRCInternal;
+    v22 = *&statistics->type;
     v23 = v9;
     [(VCRedundancyControlAlgorithmVideo *)self processRCNetworkStatistics:&v22];
   }
 }
 
-- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)a3
+- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)statistics
 {
-  if (a3->type == 11)
+  if (statistics->type == 11)
   {
-    LODWORD(self->_offChannelTimeRatio) = a3->var0.feedback.receiveQueueTarget;
+    LODWORD(self->_offChannelTimeRatio) = statistics->var0.feedback.receiveQueueTarget;
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -439,64 +439,64 @@ LABEL_8:
   }
 }
 
-- (void)processRTCPPSFBStatistics:(tagVCStatisticsMessage *)a3
+- (void)processRTCPPSFBStatistics:(tagVCStatisticsMessage *)statistics
 {
   v26 = *MEMORY[0x1E69E9840];
-  VCFECFeedbackAnalyzer_ProcessFeedback(self->_feedbackAnalyzer, *&a3->arrivalTime, a3->var0.videoLossFeedback.frameSize | (a3->var0.videoLossFeedback.packetsLost << 16) | 0xAAAAAAAA00000000, v3, v4, v5, v6, v7);
+  VCFECFeedbackAnalyzer_ProcessFeedback(self->_feedbackAnalyzer, *&statistics->arrivalTime, statistics->var0.videoLossFeedback.frameSize | (statistics->var0.videoLossFeedback.packetsLost << 16) | 0xAAAAAAAA00000000, v3, v4, v5, v6, v7);
   VPLR = VCFECFeedbackAnalyzer_GetVPLR(self->_feedbackAnalyzer, v10, v11, v12, v13, v14, v15, v16);
   self->_packetLossPercentage = VPLR;
   self->_packetLossPercentageVideo = VPLR;
   if (self->_redundancyMode == 10)
   {
-    v18 = *(&a3->var0.addRemoveEndPoint + 19);
-    v24[10] = *(&a3->var0.addRemoveEndPoint + 17);
+    v18 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v24[10] = *(&statistics->var0.addRemoveEndPoint + 17);
     v24[11] = v18;
-    v25 = *(&a3->var0.addRemoveEndPoint + 21);
-    v19 = *(&a3->var0.addRemoveEndPoint + 11);
-    v24[6] = *(&a3->var0.addRemoveEndPoint + 9);
+    v25 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v19 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v24[6] = *(&statistics->var0.addRemoveEndPoint + 9);
     v24[7] = v19;
-    v20 = *(&a3->var0.addRemoveEndPoint + 15);
-    v24[8] = *(&a3->var0.addRemoveEndPoint + 13);
+    v20 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v24[8] = *(&statistics->var0.addRemoveEndPoint + 13);
     v24[9] = v20;
-    v21 = *(&a3->var0.addRemoveEndPoint + 3);
-    v24[2] = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v21 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v24[2] = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v24[3] = v21;
-    v22 = *(&a3->var0.addRemoveEndPoint + 7);
-    v24[4] = *(&a3->var0.addRemoveEndPoint + 5);
+    v22 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v24[4] = *(&statistics->var0.addRemoveEndPoint + 5);
     v24[5] = v22;
-    v23 = *&a3->isVCRCInternal;
-    v24[0] = *&a3->type;
+    v23 = *&statistics->isVCRCInternal;
+    v24[0] = *&statistics->type;
     v24[1] = v23;
     [(VCRedundancyControlAlgorithmVideo *)self checkAndEnablePersonaBDATv2RedundancyWithStats:v24];
   }
 }
 
-- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v55 = *MEMORY[0x1E69E9840];
-  if (a3->type == 3)
+  if (statistics->type == 3)
   {
-    v5 = *(&a3->var0.addRemoveEndPoint + 19);
-    v52 = *(&a3->var0.addRemoveEndPoint + 17);
+    v5 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v52 = *(&statistics->var0.addRemoveEndPoint + 17);
     v53 = v5;
-    v54 = *(&a3->var0.addRemoveEndPoint + 21);
-    v6 = *(&a3->var0.addRemoveEndPoint + 11);
-    v48 = *(&a3->var0.addRemoveEndPoint + 9);
+    v54 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v6 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v48 = *(&statistics->var0.addRemoveEndPoint + 9);
     v49 = v6;
-    v7 = *(&a3->var0.addRemoveEndPoint + 15);
-    v50 = *(&a3->var0.addRemoveEndPoint + 13);
+    v7 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v50 = *(&statistics->var0.addRemoveEndPoint + 13);
     v51 = v7;
-    v8 = *(&a3->var0.addRemoveEndPoint + 3);
-    *&buf[32] = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v8 = *(&statistics->var0.addRemoveEndPoint + 3);
+    *&buf[32] = *&statistics->var0.rtcpRR.lastSequenceNumber;
     *v46 = v8;
-    v9 = *(&a3->var0.addRemoveEndPoint + 7);
-    *&v46[16] = *(&a3->var0.addRemoveEndPoint + 5);
+    v9 = *(&statistics->var0.addRemoveEndPoint + 7);
+    *&v46[16] = *(&statistics->var0.addRemoveEndPoint + 5);
     v47 = v9;
-    v10 = *&a3->isVCRCInternal;
-    *buf = *&a3->type;
+    v10 = *&statistics->isVCRCInternal;
+    *buf = *&statistics->type;
     *&buf[16] = v10;
     [(VCRedundancyControlAlgorithmVideo *)self processTargetBitrateUpdate:buf];
-    self->_packetLossPercentage = a3->var0.network.packetLossPercentage;
+    self->_packetLossPercentage = statistics->var0.network.packetLossPercentage;
     if (self->_mediaControlInfoFECFeedbackVersion == 1)
     {
       VPLR = VCFECFeedbackAnalyzer_GetVPLR(self->_feedbackAnalyzer, v11, v12, v13, v14, v15, v16, v17);
@@ -504,28 +504,28 @@ LABEL_8:
 
     else
     {
-      VPLR = a3->var0.network.packetLossPercentageVideo;
+      VPLR = statistics->var0.network.packetLossPercentageVideo;
     }
 
     self->_packetLossPercentageVideo = VPLR;
-    v20 = *(&a3->var0.addRemoveEndPoint + 19);
-    v52 = *(&a3->var0.addRemoveEndPoint + 17);
+    v20 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v52 = *(&statistics->var0.addRemoveEndPoint + 17);
     v53 = v20;
-    v54 = *(&a3->var0.addRemoveEndPoint + 21);
-    v21 = *(&a3->var0.addRemoveEndPoint + 11);
-    v48 = *(&a3->var0.addRemoveEndPoint + 9);
+    v54 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v21 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v48 = *(&statistics->var0.addRemoveEndPoint + 9);
     v49 = v21;
-    v22 = *(&a3->var0.addRemoveEndPoint + 15);
-    v50 = *(&a3->var0.addRemoveEndPoint + 13);
+    v22 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v50 = *(&statistics->var0.addRemoveEndPoint + 13);
     v51 = v22;
-    v23 = *(&a3->var0.addRemoveEndPoint + 3);
-    *&buf[32] = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v23 = *(&statistics->var0.addRemoveEndPoint + 3);
+    *&buf[32] = *&statistics->var0.rtcpRR.lastSequenceNumber;
     *v46 = v23;
-    v24 = *(&a3->var0.addRemoveEndPoint + 7);
-    *&v46[16] = *(&a3->var0.addRemoveEndPoint + 5);
+    v24 = *(&statistics->var0.addRemoveEndPoint + 7);
+    *&v46[16] = *(&statistics->var0.addRemoveEndPoint + 5);
     v47 = v24;
-    v25 = *&a3->isVCRCInternal;
-    *buf = *&a3->type;
+    v25 = *&statistics->isVCRCInternal;
+    *buf = *&statistics->type;
     *&buf[16] = v25;
     [(VCRedundancyControlAlgorithmVideo *)self checkForRedundancyFreeze:buf];
     if (self->_state != 1)
@@ -534,26 +534,26 @@ LABEL_8:
       {
         v44 = 0;
         *buf = 0;
-        FECUtil_UnpackFrameLoss(*(&a3->var0.addRemoveEndPoint + 28), buf, &v44, LOWORD(self->_lossFeedbackPackingLength));
-        VCFECFeedbackAnalyzer_ProcessFeedback(self->_feedbackAnalyzer, *&a3->arrivalTime, *buf | (v44 << 16) | 0xAAAAAAAA00000000, v26, v27, v28, v29, v30);
+        FECUtil_UnpackFrameLoss(*(&statistics->var0.addRemoveEndPoint + 28), buf, &v44, LOWORD(self->_lossFeedbackPackingLength));
+        VCFECFeedbackAnalyzer_ProcessFeedback(self->_feedbackAnalyzer, *&statistics->arrivalTime, *buf | (v44 << 16) | 0xAAAAAAAA00000000, v26, v27, v28, v29, v30);
       }
 
-      [(VCRedundancyControlAlgorithmVideo *)self updateBurstyLoss:a3->var0.baseband.transmittedBytes];
-      v31 = [(VCRedundancyControlAlgorithmVideo *)self computeRedundancyWithLossPercentage];
-      v32 = [(VCRedundancyControlAlgorithmVideo *)self computeRedundancyWithBurstyLoss];
-      if (v31 <= v32)
+      [(VCRedundancyControlAlgorithmVideo *)self updateBurstyLoss:statistics->var0.baseband.transmittedBytes];
+      computeRedundancyWithLossPercentage = [(VCRedundancyControlAlgorithmVideo *)self computeRedundancyWithLossPercentage];
+      computeRedundancyWithBurstyLoss = [(VCRedundancyControlAlgorithmVideo *)self computeRedundancyWithBurstyLoss];
+      if (computeRedundancyWithLossPercentage <= computeRedundancyWithBurstyLoss)
       {
-        v33 = v32;
+        v33 = computeRedundancyWithBurstyLoss;
       }
 
       else
       {
-        v33 = v31;
+        v33 = computeRedundancyWithLossPercentage;
       }
 
       if (self->_mediaControlInfoFECFeedbackVersion)
       {
-        v34 = v31;
+        v34 = computeRedundancyWithLossPercentage;
       }
 
       else
@@ -563,7 +563,7 @@ LABEL_8:
 
       if (self->_redundancyPercentage != v34)
       {
-        v35 = v32;
+        v35 = computeRedundancyWithBurstyLoss;
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
           v36 = VRTraceErrorLogLevelToCSTR();
@@ -589,7 +589,7 @@ LABEL_8:
             *&buf[40] = 1024;
             *&buf[42] = redundancyMode;
             *&buf[46] = 1024;
-            *v46 = v31;
+            *v46 = computeRedundancyWithLossPercentage;
             *&v46[4] = 1024;
             *&v46[6] = v35;
             *&v46[10] = 2048;
@@ -619,9 +619,9 @@ LABEL_8:
   }
 }
 
-- (void)updateBurstyLoss:(unsigned int)a3
+- (void)updateBurstyLoss:(unsigned int)loss
 {
-  self->_burstyLoss[self->_burstyLossArrayIndex] = a3;
+  self->_burstyLoss[self->_burstyLossArrayIndex] = loss;
   burstyLossArraySize = self->_burstyLossArraySize;
   self->_burstyLossArrayIndex = (self->_burstyLossArrayIndex + 1) & 7;
   if (burstyLossArraySize <= 7)
@@ -829,7 +829,7 @@ LABEL_8:
   return VCFECFeedbackAnalyzer_GetFECLevelVector(feedbackAnalyzer, retstr);
 }
 
-- (void)checkAndEnablePersonaBDATv2RedundancyWithStats:(tagVCStatisticsMessage *)a3
+- (void)checkAndEnablePersonaBDATv2RedundancyWithStats:(tagVCStatisticsMessage *)stats
 {
   v26 = *MEMORY[0x1E69E9840];
   redundancyPercentage = self->_redundancyPercentage;
@@ -875,11 +875,11 @@ LABEL_8:
   }
 }
 
-- (void)processTargetBitrateUpdate:(tagVCStatisticsMessage *)a3
+- (void)processTargetBitrateUpdate:(tagVCStatisticsMessage *)update
 {
   if (self->_isFrameBasedFECEnabled)
   {
-    VCFECFeedbackAnalyzer_UpdateTargetBitrate(self->_feedbackAnalyzer, a3->var0.feedback.totalSentPackets);
+    VCFECFeedbackAnalyzer_UpdateTargetBitrate(self->_feedbackAnalyzer, update->var0.feedback.totalSentPackets);
   }
 }
 

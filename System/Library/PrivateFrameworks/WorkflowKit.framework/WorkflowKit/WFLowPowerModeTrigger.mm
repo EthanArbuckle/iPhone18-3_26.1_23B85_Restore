@@ -1,16 +1,16 @@
 @interface WFLowPowerModeTrigger
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 + (id)offIcon;
 + (id)onIcon;
 + (id)yellowBatteryHierarchicalColors;
 - (BOOL)hasValidConfiguration;
 - (WFLowPowerModeTrigger)init;
-- (WFLowPowerModeTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFLowPowerModeTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
 - (id)suggestedActions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLowPowerModeTrigger
@@ -23,28 +23,28 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = WFLowPowerModeTrigger;
-  v4 = [(WFTrigger *)&v6 copyWithZone:a3];
+  v4 = [(WFTrigger *)&v6 copyWithZone:zone];
   [v4 setOnEnable:{-[WFLowPowerModeTrigger onEnable](self, "onEnable")}];
   [v4 setOnDisable:{-[WFLowPowerModeTrigger onDisable](self, "onDisable")}];
   return v4;
 }
 
-- (WFLowPowerModeTrigger)initWithCoder:(id)a3
+- (WFLowPowerModeTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLowPowerModeTrigger;
-  v5 = [(WFTrigger *)&v10 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onEnable"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onEnable"];
     v5->_onEnable = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onDisable"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onDisable"];
     v5->_onDisable = [v7 BOOLValue];
 
     v8 = v5;
@@ -53,17 +53,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFLowPowerModeTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFLowPowerModeTrigger onEnable](self, "onEnable", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"onEnable"];
+  [coderCopy encodeObject:v5 forKey:@"onEnable"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFLowPowerModeTrigger onDisable](self, "onDisable")}];
-  [v4 encodeObject:v6 forKey:@"onDisable"];
+  [coderCopy encodeObject:v6 forKey:@"onDisable"];
 }
 
 - (id)localizedPastTenseDescription
@@ -95,7 +95,7 @@ LABEL_8:
     v8 = 136315394;
     v9 = "[WFLowPowerModeTrigger localizedPastTenseDescription]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", &v8, 0x16u);
   }
 
@@ -135,7 +135,7 @@ LABEL_8:
     v8 = 136315394;
     v9 = "[WFLowPowerModeTrigger localizedDescriptionWithConfigurationSummary]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", &v8, 0x16u);
   }
 
@@ -177,8 +177,8 @@ LABEL_9:
   v7[2] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E69E09E0] colorWithRed:1.0 green:0.792156875 blue:0.0 alpha:1.0];
   v7[0] = v2;
-  v3 = [MEMORY[0x1E69E09E0] batteryOutlineColor];
-  v7[1] = v3;
+  batteryOutlineColor = [MEMORY[0x1E69E09E0] batteryOutlineColor];
+  v7[1] = batteryOutlineColor;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
 
   v5 = *MEMORY[0x1E69E9840];
@@ -192,8 +192,8 @@ LABEL_9:
   v2 = MEMORY[0x1E69E0B58];
   v3 = [MEMORY[0x1E69E09E0] colorWithSystemColor:1];
   v9[0] = v3;
-  v4 = [MEMORY[0x1E69E09E0] batteryOutlineColor];
-  v9[1] = v4;
+  batteryOutlineColor = [MEMORY[0x1E69E09E0] batteryOutlineColor];
+  v9[1] = batteryOutlineColor;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v2 triggerConfigurationSymbolNamed:@"battery.25" hierarchicalColors:v5];
 
@@ -205,17 +205,17 @@ LABEL_9:
 + (id)onIcon
 {
   v2 = MEMORY[0x1E69E0B58];
-  v3 = [a1 yellowBatteryHierarchicalColors];
-  v4 = [v2 triggerConfigurationSymbolNamed:@"battery.25" hierarchicalColors:v3];
+  yellowBatteryHierarchicalColors = [self yellowBatteryHierarchicalColors];
+  v4 = [v2 triggerConfigurationSymbolNamed:@"battery.25" hierarchicalColors:yellowBatteryHierarchicalColors];
 
   return v4;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Low Power Mode", @"Low Power Mode");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

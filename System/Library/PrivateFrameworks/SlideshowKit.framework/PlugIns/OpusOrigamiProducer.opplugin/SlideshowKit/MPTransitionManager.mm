@@ -1,27 +1,27 @@
 @interface MPTransitionManager
 + (id)sharedManager;
-+ (void)loadTransitionManagerWithPaths:(id)a3;
++ (void)loadTransitionManagerWithPaths:(id)paths;
 + (void)releaseSharedManager;
-- (MPTransitionManager)initWithPaths:(id)a3;
-- (double)beatStrengthForTransitionID:(id)a3;
-- (double)bestBeatTimeForTransitionID:(id)a3;
-- (double)defaultDurationForTransitionID:(id)a3;
+- (MPTransitionManager)initWithPaths:(id)paths;
+- (double)beatStrengthForTransitionID:(id)d;
+- (double)bestBeatTimeForTransitionID:(id)d;
+- (double)defaultDurationForTransitionID:(id)d;
 - (id)allCategoryIDs;
-- (id)attributesForTransitionID:(id)a3 andPresetID:(id)a4;
-- (id)categoryIDsForTransitionID:(id)a3;
-- (id)constraintsForTransitionPresetsMatchingList:(id)a3 andCriteria:(id)a4;
-- (id)controlForAttribute:(id)a3 forTransitionID:(id)a4;
-- (id)localizedCategoryNameFromCategoryID:(id)a3;
-- (id)localizedNameForTransitionID:(id)a3 withLanguage:(id)a4;
-- (id)localizedSettingsUITitleForTitleKey:(id)a3 inTransition:(id)a4;
-- (id)localizedTransitionNameForTransitionID:(id)a3;
-- (id)localizedTransitionNameForTransitionID:(id)a3 andPresetID:(id)a4;
-- (id)presetsForTransitionID:(id)a3;
-- (id)randomTransitionPresetFromList:(id)a3 abidingWithConstraints:(id)a4;
-- (id)settingsUIControlDescriptionsForTransition:(id)a3;
-- (id)transitionPresetsMatchingCriteria:(id)a3;
-- (id)transitionsForCategoryID:(id)a3;
-- (id)versionOfTransitionID:(id)a3;
+- (id)attributesForTransitionID:(id)d andPresetID:(id)iD;
+- (id)categoryIDsForTransitionID:(id)d;
+- (id)constraintsForTransitionPresetsMatchingList:(id)list andCriteria:(id)criteria;
+- (id)controlForAttribute:(id)attribute forTransitionID:(id)d;
+- (id)localizedCategoryNameFromCategoryID:(id)d;
+- (id)localizedNameForTransitionID:(id)d withLanguage:(id)language;
+- (id)localizedSettingsUITitleForTitleKey:(id)key inTransition:(id)transition;
+- (id)localizedTransitionNameForTransitionID:(id)d;
+- (id)localizedTransitionNameForTransitionID:(id)d andPresetID:(id)iD;
+- (id)presetsForTransitionID:(id)d;
+- (id)randomTransitionPresetFromList:(id)list abidingWithConstraints:(id)constraints;
+- (id)settingsUIControlDescriptionsForTransition:(id)transition;
+- (id)transitionPresetsMatchingCriteria:(id)criteria;
+- (id)transitionsForCategoryID:(id)d;
+- (id)versionOfTransitionID:(id)d;
 - (void)dealloc;
 @end
 
@@ -32,13 +32,13 @@
   result = qword_1EF2C8;
   if (!qword_1EF2C8)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF2C8)
     {
       qword_1EF2C8 = [[MPTransitionManager alloc] initWithPaths:0];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF2C8;
   }
 
@@ -49,11 +49,11 @@
 {
   if (qword_1EF2C8)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF2C8 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -133,21 +133,21 @@
   return v3;
 }
 
-- (id)versionOfTransitionID:(id)a3
+- (id)versionOfTransitionID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mTransitions objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mTransitions objectForKey:d];
 
   return [v3 objectForKey:@"version"];
 }
 
-- (id)categoryIDsForTransitionID:(id)a3
+- (id)categoryIDsForTransitionID:(id)d
 {
-  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"categories", "copy"}];
+  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"categories", "copy"}];
 
   return v3;
 }
 
-- (id)transitionsForCategoryID:(id)a3
+- (id)transitionsForCategoryID:(id)d
 {
   v5 = +[NSMutableSet set];
   v13 = 0u;
@@ -170,7 +170,7 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (([-[MPTransitionManager categoryIDsForTransitionID:](self categoryIDsForTransitionID:{v11), "containsObject:", a3}] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"all"))
+        if (([-[MPTransitionManager categoryIDsForTransitionID:](self categoryIDsForTransitionID:{v11), "containsObject:", d}] & 1) != 0 || objc_msgSend(d, "isEqualToString:", @"all"))
         {
           [v5 addObject:v11];
         }
@@ -185,29 +185,29 @@
   return v5;
 }
 
-- (id)localizedTransitionNameForTransitionID:(id)a3
+- (id)localizedTransitionNameForTransitionID:(id)d
 {
   result = [-[NSMutableDictionary objectForKey:](self->mTransitions "objectForKey:{"objectForKey:", @"localizedTransitionName"}")];
   if (!result)
   {
-    if ([a3 hasPrefix:@"MRCIFilterTransition"])
+    if ([d hasPrefix:@"MRCIFilterTransition"])
     {
 
-      return [a3 substringFromIndex:20];
+      return [d substringFromIndex:20];
     }
 
     else
     {
-      return a3;
+      return d;
     }
   }
 
   return result;
 }
 
-- (id)localizedNameForTransitionID:(id)a3 withLanguage:(id)a4
+- (id)localizedNameForTransitionID:(id)d withLanguage:(id)language
 {
-  v5 = +[NSDictionary dictionaryWithContentsOfFile:](NSDictionary, "dictionaryWithContentsOfFile:", [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions "objectForKey:{"objectForKey:", @"resources", "stringByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.lproj/LocalizedDescription.plist", a4)}")]);
+  v5 = +[NSDictionary dictionaryWithContentsOfFile:](NSDictionary, "dictionaryWithContentsOfFile:", [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions "objectForKey:{"objectForKey:", @"resources", "stringByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.lproj/LocalizedDescription.plist", language)}")]);
   if (v5)
   {
     v5 = [(NSDictionary *)v5 objectForKey:@"_LOCALIZABLE_"];
@@ -216,38 +216,38 @@
   result = [(NSDictionary *)v5 objectForKey:@"localizedTransitionName"];
   if (!result)
   {
-    return a3;
+    return d;
   }
 
   return result;
 }
 
-- (id)localizedTransitionNameForTransitionID:(id)a3 andPresetID:(id)a4
+- (id)localizedTransitionNameForTransitionID:(id)d andPresetID:(id)iD
 {
-  result = [-[NSMutableDictionary objectForKey:](self->mTransitions "objectForKey:{"objectForKey:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"localizedPresetID%@", a4)}")];
+  result = [-[NSMutableDictionary objectForKey:](self->mTransitions "objectForKey:{"objectForKey:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"localizedPresetID%@", iD)}")];
   if (!result)
   {
-    if ([a3 hasPrefix:@"MRCIFilterTransition"])
+    if ([d hasPrefix:@"MRCIFilterTransition"])
     {
 
-      return [a3 substringFromIndex:20];
+      return [d substringFromIndex:20];
     }
 
     else
     {
-      return a3;
+      return d;
     }
   }
 
   return result;
 }
 
-- (id)localizedCategoryNameFromCategoryID:(id)a3
+- (id)localizedCategoryNameFromCategoryID:(id)d
 {
   v5 = [(NSMutableDictionary *)self->mTransitionCategories objectForKey:?];
   if (!v5)
   {
-    v7 = [(MPTransitionManager *)self transitionsForCategoryID:a3];
+    v7 = [(MPTransitionManager *)self transitionsForCategoryID:d];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -255,7 +255,7 @@
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (!v8)
     {
-      return a3;
+      return d;
     }
 
     v9 = v8;
@@ -283,7 +283,7 @@ LABEL_6:
           goto LABEL_6;
         }
 
-        return a3;
+        return d;
       }
     }
   }
@@ -291,9 +291,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)attributesForTransitionID:(id)a3 andPresetID:(id)a4
+- (id)attributesForTransitionID:(id)d andPresetID:(id)iD
 {
-  if ([a3 isEqualToString:@"Random"])
+  if ([d isEqualToString:@"Random"])
   {
 
     return +[NSDictionary dictionary];
@@ -301,48 +301,48 @@ LABEL_6:
 
   else
   {
-    v8 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"presets", "objectForKey:", a4}];
+    v8 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"presets", "objectForKey:", iD}];
     if (v8)
     {
       return v8;
     }
 
-    v8 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"presets", "objectForKey:", @"Default"}];
+    v8 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"presets", "objectForKey:", @"Default"}];
     if (v8)
     {
       return v8;
     }
 
     v9 = [NSMutableDictionary dictionaryWithDictionary:0];
-    v10 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"presets", "mutableCopy"}];
+    v10 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"presets", "mutableCopy"}];
     [v10 setObject:v9 forKey:@"Default"];
-    [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "setObject:forKey:", v10, @"presets"}];
+    [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "setObject:forKey:", v10, @"presets"}];
 
     return v9;
   }
 }
 
-- (id)localizedSettingsUITitleForTitleKey:(id)a3 inTransition:(id)a4
+- (id)localizedSettingsUITitleForTitleKey:(id)key inTransition:(id)transition
 {
-  result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a4), "objectForKey:", @"localizedSettingsUI", "objectForKey:", a3}];
+  result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{transition), "objectForKey:", @"localizedSettingsUI", "objectForKey:", key}];
   if (!result)
   {
-    return a3;
+    return key;
   }
 
   return result;
 }
 
-- (id)settingsUIControlDescriptionsForTransition:(id)a3
+- (id)settingsUIControlDescriptionsForTransition:(id)transition
 {
-  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"settingsUI", "copy"}];
+  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{transition), "objectForKey:", @"settingsUI", "copy"}];
 
   return v3;
 }
 
-- (id)controlForAttribute:(id)a3 forTransitionID:(id)a4
+- (id)controlForAttribute:(id)attribute forTransitionID:(id)d
 {
-  v5 = [(MPTransitionManager *)self settingsUIControlDescriptionsForTransition:a4];
+  v5 = [(MPTransitionManager *)self settingsUIControlDescriptionsForTransition:d];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -365,7 +365,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([objc_msgSend(v10 objectForKey:{kMPTransitionUIControlAttributeKey[0]), "isEqualToString:", a3}])
+    if ([objc_msgSend(v10 objectForKey:{kMPTransitionUIControlAttributeKey[0]), "isEqualToString:", attribute}])
     {
       return v10;
     }
@@ -383,14 +383,14 @@ LABEL_3:
   }
 }
 
-- (double)defaultDurationForTransitionID:(id)a3
+- (double)defaultDurationForTransitionID:(id)d
 {
-  if ([a3 isEqualToString:@"Random"])
+  if ([d isEqualToString:@"Random"])
   {
     return 1.0;
   }
 
-  v5 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"duration"}];
+  v5 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"duration"}];
   if (!v5)
   {
     return 1.0;
@@ -400,14 +400,14 @@ LABEL_3:
   return result;
 }
 
-- (id)presetsForTransitionID:(id)a3
+- (id)presetsForTransitionID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"presets"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"presets"}];
 
   return [v3 allKeys];
 }
 
-+ (void)loadTransitionManagerWithPaths:(id)a3
++ (void)loadTransitionManagerWithPaths:(id)paths
 {
   if (qword_1EF2C8)
   {
@@ -415,18 +415,18 @@ LABEL_3:
     qword_1EF2C8 = 0;
   }
 
-  qword_1EF2C8 = [[MPTransitionManager alloc] initWithPaths:a3];
+  qword_1EF2C8 = [[MPTransitionManager alloc] initWithPaths:paths];
 }
 
-- (id)constraintsForTransitionPresetsMatchingList:(id)a3 andCriteria:(id)a4
+- (id)constraintsForTransitionPresetsMatchingList:(id)list andCriteria:(id)criteria
 {
-  v5 = a3;
-  if (!a3)
+  listCopy = list;
+  if (!list)
   {
-    v5 = [(NSMutableDictionary *)self->mTransitions allKeys];
+    listCopy = [(NSMutableDictionary *)self->mTransitions allKeys];
   }
 
-  if (![v5 count])
+  if (![listCopy count])
   {
     return 0;
   }
@@ -436,12 +436,12 @@ LABEL_3:
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v51 objects:v58 count:16];
+  v7 = [listCopy countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v52;
-    obj = v5;
+    obj = listCopy;
     do
     {
       for (i = 0; i != v8; i = i + 1)
@@ -514,10 +514,10 @@ LABEL_3:
         }
 
         v18 = *(*(&v43 + 1) + 8 * k);
-        v19 = [v18 stringByDeletingLastPathComponent];
-        v20 = [v18 lastPathComponent];
-        v21 = [(NSMutableDictionary *)self->mTransitions objectForKey:v19];
-        v22 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{v19), "objectForKey:", @"presets", "objectForKey:", v20}];
+        stringByDeletingLastPathComponent = [v18 stringByDeletingLastPathComponent];
+        lastPathComponent = [v18 lastPathComponent];
+        v21 = [(NSMutableDictionary *)self->mTransitions objectForKey:stringByDeletingLastPathComponent];
+        v22 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{stringByDeletingLastPathComponent), "objectForKey:", @"presets", "objectForKey:", lastPathComponent}];
         obja = v21;
         v23 = [v21 objectForKey:@"tags"];
         v36 = v22;
@@ -526,7 +526,7 @@ LABEL_3:
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v25 = [a4 countByEnumeratingWithState:&v39 objects:v55 count:16];
+        v25 = [criteria countByEnumeratingWithState:&v39 objects:v55 count:16];
         if (v25)
         {
           v26 = v25;
@@ -537,7 +537,7 @@ LABEL_28:
           {
             if (*v40 != v27)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(criteria);
             }
 
             v29 = *(*(&v39 + 1) + 8 * v28);
@@ -548,7 +548,7 @@ LABEL_28:
 
             if (v26 == ++v28)
             {
-              v26 = [a4 countByEnumeratingWithState:&v39 objects:v55 count:16];
+              v26 = [criteria countByEnumeratingWithState:&v39 objects:v55 count:16];
               if (v26)
               {
                 goto LABEL_28;
@@ -579,19 +579,19 @@ LABEL_37:
   return v32;
 }
 
-- (id)randomTransitionPresetFromList:(id)a3 abidingWithConstraints:(id)a4
+- (id)randomTransitionPresetFromList:(id)list abidingWithConstraints:(id)constraints
 {
-  if (a4)
+  if (constraints)
   {
-    v6 = +[NSMutableArray array];
+    allKeys = +[NSMutableArray array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v22 = [list countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v22)
     {
-      v20 = v6;
+      v20 = allKeys;
       v21 = *v28;
       do
       {
@@ -599,16 +599,16 @@ LABEL_37:
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(list);
           }
 
           v8 = *(*(&v27 + 1) + 8 * i);
-          v9 = [a3 objectForKey:v8];
+          v9 = [list objectForKey:v8];
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v10 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v10 = [constraints countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -619,13 +619,13 @@ LABEL_9:
             {
               if (*v24 != v12)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(constraints);
               }
 
               v14 = *(*(&v23 + 1) + 8 * v13);
               if ([v9 objectForKey:v14])
               {
-                [objc_msgSend(a4 objectForKey:{v14), "floatValue"}];
+                [objc_msgSend(constraints objectForKey:{v14), "floatValue"}];
                 v16 = v15;
                 v17 = NSRangeFromString([v9 objectForKey:v14]);
                 if (v16 < v17.location || v16 - v17.location >= v17.length)
@@ -636,7 +636,7 @@ LABEL_9:
 
               if (v11 == ++v13)
               {
-                v11 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                v11 = [constraints countByEnumeratingWithState:&v23 objects:v31 count:16];
                 if (v11)
                 {
                   goto LABEL_9;
@@ -656,36 +656,36 @@ LABEL_21:
           [v20 addObject:v8];
         }
 
-        v22 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v22 = [list countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v22);
-      v6 = v20;
+      allKeys = v20;
     }
   }
 
   else
   {
-    v6 = [a3 allKeys];
+    allKeys = [list allKeys];
   }
 
-  result = [v6 count];
+  result = [allKeys count];
   if (result)
   {
-    return [v6 objectAtIndex:rand() % result];
+    return [allKeys objectAtIndex:rand() % result];
   }
 
   return result;
 }
 
-- (id)transitionPresetsMatchingCriteria:(id)a3
+- (id)transitionPresetsMatchingCriteria:(id)criteria
 {
   v28 = +[NSMutableArray array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = self->mTransitions;
   v26 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v26)
@@ -705,7 +705,7 @@ LABEL_21:
         v29 = *(*(&v41 + 1) + 8 * v5);
         if (([v29 isEqualToString:@"Default"] & 1) == 0)
         {
-          v6 = [(NSMutableDictionary *)v23->mTransitions objectForKey:v29];
+          v6 = [(NSMutableDictionary *)selfCopy->mTransitions objectForKey:v29];
           v7 = [v6 objectForKey:@"presets"];
           if (!v7)
           {
@@ -736,7 +736,7 @@ LABEL_21:
                 v34 = 0u;
                 v35 = 0u;
                 v36 = 0u;
-                v11 = [a3 countByEnumeratingWithState:&v33 objects:v45 count:16];
+                v11 = [criteria countByEnumeratingWithState:&v33 objects:v45 count:16];
                 if (v11)
                 {
                   v12 = v11;
@@ -747,13 +747,13 @@ LABEL_16:
                   {
                     if (*v34 != v13)
                     {
-                      objc_enumerationMutation(a3);
+                      objc_enumerationMutation(criteria);
                     }
 
                     v15 = *(*(&v33 + 1) + 8 * v14);
                     if ([v10 objectForKey:v15])
                     {
-                      [objc_msgSend(a3 objectForKey:{v15), "floatValue"}];
+                      [objc_msgSend(criteria objectForKey:{v15), "floatValue"}];
                       v17 = v16;
                       v18 = v10;
                     }
@@ -765,7 +765,7 @@ LABEL_16:
                         goto LABEL_27;
                       }
 
-                      [objc_msgSend(a3 objectForKey:{v15), "floatValue"}];
+                      [objc_msgSend(criteria objectForKey:{v15), "floatValue"}];
                       v17 = v19;
                       v18 = v6;
                     }
@@ -784,7 +784,7 @@ LABEL_16:
 LABEL_27:
                     if (v12 == ++v14)
                     {
-                      v12 = [a3 countByEnumeratingWithState:&v33 objects:v45 count:16];
+                      v12 = [criteria countByEnumeratingWithState:&v33 objects:v45 count:16];
                       if (v12)
                       {
                         goto LABEL_16;
@@ -820,9 +820,9 @@ LABEL_32:
   return v28;
 }
 
-- (double)beatStrengthForTransitionID:(id)a3
+- (double)beatStrengthForTransitionID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"beatStrength"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"beatStrength"}];
   if (!v3)
   {
     return 0.375;
@@ -832,9 +832,9 @@ LABEL_32:
   return v4;
 }
 
-- (double)bestBeatTimeForTransitionID:(id)a3
+- (double)bestBeatTimeForTransitionID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{a3), "objectForKey:", @"bestBeatTime"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mTransitions objectForKey:{d), "objectForKey:", @"bestBeatTime"}];
   if (!v3)
   {
     return -1.0;
@@ -844,7 +844,7 @@ LABEL_32:
   return v4;
 }
 
-- (MPTransitionManager)initWithPaths:(id)a3
+- (MPTransitionManager)initWithPaths:(id)paths
 {
   v79.receiver = self;
   v79.super_class = MPTransitionManager;
@@ -855,9 +855,9 @@ LABEL_32:
     v4->mTransitionCategories = objc_alloc_init(NSMutableDictionary);
     v5 = +[NSMutableArray array];
     v6 = v5;
-    if (a3)
+    if (paths)
     {
-      [v5 addObjectsFromArray:a3];
+      [v5 addObjectsFromArray:paths];
     }
 
     else

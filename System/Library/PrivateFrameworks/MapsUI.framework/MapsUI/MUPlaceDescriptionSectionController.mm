@@ -1,5 +1,5 @@
 @interface MUPlaceDescriptionSectionController
-- (MUPlaceDescriptionSectionController)initWithMapItem:(id)a3 configuration:(id)a4;
+- (MUPlaceDescriptionSectionController)initWithMapItem:(id)item configuration:(id)configuration;
 - (MUPlaceDescriptionSectionControllerDelegate)actionDelegate;
 - (id)infoCardChildPossibleActions;
 - (id)sectionFooterViewModel;
@@ -19,9 +19,9 @@
 
 - (id)infoCardChildPossibleActions
 {
-  v2 = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
+  attribution = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
 
-  if (v2)
+  if (attribution)
   {
     return &unk_1F450E380;
   }
@@ -34,28 +34,28 @@
 
 - (void)_attributionTapped
 {
-  v3 = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
-  v4 = [v3 providerID];
-  v5 = [(MUPlaceSectionController *)self mapItem];
-  v6 = [v5 _reviewsAttribution];
-  v7 = [v6 providerID];
-  [(MUPlaceSectionController *)self captureInfoCardAction:6020 eventValue:v4 feedbackType:0 actionRichProviderId:v7 classification:0];
+  attribution = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
+  providerID = [attribution providerID];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _reviewsAttribution = [mapItem _reviewsAttribution];
+  providerID2 = [_reviewsAttribution providerID];
+  [(MUPlaceSectionController *)self captureInfoCardAction:6020 eventValue:providerID feedbackType:0 actionRichProviderId:providerID2 classification:0];
 
-  v8 = [(MUPlaceDescriptionSectionController *)self actionDelegate];
-  [v8 placeDescriptionSectionControllerDidTapAttribution:self];
+  actionDelegate = [(MUPlaceDescriptionSectionController *)self actionDelegate];
+  [actionDelegate placeDescriptionSectionControllerDidTapAttribution:self];
 }
 
 - (id)sectionFooterViewModel
 {
-  v3 = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
+  attribution = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
 
-  if (v3)
+  if (attribution)
   {
     footerViewModel = self->_footerViewModel;
     if (!footerViewModel)
     {
-      v5 = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
-      v6 = [MUPlaceFooterAtributionViewModel viewModelForGeoMapItemAttribution:v5];
+      attribution2 = [(MUPlaceDescriptionConfiguration *)self->_configuration attribution];
+      v6 = [MUPlaceFooterAtributionViewModel viewModelForGeoMapItemAttribution:attribution2];
       v7 = self->_footerViewModel;
       self->_footerViewModel = v6;
 
@@ -118,8 +118,8 @@ void __61__MUPlaceDescriptionSectionController_sectionFooterViewModel__block_inv
   blurbView = self->_blurbView;
   self->_blurbView = v4;
 
-  v6 = [(MUPlaceDescriptionConfiguration *)self->_configuration textBlockText];
-  [(MUExpandableBlurbView *)self->_blurbView setText:v6];
+  textBlockText = [(MUPlaceDescriptionConfiguration *)self->_configuration textBlockText];
+  [(MUExpandableBlurbView *)self->_blurbView setText:textBlockText];
 
   objc_initWeak(&location, self);
   v7 = self->_blurbView;
@@ -131,8 +131,8 @@ void __61__MUPlaceDescriptionSectionController_sectionFooterViewModel__block_inv
   [(MUExpandableBlurbView *)v7 setResizeBlock:&v13];
   v8 = self->_blurbView;
   v9 = [(MUPlaceDescriptionSectionController *)self sectionHeaderViewModel:v13];
-  v10 = [(MUPlaceDescriptionSectionController *)self sectionFooterViewModel];
-  v11 = [MUPlaceSectionView insetTextSectionViewForContentView:v8 sectionHeaderViewModel:v9 sectionFooterViewModel:v10];
+  sectionFooterViewModel = [(MUPlaceDescriptionSectionController *)self sectionFooterViewModel];
+  v11 = [MUPlaceSectionView insetTextSectionViewForContentView:v8 sectionHeaderViewModel:v9 sectionFooterViewModel:sectionFooterViewModel];
   sectionView = self->_sectionView;
   self->_sectionView = v11;
 
@@ -172,12 +172,12 @@ void __54__MUPlaceDescriptionSectionController__setupTextBlurb__block_invoke_3(u
   [v2 placeSectionControllerRequestsLayoutChange:*(a1 + 32)];
 }
 
-- (MUPlaceDescriptionSectionController)initWithMapItem:(id)a3 configuration:(id)a4
+- (MUPlaceDescriptionSectionController)initWithMapItem:(id)item configuration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = MUPlaceDescriptionSectionController;
-  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:a3];
+  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:item];
   if (v8)
   {
     v9 = MUGetPlaceCardLog();
@@ -187,7 +187,7 @@ void __54__MUPlaceDescriptionSectionController__setupTextBlurb__block_invoke_3(u
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceDescriptionSectionControllerInit", "", v12, 2u);
     }
 
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
     [(MUPlaceDescriptionSectionController *)v8 _setupTextBlurb];
     v10 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v10))

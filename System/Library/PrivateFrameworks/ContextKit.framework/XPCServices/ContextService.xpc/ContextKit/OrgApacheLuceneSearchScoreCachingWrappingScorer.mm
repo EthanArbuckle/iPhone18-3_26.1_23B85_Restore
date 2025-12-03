@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchScoreCachingWrappingScorer
-- (OrgApacheLuceneSearchScoreCachingWrappingScorer)initWithOrgApacheLuceneSearchScorer:(id)a3;
+- (OrgApacheLuceneSearchScoreCachingWrappingScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer;
 - (float)score;
 - (id)getChildren;
 @end
 
 @implementation OrgApacheLuceneSearchScoreCachingWrappingScorer
 
-- (OrgApacheLuceneSearchScoreCachingWrappingScorer)initWithOrgApacheLuceneSearchScorer:(id)a3
+- (OrgApacheLuceneSearchScoreCachingWrappingScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer
 {
-  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(self, a3);
+  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(self, scorer);
   self->curDoc_ = -1;
   return self;
 }
@@ -21,13 +21,13 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchScorer *)in docID];
-  if (v4 == self->curDoc_)
+  docID = [(OrgApacheLuceneSearchScorer *)in docID];
+  if (docID == self->curDoc_)
   {
     return self->curScore_;
   }
 
-  v6 = v4;
+  v6 = docID;
   [(OrgApacheLuceneSearchScorer *)self->super.in_ score];
   self->curScore_ = result;
   self->curDoc_ = v6;

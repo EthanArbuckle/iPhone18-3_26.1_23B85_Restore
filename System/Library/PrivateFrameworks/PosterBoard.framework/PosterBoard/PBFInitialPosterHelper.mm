@@ -1,23 +1,23 @@
 @interface PBFInitialPosterHelper
-+ (id)hostConfigurationForRole:(id)a3;
-+ (id)incomingPosterConfigurationForRole:(id)a3 templatePath:(id)a4 userInfo:(id)a5;
-+ (id)initialPosterConfigurationsWithModelCoordinatorProvider:(id)a3 role:(id)a4;
++ (id)hostConfigurationForRole:(id)role;
++ (id)incomingPosterConfigurationForRole:(id)role templatePath:(id)path userInfo:(id)info;
++ (id)initialPosterConfigurationsWithModelCoordinatorProvider:(id)provider role:(id)role;
 @end
 
 @implementation PBFInitialPosterHelper
 
-+ (id)initialPosterConfigurationsWithModelCoordinatorProvider:(id)a3 role:(id)a4
++ (id)initialPosterConfigurationsWithModelCoordinatorProvider:(id)provider role:(id)role
 {
   v78[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  roleCopy = role;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__PBFInitialPosterHelper_initialPosterConfigurationsWithModelCoordinatorProvider_role___block_invoke;
   aBlock[3] = &unk_2782C9468;
-  v7 = v5;
+  v7 = providerCopy;
   v65 = v7;
-  v8 = v6;
+  v8 = roleCopy;
   v66 = v8;
   v55 = _Block_copy(aBlock);
   v9 = PBFLogPosterContents();
@@ -45,12 +45,12 @@
       _os_log_impl(&dword_21B526000, v22, OS_LOG_TYPE_DEFAULT, "(PBFInitialPosterHelper) No configuration path yet... let's see what our defaults are.", buf, 2u);
     }
 
-    v23 = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
-    v24 = [v23 hostConfigurationForRole:v21];
+    mEMORY[0x277D3EF28] = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
+    v24 = [mEMORY[0x277D3EF28] hostConfigurationForRole:v21];
 
     if (v24)
     {
-      v25 = [v24 entries];
+      entries = [v24 entries];
     }
 
     else
@@ -64,7 +64,7 @@
 
       v32 = [objc_alloc(MEMORY[0x277D3E958]) initWithExtensionID:@"com.apple.ambient.AmbientUI.InfographPoster" descriptorID:@"InfographPoster"];
       v74 = v32;
-      v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v74 count:1];
+      entries = [MEMORY[0x277CBEA60] arrayWithObjects:&v74 count:1];
     }
 
     v49 = v24;
@@ -75,7 +75,7 @@
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v29 = v25;
+    v29 = entries;
     v33 = [v29 countByEnumeratingWithState:&v57 objects:v73 count:16];
     if (v33)
     {
@@ -94,10 +94,10 @@
           }
 
           v38 = *(*(&v57 + 1) + 8 * i);
-          v39 = [v38 extensionID];
-          v40 = [v38 descriptorID];
+          extensionID = [v38 extensionID];
+          descriptorID = [v38 descriptorID];
           v56 = 0;
-          v15 = v55[2](v55, v39, v40, &v56);
+          v15 = v55[2](v55, extensionID, descriptorID, &v56);
           v41 = v56;
 
           v42 = PBFLogPosterContents();
@@ -106,12 +106,12 @@
           {
             if (v43)
             {
-              v44 = [v38 extensionID];
-              v45 = [v38 descriptorID];
+              extensionID2 = [v38 extensionID];
+              descriptorID2 = [v38 descriptorID];
               *buf = 138412802;
-              v68 = v44;
+              v68 = extensionID2;
               v69 = 2112;
-              v70 = v45;
+              v70 = descriptorID2;
               v71 = 2112;
               v72 = v41;
               _os_log_impl(&dword_21B526000, v42, OS_LOG_TYPE_DEFAULT, "(PBFInitialPosterHelper) Failed setting up extension %@, descriptor: %@, error: %@", buf, 0x20u);
@@ -122,16 +122,16 @@
           {
             if (v43)
             {
-              v46 = [v38 extensionID];
-              v47 = [v38 descriptorID];
+              extensionID3 = [v38 extensionID];
+              descriptorID3 = [v38 descriptorID];
               *buf = 138412546;
-              v68 = v46;
+              v68 = extensionID3;
               v69 = 2112;
-              v70 = v47;
+              v70 = descriptorID3;
               _os_log_impl(&dword_21B526000, v42, OS_LOG_TYPE_DEFAULT, "(PBFInitialPosterHelper) Generated poster for extension %@, descriptor: %@", buf, 0x16u);
             }
 
-            v42 = [a1 incomingPosterConfigurationForRole:v52 templatePath:v15 userInfo:0];
+            v42 = [self incomingPosterConfigurationForRole:v52 templatePath:v15 userInfo:0];
             [v51 addObject:v42];
           }
         }
@@ -167,9 +167,9 @@
   }
 
   v10 = +[PBFWallpaperKitBridge defaultBridge];
-  v11 = [v10 shouldInstallHeroPosterAsDefaultLockScreenWallpaper];
+  shouldInstallHeroPosterAsDefaultLockScreenWallpaper = [v10 shouldInstallHeroPosterAsDefaultLockScreenWallpaper];
 
-  if (!v11)
+  if (!shouldInstallHeroPosterAsDefaultLockScreenWallpaper)
   {
     v19 = 0;
     v20 = MEMORY[0x277CBEC10];
@@ -202,7 +202,7 @@ LABEL_22:
         _os_log_impl(&dword_21B526000, v29, OS_LOG_TYPE_DEFAULT, "(PBFInitialPosterHelper) Generated legacy poster successfully.", buf, 2u);
       }
 
-      v29 = [a1 incomingPosterConfigurationForRole:v8 templatePath:v15 userInfo:v20];
+      v29 = [self incomingPosterConfigurationForRole:v8 templatePath:v15 userInfo:v20];
       v75 = v29;
       v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v75 count:1];
 
@@ -253,7 +253,7 @@ LABEL_52:
     v77 = @"wallpaperRepresentingIdentifier";
     v78[0] = v13;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:&v77 count:1];
-    v18 = [a1 incomingPosterConfigurationForRole:v8 templatePath:v15 userInfo:v20];
+    v18 = [self incomingPosterConfigurationForRole:v8 templatePath:v15 userInfo:v20];
     v76 = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v76 count:1];
   }
@@ -322,41 +322,41 @@ id __87__PBFInitialPosterHelper_initialPosterConfigurationsWithModelCoordinatorP
   return v11;
 }
 
-+ (id)incomingPosterConfigurationForRole:(id)a3 templatePath:(id)a4 userInfo:(id)a5
++ (id)incomingPosterConfigurationForRole:(id)role templatePath:(id)path userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:v7];
-  [v10 copyContentsOfPath:v8 error:0];
-  v11 = [MEMORY[0x277D3ED60] defaultConfiguredPropertiesForRole:v7];
+  roleCopy = role;
+  pathCopy = path;
+  infoCopy = info;
+  v10 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:roleCopy];
+  [v10 copyContentsOfPath:pathCopy error:0];
+  v11 = [MEMORY[0x277D3ED60] defaultConfiguredPropertiesForRole:roleCopy];
   v12 = [v11 mutableCopy];
 
-  if ([v7 isEqual:*MEMORY[0x277D3EEF0]])
+  if ([roleCopy isEqual:*MEMORY[0x277D3EEF0]])
   {
-    v36 = v8;
-    v13 = [MEMORY[0x277D3EE28] defaultConfiguration];
+    v36 = pathCopy;
+    defaultConfiguration = [MEMORY[0x277D3EE28] defaultConfiguration];
     v14 = objc_alloc(MEMORY[0x277D3EE30]);
-    v15 = [MEMORY[0x277D3EE30] defaultTitleColor];
+    defaultTitleColor = [MEMORY[0x277D3EE30] defaultTitleColor];
     [MEMORY[0x277D3EE30] defaultContentsLuminance];
     LOBYTE(v32) = 1;
-    v35 = v13;
-    v16 = [v14 initWithTimeFontConfiguration:v13 preferredTitleAlignment:0 preferredTitleLayout:0 titleColor:v15 timeNumberingSystem:0 userConfigured:0 contentsLuminance:v32 alternateDateEnabled:0 groupName:?];
+    v35 = defaultConfiguration;
+    v16 = [v14 initWithTimeFontConfiguration:defaultConfiguration preferredTitleAlignment:0 preferredTitleLayout:0 titleColor:defaultTitleColor timeNumberingSystem:0 userConfigured:0 contentsLuminance:v32 alternateDateEnabled:0 groupName:?];
 
     v34 = v16;
     [v12 setTitleStyleConfiguration:v16];
     v17 = +[PBFWallpaperKitBridge defaultBridge];
-    LODWORD(v15) = [v17 shouldDefaultWallpaperDisableModifyingLegibilityBlur];
+    LODWORD(defaultTitleColor) = [v17 shouldDefaultWallpaperDisableModifyingLegibilityBlur];
 
-    v18 = [objc_alloc(MEMORY[0x277D3EDC8]) initWithLegibilityBlurEnabled:0 allowsModifyingLegibilityBlur:v15 ^ 1];
-    v19 = [objc_alloc(MEMORY[0x277D3EDA8]) initWithLegibilityBlurEnabled:0 allowsModifyingLegibilityBlur:v15 ^ 1];
+    v18 = [objc_alloc(MEMORY[0x277D3EDC8]) initWithLegibilityBlurEnabled:0 allowsModifyingLegibilityBlur:defaultTitleColor ^ 1];
+    v19 = [objc_alloc(MEMORY[0x277D3EDA8]) initWithLegibilityBlurEnabled:0 allowsModifyingLegibilityBlur:defaultTitleColor ^ 1];
     v20 = objc_alloc_init(MEMORY[0x277D3EE18]);
     v21 = objc_alloc_init(MEMORY[0x277D3EDA0]);
     v22 = objc_alloc_init(MEMORY[0x277D3EDB8]);
     v33 = v18;
     v23 = [objc_alloc(MEMORY[0x277D3EDB0]) initWithSelectedAppearanceType:0 lockPosterAppearance:v18 solidColorAppearance:v20 gradientAppearance:v21 homePosterAppearance:v19 customizationConfiguration:v22];
     [v12 setHomeScreenConfiguration:v23];
-    v24 = v9;
+    v24 = infoCopy;
     v25 = [objc_alloc(MEMORY[0x277D3EDF8]) initWithDepthEffectDisabled:0 motionEffectsDisabled:0];
     [v12 setRenderingConfiguration:v25];
     if ([v24 count])
@@ -364,14 +364,14 @@ id __87__PBFInitialPosterHelper_initialPosterConfigurationsWithModelCoordinatorP
       [v10 storeUserInfo:v24 error:0];
     }
 
-    v9 = v24;
+    infoCopy = v24;
     v26 = v35;
-    v8 = v36;
+    pathCopy = v36;
   }
 
   else
   {
-    if (![v7 isEqual:*MEMORY[0x277D3EE98]])
+    if (![roleCopy isEqual:*MEMORY[0x277D3EE98]])
     {
       goto LABEL_8;
     }
@@ -382,21 +382,21 @@ id __87__PBFInitialPosterHelper_initialPosterConfigurationsWithModelCoordinatorP
 
 LABEL_8:
   v27 = objc_alloc(MEMORY[0x277D3ECE0]);
-  v28 = [v10 _path];
-  v29 = [v8 serverIdentity];
-  v30 = [v27 initWithNewPath:v28 destinationPosterUUID:0 sourceIdentity:v29 configuredProperties:v12 attributes:0];
+  _path = [v10 _path];
+  serverIdentity = [pathCopy serverIdentity];
+  v30 = [v27 initWithNewPath:_path destinationPosterUUID:0 sourceIdentity:serverIdentity configuredProperties:v12 attributes:0];
 
   [v30 trackTemporaryState:v10];
 
   return v30;
 }
 
-+ (id)hostConfigurationForRole:(id)a3
++ (id)hostConfigurationForRole:(id)role
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
-  v5 = [v4 hostConfigurationForRole:v3];
+  roleCopy = role;
+  mEMORY[0x277D3EF28] = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
+  v5 = [mEMORY[0x277D3EF28] hostConfigurationForRole:roleCopy];
 
   if (v5)
   {
@@ -404,7 +404,7 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  if ([v3 isEqual:*MEMORY[0x277D3EE98]])
+  if ([roleCopy isEqual:*MEMORY[0x277D3EE98]])
   {
     v7 = MEMORY[0x277D3E950];
     v8 = [MEMORY[0x277D3E958] entryWithExtensionID:@"com.apple.ambient.AmbientUI.InfographPoster" descriptorID:@"InfographPoster"];
@@ -415,15 +415,15 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  if (![v3 isEqual:*MEMORY[0x277D3EEF0]])
+  if (![roleCopy isEqual:*MEMORY[0x277D3EEF0]])
   {
     goto LABEL_13;
   }
 
   v10 = +[PBFWallpaperKitBridge defaultBridge];
-  v11 = [v10 shouldInstallHeroPosterAsDefaultLockScreenWallpaper];
+  shouldInstallHeroPosterAsDefaultLockScreenWallpaper = [v10 shouldInstallHeroPosterAsDefaultLockScreenWallpaper];
 
-  if (v11)
+  if (shouldInstallHeroPosterAsDefaultLockScreenWallpaper)
   {
     v18 = 0;
     v12 = defaultLockScreenWallpaperExtensionIdentifier(&v18);

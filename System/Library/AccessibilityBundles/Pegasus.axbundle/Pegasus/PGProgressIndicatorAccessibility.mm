@@ -1,18 +1,18 @@
 @interface PGProgressIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 @end
 
 @implementation PGProgressIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PGProgressIndicator" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PGProgressIndicator" hasInstanceVariable:@"_elapsedTrack" withType:"PGVibrantFillView"];
-  [v3 validateClass:@"PGMaterialView"];
-  [v3 validateClass:@"PGProgressIndicator" hasInstanceVariable:@"_completeTrack" withType:"PGVibrantFillView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PGProgressIndicator" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PGProgressIndicator" hasInstanceVariable:@"_elapsedTrack" withType:"PGVibrantFillView"];
+  [validationsCopy validateClass:@"PGMaterialView"];
+  [validationsCopy validateClass:@"PGProgressIndicator" hasInstanceVariable:@"_completeTrack" withType:"PGVibrantFillView"];
 }
 
 - (id)accessibilityLabel

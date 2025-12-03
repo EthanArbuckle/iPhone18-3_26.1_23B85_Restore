@@ -1,25 +1,25 @@
 @interface SKStorePageRequest
-- (SKStorePageRequest)initWithXPCEncoding:(id)a3;
+- (SKStorePageRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SKStorePageRequest
 
-- (SKStorePageRequest)initWithXPCEncoding:(id)a3
+- (SKStorePageRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
+  encodingCopy = encoding;
   v14.receiver = self;
   v14.super_class = SKStorePageRequest;
   v5 = [(SKStorePageRequest *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"0"];
+    v6 = [encodingCopy objectForKey:@"0"];
     if (objc_opt_respondsToSelector())
     {
       v5->_pageStyle = [v6 integerValue];
     }
 
-    v7 = [v4 objectForKey:@"1"];
+    v7 = [encodingCopy objectForKey:@"1"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -29,7 +29,7 @@
       v5->_productParameters = v8;
     }
 
-    v10 = [v4 objectForKey:@"2"];
+    v10 = [encodingCopy objectForKey:@"2"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -58,8 +58,8 @@
   productURL = self->_productURL;
   if (productURL)
   {
-    v7 = [(NSURL *)productURL absoluteString];
-    [v3 setObject:v7 forKey:@"2"];
+    absoluteString = [(NSURL *)productURL absoluteString];
+    [v3 setObject:absoluteString forKey:@"2"];
   }
 
   return v3;

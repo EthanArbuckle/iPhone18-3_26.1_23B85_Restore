@@ -1,11 +1,11 @@
 @interface CNGeminiChannel
 + (id)os_log;
-- (CNGeminiChannel)initWithCoder:(id)a3;
-- (id)initWithChannelIdentifier:(void *)a3 localizedLabel:(void *)a4 localizedBadgeLabel:(void *)a5 handle:(void *)a6 senderIdentity:(char)a7 available:;
-- (id)initWithDanglingPlanItem:(id *)a1;
-- (id)initWithDisabledCellularPlanItem:(id *)a1;
-- (id)initWithSenderIdentity:(id *)a1;
-- (void)encodeWithCoder:(id)a3;
+- (CNGeminiChannel)initWithCoder:(id)coder;
+- (id)initWithChannelIdentifier:(void *)identifier localizedLabel:(void *)label localizedBadgeLabel:(void *)badgeLabel handle:(void *)handle senderIdentity:(char)identity available:;
+- (id)initWithDanglingPlanItem:(id *)item;
+- (id)initWithDisabledCellularPlanItem:(id *)item;
+- (id)initWithSenderIdentity:(id *)identity;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNGeminiChannel
@@ -31,120 +31,120 @@ uint64_t __25__CNGeminiChannel_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   channelIdentifier = self->_channelIdentifier;
-  v5 = a3;
-  [v5 encodeObject:channelIdentifier forKey:@"_channelIdentifier"];
-  [v5 encodeObject:self->_localizedLabel forKey:@"_localizedLabel"];
-  [v5 encodeObject:self->_localizedBadgeLabel forKey:@"_localizedBadgeLabel"];
-  [v5 encodeObject:self->_handle forKey:@"_handle"];
-  [v5 encodeObject:self->_senderIdentity forKey:@"_senderIdentity"];
-  [v5 encodeBool:self->_available forKey:@"_available"];
+  coderCopy = coder;
+  [coderCopy encodeObject:channelIdentifier forKey:@"_channelIdentifier"];
+  [coderCopy encodeObject:self->_localizedLabel forKey:@"_localizedLabel"];
+  [coderCopy encodeObject:self->_localizedBadgeLabel forKey:@"_localizedBadgeLabel"];
+  [coderCopy encodeObject:self->_handle forKey:@"_handle"];
+  [coderCopy encodeObject:self->_senderIdentity forKey:@"_senderIdentity"];
+  [coderCopy encodeBool:self->_available forKey:@"_available"];
 }
 
-- (id)initWithSenderIdentity:(id *)a1
+- (id)initWithSenderIdentity:(id *)identity
 {
-  v2 = a1;
-  if (a1)
+  identityCopy = identity;
+  if (identity)
   {
     v3 = a2;
-    v4 = [v3 accountUUID];
-    v5 = [v4 UUIDString];
-    v6 = [v3 localizedName];
-    v7 = [v3 localizedShortName];
-    v8 = [v3 handle];
-    v9 = [v8 value];
-    v10 = [(CNGeminiChannel *)v2 initWithChannelIdentifier:v5 localizedLabel:v6 localizedBadgeLabel:v7 handle:v9 senderIdentity:v3 available:1];
+    accountUUID = [v3 accountUUID];
+    uUIDString = [accountUUID UUIDString];
+    localizedName = [v3 localizedName];
+    localizedShortName = [v3 localizedShortName];
+    handle = [v3 handle];
+    value = [handle value];
+    v10 = [(CNGeminiChannel *)identityCopy initWithChannelIdentifier:uUIDString localizedLabel:localizedName localizedBadgeLabel:localizedShortName handle:value senderIdentity:v3 available:1];
 
-    v2 = v10;
+    identityCopy = v10;
   }
 
-  return v2;
+  return identityCopy;
 }
 
-- (id)initWithChannelIdentifier:(void *)a3 localizedLabel:(void *)a4 localizedBadgeLabel:(void *)a5 handle:(void *)a6 senderIdentity:(char)a7 available:
+- (id)initWithChannelIdentifier:(void *)identifier localizedLabel:(void *)label localizedBadgeLabel:(void *)badgeLabel handle:(void *)handle senderIdentity:(char)identity available:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (a1)
+  identifierCopy = identifier;
+  labelCopy = label;
+  badgeLabelCopy = badgeLabel;
+  handleCopy = handle;
+  if (self)
   {
-    v27.receiver = a1;
+    v27.receiver = self;
     v27.super_class = CNGeminiChannel;
-    a1 = objc_msgSendSuper2(&v27, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v27, sel_init);
+    if (self)
     {
       v18 = [v13 copy];
-      v19 = a1[2];
-      a1[2] = v18;
+      v19 = self[2];
+      self[2] = v18;
 
-      v20 = [v14 copy];
-      v21 = a1[3];
-      a1[3] = v20;
+      v20 = [identifierCopy copy];
+      v21 = self[3];
+      self[3] = v20;
 
-      v22 = [v15 copy];
-      v23 = a1[4];
-      a1[4] = v22;
+      v22 = [labelCopy copy];
+      v23 = self[4];
+      self[4] = v22;
 
-      v24 = [v16 copy];
-      v25 = a1[5];
-      a1[5] = v24;
+      v24 = [badgeLabelCopy copy];
+      v25 = self[5];
+      self[5] = v24;
 
-      objc_storeStrong(a1 + 6, a6);
-      *(a1 + 8) = a7;
+      objc_storeStrong(self + 6, handle);
+      *(self + 8) = identity;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithDanglingPlanItem:(id *)a1
+- (id)initWithDanglingPlanItem:(id *)item
 {
-  v2 = a1;
-  if (a1)
+  itemCopy = item;
+  if (item)
   {
     v3 = a2;
-    v4 = [v3 simLabelID];
-    v5 = [v3 userLabel];
-    v6 = [v5 label];
-    v7 = [v3 phoneNumber];
+    simLabelID = [v3 simLabelID];
+    userLabel = [v3 userLabel];
+    label = [userLabel label];
+    phoneNumber = [v3 phoneNumber];
 
-    v2 = [(CNGeminiChannel *)v2 initWithChannelIdentifier:v4 localizedLabel:v6 localizedBadgeLabel:0 handle:v7 senderIdentity:0 available:0];
+    itemCopy = [(CNGeminiChannel *)itemCopy initWithChannelIdentifier:simLabelID localizedLabel:label localizedBadgeLabel:0 handle:phoneNumber senderIdentity:0 available:0];
   }
 
-  return v2;
+  return itemCopy;
 }
 
-- (id)initWithDisabledCellularPlanItem:(id *)a1
+- (id)initWithDisabledCellularPlanItem:(id *)item
 {
-  v2 = a1;
-  if (a1)
+  itemCopy = item;
+  if (item)
   {
     v3 = a2;
-    v4 = [v3 userLabel];
-    v5 = [v4 labelId];
-    v6 = [v3 userLabel];
-    v7 = [v6 label];
-    v8 = [v3 phoneNumber];
+    userLabel = [v3 userLabel];
+    labelId = [userLabel labelId];
+    userLabel2 = [v3 userLabel];
+    label = [userLabel2 label];
+    phoneNumber = [v3 phoneNumber];
 
-    v2 = [(CNGeminiChannel *)v2 initWithChannelIdentifier:v5 localizedLabel:v7 localizedBadgeLabel:0 handle:v8 senderIdentity:0 available:0];
+    itemCopy = [(CNGeminiChannel *)itemCopy initWithChannelIdentifier:labelId localizedLabel:label localizedBadgeLabel:0 handle:phoneNumber senderIdentity:0 available:0];
   }
 
-  return v2;
+  return itemCopy;
 }
 
-- (CNGeminiChannel)initWithCoder:(id)a3
+- (CNGeminiChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_channelIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localizedLabel"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localizedBadgeLabel"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
-  v9 = [v4 decodeObjectOfClass:_MergedGlobals[0]() forKey:@"_senderIdentity"];
-  v10 = [v4 decodeBoolForKey:@"_available"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_channelIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localizedLabel"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localizedBadgeLabel"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
+  v9 = [coderCopy decodeObjectOfClass:_MergedGlobals[0]() forKey:@"_senderIdentity"];
+  v10 = [coderCopy decodeBoolForKey:@"_available"];
 
   v11 = [(CNGeminiChannel *)&self->super.isa initWithChannelIdentifier:v5 localizedLabel:v6 localizedBadgeLabel:v7 handle:v8 senderIdentity:v9 available:v10];
   return v11;

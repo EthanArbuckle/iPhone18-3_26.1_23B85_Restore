@@ -1,18 +1,18 @@
 @interface FlowcaseCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation FlowcaseCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"headline" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"headline" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.FlowcaseCell" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

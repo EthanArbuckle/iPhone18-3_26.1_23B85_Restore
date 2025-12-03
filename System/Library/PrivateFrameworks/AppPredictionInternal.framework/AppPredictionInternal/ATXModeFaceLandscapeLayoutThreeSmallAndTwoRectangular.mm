@@ -1,15 +1,15 @@
 @interface ATXModeFaceLandscapeLayoutThreeSmallAndTwoRectangular
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4;
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face;
 @end
 
 @implementation ATXModeFaceLandscapeLayoutThreeSmallAndTwoRectangular
 
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 _pas_filteredArrayWithTest:&__block_literal_global_110];
-  v8 = [v6 _pas_filteredArrayWithTest:&__block_literal_global_12];
+  faceCopy = face;
+  candidatesCopy = candidates;
+  v7 = [candidatesCopy _pas_filteredArrayWithTest:&__block_literal_global_110];
+  v8 = [candidatesCopy _pas_filteredArrayWithTest:&__block_literal_global_12];
 
   v9 = objc_opt_new();
   v10 = [v8 count];
@@ -48,7 +48,7 @@
   v17 = [v14 subarrayWithRange:{0, v16}];
 
   [v13 addObjectsFromArray:v17];
-  [v5 setLandscapeComplications:v13];
+  [faceCopy setLandscapeComplications:v13];
 
   return 1;
 }

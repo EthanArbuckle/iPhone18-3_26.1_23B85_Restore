@@ -1,31 +1,31 @@
 @interface MFDatePickerItemIdentifier
-- (BOOL)isEqual:(id)a3;
-- (MFDatePickerItemIdentifier)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (MFDatePickerItemIdentifier)initWithIdentifier:(id)identifier type:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation MFDatePickerItemIdentifier
 
-- (MFDatePickerItemIdentifier)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (MFDatePickerItemIdentifier)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MFDatePickerItemIdentifier;
   v8 = [(MFDatePickerItemIdentifier *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_type = type;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -35,13 +35,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MFDatePickerItemIdentifier *)self identifier];
-      v7 = [(MFDatePickerItemIdentifier *)v5 identifier];
-      if (v6 == v7)
+      v5 = equalCopy;
+      identifier = [(MFDatePickerItemIdentifier *)self identifier];
+      identifier2 = [(MFDatePickerItemIdentifier *)v5 identifier];
+      if (identifier == identifier2)
       {
-        v9 = [(MFDatePickerItemIdentifier *)self type];
-        v8 = v9 == [(MFDatePickerItemIdentifier *)v5 type];
+        type = [(MFDatePickerItemIdentifier *)self type];
+        v8 = type == [(MFDatePickerItemIdentifier *)v5 type];
       }
 
       else
@@ -61,8 +61,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MFDatePickerItemIdentifier *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(MFDatePickerItemIdentifier *)self identifier];
+  v4 = [identifier hash];
 
   return 33 * v4 + [(MFDatePickerItemIdentifier *)self type]+ 5859909;
 }

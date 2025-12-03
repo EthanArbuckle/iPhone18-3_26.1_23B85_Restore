@@ -1,33 +1,33 @@
 @interface COStateNotification
-- (COStateNotification)initWithCoder:(id)a3;
-- (COStateNotification)initWithState:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COStateNotification)initWithCoder:(id)coder;
+- (COStateNotification)initWithState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COStateNotification
 
-- (COStateNotification)initWithState:(id)a3
+- (COStateNotification)initWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = COStateNotification;
   v6 = [(COMeshCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_state, a3);
+    objc_storeStrong(&v6->_state, state);
   }
 
   return v7;
 }
 
-- (COStateNotification)initWithCoder:(id)a3
+- (COStateNotification)initWithCoder:(id)coder
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = COStateNotification;
-  v5 = [(COMeshCommand *)&v43 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v43 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -36,7 +36,7 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"state"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"state"];
     state = v5->_state;
     v5->_state = v12;
 
@@ -49,13 +49,13 @@
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v14 = [(NSDictionary *)v5->_state allKeys];
-        v15 = [v14 countByEnumeratingWithState:&v39 objects:v45 count:16];
+        allKeys = [(NSDictionary *)v5->_state allKeys];
+        v15 = [allKeys countByEnumeratingWithState:&v39 objects:v45 count:16];
         if (v15)
         {
           v16 = v15;
           v17 = *v40;
-          v33 = v14;
+          v33 = allKeys;
           v34 = v11;
           v30 = *v40;
           while (2)
@@ -66,7 +66,7 @@
             {
               if (*v40 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(allKeys);
               }
 
               v32 = v18;
@@ -112,7 +112,7 @@ LABEL_25:
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
 
-                      v14 = v33;
+                      allKeys = v33;
                       v11 = v34;
                       goto LABEL_24;
                     }
@@ -129,7 +129,7 @@ LABEL_25:
               }
 
               v18 = v32 + 1;
-              v14 = v33;
+              allKeys = v33;
               v11 = v34;
               v7 = 0x277CBE000;
               v17 = v30;
@@ -149,7 +149,7 @@ LABEL_25:
 
       else
       {
-        v14 = v5;
+        allKeys = v5;
 LABEL_26:
         v5 = 0;
       }
@@ -160,14 +160,14 @@ LABEL_26:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COStateNotification;
-  v4 = a3;
-  [(COMeshCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMeshCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COStateNotification *)self state:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"state"];
+  [coderCopy encodeObject:v5 forKey:@"state"];
 }
 
 @end

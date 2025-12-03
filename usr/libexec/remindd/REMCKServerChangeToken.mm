@@ -1,10 +1,10 @@
 @interface REMCKServerChangeToken
-+ (id)addServerChangeTokenForAccount:(id)a3 ckServerChangeToken:(id)a4 zoneID:(id)a5 databaseScope:(int64_t)a6 context:(id)a7;
-+ (id)serverChangeTokenForAccount:(id)a3 zoneID:(id)a4 databaseScope:(int64_t)a5 context:(id)a6;
-+ (id)serverChangeTokensMatchingPredicate:(id)a3 inContext:(id)a4;
++ (id)addServerChangeTokenForAccount:(id)account ckServerChangeToken:(id)token zoneID:(id)d databaseScope:(int64_t)scope context:(id)context;
++ (id)serverChangeTokenForAccount:(id)account zoneID:(id)d databaseScope:(int64_t)scope context:(id)context;
++ (id)serverChangeTokensMatchingPredicate:(id)predicate inContext:(id)context;
 - (CKServerChangeToken)serverChangeToken;
 - (id)ic_loggingValues;
-- (void)setServerChangeToken:(id)a3;
+- (void)setServerChangeToken:(id)token;
 @end
 
 @implementation REMCKServerChangeToken
@@ -14,10 +14,10 @@
   serverChangeToken = self->_serverChangeToken;
   if (!serverChangeToken)
   {
-    v4 = [(REMCKServerChangeToken *)self serverChangeTokenData];
-    if (v4)
+    serverChangeTokenData = [(REMCKServerChangeToken *)self serverChangeTokenData];
+    if (serverChangeTokenData)
     {
-      v5 = [[CKServerChangeToken alloc] initWithData:v4];
+      v5 = [[CKServerChangeToken alloc] initWithData:serverChangeTokenData];
       v6 = self->_serverChangeToken;
       self->_serverChangeToken = v5;
     }
@@ -28,100 +28,100 @@
   return serverChangeToken;
 }
 
-- (void)setServerChangeToken:(id)a3
+- (void)setServerChangeToken:(id)token
 {
-  v8 = a3;
-  v5 = [(REMCKServerChangeToken *)self serverChangeToken];
-  v6 = [v5 isEqual:v8];
+  tokenCopy = token;
+  serverChangeToken = [(REMCKServerChangeToken *)self serverChangeToken];
+  v6 = [serverChangeToken isEqual:tokenCopy];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_serverChangeToken, a3);
-    v7 = [v8 data];
-    [(REMCKServerChangeToken *)self setServerChangeTokenData:v7];
+    objc_storeStrong(&self->_serverChangeToken, token);
+    data = [tokenCopy data];
+    [(REMCKServerChangeToken *)self setServerChangeTokenData:data];
   }
 }
 
-+ (id)addServerChangeTokenForAccount:(id)a3 ckServerChangeToken:(id)a4 zoneID:(id)a5 databaseScope:(int64_t)a6 context:(id)a7
++ (id)addServerChangeTokenForAccount:(id)account ckServerChangeToken:(id)token zoneID:(id)d databaseScope:(int64_t)scope context:(id)context
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a7;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a1 entity];
-  v17 = [v16 name];
+  scopeCopy = scope;
+  dCopy = d;
+  contextCopy = context;
+  tokenCopy = token;
+  accountCopy = account;
+  entity = [self entity];
+  name = [entity name];
 
-  if (!v17)
+  if (!name)
   {
-    sub_10076AFFC(a1);
+    sub_10076AFFC(self);
   }
 
-  v18 = [NSEntityDescription insertNewObjectForEntityForName:v17 inManagedObjectContext:v13];
-  [v18 setAccount:v15];
-  [v15 addCkServerChangeTokensObject:v18];
+  v18 = [NSEntityDescription insertNewObjectForEntityForName:name inManagedObjectContext:contextCopy];
+  [v18 setAccount:accountCopy];
+  [accountCopy addCkServerChangeTokensObject:v18];
 
-  [v18 setServerChangeToken:v14];
-  v19 = [v12 zoneName];
-  [v18 setZoneName:v19];
+  [v18 setServerChangeToken:tokenCopy];
+  zoneName = [dCopy zoneName];
+  [v18 setZoneName:zoneName];
 
-  v20 = [v12 ownerName];
-  v21 = [v20 isEqualToString:CKCurrentUserDefaultName];
+  ownerName = [dCopy ownerName];
+  v21 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
   if ((v21 & 1) == 0)
   {
-    v22 = [v12 ownerName];
-    [v18 setOwnerName:v22];
+    ownerName2 = [dCopy ownerName];
+    [v18 setOwnerName:ownerName2];
   }
 
-  [v18 setDatabaseScope:v8];
+  [v18 setDatabaseScope:scopeCopy];
 
   return v18;
 }
 
-+ (id)serverChangeTokenForAccount:(id)a3 zoneID:(id)a4 databaseScope:(int64_t)a5 context:(id)a6
++ (id)serverChangeTokenForAccount:(id)account zoneID:(id)d databaseScope:(int64_t)scope context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11 && ([v11 ownerName], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", CKCurrentUserDefaultName), v13, (v14 & 1) == 0))
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
+  if (dCopy && ([dCopy ownerName], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", CKCurrentUserDefaultName), v13, (v14 & 1) == 0))
   {
-    v15 = [v11 ownerName];
+    ownerName = [dCopy ownerName];
   }
 
   else
   {
-    v15 = 0;
+    ownerName = 0;
   }
 
-  v16 = [NSPredicate predicateWithFormat:@"account == %@", v10];
-  v27[0] = v16;
-  [v11 zoneName];
-  v17 = v26 = v10;
+  accountCopy = [NSPredicate predicateWithFormat:@"account == %@", accountCopy];
+  v27[0] = accountCopy;
+  [dCopy zoneName];
+  v17 = v26 = accountCopy;
   v18 = [NSPredicate predicateWithFormat:@"zoneName == %@", v17];
   v27[1] = v18;
-  v19 = [NSPredicate predicateWithFormat:@"ownerName == %@", v15];
+  v19 = [NSPredicate predicateWithFormat:@"ownerName == %@", ownerName];
   v27[2] = v19;
-  v20 = [NSPredicate predicateWithFormat:@"databaseScope == %ld", a5];
-  v27[3] = v20;
+  scope = [NSPredicate predicateWithFormat:@"databaseScope == %ld", scope];
+  v27[3] = scope;
   v21 = [NSArray arrayWithObjects:v27 count:4];
 
   v22 = [NSCompoundPredicate andPredicateWithSubpredicates:v21];
-  v23 = [a1 serverChangeTokensMatchingPredicate:v22 inContext:v12];
-  v24 = [v23 firstObject];
+  v23 = [self serverChangeTokensMatchingPredicate:v22 inContext:contextCopy];
+  firstObject = [v23 firstObject];
 
-  return v24;
+  return firstObject;
 }
 
-+ (id)serverChangeTokensMatchingPredicate:(id)a3 inContext:(id)a4
++ (id)serverChangeTokensMatchingPredicate:(id)predicate inContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 fetchRequest];
-  [v8 setPredicate:v7];
+  contextCopy = context;
+  predicateCopy = predicate;
+  fetchRequest = [self fetchRequest];
+  [fetchRequest setPredicate:predicateCopy];
 
   v13 = 0;
-  v9 = [v6 executeFetchRequest:v8 error:&v13];
+  v9 = [contextCopy executeFetchRequest:fetchRequest error:&v13];
 
   v10 = v13;
   if (v10)
@@ -139,15 +139,15 @@
 - (id)ic_loggingValues
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(REMCKServerChangeToken *)self managedObjectContext];
+  managedObjectContext = [(REMCKServerChangeToken *)self managedObjectContext];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C0AD0;
   v8[3] = &unk_1008D9B98;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  [v4 performBlockAndWait:v8];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v8];
 
   v6 = v5;
   return v5;

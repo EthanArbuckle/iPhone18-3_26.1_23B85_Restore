@@ -7,8 +7,8 @@
 
 - (uint64_t)mf_makeDirectoryWithMode:()MFDirectoryPathUtils
 {
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 mf_makeCompletePath:a1 mode:a3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager mf_makeCompletePath:self mode:a3];
 
   return v6;
 }
@@ -23,7 +23,7 @@
     v4 = v5;
   }
 
-  v6 = [a1 hasPrefix:v4];
+  v6 = [self hasPrefix:v4];
 
   return v6;
 }

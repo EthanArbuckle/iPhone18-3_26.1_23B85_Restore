@@ -1,7 +1,7 @@
 @interface _MPCProtoDelegateInfoTokenE
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)expirationDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)playerDelegateInfoData;
@@ -10,9 +10,9 @@
 - (uint64_t)setSessionID:(uint64_t)result;
 - (uint64_t)storefront;
 - (unint64_t)hash;
-- (void)setPlayerDelegateInfoData:(uint64_t)a1;
-- (void)setStorefront:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setPlayerDelegateInfoData:(uint64_t)data;
+- (void)setStorefront:(uint64_t)storefront;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoDelegateInfoTokenE
@@ -67,16 +67,16 @@
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   playerDelegateInfoData = self->_playerDelegateInfoData;
-  if (playerDelegateInfoData | *(v4 + 3))
+  if (playerDelegateInfoData | *(equalCopy + 3))
   {
     if (![(NSData *)playerDelegateInfoData isEqual:?])
     {
@@ -85,7 +85,7 @@
   }
 
   storefront = self->_storefront;
-  if (storefront | *(v4 + 4))
+  if (storefront | *(equalCopy + 4))
   {
     if (![(NSString *)storefront isEqual:?])
     {
@@ -95,23 +95,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_expirationDate != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_expirationDate != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 2) == 0;
+  v7 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_sessionID != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_sessionID != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
@@ -124,14 +124,14 @@ LABEL_16:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_playerDelegateInfoData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_playerDelegateInfoData copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_storefront copyWithZone:a3];
+  v8 = [(NSString *)self->_storefront copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -152,45 +152,45 @@ LABEL_16:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_playerDelegateInfoData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_storefront)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   playerDelegateInfoData = self->_playerDelegateInfoData;
   if (playerDelegateInfoData)
   {
-    [v3 setObject:playerDelegateInfoData forKey:@"playerDelegateInfoData"];
+    [dictionary setObject:playerDelegateInfoData forKey:@"playerDelegateInfoData"];
   }
 
   storefront = self->_storefront;
@@ -223,8 +223,8 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = _MPCProtoDelegateInfoTokenE;
   v4 = [(_MPCProtoDelegateInfoTokenE *)&v8 description];
-  v5 = [(_MPCProtoDelegateInfoTokenE *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoDelegateInfoTokenE *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -251,19 +251,19 @@ LABEL_16:
   return result;
 }
 
-- (void)setPlayerDelegateInfoData:(uint64_t)a1
+- (void)setPlayerDelegateInfoData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((data + 24), a2);
   }
 }
 
-- (void)setStorefront:(uint64_t)a1
+- (void)setStorefront:(uint64_t)storefront
 {
-  if (a1)
+  if (storefront)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((storefront + 32), a2);
   }
 }
 
@@ -289,9 +289,9 @@ LABEL_16:
 
 - (double)expirationDate
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else

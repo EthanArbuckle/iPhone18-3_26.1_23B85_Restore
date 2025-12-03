@@ -1,41 +1,41 @@
 @interface MDMSSRequestDelegate
-- (MDMSSRequestDelegate)initWithRequest:(id)a3;
-- (void)_startTimeout:(double)a3 completionBlock:(id)a4;
-- (void)_timerDidFire:(id)a3;
+- (MDMSSRequestDelegate)initWithRequest:(id)request;
+- (void)_startTimeout:(double)timeout completionBlock:(id)block;
+- (void)_timerDidFire:(id)fire;
 - (void)cancel;
 - (void)dealloc;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)requestDidFinish:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)requestDidFinish:(id)finish;
 @end
 
 @implementation MDMSSRequestDelegate
 
-- (MDMSSRequestDelegate)initWithRequest:(id)a3
+- (MDMSSRequestDelegate)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v15.receiver = self;
   v15.super_class = MDMSSRequestDelegate;
   v6 = [(MDMSSRequestDelegate *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!requestCopy)
     {
       [MDMSSRequestDelegate initWithRequest:];
     }
 
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
     [(SSRequest *)v7->_request setDelegate:v7];
     v8 = objc_alloc(MEMORY[0x277CBEBB8]);
-    v9 = [MEMORY[0x277CBEAA8] distantFuture];
-    v10 = [MEMORY[0x277CBEAA8] distantFuture];
-    [v10 timeIntervalSinceReferenceDate];
-    v11 = [v8 initWithFireDate:v9 interval:v7 target:sel__timerDidFire_ selector:v7 userInfo:1 repeats:?];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+    [distantFuture2 timeIntervalSinceReferenceDate];
+    v11 = [v8 initWithFireDate:distantFuture interval:v7 target:sel__timerDidFire_ selector:v7 userInfo:1 repeats:?];
     timeoutTimer = v7->_timeoutTimer;
     v7->_timeoutTimer = v11;
 
-    v13 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v13 addTimer:v7->_timeoutTimer forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:v7->_timeoutTimer forMode:*MEMORY[0x277CBE738]];
   }
 
   return v7;
@@ -49,17 +49,17 @@
   [(MDMSSRequestDelegate *)&v3 dealloc];
 }
 
-- (void)_startTimeout:(double)a3 completionBlock:(id)a4
+- (void)_startTimeout:(double)timeout completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__MDMSSRequestDelegate__startTimeout_completionBlock___block_invoke;
   v8[3] = &unk_27982BB68;
-  v10 = a3;
+  timeoutCopy = timeout;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = blockCopy;
+  v7 = blockCopy;
   _performBlockOnMainThread(v8);
 }
 
@@ -154,10 +154,10 @@ uint64_t __30__MDMSSRequestDelegate_cancel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = *DMCLogObjects();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -165,14 +165,14 @@ uint64_t __30__MDMSSRequestDelegate_cancel__block_invoke(uint64_t a1)
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
-    v21 = v5;
+    v21 = errorCopy;
     v8 = v19;
     _os_log_impl(&dword_2561F5000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Request failed. Error: %{public}@", buf, 0x16u);
   }
 
   timeoutTimer = self->_timeoutTimer;
-  v10 = [MEMORY[0x277CBEAA8] distantFuture];
-  [(NSTimer *)timeoutTimer setFireDate:v10];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [(NSTimer *)timeoutTimer setFireDate:distantFuture];
 
   v11 = _Block_copy(self->_completionBlock);
   completionBlock = self->_completionBlock;
@@ -186,14 +186,14 @@ uint64_t __30__MDMSSRequestDelegate_cancel__block_invoke(uint64_t a1)
     v15[2] = __49__MDMSSRequestDelegate_request_didFailWithError___block_invoke;
     v15[3] = &unk_27982B898;
     v17 = v11;
-    v16 = v5;
+    v16 = errorCopy;
     dispatch_async(v13, v15);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = *DMCLogObjects();
@@ -207,8 +207,8 @@ uint64_t __30__MDMSSRequestDelegate_cancel__block_invoke(uint64_t a1)
   }
 
   timeoutTimer = self->_timeoutTimer;
-  v8 = [MEMORY[0x277CBEAA8] distantFuture];
-  [(NSTimer *)timeoutTimer setFireDate:v8];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [(NSTimer *)timeoutTimer setFireDate:distantFuture];
 
   v9 = _Block_copy(self->_completionBlock);
   completionBlock = self->_completionBlock;
@@ -228,7 +228,7 @@ uint64_t __30__MDMSSRequestDelegate_cancel__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_timerDidFire:(id)a3
+- (void)_timerDidFire:(id)fire
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = *DMCLogObjects();

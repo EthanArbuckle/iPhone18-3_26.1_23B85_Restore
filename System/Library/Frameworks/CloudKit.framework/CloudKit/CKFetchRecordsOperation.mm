@@ -1,28 +1,28 @@
 @interface CKFetchRecordsOperation
 + (CKFetchRecordsOperation)fetchCurrentUserRecordOperation;
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKFetchRecordsOperation)init;
 - (CKFetchRecordsOperation)initWithRecordIDs:(NSArray *)recordIDs;
 - (id)activityCreate;
 - (id)perRecordETagMatchedBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
 - (void)fetchRecordsCompletionBlock;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleAssetDataForRecordID:(id)a3 recordKey:(id)a4 arrayIndex:(int64_t)a5 data:(id)a6 offset:(unint64_t)a7;
-- (void)handleFetchForRecordID:(id)a3 didProgress:(double)a4;
-- (void)handleFetchForRecordID:(id)a3 record:(id)a4 error:(id)a5;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleAssetDataForRecordID:(id)d recordKey:(id)key arrayIndex:(int64_t)index data:(id)data offset:(unint64_t)offset;
+- (void)handleFetchForRecordID:(id)d didProgress:(double)progress;
+- (void)handleFetchForRecordID:(id)d record:(id)record error:(id)error;
 - (void)perRecordCompletionBlock;
 - (void)perRecordProgressBlock;
 - (void)performCKOperation;
 - (void)setFetchRecordsCompletionBlock:(void *)fetchRecordsCompletionBlock;
-- (void)setFetchRecordsCompletionBlockIVar:(id)a3;
+- (void)setFetchRecordsCompletionBlockIVar:(id)var;
 - (void)setPerRecordCompletionBlock:(void *)perRecordCompletionBlock;
-- (void)setPerRecordETagMatchedBlock:(id)a3;
+- (void)setPerRecordETagMatchedBlock:(id)block;
 - (void)setPerRecordProgressBlock:(void *)perRecordProgressBlock;
 @end
 
@@ -259,9 +259,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setPerRecordETagMatchedBlock:(id)a3
+- (void)setPerRecordETagMatchedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -275,16 +275,16 @@ LABEL_9:
     v12[2] = sub_1885C74EC;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     perRecordETagMatchedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_perRecordETagMatchedBlock != v6)
+  if (self->_perRecordETagMatchedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     perRecordETagMatchedBlock = self->_perRecordETagMatchedBlock;
     self->_perRecordETagMatchedBlock = v9;
 LABEL_9:
@@ -327,9 +327,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setFetchRecordsCompletionBlockIVar:(id)a3
+- (void)setFetchRecordsCompletionBlockIVar:(id)var
 {
-  v6 = a3;
+  varCopy = var;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -343,16 +343,16 @@ LABEL_9:
     v12[2] = sub_1885C7878;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = varCopy;
     dispatch_sync(v11, v12);
 
     fetchRecordsCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchRecordsCompletionBlock != v6)
+  if (self->_fetchRecordsCompletionBlock != varCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(varCopy, v7, v8);
     fetchRecordsCompletionBlock = self->_fetchRecordsCompletionBlock;
     self->_fetchRecordsCompletionBlock = v9;
 LABEL_9:
@@ -403,86 +403,86 @@ LABEL_9:
   objc_msgSend_setFetchRecordsCompletionBlockIVar_(self, v6, v7);
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordIDs(self, v5, v6);
-  objc_msgSend_setRecordIDs_(v4, v8, v7);
+  objc_msgSend_setRecordIDs_(infoCopy, v8, v7);
 
   CurrentUserOperation = objc_msgSend_isFetchCurrentUserOperation(self, v9, v10);
-  objc_msgSend_setIsFetchCurrentUserOperation_(v4, v12, CurrentUserOperation);
+  objc_msgSend_setIsFetchCurrentUserOperation_(infoCopy, v12, CurrentUserOperation);
   v15 = objc_msgSend_desiredKeys(self, v13, v14);
-  objc_msgSend_setDesiredKeys_(v4, v16, v15);
+  objc_msgSend_setDesiredKeys_(infoCopy, v16, v15);
 
   v19 = objc_msgSend_recordIDsToETags(self, v17, v18);
-  objc_msgSend_setRecordIDsToETags_(v4, v20, v19);
+  objc_msgSend_setRecordIDsToETags_(infoCopy, v20, v19);
 
   v23 = objc_msgSend_recordIDsToVersionETags(self, v21, v22);
-  objc_msgSend_setRecordIDsToVersionETags_(v4, v24, v23);
+  objc_msgSend_setRecordIDsToVersionETags_(infoCopy, v24, v23);
 
   v27 = objc_msgSend_desiredPackageFileIndices(self, v25, v26);
-  objc_msgSend_setDesiredPackageFileIndices_(v4, v28, v27);
+  objc_msgSend_setDesiredPackageFileIndices_(infoCopy, v28, v27);
 
   AssetContent = objc_msgSend_shouldFetchAssetContent(self, v29, v30);
-  objc_msgSend_setShouldFetchAssetContent_(v4, v32, AssetContent);
+  objc_msgSend_setShouldFetchAssetContent_(infoCopy, v32, AssetContent);
   shouldRequestEncryptedAssetOwnerIdentifier = objc_msgSend_shouldRequestEncryptedAssetOwnerIdentifier(self, v33, v34);
-  objc_msgSend_setShouldRequestEncryptedAssetOwnerIdentifier_(v4, v36, shouldRequestEncryptedAssetOwnerIdentifier);
+  objc_msgSend_setShouldRequestEncryptedAssetOwnerIdentifier_(infoCopy, v36, shouldRequestEncryptedAssetOwnerIdentifier);
   AssetContentInMemory = objc_msgSend_shouldFetchAssetContentInMemory(self, v37, v38);
-  objc_msgSend_setShouldFetchAssetContentInMemory_(v4, v40, AssetContentInMemory);
+  objc_msgSend_setShouldFetchAssetContentInMemory_(infoCopy, v40, AssetContentInMemory);
   v43 = objc_msgSend_dropInMemoryAssetContentASAP(self, v41, v42);
-  objc_msgSend_setDropInMemoryAssetContentASAP_(v4, v44, v43);
+  objc_msgSend_setDropInMemoryAssetContentASAP_(infoCopy, v44, v43);
   v47 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(self, v45, v46);
-  objc_msgSend_setAssetTransferOptionsByRecordTypeAndKey_(v4, v48, v47);
+  objc_msgSend_setAssetTransferOptionsByRecordTypeAndKey_(infoCopy, v48, v47);
 
   v51 = objc_msgSend_webSharingIdentityDataByRecordID(self, v49, v50);
-  objc_msgSend_setWebSharingIdentityDataByRecordID_(v4, v52, v51);
+  objc_msgSend_setWebSharingIdentityDataByRecordID_(infoCopy, v52, v51);
 
   shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(self, v53, v54);
-  objc_msgSend_setShouldCloneFileInAssetCache_(v4, v56, shouldCloneFileInAssetCache);
+  objc_msgSend_setShouldCloneFileInAssetCache_(infoCopy, v56, shouldCloneFileInAssetCache);
   v57.receiver = self;
   v57.super_class = CKFetchRecordsOperation;
-  [(CKDatabaseOperation *)&v57 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v57 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v60.receiver = self;
   v60.super_class = CKFetchRecordsOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v60 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordIDs(v4, v5, v6, v60.receiver, v60.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v60 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordIDs(infoCopy, v5, v6, v60.receiver, v60.super_class);
   objc_msgSend_setRecordIDs_(self, v8, v7);
 
-  CurrentUserOperation = objc_msgSend_isFetchCurrentUserOperation(v4, v9, v10);
+  CurrentUserOperation = objc_msgSend_isFetchCurrentUserOperation(infoCopy, v9, v10);
   objc_msgSend_setIsFetchCurrentUserOperation_(self, v12, CurrentUserOperation);
-  v15 = objc_msgSend_desiredKeys(v4, v13, v14);
+  v15 = objc_msgSend_desiredKeys(infoCopy, v13, v14);
   objc_msgSend_setDesiredKeys_(self, v16, v15);
 
-  v19 = objc_msgSend_recordIDsToETags(v4, v17, v18);
+  v19 = objc_msgSend_recordIDsToETags(infoCopy, v17, v18);
   objc_msgSend_setRecordIDsToETags_(self, v20, v19);
 
-  v23 = objc_msgSend_recordIDsToVersionETags(v4, v21, v22);
+  v23 = objc_msgSend_recordIDsToVersionETags(infoCopy, v21, v22);
   objc_msgSend_setRecordIDsToVersionETags_(self, v24, v23);
 
-  v27 = objc_msgSend_desiredPackageFileIndices(v4, v25, v26);
+  v27 = objc_msgSend_desiredPackageFileIndices(infoCopy, v25, v26);
   objc_msgSend_setDesiredPackageFileIndices_(self, v28, v27);
 
-  AssetContent = objc_msgSend_shouldFetchAssetContent(v4, v29, v30);
+  AssetContent = objc_msgSend_shouldFetchAssetContent(infoCopy, v29, v30);
   objc_msgSend_setShouldFetchAssetContent_(self, v32, AssetContent);
-  AssetContentInMemory = objc_msgSend_shouldFetchAssetContentInMemory(v4, v33, v34);
+  AssetContentInMemory = objc_msgSend_shouldFetchAssetContentInMemory(infoCopy, v33, v34);
   objc_msgSend_setShouldFetchAssetContentInMemory_(self, v36, AssetContentInMemory);
-  shouldRequestEncryptedAssetOwnerIdentifier = objc_msgSend_shouldRequestEncryptedAssetOwnerIdentifier(v4, v37, v38);
+  shouldRequestEncryptedAssetOwnerIdentifier = objc_msgSend_shouldRequestEncryptedAssetOwnerIdentifier(infoCopy, v37, v38);
   objc_msgSend_setShouldRequestEncryptedAssetOwnerIdentifier_(self, v40, shouldRequestEncryptedAssetOwnerIdentifier);
-  v43 = objc_msgSend_dropInMemoryAssetContentASAP(v4, v41, v42);
+  v43 = objc_msgSend_dropInMemoryAssetContentASAP(infoCopy, v41, v42);
   objc_msgSend_setDropInMemoryAssetContentASAP_(self, v44, v43);
-  v47 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(v4, v45, v46);
+  v47 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(infoCopy, v45, v46);
   v50 = objc_msgSend_copy(v47, v48, v49);
   objc_msgSend_setAssetTransferOptionsByRecordTypeAndKey_(self, v51, v50);
 
-  v54 = objc_msgSend_webSharingIdentityDataByRecordID(v4, v52, v53);
+  v54 = objc_msgSend_webSharingIdentityDataByRecordID(infoCopy, v52, v53);
   objc_msgSend_setWebSharingIdentityDataByRecordID_(self, v55, v54);
 
-  shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(v4, v56, v57);
+  shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(infoCopy, v56, v57);
   objc_msgSend_setShouldCloneFileInAssetCache_(self, v59, shouldCloneFileInAssetCache);
 }
 
@@ -528,20 +528,20 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v8 = objc_msgSend_recordIDs(self, a2, a3);
+  v8 = objc_msgSend_recordIDs(self, a2, run);
   if (v8)
   {
   }
 
   else if ((objc_msgSend_isFetchCurrentUserOperation(self, v9, v10) & 1) == 0)
   {
-    if (a3)
+    if (run)
     {
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
-      *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v33, @"CKErrorDomain", 12, @"property recordIDs must not be nil for %@", v32);
+      *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v33, @"CKErrorDomain", 12, @"property recordIDs must not be nil for %@", v32);
     }
 
     return 0;
@@ -634,11 +634,11 @@ LABEL_17:
 
   if (v28)
   {
-    if (a3)
+    if (run)
     {
       v29 = v28;
       v30 = 0;
-      *a3 = v28;
+      *run = v28;
     }
 
     else
@@ -651,7 +651,7 @@ LABEL_17:
   {
     v39.receiver = self;
     v39.super_class = CKFetchRecordsOperation;
-    v30 = [(CKDatabaseOperation *)&v39 CKOperationShouldRun:a3];
+    v30 = [(CKDatabaseOperation *)&v39 CKOperationShouldRun:run];
   }
 
   return v30;
@@ -708,14 +708,14 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFetchForRecordID:(id)a3 record:(id)a4 error:(id)a5
+- (void)handleFetchForRecordID:(id)d record:(id)record error:(id)error
 {
   v149 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v14 = objc_msgSend_CKClientSuitableError(v11, v12, v13);
-  v128 = self;
+  dCopy = d;
+  recordCopy = record;
+  errorCopy = error;
+  v14 = objc_msgSend_CKClientSuitableError(errorCopy, v12, v13);
+  selfCopy = self;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -745,9 +745,9 @@ LABEL_11:
       v19 = v18;
       v22 = objc_msgSend_log(v19, v20, v21);
 
-      if (v128)
+      if (selfCopy)
       {
-        v23 = v128->super.super._signpost;
+        v23 = selfCopy->super.super._signpost;
       }
 
       else
@@ -764,7 +764,7 @@ LABEL_11:
       }
 
       *buf = 138412546;
-      v142 = v9;
+      v142 = dCopy;
       v143 = 2112;
       v144 = v14;
       v28 = "Record %@ fetched with error: %@";
@@ -792,9 +792,9 @@ LABEL_21:
     v33 = v32;
     v22 = objc_msgSend_log(v33, v34, v35);
 
-    if (v128)
+    if (selfCopy)
     {
-      v36 = v128->super.super._signpost;
+      v36 = selfCopy->super.super._signpost;
     }
 
     else
@@ -811,7 +811,7 @@ LABEL_21:
     }
 
     *buf = 138412290;
-    v142 = v9;
+    v142 = dCopy;
     v28 = "Record %@ fetched";
     v29 = v22;
     v30 = v40;
@@ -823,11 +823,11 @@ LABEL_21:
   v138[1] = 3221225472;
   v138[2] = sub_1885C8D08;
   v138[3] = &unk_1E70BEBB0;
-  v138[4] = v128;
-  objc_msgSend_countMergeableValueMetrics_(v10, v17, v138);
-  if (!v10 || v14)
+  v138[4] = selfCopy;
+  objc_msgSend_countMergeableValueMetrics_(recordCopy, v17, v138);
+  if (!recordCopy || v14)
   {
-    if (objc_msgSend_count(v128->_assetInfoByArrayIndexByRecordKeyByRecordID, v41, v42))
+    if (objc_msgSend_count(selfCopy->_assetInfoByArrayIndexByRecordKeyByRecordID, v41, v42))
     {
       if (ck_log_initialization_predicate != -1)
       {
@@ -838,11 +838,11 @@ LABEL_21:
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v142 = v9;
+        v142 = dCopy;
         v143 = 2112;
         v144 = v14;
         v145 = 2112;
-        v146 = v10;
+        v146 = recordCopy;
         _os_log_error_impl(&dword_1883EA000, v52, OS_LOG_TYPE_ERROR, "Ditching assetInfoByArrayIndexByRecordKeyByRecordID recordID %@ error %@ record %@", buf, 0x20u);
       }
     }
@@ -852,7 +852,7 @@ LABEL_21:
   {
     if (__sTestOverridesAvailable[0] == 1)
     {
-      v43 = objc_msgSend_unitTestOverrides(v128, v41, v42);
+      v43 = objc_msgSend_unitTestOverrides(selfCopy, v41, v42);
       v45 = objc_msgSend_objectForKeyedSubscript_(v43, v44, @"SkipInMemoryAssetSignatureCheck");
       v48 = objc_msgSend_BOOLValue(v45, v46, v47);
 
@@ -864,28 +864,28 @@ LABEL_21:
       v49 = 1;
     }
 
-    objc_msgSend__wireUpAssetContentForOperation_inRecord_checkSignatures_outError_(CKOperation, v41, v128, v10, v49 & 1, 0);
+    objc_msgSend__wireUpAssetContentForOperation_inRecord_checkSignatures_outError_(CKOperation, v41, selfCopy, recordCopy, v49 & 1, 0);
   }
 
-  if (v9)
+  if (dCopy)
   {
     if (!v14)
     {
-      if (v10)
+      if (recordCopy)
       {
-        if (objc_msgSend_canDropItemResultsEarly(v128, v50, v51))
+        if (objc_msgSend_canDropItemResultsEarly(selfCopy, v50, v51))
         {
           goto LABEL_43;
         }
 
-        v53 = objc_msgSend_recordIDsToRecords(v128, v50, v51);
-        objc_msgSend_setObject_forKeyedSubscript_(v53, v54, v10, v9);
+        v53 = objc_msgSend_recordIDsToRecords(selfCopy, v50, v51);
+        objc_msgSend_setObject_forKeyedSubscript_(v53, v54, recordCopy, dCopy);
       }
 
       else
       {
-        v55 = objc_msgSend_recordIDsToETags(v128, v50, v51);
-        v57 = objc_msgSend_objectForKeyedSubscript_(v55, v56, v9);
+        v55 = objc_msgSend_recordIDsToETags(selfCopy, v50, v51);
+        v57 = objc_msgSend_objectForKeyedSubscript_(v55, v56, dCopy);
 
         if (v57)
         {
@@ -893,28 +893,28 @@ LABEL_21:
         }
 
         v53 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v50, v51);
-        objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v53, v121, a2, v128, @"CKFetchRecordsOperation.m", 214, @"Should have received a record");
+        objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v53, v121, a2, selfCopy, @"CKFetchRecordsOperation.m", 214, @"Should have received a record");
       }
 
       goto LABEL_43;
     }
 
-    if ((objc_msgSend_canDropItemResultsEarly(v128, v50, v51) & 1) == 0)
+    if ((objc_msgSend_canDropItemResultsEarly(selfCopy, v50, v51) & 1) == 0)
     {
-      if (v128)
+      if (selfCopy)
       {
-        objc_msgSend_setObject_forKeyedSubscript_(v128->_recordErrors, v50, v14, v9);
+        objc_msgSend_setObject_forKeyedSubscript_(selfCopy->_recordErrors, v50, v14, dCopy);
       }
 
       else
       {
-        objc_msgSend_setObject_forKeyedSubscript_(0, v50, v14, v9);
+        objc_msgSend_setObject_forKeyedSubscript_(0, v50, v14, dCopy);
       }
     }
   }
 
 LABEL_43:
-  v58 = objc_msgSend_perRecordETagMatchedBlock_wrapper(v128, v50, v51);
+  v58 = objc_msgSend_perRecordETagMatchedBlock_wrapper(selfCopy, v50, v51);
   v61 = v58;
   if (v58)
   {
@@ -923,11 +923,11 @@ LABEL_43:
 
   else
   {
-    v63 = objc_msgSend_perRecordETagMatchedBlock(v128, v59, v60);
+    v63 = objc_msgSend_perRecordETagMatchedBlock(selfCopy, v59, v60);
     v62 = _Block_copy(v63);
   }
 
-  v66 = objc_msgSend_perRecordCompletionBlock_wrapper(v128, v64, v65);
+  v66 = objc_msgSend_perRecordCompletionBlock_wrapper(selfCopy, v64, v65);
   v69 = v66;
   if (v66)
   {
@@ -936,11 +936,11 @@ LABEL_43:
 
   else
   {
-    v70 = objc_msgSend_perRecordCompletionBlock(v128, v67, v68);
+    v70 = objc_msgSend_perRecordCompletionBlock(selfCopy, v67, v68);
     v127 = _Block_copy(v70);
   }
 
-  if (v9 && !v10 && !v14 && v62)
+  if (dCopy && !recordCopy && !v14 && v62)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -951,25 +951,25 @@ LABEL_43:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
     {
       v107 = v73;
-      v110 = objc_msgSend_operationID(v128, v108, v109);
+      v110 = objc_msgSend_operationID(selfCopy, v108, v109);
       v113 = objc_msgSend_recordChangeTag(0, v111, v112);
       *buf = 138543874;
       v142 = v110;
       v143 = 2112;
-      v144 = v9;
+      v144 = dCopy;
       v145 = 2112;
       v146 = v113;
       _os_log_debug_impl(&dword_1883EA000, v107, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about fetched etag-matched record with ID %@ etag=%@", buf, 0x20u);
     }
 
-    v62[2](v62, v9);
+    v62[2](v62, dCopy);
     goto LABEL_66;
   }
 
   if (!v127)
   {
 LABEL_65:
-    if (!v9)
+    if (!dCopy)
     {
       goto LABEL_67;
     }
@@ -986,12 +986,12 @@ LABEL_65:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     v114 = v74;
-    v117 = objc_msgSend_operationID(v128, v115, v116);
-    v120 = objc_msgSend_recordChangeTag(v10, v118, v119);
+    v117 = objc_msgSend_operationID(selfCopy, v115, v116);
+    v120 = objc_msgSend_recordChangeTag(recordCopy, v118, v119);
     *buf = 138544130;
     v142 = v117;
     v143 = 2112;
-    v144 = v9;
+    v144 = dCopy;
     v145 = 2112;
     v146 = v120;
     v147 = 2112;
@@ -999,36 +999,36 @@ LABEL_65:
     _os_log_debug_impl(&dword_1883EA000, v114, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about fetched record with ID %@ etag=%@: %@", buf, 0x2Au);
   }
 
-  if (objc_msgSend_dropInMemoryAssetContentASAP(v128, v75, v76))
+  if (objc_msgSend_dropInMemoryAssetContentASAP(selfCopy, v75, v76))
   {
     v77 = objc_autoreleasePoolPush();
-    v127[2](v127, v10, v9, v14);
+    v127[2](v127, recordCopy, dCopy, v14);
     objc_autoreleasePoolPop(v77);
     goto LABEL_65;
   }
 
-  v127[2](v127, v10, v9, v14);
-  if (v9)
+  v127[2](v127, recordCopy, dCopy, v14);
+  if (dCopy)
   {
 LABEL_66:
-    v78 = objc_msgSend_configuration(v128, v71, v72);
+    v78 = objc_msgSend_configuration(selfCopy, v71, v72);
     v81 = objc_msgSend_container(v78, v79, v80);
-    objc_msgSend_handleRecordChanged_changeType_record_error_(v81, v82, v9, 1, v10, v14);
+    objc_msgSend_handleRecordChanged_changeType_record_error_(v81, v82, dCopy, 1, recordCopy, v14);
   }
 
 LABEL_67:
-  if (objc_msgSend_dropInMemoryAssetContentASAP(v128, v71, v72))
+  if (objc_msgSend_dropInMemoryAssetContentASAP(selfCopy, v71, v72))
   {
     v123 = v14;
-    v124 = v11;
-    v126 = v9;
+    v124 = errorCopy;
+    v126 = dCopy;
     context = objc_autoreleasePoolPush();
     v134 = 0u;
     v135 = 0u;
     v136 = 0u;
     v137 = 0u;
-    v125 = v10;
-    v85 = objc_msgSend_valueStore(v10, v83, v84);
+    v125 = recordCopy;
+    v85 = objc_msgSend_valueStore(recordCopy, v83, v84);
     v88 = objc_msgSend_allRawValues(v85, v86, v87);
 
     v90 = objc_msgSend_countByEnumeratingWithState_objects_count_(v88, v89, &v134, v140, 16);
@@ -1102,25 +1102,25 @@ LABEL_67:
       while (v91);
     }
 
-    v9 = v126;
+    dCopy = v126;
     if (v126)
     {
-      objc_msgSend_setObject_forKeyedSubscript_(v128->_assetInfoByArrayIndexByRecordKeyByRecordID, v105, 0, v126);
+      objc_msgSend_setObject_forKeyedSubscript_(selfCopy->_assetInfoByArrayIndexByRecordKeyByRecordID, v105, 0, v126);
     }
 
     objc_autoreleasePoolPop(context);
-    v11 = v124;
-    v10 = v125;
+    errorCopy = v124;
+    recordCopy = v125;
     v14 = v123;
   }
 
   v106 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFetchForRecordID:(id)a3 didProgress:(double)a4
+- (void)handleFetchForRecordID:(id)d didProgress:(double)progress
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1164,9 +1164,9 @@ LABEL_67:
     if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
     {
       v28 = 138412546;
-      v29 = v6;
+      v29 = dCopy;
       v30 = 2048;
-      v31 = a4;
+      progressCopy = progress;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v15, OS_SIGNPOST_EVENT, v20, "CKFetchRecordsOperation", "Record %@ updated progress %f", &v28, 0x16u);
     }
   }
@@ -1186,26 +1186,26 @@ LABEL_67:
 
   if (v25)
   {
-    v25[2](v25, v6, a4);
+    v25[2](v25, dCopy, progress);
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAssetDataForRecordID:(id)a3 recordKey:(id)a4 arrayIndex:(int64_t)a5 data:(id)a6 offset:(unint64_t)a7
+- (void)handleAssetDataForRecordID:(id)d recordKey:(id)key arrayIndex:(int64_t)index data:(id)data offset:(unint64_t)offset
 {
-  v15 = a6;
-  v14 = objc_msgSend_assetInfoForOperation_recordID_recordKey_arrayIndex_(CKOperation, v12, self, a3, a4, a5);
-  if (v15)
+  dataCopy = data;
+  v14 = objc_msgSend_assetInfoForOperation_recordID_recordKey_arrayIndex_(CKOperation, v12, self, d, key, index);
+  if (dataCopy)
   {
-    objc_msgSend_writeData_atOffset_(v14, v13, v15, a7);
+    objc_msgSend_writeData_atOffset_(v14, v13, dataCopy, offset);
   }
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1317,7 +1317,7 @@ LABEL_67:
     objc_msgSend_setObject_forKeyedSubscript_(v56, v57, v53, @"zoneNames");
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     if (self)
     {
@@ -1343,12 +1343,12 @@ LABEL_67:
         objc_msgSend_setObject_forKeyedSubscript_(v59, v60, 0, @"CKPartialErrors");
       }
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v62, @"CKInternalErrorDomain", 1011, v61, @"Failed to fetch some records");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v62, @"CKInternalErrorDomain", 1011, v61, @"Failed to fetch some records");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -1382,16 +1382,16 @@ LABEL_67:
       *buf = 138544130;
       v92 = v82;
       v93 = 2048;
-      v94 = self;
+      selfCopy = self;
       v95 = 2114;
       v96 = v85;
       v97 = 2112;
-      v98 = v4;
+      v98 = errorCopy;
       _os_log_debug_impl(&dword_1883EA000, v80, OS_LOG_TYPE_DEBUG, "Calling fetchRecordsCompletionBlock for operation <%{public}@: %p; %{public}@> with error %@", buf, 0x2Au);
     }
 
     v73 = objc_msgSend_recordIDsToRecords(self, v71, v72);
-    v76 = objc_msgSend_CKClientSuitableError(v4, v74, v75);
+    v76 = objc_msgSend_CKClientSuitableError(errorCopy, v74, v75);
     v67[2](v67, v73, v76);
 
     objc_msgSend_setFetchRecordsCompletionBlock_(self, v77, 0);
@@ -1401,7 +1401,7 @@ LABEL_67:
   objc_msgSend_setPerRecordCompletionBlock_(self, v78, 0);
   v86.receiver = self;
   v86.super_class = CKFetchRecordsOperation;
-  [(CKOperation *)&v86 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v86 _finishOnCallbackQueueWithError:errorCopy];
 
   v79 = *MEMORY[0x1E69E9840];
 }
@@ -1480,10 +1480,10 @@ LABEL_67:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1527,7 +1527,7 @@ LABEL_67:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchRecordsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -1542,15 +1542,15 @@ LABEL_67:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleFetchForRecordID_record_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleFetchForRecordID_record_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchRecordsOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

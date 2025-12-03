@@ -8,15 +8,15 @@
 {
   v2 = [(CAMPanoramaArrowViewAccessibility *)self _accessibilityAncestorIsKindOf:MEMORY[0x29C2CF1C0](@"CAMPanoramaView", a2)];
   v3 = [v2 safeValueForKey:@"_direction"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (v4 == 1)
+  if (integerValue == 1)
   {
     v5 = @"left.to.right";
     goto LABEL_5;
   }
 
-  if (v4 == 2)
+  if (integerValue == 2)
   {
     v5 = @"right.to.left";
 LABEL_5:

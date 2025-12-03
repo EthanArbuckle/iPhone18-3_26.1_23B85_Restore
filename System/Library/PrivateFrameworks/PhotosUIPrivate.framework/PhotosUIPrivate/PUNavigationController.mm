@@ -1,42 +1,42 @@
 @interface PUNavigationController
 - (BOOL)_canPerformAlternateBackKeyCommandToPopViewController;
-- (BOOL)_canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:(id)a3;
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3;
+- (BOOL)_canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:(id)sender;
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller;
 - (BOOL)_shouldOptOutFromChromelessBars;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)prepareForDismissingForced:(BOOL)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)prepareForDismissingForced:(BOOL)forced;
 - (BOOL)shouldAutorotate;
-- (PUNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (PUNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PUNavigationController)initWithRootViewController:(id)a3;
+- (PUNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (PUNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (PUNavigationController)initWithRootViewController:(id)controller;
 - (UIViewController)_currentToolbarViewController;
 - (UIViewController)viewControllerForStatusBarStyleWhenDisappearing;
 - (id)_extendedToolbar;
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
-- (id)popViewControllerAnimated:(BOOL)a3;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_commonPUNavigationControllerInitialization;
-- (void)_performAlternateBackKeyCommand:(id)a3;
-- (void)_setBarStyle:(int64_t)a3;
-- (void)_setCurrentToolbarViewController:(id)a3 animated:(BOOL)a4;
-- (void)_setShouldOptOutChromelessBars:(BOOL)a3;
+- (void)_performAlternateBackKeyCommand:(id)command;
+- (void)_setBarStyle:(int64_t)style;
+- (void)_setCurrentToolbarViewController:(id)controller animated:(BOOL)animated;
+- (void)_setShouldOptOutChromelessBars:(BOOL)bars;
 - (void)_updateBarStyle;
-- (void)_updateChromelessBarsIsBeforeTransition:(BOOL)a3;
+- (void)_updateChromelessBarsIsBeforeTransition:(BOOL)transition;
 - (void)_updateStatusBarOverrides;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)pu_navigationTransitionDidEnd:(id)a3;
-- (void)pu_setAlwaysForwardsPreferredStatusBarHidden:(BOOL)a3;
-- (void)pu_setAlwaysForwardsPreferredStatusBarStyle:(BOOL)a3;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)viewController:(id)a3 willSetupInitialBarsVisibilityOnViewWillAppearAnimated:(BOOL)a4;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)pu_navigationTransitionDidEnd:(id)end;
+- (void)pu_setAlwaysForwardsPreferredStatusBarHidden:(BOOL)hidden;
+- (void)pu_setAlwaysForwardsPreferredStatusBarStyle:(BOOL)style;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)viewController:(id)controller willSetupInitialBarsVisibilityOnViewWillAppearAnimated:(BOOL)animated;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUNavigationController
@@ -46,9 +46,9 @@
   v5.receiver = self;
   v5.super_class = PUNavigationController;
   [(PUNavigationController *)&v5 loadView];
-  v3 = [(PUNavigationController *)self _alternateBackKeyCommand];
+  _alternateBackKeyCommand = [(PUNavigationController *)self _alternateBackKeyCommand];
 
-  if (!v3)
+  if (!_alternateBackKeyCommand)
   {
     v4 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDF30] modifierFlags:0x100000 action:sel__performAlternateBackKeyCommand_];
     [(PUNavigationController *)self addKeyCommand:v4];
@@ -58,8 +58,8 @@
 
 - (void)_commonPUNavigationControllerInitialization
 {
-  v3 = [(PUNavigationController *)self _toolbarClass];
-  if (!v3 || v3 == objc_opt_class())
+  _toolbarClass = [(PUNavigationController *)self _toolbarClass];
+  if (!_toolbarClass || _toolbarClass == objc_opt_class())
   {
     [(PUNavigationController *)self _setToolbarClass:objc_opt_class()];
   }
@@ -71,17 +71,17 @@
 {
   if ([(PUNavigationController *)self pu_alwaysForwardsPrefersStatusBarHidden])
   {
-    v3 = [(PUNavigationController *)self topViewController];
+    topViewController = [(PUNavigationController *)self topViewController];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PUNavigationController;
-    v3 = [(PUNavigationController *)&v5 childViewControllerForStatusBarHidden];
+    topViewController = [(PUNavigationController *)&v5 childViewControllerForStatusBarHidden];
   }
 
-  return v3;
+  return topViewController;
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -101,71 +101,71 @@
 {
   if ([(PUNavigationController *)self pu_alwaysForwardsPreferredStatusBarStyle])
   {
-    v3 = [(PUNavigationController *)self topViewController];
+    topViewController = [(PUNavigationController *)self topViewController];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PUNavigationController;
-    v3 = [(PUNavigationController *)&v5 childViewControllerForStatusBarStyle];
+    topViewController = [(PUNavigationController *)&v5 childViewControllerForStatusBarStyle];
   }
 
-  return v3;
+  return topViewController;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v3 = [(PUNavigationController *)self transitionCoordinator];
-  v4 = [v3 viewControllerForKey:*MEMORY[0x1E69DE768]];
+  transitionCoordinator = [(PUNavigationController *)self transitionCoordinator];
+  v4 = [transitionCoordinator viewControllerForKey:*MEMORY[0x1E69DE768]];
 
   if (v4 == self && ([(PUNavigationController *)self viewControllerForStatusBarStyleWhenDisappearing], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v5 = [v6 preferredStatusBarStyle];
+    preferredStatusBarStyle = [v6 preferredStatusBarStyle];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PUNavigationController;
-    v5 = [(PUNavigationController *)&v9 preferredStatusBarStyle];
+    preferredStatusBarStyle = [(PUNavigationController *)&v9 preferredStatusBarStyle];
   }
 
-  return v5;
+  return preferredStatusBarStyle;
 }
 
 - (id)_extendedToolbar
 {
-  v2 = [(PUNavigationController *)self toolbar];
+  toolbar = [(PUNavigationController *)self toolbar];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v2 = 0;
+    toolbar = 0;
   }
 
-  return v2;
+  return toolbar;
 }
 
 - (void)_updateStatusBarOverrides
 {
-  v3 = [(PUNavigationController *)self topViewController];
-  -[PUNavigationController pu_setAlwaysForwardsPreferredStatusBarStyle:](self, "pu_setAlwaysForwardsPreferredStatusBarStyle:", [v3 px_determinesPreferredStatusBarStyle]);
-  -[PUNavigationController pu_setAlwaysForwardsPreferredStatusBarHidden:](self, "pu_setAlwaysForwardsPreferredStatusBarHidden:", [v3 px_determinesPreferredStatusBarHidden]);
+  topViewController = [(PUNavigationController *)self topViewController];
+  -[PUNavigationController pu_setAlwaysForwardsPreferredStatusBarStyle:](self, "pu_setAlwaysForwardsPreferredStatusBarStyle:", [topViewController px_determinesPreferredStatusBarStyle]);
+  -[PUNavigationController pu_setAlwaysForwardsPreferredStatusBarHidden:](self, "pu_setAlwaysForwardsPreferredStatusBarHidden:", [topViewController px_determinesPreferredStatusBarHidden]);
 }
 
 - (void)_updateBarStyle
 {
-  v3 = [(PUNavigationController *)self topViewController];
-  -[PUNavigationController _setBarStyle:](self, "_setBarStyle:", [v3 pu_preferredBarStyle]);
+  topViewController = [(PUNavigationController *)self topViewController];
+  -[PUNavigationController _setBarStyle:](self, "_setBarStyle:", [topViewController pu_preferredBarStyle]);
 }
 
 - (BOOL)_shouldOptOutFromChromelessBars
 {
-  v2 = [(PUNavigationController *)self navigationBar];
-  v3 = [v2 scrollEdgeAppearance];
-  v4 = v3 != 0;
+  navigationBar = [(PUNavigationController *)self navigationBar];
+  scrollEdgeAppearance = [navigationBar scrollEdgeAppearance];
+  v4 = scrollEdgeAppearance != 0;
 
   return v4;
 }
@@ -184,31 +184,31 @@
   return WeakRetained;
 }
 
-- (void)pu_setAlwaysForwardsPreferredStatusBarHidden:(BOOL)a3
+- (void)pu_setAlwaysForwardsPreferredStatusBarHidden:(BOOL)hidden
 {
-  if (self->_pu_alwaysForwardsPrefersStatusBarHidden != a3)
+  if (self->_pu_alwaysForwardsPrefersStatusBarHidden != hidden)
   {
-    self->_pu_alwaysForwardsPrefersStatusBarHidden = a3;
+    self->_pu_alwaysForwardsPrefersStatusBarHidden = hidden;
     [(PUNavigationController *)self setNeedsStatusBarAppearanceUpdate];
   }
 }
 
-- (void)pu_setAlwaysForwardsPreferredStatusBarStyle:(BOOL)a3
+- (void)pu_setAlwaysForwardsPreferredStatusBarStyle:(BOOL)style
 {
-  if (self->_pu_alwaysForwardsPreferredStatusBarStyle != a3)
+  if (self->_pu_alwaysForwardsPreferredStatusBarStyle != style)
   {
-    self->_pu_alwaysForwardsPreferredStatusBarStyle = a3;
+    self->_pu_alwaysForwardsPreferredStatusBarStyle = style;
     [(PUNavigationController *)self setNeedsStatusBarAppearanceUpdate];
   }
 }
 
-- (BOOL)prepareForDismissingForced:(BOOL)a3
+- (BOOL)prepareForDismissingForced:(BOOL)forced
 {
-  v3 = a3;
-  v5 = [(PUNavigationController *)self viewControllers];
-  v6 = [v5 firstObject];
+  forcedCopy = forced;
+  viewControllers = [(PUNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v6 prepareForDismissingForced:v3])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![firstObject prepareForDismissingForced:forcedCopy])
   {
     v7 = 0;
   }
@@ -222,31 +222,31 @@
   return v7;
 }
 
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller
 {
-  v3 = [a3 topViewController];
-  v4 = [v3 pu_navigationTransition];
-  v5 = v4 == 0;
+  topViewController = [controller topViewController];
+  pu_navigationTransition = [topViewController pu_navigationTransition];
+  v5 = pu_navigationTransition == 0;
 
   return v5;
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  if (v5)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  if (animatedCopy)
   {
     [(PUNavigationController *)self ppt_notifyTransitionAnimationDidComplete];
   }
 
-  v9 = [(PUNavigationController *)self ppt_onDidShowViewControllerBlock];
+  ppt_onDidShowViewControllerBlock = [(PUNavigationController *)self ppt_onDidShowViewControllerBlock];
 
-  if (v9)
+  if (ppt_onDidShowViewControllerBlock)
   {
-    v10 = [(PUNavigationController *)self ppt_onDidShowViewControllerBlock];
-    v10[2]();
+    ppt_onDidShowViewControllerBlock2 = [(PUNavigationController *)self ppt_onDidShowViewControllerBlock];
+    ppt_onDidShowViewControllerBlock2[2]();
 
     [(PUNavigationController *)self ppt_setOnDidShowViewControllerBlock:0];
   }
@@ -256,20 +256,20 @@
   [(PUNavigationController *)self _setNavigating:0];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v28 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   [(PUNavigationController *)self _setNavigating:1];
-  v9 = [v8 navigationItem];
-  v10 = [(PUNavigationController *)self _banner];
-  v11 = [v9 pu_banner];
-  v12 = [(PUNavigationController *)self _palette];
-  v13 = v12;
-  if (!v12 && v11)
+  navigationItem = [viewControllerCopy navigationItem];
+  _banner = [(PUNavigationController *)self _banner];
+  pu_banner = [navigationItem pu_banner];
+  _palette = [(PUNavigationController *)self _palette];
+  v13 = _palette;
+  if (!_palette && pu_banner)
   {
-    [v11 height];
+    [pu_banner height];
     v15 = [(PUNavigationController *)self paletteForEdge:2 size:0.0, v14];
     [(PUNavigationController *)self attachPalette:v15 isPinned:1];
     v13 = v15;
@@ -278,35 +278,35 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v11 && v12)
+  if (!pu_banner && _palette)
   {
-    [(PUNavigationController *)self detachPalette:v12];
+    [(PUNavigationController *)self detachPalette:_palette];
     v15 = 0;
     goto LABEL_7;
   }
 
 LABEL_8:
-  [(PUNavigationController *)self _setBanner:v11];
-  v16 = [v11 view];
-  v17 = v16;
+  [(PUNavigationController *)self _setBanner:pu_banner];
+  view = [pu_banner view];
+  v17 = view;
   if (v13)
   {
-    if (v16)
+    if (view)
     {
-      [v16 superview];
-      v19 = v18 = v10;
+      [view superview];
+      v19 = v18 = _banner;
 
       v20 = v19 == v13;
-      v10 = v18;
+      _banner = v18;
       if (!v20)
       {
         [v13 bounds];
         [v17 setFrame:?];
         [v17 setAutoresizingMask:18];
         [v17 layoutSubviews];
-        v21 = [v18 view];
-        v22 = v21;
-        if (v5)
+        view2 = [v18 view];
+        v22 = view2;
+        if (animatedCopy)
         {
           v23 = 0.3;
         }
@@ -321,32 +321,32 @@ LABEL_8:
         v32[1] = 3221225472;
         v32[2] = __79__PUNavigationController_navigationController_willShowViewController_animated___block_invoke;
         v32[3] = &unk_1E7B809F0;
-        v33 = v21;
+        v33 = view2;
         v34 = v13;
         v35 = v17;
         v24 = v22;
         [v27 transitionWithView:v34 duration:5242880 options:v32 animations:0 completion:v23];
 
-        v10 = v18;
+        _banner = v18;
       }
     }
   }
 
-  [(PUNavigationController *)self _setCurrentToolbarViewController:v8 animated:v5];
+  [(PUNavigationController *)self _setCurrentToolbarViewController:viewControllerCopy animated:animatedCopy];
   [(PUNavigationController *)self _updateStatusBarOverrides];
   objc_initWeak(&location, self);
-  v25 = [(PUNavigationController *)self transitionCoordinator];
+  transitionCoordinator = [(PUNavigationController *)self transitionCoordinator];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __79__PUNavigationController_navigationController_willShowViewController_animated___block_invoke_2;
   v29[3] = &unk_1E7B7E238;
   objc_copyWeak(&v30, &location);
-  [v25 animateAlongsideTransition:0 completion:v29];
+  [transitionCoordinator animateAlongsideTransition:0 completion:v29];
 
   [(PUNavigationController *)self _updateBarStyle];
   [(PUNavigationController *)self _updateChromelessBarsIsBeforeTransition:1];
-  v26 = [(PUNavigationController *)self traitCollection];
-  [v9 px_updateBackButtonVisibilityForTraitCollection:v26];
+  traitCollection = [(PUNavigationController *)self traitCollection];
+  [navigationItem px_updateBackButtonVisibilityForTraitCollection:traitCollection];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -370,37 +370,37 @@ void __79__PUNavigationController_navigationController_willShowViewController_an
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = PUNavigationController;
-  [(PUNavigationController *)&v3 didMoveToParentViewController:a3];
+  [(PUNavigationController *)&v3 didMoveToParentViewController:controller];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = PUNavigationController;
-  [(PUNavigationController *)&v3 willMoveToParentViewController:a3];
+  [(PUNavigationController *)&v3 willMoveToParentViewController:controller];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = PUNavigationController;
-  v7 = a4;
-  [(PUNavigationController *)&v14 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-  v8 = [(PUNavigationController *)self viewControllers];
+  coordinatorCopy = coordinator;
+  [(PUNavigationController *)&v14 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  viewControllers = [(PUNavigationController *)self viewControllers];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__PUNavigationController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v11[3] = &unk_1E7B7AC08;
-  v12 = v8;
-  v13 = v6;
-  v9 = v6;
-  v10 = v8;
-  [v7 animateAlongsideTransition:v11 completion:0];
+  v12 = viewControllers;
+  v13 = collectionCopy;
+  v9 = collectionCopy;
+  v10 = viewControllers;
+  [coordinatorCopy animateAlongsideTransition:v11 completion:0];
 }
 
 void __84__PUNavigationController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -452,14 +452,14 @@ void __84__PUNavigationController_willTransitionToTraitCollection_withTransition
   return [(PUNavigationController *)&v4 shouldAutorotate];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel__performAlternateBackKeyCommand_ != a3)
+  senderCopy = sender;
+  if (sel__performAlternateBackKeyCommand_ != action)
   {
     v10.receiver = self;
     v10.super_class = PUNavigationController;
-    v7 = [(PUNavigationController *)&v10 canPerformAction:a3 withSender:v6];
+    v7 = [(PUNavigationController *)&v10 canPerformAction:action withSender:senderCopy];
 LABEL_6:
     v8 = v7;
     goto LABEL_7;
@@ -467,7 +467,7 @@ LABEL_6:
 
   if (![(PUNavigationController *)self _canPerformAlternateBackKeyCommandToPopViewController])
   {
-    v7 = [(PUNavigationController *)self _canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:v6];
+    v7 = [(PUNavigationController *)self _canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:senderCopy];
     goto LABEL_6;
   }
 
@@ -477,40 +477,40 @@ LABEL_7:
   return v8;
 }
 
-- (void)_setCurrentToolbarViewController:(id)a3 animated:(BOOL)a4
+- (void)_setCurrentToolbarViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->__currentToolbarViewController);
 
-  if (WeakRetained != v6)
+  if (WeakRetained != controllerCopy)
   {
     v8 = objc_loadWeakRetained(&self->__currentToolbarViewController);
-    v9 = [v8 pu_wantsToolbarVisible];
+    pu_wantsToolbarVisible = [v8 pu_wantsToolbarVisible];
 
     v10 = objc_loadWeakRetained(&self->__currentToolbarViewController);
-    v11 = objc_storeWeak(&self->__currentToolbarViewController, v6);
-    v12 = [v6 pu_wantsToolbarVisible];
+    v11 = objc_storeWeak(&self->__currentToolbarViewController, controllerCopy);
+    pu_wantsToolbarVisible2 = [controllerCopy pu_wantsToolbarVisible];
 
-    v13 = [(PUNavigationController *)self _extendedToolbar];
-    v14 = [v6 pu_toolbarViewModel];
-    v15 = [v6 transitionCoordinator];
-    if ([v15 isCancelled])
+    _extendedToolbar = [(PUNavigationController *)self _extendedToolbar];
+    pu_toolbarViewModel = [controllerCopy pu_toolbarViewModel];
+    transitionCoordinator = [controllerCopy transitionCoordinator];
+    if ([transitionCoordinator isCancelled])
     {
 
-      if (v12 & 1 | ((v9 & 1) == 0))
+      if (pu_wantsToolbarVisible2 & 1 | ((pu_wantsToolbarVisible & 1) == 0))
       {
-        v15 = 0;
+        transitionCoordinator = 0;
         v16 = 0;
 LABEL_12:
-        [v13 setToolbarViewModel:v14 withAnimatorBlock:v16];
+        [_extendedToolbar setToolbarViewModel:pu_toolbarViewModel withAnimatorBlock:v16];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __68__PUNavigationController__setCurrentToolbarViewController_animated___block_invoke_5;
         v18[3] = &unk_1E7B7AC08;
         v18[4] = self;
         v19 = v10;
-        [v15 animateAlongsideTransitionInView:v13 animation:0 completion:v18];
+        [transitionCoordinator animateAlongsideTransitionInView:_extendedToolbar animation:0 completion:v18];
 
 LABEL_15:
 LABEL_17:
@@ -521,12 +521,12 @@ LABEL_17:
 
     else
     {
-      if (v12 & 1 | ((v9 & 1) == 0))
+      if (pu_wantsToolbarVisible2 & 1 | ((pu_wantsToolbarVisible & 1) == 0))
       {
         v16 = 0;
-        if (v15)
+        if (transitionCoordinator)
         {
-          v17 = v9;
+          v17 = pu_wantsToolbarVisible;
         }
 
         else
@@ -534,36 +534,36 @@ LABEL_17:
           v17 = 0;
         }
 
-        if ((v17 & v12) == 1 && v4)
+        if ((v17 & pu_wantsToolbarVisible2) == 1 && animatedCopy)
         {
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __68__PUNavigationController__setCurrentToolbarViewController_animated___block_invoke_2;
           aBlock[3] = &unk_1E7B79518;
-          v15 = v15;
-          v21 = v15;
-          v22 = v13;
+          transitionCoordinator = transitionCoordinator;
+          v21 = transitionCoordinator;
+          v22 = _extendedToolbar;
           v16 = _Block_copy(aBlock);
         }
 
         goto LABEL_12;
       }
 
-      if (v15)
+      if (transitionCoordinator)
       {
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __68__PUNavigationController__setCurrentToolbarViewController_animated___block_invoke;
         v23[3] = &unk_1E7B7AC08;
-        v24 = v13;
-        v25 = v14;
-        [v15 animateAlongsideTransitionInView:v24 animation:0 completion:v23];
+        v24 = _extendedToolbar;
+        v25 = pu_toolbarViewModel;
+        [transitionCoordinator animateAlongsideTransitionInView:v24 animation:0 completion:v23];
 
         goto LABEL_15;
       }
     }
 
-    [v13 setToolbarViewModel:v14 withAnimatorBlock:0];
+    [_extendedToolbar setToolbarViewModel:pu_toolbarViewModel withAnimatorBlock:0];
     goto LABEL_17;
   }
 
@@ -644,51 +644,51 @@ uint64_t __68__PUNavigationController__setCurrentToolbarViewController_animated_
   return result;
 }
 
-- (void)viewController:(id)a3 willSetupInitialBarsVisibilityOnViewWillAppearAnimated:(BOOL)a4
+- (void)viewController:(id)controller willSetupInitialBarsVisibilityOnViewWillAppearAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(PUNavigationController *)self topViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  topViewController = [(PUNavigationController *)self topViewController];
 
-  v7 = v11;
-  if (v6 == v11)
+  v7 = controllerCopy;
+  if (topViewController == controllerCopy)
   {
     [(PUNavigationController *)self _updateBarStyle];
     [(PUNavigationController *)self _updateChromelessBarsIsBeforeTransition:1];
-    v8 = [v11 pu_wantsToolbarVisible];
-    v9 = [v11 transitionCoordinator];
-    v10 = [v9 isCancelled];
+    pu_wantsToolbarVisible = [controllerCopy pu_wantsToolbarVisible];
+    transitionCoordinator = [controllerCopy transitionCoordinator];
+    isCancelled = [transitionCoordinator isCancelled];
 
-    v7 = v11;
-    if ((v8 & 1) != 0 || v10)
+    v7 = controllerCopy;
+    if ((pu_wantsToolbarVisible & 1) != 0 || isCancelled)
     {
-      [(PUNavigationController *)self _setCurrentToolbarViewController:v11 animated:v4];
-      v7 = v11;
+      [(PUNavigationController *)self _setCurrentToolbarViewController:controllerCopy animated:animatedCopy];
+      v7 = controllerCopy;
     }
   }
 }
 
-- (void)_performAlternateBackKeyCommand:(id)a3
+- (void)_performAlternateBackKeyCommand:(id)command
 {
-  v6 = a3;
+  commandCopy = command;
   if ([(PUNavigationController *)self _canPerformAlternateBackKeyCommandToPopViewController])
   {
     v4 = [(PUNavigationController *)self popViewControllerAnimated:1];
   }
 
-  else if ([(PUNavigationController *)self _canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:v6])
+  else if ([(PUNavigationController *)self _canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:commandCopy])
   {
-    v5 = [(PUNavigationController *)self splitViewController];
-    [v5 toggleSidebar:v6];
+    splitViewController = [(PUNavigationController *)self splitViewController];
+    [splitViewController toggleSidebar:commandCopy];
   }
 }
 
-- (BOOL)_canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:(id)a3
+- (BOOL)_canUseAlternateBackKeyCommandToTriggerSidebarKeyCommandWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(PUNavigationController *)self splitViewController];
-  v6 = v5;
-  if (!v5 || [v5 displayMode] == 2 || objc_msgSend(v6, "displayMode") == 4 || !objc_msgSend(v6, "canPerformAction:withSender:", sel_toggleSidebar_, v4) || -[PUNavigationController _isNavigating](self, "_isNavigating"))
+  senderCopy = sender;
+  splitViewController = [(PUNavigationController *)self splitViewController];
+  v6 = splitViewController;
+  if (!splitViewController || [splitViewController displayMode] == 2 || objc_msgSend(v6, "displayMode") == 4 || !objc_msgSend(v6, "canPerformAction:withSender:", sel_toggleSidebar_, senderCopy) || -[PUNavigationController _isNavigating](self, "_isNavigating"))
   {
     LOBYTE(v7) = 0;
   }
@@ -703,151 +703,151 @@ uint64_t __68__PUNavigationController__setCurrentToolbarViewController_animated_
 
 - (BOOL)_canPerformAlternateBackKeyCommandToPopViewController
 {
-  v3 = [(PUNavigationController *)self childViewControllers];
-  if ([v3 count] < 2 || -[PUNavigationController _isNavigating](self, "_isNavigating") || (-[PUNavigationController isNavigationBarHidden](self, "isNavigationBarHidden") & 1) != 0)
+  childViewControllers = [(PUNavigationController *)self childViewControllers];
+  if ([childViewControllers count] < 2 || -[PUNavigationController _isNavigating](self, "_isNavigating") || (-[PUNavigationController isNavigationBarHidden](self, "isNavigationBarHidden") & 1) != 0)
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v6 = [(PUNavigationController *)self navigationBar];
-    v7 = [v6 topItem];
-    v4 = [v7 hidesBackButton] ^ 1;
+    navigationBar = [(PUNavigationController *)self navigationBar];
+    topItem = [navigationBar topItem];
+    v4 = [topItem hidesBackButton] ^ 1;
   }
 
   return v4;
 }
 
-- (void)_setShouldOptOutChromelessBars:(BOOL)a3
+- (void)_setShouldOptOutChromelessBars:(BOOL)bars
 {
-  v4 = a3;
-  if ([(PUNavigationController *)self _shouldOptOutFromChromelessBars]!= a3)
+  barsCopy = bars;
+  if ([(PUNavigationController *)self _shouldOptOutFromChromelessBars]!= bars)
   {
-    if (v4)
+    if (barsCopy)
     {
-      v3 = [(PUNavigationController *)self navigationBar];
-      v6 = [v3 standardAppearance];
+      navigationBar = [(PUNavigationController *)self navigationBar];
+      standardAppearance = [navigationBar standardAppearance];
     }
 
     else
     {
-      v6 = 0;
+      standardAppearance = 0;
     }
 
-    v7 = [(PUNavigationController *)self navigationBar];
-    [v7 setScrollEdgeAppearance:v6];
+    navigationBar2 = [(PUNavigationController *)self navigationBar];
+    [navigationBar2 setScrollEdgeAppearance:standardAppearance];
 
-    if (v4)
+    if (barsCopy)
     {
 
-      v10 = [(PUNavigationController *)self toolbar];
-      v8 = [v10 standardAppearance];
+      toolbar = [(PUNavigationController *)self toolbar];
+      standardAppearance2 = [toolbar standardAppearance];
     }
 
     else
     {
-      v8 = 0;
+      standardAppearance2 = 0;
     }
 
-    v9 = [(PUNavigationController *)self toolbar];
-    [v9 setScrollEdgeAppearance:v8];
+    toolbar2 = [(PUNavigationController *)self toolbar];
+    [toolbar2 setScrollEdgeAppearance:standardAppearance2];
 
-    if (v4)
+    if (barsCopy)
     {
     }
   }
 }
 
-- (void)_updateChromelessBarsIsBeforeTransition:(BOOL)a3
+- (void)_updateChromelessBarsIsBeforeTransition:(BOOL)transition
 {
-  v3 = a3;
-  v7 = [(PUNavigationController *)self topViewController];
-  v5 = [v7 pu_shouldOptOutFromChromelessBars];
-  v6 = v5;
-  if (v3 && (v5 & 1) == 0)
+  transitionCopy = transition;
+  topViewController = [(PUNavigationController *)self topViewController];
+  pu_shouldOptOutFromChromelessBars = [topViewController pu_shouldOptOutFromChromelessBars];
+  _shouldOptOutFromChromelessBars = pu_shouldOptOutFromChromelessBars;
+  if (transitionCopy && (pu_shouldOptOutFromChromelessBars & 1) == 0)
   {
-    v6 = [(PUNavigationController *)self _shouldOptOutFromChromelessBars];
+    _shouldOptOutFromChromelessBars = [(PUNavigationController *)self _shouldOptOutFromChromelessBars];
   }
 
-  [(PUNavigationController *)self _setShouldOptOutChromelessBars:v6];
+  [(PUNavigationController *)self _setShouldOptOutChromelessBars:_shouldOptOutFromChromelessBars];
 }
 
-- (void)_setBarStyle:(int64_t)a3
+- (void)_setBarStyle:(int64_t)style
 {
-  if (self->__barStyle != a3)
+  if (self->__barStyle != style)
   {
-    self->__barStyle = a3;
+    self->__barStyle = style;
     v6 = +[PUInterfaceManager currentTheme];
-    v9 = [v6 tintColorForBarStyle:a3];
+    v9 = [v6 tintColorForBarStyle:style];
 
-    v7 = [(PUNavigationController *)self navigationBar];
-    [v7 setBarStyle:a3];
-    [v7 setTintColor:v9];
-    v8 = [(PUNavigationController *)self toolbar];
-    [v8 setBarStyle:a3];
-    [v8 setTintColor:v9];
+    navigationBar = [(PUNavigationController *)self navigationBar];
+    [navigationBar setBarStyle:style];
+    [navigationBar setTintColor:v9];
+    toolbar = [(PUNavigationController *)self toolbar];
+    [toolbar setBarStyle:style];
+    [toolbar setTintColor:v9];
   }
 }
 
-- (void)pu_navigationTransitionDidEnd:(id)a3
+- (void)pu_navigationTransitionDidEnd:(id)end
 {
   v4.receiver = self;
   v4.super_class = PUNavigationController;
-  [(UINavigationController *)&v4 pu_navigationTransitionDidEnd:a3];
+  [(UINavigationController *)&v4 pu_navigationTransitionDidEnd:end];
   [(PUNavigationController *)self _updateBarStyle];
   [(PUNavigationController *)self _updateChromelessBarsIsBeforeTransition:0];
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllersCopy = controllers;
   if (-[PUNavigationController pu_disablePushPopAnimation](self, "pu_disablePushPopAnimation") || ([MEMORY[0x1E69DD250] areAnimationsEnabled] & 1) == 0)
   {
-    v4 = 0;
+    animatedCopy = 0;
   }
 
   v7.receiver = self;
   v7.super_class = PUNavigationController;
-  [(PUNavigationController *)&v7 setViewControllers:v6 animated:v4];
+  [(PUNavigationController *)&v7 setViewControllers:controllersCopy animated:animatedCopy];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = PUNavigationController;
-  v3 = [(PUNavigationController *)&v5 popViewControllerAnimated:a3 & ~[(PUNavigationController *)self pu_disablePushPopAnimation]];
+  v3 = [(PUNavigationController *)&v5 popViewControllerAnimated:animated & ~[(PUNavigationController *)self pu_disablePushPopAnimation]];
 
   return v3;
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUNavigationController *)self pu_disablePushPopAnimation];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  pu_disablePushPopAnimation = [(PUNavigationController *)self pu_disablePushPopAnimation];
   if ((PUNavigationControllerPushingWithTransition & 1) != 0 || (v8 = PURequestedNavigationTransitionIsInteractive, (v9 = PURequestedNavigationTransition) == 0))
   {
     v11.receiver = self;
     v11.super_class = PUNavigationController;
-    [(PUNavigationController *)&v11 pushViewController:v6 animated:v4 & ~v7];
+    [(PUNavigationController *)&v11 pushViewController:controllerCopy animated:animatedCopy & ~pu_disablePushPopAnimation];
   }
 
   else
   {
     v10 = v9;
     PUNavigationControllerPushingWithTransition = 1;
-    [(UINavigationController *)self pu_pushViewController:v6 withTransition:v9 animated:v4 & ~v7 isInteractive:v8];
+    [(UINavigationController *)self pu_pushViewController:controllerCopy withTransition:v9 animated:animatedCopy & ~pu_disablePushPopAnimation isInteractive:v8];
     PUNavigationControllerPushingWithTransition = 0;
   }
 }
 
-- (PUNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PUNavigationController;
-  v4 = [(PUNavigationController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(PUNavigationController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -857,11 +857,11 @@ uint64_t __68__PUNavigationController__setCurrentToolbarViewController_animated_
   return v5;
 }
 
-- (PUNavigationController)initWithRootViewController:(id)a3
+- (PUNavigationController)initWithRootViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = PUNavigationController;
-  v3 = [(PUNavigationController *)&v6 initWithRootViewController:a3];
+  v3 = [(PUNavigationController *)&v6 initWithRootViewController:controller];
   v4 = v3;
   if (v3)
   {
@@ -871,11 +871,11 @@ uint64_t __68__PUNavigationController__setCurrentToolbarViewController_animated_
   return v4;
 }
 
-- (PUNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (PUNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = PUNavigationController;
-  v4 = [(PUNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v4 = [(PUNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   v5 = v4;
   if (v4)
   {

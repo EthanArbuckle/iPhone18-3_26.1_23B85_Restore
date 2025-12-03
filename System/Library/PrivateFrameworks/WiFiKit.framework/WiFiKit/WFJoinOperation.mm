@@ -1,24 +1,24 @@
 @interface WFJoinOperation
-- (WFJoinOperation)initWithAssocParameters:(id)a3 interface:(id)a4;
-- (WFJoinOperation)initWithNetwork:(id)a3 profile:(id)a4;
-- (id)__hasPrivateMACUserJoinFailureUIState:(id)a3;
+- (WFJoinOperation)initWithAssocParameters:(id)parameters interface:(id)interface;
+- (WFJoinOperation)initWithNetwork:(id)network profile:(id)profile;
+- (id)__hasPrivateMACUserJoinFailureUIState:(id)state;
 - (void)_joinWithCoreWiFi;
 - (void)dealloc;
-- (void)joinNetworkRef:(__WiFiNetwork *)a3;
+- (void)joinNetworkRef:(__WiFiNetwork *)ref;
 - (void)start;
 @end
 
 @implementation WFJoinOperation
 
-- (WFJoinOperation)initWithNetwork:(id)a3 profile:(id)a4
+- (WFJoinOperation)initWithNetwork:(id)network profile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  networkCopy = network;
+  profileCopy = profile;
   v20.receiver = self;
   v20.super_class = WFJoinOperation;
   v9 = [(WFJoinOperation *)&v20 init];
   v10 = v9;
-  if (!v9 || (objc_storeStrong(&v9->_profile, a4), !v7))
+  if (!v9 || (objc_storeStrong(&v9->_profile, profile), !networkCopy))
   {
     v17 = 0;
 LABEL_14:
@@ -27,7 +27,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v10->_network, a3);
+  objc_storeStrong(&v10->_network, network);
   v11 = *MEMORY[0x277CBECE8];
   v12 = WiFiManagerClientCreate();
   v10->_manager = v12;
@@ -37,8 +37,8 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v13 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v13 getCFRunLoop];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop getCFRunLoop];
   v14 = *MEMORY[0x277CBF058];
   WiFiManagerClientScheduleWithRunLoop();
 
@@ -76,13 +76,13 @@ LABEL_8:
   [(WFJoinOperation *)self _joinWithCoreWiFi];
 }
 
-- (id)__hasPrivateMACUserJoinFailureUIState:(id)a3
+- (id)__hasPrivateMACUserJoinFailureUIState:(id)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 userInfo];
+  stateCopy = state;
+  userInfo = [stateCopy userInfo];
   v5 = *MEMORY[0x277D02AB0];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D02AB0]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D02AB0]];
 
   if (!v6)
   {
@@ -90,8 +90,8 @@ LABEL_8:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v3 underlyingErrors];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    underlyingErrors = [stateCopy underlyingErrors];
+    v8 = [underlyingErrors countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -102,11 +102,11 @@ LABEL_4:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(underlyingErrors);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) userInfo];
-        v6 = [v12 objectForKeyedSubscript:v5];
+        userInfo2 = [*(*(&v15 + 1) + 8 * v11) userInfo];
+        v6 = [userInfo2 objectForKeyedSubscript:v5];
 
         if (v6)
         {
@@ -115,7 +115,7 @@ LABEL_4:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v9 = [underlyingErrors countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -141,15 +141,15 @@ LABEL_10:
 - (void)_joinWithCoreWiFi
 {
   objc_initWeak(&location, self);
-  v3 = [(WFJoinOperation *)self interface];
-  v4 = [(WFJoinOperation *)self associationParameters];
+  interface = [(WFJoinOperation *)self interface];
+  associationParameters = [(WFJoinOperation *)self associationParameters];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __36__WFJoinOperation__joinWithCoreWiFi__block_invoke;
   v5[3] = &unk_279EBCEC8;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [v3 associateWithParameters:v4 reply:v5];
+  [interface associateWithParameters:associationParameters reply:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -253,7 +253,7 @@ void __36__WFJoinOperation__joinWithCoreWiFi__block_invoke(uint64_t a1, void *a2
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)joinNetworkRef:(__WiFiNetwork *)a3
+- (void)joinNetworkRef:(__WiFiNetwork *)ref
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(5uLL);
@@ -264,7 +264,7 @@ void __36__WFJoinOperation__joinWithCoreWiFi__block_invoke(uint64_t a1, void *a2
     v11 = 136315650;
     v12 = "[WFJoinOperation joinNetworkRef:]";
     v13 = 2112;
-    v14 = a3;
+    refCopy = ref;
     v15 = 2112;
     v16 = device;
     _os_log_impl(&dword_273ECD000, v5, v6, "%s: networkRef: %@ device %@", &v11, 0x20u);
@@ -277,9 +277,9 @@ void __36__WFJoinOperation__joinWithCoreWiFi__block_invoke(uint64_t a1, void *a2
     [(WFJoinOperation *)self _joinComplete:v9 userInfo:0 network:0];
   }
 
-  if (a3)
+  if (ref)
   {
-    CFRelease(a3);
+    CFRelease(ref);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -306,47 +306,47 @@ void __36__WFJoinOperation__joinWithCoreWiFi__block_invoke(uint64_t a1, void *a2
   [(WFJoinOperation *)&v5 dealloc];
 }
 
-- (WFJoinOperation)initWithAssocParameters:(id)a3 interface:(id)a4
+- (WFJoinOperation)initWithAssocParameters:(id)parameters interface:(id)interface
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  interfaceCopy = interface;
   v20.receiver = self;
   v20.super_class = WFJoinOperation;
   v9 = [(WFJoinOperation *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    if (v7)
+    if (parametersCopy)
     {
-      objc_storeStrong(&v9->_associationParameters, a3);
-      objc_storeStrong(&v10->_interface, a4);
+      objc_storeStrong(&v9->_associationParameters, parameters);
+      objc_storeStrong(&v10->_interface, interface);
       v11 = MEMORY[0x277CCACA8];
-      v12 = [v7 scanResult];
-      v13 = [(WFJoinOperation *)v12 networkName];
-      v14 = [v11 stringWithFormat:@"Association operation to network='%@'", v13];
+      scanResult = [parametersCopy scanResult];
+      networkName = [(WFJoinOperation *)scanResult networkName];
+      v14 = [v11 stringWithFormat:@"Association operation to network='%@'", networkName];
       name = v10->_name;
       v10->_name = v14;
     }
 
     else
     {
-      v13 = WFLogForCategory(5uLL);
+      networkName = WFLogForCategory(5uLL);
       v19 = OSLogForWFLogLevel(1uLL);
-      if (WFCurrentLogLevel() && v13 && os_log_type_enabled(v13, v19))
+      if (WFCurrentLogLevel() && networkName && os_log_type_enabled(networkName, v19))
       {
         *buf = 136315138;
         v22 = "[WFJoinOperation initWithAssocParameters:interface:]";
-        _os_log_impl(&dword_273ECD000, v13, v19, "%s: missing association parameters", buf, 0xCu);
+        _os_log_impl(&dword_273ECD000, networkName, v19, "%s: missing association parameters", buf, 0xCu);
       }
 
-      v12 = v10;
+      scanResult = v10;
       v10 = 0;
     }
 
     v16 = v10;
 
-    v10 = v12;
+    v10 = scanResult;
   }
 
   else

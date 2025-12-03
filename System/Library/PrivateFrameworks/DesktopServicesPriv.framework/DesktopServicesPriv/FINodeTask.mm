@@ -1,16 +1,16 @@
 @interface FINodeTask
 - (id).cxx_construct;
-- (id)init:(const void *)a3;
+- (id)init:(const void *)init;
 @end
 
 @implementation FINodeTask
 
-- (id)init:(const void *)a3
+- (id)init:(const void *)init
 {
   v4 = [(FINodeTask *)self init];
   v5 = v4;
-  v7 = *a3;
-  v6 = *(a3 + 1);
+  v7 = *init;
+  v6 = *(init + 1);
   if (v6)
   {
     atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);

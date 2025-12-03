@@ -1,73 +1,73 @@
 @interface CPLEngineWrapperArray
-+ (void)setTimeToWaitForRegisteredWrapper:(double)a3;
++ (void)setTimeToWaitForRegisteredWrapper:(double)wrapper;
 - (BOOL)_autoCloseOneWrapper;
-- (BOOL)_autoCloseWrapper:(id)a3;
-- (BOOL)_canAutoCloseWrapper:(id)a3;
-- (BOOL)_canReallyOpenWrapper:(id)a3 error:(id *)a4;
-- (BOOL)_shouldAutoOpenWrapper:(id)a3 error:(id *)a4;
-- (BOOL)isWrapperOpened:(id)a3;
+- (BOOL)_autoCloseWrapper:(id)wrapper;
+- (BOOL)_canAutoCloseWrapper:(id)wrapper;
+- (BOOL)_canReallyOpenWrapper:(id)wrapper error:(id *)error;
+- (BOOL)_shouldAutoOpenWrapper:(id)wrapper error:(id *)error;
+- (BOOL)isWrapperOpened:(id)opened;
 - (CPLConfigurationDictionary)mostRecentConfigurationDictionary;
 - (CPLConfigurationDictionary)oldestConfigurationDictionary;
-- (CPLEngineWrapperArray)initWithParametersStorage:(id)a3 queue:(id)a4;
+- (CPLEngineWrapperArray)initWithParametersStorage:(id)storage queue:(id)queue;
 - (CPLEngineWrapperArrayDelegate)delegate;
 - (NSArray)registeredLibraryIdentifiers;
 - (NSArray)wrapperStatuses;
-- (id)_loadWrapperWithIdentifier:(id)a3 error:(id *)a4;
+- (id)_loadWrapperWithIdentifier:(id)identifier error:(id *)error;
 - (id)_wrappersLibraryIdentifierEnumerator;
-- (id)openedWrapperWithLibraryIdentifier:(id)a3;
-- (id)registeredWrapperCreateIfNecessaryWithParameters:(id)a3 error:(id *)a4;
-- (id)registeredWrapperWithLibraryIdentifier:(id)a3 error:(id *)a4;
+- (id)openedWrapperWithLibraryIdentifier:(id)identifier;
+- (id)registeredWrapperCreateIfNecessaryWithParameters:(id)parameters error:(id *)error;
+- (id)registeredWrapperWithLibraryIdentifier:(id)identifier error:(id *)error;
 - (unint64_t)_countOfUltimatelyOpenedWrappers;
-- (void)_addEngineWrapperOpenObserver:(id)a3 withIdentifier:(id)a4;
+- (void)_addEngineWrapperOpenObserver:(id)observer withIdentifier:(id)identifier;
 - (void)_callStopAllBlocks;
-- (void)_executeMaintenanceWithEnumerator:(id)a3 progress:(id)a4 completionHandler:(id)a5;
-- (void)_registerOpenError:(id)a3 forWrapper:(id)a4;
-- (void)_removeEngineWrapperOpenObserverWithIdentifier:(id)a3;
+- (void)_executeMaintenanceWithEnumerator:(id)enumerator progress:(id)progress completionHandler:(id)handler;
+- (void)_registerOpenError:(id)error forWrapper:(id)wrapper;
+- (void)_removeEngineWrapperOpenObserverWithIdentifier:(id)identifier;
 - (void)cancelConfigurationDictionariesRefresh;
-- (void)configurationFetcher:(id)a3 didUpdateConfigurationDictionary:(id)a4 configurationHasChanged:(BOOL)a5;
-- (void)enumerateOpenedWrappersWithBlock:(id)a3;
-- (void)enumerateWrappersWithBlock:(id)a3;
-- (void)executeMaintenanceWithCompletionHandler:(id)a3;
-- (void)executePeriodicUploadOfComputeStatesWithCompletionHandler:(id)a3;
+- (void)configurationFetcher:(id)fetcher didUpdateConfigurationDictionary:(id)dictionary configurationHasChanged:(BOOL)changed;
+- (void)enumerateOpenedWrappersWithBlock:(id)block;
+- (void)enumerateWrappersWithBlock:(id)block;
+- (void)executeMaintenanceWithCompletionHandler:(id)handler;
+- (void)executePeriodicUploadOfComputeStatesWithCompletionHandler:(id)handler;
 - (void)loadRegisteredWrappers;
-- (void)refreshAllConfigurationDictionariesWithCompletionHandler:(id)a3;
-- (void)requestRegisteredWrapperWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)stopAllWithCompletionHandler:(id)a3;
+- (void)refreshAllConfigurationDictionariesWithCompletionHandler:(id)handler;
+- (void)requestRegisteredWrapperWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)stopAllWithCompletionHandler:(id)handler;
 - (void)wipeEnginesIfNecessary;
-- (void)wrapper:(id)a3 getStatusDictionaryWithCompletionHandler:(id)a4;
-- (void)wrapper:(id)a3 getStatusWithCompletionHandler:(id)a4;
-- (void)wrapper:(id)a3 libraryDidOpenWithError:(id)a4;
-- (void)wrapperDidCompleteInitialSyncOfMainScope:(id)a3;
-- (void)wrapperEmergencyExit:(id)a3;
-- (void)wrapperLibraryDidClose:(id)a3;
-- (void)wrapperNeedsInitialDownloadOfMainScope:(id)a3;
-- (void)wrapperShouldBeDropped:(id)a3;
+- (void)wrapper:(id)wrapper getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)wrapper:(id)wrapper getStatusWithCompletionHandler:(id)handler;
+- (void)wrapper:(id)wrapper libraryDidOpenWithError:(id)error;
+- (void)wrapperDidCompleteInitialSyncOfMainScope:(id)scope;
+- (void)wrapperEmergencyExit:(id)exit;
+- (void)wrapperLibraryDidClose:(id)close;
+- (void)wrapperNeedsInitialDownloadOfMainScope:(id)scope;
+- (void)wrapperShouldBeDropped:(id)dropped;
 @end
 
 @implementation CPLEngineWrapperArray
 
-+ (void)setTimeToWaitForRegisteredWrapper:(double)a3
++ (void)setTimeToWaitForRegisteredWrapper:(double)wrapper
 {
   if (*&qword_1002BEA70 == 0.0)
   {
-    a3 = 60.0;
+    wrapper = 60.0;
   }
 
-  qword_1002BEA70 = *&a3;
+  qword_1002BEA70 = *&wrapper;
 }
 
-- (CPLEngineWrapperArray)initWithParametersStorage:(id)a3 queue:(id)a4
+- (CPLEngineWrapperArray)initWithParametersStorage:(id)storage queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = CPLEngineWrapperArray;
   v9 = [(CPLEngineWrapperArray *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parametersStorage, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_parametersStorage, storage);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = objc_alloc_init(NSMutableDictionary);
     wrappers = v10->_wrappers;
     v10->_wrappers = v11;
@@ -90,8 +90,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(CPLEngineParametersStorage *)self->_parametersStorage allDefinedParameters];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  allDefinedParameters = [(CPLEngineParametersStorage *)self->_parametersStorage allDefinedParameters];
+  v4 = [allDefinedParameters countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v4)
   {
     v6 = v4;
@@ -105,11 +105,11 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allDefinedParameters);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) libraryIdentifier];
-        v10 = [(CPLEngineWrapperArray *)self _loadWrapperWithIdentifier:v9 error:0];
+        libraryIdentifier = [*(*(&v13 + 1) + 8 * v8) libraryIdentifier];
+        v10 = [(CPLEngineWrapperArray *)self _loadWrapperWithIdentifier:libraryIdentifier error:0];
 
         if (v10 && (_CPLSilentLogging & 1) == 0)
         {
@@ -126,17 +126,17 @@
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v6 = [allDefinedParameters countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)_shouldAutoOpenWrapper:(id)a3 error:(id *)a4
+- (BOOL)_shouldAutoOpenWrapper:(id)wrapper error:(id *)error
 {
-  v6 = [a3 libraryIdentifier];
-  v7 = [v6 isEqualToString:CPLLibraryIdentifierSystemLibrary];
+  libraryIdentifier = [wrapper libraryIdentifier];
+  v7 = [libraryIdentifier isEqualToString:CPLLibraryIdentifierSystemLibrary];
 
   if (v7)
   {
@@ -148,14 +148,14 @@
 
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v11 = +[CPLErrors libraryDoesNotAutoOpenError];
 LABEL_9:
       v12 = v11;
       v13 = v11;
       result = 0;
-      *a4 = v12;
+      *error = v12;
       return result;
     }
   }
@@ -167,7 +167,7 @@ LABEL_9:
       return 1;
     }
 
-    if (a4)
+    if (error)
     {
       v11 = +[CPLErrors tooManyOpenedEnginesError];
       goto LABEL_9;
@@ -177,32 +177,32 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)_canAutoCloseWrapper:(id)a3
+- (BOOL)_canAutoCloseWrapper:(id)wrapper
 {
-  v3 = [a3 libraryIdentifier];
-  v4 = [v3 isEqualToString:CPLLibraryIdentifierSystemLibrary];
+  libraryIdentifier = [wrapper libraryIdentifier];
+  v4 = [libraryIdentifier isEqualToString:CPLLibraryIdentifierSystemLibrary];
 
   return v4 ^ 1;
 }
 
-- (BOOL)_autoCloseWrapper:(id)a3
+- (BOOL)_autoCloseWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = [v4 libraryIdentifier];
-  v6 = [(NSMutableDictionary *)self->_autoClosingWrappers objectForKeyedSubscript:v5];
+  wrapperCopy = wrapper;
+  libraryIdentifier = [wrapperCopy libraryIdentifier];
+  v6 = [(NSMutableDictionary *)self->_autoClosingWrappers objectForKeyedSubscript:libraryIdentifier];
   if (v6)
   {
   }
 
-  else if ([(CPLEngineWrapperArray *)self _canAutoCloseWrapper:v4])
+  else if ([(CPLEngineWrapperArray *)self _canAutoCloseWrapper:wrapperCopy])
   {
-    v7 = [(CPLEngineWrapperArray *)self delegate];
-    v8 = [v7 wrapperArray:self countOfClientsForWrapper:v4];
+    delegate = [(CPLEngineWrapperArray *)self delegate];
+    v8 = [delegate wrapperArray:self countOfClientsForWrapper:wrapperCopy];
 
     if (!v8)
     {
-      [(NSMutableDictionary *)self->_autoClosingWrappers setObject:v4 forKeyedSubscript:v5];
-      [v4 stop];
+      [(NSMutableDictionary *)self->_autoClosingWrappers setObject:wrapperCopy forKeyedSubscript:libraryIdentifier];
+      [wrapperCopy stop];
       v9 = 1;
       goto LABEL_6;
     }
@@ -233,10 +233,10 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)_canReallyOpenWrapper:(id)a3 error:(id *)a4
+- (BOOL)_canReallyOpenWrapper:(id)wrapper error:(id *)error
 {
-  v6 = [a3 libraryIdentifier];
-  v7 = [v6 isEqualToString:CPLLibraryIdentifierSystemLibrary];
+  libraryIdentifier = [wrapper libraryIdentifier];
+  v7 = [libraryIdentifier isEqualToString:CPLLibraryIdentifierSystemLibrary];
 
   if (v7)
   {
@@ -245,7 +245,7 @@ LABEL_6:
 
   if ([(NSMutableDictionary *)self->_wrappers count]>= 0xF)
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -260,22 +260,22 @@ LABEL_6:
   }
 
   result = [(CPLEngineWrapperArray *)self _autoCloseOneWrapper];
-  if (a4 && !result)
+  if (error && !result)
   {
 LABEL_9:
     v10 = +[CPLErrors tooManyOpenedEnginesError];
     v11 = v10;
     result = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   return result;
 }
 
-- (id)_loadWrapperWithIdentifier:(id)a3 error:(id *)a4
+- (id)_loadWrapperWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineParametersStorage *)self->_parametersStorage parametersForLibraryIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLEngineParametersStorage *)self->_parametersStorage parametersForLibraryIdentifier:identifierCopy];
   if (v7)
   {
     v12 = 0;
@@ -288,13 +288,13 @@ LABEL_9:
         sub_10018A754();
       }
 
-      if (a4)
+      if (error)
       {
         v10 = v9;
-        *a4 = v9;
+        *error = v9;
       }
 
-      [(CPLEngineParametersStorage *)self->_parametersStorage removeParametersWithLibraryIdentifier:v6 error:0];
+      [(CPLEngineParametersStorage *)self->_parametersStorage removeParametersWithLibraryIdentifier:identifierCopy error:0];
     }
   }
 
@@ -302,13 +302,13 @@ LABEL_9:
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
-      sub_10018A7E8(v6);
+      sub_10018A7E8(identifierCopy);
     }
 
-    if (a4)
+    if (error)
     {
-      [CPLErrors cplErrorWithCode:2006 description:@"%@ has not been configured yet", v6];
-      *a4 = v8 = 0;
+      [CPLErrors cplErrorWithCode:2006 description:@"%@ has not been configured yet", identifierCopy];
+      *error = v8 = 0;
     }
 
     else
@@ -357,11 +357,11 @@ LABEL_9:
   self->_stopAllBlocks = 0;
 }
 
-- (void)_addEngineWrapperOpenObserver:(id)a3 withIdentifier:(id)a4
+- (void)_addEngineWrapperOpenObserver:(id)observer withIdentifier:(id)identifier
 {
-  v12 = a3;
+  observerCopy = observer;
   queue = self->_queue;
-  v7 = a4;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
   if (!self->_openObservers)
   {
@@ -370,26 +370,26 @@ LABEL_9:
     self->_openObservers = v8;
   }
 
-  v10 = [v12 copy];
+  v10 = [observerCopy copy];
   v11 = objc_retainBlock(v10);
-  [(NSMutableDictionary *)self->_openObservers setObject:v11 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_openObservers setObject:v11 forKeyedSubscript:identifierCopy];
 }
 
-- (void)_removeEngineWrapperOpenObserverWithIdentifier:(id)a3
+- (void)_removeEngineWrapperOpenObserverWithIdentifier:(id)identifier
 {
   queue = self->_queue;
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
-  [(NSMutableDictionary *)self->_openObservers removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_openObservers removeObjectForKey:identifierCopy];
 }
 
-- (void)stopAllWithCompletionHandler:(id)a3
+- (void)stopAllWithCompletionHandler:(id)handler
 {
   stopAllBlocks = self->_stopAllBlocks;
   if (stopAllBlocks)
   {
-    v4 = a3;
-    v14 = [v4 copy];
+    handlerCopy = handler;
+    v14 = [handlerCopy copy];
 
     v5 = objc_retainBlock(v14);
     [(NSMutableArray *)stopAllBlocks addObject:v5];
@@ -397,13 +397,13 @@ LABEL_9:
 
   else
   {
-    v7 = a3;
+    handlerCopy2 = handler;
     v8 = objc_alloc_init(NSMutableArray);
     v9 = self->_stopAllBlocks;
     self->_stopAllBlocks = v8;
 
     v10 = self->_stopAllBlocks;
-    v11 = [v7 copy];
+    v11 = [handlerCopy2 copy];
 
     v12 = objc_retainBlock(v11);
     [(NSMutableArray *)v10 addObject:v12];
@@ -439,36 +439,36 @@ LABEL_9:
 
 - (NSArray)registeredLibraryIdentifiers
 {
-  v2 = [(NSMutableDictionary *)self->_wrappers allKeys];
-  v3 = [v2 sortedArrayUsingComparator:&stru_1002728F8];
+  allKeys = [(NSMutableDictionary *)self->_wrappers allKeys];
+  v3 = [allKeys sortedArrayUsingComparator:&stru_1002728F8];
 
   return v3;
 }
 
-- (id)registeredWrapperCreateIfNecessaryWithParameters:(id)a3 error:(id *)a4
+- (id)registeredWrapperCreateIfNecessaryWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 libraryIdentifier];
-  v8 = [(NSMutableDictionary *)self->_previousOpenErrors objectForKeyedSubscript:v7];
+  parametersCopy = parameters;
+  libraryIdentifier = [parametersCopy libraryIdentifier];
+  v8 = [(NSMutableDictionary *)self->_previousOpenErrors objectForKeyedSubscript:libraryIdentifier];
   v9 = v8;
   if (v8 && ([v8 shouldTryReopening] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [v9 openError];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_30;
     }
 
     goto LABEL_12;
   }
 
-  v10 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:v7];
+  v10 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:libraryIdentifier];
   if (v10)
   {
     v11 = v10;
-    v12 = [v10 parameters];
-    v13 = [v12 matchesParameters:v6];
+    parameters = [v10 parameters];
+    v13 = [parameters matchesParameters:parametersCopy];
 
     if (v13)
     {
@@ -480,10 +480,10 @@ LABEL_9:
       sub_10018AABC();
     }
 
-    if (a4)
+    if (error)
     {
-      v14 = [v6 libraryIdentifier];
-      *a4 = [CPLErrors cplErrorWithCode:2005 description:@"Incorrect parameters for %@", v14];
+      libraryIdentifier2 = [parametersCopy libraryIdentifier];
+      *error = [CPLErrors cplErrorWithCode:2005 description:@"Incorrect parameters for %@", libraryIdentifier2];
     }
 
 LABEL_12:
@@ -491,9 +491,9 @@ LABEL_12:
     goto LABEL_30;
   }
 
-  v15 = [(CPLEngineWrapperArray *)self mostRecentConfigurationDictionary];
+  mostRecentConfigurationDictionary = [(CPLEngineWrapperArray *)self mostRecentConfigurationDictionary];
   v28 = 0;
-  v11 = [(CPLEngineWrapperArray *)self _instantiateWrapperWithParameters:v6 createIfNecessary:1 error:&v28];
+  v11 = [(CPLEngineWrapperArray *)self _instantiateWrapperWithParameters:parametersCopy createIfNecessary:1 error:&v28];
   v16 = v28;
   v17 = v16;
   if (v11)
@@ -506,14 +506,14 @@ LABEL_12:
         *buf = 138412546;
         v30 = v11;
         v31 = 2112;
-        v32 = v6;
+        v32 = parametersCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Created %@ for %@", buf, 0x16u);
       }
     }
 
     parametersStorage = self->_parametersStorage;
     v27 = 0;
-    v20 = [(CPLEngineParametersStorage *)parametersStorage saveParameters:v6 error:&v27];
+    v20 = [(CPLEngineParametersStorage *)parametersStorage saveParameters:parametersCopy error:&v27];
     v21 = v27;
     if ((v20 & 1) == 0 && (_CPLSilentLogging & 1) == 0)
     {
@@ -521,18 +521,18 @@ LABEL_12:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v30 = v6;
+        v30 = parametersCopy;
         v31 = 2112;
         v32 = v21;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to store %@ for automatic start: %@", buf, 0x16u);
       }
     }
 
-    if (v15)
+    if (mostRecentConfigurationDictionary)
     {
-      v23 = [v11 engine];
-      v24 = [v23 configuration];
-      [v24 updateConfigurationDictionary:v15];
+      engine = [v11 engine];
+      configuration = [engine configuration];
+      [configuration updateConfigurationDictionary:mostRecentConfigurationDictionary];
     }
 
     else
@@ -541,10 +541,10 @@ LABEL_12:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v25 = v16;
-    *a4 = v17;
+    *error = v17;
   }
 
 LABEL_30:
@@ -552,23 +552,23 @@ LABEL_30:
   return v11;
 }
 
-- (id)registeredWrapperWithLibraryIdentifier:(id)a3 error:(id *)a4
+- (id)registeredWrapperWithLibraryIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_previousOpenErrors objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_previousOpenErrors objectForKeyedSubscript:identifierCopy];
   v8 = v7;
   if (v7)
   {
     if ([v7 shouldTryReopeningWithoutLibrary])
     {
-      v9 = [v8 parameters];
-      v10 = [(CPLEngineWrapperArray *)self registeredWrapperCreateIfNecessaryWithParameters:v9 error:a4];
+      parameters = [v8 parameters];
+      v10 = [(CPLEngineWrapperArray *)self registeredWrapperCreateIfNecessaryWithParameters:parameters error:error];
     }
 
-    else if (a4)
+    else if (error)
     {
       [v8 openError];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -579,14 +579,14 @@ LABEL_30:
 
   else
   {
-    v10 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:identifierCopy];
     if (!v10)
     {
-      v11 = [CPLErrors cplErrorWithCode:2006 description:@"%@ has not been configured yet", v6];
-      if (a4)
+      identifierCopy = [CPLErrors cplErrorWithCode:2006 description:@"%@ has not been configured yet", identifierCopy];
+      if (error)
       {
-        v11 = v11;
-        *a4 = v11;
+        identifierCopy = identifierCopy;
+        *error = identifierCopy;
       }
     }
   }
@@ -594,13 +594,13 @@ LABEL_30:
   return v10;
 }
 
-- (id)openedWrapperWithLibraryIdentifier:(id)a3
+- (id)openedWrapperWithLibraryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:identifierCopy];
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:identifierCopy];
 
     if (v6)
     {
@@ -612,16 +612,16 @@ LABEL_30:
   return v5;
 }
 
-- (void)enumerateWrappersWithBlock:(id)a3
+- (void)enumerateWrappersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CPLEngineWrapperArray *)self registeredLibraryIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  registeredLibraryIdentifiers = [(CPLEngineWrapperArray *)self registeredLibraryIdentifiers];
+  v6 = [registeredLibraryIdentifiers countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -632,11 +632,11 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(registeredLibraryIdentifiers);
       }
 
       v10 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)];
-      v4[2](v4, v10, &v16);
+      blockCopy[2](blockCopy, v10, &v16);
       v11 = v16;
 
       if (v11)
@@ -646,7 +646,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [registeredLibraryIdentifiers countByEnumeratingWithState:&v12 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -658,23 +658,23 @@ LABEL_3:
   }
 }
 
-- (void)enumerateOpenedWrappersWithBlock:(id)a3
+- (void)enumerateOpenedWrappersWithBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001554C;
   v4[3] = &unk_100272920;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CPLEngineWrapperArray *)v5 enumerateWrappersWithBlock:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(CPLEngineWrapperArray *)selfCopy enumerateWrappersWithBlock:v4];
 }
 
-- (BOOL)isWrapperOpened:(id)a3
+- (BOOL)isWrapperOpened:(id)opened
 {
   unopenedWrappers = self->_unopenedWrappers;
-  v4 = [a3 libraryIdentifier];
-  v5 = [(NSMutableDictionary *)unopenedWrappers objectForKeyedSubscript:v4];
+  libraryIdentifier = [opened libraryIdentifier];
+  v5 = [(NSMutableDictionary *)unopenedWrappers objectForKeyedSubscript:libraryIdentifier];
   LOBYTE(unopenedWrappers) = v5 == 0;
 
   return unopenedWrappers;
@@ -682,35 +682,35 @@ LABEL_3:
 
 - (id)_wrappersLibraryIdentifierEnumerator
 {
-  v2 = [(CPLEngineWrapperArray *)self registeredLibraryIdentifiers];
-  v3 = [v2 objectEnumerator];
+  registeredLibraryIdentifiers = [(CPLEngineWrapperArray *)self registeredLibraryIdentifiers];
+  objectEnumerator = [registeredLibraryIdentifiers objectEnumerator];
 
-  return v3;
+  return objectEnumerator;
 }
 
-- (void)_executeMaintenanceWithEnumerator:(id)a3 progress:(id)a4 completionHandler:(id)a5
+- (void)_executeMaintenanceWithEnumerator:(id)enumerator progress:(id)progress completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isCancelled])
+  enumeratorCopy = enumerator;
+  progressCopy = progress;
+  handlerCopy = handler;
+  if ([progressCopy isCancelled])
   {
-    sub_10018AD7C(v10, buf);
-    v11 = *buf;
+    sub_10018AD7C(handlerCopy, buf);
+    nextObject = *buf;
     goto LABEL_12;
   }
 
-  v11 = [v8 nextObject];
-  if (!v11)
+  nextObject = [enumeratorCopy nextObject];
+  if (!nextObject)
   {
     sub_10018AD08();
     goto LABEL_12;
   }
 
-  v12 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:v11];
+  v12 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:nextObject];
   if (v12)
   {
-    v13 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:v11];
+    v13 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:nextObject];
 
     if (!v13)
     {
@@ -719,10 +719,10 @@ LABEL_3:
       v15[2] = sub_100015F94;
       v15[3] = &unk_100272568;
       v16 = v12;
-      v17 = self;
-      v18 = v8;
-      v19 = v9;
-      v20 = v10;
+      selfCopy = self;
+      v18 = enumeratorCopy;
+      v19 = progressCopy;
+      v20 = handlerCopy;
       [v19 performAsCurrentWithPendingUnitCount:1 usingBlock:v15];
 
       goto LABEL_11;
@@ -740,16 +740,16 @@ LABEL_3:
     }
   }
 
-  [v9 setCompletedUnitCount:{objc_msgSend(v9, "completedUnitCount") + 1}];
-  [(CPLEngineWrapperArray *)self _executeMaintenanceWithEnumerator:v8 progress:v9 completionHandler:v10];
+  [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
+  [(CPLEngineWrapperArray *)self _executeMaintenanceWithEnumerator:enumeratorCopy progress:progressCopy completionHandler:handlerCopy];
 LABEL_11:
 
 LABEL_12:
 }
 
-- (void)executeMaintenanceWithCompletionHandler:(id)a3
+- (void)executeMaintenanceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100016348;
@@ -758,15 +758,15 @@ LABEL_12:
   [CPLSimpleUpgradeHistory cleanupUnusedUpgradeHistoriesWithUsedBlock:v10];
   if ([(NSMutableDictionary *)self->_wrappers count])
   {
-    v5 = [(CPLEngineWrapperArray *)self _wrappersLibraryIdentifierEnumerator];
+    _wrappersLibraryIdentifierEnumerator = [(CPLEngineWrapperArray *)self _wrappersLibraryIdentifierEnumerator];
     [NSProgress progressWithTotalUnitCount:[(NSMutableDictionary *)self->_wrappers count]];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000163B4;
     v8 = v7[3] = &unk_1002727E8;
-    v9 = v4;
+    v9 = handlerCopy;
     v6 = v8;
-    [(CPLEngineWrapperArray *)self _executeMaintenanceWithEnumerator:v5 progress:v6 completionHandler:v7];
+    [(CPLEngineWrapperArray *)self _executeMaintenanceWithEnumerator:_wrappersLibraryIdentifierEnumerator progress:v6 completionHandler:v7];
   }
 
   else
@@ -775,33 +775,33 @@ LABEL_12:
   }
 }
 
-- (void)executePeriodicUploadOfComputeStatesWithCompletionHandler:(id)a3
+- (void)executePeriodicUploadOfComputeStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(CPLEngineWrapperArray *)self openedWrapperWithLibraryIdentifier:CPLLibraryIdentifierSystemLibrary];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 engine];
-    v8 = [v7 store];
+    engine = [v5 engine];
+    store = [engine store];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10018A2A8;
     v11[3] = &unk_1002726D0;
-    v12 = v8;
+    v12 = store;
     v13 = v6;
-    v9 = v8;
+    v9 = store;
     v10 = [v9 performReadTransactionWithBlock:v11];
   }
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)requestRegisteredWrapperWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)requestRegisteredWrapperWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v8 = self->_queue;
   v9 = [NSProgress progressWithTotalUnitCount:1];
@@ -833,11 +833,11 @@ LABEL_12:
   v69 = v70;
   v14 = v12;
   v67 = v14;
-  v15 = v7;
+  v15 = handlerCopy;
   v68 = v15;
   v16 = v9;
   v64 = v16;
-  v65 = self;
+  selfCopy = self;
   v39 = v10;
   v66 = v39;
   v17 = objc_retainBlock(v62);
@@ -851,7 +851,7 @@ LABEL_12:
   v36 = v14;
   v58 = v36;
   v61 = v75;
-  v19 = v6;
+  v19 = identifierCopy;
   v57 = v19;
   v20 = v17;
   v59 = v20;
@@ -960,16 +960,16 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = sub_1000173DC;
   v14[3] = &unk_100271FD8;
-  v15 = self;
+  selfCopy = self;
   v3 = [[NSMutableArray alloc] initWithCapacity:{-[CPLEngineWrapperArray count](self, "count")}];
   v16 = v3;
-  [(CPLEngineWrapperArray *)v15 enumerateWrappersWithBlock:v14];
+  [(CPLEngineWrapperArray *)selfCopy enumerateWrappersWithBlock:v14];
   previousOpenErrors = self->_previousOpenErrors;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1000174BC;
   v11 = &unk_100272B00;
-  v12 = self;
+  selfCopy2 = self;
   v13 = v3;
   v5 = v3;
   [(NSMutableDictionary *)previousOpenErrors enumerateKeysAndObjectsUsingBlock:&v8];
@@ -1018,17 +1018,17 @@ LABEL_12:
   return v2;
 }
 
-- (void)refreshAllConfigurationDictionariesWithCompletionHandler:(id)a3
+- (void)refreshAllConfigurationDictionariesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained && ([WeakRetained allowsConfigurationRefreshForWrapperArray:self] & 1) != 0)
   {
-    v7 = [(CPLEngineWrapperArray *)self oldestConfigurationDictionary];
-    v8 = v7;
-    if (v7 && ((-[NSObject isStale](v7, "isStale") & 1) != 0 || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 BOOLForKey:@"CPLAlwaysFetchConfiguration"], v9, (v10 & 1) != 0)))
+    oldestConfigurationDictionary = [(CPLEngineWrapperArray *)self oldestConfigurationDictionary];
+    v8 = oldestConfigurationDictionary;
+    if (oldestConfigurationDictionary && ((-[NSObject isStale](oldestConfigurationDictionary, "isStale") & 1) != 0 || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 BOOLForKey:@"CPLAlwaysFetchConfiguration"], v9, (v10 & 1) != 0)))
     {
       configurationFetcher = self->_configurationFetcher;
       if (!configurationFetcher)
@@ -1042,17 +1042,17 @@ LABEL_12:
         configurationFetcher = self->_configurationFetcher;
       }
 
-      [(CPLConfigurationFetcher *)configurationFetcher fetchConfigurationDictionary:v8 completionHandler:v4];
+      [(CPLConfigurationFetcher *)configurationFetcher fetchConfigurationDictionary:v8 completionHandler:handlerCopy];
     }
 
-    else if (v4)
+    else if (handlerCopy)
     {
       queue = self->_queue;
       block = _NSConcreteStackBlock;
       v22 = 3221225472;
       v23 = sub_1000027DC;
       v24 = &unk_100271E98;
-      v25 = v4;
+      v25 = handlerCopy;
       v19 = queue;
       v20 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
       dispatch_async(v19, v20);
@@ -1061,14 +1061,14 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v16 = self->_queue;
     block = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_1000027DC;
     v24 = &unk_100271E98;
-    v25 = v4;
+    v25 = handlerCopy;
     v8 = v16;
     v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v8, v17);
@@ -1085,24 +1085,24 @@ LABEL_11:
   self->_configurationFetcher = 0;
 }
 
-- (void)configurationFetcher:(id)a3 didUpdateConfigurationDictionary:(id)a4 configurationHasChanged:(BOOL)a5
+- (void)configurationFetcher:(id)fetcher didUpdateConfigurationDictionary:(id)dictionary configurationHasChanged:(BOOL)changed
 {
-  v5 = a5;
-  v8 = a4;
+  changedCopy = changed;
+  dictionaryCopy = dictionary;
   queue = self->_queue;
-  v10 = a3;
+  fetcherCopy = fetcher;
   dispatch_assert_queue_V2(queue);
   configurationFetcher = self->_configurationFetcher;
 
-  if (configurationFetcher == v10)
+  if (configurationFetcher == fetcherCopy)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100017CCC;
     v14[3] = &unk_100272B50;
-    v15 = v8;
+    v15 = dictionaryCopy;
     [(CPLEngineWrapperArray *)self enumerateWrappersWithBlock:v14];
-    if (v5)
+    if (changedCopy)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(DarwinNotifyCenter, _CPLConfigurationDidChangeNotification, 0, 0, 0);
@@ -1113,10 +1113,10 @@ LABEL_11:
   }
 }
 
-- (void)_registerOpenError:(id)a3 forWrapper:(id)a4
+- (void)_registerOpenError:(id)error forWrapper:(id)wrapper
 {
-  v15 = a3;
-  v6 = a4;
+  errorCopy = error;
+  wrapperCopy = wrapper;
   if (!self->_previousOpenErrors)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
@@ -1125,29 +1125,29 @@ LABEL_11:
   }
 
   v9 = [_CPLEngineWrapperOpenError alloc];
-  v10 = [v6 parameters];
-  v11 = [(_CPLEngineWrapperOpenError *)v9 initWithParameters:v10 openError:v15];
+  parameters = [wrapperCopy parameters];
+  v11 = [(_CPLEngineWrapperOpenError *)v9 initWithParameters:parameters openError:errorCopy];
   v12 = self->_previousOpenErrors;
-  v13 = [v6 libraryIdentifier];
-  [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
+  libraryIdentifier = [wrapperCopy libraryIdentifier];
+  [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:libraryIdentifier];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained wrapperArray:self wrapperShouldBeDropped:v6];
+  [WeakRetained wrapperArray:self wrapperShouldBeDropped:wrapperCopy];
 }
 
-- (void)wrapper:(id)a3 libraryDidOpenWithError:(id)a4
+- (void)wrapper:(id)wrapper libraryDidOpenWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  wrapperCopy = wrapper;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 libraryIdentifier];
-  v9 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:v8];
+  libraryIdentifier = [wrapperCopy libraryIdentifier];
+  v9 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:libraryIdentifier];
 
   if (v9)
   {
-    [(NSMutableDictionary *)self->_unopenedWrappers removeObjectForKey:v8];
-    [(NSMutableDictionary *)self->_previousOpenErrors removeObjectForKey:v8];
-    if (v7)
+    [(NSMutableDictionary *)self->_unopenedWrappers removeObjectForKey:libraryIdentifier];
+    [(NSMutableDictionary *)self->_previousOpenErrors removeObjectForKey:libraryIdentifier];
+    if (errorCopy)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -1155,16 +1155,16 @@ LABEL_11:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v20 = v6;
+          v20 = wrapperCopy;
           v21 = 2112;
-          v22 = v7;
+          v22 = errorCopy;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to open %@: %@", buf, 0x16u);
         }
       }
 
-      [(NSMutableDictionary *)self->_autoClosingWrappers removeObjectForKey:v8];
-      sub_10018A008(self, v6);
-      [(CPLEngineWrapperArray *)self _registerOpenError:v7 forWrapper:v6];
+      [(NSMutableDictionary *)self->_autoClosingWrappers removeObjectForKey:libraryIdentifier];
+      sub_10018A008(self, wrapperCopy);
+      [(CPLEngineWrapperArray *)self _registerOpenError:errorCopy forWrapper:wrapperCopy];
     }
 
     openObservers = self->_openObservers;
@@ -1172,24 +1172,24 @@ LABEL_11:
     v14 = 3221225472;
     v15 = sub_100018068;
     v16 = &unk_100272B98;
-    v17 = v6;
-    v18 = v7;
+    v17 = wrapperCopy;
+    v18 = errorCopy;
     [(NSMutableDictionary *)openObservers enumerateKeysAndObjectsUsingBlock:&v13];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained wrapperArrayCountDidChange:{self, v13, v14, v15, v16}];
   }
 }
 
-- (void)wrapperLibraryDidClose:(id)a3
+- (void)wrapperLibraryDidClose:(id)close
 {
-  v4 = a3;
+  closeCopy = close;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 libraryIdentifier];
-  v6 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:v5];
+  libraryIdentifier = [closeCopy libraryIdentifier];
+  v6 = [(NSMutableDictionary *)self->_wrappers objectForKeyedSubscript:libraryIdentifier];
 
   if (v6)
   {
-    v9 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:v5];
+    v9 = [(NSMutableDictionary *)self->_unopenedWrappers objectForKeyedSubscript:libraryIdentifier];
 
     if (v9)
     {
@@ -1199,12 +1199,12 @@ LABEL_11:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = v4;
+          v13 = closeCopy;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ closed before even being opened", &v12, 0xCu);
         }
       }
 
-      [(NSMutableDictionary *)self->_unopenedWrappers removeObjectForKey:v5];
+      [(NSMutableDictionary *)self->_unopenedWrappers removeObjectForKey:libraryIdentifier];
     }
 
     else if ((_CPLSilentLogging & 1) == 0)
@@ -1212,19 +1212,19 @@ LABEL_11:
       sub_10018B018();
     }
 
-    sub_10018A008(self, v4);
+    sub_10018A008(self, closeCopy);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained wrapperArrayCountDidChange:self];
   }
 
-  v7 = [(NSMutableDictionary *)self->_autoClosingWrappers objectForKeyedSubscript:v5];
+  v7 = [(NSMutableDictionary *)self->_autoClosingWrappers objectForKeyedSubscript:libraryIdentifier];
 
   if (v7)
   {
     v8 = +[CPLErrors libraryDoesNotAutoOpenError];
-    [(CPLEngineWrapperArray *)self _registerOpenError:v8 forWrapper:v4];
+    [(CPLEngineWrapperArray *)self _registerOpenError:v8 forWrapper:closeCopy];
 
-    [(NSMutableDictionary *)self->_autoClosingWrappers removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_autoClosingWrappers removeObjectForKey:libraryIdentifier];
   }
 
   if (![(NSMutableDictionary *)self->_wrappers count]&& self->_stopAllBlocks)
@@ -1233,50 +1233,50 @@ LABEL_11:
   }
 }
 
-- (void)wrapper:(id)a3 getStatusWithCompletionHandler:(id)a4
+- (void)wrapper:(id)wrapper getStatusWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained wrapperArray:self getStatusWithCompletionHandler:v5];
+    [WeakRetained wrapperArray:self getStatusWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v5[2](v5, &stru_10027C2F0, 0);
+    handlerCopy[2](handlerCopy, &stru_10027C2F0, 0);
   }
 }
 
-- (void)wrapper:(id)a3 getStatusDictionaryWithCompletionHandler:(id)a4
+- (void)wrapper:(id)wrapper getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained wrapperArray:self getStatusDictionaryWithCompletionHandler:v5];
+    [WeakRetained wrapperArray:self getStatusDictionaryWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v5[2](v5, &__NSDictionary0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSDictionary0__struct, 0);
   }
 }
 
-- (void)wrapperNeedsInitialDownloadOfMainScope:(id)a3
+- (void)wrapperNeedsInitialDownloadOfMainScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained wrapperArray:self wrapperNeedsInitialDownloadOfMainScope:v4];
+  [WeakRetained wrapperArray:self wrapperNeedsInitialDownloadOfMainScope:scopeCopy];
 }
 
-- (void)wrapperDidCompleteInitialSyncOfMainScope:(id)a3
+- (void)wrapperDidCompleteInitialSyncOfMainScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained wrapperArray:self wrapperDidCompleteInitialSyncOfMainScope:v4];
+  [WeakRetained wrapperArray:self wrapperDidCompleteInitialSyncOfMainScope:scopeCopy];
 }
 
 - (CPLEngineWrapperArrayDelegate)delegate
@@ -1286,9 +1286,9 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)wrapperEmergencyExit:(id)a3
+- (void)wrapperEmergencyExit:(id)exit
 {
-  v5 = a3;
+  exitCopy = exit;
   dispatch_assert_queue_V2(self->_queue);
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -1322,13 +1322,13 @@ LABEL_11:
   [WeakRetained emergencyExitForWrapperArray:self];
 }
 
-- (void)wrapperShouldBeDropped:(id)a3
+- (void)wrapperShouldBeDropped:(id)dropped
 {
-  v4 = a3;
-  v5 = [v4 libraryIdentifier];
+  droppedCopy = dropped;
+  libraryIdentifier = [droppedCopy libraryIdentifier];
   parametersStorage = self->_parametersStorage;
   v16 = 0;
-  v7 = [(CPLEngineParametersStorage *)parametersStorage removeParametersWithLibraryIdentifier:v5 error:&v16];
+  v7 = [(CPLEngineParametersStorage *)parametersStorage removeParametersWithLibraryIdentifier:libraryIdentifier error:&v16];
   v8 = v16;
   if (v7)
   {
@@ -1338,7 +1338,7 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v4;
+        v18 = droppedCopy;
         sub_10000FAA0();
 LABEL_8:
         _os_log_impl(v10, v11, v12, v13, v14, v15);
@@ -1355,7 +1355,7 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v18 = v4;
+      v18 = droppedCopy;
       v19 = 2112;
       v20 = v8;
       v10 = &_mh_execute_header;
@@ -1370,8 +1370,8 @@ LABEL_8:
 LABEL_9:
   }
 
-  sub_10018A008(self, v4);
-  [(NSMutableDictionary *)self->_unopenedWrappers removeObjectForKey:v5];
+  sub_10018A008(self, droppedCopy);
+  [(NSMutableDictionary *)self->_unopenedWrappers removeObjectForKey:libraryIdentifier];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface OADShapeStyle
 + (id)defaultOfficeShapeStyle;
 + (id)defaultShapeStyle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)applyToGraphicProperties:(id)a3 styleMatrix:(id)a4 useNull:(BOOL)a5 strokeWidthMultiplier:(float)a6;
-- (void)applyToTextBody:(id)a3;
-- (void)applyToTextListStyle:(id)a3;
-- (void)setEffectMatrixIndex:(unsigned int)a3 color:(id)a4;
-- (void)setFillMatrixIndex:(unsigned int)a3 color:(id)a4;
-- (void)setLineMatrixIndex:(unsigned int)a3 color:(id)a4;
+- (void)applyToGraphicProperties:(id)properties styleMatrix:(id)matrix useNull:(BOOL)null strokeWidthMultiplier:(float)multiplier;
+- (void)applyToTextBody:(id)body;
+- (void)applyToTextListStyle:(id)style;
+- (void)setEffectMatrixIndex:(unsigned int)index color:(id)color;
+- (void)setFillMatrixIndex:(unsigned int)index color:(id)color;
+- (void)setLineMatrixIndex:(unsigned int)index color:(id)color;
 @end
 
 @implementation OADShapeStyle
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(OADStyleMatrixReference *)self->mLineReference copyWithZone:a3];
+  v6 = [(OADStyleMatrixReference *)self->mLineReference copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(OADStyleMatrixReference *)self->mFillReference copyWithZone:a3];
+  v8 = [(OADStyleMatrixReference *)self->mFillReference copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(OADStyleMatrixReference *)self->mEffectReference copyWithZone:a3];
+  v10 = [(OADStyleMatrixReference *)self->mEffectReference copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(OADFontReference *)self->mFontReference copyWithZone:a3];
+  v12 = [(OADFontReference *)self->mFontReference copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
@@ -90,17 +90,17 @@
   return v2;
 }
 
-- (void)applyToGraphicProperties:(id)a3 styleMatrix:(id)a4 useNull:(BOOL)a5 strokeWidthMultiplier:(float)a6
+- (void)applyToGraphicProperties:(id)properties styleMatrix:(id)matrix useNull:(BOOL)null strokeWidthMultiplier:(float)multiplier
 {
-  v7 = a5;
-  v29 = a3;
-  v10 = a4;
-  v11 = [v29 isMergedWithParent];
-  [v29 setMergedWithParent:0];
+  nullCopy = null;
+  propertiesCopy = properties;
+  matrixCopy = matrix;
+  isMergedWithParent = [propertiesCopy isMergedWithParent];
+  [propertiesCopy setMergedWithParent:0];
   mLineReference = self->mLineReference;
   if (mLineReference)
   {
-    v13 = [v10 strokeAtIndex:{-[OADStyleMatrixReference matrixIndex](mLineReference, "matrixIndex")}];
+    v13 = [matrixCopy strokeAtIndex:{-[OADStyleMatrixReference matrixIndex](mLineReference, "matrixIndex")}];
     if (v13)
     {
       goto LABEL_7;
@@ -112,7 +112,7 @@
     v13 = 0;
   }
 
-  if (v7)
+  if (nullCopy)
   {
     v13 = +[OADStroke nullStroke];
   }
@@ -122,28 +122,28 @@ LABEL_7:
   {
     v14 = [v13 copy];
 
-    if (a6 != 1.0)
+    if (multiplier != 1.0)
     {
       [v14 width];
-      *&v16 = v15 * a6;
+      *&v16 = v15 * multiplier;
       [v14 setWidth:v16];
     }
 
-    v17 = [(OADStyleMatrixReference *)self->mLineReference color];
-    if (v17)
+    color = [(OADStyleMatrixReference *)self->mLineReference color];
+    if (color)
     {
-      [v14 setStyleColor:v17];
+      [v14 setStyleColor:color];
     }
 
-    if ([v29 hasStroke])
+    if ([propertiesCopy hasStroke])
     {
-      v18 = [v29 stroke];
-      [v18 setParent:v14];
+      stroke = [propertiesCopy stroke];
+      [stroke setParent:v14];
     }
 
     else
     {
-      [v29 setStroke:v14];
+      [propertiesCopy setStroke:v14];
     }
   }
 
@@ -155,7 +155,7 @@ LABEL_7:
   mFillReference = self->mFillReference;
   if (mFillReference)
   {
-    v20 = [v10 fillAtIndex:{-[OADStyleMatrixReference matrixIndex](mFillReference, "matrixIndex")}];
+    v20 = [matrixCopy fillAtIndex:{-[OADStyleMatrixReference matrixIndex](mFillReference, "matrixIndex")}];
     if (v20)
     {
       goto LABEL_23;
@@ -167,7 +167,7 @@ LABEL_7:
     v20 = 0;
   }
 
-  if (v7)
+  if (nullCopy)
   {
     v20 = +[OADNullFill nullFill];
   }
@@ -177,10 +177,10 @@ LABEL_23:
   {
     v21 = [v20 copy];
 
-    v22 = [(OADStyleMatrixReference *)self->mFillReference color];
-    if (v22)
+    color2 = [(OADStyleMatrixReference *)self->mFillReference color];
+    if (color2)
     {
-      [v21 setStyleColor:v22];
+      [v21 setStyleColor:color2];
     }
 
     else
@@ -190,116 +190,116 @@ LABEL_23:
       v21 = v23;
     }
 
-    if ([v29 hasFill])
+    if ([propertiesCopy hasFill])
     {
-      v24 = [v29 fill];
+      fill = [propertiesCopy fill];
       if ([v21 isMemberOfClass:objc_opt_class()])
       {
-        [v24 setParent:v21];
+        [fill setParent:v21];
       }
     }
 
     else
     {
       [v21 setDefinedByStyle:1];
-      [v29 setFill:v21];
+      [propertiesCopy setFill:v21];
     }
 
     v20 = v21;
   }
 
-  if (([v29 hasEffects] & 1) == 0)
+  if (([propertiesCopy hasEffects] & 1) == 0)
   {
     mEffectReference = self->mEffectReference;
     if (mEffectReference)
     {
-      v26 = [v10 effectsAtIndex:{-[OADStyleMatrixReference matrixIndex](mEffectReference, "matrixIndex")}];
+      array = [matrixCopy effectsAtIndex:{-[OADStyleMatrixReference matrixIndex](mEffectReference, "matrixIndex")}];
     }
 
     else
     {
-      v26 = 0;
+      array = 0;
     }
 
-    if (!v26 && v7)
+    if (!array && nullCopy)
     {
-      v26 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
-    if (v26)
+    if (array)
     {
-      v27 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v26 copyItems:1];
+      v27 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:array copyItems:1];
 
-      v28 = [(OADStyleMatrixReference *)self->mEffectReference color];
-      if (v28)
+      color3 = [(OADStyleMatrixReference *)self->mEffectReference color];
+      if (color3)
       {
-        [v27 makeObjectsPerformSelector:sel_setStyleColor_ withObject:v28];
+        [v27 makeObjectsPerformSelector:sel_setStyleColor_ withObject:color3];
       }
 
-      [v29 setEffects:v27];
+      [propertiesCopy setEffects:v27];
     }
   }
 
-  [v29 setMergedWithParent:v11];
+  [propertiesCopy setMergedWithParent:isMergedWithParent];
 }
 
-- (void)applyToTextBody:(id)a3
+- (void)applyToTextBody:(id)body
 {
-  v9 = a3;
-  v4 = [v9 overrideTextListStyle];
-  if (v4)
+  bodyCopy = body;
+  overrideTextListStyle = [bodyCopy overrideTextListStyle];
+  if (overrideTextListStyle)
   {
-    [(OADShapeStyle *)self applyToTextListStyle:v4];
+    [(OADShapeStyle *)self applyToTextListStyle:overrideTextListStyle];
   }
 
   else
   {
-    v5 = [v9 paragraphCount];
-    if (v5)
+    paragraphCount = [bodyCopy paragraphCount];
+    if (paragraphCount)
     {
-      for (i = 0; i != v5; ++i)
+      for (i = 0; i != paragraphCount; ++i)
       {
-        v7 = [v9 paragraphAtIndex:i];
-        v8 = [v7 properties];
-        [(OADShapeStyle *)self applyToParagraphProperties:v8];
+        v7 = [bodyCopy paragraphAtIndex:i];
+        properties = [v7 properties];
+        [(OADShapeStyle *)self applyToParagraphProperties:properties];
       }
     }
   }
 }
 
-- (void)applyToTextListStyle:(id)a3
+- (void)applyToTextListStyle:(id)style
 {
-  v7 = a3;
-  v4 = [v7 defaultProperties];
-  [(OADShapeStyle *)self applyToParagraphProperties:v4];
+  styleCopy = style;
+  defaultProperties = [styleCopy defaultProperties];
+  [(OADShapeStyle *)self applyToParagraphProperties:defaultProperties];
 
   for (i = 0; i != 9; ++i)
   {
-    v6 = [v7 propertiesForListLevel:i];
+    v6 = [styleCopy propertiesForListLevel:i];
     [(OADShapeStyle *)self applyToParagraphProperties:v6];
   }
 }
 
-- (void)setLineMatrixIndex:(unsigned int)a3 color:(id)a4
+- (void)setLineMatrixIndex:(unsigned int)index color:(id)color
 {
-  v8 = a4;
-  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:a3 color:v8];
+  colorCopy = color;
+  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:index color:colorCopy];
   mLineReference = self->mLineReference;
   self->mLineReference = v6;
 }
 
-- (void)setFillMatrixIndex:(unsigned int)a3 color:(id)a4
+- (void)setFillMatrixIndex:(unsigned int)index color:(id)color
 {
-  v8 = a4;
-  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:a3 color:v8];
+  colorCopy = color;
+  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:index color:colorCopy];
   mFillReference = self->mFillReference;
   self->mFillReference = v6;
 }
 
-- (void)setEffectMatrixIndex:(unsigned int)a3 color:(id)a4
+- (void)setEffectMatrixIndex:(unsigned int)index color:(id)color
 {
-  v8 = a4;
-  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:a3 color:v8];
+  colorCopy = color;
+  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:index color:colorCopy];
   mEffectReference = self->mEffectReference;
   self->mEffectReference = v6;
 }
@@ -319,9 +319,9 @@ LABEL_23:
   v7 = [(OADFontReference *)self->mFontReference description];
   [v3 addField:@"Font" value:v7];
 
-  v8 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v8;
+  return descriptionString;
 }
 
 @end

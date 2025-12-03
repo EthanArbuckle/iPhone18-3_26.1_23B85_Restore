@@ -1,77 +1,77 @@
 @interface EAAccessoryManager
 + (BOOL)isLoggingEnabled;
 + (EAAccessoryManager)sharedAccessoryManager;
-+ (id)accessoryDictionaryForLogging:(id)a3;
-- (BOOL)appDeclaresProtocol:(id)a3;
++ (id)accessoryDictionaryForLogging:(id)logging;
+- (BOOL)appDeclaresProtocol:(id)protocol;
 - (NSArray)connectedAccessories;
-- (id)_findExtraAccessoriesContainedOnlyInEA:(id)a3;
-- (id)_findExtraAccessoriesContainedOnlyIniAP:(id)a3;
+- (id)_findExtraAccessoriesContainedOnlyInEA:(id)a;
+- (id)_findExtraAccessoriesContainedOnlyIniAP:(id)p;
 - (id)_initFromSingletonCreationMethod;
-- (id)authCertForLegacyConnectionID:(unsigned int)a3;
-- (id)authCertSerialNumberForLegacyConnectionID:(unsigned int)a3;
-- (id)currentVehicleInformation:(id)a3;
-- (void)EAAccessoryArrived:(id)a3;
-- (void)EAAccessoryLeft:(id)a3;
-- (void)_OOBBTPairingCompletionStatusReceived:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_cameraInfoUpdated:(id)a3;
-- (void)_checkForConnectedAccessories:(BOOL)a3 backgroundTaskIdentifier:(unint64_t)a4;
-- (void)_cleanUpForTaskSuspendWithTaskIdentifier:(unint64_t)a3;
+- (id)authCertForLegacyConnectionID:(unsigned int)d;
+- (id)authCertSerialNumberForLegacyConnectionID:(unsigned int)d;
+- (id)currentVehicleInformation:(id)information;
+- (void)EAAccessoryArrived:(id)arrived;
+- (void)EAAccessoryLeft:(id)left;
+- (void)_OOBBTPairingCompletionStatusReceived:(id)received;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_cameraInfoUpdated:(id)updated;
+- (void)_checkForConnectedAccessories:(BOOL)accessories backgroundTaskIdentifier:(unint64_t)identifier;
+- (void)_cleanUpForTaskSuspendWithTaskIdentifier:(unint64_t)identifier;
 - (void)_ephemerisURLAvailable:(id)Accessory;
-- (void)_ephemerisURLAvailableForAccessory:(id)a3;
-- (void)_externalAccessoryConnected:(id)a3;
-- (void)_externalAccessoryConnectedNotificationHandler:(id)a3;
-- (void)_externalAccessoryDisconnected:(id)a3;
-- (void)_externalAccessoryReconnected:(id)a3;
-- (void)_externalAccessoryUpdated:(id)a3;
+- (void)_ephemerisURLAvailableForAccessory:(id)accessory;
+- (void)_externalAccessoryConnected:(id)connected;
+- (void)_externalAccessoryConnectedNotificationHandler:(id)handler;
+- (void)_externalAccessoryDisconnected:(id)disconnected;
+- (void)_externalAccessoryReconnected:(id)reconnected;
+- (void)_externalAccessoryUpdated:(id)updated;
 - (void)_gpsTimeRequested:(id)Accessory;
-- (void)_gpsTimeRequestedForAccessory:(id)a3;
-- (void)_handleAccessoryNotificationTimeout:(id)a3;
-- (void)_iapServerDied:(id)a3;
+- (void)_gpsTimeRequestedForAccessory:(id)accessory;
+- (void)_handleAccessoryNotificationTimeout:(id)timeout;
+- (void)_iapServerDied:(id)died;
 - (void)_integrateSequesteredAccessories;
 - (void)_locationNmeaDataAvailable:(id)Accessory;
-- (void)_locationNmeaDataAvailableForAccessory:(id)a3;
+- (void)_locationNmeaDataAvailableForAccessory:(id)accessory;
 - (void)_locationPointDataAvailable:(id)Accessory;
-- (void)_locationPointDataAvailableForAccessory:(id)a3;
+- (void)_locationPointDataAvailableForAccessory:(id)accessory;
 - (void)_nmeaFilteringSupportChanged:(id)Accessory;
-- (void)_nmeaFilteringSupportChangedForAccessory:(id)a3;
-- (void)_notifyObserversThatAccessoryDisconnectedWithUserInfo:(id)a3;
-- (void)_pointOfInterestStatusReceived:(id)a3;
-- (void)_timeSyncInfoUpdated:(id)a3;
-- (void)_vehicleDataUpdated:(id)a3;
-- (void)accessibilityAction:(id)a3;
-- (void)accessibilityContextChange:(id)a3;
-- (void)accessibilityItemPropertyRequest:(id)a3;
-- (void)accessibilitySystemPropertyChange:(id)a3;
-- (void)accessibilitySystemPropertyRequest:(id)a3;
-- (void)accessoryClosedEASession:(id)a3;
-- (void)closeEASessionForEASessionUUID:(id)a3;
-- (void)closeInputStreamForEASessionUUID:(id)a3;
+- (void)_nmeaFilteringSupportChangedForAccessory:(id)accessory;
+- (void)_notifyObserversThatAccessoryDisconnectedWithUserInfo:(id)info;
+- (void)_pointOfInterestStatusReceived:(id)received;
+- (void)_timeSyncInfoUpdated:(id)updated;
+- (void)_vehicleDataUpdated:(id)updated;
+- (void)accessibilityAction:(id)action;
+- (void)accessibilityContextChange:(id)change;
+- (void)accessibilityItemPropertyRequest:(id)request;
+- (void)accessibilitySystemPropertyChange:(id)change;
+- (void)accessibilitySystemPropertyRequest:(id)request;
+- (void)accessoryClosedEASession:(id)session;
+- (void)closeEASessionForEASessionUUID:(id)d;
+- (void)closeInputStreamForEASessionUUID:(id)d;
 - (void)dealloc;
-- (void)devicePicker:(id)a3 didSelectAddress:(id)a4 errorCode:(int64_t)a5;
-- (void)handleIncomingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4 withReply:(id)a5;
-- (void)initialEAAccessoriesAttachedAfterClientConnection:(id)a3;
-- (void)nmeaSentenceArrived:(id)a3 forAccessoryUUID:(id)a4 withTimestamps:(id)a5;
-- (void)pointOfInterestSelection:(id)a3;
+- (void)devicePicker:(id)picker didSelectAddress:(id)address errorCode:(int64_t)code;
+- (void)handleIncomingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier withReply:(id)reply;
+- (void)initialEAAccessoriesAttachedAfterClientConnection:(id)connection;
+- (void)nmeaSentenceArrived:(id)arrived forAccessoryUUID:(id)d withTimestamps:(id)timestamps;
+- (void)pointOfInterestSelection:(id)selection;
 - (void)registerForLocalNotifications;
-- (void)requestIAPAccessoryWiFiCredentials:(id)a3;
-- (void)saveEASession:(id)a3 forEASessionUUID:(id)a4;
-- (void)sendDeviceIdentifierNotification:(id)a3 usbIdentifier:(id)a4 forUUID:(id)a5;
-- (void)sendNMEAFilterList:(id)a3 forUUID:(id)a4;
-- (void)sendOutgoingEAData:(id)a3 forSessionUUID:(id)a4;
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessCarPlayAvailable:(id)a5 bluetoothIdentifier:(id)a6 forUUID:(id)a7;
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessCarPlayAvailable:(id)a5 bluetoothIdentifier:(id)a6 themeAssetsAvailable:(id)a7 forUUID:(id)a8;
-- (void)setAreLocationAccessoriesEnabled:(BOOL)a3;
+- (void)requestIAPAccessoryWiFiCredentials:(id)credentials;
+- (void)saveEASession:(id)session forEASessionUUID:(id)d;
+- (void)sendDeviceIdentifierNotification:(id)notification usbIdentifier:(id)identifier forUUID:(id)d;
+- (void)sendNMEAFilterList:(id)list forUUID:(id)d;
+- (void)sendOutgoingEAData:(id)data forSessionUUID:(id)d;
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessCarPlayAvailable:(id)playAvailable bluetoothIdentifier:(id)bluetoothIdentifier forUUID:(id)d;
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessCarPlayAvailable:(id)playAvailable bluetoothIdentifier:(id)bluetoothIdentifier themeAssetsAvailable:(id)assetsAvailable forUUID:(id)d;
+- (void)setAreLocationAccessoriesEnabled:(BOOL)enabled;
 - (void)showBluetoothAccessoryPickerWithNameFilter:(NSPredicate *)predicate completion:(EABluetoothAccessoryPickerCompletion)completion;
-- (void)startDestinationSharingForUUID:(id)a3 options:(unint64_t)a4;
+- (void)startDestinationSharingForUUID:(id)d options:(unint64_t)options;
 - (void)startLocationForConnectedAccessories;
-- (void)stopDestinationSharingForUUID:(id)a3;
+- (void)stopDestinationSharingForUUID:(id)d;
 - (void)stopLocationForConnectedAccessories;
 - (void)unregisterForLocalNotifications;
-- (void)updateAccessoryInfo:(id)a3;
-- (void)vehicleStatusUpdate:(id)a3 forAccessoryUUID:(id)a4;
-- (void)wakeAccessoryWithToken:(id)a3;
+- (void)updateAccessoryInfo:(id)info;
+- (void)vehicleStatusUpdate:(id)update forAccessoryUUID:(id)d;
+- (void)wakeAccessoryWithToken:(id)token;
 @end
 
 @implementation EAAccessoryManager
@@ -97,12 +97,12 @@
   v2 = __registeredForLocalNotifications;
   if (!__registeredForLocalNotifications)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__locationNmeaDataAvailable_ name:*MEMORY[0x277D184D8] object:0];
-    [v4 addObserver:self selector:sel__locationPointDataAvailable_ name:*MEMORY[0x277D184D0] object:0];
-    [v4 addObserver:self selector:sel__ephemerisURLAvailable_ name:*MEMORY[0x277D184C8] object:0];
-    [v4 addObserver:self selector:sel__nmeaFilteringSupportChanged_ name:*MEMORY[0x277D184C0] object:0];
-    [v4 addObserver:self selector:sel__gpsTimeRequested_ name:*MEMORY[0x277D184E0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__locationNmeaDataAvailable_ name:*MEMORY[0x277D184D8] object:0];
+    [defaultCenter addObserver:self selector:sel__locationPointDataAvailable_ name:*MEMORY[0x277D184D0] object:0];
+    [defaultCenter addObserver:self selector:sel__ephemerisURLAvailable_ name:*MEMORY[0x277D184C8] object:0];
+    [defaultCenter addObserver:self selector:sel__nmeaFilteringSupportChanged_ name:*MEMORY[0x277D184C0] object:0];
+    [defaultCenter addObserver:self selector:sel__gpsTimeRequested_ name:*MEMORY[0x277D184E0] object:0];
     v2 = __registeredForLocalNotifications;
   }
 
@@ -123,15 +123,15 @@
   NSLog(&cfstr_Externalaccess_12.isa, connectedAccessories);
   if (self->_connectedAccessories)
   {
-    v4 = [MEMORY[0x277CBEA60] arrayWithArray:?];
+    array = [MEMORY[0x277CBEA60] arrayWithArray:?];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v5 = v4;
+  v5 = array;
   [__accessoryListLock unlock];
   return v5;
 }
@@ -221,12 +221,12 @@
   v2 = __registeredForLocalNotifications;
   if (__registeredForLocalNotifications == 1)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D184D8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D184D0] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D184C8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D184C0] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D184E0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D184D8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D184D0] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D184C8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D184C0] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D184E0] object:0];
     v2 = __registeredForLocalNotifications;
   }
 
@@ -272,7 +272,7 @@
         if ((v5 & 1) == 0)
         {
           NSLog(&cfstr_Externalaccess_1.isa, "[EAAccessoryManager _initFromSingletonCreationMethod]");
-          v6 = [MEMORY[0x277CCAB98] defaultCenter];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
           if (uikitFramework && (v7 = dlsym(uikitFramework, "UIApplicationDidEnterBackgroundNotification")) != 0)
           {
             v8 = *v7;
@@ -283,7 +283,7 @@
             v8 = 0;
           }
 
-          [v6 addObserver:v3 selector:sel__applicationDidEnterBackground_ name:v8 object:0];
+          [defaultCenter addObserver:v3 selector:sel__applicationDidEnterBackground_ name:v8 object:0];
           if (uikitFramework && (v9 = dlsym(uikitFramework, "UIApplicationWillEnterForegroundNotification")) != 0)
           {
             v10 = *v9;
@@ -294,7 +294,7 @@
             v10 = 0;
           }
 
-          [v6 addObserver:v3 selector:sel__applicationWillEnterForeground_ name:v10 object:0];
+          [defaultCenter addObserver:v3 selector:sel__applicationWillEnterForeground_ name:v10 object:0];
         }
       }
     }
@@ -370,17 +370,17 @@
     }
 
     v3->_sequesterNewAccessories = 0;
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v3 selector:sel__externalAccessoryConnectedNotificationHandler_ name:*MEMORY[0x277D183A0] object:0];
-    [v22 addObserver:v3 selector:sel__externalAccessoryUpdated_ name:*MEMORY[0x277D18460] object:0];
-    [v22 addObserver:v3 selector:sel__externalAccessoryDisconnected_ name:*MEMORY[0x277D183A8] object:0];
-    [v22 addObserver:v3 selector:sel__pointOfInterestStatusReceived_ name:*MEMORY[0x277D18438] object:0];
-    [v22 addObserver:v3 selector:sel__OOBBTPairingCompletionStatusReceived_ name:*MEMORY[0x277D18400] object:0];
-    [v22 addObserver:v3 selector:sel__iapServerDied_ name:*MEMORY[0x277D18488] object:0];
-    [v22 addObserver:v3 selector:sel__externalAccessoryReconnected_ name:*MEMORY[0x277D18490] object:0];
-    [v22 addObserver:v3 selector:sel__timeSyncInfoUpdated_ name:*MEMORY[0x277D184E8] object:0];
-    [v22 addObserver:v3 selector:sel__vehicleDataUpdated_ name:*MEMORY[0x277D184F0] object:0];
-    [v22 addObserver:v3 selector:sel__cameraInfoUpdated_ name:*MEMORY[0x277D18498] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__externalAccessoryConnectedNotificationHandler_ name:*MEMORY[0x277D183A0] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__externalAccessoryUpdated_ name:*MEMORY[0x277D18460] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__externalAccessoryDisconnected_ name:*MEMORY[0x277D183A8] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__pointOfInterestStatusReceived_ name:*MEMORY[0x277D18438] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__OOBBTPairingCompletionStatusReceived_ name:*MEMORY[0x277D18400] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__iapServerDied_ name:*MEMORY[0x277D18488] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__externalAccessoryReconnected_ name:*MEMORY[0x277D18490] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__timeSyncInfoUpdated_ name:*MEMORY[0x277D184E8] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__vehicleDataUpdated_ name:*MEMORY[0x277D184F0] object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__cameraInfoUpdated_ name:*MEMORY[0x277D18498] object:0];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -498,7 +498,7 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
     {
       if ((v3 & 1) == 0)
       {
-        v4 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         if (uikitFramework && (v5 = dlsym(uikitFramework, "UIApplicationDidEnterBackgroundNotification")) != 0)
         {
           v6 = *v5;
@@ -509,7 +509,7 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
           v6 = 0;
         }
 
-        [v4 removeObserver:self name:v6 object:0];
+        [defaultCenter removeObserver:self name:v6 object:0];
         if (uikitFramework && (v7 = dlsym(uikitFramework, "UIApplicationWillEnterForegroundNotification")) != 0)
         {
           v8 = *v7;
@@ -520,7 +520,7 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
           v8 = 0;
         }
 
-        [v4 removeObserver:self name:v8 object:0];
+        [defaultCenter removeObserver:self name:v8 object:0];
         dlclose(uikitFramework);
       }
     }
@@ -553,17 +553,17 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
   dispatch_release(self->_connectionQueue);
   self->_connectionQueue = 0;
   [(EAAccessoryManager *)self unregisterForLocalNotifications];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 removeObserver:self name:*MEMORY[0x277D183A0] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D18460] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D183A8] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D18488] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D18490] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D184E8] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D184F0] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D18438] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D18400] object:0];
-  [v10 removeObserver:self name:*MEMORY[0x277D18498] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D183A0] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D18460] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D183A8] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D18488] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D18490] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D184E8] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D184F0] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D18438] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D18400] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D18498] object:0];
 
   self->_managerInstanceUUID = 0;
   v11.receiver = self;
@@ -571,19 +571,19 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
   [(EAAccessoryManager *)&v11 dealloc];
 }
 
-- (void)EAAccessoryArrived:(id)a3
+- (void)EAAccessoryArrived:(id)arrived
 {
   NSLog(&cfstr_Externalaccess_6.isa, [EAAccessoryManager accessoryDictionaryForLogging:?]);
-  v5 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D183A0] object:self userInfo:a3];
+  v5 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D183A0] object:self userInfo:arrived];
 
   [(EAAccessoryManager *)self _externalAccessoryConnected:v5];
 }
 
-- (void)EAAccessoryLeft:(id)a3
+- (void)EAAccessoryLeft:(id)left
 {
   NSLog(&cfstr_Externalaccess_7.isa, [EAAccessoryManager accessoryDictionaryForLogging:?]);
   v5 = *MEMORY[0x277D18480];
-  v6 = [a3 objectForKey:*MEMORY[0x277D18480]];
+  v6 = [left objectForKey:*MEMORY[0x277D18480]];
   if (v6)
   {
     v7 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D183A8] object:self userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", v6, v5)}];
@@ -597,20 +597,20 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
   }
 }
 
-- (void)initialEAAccessoriesAttachedAfterClientConnection:(id)a3
+- (void)initialEAAccessoriesAttachedAfterClientConnection:(id)connection
 {
   v19 = *MEMORY[0x277D85DE8];
-  NSLog(&cfstr_Externalaccess_9.isa, [a3 count]);
+  NSLog(&cfstr_Externalaccess_9.isa, [connection count]);
   [__accessoryListLock lock];
-  if (a3)
+  if (connection)
   {
-    if ([a3 count])
+    if ([connection count])
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [connection countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         v6 = v5;
@@ -622,7 +622,7 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
           {
             if (*v15 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(connection);
             }
 
             v9 = *(*(&v14 + 1) + 8 * v8);
@@ -643,7 +643,7 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v6 = [connection countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v6);
@@ -657,66 +657,66 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDestinationSharingForUUID:(id)a3 options:(unint64_t)a4
+- (void)startDestinationSharingForUUID:(id)d options:(unint64_t)options
 {
-  AccessoryByUUID = __findAccessoryByUUID(a3, self->_connectedAccessories);
+  AccessoryByUUID = __findAccessoryByUUID(d, self->_connectedAccessories);
   if (AccessoryByUUID)
   {
     v7 = AccessoryByUUID;
     [AccessoryByUUID setPointOfInterestHandoffEnabled:1];
-    [v7 setDestinationSharingOptions:a4];
+    [v7 setDestinationSharingOptions:options];
     if (__registeredForLocalNotifications)
     {
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v7 forKey:@"EAAccessoryKey"];
 
-      [v8 postNotificationName:@"EAAccessoryUpdateNotification" object:self userInfo:v9];
+      [defaultCenter postNotificationName:@"EAAccessoryUpdateNotification" object:self userInfo:v9];
     }
   }
 }
 
-- (void)stopDestinationSharingForUUID:(id)a3
+- (void)stopDestinationSharingForUUID:(id)d
 {
-  AccessoryByUUID = __findAccessoryByUUID(a3, self->_connectedAccessories);
+  AccessoryByUUID = __findAccessoryByUUID(d, self->_connectedAccessories);
   if (AccessoryByUUID)
   {
     v5 = AccessoryByUUID;
     [AccessoryByUUID setPointOfInterestHandoffEnabled:0];
     if (__registeredForLocalNotifications)
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v5 forKey:@"EAAccessoryKey"];
 
-      [v6 postNotificationName:@"EAAccessoryUpdateNotification" object:self userInfo:v7];
+      [defaultCenter postNotificationName:@"EAAccessoryUpdateNotification" object:self userInfo:v7];
     }
   }
 }
 
-- (void)nmeaSentenceArrived:(id)a3 forAccessoryUUID:(id)a4 withTimestamps:(id)a5
+- (void)nmeaSentenceArrived:(id)arrived forAccessoryUUID:(id)d withTimestamps:(id)timestamps
 {
-  AccessoryByUUID = __findAccessoryByUUID(a4, self->_connectedAccessories);
+  AccessoryByUUID = __findAccessoryByUUID(d, self->_connectedAccessories);
   if (AccessoryByUUID)
   {
     v10 = AccessoryByUUID;
-    [AccessoryByUUID addNMEASentence:a3 withTimestamps:a5];
+    [AccessoryByUUID addNMEASentence:arrived withTimestamps:timestamps];
 
     [(EAAccessoryManager *)self _locationNmeaDataAvailableForAccessory:v10];
   }
 
   else
   {
-    NSLog(&cfstr_LocationSCanno.isa, "[EAAccessoryManager nmeaSentenceArrived:forAccessoryUUID:withTimestamps:]", a4, a3, a5);
+    NSLog(&cfstr_LocationSCanno.isa, "[EAAccessoryManager nmeaSentenceArrived:forAccessoryUUID:withTimestamps:]", d, arrived, timestamps);
   }
 }
 
-- (void)vehicleStatusUpdate:(id)a3 forAccessoryUUID:(id)a4
+- (void)vehicleStatusUpdate:(id)update forAccessoryUUID:(id)d
 {
-  AccessoryByUUID = __findAccessoryByUUID(a4, self->_connectedAccessories);
-  NSLog(&cfstr_Vehicleinfosta.isa, "[EAAccessoryManager vehicleStatusUpdate:forAccessoryUUID:]", a4, a3);
+  AccessoryByUUID = __findAccessoryByUUID(d, self->_connectedAccessories);
+  NSLog(&cfstr_Vehicleinfosta.isa, "[EAAccessoryManager vehicleStatusUpdate:forAccessoryUUID:]", d, update);
   if (AccessoryByUUID)
   {
-    NSLog(&cfstr_Vehicleinfosta_0.isa, a4);
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+    NSLog(&cfstr_Vehicleinfosta_0.isa, d);
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:update];
     [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", objc_msgSend(AccessoryByUUID, "connectionID")), @"EAConnectionIDKey"}];
     v9 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D184F0] object:0 userInfo:v8];
 
@@ -725,13 +725,13 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
 
   else
   {
-    NSLog(&cfstr_Vehicleinfosta_1.isa, a4);
+    NSLog(&cfstr_Vehicleinfosta_1.isa, d);
   }
 }
 
-- (void)updateAccessoryInfo:(id)a3
+- (void)updateAccessoryInfo:(id)info
 {
-  v4 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D18460] object:0 userInfo:a3];
+  v4 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D18460] object:0 userInfo:info];
 
   [(EAAccessoryManager *)self _externalAccessoryUpdated:v4];
 }
@@ -771,20 +771,20 @@ uint64_t __54__EAAccessoryManager__initFromSingletonCreationMethod__block_invoke
   }
 }
 
-- (void)_notifyObserversThatAccessoryDisconnectedWithUserInfo:(id)a3
+- (void)_notifyObserversThatAccessoryDisconnectedWithUserInfo:(id)info
 {
-  v5 = [a3 objectForKey:@"EAAccessoryKey"];
+  v5 = [info objectForKey:@"EAAccessoryKey"];
   if (v5)
   {
     v6 = v5;
-    v7 = a3;
+    infoCopy = info;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__EAAccessoryManager__notifyObserversThatAccessoryDisconnectedWithUserInfo___block_invoke;
     block[3] = &unk_278A4E2D0;
     block[4] = v6;
     block[5] = self;
-    block[6] = a3;
+    block[6] = info;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -812,10 +812,10 @@ void __76__EAAccessoryManager__notifyObserversThatAccessoryDisconnectedWithUserI
   v5 = *(a1 + 48);
 }
 
-- (void)_iapServerDied:(id)a3
+- (void)_iapServerDied:(id)died
 {
   v5 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  NSLog(&cfstr_Externalaccess_16.isa, [(NSMutableArray *)self->_connectedAccessories count], a3);
+  NSLog(&cfstr_Externalaccess_16.isa, [(NSMutableArray *)self->_connectedAccessories count], died);
   [(EAAccessoryManager *)self _removeAlliAPAccessoriesFromArray:self->_connectedAccessories notifyClients:1];
   [(EAAccessoryManager *)self _removeAlliAPAccessoriesFromArray:self->_sequesteredAccessories notifyClients:0];
   if (+[EAAccessoryManager isLoggingEnabled])
@@ -828,9 +828,9 @@ void __76__EAAccessoryManager__notifyObserversThatAccessoryDisconnectedWithUserI
   __iapdStartedSinceLastAppExecution = 0;
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
-  NSLog(&cfstr_Externalaccess_18.isa, a2, a3);
+  NSLog(&cfstr_Externalaccess_18.isa, a2, background);
   if (+[EAAccessoryManager isLoggingEnabled])
   {
     NSLog(&cfstr_Externalaccess_19.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "[EAAccessoryManager _applicationDidEnterBackground:]", 1126, __capabilities, 16, 32);
@@ -842,13 +842,13 @@ void __76__EAAccessoryManager__notifyObserversThatAccessoryDisconnectedWithUserI
     NSLog(&cfstr_Externalaccess_20.isa, v4, _backgroundTask);
   }
 
-  v5 = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
+  nSClassFromString(&cfstr_Uiapplication.isa) = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__EAAccessoryManager__applicationDidEnterBackground___block_invoke;
   v9[3] = &unk_278A4E2F8;
   v9[4] = self;
-  _backgroundTask = [v5 beginBackgroundTaskWithName:@"EA_BackgroundTask" expirationHandler:v9];
+  _backgroundTask = [nSClassFromString(&cfstr_Uiapplication.isa) beginBackgroundTaskWithName:@"EA_BackgroundTask" expirationHandler:v9];
   if (+[EAAccessoryManager isLoggingEnabled])
   {
     v6 = objc_opt_class();
@@ -897,7 +897,7 @@ void __53__EAAccessoryManager__applicationDidEnterBackground___block_invoke(uint
   }
 }
 
-- (id)_findExtraAccessoriesContainedOnlyIniAP:(id)a3
+- (id)_findExtraAccessoriesContainedOnlyIniAP:(id)p
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -905,8 +905,8 @@ void __53__EAAccessoryManager__applicationDidEnterBackground___block_invoke(uint
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
-  v6 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = p;
+  v6 = [p countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -957,7 +957,7 @@ void __53__EAAccessoryManager__applicationDidEnterBackground___block_invoke(uint
   return result;
 }
 
-- (id)_findExtraAccessoriesContainedOnlyInEA:(id)a3
+- (id)_findExtraAccessoriesContainedOnlyInEA:(id)a
 {
   v35 = *MEMORY[0x277D85DE8];
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -989,12 +989,12 @@ void __53__EAAccessoryManager__applicationDidEnterBackground___block_invoke(uint
         if (([v11 createdByCoreAccessories] & 1) == 0)
         {
           v24 = v11;
-          v12 = [v11 connectionID];
+          connectionID = [v11 connectionID];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v13 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+          v13 = [a countByEnumeratingWithState:&v29 objects:v34 count:16];
           if (v13)
           {
             v14 = v13;
@@ -1006,7 +1006,7 @@ void __53__EAAccessoryManager__applicationDidEnterBackground___block_invoke(uint
               {
                 if (*v30 != v16)
                 {
-                  objc_enumerationMutation(a3);
+                  objc_enumerationMutation(a);
                 }
 
                 if (v15)
@@ -1014,11 +1014,11 @@ void __53__EAAccessoryManager__applicationDidEnterBackground___block_invoke(uint
                   goto LABEL_13;
                 }
 
-                if ([objc_msgSend(*(*(&v29 + 1) + 8 * i) objectForKey:{v9), "unsignedIntegerValue"}] == v12)
+                if ([objc_msgSend(*(*(&v29 + 1) + 8 * i) objectForKey:{v9), "unsignedIntegerValue"}] == connectionID)
                 {
                   if (+[EAAccessoryManager isLoggingEnabled])
                   {
-                    NSLog(&cfstr_Externalaccess_81.isa, v12);
+                    NSLog(&cfstr_Externalaccess_81.isa, connectionID);
                   }
 
 LABEL_13:
@@ -1029,7 +1029,7 @@ LABEL_13:
                 v15 = 0;
               }
 
-              v14 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+              v14 = [a countByEnumeratingWithState:&v29 objects:v34 count:16];
               if (!v14)
               {
                 goto LABEL_22;
@@ -1043,7 +1043,7 @@ LABEL_22:
           v7 = v23;
           if ((v15 & 1) == 0 && v18)
           {
-            NSLog(&cfstr_Externalaccess_82.isa, v12);
+            NSLog(&cfstr_Externalaccess_82.isa, connectionID);
           }
 
           v8 = v22;
@@ -1072,11 +1072,11 @@ LABEL_22:
   return result;
 }
 
-- (void)_checkForConnectedAccessories:(BOOL)a3 backgroundTaskIdentifier:(unint64_t)a4
+- (void)_checkForConnectedAccessories:(BOOL)accessories backgroundTaskIdentifier:(unint64_t)identifier
 {
   v44 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  NSLog(&cfstr_Externalaccess_28.isa, a2, "[EAAccessoryManager _checkForConnectedAccessories:backgroundTaskIdentifier:]", a3, a4);
+  accessoriesCopy = accessories;
+  NSLog(&cfstr_Externalaccess_28.isa, a2, "[EAAccessoryManager _checkForConnectedAccessories:backgroundTaskIdentifier:]", accessories, identifier);
   v27 = __capabilities;
   v5 = IAPAppConnectedAccessories();
   v25 = [(EAAccessoryManager *)self _findExtraAccessoriesContainedOnlyIniAP:v5];
@@ -1176,13 +1176,13 @@ LABEL_22:
     while (v19);
   }
 
-  if (v26)
+  if (accessoriesCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdentifier___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a4;
+    block[4] = identifier;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -1214,7 +1214,7 @@ void __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdenti
   }
 }
 
-- (void)_cleanUpForTaskSuspendWithTaskIdentifier:(unint64_t)a3
+- (void)_cleanUpForTaskSuspendWithTaskIdentifier:(unint64_t)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableArray count](self->_connectedAccessories, "count")}];
@@ -1276,11 +1276,11 @@ void __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdenti
 
   if (+[EAAccessoryManager isLoggingEnabled])
   {
-    NSLog(&cfstr_Externalaccess_34.isa, "[EAAccessoryManager _cleanUpForTaskSuspendWithTaskIdentifier:]", a3);
+    NSLog(&cfstr_Externalaccess_34.isa, "[EAAccessoryManager _cleanUpForTaskSuspendWithTaskIdentifier:]", identifier);
   }
 
   [-[objc_class sharedApplication](NSClassFromString(&cfstr_Uiapplication.isa) "sharedApplication")];
-  if (_backgroundTask == a3)
+  if (_backgroundTask == identifier)
   {
     if (+[EAAccessoryManager isLoggingEnabled])
     {
@@ -1292,15 +1292,15 @@ void __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdenti
 
   else
   {
-    NSLog(&cfstr_Externalaccess_36.isa, "[EAAccessoryManager _cleanUpForTaskSuspendWithTaskIdentifier:]", _backgroundTask, a3);
+    NSLog(&cfstr_Externalaccess_36.isa, "[EAAccessoryManager _cleanUpForTaskSuspendWithTaskIdentifier:]", _backgroundTask, identifier);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  NSLog(&cfstr_Externalaccess_37.isa, a2, "[EAAccessoryManager _applicationWillEnterForeground:]", a3);
+  NSLog(&cfstr_Externalaccess_37.isa, a2, "[EAAccessoryManager _applicationWillEnterForeground:]", foreground);
   if (+[EAAccessoryManager isLoggingEnabled])
   {
     NSLog(&cfstr_Externalaccess_19.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "[EAAccessoryManager _applicationWillEnterForeground:]", 1369, __capabilities, 16, 32);
@@ -1320,51 +1320,51 @@ void __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdenti
   dispatch_async(global_queue, block);
 }
 
-- (void)_externalAccessoryReconnected:(id)a3
+- (void)_externalAccessoryReconnected:(id)reconnected
 {
   if (+[EAAccessoryManager isLoggingEnabled])
   {
-    NSLog(&cfstr_Externalaccess_39.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "-[EAAccessoryManager _externalAccessoryReconnected:]", 1407, [a3 userInfo]);
+    NSLog(&cfstr_Externalaccess_39.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "-[EAAccessoryManager _externalAccessoryReconnected:]", 1407, [reconnected userInfo]);
   }
 
-  [(EAAccessoryManager *)self _externalAccessoryConnected:a3];
+  [(EAAccessoryManager *)self _externalAccessoryConnected:reconnected];
 }
 
-- (void)_externalAccessoryConnectedNotificationHandler:(id)a3
+- (void)_externalAccessoryConnectedNotificationHandler:(id)handler
 {
   if (+[EAAccessoryManager isLoggingEnabled])
   {
     NSLog(&cfstr_Externalaccess_44.isa, "[EAAccessoryManager _externalAccessoryConnectedNotificationHandler:]", 1452);
   }
 
-  [(EAAccessoryManager *)self _externalAccessoryConnected:a3];
+  [(EAAccessoryManager *)self _externalAccessoryConnected:handler];
 }
 
-- (void)_externalAccessoryConnected:(id)a3
+- (void)_externalAccessoryConnected:(id)connected
 {
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v4 = [a3 userInfo];
+  userInfo = [connected userInfo];
   v5 = *MEMORY[0x277D18480];
-  v6 = [v4 objectForKey:*MEMORY[0x277D18480]];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D18480]];
   if (__findAccessory([v6 unsignedIntValue], self->_connectedAccessories) || __findAccessory(objc_msgSend(v6, "unsignedIntValue"), self->_sequesteredAccessories))
   {
     v7 = MEMORY[0x277CCAB88];
     v8 = MEMORY[0x277CBEAC0];
-    v9 = [v4 objectForKey:v5];
+    v9 = [userInfo objectForKey:v5];
     -[EAAccessoryManager _externalAccessoryDisconnected:](self, "_externalAccessoryDisconnected:", [v7 notificationWithName:@"EAAccessoryReConnect" object:self userInfo:{objc_msgSend(v8, "dictionaryWithObjectsAndKeys:", v9, v5, objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1), @"EAAccessoryIsReconnecting", 0)}]);
   }
 
   v10 = objc_alloc_init(EAAccessoryInternal);
-  NSLog(&cfstr_Externalaccess_45.isa, v4);
-  __convertIAPAccessoryToEAAccessory(v4, v10);
+  NSLog(&cfstr_Externalaccess_45.isa, userInfo);
+  __convertIAPAccessoryToEAAccessory(userInfo, v10);
   [(EAAccessoryInternal *)v10 setConnected:1];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
-  v27 = [(EAAccessoryInternal *)v10 createdByCoreAccessories];
+  createdByCoreAccessories = [(EAAccessoryInternal *)v10 createdByCoreAccessories];
   v11 = [[EAAccessory alloc] _initWithAccessory:v10];
   [__accessoryListLock lock];
   if (!self->_connectedAccessories)
@@ -1374,14 +1374,14 @@ void __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdenti
 
   [__accessoryListLock unlock];
   [(NSRecursiveLock *)self->_pickerLock lock];
-  v12 = [v11 macAddress];
-  v13 = [v12 localizedCompare:self->_selectedBluetoothAddress];
+  macAddress = [v11 macAddress];
+  v13 = [macAddress localizedCompare:self->_selectedBluetoothAddress];
   *(v29 + 24) = v13 == 0;
   if (self->_sequesterNewAccessories)
   {
     if (v13)
     {
-      v14 = v12 == 0;
+      v14 = macAddress == 0;
     }
 
     else
@@ -1399,9 +1399,9 @@ void __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdenti
 
   if (+[EAAccessoryManager isLoggingEnabled])
   {
-    NSLog(&cfstr_Externalaccess_46.isa, v12, self->_selectedBluetoothAddress, v15);
+    NSLog(&cfstr_Externalaccess_46.isa, macAddress, self->_selectedBluetoothAddress, v15);
     v16 = @"NO";
-    if (!v12)
+    if (!macAddress)
     {
       v16 = @"YES";
     }
@@ -1452,10 +1452,10 @@ void __77__EAAccessoryManager__checkForConnectedAccessories_backgroundTaskIdenti
     [(EAAccessoryManager *)self _integrateSequesteredAccessories];
   }
 
-  v19 = [v11 coreAccessoriesPrimaryUUID];
-  v20 = [v11 connectionID];
-  v21 = [v11 createdByCoreAccessories];
-  NSLog(&cfstr_Externalaccess_49.isa, 1551, v19, v20, v21, __registeredForLocalNotifications);
+  coreAccessoriesPrimaryUUID = [v11 coreAccessoriesPrimaryUUID];
+  connectionID = [v11 connectionID];
+  createdByCoreAccessories2 = [v11 createdByCoreAccessories];
+  NSLog(&cfstr_Externalaccess_49.isa, 1551, coreAccessoriesPrimaryUUID, connectionID, createdByCoreAccessories2, __registeredForLocalNotifications);
   if (!((__registeredForLocalNotifications == 0) | v15 & 1))
   {
     v22 = v11;
@@ -1544,10 +1544,10 @@ void __50__EAAccessoryManager__externalAccessoryConnected___block_invoke_2(uint6
   v3 = *(a1 + 32);
 }
 
-- (void)_externalAccessoryUpdated:(id)a3
+- (void)_externalAccessoryUpdated:(id)updated
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D18480]];
+  userInfo = [updated userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D18480]];
   Accessory = __findAccessory([v5 unsignedIntValue], self->_connectedAccessories);
   v7 = Accessory;
   if (Accessory)
@@ -1566,7 +1566,7 @@ void __50__EAAccessoryManager__externalAccessoryConnected___block_invoke_2(uint6
     v8 = v9;
   }
 
-  [v8 _updateAccessoryInfo:v4];
+  [v8 _updateAccessoryInfo:userInfo];
   if (v7)
   {
     v10 = __registeredForLocalNotifications == 0;
@@ -1579,49 +1579,49 @@ void __50__EAAccessoryManager__externalAccessoryConnected___block_invoke_2(uint6
 
   if (!v10)
   {
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v8 forKey:@"EAAccessoryKey"];
 
-    [v11 postNotificationName:@"EAAccessoryUpdateNotification" object:self userInfo:v12];
+    [defaultCenter postNotificationName:@"EAAccessoryUpdateNotification" object:self userInfo:v12];
   }
 }
 
-- (void)_pointOfInterestStatusReceived:(id)a3
+- (void)_pointOfInterestStatusReceived:(id)received
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [a3 userInfo];
-  [v5 setObject:objc_msgSend(v6 forKey:{"objectForKey:", *MEMORY[0x277D18428]), @"EAAccessoryDestinationStatusIdentifierKey"}];
-  v7 = [a3 userInfo];
-  [v5 setObject:objc_msgSend(v7 forKey:{"objectForKey:", *MEMORY[0x277D18420]), @"EAAccessoryDestinationStatusDidSucceedKey"}];
-  v8 = [a3 userInfo];
-  [v5 setObject:objc_msgSend(v8 forKey:{"objectForKey:", *MEMORY[0x277D18430]), @"EAAccessoryDestinationStatusParametersUsedKey"}];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  userInfo = [received userInfo];
+  [dictionary setObject:objc_msgSend(userInfo forKey:{"objectForKey:", *MEMORY[0x277D18428]), @"EAAccessoryDestinationStatusIdentifierKey"}];
+  userInfo2 = [received userInfo];
+  [dictionary setObject:objc_msgSend(userInfo2 forKey:{"objectForKey:", *MEMORY[0x277D18420]), @"EAAccessoryDestinationStatusDidSucceedKey"}];
+  userInfo3 = [received userInfo];
+  [dictionary setObject:objc_msgSend(userInfo3 forKey:{"objectForKey:", *MEMORY[0x277D18430]), @"EAAccessoryDestinationStatusParametersUsedKey"}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v9 postNotificationName:@"EAAccessoryDestinationStatusNotification" object:self userInfo:v5];
+  [defaultCenter postNotificationName:@"EAAccessoryDestinationStatusNotification" object:self userInfo:dictionary];
 }
 
-- (void)_OOBBTPairingCompletionStatusReceived:(id)a3
+- (void)_OOBBTPairingCompletionStatusReceived:(id)received
 {
-  v5 = [a3 userInfo];
-  v6 = [objc_msgSend(v5 objectForKey:{*MEMORY[0x277D18410]), "unsignedIntValue"}];
-  v7 = [a3 userInfo];
-  v8 = [objc_msgSend(v7 objectForKey:{*MEMORY[0x277D18408]), "unsignedCharValue"}];
-  v9 = [a3 userInfo];
-  v10 = [v9 objectForKey:*MEMORY[0x277D183F8]];
+  userInfo = [received userInfo];
+  v6 = [objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D18410]), "unsignedIntValue"}];
+  userInfo2 = [received userInfo];
+  v8 = [objc_msgSend(userInfo2 objectForKey:{*MEMORY[0x277D18408]), "unsignedCharValue"}];
+  userInfo3 = [received userInfo];
+  v10 = [userInfo3 objectForKey:*MEMORY[0x277D183F8]];
   Accessory = __findAccessory(v6, [(EAAccessoryManager *)self connectedAccessories]);
 
   [Accessory _OOBBTPairingCompletedWithStatus:v8 forAccessoryWithMACAddress:v10];
 }
 
-- (void)_externalAccessoryDisconnected:(id)a3
+- (void)_externalAccessoryDisconnected:(id)disconnected
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D18480]];
+  userInfo = [disconnected userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D18480]];
   NSLog(&cfstr_Externalaccess_57.isa, "-[EAAccessoryManager _externalAccessoryDisconnected:]", [v6 unsignedLongLongValue]);
   if (v6)
   {
-    v26 = [v6 unsignedIntValue];
+    unsignedIntValue = [v6 unsignedIntValue];
     [__accessoryListLock lock];
     v33 = 0u;
     v34 = 0u;
@@ -1647,7 +1647,7 @@ void __50__EAAccessoryManager__externalAccessoryConnected___block_invoke_2(uint6
             objc_enumerationMutation(connectedAccessories);
           }
 
-          if ([*(*(&v31 + 1) + 8 * v13) connectionID] == v26)
+          if ([*(*(&v31 + 1) + 8 * v13) connectionID] == unsignedIntValue)
           {
             v21 = 1;
 LABEL_23:
@@ -1660,7 +1660,7 @@ LABEL_23:
             {
               if (+[EAAccessoryManager isLoggingEnabled])
               {
-                NSLog(&cfstr_Externalaccess_58.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "[EAAccessoryManager _externalAccessoryDisconnected:]", 1762, v26);
+                NSLog(&cfstr_Externalaccess_58.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "[EAAccessoryManager _externalAccessoryDisconnected:]", 1762, unsignedIntValue);
               }
             }
 
@@ -1668,10 +1668,10 @@ LABEL_23:
             {
               if (+[EAAccessoryManager isLoggingEnabled])
               {
-                NSLog(&cfstr_Externalaccess_59.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "[EAAccessoryManager _externalAccessoryDisconnected:]", 1770, v26, v23);
+                NSLog(&cfstr_Externalaccess_59.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAAccessoryManager.m", "[EAAccessoryManager _externalAccessoryDisconnected:]", 1770, unsignedIntValue, v23);
               }
 
-              -[EAAccessoryManager _notifyObserversThatAccessoryDisconnectedWithUserInfo:](self, "_notifyObserversThatAccessoryDisconnectedWithUserInfo:", [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v23, @"EAAccessoryKey", objc_msgSend(objc_msgSend(a3, "userInfo"), "objectForKey:", @"EAAccessoryIsReconnecting", @"EAAccessoryIsReconnecting", 0}]);
+              -[EAAccessoryManager _notifyObserversThatAccessoryDisconnectedWithUserInfo:](self, "_notifyObserversThatAccessoryDisconnectedWithUserInfo:", [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v23, @"EAAccessoryKey", objc_msgSend(objc_msgSend(disconnected, "userInfo"), "objectForKey:", @"EAAccessoryIsReconnecting", @"EAAccessoryIsReconnecting", 0}]);
             }
 
             goto LABEL_31;
@@ -1716,7 +1716,7 @@ LABEL_23:
             objc_enumerationMutation(sequesteredAccessories);
           }
 
-          if ([*(*(&v27 + 1) + 8 * v20) connectionID] == v26)
+          if ([*(*(&v27 + 1) + 8 * v20) connectionID] == unsignedIntValue)
           {
             v21 = 0;
             goto LABEL_23;
@@ -1738,7 +1738,7 @@ LABEL_23:
     }
 
     [__accessoryListLock unlock];
-    NSLog(&cfstr_Externalaccess_60.isa, v26);
+    NSLog(&cfstr_Externalaccess_60.isa, unsignedIntValue);
   }
 
   else
@@ -1757,8 +1757,8 @@ LABEL_31:
     v4 = Accessory;
     if ([Accessory userInfo])
     {
-      v5 = [v4 userInfo];
-      Accessory = __findAccessory([objc_msgSend(v5 objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
+      userInfo = [v4 userInfo];
+      Accessory = __findAccessory([objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
     }
 
     else
@@ -1777,8 +1777,8 @@ LABEL_31:
     v4 = Accessory;
     if ([Accessory userInfo])
     {
-      v5 = [v4 userInfo];
-      Accessory = __findAccessory([objc_msgSend(v5 objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
+      userInfo = [v4 userInfo];
+      Accessory = __findAccessory([objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
     }
 
     else
@@ -1797,8 +1797,8 @@ LABEL_31:
     v4 = Accessory;
     if ([Accessory userInfo])
     {
-      v5 = [v4 userInfo];
-      Accessory = __findAccessory([objc_msgSend(v5 objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
+      userInfo = [v4 userInfo];
+      Accessory = __findAccessory([objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
     }
 
     else
@@ -1817,8 +1817,8 @@ LABEL_31:
     v4 = Accessory;
     if ([Accessory userInfo])
     {
-      v5 = [v4 userInfo];
-      Accessory = __findAccessory([objc_msgSend(v5 objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
+      userInfo = [v4 userInfo];
+      Accessory = __findAccessory([objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
     }
 
     else
@@ -1837,8 +1837,8 @@ LABEL_31:
     v4 = Accessory;
     if ([Accessory userInfo])
     {
-      v5 = [v4 userInfo];
-      Accessory = __findAccessory([objc_msgSend(v5 objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
+      userInfo = [v4 userInfo];
+      Accessory = __findAccessory([objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D18480]), "intValue"}], self->_connectedAccessories);
     }
 
     else
@@ -1850,13 +1850,13 @@ LABEL_31:
   [(EAAccessoryManager *)self _gpsTimeRequestedForAccessory:Accessory];
 }
 
-- (void)_locationNmeaDataAvailableForAccessory:(id)a3
+- (void)_locationNmeaDataAvailableForAccessory:(id)accessory
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (accessory)
   {
     v6 = @"EAAccessoryNMEASentenceFromAccessoryKey";
-    v7[0] = a3;
+    v7[0] = accessory;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
@@ -1870,13 +1870,13 @@ LABEL_31:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_locationPointDataAvailableForAccessory:(id)a3
+- (void)_locationPointDataAvailableForAccessory:(id)accessory
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (accessory)
   {
     v6 = @"EAAccessoryNMEASentenceFromAccessoryKey";
-    v7[0] = a3;
+    v7[0] = accessory;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
@@ -1890,13 +1890,13 @@ LABEL_31:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ephemerisURLAvailableForAccessory:(id)a3
+- (void)_ephemerisURLAvailableForAccessory:(id)accessory
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (accessory)
   {
     v6 = @"EAAccessoryNMEASentenceFromAccessoryKey";
-    v7[0] = a3;
+    v7[0] = accessory;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
@@ -1910,13 +1910,13 @@ LABEL_31:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_nmeaFilteringSupportChangedForAccessory:(id)a3
+- (void)_nmeaFilteringSupportChangedForAccessory:(id)accessory
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (accessory)
   {
     v6 = @"EAAccessoryNMEASentenceFromAccessoryKey";
-    v7[0] = a3;
+    v7[0] = accessory;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
@@ -1930,13 +1930,13 @@ LABEL_31:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gpsTimeRequestedForAccessory:(id)a3
+- (void)_gpsTimeRequestedForAccessory:(id)accessory
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (accessory)
   {
     v6 = @"EAAccessoryNMEASentenceFromAccessoryKey";
-    v7[0] = a3;
+    v7[0] = accessory;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
@@ -1950,20 +1950,20 @@ LABEL_31:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_vehicleDataUpdated:(id)a3
+- (void)_vehicleDataUpdated:(id)updated
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [a3 userInfo];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  userInfo = [updated userInfo];
 
-  [v5 postNotificationName:@"EAAccessoryVehicleDataUpdate" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"EAAccessoryVehicleDataUpdate" object:self userInfo:userInfo];
 }
 
-- (void)_cameraInfoUpdated:(id)a3
+- (void)_cameraInfoUpdated:(id)updated
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [a3 userInfo];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  userInfo = [updated userInfo];
 
-  [v5 postNotificationName:@"EAAccessoryCameraInfoNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"EAAccessoryCameraInfoNotification" object:self userInfo:userInfo];
 }
 
 - (void)_integrateSequesteredAccessories
@@ -2001,7 +2001,7 @@ void __54__EAAccessoryManager__integrateSequesteredAccessories__block_invoke(uin
   v3 = *(a1 + 40);
 }
 
-- (void)_handleAccessoryNotificationTimeout:(id)a3
+- (void)_handleAccessoryNotificationTimeout:(id)timeout
 {
   [(NSRecursiveLock *)self->_pickerLock lock];
   self->_pickerTimer = 0;
@@ -2027,25 +2027,25 @@ void __54__EAAccessoryManager__integrateSequesteredAccessories__block_invoke(uin
   [(EAAccessoryManager *)self _integrateSequesteredAccessories];
 }
 
-- (void)_timeSyncInfoUpdated:(id)a3
+- (void)_timeSyncInfoUpdated:(id)updated
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [a3 userInfo];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  userInfo = [updated userInfo];
 
-  [v5 postNotificationName:@"EAAccessoryTimeSyncInfoUpdate" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"EAAccessoryTimeSyncInfoUpdate" object:self userInfo:userInfo];
 }
 
-- (void)wakeAccessoryWithToken:(id)a3
+- (void)wakeAccessoryWithToken:(id)token
 {
   v4 = 0;
-  v3 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v4];
+  v3 = [MEMORY[0x277CCAC58] propertyListWithData:token options:0 format:0 error:&v4];
   if (!v4)
   {
     +[EABluetoothAccessoryPicker wakeSelectedBluetoothAccessories:](EABluetoothAccessoryPicker, "wakeSelectedBluetoothAccessories:", [v3 objectForKey:@"EAAccessoryMacAddress"]);
   }
 }
 
-- (BOOL)appDeclaresProtocol:(id)a3
+- (BOOL)appDeclaresProtocol:(id)protocol
 {
   v18 = *MEMORY[0x277D85DE8];
   if (_CFExecutableLinkedOnOrAfter() && (__supportsEAShowAllAccessoriesEntitlement & 1) == 0)
@@ -2097,7 +2097,7 @@ LABEL_13:
         objc_enumerationMutation(v6);
       }
 
-      if (![*(*(&v13 + 1) + 8 * v11) caseInsensitiveCompare:a3])
+      if (![*(*(&v13 + 1) + 8 * v11) caseInsensitiveCompare:protocol])
       {
         break;
       }
@@ -2122,43 +2122,43 @@ LABEL_4:
   return v4;
 }
 
-- (void)accessibilityAction:(id)a3
+- (void)accessibilityAction:(id)action
 {
-  v5 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
+  v5 = [objc_msgSend(action objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
   if (v5)
   {
     Accessory = __findAccessory(v5, self->_connectedAccessories);
     [Accessory delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [objc_msgSend(a3 objectForKey:{@"EAAccessoryAccessibilityActionKey", "unsignedIntValue"}];
-      v8 = [Accessory delegate];
+      v7 = [objc_msgSend(action objectForKey:{@"EAAccessoryAccessibilityActionKey", "unsignedIntValue"}];
+      delegate = [Accessory delegate];
 
-      [v8 accessibilityAccessory:Accessory performAction:v7 withObject:a3];
+      [delegate accessibilityAccessory:Accessory performAction:v7 withObject:action];
     }
   }
 }
 
-- (void)accessibilityContextChange:(id)a3
+- (void)accessibilityContextChange:(id)change
 {
-  v5 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
+  v5 = [objc_msgSend(change objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
   if (v5)
   {
     Accessory = __findAccessory(v5, self->_connectedAccessories);
     [Accessory delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [objc_msgSend(a3 objectForKey:{@"EAAccessoryAccessibilityContextKey", "unsignedIntValue"}];
-      v8 = [Accessory delegate];
+      v7 = [objc_msgSend(change objectForKey:{@"EAAccessoryAccessibilityContextKey", "unsignedIntValue"}];
+      delegate = [Accessory delegate];
 
-      [v8 accessibilityAccessory:Accessory setContext:v7];
+      [delegate accessibilityAccessory:Accessory setContext:v7];
     }
   }
 }
 
-- (void)accessibilityItemPropertyRequest:(id)a3
+- (void)accessibilityItemPropertyRequest:(id)request
 {
-  v5 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
+  v5 = [objc_msgSend(request objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
   if (v5)
   {
     v6 = v5;
@@ -2166,11 +2166,11 @@ LABEL_4:
     [Accessory delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [objc_msgSend(a3 objectForKey:{@"EAAccessoryAccessibilityItemPropertyKey", "unsignedIntValue"}];
+      v8 = [objc_msgSend(request objectForKey:{@"EAAccessoryAccessibilityItemPropertyKey", "unsignedIntValue"}];
       if ((v8 - 1) <= 4)
       {
         v9 = [objc_msgSend(Accessory "delegate")];
-        v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(a3, "objectForKey:", @"EAAccessoryAccessibilityItemPropertyKey", @"EAAccessoryAccessibilityItemPropertyKey", objc_msgSend(a3, "objectForKey:", @"EAAccessoryAccessibilityContextKey", @"EAAccessoryAccessibilityContextKey", v9, @"EAAccessoryAccessibilityResponseKey", 0}];
+        v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(request, "objectForKey:", @"EAAccessoryAccessibilityItemPropertyKey", @"EAAccessoryAccessibilityItemPropertyKey", objc_msgSend(request, "objectForKey:", @"EAAccessoryAccessibilityContextKey", @"EAAccessoryAccessibilityContextKey", v9, @"EAAccessoryAccessibilityResponseKey", 0}];
 
         MEMORY[0x2821728F0](v6, v10);
       }
@@ -2178,26 +2178,26 @@ LABEL_4:
   }
 }
 
-- (void)accessibilitySystemPropertyChange:(id)a3
+- (void)accessibilitySystemPropertyChange:(id)change
 {
-  v5 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
+  v5 = [objc_msgSend(change objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
   if (v5)
   {
     Accessory = __findAccessory(v5, self->_connectedAccessories);
     [Accessory delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [objc_msgSend(a3 objectForKey:{@"EAAccessoryAccessibilitySystemPropertyKey", "unsignedIntValue"}];
-      v8 = [Accessory delegate];
+      v7 = [objc_msgSend(change objectForKey:{@"EAAccessoryAccessibilitySystemPropertyKey", "unsignedIntValue"}];
+      delegate = [Accessory delegate];
 
-      [v8 accessibilityAccessory:Accessory setValue:a3 forSystemProperty:v7];
+      [delegate accessibilityAccessory:Accessory setValue:change forSystemProperty:v7];
     }
   }
 }
 
-- (void)accessibilitySystemPropertyRequest:(id)a3
+- (void)accessibilitySystemPropertyRequest:(id)request
 {
-  v5 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
+  v5 = [objc_msgSend(request objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
   if (v5)
   {
     v6 = v5;
@@ -2205,13 +2205,13 @@ LABEL_4:
     [Accessory delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [objc_msgSend(a3 objectForKey:{@"EAAccessoryAccessibilitySystemPropertyKey", "unsignedIntValue"}];
+      v8 = [objc_msgSend(request objectForKey:{@"EAAccessoryAccessibilitySystemPropertyKey", "unsignedIntValue"}];
       if ((v8 - 1) <= 2)
       {
         v9 = [objc_msgSend(Accessory "delegate")];
         if (v9)
         {
-          v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(a3, "objectForKey:", @"EAAccessoryAccessibilitySystemPropertyKey", @"EAAccessoryAccessibilitySystemPropertyKey", v9, @"EAAccessoryAccessibilityResponseKey", objc_msgSend(a3, "objectForKey:", @"EAAccessoryAccessibilityContextKey", @"EAAccessoryAccessibilityContextKey", 0}];
+          v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(request, "objectForKey:", @"EAAccessoryAccessibilitySystemPropertyKey", @"EAAccessoryAccessibilitySystemPropertyKey", v9, @"EAAccessoryAccessibilityResponseKey", objc_msgSend(request, "objectForKey:", @"EAAccessoryAccessibilityContextKey", @"EAAccessoryAccessibilityContextKey", 0}];
 
           MEMORY[0x2821728F0](v6, v10);
         }
@@ -2220,14 +2220,14 @@ LABEL_4:
   }
 }
 
-- (void)setAreLocationAccessoriesEnabled:(BOOL)a3
+- (void)setAreLocationAccessoriesEnabled:(BOOL)enabled
 {
-  if (__areLocationAccessoriesEnabled != a3)
+  if (__areLocationAccessoriesEnabled != enabled)
   {
-    v3 = a3;
-    NSLog(&cfstr_LocationAreloc.isa, a2, __areLocationAccessoriesEnabled, a3);
-    __areLocationAccessoriesEnabled = v3;
-    if (v3)
+    enabledCopy = enabled;
+    NSLog(&cfstr_LocationAreloc.isa, a2, __areLocationAccessoriesEnabled, enabled);
+    __areLocationAccessoriesEnabled = enabledCopy;
+    if (enabledCopy)
     {
       IAPLocationActivate();
 
@@ -2243,36 +2243,36 @@ LABEL_4:
   }
 }
 
-- (void)pointOfInterestSelection:(id)a3
+- (void)pointOfInterestSelection:(id)selection
 {
-  v5 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
+  v5 = [objc_msgSend(selection objectForKey:{*MEMORY[0x277D18480]), "unsignedIntValue"}];
   if (v5)
   {
     Accessory = __findAccessory(v5, self->_connectedAccessories);
     [Accessory delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [Accessory delegate];
+      delegate = [Accessory delegate];
 
-      [v7 pointOfInterestAccessory:Accessory pointOfInterestSelection:a3];
+      [delegate pointOfInterestAccessory:Accessory pointOfInterestSelection:selection];
     }
   }
 }
 
-- (void)devicePicker:(id)a3 didSelectAddress:(id)a4 errorCode:(int64_t)a5
+- (void)devicePicker:(id)picker didSelectAddress:(id)address errorCode:(int64_t)code
 {
   v43 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->_pickerLock lock];
-  if (self->_picker == a3)
+  if (self->_picker == picker)
   {
     if (+[EAAccessoryManager isLoggingEnabled])
     {
-      NSLog(&cfstr_BtpickerAddres.isa, [a4 cStringUsingEncoding:1], a5);
+      NSLog(&cfstr_BtpickerAddres.isa, [address cStringUsingEncoding:1], code);
     }
 
-    if (a4 && [a4 length])
+    if (address && [address length])
     {
-      self->_selectedBluetoothAddress = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:a4];
+      self->_selectedBluetoothAddress = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:address];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -2420,7 +2420,7 @@ LABEL_30:
       v17 = self->_pickerCompletion;
       if (v17)
       {
-        v17[2](v17, [MEMORY[0x277CCA9B8] errorWithDomain:@"EABluetoothAccessoryPickerErrorDomain" code:a5 userInfo:0]);
+        v17[2](v17, [MEMORY[0x277CCA9B8] errorWithDomain:@"EABluetoothAccessoryPickerErrorDomain" code:code userInfo:0]);
         _Block_release(self->_pickerCompletion);
         self->_pickerCompletion = 0;
       }
@@ -2441,22 +2441,22 @@ void __62__EAAccessoryManager_devicePicker_didSelectAddress_errorCode___block_in
   v2 = *(a1 + 40);
 }
 
-- (void)closeEASessionForEASessionUUID:(id)a3
+- (void)closeEASessionForEASessionUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     [__currentCoreAccessoriesEASessions removeObjectForKey:?];
-    [__activeCoreAccessoriesEASessions removeObjectForKey:a3];
+    [__activeCoreAccessoriesEASessions removeObjectForKey:d];
     v4 = __accEAProviderClassInstance;
 
-    [v4 closeExternalAccessorySession:a3];
+    [v4 closeExternalAccessorySession:d];
   }
 }
 
-- (void)accessoryClosedEASession:(id)a3
+- (void)accessoryClosedEASession:(id)session
 {
   v4 = [__currentCoreAccessoriesEASessions objectForKey:?];
-  [__activeCoreAccessoriesEASessions removeObjectForKey:a3];
+  [__activeCoreAccessoriesEASessions removeObjectForKey:session];
   if (v4)
   {
     [objc_msgSend(v4 "accessory")];
@@ -2464,26 +2464,26 @@ void __62__EAAccessoryManager_devicePicker_didSelectAddress_errorCode___block_in
 
   v5 = __currentCoreAccessoriesEASessions;
 
-  [v5 removeObjectForKey:a3];
+  [v5 removeObjectForKey:session];
 }
 
-- (void)handleIncomingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4 withReply:(id)a5
+- (void)handleIncomingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier withReply:(id)reply
 {
-  v7 = [__activeCoreAccessoriesEASessions objectForKey:a4];
+  v7 = [__activeCoreAccessoriesEASessions objectForKey:identifier];
   v8 = v7;
   if (v7)
   {
-    [v7 _handleIncomingEAData:a3];
+    [v7 _handleIncomingEAData:data];
   }
 
-  v9 = *(a5 + 2);
+  v9 = *(reply + 2);
 
-  v9(a5, v8 != 0);
+  v9(reply, v8 != 0);
 }
 
-- (void)closeInputStreamForEASessionUUID:(id)a3
+- (void)closeInputStreamForEASessionUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v5 = __activeCoreAccessoriesEASessions;
 
@@ -2496,22 +2496,22 @@ void __62__EAAccessoryManager_devicePicker_didSelectAddress_errorCode___block_in
   }
 }
 
-- (void)saveEASession:(id)a3 forEASessionUUID:(id)a4
+- (void)saveEASession:(id)session forEASessionUUID:(id)d
 {
   [__currentCoreAccessoriesEASessions setObject:? forKey:?];
   v6 = __activeCoreAccessoriesEASessions;
 
-  [v6 setObject:a3 forKey:a4];
+  [v6 setObject:session forKey:d];
 }
 
-- (void)sendOutgoingEAData:(id)a3 forSessionUUID:(id)a4
+- (void)sendOutgoingEAData:(id)data forSessionUUID:(id)d
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__EAAccessoryManager_sendOutgoingEAData_forSessionUUID___block_invoke;
   v4[3] = &unk_278A4E3B8;
-  v4[4] = a4;
-  [__accEAProviderClassInstance sendOutgoingExternalAccessoryData:a3 forEASessionIdentifier:a4 withReply:v4];
+  v4[4] = d;
+  [__accEAProviderClassInstance sendOutgoingExternalAccessoryData:data forEASessionIdentifier:d withReply:v4];
 }
 
 void __56__EAAccessoryManager_sendOutgoingEAData_forSessionUUID___block_invoke(uint64_t a1, char a2)
@@ -2522,21 +2522,21 @@ void __56__EAAccessoryManager_sendOutgoingEAData_forSessionUUID___block_invoke(u
   }
 }
 
-- (void)sendNMEAFilterList:(id)a3 forUUID:(id)a4
+- (void)sendNMEAFilterList:(id)list forUUID:(id)d
 {
-  AccessoryByUUID = __findAccessoryByUUID(a4, self->_connectedAccessories);
+  AccessoryByUUID = __findAccessoryByUUID(d, self->_connectedAccessories);
   if (AccessoryByUUID)
   {
     NSLog(&cfstr_LocationSendin.isa, [AccessoryByUUID coreAccessoriesPrimaryUUID]);
     v7 = __accEAProviderClassInstance;
 
-    [v7 sendNMEAFilterList:a3 forAccessoryUUID:a4];
+    [v7 sendNMEAFilterList:list forAccessoryUUID:d];
   }
 }
 
-- (id)authCertForLegacyConnectionID:(unsigned int)a3
+- (id)authCertForLegacyConnectionID:(unsigned int)d
 {
-  result = __findAccessory(a3, self->_connectedAccessories);
+  result = __findAccessory(d, self->_connectedAccessories);
   if (result)
   {
     v4 = [objc_msgSend(result "certData")];
@@ -2547,9 +2547,9 @@ void __56__EAAccessoryManager_sendOutgoingEAData_forSessionUUID___block_invoke(u
   return result;
 }
 
-- (id)authCertSerialNumberForLegacyConnectionID:(unsigned int)a3
+- (id)authCertSerialNumberForLegacyConnectionID:(unsigned int)d
 {
-  result = __findAccessory(a3, self->_connectedAccessories);
+  result = __findAccessory(d, self->_connectedAccessories);
   if (result)
   {
     v4 = [objc_msgSend(result "certSerial")];
@@ -2560,70 +2560,70 @@ void __56__EAAccessoryManager_sendOutgoingEAData_forSessionUUID___block_invoke(u
   return result;
 }
 
-- (void)requestIAPAccessoryWiFiCredentials:(id)a3
+- (void)requestIAPAccessoryWiFiCredentials:(id)credentials
 {
-  if (__findAccessoryByUUID(a3, self->_connectedAccessories))
+  if (__findAccessoryByUUID(credentials, self->_connectedAccessories))
   {
-    NSLog(&cfstr_Externalaccess_66.isa, a3);
+    NSLog(&cfstr_Externalaccess_66.isa, credentials);
     v4 = __accEAProviderClassInstance;
 
-    [v4 requestAccessoryWifiCredentials:a3];
+    [v4 requestAccessoryWifiCredentials:credentials];
   }
 }
 
-- (id)currentVehicleInformation:(id)a3
+- (id)currentVehicleInformation:(id)information
 {
-  if (__findAccessoryByUUID(a3, self->_connectedAccessories))
+  if (__findAccessoryByUUID(information, self->_connectedAccessories))
   {
-    NSLog(&cfstr_Vehicleinfosta_2.isa, a3);
+    NSLog(&cfstr_Vehicleinfosta_2.isa, information);
     v4 = __accEAProviderClassInstance;
 
-    return [v4 currentVehicleInfo:a3];
+    return [v4 currentVehicleInfo:information];
   }
 
   else
   {
-    NSLog(&cfstr_Vehicleinfosta_3.isa, a3);
+    NSLog(&cfstr_Vehicleinfosta_3.isa, information);
     return 0;
   }
 }
 
-- (void)sendDeviceIdentifierNotification:(id)a3 usbIdentifier:(id)a4 forUUID:(id)a5
+- (void)sendDeviceIdentifierNotification:(id)notification usbIdentifier:(id)identifier forUUID:(id)d
 {
-  if (__findAccessoryByUUID(a5, self->_connectedAccessories))
+  if (__findAccessoryByUUID(d, self->_connectedAccessories))
   {
-    NSLog(&cfstr_Externalaccess_67.isa, a5);
+    NSLog(&cfstr_Externalaccess_67.isa, d);
     v8 = __accEAProviderClassInstance;
 
-    [v8 sendDeviceIdentifierNotification:a3 usbIdentifier:a4 forUUID:a5];
+    [v8 sendDeviceIdentifierNotification:notification usbIdentifier:identifier forUUID:d];
   }
 }
 
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessCarPlayAvailable:(id)a5 bluetoothIdentifier:(id)a6 forUUID:(id)a7
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessCarPlayAvailable:(id)playAvailable bluetoothIdentifier:(id)bluetoothIdentifier forUUID:(id)d
 {
-  if (__findAccessoryByUUID(a7, self->_connectedAccessories))
+  if (__findAccessoryByUUID(d, self->_connectedAccessories))
   {
-    NSLog(&cfstr_Externalaccess_68.isa, a7);
+    NSLog(&cfstr_Externalaccess_68.isa, d);
     v12 = __accEAProviderClassInstance;
 
-    [v12 sendWiredCarPlayAvailable:a3 usbIdentifier:a4 wirelessAvailable:a5 bluetoothIdentifier:a6 forUUID:a7];
+    [v12 sendWiredCarPlayAvailable:available usbIdentifier:identifier wirelessAvailable:playAvailable bluetoothIdentifier:bluetoothIdentifier forUUID:d];
   }
 }
 
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessCarPlayAvailable:(id)a5 bluetoothIdentifier:(id)a6 themeAssetsAvailable:(id)a7 forUUID:(id)a8
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessCarPlayAvailable:(id)playAvailable bluetoothIdentifier:(id)bluetoothIdentifier themeAssetsAvailable:(id)assetsAvailable forUUID:(id)d
 {
-  if (__findAccessoryByUUID(a8, self->_connectedAccessories))
+  if (__findAccessoryByUUID(d, self->_connectedAccessories))
   {
-    NSLog(&cfstr_Externalaccess_69.isa, a8);
+    NSLog(&cfstr_Externalaccess_69.isa, d);
     v14 = __accEAProviderClassInstance;
 
-    [v14 sendWiredCarPlayAvailable:a3 usbIdentifier:a4 wirelessAvailable:a5 bluetoothIdentifier:a6 themeAssetsAvailable:a7 forUUID:a8];
+    [v14 sendWiredCarPlayAvailable:available usbIdentifier:identifier wirelessAvailable:playAvailable bluetoothIdentifier:bluetoothIdentifier themeAssetsAvailable:assetsAvailable forUUID:d];
   }
 }
 
-+ (id)accessoryDictionaryForLogging:(id)a3
++ (id)accessoryDictionaryForLogging:(id)logging
 {
-  v3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  v3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:logging];
   if ([v3 objectForKey:@"IAPAppAccessoryCertDataKey"])
   {
     v4 = [objc_msgSend(v3 objectForKey:{@"IAPAppAccessoryCertDataKey", "length"}];

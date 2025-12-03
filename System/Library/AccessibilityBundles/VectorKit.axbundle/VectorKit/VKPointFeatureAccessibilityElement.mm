@@ -1,9 +1,9 @@
 @interface VKPointFeatureAccessibilityElement
 - ($1AB5FA073B851C12C2339EC22442E995)location;
 - (BOOL)accessibilityActivate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)accessibilityFrame;
-- (VKPointFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (VKPointFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (double)_radius;
 - (id)_poiTypeSuffix;
 - (id)accessibilityDragSourceDescriptors;
@@ -17,12 +17,12 @@
 
 @implementation VKPointFeatureAccessibilityElement
 
-- (VKPointFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (VKPointFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = VKPointFeatureAccessibilityElement;
-  v5 = [(VKFeatureAccessibilityElement *)&v9 initWithAccessibilityContainer:v4];
+  v5 = [(VKFeatureAccessibilityElement *)&v9 initWithAccessibilityContainer:containerCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -33,10 +33,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
@@ -46,15 +46,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VKPointFeatureAccessibilityElement *)self location];
       v7 = v6;
       [(VKPointFeatureAccessibilityElement *)v5 location];
       if (v7 == v8 && (-[VKPointFeatureAccessibilityElement location](self, "location"), v10 = v9, -[VKPointFeatureAccessibilityElement location](v5, "location"), v10 == v11) && (-[VKPointFeatureAccessibilityElement location](self, "location"), v13 = v12, -[VKPointFeatureAccessibilityElement location](v5, "location"), v13 == v14) && (v15 = -[VKFeatureAccessibilityElement style](self, "style"), v15 == -[VKFeatureAccessibilityElement style](v5, "style")) && (-[VKPointFeatureAccessibilityElement featureIds](self, "featureIds"), v16 = objc_claimAutoreleasedReturnValue(), -[VKPointFeatureAccessibilityElement featureIds](v5, "featureIds"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v16 isEqualToArray:v17], v17, v16, (v18 & 1) != 0))
       {
-        v19 = [(VKPointFeatureAccessibilityElement *)self accessibilityLabel];
-        v20 = [(VKPointFeatureAccessibilityElement *)v5 accessibilityLabel];
-        v21 = [v19 isEqualToString:v20];
+        accessibilityLabel = [(VKPointFeatureAccessibilityElement *)self accessibilityLabel];
+        accessibilityLabel2 = [(VKPointFeatureAccessibilityElement *)v5 accessibilityLabel];
+        v21 = [accessibilityLabel isEqualToString:accessibilityLabel2];
       }
 
       else
@@ -79,11 +79,11 @@
     return 2;
   }
 
-  v3 = [(VKPointFeatureAccessibilityElement *)self poiCategory];
-  v4 = v3;
-  if (v3)
+  poiCategory = [(VKPointFeatureAccessibilityElement *)self poiCategory];
+  v4 = poiCategory;
+  if (poiCategory)
   {
-    if ([v3 isEqual:*MEMORY[0x29EDC1258]])
+    if ([poiCategory isEqual:*MEMORY[0x29EDC1258]])
     {
       v5 = 7;
     }
@@ -464,9 +464,9 @@
 
 - (double)_radius
 {
-  v2 = [(VKPointFeatureAccessibilityElement *)self _accessibilityMapFeatureType];
+  _accessibilityMapFeatureType = [(VKPointFeatureAccessibilityElement *)self _accessibilityMapFeatureType];
   result = 40.0;
-  if ((v2 - 9) >= 4)
+  if ((_accessibilityMapFeatureType - 9) >= 4)
   {
     return 20.0;
   }
@@ -477,8 +477,8 @@
 - (id)accessibilityPath
 {
   v2 = MEMORY[0x29EDC7948];
-  v3 = [(VKPointFeatureAccessibilityElement *)self accessibilityPaths];
-  v4 = [v3 objectAtIndex:0];
+  accessibilityPaths = [(VKPointFeatureAccessibilityElement *)self accessibilityPaths];
+  v4 = [accessibilityPaths objectAtIndex:0];
   v5 = [v2 bezierPathWithCGPath:v4];
 
   return v5;
@@ -515,9 +515,9 @@
 {
   v4.receiver = self;
   v4.super_class = VKPointFeatureAccessibilityElement;
-  v2 = [(VKFeatureAccessibilityElement *)&v4 accessibilityLabel];
+  accessibilityLabel = [(VKFeatureAccessibilityElement *)&v4 accessibilityLabel];
 
-  return v2;
+  return accessibilityLabel;
 }
 
 - (id)_poiTypeSuffix
@@ -544,39 +544,39 @@
 
   if (v5)
   {
-    v6 = [*v4 objectForKeyedSubscript:v3];
+    accessibilityLabel = [*v4 objectForKeyedSubscript:v3];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = VKPointFeatureAccessibilityElement;
-    v6 = [(VKFeatureAccessibilityElement *)&v12 accessibilityLabel];
-    v7 = [(VKPointFeatureAccessibilityElement *)self _poiTypeSuffix];
-    if (v7 && [v6 rangeOfString:v7] == 0x7FFFFFFFFFFFFFFFLL)
+    accessibilityLabel = [(VKFeatureAccessibilityElement *)&v12 accessibilityLabel];
+    _poiTypeSuffix = [(VKPointFeatureAccessibilityElement *)self _poiTypeSuffix];
+    if (_poiTypeSuffix && [accessibilityLabel rangeOfString:_poiTypeSuffix] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = v7;
+      v10 = _poiTypeSuffix;
       v11 = @"__AXStringForVariablesSentinel";
       v8 = __UIAXStringForVariables();
 
-      v6 = v8;
+      accessibilityLabel = v8;
     }
 
-    [*v4 setObject:v6 forKeyedSubscript:{v3, v10, v11}];
+    [*v4 setObject:accessibilityLabel forKeyedSubscript:{v3, v10, v11}];
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityIdentifier
 {
   v7.receiver = self;
   v7.super_class = VKPointFeatureAccessibilityElement;
-  v2 = [(VKPointFeatureAccessibilityElement *)&v7 accessibilityIdentifier];
-  v3 = v2;
-  if (v2)
+  accessibilityIdentifier = [(VKPointFeatureAccessibilityElement *)&v7 accessibilityIdentifier];
+  v3 = accessibilityIdentifier;
+  if (accessibilityIdentifier)
   {
-    v4 = v2;
+    v4 = accessibilityIdentifier;
   }
 
   else
@@ -594,12 +594,12 @@
   VKLocationCoordinate2DForVKPoint();
   v4 = v3;
   v6 = v5;
-  v7 = [(VKPointFeatureAccessibilityElement *)self accessibilityContainer];
-  v8 = [(VKPointFeatureAccessibilityElement *)self accessibilityContainer];
-  [v7 convertCoordinate:v8 toPointToLayer:{v4, v6}];
+  accessibilityContainer = [(VKPointFeatureAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer2 = [(VKPointFeatureAccessibilityElement *)self accessibilityContainer];
+  [accessibilityContainer convertCoordinate:accessibilityContainer2 toPointToLayer:{v4, v6}];
 
-  v9 = [(VKPointFeatureAccessibilityElement *)self accessibilityContainer];
-  v10 = [v9 accessibilityLayerHostingView];
+  accessibilityContainer3 = [(VKPointFeatureAccessibilityElement *)self accessibilityContainer];
+  accessibilityLayerHostingView = [accessibilityContainer3 accessibilityLayerHostingView];
 
   UIAccessibilityFrameForBounds();
   v12 = v11;
@@ -624,7 +624,7 @@
   v6 = 3221225472;
   v7 = __59__VKPointFeatureAccessibilityElement_accessibilityActivate__block_invoke;
   v8 = &unk_29F318628;
-  v9 = self;
+  selfCopy = self;
   AXPerformBlockOnMainThreadAfterDelay();
   v4.receiver = self;
   v4.super_class = VKPointFeatureAccessibilityElement;
@@ -651,8 +651,8 @@ void __59__VKPointFeatureAccessibilityElement_accessibilityActivate__block_invok
   v4 = objc_alloc(MEMORY[0x29EDC7900]);
   v5 = MEMORY[0x29EDBA0F8];
   v6 = AXVectorKitLocString(@"DRAG_POI");
-  v7 = [(VKPointFeatureAccessibilityElement *)self accessibilityLabel];
-  v8 = [v5 stringWithFormat:v6, v7];
+  accessibilityLabel = [(VKPointFeatureAccessibilityElement *)self accessibilityLabel];
+  v8 = [v5 stringWithFormat:v6, accessibilityLabel];
   [(VKPointFeatureAccessibilityElement *)self accessibilityActivationPoint];
   UIAccessibilityPointToPoint();
   v9 = [v4 initWithName:v8 point:v3 inView:?];

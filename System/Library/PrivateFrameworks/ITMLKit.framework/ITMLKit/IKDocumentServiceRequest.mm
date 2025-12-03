@@ -1,55 +1,55 @@
 @interface IKDocumentServiceRequest
-- (void)didCloseViewModelLink:(id)a3 withErrorDictionary:(id)a4;
-- (void)documentDidChangeForViewModelLink:(id)a3;
+- (void)didCloseViewModelLink:(id)link withErrorDictionary:(id)dictionary;
+- (void)documentDidChangeForViewModelLink:(id)link;
 - (void)onCancel;
 - (void)onSend;
-- (void)responseDictionaryDidChangeForViewModelLink:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)responseDictionaryDidChangeForViewModelLink:(id)link;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation IKDocumentServiceRequest
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v3 = self;
+  selfCopy = self;
   v6.receiver = self;
   v6.super_class = IKDocumentServiceRequest;
-  v4 = a3;
-  [(IKServiceRequest *)&v6 setDelegate:v4];
-  p_dsrDelegateFlags = &v3->_dsrDelegateFlags;
-  v3->_dsrDelegateFlags.hasResponseDictionaryDidChange = objc_opt_respondsToSelector() & 1;
-  LOBYTE(v3) = objc_opt_respondsToSelector();
+  delegateCopy = delegate;
+  [(IKServiceRequest *)&v6 setDelegate:delegateCopy];
+  p_dsrDelegateFlags = &selfCopy->_dsrDelegateFlags;
+  selfCopy->_dsrDelegateFlags.hasResponseDictionaryDidChange = objc_opt_respondsToSelector() & 1;
+  LOBYTE(selfCopy) = objc_opt_respondsToSelector();
 
-  p_dsrDelegateFlags->hasDocumentDidChange = v3 & 1;
+  p_dsrDelegateFlags->hasDocumentDidChange = selfCopy & 1;
 }
 
 - (void)onSend
 {
-  v3 = [(IKServiceRequest *)self serviceContext];
-  v4 = [v3 element];
+  serviceContext = [(IKServiceRequest *)self serviceContext];
+  element = [serviceContext element];
 
-  v5 = [v4 appDocument];
+  appDocument = [element appDocument];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__1;
   v16[4] = __Block_byref_object_dispose__1;
-  v6 = [(IKServiceRequest *)self serviceContext];
-  v17 = [v6 contextDictionary];
+  serviceContext2 = [(IKServiceRequest *)self serviceContext];
+  contextDictionary = [serviceContext2 contextDictionary];
 
   objc_initWeak(&location, self);
-  v7 = [(IKServiceRequest *)self appContext];
+  appContext = [(IKServiceRequest *)self appContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __34__IKDocumentServiceRequest_onSend__block_invoke;
   v10[3] = &unk_279799580;
   objc_copyWeak(&v14, &location);
-  v8 = v4;
+  v8 = element;
   v11 = v8;
-  v9 = v5;
+  v9 = appDocument;
   v12 = v9;
   v13 = v16;
-  [v7 evaluate:v10 completionBlock:0];
+  [appContext evaluate:v10 completionBlock:0];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -107,13 +107,13 @@ void __34__IKDocumentServiceRequest_onSend__block_invoke(uint64_t a1, void *a2)
 - (void)onCancel
 {
   objc_initWeak(&location, self);
-  v3 = [(IKServiceRequest *)self appContext];
+  appContext = [(IKServiceRequest *)self appContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __36__IKDocumentServiceRequest_onCancel__block_invoke;
   v4[3] = &unk_2797995A8;
   objc_copyWeak(&v5, &location);
-  [v3 evaluate:v4 completionBlock:0];
+  [appContext evaluate:v4 completionBlock:0];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -136,22 +136,22 @@ void __36__IKDocumentServiceRequest_onCancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)responseDictionaryDidChangeForViewModelLink:(id)a3
+- (void)responseDictionaryDidChangeForViewModelLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 asPrivateIKJSViewModelLink];
-  v6 = [v5 responseDictionary];
+  linkCopy = link;
+  asPrivateIKJSViewModelLink = [linkCopy asPrivateIKJSViewModelLink];
+  responseDictionary = [asPrivateIKJSViewModelLink responseDictionary];
   responseDictionary = self->_responseDictionary;
-  self->_responseDictionary = v6;
+  self->_responseDictionary = responseDictionary;
 
   objc_initWeak(&location, self);
-  v8 = [(IKServiceRequest *)self appContext];
+  appContext = [(IKServiceRequest *)self appContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__IKDocumentServiceRequest_responseDictionaryDidChangeForViewModelLink___block_invoke;
   v9[3] = &unk_2797995D0;
   objc_copyWeak(&v10, &location);
-  [v8 evaluateDelegateBlockSync:v9];
+  [appContext evaluateDelegateBlockSync:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -170,24 +170,24 @@ void __72__IKDocumentServiceRequest_responseDictionaryDidChangeForViewModelLink_
   }
 }
 
-- (void)documentDidChangeForViewModelLink:(id)a3
+- (void)documentDidChangeForViewModelLink:(id)link
 {
-  v17 = a3;
-  v8 = 40;
+  linkCopy = link;
+  contextDictionary = 40;
   WeakRetained = objc_loadWeakRetained(&self->_link);
-  v10 = [WeakRetained document];
-  if (v10)
+  document = [WeakRetained document];
+  if (document)
   {
     v11 = [IKAppDocument alloc];
-    v12 = [(IKServiceRequest *)self appContext];
+    appContext = [(IKServiceRequest *)self appContext];
     v15 = objc_loadWeakRetained(&self->_link);
-    v3 = [v15 document];
-    v4 = [(IKServiceRequest *)self appContext];
-    v5 = [v4 jsViewModelService];
-    v6 = [(IKServiceRequest *)self serviceContext];
-    v8 = [v6 contextDictionary];
-    v16 = v12;
-    v13 = [(IKAppDocument *)v11 initWithAppContext:v12 document:v3 owner:v5 extraInfo:v8];
+    document2 = [v15 document];
+    appContext2 = [(IKServiceRequest *)self appContext];
+    jsViewModelService = [appContext2 jsViewModelService];
+    serviceContext = [(IKServiceRequest *)self serviceContext];
+    contextDictionary = [serviceContext contextDictionary];
+    v16 = appContext;
+    v13 = [(IKAppDocument *)v11 initWithAppContext:appContext document:document2 owner:jsViewModelService extraInfo:contextDictionary];
   }
 
   else
@@ -196,18 +196,18 @@ void __72__IKDocumentServiceRequest_responseDictionaryDidChangeForViewModelLink_
   }
 
   objc_storeStrong(&self->_appDocument, v13);
-  if (v10)
+  if (document)
   {
   }
 
   objc_initWeak(&location, self);
-  v14 = [(IKServiceRequest *)self appContext];
+  appContext3 = [(IKServiceRequest *)self appContext];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __62__IKDocumentServiceRequest_documentDidChangeForViewModelLink___block_invoke;
   v18[3] = &unk_2797995D0;
   objc_copyWeak(&v19, &location);
-  [v14 evaluateDelegateBlockSync:v18];
+  [appContext3 evaluateDelegateBlockSync:v18];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -226,22 +226,22 @@ void __62__IKDocumentServiceRequest_documentDidChangeForViewModelLink___block_in
   }
 }
 
-- (void)didCloseViewModelLink:(id)a3 withErrorDictionary:(id)a4
+- (void)didCloseViewModelLink:(id)link withErrorDictionary:(id)dictionary
 {
-  v5 = a4;
+  dictionaryCopy = dictionary;
   WeakRetained = objc_loadWeakRetained(&self->_link);
   [WeakRetained setDelegate:0];
 
   objc_storeWeak(&self->_link, 0);
-  v7 = [(IKServiceRequest *)self appContext];
+  appContext = [(IKServiceRequest *)self appContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__IKDocumentServiceRequest_didCloseViewModelLink_withErrorDictionary___block_invoke;
   v9[3] = &unk_279799260;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  [v7 evaluateDelegateBlockSync:v9];
+  v10 = dictionaryCopy;
+  v8 = dictionaryCopy;
+  [appContext evaluateDelegateBlockSync:v9];
 }
 
 @end

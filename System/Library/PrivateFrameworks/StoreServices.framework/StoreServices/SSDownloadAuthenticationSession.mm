@@ -1,6 +1,6 @@
 @interface SSDownloadAuthenticationSession
 - (NSURLAuthenticationChallenge)authenticationChallenge;
-- (void)_finishWithType:(int)a3 credential:(id)a4;
+- (void)_finishWithType:(int)type credential:(id)credential;
 @end
 
 @implementation SSDownloadAuthenticationSession
@@ -93,17 +93,17 @@ void __58__SSDownloadAuthenticationSession_authenticationChallenge__block_invoke
   }
 }
 
-- (void)_finishWithType:(int)a3 credential:(id)a4
+- (void)_finishWithType:(int)type credential:(id)credential
 {
   v28 = *MEMORY[0x1E69E9840];
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v7, "0", 2);
   xpc_dictionary_set_int64(v7, "1", self->super._sessionID);
-  xpc_dictionary_set_int64(v7, "2", a3);
-  if (a4)
+  xpc_dictionary_set_int64(v7, "2", type);
+  if (credential)
   {
     v23 = 0;
-    SSXPCDictionarySetCFObject(v7, "3", [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a4 requiringSecureCoding:1 error:&v23]);
+    SSXPCDictionarySetCFObject(v7, "3", [MEMORY[0x1E696ACC8] archivedDataWithRootObject:credential requiringSecureCoding:1 error:&v23]);
     if (v23)
     {
       v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -112,15 +112,15 @@ void __58__SSDownloadAuthenticationSession_authenticationChallenge__block_invoke
         v8 = +[SSLogConfig sharedConfig];
       }
 
-      v9 = [v8 shouldLog];
+      shouldLog = [v8 shouldLog];
       if ([v8 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog;
       }
 
       if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_ERROR))

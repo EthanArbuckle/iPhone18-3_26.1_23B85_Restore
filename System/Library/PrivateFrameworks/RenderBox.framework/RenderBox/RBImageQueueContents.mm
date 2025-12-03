@@ -1,9 +1,9 @@
 @interface RBImageQueueContents
 - (id).cxx_construct;
-- (id)replacementObjectForCoder:(id)a3;
+- (id)replacementObjectForCoder:(id)coder;
 - (uint64_t)setSurface:(uint64_t)result;
 - (void)dealloc;
-- (void)initWithSlots:(void *)a1;
+- (void)initWithSlots:(void *)slots;
 @end
 
 @implementation RBImageQueueContents
@@ -24,7 +24,7 @@
   [(RBImageQueueContents *)&v4 dealloc];
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
   p = self->_surface._p;
   if (p)
@@ -71,14 +71,14 @@ LABEL_7:
   return result;
 }
 
-- (void)initWithSlots:(void *)a1
+- (void)initWithSlots:(void *)slots
 {
-  if (!a1)
+  if (!slots)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = slots;
   v5.super_class = RBImageQueueContents;
   v1 = objc_msgSendSuper2(&v5, sel_init);
   if (v1)

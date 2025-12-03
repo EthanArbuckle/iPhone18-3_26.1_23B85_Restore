@@ -1,26 +1,26 @@
 @interface NFAssertionCALogger
-+ (void)postAnalyticsDefaultAppSupression:(id)a3 prepOnly:(BOOL)a4;
++ (void)postAnalyticsDefaultAppSupression:(id)supression prepOnly:(BOOL)only;
 @end
 
 @implementation NFAssertionCALogger
 
-+ (void)postAnalyticsDefaultAppSupression:(id)a3 prepOnly:(BOOL)a4
++ (void)postAnalyticsDefaultAppSupression:(id)supression prepOnly:(BOOL)only
 {
-  v6 = a3;
-  if (v6)
+  supressionCopy = supression;
+  if (supressionCopy)
   {
-    v87 = v6;
-    v8 = objc_msgSend_objectForKeyedSubscript_(v6, v7, @"PID");
+    v87 = supressionCopy;
+    v8 = objc_msgSend_objectForKeyedSubscript_(supressionCopy, v7, @"PID");
     v9 = 0x277CCA000uLL;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v6 = v87;
+    supressionCopy = v87;
     if (isKindOfClass)
     {
       v12 = objc_msgSend_objectForKeyedSubscript_(v87, v11, @"PID");
-      v13 = a1;
-      objc_sync_enter(v13);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v15 = 0x27DA9D000uLL;
       v16 = qword_27DA9DE48;
       if (!qword_27DA9DE48)
@@ -40,7 +40,7 @@
         objc_msgSend_setObject_forKeyedSubscript_(qword_27DA9DE48, v21, v20, v12);
       }
 
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
 
       v23 = objc_msgSend_objectForKeyedSubscript_(v87, v22, @"startTime");
       objc_opt_class();
@@ -48,7 +48,7 @@
 
       if (v24)
       {
-        v26 = v13;
+        v26 = selfCopy;
         objc_sync_enter(v26);
         v28 = objc_msgSend_objectForKeyedSubscript_(v87, v27, @"startTime");
         v30 = objc_msgSend_objectForKeyedSubscript_(qword_27DA9DE48, v29, v12);
@@ -63,7 +63,7 @@
 
       if (v33)
       {
-        v35 = v13;
+        v35 = selfCopy;
         objc_sync_enter(v35);
         v37 = objc_msgSend_objectForKeyedSubscript_(v87, v36, @"endTime");
         v39 = objc_msgSend_objectForKeyedSubscript_(qword_27DA9DE48, v38, v12);
@@ -78,7 +78,7 @@
 
       if (v42)
       {
-        v43 = v13;
+        v43 = selfCopy;
         objc_sync_enter(v43);
         v45 = objc_msgSend_objectForKeyedSubscript_(v87, v44, @"assertionType");
         v47 = objc_msgSend_objectForKeyedSubscript_(qword_27DA9DE48, v46, v12);
@@ -87,12 +87,12 @@
         objc_sync_exit(v43);
       }
 
-      if (a4)
+      if (only)
       {
         goto LABEL_23;
       }
 
-      v49 = v13;
+      v49 = selfCopy;
       objc_sync_enter(v49);
       v51 = objc_msgSend_objectForKeyedSubscript_(qword_27DA9DE48, v50, v12);
       v53 = objc_msgSend_objectForKeyedSubscript_(v51, v52, @"startTime");
@@ -148,7 +148,7 @@ LABEL_22:
       objc_sync_exit(v49);
 
 LABEL_23:
-      v6 = v87;
+      supressionCopy = v87;
     }
   }
 }

@@ -1,8 +1,8 @@
 @interface CKBrowserSwitcherFooterViewDataSource
 - (CKBrowserSwitcherFooterViewDataSource)init;
-- (id)switcherView:(id)a3 indexPathOfModelWithIdentifier:(id)a4;
-- (id)switcherView:(id)a3 modelAtIndexPath:(id)a4 type:(int64_t *)a5;
-- (unint64_t)numberOfPluginsInSwitcherView:(id)a3 forSection:(unint64_t)a4;
+- (id)switcherView:(id)view indexPathOfModelWithIdentifier:(id)identifier;
+- (id)switcherView:(id)view modelAtIndexPath:(id)path type:(int64_t *)type;
+- (unint64_t)numberOfPluginsInSwitcherView:(id)view forSection:(unint64_t)section;
 @end
 
 @implementation CKBrowserSwitcherFooterViewDataSource
@@ -21,55 +21,55 @@
   return v2;
 }
 
-- (unint64_t)numberOfPluginsInSwitcherView:(id)a3 forSection:(unint64_t)a4
+- (unint64_t)numberOfPluginsInSwitcherView:(id)view forSection:(unint64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 != 1)
+    if (section != 1)
     {
       v10 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
-    v8 = [v7 visibleRecentAppStripPlugins];
+    pluginManager = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
+    visibleRecentAppStripPlugins = [pluginManager visibleRecentAppStripPlugins];
   }
 
   else
   {
-    v7 = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
-    v8 = [v7 visibleFavoriteAppStripPlugins];
+    pluginManager = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
+    visibleRecentAppStripPlugins = [pluginManager visibleFavoriteAppStripPlugins];
   }
 
-  v9 = v8;
-  v10 = [v8 count];
+  v9 = visibleRecentAppStripPlugins;
+  v10 = [visibleRecentAppStripPlugins count];
 
 LABEL_7:
   return v10;
 }
 
-- (id)switcherView:(id)a3 modelAtIndexPath:(id)a4 type:(int64_t *)a5
+- (id)switcherView:(id)view modelAtIndexPath:(id)path type:(int64_t *)type
 {
-  v7 = a4;
-  v8 = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
-  v9 = [v8 visibleFavoriteAppStripPlugins];
-  v10 = [v8 visibleRecentAppStripPlugins];
-  if ([v7 section])
+  pathCopy = path;
+  pluginManager = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
+  visibleFavoriteAppStripPlugins = [pluginManager visibleFavoriteAppStripPlugins];
+  visibleRecentAppStripPlugins = [pluginManager visibleRecentAppStripPlugins];
+  if ([pathCopy section])
   {
-    v11 = v10;
+    v11 = visibleRecentAppStripPlugins;
   }
 
   else
   {
-    v11 = v9;
+    v11 = visibleFavoriteAppStripPlugins;
   }
 
   v12 = v11;
-  v13 = [v7 item];
-  if (v13 < [v12 count])
+  item = [pathCopy item];
+  if (item < [v12 count])
   {
-    v14 = [v12 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    v14 = [v12 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@ LABEL_7:
         v15 = 0;
 LABEL_13:
 
-        if (!a5)
+        if (!type)
         {
           goto LABEL_15;
         }
@@ -102,10 +102,10 @@ LABEL_13:
 
   v16 = 0;
   v15 = 0;
-  if (a5)
+  if (type)
   {
 LABEL_14:
-    *a5 = v15;
+    *type = v15;
   }
 
 LABEL_15:
@@ -113,12 +113,12 @@ LABEL_15:
   return v16;
 }
 
-- (id)switcherView:(id)a3 indexPathOfModelWithIdentifier:(id)a4
+- (id)switcherView:(id)view indexPathOfModelWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
-  v7 = [v6 pluginIndexPathMap];
-  v8 = [v7 objectForKey:v5];
+  identifierCopy = identifier;
+  pluginManager = [(CKBrowserSwitcherFooterViewDataSource *)self pluginManager];
+  pluginIndexPathMap = [pluginManager pluginIndexPathMap];
+  v8 = [pluginIndexPathMap objectForKey:identifierCopy];
 
   if (v8)
   {

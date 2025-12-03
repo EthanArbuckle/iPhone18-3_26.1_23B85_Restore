@@ -1,29 +1,29 @@
 @interface _SearchBarContent
 - (HKIncrementalSearchBar)searchBar;
 - (HKIncrementalSearchBarDelegate)searchBarDelegate;
-- (_SearchBarContent)initWithSearchBar:(id)a3;
+- (_SearchBarContent)initWithSearchBar:(id)bar;
 - (void)buildSearchBarContent;
-- (void)downAction:(id)a3;
+- (void)downAction:(id)action;
 - (void)layoutSubviews;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)upAction:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)upAction:(id)action;
 @end
 
 @implementation _SearchBarContent
 
-- (_SearchBarContent)initWithSearchBar:(id)a3
+- (_SearchBarContent)initWithSearchBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v9.receiver = self;
   v9.super_class = _SearchBarContent;
   v5 = [(_SearchBarContent *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_searchBar, v4);
-    v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(_SearchBarContent *)v6 setBackgroundColor:v7];
+    objc_storeWeak(&v5->_searchBar, barCopy);
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(_SearchBarContent *)v6 setBackgroundColor:systemBackgroundColor];
 
     [(_SearchBarContent *)v6 buildSearchBarContent];
   }
@@ -46,8 +46,8 @@
   LODWORD(v7) = 1148846080;
   [(HKBarButtonItemControl *)self->_upBarButton setContentHuggingPriority:0 forAxis:v7];
   [(HKBarButtonItemControl *)self->_upBarButton setHorizontalMargin:4.0];
-  v8 = [(HKBarButtonItemControl *)self->_upBarButton widthAnchor];
-  v9 = [v8 constraintGreaterThanOrEqualToConstant:36.0];
+  widthAnchor = [(HKBarButtonItemControl *)self->_upBarButton widthAnchor];
+  v9 = [widthAnchor constraintGreaterThanOrEqualToConstant:36.0];
   [v9 setActive:1];
 
   [(UIStackView *)self->_searchBarContainerView addArrangedSubview:self->_upBarButton];
@@ -59,8 +59,8 @@
   LODWORD(v12) = 1148846080;
   [(HKBarButtonItemControl *)self->_downBarButton setContentHuggingPriority:0 forAxis:v12];
   [(HKBarButtonItemControl *)self->_downBarButton setHorizontalMargin:4.0];
-  v13 = [(HKBarButtonItemControl *)self->_downBarButton widthAnchor];
-  v14 = [v13 constraintGreaterThanOrEqualToConstant:36.0];
+  widthAnchor2 = [(HKBarButtonItemControl *)self->_downBarButton widthAnchor];
+  v14 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:36.0];
   [v14 setActive:1];
 
   [(UIStackView *)self->_searchBarContainerView addArrangedSubview:self->_downBarButton];
@@ -74,14 +74,14 @@
   [(_SearchEntryWithMatchDisplay *)self->_searchEntry setEnablesReturnKeyAutomatically:0];
   [(_SearchEntryWithMatchDisplay *)self->_searchEntry setDelegate:self];
   [(_SearchEntryWithMatchDisplay *)self->_searchEntry setSearchBarStyle:2];
-  v18 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(_SearchEntryWithMatchDisplay *)self->_searchEntry setBarTintColor:v18];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(_SearchEntryWithMatchDisplay *)self->_searchEntry setBarTintColor:systemBackgroundColor];
 
-  v19 = [MEMORY[0x1E69DC888] labelColor];
-  [(_SearchEntryWithMatchDisplay *)self->_searchEntry setTintColor:v19];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(_SearchEntryWithMatchDisplay *)self->_searchEntry setTintColor:labelColor];
 
-  v20 = [(_SearchEntryWithMatchDisplay *)self->_searchEntry widthAnchor];
-  v21 = [v20 constraintGreaterThanOrEqualToConstant:100.0];
+  widthAnchor3 = [(_SearchEntryWithMatchDisplay *)self->_searchEntry widthAnchor];
+  v21 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:100.0];
   [v21 setActive:1];
 
   [(UIStackView *)self->_searchBarContainerView addArrangedSubview:self->_searchEntry];
@@ -96,8 +96,8 @@
   [(HKBarButtonItemControl *)v25 addTarget:WeakRetained action:sel_doneAction_ forControlEvents:64];
 
   [(HKBarButtonItemControl *)self->_doneBarButton setHorizontalMargin:4.0];
-  v27 = [(HKBarButtonItemControl *)self->_doneBarButton widthAnchor];
-  v28 = [v27 constraintGreaterThanOrEqualToConstant:36.0];
+  widthAnchor4 = [(HKBarButtonItemControl *)self->_doneBarButton widthAnchor];
+  v28 = [widthAnchor4 constraintGreaterThanOrEqualToConstant:36.0];
   [v28 setActive:1];
 
   [(UIStackView *)self->_searchBarContainerView addArrangedSubview:self->_doneBarButton];
@@ -111,8 +111,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(_SearchBarContent *)self layoutMarginsGuide];
-  [v3 layoutFrame];
+  layoutMarginsGuide = [(_SearchBarContent *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   v5 = v4;
 
   [(UIStackView *)self->_searchBarContainerView frame];
@@ -121,7 +121,7 @@
   [(UIStackView *)searchBarContainerView setFrame:v5];
 }
 
-- (void)upAction:(id)a3
+- (void)upAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBarDelegate);
 
@@ -132,7 +132,7 @@
   }
 }
 
-- (void)downAction:(id)a3
+- (void)downAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBarDelegate);
 
@@ -143,19 +143,19 @@
   }
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v7 = a4;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_searchBarDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_searchBarDelegate);
-    [v6 searchBarChangeSearch:self searchString:v7];
+    [v6 searchBarChangeSearch:self searchString:changeCopy];
   }
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   [WeakRetained _lowerKeyboard];

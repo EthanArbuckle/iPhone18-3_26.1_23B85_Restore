@@ -1,12 +1,12 @@
 @interface FMDAudioPlayerFactory
-+ (id)initWithContentsOfURL:(id)a3 error:(id *)a4;
++ (id)initWithContentsOfURL:(id)l error:(id *)error;
 @end
 
 @implementation FMDAudioPlayerFactory
 
-+ (id)initWithContentsOfURL:(id)a3 error:(id *)a4
++ (id)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[FMDAVRouteControllerFactory isAutomationActive];
   v7 = sub_1000070C0();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -32,21 +32,21 @@
     if (v8)
     {
       *buf = 138412290;
-      v20 = v5;
+      v20 = lCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AVAudioPlayer: initWithContentsOfURL: %@", buf, 0xCu);
     }
 
     v17 = 0;
     v12 = &v17;
-    v13 = [[AVAudioPlayer alloc] initWithContentsOfURL:v5 error:&v17];
+    v13 = [[AVAudioPlayer alloc] initWithContentsOfURL:lCopy error:&v17];
   }
 
   v14 = v13;
   v15 = *v12;
-  if (a4)
+  if (error)
   {
     v15 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   return v14;

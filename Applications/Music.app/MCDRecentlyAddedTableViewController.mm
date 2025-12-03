@@ -1,21 +1,21 @@
 @interface MCDRecentlyAddedTableViewController
-- (BOOL)contentManager:(id)a3 canDrillIntoItem:(id)a4;
-- (MCDRecentlyAddedTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4;
-- (id)textForHeaderViewInContentManager:(id)a3;
+- (BOOL)contentManager:(id)manager canDrillIntoItem:(id)item;
+- (MCDRecentlyAddedTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
+- (id)contentManager:(id)manager viewControllerForItem:(id)item;
+- (id)textForHeaderViewInContentManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDRecentlyAddedTableViewController
 
-- (MCDRecentlyAddedTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDRecentlyAddedTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDRecentlyAddedTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -30,34 +30,34 @@
   v4.receiver = self;
   v4.super_class = MCDRecentlyAddedTableViewController;
   [(MCDLibraryTableViewController *)&v4 viewDidLoad];
-  v3 = [(MCDLibraryTableViewController *)self contentManager];
-  [v3 setTableCellConfigurationBlock:&stru_101098838];
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager setTableCellConfigurationBlock:&stru_101098838];
 }
 
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4
+- (id)contentManager:(id)manager viewControllerForItem:(id)item
 {
-  v5 = a4;
-  v6 = [v5 album];
-  if (v6 && (v7 = v6, [v5 album], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "orphanMusicVideo"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
+  itemCopy = item;
+  album = [itemCopy album];
+  if (album && (v7 = album, [itemCopy album], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "orphanMusicVideo"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
   {
     v15 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v12 = [v5 album];
-    v13 = [(MCDItemDetailViewController *)v15 initWithAlbum:v12 onlyDownloaded:[(MCDLibraryTableViewController *)self showLocalContent] preferCatalog:0];
+    album2 = [itemCopy album];
+    v13 = [(MCDItemDetailViewController *)v15 initWithAlbum:album2 onlyDownloaded:[(MCDLibraryTableViewController *)self showLocalContent] preferCatalog:0];
   }
 
   else
   {
-    v10 = [v5 playlist];
+    playlist = [itemCopy playlist];
 
-    if (!v10)
+    if (!playlist)
     {
       v14 = 0;
       goto LABEL_8;
     }
 
     v11 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v12 = [v5 playlist];
-    v13 = [(MCDItemDetailViewController *)v11 initWithPlaylist:v12 onlyDownloaded:[(MCDLibraryTableViewController *)self showLocalContent] preferCatalog:0];
+    album2 = [itemCopy playlist];
+    v13 = [(MCDItemDetailViewController *)v11 initWithPlaylist:album2 onlyDownloaded:[(MCDLibraryTableViewController *)self showLocalContent] preferCatalog:0];
   }
 
   v14 = v13;
@@ -67,36 +67,36 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)contentManager:(id)a3 canDrillIntoItem:(id)a4
+- (BOOL)contentManager:(id)manager canDrillIntoItem:(id)item
 {
-  v4 = a4;
-  v5 = [v4 album];
-  v6 = [v5 orphanMusicVideo];
+  itemCopy = item;
+  album = [itemCopy album];
+  orphanMusicVideo = [album orphanMusicVideo];
 
-  if (v6)
+  if (orphanMusicVideo)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v4 album];
-    if (v8)
+    album2 = [itemCopy album];
+    if (album2)
     {
       v7 = 1;
     }
 
     else
     {
-      v9 = [v4 playlist];
-      v7 = v9 != 0;
+      playlist = [itemCopy playlist];
+      v7 = playlist != 0;
     }
   }
 
   return v7;
 }
 
-- (id)textForHeaderViewInContentManager:(id)a3
+- (id)textForHeaderViewInContentManager:(id)manager
 {
   if ([(MCDLibraryTableViewController *)self showLocalContent])
   {

@@ -1,84 +1,84 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBytes:(id)a3;
-- (void)addEnableState:(id)a3;
-- (void)addNpeers:(id)a3;
-- (void)addPackets:(id)a3;
-- (void)addTxLatencyBE:(id)a3;
-- (void)addTxLatencyBK:(id)a3;
-- (void)addTxLatencyVI:(id)a3;
-- (void)addTxLatencyVO:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPeerCount:(BOOL)a3;
-- (void)setHasPeersAdded:(BOOL)a3;
-- (void)setHasPeersRemoved:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addBytes:(id)bytes;
+- (void)addEnableState:(id)state;
+- (void)addNpeers:(id)npeers;
+- (void)addPackets:(id)packets;
+- (void)addTxLatencyBE:(id)e;
+- (void)addTxLatencyBK:(id)k;
+- (void)addTxLatencyVI:(id)i;
+- (void)addTxLatencyVO:(id)o;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPeerCount:(BOOL)count;
+- (void)setHasPeersAdded:(BOOL)added;
+- (void)setHasPeersRemoved:(BOOL)removed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats
 
-- (void)addPackets:(id)a3
+- (void)addPackets:(id)packets
 {
-  v4 = a3;
+  packetsCopy = packets;
   packets = self->_packets;
-  v8 = v4;
+  v8 = packetsCopy;
   if (!packets)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_packets;
     self->_packets = v6;
 
-    v4 = v8;
+    packetsCopy = v8;
     packets = self->_packets;
   }
 
-  [(NSMutableArray *)packets addObject:v4];
+  [(NSMutableArray *)packets addObject:packetsCopy];
 }
 
-- (void)addBytes:(id)a3
+- (void)addBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   bytes = self->_bytes;
-  v8 = v4;
+  v8 = bytesCopy;
   if (!bytes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_bytes;
     self->_bytes = v6;
 
-    v4 = v8;
+    bytesCopy = v8;
     bytes = self->_bytes;
   }
 
-  [(NSMutableArray *)bytes addObject:v4];
+  [(NSMutableArray *)bytes addObject:bytesCopy];
 }
 
-- (void)addNpeers:(id)a3
+- (void)addNpeers:(id)npeers
 {
-  v4 = a3;
+  npeersCopy = npeers;
   npeers = self->_npeers;
-  v8 = v4;
+  v8 = npeersCopy;
   if (!npeers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_npeers;
     self->_npeers = v6;
 
-    v4 = v8;
+    npeersCopy = v8;
     npeers = self->_npeers;
   }
 
-  [(NSMutableArray *)npeers addObject:v4];
+  [(NSMutableArray *)npeers addObject:npeersCopy];
 }
 
-- (void)setHasPeerCount:(BOOL)a3
+- (void)setHasPeerCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -91,9 +91,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPeersAdded:(BOOL)a3
+- (void)setHasPeersAdded:(BOOL)added
 {
-  if (a3)
+  if (added)
   {
     v3 = 4;
   }
@@ -106,9 +106,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPeersRemoved:(BOOL)a3
+- (void)setHasPeersRemoved:(BOOL)removed
 {
-  if (a3)
+  if (removed)
   {
     v3 = 8;
   }
@@ -121,94 +121,94 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addEnableState:(id)a3
+- (void)addEnableState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   enableStates = self->_enableStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!enableStates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_enableStates;
     self->_enableStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     enableStates = self->_enableStates;
   }
 
-  [(NSMutableArray *)enableStates addObject:v4];
+  [(NSMutableArray *)enableStates addObject:stateCopy];
 }
 
-- (void)addTxLatencyBK:(id)a3
+- (void)addTxLatencyBK:(id)k
 {
-  v4 = a3;
+  kCopy = k;
   txLatencyBKs = self->_txLatencyBKs;
-  v8 = v4;
+  v8 = kCopy;
   if (!txLatencyBKs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_txLatencyBKs;
     self->_txLatencyBKs = v6;
 
-    v4 = v8;
+    kCopy = v8;
     txLatencyBKs = self->_txLatencyBKs;
   }
 
-  [(NSMutableArray *)txLatencyBKs addObject:v4];
+  [(NSMutableArray *)txLatencyBKs addObject:kCopy];
 }
 
-- (void)addTxLatencyBE:(id)a3
+- (void)addTxLatencyBE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   txLatencyBEs = self->_txLatencyBEs;
-  v8 = v4;
+  v8 = eCopy;
   if (!txLatencyBEs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_txLatencyBEs;
     self->_txLatencyBEs = v6;
 
-    v4 = v8;
+    eCopy = v8;
     txLatencyBEs = self->_txLatencyBEs;
   }
 
-  [(NSMutableArray *)txLatencyBEs addObject:v4];
+  [(NSMutableArray *)txLatencyBEs addObject:eCopy];
 }
 
-- (void)addTxLatencyVO:(id)a3
+- (void)addTxLatencyVO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   txLatencyVOs = self->_txLatencyVOs;
-  v8 = v4;
+  v8 = oCopy;
   if (!txLatencyVOs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_txLatencyVOs;
     self->_txLatencyVOs = v6;
 
-    v4 = v8;
+    oCopy = v8;
     txLatencyVOs = self->_txLatencyVOs;
   }
 
-  [(NSMutableArray *)txLatencyVOs addObject:v4];
+  [(NSMutableArray *)txLatencyVOs addObject:oCopy];
 }
 
-- (void)addTxLatencyVI:(id)a3
+- (void)addTxLatencyVI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   txLatencyVIs = self->_txLatencyVIs;
-  v8 = v4;
+  v8 = iCopy;
   if (!txLatencyVIs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_txLatencyVIs;
     self->_txLatencyVIs = v6;
 
-    v4 = v8;
+    iCopy = v8;
     txLatencyVIs = self->_txLatencyVIs;
   }
 
-  [(NSMutableArray *)txLatencyVIs addObject:v4];
+  [(NSMutableArray *)txLatencyVIs addObject:iCopy];
 }
 
 - (id)description
@@ -217,8 +217,8 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -226,12 +226,12 @@
 - (id)dictionaryRepresentation
 {
   v109 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   role = self->_role;
   if (role)
   {
-    [v3 setObject:role forKey:@"role"];
+    [dictionary setObject:role forKey:@"role"];
   }
 
   if ([(NSMutableArray *)self->_packets count])
@@ -256,8 +256,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v97 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v97 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v97 objects:v108 count:16];
@@ -291,8 +291,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v93 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v93 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v93 objects:v107 count:16];
@@ -326,8 +326,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v89 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v89 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v89 objects:v106 count:16];
@@ -412,8 +412,8 @@ LABEL_35:
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v85 + 1) + 8 * m) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation4 = [*(*(&v85 + 1) + 8 * m) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation4];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v85 objects:v105 count:16];
@@ -447,8 +447,8 @@ LABEL_35:
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v81 + 1) + 8 * n) dictionaryRepresentation];
-          [v36 addObject:v42];
+          dictionaryRepresentation5 = [*(*(&v81 + 1) + 8 * n) dictionaryRepresentation];
+          [v36 addObject:dictionaryRepresentation5];
         }
 
         v39 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v81 objects:v104 count:16];
@@ -482,8 +482,8 @@ LABEL_35:
             objc_enumerationMutation(v44);
           }
 
-          v49 = [*(*(&v77 + 1) + 8 * ii) dictionaryRepresentation];
-          [v43 addObject:v49];
+          dictionaryRepresentation6 = [*(*(&v77 + 1) + 8 * ii) dictionaryRepresentation];
+          [v43 addObject:dictionaryRepresentation6];
         }
 
         v46 = [(NSMutableArray *)v44 countByEnumeratingWithState:&v77 objects:v103 count:16];
@@ -517,8 +517,8 @@ LABEL_35:
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v73 + 1) + 8 * jj) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation7 = [*(*(&v73 + 1) + 8 * jj) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation7];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v73 objects:v102 count:16];
@@ -552,8 +552,8 @@ LABEL_35:
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v69 + 1) + 8 * kk) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation8 = [*(*(&v69 + 1) + 8 * kk) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation8];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v69 objects:v101 count:16];
@@ -570,10 +570,10 @@ LABEL_35:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v99 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_role)
   {
     PBDataWriterWriteStringField();
@@ -862,55 +862,55 @@ LABEL_29:
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v37 = a3;
+  toCopy = to;
   if (self->_role)
   {
-    [v37 setRole:?];
+    [toCopy setRole:?];
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self packetsCount])
   {
-    [v37 clearPackets];
-    v4 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self packetsCount];
-    if (v4)
+    [toCopy clearPackets];
+    packetsCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self packetsCount];
+    if (packetsCount)
     {
-      v5 = v4;
+      v5 = packetsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self packetsAtIndex:i];
-        [v37 addPackets:v7];
+        [toCopy addPackets:v7];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self bytesCount])
   {
-    [v37 clearBytes];
-    v8 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self bytesCount];
-    if (v8)
+    [toCopy clearBytes];
+    bytesCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self bytesCount];
+    if (bytesCount)
     {
-      v9 = v8;
+      v9 = bytesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self bytesAtIndex:j];
-        [v37 addBytes:v11];
+        [toCopy addBytes:v11];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self npeersCount])
   {
-    [v37 clearNpeers];
-    v12 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self npeersCount];
-    if (v12)
+    [toCopy clearNpeers];
+    npeersCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self npeersCount];
+    if (npeersCount)
     {
-      v13 = v12;
+      v13 = npeersCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self npeersAtIndex:k];
-        [v37 addNpeers:v15];
+        [toCopy addNpeers:v15];
       }
     }
   }
@@ -918,8 +918,8 @@ LABEL_29:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v37 + 12) = self->_peerCount;
-    *(v37 + 104) |= 2u;
+    *(toCopy + 12) = self->_peerCount;
+    *(toCopy + 104) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -930,8 +930,8 @@ LABEL_17:
       }
 
 LABEL_45:
-      *(v37 + 14) = self->_peersRemoved;
-      *(v37 + 104) |= 8u;
+      *(toCopy + 14) = self->_peersRemoved;
+      *(toCopy + 104) |= 8u;
       if ((*&self->_has & 1) == 0)
       {
         goto LABEL_20;
@@ -946,8 +946,8 @@ LABEL_45:
     goto LABEL_17;
   }
 
-  *(v37 + 13) = self->_peersAdded;
-  *(v37 + 104) |= 4u;
+  *(toCopy + 13) = self->_peersAdded;
+  *(toCopy + 104) |= 4u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -958,92 +958,92 @@ LABEL_18:
   if (has)
   {
 LABEL_19:
-    *(v37 + 6) = self->_enabled;
-    *(v37 + 104) |= 1u;
+    *(toCopy + 6) = self->_enabled;
+    *(toCopy + 104) |= 1u;
   }
 
 LABEL_20:
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self enableStatesCount])
   {
-    [v37 clearEnableStates];
-    v17 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self enableStatesCount];
-    if (v17)
+    [toCopy clearEnableStates];
+    enableStatesCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self enableStatesCount];
+    if (enableStatesCount)
     {
-      v18 = v17;
+      v18 = enableStatesCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self enableStateAtIndex:m];
-        [v37 addEnableState:v20];
+        [toCopy addEnableState:v20];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBKsCount])
   {
-    [v37 clearTxLatencyBKs];
-    v21 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBKsCount];
-    if (v21)
+    [toCopy clearTxLatencyBKs];
+    txLatencyBKsCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBKsCount];
+    if (txLatencyBKsCount)
     {
-      v22 = v21;
+      v22 = txLatencyBKsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBKAtIndex:n];
-        [v37 addTxLatencyBK:v24];
+        [toCopy addTxLatencyBK:v24];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBEsCount])
   {
-    [v37 clearTxLatencyBEs];
-    v25 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBEsCount];
-    if (v25)
+    [toCopy clearTxLatencyBEs];
+    txLatencyBEsCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBEsCount];
+    if (txLatencyBEsCount)
     {
-      v26 = v25;
+      v26 = txLatencyBEsCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyBEAtIndex:ii];
-        [v37 addTxLatencyBE:v28];
+        [toCopy addTxLatencyBE:v28];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVOsCount])
   {
-    [v37 clearTxLatencyVOs];
-    v29 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVOsCount];
-    if (v29)
+    [toCopy clearTxLatencyVOs];
+    txLatencyVOsCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVOsCount];
+    if (txLatencyVOsCount)
     {
-      v30 = v29;
+      v30 = txLatencyVOsCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVOAtIndex:jj];
-        [v37 addTxLatencyVO:v32];
+        [toCopy addTxLatencyVO:v32];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVIsCount])
   {
-    [v37 clearTxLatencyVIs];
-    v33 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVIsCount];
-    if (v33)
+    [toCopy clearTxLatencyVIs];
+    txLatencyVIsCount = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVIsCount];
+    if (txLatencyVIsCount)
     {
-      v34 = v33;
+      v34 = txLatencyVIsCount;
       for (kk = 0; kk != v34; ++kk)
       {
         v36 = [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self txLatencyVIAtIndex:kk];
-        [v37 addTxLatencyVI:v36];
+        [toCopy addTxLatencyVI:v36];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v99 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_role copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_role copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -1066,7 +1066,7 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v87 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v87 + 1) + 8 * i) copyWithZone:zone];
         [v5 addPackets:v13];
       }
 
@@ -1095,7 +1095,7 @@ LABEL_20:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v83 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v83 + 1) + 8 * j) copyWithZone:zone];
         [v5 addBytes:v19];
       }
 
@@ -1124,7 +1124,7 @@ LABEL_20:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v79 + 1) + 8 * k) copyWithZone:a3];
+        v25 = [*(*(&v79 + 1) + 8 * k) copyWithZone:zone];
         [v5 addNpeers:v25];
       }
 
@@ -1201,7 +1201,7 @@ LABEL_27:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v75 + 1) + 8 * m) copyWithZone:a3];
+        v32 = [*(*(&v75 + 1) + 8 * m) copyWithZone:zone];
         [v5 addEnableState:v32];
       }
 
@@ -1230,7 +1230,7 @@ LABEL_27:
           objc_enumerationMutation(v33);
         }
 
-        v38 = [*(*(&v71 + 1) + 8 * n) copyWithZone:a3];
+        v38 = [*(*(&v71 + 1) + 8 * n) copyWithZone:zone];
         [v5 addTxLatencyBK:v38];
       }
 
@@ -1259,7 +1259,7 @@ LABEL_27:
           objc_enumerationMutation(v39);
         }
 
-        v44 = [*(*(&v67 + 1) + 8 * ii) copyWithZone:a3];
+        v44 = [*(*(&v67 + 1) + 8 * ii) copyWithZone:zone];
         [v5 addTxLatencyBE:v44];
       }
 
@@ -1288,7 +1288,7 @@ LABEL_27:
           objc_enumerationMutation(v45);
         }
 
-        v50 = [*(*(&v63 + 1) + 8 * jj) copyWithZone:a3];
+        v50 = [*(*(&v63 + 1) + 8 * jj) copyWithZone:zone];
         [v5 addTxLatencyVO:v50];
       }
 
@@ -1317,7 +1317,7 @@ LABEL_27:
           objc_enumerationMutation(v51);
         }
 
-        v56 = [*(*(&v59 + 1) + 8 * kk) copyWithZone:{a3, v59}];
+        v56 = [*(*(&v59 + 1) + 8 * kk) copyWithZone:{zone, v59}];
         [v5 addTxLatencyVI:v56];
       }
 
@@ -1331,16 +1331,16 @@ LABEL_27:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
   role = self->_role;
-  if (role | *(v4 + 8))
+  if (role | *(equalCopy + 8))
   {
     if (![(NSString *)role isEqual:?])
     {
@@ -1349,7 +1349,7 @@ LABEL_27:
   }
 
   packets = self->_packets;
-  if (packets | *(v4 + 5))
+  if (packets | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)packets isEqual:?])
     {
@@ -1358,7 +1358,7 @@ LABEL_27:
   }
 
   bytes = self->_bytes;
-  if (bytes | *(v4 + 1))
+  if (bytes | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)bytes isEqual:?])
     {
@@ -1367,7 +1367,7 @@ LABEL_27:
   }
 
   npeers = self->_npeers;
-  if (npeers | *(v4 + 4))
+  if (npeers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)npeers isEqual:?])
     {
@@ -1375,16 +1375,16 @@ LABEL_27:
     }
   }
 
-  v9 = *(v4 + 104);
+  v9 = *(equalCopy + 104);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_peerCount != *(v4 + 12))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_peerCount != *(equalCopy + 12))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
 LABEL_40:
     v15 = 0;
@@ -1393,51 +1393,51 @@ LABEL_40:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_peersAdded != *(v4 + 13))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_peersAdded != *(equalCopy + 13))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 104) & 8) == 0 || self->_peersRemoved != *(v4 + 14))
+    if ((*(equalCopy + 104) & 8) == 0 || self->_peersRemoved != *(equalCopy + 14))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 8) != 0)
+  else if ((*(equalCopy + 104) & 8) != 0)
   {
     goto LABEL_40;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_enabled != *(v4 + 6))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_enabled != *(equalCopy + 6))
     {
       goto LABEL_40;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_40;
   }
 
   enableStates = self->_enableStates;
-  if (enableStates | *(v4 + 2) && ![(NSMutableArray *)enableStates isEqual:?])
+  if (enableStates | *(equalCopy + 2) && ![(NSMutableArray *)enableStates isEqual:?])
   {
     goto LABEL_40;
   }
 
   txLatencyBKs = self->_txLatencyBKs;
-  if (txLatencyBKs | *(v4 + 10))
+  if (txLatencyBKs | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)txLatencyBKs isEqual:?])
     {
@@ -1446,7 +1446,7 @@ LABEL_40:
   }
 
   txLatencyBEs = self->_txLatencyBEs;
-  if (txLatencyBEs | *(v4 + 9))
+  if (txLatencyBEs | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)txLatencyBEs isEqual:?])
     {
@@ -1455,7 +1455,7 @@ LABEL_40:
   }
 
   txLatencyVOs = self->_txLatencyVOs;
-  if (txLatencyVOs | *(v4 + 12))
+  if (txLatencyVOs | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)txLatencyVOs isEqual:?])
     {
@@ -1464,7 +1464,7 @@ LABEL_40:
   }
 
   txLatencyVIs = self->_txLatencyVIs;
-  if (txLatencyVIs | *(v4 + 11))
+  if (txLatencyVIs | *(equalCopy + 11))
   {
     v15 = [(NSMutableArray *)txLatencyVIs isEqual:?];
   }
@@ -1543,11 +1543,11 @@ LABEL_10:
   return v13 ^ v15 ^ [(NSMutableArray *)self->_txLatencyVIs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(WiFiAnalyticsAWDWiFiNWActivityAPInterfaceStats *)self setRole:?];
   }
@@ -1556,7 +1556,7 @@ LABEL_10:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v75 objects:v86 count:16];
   if (v6)
   {
@@ -1584,7 +1584,7 @@ LABEL_10:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   v11 = [v10 countByEnumeratingWithState:&v71 objects:v85 count:16];
   if (v11)
   {
@@ -1612,7 +1612,7 @@ LABEL_10:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v15 = *(v4 + 4);
+  v15 = *(fromCopy + 4);
   v16 = [v15 countByEnumeratingWithState:&v67 objects:v84 count:16];
   if (v16)
   {
@@ -1636,12 +1636,12 @@ LABEL_10:
     while (v17);
   }
 
-  v20 = *(v4 + 104);
+  v20 = *(fromCopy + 104);
   if ((v20 & 2) != 0)
   {
-    self->_peerCount = *(v4 + 12);
+    self->_peerCount = *(fromCopy + 12);
     *&self->_has |= 2u;
-    v20 = *(v4 + 104);
+    v20 = *(fromCopy + 104);
     if ((v20 & 4) == 0)
     {
 LABEL_26:
@@ -1654,14 +1654,14 @@ LABEL_26:
     }
   }
 
-  else if ((*(v4 + 104) & 4) == 0)
+  else if ((*(fromCopy + 104) & 4) == 0)
   {
     goto LABEL_26;
   }
 
-  self->_peersAdded = *(v4 + 13);
+  self->_peersAdded = *(fromCopy + 13);
   *&self->_has |= 4u;
-  v20 = *(v4 + 104);
+  v20 = *(fromCopy + 104);
   if ((v20 & 8) == 0)
   {
 LABEL_27:
@@ -1674,12 +1674,12 @@ LABEL_27:
   }
 
 LABEL_67:
-  self->_peersRemoved = *(v4 + 14);
+  self->_peersRemoved = *(fromCopy + 14);
   *&self->_has |= 8u;
-  if (*(v4 + 104))
+  if (*(fromCopy + 104))
   {
 LABEL_28:
-    self->_enabled = *(v4 + 6);
+    self->_enabled = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
@@ -1688,7 +1688,7 @@ LABEL_29:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v21 = *(v4 + 2);
+  v21 = *(fromCopy + 2);
   v22 = [v21 countByEnumeratingWithState:&v63 objects:v83 count:16];
   if (v22)
   {
@@ -1716,7 +1716,7 @@ LABEL_29:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v26 = *(v4 + 10);
+  v26 = *(fromCopy + 10);
   v27 = [v26 countByEnumeratingWithState:&v59 objects:v82 count:16];
   if (v27)
   {
@@ -1744,7 +1744,7 @@ LABEL_29:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v31 = *(v4 + 9);
+  v31 = *(fromCopy + 9);
   v32 = [v31 countByEnumeratingWithState:&v55 objects:v81 count:16];
   if (v32)
   {
@@ -1772,7 +1772,7 @@ LABEL_29:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v36 = *(v4 + 12);
+  v36 = *(fromCopy + 12);
   v37 = [v36 countByEnumeratingWithState:&v51 objects:v80 count:16];
   if (v37)
   {
@@ -1800,7 +1800,7 @@ LABEL_29:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v41 = *(v4 + 11);
+  v41 = *(fromCopy + 11);
   v42 = [v41 countByEnumeratingWithState:&v47 objects:v79 count:16];
   if (v42)
   {

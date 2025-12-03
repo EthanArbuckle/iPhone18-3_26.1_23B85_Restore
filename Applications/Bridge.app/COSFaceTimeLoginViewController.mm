@@ -5,7 +5,7 @@
 - (id)localizedWaitScreenDescription;
 - (id)titleString;
 - (id)username;
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3;
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block;
 @end
 
 @implementation COSFaceTimeLoginViewController
@@ -27,8 +27,8 @@
 
 - (id)username
 {
-  v2 = [(COSFaceTimeLoginViewController *)self account];
-  v3 = [COSiMessageFaceTimeAuthController usernameForIDSAccount:v2];
+  account = [(COSFaceTimeLoginViewController *)self account];
+  v3 = [COSiMessageFaceTimeAuthController usernameForIDSAccount:account];
 
   return v3;
 }
@@ -52,20 +52,20 @@
 
 + (BOOL)controllerNeedsToRunForCurrentService
 {
-  v2 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v3 = [[NSUUID alloc] initWithUUIDString:@"DEBFF23F-9327-44FB-A219-0428BEBD5BA7"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [activeWatch supportsCapability:v3];
 
   if (v4)
   {
-    v5 = [UIApp setupController];
+    setupController = [UIApp setupController];
     v6 = +[COSiCloudAuthController iCloudAccountInAccountStore];
     v7 = +[COSiMessageFaceTimeAuthController faceTimeAccountInAccountStore];
     v8 = +[COSiMessageFaceTimeAuthController iMessageAccountInAccountStore];
     if (v8)
     {
-      v9 = [v5 appleIDSignInModel];
-      if ([v9 hasSignedInToiMessage])
+      appleIDSignInModel = [setupController appleIDSignInModel];
+      if ([appleIDSignInModel hasSignedInToiMessage])
       {
         v10 = [COSAppleIDUtilities checkIfAccount:v7 isForSameAppleIDAsAccount:v8];
 
@@ -93,17 +93,17 @@ LABEL_17:
 
     if (v6)
     {
-      v15 = [v5 appleIDSignInModel];
-      if ([v15 hasSignedInToiCloud])
+      appleIDSignInModel2 = [setupController appleIDSignInModel];
+      if ([appleIDSignInModel2 hasSignedInToiCloud])
       {
         v16 = [COSAppleIDUtilities checkIfAccount:v7 isForSameAppleIDAsAccount:v6];
 
         if (v16)
         {
-          v17 = [v5 appleIDSignInModel];
-          v18 = [v17 hasCombinedIDSSignInFailed];
+          appleIDSignInModel3 = [setupController appleIDSignInModel];
+          hasCombinedIDSSignInFailed = [appleIDSignInModel3 hasCombinedIDSSignInFailed];
 
-          if ((v18 & 1) == 0)
+          if ((hasCombinedIDSSignInFailed & 1) == 0)
           {
             v11 = pbb_accountsignin_log();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -133,11 +133,11 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v5 = pbb_accountsignin_log();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  setupController = pbb_accountsignin_log();
+  if (os_log_type_enabled(setupController, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Skipping FaceTime sign in: Watch does not have FaceTime capability", buf, 2u);
+    _os_log_impl(&_mh_execute_header, setupController, OS_LOG_TYPE_DEFAULT, "Skipping FaceTime sign in: Watch does not have FaceTime capability", buf, 2u);
   }
 
   v14 = 0;
@@ -146,20 +146,20 @@ LABEL_22:
   return v14;
 }
 
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block
 {
-  v7 = a3;
-  v4 = [UIApp setupController];
-  v5 = [v4 appleIDSignInModel];
-  [v5 setHasSignedInToFaceTime:1];
+  blockCopy = block;
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  [appleIDSignInModel setHasSignedInToFaceTime:1];
 
-  v6 = [v4 appleIDSignInModel];
-  [v6 setHasCombinedIDSSignInFailed:0];
+  appleIDSignInModel2 = [setupController appleIDSignInModel];
+  [appleIDSignInModel2 setHasCombinedIDSSignInFailed:0];
 
   [(COSAppleIDLoginViewController *)self saveiTunesStoreAccountToPairedDeviceIfForSameAppleID];
-  if (v7)
+  if (blockCopy)
   {
-    v7[2]();
+    blockCopy[2]();
   }
 }
 

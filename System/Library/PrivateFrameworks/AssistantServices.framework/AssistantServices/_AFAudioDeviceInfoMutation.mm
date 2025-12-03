@@ -1,6 +1,6 @@
 @interface _AFAudioDeviceInfoMutation
 - (BOOL)getIsRemoteDevice;
-- (_AFAudioDeviceInfoMutation)initWithBase:(id)a3;
+- (_AFAudioDeviceInfoMutation)initWithBase:(id)base;
 - (id)getDeviceUID;
 - (id)getRoute;
 @end
@@ -11,15 +11,15 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_deviceUID;
+    deviceUID = self->_deviceUID;
   }
 
   else
   {
-    v2 = [(AFAudioDeviceInfo *)self->_base deviceUID];
+    deviceUID = [(AFAudioDeviceInfo *)self->_base deviceUID];
   }
 
-  return v2;
+  return deviceUID;
 }
 
 - (BOOL)getIsRemoteDevice
@@ -39,27 +39,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_route;
+    route = self->_route;
   }
 
   else
   {
-    v2 = [(AFAudioDeviceInfo *)self->_base route];
+    route = [(AFAudioDeviceInfo *)self->_base route];
   }
 
-  return v2;
+  return route;
 }
 
-- (_AFAudioDeviceInfoMutation)initWithBase:(id)a3
+- (_AFAudioDeviceInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFAudioDeviceInfoMutation;
   v6 = [(_AFAudioDeviceInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

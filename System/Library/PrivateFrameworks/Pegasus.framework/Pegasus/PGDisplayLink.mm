@@ -1,25 +1,25 @@
 @interface PGDisplayLink
-- (PGDisplayLink)initWithOwner:(id)a3 linkFired:(id)a4;
+- (PGDisplayLink)initWithOwner:(id)owner linkFired:(id)fired;
 - (id)owner;
-- (void)_linkFired:(id)a3;
+- (void)_linkFired:(id)fired;
 - (void)invalidate;
-- (void)setPreferredFramesPerSecond:(unint64_t)a3;
+- (void)setPreferredFramesPerSecond:(unint64_t)second;
 @end
 
 @implementation PGDisplayLink
 
-- (PGDisplayLink)initWithOwner:(id)a3 linkFired:(id)a4
+- (PGDisplayLink)initWithOwner:(id)owner linkFired:(id)fired
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  firedCopy = fired;
   v13.receiver = self;
   v13.super_class = PGDisplayLink;
   v8 = [(PGDisplayLink *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_owner, v6);
-    v10 = MEMORY[0x1BFB0C680](v7);
+    objc_storeWeak(&v8->_owner, ownerCopy);
+    v10 = MEMORY[0x1BFB0C680](firedCopy);
     linkFired = v9->_linkFired;
     v9->_linkFired = v10;
   }
@@ -27,21 +27,21 @@
   return v9;
 }
 
-- (void)setPreferredFramesPerSecond:(unint64_t)a3
+- (void)setPreferredFramesPerSecond:(unint64_t)second
 {
-  if (self->_preferredFramesPerSecond == a3)
+  if (self->_preferredFramesPerSecond == second)
   {
     return;
   }
 
-  self->_preferredFramesPerSecond = a3;
+  self->_preferredFramesPerSecond = second;
   if (self->_invalidated)
   {
     return;
   }
 
   link = self->_link;
-  if (!a3)
+  if (!second)
   {
     v6 = 1;
 LABEL_9:
@@ -52,7 +52,7 @@ LABEL_9:
 
   if (link)
   {
-    [(CADisplayLink *)link setPreferredFramesPerSecond:a3];
+    [(CADisplayLink *)link setPreferredFramesPerSecond:second];
     if (![(CADisplayLink *)self->_link isPaused])
     {
       return;
@@ -67,10 +67,10 @@ LABEL_9:
   v8 = self->_link;
   self->_link = v7;
 
-  [(CADisplayLink *)self->_link setPreferredFramesPerSecond:a3];
+  [(CADisplayLink *)self->_link setPreferredFramesPerSecond:second];
   v9 = self->_link;
-  v10 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)v9 addToRunLoop:v10 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)v9 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 }
 
 - (void)invalidate
@@ -81,13 +81,13 @@ LABEL_9:
   self->_link = 0;
 }
 
-- (void)_linkFired:(id)a3
+- (void)_linkFired:(id)fired
 {
-  v5 = [(PGDisplayLink *)self owner];
-  if (v5)
+  owner = [(PGDisplayLink *)self owner];
+  if (owner)
   {
-    v4 = [(PGDisplayLink *)self linkFired];
-    (v4)[2](v4, v5, self);
+    linkFired = [(PGDisplayLink *)self linkFired];
+    (linkFired)[2](linkFired, owner, self);
   }
 
   else

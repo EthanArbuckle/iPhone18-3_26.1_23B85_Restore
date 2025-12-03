@@ -1,31 +1,31 @@
 @interface STUIStatusBarIndicatorItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (STUIStatusBarIndicatorItemAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarIndicatorItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarIndicatorQuietModeItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorStudentItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorRotationLockItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorAirplaneModeItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorTTYItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorAssistantItem"];
-  [v3 validateClass:@"STUIStatusBarVPNItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorLiquidDetectionItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorAirPlayItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorCarPlayItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorAlarmItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorLocationItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorSatelliteItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorItem" isKindOfClass:@"STUIStatusBarItem"];
-  [v3 validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"displayItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarDisplayItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarIndicatorQuietModeItem" hasInstanceMethod:@"focusName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorQuietModeItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorStudentItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorRotationLockItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorAirplaneModeItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorTTYItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorAssistantItem"];
+  [validationsCopy validateClass:@"STUIStatusBarVPNItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorLiquidDetectionItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorAirPlayItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorCarPlayItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorAlarmItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorLocationItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorSatelliteItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorItem" isKindOfClass:@"STUIStatusBarItem"];
+  [validationsCopy validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"displayItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorQuietModeItem" hasInstanceMethod:@"focusName" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

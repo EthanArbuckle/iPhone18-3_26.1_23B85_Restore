@@ -1,27 +1,27 @@
 @interface SBStripChangedModifierActivity
-- (SBStripChangedModifierActivity)initWithNewStrip:(id)a3 phase:(int64_t)a4;
+- (SBStripChangedModifierActivity)initWithNewStrip:(id)strip phase:(int64_t)phase;
 @end
 
 @implementation SBStripChangedModifierActivity
 
-- (SBStripChangedModifierActivity)initWithNewStrip:(id)a3 phase:(int64_t)a4
+- (SBStripChangedModifierActivity)initWithNewStrip:(id)strip phase:(int64_t)phase
 {
-  v7 = a3;
+  stripCopy = strip;
   v12.receiver = self;
   v12.super_class = SBStripChangedModifierActivity;
   v8 = [(SBWindowingModifierActivity *)&v12 init];
   if (v8)
   {
-    if (!v7)
+    if (!stripCopy)
     {
       [SBStripChangedModifierActivity initWithNewStrip:a2 phase:v8];
     }
 
-    v9 = [v7 copy];
+    v9 = [stripCopy copy];
     updatedStrip = v8->_updatedStrip;
     v8->_updatedStrip = v9;
 
-    v8->_phase = a4;
+    v8->_phase = phase;
   }
 
   return v8;

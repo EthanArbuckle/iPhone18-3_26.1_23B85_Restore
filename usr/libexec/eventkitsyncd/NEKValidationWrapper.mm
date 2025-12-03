@@ -1,8 +1,8 @@
 @interface NEKValidationWrapper
-+ (id)validationWrapperForPb:(id)a3;
++ (id)validationWrapperForPb:(id)pb;
 + (id)validationWrapperForRightNow;
-+ (id)validationWrapperForSameSpan:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)validationWrapperForSameSpan:(id)span;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)_countEvents;
 - (void)validate;
@@ -16,8 +16,8 @@
   v3 = +[NSDate date];
   [(NEKValidationWrapper *)v2 setStart:v3];
 
-  v4 = [(NEKValidationWrapper *)v2 start];
-  v5 = [v4 dateByAddingTimeInterval:1209600.0];
+  start = [(NEKValidationWrapper *)v2 start];
+  v5 = [start dateByAddingTimeInterval:1209600.0];
   [(NEKValidationWrapper *)v2 setEnd:v5];
 
   [(NEKValidationWrapper *)v2 _countEvents];
@@ -25,14 +25,14 @@
   return v2;
 }
 
-+ (id)validationWrapperForSameSpan:(id)a3
++ (id)validationWrapperForSameSpan:(id)span
 {
-  v3 = a3;
+  spanCopy = span;
   v4 = [(NEKWrapper *)[NEKValidationWrapper alloc] initWithStoreType:0 nekChangeType:0];
-  v5 = [v3 start];
-  [(NEKValidationWrapper *)v4 setStart:v5];
+  start = [spanCopy start];
+  [(NEKValidationWrapper *)v4 setStart:start];
 
-  v6 = [v3 end];
+  v6 = [spanCopy end];
 
   [(NEKValidationWrapper *)v4 setEnd:v6];
   [(NEKValidationWrapper *)v4 _countEvents];
@@ -40,23 +40,23 @@
   return v4;
 }
 
-+ (id)validationWrapperForPb:(id)a3
++ (id)validationWrapperForPb:(id)pb
 {
-  v3 = a3;
+  pbCopy = pb;
   v4 = [(NEKWrapper *)[NEKValidationWrapper alloc] initWithStoreType:0 nekChangeType:0];
-  [v3 startDate];
+  [pbCopy startDate];
   v5 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   [(NEKValidationWrapper *)v4 setStart:v5];
 
-  [v3 endDate];
+  [pbCopy endDate];
   v6 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   [(NEKValidationWrapper *)v4 setEnd:v6];
 
-  -[NEKValidationWrapper setMasterCount:](v4, "setMasterCount:", [v3 masterCount]);
-  -[NEKValidationWrapper setOccurrenceCount:](v4, "setOccurrenceCount:", [v3 occurrenceCount]);
-  v7 = [v3 showAlert];
+  -[NEKValidationWrapper setMasterCount:](v4, "setMasterCount:", [pbCopy masterCount]);
+  -[NEKValidationWrapper setOccurrenceCount:](v4, "setOccurrenceCount:", [pbCopy occurrenceCount]);
+  showAlert = [pbCopy showAlert];
 
-  [(NEKValidationWrapper *)v4 setShowAlert:v7];
+  [(NEKValidationWrapper *)v4 setShowAlert:showAlert];
 
   return v4;
 }
@@ -91,13 +91,13 @@
         v7 = *(*(&v33 + 1) + 8 * v6);
         if (sub_10000A2E8(v7))
         {
-          v8 = [v7 allCalendars];
+          allCalendars = [v7 allCalendars];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v28 = v8;
-          v9 = [v8 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v28 = allCalendars;
+          v9 = [allCalendars countByEnumeratingWithState:&v29 objects:v38 count:16];
           if (v9)
           {
             v10 = v9;
@@ -115,17 +115,17 @@
                 v13 = *(*(&v29 + 1) + 8 * i);
                 if (sub_10000A3B8(v13))
                 {
-                  v14 = [(NEKValidationWrapper *)self start];
+                  start = [(NEKValidationWrapper *)self start];
                   v15 = [(NEKValidationWrapper *)self end];
-                  v16 = [v26 predicateForMasterEventsWithOccurrencesWithStartDate:v14 endDate:v15 inCalendar:v13];
+                  v16 = [v26 predicateForMasterEventsWithOccurrencesWithStartDate:start endDate:v15 inCalendar:v13];
 
                   v17 = [v26 eventObjectIDsMatchingPredicate:v16];
                   -[NEKValidationWrapper setMasterCount:](self, "setMasterCount:", [v17 count] + -[NEKValidationWrapper masterCount](self, "masterCount"));
-                  v18 = [(NEKValidationWrapper *)self start];
+                  start2 = [(NEKValidationWrapper *)self start];
                   v19 = [(NEKValidationWrapper *)self end];
                   v37 = v13;
                   v20 = [NSArray arrayWithObjects:&v37 count:1];
-                  v21 = [v26 predicateForEventsWithStartDate:v18 endDate:v19 calendars:v20];
+                  v21 = [v26 predicateForEventsWithStartDate:start2 endDate:v19 calendars:v20];
 
                   v22 = [v26 eventObjectIDsMatchingPredicate:v21];
 
@@ -157,23 +157,23 @@
   [(NEKValidationWrapper *)self setShowAlert:CFPreferencesGetAppBooleanValue(@"cvAlertEnabled", @"com.apple.Bridge.CalendarSyncDebug", 0) != 0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(NEKValidationWrapper *)self start];
-    v7 = [v5 start];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    start = [(NEKValidationWrapper *)self start];
+    start2 = [v5 start];
+    if ([start isEqual:start2])
     {
       v8 = [(NEKValidationWrapper *)self end];
       v9 = [v5 end];
       if ([v8 isEqual:v9])
       {
-        v10 = [(NEKValidationWrapper *)self masterCount];
-        v11 = v10 == [v5 masterCount];
+        masterCount = [(NEKValidationWrapper *)self masterCount];
+        v11 = masterCount == [v5 masterCount];
       }
 
       else
@@ -204,8 +204,8 @@
   }
 
   v3 = qword_1000D1768;
-  v4 = [(NEKValidationWrapper *)self start];
-  v5 = [v3 stringFromDate:v4];
+  start = [(NEKValidationWrapper *)self start];
+  v5 = [v3 stringFromDate:start];
 
   v6 = qword_1000D1768;
   v7 = [(NEKValidationWrapper *)self end];
@@ -228,7 +228,7 @@
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Validation succeeded, %@.", &v7, 0xCu);
     }
 

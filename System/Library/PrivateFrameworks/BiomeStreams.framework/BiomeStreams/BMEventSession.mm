@@ -1,26 +1,26 @@
 @interface BMEventSession
-+ (id)openSessionsFromBookmark:(id)a3;
-+ (id)sessionPublisherWithStreamPublisher:(id)a3 startingBlock:(id)a4 endingBlock:(id)a5 sessionKeyBlock:(id)a6 options:(unint64_t)a7;
-- (BMEventSession)initWithCoder:(id)a3;
-- (BMEventSession)initWithKey:(id)a3 events:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)openSessionsFromBookmark:(id)bookmark;
++ (id)sessionPublisherWithStreamPublisher:(id)publisher startingBlock:(id)block endingBlock:(id)endingBlock sessionKeyBlock:(id)keyBlock options:(unint64_t)options;
+- (BMEventSession)initWithCoder:(id)coder;
+- (BMEventSession)initWithKey:(id)key events:(id)events;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMEventSession
 
-- (BMEventSession)initWithKey:(id)a3 events:(id)a4
+- (BMEventSession)initWithKey:(id)key events:(id)events
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  eventsCopy = events;
   v12.receiver = self;
   v12.super_class = BMEventSession;
   v9 = [(BMEventSession *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a3);
-    objc_storeStrong(&v10->_events, a4);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_events, events);
   }
 
   return v10;
@@ -35,13 +35,13 @@ BOOL __24__BMEventSession_events__block_invoke(uint64_t a1, void *a2)
   return v4 != v3;
 }
 
-+ (id)sessionPublisherWithStreamPublisher:(id)a3 startingBlock:(id)a4 endingBlock:(id)a5 sessionKeyBlock:(id)a6 options:(unint64_t)a7
++ (id)sessionPublisherWithStreamPublisher:(id)publisher startingBlock:(id)block endingBlock:(id)endingBlock sessionKeyBlock:(id)keyBlock options:(unint64_t)options
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
+  blockCopy = block;
+  endingBlockCopy = endingBlock;
+  keyBlockCopy = keyBlock;
+  publisherCopy = publisher;
   v15 = objc_opt_new();
   v29[0] = v15;
   v29[1] = MEMORY[0x1E695E0F0];
@@ -50,14 +50,14 @@ BOOL __24__BMEventSession_events__block_invoke(uint64_t a1, void *a2)
   v24[1] = 3221225472;
   v24[2] = __104__BMEventSession_sessionPublisherWithStreamPublisher_startingBlock_endingBlock_sessionKeyBlock_options___block_invoke;
   v24[3] = &unk_1E6E54230;
-  v25 = v13;
-  v26 = v11;
-  v27 = v12;
-  v28 = a7;
-  v17 = v12;
-  v18 = v11;
-  v19 = v13;
-  v20 = [v14 scanWithInitial:v16 nextPartialResult:v24];
+  v25 = keyBlockCopy;
+  v26 = blockCopy;
+  v27 = endingBlockCopy;
+  optionsCopy = options;
+  v17 = endingBlockCopy;
+  v18 = blockCopy;
+  v19 = keyBlockCopy;
+  v20 = [publisherCopy scanWithInitial:v16 nextPartialResult:v24];
 
   v21 = [v20 flatMapWithTransform:&__block_literal_global_11];
 
@@ -205,47 +205,47 @@ id __104__BMEventSession_sessionPublisherWithStreamPublisher_startingBlock_endin
   return v3;
 }
 
-+ (id)openSessionsFromBookmark:(id)a3
++ (id)openSessionsFromBookmark:(id)bookmark
 {
-  v3 = [a3 upstreams];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  upstreams = [bookmark upstreams];
+  v4 = [upstreams objectAtIndexedSubscript:0];
 
-  v5 = [v4 value];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  value = [v4 value];
+  v6 = [value objectAtIndexedSubscript:0];
 
-  v7 = [v6 allValues];
+  allValues = [v6 allValues];
 
-  return v7;
+  return allValues;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"key"];
-  [v5 encodeObject:self->_events forKey:@"events"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"key"];
+  [coderCopy encodeObject:self->_events forKey:@"events"];
 }
 
-- (BMEventSession)initWithCoder:(id)a3
+- (BMEventSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"key"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"key"];
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"events"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"events"];
 
   v10 = [(BMEventSession *)self initWithKey:v5 events:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4[2] isEqual:self->_key])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [equalCopy[2] isEqual:self->_key])
   {
-    v5 = [v4[1] isEqualToArray:self->_events];
+    v5 = [equalCopy[1] isEqualToArray:self->_events];
   }
 
   else

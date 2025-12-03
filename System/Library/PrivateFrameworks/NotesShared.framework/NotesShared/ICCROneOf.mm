@@ -1,14 +1,14 @@
 @interface ICCROneOf
 - (ICCROneOf)init;
-- (ICCROneOf)initWithICCRCoder:(id)a3;
+- (ICCROneOf)initWithICCRCoder:(id)coder;
 - (id)contents;
 - (id)timestampForNewItem;
-- (void)addItem:(id)a3;
-- (void)encodeWithICCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)setContents:(id)a3;
-- (void)setSet:(id)a3;
-- (void)setUpdated:(id)a3;
+- (void)addItem:(id)item;
+- (void)encodeWithICCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
+- (void)setContents:(id)contents;
+- (void)setSet:(id)set;
+- (void)setUpdated:(id)updated;
 @end
 
 @implementation ICCROneOf
@@ -20,19 +20,19 @@
   v2 = [(ICCROneOf *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     timestamps = v2->_timestamps;
-    v2->_timestamps = v3;
+    v2->_timestamps = strongToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (ICCROneOf)initWithICCRCoder:(id)a3
+- (ICCROneOf)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) != 12)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) != 12)
   {
     goto LABEL_6;
   }
@@ -48,13 +48,13 @@ LABEL_6:
     goto LABEL_23;
   }
 
-  v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   timestamps = v6->_timestamps;
-  v6->_timestamps = v7;
+  v6->_timestamps = strongToStrongObjectsMapTable;
 
-  if (*(v5 + 48) == 12)
+  if (*(currentDocumentObjectForDecoding + 48) == 12)
   {
-    v10 = *(v5 + 40);
+    v10 = *(currentDocumentObjectForDecoding + 40);
   }
 
   else
@@ -78,7 +78,7 @@ LABEL_6:
           v19 = *(CRDT::OneOf_Element::default_instance(v12) + 40);
         }
 
-        v17 = [v4 decodeObjectForProtobufObjectID:v19];
+        v17 = [coderCopy decodeObjectForProtobufObjectID:v19];
         if ((*(v15 + 32) & 2) != 0)
         {
 LABEL_16:
@@ -90,7 +90,7 @@ LABEL_16:
             v22 = *(CRDT::OneOf_Element::default_instance(v20) + 48);
           }
 
-          v23 = [(ICCRTimestamp *)v21 initWithProtobufTimestamp:v22 decoder:v4];
+          v23 = [(ICCRTimestamp *)v21 initWithProtobufTimestamp:v22 decoder:coderCopy];
           v18 = v23;
           if (v17 && v23)
           {
@@ -121,10 +121,10 @@ LABEL_21:
   v25[2] = __31__ICCROneOf_initWithICCRCoder___block_invoke;
   v25[3] = &unk_278197580;
   self = v13;
-  v26 = self;
+  selfCopy = self;
   v11 = v6;
   v27 = v11;
-  [v4 addDecoderCompletionHandler:v25 dependency:0 for:v11];
+  [coderCopy addDecoderCompletionHandler:v25 dependency:0 for:v11];
 
 LABEL_23:
   return v11;
@@ -146,26 +146,26 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
   }
 }
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForEncoding];
-  v6 = v5;
-  if (*(v5 + 48) != 12)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v6 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 12)
   {
-    CRDT::Document_DocObject::clear_contents(v5);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v6 + 48) = 12;
     operator new();
   }
 
-  v7 = *(v5 + 40);
+  v7 = *(currentDocumentObjectForEncoding + 40);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [(ICCROneOf *)self timestamps];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  timestamps = [(ICCROneOf *)self timestamps];
+  v9 = [timestamps countByEnumeratingWithState:&v22 objects:v26 count:16];
   v10 = v9;
   if (v9)
   {
@@ -177,7 +177,7 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(timestamps);
         }
 
         v13 = *(*(&v22 + 1) + 8 * v12);
@@ -203,9 +203,9 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
           operator new();
         }
 
-        [v4 encodeObject:v13 forObjectID:v18];
-        v19 = [(ICCROneOf *)self timestamps];
-        v20 = [v19 objectForKey:v13];
+        [coderCopy encodeObject:v13 forObjectID:v18];
+        timestamps2 = [(ICCROneOf *)self timestamps];
+        v20 = [timestamps2 objectForKey:v13];
 
         *(v17 + 32) |= 2u;
         v21 = *(v17 + 48);
@@ -214,13 +214,13 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
           operator new();
         }
 
-        [v20 encodeIntoProtobufTimestamp:v21 coder:v4];
+        [v20 encodeIntoProtobufTimestamp:v21 coder:coderCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [timestamps countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
@@ -250,8 +250,8 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [(ICCROneOf *)self timestamps];
-        v10 = [v9 objectForKey:v8];
+        timestamps = [(ICCROneOf *)self timestamps];
+        v10 = [timestamps objectForKey:v8];
 
         if (!v4 || [v4 compare:v10] == 1)
         {
@@ -269,34 +269,34 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
 
   v12 = [ICCRTimestamp alloc];
   v13 = [(ICCROneOf *)self set];
-  v14 = [v13 document];
-  v15 = [v14 replica];
-  v16 = -[ICCRTimestamp initWithReplica:andCounter:](v12, "initWithReplica:andCounter:", v15, [v4 counter] - 1);
+  document = [v13 document];
+  replica = [document replica];
+  v16 = -[ICCRTimestamp initWithReplica:andCounter:](v12, "initWithReplica:andCounter:", replica, [v4 counter] - 1);
 
   return v16;
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   set = self->_set;
-  v7 = v5;
-  if (set != v5)
+  v7 = setCopy;
+  if (set != setCopy)
   {
     [(ICCRSet *)set removeObserver:self];
-    objc_storeStrong(&self->_set, a3);
+    objc_storeStrong(&self->_set, set);
     [(ICCRSet *)v7 addObserver:self];
   }
 }
 
-- (void)setUpdated:(id)a3
+- (void)setUpdated:(id)updated
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ICCROneOf *)self set:a3];
+  v4 = [(ICCROneOf *)self set:updated];
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -312,14 +312,14 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(ICCROneOf *)self timestamps];
-        v10 = [v9 objectForKey:v8];
+        timestamps = [(ICCROneOf *)self timestamps];
+        v10 = [timestamps objectForKey:v8];
 
         if (!v10)
         {
-          v11 = [(ICCROneOf *)self timestamps];
-          v12 = [(ICCROneOf *)self timestampForNewItem];
-          [v11 setObject:v12 forKey:v8];
+          timestamps2 = [(ICCROneOf *)self timestamps];
+          timestampForNewItem = [(ICCROneOf *)self timestampForNewItem];
+          [timestamps2 setObject:timestampForNewItem forKey:v8];
         }
 
         ++v7;
@@ -333,12 +333,12 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v6 = a3;
-  v4 = [(ICCROneOf *)self timestamps];
-  v5 = [(ICCROneOf *)self timestampForNewItem];
-  [v4 setObject:v5 forKey:v6];
+  itemCopy = item;
+  timestamps = [(ICCROneOf *)self timestamps];
+  timestampForNewItem = [(ICCROneOf *)self timestampForNewItem];
+  [timestamps setObject:timestampForNewItem forKey:itemCopy];
 }
 
 - (id)contents
@@ -365,8 +365,8 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(ICCROneOf *)self timestamps];
-        v11 = [v10 objectForKey:v9];
+        timestamps = [(ICCROneOf *)self timestamps];
+        v11 = [timestamps objectForKey:v9];
 
         if (!v5 || [v5 compare:v11] == -1)
         {
@@ -387,48 +387,48 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v22 = a3;
+  contentsCopy = contents;
   v4 = [(ICCROneOf *)self set];
-  v5 = [v4 containsObject:v22];
+  v5 = [v4 containsObject:contentsCopy];
 
   if (v5)
   {
-    v6 = [(ICCROneOf *)self timestamps];
-    v7 = [(ICCROneOf *)self contents];
-    v8 = [v6 objectForKey:v7];
+    timestamps = [(ICCROneOf *)self timestamps];
+    contents = [(ICCROneOf *)self contents];
+    v8 = [timestamps objectForKey:contents];
 
     v9 = [ICCRTimestamp alloc];
     v10 = [(ICCROneOf *)self set];
-    v11 = [v10 document];
-    v12 = [v11 replica];
-    v13 = -[ICCRTimestamp initWithReplica:andCounter:](v9, "initWithReplica:andCounter:", v12, [v8 counter] + 1);
+    document = [v10 document];
+    replica = [document replica];
+    v13 = -[ICCRTimestamp initWithReplica:andCounter:](v9, "initWithReplica:andCounter:", replica, [v8 counter] + 1);
 
-    v14 = [(ICCROneOf *)self timestamps];
-    v15 = [v14 objectForKey:v22];
+    timestamps2 = [(ICCROneOf *)self timestamps];
+    v15 = [timestamps2 objectForKey:contentsCopy];
     [v15 mergeWith:v13];
 
-    v16 = [(ICCRTimestamp *)v13 counter];
+    counter = [(ICCRTimestamp *)v13 counter];
     v17 = [(ICCROneOf *)self set];
-    v18 = [v17 document];
-    v19 = [v18 unserializedReplicaClock];
+    document2 = [v17 document];
+    unserializedReplicaClock = [document2 unserializedReplicaClock];
 
-    if (v16 <= v19)
+    if (counter <= unserializedReplicaClock)
     {
-      v16 = v19;
+      counter = unserializedReplicaClock;
     }
 
     v20 = [(ICCROneOf *)self set];
-    v21 = [v20 document];
-    [v21 setUnserializedReplicaClock:v16];
+    document3 = [v20 document];
+    [document3 setUnserializedReplicaClock:counter];
   }
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -440,8 +440,8 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 timestamps];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  timestamps = [withCopy timestamps];
+  v6 = [timestamps countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -451,15 +451,15 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(timestamps);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v4 timestamps];
-        v11 = [v10 objectForKey:v9];
+        timestamps2 = [withCopy timestamps];
+        v11 = [timestamps2 objectForKey:v9];
 
-        v12 = [(ICCROneOf *)self timestamps];
-        v13 = [v12 objectForKey:v9];
+        timestamps3 = [(ICCROneOf *)self timestamps];
+        v13 = [timestamps3 objectForKey:v9];
 
         if (v13)
         {
@@ -468,12 +468,12 @@ void __31__ICCROneOf_initWithICCRCoder___block_invoke(uint64_t a1)
 
         else
         {
-          v14 = [(ICCROneOf *)self timestamps];
-          [v14 setObject:v11 forKey:v9];
+          timestamps4 = [(ICCROneOf *)self timestamps];
+          [timestamps4 setObject:v11 forKey:v9];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [timestamps countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);

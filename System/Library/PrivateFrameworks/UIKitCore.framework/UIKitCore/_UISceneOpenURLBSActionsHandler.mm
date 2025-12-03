@@ -1,63 +1,63 @@
 @interface _UISceneOpenURLBSActionsHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneOpenURLBSActionsHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  actionsCopy = actions;
+  iSceneCopy = iScene;
   v10 = UIApp;
-  v11 = a6;
-  v12 = [v10 _appAdoptsUISceneLifecycle];
-  v13 = [v9 session];
+  contextCopy = context;
+  _appAdoptsUISceneLifecycle = [v10 _appAdoptsUISceneLifecycle];
+  session = [iSceneCopy session];
   v19 = 0;
-  v14 = _UISceneOpenURLContextsFromActionsSessionAndTransitionContext(v8, v13, v11, &v19);
+  v14 = _UISceneOpenURLContextsFromActionsSessionAndTransitionContext(actionsCopy, session, contextCopy, &v19);
 
   v15 = v19;
   if (v14)
   {
-    _UISceneSendOpenURLActionCallbackForScene(v14, v9);
+    _UISceneSendOpenURLActionCallbackForScene(v14, iSceneCopy);
   }
 
-  if (v12)
+  if (_appAdoptsUISceneLifecycle)
   {
-    v16 = [MEMORY[0x1E695DFA8] setWithSet:v8];
+    v16 = [MEMORY[0x1E695DFA8] setWithSet:actionsCopy];
     [v16 minusSet:v15];
     v17 = [v16 copy];
   }
 
   else
   {
-    v17 = v8;
+    v17 = actionsCopy;
   }
 
   return v17;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v24 = a4;
-  v9 = a5;
-  v10 = a6;
-  if ([v10 isUISubclass])
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
+  if ([contextCopy isUISubclass])
   {
-    v11 = [v10 payload];
+    payload = [contextCopy payload];
   }
 
   else
   {
-    v11 = 0;
+    payload = 0;
   }
 
   v41 = 0;
-  v25 = v9;
-  v26 = v10;
-  v28 = _UISceneOpenURLContextsFromActionsSessionAndTransitionContext(v29, v9, v10, &v41);
+  v25 = sessionCopy;
+  v26 = contextCopy;
+  v28 = _UISceneOpenURLContextsFromActionsSessionAndTransitionContext(actionsCopy, sessionCopy, contextCopy, &v41);
   v27 = v41;
   v35 = 0;
   v36 = &v35;
@@ -95,7 +95,7 @@
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v11 objectForKey:{v17, v24, v25, v26}];
+        v18 = [payload objectForKey:{v17, sceneCopy, v25, v26}];
         if (v18)
         {
           v19 = [MEMORY[0x1E695DFD8] setWithObject:v18];
@@ -112,7 +112,7 @@
 
   v21 = objc_alloc_init(_UISceneConnectionOptionsContext);
   [(_UISceneConnectionOptionsContext *)v21 setLaunchOptionsDictionary:v36[5]];
-  v22 = [MEMORY[0x1E695DFA8] setWithSet:v29];
+  v22 = [MEMORY[0x1E695DFA8] setWithSet:actionsCopy];
   [v22 minusSet:v27];
   [(_UISceneConnectionOptionsContext *)v21 setUnprocessedActions:v22];
 

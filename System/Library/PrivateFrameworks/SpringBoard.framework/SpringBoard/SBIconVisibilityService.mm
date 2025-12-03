@@ -1,7 +1,7 @@
 @interface SBIconVisibilityService
-- (SBIconVisibilityService)initWithIconModel:(id)a3;
+- (SBIconVisibilityService)initWithIconModel:(id)model;
 - (id)iconStateDisplayIdentifiers;
-- (void)_visibleIdentifiersChanged:(id)a3;
+- (void)_visibleIdentifiersChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -16,9 +16,9 @@
   return v3;
 }
 
-- (SBIconVisibilityService)initWithIconModel:(id)a3
+- (SBIconVisibilityService)initWithIconModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = SBIconVisibilityService;
   v6 = [(SBIconVisibilityService *)&v11 init];
@@ -28,13 +28,13 @@
     iconStateDisplayIdentifiersLock = v6->_iconStateDisplayIdentifiersLock;
     v6->_iconStateDisplayIdentifiersLock = v7;
 
-    objc_storeStrong(&v6->_iconModel, a3);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
-    [v9 addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D666F8] object:v5];
-    [v9 addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D666E8] object:v5];
-    [v9 addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D66708] object:v5];
-    [v9 addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D666F0] object:v5];
+    objc_storeStrong(&v6->_iconModel, model);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D666F8] object:modelCopy];
+    [defaultCenter addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D666E8] object:modelCopy];
+    [defaultCenter addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D66708] object:modelCopy];
+    [defaultCenter addObserver:v6 selector:sel__visibleIdentifiersChanged_ name:*MEMORY[0x277D666F0] object:modelCopy];
     [(SBIconVisibilityService *)v6 _visibleIdentifiersChanged:0];
   }
 
@@ -43,24 +43,24 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBIconVisibilityService;
   [(SBIconVisibilityService *)&v4 dealloc];
 }
 
-- (void)_visibleIdentifiersChanged:(id)a3
+- (void)_visibleIdentifiersChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__SBIconVisibilityService__visibleIdentifiersChanged___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

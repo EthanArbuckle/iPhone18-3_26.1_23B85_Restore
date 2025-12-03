@@ -1,10 +1,10 @@
 @interface CHDiffusionTextSynthesizerLatin
 + (id)diffusionModelHashes;
 - (CHDiffusionTextSynthesizerLatin)init;
-- (id)runPipeline:(id)a3 options:(id)a4 shouldCancel:(id)a5 mode:(int)a6;
-- (id)runStyleEmbedding:(id)a3 drawings:(id)a4 shouldCancel:(id)a5;
+- (id)runPipeline:(id)pipeline options:(id)options shouldCancel:(id)cancel mode:(int)mode;
+- (id)runStyleEmbedding:(id)embedding drawings:(id)drawings shouldCancel:(id)cancel;
 - (id)supportedCharactersForPersonalizedSynthesis;
-- (int64_t)canPredictStyleForTranscription:(id)a3;
+- (int64_t)canPredictStyleForTranscription:(id)transcription;
 - (shared_ptr<CoreHandwriting::synthesis::CHDiffusionPipelineContext>)context;
 @end
 
@@ -22,13 +22,13 @@
   return 0;
 }
 
-- (id)runPipeline:(id)a3 options:(id)a4 shouldCancel:(id)a5 mode:(int)a6
+- (id)runPipeline:(id)pipeline options:(id)options shouldCancel:(id)cancel mode:(int)mode
 {
-  v6 = *&a6;
+  v6 = *&mode;
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pipelineCopy = pipeline;
+  optionsCopy = options;
+  cancelCopy = cancel;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -37,11 +37,11 @@
   v13 = qword_1EA84DC98;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = objc_msgSend_styleContents(v11, v14, v15, v16, v17, v18);
+    v19 = objc_msgSend_styleContents(optionsCopy, v14, v15, v16, v17, v18);
     v24 = objc_msgSend_componentsJoinedByString_(v19, v20, &stru_1EF1C0318, v21, v22, v23);
-    v30 = objc_msgSend_styleDrawings(v11, v25, v26, v27, v28, v29);
+    v30 = objc_msgSend_styleDrawings(optionsCopy, v25, v26, v27, v28, v29);
     v38 = 138740483;
-    v39 = v10;
+    v39 = pipelineCopy;
     v40 = 2117;
     v41 = v24;
     v42 = 2048;
@@ -49,14 +49,14 @@
     _os_log_impl(&dword_18366B000, v13, OS_LOG_TYPE_DEFAULT, "CHDiffusionTextSynthesizerLatin::runPipeline contents: %{sensitive}@, styleContent: %{sensitive}@, numStyleDrawings: %lu", &v38, 0x20u);
   }
 
-  v36 = sub_183791730(self->_pipeline.__ptr_, v10, v11, v12, v6);
+  v36 = sub_183791730(self->_pipeline.__ptr_, pipelineCopy, optionsCopy, cancelCopy, v6);
 
   return v36;
 }
 
-- (id)runStyleEmbedding:(id)a3 drawings:(id)a4 shouldCancel:(id)a5
+- (id)runStyleEmbedding:(id)embedding drawings:(id)drawings shouldCancel:(id)cancel
 {
-  v5 = sub_183791BAC(self->_pipeline.__ptr_, a3, a4, a5);
+  v5 = sub_183791BAC(self->_pipeline.__ptr_, embedding, drawings, cancel);
 
   return v5;
 }
@@ -85,10 +85,10 @@
   return v3;
 }
 
-- (int64_t)canPredictStyleForTranscription:(id)a3
+- (int64_t)canPredictStyleForTranscription:(id)transcription
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6, v7, v8, v9) && (ptr = self->_pipeline.__ptr_) != 0 && ((*(*ptr + 32))(ptr, v4) & 1) != 0)
+  transcriptionCopy = transcription;
+  if (objc_msgSend_length(transcriptionCopy, v5, v6, v7, v8, v9) && (ptr = self->_pipeline.__ptr_) != 0 && ((*(*ptr + 32))(ptr, transcriptionCopy) & 1) != 0)
   {
 
     return 1;

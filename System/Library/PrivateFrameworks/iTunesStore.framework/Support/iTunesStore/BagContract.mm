@@ -3,7 +3,7 @@
 - (AMSBagValue)appleMusicDeviceOfferDeepLink;
 - (AMSBagValue)iCloudDeviceOfferDeepLink;
 - (AMSBagValue)trustedDomains;
-- (id)_bagWithError:(id *)a3;
+- (id)_bagWithError:(id *)error;
 @end
 
 @implementation BagContract
@@ -92,7 +92,7 @@
   return v5;
 }
 
-- (id)_bagWithError:(id *)a3
+- (id)_bagWithError:(id *)error
 {
   v4 = [ISLoadURLBagOperation alloc];
   v5 = [SSURLBagContext contextWithBagType:0];
@@ -110,14 +110,14 @@
 
   v9 = dispatch_time(0, 60000000000);
   v10 = dispatch_semaphore_wait(v7, v9);
-  if (a3 && v10)
+  if (error && v10)
   {
-    *a3 = AMSError();
+    *error = AMSError();
   }
 
-  v11 = [v6 URLBag];
+  uRLBag = [v6 URLBag];
 
-  return v11;
+  return uRLBag;
 }
 
 @end

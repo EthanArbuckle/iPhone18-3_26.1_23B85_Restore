@@ -1,14 +1,14 @@
 @interface SBMoveFloatingApplicationGestureWorkspaceTransaction
 - (id)_transitionRequestForPreemptiveFloatingApplicationActivation;
 - (void)_begin;
-- (void)_beginWithGesture:(id)a3;
+- (void)_beginWithGesture:(id)gesture;
 - (void)_didComplete;
-- (void)_finishWithGesture:(id)a3;
-- (void)_performBlockWithLiveContentOverlayUpdatesSuspended:(id)a3;
+- (void)_finishWithGesture:(id)gesture;
+- (void)_performBlockWithLiveContentOverlayUpdatesSuspended:(id)suspended;
 - (void)_startSuppressingKeyboardForFloatingApplication;
 - (void)_stopSuppressingKeyboard;
-- (void)_tryPreemptiveFloatingApplicationActivationIfNecessaryWithGesture:(id)a3;
-- (void)_updateWithGesture:(id)a3;
+- (void)_tryPreemptiveFloatingApplicationActivationIfNecessaryWithGesture:(id)gesture;
+- (void)_updateWithGesture:(id)gesture;
 @end
 
 @implementation SBMoveFloatingApplicationGestureWorkspaceTransaction
@@ -19,17 +19,17 @@
   v26.receiver = self;
   v26.super_class = SBMoveFloatingApplicationGestureWorkspaceTransaction;
   [(SBFluidSwitcherGestureWorkspaceTransaction *)&v26 _begin];
-  v3 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v4 = [v3 layoutContext];
-  v5 = [v4 layoutState];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  layoutContext = [switcherViewController layoutContext];
+  layoutState = [layoutContext layoutState];
 
-  v6 = [v5 layoutContainsRole:3];
+  v6 = [layoutState layoutContainsRole:3];
   self->_tryPreemptiveFloatingApplicationActivation = v6 ^ 1;
   self->_didAddActivateFloatingApplicationTransaction = 0;
-  v7 = [v3 dataSource];
+  dataSource = [switcherViewController dataSource];
   if (objc_opt_respondsToSelector())
   {
-    [v7 switcherContentController:v3 frameForFloatingAppLayoutInInterfaceOrientation:objc_msgSend(v5 floatingConfiguration:{"interfaceOrientation"), objc_msgSend(v5, "floatingConfiguration")}];
+    [dataSource switcherContentController:switcherViewController frameForFloatingAppLayoutInInterfaceOrientation:objc_msgSend(layoutState floatingConfiguration:{"interfaceOrientation"), objc_msgSend(layoutState, "floatingConfiguration")}];
   }
 
   else
@@ -51,8 +51,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v5 elements];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    elements = [layoutState elements];
+    v13 = [elements countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -64,31 +64,31 @@
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(elements);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * v16) workspaceEntity];
-          v18 = [v17 deviceApplicationSceneEntity];
+          workspaceEntity = [*(*(&v22 + 1) + 8 * v16) workspaceEntity];
+          deviceApplicationSceneEntity = [workspaceEntity deviceApplicationSceneEntity];
 
-          if (v18)
+          if (deviceApplicationSceneEntity)
           {
-            v19 = [v18 sceneHandle];
-            [v19 setKeyboardContextMaskStyle:2];
+            sceneHandle = [deviceApplicationSceneEntity sceneHandle];
+            [sceneHandle setKeyboardContextMaskStyle:2];
           }
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v14 = [elements countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v14);
     }
 
-    v20 = [(SBWorkspaceTransaction *)self windowScene];
-    v21 = [v20 medusaHostedKeyboardWindowController];
-    [v21 updateMedusaHostedKeyboardWindow];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    medusaHostedKeyboardWindowController = [windowScene medusaHostedKeyboardWindowController];
+    [medusaHostedKeyboardWindowController updateMedusaHostedKeyboardWindow];
   }
 }
 
@@ -100,52 +100,52 @@
   [(SBMoveFloatingApplicationGestureWorkspaceTransaction *)self _stopSuppressingKeyboard];
 }
 
-- (void)_beginWithGesture:(id)a3
+- (void)_beginWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v6 = [v5 appLayouts];
-  v7 = [v6 bs_firstObjectPassingTest:&__block_literal_global_441];
+  gestureCopy = gesture;
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  appLayouts = [switcherViewController appLayouts];
+  v7 = [appLayouts bs_firstObjectPassingTest:&__block_literal_global_441];
 
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self setSelectedAppLayout:v7];
   v8.receiver = self;
   v8.super_class = SBMoveFloatingApplicationGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v8 _beginWithGesture:v4];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v8 _beginWithGesture:gestureCopy];
 }
 
-- (void)_updateWithGesture:(id)a3
+- (void)_updateWithGesture:(id)gesture
 {
-  v4 = a3;
-  [(SBMoveFloatingApplicationGestureWorkspaceTransaction *)self _tryPreemptiveFloatingApplicationActivationIfNecessaryWithGesture:v4];
+  gestureCopy = gesture;
+  [(SBMoveFloatingApplicationGestureWorkspaceTransaction *)self _tryPreemptiveFloatingApplicationActivationIfNecessaryWithGesture:gestureCopy];
   v5.receiver = self;
   v5.super_class = SBMoveFloatingApplicationGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _updateWithGesture:v4];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _updateWithGesture:gestureCopy];
 }
 
-- (void)_finishWithGesture:(id)a3
+- (void)_finishWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-  v6 = v5;
-  if (self->_didAddActivateFloatingApplicationTransaction && [v5 isTransitioning])
+  gestureCopy = gesture;
+  layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+  v6 = layoutStateTransitionCoordinator;
+  if (self->_didAddActivateFloatingApplicationTransaction && [layoutStateTransitionCoordinator isTransitioning])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __75__SBMoveFloatingApplicationGestureWorkspaceTransaction__finishWithGesture___block_invoke;
     v11[3] = &unk_2783A92D8;
     v12 = v6;
-    v13 = self;
+    selfCopy = self;
     [(SBMoveFloatingApplicationGestureWorkspaceTransaction *)self _performBlockWithLiveContentOverlayUpdatesSuspended:v11];
   }
 
   v10.receiver = self;
   v10.super_class = SBMoveFloatingApplicationGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v10 _finishWithGesture:v4];
-  v7 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v8 = [v7 layoutContext];
-  v9 = [v8 layoutState];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v10 _finishWithGesture:gestureCopy];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  layoutContext = [switcherViewController layoutContext];
+  layoutState = [layoutContext layoutState];
 
-  if (([v9 layoutContainsRole:3] & 1) == 0)
+  if (([layoutState layoutContainsRole:3] & 1) == 0)
   {
     [(SBMoveFloatingApplicationGestureWorkspaceTransaction *)self _startSuppressingKeyboardForFloatingApplication];
   }
@@ -167,41 +167,41 @@ void *__75__SBMoveFloatingApplicationGestureWorkspaceTransaction__finishWithGest
   return result;
 }
 
-- (void)_tryPreemptiveFloatingApplicationActivationIfNecessaryWithGesture:(id)a3
+- (void)_tryPreemptiveFloatingApplicationActivationIfNecessaryWithGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (self->_tryPreemptiveFloatingApplicationActivation && !self->_didAddActivateFloatingApplicationTransaction)
   {
-    v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+    selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
 
-    if (v5)
+    if (selectedAppLayout)
     {
-      v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-      v7 = [v6 layoutContext];
-      v8 = [v7 layoutState];
+      switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+      layoutContext = [switcherViewController layoutContext];
+      layoutState = [layoutContext layoutState];
 
-      v9 = [v6 view];
-      [v4 translationInView:v9];
+      view = [switcherViewController view];
+      [gestureCopy translationInView:view];
       v11 = v10;
 
-      [v8 interfaceOrientation];
+      [layoutState interfaceOrientation];
       SBLayoutDefaultSideLayoutElementWidth();
       if (fabs(v11) > v12 * 0.3)
       {
-        v13 = [(SBMoveFloatingApplicationGestureWorkspaceTransaction *)self _transitionRequestForPreemptiveFloatingApplicationActivation];
-        [v13 finalize];
-        objc_storeStrong(&self->super.super.super.super._transitionRequest, v13);
-        v14 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-        [v14 beginTransitionForWorkspaceTransaction:self];
+        _transitionRequestForPreemptiveFloatingApplicationActivation = [(SBMoveFloatingApplicationGestureWorkspaceTransaction *)self _transitionRequestForPreemptiveFloatingApplicationActivation];
+        [_transitionRequestForPreemptiveFloatingApplicationActivation finalize];
+        objc_storeStrong(&self->super.super.super.super._transitionRequest, _transitionRequestForPreemptiveFloatingApplicationActivation);
+        layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+        [layoutStateTransitionCoordinator beginTransitionForWorkspaceTransaction:self];
 
-        v15 = [v13 applicationContext];
-        v16 = [v15 layoutState];
-        v17 = [v16 elementWithRole:3];
+        applicationContext = [_transitionRequestForPreemptiveFloatingApplicationActivation applicationContext];
+        layoutState2 = [applicationContext layoutState];
+        v17 = [layoutState2 elementWithRole:3];
 
-        v18 = [v17 workspaceEntity];
-        v19 = [v18 applicationSceneEntity];
+        workspaceEntity = [v17 workspaceEntity];
+        applicationSceneEntity = [workspaceEntity applicationSceneEntity];
 
-        v20 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:v19 transitionRequest:v13];
+        v20 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:applicationSceneEntity transitionRequest:_transitionRequestForPreemptiveFloatingApplicationActivation];
         activateFloatingApplicationTransaction = self->_activateFloatingApplicationTransaction;
         self->_activateFloatingApplicationTransaction = v20;
 
@@ -238,19 +238,19 @@ void __122__SBMoveFloatingApplicationGestureWorkspaceTransaction__tryPreemptiveF
 
 - (id)_transitionRequestForPreemptiveFloatingApplicationActivation
 {
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 workspace];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
 
-  v5 = [v4 createRequestWithOptions:0];
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-  v7 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:v6];
+  v5 = [workspace createRequestWithOptions:0];
+  selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+  v7 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:selectedAppLayout];
 
-  v8 = [(SBWorkspaceTransaction *)self windowScene];
-  v9 = [v8 switcherController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  [v9 configureRequest:v5 forSwitcherTransitionRequest:v7 withEventLabel:@"PreemptiveFloatingApplicationActivation"];
-  v10 = [(SBWorkspaceTransaction *)self transitionRequest];
-  [v5 setSource:{objc_msgSend(v10, "source")}];
+  [switcherController configureRequest:v5 forSwitcherTransitionRequest:v7 withEventLabel:@"PreemptiveFloatingApplicationActivation"];
+  transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+  [v5 setSource:{objc_msgSend(transitionRequest2, "source")}];
 
   [v5 modifyApplicationContext:&__block_literal_global_27_3];
 
@@ -263,15 +263,15 @@ void __116__SBMoveFloatingApplicationGestureWorkspaceTransaction__transitionRequ
   [v2 bs_each:&__block_literal_global_30_6];
 }
 
-- (void)_performBlockWithLiveContentOverlayUpdatesSuspended:(id)a3
+- (void)_performBlockWithLiveContentOverlayUpdatesSuspended:(id)suspended
 {
-  v4 = a3;
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v5 = [v6 areLiveContentOverlayUpdatesSuspended];
-  [v6 setLiveContentOverlayUpdatesSuspended:1];
-  v4[2](v4);
+  suspendedCopy = suspended;
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  areLiveContentOverlayUpdatesSuspended = [switcherViewController areLiveContentOverlayUpdatesSuspended];
+  [switcherViewController setLiveContentOverlayUpdatesSuspended:1];
+  suspendedCopy[2](suspendedCopy);
 
-  [v6 setLiveContentOverlayUpdatesSuspended:v5];
+  [switcherViewController setLiveContentOverlayUpdatesSuspended:areLiveContentOverlayUpdatesSuspended];
 }
 
 - (void)_startSuppressingKeyboardForFloatingApplication

@@ -1,8 +1,8 @@
 @interface WFPurgeableImage
 - (CGImage)copyImage;
-- (WFPurgeableImage)initWithCGImage:(CGImage *)a3;
+- (WFPurgeableImage)initWithCGImage:(CGImage *)image;
 - (id)description;
-- (void)accessImageContext:(id)a3;
+- (void)accessImageContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -44,9 +44,9 @@
   return v12;
 }
 
-- (void)accessImageContext:(id)a3
+- (void)accessImageContext:(id)context
 {
-  v11 = a3;
+  contextCopy = context;
   if (self)
   {
     bytes = self->_bytes;
@@ -77,14 +77,14 @@ LABEL_5:
     v10 = CGBitmapContextCreate([(NSPurgeableData *)v9 mutableBytes], self->_size.width, self->_size.height, self->_bitsPerComponent, self->_bytesPerRow, self->_colorSpace, self->_bitmapInfo);
 
     CGContextTranslateCTM(v10, 0.0, -self->_size.height);
-    v11[2](v11, v10);
+    contextCopy[2](contextCopy, v10);
     CGContextRelease(v10);
     [(NSPurgeableData *)self->_bytes endContentAccess];
   }
 
   else
   {
-    v11[2](v11, 0);
+    contextCopy[2](contextCopy, 0);
   }
 }
 
@@ -135,18 +135,18 @@ CGImageRef __29__WFPurgeableImage_copyImage__block_invoke(CGImageRef result, CGC
   [(WFPurgeableImage *)&v3 dealloc];
 }
 
-- (WFPurgeableImage)initWithCGImage:(CGImage *)a3
+- (WFPurgeableImage)initWithCGImage:(CGImage *)image
 {
-  if (!a3)
+  if (!image)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"image"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"image"}];
   }
 
   v20.receiver = self;
   v20.super_class = WFPurgeableImage;
   v5 = [(WFPurgeableImage *)&v20 init];
-  if (!v5 || ((Width = CGImageGetWidth(a3), Height = CGImageGetHeight(a3), ColorSpace = CGImageGetColorSpace(a3), BitmapInfo = CGImageGetBitmapInfo(a3), BytesPerRow = CGImageGetBytesPerRow(a3), BitsPerComponent = CGImageGetBitsPerComponent(a3), *MEMORY[0x1E695F060] == Width) ? (v12 = *(MEMORY[0x1E695F060] + 8) == Height) : (v12 = 0), v12))
+  if (!v5 || ((Width = CGImageGetWidth(image), Height = CGImageGetHeight(image), ColorSpace = CGImageGetColorSpace(image), BitmapInfo = CGImageGetBitmapInfo(image), BytesPerRow = CGImageGetBytesPerRow(image), BitsPerComponent = CGImageGetBitsPerComponent(image), *MEMORY[0x1E695F060] == Width) ? (v12 = *(MEMORY[0x1E695F060] + 8) == Height) : (v12 = 0), v12))
   {
     v14 = 0;
   }
@@ -170,7 +170,7 @@ CGImageRef __29__WFPurgeableImage_copyImage__block_invoke(CGImageRef result, CGC
       v19[3] = &__block_descriptor_56_e20_v16__0__CGContext__8l;
       *&v19[4] = Width;
       *&v19[5] = Height;
-      v19[6] = a3;
+      v19[6] = image;
       [(WFPurgeableImage *)v5 accessImageContext:v19];
       v14 = v5;
     }

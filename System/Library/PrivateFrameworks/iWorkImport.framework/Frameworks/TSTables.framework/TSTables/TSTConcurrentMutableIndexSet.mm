@@ -1,9 +1,9 @@
 @interface TSTConcurrentMutableIndexSet
-- (BOOL)containsIndex:(unint64_t)a3;
+- (BOOL)containsIndex:(unint64_t)index;
 - (TSTConcurrentMutableIndexSet)init;
-- (void)addIndex:(unint64_t)a3;
+- (void)addIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)enumerateIndexesUsingBlock:(id)a3;
+- (void)enumerateIndexesUsingBlock:(id)block;
 - (void)removeAllIndexes;
 @end
 
@@ -34,35 +34,35 @@
   [(TSTConcurrentMutableIndexSet *)&v3 dealloc];
 }
 
-- (void)enumerateIndexesUsingBlock:(id)a3
+- (void)enumerateIndexesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   pthread_rwlock_rdlock(&self->_rwLock);
-  objc_msgSend_enumerateIndexesUsingBlock_(self->_mutableIndexSet, v5, v4, v6, v7);
+  objc_msgSend_enumerateIndexesUsingBlock_(self->_mutableIndexSet, v5, blockCopy, v6, v7);
 
   pthread_rwlock_unlock(&self->_rwLock);
 }
 
-- (void)addIndex:(unint64_t)a3
+- (void)addIndex:(unint64_t)index
 {
   pthread_rwlock_rdlock(&self->_rwLock);
-  v8 = objc_msgSend_containsIndex_(self->_mutableIndexSet, v5, a3, v6, v7);
+  v8 = objc_msgSend_containsIndex_(self->_mutableIndexSet, v5, index, v6, v7);
   pthread_rwlock_unlock(&self->_rwLock);
   if ((v8 & 1) == 0)
   {
     pthread_rwlock_wrlock(&self->_rwLock);
-    objc_msgSend_addIndex_(self->_mutableIndexSet, v9, a3, v10, v11);
+    objc_msgSend_addIndex_(self->_mutableIndexSet, v9, index, v10, v11);
 
     pthread_rwlock_unlock(&self->_rwLock);
   }
 }
 
-- (BOOL)containsIndex:(unint64_t)a3
+- (BOOL)containsIndex:(unint64_t)index
 {
   pthread_rwlock_rdlock(&self->_rwLock);
-  LOBYTE(a3) = objc_msgSend_containsIndex_(self->_mutableIndexSet, v5, a3, v6, v7);
+  LOBYTE(index) = objc_msgSend_containsIndex_(self->_mutableIndexSet, v5, index, v6, v7);
   pthread_rwlock_unlock(&self->_rwLock);
-  return a3;
+  return index;
 }
 
 - (void)removeAllIndexes

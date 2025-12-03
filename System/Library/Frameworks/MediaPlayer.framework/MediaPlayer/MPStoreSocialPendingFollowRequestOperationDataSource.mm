@@ -1,5 +1,5 @@
 @interface MPStoreSocialPendingFollowRequestOperationDataSource
-- (MPStoreSocialPendingFollowRequestOperationDataSource)initWithAction:(int64_t)a3;
+- (MPStoreSocialPendingFollowRequestOperationDataSource)initWithAction:(int64_t)action;
 - (id)_actionTypeString;
 - (id)httpBody;
 @end
@@ -8,20 +8,20 @@
 
 - (id)httpBody
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MPStoreSocialPendingFollowRequestOperationDataSource *)self _actionTypeString];
-  [v3 setObject:v4 forKey:@"actionType"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _actionTypeString = [(MPStoreSocialPendingFollowRequestOperationDataSource *)self _actionTypeString];
+  [dictionary setObject:_actionTypeString forKey:@"actionType"];
 
-  v5 = [(MPModelObject *)self->_person identifiers];
-  v6 = [v5 universalStore];
-  v7 = [v6 socialProfileID];
+  identifiers = [(MPModelObject *)self->_person identifiers];
+  universalStore = [identifiers universalStore];
+  socialProfileID = [universalStore socialProfileID];
 
-  if (v7)
+  if (socialProfileID)
   {
-    [v3 setObject:v7 forKey:@"id"];
+    [dictionary setObject:socialProfileID forKey:@"id"];
   }
 
-  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:0];
+  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:0];
 
   return v8;
 }
@@ -40,14 +40,14 @@
   }
 }
 
-- (MPStoreSocialPendingFollowRequestOperationDataSource)initWithAction:(int64_t)a3
+- (MPStoreSocialPendingFollowRequestOperationDataSource)initWithAction:(int64_t)action
 {
   v5.receiver = self;
   v5.super_class = MPStoreSocialPendingFollowRequestOperationDataSource;
   result = [(MPStoreSocialPendingFollowRequestOperationDataSource *)&v5 init];
   if (result)
   {
-    result->_action = a3;
+    result->_action = action;
   }
 
   return result;

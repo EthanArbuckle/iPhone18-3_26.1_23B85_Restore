@@ -1,21 +1,21 @@
 @interface TSUSandboxedURL
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7;
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 relativeToURL:(id)a4 bookmarkDataIsStale:(BOOL *)a5 error:(id *)a6;
-+ (void)sandboxedURLByResolvingBookmarkData:(id)a3 usingQueue:(id)a4 timeout:(double)a5 options:(unint64_t)a6 relativeToURL:(id)a7 completionQueue:(id)a8 completionHandler:(id)a9;
++ (id)sandboxedURLByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
++ (id)sandboxedURLByResolvingBookmarkData:(id)data relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
++ (void)sandboxedURLByResolvingBookmarkData:(id)data usingQueue:(id)queue timeout:(double)timeout options:(unint64_t)options relativeToURL:(id)l completionQueue:(id)completionQueue completionHandler:(id)handler;
 - (BOOL)hasUnresolvedConflicts;
-- (BOOL)hasUnresolvedConflicts:(BOOL *)a3 error:(id *)a4;
+- (BOOL)hasUnresolvedConflicts:(BOOL *)conflicts error:(id *)error;
 - (BOOL)isDocumentUploaded;
-- (BOOL)isDocumentUploaded:(BOOL *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isDocumentUploaded:(BOOL *)uploaded error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isQuotaErrorPreventingUpload;
-- (BOOL)isShared:(BOOL *)a3 logContext:(id)a4 error:(id *)a5;
-- (BOOL)isUbiquitous:(BOOL *)a3 promised:(BOOL)a4 error:(id *)a5;
-- (BOOL)isUbiquitousPromised:(BOOL)a3;
+- (BOOL)isShared:(BOOL *)shared logContext:(id)context error:(id *)error;
+- (BOOL)isUbiquitous:(BOOL *)ubiquitous promised:(BOOL)promised error:(id *)error;
+- (BOOL)isUbiquitousPromised:(BOOL)promised;
 - (NSString)description;
 - (TSUSandboxedURL)init;
-- (TSUSandboxedURL)initWithURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7;
+- (TSUSandboxedURL)initWithURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
 - (id)normalize;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -39,60 +39,60 @@
   objc_exception_throw(v7);
 }
 
-- (TSUSandboxedURL)initWithURL:(id)a3
+- (TSUSandboxedURL)initWithURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v15.receiver = self;
     v15.super_class = TSUSandboxedURL;
     v5 = [(TSUSandboxedURL *)&v15 init];
     if (v5)
     {
-      if ([v4 isFileURL])
+      if ([lCopy isFileURL])
       {
-        v6 = [v4 copy];
+        v6 = [lCopy copy];
         URL = v5->_URL;
         v5->_URL = v6;
 
-        v8 = [v4 startAccessingSecurityScopedResource];
+        startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
       }
 
       else
       {
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUSandboxedURL initWithURL:]"];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUSandboxedURL.m"];
-        [TSUAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:45 isFatal:0 description:"Sandboxed URL should not be initialized with a non-file URL. URL=%@", v4];
+        [TSUAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:45 isFatal:0 description:"Sandboxed URL should not be initialized with a non-file URL. URL=%@", lCopy];
 
         +[TSUAssertionHandler logBacktraceThrottled];
-        v12 = [v4 copy];
+        v12 = [lCopy copy];
         v13 = v5->_URL;
         v5->_URL = v12;
 
-        v8 = 0;
+        startAccessingSecurityScopedResource = 0;
       }
 
-      v5->_URLStartedAccessingSecurityScopedResource = v8;
+      v5->_URLStartedAccessingSecurityScopedResource = startAccessingSecurityScopedResource;
     }
 
     self = v5;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
   v12 = MEMORY[0x277CBEBC0];
-  v13 = a5;
-  v14 = a3;
-  v15 = [[v12 alloc] initByResolvingBookmarkData:v14 options:a4 | 0x8000 relativeToURL:v13 bookmarkDataIsStale:a6 error:a7];
+  lCopy = l;
+  dataCopy = data;
+  v15 = [[v12 alloc] initByResolvingBookmarkData:dataCopy options:options | 0x8000 relativeToURL:lCopy bookmarkDataIsStale:stale error:error];
 
   if (v15)
   {
@@ -108,30 +108,30 @@
   return v16;
 }
 
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 relativeToURL:(id)a4 bookmarkDataIsStale:(BOOL *)a5 error:(id *)a6
++ (id)sandboxedURLByResolvingBookmarkData:(id)data relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [[a1 alloc] initByResolvingBookmarkData:v11 relativeToURL:v10 bookmarkDataIsStale:a5 error:a6];
+  lCopy = l;
+  dataCopy = data;
+  v12 = [[self alloc] initByResolvingBookmarkData:dataCopy relativeToURL:lCopy bookmarkDataIsStale:stale error:error];
 
   return v12;
 }
 
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7
++ (id)sandboxedURLByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
-  v12 = a5;
-  v13 = a3;
-  v14 = [[a1 alloc] initByResolvingBookmarkData:v13 options:a4 relativeToURL:v12 bookmarkDataIsStale:a6 error:a7];
+  lCopy = l;
+  dataCopy = data;
+  v14 = [[self alloc] initByResolvingBookmarkData:dataCopy options:options relativeToURL:lCopy bookmarkDataIsStale:stale error:error];
 
   return v14;
 }
 
-+ (void)sandboxedURLByResolvingBookmarkData:(id)a3 usingQueue:(id)a4 timeout:(double)a5 options:(unint64_t)a6 relativeToURL:(id)a7 completionQueue:(id)a8 completionHandler:(id)a9
++ (void)sandboxedURLByResolvingBookmarkData:(id)data usingQueue:(id)queue timeout:(double)timeout options:(unint64_t)options relativeToURL:(id)l completionQueue:(id)completionQueue completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  dataCopy = data;
+  lCopy = l;
+  completionQueueCopy = completionQueue;
+  handlerCopy = handler;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
@@ -141,17 +141,17 @@
   block[2] = sub_2770291D4;
   block[3] = &unk_27A7018F0;
   v34 = v36;
-  v35 = a6;
-  v30 = v15;
-  v31 = v16;
-  v19 = v18;
+  optionsCopy = options;
+  v30 = dataCopy;
+  v31 = lCopy;
+  v19 = handlerCopy;
   v33 = v19;
-  v20 = v17;
+  v20 = completionQueueCopy;
   v32 = v20;
-  v21 = v16;
-  v22 = v15;
-  dispatch_async(a4, block);
-  v23 = dispatch_time(0, (fmax(a5, 0.0) * 1000000000.0));
+  v21 = lCopy;
+  v22 = dataCopy;
+  dispatch_async(queue, block);
+  v23 = dispatch_time(0, (fmax(timeout, 0.0) * 1000000000.0));
   v24 = v20;
   if (!v20)
   {
@@ -194,15 +194,15 @@
     goto LABEL_12;
   }
 
-  v4 = [v3 path];
-  if (v4)
+  path = [v3 path];
+  if (path)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v4];
+    v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:path];
     if (v5 && ([v3 isEqual:v5] & 1) == 0)
     {
-      v6 = [(TSUSandboxedURL *)self originalSandboxedURLForNormalizing];
-      v7 = v6;
-      if (v6 == self || (-[TSUSandboxedURL URL](v6, "URL"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqual:v5], v8, (v9 & 1) == 0))
+      originalSandboxedURLForNormalizing = [(TSUSandboxedURL *)self originalSandboxedURLForNormalizing];
+      v7 = originalSandboxedURLForNormalizing;
+      if (originalSandboxedURLForNormalizing == self || (-[TSUSandboxedURL URL](originalSandboxedURLForNormalizing, "URL"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqual:v5], v8, (v9 & 1) == 0))
       {
         v10 = [[TSUNormalizedSandboxedURL alloc] initWithURL:v5 originalSandboxedURL:v7];
       }
@@ -231,7 +231,7 @@ LABEL_12:
   return p_super;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSUSandboxedURL allocWithZone:?], "initWithURL:", self->_URL];
   if (!v4)
@@ -240,8 +240,8 @@ LABEL_12:
   }
 
   v12 = v4;
-  v13 = [(TSUSandboxedURL *)v4 hasSandboxAccess];
-  if (v13 != [(TSUSandboxedURL *)self hasSandboxAccess])
+  hasSandboxAccess = [(TSUSandboxedURL *)v4 hasSandboxAccess];
+  if (hasSandboxAccess != [(TSUSandboxedURL *)self hasSandboxAccess])
   {
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUSandboxedURL copyWithZone:]"];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUSandboxedURL.m"];
@@ -274,11 +274,11 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, equalCopy);
 
   if (v6)
   {
@@ -286,8 +286,8 @@ LABEL_12:
     v8 = [v6 URL];
     if ([v7 isEqual:v8])
     {
-      v9 = [(TSUSandboxedURL *)self hasSandboxAccess];
-      v10 = v9 ^ [v6 hasSandboxAccess] ^ 1;
+      hasSandboxAccess = [(TSUSandboxedURL *)self hasSandboxAccess];
+      v10 = hasSandboxAccess ^ [v6 hasSandboxAccess] ^ 1;
     }
 
     else
@@ -308,39 +308,39 @@ LABEL_12:
 {
   v3 = [(TSUSandboxedURL *)self URL];
   v4 = [v3 hash];
-  v5 = [(TSUSandboxedURL *)self hasSandboxAccess];
+  hasSandboxAccess = [(TSUSandboxedURL *)self hasSandboxAccess];
 
-  return v4 ^ v5;
+  return v4 ^ hasSandboxAccess;
 }
 
-- (BOOL)isShared:(BOOL *)a3 logContext:(id)a4 error:(id *)a5
+- (BOOL)isShared:(BOOL *)shared logContext:(id)context error:(id *)error
 {
-  v6 = [0 BOOLValue];
-  if (a3)
+  bOOLValue = [0 BOOLValue];
+  if (shared)
   {
-    *a3 = v6;
+    *shared = bOOLValue;
   }
 
   return 1;
 }
 
-- (BOOL)isUbiquitousPromised:(BOOL)a3
+- (BOOL)isUbiquitousPromised:(BOOL)promised
 {
   v5 = 0;
-  v3 = [(TSUSandboxedURL *)self isUbiquitous:&v5 promised:a3 error:0];
+  v3 = [(TSUSandboxedURL *)self isUbiquitous:&v5 promised:promised error:0];
   return v3 & v5;
 }
 
-- (BOOL)isUbiquitous:(BOOL *)a3 promised:(BOOL)a4 error:(id *)a5
+- (BOOL)isUbiquitous:(BOOL *)ubiquitous promised:(BOOL)promised error:(id *)error
 {
-  v6 = a4;
+  promisedCopy = promised;
   v9 = [(TSUSandboxedURL *)self URL];
   v10 = *MEMORY[0x277CBE8B8];
   [v9 removeCachedResourceValueForKey:*MEMORY[0x277CBE8B8]];
 
   v11 = [(TSUSandboxedURL *)self URL];
   v12 = v11;
-  if (!v6)
+  if (!promisedCopy)
   {
     v33 = 0;
     v19 = [v11 checkResourceIsReachableAndReturnError:&v33];
@@ -390,8 +390,8 @@ LABEL_17:
 LABEL_27:
     v26 = 0;
 LABEL_28:
-    v23 = 1;
-    if (!a3)
+    bOOLValue = 1;
+    if (!ubiquitous)
     {
       goto LABEL_30;
     }
@@ -441,7 +441,7 @@ LABEL_10:
     sub_277113BE4();
   }
 
-  v23 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
   if (v14)
   {
@@ -453,17 +453,17 @@ LABEL_10:
   }
 
   v26 = 1;
-  if (a3)
+  if (ubiquitous)
   {
 LABEL_29:
-    *a3 = v23 & v26;
+    *ubiquitous = bOOLValue & v26;
   }
 
 LABEL_30:
-  if (a5)
+  if (error)
   {
     v27 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v26;
@@ -476,7 +476,7 @@ LABEL_30:
   return v2 & v4;
 }
 
-- (BOOL)isDocumentUploaded:(BOOL *)a3 error:(id *)a4
+- (BOOL)isDocumentUploaded:(BOOL *)uploaded error:(id *)error
 {
   v28[3] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CBE980];
@@ -499,7 +499,7 @@ LABEL_30:
     if (TSUDefaultCat_init_token == -1)
     {
       v24 = 0;
-      if (!a3)
+      if (!uploaded)
       {
         goto LABEL_11;
       }
@@ -509,14 +509,14 @@ LABEL_30:
     {
       sub_277113C0C();
       v24 = 0;
-      if (!a3)
+      if (!uploaded)
       {
         goto LABEL_11;
       }
     }
 
 LABEL_10:
-    *a3 = v24;
+    *uploaded = v24;
     goto LABEL_11;
   }
 
@@ -542,16 +542,16 @@ LABEL_10:
     v24 = 0;
   }
 
-  if (a3)
+  if (uploaded)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
-  if (a4)
+  if (error)
   {
     v25 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   return v13 != 0;
@@ -586,8 +586,8 @@ LABEL_8:
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUSandboxedURL_Additions.m"];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v7 domain];
-      +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, v12, 204, 0, "Failed to get NSURLUbiquitousItemUploadingErrorKey with error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", v14, v15, [v7 code], v7);
+      domain = [v7 domain];
+      +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, v12, 204, 0, "Failed to get NSURLUbiquitousItemUploadingErrorKey with error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", v14, domain, [v7 code], v7);
 
       +[TSUAssertionHandler logBacktraceThrottled];
     }
@@ -611,7 +611,7 @@ LABEL_8:
   return v2 & v4;
 }
 
-- (BOOL)hasUnresolvedConflicts:(BOOL *)a3 error:(id *)a4
+- (BOOL)hasUnresolvedConflicts:(BOOL *)conflicts error:(id *)error
 {
   v7 = [(TSUSandboxedURL *)self URL];
   v8 = *MEMORY[0x277CBE958];
@@ -627,8 +627,8 @@ LABEL_8:
 
   if (v10)
   {
-    v14 = [v13 BOOLValue];
-    if (!a3)
+    bOOLValue = [v13 BOOLValue];
+    if (!conflicts)
     {
       goto LABEL_7;
     }
@@ -638,8 +638,8 @@ LABEL_8:
 
   if (TSUDocumentLifecycleCat_init_token == -1)
   {
-    v14 = 0;
-    if (!a3)
+    bOOLValue = 0;
+    if (!conflicts)
     {
       goto LABEL_7;
     }
@@ -648,18 +648,18 @@ LABEL_8:
   }
 
   sub_277113C34();
-  v14 = 0;
-  if (a3)
+  bOOLValue = 0;
+  if (conflicts)
   {
 LABEL_6:
-    *a3 = v14;
+    *conflicts = bOOLValue;
   }
 
 LABEL_7:
-  if (a4)
+  if (error)
   {
     v15 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v10;

@@ -1,24 +1,24 @@
 @interface WFFloatingButton
 - (CGSize)intrinsicContentSize;
-- (WFFloatingButton)initWithConfiguration:(id)a3 frame:(CGRect)a4;
-- (WFFloatingButton)initWithFrame:(CGRect)a3;
+- (WFFloatingButton)initWithConfiguration:(id)configuration frame:(CGRect)frame;
+- (WFFloatingButton)initWithFrame:(CGRect)frame;
 - (WFGradient)gradient;
-- (void)applyConfiguration:(id)a3;
-- (void)setGradient:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)applyConfiguration:(id)configuration;
+- (void)setGradient:(id)gradient;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFFloatingButton
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = WFFloatingButton;
-  [(WFFloatingButton *)&v6 traitCollectionDidChange:a3];
-  v4 = [(WFFloatingButton *)self layer];
-  v5 = [(WFFloatingButton *)self traitCollection];
-  [v4 setTraitCollection:v5];
+  [(WFFloatingButton *)&v6 traitCollectionDidChange:change];
+  layer = [(WFFloatingButton *)self layer];
+  traitCollection = [(WFFloatingButton *)self traitCollection];
+  [layer setTraitCollection:traitCollection];
 }
 
 - (CGSize)intrinsicContentSize
@@ -36,20 +36,20 @@
   return result;
 }
 
-- (void)applyConfiguration:(id)a3
+- (void)applyConfiguration:(id)configuration
 {
-  v15 = a3;
-  [v15 titleFontSize];
+  configurationCopy = configuration;
+  [configurationCopy titleFontSize];
   v5 = v4;
-  v6 = [v15 boldTitle];
-  if (v5 != 0.0 || v6 != 0)
+  boldTitle = [configurationCopy boldTitle];
+  if (v5 != 0.0 || boldTitle != 0)
   {
-    v8 = v6;
+    v8 = boldTitle;
     if (v5 == 0.0)
     {
-      v9 = [(WFFloatingButton *)self titleLabel];
-      v10 = [v9 font];
-      [v10 pointSize];
+      titleLabel = [(WFFloatingButton *)self titleLabel];
+      font = [titleLabel font];
+      [font pointSize];
       v5 = v11;
     }
 
@@ -63,77 +63,77 @@
       [MEMORY[0x1E69DB878] systemFontOfSize:v5];
     }
     v12 = ;
-    v13 = [(WFFloatingButton *)self titleLabel];
-    [v13 setFont:v12];
+    titleLabel2 = [(WFFloatingButton *)self titleLabel];
+    [titleLabel2 setFont:v12];
   }
 
-  v14 = [(WFFloatingButton *)self layer];
-  [v14 applyConfiguration:v15];
+  layer = [(WFFloatingButton *)self layer];
+  [layer applyConfiguration:configurationCopy];
 }
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
-  v4 = a3;
-  v5 = [(WFFloatingButton *)self layer];
-  [v5 setGradient:v4];
+  gradientCopy = gradient;
+  layer = [(WFFloatingButton *)self layer];
+  [layer setGradient:gradientCopy];
 }
 
 - (WFGradient)gradient
 {
-  v2 = [(WFFloatingButton *)self layer];
-  v3 = [v2 gradient];
+  layer = [(WFFloatingButton *)self layer];
+  gradient = [layer gradient];
 
-  return v3;
+  return gradient;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = WFFloatingButton;
   [(WFFloatingButton *)&v6 setHighlighted:?];
-  v5 = [(WFFloatingButton *)self layer];
-  [v5 setPressed:v3];
+  layer = [(WFFloatingButton *)self layer];
+  [layer setPressed:highlightedCopy];
 }
 
-- (WFFloatingButton)initWithFrame:(CGRect)a3
+- (WFFloatingButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_opt_new();
-  v9 = [(WFFloatingButton *)self initWithConfiguration:v8 frame:x, y, width, height];
+  height = [(WFFloatingButton *)self initWithConfiguration:v8 frame:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (WFFloatingButton)initWithConfiguration:(id)a3 frame:(CGRect)a4
+- (WFFloatingButton)initWithConfiguration:(id)configuration frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = WFFloatingButton;
-  v10 = [(WFFloatingButton *)&v19 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(WFFloatingButton *)&v19 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(WFFloatingButton *)v10 setAdjustsImageWhenHighlighted:0];
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    [(WFFloatingButton *)v11 setTintColor:v12];
+    [(WFFloatingButton *)height setAdjustsImageWhenHighlighted:0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(WFFloatingButton *)v11 setTintColor:whiteColor];
 
     [(WFFloatingButton *)v11 setContentEdgeInsets:0.0, 20.0, 0.0, 20.0];
     v13 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
-    v14 = [(WFFloatingButton *)v11 titleLabel];
-    [v14 setFont:v13];
+    titleLabel = [(WFFloatingButton *)v11 titleLabel];
+    [titleLabel setFont:v13];
 
-    [(WFFloatingButton *)v11 applyConfiguration:v9];
-    v15 = [(WFFloatingButton *)v11 layer];
-    v16 = [(WFFloatingButton *)v11 traitCollection];
-    [v15 setTraitCollection:v16];
+    [(WFFloatingButton *)v11 applyConfiguration:configurationCopy];
+    layer = [(WFFloatingButton *)v11 layer];
+    traitCollection = [(WFFloatingButton *)v11 traitCollection];
+    [layer setTraitCollection:traitCollection];
 
     v17 = v11;
   }

@@ -1,7 +1,7 @@
 @interface ACDPluginEntry
 - (ACDPluginEntry)init;
-- (ACDPluginEntry)initWithBundle:(id)a3;
-- (BOOL)principalObjectRespondsToSelector:(SEL)a3;
+- (ACDPluginEntry)initWithBundle:(id)bundle;
+- (BOOL)principalObjectRespondsToSelector:(SEL)selector;
 - (NSSet)supportedAccountTypes;
 - (NSSet)supportedDataclasses;
 - (NSString)identifier;
@@ -19,16 +19,16 @@
   return 0;
 }
 
-- (ACDPluginEntry)initWithBundle:(id)a3
+- (ACDPluginEntry)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = ACDPluginEntry;
   v6 = [(ACDPluginEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundle, a3);
+    objc_storeStrong(&v6->_bundle, bundle);
   }
 
   return v7;
@@ -36,93 +36,93 @@
 
 - (NSSet)supportedAccountTypes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ((*&v2->_fetchedFlags & 2) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((*&selfCopy->_fetchedFlags & 2) == 0)
   {
-    bundle = v2->_bundle;
+    bundle = selfCopy->_bundle;
     objc_opt_class();
     v4 = _ACDSetForKeyInBundle(bundle, @"ACSupportedAccountTypes");
-    supportedAccountTypes = v2->_supportedAccountTypes;
-    v2->_supportedAccountTypes = v4;
+    supportedAccountTypes = selfCopy->_supportedAccountTypes;
+    selfCopy->_supportedAccountTypes = v4;
 
-    *&v2->_fetchedFlags |= 2u;
+    *&selfCopy->_fetchedFlags |= 2u;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_supportedAccountTypes;
+  v6 = selfCopy->_supportedAccountTypes;
 
   return v6;
 }
 
 - (NSSet)supportedDataclasses
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ((*&v2->_fetchedFlags & 4) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((*&selfCopy->_fetchedFlags & 4) == 0)
   {
-    bundle = v2->_bundle;
+    bundle = selfCopy->_bundle;
     objc_opt_class();
     v4 = _ACDSetForKeyInBundle(bundle, @"ACSupportedDataclasses");
-    supportedDataclasses = v2->_supportedDataclasses;
-    v2->_supportedDataclasses = v4;
+    supportedDataclasses = selfCopy->_supportedDataclasses;
+    selfCopy->_supportedDataclasses = v4;
 
-    *&v2->_fetchedFlags |= 4u;
+    *&selfCopy->_fetchedFlags |= 4u;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_supportedDataclasses;
+  v6 = selfCopy->_supportedDataclasses;
 
   return v6;
 }
 
 - (id)principalObject
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ((*&v2->_fetchedFlags & 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((*&selfCopy->_fetchedFlags & 1) == 0)
   {
-    v3 = objc_alloc_init([(NSBundle *)v2->_bundle principalClass]);
-    principalObject = v2->_principalObject;
-    v2->_principalObject = v3;
+    v3 = objc_alloc_init([(NSBundle *)selfCopy->_bundle principalClass]);
+    principalObject = selfCopy->_principalObject;
+    selfCopy->_principalObject = v3;
 
-    *&v2->_fetchedFlags |= 1u;
+    *&selfCopy->_fetchedFlags |= 1u;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_principalObject;
+  v5 = selfCopy->_principalObject;
 
   return v5;
 }
 
 - (NSString)identifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ((*&v2->_fetchedFlags & 8) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((*&selfCopy->_fetchedFlags & 8) == 0)
   {
-    v3 = [(NSBundle *)v2->_bundle bundleIdentifier];
-    identifier = v2->_identifier;
-    v2->_identifier = v3;
+    bundleIdentifier = [(NSBundle *)selfCopy->_bundle bundleIdentifier];
+    identifier = selfCopy->_identifier;
+    selfCopy->_identifier = bundleIdentifier;
 
-    *&v2->_fetchedFlags |= 8u;
+    *&selfCopy->_fetchedFlags |= 8u;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_identifier;
+  v5 = selfCopy->_identifier;
 
   return v5;
 }
 
-- (BOOL)principalObjectRespondsToSelector:(SEL)a3
+- (BOOL)principalObjectRespondsToSelector:(SEL)selector
 {
-  v4 = [(NSBundle *)self->_bundle principalClass];
+  principalClass = [(NSBundle *)self->_bundle principalClass];
 
-  return [(objc_class *)v4 instancesRespondToSelector:a3];
+  return [(objc_class *)principalClass instancesRespondToSelector:selector];
 }
 
 - (id)description
@@ -130,8 +130,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSBundle *)self->_bundle bundlePath];
-  v7 = [v3 stringWithFormat:@"<%@: %p { bundle: %@ }>", v5, self, v6];
+  bundlePath = [(NSBundle *)self->_bundle bundlePath];
+  v7 = [v3 stringWithFormat:@"<%@: %p { bundle: %@ }>", v5, self, bundlePath];
 
   return v7;
 }

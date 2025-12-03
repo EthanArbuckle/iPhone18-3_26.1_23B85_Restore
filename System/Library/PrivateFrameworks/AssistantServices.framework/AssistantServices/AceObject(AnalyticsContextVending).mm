@@ -8,13 +8,13 @@
 - (id)af_analyticsContext
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 groupIdentifier];
-  v3 = [a1 encodedClassName];
+  groupIdentifier = [self groupIdentifier];
+  encodedClassName = [self encodedClassName];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [a1 af_addEntriesToAnalyticsContext:v4];
+  [self af_addEntriesToAnalyticsContext:v4];
   if ([v4 count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.%@", v2, v3];
+    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.%@", groupIdentifier, encodedClassName];
     v9 = v5;
     v10[0] = v4;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
@@ -33,16 +33,16 @@
 - (void)af_addEntriesToAnalyticsContext:()AnalyticsContextVending
 {
   v6 = a3;
-  v4 = [a1 aceId];
-  if (v4)
+  aceId = [self aceId];
+  if (aceId)
   {
-    [v6 setObject:v4 forKey:@"aceId"];
+    [v6 setObject:aceId forKey:@"aceId"];
   }
 
-  v5 = [a1 refId];
-  if (v5)
+  refId = [self refId];
+  if (refId)
   {
-    [v6 setObject:v5 forKey:@"refId"];
+    [v6 setObject:refId forKey:@"refId"];
   }
 }
 

@@ -25,8 +25,8 @@
     gradientLayer = v2->_gradientLayer;
     v2->_gradientLayer = v3;
 
-    v5 = [(RAPVerticalBar *)v2 layer];
-    [v5 addSublayer:v2->_gradientLayer];
+    layer = [(RAPVerticalBar *)v2 layer];
+    [layer addSublayer:v2->_gradientLayer];
 
     v6 = +[UIColor whiteColor];
     v11[0] = [v6 CGColor];

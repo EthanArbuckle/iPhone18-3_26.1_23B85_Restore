@@ -1,10 +1,10 @@
 @interface MediaPlayerTimeJumpCoordinator
-- (void)onCoordinatorTimeJumpCommandIssued:(id)a3;
+- (void)onCoordinatorTimeJumpCommandIssued:(id)issued;
 @end
 
 @implementation MediaPlayerTimeJumpCoordinator
 
-- (void)onCoordinatorTimeJumpCommandIssued:(id)a3
+- (void)onCoordinatorTimeJumpCommandIssued:(id)issued
 {
   v3 = sub_20C59D1DC();
   v4 = *(v3 - 8);

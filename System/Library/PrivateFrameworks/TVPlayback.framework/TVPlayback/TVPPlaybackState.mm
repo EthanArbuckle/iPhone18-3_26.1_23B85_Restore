@@ -4,9 +4,9 @@
 + (id)playing;
 + (id)scanning;
 + (id)stopped;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TVPPlaybackState)init;
-- (TVPPlaybackState)initWithName:(id)a3;
+- (TVPPlaybackState)initWithName:(id)name;
 @end
 
 @implementation TVPPlaybackState
@@ -112,29 +112,29 @@ uint64_t __28__TVPPlaybackState_scanning__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (TVPPlaybackState)initWithName:(id)a3
+- (TVPPlaybackState)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = TVPPlaybackState;
   v6 = [(TVPPlaybackState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 name];
-    v6 = [(TVPPlaybackState *)self name];
-    v7 = [v5 isEqualToString:v6];
+    name = [equalCopy name];
+    name2 = [(TVPPlaybackState *)self name];
+    v7 = [name isEqualToString:name2];
   }
 
   else

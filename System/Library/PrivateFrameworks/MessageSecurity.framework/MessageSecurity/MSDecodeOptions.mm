@@ -1,7 +1,7 @@
 @interface MSDecodeOptions
 - (MSDecodeOptions)init;
-- (MSDecodeOptions)initWithDecryptionIdentity:(__SecIdentity *)a3;
-- (MSDecodeOptions)initWithDecryptionKey:(id)a3;
+- (MSDecodeOptions)initWithDecryptionIdentity:(__SecIdentity *)identity;
+- (MSDecodeOptions)initWithDecryptionKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -41,30 +41,30 @@
   [(MSDecodeOptions *)&v4 dealloc];
 }
 
-- (MSDecodeOptions)initWithDecryptionIdentity:(__SecIdentity *)a3
+- (MSDecodeOptions)initWithDecryptionIdentity:(__SecIdentity *)identity
 {
   v4 = [(MSDecodeOptions *)self init];
   if (v4)
   {
-    if (a3)
+    if (identity)
     {
-      CFRetain(a3);
+      CFRetain(identity);
     }
 
-    v4->_identity = a3;
+    v4->_identity = identity;
   }
 
   return v4;
 }
 
-- (MSDecodeOptions)initWithDecryptionKey:(id)a3
+- (MSDecodeOptions)initWithDecryptionKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = [(MSDecodeOptions *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_key, a3);
+    objc_storeStrong(&v6->_key, key);
   }
 
   return v7;

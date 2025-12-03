@@ -1,23 +1,23 @@
 @interface _BUCountingAssertion
-- (_BUCountingAssertion)initWithQueue:(id)a3 block:(id)a4;
+- (_BUCountingAssertion)initWithQueue:(id)queue block:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _BUCountingAssertion
 
-- (_BUCountingAssertion)initWithQueue:(id)a3 block:(id)a4
+- (_BUCountingAssertion)initWithQueue:(id)queue block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = _BUCountingAssertion;
   v9 = [(_BUCountingAssertion *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v13 = objc_msgSend_copy(v8, v11, v12);
+    objc_storeStrong(&v9->_queue, queue);
+    v13 = objc_msgSend_copy(blockCopy, v11, v12);
     block = v10->_block;
     v10->_block = v13;
   }

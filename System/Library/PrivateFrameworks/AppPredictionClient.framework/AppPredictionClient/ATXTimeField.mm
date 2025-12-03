@@ -1,25 +1,25 @@
 @interface ATXTimeField
-- (ATXTimeField)initWithCoder:(id)a3;
-- (ATXTimeField)initWithTitle:(id)a3 value:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ATXTimeField)initWithCoder:(id)coder;
+- (ATXTimeField)initWithTitle:(id)title value:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXTimeField
 
-- (ATXTimeField)initWithTitle:(id)a3 value:(id)a4
+- (ATXTimeField)initWithTitle:(id)title value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = ATXTimeField;
   v8 = [(ATXTimeField *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v11;
 
@@ -29,22 +29,22 @@
   return v8;
 }
 
-- (ATXTimeField)initWithCoder:(id)a3
+- (ATXTimeField)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
 
   v7 = [(ATXTimeField *)self initWithTitle:v5 value:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SBFailingSystemGestureRecognizer
 - (SBFailingSystemGestureRecognizer)init;
-- (SBFailingSystemGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (SBFailingSystemGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation SBFailingSystemGestureRecognizer
@@ -12,7 +12,7 @@
   return [(SBFailingSystemGestureRecognizer *)&v3 initWithTarget:0 action:0];
 }
 
-- (SBFailingSystemGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBFailingSystemGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE648];

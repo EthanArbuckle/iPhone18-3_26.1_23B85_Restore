@@ -1,23 +1,23 @@
 @interface VSGenericUpdateEndpoint
-+ (id)configuredEndpointWithUpdateHandler:(id)a3 withConnection:(id)a4;
-+ (id)remoteUpdateHanderForEndpoint:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (VSGenericUpdateEndpoint)initWithCoder:(id)a3;
++ (id)configuredEndpointWithUpdateHandler:(id)handler withConnection:(id)connection;
++ (id)remoteUpdateHanderForEndpoint:(id)endpoint;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (VSGenericUpdateEndpoint)initWithCoder:(id)coder;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation VSGenericUpdateEndpoint
 
-- (VSGenericUpdateEndpoint)initWithCoder:(id)a3
+- (VSGenericUpdateEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = VSGenericUpdateEndpoint;
   v5 = [(VSGenericUpdateEndpoint *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endpoint"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_endpoint"];
     endpoint = v5->_endpoint;
     v5->_endpoint = v6;
   }
@@ -38,17 +38,17 @@
   self->_endpoint = 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   handler = self->_handler;
   if (handler)
   {
     if (self->_queue)
     {
-      [v7 _setQueue:?];
+      [connectionCopy _setQueue:?];
     }
 
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2881EA260];
@@ -76,14 +76,14 @@
   [(VSGenericUpdateEndpoint *)&v3 dealloc];
 }
 
-+ (id)remoteUpdateHanderForEndpoint:(id)a3
++ (id)remoteUpdateHanderForEndpoint:(id)endpoint
 {
   v3 = MEMORY[0x277CCAE80];
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = [v3 alloc];
-  v6 = [v4 endpoint];
+  endpoint = [endpointCopy endpoint];
 
-  v7 = [v5 initWithListenerEndpoint:v6];
+  v7 = [v5 initWithListenerEndpoint:endpoint];
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2881EA260];
   [v7 setRemoteObjectInterface:v8];
 
@@ -108,22 +108,22 @@ void __57__VSGenericUpdateEndpoint_remoteUpdateHanderForEndpoint___block_invoke(
   [v4 invokeUpdateWithObject:v3];
 }
 
-+ (id)configuredEndpointWithUpdateHandler:(id)a3 withConnection:(id)a4
++ (id)configuredEndpointWithUpdateHandler:(id)handler withConnection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v7 = objc_alloc_init(VSGenericUpdateEndpoint);
-  v8 = [MEMORY[0x277CCAE98] anonymousListener];
-  [v8 setDelegate:v7];
-  [v8 resume];
-  v9 = [v5 _queue];
+  anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+  [anonymousListener setDelegate:v7];
+  [anonymousListener resume];
+  _queue = [connectionCopy _queue];
 
-  [(VSGenericUpdateEndpoint *)v7 setQueue:v9];
-  [(VSGenericUpdateEndpoint *)v7 setHandler:v6];
+  [(VSGenericUpdateEndpoint *)v7 setQueue:_queue];
+  [(VSGenericUpdateEndpoint *)v7 setHandler:handlerCopy];
 
-  [(VSGenericUpdateEndpoint *)v7 setListener:v8];
-  v10 = [v8 endpoint];
-  [(VSGenericUpdateEndpoint *)v7 setEndpoint:v10];
+  [(VSGenericUpdateEndpoint *)v7 setListener:anonymousListener];
+  endpoint = [anonymousListener endpoint];
+  [(VSGenericUpdateEndpoint *)v7 setEndpoint:endpoint];
 
   return v7;
 }

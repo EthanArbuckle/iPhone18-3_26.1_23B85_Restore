@@ -1,35 +1,35 @@
 @interface ENAccountIdentity
-- (ENAccountIdentity)initWithAccountKey:(id)a3 deviceKey:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ENAccountIdentity)initWithAccountKey:(id)key deviceKey:(id)deviceKey;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENAccountIdentity
 
-- (ENAccountIdentity)initWithAccountKey:(id)a3 deviceKey:(id)a4
+- (ENAccountIdentity)initWithAccountKey:(id)key deviceKey:(id)deviceKey
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  deviceKeyCopy = deviceKey;
   v12.receiver = self;
   v12.super_class = ENAccountIdentity;
   v9 = [(ENAccountIdentity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountKey, a3);
-    objc_storeStrong(&v10->_deviceKey, a4);
+    objc_storeStrong(&v9->_accountKey, key);
+    objc_storeStrong(&v10->_deviceKey, deviceKey);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ENAccountIdentity *)self accountKey];
-  [v4 encodeObject:v5 forKey:@"kENPersonalIdentityAccountKey"];
+  coderCopy = coder;
+  accountKey = [(ENAccountIdentity *)self accountKey];
+  [coderCopy encodeObject:accountKey forKey:@"kENPersonalIdentityAccountKey"];
 
-  v6 = [(ENAccountIdentity *)self deviceKey];
-  [v4 encodeObject:v6 forKey:@"kENPersonalIdentityDeviceKey"];
+  deviceKey = [(ENAccountIdentity *)self deviceKey];
+  [coderCopy encodeObject:deviceKey forKey:@"kENPersonalIdentityDeviceKey"];
 }
 
 @end

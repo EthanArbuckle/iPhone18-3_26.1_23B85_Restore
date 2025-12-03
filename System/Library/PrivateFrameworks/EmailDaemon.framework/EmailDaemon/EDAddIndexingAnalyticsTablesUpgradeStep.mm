@@ -1,14 +1,14 @@
 @interface EDAddIndexingAnalyticsTablesUpgradeStep
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4;
++ (BOOL)runWithConnection:(id)connection error:(id *)error;
 - (EDAddIndexingAnalyticsTablesUpgradeStep)init;
 @end
 
 @implementation EDAddIndexingAnalyticsTablesUpgradeStep
 
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4
++ (BOOL)runWithConnection:(id)connection error:(id *)error
 {
-  v4 = a3;
-  sub_1C63FBFF4(v4);
+  connectionCopy = connection;
+  sub_1C63FBFF4(connectionCopy);
 
   return 1;
 }

@@ -1,7 +1,7 @@
 @interface PSCoreAnalyticsDefaultProcessUsageDelegate
 - (BOOL)readProcessUsage;
 - (PSCoreAnalyticsDefaultProcessUsageDelegate)init;
-- (void)didCheckIfOKToSendCAEventsWithResult:(BOOL)a3;
+- (void)didCheckIfOKToSendCAEventsWithResult:(BOOL)result;
 - (void)reportUsageToCA;
 @end
 
@@ -90,10 +90,10 @@
   v4 = proc_pid_rusage(v3, 6, &self->_usage);
   if (v4)
   {
-    v5 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self log_handle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    log_handle = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self log_handle];
+    if (os_log_type_enabled(log_handle, OS_LOG_TYPE_ERROR))
     {
-      sub_100017458(v5);
+      sub_100017458(log_handle);
     }
   }
 
@@ -110,33 +110,33 @@
   return v4 == 0;
 }
 
-- (void)didCheckIfOKToSendCAEventsWithResult:(BOOL)a3
+- (void)didCheckIfOKToSendCAEventsWithResult:(BOOL)result
 {
-  v3 = a3;
-  v5 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self log_handle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  resultCopy = result;
+  log_handle = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self log_handle];
+  if (os_log_type_enabled(log_handle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    *v10 = v3;
+    *v10 = resultCopy;
     *&v10[4] = 2048;
     *&v10[6] = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self physicalFootprintMB];
     v11 = 2048;
-    v12 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self lifetimeMaxPhysicalFootprintMB];
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "okToSendCAEvents: %d footprint (MB): %llu lifetime max footprint (MB): %llu", buf, 0x1Cu);
+    lifetimeMaxPhysicalFootprintMB = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self lifetimeMaxPhysicalFootprintMB];
+    _os_log_impl(&_mh_execute_header, log_handle, OS_LOG_TYPE_DEFAULT, "okToSendCAEvents: %d footprint (MB): %llu lifetime max footprint (MB): %llu", buf, 0x1Cu);
   }
 
-  v6 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self skipCount];
-  if (v3)
+  skipCount = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self skipCount];
+  if (resultCopy)
   {
-    if (v6)
+    if (skipCount)
     {
-      v7 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self log_handle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      log_handle2 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self log_handle];
+      if (os_log_type_enabled(log_handle2, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self skipCount];
+        skipCount2 = [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self skipCount];
         *buf = 134217984;
-        *v10 = v8;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Resuming after skip count: %llu", buf, 0xCu);
+        *v10 = skipCount2;
+        _os_log_impl(&_mh_execute_header, log_handle2, OS_LOG_TYPE_DEFAULT, "Resuming after skip count: %llu", buf, 0xCu);
       }
 
       AnalyticsSendEventLazy();
@@ -148,7 +148,7 @@
 
   else
   {
-    [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self setSkipCount:v6 + 1];
+    [(PSCoreAnalyticsDefaultProcessUsageDelegate *)self setSkipCount:skipCount + 1];
   }
 }
 

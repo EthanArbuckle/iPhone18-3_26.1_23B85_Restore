@@ -1,9 +1,9 @@
 @interface ApprovedApplicationList
 - (NSArray)applications;
 - (_TtC9MomentsUI23ApprovedApplicationList)init;
-- (_TtC9MomentsUI23ApprovedApplicationList)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setApplications:(id)a3;
+- (_TtC9MomentsUI23ApprovedApplicationList)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setApplications:(id)applications;
 @end
 
 @implementation ApprovedApplicationList
@@ -27,25 +27,25 @@
   return v4.super.isa;
 }
 
-- (void)setApplications:(id)a3
+- (void)setApplications:(id)applications
 {
-  v3 = a3;
-  if (a3)
+  applicationsCopy = applications;
+  if (applications)
   {
     type metadata accessor for ApprovedApplication();
-    v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    applicationsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   v5 = OBJC_IVAR____TtC9MomentsUI23ApprovedApplicationList_applications;
   swift_beginAccess();
-  *(self + v5) = v3;
+  *(self + v5) = applicationsCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *((*MEMORY[0x277D85000] & *self) + 0x58);
-  v5 = a3;
-  v8 = self;
+  coderCopy = coder;
+  selfCopy = self;
   if (v4())
   {
     type metadata accessor for ApprovedApplication();
@@ -58,16 +58,16 @@
   }
 
   v7 = MEMORY[0x21CE91FC0](0x746163696C707061, 0xEC000000736E6F69);
-  [v5 encodeObject:v6.super.isa forKey:v7];
+  [coderCopy encodeObject:v6.super.isa forKey:v7];
   swift_unknownObjectRelease();
 }
 
-- (_TtC9MomentsUI23ApprovedApplicationList)initWithCoder:(id)a3
+- (_TtC9MomentsUI23ApprovedApplicationList)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC9MomentsUI23ApprovedApplicationList_applications;
   *(self + OBJC_IVAR____TtC9MomentsUI23ApprovedApplicationList_applications) = 0;
   type metadata accessor for ApprovedApplication();
-  v6 = a3;
+  coderCopy = coder;
   v7 = NSCoder.decodeArrayOfObjects<A>(ofClass:forKey:)();
   swift_beginAccess();
   *(self + v5) = v7;

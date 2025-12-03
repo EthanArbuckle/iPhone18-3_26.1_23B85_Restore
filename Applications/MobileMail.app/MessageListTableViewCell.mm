@@ -1,31 +1,31 @@
 @interface MessageListTableViewCell
-- (MessageListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MessageListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)configurationState;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation MessageListTableViewCell
 
-- (MessageListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MessageListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = MessageListTableViewCell;
-  v7 = [(MessageListTableViewCell *)&v17 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(MessageListTableViewCell *)&v17 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = [MessageListCellView alloc];
-    v9 = [(MessageListTableViewCell *)v7 contentView];
-    [v9 bounds];
+    contentView = [(MessageListTableViewCell *)v7 contentView];
+    [contentView bounds];
     v10 = [(MessageListCellView *)v8 initWithFrame:?];
 
     v11 = [MessageListCellHelper alloc];
-    v12 = [(MessageListTableViewCell *)v7 contentView];
+    contentView2 = [(MessageListTableViewCell *)v7 contentView];
     v13 = +[MessageListCellHelperMobileMailProxy sharedApplicationProxy];
-    v14 = [v11 initWithParentView:v7 contentView:v12 cellView:v10 applicationProxy:v13];
+    v14 = [v11 initWithParentView:v7 contentView:contentView2 cellView:v10 applicationProxy:v13];
     cellHelper = v7->_cellHelper;
     v7->_cellHelper = v14;
 
@@ -39,46 +39,46 @@
 {
   v7.receiver = self;
   v7.super_class = MessageListTableViewCell;
-  v3 = [(MessageListTableViewCell *)&v7 configurationState];
-  v4 = [(MessageListTableViewCell *)self cellHelper];
-  v5 = [v4 configurationStateForCellConfigurationState:v3];
+  configurationState = [(MessageListTableViewCell *)&v7 configurationState];
+  cellHelper = [(MessageListTableViewCell *)self cellHelper];
+  v5 = [cellHelper configurationStateForCellConfigurationState:configurationState];
 
   return v5;
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MessageListTableViewCell *)self cellHelper];
-  [v7 setHighlighted:v5];
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
+  cellHelper = [(MessageListTableViewCell *)self cellHelper];
+  [cellHelper setHighlighted:highlightedCopy];
 
   v8.receiver = self;
   v8.super_class = MessageListTableViewCell;
-  [(MessageListTableViewCell *)&v8 setHighlighted:v5 animated:v4];
+  [(MessageListTableViewCell *)&v8 setHighlighted:highlightedCopy animated:animatedCopy];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MessageListTableViewCell *)self cellHelper];
-  [v7 setSelected:v5];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  cellHelper = [(MessageListTableViewCell *)self cellHelper];
+  [cellHelper setSelected:selectedCopy];
 
   v8.receiver = self;
   v8.super_class = MessageListTableViewCell;
-  [(MessageListTableViewCell *)&v8 setSelected:v5 animated:v4];
+  [(MessageListTableViewCell *)&v8 setSelected:selectedCopy animated:animatedCopy];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v7 = a3;
-  v4 = [(MessageListTableViewCell *)self cellHelper];
-  v5 = [v4 contentConfigurationForState:v7];
-  v6 = [v4 backgroundConfigurationForState:v7];
-  [v4 updateViewConfigurationForState:v7];
-  [v4 updateViewContentConfiguration:v5];
-  [v4 updateViewBackgroundConfiguration:v6];
+  stateCopy = state;
+  cellHelper = [(MessageListTableViewCell *)self cellHelper];
+  v5 = [cellHelper contentConfigurationForState:stateCopy];
+  v6 = [cellHelper backgroundConfigurationForState:stateCopy];
+  [cellHelper updateViewConfigurationForState:stateCopy];
+  [cellHelper updateViewContentConfiguration:v5];
+  [cellHelper updateViewBackgroundConfiguration:v6];
   [(MessageListTableViewCell *)self setBackgroundConfiguration:v6];
 }
 
@@ -90,15 +90,15 @@
     v15.receiver = self;
     v15.super_class = MessageListTableViewCell;
     [(MessageListTableViewCell *)&v15 layoutSubviews];
-    v4 = [(MessageListTableViewCell *)self contentView];
-    [v4 bounds];
+    contentView = [(MessageListTableViewCell *)self contentView];
+    [contentView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(MessageListTableViewCell *)self cellHelper];
-    v14 = [v13 cellView];
-    [v14 setFrame:{v6, v8, v10, v12}];
+    cellHelper = [(MessageListTableViewCell *)self cellHelper];
+    cellView = [cellHelper cellView];
+    [cellView setFrame:{v6, v8, v10, v12}];
   }
 }
 

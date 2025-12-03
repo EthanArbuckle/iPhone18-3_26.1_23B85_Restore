@@ -1,6 +1,6 @@
 @interface LPFetcherConfiguration
 - (LPFetcherConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -21,17 +21,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPFetcherConfiguration allocWithZone:a3];
+  v4 = [LPFetcherConfiguration allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPFetcherConfiguration *)self webViewForProcessSharing];
-    [(LPFetcherConfiguration *)v4 setWebViewForProcessSharing:v5];
+    webViewForProcessSharing = [(LPFetcherConfiguration *)self webViewForProcessSharing];
+    [(LPFetcherConfiguration *)v4 setWebViewForProcessSharing:webViewForProcessSharing];
 
     [(LPFetcherConfiguration *)v4 setMaximumResponseCount:[(LPFetcherConfiguration *)self maximumResponseCount]];
-    v6 = [(LPFetcherConfiguration *)self rootEvent];
-    [(LPFetcherConfiguration *)v4 setRootEvent:v6];
+    rootEvent = [(LPFetcherConfiguration *)self rootEvent];
+    [(LPFetcherConfiguration *)v4 setRootEvent:rootEvent];
 
     [(LPFetcherConfiguration *)v4 setLoadingIsNonAppInitiated:[(LPFetcherConfiguration *)self loadingIsNonAppInitiated]];
     [(LPFetcherConfiguration *)v4 setFetchIsNotUserInitiated:[(LPFetcherConfiguration *)self fetchIsNotUserInitiated]];

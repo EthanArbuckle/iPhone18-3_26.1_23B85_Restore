@@ -1,15 +1,15 @@
 @interface PRRegulatoryAssistanceEndpoint
-+ (id)endpointWithQueue:(id)a3;
-- (id)initInternalWithQueue:(id)a3;
-- (void)connectWithCompletionHandler:(id)a3;
-- (void)provideIsoCode:(id)a3;
++ (id)endpointWithQueue:(id)queue;
+- (id)initInternalWithQueue:(id)queue;
+- (void)connectWithCompletionHandler:(id)handler;
+- (void)provideIsoCode:(id)code;
 @end
 
 @implementation PRRegulatoryAssistanceEndpoint
 
-- (id)initInternalWithQueue:(id)a3
+- (id)initInternalWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
@@ -26,7 +26,7 @@
     v9 = v7->_logger;
     v7->_logger = v8;
 
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
     v10 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.nearbyd.xpc.diagnostics" options:4096];
     conn = v7->_conn;
     v7->_conn = v10;
@@ -42,17 +42,17 @@
   return v7;
 }
 
-+ (id)endpointWithQueue:(id)a3
++ (id)endpointWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[PRRegulatoryAssistanceEndpoint alloc] initInternalWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[PRRegulatoryAssistanceEndpoint alloc] initInternalWithQueue:queueCopy];
 
   return v4;
 }
 
-- (void)connectWithCompletionHandler:(id)a3
+- (void)connectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -66,14 +66,14 @@
     _os_log_impl(&dword_230EB5000, logger, OS_LOG_TYPE_DEFAULT, "#reg-assist, connectWithCompletionHandler called.", buf, 2u);
   }
 
-  v6 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__PRRegulatoryAssistanceEndpoint_connectWithCompletionHandler___block_invoke;
   v7[3] = &unk_2788F3C18;
   v7[4] = self;
   v7[5] = v9;
-  [v6 prepareForRegulatoryAssistance:v7];
+  [remoteObjectProxy prepareForRegulatoryAssistance:v7];
 
   _Block_object_dispose(v9, 8);
 }
@@ -87,9 +87,9 @@ void __63__PRRegulatoryAssistanceEndpoint_connectWithCompletionHandler___block_i
   (*(*(*(*(a1 + 40) + 8) + 40) + 16))();
 }
 
-- (void)provideIsoCode:(id)a3
+- (void)provideIsoCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,8 +97,8 @@ void __63__PRRegulatoryAssistanceEndpoint_connectWithCompletionHandler___block_i
     _os_log_impl(&dword_230EB5000, logger, OS_LOG_TYPE_DEFAULT, "#reg-assist, provideIsoCode called.", v7, 2u);
   }
 
-  v6 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
-  [v6 injectIsoCode:v4];
+  remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+  [remoteObjectProxy injectIsoCode:codeCopy];
 }
 
 @end

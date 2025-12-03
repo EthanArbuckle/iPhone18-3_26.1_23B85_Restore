@@ -1,8 +1,8 @@
 @interface _CNBlockObserver
-- (_CNBlockObserver)initWithResultBlock:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5;
+- (_CNBlockObserver)initWithResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _CNBlockObserver
@@ -15,40 +15,40 @@
   v3();
 }
 
-- (_CNBlockObserver)initWithResultBlock:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5
+- (_CNBlockObserver)initWithResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  failureBlockCopy = failureBlock;
   v22.receiver = self;
   v22.super_class = _CNBlockObserver;
   v11 = [(_CNBlockObserver *)&v22 init];
   if (v11)
   {
-    if (!v8)
+    if (!blockCopy)
     {
-      v8 = &__block_literal_global_85;
+      blockCopy = &__block_literal_global_85;
     }
 
-    if (!v9)
+    if (!completionBlockCopy)
     {
-      v9 = &__block_literal_global_3_2;
+      completionBlockCopy = &__block_literal_global_3_2;
     }
 
-    if (!v10)
+    if (!failureBlockCopy)
     {
-      v10 = &__block_literal_global_6;
+      failureBlockCopy = &__block_literal_global_6;
     }
 
-    v12 = [v8 copy];
+    v12 = [blockCopy copy];
     resultBlock = v11->_resultBlock;
     v11->_resultBlock = v12;
 
-    v14 = [v9 copy];
+    v14 = [completionBlockCopy copy];
     completionBlock = v11->_completionBlock;
     v11->_completionBlock = v14;
 
-    v16 = [v10 copy];
+    v16 = [failureBlockCopy copy];
     failureBlock = v11->_failureBlock;
     v11->_failureBlock = v16;
 
@@ -62,11 +62,11 @@
   return v11;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = +[CNObservableContractEnforcement shouldSwizzleNilResults];
-  if (!v4 && v5)
+  if (!resultCopy && v5)
   {
     v6 = +[CNObservable os_log_protocol];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -80,18 +80,18 @@
       [CNBehaviorSubject observerDidReceiveResult:v7];
     }
 
-    v4 = [MEMORY[0x1E695DFB0] null];
+    resultCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  [(CNObservableContractEnforcement *)self->_enforcement observerDidReceiveResult:v4];
+  [(CNObservableContractEnforcement *)self->_enforcement observerDidReceiveResult:resultCopy];
   (*(self->_resultBlock + 2))();
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   enforcement = self->_enforcement;
-  v5 = a3;
-  [(CNObservableContractEnforcement *)enforcement observerDidFailWithError:v5];
+  errorCopy = error;
+  [(CNObservableContractEnforcement *)enforcement observerDidFailWithError:errorCopy];
   (*(self->_failureBlock + 2))();
 }
 

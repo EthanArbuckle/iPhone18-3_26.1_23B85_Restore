@@ -1,8 +1,8 @@
 @interface MTRColorControlClusterColorLoopSetParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRColorControlClusterColorLoopSetParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -47,35 +47,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRColorControlClusterColorLoopSetParams);
-  v5 = [(MTRColorControlClusterColorLoopSetParams *)self updateFlags];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setUpdateFlags:v5];
+  updateFlags = [(MTRColorControlClusterColorLoopSetParams *)self updateFlags];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setUpdateFlags:updateFlags];
 
-  v6 = [(MTRColorControlClusterColorLoopSetParams *)self action];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setAction:v6];
+  action = [(MTRColorControlClusterColorLoopSetParams *)self action];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setAction:action];
 
-  v7 = [(MTRColorControlClusterColorLoopSetParams *)self direction];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setDirection:v7];
+  direction = [(MTRColorControlClusterColorLoopSetParams *)self direction];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setDirection:direction];
 
-  v8 = [(MTRColorControlClusterColorLoopSetParams *)self time];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setTime:v8];
+  time = [(MTRColorControlClusterColorLoopSetParams *)self time];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setTime:time];
 
-  v9 = [(MTRColorControlClusterColorLoopSetParams *)self startHue];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setStartHue:v9];
+  startHue = [(MTRColorControlClusterColorLoopSetParams *)self startHue];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setStartHue:startHue];
 
-  v10 = [(MTRColorControlClusterColorLoopSetParams *)self optionsMask];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setOptionsMask:v10];
+  optionsMask = [(MTRColorControlClusterColorLoopSetParams *)self optionsMask];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setOptionsMask:optionsMask];
 
-  v11 = [(MTRColorControlClusterColorLoopSetParams *)self optionsOverride];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setOptionsOverride:v11];
+  optionsOverride = [(MTRColorControlClusterColorLoopSetParams *)self optionsOverride];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setOptionsOverride:optionsOverride];
 
-  v12 = [(MTRColorControlClusterColorLoopSetParams *)self timedInvokeTimeoutMs];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setTimedInvokeTimeoutMs:v12];
+  timedInvokeTimeoutMs = [(MTRColorControlClusterColorLoopSetParams *)self timedInvokeTimeoutMs];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v13 = [(MTRColorControlClusterColorLoopSetParams *)self serverSideProcessingTimeout];
-  [(MTRColorControlClusterColorLoopSetParams *)v4 setServerSideProcessingTimeout:v13];
+  serverSideProcessingTimeout = [(MTRColorControlClusterColorLoopSetParams *)self serverSideProcessingTimeout];
+  [(MTRColorControlClusterColorLoopSetParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -90,35 +90,35 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v28 = 0;
-  v29 = 0;
+  unsignedCharValue = 0;
   v30 = 0;
   v31 = 0;
   v27[0] = 0;
   v27[1] = 0;
   v26 = v27;
-  v5 = [(MTRColorControlClusterColorLoopSetParams *)self updateFlags];
-  LOBYTE(v28) = [v5 unsignedCharValue];
+  updateFlags = [(MTRColorControlClusterColorLoopSetParams *)self updateFlags];
+  LOBYTE(v28) = [updateFlags unsignedCharValue];
 
-  v6 = [(MTRColorControlClusterColorLoopSetParams *)self action];
-  HIBYTE(v28) = [v6 unsignedCharValue];
+  action = [(MTRColorControlClusterColorLoopSetParams *)self action];
+  HIBYTE(v28) = [action unsignedCharValue];
 
-  v7 = [(MTRColorControlClusterColorLoopSetParams *)self direction];
-  v29 = [v7 unsignedCharValue];
+  direction = [(MTRColorControlClusterColorLoopSetParams *)self direction];
+  unsignedCharValue = [direction unsignedCharValue];
 
-  v8 = [(MTRColorControlClusterColorLoopSetParams *)self time];
-  LOWORD(v30) = [v8 unsignedShortValue];
+  time = [(MTRColorControlClusterColorLoopSetParams *)self time];
+  LOWORD(v30) = [time unsignedShortValue];
 
-  v9 = [(MTRColorControlClusterColorLoopSetParams *)self startHue];
-  HIWORD(v30) = [v9 unsignedShortValue];
+  startHue = [(MTRColorControlClusterColorLoopSetParams *)self startHue];
+  HIWORD(v30) = [startHue unsignedShortValue];
 
-  v10 = [(MTRColorControlClusterColorLoopSetParams *)self optionsMask];
-  LOBYTE(v31) = [v10 unsignedCharValue];
+  optionsMask = [(MTRColorControlClusterColorLoopSetParams *)self optionsMask];
+  LOBYTE(v31) = [optionsMask unsignedCharValue];
 
-  v11 = [(MTRColorControlClusterColorLoopSetParams *)self optionsOverride];
-  HIBYTE(v31) = [v11 unsignedCharValue];
+  optionsOverride = [(MTRColorControlClusterColorLoopSetParams *)self optionsOverride];
+  HIBYTE(v31) = [optionsOverride unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v25);
   if (v25)
@@ -139,8 +139,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v25);
-      v12 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v25);
+      v12 = sub_2393C7114(reader, 21, 256);
       v15 = v19;
       v14 = v12;
     }
@@ -168,19 +168,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRColorControlClusterColorLoopSetParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -191,7 +191,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x674800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

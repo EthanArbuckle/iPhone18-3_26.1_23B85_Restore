@@ -1,15 +1,15 @@
 @interface __FKOrderMessagesPreviewMetadata
-+ (id)createWalletDeepLinkForExistingOrderAt:(id)a3;
++ (id)createWalletDeepLinkForExistingOrderAt:(id)at;
 - (__FKOrderMessagesPreviewMetadata)init;
-- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)a3 error:(id *)a4;
-- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)a3 workingDirectory:(id)a4 error:(id *)a5;
+- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)data error:(id *)error;
+- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)data workingDirectory:(id)directory error:(id *)error;
 @end
 
 @implementation __FKOrderMessagesPreviewMetadata
 
-- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)a3 error:(id *)a4
+- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_1B77FF5B8();
   v7 = v6;
 
@@ -18,13 +18,13 @@
   return v8;
 }
 
-- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)a3 workingDirectory:(id)a4 error:(id *)a5
+- (__FKOrderMessagesPreviewMetadata)initWithOrderData:(id)data workingDirectory:(id)directory error:(id *)error
 {
   v7 = sub_1B77FF4F8();
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = a3;
-  v11 = a4;
+  dataCopy = data;
+  directoryCopy = directory;
   v12 = sub_1B77FF5B8();
   v14 = v13;
 
@@ -32,7 +32,7 @@
   return OrderMessagesPreviewMetadata.init(orderData:workingDirectory:)(v12, v14, v9);
 }
 
-+ (id)createWalletDeepLinkForExistingOrderAt:(id)a3
++ (id)createWalletDeepLinkForExistingOrderAt:(id)at
 {
   v3 = sub_1B77FF4F8();
   v4 = *(v3 - 8);

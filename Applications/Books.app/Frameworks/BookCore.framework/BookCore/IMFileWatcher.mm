@@ -1,9 +1,9 @@
 @interface IMFileWatcher
 + (id)defaultWatcher;
 - (IMFileWatcher)init;
-- (id)watchFileAtPath:(id)a3 queue:(id)a4 usingBlock:(id)a5;
+- (id)watchFileAtPath:(id)path queue:(id)queue usingBlock:(id)block;
 - (void)dealloc;
-- (void)removeWatcher:(id)a3;
+- (void)removeWatcher:(id)watcher;
 @end
 
 @implementation IMFileWatcher
@@ -57,11 +57,11 @@
   [(IMFileWatcher *)&v6 dealloc];
 }
 
-- (id)watchFileAtPath:(id)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)watchFileAtPath:(id)path queue:(id)queue usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  queueCopy = queue;
+  blockCopy = block;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -74,13 +74,13 @@
   block[2] = sub_E0168;
   block[3] = &unk_2CCFB8;
   block[4] = self;
-  v18 = v8;
-  v20 = v10;
+  v18 = pathCopy;
+  v20 = blockCopy;
   v21 = &v22;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v19 = queueCopy;
+  v12 = blockCopy;
+  v13 = queueCopy;
+  v14 = pathCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -89,19 +89,19 @@
   return v15;
 }
 
-- (void)removeWatcher:(id)a3
+- (void)removeWatcher:(id)watcher
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  watcherCopy = watcher;
+  v5 = watcherCopy;
+  if (watcherCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_E02F4;
     v7[3] = &unk_2C7BE8;
-    v8 = v4;
-    v9 = self;
+    v8 = watcherCopy;
+    selfCopy = self;
     dispatch_sync(queue, v7);
   }
 }

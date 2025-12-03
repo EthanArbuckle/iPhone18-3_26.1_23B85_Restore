@@ -1,20 +1,20 @@
 @interface PLModelMigrationAction_AddMissingExtendedAttributeDateTimezoneFromCloudMaster
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_AddMissingExtendedAttributeDateTimezoneFromCloudMaster
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v44 = self;
-  v7 = [(PLModelMigrationActionBackground *)self resumeMarker];
-  v8 = v6;
-  v46 = a4;
-  if (v7)
+  contextCopy = context;
+  selfCopy = self;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v8 = contextCopy;
+  errorCopy = error;
+  if (resumeMarker)
   {
-    v9 = [MEMORY[0x1E695DFF8] URLWithString:v7];
+    v9 = [MEMORY[0x1E695DFF8] URLWithString:resumeMarker];
   }
 
   else
@@ -22,8 +22,8 @@
     v9 = 0;
   }
 
-  v10 = [v8 persistentStoreCoordinator];
-  v11 = [v10 managedObjectIDForURIRepresentation:v9];
+  persistentStoreCoordinator = [v8 persistentStoreCoordinator];
+  v11 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v9];
 
   v45 = v8;
   v12 = MEMORY[0x1E695D5E0];
@@ -80,15 +80,15 @@
 
   [v47 setFetchBatchSize:100];
   v48 = 0;
-  v30 = [PLModelMigrationActionUtility updateExtendedAttributesWithAction:v44 managedObjectContext:v45 fetchRequest:v47 useObjectIDResumeMarker:1 error:&v48];
+  v30 = [PLModelMigrationActionUtility updateExtendedAttributesWithAction:selfCopy managedObjectContext:v45 fetchRequest:v47 useObjectIDResumeMarker:1 error:&v48];
   v31 = v48;
-  [(PLModelMigrationActionBackground *)v44 finalizeProgress];
+  [(PLModelMigrationActionBackground *)selfCopy finalizeProgress];
   v32 = v31;
   v33 = v32;
-  if (v30 != 1 && v46)
+  if (v30 != 1 && errorCopy)
   {
     v34 = v32;
-    *v46 = v33;
+    *errorCopy = v33;
   }
 
   return v30;

@@ -1,26 +1,26 @@
 @interface SBPreviousWorkspaceEntity
-+ (id)entityWithPreviousLayoutRole:(int64_t)a3;
-- (SBPreviousWorkspaceEntity)initWithPreviousLayoutRole:(int64_t)a3;
++ (id)entityWithPreviousLayoutRole:(int64_t)role;
+- (SBPreviousWorkspaceEntity)initWithPreviousLayoutRole:(int64_t)role;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBPreviousWorkspaceEntity
 
-+ (id)entityWithPreviousLayoutRole:(int64_t)a3
++ (id)entityWithPreviousLayoutRole:(int64_t)role
 {
-  v3 = [[a1 alloc] initWithPreviousLayoutRole:a3];
+  v3 = [[self alloc] initWithPreviousLayoutRole:role];
 
   return v3;
 }
 
-- (SBPreviousWorkspaceEntity)initWithPreviousLayoutRole:(int64_t)a3
+- (SBPreviousWorkspaceEntity)initWithPreviousLayoutRole:(int64_t)role
 {
   v5.receiver = self;
   v5.super_class = SBPreviousWorkspaceEntity;
   result = [(SBWorkspaceEntity *)&v5 initWithIdentifier:0 displayChangeSettings:0];
   if (result)
   {
-    result->_previousLayoutRole = a3;
+    result->_previousLayoutRole = role;
   }
 
   return result;
@@ -30,11 +30,11 @@
 {
   v7.receiver = self;
   v7.super_class = SBPreviousWorkspaceEntity;
-  v3 = [(SBWorkspaceEntity *)&v7 succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBWorkspaceEntity *)&v7 succinctDescriptionBuilder];
   v4 = SBLayoutRoleDescription(self->_previousLayoutRole);
-  v5 = [v3 appendObject:v4 withName:@"previousLayoutRole"];
+  v5 = [succinctDescriptionBuilder appendObject:v4 withName:@"previousLayoutRole"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

@@ -7,20 +7,20 @@
 
 - (id)sb_briefDescription
 {
-  v2 = [a1 name];
+  name = [self name];
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = v5;
-  if (v2)
+  if (name)
   {
-    v7 = [a1 name];
-    v8 = [v3 stringWithFormat:@"<%@: %p> name: %@", v6, a1, v7];;
+    name2 = [self name];
+    v8 = [v3 stringWithFormat:@"<%@: %p> name: %@", v6, self, name2];;
   }
 
   else
   {
-    v8 = [v3 stringWithFormat:@"<%@: %p>", v5, a1];
+    v8 = [v3 stringWithFormat:@"<%@: %p>", v5, self];
   }
 
   return v8;
@@ -28,15 +28,15 @@
 
 - (__CFString)sb_stringForState
 {
-  v2 = [a1 state];
-  if (v2 >= 6)
+  state = [self state];
+  if (state >= 6)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown: %lu", objc_msgSend(a1, "state")];
+    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown: %lu", objc_msgSend(self, "state")];
   }
 
   else
   {
-    v3 = off_2783C0D48[v2];
+    v3 = off_2783C0D48[state];
   }
 
   return v3;

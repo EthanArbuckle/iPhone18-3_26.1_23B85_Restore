@@ -1,26 +1,26 @@
 @interface NTKMagmaQuad
-- (BOOL)prepareForTime:(double)a3;
+- (BOOL)prepareForTime:(double)time;
 - (CGSize)size;
 - (NTKMagmaEffectsRendererDelegate)delegate;
-- (NTKMagmaQuad)initWithScale:(double)a3;
+- (NTKMagmaQuad)initWithScale:(double)scale;
 - (void)applyLineImpulseWithLinearFalloff:(NTKMagmaQuad *)self;
 - (void)applyLineImpulseWithQuadraticFalloff:(NTKMagmaQuad *)self;
-- (void)applyRandomImpulses:(float)a3;
-- (void)applySpinWithMagnitude:(float)a3;
+- (void)applyRandomImpulses:(float)impulses;
+- (void)applySpinWithMagnitude:(float)magnitude;
 - (void)applyUniformImpulse:(NTKMagmaQuad *)self;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)setBackgroundBottomColor:(id)a3;
-- (void)setBackgroundTopColor:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setLogoColor:(id)a3;
-- (void)setTimeFillColor:(id)a3;
-- (void)setTimeOutlineColor:(id)a3;
-- (void)setupForQuadView:(id)a3;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)setBackgroundBottomColor:(id)color;
+- (void)setBackgroundTopColor:(id)color;
+- (void)setDelegate:(id)delegate;
+- (void)setLogoColor:(id)color;
+- (void)setTimeFillColor:(id)color;
+- (void)setTimeOutlineColor:(id)color;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKMagmaQuad
 
-- (NTKMagmaQuad)initWithScale:(double)a3
+- (NTKMagmaQuad)initWithScale:(double)scale
 {
   v15.receiver = self;
   v15.super_class = NTKMagmaQuad;
@@ -28,7 +28,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_screenScale = a3;
+    v4->_screenScale = scale;
     v6 = +[CLKUIMetalResourceManager sharedDevice];
     device = v5->_device;
     v5->_device = v6;
@@ -52,33 +52,33 @@
   return v5;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
   p_size = &self->_size;
-  v5 = a3;
-  [v5 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   p_size->width = v6;
   p_size->height = v7;
   v8 = [NTKMagmaEffectsRenderer alloc];
   device = self->_device;
   library = self->_library;
-  [v5 bounds];
+  [viewCopy bounds];
   v12 = (v11 * self->_screenScale);
-  [v5 bounds];
+  [viewCopy bounds];
   screenScale = self->_screenScale;
   v15 = (screenScale * v14);
   v16 = screenScale;
-  v17 = [v5 colorPixelFormat];
+  colorPixelFormat = [viewCopy colorPixelFormat];
 
   *&v18 = v16;
-  v19 = [(NTKMagmaEffectsRenderer *)v8 initWithDevice:device library:library width:v12 height:v15 screenScale:v17 colorPixelFormat:v18];
+  v19 = [(NTKMagmaEffectsRenderer *)v8 initWithDevice:device library:library width:v12 height:v15 screenScale:colorPixelFormat colorPixelFormat:v18];
   renderer = self->_renderer;
   self->_renderer = v19;
 
   _objc_release_x1();
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
   renderSemaphore = self->_renderSemaphore;
   v6 = dispatch_time(0, 3000000000);
@@ -93,7 +93,7 @@
 
   else
   {
-    if ([(NTKMagmaEffectsRenderer *)self->_renderer prepareForTime:a3])
+    if ([(NTKMagmaEffectsRenderer *)self->_renderer prepareForTime:time])
     {
       return 1;
     }
@@ -104,24 +104,24 @@
   return 0;
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
   renderer = self->_renderer;
-  v5 = a3;
-  [(NTKMagmaEffectsRenderer *)renderer performOffscreenPassesWithCommandBuffer:v5];
+  bufferCopy = buffer;
+  [(NTKMagmaEffectsRenderer *)renderer performOffscreenPassesWithCommandBuffer:bufferCopy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_9520;
   v6[3] = &unk_14728;
   v6[4] = self;
-  [v5 addCompletedHandler:v6];
+  [bufferCopy addCompletedHandler:v6];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  [(NTKMagmaEffectsRenderer *)self->_renderer setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  [(NTKMagmaEffectsRenderer *)self->_renderer setDelegate:delegateCopy];
 }
 
 - (void)applyUniformImpulse:(NTKMagmaQuad *)self
@@ -134,13 +134,13 @@
   [(NTKMagmaQuad *)self applySpringImpulseWithBlock:v3];
 }
 
-- (void)applyRandomImpulses:(float)a3
+- (void)applyRandomImpulses:(float)impulses
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_9708;
   v3[3] = &unk_14768;
-  v4 = a3;
+  impulsesCopy = impulses;
   [(NTKMagmaQuad *)self applySpringImpulseWithBlock:v3];
 }
 
@@ -183,53 +183,53 @@
   }
 }
 
-- (void)applySpinWithMagnitude:(float)a3
+- (void)applySpinWithMagnitude:(float)magnitude
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_99F8;
   v3[3] = &unk_147B0;
   v3[4] = self;
-  v4 = a3;
+  magnitudeCopy = magnitude;
   [(NTKMagmaQuad *)self applySpringImpulseWithBlock:v3];
 }
 
-- (void)setTimeFillColor:(id)a3
+- (void)setTimeFillColor:(id)color
 {
-  objc_storeStrong(&self->_timeFillColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_timeFillColor, color);
+  colorCopy = color;
   CLKUIConvertToRGBfFromUIColor();
   [(NTKMagmaEffectsRenderer *)self->_renderer setTimeFillColor:?];
 }
 
-- (void)setTimeOutlineColor:(id)a3
+- (void)setTimeOutlineColor:(id)color
 {
-  objc_storeStrong(&self->_timeOutlineColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_timeOutlineColor, color);
+  colorCopy = color;
   CLKUIConvertToRGBfFromUIColor();
   [(NTKMagmaEffectsRenderer *)self->_renderer setTimeOutlineColor:?];
 }
 
-- (void)setLogoColor:(id)a3
+- (void)setLogoColor:(id)color
 {
-  objc_storeStrong(&self->_logoColor, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_logoColor, color);
+  colorCopy = color;
   CLKUIConvertToRGBfFromUIColor();
   [(NTKMagmaEffectsRenderer *)self->_renderer setLogoColor:*vmulq_laneq_f32(v5, v5, 3).i64];
 }
 
-- (void)setBackgroundTopColor:(id)a3
+- (void)setBackgroundTopColor:(id)color
 {
-  objc_storeStrong(&self->_backgroundTopColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_backgroundTopColor, color);
+  colorCopy = color;
   CLKUIConvertToRGBfFromUIColor();
   [(NTKMagmaEffectsRenderer *)self->_renderer setBackgroundTopColor:?];
 }
 
-- (void)setBackgroundBottomColor:(id)a3
+- (void)setBackgroundBottomColor:(id)color
 {
-  objc_storeStrong(&self->_backgroundBottomColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_backgroundBottomColor, color);
+  colorCopy = color;
   CLKUIConvertToRGBfFromUIColor();
   [(NTKMagmaEffectsRenderer *)self->_renderer setBackgroundBottomColor:?];
 }

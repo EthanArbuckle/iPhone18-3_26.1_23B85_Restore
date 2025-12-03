@@ -1,37 +1,37 @@
 @interface HMDCoreDataCloudTransformableLocalEvents
-+ (void)_addEventForObjectWithID:(void *)a3 additionalUpdates:(void *)a4 context:;
++ (void)_addEventForObjectWithID:(void *)d additionalUpdates:(void *)updates context:;
 @end
 
 @implementation HMDCoreDataCloudTransformableLocalEvents
 
-+ (void)_addEventForObjectWithID:(void *)a3 additionalUpdates:(void *)a4 context:
++ (void)_addEventForObjectWithID:(void *)d additionalUpdates:(void *)updates context:
 {
   v38[1] = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  updatesCopy = updates;
   v9 = objc_opt_self();
-  v10 = [v6 entity];
+  entity = [v6 entity];
   v11 = +[_MKFEvent entity];
-  v12 = [v10 isKindOfEntity:v11];
+  v12 = [entity isKindOfEntity:v11];
 
   if (v12)
   {
     v38[0] = @"trigger";
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
     v30 = 0;
-    v14 = [v8 hmd_fetchExistingObjectWithID:v6 propertiesToFetch:v13 error:&v30];
+    v14 = [updatesCopy hmd_fetchExistingObjectWithID:v6 propertiesToFetch:v13 error:&v30];
     v15 = v30;
 
-    v16 = [v14 trigger];
+    trigger = [v14 trigger];
 
-    if (v16)
+    if (trigger)
     {
-      v17 = [v14 trigger];
-      v18 = [v17 objectID];
+      trigger2 = [v14 trigger];
+      objectID = [trigger2 objectID];
       v37 = @"events_";
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
-      [v9 addToUpdates:v7 objectID:v18 properties:v19];
+      [v9 addToUpdates:dCopy objectID:objectID properties:v19];
 
 LABEL_13:
       goto LABEL_14;

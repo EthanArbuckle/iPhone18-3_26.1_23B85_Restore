@@ -1,15 +1,15 @@
 @interface AddedBookmarkToastViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)presentToast;
 @end
 
 @implementation AddedBookmarkToastViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AddedBookmarkToastViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AddedBookmarkToastViewController" hasInstanceMethod:@"presentToast" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AddedBookmarkToastViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AddedBookmarkToastViewController" hasInstanceMethod:@"presentToast" withFullSignature:{"v", 0}];
 }
 
 - (void)presentToast

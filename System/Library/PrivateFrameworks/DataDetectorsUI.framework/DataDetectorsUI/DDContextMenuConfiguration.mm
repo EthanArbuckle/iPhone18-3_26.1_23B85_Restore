@@ -1,28 +1,28 @@
 @interface DDContextMenuConfiguration
-- (BOOL)performPreviewActionForMenuWithAnimator:(id)a3;
+- (BOOL)performPreviewActionForMenuWithAnimator:(id)animator;
 @end
 
 @implementation DDContextMenuConfiguration
 
-- (BOOL)performPreviewActionForMenuWithAnimator:(id)a3
+- (BOOL)performPreviewActionForMenuWithAnimator:(id)animator
 {
-  v4 = a3;
-  v5 = [(DDContextMenuConfiguration *)self interactionViewControllerProvider];
-  if (v5)
+  animatorCopy = animator;
+  interactionViewControllerProvider = [(DDContextMenuConfiguration *)self interactionViewControllerProvider];
+  if (interactionViewControllerProvider)
   {
-    [v4 setPreferredCommitStyle:1];
-    v6 = [v4 previewViewController];
-    v7 = [v6 presentingViewController];
+    [animatorCopy setPreferredCommitStyle:1];
+    previewViewController = [animatorCopy previewViewController];
+    presentingViewController = [previewViewController presentingViewController];
 
-    if (v7)
+    if (presentingViewController)
     {
-      v8 = v5[2](v5);
+      v8 = interactionViewControllerProvider[2](interactionViewControllerProvider);
       if ([v8 modalPresentationStyle] == 7)
       {
-        v9 = [v8 popoverPresentationController];
-        v10 = [v9 sourceView];
+        popoverPresentationController = [v8 popoverPresentationController];
+        sourceView = [popoverPresentationController sourceView];
 
-        if (!v10)
+        if (!sourceView)
         {
           [v8 setModalPresentationStyle:0];
         }
@@ -32,11 +32,11 @@
       v15[1] = 3221225472;
       v15[2] = __70__DDContextMenuConfiguration_performPreviewActionForMenuWithAnimator___block_invoke;
       v15[3] = &unk_278290BC8;
-      v16 = v7;
+      v16 = presentingViewController;
       v17 = v8;
       v11 = v8;
-      v7 = v7;
-      [v4 addAnimations:v15];
+      presentingViewController = presentingViewController;
+      [animatorCopy addAnimations:v15];
 
       goto LABEL_9;
     }
@@ -44,25 +44,25 @@
 
   else
   {
-    v7 = [(DDContextMenuConfiguration *)self interactionURL];
-    if (v7)
+    presentingViewController = [(DDContextMenuConfiguration *)self interactionURL];
+    if (presentingViewController)
     {
-      [v4 setPreferredCommitStyle:1];
+      [animatorCopy setPreferredCommitStyle:1];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __70__DDContextMenuConfiguration_performPreviewActionForMenuWithAnimator___block_invoke_2;
       v13[3] = &unk_278290B50;
-      v14 = v7;
-      v7 = v7;
-      [v4 addAnimations:v13];
+      v14 = presentingViewController;
+      presentingViewController = presentingViewController;
+      [animatorCopy addAnimations:v13];
       v11 = v14;
 LABEL_9:
 
-      LOBYTE(v7) = 1;
+      LOBYTE(presentingViewController) = 1;
     }
   }
 
-  return v7;
+  return presentingViewController;
 }
 
 void __70__DDContextMenuConfiguration_performPreviewActionForMenuWithAnimator___block_invoke_2(uint64_t a1)

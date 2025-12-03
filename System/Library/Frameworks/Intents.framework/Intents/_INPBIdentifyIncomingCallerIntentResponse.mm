@@ -1,15 +1,15 @@
 @interface _INPBIdentifyIncomingCallerIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBIdentifyIncomingCallerIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIdentifyIncomingCallerIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatusCode:(id)a3;
+- (int)StringAsStatusCode:(id)code;
 - (unint64_t)hash;
-- (void)addCallRecords:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCallRecords:(id)a3;
-- (void)setStatusCode:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addCallRecords:(id)records;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCallRecords:(id)records;
+- (void)setStatusCode:(int)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIdentifyIncomingCallerIntentResponse
@@ -17,10 +17,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_callRecords count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -40,8 +40,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -50,33 +50,33 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"callRecords"];
+    [dictionary setObject:array forKeyedSubscript:@"callRecords"];
   }
 
   if ([(_INPBIdentifyIncomingCallerIntentResponse *)self hasStatusCode])
   {
-    v11 = [(_INPBIdentifyIncomingCallerIntentResponse *)self statusCode];
-    if (v11 == 1)
+    statusCode = [(_INPBIdentifyIncomingCallerIntentResponse *)self statusCode];
+    if (statusCode == 1)
     {
       v12 = @"NO_INCOMING_CALL";
     }
 
-    else if (v11 == 2)
+    else if (statusCode == 2)
     {
       v12 = @"INCOMING_CALL";
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v11];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", statusCode];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"statusCode"];
+    [dictionary setObject:v12 forKeyedSubscript:@"statusCode"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -95,26 +95,26 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(_INPBIdentifyIncomingCallerIntentResponse *)self callRecords];
-  v6 = [v4 callRecords];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  callRecords = [(_INPBIdentifyIncomingCallerIntentResponse *)self callRecords];
+  callRecords2 = [equalCopy callRecords];
+  v7 = callRecords2;
+  if ((callRecords != 0) != (callRecords2 == 0))
   {
-    v8 = [(_INPBIdentifyIncomingCallerIntentResponse *)self callRecords];
-    if (v8)
+    callRecords3 = [(_INPBIdentifyIncomingCallerIntentResponse *)self callRecords];
+    if (callRecords3)
     {
-      v9 = v8;
-      v10 = [(_INPBIdentifyIncomingCallerIntentResponse *)self callRecords];
-      v11 = [v4 callRecords];
-      v12 = [v10 isEqual:v11];
+      v9 = callRecords3;
+      callRecords4 = [(_INPBIdentifyIncomingCallerIntentResponse *)self callRecords];
+      callRecords5 = [equalCopy callRecords];
+      v12 = [callRecords4 isEqual:callRecords5];
 
       if (!v12)
       {
@@ -126,10 +126,10 @@
     {
     }
 
-    v13 = [(_INPBIdentifyIncomingCallerIntentResponse *)self hasStatusCode];
-    if (v13 == [v4 hasStatusCode])
+    hasStatusCode = [(_INPBIdentifyIncomingCallerIntentResponse *)self hasStatusCode];
+    if (hasStatusCode == [equalCopy hasStatusCode])
     {
-      if (!-[_INPBIdentifyIncomingCallerIntentResponse hasStatusCode](self, "hasStatusCode") || ![v4 hasStatusCode] || (statusCode = self->_statusCode, statusCode == objc_msgSend(v4, "statusCode")))
+      if (!-[_INPBIdentifyIncomingCallerIntentResponse hasStatusCode](self, "hasStatusCode") || ![equalCopy hasStatusCode] || (statusCode = self->_statusCode, statusCode == objc_msgSend(equalCopy, "statusCode")))
       {
         v14 = 1;
         goto LABEL_10;
@@ -148,10 +148,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIdentifyIncomingCallerIntentResponse allocWithZone:](_INPBIdentifyIncomingCallerIntentResponse init];
-  v6 = [(NSArray *)self->_callRecords copyWithZone:a3];
+  v6 = [(NSArray *)self->_callRecords copyWithZone:zone];
   [(_INPBIdentifyIncomingCallerIntentResponse *)v5 setCallRecords:v6];
 
   if ([(_INPBIdentifyIncomingCallerIntentResponse *)self hasStatusCode])
@@ -162,34 +162,34 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIdentifyIncomingCallerIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBIdentifyIncomingCallerIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIdentifyIncomingCallerIntentResponse)initWithCoder:(id)a3
+- (_INPBIdentifyIncomingCallerIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIdentifyIncomingCallerIntentResponse *)self initWithData:v6];
+    self = [(_INPBIdentifyIncomingCallerIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -231,13 +231,13 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsStatusCode:(id)a3
+- (int)StringAsStatusCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = 1;
-  if (([v3 isEqualToString:@"NO_INCOMING_CALL"] & 1) == 0)
+  if (([codeCopy isEqualToString:@"NO_INCOMING_CALL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"INCOMING_CALL"])
+    if ([codeCopy isEqualToString:@"INCOMING_CALL"])
     {
       v4 = 2;
     }
@@ -251,10 +251,10 @@ LABEL_10:
   return v4;
 }
 
-- (void)setStatusCode:(int)a3
+- (void)setStatusCode:(int)code
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (code == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -262,31 +262,31 @@ LABEL_10:
   else
   {
     *&self->_has = has | 1;
-    self->_statusCode = a3;
+    self->_statusCode = code;
   }
 }
 
-- (void)addCallRecords:(id)a3
+- (void)addCallRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   callRecords = self->_callRecords;
-  v8 = v4;
+  v8 = recordsCopy;
   if (!callRecords)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_callRecords;
-    self->_callRecords = v6;
+    self->_callRecords = array;
 
-    v4 = v8;
+    recordsCopy = v8;
     callRecords = self->_callRecords;
   }
 
-  [(NSArray *)callRecords addObject:v4];
+  [(NSArray *)callRecords addObject:recordsCopy];
 }
 
-- (void)setCallRecords:(id)a3
+- (void)setCallRecords:(id)records
 {
-  v4 = [a3 mutableCopy];
+  v4 = [records mutableCopy];
   callRecords = self->_callRecords;
   self->_callRecords = v4;
 

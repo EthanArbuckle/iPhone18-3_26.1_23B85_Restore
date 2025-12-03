@@ -1,31 +1,31 @@
 @interface PKCloudRecordArrayDatabase
-- (PKCloudRecordArrayDatabase)initWithCoder:(id)a3;
-- (PKCloudRecordArrayDatabase)initWithIdentifier:(id)a3;
+- (PKCloudRecordArrayDatabase)initWithCoder:(id)coder;
+- (PKCloudRecordArrayDatabase)initWithIdentifier:(id)identifier;
 - (id)allItems;
 - (id)allObjects;
 - (id)allRecordIDs;
 - (id)allRecordNames;
-- (id)allRecordsWithRecordType:(id)a3;
+- (id)allRecordsWithRecordType:(id)type;
 - (id)countByZoneID;
-- (id)descriptionWithDetailedOutput:(BOOL)a3 includeItem:(BOOL)a4;
+- (id)descriptionWithDetailedOutput:(BOOL)output includeItem:(BOOL)item;
 - (int64_t)count;
-- (void)addCloudRecord:(id)a3;
-- (void)applyCloudRecordDatabase:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addCloudRecord:(id)record;
+- (void)applyCloudRecordDatabase:(id)database;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordArrayDatabase
 
-- (PKCloudRecordArrayDatabase)initWithIdentifier:(id)a3
+- (PKCloudRecordArrayDatabase)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PKCloudRecordArrayDatabase;
   v6 = [(PKCloudRecordArrayDatabase *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     cloudRecordByDatabaseZone = v7->_cloudRecordByDatabaseZone;
     v7->_cloudRecordByDatabaseZone = v8;
@@ -34,9 +34,9 @@
   return v7;
 }
 
-- (PKCloudRecordArrayDatabase)initWithCoder:(id)a3
+- (PKCloudRecordArrayDatabase)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKCloudRecordArrayDatabase;
   v5 = [(PKCloudRecordArrayDatabase *)&v15 init];
@@ -46,11 +46,11 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"cloudRecordByDatabaseZone"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"cloudRecordByDatabaseZone"];
     cloudRecordByDatabaseZone = v5->_cloudRecordByDatabaseZone;
     v5->_cloudRecordByDatabaseZone = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v12;
   }
@@ -58,15 +58,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudRecordByDatabaseZone = self->_cloudRecordByDatabaseZone;
-  v5 = a3;
-  [v5 encodeObject:cloudRecordByDatabaseZone forKey:@"cloudRecordByDatabaseZone"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cloudRecordByDatabaseZone forKey:@"cloudRecordByDatabaseZone"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)descriptionWithDetailedOutput:(BOOL)a3 includeItem:(BOOL)a4
+- (id)descriptionWithDetailedOutput:(BOOL)output includeItem:(BOOL)item
 {
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   cloudRecordByDatabaseZone = self->_cloudRecordByDatabaseZone;
@@ -75,8 +75,8 @@
   v14 = __72__PKCloudRecordArrayDatabase_descriptionWithDetailedOutput_includeItem___block_invoke;
   v15 = &unk_1E79D2AB8;
   v16 = v7;
-  v17 = a3;
-  v18 = a4;
+  outputCopy = output;
+  itemCopy = item;
   v9 = v7;
   [(NSMutableDictionary *)cloudRecordByDatabaseZone enumerateKeysAndObjectsUsingBlock:&v12];
   v10 = [v9 copy];
@@ -104,15 +104,15 @@ void __72__PKCloudRecordArrayDatabase_descriptionWithDetailedOutput_includeItem_
   [v12 appendFormat:@"\n####### End Zone %@ %@#######\n", v14, v13];
 }
 
-- (void)applyCloudRecordDatabase:(id)a3
+- (void)applyCloudRecordDatabase:(id)database
 {
-  v4 = [a3 cloudRecordByDatabaseZone];
+  cloudRecordByDatabaseZone = [database cloudRecordByDatabaseZone];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__PKCloudRecordArrayDatabase_applyCloudRecordDatabase___block_invoke;
   v5[3] = &unk_1E79D2AE0;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [cloudRecordByDatabaseZone enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __55__PKCloudRecordArrayDatabase_applyCloudRecordDatabase___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -134,31 +134,31 @@ void __55__PKCloudRecordArrayDatabase_applyCloudRecordDatabase___block_invoke(ui
   [*(*(a1 + 32) + 16) setObject:v7 forKey:v8];
 }
 
-- (void)addCloudRecord:(id)a3
+- (void)addCloudRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
-    v10 = v4;
-    v5 = [v4 records];
-    v6 = [v5 anyObject];
+    v10 = recordCopy;
+    records = [recordCopy records];
+    anyObject = [records anyObject];
 
-    v7 = [v6 recordID];
-    v8 = [v7 zoneID];
+    recordID = [anyObject recordID];
+    zoneID = [recordID zoneID];
 
-    if (v8)
+    if (zoneID)
     {
-      v9 = [(NSMutableDictionary *)self->_cloudRecordByDatabaseZone objectForKey:v8];
+      v9 = [(NSMutableDictionary *)self->_cloudRecordByDatabaseZone objectForKey:zoneID];
       if (!v9)
       {
-        v9 = [[PKCloudRecordArrayDatabaseZone alloc] initWithZoneID:v8 databaseIdentifier:self->_identifier];
+        v9 = [[PKCloudRecordArrayDatabaseZone alloc] initWithZoneID:zoneID databaseIdentifier:self->_identifier];
       }
 
-      [(NSMutableDictionary *)self->_cloudRecordByDatabaseZone setObject:v9 forKey:v8];
+      [(NSMutableDictionary *)self->_cloudRecordByDatabaseZone setObject:v9 forKey:zoneID];
       [(PKCloudRecordArrayDatabaseZone *)v9 addCloudRecord:v10];
     }
 
-    v4 = v10;
+    recordCopy = v10;
   }
 }
 
@@ -208,9 +208,9 @@ void __40__PKCloudRecordArrayDatabase_allObjects__block_invoke(uint64_t a1, uint
   [v3 addObjectsFromArray:v4];
 }
 
-- (id)allRecordsWithRecordType:(id)a3
+- (id)allRecordsWithRecordType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   cloudRecordByDatabaseZone = self->_cloudRecordByDatabaseZone;
   v11 = MEMORY[0x1E69E9820];
@@ -218,8 +218,8 @@ void __40__PKCloudRecordArrayDatabase_allObjects__block_invoke(uint64_t a1, uint
   v13 = __55__PKCloudRecordArrayDatabase_allRecordsWithRecordType___block_invoke;
   v14 = &unk_1E79D2B08;
   v15 = v5;
-  v16 = v4;
-  v7 = v4;
+  v16 = typeCopy;
+  v7 = typeCopy;
   v8 = v5;
   [(NSMutableDictionary *)cloudRecordByDatabaseZone enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v8 copy];

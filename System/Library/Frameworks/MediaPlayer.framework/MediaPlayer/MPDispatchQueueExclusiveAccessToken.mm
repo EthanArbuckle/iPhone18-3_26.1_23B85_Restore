@@ -1,7 +1,7 @@
 @interface MPDispatchQueueExclusiveAccessToken
-+ (id)tokenWithQueue:(id)a3 owner:(id)a4;
++ (id)tokenWithQueue:(id)queue owner:(id)owner;
 - (id)_init;
-- (void)assertHasExclusiveAccessForOwner:(id)a3;
+- (void)assertHasExclusiveAccessForOwner:(id)owner;
 @end
 
 @implementation MPDispatchQueueExclusiveAccessToken
@@ -13,26 +13,26 @@
   return [(MPDispatchQueueExclusiveAccessToken *)&v3 init];
 }
 
-- (void)assertHasExclusiveAccessForOwner:(id)a3
+- (void)assertHasExclusiveAccessForOwner:(id)owner
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (self->_owner != a3)
+  if (self->_owner != owner)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPExclusiveAccessToken.m" lineNumber:37 description:{@"Exclusive access not for this owner %@ != %@", self->_owner, a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPExclusiveAccessToken.m" lineNumber:37 description:{@"Exclusive access not for this owner %@ != %@", self->_owner, owner}];
   }
 }
 
-+ (id)tokenWithQueue:(id)a3 owner:(id)a4
++ (id)tokenWithQueue:(id)queue owner:(id)owner
 {
-  v5 = a3;
-  v6 = [[MPDispatchQueueExclusiveAccessToken alloc] _init];
-  v7 = v6[1];
-  v6[1] = v5;
+  queueCopy = queue;
+  _init = [[MPDispatchQueueExclusiveAccessToken alloc] _init];
+  v7 = _init[1];
+  _init[1] = queueCopy;
 
-  v6[2] = a4;
+  _init[2] = owner;
 
-  return v6;
+  return _init;
 }
 
 @end

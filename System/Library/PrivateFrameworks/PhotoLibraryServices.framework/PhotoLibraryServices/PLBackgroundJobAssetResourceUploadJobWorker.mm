@@ -1,93 +1,93 @@
 @interface PLBackgroundJobAssetResourceUploadJobWorker
-+ (BOOL)isEnabledForBundle:(id)a3;
-- (BOOL)updateRunningProgress:(id)a3;
-- (BOOL)verifyWorkerIsRunningWithNoProgressAndReturnError:(id *)a3;
-- (PLBackgroundJobAssetResourceUploadJobWorker)initWithLibraryBundle:(id)a3 uploader:(id)a4;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)cancelProgress:(id)a3;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
++ (BOOL)isEnabledForBundle:(id)bundle;
+- (BOOL)updateRunningProgress:(id)progress;
+- (BOOL)verifyWorkerIsRunningWithNoProgressAndReturnError:(id *)error;
+- (PLBackgroundJobAssetResourceUploadJobWorker)initWithLibraryBundle:(id)bundle uploader:(id)uploader;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)cancelProgress:(id)progress;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
 - (void)transitionToCanceled;
 @end
 
 @implementation PLBackgroundJobAssetResourceUploadJobWorker
 
-- (PLBackgroundJobAssetResourceUploadJobWorker)initWithLibraryBundle:(id)a3 uploader:(id)a4
+- (PLBackgroundJobAssetResourceUploadJobWorker)initWithLibraryBundle:(id)bundle uploader:(id)uploader
 {
-  v5 = a3;
+  bundleCopy = bundle;
   swift_unknownObjectRetain();
-  return sub_19BF3BD14(v5, a4);
+  return sub_19BF3BD14(bundleCopy, uploader);
 }
 
-+ (BOOL)isEnabledForBundle:(id)a3
++ (BOOL)isEnabledForBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = static PLBackgroundJobAssetResourceUploadJobWorker.isEnabled(for:)(v3);
+  bundleCopy = bundle;
+  v4 = static PLBackgroundJobAssetResourceUploadJobWorker.isEnabled(for:)(bundleCopy);
 
   return v4 & 1;
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   sub_19BF3B340(0, &qword_1EAFF3EF0);
   sub_19BF41C1C();
   v6 = sub_19C5C46BC();
-  v7 = a3;
-  v8 = self;
-  v9 = PLBackgroundJobAssetResourceUploadJobWorker.workItemsNeedingProcessing(in:validCriterias:)(v7, v6);
+  libraryCopy = library;
+  selfCopy = self;
+  v9 = PLBackgroundJobAssetResourceUploadJobWorker.workItemsNeedingProcessing(in:validCriterias:)(libraryCopy, v6);
 
   return v9;
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
   swift_unknownObjectRetain();
-  v9 = a4;
-  v10 = self;
-  sub_19BF3D26C(a3, v9, v10, v8);
+  libraryCopy = library;
+  selfCopy = self;
+  sub_19BF3D26C(item, libraryCopy, selfCopy, v8);
   _Block_release(v8);
   swift_unknownObjectRelease();
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  PLBackgroundJobAssetResourceUploadJobWorker.stopWorking(onItem:)(a3);
+  selfCopy = self;
+  PLBackgroundJobAssetResourceUploadJobWorker.stopWorking(onItem:)(item);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)verifyWorkerIsRunningWithNoProgressAndReturnError:(id *)a3
+- (BOOL)verifyWorkerIsRunningWithNoProgressAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_19BF3F5E8();
 
   return 1;
 }
 
-- (BOOL)updateRunningProgress:(id)a3
+- (BOOL)updateRunningProgress:(id)progress
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_19BF3F8E8(v3);
+  progressCopy = progress;
+  progressCopy2 = progress;
+  selfCopy = self;
+  LOBYTE(progressCopy) = sub_19BF3F8E8(progressCopy);
 
-  return v3 & 1;
+  return progressCopy & 1;
 }
 
 - (void)transitionToCanceled
 {
-  v2 = self;
+  selfCopy = self;
   sub_19BF3F9A8();
 }
 
-- (void)cancelProgress:(id)a3
+- (void)cancelProgress:(id)progress
 {
-  v5 = a3;
-  v6 = self;
-  sub_19BF3FA78(a3);
+  progressCopy = progress;
+  selfCopy = self;
+  sub_19BF3FA78(progress);
 }
 
 @end

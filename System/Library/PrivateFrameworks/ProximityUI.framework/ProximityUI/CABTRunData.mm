@@ -1,13 +1,13 @@
 @interface CABTRunData
 - (CABTRunData)init;
-- (void)error:(id)a3;
-- (void)firstPose:(id)a3;
-- (void)firstRssiMeasurement:(id)a3;
-- (void)invalidPose:(id)a3;
+- (void)error:(id)error;
+- (void)firstPose:(id)pose;
+- (void)firstRssiMeasurement:(id)measurement;
+- (void)invalidPose:(id)pose;
 - (void)logData;
-- (void)motion:(id)a3;
-- (void)proximityLevelFound:(id)a3;
-- (void)proximityLevelRevoked:(id)a3;
+- (void)motion:(id)motion;
+- (void)proximityLevelFound:(id)found;
+- (void)proximityLevelRevoked:(id)revoked;
 @end
 
 @implementation CABTRunData
@@ -42,94 +42,94 @@
   return v2;
 }
 
-- (void)motion:(id)a3
+- (void)motion:(id)motion
 {
   v4 = MEMORY[0x277CCABB0];
-  v6 = [(CABTRunData *)self numberOfMotionEvents];
-  v5 = [v4 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
+  numberOfMotionEvents = [(CABTRunData *)self numberOfMotionEvents];
+  v5 = [v4 numberWithInt:{objc_msgSend(numberOfMotionEvents, "intValue") + 1}];
   [(CABTRunData *)self setNumberOfMotionEvents:v5];
 }
 
-- (void)proximityLevelFound:(id)a3
+- (void)proximityLevelFound:(id)found
 {
-  v8 = a3;
-  v4 = [(CABTRunData *)self firstProximityLevelFoundEvent];
+  foundCopy = found;
+  firstProximityLevelFoundEvent = [(CABTRunData *)self firstProximityLevelFoundEvent];
 
-  if (!v4)
+  if (!firstProximityLevelFoundEvent)
   {
-    [(CABTRunData *)self setFirstProximityLevelFoundEvent:v8];
+    [(CABTRunData *)self setFirstProximityLevelFoundEvent:foundCopy];
   }
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(CABTRunData *)self numberOfProximityLevelFoundEvents];
-  v7 = [v5 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
+  numberOfProximityLevelFoundEvents = [(CABTRunData *)self numberOfProximityLevelFoundEvents];
+  v7 = [v5 numberWithInt:{objc_msgSend(numberOfProximityLevelFoundEvents, "intValue") + 1}];
   [(CABTRunData *)self setNumberOfProximityLevelFoundEvents:v7];
 }
 
-- (void)proximityLevelRevoked:(id)a3
+- (void)proximityLevelRevoked:(id)revoked
 {
   v4 = MEMORY[0x277CCABB0];
-  v6 = [(CABTRunData *)self numberOfProximityLevelRevokedEvents];
-  v5 = [v4 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
+  numberOfProximityLevelRevokedEvents = [(CABTRunData *)self numberOfProximityLevelRevokedEvents];
+  v5 = [v4 numberWithInt:{objc_msgSend(numberOfProximityLevelRevokedEvents, "intValue") + 1}];
   [(CABTRunData *)self setNumberOfProximityLevelRevokedEvents:v5];
 }
 
-- (void)firstPose:(id)a3
+- (void)firstPose:(id)pose
 {
-  v5 = a3;
-  v4 = [(CABTRunData *)self firstPoseEvent];
+  poseCopy = pose;
+  firstPoseEvent = [(CABTRunData *)self firstPoseEvent];
 
-  if (!v4)
+  if (!firstPoseEvent)
   {
-    [(CABTRunData *)self setFirstPoseEvent:v5];
+    [(CABTRunData *)self setFirstPoseEvent:poseCopy];
   }
 }
 
-- (void)firstRssiMeasurement:(id)a3
+- (void)firstRssiMeasurement:(id)measurement
 {
-  v5 = a3;
-  v4 = [(CABTRunData *)self firstRssiEvent];
+  measurementCopy = measurement;
+  firstRssiEvent = [(CABTRunData *)self firstRssiEvent];
 
-  if (!v4)
+  if (!firstRssiEvent)
   {
-    [(CABTRunData *)self setFirstRssiEvent:v5];
+    [(CABTRunData *)self setFirstRssiEvent:measurementCopy];
   }
 }
 
-- (void)invalidPose:(id)a3
+- (void)invalidPose:(id)pose
 {
   v4 = MEMORY[0x277CCABB0];
-  v6 = [(CABTRunData *)self numberOfInvalidPoseEvents];
-  v5 = [v4 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
+  numberOfInvalidPoseEvents = [(CABTRunData *)self numberOfInvalidPoseEvents];
+  v5 = [v4 numberWithInt:{objc_msgSend(numberOfInvalidPoseEvents, "intValue") + 1}];
   [(CABTRunData *)self setNumberOfInvalidPoseEvents:v5];
 }
 
-- (void)error:(id)a3
+- (void)error:(id)error
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(CABTRunData *)self numberOfErrorEvents];
-  v7 = [v5 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
+  numberOfErrorEvents = [(CABTRunData *)self numberOfErrorEvents];
+  v7 = [v5 numberWithInt:{objc_msgSend(numberOfErrorEvents, "intValue") + 1}];
   [(CABTRunData *)self setNumberOfErrorEvents:v7];
 
   v17[0] = @"status";
-  v8 = [v4 objectForKeyedSubscript:?];
+  v8 = [errorCopy objectForKeyedSubscript:?];
   v17[1] = @"errorDescription";
   v18[0] = v8;
-  v9 = [v4 objectForKeyedSubscript:?];
+  v9 = [errorCopy objectForKeyedSubscript:?];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
   v11 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v10];
-  v12 = [(CABTRunData *)self productUUID];
-  LOBYTE(v9) = v12 == 0;
+  productUUID = [(CABTRunData *)self productUUID];
+  LOBYTE(v9) = productUUID == 0;
 
   if ((v9 & 1) == 0)
   {
-    v13 = [(CABTRunData *)self productUUID];
-    v14 = [v13 UUIDString];
-    [v11 setObject:v14 forKeyedSubscript:@"ProductUUID"];
+    productUUID2 = [(CABTRunData *)self productUUID];
+    uUIDString = [productUUID2 UUIDString];
+    [v11 setObject:uUIDString forKeyedSubscript:@"ProductUUID"];
   }
 
   v16 = v11;
@@ -141,34 +141,34 @@
 - (void)logData
 {
   v82[15] = *MEMORY[0x277D85DE8];
-  v3 = [(CABTRunData *)self startEvent];
-  if (v3)
+  startEvent = [(CABTRunData *)self startEvent];
+  if (startEvent)
   {
-    v4 = [(CABTRunData *)self stopEvent];
+    stopEvent = [(CABTRunData *)self stopEvent];
 
-    if (v4)
+    if (stopEvent)
     {
-      v5 = [(CABTRunData *)self startEvent];
-      v6 = [v5 objectForKeyedSubscript:@"timeElapsed"];
+      startEvent2 = [(CABTRunData *)self startEvent];
+      v6 = [startEvent2 objectForKeyedSubscript:@"timeElapsed"];
       [v6 doubleValue];
       v8 = v7;
 
-      v9 = [(CABTRunData *)self stopEvent];
-      v10 = [v9 objectForKeyedSubscript:@"timeElapsed"];
+      stopEvent2 = [(CABTRunData *)self stopEvent];
+      v10 = [stopEvent2 objectForKeyedSubscript:@"timeElapsed"];
       [v10 doubleValue];
       v77 = v11;
 
-      v12 = [(CABTRunData *)self firstRssiEvent];
+      firstRssiEvent = [(CABTRunData *)self firstRssiEvent];
 
-      if (v12)
+      if (firstRssiEvent)
       {
-        v13 = [(CABTRunData *)self firstRssiEvent];
-        v14 = [v13 objectForKeyedSubscript:@"btRssiEstimate"];
+        firstRssiEvent2 = [(CABTRunData *)self firstRssiEvent];
+        v14 = [firstRssiEvent2 objectForKeyedSubscript:@"btRssiEstimate"];
         [v14 doubleValue];
         v76 = v15;
 
-        v16 = [(CABTRunData *)self firstRssiEvent];
-        v17 = [v16 objectForKeyedSubscript:@"timeElapsed"];
+        firstRssiEvent3 = [(CABTRunData *)self firstRssiEvent];
+        v17 = [firstRssiEvent3 objectForKeyedSubscript:@"timeElapsed"];
         [v17 doubleValue];
         v19 = v18 - v8;
       }
@@ -179,12 +179,12 @@
         v76 = -200.0;
       }
 
-      v20 = [(CABTRunData *)self firstPoseEvent];
+      firstPoseEvent = [(CABTRunData *)self firstPoseEvent];
 
-      if (v20)
+      if (firstPoseEvent)
       {
-        v21 = [(CABTRunData *)self firstPoseEvent];
-        v22 = [v21 objectForKeyedSubscript:@"timeElapsed"];
+        firstPoseEvent2 = [(CABTRunData *)self firstPoseEvent];
+        v22 = [firstPoseEvent2 objectForKeyedSubscript:@"timeElapsed"];
         [v22 doubleValue];
         v24 = v23 - v8;
       }
@@ -194,26 +194,26 @@
         v24 = -1.0;
       }
 
-      v25 = [(CABTRunData *)self armsReachEvent];
+      armsReachEvent = [(CABTRunData *)self armsReachEvent];
 
-      if (v25)
+      if (armsReachEvent)
       {
-        v26 = [(CABTRunData *)self armsReachEvent];
-        v27 = [v26 objectForKeyedSubscript:@"timeElapsed"];
+        armsReachEvent2 = [(CABTRunData *)self armsReachEvent];
+        v27 = [armsReachEvent2 objectForKeyedSubscript:@"timeElapsed"];
         [v27 doubleValue];
         v29 = v28;
 
-        v30 = [(CABTRunData *)self armsReachEvent];
-        v31 = [v30 objectForKeyedSubscript:@"traveledDistance"];
+        armsReachEvent3 = [(CABTRunData *)self armsReachEvent];
+        v31 = [armsReachEvent3 objectForKeyedSubscript:@"traveledDistance"];
         [v31 doubleValue];
         v33 = v32;
-        v34 = [(CABTRunData *)self startEvent];
-        v35 = [v34 objectForKeyedSubscript:@"traveledDistance"];
+        startEvent3 = [(CABTRunData *)self startEvent];
+        v35 = [startEvent3 objectForKeyedSubscript:@"traveledDistance"];
         [v35 doubleValue];
         v37 = v36;
 
-        v38 = [(CABTRunData *)self armsReachEvent];
-        v39 = [v38 objectForKeyedSubscript:@"straightLineDistance"];
+        armsReachEvent4 = [(CABTRunData *)self armsReachEvent];
+        v39 = [armsReachEvent4 objectForKeyedSubscript:@"straightLineDistance"];
         [v39 doubleValue];
         v41 = v40;
         v42 = v29 - v8;
@@ -227,31 +227,31 @@
         v41 = -1.0;
       }
 
-      v44 = [(CABTRunData *)self stopEvent];
-      v45 = [v44 objectForKeyedSubscript:@"traveledDistance"];
+      stopEvent3 = [(CABTRunData *)self stopEvent];
+      v45 = [stopEvent3 objectForKeyedSubscript:@"traveledDistance"];
       [v45 doubleValue];
       v47 = v46;
-      v48 = [(CABTRunData *)self startEvent];
-      v49 = [v48 objectForKeyedSubscript:@"traveledDistance"];
+      startEvent4 = [(CABTRunData *)self startEvent];
+      v49 = [startEvent4 objectForKeyedSubscript:@"traveledDistance"];
       [v49 doubleValue];
       v51 = v50;
 
       v52 = MEMORY[0x277CBEB38];
       v81[0] = @"NumberOfMotionEvents";
-      v79 = [(CABTRunData *)self numberOfMotionEvents];
-      v82[0] = v79;
+      numberOfMotionEvents = [(CABTRunData *)self numberOfMotionEvents];
+      v82[0] = numberOfMotionEvents;
       v81[1] = @"NumberOfLevelFoundEvents";
-      v75 = [(CABTRunData *)self numberOfProximityLevelFoundEvents];
-      v82[1] = v75;
+      numberOfProximityLevelFoundEvents = [(CABTRunData *)self numberOfProximityLevelFoundEvents];
+      v82[1] = numberOfProximityLevelFoundEvents;
       v81[2] = @"NumberOfRevokes";
-      v74 = [(CABTRunData *)self numberOfProximityLevelRevokedEvents];
-      v82[2] = v74;
+      numberOfProximityLevelRevokedEvents = [(CABTRunData *)self numberOfProximityLevelRevokedEvents];
+      v82[2] = numberOfProximityLevelRevokedEvents;
       v81[3] = @"NumberOfInvalidPoseEvents";
-      v73 = [(CABTRunData *)self numberOfInvalidPoseEvents];
-      v82[3] = v73;
+      numberOfInvalidPoseEvents = [(CABTRunData *)self numberOfInvalidPoseEvents];
+      v82[3] = numberOfInvalidPoseEvents;
       v81[4] = @"NumberOfErrorEvents";
-      v72 = [(CABTRunData *)self numberOfErrorEvents];
-      v82[4] = v72;
+      numberOfErrorEvents = [(CABTRunData *)self numberOfErrorEvents];
+      v82[4] = numberOfErrorEvents;
       v81[5] = @"TimeToFirstMeasurement";
       v71 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
       v82[5] = v71;
@@ -270,11 +270,11 @@
       v55 = [MEMORY[0x277CCABB0] numberWithDouble:v76];
       v82[9] = v55;
       v81[10] = @"FinalRSSI";
-      v56 = [(CABTRunData *)self stopEvent];
-      v57 = [v56 objectForKeyedSubscript:@"btRssiEstimate"];
+      stopEvent4 = [(CABTRunData *)self stopEvent];
+      v57 = [stopEvent4 objectForKeyedSubscript:@"btRssiEstimate"];
       v82[10] = v57;
       v81[11] = @"EnteredArmsReach";
-      v58 = [MEMORY[0x277CCABB0] numberWithBool:v25 != 0];
+      v58 = [MEMORY[0x277CCABB0] numberWithBool:armsReachEvent != 0];
       v82[11] = v58;
       v81[12] = @"TotalDistanceMoved";
       v59 = [MEMORY[0x277CCABB0] numberWithDouble:v47 - v51];
@@ -289,14 +289,14 @@
       v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:v81 count:15];
       v64 = [v60 dictionaryWithDictionary:v63];
 
-      v65 = [(CABTRunData *)self productUUID];
-      LOBYTE(v63) = v65 == 0;
+      productUUID = [(CABTRunData *)self productUUID];
+      LOBYTE(v63) = productUUID == 0;
 
       if ((v63 & 1) == 0)
       {
-        v66 = [(CABTRunData *)self productUUID];
-        v67 = [v66 UUIDString];
-        [v64 setObject:v67 forKeyedSubscript:@"ProductUUID"];
+        productUUID2 = [(CABTRunData *)self productUUID];
+        uUIDString = [productUUID2 UUIDString];
+        [v64 setObject:uUIDString forKeyedSubscript:@"ProductUUID"];
       }
 
       v80 = v64;

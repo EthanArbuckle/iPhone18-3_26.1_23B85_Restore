@@ -1,16 +1,16 @@
 @interface WANWActivityMessageSubmitter
-- (WANWActivityMessageSubmitter)initWithMessageGroupType:(int64_t)a3;
-- (id)submitMessage:(id)a3;
+- (WANWActivityMessageSubmitter)initWithMessageGroupType:(int64_t)type;
+- (id)submitMessage:(id)message;
 @end
 
 @implementation WANWActivityMessageSubmitter
 
-- (WANWActivityMessageSubmitter)initWithMessageGroupType:(int64_t)a3
+- (WANWActivityMessageSubmitter)initWithMessageGroupType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = WANWActivityMessageSubmitter;
   v4 = [(WANWActivityMessageSubmitter *)&v8 init];
-  v4->_groupTypeForThisSubmitter = a3;
+  v4->_groupTypeForThisSubmitter = type;
   if (!qword_10010DEF0)
   {
     qword_10010DEF0 = symptom_framework_init();
@@ -34,7 +34,7 @@
         v11 = 1024;
         v12 = 78;
         v13 = 2048;
-        v14 = a3;
+        typeCopy = type;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error configuring groupType: %ld", buf, 0x1Cu);
       }
 
@@ -45,13 +45,13 @@
   return v4;
 }
 
-- (id)submitMessage:(id)a3
+- (id)submitMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 key];
+    v6 = [messageCopy key];
     *buf = 136446722;
     v43 = "[WANWActivityMessageSubmitter submitMessage:]";
     v44 = 1024;
@@ -111,7 +111,7 @@
     goto LABEL_34;
   }
 
-  v10 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:v4];
+  v10 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:messageCopy];
   if (!v10)
   {
     v34 = WALogCategoryDefaultHandle();
@@ -219,7 +219,7 @@ LABEL_34:
     v23 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [v4 key];
+      v24 = [messageCopy key];
       *buf = 136446722;
       v43 = "[WANWActivityMessageSubmitter submitMessage:]";
       v44 = 1024;
@@ -231,9 +231,9 @@ LABEL_34:
   }
 
 LABEL_20:
-  v25 = [(WAMessageAWDSubmitter *)self submissionDelegate];
-  v26 = [v4 uuid];
-  [v25 messsageWasSubmittedWithUUID:v26];
+  submissionDelegate = [(WAMessageAWDSubmitter *)self submissionDelegate];
+  uuid = [messageCopy uuid];
+  [submissionDelegate messsageWasSubmittedWithUUID:uuid];
 
   v27 = WALogCategoryDefaultHandle();
   if (os_signpost_enabled(v27))

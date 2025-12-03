@@ -1,15 +1,15 @@
 @interface FCCGoalProgressContentProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)goalTypesToDisplayAtIndex:(unint64_t)a3;
+- (int)goalTypesToDisplayAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGoalTypeToHighlight:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasGoalTypeToHighlight:(BOOL)highlight;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FCCGoalProgressContentProtobuf
@@ -22,25 +22,25 @@
   [(FCCGoalProgressContentProtobuf *)&v3 dealloc];
 }
 
-- (int)goalTypesToDisplayAtIndex:(unint64_t)a3
+- (int)goalTypesToDisplayAtIndex:(unint64_t)index
 {
   p_goalTypesToDisplays = &self->_goalTypesToDisplays;
   count = self->_goalTypesToDisplays.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_goalTypesToDisplays->list[a3];
+  return p_goalTypesToDisplays->list[index];
 }
 
-- (void)setHasGoalTypeToHighlight:(BOOL)a3
+- (void)setHasGoalTypeToHighlight:(BOOL)highlight
 {
-  if (a3)
+  if (highlight)
   {
     v3 = 2;
   }
@@ -59,20 +59,20 @@
   v8.receiver = self;
   v8.super_class = FCCGoalProgressContentProtobuf;
   v4 = [(FCCGoalProgressContentProtobuf *)&v8 description];
-  v5 = [(FCCGoalProgressContentProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FCCGoalProgressContentProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   eventIdentifier = self->_eventIdentifier;
   if (eventIdentifier)
   {
-    [v3 setObject:eventIdentifier forKey:@"eventIdentifier"];
+    [dictionary setObject:eventIdentifier forKey:@"eventIdentifier"];
   }
 
   v6 = PBRepeatedInt32NSArray();
@@ -96,14 +96,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_eventIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_goalTypesToDisplays.count)
@@ -113,7 +113,7 @@
     {
       v6 = self->_goalTypesToDisplays.list[v5];
       PBDataWriterWriteInt32Field();
-      v4 = v10;
+      toCopy = v10;
       ++v5;
     }
 
@@ -125,7 +125,7 @@
   {
     goalTypeToHighlight = self->_goalTypeToHighlight;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -133,28 +133,28 @@
   {
     expectedGoalValue = self->_expectedGoalValue;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_eventIdentifier)
   {
-    [v8 setEventIdentifier:?];
+    [toCopy setEventIdentifier:?];
   }
 
   if ([(FCCGoalProgressContentProtobuf *)self goalTypesToDisplaysCount])
   {
-    [v8 clearGoalTypesToDisplays];
-    v4 = [(FCCGoalProgressContentProtobuf *)self goalTypesToDisplaysCount];
-    if (v4)
+    [toCopy clearGoalTypesToDisplays];
+    goalTypesToDisplaysCount = [(FCCGoalProgressContentProtobuf *)self goalTypesToDisplaysCount];
+    if (goalTypesToDisplaysCount)
     {
-      v5 = v4;
+      v5 = goalTypesToDisplaysCount;
       for (i = 0; i != v5; ++i)
       {
-        [v8 addGoalTypesToDisplay:{-[FCCGoalProgressContentProtobuf goalTypesToDisplayAtIndex:](self, "goalTypesToDisplayAtIndex:", i)}];
+        [toCopy addGoalTypesToDisplay:{-[FCCGoalProgressContentProtobuf goalTypesToDisplayAtIndex:](self, "goalTypesToDisplayAtIndex:", i)}];
       }
     }
   }
@@ -162,22 +162,22 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v8 + 12) = self->_goalTypeToHighlight;
-    *(v8 + 52) |= 2u;
+    *(toCopy + 12) = self->_goalTypeToHighlight;
+    *(toCopy + 52) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v8 + 4) = *&self->_expectedGoalValue;
-    *(v8 + 52) |= 1u;
+    *(toCopy + 4) = *&self->_expectedGoalValue;
+    *(toCopy + 52) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_eventIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_eventIdentifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -199,16 +199,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   eventIdentifier = self->_eventIdentifier;
-  if (eventIdentifier | *(v4 + 5))
+  if (eventIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)eventIdentifier isEqual:?])
     {
@@ -223,23 +223,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_goalTypeToHighlight != *(v4 + 12))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_goalTypeToHighlight != *(equalCopy + 12))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
 LABEL_14:
     v6 = 0;
     goto LABEL_15;
   }
 
-  v6 = (*(v4 + 52) & 1) == 0;
+  v6 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_expectedGoalValue != *(v4 + 4))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_expectedGoalValue != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
@@ -304,20 +304,20 @@ LABEL_3:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v9 = fromCopy;
+  if (fromCopy[5])
   {
     [(FCCGoalProgressContentProtobuf *)self setEventIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v5 = [v4 goalTypesToDisplaysCount];
-  if (v5)
+  goalTypesToDisplaysCount = [fromCopy goalTypesToDisplaysCount];
+  if (goalTypesToDisplaysCount)
   {
-    v6 = v5;
+    v6 = goalTypesToDisplaysCount;
     for (i = 0; i != v6; ++i)
     {
       -[FCCGoalProgressContentProtobuf addGoalTypesToDisplay:](self, "addGoalTypesToDisplay:", [v9 goalTypesToDisplayAtIndex:i]);

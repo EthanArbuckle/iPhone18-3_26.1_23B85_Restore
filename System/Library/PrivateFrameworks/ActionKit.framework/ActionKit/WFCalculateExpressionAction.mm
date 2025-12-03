@@ -1,17 +1,17 @@
 @interface WFCalculateExpressionAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFCalculateExpressionAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __58__WFCalculateExpressionAction_runAsynchronouslyWithInput___block_invoke;
   v3[3] = &unk_278C225B0;
   v3[4] = self;
-  [a3 getStringRepresentation:v3];
+  [input getStringRepresentation:v3];
 }
 
 void __58__WFCalculateExpressionAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3)

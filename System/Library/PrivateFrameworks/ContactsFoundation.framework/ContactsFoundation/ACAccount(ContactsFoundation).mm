@@ -13,47 +13,47 @@
 
 - (uint64_t)_cn_isPrimaryAccount
 {
-  v1 = [a1 accountPropertyForKey:@"primaryAccount"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"primaryAccount"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)_cn_isLDAP
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E69598C0]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x1E69598C0]];
 
   return v3;
 }
 
 - (uint64_t)_cn_isCardDAV
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E6959820]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x1E6959820]];
 
   return v3;
 }
 
 - (uint64_t)_cn_isAppleDisplayAccount
 {
-  v1 = [a1 displayAccount];
-  v2 = [v1 accountType];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69597F8]];
+  displayAccount = [self displayAccount];
+  accountType = [displayAccount accountType];
+  identifier = [accountType identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   return v4;
 }
 
 - (uint64_t)_cn_isPrimaryiCloudAccount
 {
-  result = [a1 _cn_isPrimaryAccount];
+  result = [self _cn_isPrimaryAccount];
   if (result)
   {
 
-    return [a1 _cn_isAppleDisplayAccount];
+    return [self _cn_isAppleDisplayAccount];
   }
 
   return result;
@@ -61,11 +61,11 @@
 
 - (uint64_t)_cn_isChildDelegateAccount
 {
-  v2 = [a1 _cn_isCardDAV];
-  v3 = [a1 parentAccount];
-  v4 = [v3 _cn_isCardDAV];
+  _cn_isCardDAV = [self _cn_isCardDAV];
+  parentAccount = [self parentAccount];
+  _cn_isCardDAV2 = [parentAccount _cn_isCardDAV];
 
-  return v2 & [a1 _cn_isAppleDisplayAccount] & v4;
+  return _cn_isCardDAV & [self _cn_isAppleDisplayAccount] & _cn_isCardDAV2;
 }
 
 - (uint64_t)_cn_isManaged
@@ -75,32 +75,32 @@
     [ACAccount(ContactsFoundation) _cn_isManaged];
   }
 
-  return [a1 MCIsManaged];
+  return [self MCIsManaged];
 }
 
 - (void)setPropertiesFromDelegateInfo:()ContactsFoundation
 {
   v4 = a3;
-  v5 = [v4 dsid];
-  [a1 set_cn_dsid:v5];
+  dsid = [v4 dsid];
+  [self set_cn_dsid:dsid];
 
-  v6 = [v4 altDSID];
-  [a1 set_cn_altDSID:v6];
+  altDSID = [v4 altDSID];
+  [self set_cn_altDSID:altDSID];
 
-  v7 = [v4 principalPath];
-  [a1 set_cn_principalPath:v7];
+  principalPath = [v4 principalPath];
+  [self set_cn_principalPath:principalPath];
 
-  v8 = [v4 appleID];
-  [a1 set_cn_appleID:v8];
+  appleID = [v4 appleID];
+  [self set_cn_appleID:appleID];
 
-  v9 = [v4 nameComponents];
-  v10 = [v9 givenName];
-  [a1 set_cn_firstName:v10];
+  nameComponents = [v4 nameComponents];
+  givenName = [nameComponents givenName];
+  [self set_cn_firstName:givenName];
 
-  v12 = [v4 nameComponents];
+  nameComponents2 = [v4 nameComponents];
 
-  v11 = [v12 familyName];
-  [a1 set_cn_lastName:v11];
+  familyName = [nameComponents2 familyName];
+  [self set_cn_lastName:familyName];
 }
 
 @end

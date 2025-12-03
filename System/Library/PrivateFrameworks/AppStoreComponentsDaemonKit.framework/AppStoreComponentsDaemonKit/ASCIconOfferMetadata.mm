@@ -1,48 +1,48 @@
 @interface ASCIconOfferMetadata
-- (ASCIconOfferMetadata)initWithBaseImageName:(id)a3 animationName:(id)a4;
-- (ASCIconOfferMetadata)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCIconOfferMetadata)initWithBaseImageName:(id)name animationName:(id)animationName;
+- (ASCIconOfferMetadata)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)imageNameForSize:(id)a3;
+- (id)imageNameForSize:(id)size;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCIconOfferMetadata
 
-- (ASCIconOfferMetadata)initWithBaseImageName:(id)a3 animationName:(id)a4
+- (ASCIconOfferMetadata)initWithBaseImageName:(id)name animationName:(id)animationName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  animationNameCopy = animationName;
   v14.receiver = self;
   v14.super_class = ASCIconOfferMetadata;
-  v8 = [(ASCOfferMetadata *)&v14 _init];
-  if (v8)
+  _init = [(ASCOfferMetadata *)&v14 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    baseImageName = v8->_baseImageName;
-    v8->_baseImageName = v9;
+    v9 = [nameCopy copy];
+    baseImageName = _init->_baseImageName;
+    _init->_baseImageName = v9;
 
-    v11 = [v7 copy];
-    animationName = v8->_animationName;
-    v8->_animationName = v11;
+    v11 = [animationNameCopy copy];
+    animationName = _init->_animationName;
+    _init->_animationName = v11;
   }
 
-  return v8;
+  return _init;
 }
 
-- (ASCIconOfferMetadata)initWithCoder:(id)a3
+- (ASCIconOfferMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseImageName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseImageName"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"animationName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"animationName"];
     if (v6)
     {
       v27.receiver = self;
       v27.super_class = ASCIconOfferMetadata;
-      v7 = [(ASCOfferMetadata *)&v27 initWithCoder:v4];
+      v7 = [(ASCOfferMetadata *)&v27 initWithCoder:coderCopy];
       p_isa = &v7->super.super.isa;
       if (v7)
       {
@@ -51,7 +51,7 @@
       }
 
       self = p_isa;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
@@ -62,7 +62,7 @@
         [(ASCIconOfferMetadata *)v18 initWithCoder:v19, v20, v21, v22, v23, v24, v25];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -74,43 +74,43 @@
       [(ASCIconOfferMetadata *)v10 initWithCoder:v11, v12, v13, v14, v15, v16, v17];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ASCIconOfferMetadata;
-  v4 = a3;
-  [(ASCOfferMetadata *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ASCOfferMetadata *)&v7 encodeWithCoder:coderCopy];
   v5 = [(ASCIconOfferMetadata *)self baseImageName:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"baseImageName"];
+  [coderCopy encodeObject:v5 forKey:@"baseImageName"];
 
-  v6 = [(ASCIconOfferMetadata *)self animationName];
-  [v4 encodeObject:v6 forKey:@"animationName"];
+  animationName = [(ASCIconOfferMetadata *)self animationName];
+  [coderCopy encodeObject:animationName forKey:@"animationName"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCIconOfferMetadata *)self baseImageName];
-  [(ASCHasher *)v3 combineObject:v4];
+  baseImageName = [(ASCIconOfferMetadata *)self baseImageName];
+  [(ASCHasher *)v3 combineObject:baseImageName];
 
-  v5 = [(ASCIconOfferMetadata *)self animationName];
-  [(ASCHasher *)v3 combineObject:v5];
+  animationName = [(ASCIconOfferMetadata *)self animationName];
+  [(ASCHasher *)v3 combineObject:animationName];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -133,31 +133,31 @@
 
   if (v7)
   {
-    v8 = [(ASCIconOfferMetadata *)self baseImageName];
-    v9 = [v7 baseImageName];
-    v10 = v9;
-    if (v8 && v9)
+    baseImageName = [(ASCIconOfferMetadata *)self baseImageName];
+    baseImageName2 = [v7 baseImageName];
+    v10 = baseImageName2;
+    if (baseImageName && baseImageName2)
     {
-      if ([v8 isEqual:v9])
+      if ([baseImageName isEqual:baseImageName2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (baseImageName == baseImageName2)
     {
 LABEL_10:
-      v11 = [(ASCIconOfferMetadata *)self animationName];
-      v12 = [v7 animationName];
-      v13 = v12;
-      if (v11 && v12)
+      animationName = [(ASCIconOfferMetadata *)self animationName];
+      animationName2 = [v7 animationName];
+      v13 = animationName2;
+      if (animationName && animationName2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [animationName isEqual:animationName2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = animationName == animationName2;
       }
 
       goto LABEL_18;
@@ -178,22 +178,22 @@ LABEL_19:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCIconOfferMetadata *)self baseImageName];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"baseImageName"];
+  baseImageName = [(ASCIconOfferMetadata *)self baseImageName];
+  [(ASCDescriber *)v3 addObject:baseImageName withName:@"baseImageName"];
 
-  v5 = [(ASCIconOfferMetadata *)self animationName];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"animationName"];
+  animationName = [(ASCIconOfferMetadata *)self animationName];
+  [(ASCDescriber *)v3 addObject:animationName withName:@"animationName"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
-- (id)imageNameForSize:(id)a3
+- (id)imageNameForSize:(id)size
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ASCIconOfferMetadata *)self baseImageName];
-  v5 = [v3 stringWithFormat:@"%@%@%@", v4, &stru_2835CD1E8, &stru_2835CD1E8];
+  baseImageName = [(ASCIconOfferMetadata *)self baseImageName];
+  v5 = [v3 stringWithFormat:@"%@%@%@", baseImageName, &stru_2835CD1E8, &stru_2835CD1E8];
 
   return v5;
 }

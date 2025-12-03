@@ -1,33 +1,33 @@
 @interface RPReactionsTipViewController
-- (_TtC14ReplayKitAngel28RPReactionsTipViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14ReplayKitAngel28RPReactionsTipViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)prepareForPopoverPresentation:;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RPReactionsTipViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100031810();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100031C9C(a3);
+  selfCopy = self;
+  sub_100031C9C(disappear);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1000343E0();
 }
 
-- (_TtC14ReplayKitAngel28RPReactionsTipViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14ReplayKitAngel28RPReactionsTipViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

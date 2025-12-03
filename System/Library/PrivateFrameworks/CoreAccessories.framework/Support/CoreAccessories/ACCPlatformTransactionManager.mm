@@ -1,9 +1,9 @@
 @interface ACCPlatformTransactionManager
 + (id)sharedManager;
 - (ACCPlatformTransactionManager)init;
-- (void)addTransactionForConnectionUUID:(id)a3;
+- (void)addTransactionForConnectionUUID:(id)d;
 - (void)dealloc;
-- (void)removeTransactionForConnectionUUID:(id)a3;
+- (void)removeTransactionForConnectionUUID:(id)d;
 @end
 
 @implementation ACCPlatformTransactionManager
@@ -139,19 +139,19 @@ void __37__ACCPlatformTransactionManager_init__block_invoke_2(uint64_t a1)
   [(ACCPlatformTransactionManager *)&v4 dealloc];
 }
 
-- (void)addTransactionForConnectionUUID:(id)a3
+- (void)addTransactionForConnectionUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(ACCPlatformTransactionManager *)self transactionsLock];
+    transactionsLock = [(ACCPlatformTransactionManager *)self transactionsLock];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = __65__ACCPlatformTransactionManager_addTransactionForConnectionUUID___block_invoke;
     v6[3] = &unk_100225A08;
-    v7 = v4;
-    v8 = self;
-    dispatch_sync(v5, v6);
+    v7 = dCopy;
+    selfCopy = self;
+    dispatch_sync(transactionsLock, v6);
   }
 }
 
@@ -264,19 +264,19 @@ void __65__ACCPlatformTransactionManager_addTransactionForConnectionUUID___block
   }
 }
 
-- (void)removeTransactionForConnectionUUID:(id)a3
+- (void)removeTransactionForConnectionUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(ACCPlatformTransactionManager *)self transactionsLock];
+    transactionsLock = [(ACCPlatformTransactionManager *)self transactionsLock];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = __68__ACCPlatformTransactionManager_removeTransactionForConnectionUUID___block_invoke;
     v6[3] = &unk_100225A08;
-    v7 = v4;
-    v8 = self;
-    dispatch_sync(v5, v6);
+    v7 = dCopy;
+    selfCopy = self;
+    dispatch_sync(transactionsLock, v6);
   }
 }
 
@@ -413,7 +413,7 @@ void __68__ACCPlatformTransactionManager_removeTransactionForConnectionUUID___bl
   block[1] = 3221225472;
   block[2] = __46__ACCPlatformTransactionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_9 != -1)
   {
     dispatch_once(&sharedManager_once_9, block);

@@ -1,18 +1,18 @@
 @interface FTServerBag
-+ (id)_sharedInstanceForType:(int64_t)a3;
++ (id)_sharedInstanceForType:(int64_t)type;
 - (BOOL)allowSelfSignedCertificates;
 - (BOOL)allowUnsignedBags;
 - (BOOL)isInDebilitatedMode;
 - (BOOL)isLoaded;
 - (BOOL)isLoading;
 - (BOOL)isServerAvailable;
-- (FTServerBag)initWithBagType:(int64_t)a3;
+- (FTServerBag)initWithBagType:(int64_t)type;
 - (NSString)apsEnvironmentName;
 - (NSURL)bagURL;
 - (id)_bag;
 - (id)_cachedBag;
-- (id)objectForKey:(id)a3;
-- (id)urlWithKey:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)urlWithKey:(id)key;
 - (void)dealloc;
 - (void)forceBagLoad;
 - (void)startBagLoad;
@@ -23,36 +23,36 @@
 - (BOOL)isLoaded
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 isLoaded];
+  isLoaded = [v2 isLoaded];
 
-  return v3;
+  return isLoaded;
 }
 
-+ (id)_sharedInstanceForType:(int64_t)a3
++ (id)_sharedInstanceForType:(int64_t)type
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = qword_1ED7687D0[a3];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = qword_1ED7687D0[type];
     if (v6)
     {
       if (([v6 isLoaded] & 1) == 0)
       {
-        [qword_1ED7687D0[a3] startBagLoad];
+        [qword_1ED7687D0[type] startBagLoad];
       }
     }
 
     else
     {
-      v7 = [[FTServerBag alloc] initWithBagType:a3];
-      v8 = qword_1ED7687D0[a3];
-      qword_1ED7687D0[a3] = v7;
+      v7 = [[FTServerBag alloc] initWithBagType:type];
+      v8 = qword_1ED7687D0[type];
+      qword_1ED7687D0[type] = v7;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v3 = qword_1ED7687D0[a3];
+    v3 = qword_1ED7687D0[type];
   }
 
   else
@@ -63,7 +63,7 @@
   return v3;
 }
 
-- (FTServerBag)initWithBagType:(int64_t)a3
+- (FTServerBag)initWithBagType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = FTServerBag;
@@ -71,8 +71,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    v6 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:a3];
+    v4->_type = type;
+    v6 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:type];
   }
 
   return v5;
@@ -80,8 +80,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FTServerBag;
@@ -103,85 +103,85 @@
 - (BOOL)isLoading
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 isLoading];
+  isLoading = [v2 isLoading];
 
-  return v3;
+  return isLoading;
 }
 
 - (id)_cachedBag
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 _cachedBag];
+  _cachedBag = [v2 _cachedBag];
 
-  return v3;
+  return _cachedBag;
 }
 
 - (id)_bag
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 _bag];
+  _bag = [v2 _bag];
 
-  return v3;
+  return _bag;
 }
 
 - (NSURL)bagURL
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 bagURL];
+  bagURL = [v2 bagURL];
 
-  return v3;
+  return bagURL;
 }
 
 - (NSString)apsEnvironmentName
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 apsEnvironmentName];
+  apsEnvironmentName = [v2 apsEnvironmentName];
 
-  return v3;
+  return apsEnvironmentName;
 }
 
 - (BOOL)allowSelfSignedCertificates
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 allowSelfSignedCertificates];
+  allowSelfSignedCertificates = [v2 allowSelfSignedCertificates];
 
-  return v3;
+  return allowSelfSignedCertificates;
 }
 
 - (BOOL)allowUnsignedBags
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 allowUnsignedBags];
+  allowUnsignedBags = [v2 allowUnsignedBags];
 
-  return v3;
+  return allowUnsignedBags;
 }
 
 - (BOOL)isInDebilitatedMode
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 isInDebilitatedMode];
+  isInDebilitatedMode = [v2 isInDebilitatedMode];
 
-  return v3;
+  return isInDebilitatedMode;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v3 = MEMORY[0x1E69A53F0];
   type = self->_type;
-  v5 = a3;
+  keyCopy = key;
   v6 = [v3 sharedInstanceForBagType:type];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   return v7;
 }
 
-- (id)urlWithKey:(id)a3
+- (id)urlWithKey:(id)key
 {
   v3 = MEMORY[0x1E69A53F0];
   type = self->_type;
-  v5 = a3;
+  keyCopy = key;
   v6 = [v3 sharedInstanceForBagType:type];
-  v7 = [v6 urlWithKey:v5];
+  v7 = [v6 urlWithKey:keyCopy];
 
   return v7;
 }
@@ -189,9 +189,9 @@
 - (BOOL)isServerAvailable
 {
   v2 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:self->_type];
-  v3 = [v2 isServerAvailable];
+  isServerAvailable = [v2 isServerAvailable];
 
-  return v3;
+  return isServerAvailable;
 }
 
 @end

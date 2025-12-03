@@ -1,31 +1,31 @@
 @interface CMMotionContextSession
-- (CMMotionContextSession)initWithOptions:(id)a3;
+- (CMMotionContextSession)initWithOptions:(id)options;
 - (id).cxx_construct;
-- (uint64_t)feedARKitWorldPoseWithTimestamp:(int8x16_t)a3 pose:(int32x4_t)a4 status:(__n128)a5;
-- (void)enableMLModel:(BOOL)a3;
-- (void)enterDistractedViewingSession:(int)a3;
-- (void)exitDistractedViewingSession:(int)a3;
-- (void)feedAccessoryConfig:(const Config *)a3;
-- (void)feedAudioAccessoryIMU:(const void *)a3;
-- (void)feedGPSLocationWithTimestamp:(double)a3 course:(double)a4 speed:(double)a5 latitude:(double)a6 longitude:(double)a7 horizontalAccuracy:(double)a8;
-- (void)feedSourceDeviceIMU:(const Sample *)a3;
-- (void)initLoggerWithPrefix:(id)a3 filePath:(id)a4;
-- (void)notifyMotionContextClient:(int)a3;
-- (void)notifyPdrClient:(const void *)a3;
-- (void)notifyStepCountClient:(const void *)a3;
-- (void)setAlgType:(int)a3;
-- (void)setSpeedEstType:(int)a3;
-- (void)setTrackingClientMode:(int)a3;
+- (uint64_t)feedARKitWorldPoseWithTimestamp:(int8x16_t)timestamp pose:(int32x4_t)pose status:(__n128)status;
+- (void)enableMLModel:(BOOL)model;
+- (void)enterDistractedViewingSession:(int)session;
+- (void)exitDistractedViewingSession:(int)session;
+- (void)feedAccessoryConfig:(const Config *)config;
+- (void)feedAudioAccessoryIMU:(const void *)u;
+- (void)feedGPSLocationWithTimestamp:(double)timestamp course:(double)course speed:(double)speed latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy;
+- (void)feedSourceDeviceIMU:(const Sample *)u;
+- (void)initLoggerWithPrefix:(id)prefix filePath:(id)path;
+- (void)notifyMotionContextClient:(int)client;
+- (void)notifyPdrClient:(const void *)client;
+- (void)notifyStepCountClient:(const void *)client;
+- (void)setAlgType:(int)type;
+- (void)setSpeedEstType:(int)type;
+- (void)setTrackingClientMode:(int)mode;
 - (void)start;
-- (void)startMotionContextUpdatesToQueue:(id)a3 andHandler:(id)a4;
-- (void)startPdrUpdatesToQueue:(id)a3 andHandler:(id)a4;
-- (void)startStepCountUpdatesToQueue:(id)a3 andHandler:(id)a4;
+- (void)startMotionContextUpdatesToQueue:(id)queue andHandler:(id)handler;
+- (void)startPdrUpdatesToQueue:(id)queue andHandler:(id)handler;
+- (void)startStepCountUpdatesToQueue:(id)queue andHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation CMMotionContextSession
 
-- (CMMotionContextSession)initWithOptions:(id)a3
+- (CMMotionContextSession)initWithOptions:(id)options
 {
   v39 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -46,7 +46,7 @@
     v5->_currentTime = sub_19B41E070(v6);
     v5->_inDVEvent = 0;
     v5->_lastTrackingDisableRoute = 0;
-    if (a3)
+    if (options)
     {
       if (qword_1EAFE2A58 != -1)
       {
@@ -57,7 +57,7 @@
       if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v38 = a3;
+        optionsCopy = options;
         _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_DEFAULT, "[CMMotionContextSession] Options dictionary: %@", buf, 0xCu);
       }
 
@@ -71,7 +71,7 @@
         }
 
         v35 = 138412290;
-        v36 = a3;
+        optionsCopy2 = options;
         v10 = _os_log_send_and_compose_impl();
         sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMotionContextSession initWithOptions:]", "CoreLocation: %s\n", v10);
         if (v10 != buf)
@@ -80,17 +80,17 @@
         }
       }
 
-      if (objc_msgSend_valueForKey_(a3, v9, @"kCMMotionContextSessionLogMSL"))
+      if (objc_msgSend_valueForKey_(options, v9, @"kCMMotionContextSessionLogMSL"))
       {
-        v12 = objc_msgSend_objectForKeyedSubscript_(a3, v11, @"kCMMotionContextSessionLogMSL");
+        v12 = objc_msgSend_objectForKeyedSubscript_(options, v11, @"kCMMotionContextSessionLogMSL");
         v15 = objc_msgSend_BOOLValue(v12, v13, v14);
         v5->_logMSL = v15;
         if (v15)
         {
-          v16 = objc_msgSend_objectForKeyedSubscript_(a3, v11, @"kCMMotionContextSessionMSLFilePath");
-          if (objc_msgSend_valueForKey_(a3, v17, @"kCMMotionContextSessionMSLFilePrefix"))
+          v16 = objc_msgSend_objectForKeyedSubscript_(options, v11, @"kCMMotionContextSessionMSLFilePath");
+          if (objc_msgSend_valueForKey_(options, v17, @"kCMMotionContextSessionMSLFilePrefix"))
           {
-            v19 = objc_msgSend_objectForKeyedSubscript_(a3, v18, @"kCMMotionContextSessionMSLFilePrefix");
+            v19 = objc_msgSend_objectForKeyedSubscript_(options, v18, @"kCMMotionContextSessionMSLFilePrefix");
             v21 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v20, @"Spatial_%@", v19);
           }
 
@@ -108,7 +108,7 @@
           if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v38 = v21;
+            optionsCopy = v21;
             _os_log_impl(&dword_19B41C000, v22, OS_LOG_TYPE_DEFAULT, "[CMMotionContextSession] MSL file prefix: %@", buf, 0xCu);
           }
 
@@ -122,7 +122,7 @@
             }
 
             v35 = 138412290;
-            v36 = v21;
+            optionsCopy2 = v21;
             v25 = _os_log_send_and_compose_impl();
             sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMotionContextSession initWithOptions:]", "CoreLocation: %s\n", v25);
             if (v25 != buf)
@@ -135,9 +135,9 @@
         }
       }
 
-      if (objc_msgSend_valueForKey_(a3, v11, @"kCMMotionContextSessionUseMLModel"))
+      if (objc_msgSend_valueForKey_(options, v11, @"kCMMotionContextSessionUseMLModel"))
       {
-        v27 = objc_msgSend_objectForKeyedSubscript_(a3, v26, @"kCMMotionContextSessionUseMLModel");
+        v27 = objc_msgSend_objectForKeyedSubscript_(options, v26, @"kCMMotionContextSessionUseMLModel");
         if (objc_msgSend_BOOLValue(v27, v28, v29))
         {
           objc_msgSend_UTF8String(@"/System/Library/PrivateFrameworks/CoreMotionModels.framework/HumanMotionModels/hml.espresso/hml.mlmodelc", v30, v31);
@@ -356,10 +356,10 @@ LABEL_41:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAlgType:(int)a3
+- (void)setAlgType:(int)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  self->_pdr.fAlgType = a3;
+  self->_pdr.fAlgType = type;
   if (qword_1EAFE2A58 != -1)
   {
     dispatch_once(&qword_1EAFE2A58, &unk_1F0E28DA0);
@@ -369,7 +369,7 @@ LABEL_41:
   if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v9 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_19B41C000, v4, OS_LOG_TYPE_DEFAULT, "[CMPdr] Setting Pdr algoType to %d\n", buf, 8u);
   }
 
@@ -393,7 +393,7 @@ LABEL_41:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSpeedEstType:(int)a3
+- (void)setSpeedEstType:(int)type
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2A58 != -1)
@@ -405,7 +405,7 @@ LABEL_41:
   if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v14 = a3;
+    typeCopy2 = type;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_DEFAULT, "Setting Pdr speed estimator to %d\n", buf, 8u);
   }
 
@@ -440,7 +440,7 @@ LABEL_41:
       if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v14 = a3;
+        typeCopy2 = type;
         _os_log_impl(&dword_19B41C000, v9, OS_LOG_TYPE_DEFAULT, "[DoTEstimator] Setting speedType, %d\n", buf, 8u);
       }
 
@@ -461,29 +461,29 @@ LABEL_41:
         }
       }
 
-      *(ptr + 14) = a3;
+      *(ptr + 14) = type;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableMLModel:(BOOL)a3
+- (void)enableMLModel:(BOOL)model
 {
-  if (self->_enableMLModel != a3)
+  if (self->_enableMLModel != model)
   {
-    v3 = a3;
+    modelCopy = model;
     objc_sync_enter(self);
-    self->_enableMLModel = v3;
+    self->_enableMLModel = modelCopy;
     if (self->hmlModel.__ptr_)
     {
-      if (!v3)
+      if (!modelCopy)
       {
         sub_19B5C1D50(&self->hmlModel, 0);
       }
     }
 
-    else if (v3)
+    else if (modelCopy)
     {
       objc_msgSend_UTF8String(@"/System/Library/PrivateFrameworks/CoreMotionModels.framework/HumanMotionModels/hml.espresso/hml.mlmodelc", v5, v6);
       operator new();
@@ -493,11 +493,11 @@ LABEL_41:
   }
 }
 
-- (void)enterDistractedViewingSession:(int)a3
+- (void)enterDistractedViewingSession:(int)session
 {
   v12 = *MEMORY[0x1E69E9840];
-  self->_lastTrackingDisableRoute = a3;
-  if ((a3 | 2) == 3)
+  self->_lastTrackingDisableRoute = session;
+  if ((session | 2) == 3)
   {
     self->_inDVEvent = 1;
     *&self->_distanceTravelledPerDVEvent = 0;
@@ -514,7 +514,7 @@ LABEL_41:
     if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v11 = a3;
+      sessionCopy = session;
       _os_log_impl(&dword_19B41C000, v6, OS_LOG_TYPE_DEFAULT, "[CMMotionContextSession] entered DV event via route %d", buf, 8u);
     }
 
@@ -539,10 +539,10 @@ LABEL_41:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)exitDistractedViewingSession:(int)a3
+- (void)exitDistractedViewingSession:(int)session
 {
   v46 = *MEMORY[0x1E69E9840];
-  if ((self->_lastTrackingDisableRoute | 2) == 3 && (a3 - 1) <= 1)
+  if ((self->_lastTrackingDisableRoute | 2) == 3 && (session - 1) <= 1)
   {
     ptr = self->_analyticsTracker.__ptr_;
     if (*ptr != -1)
@@ -705,7 +705,7 @@ LABEL_41:
       *v35 = v36 + 1;
     }
 
-    if (a3 == 1)
+    if (session == 1)
     {
       v39 = *(v15 + 3);
       v37 = (v15 + 12);
@@ -757,22 +757,22 @@ LABEL_41:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTrackingClientMode:(int)a3
+- (void)setTrackingClientMode:(int)mode
 {
   ptr = self->_analyticsTracker.__ptr_;
   if (ptr)
   {
-    *(ptr + 79) = a3;
+    *(ptr + 79) = mode;
   }
 }
 
-- (void)initLoggerWithPrefix:(id)a3 filePath:(id)a4
+- (void)initLoggerWithPrefix:(id)prefix filePath:(id)path
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (prefix)
   {
-    objc_msgSend_cStringUsingEncoding_(a3, a2, 1);
-    objc_msgSend_cStringUsingEncoding_(a4, v5, 1);
+    objc_msgSend_cStringUsingEncoding_(prefix, a2, 1);
+    objc_msgSend_cStringUsingEncoding_(path, v5, 1);
     operator new();
   }
 
@@ -835,7 +835,7 @@ LABEL_41:
   __break(1u);
 }
 
-- (void)notifyStepCountClient:(const void *)a3
+- (void)notifyStepCountClient:(const void *)client
 {
   if (self->_stepCountClientHandler)
   {
@@ -849,14 +849,14 @@ LABEL_41:
       v7[2] = sub_19B5C2774;
       v7[3] = &unk_1E7532AD8;
       v7[4] = stepCountClientHandler;
-      v7[5] = a3;
+      v7[5] = client;
       dispatch_sync(stepCountClientQueue, v7);
       objc_sync_exit(self);
     }
   }
 }
 
-- (void)notifyPdrClient:(const void *)a3
+- (void)notifyPdrClient:(const void *)client
 {
   if (self->_pdrClientQueue)
   {
@@ -870,14 +870,14 @@ LABEL_41:
       v7[2] = sub_19B5C2834;
       v7[3] = &unk_1E7532AD8;
       v7[4] = pdrClientHandler;
-      v7[5] = a3;
+      v7[5] = client;
       dispatch_sync(pdrClientQueue, v7);
       objc_sync_exit(self);
     }
   }
 }
 
-- (void)notifyMotionContextClient:(int)a3
+- (void)notifyMotionContextClient:(int)client
 {
   if (self->_motionContextClientHandler)
   {
@@ -891,14 +891,14 @@ LABEL_41:
       v7[2] = sub_19B5C2904;
       v7[3] = &unk_1E7532AB0;
       v7[4] = motionContextClientHandler;
-      v8 = a3;
+      clientCopy = client;
       dispatch_sync(motionContextClientQueue, v7);
       objc_sync_exit(self);
     }
   }
 }
 
-- (void)startStepCountUpdatesToQueue:(id)a3 andHandler:(id)a4
+- (void)startStepCountUpdatesToQueue:(id)queue andHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2A58 != -1)
@@ -935,7 +935,7 @@ LABEL_41:
     }
 
 LABEL_12:
-    if (!a3)
+    if (!queue)
     {
       if (qword_1EAFE2A58 != -1)
       {
@@ -943,7 +943,7 @@ LABEL_12:
       }
 
       v13 = qword_1EAFE2A60;
-      a4 = "queue";
+      handler = "queue";
       if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_FAULT))
       {
         *buf = 68289539;
@@ -996,7 +996,7 @@ LABEL_12:
       goto LABEL_40;
     }
 
-    if (a4)
+    if (handler)
     {
       break;
     }
@@ -1007,8 +1007,8 @@ LABEL_12:
     }
 
     v15 = qword_1EAFE2A60;
-    a3 = "assert";
-    a4 = "handler";
+    queue = "assert";
+    handler = "handler";
     if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_FAULT))
     {
       *buf = 68289539;
@@ -1078,14 +1078,14 @@ LABEL_41:
     _Block_release(stepCountClientHandler);
   }
 
-  self->_stepCountClientQueue = a3;
-  dispatch_retain(a3);
-  self->_stepCountClientHandler = _Block_copy(a4);
+  self->_stepCountClientQueue = queue;
+  dispatch_retain(queue);
+  self->_stepCountClientHandler = _Block_copy(handler);
   objc_sync_exit(self);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startPdrUpdatesToQueue:(id)a3 andHandler:(id)a4
+- (void)startPdrUpdatesToQueue:(id)queue andHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2A58 != -1)
@@ -1122,7 +1122,7 @@ LABEL_41:
     }
 
 LABEL_12:
-    if (!a3)
+    if (!queue)
     {
       if (qword_1EAFE2A58 != -1)
       {
@@ -1130,7 +1130,7 @@ LABEL_12:
       }
 
       v13 = qword_1EAFE2A60;
-      a4 = "queue";
+      handler = "queue";
       if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_FAULT))
       {
         *buf = 68289539;
@@ -1183,7 +1183,7 @@ LABEL_12:
       goto LABEL_40;
     }
 
-    if (a4)
+    if (handler)
     {
       break;
     }
@@ -1194,8 +1194,8 @@ LABEL_12:
     }
 
     v15 = qword_1EAFE2A60;
-    a3 = "assert";
-    a4 = "handler";
+    queue = "assert";
+    handler = "handler";
     if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_FAULT))
     {
       *buf = 68289539;
@@ -1265,14 +1265,14 @@ LABEL_41:
     _Block_release(pdrClientHandler);
   }
 
-  self->_pdrClientQueue = a3;
-  dispatch_retain(a3);
-  self->_pdrClientHandler = _Block_copy(a4);
+  self->_pdrClientQueue = queue;
+  dispatch_retain(queue);
+  self->_pdrClientHandler = _Block_copy(handler);
   objc_sync_exit(self);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startMotionContextUpdatesToQueue:(id)a3 andHandler:(id)a4
+- (void)startMotionContextUpdatesToQueue:(id)queue andHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2A58 != -1)
@@ -1309,7 +1309,7 @@ LABEL_41:
     }
 
 LABEL_12:
-    if (!a3)
+    if (!queue)
     {
       if (qword_1EAFE2A58 != -1)
       {
@@ -1317,7 +1317,7 @@ LABEL_12:
       }
 
       v13 = qword_1EAFE2A60;
-      a4 = "queue";
+      handler = "queue";
       if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_FAULT))
       {
         *buf = 68289539;
@@ -1370,7 +1370,7 @@ LABEL_12:
       goto LABEL_40;
     }
 
-    if (a4)
+    if (handler)
     {
       break;
     }
@@ -1381,8 +1381,8 @@ LABEL_12:
     }
 
     v15 = qword_1EAFE2A60;
-    a3 = "assert";
-    a4 = "handler";
+    queue = "assert";
+    handler = "handler";
     if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_FAULT))
     {
       *buf = 68289539;
@@ -1452,24 +1452,24 @@ LABEL_41:
     _Block_release(motionContextClientHandler);
   }
 
-  self->_motionContextClientQueue = a3;
-  dispatch_retain(a3);
-  self->_motionContextClientHandler = _Block_copy(a4);
+  self->_motionContextClientQueue = queue;
+  dispatch_retain(queue);
+  self->_motionContextClientHandler = _Block_copy(handler);
   objc_sync_exit(self);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)feedSourceDeviceIMU:(const Sample *)a3
+- (void)feedSourceDeviceIMU:(const Sample *)u
 {
   if (self->_logMSL)
   {
-    sub_19B5E5DB4(self->_logger.__ptr_, &a3->timestamp);
+    sub_19B5E5DB4(self->_logger.__ptr_, &u->timestamp);
   }
 }
 
-- (void)feedAudioAccessoryIMU:(const void *)a3
+- (void)feedAudioAccessoryIMU:(const void *)u
 {
-  v3 = MEMORY[0x1EEE9AC00](self, a2, a3);
+  v3 = MEMORY[0x1EEE9AC00](self, a2, u);
   v5 = v4;
   v6 = v3;
   v112 = *MEMORY[0x1E69E9840];
@@ -1815,7 +1815,7 @@ LABEL_41:
   v77 = *MEMORY[0x1E69E9840];
 }
 
-- (void)feedAccessoryConfig:(const Config *)a3
+- (void)feedAccessoryConfig:(const Config *)config
 {
   v61 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2A58 != -1)
@@ -1826,14 +1826,14 @@ LABEL_41:
   v5 = qword_1EAFE2A60;
   if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a3->var0;
-    var3 = a3->var3;
+    var0 = config->var0;
+    var3 = config->var3;
     *buf = 67240963;
     *&buf[4] = var0;
     *&buf[8] = 2081;
-    *&buf[10] = a3->var1;
+    *&buf[10] = config->var1;
     v54 = 2081;
-    var2 = a3->var2;
+    var2 = config->var2;
     v56 = 1026;
     v57 = var3;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_DEFAULT, "[CMMotionContextSession] Received accessoryDeviceMotion config. side,%{public}d,configuration,%{private}s,serialNumber,%{private}s,hardwareModel,%{public}d", buf, 0x22u);
@@ -1848,8 +1848,8 @@ LABEL_41:
       dispatch_once(&qword_1EAFE2A58, &unk_1F0E28DA0);
     }
 
-    v48 = a3->var0;
-    v50 = a3->var3;
+    v48 = config->var0;
+    v50 = config->var3;
     v9 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMotionContextSession feedAccessoryConfig:]", "CoreLocation: %s\n", v9);
     if (v9 != buf)
@@ -1859,18 +1859,18 @@ LABEL_41:
   }
 
   objc_sync_enter(self);
-  v10 = a3->var3;
+  v10 = config->var3;
   if (v10 > 3)
   {
     if (v10 == 4)
     {
-      if (a3->var0 == 2)
+      if (config->var0 == 2)
       {
         v11 = &xmmword_19B7B7574;
         goto LABEL_68;
       }
 
-      if (a3->var0 == 1)
+      if (config->var0 == 1)
       {
         v11 = &xmmword_19B7B7564;
         goto LABEL_68;
@@ -1914,9 +1914,9 @@ LABEL_41:
       goto LABEL_38;
     }
 
-    if (a3->var0 != 2)
+    if (config->var0 != 2)
     {
-      if (a3->var0 != 1)
+      if (config->var0 != 1)
       {
         if (qword_1EAFE2A58 != -1)
         {
@@ -1958,9 +1958,9 @@ LABEL_55:
   switch(v10)
   {
     case 1:
-      if (a3->var0 != 2)
+      if (config->var0 != 2)
       {
-        if (a3->var0 != 1)
+        if (config->var0 != 1)
         {
           if (qword_1EAFE2A58 != -1)
           {
@@ -1997,13 +1997,13 @@ LABEL_55:
       v11 = &xmmword_19B7B7524;
       goto LABEL_68;
     case 3:
-      if (a3->var0 == 2)
+      if (config->var0 == 2)
       {
         v11 = &xmmword_19B7B7554;
         goto LABEL_68;
       }
 
-      if (a3->var0 == 1)
+      if (config->var0 == 1)
       {
         v11 = &xmmword_19B7B7544;
 LABEL_68:
@@ -2055,7 +2055,7 @@ LABEL_143:
   }
 
 LABEL_38:
-  if (!a3->var6)
+  if (!config->var6)
   {
     if (qword_1EAFE2A58 != -1)
     {
@@ -2065,7 +2065,7 @@ LABEL_38:
     v20 = qword_1EAFE2A60;
     if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_ERROR))
     {
-      v21 = a3->var3;
+      v21 = config->var3;
       *buf = 67240192;
       *&buf[4] = v21;
       _os_log_impl(&dword_19B41C000, v20, OS_LOG_TYPE_ERROR, "[CMMotionContextSession] Error -- No H2H transformation for model %{public}d", buf, 8u);
@@ -2080,7 +2080,7 @@ LABEL_38:
         dispatch_once(&qword_1EAFE2A58, &unk_1F0E28DA0);
       }
 
-      v23 = a3->var3;
+      v23 = config->var3;
       __p.n128_u32[0] = 67240192;
       __p.n128_u32[1] = v23;
       v24 = _os_log_send_and_compose_impl();
@@ -2091,9 +2091,9 @@ LABEL_38:
     goto LABEL_98;
   }
 
-  v47 = *a3->var7.elements;
-  v49 = a3->var7.elements[2];
-  v14 = a3->var7.elements[3];
+  v47 = *config->var7.elements;
+  v49 = config->var7.elements[2];
+  v14 = config->var7.elements[3];
   if (qword_1EAFE2A58 != -1)
   {
     dispatch_once(&qword_1EAFE2A58, &unk_1F0E28DA0);
@@ -2102,7 +2102,7 @@ LABEL_38:
   v15 = qword_1EAFE2A60;
   if (os_log_type_enabled(qword_1EAFE2A60, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = a3->var3;
+    v16 = config->var3;
     *buf = 67240192;
     *&buf[4] = v16;
     _os_log_impl(&dword_19B41C000, v15, OS_LOG_TYPE_DEFAULT, "[CMMotionContextSession] Use the H2H transformation from IORegistry for model %{public}d", buf, 8u);
@@ -2117,7 +2117,7 @@ LABEL_38:
       dispatch_once(&qword_1EAFE2A58, &unk_1F0E28DA0);
     }
 
-    v18 = a3->var3;
+    v18 = config->var3;
     __p.n128_u32[0] = 67240192;
     __p.n128_u32[1] = v18;
     v19 = _os_log_send_and_compose_impl();
@@ -2223,11 +2223,11 @@ LABEL_98:
       v59 = Current;
       sub_19B4CEB20(v58);
       v34 = *(v58 + 32);
-      v35 = a3->var0;
+      v35 = config->var0;
       *(v34 + 36) |= 2u;
       *(v34 + 28) = v35;
       v36 = *(v58 + 32);
-      sub_19B428B50(&__p, a3->var1);
+      sub_19B428B50(&__p, config->var1);
       sub_19B5C62E0(v36, &__p);
       if (v52 < 0)
       {
@@ -2235,7 +2235,7 @@ LABEL_98:
       }
 
       v37 = *(v58 + 32);
-      sub_19B428B50(&__p, a3->var2);
+      sub_19B428B50(&__p, config->var2);
       sub_19B5C6334(v37, &__p);
       if (v52 < 0)
       {
@@ -2243,7 +2243,7 @@ LABEL_98:
       }
 
       v38 = *(v58 + 32);
-      v39 = a3->var3;
+      v39 = config->var3;
       *(v38 + 36) |= 1u;
       *(v38 + 24) = v39;
       sub_19B50AF20(*v32, buf);
@@ -2255,12 +2255,12 @@ LABEL_98:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)feedARKitWorldPoseWithTimestamp:(int8x16_t)a3 pose:(int32x4_t)a4 status:(__n128)a5
+- (uint64_t)feedARKitWorldPoseWithTimestamp:(int8x16_t)timestamp pose:(int32x4_t)pose status:(__n128)status
 {
   v60 = *MEMORY[0x1E69E9840];
   if (*(result + 16) == 1)
   {
-    v10 = a5.n128_f32[2] + (*a3.i32 + *&a4.i32[1]);
+    v10 = status.n128_f32[2] + (*timestamp.i32 + *&pose.i32[1]);
     if (v10 >= 0.0)
     {
       v19 = sqrtf(v10 + 1.0);
@@ -2268,39 +2268,39 @@ LABEL_98:
       v21 = vrecpe_f32(v20);
       v22 = vmul_f32(v21, vrecps_f32(v20, v21));
       v23.i32[0] = vmul_f32(v22, vrecps_f32(v20, v22)).u32[0];
-      v34 = vmul_n_f32(vsub_f32(vzip1_s32(*&vextq_s8(a4, a4, 8uLL), a5.n128_u64[0]), vext_s8(a5.n128_u64[0], *&vextq_s8(a3, a3, 8uLL), 4uLL)), v23.f32[0]);
-      v24.f32[0] = *&a3.i32[1] - *a4.i32;
+      v34 = vmul_n_f32(vsub_f32(vzip1_s32(*&vextq_s8(pose, pose, 8uLL), status.n128_u64[0]), vext_s8(status.n128_u64[0], *&vextq_s8(timestamp, timestamp, 8uLL), 4uLL)), v23.f32[0]);
+      v24.f32[0] = *&timestamp.i32[1] - *pose.i32;
       v24.i32[1] = v20;
       v23.i32[1] = 0.25;
       v36 = vmul_f32(v24, v23);
     }
 
-    else if (*a3.i32 < *&a4.i32[1] || *a3.i32 < a5.n128_f32[2])
+    else if (*timestamp.i32 < *&pose.i32[1] || *timestamp.i32 < status.n128_f32[2])
     {
-      v12 = 1.0 - *a3.i32;
-      if (*&a4.i32[1] >= a5.n128_f32[2])
+      v12 = 1.0 - *timestamp.i32;
+      if (*&pose.i32[1] >= status.n128_f32[2])
       {
-        v37 = sqrtf(*&a4.i32[1] + (v12 - a5.n128_f32[2]));
+        v37 = sqrtf(*&pose.i32[1] + (v12 - status.n128_f32[2]));
         *&v38 = v37 + v37;
         v39 = vrecpe_f32(v38);
         v40 = vmul_f32(v39, vrecps_f32(v38, v39));
         v41.i32[0] = vmul_f32(v40, vrecps_f32(v38, v40)).u32[0];
-        v40.f32[0] = *&a3.i32[1] + *a4.i32;
+        v40.f32[0] = *&timestamp.i32[1] + *pose.i32;
         v40.i32[1] = v38;
-        v36 = vmul_n_f32(vext_s8(vadd_f32(a5.n128_u64[0], vdup_laneq_s32(a4, 2)), vsub_f32(a5.n128_u64[0], *&vextq_s8(a3, a3, 8uLL)), 4uLL), v41.f32[0]);
+        v36 = vmul_n_f32(vext_s8(vadd_f32(status.n128_u64[0], vdup_laneq_s32(pose, 2)), vsub_f32(status.n128_u64[0], *&vextq_s8(timestamp, timestamp, 8uLL)), 4uLL), v41.f32[0]);
         v41.i32[1] = 0.25;
         v34 = vmul_f32(v40, v41);
       }
 
       else
       {
-        v13 = sqrtf(a5.n128_f32[2] + (v12 - *&a4.i32[1]));
+        v13 = sqrtf(status.n128_f32[2] + (v12 - *&pose.i32[1]));
         v14.f32[0] = v13 + v13;
         v15 = vrecpe_f32(v14.u32[0]);
         v16 = vmul_f32(v15, vrecps_f32(v14.u32[0], v15));
         LODWORD(v17) = vmul_f32(v16, vrecps_f32(v14.u32[0], v16)).u32[0];
-        v34 = vmul_n_f32(vadd_f32(vzip1_s32(*&vextq_s8(a3, a3, 8uLL), *&vextq_s8(a4, a4, 8uLL)), a5.n128_u64[0]), v17);
-        v14.f32[1] = *&a3.i32[1] - *a4.i32;
+        v34 = vmul_n_f32(vadd_f32(vzip1_s32(*&vextq_s8(timestamp, timestamp, 8uLL), *&vextq_s8(pose, pose, 8uLL)), status.n128_u64[0]), v17);
+        v14.f32[1] = *&timestamp.i32[1] - *pose.i32;
         __asm { FMOV            V1.2S, #0.25 }
 
         _D1.f32[1] = v17;
@@ -2310,18 +2310,18 @@ LABEL_98:
 
     else
     {
-      v25 = sqrtf(*a3.i32 + ((1.0 - *&a4.i32[1]) - a5.n128_f32[2]));
+      v25 = sqrtf(*timestamp.i32 + ((1.0 - *&pose.i32[1]) - status.n128_f32[2]));
       v26.f32[0] = v25 + v25;
       v27 = vrecpe_f32(v26.u32[0]);
       v28 = vmul_f32(v27, vrecps_f32(v26.u32[0], v27));
       LODWORD(v29) = vmul_f32(v28, vrecps_f32(v26.u32[0], v28)).u32[0];
-      v26.f32[1] = *&a3.i32[1] + *a4.i32;
+      v26.f32[1] = *&timestamp.i32[1] + *pose.i32;
       __asm { FMOV            V5.2S, #0.25 }
 
       _D5.f32[1] = v29;
       v34 = vmul_f32(v26, _D5);
-      v35.i32[0] = vadd_f32(*&vextq_s8(a3, a3, 8uLL), a5.n128_u64[0]).u32[0];
-      v35.i32[1] = vsub_f32(vdup_laneq_s32(a4, 2), *&a5).i32[1];
+      v35.i32[0] = vadd_f32(*&vextq_s8(timestamp, timestamp, 8uLL), status.n128_u64[0]).u32[0];
+      v35.i32[1] = vsub_f32(vdup_laneq_s32(pose, 2), *&status).i32[1];
       v36 = vmul_n_f32(v35, v29);
     }
 
@@ -2366,7 +2366,7 @@ LABEL_98:
   return result;
 }
 
-- (void)feedGPSLocationWithTimestamp:(double)a3 course:(double)a4 speed:(double)a5 latitude:(double)a6 longitude:(double)a7 horizontalAccuracy:(double)a8
+- (void)feedGPSLocationWithTimestamp:(double)timestamp course:(double)course speed:(double)speed latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy
 {
   if (self->_logMSL)
   {
@@ -2384,22 +2384,22 @@ LABEL_98:
       *&v23[87] = Current;
       v17 = v24;
       *(v24 + 180) |= 0x800u;
-      *(v17 + 96) = a3;
+      *(v17 + 96) = timestamp;
       v18 = v24;
       *(v24 + 180) |= 2u;
-      *(v18 + 16) = a4;
+      *(v18 + 16) = course;
       v19 = v24;
       *(v24 + 180) |= 0x200u;
-      *(v19 + 80) = a5;
+      *(v19 + 80) = speed;
       v20 = v24;
       *(v24 + 180) |= 0x40u;
-      *(v20 + 56) = a6;
+      *(v20 + 56) = latitude;
       v21 = v24;
       *(v24 + 180) |= 0x80u;
-      *(v21 + 64) = a7;
+      *(v21 + 64) = longitude;
       v22 = v24;
       *(v24 + 180) |= 0x20u;
-      *(v22 + 48) = a8;
+      *(v22 + 48) = accuracy;
       sub_19B50AF20(*ptr, v23);
       sub_19B51DBD4(v23);
     }

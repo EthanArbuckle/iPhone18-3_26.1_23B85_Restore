@@ -1,57 +1,57 @@
 @interface AMSStorage
-+ (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4 domain:(id)a5;
-+ (BOOL)_BOOLFromCFPreferencesForKey:(id)a3 defaultValue:(BOOL)a4 domain:(__CFString *)a5;
-+ (BOOL)_BOOLFromDatabaseForKey:(id)a3 defaultValue:(BOOL)a4 domain:(id)a5 error:(id *)a6;
-+ (BOOL)_setBoolWithDatabase:(BOOL)a3 forKey:(id)a4 domain:(id)a5 error:(id *)a6;
-+ (BOOL)_setIntegerWithDatabase:(int64_t)a3 forKey:(id)a4 domain:(id)a5 error:(id *)a6;
-+ (BOOL)_setValueWithDatabase:(id)a3 forKey:(id)a4 domain:(id)a5 error:(id *)a6;
-+ (id)_allKeysWithDomain:(id)a3;
-+ (id)_valueForKey:(id)a3 domain:(id)a4;
-+ (id)_valueFromCFPreferencesForKey:(id)a3 domain:(__CFString *)a4;
-+ (id)_valueFromDatabaseForKey:(id)a3 domain:(id)a4 error:(id *)a5;
-+ (id)sharedStoreReviewMetricsForProcess:(id)a3;
-+ (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4 domain:(id)a5;
-+ (int64_t)_integerFromCFPreferencesForKey:(id)a3 defaultValue:(int64_t)a4 domain:(__CFString *)a5;
-+ (int64_t)_integerFromDatabaseForKey:(id)a3 defaultValue:(int64_t)a4 domain:(id)a5 error:(id *)a6;
-+ (void)_migrateBoolToDatabase:(BOOL)a3 forKey:(id)a4 domain:(id)a5;
-+ (void)_migrateIntegerToDatabase:(int64_t)a3 forKey:(id)a4 domain:(id)a5;
-+ (void)_migrateValueToDatabase:(id)a3 forKey:(id)a4 domain:(id)a5;
-+ (void)_setBool:(BOOL)a3 forKey:(id)a4 domain:(id)a5;
-+ (void)_setBoolWithCFPreferences:(BOOL)a3 forKey:(id)a4 domain:(__CFString *)a5;
-+ (void)_setInteger:(int64_t)a3 forKey:(id)a4 domain:(id)a5;
-+ (void)_setIntegerWithCFPreferences:(int64_t)a3 forKey:(id)a4 domain:(__CFString *)a5;
-+ (void)_setValue:(id)a3 forKey:(id)a4 domain:(id)a5;
-+ (void)_setValueWithCFPreferences:(id)a3 forKey:(id)a4 domain:(id)a5;
-+ (void)setSharedStoreReviewMetrics:(id)a3 forProcess:(id)a4;
++ (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value domain:(id)domain;
++ (BOOL)_BOOLFromCFPreferencesForKey:(id)key defaultValue:(BOOL)value domain:(__CFString *)domain;
++ (BOOL)_BOOLFromDatabaseForKey:(id)key defaultValue:(BOOL)value domain:(id)domain error:(id *)error;
++ (BOOL)_setBoolWithDatabase:(BOOL)database forKey:(id)key domain:(id)domain error:(id *)error;
++ (BOOL)_setIntegerWithDatabase:(int64_t)database forKey:(id)key domain:(id)domain error:(id *)error;
++ (BOOL)_setValueWithDatabase:(id)database forKey:(id)key domain:(id)domain error:(id *)error;
++ (id)_allKeysWithDomain:(id)domain;
++ (id)_valueForKey:(id)key domain:(id)domain;
++ (id)_valueFromCFPreferencesForKey:(id)key domain:(__CFString *)domain;
++ (id)_valueFromDatabaseForKey:(id)key domain:(id)domain error:(id *)error;
++ (id)sharedStoreReviewMetricsForProcess:(id)process;
++ (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value domain:(id)domain;
++ (int64_t)_integerFromCFPreferencesForKey:(id)key defaultValue:(int64_t)value domain:(__CFString *)domain;
++ (int64_t)_integerFromDatabaseForKey:(id)key defaultValue:(int64_t)value domain:(id)domain error:(id *)error;
++ (void)_migrateBoolToDatabase:(BOOL)database forKey:(id)key domain:(id)domain;
++ (void)_migrateIntegerToDatabase:(int64_t)database forKey:(id)key domain:(id)domain;
++ (void)_migrateValueToDatabase:(id)database forKey:(id)key domain:(id)domain;
++ (void)_setBool:(BOOL)bool forKey:(id)key domain:(id)domain;
++ (void)_setBoolWithCFPreferences:(BOOL)preferences forKey:(id)key domain:(__CFString *)domain;
++ (void)_setInteger:(int64_t)integer forKey:(id)key domain:(id)domain;
++ (void)_setIntegerWithCFPreferences:(int64_t)preferences forKey:(id)key domain:(__CFString *)domain;
++ (void)_setValue:(id)value forKey:(id)key domain:(id)domain;
++ (void)_setValueWithCFPreferences:(id)preferences forKey:(id)key domain:(id)domain;
++ (void)setSharedStoreReviewMetrics:(id)metrics forProcess:(id)process;
 @end
 
 @implementation AMSStorage
 
-+ (id)sharedStoreReviewMetricsForProcess:(id)a3
++ (id)sharedStoreReviewMetricsForProcess:(id)process
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", a3];
-  v5 = [a1 _valueForKey:v4];
+  process = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", process];
+  v5 = [self _valueForKey:process];
 
   return v5;
 }
 
-+ (void)setSharedStoreReviewMetrics:(id)a3 forProcess:(id)a4
++ (void)setSharedStoreReviewMetrics:(id)metrics forProcess:(id)process
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v8 = [v6 stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", a4];
-  [a1 _setValue:v7 forKey:v8 domain:@"com.apple.AppleMediaServices"];
+  metricsCopy = metrics;
+  process = [v6 stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", process];
+  [self _setValue:metricsCopy forKey:process domain:@"com.apple.AppleMediaServices"];
 }
 
-+ (id)_allKeysWithDomain:(id)a3
++ (id)_allKeysWithDomain:(id)domain
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v4 = [[AMSStorageDatabase alloc] initWithDomain:v3];
+    oSLogObject2 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v14 = 0;
-    v5 = [(AMSStorageDatabase *)v4 allKeysForDomain:v3 withError:&v14];
+    v5 = [(AMSStorageDatabase *)oSLogObject2 allKeysForDomain:domainCopy withError:&v14];
     v6 = v14;
     if (v6)
     {
@@ -61,8 +61,8 @@
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v9 = objc_opt_class();
         v10 = AMSLogKey();
@@ -73,7 +73,7 @@
         v18 = v10;
         v19 = 2114;
         v20 = v11;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed fetching all keys for database with error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed fetching all keys for database with error: %{public}@", buf, 0x20u);
       }
 
       v12 = 0;
@@ -93,11 +93,11 @@
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v4 = [v6 OSLogObject];
-    if (os_log_type_enabled(&v4->super, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v6 OSLogObject];
+    if (os_log_type_enabled(&oSLogObject2->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_192869000, &v4->super, OS_LOG_TYPE_DEFAULT, "AMSStorage database unsupported. The AMSStorage database feature flag is turned off.", buf, 2u);
+      _os_log_impl(&dword_192869000, &oSLogObject2->super, OS_LOG_TYPE_DEFAULT, "AMSStorage database unsupported. The AMSStorage database feature flag is turned off.", buf, 2u);
     }
 
     v12 = 0;
@@ -106,15 +106,15 @@
   return v12;
 }
 
-+ (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4 domain:(id)a5
++ (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value domain:(id)domain
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  domainCopy = domain;
   v13 = 0;
-  v10 = [a1 _integerFromDatabaseForKey:v8 defaultValue:a4 domain:v9 error:&v13];
+  v10 = [self _integerFromDatabaseForKey:keyCopy defaultValue:value domain:domainCopy error:&v13];
   if (v13)
   {
-    v10 = [a1 _integerFromCFPreferencesForKey:v8 defaultValue:a4 domain:v9];
+    v10 = [self _integerFromCFPreferencesForKey:keyCopy defaultValue:value domain:domainCopy];
   }
 
   v11 = v10;
@@ -122,21 +122,21 @@
   return v11;
 }
 
-+ (int64_t)_integerFromDatabaseForKey:(id)a3 defaultValue:(int64_t)a4 domain:(id)a5 error:(id *)a6
++ (int64_t)_integerFromDatabaseForKey:(id)key defaultValue:(int64_t)value domain:(id)domain error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v16 = [[AMSStorageDatabase alloc] initWithDomain:v10];
+    v16 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v24 = 0;
-    a4 = [(AMSStorageDatabase *)v16 integerForKey:v9 error:&v24];
+    value = [(AMSStorageDatabase *)v16 integerForKey:keyCopy error:&v24];
     v17 = v24;
     v18 = v17;
-    if (a6 && v17)
+    if (error && v17)
     {
       v19 = v17;
-      *a6 = v18;
+      *error = v18;
     }
   }
 
@@ -144,59 +144,59 @@
   {
     v20 = AMSErrorWithFormat(12, @"AMSStorage database unsupported.", @"The AMSStorage database feature flag is turned off.", v11, v12, v13, v14, v15, v23);
     v18 = v20;
-    if (a6)
+    if (error)
     {
       v21 = v20;
-      *a6 = v18;
+      *error = v18;
     }
   }
 
-  return a4;
+  return value;
 }
 
-+ (int64_t)_integerFromCFPreferencesForKey:(id)a3 defaultValue:(int64_t)a4 domain:(__CFString *)a5
++ (int64_t)_integerFromCFPreferencesForKey:(id)key defaultValue:(int64_t)value domain:(__CFString *)domain
 {
-  v8 = a3;
-  CFPreferencesAppSynchronize(a5);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
   keyExistsAndHasValidFormat = 0;
-  AppIntegerValue = CFPreferencesGetAppIntegerValue(v8, a5, &keyExistsAndHasValidFormat);
+  AppIntegerValue = CFPreferencesGetAppIntegerValue(keyCopy, domain, &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat)
   {
     v10 = AppIntegerValue;
-    [a1 _migrateIntegerToDatabase:AppIntegerValue forKey:v8 domain:a5];
+    [self _migrateIntegerToDatabase:AppIntegerValue forKey:keyCopy domain:domain];
 
-    a4 = v10;
+    value = v10;
   }
 
-  return a4;
+  return value;
 }
 
-+ (void)_setInteger:(int64_t)a3 forKey:(id)a4 domain:(id)a5
++ (void)_setInteger:(int64_t)integer forKey:(id)key domain:(id)domain
 {
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  domainCopy = domain;
   v10 = 0;
-  if (![a1 _setIntegerWithDatabase:a3 forKey:v8 domain:v9 error:&v10] || v10)
+  if (![self _setIntegerWithDatabase:integer forKey:keyCopy domain:domainCopy error:&v10] || v10)
   {
-    [a1 _setIntegerWithCFPreferences:a3 forKey:v8 domain:v9];
+    [self _setIntegerWithCFPreferences:integer forKey:keyCopy domain:domainCopy];
   }
 }
 
-+ (BOOL)_setIntegerWithDatabase:(int64_t)a3 forKey:(id)a4 domain:(id)a5 error:(id *)a6
++ (BOOL)_setIntegerWithDatabase:(int64_t)database forKey:(id)key domain:(id)domain error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v16 = [[AMSStorageDatabase alloc] initWithDomain:v10];
+    v16 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v25 = 0;
-    v17 = [(AMSStorageDatabase *)v16 setInteger:a3 forKey:v9 error:&v25];
+    v17 = [(AMSStorageDatabase *)v16 setInteger:database forKey:keyCopy error:&v25];
     v18 = v25;
     v19 = v18;
-    if (a6 && v18)
+    if (error && v18)
     {
       v20 = v18;
-      *a6 = v19;
+      *error = v19;
     }
   }
 
@@ -204,11 +204,11 @@
   {
     v21 = AMSErrorWithFormat(12, @"AMSStorage database unsupported.", @"The AMSStorage database feature flag is turned off.", v11, v12, v13, v14, v15, v24);
     v19 = v21;
-    if (a6)
+    if (error)
     {
       v22 = v21;
       v17 = 0;
-      *a6 = v19;
+      *error = v19;
     }
 
     else
@@ -220,42 +220,42 @@
   return v17;
 }
 
-+ (void)_setIntegerWithCFPreferences:(int64_t)a3 forKey:(id)a4 domain:(__CFString *)a5
++ (void)_setIntegerWithCFPreferences:(int64_t)preferences forKey:(id)key domain:(__CFString *)domain
 {
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  CFPreferencesSetAppValue(v8, [v7 numberWithInteger:a3], a5);
+  keyCopy = key;
+  CFPreferencesSetAppValue(keyCopy, [v7 numberWithInteger:preferences], domain);
 
-  CFPreferencesAppSynchronize(a5);
+  CFPreferencesAppSynchronize(domain);
 }
 
-+ (void)_migrateIntegerToDatabase:(int64_t)a3 forKey:(id)a4 domain:(id)a5
++ (void)_migrateIntegerToDatabase:(int64_t)database forKey:(id)key domain:(id)domain
 {
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v10 = [[AMSStorageDatabase alloc] initWithDomain:v9];
+    v10 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v12 = 0;
-    [(AMSStorageDatabase *)v10 setInteger:a3 forKey:v8 error:&v12];
+    [(AMSStorageDatabase *)v10 setInteger:database forKey:keyCopy error:&v12];
     v11 = v12;
     if (!v11)
     {
-      [a1 _setValueWithCFPreferences:0 forKey:v8 domain:v9];
+      [self _setValueWithCFPreferences:0 forKey:keyCopy domain:domainCopy];
     }
   }
 }
 
-+ (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4 domain:(id)a5
++ (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value domain:(id)domain
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  domainCopy = domain;
   v13 = 0;
-  v10 = [a1 _BOOLFromDatabaseForKey:v8 defaultValue:v6 domain:v9 error:&v13];
+  v10 = [self _BOOLFromDatabaseForKey:keyCopy defaultValue:valueCopy domain:domainCopy error:&v13];
   if (v13)
   {
-    v10 = [a1 _BOOLFromCFPreferencesForKey:v8 defaultValue:v6 domain:v9];
+    v10 = [self _BOOLFromCFPreferencesForKey:keyCopy defaultValue:valueCopy domain:domainCopy];
   }
 
   v11 = v10;
@@ -263,21 +263,21 @@
   return v11;
 }
 
-+ (BOOL)_BOOLFromDatabaseForKey:(id)a3 defaultValue:(BOOL)a4 domain:(id)a5 error:(id *)a6
++ (BOOL)_BOOLFromDatabaseForKey:(id)key defaultValue:(BOOL)value domain:(id)domain error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v16 = [[AMSStorageDatabase alloc] initWithDomain:v10];
+    v16 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v24 = 0;
-    a4 = [(AMSStorageDatabase *)v16 BOOLeanForKey:v9 error:&v24];
+    value = [(AMSStorageDatabase *)v16 BOOLeanForKey:keyCopy error:&v24];
     v17 = v24;
     v18 = v17;
-    if (a6 && v17)
+    if (error && v17)
     {
       v19 = v17;
-      *a6 = v18;
+      *error = v18;
     }
   }
 
@@ -285,60 +285,60 @@
   {
     v20 = AMSErrorWithFormat(12, @"AMSStorage database unsupported.", @"The AMSStorage database feature flag is turned off.", v11, v12, v13, v14, v15, v23);
     v18 = v20;
-    if (a6)
+    if (error)
     {
       v21 = v20;
-      *a6 = v18;
+      *error = v18;
     }
   }
 
-  return a4;
+  return value;
 }
 
-+ (BOOL)_BOOLFromCFPreferencesForKey:(id)a3 defaultValue:(BOOL)a4 domain:(__CFString *)a5
++ (BOOL)_BOOLFromCFPreferencesForKey:(id)key defaultValue:(BOOL)value domain:(__CFString *)domain
 {
-  LOBYTE(v6) = a4;
-  v8 = a3;
-  CFPreferencesAppSynchronize(a5);
+  LOBYTE(v6) = value;
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(v8, a5, &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(keyCopy, domain, &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat)
   {
     v6 = AppBooleanValue != 0;
-    [a1 _migrateBoolToDatabase:v6 forKey:v8 domain:a5];
+    [self _migrateBoolToDatabase:v6 forKey:keyCopy domain:domain];
   }
 
   return v6;
 }
 
-+ (void)_setBool:(BOOL)a3 forKey:(id)a4 domain:(id)a5
++ (void)_setBool:(BOOL)bool forKey:(id)key domain:(id)domain
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  boolCopy = bool;
+  keyCopy = key;
+  domainCopy = domain;
   v10 = 0;
-  if (![a1 _setBoolWithDatabase:v6 forKey:v8 domain:v9 error:&v10] || v10)
+  if (![self _setBoolWithDatabase:boolCopy forKey:keyCopy domain:domainCopy error:&v10] || v10)
   {
-    [a1 _setBoolWithCFPreferences:v6 forKey:v8 domain:v9];
+    [self _setBoolWithCFPreferences:boolCopy forKey:keyCopy domain:domainCopy];
   }
 }
 
-+ (BOOL)_setBoolWithDatabase:(BOOL)a3 forKey:(id)a4 domain:(id)a5 error:(id *)a6
++ (BOOL)_setBoolWithDatabase:(BOOL)database forKey:(id)key domain:(id)domain error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  databaseCopy = database;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v16 = [[AMSStorageDatabase alloc] initWithDomain:v10];
+    v16 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v25 = 0;
-    v17 = [(AMSStorageDatabase *)v16 setBoolean:v8 forKey:v9 error:&v25];
+    v17 = [(AMSStorageDatabase *)v16 setBoolean:databaseCopy forKey:keyCopy error:&v25];
     v18 = v25;
     v19 = v18;
-    if (a6 && v18)
+    if (error && v18)
     {
       v20 = v18;
-      *a6 = v19;
+      *error = v19;
     }
   }
 
@@ -346,11 +346,11 @@
   {
     v21 = AMSErrorWithFormat(12, @"AMSStorage database unsupported.", @"The AMSStorage database feature flag is turned off.", v11, v12, v13, v14, v15, v24);
     v19 = v21;
-    if (a6)
+    if (error)
     {
       v22 = v21;
       v17 = 0;
-      *a6 = v19;
+      *error = v19;
     }
 
     else
@@ -362,50 +362,50 @@
   return v17;
 }
 
-+ (void)_setBoolWithCFPreferences:(BOOL)a3 forKey:(id)a4 domain:(__CFString *)a5
++ (void)_setBoolWithCFPreferences:(BOOL)preferences forKey:(id)key domain:(__CFString *)domain
 {
   v6 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!preferences)
   {
     v6 = MEMORY[0x1E695E4C0];
   }
 
-  CFPreferencesSetAppValue(a4, *v6, a5);
+  CFPreferencesSetAppValue(key, *v6, domain);
 
-  CFPreferencesAppSynchronize(a5);
+  CFPreferencesAppSynchronize(domain);
 }
 
-+ (void)_migrateBoolToDatabase:(BOOL)a3 forKey:(id)a4 domain:(id)a5
++ (void)_migrateBoolToDatabase:(BOOL)database forKey:(id)key domain:(id)domain
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  databaseCopy = database;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v10 = [[AMSStorageDatabase alloc] initWithDomain:v9];
+    v10 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v12 = 0;
-    [(AMSStorageDatabase *)v10 setBoolean:v6 forKey:v8 error:&v12];
+    [(AMSStorageDatabase *)v10 setBoolean:databaseCopy forKey:keyCopy error:&v12];
     v11 = v12;
     if (!v11)
     {
-      [a1 _setValueWithCFPreferences:0 forKey:v8 domain:v9];
+      [self _setValueWithCFPreferences:0 forKey:keyCopy domain:domainCopy];
     }
   }
 }
 
-+ (id)_valueForKey:(id)a3 domain:(id)a4
++ (id)_valueForKey:(id)key domain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  domainCopy = domain;
   v11 = 0;
-  v8 = [a1 _valueFromDatabaseForKey:v6 domain:v7 error:&v11];
+  v8 = [self _valueFromDatabaseForKey:keyCopy domain:domainCopy error:&v11];
   if (v11)
   {
-    v9 = [a1 _valueFromCFPreferencesForKey:v6 domain:v7];
+    v9 = [self _valueFromCFPreferencesForKey:keyCopy domain:domainCopy];
 
     if (v9)
     {
-      [a1 _migrateValueToDatabase:v9 forKey:v6 domain:v7];
+      [self _migrateValueToDatabase:v9 forKey:keyCopy domain:domainCopy];
       v8 = v9;
     }
 
@@ -418,21 +418,21 @@
   return v8;
 }
 
-+ (id)_valueFromDatabaseForKey:(id)a3 domain:(id)a4 error:(id *)a5
++ (id)_valueFromDatabaseForKey:(id)key domain:(id)domain error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v14 = [[AMSStorageDatabase alloc] initWithDomain:v8];
+    v14 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v24 = 0;
-    v15 = [(AMSStorageDatabase *)v14 valueForKey:v7 error:&v24];
+    v15 = [(AMSStorageDatabase *)v14 valueForKey:keyCopy error:&v24];
     v16 = v24;
     v17 = v16;
-    if (a5 && v16)
+    if (error && v16)
     {
       v18 = v16;
-      *a5 = v17;
+      *error = v17;
     }
 
     v19 = v15;
@@ -442,11 +442,11 @@
   {
     v20 = AMSErrorWithFormat(12, @"AMSStorage database unsupported.", @"The AMSStorage database feature flag is turned off.", v9, v10, v11, v12, v13, v23);
     v17 = v20;
-    if (a5)
+    if (error)
     {
       v21 = v20;
       v19 = 0;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -458,56 +458,56 @@
   return v19;
 }
 
-+ (id)_valueFromCFPreferencesForKey:(id)a3 domain:(__CFString *)a4
++ (id)_valueFromCFPreferencesForKey:(id)key domain:(__CFString *)domain
 {
-  v5 = a3;
-  CFPreferencesAppSynchronize(a4);
-  v6 = CFPreferencesCopyAppValue(v5, a4);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
+  v6 = CFPreferencesCopyAppValue(keyCopy, domain);
 
   return v6;
 }
 
-+ (void)_setValue:(id)a3 forKey:(id)a4 domain:(id)a5
++ (void)_setValue:(id)value forKey:(id)key domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  domainCopy = domain;
   v11 = 0;
-  if (![a1 _setValueWithDatabase:v8 forKey:v9 domain:v10 error:&v11] || v11)
+  if (![self _setValueWithDatabase:valueCopy forKey:keyCopy domain:domainCopy error:&v11] || v11)
   {
-    [a1 _setValueWithCFPreferences:v8 forKey:v9 domain:v10];
+    [self _setValueWithCFPreferences:valueCopy forKey:keyCopy domain:domainCopy];
   }
 }
 
-+ (BOOL)_setValueWithDatabase:(id)a3 forKey:(id)a4 domain:(id)a5 error:(id *)a6
++ (BOOL)_setValueWithDatabase:(id)database forKey:(id)key domain:(id)domain error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v17 = [[AMSStorageDatabase alloc] initWithDomain:v11];
+    v17 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v18 = v17;
-    if (v9)
+    if (databaseCopy)
     {
       v27 = 0;
-      v19 = [(AMSStorageDatabase *)v17 setValue:v9 forKey:v10 error:&v27];
+      v19 = [(AMSStorageDatabase *)v17 setValue:databaseCopy forKey:keyCopy error:&v27];
       v20 = v27;
     }
 
     else
     {
       v28 = 0;
-      v19 = [(AMSStorageDatabase *)v17 deleteForKey:v10 error:&v28];
+      v19 = [(AMSStorageDatabase *)v17 deleteForKey:keyCopy error:&v28];
       v20 = v28;
     }
 
     v24 = v20;
     v22 = v24;
-    if (a6 && v24)
+    if (error && v24)
     {
       v25 = v24;
-      *a6 = v22;
+      *error = v22;
     }
   }
 
@@ -515,11 +515,11 @@
   {
     v21 = AMSErrorWithFormat(12, @"AMSStorage database unsupported.", @"The AMSStorage database feature flag is turned off.", v12, v13, v14, v15, v16, v27);
     v22 = v21;
-    if (a6)
+    if (error)
     {
       v23 = v21;
       v19 = 0;
-      *a6 = v22;
+      *error = v22;
     }
 
     else
@@ -531,28 +531,28 @@
   return v19;
 }
 
-+ (void)_migrateValueToDatabase:(id)a3 forKey:(id)a4 domain:(id)a5
++ (void)_migrateValueToDatabase:(id)database forKey:(id)key domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  databaseCopy = database;
+  keyCopy = key;
+  domainCopy = domain;
   if (+[AMSStorageDatabase isFeatureSupported])
   {
-    v11 = [[AMSStorageDatabase alloc] initWithDomain:v10];
+    v11 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
     v13 = 0;
-    [(AMSStorageDatabase *)v11 setValue:v8 forKey:v9 error:&v13];
+    [(AMSStorageDatabase *)v11 setValue:databaseCopy forKey:keyCopy error:&v13];
     v12 = v13;
     if (!v12)
     {
-      [a1 _setValueWithCFPreferences:0 forKey:v9 domain:v10];
+      [self _setValueWithCFPreferences:0 forKey:keyCopy domain:domainCopy];
     }
   }
 }
 
-+ (void)_setValueWithCFPreferences:(id)a3 forKey:(id)a4 domain:(id)a5
++ (void)_setValueWithCFPreferences:(id)preferences forKey:(id)key domain:(id)domain
 {
-  applicationID = a5;
-  CFPreferencesSetAppValue(a4, a3, applicationID);
+  applicationID = domain;
+  CFPreferencesSetAppValue(key, preferences, applicationID);
   CFPreferencesAppSynchronize(applicationID);
 }
 

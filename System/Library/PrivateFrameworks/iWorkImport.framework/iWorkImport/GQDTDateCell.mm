@@ -1,7 +1,7 @@
 @interface GQDTDateCell
 - (__CFString)createStringValue;
 - (__CFString)getDateFormat;
-- (int)readAttributesForDateCell:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesForDateCell:(_xmlTextReader *)cell processor:(id)processor;
 - (void)dealloc;
 @end
 
@@ -32,9 +32,9 @@
   if (self->mDate)
   {
     mComputedFormat = self->mComputedFormat;
-    if (!mComputedFormat || !-[GQDTComputedFormatSpec isDateFormat](mComputedFormat, "isDateFormat") || (v4 = [-[GQDTComputedFormatSpec format](self->mComputedFormat "format")]) == 0)
+    if (!mComputedFormat || !-[GQDTComputedFormatSpec isDateFormat](mComputedFormat, "isDateFormat") || (getDateFormat = [-[GQDTComputedFormatSpec format](self->mComputedFormat "format")]) == 0)
     {
-      v4 = [(GQDTDateCell *)self getDateFormat];
+      getDateFormat = [(GQDTDateCell *)self getDateFormat];
     }
 
     v5 = sub_52308();
@@ -47,9 +47,9 @@
     }
 
     CFDateFormatterSetProperty(v6, kCFDateFormatterTimeZone, v7);
-    if (v4)
+    if (getDateFormat)
     {
-      CFDateFormatterSetFormat(v6, v4);
+      CFDateFormatterSetFormat(v6, getDateFormat);
     }
 
     StringWithDate = CFDateFormatterCreateStringWithDate(0, v6, self->mDate);
@@ -64,13 +64,13 @@
   }
 }
 
-- (int)readAttributesForDateCell:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesForDateCell:(_xmlTextReader *)cell processor:(id)processor
 {
-  v6 = [objc_msgSend(objc_msgSend(a4 "documentState")];
+  v6 = [objc_msgSend(objc_msgSend(processor "documentState")];
   if (v6 >= qword_9CA98)
   {
     v13 = 0.0;
-    if (sub_426B0(a3, qword_A35E8, "cell-date", &v13))
+    if (sub_426B0(cell, qword_A35E8, "cell-date", &v13))
     {
       v11 = [NSDate alloc];
       self->mDate = [v11 initWithTimeIntervalSinceReferenceDate:v13];
@@ -80,7 +80,7 @@
 
   else
   {
-    v7 = sub_4294C(a3, qword_A35E8, "cell-date");
+    v7 = sub_4294C(cell, qword_A35E8, "cell-date");
     if (v7)
     {
       v8 = v7;

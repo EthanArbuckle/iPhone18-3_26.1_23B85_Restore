@@ -1,16 +1,16 @@
 @interface CLSCurationModelSpecification
-- (BOOL)isEqual:(id)a3;
-- (CLSCurationModelSpecification)initWithAsset:(id)a3;
-- (CLSCurationModelSpecification)initWithItemInfo:(id)a3 options:(id)a4;
-- (CLSCurationModelSpecification)initWithSceneAnalysisVersion:(unint64_t)a3 mediaAnalysisVersion:(unint64_t)a4 faceAnalysisVersion:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (CLSCurationModelSpecification)initWithAsset:(id)asset;
+- (CLSCurationModelSpecification)initWithItemInfo:(id)info options:(id)options;
+- (CLSCurationModelSpecification)initWithSceneAnalysisVersion:(unint64_t)version mediaAnalysisVersion:(unint64_t)analysisVersion faceAnalysisVersion:(unint64_t)faceAnalysisVersion;
 @end
 
 @implementation CLSCurationModelSpecification
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -20,7 +20,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       v6 = self->_sceneAnalysisVersion == v7->_sceneAnalysisVersion && self->_mediaAnalysisVersion == v7->_mediaAnalysisVersion && self->_faceAnalysisVersion == v7->_faceAnalysisVersion;
     }
 
@@ -33,45 +33,45 @@
   return v6;
 }
 
-- (CLSCurationModelSpecification)initWithItemInfo:(id)a3 options:(id)a4
+- (CLSCurationModelSpecification)initWithItemInfo:(id)info options:(id)options
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"sceneAnalysisVersion"];
-  v7 = [v6 unsignedIntegerValue];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:@"sceneAnalysisVersion"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v5 objectForKeyedSubscript:@"mediaAnalysisVersion"];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [infoCopy objectForKeyedSubscript:@"mediaAnalysisVersion"];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
 
-  v10 = [v5 objectForKeyedSubscript:@"faceAnalysisVersion"];
+  v10 = [infoCopy objectForKeyedSubscript:@"faceAnalysisVersion"];
 
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v10 unsignedIntegerValue];
 
-  return [(CLSCurationModelSpecification *)self initWithSceneAnalysisVersion:v7 mediaAnalysisVersion:v9 faceAnalysisVersion:v11];
+  return [(CLSCurationModelSpecification *)self initWithSceneAnalysisVersion:unsignedIntegerValue mediaAnalysisVersion:unsignedIntegerValue2 faceAnalysisVersion:unsignedIntegerValue3];
 }
 
-- (CLSCurationModelSpecification)initWithAsset:(id)a3
+- (CLSCurationModelSpecification)initWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 sceneAnalysisProperties];
-  v6 = [v5 sceneAnalysisVersion];
-  v7 = [v4 mediaAnalysisProperties];
-  v8 = [v7 mediaAnalysisVersion];
-  v9 = [v4 faceAnalysisVersion];
+  assetCopy = asset;
+  sceneAnalysisProperties = [assetCopy sceneAnalysisProperties];
+  sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
+  mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+  mediaAnalysisVersion = [mediaAnalysisProperties mediaAnalysisVersion];
+  faceAnalysisVersion = [assetCopy faceAnalysisVersion];
 
-  v10 = [(CLSCurationModelSpecification *)self initWithSceneAnalysisVersion:v6 mediaAnalysisVersion:v8 faceAnalysisVersion:v9];
+  v10 = [(CLSCurationModelSpecification *)self initWithSceneAnalysisVersion:sceneAnalysisVersion mediaAnalysisVersion:mediaAnalysisVersion faceAnalysisVersion:faceAnalysisVersion];
   return v10;
 }
 
-- (CLSCurationModelSpecification)initWithSceneAnalysisVersion:(unint64_t)a3 mediaAnalysisVersion:(unint64_t)a4 faceAnalysisVersion:(unint64_t)a5
+- (CLSCurationModelSpecification)initWithSceneAnalysisVersion:(unint64_t)version mediaAnalysisVersion:(unint64_t)analysisVersion faceAnalysisVersion:(unint64_t)faceAnalysisVersion
 {
   v9.receiver = self;
   v9.super_class = CLSCurationModelSpecification;
   result = [(CLSCurationModelSpecification *)&v9 init];
   if (result)
   {
-    result->_sceneAnalysisVersion = a3;
-    result->_mediaAnalysisVersion = a4;
-    result->_faceAnalysisVersion = a5;
+    result->_sceneAnalysisVersion = version;
+    result->_mediaAnalysisVersion = analysisVersion;
+    result->_faceAnalysisVersion = faceAnalysisVersion;
   }
 
   return result;

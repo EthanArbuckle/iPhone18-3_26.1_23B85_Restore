@@ -10,22 +10,22 @@
 
 - (CBSILState)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CBSILState;
-  v5 = [(CBSILState *)&v3 init];
-  if (v5)
+  selfCopy = [(CBSILState *)&v3 init];
+  if (selfCopy)
   {
-    v5->_SILState = 4;
+    selfCopy->_SILState = 4;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CBSILState;
@@ -34,15 +34,15 @@
 
 + (id)sharedInstance
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __28__CBSILState_sharedInstance__block_invoke;
   v8 = &unk_1E867B480;
-  v9 = v11;
+  v9 = selfCopy;
   v13 = &sharedInstance_onceToken_2;
   v12 = &v4;
   if (sharedInstance_onceToken_2 != -1)
@@ -50,7 +50,7 @@
     dispatch_once(v13, v12);
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return sharedInstance__sharedObject_1;
 }
 

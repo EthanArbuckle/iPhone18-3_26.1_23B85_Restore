@@ -1,40 +1,40 @@
 @interface USKScene
-+ (id)newSceneWithData:(id)a3 name:(id)a4 error:(id *)a5;
-+ (id)newSceneWithURL:(id)a3 error:(id *)a4;
-- (BOOL)exportToURL:(id)a3;
-- (BOOL)setCustomMetadata:(id)a3 value:(id)a4;
-- (BOOL)setDictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4 value:(id)a5;
-- (BOOL)setMetadataWithKey:(id)a3 value:(id)a4;
++ (id)newSceneWithData:(id)data name:(id)name error:(id *)error;
++ (id)newSceneWithURL:(id)l error:(id *)error;
+- (BOOL)exportToURL:(id)l;
+- (BOOL)setCustomMetadata:(id)metadata value:(id)value;
+- (BOOL)setDictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey value:(id)value;
+- (BOOL)setMetadataWithKey:(id)key value:(id)value;
 - (USKNode)rootNode;
 - (USKScene)init;
-- (USKScene)initWithData:(id)a3 name:(id)a4 error:(id *)a5;
-- (USKScene)initWithUsdStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(id)a4 :UsdStage>)a3 fileURL:;
-- (id)customMetadataWithKey:(id)a3;
-- (id)dictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4;
-- (id)initSceneFromURL:(id)a3 error:(id *)a4;
+- (USKScene)initWithData:(id)data name:(id)name error:(id *)error;
+- (USKScene)initWithUsdStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(id)stage :UsdStage>)a3 fileURL:;
+- (id)customMetadataWithKey:(id)key;
+- (id)dictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey;
+- (id)initSceneFromURL:(id)l error:(id *)error;
 - (id)loadedNodeIterator;
 - (id)metadata;
-- (id)metadataWithKey:(id)a3;
-- (id)newNodeAtPath:(id)a3 type:(id)a4 specifier:(id)a5;
-- (id)nodeAtPath:(id)a3;
+- (id)metadataWithKey:(id)key;
+- (id)newNodeAtPath:(id)path type:(id)type specifier:(id)specifier;
+- (id)nodeAtPath:(id)path;
 - (id)nodeIterator;
-- (id)objectAtPath:(id)a3;
-- (id)propertyAtPath:(id)a3;
+- (id)objectAtPath:(id)path;
+- (id)propertyAtPath:(id)path;
 - (id)subLayerOffsets;
 - (id)subLayerPaths;
-- (void)addSubLayerWithPath:(id)a3 offset:(id)a4;
+- (void)addSubLayerWithPath:(id)path offset:(id)offset;
 - (void)dealloc;
 - (void)dumpUSDA;
 - (void)save;
-- (void)saveAndCreateARKitUSDZPackageWithURL:(id)a3;
-- (void)saveAndCreateUSDZPackageWithURL:(id)a3;
+- (void)saveAndCreateARKitUSDZPackageWithURL:(id)l;
+- (void)saveAndCreateUSDZPackageWithURL:(id)l;
 @end
 
 @implementation USKScene
 
-+ (id)newSceneWithURL:(id)a3 error:(id *)a4
++ (id)newSceneWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   sub_27035CAC4();
   if (dword_2807CE588)
   {
@@ -54,7 +54,7 @@
     sub_27033F578(v27);
     sub_27033F5F4();
     v26 = 0;
-    v11 = objc_msgSend_path(v5, v8, v9, v10);
+    v11 = objc_msgSend_path(lCopy, v8, v9, v10);
     v12 = v11;
     v16 = objc_msgSend_UTF8String(v12, v13, v14, v15);
     sub_2703122D4(&__p, v16);
@@ -70,14 +70,14 @@
       v20 = [USKScene alloc];
       v23 = v26;
       sub_27036CABC(&v23);
-      v7 = objc_msgSend_initWithUsdStage_fileURL_(v20, v21, &v23, v5);
+      v7 = objc_msgSend_initWithUsdStage_fileURL_(v20, v21, &v23, lCopy);
       sub_270312AB8(&v23);
     }
 
-    else if (a4)
+    else if (error)
     {
       sub_27033F694(v27, v17, v18, v19);
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -92,10 +92,10 @@
   return v7;
 }
 
-+ (id)newSceneWithData:(id)a3 name:(id)a4 error:(id *)a5
++ (id)newSceneWithData:(id)data name:(id)name error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  nameCopy = name;
   sub_27035CAC4();
   if (dword_2807CE588)
   {
@@ -108,10 +108,10 @@
 
   else
   {
-    v11 = v7;
+    v11 = dataCopy;
     v15 = objc_msgSend_bytes(v11, v12, v13, v14);
-    v19 = objc_msgSend_length(v7, v16, v17, v18);
-    v9 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v20, @"memory://%@?address=%lx&size=%ld", v21, v8, v15, v19);
+    v19 = objc_msgSend_length(dataCopy, v16, v17, v18);
+    v9 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v20, @"memory://%@?address=%lx&size=%ld", v21, nameCopy, v15, v19);
     v40[0] = 0;
     v40[1] = 0;
     v41 = 0;
@@ -123,7 +123,7 @@
     sub_27033F578(v39);
     sub_27033F5F4();
     v38 = 0;
-    v27 = v8;
+    v27 = nameCopy;
     v31 = objc_msgSend_UTF8String(v27, v28, v29, v30);
     sub_2703122D4(__p, v31);
     pxrInternal__aapl__pxrReserved__::SdfLayer::OpenAsAnonymous();
@@ -137,9 +137,9 @@
     pxrInternal__aapl__pxrReserved__::UsdStage::Open();
     sub_27036CB50(__p);
     sub_27033F644();
-    if (a5)
+    if (error)
     {
-      *a5 = sub_27033F694(v39, v32, v33, v34);
+      *error = sub_27033F694(v39, v32, v33, v34);
     }
 
     sub_270312AB8(&v35);
@@ -175,7 +175,7 @@
   {
     self = 0;
 LABEL_5:
-    v4 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
@@ -188,23 +188,23 @@ LABEL_5:
   if (v6->_usdStage._refBase)
   {
     self = v6;
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
     self = v6;
   }
 
 LABEL_6:
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)initSceneFromURL:(id)a3 error:(id *)a4
+- (id)initSceneFromURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   sub_27035CAC4();
   if (dword_2807CE588)
   {
@@ -221,10 +221,10 @@ LABEL_6:
   v31.super_class = USKScene;
   v11 = [(USKScene *)&v31 init];
   self = v11;
-  if (!v11 || (objc_storeStrong(&v11->_fileURL, a3), !objc_msgSend_checkResourceIsReachableAndReturnError_(v7, v12, a4, v13)))
+  if (!v11 || (objc_storeStrong(&v11->_fileURL, l), !objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v12, error, v13)))
   {
 LABEL_5:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
@@ -232,7 +232,7 @@ LABEL_5:
   v30[1] = 0;
   sub_27033F578(v30);
   sub_27033F5F4();
-  v17 = objc_msgSend_path(v7, v14, v15, v16);
+  v17 = objc_msgSend_path(lCopy, v14, v15, v16);
   v18 = v17;
   v22 = objc_msgSend_UTF8String(v18, v19, v20, v21);
   sub_2703122D4(&__p, v22);
@@ -250,30 +250,30 @@ LABEL_5:
   sub_27033F644();
   if (self->_usdStage._refBase)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     sub_27033F694(v30, v24, v25, v26);
-    *a4 = v9 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   sub_27033F57C(v30);
 LABEL_6:
 
-  return v9;
+  return selfCopy;
 }
 
-- (USKScene)initWithData:(id)a3 name:(id)a4 error:(id *)a5
+- (USKScene)initWithData:(id)data name:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  nameCopy = name;
   sub_27035CAC4();
   if (dword_2807CE588)
   {
@@ -284,7 +284,7 @@ LABEL_6:
     }
 
     v11 = 0;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -292,7 +292,7 @@ LABEL_6:
     v48.receiver = self;
     v48.super_class = USKScene;
     v13 = [(USKScene *)&v48 init];
-    v12 = v13;
+    selfCopy = v13;
     if (!v13)
     {
       v11 = 0;
@@ -302,10 +302,10 @@ LABEL_6:
     fileURL = v13->_fileURL;
     v13->_fileURL = 0;
 
-    v16 = v8;
+    v16 = dataCopy;
     v20 = objc_msgSend_bytes(v16, v17, v18, v19);
-    v24 = objc_msgSend_length(v8, v21, v22, v23);
-    v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v25, @"memory://%@?address=%lx&size=%ld", v26, v9, v20, v24);
+    v24 = objc_msgSend_length(dataCopy, v21, v22, v23);
+    v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v25, @"memory://%@?address=%lx&size=%ld", v26, nameCopy, v20, v24);
     v46[0] = 0;
     v46[1] = 0;
     v47 = 0;
@@ -317,7 +317,7 @@ LABEL_6:
     sub_27033F578(v45);
     sub_27033F5F4();
     v44 = 0;
-    v32 = v9;
+    v32 = nameCopy;
     v36 = objc_msgSend_UTF8String(v32, v33, v34, v35);
     sub_2703122D4(__p, v36);
     pxrInternal__aapl__pxrReserved__::SdfLayer::OpenAsAnonymous();
@@ -328,21 +328,21 @@ LABEL_6:
 
     sub_27033EA1C(__p, &v44);
     pxrInternal__aapl__pxrReserved__::UsdStage::Open();
-    refBase = v12->_usdStage._refBase;
-    v12->_usdStage._refBase = v41;
+    refBase = selfCopy->_usdStage._refBase;
+    selfCopy->_usdStage._refBase = v41;
     v41 = 0;
-    sub_27036BFF4(v12 + 24, refBase);
+    sub_27036BFF4(selfCopy + 24, refBase);
     sub_27036CBA0(&v41, __p);
     sub_27033F644();
-    if (v12->_usdStage._refBase)
+    if (selfCopy->_usdStage._refBase)
     {
-      v11 = v12;
+      v11 = selfCopy;
     }
 
-    else if (a5)
+    else if (error)
     {
       sub_27033F694(v45, v38, v39, v40);
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -362,9 +362,9 @@ LABEL_8:
   return v11;
 }
 
-- (USKScene)initWithUsdStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(id)a4 :UsdStage>)a3 fileURL:
+- (USKScene)initWithUsdStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(id)stage :UsdStage>)a3 fileURL:
 {
-  v7 = a4;
+  stageCopy = stage;
   sub_27035CAC4();
   if (dword_2807CE588)
   {
@@ -385,7 +385,7 @@ LABEL_8:
   {
     self = 0;
 LABEL_5:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
@@ -395,27 +395,27 @@ LABEL_5:
     v11->_usdStage._refBase = *a3._refBase;
     sub_27036CABC(a3._refBase);
     sub_27036BFF4(p_isa + 24, refBase);
-    objc_storeStrong(p_isa + 4, a4);
+    objc_storeStrong(p_isa + 4, stage);
     self = p_isa;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
     self = v11;
   }
 
 LABEL_6:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)exportToURL:(id)a3
+- (BOOL)exportToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   sub_270312588(&self->_usdStage._refBase);
-  v5 = v4;
+  v5 = lCopy;
   v9 = objc_msgSend_fileSystemRepresentation(v5, v6, v7, v8);
   sub_2703122D4(&__p, v9);
   v13[0] = 0;
@@ -440,9 +440,9 @@ LABEL_6:
   sub_27036CB50(v4);
 }
 
-- (void)saveAndCreateUSDZPackageWithURL:(id)a3
+- (void)saveAndCreateUSDZPackageWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_270312588(&self->_usdStage._refBase);
   pxrInternal__aapl__pxrReserved__::UsdStage::GetRootLayer(v32, v5);
   v6 = sub_27033AAD4(v32);
@@ -459,7 +459,7 @@ LABEL_6:
     v12 = objc_msgSend_fileSystemRepresentation(fileURL, v8, v9, v10);
     sub_2703122D4(v30, v12);
     MEMORY[0x27439E030](v32, v30);
-    v13 = v4;
+    v13 = lCopy;
     v17 = objc_msgSend_fileSystemRepresentation(v13, v14, v15, v16);
     sub_2703122D4(&v28, v17);
     pxrInternal__aapl__pxrReserved__::UsdUtilsCreateNewUsdzPackage();
@@ -505,9 +505,9 @@ LABEL_6:
   }
 }
 
-- (void)saveAndCreateARKitUSDZPackageWithURL:(id)a3
+- (void)saveAndCreateARKitUSDZPackageWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_270312588(&self->_usdStage._refBase);
   pxrInternal__aapl__pxrReserved__::UsdStage::GetRootLayer(v32, v5);
   v6 = sub_27033AAD4(v32);
@@ -524,7 +524,7 @@ LABEL_6:
     v12 = objc_msgSend_fileSystemRepresentation(fileURL, v8, v9, v10);
     sub_2703122D4(v30, v12);
     MEMORY[0x27439E030](v32, v30);
-    v13 = v4;
+    v13 = lCopy;
     v17 = objc_msgSend_fileSystemRepresentation(v13, v14, v15, v16);
     sub_2703122D4(&v28, v17);
     pxrInternal__aapl__pxrReserved__::UsdUtilsCreateNewARKitUsdzPackage();
@@ -570,15 +570,15 @@ LABEL_6:
   }
 }
 
-- (id)nodeAtPath:(id)a3
+- (id)nodeAtPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v5 = sub_270312588(&self->_usdStage._refBase);
-    objc_msgSend_path(v4, v6, v7, v8);
+    objc_msgSend_path(pathCopy, v6, v7, v8);
     pxrInternal__aapl__pxrReserved__::UsdStage::GetPrimAtPath(&v19, v5, v18);
     pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::operator BOOL();
     sub_2703143D8(v18);
@@ -640,15 +640,15 @@ LABEL_6:
   return v11;
 }
 
-- (id)propertyAtPath:(id)a3
+- (id)propertyAtPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     v23 = 0u;
     v24 = 0u;
     v5 = sub_270312588(&self->_usdStage._refBase);
-    objc_msgSend_path(v4, v6, v7, v8);
+    objc_msgSend_path(pathCopy, v6, v7, v8);
     pxrInternal__aapl__pxrReserved__::UsdStage::GetObjectAtPath(&v19, v5, v18);
     sub_27033B548(&v19, &v23);
     if ((v22 & 7) != 0)
@@ -723,15 +723,15 @@ LABEL_6:
   return v11;
 }
 
-- (id)objectAtPath:(id)a3
+- (id)objectAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v30 = 0u;
   v31 = 0u;
   v8 = sub_270312588(&self->_usdStage._refBase);
-  if (v4)
+  if (pathCopy)
   {
-    objc_msgSend_path(v4, v5, v6, v7);
+    objc_msgSend_path(pathCopy, v5, v6, v7);
   }
 
   else
@@ -862,13 +862,13 @@ LABEL_13:
   return v11;
 }
 
-- (id)newNodeAtPath:(id)a3 type:(id)a4 specifier:(id)a5
+- (id)newNodeAtPath:(id)path type:(id)type specifier:(id)specifier
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  pathCopy = path;
+  typeCopy = type;
+  specifierCopy = specifier;
+  if (!pathCopy)
   {
     v15 = 0;
     goto LABEL_56;
@@ -879,10 +879,10 @@ LABEL_13:
   *&v41[8] = 1;
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPrimTag,24u,8u,16384u>::Handle::Handle();
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::Handle();
-  if (!v10 || @"SdfSpecifierDef" == v10)
+  if (!specifierCopy || @"SdfSpecifierDef" == specifierCopy)
   {
     v16 = sub_270312588(&self->_usdStage._refBase);
-    objc_msgSend_path(v8, v17, v18, v19);
+    objc_msgSend_path(pathCopy, v17, v18, v19);
     v40 = 0;
     pxrInternal__aapl__pxrReserved__::UsdStage::DefinePrim(&v43, v16, v41, &v40);
     *&v41[8] = v43;
@@ -918,10 +918,10 @@ LABEL_13:
     goto LABEL_30;
   }
 
-  if (@"SdfSpecifierOver" == v10)
+  if (@"SdfSpecifierOver" == specifierCopy)
   {
     v20 = sub_270312588(&self->_usdStage._refBase);
-    objc_msgSend_path(v8, v21, v22, v23);
+    objc_msgSend_path(pathCopy, v21, v22, v23);
     pxrInternal__aapl__pxrReserved__::UsdStage::OverridePrim(&v43, v20, v41);
     *&v41[8] = v43;
     if (*&v41[16])
@@ -950,10 +950,10 @@ LABEL_13:
     goto LABEL_29;
   }
 
-  if (@"SdfSpecifierClass" == v10)
+  if (@"SdfSpecifierClass" == specifierCopy)
   {
     v11 = sub_270312588(&self->_usdStage._refBase);
-    objc_msgSend_path(v8, v12, v13, v14);
+    objc_msgSend_path(pathCopy, v12, v13, v14);
     pxrInternal__aapl__pxrReserved__::UsdStage::CreateClassPrim(&v43, v11, v41);
     *&v41[8] = v43;
     if (*&v41[16])
@@ -987,10 +987,10 @@ LABEL_30:
 
   if (sub_27033E778(&v41[8]))
   {
-    if (v9)
+    if (typeCopy)
     {
       MEMORY[0x27439E610](v41, "typeName");
-      v26 = objc_msgSend_tokenWithNodeType_(USKToken, v24, v9, v25);
+      v26 = objc_msgSend_tokenWithNodeType_(USKToken, v24, typeCopy, v25);
       v30 = v26;
       if (v26)
       {
@@ -1126,18 +1126,18 @@ LABEL_56:
   return v6;
 }
 
-- (void)addSubLayerWithPath:(id)a3 offset:(id)a4
+- (void)addSubLayerWithPath:(id)path offset:(id)offset
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  pathCopy = path;
+  offsetCopy = offset;
+  if (pathCopy)
   {
     v24[0] = 0;
     v24[1] = 0;
     v8 = sub_270312588(&self->_usdStage._refBase);
     pxrInternal__aapl__pxrReserved__::UsdStage::GetRootLayer(v24, v8);
     sub_27033AAD4(v24);
-    v9 = v6;
+    v9 = pathCopy;
     v13 = objc_msgSend_UTF8String(v9, v10, v11, v12);
     sub_2703122D4(__p, v13);
     pxrInternal__aapl__pxrReserved__::SdfLayer::InsertSubLayerPath();
@@ -1146,10 +1146,10 @@ LABEL_56:
       operator delete(__p[0]);
     }
 
-    if (v7)
+    if (offsetCopy)
     {
       v14 = sub_27033AAD4(v24);
-      objc_msgSend_sdfLayerOffset(v7, v15, v16, v17);
+      objc_msgSend_sdfLayerOffset(offsetCopy, v15, v16, v17);
       v21[0] = v18;
       v21[1] = v19;
       v20 = sub_27033AAD4(v24);
@@ -1509,13 +1509,13 @@ LABEL_8:
   return v30;
 }
 
-- (BOOL)setMetadataWithKey:(id)a3 value:(id)a4
+- (BOOL)setMetadataWithKey:(id)key value:(id)value
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v31 = 0;
-  v8 = v6;
+  v8 = keyCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   MEMORY[0x27439E610](&v31, v12);
   v36._storage = 0;
@@ -1534,9 +1534,9 @@ LABEL_8:
     }
 
     Type = pxrInternal__aapl__pxrReserved__::VtValue::GetType(&v36);
-    if (v7)
+    if (valueCopy)
     {
-      objc_msgSend_value(v7, v14, v15, v16);
+      objc_msgSend_value(valueCopy, v14, v15, v16);
     }
 
     else
@@ -1551,9 +1551,9 @@ LABEL_8:
     {
       v34 = 0;
       v35 = 0;
-      if (v7)
+      if (valueCopy)
       {
-        objc_msgSend_value(v7, v20, v21, v22);
+        objc_msgSend_value(valueCopy, v20, v21, v22);
       }
 
       else
@@ -1574,9 +1574,9 @@ LABEL_8:
     {
 LABEL_10:
       v26 = sub_270312588(&self->_usdStage._refBase);
-      if (v7)
+      if (valueCopy)
       {
-        objc_msgSend_value(v7, v23, v24, v25);
+        objc_msgSend_value(valueCopy, v23, v24, v25);
       }
 
       else
@@ -1607,19 +1607,19 @@ LABEL_10:
   return v18;
 }
 
-- (BOOL)setDictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4 value:(id)a5
+- (BOOL)setDictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey value:(id)value
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  dictionaryKeyCopy = dictionaryKey;
+  valueCopy = value;
   v45 = 0;
-  v11 = v8;
+  v11 = keyCopy;
   v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
   MEMORY[0x27439E610](&v45, v15);
   v44 = 0;
-  v16 = v9;
-  v20 = objc_msgSend_UTF8String(v9, v17, v18, v19);
+  v16 = dictionaryKeyCopy;
+  v20 = objc_msgSend_UTF8String(dictionaryKeyCopy, v17, v18, v19);
   MEMORY[0x27439E610](&v44, v20);
   v48._storage = 0;
   v48._info._ptrAndBits = 0;
@@ -1696,9 +1696,9 @@ LABEL_10:
   if (v48._info._ptrAndBits)
   {
     Type = pxrInternal__aapl__pxrReserved__::VtValue::GetType(&v48);
-    if (v10)
+    if (valueCopy)
     {
-      objc_msgSend_value(v10, v28, v29, v30);
+      objc_msgSend_value(valueCopy, v28, v29, v30);
     }
 
     else
@@ -1713,9 +1713,9 @@ LABEL_10:
     {
       v49 = 0;
       v50 = 0;
-      if (v10)
+      if (valueCopy)
       {
-        objc_msgSend_value(v10, v33, v34, v35);
+        objc_msgSend_value(valueCopy, v33, v34, v35);
       }
 
       else
@@ -1736,9 +1736,9 @@ LABEL_10:
 
 LABEL_28:
   v39 = sub_270312588(&self->_usdStage._refBase);
-  if (v10)
+  if (valueCopy)
   {
-    objc_msgSend_value(v10, v36, v37, v38);
+    objc_msgSend_value(valueCopy, v36, v37, v38);
   }
 
   else
@@ -1767,11 +1767,11 @@ LABEL_37:
   return v23;
 }
 
-- (BOOL)setCustomMetadata:(id)a3 value:(id)a4
+- (BOOL)setCustomMetadata:(id)metadata value:(id)value
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  valueCopy = value;
   v24 = 0;
   v8 = atomic_load(MEMORY[0x277D86540]);
   if (!v8)
@@ -1791,13 +1791,13 @@ LABEL_37:
   }
 
   v23 = 0;
-  v11 = v6;
+  v11 = metadataCopy;
   v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
   MEMORY[0x27439E610](&v23, v15);
   v19 = sub_270312588(&self->_usdStage._refBase);
-  if (v7)
+  if (valueCopy)
   {
-    objc_msgSend_value(v7, v16, v17, v18);
+    objc_msgSend_value(valueCopy, v16, v17, v18);
   }
 
   else
@@ -1822,14 +1822,14 @@ LABEL_37:
   return v20;
 }
 
-- (id)metadataWithKey:(id)a3
+- (id)metadataWithKey:(id)key
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v22 = 0;
   v23 = 0;
   v5 = sub_270312588(&self->_usdStage._refBase);
-  v6 = v4;
+  v6 = keyCopy;
   v10 = objc_msgSend_UTF8String(v6, v7, v8, v9);
   MEMORY[0x27439E610](&v20, v10);
   pxrInternal__aapl__pxrReserved__::UsdStage::GetMetadata(v5, &v20, &v22);
@@ -1878,19 +1878,19 @@ LABEL_37:
   return v14;
 }
 
-- (id)dictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4
+- (id)dictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dictionaryKeyCopy = dictionaryKey;
   v51 = 0;
   v52 = 0;
   v8 = sub_270312588(&self->_usdStage._refBase);
-  v9 = v6;
+  v9 = keyCopy;
   v13 = objc_msgSend_UTF8String(v9, v10, v11, v12);
   MEMORY[0x27439E610](&v47, v13);
-  v14 = v7;
-  v18 = objc_msgSend_UTF8String(v7, v15, v16, v17);
+  v14 = dictionaryKeyCopy;
+  v18 = objc_msgSend_UTF8String(dictionaryKeyCopy, v15, v16, v17);
   MEMORY[0x27439E610](&v43, v18);
   pxrInternal__aapl__pxrReserved__::UsdStage::GetMetadataByDictKey(v8, &v47, &v43, &v51);
   if ((v43 & 7) != 0)
@@ -2069,10 +2069,10 @@ LABEL_22:
   return v31;
 }
 
-- (id)customMetadataWithKey:(id)a3
+- (id)customMetadataWithKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v23 = 0;
   v24 = 0;
   v5 = sub_270312588(&self->_usdStage._refBase);
@@ -2082,7 +2082,7 @@ LABEL_22:
     sub_27033E930();
   }
 
-  v7 = v4;
+  v7 = keyCopy;
   v11 = objc_msgSend_UTF8String(v7, v8, v9, v10);
   MEMORY[0x27439E610](&v21, v11);
   pxrInternal__aapl__pxrReserved__::UsdStage::GetMetadataByDictKey(v5, (v6 + 72), &v21, &v23);

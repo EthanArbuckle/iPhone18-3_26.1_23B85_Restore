@@ -1,23 +1,23 @@
 @interface CBSharedFrameLinkRunLoop
-+ (id)addDisplayLinkToRunLoop:(id)a3 forMode:(id)a4;
-- (CBSharedFrameLinkRunLoop)initWithDisplayLink:(id)a3 forMode:(id)a4;
++ (id)addDisplayLinkToRunLoop:(id)loop forMode:(id)mode;
+- (CBSharedFrameLinkRunLoop)initWithDisplayLink:(id)link forMode:(id)mode;
 - (void)dealloc;
 @end
 
 @implementation CBSharedFrameLinkRunLoop
 
-+ (id)addDisplayLinkToRunLoop:(id)a3 forMode:(id)a4
++ (id)addDisplayLinkToRunLoop:(id)loop forMode:(id)mode
 {
   pthread_mutex_lock(&_sharedFrameLinkRunLoopMutex);
   if (_sharedFrameLinkRunLoop)
   {
     v5 = MEMORY[0x1E69E5928](_sharedFrameLinkRunLoop);
-    [a3 addToRunLoop:objc_msgSend(v5 forMode:{"getRunLoop"), a4}];
+    [loop addToRunLoop:objc_msgSend(v5 forMode:{"getRunLoop"), mode}];
   }
 
   else
   {
-    _sharedFrameLinkRunLoop = [[CBSharedFrameLinkRunLoop alloc] initWithDisplayLink:a3 forMode:a4];
+    _sharedFrameLinkRunLoop = [[CBSharedFrameLinkRunLoop alloc] initWithDisplayLink:loop forMode:mode];
     v5 = _sharedFrameLinkRunLoop;
   }
 
@@ -25,15 +25,15 @@
   return v5;
 }
 
-- (CBSharedFrameLinkRunLoop)initWithDisplayLink:(id)a3 forMode:(id)a4
+- (CBSharedFrameLinkRunLoop)initWithDisplayLink:(id)link forMode:(id)mode
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
+  linkCopy = link;
+  modeCopy = mode;
   v12.receiver = self;
   v12.super_class = CBSharedFrameLinkRunLoop;
-  v16 = [(CBSharedFrameLinkRunLoop *)&v12 init];
+  selfCopy = [(CBSharedFrameLinkRunLoop *)&v12 init];
   v11 = objc_alloc_init(MEMORY[0x1E696AB30]);
   if (v11)
   {
@@ -43,12 +43,12 @@
     v9 = 32;
     v10 = 0;
     v5 = objc_alloc(MEMORY[0x1E696AF00]);
-    v16->_thread = [v5 initWithBlock:?];
-    if (v16->_thread)
+    selfCopy->_thread = [v5 initWithBlock:?];
+    if (selfCopy->_thread)
     {
-      [(NSThread *)v16->_thread setQualityOfService:33];
-      [(NSThread *)v16->_thread start];
-      [(NSThread *)v16->_thread setName:@"com.apple.CoreBrightness.CBFrameLink"];
+      [(NSThread *)selfCopy->_thread setQualityOfService:33];
+      [(NSThread *)selfCopy->_thread start];
+      [(NSThread *)selfCopy->_thread setName:@"com.apple.CoreBrightness.CBFrameLink"];
       [v11 lock];
       while ((v7[3] & 1) == 0)
       {
@@ -57,14 +57,14 @@
 
       [v11 unlock];
       MEMORY[0x1E69E5920](v11);
-      v17 = v16;
+      v17 = selfCopy;
     }
 
     else
     {
       MEMORY[0x1E69E5920](v11);
-      MEMORY[0x1E69E5920](v16);
-      v16 = 0;
+      MEMORY[0x1E69E5920](selfCopy);
+      selfCopy = 0;
       v17 = 0;
     }
 
@@ -73,8 +73,8 @@
 
   else
   {
-    MEMORY[0x1E69E5920](v16);
-    v16 = 0;
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     return 0;
   }
 
@@ -94,17 +94,17 @@ void __56__CBSharedFrameLinkRunLoop_initWithDisplayLink_forMode___block_invoke(u
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   pthread_mutex_lock(&_sharedFrameLinkRunLoopMutex);
-  if (v4->_thread)
+  if (selfCopy->_thread)
   {
-    MEMORY[0x1E69E5920](v4->_thread);
-    v4->_thread = 0;
+    MEMORY[0x1E69E5920](selfCopy->_thread);
+    selfCopy->_thread = 0;
     _sharedFrameLinkRunLoop = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBSharedFrameLinkRunLoop;
   [(CBSharedFrameLinkRunLoop *)&v2 dealloc];
   pthread_mutex_unlock(&_sharedFrameLinkRunLoopMutex);

@@ -1,10 +1,10 @@
 @interface MPUBorderDrawingCache
 - (MPUBorderDrawingCache)init;
 - (id)_borderView;
-- (id)imageForBorderConfiguration:(id)a3;
+- (id)imageForBorderConfiguration:(id)configuration;
 - (void)_invalidate;
 - (void)dealloc;
-- (void)setDisplayScale:(double)a3;
+- (void)setDisplayScale:(double)scale;
 @end
 
 @implementation MPUBorderDrawingCache
@@ -16,8 +16,8 @@
   v2 = [(MPUBorderDrawingCache *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v2->_displayScale = v4;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEA78]);
@@ -25,10 +25,10 @@
     v2->_images = v5;
 
     [(NSCache *)v2->_images setTotalCostLimit:20971520];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = *MEMORY[0x277D76670];
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    [v7 addObserver:v2 selector:sel__applicationDidReceiveMemoryWarning_ name:v8 object:v9];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidReceiveMemoryWarning_ name:v8 object:mEMORY[0x277D75128]];
   }
 
   return v2;
@@ -36,19 +36,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D76670];
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 removeObserver:self name:v4 object:v5];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [defaultCenter removeObserver:self name:v4 object:mEMORY[0x277D75128]];
 
   v6.receiver = self;
   v6.super_class = MPUBorderDrawingCache;
   [(MPUBorderDrawingCache *)&v6 dealloc];
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  SafeScaleForValue = MPUFloatGetSafeScaleForValue(a3);
+  SafeScaleForValue = MPUFloatGetSafeScaleForValue(scale);
   if (!MPUFloatEqualToFloat(self->_displayScale, SafeScaleForValue))
   {
     self->_displayScale = SafeScaleForValue;
@@ -57,11 +57,11 @@
   }
 }
 
-- (id)imageForBorderConfiguration:(id)a3
+- (id)imageForBorderConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 isFullyTransparent] & 1) != 0)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (!configurationCopy || ([configurationCopy isFullyTransparent] & 1) != 0)
   {
     goto LABEL_3;
   }
@@ -76,21 +76,21 @@ LABEL_3:
       goto LABEL_9;
     }
 
-    v7 = [(MPUBorderDrawingCache *)self _borderView];
-    [v7 setBorderConfiguration:v5];
-    [v7 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    _borderView = [(MPUBorderDrawingCache *)self _borderView];
+    [_borderView setBorderConfiguration:v5];
+    [_borderView sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v9 = v8;
     v11 = v10;
     v12 = *MEMORY[0x277CBF3A0];
     v13 = *(MEMORY[0x277CBF3A0] + 8);
-    [v7 setBounds:{*MEMORY[0x277CBF3A0], v13, v8, v10}];
+    [_borderView setBounds:{*MEMORY[0x277CBF3A0], v13, v8, v10}];
     v20.width = v9;
     v20.height = v11;
     UIGraphicsBeginImageContextWithOptions(v20, 0, self->_displayScale);
-    [v7 drawRect:{v12, v13, v9, v11}];
+    [_borderView drawRect:{v12, v13, v9, v11}];
     v14 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [v7 resizableImageCapInsets];
+    [_borderView resizableImageCapInsets];
     v6 = [v14 resizableImageWithCapInsets:?];
     if (v6)
     {
@@ -124,8 +124,8 @@ LABEL_9:
 - (void)_invalidate
 {
   [(NSCache *)self->_images removeAllObjects];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"MPUBorderDrawingCacheDidInvalidateNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MPUBorderDrawingCacheDidInvalidateNotification" object:self];
 }
 
 @end

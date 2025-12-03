@@ -1,14 +1,14 @@
 @interface PKContactlessInterfaceSessionDefaultBehavior
-+ (void)attachDefaultBehaviorToSession:(id)a3;
-- (void)_processContexts:(id)a3 didFinishTransaction:(BOOL)a4;
-- (void)contactlessInterfaceSession:(id)a3 didFinishTransactionWithContext:(id)a4;
++ (void)attachDefaultBehaviorToSession:(id)session;
+- (void)_processContexts:(id)contexts didFinishTransaction:(BOOL)transaction;
+- (void)contactlessInterfaceSession:(id)session didFinishTransactionWithContext:(id)context;
 @end
 
 @implementation PKContactlessInterfaceSessionDefaultBehavior
 
-+ (void)attachDefaultBehaviorToSession:(id)a3
++ (void)attachDefaultBehaviorToSession:(id)session
 {
-  object = a3;
+  object = session;
   v3 = objc_getAssociatedObject(object, &SessionBehaviorKey);
 
   if (!v3)
@@ -19,22 +19,22 @@
   }
 }
 
-- (void)contactlessInterfaceSession:(id)a3 didFinishTransactionWithContext:(id)a4
+- (void)contactlessInterfaceSession:(id)session didFinishTransactionWithContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextCopy = context;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSessionDefaultBehavior (%p): ignoring transaction end....", buf, 0xCu);
   }
 
-  if (v7)
+  if (contextCopy)
   {
-    v10 = v7;
+    v10 = contextCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
     [(PKContactlessInterfaceSessionDefaultBehavior *)self _processContexts:v9 didFinishTransaction:1];
   }
@@ -45,35 +45,35 @@
   }
 }
 
-- (void)_processContexts:(id)a3 didFinishTransaction:(BOOL)a4
+- (void)_processContexts:(id)contexts didFinishTransaction:(BOOL)transaction
 {
-  v4 = a4;
+  transactionCopy = transaction;
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 firstObject];
-  v8 = [v7 paymentPass];
+  contextsCopy = contexts;
+  firstObject = [contextsCopy firstObject];
+  paymentPass = [firstObject paymentPass];
 
-  if (v8)
+  if (paymentPass)
   {
     v9 = +[PKPaymentService paymentService];
-    v10 = [v8 isStoredValuePass];
-    v11 = [v8 uniqueID];
+    isStoredValuePass = [paymentPass isStoredValuePass];
+    uniqueID = [paymentPass uniqueID];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v12 = v6;
+    v12 = contextsCopy;
     v13 = [v12 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v13)
     {
       v14 = v13;
       obj = v12;
-      v26 = self;
-      v27 = v8;
-      v28 = v6;
+      selfCopy = self;
+      v27 = paymentPass;
+      v28 = contextsCopy;
       v15 = 0;
       v16 = *v32;
-      v29 = v10 | v4;
+      v29 = isStoredValuePass | transactionCopy;
       while (1)
       {
         for (i = 0; i != v14; ++i)
@@ -84,13 +84,13 @@
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
-          v19 = [v18 paymentApplication];
-          if (v10)
+          paymentApplication = [v18 paymentApplication];
+          if (isStoredValuePass)
           {
-            v20 = [v18 transitHistory];
-            v21 = [v18 date];
-            v22 = [v18 expressState];
-            [v9 processTransitTransactionEventWithHistory:v20 transactionDate:v21 forPaymentApplication:v19 withPassUniqueIdentifier:v11 expressTransactionState:v22];
+            transitHistory = [v18 transitHistory];
+            date = [v18 date];
+            expressState = [v18 expressState];
+            [v9 processTransitTransactionEventWithHistory:transitHistory transactionDate:date forPaymentApplication:paymentApplication withPassUniqueIdentifier:uniqueID expressTransactionState:expressState];
 
             v15 = 1;
           }
@@ -100,11 +100,11 @@
             goto LABEL_11;
           }
 
-          v23 = [v19 applicationIdentifier];
-          [v9 recordPaymentApplicationUsageForPassUniqueIdentifier:v11 paymentApplicationIdentifier:v23];
+          applicationIdentifier = [paymentApplication applicationIdentifier];
+          [v9 recordPaymentApplicationUsageForPassUniqueIdentifier:uniqueID paymentApplicationIdentifier:applicationIdentifier];
 
-          v24 = [v19 applicationIdentifier];
-          [v9 recordPassTransactionActivitySummaryForPassUniqueIdentifier:v11 paymentApplicationIdentifier:v24 presentmentType:2];
+          applicationIdentifier2 = [paymentApplication applicationIdentifier];
+          [v9 recordPassTransactionActivitySummaryForPassUniqueIdentifier:uniqueID paymentApplicationIdentifier:applicationIdentifier2 presentmentType:2];
 
 LABEL_11:
         }
@@ -113,9 +113,9 @@ LABEL_11:
         if (!v14)
         {
 
-          v8 = v27;
-          v6 = v28;
-          self = v26;
+          paymentPass = v27;
+          contextsCopy = v28;
+          self = selfCopy;
           if (v15)
           {
             goto LABEL_19;
@@ -132,7 +132,7 @@ LABEL_16:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v36 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSessionDefaultBehavior (%p): dropping transaction.", buf, 0xCu);
   }
 

@@ -1,15 +1,15 @@
 @interface ATXPBNotificationDeliveryEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDeliveryUI:(id)a3;
+- (int)StringAsDeliveryUI:(id)i;
 - (int)deliveryUI;
 - (unint64_t)hash;
-- (void)addSuggestionUUID:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestionUUID:(id)d;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBNotificationDeliveryEvent
@@ -27,45 +27,45 @@
   }
 }
 
-- (int)StringAsDeliveryUI:(id)a3
+- (int)StringAsDeliveryUI:(id)i
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Digest"])
+  iCopy = i;
+  if ([iCopy isEqualToString:@"Digest"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MissedNotificationBundle"])
+  else if ([iCopy isEqualToString:@"MissedNotificationBundle"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NotificationCenter"])
+  else if ([iCopy isEqualToString:@"NotificationCenter"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Banner"])
+  else if ([iCopy isEqualToString:@"Banner"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LockScreen"])
+  else if ([iCopy isEqualToString:@"LockScreen"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Other"])
+  else if ([iCopy isEqualToString:@"Other"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PriorityNotification"])
+  else if ([iCopy isEqualToString:@"PriorityNotification"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([iCopy isEqualToString:@"Total"])
   {
     v4 = 7;
   }
@@ -78,22 +78,22 @@
   return v4;
 }
 
-- (void)addSuggestionUUID:(id)a3
+- (void)addSuggestionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   suggestionUUIDs = self->_suggestionUUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!suggestionUUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_suggestionUUIDs;
     self->_suggestionUUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     suggestionUUIDs = self->_suggestionUUIDs;
   }
 
-  [(NSMutableArray *)suggestionUUIDs addObject:v4];
+  [(NSMutableArray *)suggestionUUIDs addObject:dCopy];
 }
 
 - (id)description
@@ -102,15 +102,15 @@
   v8.receiver = self;
   v8.super_class = ATXPBNotificationDeliveryEvent;
   v4 = [(ATXPBNotificationDeliveryEvent *)&v8 description];
-  v5 = [(ATXPBNotificationDeliveryEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBNotificationDeliveryEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     deliveryUI = self->_deliveryUI;
@@ -124,22 +124,22 @@
       v5 = off_2785A1460[deliveryUI];
     }
 
-    [v3 setObject:v5 forKey:@"deliveryUI"];
+    [dictionary setObject:v5 forKey:@"deliveryUI"];
   }
 
   suggestionUUIDs = self->_suggestionUUIDs;
   if (suggestionUUIDs)
   {
-    [v3 setObject:suggestionUUIDs forKey:@"suggestionUUID"];
+    [dictionary setObject:suggestionUUIDs forKey:@"suggestionUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     deliveryUI = self->_deliveryUI;
@@ -181,23 +181,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_deliveryUI;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_deliveryUI;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(ATXPBNotificationDeliveryEvent *)self suggestionUUIDsCount])
   {
     [v9 clearSuggestionUUIDs];
-    v5 = [(ATXPBNotificationDeliveryEvent *)self suggestionUUIDsCount];
-    if (v5)
+    suggestionUUIDsCount = [(ATXPBNotificationDeliveryEvent *)self suggestionUUIDsCount];
+    if (suggestionUUIDsCount)
     {
-      v6 = v5;
+      v6 = suggestionUUIDsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXPBNotificationDeliveryEvent *)self suggestionUUIDAtIndex:i];
@@ -207,10 +207,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -238,7 +238,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addSuggestionUUID:v12];
 
         ++v11;
@@ -255,24 +255,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_deliveryUI != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_deliveryUI != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -280,7 +280,7 @@ LABEL_9:
   }
 
   suggestionUUIDs = self->_suggestionUUIDs;
-  if (suggestionUUIDs | *(v4 + 2))
+  if (suggestionUUIDs | *(equalCopy + 2))
   {
     v7 = [(NSMutableArray *)suggestionUUIDs isEqual:?];
   }
@@ -310,14 +310,14 @@ LABEL_10:
   return [(NSMutableArray *)self->_suggestionUUIDs hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_deliveryUI = *(v4 + 2);
+    self->_deliveryUI = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -325,7 +325,7 @@ LABEL_10:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

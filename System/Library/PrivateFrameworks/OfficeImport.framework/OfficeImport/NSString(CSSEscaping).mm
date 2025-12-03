@@ -11,8 +11,8 @@
     dispatch_once(&qword_27FC699E0, &__block_literal_global_107);
   }
 
-  v2 = a1;
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
+  selfCopy = self;
+  v3 = [selfCopy stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
 
   v4 = [v3 componentsSeparatedByCharactersInSet:_MergedGlobals_61];
   v5 = [v4 componentsJoinedByString:@"\\a "];

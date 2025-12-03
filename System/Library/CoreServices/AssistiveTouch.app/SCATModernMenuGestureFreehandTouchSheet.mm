@@ -10,8 +10,8 @@
   v4 = [(SCATModernMenuGestureFreehandSheetBase *)self touchToggleMenuItemWithPreferredNumberOfLines:2];
   [v3 addObject:v4];
 
-  v5 = [(SCATModernMenuGestureFreehandSheetBase *)self autoPressLiftItems];
-  [v3 addObjectsFromArray:v5];
+  autoPressLiftItems = [(SCATModernMenuGestureFreehandSheetBase *)self autoPressLiftItems];
+  [v3 addObjectsFromArray:autoPressLiftItems];
 
   if ([(SCATModernMenuGestureFreehandSheetBase *)self isLandscape])
   {

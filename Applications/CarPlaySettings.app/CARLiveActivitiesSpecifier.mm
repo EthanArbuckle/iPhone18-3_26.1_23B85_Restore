@@ -1,16 +1,16 @@
 @interface CARLiveActivitiesSpecifier
-- (CARLiveActivitiesSpecifier)initWithPrototype:(id)a3 traitCollection:(id)a4;
+- (CARLiveActivitiesSpecifier)initWithPrototype:(id)prototype traitCollection:(id)collection;
 - (void)_preferenceValueSet;
 - (void)dealloc;
-- (void)performAction:(id)a3;
+- (void)performAction:(id)action;
 @end
 
 @implementation CARLiveActivitiesSpecifier
 
-- (CARLiveActivitiesSpecifier)initWithPrototype:(id)a3 traitCollection:(id)a4
+- (CARLiveActivitiesSpecifier)initWithPrototype:(id)prototype traitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  prototypeCopy = prototype;
+  collectionCopy = collection;
   v8 = [[ISIcon alloc] initWithType:@"com.apple.graphic-icon.live-activities"];
   v9 = sub_10001C80C(@"LIVE_ACTIVITIES");
   v20.receiver = self;
@@ -22,10 +22,10 @@
   if (v10)
   {
     objc_initWeak(&location, v10);
-    v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 valueBool] ^ 1);
+    v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [prototypeCopy valueBool] ^ 1);
     [(CARSettingsCellSpecifier *)v10 setCellValue:v12];
 
-    [(CARLiveActivitiesSpecifier *)v10 setLiveActivitiesDisabledPref:v6];
+    [(CARLiveActivitiesSpecifier *)v10 setLiveActivitiesDisabledPref:prototypeCopy];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_1000138DC;
@@ -41,24 +41,24 @@
   return v10;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = ([a3 BOOLValue] ^ 1);
+    valueBool = ([action BOOLValue] ^ 1);
   }
 
   else
   {
-    v4 = [(CARPrototypeBoolPref *)self->_liveActivitiesDisabledPref valueBool];
+    valueBool = [(CARPrototypeBoolPref *)self->_liveActivitiesDisabledPref valueBool];
   }
 
-  v5 = [NSNumber numberWithInt:v4 ^ 1];
+  v5 = [NSNumber numberWithInt:valueBool ^ 1];
   [(CARSettingsCellSpecifier *)self setCellValue:v5];
 
   liveActivitiesDisabledPref = self->_liveActivitiesDisabledPref;
 
-  [(CARPrototypeBoolPref *)liveActivitiesDisabledPref setState:v4];
+  [(CARPrototypeBoolPref *)liveActivitiesDisabledPref setState:valueBool];
 }
 
 - (void)dealloc
@@ -72,13 +72,13 @@
 
 - (void)_preferenceValueSet
 {
-  v3 = [(CARSettingsCellSpecifier *)self cellValue];
-  v4 = [v3 BOOLValue];
+  cellValue = [(CARSettingsCellSpecifier *)self cellValue];
+  bOOLValue = [cellValue BOOLValue];
 
-  v5 = [(CARPrototypeBoolPref *)self->_liveActivitiesDisabledPref valueBool];
-  if (v4 == v5)
+  valueBool = [(CARPrototypeBoolPref *)self->_liveActivitiesDisabledPref valueBool];
+  if (bOOLValue == valueBool)
   {
-    v6 = [NSNumber numberWithBool:v5 ^ 1];
+    v6 = [NSNumber numberWithBool:valueBool ^ 1];
     [(CARSettingsCellSpecifier *)self setCellValue:v6];
   }
 }

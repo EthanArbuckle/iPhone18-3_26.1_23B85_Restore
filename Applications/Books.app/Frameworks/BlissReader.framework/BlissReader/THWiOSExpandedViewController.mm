@@ -1,96 +1,96 @@
 @interface THWiOSExpandedViewController
-- (BOOL)allowTouchOutsideCanvasView:(id)a3 forGesture:(id)a4;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)allowTouchOutsideCanvasView:(id)view forGesture:(id)gesture;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)inFlowMode;
 - (BOOL)isZoomed;
 - (BOOL)p_alwaysVisible;
-- (BOOL)p_hasSourceRepForInfo:(id)a3;
-- (BOOL)p_hasTargetRepForInfo:(id)a3;
+- (BOOL)p_hasSourceRepForInfo:(id)info;
+- (BOOL)p_hasTargetRepForInfo:(id)info;
 - (BOOL)p_startsVisible;
 - (BOOL)prefersStatusBarHidden;
-- (CGAffineTransform)bookViewWillAnimateRotationToSize:(SEL)a3 withContext:(CGSize)a4;
-- (CGPoint)interactiveCanvasController:(id)a3 clampContentOffset:(CGPoint)a4 forViewScale:(double)a5;
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForHitTesting:(CGRect)a4;
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4;
-- (CGRect)pFrameInUnscaledCanvasSizeForExpandedRep:(id)a3;
+- (CGAffineTransform)bookViewWillAnimateRotationToSize:(SEL)size withContext:(CGSize)context;
+- (CGPoint)interactiveCanvasController:(id)controller clampContentOffset:(CGPoint)offset forViewScale:(double)scale;
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForHitTesting:(CGRect)testing;
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling;
+- (CGRect)pFrameInUnscaledCanvasSizeForExpandedRep:(id)rep;
 - (CGRect)preRotateViewFrame;
-- (CGRect)rectForCompletionAnimationWithRep:(id)a3;
+- (CGRect)rectForCompletionAnimationWithRep:(id)rep;
 - (CGRect)widgetLayoutBounds;
 - (CGSize)widgetHostExpandedSize;
 - (THWExpandedRep)expandedRep;
-- (THWiOSExpandedViewController)initWithDocumentRoot:(id)a3 expandableRep:(id)a4 delegate:(id)a5;
+- (THWiOSExpandedViewController)initWithDocumentRoot:(id)root expandableRep:(id)rep delegate:(id)delegate;
 - (UIEdgeInsets)_safeAreaInsets;
-- (double)expandedHeightForPanel:(int)a3 allowDefault:(BOOL)a4;
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5;
-- (id)additionalGestureTargetsForInteractiveCanvasController:(id)a3 gesture:(id)a4;
+- (double)expandedHeightForPanel:(int)panel allowDefault:(BOOL)default;
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
+- (id)additionalGestureTargetsForInteractiveCanvasController:(id)controller gesture:(id)gesture;
 - (id)expandedRepSourceRep;
 - (id)hostCanvasLayer;
 - (id)p_sourceICC;
-- (id)p_sourceRepForInfo:(id)a3;
+- (id)p_sourceRepForInfo:(id)info;
 - (id)p_targetICC;
-- (id)p_targetRepForInfo:(id)a3;
+- (id)p_targetRepForInfo:(id)info;
 - (id)p_targetViewBackgroundColor;
 - (int64_t)overrideUserInterfaceStyle;
 - (void)_dismissReplaceContent;
-- (void)_dismissWillReplaceContentWithFlush:(BOOL)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)animationControllerDidPresent:(id)a3;
-- (void)animationControllerDidPresentPostCommit:(id)a3;
-- (void)animationControllerSetupTarget:(id)a3;
-- (void)animationControllerTeardownTarget:(id)a3;
-- (void)animationControllerWillPresent:(id)a3;
-- (void)bookViewDidAnimateRotationToSize:(CGSize)a3 withContext:(id)a4 transform:(CGAffineTransform *)a5;
-- (void)bookViewDidRotateTransitionToSize:(CGSize)a3 withContext:(id)a4;
-- (void)bookViewDidTransitionToSize:(CGSize)a3 withContext:(id)a4;
-- (void)bookViewWillRotateTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)bookViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)_dismissWillReplaceContentWithFlush:(BOOL)flush;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)animationControllerDidPresent:(id)present;
+- (void)animationControllerDidPresentPostCommit:(id)commit;
+- (void)animationControllerSetupTarget:(id)target;
+- (void)animationControllerTeardownTarget:(id)target;
+- (void)animationControllerWillPresent:(id)present;
+- (void)bookViewDidAnimateRotationToSize:(CGSize)size withContext:(id)context transform:(CGAffineTransform *)transform;
+- (void)bookViewDidRotateTransitionToSize:(CGSize)size withContext:(id)context;
+- (void)bookViewDidTransitionToSize:(CGSize)size withContext:(id)context;
+- (void)bookViewWillRotateTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)bookViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)dismissExpandedAnimatedWithCompletionBlock:(id)a3;
+- (void)dismissExpandedAnimatedWithCompletionBlock:(id)block;
 - (void)dismissExpandedImmediate;
-- (void)exitAVPresentation:(id)a3;
-- (void)expandedRepControllerInvalidateChildrenInPanel:(int)a3 invalidateWPAuto:(BOOL)a4;
-- (void)freeTransformDidBeginWithRep:(id)a3 expandableRep:(id)a4;
-- (void)freeTransformDidCancelWithRep:(id)a3 expandableRep:(id)a4;
-- (void)freeTransformDidEndWithRep:(id)a3 expandableRep:(id)a4 completionBlock:(id)a5;
-- (void)freeTransformWillFadeOutCurtain:(id)a3 expandableRep:(id)a4;
+- (void)exitAVPresentation:(id)presentation;
+- (void)expandedRepControllerInvalidateChildrenInPanel:(int)panel invalidateWPAuto:(BOOL)auto;
+- (void)freeTransformDidBeginWithRep:(id)rep expandableRep:(id)expandableRep;
+- (void)freeTransformDidCancelWithRep:(id)rep expandableRep:(id)expandableRep;
+- (void)freeTransformDidEndWithRep:(id)rep expandableRep:(id)expandableRep completionBlock:(id)block;
+- (void)freeTransformWillFadeOutCurtain:(id)curtain expandableRep:(id)rep;
 - (void)gestureSequenceDidEnd;
-- (void)handleHyperlinkWithURL:(id)a3;
+- (void)handleHyperlinkWithURL:(id)l;
 - (void)handleSingleTap;
 - (void)hideAdornments;
-- (void)interactiveCanvasController:(id)a3 layoutRegistered:(id)a4;
-- (void)interactiveCanvasController:(id)a3 willLayoutRep:(id)a4;
+- (void)interactiveCanvasController:(id)controller layoutRegistered:(id)registered;
+- (void)interactiveCanvasController:(id)controller willLayoutRep:(id)rep;
 - (void)invalidate;
 - (void)loadView;
 - (void)p_addKeyCommands;
 - (void)p_cleanup;
-- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)a3 freeTransformDidEnd:(BOOL)a4;
-- (void)p_handleDoubleTap:(id)a3;
-- (void)p_handleMediaTransportKey:(id)a3;
-- (void)p_handleNavigationKey:(id)a3;
-- (void)p_handleNumber:(id)a3;
-- (void)p_setOnCanvasRepShadowLayerHidden:(BOOL)a3;
-- (void)p_toggleCanvasZoomAnimated:(BOOL)a3;
+- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)block freeTransformDidEnd:(BOOL)end;
+- (void)p_handleDoubleTap:(id)tap;
+- (void)p_handleMediaTransportKey:(id)key;
+- (void)p_handleNavigationKey:(id)key;
+- (void)p_handleNumber:(id)number;
+- (void)p_setOnCanvasRepShadowLayerHidden:(BOOL)hidden;
+- (void)p_toggleCanvasZoomAnimated:(BOOL)animated;
 - (void)p_updateBackgroundColor;
-- (void)p_updateCanvasToSize:(CGSize)a3;
-- (void)p_updateContentOffsetFromCurrentViewScale:(double)a3 toNewViewScale:(double)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7;
+- (void)p_updateCanvasToSize:(CGSize)size;
+- (void)p_updateContentOffsetFromCurrentViewScale:(double)scale toNewViewScale:(double)viewScale animated:(BOOL)animated duration:(double)duration completion:(id)completion;
 - (void)p_updateScrollViewLayout;
 - (void)p_viewSizeDidChange;
-- (void)presentExpandedAnimatedWithCompletionBlock:(id)a3;
-- (void)presentPopoverForPopUpInfo:(id)a3 withFrame:(CGRect)a4 inLayer:(id)a5;
-- (void)presentRepExpanded:(id)a3;
-- (void)progressDidChangeForRep:(id)a3 percent:(id)a4;
-- (void)resetAttemptForRep:(id)a3;
-- (void)scoreDidChangeForRep:(id)a3 score:(id)a4 total:(id)a5;
-- (void)setAllowPinchZoom:(BOOL)a3 withMinimumScale:(double)a4 maximumScale:(double)a5;
+- (void)presentExpandedAnimatedWithCompletionBlock:(id)block;
+- (void)presentPopoverForPopUpInfo:(id)info withFrame:(CGRect)frame inLayer:(id)layer;
+- (void)presentRepExpanded:(id)expanded;
+- (void)progressDidChangeForRep:(id)rep percent:(id)percent;
+- (void)resetAttemptForRep:(id)rep;
+- (void)scoreDidChangeForRep:(id)rep score:(id)score total:(id)total;
+- (void)setAllowPinchZoom:(BOOL)zoom withMinimumScale:(double)scale maximumScale:(double)maximumScale;
 - (void)showAdornments;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)zoomInOrOut:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)zoomInOrOut:(BOOL)out;
 @end
 
 @implementation THWiOSExpandedViewController
@@ -102,16 +102,16 @@
   return TSUClassAndProtocolCast();
 }
 
-- (THWiOSExpandedViewController)initWithDocumentRoot:(id)a3 expandableRep:(id)a4 delegate:(id)a5
+- (THWiOSExpandedViewController)initWithDocumentRoot:(id)root expandableRep:(id)rep delegate:(id)delegate
 {
   v12.receiver = self;
   v12.super_class = THWiOSExpandedViewController;
   v8 = [(THWiOSExpandedViewController *)&v12 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v8->mDocumentRoot = a3;
-    v8->_wantsStatusBarVisible = [a5 isFreeTransformInProgress];
-    [a4 expandedContentDrawableToPresent];
+    v8->mDocumentRoot = root;
+    v8->_wantsStatusBarVisible = [delegate isFreeTransformInProgress];
+    [rep expandedContentDrawableToPresent];
     objc_opt_class();
     v11 = &OBJC_PROTOCOL___TSDInfo;
     v9 = TSUClassAndProtocolCast();
@@ -121,7 +121,7 @@
     }
 
     [(THWiOSExpandedViewController *)v8 setDrawableToPresent:v9, v11];
-    [(THWiOSExpandedViewController *)v8 setDelegate:a5];
+    [(THWiOSExpandedViewController *)v8 setDelegate:delegate];
     THCanvasCreate(v8, &v8->_icc, &v8->_cvc);
     [-[THWExpandedViewControllerDelegate rootSuperviewController](-[THWiOSExpandedViewController delegate](v8 "delegate")];
     [(THWiOSExpandedViewController *)v8 addChildViewController:[(THWiOSExpandedViewController *)v8 cvc]];
@@ -135,7 +135,7 @@
     [(THWiOSExpandedViewController *)v8 setOriginalViewScale:1.0];
     [(THWiOSExpandedViewController *)v8 setExpandedRepControllerState:0];
     [+[THWAVController sharedController](THWAVController "sharedController")];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [a4 expandableShouldPreloadExpanded])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [rep expandableShouldPreloadExpanded])
     {
       [-[THWiOSExpandedViewController view](v8 "view")];
     }
@@ -148,24 +148,24 @@
 
 - (BOOL)p_startsVisible
 {
-  v2 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 1;
   }
 
-  return [(THWExpandedRep *)v2 expandedPanelStartsVisible];
+  return [(THWExpandedRep *)expandedRep expandedPanelStartsVisible];
 }
 
 - (BOOL)p_alwaysVisible
 {
-  v2 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWExpandedRep *)v2 expandedPanelAlwaysVisible];
+  return [(THWExpandedRep *)expandedRep expandedPanelAlwaysVisible];
 }
 
 - (void)loadView
@@ -195,45 +195,45 @@
   [(UIScrollView *)[(THWiOSExpandedViewController *)self scrollView] setAutoresizingMask:18];
   [(UIScrollView *)[(THWiOSExpandedViewController *)self scrollView] setContentInsetAdjustmentBehavior:2];
   [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] setInfosToDisplay:[NSArray arrayWithObject:[(THWiOSExpandedViewController *)self drawableToPresent]]];
-  v10 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if (objc_opt_respondsToSelector())
   {
-    [(UIScrollView *)[(THWiOSExpandedViewController *)self scrollView] setScrollEnabled:[(THWExpandedRep *)v10 expandedContentScrollEnabled]];
+    [(UIScrollView *)[(THWiOSExpandedViewController *)self scrollView] setScrollEnabled:[(THWExpandedRep *)expandedRep expandedContentScrollEnabled]];
   }
 
   [-[THWiOSExpandedViewController view](self "view")];
   [(UIScrollView *)[(THWiOSExpandedViewController *)self scrollView] addSubview:[(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc] view]];
   if (objc_opt_respondsToSelector())
   {
-    if ([(THWExpandedRep *)v10 expandedContentAllowDoubleTapZoom])
+    if ([(THWExpandedRep *)expandedRep expandedContentAllowDoubleTapZoom])
     {
       [(TSDInteractiveCanvasController *)self->_icc enableGestureKinds:[NSArray arrayWithObject:TSWPTapAndTouch]];
       [(THWiOSExpandedViewController *)self setAllowZoom:1];
       if (objc_opt_respondsToSelector())
       {
-        [(THWiOSExpandedViewController *)self setAllowZoom:[(THWExpandedRep *)v10 expandedContentHandlesDoubleTapZoomDirectly]^ 1];
+        [(THWiOSExpandedViewController *)self setAllowZoom:[(THWExpandedRep *)expandedRep expandedContentHandlesDoubleTapZoomDirectly]^ 1];
       }
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(TSDInteractiveCanvasController *)self->_icc enableGestureKinds:[(THWExpandedRep *)v10 expandedSupportedGestureKinds]];
+    [(TSDInteractiveCanvasController *)self->_icc enableGestureKinds:[(THWExpandedRep *)expandedRep expandedSupportedGestureKinds]];
   }
 
   v11 = [THWFreeTransformGestureRecognizer alloc];
-  v12 = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] gestureDispatcher];
-  [(THWiOSExpandedViewController *)self setTransformGR:[(THWFreeTransformGestureRecognizer *)v11 initWithGestureDispatcher:v12 gestureKind:TSDFreeTransform]];
+  gestureDispatcher = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] gestureDispatcher];
+  [(THWiOSExpandedViewController *)self setTransformGR:[(THWFreeTransformGestureRecognizer *)v11 initWithGestureDispatcher:gestureDispatcher gestureKind:TSDFreeTransform]];
   [-[TSDiOSCanvasViewController viewForGestureRecognizer:](-[THWiOSExpandedViewController cvc](self "cvc")];
   [(THWFreeTransformGestureRecognizer *)[(THWiOSExpandedViewController *)self transformGR] setUnmovingParentView:[(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc] view]];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v13 = [objc_msgSend(objc_msgSend(-[THWExpandedRep expandedZoomableInteractiveCanvasController](v10 "expandedZoomableInteractiveCanvasController")]) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (zoomGestureRecognizer = [objc_msgSend(objc_msgSend(-[THWExpandedRep expandedZoomableInteractiveCanvasController](expandedRep "expandedZoomableInteractiveCanvasController")]) == 0)
   {
-    v13 = [(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc] zoomGestureRecognizer];
+    zoomGestureRecognizer = [(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc] zoomGestureRecognizer];
   }
 
-  [v13 requireGestureRecognizerToFail:{-[THWiOSExpandedViewController transformGR](self, "transformGR")}];
+  [zoomGestureRecognizer requireGestureRecognizerToFail:{-[THWiOSExpandedViewController transformGR](self, "transformGR")}];
   [(THWiOSExpandedViewController *)self p_updateBackgroundColor];
-  [(THWiOSExpandedViewController *)self setAdornmentController:[[THWAdornmentController alloc] initWithExpandedRep:v10 documentRoot:[(THWiOSExpandedViewController *)self documentRoot]]];
+  [(THWiOSExpandedViewController *)self setAdornmentController:[[THWAdornmentController alloc] initWithExpandedRep:expandedRep documentRoot:[(THWiOSExpandedViewController *)self documentRoot]]];
   [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] setDelegate:self];
   [(THWiOSExpandedViewController *)self setFtc:objc_alloc_init(THWFreeTransformController)];
   [(THWFreeTransformController *)[(THWiOSExpandedViewController *)self ftc] setGestureRecognizerDelegate:[(THWExpandedRep *)[(THWiOSExpandedViewController *)self expandedRep] freeTransformableHandler]];
@@ -252,7 +252,7 @@
     }
 
     v4 = [-[THWiOSExpandedViewController p_targetViewBackgroundColor](self "p_targetViewBackgroundColor")];
-    v6 = +[UIColor clearColor];
+    platformColor = +[UIColor clearColor];
   }
 
   else
@@ -265,17 +265,17 @@
       goto LABEL_11;
     }
 
-    v6 = [v5 platformColor];
+    platformColor = [v5 platformColor];
   }
 
-  v3 = v6;
+  v3 = platformColor;
 LABEL_11:
   [-[THWiOSExpandedViewController view](self "view")];
   if (v3)
   {
-    v7 = [(THWiOSExpandedViewController *)self scrollView];
+    scrollView = [(THWiOSExpandedViewController *)self scrollView];
 
-    [(UIScrollView *)v7 setBackgroundColor:v3];
+    [(UIScrollView *)scrollView setBackgroundColor:v3];
   }
 }
 
@@ -339,34 +339,34 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)pFrameInUnscaledCanvasSizeForExpandedRep:(id)a3
+- (CGRect)pFrameInUnscaledCanvasSizeForExpandedRep:(id)rep
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 expandedFrameInUnscaledCanvasSize];
+    [rep expandedFrameInUnscaledCanvasSize];
   }
 
   else
   {
-    [a3 frameInUnscaledCanvas];
+    [rep frameInUnscaledCanvas];
   }
 
   return CGRectIntegral(*&v4);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THWiOSExpandedViewController;
-  [(THWiOSExpandedViewController *)&v4 viewWillAppear:a3];
+  [(THWiOSExpandedViewController *)&v4 viewWillAppear:appear];
   [(THWiOSExpandedViewController *)self p_viewSizeDidChange];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THWiOSExpandedViewController;
-  [(THWiOSExpandedViewController *)&v4 viewWillDisappear:a3];
+  [(THWiOSExpandedViewController *)&v4 viewWillDisappear:disappear];
   if ([(THWiOSExpandedViewController *)self isFirstResponder])
   {
     [(THWiOSExpandedViewController *)self resignFirstResponder];
@@ -375,12 +375,12 @@ LABEL_11:
 
 - (void)p_viewSizeDidChange
 {
-  v3 = [(THWiOSExpandedViewController *)self expandedRep];
-  v4 = [(THWExpandedRep *)v3 layout];
-  v5 = v4;
-  if (v4)
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
+  layout = [(THWExpandedRep *)expandedRep layout];
+  v5 = layout;
+  if (layout)
   {
-    [v4 invalidateFrame];
+    [layout invalidateFrame];
     [v5 invalidateChildren];
   }
 
@@ -396,19 +396,19 @@ LABEL_11:
   v21 = v20 - (v7 + v11);
   [(THWiOSExpandedViewController *)self p_updateCanvasToSize:v19, v21];
   [(THWiOSExpandedViewController *)self p_updateScrollViewLayout];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWExpandedRep *)v3 expandedContentAllowPinchZoom])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWExpandedRep *)expandedRep expandedContentAllowPinchZoom])
   {
     [(THWiOSExpandedViewController *)self setAllowPinchZoom:1 withMinimumScale:1.0 maximumScale:2.0];
   }
 
   if (v5)
   {
-    [-[THWExpandedRep interactiveCanvasController](v3 "interactiveCanvasController")];
+    [-[THWExpandedRep interactiveCanvasController](expandedRep "interactiveCanvasController")];
   }
 
-  v22 = [(THWiOSExpandedViewController *)self adornmentController];
+  adornmentController = [(THWiOSExpandedViewController *)self adornmentController];
 
-  [(THWAdornmentController *)v22 layoutInFrame:v9 + v15, v7 + v17, v19, v21];
+  [(THWAdornmentController *)adornmentController layoutInFrame:v9 + v15, v7 + v17, v19, v21];
 }
 
 - (id)p_targetViewBackgroundColor
@@ -432,9 +432,9 @@ LABEL_11:
 
   else if ([(THDocumentRoot *)[(THWiOSExpandedViewController *)self documentRoot] themeProvider])
   {
-    v5 = [(THThemeProvider *)[(THDocumentRoot *)[(THWiOSExpandedViewController *)self documentRoot] themeProvider] backgroundColor];
+    backgroundColor = [(THThemeProvider *)[(THDocumentRoot *)[(THWiOSExpandedViewController *)self documentRoot] themeProvider] backgroundColor];
 
-    return [TSUColor colorWithCGColor:v5];
+    return [TSUColor colorWithCGColor:backgroundColor];
   }
 
   else
@@ -479,45 +479,45 @@ LABEL_11:
   [(THWiOSExpandedViewController *)&v3 dealloc];
 }
 
-- (void)setAllowPinchZoom:(BOOL)a3 withMinimumScale:(double)a4 maximumScale:(double)a5
+- (void)setAllowPinchZoom:(BOOL)zoom withMinimumScale:(double)scale maximumScale:(double)maximumScale
 {
-  v7 = a3;
+  zoomCopy = zoom;
   [-[TSDiOSCanvasViewController canvasLayer](-[THWiOSExpandedViewController cvc](self "cvc")];
   [-[TSDiOSCanvasViewController canvasLayer](-[THWiOSExpandedViewController cvc](self "cvc")];
   [-[TSDiOSCanvasViewController canvasLayer](-[THWiOSExpandedViewController cvc](self "cvc")];
 
-  [(THWiOSExpandedViewController *)self setAllowZoom:v7];
+  [(THWiOSExpandedViewController *)self setAllowZoom:zoomCopy];
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v4 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(THWExpandedRep *)v4 expandedContentAllowDoubleTapZoom];
+    expandedContentAllowDoubleTapZoom = [(THWExpandedRep *)expandedRep expandedContentAllowDoubleTapZoom];
   }
 
   else
   {
-    v5 = 0;
+    expandedContentAllowDoubleTapZoom = 0;
   }
 
   objc_opt_class();
   v6 = TSUDynamicCast();
   result = 0;
-  if (!v6 || (v7 = v6, objc_opt_class(), [objc_msgSend(v7 "scrollableCanvasController")], (v8 = TSUDynamicCast()) == 0) || (objc_msgSend(v8, "gestureHitLink:", a3) & 1) == 0)
+  if (!v6 || (v7 = v6, objc_opt_class(), [objc_msgSend(v7 "scrollableCanvasController")], (v8 = TSUDynamicCast()) == 0) || (objc_msgSend(v8, "gestureHitLink:", gesture) & 1) == 0)
   {
-    if (v5)
+    if (expandedContentAllowDoubleTapZoom)
     {
-      v9 = [a3 gestureKind];
-      if (v9 == TSWPTapAndTouch)
+      gestureKind = [gesture gestureKind];
+      if (gestureKind == TSWPTapAndTouch)
       {
         return 1;
       }
     }
 
-    v10 = [a3 gestureKind];
-    if (v10 == TSWPImmediateSingleTap)
+    gestureKind2 = [gesture gestureKind];
+    if (gestureKind2 == TSWPImmediateSingleTap)
     {
       return 1;
     }
@@ -526,14 +526,14 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSWPImmediateSingleTap)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSWPImmediateSingleTap)
   {
-    v8 = [a3 gestureState];
+    gestureState = [gesture gestureState];
     result = 1;
-    if (v8 == 3)
+    if (gestureState == 3)
     {
       self->mSingleTapPossible = 1;
     }
@@ -541,13 +541,13 @@ LABEL_11:
 
   else
   {
-    v6 = [a3 gestureKind];
-    if (v6 == TSWPTapAndTouch)
+    gestureKind2 = [gesture gestureKind];
+    if (gestureKind2 == TSWPTapAndTouch)
     {
-      if ([a3 gestureState] == 3)
+      if ([gesture gestureState] == 3)
       {
         self->mSingleTapPossible = 0;
-        [(THWiOSExpandedViewController *)self p_handleDoubleTap:a3];
+        [(THWiOSExpandedViewController *)self p_handleDoubleTap:gesture];
       }
 
       return 1;
@@ -578,23 +578,23 @@ LABEL_11:
     [(THWiOSExpandedViewController *)self expandedRep];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(THWiOSExpandedViewController *)self expandedRep];
+      expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
 
-      [(THWExpandedRep *)v3 userInteractionDidTakePlace];
+      [(THWExpandedRep *)expandedRep userInteractionDidTakePlace];
     }
   }
 }
 
-- (void)p_handleDoubleTap:(id)a3
+- (void)p_handleDoubleTap:(id)tap
 {
-  v5 = [(THWiOSExpandedViewController *)self expandedRep];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWExpandedRep *)v5 expandedContentHandlesDoubleTapZoomDirectly])
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWExpandedRep *)expandedRep expandedContentHandlesDoubleTapZoomDirectly])
   {
-    [a3 unscaledLocationForICC:{-[THWiOSExpandedViewController icc](self, "icc")}];
+    [tap unscaledLocationForICC:{-[THWiOSExpandedViewController icc](self, "icc")}];
     [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] convertBoundsToUnscaledPoint:v6, v7];
-    [(THWExpandedRep *)v5 convertNaturalPointFromUnscaledCanvas:?];
+    [(THWExpandedRep *)expandedRep convertNaturalPointFromUnscaledCanvas:?];
 
-    [(THWExpandedRep *)v5 expandedContentHandleDoubleTapZoomDirectlyAtPoint:?];
+    [(THWExpandedRep *)expandedRep expandedContentHandleDoubleTapZoomDirectlyAtPoint:?];
   }
 
   else
@@ -604,9 +604,9 @@ LABEL_11:
   }
 }
 
-- (void)p_toggleCanvasZoomAnimated:(BOOL)a3
+- (void)p_toggleCanvasZoomAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] viewScale];
   v6 = v5;
   [(THWiOSExpandedViewController *)self originalViewScale];
@@ -645,7 +645,7 @@ LABEL_6:
     v15 = v14;
     v16 = [(THWiOSExpandedViewController *)self icc];
 
-    [(TSDInteractiveCanvasController *)v16 setViewScale:1 contentOffset:v3 clampOffset:v11 animated:v13, v15];
+    [(TSDInteractiveCanvasController *)v16 setViewScale:1 contentOffset:animatedCopy clampOffset:v11 animated:v13, v15];
   }
 }
 
@@ -657,38 +657,38 @@ LABEL_6:
   return vabdd_f64(v4, v5) >= 0.00999999978;
 }
 
-- (void)presentExpandedAnimatedWithCompletionBlock:(id)a3
+- (void)presentExpandedAnimatedWithCompletionBlock:(id)block
 {
   [(THWiOSExpandedViewController *)self setExpandedRepControllerState:1];
   v5 = [-[THWiOSExpandedViewController expandedRepSourceRep](self "expandedRepSourceRep")];
   [v5 addObserver:self];
   [(THWiOSExpandedViewController *)self p_setWantsStatusBarVisible:0];
 
-  [v5 presentAnimationWithCompletionBlock:a3 overshoot:0];
+  [v5 presentAnimationWithCompletionBlock:block overshoot:0];
 }
 
-- (void)dismissExpandedAnimatedWithCompletionBlock:(id)a3
+- (void)dismissExpandedAnimatedWithCompletionBlock:(id)block
 {
   [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedViewController *)self delegate] expandedViewControllerWillBeginDismissing:self];
 
-  [(THWiOSExpandedViewController *)self p_dismissExpandedAnimatedWithCompletionBlock:a3 freeTransformDidEnd:0];
+  [(THWiOSExpandedViewController *)self p_dismissExpandedAnimatedWithCompletionBlock:block freeTransformDidEnd:0];
 }
 
-- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)a3 freeTransformDidEnd:(BOOL)a4
+- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)block freeTransformDidEnd:(BOOL)end
 {
-  v4 = a4;
+  endCopy = end;
   if (![(THWiOSExpandedViewController *)self isDismissing])
   {
     [(THWiOSExpandedViewController *)self setIsDismissing:1];
     [(THWiOSExpandedViewController *)self setExpandedRepControllerState:3];
     [(THWiOSExpandedViewController *)self p_setWantsStatusBarVisible:[(THWiOSExpandedViewController *)self im_isCompactHeight]^ 1];
-    v7 = [(THWiOSExpandedViewController *)self expandedRep];
+    expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
     if (objc_opt_respondsToSelector())
     {
-      [(THWExpandedRep *)v7 willExitExpandedFreeTransformDidEnd:v4];
+      [(THWExpandedRep *)expandedRep willExitExpandedFreeTransformDidEnd:endCopy];
     }
 
-    if (v4)
+    if (endCopy)
     {
       v8 = 0;
       v9 = 0;
@@ -701,8 +701,8 @@ LABEL_6:
     }
 
     objc_opt_class();
-    v10 = [TSUClassAndProtocolCast() animationController];
-    if (!v10)
+    animationController = [TSUClassAndProtocolCast() animationController];
+    if (!animationController)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
@@ -711,20 +711,20 @@ LABEL_6:
     v14[1] = 3221225472;
     v15 = sub_146094;
     v16 = &unk_45AEA8;
-    v17 = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
-    v18 = a3;
+    expandedRepSourceRep = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
+    blockCopy = block;
     v11 = TSUProtocolCast();
     [(THWiOSExpandedViewController *)self expandedRepSourceRep];
     v12 = TSUProtocolCast();
     if (v11 && (v13 = v12) != 0)
     {
-      [v10 setSource:v11];
-      [v10 setDestination:v13];
-      [v10 setHostLayer:{objc_msgSend(-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedViewController delegate](self, "delegate"), "rootSuperview"), "layer")}];
-      [v10 setForegroundLayer:v9];
-      [v10 setBackgroundLayer:v8];
-      [v10 addObserver:self];
-      [v10 presentAnimationWithCompletionBlock:v14 overshoot:v4];
+      [animationController setSource:v11];
+      [animationController setDestination:v13];
+      [animationController setHostLayer:{objc_msgSend(-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedViewController delegate](self, "delegate"), "rootSuperview"), "layer")}];
+      [animationController setForegroundLayer:v9];
+      [animationController setBackgroundLayer:v8];
+      [animationController addObserver:self];
+      [animationController presentAnimationWithCompletionBlock:v14 overshoot:endCopy];
     }
 
     else
@@ -735,26 +735,26 @@ LABEL_6:
   }
 }
 
-- (void)handleHyperlinkWithURL:(id)a3
+- (void)handleHyperlinkWithURL:(id)l
 {
-  v5 = [(THWiOSExpandedViewController *)self delegate];
+  delegate = [(THWiOSExpandedViewController *)self delegate];
 
-  [(THWExpandedViewControllerDelegate *)v5 expandedViewController:self handleHyperlinkWithURL:a3];
+  [(THWExpandedViewControllerDelegate *)delegate expandedViewController:self handleHyperlinkWithURL:l];
 }
 
 - (void)dismissExpandedImmediate
 {
   [(THWiOSExpandedViewController *)self setIsDismissing:1];
-  v3 = self;
+  selfCopy = self;
   [(THWiOSExpandedViewController *)self _dismissWillReplaceContentWithFlush:0];
   [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedViewController *)self delegate] expandedViewControllerWillDismiss:self];
   [(THWiOSExpandedViewController *)self removeFromParentViewController];
   [-[THWiOSExpandedViewController view](self "view")];
   [(THWiOSExpandedViewController *)self _dismissReplaceContent];
-  v4 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if (objc_opt_respondsToSelector())
   {
-    [(THWExpandedRep *)v4 didExitExpanded];
+    [(THWExpandedRep *)expandedRep didExitExpanded];
   }
 
   [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedViewController *)self delegate] expandedViewControllerDidDismiss:self];
@@ -775,16 +775,16 @@ LABEL_6:
 {
   if ([-[THWiOSExpandedViewController view](self "view")] || (-[THWiOSExpandedViewController delegate](self, "delegate"), (objc_opt_respondsToSelector() & 1) == 0))
   {
-    v4 = [(THWiOSExpandedViewController *)self view];
+    view = [(THWiOSExpandedViewController *)self view];
 
-    [v4 safeAreaInsets];
+    [view safeAreaInsets];
   }
 
   else
   {
-    v3 = [(THWiOSExpandedViewController *)self delegate];
+    delegate = [(THWiOSExpandedViewController *)self delegate];
 
-    [(THWExpandedViewControllerDelegate *)v3 expandedViewControllerSafeAreaInsets:self];
+    [(THWExpandedViewControllerDelegate *)delegate expandedViewControllerSafeAreaInsets:self];
   }
 
   result.right = v8;
@@ -794,13 +794,13 @@ LABEL_6:
   return result;
 }
 
-- (void)p_updateCanvasToSize:(CGSize)a3
+- (void)p_updateCanvasToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc] canvasLayer];
+  height = size.height;
+  width = size.width;
+  canvasLayer = [(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc] canvasLayer];
 
-  [v5 setUnscaledSize:{width, height}];
+  [canvasLayer setUnscaledSize:{width, height}];
 }
 
 - (void)p_updateScrollViewLayout
@@ -812,32 +812,32 @@ LABEL_6:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(THWiOSExpandedViewController *)self scrollView];
+  scrollView = [(THWiOSExpandedViewController *)self scrollView];
 
-  [(UIScrollView *)v13 setContentInset:v6, v8, v10, v12];
+  [(UIScrollView *)scrollView setContentInset:v6, v8, v10, v12];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   if (!self->_wasTornDown)
   {
-    height = a3.height;
-    width = a3.width;
+    height = size.height;
+    width = size.width;
     v22.receiver = self;
     v22.super_class = THWiOSExpandedViewController;
     [THWiOSExpandedViewController viewWillTransitionToSize:"viewWillTransitionToSize:withTransitionCoordinator:" withTransitionCoordinator:?];
-    if (a4)
+    if (coordinator)
     {
-      [a4 targetTransform];
+      [coordinator targetTransform];
       if (CGAffineTransformIsIdentity(&v15))
       {
-        [(THWiOSExpandedViewController *)self bookViewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+        [(THWiOSExpandedViewController *)self bookViewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
         v8 = 0;
       }
 
       else
       {
-        [(THWiOSExpandedViewController *)self bookViewWillRotateTransitionToSize:a4 withTransitionCoordinator:width, height];
+        [(THWiOSExpandedViewController *)self bookViewWillRotateTransitionToSize:coordinator withTransitionCoordinator:width, height];
         v8 = 1;
       }
 
@@ -873,7 +873,7 @@ LABEL_6:
       *&v11[7] = width;
       *&v11[8] = height;
       v11[6] = &v15;
-      v10 = [a4 animateAlongsideTransition:v13 completion:v11];
+      v10 = [coordinator animateAlongsideTransition:v13 completion:v11];
       *(v19 + 24) = v10;
       _Block_object_dispose(&v15, 8);
       _Block_object_dispose(&v18, 8);
@@ -887,34 +887,34 @@ LABEL_6:
   }
 }
 
-- (void)bookViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)bookViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] controllerWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v7 = [(THWiOSExpandedViewController *)self expandedRep];
+  height = size.height;
+  width = size.width;
+  [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] controllerWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(THWExpandedRep *)v7 expandedRotationAnimationController];
+    expandedRotationAnimationController = [(THWExpandedRep *)expandedRep expandedRotationAnimationController];
   }
 
   else
   {
-    v8 = 0;
+    expandedRotationAnimationController = 0;
   }
 
-  [(THWiOSExpandedViewController *)self setExpandedRotationAnimationController:v8];
+  [(THWiOSExpandedViewController *)self setExpandedRotationAnimationController:expandedRotationAnimationController];
   expandedRotationAnimationController = self->_expandedRotationAnimationController;
   [-[THWiOSExpandedViewController view](self "view")];
 
   [(THWExpandedTransitionRotationAnimationController *)expandedRotationAnimationController expandedWillTransitionFromSize:v10 toSize:v11, width, height];
 }
 
-- (void)bookViewWillRotateTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)bookViewWillRotateTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] controllerWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  height = size.height;
+  width = size.width;
+  [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] controllerWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(THWiOSExpandedViewController *)self setRotationScrim:+[CALayer layer]];
   -[CALayer setBackgroundColor:](-[THWiOSExpandedViewController rotationScrim](self, "rotationScrim"), "setBackgroundColor:", [-[THWiOSExpandedViewController p_targetViewBackgroundColor](self "p_targetViewBackgroundColor")]);
   [-[THWiOSExpandedViewController view](self "view")];
@@ -940,36 +940,36 @@ LABEL_6:
   self->_preRotateViewFrame.size.width = v21;
   self->_preRotateViewFrame.size.height = v22;
   [(THWAdornmentController *)self->_adornmentController setDisablePanelFrameAnimation:1];
-  v23 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if (objc_opt_respondsToSelector())
   {
-    v24 = [(THWExpandedRep *)v23 expandedRotationAnimationController];
+    expandedRotationAnimationController = [(THWExpandedRep *)expandedRep expandedRotationAnimationController];
   }
 
   else
   {
-    v24 = 0;
+    expandedRotationAnimationController = 0;
   }
 
-  [(THWiOSExpandedViewController *)self setExpandedRotationAnimationController:v24];
+  [(THWiOSExpandedViewController *)self setExpandedRotationAnimationController:expandedRotationAnimationController];
   [(THWExpandedTransitionRotationAnimationController *)self->_expandedRotationAnimationController expandedWillRotateTransitionFromSize:self->_preRotateViewFrame.size.width toSize:self->_preRotateViewFrame.size.height, width, height];
   [(UIScrollView *)[(THWiOSExpandedViewController *)self scrollView] setClipsToBounds:0];
-  v25 = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] canvasView];
+  canvasView = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] canvasView];
 
-  [v25 setClipsToBounds:0];
+  [canvasView setClipsToBounds:0];
 }
 
-- (CGAffineTransform)bookViewWillAnimateRotationToSize:(SEL)a3 withContext:(CGSize)a4
+- (CGAffineTransform)bookViewWillAnimateRotationToSize:(SEL)size withContext:(CGSize)context
 {
-  height = a4.height;
-  width = a4.width;
+  height = context.height;
+  width = context.width;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v10 = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] canvasView];
-  if (v10)
+  canvasView = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] canvasView];
+  if (canvasView)
   {
-    [v10 transform];
+    [canvasView transform];
   }
 
   else
@@ -990,9 +990,9 @@ LABEL_6:
   v22 = v12 + v21;
   v24 = v23 - (v14 + v18);
   v26 = v25 - (v12 + v16);
-  v27 = [(THWiOSExpandedViewController *)self adornmentController];
+  adornmentController = [(THWiOSExpandedViewController *)self adornmentController];
   [a5 transitionDuration];
-  [(THWAdornmentController *)v27 controllerWillAnimateToSize:width duration:height inFrame:v28, v20, v22, v24, v26];
+  [(THWAdornmentController *)adornmentController controllerWillAnimateToSize:width duration:height inFrame:v28, v20, v22, v24, v26];
   [(THWiOSExpandedViewController *)self p_updateCanvasToSize:v24, v26];
   [(THWiOSExpandedViewController *)self p_updateScrollViewLayout];
   v30 = self->_preRotateViewFrame.size.width;
@@ -1003,10 +1003,10 @@ LABEL_6:
   expandedRotationAnimationController = self->_expandedRotationAnimationController;
   [a5 transitionDuration];
   [(THWExpandedTransitionRotationAnimationController *)expandedRotationAnimationController expandedWillAnimateRotationFromSize:v30 toSize:v29 duration:v32, v34, v36];
-  v37 = [(THWExpandedTransitionRotationAnimationController *)self->_expandedRotationAnimationController autoRotationMode];
-  if (v37)
+  autoRotationMode = [(THWExpandedTransitionRotationAnimationController *)self->_expandedRotationAnimationController autoRotationMode];
+  if (autoRotationMode)
   {
-    v38 = v37;
+    v38 = autoRotationMode;
     v39 = [(THWiOSExpandedViewController *)self icc];
     v40 = *&retstr->c;
     *&v54.a = *&retstr->a;
@@ -1056,19 +1056,19 @@ LABEL_6:
     CGAffineTransformTranslate(&v53, &v52, v47, v48);
     v54 = v53;
     v51 = v53;
-    v49 = [(TSDInteractiveCanvasController *)v39 canvasView];
+    canvasView2 = [(TSDInteractiveCanvasController *)v39 canvasView];
     v53 = v51;
-    [v49 setTransform:&v53];
+    [canvasView2 setTransform:&v53];
   }
 
   return +[CATransaction commit];
 }
 
-- (void)bookViewDidAnimateRotationToSize:(CGSize)a3 withContext:(id)a4 transform:(CGAffineTransform *)a5
+- (void)bookViewDidAnimateRotationToSize:(CGSize)size withContext:(id)context transform:(CGAffineTransform *)transform
 {
-  height = a3.height;
-  width = a3.width;
-  [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] controllerDidTransitionToSize:a3.width, a3.height];
+  height = size.height;
+  width = size.width;
+  [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] controllerDidTransitionToSize:size.width, size.height];
   [(CALayer *)[(THWiOSExpandedViewController *)self rotationScrim] removeFromSuperlayer];
   [(THWiOSExpandedViewController *)self setRotationScrim:0];
   [(THWExpandedTransitionRotationAnimationController *)self->_expandedRotationAnimationController expandedDidAnimateRotationToSize:width, height];
@@ -1092,19 +1092,19 @@ LABEL_6:
   [(THWAdornmentController *)self->_adornmentController setDisablePanelFrameAnimation:0];
 }
 
-- (void)bookViewDidRotateTransitionToSize:(CGSize)a3 withContext:(id)a4
+- (void)bookViewDidRotateTransitionToSize:(CGSize)size withContext:(id)context
 {
-  [(THWExpandedTransitionRotationAnimationController *)self->_expandedRotationAnimationController expandedDidRotateTransitionToSize:a4, a3.width, a3.height];
+  [(THWExpandedTransitionRotationAnimationController *)self->_expandedRotationAnimationController expandedDidRotateTransitionToSize:context, size.width, size.height];
   [(THWiOSExpandedViewController *)self setExpandedRotationAnimationController:0];
   adornmentController = self->_adornmentController;
 
   [(THWAdornmentController *)adornmentController updateVisibility];
 }
 
-- (void)bookViewDidTransitionToSize:(CGSize)a3 withContext:(id)a4
+- (void)bookViewDidTransitionToSize:(CGSize)size withContext:(id)context
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THWiOSExpandedViewController *)self p_viewSizeDidChange];
   [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] controllerDidTransitionToSize:width, height];
   [(THWExpandedTransitionRotationAnimationController *)self->_expandedRotationAnimationController expandedDidTransitionToSize:width, height];
@@ -1131,14 +1131,14 @@ LABEL_6:
   [(THWAdornmentController *)adornmentController updateVisibility];
 }
 
-- (BOOL)p_hasSourceRepForInfo:(id)a3
+- (BOOL)p_hasSourceRepForInfo:(id)info
 {
-  v5 = [(THWiOSExpandedViewController *)self p_sourceICC];
+  p_sourceICC = [(THWiOSExpandedViewController *)self p_sourceICC];
 
-  return [(THWiOSExpandedViewController *)self p_hasRepForICC:v5 forInfo:a3];
+  return [(THWiOSExpandedViewController *)self p_hasRepForICC:p_sourceICC forInfo:info];
 }
 
-- (id)p_sourceRepForInfo:(id)a3
+- (id)p_sourceRepForInfo:(id)info
 {
   v3 = [-[THWiOSExpandedViewController p_sourceICC](self "p_sourceICC")];
   if (!v3)
@@ -1149,36 +1149,36 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)p_hasTargetRepForInfo:(id)a3
+- (BOOL)p_hasTargetRepForInfo:(id)info
 {
-  v5 = [(THWiOSExpandedViewController *)self p_targetICC];
+  p_targetICC = [(THWiOSExpandedViewController *)self p_targetICC];
 
-  return [(THWiOSExpandedViewController *)self p_hasRepForICC:v5 forInfo:a3];
+  return [(THWiOSExpandedViewController *)self p_hasRepForICC:p_targetICC forInfo:info];
 }
 
-- (id)p_targetRepForInfo:(id)a3
+- (id)p_targetRepForInfo:(id)info
 {
-  v4 = [(THWiOSExpandedViewController *)self p_targetICC];
+  p_targetICC = [(THWiOSExpandedViewController *)self p_targetICC];
 
-  return [v4 repForInfo:a3 createIfNeeded:0];
+  return [p_targetICC repForInfo:info createIfNeeded:0];
 }
 
-- (void)_dismissWillReplaceContentWithFlush:(BOOL)a3
+- (void)_dismissWillReplaceContentWithFlush:(BOOL)flush
 {
-  v3 = a3;
-  v5 = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
-  if (-[THWiOSExpandedViewController p_hasSourceRepForInfo:](self, "p_hasSourceRepForInfo:", [v5 info]))
+  flushCopy = flush;
+  expandedRepSourceRep = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
+  if (-[THWiOSExpandedViewController p_hasSourceRepForInfo:](self, "p_hasSourceRepForInfo:", [expandedRepSourceRep info]))
   {
-    v6 = -[THWiOSExpandedViewController p_sourceRepForInfo:](self, "p_sourceRepForInfo:", [v5 info]);
+    v6 = -[THWiOSExpandedViewController p_sourceRepForInfo:](self, "p_sourceRepForInfo:", [expandedRepSourceRep info]);
     if (v6)
     {
       v7 = v6;
-      if (v3)
+      if (flushCopy)
       {
         +[CATransaction flush];
       }
 
-      [v5 willReplaceContentsFromRep:v7];
+      [expandedRepSourceRep willReplaceContentsFromRep:v7];
     }
   }
 }
@@ -1207,25 +1207,25 @@ LABEL_6:
   }
 }
 
-- (void)animationControllerWillPresent:(id)a3
+- (void)animationControllerWillPresent:(id)present
 {
   if ([(THWiOSExpandedViewController *)self isDismissing])
   {
     [(THWiOSExpandedViewController *)self _dismissWillReplaceContentWithFlush:1];
-    v4 = [(THWiOSExpandedViewController *)self delegate];
+    delegate = [(THWiOSExpandedViewController *)self delegate];
 
-    [(THWExpandedViewControllerDelegate *)v4 expandedViewControllerWillDismiss:self];
+    [(THWExpandedViewControllerDelegate *)delegate expandedViewControllerWillDismiss:self];
   }
 
   else
   {
-    v5 = [(THWiOSExpandedViewController *)self delegate];
+    delegate2 = [(THWiOSExpandedViewController *)self delegate];
 
-    [(THWExpandedViewControllerDelegate *)v5 expandedViewControllerWillPresent:self];
+    [(THWExpandedViewControllerDelegate *)delegate2 expandedViewControllerWillPresent:self];
   }
 }
 
-- (void)animationControllerTeardownTarget:(id)a3
+- (void)animationControllerTeardownTarget:(id)target
 {
   if ([(THWiOSExpandedViewController *)self isDismissing])
   {
@@ -1243,11 +1243,11 @@ LABEL_6:
       mContentsRep = self->mContentsRep;
     }
 
-    v6 = [(TSDRep *)mContentsRep info];
+    info = [(TSDRep *)mContentsRep info];
     if (self->mContentsRep == v4)
     {
-      v7 = v6;
-      if ([(THWiOSExpandedViewController *)self p_hasSourceRepForInfo:v6])
+      v7 = info;
+      if ([(THWiOSExpandedViewController *)self p_hasSourceRepForInfo:info])
       {
         v8 = [(THWiOSExpandedViewController *)self p_sourceRepForInfo:v7];
         v9 = self->mContentsRep;
@@ -1258,19 +1258,19 @@ LABEL_6:
   }
 }
 
-- (void)animationControllerDidPresent:(id)a3
+- (void)animationControllerDidPresent:(id)present
 {
-  v4 = [(THWiOSExpandedViewController *)self parentViewController];
+  parentViewController = [(THWiOSExpandedViewController *)self parentViewController];
   if ([(THWiOSExpandedViewController *)self isDismissing])
   {
-    v5 = self;
+    selfCopy = self;
     [(THWiOSExpandedViewController *)self p_setOnCanvasRepShadowLayerHidden:0];
     [(THWiOSExpandedViewController *)self removeFromParentViewController];
     [-[THWiOSExpandedViewController view](self "view")];
-    v6 = [(THWiOSExpandedViewController *)self expandedRep];
+    expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
     if (objc_opt_respondsToSelector())
     {
-      [(THWExpandedRep *)v6 didExitExpanded];
+      [(THWExpandedRep *)expandedRep didExitExpanded];
     }
 
     [(THWiOSExpandedViewController *)self expandedRep];
@@ -1298,10 +1298,10 @@ LABEL_6:
       [(THWAdornmentController *)[(THWiOSExpandedViewController *)self adornmentController] setAdornmentsVisible:1 animated:1 completionBlock:0];
     }
 
-    v9 = [(THWiOSExpandedViewController *)self expandedRep];
+    expandedRep2 = [(THWiOSExpandedViewController *)self expandedRep];
     if (objc_opt_respondsToSelector())
     {
-      [(THWExpandedRep *)v9 didPresentExpanded];
+      [(THWExpandedRep *)expandedRep2 didPresentExpanded];
     }
 
     [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedViewController *)self delegate] expandedViewControllerDidPresent:self];
@@ -1322,12 +1322,12 @@ LABEL_6:
     [(THWiOSExpandedViewController *)self p_setOnCanvasRepShadowLayerHidden:0, v13];
   }
 
-  [v4 setNeedsWhitePointAdaptivityStyleUpdate];
+  [parentViewController setNeedsWhitePointAdaptivityStyleUpdate];
 
   self->mContentsRep = 0;
 }
 
-- (void)animationControllerDidPresentPostCommit:(id)a3
+- (void)animationControllerDidPresentPostCommit:(id)commit
 {
   if ([(THWiOSExpandedViewController *)self expandedRepControllerState]== 1)
   {
@@ -1355,62 +1355,62 @@ LABEL_6:
 
   [(THWiOSExpandedViewController *)self setIsDismissing:0];
 
-  [a3 removeObserver:self];
+  [commit removeObserver:self];
 }
 
-- (void)animationControllerSetupTarget:(id)a3
+- (void)animationControllerSetupTarget:(id)target
 {
   if (![(THWiOSExpandedViewController *)self isDismissing])
   {
     [(THWAdornmentController *)self->_adornmentController setDisablePanelFrameAnimation:1];
-    v5 = [(THWiOSExpandedViewController *)self view];
+    view = [(THWiOSExpandedViewController *)self view];
     v6 = *&CGAffineTransformIdentity.c;
     v13[0] = *&CGAffineTransformIdentity.a;
     v13[1] = v6;
     v13[2] = *&CGAffineTransformIdentity.tx;
-    [v5 setTransform:v13];
+    [view setTransform:v13];
     [-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedViewController delegate](self "delegate")];
-    [v5 setFrame:?];
+    [view setFrame:?];
     [-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedViewController delegate](self "delegate")];
-    v7 = [(THWiOSExpandedViewController *)self expandedRep];
-    v8 = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
+    expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
+    expandedRepSourceRep = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
     if (objc_opt_respondsToSelector())
     {
-      [v8 expandableWillPresentExpanded];
+      [expandedRepSourceRep expandableWillPresentExpanded];
     }
 
     if ([(THWiOSExpandedViewController *)self isDismissing])
     {
-      v9 = [objc_msgSend(objc_msgSend(v8 "hostICC")];
+      layer = [objc_msgSend(objc_msgSend(expandedRepSourceRep "hostICC")];
     }
 
     else
     {
-      v9 = [v5 layer];
+      layer = [view layer];
     }
 
-    v10 = v9;
+    v10 = layer;
     if ([(THWiOSExpandedViewController *)self isDismissing])
     {
-      v11 = [v5 layer];
+      layer2 = [view layer];
     }
 
     else
     {
-      v11 = [objc_msgSend(objc_msgSend(v8 "hostICC")];
+      layer2 = [objc_msgSend(objc_msgSend(expandedRepSourceRep "hostICC")];
     }
 
-    v12 = v11;
-    [a3 setSource:v8];
-    [a3 setDestination:v7];
-    [a3 setHostLayer:{objc_msgSend(-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedViewController delegate](self, "delegate"), "rootSuperview"), "layer")}];
-    [a3 setForegroundLayer:v10];
-    [a3 setBackgroundLayer:v12];
-    [v5 layoutIfNeeded];
+    v12 = layer2;
+    [target setSource:expandedRepSourceRep];
+    [target setDestination:expandedRep];
+    [target setHostLayer:{objc_msgSend(-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedViewController delegate](self, "delegate"), "rootSuperview"), "layer")}];
+    [target setForegroundLayer:v10];
+    [target setBackgroundLayer:v12];
+    [view layoutIfNeeded];
     [(THWAdornmentController *)self->_adornmentController setDisablePanelFrameAnimation:0];
     if (objc_opt_respondsToSelector())
     {
-      [(THWExpandedRep *)v7 expandedDidAppearPreAnimation];
+      [(THWExpandedRep *)expandedRep expandedDidAppearPreAnimation];
     }
   }
 }
@@ -1419,9 +1419,9 @@ LABEL_6:
 {
   if (![(THWiOSExpandedViewController *)self p_alwaysVisible])
   {
-    v3 = [(THWiOSExpandedViewController *)self adornmentController];
+    adornmentController = [(THWiOSExpandedViewController *)self adornmentController];
 
-    [(THWAdornmentController *)v3 setAdornmentsVisible:0 animated:1 completionBlock:0];
+    [(THWAdornmentController *)adornmentController setAdornmentsVisible:0 animated:1 completionBlock:0];
   }
 }
 
@@ -1429,40 +1429,40 @@ LABEL_6:
 {
   if (![(THWiOSExpandedViewController *)self p_alwaysVisible])
   {
-    v3 = [(THWiOSExpandedViewController *)self adornmentController];
+    adornmentController = [(THWiOSExpandedViewController *)self adornmentController];
 
-    [(THWAdornmentController *)v3 setAdornmentsVisible:1 animated:1 completionBlock:0];
+    [(THWAdornmentController *)adornmentController setAdornmentsVisible:1 animated:1 completionBlock:0];
   }
 }
 
-- (BOOL)allowTouchOutsideCanvasView:(id)a3 forGesture:(id)a4
+- (BOOL)allowTouchOutsideCanvasView:(id)view forGesture:(id)gesture
 {
   v5 = TSUProtocolCast();
-  v6 = [v5 gestureKind];
-  if (v6 == TSWPImmediateSingleTap)
+  gestureKind = [v5 gestureKind];
+  if (gestureKind == TSWPImmediateSingleTap)
   {
     v8 = 1;
   }
 
   else
   {
-    v7 = [v5 gestureKind];
-    v8 = v7 == TSWPTapAndTouch;
+    gestureKind2 = [v5 gestureKind];
+    v8 = gestureKind2 == TSWPTapAndTouch;
   }
 
-  v9 = [v5 gestureKind];
-  if (v9 != TSDFreeTransform)
+  gestureKind3 = [v5 gestureKind];
+  if (gestureKind3 != TSDFreeTransform)
   {
     return v8;
   }
 
-  v10 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 1;
   }
 
-  return [(THWExpandedRep *)v10 expandedAllowFreeTransform];
+  return [(THWExpandedRep *)expandedRep expandedAllowFreeTransform];
 }
 
 - (id)p_sourceICC
@@ -1475,9 +1475,9 @@ LABEL_6:
 
   else
   {
-    v4 = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
+    expandedRepSourceRep = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
 
-    return [v4 hostICC];
+    return [expandedRepSourceRep hostICC];
   }
 }
 
@@ -1485,9 +1485,9 @@ LABEL_6:
 {
   if ([(THWiOSExpandedViewController *)self isDismissing])
   {
-    v3 = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
+    expandedRepSourceRep = [(THWiOSExpandedViewController *)self expandedRepSourceRep];
 
-    return [v3 hostICC];
+    return [expandedRepSourceRep hostICC];
   }
 
   else
@@ -1497,16 +1497,16 @@ LABEL_6:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 willLayoutRep:(id)a4
+- (void)interactiveCanvasController:(id)controller willLayoutRep:(id)rep
 {
-  if ([(THWiOSExpandedViewController *)self p_targetICC]== a3)
+  if ([(THWiOSExpandedViewController *)self p_targetICC]== controller)
   {
-    v6 = [(THWiOSExpandedViewController *)self drawableToPresent];
-    if ([a4 info] == v6)
+    drawableToPresent = [(THWiOSExpandedViewController *)self drawableToPresent];
+    if ([rep info] == drawableToPresent)
     {
 
       self->mContentsRep = 0;
-      self->mContentsRep = a4;
+      self->mContentsRep = rep;
       v7 = TSUProtocolCast();
       if (objc_opt_respondsToSelector())
       {
@@ -1514,25 +1514,25 @@ LABEL_6:
       }
     }
 
-    if (-[THWiOSExpandedViewController p_hasSourceRepForInfo:](self, "p_hasSourceRepForInfo:", [a4 info]))
+    if (-[THWiOSExpandedViewController p_hasSourceRepForInfo:](self, "p_hasSourceRepForInfo:", [rep info]))
     {
-      v8 = -[THWiOSExpandedViewController p_sourceRepForInfo:](self, "p_sourceRepForInfo:", [a4 info]);
+      v8 = -[THWiOSExpandedViewController p_sourceRepForInfo:](self, "p_sourceRepForInfo:", [rep info]);
 
-      [a4 willReplaceContentsFromRep:v8];
+      [rep willReplaceContentsFromRep:v8];
     }
   }
 }
 
-- (CGPoint)interactiveCanvasController:(id)a3 clampContentOffset:(CGPoint)a4 forViewScale:(double)a5
+- (CGPoint)interactiveCanvasController:(id)controller clampContentOffset:(CGPoint)offset forViewScale:(double)scale
 {
-  v6 = [(THWiOSExpandedViewController *)self scrollView];
-  v7 = [(UIScrollView *)v6 window];
-  if (!v7)
+  scrollView = [(THWiOSExpandedViewController *)self scrollView];
+  window = [(UIScrollView *)scrollView window];
+  if (!window)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [v7 bounds];
+  [window bounds];
   x = v18.origin.x;
   y = v18.origin.y;
   width = v18.size.width;
@@ -1546,12 +1546,12 @@ LABEL_6:
   [-[THWiOSExpandedViewController view](self "view")];
   [-[TSDiOSCanvasViewController canvasLayer](-[THWiOSExpandedViewController cvc](self "cvc")];
   TSDMultiplySizeScalar();
-  [(UIScrollView *)v6 bounds];
-  [(UIScrollView *)v6 bounds];
-  [(UIScrollView *)v6 bounds];
+  [(UIScrollView *)scrollView bounds];
+  [(UIScrollView *)scrollView bounds];
+  [(UIScrollView *)scrollView bounds];
   TSUClamp();
   v13 = v12;
-  [(UIScrollView *)v6 bounds];
+  [(UIScrollView *)scrollView bounds];
   TSUClamp();
   v15 = v14;
   v16 = v13;
@@ -1560,7 +1560,7 @@ LABEL_6:
   return result;
 }
 
-- (void)interactiveCanvasController:(id)a3 layoutRegistered:(id)a4
+- (void)interactiveCanvasController:(id)controller layoutRegistered:(id)registered
 {
   v5 = TSUProtocolCast();
   if (v5)
@@ -1570,17 +1570,17 @@ LABEL_6:
   }
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForHitTesting:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForHitTesting:(CGRect)testing
 {
   [-[THWiOSExpandedViewController view](self view];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(THWiOSExpandedViewController *)self view];
-  v15 = [a3 canvasView];
+  view = [(THWiOSExpandedViewController *)self view];
+  canvasView = [controller canvasView];
 
-  [v14 convertRect:v15 toView:{v7, v9, v11, v13}];
+  [view convertRect:canvasView toView:{v7, v9, v11, v13}];
   result.size.height = v19;
   result.size.width = v18;
   result.origin.y = v17;
@@ -1588,11 +1588,11 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling
 {
-  v4 = [(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc:a3] view];
+  view = [(TSDiOSCanvasViewController *)[(THWiOSExpandedViewController *)self cvc:controller] view];
 
-  [v4 bounds];
+  [view bounds];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -1600,13 +1600,13 @@ LABEL_6:
   return result;
 }
 
-- (id)additionalGestureTargetsForInteractiveCanvasController:(id)a3 gesture:(id)a4
+- (id)additionalGestureTargetsForInteractiveCanvasController:(id)controller gesture:(id)gesture
 {
   v6 = +[NSMutableArray array];
   [(THWiOSExpandedViewController *)self expandedRep];
   v7 = TSUProtocolCast();
-  v8 = [a4 gestureKind];
-  if (v8 == TSDFreeTransform && v7 != 0)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform && v7 != 0)
   {
     [v6 addObject:v7];
   }
@@ -1615,11 +1615,11 @@ LABEL_6:
   return v6;
 }
 
-- (void)exitAVPresentation:(id)a3
+- (void)exitAVPresentation:(id)presentation
 {
   [(THWiOSExpandedViewController *)self dismissExpandedAnimatedWithCompletionBlock:&stru_45DF40];
 
-  [a3 setDelegate:0];
+  [presentation setDelegate:0];
 }
 
 - (CGRect)widgetLayoutBounds
@@ -1635,12 +1635,12 @@ LABEL_6:
   return result;
 }
 
-- (void)expandedRepControllerInvalidateChildrenInPanel:(int)a3 invalidateWPAuto:(BOOL)a4
+- (void)expandedRepControllerInvalidateChildrenInPanel:(int)panel invalidateWPAuto:(BOOL)auto
 {
-  v4 = a4;
-  v5 = *&a3;
+  autoCopy = auto;
+  v5 = *&panel;
   [(THWAdornmentController *)self->_adornmentController invalidateChildrenInPanel:?];
-  if (v4)
+  if (autoCopy)
   {
     adornmentController = self->_adornmentController;
 
@@ -1650,24 +1650,24 @@ LABEL_6:
 
 - (id)expandedRepSourceRep
 {
-  v3 = [(THWiOSExpandedViewController *)self delegate];
-  v4 = [(THWiOSExpandedViewController *)self drawableToPresent];
+  delegate = [(THWiOSExpandedViewController *)self delegate];
+  drawableToPresent = [(THWiOSExpandedViewController *)self drawableToPresent];
 
-  return [(THWExpandedViewControllerDelegate *)v3 expandableRepForInfo:v4];
+  return [(THWExpandedViewControllerDelegate *)delegate expandableRepForInfo:drawableToPresent];
 }
 
-- (double)expandedHeightForPanel:(int)a3 allowDefault:(BOOL)a4
+- (double)expandedHeightForPanel:(int)panel allowDefault:(BOOL)default
 {
   adornmentController = self->_adornmentController;
   if (adornmentController)
   {
-    [(THWAdornmentController *)adornmentController heightForPanel:*&a3 allowDefault:a4];
+    [(THWAdornmentController *)adornmentController heightForPanel:*&panel allowDefault:default];
   }
 
   else
   {
     result = 44.0;
-    if (a3 >= 3 || !a4)
+    if (panel >= 3 || !default)
     {
       return 0.0;
     }
@@ -1676,7 +1676,7 @@ LABEL_6:
   return result;
 }
 
-- (void)presentRepExpanded:(id)a3
+- (void)presentRepExpanded:(id)expanded
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THWiOSExpandedViewController presentRepExpanded:]"];
@@ -1685,9 +1685,9 @@ LABEL_6:
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:1635 description:@"Main canvas widget host should handle this."];
 }
 
-- (void)presentPopoverForPopUpInfo:(id)a3 withFrame:(CGRect)a4 inLayer:(id)a5
+- (void)presentPopoverForPopUpInfo:(id)info withFrame:(CGRect)frame inLayer:(id)layer
 {
-  if (![NSThread isMainThread:a3])
+  if (![NSThread isMainThread:info])
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [NSString stringWithUTF8String:"[THWiOSExpandedViewController presentPopoverForPopUpInfo:withFrame:inLayer:]"];
@@ -1699,9 +1699,9 @@ LABEL_6:
 
 - (BOOL)inFlowMode
 {
-  v2 = [(THWiOSExpandedViewController *)self delegate];
+  delegate = [(THWiOSExpandedViewController *)self delegate];
 
-  return [(THWExpandedViewControllerDelegate *)v2 inFlowMode];
+  return [(THWExpandedViewControllerDelegate *)delegate inFlowMode];
 }
 
 - (CGSize)widgetHostExpandedSize
@@ -1716,27 +1716,27 @@ LABEL_6:
 
 - (id)hostCanvasLayer
 {
-  v2 = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] layerHost];
+  layerHost = [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] layerHost];
 
-  return [v2 canvasLayer];
+  return [layerHost canvasLayer];
 }
 
-- (void)p_setOnCanvasRepShadowLayerHidden:(BOOL)a3
+- (void)p_setOnCanvasRepShadowLayerHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   [(THWiOSExpandedViewController *)self expandedRepSourceRep];
   v4 = TSUProtocolCast();
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 styledRep];
-    [objc_msgSend(v5 "shadowLayer")];
-    v6 = [v5 reflectionLayer];
+    styledRep = [v4 styledRep];
+    [objc_msgSend(styledRep "shadowLayer")];
+    reflectionLayer = [styledRep reflectionLayer];
 
-    [v6 setHidden:v3];
+    [reflectionLayer setHidden:hiddenCopy];
   }
 }
 
-- (CGRect)rectForCompletionAnimationWithRep:(id)a3
+- (CGRect)rectForCompletionAnimationWithRep:(id)rep
 {
   [(THWiOSExpandedViewController *)self expandedRepSourceRep];
   v4 = TSUProtocolCast();
@@ -1757,9 +1757,9 @@ LABEL_6:
   return result;
 }
 
-- (void)freeTransformDidBeginWithRep:(id)a3 expandableRep:(id)a4
+- (void)freeTransformDidBeginWithRep:(id)rep expandableRep:(id)expandableRep
 {
-  if (![NSThread isMainThread:a3])
+  if (![NSThread isMainThread:rep])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -1780,16 +1780,16 @@ LABEL_6:
   [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedViewController *)self delegate] expandedViewControllerWillBeginDismissing:self];
 }
 
-- (void)freeTransformDidEndWithRep:(id)a3 expandableRep:(id)a4 completionBlock:(id)a5
+- (void)freeTransformDidEndWithRep:(id)rep expandableRep:(id)expandableRep completionBlock:(id)block
 {
-  [(THWiOSExpandedViewController *)self p_setOnCanvasRepShadowLayerHidden:0, a4];
+  [(THWiOSExpandedViewController *)self p_setOnCanvasRepShadowLayerHidden:0, expandableRep];
 
-  [(THWiOSExpandedViewController *)self p_dismissExpandedAnimatedWithCompletionBlock:a5 freeTransformDidEnd:1];
+  [(THWiOSExpandedViewController *)self p_dismissExpandedAnimatedWithCompletionBlock:block freeTransformDidEnd:1];
 }
 
-- (void)freeTransformDidCancelWithRep:(id)a3 expandableRep:(id)a4
+- (void)freeTransformDidCancelWithRep:(id)rep expandableRep:(id)expandableRep
 {
-  [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedViewController *)self delegate:a3] expandedViewControllerDidCancelDismiss:self];
+  [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedViewController *)self delegate:rep] expandedViewControllerDidCancelDismiss:self];
   self->_freeTransformWasCancelled = 1;
   [(THWiOSExpandedViewController *)self p_updateBackgroundColor];
   if (self->mControlsVisibleBeforeTransform)
@@ -1803,7 +1803,7 @@ LABEL_6:
   [(THWiOSExpandedViewController *)self p_setOnCanvasRepShadowLayerHidden:0];
 }
 
-- (void)freeTransformWillFadeOutCurtain:(id)a3 expandableRep:(id)a4
+- (void)freeTransformWillFadeOutCurtain:(id)curtain expandableRep:(id)rep
 {
   if (self->_freeTransformWasCancelled)
   {
@@ -1812,54 +1812,54 @@ LABEL_6:
 
   else
   {
-    v5 = [(THWiOSExpandedViewController *)self im_isCompactHeight:a3]^ 1;
+    v5 = [(THWiOSExpandedViewController *)self im_isCompactHeight:curtain]^ 1;
   }
 
-  [(THWiOSExpandedViewController *)self p_setWantsStatusBarVisible:v5, a4];
+  [(THWiOSExpandedViewController *)self p_setWantsStatusBarVisible:v5, rep];
   [(THWiOSExpandedViewController *)self expandedRep];
   if (objc_opt_respondsToSelector())
   {
     v6 = +[UIColor clearColor];
-    v7 = [(THWiOSExpandedViewController *)self scrollView];
+    scrollView = [(THWiOSExpandedViewController *)self scrollView];
 
-    [(UIScrollView *)v7 setBackgroundColor:v6];
+    [(UIScrollView *)scrollView setBackgroundColor:v6];
   }
 }
 
-- (void)progressDidChangeForRep:(id)a3 percent:(id)a4
+- (void)progressDidChangeForRep:(id)rep percent:(id)percent
 {
   [(THWiOSExpandedViewController *)self delegate];
   v6 = TSUProtocolCast();
   if (objc_opt_respondsToSelector())
   {
 
-    [v6 interactiveCanvasController:0 progressDidChangeForRep:a3 percent:a4];
+    [v6 interactiveCanvasController:0 progressDidChangeForRep:rep percent:percent];
   }
 }
 
-- (void)scoreDidChangeForRep:(id)a3 score:(id)a4 total:(id)a5
+- (void)scoreDidChangeForRep:(id)rep score:(id)score total:(id)total
 {
   [(THWiOSExpandedViewController *)self delegate];
   v8 = TSUProtocolCast();
   if (objc_opt_respondsToSelector())
   {
 
-    [v8 interactiveCanvasController:0 scoreDidChangeForRep:a3 score:a4 total:a5];
+    [v8 interactiveCanvasController:0 scoreDidChangeForRep:rep score:score total:total];
   }
 }
 
-- (void)resetAttemptForRep:(id)a3
+- (void)resetAttemptForRep:(id)rep
 {
   [(THWiOSExpandedViewController *)self delegate];
   v4 = TSUProtocolCast();
   if (objc_opt_respondsToSelector())
   {
 
-    [v4 interactiveCanvasController:0 resetAttemptForRep:a3];
+    [v4 interactiveCanvasController:0 resetAttemptForRep:rep];
   }
 }
 
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
   [(THWiOSExpandedViewController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1867,17 +1867,17 @@ LABEL_6:
     return 0;
   }
 
-  v9 = [(THWiOSExpandedViewController *)self delegate];
+  delegate = [(THWiOSExpandedViewController *)self delegate];
 
-  return [(THWExpandedViewControllerDelegate *)v9 expandedViewController:self actionForHyperlink:a3 inRep:a4 gesture:a5];
+  return [(THWExpandedViewControllerDelegate *)delegate expandedViewController:self actionForHyperlink:hyperlink inRep:rep gesture:gesture];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v6 = [(THWiOSExpandedViewController *)self expandedRep];
-  if (a4)
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
+  if (collection)
   {
-    v7 = v6;
+    v7 = expandedRep;
     if (objc_opt_respondsToSelector())
     {
       if ([(THWExpandedRep *)v7 expandedShouldDismissOnChangeFromSizeClassPairWithController:self flowMode:[(THWiOSExpandedViewController *)self inFlowMode]])
@@ -1889,17 +1889,17 @@ LABEL_6:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THWiOSExpandedViewController;
-  [(THWiOSExpandedViewController *)&v4 viewDidAppear:a3];
+  [(THWiOSExpandedViewController *)&v4 viewDidAppear:appear];
   [(THWiOSExpandedViewController *)self becomeFirstResponder];
 }
 
 - (void)p_addKeyCommands
 {
-  v3 = [(THWiOSExpandedViewController *)self expandedRep];
+  expandedRep = [(THWiOSExpandedViewController *)self expandedRep];
   v4 = TSUProtocolCast();
   v5 = TSUProtocolCast();
   [(THWiOSExpandedViewController *)self addKeyCommand:[UIKeyCommand keyCommandWithInput:UIKeyInputEscape modifierFlags:0 action:"p_handleEscapeKey:"]];
@@ -1937,7 +1937,7 @@ LABEL_6:
     [(THWiOSExpandedViewController *)self addKeyCommand:[UIKeyCommand keyCommandWithInput:@"9" modifierFlags:0 action:"p_handleNumber:"]];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWExpandedRep *)v3 expandedContentAllowPinchZoom])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWExpandedRep *)expandedRep expandedContentAllowPinchZoom])
   {
     [(THWiOSExpandedViewController *)self addKeyCommand:[UIKeyCommand keyCommandWithInput:@"+" modifierFlags:0 action:"p_handleZoomInKey:"]];
     v6 = @"-";
@@ -1949,27 +1949,27 @@ LABEL_9:
   }
 }
 
-- (void)p_handleNavigationKey:(id)a3
+- (void)p_handleNavigationKey:(id)key
 {
   [(THWiOSExpandedViewController *)self expandedRep];
   v4 = TSUProtocolCast();
   v6[0] = UIKeyInputRightArrow;
   v6[1] = @"\r";
   v6[2] = @"\n";
-  if (-[NSArray containsObject:](+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v6, 3), "containsObject:", [a3 input]))
+  if (-[NSArray containsObject:](+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v6, 3), "containsObject:", [key input]))
   {
     goto LABEL_2;
   }
 
   v5 = UIKeyInputLeftArrow;
-  if (-[NSArray containsObject:](+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v5, 1), "containsObject:", [a3 input]))
+  if (-[NSArray containsObject:](+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v5, 1), "containsObject:", [key input]))
   {
     goto LABEL_4;
   }
 
-  if ([&off_49DA58 containsObject:{objc_msgSend(a3, "input")}])
+  if ([&off_49DA58 containsObject:{objc_msgSend(key, "input")}])
   {
-    if (([a3 modifierFlags] & 0x20000) == 0)
+    if (([key modifierFlags] & 0x20000) == 0)
     {
 LABEL_2:
       [v4 handleNavigateNextCommand];
@@ -1981,31 +1981,31 @@ LABEL_4:
   }
 }
 
-- (void)p_handleNumber:(id)a3
+- (void)p_handleNumber:(id)number
 {
   [(THWiOSExpandedViewController *)self expandedRep];
   v4 = TSUProtocolCast();
   if (objc_opt_respondsToSelector())
   {
-    v5 = [objc_msgSend(a3 "input")];
+    v5 = [objc_msgSend(number "input")];
 
     [v4 handleNavigateCommandWithNumber:v5];
   }
 }
 
-- (void)p_handleMediaTransportKey:(id)a3
+- (void)p_handleMediaTransportKey:(id)key
 {
   [(THWiOSExpandedViewController *)self expandedRep];
   v4 = TSUProtocolCast();
-  if ([objc_msgSend(a3 "input")])
+  if ([objc_msgSend(key "input")])
   {
 
     [v4 handleTransportPlayPauseCommand];
   }
 
-  else if ([objc_msgSend(a3 "input")])
+  else if ([objc_msgSend(key "input")])
   {
-    if ([a3 modifierFlags] == &loc_100000)
+    if ([key modifierFlags] == &loc_100000)
     {
 
       [v4 handleTransportFastforwardCommand];
@@ -2018,9 +2018,9 @@ LABEL_4:
     }
   }
 
-  else if ([objc_msgSend(a3 "input")])
+  else if ([objc_msgSend(key "input")])
   {
-    if ([a3 modifierFlags] == &loc_100000)
+    if ([key modifierFlags] == &loc_100000)
     {
 
       [v4 handleTransportRewindCommand];
@@ -2033,25 +2033,25 @@ LABEL_4:
     }
   }
 
-  else if ([objc_msgSend(a3 "input")])
+  else if ([objc_msgSend(key "input")])
   {
 
     [v4 handleTransportIncreaseVolumeCommand];
   }
 
-  else if ([objc_msgSend(a3 "input")])
+  else if ([objc_msgSend(key "input")])
   {
 
     [v4 handleTransportDecreaseVolumeCommand];
   }
 }
 
-- (void)zoomInOrOut:(BOOL)a3
+- (void)zoomInOrOut:(BOOL)out
 {
-  v3 = a3;
+  outCopy = out;
   [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] viewScale];
   v6 = v5;
-  if (v3)
+  if (outCopy)
   {
     [(THWiOSExpandedViewController *)self expandedRep];
     v7 = objc_opt_respondsToSelector();
@@ -2097,9 +2097,9 @@ LABEL_4:
   }
 }
 
-- (void)p_updateContentOffsetFromCurrentViewScale:(double)a3 toNewViewScale:(double)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7
+- (void)p_updateContentOffsetFromCurrentViewScale:(double)scale toNewViewScale:(double)viewScale animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v9 = a5;
+  animatedCopy = animated;
   [(TSDInteractiveCanvasController *)[(THWiOSExpandedViewController *)self icc] contentOffset];
   [(UIScrollView *)[(THWiOSExpandedViewController *)self scrollView] bounds];
   CGRectGetWidth(v21);
@@ -2113,34 +2113,34 @@ LABEL_4:
   v13 = v12;
   v15 = v14;
   v16 = [(THWiOSExpandedViewController *)self icc];
-  if (v9)
+  if (animatedCopy)
   {
-    if (a6 == 0.0)
+    if (duration == 0.0)
     {
-      v17 = 0.3;
+      durationCopy = 0.3;
     }
 
     else
     {
-      v17 = a6;
+      durationCopy = duration;
     }
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1495B0;
     v19[3] = &unk_45BD40;
-    v19[4] = a7;
-    [(TSDInteractiveCanvasController *)v16 setViewScale:1 contentOffset:v19 clampOffset:a4 animationDuration:v13 completion:v15, v17];
+    v19[4] = completion;
+    [(TSDInteractiveCanvasController *)v16 setViewScale:1 contentOffset:v19 clampOffset:viewScale animationDuration:v13 completion:v15, durationCopy];
   }
 
   else
   {
-    [(TSDInteractiveCanvasController *)v16 setViewScale:0 contentOffset:0 clampOffset:a4 animated:v13, v15];
-    if (a7)
+    [(TSDInteractiveCanvasController *)v16 setViewScale:0 contentOffset:0 clampOffset:viewScale animated:v13, v15];
+    if (completion)
     {
-      v18 = *(a7 + 2);
+      v18 = *(completion + 2);
 
-      v18(a7);
+      v18(completion);
     }
   }
 }

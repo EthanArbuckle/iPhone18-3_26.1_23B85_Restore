@@ -1,5 +1,5 @@
 @interface NTKEsterbrookHandsView
-- (_TtC32NTKEsterbrookFaceBundleCompanion22NTKEsterbrookHandsView)initWithCoder:(id)a3;
+- (_TtC32NTKEsterbrookFaceBundleCompanion22NTKEsterbrookHandsView)initWithCoder:(id)coder;
 - (id)hourHandConfiguration;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
@@ -7,7 +7,7 @@
 
 @implementation NTKEsterbrookHandsView
 
-- (_TtC32NTKEsterbrookFaceBundleCompanion22NTKEsterbrookHandsView)initWithCoder:(id)a3
+- (_TtC32NTKEsterbrookFaceBundleCompanion22NTKEsterbrookHandsView)initWithCoder:(id)coder
 {
   result = sub_23BE32BA8();
   __break(1u);

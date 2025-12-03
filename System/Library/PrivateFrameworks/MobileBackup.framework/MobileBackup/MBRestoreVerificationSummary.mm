@@ -1,21 +1,21 @@
 @interface MBRestoreVerificationSummary
-- (MBRestoreVerificationSummary)initWithDomainsNotVerifiedCount:(unint64_t)a3 domainsPassingVerificationCount:(unint64_t)a4 domainsFailingVerificationCount:(unint64_t)a5 domainsSkippedVerificationCount:(unint64_t)a6;
+- (MBRestoreVerificationSummary)initWithDomainsNotVerifiedCount:(unint64_t)count domainsPassingVerificationCount:(unint64_t)verificationCount domainsFailingVerificationCount:(unint64_t)failingVerificationCount domainsSkippedVerificationCount:(unint64_t)skippedVerificationCount;
 - (NSString)statusToReport;
 @end
 
 @implementation MBRestoreVerificationSummary
 
-- (MBRestoreVerificationSummary)initWithDomainsNotVerifiedCount:(unint64_t)a3 domainsPassingVerificationCount:(unint64_t)a4 domainsFailingVerificationCount:(unint64_t)a5 domainsSkippedVerificationCount:(unint64_t)a6
+- (MBRestoreVerificationSummary)initWithDomainsNotVerifiedCount:(unint64_t)count domainsPassingVerificationCount:(unint64_t)verificationCount domainsFailingVerificationCount:(unint64_t)failingVerificationCount domainsSkippedVerificationCount:(unint64_t)skippedVerificationCount
 {
   v11.receiver = self;
   v11.super_class = MBRestoreVerificationSummary;
   result = [(MBRestoreVerificationSummary *)&v11 init];
   if (result)
   {
-    result->_domainsNotVerifiedCount = a3;
-    result->_domainsPassingVerificationCount = a4;
-    result->_domainsFailingVerificationCount = a5;
-    result->_domainsSkippedVerificationCount = a6;
+    result->_domainsNotVerifiedCount = count;
+    result->_domainsPassingVerificationCount = verificationCount;
+    result->_domainsFailingVerificationCount = failingVerificationCount;
+    result->_domainsSkippedVerificationCount = skippedVerificationCount;
   }
 
   return result;

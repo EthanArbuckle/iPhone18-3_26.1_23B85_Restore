@@ -1,35 +1,35 @@
 @interface HKMHMostPrevalentDomainsQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (HKMHMostPrevalentDomainsQuery)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4 predicate:(id)a5 resultsHandler:(id)a6;
-- (void)client_deliverMostPrevalentDomains:(id)a3 queryUUID:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKMHMostPrevalentDomainsQuery)initWithDayIndexRange:(id)range gregorianCalendar:(id)calendar predicate:(id)predicate resultsHandler:(id)handler;
+- (void)client_deliverMostPrevalentDomains:(id)domains queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKMHMostPrevalentDomainsQuery
 
-- (HKMHMostPrevalentDomainsQuery)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4 predicate:(id)a5 resultsHandler:(id)a6
+- (HKMHMostPrevalentDomainsQuery)initWithDayIndexRange:(id)range gregorianCalendar:(id)calendar predicate:(id)predicate resultsHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v12 = a4;
-  v13 = a6;
+  var1 = range.var1;
+  var0 = range.var0;
+  calendarCopy = calendar;
+  handlerCopy = handler;
   v14 = MEMORY[0x277CCDA38];
-  v15 = a5;
-  v16 = [v14 stateOfMindType];
+  predicateCopy = predicate;
+  stateOfMindType = [v14 stateOfMindType];
   v21.receiver = self;
   v21.super_class = HKMHMostPrevalentDomainsQuery;
-  v17 = [(HKQuery *)&v21 _initWithObjectType:v16 predicate:v15];
+  v17 = [(HKQuery *)&v21 _initWithObjectType:stateOfMindType predicate:predicateCopy];
 
   if (v17)
   {
     v17->_dayIndexRange.start = var0;
     v17->_dayIndexRange.duration = var1;
-    objc_storeStrong(&v17->_gregorianCalendar, a4);
-    v18 = [v13 copy];
+    objc_storeStrong(&v17->_gregorianCalendar, calendar);
+    v18 = [handlerCopy copy];
     resultsHandler = v17->_resultsHandler;
     v17->_resultsHandler = v18;
   }
@@ -37,21 +37,21 @@
   return v17;
 }
 
-- (void)client_deliverMostPrevalentDomains:(id)a3 queryUUID:(id)a4
+- (void)client_deliverMostPrevalentDomains:(id)domains queryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  domainsCopy = domains;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__HKMHMostPrevalentDomainsQuery_client_deliverMostPrevalentDomains_queryUUID___block_invoke;
   block[3] = &unk_2798A98E0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = domainsCopy;
+  v9 = domainsCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__HKMHMostPrevalentDomainsQuery_client_deliverMostPrevalentDomains_queryUUID___block_invoke(uint64_t a1)
@@ -109,40 +109,40 @@ uint64_t __78__HKMHMostPrevalentDomainsQuery_client_deliverMostPrevalentDomains_
   return result;
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKMHMostPrevalentDomainsQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setDayIndexRange:{self->_dayIndexRange.start, self->_dayIndexRange.duration, v5.receiver, v5.super_class}];
-  [v4 setGregorianCalendar:self->_gregorianCalendar];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setDayIndexRange:{self->_dayIndexRange.start, self->_dayIndexRange.duration, v5.receiver, v5.super_class}];
+  [configurationCopy setGregorianCalendar:self->_gregorianCalendar];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKMHMostPrevalentDomainsQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverMostPrevalentDomains_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverMostPrevalentDomains_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x259C8F310](self->_resultsHandler);
-  v6 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HKMHMostPrevalentDomainsQuery_queue_deliverError___block_invoke;
   block[3] = &unk_2798A98B8;
-  v10 = v4;
+  v10 = errorCopy;
   v11 = v5;
   block[4] = self;
-  v7 = v4;
+  v7 = errorCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __52__HKMHMostPrevalentDomainsQuery_queue_deliverError___block_invoke(void *a1)
@@ -177,11 +177,11 @@ uint64_t __52__HKMHMostPrevalentDomainsQuery_queue_deliverError___block_invoke(v
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKMHMostPrevalentDomainsQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }

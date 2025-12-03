@@ -1,28 +1,28 @@
 @interface ODDSiriSchemaODDAssistantCarPlayDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCarPlayConnection:(BOOL)a3;
-- (void)setHasDirectAction:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCarPlayConnection:(BOOL)connection;
+- (void)setHasDirectAction:(BOOL)action;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAssistantCarPlayDimensions
 
-- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = ODDSiriSchemaODDAssistantCarPlayDimensions;
   v5 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assistantDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assistantDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(ODDSiriSchemaODDAssistantCarPlayDimensions *)v5 setAssistantDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"vehicleManufacturer"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"vehicleManufacturer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(ODDSiriSchemaODDAssistantCarPlayDimensions *)v5 setVehicleManufacturer:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"vehicleName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"vehicleName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(ODDSiriSchemaODDAssistantCarPlayDimensions *)v5 setVehicleName:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"vehicleModel"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"vehicleModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,21 +54,21 @@
       [(ODDSiriSchemaODDAssistantCarPlayDimensions *)v5 setVehicleModel:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"enhancedVoiceTriggerMode"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"enhancedVoiceTriggerMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAssistantCarPlayDimensions setEnhancedVoiceTriggerMode:](v5, "setEnhancedVoiceTriggerMode:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"directAction"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"directAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAssistantCarPlayDimensions setDirectAction:](v5, "setDirectAction:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"carPlayConnection"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"carPlayConnection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAssistantCarPlayDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,20 +117,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assistantDimensions)
   {
-    v4 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    assistantDimensions = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
+    dictionaryRepresentation = [assistantDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"assistantDimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assistantDimensions"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"assistantDimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assistantDimensions"];
     }
   }
 
@@ -148,7 +148,7 @@
       v9 = off_1E78DC968[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"carPlayConnection"];
+    [dictionary setObject:v9 forKeyedSubscript:@"carPlayConnection"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -178,7 +178,7 @@ LABEL_8:
     v11 = off_1E78DC980[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"directAction"];
+  [dictionary setObject:v11 forKeyedSubscript:@"directAction"];
   if (*&self->_has)
   {
 LABEL_18:
@@ -193,34 +193,34 @@ LABEL_18:
       v13 = off_1E78DC9D0[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"enhancedVoiceTriggerMode"];
+    [dictionary setObject:v13 forKeyedSubscript:@"enhancedVoiceTriggerMode"];
   }
 
 LABEL_22:
   if (self->_vehicleManufacturer)
   {
-    v14 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"vehicleManufacturer"];
+    vehicleManufacturer = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
+    v15 = [vehicleManufacturer copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"vehicleManufacturer"];
   }
 
   if (self->_vehicleModel)
   {
-    v16 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"vehicleModel"];
+    vehicleModel = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
+    v17 = [vehicleModel copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"vehicleModel"];
   }
 
   if (self->_vehicleName)
   {
-    v18 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"vehicleName"];
+    vehicleName = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
+    v19 = [vehicleName copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"vehicleName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -267,28 +267,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
-  v6 = [v4 assistantDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
+  assistantDimensions2 = [equalCopy assistantDimensions];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
-  if (v7)
+  assistantDimensions3 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
+  if (assistantDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
-    v10 = [v4 assistantDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = assistantDimensions3;
+    assistantDimensions4 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
+    assistantDimensions5 = [equalCopy assistantDimensions];
+    v11 = [assistantDimensions4 isEqual:assistantDimensions5];
 
     if (!v11)
     {
@@ -300,20 +300,20 @@ LABEL_4:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
-  v6 = [v4 vehicleManufacturer];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
+  assistantDimensions2 = [equalCopy vehicleManufacturer];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
-  if (v12)
+  vehicleManufacturer = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
+  if (vehicleManufacturer)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
-    v15 = [v4 vehicleManufacturer];
-    v16 = [v14 isEqual:v15];
+    v13 = vehicleManufacturer;
+    vehicleManufacturer2 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
+    vehicleManufacturer3 = [equalCopy vehicleManufacturer];
+    v16 = [vehicleManufacturer2 isEqual:vehicleManufacturer3];
 
     if (!v16)
     {
@@ -325,20 +325,20 @@ LABEL_4:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
-  v6 = [v4 vehicleName];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
+  assistantDimensions2 = [equalCopy vehicleName];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
-  if (v17)
+  vehicleName = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
+  if (vehicleName)
   {
-    v18 = v17;
-    v19 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
-    v20 = [v4 vehicleName];
-    v21 = [v19 isEqual:v20];
+    v18 = vehicleName;
+    vehicleName2 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
+    vehicleName3 = [equalCopy vehicleName];
+    v21 = [vehicleName2 isEqual:vehicleName3];
 
     if (!v21)
     {
@@ -350,22 +350,22 @@ LABEL_4:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
-  v6 = [v4 vehicleModel];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
+  assistantDimensions2 = [equalCopy vehicleModel];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
-  if (v22)
+  vehicleModel = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
+  if (vehicleModel)
   {
-    v23 = v22;
-    v24 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
-    v25 = [v4 vehicleModel];
-    v26 = [v24 isEqual:v25];
+    v23 = vehicleModel;
+    vehicleModel2 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
+    vehicleModel3 = [equalCopy vehicleModel];
+    v26 = [vehicleModel2 isEqual:vehicleModel3];
 
     if (!v26)
     {
@@ -378,19 +378,19 @@ LABEL_21:
   }
 
   has = self->_has;
-  v30 = v4[52];
+  v30 = equalCopy[52];
   if ((*&has & 1) == (v30 & 1))
   {
     if (*&has)
     {
       enhancedVoiceTriggerMode = self->_enhancedVoiceTriggerMode;
-      if (enhancedVoiceTriggerMode != [v4 enhancedVoiceTriggerMode])
+      if (enhancedVoiceTriggerMode != [equalCopy enhancedVoiceTriggerMode])
       {
         goto LABEL_22;
       }
 
       has = self->_has;
-      v30 = v4[52];
+      v30 = equalCopy[52];
     }
 
     v32 = (*&has >> 1) & 1;
@@ -399,19 +399,19 @@ LABEL_21:
       if (v32)
       {
         directAction = self->_directAction;
-        if (directAction != [v4 directAction])
+        if (directAction != [equalCopy directAction])
         {
           goto LABEL_22;
         }
 
         has = self->_has;
-        v30 = v4[52];
+        v30 = equalCopy[52];
       }
 
       v34 = (*&has >> 2) & 1;
       if (v34 == ((v30 >> 2) & 1))
       {
-        if (!v34 || (carPlayConnection = self->_carPlayConnection, carPlayConnection == [v4 carPlayConnection]))
+        if (!v34 || (carPlayConnection = self->_carPlayConnection, carPlayConnection == [equalCopy carPlayConnection]))
         {
           v27 = 1;
           goto LABEL_23;
@@ -427,44 +427,44 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
+  toCopy = to;
+  assistantDimensions = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
 
-  if (v4)
+  if (assistantDimensions)
   {
-    v5 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
+    assistantDimensions2 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
+  vehicleManufacturer = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleManufacturer];
 
-  if (v6)
+  if (vehicleManufacturer)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
+  vehicleName = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleName];
 
-  if (v7)
+  if (vehicleName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
+  vehicleModel = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self vehicleModel];
 
-  if (v8)
+  if (vehicleModel)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v10 = v11;
+  v10 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v10 = v11;
+    v10 = toCopy;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -484,20 +484,20 @@ LABEL_11:
   }
 
   PBDataWriterWriteInt32Field();
-  v10 = v11;
+  v10 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     PBDataWriterWriteInt32Field();
-    v10 = v11;
+    v10 = toCopy;
   }
 
 LABEL_13:
 }
 
-- (void)setHasCarPlayConnection:(BOOL)a3
+- (void)setHasCarPlayConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 4;
   }
@@ -510,9 +510,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDirectAction:(BOOL)a3
+- (void)setHasDirectAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -525,17 +525,17 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDAssistantCarPlayDimensions;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self assistantDimensions:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDAssistantCarPlayDimensions *)self deleteAssistantDimensions];
   }

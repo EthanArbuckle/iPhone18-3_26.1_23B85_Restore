@@ -1,10 +1,10 @@
 @interface WFConfiguredSystemControlAction
-- (BOOL)isEqual:(id)a3;
-- (WFConfiguredSystemControlAction)initWithCoder:(id)a3;
-- (WFConfiguredSystemControlAction)initWithIntent:(id)a3 named:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6 kind:(id)a7 controlType:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (WFConfiguredSystemControlAction)initWithCoder:(id)coder;
+- (WFConfiguredSystemControlAction)initWithIntent:(id)intent named:(id)named extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind controlType:(id)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFConfiguredSystemControlAction
@@ -15,37 +15,37 @@
   v17.receiver = self;
   v17.super_class = WFConfiguredSystemControlAction;
   v4 = [v3 combineInteger:{-[WFConfiguredStaccatoAction hash](&v17, sel_hash)}];
-  v5 = [(WFConfiguredSystemControlAction *)self intent];
-  v6 = [v3 combine:v5];
+  intent = [(WFConfiguredSystemControlAction *)self intent];
+  v6 = [v3 combine:intent];
 
-  v7 = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
-  v8 = [v3 combine:v7];
+  extensionBundleIdentifier = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
+  v8 = [v3 combine:extensionBundleIdentifier];
 
-  v9 = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
-  v10 = [v3 combine:v9];
+  containerBundleIdentifier = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
+  v10 = [v3 combine:containerBundleIdentifier];
 
-  v11 = [(WFConfiguredSystemControlAction *)self kind];
-  v12 = [v3 combine:v11];
+  kind = [(WFConfiguredSystemControlAction *)self kind];
+  v12 = [v3 combine:kind];
 
-  v13 = [(WFConfiguredSystemControlAction *)self controlType];
-  v14 = [v3 combine:v13];
+  controlType = [(WFConfiguredSystemControlAction *)self controlType];
+  v14 = [v3 combine:controlType];
 
   v15 = [v3 finalize];
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -55,10 +55,10 @@
         if ([(WFConfiguredStaccatoAction *)&v42 isEqual:v5])
         {
           v6 = v5;
-          v7 = [(WFConfiguredSystemControlAction *)self intent];
-          v8 = [(WFConfiguredSystemControlAction *)v6 intent];
-          v9 = v7;
-          v10 = v8;
+          intent = [(WFConfiguredSystemControlAction *)self intent];
+          intent2 = [(WFConfiguredSystemControlAction *)v6 intent];
+          v9 = intent;
+          v10 = intent2;
           v11 = v10;
           if (v9 == v10)
           {
@@ -85,10 +85,10 @@ LABEL_46:
             }
           }
 
-          v16 = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
-          v17 = [(WFConfiguredSystemControlAction *)v6 extensionBundleIdentifier];
-          v14 = v16;
-          v18 = v17;
+          extensionBundleIdentifier = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
+          extensionBundleIdentifier2 = [(WFConfiguredSystemControlAction *)v6 extensionBundleIdentifier];
+          v14 = extensionBundleIdentifier;
+          v18 = extensionBundleIdentifier2;
           v13 = v18;
           if (v14 == v18)
           {
@@ -115,10 +115,10 @@ LABEL_45:
             }
           }
 
-          v22 = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
-          v23 = [(WFConfiguredSystemControlAction *)v6 containerBundleIdentifier];
-          v20 = v22;
-          v24 = v23;
+          containerBundleIdentifier = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
+          containerBundleIdentifier2 = [(WFConfiguredSystemControlAction *)v6 containerBundleIdentifier];
+          v20 = containerBundleIdentifier;
+          v24 = containerBundleIdentifier2;
           v41 = v24;
           if (v20 != v24)
           {
@@ -138,10 +138,10 @@ LABEL_45:
 
 LABEL_25:
                 v40 = v20;
-                v27 = [(WFConfiguredSystemControlAction *)self kind];
-                v28 = [(WFConfiguredSystemControlAction *)v6 kind];
-                v29 = v27;
-                v30 = v28;
+                kind = [(WFConfiguredSystemControlAction *)self kind];
+                kind2 = [(WFConfiguredSystemControlAction *)v6 kind];
+                v29 = kind;
+                v30 = kind2;
                 v38 = v30;
                 v39 = v29;
                 if (v29 == v30)
@@ -181,9 +181,9 @@ LABEL_41:
                 }
 
                 v33 = [(WFConfiguredSystemControlAction *)self controlType:v38];
-                v34 = [(WFConfiguredSystemControlAction *)v6 controlType];
+                controlType = [(WFConfiguredSystemControlAction *)v6 controlType];
                 v29 = v33;
-                v35 = v34;
+                v35 = controlType;
                 v36 = v35;
                 if (v29 == v35)
                 {
@@ -245,71 +245,71 @@ LABEL_47:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WFConfiguredStaccatoAction *)self identifier];
-  v6 = [(WFConfiguredStaccatoAction *)self name];
-  v7 = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
-  v8 = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
-  v9 = [(WFConfiguredSystemControlAction *)self kind];
-  v10 = [(WFConfiguredSystemControlAction *)self intent];
-  v11 = [(WFConfiguredSystemControlAction *)self controlType];
-  v12 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, extensionBundleIdentifier: %@, containerBundleIdentifier: %@, kind: %@, intent: %@, controlType: %@>", v4, self, v5, v6, v7, v8, v9, v10, v11];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  name = [(WFConfiguredStaccatoAction *)self name];
+  extensionBundleIdentifier = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
+  containerBundleIdentifier = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
+  kind = [(WFConfiguredSystemControlAction *)self kind];
+  intent = [(WFConfiguredSystemControlAction *)self intent];
+  controlType = [(WFConfiguredSystemControlAction *)self controlType];
+  v12 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, extensionBundleIdentifier: %@, containerBundleIdentifier: %@, kind: %@, intent: %@, controlType: %@>", v4, self, identifier, name, extensionBundleIdentifier, containerBundleIdentifier, kind, intent, controlType];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = WFConfiguredSystemControlAction;
-  v4 = a3;
-  [(WFConfiguredStaccatoAction *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFConfiguredStaccatoAction *)&v10 encodeWithCoder:coderCopy];
   v5 = [(WFConfiguredSystemControlAction *)self intent:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"intent"];
+  [coderCopy encodeObject:v5 forKey:@"intent"];
 
-  v6 = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"extensionBundleIdentifier"];
+  extensionBundleIdentifier = [(WFConfiguredSystemControlAction *)self extensionBundleIdentifier];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
 
-  v7 = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"containerBundleIdentifier"];
+  containerBundleIdentifier = [(WFConfiguredSystemControlAction *)self containerBundleIdentifier];
+  [coderCopy encodeObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
 
-  v8 = [(WFConfiguredSystemControlAction *)self kind];
-  [v4 encodeObject:v8 forKey:@"kind"];
+  kind = [(WFConfiguredSystemControlAction *)self kind];
+  [coderCopy encodeObject:kind forKey:@"kind"];
 
-  v9 = [(WFConfiguredSystemControlAction *)self controlType];
-  [v4 encodeObject:v9 forKey:@"controlType"];
+  controlType = [(WFConfiguredSystemControlAction *)self controlType];
+  [coderCopy encodeObject:controlType forKey:@"controlType"];
 }
 
-- (WFConfiguredSystemControlAction)initWithCoder:(id)a3
+- (WFConfiguredSystemControlAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"controlType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"controlType"];
 
-  v11 = 0;
+  selfCopy = 0;
   if (v6 && v7 && v9 && v10)
   {
     self = [(WFConfiguredSystemControlAction *)self initWithIntent:v5 named:v6 extensionBundleIdentifier:v7 containerBundleIdentifier:v8 kind:v9 controlType:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (WFConfiguredSystemControlAction)initWithIntent:(id)a3 named:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6 kind:(id)a7 controlType:(id)a8
+- (WFConfiguredSystemControlAction)initWithIntent:(id)intent named:(id)named extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind controlType:(id)type
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v16)
+  intentCopy = intent;
+  namedCopy = named;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  typeCopy = type;
+  if (namedCopy)
   {
-    if (v17)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -317,22 +317,22 @@ LABEL_47:
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-    if (v17)
+    if (identifierCopy)
     {
 LABEL_3:
-      if (v19)
+      if (kindCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_11:
-      v36 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v36 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"kind"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"kind"}];
 
-      if (v20)
+      if (typeCopy)
       {
         goto LABEL_5;
       }
@@ -341,57 +341,57 @@ LABEL_11:
     }
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"extensionBundleIdentifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"extensionBundleIdentifier"}];
 
-  if (!v19)
+  if (!kindCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
-  if (v20)
+  if (typeCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_12:
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v37 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"controlType"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemControlAction.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"controlType"}];
 
 LABEL_5:
-  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v17, v19];
-  if (v18)
+  kindCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", identifierCopy, kindCopy];
+  if (bundleIdentifierCopy)
   {
-    v22 = v18;
+    v22 = bundleIdentifierCopy;
   }
 
   else
   {
-    v22 = v17;
+    v22 = identifierCopy;
   }
 
   v38.receiver = self;
   v38.super_class = WFConfiguredSystemControlAction;
-  v23 = [(WFConfiguredStaccatoAction *)&v38 initWithIdentifier:v21 associatedBundleIdentifier:v22 name:v16 previewIcon:0 shortcutsMetadata:0 colorScheme:0];
+  v23 = [(WFConfiguredStaccatoAction *)&v38 initWithIdentifier:kindCopy associatedBundleIdentifier:v22 name:namedCopy previewIcon:0 shortcutsMetadata:0 colorScheme:0];
   intent = v23->_intent;
-  v23->_intent = v15;
-  v25 = v15;
+  v23->_intent = intentCopy;
+  v25 = intentCopy;
 
-  v26 = [v17 copy];
+  v26 = [identifierCopy copy];
   extensionBundleIdentifier = v23->_extensionBundleIdentifier;
   v23->_extensionBundleIdentifier = v26;
 
-  v28 = [v18 copy];
+  v28 = [bundleIdentifierCopy copy];
   containerBundleIdentifier = v23->_containerBundleIdentifier;
   v23->_containerBundleIdentifier = v28;
 
-  v30 = [v19 copy];
+  v30 = [kindCopy copy];
   kind = v23->_kind;
   v23->_kind = v30;
 
   controlType = v23->_controlType;
-  v23->_controlType = v20;
+  v23->_controlType = typeCopy;
 
   return v23;
 }

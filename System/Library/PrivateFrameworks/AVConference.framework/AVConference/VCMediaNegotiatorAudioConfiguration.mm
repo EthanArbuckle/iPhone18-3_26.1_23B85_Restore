@@ -1,29 +1,29 @@
 @interface VCMediaNegotiatorAudioConfiguration
-- (BOOL)addAudioPayload:(int)a3 isSecondary:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSecondaryPayload:(int)a3;
-- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioRecording:(BOOL)a3 ssrc:(unsigned int)a4 audioUnitNumber:(unsigned int)a5 audioRuleCollection:(id)a6;
-- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioSwitching:(BOOL)a3 allowAudioRecording:(BOOL)a4 useSBR:(BOOL)a5 ssrc:(unsigned int)a6 audioUnitNumber:(unsigned int)a7 audioRuleCollection:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)addAudioPayload:(int)payload isSecondary:(BOOL)secondary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSecondaryPayload:(int)payload;
+- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioRecording:(BOOL)recording ssrc:(unsigned int)ssrc audioUnitNumber:(unsigned int)number audioRuleCollection:(id)collection;
+- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioSwitching:(BOOL)switching allowAudioRecording:(BOOL)recording useSBR:(BOOL)r ssrc:(unsigned int)ssrc audioUnitNumber:(unsigned int)number audioRuleCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation VCMediaNegotiatorAudioConfiguration
 
-- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioRecording:(BOOL)a3 ssrc:(unsigned int)a4 audioUnitNumber:(unsigned int)a5 audioRuleCollection:(id)a6
+- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioRecording:(BOOL)recording ssrc:(unsigned int)ssrc audioUnitNumber:(unsigned int)number audioRuleCollection:(id)collection
 {
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = a3;
-  v11 = [a6 allowAudioSwitching];
-  v12 = [a6 usesSBR];
+  v7 = *&number;
+  v8 = *&ssrc;
+  recordingCopy = recording;
+  allowAudioSwitching = [collection allowAudioSwitching];
+  usesSBR = [collection usesSBR];
 
-  return [(VCMediaNegotiatorAudioConfiguration *)self initWithAllowAudioSwitching:v11 allowAudioRecording:v9 useSBR:v12 ssrc:v8 audioUnitNumber:v7 audioRuleCollection:a6];
+  return [(VCMediaNegotiatorAudioConfiguration *)self initWithAllowAudioSwitching:allowAudioSwitching allowAudioRecording:recordingCopy useSBR:usesSBR ssrc:v8 audioUnitNumber:v7 audioRuleCollection:collection];
 }
 
-- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioSwitching:(BOOL)a3 allowAudioRecording:(BOOL)a4 useSBR:(BOOL)a5 ssrc:(unsigned int)a6 audioUnitNumber:(unsigned int)a7 audioRuleCollection:(id)a8
+- (VCMediaNegotiatorAudioConfiguration)initWithAllowAudioSwitching:(BOOL)switching allowAudioRecording:(BOOL)recording useSBR:(BOOL)r ssrc:(unsigned int)ssrc audioUnitNumber:(unsigned int)number audioRuleCollection:(id)collection
 {
-  v10 = *&a6;
+  v10 = *&ssrc;
   v30 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = VCMediaNegotiatorAudioConfiguration;
@@ -33,17 +33,17 @@
     v14->_audioPayloads = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v14->_secondaryPayloads = objc_alloc_init(MEMORY[0x1E695DFA8]);
     [(VCMediaNegotiatorCommonConfiguration *)v14 setSsrc:v10];
-    v14->_allowAudioSwitching = a3;
-    v14->_allowAudioRecording = a4;
-    v14->_useSBR = a5;
-    v14->_audioUnitNumber = a7;
-    if (a8)
+    v14->_allowAudioSwitching = switching;
+    v14->_allowAudioRecording = recording;
+    v14->_useSBR = r;
+    v14->_audioUnitNumber = number;
+    if (collection)
     {
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      obj = [a8 rules];
+      obj = [collection rules];
       v15 = [obj countByEnumeratingWithState:&v26 objects:v25 count:16];
       if (v15)
       {
@@ -59,9 +59,9 @@
             }
 
             v19 = *(*(&v26 + 1) + 8 * i);
-            v20 = [v19 payload];
-            v21 = [a8 secondaryPayloads];
-            -[VCMediaNegotiatorAudioConfiguration addAudioPayload:isSecondary:](v14, "addAudioPayload:isSecondary:", v20, [v21 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v19, "payload"))}]);
+            payload = [v19 payload];
+            secondaryPayloads = [collection secondaryPayloads];
+            -[VCMediaNegotiatorAudioConfiguration addAudioPayload:isSecondary:](v14, "addAudioPayload:isSecondary:", payload, [secondaryPayloads containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v19, "payload"))}]);
           }
 
           v16 = [obj countByEnumeratingWithState:&v26 objects:v25 count:16];
@@ -84,16 +84,16 @@
   [(VCMediaNegotiatorAudioConfiguration *)&v3 dealloc];
 }
 
-- (BOOL)addAudioPayload:(int)a3 isSecondary:(BOOL)a4
+- (BOOL)addAudioPayload:(int)payload isSecondary:(BOOL)secondary
 {
-  v4 = a4;
-  v5 = *&a3;
+  secondaryCopy = secondary;
+  v5 = *&payload;
   v19 = *MEMORY[0x1E69E9840];
   v7 = [VCMediaNegotiationBlobAudioSettings isAudioPayloadSupported:?];
   if (v7)
   {
     -[NSMutableSet addObject:](self->_audioPayloads, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5]);
-    if (v4)
+    if (secondaryCopy)
     {
       -[NSMutableSet addObject:](self->_secondaryPayloads, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5]);
     }
@@ -120,18 +120,18 @@
   return v7;
 }
 
-- (BOOL)isSecondaryPayload:(int)a3
+- (BOOL)isSecondaryPayload:(int)payload
 {
   secondaryPayloads = self->_secondaryPayloads;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
 
   return [(NSMutableSet *)secondaryPayloads containsObject:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAllowAudioSwitching:allowAudioRecording:useSBR:ssrc:audioUnitNumber:", self->_allowAudioSwitching, self->_allowAudioRecording, self->_useSBR, -[VCMediaNegotiatorCommonConfiguration ssrc](self, "ssrc"), self->_audioUnitNumber}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAllowAudioSwitching:allowAudioRecording:useSBR:ssrc:audioUnitNumber:", self->_allowAudioSwitching, self->_allowAudioRecording, self->_useSBR, -[VCMediaNegotiatorCommonConfiguration ssrc](self, "ssrc"), self->_audioUnitNumber}];
   if (v4)
   {
     v15 = 0u;
@@ -153,8 +153,8 @@
             objc_enumerationMutation(audioPayloads);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) intValue];
-          [v4 addAudioPayload:v10 isSecondary:{-[VCMediaNegotiatorAudioConfiguration isSecondaryPayload:](self, "isSecondaryPayload:", v10)}];
+          intValue = [*(*(&v13 + 1) + 8 * i) intValue];
+          [v4 addAudioPayload:intValue isSecondary:{-[VCMediaNegotiatorAudioConfiguration isSecondaryPayload:](self, "isSecondaryPayload:", intValue)}];
         }
 
         v7 = [(NSMutableSet *)audioPayloads countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -167,7 +167,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v26 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -176,14 +176,14 @@
   if (v5)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (allowAudioSwitching = self->_allowAudioSwitching, allowAudioSwitching == [a3 allowAudioSwitching]) && (allowAudioRecording = self->_allowAudioRecording, allowAudioRecording == objc_msgSend(a3, "allowAudioRecording")) && (useSBR = self->_useSBR, useSBR == objc_msgSend(a3, "useSBR")) && (audioUnitNumber = self->_audioUnitNumber, audioUnitNumber == objc_msgSend(a3, "audioUnitNumber")) && (v10 = -[NSMutableSet count](self->_audioPayloads, "count"), v10 == objc_msgSend(objc_msgSend(a3, "audioPayloads"), "count")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (allowAudioSwitching = self->_allowAudioSwitching, allowAudioSwitching == [equal allowAudioSwitching]) && (allowAudioRecording = self->_allowAudioRecording, allowAudioRecording == objc_msgSend(equal, "allowAudioRecording")) && (useSBR = self->_useSBR, useSBR == objc_msgSend(equal, "useSBR")) && (audioUnitNumber = self->_audioUnitNumber, audioUnitNumber == objc_msgSend(equal, "audioUnitNumber")) && (v10 = -[NSMutableSet count](self->_audioPayloads, "count"), v10 == objc_msgSend(objc_msgSend(equal, "audioPayloads"), "count")))
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = [a3 audioPayloads];
-      v12 = [v11 countByEnumeratingWithState:&v22 objects:v21 count:16];
+      audioPayloads = [equal audioPayloads];
+      v12 = [audioPayloads countByEnumeratingWithState:&v22 objects:v21 count:16];
       if (v12)
       {
         v13 = v12;
@@ -194,26 +194,26 @@ LABEL_10:
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(audioPayloads);
           }
 
           v16 = *(*(&v22 + 1) + 8 * v15);
-          v17 = [v16 intValue];
+          intValue = [v16 intValue];
           v5 = [(NSMutableSet *)self->_audioPayloads containsObject:v16];
           if (!v5)
           {
             break;
           }
 
-          v18 = [(VCMediaNegotiatorAudioConfiguration *)self isSecondaryPayload:v17];
-          if (v18 != [a3 isSecondaryPayload:v17])
+          v18 = [(VCMediaNegotiatorAudioConfiguration *)self isSecondaryPayload:intValue];
+          if (v18 != [equal isSecondaryPayload:intValue])
           {
             goto LABEL_18;
           }
 
           if (v13 == ++v15)
           {
-            v13 = [v11 countByEnumeratingWithState:&v22 objects:v21 count:16];
+            v13 = [audioPayloads countByEnumeratingWithState:&v22 objects:v21 count:16];
             LOBYTE(v5) = 1;
             if (v13)
             {

@@ -1,22 +1,22 @@
 @interface HFActivityLogCoordinator
-- (HFActivityLogCoordinator)initWithHome:(id)a3 targetKind:(unint64_t)a4;
+- (HFActivityLogCoordinator)initWithHome:(id)home targetKind:(unint64_t)kind;
 - (HFActivityLogCoordinatorDelegate)delegate;
 - (void)checkIfEventsExist;
 @end
 
 @implementation HFActivityLogCoordinator
 
-- (HFActivityLogCoordinator)initWithHome:(id)a3 targetKind:(unint64_t)a4
+- (HFActivityLogCoordinator)initWithHome:(id)home targetKind:(unint64_t)kind
 {
-  v7 = a3;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HFActivityLogCoordinator;
   v8 = [(HFActivityLogCoordinator *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a3);
-    v10 = [[HFActivityLogCoordinator_Swift alloc] initWithHome:v7 targetKind:a4];
+    objc_storeStrong(&v8->_home, home);
+    v10 = [[HFActivityLogCoordinator_Swift alloc] initWithHome:homeCopy targetKind:kind];
     coordinator = v9->_coordinator;
     v9->_coordinator = v10;
 
@@ -29,13 +29,13 @@
 - (void)checkIfEventsExist
 {
   objc_initWeak(&location, self);
-  v3 = [(HFActivityLogCoordinator *)self coordinator];
+  coordinator = [(HFActivityLogCoordinator *)self coordinator];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__HFActivityLogCoordinator_checkIfEventsExist__block_invoke;
   v4[3] = &unk_277E001B8;
   objc_copyWeak(&v5, &location);
-  [v3 eventsExistWithCompletionHandler:v4];
+  [coordinator eventsExistWithCompletionHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);

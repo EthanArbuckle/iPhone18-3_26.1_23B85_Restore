@@ -1,8 +1,8 @@
 @interface PosterPairCollectionViewCell
 - (void)layoutSubviews;
-- (void)posterPairDidUpdateConfiguredProperties:(id)a3;
-- (void)posterPairDidUpdateLockPosterAppearance:(id)a3;
-- (void)posterPairDidUpdateLockPosterSnapshots:(id)a3;
+- (void)posterPairDidUpdateConfiguredProperties:(id)properties;
+- (void)posterPairDidUpdateLockPosterAppearance:(id)appearance;
+- (void)posterPairDidUpdateLockPosterSnapshots:(id)snapshots;
 - (void)prepareForReuse;
 @end
 
@@ -10,32 +10,32 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B63E750();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B63EA60();
 }
 
-- (void)posterPairDidUpdateConfiguredProperties:(id)a3
+- (void)posterPairDidUpdateConfiguredProperties:(id)properties
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.isa) + 0x1B0);
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 
-- (void)posterPairDidUpdateLockPosterAppearance:(id)a3
+- (void)posterPairDidUpdateLockPosterAppearance:(id)appearance
 {
-  v3 = self;
+  selfCopy = self;
   sub_21B63EF0C(2, 1);
 }
 
-- (void)posterPairDidUpdateLockPosterSnapshots:(id)a3
+- (void)posterPairDidUpdateLockPosterSnapshots:(id)snapshots
 {
-  v3 = self;
+  selfCopy = self;
   sub_21B63EF0C(1, 1);
 }
 

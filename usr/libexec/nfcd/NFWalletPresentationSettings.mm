@@ -1,12 +1,12 @@
 @interface NFWalletPresentationSettings
-- (NFWalletPresentationSettings)initWithSuiteName:(id)a3;
+- (NFWalletPresentationSettings)initWithSuiteName:(id)name;
 @end
 
 @implementation NFWalletPresentationSettings
 
-- (NFWalletPresentationSettings)initWithSuiteName:(id)a3
+- (NFWalletPresentationSettings)initWithSuiteName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = NFWalletPresentationSettings;
   v6 = [(NFWalletPresentationSettings *)&v23 init];
@@ -17,7 +17,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v7 = [[NSUserDefaults alloc] initWithSuiteName:v5];
+  v7 = [[NSUserDefaults alloc] initWithSuiteName:nameCopy];
   defaults = v6->_defaults;
   v6->_defaults = v7;
 
@@ -38,7 +38,7 @@ LABEL_14:
         v14 = 43;
       }
 
-      v11(3, "%c[%{public}s %{public}s]:%i Fail to initialize suite %@", v14, ClassName, Name, 25, v5);
+      v11(3, "%c[%{public}s %{public}s]:%i Fail to initialize suite %@", v14, ClassName, Name, 25, nameCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -67,7 +67,7 @@ LABEL_14:
       v30 = 1024;
       v31 = 25;
       v32 = 2112;
-      v33 = v5;
+      v33 = nameCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Fail to initialize suite %@", buf, 0x2Cu);
     }
 

@@ -1,7 +1,7 @@
 @interface HDFHIRResourceDocument
 - (NSArray)resourceObjects;
-- (id)_dictionaryRepresentationWithResourceHandler:(id)a3;
-- (void)addResourceObjects:(id)a3;
+- (id)_dictionaryRepresentationWithResourceHandler:(id)handler;
+- (void)addResourceObjects:(id)objects;
 @end
 
 @implementation HDFHIRResourceDocument
@@ -13,18 +13,18 @@
   return v2;
 }
 
-- (void)addResourceObjects:(id)a3
+- (void)addResourceObjects:(id)objects
 {
   resourceObjects = self->_resourceObjects;
   if (resourceObjects)
   {
 
-    [(NSMutableArray *)resourceObjects addObjectsFromArray:a3];
+    [(NSMutableArray *)resourceObjects addObjectsFromArray:objects];
   }
 
   else
   {
-    v5 = [a3 mutableCopy];
+    v5 = [objects mutableCopy];
     v6 = self->_resourceObjects;
     self->_resourceObjects = v5;
 
@@ -32,9 +32,9 @@
   }
 }
 
-- (id)_dictionaryRepresentationWithResourceHandler:(id)a3
+- (id)_dictionaryRepresentationWithResourceHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSMutableDictionary dictionary];
   v17 = 0u;
   v18 = 0u;
@@ -56,19 +56,19 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 resourceType];
+        identifier = [v11 identifier];
+        resourceType = [identifier resourceType];
 
-        if (v13)
+        if (resourceType)
         {
-          v14 = [v5 objectForKeyedSubscript:v13];
+          v14 = [v5 objectForKeyedSubscript:resourceType];
           if (!v14)
           {
             v14 = +[NSMutableArray array];
-            [v5 setObject:v14 forKeyedSubscript:v13];
+            [v5 setObject:v14 forKeyedSubscript:resourceType];
           }
 
-          v15 = v4[2](v4, v11);
+          v15 = handlerCopy[2](handlerCopy, v11);
           [v14 addObject:v15];
         }
       }

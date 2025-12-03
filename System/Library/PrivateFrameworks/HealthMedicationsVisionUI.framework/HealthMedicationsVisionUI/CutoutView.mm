@@ -1,12 +1,12 @@
 @interface CutoutView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (_TtC25HealthMedicationsVisionUI10CutoutView)initWithCoder:(id)a3;
+- (_TtC25HealthMedicationsVisionUI10CutoutView)initWithCoder:(id)coder;
 @end
 
 @implementation CutoutView
 
-- (_TtC25HealthMedicationsVisionUI10CutoutView)initWithCoder:(id)a3
+- (_TtC25HealthMedicationsVisionUI10CutoutView)initWithCoder:(id)coder
 {
   sub_2518F0278();
   sub_2518F0268();

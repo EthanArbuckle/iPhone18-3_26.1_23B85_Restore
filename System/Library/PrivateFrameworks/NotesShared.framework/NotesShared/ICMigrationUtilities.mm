@@ -1,26 +1,26 @@
 @interface ICMigrationUtilities
-+ (void)deleteMigratedHTMLAccountIfNecessaryForModernAccount:(id)a3;
-+ (void)deleteMigratedHTMLAccountsInContext:(id)a3;
-+ (void)fetchAndSetMigrationStateForAccountID:(id)a3 withCompletionHandler:(id)a4;
-+ (void)fetchMigrationStateAndUserRecordForAccountID:(id)a3 withCompletionHandler:(id)a4;
-+ (void)fetchMigrationStateForAccountID:(id)a3 withCompletionHandler:(id)a4;
-+ (void)saveDidChooseToMigrate:(BOOL)a3 didFinishMigration:(BOOL)a4 didMigrateOnMac:(BOOL)a5 toACAccount:(id)a6 inStore:(id)a7 completionHandler:(id)a8;
-+ (void)updateAllLegacyAccountMigrationStatesInContext:(id)a3;
-+ (void)updateLegacyAccountMigrationStateForModernAccount:(id)a3;
++ (void)deleteMigratedHTMLAccountIfNecessaryForModernAccount:(id)account;
++ (void)deleteMigratedHTMLAccountsInContext:(id)context;
++ (void)fetchAndSetMigrationStateForAccountID:(id)d withCompletionHandler:(id)handler;
++ (void)fetchMigrationStateAndUserRecordForAccountID:(id)d withCompletionHandler:(id)handler;
++ (void)fetchMigrationStateForAccountID:(id)d withCompletionHandler:(id)handler;
++ (void)saveDidChooseToMigrate:(BOOL)migrate didFinishMigration:(BOOL)migration didMigrateOnMac:(BOOL)mac toACAccount:(id)account inStore:(id)store completionHandler:(id)handler;
++ (void)updateAllLegacyAccountMigrationStatesInContext:(id)context;
++ (void)updateLegacyAccountMigrationStateForModernAccount:(id)account;
 @end
 
 @implementation ICMigrationUtilities
 
-+ (void)fetchMigrationStateForAccountID:(id)a3 withCompletionHandler:(id)a4
++ (void)fetchMigrationStateForAccountID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__ICMigrationUtilities_fetchMigrationStateForAccountID_withCompletionHandler___block_invoke;
   v8[3] = &unk_278197220;
-  v9 = v6;
-  v7 = v6;
-  [a1 fetchMigrationStateAndUserRecordForAccountID:a3 withCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [self fetchMigrationStateAndUserRecordForAccountID:d withCompletionHandler:v8];
 }
 
 uint64_t __78__ICMigrationUtilities_fetchMigrationStateForAccountID_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -34,19 +34,19 @@ uint64_t __78__ICMigrationUtilities_fetchMigrationStateForAccountID_withCompleti
   return result;
 }
 
-+ (void)fetchMigrationStateAndUserRecordForAccountID:(id)a3 withCompletionHandler:(id)a4
++ (void)fetchMigrationStateAndUserRecordForAccountID:(id)d withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [ICCloudContext newNotesContainerForAccountID:v5];
-  v8 = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
-  objc_initWeak(&location, v8);
-  [v8 setQualityOfService:17];
-  v9 = [v8 configuration];
-  [v9 setDiscretionaryNetworkBehavior:0];
+  dCopy = d;
+  handlerCopy = handler;
+  v7 = [ICCloudContext newNotesContainerForAccountID:dCopy];
+  fetchCurrentUserRecordOperation = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
+  objc_initWeak(&location, fetchCurrentUserRecordOperation);
+  [fetchCurrentUserRecordOperation setQualityOfService:17];
+  configuration = [fetchCurrentUserRecordOperation configuration];
+  [configuration setDiscretionaryNetworkBehavior:0];
 
-  v10 = [v7 privateCloudDatabase];
-  [v8 setDatabase:v10];
+  privateCloudDatabase = [v7 privateCloudDatabase];
+  [fetchCurrentUserRecordOperation setDatabase:privateCloudDatabase];
 
   v11 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -80,21 +80,21 @@ uint64_t __78__ICMigrationUtilities_fetchMigrationStateForAccountID_withCompleti
   v21[5] = v26;
   v21[6] = v24;
   v21[7] = v22;
-  [v8 setPerRecordCompletionBlock:v21];
+  [fetchCurrentUserRecordOperation setPerRecordCompletionBlock:v21];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__ICMigrationUtilities_fetchMigrationStateAndUserRecordForAccountID_withCompletionHandler___block_invoke_5;
   v14[3] = &unk_278197270;
   objc_copyWeak(&v20, &location);
-  v12 = v6;
+  v12 = handlerCopy;
   v15 = v12;
   v16 = v28;
   v17 = v26;
   v18 = v24;
   v19 = v22;
-  [v8 setFetchRecordsCompletionBlock:v14];
-  v13 = [v7 privateCloudDatabase];
-  [v13 addOperation:v8];
+  [fetchCurrentUserRecordOperation setFetchRecordsCompletionBlock:v14];
+  privateCloudDatabase2 = [v7 privateCloudDatabase];
+  [privateCloudDatabase2 addOperation:fetchCurrentUserRecordOperation];
 
   objc_destroyWeak(&v20);
   _Block_object_dispose(v22, 8);
@@ -164,11 +164,11 @@ void __91__ICMigrationUtilities_fetchMigrationStateAndUserRecordForAccountID_wit
   }
 }
 
-+ (void)fetchAndSetMigrationStateForAccountID:(id)a3 withCompletionHandler:(id)a4
++ (void)fetchAndSetMigrationStateForAccountID:(id)d withCompletionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -176,10 +176,10 @@ void __91__ICMigrationUtilities_fetchMigrationStateAndUserRecordForAccountID_wit
   }
 
   v9 = +[ICNoteContext sharedContext];
-  v10 = [v9 managedObjectContext];
-  if (v6)
+  managedObjectContext = [v9 managedObjectContext];
+  if (dCopy)
   {
-    v11 = [ICAccount cloudKitAccountWithIdentifier:v6 context:v10];
+    v11 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:managedObjectContext];
 
     if (v11)
     {
@@ -188,10 +188,10 @@ void __91__ICMigrationUtilities_fetchMigrationStateAndUserRecordForAccountID_wit
       v20[2] = __84__ICMigrationUtilities_fetchAndSetMigrationStateForAccountID_withCompletionHandler___block_invoke;
       v20[3] = &unk_2781972C0;
       v21 = v9;
-      v22 = v6;
-      v24 = a1;
-      v23 = v7;
-      [a1 fetchMigrationStateAndUserRecordForAccountID:v22 withCompletionHandler:v20];
+      v22 = dCopy;
+      selfCopy = self;
+      v23 = handlerCopy;
+      [self fetchMigrationStateAndUserRecordForAccountID:v22 withCompletionHandler:v20];
 
       v12 = v21;
 LABEL_14:
@@ -202,13 +202,13 @@ LABEL_14:
 
   else
   {
-    v13 = [ICAccount cloudKitAccountInContext:v10];
+    v13 = [ICAccount cloudKitAccountInContext:managedObjectContext];
     if (v13)
     {
       v14 = v13;
-      v15 = [v9 primaryICloudACAccount];
+      primaryICloudACAccount = [v9 primaryICloudACAccount];
 
-      if (v15)
+      if (primaryICloudACAccount)
       {
         goto LABEL_15;
       }
@@ -225,7 +225,7 @@ LABEL_14:
     +[ICMigrationUtilities fetchAndSetMigrationStateForAccountID:withCompletionHandler:];
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v17 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277D36110];
@@ -233,7 +233,7 @@ LABEL_14:
     v26[0] = @"No CloudKit account while fetching migration state";
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v19 = [v17 errorWithDomain:v18 code:203 userInfo:v12];
-    (*(v7 + 2))(v7, 0, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v19);
 
     goto LABEL_14;
   }
@@ -376,84 +376,84 @@ LABEL_16:
   }
 }
 
-+ (void)saveDidChooseToMigrate:(BOOL)a3 didFinishMigration:(BOOL)a4 didMigrateOnMac:(BOOL)a5 toACAccount:(id)a6 inStore:(id)a7 completionHandler:(id)a8
++ (void)saveDidChooseToMigrate:(BOOL)migrate didFinishMigration:(BOOL)migration didMigrateOnMac:(BOOL)mac toACAccount:(id)account inStore:(id)store completionHandler:(id)handler
 {
-  v30 = a5;
-  v31 = a4;
-  v32 = a3;
+  macCopy = mac;
+  migrationCopy = migration;
+  migrateCopy = migrate;
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v29 = a7;
-  v11 = a8;
+  accountCopy = account;
+  storeCopy = store;
+  handlerCopy = handler;
   v12 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [v10 identifier];
+    identifier = [accountCopy identifier];
     *buf = 67109890;
-    v40 = v32;
+    v40 = migrateCopy;
     v41 = 1024;
-    v42 = v31;
+    v42 = migrationCopy;
     v43 = 1024;
-    v44 = v30;
+    v44 = macCopy;
     v45 = 2112;
-    v46 = v27;
+    v46 = identifier;
     _os_log_debug_impl(&dword_214D51000, v12, OS_LOG_TYPE_DEBUG, "Trying to set didChooseToMigrate=%d didFinishMigration=%d didMigrateOnMac=%d on ACAccount (%@)", buf, 0x1Eu);
   }
 
   v13 = *MEMORY[0x277D36098];
-  v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277D36098]];
+  v14 = [accountCopy objectForKeyedSubscript:*MEMORY[0x277D36098]];
   v15 = *MEMORY[0x277D360A0];
-  v16 = [v10 objectForKeyedSubscript:*MEMORY[0x277D360A0]];
+  v16 = [accountCopy objectForKeyedSubscript:*MEMORY[0x277D360A0]];
   v17 = *MEMORY[0x277D360A8];
-  v18 = [v10 objectForKeyedSubscript:*MEMORY[0x277D360A8]];
-  v19 = [v14 BOOLValue];
-  v20 = [v16 BOOLValue];
-  v21 = [v18 BOOLValue];
-  if (!v14 || !v16 || !v18 || ((v19 ^ v32) & 1) != 0 || ((v20 ^ v31) & 1) != 0 || v21 != v30)
+  v18 = [accountCopy objectForKeyedSubscript:*MEMORY[0x277D360A8]];
+  bOOLValue = [v14 BOOLValue];
+  bOOLValue2 = [v16 BOOLValue];
+  bOOLValue3 = [v18 BOOLValue];
+  if (!v14 || !v16 || !v18 || ((bOOLValue ^ migrateCopy) & 1) != 0 || ((bOOLValue2 ^ migrationCopy) & 1) != 0 || bOOLValue3 != macCopy)
   {
     v23 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [v10 identifier];
+      identifier2 = [accountCopy identifier];
       *buf = 67109890;
-      v40 = v32;
+      v40 = migrateCopy;
       v41 = 1024;
-      v42 = v31;
+      v42 = migrationCopy;
       v43 = 1024;
-      v44 = v30;
+      v44 = macCopy;
       v45 = 2112;
-      v46 = v28;
+      v46 = identifier2;
       _os_log_debug_impl(&dword_214D51000, v23, OS_LOG_TYPE_DEBUG, "Actually setting didChooseToMigrate=%d didFinishMigration=%d didMigrateOnMac=%d on ACAccount (%@)", buf, 0x1Eu);
     }
 
-    v24 = [MEMORY[0x277CCABB0] numberWithBool:v32];
-    [v10 setObject:v24 forKeyedSubscript:v13];
+    v24 = [MEMORY[0x277CCABB0] numberWithBool:migrateCopy];
+    [accountCopy setObject:v24 forKeyedSubscript:v13];
 
-    v25 = [MEMORY[0x277CCABB0] numberWithBool:v31];
-    [v10 setObject:v25 forKeyedSubscript:v15];
+    v25 = [MEMORY[0x277CCABB0] numberWithBool:migrationCopy];
+    [accountCopy setObject:v25 forKeyedSubscript:v15];
 
-    v26 = [MEMORY[0x277CCABB0] numberWithBool:v30];
-    [v10 setObject:v26 forKeyedSubscript:v17];
+    v26 = [MEMORY[0x277CCABB0] numberWithBool:macCopy];
+    [accountCopy setObject:v26 forKeyedSubscript:v17];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __120__ICMigrationUtilities_saveDidChooseToMigrate_didFinishMigration_didMigrateOnMac_toACAccount_inStore_completionHandler___block_invoke;
     v33[3] = &unk_2781972E8;
-    v36 = v32;
-    v37 = v31;
-    v38 = v30;
-    v34 = v10;
-    v35 = v11;
-    v22 = v29;
-    [v29 saveAccount:v34 withCompletionHandler:v33];
+    v36 = migrateCopy;
+    v37 = migrationCopy;
+    v38 = macCopy;
+    v34 = accountCopy;
+    v35 = handlerCopy;
+    v22 = storeCopy;
+    [storeCopy saveAccount:v34 withCompletionHandler:v33];
   }
 
   else
   {
-    v22 = v29;
-    if (v11)
+    v22 = storeCopy;
+    if (handlerCopy)
     {
-      (*(v11 + 2))(v11, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
   }
 }
@@ -487,13 +487,13 @@ void __120__ICMigrationUtilities_saveDidChooseToMigrate_didFinishMigration_didMi
   }
 }
 
-+ (void)updateLegacyAccountMigrationStateForModernAccount:(id)a3
++ (void)updateLegacyAccountMigrationStateForModernAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [ICMigrationUtilities updateLegacyAccountMigrationStateForModernAccount:v3];
+    [ICMigrationUtilities updateLegacyAccountMigrationStateForModernAccount:accountCopy];
   }
 
   v5 = objc_alloc_init(MEMORY[0x277D35930]);
@@ -501,10 +501,10 @@ void __120__ICMigrationUtilities_saveDidChooseToMigrate_didFinishMigration_didMi
   v12[1] = 3221225472;
   v12[2] = __74__ICMigrationUtilities_updateLegacyAccountMigrationStateForModernAccount___block_invoke;
   v12[3] = &unk_278194AD8;
-  v13 = v3;
+  v13 = accountCopy;
   v14 = v5;
   v6 = v5;
-  v7 = v3;
+  v7 = accountCopy;
   v8 = _Block_copy(v12);
   v8[2](v8, v9, v10, v11);
 }
@@ -599,9 +599,9 @@ uint64_t __74__ICMigrationUtilities_updateLegacyAccountMigrationStateForModernAc
   return result;
 }
 
-+ (void)updateAllLegacyAccountMigrationStatesInContext:(id)a3
++ (void)updateAllLegacyAccountMigrationStatesInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -612,9 +612,9 @@ uint64_t __74__ICMigrationUtilities_updateLegacyAccountMigrationStateForModernAc
   v7[1] = 3221225472;
   v7[2] = __71__ICMigrationUtilities_updateAllLegacyAccountMigrationStatesInContext___block_invoke;
   v7[3] = &unk_278196CD8;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   [v6 performBlockAndWait:v7];
 }
 
@@ -652,16 +652,16 @@ void __71__ICMigrationUtilities_updateAllLegacyAccountMigrationStatesInContext__
   }
 }
 
-+ (void)deleteMigratedHTMLAccountsInContext:(id)a3
++ (void)deleteMigratedHTMLAccountsInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__ICMigrationUtilities_deleteMigratedHTMLAccountsInContext___block_invoke;
   v6[3] = &unk_278196CD8;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
+  v7 = contextCopy;
+  selfCopy = self;
+  v5 = contextCopy;
   [v5 performBlockAndWait:v6];
 }
 
@@ -699,27 +699,27 @@ void __60__ICMigrationUtilities_deleteMigratedHTMLAccountsInContext___block_invo
   }
 }
 
-+ (void)deleteMigratedHTMLAccountIfNecessaryForModernAccount:(id)a3
++ (void)deleteMigratedHTMLAccountIfNecessaryForModernAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 didFinishMigration])
+  accountCopy = account;
+  if ([accountCopy didFinishMigration])
   {
     v4 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [ICMigrationUtilities deleteMigratedHTMLAccountIfNecessaryForModernAccount:v3];
+      [ICMigrationUtilities deleteMigratedHTMLAccountIfNecessaryForModernAccount:accountCopy];
     }
 
     v5 = ICNewLegacyContext();
-    v6 = [v5 managedObjectContext];
+    managedObjectContext = [v5 managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __77__ICMigrationUtilities_deleteMigratedHTMLAccountIfNecessaryForModernAccount___block_invoke;
     v9[3] = &unk_278194DC0;
-    v10 = v3;
+    v10 = accountCopy;
     v11 = v5;
-    v12 = v6;
-    v7 = v6;
+    v12 = managedObjectContext;
+    v7 = managedObjectContext;
     v8 = v5;
     [v7 performBlockAndWait:v9];
   }

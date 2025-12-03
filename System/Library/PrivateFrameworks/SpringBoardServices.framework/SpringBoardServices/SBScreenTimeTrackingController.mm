@@ -1,10 +1,10 @@
 @interface SBScreenTimeTrackingController
 - (SBScreenTimeTrackingController)init;
-- (id)_nameForContext:(int)a3;
-- (void)_queue_handleNewLayout:(id)a3 withContext:(id)a4;
-- (void)_queue_setActiveCategory:(int)a3 context:(int)a4;
+- (id)_nameForContext:(int)context;
+- (void)_queue_handleNewLayout:(id)layout withContext:(id)context;
+- (void)_queue_setActiveCategory:(int)category context:(int)context;
 - (void)dealloc;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
 @end
 
 @implementation SBScreenTimeTrackingController
@@ -38,20 +38,20 @@
   [(SBScreenTimeTrackingController *)&v3 dealloc];
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  layoutCopy = layout;
+  contextCopy = context;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayout_withContext___block_invoke;
   block[3] = &unk_1E73601C8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = layoutCopy;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = layoutCopy;
   dispatch_async(queue, block);
 }
 
@@ -90,29 +90,29 @@ uint64_t __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayo
   return result;
 }
 
-- (id)_nameForContext:(int)a3
+- (id)_nameForContext:(int)context
 {
-  if ((a3 - 1) > 2)
+  if ((context - 1) > 2)
   {
     return @"other";
   }
 
   else
   {
-    return off_1E7360208[a3 - 1];
+    return off_1E7360208[context - 1];
   }
 }
 
-- (void)_queue_handleNewLayout:(id)a3 withContext:(id)a4
+- (void)_queue_handleNewLayout:(id)layout withContext:(id)context
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v27 = self;
-  v28 = a4;
+  layoutCopy = layout;
+  selfCopy = self;
+  contextCopy = context;
   BSDispatchQueueAssert();
-  v29 = v6;
-  v7 = [v6 elements];
-  v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_25];
+  v29 = layoutCopy;
+  elements = [layoutCopy elements];
+  v8 = [elements sortedArrayUsingComparator:&__block_literal_global_25];
 
   v45 = 0u;
   v46 = 0u;
@@ -150,9 +150,9 @@ uint64_t __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayo
         }
 
         v18 = *(*(&v43 + 1) + 8 * v17);
-        v19 = [v18 identifier];
-        v20 = v19;
-        if (v15 || ![v19 isEqualToString:v41])
+        identifier = [v18 identifier];
+        v20 = identifier;
+        if (v15 || ![identifier isEqualToString:v41])
         {
           if (v13 || ![v20 isEqualToString:@"com.apple.InCallService"])
           {
@@ -187,8 +187,8 @@ uint64_t __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayo
                             if ([v18 isUIApplicationElement] && objc_msgSend(v18, "layoutRole") == 6)
                             {
                               v30 = v12;
-                              v22 = [v18 bundleIdentifier];
-                              v34 = [v22 isEqualToString:@"com.apple.camera"];
+                              bundleIdentifier = [v18 bundleIdentifier];
+                              v34 = [bundleIdentifier isEqualToString:@"com.apple.camera"];
 
                               if (v34)
                               {
@@ -296,7 +296,7 @@ uint64_t __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayo
   {
     v24 = 0;
     v25 = 0;
-    v26 = v27;
+    v26 = selfCopy;
     goto LABEL_66;
   }
 
@@ -310,7 +310,7 @@ uint64_t __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayo
   {
     if (!v39)
     {
-      v26 = v27;
+      v26 = selfCopy;
       if (v36)
       {
         v25 = 15;
@@ -353,7 +353,7 @@ uint64_t __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayo
   {
     if (!v32)
     {
-      v26 = v27;
+      v26 = selfCopy;
       if (v42)
       {
         if (v37)
@@ -387,7 +387,7 @@ uint64_t __83__SBScreenTimeTrackingController_layoutMonitor_didUpdateDisplayLayo
     v24 = 2;
   }
 
-  v26 = v27;
+  v26 = selfCopy;
 LABEL_56:
   if (v40)
   {
@@ -404,7 +404,7 @@ LABEL_65:
   }
 
 LABEL_66:
-  [v26 _queue_setActiveCategory:v25 context:{v24, v27}];
+  [v26 _queue_setActiveCategory:v25 context:{v24, selfCopy}];
 }
 
 uint64_t __69__SBScreenTimeTrackingController__queue_handleNewLayout_withContext___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -424,10 +424,10 @@ uint64_t __69__SBScreenTimeTrackingController__queue_handleNewLayout_withContext
   }
 }
 
-- (void)_queue_setActiveCategory:(int)a3 context:(int)a4
+- (void)_queue_setActiveCategory:(int)category context:(int)context
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&context;
+  v5 = *&category;
   BSDispatchQueueAssert();
   queue_activeCategory = self->_queue_activeCategory;
   if (queue_activeCategory != v5)

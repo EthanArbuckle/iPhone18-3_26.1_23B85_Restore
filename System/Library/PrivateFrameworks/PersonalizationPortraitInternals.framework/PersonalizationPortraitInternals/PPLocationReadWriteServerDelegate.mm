@@ -1,14 +1,14 @@
 @interface PPLocationReadWriteServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPLocationReadWriteServerDelegate)init;
 @end
 
 @implementation PPLocationReadWriteServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28479E598];
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -25,7 +25,7 @@
   [v7 setClasses:v15 forSelector:sel_donateLocations_source_contextualNamedEntities_algorithm_cloudSync_decayRate_completion_ argumentIndex:2 ofReply:0];
 
   v16 = objc_opt_new();
-  LOBYTE(v8) = [PPXPCServerHelper shouldAcceptConnection:v6 serviceName:@"com.apple.proactive.PersonalizationPortrait.Location.readWrite" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v16 validateConnection:&__block_literal_global_11050 setupClientProxy:0 interruptionHandler:&__block_literal_global_81_11059 invalidationHandler:&__block_literal_global_83_11060];
+  LOBYTE(v8) = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.Location.readWrite" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v16 validateConnection:&__block_literal_global_11050 setupClientProxy:0 interruptionHandler:&__block_literal_global_81_11059 invalidationHandler:&__block_literal_global_83_11060];
 
   return v8;
 }

@@ -1,6 +1,6 @@
 @interface MFMailComposePlaceholderViewController
 - (void)loadView;
-- (void)setSubject:(id)a3;
+- (void)setSubject:(id)subject;
 @end
 
 @implementation MFMailComposePlaceholderViewController
@@ -11,11 +11,11 @@
   [(MFMailComposePlaceholderViewController *)self setView:?];
 }
 
-- (void)setSubject:(id)a3
+- (void)setSubject:(id)subject
 {
-  v5 = a3;
-  v4 = [(MFMailComposePlaceholderViewController *)self view];
-  [v4 setSubject:v5];
+  subjectCopy = subject;
+  view = [(MFMailComposePlaceholderViewController *)self view];
+  [view setSubject:subjectCopy];
 }
 
 @end

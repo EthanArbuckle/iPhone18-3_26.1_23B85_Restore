@@ -1,5 +1,5 @@
 @interface CPCrashReporter
-+ (void)simulateCrashReportWithFormat:(id)a3;
++ (void)simulateCrashReportWithFormat:(id)format;
 @end
 
 @implementation CPCrashReporter
@@ -11,13 +11,13 @@ uint64_t (*__58__CPCrashReporter_simulateCrashReportWithReason_pid_code___block_
   return result;
 }
 
-+ (void)simulateCrashReportWithFormat:(id)a3
++ (void)simulateCrashReportWithFormat:(id)format
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
-  [a1 simulateCrashReportWithReason:v6 pid:getpid() code:14593455];
+  [self simulateCrashReportWithReason:v6 pid:getpid() code:14593455];
 }
 
 + (void)simulateCrashReportWithReason:pid:code:.cold.2()

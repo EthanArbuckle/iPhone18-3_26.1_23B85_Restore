@@ -1,20 +1,20 @@
 @interface INSearchForMediaAppIntentHandler
 - (_TtC17SiriAudioInternal32INSearchForMediaAppIntentHandler)init;
-- (void)handleSearchForMedia:(INSearchForMediaIntent *)a3 completion:(id)a4;
-- (void)resolveMediaItemsForSearchForMedia:(INSearchForMediaIntent *)a3 withCompletion:(id)a4;
+- (void)handleSearchForMedia:(INSearchForMediaIntent *)media completion:(id)completion;
+- (void)resolveMediaItemsForSearchForMedia:(INSearchForMediaIntent *)media withCompletion:(id)completion;
 @end
 
 @implementation INSearchForMediaAppIntentHandler
 
-- (void)resolveMediaItemsForSearchForMedia:(INSearchForMediaIntent *)a3 withCompletion:(id)a4
+- (void)resolveMediaItemsForSearchForMedia:(INSearchForMediaIntent *)media withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_280069630, &qword_266268A00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = media;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_266266C58();
@@ -29,20 +29,20 @@
   v15[3] = 0;
   v15[4] = &unk_2662683D8;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  mediaCopy = media;
+  selfCopy = self;
   sub_266232CDC(0, 0, v10, &unk_2662683E0, v15);
 }
 
-- (void)handleSearchForMedia:(INSearchForMediaIntent *)a3 completion:(id)a4
+- (void)handleSearchForMedia:(INSearchForMediaIntent *)media completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_280069630, &qword_266268A00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = media;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_266266C58();
@@ -57,8 +57,8 @@
   v15[3] = 0;
   v15[4] = &unk_266268398;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  mediaCopy = media;
+  selfCopy = self;
   sub_266232CDC(0, 0, v10, &unk_2662683A8, v15);
 }
 

@@ -1,19 +1,19 @@
 @interface ATXUtils
-+ (BOOL)isInTrashPath:(id)a3;
++ (BOOL)isInTrashPath:(id)path;
 + (BOOL)shouldSkipExpensiveTask;
-+ (id)shuffle:(id)a3;
-+ (void)logCurrentMemoryFootprint:(id)a3;
++ (id)shuffle:(id)shuffle;
++ (void)logCurrentMemoryFootprint:(id)footprint;
 @end
 
 @implementation ATXUtils
 
 + (BOOL)shouldSkipExpensiveTask
 {
-  v2 = [MEMORY[0x277CFE318] userContext];
-  v3 = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForAppDataDictionary = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
+  v4 = [userContext objectForKeyedSubscript:keyPathForAppDataDictionary];
+  appBundleIdKey = [MEMORY[0x277CFE338] appBundleIdKey];
+  v6 = [v4 objectForKeyedSubscript:appBundleIdKey];
 
   v7 = [v6 isEqualToString:@"com.apple.camera"];
   if (v7)
@@ -29,13 +29,13 @@
   return v7;
 }
 
-+ (id)shuffle:(id)a3
++ (id)shuffle:(id)shuffle
 {
-  v3 = a3;
-  if ([v3 count])
+  shuffleCopy = shuffle;
+  if ([shuffleCopy count])
   {
-    v4 = [v3 allObjects];
-    v5 = [v4 mutableCopy];
+    allObjects = [shuffleCopy allObjects];
+    v5 = [allObjects mutableCopy];
 
     v6 = [v5 count];
     v7 = v6 - 1;
@@ -59,10 +59,10 @@
   return v5;
 }
 
-+ (void)logCurrentMemoryFootprint:(id)a3
++ (void)logCurrentMemoryFootprint:(id)footprint
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  footprintCopy = footprint;
   if ([MEMORY[0x277D42590] isInternalBuild])
   {
     v4 = ATXMemoryUsageInMBOfCurrentProcess();
@@ -81,7 +81,7 @@
       v8 = 134218242;
       v9 = v4;
       v10 = 2112;
-      v11 = v3;
+      v11 = footprintCopy;
       _os_log_impl(&dword_226368000, v6, OS_LOG_TYPE_DEFAULT, "[MemoryLogging] Physical memory footprint: %lf MB, context: %@", &v8, 0x16u);
     }
   }
@@ -89,13 +89,13 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isInTrashPath:(id)a3
++ (BOOL)isInTrashPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v10 = 2;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = 0;
-  [v4 getRelationship:&v10 ofDirectory:102 inDomain:0 toItemAtURL:v3 error:&v9];
+  [defaultManager getRelationship:&v10 ofDirectory:102 inDomain:0 toItemAtURL:pathCopy error:&v9];
   v5 = v9;
 
   if (v5)
@@ -103,7 +103,7 @@
     v6 = __atxlog_handle_default();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ATXUtils *)v3 isInTrashPath:v5];
+      [(ATXUtils *)pathCopy isInTrashPath:v5];
     }
 
     v7 = 0;

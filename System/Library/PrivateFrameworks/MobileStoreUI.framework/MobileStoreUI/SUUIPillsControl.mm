@@ -1,21 +1,21 @@
 @interface SUUIPillsControl
 - (CGRect)selectedPillFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIPillsControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIPillsControl)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reloadPills;
-- (void)setColorScheme:(id)a3;
+- (void)setColorScheme:(id)scheme;
 @end
 
 @implementation SUUIPillsControl
 
-- (SUUIPillsControl)initWithFrame:(CGRect)a3
+- (SUUIPillsControl)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SUUIPillsControl;
-  v3 = [(SUUIPillsControl *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIPillsControl *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SUUISegmentedControl alloc];
@@ -29,8 +29,8 @@
     [(SUUISegmentedControl *)v7 setTintColor:v8];
 
     [(SUUIPillsControl *)v3 addSubview:v3->_segmentedControl];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(SUUIPillsControl *)v3 setBackgroundColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SUUIPillsControl *)v3 setBackgroundColor:whiteColor];
   }
 
   return v3;
@@ -93,9 +93,9 @@
 - (CGRect)selectedPillFrame
 {
   segmentedControl = self->_segmentedControl;
-  v3 = [(SUUIPillsControl *)self selectedIndex];
+  selectedIndex = [(SUUIPillsControl *)self selectedIndex];
 
-  [(SUUISegmentedControl *)segmentedControl frameForSegmentAtIndex:v3];
+  [(SUUISegmentedControl *)segmentedControl frameForSegmentAtIndex:selectedIndex];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -103,21 +103,21 @@
   return result;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v4 = a3;
-  if (self->_colorScheme != v4)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v11 = v4;
-    v5 = [(SUUIColorScheme *)v4 copy];
+    v11 = schemeCopy;
+    v5 = [(SUUIColorScheme *)schemeCopy copy];
     colorScheme = self->_colorScheme;
     self->_colorScheme = v5;
 
     segmentedControl = self->_segmentedControl;
     if (self->_colorScheme)
     {
-      v8 = [(SUUIColorScheme *)v11 secondaryTextColor];
-      [(SUUISegmentedControl *)segmentedControl setTintColor:v8];
+      secondaryTextColor = [(SUUIColorScheme *)v11 secondaryTextColor];
+      [(SUUISegmentedControl *)segmentedControl setTintColor:secondaryTextColor];
 
       [(SUUIColorScheme *)v11 backgroundColor];
     }
@@ -132,7 +132,7 @@
     v10 = ;
     [(SUUIPillsControl *)self setBackgroundColor:v10];
 
-    v4 = v11;
+    schemeCopy = v11;
   }
 }
 
@@ -152,9 +152,9 @@
   [(SUUISegmentedControl *)segmentedControl setFrame:left, top, v7, v9];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SUUISegmentedControl *)self->_segmentedControl sizeThatFits:a3.width, a3.height];
+  [(SUUISegmentedControl *)self->_segmentedControl sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

@@ -3,7 +3,7 @@
 - (BOOL)setupH264Rules;
 - (BOOL)setupHEVCRules;
 - (BOOL)setupRules;
-- (VCVideoRuleCollectionsScreenSecondaryMac)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsScreenSecondaryMac)initWithHardwareSettings:(id)settings;
 - (void)initSupportedPayloads;
 - (void)setupH264Rules;
 - (void)setupHEVCRules;
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (VCVideoRuleCollectionsScreenSecondaryMac)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsScreenSecondaryMac)initWithHardwareSettings:(id)settings
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -28,7 +28,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     [(VCVideoRuleCollectionsScreenSecondaryMac *)v4 initSupportedPayloads];
     if (![(VCVideoRuleCollectionsScreenSecondaryMac *)v5 setupRules]|| ([(VCHardwareSettingsMacProtocol *)v5->_hardwareSettings isPixelFormatAvailable]& 1) == 0)
     {
@@ -60,14 +60,14 @@
 
 - (BOOL)setupRules
 {
-  v3 = [(VCVideoRuleCollectionsScreenSecondaryMac *)self setupH264Rules];
-  if (v3)
+  setupH264Rules = [(VCVideoRuleCollectionsScreenSecondaryMac *)self setupH264Rules];
+  if (setupH264Rules)
   {
 
-    LOBYTE(v3) = [(VCVideoRuleCollectionsScreenSecondaryMac *)self setupHEVCRules];
+    LOBYTE(setupH264Rules) = [(VCVideoRuleCollectionsScreenSecondaryMac *)self setupHEVCRules];
   }
 
-  return v3;
+  return setupH264Rules;
 }
 
 - (BOOL)setupH264Rules
@@ -161,7 +161,7 @@ LABEL_6:
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)setupHEVCRules
@@ -177,7 +177,7 @@ LABEL_6:
   }
 
   *a2 = 0;
-  *a1 = 0;
+  *self = 0;
 }
 
 @end

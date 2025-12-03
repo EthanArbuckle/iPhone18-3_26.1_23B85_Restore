@@ -1,73 +1,73 @@
 @interface TTRIAccountsListsViewController_collectionView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithCollectionViewLayout:(id)a3;
-- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (void)autoCategorizeListAction:(id)a3;
-- (void)beginSearchAction:(id)a3;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)didDismissSearchController:(id)a3;
-- (void)didTapDone:(id)a3;
-- (void)didTapEdit:(id)a3;
-- (void)didTapNewGroup:(id)a3;
-- (void)didTapNewList:(id)a3;
-- (void)didTapSearch:(id)a3;
-- (void)presentSearchController:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithCollectionViewLayout:(id)layout;
+- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (void)autoCategorizeListAction:(id)action;
+- (void)beginSearchAction:(id)action;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)didDismissSearchController:(id)controller;
+- (void)didTapDone:(id)done;
+- (void)didTapEdit:(id)edit;
+- (void)didTapNewGroup:(id)group;
+- (void)didTapNewList:(id)list;
+- (void)didTapSearch:(id)search;
+- (void)presentSearchController:(id)controller;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation TTRIAccountsListsViewController_collectionView
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100010D80();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100018C7C(a3);
+  selfCopy = self;
+  sub_100018C7C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10001D7FC(a3);
+  selfCopy = self;
+  sub_10001D7FC(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100558930(a3);
+  selfCopy = self;
+  sub_100558930(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRIAccountsListsViewController_collectionView *)&v5 viewDidDisappear:v3];
+  [(TTRIAccountsListsViewController_collectionView *)&v5 viewDidDisappear:disappearCopy];
   *(*&v4[OBJC_IVAR____TtC9Reminders46TTRIAccountsListsViewController_collectionView_presenter] + OBJC_IVAR____TtC9Reminders26TTRIAccountsListsPresenter_externalSelectionSyncState + 1) = 1;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -76,65 +76,65 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_100558AE0(a3, v10);
+  v8 = sub_100558AE0(action, v10);
 
   sub_1000079B4(v10, &qword_10076AE40);
   return v8 & 1;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1005591A4(a3, a4);
+  selfCopy = self;
+  sub_1005591A4(editing, animated);
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_10055952C(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_10055952C(commandCopy);
 }
 
-- (void)didTapNewList:(id)a3
+- (void)didTapNewList:(id)list
 {
-  v5 = a3;
-  v4 = self;
+  listCopy = list;
+  selfCopy = self;
   sub_100453F4C();
 }
 
-- (void)didTapNewGroup:(id)a3
+- (void)didTapNewGroup:(id)group
 {
-  v5 = a3;
-  v4 = self;
+  groupCopy = group;
+  selfCopy = self;
   sub_1004542D4();
 }
 
-- (void)didTapEdit:(id)a3
+- (void)didTapEdit:(id)edit
 {
-  v3 = self;
+  selfCopy = self;
   sub_1005591A4(1, 1);
 }
 
-- (void)didTapSearch:(id)a3
+- (void)didTapSearch:(id)search
 {
-  v3 = self;
+  selfCopy = self;
   sub_100560C24();
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
-  v3 = self;
+  selfCopy = self;
   sub_1005591A4(0, 1);
 }
 
-- (void)autoCategorizeListAction:(id)a3
+- (void)autoCategorizeListAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -143,7 +143,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100560EF0();
@@ -151,11 +151,11 @@
   sub_1000079B4(v6, &qword_10076AE40);
 }
 
-- (void)beginSearchAction:(id)a3
+- (void)beginSearchAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -164,14 +164,14 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders46TTRIAccountsListsViewController_collectionView_searchController);
   if (v6)
   {
-    v7 = [v6 searchBar];
-    [v7 becomeFirstResponder];
+    searchBar = [v6 searchBar];
+    [searchBar becomeFirstResponder];
 
     sub_1000079B4(v8, &qword_10076AE40);
   }
@@ -182,43 +182,43 @@
   }
 }
 
-- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithCollectionViewLayout:(id)a3
+- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders46TTRIAccountsListsViewController_collectionView)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_100562418(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100562418(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100567F10();
   LOBYTE(self) = v12;
 
@@ -226,34 +226,34 @@
   return self & 1;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   type metadata accessor for IndexPath();
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   v10 = sub_1005683E4(v7);
 
   return v10;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005659B0(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1005659B0(controllerCopy);
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100565CF4(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100565CF4(controllerCopy);
 }
 
-- (void)presentSearchController:(id)a3
+- (void)presentSearchController:(id)controller
 {
-  v5 = self;
+  selfCopy = self;
   v3 = UIViewController.effectiveNavigationControllerForBars.getter();
   if (v3)
   {
@@ -264,14 +264,14 @@
   }
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_100565EDC();
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
   _s9Reminders20TTRISearchControllerCMa_0();
   v5 = swift_dynamicCastClass();
@@ -283,8 +283,8 @@
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders46TTRIAccountsListsViewController_collectionView_searchResultContainerViewController);
   if (v6)
   {
-    v7 = a3;
-    v9 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     v8 = v6;
     sub_1005063DC();
   }
@@ -295,9 +295,9 @@
   }
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v3 = self;
+  selfCopy = self;
   sub_100565A58(1);
 }
 

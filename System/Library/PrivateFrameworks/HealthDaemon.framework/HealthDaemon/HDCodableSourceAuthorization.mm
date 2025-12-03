@@ -1,33 +1,33 @@
 @interface HDCodableSourceAuthorization
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAuthorizations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAuthorizations:(id)authorizations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSourceAuthorization
 
-- (void)addAuthorizations:(id)a3
+- (void)addAuthorizations:(id)authorizations
 {
-  v4 = a3;
+  authorizationsCopy = authorizations;
   authorizations = self->_authorizations;
-  v8 = v4;
+  v8 = authorizationsCopy;
   if (!authorizations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_authorizations;
     self->_authorizations = v6;
 
-    v4 = v8;
+    authorizationsCopy = v8;
     authorizations = self->_authorizations;
   }
 
-  [(NSMutableArray *)authorizations addObject:v4];
+  [(NSMutableArray *)authorizations addObject:authorizationsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableSourceAuthorization;
   v4 = [(HDCodableSourceAuthorization *)&v8 description];
-  v5 = [(HDCodableSourceAuthorization *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSourceAuthorization *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   sourceUUID = self->_sourceUUID;
   if (sourceUUID)
   {
-    [v3 setObject:sourceUUID forKey:@"sourceUUID"];
+    [dictionary setObject:sourceUUID forKey:@"sourceUUID"];
   }
 
   if ([(NSMutableArray *)self->_authorizations count])
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -97,8 +97,8 @@
   source = self->_source;
   if (source)
   {
-    v15 = [(HDCodableSource *)source dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"source"];
+    dictionaryRepresentation2 = [(HDCodableSource *)source dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"source"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -106,10 +106,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_sourceUUID)
   {
     PBDataWriterWriteDataField();
@@ -160,47 +160,47 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_sourceUUID)
   {
-    [v9 setSourceUUID:?];
+    [toCopy setSourceUUID:?];
   }
 
   if ([(HDCodableSourceAuthorization *)self authorizationsCount])
   {
-    [v9 clearAuthorizations];
-    v4 = [(HDCodableSourceAuthorization *)self authorizationsCount];
-    if (v4)
+    [toCopy clearAuthorizations];
+    authorizationsCount = [(HDCodableSourceAuthorization *)self authorizationsCount];
+    if (authorizationsCount)
     {
-      v5 = v4;
+      v5 = authorizationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableSourceAuthorization *)self authorizationsAtIndex:i];
-        [v9 addAuthorizations:v7];
+        [toCopy addAuthorizations:v7];
       }
     }
   }
 
   if (self->_backupUUID)
   {
-    [v9 setBackupUUID:?];
+    [toCopy setBackupUUID:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_source)
   {
-    [v9 setSource:?];
-    v8 = v9;
+    [toCopy setSource:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_sourceUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_sourceUUID copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -224,7 +224,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{a3, v20}];
+        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{zone, v20}];
         [v5 addAuthorizations:v13];
 
         ++v12;
@@ -237,11 +237,11 @@
     while (v10);
   }
 
-  v14 = [(NSData *)self->_backupUUID copyWithZone:a3];
+  v14 = [(NSData *)self->_backupUUID copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
-  v16 = [(HDCodableSource *)self->_source copyWithZone:a3];
+  v16 = [(HDCodableSource *)self->_source copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
@@ -249,13 +249,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sourceUUID = self->_sourceUUID, !(sourceUUID | v4[4])) || -[NSData isEqual:](sourceUUID, "isEqual:")) && ((authorizations = self->_authorizations, !(authorizations | v4[1])) || -[NSMutableArray isEqual:](authorizations, "isEqual:")) && ((backupUUID = self->_backupUUID, !(backupUUID | v4[2])) || -[NSData isEqual:](backupUUID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sourceUUID = self->_sourceUUID, !(sourceUUID | equalCopy[4])) || -[NSData isEqual:](sourceUUID, "isEqual:")) && ((authorizations = self->_authorizations, !(authorizations | equalCopy[1])) || -[NSMutableArray isEqual:](authorizations, "isEqual:")) && ((backupUUID = self->_backupUUID, !(backupUUID | equalCopy[2])) || -[NSData isEqual:](backupUUID, "isEqual:")))
   {
     source = self->_source;
-    if (source | v4[3])
+    if (source | equalCopy[3])
     {
       v9 = [(HDCodableSource *)source isEqual:?];
     }
@@ -282,11 +282,11 @@
   return v4 ^ v5 ^ [(HDCodableSource *)self->_source hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(HDCodableSourceAuthorization *)self setSourceUUID:?];
   }
@@ -295,7 +295,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -319,13 +319,13 @@
     while (v7);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HDCodableSourceAuthorization *)self setBackupUUID:?];
   }
 
   source = self->_source;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (source)
   {
     if (v11)

@@ -1,8 +1,8 @@
 @interface TVRatingBadgeView
-+ (id)ratingBadgeViewWithValue:(double)a3 layout:(id)a4 existingBadgeView:(id)a5;
++ (id)ratingBadgeViewWithValue:(double)value layout:(id)layout existingBadgeView:(id)view;
 - (CGSize)_starSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TVRatingBadgeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TVRatingBadgeView)initWithFrame:(CGRect)frame;
 - (double)_circleRadius;
 - (double)_interitemSpacing;
 - (double)_starHeight;
@@ -10,20 +10,20 @@
 - (id)_ratingStyle;
 - (id)_starImage;
 - (id)_tintColor;
-- (void)drawRect:(CGRect)a3;
-- (void)setRatingValue:(double)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setRatingValue:(double)value;
 @end
 
 @implementation TVRatingBadgeView
 
-+ (id)ratingBadgeViewWithValue:(double)a3 layout:(id)a4 existingBadgeView:(id)a5
++ (id)ratingBadgeViewWithValue:(double)value layout:(id)layout existingBadgeView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
+  layoutCopy = layout;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = viewCopy;
   }
 
   else
@@ -32,22 +32,22 @@
   }
 
   v10 = v9;
-  [v9 setRatingBadgeLayout:v7];
-  [v10 setRatingValue:a3];
+  [v9 setRatingBadgeLayout:layoutCopy];
+  [v10 setRatingValue:value];
   [v10 setNeedsDisplay];
 
   return v10;
 }
 
-- (TVRatingBadgeView)initWithFrame:(CGRect)a3
+- (TVRatingBadgeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TVRatingBadgeView;
-  v3 = [(TVRatingBadgeView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TVRatingBadgeView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(TVRatingBadgeView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TVRatingBadgeView *)v3 setBackgroundColor:clearColor];
 
     [(TVRatingBadgeView *)v3 setOpaque:0];
   }
@@ -55,18 +55,18 @@
   return v3;
 }
 
-- (void)setRatingValue:(double)a3
+- (void)setRatingValue:(double)value
 {
-  if (self->_ratingValue != a3)
+  if (self->_ratingValue != value)
   {
-    self->_ratingValue = a3;
+    self->_ratingValue = value;
     [(TVRatingBadgeView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(TVRatingBadgeView *)self _starImage:a3.origin.x];
+  v4 = [(TVRatingBadgeView *)self _starImage:rect.origin.x];
   [(TVViewLayout *)self->_ratingBadgeLayout padding];
   v6 = v5;
   v8 = v7;
@@ -74,19 +74,19 @@
   v12 = v11;
   [(TVRatingBadgeView *)self _interitemSpacing];
   v14 = v13;
-  v15 = [(TVRatingBadgeView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(TVRatingBadgeView *)self effectiveUserInterfaceLayoutDirection];
   if (v4)
   {
-    v16 = [(TVRatingBadgeView *)self _halfStarImage];
-    v17 = [(TVRatingBadgeView *)self _tintColor];
-    v18 = [v4 _flatImageWithColor:v17];
+    _halfStarImage = [(TVRatingBadgeView *)self _halfStarImage];
+    _tintColor = [(TVRatingBadgeView *)self _tintColor];
+    v18 = [v4 _flatImageWithColor:_tintColor];
 
-    v19 = [(TVRatingBadgeView *)self _tintColor];
-    v20 = [v19 colorWithAlphaComponent:0.3];
+    _tintColor2 = [(TVRatingBadgeView *)self _tintColor];
+    v20 = [_tintColor2 colorWithAlphaComponent:0.3];
     v21 = [v4 _flatImageWithColor:v20];
 
-    v22 = [(TVRatingBadgeView *)self _tintColor];
-    v23 = [v16 _flatImageWithColor:v22];
+    _tintColor3 = [(TVRatingBadgeView *)self _tintColor];
+    v23 = [_halfStarImage _flatImageWithColor:_tintColor3];
 
     v70[0] = 0;
     v70[1] = v70;
@@ -106,7 +106,7 @@
     v30 = v18;
     v58 = v30;
     v31 = v23;
-    v60 = self;
+    selfCopy = self;
     v61 = v70;
     v63 = v6;
     v64 = v8;
@@ -117,7 +117,7 @@
     v59 = v31;
     v69 = v14;
     v32 = MEMORY[0x26D6AFBB0](v56);
-    if (v15 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v33 = 5;
       do
@@ -141,30 +141,30 @@
 
   else
   {
-    v34 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout fillColor];
-    v35 = [v34 CGColor];
+    fillColor = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout fillColor];
+    cGColor = [fillColor CGColor];
 
-    v36 = [(TVRatingBadgeView *)self _tintColor];
-    v37 = [v36 CGColor];
+    _tintColor4 = [(TVRatingBadgeView *)self _tintColor];
+    cGColor2 = [_tintColor4 CGColor];
 
-    if (v15 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      v38 = v37;
+      v38 = cGColor2;
     }
 
     else
     {
-      v38 = v35;
+      v38 = cGColor;
     }
 
-    if (v15 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      v39 = v35;
+      v39 = cGColor;
     }
 
     else
     {
-      v39 = v37;
+      v39 = cGColor2;
     }
 
     CurrentContext = UIGraphicsGetCurrentContext();
@@ -188,17 +188,17 @@
     v55[6] = CurrentContext;
     v55[7] = Mutable;
     v55[8] = v50;
-    v55[9] = v35;
+    v55[9] = cGColor;
     v55[10] = v38;
     v55[11] = v39;
     v55[13] = 0;
     v55[14] = 0;
-    v55[12] = v37;
+    v55[12] = cGColor2;
     *&v55[15] = v44;
     *&v55[16] = v44;
     v55[4] = self;
     v51 = MEMORY[0x26D6AFBB0](v55);
-    if (v15 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v52 = 5;
       do
@@ -293,9 +293,9 @@ LABEL_10:
   CGContextTranslateCTM(v10, v13, 0.0);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(TVRatingBadgeView *)self _starImage:a3.width];
+  v4 = [(TVRatingBadgeView *)self _starImage:fits.width];
   [(TVViewLayout *)self->_ratingBadgeLayout padding];
   v6 = v5;
   v8 = v7;
@@ -328,32 +328,32 @@ LABEL_10:
 
 - (id)_tintColor
 {
-  v3 = [(TVRatingBadgeView *)self traitCollection];
-  v4 = v3;
-  if (v3 && [v3 userInterfaceStyle] == 2 && (-[TVViewLayout darkTintColor](self->_ratingBadgeLayout, "darkTintColor"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  traitCollection = [(TVRatingBadgeView *)self traitCollection];
+  v4 = traitCollection;
+  if (traitCollection && [traitCollection userInterfaceStyle] == 2 && (-[TVViewLayout darkTintColor](self->_ratingBadgeLayout, "darkTintColor"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(TVViewLayout *)self->_ratingBadgeLayout darkTintColor];
+    darkTintColor = [(TVViewLayout *)self->_ratingBadgeLayout darkTintColor];
   }
 
   else
   {
-    v6 = [(TVViewLayout *)self->_ratingBadgeLayout tintColor];
+    darkTintColor = [(TVViewLayout *)self->_ratingBadgeLayout tintColor];
   }
 
-  v7 = v6;
+  v7 = darkTintColor;
 
   return v7;
 }
 
 - (double)_interitemSpacing
 {
-  v3 = [(TVRatingBadgeView *)self traitCollection];
+  traitCollection = [(TVRatingBadgeView *)self traitCollection];
   [(TVRatingBadgeLayout *)self->_ratingBadgeLayout interitemSpacing];
   v5 = v4;
-  if (v3)
+  if (traitCollection)
   {
-    v6 = [v3 preferredContentSizeCategory];
-    if ([TVMLUtilities isAXSmallEnabled:v6])
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    if ([TVMLUtilities isAXSmallEnabled:preferredContentSizeCategory])
     {
       [(TVRatingBadgeLayout *)self->_ratingBadgeLayout interitemSpacingAXSmall];
       v8 = v7;
@@ -371,8 +371,8 @@ LABEL_9:
     {
     }
 
-    v10 = [v3 preferredContentSizeCategory];
-    if (![TVMLUtilities isAXLargeEnabled:v10])
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+    if (![TVMLUtilities isAXLargeEnabled:preferredContentSizeCategory2])
     {
 
       goto LABEL_11;
@@ -395,18 +395,18 @@ LABEL_11:
 
 - (id)_ratingStyle
 {
-  v3 = [(TVRatingBadgeView *)self traitCollection];
-  v4 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyle];
-  if (v3)
+  traitCollection = [(TVRatingBadgeView *)self traitCollection];
+  ratingStyle = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyle];
+  if (traitCollection)
   {
-    v5 = [v3 preferredContentSizeCategory];
-    if ([TVMLUtilities isAXSmallEnabled:v5])
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    if ([TVMLUtilities isAXSmallEnabled:preferredContentSizeCategory])
     {
-      v6 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXSmall];
+      ratingStyleAXSmall = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXSmall];
 
-      if (v6)
+      if (ratingStyleAXSmall)
       {
-        v7 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXSmall];
+        ratingStyleAXSmall2 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXSmall];
         goto LABEL_9;
       }
     }
@@ -415,42 +415,42 @@ LABEL_11:
     {
     }
 
-    v8 = [v3 preferredContentSizeCategory];
-    if (![TVMLUtilities isAXLargeEnabled:v8])
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+    if (![TVMLUtilities isAXLargeEnabled:preferredContentSizeCategory2])
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v9 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXLarge];
+    ratingStyleAXLarge = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXLarge];
 
-    if (!v9)
+    if (!ratingStyleAXLarge)
     {
       goto LABEL_11;
     }
 
-    v7 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXLarge];
+    ratingStyleAXSmall2 = [(TVRatingBadgeLayout *)self->_ratingBadgeLayout ratingStyleAXLarge];
 LABEL_9:
-    v8 = v4;
-    v4 = v7;
+    preferredContentSizeCategory2 = ratingStyle;
+    ratingStyle = ratingStyleAXSmall2;
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return v4;
+  return ratingStyle;
 }
 
 - (CGSize)_starSize
 {
-  v3 = [(TVRatingBadgeView *)self _starImage];
-  [v3 size];
+  _starImage = [(TVRatingBadgeView *)self _starImage];
+  [_starImage size];
   v5 = v4;
   [(TVRatingBadgeView *)self _starHeight];
   v7 = v5 * v6;
-  v8 = [(TVRatingBadgeView *)self _starImage];
-  [v8 size];
+  _starImage2 = [(TVRatingBadgeView *)self _starImage];
+  [_starImage2 size];
   v10 = v7 / v9;
 
   v11 = v10;
@@ -470,18 +470,18 @@ LABEL_11:
     [TVRatingBadgeView _starHeight];
   }
 
-  v3 = [(TVRatingBadgeView *)self _ratingStyle];
-  if ([v3 isEqualToString:@"star-hollow-l"] && self->_ratingValue > 0.0)
+  _ratingStyle = [(TVRatingBadgeView *)self _ratingStyle];
+  if ([_ratingStyle isEqualToString:@"star-hollow-l"] && self->_ratingValue > 0.0)
   {
-    v4 = @"star-l";
+    _ratingStyle2 = @"star-l";
   }
 
   else
   {
-    v4 = [(TVRatingBadgeView *)self _ratingStyle];
+    _ratingStyle2 = [(TVRatingBadgeView *)self _ratingStyle];
   }
 
-  v5 = v4;
+  v5 = _ratingStyle2;
 
   v6 = [_starHeight_sStarStyleMap objectForKeyedSubscript:v5];
   [v6 floatValue];
@@ -508,18 +508,18 @@ void __32__TVRatingBadgeView__starHeight__block_invoke()
 
 - (id)_starImage
 {
-  v3 = [(TVRatingBadgeView *)self _ratingStyle];
-  if ([v3 isEqualToString:@"star-hollow-l"] && self->_ratingValue > 0.0)
+  _ratingStyle = [(TVRatingBadgeView *)self _ratingStyle];
+  if ([_ratingStyle isEqualToString:@"star-hollow-l"] && self->_ratingValue > 0.0)
   {
-    v4 = @"star-l";
+    _ratingStyle2 = @"star-l";
   }
 
   else
   {
-    v4 = [(TVRatingBadgeView *)self _ratingStyle];
+    _ratingStyle2 = [(TVRatingBadgeView *)self _ratingStyle];
   }
 
-  v5 = v4;
+  v5 = _ratingStyle2;
 
   if (([(__CFString *)v5 isEqualToString:@"star-hollow-l"]& 1) != 0)
   {
@@ -552,9 +552,9 @@ void __32__TVRatingBadgeView__starHeight__block_invoke()
   if (v5 && [(TVRatingBadgeView *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
     v6 = MEMORY[0x277D755B8];
-    v7 = [v5 CGImage];
+    cGImage = [v5 CGImage];
     [v5 scale];
-    v8 = [v6 imageWithCGImage:v7 scale:4 orientation:?];
+    v8 = [v6 imageWithCGImage:cGImage scale:4 orientation:?];
   }
 
   else
@@ -575,8 +575,8 @@ void __32__TVRatingBadgeView__starHeight__block_invoke()
   }
 
   v3 = _circleRadius_sCircleRadiusMap;
-  v4 = [(TVRatingBadgeView *)self _ratingStyle];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  _ratingStyle = [(TVRatingBadgeView *)self _ratingStyle];
+  v5 = [v3 objectForKeyedSubscript:_ratingStyle];
   v6 = v5;
   v7 = &unk_287E480C0;
   if (v5)

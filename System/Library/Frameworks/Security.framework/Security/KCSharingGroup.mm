@@ -1,36 +1,36 @@
 @interface KCSharingGroup
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOwned;
-- (KCSharingGroup)initWithCoder:(id)a3;
-- (KCSharingGroup)initWithGroupID:(id)a3 participants:(id)a4 displayName:(id)a5 shareURL:(id)a6;
-- (KCSharingGroup)initWithParticipants:(id)a3 displayName:(id)a4;
+- (KCSharingGroup)initWithCoder:(id)coder;
+- (KCSharingGroup)initWithGroupID:(id)d participants:(id)participants displayName:(id)name shareURL:(id)l;
+- (KCSharingGroup)initWithParticipants:(id)participants displayName:(id)name;
 - (KCSharingParticipant)currentUserParticipant;
 - (KCSharingParticipant)ownerParticipant;
 - (NSDictionary)JSONObject;
 - (NSString)longDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)joinState;
 - (unint64_t)hash;
-- (void)addParticipant:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeParticipant:(id)a3;
+- (void)addParticipant:(id)participant;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeParticipant:(id)participant;
 @end
 
 @implementation KCSharingGroup
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(KCSharingGroup *)self participants];
-  v6 = [v5 mutableCopy];
+  participantCopy = participant;
+  participants = [(KCSharingGroup *)self participants];
+  v6 = [participants mutableCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __36__KCSharingGroup_removeParticipant___block_invoke;
   v10[3] = &unk_1E70D46F8;
-  v11 = v4;
-  v7 = v4;
+  v11 = participantCopy;
+  v7 = participantCopy;
   v8 = [v6 indexOfObjectPassingTest:v10];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -50,28 +50,28 @@ uint64_t __36__KCSharingGroup_removeParticipant___block_invoke(uint64_t a1, void
   return v5;
 }
 
-- (void)addParticipant:(id)a3
+- (void)addParticipant:(id)participant
 {
-  v4 = a3;
-  v6 = [(KCSharingGroup *)self participants];
-  v5 = [v6 arrayByAddingObject:v4];
+  participantCopy = participant;
+  participants = [(KCSharingGroup *)self participants];
+  v5 = [participants arrayByAddingObject:participantCopy];
 
   [(KCSharingGroup *)self setParticipants:v5];
 }
 
 - (int64_t)joinState
 {
-  v2 = [(KCSharingGroup *)self currentUserParticipant];
-  v3 = [v2 inviteStatus];
+  currentUserParticipant = [(KCSharingGroup *)self currentUserParticipant];
+  inviteStatus = [currentUserParticipant inviteStatus];
 
-  return v3;
+  return inviteStatus;
 }
 
 - (BOOL)isOwned
 {
-  v3 = [(KCSharingGroup *)self currentUserParticipant];
-  v4 = [(KCSharingGroup *)self ownerParticipant];
-  v5 = [v3 isEqual:v4];
+  currentUserParticipant = [(KCSharingGroup *)self currentUserParticipant];
+  ownerParticipant = [(KCSharingGroup *)self ownerParticipant];
+  v5 = [currentUserParticipant isEqual:ownerParticipant];
 
   return v5;
 }
@@ -83,8 +83,8 @@ uint64_t __36__KCSharingGroup_removeParticipant___block_invoke(uint64_t a1, void
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(KCSharingGroup *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  participants = [(KCSharingGroup *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -94,7 +94,7 @@ uint64_t __36__KCSharingGroup_removeParticipant___block_invoke(uint64_t a1, void
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -105,7 +105,7 @@ uint64_t __36__KCSharingGroup_removeParticipant___block_invoke(uint64_t a1, void
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -129,8 +129,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(KCSharingGroup *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  participants = [(KCSharingGroup *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -140,7 +140,7 @@ LABEL_11:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -151,7 +151,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -168,47 +168,47 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(KCSharingGroup *)self displayName];
-    if (v6)
+    v5 = equalCopy;
+    displayName = [(KCSharingGroup *)self displayName];
+    if (displayName)
     {
-      v7 = [(KCSharingGroup *)self displayName];
-      v8 = [v5 displayName];
-      v9 = [v7 isEqual:v8];
+      displayName2 = [(KCSharingGroup *)self displayName];
+      displayName3 = [v5 displayName];
+      v9 = [displayName2 isEqual:displayName3];
     }
 
     else
     {
-      v7 = [v5 displayName];
-      v9 = v7 == 0;
+      displayName2 = [v5 displayName];
+      v9 = displayName2 == 0;
     }
 
-    v11 = [(KCSharingGroup *)self shareURL];
-    if (v11)
+    shareURL = [(KCSharingGroup *)self shareURL];
+    if (shareURL)
     {
-      v12 = [(KCSharingGroup *)self shareURL];
-      v13 = [v5 shareURL];
-      v14 = [v12 isEqual:v13];
+      shareURL2 = [(KCSharingGroup *)self shareURL];
+      shareURL3 = [v5 shareURL];
+      v14 = [shareURL2 isEqual:shareURL3];
     }
 
     else
     {
-      v12 = [v5 shareURL];
-      v14 = v12 == 0;
+      shareURL2 = [v5 shareURL];
+      v14 = shareURL2 == 0;
     }
 
-    v15 = [(KCSharingGroup *)self groupID];
-    v16 = [v5 groupID];
-    if ([v15 isEqual:v16])
+    groupID = [(KCSharingGroup *)self groupID];
+    groupID2 = [v5 groupID];
+    if ([groupID isEqual:groupID2])
     {
-      v17 = [(KCSharingGroup *)self participants];
-      v18 = [v5 participants];
-      v10 = [v17 isEqual:v18] & v9 & v14;
+      participants = [(KCSharingGroup *)self participants];
+      participants2 = [v5 participants];
+      v10 = [participants isEqual:participants2] & v9 & v14;
     }
 
     else
@@ -227,44 +227,44 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(KCSharingGroup *)self groupID];
-  v4 = [v3 hash];
-  v5 = [(KCSharingGroup *)self participants];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(KCSharingGroup *)self displayName];
-  v8 = [v7 hash];
-  v9 = [(KCSharingGroup *)self shareURL];
-  v10 = v8 ^ [v9 hash];
+  groupID = [(KCSharingGroup *)self groupID];
+  v4 = [groupID hash];
+  participants = [(KCSharingGroup *)self participants];
+  v6 = [participants hash] ^ v4;
+  displayName = [(KCSharingGroup *)self displayName];
+  v8 = [displayName hash];
+  shareURL = [(KCSharingGroup *)self shareURL];
+  v10 = v8 ^ [shareURL hash];
 
   return v6 ^ v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(KCSharingGroup *)self groupID];
-  [v4 encodeObject:v5 forKey:@"groupID"];
+  coderCopy = coder;
+  groupID = [(KCSharingGroup *)self groupID];
+  [coderCopy encodeObject:groupID forKey:@"groupID"];
 
-  v6 = [(KCSharingGroup *)self participants];
-  [v4 encodeObject:v6 forKey:@"participants"];
+  participants = [(KCSharingGroup *)self participants];
+  [coderCopy encodeObject:participants forKey:@"participants"];
 
-  v7 = [(KCSharingGroup *)self displayName];
-  [v4 encodeObject:v7 forKey:@"displayName"];
+  displayName = [(KCSharingGroup *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v8 = [(KCSharingGroup *)self shareURL];
-  [v4 encodeObject:v8 forKey:@"shareURL"];
+  shareURL = [(KCSharingGroup *)self shareURL];
+  [coderCopy encodeObject:shareURL forKey:@"shareURL"];
 }
 
-- (KCSharingGroup)initWithCoder:(id)a3
+- (KCSharingGroup)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = KCSharingGroup;
   v5 = [(KCSharingGroup *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
     groupID = v5->_groupID;
     v5->_groupID = v6;
 
@@ -274,26 +274,26 @@ LABEL_11:
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     v10 = [v8 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"participants"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"participants"];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      array = v11;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     participants = v5->_participants;
-    v5->_participants = v13;
+    v5->_participants = array;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareURL"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareURL"];
     shareURL = v5->_shareURL;
     v5->_shareURL = v17;
   }
@@ -306,21 +306,21 @@ LABEL_11:
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v14[0] = @"groupID";
-  v3 = [(KCSharingGroup *)self groupID];
+  groupID = [(KCSharingGroup *)self groupID];
   v14[1] = @"participants";
-  v15[0] = v3;
-  v4 = [(KCSharingGroup *)self participants];
-  v5 = [v4 valueForKey:@"JSONObject"];
+  v15[0] = groupID;
+  participants = [(KCSharingGroup *)self participants];
+  v5 = [participants valueForKey:@"JSONObject"];
   v15[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v7 = [v6 mutableCopy];
 
-  v8 = [(KCSharingGroup *)self displayName];
-  [v7 setObject:v8 forKeyedSubscript:@"displayName"];
+  displayName = [(KCSharingGroup *)self displayName];
+  [v7 setObject:displayName forKeyedSubscript:@"displayName"];
 
-  v9 = [(KCSharingGroup *)self shareURL];
-  v10 = [v9 absoluteString];
-  [v7 setObject:v10 forKeyedSubscript:@"shareURL"];
+  shareURL = [(KCSharingGroup *)self shareURL];
+  absoluteString = [shareURL absoluteString];
+  [v7 setObject:absoluteString forKeyedSubscript:@"shareURL"];
 
   v11 = [v7 copy];
   v12 = *MEMORY[0x1E69E9840];
@@ -332,17 +332,17 @@ LABEL_11:
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(KCSharingGroup *)self groupID];
-  v5 = [(KCSharingGroup *)self displayName];
-  v6 = [(KCSharingGroup *)self shareURL];
-  v7 = objc_msgSend(v3, "stringWithFormat:", @"KCSharingGroup(%@, name: %@ shareURL: %@ participants:\n"), v4, v5, v6;
+  groupID = [(KCSharingGroup *)self groupID];
+  displayName = [(KCSharingGroup *)self displayName];
+  shareURL = [(KCSharingGroup *)self shareURL];
+  v7 = objc_msgSend(v3, "stringWithFormat:", @"KCSharingGroup(%@, name: %@ shareURL: %@ participants:\n"), groupID, displayName, shareURL;
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(KCSharingGroup *)self participants];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  participants = [(KCSharingGroup *)self participants];
+  v9 = [participants countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -353,14 +353,14 @@ LABEL_11:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(participants);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) longDescription];
-        [v7 appendFormat:@"\t%@\n", v13];
+        longDescription = [*(*(&v17 + 1) + 8 * i) longDescription];
+        [v7 appendFormat:@"\t%@\n", longDescription];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [participants countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -377,73 +377,73 @@ LABEL_11:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(KCSharingGroup *)self groupID];
-  v5 = [(KCSharingGroup *)self displayName];
-  v6 = [(KCSharingGroup *)self participants];
-  v7 = [v3 stringWithFormat:@"KCSharingGroup(%@, name: %@, participants: %@)", v4, v5, v6];
+  groupID = [(KCSharingGroup *)self groupID];
+  displayName = [(KCSharingGroup *)self displayName];
+  participants = [(KCSharingGroup *)self participants];
+  v7 = [v3 stringWithFormat:@"KCSharingGroup(%@, name: %@, participants: %@)", groupID, displayName, participants];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [KCSharingGroup alloc];
-  v5 = [(KCSharingGroup *)self groupID];
-  v6 = [v5 copy];
+  groupID = [(KCSharingGroup *)self groupID];
+  v6 = [groupID copy];
   v7 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v8 = [(KCSharingGroup *)self participants];
-  v9 = [v7 initWithArray:v8 copyItems:1];
-  v10 = [(KCSharingGroup *)self displayName];
-  v11 = [v10 copy];
-  v12 = [(KCSharingGroup *)self shareURL];
-  v13 = [v12 copy];
+  participants = [(KCSharingGroup *)self participants];
+  v9 = [v7 initWithArray:participants copyItems:1];
+  displayName = [(KCSharingGroup *)self displayName];
+  v11 = [displayName copy];
+  shareURL = [(KCSharingGroup *)self shareURL];
+  v13 = [shareURL copy];
   v14 = [(KCSharingGroup *)v4 initWithGroupID:v6 participants:v9 displayName:v11 shareURL:v13];
 
   return v14;
 }
 
-- (KCSharingGroup)initWithGroupID:(id)a3 participants:(id)a4 displayName:(id)a5 shareURL:(id)a6
+- (KCSharingGroup)initWithGroupID:(id)d participants:(id)participants displayName:(id)name shareURL:(id)l
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  participantsCopy = participants;
+  nameCopy = name;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = KCSharingGroup;
   v15 = [(KCSharingGroup *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_groupID, a3);
-    if (v12)
+    objc_storeStrong(&v15->_groupID, d);
+    if (participantsCopy)
     {
-      v17 = [v12 copy];
+      array = [participantsCopy copy];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     participants = v16->_participants;
-    v16->_participants = v17;
+    v16->_participants = array;
 
-    objc_storeStrong(&v16->_displayName, a5);
-    objc_storeStrong(&v16->_shareURL, a6);
+    objc_storeStrong(&v16->_displayName, name);
+    objc_storeStrong(&v16->_shareURL, l);
   }
 
   return v16;
 }
 
-- (KCSharingGroup)initWithParticipants:(id)a3 displayName:(id)a4
+- (KCSharingGroup)initWithParticipants:(id)participants displayName:(id)name
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [v9 UUIDString];
+  nameCopy = name;
+  participantsCopy = participants;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v11 = [(KCSharingGroup *)self initWithGroupID:v10 participants:v8 displayName:v7 shareURL:0];
+  v11 = [(KCSharingGroup *)self initWithGroupID:uUIDString participants:participantsCopy displayName:nameCopy shareURL:0];
   return v11;
 }
 

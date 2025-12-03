@@ -1,27 +1,27 @@
 @interface ASRSchemaASRRecognitionResultTier1
-- (ASRSchemaASRRecognitionResultTier1)initWithDictionary:(id)a3;
-- (ASRSchemaASRRecognitionResultTier1)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRRecognitionResultTier1)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRRecognitionResultTier1)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addTokens:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokens:(id)tokens;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRRecognitionResultTier1
 
-- (ASRSchemaASRRecognitionResultTier1)initWithDictionary:(id)a3
+- (ASRSchemaASRRecognitionResultTier1)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = ASRSchemaASRRecognitionResultTier1;
   v5 = [(ASRSchemaASRRecognitionResultTier1 *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(ASRSchemaASRRecognitionResultTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"tokens"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (ASRSchemaASRRecognitionResultTier1)initWithJSON:(id)a3
+- (ASRSchemaASRRecognitionResultTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRRecognitionResultTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRRecognitionResultTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRRecognitionResultTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,26 +118,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if ([(NSArray *)self->_tokens count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -157,16 +157,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -176,36 +176,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"tokens"];
+    [dictionary setObject:array forKeyedSubscript:@"tokens"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
-  v6 = [v4 tokens];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
+  linkId2 = [equalCopy tokens];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v12 = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
-    if (!v12)
+    tokens = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
+    if (!tokens)
     {
 
 LABEL_15:
@@ -230,10 +230,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
-    v15 = [v4 tokens];
-    v16 = [v14 isEqual:v15];
+    v13 = tokens;
+    tokens2 = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
+    tokens3 = [equalCopy tokens];
+    v16 = [tokens2 isEqual:tokens3];
 
     if (v16)
     {
@@ -253,15 +253,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
+    linkId2 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,41 +297,41 @@ LABEL_13:
   }
 }
 
-- (void)addTokens:(id)a3
+- (void)addTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   tokens = self->_tokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!tokens)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tokens;
-    self->_tokens = v6;
+    self->_tokens = array;
 
-    v4 = v8;
+    tokensCopy = v8;
     tokens = self->_tokens;
   }
 
-  [(NSArray *)tokens addObject:v4];
+  [(NSArray *)tokens addObject:tokensCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = ASRSchemaASRRecognitionResultTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(ASRSchemaASRRecognitionResultTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRRecognitionResultTier1 *)self deleteLinkId];
   }
 
-  v9 = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  tokens = [(ASRSchemaASRRecognitionResultTier1 *)self tokens];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:tokens underConditions:policyCopy];
   [(ASRSchemaASRRecognitionResultTier1 *)self setTokens:v10];
 
   return v5;

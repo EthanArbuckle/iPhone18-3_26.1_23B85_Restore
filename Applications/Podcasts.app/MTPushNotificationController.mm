@@ -1,25 +1,25 @@
 @interface MTPushNotificationController
-+ (BOOL)shouldProcessNotification:(id)a3;
-+ (BOOL)shouldSyncFeedUpdateForNotification:(id)a3;
-+ (BOOL)shouldSyncSubscriptionsForNotification:(id)a3;
-+ (BOOL)shouldSyncUppForNotification:(id)a3;
++ (BOOL)shouldProcessNotification:(id)notification;
++ (BOOL)shouldSyncFeedUpdateForNotification:(id)notification;
++ (BOOL)shouldSyncSubscriptionsForNotification:(id)notification;
++ (BOOL)shouldSyncUppForNotification:(id)notification;
 - (BOOL)alreadyRegisteredWithActiveDsid;
-- (BOOL)keyValueStoreController:(id)a3 transaction:(id)a4 didFailWithError:(id)a5;
-- (BOOL)shouldShowAnnouncementNotification:(id)a3;
+- (BOOL)keyValueStoreController:(id)controller transaction:(id)transaction didFailWithError:(id)error;
+- (BOOL)shouldShowAnnouncementNotification:(id)notification;
 - (MTPushNotificationController)init;
 - (void)_registerPushNotifications;
-- (void)_setupMarketingPushHandlerWithBag:(id)a3;
+- (void)_setupMarketingPushHandlerWithBag:(id)bag;
 - (void)_unregisterPushNotifications;
 - (void)dealloc;
-- (void)didChangeStoreAccount:(id)a3;
-- (void)didFailToRegisterWithError:(id)a3;
-- (void)didRegisterWithToken:(id)a3;
-- (void)executeAction:(id)a3 using:(id)a4 andToken:(id)a5;
-- (void)keyValueStoreController:(id)a3 transaction:(id)a4 didCancelWithError:(id)a5;
-- (void)keyValueStoreController:(id)a3 transactionDidFinish:(id)a4;
-- (void)processAnnouncementNotification:(id)a3;
+- (void)didChangeStoreAccount:(id)account;
+- (void)didFailToRegisterWithError:(id)error;
+- (void)didRegisterWithToken:(id)token;
+- (void)executeAction:(id)action using:(id)using andToken:(id)token;
+- (void)keyValueStoreController:(id)controller transaction:(id)transaction didCancelWithError:(id)error;
+- (void)keyValueStoreController:(id)controller transactionDidFinish:(id)finish;
+- (void)processAnnouncementNotification:(id)notification;
 - (void)registerPushNotifications;
-- (void)setKeyValueStoreControllerForUrl:(id)a3;
+- (void)setKeyValueStoreControllerForUrl:(id)url;
 - (void)unregisterPushNotifications;
 @end
 
@@ -48,16 +48,16 @@
 
 - (void)registerPushNotifications
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTPushNotificationController *)v2 subscriptionState];
-  if (v3 > 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  subscriptionState = [(MTPushNotificationController *)selfCopy subscriptionState];
+  if (subscriptionState > 1)
   {
-    if (v3 != 2)
+    if (subscriptionState != 2)
     {
-      if (v3 != 3)
+      if (subscriptionState != 3)
       {
-        if (v3 == 4)
+        if (subscriptionState == 4)
         {
           v4 = _MTLogCategoryCloudSync();
           if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -73,9 +73,9 @@
       }
 
       v8 = +[MTAccountController sharedInstance];
-      v9 = [v8 activeAccount];
+      activeAccount = [v8 activeAccount];
 
-      if (v9)
+      if (activeAccount)
       {
         v10 = _MTLogCategoryCloudSync();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -84,7 +84,7 @@
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "User is now signed in, re-registering for APNS.", buf, 2u);
         }
 
-        [(MTPushNotificationController *)v2 unregisterPushNotifications];
+        [(MTPushNotificationController *)selfCopy unregisterPushNotifications];
         goto LABEL_18;
       }
 
@@ -116,15 +116,15 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v3)
+  if (!subscriptionState)
   {
 LABEL_18:
-    [(MTPushNotificationController *)v2 setSubscriptionState:1];
-    [(MTPushNotificationController *)v2 _registerPushNotifications];
+    [(MTPushNotificationController *)selfCopy setSubscriptionState:1];
+    [(MTPushNotificationController *)selfCopy _registerPushNotifications];
     goto LABEL_23;
   }
 
-  if (v3 == 1)
+  if (subscriptionState == 1)
   {
     v5 = _MTLogCategoryCloudSync();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -139,7 +139,7 @@ LABEL_18:
   }
 
 LABEL_23:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_registerPushNotifications
@@ -161,14 +161,14 @@ LABEL_23:
 
 - (void)unregisterPushNotifications
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTPushNotificationController *)v2 subscriptionState];
-  if (v3 > 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  subscriptionState = [(MTPushNotificationController *)selfCopy subscriptionState];
+  if (subscriptionState > 1)
   {
-    if ((v3 - 2) >= 2)
+    if ((subscriptionState - 2) >= 2)
     {
-      if (v3 == 4)
+      if (subscriptionState == 4)
       {
         v4 = _MTLogCategoryCloudSync();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -188,12 +188,12 @@ LABEL_14:
     }
 
 LABEL_11:
-    [(MTPushNotificationController *)v2 setSubscriptionState:4];
-    [(MTPushNotificationController *)v2 _unregisterPushNotifications];
+    [(MTPushNotificationController *)selfCopy setSubscriptionState:4];
+    [(MTPushNotificationController *)selfCopy _unregisterPushNotifications];
     goto LABEL_16;
   }
 
-  if (!v3)
+  if (!subscriptionState)
   {
     v4 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -209,7 +209,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v3 == 1)
+  if (subscriptionState == 1)
   {
     v7 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -222,7 +222,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_unregisterPushNotifications
@@ -235,10 +235,10 @@ LABEL_16:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didChangeStoreAccount:(id)a3
+- (void)didChangeStoreAccount:(id)account
 {
-  v4 = a3;
-  if (![(MTPushNotificationController *)self alreadyRegisteredWithActiveDsid]&& [MTAccountController iTunesAccountDidChangeForACAccountNotification:v4])
+  accountCopy = account;
+  if (![(MTPushNotificationController *)self alreadyRegisteredWithActiveDsid]&& [MTAccountController iTunesAccountDidChangeForACAccountNotification:accountCopy])
   {
     v5 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -270,83 +270,83 @@ LABEL_16:
   }
 
   v2 = +[MTAccountController sharedInstance];
-  v3 = [v2 activeDsid];
-  v4 = v3 != 0;
+  activeDsid = [v2 activeDsid];
+  v4 = activeDsid != 0;
 
   return v4;
 }
 
-- (void)setKeyValueStoreControllerForUrl:(id)a3
+- (void)setKeyValueStoreControllerForUrl:(id)url
 {
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTPushNotificationController *)v4 keyValueStoreController];
-  v6 = [v5 defaultSetURL];
-  v7 = [v6 absoluteString];
-  v8 = [v13 absoluteString];
-  v9 = [v7 isEqualToString:v8];
+  urlCopy = url;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keyValueStoreController = [(MTPushNotificationController *)selfCopy keyValueStoreController];
+  defaultSetURL = [keyValueStoreController defaultSetURL];
+  absoluteString = [defaultSetURL absoluteString];
+  absoluteString2 = [urlCopy absoluteString];
+  v9 = [absoluteString isEqualToString:absoluteString2];
 
   if ((v9 & 1) == 0)
   {
     v10 = [MZKeyValueStoreController alloc];
-    v11 = [(MZKeyValueStoreController *)v10 initWithDomain:kPodcastsBookkeeperPodcastsDomain baseURLForGETAll:v13 baseURLForPUTAll:v13];
-    [(MTPushNotificationController *)v4 setKeyValueStoreController:v11];
+    v11 = [(MZKeyValueStoreController *)v10 initWithDomain:kPodcastsBookkeeperPodcastsDomain baseURLForGETAll:urlCopy baseURLForPUTAll:urlCopy];
+    [(MTPushNotificationController *)selfCopy setKeyValueStoreController:v11];
 
-    v12 = [(MTPushNotificationController *)v4 keyValueStoreController];
-    [v12 setDelegate:v4];
+    keyValueStoreController2 = [(MTPushNotificationController *)selfCopy keyValueStoreController];
+    [keyValueStoreController2 setDelegate:selfCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)executeAction:(id)a3 using:(id)a4 andToken:(id)a5
+- (void)executeAction:(id)action using:(id)using andToken:(id)token
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  [(MTPushNotificationController *)self setKeyValueStoreControllerForUrl:v8];
-  v10 = [[_TtC18PodcastsFoundation23PushSubscriptionRequest alloc] initWithEndpointURL:v8 action:v14 apnsToken:v9];
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(MTPushNotificationController *)v11 keyValueStoreController];
-  v13 = [v12 scheduleApnSubscriptionTransactionWithPushSubscriptionRequest:v10];
+  actionCopy = action;
+  usingCopy = using;
+  tokenCopy = token;
+  [(MTPushNotificationController *)self setKeyValueStoreControllerForUrl:usingCopy];
+  v10 = [[_TtC18PodcastsFoundation23PushSubscriptionRequest alloc] initWithEndpointURL:usingCopy action:actionCopy apnsToken:tokenCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keyValueStoreController = [(MTPushNotificationController *)selfCopy keyValueStoreController];
+  v13 = [keyValueStoreController scheduleApnSubscriptionTransactionWithPushSubscriptionRequest:v10];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setupMarketingPushHandlerWithBag:(id)a3
+- (void)_setupMarketingPushHandlerWithBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v7 = objc_alloc_init(AMSPushConfiguration);
   v5 = +[NSSet set];
   [v7 setEnabledActionTypes:v5];
 
   [v7 setUserNotificationExtensionId:@"com.apple.podcasts.announcement"];
-  v6 = [[AMSPushHandler alloc] initWithConfiguration:v7 bag:v4];
+  v6 = [[AMSPushHandler alloc] initWithConfiguration:v7 bag:bagCopy];
 
   [(MTPushNotificationController *)self setMarketingPushHandler:v6];
 }
 
-- (void)didRegisterWithToken:(id)a3
+- (void)didRegisterWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[MTAccountController sharedInstance];
-  v6 = [v5 activeAccount];
+  activeAccount = [v5 activeAccount];
 
-  if (v6)
+  if (activeAccount)
   {
     objc_initWeak(location, self);
     v7 = +[IMURLBag sharedInstance];
-    v8 = [v7 pushNotificationRegistration];
-    v9 = [(MTPushNotificationController *)self workQueue];
+    pushNotificationRegistration = [v7 pushNotificationRegistration];
+    workQueue = [(MTPushNotificationController *)self workQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000F87F0;
     v11[3] = &unk_1004DC340;
     objc_copyWeak(&v13, location);
-    v12 = v4;
-    [v8 asyncValueOnQueue:v9 withCompletion:v11];
+    v12 = tokenCopy;
+    [pushNotificationRegistration asyncValueOnQueue:workQueue withCompletion:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -365,60 +365,60 @@ LABEL_16:
   }
 }
 
-- (void)didFailToRegisterWithError:(id)a3
+- (void)didFailToRegisterWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to complete APNS registration. Reason: %@.", &v7, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([(MTPushNotificationController *)v6 subscriptionState]== 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MTPushNotificationController *)selfCopy subscriptionState]== 1)
   {
-    [(MTPushNotificationController *)v6 setSubscriptionState:0];
+    [(MTPushNotificationController *)selfCopy setSubscriptionState:0];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-+ (BOOL)shouldProcessNotification:(id)a3
++ (BOOL)shouldProcessNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 dsid];
+  notificationCopy = notification;
+  dsid = [notificationCopy dsid];
   v5 = +[MTAccountController sharedInstance];
-  v6 = [v5 activeDsid];
+  activeDsid = [v5 activeDsid];
 
   v7 = 0;
-  if (v4 && v6)
+  if (dsid && activeDsid)
   {
-    v7 = [v4 isEqualToNumber:v6];
+    v7 = [dsid isEqualToNumber:activeDsid];
   }
 
   v8 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v3 domain];
-    v10 = [v3 domainVersion];
-    v11 = v10;
+    domain = [notificationCopy domain];
+    domainVersion = [notificationCopy domainVersion];
+    v11 = domainVersion;
     v14 = 138413314;
     v12 = @"NO";
-    v15 = v4;
+    v15 = dsid;
     if (v7)
     {
       v12 = @"YES";
     }
 
     v16 = 2112;
-    v17 = v6;
+    v17 = activeDsid;
     v18 = 2112;
-    v19 = v9;
+    v19 = domain;
     v20 = 2112;
-    v21 = v10;
+    v21 = domainVersion;
     v22 = 2112;
     v23 = v12;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Push] Received APNS notification for DSID = %@, currentDsid = %@, domain = %@, version = %@, will process = %@", &v14, 0x34u);
@@ -427,23 +427,23 @@ LABEL_16:
   return v7;
 }
 
-+ (BOOL)shouldSyncSubscriptionsForNotification:(id)a3
++ (BOOL)shouldSyncSubscriptionsForNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:kPodcastsBookkeeperPodcastsDomain];
+  notificationCopy = notification;
+  domain = [notificationCopy domain];
+  v5 = [domain isEqualToString:kPodcastsBookkeeperPodcastsDomain];
 
   if (v5)
   {
-    v6 = [v3 domainVersion];
-    v7 = [v6 stringValue];
+    domainVersion = [notificationCopy domainVersion];
+    stringValue = [domainVersion stringValue];
 
     v8 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-    v9 = [v8 podcastsDomainVersion];
+    podcastsDomainVersion = [v8 podcastsDomainVersion];
 
-    if (v7)
+    if (stringValue)
     {
-      v5 = [v7 isEqualToString:v9] ^ 1;
+      v5 = [stringValue isEqualToString:podcastsDomainVersion] ^ 1;
     }
 
     else
@@ -454,19 +454,19 @@ LABEL_16:
     v10 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v3 domain];
+      domain2 = [notificationCopy domain];
       v12 = @"SKIP";
       v14 = 138413058;
-      v15 = v11;
+      v15 = domain2;
       if (v5)
       {
         v12 = @"PROCESS";
       }
 
       v16 = 2112;
-      v17 = v7;
+      v17 = stringValue;
       v18 = 2112;
-      v19 = v9;
+      v19 = podcastsDomainVersion;
       v20 = 2112;
       v21 = v12;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[Push] Notification for domain %@, remote version = %@, local version = %@ --> %@", &v14, 0x2Au);
@@ -476,21 +476,21 @@ LABEL_16:
   return v5;
 }
 
-+ (BOOL)shouldSyncUppForNotification:(id)a3
++ (BOOL)shouldSyncUppForNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:kPodcastsBookkeeperUppDomain];
+  notificationCopy = notification;
+  domain = [notificationCopy domain];
+  v5 = [domain isEqualToString:kPodcastsBookkeeperUppDomain];
 
   if (v5)
   {
-    v6 = [v3 domainVersion];
-    v7 = [v6 stringValue];
+    domainVersion = [notificationCopy domainVersion];
+    stringValue = [domainVersion stringValue];
 
     v8 = +[MTUniversalPlaybackPositionTransactionContext UPPDomainVersion];
-    if (v7)
+    if (stringValue)
     {
-      v5 = [v7 isEqualToString:v8] ^ 1;
+      v5 = [stringValue isEqualToString:v8] ^ 1;
     }
 
     else
@@ -501,17 +501,17 @@ LABEL_16:
     v9 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v3 domain];
+      domain2 = [notificationCopy domain];
       v11 = @"SKIP";
       v13 = 138413058;
-      v14 = v10;
+      v14 = domain2;
       if (v5)
       {
         v11 = @"PROCESS";
       }
 
       v15 = 2112;
-      v16 = v7;
+      v16 = stringValue;
       v17 = 2112;
       v18 = v8;
       v19 = 2112;
@@ -523,39 +523,39 @@ LABEL_16:
   return v5;
 }
 
-+ (BOOL)shouldSyncFeedUpdateForNotification:(id)a3
++ (BOOL)shouldSyncFeedUpdateForNotification:(id)notification
 {
-  v3 = [a3 type];
-  v4 = [v3 isEqualToString:kPodcastsPushNotificationTypeFeedUpdate];
+  type = [notification type];
+  v4 = [type isEqualToString:kPodcastsPushNotificationTypeFeedUpdate];
 
   return v4;
 }
 
-- (void)keyValueStoreController:(id)a3 transactionDidFinish:(id)a4
+- (void)keyValueStoreController:(id)controller transactionDidFinish:(id)finish
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 action];
-  if ([v8 isEqualToString:kPodcastsPushNotificationRegisterValue])
+  controllerCopy = controller;
+  finishCopy = finish;
+  action = [finishCopy action];
+  if ([action isEqualToString:kPodcastsPushNotificationRegisterValue])
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    if ([(MTPushNotificationController *)v9 subscriptionState]!= 1)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(MTPushNotificationController *)selfCopy subscriptionState]!= 1)
     {
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy);
       goto LABEL_9;
     }
 
-    [(MTPushNotificationController *)v9 setSubscriptionState:2];
-    objc_sync_exit(v9);
+    [(MTPushNotificationController *)selfCopy setSubscriptionState:2];
+    objc_sync_exit(selfCopy);
 
-    v9 = _MTLogCategoryCloudSync();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    selfCopy = _MTLogCategoryCloudSync();
+    if (os_log_type_enabled(selfCopy, OS_LOG_TYPE_INFO))
     {
       v15 = 0;
       v10 = "[Push] Registered for APNS.";
       v11 = &v15;
-      v12 = v9;
+      v12 = selfCopy;
       v13 = OS_LOG_TYPE_INFO;
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v12, v13, v10, v11, 2u);
@@ -564,13 +564,13 @@ LABEL_7:
 
   else
   {
-    v9 = _MTLogCategoryCloudSync();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    selfCopy = _MTLogCategoryCloudSync();
+    if (os_log_type_enabled(selfCopy, OS_LOG_TYPE_ERROR))
     {
       v14 = 0;
       v10 = "[Push] Could not find a valid action for APNS registration transaction.";
       v11 = &v14;
-      v12 = v9;
+      v12 = selfCopy;
       v13 = OS_LOG_TYPE_ERROR;
       goto LABEL_7;
     }
@@ -579,71 +579,71 @@ LABEL_7:
 LABEL_9:
 }
 
-- (BOOL)keyValueStoreController:(id)a3 transaction:(id)a4 didFailWithError:(id)a5
+- (BOOL)keyValueStoreController:(id)controller transaction:(id)transaction didFailWithError:(id)error
 {
-  v5 = a5;
+  errorCopy = error;
   v6 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "[Push] APNS registration transaction failed with error %@. Will retry.", &v8, 0xCu);
   }
 
   return 0;
 }
 
-- (void)keyValueStoreController:(id)a3 transaction:(id)a4 didCancelWithError:(id)a5
+- (void)keyValueStoreController:(id)controller transaction:(id)transaction didCancelWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  transactionCopy = transaction;
+  errorCopy = error;
   v11 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     v14 = 138412290;
-    v15 = v10;
+    v15 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[Push] APNS registration transaction was canceled with error %@.", &v14, 0xCu);
   }
 
-  v12 = [v9 action];
-  if ([v12 isEqualToString:kPodcastsPushNotificationRegisterValue])
+  action = [transactionCopy action];
+  if ([action isEqualToString:kPodcastsPushNotificationRegisterValue])
   {
-    v13 = self;
-    objc_sync_enter(v13);
-    if ([(MTPushNotificationController *)v13 subscriptionState]== 1)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(MTPushNotificationController *)selfCopy subscriptionState]== 1)
     {
-      [(MTPushNotificationController *)v13 setSubscriptionState:0];
+      [(MTPushNotificationController *)selfCopy setSubscriptionState:0];
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v13 = _MTLogCategoryCloudSync();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    selfCopy = _MTLogCategoryCloudSync();
+    if (os_log_type_enabled(selfCopy, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "[Push] Could not find a valid action for APNS registration transaction.", &v14, 2u);
+      _os_log_impl(&_mh_execute_header, selfCopy, OS_LOG_TYPE_ERROR, "[Push] Could not find a valid action for APNS registration transaction.", &v14, 2u);
     }
   }
 }
 
-- (BOOL)shouldShowAnnouncementNotification:(id)a3
+- (BOOL)shouldShowAnnouncementNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MTPushNotificationController *)self marketingPushHandler];
-  v6 = [v5 shouldHandleNotification:v4];
+  notificationCopy = notification;
+  marketingPushHandler = [(MTPushNotificationController *)self marketingPushHandler];
+  v6 = [marketingPushHandler shouldHandleNotification:notificationCopy];
 
   return v6;
 }
 
-- (void)processAnnouncementNotification:(id)a3
+- (void)processAnnouncementNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MTPushNotificationController *)self marketingPushHandler];
-  [v5 handleNotification:v4];
+  notificationCopy = notification;
+  marketingPushHandler = [(MTPushNotificationController *)self marketingPushHandler];
+  [marketingPushHandler handleNotification:notificationCopy];
 }
 
 @end

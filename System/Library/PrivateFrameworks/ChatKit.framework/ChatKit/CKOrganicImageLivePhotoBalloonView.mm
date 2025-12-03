@@ -1,17 +1,17 @@
 @interface CKOrganicImageLivePhotoBalloonView
 - (CKBalloonDescriptor_t)balloonDescriptor;
 - (void)prepareForReuse;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CKOrganicImageLivePhotoBalloonView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CKOrganicImageLivePhotoBalloonView *)self frame];
   v22.origin.x = v8;
   v22.origin.y = v9;
@@ -35,9 +35,9 @@
     v14.receiver = self;
     v14.super_class = CKOrganicImageLivePhotoBalloonView;
     [(CKBalloonImageView *)&v14 setFrame:x, y, width, height];
-    v13 = [(CKLivePhotoBalloonView *)self livePhotoView];
+    livePhotoView = [(CKLivePhotoBalloonView *)self livePhotoView];
     [(CKOrganicImageLivePhotoBalloonView *)self bounds];
-    [v13 setFrame:?];
+    [livePhotoView setFrame:?];
 
     v15 = v18;
     v16 = v19;

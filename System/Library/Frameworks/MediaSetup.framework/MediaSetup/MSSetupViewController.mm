@@ -1,31 +1,31 @@
 @interface MSSetupViewController
-- (MSSetupViewController)initWithServiceAccount:(id)a3 testFlags:(unint64_t)a4;
+- (MSSetupViewController)initWithServiceAccount:(id)account testFlags:(unint64_t)flags;
 - (id)createExtension;
-- (id)createExtensionItemWithServiceAccount:(id)a3;
-- (void)_setChildViewController:(id)a3;
+- (id)createExtensionItemWithServiceAccount:(id)account;
+- (void)_setChildViewController:(id)controller;
 - (void)dealloc;
-- (void)extensionHandleConnection:(id)a3 viewController:(id)a4 error:(id)a5;
+- (void)extensionHandleConnection:(id)connection viewController:(id)controller error:(id)error;
 @end
 
 @implementation MSSetupViewController
 
-- (MSSetupViewController)initWithServiceAccount:(id)a3 testFlags:(unint64_t)a4
+- (MSSetupViewController)initWithServiceAccount:(id)account testFlags:(unint64_t)flags
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  accountCopy = account;
   v20.receiver = self;
   v20.super_class = MSSetupViewController;
   v8 = [(MSSetupViewController *)&v20 initWithNibName:0 bundle:0];
   if (v8)
   {
     NSLog(&cfstr_CreatingMsview.isa);
-    objc_storeStrong(&v8->_serviceAccount, a3);
-    v8->_testFlags = a4;
+    objc_storeStrong(&v8->_serviceAccount, account);
+    v8->_testFlags = flags;
     [(MSSetupViewController *)v8 _beginDelayingPresentation:0 cancellationHandler:3.0];
     [(MSSetupViewController *)v8 setModalPresentationStyle:2];
-    v9 = [(MSSetupViewController *)v8 createExtension];
+    createExtension = [(MSSetupViewController *)v8 createExtension];
     extension = v8->_extension;
-    v8->_extension = v9;
+    v8->_extension = createExtension;
 
     v11 = [(MSSetupViewController *)v8 createExtensionItemWithServiceAccount:v8->_serviceAccount];
     if (v11)
@@ -73,15 +73,15 @@ void __58__MSSetupViewController_initWithServiceAccount_testFlags___block_invoke
   [(MSSetupViewController *)&v3 dealloc];
 }
 
-- (void)extensionHandleConnection:(id)a3 viewController:(id)a4 error:(id)a5
+- (void)extensionHandleConnection:(id)connection viewController:(id)controller error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  controllerCopy = controller;
   NSLog(&cfstr_HandlingExtens.isa);
-  v10 = v8;
+  v10 = controllerCopy;
   [(MSSetupViewController *)self _setChildViewController:v10];
   extensionRequest = self->_extensionRequest;
-  self->_extensionRequest = v7;
+  self->_extensionRequest = connectionCopy;
 
   [v10 setHost:self];
   [(MSSetupViewController *)self _endDelayingPresentation];
@@ -147,11 +147,11 @@ void __40__MSSetupViewController_createExtension__block_invoke_4(uint64_t a1)
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)createExtensionItemWithServiceAccount:(id)a3
+- (id)createExtensionItemWithServiceAccount:(id)account
 {
   v18[3] = *MEMORY[0x277D85DE8];
   v16 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v16];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:account requiringSecureCoding:1 error:&v16];
   v5 = v16;
   v6 = v5;
   if (v4)
@@ -167,16 +167,16 @@ void __40__MSSetupViewController_createExtension__block_invoke_4(uint64_t a1)
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CCA9D8]);
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     NSLog(&cfstr_CreateExtensio.isa, self->_testFlags);
     v17[0] = @"bundleID";
     v17[1] = @"mediaService";
     v11 = &stru_284C4B358;
-    if (v10)
+    if (bundleIdentifier)
     {
-      v11 = v10;
+      v11 = bundleIdentifier;
     }
 
     v18[0] = v11;
@@ -199,47 +199,47 @@ void __40__MSSetupViewController_createExtension__block_invoke_4(uint64_t a1)
   return v8;
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(_MSRemoteViewController *)self->_childViewController view];
-  [v6 removeFromSuperview];
+  controllerCopy = controller;
+  view = [(_MSRemoteViewController *)self->_childViewController view];
+  [view removeFromSuperview];
 
   [(_MSRemoteViewController *)self->_childViewController removeFromParentViewController];
-  objc_storeStrong(&self->_childViewController, a3);
+  objc_storeStrong(&self->_childViewController, controller);
   childViewController = self->_childViewController;
   if (childViewController)
   {
     [(_MSRemoteViewController *)childViewController willMoveToParentViewController:self];
-    v8 = [v5 view];
-    v9 = [(MSSetupViewController *)self view];
-    [v9 frame];
-    [v8 setFrame:?];
+    view2 = [controllerCopy view];
+    view3 = [(MSSetupViewController *)self view];
+    [view3 frame];
+    [view2 setFrame:?];
 
     [(MSSetupViewController *)self addChildViewController:self->_childViewController];
-    v10 = [(MSSetupViewController *)self view];
-    [v10 addSubview:v8];
+    view4 = [(MSSetupViewController *)self view];
+    [view4 addSubview:view2];
 
-    v27 = [v8 widthAnchor];
-    v28 = [(MSSetupViewController *)self view];
-    v26 = [v28 widthAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    widthAnchor = [view2 widthAnchor];
+    view5 = [(MSSetupViewController *)self view];
+    widthAnchor2 = [view5 widthAnchor];
+    v25 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v29[0] = v25;
-    v23 = [v8 heightAnchor];
-    v24 = [(MSSetupViewController *)self view];
-    v22 = [v24 heightAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    heightAnchor = [view2 heightAnchor];
+    view6 = [(MSSetupViewController *)self view];
+    heightAnchor2 = [view6 heightAnchor];
+    v21 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v29[1] = v21;
-    v19 = [v8 centerXAnchor];
-    v20 = [(MSSetupViewController *)self view];
-    v11 = [v20 centerXAnchor];
-    v12 = [v19 constraintEqualToAnchor:v11];
+    centerXAnchor = [view2 centerXAnchor];
+    view7 = [(MSSetupViewController *)self view];
+    centerXAnchor2 = [view7 centerXAnchor];
+    v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v29[2] = v12;
-    v13 = [v8 centerYAnchor];
-    v14 = [(MSSetupViewController *)self view];
-    v15 = [v14 centerYAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    centerYAnchor = [view2 centerYAnchor];
+    view8 = [(MSSetupViewController *)self view];
+    centerYAnchor2 = [view8 centerYAnchor];
+    v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v29[3] = v16;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
 

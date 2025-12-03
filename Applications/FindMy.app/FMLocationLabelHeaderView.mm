@@ -1,12 +1,12 @@
 @interface FMLocationLabelHeaderView
-- (_TtC6FindMy25FMLocationLabelHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC6FindMy25FMLocationLabelHeaderView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation FMLocationLabelHeaderView
 
-- (_TtC6FindMy25FMLocationLabelHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC6FindMy25FMLocationLabelHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

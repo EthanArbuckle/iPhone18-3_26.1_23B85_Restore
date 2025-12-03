@@ -5,29 +5,29 @@
 - (void)applicationWillEnterForeground;
 - (void)extensionIsCanceling;
 - (void)extensionIsFinishing;
-- (void)groupActivityJoiningPlayer:(id)a3 devicePushToken:(id)a4 participantServerIdentifier:(id)a5;
+- (void)groupActivityJoiningPlayer:(id)player devicePushToken:(id)token participantServerIdentifier:(id)identifier;
 - (void)inviterCancelled;
-- (void)messageFromExtension:(id)a3;
-- (void)recipientPropertiesProvided:(id)a3 forPlayer:(id)a4;
-- (void)setAcceptedInviteInternal:(id)a3;
-- (void)setAutomatchFailedWithError:(id)a3;
-- (void)setAutomatchPlayerCount:(int64_t)a3;
-- (void)setCanStartWithMinimumPlayers:(BOOL)a3;
-- (void)setConnectingStateForPlayer:(id)a3;
-- (void)setDefaultInvitationMessage:(id)a3;
-- (void)setEligibilityForGroupSession:(BOOL)a3;
-- (void)setExistingPlayers:(id)a3;
-- (void)setFailedWithError:(id)a3;
-- (void)setHosted:(BOOL)a3;
-- (void)setInvitesFailedWithError:(id)a3;
-- (void)setMatchRequestInternal:(id)a3;
-- (void)setMatchmakingMode:(int64_t)a3;
-- (void)setNearbyPlayer:(id)a3 reachable:(BOOL)a4;
-- (void)setPlayer:(id)a3 connected:(BOOL)a4;
-- (void)setPlayer:(id)a3 responded:(int64_t)a4;
-- (void)setPlayer:(id)a3 sentData:(id)a4;
-- (void)setSharePlaySharingControllerResult:(BOOL)a3;
-- (void)shareMatchWithRequest:(id)a3 handler:(id)a4;
+- (void)messageFromExtension:(id)extension;
+- (void)recipientPropertiesProvided:(id)provided forPlayer:(id)player;
+- (void)setAcceptedInviteInternal:(id)internal;
+- (void)setAutomatchFailedWithError:(id)error;
+- (void)setAutomatchPlayerCount:(int64_t)count;
+- (void)setCanStartWithMinimumPlayers:(BOOL)players;
+- (void)setConnectingStateForPlayer:(id)player;
+- (void)setDefaultInvitationMessage:(id)message;
+- (void)setEligibilityForGroupSession:(BOOL)session;
+- (void)setExistingPlayers:(id)players;
+- (void)setFailedWithError:(id)error;
+- (void)setHosted:(BOOL)hosted;
+- (void)setInvitesFailedWithError:(id)error;
+- (void)setMatchRequestInternal:(id)internal;
+- (void)setMatchmakingMode:(int64_t)mode;
+- (void)setNearbyPlayer:(id)player reachable:(BOOL)reachable;
+- (void)setPlayer:(id)player connected:(BOOL)connected;
+- (void)setPlayer:(id)player responded:(int64_t)responded;
+- (void)setPlayer:(id)player sentData:(id)data;
+- (void)setSharePlaySharingControllerResult:(BOOL)result;
+- (void)shareMatchWithRequest:(id)request handler:(id)handler;
 @end
 
 @implementation GKMatchmakerHostViewController
@@ -69,12 +69,12 @@ void __53__GKMatchmakerHostViewController_matchmakerExtension__block_invoke()
 
 - (id)extensionObjectProxy
 {
-  v3 = [(GKExtensionRemoteViewController *)self extension];
-  v4 = [(GKExtensionRemoteViewController *)self requestIdentifier];
-  v5 = [v3 _extensionContextForUUID:v4];
+  extension = [(GKExtensionRemoteViewController *)self extension];
+  requestIdentifier = [(GKExtensionRemoteViewController *)self requestIdentifier];
+  v5 = [extension _extensionContextForUUID:requestIdentifier];
 
-  v6 = [v5 _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_3_0];
+  _auxiliaryConnection = [v5 _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_3_0];
 
   return v7;
 }
@@ -94,156 +94,156 @@ void __54__GKMatchmakerHostViewController_extensionObjectProxy__block_invoke(uin
   }
 }
 
-- (void)setMatchRequestInternal:(id)a3
+- (void)setMatchRequestInternal:(id)internal
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (internal)
   {
     v7[0] = @"MessageCommandKey";
     v7[1] = @"MessageParamKey";
     v8[0] = &unk_286189378;
-    v8[1] = a3;
+    v8[1] = internal;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    internalCopy = internal;
     v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
     [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
   }
 }
 
-- (void)setAcceptedInviteInternal:(id)a3
+- (void)setAcceptedInviteInternal:(id)internal
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (internal)
   {
     v7[0] = @"MessageCommandKey";
     v7[1] = @"MessageParamKey";
     v8[0] = &unk_286189390;
-    v8[1] = a3;
+    v8[1] = internal;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    internalCopy = internal;
     v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
     [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
   }
 }
 
-- (void)setHosted:(BOOL)a3
+- (void)setHosted:(BOOL)hosted
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_2861893A8;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:hosted];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)setMatchmakingMode:(int64_t)a3
+- (void)setMatchmakingMode:(int64_t)mode
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_2861893C0;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)setCanStartWithMinimumPlayers:(BOOL)a3
+- (void)setCanStartWithMinimumPlayers:(BOOL)players
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_2861893D8;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:players];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)setEligibilityForGroupSession:(BOOL)a3
+- (void)setEligibilityForGroupSession:(BOOL)session
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_2861893F0;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:session];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)setSharePlaySharingControllerResult:(BOOL)a3
+- (void)setSharePlaySharingControllerResult:(BOOL)result
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_286189408;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:result];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)setExistingPlayers:(id)a3
+- (void)setExistingPlayers:(id)players
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"MessageCommandKey";
   v7[1] = @"MessageParamKey";
   v8[0] = &unk_286189420;
-  v8[1] = a3;
+  v8[1] = players;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  playersCopy = players;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
 }
 
-- (void)setDefaultInvitationMessage:(id)a3
+- (void)setDefaultInvitationMessage:(id)message
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"MessageCommandKey";
   v7[1] = @"MessageParamKey";
   v8[0] = &unk_286189438;
-  v8[1] = a3;
+  v8[1] = message;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  messageCopy = message;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
 }
 
-- (void)setAutomatchPlayerCount:(int64_t)a3
+- (void)setAutomatchPlayerCount:(int64_t)count
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_286189450;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)groupActivityJoiningPlayer:(id)a3 devicePushToken:(id)a4 participantServerIdentifier:(id)a5
+- (void)groupActivityJoiningPlayer:(id)player devicePushToken:(id)token participantServerIdentifier:(id)identifier
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v16[0] = @"MessageCommandKey";
   v16[1] = @"PlayerInternal";
   v17[0] = &unk_286189468;
-  v17[1] = a3;
+  v17[1] = player;
   v16[2] = @"MessageParamKey";
   v14[0] = @"pushToken";
   v14[1] = @"participantIdentifier";
-  v15[0] = a4;
-  v15[1] = a5;
+  v15[0] = token;
+  v15[1] = identifier;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  playerCopy = player;
   v12 = [v8 dictionaryWithObjects:v15 forKeys:v14 count:2];
   v17[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
@@ -251,103 +251,103 @@ void __54__GKMatchmakerHostViewController_extensionObjectProxy__block_invoke(uin
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v13];
 }
 
-- (void)setPlayer:(id)a3 responded:(int64_t)a4
+- (void)setPlayer:(id)player responded:(int64_t)responded
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"MessageCommandKey";
   v10[1] = @"PlayerInternal";
   v11[0] = &unk_286189480;
-  v11[1] = a3;
+  v11[1] = player;
   v10[2] = @"MessageParamKey";
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
+  playerCopy = player;
+  v8 = [v6 numberWithInteger:responded];
   v11[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v9];
 }
 
-- (void)setConnectingStateForPlayer:(id)a3
+- (void)setConnectingStateForPlayer:(id)player
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"MessageCommandKey";
   v7[1] = @"PlayerInternal";
   v8[0] = &unk_286189498;
-  v8[1] = a3;
+  v8[1] = player;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  playerCopy = player;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
 }
 
-- (void)setPlayer:(id)a3 connected:(BOOL)a4
+- (void)setPlayer:(id)player connected:(BOOL)connected
 {
-  v4 = a4;
+  connectedCopy = connected;
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"MessageCommandKey";
   v10[1] = @"PlayerInternal";
   v11[0] = &unk_2861894B0;
-  v11[1] = a3;
+  v11[1] = player;
   v10[2] = @"MessageParamKey";
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithBool:v4];
+  playerCopy = player;
+  v8 = [v6 numberWithBool:connectedCopy];
   v11[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v9];
 }
 
-- (void)setPlayer:(id)a3 sentData:(id)a4
+- (void)setPlayer:(id)player sentData:(id)data
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"MessageCommandKey";
   v10[1] = @"PlayerInternal";
   v11[0] = &unk_2861894C8;
-  v11[1] = a3;
+  v11[1] = player;
   v10[2] = @"MessageParamKey";
-  v11[2] = a4;
+  v11[2] = data;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  dataCopy = data;
+  playerCopy = player;
   v9 = [v6 dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v9];
 }
 
-- (void)setInvitesFailedWithError:(id)a3
+- (void)setInvitesFailedWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v4 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{&unk_2861894E0, @"MessageCommandKey", 0}];
-  if (v5)
+  if (errorCopy)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"MessageParamKey"];
+    [v4 setObject:errorCopy forKeyedSubscript:@"MessageParamKey"];
   }
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v4];
 }
 
-- (void)setAutomatchFailedWithError:(id)a3
+- (void)setAutomatchFailedWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v4 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{&unk_2861894F8, @"MessageCommandKey", 0}];
-  if (v5)
+  if (errorCopy)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"MessageParamKey"];
+    [v4 setObject:errorCopy forKeyedSubscript:@"MessageParamKey"];
   }
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v4];
 }
 
-- (void)setFailedWithError:(id)a3
+- (void)setFailedWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v4 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{&unk_286189510, @"MessageCommandKey", 0}];
-  if (v5)
+  if (errorCopy)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"MessageParamKey"];
+    [v4 setObject:errorCopy forKeyedSubscript:@"MessageParamKey"];
   }
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v4];
@@ -362,18 +362,18 @@ void __54__GKMatchmakerHostViewController_extensionObjectProxy__block_invoke(uin
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v3];
 }
 
-- (void)setNearbyPlayer:(id)a3 reachable:(BOOL)a4
+- (void)setNearbyPlayer:(id)player reachable:(BOOL)reachable
 {
-  v4 = a4;
+  reachableCopy = reachable;
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"MessageCommandKey";
   v10[1] = @"PlayerID";
   v11[0] = &unk_286189540;
-  v11[1] = a3;
+  v11[1] = player;
   v10[2] = @"MessageParamKey";
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithBool:v4];
+  playerCopy = player;
+  v8 = [v6 numberWithBool:reachableCopy];
   v11[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
@@ -389,31 +389,31 @@ void __54__GKMatchmakerHostViewController_extensionObjectProxy__block_invoke(uin
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v3];
 }
 
-- (void)recipientPropertiesProvided:(id)a3 forPlayer:(id)a4
+- (void)recipientPropertiesProvided:(id)provided forPlayer:(id)player
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"MessageCommandKey";
   v10[1] = @"MessageParamKey";
   v11[0] = &unk_286189570;
-  v11[1] = a3;
+  v11[1] = provided;
   v10[2] = @"PlayerInternal";
-  v11[2] = a4;
+  v11[2] = player;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  playerCopy = player;
+  providedCopy = provided;
   v9 = [v6 dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v9];
 }
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extensionCopy = extension;
   v5 = MEMORY[0x277CCAAC8];
   v6 = GKExtensionProtocolSecureCodedClasses();
   v22 = 0;
-  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v22];
+  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:extensionCopy error:&v22];
   v8 = v22;
 
   v9 = MEMORY[0x277D0C2A0];
@@ -433,7 +433,7 @@ void __54__GKMatchmakerHostViewController_extensionObjectProxy__block_invoke(uin
   }
 
   v13 = [v7 objectForKeyedSubscript:@"MessageCommandKey"];
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
   v15 = [v7 objectForKeyedSubscript:@"MessageParamKey"];
   if (!*v9)
@@ -449,94 +449,94 @@ void __54__GKMatchmakerHostViewController_extensionObjectProxy__block_invoke(uin
     _os_log_impl(&dword_24DE53000, v17, OS_LOG_TYPE_INFO, "Got message from extension: %@", buf, 0xCu);
   }
 
-  if (v14 <= 52)
+  if (integerValue <= 52)
   {
-    if (v14 <= 22)
+    if (integerValue <= 22)
     {
-      switch(v14)
+      switch(integerValue)
       {
         case 19:
-          v18 = [(GKMatchmakerHostViewController *)self delegate];
-          [v18 finishWithError:v15];
+          delegate = [(GKMatchmakerHostViewController *)self delegate];
+          [delegate finishWithError:v15];
           goto LABEL_46;
         case 21:
-          v18 = [(GKMatchmakerHostViewController *)self delegate];
-          [v18 setShareInvitees:v15];
+          delegate = [(GKMatchmakerHostViewController *)self delegate];
+          [delegate setShareInvitees:v15];
           goto LABEL_46;
         case 22:
-          v18 = [(GKMatchmakerHostViewController *)self delegate];
-          [v18 startMatchingWithRequest:v15 devicePushToken:0];
+          delegate = [(GKMatchmakerHostViewController *)self delegate];
+          [delegate startMatchingWithRequest:v15 devicePushToken:0];
           goto LABEL_46;
       }
     }
 
     else
     {
-      if (v14 <= 24)
+      if (integerValue <= 24)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
-        if (v14 == 23)
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
+        if (integerValue == 23)
         {
-          [v18 cancelPendingInviteToPlayer:v15];
+          [delegate cancelPendingInviteToPlayer:v15];
         }
 
         else
         {
-          [v18 sendData:v15];
+          [delegate sendData:v15];
         }
 
         goto LABEL_46;
       }
 
-      if (v14 == 25)
+      if (integerValue == 25)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
-        [v18 cancelMatching];
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
+        [delegate cancelMatching];
         goto LABEL_46;
       }
 
-      if (v14 == 26)
+      if (integerValue == 26)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
-        [v18 setBrowsingForNearbyPlayers:{objc_msgSend(v15, "BOOLValue")}];
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
+        [delegate setBrowsingForNearbyPlayers:{objc_msgSend(v15, "BOOLValue")}];
         goto LABEL_46;
       }
     }
   }
 
-  else if (v14 > 58)
+  else if (integerValue > 58)
   {
-    if (v14 > 62)
+    if (integerValue > 62)
     {
-      if (v14 == 63)
+      if (integerValue == 63)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
         v19 = [v15 objectForKeyedSubscript:@"players"];
-        [v18 playerPickerDidPickPlayers:v19];
+        [delegate playerPickerDidPickPlayers:v19];
         goto LABEL_43;
       }
 
-      if (v14 == 64)
+      if (integerValue == 64)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
-        [v18 playerPickerDidCancel];
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
+        [delegate playerPickerDidCancel];
         goto LABEL_46;
       }
     }
 
     else
     {
-      if (v14 == 59)
+      if (integerValue == 59)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
-        [v18 disconnectFromMatch];
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
+        [delegate disconnectFromMatch];
         goto LABEL_46;
       }
 
-      if (v14 == 60)
+      if (integerValue == 60)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
-        [v18 recipientPropertiesNeededForPlayer:v15];
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
+        [delegate recipientPropertiesNeededForPlayer:v15];
         goto LABEL_46;
       }
     }
@@ -544,65 +544,65 @@ void __54__GKMatchmakerHostViewController_extensionObjectProxy__block_invoke(uin
 
   else
   {
-    if (v14 <= 54)
+    if (integerValue <= 54)
     {
-      if (v14 != 53)
+      if (integerValue != 53)
       {
-        v18 = [(GKMatchmakerHostViewController *)self delegate];
-        [v18 activateGroupActivities];
+        delegate = [(GKMatchmakerHostViewController *)self delegate];
+        [delegate activateGroupActivities];
 LABEL_46:
 
         goto LABEL_47;
       }
 
-      v18 = [(GKMatchmakerHostViewController *)self delegate];
+      delegate = [(GKMatchmakerHostViewController *)self delegate];
       v19 = [v15 objectForKeyedSubscript:@"request"];
       v20 = [v15 objectForKeyedSubscript:@"pushToken"];
-      [v18 startMatchingWithRequest:v19 devicePushToken:v20];
+      [delegate startMatchingWithRequest:v19 devicePushToken:v20];
 
 LABEL_43:
       goto LABEL_46;
     }
 
-    if (v14 == 55)
+    if (integerValue == 55)
     {
-      v18 = [(GKMatchmakerHostViewController *)self delegate];
-      [v18 endGroupActivities];
+      delegate = [(GKMatchmakerHostViewController *)self delegate];
+      [delegate endGroupActivities];
       goto LABEL_46;
     }
 
-    if (v14 == 57)
+    if (integerValue == 57)
     {
-      v18 = [(GKMatchmakerHostViewController *)self delegate];
-      [v18 presentSharePlaySharingController];
+      delegate = [(GKMatchmakerHostViewController *)self delegate];
+      [delegate presentSharePlaySharingController];
       goto LABEL_46;
     }
   }
 
   v21.receiver = self;
   v21.super_class = GKMatchmakerHostViewController;
-  [(GKExtensionRemoteViewController *)&v21 messageFromExtension:v4];
+  [(GKExtensionRemoteViewController *)&v21 messageFromExtension:extensionCopy];
 LABEL_47:
 }
 
-- (void)shareMatchWithRequest:(id)a3 handler:(id)a4
+- (void)shareMatchWithRequest:(id)request handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMatchmakerHostViewController *)self delegate];
-  [v8 shareMatchWithRequest:v7 handler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  delegate = [(GKMatchmakerHostViewController *)self delegate];
+  [delegate shareMatchWithRequest:requestCopy handler:handlerCopy];
 }
 
 - (void)extensionIsCanceling
 {
-  v2 = [(GKMatchmakerHostViewController *)self delegate];
-  [v2 cancel];
+  delegate = [(GKMatchmakerHostViewController *)self delegate];
+  [delegate cancel];
 }
 
 - (void)extensionIsFinishing
 {
-  v2 = [(GKMatchmakerHostViewController *)self delegate];
-  [v2 cancel];
+  delegate = [(GKMatchmakerHostViewController *)self delegate];
+  [delegate cancel];
 }
 
 - (GKMatchmakerViewController)delegate

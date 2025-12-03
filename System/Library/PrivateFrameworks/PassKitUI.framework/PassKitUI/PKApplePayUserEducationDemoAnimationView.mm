@@ -1,12 +1,12 @@
 @interface PKApplePayUserEducationDemoAnimationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKApplePayUserEducationDemoAnimationView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKApplePayUserEducationDemoAnimationView)initWithCoder:(id)coder;
 - (void)dealloc;
 @end
 
 @implementation PKApplePayUserEducationDemoAnimationView
 
-- (PKApplePayUserEducationDemoAnimationView)initWithCoder:(id)a3
+- (PKApplePayUserEducationDemoAnimationView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___PKApplePayUserEducationDemoAnimationView_minuteMonitor) = 0;
   v3 = OBJC_IVAR___PKApplePayUserEducationDemoAnimationView_layerColorConfigurationSets;
@@ -21,14 +21,14 @@
   ObjectType = swift_getObjectType();
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR___PKApplePayUserEducationDemoAnimationView_minuteMonitor))
   {
-    v4 = self;
+    selfCopy = self;
     sub_1BE048964();
     sub_1BD284158();
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;
@@ -36,11 +36,11 @@
   [(PKApplePayUserEducationDemoAnimationView *)&v6 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [objc_opt_self() mainScreen];
-  [v4 bounds];
+  width = fits.width;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

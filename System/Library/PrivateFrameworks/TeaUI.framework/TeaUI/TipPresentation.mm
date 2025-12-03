@@ -1,14 +1,14 @@
 @interface TipPresentation
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 @end
 
 @implementation TipPresentation
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  TipPresentation._observeScrollViewDidScroll(_:)(v5);
+  scrollCopy = scroll;
+  selfCopy = self;
+  TipPresentation._observeScrollViewDidScroll(_:)(selfCopy);
 }
 
 @end

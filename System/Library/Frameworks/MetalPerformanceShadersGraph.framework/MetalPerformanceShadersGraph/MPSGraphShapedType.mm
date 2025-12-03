@@ -1,7 +1,7 @@
 @interface MPSGraphShapedType
 - (BOOL)isEqualTo:(MPSGraphShapedType *)object;
 - (MPSGraphShapedType)initWithShape:(MPSShape *)shape dataType:(MPSDataType)dataType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 @end
 
@@ -21,7 +21,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphShapedType alloc];
   shape = self->_shape;
@@ -44,11 +44,11 @@
     goto LABEL_3;
   }
 
-  v17 = [(MPSGraphShapedType *)v4 shape];
+  shape = [(MPSGraphShapedType *)v4 shape];
 
-  if (!v17)
+  if (!shape)
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(shape3) = 1;
     goto LABEL_14;
   }
 
@@ -57,9 +57,9 @@
     goto LABEL_3;
   }
 
-  v18 = [(MPSGraphShapedType *)v4 shape];
+  shape2 = [(MPSGraphShapedType *)v4 shape];
 
-  if (v18)
+  if (shape2)
   {
     goto LABEL_13;
   }
@@ -67,9 +67,9 @@
   if (self->_shape)
   {
 LABEL_3:
-    v6 = [(MPSGraphShapedType *)v4 shape];
+    shape3 = [(MPSGraphShapedType *)v4 shape];
 
-    if (!v6)
+    if (!shape3)
     {
       goto LABEL_14;
     }
@@ -83,13 +83,13 @@ LABEL_3:
   }
 
   v8 = [(NSArray *)shape count];
-  v9 = [(MPSGraphShapedType *)v4 shape];
-  v10 = [v9 count];
+  shape4 = [(MPSGraphShapedType *)v4 shape];
+  v10 = [shape4 count];
 
   if (v8 != v10)
   {
 LABEL_13:
-    LOBYTE(v6) = 0;
+    LOBYTE(shape3) = 0;
     goto LABEL_14;
   }
 
@@ -97,15 +97,15 @@ LABEL_13:
   do
   {
     v12 = [(NSArray *)self->_shape count];
-    LOBYTE(v6) = v11 >= v12;
+    LOBYTE(shape3) = v11 >= v12;
     if (v11 >= v12)
     {
       break;
     }
 
     v13 = [(NSArray *)self->_shape objectAtIndexedSubscript:v11];
-    v14 = [(MPSGraphShapedType *)v4 shape];
-    v15 = [v14 objectAtIndexedSubscript:v11];
+    shape5 = [(MPSGraphShapedType *)v4 shape];
+    v15 = [shape5 objectAtIndexedSubscript:v11];
     v16 = [v13 isEqualToNumber:v15];
 
     ++v11;
@@ -114,7 +114,7 @@ LABEL_13:
   while ((v16 & 1) != 0);
 LABEL_14:
 
-  return v6;
+  return shape3;
 }
 
 - (id)debugDescription

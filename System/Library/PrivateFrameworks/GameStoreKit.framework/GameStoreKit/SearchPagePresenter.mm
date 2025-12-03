@@ -1,10 +1,10 @@
 @interface SearchPagePresenter
-- (void)searchActionImplementationDidRun:(id)a3;
+- (void)searchActionImplementationDidRun:(id)run;
 @end
 
 @implementation SearchPagePresenter
 
-- (void)searchActionImplementationDidRun:(id)a3
+- (void)searchActionImplementationDidRun:(id)run
 {
   v3 = sub_24F91EB58();
   v4 = *(v3 - 8);

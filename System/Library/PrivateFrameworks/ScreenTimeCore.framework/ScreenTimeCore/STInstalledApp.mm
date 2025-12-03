@@ -1,27 +1,27 @@
 @interface STInstalledApp
-+ (id)bundleIdentifiersInstalledForAltDSID:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)bundleIdentifiersInstalledForDSID:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)bundleIdentifiersInstalledForPredicate:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5;
++ (id)bundleIdentifiersInstalledForAltDSID:(id)d inContext:(id)context error:(id *)error;
++ (id)bundleIdentifiersInstalledForDSID:(id)d inContext:(id)context error:(id *)error;
++ (id)bundleIdentifiersInstalledForPredicate:(id)predicate inContext:(id)context error:(id *)error;
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error;
 + (id)fetchRequest;
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
 - (NSString)description;
 - (id)computeUniqueIdentifier;
 - (id)dictionaryRepresentation;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setUserDeviceState:(id)a3;
-- (void)updateIconDataWithURL:(id)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)setUserDeviceState:(id)state;
+- (void)updateIconDataWithURL:(id)l;
 @end
 
 @implementation STInstalledApp
 
-+ (id)bundleIdentifiersInstalledForDSID:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)bundleIdentifiersInstalledForDSID:(id)d inContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 longLongValue])
+  dCopy = d;
+  contextCopy = context;
+  if ([dCopy longLongValue])
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"userDeviceState.user.dsid", v7];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"userDeviceState.user.dsid", dCopy];
   }
 
   else
@@ -29,18 +29,18 @@
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", @"userDeviceState.user.localUserDeviceState", v12];
   }
   v9 = ;
-  v10 = [STInstalledApp bundleIdentifiersInstalledForPredicate:v9 inContext:v8 error:a5];
+  v10 = [STInstalledApp bundleIdentifiersInstalledForPredicate:v9 inContext:contextCopy error:error];
 
   return v10;
 }
 
-+ (id)bundleIdentifiersInstalledForAltDSID:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)bundleIdentifiersInstalledForAltDSID:(id)d inContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length])
+  dCopy = d;
+  contextCopy = context;
+  if ([dCopy length])
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"userDeviceState.user.altDSID", v7];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"userDeviceState.user.altDSID", dCopy];
   }
 
   else
@@ -48,15 +48,15 @@
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", @"userDeviceState.user.localUserDeviceState", v12];
   }
   v9 = ;
-  v10 = [STInstalledApp bundleIdentifiersInstalledForPredicate:v9 inContext:v8 error:a5];
+  v10 = [STInstalledApp bundleIdentifiersInstalledForPredicate:v9 inContext:contextCopy error:error];
 
   return v10;
 }
 
-+ (id)bundleIdentifiersInstalledForPredicate:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)bundleIdentifiersInstalledForPredicate:(id)predicate inContext:(id)context error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = +[STInstalledApp fetchRequest];
   [v7 setResultType:2];
   [v7 setReturnsDistinctResults:1];
@@ -64,7 +64,7 @@
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   [v7 setPropertiesToFetch:v8];
 
-  [v7 setPredicate:v6];
+  [v7 setPredicate:predicateCopy];
   v18 = 0;
   v9 = [v7 execute:&v18];
   v10 = v18;
@@ -79,11 +79,11 @@
   else
   {
     v14 = 0;
-    if (a5 && v10)
+    if (error && v10)
     {
       v15 = v10;
       v14 = 0;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -92,45 +92,45 @@
   return v14;
 }
 
-- (void)setUserDeviceState:(id)a3
+- (void)setUserDeviceState:(id)state
 {
-  v5 = a3;
-  v4 = [v5 localDevice];
-  [(STInstalledApp *)self setInstalledLocally:v4 != 0];
+  stateCopy = state;
+  localDevice = [stateCopy localDevice];
+  [(STInstalledApp *)self setInstalledLocally:localDevice != 0];
 
-  [(STInstalledApp *)self managedObjectOriginal_setUserDeviceState:v5];
+  [(STInstalledApp *)self managedObjectOriginal_setUserDeviceState:stateCopy];
 }
 
 + (id)fetchRequest
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___STInstalledApp;
   v2 = objc_msgSendSuper2(&v4, sel_fetchRequest);
 
   return v2;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"bundleIdentifier"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"userDeviceState"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"bundleIdentifier"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"userDeviceState"))
   {
     [(STUniquedManagedObject *)self updateUniqueIdentifier];
   }
 
   v5.receiver = self;
   v5.super_class = STInstalledApp;
-  [(STInstalledApp *)&v5 didChangeValueForKey:v4];
+  [(STInstalledApp *)&v5 didChangeValueForKey:keyCopy];
 }
 
 - (id)computeUniqueIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [objc_opt_class() serializableClassName];
-  v5 = [(STInstalledApp *)self bundleIdentifier];
-  v6 = [(STInstalledApp *)self userDeviceState];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v3 stringWithFormat:@"%@:%@-%@", v4, v5, v7];
+  serializableClassName = [objc_opt_class() serializableClassName];
+  bundleIdentifier = [(STInstalledApp *)self bundleIdentifier];
+  userDeviceState = [(STInstalledApp *)self userDeviceState];
+  uniqueIdentifier = [userDeviceState uniqueIdentifier];
+  v8 = [v3 stringWithFormat:@"%@:%@-%@", serializableClassName, bundleIdentifier, uniqueIdentifier];
 
   return v8;
 }
@@ -139,84 +139,84 @@
 {
   v18.receiver = self;
   v18.super_class = STInstalledApp;
-  v3 = [(STUniquedManagedObject *)&v18 dictionaryRepresentation];
-  v4 = [(STInstalledApp *)self adamID];
-  [v3 setObject:v4 forKeyedSubscript:@"adamID"];
+  dictionaryRepresentation = [(STUniquedManagedObject *)&v18 dictionaryRepresentation];
+  adamID = [(STInstalledApp *)self adamID];
+  [dictionaryRepresentation setObject:adamID forKeyedSubscript:@"adamID"];
 
-  v5 = [(STInstalledApp *)self betaVersionIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"betaVersionIdentifier"];
+  betaVersionIdentifier = [(STInstalledApp *)self betaVersionIdentifier];
+  [dictionaryRepresentation setObject:betaVersionIdentifier forKeyedSubscript:@"betaVersionIdentifier"];
 
-  v6 = [(STInstalledApp *)self bundleIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"bundleIdentifier"];
+  bundleIdentifier = [(STInstalledApp *)self bundleIdentifier];
+  [dictionaryRepresentation setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
 
-  v7 = [(STInstalledApp *)self displayName];
-  [v3 setObject:v7 forKeyedSubscript:@"displayName"];
+  displayName = [(STInstalledApp *)self displayName];
+  [dictionaryRepresentation setObject:displayName forKeyedSubscript:@"displayName"];
 
-  v8 = [(STInstalledApp *)self distributorID];
-  [v3 setObject:v8 forKeyedSubscript:@"distributorID"];
+  distributorID = [(STInstalledApp *)self distributorID];
+  [dictionaryRepresentation setObject:distributorID forKeyedSubscript:@"distributorID"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[STInstalledApp distributorIsThirdParty](self, "distributorIsThirdParty")}];
-  [v3 setObject:v9 forKeyedSubscript:@"distributorIsThirdParty"];
+  [dictionaryRepresentation setObject:v9 forKeyedSubscript:@"distributorIsThirdParty"];
 
-  v10 = [(STInstalledApp *)self iconData];
-  [v3 setObject:v10 forKeyedSubscript:@"iconData"];
+  iconData = [(STInstalledApp *)self iconData];
+  [dictionaryRepresentation setObject:iconData forKeyedSubscript:@"iconData"];
 
-  v11 = [(STInstalledApp *)self versionIdentifier];
-  [v3 setObject:v11 forKeyedSubscript:@"versionIdentifier"];
+  versionIdentifier = [(STInstalledApp *)self versionIdentifier];
+  [dictionaryRepresentation setObject:versionIdentifier forKeyedSubscript:@"versionIdentifier"];
 
-  v12 = [(STInstalledApp *)self userDeviceState];
-  v13 = [v12 uniqueIdentifier];
+  userDeviceState = [(STInstalledApp *)self userDeviceState];
+  uniqueIdentifier = [userDeviceState uniqueIdentifier];
 
-  if (v13)
+  if (uniqueIdentifier)
   {
-    v14 = [(STInstalledApp *)self userDeviceState];
-    v15 = [v14 uniqueIdentifier];
-    [v3 setObject:v15 forKeyedSubscript:@"userDeviceState"];
+    userDeviceState2 = [(STInstalledApp *)self userDeviceState];
+    uniqueIdentifier2 = [userDeviceState2 uniqueIdentifier];
+    [dictionaryRepresentation setObject:uniqueIdentifier2 forKeyedSubscript:@"userDeviceState"];
   }
 
-  v16 = [v3 copy];
+  v16 = [dictionaryRepresentation copy];
 
   return v16;
 }
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"adamID"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"adamID"];
   [(STInstalledApp *)self setAdamID:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"betaVersionIdentifier"];
+  v6 = [representationCopy objectForKeyedSubscript:@"betaVersionIdentifier"];
   [(STInstalledApp *)self setBetaVersionIdentifier:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
+  v7 = [representationCopy objectForKeyedSubscript:@"bundleIdentifier"];
   [(STInstalledApp *)self setBundleIdentifier:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"versionIdentifier"];
+  v8 = [representationCopy objectForKeyedSubscript:@"versionIdentifier"];
   [(STInstalledApp *)self setVersionIdentifier:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"distributorIsThirdParty"];
+  v9 = [representationCopy objectForKeyedSubscript:@"distributorIsThirdParty"];
   -[STInstalledApp setDistributorIsThirdParty:](self, "setDistributorIsThirdParty:", [v9 BOOLValue]);
 
-  v10 = [v4 objectForKeyedSubscript:@"displayName"];
+  v10 = [representationCopy objectForKeyedSubscript:@"displayName"];
   if (v10)
   {
     [(STInstalledApp *)self setDisplayName:v10];
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"distributorID"];
+  v11 = [representationCopy objectForKeyedSubscript:@"distributorID"];
   if (v11)
   {
     [(STInstalledApp *)self setDistributorID:v11];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"iconData"];
+  v12 = [representationCopy objectForKeyedSubscript:@"iconData"];
   if (v12)
   {
     [(STInstalledApp *)self setIconData:v12];
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"userDeviceState"];
+  v13 = [representationCopy objectForKeyedSubscript:@"userDeviceState"];
   if (v13)
   {
     v14 = +[STUserDeviceState fetchRequest];
@@ -226,8 +226,8 @@
     v25 = 0;
     v16 = [v14 execute:&v25];
     v17 = v25;
-    v18 = [v16 firstObject];
-    [(STInstalledApp *)self setUserDeviceState:v18];
+    firstObject = [v16 firstObject];
+    [(STInstalledApp *)self setUserDeviceState:firstObject];
   }
 
   else
@@ -236,9 +236,9 @@
     v17 = 0;
   }
 
-  v19 = [(STInstalledApp *)self userDeviceState];
+  userDeviceState = [(STInstalledApp *)self userDeviceState];
 
-  if (!v19)
+  if (!userDeviceState)
   {
     v20 = +[STLog appMonitor];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -252,12 +252,12 @@
       *buf = 136446466;
       v27 = "[STInstalledApp updateWithDictionaryRepresentation:]";
       v28 = 2112;
-      v29 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B831F000, v21, OS_LOG_TYPE_DEFAULT, "%{public}s: Deleting installed app (%@)", buf, 0x16u);
     }
 
-    v22 = [(STInstalledApp *)self managedObjectContext];
-    [v22 deleteObject:self];
+    managedObjectContext = [(STInstalledApp *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -266,49 +266,49 @@
 
 - (NSString)description
 {
-  v2 = [(STInstalledApp *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(STInstalledApp *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
 
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 objectForKeyedSubscript:@"uniqueIdentifier"];
-  v10 = [a1 fetchRequest];
+  contextCopy = context;
+  v9 = [representation objectForKeyedSubscript:@"uniqueIdentifier"];
+  fetchRequest = [self fetchRequest];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uniqueIdentifier", v9];
-  [v10 setPredicate:v11];
+  [fetchRequest setPredicate:v11];
 
-  v12 = [v10 execute:a5];
+  v12 = [fetchRequest execute:error];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 firstObject];
-    if (!v14)
+    firstObject = [v12 firstObject];
+    if (!firstObject)
     {
-      v14 = [[STInstalledApp alloc] initWithContext:v8];
+      firstObject = [[STInstalledApp alloc] initWithContext:contextCopy];
     }
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
-  return v14;
+  return firstObject;
 }
 
-- (void)updateIconDataWithURL:(id)a3
+- (void)updateIconDataWithURL:(id)l
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   MGGetFloat32Answer();
   v6 = v5;
   v7 = v5;
   v8 = 87.0 / v5;
   v24 = 29 * v5;
-  v9 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithURL:v4];
+  v9 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithURL:lCopy];
 
   v10 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v8 scale:{v8, v7}];
   v27[0] = v10;
@@ -316,10 +316,10 @@
   [v9 prepareImagesForImageDescriptors:v11];
 
   v12 = [v9 imageForDescriptor:v10];
-  v13 = [v12 CGImage];
+  cGImage = [v12 CGImage];
   v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:4096];
-  v15 = [*MEMORY[0x1E6982F28] identifier];
-  v16 = CGImageDestinationCreateWithData(v14, v15, 1uLL, 0);
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v16 = CGImageDestinationCreateWithData(v14, identifier, 1uLL, 0);
 
   valuePtr = v6 * 72.0;
   v17 = *MEMORY[0x1E695E480];
@@ -335,7 +335,7 @@
   v21 = CFDictionaryCreate(v17, keys, values, 3, MEMORY[0x1E695E528], MEMORY[0x1E695E9E8]);
   CFRelease(v18);
   CFRelease(v19);
-  CGImageDestinationAddImage(v16, v13, v21);
+  CGImageDestinationAddImage(v16, cGImage, v21);
   CFRelease(v21);
   CGImageDestinationFinalize(v16);
   [(STInstalledApp *)self setIconData:v14];

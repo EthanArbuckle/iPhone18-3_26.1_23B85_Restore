@@ -1,22 +1,22 @@
 @interface _EDGroupedSenderList
-- (_EDGroupedSenderList)initWithComparator:(id)a3 grouping:(int64_t)a4;
-- (id)groupedSenderAtIndex:(unint64_t)a3;
-- (id)groupedSenderForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)orderedGroupedSendersWithLimit:(unint64_t)a3;
+- (_EDGroupedSenderList)initWithComparator:(id)comparator grouping:(int64_t)grouping;
+- (id)groupedSenderAtIndex:(unint64_t)index;
+- (id)groupedSenderForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)orderedGroupedSendersWithLimit:(unint64_t)limit;
 - (unint64_t)count;
 - (unint64_t)unreadCount;
 - (void)_checkConsistencyAndRebuildIfNecessary;
-- (void)addGroupedSender:(id)a3;
-- (void)removeGroupedSender:(id)a3;
-- (void)updateGroupedSender:(id)a3;
+- (void)addGroupedSender:(id)sender;
+- (void)removeGroupedSender:(id)sender;
+- (void)updateGroupedSender:(id)sender;
 @end
 
 @implementation _EDGroupedSenderList
 
-- (_EDGroupedSenderList)initWithComparator:(id)a3 grouping:(int64_t)a4
+- (_EDGroupedSenderList)initWithComparator:(id)comparator grouping:(int64_t)grouping
 {
-  v6 = a3;
+  comparatorCopy = comparator;
   v15.receiver = self;
   v15.super_class = _EDGroupedSenderList;
   v7 = [(_EDGroupedSenderList *)&v15 init];
@@ -30,12 +30,12 @@
     orderedGroups = v7->_orderedGroups;
     v7->_orderedGroups = v10;
 
-    v12 = _Block_copy(v6);
+    v12 = _Block_copy(comparatorCopy);
     comparator = v7->_comparator;
     v7->_comparator = v12;
 
     v7->_lock._os_unfair_lock_opaque = 0;
-    v7->_grouping = a4;
+    v7->_grouping = grouping;
   }
 
   return v7;
@@ -51,47 +51,47 @@
 
 - (unint64_t)unreadCount
 {
-  v2 = [(_EDGroupedSenderList *)self orderedGroupedSenders];
-  v3 = [v2 array];
-  v4 = [v3 ef_filter:&__block_literal_global_417];
+  orderedGroupedSenders = [(_EDGroupedSenderList *)self orderedGroupedSenders];
+  array = [orderedGroupedSenders array];
+  v4 = [array ef_filter:&__block_literal_global_417];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)groupedSenderAtIndex:(unint64_t)a3
+- (id)groupedSenderAtIndex:(unint64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableOrderedSet *)self->_orderedGroups objectAtIndex:a3];
+  v5 = [(NSMutableOrderedSet *)self->_orderedGroups objectAtIndex:index];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(_EDGroupedSenderList *)self groupedSenderForKey:a3];
+  v3 = [(_EDGroupedSenderList *)self groupedSenderForKey:subscript];
 
   return v3;
 }
 
-- (id)groupedSenderForKey:(id)a3
+- (id)groupedSenderForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_groupsBySender objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_groupsBySender objectForKeyedSubscript:keyCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)orderedGroupedSendersWithLimit:(unint64_t)a3
+- (id)orderedGroupedSendersWithLimit:(unint64_t)limit
 {
   os_unfair_lock_lock(&self->_lock);
   orderedGroups = self->_orderedGroups;
-  if (a3)
+  if (limit)
   {
-    v6 = [(NSMutableOrderedSet *)orderedGroups ef_prefix:a3];
+    v6 = [(NSMutableOrderedSet *)orderedGroups ef_prefix:limit];
   }
 
   else
@@ -105,13 +105,13 @@
   return v7;
 }
 
-- (void)addGroupedSender:(id)a3
+- (void)addGroupedSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = MEMORY[0x1E696AD98];
-  v8 = v4;
-  v6 = [v4 objectID];
-  v7 = [v5 numberWithLongLong:{objc_msgSend(v6, "businessID")}];
+  v8 = senderCopy;
+  objectID = [senderCopy objectID];
+  v7 = [v5 numberWithLongLong:{objc_msgSend(objectID, "businessID")}];
 
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_groupsBySender setObject:v8 forKeyedSubscript:v7];
@@ -120,13 +120,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeGroupedSender:(id)a3
+- (void)removeGroupedSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = MEMORY[0x1E696AD98];
-  v8 = v4;
-  v6 = [v4 objectID];
-  v7 = [v5 numberWithLongLong:{objc_msgSend(v6, "businessID")}];
+  v8 = senderCopy;
+  objectID = [senderCopy objectID];
+  v7 = [v5 numberWithLongLong:{objc_msgSend(objectID, "businessID")}];
 
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_groupsBySender setObject:0 forKeyedSubscript:v7];
@@ -135,13 +135,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateGroupedSender:(id)a3
+- (void)updateGroupedSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = MEMORY[0x1E696AD98];
-  v9 = v4;
-  v6 = [v4 objectID];
-  v7 = [v5 numberWithLongLong:{objc_msgSend(v6, "businessID")}];
+  v9 = senderCopy;
+  objectID = [senderCopy objectID];
+  v7 = [v5 numberWithLongLong:{objc_msgSend(objectID, "businessID")}];
 
   os_unfair_lock_lock(&self->_lock);
   v8 = [(NSMutableDictionary *)self->_groupsBySender objectForKeyedSubscript:v7];
@@ -162,8 +162,8 @@
   if (v3 != [(NSMutableOrderedSet *)self->_orderedGroups count])
   {
     v4 = objc_alloc(MEMORY[0x1E695DFA0]);
-    v5 = [(NSMutableDictionary *)self->_groupsBySender allValues];
-    v6 = [v4 initWithArray:v5];
+    allValues = [(NSMutableDictionary *)self->_groupsBySender allValues];
+    v6 = [v4 initWithArray:allValues];
     orderedGroups = self->_orderedGroups;
     self->_orderedGroups = v6;
 

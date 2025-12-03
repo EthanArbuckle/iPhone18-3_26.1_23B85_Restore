@@ -1,22 +1,22 @@
 @interface SBSSoftwareUpdateService
 - (int64_t)passcodePolicy;
-- (void)setPasscodePolicy:(int64_t)a3;
+- (void)setPasscodePolicy:(int64_t)policy;
 @end
 
 @implementation SBSSoftwareUpdateService
 
 - (int64_t)passcodePolicy
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 passcodePolicy];
+  client = [(SBSAbstractSystemService *)self client];
+  passcodePolicy = [client passcodePolicy];
 
-  return v3;
+  return passcodePolicy;
 }
 
-- (void)setPasscodePolicy:(int64_t)a3
+- (void)setPasscodePolicy:(int64_t)policy
 {
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setPasscodePolicy:a3];
+  client = [(SBSAbstractSystemService *)self client];
+  [client setPasscodePolicy:policy];
 }
 
 @end

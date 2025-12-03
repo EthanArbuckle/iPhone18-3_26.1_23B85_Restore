@@ -1,6 +1,6 @@
 @interface NEProxyConfigurationNetworkAgent
-+ (id)agentFromData:(id)a3;
-- (NEProxyConfigurationNetworkAgent)initWithProxyConfiguration:(id)a3;
++ (id)agentFromData:(id)data;
+- (NEProxyConfigurationNetworkAgent)initWithProxyConfiguration:(id)configuration;
 - (id)agentDescription;
 - (id)copyAgentData;
 @end
@@ -18,10 +18,10 @@
   return [(NEProxyConfigurationNetworkAgent *)self copy];
 }
 
-- (NEProxyConfigurationNetworkAgent)initWithProxyConfiguration:(id)a3
+- (NEProxyConfigurationNetworkAgent)initWithProxyConfiguration:(id)configuration
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = NEProxyConfigurationNetworkAgent;
   v5 = [(NEProxyConfigurationNetworkAgent *)&v12 init];
@@ -39,7 +39,7 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = configurationCopy;
       _os_log_error_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_ERROR, "Failed to turn proxy configuration into agent data: %@", buf, 0xCu);
     }
 
@@ -63,14 +63,14 @@ LABEL_8:
   return [v2 agentType];
 }
 
-+ (id)agentFromData:(id)a3
++ (id)agentFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NEProxyConfigurationNetworkAgent);
   v6 = v4;
   if (v4)
   {
-    objc_setProperty_atomic(v4, v5, v3, 80);
+    objc_setProperty_atomic(v4, v5, dataCopy, 80);
   }
 
   return v6;

@@ -1,53 +1,53 @@
 @interface RTLocationAwarenessManager
 + (id)powerAssertion;
-+ (int64_t)localHourFromTimestamp:(id)a3;
++ (int64_t)localHourFromTimestamp:(id)timestamp;
 - (BOOL)activeRequestInterruptedCheck;
-- (BOOL)addFixedRateLocationRequester:(id)a3 error:(id *)a4;
-- (BOOL)addHighAccuracyLocationRequester:(id)a3 error:(id *)a4;
-- (BOOL)addLocationHeartbeatRequester:(id)a3 interval:(double)a4 error:(id *)a5;
-- (BOOL)coarseLocation:(id)a3;
-- (BOOL)removeHighAccuracyLocationRequester:(id)a3 error:(id *)a4;
-- (BOOL)validInterval:(double)a3;
-- (BOOL)validLocation:(id)a3;
-- (RTLocationAwarenessManager)initWithLocationManager:(id)a3 config:(id)a4 metricManager:(id)a5 motionActivityManager:(id)a6 authorizationManager:(id)a7 wifiManager:(id)a8 xpcActivityManager:(id)a9 timerManager:(id)a10 learnedLocationStore:(id)a11;
-- (double)intervalForHeartbeatBucket:(id)a3;
+- (BOOL)addFixedRateLocationRequester:(id)requester error:(id *)error;
+- (BOOL)addHighAccuracyLocationRequester:(id)requester error:(id *)error;
+- (BOOL)addLocationHeartbeatRequester:(id)requester interval:(double)interval error:(id *)error;
+- (BOOL)coarseLocation:(id)location;
+- (BOOL)removeHighAccuracyLocationRequester:(id)requester error:(id *)error;
+- (BOOL)validInterval:(double)interval;
+- (BOOL)validLocation:(id)location;
+- (RTLocationAwarenessManager)initWithLocationManager:(id)manager config:(id)config metricManager:(id)metricManager motionActivityManager:(id)activityManager authorizationManager:(id)authorizationManager wifiManager:(id)wifiManager xpcActivityManager:(id)xpcActivityManager timerManager:(id)self0 learnedLocationStore:(id)self1;
+- (double)intervalForHeartbeatBucket:(id)bucket;
 - (double)metricAge;
-- (double)nextFiringDelayWithHeartbeatInterval:(double)result starvingDuration:(double)a4;
+- (double)nextFiringDelayWithHeartbeatInterval:(double)result starvingDuration:(double)duration;
 - (double)starvingDurationTillNow;
-- (id)heartbeatBucketForInterval:(double)a3;
-- (id)updateWithLocation:(id)a3 oneIntervalHistogram:(id)a4 lastLocation:(id)a5;
-- (void)_addFixedRateLocationRequester:(id)a3;
-- (void)_addHighAccuracyLocationRequester:(id)a3;
-- (void)_onDailyMetricsNotification:(id)a3;
-- (void)_removeFixedRateLocationRequester:(id)a3;
-- (void)_removeHighAccuracyLocationRequester:(id)a3;
+- (id)heartbeatBucketForInterval:(double)interval;
+- (id)updateWithLocation:(id)location oneIntervalHistogram:(id)histogram lastLocation:(id)lastLocation;
+- (void)_addFixedRateLocationRequester:(id)requester;
+- (void)_addHighAccuracyLocationRequester:(id)requester;
+- (void)_onDailyMetricsNotification:(id)notification;
+- (void)_removeFixedRateLocationRequester:(id)requester;
+- (void)_removeHighAccuracyLocationRequester:(id)requester;
 - (void)_requestForFixedRateLocation;
 - (void)_requestForHighAccuracyLocation;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_updateXPCActivityForHighAccuracyLocationRequest;
-- (void)_updateXPCActivityForObserverCount:(unint64_t)a3;
+- (void)_updateXPCActivityForObserverCount:(unint64_t)count;
 - (void)adjustHeartbeatTimer;
 - (void)considerRequestingForLocation;
 - (void)considerUpdateActiveRequestMetrics;
 - (void)considerUpdatingHeartbeatDelayMetrics;
 - (void)heartbeatTasks;
-- (void)hourlySingleShotWithHandler:(id)a3;
-- (void)incrementBasicHistogram:(id)a3 forTimestamp:(id)a4;
-- (void)onDailyMetricsNotification:(id)a3;
+- (void)hourlySingleShotWithHandler:(id)handler;
+- (void)incrementBasicHistogram:(id)histogram forTimestamp:(id)timestamp;
+- (void)onDailyMetricsNotification:(id)notification;
 - (void)onHeartbeat;
-- (void)onLeechedLocationNotification:(id)a3;
-- (void)onMotionActivityManagerNotificationActivityNotification:(id)a3;
+- (void)onLeechedLocationNotification:(id)notification;
+- (void)onMotionActivityManagerNotificationActivityNotification:(id)notification;
 - (void)onRest;
-- (void)removeFixedRateLocationRequester:(id)a3;
-- (void)removeLocationHeartbeatRequester:(id)a3;
+- (void)removeFixedRateLocationRequester:(id)requester;
+- (void)removeLocationHeartbeatRequester:(id)requester;
 - (void)requestForFixedRateLocation;
 - (void)requestForHighAccuracyLocation;
 - (void)resetActiveRequestSummaryVariables;
-- (void)setLastValidLocation:(id)a3;
-- (void)setMinHeartbeatBucket:(id)a3;
-- (void)updateHeartbeatTimerDelayForTimestamp:(id)a3 withDelay:(double)a4;
-- (void)updateLocationAwarenessHistogramsWithLocations:(id)a3;
+- (void)setLastValidLocation:(id)location;
+- (void)setMinHeartbeatBucket:(id)bucket;
+- (void)updateHeartbeatTimerDelayForTimestamp:(id)timestamp withDelay:(double)delay;
+- (void)updateLocationAwarenessHistogramsWithLocations:(id)locations;
 - (void)updateMinHeartbeatBucket;
 @end
 
@@ -61,19 +61,19 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke_73(uint
 
 - (void)onHeartbeat
 {
-  v3 = [(RTLocationAwarenessManager *)self activeOnset];
+  activeOnset = [(RTLocationAwarenessManager *)self activeOnset];
 
-  if (v3)
+  if (activeOnset)
   {
-    v4 = [(RTLocationAwarenessManager *)self heartbeatBuffer];
+    heartbeatBuffer = [(RTLocationAwarenessManager *)self heartbeatBuffer];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__RTLocationAwarenessManager_onHeartbeat__block_invoke;
     v7[3] = &unk_2788C4EA0;
     v7[4] = self;
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v5 stringFromDate];
-    [v4 enqueueBlock:v7 description:{@"Heartbeat tasks buffered at %@", v6}];
+    date = [MEMORY[0x277CBEAA8] date];
+    stringFromDate = [date stringFromDate];
+    [heartbeatBuffer enqueueBlock:v7 description:{@"Heartbeat tasks buffered at %@", stringFromDate}];
   }
 
   else
@@ -93,16 +93,16 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke_73(uint
 
 - (void)considerUpdatingHeartbeatDelayMetrics
 {
-  v3 = [(RTLocationAwarenessManager *)self scheduledHeartbeatFiringTime];
+  scheduledHeartbeatFiringTime = [(RTLocationAwarenessManager *)self scheduledHeartbeatFiringTime];
 
-  if (v3)
+  if (scheduledHeartbeatFiringTime)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v4 = [(RTLocationAwarenessManager *)self scheduledHeartbeatFiringTime];
-    [v8 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    scheduledHeartbeatFiringTime2 = [(RTLocationAwarenessManager *)self scheduledHeartbeatFiringTime];
+    [date timeIntervalSinceDate:scheduledHeartbeatFiringTime2];
     v6 = v5;
 
-    [(RTLocationAwarenessManager *)self updateHeartbeatTimerDelayForTimestamp:v8 withDelay:v6];
+    [(RTLocationAwarenessManager *)self updateHeartbeatTimerDelayForTimestamp:date withDelay:v6];
     [(RTLocationAwarenessManager *)self setScheduledHeartbeatFiringTime:0];
   }
 
@@ -120,41 +120,41 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke_73(uint
 - (void)considerRequestingForLocation
 {
   v67 = *MEMORY[0x277D85DE8];
-  v3 = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
-  if (v3)
+  minHeartbeatBucket = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
+  if (minHeartbeatBucket)
   {
     restTimer = self->_restTimer;
 
     if (!restTimer)
     {
-      v5 = [MEMORY[0x277CBEAA8] date];
-      v6 = [(RTLocationAwarenessManager *)self metrics];
-      v7 = [v6 heartbeatStats];
-      v8 = [v7 timerFiringCount];
-      [(RTLocationAwarenessManager *)self incrementBasicHistogram:v8 forTimestamp:v5];
+      date = [MEMORY[0x277CBEAA8] date];
+      metrics = [(RTLocationAwarenessManager *)self metrics];
+      heartbeatStats = [metrics heartbeatStats];
+      timerFiringCount = [heartbeatStats timerFiringCount];
+      [(RTLocationAwarenessManager *)self incrementBasicHistogram:timerFiringCount forTimestamp:date];
 
-      v9 = [(RTLocationAwarenessManager *)self lastValidLocation];
-      if (v9 && (v10 = v9, -[RTLocationAwarenessManager stationaryStartTimestamp](self, "stationaryStartTimestamp"), v11 = objc_claimAutoreleasedReturnValue(), -[RTLocationAwarenessManager lastValidLocation](self, "lastValidLocation"), v12 = objc_claimAutoreleasedReturnValue(), [v12 timestamp], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "timeIntervalSinceDate:", v13), v15 = v14, v13, v12, v11, v10, v15 <= 0.0))
+      lastValidLocation = [(RTLocationAwarenessManager *)self lastValidLocation];
+      if (lastValidLocation && (v10 = lastValidLocation, -[RTLocationAwarenessManager stationaryStartTimestamp](self, "stationaryStartTimestamp"), v11 = objc_claimAutoreleasedReturnValue(), -[RTLocationAwarenessManager lastValidLocation](self, "lastValidLocation"), v12 = objc_claimAutoreleasedReturnValue(), [v12 timestamp], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "timeIntervalSinceDate:", v13), v15 = v14, v13, v12, v11, v10, v15 <= 0.0))
       {
-        v59 = [(RTLocationAwarenessManager *)self metrics];
-        v60 = [v59 heartbeatStats];
-        v61 = [v60 skippedRequestDueToStationary];
-        [(RTLocationAwarenessManager *)self incrementBasicHistogram:v61 forTimestamp:v5];
+        metrics2 = [(RTLocationAwarenessManager *)self metrics];
+        heartbeatStats2 = [metrics2 heartbeatStats];
+        skippedRequestDueToStationary = [heartbeatStats2 skippedRequestDueToStationary];
+        [(RTLocationAwarenessManager *)self incrementBasicHistogram:skippedRequestDueToStationary forTimestamp:date];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v52 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
           if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
           {
-            v53 = [(RTLocationAwarenessManager *)self lastValidLocation];
-            v54 = [v53 timestamp];
-            v55 = [v54 stringFromDate];
-            v56 = [(RTLocationAwarenessManager *)self stationaryStartTimestamp];
-            v57 = [v56 stringFromDate];
+            lastValidLocation2 = [(RTLocationAwarenessManager *)self lastValidLocation];
+            timestamp = [lastValidLocation2 timestamp];
+            stringFromDate = [timestamp stringFromDate];
+            stationaryStartTimestamp = [(RTLocationAwarenessManager *)self stationaryStartTimestamp];
+            stringFromDate2 = [stationaryStartTimestamp stringFromDate];
             *buf = 138412546;
-            v64 = v55;
+            v64 = stringFromDate;
             v65 = 2112;
-            v66 = v57;
+            v66 = stringFromDate2;
             v58 = "Skip active location request, [stationary]. Last valid location timestamp, %@, stationary since, %@.";
             goto LABEL_17;
           }
@@ -167,37 +167,37 @@ LABEL_18:
       {
         [(RTLocationAwarenessManager *)self starvingDurationTillNow];
         v17 = v16;
-        v18 = [(RTLocationAwarenessManager *)self config];
-        [v18 dispatchTimerLeeway];
+        config = [(RTLocationAwarenessManager *)self config];
+        [config dispatchTimerLeeway];
         v20 = v17 + v19;
-        v21 = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
-        [(RTLocationAwarenessManager *)self intervalForHeartbeatBucket:v21];
+        minHeartbeatBucket2 = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
+        [(RTLocationAwarenessManager *)self intervalForHeartbeatBucket:minHeartbeatBucket2];
         v23 = v22;
 
-        v24 = [(RTLocationAwarenessManager *)self metrics];
-        v25 = [v24 heartbeatStats];
-        v26 = v25;
+        metrics3 = [(RTLocationAwarenessManager *)self metrics];
+        heartbeatStats3 = [metrics3 heartbeatStats];
+        v26 = heartbeatStats3;
         if (v20 > v23)
         {
-          v27 = [v25 activeRequestCount];
-          [(RTLocationAwarenessManager *)self incrementBasicHistogram:v27 forTimestamp:v5];
+          activeRequestCount = [heartbeatStats3 activeRequestCount];
+          [(RTLocationAwarenessManager *)self incrementBasicHistogram:activeRequestCount forTimestamp:date];
 
           [(RTLocationAwarenessManager *)self resetActiveRequestSummaryVariables];
-          objc_storeStrong(&self->_activeOnset, v5);
-          v28 = [(RTLocationAwarenessManager *)self locationManager];
+          objc_storeStrong(&self->_activeOnset, date);
+          locationManager = [(RTLocationAwarenessManager *)self locationManager];
           v29 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyHundredMeters];
-          [v28 addObserver:self selector:sel_onNoOpLocationNotification_ name:v29];
+          [locationManager addObserver:self selector:sel_onNoOpLocationNotification_ name:v29];
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v30 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
-              v31 = [(RTLocationAwarenessManager *)self restTimer];
-              v32 = [(RTLocationAwarenessManager *)self config];
-              [v32 activeDuration];
+              restTimer = [(RTLocationAwarenessManager *)self restTimer];
+              config2 = [(RTLocationAwarenessManager *)self config];
+              [config2 activeDuration];
               *buf = 134218240;
-              v64 = v31;
+              v64 = restTimer;
               v65 = 2048;
               v66 = v33;
               _os_log_impl(&dword_2304B3000, v30, OS_LOG_TYPE_INFO, "Reset rest timer, %p, firing delay, %f secs.", buf, 0x16u);
@@ -209,51 +209,51 @@ LABEL_18:
           v36 = objc_opt_class();
           v37 = NSStringFromClass(v36);
           v38 = [v35 stringWithFormat:@"%@.restTimer", v37];
-          v39 = [(RTNotifier *)self queue];
+          queue = [(RTNotifier *)self queue];
           v62[0] = MEMORY[0x277D85DD0];
           v62[1] = 3221225472;
           v62[2] = __59__RTLocationAwarenessManager_considerRequestingForLocation__block_invoke;
           v62[3] = &unk_2788C4EA0;
           v62[4] = self;
-          v40 = [(RTTimerManager *)timerManager timerWithIdentifier:v38 queue:v39 handler:v62];
+          v40 = [(RTTimerManager *)timerManager timerWithIdentifier:v38 queue:queue handler:v62];
           v41 = self->_restTimer;
           self->_restTimer = v40;
 
           v42 = self->_restTimer;
-          v43 = [(RTLocationAwarenessManager *)self config];
-          [v43 activeDuration];
+          config3 = [(RTLocationAwarenessManager *)self config];
+          [config3 activeDuration];
           v45 = v44;
-          v46 = [(RTLocationAwarenessManager *)self config];
-          [v46 dispatchTimerLeeway];
+          config4 = [(RTLocationAwarenessManager *)self config];
+          [config4 dispatchTimerLeeway];
           [(RTTimer *)v42 fireAfterDelay:v45 interval:INFINITY leeway:v47];
 
           [(RTTimer *)self->_restTimer resume];
           v48 = MEMORY[0x277CBEAA8];
-          v49 = [(RTLocationAwarenessManager *)self config];
-          [v49 activeDuration];
+          config5 = [(RTLocationAwarenessManager *)self config];
+          [config5 activeDuration];
           v50 = [v48 dateWithTimeIntervalSinceNow:?];
           [(RTLocationAwarenessManager *)self setScheduledRestTimerFiringTime:v50];
 
           goto LABEL_19;
         }
 
-        v51 = [v25 skippedRequestDueToRecentFix];
-        [(RTLocationAwarenessManager *)self incrementBasicHistogram:v51 forTimestamp:v5];
+        skippedRequestDueToRecentFix = [heartbeatStats3 skippedRequestDueToRecentFix];
+        [(RTLocationAwarenessManager *)self incrementBasicHistogram:skippedRequestDueToRecentFix forTimestamp:date];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v52 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
           if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
           {
-            v53 = [(RTLocationAwarenessManager *)self lastValidLocation];
-            v54 = [v53 timestamp];
-            v55 = [v54 stringFromDate];
-            v56 = [(RTLocationAwarenessManager *)self stationaryStartTimestamp];
-            v57 = [v56 stringFromDate];
+            lastValidLocation2 = [(RTLocationAwarenessManager *)self lastValidLocation];
+            timestamp = [lastValidLocation2 timestamp];
+            stringFromDate = [timestamp stringFromDate];
+            stationaryStartTimestamp = [(RTLocationAwarenessManager *)self stationaryStartTimestamp];
+            stringFromDate2 = [stationaryStartTimestamp stringFromDate];
             *buf = 138412546;
-            v64 = v55;
+            v64 = stringFromDate;
             v65 = 2112;
-            v66 = v57;
+            v66 = stringFromDate2;
             v58 = "Skip active location request, [recent fix]. Last valid location timestamp, %@, stationary since, %@.";
 LABEL_17:
             _os_log_impl(&dword_2304B3000, v52, OS_LOG_TYPE_INFO, v58, buf, 0x16u);
@@ -272,20 +272,20 @@ LABEL_19:
 
 - (double)starvingDurationTillNow
 {
-  v3 = [(RTLocationAwarenessManager *)self lastValidLocation];
-  if (v3)
+  lastValidLocation = [(RTLocationAwarenessManager *)self lastValidLocation];
+  if (lastValidLocation)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(RTLocationAwarenessManager *)self lastValidLocation];
-    v6 = [v5 timestamp];
-    [v4 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastValidLocation2 = [(RTLocationAwarenessManager *)self lastValidLocation];
+    timestamp = [lastValidLocation2 timestamp];
+    [date timeIntervalSinceDate:timestamp];
     v8 = v7;
   }
 
   else
   {
-    v4 = [(RTLocationAwarenessManager *)self config];
-    [v4 maxHeartbeatInterval];
+    date = [(RTLocationAwarenessManager *)self config];
+    [date maxHeartbeatInterval];
     v8 = v9;
   }
 
@@ -306,38 +306,38 @@ LABEL_19:
 - (void)adjustHeartbeatTimer
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
+  minHeartbeatBucket = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
 
-  if (v3)
+  if (minHeartbeatBucket)
   {
-    v4 = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
-    [(RTLocationAwarenessManager *)self intervalForHeartbeatBucket:v4];
+    minHeartbeatBucket2 = [(RTLocationAwarenessManager *)self minHeartbeatBucket];
+    [(RTLocationAwarenessManager *)self intervalForHeartbeatBucket:minHeartbeatBucket2];
     v6 = v5;
 
     [(RTLocationAwarenessManager *)self starvingDurationTillNow];
     [(RTLocationAwarenessManager *)self nextFiringDelayWithHeartbeatInterval:v6 starvingDuration:v7];
     v9 = v8;
     objc_initWeak(&location, self);
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [(RTLocationAwarenessManager *)self config];
-    [v11 dispatchTimerLeeway];
+    date = [MEMORY[0x277CBEAA8] date];
+    config = [(RTLocationAwarenessManager *)self config];
+    [config dispatchTimerLeeway];
     v13 = v9 > v12;
 
     if (!v13)
     {
-      v14 = [(RTLocationAwarenessManager *)self activeOnset];
-      v15 = v14 == 0;
+      activeOnset = [(RTLocationAwarenessManager *)self activeOnset];
+      v15 = activeOnset == 0;
 
       if (v15)
       {
-        v16 = [(RTNotifier *)self queue];
+        queue = [(RTNotifier *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke;
         block[3] = &unk_2788C57F8;
         objc_copyWeak(&v36, &location);
-        v35 = v10;
-        dispatch_async(v16, block);
+        v35 = date;
+        dispatch_async(queue, block);
 
         objc_destroyWeak(&v36);
       }
@@ -350,9 +350,9 @@ LABEL_19:
       v17 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = [(RTLocationAwarenessManager *)self heartbeatTimer];
+        heartbeatTimer = [(RTLocationAwarenessManager *)self heartbeatTimer];
         *buf = 134218240;
-        v39 = v18;
+        v39 = heartbeatTimer;
         v40 = 2048;
         v41 = v9;
         _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "Reset heartbeat timer, %p, firing delay, %f secs.", buf, 0x16u);
@@ -364,19 +364,19 @@ LABEL_19:
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
     v23 = [v20 stringWithFormat:@"%@.heartbeatTimer", v22];
-    v24 = [(RTNotifier *)self queue];
+    queue2 = [(RTNotifier *)self queue];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke_73;
     v32[3] = &unk_2788C5908;
     objc_copyWeak(&v33, &location);
-    v25 = [(RTTimerManager *)timerManager timerWithIdentifier:v23 queue:v24 handler:v32];
+    v25 = [(RTTimerManager *)timerManager timerWithIdentifier:v23 queue:queue2 handler:v32];
     heartbeatTimer = self->_heartbeatTimer;
     self->_heartbeatTimer = v25;
 
     v27 = self->_heartbeatTimer;
-    v28 = [(RTLocationAwarenessManager *)self config];
-    [v28 dispatchTimerLeeway];
+    config2 = [(RTLocationAwarenessManager *)self config];
+    [config2 dispatchTimerLeeway];
     [(RTTimer *)v27 fireAfterDelay:v9 interval:INFINITY leeway:v29];
 
     [(RTTimer *)self->_heartbeatTimer resume];
@@ -397,23 +397,23 @@ LABEL_19:
 
 - (double)metricAge
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(RTLocationAwarenessManager *)self metrics];
-  v5 = [v4 startTimestamp];
-  [v3 timeIntervalSinceDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  metrics = [(RTLocationAwarenessManager *)self metrics];
+  startTimestamp = [metrics startTimestamp];
+  [date timeIntervalSinceDate:startTimestamp];
   v7 = v6;
 
   return v7;
 }
 
-- (void)updateLocationAwarenessHistogramsWithLocations:(id)a3
+- (void)updateLocationAwarenessHistogramsWithLocations:(id)locations
 {
   v66 = *MEMORY[0x277D85DE8];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = a3;
+  obj = locations;
   v4 = [obj countByEnumeratingWithState:&v61 objects:v65 count:16];
   if (v4)
   {
@@ -429,89 +429,89 @@ LABEL_19:
         }
 
         v7 = *(*(&v61 + 1) + 8 * i);
-        v8 = [v7 timestamp];
+        timestamp = [v7 timestamp];
 
-        if (v8)
+        if (timestamp)
         {
           v9 = objc_opt_class();
-          v10 = [v7 timestamp];
-          v11 = [v9 localHourFromTimestamp:v10];
+          timestamp2 = [v7 timestamp];
+          v11 = [v9 localHourFromTimestamp:timestamp2];
 
           [v7 horizontalAccuracy];
           if (v12 > 0.0)
           {
             v13 = v12;
-            v14 = [(RTLocationAwarenessManager *)self metrics];
-            v15 = [v14 timeHistograms];
-            v16 = [v15 anyPositiveHistogram];
-            v17 = [v16 counts];
-            ++*(v17 + 4 * v11);
+            metrics = [(RTLocationAwarenessManager *)self metrics];
+            timeHistograms = [metrics timeHistograms];
+            anyPositiveHistogram = [timeHistograms anyPositiveHistogram];
+            counts = [anyPositiveHistogram counts];
+            ++*(counts + 4 * v11);
 
-            v18 = [(RTLocationAwarenessManager *)self metrics];
-            v19 = [v18 intervalHistogram];
-            v20 = [v19 anyPositiveIntervalHistograms];
-            v21 = [(RTLocationAwarenessManager *)self lastLocationAnyPositive];
-            v22 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:v20 lastLocation:v21];
+            metrics2 = [(RTLocationAwarenessManager *)self metrics];
+            intervalHistogram = [metrics2 intervalHistogram];
+            anyPositiveIntervalHistograms = [intervalHistogram anyPositiveIntervalHistograms];
+            lastLocationAnyPositive = [(RTLocationAwarenessManager *)self lastLocationAnyPositive];
+            v22 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:anyPositiveIntervalHistograms lastLocation:lastLocationAnyPositive];
             [(RTLocationAwarenessManager *)self setLastLocationAnyPositive:v22];
 
             if (v13 < 200.0)
             {
-              v23 = [(RTLocationAwarenessManager *)self metrics];
-              v24 = [v23 timeHistograms];
-              v25 = [v24 lessThan200mHistogram];
-              v26 = [v25 counts];
-              ++*(v26 + 4 * v11);
+              metrics3 = [(RTLocationAwarenessManager *)self metrics];
+              timeHistograms2 = [metrics3 timeHistograms];
+              lessThan200mHistogram = [timeHistograms2 lessThan200mHistogram];
+              counts2 = [lessThan200mHistogram counts];
+              ++*(counts2 + 4 * v11);
 
-              v27 = [(RTLocationAwarenessManager *)self metrics];
-              v28 = [v27 intervalHistogram];
-              v29 = [v28 lessThan200mIntervalHistograms];
-              v30 = [(RTLocationAwarenessManager *)self lastLocationLessThan200m];
-              v31 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:v29 lastLocation:v30];
+              metrics4 = [(RTLocationAwarenessManager *)self metrics];
+              intervalHistogram2 = [metrics4 intervalHistogram];
+              lessThan200mIntervalHistograms = [intervalHistogram2 lessThan200mIntervalHistograms];
+              lastLocationLessThan200m = [(RTLocationAwarenessManager *)self lastLocationLessThan200m];
+              v31 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:lessThan200mIntervalHistograms lastLocation:lastLocationLessThan200m];
               [(RTLocationAwarenessManager *)self setLastLocationLessThan200m:v31];
 
               if (v13 < 55.0)
               {
-                v32 = [(RTLocationAwarenessManager *)self metrics];
-                v33 = [v32 timeHistograms];
-                v34 = [v33 lessThan55mHistogram];
-                v35 = [v34 counts];
-                ++*(v35 + 4 * v11);
+                metrics5 = [(RTLocationAwarenessManager *)self metrics];
+                timeHistograms3 = [metrics5 timeHistograms];
+                lessThan55mHistogram = [timeHistograms3 lessThan55mHistogram];
+                counts3 = [lessThan55mHistogram counts];
+                ++*(counts3 + 4 * v11);
 
-                v36 = [(RTLocationAwarenessManager *)self metrics];
-                v37 = [v36 intervalHistogram];
-                v38 = [v37 lessThan55mIntervalHistograms];
-                v39 = [(RTLocationAwarenessManager *)self lastLocationLessThan55m];
-                v40 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:v38 lastLocation:v39];
+                metrics6 = [(RTLocationAwarenessManager *)self metrics];
+                intervalHistogram3 = [metrics6 intervalHistogram];
+                lessThan55mIntervalHistograms = [intervalHistogram3 lessThan55mIntervalHistograms];
+                lastLocationLessThan55m = [(RTLocationAwarenessManager *)self lastLocationLessThan55m];
+                v40 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:lessThan55mIntervalHistograms lastLocation:lastLocationLessThan55m];
                 [(RTLocationAwarenessManager *)self setLastLocationLessThan55m:v40];
 
                 if (v13 < 20.0)
                 {
-                  v41 = [(RTLocationAwarenessManager *)self metrics];
-                  v42 = [v41 timeHistograms];
-                  v43 = [v42 lessThan20mHistogram];
-                  v44 = [v43 counts];
-                  ++*(v44 + 4 * v11);
+                  metrics7 = [(RTLocationAwarenessManager *)self metrics];
+                  timeHistograms4 = [metrics7 timeHistograms];
+                  lessThan20mHistogram = [timeHistograms4 lessThan20mHistogram];
+                  counts4 = [lessThan20mHistogram counts];
+                  ++*(counts4 + 4 * v11);
 
-                  v45 = [(RTLocationAwarenessManager *)self metrics];
-                  v46 = [v45 intervalHistogram];
-                  v47 = [v46 lessThan25mIntervalHistograms];
-                  v48 = [(RTLocationAwarenessManager *)self lastLocationLessThan20m];
-                  v49 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:v47 lastLocation:v48];
+                  metrics8 = [(RTLocationAwarenessManager *)self metrics];
+                  intervalHistogram4 = [metrics8 intervalHistogram];
+                  lessThan25mIntervalHistograms = [intervalHistogram4 lessThan25mIntervalHistograms];
+                  lastLocationLessThan20m = [(RTLocationAwarenessManager *)self lastLocationLessThan20m];
+                  v49 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:lessThan25mIntervalHistograms lastLocation:lastLocationLessThan20m];
                   [(RTLocationAwarenessManager *)self setLastLocationLessThan20m:v49];
 
                   if (v13 < 10.0)
                   {
-                    v50 = [(RTLocationAwarenessManager *)self metrics];
-                    v51 = [v50 timeHistograms];
-                    v52 = [v51 lessThan10mHistogram];
-                    v53 = [v52 counts];
-                    ++*(v53 + 4 * v11);
+                    metrics9 = [(RTLocationAwarenessManager *)self metrics];
+                    timeHistograms5 = [metrics9 timeHistograms];
+                    lessThan10mHistogram = [timeHistograms5 lessThan10mHistogram];
+                    counts5 = [lessThan10mHistogram counts];
+                    ++*(counts5 + 4 * v11);
 
-                    v54 = [(RTLocationAwarenessManager *)self metrics];
-                    v55 = [v54 intervalHistogram];
-                    v56 = [v55 lessThan10mIntervalHistograms];
-                    v57 = [(RTLocationAwarenessManager *)self lastLocationLessThan10m];
-                    v58 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:v56 lastLocation:v57];
+                    metrics10 = [(RTLocationAwarenessManager *)self metrics];
+                    intervalHistogram5 = [metrics10 intervalHistogram];
+                    lessThan10mIntervalHistograms = [intervalHistogram5 lessThan10mIntervalHistograms];
+                    lastLocationLessThan10m = [(RTLocationAwarenessManager *)self lastLocationLessThan10m];
+                    v58 = [(RTLocationAwarenessManager *)self updateWithLocation:v7 oneIntervalHistogram:lessThan10mIntervalHistograms lastLocation:lastLocationLessThan10m];
                     [(RTLocationAwarenessManager *)self setLastLocationLessThan10m:v58];
                   }
                 }
@@ -528,13 +528,13 @@ LABEL_19:
   }
 }
 
-- (id)updateWithLocation:(id)a3 oneIntervalHistogram:(id)a4 lastLocation:(id)a5
+- (id)updateWithLocation:(id)location oneIntervalHistogram:(id)histogram lastLocation:(id)lastLocation
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  locationCopy = location;
+  histogramCopy = histogram;
+  lastLocationCopy = lastLocation;
+  if (!locationCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -546,82 +546,82 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location (in %s:%d)", &v38, 0x12u);
     }
 
-    v36 = v9;
+    v36 = lastLocationCopy;
     goto LABEL_18;
   }
 
-  if (!v9)
+  if (!lastLocationCopy)
   {
-    v36 = [v7 copy];
+    v36 = [locationCopy copy];
 LABEL_18:
     v17 = v36;
     goto LABEL_19;
   }
 
-  v10 = [v7 timestamp];
-  v11 = [v9 timestamp];
-  [v10 timeIntervalSinceDate:v11];
+  timestamp = [locationCopy timestamp];
+  timestamp2 = [lastLocationCopy timestamp];
+  [timestamp timeIntervalSinceDate:timestamp2];
   v13 = v12;
 
   v14 = objc_opt_class();
-  v15 = [v9 timestamp];
-  v16 = [v14 localHourFromTimestamp:v15];
+  timestamp3 = [lastLocationCopy timestamp];
+  v16 = [v14 localHourFromTimestamp:timestamp3];
 
-  v17 = v9;
+  v17 = lastLocationCopy;
   if (v13 > 0.0)
   {
-    v18 = [v7 copy];
+    v18 = [locationCopy copy];
 
     v17 = v18;
   }
 
   if (v13 > 8.0)
   {
-    v19 = [v8 objectAtIndex:0];
-    v20 = [v19 counts];
-    ++*(v20 + 4 * v16);
+    v19 = [histogramCopy objectAtIndex:0];
+    counts = [v19 counts];
+    ++*(counts + 4 * v16);
 
     if (v13 > 60.0)
     {
-      v21 = [v8 objectAtIndex:1];
-      v22 = [v21 counts];
-      ++*(v22 + 4 * v16);
+      v21 = [histogramCopy objectAtIndex:1];
+      counts2 = [v21 counts];
+      ++*(counts2 + 4 * v16);
 
       if (v13 > 120.0)
       {
-        v23 = [v8 objectAtIndex:2];
-        v24 = [v23 counts];
-        ++*(v24 + 4 * v16);
+        v23 = [histogramCopy objectAtIndex:2];
+        counts3 = [v23 counts];
+        ++*(counts3 + 4 * v16);
 
         if (v13 > 900.0)
         {
-          v25 = [v8 objectAtIndex:3];
-          v26 = [v25 counts];
-          ++*(v26 + 4 * v16);
+          v25 = [histogramCopy objectAtIndex:3];
+          counts4 = [v25 counts];
+          ++*(counts4 + 4 * v16);
 
           if (v13 > 3600.0)
           {
-            v27 = [v8 objectAtIndex:4];
-            v28 = [v27 counts];
-            ++*(v28 + 4 * v16);
+            v27 = [histogramCopy objectAtIndex:4];
+            counts5 = [v27 counts];
+            ++*(counts5 + 4 * v16);
 
             if (v13 > 7200.0)
             {
-              v29 = [v8 objectAtIndex:5];
-              v30 = [v29 counts];
-              ++*(v30 + 4 * v16);
+              v29 = [histogramCopy objectAtIndex:5];
+              counts6 = [v29 counts];
+              ++*(counts6 + 4 * v16);
 
               if (v13 > 14400.0)
               {
-                v31 = [v8 objectAtIndex:6];
-                v32 = [v31 counts];
-                ++*(v32 + 4 * v16);
+                v31 = [histogramCopy objectAtIndex:6];
+                counts7 = [v31 counts];
+                ++*(counts7 + 4 * v16);
 
                 if (v13 > 28800.0)
                 {
-                  v33 = [v8 objectAtIndex:7];
-                  v34 = [v33 counts];
-                  ++*(v34 + 4 * v16);
+                  v33 = [histogramCopy objectAtIndex:7];
+                  counts8 = [v33 counts];
+                  ++*(counts8 + 4 * v16);
                 }
               }
             }
@@ -636,26 +636,26 @@ LABEL_19:
   return v17;
 }
 
-+ (int64_t)localHourFromTimestamp:(id)a3
++ (int64_t)localHourFromTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:32 fromDate:v4];
+  timestampCopy = timestamp;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:32 fromDate:timestampCopy];
 
-  v7 = [v6 hour];
-  return v7;
+  hour = [v6 hour];
+  return hour;
 }
 
-- (void)updateHeartbeatTimerDelayForTimestamp:(id)a3 withDelay:(double)a4
+- (void)updateHeartbeatTimerDelayForTimestamp:(id)timestamp withDelay:(double)delay
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RTLocationAwarenessManager *)self config];
-  [v7 heartbeatIntervalResolution];
+  timestampCopy = timestamp;
+  config = [(RTLocationAwarenessManager *)self config];
+  [config heartbeatIntervalResolution];
   v9 = v8 * 0.5;
 
-  if (v9 < a4)
+  if (v9 < delay)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -663,36 +663,36 @@ LABEL_19:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v28 = 134217984;
-        v29 = a4;
+        delayCopy = delay;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "Significant heartbeat delay, %0.1f seconds", &v28, 0xCu);
       }
     }
 
-    v11 = [objc_opt_class() localHourFromTimestamp:v6];
-    v12 = [(RTLocationAwarenessManager *)self metrics];
-    v13 = [v12 heartbeatStats];
-    v14 = [v13 timerFiringDelayedCount];
-    v15 = [v14 counts];
-    ++*(v15 + 4 * v11);
+    v11 = [objc_opt_class() localHourFromTimestamp:timestampCopy];
+    metrics = [(RTLocationAwarenessManager *)self metrics];
+    heartbeatStats = [metrics heartbeatStats];
+    timerFiringDelayedCount = [heartbeatStats timerFiringDelayedCount];
+    counts = [timerFiringDelayedCount counts];
+    ++*(counts + 4 * v11);
 
-    v16 = llround(a4);
-    v17 = [(RTLocationAwarenessManager *)self metrics];
-    v18 = [v17 heartbeatStats];
-    v19 = [v18 timerFiringDelayedTotalSeconds];
-    v20 = [v19 counts];
-    *(v20 + 4 * v11) += v16;
+    v16 = llround(delay);
+    metrics2 = [(RTLocationAwarenessManager *)self metrics];
+    heartbeatStats2 = [metrics2 heartbeatStats];
+    timerFiringDelayedTotalSeconds = [heartbeatStats2 timerFiringDelayedTotalSeconds];
+    counts2 = [timerFiringDelayedTotalSeconds counts];
+    *(counts2 + 4 * v11) += v16;
 
-    v21 = [(RTLocationAwarenessManager *)self metrics];
-    v22 = [v21 heartbeatStats];
-    v23 = [v22 timerFiringDelayedMaxSeconds];
-    v24 = *([v23 counts] + 4 * v11);
+    metrics3 = [(RTLocationAwarenessManager *)self metrics];
+    heartbeatStats3 = [metrics3 heartbeatStats];
+    timerFiringDelayedMaxSeconds = [heartbeatStats3 timerFiringDelayedMaxSeconds];
+    v24 = *([timerFiringDelayedMaxSeconds counts] + 4 * v11);
 
     if (v24 < v16)
     {
-      v25 = [(RTLocationAwarenessManager *)self metrics];
-      v26 = [v25 heartbeatStats];
-      v27 = [v26 timerFiringDelayedMaxSeconds];
-      *([v27 counts] + 4 * v11) = v16;
+      metrics4 = [(RTLocationAwarenessManager *)self metrics];
+      heartbeatStats4 = [metrics4 heartbeatStats];
+      timerFiringDelayedMaxSeconds2 = [heartbeatStats4 timerFiringDelayedMaxSeconds];
+      *([timerFiringDelayedMaxSeconds2 counts] + 4 * v11) = v16;
     }
   }
 }
@@ -701,47 +701,47 @@ LABEL_19:
 {
   [(RTLocationAwarenessManager *)self setActiveRequestInterrupted:[(RTLocationAwarenessManager *)self activeRequestInterruptedCheck]];
   v3 = dispatch_group_create();
-  v4 = [(RTLocationAwarenessManager *)self authorizationManager];
+  authorizationManager = [(RTLocationAwarenessManager *)self authorizationManager];
 
-  if (v4)
+  if (authorizationManager)
   {
     dispatch_group_enter(v3);
-    v5 = [(RTLocationAwarenessManager *)self authorizationManager];
+    authorizationManager2 = [(RTLocationAwarenessManager *)self authorizationManager];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __72__RTLocationAwarenessManager_metric__considerUpdateActiveRequestMetrics__block_invoke;
     v15[3] = &unk_2788C53F0;
     v15[4] = self;
     v16 = v3;
-    [v5 fetchRoutineEnabledWithHandler:v15];
+    [authorizationManager2 fetchRoutineEnabledWithHandler:v15];
   }
 
-  v6 = [(RTLocationAwarenessManager *)self wifiManager];
+  wifiManager = [(RTLocationAwarenessManager *)self wifiManager];
 
-  if (v6)
+  if (wifiManager)
   {
     dispatch_group_enter(v3);
-    v7 = [(RTLocationAwarenessManager *)self wifiManager];
+    wifiManager2 = [(RTLocationAwarenessManager *)self wifiManager];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __72__RTLocationAwarenessManager_metric__considerUpdateActiveRequestMetrics__block_invoke_3;
     v13[3] = &unk_2788CC440;
     v13[4] = self;
     v14 = v3;
-    [v7 fetchPowerStatus:v13];
+    [wifiManager2 fetchPowerStatus:v13];
   }
 
   -[RTLocationAwarenessManager setActiveRequestLocationServiceOn:](self, "setActiveRequestLocationServiceOn:", [MEMORY[0x277CBFC10] locationServicesEnabled]);
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [(RTNotifier *)self queue];
+  date = [MEMORY[0x277CBEAA8] date];
+  queue = [(RTNotifier *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__RTLocationAwarenessManager_metric__considerUpdateActiveRequestMetrics__block_invoke_5;
   v11[3] = &unk_2788C4A70;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_group_notify(v3, v9, v11);
+  v12 = date;
+  v10 = date;
+  dispatch_group_notify(v3, queue, v11);
 }
 
 void __72__RTLocationAwarenessManager_metric__considerUpdateActiveRequestMetrics__block_invoke(uint64_t a1, char a2)
@@ -899,16 +899,16 @@ void __72__RTLocationAwarenessManager_metric__considerUpdateActiveRequestMetrics
 
 - (BOOL)activeRequestInterruptedCheck
 {
-  v3 = [(RTLocationAwarenessManager *)self scheduledRestTimerFiringTime];
+  scheduledRestTimerFiringTime = [(RTLocationAwarenessManager *)self scheduledRestTimerFiringTime];
 
-  if (v3)
+  if (scheduledRestTimerFiringTime)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(RTLocationAwarenessManager *)self scheduledRestTimerFiringTime];
-    [v4 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    scheduledRestTimerFiringTime2 = [(RTLocationAwarenessManager *)self scheduledRestTimerFiringTime];
+    [date timeIntervalSinceDate:scheduledRestTimerFiringTime2];
     v7 = v6;
-    v8 = [(RTLocationAwarenessManager *)self config];
-    [v8 heartbeatIntervalResolution];
+    config = [(RTLocationAwarenessManager *)self config];
+    [config heartbeatIntervalResolution];
     v10 = v7 > v9 * 0.5;
   }
 
@@ -930,33 +930,33 @@ void __72__RTLocationAwarenessManager_metric__considerUpdateActiveRequestMetrics
   return v10;
 }
 
-- (void)incrementBasicHistogram:(id)a3 forTimestamp:(id)a4
+- (void)incrementBasicHistogram:(id)histogram forTimestamp:(id)timestamp
 {
-  v5 = a4;
-  v6 = [a3 counts];
-  v7 = [objc_opt_class() localHourFromTimestamp:v5];
+  timestampCopy = timestamp;
+  counts = [histogram counts];
+  v7 = [objc_opt_class() localHourFromTimestamp:timestampCopy];
 
-  ++*(v6 + 4 * v7);
+  ++*(counts + 4 * v7);
 }
 
-- (RTLocationAwarenessManager)initWithLocationManager:(id)a3 config:(id)a4 metricManager:(id)a5 motionActivityManager:(id)a6 authorizationManager:(id)a7 wifiManager:(id)a8 xpcActivityManager:(id)a9 timerManager:(id)a10 learnedLocationStore:(id)a11
+- (RTLocationAwarenessManager)initWithLocationManager:(id)manager config:(id)config metricManager:(id)metricManager motionActivityManager:(id)activityManager authorizationManager:(id)authorizationManager wifiManager:(id)wifiManager xpcActivityManager:(id)xpcActivityManager timerManager:(id)self0 learnedLocationStore:(id)self1
 {
   v68 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v56 = a5;
-  v19 = a5;
-  v62 = a6;
-  v57 = a7;
-  v61 = a7;
-  v58 = a8;
-  v60 = a8;
-  v20 = a9;
-  v21 = a10;
-  v59 = a11;
-  if (v17)
+  managerCopy = manager;
+  configCopy = config;
+  metricManagerCopy = metricManager;
+  metricManagerCopy2 = metricManager;
+  activityManagerCopy = activityManager;
+  authorizationManagerCopy = authorizationManager;
+  authorizationManagerCopy2 = authorizationManager;
+  wifiManagerCopy = wifiManager;
+  wifiManagerCopy2 = wifiManager;
+  xpcActivityManagerCopy = xpcActivityManager;
+  timerManagerCopy = timerManager;
+  storeCopy = store;
+  if (managerCopy)
   {
-    if (v18)
+    if (configCopy)
     {
       goto LABEL_3;
     }
@@ -974,10 +974,10 @@ void __72__RTLocationAwarenessManager_metric__considerUpdateActiveRequestMetrics
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locationManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v18)
+    if (configCopy)
     {
 LABEL_3:
-      if (v20)
+      if (xpcActivityManagerCopy)
       {
         goto LABEL_4;
       }
@@ -996,10 +996,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: config (in %s:%d)", buf, 0x12u);
   }
 
-  if (v20)
+  if (xpcActivityManagerCopy)
   {
 LABEL_4:
-    if (v21)
+    if (timerManagerCopy)
     {
       goto LABEL_18;
     }
@@ -1018,7 +1018,7 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: xpcActivityManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v21)
+  if (!timerManagerCopy)
   {
 LABEL_15:
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1033,15 +1033,15 @@ LABEL_15:
   }
 
 LABEL_18:
-  v26 = 0;
-  if (v17 && v18 && v20)
+  selfCopy = 0;
+  if (managerCopy && configCopy && xpcActivityManagerCopy)
   {
     v63.receiver = self;
     v63.super_class = RTLocationAwarenessManager;
     v27 = [(RTNotifier *)&v63 init];
     if (v27)
     {
-      v28 = [v18 copy];
+      v28 = [configCopy copy];
       config = v27->_config;
       v27->_config = v28;
 
@@ -1053,8 +1053,8 @@ LABEL_18:
       heartbeatBucketToRequesters = v27->_heartbeatBucketToRequesters;
       v27->_heartbeatBucketToRequesters = v32;
 
-      objc_storeStrong(&v27->_timerManager, a10);
-      objc_storeStrong(&v27->_locationManager, a3);
+      objc_storeStrong(&v27->_timerManager, timerManager);
+      objc_storeStrong(&v27->_locationManager, manager);
       activeOnset = v27->_activeOnset;
       v27->_activeOnset = 0;
 
@@ -1064,14 +1064,14 @@ LABEL_18:
       lastValidLocation = v27->_lastValidLocation;
       v27->_lastValidLocation = 0;
 
-      objc_storeStrong(&v27->_motionActivityManager, a6);
-      v37 = [MEMORY[0x277CBEAA8] distantFuture];
+      objc_storeStrong(&v27->_motionActivityManager, activityManager);
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
       stationaryStartTimestamp = v27->_stationaryStartTimestamp;
-      v27->_stationaryStartTimestamp = v37;
+      v27->_stationaryStartTimestamp = distantFuture;
 
       v39 = [RTInvocationDispatcher alloc];
-      v40 = [(RTNotifier *)v27 queue];
-      v41 = [(RTInvocationDispatcher *)v39 initWithQueue:v40];
+      queue = [(RTNotifier *)v27 queue];
+      v41 = [(RTInvocationDispatcher *)v39 initWithQueue:queue];
       heartbeatBuffer = v27->_heartbeatBuffer;
       v27->_heartbeatBuffer = v41;
 
@@ -1079,8 +1079,8 @@ LABEL_18:
       metrics = v27->_metrics;
       v27->_metrics = v43;
 
-      objc_storeStrong(&v27->_metricManager, v56);
-      objc_storeStrong(&v27->_learnedLocationStore, a11);
+      objc_storeStrong(&v27->_metricManager, metricManagerCopy);
+      objc_storeStrong(&v27->_learnedLocationStore, store);
       lastLocationAnyPositive = v27->_lastLocationAnyPositive;
       v27->_lastLocationAnyPositive = 0;
 
@@ -1096,9 +1096,9 @@ LABEL_18:
       lastLocationLessThan10m = v27->_lastLocationLessThan10m;
       v27->_lastLocationLessThan10m = 0;
 
-      objc_storeStrong(&v27->_authorizationManager, v57);
-      objc_storeStrong(&v27->_wifiManager, v58);
-      objc_storeStrong(&v27->_xpcActivityManager, a9);
+      objc_storeStrong(&v27->_authorizationManager, authorizationManagerCopy);
+      objc_storeStrong(&v27->_wifiManager, wifiManagerCopy);
+      objc_storeStrong(&v27->_xpcActivityManager, xpcActivityManager);
       v50 = objc_opt_new();
       highAccuracyLocationRequesters = v27->_highAccuracyLocationRequesters;
       v27->_highAccuracyLocationRequesters = v50;
@@ -1112,10 +1112,10 @@ LABEL_18:
     }
 
     self = v27;
-    v26 = self;
+    selfCopy = self;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 - (void)_setup
@@ -1135,65 +1135,65 @@ LABEL_18:
       }
     }
 
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     activeOnset = self->_activeOnset;
-    self->_activeOnset = v6;
+    self->_activeOnset = date;
 
     [(RTLocationAwarenessManager *)self setRequestedHighAccuracyLocation:1];
-    v8 = [(RTLocationAwarenessManager *)self locationManager];
+    locationManager = [(RTLocationAwarenessManager *)self locationManager];
     v9 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyBest];
-    [v8 addObserver:self selector:sel_onNoOpLocationNotification_ name:v9];
+    [locationManager addObserver:self selector:sel_onNoOpLocationNotification_ name:v9];
   }
 
   else
   {
-    v10 = [(RTLocationAwarenessManager *)self locationManager];
+    locationManager2 = [(RTLocationAwarenessManager *)self locationManager];
     v11 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-    [v10 addObserver:self selector:sel_onLeechedLocationNotification_ name:v11];
+    [locationManager2 addObserver:self selector:sel_onLeechedLocationNotification_ name:v11];
 
-    v12 = [(RTLocationAwarenessManager *)self motionActivityManager];
+    motionActivityManager = [(RTLocationAwarenessManager *)self motionActivityManager];
     v13 = +[(RTNotification *)RTMotionActivityManagerNotificationActivity];
-    [v12 addObserver:self selector:sel_onMotionActivityManagerNotificationActivityNotification_ name:v13];
+    [motionActivityManager addObserver:self selector:sel_onMotionActivityManagerNotificationActivityNotification_ name:v13];
 
-    v14 = [(RTLocationAwarenessManager *)self motionActivityManager];
+    motionActivityManager2 = [(RTLocationAwarenessManager *)self motionActivityManager];
     v15 = +[(RTNotification *)RTMotionActivityManagerNotificationMotionSettledStateChange];
-    [v14 addObserver:self selector:sel_onMotionActivityManagerNotificationActivityNotification_ name:v15];
+    [motionActivityManager2 addObserver:self selector:sel_onMotionActivityManagerNotificationActivityNotification_ name:v15];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v57 = a3;
+  handlerCopy = handler;
   [(RTTimer *)self->_heartbeatTimer invalidate];
   heartbeatTimer = self->_heartbeatTimer;
   self->_heartbeatTimer = 0;
 
   [(RTLocationAwarenessManager *)self onRest];
-  v5 = [(RTLocationAwarenessManager *)self locationManager];
-  [v5 removeObserver:self];
+  locationManager = [(RTLocationAwarenessManager *)self locationManager];
+  [locationManager removeObserver:self];
 
-  v6 = [(RTLocationAwarenessManager *)self motionActivityManager];
-  [v6 removeObserver:self];
+  motionActivityManager = [(RTLocationAwarenessManager *)self motionActivityManager];
+  [motionActivityManager removeObserver:self];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v8 = [(RTLocationAwarenessManager *)self heartbeatBuffer];
-  [v8 shutdown];
+  heartbeatBuffer = [(RTLocationAwarenessManager *)self heartbeatBuffer];
+  [heartbeatBuffer shutdown];
 
   v9 = dispatch_semaphore_create(0);
-  v10 = [(RTLocationAwarenessManager *)self xpcActivityManager];
+  xpcActivityManager = [(RTLocationAwarenessManager *)self xpcActivityManager];
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __51__RTLocationAwarenessManager__shutdownWithHandler___block_invoke;
   v60[3] = &unk_2788C4730;
   v11 = v9;
   v61 = v11;
-  [v10 unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.heartbeat" handler:v60];
+  [xpcActivityManager unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.heartbeat" handler:v60];
 
   v12 = v11;
   v13 = 0x277CBE000uLL;
@@ -1209,11 +1209,11 @@ LABEL_18:
     v21 = v20;
     v22 = objc_opt_new();
     v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_130];
-    v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v25 = [v24 filteredArrayUsingPredicate:v23];
-    v26 = [v25 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v25 = [callStackSymbols filteredArrayUsingPredicate:v23];
+    firstObject = [v25 firstObject];
 
-    [v22 submitToCoreAnalytics:v26 type:1 duration:v21];
+    [v22 submitToCoreAnalytics:firstObject type:1 duration:v21];
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
@@ -1245,14 +1245,14 @@ LABEL_18:
   v33 = v31;
   v34 = dispatch_semaphore_create(0);
 
-  v35 = [(RTLocationAwarenessManager *)self xpcActivityManager];
+  xpcActivityManager2 = [(RTLocationAwarenessManager *)self xpcActivityManager];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __51__RTLocationAwarenessManager__shutdownWithHandler___block_invoke_2;
   v58[3] = &unk_2788C4730;
   v36 = v34;
   v59 = v36;
-  [v35 unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.highAccuracyLocationRequest" handler:v58];
+  [xpcActivityManager2 unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.highAccuracyLocationRequest" handler:v58];
 
   v37 = v36;
   v38 = [*(v13 + 2728) now];
@@ -1265,11 +1265,11 @@ LABEL_18:
     v42 = v41;
     v43 = objc_opt_new();
     v44 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_130];
-    v45 = [*(v17 + 3272) callStackSymbols];
-    v46 = [v45 filteredArrayUsingPredicate:v44];
-    v47 = [v46 firstObject];
+    callStackSymbols2 = [*(v17 + 3272) callStackSymbols];
+    v46 = [callStackSymbols2 filteredArrayUsingPredicate:v44];
+    firstObject2 = [v46 firstObject];
 
-    [v43 submitToCoreAnalytics:v47 type:1 duration:v42];
+    [v43 submitToCoreAnalytics:firstObject2 type:1 duration:v42];
     v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
     {
@@ -1297,16 +1297,16 @@ LABEL_18:
   xpcActivityPowerAssertion = self->_xpcActivityPowerAssertion;
   self->_xpcActivityPowerAssertion = 0;
 
-  if (v57)
+  if (handlerCopy)
   {
-    v57[2](v57, v54);
+    handlerCopy[2](handlerCopy, v54);
   }
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
@@ -1316,7 +1316,7 @@ LABEL_18:
       v11 = 138412546;
       v12 = v7;
       v13 = 2112;
-      v14 = v5;
+      v14 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, received notification, %@", &v11, 0x16u);
     }
   }
@@ -1327,35 +1327,35 @@ LABEL_18:
   [(RTLocationAwarenessMetricManager *)v10 submitMetrics];
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__RTLocationAwarenessManager_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)setMinHeartbeatBucket:(id)a3
+- (void)setMinHeartbeatBucket:(id)bucket
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  bucketCopy = bucket;
   minHeartbeatBucket = self->_minHeartbeatBucket;
-  if (v5 | minHeartbeatBucket && (!v5 || !minHeartbeatBucket || [(NSNumber *)minHeartbeatBucket compare:v5]))
+  if (bucketCopy | minHeartbeatBucket && (!bucketCopy || !minHeartbeatBucket || [(NSNumber *)minHeartbeatBucket compare:bucketCopy]))
   {
-    objc_storeStrong(&self->_minHeartbeatBucket, a3);
+    objc_storeStrong(&self->_minHeartbeatBucket, bucket);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = 138412290;
-        v9 = v5;
+        v9 = bucketCopy;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "Set minHeartbeatBucket to %@.", &v8, 0xCu);
       }
     }
@@ -1364,11 +1364,11 @@ LABEL_18:
   }
 }
 
-- (void)setLastValidLocation:(id)a3
+- (void)setLastValidLocation:(id)location
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  locationCopy = location;
+  if (!locationCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1384,9 +1384,9 @@ LABEL_18:
   lastValidLocation = self->_lastValidLocation;
   if (lastValidLocation)
   {
-    v7 = [(CLLocation *)lastValidLocation timestamp];
-    v8 = [v4 timestamp];
-    v9 = [v7 compare:v8];
+    timestamp = [(CLLocation *)lastValidLocation timestamp];
+    timestamp2 = [locationCopy timestamp];
+    v9 = [timestamp compare:timestamp2];
 
     if (v9 != -1)
     {
@@ -1402,7 +1402,7 @@ LABEL_18:
     }
   }
 
-  v11 = [v4 copy];
+  v11 = [locationCopy copy];
   v12 = self->_lastValidLocation;
   self->_lastValidLocation = v11;
 
@@ -1410,11 +1410,11 @@ LABEL_18:
   {
     if (![(RTLocationAwarenessManager *)self requestedHighAccuracyLocation])
     {
-      v13 = [(CLLocation *)self->_lastValidLocation timestamp];
-      [v13 timeIntervalSinceDate:self->_activeOnset];
+      timestamp3 = [(CLLocation *)self->_lastValidLocation timestamp];
+      [timestamp3 timeIntervalSinceDate:self->_activeOnset];
       v15 = v14;
-      v16 = [(RTLocationAwarenessManager *)self config];
-      [v16 dispatchTimerLeeway];
+      config = [(RTLocationAwarenessManager *)self config];
+      [config dispatchTimerLeeway];
       v18 = -v17;
 
       if (v15 > v18)
@@ -1438,13 +1438,13 @@ LABEL_18:
   }
 }
 
-- (BOOL)addLocationHeartbeatRequester:(id)a3 interval:(double)a4 error:(id *)a5
+- (BOOL)addLocationHeartbeatRequester:(id)requester interval:(double)interval error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  requesterCopy = requester;
+  if (!requesterCopy)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -1454,23 +1454,23 @@ LABEL_18:
     v27 = *MEMORY[0x277CCA450];
     v28[0] = @"Requester should not be nil.";
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-    *a5 = [v11 errorWithDomain:v12 code:0 userInfo:v13];
+    *error = [v11 errorWithDomain:v12 code:0 userInfo:v13];
 
 LABEL_10:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  if (![(RTLocationAwarenessManager *)self validInterval:a4])
+  if (![(RTLocationAwarenessManager *)self validInterval:interval])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(RTLocationAwarenessManager *)self config];
-    [v15 maxHeartbeatInterval];
+    config = [(RTLocationAwarenessManager *)self config];
+    [config maxHeartbeatInterval];
     v17 = [v14 stringWithFormat:@"Interval should be between 0 and %f.", v16];
 
     v18 = MEMORY[0x277CCA9B8];
@@ -1478,7 +1478,7 @@ LABEL_10:
     v25 = *MEMORY[0x277CCA450];
     v26 = v17;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    *a5 = [v18 errorWithDomain:v19 code:1 userInfo:v20];
+    *error = [v18 errorWithDomain:v19 code:1 userInfo:v20];
 
     goto LABEL_10;
   }
@@ -1488,21 +1488,21 @@ LABEL_10:
   aBlock[2] = __75__RTLocationAwarenessManager_addLocationHeartbeatRequester_interval_error___block_invoke;
   aBlock[3] = &unk_2788C5020;
   aBlock[4] = self;
-  v24 = a4;
-  v23 = v8;
+  intervalCopy = interval;
+  v23 = requesterCopy;
   v9 = _Block_copy(aBlock);
-  v10 = [(RTNotifier *)self queue];
-  dispatch_async(v10, v9);
+  queue = [(RTNotifier *)self queue];
+  dispatch_async(queue, v9);
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a5;
+  return error;
 }
 
 void __75__RTLocationAwarenessManager_addLocationHeartbeatRequester_interval_error___block_invoke(uint64_t a1)
@@ -1538,16 +1538,16 @@ void __75__RTLocationAwarenessManager_addLocationHeartbeatRequester_interval_err
   }
 }
 
-- (void)removeLocationHeartbeatRequester:(id)a3
+- (void)removeLocationHeartbeatRequester:(id)requester
 {
-  v4 = a3;
+  requesterCopy = requester;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = requesterCopy;
+  selfCopy = self;
+  v5 = requesterCopy;
   v6 = _Block_copy(&v8);
   v7 = [(RTNotifier *)self queue:v8];
   dispatch_async(v7, v6);
@@ -1577,14 +1577,14 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
   }
 }
 
-- (void)_addHighAccuracyLocationRequester:(id)a3
+- (void)_addHighAccuracyLocationRequester:(id)requester
 {
-  v4 = a3;
-  v5 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-  v6 = [v5 count];
+  requesterCopy = requester;
+  highAccuracyLocationRequesters = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+  v6 = [highAccuracyLocationRequesters count];
 
-  v7 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-  [v7 addObject:v4];
+  highAccuracyLocationRequesters2 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+  [highAccuracyLocationRequesters2 addObject:requesterCopy];
 
   if (!v6)
   {
@@ -1593,24 +1593,24 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
   }
 }
 
-- (void)_removeHighAccuracyLocationRequester:(id)a3
+- (void)_removeHighAccuracyLocationRequester:(id)requester
 {
-  v11 = a3;
-  v4 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-  v5 = [v4 count];
+  requesterCopy = requester;
+  highAccuracyLocationRequesters = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+  v5 = [highAccuracyLocationRequesters count];
 
-  v6 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-  v7 = [v6 containsObject:v11];
+  highAccuracyLocationRequesters2 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+  v7 = [highAccuracyLocationRequesters2 containsObject:requesterCopy];
 
   if (v7)
   {
-    v8 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-    [v8 removeObject:v11];
+    highAccuracyLocationRequesters3 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+    [highAccuracyLocationRequesters3 removeObject:requesterCopy];
 
     if (v5 == 1)
     {
-      v9 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-      v10 = [v9 count];
+      highAccuracyLocationRequesters4 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+      v10 = [highAccuracyLocationRequesters4 count];
 
       if (!v10)
       {
@@ -1620,11 +1620,11 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
   }
 }
 
-- (BOOL)addHighAccuracyLocationRequester:(id)a3 error:(id *)a4
+- (BOOL)addHighAccuracyLocationRequester:(id)requester error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  requesterCopy = requester;
+  if (requesterCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1635,23 +1635,23 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
         *buf = 138412546;
         v16 = v9;
         v17 = 2112;
-        v18 = v7;
+        v18 = requesterCopy;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, Add high accuracy location requester, %@", buf, 0x16u);
       }
     }
 
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __69__RTLocationAwarenessManager_addHighAccuracyLocationRequester_error___block_invoke;
     v13[3] = &unk_2788C4A70;
     v13[4] = self;
-    v14 = v7;
-    dispatch_async(v10, v13);
+    v14 = requesterCopy;
+    dispatch_async(queue, v13);
 
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
@@ -1664,20 +1664,20 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: requester", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"requester");
+      *error = _RTErrorInvalidParameterCreate(@"requester");
     }
   }
 
-  return v7 != 0;
+  return requesterCopy != 0;
 }
 
-- (BOOL)removeHighAccuracyLocationRequester:(id)a3 error:(id *)a4
+- (BOOL)removeHighAccuracyLocationRequester:(id)requester error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  requesterCopy = requester;
+  if (requesterCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1688,19 +1688,19 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
         *buf = 138412546;
         v16 = v9;
         v17 = 2112;
-        v18 = v7;
+        v18 = requesterCopy;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, Remove high accuracy location requester, %@", buf, 0x16u);
       }
     }
 
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __72__RTLocationAwarenessManager_removeHighAccuracyLocationRequester_error___block_invoke;
     v13[3] = &unk_2788C4A70;
     v13[4] = self;
-    v14 = v7;
-    dispatch_async(v10, v13);
+    v14 = requesterCopy;
+    dispatch_async(queue, v13);
   }
 
   else
@@ -1712,20 +1712,20 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: requester", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"requester");
+      *error = _RTErrorInvalidParameterCreate(@"requester");
     }
   }
 
-  return v7 != 0;
+  return requesterCopy != 0;
 }
 
-- (BOOL)addFixedRateLocationRequester:(id)a3 error:(id *)a4
+- (BOOL)addFixedRateLocationRequester:(id)requester error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  requesterCopy = requester;
+  if (requesterCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1736,23 +1736,23 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
         *buf = 138412546;
         v16 = v9;
         v17 = 2112;
-        v18 = v7;
+        v18 = requesterCopy;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, Add fixed rate location requester, %@", buf, 0x16u);
       }
     }
 
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __66__RTLocationAwarenessManager_addFixedRateLocationRequester_error___block_invoke;
     v13[3] = &unk_2788C4A70;
     v13[4] = self;
-    v14 = v7;
-    dispatch_async(v10, v13);
+    v14 = requesterCopy;
+    dispatch_async(queue, v13);
 
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
@@ -1765,20 +1765,20 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: requester", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"requester");
+      *error = _RTErrorInvalidParameterCreate(@"requester");
     }
   }
 
-  return v7 != 0;
+  return requesterCopy != 0;
 }
 
-- (void)removeFixedRateLocationRequester:(id)a3
+- (void)removeFixedRateLocationRequester:(id)requester
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  requesterCopy = requester;
+  if (!requesterCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1800,30 +1800,30 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
       *buf = 138412546;
       v14 = v8;
       v15 = 2112;
-      v16 = v5;
+      v16 = requesterCopy;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, Remove fixed rate location requester, %@", buf, 0x16u);
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__RTLocationAwarenessManager_removeFixedRateLocationRequester___block_invoke;
   v11[3] = &unk_2788C4A70;
   v11[4] = self;
-  v12 = v5;
-  v10 = v5;
-  dispatch_async(v9, v11);
+  v12 = requesterCopy;
+  v10 = requesterCopy;
+  dispatch_async(queue, v11);
 }
 
-- (void)_addFixedRateLocationRequester:(id)a3
+- (void)_addFixedRateLocationRequester:(id)requester
 {
-  v4 = a3;
-  v5 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
-  v6 = [v5 count];
+  requesterCopy = requester;
+  fixedRateLocationRequesters = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
+  v6 = [fixedRateLocationRequesters count];
 
-  v7 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
-  [v7 addObject:v4];
+  fixedRateLocationRequesters2 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
+  [fixedRateLocationRequesters2 addObject:requesterCopy];
 
   if (!v6)
   {
@@ -1832,30 +1832,30 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
   }
 }
 
-- (void)_removeFixedRateLocationRequester:(id)a3
+- (void)_removeFixedRateLocationRequester:(id)requester
 {
-  v13 = a3;
-  v4 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
-  v5 = [v4 count];
+  requesterCopy = requester;
+  fixedRateLocationRequesters = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
+  v5 = [fixedRateLocationRequesters count];
 
-  v6 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
-  v7 = [v6 containsObject:v13];
+  fixedRateLocationRequesters2 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
+  v7 = [fixedRateLocationRequesters2 containsObject:requesterCopy];
 
   if (v7)
   {
-    v8 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
-    [v8 removeObject:v13];
+    fixedRateLocationRequesters3 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
+    [fixedRateLocationRequesters3 removeObject:requesterCopy];
 
     if (v5 == 1)
     {
-      v9 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
-      v10 = [v9 count];
+      fixedRateLocationRequesters4 = [(RTLocationAwarenessManager *)self fixedRateLocationRequesters];
+      v10 = [fixedRateLocationRequesters4 count];
 
       if (!v10)
       {
-        v11 = [(RTLocationAwarenessManager *)self locationManager];
+        locationManager = [(RTLocationAwarenessManager *)self locationManager];
         v12 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking];
-        [v11 removeObserver:self fromNotification:v12];
+        [locationManager removeObserver:self fromNotification:v12];
       }
     }
   }
@@ -1864,13 +1864,13 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
 - (void)_updateXPCActivityForHighAccuracyLocationRequest
 {
   location[1] = *MEMORY[0x277D85DE8];
-  v4 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-  v5 = [v4 count];
+  highAccuracyLocationRequesters = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+  v5 = [highAccuracyLocationRequesters count];
 
   if (v5)
   {
-    v6 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
-    v7 = [v6 count];
+    highAccuracyLocationRequesters2 = [(RTLocationAwarenessManager *)self highAccuracyLocationRequesters];
+    v7 = [highAccuracyLocationRequesters2 count];
 
     if (v7 != 1)
     {
@@ -1879,14 +1879,14 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
 
     v8 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:0 priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:0 networkTransferDirection:1 allowBattery:1800.0 powerNap:900.0];
     objc_initWeak(location, self);
-    v9 = [(RTLocationAwarenessManager *)self xpcActivityManager];
+    xpcActivityManager = [(RTLocationAwarenessManager *)self xpcActivityManager];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __78__RTLocationAwarenessManager__updateXPCActivityForHighAccuracyLocationRequest__block_invoke_2;
     v28[3] = &unk_2788C6A18;
     v29[1] = a2;
     objc_copyWeak(v29, location);
-    [v9 registerActivityWithIdentifier:@"com.apple.routined.locationAwareness.highAccuracyLocationRequest" criteria:v8 handler:v28];
+    [xpcActivityManager registerActivityWithIdentifier:@"com.apple.routined.locationAwareness.highAccuracyLocationRequest" criteria:v8 handler:v28];
 
     objc_destroyWeak(v29);
     objc_destroyWeak(location);
@@ -1900,14 +1900,14 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
     }
 
     v10 = dispatch_semaphore_create(0);
-    v11 = [(RTLocationAwarenessManager *)self xpcActivityManager];
+    xpcActivityManager2 = [(RTLocationAwarenessManager *)self xpcActivityManager];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __78__RTLocationAwarenessManager__updateXPCActivityForHighAccuracyLocationRequest__block_invoke;
     v30[3] = &unk_2788C4730;
     v12 = v10;
     v31 = v12;
-    [v11 unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.highAccuracyLocationRequest" handler:v30];
+    [xpcActivityManager2 unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.highAccuracyLocationRequest" handler:v30];
 
     v8 = v12;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -1919,11 +1919,11 @@ void __63__RTLocationAwarenessManager_removeLocationHeartbeatRequester___block_i
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_130];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -1988,21 +1988,21 @@ void __78__RTLocationAwarenessManager__updateXPCActivityForHighAccuracyLocationR
   }
 }
 
-- (void)_updateXPCActivityForObserverCount:(unint64_t)a3
+- (void)_updateXPCActivityForObserverCount:(unint64_t)count
 {
   location[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (count == 1)
   {
     v8 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:0 priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:1 networkTransferDirection:0 allowBattery:3600.0 powerNap:1800.0];
     objc_initWeak(location, self);
-    v25 = [(RTLocationAwarenessManager *)self xpcActivityManager];
+    xpcActivityManager = [(RTLocationAwarenessManager *)self xpcActivityManager];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __65__RTLocationAwarenessManager__updateXPCActivityForObserverCount___block_invoke_2;
     v26[3] = &unk_2788C6A18;
     v27[1] = a2;
     objc_copyWeak(v27, location);
-    [v25 registerActivityWithIdentifier:@"com.apple.routined.locationAwareness.heartbeat" criteria:v8 handler:v26];
+    [xpcActivityManager registerActivityWithIdentifier:@"com.apple.routined.locationAwareness.heartbeat" criteria:v8 handler:v26];
 
     objc_destroyWeak(v27);
     objc_destroyWeak(location);
@@ -2010,7 +2010,7 @@ void __78__RTLocationAwarenessManager__updateXPCActivityForHighAccuracyLocationR
 
   else
   {
-    if (a3)
+    if (count)
     {
       return;
     }
@@ -2019,14 +2019,14 @@ void __78__RTLocationAwarenessManager__updateXPCActivityForHighAccuracyLocationR
     self->_xpcActivityPowerAssertion = 0;
 
     v5 = dispatch_semaphore_create(0);
-    v6 = [(RTLocationAwarenessManager *)self xpcActivityManager];
+    xpcActivityManager2 = [(RTLocationAwarenessManager *)self xpcActivityManager];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __65__RTLocationAwarenessManager__updateXPCActivityForObserverCount___block_invoke;
     v28[3] = &unk_2788C4730;
     v7 = v5;
     v29 = v7;
-    [v6 unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.heartbeat" handler:v28];
+    [xpcActivityManager2 unregisterActivityWithIdentifier:@"com.apple.routined.locationAwareness.heartbeat" handler:v28];
 
     v8 = v7;
     v9 = [MEMORY[0x277CBEAA8] now];
@@ -2038,11 +2038,11 @@ void __78__RTLocationAwarenessManager__updateXPCActivityForHighAccuracyLocationR
       v13 = v12;
       v14 = objc_opt_new();
       v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_130];
-      v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v17 = [v16 filteredArrayUsingPredicate:v15];
-      v18 = [v17 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+      firstObject = [v17 firstObject];
 
-      [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+      [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
       v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
@@ -2137,19 +2137,19 @@ void __65__RTLocationAwarenessManager__updateXPCActivityForObserverCount___block
   }
 }
 
-- (void)hourlySingleShotWithHandler:(id)a3
+- (void)hourlySingleShotWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_invoke(uint64_t a1)
@@ -2246,13 +2246,13 @@ uint64_t __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_in
 
 - (void)requestForHighAccuracyLocation
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTLocationAwarenessManager_requestForHighAccuracyLocation__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_requestForHighAccuracyLocation
@@ -2278,27 +2278,27 @@ uint64_t __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_in
     [(RTLocationAwarenessManager *)self onRest];
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   activeOnset = self->_activeOnset;
-  self->_activeOnset = v5;
+  self->_activeOnset = date;
 
   [(RTLocationAwarenessManager *)self setRequestedHighAccuracyLocation:1];
-  v7 = [(RTLocationAwarenessManager *)self locationManager];
+  locationManager = [(RTLocationAwarenessManager *)self locationManager];
   v8 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyBest];
-  [v7 addObserver:self selector:sel_onNoOpLocationNotification_ name:v8];
+  [locationManager addObserver:self selector:sel_onNoOpLocationNotification_ name:v8];
 
   timerManager = self->_timerManager;
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v13 = [v10 stringWithFormat:@"%@.restTimer", v12];
-  v14 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __61__RTLocationAwarenessManager__requestForHighAccuracyLocation__block_invoke;
   v30[3] = &unk_2788C4EA0;
   v30[4] = self;
-  v15 = [(RTTimerManager *)timerManager timerWithIdentifier:v13 queue:v14 handler:v30];
+  v15 = [(RTTimerManager *)timerManager timerWithIdentifier:v13 queue:queue handler:v30];
   v16 = self->_restTimer;
   self->_restTimer = v15;
 
@@ -2308,13 +2308,13 @@ uint64_t __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_in
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = NSStringFromSelector(a2);
-      v19 = [(RTLocationAwarenessManager *)self restTimer];
-      v20 = [(RTLocationAwarenessManager *)self config];
-      [v20 highAccuracyLocationRequestDuration];
+      restTimer = [(RTLocationAwarenessManager *)self restTimer];
+      config = [(RTLocationAwarenessManager *)self config];
+      [config highAccuracyLocationRequestDuration];
       *buf = 138412802;
       v32 = v18;
       v33 = 2048;
-      v34 = v19;
+      v34 = restTimer;
       v35 = 2048;
       v36 = v21;
       _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, Start rest timer, %p, firing delay, %f secs.", buf, 0x20u);
@@ -2322,11 +2322,11 @@ uint64_t __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_in
   }
 
   v22 = self->_restTimer;
-  v23 = [(RTLocationAwarenessManager *)self config];
-  [v23 highAccuracyLocationRequestDuration];
+  config2 = [(RTLocationAwarenessManager *)self config];
+  [config2 highAccuracyLocationRequestDuration];
   v25 = v24;
-  v26 = [(RTLocationAwarenessManager *)self config];
-  [v26 dispatchTimerLeeway];
+  config3 = [(RTLocationAwarenessManager *)self config];
+  [config3 dispatchTimerLeeway];
   [(RTTimer *)v22 fireAfterDelay:v25 interval:INFINITY leeway:v27];
 
   [(RTTimer *)self->_restTimer resume];
@@ -2334,13 +2334,13 @@ uint64_t __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_in
 
 - (void)requestForFixedRateLocation
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__RTLocationAwarenessManager_requestForFixedRateLocation__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_requestForFixedRateLocation
@@ -2362,22 +2362,22 @@ uint64_t __58__RTLocationAwarenessManager_hourlySingleShotWithHandler___block_in
 
   else
   {
-    v5 = [(RTLocationAwarenessManager *)self locationManager];
+    locationManager = [(RTLocationAwarenessManager *)self locationManager];
     v4 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking];
-    [v5 addObserver:self selector:sel_onNoOpLocationNotification_ name:v4];
+    [locationManager addObserver:self selector:sel_onNoOpLocationNotification_ name:v4];
   }
 }
 
-- (void)onLeechedLocationNotification:(id)a3
+- (void)onLeechedLocationNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __60__RTLocationAwarenessManager_onLeechedLocationNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(RTNotifier *)self queue:v8];
   dispatch_async(v7, v6);
@@ -2469,13 +2469,13 @@ void __60__RTLocationAwarenessManager_onLeechedLocationNotification___block_invo
   }
 }
 
-- (void)onMotionActivityManagerNotificationActivityNotification:(id)a3
+- (void)onMotionActivityManagerNotificationActivityNotification:(id)notification
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTMotionActivityManagerNotificationActivity];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
@@ -2483,20 +2483,20 @@ void __60__RTLocationAwarenessManager_onLeechedLocationNotification___block_invo
     aBlock[1] = 3221225472;
     aBlock[2] = __86__RTLocationAwarenessManager_onMotionActivityManagerNotificationActivityNotification___block_invoke;
     aBlock[3] = &unk_2788C4A70;
-    v23 = v5;
-    v24 = self;
+    v23 = notificationCopy;
+    selfCopy = self;
     v9 = _Block_copy(aBlock);
-    v10 = [(RTNotifier *)self queue];
-    dispatch_async(v10, v9);
+    queue = [(RTNotifier *)self queue];
+    dispatch_async(queue, v9);
 
     v11 = v23;
   }
 
   else
   {
-    v12 = [v5 name];
+    name2 = [notificationCopy name];
     v13 = +[(RTNotification *)RTMotionActivityManagerNotificationMotionSettledStateChange];
-    v14 = [v12 isEqualToString:v13];
+    v14 = [name2 isEqualToString:v13];
 
     if (v14)
     {
@@ -2504,12 +2504,12 @@ void __60__RTLocationAwarenessManager_onLeechedLocationNotification___block_invo
       v18[1] = 3221225472;
       v18[2] = __86__RTLocationAwarenessManager_onMotionActivityManagerNotificationActivityNotification___block_invoke_2;
       v18[3] = &unk_2788C5020;
-      v19 = v5;
-      v20 = self;
+      v19 = notificationCopy;
+      selfCopy2 = self;
       v21 = a2;
       v15 = _Block_copy(v18);
-      v16 = [(RTNotifier *)self queue];
-      dispatch_async(v16, v15);
+      queue2 = [(RTNotifier *)self queue];
+      dispatch_async(queue2, v15);
 
       v11 = v19;
     }
@@ -2524,9 +2524,9 @@ void __60__RTLocationAwarenessManager_onLeechedLocationNotification___block_invo
       v11 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v17 = [v5 name];
+        name3 = [notificationCopy name];
         *buf = 138412290;
-        v26 = v17;
+        v26 = name3;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "unsupported notification, %@", buf, 0xCu);
       }
     }
@@ -2627,8 +2627,8 @@ void __86__RTLocationAwarenessManager_onMotionActivityManagerNotificationActivit
       }
 
       v8 = *(*(&v31 + 1) + 8 * i);
-      v9 = [(RTLocationAwarenessManager *)self heartbeatBucketToRequesters];
-      v10 = [v9 objectForKey:v8];
+      heartbeatBucketToRequesters = [(RTLocationAwarenessManager *)self heartbeatBucketToRequesters];
+      v10 = [heartbeatBucketToRequesters objectForKey:v8];
       v11 = v10;
       if (!v10)
       {
@@ -2638,8 +2638,8 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v12 = [v10 allObjects];
-      v13 = [v12 count];
+      allObjects = [v10 allObjects];
+      v13 = [allObjects count];
 
       if (!v13)
       {
@@ -2682,8 +2682,8 @@ LABEL_17:
         }
 
         v20 = *(*(&v27 + 1) + 8 * j);
-        v21 = [(RTLocationAwarenessManager *)self heartbeatBucketToRequesters];
-        [v21 removeObjectForKey:v20];
+        heartbeatBucketToRequesters2 = [(RTLocationAwarenessManager *)self heartbeatBucketToRequesters];
+        [heartbeatBucketToRequesters2 removeObjectForKey:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v27 objects:v39 count:16];
@@ -2694,8 +2694,8 @@ LABEL_17:
 
   if (!v5)
   {
-    v22 = [(RTLocationAwarenessManager *)self heartbeatBucketToRequesters];
-    v23 = [v22 count];
+    heartbeatBucketToRequesters3 = [(RTLocationAwarenessManager *)self heartbeatBucketToRequesters];
+    v23 = [heartbeatBucketToRequesters3 count];
 
     if (v23)
     {
@@ -2738,11 +2738,11 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = NSStringFromSelector(a2);
-        v7 = [(RTLocationAwarenessManager *)self restTimer];
+        restTimer = [(RTLocationAwarenessManager *)self restTimer];
         v14 = 138412546;
         v15 = v6;
         v16 = 2048;
-        v17 = v7;
+        v17 = restTimer;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%@, Invalidate rest timer, %p.", &v14, 0x16u);
       }
 
@@ -2754,16 +2754,16 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
     self->_restTimer = 0;
   }
 
-  v9 = [(RTLocationAwarenessManager *)self activeOnset];
+  activeOnset = [(RTLocationAwarenessManager *)self activeOnset];
 
-  if (v9)
+  if (activeOnset)
   {
-    v10 = [(RTLocationAwarenessManager *)self requestedHighAccuracyLocation];
-    v11 = [(RTLocationAwarenessManager *)self locationManager];
-    if (v10)
+    requestedHighAccuracyLocation = [(RTLocationAwarenessManager *)self requestedHighAccuracyLocation];
+    locationManager = [(RTLocationAwarenessManager *)self locationManager];
+    if (requestedHighAccuracyLocation)
     {
       v12 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyBest];
-      [v11 removeObserver:self fromNotification:v12];
+      [locationManager removeObserver:self fromNotification:v12];
 
       [(RTLocationAwarenessManager *)self setRequestedHighAccuracyLocation:0];
     }
@@ -2771,16 +2771,16 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
     else
     {
       v13 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyHundredMeters];
-      [v11 removeObserver:self fromNotification:v13];
+      [locationManager removeObserver:self fromNotification:v13];
     }
 
     [(RTLocationAwarenessManager *)self considerUpdateActiveRequestMetrics];
   }
 }
 
-- (double)nextFiringDelayWithHeartbeatInterval:(double)result starvingDuration:(double)a4
+- (double)nextFiringDelayWithHeartbeatInterval:(double)result starvingDuration:(double)duration
 {
-  v4 = result - a4;
+  v4 = result - duration;
   if (v4 < result)
   {
     result = v4;
@@ -2794,30 +2794,30 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
   return result;
 }
 
-- (BOOL)validInterval:(double)a3
+- (BOOL)validInterval:(double)interval
 {
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
     return 0;
   }
 
-  v4 = [(RTLocationAwarenessManager *)self config];
-  [v4 maxHeartbeatInterval];
-  v6 = v5 >= a3;
+  config = [(RTLocationAwarenessManager *)self config];
+  [config maxHeartbeatInterval];
+  v6 = v5 >= interval;
 
   return v6;
 }
 
-- (BOOL)validLocation:(id)a3
+- (BOOL)validLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 horizontalAccuracy], v6 >= 0.0))
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy && ([locationCopy horizontalAccuracy], v6 >= 0.0))
   {
     [v5 horizontalAccuracy];
     v9 = v8;
-    v10 = [(RTLocationAwarenessManager *)self config];
-    [v10 requiredHorizontalAccuracy];
+    config = [(RTLocationAwarenessManager *)self config];
+    [config requiredHorizontalAccuracy];
     v7 = v9 <= v11;
   }
 
@@ -2829,16 +2829,16 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
   return v7;
 }
 
-- (BOOL)coarseLocation:(id)a3
+- (BOOL)coarseLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy)
   {
-    [v4 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v7 = v6;
-    v8 = [(RTLocationAwarenessManager *)self config];
-    [v8 requiredHorizontalAccuracy];
+    config = [(RTLocationAwarenessManager *)self config];
+    [config requiredHorizontalAccuracy];
     if (v7 <= v9)
     {
       v14 = 0;
@@ -2848,8 +2848,8 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
     {
       [v5 horizontalAccuracy];
       v11 = v10;
-      v12 = [(RTLocationAwarenessManager *)self config];
-      [v12 maxHorizontalAccuracyForCoarseLocation];
+      config2 = [(RTLocationAwarenessManager *)self config];
+      [config2 maxHorizontalAccuracyForCoarseLocation];
       v14 = v11 <= v13;
     }
   }
@@ -2862,22 +2862,22 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
   return v14;
 }
 
-- (id)heartbeatBucketForInterval:(double)a3
+- (id)heartbeatBucketForInterval:(double)interval
 {
-  v4 = [(RTLocationAwarenessManager *)self config];
-  [v4 heartbeatIntervalResolution];
-  v6 = vcvtpd_u64_f64(a3 / v5);
+  config = [(RTLocationAwarenessManager *)self config];
+  [config heartbeatIntervalResolution];
+  v6 = vcvtpd_u64_f64(interval / v5);
 
   v7 = MEMORY[0x277CCABB0];
 
   return [v7 numberWithUnsignedInteger:v6];
 }
 
-- (double)intervalForHeartbeatBucket:(id)a3
+- (double)intervalForHeartbeatBucket:(id)bucket
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  bucketCopy = bucket;
+  if (!bucketCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2890,12 +2890,12 @@ void __50__RTLocationAwarenessManager_adjustHeartbeatTimer__block_invoke(uint64_
     }
   }
 
-  v6 = [(RTLocationAwarenessManager *)self config];
-  [v6 heartbeatIntervalResolution];
+  config = [(RTLocationAwarenessManager *)self config];
+  [config heartbeatIntervalResolution];
   v8 = v7;
-  v9 = [v4 integerValue];
+  integerValue = [bucketCopy integerValue];
 
-  return v8 * v9;
+  return v8 * integerValue;
 }
 
 @end

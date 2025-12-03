@@ -1,27 +1,27 @@
 @interface ICFileAttachmentsContentMapping
 - (BOOL)supportsMultipleItems;
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
 @end
 
 @implementation ICFileAttachmentsContentMapping
 
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(WFInterchangeContentMapping *)self sourceKey];
-  v10 = [v8 objectForKey:v9];
+  representationCopy = representation;
+  parametersCopy = parameters;
+  sourceKey = [(WFInterchangeContentMapping *)self sourceKey];
+  v10 = [parametersCopy objectForKey:sourceKey];
 
   if ([v10 numberOfItems])
   {
-    v11 = [(WFInterchangeContentMapping *)self definition];
-    v12 = [v11 objectForKey:@"AttachmentNameKey"];
+    definition = [(WFInterchangeContentMapping *)self definition];
+    v12 = [definition objectForKey:@"AttachmentNameKey"];
 
-    v13 = [(WFInterchangeContentMapping *)self definition];
-    v14 = [v13 objectForKey:@"AttachmentDataKey"];
+    definition2 = [(WFInterchangeContentMapping *)self definition];
+    v14 = [definition2 objectForKey:@"AttachmentDataKey"];
 
-    v15 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-    v16 = [v15 mutableCopy];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+    v16 = [uRLQueryAllowedCharacterSet mutableCopy];
 
     [v16 removeCharactersInString:@"?=&"];
     v20[0] = MEMORY[0x1E69E9820];
@@ -31,7 +31,7 @@
     v21 = v12;
     v22 = v16;
     v23 = v14;
-    v24 = v7;
+    v24 = representationCopy;
     v17 = v14;
     v18 = v16;
     v19 = v12;
@@ -40,7 +40,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, &stru_1F4A1C408, 0);
+    (*(representationCopy + 2))(representationCopy, &stru_1F4A1C408, 0);
   }
 }
 
@@ -113,11 +113,11 @@ void __80__ICFileAttachmentsContentMapping_getStringRepresentation_withInput_par
 
 - (BOOL)supportsMultipleItems
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"SupportsMultipleItems"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"SupportsMultipleItems"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

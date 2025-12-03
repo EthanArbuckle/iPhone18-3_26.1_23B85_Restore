@@ -1,16 +1,16 @@
 @interface PKLiveRenderedCardFaceView
-- (PKLiveRenderedCardFaceView)initWithFrame:(CGRect)a3 pass:(id)a4;
+- (PKLiveRenderedCardFaceView)initWithFrame:(CGRect)frame pass:(id)pass;
 - (UIEdgeInsets)faceImageAlignmentInsets;
 - (UIEdgeInsets)faceImageContentInsets;
-- (void)_showState:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_showState:(unint64_t)state animated:(BOOL)animated;
 - (void)_updateFaceImage;
 - (void)clearFaceImage;
 - (void)dealloc;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)setFaceImage:(id)a3 withAverageColor:(id)a4 alignmentInsets:(UIEdgeInsets)a5 contentInsets:(UIEdgeInsets)a6;
-- (void)setMotionEnabled:(BOOL)a3;
+- (void)setFaceImage:(id)image withAverageColor:(id)color alignmentInsets:(UIEdgeInsets)insets contentInsets:(UIEdgeInsets)contentInsets;
+- (void)setMotionEnabled:(BOOL)enabled;
 @end
 
 @implementation PKLiveRenderedCardFaceView
@@ -55,34 +55,34 @@
   [(UIImageView *)logoImageView setFrame:v7, v8];
 }
 
-- (PKLiveRenderedCardFaceView)initWithFrame:(CGRect)a3 pass:(id)a4
+- (PKLiveRenderedCardFaceView)initWithFrame:(CGRect)frame pass:(id)pass
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v93 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  if (!v10)
+  passCopy = pass;
+  if (!passCopy)
   {
     goto LABEL_48;
   }
 
   v88.receiver = self;
   v88.super_class = PKLiveRenderedCardFaceView;
-  v11 = [(PKLiveRenderedCardFaceView *)&v88 initWithFrame:x, y, width, height];
-  self = v11;
-  if (!v11)
+  height = [(PKLiveRenderedCardFaceView *)&v88 initWithFrame:x, y, width, height];
+  self = height;
+  if (!height)
   {
 LABEL_47:
     self = self;
-    v75 = self;
+    selfCopy = self;
 LABEL_49:
 
-    return v75;
+    return selfCopy;
   }
 
-  objc_storeStrong(&v11->_pass, a4);
+  objc_storeStrong(&height->_pass, pass);
   self->_type = [(PKPass *)self->_pass liveRenderType];
   self->_state = 0;
   v12 = +[PKUIForegroundActiveArbiter sharedInstance];
@@ -98,25 +98,25 @@ LABEL_49:
   }
 
   self->_foregroundActive = v14;
-  v15 = [(PKPass *)self->_pass displayProfile];
+  displayProfile = [(PKPass *)self->_pass displayProfile];
   v16 = MEMORY[0x1E69DC888];
-  v17 = [v15 backgroundColor];
-  v18 = [v16 pkui_colorWithPKColor:v17];
+  backgroundColor = [displayProfile backgroundColor];
+  v18 = [v16 pkui_colorWithPKColor:backgroundColor];
   [(PKLiveRenderedCardFaceView *)self setBackgroundColor:v18];
 
   [(PKPass *)self->_pass liveRenderedImageSet];
-  v87 = v86 = v15;
+  v87 = v86 = displayProfile;
   type = self->_type;
   if (type > 2)
   {
     if (type == 3)
     {
       v48 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:&__block_literal_global_143];
-      v49 = [MEMORY[0x1E69DC888] systemGray5Color];
-      v50 = v49;
+      systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+      v50 = systemGray5Color;
       if (v48)
       {
-        v51 = [v49 resolvedColorWithTraitCollection:v48];
+        v51 = [systemGray5Color resolvedColorWithTraitCollection:v48];
 
         v50 = v51;
       }
@@ -139,11 +139,11 @@ LABEL_49:
 
       self->_requiresFaceImage = 1;
       v31 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:&__block_literal_global_143];
-      v32 = [MEMORY[0x1E69DC888] systemGray5Color];
-      v33 = v32;
+      systemGray5Color2 = [MEMORY[0x1E69DC888] systemGray5Color];
+      v33 = systemGray5Color2;
       if (v31)
       {
-        v34 = [v32 resolvedColorWithTraitCollection:v31];
+        v34 = [systemGray5Color2 resolvedColorWithTraitCollection:v31];
 
         v33 = v34;
       }
@@ -161,12 +161,12 @@ LABEL_49:
   if (type == 1)
   {
     v36 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:&__block_literal_global_141];
-    v37 = [MEMORY[0x1E69DC888] systemGray5Color];
-    v38 = v37;
+    systemGray5Color3 = [MEMORY[0x1E69DC888] systemGray5Color];
+    v38 = systemGray5Color3;
     v85 = v13;
     if (v36)
     {
-      v39 = [v37 resolvedColorWithTraitCollection:v36];
+      v39 = [systemGray5Color3 resolvedColorWithTraitCollection:v36];
 
       v38 = v39;
     }
@@ -175,11 +175,11 @@ LABEL_49:
 
     v40 = objc_alloc(MEMORY[0x1E69BC730]);
     cardView = [v87 diffuseMaterialPropertyImage];
-    v42 = [cardView imageRef];
-    v43 = [v87 metalnessMaterialPropertyImage];
-    v44 = [v43 imageRef];
-    v45 = [v87 normalMaterialPropertyImage];
-    v46 = [v40 initWithDiffuse:v42 metalness:v44 normal:{objc_msgSend(v45, "imageRef")}];
+    imageRef = [cardView imageRef];
+    metalnessMaterialPropertyImage = [v87 metalnessMaterialPropertyImage];
+    imageRef2 = [metalnessMaterialPropertyImage imageRef];
+    normalMaterialPropertyImage = [v87 normalMaterialPropertyImage];
+    v46 = [v40 initWithDiffuse:imageRef metalness:imageRef2 normal:{objc_msgSend(normalMaterialPropertyImage, "imageRef")}];
     v47 = self->_texturedCardView;
     self->_texturedCardView = v46;
 
@@ -197,13 +197,13 @@ LABEL_44:
 
       v70 = self->_logoImageView;
       v71 = MEMORY[0x1E69DCAB8];
-      v72 = [(PKPass *)self->_pass logoImage];
-      v73 = [v71 imageWithPKImage:v72];
+      logoImage = [(PKPass *)self->_pass logoImage];
+      v73 = [v71 imageWithPKImage:logoImage];
       [(UIImageView *)v70 setImage:v73];
 
       [(UIImageView *)self->_logoImageView sizeToFit];
       [(PKLiveRenderedCardFaceView *)self addSubview:self->_logoImageView];
-      v74 = [(PKLiveRenderedCardFaceView *)self layer];
+      layer = [(PKLiveRenderedCardFaceView *)self layer];
       [(PKPass *)self->_pass style];
       PKPassFrontFaceContentSize();
       [v30 CGColor];
@@ -212,16 +212,16 @@ LABEL_44:
 
     else
     {
-      v74 = PKLogFacilityTypeGetObject();
-      if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+      layer = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(layer, OS_LOG_TYPE_DEFAULT))
       {
         v77 = self->_type;
-        v78 = [(PKPass *)self->_pass uniqueID];
+        uniqueID = [(PKPass *)self->_pass uniqueID];
         *buf = 134218242;
         v90 = v77;
         v91 = 2112;
-        v92 = v78;
-        _os_log_impl(&dword_1BD026000, v74, OS_LOG_TYPE_DEFAULT, "PKLiveRenderedCardFaceView: live render type %lu recognized but failed to initialize for pass %@.", buf, 0x16u);
+        v92 = uniqueID;
+        _os_log_impl(&dword_1BD026000, layer, OS_LOG_TYPE_DEFAULT, "PKLiveRenderedCardFaceView: live render type %lu recognized but failed to initialize for pass %@.", buf, 0x16u);
       }
     }
 
@@ -231,7 +231,7 @@ LABEL_44:
     }
 
 LABEL_48:
-    v75 = 0;
+    selfCopy = 0;
     goto LABEL_49;
   }
 
@@ -241,21 +241,21 @@ LABEL_48:
     v21 = [v20 fontDescriptorWithSymbolicTraits:2];
 
     v84 = [MEMORY[0x1E69DB878] fontWithDescriptor:v21 size:22.0];
-    v22 = [v10 frontFieldBuckets];
-    v23 = [v22 firstObject];
-    v24 = [v23 firstObject];
-    v83 = [v24 value];
+    frontFieldBuckets = [passCopy frontFieldBuckets];
+    firstObject = [frontFieldBuckets firstObject];
+    v23FirstObject = [firstObject firstObject];
+    value = [v23FirstObject value];
 
     v25 = MEMORY[0x1E69DC888];
-    v26 = [v10 displayProfile];
-    v27 = [v26 foregroundColor];
-    v82 = [v25 pkui_colorWithPKColor:v27];
+    displayProfile2 = [passCopy displayProfile];
+    foregroundColor = [displayProfile2 foregroundColor];
+    v82 = [v25 pkui_colorWithPKColor:foregroundColor];
 
-    v28 = [v10 homeKeyLiveRenderType];
+    homeKeyLiveRenderType = [passCopy homeKeyLiveRenderType];
     v81 = v21;
-    if (v28 > 1)
+    if (homeKeyLiveRenderType > 1)
     {
-      if (v28 == 2)
+      if (homeKeyLiveRenderType == 2)
       {
         v29 = 1;
         v54 = LightBorderColor();
@@ -263,10 +263,10 @@ LABEL_48:
 
       else
       {
-        if (v28 != 4)
+        if (homeKeyLiveRenderType != 4)
         {
           v29 = 2;
-          if (v28 != 3)
+          if (homeKeyLiveRenderType != 3)
           {
             goto LABEL_40;
           }
@@ -279,7 +279,7 @@ LABEL_48:
           }
 
 LABEL_43:
-          v65 = [objc_alloc(MEMORY[0x1E69BC738]) initWithStyle:v29 text:v83 font:v84 textColor:v82];
+          v65 = [objc_alloc(MEMORY[0x1E69BC738]) initWithStyle:v29 text:value font:v84 textColor:v82];
           v66 = self->_texturedCardView;
           self->_texturedCardView = v65;
 
@@ -301,11 +301,11 @@ LABEL_43:
 LABEL_40:
       v60 = v13;
       v61 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:{&__block_literal_global_143, v81}];
-      v62 = [MEMORY[0x1E69DC888] systemGray5Color];
-      v63 = v62;
+      systemGray5Color4 = [MEMORY[0x1E69DC888] systemGray5Color];
+      v63 = systemGray5Color4;
       if (v61)
       {
-        v64 = [v62 resolvedColorWithTraitCollection:v61];
+        v64 = [systemGray5Color4 resolvedColorWithTraitCollection:v61];
 
         v63 = v64;
       }
@@ -316,10 +316,10 @@ LABEL_40:
       goto LABEL_43;
     }
 
-    if (v28)
+    if (homeKeyLiveRenderType)
     {
       v29 = 2;
-      if (v28 != 1)
+      if (homeKeyLiveRenderType != 1)
       {
         goto LABEL_40;
       }
@@ -336,11 +336,11 @@ LABEL_40:
     }
 
     v56 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:{&__block_literal_global_143, v81}];
-    v57 = [MEMORY[0x1E69DC888] systemGray5Color];
-    v58 = v57;
+    systemGray5Color5 = [MEMORY[0x1E69DC888] systemGray5Color];
+    v58 = systemGray5Color5;
     if (v56)
     {
-      v59 = [v57 resolvedColorWithTraitCollection:v56];
+      v59 = [systemGray5Color5 resolvedColorWithTraitCollection:v56];
 
       v58 = v59;
     }
@@ -360,11 +360,11 @@ LABEL_52:
   v79 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
   {
-    v80 = [(PKPass *)self->_pass uniqueID];
+    uniqueID2 = [(PKPass *)self->_pass uniqueID];
     *buf = 134218242;
     v90 = type;
     v91 = 2112;
-    v92 = v80;
+    v92 = uniqueID2;
     _os_log_impl(&dword_1BD026000, v79, OS_LOG_TYPE_DEFAULT, "PKLiveRenderedCardFaceView: invalid live render type %lu for pass %@.", buf, 0x16u);
   }
 
@@ -389,30 +389,30 @@ LABEL_52:
   }
 }
 
-- (void)setMotionEnabled:(BOOL)a3
+- (void)setMotionEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(PKTexturedCardView *)self->_texturedCardView setMotionEnabled:?];
   }
 }
 
-- (void)setFaceImage:(id)a3 withAverageColor:(id)a4 alignmentInsets:(UIEdgeInsets)a5 contentInsets:(UIEdgeInsets)a6
+- (void)setFaceImage:(id)image withAverageColor:(id)color alignmentInsets:(UIEdgeInsets)insets contentInsets:(UIEdgeInsets)contentInsets
 {
-  bottom = a6.bottom;
-  right = a6.right;
-  top = a6.top;
-  left = a6.left;
-  v20 = a5.bottom;
-  v21 = a5.right;
-  v18 = a5.top;
-  v19 = a5.left;
-  v22 = a3;
-  v9 = a4;
-  if (v22)
+  bottom = contentInsets.bottom;
+  right = contentInsets.right;
+  top = contentInsets.top;
+  left = contentInsets.left;
+  v20 = insets.bottom;
+  v21 = insets.right;
+  v18 = insets.top;
+  v19 = insets.left;
+  imageCopy = image;
+  colorCopy = color;
+  if (imageCopy)
   {
-    if (self->_faceImage == v22 && (v10.f64[0] = v18, v10.f64[1] = v19, v11.f64[0] = v20, v11.f64[1] = v21, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_faceImageAlignmentInsets.top, v10), vceqq_f64(*&self->_faceImageAlignmentInsets.bottom, v11)))) & 1) != 0))
+    if (self->_faceImage == imageCopy && (v10.f64[0] = v18, v10.f64[1] = v19, v11.f64[0] = v20, v11.f64[1] = v21, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_faceImageAlignmentInsets.top, v10), vceqq_f64(*&self->_faceImageAlignmentInsets.bottom, v11)))) & 1) != 0))
     {
       v12.f64[0] = top;
       v12.f64[1] = left;
@@ -430,8 +430,8 @@ LABEL_52:
 
     else
     {
-      objc_storeStrong(&self->_faceImage, a3);
-      objc_storeStrong(&self->_faceImageAverageColor, a4);
+      objc_storeStrong(&self->_faceImage, image);
+      objc_storeStrong(&self->_faceImageAverageColor, color);
       self->_faceImageAlignmentInsets.top = v18;
       self->_faceImageAlignmentInsets.left = v19;
       self->_faceImageAlignmentInsets.bottom = v20;
@@ -495,7 +495,7 @@ LABEL_52:
       [(PKLiveRenderedCardFaceView *)self insertSubview:self->_cardView belowSubview:v3];
       [(UIView *)v3 removeFromSuperview];
       [(PKLiveRenderedCardFaceView *)self setNeedsLayout];
-      v14 = [(PKSpotlightCardView *)self->_spotlightCardView isLight];
+      isLight = [(PKSpotlightCardView *)self->_spotlightCardView isLight];
       _Block_object_dispose(&v32, 8);
       _Block_object_dispose(&v36, 8);
     }
@@ -523,19 +523,19 @@ LABEL_52:
         [(PKLiveRenderedCardFaceView *)self setNeedsLayout];
       }
 
-      v14 = 1;
+      isLight = 1;
     }
 
-    v22 = [(PKLiveRenderedCardFaceView *)self layer];
+    layer = [(PKLiveRenderedCardFaceView *)self layer];
     PKPassFrontFaceContentSize();
-    if (v14)
+    if (isLight)
     {
       v23 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:&__block_literal_global_143];
-      v24 = [MEMORY[0x1E69DC888] systemGray5Color];
-      v25 = v24;
+      systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+      v25 = systemGray5Color;
       if (v23)
       {
-        v26 = [v24 resolvedColorWithTraitCollection:v23];
+        v26 = [systemGray5Color resolvedColorWithTraitCollection:v23];
 
         v25 = v26;
       }
@@ -546,11 +546,11 @@ LABEL_52:
     else
     {
       v23 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:&__block_literal_global_141];
-      v28 = [MEMORY[0x1E69DC888] systemGray5Color];
-      v25 = v28;
+      systemGray5Color2 = [MEMORY[0x1E69DC888] systemGray5Color];
+      v25 = systemGray5Color2;
       if (v23)
       {
-        v29 = [v28 resolvedColorWithTraitCollection:v23];
+        v29 = [systemGray5Color2 resolvedColorWithTraitCollection:v23];
 
         v25 = v29;
       }
@@ -573,16 +573,16 @@ CGColorRef __46__PKLiveRenderedCardFaceView__updateFaceImage__block_invoke_2(voi
   return result;
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v4 = (*&a4.var0 >> 8) & 1;
+  v4 = (*&state.var0 >> 8) & 1;
   if (v4 != self->_foregroundActive)
   {
     self->_foregroundActive = v4;
   }
 }
 
-- (void)_showState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_showState:(unint64_t)state animated:(BOOL)animated
 {
   if (self->_type == 1)
   {
@@ -590,42 +590,42 @@ CGColorRef __46__PKLiveRenderedCardFaceView__updateFaceImage__block_invoke_2(voi
     v26 = v6;
     v27 = v4;
     v28 = v5;
-    if (!self->_invalidated && self->_state != a3)
+    if (!self->_invalidated && self->_state != state)
     {
-      v9 = a4;
-      self->_state = a3;
-      if (a3 == 1)
+      animatedCopy = animated;
+      self->_state = state;
+      if (state == 1)
       {
-        v10 = [(PKPass *)self->_pass liveRenderedArmedStateImageSet];
+        liveRenderedArmedStateImageSet = [(PKPass *)self->_pass liveRenderedArmedStateImageSet];
       }
 
       else
       {
-        if (a3)
+        if (state)
         {
           return;
         }
 
-        v10 = [(PKPass *)self->_pass liveRenderedImageSet];
+        liveRenderedArmedStateImageSet = [(PKPass *)self->_pass liveRenderedImageSet];
       }
 
-      v11 = v10;
-      if (v10)
+      v11 = liveRenderedArmedStateImageSet;
+      if (liveRenderedArmedStateImageSet)
       {
         v12 = objc_alloc(MEMORY[0x1E69BC730]);
-        v13 = [v11 diffuseMaterialPropertyImage];
-        v14 = [v13 imageRef];
-        v15 = [v11 metalnessMaterialPropertyImage];
-        v16 = [v15 imageRef];
-        v17 = [v11 normalMaterialPropertyImage];
-        v18 = [v12 initWithDiffuse:v14 metalness:v16 normal:{objc_msgSend(v17, "imageRef")}];
+        diffuseMaterialPropertyImage = [v11 diffuseMaterialPropertyImage];
+        imageRef = [diffuseMaterialPropertyImage imageRef];
+        metalnessMaterialPropertyImage = [v11 metalnessMaterialPropertyImage];
+        imageRef2 = [metalnessMaterialPropertyImage imageRef];
+        normalMaterialPropertyImage = [v11 normalMaterialPropertyImage];
+        v18 = [v12 initWithDiffuse:imageRef metalness:imageRef2 normal:{objc_msgSend(normalMaterialPropertyImage, "imageRef")}];
 
         [v18 setMotionEnabled:self->_enabled];
         [v18 setAlpha:0.0];
         [(UIView *)self->_cardView frame];
         [v18 setFrame:?];
         [(PKLiveRenderedCardFaceView *)self insertSubview:v18 aboveSubview:self->_cardView];
-        if (v9)
+        if (animatedCopy)
         {
           v19 = MEMORY[0x1E69DD250];
           v22[0] = MEMORY[0x1E69E9820];
@@ -633,7 +633,7 @@ CGColorRef __46__PKLiveRenderedCardFaceView__updateFaceImage__block_invoke_2(voi
           v22[2] = __50__PKLiveRenderedCardFaceView__showState_animated___block_invoke;
           v22[3] = &unk_1E8010A10;
           v23 = v18;
-          v24 = self;
+          selfCopy = self;
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __50__PKLiveRenderedCardFaceView__showState_animated___block_invoke_2;

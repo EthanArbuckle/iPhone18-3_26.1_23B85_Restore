@@ -1,15 +1,15 @@
 @interface MusicPageHeaderPlayButton
 - (BOOL)isHighlighted;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MusicPageHeaderPlayButton
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_469B8();
   v5 = v4;
   v7 = v6;
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_46AC8();
 }
 
@@ -34,10 +34,10 @@
   return [(MusicPageHeaderPlayButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_46DDC(a3);
+  selfCopy = self;
+  sub_46DDC(highlighted);
 }
 
 @end

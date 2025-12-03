@@ -1,37 +1,37 @@
 @interface SUCorePolicyFamily
-+ (int)getFamilyUsingDeviceClass:(id)a3;
++ (int)getFamilyUsingDeviceClass:(id)class;
 @end
 
 @implementation SUCorePolicyFamily
 
-+ (int)getFamilyUsingDeviceClass:(id)a3
++ (int)getFamilyUsingDeviceClass:(id)class
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (([v3 isEqualToString:@"iPhone"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"iPod") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"iPad") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"AudioAccessory") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"RealityDevice"))
+  classCopy = class;
+  if (([classCopy isEqualToString:@"iPhone"] & 1) != 0 || (objc_msgSend(classCopy, "isEqualToString:", @"iPod") & 1) != 0 || (objc_msgSend(classCopy, "isEqualToString:", @"iPad") & 1) != 0 || (objc_msgSend(classCopy, "isEqualToString:", @"AudioAccessory") & 1) != 0 || objc_msgSend(classCopy, "isEqualToString:", @"RealityDevice"))
   {
-    v4 = [MEMORY[0x277D64460] sharedLogger];
-    v5 = [v4 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to iOS family", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to iOS family", buf, 2u);
     }
 
     v6 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AppleTV"])
+  else if ([classCopy isEqualToString:@"AppleTV"])
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v5 = [v9 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v6 = 2;
-      _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to tvOS family", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to tvOS family", buf, 2u);
     }
 
     else
@@ -40,15 +40,15 @@
     }
   }
 
-  else if ([v3 isEqualToString:@"Watch"])
+  else if ([classCopy isEqualToString:@"Watch"])
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v5 = [v10 oslog];
+    mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]3 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to watchOS family", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to watchOS family", buf, 2u);
     }
 
     v6 = 3;
@@ -56,17 +56,17 @@
 
   else
   {
-    v11 = [v3 isEqualToString:@"Mac"];
-    v12 = [MEMORY[0x277D64460] sharedLogger];
-    v5 = [v12 oslog];
+    v11 = [classCopy isEqualToString:@"Mac"];
+    mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]4 oslog];
 
-    v13 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+    v13 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
     if (v11)
     {
       if (v13)
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to macOS family", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass defaulting to macOS family", buf, 2u);
       }
 
       v6 = 7;
@@ -77,13 +77,13 @@
       if (v13)
       {
         *buf = 138543362;
-        v16 = v3;
-        _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass unknown device class %{public}@, returning default instead", buf, 0xCu);
+        v16 = classCopy;
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "SUCorePolicyFamily:getFamilyUsingDeviceClass unknown device class %{public}@, returning default instead", buf, 0xCu);
       }
 
-      v5 = [MEMORY[0x277D64428] sharedDiag];
-      v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unknown device class (%@), returning default instead", v3];
-      [v5 trackAnomaly:@"[POLICY] ASSET FAMILY" forReason:v14 withResult:8116 withError:0];
+      oslog = [MEMORY[0x277D64428] sharedDiag];
+      classCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unknown device class (%@), returning default instead", classCopy];
+      [oslog trackAnomaly:@"[POLICY] ASSET FAMILY" forReason:classCopy withResult:8116 withError:0];
 
       v6 = 0;
     }

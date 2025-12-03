@@ -1,17 +1,17 @@
 @interface TSDAudioRep
 - (CGRect)clipRect;
-- (TSDAudioRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDAudioRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (TSDMovieInfo)movieInfo;
 - (void)willBeRemoved;
 @end
 
 @implementation TSDAudioRep
 
-- (TSDAudioRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDAudioRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v10.receiver = self;
   v10.super_class = TSDAudioRep;
-  v4 = [(TSDRep *)&v10 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v10 initWithLayout:layout canvas:canvas];
   v7 = v4;
   if (v4)
   {

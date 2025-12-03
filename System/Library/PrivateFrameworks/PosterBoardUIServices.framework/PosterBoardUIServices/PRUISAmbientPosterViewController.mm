@@ -1,81 +1,81 @@
 @interface PRUISAmbientPosterViewController
 + (NSArray)suggestedInstanceIdentifiers;
-+ (id)defaultSnapshotCacheURLInCurrentContainer:(BOOL)a3;
++ (id)defaultSnapshotCacheURLInCurrentContainer:(BOOL)container;
 - (BOOL)_shouldSnapshot;
 - (FBSDisplayConfiguration)displayConfiguration;
-- (PRUISAmbientPosterViewController)initWithBoundingShape:(int64_t)a3;
+- (PRUISAmbientPosterViewController)initWithBoundingShape:(int64_t)shape;
 - (PRUISAmbientPosterViewControllerDelegate)delegate;
 - (id)_currentSnapshotDefinition;
 - (id)_makeSnapshotRequest;
-- (id)_posterProviderForPosterPath:(id)a3;
-- (id)_snapshotBundle:(id)a3 imageForLayer:(unint64_t)a4;
+- (id)_posterProviderForPosterPath:(id)path;
+- (id)_snapshotBundle:(id)bundle imageForLayer:(unint64_t)layer;
 - (id)cancelTouchesForCurrentEventInHostedContent;
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (int64_t)_currentOrientation;
-- (int64_t)_renderingModeForVisibility:(unint64_t)a3;
+- (int64_t)_renderingModeForVisibility:(unint64_t)visibility;
 - (unint64_t)_effectivePresentationMode;
-- (unint64_t)_titleAlignmentForInterfaceOrientation:(int64_t)a3;
-- (unint64_t)updatePosterConfiguration:(id)a3;
-- (void)_backlightLuminanceTraitDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (unint64_t)_titleAlignmentForInterfaceOrientation:(int64_t)orientation;
+- (unint64_t)updatePosterConfiguration:(id)configuration;
+- (void)_backlightLuminanceTraitDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_clearTouchDeliveryPolicies;
-- (void)_createCancelTouchesAssertionsForLayers:(id)a3 withInitialTouchTimestamp:(double)a4 server:(id)a5;
-- (void)_enumerateSceneObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)_enumerateSnapshotLayerViews:(id)a3;
-- (void)_fetchSnapshotsWithRequest:(id)a3 animated:(BOOL)a4;
-- (void)_noteWindowWillRotate:(id)a3;
+- (void)_createCancelTouchesAssertionsForLayers:(id)layers withInitialTouchTimestamp:(double)timestamp server:(id)server;
+- (void)_enumerateSceneObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)_enumerateSnapshotLayerViews:(id)views;
+- (void)_fetchSnapshotsWithRequest:(id)request animated:(BOOL)animated;
+- (void)_noteWindowWillRotate:(id)rotate;
 - (void)_registerForAmbientPresentationTraitChanges;
-- (void)_resetScreenWakeStateForTeardown:(BOOL)a3;
+- (void)_resetScreenWakeStateForTeardown:(BOOL)teardown;
 - (void)_screenDidTurnOn;
-- (void)_setClientWantsScreenWakeEvents:(BOOL)a3;
+- (void)_setClientWantsScreenWakeEvents:(BOOL)events;
 - (void)_setupScene;
 - (void)_takeNewSnapshots;
 - (void)_teardownScene;
-- (void)_updateAmbientPresentationSettingsForSceneSettings:(id)a3;
+- (void)_updateAmbientPresentationSettingsForSceneSettings:(id)settings;
 - (void)_updateForCurrentPresentationMode;
-- (void)_updateForSnapshotBundle:(id)a3;
+- (void)_updateForSnapshotBundle:(id)bundle;
 - (void)_updateSceneLayerPresenters;
 - (void)_updateSceneSettingsForUpdatedDisplayConfiguration;
-- (void)_updateSceneWithCompletion:(id)a3;
-- (void)_updateSceneWithCompletion:(id)a3 window:(id)a4;
-- (void)_updateSceneWithCompletion:(id)a3 window:(id)a4 orientation:(int64_t)a5;
+- (void)_updateSceneWithCompletion:(id)completion;
+- (void)_updateSceneWithCompletion:(id)completion window:(id)window;
+- (void)_updateSceneWithCompletion:(id)completion window:(id)window orientation:(int64_t)orientation;
 - (void)_updateSeparatedLayerHosting;
 - (void)_updateSnapshotLayerVisibility;
 - (void)_updateSnapshotOpacities;
-- (void)_updateSnapshotsAnimated:(BOOL)a3;
+- (void)_updateSnapshotsAnimated:(BOOL)animated;
 - (void)_updateTouchDeliveryPolicies;
-- (void)_windowDidAttachContext:(id)a3;
-- (void)_windowDidDetachContext:(id)a3;
-- (void)addSceneObserver:(id)a3;
+- (void)_windowDidAttachContext:(id)context;
+- (void)_windowDidDetachContext:(id)context;
+- (void)addSceneObserver:(id)observer;
 - (void)dealloc;
-- (void)eventOccurred:(id)a3;
-- (void)fetchAppIntentsListenerEndpointWithHandler:(id)a3;
+- (void)eventOccurred:(id)occurred;
+- (void)fetchAppIntentsListenerEndpointWithHandler:(id)handler;
 - (void)invalidate;
-- (void)removeSceneObserver:(id)a3;
-- (void)scene:(id)a3 clientDidConnect:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setExtensionUserInteractionEnabled:(BOOL)a3;
-- (void)setIsIdle:(BOOL)a3;
-- (void)setIsPreview:(BOOL)a3;
-- (void)setIsShowingIdealizedTime:(BOOL)a3;
-- (void)setOpacity:(double)a3 forLayers:(unint64_t)a4;
-- (void)setPresentationMode:(unint64_t)a3;
-- (void)setShouldShareTouchesWithHost:(BOOL)a3;
-- (void)setSnapshotController:(id)a3;
-- (void)setVisibility:(unint64_t)a3;
-- (void)setVisibleSnapshotLayers:(unint64_t)a3;
-- (void)userTapEventOccurredWithLocation:(CGPoint)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)removeSceneObserver:(id)observer;
+- (void)scene:(id)scene clientDidConnect:(id)connect;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setExtensionUserInteractionEnabled:(BOOL)enabled;
+- (void)setIsIdle:(BOOL)idle;
+- (void)setIsPreview:(BOOL)preview;
+- (void)setIsShowingIdealizedTime:(BOOL)time;
+- (void)setOpacity:(double)opacity forLayers:(unint64_t)layers;
+- (void)setPresentationMode:(unint64_t)mode;
+- (void)setShouldShareTouchesWithHost:(BOOL)host;
+- (void)setSnapshotController:(id)controller;
+- (void)setVisibility:(unint64_t)visibility;
+- (void)setVisibleSnapshotLayers:(unint64_t)layers;
+- (void)userTapEventOccurredWithLocation:(CGPoint)location;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillMoveToWindow:(id)a3;
+- (void)viewWillMoveToWindow:(id)window;
 @end
 
 @implementation PRUISAmbientPosterViewController
@@ -85,8 +85,8 @@
   snapshotController = self->__snapshotController;
   if (snapshotController)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 objectForKey:@"PRUISAmbientEnableSnapshots"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"PRUISAmbientEnableSnapshots"];
     v5 = objc_opt_class();
     v6 = v4;
     if (v5)
@@ -109,14 +109,14 @@
 
     v8 = v7;
 
-    v9 = [v8 BOOLValue];
-    LOBYTE(snapshotController) = (v8 == 0) | v9;
+    bOOLValue = [v8 BOOLValue];
+    LOBYTE(snapshotController) = (v8 == 0) | bOOLValue;
   }
 
   return snapshotController & 1;
 }
 
-- (PRUISAmbientPosterViewController)initWithBoundingShape:(int64_t)a3
+- (PRUISAmbientPosterViewController)initWithBoundingShape:(int64_t)shape
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v5 = PUIPosterBoundingShapeFromInt();
@@ -151,18 +151,18 @@
     v6->_backgroundOpacity = 1.0;
     v6->_foregroundOpacity = 1.0;
     v6->_floatingOpacity = 1.0;
-    v15 = [MEMORY[0x1E699F7A8] mainConfiguration];
+    mainConfiguration = [MEMORY[0x1E699F7A8] mainConfiguration];
     displayConfiguration = v6->_displayConfiguration;
-    v6->_displayConfiguration = v15;
+    v6->_displayConfiguration = mainConfiguration;
 
     v17 = objc_opt_self();
     v23[0] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     v19 = [(PRUISAmbientPosterViewController *)v6 registerForTraitChanges:v18 withAction:sel__backlightLuminanceTraitDidChange_previousTraitCollection_];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v6 selector:sel__windowDidAttachContext_ name:*MEMORY[0x1E69DEB08] object:0];
-    [v20 addObserver:v6 selector:sel__windowDidDetachContext_ name:*MEMORY[0x1E69DEB10] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__windowDidAttachContext_ name:*MEMORY[0x1E69DEB08] object:0];
+    [defaultCenter addObserver:v6 selector:sel__windowDidDetachContext_ name:*MEMORY[0x1E69DEB10] object:0];
   }
 
   return v6;
@@ -175,9 +175,9 @@
     [(PRUISAmbientPosterViewController *)self unregisterForTraitChanges:?];
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DEB08] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DEB10] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DEB08] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DEB10] object:0];
   [(PRUISAmbientPosterViewController *)self invalidate];
 
   v4.receiver = self;
@@ -185,36 +185,36 @@
   [(PRUISAmbientPosterViewController *)&v4 dealloc];
 }
 
-- (unint64_t)updatePosterConfiguration:(id)a3
+- (unint64_t)updatePosterConfiguration:(id)configuration
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   configuration = self->_configuration;
   if (configuration)
   {
-    v7 = [(PRSPosterConfiguration *)configuration _path];
-    v8 = [v5 _path];
-    v24 = v7;
-    v9 = [v7 serverIdentity];
-    v10 = [v8 serverIdentity];
-    v11 = [v9 posterUUID];
-    v12 = [v10 posterUUID];
-    v13 = [v11 isEqual:v12];
+    _path = [(PRSPosterConfiguration *)configuration _path];
+    _path2 = [configurationCopy _path];
+    v24 = _path;
+    serverIdentity = [_path serverIdentity];
+    serverIdentity2 = [_path2 serverIdentity];
+    posterUUID = [serverIdentity posterUUID];
+    posterUUID2 = [serverIdentity2 posterUUID];
+    v13 = [posterUUID isEqual:posterUUID2];
 
     if (v13)
     {
-      objc_storeStrong(&self->_configuration, a3);
-      v14 = [v10 version];
-      v15 = [v9 version];
+      objc_storeStrong(&self->_configuration, configuration);
+      version = [serverIdentity2 version];
+      version2 = [serverIdentity version];
       v16 = PRUISLogCommon();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-      if (v14 == v15)
+      if (version == version2)
       {
         if (v17)
         {
-          v18 = [(FBScene *)self->_scene pui_shortDescription];
+          pui_shortDescription = [(FBScene *)self->_scene pui_shortDescription];
           *buf = 138543362;
-          v28 = v18;
+          v28 = pui_shortDescription;
           _os_log_impl(&dword_1CAE63000, v16, OS_LOG_TYPE_DEFAULT, "Refreshing ambient poster %{public}@.", buf, 0xCu);
         }
 
@@ -225,13 +225,13 @@
       {
         if (v17)
         {
-          v21 = [(FBScene *)self->_scene pui_shortDescription];
+          pui_shortDescription2 = [(FBScene *)self->_scene pui_shortDescription];
           *buf = 138543874;
-          v28 = v21;
+          v28 = pui_shortDescription2;
           v29 = 2048;
-          v30 = [v9 version];
+          version3 = [serverIdentity version];
           v31 = 2048;
-          v32 = [v10 version];
+          version4 = [serverIdentity2 version];
           _os_log_impl(&dword_1CAE63000, v16, OS_LOG_TYPE_DEFAULT, "Updating ambient poster %{public}@ from version %llu to %llu.", buf, 0x20u);
         }
 
@@ -244,7 +244,7 @@
       v25[2] = __62__PRUISAmbientPosterViewController_updatePosterConfiguration___block_invoke;
       v25[3] = &unk_1E83A7868;
       v25[4] = self;
-      v26 = v8;
+      v26 = _path2;
       [(FBScene *)scene pruis_updateWithoutActivating:v25];
     }
 
@@ -270,7 +270,7 @@
 
   else
   {
-    objc_storeStrong(&self->_configuration, a3);
+    objc_storeStrong(&self->_configuration, configuration);
     [(PRUISAmbientPosterViewController *)self _setupScene];
     [(PRUISAmbientPosterViewController *)self _registerForAmbientPresentationTraitChanges];
     v19 = 0;
@@ -284,83 +284,83 @@ LABEL_18:
   return v19;
 }
 
-- (void)setExtensionUserInteractionEnabled:(BOOL)a3
+- (void)setExtensionUserInteractionEnabled:(BOOL)enabled
 {
-  if (self->_extensionUserInteractionEnabled != a3)
+  if (self->_extensionUserInteractionEnabled != enabled)
   {
-    self->_extensionUserInteractionEnabled = a3;
+    self->_extensionUserInteractionEnabled = enabled;
     [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0];
   }
 }
 
-- (void)setIsPreview:(BOOL)a3
+- (void)setIsPreview:(BOOL)preview
 {
-  if (self->_isPreview != a3)
+  if (self->_isPreview != preview)
   {
-    self->_isPreview = a3;
+    self->_isPreview = preview;
     [(PRUISAmbientPosterViewController *)self _updateForCurrentIsSnapshot];
   }
 }
 
-- (void)setIsShowingIdealizedTime:(BOOL)a3
+- (void)setIsShowingIdealizedTime:(BOOL)time
 {
-  if (self->_isShowingIdealizedTime != a3)
+  if (self->_isShowingIdealizedTime != time)
   {
-    self->_isShowingIdealizedTime = a3;
+    self->_isShowingIdealizedTime = time;
     [(PRUISAmbientPosterViewController *)self _updateForCurrentIsShowingIdealizedTime];
   }
 }
 
-- (void)setIsIdle:(BOOL)a3
+- (void)setIsIdle:(BOOL)idle
 {
-  if (self->_isIdle != a3)
+  if (self->_isIdle != idle)
   {
-    self->_isIdle = a3;
+    self->_isIdle = idle;
     [(PRUISAmbientPosterViewController *)self _updateForCurrentIsIdle];
   }
 }
 
-- (void)setVisibility:(unint64_t)a3
+- (void)setVisibility:(unint64_t)visibility
 {
-  if (self->_visibility != a3)
+  if (self->_visibility != visibility)
   {
-    self->_visibility = a3;
+    self->_visibility = visibility;
     [(PRUISAmbientPosterViewController *)self _updateForCurrentVisibility];
   }
 }
 
-- (void)setPresentationMode:(unint64_t)a3
+- (void)setPresentationMode:(unint64_t)mode
 {
-  if (self->_presentationMode != a3)
+  if (self->_presentationMode != mode)
   {
-    self->_presentationMode = a3;
+    self->_presentationMode = mode;
     [(PRUISAmbientPosterViewController *)self _updateForCurrentPresentationMode];
   }
 }
 
-- (void)setVisibleSnapshotLayers:(unint64_t)a3
+- (void)setVisibleSnapshotLayers:(unint64_t)layers
 {
-  if (self->_visibleSnapshotLayers != a3)
+  if (self->_visibleSnapshotLayers != layers)
   {
-    self->_visibleSnapshotLayers = a3;
+    self->_visibleSnapshotLayers = layers;
     [(PRUISAmbientPosterViewController *)self _updateSnapshotLayerVisibility];
   }
 }
 
-+ (id)defaultSnapshotCacheURLInCurrentContainer:(BOOL)a3
++ (id)defaultSnapshotCacheURLInCurrentContainer:(BOOL)container
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (container)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v3 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v4 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:0];
   }
 
   else
   {
     v5 = MEMORY[0x1E695DFF8];
-    v3 = BSCurrentUserDirectory();
-    v10[0] = v3;
+    defaultManager = BSCurrentUserDirectory();
+    v10[0] = defaultManager;
     v10[1] = @"Library";
     v10[2] = @"Caches";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
@@ -373,14 +373,14 @@ LABEL_18:
   return v8;
 }
 
-- (void)setSnapshotController:(id)a3
+- (void)setSnapshotController:(id)controller
 {
-  v5 = a3;
-  if (self->__snapshotController != v5)
+  controllerCopy = controller;
+  if (self->__snapshotController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__snapshotController, a3);
-    v5 = v6;
+    v6 = controllerCopy;
+    objc_storeStrong(&self->__snapshotController, controller);
+    controllerCopy = v6;
   }
 }
 
@@ -391,12 +391,12 @@ LABEL_18:
   [(PRUISAmbientPosterViewController *)self setSnapshotController:0];
 }
 
-- (void)userTapEventOccurredWithLocation:(CGPoint)a3
+- (void)userTapEventOccurredWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(FBScene *)self->_scene clientSettings];
-  if ([v6 pui_userTapEventsRequested])
+  y = location.y;
+  x = location.x;
+  clientSettings = [(FBScene *)self->_scene clientSettings];
+  if ([clientSettings pui_userTapEventsRequested])
   {
 
     v7 = *MEMORY[0x1E69C53D0];
@@ -407,10 +407,10 @@ LABEL_4:
     return;
   }
 
-  v8 = [(FBScene *)self->_scene clientSettings];
-  v9 = [v8 pr_requestedRenderingEventTypes];
+  clientSettings2 = [(FBScene *)self->_scene clientSettings];
+  pr_requestedRenderingEventTypes = [clientSettings2 pr_requestedRenderingEventTypes];
   v7 = *MEMORY[0x1E69C53D0];
-  v10 = [v9 containsObject:*MEMORY[0x1E69C53D0]];
+  v10 = [pr_requestedRenderingEventTypes containsObject:*MEMORY[0x1E69C53D0]];
 
   if (v10)
   {
@@ -425,46 +425,46 @@ LABEL_4:
   }
 }
 
-- (void)eventOccurred:(id)a3
+- (void)eventOccurred:(id)occurred
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FBScene *)self->_scene isActive];
-  v6 = PRUISLogCommon();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  occurredCopy = occurred;
+  isActive = [(FBScene *)self->_scene isActive];
+  newAction = PRUISLogCommon();
+  v7 = os_log_type_enabled(newAction, OS_LOG_TYPE_DEFAULT);
+  if (isActive)
   {
     if (v7)
     {
-      v8 = [v4 type];
+      type = [occurredCopy type];
       v11 = 138412290;
-      v12 = v8;
-      _os_log_impl(&dword_1CAE63000, v6, OS_LOG_TYPE_DEFAULT, "Sending rendering event of type: %@", &v11, 0xCu);
+      v12 = type;
+      _os_log_impl(&dword_1CAE63000, newAction, OS_LOG_TYPE_DEFAULT, "Sending rendering event of type: %@", &v11, 0xCu);
     }
 
-    v6 = [v4 newAction];
-    v9 = [MEMORY[0x1E695DFD8] setWithObject:v6];
+    newAction = [occurredCopy newAction];
+    v9 = [MEMORY[0x1E695DFD8] setWithObject:newAction];
     [(FBScene *)self->_scene sendActions:v9];
   }
 
   else if (v7)
   {
-    v10 = [v4 type];
+    type2 = [occurredCopy type];
     v11 = 138412290;
-    v12 = v10;
-    _os_log_impl(&dword_1CAE63000, v6, OS_LOG_TYPE_DEFAULT, "Trying to send rendering event when the scene is not active. Event type: %@", &v11, 0xCu);
+    v12 = type2;
+    _os_log_impl(&dword_1CAE63000, newAction, OS_LOG_TYPE_DEFAULT, "Trying to send rendering event when the scene is not active. Event type: %@", &v11, 0xCu);
   }
 }
 
-- (void)setOpacity:(double)a3 forLayers:(unint64_t)a4
+- (void)setOpacity:(double)opacity forLayers:(unint64_t)layers
 {
-  if (a4)
+  if (layers)
   {
-    self->_backgroundOpacity = a3;
-    if ((a4 & 2) == 0)
+    self->_backgroundOpacity = opacity;
+    if ((layers & 2) == 0)
     {
 LABEL_3:
-      if ((a4 & 4) == 0)
+      if ((layers & 4) == 0)
       {
         goto LABEL_5;
       }
@@ -473,16 +473,16 @@ LABEL_3:
     }
   }
 
-  else if ((a4 & 2) == 0)
+  else if ((layers & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_foregroundOpacity = a3;
-  if ((a4 & 4) != 0)
+  self->_foregroundOpacity = opacity;
+  if ((layers & 4) != 0)
   {
 LABEL_4:
-    self->_floatingOpacity = a3;
+    self->_floatingOpacity = opacity;
   }
 
 LABEL_5:
@@ -527,12 +527,12 @@ void __64__PRUISAmbientPosterViewController_suggestedInstanceIdentifiers__block_
   suggestedInstanceIdentifiers_identifiers = v8;
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (([(FBSDisplayConfiguration *)self->_displayConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_displayConfiguration, a3);
+    objc_storeStrong(&self->_displayConfiguration, configuration);
     [(PRUISAmbientPosterViewController *)self _updateSceneSettingsForUpdatedDisplayConfiguration];
   }
 }
@@ -542,27 +542,27 @@ void __64__PRUISAmbientPosterViewController_suggestedInstanceIdentifiers__block_
   displayConfiguration = self->_displayConfiguration;
   if (displayConfiguration)
   {
-    v3 = displayConfiguration;
+    _defaultDisplayConfiguration = displayConfiguration;
   }
 
   else
   {
-    v3 = [(PRUISAmbientPosterViewController *)self _defaultDisplayConfiguration];
+    _defaultDisplayConfiguration = [(PRUISAmbientPosterViewController *)self _defaultDisplayConfiguration];
   }
 
-  return v3;
+  return _defaultDisplayConfiguration;
 }
 
 - (void)_updateSceneSettingsForUpdatedDisplayConfiguration
 {
-  v3 = [(PRUISAmbientPosterViewController *)self displayConfiguration];
+  displayConfiguration = [(PRUISAmbientPosterViewController *)self displayConfiguration];
   scene = self->_scene;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__PRUISAmbientPosterViewController__updateSceneSettingsForUpdatedDisplayConfiguration__block_invoke;
   v6[3] = &unk_1E83A7260;
-  v7 = v3;
-  v5 = v3;
+  v7 = displayConfiguration;
+  v5 = displayConfiguration;
   [(FBScene *)scene pruis_updateWithoutActivating:v6];
 }
 
@@ -575,16 +575,16 @@ void __86__PRUISAmbientPosterViewController__updateSceneSettingsForUpdatedDispla
   [v4 setDisplayConfiguration:*(a1 + 32)];
 }
 
-- (void)fetchAppIntentsListenerEndpointWithHandler:(id)a3
+- (void)fetchAppIntentsListenerEndpointWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__PRUISAmbientPosterViewController_fetchAppIntentsListenerEndpointWithHandler___block_invoke;
   v6[3] = &unk_1E83A7890;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -621,9 +621,9 @@ void __79__PRUISAmbientPosterViewController_fetchAppIntentsListenerEndpointWithH
   v42.receiver = self;
   v42.super_class = PRUISAmbientPosterViewController;
   [(PRUISAmbientPosterViewController *)&v42 viewDidLoad];
-  v3 = [(PRUISAmbientPosterViewController *)self view];
+  view = [(PRUISAmbientPosterViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   [v5 setAutoresizingMask:18];
   v40[0] = MEMORY[0x1E69E9820];
@@ -636,7 +636,7 @@ void __79__PRUISAmbientPosterViewController_fetchAppIntentsListenerEndpointWithH
   [v6 insertSubview:self->_snapshotBackgroundLayerView atIndex:0];
   [v6 insertSubview:self->_snapshotForegroundLayerView atIndex:1];
   [v6 insertSubview:self->_snapshotFloatingLayerView atIndex:2];
-  [v3 insertSubview:v6 atIndex:0];
+  [view insertSubview:v6 atIndex:0];
   objc_storeStrong(&self->_snapshotContainerView, v5);
   v7 = [PRUISAmbientPosterSceneLayerHostView alloc];
   v8 = MEMORY[0x1E696AEC0];
@@ -690,13 +690,13 @@ void __79__PRUISAmbientPosterViewController_fetchAppIntentsListenerEndpointWithH
         }
 
         v34 = *(*(&v36 + 1) + 8 * v33);
-        [v3 bounds];
+        [view bounds];
         [v34 setFrame:?];
         [v34 setAutoresizingMask:18];
-        v35 = [v34 layer];
-        [v35 setAllowsGroupOpacity:1];
+        layer = [v34 layer];
+        [layer setAllowsGroupOpacity:1];
 
-        [v3 addSubview:v34];
+        [view addSubview:v34];
         ++v33;
       }
 
@@ -720,11 +720,11 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   [v3 setContentMode:2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = PRUISAmbientPosterViewController;
-  [(PRUISAmbientPosterViewController *)&v12 viewWillAppear:a3];
+  [(PRUISAmbientPosterViewController *)&v12 viewWillAppear:appear];
   if (!self->_scene)
   {
     [(PRUISAmbientPosterViewController *)self _setupScene];
@@ -733,47 +733,47 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0];
   if (!self->_snapshotControllerKeepaliveAssertion)
   {
-    v4 = [(PRUISAmbientPosterViewController *)self snapshotController];
+    snapshotController = [(PRUISAmbientPosterViewController *)self snapshotController];
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(PRSPosterConfiguration *)self->_configuration _path];
-    v7 = [v6 serverIdentity];
-    v8 = [v7 posterUUID];
-    v9 = [v5 stringWithFormat:@"PRUISAmbientPosterViewController %@", v8];
-    v10 = [v4 acquireKeepActiveAssertionForReason:v9];
+    _path = [(PRSPosterConfiguration *)self->_configuration _path];
+    serverIdentity = [_path serverIdentity];
+    posterUUID = [serverIdentity posterUUID];
+    v9 = [v5 stringWithFormat:@"PRUISAmbientPosterViewController %@", posterUUID];
+    v10 = [snapshotController acquireKeepActiveAssertionForReason:v9];
     snapshotControllerKeepaliveAssertion = self->_snapshotControllerKeepaliveAssertion;
     self->_snapshotControllerKeepaliveAssertion = v10;
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = PRUISAmbientPosterViewController;
-  [(PRUISAmbientPosterViewController *)&v4 viewIsAppearing:a3];
+  [(PRUISAmbientPosterViewController *)&v4 viewIsAppearing:appearing];
   [(PRUISAmbientPosterViewController *)self _updateSnapshotsAnimated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PRUISAmbientPosterViewController;
-  [(PRUISAmbientPosterViewController *)&v4 viewDidAppear:a3];
+  [(PRUISAmbientPosterViewController *)&v4 viewDidAppear:appear];
   [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PRUISAmbientPosterViewController;
-  [(PRUISAmbientPosterViewController *)&v4 viewWillDisappear:a3];
+  [(PRUISAmbientPosterViewController *)&v4 viewWillDisappear:disappear];
   [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PRUISAmbientPosterViewController;
-  [(PRUISAmbientPosterViewController *)&v5 viewDidDisappear:a3];
+  [(PRUISAmbientPosterViewController *)&v5 viewDidDisappear:disappear];
   [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0];
   [(PRUISAmbientPosterViewController *)self _takeNewSnapshots];
   [(BSInvalidatable *)self->_snapshotControllerKeepaliveAssertion invalidate];
@@ -783,29 +783,29 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   [(PRUISAmbientPosterViewController *)self _teardownScene];
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = PRUISAmbientPosterViewController;
-  v4 = a3;
-  [(PRUISAmbientPosterViewController *)&v5 viewWillMoveToWindow:v4];
-  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0 window:v4, v5.receiver, v5.super_class];
+  windowCopy = window;
+  [(PRUISAmbientPosterViewController *)&v5 viewWillMoveToWindow:windowCopy];
+  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0 window:windowCopy, v5.receiver, v5.super_class];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v9.receiver = self;
   v9.super_class = PRUISAmbientPosterViewController;
-  [(PRUISAmbientPosterViewController *)&v9 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0 window:v6];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [(PRUISAmbientPosterViewController *)&v9 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0 window:windowCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E69DE828];
-  [v7 removeObserver:self name:*MEMORY[0x1E69DE828] object:0];
-  if (v6)
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE828] object:0];
+  if (windowCopy)
   {
-    [v7 addObserver:self selector:sel__noteWindowWillRotate_ name:v8 object:v6];
+    [defaultCenter addObserver:self selector:sel__noteWindowWillRotate_ name:v8 object:windowCopy];
     [(PRUISAmbientPosterViewController *)self _updateTouchDeliveryPolicies];
   }
 }
@@ -817,8 +817,8 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   [(PRUISAmbientPosterViewController *)&v18 viewWillLayoutSubviews];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(PRUISAmbientPosterViewController *)self view];
-    [v3 bounds];
+    view = [(PRUISAmbientPosterViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -847,25 +847,25 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   }
 
   snapshotContainerView = self->_snapshotContainerView;
-  v16 = [(PRUISAmbientPosterViewController *)self view];
-  [v16 bounds];
+  view2 = [(PRUISAmbientPosterViewController *)self view];
+  [view2 bounds];
   [(UIView *)snapshotContainerView setFrame:?];
 }
 
-- (void)scene:(id)a3 clientDidConnect:(id)a4
+- (void)scene:(id)scene clientDidConnect:(id)connect
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 processHandle];
+  sceneCopy = scene;
+  processHandle = [connect processHandle];
   v8 = PRUISLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 pui_shortDescription];
-    v10 = [v7 pf_shortDesc];
+    pui_shortDescription = [sceneCopy pui_shortDescription];
+    pf_shortDesc = [processHandle pf_shortDesc];
     *buf = 138543618;
-    v15 = v9;
+    v15 = pui_shortDescription;
     v16 = 2114;
-    v17 = v10;
+    v17 = pf_shortDesc;
     _os_log_impl(&dword_1CAE63000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ now connected to %{public}@", buf, 0x16u);
   }
 
@@ -874,34 +874,34 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   v12[2] = __59__PRUISAmbientPosterViewController_scene_clientDidConnect___block_invoke;
   v12[3] = &unk_1E83A7900;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = sceneCopy;
+  v11 = sceneCopy;
   [(PRUISAmbientPosterViewController *)self _enumerateSceneObserversRespondingToSelector:sel_ambientPosterViewController_didConnectToScene_ usingBlock:v12];
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  actionsCopy = actions;
   v5 = PRUISLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = actionsCopy;
     _os_log_impl(&dword_1CAE63000, v5, OS_LOG_TYPE_DEFAULT, "Poster sent actions: %@", &v7, 0xCu);
   }
 
   return 0;
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = PRUISLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 contentState];
+    [changeCopy contentState];
     v6 = NSStringFromFBSceneContentState();
     *buf = 138412290;
     v12 = v6;
@@ -919,23 +919,23 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   v8[2] = __63__PRUISAmbientPosterViewController_sceneContentStateDidChange___block_invoke_2;
   v8[3] = &unk_1E83A7900;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = changeCopy;
+  v7 = changeCopy;
   [(PRUISAmbientPosterViewController *)self _enumerateSceneObserversRespondingToSelector:sel_ambientPosterViewController_sceneContentStateDidChange_ usingBlock:v8];
 }
 
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deactivateCopy = deactivate;
+  errorCopy = error;
   v8 = PRUISLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 pui_shortDescription];
-    v10 = [v7 descriptionWithMultilinePrefix:0];
+    pui_shortDescription = [deactivateCopy pui_shortDescription];
+    v10 = [errorCopy descriptionWithMultilinePrefix:0];
     *buf = 138543618;
-    v22 = *&v9;
+    v22 = *&pui_shortDescription;
     v23 = 2114;
     v24 = v10;
     _os_log_impl(&dword_1CAE63000, v8, OS_LOG_TYPE_DEFAULT, "Poster %{public}@ deactivated with error: %{public}@", buf, 0x16u);
@@ -981,17 +981,17 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   v18[2] = __65__PRUISAmbientPosterViewController_sceneDidDeactivate_withError___block_invoke_117;
   v18[3] = &unk_1E83A7900;
   v18[4] = self;
-  v19 = v6;
-  v17 = v6;
+  v19 = deactivateCopy;
+  v17 = deactivateCopy;
   [(PRUISAmbientPosterViewController *)self _enumerateSceneObserversRespondingToSelector:sel_ambientPosterViewController_didDeactivateScene_ usingBlock:v18];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([v11 pr_updateSnapshot])
+  sceneCopy = scene;
+  diffCopy = diff;
+  contextCopy = context;
+  if ([contextCopy pr_updateSnapshot])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1006,27 +1006,27 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   v21[2] = __110__PRUISAmbientPosterViewController_scene_didUpdateClientSettingsWithDiff_oldClientSettings_transitionContext___block_invoke_2;
   v21[3] = &unk_1E83A7900;
   v21[4] = self;
-  v12 = v9;
+  v12 = sceneCopy;
   v22 = v12;
   [(PRUISAmbientPosterViewController *)self _enumerateSceneObserversRespondingToSelector:sel_ambientPosterViewController_didUpdateClientSettingsForScene_ usingBlock:v21];
-  if ([v10 pr_hideChromeDidChange])
+  if ([diffCopy pr_hideChromeDidChange])
   {
-    v13 = [v12 clientSettings];
-    v14 = [v13 pr_hideChrome];
+    clientSettings = [v12 clientSettings];
+    pr_hideChrome = [clientSettings pr_hideChrome];
 
-    v15 = [(PRUISAmbientPosterViewController *)self delegate];
+    delegate = [(PRUISAmbientPosterViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v11 animationSettings];
-      v17 = [v11 animationFence];
-      [v15 ambientPosterViewController:self setChromeVisibility:v14 withAnimationSettings:v16 animationFence:v17];
+      animationSettings = [contextCopy animationSettings];
+      animationFence = [contextCopy animationFence];
+      [delegate ambientPosterViewController:self setChromeVisibility:pr_hideChrome withAnimationSettings:animationSettings animationFence:animationFence];
     }
   }
 
-  if ([v10 pui_significantEventsDidChange])
+  if ([diffCopy pui_significantEventsDidChange])
   {
-    v18 = [v12 clientSettings];
-    [v18 pui_significantEventOptions];
+    clientSettings2 = [v12 clientSettings];
+    [clientSettings2 pui_significantEventOptions];
 
     [(PRUISAmbientPosterViewController *)self _setClientWantsScreenWakeEvents:PUIPosterSignificantEventOptionsContainsEvent()];
   }
@@ -1038,16 +1038,16 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   v20[3] = &unk_1E83A7928;
   v20[4] = self;
   [v19 observeLayersWithBlock:v20];
-  [v19 inspectDiff:v10 withContext:{objc_msgSend(v12, "clientSettings")}];
+  [v19 inspectDiff:diffCopy withContext:{objc_msgSend(v12, "clientSettings")}];
   [v19 removeAllObservers];
 }
 
-- (void)setShouldShareTouchesWithHost:(BOOL)a3
+- (void)setShouldShareTouchesWithHost:(BOOL)host
 {
-  if (self->_shouldShareTouchesWithHost != a3)
+  if (self->_shouldShareTouchesWithHost != host)
   {
-    self->_shouldShareTouchesWithHost = a3;
-    if (a3)
+    self->_shouldShareTouchesWithHost = host;
+    if (host)
     {
       [(PRUISAmbientPosterViewController *)self _updateTouchDeliveryPolicies];
     }
@@ -1070,33 +1070,33 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
   v19[4] = &unk_1E83A7500;
   objc_copyWeak(&v20, &location);
   v3 = BKSTouchDeliveryPolicyServerGetProxyWithErrorHandler();
-  v4 = [(PRUISAmbientPosterViewController *)self view];
-  v5 = [v4 _window];
+  view = [(PRUISAmbientPosterViewController *)self view];
+  _window = [view _window];
 
-  if (v3 && v5)
+  if (v3 && _window)
   {
-    [*MEMORY[0x1E69DDA98] _initialTouchTimestampForWindow:v5];
+    [*MEMORY[0x1E69DDA98] _initialTouchTimestampForWindow:_window];
     v7 = v6;
-    v8 = [(FBScene *)self->_scene layerManager];
-    v9 = [v8 layers];
+    layerManager = [(FBScene *)self->_scene layerManager];
+    layers = [layerManager layers];
 
-    [(PRUISAmbientPosterViewController *)self _createCancelTouchesAssertionsForLayers:v9 withInitialTouchTimestamp:v3 server:v7];
+    [(PRUISAmbientPosterViewController *)self _createCancelTouchesAssertionsForLayers:layers withInitialTouchTimestamp:v3 server:v7];
     v10 = objc_alloc(MEMORY[0x1E698E778]);
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v11 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v13 = MEMORY[0x1E69E96A0];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHostedContent__block_invoke_129;
     v18[3] = &unk_1E83A7950;
     objc_copyWeak(v19, &location);
-    v14 = [v10 initWithIdentifier:v12 forReason:@"cancel touches in poster" queue:MEMORY[0x1E69E96A0] invalidationBlock:v18];
+    v14 = [v10 initWithIdentifier:uUIDString forReason:@"cancel touches in poster" queue:MEMORY[0x1E69E96A0] invalidationBlock:v18];
 
     v15 = PRUISLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = v14;
       _os_log_impl(&dword_1CAE63000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Made cancel touches group assertion: %{public}@", buf, 0x16u);
@@ -1107,19 +1107,19 @@ void __47__PRUISAmbientPosterViewController_viewDidLoad__block_invoke(uint64_t a
 
   else
   {
-    v9 = PRUISLogCommon();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    layers = PRUISLogCommon();
+    if (os_log_type_enabled(layers, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(FBScene *)self->_scene isActive];
+      isActive = [(FBScene *)self->_scene isActive];
       *buf = 138544130;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = v3;
       v26 = 2114;
-      v27 = v5;
+      v27 = _window;
       v28 = 1024;
-      v29 = v16;
-      _os_log_impl(&dword_1CAE63000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did not make cancel touches group assertion because of server: %{public}@, window: %{public}@, or [scene isActive]: %{BOOL}u", buf, 0x26u);
+      v29 = isActive;
+      _os_log_impl(&dword_1CAE63000, layers, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did not make cancel touches group assertion because of server: %{public}@, window: %{public}@, or [scene isActive]: %{BOOL}u", buf, 0x26u);
     }
 
     v14 = 0;
@@ -1198,11 +1198,11 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
   }
 }
 
-- (void)_createCancelTouchesAssertionsForLayers:(id)a3 withInitialTouchTimestamp:(double)a4 server:(id)a5
+- (void)_createCancelTouchesAssertionsForLayers:(id)layers withInitialTouchTimestamp:(double)timestamp server:(id)server
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  layersCopy = layers;
+  serverCopy = server;
   if (!self->_cancelTouchesAssertions)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1214,7 +1214,7 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v8;
+  obj = layersCopy;
   v12 = [obj countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v12)
   {
@@ -1232,29 +1232,29 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v26 + 1) + 8 * v16) contextID];
+        contextID = [*(*(&v26 + 1) + 8 * v16) contextID];
         v18 = objc_alloc_init(MEMORY[0x1E698E440]);
-        v19 = [MEMORY[0x1E698E438] policyCancelingTouchesDeliveredToContextId:v17 withInitialTouchTimestamp:a4];
-        v20 = [v18 endpoint];
-        [v19 setAssertionEndpoint:v20];
+        v19 = [MEMORY[0x1E698E438] policyCancelingTouchesDeliveredToContextId:contextID withInitialTouchTimestamp:timestamp];
+        endpoint = [v18 endpoint];
+        [v19 setAssertionEndpoint:endpoint];
 
-        [v9 ipc_addPolicy:v19];
+        [serverCopy ipc_addPolicy:v19];
         v21 = PRUISLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v24;
-          v31 = self;
+          selfCopy = self;
           v32 = 2114;
           v33 = v18;
           v34 = 2050;
-          v35 = v17;
+          v35 = contextID;
           v36 = 2114;
           v37 = v19;
           _os_log_impl(&dword_1CAE63000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Acquired cancel touches assertion: %{public}@ (context id: 0x%{public}llx, policy: %{public}@)", buf, 0x2Au);
         }
 
         v22 = self->_cancelTouchesAssertions;
-        v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v17];
+        v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
         [(NSMutableDictionary *)v22 setObject:v18 forKey:v23];
 
         ++v16;
@@ -1268,26 +1268,26 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
   }
 }
 
-- (void)_updateSceneWithCompletion:(id)a3
+- (void)_updateSceneWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
-  v5 = [v6 window];
-  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:v4 window:v5];
+  completionCopy = completion;
+  viewIfLoaded = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:completionCopy window:window];
 }
 
-- (void)_updateSceneWithCompletion:(id)a3 window:(id)a4
+- (void)_updateSceneWithCompletion:(id)completion window:(id)window
 {
-  v6 = a4;
-  v7 = a3;
-  -[PRUISAmbientPosterViewController _updateSceneWithCompletion:window:orientation:](self, "_updateSceneWithCompletion:window:orientation:", v7, v6, [v6 _windowInterfaceOrientation]);
+  windowCopy = window;
+  completionCopy = completion;
+  -[PRUISAmbientPosterViewController _updateSceneWithCompletion:window:orientation:](self, "_updateSceneWithCompletion:window:orientation:", completionCopy, windowCopy, [windowCopy _windowInterfaceOrientation]);
 }
 
-- (void)_updateSceneWithCompletion:(id)a3 window:(id)a4 orientation:(int64_t)a5
+- (void)_updateSceneWithCompletion:(id)completion window:(id)window orientation:(int64_t)orientation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PRUISAmbientPosterViewController *)self _appearState];
+  completionCopy = completion;
+  windowCopy = window;
+  _appearState = [(PRUISAmbientPosterViewController *)self _appearState];
   presentationMode = self->_presentationMode;
   v12 = [(PRUISAmbientPosterViewController *)self _renderingModeForVisibility:self->_visibility];
   if (self->_scene)
@@ -1296,7 +1296,7 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
     aBlock[1] = 3221225472;
     aBlock[2] = __82__PRUISAmbientPosterViewController__updateSceneWithCompletion_window_orientation___block_invoke;
     aBlock[3] = &unk_1E83A7978;
-    if (v10)
+    if (_appearState)
     {
       v13 = presentationMode == 2;
     }
@@ -1310,8 +1310,8 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
     v26 = v14;
     aBlock[4] = self;
     v24 = v12;
-    v25 = a5;
-    v23 = v9;
+    orientationCopy = orientation;
+    v23 = windowCopy;
     v15 = _Block_copy(aBlock);
     scene = self->_scene;
     if (v14 == 1)
@@ -1321,7 +1321,7 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
       v20[2] = __82__PRUISAmbientPosterViewController__updateSceneWithCompletion_window_orientation___block_invoke_2;
       v20[3] = &unk_1E83A79A0;
       v17 = &v21;
-      v21 = v8;
+      v21 = completionCopy;
       [(FBScene *)scene performUpdate:v15 withCompletion:v20];
     }
 
@@ -1332,7 +1332,7 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
       v18[2] = __82__PRUISAmbientPosterViewController__updateSceneWithCompletion_window_orientation___block_invoke_3;
       v18[3] = &unk_1E83A79A0;
       v17 = &v19;
-      v19 = v8;
+      v19 = completionCopy;
       [(FBScene *)scene pruis_updateWithoutActivating:v15 withCompletion:v18];
       if ([(FBScene *)self->_scene isActive])
       {
@@ -1341,9 +1341,9 @@ void __79__PRUISAmbientPosterViewController_cancelTouchesForCurrentEventInHosted
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1422,12 +1422,12 @@ uint64_t __82__PRUISAmbientPosterViewController__updateSceneWithCompletion_windo
   return result;
 }
 
-- (unint64_t)_titleAlignmentForInterfaceOrientation:(int64_t)a3
+- (unint64_t)_titleAlignmentForInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(PRUISAmbientPosterViewController *)self delegate];
+  delegate = [(PRUISAmbientPosterViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 ambientPosterViewController:self titleAlignmentForInterfaceOrientation:a3];
+    v6 = [delegate ambientPosterViewController:self titleAlignmentForInterfaceOrientation:orientation];
   }
 
   else
@@ -1467,15 +1467,15 @@ uint64_t __82__PRUISAmbientPosterViewController__updateSceneWithCompletion_windo
   return result;
 }
 
-- (int64_t)_renderingModeForVisibility:(unint64_t)a3
+- (int64_t)_renderingModeForVisibility:(unint64_t)visibility
 {
   v3 = 2;
-  if (a3 != 1)
+  if (visibility != 1)
   {
     v3 = 3;
   }
 
-  if (a3 == 2)
+  if (visibility == 2)
   {
     return 1;
   }
@@ -1488,8 +1488,8 @@ uint64_t __82__PRUISAmbientPosterViewController__updateSceneWithCompletion_windo
 
 - (void)_updateForCurrentPresentationMode
 {
-  v3 = [(PRUISAmbientPosterViewController *)self _effectivePresentationMode];
-  if (!v3)
+  _effectivePresentationMode = [(PRUISAmbientPosterViewController *)self _effectivePresentationMode];
+  if (!_effectivePresentationMode)
   {
     [(UIView *)self->_sceneView setHidden:1];
     [(PRUISAmbientPosterSceneLayerHostView *)self->_backgroundSceneLayerView setHidden:1];
@@ -1500,7 +1500,7 @@ uint64_t __82__PRUISAmbientPosterViewController__updateSceneWithCompletion_windo
     goto LABEL_7;
   }
 
-  if (v3 == 1)
+  if (_effectivePresentationMode == 1)
   {
     [(UIView *)self->_sceneView setHidden:1];
     [(PRUISAmbientPosterSceneLayerHostView *)self->_backgroundSceneLayerView setHidden:1];
@@ -1513,7 +1513,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v3 != 2)
+  if (_effectivePresentationMode != 2)
   {
 LABEL_8:
     v4 = 0;
@@ -1544,71 +1544,71 @@ void __69__PRUISAmbientPosterViewController__updateForCurrentPresentationMode__b
   [WeakRetained _updateTouchDeliveryPolicies];
 }
 
-- (void)_enumerateSnapshotLayerViews:(id)a3
+- (void)_enumerateSnapshotLayerViews:(id)views
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (views + 16);
+  v5 = *(views + 2);
+  viewsCopy = views;
   v5();
-  (*v4)(v6, self->_snapshotForegroundLayerView, 2);
-  (*v4)(v6, self->_snapshotFloatingLayerView, 4);
+  (*v4)(viewsCopy, self->_snapshotForegroundLayerView, 2);
+  (*v4)(viewsCopy, self->_snapshotFloatingLayerView, 4);
 }
 
-- (id)_snapshotBundle:(id)a3 imageForLayer:(unint64_t)a4
+- (id)_snapshotBundle:(id)bundle imageForLayer:(unint64_t)layer
 {
-  v5 = a3;
-  v6 = v5;
+  bundleCopy = bundle;
+  v6 = bundleCopy;
   v7 = 0;
-  if (a4 > 1)
+  if (layer > 1)
   {
-    if (a4 == 2)
+    if (layer == 2)
     {
-      v8 = [v5 foregroundSnapshot];
+      foregroundSnapshot = [bundleCopy foregroundSnapshot];
     }
 
     else
     {
-      if (a4 != 4)
+      if (layer != 4)
       {
         goto LABEL_11;
       }
 
-      v8 = [v5 floatingSnapshot];
+      foregroundSnapshot = [bundleCopy floatingSnapshot];
     }
   }
 
-  else if (a4 == -1)
+  else if (layer == -1)
   {
-    v8 = [v5 compositeSnapshot];
+    foregroundSnapshot = [bundleCopy compositeSnapshot];
   }
 
   else
   {
-    if (a4 != 1)
+    if (layer != 1)
     {
       goto LABEL_11;
     }
 
-    v8 = [v5 backgroundSnapshot];
+    foregroundSnapshot = [bundleCopy backgroundSnapshot];
   }
 
-  v7 = v8;
+  v7 = foregroundSnapshot;
 LABEL_11:
 
   return v7;
 }
 
-- (void)_updateForSnapshotBundle:(id)a3
+- (void)_updateForSnapshotBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   self->_loadedPosterSnapshotLayers = 0;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__PRUISAmbientPosterViewController__updateForSnapshotBundle___block_invoke;
   v6[3] = &unk_1E83A79E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = bundleCopy;
+  v5 = bundleCopy;
   [(PRUISAmbientPosterViewController *)self _enumerateSnapshotLayerViews:v6];
 }
 
@@ -1647,16 +1647,16 @@ void __61__PRUISAmbientPosterViewController__updateForSnapshotBundle___block_inv
   scene = self->_scene;
   if (scene && (-[FBScene settings](scene, "settings"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 conformsToProtocol:&unk_1F4AFBE60], v4, v5))
   {
-    v6 = [(FBScene *)self->_scene settings];
+    settings = [(FBScene *)self->_scene settings];
   }
 
   else
   {
-    v6 = [(PRUISAmbientPosterViewController *)self traitCollection];
+    settings = [(PRUISAmbientPosterViewController *)self traitCollection];
   }
 
-  v7 = v6;
-  [v6 ambientDisplayStyle];
+  v7 = settings;
+  [settings ambientDisplayStyle];
 
   if (AMUIAmbientDisplayStyleIsRedMode())
   {
@@ -1678,42 +1678,42 @@ void __61__PRUISAmbientPosterViewController__updateForSnapshotBundle___block_inv
 
 - (int64_t)_currentOrientation
 {
-  v2 = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
-  v3 = [v2 window];
+  viewIfLoaded = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [v3 _windowInterfaceOrientation];
+    _windowInterfaceOrientation = [window _windowInterfaceOrientation];
   }
 
   else
   {
-    v4 = 4;
+    _windowInterfaceOrientation = 4;
   }
 
-  return v4;
+  return _windowInterfaceOrientation;
 }
 
 - (id)_makeSnapshotRequest
 {
   v3 = [PRUISPosterSnapshotDescriptor alloc];
-  v4 = [(PRUISAmbientPosterViewController *)self _currentOrientation];
-  v5 = [(PRUISAmbientPosterViewController *)self _currentSnapshotDefinition];
-  v6 = [(PRUISPosterSnapshotDescriptor *)v3 initWithUserInterfaceStyle:2 interfaceOrientation:v4 snapshotDefinition:v5];
+  _currentOrientation = [(PRUISAmbientPosterViewController *)self _currentOrientation];
+  _currentSnapshotDefinition = [(PRUISAmbientPosterViewController *)self _currentSnapshotDefinition];
+  v6 = [(PRUISPosterSnapshotDescriptor *)v3 initWithUserInterfaceStyle:2 interfaceOrientation:_currentOrientation snapshotDefinition:_currentSnapshotDefinition];
 
   v7 = [[PRUISPosterSnapshotRequest alloc] initWithPoster:self->_configuration snapshotDescriptor:v6];
 
   return v7;
 }
 
-- (void)_updateSnapshotsAnimated:(BOOL)a3
+- (void)_updateSnapshotsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PRUISAmbientPosterViewController *)self _shouldSnapshot])
   {
-    v7 = [(PRUISAmbientPosterViewController *)self _makeSnapshotRequest];
-    v5 = [(PRUISAmbientPosterViewController *)self snapshotController];
-    v6 = [v5 currentSnapshotBundleForRequest:v7 error:0];
+    _makeSnapshotRequest = [(PRUISAmbientPosterViewController *)self _makeSnapshotRequest];
+    snapshotController = [(PRUISAmbientPosterViewController *)self snapshotController];
+    v6 = [snapshotController currentSnapshotBundleForRequest:_makeSnapshotRequest error:0];
 
     if (v6)
     {
@@ -1722,7 +1722,7 @@ void __61__PRUISAmbientPosterViewController__updateForSnapshotBundle___block_inv
 
     else
     {
-      [(PRUISAmbientPosterViewController *)self _fetchSnapshotsWithRequest:v7 animated:v3];
+      [(PRUISAmbientPosterViewController *)self _fetchSnapshotsWithRequest:_makeSnapshotRequest animated:animatedCopy];
     }
   }
 }
@@ -1732,15 +1732,15 @@ void __61__PRUISAmbientPosterViewController__updateForSnapshotBundle___block_inv
   if ([(PRUISAmbientPosterViewController *)self _shouldSnapshot])
   {
     v3 = self->_configuration;
-    v4 = [(PRUISAmbientPosterViewController *)self _makeSnapshotRequest];
-    v5 = [(PRUISAmbientPosterViewController *)self snapshotController];
+    _makeSnapshotRequest = [(PRUISAmbientPosterViewController *)self _makeSnapshotRequest];
+    snapshotController = [(PRUISAmbientPosterViewController *)self snapshotController];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__PRUISAmbientPosterViewController__takeNewSnapshots__block_invoke;
     v7[3] = &unk_1E83A7A10;
     v8 = v3;
     v6 = v3;
-    [v5 executeSnapshotRequest:v4 completion:v7];
+    [snapshotController executeSnapshotRequest:_makeSnapshotRequest completion:v7];
   }
 }
 
@@ -1767,15 +1767,15 @@ void __53__PRUISAmbientPosterViewController__takeNewSnapshots__block_invoke(uint
   }
 }
 
-- (void)_fetchSnapshotsWithRequest:(id)a3 animated:(BOOL)a4
+- (void)_fetchSnapshotsWithRequest:(id)request animated:(BOOL)animated
 {
-  v6 = a3;
+  requestCopy = request;
   configuration = self->_configuration;
   if (configuration)
   {
     v8 = configuration;
     objc_initWeak(&location, self);
-    v9 = [(PRUISAmbientPosterViewController *)self snapshotController];
+    snapshotController = [(PRUISAmbientPosterViewController *)self snapshotController];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72__PRUISAmbientPosterViewController__fetchSnapshotsWithRequest_animated___block_invoke;
@@ -1783,8 +1783,8 @@ void __53__PRUISAmbientPosterViewController__takeNewSnapshots__block_invoke(uint
     objc_copyWeak(&v13, &location);
     v10 = v8;
     v12 = v10;
-    v14 = a4;
-    [v9 executeSnapshotRequest:v6 completion:v11];
+    animatedCopy = animated;
+    [snapshotController executeSnapshotRequest:requestCopy completion:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -1853,10 +1853,10 @@ void __72__PRUISAmbientPosterViewController__fetchSnapshotsWithRequest_animated_
   [v7 setImage:v8];
 }
 
-- (void)_noteWindowWillRotate:(id)a3
+- (void)_noteWindowWillRotate:(id)rotate
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE7F8]];
+  userInfo = [rotate userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE7F8]];
   v6 = objc_opt_class();
   v7 = v5;
   if (v6)
@@ -1879,11 +1879,11 @@ void __72__PRUISAmbientPosterViewController__fetchSnapshotsWithRequest_animated_
 
   v9 = v8;
 
-  v12 = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
-  v10 = [v12 window];
-  v11 = [v9 integerValue];
+  viewIfLoaded = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  integerValue = [v9 integerValue];
 
-  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0 window:v10 orientation:v11];
+  [(PRUISAmbientPosterViewController *)self _updateSceneWithCompletion:0 window:window orientation:integerValue];
 }
 
 - (void)_registerForAmbientPresentationTraitChanges
@@ -1923,28 +1923,28 @@ void __79__PRUISAmbientPosterViewController__registerForAmbientPresentationTrait
   [v2 _updateSceneWithCompletion:0];
 }
 
-- (void)_updateAmbientPresentationSettingsForSceneSettings:(id)a3
+- (void)_updateAmbientPresentationSettingsForSceneSettings:(id)settings
 {
-  v5 = a3;
-  v4 = [(PRUISAmbientPosterViewController *)self traitCollection];
+  settingsCopy = settings;
+  traitCollection = [(PRUISAmbientPosterViewController *)self traitCollection];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setAmbientPresented:{objc_msgSend(v4, "isAmbientPresented")}];
+    [settingsCopy setAmbientPresented:{objc_msgSend(traitCollection, "isAmbientPresented")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 setAmbientDisplayStyle:{objc_msgSend(v4, "ambientDisplayStyle")}];
+    [settingsCopy setAmbientDisplayStyle:{objc_msgSend(traitCollection, "ambientDisplayStyle")}];
   }
 }
 
-- (id)_posterProviderForPosterPath:(id)a3
+- (id)_posterProviderForPosterPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PRUISAmbientPosterViewController *)self delegate];
+  pathCopy = path;
+  delegate = [(PRUISAmbientPosterViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 ambientPosterViewControllerRequestExtensionInstanceIdentifier:self];
+    v6 = [delegate ambientPosterViewControllerRequestExtensionInstanceIdentifier:self];
   }
 
   else
@@ -1952,7 +1952,7 @@ void __79__PRUISAmbientPosterViewController__registerForAmbientPresentationTrait
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x1E69C5160] extensionInstanceForPath:v4 instanceIdentifier:v6];
+  v7 = [MEMORY[0x1E69C5160] extensionInstanceForPath:pathCopy instanceIdentifier:v6];
 
   return v7;
 }
@@ -1988,25 +1988,25 @@ void __79__PRUISAmbientPosterViewController__registerForAmbientPresentationTrait
     scene = self->_scene;
   }
 
-  v6 = [(FBScene *)scene uiPresentationManager];
+  uiPresentationManager = [(FBScene *)scene uiPresentationManager];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 createPresenterWithIdentifier:v8];
+  v9 = [uiPresentationManager createPresenterWithIdentifier:v8];
   scenePresenter = self->_scenePresenter;
   self->_scenePresenter = v9;
 
   [(UIScenePresenter *)self->_scenePresenter modifyPresentationContext:&__block_literal_global_217];
   [(UIScenePresenter *)self->_scenePresenter activate];
-  v11 = [(UIScenePresenter *)self->_scenePresenter presentationView];
-  v12 = [(PRUISAmbientPosterViewController *)self view];
-  [v12 bounds];
-  [(UIView *)v11 setFrame:?];
-  [(UIView *)v11 setAutoresizingMask:18];
-  [v12 insertSubview:v11 belowSubview:self->_backgroundSceneLayerView];
+  presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
+  view = [(PRUISAmbientPosterViewController *)self view];
+  [view bounds];
+  [(UIView *)presentationView setFrame:?];
+  [(UIView *)presentationView setAutoresizingMask:18];
+  [view insertSubview:presentationView belowSubview:self->_backgroundSceneLayerView];
   [(PRUISAmbientPosterViewController *)self _updateSceneLayerPresenters];
   [(PRUISAmbientPosterViewController *)self _updateTouchDeliveryPolicies];
   sceneView = self->_sceneView;
-  self->_sceneView = v11;
+  self->_sceneView = presentationView;
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -2174,16 +2174,16 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(FBScene *)self->_scene layerManager];
-  v4 = [v3 layers];
+  layerManager = [(FBScene *)self->_scene layerManager];
+  layers = [layerManager layers];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [layers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
-    v8 = 0;
-    v9 = 0;
+    contextID3 = 0;
+    contextID2 = 0;
+    contextID = 0;
     v10 = *v19;
     v11 = *MEMORY[0x1E69C5380];
     v12 = *MEMORY[0x1E69C53A0];
@@ -2194,7 +2194,7 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layers);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
@@ -2204,22 +2204,22 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
         {
           if (v17 == v11)
           {
-            v9 = [v15 contextID];
+            contextID = [v15 contextID];
           }
 
           else if (v17 == v12)
           {
-            v8 = [v15 contextID];
+            contextID2 = [v15 contextID];
           }
 
           else if (v17 == v13)
           {
-            v7 = [v15 contextID];
+            contextID3 = [v15 contextID];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [layers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -2227,12 +2227,12 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
 
   else
   {
-    v7 = 0;
-    v8 = 0;
-    v9 = 0;
+    contextID3 = 0;
+    contextID2 = 0;
+    contextID = 0;
   }
 
-  if ([(PRUISAmbientPosterSceneLayerHostView *)self->_backgroundSceneLayerView setContextID:v9 scene:self->_scene]|| [(PRUISAmbientPosterSceneLayerHostView *)self->_foregroundSceneLayerView setContextID:v8 scene:self->_scene]|| [(PRUISAmbientPosterSceneLayerHostView *)self->_floatingSceneLayerView setContextID:v7 scene:self->_scene])
+  if ([(PRUISAmbientPosterSceneLayerHostView *)self->_backgroundSceneLayerView setContextID:contextID scene:self->_scene]|| [(PRUISAmbientPosterSceneLayerHostView *)self->_foregroundSceneLayerView setContextID:contextID2 scene:self->_scene]|| [(PRUISAmbientPosterSceneLayerHostView *)self->_floatingSceneLayerView setContextID:contextID3 scene:self->_scene])
   {
     [(PRUISAmbientPosterViewController *)self _updateSeparatedLayerHosting];
   }
@@ -2244,24 +2244,24 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
   BSDispatchQueueAssertMain();
   if (self->_shouldShareTouchesWithHost && self->_presentationMode == 2 && self->_scene && (-[PRUISAmbientPosterViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 _window], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    v5 = [(FBScene *)self->_scene layerManager];
-    v6 = [v5 layers];
+    layerManager = [(FBScene *)self->_scene layerManager];
+    layers = [layerManager layers];
 
     v7 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v8 = [(NSMutableDictionary *)self->_touchDeliveryPolicyAssertions allKeys];
-    v47 = [v7 initWithArray:v8];
+    allKeys = [(NSMutableDictionary *)self->_touchDeliveryPolicyAssertions allKeys];
+    v47 = [v7 initWithArray:allKeys];
 
-    v9 = [(PRUISAmbientPosterViewController *)self view];
-    v10 = [v9 _window];
-    v44 = [v10 _contextId];
+    view = [(PRUISAmbientPosterViewController *)self view];
+    _window = [view _window];
+    _contextId = [_window _contextId];
 
     v11 = PRUISLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v64 = self;
+      selfCopy4 = self;
       v65 = 2114;
-      v66 = v6;
+      v66 = layers;
       _os_log_impl(&dword_1CAE63000, v11, OS_LOG_TYPE_DEFAULT, "[%@] Updating touch delivery policies for layers: %{public}@", buf, 0x16u);
     }
 
@@ -2269,7 +2269,7 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    obj = v6;
+    obj = layers;
     v12 = [obj countByEnumeratingWithState:&v59 objects:v74 count:16];
     if (v12)
     {
@@ -2285,21 +2285,21 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
             objc_enumerationMutation(obj);
           }
 
-          v15 = [*(*(&v59 + 1) + 8 * i) contextID];
-          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+          contextID = [*(*(&v59 + 1) + 8 * i) contextID];
+          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
           [v47 removeObject:v16];
 
           touchDeliveryPolicyAssertions = self->_touchDeliveryPolicyAssertions;
-          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
           v19 = [(NSMutableDictionary *)touchDeliveryPolicyAssertions objectForKey:v18];
           LODWORD(touchDeliveryPolicyAssertions) = v19 == 0;
 
           if (touchDeliveryPolicyAssertions)
           {
             v20 = objc_alloc_init(MEMORY[0x1E698E440]);
-            v21 = [MEMORY[0x1E698E438] policyRequiringSharingOfTouchesDeliveredToChildContextId:v15 withHostContextId:v44];
-            v22 = [(__CFString *)v20 endpoint];
-            [v21 setAssertionEndpoint:v22];
+            v21 = [MEMORY[0x1E698E438] policyRequiringSharingOfTouchesDeliveredToChildContextId:contextID withHostContextId:_contextId];
+            endpoint = [(__CFString *)v20 endpoint];
+            [v21 setAssertionEndpoint:endpoint];
 
             objc_initWeak(&location, self);
             v52 = MEMORY[0x1E69E9820];
@@ -2316,11 +2316,11 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
               if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = v43;
-                v64 = self;
+                selfCopy4 = self;
                 v65 = 2114;
                 v66 = v20;
                 v67 = 2050;
-                v68 = v15;
+                v68 = contextID;
                 _os_log_impl(&dword_1CAE63000, v25, OS_LOG_TYPE_DEFAULT, "[%@] Saving touch policy assertion %{public}@ for context id 0x%{public}llx", buf, 0x20u);
               }
 
@@ -2334,7 +2334,7 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
                 v26 = self->_touchDeliveryPolicyAssertions;
               }
 
-              v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+              v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
               [(NSMutableDictionary *)v26 setObject:v20 forKey:v29];
 
               [v24 ipc_addPolicy:v23];
@@ -2376,13 +2376,13 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
           v36 = PRUISLogCommon();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
-            v37 = [v34 unsignedIntValue];
+            unsignedIntValue = [v34 unsignedIntValue];
             *buf = 138412802;
-            v64 = self;
+            selfCopy4 = self;
             v65 = 2114;
             v66 = v35;
             v67 = 2050;
-            v68 = v37;
+            v68 = unsignedIntValue;
             _os_log_impl(&dword_1CAE63000, v36, OS_LOG_TYPE_DEFAULT, "[%@] Invalidating assertion %{public}@ for context id 0x%{public}llx", buf, 0x20u);
           }
         }
@@ -2411,10 +2411,10 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
 
       presentationMode = self->_presentationMode;
       scene = self->_scene;
-      v41 = [(PRUISAmbientPosterViewController *)self view];
-      v42 = [v41 _window];
+      view2 = [(PRUISAmbientPosterViewController *)self view];
+      _window2 = [view2 _window];
       *buf = 138413314;
-      v64 = self;
+      selfCopy4 = self;
       v65 = 2114;
       v66 = v38;
       v67 = 2050;
@@ -2422,7 +2422,7 @@ void __47__PRUISAmbientPosterViewController__setupScene__block_invoke_214(uint64
       v69 = 2114;
       v70 = scene;
       v71 = 2114;
-      v72 = v42;
+      v72 = _window2;
       _os_log_impl(&dword_1CAE63000, obj, OS_LOG_TYPE_DEFAULT, "[%@] Couldn't update touch delivery policies: _shouldShareTouchesWithHost=%{public}@; _presentationMode=%{public}ld; _scene=%{public}@; window=%{public}@", buf, 0x34u);
     }
   }
@@ -2457,7 +2457,7 @@ void __64__PRUISAmbientPosterViewController__updateTouchDeliveryPolicies__block_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CAE63000, v3, OS_LOG_TYPE_DEFAULT, "[%@] Clearing any touch delivery policies", &v4, 0xCu);
   }
 
@@ -2465,35 +2465,35 @@ void __64__PRUISAmbientPosterViewController__updateTouchDeliveryPolicies__block_
   [(NSMutableDictionary *)self->_touchDeliveryPolicyAssertions removeAllObjects];
 }
 
-- (void)_windowDidAttachContext:(id)a3
+- (void)_windowDidAttachContext:(id)context
 {
-  v4 = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
-  v5 = [v4 window];
+  viewIfLoaded = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v5)
+  if (!window)
   {
 
     [(PRUISAmbientPosterViewController *)self _updateTouchDeliveryPolicies];
   }
 }
 
-- (void)_windowDidDetachContext:(id)a3
+- (void)_windowDidDetachContext:(id)context
 {
-  v7 = a3;
-  v4 = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
-  v5 = [v4 window];
+  contextCopy = context;
+  viewIfLoaded = [(PRUISAmbientPosterViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v5 || ([v7 object], v6 = objc_claimAutoreleasedReturnValue(), v6, v5 == v6))
+  if (!window || ([contextCopy object], v6 = objc_claimAutoreleasedReturnValue(), v6, window == v6))
   {
     [(PRUISAmbientPosterViewController *)self _clearTouchDeliveryPolicies];
   }
 }
 
-- (void)_enumerateSceneObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateSceneObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5 && [(NSHashTable *)self->_sceneObservers count])
+  blockCopy = block;
+  if (blockCopy && [(NSHashTable *)self->_sceneObservers count])
   {
     v14 = 0u;
     v15 = 0u;
@@ -2518,7 +2518,7 @@ void __64__PRUISAmbientPosterViewController__updateTouchDeliveryPolicies__block_
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v11);
+            blockCopy[2](blockCopy, v11);
           }
 
           ++v10;
@@ -2533,13 +2533,13 @@ void __64__PRUISAmbientPosterViewController__updateTouchDeliveryPolicies__block_
   }
 }
 
-- (void)_backlightLuminanceTraitDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_backlightLuminanceTraitDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = [a3 traitCollection];
-  v8 = [v7 _backlightLuminance];
+  collectionCopy = collection;
+  traitCollection = [change traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (!v8)
+  if (!_backlightLuminance)
   {
     [(PRUISAmbientPosterViewController *)self _screenWillTurnOff];
     v9 = MEMORY[0x1E698E7D0];
@@ -2547,12 +2547,12 @@ void __64__PRUISAmbientPosterViewController__updateTouchDeliveryPolicies__block_
     v17 = 3221225472;
     v18 = __94__PRUISAmbientPosterViewController__backlightLuminanceTraitDidChange_previousTraitCollection___block_invoke;
     v19 = &unk_1E83A7490;
-    v20 = self;
+    selfCopy = self;
     v10 = &v16;
     goto LABEL_5;
   }
 
-  if (![v6 _backlightLuminance])
+  if (![collectionCopy _backlightLuminance])
   {
     [(PRUISAmbientPosterViewController *)self _screenWillTurnOn];
     v9 = MEMORY[0x1E698E7D0];
@@ -2560,10 +2560,10 @@ void __64__PRUISAmbientPosterViewController__updateTouchDeliveryPolicies__block_
     v12 = 3221225472;
     v13 = __94__PRUISAmbientPosterViewController__backlightLuminanceTraitDidChange_previousTraitCollection___block_invoke_2;
     v14 = &unk_1E83A7490;
-    v15 = self;
+    selfCopy2 = self;
     v10 = &v11;
 LABEL_5:
-    [v9 addAlongsideAnimations:0 completion:{v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20}];
+    [v9 addAlongsideAnimations:0 completion:{v10, v11, v12, v13, v14, selfCopy2, v16, v17, v18, v19, selfCopy}];
   }
 }
 
@@ -2590,10 +2590,10 @@ uint64_t __94__PRUISAmbientPosterViewController__backlightLuminanceTraitDidChang
 - (void)_screenDidTurnOn
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PRUISAmbientPosterViewController *)self bs_isAppearingOrAppeared];
+  bs_isAppearingOrAppeared = [(PRUISAmbientPosterViewController *)self bs_isAppearingOrAppeared];
   v4 = PRUISLogCommon();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (!v3)
+  if (!bs_isAppearingOrAppeared)
   {
     if (v5)
     {
@@ -2606,9 +2606,9 @@ uint64_t __94__PRUISAmbientPosterViewController__backlightLuminanceTraitDidChang
 
   if (v5)
   {
-    v6 = [(FBScene *)self->_scene pui_shortDescription];
+    pui_shortDescription = [(FBScene *)self->_scene pui_shortDescription];
     v12 = 138543362;
-    v13 = v6;
+    v13 = pui_shortDescription;
     _os_log_impl(&dword_1CAE63000, v4, OS_LOG_TYPE_DEFAULT, "Scene %{public}@ observed screen turn on", &v12, 0xCu);
   }
 
@@ -2619,9 +2619,9 @@ uint64_t __94__PRUISAmbientPosterViewController__backlightLuminanceTraitDidChang
       v4 = PRUISLogCommon();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(FBScene *)self->_scene pui_shortDescription];
+        pui_shortDescription2 = [(FBScene *)self->_scene pui_shortDescription];
         v12 = 138543362;
-        v13 = v9;
+        v13 = pui_shortDescription2;
         _os_log_impl(&dword_1CAE63000, v4, OS_LOG_TYPE_DEFAULT, "Ignoring screen wake event because scene %{public}@ wanted them and later disabled them", &v12, 0xCu);
       }
     }
@@ -2632,10 +2632,10 @@ uint64_t __94__PRUISAmbientPosterViewController__backlightLuminanceTraitDidChang
       v4 = PRUISLogCommon();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(FBScene *)self->_scene pui_shortDescription];
+        pui_shortDescription3 = [(FBScene *)self->_scene pui_shortDescription];
         v11 = [MEMORY[0x1E696AD98] numberWithInteger:self->_pendingScreenWakeCount];
         v12 = 138543618;
-        v13 = v10;
+        v13 = pui_shortDescription3;
         v14 = 2112;
         v15 = v11;
         _os_log_impl(&dword_1CAE63000, v4, OS_LOG_TYPE_DEFAULT, "Deferring screen wake event for scene %{public}@. total deferred: %@", &v12, 0x16u);
@@ -2650,38 +2650,38 @@ LABEL_10:
   v7 = PRUISLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(FBScene *)self->_scene pui_shortDescription];
+    pui_shortDescription4 = [(FBScene *)self->_scene pui_shortDescription];
     v12 = 138543362;
-    v13 = v8;
+    v13 = pui_shortDescription4;
     _os_log_impl(&dword_1CAE63000, v7, OS_LOG_TYPE_DEFAULT, "Sending prompt screen wake event to scene %{public}@", &v12, 0xCu);
   }
 
   [(FBScene *)self->_scene pui_postSignificantEvent:3];
 }
 
-- (void)_resetScreenWakeStateForTeardown:(BOOL)a3
+- (void)_resetScreenWakeStateForTeardown:(BOOL)teardown
 {
   self->_pendingScreenWakeCount = 0;
   self->_clientWantsScreenWakeEvents = 0;
   self->_clientEverWantedScreenWakeEvents = 0;
 }
 
-- (void)_setClientWantsScreenWakeEvents:(BOOL)a3
+- (void)_setClientWantsScreenWakeEvents:(BOOL)events
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_clientWantsScreenWakeEvents != a3)
+  if (self->_clientWantsScreenWakeEvents != events)
   {
-    v3 = a3;
-    self->_clientWantsScreenWakeEvents = a3;
+    eventsCopy = events;
+    self->_clientWantsScreenWakeEvents = events;
     v5 = PRUISLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FBScene *)self->_scene pui_shortDescription];
+      pui_shortDescription = [(FBScene *)self->_scene pui_shortDescription];
       clientWantsScreenWakeEvents = self->_clientWantsScreenWakeEvents;
       clientEverWantedScreenWakeEvents = self->_clientEverWantedScreenWakeEvents;
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_pendingScreenWakeCount];
       v12 = 138544130;
-      v13 = v6;
+      v13 = pui_shortDescription;
       v14 = 1024;
       v15 = clientWantsScreenWakeEvents;
       v16 = 1024;
@@ -2696,9 +2696,9 @@ LABEL_10:
       v10 = PRUISLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(FBScene *)self->_scene pui_shortDescription];
+        pui_shortDescription2 = [(FBScene *)self->_scene pui_shortDescription];
         v12 = 138543362;
-        v13 = v11;
+        v13 = pui_shortDescription2;
         _os_log_impl(&dword_1CAE63000, v10, OS_LOG_TYPE_DEFAULT, "Sending deferred screen wake event to scene %{public}@", &v12, 0xCu);
       }
 
@@ -2706,7 +2706,7 @@ LABEL_10:
       self->_pendingScreenWakeCount = 0;
     }
 
-    if (v3)
+    if (eventsCopy)
     {
       self->_clientEverWantedScreenWakeEvents = 1;
     }
@@ -2720,32 +2720,32 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)addSceneObserver:(id)a3
+- (void)addSceneObserver:(id)observer
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  sceneObservers = v4->_sceneObservers;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sceneObservers = selfCopy->_sceneObservers;
   if (!sceneObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    v7 = v4->_sceneObservers;
-    v4->_sceneObservers = v6;
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v7 = selfCopy->_sceneObservers;
+    selfCopy->_sceneObservers = weakObjectsHashTable;
 
-    sceneObservers = v4->_sceneObservers;
+    sceneObservers = selfCopy->_sceneObservers;
   }
 
-  [(NSHashTable *)sceneObservers addObject:v8];
-  objc_sync_exit(v4);
+  [(NSHashTable *)sceneObservers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeSceneObserver:(id)a3
+- (void)removeSceneObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_sceneObservers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_sceneObservers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)initWithBoundingShape:(const char *)a1 .cold.1(const char *a1, uint64_t a2)

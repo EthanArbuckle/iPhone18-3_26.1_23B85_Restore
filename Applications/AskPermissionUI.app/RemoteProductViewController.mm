@@ -1,15 +1,15 @@
 @interface RemoteProductViewController
-+ (id)metricsEventForAccount:(id)a3 request:(id)a4 action:(unint64_t)a5;
++ (id)metricsEventForAccount:(id)account request:(id)request action:(unint64_t)action;
 - (UIViewController)childViewController;
 - (id)_viewControllerProxy;
 - (void)_forceOrientationBackToSupportedOrientation;
 - (void)_presentErrorAlert;
 - (void)_presentStoreProductViewController;
 - (void)_presentWebProductViewController;
-- (void)_updateRequestWithAction:(int64_t)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)productViewControllerDidFinishWithAction:(unint64_t)a3;
+- (void)_updateRequestWithAction:(int64_t)action;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)productViewControllerDidFinishWithAction:(unint64_t)action;
 @end
 
 @implementation RemoteProductViewController
@@ -19,31 +19,31 @@
   v7 = +[UIApplication sharedApplication];
   if ([v7 statusBarOrientation] - 3 <= 1 && (-[RemoteProductViewController supportedInterfaceOrientations](self, "supportedInterfaceOrientations") & 0x18) == 0)
   {
-    if (!-[RemoteProductViewController isViewLoaded](self, "isViewLoaded") || (-[RemoteProductViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+    if (!-[RemoteProductViewController isViewLoaded](self, "isViewLoaded") || (-[RemoteProductViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], window = objc_claimAutoreleasedReturnValue(), v3, !window))
     {
-      v5 = [(RemoteProductViewController *)self presentedViewController];
-      v6 = [v5 view];
-      v4 = [v6 window];
+      presentedViewController = [(RemoteProductViewController *)self presentedViewController];
+      view = [presentedViewController view];
+      window = [view window];
 
-      if (!v4)
+      if (!window)
       {
-        v4 = +[UIWindow _applicationKeyWindow];
+        window = +[UIWindow _applicationKeyWindow];
       }
     }
 
-    [v4 _setRotatableViewOrientation:1 duration:1 force:0.0];
+    [window _setRotatableViewOrientation:1 duration:1 force:0.0];
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
-  v8 = [[ApprovalRequest alloc] initWithDictionary:v7];
+  completionCopy = completion;
+  userInfo = [context userInfo];
+  v8 = [[ApprovalRequest alloc] initWithDictionary:userInfo];
   [(RemoteProductViewController *)self setRequest:v8];
 
-  v9 = [(RemoteProductViewController *)self _viewControllerProxy];
-  [v9 setDesiredHardwareButtonEvents:16];
+  _viewControllerProxy = [(RemoteProductViewController *)self _viewControllerProxy];
+  [_viewControllerProxy setDesiredHardwareButtonEvents:16];
 
   v10 = +[APLogConfig sharedUIServiceConfig];
   if (!v10)
@@ -51,36 +51,36 @@
     v10 = +[APLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [(RemoteProductViewController *)self request];
+    request = [(RemoteProductViewController *)self request];
     v15 = 138543618;
     v16 = v12;
     v17 = 2114;
-    v18 = v14;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Configured with context. Request payload: %{public}@", &v15, 0x16u);
+    v18 = request;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Configured with context. Request payload: %{public}@", &v15, 0x16u);
   }
 
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
-+ (id)metricsEventForAccount:(id)a3 request:(id)a4 action:(unint64_t)a5
++ (id)metricsEventForAccount:(id)account request:(id)request action:(unint64_t)action
 {
-  v9 = a4;
-  v10 = a3;
+  requestCopy = request;
+  accountCopy = account;
   v11 = +[APLogConfig sharedUIServiceConfig];
   if (!v11)
   {
     v11 = +[APLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = a5;
+    actionCopy = action;
     v13 = AMSLogKey();
     v14 = objc_opt_class();
     v22 = a2;
@@ -89,8 +89,8 @@
       v15 = AMSLogKey();
       v16 = a2;
       v17 = v15;
-      a3 = NSStringFromSelector(v16);
-      [NSString stringWithFormat:@"%@: [%@] %@ ", v14, v17, a3];
+      account = NSStringFromSelector(v16);
+      [NSString stringWithFormat:@"%@: [%@] %@ ", v14, v17, account];
     }
 
     else
@@ -98,30 +98,30 @@
       v17 = NSStringFromSelector(a2);
       [NSString stringWithFormat:@"%@: %@ ", v14, v17];
     }
-    v18 = ;
+    accountCopy2 = ;
     *buf = 138543618;
-    v26 = v18;
+    v26 = accountCopy2;
     v27 = 2050;
-    v28 = v23;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Creating metrics event for action: %{public}ld", buf, 0x16u);
+    v28 = actionCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Creating metrics event for action: %{public}ld", buf, 0x16u);
     if (v13)
     {
 
-      v18 = a3;
+      accountCopy2 = account;
     }
 
     a2 = v22;
-    a5 = v23;
+    action = actionCopy;
   }
 
-  v19 = [APMetricsEvent metricsEventWithAccount:v10 request:v9];
+  v19 = [APMetricsEvent metricsEventWithAccount:accountCopy request:requestCopy];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100001BB0;
   v24[3] = &unk_1000184D0;
-  v24[4] = a5;
-  v24[5] = a1;
+  v24[4] = action;
+  v24[5] = self;
   v24[6] = a2;
   v20 = [v19 thenWithBlock:v24];
 
@@ -136,13 +136,13 @@
     v3 = +[APLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
     *(&buf + 4) = objc_opt_class();
     v5 = *(&buf + 4);
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Presenting store product view controller", &buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Presenting store product view controller", &buf, 0xCu);
   }
 
   v41 = 0;
@@ -166,26 +166,26 @@
   v8 = objc_alloc_init(v6);
   [v8 setDelegate:self];
   [v8 setAskToBuy:1];
-  v9 = [(RemoteProductViewController *)self request];
-  v10 = [v9 status] == -1;
+  request = [(RemoteProductViewController *)self request];
+  v10 = [request status] == -1;
 
   if (v10)
   {
-    v11 = [(RemoteProductViewController *)self request];
-    v12 = [v11 localizations];
-    v13 = [v12 decline];
-    [v8 setCancelButtonTitle:v13];
+    request2 = [(RemoteProductViewController *)self request];
+    localizations = [request2 localizations];
+    decline = [localizations decline];
+    [v8 setCancelButtonTitle:decline];
 
-    v14 = [(RemoteProductViewController *)self request];
-    v15 = [v14 localizations];
-    v16 = [v15 approve];
-    [v8 setRightBarButtonTitle:v16];
+    request3 = [(RemoteProductViewController *)self request];
+    localizations2 = [request3 localizations];
+    approve = [localizations2 approve];
+    [v8 setRightBarButtonTitle:approve];
 
     [v8 setShowsRightBarButton:1];
-    v17 = [(RemoteProductViewController *)self request];
-    v18 = [v17 localizations];
-    v19 = [v18 body];
-    [v8 setPromptString:v19];
+    request4 = [(RemoteProductViewController *)self request];
+    localizations3 = [request4 localizations];
+    body = [localizations3 body];
+    [v8 setPromptString:body];
   }
 
   else
@@ -201,15 +201,15 @@
     [v8 setModalPresentationStyle:0];
   }
 
-  v22 = [v8 presentationController];
-  [v22 setDelegate:self];
+  presentationController = [v8 presentationController];
+  [presentationController setDelegate:self];
 
-  v23 = [(RemoteProductViewController *)self request];
-  v24 = [v23 itemIdentifier];
-  v25 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v24 longLongValue]);
+  request5 = [(RemoteProductViewController *)self request];
+  itemIdentifier = [request5 itemIdentifier];
+  v25 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [itemIdentifier longLongValue]);
 
-  v26 = [(RemoteProductViewController *)self request];
-  v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v26 isException]);
+  request6 = [(RemoteProductViewController *)self request];
+  v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [request6 isException]);
 
   v46[0] = v27;
   v41 = 0;
@@ -243,9 +243,9 @@
   v45[1] = v31;
   v45[2] = @"askToBuyItem";
   v32 = v31;
-  v33 = [(RemoteProductViewController *)self request];
-  v34 = [v33 compile];
-  v46[2] = v34;
+  request7 = [(RemoteProductViewController *)self request];
+  compile = [request7 compile];
+  v46[2] = compile;
   v35 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:3];
 
   objc_initWeak(&buf, self);
@@ -255,10 +255,10 @@
   v39[3] = &unk_100018520;
   objc_copyWeak(&v40, &buf);
   [v8 loadProductWithParameters:v35 completionBlock:v39];
-  v36 = [(RemoteProductViewController *)self view];
-  v37 = [v36 window];
-  v38 = [v37 _rootSheetPresentationController];
-  [v38 _setShouldScaleDownBehindDescendantSheets:0];
+  view = [(RemoteProductViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
   [(RemoteProductViewController *)self presentViewController:v8 animated:1 completion:0];
   [(RemoteProductViewController *)self setChildViewController:v8];
@@ -274,35 +274,35 @@
     v3 = +[APLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
     v18 = objc_opt_class();
     v5 = v18;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Presenting web product view controller", &v17, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Presenting web product view controller", &v17, 0xCu);
   }
 
   v6 = [WebProductViewController alloc];
-  v7 = [(RemoteProductViewController *)self request];
-  v8 = [(WebProductViewController *)v6 initWithRequest:v7];
+  request = [(RemoteProductViewController *)self request];
+  v8 = [(WebProductViewController *)v6 initWithRequest:request];
 
   [(WebProductViewController *)v8 setActionDelegate:self];
   v9 = [[UINavigationController alloc] initWithRootViewController:v8];
   v10 = +[UIColor systemBackgroundColor];
-  v11 = [v9 navigationBar];
-  [v11 setBackgroundColor:v10];
+  navigationBar = [v9 navigationBar];
+  [navigationBar setBackgroundColor:v10];
 
-  v12 = [v9 navigationBar];
-  [v12 setTranslucent:0];
+  navigationBar2 = [v9 navigationBar];
+  [navigationBar2 setTranslucent:0];
 
-  v13 = [v9 presentationController];
-  [v13 setDelegate:self];
+  presentationController = [v9 presentationController];
+  [presentationController setDelegate:self];
 
-  v14 = [(RemoteProductViewController *)self view];
-  v15 = [v14 window];
-  v16 = [v15 _rootSheetPresentationController];
-  [v16 _setShouldScaleDownBehindDescendantSheets:0];
+  view = [(RemoteProductViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
   [(RemoteProductViewController *)self presentViewController:v9 animated:1 completion:0];
   [(RemoteProductViewController *)self setChildViewController:v8];
@@ -338,12 +338,12 @@
   v7 = [UIAlertAction actionWithTitle:v3 style:0 handler:&v10];
   [v6 addAction:{v7, v10, v11, v12, v13}];
 
-  v8 = [(RemoteProductViewController *)self childViewController];
+  childViewController = [(RemoteProductViewController *)self childViewController];
 
-  if (v8)
+  if (childViewController)
   {
-    v9 = [(RemoteProductViewController *)self childViewController];
-    [v9 presentViewController:v6 animated:1 completion:0];
+    childViewController2 = [(RemoteProductViewController *)self childViewController];
+    [childViewController2 presentViewController:v6 animated:1 completion:0];
   }
 
   else
@@ -355,12 +355,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateRequestWithAction:(int64_t)a3
+- (void)_updateRequestWithAction:(int64_t)action
 {
-  v5 = [(RemoteProductViewController *)self request];
-  v6 = [v5 isMocked];
+  request = [(RemoteProductViewController *)self request];
+  isMocked = [request isMocked];
 
-  if (v6)
+  if (isMocked)
   {
     v7 = +[APLogConfig sharedUIServiceConfig];
     if (!v7)
@@ -368,34 +368,34 @@
       v7 = +[APLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v15 = objc_opt_class();
       v9 = v15;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Cannot update mocked request", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Cannot update mocked request", buf, 0xCu);
     }
   }
 
   else
   {
     objc_initWeak(buf, self);
-    v10 = [(RemoteProductViewController *)self request];
-    v11 = [v10 requestIdentifier];
+    request2 = [(RemoteProductViewController *)self request];
+    requestIdentifier = [request2 requestIdentifier];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100002E34;
     v12[3] = &unk_100018548;
     objc_copyWeak(&v13, buf);
-    [APRequestHandler updateRequestWithIdentifier:v11 action:a3 completion:v12];
+    [APRequestHandler updateRequestWithIdentifier:requestIdentifier action:action completion:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)productViewControllerDidFinishWithAction:(unint64_t)a3
+- (void)productViewControllerDidFinishWithAction:(unint64_t)action
 {
   v6 = +[APLogConfig sharedUIServiceConfig];
   if (!v6)
@@ -403,8 +403,8 @@
     v6 = +[APLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = objc_opt_class();
@@ -424,8 +424,8 @@
     *buf = 138543618;
     v31 = v11;
     v32 = 2050;
-    v33 = a3;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Product view controller finished. Action: %{public}ld", buf, 0x16u);
+    actionCopy = action;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Product view controller finished. Action: %{public}ld", buf, 0x16u);
     if (v8)
     {
 
@@ -433,12 +433,12 @@
     }
   }
 
-  v12 = [(RemoteProductViewController *)self request];
-  v13 = [v12 status] == -1;
+  request = [(RemoteProductViewController *)self request];
+  v13 = [request status] == -1;
 
   if (!v13)
   {
-    a3 = 2;
+    action = 2;
   }
 
   v14 = +[APLogConfig sharedUIServiceConfig];
@@ -447,8 +447,8 @@
     v14 = +[APLogConfig sharedConfig];
   }
 
-  v15 = [v14 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v14 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v16 = AMSLogKey();
     v17 = objc_opt_class();
@@ -467,7 +467,7 @@
     v19 = ;
     *buf = 138543362;
     v31 = v19;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Creating metrics event", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Creating metrics event", buf, 0xCu);
     if (v16)
     {
 
@@ -476,9 +476,9 @@
   }
 
   v20 = objc_opt_class();
-  v21 = [(RemoteProductViewController *)self account];
-  v22 = [(RemoteProductViewController *)self request];
-  v23 = [v20 metricsEventForAccount:v21 request:v22 action:a3];
+  account = [(RemoteProductViewController *)self account];
+  request2 = [(RemoteProductViewController *)self request];
+  v23 = [v20 metricsEventForAccount:account request:request2 action:action];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100003500;
@@ -487,22 +487,22 @@
   v29[5] = a2;
   [v23 resultWithCompletion:v29];
 
-  if (a3 > 1)
+  if (action > 1)
   {
-    if (a3 == 2)
+    if (action == 2)
     {
       [(RemoteProductViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
 
-    else if (a3 == 3)
+    else if (action == 3)
     {
       [(RemoteProductViewController *)self _presentErrorAlert];
     }
   }
 
-  else if (a3)
+  else if (action)
   {
-    if (a3 == 1)
+    if (action == 1)
     {
       objc_initWeak(buf, self);
       v25[0] = _NSConcreteStackBlock;
@@ -530,11 +530,11 @@
   }
 }
 
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  if (a4)
+  if (result)
   {
-    v4 = 2 * (a4 != 5);
+    v4 = 2 * (result != 5);
   }
 
   else

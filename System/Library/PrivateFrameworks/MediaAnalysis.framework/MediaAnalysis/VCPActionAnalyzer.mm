@@ -1,16 +1,16 @@
 @interface VCPActionAnalyzer
-- (BOOL)decideSegmentPointBasedOnActionScore:(float)a3;
-- (BOOL)decideSegmentPointUsingHinkleyDetector:(float)a3;
+- (BOOL)decideSegmentPointBasedOnActionScore:(float)score;
+- (BOOL)decideSegmentPointUsingHinkleyDetector:(float)detector;
 - (VCPActionAnalyzer)init;
-- (int)analyzeFrameWithTimeRange:(id *)a3 andActionScore:(float)a4;
-- (int)finalizeWithDestructiveTrimStart:(id *)a3 trimEnd:(id *)a4;
+- (int)analyzeFrameWithTimeRange:(id *)range andActionScore:(float)score;
+- (int)finalizeWithDestructiveTrimStart:(id *)start trimEnd:(id *)end;
 - (int)mergeConsecutiveShortSegments;
 - (int)mergeSameTypeSegments;
 - (int)mergeSparseShortSegments;
-- (int)postProcessSegmentsWithCaptureTime:(id *)a3 trimStart:(id *)a4;
-- (int)prepareTrimmingWithTrimStart:(id *)a3 andTrimEnd:(id *)a4;
+- (int)postProcessSegmentsWithCaptureTime:(id *)time trimStart:(id *)start;
+- (int)prepareTrimmingWithTrimStart:(id *)start andTrimEnd:(id *)end;
 - (void)dealloc;
-- (void)printSegments:(id)a3;
+- (void)printSegments:(id)segments;
 - (void)updateActiveThreshold;
 @end
 
@@ -45,9 +45,9 @@ LABEL_7:
   ma::HinkleyDetector::HinkleyDetector(v3);
   v2->_activeHinkleyDetector = v4;
   ma::HinkleyDetector::Initialize(v4, 0.05, 0.15, 10);
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   internalResults = v2->_internalResults;
-  v2->_internalResults = v5;
+  v2->_internalResults = array;
 
   v7 = objc_alloc_init(VCPSegment);
   activeSegment = v2->_activeSegment;
@@ -76,33 +76,33 @@ LABEL_8:
   [(VCPActionAnalyzer *)&v4 dealloc];
 }
 
-- (int)analyzeFrameWithTimeRange:(id *)a3 andActionScore:(float)a4
+- (int)analyzeFrameWithTimeRange:(id *)range andActionScore:(float)score
 {
   if (self->_firstFrame)
   {
     activeSegment = self->_activeSegment;
-    v8 = *&a3->var0.var3;
-    v23 = *&a3->var0.var0;
+    v8 = *&range->var0.var3;
+    v23 = *&range->var0.var0;
     v24 = v8;
-    v9 = *&a3->var1.var1;
-    *&v9 = a4;
-    v10 = [(VCPActionAnalyzer *)self isScoreValid:*&v9, v23, v8, *&a3->var1.var1, a3->var1.var3];
-    *&v11 = a4;
+    v9 = *&range->var1.var1;
+    *&v9 = score;
+    v10 = [(VCPActionAnalyzer *)self isScoreValid:*&v9, v23, v8, *&range->var1.var1, range->var1.var3];
+    *&v11 = score;
     [(VCPSegment *)activeSegment updateWithFirstFrame:&v23 score:v10 valid:v11];
     self->_firstFrame = 0;
   }
 
-  else if ([(VCPActionAnalyzer *)self isScoreValid:*&a4]&& (*&v12 = a4, [(VCPActionAnalyzer *)self decideSegmentPointUsingHinkleyDetector:v12]))
+  else if ([(VCPActionAnalyzer *)self isScoreValid:*&score]&& (*&v12 = score, [(VCPActionAnalyzer *)self decideSegmentPointUsingHinkleyDetector:v12]))
   {
     v13 = self->_activeSegment;
-    v23 = *&a3->var0.var0;
-    *&v24 = a3->var0.var3;
+    v23 = *&range->var0.var0;
+    *&v24 = range->var0.var3;
     [(VCPSegment *)v13 updateDuration:&v23];
     [(NSMutableArray *)self->_internalResults addObject:self->_activeSegment];
     v14 = [VCPSegment alloc];
-    v23 = *&a3->var0.var0;
-    *&v24 = a3->var0.var3;
-    v15 = [(VCPSegment *)v14 initWithTimestamp:&v23 score:1 valid:COERCE_DOUBLE(__PAIR64__(DWORD1(v23), LODWORD(a4)))];
+    v23 = *&range->var0.var0;
+    *&v24 = range->var0.var3;
+    v15 = [(VCPSegment *)v14 initWithTimestamp:&v23 score:1 valid:COERCE_DOUBLE(__PAIR64__(DWORD1(v23), LODWORD(score)))];
     v16 = self->_activeSegment;
     self->_activeSegment = v15;
   }
@@ -110,13 +110,13 @@ LABEL_8:
   else
   {
     v17 = self->_activeSegment;
-    v18 = *&a3->var0.var3;
-    v23 = *&a3->var0.var0;
+    v18 = *&range->var0.var3;
+    v23 = *&range->var0.var0;
     v24 = v18;
-    v19 = *&a3->var1.var1;
-    *&v19 = a4;
-    v20 = [(VCPActionAnalyzer *)self isScoreValid:*&v19, v23, v18, *&a3->var1.var1, a3->var1.var3];
-    *&v21 = a4;
+    v19 = *&range->var1.var1;
+    *&v19 = score;
+    v20 = [(VCPActionAnalyzer *)self isScoreValid:*&v19, v23, v18, *&range->var1.var1, range->var1.var3];
+    *&v21 = score;
     [(VCPSegment *)v17 updateSegment:&v23 score:v20 valid:v21];
   }
 
@@ -158,39 +158,39 @@ LABEL_8:
   }
 }
 
-- (BOOL)decideSegmentPointBasedOnActionScore:(float)a3
+- (BOOL)decideSegmentPointBasedOnActionScore:(float)score
 {
-  v5 = [(VCPSegment *)self->_activeSegment numOfFrames];
-  if (v5)
+  numOfFrames = [(VCPSegment *)self->_activeSegment numOfFrames];
+  if (numOfFrames)
   {
-    *&v6 = a3;
-    LODWORD(v5) = [(VCPActionAnalyzer *)self isScoreValid:v6];
-    if (v5)
+    *&v6 = score;
+    LODWORD(numOfFrames) = [(VCPActionAnalyzer *)self isScoreValid:v6];
+    if (numOfFrames)
     {
       [(VCPSegment *)self->_activeSegment score];
       v7 = [(VCPActionAnalyzer *)self isActive:?];
-      *&v8 = a3;
-      LOBYTE(v5) = v7 ^ [(VCPActionAnalyzer *)self isActive:v8];
+      *&v8 = score;
+      LOBYTE(numOfFrames) = v7 ^ [(VCPActionAnalyzer *)self isActive:v8];
     }
   }
 
-  return v5;
+  return numOfFrames;
 }
 
-- (BOOL)decideSegmentPointUsingHinkleyDetector:(float)a3
+- (BOOL)decideSegmentPointUsingHinkleyDetector:(float)detector
 {
-  v11 = a3;
-  if ([(VCPSegment *)self->_activeSegment numOfValidFrames]&& (activeHinkleyDetector = self->_activeHinkleyDetector, activeHinkleyDetector->min_length_ < [(VCPSegment *)self->_activeSegment numOfFrames]) && (v5 = self->_activeHinkleyDetector, [(VCPSegment *)self->_activeSegment sumOfScore], v10 = v6, ma::HinkleyDetector::Test(v5, &v10, &v11, [(VCPSegment *)self->_activeSegment numOfValidFrames]+ 1)))
+  detectorCopy = detector;
+  if ([(VCPSegment *)self->_activeSegment numOfValidFrames]&& (activeHinkleyDetector = self->_activeHinkleyDetector, activeHinkleyDetector->min_length_ < [(VCPSegment *)self->_activeSegment numOfFrames]) && (v5 = self->_activeHinkleyDetector, [(VCPSegment *)self->_activeSegment sumOfScore], v10 = v6, ma::HinkleyDetector::Test(v5, &v10, &detectorCopy, [(VCPSegment *)self->_activeSegment numOfValidFrames]+ 1)))
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(VCPSegment *)self->_activeSegment numOfValidFrames];
+    numOfValidFrames = [(VCPSegment *)self->_activeSegment numOfValidFrames];
     v7 = 0;
     result = 0;
-    if (v8)
+    if (numOfValidFrames)
     {
       return result;
     }
@@ -215,9 +215,9 @@ LABEL_8:
         for (i = v5; [(NSMutableArray *)self->_internalResults count]> i; ++i)
         {
           v8 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:i];
-          v9 = [v8 isContentTooShort];
+          isContentTooShort = [v8 isContentTooShort];
 
-          if (!v9)
+          if (!isContentTooShort)
           {
             break;
           }
@@ -325,22 +325,22 @@ LABEL_8:
   return 0;
 }
 
-- (int)finalizeWithDestructiveTrimStart:(id *)a3 trimEnd:(id *)a4
+- (int)finalizeWithDestructiveTrimStart:(id *)start trimEnd:(id *)end
 {
   if (self->_verbose)
   {
-    time = *a3;
+    time = *start;
     Seconds = CMTimeGetSeconds(&time);
-    time = *a4;
+    time = *end;
     v8 = CMTimeGetSeconds(&time);
     printf("Destructive Trim Range: [%.2f - %.2f]\n", Seconds, v8);
   }
 
   [(NSMutableArray *)self->_internalResults addObject:self->_activeSegment];
   [(VCPActionAnalyzer *)self printSegments:@"start"];
-  time = *a3;
-  v10 = *&a4->var0;
-  var3 = a4->var3;
+  time = *start;
+  v10 = *&end->var0;
+  var3 = end->var3;
   [(VCPActionAnalyzer *)self prepareTrimmingWithTrimStart:&time andTrimEnd:&v10];
   [(VCPActionAnalyzer *)self printSegments:@"after repare"];
   [(VCPActionAnalyzer *)self mergeConsecutiveShortSegments];
@@ -350,7 +350,7 @@ LABEL_8:
   return 0;
 }
 
-- (int)postProcessSegmentsWithCaptureTime:(id *)a3 trimStart:(id *)a4
+- (int)postProcessSegmentsWithCaptureTime:(id *)time trimStart:(id *)start
 {
   activeSegment = self->_activeSegment;
   if (activeSegment)
@@ -363,7 +363,7 @@ LABEL_8:
     memset(&range, 0, sizeof(range));
   }
 
-  time = *a3;
+  time = *time;
   if (CMTimeRangeContainsTime(&range, &time))
   {
     [(NSMutableArray *)self->_internalResults addObject:self->_activeSegment];
@@ -392,12 +392,12 @@ LABEL_8:
 
   if ([(NSMutableArray *)self->_internalResults count])
   {
-    v16 = [(NSMutableArray *)self->_internalResults lastObject];
-    v17 = v16;
-    time = *a4;
-    if (v16)
+    lastObject = [(NSMutableArray *)self->_internalResults lastObject];
+    v17 = lastObject;
+    time = *start;
+    if (lastObject)
     {
-      [v16 timeRange];
+      [lastObject timeRange];
     }
 
     else
@@ -416,12 +416,12 @@ LABEL_8:
   return 0;
 }
 
-- (void)printSegments:(id)a3
+- (void)printSegments:(id)segments
 {
-  v4 = a3;
+  segmentsCopy = segments;
   if (self->_verbose)
   {
-    printf("=========Segment %s==========\n", [v4 UTF8String]);
+    printf("=========Segment %s==========\n", [segmentsCopy UTF8String]);
     [(NSMutableArray *)self->_internalResults enumerateObjectsUsingBlock:&__block_literal_global_78];
   }
 }
@@ -461,7 +461,7 @@ void __35__VCPActionAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   printf(" [%.2f - %.2f]: %.2f\n", Seconds, v5, v6);
 }
 
-- (int)prepareTrimmingWithTrimStart:(id *)a3 andTrimEnd:(id *)a4
+- (int)prepareTrimmingWithTrimStart:(id *)start andTrimEnd:(id *)end
 {
   v33 = 0;
   v34 = &v33;
@@ -476,8 +476,8 @@ void __35__VCPActionAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   v26[1] = 3221225472;
   v26[2] = __61__VCPActionAnalyzer_prepareTrimmingWithTrimStart_andTrimEnd___block_invoke;
   v26[3] = &unk_1E8351088;
-  v27 = *a3;
-  v28 = *a4;
+  v27 = *start;
+  v28 = *end;
   v26[4] = &v33;
   v26[5] = &v29;
   [(NSMutableArray *)internalResults enumerateObjectsUsingBlock:v26];
@@ -494,8 +494,8 @@ void __35__VCPActionAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   }
 
   v11 = [(NSMutableArray *)v9 objectAtIndexedSubscript:?];
-  v23 = *&a4->var0;
-  *&v24 = a4->var3;
+  v23 = *&end->var0;
+  *&v24 = end->var3;
   [v11 trimSegment:&v23 fromStart:0];
 
   for (j = *(v34 + 6); j >= 1; [(NSMutableArray *)self->_internalResults removeObjectAtIndex:j])
@@ -504,8 +504,8 @@ void __35__VCPActionAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   }
 
   v13 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:0];
-  v23 = *&a3->var0;
-  *&v24 = a3->var3;
+  v23 = *&start->var0;
+  *&v24 = start->var3;
   [v13 trimSegment:&v23 fromStart:1];
 
   if (self->_verbose)
@@ -527,11 +527,11 @@ void __35__VCPActionAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
     *&time.start.value = v23;
     time.start.epoch = v24;
     Seconds = CMTimeGetSeconds(&time.start);
-    v17 = [(NSMutableArray *)self->_internalResults lastObject];
-    v18 = v17;
-    if (v17)
+    lastObject = [(NSMutableArray *)self->_internalResults lastObject];
+    v18 = lastObject;
+    if (lastObject)
     {
-      [v17 timeRange];
+      [lastObject timeRange];
     }
 
     else

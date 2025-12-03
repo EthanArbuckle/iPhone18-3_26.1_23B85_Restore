@@ -1,10 +1,10 @@
 @interface ANSTSmileEstimate
 + (id)new;
 - (ANSTSmileEstimate)init;
-- (ANSTSmileEstimate)initWithCoder:(id)a3;
-- (ANSTSmileEstimate)initWithSmile:(int64_t)a3;
+- (ANSTSmileEstimate)initWithCoder:(id)coder;
+- (ANSTSmileEstimate)initWithSmile:(int64_t)smile;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTSmileEstimate
@@ -18,27 +18,27 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTSmileEstimate)initWithSmile:(int64_t)a3
+- (ANSTSmileEstimate)initWithSmile:(int64_t)smile
 {
   v5.receiver = self;
   v5.super_class = ANSTSmileEstimate;
   result = [(ANSTSmileEstimate *)&v5 init];
-  result->_smile = a3;
+  result->_smile = smile;
   return result;
 }
 
-- (ANSTSmileEstimate)initWithCoder:(id)a3
+- (ANSTSmileEstimate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ANSTSmileEstimate;
   v5 = [(ANSTSmileEstimate *)&v14 init];
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_smile);
   v10 = objc_msgSend_decodeObjectOfClass_forKey_(v6, v9, v7, v8);
@@ -53,14 +53,14 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   smile = self->_smile;
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v9 = objc_msgSend_numberWithInteger_(v4, v6, smile);
   v7 = NSStringFromSelector(sel_smile);
-  objc_msgSend_encodeObject_forKey_(v5, v8, v9, v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v9, v7);
 }
 
 - (id)description

@@ -1,6 +1,6 @@
 @interface WBSCrowdsourcedFeedbackDomainNormalizer
 - (WBSCrowdsourcedFeedbackDomainNormalizer)init;
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation WBSCrowdsourcedFeedbackDomainNormalizer
@@ -22,18 +22,18 @@
   return v2;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 host];
+    host = [valueCopy host];
 LABEL_5:
-    v6 = v5;
-    v7 = [v5 stringByTrimmingCharactersInSet:self->_dotCharacterSet];
+    v6 = host;
+    v7 = [host stringByTrimmingCharactersInSet:self->_dotCharacterSet];
 
-    v8 = [v7 safari_stringByRemovingWwwDotPrefix];
+    safari_stringByRemovingWwwDotPrefix = [v7 safari_stringByRemovingWwwDotPrefix];
 
     goto LABEL_7;
   }
@@ -41,14 +41,14 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    host = valueCopy;
     goto LABEL_5;
   }
 
-  v8 = 0;
+  safari_stringByRemovingWwwDotPrefix = 0;
 LABEL_7:
 
-  return v8;
+  return safari_stringByRemovingWwwDotPrefix;
 }
 
 @end

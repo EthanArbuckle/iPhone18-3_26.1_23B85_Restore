@@ -1,35 +1,35 @@
 @interface TDModelMeshRenditionSpec
 + (id)fetchRequest;
-- (void)processSubMesh:(id)a3 withAssetSubmeshIndex:(unsigned int *)a4 assetKeySpec:(id)a5 inDocument:(id)a6;
+- (void)processSubMesh:(id)mesh withAssetSubmeshIndex:(unsigned int *)index assetKeySpec:(id)spec inDocument:(id)document;
 @end
 
 @implementation TDModelMeshRenditionSpec
 
-- (void)processSubMesh:(id)a3 withAssetSubmeshIndex:(unsigned int *)a4 assetKeySpec:(id)a5 inDocument:(id)a6
+- (void)processSubMesh:(id)mesh withAssetSubmeshIndex:(unsigned int *)index assetKeySpec:(id)spec inDocument:(id)document
 {
   v36 = *MEMORY[0x277D85DE8];
-  v11 = [a6 newObjectForEntity:@"ModelIOSubmeshRenditionSpec"];
-  v12 = [a6 newObjectForEntity:@"RenditionKeySpec"];
-  [a5 copyAttributesInto:v12];
-  [v12 setElement:{objc_msgSend(a6, "elementWithIdentifier:", 164)}];
-  v28 = a6;
-  [v12 setPart:{objc_msgSend(a6, "partWithIdentifier:", 233)}];
-  [v12 setDimension2:a4];
+  v11 = [document newObjectForEntity:@"ModelIOSubmeshRenditionSpec"];
+  v12 = [document newObjectForEntity:@"RenditionKeySpec"];
+  [spec copyAttributesInto:v12];
+  [v12 setElement:{objc_msgSend(document, "elementWithIdentifier:", 164)}];
+  documentCopy = document;
+  [v12 setPart:{objc_msgSend(document, "partWithIdentifier:", 233)}];
+  [v12 setDimension2:index];
   [v11 setParentRendition:self];
   [(TDModelMeshRenditionSpec *)self addSubmeshesObject:v11];
   [v11 setKeySpec:v12];
   v29 = v11;
   [-[TDModelMeshRenditionSpec production](self "production")];
-  v13 = [a3 material];
+  material = [mesh material];
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v13)
+  if (material)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v14 = [material countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v14)
     {
       v15 = v14;
@@ -40,12 +40,12 @@
         {
           if (*v32 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(material);
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
-          v19 = [v18 URLValue];
-          if ([v18 type] == 1 && v19 != 0)
+          uRLValue = [v18 URLValue];
+          if ([v18 type] == 1 && uRLValue != 0)
           {
             v21 = objc_alloc_init(TDNamedAssetImportInfo);
             -[TDNamedAssetImportInfo setName:](v21, "setName:", [v18 stringValue]);
@@ -59,14 +59,14 @@
             [(TDNamedAssetImportInfo *)v21 setTextureHeight:120];
             v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
             v23 = objc_alloc_init(TDTextureAssetInfo);
-            [(TDTextureAssetInfo *)v23 setFileURL:v19];
+            [(TDTextureAssetInfo *)v23 setFileURL:uRLValue];
             [(TDTextureAssetInfo *)v23 setMipLevel:0];
             [v22 addObject:v23];
             [(TDNamedAssetImportInfo *)v21 setTextureInfos:v22];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v15 = [material countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v15);
@@ -75,7 +75,7 @@
 
   v30 = 0;
   v24 = v26;
-  [v28 createNamedTexturesForCustomInfos:v27 referenceFiles:1 bitSource:objc_msgSend(v28 error:{"_themeBitSourceForReferencedFilesAtURLs:createIfNecessary:", v26, 1, v26), &v30}];
+  [documentCopy createNamedTexturesForCustomInfos:v27 referenceFiles:1 bitSource:objc_msgSend(documentCopy error:{"_themeBitSourceForReferencedFilesAtURLs:createIfNecessary:", v26, 1, v26), &v30}];
 
   v25 = *MEMORY[0x277D85DE8];
 }

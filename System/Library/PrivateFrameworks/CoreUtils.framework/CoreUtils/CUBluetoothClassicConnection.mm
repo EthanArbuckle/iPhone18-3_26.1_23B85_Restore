@@ -1,48 +1,48 @@
 @interface CUBluetoothClassicConnection
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4;
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error;
 - (BOOL)_processReadStatus;
 - (BOOL)_runBTSessionStart;
 - (BOOL)_runConnectStart;
 - (BOOL)_runSetupChannel;
-- (BOOL)_setupIOAndReturnError:(id *)a3;
-- (BOOL)_startConnectingAndReturnError:(id *)a3;
-- (BOOL)activateDirectAndReturnError:(id *)a3;
-- (BTDeviceImpl)_btDeviceWithID:(id)a3 error:(id *)a4;
+- (BOOL)_setupIOAndReturnError:(id *)error;
+- (BOOL)_startConnectingAndReturnError:(id *)error;
+- (BOOL)activateDirectAndReturnError:(id *)error;
+- (BTDeviceImpl)_btDeviceWithID:(id)d error:(id *)error;
 - (CUBluetoothClassicConnection)init;
-- (void)_abortReadsWithError:(id)a3;
-- (void)_abortWritesWithError:(id)a3;
+- (void)_abortReadsWithError:(id)error;
+- (void)_abortWritesWithError:(id)error;
 - (void)_btEnsureStopped;
-- (void)_completeReadRequest:(id)a3 error:(id)a4;
-- (void)_completeWriteRequest:(id)a3 error:(id)a4;
+- (void)_completeReadRequest:(id)request error:(id)error;
+- (void)_completeWriteRequest:(id)request error:(id)error;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_prepareReadRequest:(id)a3;
-- (void)_processReads:(BOOL)a3;
+- (void)_prepareReadRequest:(id)request;
+- (void)_processReads:(BOOL)reads;
 - (void)_processWrites;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)_run;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)readWithRequest:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)writeEndOfDataWithCompletion:(id)a3;
-- (void)writeWithRequest:(id)a3;
+- (void)readWithRequest:(id)request;
+- (void)setLabel:(id)label;
+- (void)writeEndOfDataWithCompletion:(id)completion;
+- (void)writeWithRequest:(id)request;
 @end
 
 @implementation CUBluetoothClassicConnection
 
-- (void)_completeWriteRequest:(id)a3 error:(id)a4
+- (void)_completeWriteRequest:(id)request error:(id)error
 {
-  v14 = a3;
-  v10 = a4;
+  requestCopy = request;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 9)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUBluetoothClassicConnection _completeWriteRequest:error:]", 9u, "Write completed: %{error}\n", v6, v7, v8, v9, v10);
+      LogPrintF(ucat, "[CUBluetoothClassicConnection _completeWriteRequest:error:]", 9u, "Write completed: %{error}\n", v6, v7, v8, v9, errorCopy);
       goto LABEL_5;
     }
 
@@ -54,21 +54,21 @@ LABEL_3:
   }
 
 LABEL_5:
-  v12 = v14[1];
-  v14[1] = v10;
+  v12 = requestCopy[1];
+  requestCopy[1] = errorCopy;
 
-  v13 = [v14 completion];
-  [v14 setCompletion:0];
-  if (v13)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v13[2](v13);
+    completion[2](completion);
   }
 }
 
-- (void)_abortWritesWithError:(id)a3
+- (void)_abortWritesWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   if (self->_writeRequestCurrent || [(NSMutableArray *)self->_writeRequests count])
   {
     ucat = self->_ucat;
@@ -77,7 +77,7 @@ LABEL_5:
       if (ucat->var0 != -1)
       {
 LABEL_5:
-        LogPrintF(ucat, "[CUBluetoothClassicConnection _abortWritesWithError:]", 0x1Eu, "Abort writes: %{error}\n", v4, v5, v6, v7, v8);
+        LogPrintF(ucat, "[CUBluetoothClassicConnection _abortWritesWithError:]", 0x1Eu, "Abort writes: %{error}\n", v4, v5, v6, v7, errorCopy);
         goto LABEL_7;
       }
 
@@ -96,7 +96,7 @@ LABEL_7:
     writeRequestCurrent = self->_writeRequestCurrent;
     self->_writeRequestCurrent = 0;
 
-    [(CUBluetoothClassicConnection *)self _completeWriteRequest:v10 error:v8];
+    [(CUBluetoothClassicConnection *)self _completeWriteRequest:v10 error:errorCopy];
   }
 
   v23 = 0u;
@@ -122,7 +122,7 @@ LABEL_7:
 
         v10 = *(*(&v21 + 1) + 8 * v16);
 
-        [(CUBluetoothClassicConnection *)self _completeWriteRequest:v10 error:v8];
+        [(CUBluetoothClassicConnection *)self _completeWriteRequest:v10 error:errorCopy];
         ++v16;
         v17 = v10;
       }
@@ -148,41 +148,41 @@ LABEL_7:
 
   if (v19)
   {
-    v19[2](v19, v8);
+    v19[2](v19, errorCopy);
   }
 
   [(CUBluetoothClassicConnection *)self _invalidated];
 }
 
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 dataArray];
-  v8 = v7;
-  if (!v7)
+  requestCopy = request;
+  dataArray = [requestCopy dataArray];
+  v8 = dataArray;
+  if (!dataArray)
   {
-    *(v6 + 34) = v6 + 16;
-    LODWORD(v18) = [v6 bytesIOCount];
+    *(requestCopy + 34) = requestCopy + 16;
+    LODWORD(v18) = [requestCopy bytesIOCount];
     goto LABEL_14;
   }
 
-  v9 = [v7 count];
-  if (v9 <= [v6 bytesIOMaxCount])
+  v9 = [dataArray count];
+  if (v9 <= [requestCopy bytesIOMaxCount])
   {
-    v19 = v6 + 16;
+    v19 = requestCopy + 16;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
     v20 = v8;
     v21 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
-    v22 = v6 + 16;
+    v22 = requestCopy + 16;
     if (v21)
     {
       v23 = v21;
       v24 = *v40;
-      v22 = v6 + 16;
+      v22 = requestCopy + 16;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -204,25 +204,25 @@ LABEL_7:
       while (v23);
     }
 
-    *(v6 + 34) = v19;
+    *(requestCopy + 34) = v19;
     v18 = (v22 - v19) >> 4;
 LABEL_14:
-    *(v6 + 70) = v18;
-    *(v6 + 36) = 0;
-    v27 = *(v6 + 1);
-    *(v6 + 1) = 0;
+    *(requestCopy + 70) = v18;
+    *(requestCopy + 36) = 0;
+    v27 = *(requestCopy + 1);
+    *(requestCopy + 1) = 0;
 
     if (gLogCategory_CUBluetoothClassicConnection > 9 || gLogCategory_CUBluetoothClassicConnection == -1 && !_LogCategory_Initialize(&gLogCategory_CUBluetoothClassicConnection, 9u))
     {
       goto LABEL_27;
     }
 
-    v32 = *(v6 + 70);
+    v32 = *(requestCopy + 70);
     if (v32)
     {
       v33 = 0;
       v34 = 16 * v32;
-      v35 = (*(v6 + 34) + 8);
+      v35 = (*(requestCopy + 34) + 8);
       do
       {
         v36 = *v35;
@@ -248,7 +248,7 @@ LABEL_14:
       }
 
       ucat = self->_ucat;
-      v32 = *(v6 + 70);
+      v32 = *(requestCopy + 70);
     }
 
     LogPrintF(ucat, "[CUBluetoothClassicConnection _prepareWriteRequest:error:]", 9u, "Write prepared (%d iov, %zu total)\n", v28, v29, v30, v31, v32);
@@ -257,12 +257,12 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = *MEMORY[0x1E696A768];
-    v11 = [v6 bytesIOMaxCount];
-    NSErrorF_safe(v10, 4294960532, "Too many write elements (%zu max)", v12, v13, v14, v15, v16, v11);
-    *a4 = v17 = 0;
+    bytesIOMaxCount = [requestCopy bytesIOMaxCount];
+    NSErrorF_safe(v10, 4294960532, "Too many write elements (%zu max)", v12, v13, v14, v15, v16, bytesIOMaxCount);
+    *error = v17 = 0;
   }
 
   else
@@ -284,8 +284,8 @@ LABEL_28:
     v5 = self->_writeRequestCurrent;
     if (!v5)
     {
-      v13 = [(NSMutableArray *)self->_writeRequests firstObject];
-      if (!v13)
+      firstObject = [(NSMutableArray *)self->_writeRequests firstObject];
+      if (!firstObject)
       {
         if (!self->_writeSuspended)
         {
@@ -297,7 +297,7 @@ LABEL_28:
         goto LABEL_37;
       }
 
-      v5 = v13;
+      v5 = firstObject;
       [(NSMutableArray *)self->_writeRequests removeObjectAtIndex:0];
       v30 = 0;
       [(CUBluetoothClassicConnection *)self _prepareWriteRequest:v5 error:&v30];
@@ -408,19 +408,19 @@ LABEL_24:
   }
 }
 
-- (void)writeEndOfDataWithCompletion:(id)a3
+- (void)writeEndOfDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(CUWriteRequest);
   [(CUWriteRequest *)v5 setEndOfData:1];
-  if (v4)
+  if (completionCopy)
   {
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __61__CUBluetoothClassicConnection_writeEndOfDataWithCompletion___block_invoke;
     v9 = &unk_1E73A49A0;
     v10 = v5;
-    v11 = v4;
+    v11 = completionCopy;
     [(CUWriteRequest *)v5 setCompletion:&v6];
   }
 
@@ -434,17 +434,17 @@ void __61__CUBluetoothClassicConnection_writeEndOfDataWithCompletion___block_inv
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)writeWithRequest:(id)a3
+- (void)writeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CUBluetoothClassicConnection_writeWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -470,14 +470,14 @@ void __49__CUBluetoothClassicConnection_writeWithRequest___block_invoke(uint64_t
   }
 }
 
-- (void)_completeReadRequest:(id)a3 error:(id)a4
+- (void)_completeReadRequest:(id)request error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 9)
   {
-    v8 = v16;
+    v8 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_3:
@@ -489,20 +489,20 @@ LABEL_3:
     if (_LogCategory_Initialize(self->_ucat, 9u))
     {
       ucat = self->_ucat;
-      v8 = v16;
+      v8 = requestCopy;
       goto LABEL_3;
     }
   }
 
 LABEL_5:
-  v14 = v16[2];
-  v16[2] = v6;
+  v14 = requestCopy[2];
+  requestCopy[2] = errorCopy;
 
-  v15 = [v16 completion];
-  [v16 setCompletion:0];
-  if (v15)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v15[2](v15);
+    completion[2](completion);
   }
 }
 
@@ -566,10 +566,10 @@ LABEL_12:
   return 1;
 }
 
-- (void)_abortReadsWithError:(id)a3
+- (void)_abortReadsWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   if (self->_readRequestCurrent || [(NSMutableArray *)self->_readRequests count])
   {
     ucat = self->_ucat;
@@ -578,7 +578,7 @@ LABEL_12:
       if (ucat->var0 != -1)
       {
 LABEL_5:
-        LogPrintF(ucat, "[CUBluetoothClassicConnection _abortReadsWithError:]", 0x1Eu, "Abort reads: %{error}\n", v4, v5, v6, v7, v8);
+        LogPrintF(ucat, "[CUBluetoothClassicConnection _abortReadsWithError:]", 0x1Eu, "Abort reads: %{error}\n", v4, v5, v6, v7, errorCopy);
         goto LABEL_7;
       }
 
@@ -597,7 +597,7 @@ LABEL_7:
     readRequestCurrent = self->_readRequestCurrent;
     self->_readRequestCurrent = 0;
 
-    [(CUBluetoothClassicConnection *)self _completeReadRequest:v10 error:v8];
+    [(CUBluetoothClassicConnection *)self _completeReadRequest:v10 error:errorCopy];
   }
 
   v23 = 0u;
@@ -623,7 +623,7 @@ LABEL_7:
 
         v10 = *(*(&v21 + 1) + 8 * v16);
 
-        [(CUBluetoothClassicConnection *)self _completeReadRequest:v10 error:v8];
+        [(CUBluetoothClassicConnection *)self _completeReadRequest:v10 error:errorCopy];
         ++v16;
         v17 = v10;
       }
@@ -649,73 +649,73 @@ LABEL_7:
 
   if (v19)
   {
-    v19[2](v19, v8);
+    v19[2](v19, errorCopy);
   }
 
   [(CUBluetoothClassicConnection *)self _invalidated];
 }
 
-- (void)_prepareReadRequest:(id)a3
+- (void)_prepareReadRequest:(id)request
 {
-  v21 = a3;
-  if ([v21 bufferBytes])
+  requestCopy = request;
+  if ([requestCopy bufferBytes])
   {
-    v21[1] = [v21 bufferBytes];
-    [v21 setData:0];
+    requestCopy[1] = [requestCopy bufferBytes];
+    [requestCopy setData:0];
   }
 
   else
   {
-    v4 = [v21 bufferData];
+    bufferData = [requestCopy bufferData];
 
-    if (v4)
+    if (bufferData)
     {
-      v5 = [v21 bufferData];
-      v6 = [v5 length];
-      v7 = [v21 maxLength];
+      bufferData2 = [requestCopy bufferData];
+      v6 = [bufferData2 length];
+      maxLength = [requestCopy maxLength];
 
-      if (v6 < v7)
+      if (v6 < maxLength)
       {
-        v8 = [v21 maxLength];
-        v9 = [v21 bufferData];
-        [v9 setLength:v8];
+        maxLength2 = [requestCopy maxLength];
+        bufferData3 = [requestCopy bufferData];
+        [bufferData3 setLength:maxLength2];
       }
     }
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v21, "maxLength")}];
-      [v21 setBufferData:v10];
+      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(requestCopy, "maxLength")}];
+      [requestCopy setBufferData:v10];
     }
 
-    v11 = [v21 bufferData];
-    v21[1] = [v11 mutableBytes];
+    bufferData4 = [requestCopy bufferData];
+    requestCopy[1] = [bufferData4 mutableBytes];
 
-    v12 = [v21 bufferData];
-    [v21 setData:v12];
+    bufferData5 = [requestCopy bufferData];
+    [requestCopy setData:bufferData5];
   }
 
-  v13 = v21[2];
-  v21[2] = 0;
-  v21[3] = 0;
+  v13 = requestCopy[2];
+  requestCopy[2] = 0;
+  requestCopy[3] = 0;
 
   ucat = self->_ucat;
   if (ucat->var0 <= 9)
   {
-    v15 = v21;
+    v15 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_10:
-      v16 = [v15 minLength];
-      [v21 maxLength];
-      LogPrintF(ucat, "[CUBluetoothClassicConnection _prepareReadRequest:]", 9u, "Read prepared (%zu min, %zu max)\n", v17, v18, v19, v20, v16);
+      minLength = [v15 minLength];
+      [requestCopy maxLength];
+      LogPrintF(ucat, "[CUBluetoothClassicConnection _prepareReadRequest:]", 9u, "Read prepared (%zu min, %zu max)\n", v17, v18, v19, v20, minLength);
       goto LABEL_12;
     }
 
     if (_LogCategory_Initialize(self->_ucat, 9u))
     {
       ucat = self->_ucat;
-      v15 = v21;
+      v15 = requestCopy;
       goto LABEL_10;
     }
   }
@@ -723,9 +723,9 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_processReads:(BOOL)a3
+- (void)_processReads:(BOOL)reads
 {
-  v3 = a3;
+  readsCopy = reads;
   v5 = 0;
   while (1)
   {
@@ -735,10 +735,10 @@ LABEL_12:
       goto LABEL_5;
     }
 
-    v7 = [(NSMutableArray *)self->_readRequests firstObject];
-    if (!v7)
+    firstObject = [(NSMutableArray *)self->_readRequests firstObject];
+    if (!firstObject)
     {
-      if (v3)
+      if (readsCopy)
       {
         if (v5)
         {
@@ -747,9 +747,9 @@ LABEL_12:
 
         else
         {
-          v26 = [(CUBluetoothClassicConnection *)self _processReadStatus];
+          _processReadStatus = [(CUBluetoothClassicConnection *)self _processReadStatus];
           readSuspended = self->_readSuspended;
-          if (v26)
+          if (_processReadStatus)
           {
             if (!self->_readSuspended)
             {
@@ -773,7 +773,7 @@ LABEL_37:
       goto LABEL_21;
     }
 
-    obja = v7;
+    obja = firstObject;
     [(NSMutableArray *)self->_readRequests removeObjectAtIndex:0];
     [(CUBluetoothClassicConnection *)self _prepareReadRequest:obja];
     objc_storeStrong(&self->_readRequestCurrent, obja);
@@ -855,17 +855,17 @@ LABEL_9:
 LABEL_21:
 }
 
-- (void)readWithRequest:(id)a3
+- (void)readWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CUBluetoothClassicConnection_readWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -929,26 +929,26 @@ LABEL_9:
   self->_btSessionStarted = 0;
 }
 
-- (BTDeviceImpl)_btDeviceWithID:(id)a3 error:(id *)a4
+- (BTDeviceImpl)_btDeviceWithID:(id)d error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v36 = 0;
-  v7 = [v6 UTF8String];
-  if (!v7)
+  uTF8String = [dCopy UTF8String];
+  if (!uTF8String)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
 
-    NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "Bad device ID UTF-8: '%@'", v8, v9, v10, v11, v12, v6);
+    NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "Bad device ID UTF-8: '%@'", v8, v9, v10, v11, v12, dCopy);
     goto LABEL_24;
   }
 
-  v13 = v7;
+  v13 = uTF8String;
   v37 = 0uLL;
-  if (!StringToUUIDEx(v7, 0xFFFFFFFFFFFFFFFFLL, 0, 0, &v37, v10, v11, v12))
+  if (!StringToUUIDEx(uTF8String, 0xFFFFFFFFFFFFFFFFLL, 0, 0, &v37, v10, v11, v12))
   {
     v24 = (softLinkBTDeviceFromIdentifier[0])(self->_btSession, &v37, &v36);
     if (v24 == -310000)
@@ -966,14 +966,14 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
 
     NSErrorF_safe(*MEMORY[0x1E696A768], v30, "BTDeviceFromIdentifier failed", v25, v26, v27, v28, v29, v33);
 LABEL_24:
-    *a4 = v31 = 0;
+    *error = v31 = 0;
     goto LABEL_15;
   }
 
@@ -982,7 +982,7 @@ LABEL_24:
   v14 = TextToHardwareAddress(v13, 0xFFFFFFFFFFFFFFFFLL, 6, &v34);
   if (v14)
   {
-    if (a4)
+    if (error)
     {
       v21 = v14;
       v22 = *MEMORY[0x1E696A768];
@@ -1009,12 +1009,12 @@ LABEL_21:
 
   if (v20)
   {
-    if (a4)
+    if (error)
     {
       v22 = *MEMORY[0x1E696A768];
       v23 = "BTDeviceFromAddress failed";
 LABEL_20:
-      *a4 = NSErrorF_safe(v22, v21, v23, v15, v16, v17, v18, v19, v33);
+      *error = NSErrorF_safe(v22, v21, v23, v15, v16, v17, v18, v19, v33);
       goto LABEL_21;
     }
 
@@ -1227,19 +1227,19 @@ void __48__CUBluetoothClassicConnection__runConnectStart__block_invoke(uint64_t 
 - (BOOL)_runBTSessionStart
 {
   v12 = _btSessionEventCallback;
-  v2 = self;
-  v3 = (softLinkBTSessionAttachWithQueue[0])(v2->_ucat->var4, &v12, v2, v2->_dispatchQueue);
+  selfCopy = self;
+  v3 = (softLinkBTSessionAttachWithQueue[0])(selfCopy->_ucat->var4, &v12, selfCopy, selfCopy->_dispatchQueue);
   if (v3)
   {
-    CFRelease(v2);
+    CFRelease(selfCopy);
     v9 = NSErrorF_safe(*MEMORY[0x1E696A768], (v3 + 310000), "BTSessionAttachWithQueue failed", v4, v5, v6, v7, v8, v11);
-    [(CUBluetoothClassicConnection *)v2 _reportError:v9];
+    [(CUBluetoothClassicConnection *)selfCopy _reportError:v9];
   }
 
   else
   {
-    v2->_btSessionAttaching = 1;
-    v2->_btSessionStarted = 1;
+    selfCopy->_btSessionAttaching = 1;
+    selfCopy->_btSessionStarted = 1;
   }
 
   return v3 == 0;
@@ -1270,10 +1270,10 @@ void __48__CUBluetoothClassicConnection__runConnectStart__block_invoke(uint64_t 
           return;
         }
 
-        v14 = [(CUBluetoothClassicConnection *)self _runBTSessionStart];
+        _runBTSessionStart = [(CUBluetoothClassicConnection *)self _runBTSessionStart];
 LABEL_34:
         v8 = self->_state;
-        if (v14)
+        if (_runBTSessionStart)
         {
           ++v8;
           goto LABEL_42;
@@ -1296,7 +1296,7 @@ LABEL_34:
 
       if (state == 12)
       {
-        v14 = [(CUBluetoothClassicConnection *)self _runConnectStart];
+        _runBTSessionStart = [(CUBluetoothClassicConnection *)self _runConnectStart];
         goto LABEL_34;
       }
 
@@ -1375,7 +1375,7 @@ LABEL_46:
         goto LABEL_43;
       }
 
-      v14 = [(CUBluetoothClassicConnection *)self _runSetupChannel];
+      _runBTSessionStart = [(CUBluetoothClassicConnection *)self _runSetupChannel];
     }
 
     else
@@ -1407,7 +1407,7 @@ LABEL_46:
         goto LABEL_42;
       }
 
-      v14 = [(CUBluetoothClassicConnection *)self _runOpenChannelStart];
+      _runBTSessionStart = [(CUBluetoothClassicConnection *)self _runOpenChannelStart];
     }
 
     goto LABEL_34;
@@ -1416,13 +1416,13 @@ LABEL_46:
   [(CUBluetoothClassicConnection *)self _invalidated];
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v14 = a3;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 90)
   {
-    v9 = v14;
+    v9 = errorCopy;
     if (ucat->var0 != -1)
     {
 LABEL_3:
@@ -1433,7 +1433,7 @@ LABEL_3:
     if (_LogCategory_Initialize(ucat, 0x5Au))
     {
       ucat = self->_ucat;
-      v9 = v14;
+      v9 = errorCopy;
       goto LABEL_3;
     }
   }
@@ -1446,7 +1446,7 @@ LABEL_5:
 
   if (v10)
   {
-    v10[2](v10, v14);
+    v10[2](v10, errorCopy);
   }
 
   else
@@ -1457,20 +1457,20 @@ LABEL_5:
 
     if (v12)
     {
-      v12[2](v12, v14);
+      v12[2](v12, errorCopy);
     }
   }
 
-  [(CUBluetoothClassicConnection *)self _abortReadsWithError:v14];
-  [(CUBluetoothClassicConnection *)self _abortWritesWithError:v14];
+  [(CUBluetoothClassicConnection *)self _abortReadsWithError:errorCopy];
+  [(CUBluetoothClassicConnection *)self _abortWritesWithError:errorCopy];
 }
 
-- (BOOL)_setupIOAndReturnError:(id *)a3
+- (BOOL)_setupIOAndReturnError:(id *)error
 {
-  v5 = [(CBL2CAPChannel *)self->_l2capChannel socketFD];
-  if (v5 < 0)
+  socketFD = [(CBL2CAPChannel *)self->_l2capChannel socketFD];
+  if (socketFD < 0)
   {
-    if (a3)
+    if (error)
     {
       NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "No socket for L2CAP channel: %@", v6, v7, v8, v9, v10, self->_l2capChannel);
       goto LABEL_14;
@@ -1479,10 +1479,10 @@ LABEL_5:
     return 0;
   }
 
-  v11 = v5;
-  self->_socketFD = v5;
+  v11 = socketFD;
+  self->_socketFD = socketFD;
   v42 = 1;
-  if (setsockopt(v5, 0xFFFF, 4130, &v42, 4u))
+  if (setsockopt(socketFD, 0xFFFF, 4130, &v42, 4u))
   {
     if (*__error())
     {
@@ -1498,7 +1498,7 @@ LABEL_5:
       v17 = 4294960596;
     }
 
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -1510,7 +1510,7 @@ LABEL_13:
     v36 = LABEL_14:;
     v31 = 0;
 LABEL_15:
-    *a3 = v36;
+    *error = v36;
     return v31;
   }
 
@@ -1518,7 +1518,7 @@ LABEL_5:
   v18 = SocketSetNonBlocking(v11, 1);
   if (v18)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -1536,7 +1536,7 @@ LABEL_5:
   v21 = self->_readSource;
   if (!v21)
   {
-    if (a3)
+    if (error)
     {
       v34 = *MEMORY[0x1E696A768];
       v35 = "Create read source failed";
@@ -1569,7 +1569,7 @@ LABEL_5:
   v31 = v30 != 0;
   if (!v30)
   {
-    if (!a3)
+    if (!error)
     {
       return v31;
     }
@@ -1617,7 +1617,7 @@ uint64_t __55__CUBluetoothClassicConnection__setupIOAndReturnError___block_invok
   return [v4 _invalidated];
 }
 
-- (BOOL)_startConnectingAndReturnError:(id *)a3
+- (BOOL)_startConnectingAndReturnError:(id *)error
 {
   destinationPeer = self->_destinationPeer;
   if (destinationPeer)
@@ -1625,9 +1625,9 @@ uint64_t __55__CUBluetoothClassicConnection__setupIOAndReturnError___block_invok
     [(CUBluetoothClassicConnection *)self _run];
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No destination peer", v3, v4, v5, v6, v7, v11);
+    *error = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No destination peer", v3, v4, v5, v6, v7, v11);
   }
 
   return destinationPeer != 0;
@@ -1756,7 +1756,7 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)activateDirectAndReturnError:(id *)a3
+- (BOOL)activateDirectAndReturnError:(id *)error
 {
   l2capChannel = self->_l2capChannel;
   ucat = self->_ucat;
@@ -1808,12 +1808,12 @@ LABEL_15:
         }
 
 LABEL_23:
-        if (a3)
+        if (error)
         {
 LABEL_24:
           v38 = writeRequests;
           v36 = 0;
-          *a3 = writeRequests;
+          *error = writeRequests;
           goto LABEL_28;
         }
 
@@ -1827,8 +1827,8 @@ LABEL_27:
     }
 
     v12 = [(CBL2CAPChannel *)l2capChannel PSM];
-    v13 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-    v14 = [v13 identifier];
+    peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+    identifier = [peer identifier];
     LogPrintF(ucat, "[CUBluetoothClassicConnection activateDirectAndReturnError:]", 0x1Eu, "Activate incoming PSM 0x%04X, peer %@, CF %#{flags}\n", v15, v16, v17, v18, v12);
 
     goto LABEL_9;
@@ -1867,7 +1867,7 @@ LABEL_17:
       if (!_LogCategory_Initialize(v37, 0x5Au))
       {
 LABEL_26:
-        if (a3)
+        if (error)
         {
           goto LABEL_24;
         }
@@ -1897,17 +1897,17 @@ LABEL_28:
   return v36;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__CUBluetoothClassicConnection_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1932,13 +1932,13 @@ void __55__CUBluetoothClassicConnection_activateWithCompletion___block_invoke(ui
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9368;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

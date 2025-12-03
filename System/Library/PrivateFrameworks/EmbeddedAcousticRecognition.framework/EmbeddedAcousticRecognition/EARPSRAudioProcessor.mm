@@ -1,11 +1,11 @@
 @interface EARPSRAudioProcessor
 + (void)initialize;
-- (EARPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6;
-- (EARPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7;
+- (EARPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate;
+- (EARPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue;
 - (EARPSRAudioProcessorDelegate)delegate;
 - (id).cxx_construct;
 - (void)_startComputeTask;
-- (void)addAudio:(id)a3;
+- (void)addAudio:(id)audio;
 - (void)dealloc;
 - (void)endAudio;
 - (void)resetForNewRequest;
@@ -15,7 +15,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.ear", "EARPSRAudioProcessor");
     v3 = earPSRLog;
@@ -23,21 +23,21 @@
   }
 }
 
-- (EARPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6
+- (EARPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate
 {
   v11 = dispatch_get_global_queue(2, 0);
-  v12 = [(EARPSRAudioProcessor *)self initWithConfigFile:a3 configRoot:a4 sampleRate:a5 delegate:a6 queue:v11];
+  v12 = [(EARPSRAudioProcessor *)self initWithConfigFile:file configRoot:root sampleRate:rate delegate:delegate queue:v11];
 
   return v12;
 }
 
-- (EARPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7
+- (EARPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue
 {
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  fileCopy = file;
+  rootCopy = root;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v31.receiver = self;
   v31.super_class = EARPSRAudioProcessor;
   v16 = [(EARPSRAudioProcessor *)&v31 init];
@@ -47,19 +47,19 @@
     goto LABEL_17;
   }
 
-  v16->_sampleRate = a5;
-  objc_storeStrong(&v16->_configRoot, a4);
-  objc_storeWeak(&v17->_delegate, v14);
-  objc_storeStrong(&v17->_queue, a7);
+  v16->_sampleRate = rate;
+  objc_storeStrong(&v16->_configRoot, root);
+  objc_storeWeak(&v17->_delegate, delegateCopy);
+  objc_storeStrong(&v17->_queue, queue);
   v17->_batchSize = 1;
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
-  v19 = [v18 fileExistsAtPath:v12];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v19 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v19)
   {
-    if (v12)
+    if (fileCopy)
     {
-      [v12 ear_toString];
+      [fileCopy ear_toString];
     }
 
     else
@@ -112,7 +112,7 @@ LABEL_17:
   if (os_log_type_enabled(earPSRLog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(__p) = 138412290;
-    *(&__p + 4) = v12;
+    *(&__p + 4) = fileCopy;
     v21 = "PSR: EARAudioProcessor Config file does not exist at %@";
     v22 = v20;
     v23 = 12;
@@ -127,10 +127,10 @@ LABEL_18:
   return v26;
 }
 
-- (void)addAudio:(id)a3
+- (void)addAudio:(id)audio
 {
-  v4 = a3;
-  quasar::PSRAudioProcessor::addAudio(self->_audioProcessor.__ptr_, [v4 bytes], objc_msgSend(v4, "length") >> 1);
+  audioCopy = audio;
+  quasar::PSRAudioProcessor::addAudio(self->_audioProcessor.__ptr_, [audioCopy bytes], objc_msgSend(audioCopy, "length") >> 1);
 }
 
 - (void)endAudio

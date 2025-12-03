@@ -3,7 +3,7 @@
 - (UIResponder)customNextResponder;
 - (id)nextResponder;
 - (id)parentFocusEnvironment;
-- (void)setNextResponder:(id)a3 parentFocusEnvironment:(id)a4;
+- (void)setNextResponder:(id)responder parentFocusEnvironment:(id)environment;
 @end
 
 @implementation ViewWithCustomNextResponder
@@ -14,17 +14,17 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    nextResponder = WeakRetained;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ViewWithCustomNextResponder;
-    v5 = [(ViewWithCustomNextResponder *)&v8 nextResponder];
+    nextResponder = [(ViewWithCustomNextResponder *)&v8 nextResponder];
   }
 
-  v6 = v5;
+  v6 = nextResponder;
 
   return v6;
 }
@@ -35,25 +35,25 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    parentFocusEnvironment = WeakRetained;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ViewWithCustomNextResponder;
-    v5 = [(ViewWithCustomNextResponder *)&v8 parentFocusEnvironment];
+    parentFocusEnvironment = [(ViewWithCustomNextResponder *)&v8 parentFocusEnvironment];
   }
 
-  v6 = v5;
+  v6 = parentFocusEnvironment;
 
   return v6;
 }
 
-- (void)setNextResponder:(id)a3 parentFocusEnvironment:(id)a4
+- (void)setNextResponder:(id)responder parentFocusEnvironment:(id)environment
 {
-  obj = a4;
-  objc_storeWeak(&self->_customNextResponder, a3);
+  obj = environment;
+  objc_storeWeak(&self->_customNextResponder, responder);
   objc_storeWeak(&self->_customParentFocusEnvironment, obj);
 }
 

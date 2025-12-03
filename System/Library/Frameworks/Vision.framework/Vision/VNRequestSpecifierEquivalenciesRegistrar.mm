@@ -1,29 +1,29 @@
 @interface VNRequestSpecifierEquivalenciesRegistrar
-- (BOOL)isRequestSpecifier:(id)a3 equivalentToRequestSpecifier:(id)a4;
-- (BOOL)registerRequestClass:(Class)a3 revision:(unint64_t)a4 equivalencyToRevision:(unint64_t)a5 error:(id *)a6;
-- (BOOL)registerRequestClassName:(id)a3 revision:(unint64_t)a4 equivalencyToRequestClassName:(id)a5 revision:(unint64_t)a6 error:(id *)a7;
-- (BOOL)registerRequestClassName:(id)a3 revision:(unint64_t)a4 equivalencyToRevision:(unint64_t)a5 error:(id *)a6;
-- (BOOL)registerRequestSpecifier:(id)a3 equivalencyToRequestSpecifier:(id)a4 error:(id *)a5;
+- (BOOL)isRequestSpecifier:(id)specifier equivalentToRequestSpecifier:(id)requestSpecifier;
+- (BOOL)registerRequestClass:(Class)class revision:(unint64_t)revision equivalencyToRevision:(unint64_t)toRevision error:(id *)error;
+- (BOOL)registerRequestClassName:(id)name revision:(unint64_t)revision equivalencyToRequestClassName:(id)className revision:(unint64_t)a6 error:(id *)error;
+- (BOOL)registerRequestClassName:(id)name revision:(unint64_t)revision equivalencyToRevision:(unint64_t)toRevision error:(id *)error;
+- (BOOL)registerRequestSpecifier:(id)specifier equivalencyToRequestSpecifier:(id)requestSpecifier error:(id *)error;
 - (VNRequestSpecifierEquivalenciesRegistrar)init;
-- (id)equivalenciesForRequestSpecifier:(id)a3;
+- (id)equivalenciesForRequestSpecifier:(id)specifier;
 @end
 
 @implementation VNRequestSpecifierEquivalenciesRegistrar
 
-- (BOOL)registerRequestSpecifier:(id)a3 equivalencyToRequestSpecifier:(id)a4 error:(id *)a5
+- (BOOL)registerRequestSpecifier:(id)specifier equivalencyToRequestSpecifier:(id)requestSpecifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isEqual:v9] & 1) == 0)
+  specifierCopy = specifier;
+  requestSpecifierCopy = requestSpecifier;
+  if (([specifierCopy isEqual:requestSpecifierCopy] & 1) == 0)
   {
-    v10 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:v8];
-    v11 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:v9];
+    v10 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:specifierCopy];
+    v11 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:requestSpecifierCopy];
     v12 = v11;
     if (!(v10 | v11))
     {
-      v13 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v8, v9, 0}];
-      [(NSMutableDictionary *)self->_equivalenciesLookup setObject:v13 forKeyedSubscript:v8];
-      [(NSMutableDictionary *)self->_equivalenciesLookup setObject:v13 forKeyedSubscript:v9];
+      v13 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{specifierCopy, requestSpecifierCopy, 0}];
+      [(NSMutableDictionary *)self->_equivalenciesLookup setObject:v13 forKeyedSubscript:specifierCopy];
+      [(NSMutableDictionary *)self->_equivalenciesLookup setObject:v13 forKeyedSubscript:requestSpecifierCopy];
 
       goto LABEL_13;
     }
@@ -34,58 +34,58 @@
       {
         if (v10 != v11)
         {
-          if (a5)
+          if (error)
           {
-            v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unbalanced equivalencies lookup:\n%@: %@\n%@: %@", v8, v10, v9, v11];
-            *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v14];
+            v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unbalanced equivalencies lookup:\n%@: %@\n%@: %@", specifierCopy, v10, requestSpecifierCopy, v11];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:v14];
 
-            LOBYTE(a5) = 0;
+            LOBYTE(error) = 0;
           }
 
           goto LABEL_14;
         }
 
 LABEL_13:
-        LOBYTE(a5) = 1;
+        LOBYTE(error) = 1;
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      [v10 addObject:v9];
+      [v10 addObject:requestSpecifierCopy];
       equivalenciesLookup = self->_equivalenciesLookup;
       v16 = v10;
-      v17 = v9;
+      v17 = requestSpecifierCopy;
     }
 
     else
     {
-      [v11 addObject:v8];
+      [v11 addObject:specifierCopy];
       equivalenciesLookup = self->_equivalenciesLookup;
       v16 = v12;
-      v17 = v8;
+      v17 = specifierCopy;
     }
 
     [(NSMutableDictionary *)equivalenciesLookup setObject:v16 forKeyedSubscript:v17];
     goto LABEL_13;
   }
 
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_15:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)registerRequestClassName:(id)a3 revision:(unint64_t)a4 equivalencyToRequestClassName:(id)a5 revision:(unint64_t)a6 error:(id *)a7
+- (BOOL)registerRequestClassName:(id)name revision:(unint64_t)revision equivalencyToRequestClassName:(id)className revision:(unint64_t)a6 error:(id *)error
 {
-  v12 = a5;
-  v13 = [VNRequestSpecifier specifierForRequestClassName:a3 revision:a4 error:a7];
+  classNameCopy = className;
+  v13 = [VNRequestSpecifier specifierForRequestClassName:name revision:revision error:error];
   if (v13)
   {
-    v14 = [VNRequestSpecifier specifierForRequestClassName:v12 revision:a6 error:a7];
+    v14 = [VNRequestSpecifier specifierForRequestClassName:classNameCopy revision:a6 error:error];
     if (v14)
     {
-      v15 = [(VNRequestSpecifierEquivalenciesRegistrar *)self registerRequestSpecifier:v13 equivalencyToRequestSpecifier:v14 error:a7];
+      v15 = [(VNRequestSpecifierEquivalenciesRegistrar *)self registerRequestSpecifier:v13 equivalencyToRequestSpecifier:v14 error:error];
     }
 
     else
@@ -102,16 +102,16 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)registerRequestClassName:(id)a3 revision:(unint64_t)a4 equivalencyToRevision:(unint64_t)a5 error:(id *)a6
+- (BOOL)registerRequestClassName:(id)name revision:(unint64_t)revision equivalencyToRevision:(unint64_t)toRevision error:(id *)error
 {
-  v10 = a3;
-  v11 = [VNRequestSpecifier specifierForRequestClassName:v10 revision:a4 error:a6];
+  nameCopy = name;
+  v11 = [VNRequestSpecifier specifierForRequestClassName:nameCopy revision:revision error:error];
   if (v11)
   {
-    v12 = [VNRequestSpecifier specifierForRequestClassName:v10 revision:a5 error:a6];
+    v12 = [VNRequestSpecifier specifierForRequestClassName:nameCopy revision:toRevision error:error];
     if (v12)
     {
-      v13 = [(VNRequestSpecifierEquivalenciesRegistrar *)self registerRequestSpecifier:v11 equivalencyToRequestSpecifier:v12 error:a6];
+      v13 = [(VNRequestSpecifierEquivalenciesRegistrar *)self registerRequestSpecifier:v11 equivalencyToRequestSpecifier:v12 error:error];
     }
 
     else
@@ -128,16 +128,16 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)registerRequestClass:(Class)a3 revision:(unint64_t)a4 equivalencyToRevision:(unint64_t)a5 error:(id *)a6
+- (BOOL)registerRequestClass:(Class)class revision:(unint64_t)revision equivalencyToRevision:(unint64_t)toRevision error:(id *)error
 {
-  v10 = VNRequestClassFromClientSubclass(a3);
-  v11 = [VNRequestSpecifier specifierForRequestClass:v10 revision:a4 error:a6];
+  v10 = VNRequestClassFromClientSubclass(class);
+  v11 = [VNRequestSpecifier specifierForRequestClass:v10 revision:revision error:error];
   if (v11)
   {
-    v12 = [VNRequestSpecifier specifierForRequestClass:v10 revision:a5 error:a6];
+    v12 = [VNRequestSpecifier specifierForRequestClass:v10 revision:toRevision error:error];
     if (v12)
     {
-      v13 = [(VNRequestSpecifierEquivalenciesRegistrar *)self registerRequestSpecifier:v11 equivalencyToRequestSpecifier:v12 error:a6];
+      v13 = [(VNRequestSpecifierEquivalenciesRegistrar *)self registerRequestSpecifier:v11 equivalencyToRequestSpecifier:v12 error:error];
     }
 
     else
@@ -154,48 +154,48 @@ LABEL_15:
   return v13;
 }
 
-- (id)equivalenciesForRequestSpecifier:(id)a3
+- (id)equivalenciesForRequestSpecifier:(id)specifier
 {
-  v3 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:specifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allObjects];
+    allObjects = [v3 allObjects];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return allObjects;
 }
 
-- (BOOL)isRequestSpecifier:(id)a3 equivalentToRequestSpecifier:(id)a4
+- (BOOL)isRequestSpecifier:(id)specifier equivalentToRequestSpecifier:(id)requestSpecifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:v7])
+  specifierCopy = specifier;
+  requestSpecifierCopy = requestSpecifier;
+  if ([specifierCopy isEqual:requestSpecifierCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:specifierCopy];
     v10 = v9;
     if (v9)
     {
-      v8 = [v9 containsObject:v7];
+      v8 = [v9 containsObject:requestSpecifierCopy];
     }
 
     else
     {
-      v11 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:v7];
+      v11 = [(NSMutableDictionary *)self->_equivalenciesLookup objectForKeyedSubscript:requestSpecifierCopy];
       v12 = v11;
       if (v11)
       {
-        v8 = [v11 containsObject:v6];
+        v8 = [v11 containsObject:specifierCopy];
       }
 
       else

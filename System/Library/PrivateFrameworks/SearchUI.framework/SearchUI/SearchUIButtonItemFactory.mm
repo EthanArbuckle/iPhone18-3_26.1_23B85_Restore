@@ -2,8 +2,8 @@
 - (SearchUIButtonItemFactory)init;
 - (SearchUIButtonItemGeneratorViewDelegate)delegate;
 - (SearchUIFeedbackDelegate)feedbackDelegate;
-- (void)fetchSearchUIButtonitemsWithSFButtonItems:(id)a3 maxButtonItems:(unint64_t)a4 shouldReverseButtonOrder:(BOOL)a5 completion:(id)a6;
-- (void)updateCompletionHandlerWithSFButtonItems:(id)a3 maxButtonItems:(unint64_t)a4 shouldReverseButtonOrder:(BOOL)a5 completion:(id)a6;
+- (void)fetchSearchUIButtonitemsWithSFButtonItems:(id)items maxButtonItems:(unint64_t)buttonItems shouldReverseButtonOrder:(BOOL)order completion:(id)completion;
+- (void)updateCompletionHandlerWithSFButtonItems:(id)items maxButtonItems:(unint64_t)buttonItems shouldReverseButtonOrder:(BOOL)order completion:(id)completion;
 @end
 
 @implementation SearchUIButtonItemFactory
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (void)fetchSearchUIButtonitemsWithSFButtonItems:(id)a3 maxButtonItems:(unint64_t)a4 shouldReverseButtonOrder:(BOOL)a5 completion:(id)a6
+- (void)fetchSearchUIButtonitemsWithSFButtonItems:(id)items maxButtonItems:(unint64_t)buttonItems shouldReverseButtonOrder:(BOOL)order completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  itemsCopy = items;
+  completionCopy = completion;
   [(SearchUIButtonItemFactory *)self timeLimitForSubsequentButtonGeneratorUpdates];
   if (v12 != 0.0)
   {
@@ -40,10 +40,10 @@
     block[2] = __122__SearchUIButtonItemFactory_fetchSearchUIButtonitemsWithSFButtonItems_maxButtonItems_shouldReverseButtonOrder_completion___block_invoke;
     block[3] = &unk_1E85B2D88;
     objc_copyWeak(v26, &location);
-    v24 = v10;
-    v26[1] = a4;
-    v27 = a5;
-    v25 = v11;
+    v24 = itemsCopy;
+    v26[1] = buttonItems;
+    orderCopy = order;
+    v25 = completionCopy;
     dispatch_after(v15, MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(v26);
@@ -55,12 +55,12 @@
   v18[2] = __122__SearchUIButtonItemFactory_fetchSearchUIButtonitemsWithSFButtonItems_maxButtonItems_shouldReverseButtonOrder_completion___block_invoke_2;
   v18[3] = &unk_1E85B2E00;
   v18[4] = self;
-  v19 = v10;
-  v22 = a5;
-  v20 = v11;
-  v21 = a4;
-  v16 = v11;
-  v17 = v10;
+  v19 = itemsCopy;
+  orderCopy2 = order;
+  v20 = completionCopy;
+  buttonItemsCopy = buttonItems;
+  v16 = completionCopy;
+  v17 = itemsCopy;
   [SearchUIUtilities dispatchMainIfNecessary:v18];
 }
 
@@ -192,18 +192,18 @@ void __122__SearchUIButtonItemFactory_fetchSearchUIButtonitemsWithSFButtonItems_
   [WeakRetained updateCompletionHandlerWithSFButtonItems:*(a1 + 48) maxButtonItems:*(a1 + 72) shouldReverseButtonOrder:*(a1 + 81) completion:*(a1 + 56)];
 }
 
-- (void)updateCompletionHandlerWithSFButtonItems:(id)a3 maxButtonItems:(unint64_t)a4 shouldReverseButtonOrder:(BOOL)a5 completion:(id)a6
+- (void)updateCompletionHandlerWithSFButtonItems:(id)items maxButtonItems:(unint64_t)buttonItems shouldReverseButtonOrder:(BOOL)order completion:(id)completion
 {
-  v43 = a5;
+  orderCopy = order;
   v49 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  itemsCopy = items;
+  completionCopy = completion;
   v11 = objc_opt_new();
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v12 = v9;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v13)
   {
@@ -219,8 +219,8 @@ void __122__SearchUIButtonItemFactory_fetchSearchUIButtonitemsWithSFButtonItems_
         }
 
         v17 = *(*(&v44 + 1) + 8 * i);
-        v18 = [(SearchUIButtonItemFactory *)self fetchedCommandButtonItemsForButtons];
-        v19 = [v18 objectForKey:v17];
+        fetchedCommandButtonItemsForButtons = [(SearchUIButtonItemFactory *)self fetchedCommandButtonItemsForButtons];
+        v19 = [fetchedCommandButtonItemsForButtons objectForKey:v17];
 
         if ([v19 count])
         {
@@ -234,10 +234,10 @@ void __122__SearchUIButtonItemFactory_fetchSearchUIButtonitemsWithSFButtonItems_
     while (v14);
   }
 
-  if (a4 && [v11 count] > a4)
+  if (buttonItems && [v11 count] > buttonItems)
   {
     v20 = objc_opt_new();
-    v21 = a4 - [(SearchUIButtonItemFactory *)self countMoreButtonTowardsMaxCount];
+    v21 = buttonItems - [(SearchUIButtonItemFactory *)self countMoreButtonTowardsMaxCount];
     for (j = v21 - (v21 == [v11 count] - 1); j < objc_msgSend(v11, "count"); ++j)
     {
       v23 = [v11 objectAtIndexedSubscript:j];
@@ -255,32 +255,32 @@ void __122__SearchUIButtonItemFactory_fetchSearchUIButtonitemsWithSFButtonItems_
     [v11 addObject:v25];
   }
 
-  if (v43)
+  if (orderCopy)
   {
-    v26 = [v11 reverseObjectEnumerator];
-    v27 = [v26 allObjects];
-    v28 = [v27 mutableCopy];
+    reverseObjectEnumerator = [v11 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v28 = [allObjects mutableCopy];
 
     v11 = v28;
   }
 
-  v29 = [(SearchUIButtonItemFactory *)self startTime];
-  [v29 timeIntervalSinceNow];
+  startTime = [(SearchUIButtonItemFactory *)self startTime];
+  [startTime timeIntervalSinceNow];
   v31 = v30;
   [(SearchUIButtonItemFactory *)self timeLimitForSubsequentButtonGeneratorUpdates];
   v33 = v32;
 
-  v34 = [(SearchUIButtonItemFactory *)self fetchedCommandButtonItemsForButtons];
-  v35 = [v34 count];
+  fetchedCommandButtonItemsForButtons2 = [(SearchUIButtonItemFactory *)self fetchedCommandButtonItemsForButtons];
+  v35 = [fetchedCommandButtonItemsForButtons2 count];
   v36 = [v12 count];
 
-  v37 = [(SearchUIButtonItemFactory *)self fullyGeneratedButtonItems];
-  v38 = [v37 count];
+  fullyGeneratedButtonItems = [(SearchUIButtonItemFactory *)self fullyGeneratedButtonItems];
+  v38 = [fullyGeneratedButtonItems count];
   v39 = [v12 count];
 
   v41 = v33 < -v31 && v35 == v36;
   v42 = v38 == v39 || v41;
-  v10[2](v10, v11, v42);
+  completionCopy[2](completionCopy, v11, v42);
 }
 
 - (SearchUIButtonItemGeneratorViewDelegate)delegate

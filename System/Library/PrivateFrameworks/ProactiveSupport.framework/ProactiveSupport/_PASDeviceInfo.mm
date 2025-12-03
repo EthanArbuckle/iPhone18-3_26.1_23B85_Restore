@@ -71,7 +71,7 @@
   block[1] = 3221225472;
   block[2] = __36___PASDeviceInfo_internalDeviceCode__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (internalDeviceCode_onceToken != -1)
   {
     dispatch_once(&internalDeviceCode_onceToken, block);
@@ -88,7 +88,7 @@
   block[1] = 3221225472;
   block[2] = __45___PASDeviceInfo_shouldIncludePredictionLogs__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shouldIncludePredictionLogs_onceToken != -1)
   {
     dispatch_once(&shouldIncludePredictionLogs_onceToken, block);
@@ -99,10 +99,10 @@
 
 + (BOOL)isDNUEnabled
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isDiagnosticSubmissionAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isDiagnosticSubmissionAllowed = [mEMORY[0x1E69ADFB8] isDiagnosticSubmissionAllowed];
 
-  return v3;
+  return isDiagnosticSubmissionAllowed;
 }
 
 + (BOOL)isiPad
@@ -147,8 +147,8 @@
 
 + (BOOL)isLowPowerModeEnabled
 {
-  v2 = [a1 sharedInstance];
-  state = notify_get_state(v2[2], &isLowPowerModeEnabled_state);
+  sharedInstance = [self sharedInstance];
+  state = notify_get_state(sharedInstance[2], &isLowPowerModeEnabled_state);
 
   if (state && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {

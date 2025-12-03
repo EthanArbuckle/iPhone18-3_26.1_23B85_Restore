@@ -1,23 +1,23 @@
 @interface SUDocumentInteractionSession
-- (SUDocumentInteractionSession)initWithDocumentInteractionController:(id)a3;
+- (SUDocumentInteractionSession)initWithDocumentInteractionController:(id)controller;
 - (void)cancel;
 - (void)dealloc;
-- (void)documentInteractionController:(id)a3 willBeginSendingToApplication:(id)a4;
-- (void)documentInteractionControllerDidDismissOpenInMenu:(id)a3;
+- (void)documentInteractionController:(id)controller willBeginSendingToApplication:(id)application;
+- (void)documentInteractionControllerDidDismissOpenInMenu:(id)menu;
 @end
 
 @implementation SUDocumentInteractionSession
 
-- (SUDocumentInteractionSession)initWithDocumentInteractionController:(id)a3
+- (SUDocumentInteractionSession)initWithDocumentInteractionController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = SUDocumentInteractionSession;
   v4 = [(SUDocumentInteractionSession *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_documentInteractionController = v5;
-    [(UIDocumentInteractionController *)v5 setDelegate:v4];
+    controllerCopy = controller;
+    v4->_documentInteractionController = controllerCopy;
+    [(UIDocumentInteractionController *)controllerCopy setDelegate:v4];
   }
 
   return v4;
@@ -38,30 +38,30 @@
   [(UIDocumentInteractionController *)self->_documentInteractionController dismissMenuAnimated:1];
   if (self->_completionHandler)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = *(self->_completionHandler + 2);
 
     v4();
   }
 }
 
-- (void)documentInteractionControllerDidDismissOpenInMenu:(id)a3
+- (void)documentInteractionControllerDidDismissOpenInMenu:(id)menu
 {
   if (self->_completionHandler)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = *(self->_completionHandler + 2);
 
     v5();
   }
 }
 
-- (void)documentInteractionController:(id)a3 willBeginSendingToApplication:(id)a4
+- (void)documentInteractionController:(id)controller willBeginSendingToApplication:(id)application
 {
-  [a3 setDelegate:0];
+  [controller setDelegate:0];
   if (self->_completionHandler)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = *(self->_completionHandler + 2);
 
     v6();

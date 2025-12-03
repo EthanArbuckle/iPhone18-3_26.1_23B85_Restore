@@ -1,15 +1,15 @@
 @interface PGGraphIsOwnerOfPetEdge
 + (id)filter;
-- (id)initFromPersonNode:(id)a3 toPetNode:(id)a4;
+- (id)initFromPersonNode:(id)node toPetNode:(id)petNode;
 @end
 
 @implementation PGGraphIsOwnerOfPetEdge
 
-- (id)initFromPersonNode:(id)a3 toPetNode:(id)a4
+- (id)initFromPersonNode:(id)node toPetNode:(id)petNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphIsOwnerOfPetEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:petNode];
 }
 
 + (id)filter

@@ -1,17 +1,17 @@
 @interface TSDErrorImageProvider
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedInstance;
 - (CGPDFDocument)p_iconPDFDocument;
 - (CGSize)naturalSize;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 @end
 
 @implementation TSDErrorImageProvider
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSDErrorImageProvider;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -21,32 +21,32 @@
   result = sharedInstance_sSingletonInstance;
   if (!sharedInstance_sSingletonInstance)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!sharedInstance_sSingletonInstance)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       sharedInstance_sSingletonInstance = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDErrorImageProvider sharedInstance]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDErrorImageProvider.m"), 29, @"Couldn't create singleton instance of %@", a1}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDErrorImageProvider.m"), 29, @"Couldn't create singleton instance of %@", self}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return sharedInstance_sSingletonInstance;
   }
 
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDErrorImageProvider allocWithZone:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDErrorImageProvider.m"), 29, @"Don't alloc a singleton"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDErrorImageProvider.m"), 29, @"Don't alloc a singleton"}];
   return 0;
 }
 
@@ -59,28 +59,28 @@
   return result;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSetShouldAntialias(a3, 1);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSetShouldAntialias(context, 1);
   DeviceRGB = TSUCGColorCreateDeviceRGB();
-  CGContextSetFillColorWithColor(a3, DeviceRGB);
+  CGContextSetFillColorWithColor(context, DeviceRGB);
   CGColorRelease(DeviceRGB);
   v58.origin.x = x;
   v58.origin.y = y;
   v58.size.width = width;
   v58.size.height = height;
-  CGContextFillRect(a3, v58);
+  CGContextFillRect(context, v58);
   v11 = TSUCGColorCreateDeviceRGB();
-  CGContextSetStrokeColorWithColor(a3, v11);
+  CGContextSetStrokeColorWithColor(context, v11);
   CGColorRelease(v11);
   memset(&v57, 0, sizeof(v57));
-  CGContextGetCTM(&v57, a3);
+  CGContextGetCTM(&v57, context);
   v12 = 1.0 / TSDDistance(v57.tx + v57.a + v57.c * 0.0, v57.ty + v57.b + v57.d * 0.0, v57.tx + v57.c * *(MEMORY[0x277CBF348] + 8) + v57.a * *MEMORY[0x277CBF348], v57.ty + v57.d * *(MEMORY[0x277CBF348] + 8) + v57.b * *MEMORY[0x277CBF348]);
-  CGContextSetLineWidth(a3, v12);
+  CGContextSetLineWidth(context, v12);
   v48 = x;
   v49 = y;
   v59.origin.x = x;
@@ -92,12 +92,12 @@
   v14 = v60.origin.y;
   v15 = v60.size.width;
   v16 = v60.size.height;
-  CGContextBeginPath(a3);
+  CGContextBeginPath(context);
   v61.origin.x = v13;
   v61.origin.y = v14;
   v61.size.width = v15;
   v61.size.height = v16;
-  CGContextAddRect(a3, v61);
+  CGContextAddRect(context, v61);
   v62.origin.x = v13;
   v62.origin.y = v14;
   v62.size.width = v15;
@@ -108,7 +108,7 @@
   v63.size.width = v15;
   v63.size.height = v16;
   MinY = CGRectGetMinY(v63);
-  CGContextMoveToPoint(a3, MinX, MinY);
+  CGContextMoveToPoint(context, MinX, MinY);
   v64.origin.x = v13;
   v64.origin.y = v14;
   v64.size.width = v15;
@@ -119,7 +119,7 @@
   v65.size.width = v15;
   v65.size.height = v16;
   MaxY = CGRectGetMaxY(v65);
-  CGContextAddLineToPoint(a3, MaxX, MaxY);
+  CGContextAddLineToPoint(context, MaxX, MaxY);
   v66.origin.x = v13;
   v66.origin.y = v14;
   v66.size.width = v15;
@@ -130,7 +130,7 @@
   v67.size.width = v15;
   v67.size.height = v16;
   v22 = CGRectGetMinY(v67);
-  CGContextMoveToPoint(a3, v21, v22);
+  CGContextMoveToPoint(context, v21, v22);
   v68.origin.x = v13;
   v68.origin.y = v14;
   v68.size.width = v15;
@@ -141,12 +141,12 @@
   v69.size.width = v15;
   v69.size.height = v16;
   v24 = CGRectGetMaxY(v69);
-  CGContextAddLineToPoint(a3, v23, v24);
-  CGContextStrokePath(a3);
-  v25 = [(TSDErrorImageProvider *)self p_iconPDFDocument];
-  if (v25)
+  CGContextAddLineToPoint(context, v23, v24);
+  CGContextStrokePath(context);
+  p_iconPDFDocument = [(TSDErrorImageProvider *)self p_iconPDFDocument];
+  if (p_iconPDFDocument)
   {
-    Page = CGPDFDocumentGetPage(v25, 1uLL);
+    Page = CGPDFDocumentGetPage(p_iconPDFDocument, 1uLL);
     if (Page)
     {
       v27 = Page;
@@ -171,20 +171,20 @@
         *&transform.a = v51;
         *&transform.c = v52;
         *&transform.tx = v53;
-        CGContextConcatCTM(a3, &transform);
+        CGContextConcatCTM(context, &transform);
         v70.origin.x = v28;
         v70.origin.y = v30;
         v70.size.width = v32;
         v70.size.height = v47;
-        CGContextClipToRect(a3, v70);
+        CGContextClipToRect(context, v70);
         v71.origin.x = v28;
         v71.origin.y = v30;
         v71.size.width = v32;
         v71.size.height = v47;
         v46 = CGRectGetMaxY(v71);
-        CGContextTranslateCTM(a3, 0.0, v46);
-        CGContextScaleCTM(a3, 1.0, -1.0);
-        CGContextDrawPDFPage(a3, v27);
+        CGContextTranslateCTM(context, 0.0, v46);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        CGContextDrawPDFPage(context, v27);
       }
     }
   }

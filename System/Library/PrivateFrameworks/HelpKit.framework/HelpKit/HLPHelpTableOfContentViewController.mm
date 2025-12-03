@@ -1,47 +1,47 @@
 @interface HLPHelpTableOfContentViewController
 - (HLPHelpSearchIndexController)helpSearchIndexController;
-- (HLPHelpTableOfContentViewController)initWithStyle:(int64_t)a3;
+- (HLPHelpTableOfContentViewController)initWithStyle:(int64_t)style;
 - (HLPHelpTableOfContentViewControllerDelegate)delegate;
 - (UISearchController)searchController;
 - (UIView)tableFooterView;
 - (UIVisualEffectView)searchBlurEffectView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfVisibleHelpItemForSectionItem:(id)a3;
-- (void)appendChildrenForSectionItem:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfVisibleHelpItemForSectionItem:(id)item;
+- (void)appendChildrenForSectionItem:(id)item;
 - (void)cancelSpotlightSearchDelay;
-- (void)closeSectionItem:(id)a3;
+- (void)closeSectionItem:(id)item;
 - (void)copyrightButtonTapped;
 - (void)dealloc;
 - (void)deselectCurrentRow;
-- (void)didDismissSearchController:(id)a3;
+- (void)didDismissSearchController:(id)controller;
 - (void)loadError;
-- (void)logAnalyticsContentViewedWithHelpTopicItem:(id)a3 sourceType:(id)a4;
+- (void)logAnalyticsContentViewedWithHelpTopicItem:(id)item sourceType:(id)type;
 - (void)registerTraitChanges;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)showHelpBookInfo;
-- (void)showTopicItem:(id)a3 fromTableView:(id)a4;
+- (void)showTopicItem:(id)item fromTableView:(id)view;
 - (void)spotlightSearchDelay;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateFooterViewBackgroundColor;
 - (void)updateFooterViewLayout;
 - (void)updateSearchBarBlur;
 - (void)updateSearchBarLayout;
 - (void)updateSearchResultViewSeparatorValue;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)updateWithHelpBookController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)updateWithHelpBookController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation HLPHelpTableOfContentViewController
 
-- (HLPHelpTableOfContentViewController)initWithStyle:(int64_t)a3
+- (HLPHelpTableOfContentViewController)initWithStyle:(int64_t)style
 {
   v10.receiver = self;
   v10.super_class = HLPHelpTableOfContentViewController;
-  v3 = [(HLPHelpTableOfContentViewController *)&v10 initWithStyle:a3];
+  v3 = [(HLPHelpTableOfContentViewController *)&v10 initWithStyle:style];
   if (v3)
   {
     v4 = MEMORY[0x277CBEBF8];
@@ -62,8 +62,8 @@
 - (void)dealloc
 {
   [(HLPHelpTableOfContentViewController *)self cancelSpotlightSearchDelay];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = HLPHelpTableOfContentViewController;
@@ -75,21 +75,21 @@
   v13.receiver = self;
   v13.super_class = HLPHelpTableOfContentViewController;
   [(HLPHelpTableOfContentViewController *)&v13 viewDidLoad];
-  v3 = [(HLPHelpTableOfContentViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"kTOCTableViewCellIdentifier"];
-  [v3 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kTOCTableViewCellIdentifier"];
+  [tableView setRowHeight:*MEMORY[0x277D76F30]];
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
   tableBackgroundView = self->_tableBackgroundView;
   self->_tableBackgroundView = v4;
 
-  v6 = [MEMORY[0x277D75348] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   if (+[HLPCommonDefines isVisionOS])
   {
-    v7 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
 
-    [v3 setBackgroundColor:v7];
+    [tableView setBackgroundColor:clearColor];
     v8 = 60.0;
-    v6 = v7;
+    systemBackgroundColor = clearColor;
   }
 
   else
@@ -97,25 +97,25 @@
     v8 = 52.0;
   }
 
-  [v3 setEstimatedRowHeight:v8];
-  [(UIView *)self->_tableBackgroundView setBackgroundColor:v6];
-  [v3 setBackgroundView:0];
-  [v3 setBackgroundView:self->_tableBackgroundView];
-  v9 = [(HLPHelpTableOfContentViewController *)self tableFooterView];
-  [v3 setTableFooterView:v9];
+  [tableView setEstimatedRowHeight:v8];
+  [(UIView *)self->_tableBackgroundView setBackgroundColor:systemBackgroundColor];
+  [tableView setBackgroundView:0];
+  [tableView setBackgroundView:self->_tableBackgroundView];
+  tableFooterView = [(HLPHelpTableOfContentViewController *)self tableFooterView];
+  [tableView setTableFooterView:tableFooterView];
 
-  v10 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v11 = [v3 tableFooterView];
-  [v11 setBackgroundColor:v10];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  tableFooterView2 = [tableView tableFooterView];
+  [tableFooterView2 setBackgroundColor:systemBackgroundColor2];
 
   [(HLPHelpTableOfContentViewController *)self updateFooterViewBackgroundColor];
   if (self->_fullBookView)
   {
-    [v3 setBackgroundView:0];
+    [tableView setBackgroundView:0];
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
   [(HLPHelpTableOfContentViewController *)self registerTraitChanges];
 }
@@ -145,8 +145,8 @@
     searchResultTableViewController = self->_searchResultTableViewController;
     self->_searchResultTableViewController = v3;
 
-    v5 = [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController tableView];
-    [v5 setDelegate:self];
+    tableView = [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController tableView];
+    [tableView setDelegate:self];
 
     [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController setFullBookView:self->_fullBookView];
     v6 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:self->_searchResultTableViewController];
@@ -155,11 +155,11 @@
 
     [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
     [(UISearchController *)self->_searchController setDelegate:self];
-    v8 = [(UISearchController *)self->_searchController searchBar];
-    [v8 setAutocapitalizationType:0];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar setAutocapitalizationType:0];
 
-    v9 = [(UISearchController *)self->_searchController searchBar];
-    [v9 setAutocorrectionType:1];
+    searchBar2 = [(UISearchController *)self->_searchController searchBar];
+    [searchBar2 setAutocorrectionType:1];
 
     if (self->_fullBookView)
     {
@@ -193,22 +193,22 @@
   helpSearchIndexController = self->_helpSearchIndexController;
   if (!helpSearchIndexController)
   {
-    v4 = [(HLPHelpBookController *)self->_helpBookController serverType];
+    serverType = [(HLPHelpBookController *)self->_helpBookController serverType];
     helpBookController = self->_helpBookController;
-    if (v4 == 1)
+    if (serverType == 1)
     {
-      v6 = [(HLPHelpBookController *)helpBookController remoteCSSearchIndex];
+      remoteCSSearchIndex = [(HLPHelpBookController *)helpBookController remoteCSSearchIndex];
 
-      if (v6)
+      if (remoteCSSearchIndex)
       {
         v7 = MEMORY[0x277CBEBC0];
-        v8 = [(HLPHelpBookController *)self->_helpBookController remoteCSSearchIndex];
-        v9 = [v7 URLWithString:v8];
+        remoteCSSearchIndex2 = [(HLPHelpBookController *)self->_helpBookController remoteCSSearchIndex];
+        remoteSearchPath = [v7 URLWithString:remoteCSSearchIndex2];
         v10 = 1;
 LABEL_9:
 
 LABEL_10:
-        v15 = [(HLPRemoteDataController *)[HLPHelpSearchIndexController alloc] initWithURL:v9];
+        v15 = [(HLPRemoteDataController *)[HLPHelpSearchIndexController alloc] initWithURL:remoteSearchPath];
         v16 = self->_helpSearchIndexController;
         self->_helpSearchIndexController = v15;
 
@@ -219,32 +219,32 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v9 = [(HLPHelpBookController *)self->_helpBookController remoteSearchPath];
+      remoteSearchPath = [(HLPHelpBookController *)self->_helpBookController remoteSearchPath];
 
-      if (!v9)
+      if (!remoteSearchPath)
       {
         v10 = 0;
         goto LABEL_10;
       }
 
       v18 = MEMORY[0x277CBEBC0];
-      v8 = [(HLPHelpBookController *)self->_helpBookController remoteSearchPath];
-      v9 = [v18 URLWithString:v8];
+      remoteCSSearchIndex2 = [(HLPHelpBookController *)self->_helpBookController remoteSearchPath];
+      remoteSearchPath = [v18 URLWithString:remoteCSSearchIndex2];
     }
 
     else
     {
-      v11 = [(HLPHelpBookController *)helpBookController isSemanticHTML];
+      isSemanticHTML = [(HLPHelpBookController *)helpBookController isSemanticHTML];
       v12 = @"search.json";
-      if (v11)
+      if (isSemanticHTML)
       {
         v12 = @"searchTree.json";
       }
 
       v13 = self->_helpBookController;
       v14 = v12;
-      v8 = [(HLPHelpBookController *)v13 helpBookURL];
-      v9 = [v8 URLByAppendingPathComponent:v14];
+      remoteCSSearchIndex2 = [(HLPHelpBookController *)v13 helpBookURL];
+      remoteSearchPath = [remoteCSSearchIndex2 URLByAppendingPathComponent:v14];
     }
 
     v10 = 0;
@@ -271,20 +271,20 @@ LABEL_11:
 
     [(UIView *)self->_tableFooterSeparatorView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_tableFooterView addSubview:self->_tableFooterSeparatorView];
-    v8 = [(UIView *)self->_tableFooterSeparatorView leadingAnchor];
-    v9 = [(UIView *)self->_tableFooterView leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(UIView *)self->_tableFooterSeparatorView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_tableFooterView leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v10 setActive:1];
 
-    v11 = [(UIView *)self->_tableFooterSeparatorView trailingAnchor];
-    v12 = [(UIView *)self->_tableFooterView trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UIView *)self->_tableFooterSeparatorView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_tableFooterView trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v13 setActive:1];
 
-    v14 = [(UIView *)self->_tableFooterSeparatorView heightAnchor];
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
-    v17 = [v14 constraintEqualToConstant:1.0 / v16];
+    heightAnchor = [(UIView *)self->_tableFooterSeparatorView heightAnchor];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v17 = [heightAnchor constraintEqualToConstant:1.0 / v16];
     [v17 setActive:1];
 
     v18 = objc_alloc(MEMORY[0x277D756B8]);
@@ -297,16 +297,16 @@ LABEL_11:
     [(UILabel *)self->_copyrightFooterLabel setLineBreakMode:0];
     [(UILabel *)self->_copyrightFooterLabel setNumberOfLines:0];
     [(UIView *)self->_tableFooterView addSubview:self->_copyrightFooterLabel];
-    v21 = [(UILabel *)self->_copyrightFooterLabel leadingAnchor];
-    v22 = [(UIView *)self->_tableFooterView leadingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:10.0];
+    leadingAnchor3 = [(UILabel *)self->_copyrightFooterLabel leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_tableFooterView leadingAnchor];
+    v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
 
     LODWORD(v24) = 1147207680;
     [v23 setPriority:v24];
     [v23 setActive:1];
-    v25 = [(UILabel *)self->_copyrightFooterLabel trailingAnchor];
-    v26 = [(UIView *)self->_tableFooterView trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-10.0];
+    trailingAnchor3 = [(UILabel *)self->_copyrightFooterLabel trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_tableFooterView trailingAnchor];
+    v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
 
     LODWORD(v28) = 1147207680;
     [v27 setPriority:v28];
@@ -321,15 +321,15 @@ LABEL_11:
       v29 = 40.0;
     }
 
-    v30 = [(UILabel *)self->_copyrightFooterLabel topAnchor];
-    v31 = [(UIView *)self->_tableFooterView topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:v29];
+    topAnchor = [(UILabel *)self->_copyrightFooterLabel topAnchor];
+    topAnchor2 = [(UIView *)self->_tableFooterView topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v29];
     copyrightFooterLabelTopConstraint = self->_copyrightFooterLabelTopConstraint;
     self->_copyrightFooterLabelTopConstraint = v32;
 
     [(NSLayoutConstraint *)self->_copyrightFooterLabelTopConstraint setActive:1];
-    v34 = [(UILabel *)self->_copyrightFooterLabel heightAnchor];
-    v35 = [v34 constraintGreaterThanOrEqualToConstant:0.0];
+    heightAnchor2 = [(UILabel *)self->_copyrightFooterLabel heightAnchor];
+    v35 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:0.0];
     copyrightFooterLabelHeightConstraint = self->_copyrightFooterLabelHeightConstraint;
     self->_copyrightFooterLabelHeightConstraint = v35;
 
@@ -341,24 +341,24 @@ LABEL_11:
     [(UIButton *)self->_footerViewOverlayButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)self->_footerViewOverlayButton addTarget:self action:sel_copyrightButtonTapped forControlEvents:64];
     [(UIView *)self->_tableFooterView addSubview:self->_footerViewOverlayButton];
-    v39 = [(UIButton *)self->_footerViewOverlayButton leadingAnchor];
-    v40 = [(UIView *)self->_tableFooterView leadingAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    leadingAnchor5 = [(UIButton *)self->_footerViewOverlayButton leadingAnchor];
+    leadingAnchor6 = [(UIView *)self->_tableFooterView leadingAnchor];
+    v41 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v41 setActive:1];
 
-    v42 = [(UIButton *)self->_footerViewOverlayButton trailingAnchor];
-    v43 = [(UIView *)self->_tableFooterView trailingAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    trailingAnchor5 = [(UIButton *)self->_footerViewOverlayButton trailingAnchor];
+    trailingAnchor6 = [(UIView *)self->_tableFooterView trailingAnchor];
+    v44 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v44 setActive:1];
 
-    v45 = [(UIButton *)self->_footerViewOverlayButton topAnchor];
-    v46 = [(UIView *)self->_tableFooterView topAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
+    topAnchor3 = [(UIButton *)self->_footerViewOverlayButton topAnchor];
+    topAnchor4 = [(UIView *)self->_tableFooterView topAnchor];
+    v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v47 setActive:1];
 
-    v48 = [(UIButton *)self->_footerViewOverlayButton bottomAnchor];
-    v49 = [(UIView *)self->_tableFooterView bottomAnchor];
-    v50 = [v48 constraintEqualToAnchor:v49];
+    bottomAnchor = [(UIButton *)self->_footerViewOverlayButton bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_tableFooterView bottomAnchor];
+    v50 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v50 setActive:1];
 
     v51 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_showHelpBookInfo];
@@ -373,27 +373,27 @@ LABEL_11:
   return tableFooterView;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if ([(UISearchController *)self->_searchController isActive])
   {
-    v4 = [(UISearchController *)self->_searchController searchBar];
-    v5 = [v4 isFirstResponder];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    isFirstResponder = [searchBar isFirstResponder];
 
-    if (v5)
+    if (isFirstResponder)
     {
-      v6 = [(UISearchController *)self->_searchController searchBar];
-      [v6 resignFirstResponder];
+      searchBar2 = [(UISearchController *)self->_searchController searchBar];
+      [searchBar2 resignFirstResponder];
     }
   }
 }
 
 - (void)deselectCurrentRow
 {
-  v5 = [(HLPHelpTableOfContentViewController *)self tableView];
-  v3 = [(HLPHelpTableOfContentViewController *)self tableView];
-  v4 = [v3 indexPathForSelectedRow];
-  [v5 deselectRowAtIndexPath:v4 animated:1];
+  tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+  tableView2 = [(HLPHelpTableOfContentViewController *)self tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
 - (void)updateFooterViewBackgroundColor
@@ -405,8 +405,8 @@ LABEL_11:
 
   else
   {
-    v3 = [(HLPHelpTableOfContentViewController *)self traitCollection];
-    v4 = [v3 userInterfaceStyle] == 1;
+    traitCollection = [(HLPHelpTableOfContentViewController *)self traitCollection];
+    v4 = [traitCollection userInterfaceStyle] == 1;
 
     [MEMORY[0x277D75348] colorWithWhite:dbl_2522E91C0[v4] alpha:1.0];
   }
@@ -478,20 +478,20 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
 
 - (void)showHelpBookInfo
 {
-  v3 = [(HLPHelpTableOfContentViewController *)self delegate];
-  [v3 tableOfContentViewControllerShowHelpBookInfo:self];
+  delegate = [(HLPHelpTableOfContentViewController *)self delegate];
+  [delegate tableOfContentViewControllerShowHelpBookInfo:self];
 }
 
 - (void)copyrightButtonTapped
 {
   helpBookController = self->_helpBookController;
-  v4 = [(HLPHelpBookController *)helpBookController copyrightTopicIdentifier];
-  v6 = [(HLPHelpBookController *)helpBookController helpTopicItemForID:v4];
+  copyrightTopicIdentifier = [(HLPHelpBookController *)helpBookController copyrightTopicIdentifier];
+  v6 = [(HLPHelpBookController *)helpBookController helpTopicItemForID:copyrightTopicIdentifier];
 
   if (v6)
   {
-    v5 = [(HLPHelpTableOfContentViewController *)self tableView];
-    [(HLPHelpTableOfContentViewController *)self showTopicItem:v6 fromTableView:v5];
+    tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+    [(HLPHelpTableOfContentViewController *)self showTopicItem:v6 fromTableView:tableView];
   }
 }
 
@@ -503,16 +503,16 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
     v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
     [(UILabel *)self->_copyrightFooterLabel setFont:v3];
 
-    v4 = [(HLPHelpTableOfContentViewController *)self tableView];
-    [v4 bounds];
+    tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+    [tableView bounds];
     v5 = CGRectGetWidth(v37) + -16.0;
 
-    v6 = [(UILabel *)self->_copyrightFooterLabel text];
+    text = [(UILabel *)self->_copyrightFooterLabel text];
     v35 = *MEMORY[0x277D740A8];
-    v7 = [(UILabel *)self->_copyrightFooterLabel font];
-    v36[0] = v7;
+    font = [(UILabel *)self->_copyrightFooterLabel font];
+    v36[0] = font;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-    [v6 boundingRectWithSize:1 options:v8 attributes:0 context:{v5, 1.79769313e308}];
+    [text boundingRectWithSize:1 options:v8 attributes:0 context:{v5, 1.79769313e308}];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -536,20 +536,20 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
     v39.size.width = v22;
     v39.size.height = v26;
     Height = CGRectGetHeight(v39);
-    v28 = [(HLPHelpTableOfContentViewController *)self tableView];
-    v29 = [v28 tableFooterView];
-    [v29 frame];
+    tableView2 = [(HLPHelpTableOfContentViewController *)self tableView];
+    tableFooterView = [tableView2 tableFooterView];
+    [tableFooterView frame];
     v30 = CGRectGetHeight(v40);
 
     if (Height != v30)
     {
       [(UIView *)self->_tableFooterView setFrame:v18, v20, v22, v26];
-      v31 = [(HLPHelpTableOfContentViewController *)self tableView];
-      [v31 setTableFooterView:0];
+      tableView3 = [(HLPHelpTableOfContentViewController *)self tableView];
+      [tableView3 setTableFooterView:0];
 
       tableFooterView = self->_tableFooterView;
-      v33 = [(HLPHelpTableOfContentViewController *)self tableView];
-      [v33 setTableFooterView:tableFooterView];
+      tableView4 = [(HLPHelpTableOfContentViewController *)self tableView];
+      [tableView4 setTableFooterView:tableFooterView];
     }
   }
 
@@ -560,23 +560,23 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
 {
   if (+[HLPCommonDefines isVisionOS])
   {
-    v3 = [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController searchResults];
+    searchResults = [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController searchResults];
 
-    if (v3)
+    if (searchResults)
     {
-      v4 = [(UISearchController *)self->_searchController view];
-      [v4 frame];
+      view = [(UISearchController *)self->_searchController view];
+      [view frame];
       [(UIVisualEffectView *)self->_searchBlurEffectView setFrame:?];
 
-      v6 = [(UISearchController *)self->_searchController searchBar];
-      v5 = [(HLPHelpTableOfContentViewController *)self searchBlurEffectView];
-      [v6 insertSubview:v5 atIndex:0];
+      searchBar = [(UISearchController *)self->_searchController searchBar];
+      searchBlurEffectView = [(HLPHelpTableOfContentViewController *)self searchBlurEffectView];
+      [searchBar insertSubview:searchBlurEffectView atIndex:0];
     }
 
     else
     {
-      v6 = [(HLPHelpTableOfContentViewController *)self searchBlurEffectView];
-      [v6 removeFromSuperview];
+      searchBar = [(HLPHelpTableOfContentViewController *)self searchBlurEffectView];
+      [searchBar removeFromSuperview];
     }
   }
 }
@@ -585,38 +585,38 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
 {
   if (+[HLPCommonDefines isVisionOS])
   {
-    v3 = [(UISearchController *)self->_searchController searchBar];
-    [v3 setSearchBarStyle:2];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar setSearchBarStyle:2];
   }
 }
 
-- (void)updateWithHelpBookController:(id)a3
+- (void)updateWithHelpBookController:(id)controller
 {
-  v5 = a3;
-  if (self->_helpBookController != v5)
+  controllerCopy = controller;
+  if (self->_helpBookController != controllerCopy)
   {
-    v31 = v5;
-    objc_storeStrong(&self->_helpBookController, a3);
+    v31 = controllerCopy;
+    objc_storeStrong(&self->_helpBookController, controller);
     [(NSMutableArray *)self->_displayHelpItems removeAllObjects];
-    v6 = [(HLPHelpBookController *)v31 rootSectionItem];
-    [(HLPHelpTableOfContentViewController *)self appendChildrenForSectionItem:v6];
+    rootSectionItem = [(HLPHelpBookController *)v31 rootSectionItem];
+    [(HLPHelpTableOfContentViewController *)self appendChildrenForSectionItem:rootSectionItem];
 
-    v7 = [(HLPHelpBookController *)v31 copyrightTopicIdentifier];
-    v8 = [(HLPHelpBookController *)v31 helpTopicItemForID:v7];
+    copyrightTopicIdentifier = [(HLPHelpBookController *)v31 copyrightTopicIdentifier];
+    v8 = [(HLPHelpBookController *)v31 helpTopicItemForID:copyrightTopicIdentifier];
 
-    v9 = [(HLPHelpBookController *)v31 copyrightText];
-    v10 = v9;
-    if (v9)
+    copyrightText = [(HLPHelpBookController *)v31 copyrightText];
+    v10 = copyrightText;
+    if (copyrightText)
     {
-      v11 = v9;
+      name = copyrightText;
     }
 
     else
     {
-      v11 = [v8 name];
+      name = [v8 name];
     }
 
-    v12 = v11;
+    v12 = name;
 
     if (v12)
     {
@@ -630,8 +630,8 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
 
     [(UILabel *)self->_copyrightFooterLabel setText:v13];
     [(UILabel *)self->_copyrightFooterLabel setHidden:[(__CFString *)v12 length]== 0];
-    v14 = [v8 hrefID];
-    v15 = [v14 length];
+    hrefID = [v8 hrefID];
+    v15 = [hrefID length];
 
     if (v15)
     {
@@ -645,18 +645,18 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
     v16 = ;
     [(UILabel *)self->_copyrightFooterLabel setEnabled:v15 != 0];
     [(UILabel *)self->_copyrightFooterLabel setTextColor:v16];
-    v17 = [(HLPHelpBookController *)v31 helpItemMap];
-    v18 = [v17 count];
+    helpItemMap = [(HLPHelpBookController *)v31 helpItemMap];
+    searchController = [helpItemMap count];
 
-    if (v18)
+    if (searchController)
     {
-      v19 = [(HLPHelpTableOfContentViewController *)self helpSearchIndexController];
-      v18 = [v19 URL];
-      v20 = [v18 lastPathComponent];
-      v21 = [v20 isEqualToString:@"search.cshelpindex"];
+      helpSearchIndexController = [(HLPHelpTableOfContentViewController *)self helpSearchIndexController];
+      searchController = [helpSearchIndexController URL];
+      lastPathComponent = [searchController lastPathComponent];
+      v21 = [lastPathComponent isEqualToString:@"search.cshelpindex"];
 
-      v22 = [(HLPHelpTableOfContentViewController *)self helpSearchIndexController];
-      v23 = v22;
+      helpSearchIndexController2 = [(HLPHelpTableOfContentViewController *)self helpSearchIndexController];
+      v23 = helpSearchIndexController2;
       if (v21)
       {
         v24 = @"search.cshelpindex";
@@ -671,7 +671,7 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
         v26 = 1;
       }
 
-      [v22 fetchDataWithDataType:v26 identifier:v24 completionHandler:v25];
+      [helpSearchIndexController2 fetchDataWithDataType:v26 identifier:v24 completionHandler:v25];
     }
 
     if (self->_fullBookView)
@@ -679,17 +679,17 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
       v27 = [(NSMutableArray *)self->_displayHelpItems count];
       if (v27)
       {
-        v18 = [(HLPHelpTableOfContentViewController *)self searchController];
-        v28 = [v18 searchBar];
+        searchController = [(HLPHelpTableOfContentViewController *)self searchController];
+        searchBar = [searchController searchBar];
       }
 
       else
       {
-        v28 = 0;
+        searchBar = 0;
       }
 
-      v29 = [(HLPHelpTableOfContentViewController *)self tableView];
-      [v29 setTableHeaderView:v28];
+      tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+      [tableView setTableHeaderView:searchBar];
 
       if (v27)
       {
@@ -697,10 +697,10 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
     }
 
     [(UIButton *)self->_footerViewOverlayButton setHidden:[(NSMutableArray *)self->_displayHelpItems count]== 0];
-    v30 = [(HLPHelpTableOfContentViewController *)self tableView];
-    [v30 reloadData];
+    tableView2 = [(HLPHelpTableOfContentViewController *)self tableView];
+    [tableView2 reloadData];
 
-    v5 = v31;
+    controllerCopy = v31;
   }
 }
 
@@ -712,15 +712,15 @@ void __92__HLPHelpTableOfContentViewController_scrollToHelpItem_deselectImmediat
   [(UIButton *)footerViewOverlayButton setHidden:v3];
 }
 
-- (void)appendChildrenForSectionItem:(id)a3
+- (void)appendChildrenForSectionItem:(id)item
 {
-  v4 = [a3 children];
+  children = [item children];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__HLPHelpTableOfContentViewController_appendChildrenForSectionItem___block_invoke;
   v5[3] = &unk_279706A28;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [children enumerateObjectsUsingBlock:v5];
 }
 
 void __68__HLPHelpTableOfContentViewController_appendChildrenForSectionItem___block_invoke(uint64_t a1, void *a2)
@@ -748,19 +748,19 @@ void __95__HLPHelpTableOfContentViewController_updateCellSelectionWithScrollPosi
   }
 }
 
-- (void)showTopicItem:(id)a3 fromTableView:(id)a4
+- (void)showTopicItem:(id)item fromTableView:(id)view
 {
-  v6 = a3;
-  v5 = [(HLPHelpTableOfContentViewController *)self delegate];
-  [v5 tableOfContentViewController:self showHelpTopicItem:v6];
+  itemCopy = item;
+  delegate = [(HLPHelpTableOfContentViewController *)self delegate];
+  [delegate tableOfContentViewController:self showHelpTopicItem:itemCopy];
 
-  [(HLPHelpTableOfContentViewController *)self updateCellSelectionWithScrollPosition:0 helpItem:v6 animated:1];
+  [(HLPHelpTableOfContentViewController *)self updateCellSelectionWithScrollPosition:0 helpItem:itemCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"kTOCTableViewCellIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"kTOCTableViewCellIdentifier" forIndexPath:pathCopy];
   if ([(HLPHelpBookController *)self->_helpBookController fullBookView])
   {
     v8 = 0;
@@ -775,7 +775,7 @@ void __95__HLPHelpTableOfContentViewController_updateCellSelectionWithScrollPosi
   [v7 setUpdateSeparatorInsetAutomatically:1];
   [v7 setShowFirstLevelIcon:{-[HLPHelpBookController hasSectionIcon](self->_helpBookController, "hasSectionIcon")}];
   displayHelpItems = self->_displayHelpItems;
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSMutableArray *)displayHelpItems objectAtIndexedSubscript:v10];
   [v7 setHelpItem:v11];
@@ -784,35 +784,35 @@ void __95__HLPHelpTableOfContentViewController_updateCellSelectionWithScrollPosi
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HLPHelpTableOfContentViewController *)self tableView];
-  if (v8 == v6)
+  viewCopy = view;
+  pathCopy = path;
+  tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+  if (tableView == viewCopy)
   {
-    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_displayHelpItems, "objectAtIndexedSubscript:", [v7 row]);
+    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_displayHelpItems, "objectAtIndexedSubscript:", [pathCopy row]);
   }
 
   else
   {
-    v9 = [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController searchResults];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    searchResults = [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController searchResults];
+    v10 = [searchResults objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v6 cellForRowAtIndexPath:v7];
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
       [v12 toggle];
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       v13 = v10;
-      [v6 beginUpdates];
+      [viewCopy beginUpdates];
       if ([v12 closed])
       {
         [(HLPHelpTableOfContentViewController *)self closeSectionItem:v13];
@@ -820,21 +820,21 @@ void __95__HLPHelpTableOfContentViewController_updateCellSelectionWithScrollPosi
 
       else
       {
-        v20 = [(NSMutableArray *)self->_displayHelpItems lastObject];
+        lastObject = [(NSMutableArray *)self->_displayHelpItems lastObject];
 
-        if (v13 == v20)
+        if (v13 == lastObject)
         {
-          v21 = [(HLPHelpTableOfContentViewController *)self tableView];
+          tableView2 = [(HLPHelpTableOfContentViewController *)self tableView];
           v22 = [MEMORY[0x277CCAA70] indexPathForRow:-[NSMutableArray count](self->_displayHelpItems inSection:{"count") - 1, 0}];
           v29[0] = v22;
           v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
-          [v21 reloadRowsAtIndexPaths:v23 withRowAnimation:5];
+          [tableView2 reloadRowsAtIndexPaths:v23 withRowAnimation:5];
         }
 
         [(HLPHelpTableOfContentViewController *)self openHelpItem:v13 animated:1];
       }
 
-      [v6 endUpdates];
+      [viewCopy endUpdates];
     }
   }
 
@@ -847,28 +847,28 @@ void __95__HLPHelpTableOfContentViewController_updateCellSelectionWithScrollPosi
     }
 
     v11 = v10;
-    v14 = [v11 hrefID];
-    v15 = [v14 hasPrefix:@"http"];
+    hrefID = [v11 hrefID];
+    v15 = [hrefID hasPrefix:@"http"];
 
     if (v15)
     {
-      v16 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
       v17 = MEMORY[0x277CBEBC0];
-      v18 = [v11 hrefID];
-      v19 = [v17 URLWithString:v18];
-      [v16 openURL:v19 options:MEMORY[0x277CBEC10] completionHandler:0];
+      hrefID2 = [v11 hrefID];
+      v19 = [v17 URLWithString:hrefID2];
+      [mEMORY[0x277D75128] openURL:v19 options:MEMORY[0x277CBEC10] completionHandler:0];
 
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
 
     else
     {
-      [(HLPHelpTableOfContentViewController *)self showTopicItem:v11 fromTableView:v6];
+      [(HLPHelpTableOfContentViewController *)self showTopicItem:v11 fromTableView:viewCopy];
     }
 
-    v24 = [(HLPHelpTableOfContentViewController *)self tableView];
+    tableView3 = [(HLPHelpTableOfContentViewController *)self tableView];
     v25 = HLPAnalyticsViewSourceTypeTOC;
-    if (v24 != v6)
+    if (tableView3 != viewCopy)
     {
       v25 = HLPAnalyticsViewSourceTypeSearch;
     }
@@ -881,28 +881,28 @@ void __95__HLPHelpTableOfContentViewController_updateCellSelectionWithScrollPosi
 LABEL_20:
   if (self->_fullBookView)
   {
-    v27 = [(UISearchController *)self->_searchController searchBar];
-    [v27 resignFirstResponder];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar resignFirstResponder];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)numberOfVisibleHelpItemForSectionItem:(id)a3
+- (int64_t)numberOfVisibleHelpItemForSectionItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [v4 children];
+  children = [itemCopy children];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__HLPHelpTableOfContentViewController_numberOfVisibleHelpItemForSectionItem___block_invoke;
   v8[3] = &unk_279706A78;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [children enumerateObjectsUsingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -928,9 +928,9 @@ void __77__HLPHelpTableOfContentViewController_numberOfVisibleHelpItemForSection
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (void)closeSectionItem:(id)a3
+- (void)closeSectionItem:(id)item
 {
-  v44 = a3;
+  itemCopy = item;
   v4 = [(NSMutableArray *)self->_displayHelpItems indexOfObject:?];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -938,21 +938,21 @@ void __77__HLPHelpTableOfContentViewController_numberOfVisibleHelpItemForSection
   }
 
   v5 = v4;
-  if ([(NSMutableArray *)self->_openSections indexOfObject:v44]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)self->_openSections indexOfObject:itemCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_20;
   }
 
-  v6 = [(HLPHelpTableOfContentViewController *)self tableView];
+  tableView = [(HLPHelpTableOfContentViewController *)self tableView];
   v7 = [MEMORY[0x277CCAA70] indexPathForRow:v5 inSection:0];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  v8 = [tableView cellForRowAtIndexPath:v7];
 
   if (v8)
   {
     [v8 setClosed:1];
   }
 
-  v9 = [(HLPHelpTableOfContentViewController *)self numberOfVisibleHelpItemForSectionItem:v44];
+  v9 = [(HLPHelpTableOfContentViewController *)self numberOfVisibleHelpItemForSectionItem:itemCopy];
   if (v9 >= 1)
   {
     v10 = v9;
@@ -970,138 +970,138 @@ void __77__HLPHelpTableOfContentViewController_numberOfVisibleHelpItemForSection
     }
 
     while (v11 < v14);
-    v16 = [(HLPHelpTableOfContentViewController *)self tableView];
-    [v16 estimatedRowHeight];
+    tableView2 = [(HLPHelpTableOfContentViewController *)self tableView];
+    [tableView2 estimatedRowHeight];
     v18 = v17;
 
-    v19 = [(HLPHelpTableOfContentViewController *)self tableView];
-    [v19 contentSize];
+    tableView3 = [(HLPHelpTableOfContentViewController *)self tableView];
+    [tableView3 contentSize];
     v21 = v20;
 
     v22 = v21 - v18 * [v13 count];
-    v23 = [(HLPHelpTableOfContentViewController *)self view];
-    [v23 bounds];
+    view = [(HLPHelpTableOfContentViewController *)self view];
+    [view bounds];
     Height = CGRectGetHeight(v46);
 
-    v25 = [(HLPHelpTableOfContentViewController *)self tableView];
-    v26 = v25;
+    tableView4 = [(HLPHelpTableOfContentViewController *)self tableView];
+    tableView8 = tableView4;
     if (v22 >= Height)
     {
-      [v25 contentOffset];
+      [tableView4 contentOffset];
       v30 = v29;
 
       v31 = Height + v30;
       if (Height + v30 <= v22)
       {
 LABEL_13:
-        v32 = [(HLPHelpTableOfContentViewController *)self tableView];
-        [v32 beginUpdates];
+        tableView5 = [(HLPHelpTableOfContentViewController *)self tableView];
+        [tableView5 beginUpdates];
 
-        v33 = [(HLPHelpTableOfContentViewController *)self tableView];
-        [v33 deleteRowsAtIndexPaths:v13 withRowAnimation:3];
+        tableView6 = [(HLPHelpTableOfContentViewController *)self tableView];
+        [tableView6 deleteRowsAtIndexPaths:v13 withRowAnimation:3];
 
-        v34 = [(HLPHelpTableOfContentViewController *)self tableView];
-        [v34 endUpdates];
+        tableView7 = [(HLPHelpTableOfContentViewController *)self tableView];
+        [tableView7 endUpdates];
 
         goto LABEL_14;
       }
 
-      v26 = [(HLPHelpTableOfContentViewController *)self tableView];
-      [v26 setContentOffset:1 animated:{0.0, v22 - Height}];
+      tableView8 = [(HLPHelpTableOfContentViewController *)self tableView];
+      [tableView8 setContentOffset:1 animated:{0.0, v22 - Height}];
     }
 
     else
     {
-      v27 = [(HLPHelpTableOfContentViewController *)self view];
-      [v27 safeAreaInsets];
-      [v26 setContentOffset:1 animated:{0.0, -v28}];
+      view2 = [(HLPHelpTableOfContentViewController *)self view];
+      [view2 safeAreaInsets];
+      [tableView8 setContentOffset:1 animated:{0.0, -v28}];
     }
 
     goto LABEL_13;
   }
 
 LABEL_14:
-  v35 = [(NSMutableArray *)self->_openSections indexOfObject:v44];
-  v36 = [MEMORY[0x277CBEB38] dictionary];
-  v37 = [v44 identifier];
-  [v36 setObject:v44 forKeyedSubscript:v37];
+  v35 = [(NSMutableArray *)self->_openSections indexOfObject:itemCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [itemCopy identifier];
+  [dictionary setObject:itemCopy forKeyedSubscript:identifier];
 
   for (i = v35 + 1; i < [(NSMutableArray *)self->_openSections count]; ++i)
   {
     v39 = [(NSMutableArray *)self->_openSections objectAtIndexedSubscript:i];
-    v40 = [v39 parent];
-    v41 = [v40 identifier];
-    v42 = [v36 objectForKeyedSubscript:v41];
+    parent = [v39 parent];
+    identifier2 = [parent identifier];
+    v42 = [dictionary objectForKeyedSubscript:identifier2];
 
     if (v42)
     {
-      v43 = [v39 identifier];
-      [v36 setObject:v39 forKeyedSubscript:v43];
+      identifier3 = [v39 identifier];
+      [dictionary setObject:v39 forKeyedSubscript:identifier3];
     }
   }
 
-  -[NSMutableArray removeObjectsInRange:](self->_openSections, "removeObjectsInRange:", v35, [v36 count]);
+  -[NSMutableArray removeObjectsInRange:](self->_openSections, "removeObjectsInRange:", v35, [dictionary count]);
 
 LABEL_20:
 }
 
-- (void)logAnalyticsContentViewedWithHelpTopicItem:(id)a3 sourceType:(id)a4
+- (void)logAnalyticsContentViewedWithHelpTopicItem:(id)item sourceType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifier];
-  v9 = [v7 name];
-  v10 = [(HLPHelpTableOfContentViewController *)self traitCollection];
-  v15 = +[HLPAnalyticsEventContentViewed eventWithTopicID:topicTitle:source:interfaceStyle:](HLPAnalyticsEventContentViewed, "eventWithTopicID:topicTitle:source:interfaceStyle:", v8, v9, v6, [v10 userInterfaceStyle]);
+  typeCopy = type;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  name = [itemCopy name];
+  traitCollection = [(HLPHelpTableOfContentViewController *)self traitCollection];
+  v15 = +[HLPAnalyticsEventContentViewed eventWithTopicID:topicTitle:source:interfaceStyle:](HLPAnalyticsEventContentViewed, "eventWithTopicID:topicTitle:source:interfaceStyle:", identifier, name, typeCopy, [traitCollection userInterfaceStyle]);
 
   [v15 log];
-  v11 = [(HLPHelpTableOfContentViewController *)self delegate];
-  v12 = [v7 identifier];
-  v13 = [v7 name];
+  delegate = [(HLPHelpTableOfContentViewController *)self delegate];
+  identifier2 = [itemCopy identifier];
+  name2 = [itemCopy name];
 
-  v14 = [(HLPHelpTableOfContentViewController *)self traitCollection];
-  [v11 tableOfContentViewControllerToCContentViewed:self topicID:v12 topicTitle:v13 source:v6 interfaceStyle:objc_msgSend(v14 fromTopicID:"userInterfaceStyle") externalURLString:&stru_2864756F0];
+  traitCollection2 = [(HLPHelpTableOfContentViewController *)self traitCollection];
+  [delegate tableOfContentViewControllerToCContentViewed:self topicID:identifier2 topicTitle:name2 source:typeCopy interfaceStyle:objc_msgSend(traitCollection2 fromTopicID:"userInterfaceStyle") externalURLString:&stru_2864756F0];
 }
 
 - (void)updateSearchResultViewSeparatorValue
 {
-  v3 = [(HLPHelpTableOfContentViewController *)self tableView];
-  v4 = [v3 visibleCells];
-  v7 = [v4 firstObject];
+  tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
+  firstObject = [visibleCells firstObject];
 
   searchResultTableViewController = self->_searchResultTableViewController;
-  v6 = [v7 accessoryImageView];
-  [v6 bounds];
+  accessoryImageView = [firstObject accessoryImageView];
+  [accessoryImageView bounds];
   [(HLPHelpSearchResultTableViewController *)searchResultTableViewController preferSeparatorValue:CGRectGetWidth(v9) + 16.0 * 2.0];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   if (+[HLPCommonDefines isVisionOS])
   {
-    v4 = [(HLPHelpTableOfContentViewController *)self tableView];
-    [v4 setHidden:1];
+    tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+    [tableView setHidden:1];
   }
 
   [(HLPHelpTableOfContentViewController *)self updateSearchResultViewSeparatorValue];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v10 = a3;
+  controllerCopy = controller;
   if (+[HLPCommonDefines isVisionOS])
   {
-    v4 = [(HLPHelpTableOfContentViewController *)self tableView];
-    [v4 setHidden:0];
+    tableView = [(HLPHelpTableOfContentViewController *)self tableView];
+    [tableView setHidden:0];
 
-    v5 = [(HLPHelpTableOfContentViewController *)self searchResultTableViewController];
-    v6 = [v5 tableView];
-    v7 = [v6 indexPathForSelectedRow];
+    searchResultTableViewController = [(HLPHelpTableOfContentViewController *)self searchResultTableViewController];
+    tableView2 = [searchResultTableViewController tableView];
+    indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
 
-    if (v7)
+    if (indexPathForSelectedRow)
     {
-      v8 = [v10 searchBar];
-      [v8 setAlpha:0.0];
+      searchBar = [controllerCopy searchBar];
+      [searchBar setAlpha:0.0];
     }
   }
 
@@ -1112,44 +1112,44 @@ LABEL_20:
   [(HLPHelpTableOfContentViewController *)self cancelSpotlightSearchDelay];
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (+[HLPCommonDefines isVisionOS])
   {
-    v3 = [v4 searchBar];
-    [v3 setAlpha:1.0];
+    searchBar = [controllerCopy searchBar];
+    [searchBar setAlpha:1.0];
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HLPHelpTableOfContentViewController *)self locale];
-  v6 = [v5 isoCodes];
+  controllerCopy = controller;
+  locale = [(HLPHelpTableOfContentViewController *)self locale];
+  isoCodes = [locale isoCodes];
 
-  if (v6)
+  if (isoCodes)
   {
-    v7 = [v4 searchBar];
-    v8 = [v7 text];
+    searchBar = [controllerCopy searchBar];
+    text = [searchBar text];
 
-    if ([v8 length])
+    if ([text length])
     {
       if (!self->_searchLogged)
       {
         v9 = +[HLPAnalyticsEventSearchUsed event];
         [v9 log];
 
-        v10 = [(HLPHelpTableOfContentViewController *)self delegate];
-        [v10 tableOfContentViewControllerSearchUsed:self];
+        delegate = [(HLPHelpTableOfContentViewController *)self delegate];
+        [delegate tableOfContentViewControllerSearchUsed:self];
 
         self->_searchLogged = 1;
       }
 
       if ([(HLPHelpSearchIndexController *)self->_helpSearchIndexController useCSSearch])
       {
-        v25[0] = v8;
+        v25[0] = text;
         v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
         searchTerms = self->_searchTerms;
         self->_searchTerms = v11;
@@ -1160,22 +1160,22 @@ LABEL_20:
 
       else
       {
-        v14 = [v8 lowercaseString];
+        lowercaseString = [text lowercaseString];
 
         helpSearchIndexController = self->_helpSearchIndexController;
-        v16 = [(HLPHelpTableOfContentViewController *)self locale];
-        v17 = [v16 isoCodes];
-        v18 = [v17 firstObject];
+        locale2 = [(HLPHelpTableOfContentViewController *)self locale];
+        isoCodes2 = [locale2 isoCodes];
+        firstObject = [isoCodes2 firstObject];
         v24 = 0;
-        v19 = [(HLPHelpSearchIndexController *)helpSearchIndexController resultsWithSearchText:v14 localeCode:v18 searchTerms:&v24];
+        v19 = [(HLPHelpSearchIndexController *)helpSearchIndexController resultsWithSearchText:lowercaseString localeCode:firstObject searchTerms:&v24];
         v20 = v24;
 
         v21 = self->_searchTerms;
         self->_searchTerms = v20;
         v22 = v20;
 
-        [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController updateWithSearchText:v14 searchResults:v19];
-        v8 = v14;
+        [(HLPHelpSearchResultTableViewController *)self->_searchResultTableViewController updateWithSearchText:lowercaseString searchResults:v19];
+        text = lowercaseString;
       }
     }
 
@@ -1204,9 +1204,9 @@ LABEL_20:
 - (void)spotlightSearchDelay
 {
   objc_initWeak(&location, self);
-  v3 = [(HLPHelpTableOfContentViewController *)self searchController];
-  v4 = [v3 searchBar];
-  v5 = [v4 text];
+  searchController = [(HLPHelpTableOfContentViewController *)self searchController];
+  searchBar = [searchController searchBar];
+  text = [searchBar text];
 
   helpSearchIndexController = self->_helpSearchIndexController;
   v8[0] = MEMORY[0x277D85DD0];
@@ -1214,7 +1214,7 @@ LABEL_20:
   v8[2] = __59__HLPHelpTableOfContentViewController_spotlightSearchDelay__block_invoke;
   v8[3] = &unk_279706AC8;
   objc_copyWeak(&v10, &location);
-  v7 = v5;
+  v7 = text;
   v9 = v7;
   [(HLPHelpSearchIndexController *)helpSearchIndexController CSSearchForSearchText:v7 completionHandler:v8];
 

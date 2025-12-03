@@ -5,23 +5,23 @@
 - (RWIProtocolJSONObject)value;
 - (RWIProtocolRuntimeObjectPreview)preview;
 - (RWIProtocolRuntimeRemoteObject)classPrototype;
-- (RWIProtocolRuntimeRemoteObject)initWithType:(int64_t)a3;
+- (RWIProtocolRuntimeRemoteObject)initWithType:(int64_t)type;
 - (int)size;
 - (int64_t)subtype;
 - (int64_t)type;
-- (void)setClassName:(id)a3;
-- (void)setClassPrototype:(id)a3;
-- (void)setObjectId:(id)a3;
-- (void)setPreview:(id)a3;
-- (void)setStringRepresentation:(id)a3;
-- (void)setSubtype:(int64_t)a3;
-- (void)setType:(int64_t)a3;
-- (void)setValue:(id)a3;
+- (void)setClassName:(id)name;
+- (void)setClassPrototype:(id)prototype;
+- (void)setObjectId:(id)id;
+- (void)setPreview:(id)preview;
+- (void)setStringRepresentation:(id)representation;
+- (void)setSubtype:(int64_t)subtype;
+- (void)setType:(int64_t)type;
+- (void)setValue:(id)value;
 @end
 
 @implementation RWIProtocolRuntimeRemoteObject
 
-- (RWIProtocolRuntimeRemoteObject)initWithType:(int64_t)a3
+- (RWIProtocolRuntimeRemoteObject)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = RWIProtocolRuntimeRemoteObject;
@@ -29,14 +29,14 @@
   v5 = v4;
   if (v4)
   {
-    [(RWIProtocolRuntimeRemoteObject *)v4 setType:a3];
+    [(RWIProtocolRuntimeRemoteObject *)v4 setType:type];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -104,7 +104,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setSubtype:(int64_t)a3
+- (void)setSubtype:(int64_t)subtype
 {
   Inspector::toProtocolString();
   if (v6)
@@ -172,11 +172,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setClassName:(id)a3
+- (void)setClassName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeRemoteObject;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"className"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"className"];
 }
 
 - (NSString)className
@@ -188,11 +188,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeRemoteObject;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setObject:value forKey:@"value"];
 }
 
 - (RWIProtocolJSONObject)value
@@ -250,11 +250,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setStringRepresentation:(id)a3
+- (void)setStringRepresentation:(id)representation
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeRemoteObject;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"description"];
+  [(RWIProtocolJSONObject *)&v3 setString:representation forKey:@"description"];
 }
 
 - (NSString)stringRepresentation
@@ -266,11 +266,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setObjectId:(id)a3
+- (void)setObjectId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeRemoteObject;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"objectId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"objectId"];
 }
 
 - (NSString)objectId
@@ -289,11 +289,11 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"size"];
 }
 
-- (void)setClassPrototype:(id)a3
+- (void)setClassPrototype:(id)prototype
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeRemoteObject;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"classPrototype"];
+  [(RWIProtocolJSONObject *)&v3 setObject:prototype forKey:@"classPrototype"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)classPrototype
@@ -351,11 +351,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setPreview:(id)a3
+- (void)setPreview:(id)preview
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeRemoteObject;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"preview"];
+  [(RWIProtocolJSONObject *)&v3 setObject:preview forKey:@"preview"];
 }
 
 - (RWIProtocolRuntimeObjectPreview)preview

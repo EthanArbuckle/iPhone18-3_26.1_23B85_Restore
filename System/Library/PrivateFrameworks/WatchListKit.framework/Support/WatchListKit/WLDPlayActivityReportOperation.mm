@@ -1,11 +1,11 @@
 @interface WLDPlayActivityReportOperation
 - (NSNumber)nextExpectedReportMillis;
 - (WLDPlayActivityReportOperation)init;
-- (WLDPlayActivityReportOperation)initWithLivePlayEvents:(id)a3;
-- (WLDPlayActivityReportOperation)initWithPlayEvents:(id)a3;
-- (id)_protoForURLRequest:(id)a3;
-- (id)_userAgentHeaderForRequest:(id)a3;
-- (void)prepareURLRequest:(id)a3;
+- (WLDPlayActivityReportOperation)initWithLivePlayEvents:(id)events;
+- (WLDPlayActivityReportOperation)initWithPlayEvents:(id)events;
+- (id)_protoForURLRequest:(id)request;
+- (id)_userAgentHeaderForRequest:(id)request;
+- (void)prepareURLRequest:(id)request;
 @end
 
 @implementation WLDPlayActivityReportOperation
@@ -17,15 +17,15 @@
   return 0;
 }
 
-- (WLDPlayActivityReportOperation)initWithLivePlayEvents:(id)a3
+- (WLDPlayActivityReportOperation)initWithLivePlayEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v9.receiver = self;
   v9.super_class = WLDPlayActivityReportOperation;
   v5 = [(WLDPlayActivityReportOperation *)&v9 initWithURLRequest:0 options:4];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [eventsCopy copy];
     livePlayEvents = v5->_livePlayEvents;
     v5->_livePlayEvents = v6;
   }
@@ -33,15 +33,15 @@
   return v5;
 }
 
-- (WLDPlayActivityReportOperation)initWithPlayEvents:(id)a3
+- (WLDPlayActivityReportOperation)initWithPlayEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v9.receiver = self;
   v9.super_class = WLDPlayActivityReportOperation;
   v5 = [(WLDPlayActivityReportOperation *)&v9 initWithURLRequest:0 options:4];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [eventsCopy copy];
     playEvents = v5->_playEvents;
     v5->_playEvents = v6;
   }
@@ -49,14 +49,14 @@
   return v5;
 }
 
-- (void)prepareURLRequest:(id)a3
+- (void)prepareURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = WLKNetworkSignpostLogObject();
-  v6 = [(WLDPlayActivityReportOperation *)self signpostIdentifier];
-  if ((v6 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostIdentifier = [(WLDPlayActivityReportOperation *)self signpostIdentifier];
+  if ((signpostIdentifier - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signpostIdentifier;
     if (os_signpost_enabled(v5))
     {
       *buf = 0;
@@ -70,8 +70,8 @@
   v10[2] = __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke;
   v10[3] = &unk_1000450D0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = requestCopy;
+  v9 = requestCopy;
   [v8 fetchConfigurationWithCompletionHandler:v10];
 }
 
@@ -134,41 +134,41 @@ void __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke(uint6
 
 - (NSNumber)nextExpectedReportMillis
 {
-  v2 = [(WLDPlayActivityReportOperation *)self httpResponse];
-  v3 = [v2 allHeaderFields];
-  v4 = [v3 wlk_caseInsensitiveValueForKey:@"X-Apple-Next-Report-Expected-In-Milliseconds"];
+  httpResponse = [(WLDPlayActivityReportOperation *)self httpResponse];
+  allHeaderFields = [httpResponse allHeaderFields];
+  v4 = [allHeaderFields wlk_caseInsensitiveValueForKey:@"X-Apple-Next-Report-Expected-In-Milliseconds"];
 
   return v4;
 }
 
-- (id)_protoForURLRequest:(id)a3
+- (id)_protoForURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WLDPlayActivityReportOperation *)self encoder];
-  v6 = [v5 account];
+  requestCopy = request;
+  encoder = [(WLDPlayActivityReportOperation *)self encoder];
+  account = [encoder account];
 
-  v38 = [v6 ams_DSID];
-  v7 = [v38 stringValue];
+  ams_DSID = [account ams_DSID];
+  stringValue = [ams_DSID stringValue];
   v8 = objc_alloc_init(UWLMessageHeaders);
-  v9 = [v6 ams_storefront];
-  [(UWLMessageHeaders *)v8 setXAppleStorefront:v9];
+  ams_storefront = [account ams_storefront];
+  [(UWLMessageHeaders *)v8 setXAppleStorefront:ams_storefront];
 
-  v35 = self;
-  v10 = [(WLDPlayActivityReportOperation *)self _userAgentHeaderForRequest:v4];
+  selfCopy = self;
+  v10 = [(WLDPlayActivityReportOperation *)self _userAgentHeaderForRequest:requestCopy];
   [(UWLMessageHeaders *)v8 setUserAgent:v10];
 
-  v37 = v7;
-  [(UWLMessageHeaders *)v8 setXDsid:v7];
+  v37 = stringValue;
+  [(UWLMessageHeaders *)v8 setXDsid:stringValue];
   v11 = +[WLKUserEnvironment currentEnvironment];
-  v12 = [v11 platform];
-  [(UWLMessageHeaders *)v8 setPfm:v12];
+  platform = [v11 platform];
+  [(UWLMessageHeaders *)v8 setPfm:platform];
 
   [(UWLMessageHeaders *)v8 setClientVersion:WLKCurrentProtocolVersion()];
   v13 = objc_alloc_init(NSMutableArray);
-  v40 = v4;
-  [v4 URL];
-  v36 = v39 = v6;
-  v14 = [v6 ams_cookiesForURL:?];
+  v40 = requestCopy;
+  [requestCopy URL];
+  v36 = v39 = account;
+  v14 = [account ams_cookiesForURL:?];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -189,11 +189,11 @@ void __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke(uint6
 
         v19 = *(*(&v49 + 1) + 8 * i);
         v20 = objc_alloc_init(MapEntry);
-        v21 = [v19 name];
-        [(MapEntry *)v20 setKey:v21];
+        name = [v19 name];
+        [(MapEntry *)v20 setKey:name];
 
-        v22 = [v19 value];
-        [(MapEntry *)v20 setValue:v22];
+        value = [v19 value];
+        [(MapEntry *)v20 setValue:value];
 
         [v13 addObject:v20];
       }
@@ -212,16 +212,16 @@ void __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke(uint6
   v23 = objc_alloc_init(UWLMessageWireEnvelope);
   [(UWLMessageWireEnvelope *)v23 setVersion:1];
   [(UWLMessageWireEnvelope *)v23 setHeaders:v8];
-  v24 = [(WLDPlayActivityReportOperation *)v35 playEvents];
+  playEvents = [(WLDPlayActivityReportOperation *)selfCopy playEvents];
 
-  if (v24)
+  if (playEvents)
   {
     v47 = 0uLL;
     v48 = 0uLL;
     v45 = 0uLL;
     v46 = 0uLL;
-    v25 = [(WLDPlayActivityReportOperation *)v35 playEvents];
-    v26 = [v25 countByEnumeratingWithState:&v45 objects:v54 count:16];
+    playEvents2 = [(WLDPlayActivityReportOperation *)selfCopy playEvents];
+    v26 = [playEvents2 countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v26)
     {
       v27 = v26;
@@ -232,13 +232,13 @@ void __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke(uint6
         {
           if (*v46 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(playEvents2);
           }
 
           [(UWLMessageWireEnvelope *)v23 addPlayEvents:*(*(&v45 + 1) + 8 * j)];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v45 objects:v54 count:16];
+        v27 = [playEvents2 countByEnumeratingWithState:&v45 objects:v54 count:16];
       }
 
       while (v27);
@@ -251,8 +251,8 @@ void __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke(uint6
     v44 = 0uLL;
     v41 = 0uLL;
     v42 = 0uLL;
-    v25 = [(WLDPlayActivityReportOperation *)v35 livePlayEvents];
-    v30 = [v25 countByEnumeratingWithState:&v41 objects:v53 count:16];
+    playEvents2 = [(WLDPlayActivityReportOperation *)selfCopy livePlayEvents];
+    v30 = [playEvents2 countByEnumeratingWithState:&v41 objects:v53 count:16];
     if (v30)
     {
       v31 = v30;
@@ -263,13 +263,13 @@ void __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke(uint6
         {
           if (*v42 != v32)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(playEvents2);
           }
 
           [(UWLMessageWireEnvelope *)v23 addLiveActivityEvents:*(*(&v41 + 1) + 8 * k)];
         }
 
-        v31 = [v25 countByEnumeratingWithState:&v41 objects:v53 count:16];
+        v31 = [playEvents2 countByEnumeratingWithState:&v41 objects:v53 count:16];
       }
 
       while (v31);
@@ -279,11 +279,11 @@ void __52__WLDPlayActivityReportOperation_prepareURLRequest___block_invoke(uint6
   return v23;
 }
 
-- (id)_userAgentHeaderForRequest:(id)a3
+- (id)_userAgentHeaderForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WLDPlayActivityReportOperation *)self encoder];
-  v6 = [v5 requestByEncodingRequest:v4 parameters:0];
+  requestCopy = request;
+  encoder = [(WLDPlayActivityReportOperation *)self encoder];
+  v6 = [encoder requestByEncodingRequest:requestCopy parameters:0];
 
   v7 = [v6 resultWithError:0];
   v8 = [v7 valueForHTTPHeaderField:AMSHTTPHeaderUserAgent];

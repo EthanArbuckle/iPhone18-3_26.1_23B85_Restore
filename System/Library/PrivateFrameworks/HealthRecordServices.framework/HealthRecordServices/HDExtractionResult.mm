@@ -1,7 +1,7 @@
 @interface HDExtractionResult
-- (BOOL)isEqual:(id)a3;
-- (HDExtractionResult)initWithCoder:(id)a3;
-- (HDExtractionResult)initWithItems:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDExtractionResult)initWithCoder:(id)coder;
+- (HDExtractionResult)initWithItems:(id)items;
 - (NSArray)allUnits;
 - (id)debugDescription;
 - (id)description;
@@ -9,15 +9,15 @@
 
 @implementation HDExtractionResult
 
-- (HDExtractionResult)initWithItems:(id)a3
+- (HDExtractionResult)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = HDExtractionResult;
   v5 = [(HDExtractionResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     items = v5->_items;
     v5->_items = v6;
   }
@@ -49,8 +49,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) units];
-        [(NSArray *)v3 addObjectsFromArray:v9];
+        units = [*(*(&v14 + 1) + 8 * v8) units];
+        [(NSArray *)v3 addObjectsFromArray:units];
 
         ++v8;
       }
@@ -78,10 +78,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -91,22 +91,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       items = self->_items;
-      v7 = [(HDExtractionResult *)v5 items];
-      if (items == v7)
+      items = [(HDExtractionResult *)v5 items];
+      if (items == items)
       {
         v11 = 1;
       }
 
       else
       {
-        v8 = [(HDExtractionResult *)v5 items];
-        if (v8)
+        items2 = [(HDExtractionResult *)v5 items];
+        if (items2)
         {
           v9 = self->_items;
-          v10 = [(HDExtractionResult *)v5 items];
-          v11 = [(NSArray *)v9 isEqualToArray:v10];
+          items3 = [(HDExtractionResult *)v5 items];
+          v11 = [(NSArray *)v9 isEqualToArray:items3];
         }
 
         else
@@ -147,12 +147,12 @@
   return v7;
 }
 
-- (HDExtractionResult)initWithCoder:(id)a3
+- (HDExtractionResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 hk_typesForArrayOf:objc_opt_class()];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"Items"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"Items"];
 
   v8 = [(HDExtractionResult *)self initWithItems:v7];
   return v8;

@@ -1,9 +1,9 @@
 @interface CRLRemoteDefaults
 + (id)sharedDefaults;
-- (CRLRemoteDefaults)initWithRemoteURL:(id)a3 localURL:(id)a4;
+- (CRLRemoteDefaults)initWithRemoteURL:(id)l localURL:(id)rL;
 - (id)initInternal;
-- (id)objectForKey:(id)a3;
-- (void)processPropertyList:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)processPropertyList:(id)list;
 - (void)registerDefaults;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000137FC;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A35518 != -1)
   {
     dispatch_once(&qword_101A35518, block);
@@ -118,10 +118,10 @@
   }
 }
 
-- (CRLRemoteDefaults)initWithRemoteURL:(id)a3 localURL:(id)a4
+- (CRLRemoteDefaults)initWithRemoteURL:(id)l localURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -170,32 +170,32 @@
   objc_exception_throw(v15);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 dictionaryForKey:@"CRLRemoteDefaults"];
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:keyCopy];
 
   if (!v7)
   {
     v9.receiver = self;
     v9.super_class = CRLRemoteDefaults;
-    v7 = [(CRLRemotePropertyList *)&v9 objectForKey:v4];
+    v7 = [(CRLRemotePropertyList *)&v9 objectForKey:keyCopy];
   }
 
   return v7;
 }
 
-- (void)processPropertyList:(id)a3
+- (void)processPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setObject:v4 forKey:@"CRLRemoteDefaults"];
+  [v5 setObject:listCopy forKey:@"CRLRemoteDefaults"];
 
   v6.receiver = self;
   v6.super_class = CRLRemoteDefaults;
-  [(CRLRemotePropertyList *)&v6 processPropertyList:v4];
+  [(CRLRemotePropertyList *)&v6 processPropertyList:listCopy];
 }
 
 @end

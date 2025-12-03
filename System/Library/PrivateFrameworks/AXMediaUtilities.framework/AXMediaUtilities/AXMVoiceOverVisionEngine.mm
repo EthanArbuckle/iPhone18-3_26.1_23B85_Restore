@@ -12,10 +12,10 @@
 - (AXMSignificantEventDetectorNode)significantEventDetector;
 - (AXMTraitDetectorNode)traitDetector;
 - (AXMVoiceOverVisionEngine)init;
-- (AXMVoiceOverVisionEngine)initWithIdentifier:(id)a3;
-- (id)configuredOptionsDisableAllDetectors:(id)a3 elementOptions:(unsigned int)a4 textRecognitionLevel:(id)a5 textDetectionLocales:(id)a6 preferringFullCaptions:(BOOL)a7;
+- (AXMVoiceOverVisionEngine)initWithIdentifier:(id)identifier;
+- (id)configuredOptionsDisableAllDetectors:(id)detectors elementOptions:(unsigned int)options textRecognitionLevel:(id)level textDetectionLocales:(id)locales preferringFullCaptions:(BOOL)captions;
 - (unint64_t)genderStrategy;
-- (void)setGenderStrategy:(unint64_t)a3;
+- (void)setGenderStrategy:(unint64_t)strategy;
 @end
 
 @implementation AXMVoiceOverVisionEngine
@@ -133,7 +133,7 @@
   return v3;
 }
 
-- (AXMVoiceOverVisionEngine)initWithIdentifier:(id)a3
+- (AXMVoiceOverVisionEngine)initWithIdentifier:(id)identifier
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"use init()"];
 
@@ -142,26 +142,26 @@
 
 - (unint64_t)genderStrategy
 {
-  v2 = [(AXMVoiceOverVisionEngine *)self captionDetector];
-  v3 = [v2 genderStrategy];
+  captionDetector = [(AXMVoiceOverVisionEngine *)self captionDetector];
+  genderStrategy = [captionDetector genderStrategy];
 
-  return v3;
+  return genderStrategy;
 }
 
-- (void)setGenderStrategy:(unint64_t)a3
+- (void)setGenderStrategy:(unint64_t)strategy
 {
-  v4 = [(AXMVoiceOverVisionEngine *)self captionDetector];
-  [v4 setGenderStrategy:a3];
+  captionDetector = [(AXMVoiceOverVisionEngine *)self captionDetector];
+  [captionDetector setGenderStrategy:strategy];
 }
 
-- (id)configuredOptionsDisableAllDetectors:(id)a3 elementOptions:(unsigned int)a4 textRecognitionLevel:(id)a5 textDetectionLocales:(id)a6 preferringFullCaptions:(BOOL)a7
+- (id)configuredOptionsDisableAllDetectors:(id)detectors elementOptions:(unsigned int)options textRecognitionLevel:(id)level textDetectionLocales:(id)locales preferringFullCaptions:(BOOL)captions
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  captionsCopy = captions;
+  detectorsCopy = detectors;
+  levelCopy = level;
+  localesCopy = locales;
   v14 = +[AXMVisionAnalysisOptions voiceOverOptions];
-  if (v11 && v11[2](v11))
+  if (detectorsCopy && detectorsCopy[2](detectorsCopy))
   {
     [v14 disableAllDetectors];
   }
@@ -169,7 +169,7 @@
   else
   {
     [v14 setDetectScenes:1];
-    if (v7)
+    if (captionsCopy)
     {
       [v14 setDetectCaptions:1];
       if (AXRuntimeCheck_MediaAnalysisSupport())
@@ -204,30 +204,30 @@
       [v14 setDetectMADCaptions:0];
     }
 
-    [v14 setDetectFaceRectangles:{objc_msgSend(v14, "detectFaceRectangles") & (a4 >> 1)}];
-    [v14 setDetectFaceNames:{objc_msgSend(v14, "detectFaceNames") & (a4 >> 2)}];
-    [v14 setDetectFaceAttributes:{objc_msgSend(v14, "detectFaceAttributes") & (a4 >> 3)}];
-    [v14 setDetectFaceExpressions:{objc_msgSend(v14, "detectFaceExpressions") & (a4 >> 4)}];
-    [v14 setDetectFaceLandmarks:{objc_msgSend(v14, "detectFaceLandmarks") & (a4 >> 5)}];
-    [v14 setDetectFacePose:{objc_msgSend(v14, "detectFacePose") & (a4 >> 6)}];
-    [v14 setDetectText:{a4 & objc_msgSend(v14, "detectText")}];
-    [v14 setDetectTraits:{objc_msgSend(v14, "detectTraits") & (a4 >> 7)}];
-    [v14 setDetectScenes:{objc_msgSend(v14, "detectScenes") & (a4 >> 8)}];
-    [v14 setDetectObjects:{objc_msgSend(v14, "detectObjects") & (a4 >> 12)}];
-    [v14 setDetectCaptions:{objc_msgSend(v14, "detectCaptions") & (a4 >> 11)}];
-    [v14 setDetectProminentObjects:{objc_msgSend(v14, "detectProminentObjects") & (a4 >> 10)}];
+    [v14 setDetectFaceRectangles:{objc_msgSend(v14, "detectFaceRectangles") & (options >> 1)}];
+    [v14 setDetectFaceNames:{objc_msgSend(v14, "detectFaceNames") & (options >> 2)}];
+    [v14 setDetectFaceAttributes:{objc_msgSend(v14, "detectFaceAttributes") & (options >> 3)}];
+    [v14 setDetectFaceExpressions:{objc_msgSend(v14, "detectFaceExpressions") & (options >> 4)}];
+    [v14 setDetectFaceLandmarks:{objc_msgSend(v14, "detectFaceLandmarks") & (options >> 5)}];
+    [v14 setDetectFacePose:{objc_msgSend(v14, "detectFacePose") & (options >> 6)}];
+    [v14 setDetectText:{options & objc_msgSend(v14, "detectText")}];
+    [v14 setDetectTraits:{objc_msgSend(v14, "detectTraits") & (options >> 7)}];
+    [v14 setDetectScenes:{objc_msgSend(v14, "detectScenes") & (options >> 8)}];
+    [v14 setDetectObjects:{objc_msgSend(v14, "detectObjects") & (options >> 12)}];
+    [v14 setDetectCaptions:{objc_msgSend(v14, "detectCaptions") & (options >> 11)}];
+    [v14 setDetectProminentObjects:{objc_msgSend(v14, "detectProminentObjects") & (options >> 10)}];
     if ([v14 detectText])
     {
-      v15 = [v14 textDetectionOptions];
-      if (v12)
+      textDetectionOptions = [v14 textDetectionOptions];
+      if (levelCopy)
       {
-        [v15 setRecognitionLevel:v12[2](v12)];
+        [textDetectionOptions setRecognitionLevel:levelCopy[2](levelCopy)];
       }
 
-      if (v13)
+      if (localesCopy)
       {
-        v16 = v13[2](v13);
-        [v15 setTextDetectionLocales:v16];
+        v16 = localesCopy[2](localesCopy);
+        [textDetectionOptions setTextDetectionLocales:v16];
       }
     }
   }

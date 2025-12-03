@@ -1,38 +1,38 @@
 @interface GroupIdentityViewController.Coordinator
 - (_TtCV7ChatKit27GroupIdentityViewController11Coordinator)init;
-- (void)handleAddressBookChanged:(id)a3;
-- (void)handleGroupDisplayNameChanged:(id)a3;
-- (void)handleGroupPhotoChanged:(id)a3;
-- (void)headerViewControllerDidTapActionButton:(id)a3;
+- (void)handleAddressBookChanged:(id)changed;
+- (void)handleGroupDisplayNameChanged:(id)changed;
+- (void)handleGroupPhotoChanged:(id)changed;
+- (void)headerViewControllerDidTapActionButton:(id)button;
 @end
 
 @implementation GroupIdentityViewController.Coordinator
 
-- (void)handleGroupPhotoChanged:(id)a3
+- (void)handleGroupPhotoChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_190AF1638(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_190AF1638(changedCopy);
 }
 
-- (void)handleGroupDisplayNameChanged:(id)a3
+- (void)handleGroupDisplayNameChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_190AF1E04(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_190AF1E04(changedCopy);
 }
 
-- (void)handleAddressBookChanged:(id)a3
+- (void)handleAddressBookChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_190AF2604(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_190AF2604(changedCopy);
 }
 
-- (void)headerViewControllerDidTapActionButton:(id)a3
+- (void)headerViewControllerDidTapActionButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_190AF3714();
 }
 

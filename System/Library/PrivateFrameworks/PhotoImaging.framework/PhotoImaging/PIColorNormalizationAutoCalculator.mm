@@ -1,26 +1,26 @@
 @interface PIColorNormalizationAutoCalculator
-+ (id)autoCalculatorWithImageData:(id)a3 orientation:(int64_t)a4;
-- (PIColorNormalizationAutoCalculator)initWithComposition:(id)a3;
-- (PIColorNormalizationAutoCalculator)initWithMedia:(id)a3;
-- (PIColorNormalizationAutoCalculator)initWithRequest:(id)a3;
-- (void)setTime:(id *)a3;
-- (void)submit:(id)a3;
++ (id)autoCalculatorWithImageData:(id)data orientation:(int64_t)orientation;
+- (PIColorNormalizationAutoCalculator)initWithComposition:(id)composition;
+- (PIColorNormalizationAutoCalculator)initWithMedia:(id)media;
+- (PIColorNormalizationAutoCalculator)initWithRequest:(id)request;
+- (void)setTime:(id *)time;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIColorNormalizationAutoCalculator
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->time.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->time.value = *&time->var0;
   self->time.epoch = var3;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v11 = NUAssertLogger_2471();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -42,8 +42,8 @@
         v19 = dispatch_get_specific(*v13);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v19;
         v29 = 2114;
@@ -54,8 +54,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v18;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -64,7 +64,7 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   v6 = objc_alloc_init(MEMORY[0x1E69843E0]);
   [v6 setRevision:1];
   if (v6)
@@ -168,10 +168,10 @@ void __45__PIColorNormalizationAutoCalculator_submit___block_invoke(uint64_t a1,
   (*(*(a1 + 32) + 16))();
 }
 
-- (PIColorNormalizationAutoCalculator)initWithMedia:(id)a3
+- (PIColorNormalizationAutoCalculator)initWithMedia:(id)media
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -210,8 +210,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -238,8 +238,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -257,10 +257,10 @@ LABEL_14:
   }
 }
 
-- (PIColorNormalizationAutoCalculator)initWithRequest:(id)a3
+- (PIColorNormalizationAutoCalculator)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -299,8 +299,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -327,8 +327,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -346,12 +346,12 @@ LABEL_14:
   }
 }
 
-- (PIColorNormalizationAutoCalculator)initWithComposition:(id)a3
+- (PIColorNormalizationAutoCalculator)initWithComposition:(id)composition
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PIColorNormalizationAutoCalculator;
-  v3 = [(NURenderRequest *)&v9 initWithComposition:a3];
+  v3 = [(NURenderRequest *)&v9 initWithComposition:composition];
   v4 = [PIPipelineFilters stopAtTagIncludeOrientationFilter:@"/Master/Source"];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -364,11 +364,11 @@ LABEL_14:
   return v3;
 }
 
-+ (id)autoCalculatorWithImageData:(id)a3 orientation:(int64_t)a4
++ (id)autoCalculatorWithImageData:(id)data orientation:(int64_t)orientation
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v15 = NUAssertLogger_2471();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -390,8 +390,8 @@ LABEL_14:
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v23;
         v30 = 2114;
@@ -402,8 +402,8 @@ LABEL_14:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -412,18 +412,18 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x1E695F658] imageWithData:v5];
+  v6 = dataCopy;
+  v7 = [MEMORY[0x1E695F658] imageWithData:dataCopy];
   if (v7)
   {
-    v8 = [PIPhotoEditHelper imageSourceWithCIImage:v7 orientation:a4];
+    v8 = [PIPhotoEditHelper imageSourceWithCIImage:v7 orientation:orientation];
     v9 = +[PIPhotoEditHelper newComposition];
     v10 = [PIPhotoEditHelper newCompositionControllerWithComposition:v9];
 
     [v10 setSource:v8 mediaType:1];
     v11 = [PIColorNormalizationAutoCalculator alloc];
-    v12 = [v10 composition];
-    v13 = [(PIColorNormalizationAutoCalculator *)v11 initWithComposition:v12];
+    composition = [v10 composition];
+    v13 = [(PIColorNormalizationAutoCalculator *)v11 initWithComposition:composition];
   }
 
   else

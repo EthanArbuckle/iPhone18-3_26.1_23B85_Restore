@@ -1,15 +1,15 @@
 @interface KNBuildShimmer
-+ (id)localizedMenuString:(int)a3;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (void)animationDidEndWithContext:(id)a3;
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalRenderFrameWithContext:(id)a3;
++ (id)localizedMenuString:(int)string;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (void)animationDidEndWithContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalRenderFrameWithContext:(id)context;
 @end
 
 @implementation KNBuildShimmer
 
-+ (id)localizedMenuString:(int)a3
++ (id)localizedMenuString:(int)string
 {
   v3 = KNBundle();
   v4 = [v3 localizedStringForKey:@"Shimmer *Shimmer Build*" value:@"Shimmer" table:@"Keynote"];
@@ -17,9 +17,9 @@
   return v4;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  [a3 drawableFrame];
+  [context drawableFrame];
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
@@ -59,23 +59,23 @@
   return result;
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildShimmer *)self metalPrepareAnimationWithContext:v4];
-  v5 = [v4 textures];
-  if ([v5 count] != &dword_0 + 1)
+  contextCopy = context;
+  [(KNBuildShimmer *)self metalPrepareAnimationWithContext:contextCopy];
+  textures = [contextCopy textures];
+  if ([textures count] != &dword_0 + 1)
   {
     v6 = +[TSUAssertionHandler currentHandler];
     v7 = [NSString stringWithUTF8String:"[KNBuildShimmer animationWillBeginWithContext:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildShimmer.m"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:151 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(v5, "count")}];
+    [v6 handleFailureInFunction:v7 file:v8 lineNumber:151 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(textures, "count")}];
   }
 
-  v9 = [v4 animatedBuild];
-  v33 = [v4 direction];
-  v32 = [v5 lastObject];
-  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:v4];
+  animatedBuild = [contextCopy animatedBuild];
+  direction = [contextCopy direction];
+  lastObject = [textures lastObject];
+  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:contextCopy];
   v10 = v39;
   *&self->_baseTransform.m31 = v38;
   *&self->_baseTransform.m33 = v10;
@@ -90,12 +90,12 @@
   *&self->_baseTransform.m23 = v13;
   v14 = [KNShimmerEffect alloc];
   mAnimationContext = self->super.mAnimationContext;
-  [v9 duration];
+  [animatedBuild duration];
   v17 = v16;
-  v18 = [v9 buildType];
-  [v4 metalContext];
-  v19 = v31 = v5;
-  v20 = [v4 randomGenerator];
+  buildType = [animatedBuild buildType];
+  [contextCopy metalContext];
+  v19 = v31 = textures;
+  randomGenerator = [contextCopy randomGenerator];
   x = self->_frameRect.origin.x;
   y = self->_frameRect.origin.y;
   width = self->_frameRect.size.width;
@@ -112,21 +112,21 @@
   v28 = *&self->_baseTransform.m23;
   v36 = *&self->_baseTransform.m21;
   v37 = v28;
-  v29 = [(KNShimmerEffect *)v14 initWithAnimationContext:mAnimationContext texture:v32 destinationRect:&v34 translate:v33 duration:v18 direction:v19 buildType:x metalContext:y randomGenerator:width, height, v17, v20];
+  v29 = [(KNShimmerEffect *)v14 initWithAnimationContext:mAnimationContext texture:lastObject destinationRect:&v34 translate:direction duration:buildType direction:v19 buildType:x metalContext:y randomGenerator:width, height, v17, randomGenerator];
   effect = self->_effect;
   self->_effect = v29;
 }
 
-- (void)animationDidEndWithContext:(id)a3
+- (void)animationDidEndWithContext:(id)context
 {
   [(KNShimmerEffect *)self->_effect teardown];
   effect = self->_effect;
   self->_effect = 0;
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  [a3 drawableFrame];
+  [context drawableFrame];
   self->_drawableFrame.origin.x = v4;
   self->_drawableFrame.origin.y = v5;
   self->_drawableFrame.size.width = v6;
@@ -138,15 +138,15 @@
   self->_frameRect.size.height = v11;
 }
 
-- (void)metalRenderFrameWithContext:(id)a3
+- (void)metalRenderFrameWithContext:(id)context
 {
   effect = self->_effect;
-  v4 = a3;
-  [v4 percent];
+  contextCopy = context;
+  [contextCopy percent];
   v6 = v5;
-  v7 = [v4 metalContext];
+  metalContext = [contextCopy metalContext];
 
-  [(KNShimmerEffect *)effect renderEffectAtPercent:v7 withContext:v6];
+  [(KNShimmerEffect *)effect renderEffectAtPercent:metalContext withContext:v6];
 }
 
 @end

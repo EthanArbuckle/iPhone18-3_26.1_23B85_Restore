@@ -1,27 +1,27 @@
 @interface _SBHIconLibraryPrewarmAssertion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBHIconLibraryTableViewController)iconLibraryTableViewController;
-- (_SBHIconLibraryPrewarmAssertion)initWithReason:(id)a3 iconLibraryTableViewController:(id)a4;
+- (_SBHIconLibraryPrewarmAssertion)initWithReason:(id)reason iconLibraryTableViewController:(id)controller;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _SBHIconLibraryPrewarmAssertion
 
-- (_SBHIconLibraryPrewarmAssertion)initWithReason:(id)a3 iconLibraryTableViewController:(id)a4
+- (_SBHIconLibraryPrewarmAssertion)initWithReason:(id)reason iconLibraryTableViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = _SBHIconLibraryPrewarmAssertion;
   v8 = [(_SBHIconLibraryPrewarmAssertion *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
 
-    objc_storeWeak(&v8->_iconLibraryTableViewController, v7);
+    objc_storeWeak(&v8->_iconLibraryTableViewController, controllerCopy);
   }
 
   return v8;
@@ -51,16 +51,16 @@
   [WeakRetained _invalidatePrewarmAssertion:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())

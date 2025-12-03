@@ -1,5 +1,5 @@
 @interface VNTrackRectangleRequest
-+ (id)trackerTypeForRequestRevision:(unint64_t)a3 error:(id *)a4;
++ (id)trackerTypeForRequestRevision:(unint64_t)revision error:(id *)error;
 - (VNTrackRectangleRequest)initWithRectangleObservation:(VNRectangleObservation *)observation completionHandler:(VNRequestCompletionHandler)completionHandler;
 @end
 
@@ -12,18 +12,18 @@
   return [(VNTrackingRequest *)&v5 initWithDetectedObjectObservation:observation completionHandler:completionHandler];
 }
 
-+ (id)trackerTypeForRequestRevision:(unint64_t)a3 error:(id *)a4
++ (id)trackerTypeForRequestRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNRectangleTrackerType";
     v5 = @"VNRectangleTrackerType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequestClass:" ofRequestClass:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

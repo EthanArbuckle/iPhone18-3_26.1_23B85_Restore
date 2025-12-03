@@ -1,25 +1,25 @@
 @interface NRApplicationServiceClient
 - (NSString)description;
 - (void)dealloc;
-- (void)didCompleteIncomingResolveRequestForASName:(id)a3 asClient:(id)a4;
-- (void)didStartBrowseRequestForASName:(id)a3 asClient:(id)a4;
-- (void)didStartResolveRequestForASName:(id)a3 asClient:(id)a4;
-- (void)didStopAdvertiseRequestForASName:(id)a3 endpoint:(id)a4 asClient:(id)a5;
-- (void)didStopBrowseRequestForASName:(id)a3 asClient:(id)a4;
-- (void)didStopResolveRequestForASName:(id)a3 asClient:(id)a4;
+- (void)didCompleteIncomingResolveRequestForASName:(id)name asClient:(id)client;
+- (void)didStartBrowseRequestForASName:(id)name asClient:(id)client;
+- (void)didStartResolveRequestForASName:(id)name asClient:(id)client;
+- (void)didStopAdvertiseRequestForASName:(id)name endpoint:(id)endpoint asClient:(id)client;
+- (void)didStopBrowseRequestForASName:(id)name asClient:(id)client;
+- (void)didStopResolveRequestForASName:(id)name asClient:(id)client;
 @end
 
 @implementation NRApplicationServiceClient
 
-- (void)didStopAdvertiseRequestForASName:(id)a3 endpoint:(id)a4 asClient:(id)a5
+- (void)didStopAdvertiseRequestForASName:(id)name endpoint:(id)endpoint asClient:(id)client
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 == self)
+  nameCopy = name;
+  endpointCopy = endpoint;
+  clientCopy = client;
+  v10 = clientCopy;
+  if (clientCopy == self)
   {
-    if (v9)
+    if (clientCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
     }
@@ -29,31 +29,31 @@
       WeakRetained = 0;
     }
 
-    [WeakRetained didStopAdvertiseRequestForASName:v12 endpoint:v8 asClient:self];
+    [WeakRetained didStopAdvertiseRequestForASName:nameCopy endpoint:endpointCopy asClient:self];
   }
 }
 
-- (void)didCompleteIncomingResolveRequestForASName:(id)a3 asClient:(id)a4
+- (void)didCompleteIncomingResolveRequestForASName:(id)name asClient:(id)client
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 == self)
+  nameCopy = name;
+  clientCopy = client;
+  v7 = clientCopy;
+  if (clientCopy == self)
   {
-    if (v6)
+    if (clientCopy)
     {
-      if (!self->_cancelled && [(NSMutableArray *)self->_asNamesForIncomingResolveRequests containsObject:v9])
+      if (!self->_cancelled && [(NSMutableArray *)self->_asNamesForIncomingResolveRequests containsObject:nameCopy])
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
 LABEL_6:
-        [WeakRetained didCompleteIncomingResolveRequestForASName:v9 asClient:self];
+        [WeakRetained didCompleteIncomingResolveRequestForASName:nameCopy asClient:self];
       }
     }
 
     else
     {
       WeakRetained = 0;
-      if ([0 containsObject:v9])
+      if ([0 containsObject:nameCopy])
       {
         goto LABEL_6;
       }
@@ -61,27 +61,27 @@ LABEL_6:
   }
 }
 
-- (void)didStopResolveRequestForASName:(id)a3 asClient:(id)a4
+- (void)didStopResolveRequestForASName:(id)name asClient:(id)client
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6 == self)
+  nameCopy = name;
+  clientCopy = client;
+  if (clientCopy == self)
   {
-    if (v6)
+    if (clientCopy)
     {
       if (!self->_cancelled)
       {
-        v7 = v6;
-        v8 = [(NSMutableArray *)self->_asNamesForResolving containsObject:v11];
-        v6 = v7;
+        v7 = clientCopy;
+        v8 = [(NSMutableArray *)self->_asNamesForResolving containsObject:nameCopy];
+        clientCopy = v7;
         if (v8)
         {
-          [(NSMutableArray *)self->_asNamesForResolving removeObject:v11];
+          [(NSMutableArray *)self->_asNamesForResolving removeObject:nameCopy];
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
 LABEL_6:
-          [WeakRetained didStopResolveRequestForASName:v11 asClient:self];
+          [WeakRetained didStopResolveRequestForASName:nameCopy asClient:self];
 
-          v6 = v7;
+          clientCopy = v7;
         }
       }
     }
@@ -89,11 +89,11 @@ LABEL_6:
     else
     {
       v7 = 0;
-      v10 = [0 containsObject:v11];
-      v6 = 0;
+      v10 = [0 containsObject:nameCopy];
+      clientCopy = 0;
       if (v10)
       {
-        [0 removeObject:v11];
+        [0 removeObject:nameCopy];
         WeakRetained = 0;
         goto LABEL_6;
       }
@@ -101,23 +101,23 @@ LABEL_6:
   }
 }
 
-- (void)didStartResolveRequestForASName:(id)a3 asClient:(id)a4
+- (void)didStartResolveRequestForASName:(id)name asClient:(id)client
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6 == self)
+  nameCopy = name;
+  clientCopy = client;
+  if (clientCopy == self)
   {
-    if (v6)
+    if (clientCopy)
     {
       if (self->_cancelled)
       {
         goto LABEL_8;
       }
 
-      v7 = v6;
-      if (([(NSMutableArray *)self->_asNamesForResolving containsObject:v9]& 1) == 0)
+      v7 = clientCopy;
+      if (([(NSMutableArray *)self->_asNamesForResolving containsObject:nameCopy]& 1) == 0)
       {
-        [(NSMutableArray *)self->_asNamesForResolving addObject:v9];
+        [(NSMutableArray *)self->_asNamesForResolving addObject:nameCopy];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -127,42 +127,42 @@ LABEL_6:
     {
       v7 = 0;
       WeakRetained = 0;
-      if (([0 containsObject:v9] & 1) == 0)
+      if (([0 containsObject:nameCopy] & 1) == 0)
       {
-        [0 addObject:v9];
+        [0 addObject:nameCopy];
         WeakRetained = 0;
       }
     }
 
-    [WeakRetained didStartResolveRequestForASName:v9 asClient:self];
+    [WeakRetained didStartResolveRequestForASName:nameCopy asClient:self];
 
-    v6 = v7;
+    clientCopy = v7;
   }
 
 LABEL_8:
 }
 
-- (void)didStopBrowseRequestForASName:(id)a3 asClient:(id)a4
+- (void)didStopBrowseRequestForASName:(id)name asClient:(id)client
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6 == self)
+  nameCopy = name;
+  clientCopy = client;
+  if (clientCopy == self)
   {
-    if (v6)
+    if (clientCopy)
     {
       if (!self->_cancelled)
       {
-        v7 = v6;
-        v8 = [(NSMutableArray *)self->_asNamesForBrowsing containsObject:v11];
-        v6 = v7;
+        v7 = clientCopy;
+        v8 = [(NSMutableArray *)self->_asNamesForBrowsing containsObject:nameCopy];
+        clientCopy = v7;
         if (v8)
         {
-          [(NSMutableArray *)self->_asNamesForBrowsing removeObject:v11];
+          [(NSMutableArray *)self->_asNamesForBrowsing removeObject:nameCopy];
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
 LABEL_6:
-          [WeakRetained didStopBrowseRequestForASName:v11 asClient:self];
+          [WeakRetained didStopBrowseRequestForASName:nameCopy asClient:self];
 
-          v6 = v7;
+          clientCopy = v7;
         }
       }
     }
@@ -170,11 +170,11 @@ LABEL_6:
     else
     {
       v7 = 0;
-      v10 = [0 containsObject:v11];
-      v6 = 0;
+      v10 = [0 containsObject:nameCopy];
+      clientCopy = 0;
       if (v10)
       {
-        [0 removeObject:v11];
+        [0 removeObject:nameCopy];
         WeakRetained = 0;
         goto LABEL_6;
       }
@@ -182,28 +182,28 @@ LABEL_6:
   }
 }
 
-- (void)didStartBrowseRequestForASName:(id)a3 asClient:(id)a4
+- (void)didStartBrowseRequestForASName:(id)name asClient:(id)client
 {
-  v13 = a3;
-  v6 = a4;
-  if (v6 == self)
+  nameCopy = name;
+  clientCopy = client;
+  if (clientCopy == self)
   {
-    if (v6)
+    if (clientCopy)
     {
       if (self->_cancelled)
       {
         goto LABEL_13;
       }
 
-      v7 = v6;
-      if ([(NSMutableArray *)self->_asNamesForBrowsing containsObject:v13])
+      v7 = clientCopy;
+      if ([(NSMutableArray *)self->_asNamesForBrowsing containsObject:nameCopy])
       {
         nrUUID = self->_nrUUID;
 LABEL_6:
         v9 = _NRCopyLogObjectForNRUUID();
         IsLevelEnabled = _NRLogIsLevelEnabled();
 
-        v6 = v7;
+        clientCopy = v7;
         if (!IsLevelEnabled)
         {
           goto LABEL_13;
@@ -224,26 +224,26 @@ LABEL_6:
         goto LABEL_12;
       }
 
-      [(NSMutableArray *)self->_asNamesForBrowsing addObject:v13];
+      [(NSMutableArray *)self->_asNamesForBrowsing addObject:nameCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
     }
 
     else
     {
       v7 = 0;
-      if ([0 containsObject:v13])
+      if ([0 containsObject:nameCopy])
       {
         goto LABEL_6;
       }
 
-      [0 addObject:v13];
+      [0 addObject:nameCopy];
       WeakRetained = 0;
     }
 
-    [WeakRetained didStartBrowseRequestForASName:v13 asClient:self];
+    [WeakRetained didStartBrowseRequestForASName:nameCopy asClient:self];
 LABEL_12:
 
-    v6 = v7;
+    clientCopy = v7;
   }
 
 LABEL_13:

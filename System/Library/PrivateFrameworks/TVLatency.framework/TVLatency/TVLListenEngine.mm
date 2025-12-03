@@ -1,35 +1,35 @@
 @interface TVLListenEngine
-+ (TVLListenEngine)engineWithCompletion:(id)a3;
++ (TVLListenEngine)engineWithCompletion:(id)completion;
 + (void)invalidate;
-- (BOOL)_setupAndStartAudioEngineGraphWithTimeout:(double)a3 error:(id *)a4;
-- (BOOL)_setupAndStartAudioSessionWithError:(id *)a3;
-- (BOOL)startListeningWithReferenceTone:(id)a3 at:(unint64_t)a4 saveToFile:(id)a5 withCallback:(id)a6 completion:(id)a7;
+- (BOOL)_setupAndStartAudioEngineGraphWithTimeout:(double)timeout error:(id *)error;
+- (BOOL)_setupAndStartAudioSessionWithError:(id *)error;
+- (BOOL)startListeningWithReferenceTone:(id)tone at:(unint64_t)at saveToFile:(id)file withCallback:(id)callback completion:(id)completion;
 - (TVLListenEngine)init;
-- (double)medianOfSortedArray:(id)a3;
-- (void)_handleIterruption:(id)a3;
+- (double)medianOfSortedArray:(id)array;
+- (void)_handleIterruption:(id)iterruption;
 - (void)_splitMicrophoneAndReferenceToneChannels;
 - (void)completeAnalysis;
 - (void)init;
 - (void)invalidate;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
-- (void)requestDidComplete:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
+- (void)requestDidComplete:(id)complete;
 @end
 
 @implementation TVLListenEngine
 
-+ (TVLListenEngine)engineWithCompletion:(id)a3
++ (TVLListenEngine)engineWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CB83F8] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__TVLListenEngine_engineWithCompletion___block_invoke;
   v8[3] = &unk_279D6C248;
-  v9 = v4;
-  v10 = a1;
-  v6 = v4;
-  [v5 requestRecordPermission:v8];
+  v9 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  [mEMORY[0x277CB83F8] requestRecordPermission:v8];
 
   return result;
 }
@@ -108,8 +108,8 @@ void __40__TVLListenEngine_engineWithCompletion___block_invoke(uint64_t a1, char
       analysisQueue = v3->_analysisQueue;
       v3->_analysisQueue = v9;
 
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v11 addObserver:v3 selector:sel__handleIterruption_ name:*MEMORY[0x277CB8068] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel__handleIterruption_ name:*MEMORY[0x277CB8068] object:0];
 
 LABEL_5:
       v12 = v3;
@@ -137,7 +137,7 @@ LABEL_12:
 
 + (void)invalidate
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   [_listenEngineInst invalidate];
   v2 = _listenEngineInst;
@@ -148,27 +148,27 @@ LABEL_12:
 
 - (void)invalidate
 {
-  v3 = [(TVLListenEngine *)self mixer];
-  [v3 removeTapOnBus:0];
+  mixer = [(TVLListenEngine *)self mixer];
+  [mixer removeTapOnBus:0];
 
-  v4 = [(TVLListenEngine *)self audioEngine];
-  [v4 stop];
+  audioEngine = [(TVLListenEngine *)self audioEngine];
+  [audioEngine stop];
 
   [(TVLListenEngine *)self setPlayer:0];
   [(TVLListenEngine *)self setMixer:0];
   [(TVLListenEngine *)self setMicrophone:0];
   [(TVLListenEngine *)self setAudioEngine:0];
-  v5 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v5 setActive:0 error:0];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setActive:0 error:0];
 }
 
-- (void)_handleIterruption:(id)a3
+- (void)_handleIterruption:(id)iterruption
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CB8080]];
-  v6 = [v5 integerValue];
+  userInfo = [iterruption userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CB8080]];
+  integerValue = [v5 integerValue];
 
-  if (!v6)
+  if (!integerValue)
   {
     if (_TVLLogDefault_onceToken_6 != -1)
     {
@@ -186,16 +186,16 @@ LABEL_12:
   }
 }
 
-- (BOOL)_setupAndStartAudioSessionWithError:(id *)a3
+- (BOOL)_setupAndStartAudioSessionWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CB83F8] sharedInstance];
-  v5 = [v4 setCategory:*MEMORY[0x277CB8028] mode:*MEMORY[0x277CB80B0] options:2 error:a3];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  v5 = [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8028] mode:*MEMORY[0x277CB80B0] options:2 error:error];
 
-  if (v5 && ([MEMORY[0x277CB83F8] sharedInstance], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "setPreferredIOBufferDuration:error:", a3, 0.005), v6, v7))
+  if (v5 && ([MEMORY[0x277CB83F8] sharedInstance], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "setPreferredIOBufferDuration:error:", error, 0.005), v6, v7))
   {
-    v8 = [MEMORY[0x277CB83F8] sharedInstance];
-    v9 = [v8 setActive:1 error:a3];
+    mEMORY[0x277CB83F8]2 = [MEMORY[0x277CB83F8] sharedInstance];
+    v9 = [mEMORY[0x277CB83F8]2 setActive:1 error:error];
   }
 
   else
@@ -203,8 +203,8 @@ LABEL_12:
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v10 setAllowAllBuiltInDataSources:1];
+  mEMORY[0x277CB83F8]3 = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8]3 setAllowAllBuiltInDataSources:1];
 
   v26 = 0;
   v27 = &v26;
@@ -212,29 +212,29 @@ LABEL_12:
   v29 = __Block_byref_object_copy__0;
   v30 = __Block_byref_object_dispose__0;
   v31 = 0;
-  v11 = [MEMORY[0x277CB83F8] sharedInstance];
-  v12 = [v11 availableInputs];
+  mEMORY[0x277CB83F8]4 = [MEMORY[0x277CB83F8] sharedInstance];
+  availableInputs = [mEMORY[0x277CB83F8]4 availableInputs];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __55__TVLListenEngine__setupAndStartAudioSessionWithError___block_invoke;
   v25[3] = &unk_279D6C270;
   v25[4] = &v26;
-  [v12 enumerateObjectsUsingBlock:v25];
+  [availableInputs enumerateObjectsUsingBlock:v25];
 
   v13 = v27[5];
   if (v13)
   {
     if (v9)
     {
-      v14 = [MEMORY[0x277CB83F8] sharedInstance];
-      v9 = [v14 setPreferredInput:v27[5] error:a3];
+      mEMORY[0x277CB83F8]5 = [MEMORY[0x277CB83F8] sharedInstance];
+      v9 = [mEMORY[0x277CB83F8]5 setPreferredInput:v27[5] error:error];
 
       v13 = v27[5];
     }
 
-    v15 = [v13 dataSources];
-    v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_6];
-    v17 = [v16 lastObject];
+    dataSources = [v13 dataSources];
+    v16 = [dataSources sortedArrayUsingComparator:&__block_literal_global_6];
+    lastObject = [v16 lastObject];
 
     if (_TVLLogDefault_onceToken_6 != -1)
     {
@@ -244,17 +244,17 @@ LABEL_12:
     v18 = _TVLLogDefault_log_6;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v17 description];
+      v19 = [lastObject description];
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v19;
       _os_log_impl(&dword_26CD78000, v18, OS_LOG_TYPE_DEFAULT, "Selected Built-In Mic: %{public}@", &buf, 0xCu);
     }
 
-    if (v17)
+    if (lastObject)
     {
       if (v9)
       {
-        LOBYTE(v9) = [v27[5] setPreferredDataSource:v17 error:a3];
+        LOBYTE(v9) = [v27[5] setPreferredDataSource:lastObject error:error];
       }
 
       *&buf = 0;
@@ -263,18 +263,18 @@ LABEL_12:
       v34 = __Block_byref_object_copy__0;
       v35 = __Block_byref_object_dispose__0;
       v36 = 0;
-      v20 = [v17 supportedPolarPatterns];
+      supportedPolarPatterns = [lastObject supportedPolarPatterns];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __55__TVLListenEngine__setupAndStartAudioSessionWithError___block_invoke_8;
       v24[3] = &unk_279D6C2B8;
       v24[4] = &buf;
-      [v20 enumerateObjectsUsingBlock:v24];
+      [supportedPolarPatterns enumerateObjectsUsingBlock:v24];
 
       v21 = *(*(&buf + 1) + 40);
       if (v21)
       {
-        [v17 setPreferredPolarPattern:v21 error:a3];
+        [lastObject setPreferredPolarPattern:v21 error:error];
       }
 
       _Block_object_dispose(&buf, 8);
@@ -341,7 +341,7 @@ void __55__TVLListenEngine__setupAndStartAudioSessionWithError___block_invoke_8(
   }
 }
 
-- (BOOL)_setupAndStartAudioEngineGraphWithTimeout:(double)a3 error:(id *)a4
+- (BOOL)_setupAndStartAudioEngineGraphWithTimeout:(double)timeout error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
   v7 = dispatch_group_create();
@@ -364,22 +364,22 @@ void __55__TVLListenEngine__setupAndStartAudioSessionWithError___block_invoke_8(
   *buf = *"xmuaxmcmlppa";
   v57 = 0;
   [v8 instantiateWithComponentDescription:buf options:0 completionHandler:v47];
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_group_wait(v9, v10);
-  *a4 = v51[5];
-  v11 = [(TVLListenEngine *)self mixer];
+  *error = v51[5];
+  mixer = [(TVLListenEngine *)self mixer];
 
-  if (v11)
+  if (mixer)
   {
     v12 = objc_alloc_init(MEMORY[0x277CB8388]);
     [(TVLListenEngine *)self setAudioEngine:v12];
 
-    v13 = [(TVLListenEngine *)self audioEngine];
-    v14 = [v13 inputNode];
-    [(TVLListenEngine *)self setMicrophone:v14];
+    audioEngine = [(TVLListenEngine *)self audioEngine];
+    inputNode = [audioEngine inputNode];
+    [(TVLListenEngine *)self setMicrophone:inputNode];
 
-    v15 = [(TVLListenEngine *)self microphone];
-    v16 = [v15 inputFormatForBus:0];
+    microphone = [(TVLListenEngine *)self microphone];
+    v16 = [microphone inputFormatForBus:0];
     [v16 sampleRate];
     if (v17 <= 0.0)
     {
@@ -387,8 +387,8 @@ void __55__TVLListenEngine__setupAndStartAudioSessionWithError___block_invoke_8(
 
     else
     {
-      v18 = [(TVLListenEngine *)self microphone];
-      v19 = [v18 inputFormatForBus:0];
+      microphone2 = [(TVLListenEngine *)self microphone];
+      v19 = [microphone2 inputFormatForBus:0];
       v20 = [v19 channelCount] == 0;
 
       if (!v20)
@@ -396,42 +396,42 @@ void __55__TVLListenEngine__setupAndStartAudioSessionWithError___block_invoke_8(
         v21 = objc_alloc_init(MEMORY[0x277CB83E0]);
         [(TVLListenEngine *)self setPlayer:v21];
 
-        v22 = [(TVLListenEngine *)self audioEngine];
-        v23 = [(TVLListenEngine *)self player];
-        [v22 attachNode:v23];
+        audioEngine2 = [(TVLListenEngine *)self audioEngine];
+        player = [(TVLListenEngine *)self player];
+        [audioEngine2 attachNode:player];
 
-        v24 = [(TVLListenEngine *)self audioEngine];
-        v25 = [(TVLListenEngine *)self mixer];
-        [v24 attachNode:v25];
+        audioEngine3 = [(TVLListenEngine *)self audioEngine];
+        mixer2 = [(TVLListenEngine *)self mixer];
+        [audioEngine3 attachNode:mixer2];
 
         v26 = objc_alloc(MEMORY[0x277CB83A8]);
-        v27 = [MEMORY[0x277CB83F8] sharedInstance];
-        [v27 sampleRate];
+        mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+        [mEMORY[0x277CB83F8] sampleRate];
         v28 = [v26 initStandardFormatWithSampleRate:2 channels:?];
 
-        v29 = [(TVLListenEngine *)self audioEngine];
-        v30 = [(TVLListenEngine *)self microphone];
-        v31 = [(TVLListenEngine *)self mixer];
-        [v29 connect:v30 to:v31 fromBus:0 toBus:1 format:v28];
+        audioEngine4 = [(TVLListenEngine *)self audioEngine];
+        microphone3 = [(TVLListenEngine *)self microphone];
+        mixer3 = [(TVLListenEngine *)self mixer];
+        [audioEngine4 connect:microphone3 to:mixer3 fromBus:0 toBus:1 format:v28];
 
-        v32 = [(TVLListenEngine *)self audioEngine];
-        v33 = [(TVLListenEngine *)self player];
-        v34 = [(TVLListenEngine *)self mixer];
-        [v32 connect:v33 to:v34 fromBus:0 toBus:0 format:v28];
+        audioEngine5 = [(TVLListenEngine *)self audioEngine];
+        player2 = [(TVLListenEngine *)self player];
+        mixer4 = [(TVLListenEngine *)self mixer];
+        [audioEngine5 connect:player2 to:mixer4 fromBus:0 toBus:0 format:v28];
 
-        v35 = [(TVLListenEngine *)self audioEngine];
-        v36 = [(TVLListenEngine *)self mixer];
-        v37 = [(TVLListenEngine *)self audioEngine];
-        v38 = [v37 mainMixerNode];
-        [v35 connect:v36 to:v38 format:v28];
+        audioEngine6 = [(TVLListenEngine *)self audioEngine];
+        mixer5 = [(TVLListenEngine *)self mixer];
+        audioEngine7 = [(TVLListenEngine *)self audioEngine];
+        mainMixerNode = [audioEngine7 mainMixerNode];
+        [audioEngine6 connect:mixer5 to:mainMixerNode format:v28];
 
-        v39 = [(TVLListenEngine *)self audioEngine];
-        v40 = [v39 mainMixerNode];
-        [v40 setOutputVolume:0.0];
+        audioEngine8 = [(TVLListenEngine *)self audioEngine];
+        mainMixerNode2 = [audioEngine8 mainMixerNode];
+        [mainMixerNode2 setOutputVolume:0.0];
 
         [(TVLListenEngine *)self _splitMicrophoneAndReferenceToneChannels];
-        v41 = [(TVLListenEngine *)self audioEngine];
-        v42 = [v41 startAndReturnError:a4];
+        audioEngine9 = [(TVLListenEngine *)self audioEngine];
+        v42 = [audioEngine9 startAndReturnError:error];
 
 LABEL_12:
         goto LABEL_13;
@@ -446,9 +446,9 @@ LABEL_12:
     v28 = _TVLLogDefault_log_6;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v43 = [(TVLListenEngine *)self microphone];
-      v44 = [v43 inputFormatForBus:0];
-      [(TVLListenEngine *)v44 _setupAndStartAudioEngineGraphWithTimeout:buf error:v28, v43];
+      microphone4 = [(TVLListenEngine *)self microphone];
+      v44 = [microphone4 inputFormatForBus:0];
+      [(TVLListenEngine *)v44 _setupAndStartAudioEngineGraphWithTimeout:buf error:v28, microphone4];
     }
 
     v42 = 0;
@@ -481,27 +481,27 @@ void __67__TVLListenEngine__setupAndStartAudioEngineGraphWithTimeout_error___blo
 
 - (void)_splitMicrophoneAndReferenceToneChannels
 {
-  v3 = [(TVLListenEngine *)self mixer];
-  v4 = [v3 inputFormatForBus:0];
-  v5 = [v4 channelCount];
+  mixer = [(TVLListenEngine *)self mixer];
+  v4 = [mixer inputFormatForBus:0];
+  channelCount = [v4 channelCount];
 
-  switch(v5)
+  switch(channelCount)
   {
     case 3:
-      v6 = [(TVLListenEngine *)self mixer];
-      v7 = [v6 audioUnit];
+      mixer2 = [(TVLListenEngine *)self mixer];
+      audioUnit = [mixer2 audioUnit];
       v8 = &SURROUND_TO_STEREO_LEFT;
       v9 = 24;
       break;
     case 2:
-      v6 = [(TVLListenEngine *)self mixer];
-      v7 = [v6 audioUnit];
+      mixer2 = [(TVLListenEngine *)self mixer];
+      audioUnit = [mixer2 audioUnit];
       v8 = &STEREO_TO_STEREO_LEFT;
       v9 = 16;
       break;
     case 1:
-      v6 = [(TVLListenEngine *)self mixer];
-      v7 = [v6 audioUnit];
+      mixer2 = [(TVLListenEngine *)self mixer];
+      audioUnit = [mixer2 audioUnit];
       v8 = &MONO_TO_STEREO_LEFT;
       v9 = 8;
       break;
@@ -509,30 +509,30 @@ void __67__TVLListenEngine__setupAndStartAudioEngineGraphWithTimeout_error___blo
       goto LABEL_8;
   }
 
-  AudioUnitSetProperty(v7, 0xBBEu, 1u, 0, v8, v9);
+  AudioUnitSetProperty(audioUnit, 0xBBEu, 1u, 0, v8, v9);
 
 LABEL_8:
-  v10 = [(TVLListenEngine *)self mixer];
-  v11 = [v10 inputFormatForBus:1];
-  v12 = [v11 channelCount];
+  mixer3 = [(TVLListenEngine *)self mixer];
+  v11 = [mixer3 inputFormatForBus:1];
+  channelCount2 = [v11 channelCount];
 
-  switch(v12)
+  switch(channelCount2)
   {
     case 3:
-      v16 = [(TVLListenEngine *)self mixer];
-      v13 = [v16 audioUnit];
+      mixer4 = [(TVLListenEngine *)self mixer];
+      audioUnit2 = [mixer4 audioUnit];
       v14 = &SURROUND_TO_STEREO_RIGHT;
       v15 = 24;
       break;
     case 2:
-      v16 = [(TVLListenEngine *)self mixer];
-      v13 = [v16 audioUnit];
+      mixer4 = [(TVLListenEngine *)self mixer];
+      audioUnit2 = [mixer4 audioUnit];
       v14 = &STEREO_TO_STEREO_RIGHT;
       v15 = 16;
       break;
     case 1:
-      v16 = [(TVLListenEngine *)self mixer];
-      v13 = [v16 audioUnit];
+      mixer4 = [(TVLListenEngine *)self mixer];
+      audioUnit2 = [mixer4 audioUnit];
       v14 = &MONO_TO_STEREO_RIGHT;
       v15 = 8;
       break;
@@ -540,25 +540,25 @@ LABEL_8:
       return;
   }
 
-  AudioUnitSetProperty(v13, 0xBBEu, 1u, 1u, v14, v15);
+  AudioUnitSetProperty(audioUnit2, 0xBBEu, 1u, 1u, v14, v15);
 }
 
-- (BOOL)startListeningWithReferenceTone:(id)a3 at:(unint64_t)a4 saveToFile:(id)a5 withCallback:(id)a6 completion:(id)a7
+- (BOOL)startListeningWithReferenceTone:(id)tone at:(unint64_t)at saveToFile:(id)file withCallback:(id)callback completion:(id)completion
 {
   v71 = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  v59 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(TVLListenEngine *)self audioEngine];
+  toneCopy = tone;
+  fileCopy = file;
+  callbackCopy = callback;
+  completionCopy = completion;
+  audioEngine = [(TVLListenEngine *)self audioEngine];
   v68 = 0;
-  v15 = [v14 startAndReturnError:&v68];
+  v15 = [audioEngine startAndReturnError:&v68];
   v16 = v68;
 
   if (v15)
   {
-    v17 = [MEMORY[0x277CB83F8] sharedInstance];
-    [v17 IOBufferDuration];
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+    [mEMORY[0x277CB83F8] IOBufferDuration];
     v19 = v18;
 
     if (_TVLLogDefault_onceToken_6 != -1)
@@ -574,8 +574,8 @@ LABEL_8:
       _os_log_impl(&dword_26CD78000, v20, OS_LOG_TYPE_DEFAULT, "IOBufferDuration: %f", buf, 0xCu);
     }
 
-    v21 = [MEMORY[0x277CB83F8] sharedInstance];
-    [v21 inputSafetyOffset];
+    mEMORY[0x277CB83F8]2 = [MEMORY[0x277CB83F8] sharedInstance];
+    [mEMORY[0x277CB83F8]2 inputSafetyOffset];
     v23 = v22;
 
     if (_TVLLogDefault_onceToken_6 != -1)
@@ -591,8 +591,8 @@ LABEL_8:
       _os_log_impl(&dword_26CD78000, v24, OS_LOG_TYPE_DEFAULT, "Input Safety Offset: %f", buf, 0xCu);
     }
 
-    v25 = [MEMORY[0x277CB83F8] sharedInstance];
-    [v25 outputSafetyOffset];
+    mEMORY[0x277CB83F8]3 = [MEMORY[0x277CB83F8] sharedInstance];
+    [mEMORY[0x277CB83F8]3 outputSafetyOffset];
     v27 = v26;
 
     if (_TVLLogDefault_onceToken_6 != -1)
@@ -622,9 +622,9 @@ LABEL_8:
       _os_log_impl(&dword_26CD78000, v30, OS_LOG_TYPE_DEFAULT, "Adjusted Offset: %f", buf, 0xCu);
     }
 
-    v58 = dispatch_time(a4, (v29 * 1000000000.0));
-    [(TVLListenEngine *)self setCallback:v12];
-    [(TVLListenEngine *)self setCompletion:v13];
+    v58 = dispatch_time(at, (v29 * 1000000000.0));
+    [(TVLListenEngine *)self setCallback:callbackCopy];
+    [(TVLListenEngine *)self setCompletion:completionCopy];
     v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(TVLListenEngine *)self setConfidentResults:v31];
 
@@ -633,18 +633,18 @@ LABEL_8:
     [(TVLListenEngine *)self setTimeToConverge:INFINITY];
     [(TVLListenEngine *)self setLastObservationWasConfident:0];
     v32 = objc_alloc(MEMORY[0x277CDC8F0]);
-    v33 = [(TVLListenEngine *)self mixer];
-    v34 = [v33 outputFormatForBus:0];
+    mixer = [(TVLListenEngine *)self mixer];
+    v34 = [mixer outputFormatForBus:0];
     v35 = [v32 initWithFormat:v34];
     [(TVLListenEngine *)self setStreamAnalyzer:v35];
 
     v36 = objc_alloc_init(MEMORY[0x277CDC928]);
     [(TVLListenEngine *)self setEstimateAudioOffsetRequest:v36];
 
-    v37 = [(TVLListenEngine *)self streamAnalyzer];
-    v38 = [(TVLListenEngine *)self estimateAudioOffsetRequest];
+    streamAnalyzer = [(TVLListenEngine *)self streamAnalyzer];
+    estimateAudioOffsetRequest = [(TVLListenEngine *)self estimateAudioOffsetRequest];
     v67 = v16;
-    [v37 addRequest:v38 withObserver:self error:&v67];
+    [streamAnalyzer addRequest:estimateAudioOffsetRequest withObserver:self error:&v67];
     v39 = v67;
 
     if (v39)
@@ -665,14 +665,14 @@ LABEL_8:
 
     else
     {
-      if (v59)
+      if (fileCopy)
       {
         v41 = objc_alloc(MEMORY[0x277CB8398]);
-        v42 = [(TVLListenEngine *)self mixer];
-        v43 = [v42 outputFormatForBus:0];
-        v44 = [v43 settings];
+        mixer2 = [(TVLListenEngine *)self mixer];
+        v43 = [mixer2 outputFormatForBus:0];
+        settings = [v43 settings];
         v66 = 0;
-        v45 = [v41 initForWriting:v59 settings:v44 error:&v66];
+        v45 = [v41 initForWriting:fileCopy settings:settings error:&v66];
         v16 = v66;
         [(TVLListenEngine *)self setFile:v45];
 
@@ -695,17 +695,17 @@ LABEL_8:
         v16 = 0;
       }
 
-      v46 = [(TVLListenEngine *)self mixer];
-      [v46 removeTapOnBus:0];
+      mixer3 = [(TVLListenEngine *)self mixer];
+      [mixer3 removeTapOnBus:0];
 
       objc_initWeak(&location, self);
-      v47 = [(TVLListenEngine *)self mixer];
+      mixer4 = [(TVLListenEngine *)self mixer];
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __89__TVLListenEngine_startListeningWithReferenceTone_at_saveToFile_withCallback_completion___block_invoke;
       v63[3] = &unk_279D6C330;
       objc_copyWeak(&v64, &location);
-      [v47 installTapOnBus:0 bufferSize:64 format:0 block:v63];
+      [mixer4 installTapOnBus:0 bufferSize:64 format:0 block:v63];
 
       self->_didMissDeadline = 0;
       v48 = dispatch_time(0, 0);
@@ -751,20 +751,20 @@ LABEL_8:
         self->_didMissDeadline = 1;
       }
 
-      v52 = [(TVLListenEngine *)self player];
+      player = [(TVLListenEngine *)self player];
       v53 = [MEMORY[0x277CB8428] timeWithHostTime:v58];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __89__TVLListenEngine_startListeningWithReferenceTone_at_saveToFile_withCallback_completion___block_invoke_22;
       v61[3] = &unk_279D6C358;
       objc_copyWeak(&v62, &location);
-      [v52 scheduleFile:v60 atTime:v53 completionCallbackType:2 completionHandler:v61];
+      [player scheduleFile:toneCopy atTime:v53 completionCallbackType:2 completionHandler:v61];
 
-      v54 = [(TVLListenEngine *)self player];
-      [v54 prepareWithFrameCount:{objc_msgSend(v60, "length")}];
+      player2 = [(TVLListenEngine *)self player];
+      [player2 prepareWithFrameCount:{objc_msgSend(toneCopy, "length")}];
 
-      v55 = [(TVLListenEngine *)self player];
-      [v55 play];
+      player3 = [(TVLListenEngine *)self player];
+      [player3 play];
 
       objc_destroyWeak(&v62);
       objc_destroyWeak(&v64);
@@ -785,7 +785,7 @@ LABEL_8:
       [TVLListenEngine startListeningWithReferenceTone:at:saveToFile:withCallback:completion:];
     }
 
-    (*(v13 + 2))(v13, 0, 0, 0.0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0.0);
     v40 = 0;
   }
 
@@ -859,8 +859,8 @@ void __89__TVLListenEngine_startListeningWithReferenceTone_at_saveToFile_withCal
 - (void)completeAnalysis
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v3 = [(TVLListenEngine *)self confidentResults];
-  if (![v3 count])
+  confidentResults = [(TVLListenEngine *)self confidentResults];
+  if (![confidentResults count])
   {
 
     goto LABEL_5;
@@ -877,17 +877,17 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v5 = [(TVLListenEngine *)self confidentResults];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  confidentResults2 = [(TVLListenEngine *)self confidentResults];
+  v6 = [confidentResults2 sortedArrayUsingSelector:sel_compare_];
 
   [(TVLListenEngine *)self medianOfSortedArray:v6];
   v8 = v7;
-  v9 = [v6 firstObject];
-  [v9 doubleValue];
+  firstObject = [v6 firstObject];
+  [firstObject doubleValue];
   v11 = v10;
 
-  v12 = [v6 lastObject];
-  [v12 doubleValue];
+  lastObject = [v6 lastObject];
+  [lastObject doubleValue];
   v14 = v13;
 
   v24[0] = @"LATENCY_LOW";
@@ -908,25 +908,25 @@ LABEL_5:
 
   v21 = 1;
 LABEL_6:
-  v22 = [(TVLListenEngine *)self completion];
-  (v22)[2](v22, v21, v20, v8);
+  completion = [(TVLListenEngine *)self completion];
+  (completion)[2](completion, v21, v20, v8);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (double)medianOfSortedArray:(id)a3
+- (double)medianOfSortedArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   if (v4)
   {
     v5 = v4;
     if (v4 == 1)
     {
-      v6 = [v3 firstObject];
+      firstObject = [arrayCopy firstObject];
 LABEL_8:
-      v15 = v6;
-      [v6 doubleValue];
+      v15 = firstObject;
+      [firstObject doubleValue];
       v7 = v16;
 
       goto LABEL_9;
@@ -935,15 +935,15 @@ LABEL_8:
     v8 = (v4 - 1) >> 1;
     if (v4)
     {
-      v6 = [v3 objectAtIndex:v8];
+      firstObject = [arrayCopy objectAtIndex:v8];
       goto LABEL_8;
     }
 
-    v9 = [v3 objectAtIndex:v8];
+    v9 = [arrayCopy objectAtIndex:v8];
     [v9 doubleValue];
     v11 = v10;
 
-    v12 = [v3 objectAtIndex:v5 >> 1];
+    v12 = [arrayCopy objectAtIndex:v5 >> 1];
     [v12 doubleValue];
     v14 = v13;
 
@@ -960,42 +960,42 @@ LABEL_9:
   return v7;
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
-  v20 = a4;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TVLListenEngine *)self firstObservationDate];
+    firstObservationDate = [(TVLListenEngine *)self firstObservationDate];
 
-    if (!v5)
+    if (!firstObservationDate)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [(TVLListenEngine *)self setFirstObservationDate:v6];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(TVLListenEngine *)self setFirstObservationDate:date];
     }
 
-    v7 = v20;
+    v7 = resultCopy;
     [v7 offset];
     v9 = v8 / 1000.0 - *&_inputLatency;
-    v10 = [(TVLListenEngine *)self callback];
+    callback = [(TVLListenEngine *)self callback];
     [v7 confidence];
     v12 = v11;
-    v10[2](v10, v9, v12);
+    callback[2](callback, v9, v12);
 
     [v7 confidence];
     v14 = v13;
     if (v13 == 1.0)
     {
-      v15 = [(TVLListenEngine *)self confidentResults];
+      confidentResults = [(TVLListenEngine *)self confidentResults];
       v16 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-      [v15 addObject:v16];
+      [confidentResults addObject:v16];
 
       [(TVLListenEngine *)self timeToConverge];
       if (v17 == INFINITY)
       {
-        v18 = [MEMORY[0x277CBEAA8] date];
-        v19 = [(TVLListenEngine *)self firstObservationDate];
-        [v18 timeIntervalSinceDate:v19];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        firstObservationDate2 = [(TVLListenEngine *)self firstObservationDate];
+        [date2 timeIntervalSinceDate:firstObservationDate2];
         [(TVLListenEngine *)self setTimeToConverge:?];
       }
     }
@@ -1019,10 +1019,10 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   if (_TVLLogDefault_onceToken_6 != -1)
   {
     __40__TVLListenEngine_engineWithCompletion___block_invoke_cold_1();
@@ -1033,15 +1033,15 @@ LABEL_11:
     [TVLListenEngine request:didFailWithError:];
   }
 
-  v8 = [(TVLListenEngine *)self completion];
-  v8[2](v8, 0, 0, 0.0);
+  completion = [(TVLListenEngine *)self completion];
+  completion[2](completion, 0, 0, 0.0);
 
   [(TVLListenEngine *)self invalidate];
 }
 
-- (void)requestDidComplete:(id)a3
+- (void)requestDidComplete:(id)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   if (_TVLLogDefault_onceToken_6 != -1)
   {
     __40__TVLListenEngine_engineWithCompletion___block_invoke_cold_1();

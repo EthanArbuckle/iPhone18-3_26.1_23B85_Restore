@@ -1,17 +1,17 @@
 @interface SHManagedSessionCustomCatalogDriver
 - (NSUUID)matchingSignatureID;
-- (SHManagedSessionCustomCatalogDriver)initWithServiceConnection:(id)a3;
+- (SHManagedSessionCustomCatalogDriver)initWithServiceConnection:(id)connection;
 - (SHSessionDriverDelegate)sessionDriverDelegate;
-- (void)flow:(id)a3 time:(id)a4;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
-- (void)setSessionDriverDelegate:(id)a3;
+- (void)flow:(id)flow time:(id)time;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
+- (void)setSessionDriverDelegate:(id)delegate;
 @end
 
 @implementation SHManagedSessionCustomCatalogDriver
 
-- (SHManagedSessionCustomCatalogDriver)initWithServiceConnection:(id)a3
+- (SHManagedSessionCustomCatalogDriver)initWithServiceConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = SHManagedSessionCustomCatalogDriver;
   v6 = [(SHManagedSessionCustomCatalogDriver *)&v10 init];
@@ -21,7 +21,7 @@
     daemonDelegate = v6->_daemonDelegate;
     v6->_daemonDelegate = v7;
 
-    objc_storeStrong(&v6->_serviceConnection, a3);
+    objc_storeStrong(&v6->_serviceConnection, connection);
     [(SHMatcher *)v6->_serviceConnection setDelegate:v6->_daemonDelegate];
   }
 
@@ -30,53 +30,53 @@
 
 - (NSUUID)matchingSignatureID
 {
-  v2 = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
-  v3 = [v2 matchingSignatureID];
+  daemonDelegate = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
+  matchingSignatureID = [daemonDelegate matchingSignatureID];
 
-  return v3;
+  return matchingSignatureID;
 }
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  matcherCopy = matcher;
   v8 = [SHMatcherResponse alloc];
-  [v6 recordingIntermission];
+  [responseCopy recordingIntermission];
   v10 = v9;
-  [v6 recordingSignatureOffset];
+  [responseCopy recordingSignatureOffset];
   v12 = v11;
-  [v6 retrySeconds];
+  [responseCopy retrySeconds];
   v14 = v13;
-  v15 = [v6 match];
-  v16 = [v6 signature];
-  v17 = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
-  v18 = [v17 inflightRequestID];
-  v19 = [v6 error];
+  match = [responseCopy match];
+  signature = [responseCopy signature];
+  daemonDelegate = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
+  inflightRequestID = [daemonDelegate inflightRequestID];
+  error = [responseCopy error];
 
-  v21 = [(SHMatcherResponse *)v8 initWithRecordingIntermission:v15 recordingSignatureOffset:v16 retrySeconds:v18 match:v19 signature:v10 runningAssociatedRequestID:v12 error:v14];
-  v20 = [(SHManagedSessionCustomCatalogDriver *)self serviceConnection];
-  [v20 matcher:v7 didProduceResponse:v21];
+  v21 = [(SHMatcherResponse *)v8 initWithRecordingIntermission:match recordingSignatureOffset:signature retrySeconds:inflightRequestID match:error signature:v10 runningAssociatedRequestID:v12 error:v14];
+  serviceConnection = [(SHManagedSessionCustomCatalogDriver *)self serviceConnection];
+  [serviceConnection matcher:matcherCopy didProduceResponse:v21];
 }
 
-- (void)setSessionDriverDelegate:(id)a3
+- (void)setSessionDriverDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
-  [v5 setSessionDriverDelegate:v4];
+  delegateCopy = delegate;
+  daemonDelegate = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
+  [daemonDelegate setSessionDriverDelegate:delegateCopy];
 }
 
 - (SHSessionDriverDelegate)sessionDriverDelegate
 {
-  v2 = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
-  v3 = [v2 sessionDriverDelegate];
+  daemonDelegate = [(SHManagedSessionCustomCatalogDriver *)self daemonDelegate];
+  sessionDriverDelegate = [daemonDelegate sessionDriverDelegate];
 
-  return v3;
+  return sessionDriverDelegate;
 }
 
-- (void)flow:(id)a3 time:(id)a4
+- (void)flow:(id)flow time:(id)time
 {
-  v5 = a3;
-  v6 = a4;
+  flowCopy = flow;
+  timeCopy = time;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"This session driver does not accept user supplied audio" userInfo:0];
   objc_exception_throw(v7);
 }

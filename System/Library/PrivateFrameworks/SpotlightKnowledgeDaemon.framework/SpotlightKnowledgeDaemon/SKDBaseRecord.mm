@@ -1,19 +1,19 @@
 @interface SKDBaseRecord
-- (SKDBaseRecord)initWithAttributes:(id)a3;
+- (SKDBaseRecord)initWithAttributes:(id)attributes;
 @end
 
 @implementation SKDBaseRecord
 
-- (SKDBaseRecord)initWithAttributes:(id)a3
+- (SKDBaseRecord)initWithAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = SKDBaseRecord;
   v6 = [(SKDBaseRecord *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attributes, a3);
+    objc_storeStrong(&v6->_attributes, attributes);
   }
 
   return v7;

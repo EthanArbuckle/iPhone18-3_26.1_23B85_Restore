@@ -1,22 +1,22 @@
 @interface PosterRenderer
-- (void)renderer:(id)a3 didReceiveTapAtPoint:(CGPoint)a4;
-- (void)rendererDidInvalidate:(id)a3;
+- (void)renderer:(id)renderer didReceiveTapAtPoint:(CGPoint)point;
+- (void)rendererDidInvalidate:(id)invalidate;
 @end
 
 @implementation PosterRenderer
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000039D4(v4);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  sub_1000039D4(invalidateCopy);
 }
 
-- (void)renderer:(id)a3 didReceiveTapAtPoint:(CGPoint)a4
+- (void)renderer:(id)renderer didReceiveTapAtPoint:(CGPoint)point
 {
-  v5 = a3;
-  v6 = self;
-  sub_100003EAC(v5);
+  rendererCopy = renderer;
+  selfCopy = self;
+  sub_100003EAC(rendererCopy);
 }
 
 @end

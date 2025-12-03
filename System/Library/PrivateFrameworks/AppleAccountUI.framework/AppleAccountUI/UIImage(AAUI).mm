@@ -13,13 +13,13 @@
   v5 = a3;
   v6 = [[v4 alloc] initWithType:v5];
 
-  v7 = [a1 descriptorForDataclassWithSize:56.0];
+  v7 = [self descriptorForDataclassWithSize:56.0];
   v8 = [v6 prepareImageForDescriptor:v7];
 
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [v8 CGImage];
+  cGImage = [v8 CGImage];
   [v8 scale];
-  v11 = [v9 imageWithCGImage:v10 scale:0 orientation:?];
+  v11 = [v9 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v11;
 }
@@ -30,13 +30,13 @@
   v5 = a3;
   v6 = [[v4 alloc] initWithBundleIdentifier:v5];
 
-  v7 = [a1 descriptorForDataclassWithSize:56.0];
+  v7 = [self descriptorForDataclassWithSize:56.0];
   v8 = [v6 prepareImageForDescriptor:v7];
 
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [v8 CGImage];
+  cGImage = [v8 CGImage];
   [v8 scale];
-  v11 = [v9 imageWithCGImage:v10 scale:0 orientation:?];
+  v11 = [v9 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v11;
 }
@@ -44,16 +44,16 @@
 + (id)descriptorForDataclassWithSize:()AAUI
 {
   v2 = objc_alloc(MEMORY[0x1E69A8A30]);
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 scale];
-  v5 = [v2 initWithSize:a1 scale:{a1, v4 * 3.0}];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v5 = [v2 initWithSize:self scale:{self, v4 * 3.0}];
 
   [v5 setDrawBorder:1];
-  v6 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  [v5 setAppearance:{objc_msgSend(v6, "userInterfaceStyle") != 1}];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  [v5 setAppearance:{objc_msgSend(currentTraitCollection, "userInterfaceStyle") != 1}];
 
-  v7 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  if ([v7 layoutDirection])
+  currentTraitCollection2 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  if ([currentTraitCollection2 layoutDirection])
   {
     v8 = 2;
   }
@@ -65,8 +65,8 @@
 
   [v5 setLanguageDirection:v8];
 
-  v9 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  [v5 setContrast:{objc_msgSend(v9, "accessibilityContrast") == 1}];
+  currentTraitCollection3 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  [v5 setContrast:{objc_msgSend(currentTraitCollection3, "accessibilityContrast") == 1}];
 
   return v5;
 }
@@ -80,9 +80,9 @@
   v6 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:*MEMORY[0x1E69A8AA0]];
   v7 = [v5 prepareImageForDescriptor:v6];
   v8 = MEMORY[0x1E69DCAB8];
-  v9 = [v7 CGImage];
+  cGImage = [v7 CGImage];
   [v7 scale];
-  v10 = [v8 imageWithCGImage:v9 scale:0 orientation:?];
+  v10 = [v8 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v10;
 }

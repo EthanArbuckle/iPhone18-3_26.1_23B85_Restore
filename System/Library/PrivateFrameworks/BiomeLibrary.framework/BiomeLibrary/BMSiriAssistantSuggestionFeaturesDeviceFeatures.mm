@@ -1,26 +1,26 @@
 @interface BMSiriAssistantSuggestionFeaturesDeviceFeatures
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithConnectedToAirpods:(id)a3 noiseCancellingMode:(id)a4 connectedToDevice:(id)a5 isInCarPlay:(id)a6 hasWatch:(id)a7 hasIPad:(id)a8 hasHomePod:(id)a9 hasAppleTV:(id)a10 hasIPhone:(id)a11 totalNumDevices:(id)a12 currentDeviceType:(id)a13 currentBuildVersion:(id)a14 distanceFromLatestBuild:(id)a15 isALargeFormatPhone:(id)a16 hasAPasscode:(id)a17 supportsSMSMEssaging:(id)a18;
-- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithConnectedToAirpods:(id)airpods noiseCancellingMode:(id)mode connectedToDevice:(id)device isInCarPlay:(id)play hasWatch:(id)watch hasIPad:(id)pad hasHomePod:(id)pod hasAppleTV:(id)self0 hasIPhone:(id)self1 totalNumDevices:(id)self2 currentDeviceType:(id)self3 currentBuildVersion:(id)self4 distanceFromLatestBuild:(id)self5 isALargeFormatPhone:(id)self6 hasAPasscode:(id)self7 supportsSMSMEssaging:(id)self8;
+- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriAssistantSuggestionFeaturesDeviceFeatures
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSiriAssistantSuggestionFeaturesDeviceFeatures hasConnectedToAirpods](self, "hasConnectedToAirpods") || [v5 hasConnectedToAirpods])
     {
       if (![(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasConnectedToAirpods])
@@ -33,25 +33,25 @@
         goto LABEL_78;
       }
 
-      v6 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToAirpods];
-      if (v6 != [v5 connectedToAirpods])
+      connectedToAirpods = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToAirpods];
+      if (connectedToAirpods != [v5 connectedToAirpods])
       {
         goto LABEL_78;
       }
     }
 
-    v7 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
-    v8 = [v5 noiseCancellingMode];
-    v9 = v8;
-    if (v7 == v8)
+    noiseCancellingMode = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
+    noiseCancellingMode2 = [v5 noiseCancellingMode];
+    v9 = noiseCancellingMode2;
+    if (noiseCancellingMode == noiseCancellingMode2)
     {
     }
 
     else
     {
-      v10 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
-      v11 = [v5 noiseCancellingMode];
-      v12 = [v10 isEqual:v11];
+      noiseCancellingMode3 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
+      noiseCancellingMode4 = [v5 noiseCancellingMode];
+      v12 = [noiseCancellingMode3 isEqual:noiseCancellingMode4];
 
       if (!v12)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v14 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
-    v15 = [v5 connectedToDevice];
-    v16 = v15;
-    if (v14 == v15)
+    connectedToDevice = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
+    connectedToDevice2 = [v5 connectedToDevice];
+    v16 = connectedToDevice2;
+    if (connectedToDevice == connectedToDevice2)
     {
     }
 
     else
     {
-      v17 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
-      v18 = [v5 connectedToDevice];
-      v19 = [v17 isEqual:v18];
+      connectedToDevice3 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
+      connectedToDevice4 = [v5 connectedToDevice];
+      v19 = [connectedToDevice3 isEqual:connectedToDevice4];
 
       if (!v19)
       {
@@ -90,8 +90,8 @@
         goto LABEL_78;
       }
 
-      v20 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self isInCarPlay];
-      if (v20 != [v5 isInCarPlay])
+      isInCarPlay = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self isInCarPlay];
+      if (isInCarPlay != [v5 isInCarPlay])
       {
         goto LABEL_78;
       }
@@ -109,8 +109,8 @@
         goto LABEL_78;
       }
 
-      v21 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasWatch];
-      if (v21 != [v5 hasWatch])
+      hasWatch = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasWatch];
+      if (hasWatch != [v5 hasWatch])
       {
         goto LABEL_78;
       }
@@ -128,8 +128,8 @@
         goto LABEL_78;
       }
 
-      v22 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasIPad];
-      if (v22 != [v5 hasIPad])
+      hasIPad = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasIPad];
+      if (hasIPad != [v5 hasIPad])
       {
         goto LABEL_78;
       }
@@ -147,8 +147,8 @@
         goto LABEL_78;
       }
 
-      v23 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasHomePod];
-      if (v23 != [v5 hasHomePod])
+      hasHomePod = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasHomePod];
+      if (hasHomePod != [v5 hasHomePod])
       {
         goto LABEL_78;
       }
@@ -166,8 +166,8 @@
         goto LABEL_78;
       }
 
-      v24 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasAppleTV];
-      if (v24 != [v5 hasAppleTV])
+      hasAppleTV = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasAppleTV];
+      if (hasAppleTV != [v5 hasAppleTV])
       {
         goto LABEL_78;
       }
@@ -185,8 +185,8 @@
         goto LABEL_78;
       }
 
-      v25 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasIPhone];
-      if (v25 != [v5 hasIPhone])
+      hasIPhone = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasIPhone];
+      if (hasIPhone != [v5 hasIPhone])
       {
         goto LABEL_78;
       }
@@ -204,25 +204,25 @@
         goto LABEL_78;
       }
 
-      v26 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self totalNumDevices];
-      if (v26 != [v5 totalNumDevices])
+      totalNumDevices = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self totalNumDevices];
+      if (totalNumDevices != [v5 totalNumDevices])
       {
         goto LABEL_78;
       }
     }
 
-    v27 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
-    v28 = [v5 currentDeviceType];
-    v29 = v28;
-    if (v27 == v28)
+    currentDeviceType = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
+    currentDeviceType2 = [v5 currentDeviceType];
+    v29 = currentDeviceType2;
+    if (currentDeviceType == currentDeviceType2)
     {
     }
 
     else
     {
-      v30 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
-      v31 = [v5 currentDeviceType];
-      v32 = [v30 isEqual:v31];
+      currentDeviceType3 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
+      currentDeviceType4 = [v5 currentDeviceType];
+      v32 = [currentDeviceType3 isEqual:currentDeviceType4];
 
       if (!v32)
       {
@@ -230,18 +230,18 @@
       }
     }
 
-    v33 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
-    v34 = [v5 currentBuildVersion];
-    v35 = v34;
-    if (v33 == v34)
+    currentBuildVersion = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
+    currentBuildVersion2 = [v5 currentBuildVersion];
+    v35 = currentBuildVersion2;
+    if (currentBuildVersion == currentBuildVersion2)
     {
     }
 
     else
     {
-      v36 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
-      v37 = [v5 currentBuildVersion];
-      v38 = [v36 isEqual:v37];
+      currentBuildVersion3 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
+      currentBuildVersion4 = [v5 currentBuildVersion];
+      v38 = [currentBuildVersion3 isEqual:currentBuildVersion4];
 
       if (!v38)
       {
@@ -249,18 +249,18 @@
       }
     }
 
-    v39 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
-    v40 = [v5 distanceFromLatestBuild];
-    v41 = v40;
-    if (v39 == v40)
+    distanceFromLatestBuild = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
+    distanceFromLatestBuild2 = [v5 distanceFromLatestBuild];
+    v41 = distanceFromLatestBuild2;
+    if (distanceFromLatestBuild == distanceFromLatestBuild2)
     {
     }
 
     else
     {
-      v42 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
-      v43 = [v5 distanceFromLatestBuild];
-      v44 = [v42 isEqual:v43];
+      distanceFromLatestBuild3 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
+      distanceFromLatestBuild4 = [v5 distanceFromLatestBuild];
+      v44 = [distanceFromLatestBuild3 isEqual:distanceFromLatestBuild4];
 
       if (!v44)
       {
@@ -280,8 +280,8 @@
 
         if (-[BMSiriAssistantSuggestionFeaturesDeviceFeatures hasSupportsSMSMEssaging](self, "hasSupportsSMSMEssaging") && [v5 hasSupportsSMSMEssaging])
         {
-          v47 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self supportsSMSMEssaging];
-          v13 = v47 ^ [v5 supportsSMSMEssaging] ^ 1;
+          supportsSMSMEssaging = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self supportsSMSMEssaging];
+          v13 = supportsSMSMEssaging ^ [v5 supportsSMSMEssaging] ^ 1;
 LABEL_79:
 
           goto LABEL_80;
@@ -313,8 +313,8 @@ LABEL_80:
     v3 = 0;
   }
 
-  v4 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
-  v5 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
+  noiseCancellingMode = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
+  connectedToDevice = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
   if ([(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasIsInCarPlay])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures isInCarPlay](self, "isInCarPlay")}];
@@ -385,9 +385,9 @@ LABEL_80:
     v53 = 0;
   }
 
-  v52 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
-  v51 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
-  v50 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
+  currentDeviceType = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
+  currentBuildVersion = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
+  distanceFromLatestBuild = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
   if ([(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self hasIsALargeFormatPhone])
   {
     v49 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures isALargeFormatPhone](self, "isALargeFormatPhone")}];
@@ -419,150 +419,150 @@ LABEL_80:
   }
 
   v56[0] = @"connectedToAirpods";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42 = v11;
-  v57[0] = v11;
+  v42 = null;
+  v57[0] = null;
   v56[1] = @"noiseCancellingMode";
-  v12 = v4;
-  if (!v4)
+  null2 = noiseCancellingMode;
+  if (!noiseCancellingMode)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v12;
-  v57[1] = v12;
+  v41 = null2;
+  v57[1] = null2;
   v56[2] = @"connectedToDevice";
-  v13 = v5;
-  if (!v5)
+  null3 = connectedToDevice;
+  if (!connectedToDevice)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v13;
-  v57[2] = v13;
+  v40 = null3;
+  v57[2] = null3;
   v56[3] = @"isInCarPlay";
-  v14 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v14;
-  v57[3] = v14;
+  v39 = null4;
+  v57[3] = null4;
   v56[4] = @"hasWatch";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v15;
-  v57[4] = v15;
+  v38 = null5;
+  v57[4] = null5;
   v56[5] = @"hasIPad";
-  v16 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v16;
-  v57[5] = v16;
+  v37 = null6;
+  v57[5] = null6;
   v56[6] = @"hasHomePod";
-  v17 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v17;
-  v57[6] = v17;
+  v36 = null7;
+  v57[6] = null7;
   v56[7] = @"hasAppleTV";
-  v18 = v55;
+  null8 = v55;
   if (!v55)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v44 = v9;
-  v57[7] = v18;
+  v57[7] = null8;
   v56[8] = @"hasIPhone";
-  v19 = v54;
+  null9 = v54;
   if (!v54)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
   v46 = v6;
-  v57[8] = v19;
+  v57[8] = null9;
   v56[9] = @"totalNumDevices";
-  v20 = v53;
+  null10 = v53;
   if (!v53)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
   v47 = v3;
-  v32 = v20;
-  v57[9] = v20;
+  v32 = null10;
+  v57[9] = null10;
   v56[10] = @"currentDeviceType";
-  v21 = v52;
-  if (!v52)
+  null11 = currentDeviceType;
+  if (!currentDeviceType)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v19;
-  v35 = v18;
+  v34 = null9;
+  v35 = null8;
   v45 = v7;
-  v57[10] = v21;
+  v57[10] = null11;
   v56[11] = @"currentBuildVersion";
-  v22 = v51;
-  if (!v51)
+  null12 = currentBuildVersion;
+  if (!currentBuildVersion)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v8;
-  v24 = v4;
-  v57[11] = v22;
+  v24 = noiseCancellingMode;
+  v57[11] = null12;
   v56[12] = @"distanceFromLatestBuild";
-  v25 = v50;
-  if (!v50)
+  null13 = distanceFromLatestBuild;
+  if (!distanceFromLatestBuild)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v5;
-  v57[12] = v25;
+  v26 = connectedToDevice;
+  v57[12] = null13;
   v56[13] = @"isALargeFormatPhone";
-  v27 = v49;
+  null14 = v49;
   if (!v49)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57[13] = v27;
+  v57[13] = null14;
   v56[14] = @"hasAPasscode";
-  v28 = v48;
+  null15 = v48;
   if (!v48)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57[14] = v28;
+  v57[14] = null15;
   v56[15] = @"supportsSMSMEssaging";
-  v29 = v10;
+  null16 = v10;
   if (!v10)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57[15] = v29;
+  v57[15] = null16;
   v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:{16, v32}];
   if (!v10)
   {
@@ -576,15 +576,15 @@ LABEL_80:
   {
   }
 
-  if (!v50)
+  if (!distanceFromLatestBuild)
   {
   }
 
-  if (!v51)
+  if (!currentBuildVersion)
   {
   }
 
-  if (!v52)
+  if (!currentDeviceType)
   {
   }
 
@@ -697,25 +697,25 @@ LABEL_90:
   return v43;
 }
 
-- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v200[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v168 = [v6 objectForKeyedSubscript:@"connectedToAirpods"];
+  dictionaryCopy = dictionary;
+  v168 = [dictionaryCopy objectForKeyedSubscript:@"connectedToAirpods"];
   if (!v168 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"noiseCancellingMode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"noiseCancellingMode"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v166 = 0;
-          v37 = 0;
+          selfCopy6 = 0;
           goto LABEL_67;
         }
 
@@ -731,8 +731,8 @@ LABEL_4:
         v167 = v50;
         v52 = [v51 initWithDomain:v49 code:2 userInfo:?];
         v166 = 0;
-        v37 = 0;
-        *a4 = v52;
+        selfCopy6 = 0;
+        *error = v52;
         goto LABEL_66;
       }
 
@@ -744,17 +744,17 @@ LABEL_4:
       v166 = 0;
     }
 
-    v167 = [v6 objectForKeyedSubscript:@"connectedToDevice"];
+    v167 = [dictionaryCopy objectForKeyedSubscript:@"connectedToDevice"];
     if (v167 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v43 = a4;
+      errorCopy = error;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v40 = 0;
-          v37 = 0;
+          selfCopy6 = 0;
           goto LABEL_66;
         }
 
@@ -771,8 +771,8 @@ LABEL_4:
         v8 = v156;
         v58 = [v57 initWithDomain:v55 code:2 userInfo:v9];
         v40 = 0;
-        v37 = 0;
-        *v43 = v58;
+        selfCopy6 = 0;
+        *errorCopy = v58;
         v11 = v56;
 LABEL_65:
 
@@ -788,16 +788,16 @@ LABEL_66:
       v165 = 0;
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"isInCarPlay"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isInCarPlay"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
-          v37 = 0;
+          selfCopy6 = 0;
           v40 = v165;
           goto LABEL_65;
         }
@@ -806,7 +806,7 @@ LABEL_66:
         v60 = objc_alloc(MEMORY[0x1E696ABC0]);
         v61 = *MEMORY[0x1E698F240];
         v193 = *MEMORY[0x1E696A578];
-        v147 = a4;
+        errorCopy2 = error;
         v164 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isInCarPlay"];
         v194 = v164;
         v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v194 forKeys:&v193 count:1];
@@ -814,35 +814,35 @@ LABEL_66:
         v7 = v59;
         v63 = [v62 initWithDomain:v61 code:2 userInfo:v38];
         v11 = 0;
-        v37 = 0;
-        *v147 = v63;
+        selfCopy6 = 0;
+        *errorCopy2 = v63;
         v40 = v165;
         goto LABEL_64;
       }
 
-      v10 = self;
+      selfCopy2 = self;
       v11 = v9;
     }
 
     else
     {
-      v10 = self;
+      selfCopy2 = self;
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"hasWatch"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"hasWatch"];
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v164 = 0;
-          v37 = 0;
+          selfCopy6 = 0;
           v40 = v165;
           v38 = v12;
-          self = v10;
+          self = selfCopy2;
           goto LABEL_64;
         }
 
@@ -852,12 +852,12 @@ LABEL_66:
         v66 = objc_alloc(MEMORY[0x1E696ABC0]);
         v67 = *MEMORY[0x1E698F240];
         v191 = *MEMORY[0x1E696A578];
-        v148 = a4;
+        errorCopy3 = error;
         v68 = objc_alloc(MEMORY[0x1E696AEC0]);
         v133 = objc_opt_class();
         v69 = v68;
         v38 = v12;
-        self = v10;
+        self = selfCopy2;
         v163 = [v69 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v133, @"hasWatch"];
         v192 = v163;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v192 forKeys:&v191 count:1];
@@ -867,8 +867,8 @@ LABEL_66:
         v8 = v157;
         v71 = [v70 initWithDomain:v67 code:2 userInfo:v13];
         v164 = 0;
-        v37 = 0;
-        *v148 = v71;
+        selfCopy6 = 0;
+        *errorCopy3 = v71;
         v40 = v165;
 LABEL_63:
 
@@ -886,18 +886,18 @@ LABEL_64:
       v164 = 0;
     }
 
-    [v6 objectForKeyedSubscript:@"hasIPad"];
-    v13 = self = v10;
+    [dictionaryCopy objectForKeyedSubscript:@"hasIPad"];
+    v13 = self = selfCopy2;
     v161 = v11;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v163 = 0;
-          v37 = 0;
+          selfCopy6 = 0;
           v40 = v165;
           v38 = v160;
           goto LABEL_63;
@@ -919,8 +919,8 @@ LABEL_64:
         v159 = v76;
         v78 = [v77 initWithDomain:v75 code:2 userInfo:?];
         v163 = 0;
-        v37 = 0;
-        *a4 = v78;
+        selfCopy6 = 0;
+        *error = v78;
         v40 = v165;
         v38 = v160;
         goto LABEL_62;
@@ -936,17 +936,17 @@ LABEL_64:
       v163 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"hasHomePod"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"hasHomePod"];
     v159 = v15;
     if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v162 = 0;
-          v37 = 0;
+          selfCopy6 = 0;
           v40 = v165;
           v38 = v160;
           v7 = v14;
@@ -964,8 +964,8 @@ LABEL_64:
         v17 = v83;
         v85 = [v84 initWithDomain:v82 code:2 userInfo:v83];
         v162 = 0;
-        v37 = 0;
-        *a4 = v85;
+        selfCopy6 = 0;
+        *error = v85;
         goto LABEL_135;
       }
 
@@ -977,15 +977,15 @@ LABEL_64:
       v162 = 0;
     }
 
-    [v6 objectForKeyedSubscript:@"hasAppleTV"];
+    [dictionaryCopy objectForKeyedSubscript:@"hasAppleTV"];
     v17 = v7 = v14;
     if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v146 = v13;
-      v18 = self;
+      selfCopy8 = self;
       v154 = 0;
 LABEL_25:
-      v19 = [v6 objectForKeyedSubscript:@"hasIPhone"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"hasIPhone"];
       v149 = v17;
       v152 = v19;
       if (v19 && (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -993,13 +993,13 @@ LABEL_25:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v153 = 0;
-            v37 = 0;
+            selfCopy6 = 0;
             v40 = v165;
             v38 = v160;
-            self = v18;
+            self = selfCopy8;
             goto LABEL_58;
           }
 
@@ -1007,7 +1007,7 @@ LABEL_25:
           v92 = objc_alloc(MEMORY[0x1E696ABC0]);
           v93 = *MEMORY[0x1E698F240];
           v183 = *MEMORY[0x1E696A578];
-          self = v18;
+          self = selfCopy8;
           v150 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"hasIPhone"];
           v184 = v150;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v184 forKeys:&v183 count:1];
@@ -1016,8 +1016,8 @@ LABEL_25:
           v17 = v149;
           v95 = [v94 initWithDomain:v93 code:2 userInfo:v21];
           v153 = 0;
-          v37 = 0;
-          *a4 = v95;
+          selfCopy6 = 0;
+          *error = v95;
           goto LABEL_142;
         }
 
@@ -1029,26 +1029,26 @@ LABEL_25:
         v153 = 0;
       }
 
-      [v6 objectForKeyedSubscript:@"totalNumDevices"];
-      v21 = self = v18;
+      [dictionaryCopy objectForKeyedSubscript:@"totalNumDevices"];
+      v21 = self = selfCopy8;
       v145 = v21;
       if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v150 = 0;
 LABEL_31:
-        v22 = [v6 objectForKeyedSubscript:@"currentDeviceType"];
+        v22 = [dictionaryCopy objectForKeyedSubscript:@"currentDeviceType"];
         v143 = v22;
         if (v22 && (v23 = v22, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           v79 = v9;
-          v80 = self;
+          selfCopy7 = self;
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v144 = 0;
-              v37 = 0;
+              selfCopy6 = 0;
               v40 = v165;
               v38 = v160;
               v17 = v149;
@@ -1068,8 +1068,8 @@ LABEL_31:
             v141 = v105;
             v107 = [v106 initWithDomain:v104 code:2 userInfo:?];
             v144 = 0;
-            v37 = 0;
-            *a4 = v107;
+            selfCopy6 = 0;
+            *error = v107;
             goto LABEL_148;
           }
 
@@ -1083,7 +1083,7 @@ LABEL_31:
           v144 = 0;
         }
 
-        v24 = [v6 objectForKeyedSubscript:@"currentBuildVersion"];
+        v24 = [dictionaryCopy objectForKeyedSubscript:@"currentBuildVersion"];
         v141 = v24;
         if (!v24 || (v25 = v24, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -1092,7 +1092,7 @@ LABEL_31:
         }
 
         v79 = v9;
-        v80 = self;
+        selfCopy7 = self;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -1100,23 +1100,23 @@ LABEL_31:
           v17 = v149;
           v21 = v145;
 LABEL_37:
-          v26 = [v6 objectForKeyedSubscript:@"distanceFromLatestBuild"];
+          v26 = [dictionaryCopy objectForKeyedSubscript:@"distanceFromLatestBuild"];
           v138 = v26;
           if (!v26 || (v27 = v26, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v140 = 0;
 LABEL_40:
-            v28 = [v6 objectForKeyedSubscript:@"isALargeFormatPhone"];
+            v28 = [dictionaryCopy objectForKeyedSubscript:@"isALargeFormatPhone"];
             v137 = v28;
             if (v28 && (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v139 = 0;
-                  v37 = 0;
+                  selfCopy6 = 0;
                   v40 = v165;
                   v38 = v160;
                   goto LABEL_53;
@@ -1135,8 +1135,8 @@ LABEL_40:
                 v17 = v149;
                 v124 = [v123 initWithDomain:v122 code:2 userInfo:v39];
                 v139 = 0;
-                v37 = 0;
-                *a4 = v124;
+                selfCopy6 = 0;
+                *error = v124;
                 v38 = v160;
                 goto LABEL_52;
               }
@@ -1149,7 +1149,7 @@ LABEL_40:
               v139 = 0;
             }
 
-            v30 = [v6 objectForKeyedSubscript:@"hasAPasscode"];
+            v30 = [dictionaryCopy objectForKeyedSubscript:@"hasAPasscode"];
             v135 = v9;
             v155 = v30;
             if (v30 && (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1157,17 +1157,17 @@ LABEL_40:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v136 = 0;
-                  v37 = 0;
+                  selfCopy6 = 0;
                   v38 = v160;
                   goto LABEL_51;
                 }
 
                 v33 = v7;
                 v125 = objc_alloc(MEMORY[0x1E696ABC0]);
-                v126 = a4;
+                errorCopy4 = error;
                 v127 = *MEMORY[0x1E698F240];
                 v171 = *MEMORY[0x1E696A578];
                 v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"hasAPasscode"];
@@ -1175,8 +1175,8 @@ LABEL_40:
                 v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v172 forKeys:&v171 count:1];
                 v128 = [v125 initWithDomain:v127 code:2 userInfo:v35];
                 v136 = 0;
-                v37 = 0;
-                *v126 = v128;
+                selfCopy6 = 0;
+                *errorCopy4 = v128;
                 goto LABEL_50;
               }
 
@@ -1192,27 +1192,27 @@ LABEL_40:
               v34 = 0;
             }
 
-            v35 = [v6 objectForKeyedSubscript:@"supportsSMSMEssaging"];
+            v35 = [dictionaryCopy objectForKeyedSubscript:@"supportsSMSMEssaging"];
             v136 = v34;
             if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (a4)
+                if (error)
                 {
                   v134 = objc_alloc(MEMORY[0x1E696ABC0]);
-                  v129 = a4;
+                  errorCopy5 = error;
                   v130 = *MEMORY[0x1E698F240];
                   v169 = *MEMORY[0x1E696A578];
                   v131 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"supportsSMSMEssaging"];
                   v170 = v131;
                   v132 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v170 forKeys:&v169 count:1];
-                  *v129 = [v134 initWithDomain:v130 code:2 userInfo:v132];
+                  *errorCopy5 = [v134 initWithDomain:v130 code:2 userInfo:v132];
                 }
 
                 v36 = 0;
-                v37 = 0;
+                selfCopy6 = 0;
                 goto LABEL_50;
               }
 
@@ -1225,7 +1225,7 @@ LABEL_40:
             }
 
             self = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self initWithConnectedToAirpods:v33 noiseCancellingMode:v166 connectedToDevice:v165 isInCarPlay:v32 hasWatch:v164 hasIPad:v163 hasHomePod:v162 hasAppleTV:v154 hasIPhone:v153 totalNumDevices:v150 currentDeviceType:v144 currentBuildVersion:v142 distanceFromLatestBuild:v140 isALargeFormatPhone:v139 hasAPasscode:v34 supportsSMSMEssaging:v36];
-            v37 = self;
+            selfCopy6 = self;
 LABEL_50:
             v38 = v160;
 
@@ -1259,7 +1259,7 @@ LABEL_62:
           }
 
           v79 = v9;
-          v80 = self;
+          selfCopy7 = self;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -1269,7 +1269,7 @@ LABEL_62:
             goto LABEL_40;
           }
 
-          if (a4)
+          if (error)
           {
             v114 = v7;
             v115 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1283,8 +1283,8 @@ LABEL_62:
             v137 = v117;
             v119 = [v118 initWithDomain:v116 code:2 userInfo:?];
             v140 = 0;
-            v37 = 0;
-            *a4 = v119;
+            selfCopy6 = 0;
+            *error = v119;
             v40 = v165;
             v9 = v79;
             v38 = v160;
@@ -1294,9 +1294,9 @@ LABEL_62:
           }
 
           v140 = 0;
-          v37 = 0;
+          selfCopy6 = 0;
 LABEL_150:
-          self = v80;
+          self = selfCopy7;
           v40 = v165;
           v9 = v79;
           v38 = v160;
@@ -1305,7 +1305,7 @@ LABEL_150:
           goto LABEL_54;
         }
 
-        if (a4)
+        if (error)
         {
           v108 = v7;
           v109 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1319,15 +1319,15 @@ LABEL_150:
           v138 = v111;
           v113 = [v112 initWithDomain:v110 code:2 userInfo:?];
           v142 = 0;
-          v37 = 0;
-          *a4 = v113;
+          selfCopy6 = 0;
+          *error = v113;
           goto LABEL_150;
         }
 
         v142 = 0;
-        v37 = 0;
+        selfCopy6 = 0;
 LABEL_148:
-        self = v80;
+        self = selfCopy7;
         v40 = v165;
         v9 = v79;
         v38 = v160;
@@ -1343,7 +1343,7 @@ LABEL_148:
         goto LABEL_31;
       }
 
-      if (a4)
+      if (error)
       {
         v96 = v7;
         v97 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1358,15 +1358,15 @@ LABEL_148:
         v143 = v99;
         v101 = [v100 initWithDomain:v98 code:2 userInfo:?];
         v150 = 0;
-        v37 = 0;
-        *a4 = v101;
+        selfCopy6 = 0;
+        *error = v101;
         v40 = v165;
         v38 = v160;
         goto LABEL_56;
       }
 
       v150 = 0;
-      v37 = 0;
+      selfCopy6 = 0;
 LABEL_142:
       v40 = v165;
       v38 = v160;
@@ -1377,12 +1377,12 @@ LABEL_142:
     if (objc_opt_isKindOfClass())
     {
       v146 = v13;
-      v18 = self;
+      selfCopy8 = self;
       v154 = v17;
       goto LABEL_25;
     }
 
-    if (a4)
+    if (error)
     {
       v151 = v7;
       v86 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1396,15 +1396,15 @@ LABEL_142:
       v152 = v88;
       v90 = [v89 initWithDomain:v87 code:2 userInfo:?];
       v154 = 0;
-      v37 = 0;
-      *a4 = v90;
+      selfCopy6 = 0;
+      *error = v90;
       v40 = v165;
       v38 = v160;
       goto LABEL_59;
     }
 
     v154 = 0;
-    v37 = 0;
+    selfCopy6 = 0;
 LABEL_135:
     v40 = v165;
     v38 = v160;
@@ -1418,10 +1418,10 @@ LABEL_135:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v7 = 0;
-    v37 = 0;
+    selfCopy6 = 0;
     goto LABEL_68;
   }
 
@@ -1433,27 +1433,27 @@ LABEL_135:
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v200 forKeys:&v199 count:1];
   v46 = [v44 initWithDomain:v45 code:2 userInfo:v8];
   v7 = 0;
-  v37 = 0;
-  *a4 = v46;
+  selfCopy6 = 0;
+  *error = v46;
 LABEL_67:
 
 LABEL_68:
   v41 = *MEMORY[0x1E69E9840];
-  return v37;
+  return selfCopy6;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if (self->_hasConnectedToAirpods)
   {
     connectedToAirpods = self->_connectedToAirpods;
@@ -1546,9 +1546,9 @@ LABEL_68:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v90.receiver = self;
   v90.super_class = BMSiriAssistantSuggestionFeaturesDeviceFeatures;
   v5 = [(BMEventBase *)&v90 init];
@@ -1557,12 +1557,12 @@ LABEL_68:
     goto LABEL_154;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1573,18 +1573,18 @@ LABEL_68:
       while (1)
       {
         v91 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v91 & 0x7F) << v7;
@@ -1602,9 +1602,9 @@ LABEL_68:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1619,18 +1619,18 @@ LABEL_16:
           while (1)
           {
             v91 = 0;
-            v18 = [v4 position] + 1;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 1, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 1;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 1, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v20 = [v4 data];
-              [v20 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v17 |= (v91 & 0x7F) << v15;
@@ -1650,7 +1650,7 @@ LABEL_131:
             }
           }
 
-          v21 = (v17 != 0) & ~[v4 hasError];
+          v21 = (v17 != 0) & ~[fromCopy hasError];
           goto LABEL_131;
         case 2u:
           v28 = PBReaderReadString();
@@ -1668,18 +1668,18 @@ LABEL_131:
           while (1)
           {
             v91 = 0;
-            v64 = [v4 position] + 1;
-            if (v64 >= [v4 position] && (v65 = objc_msgSend(v4, "position") + 1, v65 <= objc_msgSend(v4, "length")))
+            v64 = [fromCopy position] + 1;
+            if (v64 >= [fromCopy position] && (v65 = objc_msgSend(fromCopy, "position") + 1, v65 <= objc_msgSend(fromCopy, "length")))
             {
-              v66 = [v4 data];
-              [v66 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v63 |= (v91 & 0x7F) << v61;
@@ -1697,7 +1697,7 @@ LABEL_131:
             }
           }
 
-          v21 = (v63 != 0) & ~[v4 hasError];
+          v21 = (v63 != 0) & ~[fromCopy hasError];
 LABEL_141:
           v86 = 18;
           goto LABEL_150;
@@ -1709,18 +1709,18 @@ LABEL_141:
           while (1)
           {
             v91 = 0;
-            v70 = [v4 position] + 1;
-            if (v70 >= [v4 position] && (v71 = objc_msgSend(v4, "position") + 1, v71 <= objc_msgSend(v4, "length")))
+            v70 = [fromCopy position] + 1;
+            if (v70 >= [fromCopy position] && (v71 = objc_msgSend(fromCopy, "position") + 1, v71 <= objc_msgSend(fromCopy, "length")))
             {
-              v72 = [v4 data];
-              [v72 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v69 |= (v91 & 0x7F) << v67;
@@ -1738,7 +1738,7 @@ LABEL_141:
             }
           }
 
-          v21 = (v69 != 0) & ~[v4 hasError];
+          v21 = (v69 != 0) & ~[fromCopy hasError];
 LABEL_143:
           v86 = 20;
           goto LABEL_150;
@@ -1750,18 +1750,18 @@ LABEL_143:
           while (1)
           {
             v91 = 0;
-            v33 = [v4 position] + 1;
-            if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+            v33 = [fromCopy position] + 1;
+            if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
             {
-              v35 = [v4 data];
-              [v35 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v32 |= (v91 & 0x7F) << v30;
@@ -1779,7 +1779,7 @@ LABEL_143:
             }
           }
 
-          v21 = (v32 != 0) & ~[v4 hasError];
+          v21 = (v32 != 0) & ~[fromCopy hasError];
 LABEL_129:
           v86 = 22;
           goto LABEL_150;
@@ -1791,18 +1791,18 @@ LABEL_129:
           while (1)
           {
             v91 = 0;
-            v40 = [v4 position] + 1;
-            if (v40 >= [v4 position] && (v41 = objc_msgSend(v4, "position") + 1, v41 <= objc_msgSend(v4, "length")))
+            v40 = [fromCopy position] + 1;
+            if (v40 >= [fromCopy position] && (v41 = objc_msgSend(fromCopy, "position") + 1, v41 <= objc_msgSend(fromCopy, "length")))
             {
-              v42 = [v4 data];
-              [v42 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v39 |= (v91 & 0x7F) << v37;
@@ -1820,7 +1820,7 @@ LABEL_129:
             }
           }
 
-          v21 = (v39 != 0) & ~[v4 hasError];
+          v21 = (v39 != 0) & ~[fromCopy hasError];
 LABEL_133:
           v86 = 24;
           goto LABEL_150;
@@ -1832,18 +1832,18 @@ LABEL_133:
           while (1)
           {
             v91 = 0;
-            v46 = [v4 position] + 1;
-            if (v46 >= [v4 position] && (v47 = objc_msgSend(v4, "position") + 1, v47 <= objc_msgSend(v4, "length")))
+            v46 = [fromCopy position] + 1;
+            if (v46 >= [fromCopy position] && (v47 = objc_msgSend(fromCopy, "position") + 1, v47 <= objc_msgSend(fromCopy, "length")))
             {
-              v48 = [v4 data];
-              [v48 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v45 |= (v91 & 0x7F) << v43;
@@ -1861,7 +1861,7 @@ LABEL_133:
             }
           }
 
-          v21 = (v45 != 0) & ~[v4 hasError];
+          v21 = (v45 != 0) & ~[fromCopy hasError];
 LABEL_135:
           v86 = 26;
           goto LABEL_150;
@@ -1873,18 +1873,18 @@ LABEL_135:
           while (1)
           {
             v91 = 0;
-            v83 = [v4 position] + 1;
-            if (v83 >= [v4 position] && (v84 = objc_msgSend(v4, "position") + 1, v84 <= objc_msgSend(v4, "length")))
+            v83 = [fromCopy position] + 1;
+            if (v83 >= [fromCopy position] && (v84 = objc_msgSend(fromCopy, "position") + 1, v84 <= objc_msgSend(fromCopy, "length")))
             {
-              v85 = [v4 data];
-              [v85 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v82 |= (v91 & 0x7F) << v80;
@@ -1902,7 +1902,7 @@ LABEL_135:
             }
           }
 
-          v21 = (v82 != 0) & ~[v4 hasError];
+          v21 = (v82 != 0) & ~[fromCopy hasError];
 LABEL_149:
           v86 = 28;
           goto LABEL_150;
@@ -1914,18 +1914,18 @@ LABEL_149:
           while (1)
           {
             v91 = 0;
-            v76 = [v4 position] + 1;
-            if (v76 >= [v4 position] && (v77 = objc_msgSend(v4, "position") + 1, v77 <= objc_msgSend(v4, "length")))
+            v76 = [fromCopy position] + 1;
+            if (v76 >= [fromCopy position] && (v77 = objc_msgSend(fromCopy, "position") + 1, v77 <= objc_msgSend(fromCopy, "length")))
             {
-              v78 = [v4 data];
-              [v78 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data9 = [fromCopy data];
+              [data9 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v75 |= (v91 & 0x7F) << v73;
@@ -1943,7 +1943,7 @@ LABEL_149:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v79 = 0;
           }
@@ -1980,18 +1980,18 @@ LABEL_51:
           while (1)
           {
             v91 = 0;
-            v25 = [v4 position] + 1;
-            if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+            v25 = [fromCopy position] + 1;
+            if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
             {
-              v27 = [v4 data];
-              [v27 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data10 = [fromCopy data];
+              [data10 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v24 |= (v91 & 0x7F) << v22;
@@ -2009,7 +2009,7 @@ LABEL_51:
             }
           }
 
-          v21 = (v24 != 0) & ~[v4 hasError];
+          v21 = (v24 != 0) & ~[fromCopy hasError];
 LABEL_127:
           v86 = 31;
           goto LABEL_150;
@@ -2021,18 +2021,18 @@ LABEL_127:
           while (1)
           {
             v91 = 0;
-            v52 = [v4 position] + 1;
-            if (v52 >= [v4 position] && (v53 = objc_msgSend(v4, "position") + 1, v53 <= objc_msgSend(v4, "length")))
+            v52 = [fromCopy position] + 1;
+            if (v52 >= [fromCopy position] && (v53 = objc_msgSend(fromCopy, "position") + 1, v53 <= objc_msgSend(fromCopy, "length")))
             {
-              v54 = [v4 data];
-              [v54 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+              data11 = [fromCopy data];
+              [data11 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v51 |= (v91 & 0x7F) << v49;
@@ -2050,7 +2050,7 @@ LABEL_127:
             }
           }
 
-          v21 = (v51 != 0) & ~[v4 hasError];
+          v21 = (v51 != 0) & ~[fromCopy hasError];
 LABEL_137:
           v86 = 33;
           goto LABEL_150;
@@ -2072,18 +2072,18 @@ LABEL_137:
       while (1)
       {
         v91 = 0;
-        v58 = [v4 position] + 1;
-        if (v58 >= [v4 position] && (v59 = objc_msgSend(v4, "position") + 1, v59 <= objc_msgSend(v4, "length")))
+        v58 = [fromCopy position] + 1;
+        if (v58 >= [fromCopy position] && (v59 = objc_msgSend(fromCopy, "position") + 1, v59 <= objc_msgSend(fromCopy, "length")))
         {
-          v60 = [v4 data];
-          [v60 getBytes:&v91 range:{objc_msgSend(v4, "position"), 1}];
+          data12 = [fromCopy data];
+          [data12 getBytes:&v91 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v57 |= (v91 & 0x7F) << v55;
@@ -2101,19 +2101,19 @@ LABEL_137:
         }
       }
 
-      v21 = (v57 != 0) & ~[v4 hasError];
+      v21 = (v57 != 0) & ~[fromCopy hasError];
 LABEL_139:
       v86 = 35;
 LABEL_150:
       *(&v5->super.super.isa + v86) = v21;
 LABEL_151:
-      v87 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v87 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_153:
     v88 = 0;
@@ -2132,8 +2132,8 @@ LABEL_154:
 {
   v17 = objc_alloc(MEMORY[0x1E696AEC0]);
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures connectedToAirpods](self, "connectedToAirpods")}];
-  v21 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
-  v20 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
+  noiseCancellingMode = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self noiseCancellingMode];
+  connectedToDevice = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self connectedToDevice];
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures isInCarPlay](self, "isInCarPlay")}];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures hasWatch](self, "hasWatch")}];
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures hasIPad](self, "hasIPad")}];
@@ -2141,47 +2141,47 @@ LABEL_154:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures hasAppleTV](self, "hasAppleTV")}];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures hasIPhone](self, "hasIPhone")}];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures totalNumDevices](self, "totalNumDevices")}];
-  v3 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
-  v4 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
-  v5 = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
+  currentDeviceType = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentDeviceType];
+  currentBuildVersion = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self currentBuildVersion];
+  distanceFromLatestBuild = [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self distanceFromLatestBuild];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures isALargeFormatPhone](self, "isALargeFormatPhone")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures hasAPasscode](self, "hasAPasscode")}];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriAssistantSuggestionFeaturesDeviceFeatures supportsSMSMEssaging](self, "supportsSMSMEssaging")}];
-  v18 = [v17 initWithFormat:@"BMSiriAssistantSuggestionFeaturesDeviceFeatures with connectedToAirpods: %@, noiseCancellingMode: %@, connectedToDevice: %@, isInCarPlay: %@, hasWatch: %@, hasIPad: %@, hasHomePod: %@, hasAppleTV: %@, hasIPhone: %@, totalNumDevices: %@, currentDeviceType: %@, currentBuildVersion: %@, distanceFromLatestBuild: %@, isALargeFormatPhone: %@, hasAPasscode: %@, supportsSMSMEssaging: %@", v16, v21, v20, v15, v14, v13, v19, v12, v11, v10, v3, v4, v5, v6, v7, v8];
+  v18 = [v17 initWithFormat:@"BMSiriAssistantSuggestionFeaturesDeviceFeatures with connectedToAirpods: %@, noiseCancellingMode: %@, connectedToDevice: %@, isInCarPlay: %@, hasWatch: %@, hasIPad: %@, hasHomePod: %@, hasAppleTV: %@, hasIPhone: %@, totalNumDevices: %@, currentDeviceType: %@, currentBuildVersion: %@, distanceFromLatestBuild: %@, isALargeFormatPhone: %@, hasAPasscode: %@, supportsSMSMEssaging: %@", v16, noiseCancellingMode, connectedToDevice, v15, v14, v13, v19, v12, v11, v10, currentDeviceType, currentBuildVersion, distanceFromLatestBuild, v6, v7, v8];
 
   return v18;
 }
 
-- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithConnectedToAirpods:(id)a3 noiseCancellingMode:(id)a4 connectedToDevice:(id)a5 isInCarPlay:(id)a6 hasWatch:(id)a7 hasIPad:(id)a8 hasHomePod:(id)a9 hasAppleTV:(id)a10 hasIPhone:(id)a11 totalNumDevices:(id)a12 currentDeviceType:(id)a13 currentBuildVersion:(id)a14 distanceFromLatestBuild:(id)a15 isALargeFormatPhone:(id)a16 hasAPasscode:(id)a17 supportsSMSMEssaging:(id)a18
+- (BMSiriAssistantSuggestionFeaturesDeviceFeatures)initWithConnectedToAirpods:(id)airpods noiseCancellingMode:(id)mode connectedToDevice:(id)device isInCarPlay:(id)play hasWatch:(id)watch hasIPad:(id)pad hasHomePod:(id)pod hasAppleTV:(id)self0 hasIPhone:(id)self1 totalNumDevices:(id)self2 currentDeviceType:(id)self3 currentBuildVersion:(id)self4 distanceFromLatestBuild:(id)self5 isALargeFormatPhone:(id)self6 hasAPasscode:(id)self7 supportsSMSMEssaging:(id)self8
 {
-  v44 = a3;
-  obj = a4;
-  v38 = a4;
-  v34 = a5;
-  v37 = a5;
-  v42 = a6;
-  v43 = a7;
-  v23 = a8;
-  v41 = a9;
-  v40 = a10;
-  v24 = a11;
-  v39 = a12;
-  v25 = a13;
-  v26 = a14;
-  v36 = a15;
-  v27 = a16;
-  v28 = a17;
-  v29 = a18;
+  airpodsCopy = airpods;
+  obj = mode;
+  modeCopy = mode;
+  deviceCopy = device;
+  deviceCopy2 = device;
+  playCopy = play;
+  watchCopy = watch;
+  padCopy = pad;
+  podCopy = pod;
+  vCopy = v;
+  phoneCopy = phone;
+  devicesCopy = devices;
+  typeCopy = type;
+  versionCopy = version;
+  buildCopy = build;
+  formatPhoneCopy = formatPhone;
+  passcodeCopy = passcode;
+  essagingCopy = essaging;
   v45.receiver = self;
   v45.super_class = BMSiriAssistantSuggestionFeaturesDeviceFeatures;
   v30 = [(BMEventBase *)&v45 init];
   if (v30)
   {
     v30->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v44)
+    if (airpodsCopy)
     {
       v30->_hasConnectedToAirpods = 1;
-      v30->_connectedToAirpods = [v44 BOOLValue];
+      v30->_connectedToAirpods = [airpodsCopy BOOLValue];
     }
 
     else
@@ -2191,11 +2191,11 @@ LABEL_154:
     }
 
     objc_storeStrong(&v30->_noiseCancellingMode, obj);
-    objc_storeStrong(&v30->_connectedToDevice, v34);
-    if (v42)
+    objc_storeStrong(&v30->_connectedToDevice, deviceCopy);
+    if (playCopy)
     {
       v30->_hasIsInCarPlay = 1;
-      v30->_isInCarPlay = [v42 BOOLValue];
+      v30->_isInCarPlay = [playCopy BOOLValue];
     }
 
     else
@@ -2204,10 +2204,10 @@ LABEL_154:
       v30->_isInCarPlay = 0;
     }
 
-    if (v43)
+    if (watchCopy)
     {
       v30->_hasHasWatch = 1;
-      v30->_hasWatch = [v43 BOOLValue];
+      v30->_hasWatch = [watchCopy BOOLValue];
     }
 
     else
@@ -2216,10 +2216,10 @@ LABEL_154:
       v30->_hasWatch = 0;
     }
 
-    if (v23)
+    if (padCopy)
     {
       v30->_hasHasIPad = 1;
-      v30->_hasIPad = [v23 BOOLValue];
+      v30->_hasIPad = [padCopy BOOLValue];
     }
 
     else
@@ -2228,10 +2228,10 @@ LABEL_154:
       v30->_hasIPad = 0;
     }
 
-    if (v41)
+    if (podCopy)
     {
       v30->_hasHasHomePod = 1;
-      v30->_hasHomePod = [v41 BOOLValue];
+      v30->_hasHomePod = [podCopy BOOLValue];
     }
 
     else
@@ -2240,10 +2240,10 @@ LABEL_154:
       v30->_hasHomePod = 0;
     }
 
-    if (v40)
+    if (vCopy)
     {
       v30->_hasHasAppleTV = 1;
-      v30->_hasAppleTV = [v40 BOOLValue];
+      v30->_hasAppleTV = [vCopy BOOLValue];
     }
 
     else
@@ -2252,10 +2252,10 @@ LABEL_154:
       v30->_hasAppleTV = 0;
     }
 
-    if (v24)
+    if (phoneCopy)
     {
       v30->_hasHasIPhone = 1;
-      v30->_hasIPhone = [v24 BOOLValue];
+      v30->_hasIPhone = [phoneCopy BOOLValue];
     }
 
     else
@@ -2264,26 +2264,26 @@ LABEL_154:
       v30->_hasIPhone = 0;
     }
 
-    if (v39)
+    if (devicesCopy)
     {
       v30->_hasTotalNumDevices = 1;
-      v31 = [v39 intValue];
+      intValue = [devicesCopy intValue];
     }
 
     else
     {
       v30->_hasTotalNumDevices = 0;
-      v31 = -1;
+      intValue = -1;
     }
 
-    v30->_totalNumDevices = v31;
-    objc_storeStrong(&v30->_currentDeviceType, a13);
-    objc_storeStrong(&v30->_currentBuildVersion, a14);
-    objc_storeStrong(&v30->_distanceFromLatestBuild, a15);
-    if (v27)
+    v30->_totalNumDevices = intValue;
+    objc_storeStrong(&v30->_currentDeviceType, type);
+    objc_storeStrong(&v30->_currentBuildVersion, version);
+    objc_storeStrong(&v30->_distanceFromLatestBuild, build);
+    if (formatPhoneCopy)
     {
       v30->_hasIsALargeFormatPhone = 1;
-      v30->_isALargeFormatPhone = [v27 BOOLValue];
+      v30->_isALargeFormatPhone = [formatPhoneCopy BOOLValue];
     }
 
     else
@@ -2292,10 +2292,10 @@ LABEL_154:
       v30->_isALargeFormatPhone = 0;
     }
 
-    if (v28)
+    if (passcodeCopy)
     {
       v30->_hasHasAPasscode = 1;
-      v30->_hasAPasscode = [v28 BOOLValue];
+      v30->_hasAPasscode = [passcodeCopy BOOLValue];
     }
 
     else
@@ -2304,10 +2304,10 @@ LABEL_154:
       v30->_hasAPasscode = 0;
     }
 
-    if (v29)
+    if (essagingCopy)
     {
       v30->_hasSupportsSMSMEssaging = 1;
-      v30->_supportsSMSMEssaging = [v29 BOOLValue];
+      v30->_supportsSMSMEssaging = [essagingCopy BOOLValue];
     }
 
     else
@@ -2404,9 +2404,9 @@ LABEL_154:
   return v12;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -2414,8 +2414,8 @@ LABEL_154:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriAssistantSuggestionFeaturesDeviceFeatures alloc] initByReadFrom:v7];
     v4 = v8;

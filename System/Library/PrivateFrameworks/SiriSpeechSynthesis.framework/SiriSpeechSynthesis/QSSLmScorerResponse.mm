@@ -1,8 +1,8 @@
 @interface QSSLmScorerResponse
 - (NSArray)tokens;
 - (NSString)return_str;
-- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)a3;
-- (QSSLmScorerResponse)initWithFlatbuffData:(id)a3 root:(const LmScorerResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSLmScorerResponse)initWithFlatbuffData:(id)data root:(const LmScorerResponse *)root verify:(BOOL)verify;
 - (double)ppl;
 - (id)flatbuffData;
 - (int)return_code;
@@ -39,24 +39,24 @@ flatbuffers::DetachedBuffer *__35__QSSLmScorerResponse_flatbuffData__block_invok
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)buffer
 {
   v30 = *MEMORY[0x277D85DE8];
-  v22 = [(QSSLmScorerResponse *)self return_code];
-  v23 = self;
-  v5 = [(QSSLmScorerResponse *)self return_str];
-  v6 = v5;
-  if (!v5)
+  return_code = [(QSSLmScorerResponse *)self return_code];
+  selfCopy = self;
+  return_str = [(QSSLmScorerResponse *)self return_str];
+  v6 = return_str;
+  if (!return_str)
   {
-    v5 = &stru_2879AE8E0;
+    return_str = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)return_str UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(QSSLmScorerResponse *)v23 tokens];
-  v10 = [v9 count];
+  tokens = [(QSSLmScorerResponse *)selfCopy tokens];
+  v10 = [tokens count];
   if (v10)
   {
     if (!(v10 >> 62))
@@ -71,34 +71,34 @@ flatbuffers::DetachedBuffer *__35__QSSLmScorerResponse_flatbuffData__block_invok
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [(QSSLmScorerResponse *)v23 tokens];
+  obj = [(QSSLmScorerResponse *)selfCopy tokens];
   if ([obj countByEnumeratingWithState:&v25 objects:v29 count:16])
   {
     *v26;
     *v26;
-    [**(&v25 + 1) addObjectToBuffer:a3];
+    [**(&v25 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v11 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  [(QSSLmScorerResponse *)v23 ppl];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v11 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  [(QSSLmScorerResponse *)selfCopy ppl];
   v13 = v12;
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 8);
-  v15 = *(a3 + 12);
-  v16 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v22);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, String);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 8);
+  v15 = *(buffer + 12);
+  v16 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, return_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, String);
   if (v11)
   {
-    v17 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v11);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v17);
+    v17 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v11);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, v17);
   }
 
-  flatbuffers::FlatBufferBuilder::AddElement<double>(a3, 10, v13);
-  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v14 - v15 + v16);
+  flatbuffers::FlatBufferBuilder::AddElement<double>(buffer, 10, v13);
+  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v14 - v15 + v16);
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
@@ -122,10 +122,10 @@ flatbuffers::DetachedBuffer *__35__QSSLmScorerResponse_flatbuffData__block_invok
 
 - (NSArray)tokens
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 9u)
@@ -142,7 +142,7 @@ flatbuffers::DetachedBuffer *__35__QSSLmScorerResponse_flatbuffData__block_invok
           do
           {
             v11 = [[QSSLmScorerToken alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -153,10 +153,10 @@ flatbuffers::DetachedBuffer *__35__QSSLmScorerResponse_flatbuffData__block_invok
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"tokens"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"tokens"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)return_str
@@ -197,10 +197,10 @@ flatbuffers::DetachedBuffer *__35__QSSLmScorerResponse_flatbuffData__block_invok
   }
 }
 
-- (QSSLmScorerResponse)initWithFlatbuffData:(id)a3 root:(const LmScorerResponse *)a4 verify:(BOOL)a5
+- (QSSLmScorerResponse)initWithFlatbuffData:(id)data root:(const LmScorerResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v40.receiver = self;
   v40.super_class = QSSLmScorerResponse;
   v10 = [(QSSLmScorerResponse *)&v40 init];
@@ -210,35 +210,35 @@ flatbuffers::DetachedBuffer *__35__QSSLmScorerResponse_flatbuffData__block_invok
     goto LABEL_42;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_43;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_41;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_43;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v35 = v17;
+  v35 = bytes3;
   v36 = v18;
   v37 = xmmword_26914CD70;
   v38 = 0;
@@ -342,9 +342,9 @@ LABEL_37:
   }
 
 LABEL_41:
-  v31 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v31;
+  v11->_storage = dictionary;
 
 LABEL_42:
   v33 = v11;

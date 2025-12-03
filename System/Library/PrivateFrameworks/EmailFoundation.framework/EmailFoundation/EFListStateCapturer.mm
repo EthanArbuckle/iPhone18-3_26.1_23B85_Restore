@@ -1,5 +1,5 @@
 @interface EFListStateCapturer
-- (EFListStateCapturer)initWithTitle:(id)a3 itemName:(id)a4 headLimit:(unint64_t)a5 tailLimit:(unint64_t)a6 delegate:(id)a7;
+- (EFListStateCapturer)initWithTitle:(id)title itemName:(id)name headLimit:(unint64_t)limit tailLimit:(unint64_t)tailLimit delegate:(id)delegate;
 - (void)dealloc;
 @end
 
@@ -7,19 +7,19 @@
 
 - (void)dealloc
 {
-  v3 = [(EFListStateCapturer *)self stateCaptureCancelable];
-  [v3 cancel];
+  stateCaptureCancelable = [(EFListStateCapturer *)self stateCaptureCancelable];
+  [stateCaptureCancelable cancel];
 
   v4.receiver = self;
   v4.super_class = EFListStateCapturer;
   [(EFListStateCapturer *)&v4 dealloc];
 }
 
-- (EFListStateCapturer)initWithTitle:(id)a3 itemName:(id)a4 headLimit:(unint64_t)a5 tailLimit:(unint64_t)a6 delegate:(id)a7
+- (EFListStateCapturer)initWithTitle:(id)title itemName:(id)name headLimit:(unint64_t)limit tailLimit:(unint64_t)tailLimit delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  titleCopy = title;
+  nameCopy = name;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = EFListStateCapturer;
   v15 = [(EFListStateCapturer *)&v30 init];
@@ -32,7 +32,7 @@
     v15->_stateCaptureQueue = v18;
 
     objc_initWeak(&location, v15);
-    objc_initWeak(&from, v14);
+    objc_initWeak(&from, delegateCopy);
     v20 = v15->_stateCaptureQueue;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -40,10 +40,10 @@
     v24[3] = &unk_1E8248D18;
     objc_copyWeak(&v26, &location);
     objc_copyWeak(v27, &from);
-    v27[1] = a5;
-    v27[2] = a6;
-    v25 = v13;
-    v21 = EFLogRegisterStateCaptureBlock(v20, v12, 4, v24);
+    v27[1] = limit;
+    v27[2] = tailLimit;
+    v25 = nameCopy;
+    v21 = EFLogRegisterStateCaptureBlock(v20, titleCopy, 4, v24);
     stateCaptureCancelable = v15->_stateCaptureCancelable;
     v15->_stateCaptureCancelable = v21;
 

@@ -1,14 +1,14 @@
 @interface ContactCardActionsProviderHandler
-- (void)didTapAction:(int64_t)a3 forContact:(id)a4;
+- (void)didTapAction:(int64_t)action forContact:(id)contact;
 @end
 
 @implementation ContactCardActionsProviderHandler
 
-- (void)didTapAction:(int64_t)a3 forContact:(id)a4
+- (void)didTapAction:(int64_t)action forContact:(id)contact
 {
-  v5 = a4;
+  contactCopy = contact;
 
-  sub_199AABF0C(a3, v5);
+  sub_199AABF0C(action, contactCopy);
 }
 
 @end

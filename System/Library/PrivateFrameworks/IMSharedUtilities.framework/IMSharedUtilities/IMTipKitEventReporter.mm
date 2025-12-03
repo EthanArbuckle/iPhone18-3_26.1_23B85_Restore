@@ -1,6 +1,6 @@
 @interface IMTipKitEventReporter
 + (id)sharedInstance;
-- (void)sendBiomeSignal:(id)a3;
+- (void)sendBiomeSignal:(id)signal;
 - (void)sendFilterUnknownSenderStateChangedEvent;
 - (void)sendINSendMessageIntentEvent;
 - (void)sendJunkInboxOpenedEvent;
@@ -54,11 +54,11 @@
 
 - (void)sendReceivedJunkEventIfNeeded
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"com.apple.MobileSMS.user-previously-received-junk-message"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"com.apple.MobileSMS.user-previously-received-junk-message"];
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"com.apple.MobileSMS.user-previously-received-junk-message-fus"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults2 BOOLForKey:@"com.apple.MobileSMS.user-previously-received-junk-message-fus"];
 
   v7 = +[IMSpamFilterHelper isFilterUnknownSendersEnabled];
   if ((v4 & 1) != 0 || v7)
@@ -97,8 +97,8 @@
   }
 
   [(IMTipKitEventReporter *)self sendBiomeSignal:v9];
-  v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v11 setBool:1 forKey:v9];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults3 setBool:1 forKey:v9];
 }
 
 - (void)sendTapbackSendEvent
@@ -108,9 +108,9 @@
   MEMORY[0x1EEE66B58](self, sel_sendCoreAnalyticsSilverEvent_);
 }
 
-- (void)sendBiomeSignal:(id)a3
+- (void)sendBiomeSignal:(id)signal
 {
-  v3 = [a3 copy];
+  v3 = [signal copy];
   v4 = IMBiomeQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

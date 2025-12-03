@@ -1,27 +1,27 @@
 @interface PKMultilineKeyValueTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation PKMultilineKeyValueTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKMultilineKeyValueTableViewCell" hasInstanceVariable:@"_keyLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKMultilineKeyValueTableViewCell" hasInstanceVariable:@"_valueLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKMultilineKeyValueTableViewCell" hasInstanceVariable:@"_keyLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKMultilineKeyValueTableViewCell" hasInstanceVariable:@"_valueLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(PKMultilineKeyValueTableViewCellAccessibility *)self _accessibilityStringForLabelKeyValues:@"_valueLabel"];
-  v3 = [MEMORY[0x29EDB9F50] controlCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  controlCharacterSet = [MEMORY[0x29EDB9F50] controlCharacterSet];
+  v4 = [v2 stringByTrimmingCharactersInSet:controlCharacterSet];
 
   v5 = PKPANMask();
-  LODWORD(v3) = [v4 hasPrefix:v5];
+  LODWORD(controlCharacterSet) = [v4 hasPrefix:v5];
 
-  if (v3)
+  if (controlCharacterSet)
   {
     v6 = MEMORY[0x29EDBD7E8];
     v7 = MEMORY[0x29EDBA0F8];

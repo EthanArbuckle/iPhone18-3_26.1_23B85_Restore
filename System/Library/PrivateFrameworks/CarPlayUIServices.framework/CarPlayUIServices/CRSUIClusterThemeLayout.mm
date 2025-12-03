@@ -1,35 +1,35 @@
 @interface CRSUIClusterThemeLayout
 - (BOOL)isCustomizable;
-- (CRSUIClusterThemeLayout)initWithBSXPCCoder:(id)a3;
-- (CRSUIClusterThemeLayout)initWithIdentifier:(id)a3 displayName:(id)a4 palettes:(id)a5 wallpapers:(id)a6 preview:(id)a7;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (CRSUIClusterThemeLayout)initWithBSXPCCoder:(id)coder;
+- (CRSUIClusterThemeLayout)initWithIdentifier:(id)identifier displayName:(id)name palettes:(id)palettes wallpapers:(id)wallpapers preview:(id)preview;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CRSUIClusterThemeLayout
 
-- (CRSUIClusterThemeLayout)initWithIdentifier:(id)a3 displayName:(id)a4 palettes:(id)a5 wallpapers:(id)a6 preview:(id)a7
+- (CRSUIClusterThemeLayout)initWithIdentifier:(id)identifier displayName:(id)name palettes:(id)palettes wallpapers:(id)wallpapers preview:(id)preview
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  palettesCopy = palettes;
+  wallpapersCopy = wallpapers;
+  previewCopy = preview;
   v23.receiver = self;
   v23.super_class = CRSUIClusterThemeLayout;
   v17 = [(CRSUIClusterThemeLayout *)&v23 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [nameCopy copy];
     displayName = v17->_displayName;
     v17->_displayName = v20;
 
-    objc_storeStrong(&v17->_palettes, a5);
-    objc_storeStrong(&v17->_wallpapers, a6);
-    objc_storeStrong(&v17->_preview, a7);
+    objc_storeStrong(&v17->_palettes, palettes);
+    objc_storeStrong(&v17->_wallpapers, wallpapers);
+    objc_storeStrong(&v17->_preview, preview);
   }
 
   return v17;
@@ -37,57 +37,57 @@
 
 - (BOOL)isCustomizable
 {
-  v3 = [(CRSUIClusterThemeLayout *)self palettes];
-  if ([v3 count] > 1)
+  palettes = [(CRSUIClusterThemeLayout *)self palettes];
+  if ([palettes count] > 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v4 = [(CRSUIClusterThemeLayout *)self wallpapers];
-    v5 = [v4 count] > 1;
+    wallpapers = [(CRSUIClusterThemeLayout *)self wallpapers];
+    v5 = [wallpapers count] > 1;
   }
 
   return v5;
 }
 
-- (CRSUIClusterThemeLayout)initWithBSXPCCoder:(id)a3
+- (CRSUIClusterThemeLayout)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"identifier"];
-  v6 = [v4 decodeStringForKey:@"displayName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"identifier"];
+  v6 = [coderCopy decodeStringForKey:@"displayName"];
   v7 = objc_opt_class();
-  v8 = [v4 decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"palettes"];
+  v8 = [coderCopy decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"palettes"];
   v9 = objc_opt_class();
-  v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"wallpapers"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
+  v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"wallpapers"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
 
   v12 = [(CRSUIClusterThemeLayout *)self initWithIdentifier:v5 displayName:v6 palettes:v8 wallpapers:v10 preview:v11];
   return v12;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(CRSUIClusterThemeLayout *)self identifier];
-  [v10 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(CRSUIClusterThemeLayout *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(CRSUIClusterThemeLayout *)self displayName];
-  [v10 encodeObject:v5 forKey:@"displayName"];
+  displayName = [(CRSUIClusterThemeLayout *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v6 = [(CRSUIClusterThemeLayout *)self palettes];
-  [v10 encodeCollection:v6 forKey:@"palettes"];
+  palettes = [(CRSUIClusterThemeLayout *)self palettes];
+  [coderCopy encodeCollection:palettes forKey:@"palettes"];
 
-  v7 = [(CRSUIClusterThemeLayout *)self wallpapers];
-  [v10 encodeCollection:v7 forKey:@"wallpapers"];
+  wallpapers = [(CRSUIClusterThemeLayout *)self wallpapers];
+  [coderCopy encodeCollection:wallpapers forKey:@"wallpapers"];
 
-  v8 = [(CRSUIClusterThemeLayout *)self preview];
+  preview = [(CRSUIClusterThemeLayout *)self preview];
 
-  if (v8)
+  if (preview)
   {
-    v9 = [(CRSUIClusterThemeLayout *)self preview];
-    [v10 encodeObject:v9 forKey:@"preview"];
+    preview2 = [(CRSUIClusterThemeLayout *)self preview];
+    [coderCopy encodeObject:preview2 forKey:@"preview"];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface UAAnalyticsEvent
 - (id)description;
-- (id)firstPartyActivityTypeOrUnknown:(id)a3;
+- (id)firstPartyActivityTypeOrUnknown:(id)unknown;
 - (void)sendEvent;
 @end
 
@@ -11,36 +11,36 @@
   v3 = sub_100001A30(@"Diagnostic");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(UAAnalyticsEvent *)self eventName];
+    eventName = [(UAAnalyticsEvent *)self eventName];
     v7 = 138412290;
-    v8 = v4;
+    v8 = eventName;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Sending event: %@", &v7, 0xCu);
   }
 
-  v5 = [(UAAnalyticsEvent *)self eventName];
-  v6 = [(UAAnalyticsEvent *)self eventPayload];
+  eventName2 = [(UAAnalyticsEvent *)self eventName];
+  eventPayload = [(UAAnalyticsEvent *)self eventPayload];
   AnalyticsSendEvent();
 }
 
 - (id)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(UAAnalyticsEvent *)self eventName];
-  [v3 appendString:v4];
+  eventName = [(UAAnalyticsEvent *)self eventName];
+  [v3 appendString:eventName];
 
   [v3 appendString:@" => "];
-  v5 = [(UAAnalyticsEvent *)self eventPayload];
-  [v3 appendFormat:@"%@", v5];
+  eventPayload = [(UAAnalyticsEvent *)self eventPayload];
+  [v3 appendFormat:@"%@", eventPayload];
 
   return v3;
 }
 
-- (id)firstPartyActivityTypeOrUnknown:(id)a3
+- (id)firstPartyActivityTypeOrUnknown:(id)unknown
 {
-  v3 = a3;
-  if (([v3 hasPrefix:@":com.apple."] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"NSUserActivityTypeBrowsingWeb"))
+  unknownCopy = unknown;
+  if (([unknownCopy hasPrefix:@":com.apple."] & 1) != 0 || (objc_msgSend(unknownCopy, "hasPrefix:", @"com.apple.") & 1) != 0 || objc_msgSend(unknownCopy, "isEqualToString:", @"NSUserActivityTypeBrowsingWeb"))
   {
-    v4 = v3;
+    v4 = unknownCopy;
   }
 
   else
@@ -52,7 +52,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138478083;
-    v8 = v3;
+    v8 = unknownCopy;
     v9 = 2113;
     v10 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Metric AT for %{private}@ is %{private}@", &v7, 0x16u);

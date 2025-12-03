@@ -1,14 +1,14 @@
 @interface PXFeedbackAssetUIViewController
-- (PXFeedbackAssetUIViewController)initWithAsset:(id)a3 delegate:(id)a4;
+- (PXFeedbackAssetUIViewController)initWithAsset:(id)asset delegate:(id)delegate;
 - (PXFeedbackAssetUIViewControllerDelegate)delegate;
-- (void)_fileRadarWithAutoLoopAsset:(id)a3 positiveFeedback:(id)a4 negativeFeedback:(id)a5;
-- (void)_startAutoLoopVideoTaskForDiagnosticsWithAsset:(id)a3;
-- (void)autoloopVideoTaskStatusDidChange:(id)a3;
+- (void)_fileRadarWithAutoLoopAsset:(id)asset positiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback;
+- (void)_startAutoLoopVideoTaskForDiagnosticsWithAsset:(id)asset;
+- (void)autoloopVideoTaskStatusDidChange:(id)change;
 - (void)continueFiling;
-- (void)userDidFinish:(BOOL)a3;
+- (void)userDidFinish:(BOOL)finish;
 - (void)userIndicatedDislike;
 - (void)userIndicatedLike;
-- (void)userSentPositiveFeedback:(id)a3 negativeFeedback:(id)a4 customFeedback:(id)a5;
+- (void)userSentPositiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback customFeedback:(id)customFeedback;
 - (void)viewDidLoad;
 @end
 
@@ -21,34 +21,34 @@
   return WeakRetained;
 }
 
-- (void)autoloopVideoTaskStatusDidChange:(id)a3
+- (void)autoloopVideoTaskStatusDidChange:(id)change
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXFeedbackAssetUIViewController *)self autoLoopFrameworkDiagnosticsCurrentTask];
-  if (v5 != v4)
+  changeCopy = change;
+  autoLoopFrameworkDiagnosticsCurrentTask = [(PXFeedbackAssetUIViewController *)self autoLoopFrameworkDiagnosticsCurrentTask];
+  if (autoLoopFrameworkDiagnosticsCurrentTask != changeCopy)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v6 = [v4 status];
+  status = [changeCopy status];
 
-  if (v6 == 4)
+  if (status == 4)
   {
-    v5 = objc_opt_new();
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    autoLoopFrameworkDiagnosticsCurrentTask = objc_opt_new();
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [v4 temporaryFilesDirectory];
-    v10 = [v8 fileURLWithPath:v9 isDirectory:1];
+    temporaryFilesDirectory = [changeCopy temporaryFilesDirectory];
+    v10 = [v8 fileURLWithPath:temporaryFilesDirectory isDirectory:1];
 
     v11 = *MEMORY[0x1E695DBB8];
     v29[0] = *MEMORY[0x1E695DBB8];
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
     v21 = v10;
-    v22 = v7;
-    v13 = [v7 enumeratorAtURL:v10 includingPropertiesForKeys:v12 options:4 errorHandler:&__block_literal_global_262];
+    v22 = defaultManager;
+    v13 = [defaultManager enumeratorAtURL:v10 includingPropertiesForKeys:v12 options:4 errorHandler:&__block_literal_global_262];
 
     v26 = 0u;
     v27 = 0u;
@@ -76,7 +76,7 @@ LABEL_14:
           v20 = v23;
           if ([v20 BOOLValue])
           {
-            [v5 addObject:v19];
+            [autoLoopFrameworkDiagnosticsCurrentTask addObject:v19];
           }
 
           else
@@ -94,7 +94,7 @@ LABEL_14:
       while (v16);
     }
 
-    [(PXFeedbackAssetUIViewController *)self setAutoLoopFrameworkDiagnosticFileURLs:v5];
+    [(PXFeedbackAssetUIViewController *)self setAutoLoopFrameworkDiagnosticFileURLs:autoLoopFrameworkDiagnosticsCurrentTask];
     [(PXFeedbackAssetUIViewController *)self continueFiling];
 
     goto LABEL_14;
@@ -113,10 +113,10 @@ BOOL __68__PXFeedbackAssetUIViewController_autoloopVideoTaskStatusDidChange___bl
   return a3 == 0;
 }
 
-- (void)_startAutoLoopVideoTaskForDiagnosticsWithAsset:(id)a3
+- (void)_startAutoLoopVideoTaskForDiagnosticsWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6978860] defaultManager];
+  assetCopy = asset;
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
   v6 = objc_alloc_init(MEMORY[0x1E6978B18]);
   [v6 setVideoComplementAllowed:1];
   [v6 setVersion:1];
@@ -124,10 +124,10 @@ BOOL __68__PXFeedbackAssetUIViewController_autoloopVideoTaskStatusDidChange___bl
   v8[1] = 3221225472;
   v8[2] = __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnosticsWithAsset___block_invoke;
   v8[3] = &unk_1E7734D88;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  [v5 requestAVAssetForAsset:v7 options:v6 resultHandler:v8];
+  v9 = assetCopy;
+  selfCopy = self;
+  v7 = assetCopy;
+  [defaultManager requestAVAssetForAsset:v7 options:v6 resultHandler:v8];
 }
 
 void __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnosticsWithAsset___block_invoke(uint64_t a1, void *a2)
@@ -147,9 +147,9 @@ void __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnostics
 - (void)continueFiling
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [(PXFeedbackAssetUIViewController *)self userLikedIt];
+  userLikedIt = [(PXFeedbackAssetUIViewController *)self userLikedIt];
   v4 = @"Negative";
-  if (v3)
+  if (userLikedIt)
   {
     v4 = @"Positive";
   }
@@ -164,10 +164,10 @@ void __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnostics
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = [(PXFeedbackAssetUIViewController *)self positiveFeedback];
-  v7 = [v6 allKeys];
+  positiveFeedback = [(PXFeedbackAssetUIViewController *)self positiveFeedback];
+  allKeys = [positiveFeedback allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v8)
   {
     v9 = *v43;
@@ -178,19 +178,19 @@ void __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnostics
       {
         if (*v43 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v42 + 1) + 8 * v10);
-        v12 = [(PXFeedbackAssetUIViewController *)self positiveFeedback];
-        v13 = [v12 valueForKey:v11];
+        positiveFeedback2 = [(PXFeedbackAssetUIViewController *)self positiveFeedback];
+        v13 = [positiveFeedback2 valueForKey:v11];
         [v5 appendFormat:@"%@: %@\n", v11, v13];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v8);
@@ -201,10 +201,10 @@ void __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnostics
   v41 = 0u;
   v39 = 0u;
   v38 = 0u;
-  v14 = [(PXFeedbackAssetUIViewController *)self negativeFeedback];
-  v15 = [v14 allKeys];
+  negativeFeedback = [(PXFeedbackAssetUIViewController *)self negativeFeedback];
+  allKeys2 = [negativeFeedback allKeys];
 
-  v16 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  v16 = [allKeys2 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v16)
   {
     v17 = *v39;
@@ -215,25 +215,25 @@ void __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnostics
       {
         if (*v39 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys2);
         }
 
         v19 = *(*(&v38 + 1) + 8 * v18);
-        v20 = [(PXFeedbackAssetUIViewController *)self negativeFeedback];
-        v21 = [v20 valueForKey:v19];
+        negativeFeedback2 = [(PXFeedbackAssetUIViewController *)self negativeFeedback];
+        v21 = [negativeFeedback2 valueForKey:v19];
         [v5 appendFormat:@"%@: %@\n", v19, v21];
 
         ++v18;
       }
 
       while (v16 != v18);
-      v16 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v16 = [allKeys2 countByEnumeratingWithState:&v38 objects:v46 count:16];
     }
 
     while (v16);
   }
 
-  v22 = [MEMORY[0x1E6978860] defaultManager];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
@@ -243,20 +243,20 @@ void __82__PXFeedbackAssetUIViewController__startAutoLoopVideoTaskForDiagnostics
   v23 = objc_alloc_init(MEMORY[0x1E6978868]);
   [v23 setVersion:2];
   [v23 setLoadingMode:0x10000];
-  v24 = [(PXFeedbackAssetUIViewController *)self asset];
+  asset = [(PXFeedbackAssetUIViewController *)self asset];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __49__PXFeedbackAssetUIViewController_continueFiling__block_invoke;
   v30[3] = &unk_1E7734D60;
   v35 = v36;
-  v25 = v22;
+  v25 = defaultManager;
   v31 = v25;
-  v32 = self;
+  selfCopy = self;
   v26 = v28;
   v33 = v26;
   v27 = v5;
   v34 = v27;
-  [v25 requestImageForAsset:v24 targetSize:0 contentMode:v23 options:v30 resultHandler:{*MEMORY[0x1E6978E30], *(MEMORY[0x1E6978E30] + 8)}];
+  [v25 requestImageForAsset:asset targetSize:0 contentMode:v23 options:v30 resultHandler:{*MEMORY[0x1E6978E30], *(MEMORY[0x1E6978E30] + 8)}];
 
   _Block_object_dispose(v36, 8);
 }
@@ -353,49 +353,49 @@ void __49__PXFeedbackAssetUIViewController_continueFiling__block_invoke_4(uint64
   [v4 feedbackAssetUIViewController:v5 didFinish:a2];
 }
 
-- (void)_fileRadarWithAutoLoopAsset:(id)a3 positiveFeedback:(id)a4 negativeFeedback:(id)a5
+- (void)_fileRadarWithAutoLoopAsset:(id)asset positiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(PXFeedbackAssetUIViewController *)self setAsset:v10];
-  [(PXFeedbackAssetUIViewController *)self setPositiveFeedback:v9];
+  negativeFeedbackCopy = negativeFeedback;
+  feedbackCopy = feedback;
+  assetCopy = asset;
+  [(PXFeedbackAssetUIViewController *)self setAsset:assetCopy];
+  [(PXFeedbackAssetUIViewController *)self setPositiveFeedback:feedbackCopy];
 
-  [(PXFeedbackAssetUIViewController *)self setNegativeFeedback:v8];
+  [(PXFeedbackAssetUIViewController *)self setNegativeFeedback:negativeFeedbackCopy];
   [(PXFeedbackAssetUIViewController *)self setAutoLoopFrameworkDiagnosticFileURLs:0];
   [(PXFeedbackAssetUIViewController *)self setAutoLoopFrameworkDiagnosticsCurrentTask:0];
   v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Collecting data for radar..." message:0 preferredStyle:1];
   [(PXFeedbackAssetUIViewController *)self presentViewController:v11 animated:1 completion:&__block_literal_global_71162];
-  [(PXFeedbackAssetUIViewController *)self _startAutoLoopVideoTaskForDiagnosticsWithAsset:v10];
+  [(PXFeedbackAssetUIViewController *)self _startAutoLoopVideoTaskForDiagnosticsWithAsset:assetCopy];
 }
 
-- (void)userDidFinish:(BOOL)a3
+- (void)userDidFinish:(BOOL)finish
 {
-  v3 = a3;
-  v5 = [(PXFeedbackAssetUIViewController *)self delegate];
-  [v5 feedbackAssetUIViewController:self didFinish:v3];
+  finishCopy = finish;
+  delegate = [(PXFeedbackAssetUIViewController *)self delegate];
+  [delegate feedbackAssetUIViewController:self didFinish:finishCopy];
 }
 
-- (void)userSentPositiveFeedback:(id)a3 negativeFeedback:(id)a4 customFeedback:(id)a5
+- (void)userSentPositiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback customFeedback:(id)customFeedback
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PXFeedbackAssetUIViewController *)self asset];
-  [(PXFeedbackAssetUIViewController *)self _fileRadarWithAutoLoopAsset:v9 positiveFeedback:v8 negativeFeedback:v7];
+  negativeFeedbackCopy = negativeFeedback;
+  feedbackCopy = feedback;
+  asset = [(PXFeedbackAssetUIViewController *)self asset];
+  [(PXFeedbackAssetUIViewController *)self _fileRadarWithAutoLoopAsset:asset positiveFeedback:feedbackCopy negativeFeedback:negativeFeedbackCopy];
 }
 
 - (void)userIndicatedDislike
 {
   [(PXFeedbackAssetUIViewController *)self setUserLikedIt:0];
-  v3 = [(PXFeedbackAssetUIViewController *)self feedbackController];
-  [v3 showMoreFeedbackForm];
+  feedbackController = [(PXFeedbackAssetUIViewController *)self feedbackController];
+  [feedbackController showMoreFeedbackForm];
 }
 
 - (void)userIndicatedLike
 {
   [(PXFeedbackAssetUIViewController *)self setUserLikedIt:1];
-  v3 = [(PXFeedbackAssetUIViewController *)self feedbackController];
-  [v3 showMoreFeedbackForm];
+  feedbackController = [(PXFeedbackAssetUIViewController *)self feedbackController];
+  [feedbackController showMoreFeedbackForm];
 }
 
 - (void)viewDidLoad
@@ -406,40 +406,40 @@ void __49__PXFeedbackAssetUIViewController_continueFiling__block_invoke_4(uint64
   v3 = objc_alloc_init(MEMORY[0x1E69DCCD8]);
   [(PXFeedbackAssetUIViewController *)self setNavigationController:v3];
 
-  v4 = [(PXFeedbackAssetUIViewController *)self navigationController];
-  [(PXFeedbackAssetUIViewController *)self addChildViewController:v4];
+  navigationController = [(PXFeedbackAssetUIViewController *)self navigationController];
+  [(PXFeedbackAssetUIViewController *)self addChildViewController:navigationController];
 
-  v5 = [(PXFeedbackAssetUIViewController *)self view];
-  v6 = [(PXFeedbackAssetUIViewController *)self navigationController];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
+  view = [(PXFeedbackAssetUIViewController *)self view];
+  navigationController2 = [(PXFeedbackAssetUIViewController *)self navigationController];
+  view2 = [navigationController2 view];
+  [view addSubview:view2];
 
-  v8 = [(PXFeedbackAssetUIViewController *)self navigationController];
-  [v8 didMoveToParentViewController:self];
+  navigationController3 = [(PXFeedbackAssetUIViewController *)self navigationController];
+  [navigationController3 didMoveToParentViewController:self];
 
-  v9 = [(PXFeedbackAssetUIViewController *)self navigationController];
-  [v9 setToolbarHidden:0];
+  navigationController4 = [(PXFeedbackAssetUIViewController *)self navigationController];
+  [navigationController4 setToolbarHidden:0];
 
   v10 = [[PXFeedbackLikeItOrNotComboUIViewController alloc] initWithDelegate:self];
   [(PXFeedbackAssetUIViewController *)self setFeedbackController:v10];
 
-  v11 = [(PXFeedbackAssetUIViewController *)self navigationController];
-  v12 = [(PXFeedbackAssetUIViewController *)self feedbackController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController5 = [(PXFeedbackAssetUIViewController *)self navigationController];
+  feedbackController = [(PXFeedbackAssetUIViewController *)self feedbackController];
+  [navigationController5 pushViewController:feedbackController animated:1];
 }
 
-- (PXFeedbackAssetUIViewController)initWithAsset:(id)a3 delegate:(id)a4
+- (PXFeedbackAssetUIViewController)initWithAsset:(id)asset delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PXFeedbackAssetUIViewController;
   v9 = [(PXFeedbackAssetUIViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_asset, asset);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

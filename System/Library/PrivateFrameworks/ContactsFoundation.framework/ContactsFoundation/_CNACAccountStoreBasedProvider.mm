@@ -1,24 +1,24 @@
 @interface _CNACAccountStoreBasedProvider
-- (BOOL)isAccountSyncable:(id)a3;
-- (BOOL)isAnyAccountSyncableIgnoringAccount:(id)a3;
-- (_CNACAccountStoreBasedProvider)initWithAccountStore:(id)a3;
-- (id)accountsWithAccountType:(id)a3;
+- (BOOL)isAccountSyncable:(id)syncable;
+- (BOOL)isAnyAccountSyncableIgnoringAccount:(id)account;
+- (_CNACAccountStoreBasedProvider)initWithAccountStore:(id)store;
+- (id)accountsWithAccountType:(id)type;
 - (id)allAccountTypes;
-- (id)childAccountsForAccount:(id)a3;
+- (id)childAccountsForAccount:(id)account;
 @end
 
 @implementation _CNACAccountStoreBasedProvider
 
-- (_CNACAccountStoreBasedProvider)initWithAccountStore:(id)a3
+- (_CNACAccountStoreBasedProvider)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = _CNACAccountStoreBasedProvider;
   v6 = [(_CNACAccountStoreBasedProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
     v8 = v7;
   }
 
@@ -27,53 +27,53 @@
 
 - (id)allAccountTypes
 {
-  v2 = [(_CNACAccountStoreBasedProvider *)self accountStore];
-  v3 = [v2 allAccountTypes];
-  v4 = [v3 _cn_filter:&__block_literal_global_71];
+  accountStore = [(_CNACAccountStoreBasedProvider *)self accountStore];
+  allAccountTypes = [accountStore allAccountTypes];
+  v4 = [allAccountTypes _cn_filter:&__block_literal_global_71];
 
   return v4;
 }
 
-- (id)accountsWithAccountType:(id)a3
+- (id)accountsWithAccountType:(id)type
 {
-  v4 = a3;
-  v5 = [(_CNACAccountStoreBasedProvider *)self accountStore];
-  v6 = [v5 accountsWithAccountType:v4];
+  typeCopy = type;
+  accountStore = [(_CNACAccountStoreBasedProvider *)self accountStore];
+  v6 = [accountStore accountsWithAccountType:typeCopy];
 
   return v6;
 }
 
-- (id)childAccountsForAccount:(id)a3
+- (id)childAccountsForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(_CNACAccountStoreBasedProvider *)self accountStore];
-  v6 = [v5 childAccountsForAccount:v4];
+  accountCopy = account;
+  accountStore = [(_CNACAccountStoreBasedProvider *)self accountStore];
+  v6 = [accountStore childAccountsForAccount:accountCopy];
 
   return v6;
 }
 
-- (BOOL)isAccountSyncable:(id)a3
+- (BOOL)isAccountSyncable:(id)syncable
 {
-  v3 = [a3 accountType];
-  v4 = [v3 syncableDataclasses];
-  v5 = [v4 containsObject:*MEMORY[0x1E6959AF0]];
+  accountType = [syncable accountType];
+  syncableDataclasses = [accountType syncableDataclasses];
+  v5 = [syncableDataclasses containsObject:*MEMORY[0x1E6959AF0]];
 
   return v5;
 }
 
-- (BOOL)isAnyAccountSyncableIgnoringAccount:(id)a3
+- (BOOL)isAnyAccountSyncableIgnoringAccount:(id)account
 {
-  v4 = [a3 identifier];
-  v5 = v4;
+  identifier = [account identifier];
+  v5 = identifier;
   v6 = &stru_1EF441028;
-  if (v4)
+  if (identifier)
   {
-    v6 = v4;
+    v6 = identifier;
   }
 
   v7 = v6;
 
-  v8 = [(_CNACAccountStoreBasedProvider *)self allAccountTypes];
+  allAccountTypes = [(_CNACAccountStoreBasedProvider *)self allAccountTypes];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70___CNACAccountStoreBasedProvider_isAnyAccountSyncableIgnoringAccount___block_invoke;
@@ -81,7 +81,7 @@
   v11[4] = self;
   v12 = v7;
   v9 = v7;
-  LOBYTE(v7) = [v8 _cn_any:v11];
+  LOBYTE(v7) = [allAccountTypes _cn_any:v11];
 
   return v7;
 }

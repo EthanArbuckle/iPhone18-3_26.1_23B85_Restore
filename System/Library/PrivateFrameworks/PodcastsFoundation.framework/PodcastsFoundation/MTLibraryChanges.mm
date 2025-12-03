@@ -1,18 +1,18 @@
 @interface MTLibraryChanges
 - (BOOL)hasChanges;
-- (BOOL)hasChangesForEntityNames:(id)a3;
+- (BOOL)hasChangesForEntityNames:(id)names;
 - (BOOL)hasDeletes;
-- (BOOL)hasDeletesForEntityNames:(id)a3;
+- (BOOL)hasDeletesForEntityNames:(id)names;
 - (BOOL)hasInserts;
-- (BOOL)hasInsertsForEntityNames:(id)a3;
+- (BOOL)hasInsertsForEntityNames:(id)names;
 - (BOOL)hasUpdates;
-- (BOOL)hasUpdatesForEntityNames:(id)a3;
-- (MTLibraryChanges)initWithContextName:(id)a3;
-- (id)changesForEntityName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)hasUpdatesForEntityNames:(id)names;
+- (MTLibraryChanges)initWithContextName:(id)name;
+- (id)changesForEntityName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)entityNames;
-- (void)combineChanges:(id)a3;
+- (void)combineChanges:(id)changes;
 - (void)removeAllChanges;
 @end
 
@@ -20,23 +20,23 @@
 
 - (BOOL)hasChanges
 {
-  v2 = self;
-  v3 = [(MTLibraryChanges *)self changesByEntityName];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  allKeys = [changesByEntityName allKeys];
 
-  LOBYTE(v2) = [(MTLibraryChanges *)v2 hasChangesForEntityNames:v4];
-  return v2;
+  LOBYTE(selfCopy) = [(MTLibraryChanges *)selfCopy hasChangesForEntityNames:allKeys];
+  return selfCopy;
 }
 
-- (MTLibraryChanges)initWithContextName:(id)a3
+- (MTLibraryChanges)initWithContextName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = MTLibraryChanges;
   v5 = [(MTLibraryChanges *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     contextName = v5->_contextName;
     v5->_contextName = v6;
 
@@ -48,12 +48,12 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v6 = [(MTLibraryChanges *)self changesByEntityName];
-  v7 = [v5 initWithDictionary:v6 copyItems:1];
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  v7 = [v5 initWithDictionary:changesByEntityName copyItems:1];
   [v4 setChangesByEntityName:v7];
 
   return v4;
@@ -61,48 +61,48 @@
 
 - (id)description
 {
-  v2 = [(MTLibraryChanges *)self changesByEntityName];
-  v3 = [v2 allValues];
-  v4 = [v3 componentsJoinedByString:@"\n\t"];
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  allValues = [changesByEntityName allValues];
+  v4 = [allValues componentsJoinedByString:@"\n\t"];
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"library changes: {\n\t%@\n}", v4];
 
   return v5;
 }
 
-- (id)changesForEntityName:(id)a3
+- (id)changesForEntityName:(id)name
 {
-  v4 = a3;
-  v5 = [(MTLibraryChanges *)self changesByEntityName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  v6 = [changesByEntityName objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
 - (id)entityNames
 {
-  v2 = [(MTLibraryChanges *)self changesByEntityName];
-  v3 = [v2 allKeys];
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  allKeys = [changesByEntityName allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (void)removeAllChanges
 {
-  v2 = [(MTLibraryChanges *)self changesByEntityName];
-  [v2 removeAllObjects];
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  [changesByEntityName removeAllObjects];
 }
 
-- (void)combineChanges:(id)a3
+- (void)combineChanges:(id)changes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 entityNames];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  entityNames = [changesCopy entityNames];
+  v6 = [entityNames countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -113,23 +113,23 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entityNames);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v4 changesForEntityName:v10];
+        v11 = [changesCopy changesForEntityName:v10];
         v12 = [(MTLibraryChanges *)self changesForEntityName:v10];
         if (!v12)
         {
           v12 = [[MTLibraryEntityChanges alloc] initWithEntityName:v10];
-          v13 = [(MTLibraryChanges *)self changesByEntityName];
-          [v13 setObject:v12 forKeyedSubscript:v10];
+          changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+          [changesByEntityName setObject:v12 forKeyedSubscript:v10];
         }
 
         [(MTLibraryEntityChanges *)v12 combineChanges:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [entityNames countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -140,43 +140,43 @@
 
 - (BOOL)hasInserts
 {
-  v2 = self;
-  v3 = [(MTLibraryChanges *)self changesByEntityName];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  allKeys = [changesByEntityName allKeys];
 
-  LOBYTE(v2) = [(MTLibraryChanges *)v2 hasInsertsForEntityNames:v4];
-  return v2;
+  LOBYTE(selfCopy) = [(MTLibraryChanges *)selfCopy hasInsertsForEntityNames:allKeys];
+  return selfCopy;
 }
 
 - (BOOL)hasDeletes
 {
-  v2 = self;
-  v3 = [(MTLibraryChanges *)self changesByEntityName];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  allKeys = [changesByEntityName allKeys];
 
-  LOBYTE(v2) = [(MTLibraryChanges *)v2 hasDeletesForEntityNames:v4];
-  return v2;
+  LOBYTE(selfCopy) = [(MTLibraryChanges *)selfCopy hasDeletesForEntityNames:allKeys];
+  return selfCopy;
 }
 
 - (BOOL)hasUpdates
 {
-  v2 = self;
-  v3 = [(MTLibraryChanges *)self changesByEntityName];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  changesByEntityName = [(MTLibraryChanges *)self changesByEntityName];
+  allKeys = [changesByEntityName allKeys];
 
-  LOBYTE(v2) = [(MTLibraryChanges *)v2 hasUpdatesForEntityNames:v4];
-  return v2;
+  LOBYTE(selfCopy) = [(MTLibraryChanges *)selfCopy hasUpdatesForEntityNames:allKeys];
+  return selfCopy;
 }
 
-- (BOOL)hasChangesForEntityNames:(id)a3
+- (BOOL)hasChangesForEntityNames:(id)names
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  namesCopy = names;
+  v5 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -187,20 +187,20 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namesCopy);
         }
 
         v9 = [(MTLibraryChanges *)self changesForEntityName:*(*(&v14 + 1) + 8 * i), v14];
-        v10 = [v9 hasChanges];
+        hasChanges = [v9 hasChanges];
 
-        if (v10)
+        if (hasChanges)
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -217,15 +217,15 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)hasInsertsForEntityNames:(id)a3
+- (BOOL)hasInsertsForEntityNames:(id)names
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  namesCopy = names;
+  v5 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -236,20 +236,20 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namesCopy);
         }
 
         v9 = [(MTLibraryChanges *)self changesForEntityName:*(*(&v14 + 1) + 8 * i), v14];
-        v10 = [v9 hasInserts];
+        hasInserts = [v9 hasInserts];
 
-        if (v10)
+        if (hasInserts)
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -266,15 +266,15 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)hasDeletesForEntityNames:(id)a3
+- (BOOL)hasDeletesForEntityNames:(id)names
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  namesCopy = names;
+  v5 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -285,20 +285,20 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namesCopy);
         }
 
         v9 = [(MTLibraryChanges *)self changesForEntityName:*(*(&v14 + 1) + 8 * i), v14];
-        v10 = [v9 hasDeletes];
+        hasDeletes = [v9 hasDeletes];
 
-        if (v10)
+        if (hasDeletes)
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -315,15 +315,15 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)hasUpdatesForEntityNames:(id)a3
+- (BOOL)hasUpdatesForEntityNames:(id)names
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  namesCopy = names;
+  v5 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -334,20 +334,20 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namesCopy);
         }
 
         v9 = [(MTLibraryChanges *)self changesForEntityName:*(*(&v14 + 1) + 8 * i), v14];
-        v10 = [v9 hasUpdates];
+        hasUpdates = [v9 hasUpdates];
 
-        if (v10)
+        if (hasUpdates)
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

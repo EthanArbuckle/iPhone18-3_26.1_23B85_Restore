@@ -1,29 +1,29 @@
 @interface AcceptTermsAndConditionsOperation
-- (AcceptTermsAndConditionsOperation)initWithAccount:(id)a3;
+- (AcceptTermsAndConditionsOperation)initWithAccount:(id)account;
 - (BOOL)isUserAccepted;
 - (id)_newTermsAcceptSrvOperation;
 - (id)_newTermsCheckSrvOperation;
-- (void)_acceptTermsAndConditionsWithBlock:(id)a3;
-- (void)_checkTermsAndConditionsWithBlock:(id)a3;
-- (void)_dismissTermsAndConditionsWithAcceptance:(BOOL)a3;
+- (void)_acceptTermsAndConditionsWithBlock:(id)block;
+- (void)_checkTermsAndConditionsWithBlock:(id)block;
+- (void)_dismissTermsAndConditionsWithAcceptance:(BOOL)acceptance;
 - (void)_presentTermsAndConditions;
-- (void)alertProxy:(id)a3 didReceiveMessage:(id)a4;
+- (void)alertProxy:(id)proxy didReceiveMessage:(id)message;
 - (void)run;
-- (void)setUserAccepted:(BOOL)a3;
+- (void)setUserAccepted:(BOOL)accepted;
 @end
 
 @implementation AcceptTermsAndConditionsOperation
 
-- (AcceptTermsAndConditionsOperation)initWithAccount:(id)a3
+- (AcceptTermsAndConditionsOperation)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AcceptTermsAndConditionsOperation;
   v6 = [(AcceptTermsAndConditionsOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -37,10 +37,10 @@
   return userAccepted;
 }
 
-- (void)setUserAccepted:(BOOL)a3
+- (void)setUserAccepted:(BOOL)accepted
 {
   [(AcceptTermsAndConditionsOperation *)self lock];
-  self->_userAccepted = a3;
+  self->_userAccepted = accepted;
 
   [(AcceptTermsAndConditionsOperation *)self unlock];
 }
@@ -53,19 +53,19 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v5 &= 2u;
   }
@@ -106,21 +106,21 @@
       v12 = +[SSLogConfig sharedConfig];
     }
 
-    v13 = [v12 shouldLog];
-    v14 = [v12 shouldLogToDisk];
-    v15 = [v12 OSLogObject];
-    v16 = v15;
-    if (v14)
+    shouldLog2 = [v12 shouldLog];
+    shouldLogToDisk = [v12 shouldLogToDisk];
+    oSLogObject2 = [v12 OSLogObject];
+    v16 = oSLogObject2;
+    if (shouldLogToDisk)
     {
-      v13 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v13 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v13)
+    if (shouldLog2)
     {
       LODWORD(location[0]) = 138412290;
       *(location + 4) = objc_opt_class();
@@ -175,35 +175,35 @@ LABEL_28:
   _Block_object_dispose(&v28, 8);
 }
 
-- (void)alertProxy:(id)a3 didReceiveMessage:(id)a4
+- (void)alertProxy:(id)proxy didReceiveMessage:(id)message
 {
-  v5 = xpc_dictionary_get_value(a4, "1");
+  v5 = xpc_dictionary_get_value(message, "1");
   xBOOL = v5;
   v6 = v5 && xpc_get_type(v5) == &_xpc_type_BOOL && xpc_BOOL_get_value(xBOOL);
   [(AcceptTermsAndConditionsOperation *)self _dismissTermsAndConditionsWithAcceptance:v6];
 }
 
-- (void)_acceptTermsAndConditionsWithBlock:(id)a3
+- (void)_acceptTermsAndConditionsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AcceptTermsAndConditionsOperation *)self _newTermsAcceptSrvOperation];
+  blockCopy = block;
+  _newTermsAcceptSrvOperation = [(AcceptTermsAndConditionsOperation *)self _newTermsAcceptSrvOperation];
   v6 = +[ISDataProvider provider];
-  [v5 setDataProvider:v6];
+  [_newTermsAcceptSrvOperation setDataProvider:v6];
 
-  [v5 setNeedsAuthentication:1];
-  [v5 setNeedsTermsAndConditionsAcceptance:0];
+  [_newTermsAcceptSrvOperation setNeedsAuthentication:1];
+  [_newTermsAcceptSrvOperation setNeedsTermsAndConditionsAcceptance:0];
   v14 = 0;
-  v7 = [(AcceptTermsAndConditionsOperation *)self runSubOperation:v5 returningError:&v14];
+  v7 = [(AcceptTermsAndConditionsOperation *)self runSubOperation:_newTermsAcceptSrvOperation returningError:&v14];
   v8 = v14;
-  if (v4 && v7)
+  if (blockCopy && v7)
   {
-    v9 = [v5 dataProvider];
-    v10 = [v9 output];
+    dataProvider = [_newTermsAcceptSrvOperation dataProvider];
+    output = [dataProvider output];
 
-    if (v10)
+    if (output)
     {
       v13 = v8;
-      v11 = [[SSTermsAndConditions alloc] initWithResponseData:v10 error:&v13];
+      v11 = [[SSTermsAndConditions alloc] initWithResponseData:output error:&v13];
       v12 = v13;
 
       v8 = v12;
@@ -214,33 +214,33 @@ LABEL_28:
       v11 = 0;
     }
 
-    v4[2](v4, [v11 isUserAccepted], v8);
+    blockCopy[2](blockCopy, [v11 isUserAccepted], v8);
   }
 }
 
-- (void)_checkTermsAndConditionsWithBlock:(id)a3
+- (void)_checkTermsAndConditionsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AcceptTermsAndConditionsOperation *)self _newTermsCheckSrvOperation];
+  blockCopy = block;
+  _newTermsCheckSrvOperation = [(AcceptTermsAndConditionsOperation *)self _newTermsCheckSrvOperation];
   v6 = +[ISDataProvider provider];
-  [v5 setDataProvider:v6];
+  [_newTermsCheckSrvOperation setDataProvider:v6];
 
-  [v5 setNeedsAuthentication:1];
-  [v5 setNeedsTermsAndConditionsAcceptance:0];
+  [_newTermsCheckSrvOperation setNeedsAuthentication:1];
+  [_newTermsCheckSrvOperation setNeedsTermsAndConditionsAcceptance:0];
   v13 = 0;
-  LODWORD(v6) = [(AcceptTermsAndConditionsOperation *)self runSubOperation:v5 returningError:&v13];
+  LODWORD(v6) = [(AcceptTermsAndConditionsOperation *)self runSubOperation:_newTermsCheckSrvOperation returningError:&v13];
   v7 = v13;
   if (v6)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v8 = [v5 dataProvider];
-      v9 = [v8 output];
+      dataProvider = [_newTermsCheckSrvOperation dataProvider];
+      output = [dataProvider output];
 
-      if (v9)
+      if (output)
       {
         v12 = v7;
-        v10 = [[SSTermsAndConditions alloc] initWithResponseData:v9 error:&v12];
+        v10 = [[SSTermsAndConditions alloc] initWithResponseData:output error:&v12];
         v11 = v12;
 
         v7 = v11;
@@ -251,38 +251,38 @@ LABEL_28:
         v10 = 0;
       }
 
-      v4[2](v4, v10, v7);
+      blockCopy[2](blockCopy, v10, v7);
     }
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
-    v4[2](v4, 0, v7);
+    blockCopy[2](blockCopy, 0, v7);
   }
 }
 
-- (void)_dismissTermsAndConditionsWithAcceptance:(BOOL)a3
+- (void)_dismissTermsAndConditionsWithAcceptance:(BOOL)acceptance
 {
-  v3 = a3;
+  acceptanceCopy = acceptance;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 &= 2u;
   }
@@ -294,7 +294,7 @@ LABEL_28:
 
   v9 = objc_opt_class();
   v10 = @"NO";
-  if (v3)
+  if (acceptanceCopy)
   {
     v10 = @"YES";
   }
@@ -310,15 +310,15 @@ LABEL_28:
 
   if (v12)
   {
-    v8 = [NSString stringWithCString:v12 encoding:4, &v20, v18];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v20, v18];
     free(v12);
-    v17 = v8;
+    v17 = oSLogObject;
     SSFileLog();
 LABEL_13:
   }
 
   [(AcceptTermsAndConditionsOperation *)self lock];
-  self->_userAccepted = v3;
+  self->_userAccepted = acceptanceCopy;
   self->_result = 1;
   alertSemaphore = self->_alertSemaphore;
   if (alertSemaphore)
@@ -392,26 +392,26 @@ LABEL_13:
 - (void)_presentTermsAndConditions
 {
   v3 = +[ISDevice sharedInstance];
-  v4 = [(AcceptTermsAndConditionsOperation *)self copyActivePowerAssertionIdentifiers];
+  copyActivePowerAssertionIdentifiers = [(AcceptTermsAndConditionsOperation *)self copyActivePowerAssertionIdentifiers];
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 &= 2u;
   }
@@ -423,7 +423,7 @@ LABEL_13:
     *location = 138412546;
     *&location[4] = v9;
     v45 = 2048;
-    v46 = [v4 count];
+    v46 = [copyActivePowerAssertionIdentifiers count];
     LODWORD(v31) = 22;
     v30 = location;
     v11 = _os_log_send_and_compose_impl();
@@ -445,7 +445,7 @@ LABEL_13:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = v4;
+  v13 = copyActivePowerAssertionIdentifiers;
   v14 = [v13 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v14)
   {
@@ -476,9 +476,9 @@ LABEL_13:
   conditions = self->_conditions;
   if (conditions)
   {
-    v21 = [(SSTermsAndConditions *)conditions currentText];
-    v22 = v21;
-    if (v21 && [v21 length])
+    currentText = [(SSTermsAndConditions *)conditions currentText];
+    v22 = currentText;
+    if (currentText && [currentText length])
     {
       [v19 setObject:v22 forKey:@"terms"];
     }

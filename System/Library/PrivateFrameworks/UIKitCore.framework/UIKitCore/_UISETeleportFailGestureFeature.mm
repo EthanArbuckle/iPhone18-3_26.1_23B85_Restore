@@ -1,6 +1,6 @@
 @interface _UISETeleportFailGestureFeature
 - (_UISETeleportFailGestureFeature)init;
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3;
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample;
 @end
 
 @implementation _UISETeleportFailGestureFeature
@@ -18,23 +18,23 @@
   return result;
 }
 
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
-  if (a3->var0 == 1)
+  if (sample->var0 == 1)
   {
-    v5 = vsubq_f64(self->_lastLocation, a3->var5);
+    v5 = vsubq_f64(self->_lastLocation, sample->var5);
     if (sqrt(vaddvq_f64(vmulq_f64(v5, v5))) > 100.0)
     {
       [(_UISEGestureFeature *)self _setState:2];
     }
   }
 
-  else if (a3->var0)
+  else if (sample->var0)
   {
     return;
   }
 
-  self->_lastLocation = a3->var5;
+  self->_lastLocation = sample->var5;
 }
 
 @end

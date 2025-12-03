@@ -2,51 +2,51 @@
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
 - (CGRect)_mainContentFrame;
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3;
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size;
 - (NSArray)iconButtons;
 - (UIButton)utilityButton;
 - (void)_configureHeaderContentView;
 - (void)_configureHeaderContentViewIfNecessary;
 - (void)_layoutHeaderViews;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setHeaderHeedsHorizontalLayoutMargins:(BOOL)a3;
-- (void)setIcons:(id)a3;
-- (void)setLargerHeaderMarginEnabled:(BOOL)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setBackgroundView:(id)view;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setHeaderHeedsHorizontalLayoutMargins:(BOOL)margins;
+- (void)setIcons:(id)icons;
+- (void)setLargerHeaderMarginEnabled:(BOOL)enabled;
 - (void)setNeedsLayout;
-- (void)setTimeZone:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUtilityView:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setTimeZone:(id)zone;
+- (void)setTitle:(id)title;
+- (void)setUtilityView:(id)view;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation PLTitledPlatterView
 
-- (void)setLargerHeaderMarginEnabled:(BOOL)a3
+- (void)setLargerHeaderMarginEnabled:(BOOL)enabled
 {
-  if (self->_largerHeaderMarginEnabled != a3)
+  if (self->_largerHeaderMarginEnabled != enabled)
   {
-    self->_largerHeaderMarginEnabled = a3;
+    self->_largerHeaderMarginEnabled = enabled;
     [(PLTitledPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = PLTitledPlatterView;
-  [(PLPlatterView *)&v16 setBackgroundView:a3];
+  [(PLPlatterView *)&v16 setBackgroundView:view];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView requiredVisualStyleCategories];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  requiredVisualStyleCategories = [(PLPlatterHeaderContentView *)self->_headerContentView requiredVisualStyleCategories];
+  v5 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -58,47 +58,47 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requiredVisualStyleCategories);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) integerValue];
+        integerValue = [*(*(&v12 + 1) + 8 * v8) integerValue];
         headerContentView = self->_headerContentView;
-        v11 = [(PLPlatterView *)self visualStylingProviderForCategory:v9];
-        [(PLPlatterHeaderContentView *)headerContentView setVisualStylingProvider:v11 forCategory:v9];
+        v11 = [(PLPlatterView *)self visualStylingProviderForCategory:integerValue];
+        [(PLPlatterHeaderContentView *)headerContentView setVisualStylingProvider:v11 forCategory:integerValue];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if ([(PLPlatterHeaderContentView *)self->_headerContentView dateFormatStyle]!= a3)
+  if ([(PLPlatterHeaderContentView *)self->_headerContentView dateFormatStyle]!= style)
   {
     [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
     headerContentView = self->_headerContentView;
 
-    [(PLPlatterHeaderContentView *)headerContentView setDateFormatStyle:a3];
+    [(PLPlatterHeaderContentView *)headerContentView setDateFormatStyle:style];
   }
 }
 
-- (void)setIcons:(id)a3
+- (void)setIcons:(id)icons
 {
-  v4 = a3;
-  v5 = [(PLTitledPlatterView *)self iconButtons];
-  v6 = [v5 count];
+  iconsCopy = icons;
+  iconButtons = [(PLTitledPlatterView *)self iconButtons];
+  v6 = [iconButtons count];
 
   [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
-  [(PLPlatterHeaderContentView *)self->_headerContentView setIcons:v4];
+  [(PLPlatterHeaderContentView *)self->_headerContentView setIcons:iconsCopy];
 
-  v7 = [(PLTitledPlatterView *)self iconButtons];
-  v8 = [v7 count];
+  iconButtons2 = [(PLTitledPlatterView *)self iconButtons];
+  v8 = [iconButtons2 count];
 
   if (!v6 && v8 || v6 && !v8)
   {
@@ -107,42 +107,42 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView title];
-  v5 = [v6 isEqual:v4];
+  titleCopy = title;
+  title = [(PLPlatterHeaderContentView *)self->_headerContentView title];
+  v5 = [titleCopy isEqual:title];
 
   if ((v5 & 1) == 0)
   {
     [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
-    [(PLPlatterHeaderContentView *)self->_headerContentView setTitle:v6];
+    [(PLPlatterHeaderContentView *)self->_headerContentView setTitle:titleCopy];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView date];
-  v5 = [v6 isEqual:v4];
+  dateCopy = date;
+  date = [(PLPlatterHeaderContentView *)self->_headerContentView date];
+  v5 = [dateCopy isEqual:date];
 
   if ((v5 & 1) == 0)
   {
     [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
-    [(PLPlatterHeaderContentView *)self->_headerContentView setDate:v6];
+    [(PLPlatterHeaderContentView *)self->_headerContentView setDate:dateCopy];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView timeZone];
-  v5 = [v6 isEqual:v4];
+  zoneCopy = zone;
+  timeZone = [(PLPlatterHeaderContentView *)self->_headerContentView timeZone];
+  v5 = [zoneCopy isEqual:timeZone];
 
   if ((v5 & 1) == 0)
   {
     [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
-    [(PLPlatterHeaderContentView *)self->_headerContentView setTimeZone:v6];
+    [(PLPlatterHeaderContentView *)self->_headerContentView setTimeZone:zoneCopy];
   }
 }
 
@@ -162,44 +162,44 @@
   return [(PLPlatterHeaderContentView *)headerContentView utilityButton];
 }
 
-- (void)setUtilityView:(id)a3
+- (void)setUtilityView:(id)view
 {
-  v5 = a3;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView utilityView];
+  viewCopy = view;
+  utilityView = [(PLPlatterHeaderContentView *)self->_headerContentView utilityView];
 
-  if (v4 != v5)
+  if (utilityView != viewCopy)
   {
     [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
-    [(PLPlatterHeaderContentView *)self->_headerContentView setUtilityView:v5];
+    [(PLPlatterHeaderContentView *)self->_headerContentView setUtilityView:viewCopy];
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  v3 = a3;
-  if ([(PLPlatterHeaderContentView *)self->_headerContentView isDateAllDay]!= a3)
+  dayCopy = day;
+  if ([(PLPlatterHeaderContentView *)self->_headerContentView isDateAllDay]!= day)
   {
     [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
     headerContentView = self->_headerContentView;
 
-    [(PLPlatterHeaderContentView *)headerContentView setDateAllDay:v3];
+    [(PLPlatterHeaderContentView *)headerContentView setDateAllDay:dayCopy];
   }
 }
 
-- (void)setHeaderHeedsHorizontalLayoutMargins:(BOOL)a3
+- (void)setHeaderHeedsHorizontalLayoutMargins:(BOOL)margins
 {
-  v3 = a3;
+  marginsCopy = margins;
   [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
   headerContentView = self->_headerContentView;
 
-  [(PLPlatterHeaderContentView *)headerContentView setHeedsHorizontalLayoutMargins:v3];
+  [(PLPlatterHeaderContentView *)headerContentView setHeedsHorizontalLayoutMargins:marginsCopy];
 }
 
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size
 {
   v14.receiver = self;
   v14.super_class = PLTitledPlatterView;
-  [(PLPlatterView *)&v14 sizeThatFitsContentWithSize:a3.width, a3.height];
+  [(PLPlatterView *)&v14 sizeThatFitsContentWithSize:size.width, size.height];
   v5 = v4;
   v7 = v6;
   [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
@@ -361,40 +361,40 @@ uint64_t __51__PLTitledPlatterView_sizeThatFitsContentWithSize___block_invoke(ui
   return [(PLPlatterHeaderContentView *)headerContentView adjustsFontForContentSizeCategory];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
   headerContentView = self->_headerContentView;
 
-  [(PLPlatterHeaderContentView *)headerContentView setAdjustsFontForContentSizeCategory:v3];
+  [(PLPlatterHeaderContentView *)headerContentView setAdjustsFontForContentSizeCategory:categoryCopy];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
   [(PLTitledPlatterView *)self _configureHeaderContentViewIfNecessary];
-  v3 = [(PLPlatterHeaderContentView *)self->_headerContentView adjustForContentSizeCategoryChange];
-  if (v3)
+  adjustForContentSizeCategoryChange = [(PLPlatterHeaderContentView *)self->_headerContentView adjustForContentSizeCategoryChange];
+  if (adjustForContentSizeCategoryChange)
   {
     [(PLTitledPlatterView *)self setNeedsLayout];
   }
 
-  return v3;
+  return adjustForContentSizeCategoryChange;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  v7 = [(PLPlatterView *)self visualStylingProviderForCategory:a4];
+  providerCopy = provider;
+  v7 = [(PLPlatterView *)self visualStylingProviderForCategory:category];
 
-  if (v7 != v6)
+  if (v7 != providerCopy)
   {
     v10.receiver = self;
     v10.super_class = PLTitledPlatterView;
-    [(PLPlatterView *)&v10 setVisualStylingProvider:v6 forCategory:a4];
+    [(PLPlatterView *)&v10 setVisualStylingProvider:providerCopy forCategory:category];
     headerContentView = self->_headerContentView;
-    v9 = [(PLPlatterView *)self visualStylingProviderForCategory:a4];
-    [(PLPlatterHeaderContentView *)headerContentView setVisualStylingProvider:v9 forCategory:a4];
+    v9 = [(PLPlatterView *)self visualStylingProviderForCategory:category];
+    [(PLPlatterHeaderContentView *)headerContentView setVisualStylingProvider:v9 forCategory:category];
   }
 }
 
@@ -409,8 +409,8 @@ uint64_t __51__PLTitledPlatterView_sizeThatFitsContentWithSize___block_invoke(ui
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PLPlatterHeaderContentView *)self->_headerContentView requiredVisualStyleCategories];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  requiredVisualStyleCategories = [(PLPlatterHeaderContentView *)self->_headerContentView requiredVisualStyleCategories];
+  v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -422,19 +422,19 @@ uint64_t __51__PLTitledPlatterView_sizeThatFitsContentWithSize___block_invoke(ui
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requiredVisualStyleCategories);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) integerValue];
+        integerValue = [*(*(&v13 + 1) + 8 * v9) integerValue];
         v11 = self->_headerContentView;
-        v12 = [(PLPlatterView *)self visualStylingProviderForCategory:v10];
-        [(PLPlatterHeaderContentView *)v11 setVisualStylingProvider:v12 forCategory:v10];
+        v12 = [(PLPlatterView *)self visualStylingProviderForCategory:integerValue];
+        [(PLPlatterHeaderContentView *)v11 setVisualStylingProvider:v12 forCategory:integerValue];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

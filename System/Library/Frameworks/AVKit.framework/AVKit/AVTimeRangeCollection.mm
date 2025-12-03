@@ -1,36 +1,36 @@
 @interface AVTimeRangeCollection
-- (AVTimeRangeCollection)initWithInterstitialTimeRanges:(id)a3;
-- (AVTimeRangeCollection)initWithTimeRanges:(id)a3;
-- (AVTimeRangeCollection)initWithTimedMetadataGroups:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTimeRangeCollection:(id)a3;
-- (double)displayTimeFromTime:(double)a3;
-- (double)timeFromDisplayTime:(double)a3;
+- (AVTimeRangeCollection)initWithInterstitialTimeRanges:(id)ranges;
+- (AVTimeRangeCollection)initWithTimeRanges:(id)ranges;
+- (AVTimeRangeCollection)initWithTimedMetadataGroups:(id)groups;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTimeRangeCollection:(id)collection;
+- (double)displayTimeFromTime:(double)time;
+- (double)timeFromDisplayTime:(double)time;
 - (id)arrayOfBoundaryTimes;
-- (id)arrayOfDisplayTimesMatching:(id)a3;
+- (id)arrayOfDisplayTimesMatching:(id)matching;
 - (id)description;
-- (id)displayTimeRangeTrimmedToTimeRange:(id)a3;
-- (id)timeRangeAfterTime:(double)a3;
-- (id)timeRangeBeforeTime:(double)a3;
-- (id)timeRangeClosestToTime:(double)a3;
-- (id)timeRangeContainingTime:(double)a3;
-- (id)timeRangesBetweenDisplayTime:(double)a3 and:(double)a4;
+- (id)displayTimeRangeTrimmedToTimeRange:(id)range;
+- (id)timeRangeAfterTime:(double)time;
+- (id)timeRangeBeforeTime:(double)time;
+- (id)timeRangeClosestToTime:(double)time;
+- (id)timeRangeContainingTime:(double)time;
+- (id)timeRangesBetweenDisplayTime:(double)time and:(double)and;
 - (unint64_t)count;
-- (void)setMapDate:(id)a3 toTime:(double)a4;
+- (void)setMapDate:(id)date toTime:(double)time;
 @end
 
 @implementation AVTimeRangeCollection
 
-- (AVTimeRangeCollection)initWithInterstitialTimeRanges:(id)a3
+- (AVTimeRangeCollection)initWithInterstitialTimeRanges:(id)ranges
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  rangesCopy = ranges;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = rangesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -52,7 +52,7 @@
           if ((v15 & 0x1D) == 1)
           {
             v12 = [AVTimeRange timeRangeWithInterstice:v11];
-            [v5 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -68,7 +68,7 @@
     while (v8);
   }
 
-  v13 = [(AVTimeRangeCollection *)self initWithTimeRanges:v5];
+  v13 = [(AVTimeRangeCollection *)self initWithTimeRanges:array];
   return v13;
 }
 
@@ -126,19 +126,19 @@
   return v17;
 }
 
-- (id)displayTimeRangeTrimmedToTimeRange:(id)a3
+- (id)displayTimeRangeTrimmedToTimeRange:(id)range
 {
-  v4 = a3;
-  [v4 startTime];
+  rangeCopy = range;
+  [rangeCopy startTime];
   v5 = [(AVTimeRangeCollection *)self timeRangeContainingTime:?];
   if (v5)
   {
-    v6 = [v4 timeRangeExcludingTimeRange:v5];
+    v6 = [rangeCopy timeRangeExcludingTimeRange:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = rangeCopy;
   }
 
   v7 = v6;
@@ -163,15 +163,15 @@
   return v13;
 }
 
-- (double)timeFromDisplayTime:(double)a3
+- (double)timeFromDisplayTime:(double)time
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AVTimeRangeCollection *)self timeRanges];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v5 = [timeRanges countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -182,12 +182,12 @@ LABEL_3:
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(timeRanges);
       }
 
       v9 = *(*(&v13 + 1) + 8 * v8);
       [v9 startTime];
-      if (a3 <= v10)
+      if (time <= v10)
       {
         break;
       }
@@ -195,12 +195,12 @@ LABEL_3:
       if ([v9 isCollapsedInTimeLine])
       {
         [v9 duration];
-        a3 = a3 + v11;
+        time = time + v11;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [timeRanges countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -211,18 +211,18 @@ LABEL_3:
     }
   }
 
-  return a3;
+  return time;
 }
 
-- (double)displayTimeFromTime:(double)a3
+- (double)displayTimeFromTime:(double)time
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(AVTimeRangeCollection *)self timeRanges];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v5 = [timeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -234,11 +234,11 @@ LABEL_3:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeRanges);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        if ([v10 containsTime:a3])
+        if ([v10 containsTime:time])
         {
           if ([v10 isCollapsedInTimeLine])
           {
@@ -249,7 +249,7 @@ LABEL_3:
           else
           {
 LABEL_18:
-            v14 = a3 - v8;
+            v14 = time - v8;
           }
 
 LABEL_20:
@@ -258,7 +258,7 @@ LABEL_20:
         }
 
         [v10 startTime];
-        if (v11 > a3)
+        if (v11 > time)
         {
           goto LABEL_18;
         }
@@ -270,14 +270,14 @@ LABEL_20:
         }
 
         [v10 endTime];
-        if (v13 == a3)
+        if (v13 == time)
         {
-          v14 = a3 - v8 + 0.00000011920929;
+          v14 = time - v8 + 0.00000011920929;
           goto LABEL_20;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [timeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v6)
       {
         continue;
@@ -292,15 +292,15 @@ LABEL_20:
     v8 = 0.0;
   }
 
-  return a3 - v8;
+  return time - v8;
 }
 
-- (id)timeRangesBetweenDisplayTime:(double)a3 and:(double)a4
+- (id)timeRangesBetweenDisplayTime:(double)time and:(double)and
 {
   v28 = *MEMORY[0x1E69E9840];
-  [(AVTimeRangeCollection *)self timeFromDisplayTime:a3];
+  [(AVTimeRangeCollection *)self timeFromDisplayTime:time];
   v7 = v6;
-  [(AVTimeRangeCollection *)self timeFromDisplayTime:a4];
+  [(AVTimeRangeCollection *)self timeFromDisplayTime:and];
   v9 = v8;
   if (v7 >= v8)
   {
@@ -312,13 +312,13 @@ LABEL_20:
     v10 = v7;
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [(AVTimeRangeCollection *)self timeRanges];
-  v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v13 = [timeRanges countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -330,7 +330,7 @@ LABEL_20:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(timeRanges);
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
@@ -340,20 +340,20 @@ LABEL_20:
           [v18 endTime];
           if (v20 > v10)
           {
-            [v11 addObject:v18];
+            [array addObject:v18];
           }
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v14 = [timeRanges countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v14);
   }
 
-  if ([v11 count])
+  if ([array count])
   {
-    v21 = [v11 copy];
+    v21 = [array copy];
   }
 
   else
@@ -364,21 +364,21 @@ LABEL_20:
   return v21;
 }
 
-- (id)arrayOfDisplayTimesMatching:(id)a3
+- (id)arrayOfDisplayTimesMatching:(id)matching
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(AVTimeRangeCollection *)self timeRanges];
+  matchingCopy = matching;
+  array = [MEMORY[0x1E695DF70] array];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke;
   v11[3] = &unk_1E7209CB8;
-  v13 = self;
-  v14 = v4;
-  v12 = v5;
-  v7 = v5;
-  v8 = v4;
-  [v6 enumerateObjectsWithOptions:0 usingBlock:v11];
+  selfCopy = self;
+  v14 = matchingCopy;
+  v12 = array;
+  v7 = array;
+  v8 = matchingCopy;
+  [timeRanges enumerateObjectsWithOptions:0 usingBlock:v11];
 
   v9 = [v7 copy];
 
@@ -403,13 +403,13 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
 - (id)arrayOfBoundaryTimes
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(AVTimeRangeCollection *)self timeRanges];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v5 = [timeRanges countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -420,7 +420,7 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeRanges);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
@@ -438,7 +438,7 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
         }
 
         v11 = [v10 valueWithCMTime:&v17];
-        [v3 addObject:v11];
+        [array addObject:v11];
 
         [v9 duration];
         if (v12 > 0.0)
@@ -457,30 +457,30 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
           }
 
           v14 = [v13 valueWithCMTime:&v17];
-          [v3 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [timeRanges countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
 
   return v15;
 }
 
-- (id)timeRangeAfterTime:(double)a3
+- (id)timeRangeAfterTime:(double)time
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(AVTimeRangeCollection *)self timeRanges];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v5 = [timeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -492,12 +492,12 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeRanges);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         [v10 startTime];
-        if (v11 > a3)
+        if (v11 > time)
         {
           if (!v7 || ([v10 startTime], v13 = v12, objc_msgSend(v7, "startTime"), v13 < v14))
           {
@@ -508,7 +508,7 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [timeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -522,15 +522,15 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
   return v7;
 }
 
-- (id)timeRangeBeforeTime:(double)a3
+- (id)timeRangeBeforeTime:(double)time
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(AVTimeRangeCollection *)self timeRanges];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v5 = [timeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -542,12 +542,12 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeRanges);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         [v10 endTime];
-        if (v11 < a3)
+        if (v11 < time)
         {
           if (!v7 || ([v10 endTime], v13 = v12, objc_msgSend(v7, "endTime"), v13 > v14))
           {
@@ -558,7 +558,7 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [timeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -572,18 +572,18 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
   return v7;
 }
 
-- (id)timeRangeClosestToTime:(double)a3
+- (id)timeRangeClosestToTime:(double)time
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(AVTimeRangeCollection *)self timeRanges];
-  v6 = [v5 firstObject];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  firstObject = [timeRanges firstObject];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(AVTimeRangeCollection *)self timeRanges];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  timeRanges2 = [(AVTimeRangeCollection *)self timeRanges];
+  v8 = [timeRanges2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -594,29 +594,29 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(timeRanges2);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if ([v12 containsTime:a3])
+        if ([v12 containsTime:time])
         {
           v17 = v12;
 
           goto LABEL_13;
         }
 
-        [v6 deltaTimeFromOutsideTime:a3];
+        [firstObject deltaTimeFromOutsideTime:time];
         v14 = fabs(v13);
-        [v12 deltaTimeFromOutsideTime:a3];
+        [v12 deltaTimeFromOutsideTime:time];
         if (v14 > fabs(v15))
         {
           v16 = v12;
 
-          v6 = v16;
+          firstObject = v16;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [timeRanges2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -626,22 +626,22 @@ void __53__AVTimeRangeCollection_arrayOfDisplayTimesMatching___block_invoke(void
     }
   }
 
-  v6 = v6;
-  v17 = v6;
+  firstObject = firstObject;
+  v17 = firstObject;
 LABEL_13:
 
   return v17;
 }
 
-- (id)timeRangeContainingTime:(double)a3
+- (id)timeRangeContainingTime:(double)time
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AVTimeRangeCollection *)self timeRanges];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v5 = [timeRanges countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -651,18 +651,18 @@ LABEL_13:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeRanges);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        if ([v8 containsTime:a3])
+        if ([v8 containsTime:time])
         {
           v5 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [timeRanges countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -679,16 +679,16 @@ LABEL_11:
 
 - (unint64_t)count
 {
-  v2 = [(AVTimeRangeCollection *)self timeRanges];
-  v3 = [v2 count];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v3 = [timeRanges count];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -696,32 +696,32 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AVTimeRangeCollection *)self isEqualToTimeRangeCollection:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AVTimeRangeCollection *)self isEqualToTimeRangeCollection:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToTimeRangeCollection:(id)a3
+- (BOOL)isEqualToTimeRangeCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(AVTimeRangeCollection *)self timeRanges];
-  v6 = [v4 timeRanges];
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  collectionCopy = collection;
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  timeRanges2 = [collectionCopy timeRanges];
+  v7 = [timeRanges count];
+  if (v7 == [timeRanges2 count])
   {
-    if ([v5 count])
+    if ([timeRanges count])
     {
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndexedSubscript:v8];
-        v10 = [v9 interstice];
+        v9 = [timeRanges objectAtIndexedSubscript:v8];
+        interstice = [v9 interstice];
 
-        v11 = [v6 objectAtIndexedSubscript:v8];
-        v12 = [v11 interstice];
+        v11 = [timeRanges2 objectAtIndexedSubscript:v8];
+        interstice2 = [v11 interstice];
 
-        v13 = [v10 isEqual:v12];
+        v13 = [interstice isEqual:interstice2];
         if ((v13 & 1) == 0)
         {
           break;
@@ -730,7 +730,7 @@ LABEL_11:
         ++v8;
       }
 
-      while (v8 < [v5 count]);
+      while (v8 < [timeRanges count]);
     }
 
     else
@@ -747,16 +747,16 @@ LABEL_11:
   return v13;
 }
 
-- (void)setMapDate:(id)a3 toTime:(double)a4
+- (void)setMapDate:(id)date toTime:(double)time
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(AVTimeRangeCollection *)self timeRanges];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  timeRanges = [(AVTimeRangeCollection *)self timeRanges];
+  v8 = [timeRanges countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -768,30 +768,30 @@ LABEL_11:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(timeRanges);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setMapDate:v6 toTime:a4];
+        [*(*(&v12 + 1) + 8 * v11++) setMapDate:dateCopy toTime:time];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [timeRanges countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (AVTimeRangeCollection)initWithTimedMetadataGroups:(id)a3
+- (AVTimeRangeCollection)initWithTimedMetadataGroups:(id)groups
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  groupsCopy = groups;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = groupsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -810,7 +810,7 @@ LABEL_11:
         v11 = *(*(&v16 + 1) + 8 * v10);
         v12 = [AVTimeRange alloc];
         v13 = [(AVTimeRange *)v12 initWithAVTimedMetadataGroup:v11, v16];
-        [v5 addObject:v13];
+        [array addObject:v13];
 
         ++v10;
       }
@@ -822,20 +822,20 @@ LABEL_11:
     while (v8);
   }
 
-  v14 = [(AVTimeRangeCollection *)self initWithTimeRanges:v5];
+  v14 = [(AVTimeRangeCollection *)self initWithTimeRanges:array];
   return v14;
 }
 
-- (AVTimeRangeCollection)initWithTimeRanges:(id)a3
+- (AVTimeRangeCollection)initWithTimeRanges:(id)ranges
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangesCopy = ranges;
   v27.receiver = self;
   v27.super_class = AVTimeRangeCollection;
   v5 = [(AVTimeRangeCollection *)&v27 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingSelector:sel_compare_];
+    v6 = [rangesCopy sortedArrayUsingSelector:sel_compare_];
     timeRanges = v5->_timeRanges;
     v5->_timeRanges = v6;
 

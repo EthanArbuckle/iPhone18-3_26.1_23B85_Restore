@@ -1,34 +1,34 @@
 @interface SKUIMenuPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIMenuPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIMenuPageSection)initWithPageComponent:(id)component;
 - (UIEdgeInsets)sectionContentInset;
 - (id)_contentChildView;
 - (id)_newMenuViewController;
 - (id)_pillsControl;
 - (id)_popupHeaderView;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (void)_cancelMenuAction:(id)a3;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (void)_cancelMenuAction:(id)action;
 - (void)_dismissMenuViewController;
-- (void)_loadSortDataIfNecessaryForMenuIndex:(int64_t)a3 reason:(int64_t)a4;
-- (void)_pillAction:(id)a3;
+- (void)_loadSortDataIfNecessaryForMenuIndex:(int64_t)index reason:(int64_t)reason;
+- (void)_pillAction:(id)action;
 - (void)_restorePreviousSelection;
-- (void)_setSelectedIndex:(int64_t)a3;
+- (void)_setSelectedIndex:(int64_t)index;
 - (void)_showMenuViewController;
 - (void)_showMoreList;
 - (void)_showPopoverController;
 - (void)dealloc;
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)sortDataRequest:(id)a3 didFinishWithLockups:(id)a4;
-- (void)willAppearInContext:(id)a3;
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)sortDataRequest:(id)request didFinishWithLockups:(id)lockups;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SKUIMenuPageSection
 
-- (SKUIMenuPageSection)initWithPageComponent:(id)a3
+- (SKUIMenuPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMenuPageSection initWithPageComponent:];
@@ -36,10 +36,10 @@
 
   v7.receiver = self;
   v7.super_class = SKUIMenuPageSection;
-  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:componentCopy];
   if (v5)
   {
-    v5->_selectedIndex = [v4 defaultSelectedIndex];
+    v5->_selectedIndex = [componentCopy defaultSelectedIndex];
   }
 
   return v5;
@@ -57,26 +57,26 @@
   [(SKUIStorePageSection *)&v3 dealloc];
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [v6 style];
-  v8 = [v7 ikBackgroundColor];
-  v9 = [v8 color];
+  style = [viewElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v9)
+  if (color)
   {
-    v10 = v9;
+    v10 = color;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SKUIMenuPageSection;
-    v10 = [(SKUIStorePageSection *)&v13 backgroundColorForIndexPath:v4];
+    v10 = [(SKUIStorePageSection *)&v13 backgroundColorForIndexPath:pathCopy];
   }
 
   v11 = v10;
@@ -84,28 +84,28 @@
   return v11;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUIMenuPageSectionReuseIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUIMenuPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
   [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  v8 = [(SKUIMenuPageSection *)self _contentChildView];
-  [v7 setContentChildView:v8];
+  _contentChildView = [(SKUIMenuPageSection *)self _contentChildView];
+  [v7 setContentChildView:_contentChildView];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIMenuPageSection *)self _contentChildView];
-  [v4 bounds];
+  _contentChildView = [(SKUIMenuPageSection *)self _contentChildView];
+  [_contentChildView bounds];
   v6 = v5;
 
-  v7 = [(SKUIStorePageSection *)self context];
-  [v7 activePageWidth];
+  context = [(SKUIStorePageSection *)self context];
+  [context activePageWidth];
   v9 = v8;
 
   v10 = v9;
@@ -117,9 +117,9 @@
 
 - (UIEdgeInsets)sectionContentInset
 {
-  v2 = [(SKUIStorePageSection *)self isTopSection];
+  isTopSection = [(SKUIStorePageSection *)self isTopSection];
   v3 = 15.0;
-  if (v2)
+  if (isTopSection)
   {
     v3 = 7.0;
   }
@@ -134,48 +134,48 @@
   return result;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIMenuPageSectionReuseIdentifier"];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIMenuPageSectionReuseIdentifier"];
   v6.receiver = self;
   v6.super_class = SKUIMenuPageSection;
-  [(SKUIStorePageSection *)&v6 willAppearInContext:v4];
+  [(SKUIStorePageSection *)&v6 willAppearInContext:contextCopy];
 }
 
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index
 {
-  [a3 setIndexOfCheckedTitle:a4];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  [controller setIndexOfCheckedTitle:index];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v8 = 2;
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v8 = 4;
   }
 
-  [(SKUIMenuPageSection *)self _setSelectedIndex:v8 + a4];
+  [(SKUIMenuPageSection *)self _setSelectedIndex:v8 + index];
 
   [(SKUIMenuPageSection *)self _dismissMenuViewController];
 }
 
-- (void)sortDataRequest:(id)a3 didFinishWithLockups:(id)a4
+- (void)sortDataRequest:(id)request didFinishWithLockups:(id)lockups
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 sortURL];
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v9 = [v8 numberOfItems];
-  if (v9 >= 1)
+  lockupsCopy = lockups;
+  sortURL = [request sortURL];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  numberOfItems = [pageComponent numberOfItems];
+  if (numberOfItems >= 1)
   {
-    v10 = v9;
+    v10 = numberOfItems;
     v11 = 0;
     while (1)
     {
-      v12 = [v8 sortURLForIndex:v11];
-      v13 = [v7 isEqual:v12];
+      v12 = [pageComponent sortURLForIndex:v11];
+      v13 = [sortURL isEqual:v12];
 
       if (v13)
       {
@@ -190,22 +190,22 @@
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [[SKUIGridComponent alloc] initWithLockups:v6];
+      v14 = [[SKUIGridComponent alloc] initWithLockups:lockupsCopy];
       v18[0] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-      [v8 _setChildComponents:v15 forIndex:v11];
+      [pageComponent _setChildComponents:v15 forIndex:v11];
 
       [(NSMutableIndexSet *)self->_sortRequestIndexSet removeIndex:v11];
-      v16 = [(SKUIStorePageSection *)self context];
-      v17 = [v16 parentViewController];
-      [v17 _updateSectionsForIndex:v11 menuSection:self];
+      context = [(SKUIStorePageSection *)self context];
+      parentViewController = [context parentViewController];
+      [parentViewController _updateSectionsForIndex:v11 menuSection:self];
     }
   }
 
 LABEL_8:
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   [(SKUIMenuPageSection *)self _restorePreviousSelection];
   [(SKUIMenuViewController *)self->_moreListMenuViewController setDelegate:0];
@@ -217,43 +217,43 @@ LABEL_8:
   self->_moreListPopoverController = 0;
 }
 
-- (void)_cancelMenuAction:(id)a3
+- (void)_cancelMenuAction:(id)action
 {
   [(SKUIMenuPageSection *)self _restorePreviousSelection];
 
   [(SKUIMenuPageSection *)self _dismissMenuViewController];
 }
 
-- (void)_pillAction:(id)a3
+- (void)_pillAction:(id)action
 {
-  v4 = [(SKUIStorePageSection *)self pageComponent];
-  v5 = [v4 numberOfItems];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  numberOfItems = [pageComponent numberOfItems];
 
-  v6 = [(SKUIPillsControl *)self->_pillsControl selectedIndex];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  selectedIndex = [(SKUIPillsControl *)self->_pillsControl selectedIndex];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v9 = 3;
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v9 = 5;
   }
 
-  if (v5 <= v9)
+  if (numberOfItems <= v9)
   {
     goto LABEL_10;
   }
 
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v12 = 2;
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v12 = 4;
   }
 
-  if (v6 == v12)
+  if (selectedIndex == v12)
   {
 
     [(SKUIMenuPageSection *)self _showMoreList];
@@ -263,26 +263,26 @@ LABEL_8:
   {
 LABEL_10:
 
-    [(SKUIMenuPageSection *)self _setSelectedIndex:v6];
+    [(SKUIMenuPageSection *)self _setSelectedIndex:selectedIndex];
   }
 }
 
 - (id)_contentChildView
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v4 = [v3 menuStyle];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  menuStyle = [pageComponent menuStyle];
 
-  if (v4 && ([MEMORY[0x277D75418] currentDevice], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v6))
+  if (menuStyle && ([MEMORY[0x277D75418] currentDevice], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v6))
   {
-    v7 = [(SKUIMenuPageSection *)self _popupHeaderView];
+    _popupHeaderView = [(SKUIMenuPageSection *)self _popupHeaderView];
   }
 
   else
   {
-    v7 = [(SKUIMenuPageSection *)self _pillsControl];
+    _popupHeaderView = [(SKUIMenuPageSection *)self _pillsControl];
   }
 
-  return v7;
+  return _popupHeaderView;
 }
 
 - (void)_dismissMenuViewController
@@ -312,22 +312,22 @@ LABEL_10:
     [(SKUIMenuViewController *)v10 dismissViewControllerAnimated:1 completion:0];
   }
 
-  v8 = [(SKUIStorePageSection *)self context];
-  v9 = [v8 parentViewController];
-  [v9 _endIgnoringSectionChanges];
+  context = [(SKUIStorePageSection *)self context];
+  parentViewController = [context parentViewController];
+  [parentViewController _endIgnoringSectionChanges];
 }
 
-- (void)_loadSortDataIfNecessaryForMenuIndex:(int64_t)a3 reason:(int64_t)a4
+- (void)_loadSortDataIfNecessaryForMenuIndex:(int64_t)index reason:(int64_t)reason
 {
   if (([(NSMutableIndexSet *)self->_sortRequestIndexSet containsIndex:?]& 1) == 0)
   {
-    v16 = [(SKUIStorePageSection *)self pageComponent];
-    v7 = [v16 childComponentsForIndex:a3];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    v7 = [pageComponent childComponentsForIndex:index];
 
-    v8 = v16;
+    v8 = pageComponent;
     if (!v7)
     {
-      v9 = [v16 sortURLForIndex:a3];
+      v9 = [pageComponent sortURLForIndex:index];
       if (v9)
       {
         v10 = [[SKUISortDataRequest alloc] initWithSortURL:v9];
@@ -342,23 +342,23 @@ LABEL_10:
           sortRequestIndexSet = self->_sortRequestIndexSet;
         }
 
-        [(NSMutableIndexSet *)sortRequestIndexSet addIndex:a3];
-        v14 = [(SKUIStorePageSection *)self context];
-        v15 = [v14 resourceLoader];
-        [v15 loadResourceWithRequest:v10 reason:a4];
+        [(NSMutableIndexSet *)sortRequestIndexSet addIndex:index];
+        context = [(SKUIStorePageSection *)self context];
+        resourceLoader = [context resourceLoader];
+        [resourceLoader loadResourceWithRequest:v10 reason:reason];
       }
 
-      v8 = v16;
+      v8 = pageComponent;
     }
   }
 }
 
 - (id)_newMenuViewController
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 4;
   }
@@ -368,8 +368,8 @@ LABEL_10:
     v5 = 2;
   }
 
-  v6 = [(SKUIPillsControl *)self->_pillsControl titles];
-  v7 = [v6 subarrayWithRange:{v5, objc_msgSend(v6, "count") - v5}];
+  titles = [(SKUIPillsControl *)self->_pillsControl titles];
+  v7 = [titles subarrayWithRange:{v5, objc_msgSend(titles, "count") - v5}];
 
   v8 = [[SKUIMenuViewController alloc] initWithMenuTitles:v7];
   [(SKUIMenuViewController *)v8 setDelegate:self];
@@ -393,15 +393,15 @@ LABEL_10:
 
     [(SKUIPillsControl *)self->_pillsControl addTarget:self action:sel__pillAction_ forControlEvents:4096];
     v6 = self->_pillsControl;
-    v7 = [(SKUIStorePageSection *)self context];
-    v8 = [v7 colorScheme];
-    [(SKUIPillsControl *)v6 setColorScheme:v8];
+    context = [(SKUIStorePageSection *)self context];
+    colorScheme = [context colorScheme];
+    [(SKUIPillsControl *)v6 setColorScheme:colorScheme];
 
     v9 = self->_pillsControl;
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v12 = 5;
     }
@@ -412,32 +412,32 @@ LABEL_10:
     }
 
     [(SKUIPillsControl *)v9 setMaximumNumberOfVisiblePills:v12];
-    v13 = [(SKUIStorePageSection *)self pageComponent];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
     v14 = self->_pillsControl;
-    v15 = [v13 allTitles];
-    [(SKUIPillsControl *)v14 setTitles:v15];
+    allTitles = [pageComponent allTitles];
+    [(SKUIPillsControl *)v14 setTitles:allTitles];
 
-    v16 = [v13 viewElement];
-    v17 = [v16 style];
-    v18 = SKUIViewElementPlainColorWithStyle(v17, 0);
+    viewElement = [pageComponent viewElement];
+    style = [viewElement style];
+    v18 = SKUIViewElementPlainColorWithStyle(style, 0);
 
     [(SKUIPillsControl *)self->_pillsControl setTintColor:v18];
-    v19 = [(SKUIStorePageSection *)self context];
-    v20 = [v19 parentViewController];
-    v21 = [v20 clientContext];
+    context2 = [(SKUIStorePageSection *)self context];
+    parentViewController = [context2 parentViewController];
+    clientContext = [parentViewController clientContext];
 
-    v22 = [v13 titleForMoreItem];
+    titleForMoreItem = [pageComponent titleForMoreItem];
     v23 = self->_pillsControl;
-    if (v22)
+    if (titleForMoreItem)
     {
-      [(SKUIPillsControl *)self->_pillsControl setMoreListTitle:v22];
+      [(SKUIPillsControl *)self->_pillsControl setMoreListTitle:titleForMoreItem];
     }
 
     else
     {
-      if (v21)
+      if (clientContext)
       {
-        [v21 localizedStringForKey:@"TABS_MORE_LIST_TITLE"];
+        [clientContext localizedStringForKey:@"TABS_MORE_LIST_TITLE"];
       }
 
       else
@@ -452,11 +452,11 @@ LABEL_10:
     [(SKUIPillsControl *)self->_pillsControl reloadPills];
     v25 = self->_pillsControl;
     selectedIndex = self->_selectedIndex;
-    v27 = [MEMORY[0x277D75418] currentDevice];
-    v28 = [v27 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
     v29 = 2;
-    if ((v28 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v29 = 4;
     }
@@ -490,21 +490,21 @@ LABEL_10:
     self->_popupHeaderView = v4;
 
     [(SKUIPopupMenuHeaderView *)self->_popupHeaderView setDelegate:self];
-    v6 = [(SKUIStorePageSection *)self pageComponent];
-    v7 = [v6 menuTitle];
-    if (v7)
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    menuTitle = [pageComponent menuTitle];
+    if (menuTitle)
     {
-      [(SKUIPopupMenuHeaderView *)self->_popupHeaderView setTitle:v7];
+      [(SKUIPopupMenuHeaderView *)self->_popupHeaderView setTitle:menuTitle];
     }
 
-    v8 = [(SKUIStorePageSection *)self context];
-    v9 = [v8 parentViewController];
-    v10 = [v9 clientContext];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
+    clientContext = [parentViewController clientContext];
 
     v11 = self->_popupHeaderView;
-    if (v10)
+    if (clientContext)
     {
-      [v10 localizedStringForKey:@"POPUP_SORT_BY"];
+      [clientContext localizedStringForKey:@"POPUP_SORT_BY"];
     }
 
     else
@@ -515,13 +515,13 @@ LABEL_10:
     [(SKUIPopupMenuHeaderView *)v11 setMenuLabelTitle:v12];
 
     v13 = self->_popupHeaderView;
-    v14 = [v6 allTitles];
-    [(SKUIPopupMenuHeaderView *)v13 setMenuItemTitles:v14];
+    allTitles = [pageComponent allTitles];
+    [(SKUIPopupMenuHeaderView *)v13 setMenuItemTitles:allTitles];
 
     v15 = self->_popupHeaderView;
-    v16 = [(SKUIStorePageSection *)self context];
-    v17 = [v16 colorScheme];
-    [(SKUIPopupMenuHeaderView *)v15 setColoringWithColorScheme:v17];
+    context2 = [(SKUIStorePageSection *)self context];
+    colorScheme = [context2 colorScheme];
+    [(SKUIPopupMenuHeaderView *)v15 setColoringWithColorScheme:colorScheme];
 
     [(SKUIPopupMenuHeaderView *)self->_popupHeaderView setSelectedMenuItemIndex:self->_selectedIndex];
     [(SKUIPopupMenuHeaderView *)self->_popupHeaderView sizeToFit];
@@ -535,11 +535,11 @@ LABEL_10:
 - (void)_restorePreviousSelection
 {
   selectedIndex = self->_selectedIndex;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v6 = 2;
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6 = 4;
   }
@@ -560,26 +560,26 @@ LABEL_10:
   [(SKUIPillsControl *)pillsControl setSelectedIndex:v7];
 }
 
-- (void)_setSelectedIndex:(int64_t)a3
+- (void)_setSelectedIndex:(int64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    self->_selectedIndex = a3;
-    v4 = [(SKUIStorePageSection *)self pageComponent];
-    v8 = [v4 viewElement];
+    self->_selectedIndex = index;
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
     selectedIndex = self->_selectedIndex;
-    if (v8)
+    if (viewElement)
     {
-      [v8 dispatchEventOfType:2 forItemAtIndex:selectedIndex];
+      [viewElement dispatchEventOfType:2 forItemAtIndex:selectedIndex];
     }
 
     else
     {
       [(SKUIMenuPageSection *)self _loadSortDataIfNecessaryForMenuIndex:selectedIndex reason:1];
-      v6 = [(SKUIStorePageSection *)self context];
-      v7 = [v6 parentViewController];
-      [v7 _setSelectedIndex:self->_selectedIndex forMenuSection:self];
+      context = [(SKUIStorePageSection *)self context];
+      parentViewController = [context parentViewController];
+      [parentViewController _setSelectedIndex:self->_selectedIndex forMenuSection:self];
     }
   }
 }
@@ -588,15 +588,15 @@ LABEL_10:
 {
   if (!self->_moreListMenuViewController)
   {
-    v16 = [(SKUIStorePageSection *)self context];
-    v3 = [v16 parentViewController];
-    v4 = [(SKUIMenuPageSection *)self _newMenuViewController];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
+    _newMenuViewController = [(SKUIMenuPageSection *)self _newMenuViewController];
     moreListMenuViewController = self->_moreListMenuViewController;
-    self->_moreListMenuViewController = v4;
+    self->_moreListMenuViewController = _newMenuViewController;
 
     v6 = self->_moreListMenuViewController;
-    v7 = [(SKUIPillsControl *)self->_pillsControl moreListTitle];
-    [(SKUIMenuViewController *)v6 setTitle:v7];
+    moreListTitle = [(SKUIPillsControl *)self->_pillsControl moreListTitle];
+    [(SKUIMenuViewController *)v6 setTitle:moreListTitle];
 
     v8 = objc_alloc_init(MEMORY[0x277D751E0]);
     cancelMenuItem = self->_cancelMenuItem;
@@ -606,11 +606,11 @@ LABEL_10:
     [(UIBarButtonItem *)self->_cancelMenuItem setStyle:2];
     [(UIBarButtonItem *)self->_cancelMenuItem setTarget:self];
     v10 = self->_cancelMenuItem;
-    v11 = [v16 clientContext];
-    v12 = v11;
-    if (v11)
+    clientContext = [context clientContext];
+    v12 = clientContext;
+    if (clientContext)
     {
-      [v11 localizedStringForKey:@"CANCEL"];
+      [clientContext localizedStringForKey:@"CANCEL"];
     }
 
     else
@@ -620,21 +620,21 @@ LABEL_10:
     v13 = ;
     [(UIBarButtonItem *)v10 setTitle:v13];
 
-    v14 = [(SKUIMenuViewController *)self->_moreListMenuViewController navigationItem];
-    [v14 setLeftBarButtonItem:self->_cancelMenuItem];
+    navigationItem = [(SKUIMenuViewController *)self->_moreListMenuViewController navigationItem];
+    [navigationItem setLeftBarButtonItem:self->_cancelMenuItem];
 
     v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:self->_moreListMenuViewController];
-    [v3 presentViewController:v15 animated:1 completion:0];
-    [v3 _beginIgnoringSectionChanges];
+    [parentViewController presentViewController:v15 animated:1 completion:0];
+    [parentViewController _beginIgnoringSectionChanges];
   }
 }
 
 - (void)_showMoreList
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
 
     [(SKUIMenuPageSection *)self _showPopoverController];
@@ -651,13 +651,13 @@ LABEL_10:
 {
   if (!self->_moreListPopoverController)
   {
-    v3 = [(SKUIMenuPageSection *)self _newMenuViewController];
+    _newMenuViewController = [(SKUIMenuPageSection *)self _newMenuViewController];
     moreListMenuViewController = self->_moreListMenuViewController;
-    self->_moreListMenuViewController = v3;
+    self->_moreListMenuViewController = _newMenuViewController;
 
     [(SKUIMenuViewController *)self->_moreListMenuViewController setDelegate:self];
-    v5 = [(SKUIMenuViewController *)self->_moreListMenuViewController menuTitles];
-    v6 = ([v5 count] * 45.0);
+    menuTitles = [(SKUIMenuViewController *)self->_moreListMenuViewController menuTitles];
+    v6 = ([menuTitles count] * 45.0);
 
     [(SKUIMenuViewController *)self->_moreListMenuViewController setPreferredContentSize:320.0, v6];
     v7 = [objc_alloc(MEMORY[0x277D758A0]) initWithContentViewController:self->_moreListMenuViewController];
@@ -669,9 +669,9 @@ LABEL_10:
     v9 = self->_moreListPopoverController;
     [(SKUIPillsControl *)self->_pillsControl selectedPillFrame];
     [(UIPopoverController *)v9 presentPopoverFromRect:self->_pillsControl inView:1 permittedArrowDirections:1 animated:?];
-    v11 = [(SKUIStorePageSection *)self context];
-    v10 = [v11 parentViewController];
-    [v10 _beginIgnoringSectionChanges];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
+    [parentViewController _beginIgnoringSectionChanges];
   }
 }
 

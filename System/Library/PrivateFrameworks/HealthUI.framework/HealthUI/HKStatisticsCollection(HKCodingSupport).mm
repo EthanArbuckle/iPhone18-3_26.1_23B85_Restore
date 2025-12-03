@@ -13,18 +13,18 @@
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x1E695DF10];
-    v5 = [v3 statisticsInterval];
-    v6 = [v4 hkui_dateComponentsWithCodableDateComponents:v5];
+    statisticsInterval = [v3 statisticsInterval];
+    v6 = [v4 hkui_dateComponentsWithCodableDateComponents:statisticsInterval];
 
-    v7 = [v3 statistics];
-    v8 = [v7 hk_map:&__block_literal_global_89];
+    statistics = [v3 statistics];
+    v8 = [statistics hk_map:&__block_literal_global_89];
 
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x1E696C4C8]);
-      v10 = [v8 firstObject];
-      v11 = [v10 startDate];
-      v12 = [v9 initWithAnchorDate:v11 statisticsInterval:v6];
+      firstObject = [v8 firstObject];
+      startDate = [firstObject startDate];
+      v12 = [v9 initWithAnchorDate:startDate statisticsInterval:v6];
 
       v21 = 0u;
       v22 = 0u;
@@ -72,12 +72,12 @@
 - (HKCodableStatisticsCollection)codableCollection
 {
   v2 = objc_alloc_init(HKCodableStatisticsCollection);
-  v3 = [a1 statisticsInterval];
-  v4 = [v3 hkui_codableDateComponents];
-  [(HKCodableStatisticsCollection *)v2 setStatisticsInterval:v4];
+  statisticsInterval = [self statisticsInterval];
+  hkui_codableDateComponents = [statisticsInterval hkui_codableDateComponents];
+  [(HKCodableStatisticsCollection *)v2 setStatisticsInterval:hkui_codableDateComponents];
 
-  v5 = [a1 statistics];
-  v6 = [v5 hk_map:&__block_literal_global_351];
+  statistics = [self statistics];
+  v6 = [statistics hk_map:&__block_literal_global_351];
   v7 = [v6 mutableCopy];
   [(HKCodableStatisticsCollection *)v2 setStatistics:v7];
 

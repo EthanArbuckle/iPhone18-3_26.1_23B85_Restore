@@ -1,24 +1,24 @@
 @interface PKApplyFocusedPickerViewController
-- (PKApplyFocusedPickerViewController)initWithPicker:(id)a3;
+- (PKApplyFocusedPickerViewController)initWithPicker:(id)picker;
 - (id)_recomputeSections;
 - (void)didSelectCell;
-- (void)recomputeSectionsWithReload:(BOOL)a3;
-- (void)reloadDataAnimated:(BOOL)a3;
+- (void)recomputeSectionsWithReload:(BOOL)reload;
+- (void)reloadDataAnimated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation PKApplyFocusedPickerViewController
 
-- (PKApplyFocusedPickerViewController)initWithPicker:(id)a3
+- (PKApplyFocusedPickerViewController)initWithPicker:(id)picker
 {
-  v5 = a3;
+  pickerCopy = picker;
   v11.receiver = self;
   v11.super_class = PKApplyFocusedPickerViewController;
   v6 = [(PKApplyFocusedPickerViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_picker, a3);
+    objc_storeStrong(&v6->_picker, picker);
     v8 = [[PKApplyListPickerSectionController alloc] initWithPicker:v7->_picker];
     pickerSectionController = v7->_pickerSectionController;
     v7->_pickerSectionController = v8;
@@ -34,18 +34,18 @@
   v8.receiver = self;
   v8.super_class = PKApplyFocusedPickerViewController;
   [(PKDynamicCollectionViewController *)&v8 viewDidLoad];
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
   [(PKApplyFocusedPickerViewController *)self recomputeSectionsWithReload:0];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
-  v5 = [(PKApplyFocusedPickerViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  [collectionView setBackgroundColor:v4];
+  view = [(PKApplyFocusedPickerViewController *)self view];
+  [view setBackgroundColor:v4];
 
-  v6 = [(PKApplyFocusedPickerViewController *)self navigationItem];
-  v7 = [(PKPaymentSetupFieldPicker *)self->_picker localizedDisplayName];
-  [v6 setTitle:v7];
+  navigationItem = [(PKApplyFocusedPickerViewController *)self navigationItem];
+  localizedDisplayName = [(PKPaymentSetupFieldPicker *)self->_picker localizedDisplayName];
+  [navigationItem setTitle:localizedDisplayName];
 
-  [v6 setBackButtonDisplayMode:0];
+  [navigationItem setBackButtonDisplayMode:0];
 }
 
 - (id)_recomputeSections
@@ -61,41 +61,41 @@
   return v4;
 }
 
-- (void)reloadDataAnimated:(BOOL)a3
+- (void)reloadDataAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = PKApplyFocusedPickerViewController;
   [(PKDynamicCollectionViewController *)&v6 reloadDataAnimated:?];
-  v5 = [(PKApplyFocusedPickerViewController *)self _recomputeSections];
-  [(PKDynamicCollectionViewController *)self setSections:v5 animated:v3];
+  _recomputeSections = [(PKApplyFocusedPickerViewController *)self _recomputeSections];
+  [(PKDynamicCollectionViewController *)self setSections:_recomputeSections animated:animatedCopy];
 }
 
-- (void)recomputeSectionsWithReload:(BOOL)a3
+- (void)recomputeSectionsWithReload:(BOOL)reload
 {
-  v3 = a3;
-  v7 = [(PKApplyFocusedPickerViewController *)self _recomputeSections];
-  if (v3)
+  reloadCopy = reload;
+  _recomputeSections = [(PKApplyFocusedPickerViewController *)self _recomputeSections];
+  if (reloadCopy)
   {
-    [(PKDynamicCollectionViewController *)self setSections:v7 animated:1];
+    [(PKDynamicCollectionViewController *)self setSections:_recomputeSections animated:1];
   }
 
-  v5 = [(PKApplyFocusedPickerViewController *)self dynamicCollectionDelegate];
-  v6 = v5;
-  if (v5)
+  dynamicCollectionDelegate = [(PKApplyFocusedPickerViewController *)self dynamicCollectionDelegate];
+  v6 = dynamicCollectionDelegate;
+  if (dynamicCollectionDelegate)
   {
-    [v5 recomputeSectionsWithReload:v3];
+    [dynamicCollectionDelegate recomputeSectionsWithReload:reloadCopy];
   }
 }
 
 - (void)didSelectCell
 {
-  v3 = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
+  currentValue = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
 
-  if (v3)
+  if (currentValue)
   {
-    v5 = [(PKApplyFocusedPickerViewController *)self navigationController];
-    v4 = [v5 popViewControllerAnimated:1];
+    navigationController = [(PKApplyFocusedPickerViewController *)self navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 }
 

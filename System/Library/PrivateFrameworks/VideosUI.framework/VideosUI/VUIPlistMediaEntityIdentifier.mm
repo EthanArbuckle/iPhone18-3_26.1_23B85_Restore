@@ -1,8 +1,8 @@
 @interface VUIPlistMediaEntityIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (VUIPlistMediaEntityIdentifier)init;
-- (VUIPlistMediaEntityIdentifier)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (VUIPlistMediaEntityIdentifier)initWithIdentifier:(id)identifier type:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
@@ -18,21 +18,21 @@
   return 0;
 }
 
-- (VUIPlistMediaEntityIdentifier)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (VUIPlistMediaEntityIdentifier)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = VUIPlistMediaEntityIdentifier;
   v7 = [(VUIPlistMediaEntityIdentifier *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    if (a4 > 2)
+    if (type > 2)
     {
-      switch(a4)
+      switch(type)
       {
         case 3uLL:
           v10 = +[VUIMediaEntityType homeVideo];
@@ -48,7 +48,7 @@
 
     else
     {
-      switch(a4)
+      switch(type)
       {
         case 0uLL:
           v10 = +[VUIMediaEntityType movie];
@@ -76,28 +76,28 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = [(VUIPlistMediaEntityIdentifier *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(VUIPlistMediaEntityIdentifier *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIPlistMediaEntityIdentifier *)self identifier];
-    v8 = [(VUIPlistMediaEntityIdentifier *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(VUIPlistMediaEntityIdentifier *)self identifier];
+    identifier2 = [(VUIPlistMediaEntityIdentifier *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -131,8 +131,8 @@ LABEL_17:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIPlistMediaEntityIdentifier *)self identifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", v6];
+  identifier = [(VUIPlistMediaEntityIdentifier *)self identifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", identifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

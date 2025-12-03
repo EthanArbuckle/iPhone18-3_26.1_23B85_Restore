@@ -1,13 +1,13 @@
 @interface MKViewSwitchingSelectionAccessoryView
-- (MKViewSwitchingSelectionAccessoryView)initWithFrame:(CGRect)a3;
+- (MKViewSwitchingSelectionAccessoryView)initWithFrame:(CGRect)frame;
 - (UIViewController)parentViewController;
-- (void)_displayView:(id)a3;
-- (void)_displayViewController:(id)a3;
+- (void)_displayView:(id)view;
+- (void)_displayViewController:(id)controller;
 - (void)_updateDisplay;
 - (void)displayError;
 - (void)displayLoading;
-- (void)displayMapItem:(id)a3;
-- (void)placeCardPreferredContentSizeDidChange:(CGSize)a3;
+- (void)displayMapItem:(id)item;
+- (void)placeCardPreferredContentSizeDidChange:(CGSize)change;
 @end
 
 @implementation MKViewSwitchingSelectionAccessoryView
@@ -19,10 +19,10 @@
   return WeakRetained;
 }
 
-- (void)placeCardPreferredContentSizeDidChange:(CGSize)a3
+- (void)placeCardPreferredContentSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   v15 = *MEMORY[0x1E69E9840];
   if (MKGetMKRemoteUILog_onceToken_3887 != -1)
   {
@@ -40,59 +40,59 @@
     _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_DEBUG, "SelectionAccessoryView placeCardPreferredContentSizeDidChange: %{public}@", buf, 0xCu);
   }
 
-  v10 = [(MKSelectionAccessoryView *)self placeCardContentSizeDelegate];
+  placeCardContentSizeDelegate = [(MKSelectionAccessoryView *)self placeCardContentSizeDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(MKSelectionAccessoryView *)self placeCardContentSizeDelegate];
-    [v12 placeCardPreferredContentSizeDidChange:{width, height}];
+    placeCardContentSizeDelegate2 = [(MKSelectionAccessoryView *)self placeCardContentSizeDelegate];
+    [placeCardContentSizeDelegate2 placeCardPreferredContentSizeDidChange:{width, height}];
   }
 }
 
-- (void)_displayView:(id)a3
+- (void)_displayView:(id)view
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  objc_storeStrong(&self->_view, a3);
-  v16 = a3;
+  objc_storeStrong(&self->_view, view);
+  viewCopy = view;
   [(UIView *)self->_view setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MKViewSwitchingSelectionAccessoryView *)self addSubview:self->_view];
   v15 = MEMORY[0x1E696ACD8];
-  v19 = [(UIView *)self->_view topAnchor];
-  v18 = [(MKViewSwitchingSelectionAccessoryView *)self topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor = [(UIView *)self->_view topAnchor];
+  topAnchor2 = [(MKViewSwitchingSelectionAccessoryView *)self topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v17;
-  v5 = [(UIView *)self->_view leadingAnchor];
-  v6 = [(MKViewSwitchingSelectionAccessoryView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  leadingAnchor = [(UIView *)self->_view leadingAnchor];
+  leadingAnchor2 = [(MKViewSwitchingSelectionAccessoryView *)self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[1] = v7;
-  v8 = [(MKViewSwitchingSelectionAccessoryView *)self trailingAnchor];
-  v9 = [(UIView *)self->_view trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor = [(MKViewSwitchingSelectionAccessoryView *)self trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_view trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[2] = v10;
-  v11 = [(MKViewSwitchingSelectionAccessoryView *)self bottomAnchor];
-  v12 = [(UIView *)self->_view bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [(MKViewSwitchingSelectionAccessoryView *)self bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_view bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
   [v15 activateConstraints:v14];
 }
 
-- (void)_displayViewController:(id)a3
+- (void)_displayViewController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
   if (!WeakRetained)
   {
-    WeakRetained = [[_MKSelectionAccessoryParentViewController alloc] initWithChildViewController:v8];
+    WeakRetained = [[_MKSelectionAccessoryParentViewController alloc] initWithChildViewController:controllerCopy];
   }
 
-  [(_MKSelectionAccessoryParentViewController *)WeakRetained addChildViewController:v8];
-  [(_MKSelectionAccessoryParentViewController *)v8 setPlaceCardContentSizeDelegate:self];
+  [(_MKSelectionAccessoryParentViewController *)WeakRetained addChildViewController:controllerCopy];
+  [(_MKSelectionAccessoryParentViewController *)controllerCopy setPlaceCardContentSizeDelegate:self];
   v5 = objc_loadWeakRetained(&self->_parentViewController);
   if (v5)
   {
-    v6 = v8;
+    v6 = controllerCopy;
   }
 
   else
@@ -102,10 +102,10 @@
 
   objc_storeStrong(&self->_viewController, v6);
 
-  v7 = [(UIViewController *)self->_viewController view];
-  [(MKViewSwitchingSelectionAccessoryView *)self _displayView:v7];
+  view = [(UIViewController *)self->_viewController view];
+  [(MKViewSwitchingSelectionAccessoryView *)self _displayView:view];
 
-  [(_MKSelectionAccessoryParentViewController *)v8 didMoveToParentViewController:WeakRetained];
+  [(_MKSelectionAccessoryParentViewController *)controllerCopy didMoveToParentViewController:WeakRetained];
 }
 
 - (void)_updateDisplay
@@ -136,12 +136,12 @@
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    v9 = [(MKMapItem *)mapItem location];
-    if (v9)
+    location = [(MKMapItem *)mapItem location];
+    if (location)
     {
-      v10 = v9;
-      v11 = [(MKMapItem *)self->_mapItem location];
-      [v11 coordinate];
+      v10 = location;
+      location2 = [(MKMapItem *)self->_mapItem location];
+      [location2 coordinate];
       v13 = v12;
       v15 = fabs(v14);
 
@@ -156,14 +156,14 @@
 
   else if (!self->_error)
   {
-    v17 = [(MKViewSwitchingSelectionAccessoryView *)self _createLoadingView];
+    _createLoadingView = [(MKViewSwitchingSelectionAccessoryView *)self _createLoadingView];
     goto LABEL_15;
   }
 
-  v17 = [(MKViewSwitchingSelectionAccessoryView *)self _createErrorView];
+  _createLoadingView = [(MKViewSwitchingSelectionAccessoryView *)self _createErrorView];
 LABEL_15:
-  v16 = v17;
-  [(MKViewSwitchingSelectionAccessoryView *)self _displayView:v17];
+  v16 = _createLoadingView;
+  [(MKViewSwitchingSelectionAccessoryView *)self _displayView:_createLoadingView];
 LABEL_16:
 
   [(MKSelectionAccessoryView *)self _bringDismissButtonToFront];
@@ -181,16 +181,16 @@ LABEL_16:
   }
 }
 
-- (void)displayMapItem:(id)a3
+- (void)displayMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_error || self->_mapItem != v5)
+  itemCopy = item;
+  if (self->_error || self->_mapItem != itemCopy)
   {
     self->_error = 0;
-    v6 = v5;
-    objc_storeStrong(&self->_mapItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_mapItem, item);
     [(MKViewSwitchingSelectionAccessoryView *)self _updateDisplay];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
@@ -206,11 +206,11 @@ LABEL_16:
   }
 }
 
-- (MKViewSwitchingSelectionAccessoryView)initWithFrame:(CGRect)a3
+- (MKViewSwitchingSelectionAccessoryView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKViewSwitchingSelectionAccessoryView;
-  v3 = [(MKSelectionAccessoryView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKSelectionAccessoryView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

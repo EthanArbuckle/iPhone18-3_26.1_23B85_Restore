@@ -1,10 +1,10 @@
 @interface KTRepairCKV
-+ (BOOL)rateLimitAppliesWithRepair:(id)a3;
++ (BOOL)rateLimitAppliesWithRepair:(id)repair;
 + (id)hardResetRepair;
 - (_TtC13transparencyd11KTRepairCKV)init;
-- (_TtC13transparencyd11KTRepairCKV)initWithDeps:(id)a3 repair:(id)a4 reset:(id)a5;
+- (_TtC13transparencyd11KTRepairCKV)initWithDeps:(id)deps repair:(id)repair reset:(id)reset;
 - (void)doRepair;
-- (void)repairWithNow:(id)a3;
+- (void)repairWithNow:(id)now;
 @end
 
 @implementation KTRepairCKV
@@ -17,26 +17,26 @@
   return v2;
 }
 
-+ (BOOL)rateLimitAppliesWithRepair:(id)a3
++ (BOOL)rateLimitAppliesWithRepair:(id)repair
 {
-  v3 = a3;
+  repairCopy = repair;
   v4 = KTRepair.bypassRateControl.getter();
 
   return (v4 & 1) == 0;
 }
 
-- (_TtC13transparencyd11KTRepairCKV)initWithDeps:(id)a3 repair:(id)a4 reset:(id)a5
+- (_TtC13transparencyd11KTRepairCKV)initWithDeps:(id)deps repair:(id)repair reset:(id)reset
 {
-  v7 = a3;
-  v8 = a4;
+  depsCopy = deps;
+  repairCopy = repair;
   swift_unknownObjectRetain();
-  v9 = sub_100152EAC(v7, v8, a5);
+  v9 = sub_100152EAC(depsCopy, repairCopy, reset);
 
   swift_unknownObjectRelease();
   return v9;
 }
 
-- (void)repairWithNow:(id)a3
+- (void)repairWithNow:(id)now
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -44,7 +44,7 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_100152188(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -57,9 +57,9 @@
   v5 = *(v4 + 64);
   __chkstk_darwin(v3);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   Date.init()();
-  (*((swift_isaMask & v8->super.isa) + 0x80))(v7);
+  (*((swift_isaMask & selfCopy->super.isa) + 0x80))(v7);
 
   (*(v4 + 8))(v7, v3);
 }

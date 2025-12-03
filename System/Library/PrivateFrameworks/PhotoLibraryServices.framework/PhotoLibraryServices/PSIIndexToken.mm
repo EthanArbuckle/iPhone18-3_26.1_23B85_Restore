@@ -1,5 +1,5 @@
 @interface PSIIndexToken
-- (PSIIndexToken)initWithText:(id)a3 identifier:(id)a4 category:(signed __int16)a5 owningCategory:(signed __int16)a6;
+- (PSIIndexToken)initWithText:(id)text identifier:(id)identifier category:(signed __int16)category owningCategory:(signed __int16)owningCategory;
 - (id)description;
 @end
 
@@ -26,14 +26,14 @@
   return v4;
 }
 
-- (PSIIndexToken)initWithText:(id)a3 identifier:(id)a4 category:(signed __int16)a5 owningCategory:(signed __int16)a6
+- (PSIIndexToken)initWithText:(id)text identifier:(id)identifier category:(signed __int16)category owningCategory:(signed __int16)owningCategory
 {
-  v11 = a3;
-  v12 = a4;
-  if (!(v11 | v12))
+  textCopy = text;
+  identifierCopy = identifier;
+  if (!(textCopy | identifierCopy))
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PSIIndexToken.m" lineNumber:16 description:@"text and identifier cannot be both nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIIndexToken.m" lineNumber:16 description:@"text and identifier cannot be both nil"];
   }
 
   v20.receiver = self;
@@ -41,16 +41,16 @@
   v13 = [(PSIIndexToken *)&v20 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [textCopy copy];
     text = v13->_text;
     v13->_text = v14;
 
-    v16 = [v12 copy];
+    v16 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v16;
 
-    v13->_category = a5;
-    v13->_owningCategory = a6;
+    v13->_category = category;
+    v13->_owningCategory = owningCategory;
   }
 
   return v13;

@@ -1,15 +1,15 @@
 @interface BKSlideTransition
-+ (id)transitionWithDirection:(unint64_t)a3;
++ (id)transitionWithDirection:(unint64_t)direction;
 - (BKSlideTransition)init;
-- (BKSlideTransition)initWithDirection:(unint64_t)a3;
-- (void)animateTransition:(id)a3;
+- (BKSlideTransition)initWithDirection:(unint64_t)direction;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation BKSlideTransition
 
-+ (id)transitionWithDirection:(unint64_t)a3
++ (id)transitionWithDirection:(unint64_t)direction
 {
-  v3 = [[a1 alloc] initWithDirection:a3];
+  v3 = [[self alloc] initWithDirection:direction];
 
   return v3;
 }
@@ -24,35 +24,35 @@
   return 0;
 }
 
-- (BKSlideTransition)initWithDirection:(unint64_t)a3
+- (BKSlideTransition)initWithDirection:(unint64_t)direction
 {
   v5.receiver = self;
   v5.super_class = BKSlideTransition;
   result = [(BKSlideTransition *)&v5 init];
   if (result)
   {
-    result->_direction = a3;
+    result->_direction = direction;
   }
 
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewForKey:UITransitionContextFromViewKey];
-  v6 = [v4 viewForKey:UITransitionContextToViewKey];
-  v7 = [v4 containerView];
-  [(BKSlideTransition *)self transitionDuration:v4];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewForKey:UITransitionContextFromViewKey];
+  v6 = [transitionCopy viewForKey:UITransitionContextToViewKey];
+  containerView = [transitionCopy containerView];
+  [(BKSlideTransition *)self transitionDuration:transitionCopy];
   v9 = v8;
   if ([(BKSlideTransition *)self direction]== 2)
   {
-    [v7 insertSubview:v6 belowSubview:v5];
+    [containerView insertSubview:v6 belowSubview:v5];
   }
 
   else
   {
-    [v7 insertSubview:v6 aboveSubview:v5];
+    [containerView insertSubview:v6 aboveSubview:v5];
   }
 
   [v5 frame];
@@ -60,8 +60,8 @@
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(BKSlideTransition *)self direction];
-  if (!v18)
+  direction = [(BKSlideTransition *)self direction];
+  if (!direction)
   {
     v45.origin.x = v11;
     v45.origin.y = v13;
@@ -76,7 +76,7 @@
     goto LABEL_10;
   }
 
-  if (v18 == 2)
+  if (direction == 2)
   {
     v44.origin.x = v11;
     v44.origin.y = v13;
@@ -92,7 +92,7 @@
     v19 = v11;
     v20 = v13;
     Width = v11;
-    if (v18 == 1)
+    if (direction == 1)
     {
       v42.origin.x = v11;
       v42.origin.y = v13;
@@ -111,8 +111,8 @@ LABEL_10:
 
   [v5 setFrame:{v11, v13, v15, v17}];
   [v6 setFrame:{v19, v13, v15, v17}];
-  v22 = [v7 window];
-  [v22 setUserInteractionEnabled:0];
+  window = [containerView window];
+  [window setUserInteractionEnabled:0];
 
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
@@ -133,10 +133,10 @@ LABEL_10:
   v27[2] = sub_1000C9A60;
   v27[3] = &unk_100A05F98;
   v28 = v32;
-  v29 = v7;
-  v30 = v4;
-  v23 = v4;
-  v24 = v7;
+  v29 = containerView;
+  v30 = transitionCopy;
+  v23 = transitionCopy;
+  v24 = containerView;
   v25 = v32;
   v26 = v6;
   [UIView animateWithDuration:v31 animations:v27 completion:v9];

@@ -1,7 +1,7 @@
 @interface ISTransparentIcon
 + (id)sharedInstance;
 - (ISTransparentIcon)init;
-- (ISTransparentIcon)initWithCoder:(id)a3;
+- (ISTransparentIcon)initWithCoder:(id)coder;
 @end
 
 @implementation ISTransparentIcon
@@ -27,10 +27,10 @@ uint64_t __35__ISTransparentIcon_sharedInstance__block_invoke()
 
 - (ISTransparentIcon)init
 {
-  v3 = [MEMORY[0x1E696AFB0] _IF_nullUUID];
+  _IF_nullUUID = [MEMORY[0x1E696AFB0] _IF_nullUUID];
   v8.receiver = self;
   v8.super_class = ISTransparentIcon;
-  v4 = [(ISConcreteIcon *)&v8 initWithDigest:v3];
+  v4 = [(ISConcreteIcon *)&v8 initWithDigest:_IF_nullUUID];
 
   if (v4)
   {
@@ -42,7 +42,7 @@ uint64_t __35__ISTransparentIcon_sharedInstance__block_invoke()
   return v4;
 }
 
-- (ISTransparentIcon)initWithCoder:(id)a3
+- (ISTransparentIcon)initWithCoder:(id)coder
 {
   v4 = +[ISTransparentIcon sharedInstance];
 

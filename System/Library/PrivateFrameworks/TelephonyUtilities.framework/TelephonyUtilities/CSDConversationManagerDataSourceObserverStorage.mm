@@ -1,22 +1,22 @@
 @interface CSDConversationManagerDataSourceObserverStorage
 - (id)observerToQueue;
-- (void)addObserver:(id)a3 queue:(id)a4;
+- (void)addObserver:(id)observer queue:(id)queue;
 @end
 
 @implementation CSDConversationManagerDataSourceObserverStorage
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  queueCopy = queue;
+  selfCopy = self;
   sub_1002ECA78();
   swift_unknownObjectRelease();
 }
 
 - (id)observerToQueue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002ECD5C();
 
   return v3;

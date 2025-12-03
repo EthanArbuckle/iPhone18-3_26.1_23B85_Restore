@@ -1,10 +1,10 @@
 @interface UITableConstants_Pad
 + (id)sharedConstants;
-- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)a3 inTableView:(id)a4;
-- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5;
-- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5;
-- (double)defaultRowHeightForTableView:(id)a3 cellStyle:(int64_t)a4;
-- (double)minimumContentViewHeightForFont:(id)a3 traitCollection:(id)a4 isSidebarStyle:(BOOL)a5;
+- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)cell inTableView:(id)view;
+- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection;
+- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection;
+- (double)defaultRowHeightForTableView:(id)view cellStyle:(int64_t)style;
+- (double)minimumContentViewHeightForFont:(id)font traitCollection:(id)collection isSidebarStyle:(BOOL)style;
 @end
 
 @implementation UITableConstants_Pad
@@ -14,7 +14,7 @@
   v3 = sharedConstants___sharedConstants_0;
   if (!sharedConstants___sharedConstants_0)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedConstants___sharedConstants_0;
     sharedConstants___sharedConstants_0 = v4;
 
@@ -24,13 +24,13 @@
   return v3;
 }
 
-- (double)defaultRowHeightForTableView:(id)a3 cellStyle:(int64_t)a4
+- (double)defaultRowHeightForTableView:(id)view cellStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = UITableConstants_Pad;
-  [(UITableConstants_IOS *)&v9 defaultRowHeightForTableView:a3 cellStyle:a4];
+  [(UITableConstants_IOS *)&v9 defaultRowHeightForTableView:view cellStyle:style];
   v6 = v5;
-  ShouldUseExtraPaddingForCells = TableShouldUseExtraPaddingForCells(a3);
+  ShouldUseExtraPaddingForCells = TableShouldUseExtraPaddingForCells(view);
   result = v6 + 8.0;
   if (!ShouldUseExtraPaddingForCells)
   {
@@ -40,24 +40,24 @@
   return result;
 }
 
-- (double)minimumContentViewHeightForFont:(id)a3 traitCollection:(id)a4 isSidebarStyle:(BOOL)a5
+- (double)minimumContentViewHeightForFont:(id)font traitCollection:(id)collection isSidebarStyle:(BOOL)style
 {
   v6.receiver = self;
   v6.super_class = UITableConstants_Pad;
-  [(UITableConstants_IOS *)&v6 minimumContentViewHeightForFont:a3 traitCollection:a4 isSidebarStyle:a5];
+  [(UITableConstants_IOS *)&v6 minimumContentViewHeightForFont:font traitCollection:collection isSidebarStyle:style];
   return result;
 }
 
-- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)a3 inTableView:(id)a4
+- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)cell inTableView:(id)view
 {
   v18.receiver = self;
   v18.super_class = UITableConstants_Pad;
-  [(UITableConstants_IOS *)&v18 defaultLayoutMarginsForCell:a3 inTableView:?];
+  [(UITableConstants_IOS *)&v18 defaultLayoutMarginsForCell:cell inTableView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  ShouldUseExtraPaddingForCells = TableShouldUseExtraPaddingForCells(a4);
+  ShouldUseExtraPaddingForCells = TableShouldUseExtraPaddingForCells(view);
   if (ShouldUseExtraPaddingForCells)
   {
     v14 = v10 + 4.0;
@@ -87,7 +87,7 @@
   return result;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5
+- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection
 {
   retstr->var13.trailing = 0.0;
   *&retstr->var12 = 0u;
@@ -100,10 +100,10 @@
   *&retstr->var2 = 0u;
   v7.receiver = self;
   v7.super_class = UITableConstants_Pad;
-  return [(_UITableConstantsBackgroundProperties *)&v7 defaultCellBackgroundPropertiesForTableViewStyle:a4 state:a5 traitCollection:a6];
+  return [(_UITableConstantsBackgroundProperties *)&v7 defaultCellBackgroundPropertiesForTableViewStyle:state state:collection traitCollection:a6];
 }
 
-- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5
+- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection
 {
   retstr->var13.trailing = 0.0;
   *&retstr->var12 = 0u;
@@ -116,7 +116,7 @@
   *&retstr->var2 = 0u;
   v7.receiver = self;
   v7.super_class = UITableConstants_Pad;
-  return [(_UITableConstantsBackgroundProperties *)&v7 defaultSidebarCellBackgroundPropertiesForStyle:a4 state:a5 traitCollection:a6];
+  return [(_UITableConstantsBackgroundProperties *)&v7 defaultSidebarCellBackgroundPropertiesForStyle:state state:collection traitCollection:a6];
 }
 
 @end

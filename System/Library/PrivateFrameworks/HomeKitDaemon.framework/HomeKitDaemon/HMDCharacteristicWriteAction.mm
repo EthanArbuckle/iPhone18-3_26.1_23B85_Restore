@@ -1,28 +1,28 @@
 @interface HMDCharacteristicWriteAction
-+ (id)actionWithDictionaryRepresentation:(id)a3 home:(id)a4;
++ (id)actionWithDictionaryRepresentation:(id)representation home:(id)home;
 + (id)logCategory;
-- (BOOL)isActionForCharacteristic:(id)a3;
-- (BOOL)isAssociatedWithAccessory:(id)a3;
-- (BOOL)isCompatibleWithAction:(id)a3;
-- (BOOL)isStaleWithAccessory:(id)a3;
+- (BOOL)isActionForCharacteristic:(id)characteristic;
+- (BOOL)isAssociatedWithAccessory:(id)accessory;
+- (BOOL)isCompatibleWithAction:(id)action;
+- (BOOL)isStaleWithAccessory:(id)accessory;
 - (BOOL)isUnsecuringAction;
 - (BOOL)requiresDeviceUnlock;
 - (HMDCharacteristic)characteristic;
 - (HMDCharacteristicWriteAction)init;
-- (HMDCharacteristicWriteAction)initWithCoder:(id)a3;
-- (HMDCharacteristicWriteAction)initWithUUID:(id)a3 accessoryUUID:(id)a4 serviceIID:(id)a5 characteristicIID:(id)a6 targetValue:(id)a7 actionSet:(id)a8;
-- (HMDCharacteristicWriteAction)initWithUUID:(id)a3 characteristic:(id)a4 targetValue:(id)a5 actionSet:(id)a6;
+- (HMDCharacteristicWriteAction)initWithCoder:(id)coder;
+- (HMDCharacteristicWriteAction)initWithUUID:(id)d accessoryUUID:(id)iD serviceIID:(id)iID characteristicIID:(id)characteristicIID targetValue:(id)value actionSet:(id)set;
+- (HMDCharacteristicWriteAction)initWithUUID:(id)d characteristic:(id)characteristic targetValue:(id)value actionSet:(id)set;
 - (HMDHAPAccessory)accessory;
 - (HMDHome)home;
 - (id)associatedAccessories;
 - (id)attributeDescriptions;
 - (id)dictionaryRepresentation;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
+- (id)modelObjectWithChangeType:(unint64_t)type;
 - (id)stateDump;
-- (void)_processWriteActionModelUpdated:(id)a3 message:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithSource:(unint64_t)a3 clientName:(id)a4 completionHandler:(id)a5;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)_processWriteActionModelUpdated:(id)updated message:(id)message;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithSource:(unint64_t)source clientName:(id)name completionHandler:(id)handler;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDCharacteristicWriteAction
@@ -38,15 +38,15 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAction *)self uuid];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uuid = [(HMDAction *)self uuid];
+  v5 = [v3 initWithName:@"UUID" value:uuid];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDCharacteristicWriteAction *)self characteristic];
-  v8 = [v6 initWithName:@"characteristic" value:v7];
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
+  v8 = [v6 initWithName:@"characteristic" value:characteristic];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMDCharacteristicWriteAction *)self targetValue];
-  v11 = [v9 initWithName:@"target value" value:v10];
+  targetValue = [(HMDCharacteristicWriteAction *)self targetValue];
+  v11 = [v9 initWithName:@"target value" value:targetValue];
   v15[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
 
@@ -55,42 +55,42 @@
   return v12;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
   v5 = [HMDCharacteristicWriteActionModel alloc];
-  v6 = [(HMDAction *)self uuid];
-  v7 = [(HMDAction *)self actionSet];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  uuid = [(HMDAction *)self uuid];
+  actionSet = [(HMDAction *)self actionSet];
+  uuid2 = [actionSet uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:uuid parentUUID:uuid2];
 
-  v10 = [(HMDCharacteristicWriteAction *)self characteristic];
-  v11 = [v10 accessory];
-  v12 = [v11 uuid];
-  v13 = [v12 UUIDString];
-  [(HMDCharacteristicWriteActionModel *)v9 setAccessory:v13];
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
+  accessory = [characteristic accessory];
+  uuid3 = [accessory uuid];
+  uUIDString = [uuid3 UUIDString];
+  [(HMDCharacteristicWriteActionModel *)v9 setAccessory:uUIDString];
 
-  v14 = [v10 service];
-  v15 = [v14 instanceID];
-  [(HMDCharacteristicWriteActionModel *)v9 setServiceID:v15];
+  service = [characteristic service];
+  instanceID = [service instanceID];
+  [(HMDCharacteristicWriteActionModel *)v9 setServiceID:instanceID];
 
-  v16 = [v10 instanceID];
-  [(HMDCharacteristicWriteActionModel *)v9 setCharacteristicID:v16];
+  instanceID2 = [characteristic instanceID];
+  [(HMDCharacteristicWriteActionModel *)v9 setCharacteristicID:instanceID2];
 
-  v17 = [(HMDCharacteristicWriteAction *)self targetValue];
-  [(HMDCharacteristicWriteActionModel *)v9 setTargetValue:v17];
+  targetValue = [(HMDCharacteristicWriteAction *)self targetValue];
+  [(HMDCharacteristicWriteActionModel *)v9 setTargetValue:targetValue];
 
   return v9;
 }
 
-- (void)_processWriteActionModelUpdated:(id)a3 message:(id)a4
+- (void)_processWriteActionModelUpdated:(id)updated message:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 transactionResult];
-  v9 = [(HMDAction *)self actionSet];
-  v10 = [v6 setProperties];
-  v11 = [v10 containsObject:@"targetValue"];
+  updatedCopy = updated;
+  messageCopy = message;
+  transactionResult = [messageCopy transactionResult];
+  actionSet = [(HMDAction *)self actionSet];
+  setProperties = [updatedCopy setProperties];
+  v11 = [setProperties containsObject:@"targetValue"];
 
   if (!v11)
   {
@@ -98,33 +98,33 @@
     goto LABEL_6;
   }
 
-  v12 = [v9 home];
-  v13 = v12;
-  if (v9 && v12)
+  home = [actionSet home];
+  v13 = home;
+  if (actionSet && home)
   {
-    v14 = [v6 targetValue];
-    [(HMDCharacteristicWriteAction *)self setTargetValue:v14];
+    targetValue = [updatedCopy targetValue];
+    [(HMDCharacteristicWriteAction *)self setTargetValue:targetValue];
 
     v33[0] = *MEMORY[0x277CD2060];
-    v15 = [(HMDAction *)self uuid];
-    v16 = [v15 UUIDString];
-    v34[0] = v16;
+    uuid = [(HMDAction *)self uuid];
+    uUIDString = [uuid UUIDString];
+    v34[0] = uUIDString;
     v33[1] = *MEMORY[0x277CD2028];
     [(HMDCharacteristicWriteAction *)self dictionaryRepresentation];
-    v17 = v32 = v8;
+    v17 = v32 = transactionResult;
     v34[1] = v17;
     v33[2] = *MEMORY[0x277CD0640];
     [v13 uuid];
     v18 = v31 = v13;
-    v19 = [v18 UUIDString];
-    v34[2] = v19;
+    uUIDString2 = [v18 UUIDString];
+    v34[2] = uUIDString2;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:3];
 
-    v8 = v32;
+    transactionResult = v32;
 LABEL_6:
-    [v7 respondWithPayload:v20];
+    [messageCopy respondWithPayload:v20];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
@@ -137,17 +137,17 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v21);
-    [v8 markChanged];
-    if ([(HMDCharacteristicWriteAction *)v22 isSecureAction])
+    [transactionResult markChanged];
+    if ([(HMDCharacteristicWriteAction *)selfCopy isSecureAction])
     {
-      [v8 markSaveToAssistant];
+      [transactionResult markSaveToAssistant];
     }
 
     goto LABEL_13;
   }
 
   v25 = objc_autoreleasePoolPush();
-  v26 = self;
+  selfCopy2 = self;
   v27 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
@@ -155,9 +155,9 @@ LABEL_6:
     *buf = 138544130;
     v36 = v28;
     v37 = 2112;
-    v38 = v6;
+    v38 = updatedCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = actionSet;
     v41 = 2112;
     v42 = v13;
     _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Write action Model object (%@) missing actionset %@ or home %@ ", buf, 0x2Au);
@@ -165,7 +165,7 @@ LABEL_6:
 
   objc_autoreleasePoolPop(v25);
   v29 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  [v7 respondWithError:v29];
+  [messageCopy respondWithError:v29];
 
   v20 = 0;
 LABEL_13:
@@ -173,13 +173,13 @@ LABEL_13:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
+  v11 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -195,13 +195,13 @@ LABEL_13:
 
   if (v13)
   {
-    [(HMDCharacteristicWriteAction *)self _processWriteActionModelUpdated:v13 message:v10];
+    [(HMDCharacteristicWriteAction *)self _processWriteActionModelUpdated:v13 message:messageCopy];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -218,52 +218,52 @@ LABEL_13:
 
     objc_autoreleasePoolPop(v14);
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v10 respondWithError:v19];
+    [messageCopy respondWithError:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMDCharacteristicWriteAction;
-  v4 = a3;
-  [(HMDAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(HMDCharacteristicWriteAction *)self characteristic:v7.receiver];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD2118]];
+  [coderCopy encodeObject:v5 forKey:*MEMORY[0x277CD2118]];
 
-  v6 = [(HMDCharacteristicWriteAction *)self targetValue];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CD21B0]];
+  targetValue = [(HMDCharacteristicWriteAction *)self targetValue];
+  [coderCopy encodeObject:targetValue forKey:*MEMORY[0x277CD21B0]];
 }
 
-- (HMDCharacteristicWriteAction)initWithCoder:(id)a3
+- (HMDCharacteristicWriteAction)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[HMDAction alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[HMDAction alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2118]];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2118]];
     v7 = allowedCharValueTypes();
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:*MEMORY[0x277CD21B0]];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:*MEMORY[0x277CD21B0]];
 
-    v9 = [(HMDAction *)v5 uuid];
-    v10 = [(HMDAction *)v5 actionSet];
-    v11 = [(HMDCharacteristicWriteAction *)self initWithUUID:v9 characteristic:v6 targetValue:v8 actionSet:v10];
+    uuid = [(HMDAction *)v5 uuid];
+    actionSet = [(HMDAction *)v5 actionSet];
+    selfCopy = [(HMDCharacteristicWriteAction *)self initWithUUID:uuid characteristic:v6 targetValue:v8 actionSet:actionSet];
 
-    v12 = v11;
+    v12 = selfCopy;
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v19.receiver = v11;
+      v19.receiver = selfCopy;
       v19.super_class = HMDCharacteristicWriteAction;
       v16 = [(HMDCharacteristicWriteAction *)&v19 class];
       *buf = 138543618;
@@ -281,15 +281,15 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)isStaleWithAccessory:(id)a3
+- (BOOL)isStaleWithAccessory:(id)accessory
 {
-  if (![(HMDCharacteristicWriteAction *)self isAssociatedWithAccessory:a3])
+  if (![(HMDCharacteristicWriteAction *)self isAssociatedWithAccessory:accessory])
   {
     return 0;
   }
 
-  v4 = [(HMDCharacteristicWriteAction *)self characteristic];
-  v5 = v4 == 0;
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
+  v5 = characteristic == 0;
 
   return v5;
 }
@@ -297,11 +297,11 @@ LABEL_13:
 - (id)associatedAccessories
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HMDCharacteristicWriteAction *)self accessory];
-  v3 = v2;
-  if (v2)
+  accessory = [(HMDCharacteristicWriteAction *)self accessory];
+  v3 = accessory;
+  if (accessory)
   {
-    v7[0] = v2;
+    v7[0] = accessory;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -315,24 +315,24 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)isAssociatedWithAccessory:(id)a3
+- (BOOL)isAssociatedWithAccessory:(id)accessory
 {
-  v4 = [a3 uuid];
-  v5 = [(HMDCharacteristicWriteAction *)self accessoryUUID];
-  v6 = [v4 isEqual:v5];
+  uuid = [accessory uuid];
+  accessoryUUID = [(HMDCharacteristicWriteAction *)self accessoryUUID];
+  v6 = [uuid isEqual:accessoryUUID];
 
   return v6;
 }
 
 - (HMDHAPAccessory)accessory
 {
-  v3 = [(HMDCharacteristicWriteAction *)self accessoryUUID];
+  accessoryUUID = [(HMDCharacteristicWriteAction *)self accessoryUUID];
 
-  if (v3)
+  if (accessoryUUID)
   {
-    v4 = [(HMDCharacteristicWriteAction *)self home];
-    v5 = [(HMDCharacteristicWriteAction *)self accessoryUUID];
-    v6 = [v4 accessoryWithUUID:v5];
+    home = [(HMDCharacteristicWriteAction *)self home];
+    accessoryUUID2 = [(HMDCharacteristicWriteAction *)self accessoryUUID];
+    v6 = [home accessoryWithUUID:accessoryUUID2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -359,15 +359,15 @@ LABEL_13:
 - (BOOL)isUnsecuringAction
 {
   v3 = +[HMDHAPMetadata getSharedInstance];
-  v4 = [(HMDCharacteristicWriteAction *)self characteristic];
-  v5 = [v4 type];
-  v6 = [v4 service];
-  v7 = [v6 type];
-  if ([v3 requiresDeviceUnlock:v5 forService:v7])
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
+  type = [characteristic type];
+  service = [characteristic service];
+  type2 = [service type];
+  if ([v3 requiresDeviceUnlock:type forService:type2])
   {
-    v8 = [v4 type];
-    v9 = [(HMDCharacteristicWriteAction *)self targetValue];
-    v10 = [v3 allowsSecuringWriteFor:v8 withValue:v9] ^ 1;
+    type3 = [characteristic type];
+    targetValue = [(HMDCharacteristicWriteAction *)self targetValue];
+    v10 = [v3 allowsSecuringWriteFor:type3 withValue:targetValue] ^ 1;
   }
 
   else
@@ -381,33 +381,33 @@ LABEL_13:
 - (BOOL)requiresDeviceUnlock
 {
   v3 = +[HMDHAPMetadata getSharedInstance];
-  v4 = [(HMDCharacteristicWriteAction *)self characteristic];
-  v5 = [v4 type];
-  v6 = [v4 service];
-  v7 = [v6 type];
-  v8 = [v3 requiresDeviceUnlock:v5 forService:v7];
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
+  type = [characteristic type];
+  service = [characteristic service];
+  type2 = [service type];
+  v8 = [v3 requiresDeviceUnlock:type forService:type2];
 
   return v8;
 }
 
-- (BOOL)isCompatibleWithAction:(id)a3
+- (BOOL)isCompatibleWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v13.receiver = self;
   v13.super_class = HMDCharacteristicWriteAction;
-  if ([(HMDAction *)&v13 isCompatibleWithAction:v4])
+  if ([(HMDAction *)&v13 isCompatibleWithAction:actionCopy])
   {
-    v5 = [(HMDCharacteristicWriteAction *)self characteristicID];
-    v6 = [v4 characteristicID];
-    if ([v5 isEqual:v6])
+    characteristicID = [(HMDCharacteristicWriteAction *)self characteristicID];
+    characteristicID2 = [actionCopy characteristicID];
+    if ([characteristicID isEqual:characteristicID2])
     {
-      v7 = [(HMDCharacteristicWriteAction *)self serviceID];
-      v8 = [v4 serviceID];
-      if ([v7 isEqual:v8])
+      serviceID = [(HMDCharacteristicWriteAction *)self serviceID];
+      serviceID2 = [actionCopy serviceID];
+      if ([serviceID isEqual:serviceID2])
       {
-        v9 = [(HMDCharacteristicWriteAction *)self accessoryUUID];
-        v10 = [v4 accessoryUUID];
-        v11 = [v9 isEqual:v10];
+        accessoryUUID = [(HMDCharacteristicWriteAction *)self accessoryUUID];
+        accessoryUUID2 = [actionCopy accessoryUUID];
+        v11 = [accessoryUUID isEqual:accessoryUUID2];
       }
 
       else
@@ -430,30 +430,30 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isActionForCharacteristic:(id)a3
+- (BOOL)isActionForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [v4 instanceID];
-  v6 = [v4 service];
-  v7 = [v6 instanceID];
+  characteristicCopy = characteristic;
+  instanceID = [characteristicCopy instanceID];
+  service = [characteristicCopy service];
+  instanceID2 = [service instanceID];
 
-  v8 = [v4 accessory];
+  accessory = [characteristicCopy accessory];
 
-  v9 = [v8 uuid];
-  v10 = [v9 UUIDString];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
 
-  v11 = [(HMDCharacteristicWriteAction *)self characteristic];
-  v12 = [v11 instanceID];
-  v13 = [v11 service];
-  v14 = [v13 instanceID];
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
+  instanceID3 = [characteristic instanceID];
+  service2 = [characteristic service];
+  instanceID4 = [service2 instanceID];
 
-  v15 = [v11 accessory];
-  v16 = [v15 uuid];
-  v17 = [v16 UUIDString];
+  accessory2 = [characteristic accessory];
+  uuid2 = [accessory2 uuid];
+  uUIDString2 = [uuid2 UUIDString];
 
-  if ([v12 isEqual:v5] && objc_msgSend(v14, "isEqual:", v7))
+  if ([instanceID3 isEqual:instanceID] && objc_msgSend(instanceID4, "isEqual:", instanceID2))
   {
-    v18 = [v17 isEqualToString:v10];
+    v18 = [uUIDString2 isEqualToString:uUIDString];
   }
 
   else
@@ -464,37 +464,37 @@ LABEL_13:
   return v18;
 }
 
-- (void)executeWithSource:(unint64_t)a3 clientName:(id)a4 completionHandler:(id)a5
+- (void)executeWithSource:(unint64_t)source clientName:(id)name completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(HMDCharacteristicWriteAction *)self characteristic];
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
   v16.receiver = self;
   v16.super_class = HMDCharacteristicWriteAction;
-  v4 = [(HMDAction *)&v16 dictionaryRepresentation];
-  v5 = [v4 mutableCopy];
+  dictionaryRepresentation = [(HMDAction *)&v16 dictionaryRepresentation];
+  v5 = [dictionaryRepresentation mutableCopy];
 
-  v6 = [v3 accessory];
-  v7 = accessoryToEncodeForXPCTransportForAccessory(v6);
-  v8 = [v7 uuid];
-  v9 = [v8 UUIDString];
-  [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x277CCF0B0]];
+  accessory = [characteristic accessory];
+  v7 = accessoryToEncodeForXPCTransportForAccessory(accessory);
+  uuid = [v7 uuid];
+  uUIDString = [uuid UUIDString];
+  [v5 setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CCF0B0]];
 
-  v10 = [v3 service];
-  v11 = [v10 instanceID];
-  [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x277CD25F8]];
+  service = [characteristic service];
+  instanceID = [service instanceID];
+  [v5 setObject:instanceID forKeyedSubscript:*MEMORY[0x277CD25F8]];
 
-  v12 = [v3 instanceID];
-  [v5 setObject:v12 forKeyedSubscript:*MEMORY[0x277CD2140]];
+  instanceID2 = [characteristic instanceID];
+  [v5 setObject:instanceID2 forKeyedSubscript:*MEMORY[0x277CD2140]];
 
-  v13 = [(HMDCharacteristicWriteAction *)self targetValue];
-  [v5 setObject:v13 forKeyedSubscript:*MEMORY[0x277CD21B8]];
+  targetValue = [(HMDCharacteristicWriteAction *)self targetValue];
+  [v5 setObject:targetValue forKeyedSubscript:*MEMORY[0x277CD21B8]];
 
   v14 = [v5 copy];
 
@@ -504,24 +504,24 @@ LABEL_13:
 - (id)stateDump
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDAction *)self uuid];
-  v5 = [v4 UUIDString];
-  v6 = [(HMDCharacteristicWriteAction *)self characteristic];
-  v7 = [(HMDCharacteristicWriteAction *)self targetValue];
-  v8 = [v3 stringWithFormat:@"Action uuid: %@, Characteristic %@  value %@", v5, v6, v7];
+  uuid = [(HMDAction *)self uuid];
+  uUIDString = [uuid UUIDString];
+  characteristic = [(HMDCharacteristicWriteAction *)self characteristic];
+  targetValue = [(HMDCharacteristicWriteAction *)self targetValue];
+  v8 = [v3 stringWithFormat:@"Action uuid: %@, Characteristic %@  value %@", uUIDString, characteristic, targetValue];
 
   return v8;
 }
 
 - (HMDCharacteristic)characteristic
 {
-  v3 = [(HMDCharacteristicWriteAction *)self serviceID];
-  if (v3 && (v4 = v3, [(HMDCharacteristicWriteAction *)self characteristicID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  serviceID = [(HMDCharacteristicWriteAction *)self serviceID];
+  if (serviceID && (v4 = serviceID, [(HMDCharacteristicWriteAction *)self characteristicID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(HMDCharacteristicWriteAction *)self accessory];
-    v7 = [(HMDCharacteristicWriteAction *)self characteristicID];
-    v8 = [(HMDCharacteristicWriteAction *)self serviceID];
-    v9 = [v6 findCharacteristic:v7 forService:v8];
+    accessory = [(HMDCharacteristicWriteAction *)self accessory];
+    characteristicID = [(HMDCharacteristicWriteAction *)self characteristicID];
+    serviceID2 = [(HMDCharacteristicWriteAction *)self serviceID];
+    v9 = [accessory findCharacteristic:characteristicID forService:serviceID2];
   }
 
   else
@@ -532,57 +532,57 @@ LABEL_13:
   return v9;
 }
 
-- (HMDCharacteristicWriteAction)initWithUUID:(id)a3 accessoryUUID:(id)a4 serviceIID:(id)a5 characteristicIID:(id)a6 targetValue:(id)a7 actionSet:(id)a8
+- (HMDCharacteristicWriteAction)initWithUUID:(id)d accessoryUUID:(id)iD serviceIID:(id)iID characteristicIID:(id)characteristicIID targetValue:(id)value actionSet:(id)set
 {
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  iDCopy = iD;
+  iIDCopy = iID;
+  characteristicIIDCopy = characteristicIID;
+  valueCopy = value;
+  setCopy = set;
   v23.receiver = self;
   v23.super_class = HMDCharacteristicWriteAction;
-  v18 = [(HMDAction *)&v23 initWithUUID:a3 actionSet:v17];
+  v18 = [(HMDAction *)&v23 initWithUUID:d actionSet:setCopy];
   if (v18)
   {
-    v19 = [v17 home];
-    objc_storeWeak(&v18->_home, v19);
+    home = [setCopy home];
+    objc_storeWeak(&v18->_home, home);
 
-    objc_storeStrong(&v18->_accessoryUUID, a4);
-    objc_storeStrong(&v18->_serviceID, a5);
-    objc_storeStrong(&v18->_characteristicID, a6);
-    objc_storeStrong(&v18->_targetValue, a7);
+    objc_storeStrong(&v18->_accessoryUUID, iD);
+    objc_storeStrong(&v18->_serviceID, iID);
+    objc_storeStrong(&v18->_characteristicID, characteristicIID);
+    objc_storeStrong(&v18->_targetValue, value);
   }
 
   return v18;
 }
 
-- (HMDCharacteristicWriteAction)initWithUUID:(id)a3 characteristic:(id)a4 targetValue:(id)a5 actionSet:(id)a6
+- (HMDCharacteristicWriteAction)initWithUUID:(id)d characteristic:(id)characteristic targetValue:(id)value actionSet:(id)set
 {
-  v10 = a4;
-  v11 = a5;
+  characteristicCopy = characteristic;
+  valueCopy = value;
   v23.receiver = self;
   v23.super_class = HMDCharacteristicWriteAction;
-  v12 = [(HMDAction *)&v23 initWithUUID:a3 actionSet:a6];
+  v12 = [(HMDAction *)&v23 initWithUUID:d actionSet:set];
   if (v12)
   {
-    v13 = [v10 service];
-    v14 = [v13 accessory];
-    v15 = [v14 home];
-    objc_storeWeak(&v12->_home, v15);
+    service = [characteristicCopy service];
+    accessory = [service accessory];
+    home = [accessory home];
+    objc_storeWeak(&v12->_home, home);
 
-    v16 = [v14 uuid];
+    uuid = [accessory uuid];
     accessoryUUID = v12->_accessoryUUID;
-    v12->_accessoryUUID = v16;
+    v12->_accessoryUUID = uuid;
 
-    v18 = [v13 instanceID];
+    instanceID = [service instanceID];
     serviceID = v12->_serviceID;
-    v12->_serviceID = v18;
+    v12->_serviceID = instanceID;
 
-    v20 = [v10 instanceID];
+    instanceID2 = [characteristicCopy instanceID];
     characteristicID = v12->_characteristicID;
-    v12->_characteristicID = v20;
+    v12->_characteristicID = instanceID2;
 
-    objc_storeStrong(&v12->_targetValue, a5);
+    objc_storeStrong(&v12->_targetValue, value);
   }
 
   return v12;
@@ -621,26 +621,26 @@ void __43__HMDCharacteristicWriteAction_logCategory__block_invoke()
   logCategory__hmf_once_v14_184262 = v1;
 }
 
-+ (id)actionWithDictionaryRepresentation:(id)a3 home:(id)a4
++ (id)actionWithDictionaryRepresentation:(id)representation home:(id)home
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hmf_numberForKey:*MEMORY[0x277CD2058]];
+  representationCopy = representation;
+  homeCopy = home;
+  v8 = [representationCopy hmf_numberForKey:*MEMORY[0x277CD2058]];
   if (![v8 unsignedIntegerValue])
   {
-    v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
+    v14 = [representationCopy objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
     if (v14)
     {
-      v15 = [v6 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
-      if (v15 && (([v7 accessoryWithUUID:v15], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v17 = 0) : (v17 = v16), v18 = v17, v16, v18))
+      v15 = [representationCopy hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
+      if (v15 && (([homeCopy accessoryWithUUID:v15], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v17 = 0) : (v17 = v16), v18 = v17, v16, v18))
       {
 
-        v19 = [v6 hmf_numberForKey:*MEMORY[0x277CD25F8]];
+        v19 = [representationCopy hmf_numberForKey:*MEMORY[0x277CD25F8]];
         v20 = HAPInstanceIDFromValue();
 
         v21 = *MEMORY[0x277CD2140];
-        v22 = [v6 hmf_numberForKey:*MEMORY[0x277CD2140]];
+        v22 = [representationCopy hmf_numberForKey:*MEMORY[0x277CD2140]];
         v23 = HAPInstanceIDFromValue();
 
         v45 = v20;
@@ -654,9 +654,9 @@ void __43__HMDCharacteristicWriteAction_logCategory__block_invoke()
           if (v26)
           {
 
-            v27 = [a1 alloc];
-            v28 = [MEMORY[0x277CCAD78] UUID];
-            v13 = [v27 initWithUUID:v28 characteristic:v26 targetValue:v14 actionSet:0];
+            v27 = [self alloc];
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            v13 = [v27 initWithUUID:uUID characteristic:v26 targetValue:v14 actionSet:0];
 
 LABEL_28:
             goto LABEL_29;
@@ -664,13 +664,13 @@ LABEL_28:
         }
 
         v37 = objc_autoreleasePoolPush();
-        v38 = a1;
+        selfCopy = self;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           HMFGetLogIdentifier();
           v40 = v44 = v37;
-          v41 = [v6 hmf_numberForKey:v21];
+          v41 = [representationCopy hmf_numberForKey:v21];
           *buf = 138544130;
           v47 = v40;
           v48 = 2112;
@@ -690,7 +690,7 @@ LABEL_28:
       else
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = a1;
+        selfCopy2 = self;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
@@ -709,7 +709,7 @@ LABEL_28:
     else
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = a1;
+      selfCopy3 = self;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -717,7 +717,7 @@ LABEL_28:
         *buf = 138543618;
         v47 = v36;
         v48 = 2112;
-        v49 = v6;
+        v49 = representationCopy;
         _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_ERROR, "%{public}@Missing target value: %@", buf, 0x16u);
       }
 
@@ -729,7 +729,7 @@ LABEL_28:
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = a1;
+  selfCopy4 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {

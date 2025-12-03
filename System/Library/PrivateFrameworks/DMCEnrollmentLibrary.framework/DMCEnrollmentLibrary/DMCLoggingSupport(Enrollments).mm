@@ -7,24 +7,24 @@
 
 - (void)enableDebugLoggingForEnrollment
 {
-  v2 = [a1 _bundleIDsForDeviceManagementProcesses];
-  v5 = [v2 mutableCopy];
+  _bundleIDsForDeviceManagementProcesses = [self _bundleIDsForDeviceManagementProcesses];
+  v5 = [_bundleIDsForDeviceManagementProcesses mutableCopy];
 
-  v3 = [a1 _bundleIDsForEnrollmentHostingApps];
-  [v5 addObjectsFromArray:v3];
+  _bundleIDsForEnrollmentHostingApps = [self _bundleIDsForEnrollmentHostingApps];
+  [v5 addObjectsFromArray:_bundleIDsForEnrollmentHostingApps];
 
-  [a1 enableDebugLoggingForProcesses:v5];
-  v4 = [a1 _deviceManagementSubsystems];
-  [a1 enableDebugLoggingForSubsystems:v4];
+  [self enableDebugLoggingForProcesses:v5];
+  _deviceManagementSubsystems = [self _deviceManagementSubsystems];
+  [self enableDebugLoggingForSubsystems:_deviceManagementSubsystems];
 }
 
 - (void)enableDebugLoggingForAppPreservation
 {
-  v2 = [a1 _bundleIDsForAppRelatedProcesses];
-  [a1 enableDebugLoggingForProcesses:v2];
+  _bundleIDsForAppRelatedProcesses = [self _bundleIDsForAppRelatedProcesses];
+  [self enableDebugLoggingForProcesses:_bundleIDsForAppRelatedProcesses];
 
-  v3 = [a1 _appRelatedSubsystems];
-  [a1 enableDebugLoggingForSubsystems:v3];
+  _appRelatedSubsystems = [self _appRelatedSubsystems];
+  [self enableDebugLoggingForSubsystems:_appRelatedSubsystems];
 }
 
 @end

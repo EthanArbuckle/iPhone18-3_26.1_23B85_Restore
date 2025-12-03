@@ -1,15 +1,15 @@
 @interface SiriActivationButtonEventListener
 + (id)listener;
 - (id)_init;
-- (void)_registerListenerWithIdentifier:(id)a3;
-- (void)buttonDownWithButtonIdentifier:(id)a3 forListenerIdentifier:(id)a4 atTimestamp:(id)a5;
-- (void)buttonLongPressWithButtonIdentifier:(id)a3 forListenerIdentifier:(id)a4 atTimestamp:(id)a5;
-- (void)buttonUpWithButtonIdentifier:(id)a3 forListenerIdentifier:(id)a4 atTimestamp:(id)a5;
-- (void)configureConnectionForIdentifier:(id)a3;
+- (void)_registerListenerWithIdentifier:(id)identifier;
+- (void)buttonDownWithButtonIdentifier:(id)identifier forListenerIdentifier:(id)listenerIdentifier atTimestamp:(id)timestamp;
+- (void)buttonLongPressWithButtonIdentifier:(id)identifier forListenerIdentifier:(id)listenerIdentifier atTimestamp:(id)timestamp;
+- (void)buttonUpWithButtonIdentifier:(id)identifier forListenerIdentifier:(id)listenerIdentifier atTimestamp:(id)timestamp;
+- (void)configureConnectionForIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)invalidatedAtTimestamp:(double)a3;
-- (void)registerWithListener:(id)a3 identifier:(id)a4;
-- (void)unregisterListenerWithIdentifier:(id)a3;
+- (void)invalidatedAtTimestamp:(double)timestamp;
+- (void)registerWithListener:(id)listener identifier:(id)identifier;
+- (void)unregisterListenerWithIdentifier:(id)identifier;
 @end
 
 @implementation SiriActivationButtonEventListener
@@ -48,22 +48,22 @@ uint64_t __45__SiriActivationButtonEventListener_listener__block_invoke()
   return v2;
 }
 
-- (void)registerWithListener:(id)a3 identifier:(id)a4
+- (void)registerWithListener:(id)listener identifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  identifierCopy = identifier;
   v8 = MEMORY[0x1E698D0A0];
   v9 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x1E696AF00];
     v11 = v9;
-    v12 = [v10 currentThread];
+    currentThread = [v10 currentThread];
     v18 = 136315394;
     v19 = "[SiriActivationButtonEventListener registerWithListener:identifier:]";
     v20 = 2048;
-    v21 = [v12 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", &v18, 0x16u);
   }
 
@@ -76,10 +76,10 @@ uint64_t __45__SiriActivationButtonEventListener_listener__block_invoke()
     _os_log_impl(&dword_1C8137000, v13, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock successfully locked", &v18, 0xCu);
   }
 
-  v14 = [(SiriActivationButtonEventListener *)self listeners];
-  [v14 setObject:v6 forKey:v7];
+  listeners = [(SiriActivationButtonEventListener *)self listeners];
+  [listeners setObject:listenerCopy forKey:identifierCopy];
 
-  v15 = [(BSServiceConnection *)self->super._connection remoteTarget];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
   os_unfair_lock_unlock(&self->super._lock);
   v16 = *v8;
   if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
@@ -89,28 +89,28 @@ uint64_t __45__SiriActivationButtonEventListener_listener__block_invoke()
     _os_log_impl(&dword_1C8137000, v16, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock unlocked", &v18, 0xCu);
   }
 
-  if (v15)
+  if (remoteTarget)
   {
-    [(SiriActivationButtonEventListener *)self _registerListenerWithIdentifier:v7];
+    [(SiriActivationButtonEventListener *)self _registerListenerWithIdentifier:identifierCopy];
   }
 
   else
   {
-    [(SiriActivationButtonEventListener *)self configureConnectionForIdentifier:v7];
+    [(SiriActivationButtonEventListener *)self configureConnectionForIdentifier:identifierCopy];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureConnectionForIdentifier:(id)a3
+- (void)configureConnectionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E698F498];
   v6 = +[SASBoardServicesConfiguration configuration];
-  v7 = [v6 machServiceIdentifier];
+  machServiceIdentifier = [v6 machServiceIdentifier];
   v8 = +[SASBoardServicesConfiguration configuration];
   v9 = [v8 identifierForService:1];
-  v10 = [v5 endpointForMachName:v7 service:v9 instance:0];
+  v10 = [v5 endpointForMachName:machServiceIdentifier service:v9 instance:0];
 
   v11 = [MEMORY[0x1E698F490] connectionWithEndpoint:v10];
   connection = self->super._connection;
@@ -123,7 +123,7 @@ uint64_t __45__SiriActivationButtonEventListener_listener__block_invoke()
   v15[2] = __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___block_invoke;
   v15[3] = &unk_1E82F40E8;
   objc_copyWeak(&v17, &location);
-  v14 = v4;
+  v14 = identifierCopy;
   v16 = v14;
   [(BSServiceConnection *)v13 configureConnection:v15];
   [(BSServiceConnection *)self->super._connection activate];
@@ -244,21 +244,21 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterListenerWithIdentifier:(id)a3
+- (void)unregisterListenerWithIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E698D0A0];
   v6 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = MEMORY[0x1E696AF00];
     v8 = v6;
-    v9 = [v7 currentThread];
+    currentThread = [v7 currentThread];
     v21 = 136315394;
     v22 = "[SiriActivationButtonEventListener unregisterListenerWithIdentifier:]";
     v23 = 2048;
-    v24 = [v9 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", &v21, 0x16u);
   }
 
@@ -271,8 +271,8 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
     _os_log_impl(&dword_1C8137000, v10, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock successfully locked", &v21, 0xCu);
   }
 
-  v11 = [(NSMutableDictionary *)self->_listeners allKeys];
-  v12 = [v11 containsObject:v4];
+  allKeys = [(NSMutableDictionary *)self->_listeners allKeys];
+  v12 = [allKeys containsObject:identifierCopy];
 
   v13 = *v5;
   v14 = *v5;
@@ -284,15 +284,15 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
       v21 = 136315650;
       v22 = "[SiriActivationButtonEventListener unregisterListenerWithIdentifier:]";
       v23 = 2112;
-      v24 = v4;
+      qualityOfService = identifierCopy;
       v25 = 2112;
       v26 = connection;
       _os_log_impl(&dword_1C8137000, v13, OS_LOG_TYPE_DEFAULT, "%s #activation BSServiceConnection Unregistering SiriActivationButtonEventListenerDelegate delegate=%@ connection=%@", &v21, 0x20u);
     }
 
-    [(NSMutableDictionary *)self->_listeners removeObjectForKey:v4];
-    v16 = [(BSServiceConnection *)self->super._connection remoteTarget];
-    [v16 unregisterButtonEventListenerWithIdentifier:v4];
+    [(NSMutableDictionary *)self->_listeners removeObjectForKey:identifierCopy];
+    remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+    [remoteTarget unregisterButtonEventListenerWithIdentifier:identifierCopy];
 
     v17 = [(NSMutableDictionary *)self->_listeners count];
     os_unfair_lock_unlock(&self->super._lock);
@@ -314,7 +314,7 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(SiriActivationButtonEventListener *)v4 unregisterListenerWithIdentifier:v13];
+      [(SiriActivationButtonEventListener *)identifierCopy unregisterListenerWithIdentifier:v13];
     }
 
     os_unfair_lock_unlock(&self->super._lock);
@@ -330,21 +330,21 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerListenerWithIdentifier:(id)a3
+- (void)_registerListenerWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E698D0A0];
   v6 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = MEMORY[0x1E696AF00];
     v8 = v6;
-    v9 = [v7 currentThread];
+    currentThread = [v7 currentThread];
     v14 = 136315394;
     v15 = "[SiriActivationButtonEventListener _registerListenerWithIdentifier:]";
     v16 = 2048;
-    v17 = [v9 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", &v14, 0x16u);
   }
 
@@ -357,8 +357,8 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
     _os_log_impl(&dword_1C8137000, v10, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock successfully locked", &v14, 0xCu);
   }
 
-  v11 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  [v11 registerButtonEventListenerWithIdentifier:v4];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  [remoteTarget registerButtonEventListenerWithIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->super._lock);
   v12 = *v5;
@@ -379,7 +379,7 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   [(SiriActivationButtonEventListener *)self invalidatedAtTimestamp:Current];
 }
 
-- (void)invalidatedAtTimestamp:(double)a3
+- (void)invalidatedAtTimestamp:(double)timestamp
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E698D0A0];
@@ -399,12 +399,12 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   {
     v8 = MEMORY[0x1E696AF00];
     v9 = v7;
-    v10 = [v8 currentThread];
-    v11 = [v10 qualityOfService];
+    currentThread = [v8 currentThread];
+    qualityOfService = [currentThread qualityOfService];
     v16 = 136315394;
     v17 = "[SiriActivationButtonEventListener invalidatedAtTimestamp:]";
     v18 = 2048;
-    v19 = v11;
+    v19 = qualityOfService;
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", &v16, 0x16u);
   }
 
@@ -433,22 +433,22 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buttonDownWithButtonIdentifier:(id)a3 forListenerIdentifier:(id)a4 atTimestamp:(id)a5
+- (void)buttonDownWithButtonIdentifier:(id)identifier forListenerIdentifier:(id)listenerIdentifier atTimestamp:(id)timestamp
 {
   v37 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v26 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  listenerIdentifierCopy = listenerIdentifier;
+  timestampCopy = timestamp;
   v9 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x1E696AF00];
     v11 = v9;
-    v12 = [v10 currentThread];
+    currentThread = [v10 currentThread];
     *buf = 136315394;
     v34 = "[SiriActivationButtonEventListener buttonDownWithButtonIdentifier:forListenerIdentifier:atTimestamp:]";
     v35 = 2048;
-    v36 = [v12 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", buf, 0x16u);
   }
 
@@ -465,8 +465,8 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = [(NSMutableDictionary *)self->_listeners allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allKeys = [(NSMutableDictionary *)self->_listeners allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -477,7 +477,7 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
@@ -488,15 +488,15 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
           *buf = 136315394;
           v34 = "[SiriActivationButtonEventListener buttonDownWithButtonIdentifier:forListenerIdentifier:atTimestamp:]";
           v35 = 2112;
-          v36 = v19;
+          qualityOfService = v19;
           _os_log_impl(&dword_1C8137000, v21, OS_LOG_TYPE_DEFAULT, "%s #activation #noisy Forwarding Button down event to Listener with identifier %@", buf, 0x16u);
         }
 
-        [v8 timeInterval];
-        [v20 buttonEventListenerDidReceiveButtonDownWithButtonIdentifier:objc_msgSend(v27 atTimestamp:{"integerValue"), v22}];
+        [timestampCopy timeInterval];
+        [v20 buttonEventListenerDidReceiveButtonDownWithButtonIdentifier:objc_msgSend(identifierCopy atTimestamp:{"integerValue"), v22}];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v16);
@@ -514,22 +514,22 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buttonUpWithButtonIdentifier:(id)a3 forListenerIdentifier:(id)a4 atTimestamp:(id)a5
+- (void)buttonUpWithButtonIdentifier:(id)identifier forListenerIdentifier:(id)listenerIdentifier atTimestamp:(id)timestamp
 {
   v37 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v26 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  listenerIdentifierCopy = listenerIdentifier;
+  timestampCopy = timestamp;
   v9 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x1E696AF00];
     v11 = v9;
-    v12 = [v10 currentThread];
+    currentThread = [v10 currentThread];
     *buf = 136315394;
     v34 = "[SiriActivationButtonEventListener buttonUpWithButtonIdentifier:forListenerIdentifier:atTimestamp:]";
     v35 = 2048;
-    v36 = [v12 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", buf, 0x16u);
   }
 
@@ -546,8 +546,8 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = [(NSMutableDictionary *)self->_listeners allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allKeys = [(NSMutableDictionary *)self->_listeners allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -558,7 +558,7 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
@@ -569,15 +569,15 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
           *buf = 136315394;
           v34 = "[SiriActivationButtonEventListener buttonUpWithButtonIdentifier:forListenerIdentifier:atTimestamp:]";
           v35 = 2112;
-          v36 = v19;
+          qualityOfService = v19;
           _os_log_impl(&dword_1C8137000, v21, OS_LOG_TYPE_DEFAULT, "%s #activation #noisy Forwarding Button down event to Listener with identifier %@", buf, 0x16u);
         }
 
-        [v8 timeInterval];
-        [v20 buttonEventListenerDidReceiveButtonUpWithButtonIdentifier:objc_msgSend(v27 atTimestamp:{"integerValue"), v22}];
+        [timestampCopy timeInterval];
+        [v20 buttonEventListenerDidReceiveButtonUpWithButtonIdentifier:objc_msgSend(identifierCopy atTimestamp:{"integerValue"), v22}];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v16);
@@ -595,22 +595,22 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buttonLongPressWithButtonIdentifier:(id)a3 forListenerIdentifier:(id)a4 atTimestamp:(id)a5
+- (void)buttonLongPressWithButtonIdentifier:(id)identifier forListenerIdentifier:(id)listenerIdentifier atTimestamp:(id)timestamp
 {
   v37 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v26 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  listenerIdentifierCopy = listenerIdentifier;
+  timestampCopy = timestamp;
   v9 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x1E696AF00];
     v11 = v9;
-    v12 = [v10 currentThread];
+    currentThread = [v10 currentThread];
     *buf = 136315394;
     v34 = "[SiriActivationButtonEventListener buttonLongPressWithButtonIdentifier:forListenerIdentifier:atTimestamp:]";
     v35 = 2048;
-    v36 = [v12 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", buf, 0x16u);
   }
 
@@ -627,8 +627,8 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = [(NSMutableDictionary *)self->_listeners allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allKeys = [(NSMutableDictionary *)self->_listeners allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -639,7 +639,7 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
@@ -650,15 +650,15 @@ void __70__SiriActivationButtonEventListener_configureConnectionForIdentifier___
           *buf = 136315394;
           v34 = "[SiriActivationButtonEventListener buttonLongPressWithButtonIdentifier:forListenerIdentifier:atTimestamp:]";
           v35 = 2112;
-          v36 = v19;
+          qualityOfService = v19;
           _os_log_impl(&dword_1C8137000, v21, OS_LOG_TYPE_DEFAULT, "%s #activation #noisy Forwarding Button down event to Listener with identifier %@", buf, 0x16u);
         }
 
-        [v8 timeInterval];
-        [v20 buttonEventListenerDidReceiveButtonLongPressWithButtonIdentifier:objc_msgSend(v27 atTimestamp:{"integerValue"), v22}];
+        [timestampCopy timeInterval];
+        [v20 buttonEventListenerDidReceiveButtonLongPressWithButtonIdentifier:objc_msgSend(identifierCopy atTimestamp:{"integerValue"), v22}];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v16);

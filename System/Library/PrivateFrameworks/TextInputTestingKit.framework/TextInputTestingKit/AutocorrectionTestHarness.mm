@@ -1,52 +1,52 @@
 @interface AutocorrectionTestHarness
-+ (id)keyboardFromWidth:(id)a3 useDynamicLayout:(BOOL)a4 orientation:(id)a5 keyboardLayout:(id)a6;
-+ (id)overrideInputMode:(id)a3;
-- (AutocorrectionTestHarness)initWithAttributes:(id)a3;
-- (BOOL)outcomeIsFailureForTest:(id)a3 withResult:(id)a4;
++ (id)keyboardFromWidth:(id)width useDynamicLayout:(BOOL)layout orientation:(id)orientation keyboardLayout:(id)keyboardLayout;
++ (id)overrideInputMode:(id)mode;
+- (AutocorrectionTestHarness)initWithAttributes:(id)attributes;
+- (BOOL)outcomeIsFailureForTest:(id)test withResult:(id)result;
 - (BOOL)requiresMaintenance;
-- (id)emptyResultForPlayback:(id)a3;
-- (id)emptyResultForTest:(id)a3;
+- (id)emptyResultForPlayback:(id)playback;
+- (id)emptyResultForTest:(id)test;
 - (id)newKeyboardInputManager;
-- (id)replayTest:(id)a3 withError:(id)a4;
-- (id)runConversationTest:(id)a3 trialID:(unint64_t)a4 withError:(id)a5;
-- (id)runTest:(id)a3 trialID:(unint64_t)a4 withError:(id)a5;
-- (id)typeTest:(id)a3 withError:(id)a4;
-- (unsigned)seedForTest:(id)a3 trialID:(unint64_t)a4;
+- (id)replayTest:(id)test withError:(id)error;
+- (id)runConversationTest:(id)test trialID:(unint64_t)d withError:(id)error;
+- (id)runTest:(id)test trialID:(unint64_t)d withError:(id)error;
+- (id)typeTest:(id)test withError:(id)error;
+- (unsigned)seedForTest:(id)test trialID:(unint64_t)d;
 - (void)initializeConversationHistory;
 - (void)nullifyConversationHistory;
-- (void)testConversation:(id)a3 testingSender:(id)a4 warmupMessages:(unint64_t)a5 adaptToSentMessages:(BOOL)a6 adaptToReceivedMessages:(BOOL)a7 trialID:(unint64_t)a8 withError:(id)a9 writingResults:(id)a10;
-- (void)trainWithCorpus:(id)a3;
+- (void)testConversation:(id)conversation testingSender:(id)sender warmupMessages:(unint64_t)messages adaptToSentMessages:(BOOL)sentMessages adaptToReceivedMessages:(BOOL)receivedMessages trialID:(unint64_t)d withError:(id)error writingResults:(id)self0;
+- (void)trainWithCorpus:(id)corpus;
 @end
 
 @implementation AutocorrectionTestHarness
 
 - (BOOL)requiresMaintenance
 {
-  v2 = [(AutocorrectionTestHarness *)self testTyper];
-  v3 = [v2 wordLearningEnabled];
+  testTyper = [(AutocorrectionTestHarness *)self testTyper];
+  wordLearningEnabled = [testTyper wordLearningEnabled];
 
-  return v3;
+  return wordLearningEnabled;
 }
 
-- (BOOL)outcomeIsFailureForTest:(id)a3 withResult:(id)a4
+- (BOOL)outcomeIsFailureForTest:(id)test withResult:(id)result
 {
-  v5 = a4;
-  v6 = [v5 intended];
-  v7 = [v5 corrected];
-  LOBYTE(self) = [(AutocorrectionTestHarness *)self compareExpectedValue:v6 withResult:v7];
+  resultCopy = result;
+  intended = [resultCopy intended];
+  corrected = [resultCopy corrected];
+  LOBYTE(self) = [(AutocorrectionTestHarness *)self compareExpectedValue:intended withResult:corrected];
 
   return self ^ 1;
 }
 
-- (void)trainWithCorpus:(id)a3
+- (void)trainWithCorpus:(id)corpus
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  corpusCopy = corpus;
+  v5 = [corpusCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -57,32 +57,32 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(corpusCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(AutocorrectionTestHarness *)self testTyper];
-        [v9 attemptToTypeText:v8];
+        testTyper = [(AutocorrectionTestHarness *)self testTyper];
+        [testTyper attemptToTypeText:v8];
 
-        v10 = [(AutocorrectionTestHarness *)self testTyper];
-        [v10 commitText];
+        testTyper2 = [(AutocorrectionTestHarness *)self testTyper];
+        [testTyper2 commitText];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [corpusCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)runTest:(id)a3 trialID:(unint64_t)a4 withError:(id)a5
+- (id)runTest:(id)test trialID:(unint64_t)d withError:(id)error
 {
-  v39 = a3;
+  testCopy = test;
   [(NSMutableArray *)self->_insertedText removeAllObjects];
-  v7 = v39;
+  v7 = testCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -95,13 +95,13 @@
     [(AutocorrectionTestHarness *)self emptyResultForTest:v7];
   }
   v9 = ;
-  v10 = [v7 sourceMetadata];
-  [v9 setSourceMetadata:v10];
+  sourceMetadata = [v7 sourceMetadata];
+  [v9 setSourceMetadata:sourceMetadata];
 
-  v40 = [(AutocorrectionTestHarness *)self seedForTest:v7 trialID:a4];
-  v11 = [(AutocorrectionTestHarness *)self testTyper];
-  v12 = [v11 userActionStream];
-  [v12 setRandomNumberSeed:v40];
+  v40 = [(AutocorrectionTestHarness *)self seedForTest:v7 trialID:d];
+  testTyper = [(AutocorrectionTestHarness *)self testTyper];
+  userActionStream = [testTyper userActionStream];
+  [userActionStream setRandomNumberSeed:v40];
 
   if (isKindOfClass)
   {
@@ -113,54 +113,54 @@
     [(AutocorrectionTestHarness *)self typeTest:v7 withError:0];
   }
   v13 = ;
-  v14 = [(AutocorrectionTestHarness *)self typologyOutpath];
+  typologyOutpath = [(AutocorrectionTestHarness *)self typologyOutpath];
 
-  if (v14)
+  if (typologyOutpath)
   {
-    v15 = [(TIKeyboardTyper *)self->_testTyper inputManager];
-    v16 = [v15 inputManagerLogger];
-    v17 = [v16 writeToFile];
+    inputManager = [(TIKeyboardTyper *)self->_testTyper inputManager];
+    inputManagerLogger = [inputManager inputManagerLogger];
+    writeToFile = [inputManagerLogger writeToFile];
 
-    v18 = [v17 objectAtIndexedSubscript:0];
+    v18 = [writeToFile objectAtIndexedSubscript:0];
     [v9 setTypologyLogURL:v18];
 
-    v19 = [v17 objectAtIndexedSubscript:1];
+    v19 = [writeToFile objectAtIndexedSubscript:1];
     [v9 setTypologyTraceLogURL:v19];
   }
 
-  v20 = [v13 correctedTransliterationSequence];
-  v21 = v20;
-  if (v20)
+  correctedTransliterationSequence = [v13 correctedTransliterationSequence];
+  v21 = correctedTransliterationSequence;
+  if (correctedTransliterationSequence)
   {
-    v22 = v20;
+    v22 = correctedTransliterationSequence;
   }
 
   else
   {
-    v23 = [(AutocorrectionTestHarness *)self testTyper];
-    v24 = [(AutocorrectionTestHarness *)self testTyper];
-    v25 = [v24 text];
-    v22 = [v23 tokensForString:v25];
+    testTyper2 = [(AutocorrectionTestHarness *)self testTyper];
+    testTyper3 = [(AutocorrectionTestHarness *)self testTyper];
+    text = [testTyper3 text];
+    v22 = [testTyper2 tokensForString:text];
   }
 
-  v26 = [(AutocorrectionTestHarness *)self config];
+  config = [(AutocorrectionTestHarness *)self config];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_21;
   }
 
-  v27 = [(AutocorrectionTestHarness *)self config];
-  v28 = [v27 usesContinuousPath];
+  config2 = [(AutocorrectionTestHarness *)self config];
+  usesContinuousPath = [config2 usesContinuousPath];
 
-  if (!v28)
+  if (!usesContinuousPath)
   {
     goto LABEL_23;
   }
 
-  v29 = [v9 intended];
-  v26 = [v29 componentsJoinedByString:&stru_287EC4808];
+  intended = [v9 intended];
+  config = [intended componentsJoinedByString:&stru_287EC4808];
 
-  if (([v26 hasSuffix:@" "] & 1) == 0 && objc_msgSend(v13, "adjustForContinuousPath") && (objc_msgSend(v22, "lastObject"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqualToString:", @" "), v30, v31))
+  if (([config hasSuffix:@" "] & 1) == 0 && objc_msgSend(v13, "adjustForContinuousPath") && (objc_msgSend(v22, "lastObject"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqualToString:", @" "), v30, v31))
   {
     v32 = [v22 count] - 1;
     v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:v32];
@@ -187,29 +187,29 @@ LABEL_23:
   v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v40];
   [v9 setSeed:v36];
 
-  v37 = [(AutocorrectionTestHarness *)self resultClassifiers];
-  [v9 setTagsFromClassifiers:v37];
+  resultClassifiers = [(AutocorrectionTestHarness *)self resultClassifiers];
+  [v9 setTagsFromClassifiers:resultClassifiers];
 
   return v9;
 }
 
-- (id)runConversationTest:(id)a3 trialID:(unint64_t)a4 withError:(id)a5
+- (id)runConversationTest:(id)test trialID:(unint64_t)d withError:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v24 = a5;
-  v9 = [v8 conversation];
-  v10 = [v9 count];
-  v11 = [v8 warmupMessages];
+  testCopy = test;
+  errorCopy = error;
+  conversation = [testCopy conversation];
+  v10 = [conversation count];
+  warmupMessages = [testCopy warmupMessages];
 
-  v25 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v10 - v11];
-  if (v10 != v11)
+  v25 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v10 - warmupMessages];
+  if (v10 != warmupMessages)
   {
-    v12 = v11 - v10;
+    v12 = warmupMessages - v10;
     do
     {
-      v13 = [MEMORY[0x277CBEB68] null];
-      [v25 addObject:v13];
+      null = [MEMORY[0x277CBEB68] null];
+      [v25 addObject:null];
     }
 
     while (!__CFADD__(v12++, 1));
@@ -219,9 +219,9 @@ LABEL_23:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [v8 sendersToTest];
-  obj = v15;
-  v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  sendersToTest = [testCopy sendersToTest];
+  obj = sendersToTest;
+  v16 = [sendersToTest countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v16)
   {
     v17 = *v27;
@@ -235,38 +235,38 @@ LABEL_23:
         }
 
         v19 = *(*(&v26 + 1) + 8 * i);
-        v20 = [v8 conversation];
-        -[AutocorrectionTestHarness testConversation:testingSender:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:trialID:withError:writingResults:](self, "testConversation:testingSender:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:trialID:withError:writingResults:", v20, v19, [v8 warmupMessages], objc_msgSend(v8, "adaptToSentMessages"), objc_msgSend(v8, "adaptToReceivedMessages"), a4, v24, v25);
+        conversation2 = [testCopy conversation];
+        -[AutocorrectionTestHarness testConversation:testingSender:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:trialID:withError:writingResults:](self, "testConversation:testingSender:warmupMessages:adaptToSentMessages:adaptToReceivedMessages:trialID:withError:writingResults:", conversation2, v19, [testCopy warmupMessages], objc_msgSend(testCopy, "adaptToSentMessages"), objc_msgSend(testCopy, "adaptToReceivedMessages"), d, errorCopy, v25);
       }
 
-      v15 = obj;
+      sendersToTest = obj;
       v16 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v16);
   }
 
-  v21 = [MEMORY[0x277CBEB68] null];
-  [v25 removeObjectIdenticalTo:v21];
+  null2 = [MEMORY[0x277CBEB68] null];
+  [v25 removeObjectIdenticalTo:null2];
 
   return v25;
 }
 
-- (void)testConversation:(id)a3 testingSender:(id)a4 warmupMessages:(unint64_t)a5 adaptToSentMessages:(BOOL)a6 adaptToReceivedMessages:(BOOL)a7 trialID:(unint64_t)a8 withError:(id)a9 writingResults:(id)a10
+- (void)testConversation:(id)conversation testingSender:(id)sender warmupMessages:(unint64_t)messages adaptToSentMessages:(BOOL)sentMessages adaptToReceivedMessages:(BOOL)receivedMessages trialID:(unint64_t)d withError:(id)error writingResults:(id)self0
 {
-  v33 = a6;
-  v34 = a7;
+  sentMessagesCopy = sentMessages;
+  receivedMessagesCopy = receivedMessages;
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v38 = a4;
-  v31 = a9;
-  v32 = a10;
+  conversationCopy = conversation;
+  senderCopy = sender;
+  errorCopy = error;
+  resultsCopy = results;
   [(AutocorrectionTestHarness *)self initializeConversationHistory];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v12;
+  obj = conversationCopy;
   v13 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v13)
   {
@@ -276,7 +276,7 @@ LABEL_23:
     {
       v39 = v13;
       v15 = 0;
-      v16 = v14 - a5;
+      v16 = v14 - messages;
       v14 = v14;
       do
       {
@@ -286,48 +286,48 @@ LABEL_23:
         }
 
         v17 = *(*(&v40 + 1) + 8 * v15);
-        v18 = [v17 senderId];
-        v19 = [v18 isEqualToString:v38];
+        senderId = [v17 senderId];
+        v19 = [senderId isEqualToString:senderCopy];
 
         if (!v19)
         {
-          if (!v34)
+          if (!receivedMessagesCopy)
           {
             goto LABEL_14;
           }
 
-          v24 = [(AutocorrectionTestHarness *)self testTyper];
-          v25 = [v24 keyboardController];
-          v26 = [v25 inputContextHistory];
-          v27 = [v17 text];
-          v28 = [MEMORY[0x277CBEAA8] date];
-          v29 = [(AutocorrectionTestHarness *)self friendId];
-          [v26 addTextEntry:v27 timestamp:v28 senderIdentifier:v29];
+          testTyper = [(AutocorrectionTestHarness *)self testTyper];
+          keyboardController = [testTyper keyboardController];
+          inputContextHistory = [keyboardController inputContextHistory];
+          text = [v17 text];
+          date = [MEMORY[0x277CBEAA8] date];
+          friendId = [(AutocorrectionTestHarness *)self friendId];
+          [inputContextHistory addTextEntry:text timestamp:date senderIdentifier:friendId];
           goto LABEL_13;
         }
 
-        if (v14 >= a5)
+        if (v14 >= messages)
         {
-          v20 = [(AutocorrectionTestHarness *)self testTyper];
-          [v20 syncToEmptyDocument];
+          testTyper2 = [(AutocorrectionTestHarness *)self testTyper];
+          [testTyper2 syncToEmptyDocument];
 
           TIDispatchWaitForAllBlocks();
-          v21 = [v17 text];
-          v22 = [AutocorrectionTest testWithInput:v21];
+          text2 = [v17 text];
+          v22 = [AutocorrectionTest testWithInput:text2];
 
-          v23 = [(AutocorrectionTestHarness *)self runTest:v22 trialID:a8 withError:v31];
-          [v32 setObject:v23 atIndexedSubscript:v16];
+          v23 = [(AutocorrectionTestHarness *)self runTest:v22 trialID:d withError:errorCopy];
+          [resultsCopy setObject:v23 atIndexedSubscript:v16];
         }
 
-        if (v33)
+        if (sentMessagesCopy)
         {
-          v24 = [(AutocorrectionTestHarness *)self testTyper];
-          v25 = [v24 keyboardController];
-          v26 = [v25 inputContextHistory];
-          v27 = [v17 text];
-          v28 = [MEMORY[0x277CBEAA8] date];
-          v29 = [(AutocorrectionTestHarness *)self selfId];
-          [v26 addTextEntry:v27 timestamp:v28 senderIdentifier:v29];
+          testTyper = [(AutocorrectionTestHarness *)self testTyper];
+          keyboardController = [testTyper keyboardController];
+          inputContextHistory = [keyboardController inputContextHistory];
+          text = [v17 text];
+          date = [MEMORY[0x277CBEAA8] date];
+          friendId = [(AutocorrectionTestHarness *)self selfId];
+          [inputContextHistory addTextEntry:text timestamp:date senderIdentifier:friendId];
 LABEL_13:
         }
 
@@ -352,42 +352,42 @@ LABEL_14:
   v3 = objc_alloc(MEMORY[0x277D6F370]);
   v7 = [MEMORY[0x277CBEB98] setWithObject:@"mailto:null@apple.com"];
   v4 = [v3 initWithRecipientIdentifiers:?];
-  v5 = [(AutocorrectionTestHarness *)self testTyper];
-  v6 = [v5 keyboardController];
-  [v6 setInputContextHistory:v4];
+  testTyper = [(AutocorrectionTestHarness *)self testTyper];
+  keyboardController = [testTyper keyboardController];
+  [keyboardController setInputContextHistory:v4];
 
-  v8 = [(AutocorrectionTestHarness *)self testTyper];
-  [v8 syncToEmptyDocument];
+  testTyper2 = [(AutocorrectionTestHarness *)self testTyper];
+  [testTyper2 syncToEmptyDocument];
 }
 
 - (void)initializeConversationHistory
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(AutocorrectionTestHarness *)self friendId];
-  v11 = [v3 setWithObject:v4];
+  friendId = [(AutocorrectionTestHarness *)self friendId];
+  v11 = [v3 setWithObject:friendId];
 
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(AutocorrectionTestHarness *)self selfId];
-  v7 = [v5 setWithObject:v6];
+  selfId = [(AutocorrectionTestHarness *)self selfId];
+  v7 = [v5 setWithObject:selfId];
 
   v8 = [objc_alloc(MEMORY[0x277D6F370]) initWithRecipientIdentifiers:v11 senderIdentifiers:v7];
-  v9 = [(AutocorrectionTestHarness *)self testTyper];
-  v10 = [v9 keyboardController];
-  [v10 setInputContextHistory:v8];
+  testTyper = [(AutocorrectionTestHarness *)self testTyper];
+  keyboardController = [testTyper keyboardController];
+  [keyboardController setInputContextHistory:v8];
 }
 
-- (unsigned)seedForTest:(id)a3 trialID:(unint64_t)a4
+- (unsigned)seedForTest:(id)test trialID:(unint64_t)d
 {
-  v4 = a4;
-  v5 = [a3 input];
-  v6 = [v5 length];
+  dCopy = d;
+  input = [test input];
+  v6 = [input length];
   if (v6)
   {
     v7 = 0;
     v8 = 5381;
     do
     {
-      v8 = 33 * v8 + [v5 characterAtIndex:v7++];
+      v8 = 33 * v8 + [input characterAtIndex:v7++];
     }
 
     while (v6 != v7);
@@ -399,55 +399,55 @@ LABEL_14:
     v9 = 177573;
   }
 
-  return v9 + v4;
+  return v9 + dCopy;
 }
 
-- (id)emptyResultForPlayback:(id)a3
+- (id)emptyResultForPlayback:(id)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   v4 = objc_alloc_init(AutocorrectionResult);
-  v5 = [v3 intended];
-  [(AutocorrectionResult *)v4 setInput:v5];
+  intended = [playbackCopy intended];
+  [(AutocorrectionResult *)v4 setInput:intended];
 
-  v6 = [v3 intended];
-  [(AutocorrectionResult *)v4 setIntended:v6];
+  intended2 = [playbackCopy intended];
+  [(AutocorrectionResult *)v4 setIntended:intended2];
 
-  v7 = [v3 corpusId];
-  [(AutocorrectionResult *)v4 setCorpusId:v7];
+  corpusId = [playbackCopy corpusId];
+  [(AutocorrectionResult *)v4 setCorpusId:corpusId];
 
   return v4;
 }
 
-- (id)emptyResultForTest:(id)a3
+- (id)emptyResultForTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = objc_alloc_init(AutocorrectionResult);
-  v6 = [(AutocorrectionTestHarness *)self testTyper];
-  v7 = [v4 input];
-  v8 = [v6 tokensForString:v7];
+  testTyper = [(AutocorrectionTestHarness *)self testTyper];
+  input = [testCopy input];
+  v8 = [testTyper tokensForString:input];
   [(AutocorrectionResult *)v5 setInput:v8];
 
-  v9 = [(AutocorrectionTestHarness *)self testTyper];
-  v10 = [v9 userModel];
-  if ([v10 prefersContinuousPath])
+  testTyper2 = [(AutocorrectionTestHarness *)self testTyper];
+  userModel = [testTyper2 userModel];
+  if ([userModel prefersContinuousPath])
   {
-    v11 = [(AutocorrectionTestHarness *)self config];
-    v12 = [v11 usesContinuousPath];
+    config = [(AutocorrectionTestHarness *)self config];
+    usesContinuousPath = [config usesContinuousPath];
 
-    if (v12)
+    if (usesContinuousPath)
     {
-      v13 = [(AutocorrectionTestHarness *)self testTyper];
-      v14 = [v4 input];
-      v15 = [v13 tokensForString:v14];
+      testTyper3 = [(AutocorrectionTestHarness *)self testTyper];
+      input2 = [testCopy input];
+      expectedOutput2 = [testTyper3 tokensForString:input2];
 
-      v16 = [v15 count];
-      v17 = v15;
+      v16 = [expectedOutput2 count];
+      expectedOutput4 = expectedOutput2;
       if (!v16)
       {
-        v17 = [MEMORY[0x277CBEB18] arrayWithObject:&stru_287EC4808];
+        expectedOutput4 = [MEMORY[0x277CBEB18] arrayWithObject:&stru_287EC4808];
       }
 
-      [(AutocorrectionResult *)v5 setIntended:v17];
+      [(AutocorrectionResult *)v5 setIntended:expectedOutput4];
       if (!v16)
       {
         goto LABEL_12;
@@ -461,66 +461,66 @@ LABEL_14:
   {
   }
 
-  v18 = [v4 expectedOutput];
-  v19 = [v18 count];
+  expectedOutput = [testCopy expectedOutput];
+  v19 = [expectedOutput count];
 
   if (v19 >= 2)
   {
-    v15 = [v4 expectedOutput];
-    [(AutocorrectionResult *)v5 setIntended:v15];
+    expectedOutput2 = [testCopy expectedOutput];
+    [(AutocorrectionResult *)v5 setIntended:expectedOutput2];
     goto LABEL_14;
   }
 
-  v20 = [v4 expectedOutput];
-  v21 = [v20 count];
+  expectedOutput3 = [testCopy expectedOutput];
+  v21 = [expectedOutput3 count];
 
   if (v21 == 1)
   {
-    v15 = [(AutocorrectionTestHarness *)self testTyper];
-    v17 = [v4 expectedOutput];
-    v22 = [v17 firstObject];
-    v23 = [v15 tokensForString:v22];
+    expectedOutput2 = [(AutocorrectionTestHarness *)self testTyper];
+    expectedOutput4 = [testCopy expectedOutput];
+    firstObject = [expectedOutput4 firstObject];
+    v23 = [expectedOutput2 tokensForString:firstObject];
     [(AutocorrectionResult *)v5 setIntended:v23];
 
 LABEL_12:
     goto LABEL_14;
   }
 
-  v15 = [MEMORY[0x277CBEB18] arrayWithObject:&stru_287EC4808];
-  [(AutocorrectionResult *)v5 setIntended:v15];
+  expectedOutput2 = [MEMORY[0x277CBEB18] arrayWithObject:&stru_287EC4808];
+  [(AutocorrectionResult *)v5 setIntended:expectedOutput2];
 LABEL_14:
 
-  v24 = [v4 corpusId];
-  [(AutocorrectionResult *)v5 setCorpusId:v24];
+  corpusId = [testCopy corpusId];
+  [(AutocorrectionResult *)v5 setCorpusId:corpusId];
 
   return v5;
 }
 
-- (id)typeTest:(id)a3 withError:(id)a4
+- (id)typeTest:(id)test withError:(id)error
 {
-  v5 = a3;
+  testCopy = test;
   v6 = [TITypingLog typingLogWithDebug:self->_saveDebugData];
-  v7 = [(AutocorrectionTestHarness *)self testTyper];
-  v8 = [v5 input];
-  [v7 attemptToTypeText:v8 typingLog:v6];
+  testTyper = [(AutocorrectionTestHarness *)self testTyper];
+  input = [testCopy input];
+  [testTyper attemptToTypeText:input typingLog:v6];
 
-  v9 = [(AutocorrectionTestHarness *)self testTyper];
-  [v9 commitText];
+  testTyper2 = [(AutocorrectionTestHarness *)self testTyper];
+  [testTyper2 commitText];
 
   return v6;
 }
 
-- (id)replayTest:(id)a3 withError:(id)a4
+- (id)replayTest:(id)test withError:(id)error
 {
-  v5 = a3;
+  testCopy = test;
   v6 = [TITypingLog typingLogWithDebug:self->_saveDebugData];
-  v7 = [(AutocorrectionTestHarness *)self testTyper];
-  v8 = [v5 intended];
-  v9 = [v5 expected];
-  [v7 attemptToTypeIntended:v8 expected:v9 typingLog:v6];
+  testTyper = [(AutocorrectionTestHarness *)self testTyper];
+  intended = [testCopy intended];
+  expected = [testCopy expected];
+  [testTyper attemptToTypeIntended:intended expected:expected typingLog:v6];
 
-  v10 = [(AutocorrectionTestHarness *)self testTyper];
-  [v10 commitText];
+  testTyper2 = [(AutocorrectionTestHarness *)self testTyper];
+  [testTyper2 commitText];
 
   return v6;
 }
@@ -532,67 +532,67 @@ LABEL_14:
   {
     v39 = objc_alloc_init(TIDynamicLanguageLikelihoodModel);
     v12 = [TIMultilingualPreferenceOverrides alloc];
-    v13 = [(AutocorrectionTestHarness *)self secondaryInputMode];
-    v14 = [(AutocorrectionTestHarness *)self config];
-    v15 = [v14 inputMode];
-    v41[0] = v15;
+    secondaryInputMode = [(AutocorrectionTestHarness *)self secondaryInputMode];
+    config = [(AutocorrectionTestHarness *)self config];
+    inputMode = [config inputMode];
+    v41[0] = inputMode;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
-    v17 = [(AutocorrectionTestHarness *)self config];
-    v18 = [v17 inputMode];
-    v19 = [v18 languageWithRegion];
-    v40 = v19;
+    config2 = [(AutocorrectionTestHarness *)self config];
+    inputMode2 = [config2 inputMode];
+    languageWithRegion = [inputMode2 languageWithRegion];
+    v40 = languageWithRegion;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-    v21 = [(TIMultilingualPreferenceOverrides *)v12 initWithPreferredSecondaryInputMode:v13 userEnabledInputModes:v16 userPreferredLanguages:v20];
+    v21 = [(TIMultilingualPreferenceOverrides *)v12 initWithPreferredSecondaryInputMode:secondaryInputMode userEnabledInputModes:v16 userPreferredLanguages:v20];
 
     v22 = [objc_alloc(MEMORY[0x277D6FE98]) initWithLanguageLikelihoodModel:v39 preferenceProvider:v21];
-    v23 = [(AutocorrectionTestHarness *)self config];
-    v24 = [v23 inputMode];
-    v25 = [v24 multilingualInputManagerClass];
+    config3 = [(AutocorrectionTestHarness *)self config];
+    inputMode3 = [config3 inputMode];
+    multilingualInputManagerClass = [inputMode3 multilingualInputManagerClass];
 
-    v26 = [v25 alloc];
-    v27 = [(AutocorrectionTestHarness *)self config];
-    v11 = [v26 initWithConfig:v27 keyboardState:0 languageSelectionController:v22];
+    v26 = [multilingualInputManagerClass alloc];
+    config4 = [(AutocorrectionTestHarness *)self config];
+    v11 = [v26 initWithConfig:config4 keyboardState:0 languageSelectionController:v22];
 
-    v28 = [MEMORY[0x277CBEB38] dictionary];
-    [v11 setTestingStateObject:v28];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [v11 setTestingStateObject:dictionary];
   }
 
   else
   {
-    v6 = [(AutocorrectionTestHarness *)self config];
-    v7 = [v6 inputMode];
-    v8 = [v7 inputManagerClass];
+    config5 = [(AutocorrectionTestHarness *)self config];
+    inputMode4 = [config5 inputMode];
+    inputManagerClass = [inputMode4 inputManagerClass];
 
-    v9 = [v8 alloc];
-    v10 = [(AutocorrectionTestHarness *)self config];
-    v11 = [v9 initWithConfig:v10 keyboardState:0];
+    v9 = [inputManagerClass alloc];
+    config6 = [(AutocorrectionTestHarness *)self config];
+    v11 = [v9 initWithConfig:config6 keyboardState:0];
   }
 
-  v29 = [(AutocorrectionTestHarness *)self typologyOutpath];
-  v30 = v29 == 0;
+  typologyOutpath = [(AutocorrectionTestHarness *)self typologyOutpath];
+  v30 = typologyOutpath == 0;
 
   if (!v30)
   {
     v31 = objc_alloc(MEMORY[0x277D6FEE8]);
-    v32 = [(AutocorrectionTestHarness *)self typologyOutpath];
-    v33 = [v31 initWithOutputPath:v32];
+    typologyOutpath2 = [(AutocorrectionTestHarness *)self typologyOutpath];
+    v33 = [v31 initWithOutputPath:typologyOutpath2];
     [v11 setTypologyPreferences:v33];
 
     v34 = objc_alloc(MEMORY[0x277D6FE78]);
-    v35 = [v11 typologyPreferences];
-    v36 = [v34 initWithTypologyPreferences:v35];
+    typologyPreferences = [v11 typologyPreferences];
+    v36 = [v34 initWithTypologyPreferences:typologyPreferences];
 
     [v11 setInputManagerLogger:v36];
-    v37 = [v11 configurationPropertyList];
-    [v36 setConfig:v37];
+    configurationPropertyList = [v11 configurationPropertyList];
+    [v36 setConfig:configurationPropertyList];
   }
 
   return v11;
 }
 
-- (AutocorrectionTestHarness)initWithAttributes:(id)a3
+- (AutocorrectionTestHarness)initWithAttributes:(id)attributes
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v167.receiver = self;
   v167.super_class = AutocorrectionTestHarness;
   v7 = [(AutocorrectionTestHarness *)&v167 init];
@@ -603,14 +603,14 @@ LABEL_14:
     goto LABEL_145;
   }
 
-  v8 = [v6 valueForKey:@"TYPOLOGY_OUTPATH"];
+  v8 = [attributesCopy valueForKey:@"TYPOLOGY_OUTPATH"];
   typologyOutpath = v7->_typologyOutpath;
   v7->_typologyOutpath = v8;
 
   if (v7->_typologyOutpath)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v10 createDirectoryAtPath:v7->_typologyOutpath withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v11 = [defaultManager createDirectoryAtPath:v7->_typologyOutpath withIntermediateDirectories:1 attributes:0 error:0];
 
     if ((v11 & 1) == 0)
     {
@@ -622,7 +622,7 @@ LABEL_14:
 
   v166 = objc_alloc_init(MEMORY[0x277D6FE68]);
   [v166 setDisableAnalytics:1];
-  v13 = [v6 valueForKey:@"INPUT_MODE"];
+  v13 = [attributesCopy valueForKey:@"INPUT_MODE"];
   v158 = v13;
   if ([v13 containsString:@"sw="])
   {
@@ -632,7 +632,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"SOFTWARE_KEYBOARD"];
+  v14 = [attributesCopy objectForKeyedSubscript:@"SOFTWARE_KEYBOARD"];
   if (!v14)
   {
     v15 = UIKeyboardGetSupportedSoftwareKeyboardsForInputModeAndIdiom();
@@ -646,20 +646,20 @@ LABEL_10:
   v163 = UIKeyboardInputModeWithNewSWLayout();
   v157 = v14;
 LABEL_11:
-  v17 = [v6 objectForKey:@"SIRI_MODE"];
+  v17 = [attributesCopy objectForKey:@"SIRI_MODE"];
   v18 = v17;
   if (!v17)
   {
     v17 = @"NO";
   }
 
-  v19 = [(__CFString *)v17 BOOLValue];
+  bOOLValue = [(__CFString *)v17 BOOLValue];
 
-  v162 = [MEMORY[0x277D6FE48] inputModeWithIdentifier:v163 isSiriMode:v19];
-  v20 = [v162 normalizedIdentifier];
+  v162 = [MEMORY[0x277D6FE48] inputModeWithIdentifier:v163 isSiriMode:bOOLValue];
+  normalizedIdentifier = [v162 normalizedIdentifier];
   v164 = TIGetInputModeProperties();
 
-  v21 = [v6 objectForKey:@"USE_LANGUAGE_MODEL"];
+  v21 = [attributesCopy objectForKey:@"USE_LANGUAGE_MODEL"];
   v22 = v21;
   if (!v21)
   {
@@ -679,16 +679,16 @@ LABEL_11:
   v23 = [AutocorrectionTestHarness overrideInputMode:v162];
   [v166 setInputMode:v23];
 
-  v24 = [v166 inputMode];
-  [v166 setAllowsSpaceCorrections:{objc_msgSend(v24, "spaceAutocorrectionEnabled")}];
+  inputMode = [v166 inputMode];
+  [v166 setAllowsSpaceCorrections:{objc_msgSend(inputMode, "spaceAutocorrectionEnabled")}];
 
-  v25 = [v166 inputMode];
-  [v166 setUsesETSRescoring:{objc_msgSend(v25, "typedStringLMRankingEnabled")}];
+  inputMode2 = [v166 inputMode];
+  [v166 setUsesETSRescoring:{objc_msgSend(inputMode2, "typedStringLMRankingEnabled")}];
 
   v26 = [v164 objectForKey:*MEMORY[0x277D6F670]];
   [v166 setUsesTextChecker:{objc_msgSend(v26, "BOOLValue")}];
 
-  v27 = [v6 objectForKey:@"USE_RETROCORRECTION"];
+  v27 = [attributesCopy objectForKey:@"USE_RETROCORRECTION"];
   v28 = v27;
   if (!v27)
   {
@@ -697,46 +697,46 @@ LABEL_11:
 
   [v166 setUsesRetrocorrection:{-[__CFString BOOLValue](v27, "BOOLValue")}];
 
-  v29 = [v6 objectForKey:@"WORD_LEARNING_ENABLED"];
+  v29 = [attributesCopy objectForKey:@"WORD_LEARNING_ENABLED"];
   if ([v29 BOOLValue])
   {
-    v30 = 1;
+    bOOLValue2 = 1;
   }
 
   else
   {
-    v31 = [v6 objectForKey:@"USES_ADAPTATION"];
-    v3 = v31;
+    v31 = [attributesCopy objectForKey:@"USES_ADAPTATION"];
+    inputMode3 = v31;
     if (!v31)
     {
-      v31 = [v6 objectForKey:@"USE_WORD_NGRAM_MODEL_ADAPTATION"];
-      v4 = v31;
+      v31 = [attributesCopy objectForKey:@"USE_WORD_NGRAM_MODEL_ADAPTATION"];
+      languageWithRegion = v31;
       if (!v31)
       {
         v31 = @"NO";
       }
     }
 
-    v30 = [(__CFString *)v31 BOOLValue];
-    if (!v3)
+    bOOLValue2 = [(__CFString *)v31 BOOLValue];
+    if (!inputMode3)
     {
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v166 setUsesAdaptation:v30];
+    [v166 setUsesAdaptation:bOOLValue2];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v166 setUsesWordNgramModelAdaptation:v30];
+    [v166 setUsesWordNgramModelAdaptation:bOOLValue2];
   }
 
-  v32 = [v6 objectForKey:@"NEGATIVE_LEARNING_ENABLED"];
+  v32 = [attributesCopy objectForKey:@"NEGATIVE_LEARNING_ENABLED"];
   [v166 setNegativeLearningDisabled:{objc_msgSend(v32, "BOOLValue") ^ 1}];
 
-  v33 = [v6 objectForKey:@"MAX_WORDS_PER_PREDICTION"];
+  v33 = [attributesCopy objectForKey:@"MAX_WORDS_PER_PREDICTION"];
   v34 = v33;
   if (!v33)
   {
@@ -747,25 +747,25 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    v35 = [v6 objectForKey:@"CUSTOM_STATIC_DICTIONARY_PATH"];
+    v35 = [attributesCopy objectForKey:@"CUSTOM_STATIC_DICTIONARY_PATH"];
     [v166 setUsesCustomStaticDictionary:v35 != 0];
   }
 
-  v36 = [v6 objectForKey:@"CUSTOM_STATIC_DICTIONARY_PATH"];
+  v36 = [attributesCopy objectForKey:@"CUSTOM_STATIC_DICTIONARY_PATH"];
   [v166 setStaticDictionaryPath:v36];
 
   if (objc_opt_respondsToSelector())
   {
-    v37 = [v6 objectForKey:@"CUSTOM_LANGUAGE_MODEL_PATH"];
+    v37 = [attributesCopy objectForKey:@"CUSTOM_LANGUAGE_MODEL_PATH"];
     [v166 setUsesCustomNgramModel:v37 != 0];
   }
 
-  v38 = [v6 objectForKey:@"CUSTOM_LANGUAGE_MODEL_PATH"];
+  v38 = [attributesCopy objectForKey:@"CUSTOM_LANGUAGE_MODEL_PATH"];
   v39 = v38;
   if (!v38)
   {
-    v3 = [v166 inputMode];
-    v4 = [v3 languageWithRegion];
+    inputMode3 = [v166 inputMode];
+    languageWithRegion = [inputMode3 languageWithRegion];
     v39 = TINgramModelPathForInputMode();
   }
 
@@ -774,7 +774,7 @@ LABEL_11:
   {
   }
 
-  v40 = [v6 objectForKey:@"CUSTOM_DYNAMIC_RESOURCE_PATH"];
+  v40 = [attributesCopy objectForKey:@"CUSTOM_DYNAMIC_RESOURCE_PATH"];
   v41 = v40;
   if (!v40)
   {
@@ -786,14 +786,14 @@ LABEL_11:
   {
   }
 
-  v42 = [v6 objectForKey:@"CUSTOM_SHAPE_STORE_DIR"];
-  v43 = v42;
+  v42 = [attributesCopy objectForKey:@"CUSTOM_SHAPE_STORE_DIR"];
+  dynamicResourcePath = v42;
   if (!v42)
   {
-    v43 = [v166 dynamicResourcePath];
+    dynamicResourcePath = [v166 dynamicResourcePath];
   }
 
-  [v166 setShapeStoreResourceDir:v43];
+  [v166 setShapeStoreResourceDir:dynamicResourcePath];
   if (!v42)
   {
   }
@@ -804,15 +804,15 @@ LABEL_11:
     [v166 setUsesStemSuffixCorrectionFactor:{objc_msgSend(v44, "BOOLValue")}];
   }
 
-  v45 = [v6 objectForKey:@"FAVONIUS_LANGUAGE_MODEL_WEIGHT"];
+  v45 = [attributesCopy objectForKey:@"FAVONIUS_LANGUAGE_MODEL_WEIGHT"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v160 = v45;
     v46 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v46 setNumberStyle:1];
-    v43 = [v6 objectForKey:@"FAVONIUS_LANGUAGE_MODEL_WEIGHT"];
-    v45 = [v46 numberFromString:v43];
+    dynamicResourcePath = [attributesCopy objectForKey:@"FAVONIUS_LANGUAGE_MODEL_WEIGHT"];
+    v45 = [v46 numberFromString:dynamicResourcePath];
   }
 
   if (v45)
@@ -825,7 +825,7 @@ LABEL_11:
   }
 
   v161 = v45;
-  v47 = [v6 objectForKey:@"MLTT_BUNDLE_URL"];
+  v47 = [attributesCopy objectForKey:@"MLTT_BUNDLE_URL"];
   v156 = v47;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -837,30 +837,30 @@ LABEL_11:
   [v166 setUsesUserModelLogging:0];
   [v166 setStickerSuggestionsEnabled:0];
   objc_storeStrong(&v7->_config, v166);
-  v48 = [v6 objectForKey:@"MAX_PREDICTIONS"];
+  v48 = [attributesCopy objectForKey:@"MAX_PREDICTIONS"];
   v49 = v48;
   if (!v48)
   {
-    v48 = [v6 objectForKey:@"SIZE_OF_AUTOCORRECTION_LIST"];
-    v43 = v48;
+    v48 = [attributesCopy objectForKey:@"SIZE_OF_AUTOCORRECTION_LIST"];
+    dynamicResourcePath = v48;
     if (!v48)
     {
       v48 = @"3";
     }
   }
 
-  v50 = [(__CFString *)v48 intValue];
+  intValue = [(__CFString *)v48 intValue];
   if (!v49)
   {
   }
 
   v51 = [v164 objectForKey:*MEMORY[0x277D6F760]];
-  v52 = [v51 BOOLValue];
+  bOOLValue3 = [v51 BOOLValue];
 
   v53 = MEMORY[0x277CBEC28];
-  if (v52)
+  if (bOOLValue3)
   {
-    v54 = [v6 objectForKey:@"MULTILINGUAL_ENABLED"];
+    v54 = [attributesCopy objectForKey:@"MULTILINGUAL_ENABLED"];
     v55 = v54;
     if (!v54)
     {
@@ -875,7 +875,7 @@ LABEL_11:
     v165->_multilingualEnabled = 0;
   }
 
-  v159 = [v6 objectForKey:@"KEYBOARD_SECOND_LANGUAGE"];
+  v159 = [attributesCopy objectForKey:@"KEYBOARD_SECOND_LANGUAGE"];
   if ([v159 length])
   {
     v56 = [MEMORY[0x277D6FE48] inputModeWithIdentifier:v159];
@@ -884,35 +884,35 @@ LABEL_11:
   }
 
   v58 = [[TIKeyboardTyper alloc] initWithInputMode:v162];
-  v59 = [v6 objectForKey:@"BAD_SENTENCES_FILE_PATH"];
-  v60 = [v59 stringValue];
-  [(TIKeyboardTyper *)v58 setBadSentenceLogFilePath:v60];
+  v59 = [attributesCopy objectForKey:@"BAD_SENTENCES_FILE_PATH"];
+  stringValue = [v59 stringValue];
+  [(TIKeyboardTyper *)v58 setBadSentenceLogFilePath:stringValue];
 
   [(TIKeyboardTyper *)v58 setInputModeIdentifier:v163];
-  v61 = [v6 objectForKey:@"PRINT_TYPING_TRANSCRIPT"];
+  v61 = [attributesCopy objectForKey:@"PRINT_TYPING_TRANSCRIPT"];
   -[TIKeyboardTyper setPrintTypingTranscript:](v58, "setPrintTypingTranscript:", [v61 BOOLValue]);
 
-  v62 = [v6 objectForKey:@"SHOW_CANDIDATE_BAR"];
+  v62 = [attributesCopy objectForKey:@"SHOW_CANDIDATE_BAR"];
   -[TIKeyboardTyper setShowsCandidateBar:](v58, "setShowsCandidateBar:", [v62 BOOLValue]);
 
-  v63 = [v6 objectForKey:@"TRANSLITERATION_SUMMARIES"];
+  v63 = [attributesCopy objectForKey:@"TRANSLITERATION_SUMMARIES"];
   -[TIKeyboardTyper setPrintTranslitSummaries:](v58, "setPrintTranslitSummaries:", [v63 BOOLValue]);
 
-  v64 = [v6 objectForKey:@"TEST_AUTO_FILL_FEATURE"];
-  v65 = [v64 BOOLValue];
+  v64 = [attributesCopy objectForKey:@"TEST_AUTO_FILL_FEATURE"];
+  bOOLValue4 = [v64 BOOLValue];
 
-  v66 = [(TIKeyboardTyper *)v58 keyboardController];
-  if (v65)
+  keyboardController = [(TIKeyboardTyper *)v58 keyboardController];
+  if (bOOLValue4)
   {
-    [v66 setIsScreenLocked:0];
+    [keyboardController setIsScreenLocked:0];
   }
 
   else
   {
-    [v66 setIsScreenLocked:v30 ^ 1];
+    [keyboardController setIsScreenLocked:bOOLValue2 ^ 1];
   }
 
-  v67 = [v6 objectForKey:@"USE_LANGUAGE_MODEL"];
+  v67 = [attributesCopy objectForKey:@"USE_LANGUAGE_MODEL"];
   v68 = v67;
   if (v67)
   {
@@ -923,8 +923,8 @@ LABEL_11:
 
   else
   {
-    v72 = [v6 objectForKey:@"USE_PREDICTION"];
-    v65 = v72;
+    v72 = [attributesCopy objectForKey:@"USE_PREDICTION"];
+    bOOLValue4 = v72;
     if (v72)
     {
       v69 = 0;
@@ -934,11 +934,11 @@ LABEL_11:
 
     else
     {
-      v73 = [v6 objectForKey:@"AUTOCORRECTION_LISTS"];
-      v66 = v73;
+      v73 = [attributesCopy objectForKey:@"AUTOCORRECTION_LISTS"];
+      keyboardController = v73;
       if (v73)
       {
-        v65 = 0;
+        bOOLValue4 = 0;
         v70 = 0;
         v69 = 1;
         v71 = v73;
@@ -947,15 +947,15 @@ LABEL_11:
       else
       {
         v71 = [v164 objectForKey:*MEMORY[0x277D6F6D0]];
-        v65 = 0;
-        v66 = 0;
+        bOOLValue4 = 0;
+        keyboardController = 0;
         v69 = 1;
         v70 = 1;
       }
     }
   }
 
-  v74 = [v71 BOOLValue];
+  bOOLValue5 = [v71 BOOLValue];
   if (v70)
   {
   }
@@ -969,14 +969,14 @@ LABEL_11:
   {
   }
 
-  if (v74)
+  if (bOOLValue5)
   {
     [(TIKeyboardTyper *)v58 setUsesPrediction:1];
   }
 
-  [(TIKeyboardTyper *)v58 setMaxPredictions:v50];
+  [(TIKeyboardTyper *)v58 setMaxPredictions:intValue];
   [(TIKeyboardTyper *)v58 setKeyboardInputManagerFactory:v165];
-  v76 = [v6 objectForKey:@"USE_AUTOCORRECTION"];
+  v76 = [attributesCopy objectForKey:@"USE_AUTOCORRECTION"];
   v77 = v76;
   v78 = MEMORY[0x277CBEC38];
   if (!v76)
@@ -986,7 +986,7 @@ LABEL_11:
 
   -[TIKeyboardTyper setUsesAutocorrection:](v58, "setUsesAutocorrection:", [v76 BOOLValue]);
 
-  v79 = [v6 objectForKey:@"USE_AUTOCAPITALIZATION"];
+  v79 = [attributesCopy objectForKey:@"USE_AUTOCAPITALIZATION"];
   v80 = v79;
   if (!v79)
   {
@@ -995,10 +995,10 @@ LABEL_11:
 
   -[TIKeyboardTyper setUsesAutocapitalization:](v58, "setUsesAutocapitalization:", [v79 BOOLValue]);
 
-  v81 = [v6 objectForKey:@"WORD_LEARNING_ENABLED"];
+  v81 = [attributesCopy objectForKey:@"WORD_LEARNING_ENABLED"];
   -[TIKeyboardTyper setWordLearningEnabled:](v58, "setWordLearningEnabled:", [v81 BOOLValue]);
 
-  v82 = [v6 objectForKey:@"WARN_IF_SELECTING_POPUP_VARIANT"];
+  v82 = [attributesCopy objectForKey:@"WARN_IF_SELECTING_POPUP_VARIANT"];
   v83 = v82;
   if (!v82)
   {
@@ -1007,7 +1007,7 @@ LABEL_11:
 
   -[TIKeyboardTyper setWarnIfSelectingPopupVariant:](v58, "setWarnIfSelectingPopupVariant:", [v82 BOOLValue]);
 
-  v84 = [v6 objectForKey:@"MAX_PREDICTIONS_REPORTED"];
+  v84 = [attributesCopy objectForKey:@"MAX_PREDICTIONS_REPORTED"];
   v85 = v84;
   if (!v84)
   {
@@ -1016,7 +1016,7 @@ LABEL_11:
 
   [(TIKeyboardTyper *)v58 setMaxPredictionsReported:[(__CFString *)v84 intValue]];
 
-  v86 = [v6 objectForKey:@"LOG_DOCUMENT_CONTEXT"];
+  v86 = [attributesCopy objectForKey:@"LOG_DOCUMENT_CONTEXT"];
   v87 = v86;
   if (!v86)
   {
@@ -1025,21 +1025,21 @@ LABEL_11:
 
   -[TIKeyboardTyper setLogDocumentContext:](v58, "setLogDocumentContext:", [v86 BOOLValue]);
 
-  v88 = [v6 objectForKey:@"CONTINUOUS_PATH_ENABLED"];
+  v88 = [attributesCopy objectForKey:@"CONTINUOUS_PATH_ENABLED"];
   v89 = v88;
   if (!v88)
   {
     v88 = v78;
   }
 
-  v90 = [v88 BOOLValue];
+  bOOLValue6 = [v88 BOOLValue];
 
-  v91 = [(AutocorrectionTestHarness *)v165 config];
+  config = [(AutocorrectionTestHarness *)v165 config];
   v92 = objc_opt_respondsToSelector();
 
   if (v92)
   {
-    v93 = [v6 objectForKey:@"CONTINUOUS_PATH_APPEND_SPACE"];
+    v93 = [attributesCopy objectForKey:@"CONTINUOUS_PATH_APPEND_SPACE"];
     v94 = v93;
     if (!v93)
     {
@@ -1048,89 +1048,89 @@ LABEL_11:
 
     -[TIKeyboardTyper setInsertsSpaceAfterPredictiveInput:](v58, "setInsertsSpaceAfterPredictiveInput:", [v93 BOOLValue]);
 
-    v95 = [(AutocorrectionTestHarness *)v165 config];
-    [v95 setUsesContinuousPath:v90];
+    config2 = [(AutocorrectionTestHarness *)v165 config];
+    [config2 setUsesContinuousPath:bOOLValue6];
 
-    v96 = [(AutocorrectionTestHarness *)v165 config];
-    [v96 setUsesCJContinuousPath:v90];
+    config3 = [(AutocorrectionTestHarness *)v165 config];
+    [config3 setUsesCJContinuousPath:bOOLValue6];
 
-    v97 = [(AutocorrectionTestHarness *)v165 config];
-    LOBYTE(v96) = objc_opt_respondsToSelector();
+    config4 = [(AutocorrectionTestHarness *)v165 config];
+    LOBYTE(config3) = objc_opt_respondsToSelector();
 
-    if (v96)
+    if (config3)
     {
-      v98 = [v6 objectForKey:@"CONTINUOUS_PATH_ALGORITHMS"];
+      v98 = [attributesCopy objectForKey:@"CONTINUOUS_PATH_ALGORITHMS"];
       v99 = v98;
       if (!v98)
       {
         v98 = &unk_287ED4A18;
       }
 
-      v100 = [v98 intValue];
-      v101 = [(AutocorrectionTestHarness *)v165 config];
-      [v101 setContinuousPathEnabledAlgorithms:v100];
+      intValue2 = [v98 intValue];
+      config5 = [(AutocorrectionTestHarness *)v165 config];
+      [config5 setContinuousPathEnabledAlgorithms:intValue2];
     }
 
-    v102 = [(AutocorrectionTestHarness *)v165 config];
+    config6 = [(AutocorrectionTestHarness *)v165 config];
     v103 = objc_opt_respondsToSelector();
 
     if (v103)
     {
-      v104 = [v6 objectForKey:@"ENABLE_CONTINUOUS_PATH_RETROCORRECTION"];
+      v104 = [attributesCopy objectForKey:@"ENABLE_CONTINUOUS_PATH_RETROCORRECTION"];
       v105 = v104;
       if (!v104)
       {
         v104 = v78;
       }
 
-      v106 = [v104 BOOLValue];
-      v107 = [(AutocorrectionTestHarness *)v165 config];
-      [v107 setUsesContinuousPathRetrocorrection:v106];
+      bOOLValue7 = [v104 BOOLValue];
+      config7 = [(AutocorrectionTestHarness *)v165 config];
+      [config7 setUsesContinuousPathRetrocorrection:bOOLValue7];
     }
 
-    v108 = [(AutocorrectionTestHarness *)v165 config];
+    config8 = [(AutocorrectionTestHarness *)v165 config];
     v109 = objc_opt_respondsToSelector();
 
     if (v109)
     {
-      v110 = [v6 objectForKey:@"CONTINUOUS_PATH_NUM_CANDIDATE_RESCORED_BY_LM"];
+      v110 = [attributesCopy objectForKey:@"CONTINUOUS_PATH_NUM_CANDIDATE_RESCORED_BY_LM"];
       v111 = v110;
       if (!v110)
       {
         v110 = &unk_287ED4A30;
       }
 
-      v112 = [v110 integerValue];
-      v113 = [(AutocorrectionTestHarness *)v165 config];
-      [v113 setCpCandidatesCount:v112];
+      integerValue = [v110 integerValue];
+      config9 = [(AutocorrectionTestHarness *)v165 config];
+      [config9 setCpCandidatesCount:integerValue];
     }
 
     v114 = [v164 objectForKey:*MEMORY[0x277D6F6B0]];
-    v115 = [(AutocorrectionTestHarness *)v165 config];
-    [v115 setContinuousPathParams:v114];
+    config10 = [(AutocorrectionTestHarness *)v165 config];
+    [config10 setContinuousPathParams:v114];
 
     v116 = [v164 objectForKey:*MEMORY[0x277D6F6A8]];
-    v117 = [(AutocorrectionTestHarness *)v165 config];
-    [v117 setContinuousPathEnsembleSourceWeights:v116];
+    config11 = [(AutocorrectionTestHarness *)v165 config];
+    [config11 setContinuousPathEnsembleSourceWeights:v116];
 
     v118 = [v164 objectForKey:*MEMORY[0x277D6F6A0]];
-    v119 = [(AutocorrectionTestHarness *)v165 config];
-    [v119 setContinuousPathEnsembleSourceScales:v118];
+    config12 = [(AutocorrectionTestHarness *)v165 config];
+    [config12 setContinuousPathEnsembleSourceScales:v118];
   }
 
-  v120 = [ACTUserActionStreamFactory userActionStreamWithParameters:v6 delegate:v58];
+  v120 = [ACTUserActionStreamFactory userActionStreamWithParameters:attributesCopy delegate:v58];
   [(TIKeyboardTyper *)v58 linkWithUserActionStream:v120];
 
-  v121 = [(TIKeyboardTyper *)v58 userModel];
-  -[TIKeyboardTyper setUsesTransliteration:](v58, "setUsesTransliteration:", [v121 prefersTransliteration]);
+  userModel = [(TIKeyboardTyper *)v58 userModel];
+  -[TIKeyboardTyper setUsesTransliteration:](v58, "setUsesTransliteration:", [userModel prefersTransliteration]);
 
   v122 = MEMORY[0x26D6C0470](v163);
-  v123 = [v6 objectForKey:@"TTKKeyboardPlane"];
+  v123 = [attributesCopy objectForKey:@"TTKKeyboardPlane"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v124 = [(TIKeyboardTyper *)v58 keyboardController];
-    [(TTKSimpleKeyboardPlane *)v124 setTtkLayout:v123];
+    keyboardController2 = [(TIKeyboardTyper *)v58 keyboardController];
+    [(TTKSimpleKeyboardPlane *)keyboardController2 setTtkLayout:v123];
   }
 
   else
@@ -1138,30 +1138,30 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v124 = [[TTKSimpleKeyboardPlane alloc] initWithJsonDictionary:v123];
-      v125 = [(TIKeyboardTyper *)v58 keyboardController];
-      [v125 setTtkLayout:v124];
+      keyboardController2 = [[TTKSimpleKeyboardPlane alloc] initWithJsonDictionary:v123];
+      keyboardController3 = [(TIKeyboardTyper *)v58 keyboardController];
+      [keyboardController3 setTtkLayout:keyboardController2];
     }
 
     else
     {
-      v124 = [v123 description];
-      NSLog(&cfstr_Ttkkeyboardpla_0.isa, v124);
+      keyboardController2 = [v123 description];
+      NSLog(&cfstr_Ttkkeyboardpla_0.isa, keyboardController2);
     }
   }
 
-  v126 = [v6 objectForKey:@"USE_DYNAMIC_LAYOUT"];
+  v126 = [attributesCopy objectForKey:@"USE_DYNAMIC_LAYOUT"];
   v127 = v126;
   if (!v126)
   {
     v126 = MEMORY[0x277CBEC28];
   }
 
-  v128 = [v126 BOOLValue];
+  bOOLValue8 = [v126 BOOLValue];
 
   v129 = objc_opt_class();
-  v130 = [v6 objectForKey:@"KEYBOARD_WIDTH"];
-  v131 = [v6 objectForKey:@"KEYBOARD_ORIENTATION"];
+  v130 = [attributesCopy objectForKey:@"KEYBOARD_WIDTH"];
+  v131 = [attributesCopy objectForKey:@"KEYBOARD_ORIENTATION"];
   v132 = v131;
   if (v130)
   {
@@ -1183,21 +1183,21 @@ LABEL_11:
     v134 = @"Portrait";
   }
 
-  v135 = [v129 keyboardFromWidth:v133 useDynamicLayout:v128 orientation:v134 keyboardLayout:v122];
+  v135 = [v129 keyboardFromWidth:v133 useDynamicLayout:bOOLValue8 orientation:v134 keyboardLayout:v122];
   [(TIKeyboardTyper *)v58 setKeyboard:v135];
 
-  v136 = [v6 objectForKey:@"PERSONA"];
+  v136 = [attributesCopy objectForKey:@"PERSONA"];
 
   if (v136)
   {
     v137 = [TITestUserPersona alloc];
-    v138 = [v6 objectForKey:@"PERSONA"];
+    v138 = [attributesCopy objectForKey:@"PERSONA"];
     v139 = [(TITestUserPersona *)v137 initWithPersonaName:v138];
     [(TIKeyboardTyper *)v58 setUserPersona:v139];
 
-    v140 = [(TIKeyboardTyper *)v58 userPersona];
-    v141 = [(TIKeyboardTyper *)v58 keyplane];
-    [v140 updateFromKeyplane:v141];
+    userPersona = [(TIKeyboardTyper *)v58 userPersona];
+    keyplane = [(TIKeyboardTyper *)v58 keyplane];
+    [userPersona updateFromKeyplane:keyplane];
   }
 
   else
@@ -1205,11 +1205,11 @@ LABEL_11:
     [(TIKeyboardTyper *)v58 setUserPersona:0];
   }
 
-  v142 = [(TIKeyboardTyper *)v58 userPersona];
+  userPersona2 = [(TIKeyboardTyper *)v58 userPersona];
 
-  if (!v142)
+  if (!userPersona2)
   {
-    v143 = [TIErrorGenerator errorGeneratorWithAttributes:v6];
+    v143 = [TIErrorGenerator errorGeneratorWithAttributes:attributesCopy];
     if (!v143)
     {
       NSLog(&cfstr_UnableToConstr.isa);
@@ -1233,7 +1233,7 @@ LABEL_11:
   v165->_resultClassifiers = v147;
 
   [(AutocorrectionTestHarness *)v165 setResultClassifiers];
-  v149 = [v6 objectForKey:@"SAVE_DEBUG_DATA"];
+  v149 = [attributesCopy objectForKey:@"SAVE_DEBUG_DATA"];
   v150 = v149;
   if (!v149)
   {
@@ -1242,7 +1242,7 @@ LABEL_11:
 
   v165->_saveDebugData = [v149 BOOLValue];
 
-  v151 = [v6 objectForKey:@"RUN_DSL_TEST"];
+  v151 = [attributesCopy objectForKey:@"RUN_DSL_TEST"];
 
   if (v151)
   {
@@ -1257,23 +1257,23 @@ LABEL_145:
   return v154;
 }
 
-+ (id)overrideInputMode:(id)a3
++ (id)overrideInputMode:(id)mode
 {
-  v3 = a3;
-  v4 = [v3 languageWithRegion];
-  v5 = [v4 hasPrefix:@"ars"];
+  modeCopy = mode;
+  languageWithRegion = [modeCopy languageWithRegion];
+  v5 = [languageWithRegion hasPrefix:@"ars"];
 
   if (v5)
   {
-    v6 = [v3 languageWithRegion];
-    NSLog(&cfstr_OverrideInputM.isa, v6);
+    languageWithRegion2 = [modeCopy languageWithRegion];
+    NSLog(&cfstr_OverrideInputM.isa, languageWithRegion2);
 
     v7 = [MEMORY[0x277D6FE48] inputModeWithIdentifier:@"ar"];
   }
 
   else
   {
-    v7 = v3;
+    v7 = modeCopy;
   }
 
   v8 = v7;
@@ -1281,17 +1281,17 @@ LABEL_145:
   return v8;
 }
 
-+ (id)keyboardFromWidth:(id)a3 useDynamicLayout:(BOOL)a4 orientation:(id)a5 keyboardLayout:(id)a6
++ (id)keyboardFromWidth:(id)width useDynamicLayout:(BOOL)layout orientation:(id)orientation keyboardLayout:(id)keyboardLayout
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
-  [a3 floatValue];
-  if (v7)
+  layoutCopy = layout;
+  orientationCopy = orientation;
+  keyboardLayoutCopy = keyboardLayout;
+  [width floatValue];
+  if (layoutCopy)
   {
-    v12 = [v9 isEqualToString:@"Portrait"];
+    v12 = [orientationCopy isEqualToString:@"Portrait"];
     v13 = MEMORY[0x277D75640];
-    v14 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
     if (v12)
     {
       v15 = 1;
@@ -1302,21 +1302,21 @@ LABEL_145:
       v15 = 4;
     }
 
-    v16 = [v13 traitsWithScreen:v14 orientation:v15];
+    v16 = [v13 traitsWithScreen:mainScreen orientation:v15];
 
     [(__CFString *)v16 keyboardScreenReferenceSize];
     v18 = v17;
     v20 = v19;
-    v21 = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
-    v22 = [v21 keyboardSuffixForScreenDimensions:{v18, v20}];
+    mEMORY[0x277D6FF98] = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
+    keyboardLayoutCopy = [mEMORY[0x277D6FF98] keyboardSuffixForScreenDimensions:{v18, v20}];
 
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v10, v22];
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"Dynamic", v23];
+    mEMORY[0x277D6FF98]4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", keyboardLayoutCopy, keyboardLayoutCopy];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"Dynamic", mEMORY[0x277D6FF98]4];
     [MEMORY[0x277D6FFA0] keyplaneSizeForLayout:v24 screenTraits:v16 keyboardType:0];
     v26 = v25;
     v28 = v27;
     fprintf(*MEMORY[0x277D85DF8], "Attempting to load dynamic keyboard layout named: %s\n", [v24 UTF8String]);
-    v29 = [MEMORY[0x277D6FFA0] dynamicKeyboardForName:v23 size:objc_msgSend(v9 isLandscape:{"isEqualToString:", @"Landscape", v26, v28}];
+    v29 = [MEMORY[0x277D6FFA0] dynamicKeyboardForName:mEMORY[0x277D6FF98]4 size:objc_msgSend(orientationCopy isLandscape:{"isEqualToString:", @"Landscape", v26, v28}];
 
     goto LABEL_29;
   }
@@ -1324,14 +1324,14 @@ LABEL_145:
   v30 = v11;
   if (v11 >= 320.0)
   {
-    v31 = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
+    mEMORY[0x277D6FF98]2 = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
     v32 = objc_opt_respondsToSelector();
 
     if (v32)
     {
-      v33 = [v9 isEqualToString:@"Portrait"];
-      v34 = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
-      v16 = [v34 keyboardPrefixForWidth:v33 andEdge:v30];
+      v33 = [orientationCopy isEqualToString:@"Portrait"];
+      mEMORY[0x277D6FF98]3 = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
+      v16 = [mEMORY[0x277D6FF98]3 keyboardPrefixForWidth:v33 andEdge:v30];
 
       if (v16)
       {
@@ -1339,7 +1339,7 @@ LABEL_145:
       }
     }
 
-    if ([v9 isEqualToString:@"Portrait"])
+    if ([orientationCopy isEqualToString:@"Portrait"])
     {
       v35 = @"Wildcat-Portrait";
       v36 = @"iPhone-Portrait";
@@ -1366,7 +1366,7 @@ LABEL_145:
       goto LABEL_28;
     }
 
-    if ([v9 isEqualToString:@"Landscape"])
+    if ([orientationCopy isEqualToString:@"Landscape"])
     {
       if (v30 >= 1366.0)
       {
@@ -1402,10 +1402,10 @@ LABEL_145:
   }
 
 LABEL_28:
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v16, v10];
-  fprintf(*MEMORY[0x277D85DF8], "Attempting to load keyboard named: %s\n", [v22 UTF8String]);
-  v23 = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
-  v29 = [v23 keyboardWithName:v22 inCache:0];
+  keyboardLayoutCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v16, keyboardLayoutCopy];
+  fprintf(*MEMORY[0x277D85DF8], "Attempting to load keyboard named: %s\n", [keyboardLayoutCopy UTF8String]);
+  mEMORY[0x277D6FF98]4 = [MEMORY[0x277D6FF98] sharedKeyboardFactory];
+  v29 = [mEMORY[0x277D6FF98]4 keyboardWithName:keyboardLayoutCopy inCache:0];
 LABEL_29:
 
   return v29;

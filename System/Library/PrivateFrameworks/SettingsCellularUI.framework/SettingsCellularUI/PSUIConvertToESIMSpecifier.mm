@@ -1,34 +1,34 @@
 @interface PSUIConvertToESIMSpecifier
-+ (id)keyFor:(id)a3;
-- (PSUIConvertToESIMSpecifier)initWithPhoneNumber:(id)a3 carrierName:(id)a4 hostController:(id)a5 isViewControllerPopNeeded:(BOOL)a6 iccid:(id)a7;
++ (id)keyFor:(id)for;
+- (PSUIConvertToESIMSpecifier)initWithPhoneNumber:(id)number carrierName:(id)name hostController:(id)controller isViewControllerPopNeeded:(BOOL)needed iccid:(id)iccid;
 - (void)_convertToeSIM;
 - (void)_showWifiAlert;
-- (void)convertToeSIMCellPressed:(id)a3;
+- (void)convertToeSIMCellPressed:(id)pressed;
 - (void)dealloc;
-- (void)odcCanceled:(id)a3;
-- (void)odcFailed:(id)a3;
-- (void)odcSuccess:(id)a3 isViewControllerPopNeeded:(BOOL)a4;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)odcCanceled:(id)canceled;
+- (void)odcFailed:(id)failed;
+- (void)odcSuccess:(id)success isViewControllerPopNeeded:(BOOL)needed;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUIConvertToESIMSpecifier
 
-+ (id)keyFor:(id)a3
++ (id)keyFor:(id)for
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v3 stringWithFormat:@"%@:%@", objc_opt_class(), v4];
+  forCopy = for;
+  forCopy = [v3 stringWithFormat:@"%@:%@", objc_opt_class(), forCopy];
 
-  return v5;
+  return forCopy;
 }
 
-- (PSUIConvertToESIMSpecifier)initWithPhoneNumber:(id)a3 carrierName:(id)a4 hostController:(id)a5 isViewControllerPopNeeded:(BOOL)a6 iccid:(id)a7
+- (PSUIConvertToESIMSpecifier)initWithPhoneNumber:(id)number carrierName:(id)name hostController:(id)controller isViewControllerPopNeeded:(BOOL)needed iccid:(id)iccid
 {
   v28 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  numberCopy = number;
+  nameCopy = name;
+  controllerCopy = controller;
+  iccidCopy = iccid;
   if (_MergedGlobals_1_1 != -1)
   {
     dispatch_once(&_MergedGlobals_1_1, &__block_literal_global_7);
@@ -45,25 +45,25 @@
     [(PSUIConvertToESIMSpecifier *)v18 setIdentifier:@"Convert to eSIM"];
     [(PSUIConvertToESIMSpecifier *)v18 setTarget:v18];
     [(PSUIConvertToESIMSpecifier *)v18 setButtonAction:sel_convertToeSIMCellPressed_];
-    objc_storeStrong(&v18->_phoneNumber, a3);
-    objc_storeStrong(&v18->_carrierName, a4);
-    objc_storeWeak(&v18->_hostController, v14);
-    v19 = [v14 navigationController];
-    objc_storeWeak(&v18->_navigationController, v19);
+    objc_storeStrong(&v18->_phoneNumber, number);
+    objc_storeStrong(&v18->_carrierName, name);
+    objc_storeWeak(&v18->_hostController, controllerCopy);
+    navigationController = [controllerCopy navigationController];
+    objc_storeWeak(&v18->_navigationController, navigationController);
 
-    v18->_isViewControllerPopNeeded = a6;
-    objc_storeStrong(&v18->_iccid, a7);
+    v18->_isViewControllerPopNeeded = needed;
+    objc_storeStrong(&v18->_iccid, iccid);
   }
 
-  v20 = [qword_28156A5F0 objectForKey:v15];
+  v20 = [qword_28156A5F0 objectForKey:iccidCopy];
   if (v20)
   {
-    v21 = [(PSUIConvertToESIMSpecifier *)v18 getLogger];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIConvertToESIMSpecifier *)v18 getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v27 = v18;
-      _os_log_impl(&dword_2658DE000, v21, OS_LOG_TYPE_DEFAULT, "update delegate to %@", buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "update delegate to %@", buf, 0xCu);
     }
 
     [v20 setDelegate:v18];
@@ -82,15 +82,15 @@ uint64_t __109__PSUIConvertToESIMSpecifier_initWithPhoneNumber_carrierName_hostC
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUIConvertToESIMSpecifier;
   [(PSUIConvertToESIMSpecifier *)&v4 dealloc];
 }
 
-- (void)convertToeSIMCellPressed:(id)a3
+- (void)convertToeSIMCellPressed:(id)pressed
 {
   v4 = +[PSUIDeviceWiFiState sharedInstance];
   if ([v4 isConnectedOverWiFi])
@@ -103,9 +103,9 @@ LABEL_4:
   }
 
   v5 = +[PSUIDeviceEthernetState sharedInstance];
-  v6 = [v5 isConnectedOverEthernet];
+  isConnectedOverEthernet = [v5 isConnectedOverEthernet];
 
-  if (v6)
+  if (isConnectedOverEthernet)
   {
     goto LABEL_4;
   }
@@ -113,52 +113,52 @@ LABEL_4:
   [(PSUIConvertToESIMSpecifier *)self _showWifiAlert];
 }
 
-- (void)odcSuccess:(id)a3 isViewControllerPopNeeded:(BOOL)a4
+- (void)odcSuccess:(id)success isViewControllerPopNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PSUIConvertToESIMSpecifier *)self getLogger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  neededCopy = needed;
+  successCopy = success;
+  getLogger = [(PSUIConvertToESIMSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v10 = 0;
-    _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "ODC Success", v10, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "ODC Success", v10, 2u);
   }
 
-  [qword_28156A5F0 removeObjectForKey:v6];
-  if (v4)
+  [qword_28156A5F0 removeObjectForKey:successCopy];
+  if (neededCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_navigationController);
     v9 = [WeakRetained popViewControllerAnimated:1];
   }
 }
 
-- (void)odcFailed:(id)a3
+- (void)odcFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(PSUIConvertToESIMSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  failedCopy = failed;
+  getLogger = [(PSUIConvertToESIMSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "ODC Failed", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "ODC Failed", v6, 2u);
   }
 
-  [qword_28156A5F0 removeObjectForKey:v4];
+  [qword_28156A5F0 removeObjectForKey:failedCopy];
 }
 
-- (void)odcCanceled:(id)a3
+- (void)odcCanceled:(id)canceled
 {
-  v4 = a3;
-  v5 = [(PSUIConvertToESIMSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  canceledCopy = canceled;
+  getLogger = [(PSUIConvertToESIMSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "ODC canceled", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "ODC canceled", v6, 2u);
   }
 
-  [qword_28156A5F0 removeObjectForKey:v4];
+  [qword_28156A5F0 removeObjectForKey:canceledCopy];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
@@ -167,7 +167,7 @@ LABEL_4:
   v5[3] = &unk_279BA9FE0;
   objc_copyWeak(v6, &location);
   v5[4] = self;
-  v6[1] = a3;
+  v6[1] = completed;
   dispatch_async(MEMORY[0x277D85CD0], v5);
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
@@ -214,20 +214,20 @@ void __52__PSUIConvertToESIMSpecifier_simSetupFlowCompleted___block_invoke(uint6
 - (void)_convertToeSIM
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIConvertToESIMSpecifier *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIConvertToESIMSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "start convert physical SIM -> eSIM", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "start convert physical SIM -> eSIM", buf, 2u);
   }
 
   if (!self->_carrierName)
   {
-    v4 = [(PSUIConvertToESIMSpecifier *)self getLogger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUIConvertToESIMSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "carrier name empty", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "carrier name empty", buf, 2u);
     }
 
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -259,12 +259,12 @@ void __52__PSUIConvertToESIMSpecifier_simSetupFlowCompleted___block_invoke(uint6
   v29[2] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:3];
 
-  v15 = [(PSUIConvertToESIMSpecifier *)self getLogger];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  getLogger3 = [(PSUIConvertToESIMSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v27 = v14;
-    _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "launch SimSetupSupport with options:%@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "launch SimSetupSupport with options:%@", buf, 0xCu);
   }
 
   v16 = [MEMORY[0x277D49530] flowWithOptions:v14];
@@ -324,11 +324,11 @@ void __44__PSUIConvertToESIMSpecifier__convertToeSIM__block_invoke(uint64_t a1, 
 
 - (void)_showWifiAlert
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 sf_isChinaRegionCellularDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (sf_isChinaRegionCellularDevice)
   {
     v7 = @"NOT_CONNECTED_TO_WLAN";
   }
@@ -340,8 +340,8 @@ void __44__PSUIConvertToESIMSpecifier__convertToeSIM__block_invoke(uint64_t a1, 
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_287733598 table:@"Gemini-Gemini"];
 
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  if ([v9 sf_isChinaRegionCellularDevice])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 sf_isChinaRegionCellularDevice])
   {
     v10 = @"TURN_ON_WLAN_FOR_CONVERT_TO_ESIM";
   }
@@ -355,8 +355,8 @@ void __44__PSUIConvertToESIMSpecifier__convertToeSIM__block_invoke(uint64_t a1, 
   v12 = [v11 localizedStringForKey:v10 value:&stru_287733598 table:@"Gemini-Gemini"];
 
   v13 = [MEMORY[0x277D75110] alertControllerWithTitle:v8 message:v12 preferredStyle:1];
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  if ([v14 sf_isChinaRegionCellularDevice])
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice3 sf_isChinaRegionCellularDevice])
   {
     v15 = @"WLAN_SETTINGS";
   }

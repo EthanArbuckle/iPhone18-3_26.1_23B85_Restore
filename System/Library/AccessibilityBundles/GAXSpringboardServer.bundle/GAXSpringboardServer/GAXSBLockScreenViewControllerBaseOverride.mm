@@ -1,15 +1,15 @@
 @interface GAXSBLockScreenViewControllerBaseOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)launchEmergencyDialer;
 @end
 
 @implementation GAXSBLockScreenViewControllerBaseOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBLockScreenViewControllerBase" hasInstanceMethod:@"exitEmergencyDialerAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBLockScreenViewControllerBase" hasInstanceMethod:@"launchEmergencyDialer" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBLockScreenViewControllerBase" hasInstanceMethod:@"exitEmergencyDialerAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBLockScreenViewControllerBase" hasInstanceMethod:@"launchEmergencyDialer" withFullSignature:{"v", 0}];
 }
 
 - (void)launchEmergencyDialer

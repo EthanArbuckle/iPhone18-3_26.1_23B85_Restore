@@ -1,10 +1,10 @@
 @interface NSSNewsAnalyticsPBEventAccumulator
 - (NSSNewsAnalyticsPBEventAccumulator)init;
-- (NSSNewsAnalyticsPBEventAccumulator)initWithEnvelopeDescriptor:(id)a3 sessionManager:(id)a4;
+- (NSSNewsAnalyticsPBEventAccumulator)initWithEnvelopeDescriptor:(id)descriptor sessionManager:(id)manager;
 - (NSSNewsAnalyticsSessionManager)sessionManager;
 - (id)dequeueEventsIntoEnvelope;
-- (void)observeEvent:(id)a3;
-- (void)observeEvents:(id)a3;
+- (void)observeEvent:(id)event;
+- (void)observeEvents:(id)events;
 @end
 
 @implementation NSSNewsAnalyticsPBEventAccumulator
@@ -35,20 +35,20 @@
   objc_exception_throw(v6);
 }
 
-- (NSSNewsAnalyticsPBEventAccumulator)initWithEnvelopeDescriptor:(id)a3 sessionManager:(id)a4
+- (NSSNewsAnalyticsPBEventAccumulator)initWithEnvelopeDescriptor:(id)descriptor sessionManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorCopy = descriptor;
+  managerCopy = manager;
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSNewsAnalyticsPBEventAccumulator initWithEnvelopeDescriptor:sessionManager:];
-    if (v7)
+    if (managerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (managerCopy)
   {
     goto LABEL_6;
   }
@@ -64,11 +64,11 @@ LABEL_6:
   v8 = [(NSSNewsAnalyticsPBEventAccumulator *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptorCopy copy];
     envelopeDescriptor = v8->_envelopeDescriptor;
     v8->_envelopeDescriptor = v9;
 
-    objc_storeWeak(&v8->_sessionManager, v7);
+    objc_storeWeak(&v8->_sessionManager, managerCopy);
     v11 = objc_opt_new();
     events = v8->_events;
     v8->_events = v11;
@@ -80,27 +80,27 @@ LABEL_6:
 - (id)dequeueEventsIntoEnvelope
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
-  v4 = [v3 count];
+  events = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
+  v4 = [events count];
 
   if (v4)
   {
-    v5 = [(NSSNewsAnalyticsPBEventAccumulator *)self sessionManager];
-    v6 = [v5 currentSession];
-    v7 = [v6 copy];
+    sessionManager = [(NSSNewsAnalyticsPBEventAccumulator *)self sessionManager];
+    currentSession = [sessionManager currentSession];
+    v7 = [currentSession copy];
 
-    v8 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
-    v9 = [v8 copy];
+    events2 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
+    v9 = [events2 copy];
 
-    v10 = [MEMORY[0x277D35500] nss_sessionBatchWithIdentifier];
-    [v10 setSession:v7];
-    [v10 setEvents:v9];
+    nss_sessionBatchWithIdentifier = [MEMORY[0x277D35500] nss_sessionBatchWithIdentifier];
+    [nss_sessionBatchWithIdentifier setSession:v7];
+    [nss_sessionBatchWithIdentifier setEvents:v9];
     v11 = NSSNewsAnalyticsPBEventAccumulatorLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
+      envelopeDescriptor = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
       *buf = 67109634;
-      v27 = [v12 contentType];
+      contentType = [envelopeDescriptor contentType];
       v28 = 2112;
       v29 = v7;
       v30 = 2112;
@@ -108,85 +108,85 @@ LABEL_6:
       _os_log_impl(&dword_25BF0A000, v11, OS_LOG_TYPE_DEBUG, "Preparing an envelope of contentType %d with session %@, events %@", buf, 0x1Cu);
     }
 
-    v13 = [MEMORY[0x277D35468] nss_envelopeWithIdentifier];
-    v14 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
-    [v13 setContentTypeVersion:{objc_msgSend(v14, "contentTypeVersion")}];
+    nss_envelopeWithIdentifier = [MEMORY[0x277D35468] nss_envelopeWithIdentifier];
+    envelopeDescriptor2 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
+    [nss_envelopeWithIdentifier setContentTypeVersion:{objc_msgSend(envelopeDescriptor2, "contentTypeVersion")}];
 
-    v15 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
-    [v13 setContentTypeMinorVersion:{objc_msgSend(v15, "contentTypeMinorVersion")}];
+    envelopeDescriptor3 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
+    [nss_envelopeWithIdentifier setContentTypeMinorVersion:{objc_msgSend(envelopeDescriptor3, "contentTypeMinorVersion")}];
 
-    v16 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
-    [v13 setContentTypePatchVersion:{objc_msgSend(v16, "contentTypePatchVersion")}];
+    envelopeDescriptor4 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
+    [nss_envelopeWithIdentifier setContentTypePatchVersion:{objc_msgSend(envelopeDescriptor4, "contentTypePatchVersion")}];
 
-    v17 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
-    [v13 setContentType:{objc_msgSend(v17, "contentType")}];
+    envelopeDescriptor5 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
+    [nss_envelopeWithIdentifier setContentType:{objc_msgSend(envelopeDescriptor5, "contentType")}];
 
-    v18 = [v10 data];
-    v19 = [v18 fc_zlibDeflate];
-    [v13 setContent:v19];
+    data = [nss_sessionBatchWithIdentifier data];
+    fc_zlibDeflate = [data fc_zlibDeflate];
+    [nss_envelopeWithIdentifier setContent:fc_zlibDeflate];
 
     v20 = MEMORY[0x277D2F918];
-    v25 = v13;
+    v25 = nss_envelopeWithIdentifier;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
     [v20 registerEnvelopesAsCreated:v21];
 
-    v22 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
-    [v22 removeAllObjects];
+    events3 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
+    [events3 removeAllObjects];
   }
 
   else
   {
-    v13 = 0;
+    nss_envelopeWithIdentifier = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return nss_envelopeWithIdentifier;
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  eventCopy = event;
+  if (!eventCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSNewsAnalyticsPBEventAccumulator observeEvent:];
   }
 
-  v7[0] = v4;
+  v7[0] = eventCopy;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(NSSNewsAnalyticsPBEventAccumulator *)self observeEvents:v5];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeEvents:(id)a3
+- (void)observeEvents:(id)events
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  eventsCopy = events;
+  if (!eventsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSNewsAnalyticsPBEventAccumulator observeEvents:];
   }
 
-  if ([v4 count])
+  if ([eventsCopy count])
   {
-    v5 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
-    v6 = [v5 count];
+    events = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
+    v6 = [events count];
 
     if (!v6)
     {
       v7 = MEMORY[0x277D2F918];
-      v8 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
-      [v7 registerEnvelopeCreationAnticipatedForContentType:{objc_msgSend(v8, "contentType")}];
+      envelopeDescriptor = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
+      [v7 registerEnvelopeCreationAnticipatedForContentType:{objc_msgSend(envelopeDescriptor, "contentType")}];
     }
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v20 = v4;
-    v9 = v4;
+    v20 = eventsCopy;
+    v9 = eventsCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v10)
     {
@@ -205,10 +205,10 @@ LABEL_6:
           v15 = NSSNewsAnalyticsPBEventAccumulatorLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
-            v17 = [v16 contentType];
+            envelopeDescriptor2 = [(NSSNewsAnalyticsPBEventAccumulator *)self envelopeDescriptor];
+            contentType = [envelopeDescriptor2 contentType];
             *buf = 67109378;
-            v26 = v17;
+            v26 = contentType;
             v27 = 2112;
             v28 = v14;
             _os_log_impl(&dword_25BF0A000, v15, OS_LOG_TYPE_DEBUG, "For envelope of contentType %d, processing event %@.", buf, 0x12u);
@@ -221,10 +221,10 @@ LABEL_6:
       while (v11);
     }
 
-    v18 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
-    [v18 addObjectsFromArray:v9];
+    events2 = [(NSSNewsAnalyticsPBEventAccumulator *)self events];
+    [events2 addObjectsFromArray:v9];
 
-    v4 = v20;
+    eventsCopy = v20;
   }
 
   v19 = *MEMORY[0x277D85DE8];

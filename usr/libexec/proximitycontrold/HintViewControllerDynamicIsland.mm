@@ -3,10 +3,10 @@
 - (NSString)description;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
-- (_TtC17proximitycontrold31HintViewControllerDynamicIsland)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17proximitycontrold31HintViewControllerDynamicIsland)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didTap;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviewsWithTransitionCoordinator:;
 @end
 
@@ -30,7 +30,7 @@
 - (NSString)requestIdentifier
 {
   v2 = *(*(self + OBJC_IVAR____TtC17proximitycontrold31HintViewControllerDynamicIsland_viewModel) + 16);
-  v3 = self;
+  selfCopy = self;
   UUID.uuidString.getter();
 
   v4 = String._bridgeToObjectiveC()();
@@ -40,7 +40,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100205FB4();
 
   v3 = String._bridgeToObjectiveC()();
@@ -50,24 +50,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100206988();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v7 = a3;
-  v8 = self;
-  sub_100206D28(a3, a4);
+  windowCopy = window;
+  selfCopy = self;
+  sub_100206D28(window, disappear);
 }
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_100207130();
 }
 
-- (_TtC17proximitycontrold31HintViewControllerDynamicIsland)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17proximitycontrold31HintViewControllerDynamicIsland)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

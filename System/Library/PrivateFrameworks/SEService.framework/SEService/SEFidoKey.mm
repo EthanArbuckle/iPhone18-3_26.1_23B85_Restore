@@ -1,67 +1,67 @@
 @interface SEFidoKey
-+ (id)withRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoPublicKey:(id)a5 fidoAttestation:(id)a6;
-- (SEFidoKey)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)withRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoPublicKey:(id)key fidoAttestation:(id)attestation;
+- (SEFidoKey)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEFidoKey
 
-+ (id)withRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoPublicKey:(id)a5 fidoAttestation:(id)a6
++ (id)withRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoPublicKey:(id)key fidoAttestation:(id)attestation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  partyCopy = party;
+  hashCopy = hash;
+  keyCopy = key;
+  attestationCopy = attestation;
   v13 = objc_opt_new();
   v14 = v13[1];
-  v13[1] = v9;
-  v15 = v9;
+  v13[1] = partyCopy;
+  v15 = partyCopy;
 
   v16 = v13[2];
-  v13[2] = v10;
-  v17 = v10;
+  v13[2] = hashCopy;
+  v17 = hashCopy;
 
   v18 = v13[4];
-  v13[4] = v11;
-  v19 = v11;
+  v13[4] = keyCopy;
+  v19 = keyCopy;
 
   v20 = v13[3];
-  v13[3] = v12;
+  v13[3] = attestationCopy;
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relyingParty = self->_relyingParty;
-  v5 = a3;
-  [v5 encodeObject:relyingParty forKey:@"relyingParty"];
-  [v5 encodeObject:self->_relyingPartyAccountHash forKey:@"relyingPartyAccountHash"];
-  [v5 encodeObject:self->_fidoPublicKey forKey:@"fidoPublicKey"];
-  [v5 encodeObject:self->_fidoAttestation forKey:@"fidoAttestation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:relyingParty forKey:@"relyingParty"];
+  [coderCopy encodeObject:self->_relyingPartyAccountHash forKey:@"relyingPartyAccountHash"];
+  [coderCopy encodeObject:self->_fidoPublicKey forKey:@"fidoPublicKey"];
+  [coderCopy encodeObject:self->_fidoAttestation forKey:@"fidoAttestation"];
 }
 
-- (SEFidoKey)initWithCoder:(id)a3
+- (SEFidoKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SEFidoKey;
   v5 = [(SEFidoKey *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingParty"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingParty"];
     relyingParty = v5->_relyingParty;
     v5->_relyingParty = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyAccountHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyAccountHash"];
     relyingPartyAccountHash = v5->_relyingPartyAccountHash;
     v5->_relyingPartyAccountHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fidoPublicKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fidoPublicKey"];
     fidoPublicKey = v5->_fidoPublicKey;
     v5->_fidoPublicKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fidoAttestation"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fidoAttestation"];
     fidoAttestation = v5->_fidoAttestation;
     v5->_fidoAttestation = v12;
   }

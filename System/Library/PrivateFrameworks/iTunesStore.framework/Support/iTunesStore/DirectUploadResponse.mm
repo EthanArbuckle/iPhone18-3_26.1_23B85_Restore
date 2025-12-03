@@ -1,36 +1,36 @@
 @interface DirectUploadResponse
-- (DirectUploadResponse)initWithURLResponse:(id)a3 data:(id)a4;
+- (DirectUploadResponse)initWithURLResponse:(id)response data:(id)data;
 @end
 
 @implementation DirectUploadResponse
 
-- (DirectUploadResponse)initWithURLResponse:(id)a3 data:(id)a4
+- (DirectUploadResponse)initWithURLResponse:(id)response data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v36.receiver = self;
   v36.super_class = DirectUploadResponse;
   v8 = [(DirectUploadResponse *)&v36 init];
   if (v8)
   {
-    v9 = [v6 statusCode];
+    statusCode = [responseCopy statusCode];
     v10 = +[SSVURLProtocolConsumer consumer];
-    v11 = [v10 objectForData:v7 response:v6 error:0];
+    v11 = [v10 objectForData:dataCopy response:responseCopy error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v33 = v9;
+      integerValue = statusCode;
       v12 = v11;
       v13 = [v12 objectForKey:@"responses"];
       objc_opt_class();
       v34 = v13;
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 firstObject];
+        firstObject = [v13 firstObject];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = v14;
+          v15 = firstObject;
 
           v12 = v15;
         }
@@ -67,7 +67,7 @@
 
       if (objc_opt_respondsToSelector())
       {
-        v33 = [v22 integerValue];
+        integerValue = [v22 integerValue];
       }
 
       v23 = [v12 objectForKey:@"localizedMessage"];
@@ -98,7 +98,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v9 = v33;
+      statusCode = integerValue;
     }
 
     else
@@ -107,7 +107,7 @@ LABEL_27:
       v19 = 0;
     }
 
-    if (v9 == 403)
+    if (statusCode == 403)
     {
       p_isa = SSError();
       v26 = [NSNumber numberWithInteger:403];
@@ -119,9 +119,9 @@ LABEL_27:
     else
     {
       v29 = SSError();
-      if (v9 >= 400)
+      if (statusCode >= 400)
       {
-        v30 = [NSNumber numberWithInteger:v9];
+        v30 = [NSNumber numberWithInteger:statusCode];
         v31 = SSErrorBySettingUserInfoValue();
 
         v29 = v31;

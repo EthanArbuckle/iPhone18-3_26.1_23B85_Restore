@@ -1,44 +1,44 @@
 @interface PUTouchingGestureRecognizer
-- (void)_decrementTouchesBy:(unint64_t)a3;
-- (void)_incrementTouchesBy:(unint64_t)a3;
-- (void)_setTouchCount:(unint64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)_decrementTouchesBy:(unint64_t)by;
+- (void)_incrementTouchesBy:(unint64_t)by;
+- (void)_setTouchCount:(unint64_t)count;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation PUTouchingGestureRecognizer
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
+  cancelledCopy = cancelled;
   [(PUTouchingGestureRecognizer *)self setState:4];
-  v6 = [v5 count];
+  v6 = [cancelledCopy count];
 
   [(PUTouchingGestureRecognizer *)self _decrementTouchesBy:v6];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [a3 count];
+  v5 = [ended count];
 
   [(PUTouchingGestureRecognizer *)self _decrementTouchesBy:v5];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 count];
+  v5 = [began count];
 
   [(PUTouchingGestureRecognizer *)self _incrementTouchesBy:v5];
 }
 
-- (void)_setTouchCount:(unint64_t)a3
+- (void)_setTouchCount:(unint64_t)count
 {
   touchCount = self->__touchCount;
-  if (touchCount != a3)
+  if (touchCount != count)
   {
-    self->__touchCount = a3;
-    if (a3)
+    self->__touchCount = count;
+    if (count)
     {
       if (touchCount)
       {
@@ -57,11 +57,11 @@
   }
 }
 
-- (void)_decrementTouchesBy:(unint64_t)a3
+- (void)_decrementTouchesBy:(unint64_t)by
 {
-  if ([(PUTouchingGestureRecognizer *)self _touchCount]>= a3)
+  if ([(PUTouchingGestureRecognizer *)self _touchCount]>= by)
   {
-    v5 = [(PUTouchingGestureRecognizer *)self _touchCount]- a3;
+    v5 = [(PUTouchingGestureRecognizer *)self _touchCount]- by;
   }
 
   else
@@ -72,9 +72,9 @@
   [(PUTouchingGestureRecognizer *)self _setTouchCount:v5];
 }
 
-- (void)_incrementTouchesBy:(unint64_t)a3
+- (void)_incrementTouchesBy:(unint64_t)by
 {
-  v4 = [(PUTouchingGestureRecognizer *)self _touchCount]+ a3;
+  v4 = [(PUTouchingGestureRecognizer *)self _touchCount]+ by;
 
   [(PUTouchingGestureRecognizer *)self _setTouchCount:v4];
 }

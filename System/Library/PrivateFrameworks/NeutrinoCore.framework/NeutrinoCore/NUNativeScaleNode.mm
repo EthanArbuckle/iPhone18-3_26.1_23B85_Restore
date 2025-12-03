@@ -1,17 +1,17 @@
 @interface NUNativeScaleNode
-- (NUNativeScaleNode)initWithInput:(id)a3;
-- (NUNativeScaleNode)initWithInput:(id)a3 settings:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (NUNativeScaleNode)initWithInput:(id)input;
+- (NUNativeScaleNode)initWithInput:(id)input settings:(id)settings;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUNativeScaleNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v21 = NUAssertLogger_13707();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -32,8 +32,8 @@
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v28;
         v39 = 2114;
@@ -44,8 +44,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -54,24 +54,24 @@
     _NUAssertFailHandler("[NUNativeScaleNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 230, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "error != nil");
   }
 
-  v10 = v9;
+  v10 = stateCopy;
   v11 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v12 = [v11 outputImageGeometry:a5];
+  v12 = [v11 outputImageGeometry:error];
   v13 = v12;
   if (v12)
   {
     if ([v12 renderScale] < 1 || v14 <= 0)
     {
       [NUError invalidError:@"invalid scale" object:v13];
-      *a5 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
     {
       v16 = [v10 copy];
-      v17 = [v13 renderScale];
-      [v16 setScale:{v17, v18}];
-      v19 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v16 error:a5];
+      renderScale = [v13 renderScale];
+      [v16 setScale:{renderScale, v18}];
+      v19 = [v11 nodeByReplayingAgainstCache:cacheCopy pipelineState:v16 error:error];
     }
   }
 
@@ -83,18 +83,18 @@
   return v19;
 }
 
-- (NUNativeScaleNode)initWithInput:(id)a3
+- (NUNativeScaleNode)initWithInput:(id)input
 {
   v4.receiver = self;
   v4.super_class = NUNativeScaleNode;
-  return [(NUAbstractScaleNode *)&v4 initWithInput:a3 settings:MEMORY[0x1E695E0F8]];
+  return [(NUAbstractScaleNode *)&v4 initWithInput:input settings:MEMORY[0x1E695E0F8]];
 }
 
-- (NUNativeScaleNode)initWithInput:(id)a3 settings:(id)a4
+- (NUNativeScaleNode)initWithInput:(id)input settings:(id)settings
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  settingsCopy = settings;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_13724);
@@ -138,8 +138,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -155,8 +155,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

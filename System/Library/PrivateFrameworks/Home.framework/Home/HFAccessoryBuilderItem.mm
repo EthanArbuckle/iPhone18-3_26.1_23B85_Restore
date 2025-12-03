@@ -1,13 +1,13 @@
 @interface HFAccessoryBuilderItem
 - (HFAccessoryBuilderItem)init;
-- (HFAccessoryBuilderItem)initWithAccessoryBuilder:(id)a3 valueSource:(id)a4;
+- (HFAccessoryBuilderItem)initWithAccessoryBuilder:(id)builder valueSource:(id)source;
 - (HFCharacteristicValueSource)valueSource;
 - (HFHomeKitObject)homeKitObject;
 - (NSSet)services;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)namingComponentForHomeKitObject;
 @end
 
@@ -15,59 +15,59 @@
 
 - (HFAccessoryBuilderItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAccessoryBuilder_valueSource_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryBuilderItem.m" lineNumber:31 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryBuilderItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryBuilderItem.m" lineNumber:31 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryBuilderItem init]", v5}];
 
   return 0;
 }
 
-- (HFAccessoryBuilderItem)initWithAccessoryBuilder:(id)a3 valueSource:(id)a4
+- (HFAccessoryBuilderItem)initWithAccessoryBuilder:(id)builder valueSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  builderCopy = builder;
+  sourceCopy = source;
   v26.receiver = self;
   v26.super_class = HFAccessoryBuilderItem;
   v8 = [(HFAccessoryBuilderItem *)&v26 init];
   v9 = v8;
   if (v8)
   {
-    [(HFAccessoryBuilderItem *)v8 setAccessoryBuilder:v6];
-    v10 = [v6 accessory];
-    v11 = [v10 hf_isCamera];
+    [(HFAccessoryBuilderItem *)v8 setAccessoryBuilder:builderCopy];
+    accessory = [builderCopy accessory];
+    hf_isCamera = [accessory hf_isCamera];
 
-    if (v11)
+    if (hf_isCamera)
     {
       v12 = [HFCameraItem alloc];
-      v13 = [v6 accessory];
-      v14 = [v13 cameraProfiles];
-      v15 = [v14 firstObject];
-      v16 = [(HFAccessoryProfileItem *)v12 initWithProfile:v15 valueSource:v7];
+      accessory2 = [builderCopy accessory];
+      cameraProfiles = [accessory2 cameraProfiles];
+      firstObject = [cameraProfiles firstObject];
+      v16 = [(HFAccessoryProfileItem *)v12 initWithProfile:firstObject valueSource:sourceCopy];
       [(HFAccessoryBuilderItem *)v9 setAccessoryItem:v16];
 
 LABEL_10:
       goto LABEL_11;
     }
 
-    v17 = [v6 accessory];
-    v18 = [v17 hf_isRemoteControl];
+    accessory3 = [builderCopy accessory];
+    hf_isRemoteControl = [accessory3 hf_isRemoteControl];
 
-    if (v18)
+    if (hf_isRemoteControl)
     {
       v19 = HFTargetControlAccessoryItem;
     }
 
     else
     {
-      v20 = [v6 accessory];
-      v21 = [v20 mediaProfile];
+      accessory4 = [builderCopy accessory];
+      mediaProfile = [accessory4 mediaProfile];
 
-      if (v21)
+      if (mediaProfile)
       {
         v22 = [HFMediaAccessoryItem alloc];
-        v13 = [v6 accessory];
-        v14 = [v13 mediaProfile];
-        v23 = [(HFMediaAccessoryItem *)v22 initWithValueSource:v7 mediaProfileContainer:v14];
+        accessory2 = [builderCopy accessory];
+        cameraProfiles = [accessory2 mediaProfile];
+        v23 = [(HFMediaAccessoryItem *)v22 initWithValueSource:sourceCopy mediaProfileContainer:cameraProfiles];
         [(HFAccessoryBuilderItem *)v9 setAccessoryItem:v23];
 
         goto LABEL_10;
@@ -77,9 +77,9 @@ LABEL_10:
     }
 
     v24 = [v19 alloc];
-    v13 = [v6 accessory];
-    v14 = [v24 initWithAccessory:v13 valueSource:v7];
-    [(HFAccessoryBuilderItem *)v9 setAccessoryItem:v14];
+    accessory2 = [builderCopy accessory];
+    cameraProfiles = [v24 initWithAccessory:accessory2 valueSource:sourceCopy];
+    [(HFAccessoryBuilderItem *)v9 setAccessoryItem:cameraProfiles];
     goto LABEL_10;
   }
 
@@ -88,30 +88,30 @@ LABEL_11:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFAccessoryBuilderItem *)self valueSource];
-  v5 = [(HFAccessoryBuilderItem *)self copyWithValueSource:v4];
+  valueSource = [(HFAccessoryBuilderItem *)self valueSource];
+  v5 = [(HFAccessoryBuilderItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFAccessoryBuilderItem *)self accessoryBuilder];
-  v7 = [v5 initWithAccessoryBuilder:v6 valueSource:v4];
+  accessoryBuilder = [(HFAccessoryBuilderItem *)self accessoryBuilder];
+  v7 = [v5 initWithAccessoryBuilder:accessoryBuilder valueSource:sourceCopy];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFAccessoryBuilderItem *)self accessoryItem];
-  v6 = [v5 updateWithOptions:v4];
+  optionsCopy = options;
+  accessoryItem = [(HFAccessoryBuilderItem *)self accessoryItem];
+  v6 = [accessoryItem updateWithOptions:optionsCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -154,43 +154,43 @@ id __54__HFAccessoryBuilderItem__subclass_updateWithOptions___block_invoke(uint6
 
 - (HFHomeKitObject)homeKitObject
 {
-  v2 = [(HFAccessoryBuilderItem *)self accessoryItem];
-  v3 = [v2 homeKitObject];
+  accessoryItem = [(HFAccessoryBuilderItem *)self accessoryItem];
+  homeKitObject = [accessoryItem homeKitObject];
 
-  return v3;
+  return homeKitObject;
 }
 
 - (NSSet)services
 {
-  v2 = [(HFAccessoryBuilderItem *)self accessoryItem];
-  v3 = [v2 services];
+  accessoryItem = [(HFAccessoryBuilderItem *)self accessoryItem];
+  services = [accessoryItem services];
 
-  return v3;
+  return services;
 }
 
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFAccessoryBuilderItem *)self accessoryBuilder];
-  v4 = [v3 accessory];
-  v5 = [v2 setWithObject:v4];
+  accessoryBuilder = [(HFAccessoryBuilderItem *)self accessoryBuilder];
+  accessory = [accessoryBuilder accessory];
+  v5 = [v2 setWithObject:accessory];
 
   return v5;
 }
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v2 = [(HFAccessoryBuilderItem *)self accessoryItem];
-  v3 = [v2 valueSource];
+  accessoryItem = [(HFAccessoryBuilderItem *)self accessoryItem];
+  valueSource = [accessoryItem valueSource];
 
-  return v3;
+  return valueSource;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFAccessoryBuilderItem *)self accessoryItem];
-  v3 = [v2 homeKitObject];
-  v4 = [HFNamingComponents namingComponentFromHomeKitObject:v3];
+  accessoryItem = [(HFAccessoryBuilderItem *)self accessoryItem];
+  homeKitObject = [accessoryItem homeKitObject];
+  v4 = [HFNamingComponents namingComponentFromHomeKitObject:homeKitObject];
 
   return v4;
 }

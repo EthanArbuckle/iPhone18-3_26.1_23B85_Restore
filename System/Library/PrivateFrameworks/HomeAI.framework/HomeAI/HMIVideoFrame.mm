@@ -1,41 +1,41 @@
 @interface HMIVideoFrame
 - (CGSize)size;
-- (HMIVideoFrame)initWithCoder:(id)a3;
-- (HMIVideoFrame)initWithJPEGData:(id)a3 size:(CGSize)a4 presentationTimeStamp:(id *)a5;
-- (HMIVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 presentationTimeStamp:(id *)a4;
-- (HMIVideoFrame)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (HMIVideoFrame)initWithCoder:(id)coder;
+- (HMIVideoFrame)initWithJPEGData:(id)data size:(CGSize)size presentationTimeStamp:(id *)stamp;
+- (HMIVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer presentationTimeStamp:(id *)stamp;
+- (HMIVideoFrame)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (NSData)data;
 - (id)attributeDescriptions;
 - (id)base64Encoded;
-- (id)compressedFrameWithScale:(double)a3 quality:(double)a4 error:(id *)a5;
-- (id)pixelBufferFrameWithError:(id *)a3;
+- (id)compressedFrameWithScale:(double)scale quality:(double)quality error:(id *)error;
+- (id)pixelBufferFrameWithError:(id *)error;
 - (id)redactedCopy;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)printWithHeight:(unint64_t)a3;
-- (void)printWithScale:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)printWithHeight:(unint64_t)height;
+- (void)printWithScale:(double)scale;
 @end
 
 @implementation HMIVideoFrame
 
-- (HMIVideoFrame)initWithJPEGData:(id)a3 size:(CGSize)a4 presentationTimeStamp:(id *)a5
+- (HMIVideoFrame)initWithJPEGData:(id)data size:(CGSize)size presentationTimeStamp:(id *)stamp
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  if (v10)
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  if (dataCopy)
   {
-    v11 = v10;
+    v11 = dataCopy;
     v20.receiver = self;
     v20.super_class = HMIVideoFrame;
     v12 = [(HMIVideoFrame *)&v20 init];
     v13 = v12;
     if (v12)
     {
-      var3 = a5->var3;
-      *&v12->_presentationTimeStamp.value = *&a5->var0;
+      var3 = stamp->var3;
+      *&v12->_presentationTimeStamp.value = *&stamp->var0;
       v12->_presentationTimeStamp.epoch = var3;
-      objc_storeStrong(&v12->_data, a3);
+      objc_storeStrong(&v12->_data, data);
       v13->_size.width = width;
       v13->_size.height = height;
       v13->_store = 1;
@@ -51,7 +51,7 @@
   }
 }
 
-- (HMIVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 presentationTimeStamp:(id *)a4
+- (HMIVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer presentationTimeStamp:(id *)stamp
 {
   v11.receiver = self;
   v11.super_class = HMIVideoFrame;
@@ -59,51 +59,51 @@
   v7 = v6;
   if (v6)
   {
-    var3 = a4->var3;
-    *&v6->_presentationTimeStamp.value = *&a4->var0;
+    var3 = stamp->var3;
+    *&v6->_presentationTimeStamp.value = *&stamp->var0;
     v6->_presentationTimeStamp.epoch = var3;
-    v6->_size.width = HMICVPixelBufferGetSize(a3);
+    v6->_size.width = HMICVPixelBufferGetSize(buffer);
     v7->_size.height = v9;
-    v7->_pixelBuffer = CFRetain(a3);
+    v7->_pixelBuffer = CFRetain(buffer);
     v7->_store = 0;
   }
 
   return v7;
 }
 
-- (HMIVideoFrame)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (HMIVideoFrame)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  CMSampleBufferGetPresentationTimeStamp(&v7, a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+  CMSampleBufferGetPresentationTimeStamp(&v7, buffer);
   return [(HMIVideoFrame *)self initWithPixelBuffer:ImageBuffer presentationTimeStamp:&v7];
 }
 
 - (id)redactedCopy
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
   [(HMIVideoFrame *)self size];
   v6 = v5;
   v8 = v7;
   [(HMIVideoFrame *)self presentationTimeStamp];
-  v9 = [v3 initWithJPEGData:v4 size:v11 presentationTimeStamp:{v6, v8}];
+  v9 = [v3 initWithJPEGData:data size:v11 presentationTimeStamp:{v6, v8}];
 
   return v9;
 }
 
 - (id)base64Encoded
 {
-  v2 = [(HMIVideoFrame *)self data];
-  v3 = [v2 base64EncodedStringWithOptions:32];
+  data = [(HMIVideoFrame *)self data];
+  v3 = [data base64EncodedStringWithOptions:32];
 
   return v3;
 }
 
-- (id)compressedFrameWithScale:(double)a3 quality:(double)a4 error:(id *)a5
+- (id)compressedFrameWithScale:(double)scale quality:(double)quality error:(id *)error
 {
-  v8 = a3 <= 0.0;
+  v8 = scale <= 0.0;
   v7 = 1.0;
-  v8 = v8 || a3 > 1.0;
+  v8 = v8 || scale > 1.0;
   if (v8)
   {
     [HMIVideoFrame compressedFrameWithScale:quality:error:];
@@ -112,8 +112,8 @@ LABEL_31:
     return [(HMIVideoFrame *)v25 pixelBufferFrameWithError:v26, v27];
   }
 
-  v9 = a4;
-  if (a4 <= 0.0 || a4 > 1.0)
+  qualityCopy = quality;
+  if (quality <= 0.0 || quality > 1.0)
   {
     goto LABEL_31;
   }
@@ -123,15 +123,15 @@ LABEL_31:
   {
     if (!store)
     {
-      *&v7 = a3;
-      *&a4 = a4;
-      v14 = [HMIVisionUtilities createJPEGDataFromPixelBuffer:self->_pixelBuffer scale:a5 encodeQuality:v7 error:a4];
+      *&v7 = scale;
+      *&quality = quality;
+      v14 = [HMIVisionUtilities createJPEGDataFromPixelBuffer:self->_pixelBuffer scale:error encodeQuality:v7 error:quality];
       if (v14)
       {
         Size = HMICVPixelBufferGetSize(self->_pixelBuffer);
         v28 = v16;
         v29 = Size;
-        CGAffineTransformMakeScale(&v32, a3, a3);
+        CGAffineTransformMakeScale(&v32, scale, scale);
         v30 = vmlaq_n_f64(vmulq_n_f64(*&v32.c, v28), *&v32.a, v29);
         v17 = objc_alloc(objc_opt_class());
         *&v32.a = *&self->_presentationTimeStamp.value;
@@ -148,20 +148,20 @@ LABEL_31:
     goto LABEL_27;
   }
 
-  if (a3 == 1.0 && a4 == 1.0)
+  if (scale == 1.0 && quality == 1.0)
   {
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
     if ([(NSData *)self->_data length])
     {
-      v19 = [(HMIVideoFrame *)self pixelBufferFrameWithError:a5];
+      v19 = [(HMIVideoFrame *)self pixelBufferFrameWithError:error];
       v20 = v19;
       if (v19)
       {
-        v5 = [v19 compressedFrameWithScale:a5 quality:a3 error:v9];
+        v5 = [v19 compressedFrameWithScale:error quality:scale error:qualityCopy];
       }
 
       else
@@ -172,47 +172,47 @@ LABEL_31:
       goto LABEL_27;
     }
 
-    CGAffineTransformMakeScale(&v32, a3, a3);
+    CGAffineTransformMakeScale(&v32, scale, scale);
     v31 = vmlaq_n_f64(vmulq_n_f64(*&v32.c, self->_size.height), *&v32.a, self->_size.width);
     v22 = objc_alloc(objc_opt_class());
     data = self->_data;
     *&v32.a = *&self->_presentationTimeStamp.value;
     *&v32.c = self->_presentationTimeStamp.epoch;
-    v21 = [v22 initWithJPEGData:data size:&v32 presentationTimeStamp:*&v31];
+    selfCopy = [v22 initWithJPEGData:data size:&v32 presentationTimeStamp:*&v31];
   }
 
-  v5 = v21;
+  v5 = selfCopy;
 LABEL_27:
 
   return v5;
 }
 
-- (id)pixelBufferFrameWithError:(id *)a3
+- (id)pixelBufferFrameWithError:(id *)error
 {
   if ([(HMIVideoFrame *)self pixelBuffer])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [HMIVisionUtilities createPixelBufferFromImageData:self->_data error:a3];
+    v6 = [HMIVisionUtilities createPixelBufferFromImageData:self->_data error:error];
     if (v6)
     {
       v7 = v6;
       v8 = objc_alloc(objc_opt_class());
       [(HMIVideoFrame *)self presentationTimeStamp];
-      v5 = [v8 initWithPixelBuffer:v7 presentationTimeStamp:v10];
+      selfCopy = [v8 initWithPixelBuffer:v7 presentationTimeStamp:v10];
       CVPixelBufferRelease(v7);
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)data
@@ -230,9 +230,9 @@ LABEL_27:
     }
 
     v6 = v5;
-    v7 = [v4 data];
+    data = [v4 data];
     v8 = self->_data;
-    self->_data = v7;
+    self->_data = data;
 
     data = self->_data;
   }
@@ -240,20 +240,20 @@ LABEL_27:
   return data;
 }
 
-- (void)printWithHeight:(unint64_t)a3
+- (void)printWithHeight:(unint64_t)height
 {
-  v4 = a3;
+  heightCopy = height;
   [(HMIVideoFrame *)self size];
 
-  [(HMIVideoFrame *)self printWithScale:v4 / v5];
+  [(HMIVideoFrame *)self printWithScale:heightCopy / v5];
 }
 
-- (void)printWithScale:(double)a3
+- (void)printWithScale:(double)scale
 {
-  v8 = [(HMIVideoFrame *)self compressedFrameWithScale:0 quality:fmax(fmin(a3 error:1.0), 0.1), 1.0];
+  v8 = [(HMIVideoFrame *)self compressedFrameWithScale:0 quality:fmax(fmin(scale error:1.0), 0.1), 1.0];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [v8 data];
-  v5 = [v4 base64EncodedDataWithOptions:1];
+  data = [v8 data];
+  v5 = [data base64EncodedDataWithOptions:1];
   v6 = [v3 initWithData:v5 encoding:4];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"\x1B]1337File=inline=1;preserveAspectRatio=1:%@\a", v6];;
@@ -305,15 +305,15 @@ LABEL_27:
   return v13;
 }
 
-- (HMIVideoFrame)initWithCoder:(id)a3
+- (HMIVideoFrame)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22 = 0uLL;
   v23 = 0;
   v5 = NSStringFromSelector(sel_presentationTimeStamp);
-  if (v4)
+  if (coderCopy)
   {
-    [v4 decodeCMTimeForKey:v5];
+    [coderCopy decodeCMTimeForKey:v5];
   }
 
   else
@@ -324,7 +324,7 @@ LABEL_27:
 
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(sel_surface);
-  v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+  v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
 
   if (v8)
   {
@@ -343,10 +343,10 @@ LABEL_27:
   {
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_data);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
 
     v13 = NSStringFromSelector(sel_size);
-    [v4 decodeSizeForKey:v13];
+    [coderCopy decodeSizeForKey:v13];
     v15 = v14;
     v17 = v16;
 
@@ -358,24 +358,24 @@ LABEL_27:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_presentationTimeStamp);
   presentationTimeStamp = self->_presentationTimeStamp;
-  [v4 encodeCMTime:&presentationTimeStamp forKey:v5];
+  [coderCopy encodeCMTime:&presentationTimeStamp forKey:v5];
 
   store = self->_store;
   if (store == 1)
   {
     data = self->_data;
     v11 = NSStringFromSelector(sel_data);
-    [v4 encodeObject:data forKey:v11];
+    [coderCopy encodeObject:data forKey:v11];
 
     width = self->_size.width;
     height = self->_size.height;
     v8 = NSStringFromSelector(sel_size);
-    [v4 encodeSize:v8 forKey:{width, height}];
+    [coderCopy encodeSize:v8 forKey:{width, height}];
 LABEL_6:
 
     goto LABEL_7;
@@ -392,7 +392,7 @@ LABEL_6:
 
     v8 = v7;
     v9 = NSStringFromSelector(sel_surface);
-    [v4 encodeObject:v8 forKey:v9];
+    [coderCopy encodeObject:v8 forKey:v9];
 
     goto LABEL_6;
   }

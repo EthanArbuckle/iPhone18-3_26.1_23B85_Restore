@@ -1,7 +1,7 @@
 @interface HMDEventTriggerDevice
-- (BOOL)isEqual:(id)a3;
-- (HMDEventTriggerDevice)initWithCurrentDeviceForHome:(id)a3;
-- (HMDEventTriggerDevice)initWithDevice:(id)a3 forHome:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDEventTriggerDevice)initWithCurrentDeviceForHome:(id)home;
+- (HMDEventTriggerDevice)initWithDevice:(id)device forHome:(id)home;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -10,28 +10,28 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDEventTriggerDevice *)self device];
+  device = [(HMDEventTriggerDevice *)self device];
 
-  if (!v3)
+  if (!device)
   {
     return 1;
   }
 
-  v4 = [(HMDEventTriggerDevice *)self device];
-  v5 = [v4 hash];
+  device2 = [(HMDEventTriggerDevice *)self device];
+  v5 = [device2 hash];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -42,24 +42,24 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDEventTriggerDevice *)self device];
-      if (v7)
+      device = [(HMDEventTriggerDevice *)self device];
+      if (device)
       {
       }
 
       else
       {
-        v9 = [(HMDEventTriggerDevice *)v6 device];
+        device2 = [(HMDEventTriggerDevice *)v6 device];
 
-        if (!v9)
+        if (!device2)
         {
           v8 = 1;
           goto LABEL_12;
         }
       }
 
-      v10 = [(HMDEventTriggerDevice *)self device];
-      v11 = [(HMDEventTriggerDevice *)v6 device];
+      device3 = [(HMDEventTriggerDevice *)self device];
+      device4 = [(HMDEventTriggerDevice *)v6 device];
       v8 = HMFEqualObjects();
     }
 
@@ -81,13 +81,13 @@ LABEL_13:
 
 - (id)description
 {
-  v3 = [(HMDEventTriggerDevice *)self device];
+  device = [(HMDEventTriggerDevice *)self device];
 
   v4 = MEMORY[0x277CCACA8];
-  if (v3)
+  if (device)
   {
-    v5 = [(HMDEventTriggerDevice *)self device];
-    v6 = [v4 stringWithFormat:@"[Event-trigger-device: %@]", v5];
+    device2 = [(HMDEventTriggerDevice *)self device];
+    v6 = [v4 stringWithFormat:@"[Event-trigger-device: %@]", device2];
   }
 
   else
@@ -98,23 +98,23 @@ LABEL_13:
   return v6;
 }
 
-- (HMDEventTriggerDevice)initWithDevice:(id)a3 forHome:(id)a4
+- (HMDEventTriggerDevice)initWithDevice:(id)device forHome:(id)home
 {
-  v6 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = HMDEventTriggerDevice;
   v7 = [(HMDEventTriggerDevice *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_device, a3);
-    v8->_currentDevice = [v6 isCurrentDevice];
+    objc_storeStrong(&v7->_device, device);
+    v8->_currentDevice = [deviceCopy isCurrentDevice];
   }
 
   return v8;
 }
 
-- (HMDEventTriggerDevice)initWithCurrentDeviceForHome:(id)a3
+- (HMDEventTriggerDevice)initWithCurrentDeviceForHome:(id)home
 {
   v8.receiver = self;
   v8.super_class = HMDEventTriggerDevice;
@@ -122,9 +122,9 @@ LABEL_13:
   if (v3)
   {
     v4 = +[HMDAppleAccountManager sharedManager];
-    v5 = [v4 device];
+    device = [v4 device];
     device = v3->_device;
-    v3->_device = v5;
+    v3->_device = device;
 
     v3->_currentDevice = 1;
   }

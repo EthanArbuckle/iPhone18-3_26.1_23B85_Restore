@@ -1,33 +1,33 @@
 @interface WBSQuickWebsiteSearchController
 + (id)sharedController;
-- (BOOL)_quickWebsiteSearchProviderHasSearchURLTemplateStringOnAccessQueue:(id)a3;
-- (BOOL)_shouldRemoveQuickWebsiteSearchProvider:(id)a3;
+- (BOOL)_quickWebsiteSearchProviderHasSearchURLTemplateStringOnAccessQueue:(id)queue;
+- (BOOL)_shouldRemoveQuickWebsiteSearchProvider:(id)provider;
 - (NSArray)quickWebsiteSearchHosts;
 - (id)_dictionaryRepresentation;
-- (id)_initWithSearchDescriptionsURL:(id)a3;
-- (id)openSearchDescriptionForOpenSearchDescriptionURLString:(id)a3;
-- (id)providerForSourcePageURLString:(id)a3;
-- (id)providersMatchingQueryString:(id)a3 excludingSearchEngineHostSuffixes:(id)a4;
-- (id)providersMatchingString:(id)a3 excludingSearchEngineHostSuffixes:(id)a4;
-- (id)quickWebsiteSearchProvider:(id)a3 openSearchDescriptionForOpenSearchDescriptionURLString:(id)a4;
-- (void)_addHost:(id)a3 toOpenSearchDescriptionWithDocumentURL:(id)a4;
-- (void)_didCollectOpenSearchDescription:(id)a3;
+- (id)_initWithSearchDescriptionsURL:(id)l;
+- (id)openSearchDescriptionForOpenSearchDescriptionURLString:(id)string;
+- (id)providerForSourcePageURLString:(id)string;
+- (id)providersMatchingQueryString:(id)string excludingSearchEngineHostSuffixes:(id)suffixes;
+- (id)providersMatchingString:(id)string excludingSearchEngineHostSuffixes:(id)suffixes;
+- (id)quickWebsiteSearchProvider:(id)provider openSearchDescriptionForOpenSearchDescriptionURLString:(id)string;
+- (void)_addHost:(id)host toOpenSearchDescriptionWithDocumentURL:(id)l;
+- (void)_didCollectOpenSearchDescription:(id)description;
 - (void)_didFinishLoadingFromDisk;
 - (void)_loadFromDisk;
 - (void)_pruneUnusedQuickWebsiteSearchProviders;
-- (void)_removeHost:(id)a3 fromOpenSearchDescriptionWithDocumentURL:(id)a4;
-- (void)_resetCachedDataWithCompletionHandler:(id)a3;
+- (void)_removeHost:(id)host fromOpenSearchDescriptionWithDocumentURL:(id)l;
+- (void)_resetCachedDataWithCompletionHandler:(id)handler;
 - (void)_saveToDiskSoon;
-- (void)_sendNotification:(id)a3 forQuickWebsiteSearchProvider:(id)a4;
+- (void)_sendNotification:(id)notification forQuickWebsiteSearchProvider:(id)provider;
 - (void)beginLoadingFromDiskIfNeeded;
-- (void)clearWithCompletionHandler:(id)a3;
-- (void)didPerformSearchWithProvider:(id)a3;
+- (void)clearWithCompletionHandler:(id)handler;
+- (void)didPerformSearchWithProvider:(id)provider;
 - (void)noteProvidersAreStale;
-- (void)removeProviderWithHost:(id)a3;
-- (void)removeProvidersAddedAfterDate:(id)a3 beforeDate:(id)a4;
-- (void)removeProvidersWithHosts:(id)a3 completionHandler:(id)a4;
-- (void)setOpenSearchDescriptionURLString:(id)a3 forSourcePageURLString:(id)a4;
-- (void)setSearchURLTemplateFromForm:(id)a3 forSourcePageURLString:(id)a4 completionHandler:(id)a5;
+- (void)removeProviderWithHost:(id)host;
+- (void)removeProvidersAddedAfterDate:(id)date beforeDate:(id)beforeDate;
+- (void)removeProvidersWithHosts:(id)hosts completionHandler:(id)handler;
+- (void)setOpenSearchDescriptionURLString:(id)string forSourcePageURLString:(id)lString;
+- (void)setSearchURLTemplateFromForm:(id)form forSourcePageURLString:(id)string completionHandler:(id)handler;
 @end
 
 @implementation WBSQuickWebsiteSearchController
@@ -57,37 +57,37 @@ void __51__WBSQuickWebsiteSearchController_sharedController__block_invoke()
   [+[WBSQuickWebsiteSearchController sharedController]::controller beginLoadingFromDiskIfNeeded];
 }
 
-- (id)_initWithSearchDescriptionsURL:(id)a3
+- (id)_initWithSearchDescriptionsURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = WBSQuickWebsiteSearchController;
   v6 = [(WBSQuickWebsiteSearchController *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchDescriptionsURL, a3);
+    objc_storeStrong(&v6->_searchDescriptionsURL, l);
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.QuickWebsiteSearchProvidersAccess.%@.%p.accessQueue", objc_opt_class(), v7];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = v7->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
     v7->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     quickWebsiteSearchProvidersByHost = v7->_quickWebsiteSearchProvidersByHost;
-    v7->_quickWebsiteSearchProvidersByHost = v13;
+    v7->_quickWebsiteSearchProvidersByHost = dictionary;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     openSearchDescriptionsByDescriptionDocumentURLString = v7->_openSearchDescriptionsByDescriptionDocumentURLString;
-    v7->_openSearchDescriptionsByDescriptionDocumentURLString = v15;
+    v7->_openSearchDescriptionsByDescriptionDocumentURLString = dictionary2;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     hostSetsByOpenSearchDescriptionDocumentURLString = v7->_hostSetsByOpenSearchDescriptionDocumentURLString;
-    v7->_hostSetsByOpenSearchDescriptionDocumentURLString = v17;
+    v7->_hostSetsByOpenSearchDescriptionDocumentURLString = dictionary3;
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v7 selector:sel__didCollectOpenSearchDescription_ name:@"WBSOpenSearchSchemaFetcherDidCollectDescriptionNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__didCollectOpenSearchDescription_ name:@"WBSOpenSearchSchemaFetcherDidCollectDescriptionNotification" object:0];
     if (!v7->_searchDescriptionsURL)
     {
       [(WBSQuickWebsiteSearchController *)v7 _didFinishLoadingFromDisk];
@@ -118,16 +118,16 @@ void __51__WBSQuickWebsiteSearchController_sharedController__block_invoke()
   [(WBSQuickWebsiteSearchController *)self _resetCachedDataWithCompletionHandler:v2];
 }
 
-- (void)clearWithCompletionHandler:(id)a3
+- (void)clearWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__WBSQuickWebsiteSearchController_clearWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7FB6F08;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSQuickWebsiteSearchController *)self _resetCachedDataWithCompletionHandler:v6];
 }
 
@@ -145,20 +145,20 @@ uint64_t __62__WBSQuickWebsiteSearchController_clearWithCompletionHandler___bloc
   return result;
 }
 
-- (void)removeProvidersAddedAfterDate:(id)a3 beforeDate:(id)a4
+- (void)removeProvidersAddedAfterDate:(id)date beforeDate:(id)beforeDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
   quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__WBSQuickWebsiteSearchController_removeProvidersAddedAfterDate_beforeDate___block_invoke;
   block[3] = &unk_1E7FB7DD0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = beforeDateCopy;
+  v9 = beforeDateCopy;
+  v10 = dateCopy;
   dispatch_async(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, block);
 }
 
@@ -207,16 +207,16 @@ void __76__WBSQuickWebsiteSearchController_removeProvidersAddedAfterDate_beforeD
   }
 }
 
-- (void)_sendNotification:(id)a3 forQuickWebsiteSearchProvider:(id)a4
+- (void)_sendNotification:(id)notification forQuickWebsiteSearchProvider:(id)provider
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  providerCopy = provider;
   v10 = @"QuickWebsiteSearchProvider";
-  v11[0] = v7;
+  v11[0] = providerCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:v6 object:self userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:notificationCopy object:self userInfo:v8];
 }
 
 - (NSArray)quickWebsiteSearchHosts
@@ -265,25 +265,25 @@ void __58__WBSQuickWebsiteSearchController_quickWebsiteSearchHosts__block_invoke
   *(v6 + 40) = v5;
 }
 
-- (id)providersMatchingString:(id)a3 excludingSearchEngineHostSuffixes:(id)a4
+- (id)providersMatchingString:(id)string excludingSearchEngineHostSuffixes:(id)suffixes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  stringCopy = string;
+  suffixesCopy = suffixes;
+  array = [MEMORY[0x1E695DF70] array];
   quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __93__WBSQuickWebsiteSearchController_providersMatchingString_excludingSearchEngineHostSuffixes___block_invoke;
   v17 = &unk_1E7FC5D00;
-  v18 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = stringCopy;
   v19 = v10;
-  v11 = v7;
+  v11 = suffixesCopy;
   v20 = v11;
-  v12 = v8;
+  v12 = array;
   v21 = v12;
   dispatch_sync(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, &v14);
-  [v12 sortUsingComparator:{&__block_literal_global_34_1, v14, v15, v16, v17, v18}];
+  [v12 sortUsingComparator:{&__block_literal_global_34_1, v14, v15, v16, v17, selfCopy}];
 
   return v12;
 }
@@ -415,15 +415,15 @@ uint64_t __93__WBSQuickWebsiteSearchController_providersMatchingString_excluding
   return v9;
 }
 
-- (id)providersMatchingQueryString:(id)a3 excludingSearchEngineHostSuffixes:(id)a4
+- (id)providersMatchingQueryString:(id)string excludingSearchEngineHostSuffixes:(id)suffixes
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  suffixesCopy = suffixes;
   v8 = [MEMORY[0x1E696AB08] characterSetWithRange:{8206, 1}];
-  v9 = [v6 stringByTrimmingCharactersInSet:v8];
+  v9 = [stringCopy stringByTrimmingCharactersInSet:v8];
 
-  v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v11 = [v9 rangeOfCharacterFromSet:v10];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v11 = [v9 rangeOfCharacterFromSet:whitespaceCharacterSet];
 
   if (v11 < 3 || v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -442,24 +442,24 @@ uint64_t __93__WBSQuickWebsiteSearchController_providersMatchingString_excluding
   }
 
   v15 = v14;
-  v13 = [(WBSQuickWebsiteSearchController *)self providersMatchingString:v14 excludingSearchEngineHostSuffixes:v7];
+  v13 = [(WBSQuickWebsiteSearchController *)self providersMatchingString:v14 excludingSearchEngineHostSuffixes:suffixesCopy];
 
 LABEL_10:
 
   return v13;
 }
 
-- (void)didPerformSearchWithProvider:(id)a3
+- (void)didPerformSearchWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__WBSQuickWebsiteSearchController_didPerformSearchWithProvider___block_invoke;
   v7[3] = &unk_1E7FB7F10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = providerCopy;
+  selfCopy = self;
+  v6 = providerCopy;
   dispatch_async(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, v7);
 }
 
@@ -476,16 +476,16 @@ void __64__WBSQuickWebsiteSearchController_didPerformSearchWithProvider___block_
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setSearchURLTemplateFromForm:(id)a3 forSourcePageURLString:(id)a4 completionHandler:(id)a5
+- (void)setSearchURLTemplateFromForm:(id)form forSourcePageURLString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DFF8] URLWithString:v9];
-  v12 = [v11 host];
-  v13 = [v12 safari_stringByRemovingWwwDotPrefix];
+  formCopy = form;
+  stringCopy = string;
+  handlerCopy = handler;
+  v11 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
+  host = [v11 host];
+  safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
 
-  if (v13)
+  if (safari_stringByRemovingWwwDotPrefix)
   {
     quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -493,16 +493,16 @@ void __64__WBSQuickWebsiteSearchController_didPerformSearchWithProvider___block_
     block[2] = __105__WBSQuickWebsiteSearchController_setSearchURLTemplateFromForm_forSourcePageURLString_completionHandler___block_invoke;
     block[3] = &unk_1E7FC6AA0;
     block[4] = self;
-    v16 = v13;
-    v17 = v8;
-    v19 = v10;
-    v18 = v9;
+    v16 = safari_stringByRemovingWwwDotPrefix;
+    v17 = formCopy;
+    v19 = handlerCopy;
+    v18 = stringCopy;
     dispatch_async(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, block);
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -575,15 +575,15 @@ uint64_t __105__WBSQuickWebsiteSearchController_setSearchURLTemplateFromForm_for
   return result;
 }
 
-- (void)setOpenSearchDescriptionURLString:(id)a3 forSourcePageURLString:(id)a4
+- (void)setOpenSearchDescriptionURLString:(id)string forSourcePageURLString:(id)lString
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DFF8] URLWithString:v7];
-  v9 = [v8 host];
-  v10 = [v9 safari_stringByRemovingWwwDotPrefix];
+  stringCopy = string;
+  lStringCopy = lString;
+  v8 = [MEMORY[0x1E695DFF8] URLWithString:lStringCopy];
+  host = [v8 host];
+  safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
 
-  if (v10)
+  if (safari_stringByRemovingWwwDotPrefix)
   {
     quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -591,9 +591,9 @@ uint64_t __105__WBSQuickWebsiteSearchController_setSearchURLTemplateFromForm_for
     v12[2] = __92__WBSQuickWebsiteSearchController_setOpenSearchDescriptionURLString_forSourcePageURLString___block_invoke;
     v12[3] = &unk_1E7FC5D00;
     v12[4] = self;
-    v13 = v10;
-    v14 = v6;
-    v15 = v7;
+    v13 = safari_stringByRemovingWwwDotPrefix;
+    v14 = stringCopy;
+    v15 = lStringCopy;
     dispatch_async(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, v12);
   }
 }
@@ -637,9 +637,9 @@ void __92__WBSQuickWebsiteSearchController_setOpenSearchDescriptionURLString_for
   }
 }
 
-- (id)providerForSourcePageURLString:(id)a3
+- (id)providerForSourcePageURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(WBSQuickWebsiteSearchController *)self quickWebsiteSearchProvidersLoadedFromDisk])
   {
     v11 = 0;
@@ -655,7 +655,7 @@ void __92__WBSQuickWebsiteSearchController_setOpenSearchDescriptionURLString_for
     block[3] = &unk_1E7FC4D50;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = stringCopy;
     dispatch_sync(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, block);
     v6 = v12[5];
 
@@ -681,9 +681,9 @@ void __66__WBSQuickWebsiteSearchController_providerForSourcePageURLString___bloc
   *(v5 + 40) = v4;
 }
 
-- (id)openSearchDescriptionForOpenSearchDescriptionURLString:(id)a3
+- (id)openSearchDescriptionForOpenSearchDescriptionURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(WBSQuickWebsiteSearchController *)self quickWebsiteSearchProvidersLoadedFromDisk])
   {
     v11 = 0;
@@ -699,7 +699,7 @@ void __66__WBSQuickWebsiteSearchController_providerForSourcePageURLString___bloc
     block[3] = &unk_1E7FC4D50;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = stringCopy;
     dispatch_sync(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, block);
     v6 = v12[5];
 
@@ -722,20 +722,20 @@ void __90__WBSQuickWebsiteSearchController_openSearchDescriptionForOpenSearchDes
   *(v3 + 40) = v2;
 }
 
-- (void)removeProvidersWithHosts:(id)a3 completionHandler:(id)a4
+- (void)removeProvidersWithHosts:(id)hosts completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  hostsCopy = hosts;
+  handlerCopy = handler;
   quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSQuickWebsiteSearchController_removeProvidersWithHosts_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = hostsCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = hostsCopy;
   dispatch_async(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, block);
 }
 
@@ -813,40 +813,40 @@ uint64_t __78__WBSQuickWebsiteSearchController_removeProvidersWithHosts_completi
   return result;
 }
 
-- (void)removeProviderWithHost:(id)a3
+- (void)removeProviderWithHost:(id)host
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6[0] = v4;
+  hostCopy = host;
+  v6[0] = hostCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(WBSQuickWebsiteSearchController *)self removeProvidersWithHosts:v5 completionHandler:0];
 }
 
-- (id)quickWebsiteSearchProvider:(id)a3 openSearchDescriptionForOpenSearchDescriptionURLString:(id)a4
+- (id)quickWebsiteSearchProvider:(id)provider openSearchDescriptionForOpenSearchDescriptionURLString:(id)string
 {
-  v4 = [(WBSQuickWebsiteSearchController *)self openSearchDescriptionForOpenSearchDescriptionURLString:a4];
+  v4 = [(WBSQuickWebsiteSearchController *)self openSearchDescriptionForOpenSearchDescriptionURLString:string];
 
   return v4;
 }
 
-- (BOOL)_quickWebsiteSearchProviderHasSearchURLTemplateStringOnAccessQueue:(id)a3
+- (BOOL)_quickWebsiteSearchProviderHasSearchURLTemplateStringOnAccessQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [v4 searchURLTemplateFromForm];
+  queueCopy = queue;
+  searchURLTemplateFromForm = [queueCopy searchURLTemplateFromForm];
 
-  if (v5)
+  if (searchURLTemplateFromForm)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 openSearchDescriptionURLString];
-    if ([v7 length])
+    openSearchDescriptionURLString = [queueCopy openSearchDescriptionURLString];
+    if ([openSearchDescriptionURLString length])
     {
-      v8 = [(NSMutableDictionary *)self->_openSearchDescriptionsByDescriptionDocumentURLString objectForKeyedSubscript:v7];
-      v9 = [v8 searchURLTemplate];
-      v6 = v9 != 0;
+      v8 = [(NSMutableDictionary *)self->_openSearchDescriptionsByDescriptionDocumentURLString objectForKeyedSubscript:openSearchDescriptionURLString];
+      searchURLTemplate = [v8 searchURLTemplate];
+      v6 = searchURLTemplate != 0;
     }
 
     else
@@ -858,49 +858,49 @@ uint64_t __78__WBSQuickWebsiteSearchController_removeProvidersWithHosts_completi
   return v6;
 }
 
-- (void)_addHost:(id)a3 toOpenSearchDescriptionWithDocumentURL:(id)a4
+- (void)_addHost:(id)host toOpenSearchDescriptionWithDocumentURL:(id)l
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_hostSetsByOpenSearchDescriptionDocumentURLString objectForKeyedSubscript:v6];
+  hostCopy = host;
+  lCopy = l;
+  v7 = [(NSMutableDictionary *)self->_hostSetsByOpenSearchDescriptionDocumentURLString objectForKeyedSubscript:lCopy];
   if (!v7)
   {
     v7 = [MEMORY[0x1E695DFA8] set];
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   }
 
-  [v7 addObject:v8];
+  [v7 addObject:hostCopy];
 }
 
-- (void)_removeHost:(id)a3 fromOpenSearchDescriptionWithDocumentURL:(id)a4
+- (void)_removeHost:(id)host fromOpenSearchDescriptionWithDocumentURL:(id)l
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_hostSetsByOpenSearchDescriptionDocumentURLString objectForKeyedSubscript:v6];
-  [v7 removeObject:v8];
+  hostCopy = host;
+  lCopy = l;
+  v7 = [(NSMutableDictionary *)self->_hostSetsByOpenSearchDescriptionDocumentURLString objectForKeyedSubscript:lCopy];
+  [v7 removeObject:hostCopy];
   if (![v7 count])
   {
-    [(NSMutableDictionary *)self->_hostSetsByOpenSearchDescriptionDocumentURLString removeObjectForKey:v6];
-    [(NSMutableDictionary *)self->_openSearchDescriptionsByDescriptionDocumentURLString removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_hostSetsByOpenSearchDescriptionDocumentURLString removeObjectForKey:lCopy];
+    [(NSMutableDictionary *)self->_openSearchDescriptionsByDescriptionDocumentURLString removeObjectForKey:lCopy];
   }
 }
 
-- (BOOL)_shouldRemoveQuickWebsiteSearchProvider:(id)a3
+- (BOOL)_shouldRemoveQuickWebsiteSearchProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [v3 dateAdded];
-  if (v4)
+  providerCopy = provider;
+  dateAdded = [providerCopy dateAdded];
+  if (dateAdded)
   {
-    v5 = [v3 dateOfLastSearch];
+    dateOfLastSearch = [providerCopy dateOfLastSearch];
 
-    if (v5)
+    if (dateOfLastSearch)
     {
       v6 = 0;
     }
 
     else
     {
-      [v4 timeIntervalSinceNow];
+      [dateAdded timeIntervalSinceNow];
       v6 = v7 < -604800.0;
     }
   }
@@ -923,8 +923,8 @@ uint64_t __78__WBSQuickWebsiteSearchController_removeProvidersWithHosts_completi
   v7[4] = self;
   v4 = [(NSMutableDictionary *)quickWebsiteSearchProvidersByHost keysOfEntriesPassingTest:v7];
   v5 = self->_quickWebsiteSearchProvidersByHost;
-  v6 = [v4 allObjects];
-  [(NSMutableDictionary *)v5 removeObjectsForKeys:v6];
+  allObjects = [v4 allObjects];
+  [(NSMutableDictionary *)v5 removeObjectsForKeys:allObjects];
 }
 
 uint64_t __74__WBSQuickWebsiteSearchController__pruneUnusedQuickWebsiteSearchProviders__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -998,24 +998,24 @@ id __50__WBSQuickWebsiteSearchController__saveToDiskSoon__block_invoke(uint64_t 
 - (id)_dictionaryRepresentation
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __60__WBSQuickWebsiteSearchController__dictionaryRepresentation__block_invoke;
   v13 = &unk_1E7FB7DD0;
-  v14 = self;
-  v6 = v3;
+  selfCopy = self;
+  v6 = array;
   v15 = v6;
-  v7 = v4;
+  v7 = array2;
   v16 = v7;
   dispatch_sync(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, &v10);
   v17[0] = @"WebsiteSpecificSearchDescriptions";
   v17[1] = @"OpenSearchDescriptions";
   v18[0] = v6;
   v18[1] = v7;
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:{2, v10, v11, v12, v13, v14}];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:{2, v10, v11, v12, v13, selfCopy}];
 
   return v8;
 }
@@ -1216,11 +1216,11 @@ void __60__WBSQuickWebsiteSearchController__didFinishLoadingFromDisk__block_invo
   [v2 postNotificationName:@"WBSQuickWebsiteSearchControllerDidFinishLoadingNotification" object:*(a1 + 32)];
 }
 
-- (void)_didCollectOpenSearchDescription:(id)a3
+- (void)_didCollectOpenSearchDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"WBSOpenSearchDescription"];
+  descriptionCopy = description;
+  userInfo = [descriptionCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"WBSOpenSearchDescription"];
 
   quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -1228,7 +1228,7 @@ void __60__WBSQuickWebsiteSearchController__didFinishLoadingFromDisk__block_invo
   v9[2] = __68__WBSQuickWebsiteSearchController__didCollectOpenSearchDescription___block_invoke;
   v9[3] = &unk_1E7FB7F10;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
   dispatch_async(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, v9);
 }
@@ -1320,17 +1320,17 @@ uint64_t __68__WBSQuickWebsiteSearchController__didCollectOpenSearchDescription_
   return [*(a1 + 40) _saveToDiskSoon];
 }
 
-- (void)_resetCachedDataWithCompletionHandler:(id)a3
+- (void)_resetCachedDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue = self->_quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__WBSQuickWebsiteSearchController__resetCachedDataWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(quickWebsiteSearchProvidersBySourcePageURLStringAccessQueue, v7);
 }
 

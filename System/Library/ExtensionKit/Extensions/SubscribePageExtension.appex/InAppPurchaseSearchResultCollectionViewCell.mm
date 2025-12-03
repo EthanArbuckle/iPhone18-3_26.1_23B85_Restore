@@ -1,12 +1,12 @@
 @interface InAppPurchaseSearchResultCollectionViewCell
-- (_TtC22SubscribePageExtension43InAppPurchaseSearchResultCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension43InAppPurchaseSearchResultCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation InAppPurchaseSearchResultCollectionViewCell
 
-- (_TtC22SubscribePageExtension43InAppPurchaseSearchResultCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension43InAppPurchaseSearchResultCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension43InAppPurchaseSearchResultCollectionViewCell_metrics;
   if (qword_100921778 != -1)
@@ -27,15 +27,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050568C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100505B30(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100505B30(change);
 }
 
 @end

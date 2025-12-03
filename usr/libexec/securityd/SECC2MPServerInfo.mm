@@ -1,35 +1,35 @@
 @interface SECC2MPServerInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECC2MPServerInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(SECC2MPServerInfo *)self setServiceName:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(SECC2MPServerInfo *)self setPartition:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SECC2MPServerInfo *)self setServiceBuild:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(SECC2MPServerInfo *)self setServiceInstance:?];
   }
@@ -43,13 +43,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_serviceInstance hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((serviceName = self->_serviceName, !(serviceName | v4[4])) || -[NSString isEqual:](serviceName, "isEqual:")) && ((partition = self->_partition, !(partition | v4[1])) || -[NSString isEqual:](partition, "isEqual:")) && ((serviceBuild = self->_serviceBuild, !(serviceBuild | v4[2])) || -[NSString isEqual:](serviceBuild, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((serviceName = self->_serviceName, !(serviceName | equalCopy[4])) || -[NSString isEqual:](serviceName, "isEqual:")) && ((partition = self->_partition, !(partition | equalCopy[1])) || -[NSString isEqual:](partition, "isEqual:")) && ((serviceBuild = self->_serviceBuild, !(serviceBuild | equalCopy[2])) || -[NSString isEqual:](serviceBuild, "isEqual:")))
   {
     serviceInstance = self->_serviceInstance;
-    if (serviceInstance | v4[3])
+    if (serviceInstance | equalCopy[3])
     {
       v9 = [(NSString *)serviceInstance isEqual:?];
     }
@@ -68,83 +68,83 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_serviceName copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_partition copyWithZone:a3];
+  v8 = [(NSString *)self->_partition copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_serviceBuild copyWithZone:a3];
+  v10 = [(NSString *)self->_serviceBuild copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_serviceInstance copyWithZone:a3];
+  v12 = [(NSString *)self->_serviceInstance copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_serviceName)
   {
-    [v4 setServiceName:?];
-    v4 = v5;
+    [toCopy setServiceName:?];
+    toCopy = v5;
   }
 
   if (self->_partition)
   {
     [v5 setPartition:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serviceBuild)
   {
     [v5 setServiceBuild:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serviceInstance)
   {
     [v5 setServiceInstance:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_serviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_partition)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serviceBuild)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serviceInstance)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
@@ -184,8 +184,8 @@
   v7.receiver = self;
   v7.super_class = SECC2MPServerInfo;
   v3 = [(SECC2MPServerInfo *)&v7 description];
-  v4 = [(SECC2MPServerInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SECC2MPServerInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

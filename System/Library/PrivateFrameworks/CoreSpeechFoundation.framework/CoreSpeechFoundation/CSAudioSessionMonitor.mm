@@ -1,33 +1,33 @@
 @interface CSAudioSessionMonitor
 + (id)sharedInstance;
-- (CSAudioSessionMonitor)initWithCrashMonitor:(id)a3;
+- (CSAudioSessionMonitor)initWithCrashMonitor:(id)monitor;
 - (unint64_t)getAudioSessionState;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)audioSessionEventProvidingDidSetAudioSessionActive:(BOOL)a3;
-- (void)audioSessionEventProvidingWillSetAudioSessionActive:(BOOL)a3;
-- (void)notifyAudioSessionStateChange:(unint64_t)a3;
+- (void)audioSessionEventProvidingDidSetAudioSessionActive:(BOOL)active;
+- (void)audioSessionEventProvidingWillSetAudioSessionActive:(BOOL)active;
+- (void)notifyAudioSessionStateChange:(unint64_t)change;
 @end
 
 @implementation CSAudioSessionMonitor
 
-- (void)audioSessionEventProvidingDidSetAudioSessionActive:(BOOL)a3
+- (void)audioSessionEventProvidingDidSetAudioSessionActive:(BOOL)active
 {
-  if (!a3)
+  if (!active)
   {
     [(CSAudioSessionMonitor *)self notifyAudioSessionStateChange:2];
   }
 }
 
-- (void)audioSessionEventProvidingWillSetAudioSessionActive:(BOOL)a3
+- (void)audioSessionEventProvidingWillSetAudioSessionActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     [(CSAudioSessionMonitor *)self notifyAudioSessionStateChange:1];
   }
 }
 
-- (void)notifyAudioSessionStateChange:(unint64_t)a3
+- (void)notifyAudioSessionStateChange:(unint64_t)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -35,14 +35,14 @@
   block[2] = __55__CSAudioSessionMonitor_notifyAudioSessionStateChange___block_invoke;
   block[3] = &unk_1E865CC58;
   block[4] = self;
-  block[5] = a3;
+  block[5] = change;
   dispatch_async(queue, block);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__CSAudioSessionMonitor_notifyAudioSessionStateChange___block_invoke_3;
   v6[3] = &unk_1E865CA68;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = change;
   [(CSEventMonitor *)self enumerateObserversInQueue:v6];
 }
 
@@ -102,7 +102,7 @@ void __55__CSAudioSessionMonitor_notifyAudioSessionStateChange___block_invoke(ui
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = CSLogContextFacilityCoreSpeech;
@@ -116,9 +116,9 @@ void __55__CSAudioSessionMonitor_notifyAudioSessionStateChange___block_invoke(ui
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (CSAudioSessionMonitor)initWithCrashMonitor:(id)a3
+- (CSAudioSessionMonitor)initWithCrashMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   v11.receiver = self;
   v11.super_class = CSAudioSessionMonitor;
   v5 = [(CSEventMonitor *)&v11 init];
@@ -129,9 +129,9 @@ void __55__CSAudioSessionMonitor_notifyAudioSessionStateChange___block_invoke(ui
     v5->_queue = v6;
 
     v5->_audioSessionState = 0;
-    if (v4)
+    if (monitorCopy)
     {
-      v8 = v4;
+      v8 = monitorCopy;
     }
 
     else

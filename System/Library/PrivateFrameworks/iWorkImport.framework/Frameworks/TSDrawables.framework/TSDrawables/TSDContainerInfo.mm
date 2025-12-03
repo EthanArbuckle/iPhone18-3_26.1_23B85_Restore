@@ -1,48 +1,48 @@
 @interface TSDContainerInfo
 - (BOOL)isThemeContent;
 - (NSArray)childInfos;
-- (TSDContainerInfo)initWithContext:(id)a3 geometry:(id)a4;
+- (TSDContainerInfo)initWithContext:(id)context geometry:(id)geometry;
 - (id)endCollectingChanges;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)addChildInfo:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)addChildInfo:(id)info;
 - (void)beginCollectingChanges;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
 - (void)dealloc;
-- (void)insertChildInfo:(id)a3 above:(id)a4;
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChildInfo:(id)a3 below:(id)a4;
-- (void)insertContainedModel:(id)a3 atIndex:(unint64_t)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)moveChildren:(id)a3 toIndexes:(id)a4;
-- (void)moveModel:(id)a3 toIndex:(unint64_t)a4;
-- (void)removeContainedModel:(id)a3;
-- (void)replaceChildInfo:(id)a3 with:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setChildInfos:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setOwningAttachment:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
-- (void)willChangeProperties:(id)a3;
-- (void)willChangeProperty:(int)a3;
+- (void)insertChildInfo:(id)info above:(id)above;
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index;
+- (void)insertChildInfo:(id)info below:(id)below;
+- (void)insertContainedModel:(id)model atIndex:(unint64_t)index;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)moveChildren:(id)children toIndexes:(id)indexes;
+- (void)moveModel:(id)model toIndex:(unint64_t)index;
+- (void)removeContainedModel:(id)model;
+- (void)replaceChildInfo:(id)info with:(id)with;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setChildInfos:(id)infos;
+- (void)setGeometry:(id)geometry;
+- (void)setOwningAttachment:(id)attachment;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
+- (void)willChangeProperties:(id)properties;
+- (void)willChangeProperty:(int)property;
 @end
 
 @implementation TSDContainerInfo
 
-- (TSDContainerInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDContainerInfo)initWithContext:(id)context geometry:(id)geometry
 {
-  v6 = a4;
+  geometryCopy = geometry;
   v17.receiver = self;
   v17.super_class = TSDContainerInfo;
-  v9 = [(TSDContainerInfo *)&v17 initWithContext:a3];
+  v9 = [(TSDContainerInfo *)&v17 initWithContext:context];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
+    v10 = objc_msgSend_copy(geometryCopy, v7, v8);
     geometry = v9->_geometry;
     v9->_geometry = v10;
 
@@ -92,19 +92,19 @@
   [(TSDContainerInfo *)&v10 dealloc];
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  if (self->_parentInfo == a3)
+  if (self->_parentInfo == needed)
   {
     self->_parentInfo = 0;
   }
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v5 = a3;
-  v16 = v5;
-  if (!v5)
+  geometryCopy = geometry;
+  v16 = geometryCopy;
+  if (!geometryCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDContainerInfo setGeometry:]");
@@ -112,17 +112,17 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 54, 0, "invalid nil value for '%{public}s'", "newGeometry");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
-    v5 = 0;
+    geometryCopy = 0;
   }
 
-  if ((objc_msgSend_isEqual_(v5, v6, self->_geometry) & 1) == 0)
+  if ((objc_msgSend_isEqual_(geometryCopy, v6, self->_geometry) & 1) == 0)
   {
     objc_msgSend_willModify(self, v14, v15);
-    objc_storeStrong(&self->_geometry, a3);
+    objc_storeStrong(&self->_geometry, geometry);
   }
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDContainerInfo setOwningAttachment:]");
@@ -149,13 +149,13 @@
   return v3;
 }
 
-- (void)insertContainedModel:(id)a3 atIndex:(unint64_t)a4
+- (void)insertContainedModel:(id)model atIndex:(unint64_t)index
 {
   v6 = TSUProtocolCast();
   v15 = v6;
   if (v6)
   {
-    objc_msgSend_insertChildInfo_atIndex_(self, v6, v6, a4, &unk_2885A16B8);
+    objc_msgSend_insertChildInfo_atIndex_(self, v6, v6, index, &unk_2885A16B8);
   }
 
   else
@@ -169,7 +169,7 @@
   }
 }
 
-- (void)removeContainedModel:(id)a3
+- (void)removeContainedModel:(id)model
 {
   v4 = TSUProtocolCast();
   v13 = v4;
@@ -189,7 +189,7 @@
   }
 }
 
-- (void)moveModel:(id)a3 toIndex:(unint64_t)a4
+- (void)moveModel:(id)model toIndex:(unint64_t)index
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v6 = TSUProtocolCast();
@@ -198,7 +198,7 @@
   {
     v20[0] = v6;
     v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v20, 1, &unk_2885A16B8);
-    v11 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v10, a4);
+    v11 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v10, index);
     objc_msgSend_moveChildren_toIndexes_(self, v12, v9, v11);
   }
 
@@ -213,18 +213,18 @@
   }
 }
 
-- (void)setChildInfos:(id)a3
+- (void)setChildInfos:(id)infos
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infosCopy = infos;
   childInfos = self->_childInfos;
-  if (childInfos != v5 && (objc_msgSend_isEqual_(childInfos, v4, v5) & 1) == 0)
+  if (childInfos != infosCopy && (objc_msgSend_isEqual_(childInfos, v4, infosCopy) & 1) == 0)
   {
     objc_msgSend_willChangeProperty_(self, v7, 514);
-    if (v5)
+    if (infosCopy)
     {
       v8 = objc_alloc(MEMORY[0x277CBEB98]);
-      v10 = objc_msgSend_initWithArray_(v8, v9, v5);
+      v10 = objc_msgSend_initWithArray_(v8, v9, infosCopy);
     }
 
     else
@@ -267,13 +267,13 @@
     if (self->_childInfos)
     {
       v19 = objc_alloc(MEMORY[0x277CBEB98]);
-      v20 = self;
+      selfCopy2 = self;
       v22 = objc_msgSend_initWithArray_(v19, v21, self->_childInfos);
     }
 
     else
     {
-      v20 = self;
+      selfCopy2 = self;
       v22 = 0;
     }
 
@@ -281,8 +281,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v40 = v5;
-    v23 = v5;
+    v40 = infosCopy;
+    v23 = infosCopy;
     v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v41, v49, 16);
     if (v25)
     {
@@ -304,7 +304,7 @@
             v33 = TSUProtocolCast();
 
             objc_msgSend_removeChildInfo_(v33, v34, v30, &unk_2885A1948);
-            objc_msgSend_setParentInfo_(v30, v35, v20);
+            objc_msgSend_setParentInfo_(v30, v35, selfCopy2);
           }
         }
 
@@ -315,35 +315,35 @@
     }
 
     v38 = objc_msgSend_mutableCopy(v23, v36, v37);
-    v39 = v20->_childInfos;
-    v20->_childInfos = v38;
+    v39 = selfCopy2->_childInfos;
+    selfCopy2->_childInfos = v38;
 
-    v5 = v40;
+    infosCopy = v40;
   }
 }
 
-- (void)addChildInfo:(id)a3
+- (void)addChildInfo:(id)info
 {
-  v9 = a3;
+  infoCopy = info;
   childInfos = self->_childInfos;
   if (childInfos)
   {
     v7 = objc_msgSend_count(childInfos, v4, v5);
-    objc_msgSend_insertChildInfo_atIndex_(self, v8, v9, v7);
+    objc_msgSend_insertChildInfo_atIndex_(self, v8, infoCopy, v7);
   }
 
   else
   {
-    objc_msgSend_insertChildInfo_atIndex_(self, v4, v9, 0);
+    objc_msgSend_insertChildInfo_atIndex_(self, v4, infoCopy, 0);
   }
 }
 
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v30 = v6;
+    v30 = infoCopy;
     objc_msgSend_willChangeProperty_(self, v7, 514);
     v10 = objc_msgSend_parentInfo(v30, v8, v9);
     v29 = &unk_2885A1948;
@@ -363,54 +363,54 @@
       objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v13, v22, v21, v16);
     }
 
-    objc_msgSend_insertObject_atIndex_(self->_childInfos, v19, v30, a4);
+    objc_msgSend_insertObject_atIndex_(self->_childInfos, v19, v30, index);
     if (objc_msgSend_tsp_isInDocument(self, v23, v24))
     {
       v27 = objc_msgSend_documentRoot(self, v25, v26);
       objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v13, v28, v27, v16);
     }
 
-    v6 = v30;
+    infoCopy = v30;
   }
 }
 
-- (void)insertChildInfo:(id)a3 below:(id)a4
+- (void)insertChildInfo:(id)info below:(id)below
 {
-  v11 = a3;
-  v7 = a4;
+  infoCopy = info;
+  belowCopy = below;
   childInfos = self->_childInfos;
   if (childInfos)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(childInfos, v6, v7);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(childInfos, v6, belowCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_insertChildInfo_atIndex_(self, v10, v11, v9);
+      objc_msgSend_insertChildInfo_atIndex_(self, v10, infoCopy, v9);
     }
   }
 }
 
-- (void)insertChildInfo:(id)a3 above:(id)a4
+- (void)insertChildInfo:(id)info above:(id)above
 {
-  v11 = a3;
-  v7 = a4;
+  infoCopy = info;
+  aboveCopy = above;
   childInfos = self->_childInfos;
   if (childInfos)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(childInfos, v6, v7);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(childInfos, v6, aboveCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_insertChildInfo_atIndex_(self, v10, v11, v9 + 1);
+      objc_msgSend_insertChildInfo_atIndex_(self, v10, infoCopy, v9 + 1);
     }
   }
 }
 
-- (void)moveChildren:(id)a3 toIndexes:(id)a4
+- (void)moveChildren:(id)children toIndexes:(id)indexes
 {
-  v52 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_count(v52, v7, v8);
-  v12 = objc_msgSend_count(v6, v10, v11);
-  Index = objc_msgSend_lastIndex(v6, v13, v14);
+  childrenCopy = children;
+  indexesCopy = indexes;
+  v9 = objc_msgSend_count(childrenCopy, v7, v8);
+  v12 = objc_msgSend_count(indexesCopy, v10, v11);
+  Index = objc_msgSend_lastIndex(indexesCopy, v13, v14);
   v18 = objc_msgSend_count(self->_childInfos, v16, v17);
   v21 = v18;
   if (v9 != v12)
@@ -442,7 +442,7 @@ LABEL_9:
   }
 
   v22 = objc_msgSend_mutableCopy(self->_childInfos, v19, v20);
-  objc_msgSend_removeObjectsInArray_(v22, v23, v52);
+  objc_msgSend_removeObjectsInArray_(v22, v23, childrenCopy);
   v28 = v21 - v9;
   if (objc_msgSend_count(v22, v24, v25) != v21 - v9)
   {
@@ -456,21 +456,21 @@ LABEL_9:
 
   if (objc_msgSend_count(v22, v26, v27) == v28)
   {
-    objc_msgSend_insertObjects_atIndexes_(v22, v36, v52, v6);
+    objc_msgSend_insertObjects_atIndexes_(v22, v36, childrenCopy, indexesCopy);
     objc_msgSend_setChildInfos_(self, v37, v22);
   }
 
 LABEL_10:
 }
 
-- (void)replaceChildInfo:(id)a3 with:(id)a4
+- (void)replaceChildInfo:(id)info with:(id)with
 {
-  v26 = a3;
-  v7 = a4;
+  infoCopy = info;
+  withCopy = with;
   childInfos = self->_childInfos;
   if (childInfos)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(childInfos, v6, v26);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(childInfos, v6, infoCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = v9;
@@ -483,14 +483,14 @@ LABEL_10:
       }
 
       objc_msgSend_removeObjectAtIndex_(self->_childInfos, v15, v11);
-      objc_msgSend_setParentInfo_(v26, v19, 0);
+      objc_msgSend_setParentInfo_(infoCopy, v19, 0);
       if (objc_msgSend_tsp_isInDocument(self, v20, v21))
       {
         v24 = objc_msgSend_documentRoot(self, v22, v23);
         objc_msgSend_wasRemovedFromDocumentRoot_(v12, v25, v24);
       }
 
-      objc_msgSend_insertChildInfo_atIndex_(self, v22, v7, v11);
+      objc_msgSend_insertChildInfo_atIndex_(self, v22, withCopy, v11);
     }
   }
 }
@@ -505,20 +505,20 @@ LABEL_10:
   }
 }
 
-- (void)willChangeProperty:(int)a3
+- (void)willChangeProperty:(int)property
 {
-  v3 = *&a3;
-  objc_msgSend_willModify(self, a2, *&a3);
+  v3 = *&property;
+  objc_msgSend_willModify(self, a2, *&property);
   changes = self->_changes;
 
   MEMORY[0x2821F9670](changes, sel_addChangedProperty_, v3);
 }
 
-- (void)willChangeProperties:(id)a3
+- (void)willChangeProperties:(id)properties
 {
-  v7 = a3;
+  propertiesCopy = properties;
   objc_msgSend_willModify(self, v4, v5);
-  objc_msgSend_addChangedProperties_(self->_changes, v6, v7);
+  objc_msgSend_addChangedProperties_(self->_changes, v6, propertiesCopy);
 }
 
 - (id)endCollectingChanges
@@ -542,12 +542,12 @@ LABEL_10:
   return changes;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ((objc_msgSend_wasUnarchived(v7, v8, v9) & 1) == 0)
+  rootCopy = root;
+  contextCopy = context;
+  if ((objc_msgSend_wasUnarchived(contextCopy, v8, v9) & 1) == 0)
   {
     v19 = 0u;
     v20 = 0u;
@@ -569,7 +569,7 @@ LABEL_10:
             objc_enumerationMutation(v10);
           }
 
-          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v17 + 1) + 8 * v16++), v13, v6, v7, v17);
+          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v17 + 1) + 8 * v16++), v13, rootCopy, contextCopy, v17);
         }
 
         while (v14 != v16);
@@ -581,15 +581,15 @@ LABEL_10:
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_context(v6, v8, v9);
+  rootCopy = root;
+  contextCopy = context;
+  v10 = objc_msgSend_context(rootCopy, v8, v9);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v11, v10);
 
-  if ((objc_msgSend_wasUnarchived(v7, v12, v13) & 1) == 0)
+  if ((objc_msgSend_wasUnarchived(contextCopy, v12, v13) & 1) == 0)
   {
     v23 = 0u;
     v24 = 0u;
@@ -611,7 +611,7 @@ LABEL_10:
             objc_enumerationMutation(v14);
           }
 
-          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v21 + 1) + 8 * v20++), v17, v6, v7, v21);
+          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v21 + 1) + 8 * v20++), v17, rootCopy, contextCopy, v21);
         }
 
         while (v18 != v20);
@@ -623,11 +623,11 @@ LABEL_10:
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_context(v4, v5, v6);
+  rootCopy = root;
+  v7 = objc_msgSend_context(rootCopy, v5, v6);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v8, v7);
 
   v18 = 0u;
@@ -650,7 +650,7 @@ LABEL_10:
           objc_enumerationMutation(v9);
         }
 
-        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v16 + 1) + 8 * v15++), v12, v4, v16);
+        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v16 + 1) + 8 * v15++), v12, rootCopy, v16);
       }
 
       while (v13 != v15);
@@ -661,10 +661,10 @@ LABEL_10:
   }
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -685,7 +685,7 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v12 + 1) + 8 * v11++), v8, v4, v12);
+        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v12 + 1) + 8 * v11++), v8, rootCopy, v12);
       }
 
       while (v9 != v11);
@@ -696,10 +696,10 @@ LABEL_10:
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDContainerInfo mixingTypeWithObject:context:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDContainerInfo mixingTypeWithObject:context:]", context);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDContainerInfo.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 353, 0, "TSDContainerInfo does not implement TSDMixing!");
 
@@ -707,10 +707,10 @@ LABEL_10:
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDContainerInfo mixedObjectWithFraction:ofObject:]", a3);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDContainerInfo mixedObjectWithFraction:ofObject:]", fraction);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDContainerInfo.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 359, 0, "TSDContainerInfo does not implement TSDMixing!");
 
@@ -718,13 +718,13 @@ LABEL_10:
   return 0;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v7 = [TSDMutableInfoGeometry alloc];
-  if (*(a3 + 6))
+  if (*(archive + 6))
   {
-    v9 = objc_msgSend_initWithArchive_(v7, v8, *(a3 + 6));
+    v9 = objc_msgSend_initWithArchive_(v7, v8, *(archive + 6));
   }
 
   else
@@ -735,18 +735,18 @@ LABEL_10:
   geometry = self->_geometry;
   self->_geometry = v9;
 
-  if ((*(a3 + 16) & 2) != 0)
+  if ((*(archive + 16) & 2) != 0)
   {
-    v11 = *(a3 + 7);
+    v11 = *(archive + 7);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_276664ED0;
     v15[3] = &unk_27A6CC6A8;
     v15[4] = self;
-    sub_276664E24(v6, v11, &unk_2885A16B8, v15);
+    sub_276664E24(unarchiverCopy, v11, &unk_2885A16B8, v15);
   }
 
-  if (*(a3 + 8) < 1)
+  if (*(archive + 8) < 1)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     childInfos = self->_childInfos;
@@ -760,31 +760,31 @@ LABEL_10:
     v14[2] = sub_276664F88;
     v14[3] = &unk_27A6CC598;
     v14[4] = self;
-    sub_276664EDC(v6, a3 + 24, &unk_2885A16B8, v14);
+    sub_276664EDC(unarchiverCopy, archive + 24, &unk_2885A16B8, v14);
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v7 = a4;
+  archiverCopy = archiver;
   geometry = self->_geometry;
-  *(a3 + 4) |= 1u;
-  v9 = *(a3 + 6);
-  v39 = v7;
+  *(archive + 4) |= 1u;
+  v9 = *(archive + 6);
+  v39 = archiverCopy;
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSD::GeometryArchive>(v10);
-    *(a3 + 6) = v9;
-    v7 = v39;
+    *(archive + 6) = v9;
+    archiverCopy = v39;
   }
 
-  objc_msgSend_saveToArchive_archiver_(geometry, v6, v9, v7);
+  objc_msgSend_saveToArchive_archiver_(geometry, v6, v9, archiverCopy);
   v13 = objc_msgSend_parentInfo(self, v11, v12);
 
   if (v13)
@@ -804,18 +804,18 @@ LABEL_10:
     }
 
     v28 = objc_msgSend_parentInfo(self, v18, v19);
-    *(a3 + 4) |= 2u;
-    v29 = *(a3 + 7);
+    *(archive + 4) |= 2u;
+    v29 = *(archive + 7);
     if (!v29)
     {
-      v30 = *(a3 + 1);
+      v30 = *(archive + 1);
       if (v30)
       {
         v30 = *(v30 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v29 = MEMORY[0x277C9BB20](v30);
-      *(a3 + 7) = v29;
+      *(archive + 7) = v29;
     }
 
     objc_msgSend_setStrongReference_message_(v39, v27, v28, v29);
@@ -827,13 +827,13 @@ LABEL_10:
   if (v34)
   {
     v37 = objc_msgSend_childInfos(self, v35, v36);
-    objc_msgSend_setStrongReferenceArray_message_(v39, v38, v37, a3 + 24);
+    objc_msgSend_setStrongReferenceArray_message_(v39, v38, v37, archive + 24);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
@@ -845,20 +845,20 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  v17 = v4;
+  v17 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v15 = objc_msgSend_messageWithDescriptor_(v17, v14, off_2812F5188[72]);
 
   objc_msgSend_loadFromArchive_unarchiver_(self, v16, v15, v17);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276665400, off_2812F5188[72]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276665400, off_2812F5188[72]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

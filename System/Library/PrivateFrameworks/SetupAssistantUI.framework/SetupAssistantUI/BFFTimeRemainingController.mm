@@ -1,18 +1,18 @@
 @interface BFFTimeRemainingController
-- (BFFTimeRemainingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (id)timeRemainingString:(double)a3;
-- (void)setProgress:(double)a3;
-- (void)setTimeRemainingEstimate:(double)a3;
+- (BFFTimeRemainingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (id)timeRemainingString:(double)string;
+- (void)setProgress:(double)progress;
+- (void)setTimeRemainingEstimate:(double)estimate;
 - (void)viewDidLoad;
 @end
 
 @implementation BFFTimeRemainingController
 
-- (BFFTimeRemainingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (BFFTimeRemainingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   v9.receiver = self;
   v9.super_class = BFFTimeRemainingController;
-  v5 = [(OBSetupAssistantProgressController *)&v9 initWithTitle:a3 detailText:a4 icon:a5];
+  v5 = [(OBSetupAssistantProgressController *)&v9 initWithTitle:title detailText:text icon:icon];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCA958]);
@@ -41,29 +41,29 @@
   [(OBSetupAssistantProgressController *)self setProgressText:v7];
 }
 
-- (void)setTimeRemainingEstimate:(double)a3
+- (void)setTimeRemainingEstimate:(double)estimate
 {
-  v4 = [(BFFTimeRemainingController *)self timeRemainingString:a3];
+  v4 = [(BFFTimeRemainingController *)self timeRemainingString:estimate];
   [(OBSetupAssistantProgressController *)self setProgressText:v4];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (a3 < 0.02)
+  if (progress < 0.02)
   {
-    a3 = 0.02;
+    progress = 0.02;
   }
 
   v3.receiver = self;
   v3.super_class = BFFTimeRemainingController;
-  [(OBSetupAssistantProgressController *)&v3 setProgress:a3];
+  [(OBSetupAssistantProgressController *)&v3 setProgress:progress];
 }
 
-- (id)timeRemainingString:(double)a3
+- (id)timeRemainingString:(double)string
 {
-  if (a3 <= 604800.0)
+  if (string <= 604800.0)
   {
-    if (a3 > 0.0)
+    if (string > 0.0)
     {
       v6 = [(NSDateComponentsFormatter *)self->_durationFormatter stringFromTimeInterval:?];
       goto LABEL_7;

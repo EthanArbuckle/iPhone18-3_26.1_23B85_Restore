@@ -1,18 +1,18 @@
 @interface CRLLassoSegmentedViewController
 - (CGSize)preferredContentSize;
 - (CRLLassoSegmentedControlDelegate)delegate;
-- (CRLLassoSegmentedViewController)initWithCoder:(id)a3;
-- (CRLLassoSegmentedViewController)initWithLassoType:(unint64_t)a3;
-- (CRLLassoSegmentedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CRLLassoSegmentedViewController)initWithCoder:(id)coder;
+- (CRLLassoSegmentedViewController)initWithLassoType:(unint64_t)type;
+- (CRLLassoSegmentedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)p_commonInit;
-- (void)segmentedControlDidChangeValue:(id)a3;
-- (void)setLassoType:(unint64_t)a3;
+- (void)segmentedControlDidChangeValue:(id)value;
+- (void)setLassoType:(unint64_t)type;
 - (void)viewDidLoad;
 @end
 
 @implementation CRLLassoSegmentedViewController
 
-- (CRLLassoSegmentedViewController)initWithLassoType:(unint64_t)a3
+- (CRLLassoSegmentedViewController)initWithLassoType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = CRLLassoSegmentedViewController;
@@ -21,17 +21,17 @@
   if (v4)
   {
     [(CRLLassoSegmentedViewController *)v4 p_commonInit];
-    [(UISegmentedControl *)v5->_segmentedControl setSelectedSegmentIndex:a3];
+    [(UISegmentedControl *)v5->_segmentedControl setSelectedSegmentIndex:type];
   }
 
   return v5;
 }
 
-- (CRLLassoSegmentedViewController)initWithCoder:(id)a3
+- (CRLLassoSegmentedViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLLassoSegmentedViewController;
-  v3 = [(CRLLassoSegmentedViewController *)&v6 initWithCoder:a3];
+  v3 = [(CRLLassoSegmentedViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -42,11 +42,11 @@
   return v4;
 }
 
-- (CRLLassoSegmentedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CRLLassoSegmentedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = CRLLassoSegmentedViewController;
-  v4 = [(CRLLassoSegmentedViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(CRLLassoSegmentedViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -79,26 +79,26 @@
   v20.receiver = self;
   v20.super_class = CRLLassoSegmentedViewController;
   [(CRLLassoSegmentedViewController *)&v20 viewDidLoad];
-  v3 = [(CRLLassoSegmentedViewController *)self view];
-  [v3 addSubview:self->_segmentedControl];
+  view = [(CRLLassoSegmentedViewController *)self view];
+  [view addSubview:self->_segmentedControl];
 
-  v18 = [(UISegmentedControl *)self->_segmentedControl topAnchor];
-  v19 = [(CRLLassoSegmentedViewController *)self view];
-  v17 = [v19 safeAreaLayoutGuide];
-  v16 = [v17 topAnchor];
-  v15 = [v18 constraintEqualToAnchor:v16 constant:10.0];
+  topAnchor = [(UISegmentedControl *)self->_segmentedControl topAnchor];
+  view2 = [(CRLLassoSegmentedViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v21[0] = v15;
-  v13 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
-  v14 = [(CRLLassoSegmentedViewController *)self view];
-  v12 = [v14 safeAreaLayoutGuide];
-  v4 = [v12 leadingAnchor];
-  v5 = [v13 constraintEqualToAnchor:v4 constant:10.0];
+  leadingAnchor = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
+  view3 = [(CRLLassoSegmentedViewController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v21[1] = v5;
-  v6 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-  v7 = [(CRLLassoSegmentedViewController *)self view];
-  v8 = [v7 safeAreaLayoutGuide];
-  v9 = [v8 trailingAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9 constant:-10.0];
+  trailingAnchor = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+  view4 = [(CRLLassoSegmentedViewController *)self view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v21[2] = v10;
   v11 = [NSArray arrayWithObjects:v21 count:3];
   [NSLayoutConstraint activateConstraints:v11];
@@ -106,13 +106,13 @@
   [(UISegmentedControl *)self->_segmentedControl addTarget:self action:"segmentedControlDidChangeValue:" forControlEvents:4096];
 }
 
-- (void)setLassoType:(unint64_t)a3
+- (void)setLassoType:(unint64_t)type
 {
-  if ([(UISegmentedControl *)self->_segmentedControl numberOfSegments]> a3)
+  if ([(UISegmentedControl *)self->_segmentedControl numberOfSegments]> type)
   {
     segmentedControl = self->_segmentedControl;
 
-    [(UISegmentedControl *)segmentedControl setSelectedSegmentIndex:a3];
+    [(UISegmentedControl *)segmentedControl setSelectedSegmentIndex:type];
   }
 }
 
@@ -135,7 +135,7 @@
   return result;
 }
 
-- (void)segmentedControlDidChangeValue:(id)a3
+- (void)segmentedControlDidChangeValue:(id)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained lassoSegmentedControlDidChangeType:{-[CRLLassoSegmentedViewController lassoType](self, "lassoType")}];

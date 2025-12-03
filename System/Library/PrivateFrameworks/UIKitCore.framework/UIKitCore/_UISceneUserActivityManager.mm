@@ -1,34 +1,34 @@
 @interface _UISceneUserActivityManager
-+ (BOOL)_restorationUserActivityAvailableForSceneIdentifier:(id)a3;
-+ (id)_activityContinuationDictionaryWithAction:(id)a3 sourceApplication:(id)a4 originatingProcess:(id)a5;
-+ (id)_fetchSceneSessionWithPersistentIdentifier:(id)a3;
-+ (id)_getInternalUserInfoForPersistentIdentifier:(id)a3 error:(id *)a4;
-+ (id)_getRestorationUserActivityForPersistentIdentifier:(id)a3 error:(id *)a4;
-+ (id)_getUserInfoForPersistentIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)_restorationUserActivityAvailableForSceneIdentifier:(id)identifier;
++ (id)_activityContinuationDictionaryWithAction:(id)action sourceApplication:(id)application originatingProcess:(id)process;
++ (id)_fetchSceneSessionWithPersistentIdentifier:(id)identifier;
++ (id)_getInternalUserInfoForPersistentIdentifier:(id)identifier error:(id *)error;
++ (id)_getRestorationUserActivityForPersistentIdentifier:(id)identifier error:(id *)error;
++ (id)_getUserInfoForPersistentIdentifier:(id)identifier error:(id *)error;
 + (id)_knownSceneSessionMap;
-+ (id)_userActivityManagerForScene:(id)a3;
-+ (void)_deleteSavedSceneSessionDirectoryWithPersistentIdentifier:(id)a3;
-+ (void)_deleteSceneSessionsWithPersistentIdentifiers:(id)a3;
++ (id)_userActivityManagerForScene:(id)scene;
++ (void)_deleteSavedSceneSessionDirectoryWithPersistentIdentifier:(id)identifier;
++ (void)_deleteSceneSessionsWithPersistentIdentifiers:(id)identifiers;
 + (void)_initializeUserActivityManager;
-+ (void)_saveRestorationStateForScene:(id)a3;
-+ (void)_scheduleDataSaveForSceneSession:(id)a3 saveRestorationActivity:(BOOL)a4;
-+ (void)_showProgressForScene:(id)a3 whenFetchingUserActivityForTypes:(id)a4;
-+ (void)_updatePersistedSceneSession:(id)a3;
-- (BOOL)activityContinuationManager:(id)a3 continueUserActivity:(id)a4;
-- (BOOL)activityContinuationManager:(id)a3 willContinueUserActivityWithType:(id)a4;
++ (void)_saveRestorationStateForScene:(id)scene;
++ (void)_scheduleDataSaveForSceneSession:(id)session saveRestorationActivity:(BOOL)activity;
++ (void)_showProgressForScene:(id)scene whenFetchingUserActivityForTypes:(id)types;
++ (void)_updatePersistedSceneSession:(id)session;
+- (BOOL)activityContinuationManager:(id)manager continueUserActivity:(id)activity;
+- (BOOL)activityContinuationManager:(id)manager willContinueUserActivityWithType:(id)type;
 - (UIScene)_scene;
-- (_UISceneUserActivityManager)initWithScene:(id)a3;
-- (id)activityContinuationManagerUserCancelledError:(id)a3;
+- (_UISceneUserActivityManager)initWithScene:(id)scene;
+- (id)activityContinuationManagerUserCancelledError:(id)error;
 - (void)_checkActivityContinuationAndBecomeCurrentIfNeeded;
-- (void)_saveOrClearRestorationDictionary:(id)a3 forScene:(id)a4;
+- (void)_saveOrClearRestorationDictionary:(id)dictionary forScene:(id)scene;
 - (void)_saveSceneRestorationState;
-- (void)_scene:(id)a3 didTransitionFromActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5;
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5;
-- (void)activityContinuationManager:(id)a3 configureProgressUIWithError:(id)a4;
-- (void)activityContinuationManager:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)activityContinuationManager:(id)a3 didUpdateUserActivity:(id)a4;
-- (void)activityContinuationManager:(id)a3 displayProgressUI:(id)a4 dismissalHandler:(id)a5;
-- (void)activityContinuationManager:(id)a3 hideProgressUIWithCompletion:(id)a4;
+- (void)_scene:(id)_scene didTransitionFromActivationState:(int64_t)state withReasonsMask:(unint64_t)mask;
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask;
+- (void)activityContinuationManager:(id)manager configureProgressUIWithError:(id)error;
+- (void)activityContinuationManager:(id)manager didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)activityContinuationManager:(id)manager didUpdateUserActivity:(id)activity;
+- (void)activityContinuationManager:(id)manager displayProgressUI:(id)i dismissalHandler:(id)handler;
+- (void)activityContinuationManager:(id)manager hideProgressUIWithCompletion:(id)completion;
 @end
 
 @implementation _UISceneUserActivityManager
@@ -48,7 +48,7 @@
 
 + (id)_knownSceneSessionMap
 {
-  v2 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v4 = [v3 initWithCapacity:{objc_msgSend(qword_1ED49FA08, "count")}];
   v5 = _persistenceQueue();
@@ -58,8 +58,8 @@
   v11[3] = &unk_1E70F35B8;
   v6 = v4;
   v12 = v6;
-  v13 = v2;
-  v7 = v2;
+  v13 = date;
+  v7 = date;
   dispatch_sync(v5, v11);
 
   v8 = v13;
@@ -87,10 +87,10 @@
   v43 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained session];
-    v5 = [v4 persistentIdentifier];
+    session = [WeakRetained session];
+    persistentIdentifier = [session persistentIdentifier];
 
-    if (!v5)
+    if (!persistentIdentifier)
     {
       if (_UIStateRestorationDebugLogEnabled())
       {
@@ -100,47 +100,47 @@
       goto LABEL_52;
     }
 
-    v6 = [v43 _FBSScene];
-    if ([v6 isPersistable])
+    _FBSScene = [v43 _FBSScene];
+    if ([_FBSScene isPersistable])
     {
-      v7 = [v43 session];
-      if ([v7 _userInfoIsDirty])
+      session2 = [v43 session];
+      if ([session2 _userInfoIsDirty])
       {
       }
 
       else
       {
-        v8 = [v43 session];
-        v9 = [v8 _configurationIsDirty];
+        session3 = [v43 session];
+        _configurationIsDirty = [session3 _configurationIsDirty];
 
-        if (!v9)
+        if (!_configurationIsDirty)
         {
           goto LABEL_13;
         }
       }
 
-      v6 = [v43 session];
-      [_UISceneUserActivityManager _updatePersistedSceneSession:v6];
+      _FBSScene = [v43 session];
+      [_UISceneUserActivityManager _updatePersistedSceneSession:_FBSScene];
     }
 
 LABEL_13:
     if (_UIStateRestorationDebugLogEnabled())
     {
-      NSLog(&cfstr_SCheckingForUs.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]", v5);
+      NSLog(&cfstr_SCheckingForUs.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]", persistentIdentifier);
     }
 
-    v10 = [v43 delegate];
+    delegate = [v43 delegate];
     v11 = objc_opt_respondsToSelector();
 
-    v12 = [v43 session];
-    v13 = [v12 stateRestorationActivity];
+    session4 = [v43 session];
+    stateRestorationActivity = [session4 stateRestorationActivity];
 
-    v14 = [v43 session];
-    [v14 _setStateRestorationActivityIsDirty:0];
+    session5 = [v43 session];
+    [session5 _setStateRestorationActivityIsDirty:0];
 
     if (_UIStateRestorationDebugLogEnabled())
     {
-      NSLog(&cfstr_SUsingUisceneS.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]", v13);
+      NSLog(&cfstr_SUsingUisceneS.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]", stateRestorationActivity);
     }
 
     v15 = _UIStateRestorationDebugLogEnabled();
@@ -151,10 +151,10 @@ LABEL_13:
         NSLog(&cfstr_SCallingStater.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]");
       }
 
-      v16 = [v43 delegate];
-      v17 = [v16 stateRestorationActivityForScene:v43];
+      delegate2 = [v43 delegate];
+      v17 = [delegate2 stateRestorationActivityForScene:v43];
 
-      v13 = v17;
+      stateRestorationActivity = v17;
       if (!v17)
       {
         if (_UIStateRestorationDebugLogEnabled())
@@ -162,7 +162,7 @@ LABEL_13:
           NSLog(&cfstr_SUisceneDelega.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]");
         }
 
-        v13 = 0;
+        stateRestorationActivity = 0;
 LABEL_33:
         v29 = 0;
 LABEL_51:
@@ -180,7 +180,7 @@ LABEL_52:
         NSLog(&cfstr_SUisceneDelega_0.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]");
       }
 
-      if (!v13)
+      if (!stateRestorationActivity)
       {
         goto LABEL_33;
       }
@@ -188,28 +188,28 @@ LABEL_52:
 
     if (_UIStateRestorationDebugLogEnabled())
     {
-      v18 = [v13 activityType];
-      v19 = [v13 title];
-      v20 = [v13 userInfo];
-      NSLog(&cfstr_SFoundActivity_0.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]", v18, v19, v20);
+      activityType = [stateRestorationActivity activityType];
+      title = [stateRestorationActivity title];
+      userInfo = [stateRestorationActivity userInfo];
+      NSLog(&cfstr_SFoundActivity_0.isa, "[_UISceneUserActivityManager _saveSceneRestorationState]", activityType, title, userInfo);
     }
 
-    v21 = v13;
-    v22 = [UIApp _getActivityContinuationManager];
-    [v22 userActivityWillSave:v21];
-    v23 = [v21 delegate];
-    if (v23)
+    v21 = stateRestorationActivity;
+    _getActivityContinuationManager = [UIApp _getActivityContinuationManager];
+    [_getActivityContinuationManager userActivityWillSave:v21];
+    delegate3 = [v21 delegate];
+    if (delegate3)
     {
-      v24 = v23;
-      v25 = [v21 delegate];
-      v26 = v25;
-      if (v25 == v22)
+      delegate6 = delegate3;
+      delegate4 = [v21 delegate];
+      v26 = delegate4;
+      if (delegate4 == _getActivityContinuationManager)
       {
       }
 
       else
       {
-        v27 = [v21 delegate];
+        delegate5 = [v21 delegate];
         v28 = objc_opt_respondsToSelector();
 
         if ((v28 & 1) == 0)
@@ -217,63 +217,63 @@ LABEL_52:
           goto LABEL_36;
         }
 
-        v24 = [v21 delegate];
-        [v24 userActivityWillSave:v21];
+        delegate6 = [v21 delegate];
+        [delegate6 userActivityWillSave:v21];
       }
     }
 
 LABEL_36:
 
-    v30 = [v43 session];
-    [v30 _resetStateRestorationToActivity:v21];
+    session6 = [v43 session];
+    [session6 _resetStateRestorationToActivity:v21];
 
-    v13 = v21;
+    stateRestorationActivity = v21;
     v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
     if (_UIStateRestorationDebugLogEnabled())
     {
-      v31 = [v13 activityType];
-      v32 = [v13 title];
-      NSLog(&cfstr_SCreatingUserA.isa, "NSDictionary * _Nonnull _createStateRestorationDictionaryForUserActivity(NSUserActivity *__strong _Nonnull)", v13, v31, v32);
+      activityType2 = [stateRestorationActivity activityType];
+      title2 = [stateRestorationActivity title];
+      NSLog(&cfstr_SCreatingUserA.isa, "NSDictionary * _Nonnull _createStateRestorationDictionaryForUserActivity(NSUserActivity *__strong _Nonnull)", stateRestorationActivity, activityType2, title2);
     }
 
-    v33 = [v13 activityType];
-    [v29 setObject:v33 forKey:@"CanvasRestorationUserActivityTypeKey"];
+    activityType3 = [stateRestorationActivity activityType];
+    [v29 setObject:activityType3 forKey:@"CanvasRestorationUserActivityTypeKey"];
 
-    v34 = [v13 title];
+    title3 = [stateRestorationActivity title];
 
-    if (v34)
+    if (title3)
     {
-      v35 = [v13 title];
-      [v29 setObject:v35 forKey:@"CanvasRestorationUserActivityTitleKey"];
+      title4 = [stateRestorationActivity title];
+      [v29 setObject:title4 forKey:@"CanvasRestorationUserActivityTitleKey"];
     }
 
-    v36 = [v13 userInfo];
+    userInfo2 = [stateRestorationActivity userInfo];
 
     v37 = _UIStateRestorationDebugLogEnabled();
-    if (v36)
+    if (userInfo2)
     {
       if (v37)
       {
         NSLog(&cfstr_SSecurelyCodin.isa, "NSDictionary * _Nonnull _createStateRestorationDictionaryForUserActivity(NSUserActivity *__strong _Nonnull)");
       }
 
-      v38 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-      v39 = [v13 userInfo];
-      [v38 encodeObject:v39 forKey:@"CanvasRestorationUserActivityUserInfoKey"];
+      userInfo4 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
+      userInfo3 = [stateRestorationActivity userInfo];
+      [userInfo4 encodeObject:userInfo3 forKey:@"CanvasRestorationUserActivityUserInfoKey"];
 
-      [v38 finishEncoding];
+      [userInfo4 finishEncoding];
       if (_UIStateRestorationDebugLogEnabled())
       {
-        v40 = [v38 encodedData];
-        NSLog(&cfstr_SEncodedUserIn.isa, "NSDictionary * _Nonnull _createStateRestorationDictionaryForUserActivity(NSUserActivity *__strong _Nonnull)", v40);
+        encodedData = [userInfo4 encodedData];
+        NSLog(&cfstr_SEncodedUserIn.isa, "NSDictionary * _Nonnull _createStateRestorationDictionaryForUserActivity(NSUserActivity *__strong _Nonnull)", encodedData);
       }
 
-      v41 = [v38 encodedData];
+      encodedData2 = [userInfo4 encodedData];
 
-      if (v41)
+      if (encodedData2)
       {
-        v42 = [v38 encodedData];
-        [v29 setObject:v42 forKey:@"CanvasRestorationUserActivityUserInfoDataKey"];
+        encodedData3 = [userInfo4 encodedData];
+        [v29 setObject:encodedData3 forKey:@"CanvasRestorationUserActivityUserInfoDataKey"];
       }
     }
 
@@ -286,8 +286,8 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v38 = [v13 userInfo];
-      NSLog(&cfstr_SNoUserActivit.isa, "NSDictionary * _Nonnull _createStateRestorationDictionaryForUserActivity(NSUserActivity *__strong _Nonnull)", v38);
+      userInfo4 = [stateRestorationActivity userInfo];
+      NSLog(&cfstr_SNoUserActivit.isa, "NSDictionary * _Nonnull _createStateRestorationDictionaryForUserActivity(NSUserActivity *__strong _Nonnull)", userInfo4);
     }
 
     goto LABEL_50;
@@ -301,27 +301,27 @@ LABEL_50:
 LABEL_53:
 }
 
-+ (id)_userActivityManagerForScene:(id)a3
++ (id)_userActivityManagerForScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   if (_UIStateRestorationDebugLogEnabled())
   {
     NSLog(&cfstr_SCalledLooking.isa, "+[_UISceneUserActivityManager _userActivityManagerForScene:]", @"UIUserActivitySceneComponentKey");
   }
 
-  v4 = [v3 _sceneComponentForKey:@"UIUserActivitySceneComponentKey"];
+  v4 = [sceneCopy _sceneComponentForKey:@"UIUserActivitySceneComponentKey"];
 
   return v4;
 }
 
-- (_UISceneUserActivityManager)initWithScene:(id)a3
+- (_UISceneUserActivityManager)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if (_UIStateRestorationDebugLogEnabled())
   {
-    v5 = [v4 session];
-    v6 = [v5 persistentIdentifier];
-    NSLog(&cfstr_SCalledForScen.isa, "[_UISceneUserActivityManager initWithScene:]", v6);
+    session = [sceneCopy session];
+    persistentIdentifier = [session persistentIdentifier];
+    NSLog(&cfstr_SCalledForScen.isa, "[_UISceneUserActivityManager initWithScene:]", persistentIdentifier);
   }
 
   v12.receiver = self;
@@ -330,7 +330,7 @@ LABEL_53:
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_weakScene, v4);
+    objc_storeWeak(&v7->_weakScene, sceneCopy);
     v9 = [[UIActivityContinuationManager alloc] initWithApplicationContext:v8];
     activityContinuationManager = v8->_activityContinuationManager;
     v8->_activityContinuationManager = v9;
@@ -346,20 +346,20 @@ LABEL_53:
   return WeakRetained;
 }
 
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask
 {
-  v10 = a3;
-  v7 = [v10 activationState];
+  _sceneCopy = _scene;
+  activationState = [_sceneCopy activationState];
   if (_UIStateRestorationDebugLogEnabled())
   {
-    v8 = _NSStringFromUISceneActivationState(a4);
-    v9 = _NSStringFromUISceneActivationState(v7);
-    NSLog(&cfstr_SInvokedForSce.isa, "[_UISceneUserActivityManager _scene:willTransitionToActivationState:withReasonsMask:]", v10, v8, v9);
+    v8 = _NSStringFromUISceneActivationState(state);
+    v9 = _NSStringFromUISceneActivationState(activationState);
+    NSLog(&cfstr_SInvokedForSce.isa, "[_UISceneUserActivityManager _scene:willTransitionToActivationState:withReasonsMask:]", _sceneCopy, v8, v9);
   }
 
-  if (a4)
+  if (state)
   {
-    if (a4 == 2 && v7 != 2)
+    if (state == 2 && activationState != 2)
     {
       if (_UIStateRestorationDebugLogEnabled())
       {
@@ -381,21 +381,21 @@ LABEL_53:
   }
 }
 
-- (void)_scene:(id)a3 didTransitionFromActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5
+- (void)_scene:(id)_scene didTransitionFromActivationState:(int64_t)state withReasonsMask:(unint64_t)mask
 {
-  v7 = a3;
+  _sceneCopy = _scene;
   if (!self->_initialRestorationIsFinished)
   {
-    v14 = v7;
-    v8 = [v7 activationState];
+    v14 = _sceneCopy;
+    activationState = [_sceneCopy activationState];
     if (_UIStateRestorationDebugLogEnabled())
     {
-      v9 = _NSStringFromUISceneActivationState(v8);
+      v9 = _NSStringFromUISceneActivationState(activationState);
       v10 = _NSStringFromUISceneActivationState([v14 activationState]);
       NSLog(&cfstr_SInvokedForSce.isa, "[_UISceneUserActivityManager _scene:didTransitionFromActivationState:withReasonsMask:]", v14, v9, v10);
     }
 
-    if (v8 > 1 || a4 != 2 && a4 != -1)
+    if (activationState > 1 || state != 2 && state != -1)
     {
       goto LABEL_15;
     }
@@ -405,14 +405,14 @@ LABEL_53:
       NSLog(&cfstr_SOfferingResto.isa, "[_UISceneUserActivityManager _scene:didTransitionFromActivationState:withReasonsMask:]");
     }
 
-    v11 = [v14 delegate];
+    delegate = [v14 delegate];
     if (objc_opt_respondsToSelector())
     {
       [v14 _willRestoreInteractionStateForUserActivityManager:self];
       kdebug_trace();
-      v12 = [v14 session];
-      v13 = [v12 stateRestorationActivity];
-      [v11 scene:v14 restoreInteractionStateWithUserActivity:v13];
+      session = [v14 session];
+      stateRestorationActivity = [session stateRestorationActivity];
+      [delegate scene:v14 restoreInteractionStateWithUserActivity:stateRestorationActivity];
     }
 
     else
@@ -423,15 +423,15 @@ LABEL_14:
 
 LABEL_15:
         self->_initialRestorationIsFinished = 1;
-        v7 = v14;
+        _sceneCopy = v14;
         goto LABEL_16;
       }
 
       [v14 _willRestoreInteractionStateForUserActivityManager:self];
       kdebug_trace();
-      v12 = [v14 session];
-      v13 = [v12 stateRestorationActivity];
-      [v11 _scene:v14 restoreInteractionStateWithUserActivity:v13];
+      session = [v14 session];
+      stateRestorationActivity = [session stateRestorationActivity];
+      [delegate _scene:v14 restoreInteractionStateWithUserActivity:stateRestorationActivity];
     }
 
     kdebug_trace();
@@ -441,29 +441,29 @@ LABEL_15:
 LABEL_16:
 }
 
-+ (void)_showProgressForScene:(id)a3 whenFetchingUserActivityForTypes:(id)a4
++ (void)_showProgressForScene:(id)scene whenFetchingUserActivityForTypes:(id)types
 {
-  v8 = a4;
-  v5 = [_UISceneUserActivityManager _userActivityManagerForScene:a3];
+  typesCopy = types;
+  v5 = [_UISceneUserActivityManager _userActivityManagerForScene:scene];
   if (v5)
   {
-    v6 = [v8 copy];
+    v6 = [typesCopy copy];
     v7 = v5[5];
     v5[5] = v6;
   }
 }
 
-- (void)activityContinuationManager:(id)a3 displayProgressUI:(id)a4 dismissalHandler:(id)a5
+- (void)activityContinuationManager:(id)manager displayProgressUI:(id)i dismissalHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = _UINSLocalizedStringWithDefaultValue(@"Handoff", @"Handoff");
     v9 = _UINSLocalizedStringWithDefaultValue(@"Waiting for Handoff to “%@”.", @"Waiting for Handoff to “%@”.");
-    v10 = [UIApp _localizedApplicationName];
-    v11 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v9, v10];
+    _localizedApplicationName = [UIApp _localizedApplicationName];
+    v11 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v9, _localizedApplicationName];
     v12 = _UINSLocalizedStringWithDefaultValue(@"Cancel", @"Cancel");
     v13 = [_UIApplicationModalProgressController instanceForScene:WeakRetained];
     if ([(_UISceneUserActivityManager *)self _isDisplayingActivityContinuationUI])
@@ -473,7 +473,7 @@ LABEL_16:
       v17[2] = __94___UISceneUserActivityManager_activityContinuationManager_displayProgressUI_dismissalHandler___block_invoke;
       v17[3] = &unk_1E70F3608;
       v14 = &v18;
-      v18 = v6;
+      v18 = handlerCopy;
       [v13 reconfigureWithTitle:v8 message:v11 progress:0 buttonTitle:v12 dismissalHandler:v17];
     }
 
@@ -485,13 +485,13 @@ LABEL_16:
       v15[2] = __94___UISceneUserActivityManager_activityContinuationManager_displayProgressUI_dismissalHandler___block_invoke_2;
       v15[3] = &unk_1E70F3608;
       v14 = &v16;
-      v16 = v6;
+      v16 = handlerCopy;
       [v13 displayWithTitle:v8 message:v11 progress:0 buttonTitle:v12 sourceViewController:0 preDisplayTestBlock:0 dismissalHandler:v15];
     }
   }
 }
 
-- (void)activityContinuationManager:(id)a3 configureProgressUIWithError:(id)a4
+- (void)activityContinuationManager:(id)manager configureProgressUIWithError:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
   objc_opt_class();
@@ -506,9 +506,9 @@ LABEL_16:
   }
 }
 
-- (void)activityContinuationManager:(id)a3 hideProgressUIWithCompletion:(id)a4
+- (void)activityContinuationManager:(id)manager hideProgressUIWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(_UISceneUserActivityManager *)self _isDisplayingActivityContinuationUI])
@@ -519,17 +519,17 @@ LABEL_16:
     v8[1] = 3221225472;
     v8[2] = __88___UISceneUserActivityManager_activityContinuationManager_hideProgressUIWithCompletion___block_invoke;
     v8[3] = &unk_1E70F3608;
-    v9 = v5;
+    v9 = completionCopy;
     [v7 hideAfterMinimumUptimeWithDismissalHandler:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (id)activityContinuationManagerUserCancelledError:(id)a3
+- (id)activityContinuationManagerUserCancelledError:(id)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
@@ -543,19 +543,19 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)activityContinuationManager:(id)a3 willContinueUserActivityWithType:(id)a4
+- (BOOL)activityContinuationManager:(id)manager willContinueUserActivityWithType:(id)type
 {
-  v5 = a4;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
-  v7 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [WeakRetained delegate];
-    [v9 scene:WeakRetained willContinueUserActivityWithType:v5];
+    delegate2 = [WeakRetained delegate];
+    [delegate2 scene:WeakRetained willContinueUserActivityWithType:typeCopy];
 
-    v10 = ![(NSSet *)self->_activityTypesForDefaultProgressUI containsObject:v5];
+    v10 = ![(NSSet *)self->_activityTypesForDefaultProgressUI containsObject:typeCopy];
   }
 
   else
@@ -566,75 +566,75 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)activityContinuationManager:(id)a3 continueUserActivity:(id)a4
+- (BOOL)activityContinuationManager:(id)manager continueUserActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
-  v7 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [WeakRetained delegate];
-    [v9 scene:WeakRetained continueUserActivity:v5];
+    delegate2 = [WeakRetained delegate];
+    [delegate2 scene:WeakRetained continueUserActivity:activityCopy];
   }
 
   return 1;
 }
 
-- (void)activityContinuationManager:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)activityContinuationManager:(id)manager didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v12 = a4;
-  v7 = a5;
+  typeCopy = type;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
-  v9 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [WeakRetained delegate];
-    [v11 scene:WeakRetained didFailToContinueUserActivityWithType:v12 error:v7];
+    delegate2 = [WeakRetained delegate];
+    [delegate2 scene:WeakRetained didFailToContinueUserActivityWithType:typeCopy error:errorCopy];
   }
 }
 
-- (void)activityContinuationManager:(id)a3 didUpdateUserActivity:(id)a4
+- (void)activityContinuationManager:(id)manager didUpdateUserActivity:(id)activity
 {
-  v9 = a4;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
-  v6 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [WeakRetained delegate];
-    [v8 scene:WeakRetained didUpdateUserActivity:v9];
+    delegate2 = [WeakRetained delegate];
+    [delegate2 scene:WeakRetained didUpdateUserActivity:activityCopy];
   }
 }
 
-+ (void)_deleteSavedSceneSessionDirectoryWithPersistentIdentifier:(id)a3
++ (void)_deleteSavedSceneSessionDirectoryWithPersistentIdentifier:(id)identifier
 {
-  v3 = _restorationDirectory(a3);
+  v3 = _restorationDirectory(identifier);
   if (_UIStateRestorationDebugLogEnabled())
   {
     NSLog(&cfstr_SDeletingScene.isa, "+[_UISceneUserActivityManager _deleteSavedSceneSessionDirectoryWithPersistentIdentifier:]", v3);
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v10];
+  v5 = [defaultManager removeItemAtURL:v3 error:&v10];
   v6 = v10;
 
   if (v6 || (v5 & 1) == 0)
   {
     if (v6)
     {
-      v7 = [v6 domain];
-      v8 = v7;
-      if (v7 == *MEMORY[0x1E696A250])
+      domain = [v6 domain];
+      v8 = domain;
+      if (domain == *MEMORY[0x1E696A250])
       {
-        v9 = [v6 code];
+        code = [v6 code];
 
-        if (v9 == 4)
+        if (code == 4)
         {
           goto LABEL_11;
         }
@@ -654,41 +654,41 @@ LABEL_16:
 LABEL_11:
 }
 
-+ (void)_updatePersistedSceneSession:(id)a3
++ (void)_updatePersistedSceneSession:(id)session
 {
-  v3 = a3;
-  if ([v3 _userInfoIsDirty])
+  sessionCopy = session;
+  if ([sessionCopy _userInfoIsDirty])
   {
-    _saveSceneSessionUserInfo(v3);
+    _saveSceneSessionUserInfo(sessionCopy);
   }
 
-  if (v3 && (v3[32] & 0x40) != 0)
+  if (sessionCopy && (sessionCopy[32] & 0x40) != 0)
   {
-    _saveSceneSessionInternalUserInfo(v3);
+    _saveSceneSessionInternalUserInfo(sessionCopy);
   }
 
-  if ([v3 _configurationIsDirty])
+  if ([sessionCopy _configurationIsDirty])
   {
-    [v3 _setConfigurationIsDirty:0];
+    [sessionCopy _setConfigurationIsDirty:0];
     v4 = _persistenceQueue();
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60___UISceneUserActivityManager__updatePersistedSceneSession___block_invoke;
     block[3] = &unk_1E70F3590;
-    v6 = v3;
+    v6 = sessionCopy;
     dispatch_sync(v4, block);
   }
 }
 
-+ (void)_deleteSceneSessionsWithPersistentIdentifiers:(id)a3
++ (void)_deleteSceneSessionsWithPersistentIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -700,7 +700,7 @@ LABEL_11:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -714,7 +714,7 @@ LABEL_11:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -725,14 +725,14 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __77___UISceneUserActivityManager__deleteSceneSessionsWithPersistentIdentifiers___block_invoke;
   block[3] = &unk_1E70F3590;
-  v12 = v3;
-  v10 = v3;
+  v12 = identifiersCopy;
+  v10 = identifiersCopy;
   dispatch_sync(v9, block);
 }
 
-+ (id)_fetchSceneSessionWithPersistentIdentifier:(id)a3
++ (id)_fetchSceneSessionWithPersistentIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -745,7 +745,7 @@ LABEL_11:
   v8[2] = __74___UISceneUserActivityManager__fetchSceneSessionWithPersistentIdentifier___block_invoke;
   v8[3] = &unk_1E70FCDA0;
   v10 = &v11;
-  v5 = v3;
+  v5 = identifierCopy;
   v9 = v5;
   dispatch_sync(v4, v8);
 
@@ -756,18 +756,18 @@ LABEL_11:
   return v6;
 }
 
-- (void)_saveOrClearRestorationDictionary:(id)a3 forScene:(id)a4
+- (void)_saveOrClearRestorationDictionary:(id)dictionary forScene:(id)scene
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 session];
-  v8 = [v7 persistentIdentifier];
+  dictionaryCopy = dictionary;
+  sceneCopy = scene;
+  session = [sceneCopy session];
+  persistentIdentifier = [session persistentIdentifier];
 
-  v9 = _restorationPath(v8);
-  if (v5 && [v5 count])
+  v9 = _restorationPath(persistentIdentifier);
+  if (dictionaryCopy && [dictionaryCopy count])
   {
-    v10 = [_lastRestorationDictionaryMap objectForKeyedSubscript:v8];
-    if (v10 && [v5 isEqualToDictionary:v10])
+    v10 = [_lastRestorationDictionaryMap objectForKeyedSubscript:persistentIdentifier];
+    if (v10 && [dictionaryCopy isEqualToDictionary:v10])
     {
       if (_UIStateRestorationDebugLogEnabled())
       {
@@ -784,10 +784,10 @@ LABEL_11:
         NSLog(&cfstr_SSavingSceneSt_0.isa, "[_UISceneUserActivityManager _saveOrClearRestorationDictionary:forScene:]");
       }
 
-      _updateLastRestorationDictionaryForPersistentIdentifier(v5, v8);
-      _ensureRestorationDirectoryExists(v8);
+      _updateLastRestorationDictionaryForPersistentIdentifier(dictionaryCopy, persistentIdentifier);
+      _ensureRestorationDirectoryExists(persistentIdentifier);
       v29 = 0;
-      [v5 writeToURL:v9 error:&v29];
+      [dictionaryCopy writeToURL:v9 error:&v29];
       v17 = v29;
       if (v17)
       {
@@ -802,7 +802,7 @@ LABEL_11:
           NSLog(&cfstr_SWroteUisceneR.isa, "[_UISceneUserActivityManager _saveOrClearRestorationDictionary:forScene:]", v9);
         }
 
-        v18 = [v6 delegate];
+        delegate = [sceneCopy delegate];
         v19 = objc_opt_respondsToSelector();
 
         v20 = *MEMORY[0x1E695DAF0];
@@ -845,28 +845,28 @@ LABEL_11:
     goto LABEL_35;
   }
 
-  _updateLastRestorationDictionaryForPersistentIdentifier(0, v8);
+  _updateLastRestorationDictionaryForPersistentIdentifier(0, persistentIdentifier);
   if (_UIStateRestorationDebugLogEnabled())
   {
     NSLog(&cfstr_SNothingToSave.isa, "[_UISceneUserActivityManager _saveOrClearRestorationDictionary:forScene:]", v9);
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v30 = 0;
-  v13 = [v12 removeItemAtURL:v9 error:&v30];
+  v13 = [defaultManager removeItemAtURL:v9 error:&v30];
   v14 = v30;
 
   if (v14 || (v11 = 0, (v13 & 1) == 0))
   {
     if (v14)
     {
-      v15 = [v14 domain];
-      v16 = v15;
-      if (v15 == *MEMORY[0x1E696A250])
+      domain = [v14 domain];
+      v16 = domain;
+      if (domain == *MEMORY[0x1E696A250])
       {
-        v24 = [v14 code];
+        code = [v14 code];
 
-        if (v24 == 4)
+        if (code == 4)
         {
 LABEL_27:
           v11 = v14;
@@ -890,19 +890,19 @@ LABEL_27:
 LABEL_35:
 }
 
-+ (BOOL)_restorationUserActivityAvailableForSceneIdentifier:(id)a3
++ (BOOL)_restorationUserActivityAvailableForSceneIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = _restorationPath(v3);
+  identifierCopy = identifier;
+  v4 = _restorationPath(identifierCopy);
   if (_UIStateRestorationDebugLogEnabled())
   {
-    v5 = [v4 path];
-    NSLog(&cfstr_SCheckingAvail.isa, "+[_UISceneUserActivityManager _restorationUserActivityAvailableForSceneIdentifier:]", v3, v4, v5);
+    path = [v4 path];
+    NSLog(&cfstr_SCheckingAvail.isa, "+[_UISceneUserActivityManager _restorationUserActivityAvailableForSceneIdentifier:]", identifierCopy, v4, path);
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v4 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path2 = [v4 path];
+  v8 = [defaultManager fileExistsAtPath:path2 isDirectory:0];
 
   if (v8)
   {
@@ -922,8 +922,8 @@ LABEL_35:
         NSLog(&cfstr_SErrorTryingTo.isa, "+[_UISceneUserActivityManager _restorationUserActivityAvailableForSceneIdentifier:]", v10);
       }
 
-      v12 = [v10 domain];
-      v13 = [v12 isEqualToString:*MEMORY[0x1E696A250]];
+      domain = [v10 domain];
+      v13 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
       if (v13 && ([v10 code] == 257 || objc_msgSend(v10, "code") == 513))
       {
@@ -947,11 +947,11 @@ LABEL_35:
   return v11;
 }
 
-+ (void)_saveRestorationStateForScene:(id)a3
++ (void)_saveRestorationStateForScene:(id)scene
 {
-  if (a3)
+  if (scene)
   {
-    v3 = [a1 _userActivityManagerForScene:?];
+    v3 = [self _userActivityManagerForScene:?];
     [v3 _saveSceneRestorationState];
   }
 
@@ -961,12 +961,12 @@ LABEL_35:
   }
 }
 
-+ (void)_scheduleDataSaveForSceneSession:(id)a3 saveRestorationActivity:(BOOL)a4
++ (void)_scheduleDataSaveForSceneSession:(id)session saveRestorationActivity:(BOOL)activity
 {
-  v6 = a3;
+  sessionCopy = session;
   if (pthread_main_np() == 1)
   {
-    byte_1ED49FA01 |= a4;
+    byte_1ED49FA01 |= activity;
     if ((_MergedGlobals_1221 & 1) == 0)
     {
       if (_UIStateRestorationDebugLogEnabled())
@@ -974,7 +974,7 @@ LABEL_35:
         NSLog(&cfstr_SSchedulingSav.isa, "+[_UISceneUserActivityManager _scheduleDataSaveForSceneSession:saveRestorationActivity:]");
       }
 
-      objc_initWeak(&location, v6);
+      objc_initWeak(&location, sessionCopy);
       _MergedGlobals_1221 = 1;
       v7 = dispatch_time(0, 5000000000);
       block[0] = MEMORY[0x1E69E9820];
@@ -982,7 +982,7 @@ LABEL_35:
       block[2] = __88___UISceneUserActivityManager__scheduleDataSaveForSceneSession_saveRestorationActivity___block_invoke_2;
       block[3] = &unk_1E70F8DC8;
       objc_copyWeak(v9, &location);
-      v9[1] = a1;
+      v9[1] = self;
       dispatch_after(v7, MEMORY[0x1E69E96A0], block);
       objc_destroyWeak(v9);
       objc_destroyWeak(&location);
@@ -995,22 +995,22 @@ LABEL_35:
     v11[1] = 3221225472;
     v11[2] = __88___UISceneUserActivityManager__scheduleDataSaveForSceneSession_saveRestorationActivity___block_invoke;
     v11[3] = &unk_1E7101F90;
-    v13 = a1;
-    v12 = v6;
-    v14 = a4;
+    selfCopy = self;
+    v12 = sessionCopy;
+    activityCopy = activity;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
   }
 }
 
-+ (id)_getUserInfoForPersistentIdentifier:(id)a3 error:(id *)a4
++ (id)_getUserInfoForPersistentIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (_UIStateRestorationDebugLogEnabled())
   {
-    NSLog(&cfstr_SCheckingForSa.isa, "+[_UISceneUserActivityManager _getUserInfoForPersistentIdentifier:error:]", v5);
+    NSLog(&cfstr_SCheckingForSa.isa, "+[_UISceneUserActivityManager _getUserInfoForPersistentIdentifier:error:]", identifierCopy);
   }
 
-  v6 = _restorationDirectory(v5);
+  v6 = _restorationDirectory(identifierCopy);
   v7 = [v6 URLByAppendingPathComponent:@"userInfo.data" isDirectory:0];
 
   v17 = 0;
@@ -1019,8 +1019,8 @@ LABEL_35:
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 domain];
-    v12 = [v11 isEqualToString:*MEMORY[0x1E696A250]];
+    domain = [v9 domain];
+    v12 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
     if (v12)
     {
@@ -1036,10 +1036,10 @@ LABEL_35:
           NSLog(&cfstr_SErrorReadingA.isa, "+[_UISceneUserActivityManager _getUserInfoForPersistentIdentifier:error:]", v10);
         }
 
-        if (a4)
+        if (error)
         {
           v13 = v10;
-          *a4 = v10;
+          *error = v10;
         }
       }
     }
@@ -1060,15 +1060,15 @@ LABEL_35:
   return v14;
 }
 
-+ (id)_getInternalUserInfoForPersistentIdentifier:(id)a3 error:(id *)a4
++ (id)_getInternalUserInfoForPersistentIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (_UIStateRestorationDebugLogEnabled())
   {
-    NSLog(&cfstr_SCheckingForSa_0.isa, "+[_UISceneUserActivityManager _getInternalUserInfoForPersistentIdentifier:error:]", v5);
+    NSLog(&cfstr_SCheckingForSa_0.isa, "+[_UISceneUserActivityManager _getInternalUserInfoForPersistentIdentifier:error:]", identifierCopy);
   }
 
-  v6 = _restorationDirectory(v5);
+  v6 = _restorationDirectory(identifierCopy);
   v7 = [v6 URLByAppendingPathComponent:@"internalUserInfo.data" isDirectory:0];
 
   v17 = 0;
@@ -1077,8 +1077,8 @@ LABEL_35:
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 domain];
-    v12 = [v11 isEqualToString:*MEMORY[0x1E696A250]];
+    domain = [v9 domain];
+    v12 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
     if (v12)
     {
@@ -1094,10 +1094,10 @@ LABEL_35:
           NSLog(&cfstr_SErrorReadingA_0.isa, "+[_UISceneUserActivityManager _getInternalUserInfoForPersistentIdentifier:error:]", v10);
         }
 
-        if (a4)
+        if (error)
         {
           v13 = v10;
-          *a4 = v10;
+          *error = v10;
         }
       }
     }
@@ -1118,15 +1118,15 @@ LABEL_35:
   return v14;
 }
 
-+ (id)_getRestorationUserActivityForPersistentIdentifier:(id)a3 error:(id *)a4
++ (id)_getRestorationUserActivityForPersistentIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (_UIStateRestorationDebugLogEnabled())
   {
-    NSLog(&cfstr_SCheckingForSa_1.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", v5);
+    NSLog(&cfstr_SCheckingForSa_1.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", identifierCopy);
   }
 
-  v6 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   if ([UIApp launchedToTest])
   {
     v7 = [objc_opt_class() _restorationUserActivityAvailableForSceneIdentifier:@"TestApplicationState"];
@@ -1139,12 +1139,12 @@ LABEL_35:
 
   if (_UIStateRestorationDebugLogEnabled())
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    [v8 timeIntervalSinceDate:v6];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     NSLog(&cfstr_SCheckingForTe.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", v9);
   }
 
-  v10 = [MEMORY[0x1E695DF00] date];
+  date3 = [MEMORY[0x1E695DF00] date];
 
   if (v7)
   {
@@ -1165,7 +1165,7 @@ LABEL_35:
     v13 = 0;
   }
 
-  v15 = _restorationPath(v5);
+  v15 = _restorationPath(identifierCopy);
 
   v43 = v13;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v15 error:&v43];
@@ -1186,14 +1186,14 @@ LABEL_35:
 
     v13 = 0;
     v14 = v15;
-    _updateLastRestorationDictionaryForPersistentIdentifier(v12, v5);
+    _updateLastRestorationDictionaryForPersistentIdentifier(v12, identifierCopy);
   }
 
 LABEL_18:
   if (_UIStateRestorationDebugLogEnabled())
   {
-    v17 = [MEMORY[0x1E695DF00] date];
-    [v17 timeIntervalSinceDate:v10];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date3];
     NSLog(&cfstr_SOpeningRestor.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", v18);
   }
 
@@ -1230,7 +1230,7 @@ LABEL_50:
         v22 = 0;
         if (_UIStateRestorationDebugLogEnabled())
         {
-          NSLog(&cfstr_SNoUserActivit_0.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", v5);
+          NSLog(&cfstr_SNoUserActivit_0.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", identifierCopy);
         }
 
 LABEL_52:
@@ -1262,7 +1262,7 @@ LABEL_42:
     {
       if (_UIStateRestorationDebugLogEnabled())
       {
-        NSLog(&cfstr_SCouldnTCreate.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", v5);
+        NSLog(&cfstr_SCouldnTCreate.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", identifierCopy);
       }
     }
 
@@ -1299,7 +1299,7 @@ LABEL_42:
       v25 = v39;
       if (_UIStateRestorationDebugLogEnabled())
       {
-        NSLog(&cfstr_SCouldnTDecode.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", v5);
+        NSLog(&cfstr_SCouldnTDecode.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", identifierCopy);
         v23 = 0;
         goto LABEL_41;
       }
@@ -1311,8 +1311,8 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v19 = [v13 domain];
-  v20 = [v19 isEqualToString:*MEMORY[0x1E696A250]];
+  domain = [v13 domain];
+  v20 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
   if (!v20)
   {
@@ -1334,11 +1334,11 @@ LABEL_41:
     NSLog(&cfstr_SErrorReadingA_1.isa, "+[_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:error:]", v13);
   }
 
-  if (a4)
+  if (error)
   {
     v21 = v13;
     v22 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -1352,14 +1352,14 @@ LABEL_53:
   return v22;
 }
 
-+ (id)_activityContinuationDictionaryWithAction:(id)a3 sourceApplication:(id)a4 originatingProcess:(id)a5
++ (id)_activityContinuationDictionaryWithAction:(id)action sourceApplication:(id)application originatingProcess:(id)process
 {
   v7 = UIApp;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 _getActivityContinuationManager];
-  v12 = [v11 activityContinuationDictionaryWithAction:v10 sourceApplication:v9 originatingProcess:v8];
+  processCopy = process;
+  applicationCopy = application;
+  actionCopy = action;
+  _getActivityContinuationManager = [v7 _getActivityContinuationManager];
+  v12 = [_getActivityContinuationManager activityContinuationDictionaryWithAction:actionCopy sourceApplication:applicationCopy originatingProcess:processCopy];
 
   return v12;
 }

@@ -1,8 +1,8 @@
 @interface CLIOptionSet
 - (CLIOptionSet)init;
-- (CLIOptionSet)initWithOptions:(id)a3;
+- (CLIOptionSet)initWithOptions:(id)options;
 - (id)_copiedSet;
-- (void)_registerOption:(id)a3;
+- (void)_registerOption:(id)option;
 @end
 
 @implementation CLIOptionSet
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (CLIOptionSet)initWithOptions:(id)a3
+- (CLIOptionSet)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(CLIOptionSet *)self init];
   if (v5)
   {
@@ -52,7 +52,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = v4;
+    v12 = optionsCopy;
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -83,40 +83,40 @@
   return v5;
 }
 
-- (void)_registerOption:(id)a3
+- (void)_registerOption:(id)option
 {
-  v8 = a3;
-  [v8 _finalize];
-  if ([(NSMutableSet *)self->_options containsObject:v8])
+  optionCopy = option;
+  [optionCopy _finalize];
+  if ([(NSMutableSet *)self->_options containsObject:optionCopy])
   {
     sub_100008038();
   }
 
-  [(NSMutableSet *)self->_options addObject:v8];
-  v4 = [v8 shortName];
-  if (v4)
+  [(NSMutableSet *)self->_options addObject:optionCopy];
+  shortName = [optionCopy shortName];
+  if (shortName)
   {
-    v5 = [(NSMutableDictionary *)self->_shortAliasToOptionDict objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_shortAliasToOptionDict objectForKeyedSubscript:shortName];
 
     if (v5)
     {
       sub_1000080A4();
     }
 
-    [(NSMutableDictionary *)self->_shortAliasToOptionDict setObject:v8 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_shortAliasToOptionDict setObject:optionCopy forKeyedSubscript:shortName];
   }
 
-  v6 = [v8 longName];
-  if (v6)
+  longName = [optionCopy longName];
+  if (longName)
   {
-    v7 = [(NSMutableDictionary *)self->_longAliasToOptionDict objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_longAliasToOptionDict objectForKeyedSubscript:longName];
 
     if (v7)
     {
       sub_10000811C();
     }
 
-    [(NSMutableDictionary *)self->_longAliasToOptionDict setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_longAliasToOptionDict setObject:optionCopy forKeyedSubscript:longName];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface MSPCountedOrderedSet
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (MSPCountedOrderedSet)init;
 - (NSArray)array;
 - (NSOrderedSet)contents;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)countForObject:(id)a3;
-- (void)_addObjectNoLock:(id)a3;
-- (void)_removeObjectNoLock:(id)a3;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)minusSet:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)removeObjectsFromArray:(id)a3;
-- (void)unionSet:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)countForObject:(id)object;
+- (void)_addObjectNoLock:(id)lock;
+- (void)_removeObjectNoLock:(id)lock;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)minusSet:(id)set;
+- (void)removeObject:(id)object;
+- (void)removeObjectsFromArray:(id)array;
+- (void)unionSet:(id)set;
 @end
 
 @implementation MSPCountedOrderedSet
@@ -51,10 +51,10 @@
 - (NSArray)array
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableOrderedSet *)self->_set array];
+  array = [(NSMutableOrderedSet *)self->_set array];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)count
@@ -65,25 +65,25 @@
   return v3;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
+    objectCopy = object;
     os_unfair_lock_lock(&self->_lock);
-    [(MSPCountedOrderedSet *)self _addObjectNoLock:v4];
+    [(MSPCountedOrderedSet *)self _addObjectNoLock:objectCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)_addObjectNoLock:(id)a3
+- (void)_addObjectNoLock:(id)lock
 {
-  v4 = a3;
-  if (v4)
+  lockCopy = lock;
+  if (lockCopy)
   {
-    v6 = v4;
-    v5 = [(NSCountedSet *)self->_counts countForObject:v4];
+    v6 = lockCopy;
+    v5 = [(NSCountedSet *)self->_counts countForObject:lockCopy];
     [(NSCountedSet *)self->_counts addObject:v6];
     if (!v5)
     {
@@ -94,18 +94,18 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
+    v5 = setCopy;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -137,28 +137,28 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:a3];
+  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:array];
   [(MSPCountedOrderedSet *)self unionSet:v4];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  [(MSPCountedOrderedSet *)self _removeObjectNoLock:v4];
+  [(MSPCountedOrderedSet *)self _removeObjectNoLock:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_removeObjectNoLock:(id)a3
+- (void)_removeObjectNoLock:(id)lock
 {
-  v4 = a3;
-  if (v4)
+  lockCopy = lock;
+  if (lockCopy)
   {
-    v5 = v4;
-    [(NSCountedSet *)self->_counts removeObject:v4];
+    v5 = lockCopy;
+    [(NSCountedSet *)self->_counts removeObject:lockCopy];
     if (![(NSCountedSet *)self->_counts countForObject:v5])
     {
       [(NSMutableOrderedSet *)self->_set removeObject:v5];
@@ -168,18 +168,18 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
+    v5 = setCopy;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -211,41 +211,41 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObjectsFromArray:(id)a3
+- (void)removeObjectsFromArray:(id)array
 {
-  v4 = [MEMORY[0x277CBEB98] setWithArray:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithArray:array];
   [(MSPCountedOrderedSet *)self minusSet:v4];
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return 0;
   }
 
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableOrderedSet *)self->_set containsObject:v4];
+  v5 = [(NSMutableOrderedSet *)self->_set containsObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (unint64_t)countForObject:(id)a3
+- (unint64_t)countForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSCountedSet *)self->_counts countForObject:v4];
+  v5 = [(NSCountedSet *)self->_counts countForObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSMutableOrderedSet *)self->_set countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v9 = [(NSMutableOrderedSet *)self->_set countByEnumeratingWithState:state objects:objects count:count];
   os_unfair_lock_unlock(&self->_lock);
   return v9;
 }

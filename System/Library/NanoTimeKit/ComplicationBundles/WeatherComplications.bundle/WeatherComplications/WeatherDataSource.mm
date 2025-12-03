@@ -1,18 +1,18 @@
 @interface WeatherDataSource
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
 + (NSNumber)legacyNTKComplicationType;
 + (NSString)bundleIdentifier;
-- (_TtC20WeatherComplications17WeatherDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5;
+- (_TtC20WeatherComplications17WeatherDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion;
 @end
 
 @implementation WeatherDataSource
 
 + (NSNumber)legacyNTKComplicationType
 {
-  v2 = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithUnsignedInteger_];
+  initWithUnsignedInteger_ = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithUnsignedInteger_];
 
-  return v2;
+  return initWithUnsignedInteger_;
 }
 
 + (NSString)bundleIdentifier
@@ -22,13 +22,13 @@
   return v2;
 }
 
-- (_TtC20WeatherComplications17WeatherDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (_TtC20WeatherComplications17WeatherDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v16.receiver = self;
   v16.super_class = type metadata accessor for WeatherDataSource();
-  v8 = a3;
-  v9 = a5;
-  v10 = [(BaseDataSource *)&v16 initWithComplication:v8 family:a4 forDevice:v9];
+  complicationCopy = complication;
+  deviceCopy = device;
+  v10 = [(BaseDataSource *)&v16 initWithComplication:complicationCopy family:family forDevice:deviceCopy];
   v11 = qword_27E1C55C0;
   v12 = v10;
   if (v11 != -1)
@@ -46,18 +46,18 @@
   return v12;
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = self;
-  sub_23BDB21EC(a4, v8);
+  descriptorCopy = descriptor;
+  selfCopy = self;
+  sub_23BDB21EC(family, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
   v5 = objc_opt_self();
 

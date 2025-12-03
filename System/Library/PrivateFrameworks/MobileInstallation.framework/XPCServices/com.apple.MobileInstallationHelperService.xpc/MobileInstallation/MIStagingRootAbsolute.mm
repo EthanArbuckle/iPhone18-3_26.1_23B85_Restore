@@ -1,22 +1,22 @@
 @interface MIStagingRootAbsolute
-- (id)privilegedResolveRootWithError:(id *)a3;
+- (id)privilegedResolveRootWithError:(id *)error;
 @end
 
 @implementation MIStagingRootAbsolute
 
-- (id)privilegedResolveRootWithError:(id *)a3
+- (id)privilegedResolveRootWithError:(id *)error
 {
-  v5 = [(MIStagingRootAbsolute *)self stagingContentType];
-  if (v5 == 2)
+  stagingContentType = [(MIStagingRootAbsolute *)self stagingContentType];
+  if (stagingContentType == 2)
   {
     v7 = +[MIStagingManager sharedInstance];
-    v8 = [v7 stagingRecordForUserContentWithinSubsystem:-[MIStagingRootAbsolute stagingSubsystem](self error:{"stagingSubsystem"), a3}];
+    v8 = [v7 stagingRecordForUserContentWithinSubsystem:-[MIStagingRootAbsolute stagingSubsystem](self error:{"stagingSubsystem"), error}];
 LABEL_5:
     v9 = v8;
 
     if (v9)
     {
-      v10 = [v9 completeURL];
+      completeURL = [v9 completeURL];
 
       goto LABEL_10;
     }
@@ -24,25 +24,25 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (v5 == 1)
+  if (stagingContentType == 1)
   {
     v7 = +[MIStagingManager sharedInstance];
-    v8 = [v7 stagingRecordForSystemContentWithinSubsystem:-[MIStagingRootAbsolute stagingSubsystem](self error:{"stagingSubsystem"), a3}];
+    v8 = [v7 stagingRecordForSystemContentWithinSubsystem:-[MIStagingRootAbsolute stagingSubsystem](self error:{"stagingSubsystem"), error}];
     goto LABEL_5;
   }
 
-  if (a3)
+  if (error)
   {
     _CreateAndLogError("[MIStagingRootAbsolute(PrivilegedOperations) privilegedResolveRootWithError:]", 36, MIInstallerErrorDomain, 4, 0, 0, @"Failed to resolve staging root for unknown staging content type", v6, v12);
-    *a3 = v10 = 0;
+    *error = completeURL = 0;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v10 = 0;
+  completeURL = 0;
 LABEL_10:
 
-  return v10;
+  return completeURL;
 }
 
 @end

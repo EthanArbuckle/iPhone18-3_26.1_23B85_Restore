@@ -1,10 +1,10 @@
 @interface VNVTSessionManager
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNVTSessionManager)init;
-- (VTSessionRef)waitAndGetAvailablePixelRotationSessionForInputPixelFormat:(int)a3 outputPixelFormat:(int)a4 rotation:(int)a5 flipHorizontal:(int)a6 flipVertical:(void *)a7 error:;
+- (VTSessionRef)waitAndGetAvailablePixelRotationSessionForInputPixelFormat:(int)format outputPixelFormat:(int)pixelFormat rotation:(int)rotation flipHorizontal:(int)horizontal flipVertical:(void *)vertical error:;
 - (id).cxx_construct;
 - (unint64_t)hash;
-- (void)releasePixelRotationSession:(uint64_t)a1;
+- (void)releasePixelRotationSession:(uint64_t)session;
 @end
 
 @implementation VNVTSessionManager
@@ -16,10 +16,10 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_9;
@@ -32,7 +32,7 @@
     goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!self)
   {
     maxSessionsCount = 0;
@@ -102,26 +102,26 @@ LABEL_9:
   return v4;
 }
 
-- (VTSessionRef)waitAndGetAvailablePixelRotationSessionForInputPixelFormat:(int)a3 outputPixelFormat:(int)a4 rotation:(int)a5 flipHorizontal:(int)a6 flipVertical:(void *)a7 error:
+- (VTSessionRef)waitAndGetAvailablePixelRotationSessionForInputPixelFormat:(int)format outputPixelFormat:(int)pixelFormat rotation:(int)rotation flipHorizontal:(int)horizontal flipVertical:(void *)vertical error:
 {
   v54 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __142__VNVTSessionManager_waitAndGetAvailablePixelRotationSessionForInputPixelFormat_outputPixelFormat_rotation_flipHorizontal_flipVertical_error___block_invoke;
     aBlock[3] = &__block_descriptor_36_e21_B16__0__VNVTSession_8l;
-    v48 = a4;
+    pixelFormatCopy = pixelFormat;
     v11 = _Block_copy(aBlock);
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __142__VNVTSessionManager_waitAndGetAvailablePixelRotationSessionForInputPixelFormat_outputPixelFormat_rotation_flipHorizontal_flipVertical_error___block_invoke_2;
     v43[3] = &__block_descriptor_38_e22___VNVTSession_16__0__8l;
-    v44 = a4;
-    v45 = a5;
-    v46 = a6;
+    pixelFormatCopy2 = pixelFormat;
+    rotationCopy = rotation;
+    horizontalCopy = horizontal;
     v12 = _Block_copy(v43);
-    v13 = *(a1 + 16);
+    v13 = *(self + 16);
     v14 = v11;
     v41 = v12;
     dispatch_semaphore_wait(*(v13 + 8), 0xFFFFFFFFFFFFFFFFLL);
@@ -155,7 +155,7 @@ LABEL_4:
           {
             v22 = *(v20 + 3);
 LABEL_10:
-            if (v22 == a3 && (v14[2](v14, v20) & 1) != 0)
+            if (v22 == format && (v14[2](v14, v20) & 1) != 0)
             {
 
               if (!v21)
@@ -201,12 +201,12 @@ LABEL_20:
       [*(v37 + 24) removeLastObject];
     }
 
-    v27 = v41[2](v41, a7);
+    v27 = v41[2](v41, vertical);
     v21 = v27;
     if (v27)
     {
       *(v27 + 8) = a2;
-      *(v27 + 12) = a3;
+      *(v27 + 12) = format;
     }
 
 LABEL_25:
@@ -221,7 +221,7 @@ LABEL_25:
     v28 = v21[4];
     v29 = *MEMORY[0x1E695E4D0];
     v30 = *MEMORY[0x1E695E4C0];
-    if (a5)
+    if (rotation)
     {
       v31 = *MEMORY[0x1E695E4D0];
     }
@@ -234,17 +234,17 @@ LABEL_25:
     v32 = VTSessionSetProperty(v21[4], *MEMORY[0x1E6983D78], v31);
     if (v32)
     {
-      if (a7)
+      if (vertical)
       {
 LABEL_37:
         v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot set VTSession property, error: %d", v32];
-        *a7 = [VNError errorForInternalErrorWithLocalizedDescription:v34];
+        *vertical = [VNError errorForInternalErrorWithLocalizedDescription:v34];
       }
     }
 
     else
     {
-      if (a6)
+      if (horizontal)
       {
         v33 = v29;
       }
@@ -261,7 +261,7 @@ LABEL_37:
         goto LABEL_39;
       }
 
-      if (a7)
+      if (vertical)
       {
         goto LABEL_37;
       }
@@ -310,12 +310,12 @@ id __142__VNVTSessionManager_waitAndGetAvailablePixelRotationSessionForInputPixe
   return 0;
 }
 
-- (void)releasePixelRotationSession:(uint64_t)a1
+- (void)releasePixelRotationSession:(uint64_t)session
 {
   v3 = a2;
-  if (a1)
+  if (session)
   {
-    v4 = *(a1 + 16);
+    v4 = *(session + 16);
     v13 = v3;
     v5 = v3;
     if (v5)

@@ -1,7 +1,7 @@
 @interface _CurareInternalBiomeFeature
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (_CurareInternalBiomeFeature)initWithCurareInteraction:(id)a3;
-- (_CurareInternalBiomeFeature)initWithData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (_CurareInternalBiomeFeature)initWithCurareInteraction:(id)interaction;
+- (_CurareInternalBiomeFeature)initWithData:(id)data;
 - (id)json;
 - (id)serialize;
 @end
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (_CurareInternalBiomeFeature)initWithCurareInteraction:(id)a3
+- (_CurareInternalBiomeFeature)initWithCurareInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v13.receiver = self;
   v13.super_class = _CurareInternalBiomeFeature;
   v5 = [(_CurareInternalBiomeFeature *)&v13 init];
@@ -36,27 +36,27 @@
     v5->_content = v6;
 
     v8 = v5->_content;
-    v9 = [v4 interactionId];
-    [(NSMutableDictionary *)v8 setObject:v9 forKey:@"interactionId"];
+    interactionId = [interactionCopy interactionId];
+    [(NSMutableDictionary *)v8 setObject:interactionId forKey:@"interactionId"];
 
-    v10 = [v4 serialize];
-    v11 = [FSFUtils getBase64EncodedStrFromData:v10];
+    serialize = [interactionCopy serialize];
+    v11 = [FSFUtils getBase64EncodedStrFromData:serialize];
     [(NSMutableDictionary *)v5->_content setObject:v11 forKey:@"feature"];
   }
 
   return v5;
 }
 
-- (_CurareInternalBiomeFeature)initWithData:(id)a3
+- (_CurareInternalBiomeFeature)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = _CurareInternalBiomeFeature;
   v5 = [(_CurareInternalBiomeFeature *)&v11 init];
   if (v5)
   {
     v10 = 0;
-    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v10];
+    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v10];
     v7 = v10;
     content = v5->_content;
     v5->_content = v6;
@@ -70,10 +70,10 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v4 = a3;
-  v5 = [[_CurareInternalBiomeFeature alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[_CurareInternalBiomeFeature alloc] initWithData:dataCopy];
 
   return v5;
 }

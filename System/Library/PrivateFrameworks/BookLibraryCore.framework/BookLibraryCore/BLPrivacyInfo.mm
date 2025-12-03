@@ -4,7 +4,7 @@
 - (BOOL)isGDPRPrivacyAcknowledgementRequired;
 - (void)_startObservingNotifications;
 - (void)_stopObservingNotifications;
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4;
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason;
 - (void)clearCachedValue;
 - (void)dealloc;
 @end
@@ -51,14 +51,14 @@
 
 - (void)_startObservingNotifications
 {
-  v3 = [MEMORY[0x277CF32F0] sharedProvider];
-  [v3 addObserver:self accountTypes:1];
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  [mEMORY[0x277CF32F0] addObserver:self accountTypes:1];
 }
 
 - (void)_stopObservingNotifications
 {
-  v3 = [MEMORY[0x277CF32F0] sharedProvider];
-  [v3 removeObserver:self accountTypes:1];
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  [mEMORY[0x277CF32F0] removeObserver:self accountTypes:1];
 }
 
 - (BOOL)isGDPRPrivacyAcknowledgementRequired
@@ -68,12 +68,12 @@
   cachedValue = self->_cachedValue;
   if (cachedValue)
   {
-    v4 = [(NSNumber *)cachedValue BOOLValue];
+    bOOLValue = [(NSNumber *)cachedValue BOOLValue];
     p_super = BLJaliscoLog();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG))
     {
       v12 = 67109120;
-      v13 = v4;
+      v13 = bOOLValue;
       _os_log_impl(&dword_241D1F000, p_super, OS_LOG_TYPE_DEBUG, "isGDPRPrivacyAcknowledgementRequired: Got cached value %{BOOL}d", &v12, 8u);
     }
 
@@ -99,7 +99,7 @@
   if ((v7 & 1) == 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:0];
-    LOBYTE(v4) = 0;
+    LOBYTE(bOOLValue) = 0;
     p_super = &self->_cachedValue->super.super;
     self->_cachedValue = v9;
 LABEL_11:
@@ -107,11 +107,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  LOBYTE(v4) = 1;
+  LOBYTE(bOOLValue) = 1;
 LABEL_12:
   os_unfair_lock_unlock(&self->_lock);
   v10 = *MEMORY[0x277D85DE8];
-  return v4;
+  return bOOLValue;
 }
 
 - (void)clearCachedValue
@@ -123,9 +123,9 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason
 {
-  if (a4 - 101 <= 1)
+  if (reason - 101 <= 1)
   {
     MEMORY[0x2821F9670](self, sel_clearCachedValue);
   }

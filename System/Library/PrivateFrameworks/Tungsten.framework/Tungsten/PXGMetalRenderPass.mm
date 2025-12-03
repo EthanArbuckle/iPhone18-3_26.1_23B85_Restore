@@ -3,7 +3,7 @@
 - (CGRect)renderRect;
 - (PXGMetalRenderPass)init;
 - (id)description;
-- (void)setRenderSize:(id *)a3;
+- (void)setRenderSize:(id *)size;
 @end
 
 @implementation PXGMetalRenderPass
@@ -48,10 +48,10 @@
   return result;
 }
 
-- (void)setRenderSize:(id *)a3
+- (void)setRenderSize:(id *)size
 {
-  v3 = *&a3->var0;
-  self->_renderSize.depth = a3->var2;
+  v3 = *&size->var0;
+  self->_renderSize.depth = size->var2;
   *&self->_renderSize.width = v3;
 }
 
@@ -60,9 +60,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGMetalRenderPass *)self captureSpriteTexture];
-  v7 = [(PXGMetalRenderPass *)self offscreenKernelEffect];
-  v8 = [v3 stringWithFormat:@"<%@:%p captureTexture:%@ effect:%@ drawingScale:%.2f sprites:(%.6f < z <= %.6f) drawCalls:%ld>", v5, self, v6, v7, *&self->_drawingScale, self->_minZ, self->_maxZ, self->_drawCalls];
+  captureSpriteTexture = [(PXGMetalRenderPass *)self captureSpriteTexture];
+  offscreenKernelEffect = [(PXGMetalRenderPass *)self offscreenKernelEffect];
+  v8 = [v3 stringWithFormat:@"<%@:%p captureTexture:%@ effect:%@ drawingScale:%.2f sprites:(%.6f < z <= %.6f) drawCalls:%ld>", v5, self, captureSpriteTexture, offscreenKernelEffect, *&self->_drawingScale, self->_minZ, self->_maxZ, self->_drawCalls];
 
   return v8;
 }

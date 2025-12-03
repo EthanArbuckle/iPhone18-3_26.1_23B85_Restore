@@ -1,52 +1,52 @@
 @interface VisionCoreClassificationMetrics
-- (BOOL)isEqual:(id)a3;
-- (VisionCoreClassificationMetrics)initWithCoder:(id)a3;
-- (VisionCoreClassificationMetrics)initWithPrecisionCurve:(id)a3 recallCurve:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VisionCoreClassificationMetrics)initWithCoder:(id)coder;
+- (VisionCoreClassificationMetrics)initWithPrecisionCurve:(id)curve recallCurve:(id)recallCurve;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreClassificationMetrics
 
-- (VisionCoreClassificationMetrics)initWithCoder:(id)a3
+- (VisionCoreClassificationMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"P"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"P"];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:v5 forKey:@"R"];
+    v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"R"];
     if (v7)
     {
       self = [(VisionCoreClassificationMetrics *)self initWithPrecisionCurve:v6 recallCurve:v7];
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_precisionCurve forKey:@"P"];
-  [v4 encodeObject:self->_recallCurve forKey:@"R"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_precisionCurve forKey:@"P"];
+  [coderCopy encodeObject:self->_recallCurve forKey:@"R"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -56,7 +56,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(VisionCoreValueConfidenceCurve *)self->_precisionCurve isEqual:v5->_precisionCurve]&& [(VisionCoreValueConfidenceCurve *)self->_recallCurve isEqual:v5->_recallCurve];
     }
 
@@ -76,20 +76,20 @@
   return v2;
 }
 
-- (VisionCoreClassificationMetrics)initWithPrecisionCurve:(id)a3 recallCurve:(id)a4
+- (VisionCoreClassificationMetrics)initWithPrecisionCurve:(id)curve recallCurve:(id)recallCurve
 {
-  v6 = a3;
-  v7 = a4;
+  curveCopy = curve;
+  recallCurveCopy = recallCurve;
   v14.receiver = self;
   v14.super_class = VisionCoreClassificationMetrics;
   v8 = [(VisionCoreClassificationMetrics *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [curveCopy copy];
     precisionCurve = v8->_precisionCurve;
     v8->_precisionCurve = v9;
 
-    v11 = [v7 copy];
+    v11 = [recallCurveCopy copy];
     recallCurve = v8->_recallCurve;
     v8->_recallCurve = v11;
   }

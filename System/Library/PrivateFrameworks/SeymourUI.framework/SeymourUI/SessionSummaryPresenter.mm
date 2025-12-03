@@ -1,10 +1,10 @@
 @interface SessionSummaryPresenter
-- (void)textSizeChanged:(id)a3;
+- (void)textSizeChanged:(id)changed;
 @end
 
 @implementation SessionSummaryPresenter
 
-- (void)textSizeChanged:(id)a3
+- (void)textSizeChanged:(id)changed
 {
   v3 = sub_20C132614();
   v4 = *(v3 - 8);

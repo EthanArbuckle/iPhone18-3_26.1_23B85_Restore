@@ -1,5 +1,5 @@
 @interface PXScrollDetent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)identifier;
 @end
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B405DAF4();
     swift_unknownObjectRelease();
@@ -27,7 +27,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PXScrollDetent.isEqual(_:)(v8);
@@ -38,7 +38,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   PXScrollDetent.debugDescription.getter();
 
   v3 = sub_1B405D414();

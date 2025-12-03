@@ -1,33 +1,33 @@
 @interface _MRSendCommandResultHandlerDialogProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addActions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActions:(id)actions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSendCommandResultHandlerDialogProtobuf
 
-- (void)addActions:(id)a3
+- (void)addActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   actions = self->_actions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!actions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_actions;
     self->_actions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     actions = self->_actions;
   }
 
-  [(NSMutableArray *)actions addObject:v4];
+  [(NSMutableArray *)actions addObject:actionsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = _MRSendCommandResultHandlerDialogProtobuf;
   v4 = [(_MRSendCommandResultHandlerDialogProtobuf *)&v8 description];
-  v5 = [(_MRSendCommandResultHandlerDialogProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSendCommandResultHandlerDialogProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,7 +45,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_actions count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_actions, "count")}];
@@ -68,8 +68,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -78,30 +78,30 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"actions"];
+    [dictionary setObject:v4 forKey:@"actions"];
   }
 
   localizedTitle = self->_localizedTitle;
   if (localizedTitle)
   {
-    [v3 setObject:localizedTitle forKey:@"localizedTitle"];
+    [dictionary setObject:localizedTitle forKey:@"localizedTitle"];
   }
 
   localizedMessage = self->_localizedMessage;
   if (localizedMessage)
   {
-    [v3 setObject:localizedMessage forKey:@"localizedMessage"];
+    [dictionary setObject:localizedMessage forKey:@"localizedMessage"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -147,41 +147,41 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_MRSendCommandResultHandlerDialogProtobuf *)self actionsCount])
   {
-    [v9 clearActions];
-    v4 = [(_MRSendCommandResultHandlerDialogProtobuf *)self actionsCount];
-    if (v4)
+    [toCopy clearActions];
+    actionsCount = [(_MRSendCommandResultHandlerDialogProtobuf *)self actionsCount];
+    if (actionsCount)
     {
-      v5 = v4;
+      v5 = actionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRSendCommandResultHandlerDialogProtobuf *)self actionsAtIndex:i];
-        [v9 addActions:v7];
+        [toCopy addActions:v7];
       }
     }
   }
 
   if (self->_localizedTitle)
   {
-    [v9 setLocalizedTitle:?];
+    [toCopy setLocalizedTitle:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_localizedMessage)
   {
-    [v9 setLocalizedMessage:?];
-    v8 = v9;
+    [toCopy setLocalizedMessage:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -202,7 +202,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{a3, v18}];
+        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{zone, v18}];
         [v5 addActions:v11];
 
         ++v10;
@@ -215,11 +215,11 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_localizedTitle copyWithZone:a3];
+  v12 = [(NSString *)self->_localizedTitle copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_localizedMessage copyWithZone:a3];
+  v14 = [(NSString *)self->_localizedMessage copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
@@ -227,13 +227,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((actions = self->_actions, !(actions | v4[1])) || -[NSMutableArray isEqual:](actions, "isEqual:")) && ((localizedTitle = self->_localizedTitle, !(localizedTitle | v4[3])) || -[NSString isEqual:](localizedTitle, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((actions = self->_actions, !(actions | equalCopy[1])) || -[NSMutableArray isEqual:](actions, "isEqual:")) && ((localizedTitle = self->_localizedTitle, !(localizedTitle | equalCopy[3])) || -[NSString isEqual:](localizedTitle, "isEqual:")))
   {
     localizedMessage = self->_localizedMessage;
-    if (localizedMessage | v4[2])
+    if (localizedMessage | equalCopy[2])
     {
       v8 = [(NSString *)localizedMessage isEqual:?];
     }
@@ -259,15 +259,15 @@
   return v4 ^ [(NSString *)self->_localizedMessage hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -291,12 +291,12 @@
     while (v7);
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(_MRSendCommandResultHandlerDialogProtobuf *)self setLocalizedTitle:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(_MRSendCommandResultHandlerDialogProtobuf *)self setLocalizedMessage:?];
   }

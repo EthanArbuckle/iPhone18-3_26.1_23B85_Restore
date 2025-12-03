@@ -1,7 +1,7 @@
 @interface OADOuterShadowEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADOuterShadowEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -35,9 +35,9 @@
   return v2 ^ v3 ^ [(OADShadowEffect *)&v5 hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithShadowEffect:type:", self, 1}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithShadowEffect:type:", self, 1}];
   *(result + 9) = *(&self->super.mAngle + 1);
   *(result + 10) = LODWORD(self->mXScale);
   *(result + 11) = LODWORD(self->mYScale);
@@ -47,14 +47,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADOuterShadowEffect;
-  if ([(OADShadowEffect *)&v8 isEqual:v4])
+  if ([(OADShadowEffect *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *(&self->super.mAngle + 1) == v5[9] && self->mXScale == v5[10] && self->mYScale == v5[11] && self->mXSkew == v5[12] && LODWORD(self->mYSkew) == *(v5 + 13) && LOBYTE(self->mAlignment) == *(v5 + 56);
   }
 

@@ -1,5 +1,5 @@
 @interface CKRecord
-+ (id)safari_recordNameForFolderType:(int64_t)a3;
++ (id)safari_recordNameForFolderType:(int64_t)type;
 - (BOOL)safari_isCloudExtensionDeviceRecord;
 - (BOOL)safari_isCloudExtensionStateRecord;
 - (BOOL)safari_isCloudTabCloseRequestRecord;
@@ -10,61 +10,61 @@
 - (BOOL)safari_isMigrationStateRecord;
 - (BOOL)safari_isSyncRequirementsRecord;
 - (NSString)safari_recordName;
-- (id)safari_defaultPositionUsingValueTransformer:(id)a3;
-- (id)safari_generationForKey:(id)a3;
-- (id)safari_positionDictionaryRepresentationUsingValueTransformer:(id)a3;
+- (id)safari_defaultPositionUsingValueTransformer:(id)transformer;
+- (id)safari_generationForKey:(id)key;
+- (id)safari_positionDictionaryRepresentationUsingValueTransformer:(id)transformer;
 - (int64_t)safari_deviceOSKind;
 - (int64_t)safari_migrationState;
 - (int64_t)safari_minimumAPIVersion;
 - (int64_t)safari_minimumSyncAPIVersion;
 - (int64_t)safari_state;
-- (void)safari_incrementGenerationWithDeviceIdentifier:(id)a3 forKey:(id)a4;
-- (void)safari_setDefaultPosition:(id)a3 usingValueTransformer:(id)a4;
-- (void)safari_setGeneration:(id)a3 forKey:(id)a4;
-- (void)safari_setMigrationState:(int64_t)a3;
-- (void)safari_setMigratorDeviceIdentifier:(id)a3;
-- (void)safari_setMinimumAPIVersion:(int64_t)a3;
-- (void)safari_setMinimumSyncAPIVersion:(int64_t)a3;
-- (void)safari_setPositionDictionaryRepresentation:(id)a3 usingValueTransformer:(id)a4;
-- (void)safari_setState:(int64_t)a3;
+- (void)safari_incrementGenerationWithDeviceIdentifier:(id)identifier forKey:(id)key;
+- (void)safari_setDefaultPosition:(id)position usingValueTransformer:(id)transformer;
+- (void)safari_setGeneration:(id)generation forKey:(id)key;
+- (void)safari_setMigrationState:(int64_t)state;
+- (void)safari_setMigratorDeviceIdentifier:(id)identifier;
+- (void)safari_setMinimumAPIVersion:(int64_t)version;
+- (void)safari_setMinimumSyncAPIVersion:(int64_t)version;
+- (void)safari_setPositionDictionaryRepresentation:(id)representation usingValueTransformer:(id)transformer;
+- (void)safari_setState:(int64_t)state;
 @end
 
 @implementation CKRecord
 
 - (BOOL)safari_isCloudExtensionDeviceRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"CloudExtensionDevice"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"CloudExtensionDevice"];
 
   return v3;
 }
 
 - (BOOL)safari_isCloudExtensionStateRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  if ([v2 isEqualToString:@"CloudExtensionState"])
+  recordType = [(CKRecord *)self recordType];
+  if ([recordType isEqualToString:@"CloudExtensionState"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"CloudExtensionStateV2"];
+    v3 = [recordType isEqualToString:@"CloudExtensionStateV2"];
   }
 
   return v3;
 }
 
-+ (id)safari_recordNameForFolderType:(int64_t)a3
++ (id)safari_recordNameForFolderType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&off_100133140 + a3 - 1);
+    v4 = **(&off_100133140 + type - 1);
   }
 
   return v4;
@@ -72,16 +72,16 @@
 
 - (NSString)safari_recordName
 {
-  v2 = [(CKRecord *)self recordID];
-  v3 = [v2 recordName];
+  recordID = [(CKRecord *)self recordID];
+  recordName = [recordID recordName];
 
-  return v3;
+  return recordName;
 }
 
 - (BOOL)safari_isSyncRequirementsRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"SyncRequirements"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"SyncRequirements"];
 
   return v3;
 }
@@ -89,32 +89,32 @@
 - (int64_t)safari_minimumSyncAPIVersion
 {
   v2 = [(CKRecord *)self objectForKeyedSubscript:@"MinimumSyncAPIVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)safari_setMinimumSyncAPIVersion:(int64_t)a3
+- (void)safari_setMinimumSyncAPIVersion:(int64_t)version
 {
-  if ([(CKRecord *)self safari_minimumSyncAPIVersion]!= a3)
+  if ([(CKRecord *)self safari_minimumSyncAPIVersion]!= version)
   {
-    v5 = [NSNumber numberWithInteger:a3];
+    v5 = [NSNumber numberWithInteger:version];
     [(CKRecord *)self setObject:v5 forKeyedSubscript:@"MinimumSyncAPIVersion"];
   }
 }
 
 - (BOOL)safari_isEncryptionInfoRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"EncryptionInfo"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"EncryptionInfo"];
 
   return v3;
 }
 
 - (BOOL)safari_isMigrationStateRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"MigrationState"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"MigrationState"];
 
   return v3;
 }
@@ -136,8 +136,8 @@
       goto LABEL_9;
     }
 
-    v3 = [v2 integerValue];
-    if (v3 >= 3)
+    integerValue = [v2 integerValue];
+    if (integerValue >= 3)
     {
       v4 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -146,34 +146,34 @@
       }
 
 LABEL_9:
-      v3 = -1;
+      integerValue = -1;
     }
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (void)safari_setMigrationState:(int64_t)a3
+- (void)safari_setMigrationState:(int64_t)state
 {
-  if ([(CKRecord *)self safari_migrationState]!= a3)
+  if ([(CKRecord *)self safari_migrationState]!= state)
   {
-    v5 = [NSNumber numberWithInteger:a3];
+    v5 = [NSNumber numberWithInteger:state];
     [(CKRecord *)self setObject:v5 forKeyedSubscript:@"MigrationState"];
   }
 }
 
-- (void)safari_setMigratorDeviceIdentifier:(id)a3
+- (void)safari_setMigratorDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(CKRecord *)self safari_migratorDeviceIdentifier];
-  if (v4 != v6 && ([v6 isEqualToString:v4] & 1) == 0)
+  identifierCopy = identifier;
+  safari_migratorDeviceIdentifier = [(CKRecord *)self safari_migratorDeviceIdentifier];
+  if (safari_migratorDeviceIdentifier != identifierCopy && ([identifierCopy isEqualToString:safari_migratorDeviceIdentifier] & 1) == 0)
   {
-    v5 = [v6 copy];
+    v5 = [identifierCopy copy];
     [(CKRecord *)self setObject:v5 forKeyedSubscript:@"MigratorDeviceIdentifier"];
   }
 }
@@ -181,71 +181,71 @@ LABEL_9:
 - (int64_t)safari_state
 {
   v2 = [(CKRecord *)self objectForKeyedSubscript:@"Deleted"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (v3 == 2)
+  if (integerValue == 2)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 1;
+    return integerValue == 1;
   }
 }
 
-- (void)safari_setState:(int64_t)a3
+- (void)safari_setState:(int64_t)state
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:state];
   [(CKRecord *)self setObject:v4 forKeyedSubscript:@"Deleted"];
 }
 
 - (int64_t)safari_minimumAPIVersion
 {
   v2 = [(CKRecord *)self objectForKeyedSubscript:@"MinimumAPIVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)safari_setMinimumAPIVersion:(int64_t)a3
+- (void)safari_setMinimumAPIVersion:(int64_t)version
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:version];
   [(CKRecord *)self setObject:v4 forKeyedSubscript:@"MinimumAPIVersion"];
 }
 
-- (id)safari_positionDictionaryRepresentationUsingValueTransformer:(id)a3
+- (id)safari_positionDictionaryRepresentationUsingValueTransformer:(id)transformer
 {
-  v4 = a3;
-  if ([v4 attributeRequiresEncryption])
+  transformerCopy = transformer;
+  if ([transformerCopy attributeRequiresEncryption])
   {
-    v5 = [(CKRecord *)self safari_encryptedValues];
-    v6 = [v5 objectForKeyedSubscript:@"Position"];
-    v7 = [v4 reverseTransformedValue:v6];
+    safari_encryptedValues = [(CKRecord *)self safari_encryptedValues];
+    v6 = [safari_encryptedValues objectForKeyedSubscript:@"Position"];
+    v7 = [transformerCopy reverseTransformedValue:v6];
 
-    v4 = v6;
+    transformerCopy = v6;
   }
 
   else
   {
-    v5 = [(CKRecord *)self objectForKeyedSubscript:@"Position"];
-    v7 = [v4 reverseTransformedValue:v5];
+    safari_encryptedValues = [(CKRecord *)self objectForKeyedSubscript:@"Position"];
+    v7 = [transformerCopy reverseTransformedValue:safari_encryptedValues];
   }
 
   return v7;
 }
 
-- (void)safari_setPositionDictionaryRepresentation:(id)a3 usingValueTransformer:(id)a4
+- (void)safari_setPositionDictionaryRepresentation:(id)representation usingValueTransformer:(id)transformer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 attributeRequiresEncryption];
-  v10 = [v6 transformedValue:v7];
+  transformerCopy = transformer;
+  representationCopy = representation;
+  attributeRequiresEncryption = [transformerCopy attributeRequiresEncryption];
+  v10 = [transformerCopy transformedValue:representationCopy];
 
-  if (v8)
+  if (attributeRequiresEncryption)
   {
-    v9 = [(CKRecord *)self safari_encryptedValues];
-    [v9 setObject:v10 forKeyedSubscript:@"Position"];
+    safari_encryptedValues = [(CKRecord *)self safari_encryptedValues];
+    [safari_encryptedValues setObject:v10 forKeyedSubscript:@"Position"];
   }
 
   else
@@ -254,9 +254,9 @@ LABEL_9:
   }
 }
 
-- (id)safari_defaultPositionUsingValueTransformer:(id)a3
+- (id)safari_defaultPositionUsingValueTransformer:(id)transformer
 {
-  v3 = [(CKRecord *)self safari_positionDictionaryRepresentationUsingValueTransformer:a3];
+  v3 = [(CKRecord *)self safari_positionDictionaryRepresentationUsingValueTransformer:transformer];
   v4 = [WBSCRDTPosition alloc];
   v5 = [v3 objectForKeyedSubscript:WBDefaultPositionKey];
   v6 = [v4 initWithDictionaryRepresentation:v5];
@@ -264,11 +264,11 @@ LABEL_9:
   return v6;
 }
 
-- (void)safari_setDefaultPosition:(id)a3 usingValueTransformer:(id)a4
+- (void)safari_setDefaultPosition:(id)position usingValueTransformer:(id)transformer
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CKRecord *)self safari_positionDictionaryRepresentationUsingValueTransformer:v6];
+  positionCopy = position;
+  transformerCopy = transformer;
+  v7 = [(CKRecord *)self safari_positionDictionaryRepresentationUsingValueTransformer:transformerCopy];
   v8 = v7;
   if (!v7)
   {
@@ -277,10 +277,10 @@ LABEL_9:
 
   v9 = [v7 mutableCopy];
 
-  if (v12)
+  if (positionCopy)
   {
-    v10 = [v12 dictionaryRepresentation];
-    [v9 setObject:v10 forKeyedSubscript:WBDefaultPositionKey];
+    dictionaryRepresentation = [positionCopy dictionaryRepresentation];
+    [v9 setObject:dictionaryRepresentation forKeyedSubscript:WBDefaultPositionKey];
   }
 
   if ([v9 count])
@@ -293,16 +293,16 @@ LABEL_9:
     v11 = 0;
   }
 
-  [(CKRecord *)self safari_setPositionDictionaryRepresentation:v11 usingValueTransformer:v6];
+  [(CKRecord *)self safari_setPositionDictionaryRepresentation:v11 usingValueTransformer:transformerCopy];
 }
 
-- (id)safari_generationForKey:(id)a3
+- (id)safari_generationForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKRecord *)self _safari_generationKeyForKey:v4];
+  keyCopy = key;
+  v5 = [(CKRecord *)self _safari_generationKeyForKey:keyCopy];
   v6 = [(CKRecord *)self objectForKeyedSubscript:v5];
 
-  v7 = [(CKRecord *)self _safari_deviceIdentifierKeyForKey:v4];
+  v7 = [(CKRecord *)self _safari_deviceIdentifierKeyForKey:keyCopy];
 
   v8 = [(CKRecord *)self objectForKeyedSubscript:v7];
 
@@ -321,13 +321,13 @@ LABEL_9:
   return v10;
 }
 
-- (void)safari_setGeneration:(id)a3 forKey:(id)a4
+- (void)safari_setGeneration:(id)generation forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  generationCopy = generation;
+  keyCopy = key;
+  if (generationCopy)
   {
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 generation]);
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [generationCopy generation]);
   }
 
   else
@@ -335,67 +335,67 @@ LABEL_9:
     v7 = 0;
   }
 
-  v8 = [(CKRecord *)self _safari_generationKeyForKey:v6];
+  v8 = [(CKRecord *)self _safari_generationKeyForKey:keyCopy];
   [(CKRecord *)self setObject:v7 forKeyedSubscript:v8];
 
-  v9 = v12;
-  if (v12)
+  v9 = generationCopy;
+  if (generationCopy)
   {
 
-    v9 = v12;
+    v9 = generationCopy;
   }
 
-  v10 = [v9 deviceIdentifier];
-  v11 = [(CKRecord *)self _safari_deviceIdentifierKeyForKey:v6];
-  [(CKRecord *)self setObject:v10 forKeyedSubscript:v11];
+  deviceIdentifier = [v9 deviceIdentifier];
+  v11 = [(CKRecord *)self _safari_deviceIdentifierKeyForKey:keyCopy];
+  [(CKRecord *)self setObject:deviceIdentifier forKeyedSubscript:v11];
 }
 
-- (void)safari_incrementGenerationWithDeviceIdentifier:(id)a3 forKey:(id)a4
+- (void)safari_incrementGenerationWithDeviceIdentifier:(id)identifier forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CKRecord *)self safari_generationForKey:v6];
-  v8 = [v9 incrementedGenerationWithDeviceIdentifier:v7];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v9 = [(CKRecord *)self safari_generationForKey:keyCopy];
+  v8 = [v9 incrementedGenerationWithDeviceIdentifier:identifierCopy];
 
-  [(CKRecord *)self safari_setGeneration:v8 forKey:v6];
+  [(CKRecord *)self safari_setGeneration:v8 forKey:keyCopy];
 }
 
 - (BOOL)safari_isMetadataDevice
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"metadata_device_type"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"metadata_device_type"];
 
   return v3;
 }
 
 - (int64_t)safari_deviceOSKind
 {
-  v2 = [(CKRecord *)self safari_deviceOSName];
-  v3 = sub_10003FE40(v2);
+  safari_deviceOSName = [(CKRecord *)self safari_deviceOSName];
+  v3 = sub_10003FE40(safari_deviceOSName);
 
   return v3;
 }
 
 - (BOOL)safari_isCloudTabDeviceRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"CloudTabDevice"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"CloudTabDevice"];
 
   return v3;
 }
 
 - (BOOL)safari_isCloudTabRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"CloudTab"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"CloudTab"];
 
   return v3;
 }
 
 - (BOOL)safari_isCloudTabCloseRequestRecord
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = [v2 isEqualToString:@"CloudTabCloseRequest"];
+  recordType = [(CKRecord *)self recordType];
+  v3 = [recordType isEqualToString:@"CloudTabCloseRequest"];
 
   return v3;
 }

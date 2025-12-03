@@ -1,31 +1,31 @@
 @interface WOChronicleClass
-+ (id)chronicleInstance:(id)a3;
-- (WOChronicleClass)initWithInstance:(id)a3;
++ (id)chronicleInstance:(id)instance;
+- (WOChronicleClass)initWithInstance:(id)instance;
 - (id)description;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation WOChronicleClass
 
-+ (id)chronicleInstance:(id)a3
++ (id)chronicleInstance:(id)instance
 {
   v20 = *MEMORY[0x277D85DE8];
-  v17 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, instance);
   v14 = 0;
   v10 = 0;
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
-    v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v14 = 1;
-    v10 = [v15 hk_BOOLForKey:@"WOChronicleInstanceCalls" defaultValue:0];
+    v10 = [standardUserDefaults hk_BOOLForKey:@"WOChronicleInstanceCalls" defaultValue:0];
   }
 
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](standardUserDefaults);
   }
 
   if (v10)
@@ -46,7 +46,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v4 = [v17 alloc];
+    v4 = [selfCopy alloc];
     v18 = [v4 initWithInstance:location[0]];
   }
 
@@ -62,49 +62,49 @@
   return v5;
 }
 
-- (WOChronicleClass)initWithInstance:(id)a3
+- (WOChronicleClass)initWithInstance:(id)instance
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
+  objc_storeStrong(location, instance);
+  v3 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v3;
   v8.super_class = WOChronicleClass;
-  v10 = [(WOChronicleClass *)&v8 init];
-  objc_storeStrong(&v10, v10);
-  if (v10)
+  selfCopy = [(WOChronicleClass *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(WOChronicleClass *)v10 setChronicledInstance:location[0]];
+    [(WOChronicleClass *)selfCopy setChronicledInstance:location[0]];
     v4 = objc_opt_class();
     v7 = NSStringFromClass(v4);
-    [(WOChronicleClass *)v10 setChronicledClassName:?];
+    [(WOChronicleClass *)selfCopy setChronicledClassName:?];
     MEMORY[0x277D82BD8](v7);
   }
 
-  v6 = MEMORY[0x277D82BE0](v10);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v6 = +[WOChronicle shared];
-  v5 = [(WOChronicleClass *)self chronicledClassName];
-  v4 = [(WOChronicleClass *)self chronicledInstance];
-  [WOChronicle recordWithClassName:v6 classInstance:"recordWithClassName:classInstance:selector:" selector:v5];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  chronicledClassName = [(WOChronicleClass *)self chronicledClassName];
+  chronicledInstance = [(WOChronicleClass *)self chronicledInstance];
+  [WOChronicle recordWithClassName:v6 classInstance:"recordWithClassName:classInstance:selector:" selector:chronicledClassName];
+  MEMORY[0x277D82BD8](chronicledInstance);
+  MEMORY[0x277D82BD8](chronicledClassName);
   return [(WOChronicleClass *)self chronicledInstance];
 }
 
 - (id)description
 {
-  v3 = [(WOChronicleClass *)self chronicledInstance];
-  v4 = [v3 description];
-  MEMORY[0x277D82BD8](v3);
+  chronicledInstance = [(WOChronicleClass *)self chronicledInstance];
+  v4 = [chronicledInstance description];
+  MEMORY[0x277D82BD8](chronicledInstance);
 
   return v4;
 }

@@ -8,8 +8,8 @@
 
 - (BOOL)hasDeviceBeenUnlocked
 {
-  v2 = [MEMORY[0x1E69A1E20] sharedObject];
-  v3 = [v2 canAccessFilesWithProtection:3];
+  mEMORY[0x1E69A1E20] = [MEMORY[0x1E69A1E20] sharedObject];
+  v3 = [mEMORY[0x1E69A1E20] canAccessFilesWithProtection:3];
 
   return v3;
 }
@@ -23,8 +23,8 @@
 
 - (void)didAddFirstObserver
 {
-  v3 = [MEMORY[0x1E69A1E20] sharedObject];
-  [v3 addDataDidBecomeAvailableAfterFirstUnlockObserver:self];
+  mEMORY[0x1E69A1E20] = [MEMORY[0x1E69A1E20] sharedObject];
+  [mEMORY[0x1E69A1E20] addDataDidBecomeAvailableAfterFirstUnlockObserver:self];
 }
 
 @end

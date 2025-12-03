@@ -1,6 +1,6 @@
 @interface HMDThreadNetworkStabilityLogEvent
-- (HMDThreadNetworkStabilityLogEvent)initWithDictionary:(id)a3;
-- (HMDThreadNetworkStabilityLogEvent)initWithHomeUUID:(id)a3 threadNetworkStatusReport:(id)a4 threadNetworkUptime:(unint64_t)a5 threadNetworkDowntime:(unint64_t)a6 numReadWrites:(unint64_t)a7 numReadErrors:(unint64_t)a8 numWriteErrors:(unint64_t)a9 topReadWriteError:(id)a10 topSessionError:(id)a11 numSessionErrors:(unint64_t)a12 logTriggerReason:(id)a13;
+- (HMDThreadNetworkStabilityLogEvent)initWithDictionary:(id)dictionary;
+- (HMDThreadNetworkStabilityLogEvent)initWithHomeUUID:(id)d threadNetworkStatusReport:(id)report threadNetworkUptime:(unint64_t)uptime threadNetworkDowntime:(unint64_t)downtime numReadWrites:(unint64_t)writes numReadErrors:(unint64_t)errors numWriteErrors:(unint64_t)writeErrors topReadWriteError:(id)self0 topSessionError:(id)self1 numSessionErrors:(unint64_t)self2 logTriggerReason:(id)self3;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (id)serializedLogEvent;
 @end
@@ -9,93 +9,93 @@
 
 - (id)serializedLogEvent
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMMHomeLogEvent *)self homeUUIDString];
-  [v3 setObject:v4 forKeyedSubscript:@"homeUUID"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  homeUUIDString = [(HMMHomeLogEvent *)self homeUUIDString];
+  [dictionary setObject:homeUUIDString forKeyedSubscript:@"homeUUID"];
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "numAdvertisedBRs")}];
-  [v3 setObject:v7 forKeyedSubscript:@"numAdvertisedBRs"];
+  threadNetworkStatusReport = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport, "numAdvertisedBRs")}];
+  [dictionary setObject:v7 forKeyedSubscript:@"numAdvertisedBRs"];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "numAppleBRs")}];
-  [v3 setObject:v10 forKeyedSubscript:@"numAppleBRs"];
+  threadNetworkStatusReport2 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport2, "numAppleBRs")}];
+  [dictionary setObject:v10 forKeyedSubscript:@"numAppleBRs"];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "numThirdPartyBRs")}];
-  [v3 setObject:v13 forKeyedSubscript:@"numThirdPartyBRs"];
+  threadNetworkStatusReport3 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport3, "numThirdPartyBRs")}];
+  [dictionary setObject:v13 forKeyedSubscript:@"numThirdPartyBRs"];
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "numThreadNetworks")}];
-  [v3 setObject:v16 forKeyedSubscript:@"numThreadNetworks"];
+  threadNetworkStatusReport4 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport4, "numThreadNetworks")}];
+  [dictionary setObject:v16 forKeyedSubscript:@"numThreadNetworks"];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "maxSimuIPPrefixesDetected")}];
-  [v3 setObject:v19 forKeyedSubscript:@"maxSimuIPPrefixesDetected"];
+  threadNetworkStatusReport5 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport5, "maxSimuIPPrefixesDetected")}];
+  [dictionary setObject:v19 forKeyedSubscript:@"maxSimuIPPrefixesDetected"];
 
   v20 = MEMORY[0x277CCABB0];
-  v21 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(v21, "txTotal")}];
-  [v3 setObject:v22 forKeyedSubscript:@"txTotal"];
+  threadNetworkStatusReport6 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport6, "txTotal")}];
+  [dictionary setObject:v22 forKeyedSubscript:@"txTotal"];
 
   v23 = MEMORY[0x277CCABB0];
-  v24 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v25 = [v23 numberWithUnsignedInteger:{objc_msgSend(v24, "txSuccess")}];
-  [v3 setObject:v25 forKeyedSubscript:@"txSuccess"];
+  threadNetworkStatusReport7 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v25 = [v23 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport7, "txSuccess")}];
+  [dictionary setObject:v25 forKeyedSubscript:@"txSuccess"];
 
   v26 = MEMORY[0x277CCABB0];
-  v27 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(v27, "txDelayAvg")}];
-  [v3 setObject:v28 forKeyedSubscript:@"txDelayAvg"];
+  threadNetworkStatusReport8 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport8, "txDelayAvg")}];
+  [dictionary setObject:v28 forKeyedSubscript:@"txDelayAvg"];
 
   v29 = MEMORY[0x277CCABB0];
-  v30 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(v30, "rxTotal")}];
-  [v3 setObject:v31 forKeyedSubscript:@"rxTotal"];
+  threadNetworkStatusReport9 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport9, "rxTotal")}];
+  [dictionary setObject:v31 forKeyedSubscript:@"rxTotal"];
 
   v32 = MEMORY[0x277CCABB0];
-  v33 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(v33, "rxSuccess")}];
-  [v3 setObject:v34 forKeyedSubscript:@"rxSuccess"];
+  threadNetworkStatusReport10 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport10, "rxSuccess")}];
+  [dictionary setObject:v34 forKeyedSubscript:@"rxSuccess"];
 
   v35 = MEMORY[0x277CCABB0];
-  v36 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(v36, "reportDuration")}];
-  [v3 setObject:v37 forKeyedSubscript:@"reportDuration"];
+  threadNetworkStatusReport11 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport11, "reportDuration")}];
+  [dictionary setObject:v37 forKeyedSubscript:@"reportDuration"];
 
   v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent threadNetworkUptime](self, "threadNetworkUptime")}];
-  [v3 setObject:v38 forKeyedSubscript:@"threadNetworkUptime"];
+  [dictionary setObject:v38 forKeyedSubscript:@"threadNetworkUptime"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent threadNetworkDowntime](self, "threadNetworkDowntime")}];
-  [v3 setObject:v39 forKeyedSubscript:@"threadNetworkDowntime"];
+  [dictionary setObject:v39 forKeyedSubscript:@"threadNetworkDowntime"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent numReadWrites](self, "numReadWrites")}];
-  [v3 setObject:v40 forKeyedSubscript:@"numReadWrites"];
+  [dictionary setObject:v40 forKeyedSubscript:@"numReadWrites"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent numReadErrors](self, "numReadErrors")}];
-  [v3 setObject:v41 forKeyedSubscript:@"numReadErrors"];
+  [dictionary setObject:v41 forKeyedSubscript:@"numReadErrors"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent numWriteErrors](self, "numWriteErrors")}];
-  [v3 setObject:v42 forKeyedSubscript:@"numWriteErrors"];
+  [dictionary setObject:v42 forKeyedSubscript:@"numWriteErrors"];
 
-  v43 = [(HMDThreadNetworkStabilityLogEvent *)self topReadWriteError];
-  [v3 setObject:v43 forKeyedSubscript:@"topReadWriteError"];
+  topReadWriteError = [(HMDThreadNetworkStabilityLogEvent *)self topReadWriteError];
+  [dictionary setObject:topReadWriteError forKeyedSubscript:@"topReadWriteError"];
 
-  v44 = [(HMDThreadNetworkStabilityLogEvent *)self topSessionError];
-  [v3 setObject:v44 forKeyedSubscript:@"topSessionError"];
+  topSessionError = [(HMDThreadNetworkStabilityLogEvent *)self topSessionError];
+  [dictionary setObject:topSessionError forKeyedSubscript:@"topSessionError"];
 
   v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent numSessionErrors](self, "numSessionErrors")}];
-  [v3 setObject:v45 forKeyedSubscript:@"numSessionErrors"];
+  [dictionary setObject:v45 forKeyedSubscript:@"numSessionErrors"];
 
-  v46 = [(HMDThreadNetworkStabilityLogEvent *)self logTriggerReason];
-  [v3 setObject:v46 forKeyedSubscript:@"logTriggerReason"];
+  logTriggerReason = [(HMDThreadNetworkStabilityLogEvent *)self logTriggerReason];
+  [dictionary setObject:logTriggerReason forKeyedSubscript:@"logTriggerReason"];
 
-  v47 = [v3 copy];
+  v47 = [dictionary copy];
 
   return v47;
 }
@@ -105,58 +105,58 @@
   v49[20] = *MEMORY[0x277D85DE8];
   v48[0] = @"numAdvertisedBRs";
   v3 = MEMORY[0x277CCABB0];
-  v47 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v46 = [v3 numberWithUnsignedInteger:{objc_msgSend(v47, "numAdvertisedBRs")}];
+  threadNetworkStatusReport = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v46 = [v3 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport, "numAdvertisedBRs")}];
   v49[0] = v46;
   v48[1] = @"numAppleBRs";
   v4 = MEMORY[0x277CCABB0];
-  v45 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v44 = [v4 numberWithUnsignedInteger:{objc_msgSend(v45, "numAppleBRs")}];
+  threadNetworkStatusReport2 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v44 = [v4 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport2, "numAppleBRs")}];
   v49[1] = v44;
   v48[2] = @"numThirdPartyBRs";
   v5 = MEMORY[0x277CCABB0];
-  v43 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v42 = [v5 numberWithUnsignedInteger:{objc_msgSend(v43, "numThirdPartyBRs")}];
+  threadNetworkStatusReport3 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v42 = [v5 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport3, "numThirdPartyBRs")}];
   v49[2] = v42;
   v48[3] = @"numThreadNetworks";
   v6 = MEMORY[0x277CCABB0];
-  v41 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v40 = [v6 numberWithUnsignedInteger:{objc_msgSend(v41, "numThreadNetworks")}];
+  threadNetworkStatusReport4 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v40 = [v6 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport4, "numThreadNetworks")}];
   v49[3] = v40;
   v48[4] = @"maxSimuIPPrefixesDetected";
   v7 = MEMORY[0x277CCABB0];
-  v39 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v38 = [v7 numberWithUnsignedInteger:{objc_msgSend(v39, "maxSimuIPPrefixesDetected")}];
+  threadNetworkStatusReport5 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v38 = [v7 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport5, "maxSimuIPPrefixesDetected")}];
   v49[4] = v38;
   v48[5] = @"txTotal";
   v8 = MEMORY[0x277CCABB0];
-  v37 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v36 = [v8 numberWithUnsignedInteger:{objc_msgSend(v37, "txTotal")}];
+  threadNetworkStatusReport6 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v36 = [v8 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport6, "txTotal")}];
   v49[5] = v36;
   v48[6] = @"txSuccess";
   v9 = MEMORY[0x277CCABB0];
-  v35 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v34 = [v9 numberWithUnsignedInteger:{objc_msgSend(v35, "txSuccess")}];
+  threadNetworkStatusReport7 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v34 = [v9 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport7, "txSuccess")}];
   v49[6] = v34;
   v48[7] = @"txDelayAvg";
   v10 = MEMORY[0x277CCABB0];
-  v33 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v32 = [v10 numberWithUnsignedInteger:{objc_msgSend(v33, "txDelayAvg")}];
+  threadNetworkStatusReport8 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v32 = [v10 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport8, "txDelayAvg")}];
   v49[7] = v32;
   v48[8] = @"rxTotal";
   v11 = MEMORY[0x277CCABB0];
-  v31 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v30 = [v11 numberWithUnsignedInteger:{objc_msgSend(v31, "rxTotal")}];
+  threadNetworkStatusReport9 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v30 = [v11 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport9, "rxTotal")}];
   v49[8] = v30;
   v48[9] = @"rxSuccess";
   v12 = MEMORY[0x277CCABB0];
-  v29 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v28 = [v12 numberWithUnsignedInteger:{objc_msgSend(v29, "rxSuccess")}];
+  threadNetworkStatusReport10 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v28 = [v12 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport10, "rxSuccess")}];
   v49[9] = v28;
   v48[10] = @"reportDuration";
   v13 = MEMORY[0x277CCABB0];
-  v27 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
-  v14 = [v13 numberWithUnsignedInteger:{objc_msgSend(v27, "reportDuration")}];
+  threadNetworkStatusReport11 = [(HMDThreadNetworkStabilityLogEvent *)self threadNetworkStatusReport];
+  v14 = [v13 numberWithUnsignedInteger:{objc_msgSend(threadNetworkStatusReport11, "reportDuration")}];
   v49[10] = v14;
   v48[11] = @"threadNetworkUptime";
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent threadNetworkUptime](self, "threadNetworkUptime")}];
@@ -174,17 +174,17 @@
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent numWriteErrors](self, "numWriteErrors")}];
   v49[15] = v19;
   v48[16] = @"topReadWriteError";
-  v20 = [(HMDThreadNetworkStabilityLogEvent *)self topReadWriteError];
-  v49[16] = v20;
+  topReadWriteError = [(HMDThreadNetworkStabilityLogEvent *)self topReadWriteError];
+  v49[16] = topReadWriteError;
   v48[17] = @"topSessionError";
-  v21 = [(HMDThreadNetworkStabilityLogEvent *)self topSessionError];
-  v49[17] = v21;
+  topSessionError = [(HMDThreadNetworkStabilityLogEvent *)self topSessionError];
+  v49[17] = topSessionError;
   v48[18] = @"numSessionErrors";
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDThreadNetworkStabilityLogEvent numSessionErrors](self, "numSessionErrors")}];
   v49[18] = v22;
   v48[19] = @"logTriggerReason";
-  v23 = [(HMDThreadNetworkStabilityLogEvent *)self logTriggerReason];
-  v49[19] = v23;
+  logTriggerReason = [(HMDThreadNetworkStabilityLogEvent *)self logTriggerReason];
+  v49[19] = logTriggerReason;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:20];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -192,10 +192,10 @@
   return v26;
 }
 
-- (HMDThreadNetworkStabilityLogEvent)initWithDictionary:(id)a3
+- (HMDThreadNetworkStabilityLogEvent)initWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"homeUUID"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"homeUUID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -220,7 +220,7 @@
     v85 = 0;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"numAdvertisedBRs"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"numAdvertisedBRs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -234,7 +234,7 @@
 
   v84 = v8;
 
-  v9 = [v3 objectForKeyedSubscript:@"numAppleBRs"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"numAppleBRs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -248,7 +248,7 @@
 
   v74 = v10;
 
-  v11 = [v3 objectForKeyedSubscript:@"numThirdPartyBRs"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"numThirdPartyBRs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -262,7 +262,7 @@
 
   v68 = v12;
 
-  v13 = [v3 objectForKeyedSubscript:@"numThreadNetworks"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"numThreadNetworks"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -276,7 +276,7 @@
 
   v73 = v14;
 
-  v15 = [v3 objectForKeyedSubscript:@"maxSimuIPPrefixesDetected"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"maxSimuIPPrefixesDetected"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -290,7 +290,7 @@
 
   v77 = v16;
 
-  v17 = [v3 objectForKeyedSubscript:@"txTotal"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"txTotal"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -304,7 +304,7 @@
 
   v76 = v18;
 
-  v19 = [v3 objectForKeyedSubscript:@"txSuccess"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"txSuccess"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -318,7 +318,7 @@
 
   v21 = v20;
 
-  v22 = [v3 objectForKeyedSubscript:@"txDelayAvg"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"txDelayAvg"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -332,7 +332,7 @@
 
   v83 = v23;
 
-  v24 = [v3 objectForKeyedSubscript:@"rxTotal"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"rxTotal"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -346,7 +346,7 @@
 
   v26 = v25;
 
-  v27 = [v3 objectForKeyedSubscript:@"rxSuccess"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"rxSuccess"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -360,7 +360,7 @@
 
   v82 = v28;
 
-  v29 = [v3 objectForKeyedSubscript:@"reportDuration"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"reportDuration"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -374,7 +374,7 @@
 
   v79 = v30;
 
-  v31 = [v3 objectForKeyedSubscript:@"threadNetworkUptime"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"threadNetworkUptime"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -388,7 +388,7 @@
 
   v78 = v32;
 
-  v33 = [v3 objectForKeyedSubscript:@"threadNetworkDowntime"];
+  v33 = [dictionaryCopy objectForKeyedSubscript:@"threadNetworkDowntime"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -402,7 +402,7 @@
 
   v35 = v34;
 
-  v36 = [v3 objectForKeyedSubscript:@"numReadWrites"];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"numReadWrites"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -416,7 +416,7 @@
 
   v81 = v37;
 
-  v38 = [v3 objectForKeyedSubscript:@"numReadErrors"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"numReadErrors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -430,7 +430,7 @@
 
   v80 = v39;
 
-  v40 = [v3 objectForKeyedSubscript:@"numWriteErrors"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"numWriteErrors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -444,7 +444,7 @@
 
   v71 = v41;
 
-  v42 = [v3 objectForKeyedSubscript:@"topReadWriteError"];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"topReadWriteError"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -458,7 +458,7 @@
 
   v44 = v43;
 
-  v45 = [v3 objectForKeyedSubscript:@"topSessionError"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"topSessionError"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -472,7 +472,7 @@
 
   v70 = v46;
 
-  v47 = [v3 objectForKeyedSubscript:@"numSessionErrors"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"numSessionErrors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -486,7 +486,7 @@
 
   v49 = v48;
 
-  v50 = [v3 objectForKeyedSubscript:@"logTriggerReason"];
+  v50 = [dictionaryCopy objectForKeyedSubscript:@"logTriggerReason"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -592,27 +592,27 @@ LABEL_93:
   return v63;
 }
 
-- (HMDThreadNetworkStabilityLogEvent)initWithHomeUUID:(id)a3 threadNetworkStatusReport:(id)a4 threadNetworkUptime:(unint64_t)a5 threadNetworkDowntime:(unint64_t)a6 numReadWrites:(unint64_t)a7 numReadErrors:(unint64_t)a8 numWriteErrors:(unint64_t)a9 topReadWriteError:(id)a10 topSessionError:(id)a11 numSessionErrors:(unint64_t)a12 logTriggerReason:(id)a13
+- (HMDThreadNetworkStabilityLogEvent)initWithHomeUUID:(id)d threadNetworkStatusReport:(id)report threadNetworkUptime:(unint64_t)uptime threadNetworkDowntime:(unint64_t)downtime numReadWrites:(unint64_t)writes numReadErrors:(unint64_t)errors numWriteErrors:(unint64_t)writeErrors topReadWriteError:(id)self0 topSessionError:(id)self1 numSessionErrors:(unint64_t)self2 logTriggerReason:(id)self3
 {
-  v29 = a4;
-  v20 = a10;
-  v21 = a11;
-  v22 = a13;
+  reportCopy = report;
+  errorCopy = error;
+  sessionErrorCopy = sessionError;
+  reasonCopy = reason;
   v30.receiver = self;
   v30.super_class = HMDThreadNetworkStabilityLogEvent;
-  v23 = [(HMMHomeLogEvent *)&v30 initWithHomeUUID:a3];
+  v23 = [(HMMHomeLogEvent *)&v30 initWithHomeUUID:d];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_threadNetworkStatusReport, a4);
-    v24->_threadNetworkUptime = a5;
-    v24->_threadNetworkDowntime = a6;
-    v24->_numReadWrites = a7;
-    v24->_numReadErrors = a8;
-    v24->_numWriteErrors = a9;
-    if (v20)
+    objc_storeStrong(&v23->_threadNetworkStatusReport, report);
+    v24->_threadNetworkUptime = uptime;
+    v24->_threadNetworkDowntime = downtime;
+    v24->_numReadWrites = writes;
+    v24->_numReadErrors = errors;
+    v24->_numWriteErrors = writeErrors;
+    if (errorCopy)
     {
-      v25 = [v20 copy];
+      v25 = [errorCopy copy];
     }
 
     else
@@ -621,13 +621,13 @@ LABEL_93:
     }
 
     objc_storeStrong(&v24->_topReadWriteError, v25);
-    if (v20)
+    if (errorCopy)
     {
     }
 
-    if (v21)
+    if (sessionErrorCopy)
     {
-      v26 = [v21 copy];
+      v26 = [sessionErrorCopy copy];
     }
 
     else
@@ -636,14 +636,14 @@ LABEL_93:
     }
 
     objc_storeStrong(&v24->_topSessionError, v26);
-    if (v21)
+    if (sessionErrorCopy)
     {
     }
 
-    v24->_numSessionErrors = a12;
-    if (v22)
+    v24->_numSessionErrors = sessionErrors;
+    if (reasonCopy)
     {
-      v27 = [v22 copy];
+      v27 = [reasonCopy copy];
     }
 
     else
@@ -652,7 +652,7 @@ LABEL_93:
     }
 
     objc_storeStrong(&v24->_logTriggerReason, v27);
-    if (v22)
+    if (reasonCopy)
     {
     }
   }

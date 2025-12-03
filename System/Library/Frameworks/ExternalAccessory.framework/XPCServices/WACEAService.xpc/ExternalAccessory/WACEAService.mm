@@ -1,6 +1,6 @@
 @interface WACEAService
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)reconfigureAccessory:(id)a3 withReply:(id)a4;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)reconfigureAccessory:(id)accessory withReply:(id)reply;
 - (void)setup;
 - (void)startSearchForAccessoriesNeedingReprovisioning;
 @end
@@ -20,21 +20,21 @@
   }
 }
 
-- (void)reconfigureAccessory:(id)a3 withReply:(id)a4
+- (void)reconfigureAccessory:(id)accessory withReply:(id)reply
 {
-  v46 = a3;
-  v42 = self;
-  v44 = a4;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  replyCopy = reply;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v6 = [(WACEAService *)self homeManager];
-  v7 = [v6 currentHome];
-  v8 = [v7 accessories];
+  homeManager = [(WACEAService *)self homeManager];
+  currentHome = [homeManager currentHome];
+  accessories = [currentHome accessories];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v58 objects:v64 count:16];
+  obj = accessories;
+  v9 = [accessories countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v9)
   {
     v10 = v9;
@@ -49,25 +49,25 @@
         }
 
         v13 = *(*(&v58 + 1) + 8 * i);
-        v14 = [v13 deviceIdentifier];
-        v15 = [v14 stringByReplacingOccurrencesOfString:@":" withString:&stru_1000041D0];
-        v16 = [v46 uppercaseString];
-        v17 = [v15 isEqualToString:v16];
+        deviceIdentifier = [v13 deviceIdentifier];
+        v15 = [deviceIdentifier stringByReplacingOccurrencesOfString:@":" withString:&stru_1000041D0];
+        uppercaseString = [accessoryCopy uppercaseString];
+        v17 = [v15 isEqualToString:uppercaseString];
 
         if (v17)
         {
           if ([v13 accessoryReprovisionState] == 1)
           {
-            v33 = [(WACEAService *)v42 homeManager];
-            v34 = [v33 currentHome];
+            homeManager2 = [(WACEAService *)selfCopy homeManager];
+            currentHome2 = [homeManager2 currentHome];
             v56[0] = _NSConcreteStackBlock;
             v56[1] = 3221225472;
             v56[2] = sub_1000012E0;
             v56[3] = &unk_100004150;
-            v32 = v44;
-            v35 = v44;
+            v32 = replyCopy;
+            v35 = replyCopy;
             v57 = v35;
-            [v34 reprovisionAccessory:v13 completionHandler:v56];
+            [currentHome2 reprovisionAccessory:v13 completionHandler:v56];
 
             v36 = dispatch_group_create();
             v37 = dispatch_get_global_queue(0, 0);
@@ -94,8 +94,8 @@
 
           else
           {
-            v32 = v44;
-            (*(v44 + 2))(v44, 1, 0);
+            v32 = replyCopy;
+            (*(replyCopy + 2))(replyCopy, 1, 0);
           }
 
 LABEL_32:
@@ -118,14 +118,14 @@ LABEL_32:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v18 = [(WACEAService *)v42 homeManager];
-  v19 = [v18 homes];
+  homeManager3 = [(WACEAService *)selfCopy homeManager];
+  homes = [homeManager3 homes];
 
-  v41 = [v19 countByEnumeratingWithState:&v51 objects:v63 count:16];
+  v41 = [homes countByEnumeratingWithState:&v51 objects:v63 count:16];
   if (v41)
   {
     v20 = *v52;
-    obj = v19;
+    obj = homes;
     v40 = *v52;
     do
     {
@@ -134,7 +134,7 @@ LABEL_32:
       {
         if (*v52 != v20)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(homes);
         }
 
         v43 = v21;
@@ -143,8 +143,8 @@ LABEL_32:
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v23 = [v22 accessories];
-        v24 = [v23 countByEnumeratingWithState:&v47 objects:v62 count:16];
+        accessories2 = [v22 accessories];
+        v24 = [accessories2 countByEnumeratingWithState:&v47 objects:v62 count:16];
         if (v24)
         {
           v25 = v24;
@@ -155,24 +155,24 @@ LABEL_32:
             {
               if (*v48 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(accessories2);
               }
 
-              v28 = [*(*(&v47 + 1) + 8 * j) deviceIdentifier];
-              v29 = [v28 stringByReplacingOccurrencesOfString:@":" withString:&stru_1000041D0];
-              v30 = [v46 uppercaseString];
-              v31 = [v29 isEqualToString:v30];
+              deviceIdentifier2 = [*(*(&v47 + 1) + 8 * j) deviceIdentifier];
+              v29 = [deviceIdentifier2 stringByReplacingOccurrencesOfString:@":" withString:&stru_1000041D0];
+              uppercaseString2 = [accessoryCopy uppercaseString];
+              v31 = [v29 isEqualToString:uppercaseString2];
 
               if (v31)
               {
-                v32 = v44;
-                (*(v44 + 2))(v44, 2, 0);
+                v32 = replyCopy;
+                (*(replyCopy + 2))(replyCopy, 2, 0);
 
                 goto LABEL_32;
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v47 objects:v62 count:16];
+            v25 = [accessories2 countByEnumeratingWithState:&v47 objects:v62 count:16];
             if (v25)
             {
               continue;
@@ -183,7 +183,7 @@ LABEL_32:
         }
 
         v21 = v43 + 1;
-        v19 = obj;
+        homes = obj;
         v20 = v40;
       }
 
@@ -194,43 +194,43 @@ LABEL_32:
     while (v41);
   }
 
-  v32 = v44;
-  (*(v44 + 2))(v44, 3, 0);
+  v32 = replyCopy;
+  (*(replyCopy + 2))(replyCopy, 3, 0);
 LABEL_33:
 }
 
 - (void)startSearchForAccessoriesNeedingReprovisioning
 {
-  v3 = [(WACEAService *)self homeManager];
-  v2 = [v3 currentHome];
-  [v2 startSearchForAccessoriesNeedingReprovisioning];
+  homeManager = [(WACEAService *)self homeManager];
+  currentHome = [homeManager currentHome];
+  [currentHome startSearchForAccessoriesNeedingReprovisioning];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = [v4 currentHome];
+  homesCopy = homes;
+  currentHome = [homesCopy currentHome];
 
-  if (v5)
+  if (currentHome)
   {
-    v6 = [v4 currentHome];
-    [(WACEAService *)self setCurrentHome:v6];
+    currentHome2 = [homesCopy currentHome];
+    [(WACEAService *)self setCurrentHome:currentHome2];
 
-    v7 = [v4 currentHome];
-    NSLog(@"### WAC XPC: Current Home: %@", v7);
+    currentHome3 = [homesCopy currentHome];
+    NSLog(@"### WAC XPC: Current Home: %@", currentHome3);
 
-    v8 = [(WACEAService *)self currentHome];
-    [v8 setDelegate:self];
+    currentHome4 = [(WACEAService *)self currentHome];
+    [currentHome4 setDelegate:self];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(WACEAService *)self homeManager];
-    v10 = [v9 primaryHome];
-    v11 = [v10 accessories];
+    homeManager = [(WACEAService *)self homeManager];
+    primaryHome = [homeManager primaryHome];
+    accessories = [primaryHome accessories];
 
-    v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v12 = [accessories countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v12)
     {
       v13 = v12;
@@ -242,7 +242,7 @@ LABEL_33:
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(accessories);
           }
 
           [*(*(&v16 + 1) + 8 * v15) setDelegate:self];
@@ -250,7 +250,7 @@ LABEL_33:
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v13 = [accessories countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v13);

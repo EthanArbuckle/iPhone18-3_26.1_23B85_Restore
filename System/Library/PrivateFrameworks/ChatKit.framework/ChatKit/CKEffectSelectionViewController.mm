@@ -3,12 +3,12 @@
 - (BOOL)becomeFirstResponder;
 - (CKEffectSelectionViewControllerDelegate)delegate;
 - (NSString)selectedEffectIdentifier;
-- (id)effectImageForIndexPath:(id)a3;
-- (id)effectTitleForIndexPath:(id)a3;
-- (void)_updateMaxCellHeightForIndexPath:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)setSelectedEffectIdentifier:(id)a3;
-- (void)updateContentInsets:(UIEdgeInsets)a3;
+- (id)effectImageForIndexPath:(id)path;
+- (id)effectTitleForIndexPath:(id)path;
+- (void)_updateMaxCellHeightForIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)setSelectedEffectIdentifier:(id)identifier;
+- (void)updateContentInsets:(UIEdgeInsets)insets;
 - (void)viewDidLoad;
 @end
 
@@ -48,69 +48,69 @@
   v11 = [objc_alloc(MEMORY[0x1E69DC7F0]) initWithFrame:v52 collectionViewLayout:{v4, v5, v6, v7}];
   [(CKEffectSelectionViewController *)self setCollectionView:v11];
 
-  v12 = [(CKEffectSelectionViewController *)self collectionView];
-  [v12 setDelegate:self];
+  collectionView = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView setDelegate:self];
 
-  v13 = [(CKEffectSelectionViewController *)self collectionView];
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  [v13 setBackgroundColor:v14];
+  collectionView2 = [(CKEffectSelectionViewController *)self collectionView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [collectionView2 setBackgroundColor:clearColor];
 
-  v15 = [(CKEffectSelectionViewController *)self collectionView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView3 = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(CKEffectSelectionViewController *)self collectionView];
-  [v16 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kEffectSelectionCellReuseIdentifier"];
+  collectionView4 = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kEffectSelectionCellReuseIdentifier"];
 
-  v17 = [(CKEffectSelectionViewController *)self collectionView];
-  [v17 setContentInsetAdjustmentBehavior:2];
+  collectionView5 = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView5 setContentInsetAdjustmentBehavior:2];
 
-  v18 = [(CKEffectSelectionViewController *)self collectionView];
-  [v18 setShowsHorizontalScrollIndicator:1];
+  collectionView6 = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView6 setShowsHorizontalScrollIndicator:1];
 
-  v19 = [(CKEffectSelectionViewController *)self collectionView];
-  [v19 setSelectionFollowsFocus:1];
+  collectionView7 = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView7 setSelectionFollowsFocus:1];
 
-  v20 = [(CKEffectSelectionViewController *)self view];
-  v21 = [(CKEffectSelectionViewController *)self collectionView];
-  [v20 addSubview:v21];
+  view = [(CKEffectSelectionViewController *)self view];
+  collectionView8 = [(CKEffectSelectionViewController *)self collectionView];
+  [view addSubview:collectionView8];
 
   v38 = MEMORY[0x1E696ACD8];
-  v50 = [(CKEffectSelectionViewController *)self collectionView];
-  v48 = [v50 topAnchor];
-  v49 = [(CKEffectSelectionViewController *)self view];
-  v47 = [v49 topAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  collectionView9 = [(CKEffectSelectionViewController *)self collectionView];
+  topAnchor = [collectionView9 topAnchor];
+  view2 = [(CKEffectSelectionViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v58[0] = v46;
-  v45 = [(CKEffectSelectionViewController *)self collectionView];
-  v43 = [v45 leadingAnchor];
-  v44 = [(CKEffectSelectionViewController *)self view];
-  v42 = [v44 leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  collectionView10 = [(CKEffectSelectionViewController *)self collectionView];
+  leadingAnchor = [collectionView10 leadingAnchor];
+  view3 = [(CKEffectSelectionViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v58[1] = v41;
-  v40 = [(CKEffectSelectionViewController *)self collectionView];
-  v39 = [v40 trailingAnchor];
-  v22 = [(CKEffectSelectionViewController *)self view];
-  v23 = [v22 trailingAnchor];
-  v24 = [v39 constraintEqualToAnchor:v23];
+  collectionView11 = [(CKEffectSelectionViewController *)self collectionView];
+  trailingAnchor = [collectionView11 trailingAnchor];
+  view4 = [(CKEffectSelectionViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v58[2] = v24;
-  v25 = [(CKEffectSelectionViewController *)self collectionView];
-  v26 = [v25 bottomAnchor];
-  v27 = [(CKEffectSelectionViewController *)self view];
-  v28 = [v27 bottomAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  collectionView12 = [(CKEffectSelectionViewController *)self collectionView];
+  bottomAnchor = [collectionView12 bottomAnchor];
+  view5 = [(CKEffectSelectionViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v58[3] = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:4];
   [v38 activateConstraints:v30];
 
   objc_initWeak(&location, self);
   v31 = objc_alloc(MEMORY[0x1E69DC820]);
-  v32 = [(CKEffectSelectionViewController *)self collectionView];
+  collectionView13 = [(CKEffectSelectionViewController *)self collectionView];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __46__CKEffectSelectionViewController_viewDidLoad__block_invoke;
   v53[3] = &unk_1E72F11A0;
   objc_copyWeak(&v54, &location);
-  v33 = [v31 initWithCollectionView:v32 cellProvider:v53];
+  v33 = [v31 initWithCollectionView:collectionView13 cellProvider:v53];
   [(CKEffectSelectionViewController *)self setDataSource:v33];
 
   v34 = objc_alloc_init(MEMORY[0x1E69955A0]);
@@ -121,8 +121,8 @@
   v36 = +[CKEffectSelectionViewController orderedEffectIdentifiers];
   [v34 appendItemsWithIdentifiers:v36 intoSectionWithIdentifier:@"MainSectionIdentifier"];
 
-  v37 = [(CKEffectSelectionViewController *)self dataSource];
-  [v37 applySnapshot:v34 animatingDifferences:0];
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  [dataSource applySnapshot:v34 animatingDifferences:0];
 
   objc_destroyWeak(&v54);
   objc_destroyWeak(&location);
@@ -154,25 +154,25 @@ id __46__CKEffectSelectionViewController_viewDidLoad__block_invoke(uint64_t a1, 
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(CKEffectSelectionViewController *)self collectionView];
-  v3 = [v2 becomeFirstResponder];
+  collectionView = [(CKEffectSelectionViewController *)self collectionView];
+  becomeFirstResponder = [collectionView becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
-- (void)_updateMaxCellHeightForIndexPath:(id)a3
+- (void)_updateMaxCellHeightForIndexPath:(id)path
 {
-  v29 = a3;
-  v4 = [(CKEffectSelectionViewController *)self dataSource];
-  v5 = [v4 itemIdentifierForIndexPath:v29];
+  pathCopy = path;
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  v5 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
-  v6 = [(CKEffectSelectionViewController *)self identifierToHeightMap];
-  v7 = [v6 objectForKey:v5];
+  identifierToHeightMap = [(CKEffectSelectionViewController *)self identifierToHeightMap];
+  v7 = [identifierToHeightMap objectForKey:v5];
 
   if (v7)
   {
-    v8 = [(CKEffectSelectionViewController *)self identifierToHeightMap];
-    v9 = [v8 objectForKey:v5];
+    identifierToHeightMap2 = [(CKEffectSelectionViewController *)self identifierToHeightMap];
+    v9 = [identifierToHeightMap2 objectForKey:v5];
 
     [(CKEffectSelectionViewController *)self cellMaxHeight];
     v11 = v10;
@@ -188,18 +188,18 @@ id __46__CKEffectSelectionViewController_viewDidLoad__block_invoke(uint64_t a1, 
 
   else
   {
-    v9 = [(CKEffectSelectionViewController *)self effectTitleForIndexPath:v29];
-    v14 = [(CKEffectSelectionViewController *)self sizingCell];
-    [v14 setTitle:v9];
+    v9 = [(CKEffectSelectionViewController *)self effectTitleForIndexPath:pathCopy];
+    sizingCell = [(CKEffectSelectionViewController *)self sizingCell];
+    [sizingCell setTitle:v9];
 
-    v15 = [(CKEffectSelectionViewController *)self sizingCell];
-    [v15 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    sizingCell2 = [(CKEffectSelectionViewController *)self sizingCell];
+    [sizingCell2 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v17 = v16;
 
-    v18 = [(CKEffectSelectionViewController *)self identifierToHeightMap];
+    identifierToHeightMap3 = [(CKEffectSelectionViewController *)self identifierToHeightMap];
     *&v19 = v17;
     v20 = [MEMORY[0x1E696AD98] numberWithFloat:v19];
-    [v18 setObject:v20 forKey:v5];
+    [identifierToHeightMap3 setObject:v20 forKey:v5];
 
     [(CKEffectSelectionViewController *)self cellMaxHeight];
     if (v21 >= v17)
@@ -211,69 +211,69 @@ id __46__CKEffectSelectionViewController_viewDidLoad__block_invoke(uint64_t a1, 
     if (v17 != v22)
     {
       [(CKEffectSelectionViewController *)self setCellMaxHeight:v17];
-      v23 = [(CKEffectSelectionViewController *)self collectionView];
-      v24 = [v23 collectionViewLayout];
+      collectionView = [(CKEffectSelectionViewController *)self collectionView];
+      collectionViewLayout = [collectionView collectionViewLayout];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [(CKEffectSelectionViewController *)self collectionView];
-        v26 = [v25 collectionViewLayout];
+        collectionView2 = [(CKEffectSelectionViewController *)self collectionView];
+        collectionViewLayout2 = [collectionView2 collectionViewLayout];
 
-        [v26 itemSize];
+        [collectionViewLayout2 itemSize];
         if (v27 != v17)
         {
-          [v26 setItemSize:{88.0, v17}];
+          [collectionViewLayout2 setItemSize:{88.0, v17}];
         }
       }
 
-      v28 = [(CKEffectSelectionViewController *)self delegate];
-      [v28 didUpdateMaxCellHeight:v17];
+      delegate = [(CKEffectSelectionViewController *)self delegate];
+      [delegate didUpdateMaxCellHeight:v17];
     }
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CKEffectSelectionViewController *)self dataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  v7 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
-  v8 = [(CKEffectSelectionViewController *)self delegate];
-  [v8 effectSelectionViewController:self didSelectEffectWithIdentifier:v7];
+  delegate = [(CKEffectSelectionViewController *)self delegate];
+  [delegate effectSelectionViewController:self didSelectEffectWithIdentifier:v7];
 
-  v9 = [(CKEffectSelectionViewController *)self fsem];
-  v10 = [v9 effectForIdentifier:v7];
+  fsem = [(CKEffectSelectionViewController *)self fsem];
+  v10 = [fsem effectForIdentifier:v7];
 
   if (v10 && [v10 effectIsDark])
   {
-    v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 theme];
-    v13 = [v12 fsmPickerPrimaryColorDarkEffect];
-    [(CKEffectSelectionViewController *)self setLabelColor:v13];
+    secondaryLabelColor = +[CKUIBehavior sharedBehaviors];
+    theme = [secondaryLabelColor theme];
+    fsmPickerPrimaryColorDarkEffect = [theme fsmPickerPrimaryColorDarkEffect];
+    [(CKEffectSelectionViewController *)self setLabelColor:fsmPickerPrimaryColorDarkEffect];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(CKEffectSelectionViewController *)self setLabelColor:v11];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(CKEffectSelectionViewController *)self setLabelColor:secondaryLabelColor];
   }
 
   v19 = 0.0;
   v20 = 0.0;
-  v14 = [v10 backgroundColor];
-  [v14 getHue:0 saturation:0 brightness:&v20 alpha:&v19];
+  backgroundColor = [v10 backgroundColor];
+  [backgroundColor getHue:0 saturation:0 brightness:&v20 alpha:&v19];
 
   v15 = v19 > 0.5 && v20 < 0.5;
   [(CKEffectSelectionViewController *)self setLabelUsesDarkVibrancy:v15, v19, 0.5, v20];
-  v16 = [(CKEffectSelectionViewController *)self collectionView];
-  v17 = [v16 visibleCells];
+  collectionView = [(CKEffectSelectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__CKEffectSelectionViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
   v18[3] = &unk_1E72F7D70;
   v18[4] = self;
-  [v17 enumerateObjectsUsingBlock:v18];
+  [visibleCells enumerateObjectsUsingBlock:v18];
 }
 
 void __75__CKEffectSelectionViewController_collectionView_didSelectItemAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -283,20 +283,20 @@ void __75__CKEffectSelectionViewController_collectionView_didSelectItemAtIndexPa
   [v3 configureForEffectIsDark:{objc_msgSend(v2, "labelUsesDarkVibrancy")}];
 }
 
-- (id)effectTitleForIndexPath:(id)a3
+- (id)effectTitleForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CKEffectSelectionViewController *)self dataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  v6 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
-  v7 = [(CKEffectSelectionViewController *)self fsem];
-  v8 = [v7 effectIdentifiers];
-  v9 = [v8 containsObject:v6];
+  fsem = [(CKEffectSelectionViewController *)self fsem];
+  effectIdentifiers = [fsem effectIdentifiers];
+  v9 = [effectIdentifiers containsObject:v6];
 
   if (v9)
   {
-    v10 = [(CKEffectSelectionViewController *)self fsem];
-    v11 = [v10 localizedDisplayNameForEffectWithIdentifier:v6];
+    fsem2 = [(CKEffectSelectionViewController *)self fsem];
+    v11 = [fsem2 localizedDisplayNameForEffectWithIdentifier:v6];
   }
 
   else
@@ -318,11 +318,11 @@ void __75__CKEffectSelectionViewController_collectionView_didSelectItemAtIndexPa
   return v11;
 }
 
-- (id)effectImageForIndexPath:(id)a3
+- (id)effectImageForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CKEffectSelectionViewController *)self dataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  v6 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6];
 
@@ -331,45 +331,45 @@ void __75__CKEffectSelectionViewController_collectionView_didSelectItemAtIndexPa
 
 - (NSString)selectedEffectIdentifier
 {
-  v3 = [(CKEffectSelectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
-  v5 = [v4 firstObject];
+  collectionView = [(CKEffectSelectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  v6 = [(CKEffectSelectionViewController *)self dataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  v7 = [dataSource itemIdentifierForIndexPath:firstObject];
 
   return v7;
 }
 
-- (void)setSelectedEffectIdentifier:(id)a3
+- (void)setSelectedEffectIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKEffectSelectionViewController *)self collectionView];
-  [v5 frame];
+  identifierCopy = identifier;
+  collectionView = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView frame];
   v6 = CGRectEqualToRect(v18, *MEMORY[0x1E695F058]);
 
   if (v6)
   {
-    v7 = [(CKEffectSelectionViewController *)self view];
-    [v7 setNeedsLayout];
+    view = [(CKEffectSelectionViewController *)self view];
+    [view setNeedsLayout];
 
-    v8 = [(CKEffectSelectionViewController *)self view];
-    [v8 layoutIfNeeded];
+    view2 = [(CKEffectSelectionViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 
-  v9 = [(CKEffectSelectionViewController *)self dataSource];
-  v16 = [v9 indexPathForItemIdentifier:v4];
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  v16 = [dataSource indexPathForItemIdentifier:identifierCopy];
 
-  v10 = [(CKEffectSelectionViewController *)self collectionView];
-  [v10 selectItemAtIndexPath:v16 animated:0 scrollPosition:0];
+  collectionView2 = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView2 selectItemAtIndexPath:v16 animated:0 scrollPosition:0];
 
-  v11 = [(CKEffectSelectionViewController *)self collectionView];
-  v12 = [v11 delegate];
-  v13 = [(CKEffectSelectionViewController *)self collectionView];
-  [v12 collectionView:v13 didSelectItemAtIndexPath:v16];
+  collectionView3 = [(CKEffectSelectionViewController *)self collectionView];
+  delegate = [collectionView3 delegate];
+  collectionView4 = [(CKEffectSelectionViewController *)self collectionView];
+  [delegate collectionView:collectionView4 didSelectItemAtIndexPath:v16];
 
-  v14 = [(CKEffectSelectionViewController *)self collectionView];
-  v15 = [v14 cellForItemAtIndexPath:v16];
+  collectionView5 = [(CKEffectSelectionViewController *)self collectionView];
+  v15 = [collectionView5 cellForItemAtIndexPath:v16];
 
   [v15 becomeFirstResponder];
 }
@@ -406,24 +406,24 @@ void __59__CKEffectSelectionViewController_orderedEffectIdentifiers__block_invok
   orderedEffectIdentifiers_effectIdentifiers = v0;
 }
 
-- (void)updateContentInsets:(UIEdgeInsets)a3
+- (void)updateContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  v6 = [(CKEffectSelectionViewController *)self collectionView:a3.top];
+  right = insets.right;
+  left = insets.left;
+  v6 = [(CKEffectSelectionViewController *)self collectionView:insets.top];
   [v6 contentInset];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(CKEffectSelectionViewController *)self collectionView];
-  [v11 setContentInset:{v8, left, v10, right}];
+  collectionView = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView setContentInset:{v8, left, v10, right}];
 
-  v12 = [(CKEffectSelectionViewController *)self dataSource];
-  v13 = [(CKEffectSelectionViewController *)self selectedEffectIdentifier];
-  v15 = [v12 indexPathForItemIdentifier:v13];
+  dataSource = [(CKEffectSelectionViewController *)self dataSource];
+  selectedEffectIdentifier = [(CKEffectSelectionViewController *)self selectedEffectIdentifier];
+  v15 = [dataSource indexPathForItemIdentifier:selectedEffectIdentifier];
 
-  v14 = [(CKEffectSelectionViewController *)self collectionView];
-  [v14 selectItemAtIndexPath:v15 animated:0 scrollPosition:16];
+  collectionView2 = [(CKEffectSelectionViewController *)self collectionView];
+  [collectionView2 selectItemAtIndexPath:v15 animated:0 scrollPosition:16];
 }
 
 - (CKEffectSelectionViewControllerDelegate)delegate

@@ -1,20 +1,20 @@
 @interface UIView
-- (double)buddy_heightForContainerWidth:(double)a3 ratio:(double)a4;
-- (id)buddy_scaleHeightTo:(double)a3 ratio:(double)a4;
-- (id)buddy_scaleWidthTo:(double)a3 ratio:(double)a4;
-- (void)buddy_setSemanticContentAttributeRecursively:(int64_t)a3;
+- (double)buddy_heightForContainerWidth:(double)width ratio:(double)ratio;
+- (id)buddy_scaleHeightTo:(double)to ratio:(double)ratio;
+- (id)buddy_scaleWidthTo:(double)to ratio:(double)ratio;
+- (void)buddy_setSemanticContentAttributeRecursively:(int64_t)recursively;
 @end
 
 @implementation UIView
 
-- (void)buddy_setSemanticContentAttributeRecursively:(int64_t)a3
+- (void)buddy_setSemanticContentAttributeRecursively:(int64_t)recursively
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  recursivelyCopy = recursively;
   memset(__b, 0, sizeof(__b));
-  v3 = [(UIView *)v11 subviews];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:__b objects:v12 count:16];
+  subviews = [(UIView *)selfCopy subviews];
+  v4 = [(NSArray *)subviews countByEnumeratingWithState:__b objects:v12 count:16];
   if (v4)
   {
     v5 = *__b[2];
@@ -24,23 +24,23 @@
       {
         if (*__b[2] != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(__b[1] + 8 * i);
-        [v8 buddy_setSemanticContentAttributeRecursively:v9];
+        [v8 buddy_setSemanticContentAttributeRecursively:recursivelyCopy];
       }
 
-      v4 = [(NSArray *)v3 countByEnumeratingWithState:__b objects:v12 count:16];
+      v4 = [(NSArray *)subviews countByEnumeratingWithState:__b objects:v12 count:16];
     }
 
     while (v4);
   }
 
-  [(UIView *)v11 setSemanticContentAttribute:v9];
+  [(UIView *)selfCopy setSemanticContentAttribute:recursivelyCopy];
 }
 
-- (id)buddy_scaleHeightTo:(double)a3 ratio:(double)a4
+- (id)buddy_scaleHeightTo:(double)to ratio:(double)ratio
 {
   [(UIView *)self bounds];
   [(UIView *)self bounds];
@@ -53,7 +53,7 @@
   return self;
 }
 
-- (id)buddy_scaleWidthTo:(double)a3 ratio:(double)a4
+- (id)buddy_scaleWidthTo:(double)to ratio:(double)ratio
 {
   [(UIView *)self bounds];
   [(UIView *)self bounds];
@@ -66,7 +66,7 @@
   return self;
 }
 
-- (double)buddy_heightForContainerWidth:(double)a3 ratio:(double)a4
+- (double)buddy_heightForContainerWidth:(double)width ratio:(double)ratio
 {
   [(UIView *)self bounds];
   [(UIView *)self bounds];

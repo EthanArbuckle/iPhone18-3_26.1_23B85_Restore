@@ -1,58 +1,58 @@
 @interface RemoteAlertServiceViewController
-- (_TtC22HomeCaptiveViewService32RemoteAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (_TtC22HomeCaptiveViewService32RemoteAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
-- (void)extensionDeviceLostWithNotification:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)extensionDeviceLostWithNotification:(id)notification;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation RemoteAlertServiceViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_1000043F4;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_1000025B0(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000025B0(context, v6);
   sub_1000043AC(v6);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002ACC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100002C0C(a3);
+  selfCopy = self;
+  sub_100002C0C(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100002DC0(a3);
+  selfCopy = self;
+  sub_100002DC0(disappear);
 }
 
-- (void)extensionDeviceLostWithNotification:(id)a3
+- (void)extensionDeviceLostWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100002F98(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100002F98(notificationCopy);
 }
 
-- (_TtC22HomeCaptiveViewService32RemoteAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22HomeCaptiveViewService32RemoteAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -64,8 +64,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000038F0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000038F0(v5, v7, bundle);
 }
 
 - (void)didInvalidateForRemoteAlert

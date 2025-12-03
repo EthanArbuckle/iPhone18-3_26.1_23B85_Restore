@@ -6,12 +6,12 @@
 
 - (uint64_t)hu_hasTextStyle
 {
-  v1 = a1;
-  v2 = [a1 configurationWithoutTextStyle];
-  v3 = [v2 configurationWithoutPointSizeAndWeight];
+  selfCopy = self;
+  configurationWithoutTextStyle = [self configurationWithoutTextStyle];
+  configurationWithoutPointSizeAndWeight = [configurationWithoutTextStyle configurationWithoutPointSizeAndWeight];
 
-  LODWORD(v1) = [v1 isEqualToConfiguration:v3];
-  return v1 ^ 1;
+  LODWORD(selfCopy) = [selfCopy isEqualToConfiguration:configurationWithoutPointSizeAndWeight];
+  return selfCopy ^ 1;
 }
 
 @end

@@ -1,47 +1,47 @@
 @interface JFXOverlayEffectDebugView
-- (JFXOverlayEffectDebugView)initWithCoder:(id)a3;
-- (JFXOverlayEffectDebugView)initWithFrame:(CGRect)a3 delegate:(id)a4;
+- (JFXOverlayEffectDebugView)initWithCoder:(id)coder;
+- (JFXOverlayEffectDebugView)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (JFXOverlayEffectDebugViewDelegate)delegate;
 - (id)additionalRectsToDraw;
 - (void)setupViews;
-- (void)updateAdditionalRects:(id)a3 transformedLayer:(id)a4 effectScale:(double)a5 rects:(id)a6;
-- (void)updateBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6;
-- (void)updateCrosshairLayer:(id)a3 center:(CGPoint)a4 color:(id)a5 size:(CGSize)a6 thickness:(CGSize)a7;
-- (void)updateDottedBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6 borderPhase:(double)a7 borderDashPattern:(id)a8;
-- (void)updateFilledCircleLayer:(id)a3 center:(CGPoint)a4 radius:(double)a5 fillColor:(id)a6;
-- (void)updateFilledPolygonLayer:(id)a3 path:(CGPath *)a4 fillColor:(id)a5;
-- (void)updatePointsLayers:(id)a3 points:(id)a4 colors:(id)a5 size:(double)a6;
-- (void)updatePolygonLayer:(id)a3 points:(id)a4 borderWidth:(double)a5 borderColor:(id)a6;
-- (void)updateWithEffectFrame:(id)a3;
+- (void)updateAdditionalRects:(id)rects transformedLayer:(id)layer effectScale:(double)scale rects:(id)a6;
+- (void)updateBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color;
+- (void)updateCrosshairLayer:(id)layer center:(CGPoint)center color:(id)color size:(CGSize)size thickness:(CGSize)thickness;
+- (void)updateDottedBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color borderPhase:(double)phase borderDashPattern:(id)pattern;
+- (void)updateFilledCircleLayer:(id)layer center:(CGPoint)center radius:(double)radius fillColor:(id)color;
+- (void)updateFilledPolygonLayer:(id)layer path:(CGPath *)path fillColor:(id)color;
+- (void)updatePointsLayers:(id)layers points:(id)points colors:(id)colors size:(double)size;
+- (void)updatePolygonLayer:(id)layer points:(id)points borderWidth:(double)width borderColor:(id)color;
+- (void)updateWithEffectFrame:(id)frame;
 @end
 
 @implementation JFXOverlayEffectDebugView
 
-- (JFXOverlayEffectDebugView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (JFXOverlayEffectDebugView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = JFXOverlayEffectDebugView;
-  v10 = [(JFXOverlayEffectDebugView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(JFXOverlayEffectDebugView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(JFXOverlayEffectDebugView *)v10 setDelegate:v9];
+    [(JFXOverlayEffectDebugView *)height setDelegate:delegateCopy];
     [(JFXOverlayEffectDebugView *)v11 setupViews];
   }
 
   return v11;
 }
 
-- (JFXOverlayEffectDebugView)initWithCoder:(id)a3
+- (JFXOverlayEffectDebugView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = JFXOverlayEffectDebugView;
-  v3 = [(JFXOverlayEffectDebugView *)&v6 initWithCoder:a3];
+  v3 = [(JFXOverlayEffectDebugView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -58,275 +58,275 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(JFXOverlayEffectDebugView *)self setRootContainerView:v4];
 
-  v5 = [(JFXOverlayEffectDebugView *)self rootContainerView];
-  [v5 setHidden:1];
+  rootContainerView = [(JFXOverlayEffectDebugView *)self rootContainerView];
+  [rootContainerView setHidden:1];
 
-  v6 = [(JFXOverlayEffectDebugView *)self rootContainerView];
-  [(JFXOverlayEffectDebugView *)self addSubview:v6];
+  rootContainerView2 = [(JFXOverlayEffectDebugView *)self rootContainerView];
+  [(JFXOverlayEffectDebugView *)self addSubview:rootContainerView2];
 
-  v7 = [(JFXOverlayEffectDebugView *)self rootContainerView];
-  v8 = [v7 layer];
-  [(JFXOverlayEffectDebugView *)self setRootLayer:v8];
+  rootContainerView3 = [(JFXOverlayEffectDebugView *)self rootContainerView];
+  layer = [rootContainerView3 layer];
+  [(JFXOverlayEffectDebugView *)self setRootLayer:layer];
 
-  v9 = [MEMORY[0x277CD9FF8] layer];
-  [(JFXOverlayEffectDebugView *)self setRootTransformLayer:v9];
+  layer2 = [MEMORY[0x277CD9FF8] layer];
+  [(JFXOverlayEffectDebugView *)self setRootTransformLayer:layer2];
 
   v10 = *MEMORY[0x277CBF348];
   v11 = *(MEMORY[0x277CBF348] + 8);
-  v12 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  [v12 setAnchorPoint:{v10, v11}];
+  rootTransformLayer = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  [rootTransformLayer setAnchorPoint:{v10, v11}];
 
-  v13 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v14 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  [v13 addSublayer:v14];
+  rootLayer = [(JFXOverlayEffectDebugView *)self rootLayer];
+  rootTransformLayer2 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  [rootLayer addSublayer:rootTransformLayer2];
 
-  v15 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setDocumentBoundingBoxLayer:v15];
+  layer3 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setDocumentBoundingBoxLayer:layer3];
 
-  v16 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  v17 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
-  [v16 addSublayer:v17];
+  rootTransformLayer3 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  documentBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
+  [rootTransformLayer3 addSublayer:documentBoundingBoxLayer];
 
-  v18 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setOutputROILayer:v18];
+  layer4 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setOutputROILayer:layer4];
 
-  v19 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  v20 = [(JFXOverlayEffectDebugView *)self outputROILayer];
-  [v19 addSublayer:v20];
+  rootTransformLayer4 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  outputROILayer = [(JFXOverlayEffectDebugView *)self outputROILayer];
+  [rootTransformLayer4 addSublayer:outputROILayer];
 
-  v21 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setObjectAlignedBoundingBoxLayer:v21];
+  layer5 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setObjectAlignedBoundingBoxLayer:layer5];
 
-  v22 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  v23 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v22 addSublayer:v23];
+  rootTransformLayer5 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  objectAlignedBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [rootTransformLayer5 addSublayer:objectAlignedBoundingBoxLayer];
 
-  v24 = [MEMORY[0x277CD9ED0] layer];
-  [(JFXOverlayEffectDebugView *)self setTextBoundingBoxesContainerLayer:v24];
+  layer6 = [MEMORY[0x277CD9ED0] layer];
+  [(JFXOverlayEffectDebugView *)self setTextBoundingBoxesContainerLayer:layer6];
 
-  v25 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v26 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
-  [v25 addSublayer:v26];
+  rootLayer2 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  textBoundingBoxesContainerLayer = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
+  [rootLayer2 addSublayer:textBoundingBoxesContainerLayer];
 
-  v27 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setHitAreaBoundingBoxLayer:v27];
+  layer7 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setHitAreaBoundingBoxLayer:layer7];
 
-  v28 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v29 = [(JFXOverlayEffectDebugView *)self hitAreaBoundingBoxLayer];
-  [v28 addSublayer:v29];
+  rootLayer3 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  hitAreaBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self hitAreaBoundingBoxLayer];
+  [rootLayer3 addSublayer:hitAreaBoundingBoxLayer];
 
-  v30 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setHitAreaMinimumSizeBoundingBoxLayer:v30];
+  layer8 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setHitAreaMinimumSizeBoundingBoxLayer:layer8];
 
-  v31 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v32 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-  [v31 addSublayer:v32];
+  rootLayer4 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  hitAreaMinimumSizeBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+  [rootLayer4 addSublayer:hitAreaMinimumSizeBoundingBoxLayer];
 
-  v33 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+  hitAreaMinimumSizeBoundingBoxLayer2 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
   LODWORD(v34) = 1050253722;
-  [v33 setOpacity:v34];
+  [hitAreaMinimumSizeBoundingBoxLayer2 setOpacity:v34];
 
-  v35 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setMidpointLayer:v35];
+  layer9 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setMidpointLayer:layer9];
 
-  v36 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v37 = [(JFXOverlayEffectDebugView *)self midpointLayer];
-  [v36 addSublayer:v37];
+  rootLayer5 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  midpointLayer = [(JFXOverlayEffectDebugView *)self midpointLayer];
+  [rootLayer5 addSublayer:midpointLayer];
 
-  v38 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setOverlayCenterLayer:v38];
+  layer10 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setOverlayCenterLayer:layer10];
 
-  v39 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v40 = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
-  [v39 addSublayer:v40];
+  rootLayer6 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  overlayCenterLayer = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
+  [rootLayer6 addSublayer:overlayCenterLayer];
 
-  v41 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setOriginCrosshairLayer:v41];
+  layer11 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setOriginCrosshairLayer:layer11];
 
-  v42 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  v43 = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
-  [v42 addSublayer:v43];
+  rootTransformLayer6 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  originCrosshairLayer = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
+  [rootTransformLayer6 addSublayer:originCrosshairLayer];
 
-  v44 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setCornerPointsLayer:v44];
+  layer12 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setCornerPointsLayer:layer12];
 
-  v45 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v46 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
-  [v45 addSublayer:v46];
+  rootLayer7 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  cornerPointsLayer = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
+  [rootLayer7 addSublayer:cornerPointsLayer];
 
-  v47 = [MEMORY[0x277CD9ED0] layer];
-  [(JFXOverlayEffectDebugView *)self setTextCornerPointsContainerLayer:v47];
+  layer13 = [MEMORY[0x277CD9ED0] layer];
+  [(JFXOverlayEffectDebugView *)self setTextCornerPointsContainerLayer:layer13];
 
-  v48 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v49 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
-  [v48 addSublayer:v49];
+  rootLayer8 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  textCornerPointsContainerLayer = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
+  [rootLayer8 addSublayer:textCornerPointsContainerLayer];
 
-  v50 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setHitAreaPointsLayer:v50];
+  layer14 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setHitAreaPointsLayer:layer14];
 
-  v51 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v52 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
-  [v51 addSublayer:v52];
+  rootLayer9 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  hitAreaPointsLayer = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
+  [rootLayer9 addSublayer:hitAreaPointsLayer];
 
-  v53 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setAdditionalRectsLayer:v53];
+  layer15 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setAdditionalRectsLayer:layer15];
 
-  v54 = [(JFXOverlayEffectDebugView *)self rootLayer];
-  v55 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
-  [v54 addSublayer:v55];
+  rootLayer10 = [(JFXOverlayEffectDebugView *)self rootLayer];
+  additionalRectsLayer = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
+  [rootLayer10 addSublayer:additionalRectsLayer];
 
-  v56 = [MEMORY[0x277CD9F90] layer];
-  [(JFXOverlayEffectDebugView *)self setAdditionalRectsTransformedLayer:v56];
+  layer16 = [MEMORY[0x277CD9F90] layer];
+  [(JFXOverlayEffectDebugView *)self setAdditionalRectsTransformedLayer:layer16];
 
-  v57 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  v58 = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
-  [v57 addSublayer:v58];
+  rootTransformLayer7 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  additionalRectsTransformedLayer = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
+  [rootTransformLayer7 addSublayer:additionalRectsTransformedLayer];
 
-  v59 = [(JFXOverlayEffectDebugView *)self delegate];
-  LOBYTE(v58) = objc_opt_respondsToSelector();
+  delegate = [(JFXOverlayEffectDebugView *)self delegate];
+  LOBYTE(additionalRectsTransformedLayer) = objc_opt_respondsToSelector();
 
-  if ((v58 & 1) != 0 && (-[JFXOverlayEffectDebugView delegate](self, "delegate"), v60 = objc_claimAutoreleasedReturnValue(), [v60 overlayEffectDebugViewOptions], v63 = objc_claimAutoreleasedReturnValue(), v60, v63))
+  if ((additionalRectsTransformedLayer & 1) != 0 && (-[JFXOverlayEffectDebugView delegate](self, "delegate"), v60 = objc_claimAutoreleasedReturnValue(), [v60 overlayEffectDebugViewOptions], v63 = objc_claimAutoreleasedReturnValue(), v60, v63))
   {
-    v61 = self;
+    selfCopy2 = self;
     v62 = v63;
   }
 
   else
   {
     v62 = objc_opt_new();
-    v61 = self;
+    selfCopy2 = self;
     v63 = v62;
   }
 
-  [(JFXOverlayEffectDebugView *)v61 setOptions:v62];
+  [(JFXOverlayEffectDebugView *)selfCopy2 setOptions:v62];
 }
 
-- (void)updateDottedBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6 borderPhase:(double)a7 borderDashPattern:(id)a8
+- (void)updateDottedBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color borderPhase:(double)phase borderDashPattern:(id)pattern
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  v17 = a6;
-  v18 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layerCopy = layer;
+  colorCopy = color;
+  patternCopy = pattern;
   v31.origin.x = x;
   v31.origin.y = y;
   v31.size.width = width;
   v31.size.height = height;
   v19 = pv_CGRect_to_NSArray(v31);
-  v20 = [MEMORY[0x277D75348] clearColor];
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v21 = patternCopy;
+  v22 = colorCopy;
+  v23 = layerCopy;
   ClosedCGPathWithPoints = createClosedCGPathWithPoints(v19);
-  v25 = v20;
+  v25 = clearColor;
   v29 = v23;
   v26 = v22;
   v27 = v21;
-  [v29 setFillColor:{objc_msgSend(v20, "CGColor")}];
-  v28 = [v26 CGColor];
+  [v29 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
+  cGColor = [v26 CGColor];
 
-  [v29 setStrokeColor:v28];
-  [v29 setLineDashPhase:a7];
+  [v29 setStrokeColor:cGColor];
+  [v29 setLineDashPhase:phase];
   [v29 setLineDashPattern:v27];
 
-  [v29 setLineWidth:a5 * 0.5];
+  [v29 setLineWidth:width * 0.5];
   [v29 setPath:ClosedCGPathWithPoints];
 
   CGPathRelease(ClosedCGPathWithPoints);
 }
 
-- (void)updateBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6
+- (void)updateBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layerCopy = layer;
+  colorCopy = color;
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
   v24.size.height = height;
   v14 = pv_CGRect_to_NSArray(v24);
-  v15 = [MEMORY[0x277D75348] clearColor];
-  v16 = v13;
-  v17 = v12;
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v16 = colorCopy;
+  v17 = layerCopy;
   ClosedCGPathWithPoints = createClosedCGPathWithPoints(v14);
-  v19 = v15;
+  v19 = clearColor;
   v22 = v17;
   v20 = v16;
-  [v22 setFillColor:{objc_msgSend(v15, "CGColor")}];
-  v21 = [v20 CGColor];
+  [v22 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
+  cGColor = [v20 CGColor];
 
-  [v22 setStrokeColor:v21];
+  [v22 setStrokeColor:cGColor];
   [v22 setLineDashPhase:0.0];
   [v22 setLineDashPattern:0];
-  [v22 setLineWidth:a5];
+  [v22 setLineWidth:width];
   [v22 setPath:ClosedCGPathWithPoints];
 
   CGPathRelease(ClosedCGPathWithPoints);
 }
 
-- (void)updatePolygonLayer:(id)a3 points:(id)a4 borderWidth:(double)a5 borderColor:(id)a6
+- (void)updatePolygonLayer:(id)layer points:(id)points borderWidth:(double)width borderColor:(id)color
 {
-  v9 = a3;
-  v10 = a6;
+  layerCopy = layer;
+  colorCopy = color;
   v11 = MEMORY[0x277D75348];
-  v12 = a4;
-  v13 = [v11 clearColor];
-  v14 = v10;
-  v15 = v9;
-  ClosedCGPathWithPoints = createClosedCGPathWithPoints(v12);
+  pointsCopy = points;
+  clearColor = [v11 clearColor];
+  v14 = colorCopy;
+  v15 = layerCopy;
+  ClosedCGPathWithPoints = createClosedCGPathWithPoints(pointsCopy);
 
-  v17 = v13;
+  v17 = clearColor;
   v20 = v15;
   v18 = v14;
-  [v20 setFillColor:{objc_msgSend(v13, "CGColor")}];
-  v19 = [v18 CGColor];
+  [v20 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
+  cGColor = [v18 CGColor];
 
-  [v20 setStrokeColor:v19];
+  [v20 setStrokeColor:cGColor];
   [v20 setLineDashPhase:0.0];
   [v20 setLineDashPattern:0];
-  [v20 setLineWidth:a5];
+  [v20 setLineWidth:width];
   [v20 setPath:ClosedCGPathWithPoints];
 
   CGPathRelease(ClosedCGPathWithPoints);
 }
 
-- (void)updateFilledPolygonLayer:(id)a3 path:(CGPath *)a4 fillColor:(id)a5
+- (void)updateFilledPolygonLayer:(id)layer path:(CGPath *)path fillColor:(id)color
 {
-  v7 = a3;
+  layerCopy = layer;
   v8 = MEMORY[0x277D75348];
-  v9 = a5;
-  v10 = [v8 clearColor];
-  v11 = v9;
-  v13 = v7;
-  v12 = [v9 CGColor];
+  colorCopy = color;
+  clearColor = [v8 clearColor];
+  v11 = colorCopy;
+  v13 = layerCopy;
+  cGColor = [colorCopy CGColor];
 
-  [v13 setFillColor:v12];
-  [v13 setStrokeColor:{objc_msgSend(v10, "CGColor")}];
+  [v13 setFillColor:cGColor];
+  [v13 setStrokeColor:{objc_msgSend(clearColor, "CGColor")}];
   [v13 setLineDashPhase:0.0];
   [v13 setLineDashPattern:0];
   [v13 setLineWidth:0.0];
-  [v13 setPath:a4];
+  [v13 setPath:path];
 }
 
-- (void)updatePointsLayers:(id)a3 points:(id)a4 colors:(id)a5 size:(double)a6
+- (void)updatePointsLayers:(id)layers points:(id)points colors:(id)colors size:(double)size
 {
-  v9 = a4;
-  v10 = a5;
+  pointsCopy = points;
+  colorsCopy = colors;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__JFXOverlayEffectDebugView_updatePointsLayers_points_colors_size___block_invoke;
   v13[3] = &unk_278D7D168;
-  v16 = a6;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [a3 enumerateObjectsUsingBlock:v13];
+  sizeCopy = size;
+  v14 = pointsCopy;
+  v15 = colorsCopy;
+  v11 = colorsCopy;
+  v12 = pointsCopy;
+  [layers enumerateObjectsUsingBlock:v13];
 }
 
 void __67__JFXOverlayEffectDebugView_updatePointsLayers_points_colors_size___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -360,20 +360,20 @@ void __67__JFXOverlayEffectDebugView_updatePointsLayers_points_colors_size___blo
   CGPathRelease(ClosedCGPathWithPoints);
 }
 
-- (void)updateFilledCircleLayer:(id)a3 center:(CGPoint)a4 radius:(double)a5 fillColor:(id)a6
+- (void)updateFilledCircleLayer:(id)layer center:(CGPoint)center radius:(double)radius fillColor:(id)color
 {
-  x = a4.x;
-  v9 = a3;
-  v10 = a6;
-  v17.origin.x = CGRectMakeSquareWithSizeAndCenterPoint(a5 + a5, x);
+  x = center.x;
+  layerCopy = layer;
+  colorCopy = color;
+  v17.origin.x = CGRectMakeSquareWithSizeAndCenterPoint(radius + radius, x);
   v11 = CGPathCreateWithEllipseInRect(v17, 0);
-  v12 = [MEMORY[0x277D75348] clearColor];
-  v13 = v10;
-  v15 = v9;
-  v14 = [v10 CGColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v13 = colorCopy;
+  v15 = layerCopy;
+  cGColor = [colorCopy CGColor];
 
-  [v15 setFillColor:v14];
-  [v15 setStrokeColor:{objc_msgSend(v12, "CGColor")}];
+  [v15 setFillColor:cGColor];
+  [v15 setStrokeColor:{objc_msgSend(clearColor, "CGColor")}];
   [v15 setLineDashPhase:0.0];
   [v15 setLineDashPattern:0];
   [v15 setLineWidth:0.0];
@@ -382,17 +382,17 @@ void __67__JFXOverlayEffectDebugView_updatePointsLayers_points_colors_size___blo
   CGPathRelease(v11);
 }
 
-- (void)updateCrosshairLayer:(id)a3 center:(CGPoint)a4 color:(id)a5 size:(CGSize)a6 thickness:(CGSize)a7
+- (void)updateCrosshairLayer:(id)layer center:(CGPoint)center color:(id)color size:(CGSize)size thickness:(CGSize)thickness
 {
-  height = a7.height;
-  width = a7.width;
-  v9 = a6.height;
-  v10 = a6.width;
-  y = a4.y;
-  x = a4.x;
+  height = thickness.height;
+  width = thickness.width;
+  v9 = size.height;
+  v10 = size.width;
+  y = center.y;
+  x = center.x;
   v33[24] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
+  layerCopy = layer;
+  colorCopy = color;
   v16 = CGSizeScale(v10, v9, 0.5);
   v18 = v17;
   v19 = CGSizeScale(width, height, 0.5);
@@ -427,19 +427,19 @@ void __67__JFXOverlayEffectDebugView_updatePointsLayers_points_colors_size___blo
     [v21 addObject:v23];
   }
 
-  v24 = [MEMORY[0x277D75348] clearColor];
-  v25 = v14;
-  v26 = v15;
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v25 = layerCopy;
+  v26 = colorCopy;
   ClosedCGPathWithPoints = createClosedCGPathWithPoints(v21);
   v28 = v26;
   v32 = v25;
-  v29 = v24;
-  v30 = [v26 CGColor];
+  v29 = clearColor;
+  cGColor = [v26 CGColor];
 
-  [v32 setFillColor:v30];
-  v31 = [v29 CGColor];
+  [v32 setFillColor:cGColor];
+  cGColor2 = [v29 CGColor];
 
-  [v32 setStrokeColor:v31];
+  [v32 setStrokeColor:cGColor2];
   [v32 setLineDashPhase:0.0];
   [v32 setLineDashPattern:0];
   [v32 setLineWidth:0.0];
@@ -448,30 +448,30 @@ void __67__JFXOverlayEffectDebugView_updatePointsLayers_points_colors_size___blo
   CGPathRelease(ClosedCGPathWithPoints);
 }
 
-- (void)updateAdditionalRects:(id)a3 transformedLayer:(id)a4 effectScale:(double)a5 rects:(id)a6
+- (void)updateAdditionalRects:(id)rects transformedLayer:(id)layer effectScale:(double)scale rects:(id)a6
 {
-  v9 = a3;
-  v10 = a4;
+  rectsCopy = rects;
+  layerCopy = layer;
   v11 = a6;
-  [v9 setHidden:{objc_msgSend(v11, "count") == 0}];
-  [v10 setHidden:{objc_msgSend(v9, "isHidden")}];
-  if (([v9 isHidden] & 1) == 0)
+  [rectsCopy setHidden:{objc_msgSend(v11, "count") == 0}];
+  [layerCopy setHidden:{objc_msgSend(rectsCopy, "isHidden")}];
+  if (([rectsCopy isHidden] & 1) == 0)
   {
-    v12 = [v9 sublayers];
-    v13 = [v12 copy];
+    sublayers = [rectsCopy sublayers];
+    v13 = [sublayers copy];
 
     [v13 enumerateObjectsUsingBlock:&__block_literal_global_70];
-    v14 = [v10 sublayers];
-    v15 = [v14 copy];
+    sublayers2 = [layerCopy sublayers];
+    v15 = [sublayers2 copy];
 
     [v15 enumerateObjectsUsingBlock:&__block_literal_global_46];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effectScale_rects___block_invoke_3;
     v16[3] = &unk_278D7D1B0;
-    v19 = a5;
-    v17 = v9;
-    v18 = v10;
+    scaleCopy = scale;
+    v17 = rectsCopy;
+    v18 = layerCopy;
     [v11 enumerateObjectsUsingBlock:v16];
   }
 }
@@ -520,23 +520,23 @@ void __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effe
   [*(x0_0 + v19) addSublayer:v14];
 }
 
-- (void)updateWithEffectFrame:(id)a3
+- (void)updateWithEffectFrame:(id)frame
 {
   v288 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 isTrackedButTrackingUnavailable])
+  frameCopy = frame;
+  v5 = frameCopy;
+  if (!frameCopy || [frameCopy isTrackedButTrackingUnavailable])
   {
-    v6 = [(JFXOverlayEffectDebugView *)self rootContainerView];
-    [v6 setHidden:1];
+    rootContainerView = [(JFXOverlayEffectDebugView *)self rootContainerView];
+    [rootContainerView setHidden:1];
 
     goto LABEL_65;
   }
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v7 = [(JFXOverlayEffectDebugView *)self rootContainerView];
-  [v7 setHidden:0];
+  rootContainerView2 = [(JFXOverlayEffectDebugView *)self rootContainerView];
+  [rootContainerView2 setHidden:0];
 
   [v5 relativeToSize];
   v289.origin.x = CGRectMakeWithSize();
@@ -565,10 +565,10 @@ void __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effe
   v265 = v273;
   v266 = v274;
   [(JFXOverlayEffectDebugView *)self setTransform:&v264];
-  v16 = [(JFXOverlayEffectDebugView *)self rootContainerView];
-  [v16 setFrame:{x, y, width, height}];
+  rootContainerView3 = [(JFXOverlayEffectDebugView *)self rootContainerView];
+  [rootContainerView3 setFrame:{x, y, width, height}];
 
-  v17 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  rootTransformLayer = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
   v18 = *(MEMORY[0x277CD9DE8] + 64);
   v19 = *(MEMORY[0x277CD9DE8] + 96);
   v20 = *(MEMORY[0x277CD9DE8] + 112);
@@ -583,16 +583,16 @@ void __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effe
   v266 = v22;
   v267 = v23;
   v268 = v18;
-  [v17 setTransform:&v264];
+  [rootTransformLayer setTransform:&v264];
 
-  v24 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
-  [v24 setBounds:{x, y, width, height}];
+  rootTransformLayer2 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  [rootTransformLayer2 setBounds:{x, y, width, height}];
 
   v26 = *MEMORY[0x277CBF348];
   v25 = *(MEMORY[0x277CBF348] + 8);
-  v27 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  rootTransformLayer3 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
   v249 = v25;
-  [v27 setPosition:{v26, v25}];
+  [rootTransformLayer3 setPosition:{v26, v25}];
 
   v270 = 0u;
   v271 = 0u;
@@ -613,7 +613,7 @@ void __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effe
   v247 = v285;
   v237 = v286;
   v239 = v284;
-  v29 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
+  rootTransformLayer4 = [(JFXOverlayEffectDebugView *)self rootTransformLayer];
   v283.a = a;
   v283.b = b;
   v283.c = c;
@@ -622,92 +622,92 @@ void __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effe
   v285 = v247;
   v286 = v237;
   v287 = v245;
-  [v29 setTransform:&v283];
+  [rootTransformLayer4 setTransform:&v283];
 
-  v30 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
-  [v30 setBounds:{x, y, width, height}];
+  documentBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
+  [documentBoundingBoxLayer setBounds:{x, y, width, height}];
 
-  v31 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
-  [v31 setPosition:{MidX, MidY}];
+  documentBoundingBoxLayer2 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
+  [documentBoundingBoxLayer2 setPosition:{MidX, MidY}];
 
-  v32 = [(JFXOverlayEffectDebugView *)self outputROILayer];
-  [v32 setBounds:{x, y, width, height}];
+  outputROILayer = [(JFXOverlayEffectDebugView *)self outputROILayer];
+  [outputROILayer setBounds:{x, y, width, height}];
 
-  v33 = [(JFXOverlayEffectDebugView *)self outputROILayer];
-  [v33 setPosition:{MidX, MidY}];
+  outputROILayer2 = [(JFXOverlayEffectDebugView *)self outputROILayer];
+  [outputROILayer2 setPosition:{MidX, MidY}];
 
-  v34 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v34 setBounds:{x, y, width, height}];
+  objectAlignedBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [objectAlignedBoundingBoxLayer setBounds:{x, y, width, height}];
 
-  v35 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v35 setPosition:{MidX, MidY}];
+  objectAlignedBoundingBoxLayer2 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [objectAlignedBoundingBoxLayer2 setPosition:{MidX, MidY}];
 
-  v36 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
-  [v36 setBounds:{x, y, width, height}];
+  textBoundingBoxesContainerLayer = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
+  [textBoundingBoxesContainerLayer setBounds:{x, y, width, height}];
 
-  v37 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
-  [v37 setPosition:{MidX, MidY}];
+  textBoundingBoxesContainerLayer2 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
+  [textBoundingBoxesContainerLayer2 setPosition:{MidX, MidY}];
 
-  v38 = [(JFXOverlayEffectDebugView *)self midpointLayer];
-  [v38 setBounds:{x, y, width, height}];
+  midpointLayer = [(JFXOverlayEffectDebugView *)self midpointLayer];
+  [midpointLayer setBounds:{x, y, width, height}];
 
-  v39 = [(JFXOverlayEffectDebugView *)self midpointLayer];
-  [v39 setPosition:{MidX, MidY}];
+  midpointLayer2 = [(JFXOverlayEffectDebugView *)self midpointLayer];
+  [midpointLayer2 setPosition:{MidX, MidY}];
 
-  v40 = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
-  [v40 setBounds:{x, y, width, height}];
+  overlayCenterLayer = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
+  [overlayCenterLayer setBounds:{x, y, width, height}];
 
-  v41 = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
-  [v41 setPosition:{MidX, MidY}];
+  overlayCenterLayer2 = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
+  [overlayCenterLayer2 setPosition:{MidX, MidY}];
 
-  v42 = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
-  [v42 setBounds:{x, y, width, height}];
+  originCrosshairLayer = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
+  [originCrosshairLayer setBounds:{x, y, width, height}];
 
-  v43 = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
-  [v43 setPosition:{MidX, MidY}];
+  originCrosshairLayer2 = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
+  [originCrosshairLayer2 setPosition:{MidX, MidY}];
 
-  v44 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
-  [v44 setBounds:{x, y, width, height}];
+  cornerPointsLayer = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
+  [cornerPointsLayer setBounds:{x, y, width, height}];
 
-  v45 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
-  [v45 setPosition:{MidX, MidY}];
+  cornerPointsLayer2 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
+  [cornerPointsLayer2 setPosition:{MidX, MidY}];
 
-  v46 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
-  [v46 setBounds:{x, y, width, height}];
+  textCornerPointsContainerLayer = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
+  [textCornerPointsContainerLayer setBounds:{x, y, width, height}];
 
-  v47 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
-  [v47 setPosition:{MidX, MidY}];
+  textCornerPointsContainerLayer2 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
+  [textCornerPointsContainerLayer2 setPosition:{MidX, MidY}];
 
-  v48 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
-  [v48 setBounds:{x, y, width, height}];
+  hitAreaPointsLayer = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
+  [hitAreaPointsLayer setBounds:{x, y, width, height}];
 
-  v49 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
-  [v49 setPosition:{MidX, MidY}];
+  hitAreaPointsLayer2 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
+  [hitAreaPointsLayer2 setPosition:{MidX, MidY}];
 
-  v50 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
-  [v50 setBounds:{x, y, width, height}];
+  additionalRectsLayer = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
+  [additionalRectsLayer setBounds:{x, y, width, height}];
 
-  v51 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
-  [v51 setPosition:{MidX, MidY}];
+  additionalRectsLayer2 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
+  [additionalRectsLayer2 setPosition:{MidX, MidY}];
 
-  v52 = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
+  additionalRectsTransformedLayer = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
   v248 = x;
   v246 = y;
   v244 = width;
   v242 = height;
   v53 = height;
   v54 = v28;
-  [v52 setBounds:{x, y, width, v53}];
+  [additionalRectsTransformedLayer setBounds:{x, y, width, v53}];
 
-  v55 = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
-  [v55 setPosition:{MidX, MidY}];
+  additionalRectsTransformedLayer2 = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
+  [additionalRectsTransformedLayer2 setPosition:{MidX, MidY}];
 
-  v56 = [(JFXOverlayEffectDebugView *)self options];
-  v57 = [v56 showDocumentBoundingBox];
+  options = [(JFXOverlayEffectDebugView *)self options];
+  showDocumentBoundingBox = [options showDocumentBoundingBox];
 
-  v58 = v57 ^ 1u;
-  v59 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
-  [v59 setHidden:v58];
+  v58 = showDocumentBoundingBox ^ 1u;
+  documentBoundingBoxLayer3 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
+  [documentBoundingBoxLayer3 setHidden:v58];
 
   if ((v58 & 1) == 0)
   {
@@ -718,7 +718,7 @@ void __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effe
     [v5 effectSize];
     v68 = v67;
     v70 = v69;
-    v71 = [v5 effectOrigin];
+    effectOrigin = [v5 effectOrigin];
     v72 = 0;
     v283.a.x = SquareWithSize;
     v283.a.y = v62;
@@ -732,14 +732,14 @@ void __86__JFXOverlayEffectDebugView_updateAdditionalRects_transformedLayer_effe
     {
       v254 = *(&v283.a.x + v72);
       v251 = *(&v283.a.y + v72);
-      if (v71 == 2)
+      if (effectOrigin == 2)
       {
         break;
       }
 
       v73 = v249;
       v74 = v26;
-      if (v71 != 1)
+      if (effectOrigin != 1)
       {
         goto LABEL_10;
       }
@@ -792,15 +792,15 @@ LABEL_11:
         while (v75 != 64);
         v82 = v76 - v77;
         v83 = v79 - v78;
-        v84 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
-        v85 = [(JFXOverlayEffectDebugView *)self options];
-        v86 = [v85 documentBoundingBoxColor];
+        documentBoundingBoxLayer4 = [(JFXOverlayEffectDebugView *)self documentBoundingBoxLayer];
+        options2 = [(JFXOverlayEffectDebugView *)self options];
+        documentBoundingBoxColor = [options2 documentBoundingBoxColor];
         v87 = [MEMORY[0x277CCABB0] numberWithDouble:8.0 / v54];
         v282[0] = v87;
         v88 = [MEMORY[0x277CCABB0] numberWithDouble:5.0 / v54];
         v282[1] = v88;
         v89 = [MEMORY[0x277CBEA60] arrayWithObjects:v282 count:2];
-        [(JFXOverlayEffectDebugView *)self updateDottedBorderedLayer:v84 borderRect:v86 borderWidth:v89 borderColor:v77 borderPhase:v78 borderDashPattern:v82, v83, 2.0 / v54, 0.0];
+        [(JFXOverlayEffectDebugView *)self updateDottedBorderedLayer:documentBoundingBoxLayer4 borderRect:documentBoundingBoxColor borderWidth:v89 borderColor:v77 borderPhase:v78 borderDashPattern:v82, v83, 2.0 / v54, 0.0];
 
         goto LABEL_23;
       }
@@ -817,12 +817,12 @@ LABEL_10:
   }
 
 LABEL_23:
-  v90 = [(JFXOverlayEffectDebugView *)self options];
-  v91 = [v90 showDocumentBoundingBox];
+  options3 = [(JFXOverlayEffectDebugView *)self options];
+  showDocumentBoundingBox2 = [options3 showDocumentBoundingBox];
 
-  v92 = v91 ^ 1u;
-  v93 = [(JFXOverlayEffectDebugView *)self outputROILayer];
-  [v93 setHidden:v92];
+  v92 = showDocumentBoundingBox2 ^ 1u;
+  outputROILayer3 = [(JFXOverlayEffectDebugView *)self outputROILayer];
+  [outputROILayer3 setHidden:v92];
 
   if (v92)
   {
@@ -842,7 +842,7 @@ LABEL_23:
   v107 = v106;
   v238 = v26;
   v109 = v108;
-  v110 = [v5 effectOrigin];
+  effectOrigin2 = [v5 effectOrigin];
   v111 = 0;
   v283.a.x = v95;
   v283.a.y = v97;
@@ -859,7 +859,7 @@ LABEL_23:
   {
     v255 = *(&v283.a.x + v111);
     v252 = *(&v283.a.y + v111);
-    if (v110 == 2)
+    if (effectOrigin2 == 2)
     {
       v114 = v105 * -0.5;
       v115 = v103 * -0.5;
@@ -869,7 +869,7 @@ LABEL_23:
     {
       v114 = v249;
       v115 = v238;
-      if (v110 == 1)
+      if (effectOrigin2 == 1)
       {
         memset(&v275, 0, sizeof(v275));
         CGAffineTransformMakeScale(&v275, v112, v113);
@@ -928,54 +928,54 @@ LABEL_30:
   while (v116 != 64);
   v123 = v117 - v118;
   v124 = v120 - v119;
-  v125 = [(JFXOverlayEffectDebugView *)self outputROILayer];
+  outputROILayer4 = [(JFXOverlayEffectDebugView *)self outputROILayer];
   v54 = v240;
-  v126 = [(JFXOverlayEffectDebugView *)self options];
-  v127 = [v126 outputROIColor];
-  v128 = [MEMORY[0x277CCABB0] numberWithDouble:6.0 / v240];
-  v281[0] = v128;
-  v129 = [MEMORY[0x277CCABB0] numberWithDouble:4.0 / v240];
-  v281[1] = v129;
+  options4 = [(JFXOverlayEffectDebugView *)self options];
+  outputROIColor = [options4 outputROIColor];
+  v240 = [MEMORY[0x277CCABB0] numberWithDouble:6.0 / v240];
+  v281[0] = v240;
+  v2402 = [MEMORY[0x277CCABB0] numberWithDouble:4.0 / v240];
+  v281[1] = v2402;
   v130 = [MEMORY[0x277CBEA60] arrayWithObjects:v281 count:2];
-  [(JFXOverlayEffectDebugView *)self updateDottedBorderedLayer:v125 borderRect:v127 borderWidth:v130 borderColor:v118 borderPhase:v119 borderDashPattern:v123, v124, 2.0 / v240, 0.0];
+  [(JFXOverlayEffectDebugView *)self updateDottedBorderedLayer:outputROILayer4 borderRect:outputROIColor borderWidth:v130 borderColor:v118 borderPhase:v119 borderDashPattern:v123, v124, 2.0 / v240, 0.0];
 
 LABEL_42:
-  v131 = [(JFXOverlayEffectDebugView *)self options];
-  v132 = [v131 showObjectAlignedBoundingBox];
+  options5 = [(JFXOverlayEffectDebugView *)self options];
+  showObjectAlignedBoundingBox = [options5 showObjectAlignedBoundingBox];
 
-  v133 = v132 ^ 1u;
-  v134 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v134 setHidden:v133];
+  v133 = showObjectAlignedBoundingBox ^ 1u;
+  objectAlignedBoundingBoxLayer3 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [objectAlignedBoundingBoxLayer3 setHidden:v133];
 
   if ((v133 & 1) == 0)
   {
-    v135 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
+    objectAlignedBoundingBoxLayer4 = [(JFXOverlayEffectDebugView *)self objectAlignedBoundingBoxLayer];
     [v5 objectBounds];
     v137 = v136;
     v139 = v138;
     v141 = v140;
     v143 = v142;
-    v144 = [(JFXOverlayEffectDebugView *)self options];
-    v145 = [v144 objectAlignedBoundingBoxColor];
-    [(JFXOverlayEffectDebugView *)self updateBorderedLayer:v135 borderRect:v145 borderWidth:v137 borderColor:v139, v141, v143, 2.0 / v54];
+    options6 = [(JFXOverlayEffectDebugView *)self options];
+    objectAlignedBoundingBoxColor = [options6 objectAlignedBoundingBoxColor];
+    [(JFXOverlayEffectDebugView *)self updateBorderedLayer:objectAlignedBoundingBoxLayer4 borderRect:objectAlignedBoundingBoxColor borderWidth:v137 borderColor:v139, v141, v143, 2.0 / v54];
   }
 
-  v146 = [(JFXOverlayEffectDebugView *)self options];
-  if ([v146 showTextBoundingBoxes])
+  options7 = [(JFXOverlayEffectDebugView *)self options];
+  if ([options7 showTextBoundingBoxes])
   {
-    v147 = [v5 textFrames];
-    v148 = [v147 count];
+    textFrames = [v5 textFrames];
+    v148 = [textFrames count];
 
-    v149 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
-    [v149 setHidden:v148 == 0];
+    textBoundingBoxesContainerLayer3 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
+    [textBoundingBoxesContainerLayer3 setHidden:v148 == 0];
 
     if (v148)
     {
-      v150 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
-      v151 = [v5 textFrames];
-      ensureNSublayers(v150, [v151 count]);
+      textBoundingBoxesContainerLayer4 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
+      textFrames2 = [v5 textFrames];
+      ensureNSublayers(textBoundingBoxesContainerLayer4, [textFrames2 count]);
 
-      v152 = [v5 textFrames];
+      textFrames3 = [v5 textFrames];
       v258[0] = MEMORY[0x277D85DD0];
       v258[1] = 3221225472;
       v258[2] = __51__JFXOverlayEffectDebugView_updateWithEffectFrame___block_invoke;
@@ -986,152 +986,152 @@ LABEL_42:
       v262 = v244;
       v263 = v242;
       v259 = v5;
-      [v152 enumerateObjectsUsingBlock:v258];
+      [textFrames3 enumerateObjectsUsingBlock:v258];
     }
   }
 
   else
   {
 
-    v153 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
-    [v153 setHidden:1];
+    textBoundingBoxesContainerLayer5 = [(JFXOverlayEffectDebugView *)self textBoundingBoxesContainerLayer];
+    [textBoundingBoxesContainerLayer5 setHidden:1];
   }
 
-  v154 = [(JFXOverlayEffectDebugView *)self options];
-  v155 = [v154 showHitAreaBoundingBox];
+  options8 = [(JFXOverlayEffectDebugView *)self options];
+  showHitAreaBoundingBox = [options8 showHitAreaBoundingBox];
 
-  v156 = [(JFXOverlayEffectDebugView *)self hitAreaBoundingBoxLayer];
-  v157 = v156;
-  if (v155)
+  hitAreaBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self hitAreaBoundingBoxLayer];
+  v157 = hitAreaBoundingBoxLayer;
+  if (showHitAreaBoundingBox)
   {
-    [v156 setHidden:0];
+    [hitAreaBoundingBoxLayer setHidden:0];
 
-    v158 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    [v158 setHidden:0];
+    hitAreaMinimumSizeBoundingBoxLayer = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    [hitAreaMinimumSizeBoundingBoxLayer setHidden:0];
 
-    v159 = [(JFXOverlayEffectDebugView *)self hitAreaBoundingBoxLayer];
-    v160 = [v5 hitAreaPoints];
-    v161 = [(JFXOverlayEffectDebugView *)self options];
-    v162 = [v161 hitAreaBoundingBoxColor];
-    [(JFXOverlayEffectDebugView *)self updatePolygonLayer:v159 points:v160 borderWidth:v162 borderColor:3.0];
+    hitAreaBoundingBoxLayer2 = [(JFXOverlayEffectDebugView *)self hitAreaBoundingBoxLayer];
+    hitAreaPoints = [v5 hitAreaPoints];
+    options9 = [(JFXOverlayEffectDebugView *)self options];
+    hitAreaBoundingBoxColor = [options9 hitAreaBoundingBoxColor];
+    [(JFXOverlayEffectDebugView *)self updatePolygonLayer:hitAreaBoundingBoxLayer2 points:hitAreaPoints borderWidth:hitAreaBoundingBoxColor borderColor:3.0];
 
-    v163 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    ensureNSublayers(v163, 1uLL);
+    hitAreaMinimumSizeBoundingBoxLayer2 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    ensureNSublayers(hitAreaMinimumSizeBoundingBoxLayer2, 1uLL);
 
-    v164 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    v165 = [v164 sublayers];
-    v166 = [v165 firstObject];
+    hitAreaMinimumSizeBoundingBoxLayer3 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    sublayers = [hitAreaMinimumSizeBoundingBoxLayer3 sublayers];
+    firstObject = [sublayers firstObject];
 
-    v167 = [v5 hitAreaPath];
-    v168 = [(JFXOverlayEffectDebugView *)self options];
-    v169 = [v168 hitAreaBoundingBoxColor];
-    [(JFXOverlayEffectDebugView *)self updateFilledPolygonLayer:v166 path:v167 fillColor:v169];
+    hitAreaPath = [v5 hitAreaPath];
+    options10 = [(JFXOverlayEffectDebugView *)self options];
+    hitAreaBoundingBoxColor2 = [options10 hitAreaBoundingBoxColor];
+    [(JFXOverlayEffectDebugView *)self updateFilledPolygonLayer:firstObject path:hitAreaPath fillColor:hitAreaBoundingBoxColor2];
 
-    v170 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    v171 = [v5 expandedHitAreaPath];
-    v172 = [(JFXOverlayEffectDebugView *)self options];
-    v173 = [v172 hitAreaBoundingBoxColor];
-    [(JFXOverlayEffectDebugView *)self updateFilledPolygonLayer:v170 path:v171 fillColor:v173];
+    hitAreaMinimumSizeBoundingBoxLayer4 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    expandedHitAreaPath = [v5 expandedHitAreaPath];
+    options11 = [(JFXOverlayEffectDebugView *)self options];
+    hitAreaBoundingBoxColor3 = [options11 hitAreaBoundingBoxColor];
+    [(JFXOverlayEffectDebugView *)self updateFilledPolygonLayer:hitAreaMinimumSizeBoundingBoxLayer4 path:expandedHitAreaPath fillColor:hitAreaBoundingBoxColor3];
   }
 
   else
   {
-    [v156 setHidden:1];
+    [hitAreaBoundingBoxLayer setHidden:1];
 
-    v166 = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    [v166 setHidden:1];
+    firstObject = [(JFXOverlayEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    [firstObject setHidden:1];
   }
 
-  v174 = [(JFXOverlayEffectDebugView *)self options];
-  v175 = [v174 showCornerPoints];
+  options12 = [(JFXOverlayEffectDebugView *)self options];
+  showCornerPoints = [options12 showCornerPoints];
 
-  v176 = v175 ^ 1u;
-  v177 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
-  [v177 setHidden:v176];
+  v176 = showCornerPoints ^ 1u;
+  cornerPointsLayer3 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
+  [cornerPointsLayer3 setHidden:v176];
 
   if ((v176 & 1) == 0)
   {
-    v178 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
-    ensureNSublayers(v178, 4uLL);
+    cornerPointsLayer4 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
+    ensureNSublayers(cornerPointsLayer4, 4uLL);
 
-    v179 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
-    v180 = [v179 sublayers];
+    cornerPointsLayer5 = [(JFXOverlayEffectDebugView *)self cornerPointsLayer];
+    sublayers2 = [cornerPointsLayer5 sublayers];
 
     [v5 cornerPoints];
     v181 = PVCGPointQuad_to_NSArray(&v283);
-    v182 = [(JFXOverlayEffectDebugView *)self options];
-    v183 = [v182 cornerPointColors];
-    [(JFXOverlayEffectDebugView *)self updatePointsLayers:v180 points:v181 colors:v183 size:4.0];
+    options13 = [(JFXOverlayEffectDebugView *)self options];
+    cornerPointColors = [options13 cornerPointColors];
+    [(JFXOverlayEffectDebugView *)self updatePointsLayers:sublayers2 points:v181 colors:cornerPointColors size:4.0];
   }
 
-  v184 = [(JFXOverlayEffectDebugView *)self options];
-  v185 = [v184 showMidpoint];
+  options14 = [(JFXOverlayEffectDebugView *)self options];
+  showMidpoint = [options14 showMidpoint];
 
-  v186 = v185 ^ 1u;
-  v187 = [(JFXOverlayEffectDebugView *)self midpointLayer];
-  [v187 setHidden:v186];
+  v186 = showMidpoint ^ 1u;
+  midpointLayer3 = [(JFXOverlayEffectDebugView *)self midpointLayer];
+  [midpointLayer3 setHidden:v186];
 
   if ((v186 & 1) == 0)
   {
-    v188 = [(JFXOverlayEffectDebugView *)self midpointLayer];
-    v280 = v188;
+    midpointLayer4 = [(JFXOverlayEffectDebugView *)self midpointLayer];
+    v280 = midpointLayer4;
     v189 = [MEMORY[0x277CBEA60] arrayWithObjects:&v280 count:1];
     v190 = MEMORY[0x277CCAE60];
     [v5 center];
     v191 = [v190 valueWithCGPoint:?];
     v279 = v191;
     v192 = [MEMORY[0x277CBEA60] arrayWithObjects:&v279 count:1];
-    v193 = [(JFXOverlayEffectDebugView *)self options];
-    v194 = [v193 midpointColor];
-    v278 = v194;
+    options15 = [(JFXOverlayEffectDebugView *)self options];
+    midpointColor = [options15 midpointColor];
+    v278 = midpointColor;
     v195 = [MEMORY[0x277CBEA60] arrayWithObjects:&v278 count:1];
     [(JFXOverlayEffectDebugView *)self updatePointsLayers:v189 points:v192 colors:v195 size:6.0];
 
-    v196 = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
+    overlayCenterLayer3 = [(JFXOverlayEffectDebugView *)self overlayCenterLayer];
     [v5 overlayCenter];
     v198 = v197;
     v200 = v199;
-    v201 = [(JFXOverlayEffectDebugView *)self options];
-    v202 = [v201 overlayCenterColor];
-    [(JFXOverlayEffectDebugView *)self updateFilledCircleLayer:v196 center:v202 radius:v198 fillColor:v200, 6.0];
+    options16 = [(JFXOverlayEffectDebugView *)self options];
+    overlayCenterColor = [options16 overlayCenterColor];
+    [(JFXOverlayEffectDebugView *)self updateFilledCircleLayer:overlayCenterLayer3 center:overlayCenterColor radius:v198 fillColor:v200, 6.0];
 
-    v203 = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
-    v204 = [(JFXOverlayEffectDebugView *)self options];
-    v205 = [v204 originCrosshairColor];
-    [(JFXOverlayEffectDebugView *)self updateCrosshairLayer:v203 center:v205 color:v26 size:v249 thickness:10.0 / v54, 10.0 / v54, 2.0 / v54, 2.0 / v54];
+    originCrosshairLayer3 = [(JFXOverlayEffectDebugView *)self originCrosshairLayer];
+    options17 = [(JFXOverlayEffectDebugView *)self options];
+    originCrosshairColor = [options17 originCrosshairColor];
+    [(JFXOverlayEffectDebugView *)self updateCrosshairLayer:originCrosshairLayer3 center:originCrosshairColor color:v26 size:v249 thickness:10.0 / v54, 10.0 / v54, 2.0 / v54, 2.0 / v54];
   }
 
-  v206 = [(JFXOverlayEffectDebugView *)self options];
-  if ([v206 showTextCornerPoints])
+  options18 = [(JFXOverlayEffectDebugView *)self options];
+  if ([options18 showTextCornerPoints])
   {
-    v207 = [v5 textFrames];
-    v208 = [v207 count];
+    textFrames4 = [v5 textFrames];
+    v208 = [textFrames4 count];
 
-    v209 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
-    [v209 setHidden:v208 == 0];
+    textCornerPointsContainerLayer3 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
+    [textCornerPointsContainerLayer3 setHidden:v208 == 0];
 
     if (v208)
     {
-      v210 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
-      v211 = [v5 textFrames];
-      ensureNSublayers(v210, 4 * [v211 count]);
+      textCornerPointsContainerLayer4 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
+      textFrames5 = [v5 textFrames];
+      ensureNSublayers(textCornerPointsContainerLayer4, 4 * [textFrames5 count]);
 
-      v212 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
-      v213 = [v212 sublayers];
+      textCornerPointsContainerLayer5 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
+      sublayers3 = [textCornerPointsContainerLayer5 sublayers];
 
-      v214 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v213, "count")}];
-      v215 = [v5 textFrames];
+      v214 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(sublayers3, "count")}];
+      textFrames6 = [v5 textFrames];
       v256[0] = MEMORY[0x277D85DD0];
       v256[1] = 3221225472;
       v256[2] = __51__JFXOverlayEffectDebugView_updateWithEffectFrame___block_invoke_2;
       v256[3] = &unk_278D7D200;
       v257 = v214;
       v216 = v214;
-      [v215 enumerateObjectsUsingBlock:v256];
+      [textFrames6 enumerateObjectsUsingBlock:v256];
 
-      v217 = [(JFXOverlayEffectDebugView *)self options];
-      v218 = [v217 textCornerPointColors];
-      [(JFXOverlayEffectDebugView *)self updatePointsLayers:v213 points:v216 colors:v218 size:4.0];
+      options19 = [(JFXOverlayEffectDebugView *)self options];
+      textCornerPointColors = [options19 textCornerPointColors];
+      [(JFXOverlayEffectDebugView *)self updatePointsLayers:sublayers3 points:v216 colors:textCornerPointColors size:4.0];
 
       goto LABEL_59;
     }
@@ -1140,46 +1140,46 @@ LABEL_42:
   else
   {
 
-    v213 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
-    [v213 setHidden:1];
+    sublayers3 = [(JFXOverlayEffectDebugView *)self textCornerPointsContainerLayer];
+    [sublayers3 setHidden:1];
 LABEL_59:
   }
 
-  v219 = [(JFXOverlayEffectDebugView *)self options];
-  v220 = [v219 showHitAreaPoints];
+  options20 = [(JFXOverlayEffectDebugView *)self options];
+  showHitAreaPoints = [options20 showHitAreaPoints];
 
-  v221 = v220 ^ 1u;
-  v222 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
-  [v222 setHidden:v221];
+  v221 = showHitAreaPoints ^ 1u;
+  hitAreaPointsLayer3 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
+  [hitAreaPointsLayer3 setHidden:v221];
 
   if ((v221 & 1) == 0)
   {
-    v223 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
-    v224 = [v5 hitAreaPoints];
-    ensureNSublayers(v223, [v224 count]);
+    hitAreaPointsLayer4 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
+    hitAreaPoints2 = [v5 hitAreaPoints];
+    ensureNSublayers(hitAreaPointsLayer4, [hitAreaPoints2 count]);
 
-    v225 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
-    v226 = [v225 sublayers];
+    hitAreaPointsLayer5 = [(JFXOverlayEffectDebugView *)self hitAreaPointsLayer];
+    sublayers4 = [hitAreaPointsLayer5 sublayers];
 
-    v227 = [v5 hitAreaPoints];
-    v228 = [(JFXOverlayEffectDebugView *)self options];
-    v229 = [v228 hitAreaPointColors];
-    [(JFXOverlayEffectDebugView *)self updatePointsLayers:v226 points:v227 colors:v229 size:4.0];
+    hitAreaPoints3 = [v5 hitAreaPoints];
+    options21 = [(JFXOverlayEffectDebugView *)self options];
+    hitAreaPointColors = [options21 hitAreaPointColors];
+    [(JFXOverlayEffectDebugView *)self updatePointsLayers:sublayers4 points:hitAreaPoints3 colors:hitAreaPointColors size:4.0];
   }
 
-  v230 = [(JFXOverlayEffectDebugView *)self options];
-  v231 = [v230 showAdditionalRects];
+  options22 = [(JFXOverlayEffectDebugView *)self options];
+  showAdditionalRects = [options22 showAdditionalRects];
 
-  v232 = v231 ^ 1u;
-  v233 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
-  [v233 setHidden:v232];
+  v232 = showAdditionalRects ^ 1u;
+  additionalRectsLayer3 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
+  [additionalRectsLayer3 setHidden:v232];
 
   if ((v232 & 1) == 0)
   {
-    v234 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
-    v235 = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
-    v236 = [(JFXOverlayEffectDebugView *)self additionalRectsToDraw];
-    [(JFXOverlayEffectDebugView *)self updateAdditionalRects:v234 transformedLayer:v235 effectScale:v236 rects:v54];
+    additionalRectsLayer4 = [(JFXOverlayEffectDebugView *)self additionalRectsLayer];
+    additionalRectsTransformedLayer3 = [(JFXOverlayEffectDebugView *)self additionalRectsTransformedLayer];
+    additionalRectsToDraw = [(JFXOverlayEffectDebugView *)self additionalRectsToDraw];
+    [(JFXOverlayEffectDebugView *)self updateAdditionalRects:additionalRectsLayer4 transformedLayer:additionalRectsTransformedLayer3 effectScale:additionalRectsToDraw rects:v54];
   }
 
   [MEMORY[0x277CD9FF0] commit];
@@ -1308,21 +1308,21 @@ void __51__JFXOverlayEffectDebugView_updateWithEffectFrame___block_invoke_2(uint
 
 - (id)additionalRectsToDraw
 {
-  v3 = [(JFXOverlayEffectDebugView *)self delegate];
+  delegate = [(JFXOverlayEffectDebugView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(JFXOverlayEffectDebugView *)self delegate];
-    v6 = [v5 overlayEffectDebugViewAdditionalRectsToDraw];
+    delegate2 = [(JFXOverlayEffectDebugView *)self delegate];
+    overlayEffectDebugViewAdditionalRectsToDraw = [delegate2 overlayEffectDebugViewAdditionalRectsToDraw];
   }
 
   else
   {
-    v6 = 0;
+    overlayEffectDebugViewAdditionalRectsToDraw = 0;
   }
 
-  return v6;
+  return overlayEffectDebugViewAdditionalRectsToDraw;
 }
 
 - (JFXOverlayEffectDebugViewDelegate)delegate

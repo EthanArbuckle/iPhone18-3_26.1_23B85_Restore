@@ -1,34 +1,34 @@
 @interface BWE5MultipleLayoutInferenceProvider
 + (void)initialize;
-- (BOOL)_bindE5Port:(__CVBuffer *)a3 toPixelBuffer:;
-- (BWE5MultipleLayoutInferenceProvider)initWithType:(int)a3 networkURL:(id)a4 networkConfigurationsByLayout:(id)a5 defaultLayout:(unsigned int)a6 executionTarget:(int)a7 schedulerPriority:(unsigned int)a8 preventionReasons:(id)a9 allowedCompressionDirection:(unsigned int)a10 updateMetadataWithCropRect:(BOOL)a11;
-- (__CVBuffer)_createAndRotatedOnDemandPixelBufferWithPixelBuffer:(int)a3 rotationDegrees:;
-- (id)bindEspressoInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6;
-- (id)bindEspressoInput:(id)a3 fromMetadataUsingKeys:(id)a4;
-- (id)bindEspressoOutput:(id)a3 asAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6;
-- (id)bindEspressoOutput:(id)a3 asConsolidatedMetadataUsingKeys:(id)a4;
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKey:(id)a4;
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKeys:(id)a4;
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4;
+- (BOOL)_bindE5Port:(__CVBuffer *)port toPixelBuffer:;
+- (BWE5MultipleLayoutInferenceProvider)initWithType:(int)type networkURL:(id)l networkConfigurationsByLayout:(id)layout defaultLayout:(unsigned int)defaultLayout executionTarget:(int)target schedulerPriority:(unsigned int)priority preventionReasons:(id)reasons allowedCompressionDirection:(unsigned int)self0 updateMetadataWithCropRect:(BOOL)self1;
+- (__CVBuffer)_createAndRotatedOnDemandPixelBufferWithPixelBuffer:(int)buffer rotationDegrees:;
+- (id)bindEspressoInput:(id)input fromAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count;
+- (id)bindEspressoInput:(id)input fromMetadataUsingKeys:(id)keys;
+- (id)bindEspressoOutput:(id)output asAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count;
+- (id)bindEspressoOutput:(id)output asConsolidatedMetadataUsingKeys:(id)keys;
+- (id)bindEspressoOutput:(id)output asMetadataUsingKey:(id)key;
+- (id)bindEspressoOutput:(id)output asMetadataUsingKeys:(id)keys;
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key;
 - (id)newStorage;
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6;
-- (int)prewarmUsingLimitedMemory:(BOOL)a3;
-- (int)prewarmUsingLimitedMemory:(BOOL)a3 sharedE5ANEMemoryProvider:(id)a4;
-- (int)reconcileWithPlaceholderProvider:(id)a3;
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler;
+- (int)prewarmUsingLimitedMemory:(BOOL)memory;
+- (int)prewarmUsingLimitedMemory:(BOOL)memory sharedE5ANEMemoryProvider:(id)provider;
+- (int)reconcileWithPlaceholderProvider:(id)provider;
 - (uint64_t)_anePriorityForSchedulerPriority:(uint64_t)result;
-- (uint64_t)_applyRotationOnPixelBuffer:(__CVBuffer *)a3 dstPixelBuffer:(int)a4 rotationDegrees:;
+- (uint64_t)_applyRotationOnPixelBuffer:(__CVBuffer *)buffer dstPixelBuffer:(int)pixelBuffer rotationDegrees:;
 - (uint64_t)_exifOrientationWithStorage:(uint64_t)result;
 - (uint64_t)_prepareWithSharedANEMemoryProvider:(VTPixelRotationSessionRef *)pixelRotationSessionOut;
 - (void)dealloc;
-- (void)setCustomInferenceIdentifier:(id)a3;
-- (void)setPropagatable:(id)a3;
+- (void)setCustomInferenceIdentifier:(id)identifier;
+- (void)setPropagatable:(id)propagatable;
 @end
 
 @implementation BWE5MultipleLayoutInferenceProvider
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -37,7 +37,7 @@
   }
 }
 
-- (BWE5MultipleLayoutInferenceProvider)initWithType:(int)a3 networkURL:(id)a4 networkConfigurationsByLayout:(id)a5 defaultLayout:(unsigned int)a6 executionTarget:(int)a7 schedulerPriority:(unsigned int)a8 preventionReasons:(id)a9 allowedCompressionDirection:(unsigned int)a10 updateMetadataWithCropRect:(BOOL)a11
+- (BWE5MultipleLayoutInferenceProvider)initWithType:(int)type networkURL:(id)l networkConfigurationsByLayout:(id)layout defaultLayout:(unsigned int)defaultLayout executionTarget:(int)target schedulerPriority:(unsigned int)priority preventionReasons:(id)reasons allowedCompressionDirection:(unsigned int)self0 updateMetadataWithCropRect:(BOOL)self1
 {
   v20.receiver = self;
   v20.super_class = BWE5MultipleLayoutInferenceProvider;
@@ -45,15 +45,15 @@
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
-    v16->_executionTarget = a7;
-    v16->_networkURL = [a4 copy];
-    v17->_networkConfigurationsByLayout = [a5 copy];
-    v17->_defaultLayout = a6;
+    v16->_type = type;
+    v16->_executionTarget = target;
+    v16->_networkURL = [l copy];
+    v17->_networkConfigurationsByLayout = [layout copy];
+    v17->_defaultLayout = defaultLayout;
     v17->_anePriority = [BWE5MultipleLayoutInferenceProvider _anePriorityForSchedulerPriority:v17];
-    v17->_preventionReasons = [a9 copy];
+    v17->_preventionReasons = [reasons copy];
     v17->_allowedCompressionDirection = 0;
-    v17->_updateMetadataWithCropRect = a11;
+    v17->_updateMetadataWithCropRect = rect;
     v17->_bindingNamesByRequirement = objc_alloc_init(MEMORY[0x1E695DF90]);
     v17->_inputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v17->_outputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -99,96 +99,96 @@
 
 - (id)newStorage
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 addObjectsFromArray:self->_inputMetadataRequirements];
-  [v3 addObjectsFromArray:self->_outputMetadataRequirements];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:self->_inputMetadataRequirements];
+  [array addObjectsFromArray:self->_outputMetadataRequirements];
   v4 = [BWE5InferenceStorage alloc];
   bindingNamesByRequirement = self->_bindingNamesByRequirement;
   inputVideoRequirements = self->_inputVideoRequirements;
   outputVideoRequirements = self->_outputVideoRequirements;
 
-  return [(BWE5InferenceStorage *)v4 initWithBindingNameByRequirement:bindingNamesByRequirement requirementsNeedingPixelBuffers:inputVideoRequirements requirementsNeedingPixelBufferPools:outputVideoRequirements requirementsNeedingTensors:v3];
+  return [(BWE5InferenceStorage *)v4 initWithBindingNameByRequirement:bindingNamesByRequirement requirementsNeedingPixelBuffers:inputVideoRequirements requirementsNeedingPixelBufferPools:outputVideoRequirements requirementsNeedingTensors:array];
 }
 
-- (void)setPropagatable:(id)a3
+- (void)setPropagatable:(id)propagatable
 {
   propagator = self->_propagator;
-  if (propagator != a3)
+  if (propagator != propagatable)
   {
 
-    self->_propagator = a3;
+    self->_propagator = propagatable;
   }
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
-- (id)bindEspressoInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6
+- (id)bindEspressoInput:(id)input fromAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count
 {
-  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:a4 videoFormat:a5 count:a6];
+  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:key videoFormat:format count:count];
   [(NSMutableArray *)self->_inputVideoRequirements addObject:v8];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:input forKeyedSubscript:v8];
 
   return v8;
 }
 
-- (id)bindEspressoInput:(id)a3 fromMetadataUsingKeys:(id)a4
+- (id)bindEspressoInput:(id)input fromMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_inputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:input forKeyedSubscript:v6];
 
   return v6;
 }
 
-- (id)bindEspressoOutput:(id)a3 asAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6
+- (id)bindEspressoOutput:(id)output asAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count
 {
-  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:a4 videoFormat:a5 count:a6];
+  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:key videoFormat:format count:count];
   [(NSMutableArray *)self->_outputVideoRequirements addObject:v8];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v8];
 
   return v8;
 }
 
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key
 {
-  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:a4 sourceVideoRequirement:a3];
+  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:key sourceVideoRequirement:requirement];
   [(NSMutableArray *)self->_cloneVideoRequirements addObject:v5];
 
   return v5;
 }
 
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKey:(id)a4
+- (id)bindEspressoOutput:(id)output asMetadataUsingKey:(id)key
 {
   v7 = [BWInferenceMetadataRequirement alloc];
-  v10 = a4;
-  v8 = -[BWInferenceMetadataRequirement initWithMetadataKeys:mappingOption:](v7, "initWithMetadataKeys:mappingOption:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1], 1);
+  keyCopy = key;
+  v8 = -[BWInferenceMetadataRequirement initWithMetadataKeys:mappingOption:](v7, "initWithMetadataKeys:mappingOption:", [MEMORY[0x1E695DEC8] arrayWithObjects:&keyCopy count:1], 1);
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v8];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v8];
   return v8;
 }
 
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKeys:(id)a4
+- (id)bindEspressoOutput:(id)output asMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v6];
 
   return v6;
 }
 
-- (id)bindEspressoOutput:(id)a3 asConsolidatedMetadataUsingKeys:(id)a4
+- (id)bindEspressoOutput:(id)output asConsolidatedMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4 mappingOption:2];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys mappingOption:2];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v6];
 
   return v6;
 }
@@ -212,14 +212,14 @@
   return result;
 }
 
-- (BOOL)_bindE5Port:(__CVBuffer *)a3 toPixelBuffer:
+- (BOOL)_bindE5Port:(__CVBuffer *)port toPixelBuffer:
 {
   if (result)
   {
     result = 0;
     if (!e5rt_io_port_is_tensor())
     {
-      CVPixelBufferGetIOSurface(a3);
+      CVPixelBufferGetIOSurface(port);
       if (!e5rt_surface_object_create_from_iosurface() && !e5rt_io_port_bind_surface_object() && !e5rt_surface_object_release())
       {
         return 1;
@@ -431,18 +431,18 @@ LABEL_49:
   return v5;
 }
 
-- (uint64_t)_applyRotationOnPixelBuffer:(__CVBuffer *)a3 dstPixelBuffer:(int)a4 rotationDegrees:
+- (uint64_t)_applyRotationOnPixelBuffer:(__CVBuffer *)buffer dstPixelBuffer:(int)pixelBuffer rotationDegrees:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7 = *(a1 + 152);
+  v7 = *(self + 152);
   v8 = *MEMORY[0x1E6983D98];
-  v9 = FigCaptureVTRotationFromDegrees(a4);
+  v9 = FigCaptureVTRotationFromDegrees(pixelBuffer);
   VTSessionSetProperty(v7, v8, v9);
-  v10 = VTPixelRotationSessionRotateImage(*(a1 + 152), a2, a3);
+  v10 = VTPixelRotationSessionRotateImage(*(self + 152), a2, buffer);
   if (v10)
   {
     OUTLINED_FUNCTION_0();
@@ -452,16 +452,16 @@ LABEL_49:
   return v10;
 }
 
-- (__CVBuffer)_createAndRotatedOnDemandPixelBufferWithPixelBuffer:(int)a3 rotationDegrees:
+- (__CVBuffer)_createAndRotatedOnDemandPixelBufferWithPixelBuffer:(int)buffer rotationDegrees:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   Width = CVPixelBufferGetWidth(pixelBuffer);
   Height = CVPixelBufferGetHeight(pixelBuffer);
-  if (a3 != 180 && a3)
+  if (buffer != 180 && buffer)
   {
     v8 = __ROR8__(Width | (Height << 32), 32);
   }
@@ -472,7 +472,7 @@ LABEL_49:
   }
 
   v9 = [+[BWOnDemandPixelBufferAllocator onDemandAllocatorWithDimensions:pixelFormat:name:memoryPool:](BWOnDemandPixelBufferAllocator onDemandAllocatorWithDimensions:v8 pixelFormat:CVPixelBufferGetPixelFormatType(pixelBuffer) name:@"OnDemandRotatedPixelBufferForE5MultipleLayoutInferenceProvider" memoryPool:+[BWMemoryPool sharedMemoryPool](BWMemoryPool, "sharedMemoryPool")), "newPixelBuffer"];
-  [(BWE5MultipleLayoutInferenceProvider *)a1 _applyRotationOnPixelBuffer:v9 dstPixelBuffer:a3 rotationDegrees:?];
+  [(BWE5MultipleLayoutInferenceProvider *)self _applyRotationOnPixelBuffer:v9 dstPixelBuffer:buffer rotationDegrees:?];
   return v9;
 }
 
@@ -493,7 +493,7 @@ LABEL_49:
   return result;
 }
 
-- (int)prewarmUsingLimitedMemory:(BOOL)a3 sharedE5ANEMemoryProvider:(id)a4
+- (int)prewarmUsingLimitedMemory:(BOOL)memory sharedE5ANEMemoryProvider:(id)provider
 {
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -501,7 +501,7 @@ LABEL_49:
     OUTLINED_FUNCTION_2_38();
   }
 
-  v7 = [(BWE5MultipleLayoutInferenceProvider *)&self->super.isa _prepareWithSharedANEMemoryProvider:a4];
+  v7 = [(BWE5MultipleLayoutInferenceProvider *)&self->super.isa _prepareWithSharedANEMemoryProvider:provider];
   if (*v6 == 1)
   {
     kdebug_trace();
@@ -510,7 +510,7 @@ LABEL_49:
   return v7;
 }
 
-- (int)prewarmUsingLimitedMemory:(BOOL)a3
+- (int)prewarmUsingLimitedMemory:(BOOL)memory
 {
   if ([(BWE5MultipleLayoutInferenceProvider *)self prewarmingSharedResourceType]== 1)
   {
@@ -526,39 +526,39 @@ LABEL_49:
   return [(BWE5MultipleLayoutInferenceProvider *)&self->super.isa _prepareWithSharedANEMemoryProvider:?];
 }
 
-- (int)reconcileWithPlaceholderProvider:(id)a3
+- (int)reconcileWithPlaceholderProvider:(id)provider
 {
   type = self->_type;
-  if (type != [a3 type])
+  if (type != [provider type])
   {
     return -31783;
   }
 
-  [a3 customInferenceIdentifier];
+  [provider customInferenceIdentifier];
   if (![OUTLINED_FUNCTION_8() isEqualToString:?])
   {
     return -31783;
   }
 
   [(NSMutableArray *)self->_inputVideoRequirements removeAllObjects];
-  [a3 inputVideoRequirements];
+  [provider inputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_inputMetadataRequirements removeAllObjects];
-  [a3 inputMetadataRequirements];
+  [provider inputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputVideoRequirements removeAllObjects];
-  [a3 outputVideoRequirements];
+  [provider outputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputMetadataRequirements removeAllObjects];
-  [a3 outputMetadataRequirements];
+  [provider outputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_cloneVideoRequirements removeAllObjects];
-  [a3 cloneVideoRequirements];
+  [provider cloneVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableDictionary *)self->_bindingNamesByRequirement removeAllObjects];
-  if (a3)
+  if (provider)
   {
-    v6 = *(a3 + 10);
+    v6 = *(provider + 10);
   }
 
   else
@@ -567,23 +567,23 @@ LABEL_49:
   }
 
   [(NSMutableDictionary *)self->_bindingNamesByRequirement addEntriesFromDictionary:v6];
-  -[BWE5MultipleLayoutInferenceProvider setPropagatable:](self, "setPropagatable:", [a3 propagatable]);
+  -[BWE5MultipleLayoutInferenceProvider setPropagatable:](self, "setPropagatable:", [provider propagatable]);
   return 0;
 }
 
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler
 {
-  v9 = self;
+  selfCopy = self;
   v10 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    [(BWE5MultipleLayoutInferenceProvider *)self type:a3];
+    [(BWE5MultipleLayoutInferenceProvider *)self type:buffer];
     OUTLINED_FUNCTION_2_38();
   }
 
-  v11 = [(BWE5MultipleLayoutInferenceProvider *)v9 _exifOrientationWithStorage:a4];
-  v107 = v9;
-  if ([(NSMutableArray *)v9->_inputVideoRequirements count]!= 1 || [(NSMutableArray *)v9->_outputVideoRequirements count]!= 1 || [(NSMutableArray *)v9->_outputMetadataRequirements count])
+  v11 = [(BWE5MultipleLayoutInferenceProvider *)selfCopy _exifOrientationWithStorage:storage];
+  v107 = selfCopy;
+  if ([(NSMutableArray *)selfCopy->_inputVideoRequirements count]!= 1 || [(NSMutableArray *)selfCopy->_outputVideoRequirements count]!= 1 || [(NSMutableArray *)selfCopy->_outputMetadataRequirements count])
   {
     v88 = 0;
     v77 = 0;
@@ -593,12 +593,12 @@ LABEL_49:
     goto LABEL_62;
   }
 
-  v85 = a6;
+  handlerCopy = handler;
   v217 = 0u;
   v218 = 0u;
   v215 = 0u;
   v216 = 0u;
-  obj = v9->_inputVideoRequirements;
+  obj = selfCopy->_inputVideoRequirements;
   v12 = [(NSMutableArray *)obj countByEnumeratingWithState:&v215 objects:v214 count:16];
   v104 = v11;
   if (!v12)
@@ -631,7 +631,7 @@ LABEL_45:
         v88 = 0;
         v77 = 0;
         v33 = 4294935584;
-        v9 = v107;
+        selfCopy = v107;
         goto LABEL_61;
       }
 
@@ -678,18 +678,18 @@ LABEL_46:
       {
         v77 = 0;
         v78 = 0;
-        v9 = v107;
+        selfCopy = v107;
         v11 = v104;
 LABEL_49:
         v88 = v78;
-        if (v9->_executionTarget == 3 && e5rt_execution_stream_set_ane_execution_priority() || e5rt_execution_stream_encode_operation() || e5rt_execution_stream_execute_sync() || (!v11 || ![(BWE5MultipleLayoutInferenceProvider *)v9 _applyRotationOnPixelBuffer:v77 dstPixelBuffer:v78 rotationDegrees:360 - v11]) && e5rt_execution_stream_reset())
+        if (selfCopy->_executionTarget == 3 && e5rt_execution_stream_set_ane_execution_priority() || e5rt_execution_stream_encode_operation() || e5rt_execution_stream_execute_sync() || (!v11 || ![(BWE5MultipleLayoutInferenceProvider *)selfCopy _applyRotationOnPixelBuffer:v77 dstPixelBuffer:v78 rotationDegrees:360 - v11]) && e5rt_execution_stream_reset())
         {
           goto LABEL_55;
         }
 
         v33 = 0;
 LABEL_61:
-        a6 = v85;
+        handler = handlerCopy;
         v10 = MEMORY[0x1E695FF58];
         goto LABEL_62;
       }
@@ -714,7 +714,7 @@ LABEL_24:
   v212 = 0u;
   v209 = 0u;
   v210 = 0u;
-  v9 = v107;
+  selfCopy = v107;
   v91 = *(v107 + 96);
   obja = [v91 countByEnumeratingWithState:&v209 objects:v208 count:16];
   v77 = 0;
@@ -748,7 +748,7 @@ LABEL_26:
     if (!v78)
     {
       v78 = [objc_msgSend(OUTLINED_FUNCTION_4_31() "pixelBufferPoolForRequirement:"newPixelBuffer"")];
-      [a4 setPixelBuffer:v78 forRequirement:v23];
+      [storage setPixelBuffer:v78 forRequirement:v23];
       if (v78)
       {
         CFRelease(v78);
@@ -806,7 +806,7 @@ LABEL_33:
         }
 
 LABEL_42:
-        v9 = v107;
+        selfCopy = v107;
         goto LABEL_49;
       }
     }
@@ -829,20 +829,20 @@ LABEL_55:
   e5rt_get_last_error_message();
   v33 = 4294935586;
 LABEL_56:
-  a6 = v85;
+  handler = handlerCopy;
   v10 = MEMORY[0x1E695FF58];
-  v9 = v107;
+  selfCopy = v107;
 LABEL_62:
   if (*v10 == 1)
   {
-    [(BWE5MultipleLayoutInferenceProvider *)v9 type];
+    [(BWE5MultipleLayoutInferenceProvider *)selfCopy type];
     OUTLINED_FUNCTION_7_22(0x48Du);
     kdebug_trace();
   }
 
-  v35 = (*(a6 + 2))(a6, v33, v9);
-  inputVideoRequirements = v9->_inputVideoRequirements;
-  v44 = OUTLINED_FUNCTION_10_15(v35, v37, v38, v39, v40, v41, v42, v43, v79, v82, v85, v88, v91, v94, v97, v33, v77, v107, v110, v113, v116, v119, v122, v125, v128, v131, v134, v137, v140, v143, v146, v149, v152, v155, v158, v161, v163, v165, v167, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, v191, v193, v195, v197, v199, v201, v203, v205, 0);
+  v35 = (*(handler + 2))(handler, v33, selfCopy);
+  inputVideoRequirements = selfCopy->_inputVideoRequirements;
+  v44 = OUTLINED_FUNCTION_10_15(v35, v37, v38, v39, v40, v41, v42, v43, v79, v82, handlerCopy, v88, v91, v94, v97, v33, v77, v107, v110, v113, v116, v119, v122, v125, v128, v131, v134, v137, v140, v143, v146, v149, v152, v155, v158, v161, v163, v165, v167, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, v191, v193, v195, v197, v199, v201, v203, v205, 0);
   if (v44)
   {
     v52 = v44;
@@ -857,7 +857,7 @@ LABEL_62:
           objc_enumerationMutation(inputVideoRequirements);
         }
 
-        [objc_msgSend(a4 bindingNameForRequirement:{*(8 * v54)), "UTF8String"}];
+        [objc_msgSend(storage bindingNameForRequirement:{*(8 * v54)), "UTF8String"}];
         e5rt_execution_stream_operation_retain_input_port();
         e5rt_io_port_bind_surface_object();
         v55 = e5rt_io_port_release();
@@ -887,7 +887,7 @@ LABEL_62:
           objc_enumerationMutation(v63);
         }
 
-        [objc_msgSend(a4 bindingNameForRequirement:{*(8 * i)), "UTF8String"}];
+        [objc_msgSend(storage bindingNameForRequirement:{*(8 * i)), "UTF8String"}];
         e5rt_execution_stream_operation_retain_output_port();
         e5rt_io_port_bind_surface_object();
         v68 = e5rt_io_port_release();

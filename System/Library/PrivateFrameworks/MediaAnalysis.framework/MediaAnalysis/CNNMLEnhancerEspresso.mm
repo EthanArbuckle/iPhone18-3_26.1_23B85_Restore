@@ -1,15 +1,15 @@
 @interface CNNMLEnhancerEspresso
-- (CNNMLEnhancerEspresso)initWithModelFile:(id)a3;
-- (int)inferenceWithPixelBuffer:(__CVBuffer *)a3 toDestinationPixelBuffer:(__CVBuffer *)a4;
+- (CNNMLEnhancerEspresso)initWithModelFile:(id)file;
+- (int)inferenceWithPixelBuffer:(__CVBuffer *)buffer toDestinationPixelBuffer:(__CVBuffer *)pixelBuffer;
 - (void)dealloc;
 @end
 
 @implementation CNNMLEnhancerEspresso
 
-- (CNNMLEnhancerEspresso)initWithModelFile:(id)a3
+- (CNNMLEnhancerEspresso)initWithModelFile:(id)file
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   v17.receiver = self;
   v17.super_class = CNNMLEnhancerEspresso;
   v5 = [(CNNMLEnhancerEspresso *)&v17 init];
@@ -19,14 +19,14 @@
   }
 
   v16 = 0;
-  v6 = [v4 checkResourceIsReachableAndReturnError:&v16];
+  v6 = [fileCopy checkResourceIsReachableAndReturnError:&v16];
   v7 = v16;
   if ((v6 & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = fileCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Model URL %@ not reachable", buf, 0xCu);
     }
 
@@ -36,7 +36,7 @@
   v5->_ctx = espresso_create_context();
   plan = espresso_create_plan();
   v5->_plan = plan;
-  if (!plan || ([v4 path], v9 = objc_claimAutoreleasedReturnValue(), v10 = v9, objc_msgSend(v9, "UTF8String"), v11 = espresso_plan_add_network() == 0, v9, !v11))
+  if (!plan || ([fileCopy path], v9 = objc_claimAutoreleasedReturnValue(), v10 = v9, objc_msgSend(v9, "UTF8String"), v11 = espresso_plan_add_network() == 0, v9, !v11))
   {
 LABEL_10:
 
@@ -77,7 +77,7 @@ LABEL_12:
   [(CNNMLEnhancerEspresso *)&v3 dealloc];
 }
 
-- (int)inferenceWithPixelBuffer:(__CVBuffer *)a3 toDestinationPixelBuffer:(__CVBuffer *)a4
+- (int)inferenceWithPixelBuffer:(__CVBuffer *)buffer toDestinationPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   v6 = espresso_network_bind_direct_cvpixelbuffer();
   if (v6)
@@ -115,7 +115,7 @@ LABEL_13:
       v7 = espresso_plan_execute_sync();
       if (!v7)
       {
-        CVBufferPropagateAttachments(a3, a4);
+        CVBufferPropagateAttachments(buffer, pixelBuffer);
         return v7;
       }
 

@@ -10,8 +10,8 @@
 {
   v2 = objc_autoreleasePoolPush();
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [a1 iconImage];
-  v5 = [v3 imageWithPKImage:v4];
+  iconImage = [self iconImage];
+  v5 = [v3 imageWithPKImage:iconImage];
 
   if (!v5)
   {
@@ -29,8 +29,8 @@
 {
   v2 = objc_autoreleasePoolPush();
   v7 = 1.0;
-  v3 = [a1 rawIcon];
-  v4 = PKPassMailAttachmentIconImage(v3, &v7);
+  rawIcon = [self rawIcon];
+  v4 = PKPassMailAttachmentIconImage(rawIcon, &v7);
 
   v5 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v4 scale:0 orientation:v7];
   objc_autoreleasePoolPop(v2);
@@ -40,7 +40,7 @@
 
 - (id)cardImageWithDimensions:()PKPassUIAdditions
 {
-  v5 = [[PKPassView alloc] initWithPass:a1 content:5 suppressedContent:4087];
+  v5 = [[PKPassView alloc] initWithPass:self content:5 suppressedContent:4087];
   v6 = [(PKPassView *)v5 snapshotOfFrontFaceWithRequestedSize:a2, a3];
 
   return v6;

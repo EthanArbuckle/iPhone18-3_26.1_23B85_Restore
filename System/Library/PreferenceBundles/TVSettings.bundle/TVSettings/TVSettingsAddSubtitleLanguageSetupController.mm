@@ -8,8 +8,8 @@
 {
   v6 = objc_alloc_init(PSSpecifier);
   v3 = [TVSettingsAddSubtitleLanguageController alloc];
-  v4 = [(TVSettingsAddLanguageSetupController *)self topLevelController];
-  v5 = [(TVSettingsAddSubtitleLanguageController *)v3 initWithTopLevelController:v4];
+  topLevelController = [(TVSettingsAddLanguageSetupController *)self topLevelController];
+  v5 = [(TVSettingsAddSubtitleLanguageController *)v3 initWithTopLevelController:topLevelController];
 
   [(TVSettingsAddSubtitleLanguageController *)v5 setRootController:self];
   [(TVSettingsAddSubtitleLanguageController *)v5 setSpecifier:v6];

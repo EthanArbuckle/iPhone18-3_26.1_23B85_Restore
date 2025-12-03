@@ -1,10 +1,10 @@
 @interface DYLockdownTransport
 - (DYLockdownTransport)init;
 - (id)connect;
-- (int)_ssl_st_read:(void *)a3 size:(unint64_t *)a4;
-- (int)_ssl_st_write:(const void *)a3 size:(unint64_t *)a4;
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4;
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4;
+- (int)_ssl_st_read:(void *)_ssl_st_read size:(unint64_t *)size;
+- (int)_ssl_st_write:(const void *)_ssl_st_write size:(unint64_t *)size;
+- (int64_t)_read:(void *)_read size:(unint64_t)size;
+- (int64_t)_write:(const void *)_write size:(unint64_t)size;
 - (void)closeSocketDescriptor;
 - (void)dealloc;
 @end
@@ -45,19 +45,19 @@
   [(DYLockdownTransport *)&v4 dealloc];
 }
 
-- (int)_ssl_st_read:(void *)a3 size:(unint64_t *)a4
+- (int)_ssl_st_read:(void *)_ssl_st_read size:(unint64_t *)size
 {
-  v4 = *a4;
-  *a4 = 0;
+  v4 = *size;
+  *size = 0;
   if (!v4)
   {
     return 0;
   }
 
-  v8 = a3;
+  _ssl_st_readCopy = _ssl_st_read;
   while (1)
   {
-    v9 = recv(self->_socket, v8, v4, 0);
+    v9 = recv(self->_socket, _ssl_st_readCopy, v4, 0);
     if (v9 != -1)
     {
       if (!v9)
@@ -66,9 +66,9 @@
       }
 
       v4 -= v9;
-      v10 = *a4 + v9;
-      *a4 = v10;
-      v8 = a3 + v10;
+      v10 = *size + v9;
+      *size = v10;
+      _ssl_st_readCopy = _ssl_st_read + v10;
       goto LABEL_9;
     }
 
@@ -95,25 +95,25 @@ LABEL_9:
   }
 }
 
-- (int)_ssl_st_write:(const void *)a3 size:(unint64_t *)a4
+- (int)_ssl_st_write:(const void *)_ssl_st_write size:(unint64_t *)size
 {
-  v4 = *a4;
-  *a4 = 0;
+  v4 = *size;
+  *size = 0;
   if (!v4)
   {
     return 0;
   }
 
-  v8 = a3;
+  _ssl_st_writeCopy = _ssl_st_write;
   while (1)
   {
-    v9 = send(self->_socket, v8, v4, 0);
+    v9 = send(self->_socket, _ssl_st_writeCopy, v4, 0);
     if (v9 != -1)
     {
       v4 -= v9;
-      v10 = *a4 + v9;
-      *a4 = v10;
-      v8 = a3 + v10;
+      v10 = *size + v9;
+      *size = v10;
+      _ssl_st_writeCopy = _ssl_st_write + v10;
       goto LABEL_8;
     }
 
@@ -141,13 +141,13 @@ LABEL_8:
   }
 }
 
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4
+- (int64_t)_read:(void *)_read size:(unint64_t)size
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (a4)
+  if (size)
   {
     if (self->_ssl)
     {
@@ -163,8 +163,8 @@ LABEL_8:
       block[3] = &unk_10000C808;
       block[4] = self;
       block[5] = &v13;
-      block[7] = a3;
-      block[8] = a4;
+      block[7] = _read;
+      block[8] = size;
       block[6] = &v17;
       dispatch_sync(sslQueue, block);
       v6 = *(v14 + 6);
@@ -220,7 +220,7 @@ LABEL_17:
 
     v11.receiver = self;
     v11.super_class = DYLockdownTransport;
-    v7 = [(DYLockdownTransport *)&v11 _read:a3 size:?];
+    v7 = [(DYLockdownTransport *)&v11 _read:_read size:?];
     v18[3] = v7;
   }
 
@@ -234,13 +234,13 @@ LABEL_19:
   return v7;
 }
 
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_write:(const void *)_write size:(unint64_t)size
 {
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (a4)
+  if (size)
   {
     if (self->_ssl)
     {
@@ -255,8 +255,8 @@ LABEL_19:
       block[3] = &unk_10000C808;
       block[4] = self;
       block[5] = &v12;
-      block[7] = a3;
-      block[8] = a4;
+      block[7] = _write;
+      block[8] = size;
       block[6] = &v16;
       dispatch_sync(sslQueue, block);
       v5 = *(v13 + 6);
@@ -306,7 +306,7 @@ LABEL_15:
 
     v10.receiver = self;
     v10.super_class = DYLockdownTransport;
-    v6 = [(DYLockdownTransport *)&v10 _write:a3 size:?];
+    v6 = [(DYLockdownTransport *)&v10 _write:_write size:?];
     v17[3] = v6;
   }
 

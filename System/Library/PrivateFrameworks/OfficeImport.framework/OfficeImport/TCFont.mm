@@ -1,10 +1,10 @@
 @interface TCFont
-+ (id)fontWithFont:(id)a3;
-- (TCFont)initWithDictionary:(id)a3;
-- (TCFont)initWithNamesByLanguage:(id)a3 psName:(id)a4 styling:(TCFontStyling)a5;
++ (id)fontWithFont:(id)font;
+- (TCFont)initWithDictionary:(id)dictionary;
+- (TCFont)initWithNamesByLanguage:(id)language psName:(id)name styling:(TCFontStyling)styling;
 - (TCFontStyling)styling;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)englishName;
 - (id)equivalentDictionary;
@@ -14,22 +14,22 @@
 
 @implementation TCFont
 
-- (TCFont)initWithNamesByLanguage:(id)a3 psName:(id)a4 styling:(TCFontStyling)a5
+- (TCFont)initWithNamesByLanguage:(id)language psName:(id)name styling:(TCFontStyling)styling
 {
-  v5 = *&a5.weight;
-  v6 = *&a5.fontClass;
-  v9 = a3;
-  v10 = a4;
+  v5 = *&styling.weight;
+  v6 = *&styling.fontClass;
+  languageCopy = language;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = TCFont;
   v11 = [(TCFont *)&v17 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [languageCopy copy];
     namesByLanguage = v11->_namesByLanguage;
     v11->_namesByLanguage = v12;
 
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     psName = v11->_psName;
     v11->_psName = v14;
 
@@ -43,7 +43,7 @@
 - (id)equivalentDictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   [(TCFont *)self namesByLanguage];
   v21 = 0u;
   v22 = 0u;
@@ -65,8 +65,8 @@
         v8 = *(*(&v19 + 1) + 8 * i);
         v9 = [v4 objectForKeyedSubscript:v8];
         v10 = TCFontMacLanguageIDToNSString([v8 unsignedShortValue]);
-        v11 = [v9 equivalentDictionary];
-        [v3 setObject:v11 forKeyedSubscript:v10];
+        equivalentDictionary = [v9 equivalentDictionary];
+        [dictionary setObject:equivalentDictionary forKeyedSubscript:v10];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -76,21 +76,21 @@
   }
 
   v12 = MEMORY[0x277CBEAC0];
-  v13 = [(TCFont *)self psName];
+  psName = [(TCFont *)self psName];
   *&v18.fontClass = [(TCFont *)self styling];
   *&v18.weight = v14;
   v15 = TCFontStyling::equivalentDictionary(&v18);
-  v16 = [v12 dictionaryWithObjectsAndKeys:{v3, @"font-names", v13, @"PostScript-name", v15, @"styling", 0}];
+  v16 = [v12 dictionaryWithObjectsAndKeys:{dictionary, @"font-names", psName, @"PostScript-name", v15, @"styling", 0}];
 
   return v16;
 }
 
-- (TCFont)initWithDictionary:(id)a3
+- (TCFont)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v22 objectForKeyedSubscript:@"font-names"];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionaryCopy objectForKeyedSubscript:@"font-names"];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -114,7 +114,7 @@
         v11 = [v4 objectForKeyedSubscript:v8];
         v12 = [(TCFontName *)v10 initWithDictionary:v11];
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v9];
-        [v3 setObject:v12 forKeyedSubscript:v13];
+        [dictionary setObject:v12 forKeyedSubscript:v13];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -123,50 +123,50 @@
     while (v5);
   }
 
-  v14 = [v22 objectForKeyedSubscript:@"PostScript-name"];
-  v15 = [v22 objectForKeyedSubscript:@"styling"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"PostScript-name"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"styling"];
   v17 = TCFontStyling::createWithDictionary(v15, v16);
-  v19 = [(TCFont *)self initWithNamesByLanguage:v3 psName:v14 styling:v17, v18, 0];
+  v19 = [(TCFont *)self initWithNamesByLanguage:dictionary psName:v14 styling:v17, v18, 0];
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(TCFont *)self equivalentDictionary];
-  v6 = [v4 initWithDictionary:v5];
+  equivalentDictionary = [(TCFont *)self equivalentDictionary];
+  v6 = [v4 initWithDictionary:equivalentDictionary];
 
   return v6;
 }
 
-+ (id)fontWithFont:(id)a3
++ (id)fontWithFont:(id)font
 {
-  v3 = [a3 copy];
+  v3 = [font copy];
 
   return v3;
 }
 
 - (id)englishName
 {
-  v2 = [(TCFont *)self namesByLanguage];
-  v3 = [v2 objectForKeyedSubscript:&unk_286F6D860];
+  namesByLanguage = [(TCFont *)self namesByLanguage];
+  v3 = [namesByLanguage objectForKeyedSubscript:&unk_286F6D860];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(TCFont *)self equivalentDictionary];
-  v3 = [v2 description];
+  equivalentDictionary = [(TCFont *)self equivalentDictionary];
+  v3 = [equivalentDictionary description];
 
   return v3;
 }
 
 - (int)preferredLanguage
 {
-  v2 = [(TCFont *)self styling];
-  if (HIDWORD(v2) == 25)
+  styling = [(TCFont *)self styling];
+  if (HIDWORD(styling) == 25)
   {
     v3 = 33;
   }
@@ -176,7 +176,7 @@
     v3 = 0;
   }
 
-  if (HIDWORD(v2) == 3)
+  if (HIDWORD(styling) == 3)
   {
     v4 = 23;
   }
@@ -186,7 +186,7 @@
     v4 = v3;
   }
 
-  if (HIDWORD(v2) == 2)
+  if (HIDWORD(styling) == 2)
   {
     v5 = 19;
   }
@@ -196,7 +196,7 @@
     v5 = 0;
   }
 
-  if (HIDWORD(v2) == 1)
+  if (HIDWORD(styling) == 1)
   {
     v6 = 11;
   }
@@ -206,7 +206,7 @@
     v6 = v5;
   }
 
-  if (SHIDWORD(v2) <= 2)
+  if (SHIDWORD(styling) <= 2)
   {
     return v6;
   }
@@ -219,16 +219,16 @@
 
 - (id)localizedFontName
 {
-  v3 = [(TCFont *)self namesByLanguage];
+  namesByLanguage = [(TCFont *)self namesByLanguage];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[TCFont preferredLanguage](self, "preferredLanguage")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  englishName = [namesByLanguage objectForKeyedSubscript:v4];
 
-  if (!v5)
+  if (!englishName)
   {
-    v5 = [(TCFont *)self englishName];
+    englishName = [(TCFont *)self englishName];
   }
 
-  return v5;
+  return englishName;
 }
 
 - (TCFontStyling)styling

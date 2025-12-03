@@ -4,11 +4,11 @@
 - (void)_run;
 - (void)_sendQueuedMesssages;
 - (void)_sfSessionStart;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendCommand:(int)a3;
-- (void)sendCommand:(int)a3 options:(id)a4;
+- (void)sendCommand:(int)command;
+- (void)sendCommand:(int)command options:(id)options;
 @end
 
 @implementation SFContinuityRemoteSession
@@ -58,17 +58,17 @@
   self->_invalidationHandler = 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__SFContinuityRemoteSession_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -252,7 +252,7 @@ LABEL_10:
   }
 }
 
-- (void)sendCommand:(int)a3
+- (void)sendCommand:(int)command
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -260,22 +260,22 @@ LABEL_10:
   v4[2] = __41__SFContinuityRemoteSession_sendCommand___block_invoke;
   v4[3] = &unk_1E788D970;
   v4[4] = self;
-  v5 = a3;
+  commandCopy = command;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)sendCommand:(int)a3 options:(id)a4
+- (void)sendCommand:(int)command options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__SFContinuityRemoteSession_sendCommand_options___block_invoke;
   block[3] = &unk_1E788EC90;
-  v11 = a3;
+  commandCopy = command;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = optionsCopy;
+  v8 = optionsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -284,19 +284,19 @@ LABEL_10:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_sfSessionActivated)
   {
-    v3 = [(NSMutableArray *)self->_messageQueue firstObject];
-    if (v3)
+    firstObject = [(NSMutableArray *)self->_messageQueue firstObject];
+    if (firstObject)
     {
-      v4 = v3;
+      firstObject2 = firstObject;
       do
       {
         [(NSMutableArray *)self->_messageQueue removeObjectAtIndex:0];
-        [(SFSession *)self->_sfSession sendWithFlags:1 object:v4];
+        [(SFSession *)self->_sfSession sendWithFlags:1 object:firstObject2];
 
-        v4 = [(NSMutableArray *)self->_messageQueue firstObject];
+        firstObject2 = [(NSMutableArray *)self->_messageQueue firstObject];
       }
 
-      while (v4);
+      while (firstObject2);
     }
   }
 }

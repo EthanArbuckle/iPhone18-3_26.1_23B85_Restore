@@ -1,7 +1,7 @@
 @interface ComponentSystemHealthStatus
 - (ComponentSystemHealthStatus)init;
 - (id)systemHealthInfo;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentSystemHealthStatus
@@ -21,13 +21,13 @@
   return v2;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v5 = a3;
-  v4 = [(ComponentSystemHealthStatus *)self systemHealthInfo];
-  if (v4)
+  attributesCopy = attributes;
+  systemHealthInfo = [(ComponentSystemHealthStatus *)self systemHealthInfo];
+  if (systemHealthInfo)
   {
-    [v5 setObject:v4 forKeyedSubscript:@"systemHealthInfo"];
+    [attributesCopy setObject:systemHealthInfo forKeyedSubscript:@"systemHealthInfo"];
   }
 }
 

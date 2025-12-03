@@ -1,46 +1,46 @@
 @interface UAPingClient
 - (BOOL)active;
-- (UAPingClient)initWithController:(id)a3;
+- (UAPingClient)initWithController:(id)controller;
 - (id)eligibleAdvertiseableItemsInOrder;
 - (id)items;
 - (id)statusString;
-- (void)pushItem:(id)a3;
-- (void)removeItem:(id)a3;
+- (void)pushItem:(id)item;
+- (void)removeItem:(id)item;
 @end
 
 @implementation UAPingClient
 
 - (id)eligibleAdvertiseableItemsInOrder
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_items copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_items copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)items
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [NSSet setWithArray:v2->_items];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [NSSet setWithArray:selfCopy->_items];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (UAPingClient)initWithController:(id)a3
+- (UAPingClient)initWithController:(id)controller
 {
-  v5 = a3;
-  v6 = [v5 manager];
+  controllerCopy = controller;
+  manager = [controllerCopy manager];
   v11.receiver = self;
   v11.super_class = UAPingClient;
-  v7 = [(UAClientController *)&v11 initWithManager:v6 name:@"PingCreator"];
+  v7 = [(UAClientController *)&v11 initWithManager:manager name:@"PingCreator"];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_controller, a3);
+    objc_storeStrong(&v7->_controller, controller);
     v8 = +[NSMutableArray array];
     items = v7->_items;
     v7->_items = v8;
@@ -49,48 +49,48 @@
   return v7;
 }
 
-- (void)pushItem:(id)a3
+- (void)pushItem:(id)item
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(UAPingClient *)v4 setHasBeenUsedAtLeastOnce:1];
-  if (([(NSMutableArray *)v4->_items containsObject:v6]& 1) == 0)
+  itemCopy = item;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(UAPingClient *)selfCopy setHasBeenUsedAtLeastOnce:1];
+  if (([(NSMutableArray *)selfCopy->_items containsObject:itemCopy]& 1) == 0)
   {
-    [(NSMutableArray *)v4->_items insertObject:v6 atIndex:0];
-    v5 = [(UACornerActionManagerHandler *)v4 manager];
-    [v5 scheduleUpdatingAdvertisableItems];
+    [(NSMutableArray *)selfCopy->_items insertObject:itemCopy atIndex:0];
+    manager = [(UACornerActionManagerHandler *)selfCopy manager];
+    [manager scheduleUpdatingAdvertisableItems];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v6)
+  itemCopy = item;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (itemCopy)
   {
-    for (i = v6; [(NSMutableArray *)v4->_items containsObject:i]; i = v6)
+    for (i = itemCopy; [(NSMutableArray *)selfCopy->_items containsObject:i]; i = itemCopy)
     {
-      [(NSMutableArray *)v4->_items removeObject:v6];
+      [(NSMutableArray *)selfCopy->_items removeObject:itemCopy];
     }
   }
 
   else
   {
-    [(NSMutableArray *)v4->_items removeAllObjects];
+    [(NSMutableArray *)selfCopy->_items removeAllObjects];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)active
 {
-  v2 = [(UAPingClient *)self items];
-  v3 = [v2 anyObject];
-  v4 = v3 != 0;
+  items = [(UAPingClient *)self items];
+  anyObject = [items anyObject];
+  v4 = anyObject != 0;
 
   return v4;
 }
@@ -99,19 +99,19 @@
 {
   if ([(UAPingClient *)self hasBeenUsedAtLeastOnce])
   {
-    v3 = [(UAPingClient *)self items];
-    v4 = [v3 count];
+    items = [(UAPingClient *)self items];
+    v4 = [items count];
     if (v4)
     {
-      v5 = [(NSMutableArray *)self->_items firstObject];
+      firstObject = [(NSMutableArray *)self->_items firstObject];
     }
 
     else
     {
-      v5 = @"-";
+      firstObject = @"-";
     }
 
-    v6 = [NSString stringWithFormat:@"PingCreator:%@\n", v5];
+    v6 = [NSString stringWithFormat:@"PingCreator:%@\n", firstObject];
     if (v4)
     {
     }

@@ -1,20 +1,20 @@
 @interface CRLImageToolbarButtonItem
-+ (id)itemWithImageNamed:(id)a3 target:(id)a4 action:(SEL)a5;
++ (id)itemWithImageNamed:(id)named target:(id)target action:(SEL)action;
 - (CRLImageToolbarButtonItem)init;
-- (CRLImageToolbarButtonItem)initWithCoder:(id)a3;
-- (CRLImageToolbarButtonItem)initWithImageNamed:(id)a3 target:(id)a4 action:(SEL)a5;
-- (void)didTapButton:(id)a3 withEvent:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setLandscapeImagePhone:(id)a3;
+- (CRLImageToolbarButtonItem)initWithCoder:(id)coder;
+- (CRLImageToolbarButtonItem)initWithImageNamed:(id)named target:(id)target action:(SEL)action;
+- (void)didTapButton:(id)button withEvent:(id)event;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImage:(id)image;
+- (void)setLandscapeImagePhone:(id)phone;
 @end
 
 @implementation CRLImageToolbarButtonItem
 
-- (CRLImageToolbarButtonItem)initWithImageNamed:(id)a3 target:(id)a4 action:(SEL)a5
+- (CRLImageToolbarButtonItem)initWithImageNamed:(id)named target:(id)target action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  namedCopy = named;
+  targetCopy = target;
   v17.receiver = self;
   v17.super_class = CRLImageToolbarButtonItem;
   v10 = [(CRLImageToolbarButtonItem *)&v17 init];
@@ -22,22 +22,22 @@
   if (v10)
   {
     [(CRLImageToolbarButtonItem *)v10 setStyle:0];
-    [(CRLImageToolbarButtonItem *)v11 setTarget:v9];
-    [(CRLImageToolbarButtonItem *)v11 setAction:a5];
+    [(CRLImageToolbarButtonItem *)v11 setTarget:targetCopy];
+    [(CRLImageToolbarButtonItem *)v11 setAction:action];
     v12 = [CRLImageToolbarButton buttonWithType:1];
     button = v11->_button;
     v11->_button = v12;
 
     [(CRLImageToolbarButton *)v11->_button addTarget:v11 action:"didTapButton:withEvent:" forControlEvents:64];
-    [(CRLImageToolbarButton *)v11->_button setImageNamed:v8];
+    [(CRLImageToolbarButton *)v11->_button setImageNamed:namedCopy];
     [(CRLImageToolbarButtonItem *)v11 setCustomView:v11->_button];
     if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
     {
       v14 = +[UIColor labelColor];
       [(CRLImageToolbarButtonItem *)v11 setTintColor:v14];
 
-      v15 = [(CRLImageToolbarButtonItem *)v11 tintColor];
-      [(CRLImageToolbarButton *)v11->_button setTintColor:v15];
+      tintColor = [(CRLImageToolbarButtonItem *)v11 tintColor];
+      [(CRLImageToolbarButton *)v11->_button setTintColor:tintColor];
 
       [(CRLImageToolbarButton *)v11->_button tintColorDidChange];
     }
@@ -46,11 +46,11 @@
   return v11;
 }
 
-+ (id)itemWithImageNamed:(id)a3 target:(id)a4 action:(SEL)a5
++ (id)itemWithImageNamed:(id)named target:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithImageNamed:v9 target:v8 action:a5];
+  targetCopy = target;
+  namedCopy = named;
+  v10 = [[self alloc] initWithImageNamed:namedCopy target:targetCopy action:action];
 
   return v10;
 }
@@ -105,9 +105,9 @@
   objc_exception_throw(v10);
 }
 
-- (CRLImageToolbarButtonItem)initWithCoder:(id)a3
+- (CRLImageToolbarButtonItem)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -156,12 +156,12 @@
   objc_exception_throw(v12);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  if ([v4 isSymbolImage])
+  imageCopy = image;
+  if ([imageCopy isSymbolImage])
   {
-    [(CRLImageToolbarButton *)self->_button setImage:v4];
+    [(CRLImageToolbarButton *)self->_button setImage:imageCopy];
   }
 
   else
@@ -194,12 +194,12 @@
   }
 }
 
-- (void)setLandscapeImagePhone:(id)a3
+- (void)setLandscapeImagePhone:(id)phone
 {
-  v4 = a3;
-  if ([v4 isSymbolImage])
+  phoneCopy = phone;
+  if ([phoneCopy isSymbolImage])
   {
-    [(CRLImageToolbarButton *)self->_button setImage:v4];
+    [(CRLImageToolbarButton *)self->_button setImage:phoneCopy];
   }
 
   else
@@ -232,24 +232,24 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = CRLImageToolbarButtonItem;
   [(CRLImageToolbarButtonItem *)&v5 setEnabled:?];
-  [(CRLImageToolbarButton *)self->_button setEnabled:v3];
+  [(CRLImageToolbarButton *)self->_button setEnabled:enabledCopy];
 }
 
-- (void)didTapButton:(id)a3 withEvent:(id)a4
+- (void)didTapButton:(id)button withEvent:(id)event
 {
-  v8 = a4;
+  eventCopy = event;
   if ([(CRLImageToolbarButtonItem *)self action])
   {
     v5 = +[UIApplication sharedApplication];
-    v6 = [(CRLImageToolbarButtonItem *)self action];
-    v7 = [(CRLImageToolbarButtonItem *)self target];
-    [v5 sendAction:v6 to:v7 from:self forEvent:v8];
+    action = [(CRLImageToolbarButtonItem *)self action];
+    target = [(CRLImageToolbarButtonItem *)self target];
+    [v5 sendAction:action to:target from:self forEvent:eventCopy];
   }
 }
 

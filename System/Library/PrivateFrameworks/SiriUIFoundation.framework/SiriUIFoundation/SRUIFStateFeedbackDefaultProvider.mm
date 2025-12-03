@@ -1,28 +1,28 @@
 @interface SRUIFStateFeedbackDefaultProvider
-- (SRUIFStateFeedbackDefaultProvider)initWithConnection:(id)a3 withPlaybackOptions:(unint64_t)a4;
-- (void)_playAudioPlaybackRequest:(id)a3 completion:(id)a4;
-- (void)_playFeedbackWithSoundId:(int64_t)a3 hapticLibraryKey:(id)a4 UUID:(id)a5 completion:(id)a6;
-- (void)_startDelayFeedbackWithResponseMode:(id)a3 withCompletion:(id)a4;
-- (void)_startSuccessFeedback:(id)a3 withCompletion:(id)a4;
-- (void)cancelFeedbackWithCompletion:(id)a3;
-- (void)playAudioPlaybackRequest:(id)a3 completion:(id)a4;
-- (void)playFeedbackForStateFeedbackType:(int64_t)a3 withResponseMode:(id)a4 completion:(id)a5;
-- (void)releaseAudioSessionWithCompletion:(id)a3;
+- (SRUIFStateFeedbackDefaultProvider)initWithConnection:(id)connection withPlaybackOptions:(unint64_t)options;
+- (void)_playAudioPlaybackRequest:(id)request completion:(id)completion;
+- (void)_playFeedbackWithSoundId:(int64_t)id hapticLibraryKey:(id)key UUID:(id)d completion:(id)completion;
+- (void)_startDelayFeedbackWithResponseMode:(id)mode withCompletion:(id)completion;
+- (void)_startSuccessFeedback:(id)feedback withCompletion:(id)completion;
+- (void)cancelFeedbackWithCompletion:(id)completion;
+- (void)playAudioPlaybackRequest:(id)request completion:(id)completion;
+- (void)playFeedbackForStateFeedbackType:(int64_t)type withResponseMode:(id)mode completion:(id)completion;
+- (void)releaseAudioSessionWithCompletion:(id)completion;
 @end
 
 @implementation SRUIFStateFeedbackDefaultProvider
 
-- (SRUIFStateFeedbackDefaultProvider)initWithConnection:(id)a3 withPlaybackOptions:(unint64_t)a4
+- (SRUIFStateFeedbackDefaultProvider)initWithConnection:(id)connection withPlaybackOptions:(unint64_t)options
 {
-  v6 = a3;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = SRUIFStateFeedbackDefaultProvider;
   v7 = [(SRUIFStateFeedbackDefaultProvider *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_connection, v6);
-    v8->_options = a4;
+    objc_storeWeak(&v7->_connection, connectionCopy);
+    v8->_options = options;
     v9 = dispatch_queue_create("com.apple.siri.stateFeedbackProviderQueue", 0);
     queue = v8->_queue;
     v8->_queue = v9;
@@ -31,17 +31,17 @@
   return v8;
 }
 
-- (void)playFeedbackForStateFeedbackType:(int64_t)a3 withResponseMode:(id)a4 completion:(id)a5
+- (void)playFeedbackForStateFeedbackType:(int64_t)type withResponseMode:(id)mode completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 1)
+  modeCopy = mode;
+  completionCopy = completion;
+  if (type == 1)
   {
-    [(SRUIFStateFeedbackDefaultProvider *)self _startSuccessFeedback:v8 withCompletion:v9];
+    [(SRUIFStateFeedbackDefaultProvider *)self _startSuccessFeedback:modeCopy withCompletion:completionCopy];
   }
 
-  else if (a3)
+  else if (type)
   {
     v10 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -54,18 +54,18 @@
 
   else
   {
-    [(SRUIFStateFeedbackDefaultProvider *)self _startDelayFeedbackWithResponseMode:v8 withCompletion:v9];
+    [(SRUIFStateFeedbackDefaultProvider *)self _startDelayFeedbackWithResponseMode:modeCopy withCompletion:completionCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playAudioPlaybackRequest:(id)a3 completion:(id)a4
+- (void)playAudioPlaybackRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemURL];
-  if (v8)
+  requestCopy = request;
+  completionCopy = completion;
+  itemURL = [requestCopy itemURL];
+  if (itemURL)
   {
 
 LABEL_4:
@@ -74,7 +74,7 @@ LABEL_4:
     v19[1] = 3221225472;
     v19[2] = __73__SRUIFStateFeedbackDefaultProvider_playAudioPlaybackRequest_completion___block_invoke;
     v19[3] = &unk_279C619B8;
-    v20 = v6;
+    v20 = requestCopy;
     v11 = [v10 initWithBuilder:v19];
     currentAudioPlaybackRequest = self->_currentAudioPlaybackRequest;
     self->_currentAudioPlaybackRequest = v11;
@@ -84,28 +84,28 @@ LABEL_4:
     v17[1] = 3221225472;
     v17[2] = __73__SRUIFStateFeedbackDefaultProvider_playAudioPlaybackRequest_completion___block_invoke_2;
     v17[3] = &unk_279C619E0;
-    v18 = v7;
+    v18 = completionCopy;
     [(SRUIFStateFeedbackDefaultProvider *)self _playAudioPlaybackRequest:v13 completion:v17];
 
     goto LABEL_5;
   }
 
-  v9 = [v6 itemData];
+  itemData = [requestCopy itemData];
 
-  if (v9)
+  if (itemData)
   {
     goto LABEL_4;
   }
 
-  v14 = [v6 toneLibraryAlertType];
+  toneLibraryAlertType = [requestCopy toneLibraryAlertType];
 
-  if (v14)
+  if (toneLibraryAlertType)
   {
-    v15 = [v6 toneLibraryAlertType];
-    v16 = [v15 integerValue];
+    toneLibraryAlertType2 = [requestCopy toneLibraryAlertType];
+    integerValue = [toneLibraryAlertType2 integerValue];
 
-    [MEMORY[0x277D71F50] playAlertForType:v16];
-    (*(v7 + 2))(v7, 1);
+    [MEMORY[0x277D71F50] playAlertForType:integerValue];
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   else
@@ -115,7 +115,7 @@ LABEL_4:
       [SRUIFStateFeedbackDefaultProvider playAudioPlaybackRequest:completion:];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_5:
@@ -225,10 +225,10 @@ void __73__SRUIFStateFeedbackDefaultProvider_playAudioPlaybackRequest_completion
   v4();
 }
 
-- (void)cancelFeedbackWithCompletion:(id)a3
+- (void)cancelFeedbackWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (self->_currentAudioPlaybackRequest)
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
@@ -263,15 +263,15 @@ void __73__SRUIFStateFeedbackDefaultProvider_playAudioPlaybackRequest_completion
     aBlock[1] = 3221225472;
     aBlock[2] = __66__SRUIFStateFeedbackDefaultProvider_cancelFeedbackWithCompletion___block_invoke;
     aBlock[3] = &unk_279C61A08;
-    v14 = v4;
+    v14 = completionCopy;
     v10 = _Block_copy(aBlock);
     audioSessionAcquiredBlock = self->_audioSessionAcquiredBlock;
     self->_audioSessionAcquiredBlock = v10;
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -288,23 +288,23 @@ uint64_t __66__SRUIFStateFeedbackDefaultProvider_cancelFeedbackWithCompletion___
   return result;
 }
 
-- (void)releaseAudioSessionWithCompletion:(id)a3
+- (void)releaseAudioSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  [WeakRetained forceAudioSessionInactiveWithOptions:0 completion:v4];
+  [WeakRetained forceAudioSessionInactiveWithOptions:0 completion:completionCopy];
 }
 
-- (void)_playFeedbackWithSoundId:(int64_t)a3 hapticLibraryKey:(id)a4 UUID:(id)a5 completion:(id)a6
+- (void)_playFeedbackWithSoundId:(int64_t)id hapticLibraryKey:(id)key UUID:(id)d completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  dCopy = d;
+  completionCopy = completion;
   if (AFSoundIDGetIsValidAndSpecified())
   {
-    v13 = [MEMORY[0x277CEF1C0] sharedManager];
-    v14 = [v13 URLForSoundID:a3];
+    mEMORY[0x277CEF1C0] = [MEMORY[0x277CEF1C0] sharedManager];
+    v14 = [mEMORY[0x277CEF1C0] URLForSoundID:id];
   }
 
   else
@@ -312,7 +312,7 @@ uint64_t __66__SRUIFStateFeedbackDefaultProvider_cancelFeedbackWithCompletion___
     v14 = 0;
   }
 
-  if (v10 | v14)
+  if (keyCopy | v14)
   {
     v15 = objc_alloc(MEMORY[0x277CEF188]);
     v24[0] = MEMORY[0x277D85DD0];
@@ -320,8 +320,8 @@ uint64_t __66__SRUIFStateFeedbackDefaultProvider_cancelFeedbackWithCompletion___
     v24[2] = __95__SRUIFStateFeedbackDefaultProvider__playFeedbackWithSoundId_hapticLibraryKey_UUID_completion___block_invoke;
     v24[3] = &unk_279C61A30;
     v25 = v14;
-    v26 = v11;
-    v27 = v10;
+    v26 = dCopy;
+    v27 = keyCopy;
     v16 = [v15 initWithBuilder:v24];
     currentAudioPlaybackRequest = self->_currentAudioPlaybackRequest;
     self->_currentAudioPlaybackRequest = v16;
@@ -332,7 +332,7 @@ uint64_t __66__SRUIFStateFeedbackDefaultProvider_cancelFeedbackWithCompletion___
     v22[1] = 3221225472;
     v22[2] = __95__SRUIFStateFeedbackDefaultProvider__playFeedbackWithSoundId_hapticLibraryKey_UUID_completion___block_invoke_2;
     v22[3] = &unk_279C619E0;
-    v23 = v12;
+    v23 = completionCopy;
     [(SRUIFStateFeedbackDefaultProvider *)self _playAudioPlaybackRequest:v19 completion:v22];
   }
 
@@ -346,9 +346,9 @@ uint64_t __66__SRUIFStateFeedbackDefaultProvider_cancelFeedbackWithCompletion___
       _os_log_impl(&dword_26951F000, v20, OS_LOG_TYPE_DEFAULT, "%s #statefeedback no audio or haptic specified, visual only feedback", buf, 0xCu);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
@@ -379,11 +379,11 @@ uint64_t __95__SRUIFStateFeedbackDefaultProvider__playFeedbackWithSoundId_haptic
   return result;
 }
 
-- (void)_playAudioPlaybackRequest:(id)a3 completion:(id)a4
+- (void)_playAudioPlaybackRequest:(id)request completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x277CEF398]) initWithBuilder:&__block_literal_global];
   objc_initWeak(&location, self);
   self->_acquiringAudioSession = 1;
@@ -401,9 +401,9 @@ uint64_t __95__SRUIFStateFeedbackDefaultProvider__playFeedbackWithSoundId_haptic
   v14[2] = __74__SRUIFStateFeedbackDefaultProvider__playAudioPlaybackRequest_completion___block_invoke_9;
   v14[3] = &unk_279C61A78;
   objc_copyWeak(&v17, &location);
-  v11 = v6;
+  v11 = requestCopy;
   v15 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v16 = v12;
   [WeakRetained acquireAudioSessionWithContext:v8 completion:v14];
 
@@ -491,9 +491,9 @@ void __74__SRUIFStateFeedbackDefaultProvider__playAudioPlaybackRequest_completio
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startSuccessFeedback:(id)a3 withCompletion:(id)a4
+- (void)_startSuccessFeedback:(id)feedback withCompletion:(id)completion
 {
-  v9 = a4;
+  completionCopy = completion;
   v5 = AFSoundIDGetFromName();
   if ([MEMORY[0x277CEF4D0] saeAvailable])
   {
@@ -508,17 +508,17 @@ void __74__SRUIFStateFeedbackDefaultProvider__playAudioPlaybackRequest_completio
   if (!v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CCAD78]);
-    v8 = [v7 UUIDString];
-    [(SRUIFStateFeedbackDefaultProvider *)self _playFeedbackWithSoundId:v5 hapticLibraryKey:@"TestPattern01" UUID:v8 completion:v9];
+    uUIDString = [v7 UUIDString];
+    [(SRUIFStateFeedbackDefaultProvider *)self _playFeedbackWithSoundId:v5 hapticLibraryKey:@"TestPattern01" UUID:uUIDString completion:completionCopy];
   }
 }
 
-- (void)_startDelayFeedbackWithResponseMode:(id)a3 withCompletion:(id)a4
+- (void)_startDelayFeedbackWithResponseMode:(id)mode withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CCAD78]);
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
   if ([MEMORY[0x277CEF4D0] saeAvailable])
   {
@@ -539,9 +539,9 @@ void __74__SRUIFStateFeedbackDefaultProvider__playAudioPlaybackRequest_completio
     v11 = 8;
   }
 
-  if (([v6 isEqualToString:*MEMORY[0x277D48C98]] & 1) == 0 && (!AFIsNano() || !objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277D48C90])))
+  if (([modeCopy isEqualToString:*MEMORY[0x277D48C98]] & 1) == 0 && (!AFIsNano() || !objc_msgSend(modeCopy, "isEqualToString:", *MEMORY[0x277D48C90])))
   {
-    objc_storeStrong(&self->_uuidForFirstDelayTone, v9);
+    objc_storeStrong(&self->_uuidForFirstDelayTone, uUIDString);
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -551,8 +551,8 @@ void __74__SRUIFStateFeedbackDefaultProvider__playAudioPlaybackRequest_completio
     v16 = 1076887552;
     v15[1] = v11;
     v13 = 0;
-    v14 = v7;
-    [(SRUIFStateFeedbackDefaultProvider *)self _playFeedbackWithSoundId:v11 hapticLibraryKey:0 UUID:v9 completion:v12];
+    v14 = completionCopy;
+    [(SRUIFStateFeedbackDefaultProvider *)self _playFeedbackWithSoundId:v11 hapticLibraryKey:0 UUID:uUIDString completion:v12];
 
     objc_destroyWeak(v15);
     objc_destroyWeak(&location);
@@ -562,7 +562,7 @@ void __74__SRUIFStateFeedbackDefaultProvider__playAudioPlaybackRequest_completio
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
     [SRUIFStateFeedbackDefaultProvider _startDelayFeedbackWithResponseMode:withCompletion:];
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -570,10 +570,10 @@ void __74__SRUIFStateFeedbackDefaultProvider__playAudioPlaybackRequest_completio
     goto LABEL_9;
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_9:
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
 LABEL_13:

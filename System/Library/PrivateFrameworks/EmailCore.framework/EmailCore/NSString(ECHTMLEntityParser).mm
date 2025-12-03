@@ -7,7 +7,7 @@
 - (id)ec_parseHTMLEntity
 {
   v3 = 0;
-  parseEntity(a1, &v3);
+  parseEntity(self, &v3);
   v1 = v3;
 
   return v1;

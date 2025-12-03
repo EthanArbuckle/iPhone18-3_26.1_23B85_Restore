@@ -1,24 +1,24 @@
 @interface UIAccessibilityMathViewController
-- (UIAccessibilityMathViewController)initWithMathDictionary:(id)a3;
+- (UIAccessibilityMathViewController)initWithMathDictionary:(id)dictionary;
 - (id)_htmlString;
 - (void)_doneButtonTapped;
-- (void)_styleBarButtonItem:(id)a3;
+- (void)_styleBarButtonItem:(id)item;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation UIAccessibilityMathViewController
 
-- (UIAccessibilityMathViewController)initWithMathDictionary:(id)a3
+- (UIAccessibilityMathViewController)initWithMathDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = UIAccessibilityMathViewController;
   v6 = [(UIAccessibilityMathViewController *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mathDictionary, a3);
+    objc_storeStrong(&v6->_mathDictionary, dictionary);
     v25 = 0;
     v26 = &v25;
     v27 = 0x2050000000;
@@ -37,7 +37,7 @@
 
     v9 = v8;
     _Block_object_dispose(&v25, 8);
-    v10 = [v8 mathExpressionWithDictionary:v5];
+    v10 = [v8 mathExpressionWithDictionary:dictionaryCopy];
     mathExpression = v7->_mathExpression;
     v7->_mathExpression = v10;
 
@@ -47,8 +47,8 @@
     v15 = [v12 initWithTitle:v14 style:0 target:v7 action:sel__doneButtonTapped];
 
     [(UIAccessibilityMathViewController *)v7 _styleBarButtonItem:v15];
-    v16 = [(UIAccessibilityMathViewController *)v7 navigationItem];
-    [v16 setRightBarButtonItem:v15];
+    navigationItem = [(UIAccessibilityMathViewController *)v7 navigationItem];
+    [navigationItem setRightBarButtonItem:v15];
 
     v17 = objc_alloc(MEMORY[0x1E69DC708]);
     v18 = UIAccessibilityBundle();
@@ -56,8 +56,8 @@
     v20 = [v17 initWithTitle:v19 style:0 target:0 action:0];
 
     [(UIAccessibilityMathViewController *)v7 _styleBarButtonItem:v20];
-    v21 = [(UIAccessibilityMathViewController *)v7 navigationItem];
-    [v21 setBackBarButtonItem:v20];
+    navigationItem2 = [(UIAccessibilityMathViewController *)v7 navigationItem];
+    [navigationItem2 setBackBarButtonItem:v20];
   }
 
   return v7;
@@ -73,8 +73,8 @@
   self->_webView = v3;
 
   [(UIAccessibilityMathWebView *)self->_webView setNavigationDelegate:self];
-  v5 = [(UIAccessibilityMathWebView *)self->_webView scrollView];
-  [v5 setScrollEnabled:0];
+  scrollView = [(UIAccessibilityMathWebView *)self->_webView scrollView];
+  [scrollView setScrollEnabled:0];
 
   [(UIAccessibilityMathViewController *)self setView:self->_webView];
 }
@@ -85,8 +85,8 @@
   v6.super_class = UIAccessibilityMathViewController;
   [(UIAccessibilityMathViewController *)&v6 viewDidLoad];
   webView = self->_webView;
-  v4 = [(UIAccessibilityMathViewController *)self _htmlString];
-  v5 = [(UIAccessibilityMathWebView *)webView loadHTMLString:v4 baseURL:0];
+  _htmlString = [(UIAccessibilityMathViewController *)self _htmlString];
+  v5 = [(UIAccessibilityMathWebView *)webView loadHTMLString:_htmlString baseURL:0];
 }
 
 - (id)_htmlString
@@ -100,8 +100,8 @@
   if (_htmlString_HTMLFormat)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(SCRCMathExpression *)self->_mathExpression mathMLString];
-    v6 = [v4 stringWithFormat:v3, v5];
+    mathMLString = [(SCRCMathExpression *)self->_mathExpression mathMLString];
+    v6 = [v4 stringWithFormat:v3, mathMLString];
   }
 
   else
@@ -139,29 +139,29 @@ void __48__UIAccessibilityMathViewController__htmlString__block_invoke()
 
 - (void)_doneButtonTapped
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v2 = [v3 accessibilityPresentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  accessibilityPresentingViewController = [mEMORY[0x1E69DC668] accessibilityPresentingViewController];
+  [accessibilityPresentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_styleBarButtonItem:(id)a3
+- (void)_styleBarButtonItem:(id)item
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setShadowColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setShadowColor:clearColor];
 
   v9[0] = *MEMORY[0x1E69DB648];
   v6 = [MEMORY[0x1E69DB878] fontWithName:@"Helvetica-Bold" size:12.0];
   v10[0] = v6;
   v9[1] = *MEMORY[0x1E69DB650];
-  v7 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
   v9[2] = *MEMORY[0x1E69DB6A8];
-  v10[1] = v7;
+  v10[1] = blackColor;
   v10[2] = v4;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
-  [v3 setTitleTextAttributes:v8 forState:0];
+  [itemCopy setTitleTextAttributes:v8 forState:0];
 }
 
 @end

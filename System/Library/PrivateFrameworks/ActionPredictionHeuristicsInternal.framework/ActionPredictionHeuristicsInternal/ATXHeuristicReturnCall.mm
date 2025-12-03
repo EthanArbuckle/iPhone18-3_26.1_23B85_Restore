@@ -1,13 +1,13 @@
 @interface ATXHeuristicReturnCall
-- (id)_actionWithCall:(id)a3 contactDict:(id)a4 contactId:(id)a5 handle:(id)a6 service:(id)a7;
-- (id)_bestContactHandleFromDataSourceWithContact:(id)a3 service:(id)a4 environment:(id)a5;
-- (id)_contactsDataSourceWithIdentifiers:(id)a3 environment:(id)a4;
-- (id)_duetInteractionCountFromDataSourceWithHandles:(id)a3 date:(id)a4 environment:(id)a5;
-- (id)_interactionCountAfterCall:(id)a3 contactDict:(id)a4 environment:(id)a5;
-- (id)_serviceWithCall:(id)a3;
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)_actionWithCall:(id)call contactDict:(id)dict contactId:(id)id handle:(id)handle service:(id)service;
+- (id)_bestContactHandleFromDataSourceWithContact:(id)contact service:(id)service environment:(id)environment;
+- (id)_contactsDataSourceWithIdentifiers:(id)identifiers environment:(id)environment;
+- (id)_duetInteractionCountFromDataSourceWithHandles:(id)handles date:(id)date environment:(id)environment;
+- (id)_interactionCountAfterCall:(id)call contactDict:(id)dict environment:(id)environment;
+- (id)_serviceWithCall:(id)call;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
-- (void)_addActionWithContactId:(id)a3 toActions:(id)a4 environment:(id)a5 lastCallDict:(id)a6;
+- (void)_addActionWithContactId:(id)id toActions:(id)actions environment:(id)environment lastCallDict:(id)dict;
 @end
 
 @implementation ATXHeuristicReturnCall
@@ -16,8 +16,8 @@
 {
   v2 = [[ATXInformationHeuristicRefreshNotitifcationTrigger alloc] initWithNotification:@"com.apple.CallHistoryPluginHelper.launchnotification" type:1];
   v3 = [ATXInformationHeuristicRefreshContextChangeTrigger alloc];
-  v4 = [MEMORY[0x277CFE338] keyPathForActiveCall];
-  v5 = [(ATXInformationHeuristicRefreshContextChangeTrigger *)v3 initWithCDContextualKeyPath:v4];
+  keyPathForActiveCall = [MEMORY[0x277CFE338] keyPathForActiveCall];
+  v5 = [(ATXInformationHeuristicRefreshContextChangeTrigger *)v3 initWithCDContextualKeyPath:keyPathForActiveCall];
 
   v6 = objc_autoreleasePoolPush();
   v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v2, v5, 0}];
@@ -26,14 +26,14 @@
   return v7;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  environmentCopy = environment;
   v4 = [ATXCallHistoryDataSource alloc];
-  v40 = v3;
-  v5 = [v3 heuristicDevice];
-  v6 = [(ATXCallHistoryDataSource *)v4 initWithDevice:v5];
+  v40 = environmentCopy;
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v6 = [(ATXCallHistoryDataSource *)v4 initWithDevice:heuristicDevice];
 
   v50 = 0;
   v51 = &v50;
@@ -179,40 +179,40 @@
   return v34;
 }
 
-- (void)_addActionWithContactId:(id)a3 toActions:(id)a4 environment:(id)a5 lastCallDict:(id)a6
+- (void)_addActionWithContactId:(id)id toActions:(id)actions environment:(id)environment lastCallDict:(id)dict
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a6 objectForKeyedSubscript:v10];
+  idCopy = id;
+  actionsCopy = actions;
+  environmentCopy = environment;
+  v13 = [dict objectForKeyedSubscript:idCopy];
   v14 = [v13 objectForKeyedSubscript:@"missed"];
   if ([v14 BOOLValue])
   {
     v15 = [v13 objectForKeyedSubscript:@"remoteParticipantHandles"];
     if ([v15 count]== 1)
     {
-      v16 = [v15 firstObject];
-      v17 = [v16 objectForKeyedSubscript:@"value"];
+      firstObject = [v15 firstObject];
+      v17 = [firstObject objectForKeyedSubscript:@"value"];
 
       v18 = [(ATXHeuristicReturnCall *)self _serviceWithCall:v13];
       if ([v18 length])
       {
         v25 = v18;
-        v26 = v10;
+        v26 = idCopy;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-        v20 = [(ATXHeuristicReturnCall *)self _contactsDataSourceWithIdentifiers:v19 environment:v12];
+        v20 = [(ATXHeuristicReturnCall *)self _contactsDataSourceWithIdentifiers:v19 environment:environmentCopy];
 
         if ([v20 count] == 1)
         {
-          v21 = [v20 firstObject];
-          v24 = [(ATXHeuristicReturnCall *)self _interactionCountAfterCall:v13 contactDict:v21 environment:v12];
+          firstObject2 = [v20 firstObject];
+          v24 = [(ATXHeuristicReturnCall *)self _interactionCountAfterCall:v13 contactDict:firstObject2 environment:environmentCopy];
           if ([v24 integerValue] < 1)
           {
-            v22 = [(ATXHeuristicReturnCall *)self _actionWithCall:v13 contactDict:v21 contactId:v10 handle:v17 service:v25];
+            v22 = [(ATXHeuristicReturnCall *)self _actionWithCall:v13 contactDict:firstObject2 contactId:idCopy handle:v17 service:v25];
             if (v22)
             {
-              [v11 addObject:v22];
+              [actionsCopy addObject:v22];
             }
           }
 
@@ -230,12 +230,12 @@
 
         else
         {
-          v21 = __atxlog_handle_context_heuristic();
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+          firstObject2 = __atxlog_handle_context_heuristic();
+          if (os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v28 = v10;
-            _os_log_impl(&dword_23E3EA000, v21, OS_LOG_TYPE_DEFAULT, "ATXHeuristicReturnCall: heuristicResultWithEnvironment contactId %@ Could not find exactly 1 CNContact for identifier", buf, 0xCu);
+            v28 = idCopy;
+            _os_log_impl(&dword_23E3EA000, firstObject2, OS_LOG_TYPE_DEFAULT, "ATXHeuristicReturnCall: heuristicResultWithEnvironment contactId %@ Could not find exactly 1 CNContact for identifier", buf, 0xCu);
           }
         }
 
@@ -249,7 +249,7 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v28 = v10;
+        v28 = idCopy;
         _os_log_impl(&dword_23E3EA000, v17, OS_LOG_TYPE_DEFAULT, "ATXHeuristicReturnCall: heuristicResultWithEnvironment contactId %@ Cannot find exactly 1 remote participant handle", buf, 0xCu);
       }
     }
@@ -261,7 +261,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v10;
+      v28 = idCopy;
       _os_log_impl(&dword_23E3EA000, v15, OS_LOG_TYPE_DEFAULT, "ATXHeuristicReturnCall: heuristicResultWithEnvironment contactId %@ last call was not missed. Skipping", buf, 0xCu);
     }
   }
@@ -269,9 +269,9 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_serviceWithCall:(id)a3
+- (id)_serviceWithCall:(id)call
 {
-  v3 = [a3 objectForKeyedSubscript:@"serviceProvider"];
+  v3 = [call objectForKeyedSubscript:@"serviceProvider"];
   v4 = v3;
   if (!v3)
   {
@@ -304,16 +304,16 @@ LABEL_10:
   return v5;
 }
 
-- (id)_duetInteractionCountFromDataSourceWithHandles:(id)a3 date:(id)a4 environment:(id)a5
+- (id)_duetInteractionCountFromDataSourceWithHandles:(id)handles date:(id)date environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  handlesCopy = handles;
+  dateCopy = date;
+  environmentCopy = environment;
+  if ([handlesCopy count])
   {
     v10 = [ATXDuetInteractionDataSource alloc];
-    v11 = [v9 heuristicDevice];
-    v12 = [(ATXDuetInteractionDataSource *)v10 initWithDevice:v11];
+    heuristicDevice = [environmentCopy heuristicDevice];
+    v12 = [(ATXDuetInteractionDataSource *)v10 initWithDevice:heuristicDevice];
 
     v21 = 0;
     v22 = &v21;
@@ -327,14 +327,14 @@ LABEL_10:
     v19[2] = __Block_byref_object_copy__15;
     v19[3] = __Block_byref_object_dispose__15;
     v20 = 0;
-    v13 = [MEMORY[0x277CBEB98] setWithArray:v7];
+    v13 = [MEMORY[0x277CBEB98] setWithArray:handlesCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __90__ATXHeuristicReturnCall__duetInteractionCountFromDataSourceWithHandles_date_environment___block_invoke;
     v17[3] = &unk_278C3CDD0;
     v17[4] = &v21;
     v17[5] = &v18;
-    [(ATXDuetInteractionDataSource *)v12 duetInteractionCountForHandles:v13 sinceDate:v8 callback:v17];
+    [(ATXDuetInteractionDataSource *)v12 duetInteractionCountForHandles:v13 sinceDate:dateCopy callback:v17];
 
     if (*(v19[0] + 40))
     {
@@ -379,13 +379,13 @@ void __90__ATXHeuristicReturnCall__duetInteractionCountFromDataSourceWithHandles
   *(v9 + 40) = v6;
 }
 
-- (id)_contactsDataSourceWithIdentifiers:(id)a3 environment:(id)a4
+- (id)_contactsDataSourceWithIdentifiers:(id)identifiers environment:(id)environment
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  environmentCopy = environment;
   v7 = [ATXContactsDataSource alloc];
-  v8 = [v6 heuristicDevice];
-  v9 = [(ATXContactsDataSource *)v7 initWithDevice:v8];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v9 = [(ATXContactsDataSource *)v7 initWithDevice:heuristicDevice];
 
   v17 = 0;
   v18 = &v17;
@@ -405,7 +405,7 @@ void __90__ATXHeuristicReturnCall__duetInteractionCountFromDataSourceWithHandles
   v13[3] = &unk_278C3CDA8;
   v13[4] = &v17;
   v13[5] = &v14;
-  [(ATXContactsDataSource *)v9 contactsWithIdentifiers:v5 callback:v13];
+  [(ATXContactsDataSource *)v9 contactsWithIdentifiers:identifiersCopy callback:v13];
   if (*(v15[0] + 40))
   {
     v10 = __atxlog_handle_context_heuristic();
@@ -443,14 +443,14 @@ void __73__ATXHeuristicReturnCall__contactsDataSourceWithIdentifiers_environment
   *(v9 + 40) = v6;
 }
 
-- (id)_interactionCountAfterCall:(id)a3 contactDict:(id)a4 environment:(id)a5
+- (id)_interactionCountAfterCall:(id)call contactDict:(id)dict environment:(id)environment
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 objectForKeyedSubscript:@"CNContact"];
-  v11 = [(ATXHeuristicReturnCall *)self _bestContactHandleFromDataSourceWithContact:v10 service:*MEMORY[0x277D18698] environment:v9];
-  v12 = [(ATXHeuristicReturnCall *)self _bestContactHandleFromDataSourceWithContact:v10 service:*MEMORY[0x277D18690] environment:v9];
-  v13 = [(ATXHeuristicReturnCall *)self _bestContactHandleFromDataSourceWithContact:v10 service:*MEMORY[0x277D186B0] environment:v9];
+  callCopy = call;
+  environmentCopy = environment;
+  v10 = [dict objectForKeyedSubscript:@"CNContact"];
+  v11 = [(ATXHeuristicReturnCall *)self _bestContactHandleFromDataSourceWithContact:v10 service:*MEMORY[0x277D18698] environment:environmentCopy];
+  v12 = [(ATXHeuristicReturnCall *)self _bestContactHandleFromDataSourceWithContact:v10 service:*MEMORY[0x277D18690] environment:environmentCopy];
+  v13 = [(ATXHeuristicReturnCall *)self _bestContactHandleFromDataSourceWithContact:v10 service:*MEMORY[0x277D186B0] environment:environmentCopy];
   v14 = objc_opt_new();
   v15 = v14;
   if (v11)
@@ -468,25 +468,25 @@ void __73__ATXHeuristicReturnCall__contactsDataSourceWithIdentifiers_environment
     [v15 addObject:v13];
   }
 
-  v16 = [v8 objectForKeyedSubscript:@"date"];
+  v16 = [callCopy objectForKeyedSubscript:@"date"];
   v17 = MEMORY[0x277CBEAA8];
   [v16 doubleValue];
   v19 = [v17 dateWithTimeIntervalSinceReferenceDate:v18 + 1.0];
-  v20 = [(ATXHeuristicReturnCall *)self _duetInteractionCountFromDataSourceWithHandles:v15 date:v19 environment:v9];
+  v20 = [(ATXHeuristicReturnCall *)self _duetInteractionCountFromDataSourceWithHandles:v15 date:v19 environment:environmentCopy];
 
   return v20;
 }
 
-- (id)_bestContactHandleFromDataSourceWithContact:(id)a3 service:(id)a4 environment:(id)a5
+- (id)_bestContactHandleFromDataSourceWithContact:(id)contact service:(id)service environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && v8)
+  contactCopy = contact;
+  serviceCopy = service;
+  environmentCopy = environment;
+  if (contactCopy && serviceCopy)
   {
     v10 = [ATXBestContactHandleForServiceDataSource alloc];
-    v11 = [v9 heuristicDevice];
-    v12 = [(ATXBestContactHandleForServiceDataSource *)v10 initWithDevice:v11];
+    heuristicDevice = [environmentCopy heuristicDevice];
+    v12 = [(ATXBestContactHandleForServiceDataSource *)v10 initWithDevice:heuristicDevice];
 
     v20 = 0;
     v21 = &v20;
@@ -506,7 +506,7 @@ void __73__ATXHeuristicReturnCall__contactsDataSourceWithIdentifiers_environment
     v16[3] = &unk_278C3D2D0;
     v16[4] = &v20;
     v16[5] = &v17;
-    [v12 bestHandleForContact:v7 service:v8 callback:v16];
+    [v12 bestHandleForContact:contactCopy service:serviceCopy callback:v16];
     if (*(v18[0] + 40))
     {
       v13 = __atxlog_handle_context_heuristic();
@@ -533,7 +533,7 @@ void __73__ATXHeuristicReturnCall__contactsDataSourceWithIdentifiers_environment
     v12 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [ATXHeuristicReturnCall _bestContactHandleFromDataSourceWithContact:v7 service:v8 environment:v12];
+      [ATXHeuristicReturnCall _bestContactHandleFromDataSourceWithContact:contactCopy service:serviceCopy environment:v12];
     }
 
     v14 = 0;
@@ -556,24 +556,24 @@ void __90__ATXHeuristicReturnCall__bestContactHandleFromDataSourceWithContact_se
   *(v9 + 40) = v6;
 }
 
-- (id)_actionWithCall:(id)a3 contactDict:(id)a4 contactId:(id)a5 handle:(id)a6 service:(id)a7
+- (id)_actionWithCall:(id)call contactDict:(id)dict contactId:(id)id handle:(id)handle service:(id)service
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  callCopy = call;
+  idCopy = id;
+  handleCopy = handle;
+  serviceCopy = service;
   v15 = MEMORY[0x277CCA8D8];
-  v16 = a4;
+  dictCopy = dict;
   v17 = [v15 bundleForClass:objc_opt_class()];
-  v18 = [v16 objectForKeyedSubscript:@"displayName"];
+  v18 = [dictCopy objectForKeyedSubscript:@"displayName"];
 
   if ([v18 length])
   {
-    v45 = v12;
+    v45 = idCopy;
     v19 = MEMORY[0x277CCACA8];
     [v17 localizedStringForKey:@"RETURN_CALL_TITLE" value:&stru_2850AD368 table:0];
-    v20 = v47 = v11;
+    v20 = v47 = callCopy;
     v44 = v18;
     v21 = [v19 localizedStringWithFormat:v20, v18];
 
@@ -604,9 +604,9 @@ void __90__ATXHeuristicReturnCall__bestContactHandleFromDataSourceWithContact_se
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413059;
-      v49 = v13;
+      v49 = handleCopy;
       v50 = 2112;
-      v51 = v14;
+      v51 = serviceCopy;
       v52 = 2117;
       v53 = v21;
       v54 = 2112;
@@ -617,7 +617,7 @@ void __90__ATXHeuristicReturnCall__bestContactHandleFromDataSourceWithContact_se
     v32 = MEMORY[0x277CEB2C8];
     v33 = [v47 objectForKeyedSubscript:@"mediaType"];
     v18 = v44;
-    v34 = [v32 atx_startCallActionWithTitle:v21 subtitle:v30 recipientName:v44 recipientHandle:v13 callService:v14 contactIdentifier:v45 eventIdentifier:0 heuristicName:@"returnCall" mediaType:v33];
+    v34 = [v32 atx_startCallActionWithTitle:v21 subtitle:v30 recipientName:v44 recipientHandle:handleCopy callService:serviceCopy contactIdentifier:v45 eventIdentifier:0 heuristicName:@"returnCall" mediaType:v33];
 
     v35 = [v24 dateByAddingTimeInterval:120.0];
     v36 = [v35 dateByAddingTimeInterval:1800.0];
@@ -626,8 +626,8 @@ void __90__ATXHeuristicReturnCall__bestContactHandleFromDataSourceWithContact_se
     v39 = [objc_alloc(MEMORY[0x277CEB2D0]) initWithStartDate:v35 endDate:v36 lockScreenEligible:0 predicate:0];
     [v34 setCriteria:v39];
 
-    v12 = v45;
-    v11 = v47;
+    idCopy = v45;
+    callCopy = v47;
 
     v17 = v46;
   }

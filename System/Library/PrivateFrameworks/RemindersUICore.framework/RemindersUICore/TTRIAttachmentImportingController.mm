@@ -1,7 +1,7 @@
 @interface TTRIAttachmentImportingController
 - (_TtC15RemindersUICore33TTRIAttachmentImportingController)init;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
 @end
 
 @implementation TTRIAttachmentImportingController
@@ -16,7 +16,7 @@
   return [(TTRIAttachmentImportingController *)&v5 init];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   type metadata accessor for InfoKey(0);
   sub_21DAAC3CC();
@@ -31,18 +31,18 @@
   v11[2] = sub_21D0D74FC;
   v11[3] = &block_descriptor_50;
   v8 = _Block_copy(v11);
-  v9 = self;
-  v10 = a3;
+  selfCopy = self;
+  controllerCopy = controller;
 
-  [v10 dismissViewControllerAnimated:1 completion:v8];
+  [controllerCopy dismissViewControllerAnimated:1 completion:v8];
 
   _Block_release(v8);
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
   v7 = swift_allocObject();
-  *(v7 + 16) = a4;
+  *(v7 + 16) = scan;
   *(v7 + 24) = self;
   v14[4] = sub_21DAAC50C;
   v14[5] = v7;
@@ -51,13 +51,13 @@
   v14[2] = sub_21D0D74FC;
   v14[3] = &block_descriptor_36_3;
   v8 = _Block_copy(v14);
-  v9 = a4;
-  v10 = self;
-  v11 = v9;
-  v12 = v10;
-  v13 = a3;
+  scanCopy = scan;
+  selfCopy = self;
+  v11 = scanCopy;
+  v12 = selfCopy;
+  controllerCopy = controller;
 
-  [v13 dismissViewControllerAnimated:1 completion:v8];
+  [controllerCopy dismissViewControllerAnimated:1 completion:v8];
 
   _Block_release(v8);
 }

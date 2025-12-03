@@ -1,19 +1,19 @@
 @interface DummyHandlerProvider
-- (DummyHandlerProvider)initWithHandler:(id)a3;
+- (DummyHandlerProvider)initWithHandler:(id)handler;
 @end
 
 @implementation DummyHandlerProvider
 
-- (DummyHandlerProvider)initWithHandler:(id)a3
+- (DummyHandlerProvider)initWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = DummyHandlerProvider;
   v6 = [(DummyHandlerProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_handler, a3);
+    objc_storeStrong(&v6->_handler, handler);
   }
 
   return v7;

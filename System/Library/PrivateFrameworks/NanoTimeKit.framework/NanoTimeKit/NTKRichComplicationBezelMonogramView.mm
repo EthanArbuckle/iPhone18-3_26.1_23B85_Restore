@@ -1,41 +1,41 @@
 @interface NTKRichComplicationBezelMonogramView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (id)_createLabelViewWithFont:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (id)_createLabelViewWithFont:(id)font;
 - (id)_labelFont;
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4;
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationBezelMonogramView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = [a3 textProvider];
-  [(CLKUIColoringLabel *)self->_textLabel setTextProvider:v5];
+  textProvider = [template textProvider];
+  [(CLKUIColoringLabel *)self->_textLabel setTextProvider:textProvider];
 
-  v6 = [(NTKRichComplicationBezelMonogramView *)self _labelFont];
-  [(CLKUIColoringLabel *)self->_textLabel setFont:v6];
+  _labelFont = [(NTKRichComplicationBezelMonogramView *)self _labelFont];
+  [(CLKUIColoringLabel *)self->_textLabel setFont:_labelFont];
 
   [(NTKRichComplicationBezelMonogramView *)self setNeedsLayout];
 }
 
 - (id)_labelFont
 {
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = ___LayoutConstants_block_invoke(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = ___LayoutConstants_block_invoke(device, device);
   v6 = v5;
   v8 = v7;
 
-  v9 = [(CLKUIColoringLabel *)self->_textLabel text];
-  v10 = [v9 length];
+  text = [(CLKUIColoringLabel *)self->_textLabel text];
+  v10 = [text length];
 
   if (v10 == 2)
   {
@@ -53,14 +53,14 @@
   }
 
   v12 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v11 design:*MEMORY[0x277D74420]];
-  v13 = [v12 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v12 CLKFontWithAlternativePunctuation];
 
-  return v13;
+  return cLKFontWithAlternativePunctuation;
 }
 
-- (id)_createLabelViewWithFont:(id)a3
+- (id)_createLabelViewWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = objc_alloc_init(off_27877BEF8);
   [v5 setInTimeTravel:0];
   objc_initWeak(&location, self);
@@ -76,14 +76,14 @@
   v10[3] = &unk_27877DC58;
   objc_copyWeak(&v11, &location);
   [v5 setNeedsResizeHandler:v10];
-  v6 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke(v6, v6);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke(device, device);
   [v5 setMaxWidth:v7];
 
   [v5 setUppercase:1];
-  [v5 setFont:v4];
-  v8 = [MEMORY[0x277D75348] blackColor];
-  [v5 setTextColor:v8];
+  [v5 setFont:fontCopy];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v5 setTextColor:blackColor];
 
   objc_storeStrong(&self->_textLabel, v5);
   objc_destroyWeak(&v11);

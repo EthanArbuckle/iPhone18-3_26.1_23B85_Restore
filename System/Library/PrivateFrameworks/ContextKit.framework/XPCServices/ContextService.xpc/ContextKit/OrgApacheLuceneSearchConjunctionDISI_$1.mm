@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneSearchConjunctionDISI_$1
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneSearchConjunctionDISI_$1
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v5 = [a3 cost], !a4))
+  if (!id || (v5 = [id cost], !withId))
   {
     JreThrowNullPointerException();
   }
 
   v6 = v5;
-  v7 = [a4 cost];
+  cost = [withId cost];
 
-  return JavaLangLong_compareWithLong_withLong_(v6, v7);
+  return JavaLangLong_compareWithLong_withLong_(v6, cost);
 }
 
 @end

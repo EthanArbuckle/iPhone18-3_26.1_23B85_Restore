@@ -1,31 +1,31 @@
 @interface IFTSchemaIFTTypeIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTCustom)custom;
 - (IFTSchemaIFTPrimitive)primitive;
-- (IFTSchemaIFTTypeIdentifier)initWithDictionary:(id)a3;
-- (IFTSchemaIFTTypeIdentifier)initWithJSON:(id)a3;
+- (IFTSchemaIFTTypeIdentifier)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTTypeIdentifier)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteCustom;
 - (void)deletePrimitive;
-- (void)setCustom:(id)a3;
-- (void)setPrimitive:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCustom:(id)custom;
+- (void)setPrimitive:(id)primitive;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTTypeIdentifier
 
-- (IFTSchemaIFTTypeIdentifier)initWithDictionary:(id)a3
+- (IFTSchemaIFTTypeIdentifier)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IFTSchemaIFTTypeIdentifier;
   v5 = [(IFTSchemaIFTTypeIdentifier *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"primitive"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"primitive"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(IFTSchemaIFTTypeIdentifier *)v5 setPrimitive:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"custom"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"custom"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTTypeIdentifier)initWithJSON:(id)a3
+- (IFTSchemaIFTTypeIdentifier)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTTypeIdentifier *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTTypeIdentifier *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTTypeIdentifier *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_custom)
   {
-    v4 = [(IFTSchemaIFTTypeIdentifier *)self custom];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    custom = [(IFTSchemaIFTTypeIdentifier *)self custom];
+    dictionaryRepresentation = [custom dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"custom"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"custom"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"custom"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"custom"];
     }
   }
 
   if (self->_primitive)
   {
-    v7 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    primitive = [(IFTSchemaIFTTypeIdentifier *)self primitive];
+    dictionaryRepresentation2 = [primitive dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"primitive"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"primitive"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"primitive"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"primitive"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichOneof_Typeidentifier = self->_whichOneof_Typeidentifier;
-  if (whichOneof_Typeidentifier != [v4 whichOneof_Typeidentifier])
+  if (whichOneof_Typeidentifier != [equalCopy whichOneof_Typeidentifier])
   {
     goto LABEL_13;
   }
 
-  v6 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
-  v7 = [v4 primitive];
-  if ((v6 != 0) == (v7 == 0))
+  primitive = [(IFTSchemaIFTTypeIdentifier *)self primitive];
+  primitive2 = [equalCopy primitive];
+  if ((primitive != 0) == (primitive2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
-  if (v8)
+  primitive3 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
+  if (primitive3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
-    v11 = [v4 primitive];
-    v12 = [v10 isEqual:v11];
+    v9 = primitive3;
+    primitive4 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
+    primitive5 = [equalCopy primitive];
+    v12 = [primitive4 isEqual:primitive5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTTypeIdentifier *)self custom];
-  v7 = [v4 custom];
-  if ((v6 != 0) != (v7 == 0))
+  primitive = [(IFTSchemaIFTTypeIdentifier *)self custom];
+  primitive2 = [equalCopy custom];
+  if ((primitive != 0) != (primitive2 == 0))
   {
-    v13 = [(IFTSchemaIFTTypeIdentifier *)self custom];
-    if (!v13)
+    custom = [(IFTSchemaIFTTypeIdentifier *)self custom];
+    if (!custom)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaIFTTypeIdentifier *)self custom];
-    v16 = [v4 custom];
-    v17 = [v15 isEqual:v16];
+    v14 = custom;
+    custom2 = [(IFTSchemaIFTTypeIdentifier *)self custom];
+    custom3 = [equalCopy custom];
+    v17 = [custom2 isEqual:custom3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
+  toCopy = to;
+  primitive = [(IFTSchemaIFTTypeIdentifier *)self primitive];
 
-  if (v4)
+  if (primitive)
   {
-    v5 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
+    primitive2 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTTypeIdentifier *)self custom];
+  custom = [(IFTSchemaIFTTypeIdentifier *)self custom];
 
-  if (v6)
+  if (custom)
   {
-    v7 = [(IFTSchemaIFTTypeIdentifier *)self custom];
+    custom2 = [(IFTSchemaIFTTypeIdentifier *)self custom];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,15 +241,15 @@ LABEL_14:
   return v3;
 }
 
-- (void)setCustom:(id)a3
+- (void)setCustom:(id)custom
 {
-  v4 = a3;
+  customCopy = custom;
   primitive = self->_primitive;
   self->_primitive = 0;
 
-  self->_whichOneof_Typeidentifier = 2 * (v4 != 0);
+  self->_whichOneof_Typeidentifier = 2 * (customCopy != 0);
   custom = self->_custom;
-  self->_custom = v4;
+  self->_custom = customCopy;
 }
 
 - (void)deletePrimitive
@@ -277,37 +277,37 @@ LABEL_14:
   return v3;
 }
 
-- (void)setPrimitive:(id)a3
+- (void)setPrimitive:(id)primitive
 {
-  v4 = a3;
+  primitiveCopy = primitive;
   custom = self->_custom;
   self->_custom = 0;
 
-  self->_whichOneof_Typeidentifier = v4 != 0;
+  self->_whichOneof_Typeidentifier = primitiveCopy != 0;
   primitive = self->_primitive;
-  self->_primitive = v4;
+  self->_primitive = primitiveCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTTypeIdentifier;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTTypeIdentifier *)self primitive];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  primitive = [(IFTSchemaIFTTypeIdentifier *)self primitive];
+  v7 = [primitive applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTTypeIdentifier *)self deletePrimitive];
   }
 
-  v9 = [(IFTSchemaIFTTypeIdentifier *)self custom];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  custom = [(IFTSchemaIFTTypeIdentifier *)self custom];
+  v10 = [custom applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTTypeIdentifier *)self deleteCustom];
   }

@@ -1,21 +1,21 @@
 @interface SLSheetTitleView
 - (CGSize)intrinsicContentSize;
-- (SLSheetTitleView)initWithFrame:(CGRect)a3;
+- (SLSheetTitleView)initWithFrame:(CGRect)frame;
 - (void)_setupTitleLabel;
 - (void)layoutSubviews;
-- (void)setServiceIconImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setServiceIconImage:(id)image;
+- (void)setTitle:(id)title;
 - (void)sizeToFit;
 - (void)updateConstraints;
 @end
 
 @implementation SLSheetTitleView
 
-- (SLSheetTitleView)initWithFrame:(CGRect)a3
+- (SLSheetTitleView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SLSheetTitleView;
-  v3 = [(SLSheetTitleView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SLSheetTitleView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -90,11 +90,11 @@
   self->_titleLabel = v3;
 
   [(SLSheetTitleView *)self addSubview:self->_titleLabel];
-  v5 = [(SLSheetTitleView *)self title];
-  [(UILabel *)self->_titleLabel setText:v5];
+  title = [(SLSheetTitleView *)self title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_titleLabel setBackgroundColor:clearColor];
 
   v7 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:18.0];
   [(UILabel *)self->_titleLabel setFont:v7];
@@ -105,21 +105,21 @@
   [(SLSheetTitleView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
   [(UILabel *)self->_titleLabel invalidateIntrinsicContentSize];
 }
 
-- (void)setServiceIconImage:(id)a3
+- (void)setServiceIconImage:(id)image
 {
-  v7 = a3;
+  imageCopy = image;
   [(UIImageView *)self->_serviceIconView removeFromSuperview];
-  if (v7)
+  if (imageCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
+    v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     serviceIconView = self->_serviceIconView;
     self->_serviceIconView = v4;
 
@@ -157,8 +157,8 @@
   {
     [(UIImageView *)serviceIconView intrinsicContentSize];
     v9 = v8;
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v12 = v11;
 
     v13 = 8.0;

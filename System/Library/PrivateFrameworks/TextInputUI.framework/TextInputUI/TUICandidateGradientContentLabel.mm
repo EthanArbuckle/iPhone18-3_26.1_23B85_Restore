@@ -1,12 +1,12 @@
 @interface TUICandidateGradientContentLabel
-- (TUICandidateGradientContentLabel)initWithFrame:(CGRect)a3;
+- (TUICandidateGradientContentLabel)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)reconfigureForAlignment:(int64_t)a3;
+- (void)reconfigureForAlignment:(int64_t)alignment;
 - (void)regenerateLightConfiguration;
-- (void)setCaptionLabelText:(id)a3;
-- (void)setLightingEffectEnabled:(BOOL)a3;
-- (void)setPrimaryLabelImage:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setCaptionLabelText:(id)text;
+- (void)setLightingEffectEnabled:(BOOL)enabled;
+- (void)setPrimaryLabelImage:(id)image;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation TUICandidateGradientContentLabel
@@ -18,19 +18,19 @@
   [(TUICandidateGradientContentLabel *)self setPrimaryLabelText:&stru_1F03BA8F8];
 }
 
-- (void)setLightingEffectEnabled:(BOOL)a3
+- (void)setLightingEffectEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = ([(TUICandidateGradientContentLabel *)self predictionPosition]* 0.625);
-    v5 = [(TUICandidateGradientContentLabel *)self lightEffectConfiguration];
-    v6 = [(TUICandidateGradientContentLabel *)self lightEffectsContainer];
-    [v6 setLightConfiguration:v5];
+    lightEffectConfiguration = [(TUICandidateGradientContentLabel *)self lightEffectConfiguration];
+    lightEffectsContainer = [(TUICandidateGradientContentLabel *)self lightEffectsContainer];
+    [lightEffectsContainer setLightConfiguration:lightEffectConfiguration];
 
     v7 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E0]];
-    v8 = [(TUICandidateGradientContentLabel *)self layoutStackView];
-    v9 = [v8 layer];
-    [v9 setCompositingFilter:v7];
+    layoutStackView = [(TUICandidateGradientContentLabel *)self layoutStackView];
+    layer = [layoutStackView layer];
+    [layer setCompositingFilter:v7];
 
     v10 = dispatch_time(0, (v4 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
@@ -43,12 +43,12 @@
 
   else
   {
-    v11 = [(TUICandidateGradientContentLabel *)self lightEffectsContainer];
-    [v11 setLightConfiguration:0];
+    lightEffectsContainer2 = [(TUICandidateGradientContentLabel *)self lightEffectsContainer];
+    [lightEffectsContainer2 setLightConfiguration:0];
 
-    v13 = [(TUICandidateGradientContentLabel *)self layoutStackView];
-    v12 = [v13 layer];
-    [v12 setCompositingFilter:0];
+    layoutStackView2 = [(TUICandidateGradientContentLabel *)self layoutStackView];
+    layer2 = [layoutStackView2 layer];
+    [layer2 setCompositingFilter:0];
   }
 }
 
@@ -61,33 +61,33 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
 - (void)regenerateLightConfiguration
 {
   v3 = MEMORY[0x1E69DD400];
-  v4 = [(TUICandidateGradientContentLabel *)self textColor];
-  v5 = [(TUICandidateGradientContentLabel *)self textColor];
-  v6 = [v3 _tui_intelligenceAmbientPaletteWithStartColor:v4 endColor:v5];
-  v8 = [v6 _tui_scaledColorSpaceForAmbientText];
+  textColor = [(TUICandidateGradientContentLabel *)self textColor];
+  textColor2 = [(TUICandidateGradientContentLabel *)self textColor];
+  v6 = [v3 _tui_intelligenceAmbientPaletteWithStartColor:textColor endColor:textColor2];
+  _tui_scaledColorSpaceForAmbientText = [v6 _tui_scaledColorSpaceForAmbientText];
 
-  v7 = [objc_alloc(MEMORY[0x1E69DD468]) initWithColorPalette:v8];
+  v7 = [objc_alloc(MEMORY[0x1E69DD468]) initWithColorPalette:_tui_scaledColorSpaceForAmbientText];
   [v7 setDirection:0];
   [v7 setDuration:2.0];
   [(TUICandidateGradientContentLabel *)self setLightEffectConfiguration:v7];
 }
 
-- (void)setPrimaryLabelImage:(id)a3
+- (void)setPrimaryLabelImage:(id)image
 {
   [(UIImageView *)self->_imageView setImage:?];
   imageView = self->_imageView;
 
-  [(UIImageView *)imageView setHidden:a3 == 0];
+  [(UIImageView *)imageView setHidden:image == 0];
 }
 
-- (void)setCaptionLabelText:(id)a3
+- (void)setCaptionLabelText:(id)text
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  textCopy = text;
+  v7 = textCopy;
+  if (textCopy)
   {
     v5 = 0;
-    v6 = v4;
+    v6 = textCopy;
   }
 
   else
@@ -100,13 +100,13 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
   [(UILabel *)self->_captionLabel setText:v6];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (v5)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(UILabel *)self->_primaryLabel setTextColor:v6];
     [(UILabel *)self->_captionLabel setTextColor:v6];
     [(TUICandidateGradientContentLabel *)self regenerateLightConfiguration];
@@ -115,9 +115,9 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)reconfigureForAlignment:(int64_t)a3
+- (void)reconfigureForAlignment:(int64_t)alignment
 {
-  if (a3 == 1)
+  if (alignment == 1)
   {
     v4 = &OBJC_IVAR___TUICandidateGradientContentLabel__layoutStackView;
   }
@@ -127,7 +127,7 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
     v4 = &OBJC_IVAR___TUICandidateGradientContentLabel__primaryLabelStackView;
   }
 
-  if (a3 == 1)
+  if (alignment == 1)
   {
     v5 = &OBJC_IVAR___TUICandidateGradientContentLabel__primaryLabelStackView;
   }
@@ -137,7 +137,7 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
     v5 = &OBJC_IVAR___TUICandidateGradientContentLabel__layoutStackView;
   }
 
-  if (a3 == 1)
+  if (alignment == 1)
   {
     v6 = 3;
   }
@@ -154,7 +154,7 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
   [(TUICandidateGradientContentLabel *)self setNeedsLayout];
 }
 
-- (TUICandidateGradientContentLabel)initWithFrame:(CGRect)a3
+- (TUICandidateGradientContentLabel)initWithFrame:(CGRect)frame
 {
   v61[4] = *MEMORY[0x1E69E9840];
   v58.receiver = self;
@@ -168,9 +168,9 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
   if (v7)
   {
     [(TUICandidateGradientContentLabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x1E69DC888] tintColor];
+    tintColor = [MEMORY[0x1E69DC888] tintColor];
     textColor = v8->_textColor;
-    v8->_textColor = v9;
+    v8->_textColor = tintColor;
 
     v11 = [[TUIGradientView alloc] initWithFrame:v3, v4, v5, v6];
     lightEffectsContainer = v8->_lightEffectsContainer;
@@ -179,21 +179,21 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
     [(TUIGradientView *)v8->_lightEffectsContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TUICandidateGradientContentLabel *)v8 addSubview:v8->_lightEffectsContainer];
     v51 = MEMORY[0x1E696ACD8];
-    v56 = [(TUIGradientView *)v8->_lightEffectsContainer leadingAnchor];
-    v55 = [(TUICandidateGradientContentLabel *)v8 leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    leadingAnchor = [(TUIGradientView *)v8->_lightEffectsContainer leadingAnchor];
+    leadingAnchor2 = [(TUICandidateGradientContentLabel *)v8 leadingAnchor];
+    v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v61[0] = v54;
-    v53 = [(TUIGradientView *)v8->_lightEffectsContainer trailingAnchor];
-    v52 = [(TUICandidateGradientContentLabel *)v8 trailingAnchor];
-    v13 = [v53 constraintEqualToAnchor:v52];
+    trailingAnchor = [(TUIGradientView *)v8->_lightEffectsContainer trailingAnchor];
+    trailingAnchor2 = [(TUICandidateGradientContentLabel *)v8 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v61[1] = v13;
-    v14 = [(TUIGradientView *)v8->_lightEffectsContainer topAnchor];
-    v15 = [(TUICandidateGradientContentLabel *)v8 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor = [(TUIGradientView *)v8->_lightEffectsContainer topAnchor];
+    topAnchor2 = [(TUICandidateGradientContentLabel *)v8 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v61[2] = v16;
-    v17 = [(TUIGradientView *)v8->_lightEffectsContainer bottomAnchor];
-    v18 = [(TUICandidateGradientContentLabel *)v8 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(TUIGradientView *)v8->_lightEffectsContainer bottomAnchor];
+    bottomAnchor2 = [(TUICandidateGradientContentLabel *)v8 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v61[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:4];
     [v51 activateConstraints:v20];
@@ -224,13 +224,13 @@ void __61__TUICandidateGradientContentLabel_setLightingEffectEnabled___block_inv
     [(UIStackView *)v8->_stackedLabelView setSpacing:0.0];
     [(UIStackView *)v8->_layoutStackView addArrangedSubview:v8->_stackedLabelView];
     v57 = MEMORY[0x1E696ACD8];
-    v29 = [(UIStackView *)v8->_stackedLabelView centerXAnchor];
-    v30 = [(TUIGradientView *)v8->_lightEffectsContainer centerXAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    centerXAnchor = [(UIStackView *)v8->_stackedLabelView centerXAnchor];
+    centerXAnchor2 = [(TUIGradientView *)v8->_lightEffectsContainer centerXAnchor];
+    v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v60[0] = v31;
-    v32 = [(UIStackView *)v8->_stackedLabelView centerYAnchor];
-    v33 = [(TUIGradientView *)v8->_lightEffectsContainer centerYAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    centerYAnchor = [(UIStackView *)v8->_stackedLabelView centerYAnchor];
+    centerYAnchor2 = [(TUIGradientView *)v8->_lightEffectsContainer centerYAnchor];
+    v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v60[1] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:2];
     [v57 activateConstraints:v35];

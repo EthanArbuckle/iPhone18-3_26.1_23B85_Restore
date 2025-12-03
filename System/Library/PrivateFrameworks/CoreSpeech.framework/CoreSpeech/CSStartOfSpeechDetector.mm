@@ -1,8 +1,8 @@
 @interface CSStartOfSpeechDetector
-- (CSStartOfSpeechDetector)initWithConfig:(id)a3 samplingRate:(unint64_t)a4 minSpeechFrames:(unint64_t)a5 numLeadingFrames:(unint64_t)a6 delegate:(id)a7;
+- (CSStartOfSpeechDetector)initWithConfig:(id)config samplingRate:(unint64_t)rate minSpeechFrames:(unint64_t)frames numLeadingFrames:(unint64_t)leadingFrames delegate:(id)delegate;
 - (CSStartOfSpeechDetectorDelegate)delegate;
-- (void)addAudio:(id)a3 numSamples:(unint64_t)a4;
-- (void)clientSilenceFeaturesAvailable:(id)a3;
+- (void)addAudio:(id)audio numSamples:(unint64_t)samples;
+- (void)clientSilenceFeaturesAvailable:(id)available;
 - (void)endAudio;
 - (void)resetForNewRequest;
 @end
@@ -16,17 +16,17 @@
   return WeakRetained;
 }
 
-- (void)clientSilenceFeaturesAvailable:(id)a3
+- (void)clientSilenceFeaturesAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   sosQueue = self->_sosQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__CSStartOfSpeechDetector_clientSilenceFeaturesAvailable___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = availableCopy;
+  v6 = availableCopy;
   dispatch_async(sosQueue, v7);
 }
 
@@ -163,18 +163,18 @@ uint64_t __35__CSStartOfSpeechDetector_endAudio__block_invoke(uint64_t a1)
   return [v4 endAudio];
 }
 
-- (void)addAudio:(id)a3 numSamples:(unint64_t)a4
+- (void)addAudio:(id)audio numSamples:(unint64_t)samples
 {
-  v6 = a3;
+  audioCopy = audio;
   sosQueue = self->_sosQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__CSStartOfSpeechDetector_addAudio_numSamples___block_invoke;
   block[3] = &unk_2784C6998;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = audioCopy;
+  samplesCopy = samples;
+  v8 = audioCopy;
   dispatch_async(sosQueue, block);
 }
 
@@ -214,22 +214,22 @@ void __45__CSStartOfSpeechDetector_resetForNewRequest__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (CSStartOfSpeechDetector)initWithConfig:(id)a3 samplingRate:(unint64_t)a4 minSpeechFrames:(unint64_t)a5 numLeadingFrames:(unint64_t)a6 delegate:(id)a7
+- (CSStartOfSpeechDetector)initWithConfig:(id)config samplingRate:(unint64_t)rate minSpeechFrames:(unint64_t)frames numLeadingFrames:(unint64_t)leadingFrames delegate:(id)delegate
 {
   v29 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a7;
+  configCopy = config;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = CSStartOfSpeechDetector;
   v15 = [(CSStartOfSpeechDetector *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v14);
-    v16->_samplingRate = a4;
-    objc_storeStrong(&v16->_configFile, a3);
-    v16->_minSpeechFrames = a5;
-    v16->_numLeadingFrames = a6;
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    v16->_samplingRate = rate;
+    objc_storeStrong(&v16->_configFile, config);
+    v16->_minSpeechFrames = frames;
+    v16->_numLeadingFrames = leadingFrames;
     v17 = dispatch_queue_create("StartOfSpeech SPG queue", 0);
     spgQueue = v16->_spgQueue;
     v16->_spgQueue = v17;

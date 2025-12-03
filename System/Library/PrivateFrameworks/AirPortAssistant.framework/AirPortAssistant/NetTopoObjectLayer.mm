@@ -1,52 +1,52 @@
 @interface NetTopoObjectLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - ($E32549A47AE6FE03C4AA404FAEB37148)getConnectionAttachmentLocations;
 - (CGPoint)layoutOrigin;
 - (CGRect)getFrameContainingAllSublayers;
 - (CGRect)getUserInteractionBounds;
 - (CGSize)boundsSizeConstraint;
 - (NetTopoObjectLayer)init;
-- (NetTopoObjectLayer)initWithUIStyle:(int)a3 andOwningView:(id)a4;
+- (NetTopoObjectLayer)initWithUIStyle:(int)style andOwningView:(id)view;
 - (NetTopoObjectLayer)parentDevice;
-- (id)childAtIndex:(unint64_t)a3;
+- (id)childAtIndex:(unint64_t)index;
 - (id)debugDescription;
-- (id)describeOne:(id)a3 uiLayer:(id)a4 indent:(unint64_t)a5;
+- (id)describeOne:(id)one uiLayer:(id)layer indent:(unint64_t)indent;
 - (id)firstChild;
 - (id)lastChild;
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 - (void)dealloc;
 - (void)deallocStatusImages;
-- (void)drawInContext:(CGContext *)a3;
-- (void)initNetTopoObjectLayerCommonWithStyle:(int)a3 andOwningView:(id)a4;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
+- (void)drawInContext:(CGContext *)context;
+- (void)initNetTopoObjectLayerCommonWithStyle:(int)style andOwningView:(id)view;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
 - (void)layoutSublayers;
-- (void)loadStatusImagesForScale:(double)a3;
-- (void)pickCorrectImagesForContentsScale:(double)a3;
-- (void)removeChild:(id)a3;
-- (void)setBoundsSizeConstraint:(CGSize)a3;
-- (void)setLabel:(id)a3;
-- (void)setOwningView:(id)a3;
-- (void)setSecondaryLabel:(id)a3;
-- (void)setStatusBadgeImage:(id)a3;
-- (void)setStatusBadgeImagePriv:(id)a3;
-- (void)setStatusLightMode:(unsigned int)a3;
+- (void)loadStatusImagesForScale:(double)scale;
+- (void)pickCorrectImagesForContentsScale:(double)scale;
+- (void)removeChild:(id)child;
+- (void)setBoundsSizeConstraint:(CGSize)constraint;
+- (void)setLabel:(id)label;
+- (void)setOwningView:(id)view;
+- (void)setSecondaryLabel:(id)label;
+- (void)setStatusBadgeImage:(id)image;
+- (void)setStatusBadgeImagePriv:(id)priv;
+- (void)setStatusLightMode:(unsigned int)mode;
 - (void)setStatusLightStateFromMode;
-- (void)setTopoBadgeNumber:(unint64_t)a3;
-- (void)setTopoProgressValue:(float)a3;
-- (void)statusLightUpdateTimer:(id)a3;
+- (void)setTopoBadgeNumber:(unint64_t)number;
+- (void)setTopoProgressValue:(float)value;
+- (void)statusLightUpdateTimer:(id)timer;
 @end
 
 @implementation NetTopoObjectLayer
 
-- (void)initNetTopoObjectLayerCommonWithStyle:(int)a3 andOwningView:(id)a4
+- (void)initNetTopoObjectLayerCommonWithStyle:(int)style andOwningView:(id)view
 {
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
     sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer initNetTopoObjectLayerCommonWithStyle:andOwningView:]", 800, "%@\n", v4, v5, v6, v7, self);
   }
 
-  self->_topoStyle = a3;
-  objc_msgSend_setOwningView_(self, a2, a4);
+  self->_topoStyle = style;
+  objc_msgSend_setOwningView_(self, a2, view);
   objc_msgSend_setEdgeAntialiasingMask_(self, v11, 0);
   self->_layoutScale = 1.0;
   self->_isExpanded = 1;
@@ -62,7 +62,7 @@
   self->_imageSelectionFrame.origin = v12;
   self->_imageSelectionFrame.size = v13;
   self->_selectionColor = sub_23EBFD680(0.0, 0.0, 0.0, 0.3);
-  v16 = sub_23EC13544(a4, v14, v15);
+  v16 = sub_23EC13544(view, v14, v15);
   v17 = 20.0;
   v18 = 14.0;
   if (v16 == 1)
@@ -98,7 +98,7 @@
   objc_msgSend_contentsScale(self, v35, v36);
   objc_msgSend_loadStatusImagesForScale_(self, v37, v38);
   objc_msgSend_setZPosition_(self, v39, v40, 1000.0);
-  v43 = sub_23EC13544(a4, v41, v42);
+  v43 = sub_23EC13544(view, v41, v42);
   if (v43 == 2)
   {
     v46 = 292.0;
@@ -122,9 +122,9 @@
   objc_msgSend_setFrame_(self, v44, v45, 0.0, 0.0, v47, v46);
 }
 
-- (NetTopoObjectLayer)initWithUIStyle:(int)a3 andOwningView:(id)a4
+- (NetTopoObjectLayer)initWithUIStyle:(int)style andOwningView:(id)view
 {
-  v9 = *&a3;
+  v9 = *&style;
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
     sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer initWithUIStyle:andOwningView:]", 800, "\n", v4, v5, v6, v7, v15.receiver);
@@ -136,7 +136,7 @@
   v13 = v11;
   if (v11)
   {
-    objc_msgSend_initNetTopoObjectLayerCommonWithStyle_andOwningView_(v11, v12, v9, a4);
+    objc_msgSend_initNetTopoObjectLayerCommonWithStyle_andOwningView_(v11, v12, v9, view);
   }
 
   return v13;
@@ -184,14 +184,14 @@
   [(NetTopoObjectLayer *)&v10 dealloc];
 }
 
-- (void)pickCorrectImagesForContentsScale:(double)a3
+- (void)pickCorrectImagesForContentsScale:(double)scale
 {
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
-    sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer pickCorrectImagesForContentsScale:]", 800, "scale = %.1f\n", v4, v5, v6, v7, *&a3);
+    sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer pickCorrectImagesForContentsScale:]", 800, "scale = %.1f\n", v4, v5, v6, v7, *&scale);
   }
 
-  objc_msgSend_loadStatusImagesForScale_(self, a2, v3, a3);
+  objc_msgSend_loadStatusImagesForScale_(self, a2, v3, scale);
   v13 = objc_msgSend_statusLightMode(self, v10, v11);
 
   objc_msgSend_setStatusLightMode_(self, v12, v13);
@@ -216,21 +216,21 @@
   return objc_msgSend_parent(v10, v11, v12);
 }
 
-- (id)childAtIndex:(unint64_t)a3
+- (id)childAtIndex:(unint64_t)index
 {
   if (dword_27E382FE8 <= 800 && (dword_27E382FE8 != -1 || sub_23EB74AC8(&dword_27E382FE8, 0x320u)))
   {
-    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer childAtIndex:]", 800, "index %d  _children %@\n", v3, v4, v5, v6, a3);
+    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer childAtIndex:]", 800, "index %d  _children %@\n", v3, v4, v5, v6, index);
   }
 
-  if (objc_msgSend_count(self->_children, a2, a3) <= a3)
+  if (objc_msgSend_count(self->_children, a2, index) <= index)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = objc_msgSend_objectAtIndex_(self->_children, v9, a3);
+    v14 = objc_msgSend_objectAtIndex_(self->_children, v9, index);
   }
 
   if (dword_27E382FE8 <= 800 && (dword_27E382FE8 != -1 || sub_23EB74AC8(&dword_27E382FE8, 0x320u)))
@@ -283,72 +283,72 @@
   return v14;
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
   if (dword_27E382FE8 <= 800 && (dword_27E382FE8 != -1 || sub_23EB74AC8(&dword_27E382FE8, 0x320u)))
   {
-    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer insertChild:atIndex:]", 800, "inserting child %@ at index %d\n", v4, v5, v6, v7, a3);
+    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer insertChild:atIndex:]", 800, "inserting child %@ at index %d\n", v4, v5, v6, v7, child);
   }
 
-  if (objc_msgSend_count(self->_children, a2, a3) <= a4)
+  if (objc_msgSend_count(self->_children, a2, child) <= index)
   {
     if (dword_27E382FE8 <= 800 && (dword_27E382FE8 != -1 || sub_23EB74AC8(&dword_27E382FE8, 0x320u)))
     {
       sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer insertChild:atIndex:]", 800, "growing child array\n", v12, v13, v14, v15, v22);
     }
 
-    objc_msgSend_addChild_(self, v11, a3);
+    objc_msgSend_addChild_(self, v11, child);
   }
 
   else
   {
     if (dword_27E382FE8 <= 800 && (dword_27E382FE8 != -1 || sub_23EB74AC8(&dword_27E382FE8, 0x320u)))
     {
-      v16 = objc_msgSend_objectAtIndex_(self->_children, v11, a4);
+      v16 = objc_msgSend_objectAtIndex_(self->_children, v11, index);
       sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer insertChild:atIndex:]", 800, "replacing existing object %@\n", v17, v18, v19, v20, v16);
     }
 
-    objc_msgSend_replaceObjectAtIndex_withObject_(self->_children, v11, a4, a3);
+    objc_msgSend_replaceObjectAtIndex_withObject_(self->_children, v11, index, child);
 
-    objc_msgSend_setParent_(a3, v21, self);
+    objc_msgSend_setParent_(child, v21, self);
   }
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  if (objc_msgSend_indexOfObjectIdenticalTo_(self->_children, a2, a3) == 0x7FFFFFFFFFFFFFFFLL)
+  if (objc_msgSend_indexOfObjectIdenticalTo_(self->_children, a2, child) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    objc_msgSend_addObject_(self->_children, v5, a3);
+    objc_msgSend_addObject_(self->_children, v5, child);
 
-    objc_msgSend_setParent_(a3, v10, self);
+    objc_msgSend_setParent_(child, v10, self);
   }
 
   else if (dword_27E382FE8 <= 800 && (dword_27E382FE8 != -1 || sub_23EB74AC8(&dword_27E382FE8, 0x320u)))
   {
-    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer addChild:]", 800, "new child %@ is already in the child array\n", v6, v7, v8, v9, a3);
+    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer addChild:]", 800, "new child %@ is already in the child array\n", v6, v7, v8, v9, child);
   }
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  if (a3 && objc_msgSend_containsObject_(self->_children, a2, a3))
+  if (child && objc_msgSend_containsObject_(self->_children, a2, child))
   {
-    objc_msgSend_setParent_(a3, v9, 0);
+    objc_msgSend_setParent_(child, v9, 0);
     children = self->_children;
 
-    objc_msgSend_removeObject_(children, v10, a3);
+    objc_msgSend_removeObject_(children, v10, child);
   }
 
   else if (dword_27E382FE8 <= 800 && (dword_27E382FE8 != -1 || sub_23EB74AC8(&dword_27E382FE8, 0x320u)))
   {
-    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer removeChild:]", 800, "attempting to remove child %@ that's not in the child array\n", v3, v4, v5, v6, a3);
+    sub_23EB75374(&dword_27E382FE8, "[NetTopoObjectLayer removeChild:]", 800, "attempting to remove child %@ that's not in the child array\n", v3, v4, v5, v6, child);
   }
 }
 
-- (void)setBoundsSizeConstraint:(CGSize)a3
+- (void)setBoundsSizeConstraint:(CGSize)constraint
 {
-  height = a3.height;
-  width = a3.width;
+  height = constraint.height;
+  width = constraint.width;
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
     sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer setBoundsSizeConstraint:]", 800, "constraint = (w = %.2f h = %.2f)\n", v4, v5, v6, v7, *&width);
@@ -371,16 +371,16 @@
   return result;
 }
 
-- (void)setOwningView:(id)a3
+- (void)setOwningView:(id)view
 {
-  self->_owningView = a3;
-  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, a3);
+  self->_owningView = view;
+  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, view);
   objc_msgSend_scale(v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel_setContentsScale_, v7);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   if (!self->_labelLayer)
   {
@@ -437,16 +437,16 @@ LABEL_11:
   }
 
 LABEL_14:
-  v36 = a3;
+  labelCopy = label;
 
-  self->_labelString = a3;
-  objc_msgSend_setString_(self->_labelLayer, v37, a3);
+  self->_labelString = label;
+  objc_msgSend_setString_(self->_labelLayer, v37, label);
   objc_msgSend_setNeedsLayout(self->_labelLayer, v38, v39);
 
   objc_msgSend_layoutSublayers(self, v40, v41);
 }
 
-- (void)setSecondaryLabel:(id)a3
+- (void)setSecondaryLabel:(id)label
 {
   if (!self->_secondaryLabelLayer)
   {
@@ -480,16 +480,16 @@ LABEL_14:
     objc_msgSend_addSublayer_(self, v25, self->_secondaryLabelLayer);
   }
 
-  v26 = a3;
+  labelCopy = label;
 
-  self->_secondaryLabelString = a3;
-  objc_msgSend_setString_(self->_secondaryLabelLayer, v27, a3);
+  self->_secondaryLabelString = label;
+  objc_msgSend_setString_(self->_secondaryLabelLayer, v27, label);
   objc_msgSend_setNeedsLayout(self->_secondaryLabelLayer, v28, v29);
 
   objc_msgSend_layoutSublayers(self, v30, v31);
 }
 
-- (void)setTopoProgressValue:(float)a3
+- (void)setTopoProgressValue:(float)value
 {
   topoProgressBar = self->_topoProgressBar;
   if (!topoProgressBar)
@@ -502,13 +502,13 @@ LABEL_14:
     topoProgressBar = self->_topoProgressBar;
   }
 
-  *&v14 = a3;
+  *&v14 = value;
   objc_msgSend_setProgressValue_(topoProgressBar, a2, v3, v14);
 
   objc_msgSend_layoutSublayers(self, v15, v16);
 }
 
-- (void)setTopoBadgeNumber:(unint64_t)a3
+- (void)setTopoBadgeNumber:(unint64_t)number
 {
   topoNumberBadge = self->_topoNumberBadge;
   if (!topoNumberBadge)
@@ -519,15 +519,15 @@ LABEL_14:
     self->_topoNumberBadge = topoNumberBadge;
   }
 
-  objc_msgSend_setCount_(topoNumberBadge, a2, a3);
-  self->_topoBadgeNumber = a3;
+  objc_msgSend_setCount_(topoNumberBadge, a2, number);
+  self->_topoBadgeNumber = number;
   v11 = self->_topoNumberBadge;
   labelLayer = self->_labelLayer;
 
   MEMORY[0x2821F9670](labelLayer, sel_setRightAccessoryLayer_, v11);
 }
 
-- (void)loadStatusImagesForScale:(double)a3
+- (void)loadStatusImagesForScale:(double)scale
 {
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
@@ -590,16 +590,16 @@ LABEL_14:
   statusLights[3] = 0;
 }
 
-- (void)setStatusBadgeImagePriv:(id)a3
+- (void)setStatusBadgeImagePriv:(id)priv
 {
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
     sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer setStatusBadgeImagePriv:]", 800, "\n", v3, v4, v5, v6, v27);
   }
 
-  if (!a3)
+  if (!priv)
   {
-    if (!objc_msgSend_image(self->_labelLayer, a2, a3))
+    if (!objc_msgSend_image(self->_labelLayer, a2, priv))
     {
       return;
     }
@@ -608,8 +608,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  objc_msgSend_contentsScale(self, a2, a3);
-  v10 = objc_msgSend_cgImageFromImage_forContentsScale_(ImageStore, v9, a3);
+  objc_msgSend_contentsScale(self, a2, priv);
+  v10 = objc_msgSend_cgImageFromImage_forContentsScale_(ImageStore, v9, priv);
   if (objc_msgSend_image(self->_labelLayer, v11, v12))
   {
     v15 = objc_msgSend_image(self->_labelLayer, v13, v14);
@@ -635,16 +635,16 @@ LABEL_15:
   }
 }
 
-- (void)setStatusBadgeImage:(id)a3
+- (void)setStatusBadgeImage:(id)image
 {
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
     sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer setStatusBadgeImage:]", 800, "\n", v3, v4, v5, v6, v11);
   }
 
-  v9 = a3;
+  imageCopy = image;
 
-  self->_statusBadgeImage = a3;
+  self->_statusBadgeImage = image;
 
   objc_msgSend_setStatusLightMode_(self, v10, 1);
 }
@@ -738,19 +738,19 @@ LABEL_23:
   MEMORY[0x2821F9670](self, sel_setStatusBadgeImagePriv_, v10);
 }
 
-- (void)statusLightUpdateTimer:(id)a3
+- (void)statusLightUpdateTimer:(id)timer
 {
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
     sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer statusLightUpdateTimer:]", 800, "\n", v3, v4, v5, v6, v8);
   }
 
-  MEMORY[0x2821F9670](self, sel_setStatusLightStateFromMode, a3);
+  MEMORY[0x2821F9670](self, sel_setStatusLightStateFromMode, timer);
 }
 
-- (void)setStatusLightMode:(unsigned int)a3
+- (void)setStatusLightMode:(unsigned int)mode
 {
-  v7 = *&a3;
+  v7 = *&mode;
   if (dword_27E382FA8 <= 800 && (dword_27E382FA8 != -1 || sub_23EB74AC8(&dword_27E382FA8, 0x320u)))
   {
     sub_23EB75374(&dword_27E382FA8, "[NetTopoObjectLayer setStatusLightMode:]", 800, "entered with mode = %d\n", v3, v4, v5, v6, v7);
@@ -759,7 +759,7 @@ LABEL_23:
   statusLightTimer = self->_statusLightTimer;
   if (statusLightTimer)
   {
-    objc_msgSend_invalidate(statusLightTimer, a2, *&a3);
+    objc_msgSend_invalidate(statusLightTimer, a2, *&mode);
     self->_statusLightTimer = 0;
   }
 
@@ -778,7 +778,7 @@ LABEL_23:
       self->_statusLightTimer = objc_msgSend_scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(MEMORY[0x277CBEBB8], a2, self, sel_statusLightUpdateTimer_, 0, 1, v10);
     }
 
-    MEMORY[0x2821F9670](self, sel_setStatusLightStateFromMode, *&a3);
+    MEMORY[0x2821F9670](self, sel_setStatusLightStateFromMode, *&mode);
   }
 }
 
@@ -957,31 +957,31 @@ LABEL_23:
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v27.receiver = self;
   v27.super_class = NetTopoObjectLayer;
   [(NetTopoObjectLayer *)&v27 drawInContext:?];
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   if (!objc_msgSend_objectImage(self, v5, v6))
   {
     goto LABEL_16;
   }
 
-  CGContextScaleCTM(a3, 1.0, -1.0);
+  CGContextScaleCTM(context, 1.0, -1.0);
   objc_msgSend_bounds(self, v7, v8);
-  CGContextTranslateCTM(a3, 0.0, -v9);
+  CGContextTranslateCTM(context, 0.0, -v9);
   if (objc_msgSend_isSelectable(self, v10, v11) && objc_msgSend_isSelected(self, v12, v13))
   {
-    sub_23EBFDA80(a3, self->_imageSelectionFrame.origin.x, self->_imageSelectionFrame.origin.y, self->_imageSelectionFrame.size.width, self->_imageSelectionFrame.size.height, self->_selectionCornerRadius);
-    CGContextClosePath(a3);
-    CGContextSetFillColorWithColor(a3, self->_selectionColor);
-    CGContextDrawPath(a3, kCGPathFill);
-    CGContextSetStrokeColorWithColor(a3, self->_secondaryLabelUnselectedTextColor);
-    sub_23EBFDA80(a3, self->_imageSelectionFrame.origin.x, self->_imageSelectionFrame.origin.y, self->_imageSelectionFrame.size.width, self->_imageSelectionFrame.size.height, self->_selectionCornerRadius);
-    CGContextSetLineWidth(a3, 2.0);
-    CGContextClosePath(a3);
-    CGContextStrokePath(a3);
+    sub_23EBFDA80(context, self->_imageSelectionFrame.origin.x, self->_imageSelectionFrame.origin.y, self->_imageSelectionFrame.size.width, self->_imageSelectionFrame.size.height, self->_selectionCornerRadius);
+    CGContextClosePath(context);
+    CGContextSetFillColorWithColor(context, self->_selectionColor);
+    CGContextDrawPath(context, kCGPathFill);
+    CGContextSetStrokeColorWithColor(context, self->_secondaryLabelUnselectedTextColor);
+    sub_23EBFDA80(context, self->_imageSelectionFrame.origin.x, self->_imageSelectionFrame.origin.y, self->_imageSelectionFrame.size.width, self->_imageSelectionFrame.size.height, self->_selectionCornerRadius);
+    CGContextSetLineWidth(context, 2.0);
+    CGContextClosePath(context);
+    CGContextStrokePath(context);
     labelLayer = self->_labelLayer;
     if (labelLayer)
     {
@@ -1027,11 +1027,11 @@ LABEL_13:
     v23 = 1.0;
   }
 
-  CGContextSetAlpha(a3, v23);
+  CGContextSetAlpha(context, v23);
   v26 = objc_msgSend_objectImage(self, v24, v25);
-  CGContextDrawImage(a3, self->_imageFrame, v26);
+  CGContextDrawImage(context, self->_imageFrame, v26);
 LABEL_16:
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 - ($E32549A47AE6FE03C4AA404FAEB37148)getConnectionAttachmentLocations
@@ -1238,27 +1238,27 @@ LABEL_17:
   return result;
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"objectImage") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v5, @"selected") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v6, @"ghosted"))
+  if (objc_msgSend_isEqualToString_(key, a2, @"objectImage") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v5, @"selected") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v6, @"ghosted"))
   {
     return 1;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___NetTopoObjectLayer;
-  return objc_msgSendSuper2(&v8, sel_needsDisplayForKey_, a3);
+  return objc_msgSendSuper2(&v8, sel_needsDisplayForKey_, key);
 }
 
-- (id)describeOne:(id)a3 uiLayer:(id)a4 indent:(unint64_t)a5
+- (id)describeOne:(id)one uiLayer:(id)layer indent:(unint64_t)indent
 {
   v7 = objc_opt_class();
   Name = class_getName(v7);
-  v11 = objc_msgSend_retainCount(a4, v9, v10);
-  v14 = objc_msgSend_row(a4, v12, v13);
-  v17 = objc_msgSend_column(a4, v15, v16);
-  objc_msgSend_appendFormat_(a3, v18, @"<%s: %p retains %d> (row=%d col=%d)", Name, a4, v11, v14, v17);
-  return a3;
+  v11 = objc_msgSend_retainCount(layer, v9, v10);
+  v14 = objc_msgSend_row(layer, v12, v13);
+  v17 = objc_msgSend_column(layer, v15, v16);
+  objc_msgSend_appendFormat_(one, v18, @"<%s: %p retains %d> (row=%d col=%d)", Name, layer, v11, v14, v17);
+  return one;
 }
 
 - (id)debugDescription

@@ -1,9 +1,9 @@
 @interface PRTrustedContact
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PRTrustedContact)init;
-- (PRTrustedContact)initWithCoder:(id)a3;
-- (PRTrustedContact)initWithContactKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRTrustedContact)initWithCoder:(id)coder;
+- (PRTrustedContact)initWithContactKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PRTrustedContact
@@ -15,15 +15,15 @@
   return 0;
 }
 
-- (PRTrustedContact)initWithContactKey:(id)a3
+- (PRTrustedContact)initWithContactKey:(id)key
 {
-  v6 = a3;
-  if (!v6)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [(PRTrustedContact *)a2 initWithContactKey:?];
   }
 
-  if ([v6 length] != 6)
+  if ([keyCopy length] != 6)
   {
     [(PRTrustedContact *)a2 initWithContactKey:?];
   }
@@ -34,22 +34,22 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_contactKey, a3);
+    objc_storeStrong(&v7->_contactKey, key);
   }
 
   return v8;
 }
 
-- (PRTrustedContact)initWithCoder:(id)a3
+- (PRTrustedContact)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContactKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactKey"];
 
   v6 = [(PRTrustedContact *)self initWithContactKey:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRTrustedContact alloc];
   contactKey = self->_contactKey;
@@ -57,15 +57,15 @@
   return [(PRTrustedContact *)v4 initWithContactKey:contactKey];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     contactKey = self->_contactKey;
-    v6 = [v4 contactKey];
-    v7 = [(NSData *)contactKey isEqualToData:v6];
+    contactKey = [equalCopy contactKey];
+    v7 = [(NSData *)contactKey isEqualToData:contactKey];
   }
 
   else

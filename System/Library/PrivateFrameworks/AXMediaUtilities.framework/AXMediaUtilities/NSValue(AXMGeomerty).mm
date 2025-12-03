@@ -14,7 +14,7 @@
 
 + (id)axmValueWithCGPoint:()AXMGeomerty
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{CGPoint=dd}"];
 
@@ -23,7 +23,7 @@
 
 + (id)axmValueWithCGVector:()AXMGeomerty
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{CGVector=dd}"];
 
@@ -32,7 +32,7 @@
 
 + (id)axmValueWithCGSize:()AXMGeomerty
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{CGSize=dd}"];
 
@@ -41,7 +41,7 @@
 
 + (id)axmValueWithCGRect:()AXMGeomerty
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;
@@ -54,7 +54,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return *v2;
 }
 
@@ -62,7 +62,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return *v2;
 }
 
@@ -70,14 +70,14 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return *v2;
 }
 
 - (double)AXMRectValue
 {
   memset(v2, 0, sizeof(v2));
-  [a1 getValue:v2];
+  [self getValue:v2];
   return *v2;
 }
 
@@ -86,7 +86,7 @@
   x8_0[1] = 0u;
   x8_0[2] = 0u;
   *x8_0 = 0u;
-  return [a1 getValue:x8_0];
+  return [self getValue:x8_0];
 }
 
 @end

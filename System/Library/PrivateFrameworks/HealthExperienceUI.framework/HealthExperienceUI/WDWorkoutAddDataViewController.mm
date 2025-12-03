@@ -1,44 +1,44 @@
 @interface WDWorkoutAddDataViewController
-- (WDWorkoutAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7;
+- (WDWorkoutAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache;
 - (id)_activeEnergyDisplayName;
-- (id)_activityTypeDescriptionForIndex:(int64_t)a3;
-- (id)_displayTypeForDistanceType:(id)a3;
-- (id)_displayTypeForIdentifier:(int64_t)a3;
+- (id)_activityTypeDescriptionForIndex:(int64_t)index;
+- (id)_displayTypeForDistanceType:(id)type;
+- (id)_displayTypeForIdentifier:(int64_t)identifier;
 - (id)_distanceDisplayName;
 - (id)_generateSortedActivityTypes;
-- (id)_quantityFromEntryItem:(id)a3 unit:(id)a4;
-- (id)_sectionsForDistanceType:(id)a3;
+- (id)_quantityFromEntryItem:(id)item unit:(id)unit;
+- (id)_sectionsForDistanceType:(id)type;
 - (id)_totalDistance;
 - (id)_totalEnergyBurned;
-- (id)_unitForDistanceType:(id)a3;
-- (id)manualEntryItemsForSection:(int64_t)a3;
-- (int64_t)_indexOfActivityType:(unint64_t)a3;
+- (id)_unitForDistanceType:(id)type;
+- (id)manualEntryItemsForSection:(int64_t)section;
+- (int64_t)_indexOfActivityType:(unint64_t)type;
 - (int64_t)numberOfSections;
-- (unint64_t)_activityTypeForIndex:(int64_t)a3;
+- (unint64_t)_activityTypeForIndex:(int64_t)index;
 - (unint64_t)_selectedActivityType;
 - (void)_createEntryItems;
-- (void)_updateCurrentDistanceTypeWithActivityType:(unint64_t)a3;
+- (void)_updateCurrentDistanceTypeWithActivityType:(unint64_t)type;
 - (void)dealloc;
-- (void)manualEntryItemDidUpdate:(id)a3;
-- (void)saveHKObjectWithCompletion:(id)a3;
-- (void)unitPreferencesDidChange:(id)a3;
-- (void)validateDataWithCompletion:(id)a3;
+- (void)manualEntryItemDidUpdate:(id)update;
+- (void)saveHKObjectWithCompletion:(id)completion;
+- (void)unitPreferencesDidChange:(id)change;
+- (void)validateDataWithCompletion:(id)completion;
 @end
 
 @implementation WDWorkoutAddDataViewController
 
-- (WDWorkoutAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7
+- (WDWorkoutAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = WDWorkoutAddDataViewController;
-  v7 = [(WDAddDataViewController *)&v21 initWithDisplayType:a3 healthStore:a4 unitController:a5 initialStartDate:a6 dateCache:a7];
+  v7 = [(WDAddDataViewController *)&v21 initWithDisplayType:type healthStore:store unitController:controller initialStartDate:date dateCache:cache];
   v8 = v7;
   if (v7)
   {
-    v9 = [(WDWorkoutAddDataViewController *)v7 _generateSortedActivityTypes];
+    _generateSortedActivityTypes = [(WDWorkoutAddDataViewController *)v7 _generateSortedActivityTypes];
     workoutActivityTypePairs = v8->_workoutActivityTypePairs;
-    v8->_workoutActivityTypePairs = v9;
+    v8->_workoutActivityTypePairs = _generateSortedActivityTypes;
 
     [(WDWorkoutAddDataViewController *)v8 _createEntryItems];
     v26[0] = v8->_activityTypeEntryItem;
@@ -65,8 +65,8 @@
     v8->_sectionsWithoutDistance = v17;
 
     [(WDWorkoutAddDataViewController *)v8 _updateCurrentDistanceTypeWithActivityType:37];
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v8 selector:sel_unitPreferencesDidChange_ name:*MEMORY[0x1E696BE70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_unitPreferencesDidChange_ name:*MEMORY[0x1E696BE70] object:0];
   }
 
   return v8;
@@ -74,8 +74,8 @@
 
 - (void)_createEntryItems
 {
-  v3 = [(HKDateCache *)self->super._dateCache oneMinuteBeforeEndOfDayMidnight];
-  v4 = [WDAddDataManualEntryItem twoPartDateRangeItemWithMaximumEndDate:v3];
+  oneMinuteBeforeEndOfDayMidnight = [(HKDateCache *)self->super._dateCache oneMinuteBeforeEndOfDayMidnight];
+  v4 = [WDAddDataManualEntryItem twoPartDateRangeItemWithMaximumEndDate:oneMinuteBeforeEndOfDayMidnight];
   dateRangeEntryItem = self->_dateRangeEntryItem;
   self->_dateRangeEntryItem = v4;
 
@@ -103,8 +103,8 @@
   self->_activeEnergyEntryItem = v16;
 
   v18 = self->_activeEnergyEntryItem;
-  v19 = [(WDWorkoutAddDataViewController *)self _activeEnergyDisplayName];
-  [(WDAddDataManualEntryItem *)v18 setTitle:v19];
+  _activeEnergyDisplayName = [(WDWorkoutAddDataViewController *)self _activeEnergyDisplayName];
+  [(WDAddDataManualEntryItem *)v18 setTitle:_activeEnergyDisplayName];
 
   [(WDAddDataManualEntryItem *)self->_activeEnergyEntryItem setDelegate:self];
   v20 = [v24 displayTypeWithIdentifier:&unk_1F38464C8];
@@ -120,23 +120,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696BE70] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696BE70] object:0];
 
   v4.receiver = self;
   v4.super_class = WDWorkoutAddDataViewController;
   [(WDWorkoutAddDataViewController *)&v4 dealloc];
 }
 
-- (void)unitPreferencesDidChange:(id)a3
+- (void)unitPreferencesDidChange:(id)change
 {
   distanceEntryItem = self->_distanceEntryItem;
-  v5 = [(WDWorkoutAddDataViewController *)self _distanceDisplayName];
-  [(WDAddDataManualEntryItem *)distanceEntryItem setTitle:v5];
+  _distanceDisplayName = [(WDWorkoutAddDataViewController *)self _distanceDisplayName];
+  [(WDAddDataManualEntryItem *)distanceEntryItem setTitle:_distanceDisplayName];
 
   activeEnergyEntryItem = self->_activeEnergyEntryItem;
-  v7 = [(WDWorkoutAddDataViewController *)self _activeEnergyDisplayName];
-  [(WDAddDataManualEntryItem *)activeEnergyEntryItem setTitle:v7];
+  _activeEnergyDisplayName = [(WDWorkoutAddDataViewController *)self _activeEnergyDisplayName];
+  [(WDAddDataManualEntryItem *)activeEnergyEntryItem setTitle:_activeEnergyDisplayName];
 }
 
 - (id)_totalDistance
@@ -158,16 +158,16 @@
   return v6;
 }
 
-- (id)_quantityFromEntryItem:(id)a3 unit:(id)a4
+- (id)_quantityFromEntryItem:(id)item unit:(id)unit
 {
-  v5 = a4;
-  v6 = [a3 generateValue];
-  v7 = v6;
-  if (v6)
+  unitCopy = unit;
+  generateValue = [item generateValue];
+  v7 = generateValue;
+  if (generateValue)
   {
     v8 = MEMORY[0x1E696C348];
-    [v6 doubleValue];
-    v9 = [v8 quantityWithUnit:v5 doubleValue:?];
+    [generateValue doubleValue];
+    v9 = [v8 quantityWithUnit:unitCopy doubleValue:?];
   }
 
   else
@@ -178,26 +178,26 @@
   return v9;
 }
 
-- (id)_displayTypeForIdentifier:(int64_t)a3
+- (id)_displayTypeForIdentifier:(int64_t)identifier
 {
   v4 = [MEMORY[0x1E69A4380] sharedInstanceForHealthStore:self->super._healthStore];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v6 = [v4 displayTypeWithIdentifier:v5];
 
   return v6;
 }
 
-- (id)_displayTypeForDistanceType:(id)a3
+- (id)_displayTypeForDistanceType:(id)type
 {
-  v4 = [a3 code];
-  if ((v4 - 83) > 0x37 || ((1 << (v4 - 83)) & 0x80000048000001) == 0)
+  code = [type code];
+  if ((code - 83) > 0x37 || ((1 << (code - 83)) & 0x80000048000001) == 0)
   {
     v6 = 8;
   }
 
   else
   {
-    v6 = v4;
+    v6 = code;
   }
 
   v7 = [(WDWorkoutAddDataViewController *)self _displayTypeForIdentifier:v6];
@@ -205,7 +205,7 @@
   return v7;
 }
 
-- (id)_unitForDistanceType:(id)a3
+- (id)_unitForDistanceType:(id)type
 {
   v4 = [(WDWorkoutAddDataViewController *)self _displayTypeForDistanceType:self->_distanceType];
   v5 = [(HKUnitPreferenceController *)self->super._unitController unitForDisplayType:v4];
@@ -250,20 +250,20 @@
   return v4;
 }
 
-- (void)validateDataWithCompletion:(id)a3
+- (void)validateDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
-  v6 = [v5 startDate];
-  v7 = [v5 endDate];
+  completionCopy = completion;
+  generateValue = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
+  startDate = [generateValue startDate];
+  endDate = [generateValue endDate];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__WDWorkoutAddDataViewController_validateDataWithCompletion___block_invoke;
   v9[3] = &unk_1E7EEB118;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [(WDAddDataViewController *)self validateMaximumAllowedDurationFor:v6 endDate:v7 competion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(WDAddDataViewController *)self validateMaximumAllowedDurationFor:startDate endDate:endDate competion:v9];
 }
 
 void __61__WDWorkoutAddDataViewController_validateDataWithCompletion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -371,30 +371,30 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)saveHKObjectWithCompletion:(id)a3
+- (void)saveHKObjectWithCompletion:(id)completion
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v4 = [(WDWorkoutAddDataViewController *)self _selectedActivityType];
-  v5 = [(WDWorkoutAddDataViewController *)self _totalEnergyBurned];
-  v6 = [(WDWorkoutAddDataViewController *)self _totalDistance];
-  v7 = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
+  completionCopy = completion;
+  _selectedActivityType = [(WDWorkoutAddDataViewController *)self _selectedActivityType];
+  _totalEnergyBurned = [(WDWorkoutAddDataViewController *)self _totalEnergyBurned];
+  _totalDistance = [(WDWorkoutAddDataViewController *)self _totalDistance];
+  generateValue = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
   v8 = MEMORY[0x1E696C588];
-  v9 = [v7 startDate];
-  v10 = [v7 endDate];
-  v11 = [(WDAddDataViewController *)self defaultMetadata];
+  startDate = [generateValue startDate];
+  endDate = [generateValue endDate];
+  defaultMetadata = [(WDAddDataViewController *)self defaultMetadata];
   v12 = v8;
-  v13 = v6;
-  v32 = [v12 _workoutWithActivityType:v4 startDate:v9 endDate:v10 workoutEvents:0 totalEnergyBurned:v5 totalDistance:v6 device:0 metadata:v11];
+  v13 = _totalDistance;
+  v32 = [v12 _workoutWithActivityType:_selectedActivityType startDate:startDate endDate:endDate workoutEvents:0 totalEnergyBurned:_totalEnergyBurned totalDistance:_totalDistance device:0 metadata:defaultMetadata];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v5)
+  if (_totalEnergyBurned)
   {
     v15 = MEMORY[0x1E696C358];
     v16 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BC38]];
-    v17 = [v7 startDate];
-    v18 = [v7 endDate];
-    v19 = [v15 quantitySampleWithType:v16 quantity:v5 startDate:v17 endDate:v18];
+    startDate2 = [generateValue startDate];
+    endDate2 = [generateValue endDate];
+    v19 = [v15 quantitySampleWithType:v16 quantity:_totalEnergyBurned startDate:startDate2 endDate:endDate2];
 
     [v14 addObject:v19];
   }
@@ -405,9 +405,9 @@ LABEL_22:
   {
     v22 = MEMORY[0x1E696C358];
     v23 = _HKWorkoutDistanceTypeForActivityType();
-    v24 = [v7 startDate];
-    v25 = [v7 endDate];
-    v26 = [v22 quantitySampleWithType:v23 quantity:v13 startDate:v24 endDate:v25];
+    startDate3 = [generateValue startDate];
+    endDate3 = [generateValue endDate];
+    v26 = [v22 quantitySampleWithType:v23 quantity:v13 startDate:startDate3 endDate:endDate3];
 
     v21 = v13;
     [v14 addObject:v26];
@@ -421,10 +421,10 @@ LABEL_22:
   v34[2] = __61__WDWorkoutAddDataViewController_saveHKObjectWithCompletion___block_invoke;
   v34[3] = &unk_1E7EEB168;
   v35 = v14;
-  v36 = self;
+  selfCopy = self;
   v37 = v32;
-  v38 = v33;
-  v29 = v33;
+  v38 = completionCopy;
+  v29 = completionCopy;
   v30 = v32;
   v31 = v14;
   [(HKHealthStore *)healthStore saveObjects:v28 withCompletion:v34];
@@ -460,10 +460,10 @@ void __61__WDWorkoutAddDataViewController_saveHKObjectWithCompletion___block_inv
   return v3;
 }
 
-- (id)manualEntryItemsForSection:(int64_t)a3
+- (id)manualEntryItemsForSection:(int64_t)section
 {
   v4 = [(WDWorkoutAddDataViewController *)self _sectionsForDistanceType:self->_distanceType];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  v5 = [v4 objectAtIndexedSubscript:section];
 
   return v5;
 }
@@ -506,7 +506,7 @@ uint64_t __62__WDWorkoutAddDataViewController__generateSortedActivityTypes__bloc
   return v7;
 }
 
-- (int64_t)_indexOfActivityType:(unint64_t)a3
+- (int64_t)_indexOfActivityType:(unint64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -518,7 +518,7 @@ uint64_t __62__WDWorkoutAddDataViewController__generateSortedActivityTypes__bloc
   v6[2] = __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke;
   v6[3] = &unk_1E7EEB1B0;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = type;
   [(NSArray *)workoutActivityTypePairs enumerateObjectsUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -538,30 +538,30 @@ void __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke(ui
   }
 }
 
-- (id)_activityTypeDescriptionForIndex:(int64_t)a3
+- (id)_activityTypeDescriptionForIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_workoutActivityTypePairs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_workoutActivityTypePairs objectAtIndexedSubscript:index];
   v4 = [v3 objectAtIndexedSubscript:1];
 
   return v4;
 }
 
-- (unint64_t)_activityTypeForIndex:(int64_t)a3
+- (unint64_t)_activityTypeForIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_workoutActivityTypePairs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_workoutActivityTypePairs objectAtIndexedSubscript:index];
   v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (unint64_t)_selectedActivityType
 {
-  v3 = [(WDAddDataManualEntrySpinner *)self->_activityTypeEntryItem generateValue];
-  v4 = v3;
-  if (v3)
+  generateValue = [(WDAddDataManualEntrySpinner *)self->_activityTypeEntryItem generateValue];
+  v4 = generateValue;
+  if (generateValue)
   {
-    v5 = -[WDWorkoutAddDataViewController _activityTypeForIndex:](self, "_activityTypeForIndex:", [v3 integerValue]);
+    v5 = -[WDWorkoutAddDataViewController _activityTypeForIndex:](self, "_activityTypeForIndex:", [generateValue integerValue]);
   }
 
   else
@@ -572,10 +572,10 @@ void __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke(ui
   return v5;
 }
 
-- (id)_sectionsForDistanceType:(id)a3
+- (id)_sectionsForDistanceType:(id)type
 {
   v3 = &OBJC_IVAR___WDWorkoutAddDataViewController__sectionsWithDistance;
-  if (!a3)
+  if (!type)
   {
     v3 = &OBJC_IVAR___WDWorkoutAddDataViewController__sectionsWithoutDistance;
   }
@@ -583,7 +583,7 @@ void __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke(ui
   return *(&self->super.super.super.super.super.super.isa + *v3);
 }
 
-- (void)_updateCurrentDistanceTypeWithActivityType:(unint64_t)a3
+- (void)_updateCurrentDistanceTypeWithActivityType:(unint64_t)type
 {
   v4 = _HKWorkoutDistanceTypeForActivityType();
   v5 = v4;
@@ -596,8 +596,8 @@ void __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke(ui
     {
       objc_storeStrong(&self->_distanceType, obj);
       distanceEntryItem = self->_distanceEntryItem;
-      v8 = [(WDWorkoutAddDataViewController *)self _distanceDisplayName];
-      [(WDAddDataManualEntryItem *)distanceEntryItem setTitle:v8];
+      _distanceDisplayName = [(WDWorkoutAddDataViewController *)self _distanceDisplayName];
+      [(WDAddDataManualEntryItem *)distanceEntryItem setTitle:_distanceDisplayName];
 
       [(WDAddDataViewController *)self reloadManualEntryItemsAndReloadTableView:[(WDWorkoutAddDataViewController *)self isViewLoaded]];
       v5 = obj;
@@ -605,18 +605,18 @@ void __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke(ui
   }
 }
 
-- (void)manualEntryItemDidUpdate:(id)a3
+- (void)manualEntryItemDidUpdate:(id)update
 {
-  v16 = a3;
-  if (self->_activityTypeEntryItem == v16)
+  updateCopy = update;
+  if (self->_activityTypeEntryItem == updateCopy)
   {
     [(WDWorkoutAddDataViewController *)self _updateCurrentDistanceTypeWithActivityType:[(WDWorkoutAddDataViewController *)self _selectedActivityType]];
   }
 
-  v4 = [(WDWorkoutAddDataViewController *)self _totalEnergyBurned];
-  if (v4)
+  _totalEnergyBurned = [(WDWorkoutAddDataViewController *)self _totalEnergyBurned];
+  if (_totalEnergyBurned)
   {
-    v5 = [(HKManualEntryValidationController *)self->super._validationController validateWorkoutEnergyBurned:v4]!= 2;
+    v5 = [(HKManualEntryValidationController *)self->super._validationController validateWorkoutEnergyBurned:_totalEnergyBurned]!= 2;
   }
 
   else
@@ -624,11 +624,11 @@ void __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke(ui
     v5 = 1;
   }
 
-  v6 = [(WDWorkoutAddDataViewController *)self _totalDistance];
-  v7 = v6;
+  _totalDistance = [(WDWorkoutAddDataViewController *)self _totalDistance];
+  v7 = _totalDistance;
   if (self->_distanceType)
   {
-    v8 = v6 == 0;
+    v8 = _totalDistance == 0;
   }
 
   else
@@ -638,18 +638,18 @@ void __55__WDWorkoutAddDataViewController__indexOfActivityType___block_invoke(ui
 
   if (!v8)
   {
-    v5 = ([(HKManualEntryValidationController *)self->super._validationController validateWorkoutDistance:v6]!= 2) & v5;
+    v5 = ([(HKManualEntryValidationController *)self->super._validationController validateWorkoutDistance:_totalDistance]!= 2) & v5;
   }
 
-  v9 = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
-  v10 = [v9 endDate];
-  v11 = [v9 startDate];
-  [v10 timeIntervalSinceDate:v11];
+  generateValue = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
+  endDate = [generateValue endDate];
+  startDate = [generateValue startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v13 = v12;
 
   validationController = self->super._validationController;
-  v15 = [(HKDisplayType *)self->super._displayType sampleType];
-  LODWORD(validationController) = [(HKManualEntryValidationController *)validationController validateMinimumAllowedDuration:v15 ofType:v13]!= 2;
+  sampleType = [(HKDisplayType *)self->super._displayType sampleType];
+  LODWORD(validationController) = [(HKManualEntryValidationController *)validationController validateMinimumAllowedDuration:sampleType ofType:v13]!= 2;
 
   [(WDAddDataViewController *)self setSavingEnabled:validationController & v5];
 }

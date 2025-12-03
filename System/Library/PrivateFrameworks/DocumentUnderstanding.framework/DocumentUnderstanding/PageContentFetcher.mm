@@ -1,16 +1,16 @@
 @interface PageContentFetcher
 + (id)_copyDefaultWebViewConfiguration;
 - (PageContentFetcher)init;
-- (void)runJavaScriptOnHTML:(id)a3 javaScript:(id)a4 completionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)runJavaScriptOnHTML:(id)l javaScript:(id)script completionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation PageContentFetcher
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v5 = a3;
+  viewCopy = view;
   if (objc_msgSend_length(self->_providedJavaScript, v6, v7, v8, v9))
   {
     providedJavaScript = self->_providedJavaScript;
@@ -19,7 +19,7 @@
     v15[2] = sub_232CE5704;
     v15[3] = &unk_2789A7E38;
     v15[4] = self;
-    objc_msgSend_evaluateJavaScript_completionHandler_(v5, v10, providedJavaScript, v15, v11);
+    objc_msgSend_evaluateJavaScript_completionHandler_(viewCopy, v10, providedJavaScript, v15, v11);
   }
 
   else
@@ -30,24 +30,24 @@
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_232CE5950;
   v8[3] = &unk_2789A7DE8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)runJavaScriptOnHTML:(id)a3 javaScript:(id)a4 completionHandler:(id)a5
+- (void)runJavaScriptOnHTML:(id)l javaScript:(id)script completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v14 = objc_msgSend_copy(a4, v10, v11, v12, v13);
+  lCopy = l;
+  handlerCopy = handler;
+  v14 = objc_msgSend_copy(script, v10, v11, v12, v13);
   providedJavaScript = self->_providedJavaScript;
   self->_providedJavaScript = v14;
 
@@ -55,11 +55,11 @@
   block[1] = 3221225472;
   block[2] = sub_232CE5A98;
   block[3] = &unk_2789A7DC0;
-  v19 = v8;
-  v20 = v9;
+  v19 = lCopy;
+  v20 = handlerCopy;
   block[4] = self;
-  v16 = v8;
-  v17 = v9;
+  v16 = lCopy;
+  v17 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

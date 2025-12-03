@@ -3,31 +3,31 @@
 + (BOOL)affectsPuckVisibility;
 - (BOOL)isInTransitNav;
 - (NSString)debugDescription;
-- (VLFSessionTransitSteppingMonitor)initWithObserver:(id)a3 navigationService:(id)a4;
+- (VLFSessionTransitSteppingMonitor)initWithObserver:(id)observer navigationService:(id)service;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
 @end
 
 @implementation VLFSessionTransitSteppingMonitor
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
   v8 = sub_100ECB9C4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(VLFSessionTransitSteppingMonitor *)self isInTransitNav];
+    isInTransitNav = [(VLFSessionTransitSteppingMonitor *)self isInTransitNav];
     v10 = @"NO";
-    if (v9)
+    if (isInTransitNav)
     {
       v10 = @"YES";
     }
 
     v11 = v10;
     *buf = 134218498;
-    v45 = a4;
+    indexCopy2 = index;
     v46 = 2048;
-    v47 = a5;
+    segmentIndexCopy = segmentIndex;
     v48 = 2112;
     v49[0] = v11;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Updated step index: %lu segment index: %lu, isInTransitNav: %@", buf, 0x20u);
@@ -45,15 +45,15 @@
     return;
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v32 = sub_10006D178();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v45 = "[VLFSessionTransitSteppingMonitor navigationService:didUpdateStepIndex:segmentIndex:]";
+      indexCopy2 = "[VLFSessionTransitSteppingMonitor navigationService:didUpdateStepIndex:segmentIndex:]";
       v46 = 2080;
-      v47 = "VLFSessionTransitSteppingMonitor.m";
+      segmentIndexCopy = "VLFSessionTransitSteppingMonitor.m";
       v48 = 1024;
       LODWORD(v49[0]) = 115;
       WORD2(v49[0]) = 2080;
@@ -68,7 +68,7 @@
       {
         v34 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v45 = v34;
+        indexCopy2 = v34;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -77,9 +77,9 @@
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v45 = "[VLFSessionTransitSteppingMonitor navigationService:didUpdateStepIndex:segmentIndex:]";
+      indexCopy2 = "[VLFSessionTransitSteppingMonitor navigationService:didUpdateStepIndex:segmentIndex:]";
       v46 = 2080;
-      v47 = "VLFSessionTransitSteppingMonitor.m";
+      segmentIndexCopy = "VLFSessionTransitSteppingMonitor.m";
       v48 = 1024;
       LODWORD(v49[0]) = 117;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion reached unexpectedly!", buf, 0x1Cu);
@@ -92,7 +92,7 @@
       {
         v37 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v45 = v37;
+        indexCopy2 = v37;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -111,11 +111,11 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = [(VLFSessionTransitSteppingMonitor *)self navigationService];
-  v13 = [v12 route];
-  v14 = [v13 steppingSigns];
+  navigationService = [(VLFSessionTransitSteppingMonitor *)self navigationService];
+  route = [navigationService route];
+  steppingSigns = [route steppingSigns];
 
-  v15 = [v14 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v15 = [steppingSigns countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (!v15)
   {
     goto LABEL_19;
@@ -129,12 +129,12 @@
     {
       if (*v40 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(steppingSigns);
       }
 
       v19 = *(*(&v39 + 1) + 8 * i);
-      v20 = [v19 stepIndexRange];
-      if (a4 >= v20 && a4 - v20 < v21)
+      stepIndexRange = [v19 stepIndexRange];
+      if (index >= stepIndexRange && index - stepIndexRange < v21)
       {
         v24 = v19;
 
@@ -147,7 +147,7 @@
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v45 = v24;
+          indexCopy2 = v24;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Detected current transit stepping mode sign: %@", buf, 0xCu);
         }
 
@@ -180,7 +180,7 @@ LABEL_41:
       }
     }
 
-    v16 = [v14 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    v16 = [steppingSigns countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v16)
     {
       continue;
@@ -196,9 +196,9 @@ LABEL_29:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315650;
-    v45 = "[VLFSessionTransitSteppingMonitor navigationService:didUpdateStepIndex:segmentIndex:]";
+    indexCopy2 = "[VLFSessionTransitSteppingMonitor navigationService:didUpdateStepIndex:segmentIndex:]";
     v46 = 2080;
-    v47 = "VLFSessionTransitSteppingMonitor.m";
+    segmentIndexCopy = "VLFSessionTransitSteppingMonitor.m";
     v48 = 1024;
     LODWORD(v49[0]) = 132;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion reached unexpectedly!", buf, 0x1Cu);
@@ -211,7 +211,7 @@ LABEL_29:
     {
       v30 = +[NSThread callStackSymbols];
       *buf = 138412290;
-      v45 = v30;
+      indexCopy2 = v30;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
   }
@@ -220,7 +220,7 @@ LABEL_29:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v45 = a4;
+    indexCopy2 = index;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Could not find current stepping sign for the current step index %lu", buf, 0xCu);
   }
 
@@ -228,15 +228,15 @@ LABEL_38:
   [(VLFSessionMonitor *)self setState:2];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v6 = sub_100ECB9C4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = MNNavigationServiceStateAsString();
-    v8 = [(VLFSessionTransitSteppingMonitor *)self isInTransitNav];
+    isInTransitNav = [(VLFSessionTransitSteppingMonitor *)self isInTransitNav];
     v9 = @"NO";
-    if (v8)
+    if (isInTransitNav)
     {
       v9 = @"YES";
     }
@@ -298,14 +298,14 @@ LABEL_38:
   }
 
   v9 = v8;
-  v10 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v11 = @"Hide";
-  if (v10 == 1)
+  if (state == 1)
   {
     v11 = @"EnablePuck";
   }
 
-  if (v10 == 2)
+  if (state == 2)
   {
     v11 = @"EnablePuckAndBanner";
   }
@@ -317,8 +317,8 @@ LABEL_38:
 
 - (BOOL)isInTransitNav
 {
-  v2 = [(VLFSessionTransitSteppingMonitor *)self navigationService];
-  v3 = [v2 navigationTransportType] == 1;
+  navigationService = [(VLFSessionTransitSteppingMonitor *)self navigationService];
+  v3 = [navigationService navigationTransportType] == 1;
 
   return v3;
 }
@@ -331,16 +331,16 @@ LABEL_38:
   [(VLFSessionTransitSteppingMonitor *)&v3 dealloc];
 }
 
-- (VLFSessionTransitSteppingMonitor)initWithObserver:(id)a3 navigationService:(id)a4
+- (VLFSessionTransitSteppingMonitor)initWithObserver:(id)observer navigationService:(id)service
 {
-  v7 = a4;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = VLFSessionTransitSteppingMonitor;
-  v8 = [(VLFSessionMonitor *)&v11 initWithObserver:a3];
+  v8 = [(VLFSessionMonitor *)&v11 initWithObserver:observer];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_navigationService, a4);
+    objc_storeStrong(&v8->_navigationService, service);
     [(MNNavigationService *)v9->_navigationService registerObserver:v9];
     [(VLFSessionMonitor *)v9 setState:2];
   }

@@ -1,18 +1,18 @@
 @interface VCPProtoSummarizedEmbeddingResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (unsigned)embeddingIDAtIndex:(unint64_t)a3;
-- (unsigned)representativeMappingAtIndex:(unint64_t)a3;
-- (void)addThumbnailID:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)embeddingIDAtIndex:(unint64_t)index;
+- (unsigned)representativeMappingAtIndex:(unint64_t)index;
+- (void)addThumbnailID:(id)d;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoSummarizedEmbeddingResult
@@ -26,54 +26,54 @@
   [(VCPProtoSummarizedEmbeddingResult *)&v3 dealloc];
 }
 
-- (unsigned)embeddingIDAtIndex:(unint64_t)a3
+- (unsigned)embeddingIDAtIndex:(unint64_t)index
 {
   p_embeddingIDs = &self->_embeddingIDs;
   count = self->_embeddingIDs.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_embeddingIDs->list[a3];
+  return p_embeddingIDs->list[index];
 }
 
-- (unsigned)representativeMappingAtIndex:(unint64_t)a3
+- (unsigned)representativeMappingAtIndex:(unint64_t)index
 {
   p_representativeMappings = &self->_representativeMappings;
   count = self->_representativeMappings.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_representativeMappings->list[a3];
+  return p_representativeMappings->list[index];
 }
 
-- (void)addThumbnailID:(id)a3
+- (void)addThumbnailID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   thumbnailIDs = self->_thumbnailIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!thumbnailIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_thumbnailIDs;
     self->_thumbnailIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     thumbnailIDs = self->_thumbnailIDs;
   }
 
-  [(NSMutableArray *)thumbnailIDs addObject:v4];
+  [(NSMutableArray *)thumbnailIDs addObject:dCopy];
 }
 
 - (id)description
@@ -82,41 +82,41 @@
   v8.receiver = self;
   v8.super_class = VCPProtoSummarizedEmbeddingResult;
   v4 = [(VCPProtoSummarizedEmbeddingResult *)&v8 description];
-  v5 = [(VCPProtoSummarizedEmbeddingResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoSummarizedEmbeddingResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   v6 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v6 forKey:@"embeddingID"];
+  [dictionary setObject:v6 forKey:@"embeddingID"];
 
   v7 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v7 forKey:@"representativeMapping"];
+  [dictionary setObject:v7 forKey:@"representativeMapping"];
 
   thumbnailIDs = self->_thumbnailIDs;
   if (thumbnailIDs)
   {
-    [v3 setObject:thumbnailIDs forKey:@"thumbnailID"];
+    [dictionary setObject:thumbnailIDs forKey:@"thumbnailID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   if (self->_embeddingIDs.count)
   {
@@ -174,59 +174,59 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v14 = a3;
-  [v14 setTimeRange:self->_timeRange];
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
   if ([(VCPProtoSummarizedEmbeddingResult *)self embeddingIDsCount])
   {
-    [v14 clearEmbeddingIDs];
-    v4 = [(VCPProtoSummarizedEmbeddingResult *)self embeddingIDsCount];
-    if (v4)
+    [toCopy clearEmbeddingIDs];
+    embeddingIDsCount = [(VCPProtoSummarizedEmbeddingResult *)self embeddingIDsCount];
+    if (embeddingIDsCount)
     {
-      v5 = v4;
+      v5 = embeddingIDsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v14 addEmbeddingID:{-[VCPProtoSummarizedEmbeddingResult embeddingIDAtIndex:](self, "embeddingIDAtIndex:", i)}];
+        [toCopy addEmbeddingID:{-[VCPProtoSummarizedEmbeddingResult embeddingIDAtIndex:](self, "embeddingIDAtIndex:", i)}];
       }
     }
   }
 
   if ([(VCPProtoSummarizedEmbeddingResult *)self representativeMappingsCount])
   {
-    [v14 clearRepresentativeMappings];
-    v7 = [(VCPProtoSummarizedEmbeddingResult *)self representativeMappingsCount];
-    if (v7)
+    [toCopy clearRepresentativeMappings];
+    representativeMappingsCount = [(VCPProtoSummarizedEmbeddingResult *)self representativeMappingsCount];
+    if (representativeMappingsCount)
     {
-      v8 = v7;
+      v8 = representativeMappingsCount;
       for (j = 0; j != v8; ++j)
       {
-        [v14 addRepresentativeMapping:{-[VCPProtoSummarizedEmbeddingResult representativeMappingAtIndex:](self, "representativeMappingAtIndex:", j)}];
+        [toCopy addRepresentativeMapping:{-[VCPProtoSummarizedEmbeddingResult representativeMappingAtIndex:](self, "representativeMappingAtIndex:", j)}];
       }
     }
   }
 
   if ([(VCPProtoSummarizedEmbeddingResult *)self thumbnailIDsCount])
   {
-    [v14 clearThumbnailIDs];
-    v10 = [(VCPProtoSummarizedEmbeddingResult *)self thumbnailIDsCount];
-    if (v10)
+    [toCopy clearThumbnailIDs];
+    thumbnailIDsCount = [(VCPProtoSummarizedEmbeddingResult *)self thumbnailIDsCount];
+    if (thumbnailIDsCount)
     {
-      v11 = v10;
+      v11 = thumbnailIDsCount;
       for (k = 0; k != v11; ++k)
       {
         v13 = [(VCPProtoSummarizedEmbeddingResult *)self thumbnailIDAtIndex:k];
-        [v14 addThumbnailID:v13];
+        [toCopy addThumbnailID:v13];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
@@ -252,7 +252,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addThumbnailID:v13];
 
         ++v12;
@@ -268,13 +268,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[8])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[8])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual())
   {
     thumbnailIDs = self->_thumbnailIDs;
-    if (thumbnailIDs | v4[7])
+    if (thumbnailIDs | equalCopy[7])
     {
       v7 = [(NSMutableArray *)thumbnailIDs isEqual:?];
     }
@@ -301,12 +301,12 @@
   return v5 ^ [(NSMutableArray *)self->_thumbnailIDs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 8);
+  v6 = *(fromCopy + 8);
   if (timeRange)
   {
     if (v6)
@@ -320,23 +320,23 @@
     [(VCPProtoSummarizedEmbeddingResult *)self setTimeRange:?];
   }
 
-  v7 = [v4 embeddingIDsCount];
-  if (v7)
+  embeddingIDsCount = [fromCopy embeddingIDsCount];
+  if (embeddingIDsCount)
   {
-    v8 = v7;
+    v8 = embeddingIDsCount;
     for (i = 0; i != v8; ++i)
     {
-      -[VCPProtoSummarizedEmbeddingResult addEmbeddingID:](self, "addEmbeddingID:", [v4 embeddingIDAtIndex:i]);
+      -[VCPProtoSummarizedEmbeddingResult addEmbeddingID:](self, "addEmbeddingID:", [fromCopy embeddingIDAtIndex:i]);
     }
   }
 
-  v10 = [v4 representativeMappingsCount];
-  if (v10)
+  representativeMappingsCount = [fromCopy representativeMappingsCount];
+  if (representativeMappingsCount)
   {
-    v11 = v10;
+    v11 = representativeMappingsCount;
     for (j = 0; j != v11; ++j)
     {
-      -[VCPProtoSummarizedEmbeddingResult addRepresentativeMapping:](self, "addRepresentativeMapping:", [v4 representativeMappingAtIndex:j]);
+      -[VCPProtoSummarizedEmbeddingResult addRepresentativeMapping:](self, "addRepresentativeMapping:", [fromCopy representativeMappingAtIndex:j]);
     }
   }
 
@@ -344,7 +344,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v13 = *(v4 + 7);
+  v13 = *(fromCopy + 7);
   v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
@@ -369,13 +369,13 @@
   }
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"attributes"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
   memset(&v45, 0, sizeof(v45));
-  CMTimeRangeMakeFromDictionary(&v45, v3);
+  CMTimeRangeMakeFromDictionary(&v45, dictionaryCopy);
   if (v45.start.flags)
   {
     v5 = 0;
@@ -519,11 +519,11 @@
 - (id)exportToLegacyDictionary
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v3 = [(VCPProtoSummarizedEmbeddingResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoSummarizedEmbeddingResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -558,8 +558,8 @@
     v23[0] = v7;
     v23[1] = v11;
     v22[2] = @"thumbnailID";
-    v15 = [(VCPProtoSummarizedEmbeddingResult *)self thumbnailIDs];
-    v23[2] = v15;
+    thumbnailIDs = [(VCPProtoSummarizedEmbeddingResult *)self thumbnailIDs];
+    v23[2] = thumbnailIDs;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
     [v6 setObject:v16 forKeyedSubscript:@"attributes"];
   }
@@ -570,8 +570,8 @@
     v20[1] = @"representativeMapping";
     v21[0] = v7;
     v21[1] = v11;
-    v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-    [v6 setObject:v15 forKeyedSubscript:@"attributes"];
+    thumbnailIDs = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
+    [v6 setObject:thumbnailIDs forKeyedSubscript:@"attributes"];
   }
 
   return v6;

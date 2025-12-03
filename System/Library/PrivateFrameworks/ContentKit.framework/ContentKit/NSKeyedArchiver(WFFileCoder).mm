@@ -15,22 +15,22 @@
   [v8 encodeObject:v7 forKey:*MEMORY[0x277CCA308]];
 
   [v8 encodeObject:v6 forKey:@"WFFileCoder"];
-  v9 = [v8 encodedData];
-  if (!v9)
+  encodedData = [v8 encodedData];
+  if (!encodedData)
   {
     v10 = getWFWorkflowExecutionLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v8 error];
+      error = [v8 error];
       v13 = 136315394;
       v14 = "+[NSKeyedArchiver(WFFileCoder) wf_securelyArchivedDataWithRootObject:fileCoder:]";
       v15 = 2112;
-      v16 = v11;
+      v16 = error;
       _os_log_impl(&dword_21E1BD000, v10, OS_LOG_TYPE_ERROR, "%s Failed to encode data: %@", &v13, 0x16u);
     }
   }
 
-  return v9;
+  return encodedData;
 }
 
 @end

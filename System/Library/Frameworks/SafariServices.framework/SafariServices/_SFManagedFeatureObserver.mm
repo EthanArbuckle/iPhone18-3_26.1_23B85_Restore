@@ -6,7 +6,7 @@
 - (int64_t)biometryTypeCurrentlyAvailableForDevice;
 - (void)dealloc;
 - (void)isUserEnrolledInBiometricAuthentication;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation _SFManagedFeatureObserver
@@ -42,18 +42,18 @@
   v2 = [(_SFManagedFeatureObserver *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
     if (objc_opt_respondsToSelector())
     {
-      [v3 registerObserver:v2];
+      [mEMORY[0x1E69ADFB8] registerObserver:v2];
     }
 
     else
     {
-      [v3 addObserver:v2];
+      [mEMORY[0x1E69ADFB8] addObserver:v2];
     }
 
-    v2->_cachedAuthenticationRequiredToAutoFill = [v3 effectiveBoolValueForSetting:*MEMORY[0x1E69ADDD8]] == 1;
+    v2->_cachedAuthenticationRequiredToAutoFill = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADDD8]] == 1;
     v4 = objc_alloc_init(MEMORY[0x1E696EE50]);
     context = v2->_context;
     v2->_context = v4;
@@ -73,28 +73,28 @@
   v5 = v4;
   if (v4 && ([v4 code] + 7) < 3)
   {
-    v6 = LABiometryTypeNone;
+    biometryType = LABiometryTypeNone;
   }
 
   else
   {
-    v6 = [(LAContext *)self->_context biometryType];
+    biometryType = [(LAContext *)self->_context biometryType];
   }
 
-  return v6;
+  return biometryType;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
   if (objc_opt_respondsToSelector())
   {
-    [v3 unregisterObserver:self];
+    [mEMORY[0x1E69ADFB8] unregisterObserver:self];
   }
 
   else
   {
-    [v3 removeObserver:self];
+    [mEMORY[0x1E69ADFB8] removeObserver:self];
   }
 
   v4.receiver = self;
@@ -113,8 +113,8 @@
   {
     if (v4)
     {
-      v7 = [v4 domain];
-      v8 = [v7 isEqualToString:*MEMORY[0x1E696EE30]];
+      domain = [v4 domain];
+      v8 = [domain isEqualToString:*MEMORY[0x1E696EE30]];
 
       if (v8)
       {
@@ -139,20 +139,20 @@ LABEL_9:
   return v6;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  self->_cachedAuthenticationRequiredToAutoFill = [v5 effectiveBoolValueForSetting:*MEMORY[0x1E69ADDD8]] == 1;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  self->_cachedAuthenticationRequiredToAutoFill = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADDD8]] == 1;
 }
 
 - (void)isUserEnrolledInBiometricAuthentication
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   v5 = 138543362;
-  v6 = v4;
-  _os_log_error_impl(&dword_1D4644000, v3, OS_LOG_TYPE_ERROR, "Could not get Local Authentication policy information: %{public}@", &v5, 0xCu);
+  v6 = safari_privacyPreservingDescription;
+  _os_log_error_impl(&dword_1D4644000, selfCopy, OS_LOG_TYPE_ERROR, "Could not get Local Authentication policy information: %{public}@", &v5, 0xCu);
 }
 
 @end

@@ -2,11 +2,11 @@
 - (MPSImageGaussianBlur)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageGaussianBlur)initWithDevice:(id)device;
 - (MPSImageGaussianBlur)initWithDevice:(id)device sigma:(float)sigma;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initFilterInfo;
 @end
 
@@ -473,7 +473,7 @@ LABEL_73:
   return result;
 }
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   sigma = self->_sigma;
   if (sigma <= 0.14)
@@ -488,7 +488,7 @@ LABEL_73:
   {
     memset(v65, 0, sizeof(v65));
     v64 = *a4;
-    objc_msgSend_clipRect(self, a3, a4, v4, v5, v6);
+    objc_msgSend_clipRect(self, size, a4, v4, v5, v6);
     MPSGetEffectiveClipRegion(v65, &v64, &v63);
     objc_msgSend_offset(self, v31, v32, v33, v34, v35);
     x = v63.origin.x;
@@ -583,7 +583,7 @@ LABEL_21:
 
   else
   {
-    objc_msgSend_offset(self, a3, a4, v4, v5, v6);
+    objc_msgSend_offset(self, size, a4, v4, v5, v6);
     smallConv = self->smallConv;
     v65[0] = v69;
     objc_msgSend_setOffset_(smallConv, v12, v65, v13, v14, v15);
@@ -607,7 +607,7 @@ LABEL_21:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v14.receiver = self;
   v14.super_class = MPSImageGaussianBlur;
@@ -621,7 +621,7 @@ LABEL_21:
     if (smallConv)
     {
       v12 = result;
-      smallConv = objc_msgSend_copyWithZone_device_(self->smallConv, v8, a3, a4, v9, v10);
+      smallConv = objc_msgSend_copyWithZone_device_(self->smallConv, v8, zone, device, v9, v10);
       result = v12;
     }
 
@@ -645,14 +645,14 @@ LABEL_21:
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\tsigma: %f\n", v6, v7, v8, v4, self->_sigma);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v10.receiver = self;
   v10.super_class = MPSImageGaussianBlur;
   [(MPSUnaryImageKernel *)&v10 encodeWithCoder:?];
   *&v5 = self->_sigma;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSGaussianBlur.sigma", v7, v8, v9, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSGaussianBlur.sigma", v7, v8, v9, v5);
 }
 
 - (MPSImageGaussianBlur)initWithCoder:(NSCoder *)aDecoder device:(id)device

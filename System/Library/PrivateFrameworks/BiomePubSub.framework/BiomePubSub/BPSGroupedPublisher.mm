@@ -1,21 +1,21 @@
 @interface BPSGroupedPublisher
-- (BPSGroupedPublisher)initWithUpstream:(id)a3 createSubject:(id)a4;
-- (id)aggregateWithInitial:(id)a3 nextPartialResult:(id)a4;
-- (id)subscribeOnKey:(id)a3;
+- (BPSGroupedPublisher)initWithUpstream:(id)upstream createSubject:(id)subject;
+- (id)aggregateWithInitial:(id)initial nextPartialResult:(id)result;
+- (id)subscribeOnKey:(id)key;
 @end
 
 @implementation BPSGroupedPublisher
 
-- (BPSGroupedPublisher)initWithUpstream:(id)a3 createSubject:(id)a4
+- (BPSGroupedPublisher)initWithUpstream:(id)upstream createSubject:(id)subject
 {
-  v6 = a3;
-  v7 = a4;
+  upstreamCopy = upstream;
+  subjectCopy = subject;
   v12.receiver = self;
   v12.super_class = BPSGroupedPublisher;
   v8 = [(BPSGroupedPublisher *)&v12 init];
   if (v8)
   {
-    v9 = [[BPSMulticast alloc] initWithUpstream:v6 createSubject:v7];
+    v9 = [[BPSMulticast alloc] initWithUpstream:upstreamCopy createSubject:subjectCopy];
     multicast = v8->_multicast;
     v8->_multicast = v9;
   }
@@ -23,27 +23,27 @@
   return v8;
 }
 
-- (id)subscribeOnKey:(id)a3
+- (id)subscribeOnKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BPSGroupedPublisher *)self multicast];
-  v6 = BPSPipelineSupportsPullBasedPublishers(v5);
+  keyCopy = key;
+  multicast = [(BPSGroupedPublisher *)self multicast];
+  v6 = BPSPipelineSupportsPullBasedPublishers(multicast);
 
-  v7 = [(BPSGroupedPublisher *)self multicast];
-  v8 = v7;
+  multicast2 = [(BPSGroupedPublisher *)self multicast];
+  v8 = multicast2;
   if (v6)
   {
-    v9 = [v7 toPublisher];
+    toPublisher = [multicast2 toPublisher];
 
-    v8 = v9;
+    v8 = toPublisher;
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__BPSGroupedPublisher_GroupBy__subscribeOnKey___block_invoke;
   v14[3] = &unk_1E83210D8;
-  v15 = v4;
-  v10 = v4;
+  v15 = keyCopy;
+  v10 = keyCopy;
   v11 = [v8 filterWithIsIncluded:v14];
   v12 = [v11 mapWithTransform:&__block_literal_global_7];
 
@@ -59,20 +59,20 @@ uint64_t __47__BPSGroupedPublisher_GroupBy__subscribeOnKey___block_invoke(uint64
   return v4;
 }
 
-- (id)aggregateWithInitial:(id)a3 nextPartialResult:(id)a4
+- (id)aggregateWithInitial:(id)initial nextPartialResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BPSGroupedPublisher *)self multicast];
-  v9 = BPSPipelineSupportsPullBasedPublishers(v8);
+  initialCopy = initial;
+  resultCopy = result;
+  multicast = [(BPSGroupedPublisher *)self multicast];
+  v9 = BPSPipelineSupportsPullBasedPublishers(multicast);
 
-  v10 = [(BPSGroupedPublisher *)self multicast];
-  v11 = v10;
+  multicast2 = [(BPSGroupedPublisher *)self multicast];
+  v11 = multicast2;
   if (v9)
   {
-    v12 = [v10 toPublisher];
+    toPublisher = [multicast2 toPublisher];
 
-    v11 = v12;
+    v11 = toPublisher;
   }
 
   v13 = objc_opt_new();
@@ -80,10 +80,10 @@ uint64_t __47__BPSGroupedPublisher_GroupBy__subscribeOnKey___block_invoke(uint64
   v18[1] = 3221225472;
   v18[2] = __71__BPSGroupedPublisher_GroupBy__aggregateWithInitial_nextPartialResult___block_invoke;
   v18[3] = &unk_1E8321100;
-  v19 = v6;
-  v20 = v7;
-  v14 = v7;
-  v15 = v6;
+  v19 = initialCopy;
+  v20 = resultCopy;
+  v14 = resultCopy;
+  v15 = initialCopy;
   v16 = [v11 reduceWithInitial:v13 nextPartialResult:v18];
 
   return v16;

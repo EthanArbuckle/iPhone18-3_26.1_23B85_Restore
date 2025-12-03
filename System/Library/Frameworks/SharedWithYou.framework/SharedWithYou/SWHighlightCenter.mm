@@ -13,34 +13,34 @@
 - (SLDServiceProxy)cloudDocsServiceProxy;
 - (SLDServiceProxy)noticeServiceProxy;
 - (SWCollaborationHighlight)collaborationHighlightForIdentifier:(SWCollaborationIdentifier)collaborationIdentifier error:(NSError *)error;
-- (SWHighlightCenter)initWithAppIdentifier:(id)a3;
+- (SWHighlightCenter)initWithAppIdentifier:(id)identifier;
 - (double)highlightsRankingScore;
-- (id)_attributionIdentifiersForHighlight:(id)a3;
-- (id)_fetchHighlightFromAnyCacheForURL:(id)a3;
-- (id)_sandboxExtensionIssueFileURL:(id)a3 withAuditToken:(id *)a4;
-- (id)collaborationHighlightForURL:(id)a3 error:(id *)a4;
+- (id)_attributionIdentifiersForHighlight:(id)highlight;
+- (id)_fetchHighlightFromAnyCacheForURL:(id)l;
+- (id)_sandboxExtensionIssueFileURL:(id)l withAuditToken:(id *)token;
+- (id)collaborationHighlightForURL:(id)l error:(id *)error;
 - (id)delegate;
-- (id)fetchAttributionForAttributionIdentifier:(id)a3;
-- (id)fetchAttributionsForHighlight:(id)a3;
-- (id)getShareURLForFileURL:(id)a3;
-- (id)highlightForURL:(id)a3 error:(id *)a4;
-- (id)originalSenderForCollaborationHighlight:(id)a3;
+- (id)fetchAttributionForAttributionIdentifier:(id)identifier;
+- (id)fetchAttributionsForHighlight:(id)highlight;
+- (id)getShareURLForFileURL:(id)l;
+- (id)highlightForURL:(id)l error:(id *)error;
+- (id)originalSenderForCollaborationHighlight:(id)highlight;
 - (void)_disconnectNoticeServiceConnectionIfNecessary;
-- (void)_getCollaborationHighlightForShareURL:(id)a3 fileURL:(id)a4 completionHandler:(id)a5;
-- (void)_getShareURLForFileURL:(id)a3 completionHandler:(id)a4;
+- (void)_getCollaborationHighlightForShareURL:(id)l fileURL:(id)rL completionHandler:(id)handler;
+- (void)_getShareURLForFileURL:(id)l completionHandler:(id)handler;
 - (void)_notifyDelegateHighlightsDidChange;
-- (void)_processClearNoticesFor:(id)a3;
-- (void)_processPendingHighlightEvent:(id)a3;
+- (void)_processClearNoticesFor:(id)for;
+- (void)_processPendingHighlightEvent:(id)event;
 - (void)_sendCurrentClearNoticesToDaemonAndDisconnect;
 - (void)_sendCurrentNoticesToDaemonAndDisconnect;
-- (void)apiAdapterHighlightsDidChange:(id)a3;
+- (void)apiAdapterHighlightsDidChange:(id)change;
 - (void)clearNoticesForHighlight:(SWCollaborationHighlight *)highlight;
 - (void)getCollaborationHighlightForURL:(NSURL *)URL completionHandler:(void *)completionHandler;
 - (void)getHighlightForURL:(NSURL *)URL completionHandler:(void *)completionHandler;
 - (void)getSignedIdentityProofForCollaborationHighlight:(SWCollaborationHighlight *)collaborationHighlight usingData:(NSData *)data completionHandler:(void *)completionHandler;
 - (void)postNoticeForHighlightEvent:(id)event;
-- (void)serviceProxyDidConnect:(id)a3;
-- (void)serviceProxyDidDisconnect:(id)a3;
+- (void)serviceProxyDidConnect:(id)connect;
+- (void)serviceProxyDidDisconnect:(id)disconnect;
 - (void)setDelegate:(id)delegate;
 @end
 
@@ -86,9 +86,9 @@ void __39__SWHighlightCenter_shareURLFetchQueue__block_invoke()
 
 - (NSArray)highlights
 {
-  v2 = [(SWHighlightCenter *)self _highlightCenterAdapter];
-  v3 = [v2 highlights];
-  v4 = [SWHighlight highlightsForSLHighlights:v3];
+  _highlightCenterAdapter = [(SWHighlightCenter *)self _highlightCenterAdapter];
+  highlights = [_highlightCenterAdapter highlights];
+  v4 = [SWHighlight highlightsForSLHighlights:highlights];
 
   return v4;
 }
@@ -154,9 +154,9 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
   signingQueue_signingQueue = v0;
 }
 
-- (SWHighlightCenter)initWithAppIdentifier:(id)a3
+- (SWHighlightCenter)initWithAppIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SWHighlightCenter;
   v5 = [(SWHighlightCenter *)&v13 init];
@@ -167,12 +167,12 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
     highlightArrayQueue = v5->__highlightArrayQueue;
     v5->__highlightArrayQueue = v7;
 
-    v9 = [objc_alloc(MEMORY[0x1E69D3818]) initWithAppIdentifier:v4 apiAdapterDelegate:v5];
+    v9 = [objc_alloc(MEMORY[0x1E69D3818]) initWithAppIdentifier:identifierCopy apiAdapterDelegate:v5];
     highlightCenterAdapter = v5->__highlightCenterAdapter;
     v5->__highlightCenterAdapter = v9;
 
-    v11 = [(SWHighlightCenter *)v5 cloudDocsServiceProxy];
-    [v11 connect];
+    cloudDocsServiceProxy = [(SWHighlightCenter *)v5 cloudDocsServiceProxy];
+    [cloudDocsServiceProxy connect];
   }
 
   return v5;
@@ -187,8 +187,8 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v6 = [(SWHighlightCenter *)self highlights];
-    v7 = [v6 count];
+    highlights = [(SWHighlightCenter *)self highlights];
+    v7 = [highlights count];
 
     v5 = obj;
     if (v7)
@@ -202,10 +202,10 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
 - (NSCache)urlToHighlightCache
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(NSCache *)self->_urlToHighlightCache allObjects];
-  v4 = [v3 count];
-  v5 = [(SWHighlightCenter *)self highlights];
-  v6 = [v5 count];
+  allObjects = [(NSCache *)self->_urlToHighlightCache allObjects];
+  v4 = [allObjects count];
+  highlights = [(SWHighlightCenter *)self highlights];
+  v6 = [highlights count];
 
   if (v4 != v6)
   {
@@ -214,8 +214,8 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(SWHighlightCenter *)self highlights];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    highlights2 = [(SWHighlightCenter *)self highlights];
+    v9 = [highlights2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -226,7 +226,7 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(highlights2);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
@@ -234,7 +234,7 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
           [v7 setObject:v13 forKey:v14];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [highlights2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -252,10 +252,10 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
 - (NSCache)urlToCollaborationHighlightCache
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(NSCache *)self->_urlToCollaborationHighlightCache allObjects];
-  v4 = [v3 count];
-  v5 = [(SWHighlightCenter *)self highlights];
-  v6 = [v5 count];
+  allObjects = [(NSCache *)self->_urlToCollaborationHighlightCache allObjects];
+  v4 = [allObjects count];
+  highlights = [(SWHighlightCenter *)self highlights];
+  v6 = [highlights count];
 
   if (v4 != v6)
   {
@@ -264,8 +264,8 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [(SWHighlightCenter *)self highlights];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    highlights2 = [(SWHighlightCenter *)self highlights];
+    v9 = [highlights2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -277,7 +277,7 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(highlights2);
           }
 
           v13 = *(*(&v20 + 1) + 8 * v12);
@@ -294,7 +294,7 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [highlights2 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
@@ -344,10 +344,10 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
 - (NSCache)identifierToCollaborationHighlightCache
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(NSCache *)self->_identifierToCollaborationHighlightCache allObjects];
-  v4 = [v3 count];
-  v5 = [(SWHighlightCenter *)self highlights];
-  v6 = [v5 count];
+  allObjects = [(NSCache *)self->_identifierToCollaborationHighlightCache allObjects];
+  v4 = [allObjects count];
+  highlights = [(SWHighlightCenter *)self highlights];
+  v6 = [highlights count];
 
   if (v4 != v6)
   {
@@ -356,8 +356,8 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [(SWHighlightCenter *)self highlights];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    highlights2 = [(SWHighlightCenter *)self highlights];
+    v9 = [highlights2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -369,7 +369,7 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(highlights2);
           }
 
           v13 = *(*(&v19 + 1) + 8 * v12);
@@ -377,15 +377,15 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
           if (objc_opt_isKindOfClass())
           {
             v14 = v13;
-            v15 = [v14 collaborationIdentifier];
-            [v7 setObject:v14 forKey:v15];
+            collaborationIdentifier = [v14 collaborationIdentifier];
+            [v7 setObject:v14 forKey:collaborationIdentifier];
           }
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [highlights2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
@@ -440,10 +440,10 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
   v12 = +[SWHighlightCenter signingQueue];
   v13 = [v11 initWithTargetSerialQueue:v12 synchronous:1];
 
-  v14 = [(SWCollaborationHighlight *)v7 localIdentity];
-  v15 = [v14 trackingPreventionSalt];
+  localIdentity = [(SWCollaborationHighlight *)v7 localIdentity];
+  trackingPreventionSalt = [localIdentity trackingPreventionSalt];
 
-  if (!v15)
+  if (!trackingPreventionSalt)
   {
     v17 = SWFrameworkLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -454,9 +454,9 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
     goto LABEL_7;
   }
 
-  v16 = [(SWCollaborationHighlight *)v7 localProofOfInclusion];
+  localProofOfInclusion = [(SWCollaborationHighlight *)v7 localProofOfInclusion];
 
-  if (!v16)
+  if (!localProofOfInclusion)
   {
     v17 = SWFrameworkLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -467,9 +467,9 @@ void __33__SWHighlightCenter_signingQueue__block_invoke()
 LABEL_7:
   }
 
-  v18 = [(SWCollaborationHighlight *)v7 collaborationIdentifier];
-  v19 = [(SWCollaborationHighlight *)v7 localIdentity];
-  v20 = [v19 trackingPreventionSalt];
+  collaborationIdentifier = [(SWCollaborationHighlight *)v7 collaborationIdentifier];
+  localIdentity2 = [(SWCollaborationHighlight *)v7 localIdentity];
+  trackingPreventionSalt2 = [localIdentity2 trackingPreventionSalt];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __97__SWHighlightCenter_getSignedIdentityProofForCollaborationHighlight_usingData_completionHandler___block_invoke;
@@ -478,7 +478,7 @@ LABEL_7:
   v25 = v8;
   v21 = v8;
   v22 = v7;
-  [v13 signData:v10 forCollaborationIdentifier:v18 trackingPreventionSalt:v20 timeout:v23 completion:3.0];
+  [v13 signData:v10 forCollaborationIdentifier:collaborationIdentifier trackingPreventionSalt:trackingPreventionSalt2 timeout:v23 completion:3.0];
 }
 
 void __97__SWHighlightCenter_getSignedIdentityProofForCollaborationHighlight_usingData_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -573,24 +573,24 @@ LABEL_7:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchAttributionForAttributionIdentifier:(id)a3
+- (id)fetchAttributionForAttributionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SWHighlightCenter *)self _highlightCenterAdapter];
-  v6 = [v5 fetchAttributionForAttributionIdentifier:v4];
+  identifierCopy = identifier;
+  _highlightCenterAdapter = [(SWHighlightCenter *)self _highlightCenterAdapter];
+  v6 = [_highlightCenterAdapter fetchAttributionForAttributionIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)originalSenderForCollaborationHighlight:(id)a3
+- (id)originalSenderForCollaborationHighlight:(id)highlight
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 attributions], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (highlightCopy && ([highlightCopy attributions], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
   {
-    v8 = [v5 attributions];
-    v9 = [v8 count];
+    attributions = [v5 attributions];
+    v9 = [attributions count];
 
     if (v9 >= 2)
     {
@@ -603,12 +603,12 @@ LABEL_7:
       }
     }
 
-    v11 = [v5 attributions];
-    v12 = [v11 firstObject];
-    v13 = [v12 uniqueIdentifier];
+    attributions2 = [v5 attributions];
+    firstObject = [attributions2 firstObject];
+    uniqueIdentifier = [firstObject uniqueIdentifier];
 
-    v14 = [v5 earliestAttributionIdentifiers];
-    v15 = [v14 objectForKey:v13];
+    earliestAttributionIdentifiers = [v5 earliestAttributionIdentifiers];
+    v15 = [earliestAttributionIdentifiers objectForKey:uniqueIdentifier];
     v16 = SWFrameworkLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -623,11 +623,11 @@ LABEL_7:
     if (v17)
     {
       v18 = objc_alloc(MEMORY[0x1E697B730]);
-      v19 = [v17 sender];
-      v20 = [v19 handle];
-      v21 = [v17 sender];
-      v22 = [v21 displayName];
-      v23 = [v18 initWithHandle:v20 identity:0 displayName:v22 thumbnailImageData:0];
+      sender = [v17 sender];
+      handle = [sender handle];
+      sender2 = [v17 sender];
+      displayName = [sender2 displayName];
+      v23 = [v18 initWithHandle:handle identity:0 displayName:displayName thumbnailImageData:0];
 
       v24 = SWFrameworkLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -658,17 +658,17 @@ LABEL_7:
   return v25;
 }
 
-- (id)fetchAttributionsForHighlight:(id)a3
+- (id)fetchAttributionsForHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = [(SWHighlightCenter *)self _highlightCenterAdapter];
-  v6 = [v4 slHighlight];
-  v7 = [v5 fetchAttributionsForHighlight:v6];
+  highlightCopy = highlight;
+  _highlightCenterAdapter = [(SWHighlightCenter *)self _highlightCenterAdapter];
+  slHighlight = [highlightCopy slHighlight];
+  v7 = [_highlightCenterAdapter fetchAttributionsForHighlight:slHighlight];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(_highlightCenterAdapter) = objc_opt_isKindOfClass();
 
-  if (v5)
+  if (_highlightCenterAdapter)
   {
     v8 = [[SWCollaborationHighlight alloc] initWithSLCollaborationHighlight:v7];
   }
@@ -685,27 +685,27 @@ LABEL_7:
 
 - (double)highlightsRankingScore
 {
-  v2 = [(SWHighlightCenter *)self _highlightCenterAdapter];
-  [v2 highlightsRankingScore];
+  _highlightCenterAdapter = [(SWHighlightCenter *)self _highlightCenterAdapter];
+  [_highlightCenterAdapter highlightsRankingScore];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_getShareURLForFileURL:(id)a3 completionHandler:(id)a4
+- (void)_getShareURLForFileURL:(id)l completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFileURL])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([lCopy isFileURL])
   {
-    v8 = [(SWHighlightCenter *)self fileURLToShareURLCache];
-    v9 = [v8 objectForKey:v6];
+    fileURLToShareURLCache = [(SWHighlightCenter *)self fileURLToShareURLCache];
+    v9 = [fileURLToShareURLCache objectForKey:lCopy];
 
     if (v9)
     {
-      v10 = [(SWHighlightCenter *)self fileURLToShareURLCache];
-      v11 = [v10 objectForKey:v6];
+      fileURLToShareURLCache2 = [(SWHighlightCenter *)self fileURLToShareURLCache];
+      v11 = [fileURLToShareURLCache2 objectForKey:lCopy];
 
       v12 = SWFrameworkLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -715,11 +715,11 @@ LABEL_7:
         v21 = 2112;
         v22 = v11;
         v23 = 2112;
-        v24 = v6;
+        v24 = lCopy;
         _os_log_impl(&dword_1BBC06000, v12, OS_LOG_TYPE_INFO, "%s: Found cached shareURL: %@ for URL: %@.", buf, 0x20u);
       }
 
-      v7[2](v7, v11);
+      handlerCopy[2](handlerCopy, v11);
     }
 
     else
@@ -730,8 +730,8 @@ LABEL_7:
       block[2] = __62__SWHighlightCenter__getShareURLForFileURL_completionHandler___block_invoke;
       block[3] = &unk_1E7FDDD40;
       block[4] = self;
-      v17 = v6;
-      v18 = v7;
+      v17 = lCopy;
+      v18 = handlerCopy;
       dispatch_async(v14, block);
     }
   }
@@ -744,11 +744,11 @@ LABEL_7:
       *buf = 136315394;
       v20 = "[SWHighlightCenter _getShareURLForFileURL:completionHandler:]";
       v21 = 2112;
-      v22 = v6;
+      v22 = lCopy;
       _os_log_impl(&dword_1BBC06000, v13, OS_LOG_TYPE_INFO, "%s: URL passed in NOT a file URL: %@.", buf, 0x16u);
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -905,21 +905,21 @@ uint64_t __62__SWHighlightCenter__getShareURLForFileURL_completionHandler___bloc
   return result;
 }
 
-- (void)_getCollaborationHighlightForShareURL:(id)a3 fileURL:(id)a4 completionHandler:(id)a5
+- (void)_getCollaborationHighlightForShareURL:(id)l fileURL:(id)rL completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
+  if (lCopy && rLCopy)
   {
-    v11 = [(SWHighlightCenter *)self supplementaryURLToCollaborationHighlightCache];
-    v12 = [v11 objectForKey:v8];
+    supplementaryURLToCollaborationHighlightCache = [(SWHighlightCenter *)self supplementaryURLToCollaborationHighlightCache];
+    v12 = [supplementaryURLToCollaborationHighlightCache objectForKey:lCopy];
 
     if (v12)
     {
-      v13 = [(SWHighlightCenter *)self supplementaryURLToCollaborationHighlightCache];
-      v14 = [v13 objectForKey:v8];
+      supplementaryURLToCollaborationHighlightCache2 = [(SWHighlightCenter *)self supplementaryURLToCollaborationHighlightCache];
+      v14 = [supplementaryURLToCollaborationHighlightCache2 objectForKey:lCopy];
 
       v15 = SWFrameworkLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -929,11 +929,11 @@ uint64_t __62__SWHighlightCenter__getShareURLForFileURL_completionHandler___bloc
         v25 = 2112;
         v26 = v14;
         v27 = 2112;
-        v28 = v8;
+        v28 = lCopy;
         _os_log_impl(&dword_1BBC06000, v15, OS_LOG_TYPE_DEFAULT, "%s: Found cached highlight: %@ for URL: %@.", buf, 0x20u);
       }
 
-      v10[2](v10, v14);
+      handlerCopy[2](handlerCopy, v14);
     }
 
     else
@@ -944,9 +944,9 @@ uint64_t __62__SWHighlightCenter__getShareURLForFileURL_completionHandler___bloc
       v19[2] = __85__SWHighlightCenter__getCollaborationHighlightForShareURL_fileURL_completionHandler___block_invoke;
       v19[3] = &unk_1E7FDDC60;
       v19[4] = self;
-      v20 = v9;
-      v21 = v8;
-      v22 = v10;
+      v20 = rLCopy;
+      v21 = lCopy;
+      v22 = handlerCopy;
       dispatch_async(v17, v19);
     }
   }
@@ -959,7 +959,7 @@ uint64_t __62__SWHighlightCenter__getShareURLForFileURL_completionHandler___bloc
       [SWHighlightCenter _getCollaborationHighlightForShareURL:fileURL:completionHandler:];
     }
 
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -1158,9 +1158,9 @@ void __85__SWHighlightCenter__getCollaborationHighlightForShareURL_fileURL_compl
   v9 = v7;
   v22 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [(SWHighlightCenter *)self urlToHighlightCache];
-  v12 = [v11 allObjects];
-  v13 = [v12 count];
+  urlToHighlightCache = [(SWHighlightCenter *)self urlToHighlightCache];
+  allObjects = [urlToHighlightCache allObjects];
+  v13 = [allObjects count];
 
   v14 = SWFrameworkLogHandle();
   v15 = v14;
@@ -1290,7 +1290,7 @@ LABEL_10:
 
   else
   {
-    v13 = [(SWHighlightCenter *)self _highlightCenterAdapter];
+    _highlightCenterAdapter = [(SWHighlightCenter *)self _highlightCenterAdapter];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __71__SWHighlightCenter_getCollaborationHighlightForURL_completionHandler___block_invoke_123;
@@ -1299,7 +1299,7 @@ LABEL_10:
     v18 = v10;
     v14 = MEMORY[0x1E69E96A0];
     v15 = MEMORY[0x1E69E96A0];
-    [v13 runAfterInitialFetch:v17 onQueue:v14];
+    [_highlightCenterAdapter runAfterInitialFetch:v17 onQueue:v14];
   }
 
   _Block_object_dispose(buf, 8);
@@ -1509,8 +1509,8 @@ uint64_t __71__SWHighlightCenter_getCollaborationHighlightForURL_completionHandl
 
   if (v6)
   {
-    v8 = [(SWHighlightCenter *)self identifierToCollaborationHighlightCache];
-    v9 = [v8 objectForKey:v6];
+    identifierToCollaborationHighlightCache = [(SWHighlightCenter *)self identifierToCollaborationHighlightCache];
+    v9 = [identifierToCollaborationHighlightCache objectForKey:v6];
   }
 
   else if (error)
@@ -1566,17 +1566,17 @@ void __55__SWHighlightCenter__notifyDelegateHighlightsDidChange__block_invoke(ui
   }
 }
 
-- (void)serviceProxyDidConnect:(id)a3
+- (void)serviceProxyDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = +[SWHighlightCenter noticeHandlerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SWHighlightCenter_serviceProxyDidConnect___block_invoke;
   v7[3] = &unk_1E7FDDFC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectCopy;
+  selfCopy = self;
+  v6 = connectCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1594,17 +1594,17 @@ void __44__SWHighlightCenter_serviceProxyDidConnect___block_invoke(uint64_t a1)
   }
 }
 
-- (void)serviceProxyDidDisconnect:(id)a3
+- (void)serviceProxyDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = +[SWHighlightCenter noticeHandlerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SWHighlightCenter_serviceProxyDidDisconnect___block_invoke;
   v7[3] = &unk_1E7FDDFC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = disconnectCopy;
+  selfCopy = self;
+  v6 = disconnectCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1638,12 +1638,12 @@ void __47__SWHighlightCenter_serviceProxyDidDisconnect___block_invoke(uint64_t a
   }
 }
 
-- (id)_fetchHighlightFromAnyCacheForURL:(id)a3
+- (id)_fetchHighlightFromAnyCacheForURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = SLURLMinusFragmentForCKURLs();
-  v5 = [(SWHighlightCenter *)self urlToHighlightCache];
-  v6 = [v5 objectForKey:v4];
+  urlToHighlightCache = [(SWHighlightCenter *)self urlToHighlightCache];
+  v6 = [urlToHighlightCache objectForKey:v4];
   v7 = [v6 copy];
 
   if (v7)
@@ -1661,8 +1661,8 @@ void __47__SWHighlightCenter_serviceProxyDidDisconnect___block_invoke(uint64_t a
 
   else
   {
-    v10 = [(SWHighlightCenter *)self urlToCollaborationHighlightCache];
-    v11 = [v10 objectForKey:v4];
+    urlToCollaborationHighlightCache = [(SWHighlightCenter *)self urlToCollaborationHighlightCache];
+    v11 = [urlToCollaborationHighlightCache objectForKey:v4];
     v12 = [v11 copy];
 
     if (v12)
@@ -1680,8 +1680,8 @@ void __47__SWHighlightCenter_serviceProxyDidDisconnect___block_invoke(uint64_t a
 
     else
     {
-      v14 = [(SWHighlightCenter *)self supplementaryURLToCollaborationHighlightCache];
-      v15 = [v14 objectForKey:v4];
+      supplementaryURLToCollaborationHighlightCache = [(SWHighlightCenter *)self supplementaryURLToCollaborationHighlightCache];
+      v15 = [supplementaryURLToCollaborationHighlightCache objectForKey:v4];
       v9 = [v15 copy];
 
       if (v9)
@@ -1704,15 +1704,15 @@ void __47__SWHighlightCenter_serviceProxyDidDisconnect___block_invoke(uint64_t a
   return v9;
 }
 
-- (void)_processPendingHighlightEvent:(id)a3
+- (void)_processPendingHighlightEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 highlightURL];
-  v6 = [(SWHighlightCenter *)self _fetchHighlightFromAnyCacheForURL:v5];
+  eventCopy = event;
+  highlightURL = [eventCopy highlightURL];
+  v6 = [(SWHighlightCenter *)self _fetchHighlightFromAnyCacheForURL:highlightURL];
 
   if (v6)
   {
-    v7 = [SWCachedHighlightEvent cachedEvent:v4 forHighlight:v6];
+    v7 = [SWCachedHighlightEvent cachedEvent:eventCopy forHighlight:v6];
     v8 = [v7 copy];
 
     if (v8)
@@ -1772,17 +1772,17 @@ void __51__SWHighlightCenter__processPendingHighlightEvent___block_invoke(uint64
   }
 }
 
-- (void)_processClearNoticesFor:(id)a3
+- (void)_processClearNoticesFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v5 = +[SWHighlightCenter noticeHandlerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SWHighlightCenter__processClearNoticesFor___block_invoke;
   v7[3] = &unk_1E7FDDFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = forCopy;
+  v6 = forCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2061,13 +2061,13 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
   }
 }
 
-- (id)_attributionIdentifiersForHighlight:(id)a3
+- (id)_attributionIdentifiersForHighlight:(id)highlight
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [v4 attributions];
-  v7 = [v6 count];
+  highlightCopy = highlight;
+  array = [MEMORY[0x1E695DF70] array];
+  attributions = [highlightCopy attributions];
+  v7 = [attributions count];
 
   if (v7)
   {
@@ -2075,8 +2075,8 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [v4 attributions];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    attributions2 = [highlightCopy attributions];
+    v9 = [attributions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2087,20 +2087,20 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(attributions2);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 uniqueIdentifier];
+          uniqueIdentifier = [v13 uniqueIdentifier];
 
-          if (v14)
+          if (uniqueIdentifier)
           {
-            v15 = [v13 uniqueIdentifier];
-            [v5 addObject:v15];
+            uniqueIdentifier2 = [v13 uniqueIdentifier];
+            [array addObject:uniqueIdentifier2];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [attributions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -2109,24 +2109,24 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
 
   else
   {
-    v8 = SWFrameworkLogHandle();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    attributions2 = SWFrameworkLogHandle();
+    if (os_log_type_enabled(attributions2, OS_LOG_TYPE_ERROR))
     {
-      [(SWHighlightCenter *)self _attributionIdentifiersForHighlight:v4];
+      [(SWHighlightCenter *)self _attributionIdentifiersForHighlight:highlightCopy];
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (void)apiAdapterHighlightsDidChange:(id)a3
+- (void)apiAdapterHighlightsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SWHighlightCenter *)self _highlightCenterAdapter];
+  changeCopy = change;
+  _highlightCenterAdapter = [(SWHighlightCenter *)self _highlightCenterAdapter];
 
-  if (v5 == v4)
+  if (_highlightCenterAdapter == changeCopy)
   {
     [(SWHighlightCenter *)self setUrlToHighlightCache:0];
     [(SWHighlightCenter *)self setSupplementaryURLToCollaborationHighlightCache:0];
@@ -2137,24 +2137,24 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
   }
 }
 
-- (id)_sandboxExtensionIssueFileURL:(id)a3 withAuditToken:(id *)a4
+- (id)_sandboxExtensionIssueFileURL:(id)l withAuditToken:(id *)token
 {
-  v5 = a3;
-  v6 = [v5 path];
-  v7 = [v5 hasDirectoryPath];
+  lCopy = l;
+  path = [lCopy path];
+  hasDirectoryPath = [lCopy hasDirectoryPath];
 
-  if (v7)
+  if (hasDirectoryPath)
   {
-    v8 = [v6 stringByAppendingString:@"/"];
+    v8 = [path stringByAppendingString:@"/"];
 
-    v6 = v8;
+    path = v8;
   }
 
   v9 = *MEMORY[0x1E69E9BB0];
-  [v6 fileSystemRepresentation];
+  [path fileSystemRepresentation];
   v10 = *MEMORY[0x1E69E9BE0];
-  v14 = *a4->var0;
-  v15 = *&a4->var0[4];
+  v14 = *token->var0;
+  v15 = *&token->var0[4];
   v11 = sandbox_extension_issue_file_to_process();
   v12 = v11;
   if (v11)
@@ -2172,13 +2172,13 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
   return WeakRetained;
 }
 
-- (id)highlightForURL:(id)a3 error:(id *)a4
+- (id)highlightForURL:(id)l error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SWHighlightCenter *)self urlToHighlightCache];
-  v8 = [v7 allObjects];
-  v9 = [v8 count];
+  lCopy = l;
+  urlToHighlightCache = [(SWHighlightCenter *)self urlToHighlightCache];
+  allObjects = [urlToHighlightCache allObjects];
+  v9 = [allObjects count];
 
   v10 = SWFrameworkLogHandle();
   v11 = v10;
@@ -2189,28 +2189,28 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
       v22 = 136315394;
       v23 = "[SWHighlightCenter(Deprecations) highlightForURL:error:]";
       v24 = 2112;
-      v25 = v6;
+      v25 = lCopy;
       _os_log_impl(&dword_1BBC06000, v11, OS_LOG_TYPE_INFO, "%s: Fetching collaboration highlight for URL: %@.", &v22, 0x16u);
     }
 
     v12 = SLURLMinusFragmentForCKURLs();
     if ([v12 isFileURL])
     {
-      v13 = [(SWHighlightCenter *)self getShareURLForFileURL:v6];
+      v13 = [(SWHighlightCenter *)self getShareURLForFileURL:lCopy];
 
       v12 = v13;
     }
 
     if (v12 && ([v12 scheme], (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (v15 = v14, objc_msgSend(v12, "host"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
     {
-      v17 = [(SWHighlightCenter *)self urlToHighlightCache];
-      v18 = [v17 objectForKey:v12];
+      urlToHighlightCache2 = [(SWHighlightCenter *)self urlToHighlightCache];
+      v18 = [urlToHighlightCache2 objectForKey:v12];
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.SharedWithYou.SWHighlightErrorDomain" code:2 userInfo:0];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -2238,44 +2238,44 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
   return v19;
 }
 
-- (id)collaborationHighlightForURL:(id)a3 error:(id *)a4
+- (id)collaborationHighlightForURL:(id)l error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v7 = SWFrameworkLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v23 = 136315394;
     v24 = "[SWHighlightCenter(Deprecations) collaborationHighlightForURL:error:]";
     v25 = 2112;
-    v26 = v6;
+    v26 = lCopy;
     _os_log_impl(&dword_1BBC06000, v7, OS_LOG_TYPE_INFO, "%s: Fetching collaboration highlight for URL: %@.", &v23, 0x16u);
   }
 
-  v8 = [(SWHighlightCenter *)self urlToCollaborationHighlightCache];
-  v9 = [v8 allObjects];
-  v10 = [v9 count];
+  urlToCollaborationHighlightCache = [(SWHighlightCenter *)self urlToCollaborationHighlightCache];
+  allObjects = [urlToCollaborationHighlightCache allObjects];
+  v10 = [allObjects count];
 
   if (v10)
   {
     v11 = SLURLMinusFragmentForCKURLs();
     if ([v11 isFileURL])
     {
-      v12 = [(SWHighlightCenter *)self getShareURLForFileURL:v6];
+      v12 = [(SWHighlightCenter *)self getShareURLForFileURL:lCopy];
 
       v11 = v12;
     }
 
     if (v11 && ([v11 scheme], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, objc_msgSend(v11, "host"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
     {
-      v16 = [(SWHighlightCenter *)self urlToCollaborationHighlightCache];
-      v17 = [v16 objectForKey:v11];
+      urlToCollaborationHighlightCache2 = [(SWHighlightCenter *)self urlToCollaborationHighlightCache];
+      v17 = [urlToCollaborationHighlightCache2 objectForKey:v11];
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.SharedWithYou.SWHighlightErrorDomain" code:2 userInfo:0];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -2313,7 +2313,7 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
   return v19;
 }
 
-- (id)getShareURLForFileURL:(id)a3
+- (id)getShareURLForFileURL:(id)l
 {
   v44 = *MEMORY[0x1E69E9840];
   v33 = 0;
@@ -2321,12 +2321,12 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy_;
   v37 = __Block_byref_object_dispose_;
-  v4 = a3;
-  v38 = v4;
-  if (([v4 isFileURL] & 1) == 0)
+  lCopy = l;
+  v38 = lCopy;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v11 = SWFrameworkLogHandle();
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    synchronousRemoteService = SWFrameworkLogHandle();
+    if (!os_log_type_enabled(synchronousRemoteService, OS_LOG_TYPE_INFO))
     {
       goto LABEL_18;
     }
@@ -2334,26 +2334,26 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
     *buf = 136315394;
     *&buf[4] = "[SWHighlightCenter(Deprecations) getShareURLForFileURL:]";
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = lCopy;
     v13 = "%s: Obtained URL is NOT a file URL: %@.";
-    v14 = v11;
+    v14 = synchronousRemoteService;
     v15 = 22;
     goto LABEL_7;
   }
 
-  v5 = [(SWHighlightCenter *)self fileURLToShareURLCache];
-  v6 = [v5 objectForKey:v4];
+  fileURLToShareURLCache = [(SWHighlightCenter *)self fileURLToShareURLCache];
+  v6 = [fileURLToShareURLCache objectForKey:lCopy];
   v7 = v6 == 0;
 
   if (!v7)
   {
-    v8 = [(SWHighlightCenter *)self fileURLToShareURLCache];
-    v9 = [v8 objectForKey:v4];
+    fileURLToShareURLCache2 = [(SWHighlightCenter *)self fileURLToShareURLCache];
+    v9 = [fileURLToShareURLCache2 objectForKey:lCopy];
     v10 = v34[5];
     v34[5] = v9;
 
-    v11 = SWFrameworkLogHandle();
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    synchronousRemoteService = SWFrameworkLogHandle();
+    if (!os_log_type_enabled(synchronousRemoteService, OS_LOG_TYPE_INFO))
     {
       goto LABEL_18;
     }
@@ -2364,20 +2364,20 @@ void __66__SWHighlightCenter__disconnectNoticeServiceConnectionIfNecessary__bloc
     *&buf[12] = 2112;
     *&buf[14] = v12;
     *&buf[22] = 2112;
-    v41 = v4;
+    v41 = lCopy;
     v13 = "%s: Obtained cached shareURL: %@ for URL: %@.";
-    v14 = v11;
+    v14 = synchronousRemoteService;
     v15 = 32;
 LABEL_7:
     _os_log_impl(&dword_1BBC06000, v14, OS_LOG_TYPE_INFO, v13, buf, v15);
     goto LABEL_18;
   }
 
-  v16 = [(SWHighlightCenter *)self cloudDocsServiceProxy];
-  [v16 connect];
+  cloudDocsServiceProxy = [(SWHighlightCenter *)self cloudDocsServiceProxy];
+  [cloudDocsServiceProxy connect];
 
-  v17 = [(SWHighlightCenter *)self cloudDocsServiceProxy];
-  v11 = [v17 synchronousRemoteService];
+  cloudDocsServiceProxy2 = [(SWHighlightCenter *)self cloudDocsServiceProxy];
+  synchronousRemoteService = [cloudDocsServiceProxy2 synchronousRemoteService];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -2390,7 +2390,7 @@ LABEL_7:
   v32[2] = __57__SWHighlightCenter_Deprecations__getShareURLForFileURL___block_invoke;
   v32[3] = &unk_1E7FDDE30;
   v32[4] = buf;
-  [v11 prepareConnectionWithReply:v32];
+  [synchronousRemoteService prepareConnectionWithReply:v32];
   v18 = v34[5];
   v19 = *(*&buf[8] + 48);
   *v39 = *(*&buf[8] + 32);
@@ -2420,10 +2420,10 @@ LABEL_7:
     v28[1] = 3221225472;
     v28[2] = __57__SWHighlightCenter_Deprecations__getShareURLForFileURL___block_invoke_275;
     v28[3] = &unk_1E7FDE038;
-    v30 = self;
+    selfCopy = self;
     v31 = &v33;
-    v29 = v4;
-    [v11 shareURLForFileURL:v29 sandboxTokenData:v20 reply:v28];
+    v29 = lCopy;
+    [synchronousRemoteService shareURLForFileURL:v29 sandboxTokenData:v20 reply:v28];
     v23 = v29;
   }
 
@@ -2435,7 +2435,7 @@ LABEL_7:
       *v39 = 136315394;
       *&v39[4] = "[SWHighlightCenter(Deprecations) getShareURLForFileURL:]";
       *&v39[12] = 2112;
-      *&v39[14] = v4;
+      *&v39[14] = lCopy;
       _os_log_impl(&dword_1BBC06000, v24, OS_LOG_TYPE_INFO, "%s: Failed to get tokendata for URL: %@", v39, 0x16u);
     }
 

@@ -1,7 +1,7 @@
 @interface AudiogramChartDataFormatter
 - (_TtC8HealthUI27AudiogramChartDataFormatter)init;
-- (id)unitStringFromUnit:(id)a3 number:(id)a4;
-- (id)valueStringFromNumber:(id)a3;
+- (id)unitStringFromUnit:(id)unit number:(id)number;
+- (id)valueStringFromNumber:(id)number;
 @end
 
 @implementation AudiogramChartDataFormatter
@@ -13,16 +13,16 @@
   return result;
 }
 
-- (id)unitStringFromUnit:(id)a3 number:(id)a4
+- (id)unitStringFromUnit:(id)unit number:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [(HKInteractiveChartDataFormatter *)v8 unitController];
-  if (v9)
+  unitCopy = unit;
+  numberCopy = number;
+  selfCopy = self;
+  unitController = [(HKInteractiveChartDataFormatter *)selfCopy unitController];
+  if (unitController)
   {
-    v10 = v9;
-    v11 = [(HKUnitPreferenceController *)v9 localizedDisplayNameForUnit:v6 value:v7];
+    v10 = unitController;
+    v11 = [(HKUnitPreferenceController *)unitController localizedDisplayNameForUnit:unitCopy value:numberCopy];
 
     sub_1C3D20104();
   }
@@ -36,10 +36,10 @@
   return v12;
 }
 
-- (id)valueStringFromNumber:(id)a3
+- (id)valueStringFromNumber:(id)number
 {
-  v3 = a3;
-  [v3 doubleValue];
+  numberCopy = number;
+  [numberCopy doubleValue];
   v5 = HKRoundWithPositiveZeroForDoubleValue(v4);
   sub_1C3C702E8();
   v6 = swift_allocObject();

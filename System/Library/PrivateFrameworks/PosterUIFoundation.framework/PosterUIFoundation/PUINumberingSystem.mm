@@ -1,15 +1,15 @@
 @interface PUINumberingSystem
 + (id)allNumberingSystemTypes;
 + (id)allNumberingSystems;
-+ (id)numberingSystemDisplayFontForFont:(id)a3;
-+ (id)numberingSystemForType:(id)a3;
++ (id)numberingSystemDisplayFontForFont:(id)font;
++ (id)numberingSystemForType:(id)type;
 + (id)supportedNumberingSystemTypes;
 + (id)supportedNumberingSystems;
 + (id)systemDefaultNumberingSystem;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PUINumberingSystem)init;
-- (PUINumberingSystem)initWithCoder:(id)a3;
-- (PUINumberingSystem)initWithNumberingSystemType:(id)a3;
+- (PUINumberingSystem)initWithCoder:(id)coder;
+- (PUINumberingSystem)initWithNumberingSystemType:(id)type;
 - (id)description;
 @end
 
@@ -18,7 +18,7 @@
 + (id)systemDefaultNumberingSystem
 {
   v3 = PUISystemDefaultNumberingSystemType();
-  v4 = [a1 numberingSystemForType:v3];
+  v4 = [self numberingSystemForType:v3];
 
   return v4;
 }
@@ -63,13 +63,13 @@ void __45__PUINumberingSystem_allNumberingSystemTypes__block_invoke()
 
 + (id)allNumberingSystems
 {
-  v3 = [a1 allNumberingSystemTypes];
+  allNumberingSystemTypes = [self allNumberingSystemTypes];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__PUINumberingSystem_allNumberingSystems__block_invoke;
   v6[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v6[4] = a1;
-  v4 = [v3 bs_map:v6];
+  v6[4] = self;
+  v4 = [allNumberingSystemTypes bs_map:v6];
 
   return v4;
 }
@@ -122,32 +122,32 @@ void __51__PUINumberingSystem_supportedNumberingSystemTypes__block_invoke()
 
 + (id)supportedNumberingSystems
 {
-  v3 = [a1 supportedNumberingSystemTypes];
+  supportedNumberingSystemTypes = [self supportedNumberingSystemTypes];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__PUINumberingSystem_supportedNumberingSystems__block_invoke;
   v6[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v6[4] = a1;
-  v4 = [v3 bs_map:v6];
+  v6[4] = self;
+  v4 = [supportedNumberingSystemTypes bs_map:v6];
 
   return v4;
 }
 
-+ (id)numberingSystemForType:(id)a3
++ (id)numberingSystemForType:(id)type
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__PUINumberingSystem_numberingSystemForType___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = numberingSystemForType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&numberingSystemForType__onceToken, block);
   }
 
-  v5 = [numberingSystemForType__numberingSystemForType objectForKeyedSubscript:v4];
+  v5 = [numberingSystemForType__numberingSystemForType objectForKeyedSubscript:typeCopy];
 
   return v5;
 }
@@ -169,11 +169,11 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
   [numberingSystemForType__numberingSystemForType setObject:v3 forKeyedSubscript:v2];
 }
 
-+ (id)numberingSystemDisplayFontForFont:(id)a3
++ (id)numberingSystemDisplayFontForFont:(id)font
 {
-  if (a3)
+  if (font)
   {
-    [a3 fontWithSize:50.0];
+    [font fontWithSize:50.0];
   }
 
   else
@@ -185,21 +185,21 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
   return v3;
 }
 
-- (PUINumberingSystem)initWithNumberingSystemType:(id)a3
+- (PUINumberingSystem)initWithNumberingSystemType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v70.receiver = self;
   v70.super_class = PUINumberingSystem;
   v5 = [(PUINumberingSystem *)&v70 init];
   if (v5)
   {
-    v6 = [objc_opt_class() allNumberingSystemTypes];
-    v7 = [v6 containsObject:v4];
+    allNumberingSystemTypes = [objc_opt_class() allNumberingSystemTypes];
+    v7 = [allNumberingSystemTypes containsObject:typeCopy];
 
     if ((v7 & 1) == 0)
     {
 
-      v4 = @"latn";
+      typeCopy = @"latn";
     }
 
     v8 = MEMORY[0x1E69DCAB8];
@@ -213,12 +213,12 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
     localizedDisplayName = v5->_localizedDisplayName;
     v5->_localizedDisplayName = v13;
 
-    objc_storeStrong(&v5->_type, v4);
-    objc_storeStrong(&v5->_systemName, v4);
-    v15 = [MEMORY[0x1E695DF58] currentLocale];
-    v16 = [v15 localeIdentifier];
+    objc_storeStrong(&v5->_type, typeCopy);
+    objc_storeStrong(&v5->_systemName, typeCopy);
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v17 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v16];
+    v17 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:localeIdentifier];
     v18 = [v17 mutableCopy];
 
     [v18 setObject:v5->_systemName forKey:@"numbers"];
@@ -227,12 +227,12 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
     locale = v5->_locale;
     v5->_locale = v20;
 
-    if (([(__CFString *)v4 isEqualToString:@"latn"]& 1) != 0)
+    if (([(__CFString *)typeCopy isEqualToString:@"latn"]& 1) != 0)
     {
       goto LABEL_22;
     }
 
-    if ([(__CFString *)v4 isEqualToString:@"arab"])
+    if ([(__CFString *)typeCopy isEqualToString:@"arab"])
     {
       v22 = PUIBundle();
       v23 = v22;
@@ -241,7 +241,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
 
     else
     {
-      if ([(__CFString *)v4 isEqualToString:@"deva"])
+      if ([(__CFString *)typeCopy isEqualToString:@"deva"])
       {
         v29 = PUIBundle();
         v30 = [v29 localizedStringForKey:@"DEVANAGARI_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -253,7 +253,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"khmr"])
+      if ([(__CFString *)typeCopy isEqualToString:@"khmr"])
       {
         v32 = PUIBundle();
         v33 = [v32 localizedStringForKey:@"KHMER_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -265,7 +265,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"mymr"])
+      if ([(__CFString *)typeCopy isEqualToString:@"mymr"])
       {
         v35 = PUIBundle();
         v36 = [v35 localizedStringForKey:@"BURMESE_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -277,7 +277,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"beng"])
+      if ([(__CFString *)typeCopy isEqualToString:@"beng"])
       {
         v38 = PUIBundle();
         v39 = [v38 localizedStringForKey:@"BANGLA_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -289,7 +289,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"guru"])
+      if ([(__CFString *)typeCopy isEqualToString:@"guru"])
       {
         v41 = PUIBundle();
         v42 = [v41 localizedStringForKey:@"GURMUKHI_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -301,7 +301,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"gujr"])
+      if ([(__CFString *)typeCopy isEqualToString:@"gujr"])
       {
         v44 = PUIBundle();
         v45 = [v44 localizedStringForKey:@"GUJARATI_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -313,7 +313,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"taml"])
+      if ([(__CFString *)typeCopy isEqualToString:@"taml"])
       {
         v48 = PUIBundle();
         v50 = [v48 localizedStringForKey:@"TAMIL_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -323,7 +323,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_21;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"telu"])
+      if ([(__CFString *)typeCopy isEqualToString:@"telu"])
       {
         v52 = PUIBundle();
         v53 = [v52 localizedStringForKey:@"TELUGU_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -335,7 +335,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"mlym"])
+      if ([(__CFString *)typeCopy isEqualToString:@"mlym"])
       {
         v55 = PUIBundle();
         v56 = [v55 localizedStringForKey:@"MALAYALAM_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -347,7 +347,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"knda"])
+      if ([(__CFString *)typeCopy isEqualToString:@"knda"])
       {
         v58 = PUIBundle();
         v59 = [v58 localizedStringForKey:@"KANNADA_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -359,7 +359,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"orya"])
+      if ([(__CFString *)typeCopy isEqualToString:@"orya"])
       {
         v61 = PUIBundle();
         v62 = [v61 localizedStringForKey:@"ODIA_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -371,7 +371,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"olck"])
+      if ([(__CFString *)typeCopy isEqualToString:@"olck"])
       {
         v64 = PUIBundle();
         v65 = [v64 localizedStringForKey:@"OLCHIKI_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -383,7 +383,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if ([(__CFString *)v4 isEqualToString:@"mtei"])
+      if ([(__CFString *)typeCopy isEqualToString:@"mtei"])
       {
         v67 = PUIBundle();
         v68 = [v67 localizedStringForKey:@"MEITEI_NUMBERS" value:&stru_1F1C6DED8 table:0];
@@ -395,7 +395,7 @@ void __45__PUINumberingSystem_numberingSystemForType___block_invoke_2(uint64_t a
         goto LABEL_20;
       }
 
-      if (![(__CFString *)v4 isEqualToString:@"arabext"])
+      if (![(__CFString *)typeCopy isEqualToString:@"arabext"])
       {
         goto LABEL_22;
       }
@@ -432,16 +432,16 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     v6 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -459,9 +459,9 @@ LABEL_22:
 
     if ((isKindOfClass & 1) != 0 && (-[PUINumberingSystem type](v5, "type"), v10 = objc_claimAutoreleasedReturnValue(), -[PUINumberingSystem type](self, "type"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqualToString:v11], v11, v10, v12) && (-[PUINumberingSystem localizedDisplayName](v5, "localizedDisplayName"), v13 = objc_claimAutoreleasedReturnValue(), -[PUINumberingSystem localizedDisplayName](self, "localizedDisplayName"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqualToString:", v14), v14, v13, v15))
     {
-      v16 = [(PUINumberingSystem *)v5 locale];
-      v17 = [(PUINumberingSystem *)self locale];
-      v18 = [v16 isEqual:v17];
+      locale = [(PUINumberingSystem *)v5 locale];
+      locale2 = [(PUINumberingSystem *)self locale];
+      v18 = [locale isEqual:locale2];
     }
 
     else
@@ -485,16 +485,16 @@ LABEL_22:
   [v3 appendString:self->_localizedDisplayName withName:@"localizedDisplayName"];
   v4 = [v3 appendBool:self->_image != 0 withName:@"hasImage" ifEqualTo:0];
   v5 = [v3 appendObject:self->_locale withName:@"locale"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (PUINumberingSystem)initWithCoder:(id)a3
+- (PUINumberingSystem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_type"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_type"];
 
   v7 = [(PUINumberingSystem *)self initWithNumberingSystemType:v6];
   return v7;

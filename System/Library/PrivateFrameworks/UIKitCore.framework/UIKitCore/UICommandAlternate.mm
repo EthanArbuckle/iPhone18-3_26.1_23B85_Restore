@@ -1,10 +1,10 @@
 @interface UICommandAlternate
 + (UICommandAlternate)alternateWithTitle:(NSString *)title action:(SEL)action modifierFlags:(UIKeyModifierFlags)modifierFlags;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UICommandAlternate)initWithCoder:(NSCoder *)coder;
-- (UICommandAlternate)initWithTitle:(id)a3 action:(SEL)a4 modifierFlags:(int64_t)a5;
-- (id)_resolvedTargetFromFirstTarget:(id)a3 sender:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (UICommandAlternate)initWithTitle:(id)title action:(SEL)action modifierFlags:(int64_t)flags;
+- (id)_resolvedTargetFromFirstTarget:(id)target sender:(id)sender;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICommandAlternate
@@ -38,61 +38,61 @@
   return v5;
 }
 
-- (UICommandAlternate)initWithTitle:(id)a3 action:(SEL)a4 modifierFlags:(int64_t)a5
+- (UICommandAlternate)initWithTitle:(id)title action:(SEL)action modifierFlags:(int64_t)flags
 {
-  v8 = a3;
+  titleCopy = title;
   v13.receiver = self;
   v13.super_class = UICommandAlternate;
   v9 = [(UICommandAlternate *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [titleCopy copy];
     title = v9->_title;
     v9->_title = v10;
 
-    v9->_action = a4;
-    v9->_modifierFlags = a5;
+    v9->_action = action;
+    v9->_modifierFlags = flags;
   }
 
   return v9;
 }
 
-- (id)_resolvedTargetFromFirstTarget:(id)a3 sender:(id)a4
+- (id)_resolvedTargetFromFirstTarget:(id)target sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 __isKindOfUIResponder])
+  targetCopy = target;
+  senderCopy = sender;
+  if ([targetCopy __isKindOfUIResponder])
   {
-    objc_storeStrong(&self->_sender, a4);
-    v8 = [v6 targetForAction:self->_action withSender:self];
+    objc_storeStrong(&self->_sender, sender);
+    v8 = [targetCopy targetForAction:self->_action withSender:self];
     sender = self->_sender;
     self->_sender = 0;
   }
 
   else
   {
-    v8 = v6;
+    v8 = targetCopy;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v6 = a3;
-  [v6 encodeObject:title forKey:@"title"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
   v5 = NSStringFromSelector(self->_action);
-  [v6 encodeObject:v5 forKey:@"action"];
+  [coderCopy encodeObject:v5 forKey:@"action"];
 
-  [v6 encodeInteger:self->_modifierFlags forKey:@"modifierFlags"];
+  [coderCopy encodeInteger:self->_modifierFlags forKey:@"modifierFlags"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_modifierFlags == v4[3];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_modifierFlags == equalCopy[3];
 
   return v5;
 }

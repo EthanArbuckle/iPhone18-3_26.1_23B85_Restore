@@ -1,18 +1,18 @@
 @interface AWDWiFiNWActivityRateAndAggregation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unint64_t)ampduAGGAtIndex:(unint64_t)a3;
+- (unint64_t)ampduAGGAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)rxMCSSuccessAtIndex:(unint64_t)a3;
-- (unint64_t)rxVHTSuccessAtIndex:(unint64_t)a3;
-- (unint64_t)txMCSSuccessAtIndex:(unint64_t)a3;
-- (unint64_t)txVHTSuccessAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)rxMCSSuccessAtIndex:(unint64_t)index;
+- (unint64_t)rxVHTSuccessAtIndex:(unint64_t)index;
+- (unint64_t)txMCSSuccessAtIndex:(unint64_t)index;
+- (unint64_t)txVHTSuccessAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiNWActivityRateAndAggregation
@@ -29,64 +29,64 @@
   [(AWDWiFiNWActivityRateAndAggregation *)&v3 dealloc];
 }
 
-- (unint64_t)rxVHTSuccessAtIndex:(unint64_t)a3
+- (unint64_t)rxVHTSuccessAtIndex:(unint64_t)index
 {
   p_rxVHTSuccess = &self->_rxVHTSuccess;
   count = self->_rxVHTSuccess.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_rxVHTSuccess->list[a3];
+  return p_rxVHTSuccess->list[index];
 }
 
-- (unint64_t)txVHTSuccessAtIndex:(unint64_t)a3
+- (unint64_t)txVHTSuccessAtIndex:(unint64_t)index
 {
   p_txVHTSuccess = &self->_txVHTSuccess;
   count = self->_txVHTSuccess.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txVHTSuccess->list[a3];
+  return p_txVHTSuccess->list[index];
 }
 
-- (unint64_t)rxMCSSuccessAtIndex:(unint64_t)a3
+- (unint64_t)rxMCSSuccessAtIndex:(unint64_t)index
 {
   p_rxMCSSuccess = &self->_rxMCSSuccess;
   count = self->_rxMCSSuccess.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_rxMCSSuccess->list[a3];
+  return p_rxMCSSuccess->list[index];
 }
 
-- (unint64_t)txMCSSuccessAtIndex:(unint64_t)a3
+- (unint64_t)txMCSSuccessAtIndex:(unint64_t)index
 {
   p_txMCSSuccess = &self->_txMCSSuccess;
   count = self->_txMCSSuccess.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txMCSSuccess->list[a3];
+  return p_txMCSSuccess->list[index];
 }
 
-- (unint64_t)ampduAGGAtIndex:(unint64_t)a3
+- (unint64_t)ampduAGGAtIndex:(unint64_t)index
 {
   p_ampduAGGs = &self->_ampduAGGs;
   count = self->_ampduAGGs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_ampduAGGs->list[a3];
+  return p_ampduAGGs->list[index];
 }
 
 - (id)description
@@ -98,16 +98,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x29EDB8E00] dictionary];
-  [v2 setObject:PBRepeatedUInt64NSArray() forKey:@"rxVHTSuccess"];
-  [v2 setObject:PBRepeatedUInt64NSArray() forKey:@"txVHTSuccess"];
-  [v2 setObject:PBRepeatedUInt64NSArray() forKey:@"rxMCSSuccess"];
-  [v2 setObject:PBRepeatedUInt64NSArray() forKey:@"txMCSSuccess"];
-  [v2 setObject:PBRepeatedUInt64NSArray() forKey:@"ampduAGG"];
-  return v2;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"rxVHTSuccess"];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"txVHTSuccess"];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"rxMCSSuccess"];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"txMCSSuccess"];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"ampduAGG"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_rxVHTSuccess = &self->_rxVHTSuccess;
   if (self->_rxVHTSuccess.count)
@@ -177,82 +177,82 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ([(AWDWiFiNWActivityRateAndAggregation *)self rxVHTSuccessCount])
   {
-    [a3 clearRxVHTSuccess];
-    v5 = [(AWDWiFiNWActivityRateAndAggregation *)self rxVHTSuccessCount];
-    if (v5)
+    [to clearRxVHTSuccess];
+    rxVHTSuccessCount = [(AWDWiFiNWActivityRateAndAggregation *)self rxVHTSuccessCount];
+    if (rxVHTSuccessCount)
     {
-      v6 = v5;
+      v6 = rxVHTSuccessCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addRxVHTSuccess:{-[AWDWiFiNWActivityRateAndAggregation rxVHTSuccessAtIndex:](self, "rxVHTSuccessAtIndex:", i)}];
+        [to addRxVHTSuccess:{-[AWDWiFiNWActivityRateAndAggregation rxVHTSuccessAtIndex:](self, "rxVHTSuccessAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivityRateAndAggregation *)self txVHTSuccessCount])
   {
-    [a3 clearTxVHTSuccess];
-    v8 = [(AWDWiFiNWActivityRateAndAggregation *)self txVHTSuccessCount];
-    if (v8)
+    [to clearTxVHTSuccess];
+    txVHTSuccessCount = [(AWDWiFiNWActivityRateAndAggregation *)self txVHTSuccessCount];
+    if (txVHTSuccessCount)
     {
-      v9 = v8;
+      v9 = txVHTSuccessCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addTxVHTSuccess:{-[AWDWiFiNWActivityRateAndAggregation txVHTSuccessAtIndex:](self, "txVHTSuccessAtIndex:", j)}];
+        [to addTxVHTSuccess:{-[AWDWiFiNWActivityRateAndAggregation txVHTSuccessAtIndex:](self, "txVHTSuccessAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivityRateAndAggregation *)self rxMCSSuccessCount])
   {
-    [a3 clearRxMCSSuccess];
-    v11 = [(AWDWiFiNWActivityRateAndAggregation *)self rxMCSSuccessCount];
-    if (v11)
+    [to clearRxMCSSuccess];
+    rxMCSSuccessCount = [(AWDWiFiNWActivityRateAndAggregation *)self rxMCSSuccessCount];
+    if (rxMCSSuccessCount)
     {
-      v12 = v11;
+      v12 = rxMCSSuccessCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addRxMCSSuccess:{-[AWDWiFiNWActivityRateAndAggregation rxMCSSuccessAtIndex:](self, "rxMCSSuccessAtIndex:", k)}];
+        [to addRxMCSSuccess:{-[AWDWiFiNWActivityRateAndAggregation rxMCSSuccessAtIndex:](self, "rxMCSSuccessAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivityRateAndAggregation *)self txMCSSuccessCount])
   {
-    [a3 clearTxMCSSuccess];
-    v14 = [(AWDWiFiNWActivityRateAndAggregation *)self txMCSSuccessCount];
-    if (v14)
+    [to clearTxMCSSuccess];
+    txMCSSuccessCount = [(AWDWiFiNWActivityRateAndAggregation *)self txMCSSuccessCount];
+    if (txMCSSuccessCount)
     {
-      v15 = v14;
+      v15 = txMCSSuccessCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addTxMCSSuccess:{-[AWDWiFiNWActivityRateAndAggregation txMCSSuccessAtIndex:](self, "txMCSSuccessAtIndex:", m)}];
+        [to addTxMCSSuccess:{-[AWDWiFiNWActivityRateAndAggregation txMCSSuccessAtIndex:](self, "txMCSSuccessAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivityRateAndAggregation *)self ampduAGGsCount])
   {
-    [a3 clearAmpduAGGs];
-    v17 = [(AWDWiFiNWActivityRateAndAggregation *)self ampduAGGsCount];
-    if (v17)
+    [to clearAmpduAGGs];
+    ampduAGGsCount = [(AWDWiFiNWActivityRateAndAggregation *)self ampduAGGsCount];
+    if (ampduAGGsCount)
     {
-      v18 = v17;
+      v18 = ampduAGGsCount;
       for (n = 0; n != v18; ++n)
       {
-        [a3 addAmpduAGG:{-[AWDWiFiNWActivityRateAndAggregation ampduAGGAtIndex:](self, "ampduAGGAtIndex:", n)}];
+        [to addAmpduAGG:{-[AWDWiFiNWActivityRateAndAggregation ampduAGGAtIndex:](self, "ampduAGGAtIndex:", n)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt64Copy();
   PBRepeatedUInt64Copy();
   PBRepeatedUInt64Copy();
@@ -261,9 +261,9 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual() || !PBRepeatedUInt64IsEqual() || !PBRepeatedUInt64IsEqual() || !PBRepeatedUInt64IsEqual())
+  if (![equal isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual() || !PBRepeatedUInt64IsEqual() || !PBRepeatedUInt64IsEqual() || !PBRepeatedUInt64IsEqual())
   {
     return 0;
   }
@@ -280,55 +280,55 @@
   return v5 ^ PBRepeatedUInt64Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = [a3 rxVHTSuccessCount];
-  if (v5)
+  rxVHTSuccessCount = [from rxVHTSuccessCount];
+  if (rxVHTSuccessCount)
   {
-    v6 = v5;
+    v6 = rxVHTSuccessCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWiFiNWActivityRateAndAggregation addRxVHTSuccess:](self, "addRxVHTSuccess:", [a3 rxVHTSuccessAtIndex:i]);
+      -[AWDWiFiNWActivityRateAndAggregation addRxVHTSuccess:](self, "addRxVHTSuccess:", [from rxVHTSuccessAtIndex:i]);
     }
   }
 
-  v8 = [a3 txVHTSuccessCount];
-  if (v8)
+  txVHTSuccessCount = [from txVHTSuccessCount];
+  if (txVHTSuccessCount)
   {
-    v9 = v8;
+    v9 = txVHTSuccessCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDWiFiNWActivityRateAndAggregation addTxVHTSuccess:](self, "addTxVHTSuccess:", [a3 txVHTSuccessAtIndex:j]);
+      -[AWDWiFiNWActivityRateAndAggregation addTxVHTSuccess:](self, "addTxVHTSuccess:", [from txVHTSuccessAtIndex:j]);
     }
   }
 
-  v11 = [a3 rxMCSSuccessCount];
-  if (v11)
+  rxMCSSuccessCount = [from rxMCSSuccessCount];
+  if (rxMCSSuccessCount)
   {
-    v12 = v11;
+    v12 = rxMCSSuccessCount;
     for (k = 0; k != v12; ++k)
     {
-      -[AWDWiFiNWActivityRateAndAggregation addRxMCSSuccess:](self, "addRxMCSSuccess:", [a3 rxMCSSuccessAtIndex:k]);
+      -[AWDWiFiNWActivityRateAndAggregation addRxMCSSuccess:](self, "addRxMCSSuccess:", [from rxMCSSuccessAtIndex:k]);
     }
   }
 
-  v14 = [a3 txMCSSuccessCount];
-  if (v14)
+  txMCSSuccessCount = [from txMCSSuccessCount];
+  if (txMCSSuccessCount)
   {
-    v15 = v14;
+    v15 = txMCSSuccessCount;
     for (m = 0; m != v15; ++m)
     {
-      -[AWDWiFiNWActivityRateAndAggregation addTxMCSSuccess:](self, "addTxMCSSuccess:", [a3 txMCSSuccessAtIndex:m]);
+      -[AWDWiFiNWActivityRateAndAggregation addTxMCSSuccess:](self, "addTxMCSSuccess:", [from txMCSSuccessAtIndex:m]);
     }
   }
 
-  v17 = [a3 ampduAGGsCount];
-  if (v17)
+  ampduAGGsCount = [from ampduAGGsCount];
+  if (ampduAGGsCount)
   {
-    v18 = v17;
+    v18 = ampduAGGsCount;
     for (n = 0; n != v18; ++n)
     {
-      -[AWDWiFiNWActivityRateAndAggregation addAmpduAGG:](self, "addAmpduAGG:", [a3 ampduAGGAtIndex:n]);
+      -[AWDWiFiNWActivityRateAndAggregation addAmpduAGG:](self, "addAmpduAGG:", [from ampduAGGAtIndex:n]);
     }
   }
 }

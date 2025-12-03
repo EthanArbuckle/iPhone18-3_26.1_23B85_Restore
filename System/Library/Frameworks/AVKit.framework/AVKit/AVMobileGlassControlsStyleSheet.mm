@@ -1,5 +1,5 @@
 @interface AVMobileGlassControlsStyleSheet
-- (AVMobileGlassControlsStyleSheet)initWithTraitCollection:(id)a3;
+- (AVMobileGlassControlsStyleSheet)initWithTraitCollection:(id)collection;
 - (CGSize)playbackControlButtonLargeInlineSize;
 - (CGSize)playbackControlButtonLargeSize;
 - (CGSize)playbackControlButtonSmallInlineSize;
@@ -9,7 +9,7 @@
 - (UIEdgeInsets)controlsPlatterInlineEdgeInsets;
 - (UIEdgeInsets)embeddedInlineInsets;
 - (UIEdgeInsets)landscapeFullscreenInsets;
-- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)a3 keyboardHeight:(double)a4 isFullScreen:(BOOL)a5;
+- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)view keyboardHeight:(double)height isFullScreen:(BOOL)screen;
 - (UIEdgeInsets)portraitFullscreenInsets;
 - (UIEdgeInsets)timelineControlsPlatterFullscreenEdgeInsets;
 - (UIEdgeInsets)timelineControlsPlatterInlineEdgeInsets;
@@ -158,26 +158,26 @@
   return result;
 }
 
-- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)a3 keyboardHeight:(double)a4 isFullScreen:(BOOL)a5
+- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)view keyboardHeight:(double)height isFullScreen:(BOOL)screen
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(AVMobileControlsStyleSheet *)self traitCollection];
+  screenCopy = screen;
+  viewCopy = view;
+  traitCollection = [(AVMobileControlsStyleSheet *)self traitCollection];
   [(AVMobileGlassControlsStyleSheet *)self standardPaddingFullScreen];
   v91 = v10;
-  v11 = [v9 userInterfaceIdiom];
-  [v8 safeAreaInsets];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  [viewCopy safeAreaInsets];
   v13 = v12;
   v87 = v14;
-  v15 = [v8 window];
-  v16 = [v15 windowScene];
-  v17 = [v16 statusBarManager];
-  v18 = v17;
+  window = [viewCopy window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  v18 = statusBarManager;
   v89 = v13;
-  if (v15)
+  if (window)
   {
-    v85 = a4;
-    [v17 statusBarFrame];
+    heightCopy = height;
+    [statusBarManager statusBarFrame];
     x = v92.origin.x;
     y = v92.origin.y;
     width = v92.size.width;
@@ -202,12 +202,12 @@
       width = v24;
     }
 
-    [v8 convertRect:v15 fromView:{x, y, width, height}];
+    [viewCopy convertRect:window fromView:{x, y, width, height}];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    [v8 bounds];
+    [viewCopy bounds];
     v103.origin.x = v33;
     v103.origin.y = v34;
     v103.size.width = v35;
@@ -228,8 +228,8 @@
       v38 = 0.0;
     }
 
-    [v8 bounds];
-    [v15 convertRect:v8 fromView:?];
+    [viewCopy bounds];
+    [window convertRect:viewCopy fromView:?];
     v13 = v89;
     v39 = v89 + CGRectGetMinY(v98);
     v99.origin.x = x;
@@ -239,8 +239,8 @@
     MaxY = CGRectGetMaxY(v99);
     v41 = v91;
     v42 = v39 > v91 * 0.5 + MaxY;
-    a4 = v85;
-    if (!v5)
+    height = heightCopy;
+    if (!screenCopy)
     {
       goto LABEL_24;
     }
@@ -251,24 +251,24 @@
     v42 = 0;
     v38 = 0.0;
     v41 = v91;
-    if (!v5)
+    if (!screenCopy)
     {
 LABEL_24:
-      v55 = [v15 screen];
+      screen = [window screen];
       [(AVMobileGlassControlsStyleSheet *)self embeddedInlineInsets];
-      v56 = [MEMORY[0x1E69DC938] currentDevice];
-      [v56 orientation];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      [currentDevice orientation];
 
-      [v55 _peripheryInsets];
+      [screen _peripheryInsets];
       UIEdgeInsetsAdd();
       v58 = v57;
       v86 = v59;
       v61 = v60;
       v91 = v62;
-      v63 = [v8 avkit_isDescendantOfNonPagingScrollView];
+      avkit_isDescendantOfNonPagingScrollView = [viewCopy avkit_isDescendantOfNonPagingScrollView];
       v64 = v89 + v58;
       v65 = v87 + v61;
-      if (v63)
+      if (avkit_isDescendantOfNonPagingScrollView)
       {
         v65 = v61;
         v64 = v58;
@@ -281,15 +281,15 @@ LABEL_24:
     }
   }
 
-  if (v11 == 5)
+  if (userInterfaceIdiom == 5)
   {
     goto LABEL_24;
   }
 
   v43 = 0.0;
-  if (a4 < 100.0 && a4 > 0.0)
+  if (height < 100.0 && height > 0.0)
   {
-    v43 = v41 + a4;
+    v43 = v41 + height;
   }
 
   if (v87 >= v43)
@@ -302,7 +302,7 @@ LABEL_24:
     v45 = v43;
   }
 
-  [v9 displayCornerRadius];
+  [traitCollection displayCornerRadius];
   if (v46 <= 0.0)
   {
     v66 = v91 * 0.5 + v38;
@@ -326,9 +326,9 @@ LABEL_24:
     v47 = MEMORY[0x1E69DDA98];
     if ([*MEMORY[0x1E69DDA98] _isClassic] && objc_msgSend(*v47, "_classicMode") != 5)
     {
-      [v8 bounds];
+      [viewCopy bounds];
       v75 = CGRectGetWidth(v100);
-      [v8 bounds];
+      [viewCopy bounds];
       v76 = CGRectGetHeight(v101);
       v77 = v91;
       if (v75 > v76)
@@ -344,7 +344,7 @@ LABEL_24:
 
     else
     {
-      [v8 avkit_overrideLayoutMarginsForCounterRotation];
+      [viewCopy avkit_overrideLayoutMarginsForCounterRotation];
       v52.f64[0] = v48;
       v52.f64[1] = v49;
       v53.f64[0] = v50;
@@ -360,7 +360,7 @@ LABEL_24:
 
       else
       {
-        if (([v16 interfaceOrientation] - 3) > 1)
+        if (([windowScene interfaceOrientation] - 3) > 1)
         {
           [(AVMobileGlassControlsStyleSheet *)self portraitFullscreenInsets];
         }
@@ -486,8 +486,8 @@ LABEL_32:
       v2 = MEMORY[0x1E69DB878];
       v3 = *MEMORY[0x1E69DDD10];
       v4 = *MEMORY[0x1E69DB970];
-      v5 = [result traitCollection];
-      v6 = [v2 avkit_monospacedDigitFontWithTextStyle:v3 fontWeight:v5 traitCollection:v4];
+      traitCollection = [result traitCollection];
+      v6 = [v2 avkit_monospacedDigitFontWithTextStyle:v3 fontWeight:traitCollection traitCollection:v4];
       v7 = v1[21];
       v1[21] = v6;
 
@@ -622,15 +622,15 @@ LABEL_32:
   return contentTagFont;
 }
 
-- (AVMobileGlassControlsStyleSheet)initWithTraitCollection:(id)a3
+- (AVMobileGlassControlsStyleSheet)initWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = AVMobileGlassControlsStyleSheet;
-  v5 = [(AVMobileControlsStyleSheet *)&v14 initWithTraitCollection:v4];
+  v5 = [(AVMobileControlsStyleSheet *)&v14 initWithTraitCollection:collectionCopy];
   if (v5)
   {
-    if ([v4 userInterfaceIdiom])
+    if ([collectionCopy userInterfaceIdiom])
     {
       _PadInit(v5);
     }

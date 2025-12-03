@@ -7,11 +7,11 @@
 - (id)UIColor
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [a1 systemColorName];
-  v3 = v2;
-  if (v2)
+  systemColorName = [self systemColorName];
+  v3 = systemColorName;
+  if (systemColorName)
   {
-    v4 = NSSelectorFromString(v2);
+    v4 = NSSelectorFromString(systemColorName);
     if (objc_opt_respondsToSelector())
     {
       v5 = [MEMORY[0x277D75348] performSelector:v4];
@@ -43,17 +43,17 @@
     goto LABEL_13;
   }
 
-  v6 = [a1 BSColor];
-  v7 = v6;
-  if (!v6)
+  bSColor = [self BSColor];
+  v7 = bSColor;
+  if (!bSColor)
   {
 LABEL_13:
     v5 = 0;
     goto LABEL_14;
   }
 
-  v8 = [v6 UIColor];
-  if (!v8)
+  uIColor = [bSColor UIColor];
+  if (!uIColor)
   {
     v11 = STSystemStatusLogBundleLoading();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v5 = v8;
+  v5 = uIColor;
 LABEL_14:
 
 LABEL_15:

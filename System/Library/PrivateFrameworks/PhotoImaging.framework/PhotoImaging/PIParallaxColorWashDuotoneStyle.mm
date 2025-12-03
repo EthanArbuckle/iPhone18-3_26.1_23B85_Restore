@@ -1,24 +1,24 @@
 @interface PIParallaxColorWashDuotoneStyle
-+ (id)styleWithColorAnalysis:(id)a3;
-+ (id)styleWithParameters:(id)a3 colorSuggestions:(id)a4;
-- (BOOL)configureForCategory:(id)a3;
-- (PIParallaxColorWashDuotoneStyle)initWithPrimaryColor:(id)a3 secondaryColor:(id)a4 background:(BOOL)a5 clockColor:(id)a6 colorSuggestions:(id)a7;
++ (id)styleWithColorAnalysis:(id)analysis;
++ (id)styleWithParameters:(id)parameters colorSuggestions:(id)suggestions;
+- (BOOL)configureForCategory:(id)category;
+- (PIParallaxColorWashDuotoneStyle)initWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor background:(BOOL)background clockColor:(id)clockColor colorSuggestions:(id)suggestions;
 - (id)parameters;
 @end
 
 @implementation PIParallaxColorWashDuotoneStyle
 
-- (BOOL)configureForCategory:(id)a3
+- (BOOL)configureForCategory:(id)category
 {
-  v4 = [(PIParallaxStyle *)self colorSuggestionForCategory:a3];
+  v4 = [(PIParallaxStyle *)self colorSuggestionForCategory:category];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 primaryColor];
-    [(PIParallaxColorWashDuotoneStyle *)self setPrimaryColor:v6];
+    primaryColor = [v4 primaryColor];
+    [(PIParallaxColorWashDuotoneStyle *)self setPrimaryColor:primaryColor];
 
-    v7 = [v5 secondaryColor];
-    [(PIParallaxColorWashDuotoneStyle *)self setSecondaryColor:v7];
+    secondaryColor = [v5 secondaryColor];
+    [(PIParallaxColorWashDuotoneStyle *)self setSecondaryColor:secondaryColor];
   }
 
   return v5 != 0;
@@ -28,18 +28,18 @@
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v10[0] = *MEMORY[0x1E69C0B88];
-  v3 = [(PIParallaxColorWashDuotoneStyle *)self primaryColor];
-  v11[0] = v3;
+  primaryColor = [(PIParallaxColorWashDuotoneStyle *)self primaryColor];
+  v11[0] = primaryColor;
   v10[1] = *MEMORY[0x1E69C0B90];
-  v4 = [(PIParallaxColorWashDuotoneStyle *)self secondaryColor];
-  v11[1] = v4;
+  secondaryColor = [(PIParallaxColorWashDuotoneStyle *)self secondaryColor];
+  v11[1] = secondaryColor;
   v10[2] = *MEMORY[0x1E69C0B48];
-  v5 = [(PIParallaxStyle *)self clockColor];
-  v11[2] = v5;
+  clockColor = [(PIParallaxStyle *)self clockColor];
+  v11[2] = clockColor;
   v10[3] = *MEMORY[0x1E69C0B40];
-  v6 = [(PIParallaxColorWashDuotoneStyle *)self showsBackground];
+  showsBackground = [(PIParallaxColorWashDuotoneStyle *)self showsBackground];
   v7 = &unk_1F471F3F0;
-  if (v6)
+  if (showsBackground)
   {
     v7 = &unk_1F471F3E0;
   }
@@ -50,14 +50,14 @@
   return v8;
 }
 
-- (PIParallaxColorWashDuotoneStyle)initWithPrimaryColor:(id)a3 secondaryColor:(id)a4 background:(BOOL)a5 clockColor:(id)a6 colorSuggestions:(id)a7
+- (PIParallaxColorWashDuotoneStyle)initWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor background:(BOOL)background clockColor:(id)clockColor colorSuggestions:(id)suggestions
 {
   v49 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (!v12)
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
+  clockColorCopy = clockColor;
+  suggestionsCopy = suggestions;
+  if (!colorCopy)
   {
     v22 = NUAssertLogger_4208();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -68,7 +68,7 @@
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v24 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v26 = NUAssertLogger_4208();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
@@ -76,11 +76,11 @@
     {
       if (v27)
       {
-        v35 = dispatch_get_specific(*v24);
+        v35 = dispatch_get_specific(*callStackSymbols);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v24 = [v36 callStackSymbols];
-        v38 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v35;
         v47 = 2114;
@@ -91,10 +91,10 @@
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v46 = v24;
+      v46 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -102,7 +102,7 @@
     goto LABEL_17;
   }
 
-  if (!v13)
+  if (!secondaryColorCopy)
   {
     v29 = NUAssertLogger_4208();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -113,7 +113,7 @@
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v24 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v31 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v26 = NUAssertLogger_4208();
     v32 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
@@ -121,8 +121,8 @@
     {
       if (v32)
       {
-        v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v34 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v46 = v34;
         _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -134,11 +134,11 @@
 LABEL_17:
     if (v32)
     {
-      v39 = dispatch_get_specific(*v24);
+      v39 = dispatch_get_specific(*callStackSymbols);
       v40 = MEMORY[0x1E696AF00];
       v41 = v39;
-      v42 = [v40 callStackSymbols];
-      v43 = [v42 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v40 callStackSymbols];
+      v43 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v46 = v39;
       v47 = 2114;
@@ -151,27 +151,27 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v16 = v15;
+  v16 = suggestionsCopy;
   v44.receiver = self;
   v44.super_class = PIParallaxColorWashDuotoneStyle;
-  v17 = [(PIParallaxStyle *)&v44 initWithClockColor:v14 colorSuggestions:v15];
+  v17 = [(PIParallaxStyle *)&v44 initWithClockColor:clockColorCopy colorSuggestions:suggestionsCopy];
   primaryColor = v17->_primaryColor;
-  v17->_primaryColor = v12;
-  v19 = v12;
+  v17->_primaryColor = colorCopy;
+  v19 = colorCopy;
 
   secondaryColor = v17->_secondaryColor;
-  v17->_secondaryColor = v13;
+  v17->_secondaryColor = secondaryColorCopy;
 
-  v17->_showsBackground = a5;
+  v17->_showsBackground = background;
   return v17;
 }
 
-+ (id)styleWithParameters:(id)a3 colorSuggestions:(id)a4
++ (id)styleWithParameters:(id)parameters colorSuggestions:(id)suggestions
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  parametersCopy = parameters;
+  suggestionsCopy = suggestions;
+  if (!parametersCopy)
   {
     v18 = NUAssertLogger_4208();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -193,8 +193,8 @@ LABEL_19:
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v26;
         v33 = 2114;
@@ -205,8 +205,8 @@ LABEL_19:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -215,11 +215,11 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v8 = v7;
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0B48]];
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0B88]];
-  v11 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0B90]];
-  v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0B40]];
+  v8 = suggestionsCopy;
+  v9 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x1E69C0B48]];
+  v10 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x1E69C0B88]];
+  v11 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x1E69C0B90]];
+  v12 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x1E69C0B40]];
   v13 = v12;
   if (v12)
   {
@@ -232,27 +232,27 @@ LABEL_19:
     v15 = 1;
   }
 
-  v16 = [[a1 alloc] initWithPrimaryColor:v10 secondaryColor:v11 background:v15 clockColor:v9 colorSuggestions:v8];
+  v16 = [[self alloc] initWithPrimaryColor:v10 secondaryColor:v11 background:v15 clockColor:v9 colorSuggestions:v8];
 
   return v16;
 }
 
-+ (id)styleWithColorAnalysis:(id)a3
++ (id)styleWithColorAnalysis:(id)analysis
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[PIParallaxColorSuggester alloc] initWithColorAnalysis:v4];
-  v6 = [v4 backgroundColors];
+  analysisCopy = analysis;
+  v5 = [[PIParallaxColorSuggester alloc] initWithColorAnalysis:analysisCopy];
+  backgroundColors = [analysisCopy backgroundColors];
   v7 = PFMap();
 
   v8 = +[PIParallaxColorPalette colorWashDuotonePalette];
   v9 = [(PIParallaxColorSuggester *)v5 suggestedColorsForColors:v7 fromColorPalette:v8];
   v10 = v8;
   v11 = PFMap();
-  v12 = [v11 firstObject];
-  v13 = [v12 primaryColor];
-  v14 = [v12 secondaryColor];
-  if (!v14)
+  firstObject = [v11 firstObject];
+  primaryColor = [firstObject primaryColor];
+  secondaryColor = [firstObject secondaryColor];
+  if (!secondaryColor)
   {
     v21 = NUAssertLogger_4208();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -274,8 +274,8 @@ LABEL_19:
         v29 = dispatch_get_specific(*v23);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v29;
         v37 = 2114;
@@ -286,8 +286,8 @@ LABEL_19:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v28;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -296,12 +296,12 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v15 = v14;
-  v16 = [a1 alloc];
+  v15 = secondaryColor;
+  v16 = [self alloc];
   [MEMORY[0x1E69C0750] whiteColor];
-  v34 = v4;
+  v34 = analysisCopy;
   v18 = v17 = v5;
-  v19 = [v16 initWithPrimaryColor:v13 secondaryColor:v15 background:1 clockColor:v18 colorSuggestions:v11];
+  v19 = [v16 initWithPrimaryColor:primaryColor secondaryColor:v15 background:1 clockColor:v18 colorSuggestions:v11];
 
   return v19;
 }

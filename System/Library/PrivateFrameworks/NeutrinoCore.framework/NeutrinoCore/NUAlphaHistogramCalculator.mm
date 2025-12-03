@@ -2,8 +2,8 @@
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)luminanceThresholds;
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)luminanceWeights;
 - (NUAlphaHistogramCalculator)init;
-- (id)_computeAlphaHistogramForBufferBGRA8:(id)a3 error:(id *)a4;
-- (id)computeHistogramFromBuffer:(id)a3 error:(id *)a4;
+- (id)_computeAlphaHistogramForBufferBGRA8:(id)a8 error:(id *)error;
+- (id)computeHistogramFromBuffer:(id)buffer error:(id *)error;
 @end
 
 @implementation NUAlphaHistogramCalculator
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (id)_computeAlphaHistogramForBufferBGRA8:(id)a3 error:(id *)a4
+- (id)_computeAlphaHistogramForBufferBGRA8:(id)a8 error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  a8Copy = a8;
+  if (!a8Copy)
   {
     v21 = NUAssertLogger_1900();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -59,8 +59,8 @@
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v35;
         v67 = 2114;
@@ -71,8 +71,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -81,7 +81,7 @@
     _NUAssertFailHandler("[NUAlphaHistogramCalculator _computeAlphaHistogramForBufferBGRA8:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 344, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "buffer != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v28 = NUAssertLogger_1900();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -102,8 +102,8 @@
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v45 callStackSymbols];
+        v48 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v44;
         v67 = 2114;
@@ -114,8 +114,8 @@
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -124,7 +124,7 @@
     _NUAssertFailHandler("[NUAlphaHistogramCalculator _computeAlphaHistogramForBufferBGRA8:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 345, @"Invalid parameter not satisfying: %s", v49, v50, v51, v52, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = a8Copy;
   g = self->_luminanceWeights.g;
   b = self->_luminanceWeights.b;
   a = self->_luminanceWeights.a;
@@ -221,11 +221,11 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
   return v16;
 }
 
-- (id)computeHistogramFromBuffer:(id)a3 error:(id *)a4
+- (id)computeHistogramFromBuffer:(id)buffer error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
     v17 = NUAssertLogger_1900();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -246,8 +246,8 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v31;
         v51 = 2114;
@@ -258,8 +258,8 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -268,7 +268,7 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
     _NUAssertFailHandler("[NUAlphaHistogramCalculator computeHistogramFromBuffer:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 309, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "buffer != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v24 = NUAssertLogger_1900();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -289,8 +289,8 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v41 callStackSymbols];
+        v44 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v40;
         v51 = 2114;
@@ -301,8 +301,8 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -311,10 +311,10 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
     _NUAssertFailHandler("[NUAlphaHistogramCalculator computeHistogramFromBuffer:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 310, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [v6 format];
+  v7 = bufferCopy;
+  format = [bufferCopy format];
   v9 = +[NUPixelFormat BGRA8];
-  v10 = [v8 isEqualToPixelFormat:v9];
+  v10 = [format isEqualToPixelFormat:v9];
 
   if (v10)
   {
@@ -326,7 +326,7 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
         [(NUHistogramCalculator *)self range];
         if (v12 == 1.0)
         {
-          v13 = [(NUAlphaHistogramCalculator *)self _computeAlphaHistogramForBufferBGRA8:v7 error:a4];
+          v13 = [(NUAlphaHistogramCalculator *)self _computeAlphaHistogramForBufferBGRA8:v7 error:error];
           goto LABEL_12;
         }
       }
@@ -340,13 +340,13 @@ uint64_t __73__NUAlphaHistogramCalculator__computeAlphaHistogramForBufferBGRA8_e
     }
 
     [NUError unsupportedError:v15 object:self];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
   {
-    v14 = [v7 format];
-    *a4 = [NUError unsupportedError:@"Unsupported pixel format" object:v14];
+    format2 = [v7 format];
+    *error = [NUError unsupportedError:@"Unsupported pixel format" object:format2];
 
     v13 = 0;
   }

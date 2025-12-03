@@ -1,9 +1,9 @@
 @interface _NTKCGalleryCollectionFooter
 + (id)reuseIdentifier;
-- (_NTKCGalleryCollectionFooter)initWithFrame:(CGRect)a3;
+- (_NTKCGalleryCollectionFooter)initWithFrame:(CGRect)frame;
 - (void)_fontSizeDidChange;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation _NTKCGalleryCollectionFooter
@@ -15,11 +15,11 @@
   return NSStringFromClass(v2);
 }
 
-- (_NTKCGalleryCollectionFooter)initWithFrame:(CGRect)a3
+- (_NTKCGalleryCollectionFooter)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _NTKCGalleryCollectionFooter;
-  v3 = [(_NTKCGalleryCollectionFooter *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_NTKCGalleryCollectionFooter *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -37,16 +37,16 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UILabel *)self->_label text];
-  v6 = [v4 isEqualToString:v5];
+  textCopy = text;
+  text = [(UILabel *)self->_label text];
+  v6 = [textCopy isEqualToString:text];
 
   if ((v6 & 1) == 0)
   {
-    if (v4)
+    if (textCopy)
     {
       v7 = objc_alloc(MEMORY[0x277CCA898]);
       v12 = *MEMORY[0x277D74118];
@@ -55,7 +55,7 @@
       [v9 setLineBreakMode:4];
       v13[0] = v9;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      v11 = [v7 initWithString:v4 attributes:v10];
+      v11 = [v7 initWithString:textCopy attributes:v10];
 
       [(UILabel *)self->_label setAttributedText:v11];
     }

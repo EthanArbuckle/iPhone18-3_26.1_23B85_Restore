@@ -1,20 +1,20 @@
 @interface HUSoftwareUpdateLockupTableViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 @end
 
 @implementation HUSoftwareUpdateLockupTableViewCell
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(HULockupTableViewCell *)self lockupView];
-  [v10 layoutIfNeeded];
+  height = size.height;
+  width = size.width;
+  lockupView = [(HULockupTableViewCell *)self lockupView];
+  [lockupView layoutIfNeeded];
 
   v15.receiver = self;
   v15.super_class = HUSoftwareUpdateLockupTableViewCell;
-  *&v11 = a4;
-  *&v12 = a5;
+  *&v11 = priority;
+  *&v12 = fittingPriority;
   [(HUSoftwareUpdateLockupTableViewCell *)&v15 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
   result.height = v14;
   result.width = v13;

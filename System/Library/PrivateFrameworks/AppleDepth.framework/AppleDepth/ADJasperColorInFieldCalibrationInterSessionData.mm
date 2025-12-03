@@ -1,8 +1,8 @@
 @interface ADJasperColorInFieldCalibrationInterSessionData
 + (id)defaults;
-- (ADJasperColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3 andDeviceName:(id)a4;
-- (ADJasperColorInFieldCalibrationInterSessionData)initWithFactoryJasperToColorTransform:(__n128)a3 currentJasperToColorTransform:(__n128)a4 andDeviceName:(double)a5;
-- (__n128)convertDictToExtrinsicsAngles:(void *)a3;
+- (ADJasperColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation andDeviceName:(id)name;
+- (ADJasperColorInFieldCalibrationInterSessionData)initWithFactoryJasperToColorTransform:(__n128)transform currentJasperToColorTransform:(__n128)colorTransform andDeviceName:(double)name;
+- (__n128)convertDictToExtrinsicsAngles:(void *)angles;
 - (id)convertExtrinsicsAnglesToDict:(ADJasperColorInFieldCalibrationInterSessionData *)self;
 - (id)persistenceData;
 - (void)initIsf;
@@ -10,16 +10,16 @@
 
 @implementation ADJasperColorInFieldCalibrationInterSessionData
 
-- (__n128)convertDictToExtrinsicsAngles:(void *)a3
+- (__n128)convertDictToExtrinsicsAngles:(void *)angles
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"rotX"];
+  anglesCopy = angles;
+  v4 = [anglesCopy objectForKeyedSubscript:@"rotX"];
   [v4 floatValue];
   v13 = v5;
-  v6 = [v3 objectForKeyedSubscript:@"rotY"];
+  v6 = [anglesCopy objectForKeyedSubscript:@"rotY"];
   [v6 floatValue];
   v12 = v7;
-  v8 = [v3 objectForKeyedSubscript:@"rotZ"];
+  v8 = [anglesCopy objectForKeyedSubscript:@"rotZ"];
   [v8 floatValue];
   v11 = v9;
 
@@ -68,12 +68,12 @@
 
   v9 = MEMORY[0x277CBEB38];
   v22[0] = @"isfHistoryKey";
-  v20 = [(ADInterSessionFilter *)self->super._isf persistenceData];
-  v23[0] = v20;
+  persistenceData = [(ADInterSessionFilter *)self->super._isf persistenceData];
+  v23[0] = persistenceData;
   v22[1] = @"telemetryKey";
-  v10 = [(ADJasperColorInFieldCalibrationInterSessionData *)self inFieldCalibrationTelemetryData];
-  v11 = [v10 persistenceData];
-  v23[1] = v11;
+  inFieldCalibrationTelemetryData = [(ADJasperColorInFieldCalibrationInterSessionData *)self inFieldCalibrationTelemetryData];
+  persistenceData2 = [inFieldCalibrationTelemetryData persistenceData];
+  v23[1] = persistenceData2;
   v23[2] = v21;
   v22[2] = @"depthToMcamFactoryExtrinsics";
   v22[3] = @"interSessionDataVersion";
@@ -104,9 +104,9 @@
   return v18;
 }
 
-- (ADJasperColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3 andDeviceName:(id)a4
+- (ADJasperColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation andDeviceName:(id)name
 {
-  v5 = a3;
+  representationCopy = representation;
   v31.receiver = self;
   v31.super_class = ADJasperColorInFieldCalibrationInterSessionData;
   v6 = [(ADInFieldCalibrationInterSessionData *)&v31 init];
@@ -115,7 +115,7 @@
     goto LABEL_18;
   }
 
-  v7 = [v5 objectForKey:@"interSessionDataVersion"];
+  v7 = [representationCopy objectForKey:@"interSessionDataVersion"];
   -[ADInFieldCalibrationInterSessionData setVersion:](v6, "setVersion:", [v7 unsignedIntValue]);
 
   if ([(ADInFieldCalibrationInterSessionData *)v6 version]< 5 || [(ADInFieldCalibrationInterSessionData *)v6 version]> 7 || ([(ADJasperColorInFieldCalibrationInterSessionData *)v6 initIsf], !v6->super._isf))
@@ -125,17 +125,17 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v8 = [v5 objectForKey:@"telemetryKey"];
-  v9 = [v5 objectForKey:@"isfHistoryKey"];
-  v10 = [v5 objectForKey:@"depthToMcamFactoryExtrinsics"];
-  v11 = [v5 objectForKey:@"featursHistoryDataKey"];
-  v12 = [v5 objectForKey:@"featuresHistoryCountKey"];
-  v13 = [v12 unsignedLongLongValue];
+  v8 = [representationCopy objectForKey:@"telemetryKey"];
+  v9 = [representationCopy objectForKey:@"isfHistoryKey"];
+  v10 = [representationCopy objectForKey:@"depthToMcamFactoryExtrinsics"];
+  v11 = [representationCopy objectForKey:@"featursHistoryDataKey"];
+  v12 = [representationCopy objectForKey:@"featuresHistoryCountKey"];
+  unsignedLongLongValue = [v12 unsignedLongLongValue];
 
-  v14 = [v5 objectForKey:@"successfulResultCountKey"];
-  v15 = [v14 unsignedLongLongValue];
+  v14 = [representationCopy objectForKey:@"successfulResultCountKey"];
+  unsignedLongLongValue2 = [v14 unsignedLongLongValue];
 
-  v6->_intersessionFeaturesHistoryCount = v13;
+  v6->_intersessionFeaturesHistoryCount = unsignedLongLongValue;
   if (v11)
   {
     v16 = objc_opt_new();
@@ -149,7 +149,7 @@ LABEL_20:
   v17 = v16;
   objc_storeStrong(&v6->_intersessionFeaturesHistory, v16);
 
-  v6->_successfulResultCount = v15;
+  v6->_successfulResultCount = unsignedLongLongValue2;
   isf = v6->super._isf;
   if (!v9)
   {
@@ -210,13 +210,13 @@ LABEL_21:
   return v29;
 }
 
-- (ADJasperColorInFieldCalibrationInterSessionData)initWithFactoryJasperToColorTransform:(__n128)a3 currentJasperToColorTransform:(__n128)a4 andDeviceName:(double)a5
+- (ADJasperColorInFieldCalibrationInterSessionData)initWithFactoryJasperToColorTransform:(__n128)transform currentJasperToColorTransform:(__n128)colorTransform andDeviceName:(double)name
 {
-  v33.receiver = a1;
+  v33.receiver = self;
   v33.super_class = ADJasperColorInFieldCalibrationInterSessionData;
   v8 = [(ADInFieldCalibrationInterSessionData *)&v33 init];
   v9 = v8;
-  if (v8 && (([(ADInFieldCalibrationInterSessionData *)v8 setVersion:7], [(ADJasperColorInFieldCalibrationInterSessionData *)v9 initIsf], !v9->super._isf) || (v10 = objc_alloc_init(ADJasperColorInFieldCalibrationTelemetryData), inFieldCalibrationTelemetryData = v9->_inFieldCalibrationTelemetryData, v9->_inFieldCalibrationTelemetryData = v10, inFieldCalibrationTelemetryData, v30 = 0u, v31 = 0u, v30.i32[2] = a2.n128_i32[2], v32 = 0u, v31.i32[2] = a3.n128_i32[2], v30.i64[0] = a2.n128_u64[0], v31.i64[0] = a3.n128_u64[0], v32.i32[2] = a4.n128_i32[2], v32.i64[0] = a4.n128_u64[0], [ADUtils calcRotationAngle:&v30], *v9->_jasperToColorRotationAngles = v12, v27 = 0u, v28 = 0u, v29 = 0u, v13 = vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(a6, v30.f32[0]), a7, v31.f32[0]), a8, v32.f32[0]), v14 = vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(a6, *v30.f32, 1), a7, *v31.f32, 1), a8, *v32.f32, 1), v15 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(a6, v30, 2), a7, v31, 2), a8, v32, 2), DWORD2(v27) = v13.i32[2], DWORD2(v28) = v14.i32[2], *&v27 = v13.i64[0], *&v28 = v14.i64[0], DWORD2(v29) = v15.i32[2], *&v29 = v15.i64[0], [ADUtils calcRotationAngle:&v27], isf = v9->super._isf, [(ADJasperColorInFieldCalibrationInterSessionData *)v9 convertExtrinsicsAnglesToDict:?], v17 = objc_claimAutoreleasedReturnValue(), v18 = [(ADInterSessionFilter *)isf fillWithEntry:v17], v17, v18)))
+  if (v8 && (([(ADInFieldCalibrationInterSessionData *)v8 setVersion:7], [(ADJasperColorInFieldCalibrationInterSessionData *)v9 initIsf], !v9->super._isf) || (v10 = objc_alloc_init(ADJasperColorInFieldCalibrationTelemetryData), inFieldCalibrationTelemetryData = v9->_inFieldCalibrationTelemetryData, v9->_inFieldCalibrationTelemetryData = v10, inFieldCalibrationTelemetryData, v30 = 0u, v31 = 0u, v30.i32[2] = a2.n128_i32[2], v32 = 0u, v31.i32[2] = transform.n128_i32[2], v30.i64[0] = a2.n128_u64[0], v31.i64[0] = transform.n128_u64[0], v32.i32[2] = colorTransform.n128_i32[2], v32.i64[0] = colorTransform.n128_u64[0], [ADUtils calcRotationAngle:&v30], *v9->_jasperToColorRotationAngles = v12, v27 = 0u, v28 = 0u, v29 = 0u, v13 = vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(a6, v30.f32[0]), a7, v31.f32[0]), a8, v32.f32[0]), v14 = vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(a6, *v30.f32, 1), a7, *v31.f32, 1), a8, *v32.f32, 1), v15 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(a6, v30, 2), a7, v31, 2), a8, v32, 2), DWORD2(v27) = v13.i32[2], DWORD2(v28) = v14.i32[2], *&v27 = v13.i64[0], *&v28 = v14.i64[0], DWORD2(v29) = v15.i32[2], *&v29 = v15.i64[0], [ADUtils calcRotationAngle:&v27], isf = v9->super._isf, [(ADJasperColorInFieldCalibrationInterSessionData *)v9 convertExtrinsicsAnglesToDict:?], v17 = objc_claimAutoreleasedReturnValue(), v18 = [(ADInterSessionFilter *)isf fillWithEntry:v17], v17, v18)))
   {
     v19 = 0;
   }
@@ -236,8 +236,8 @@ LABEL_21:
   isf = self->super._isf;
   self->super._isf = 0;
 
-  v4 = [objc_opt_class() defaults];
-  v5 = [v4 numberForKey:kADDeviceConfigurationKeyJasperColorIsfCapacity];
+  defaults = [objc_opt_class() defaults];
+  v5 = [defaults numberForKey:kADDeviceConfigurationKeyJasperColorIsfCapacity];
   -[ADInterSessionFilterParameters setCapacity:](self->super._isfParameters, "setCapacity:", [v5 unsignedIntValue]);
 
   [(ADInterSessionFilterParameters *)self->super._isfParameters setMinimalEntriesForResult:[(ADInterSessionFilterParameters *)self->super._isfParameters capacity]];
@@ -245,8 +245,8 @@ LABEL_21:
   [(ADInterSessionFilterParameters *)self->super._isfParameters setMinimalWeight:v6];
   LODWORD(v7) = 0.25;
   [(ADInterSessionFilterParameters *)self->super._isfParameters setMaximalWeight:v7];
-  v8 = [objc_opt_class() defaults];
-  v9 = [v8 numberForKey:kADDeviceConfigurationKeyJasperColorIsfOutliers];
+  defaults2 = [objc_opt_class() defaults];
+  v9 = [defaults2 numberForKey:kADDeviceConfigurationKeyJasperColorIsfOutliers];
   -[ADInterSessionFilterParameters setOutlierNumber:](self->super._isfParameters, "setOutlierNumber:", [v9 unsignedIntValue]);
 
   LODWORD(v10) = 1017370378;

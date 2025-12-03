@@ -2,7 +2,7 @@
 - (BOOL)isValid;
 - (id)getEndpoint;
 - (id)getPostData;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDKVStoreRequest
@@ -11,18 +11,18 @@
 {
   v10.receiver = self;
   v10.super_class = MSDKVStoreRequest;
-  v3 = [(MSDCommandServerRequest *)&v10 isValid];
-  v4 = [(MSDKVStoreRequest *)self isPost];
+  isValid = [(MSDCommandServerRequest *)&v10 isValid];
+  isPost = [(MSDKVStoreRequest *)self isPost];
   v5 = [(MSDKVStoreRequest *)self key];
   v6 = v5;
-  if (v4)
+  if (isPost)
   {
     if (v5)
     {
-      v7 = [(MSDKVStoreRequest *)self value];
-      if (v7)
+      value = [(MSDKVStoreRequest *)self value];
+      if (value)
       {
-        v8 = v3;
+        v8 = isValid;
       }
 
       else
@@ -39,7 +39,7 @@
 
   else if (v5)
   {
-    v8 = v3;
+    v8 = isValid;
   }
 
   else
@@ -53,8 +53,8 @@
 - (id)getPostData
 {
   v3 = [NSMutableDictionary dictionaryWithCapacity:0];
-  v4 = [(MSDKVStoreRequest *)self value];
-  [v3 setObject:v4 forKey:@"value"];
+  value = [(MSDKVStoreRequest *)self value];
+  [v3 setObject:value forKey:@"value"];
 
   v5 = [(MSDKVStoreRequest *)self ttl];
 
@@ -64,28 +64,28 @@
     [v3 setObject:v6 forKey:@"ttl"];
   }
 
-  v7 = [v3 convertToNSData];
+  convertToNSData = [v3 convertToNSData];
 
-  return v7;
+  return convertToNSData;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v48.receiver = self;
   v48.super_class = MSDKVStoreRequest;
-  v8 = [(MSDServerRequest *)&v48 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v48 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v10 = 0;
-    v11 = v6;
+    v11 = errorCopy;
 LABEL_31:
-    v44 = [v8 error];
+    error2 = [v8 error];
 
-    if (!v44)
+    if (!error2)
     {
       v46 = v11;
       sub_1000C1390(&v46, 3727744512, @"Unexpected server response.");
@@ -103,8 +103,8 @@ LABEL_31:
     goto LABEL_27;
   }
 
-  v47 = v6;
-  v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v47];
+  v47 = errorCopy;
+  v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v47];
   v11 = v47;
 
   if (!v10)
@@ -115,8 +115,8 @@ LABEL_31:
   v12 = [v10 objectForKeyedSubscript:@"value"];
   [v8 setValue:v12];
 
-  v13 = [v8 value];
-  if (!v13 || (v14 = v13, [v8 value], v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, v14, (isKindOfClass & 1) == 0))
+  value = [v8 value];
+  if (!value || (v14 = value, [v8 value], v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, v14, (isKindOfClass & 1) == 0))
   {
     sub_1000CA478(self);
     goto LABEL_31;
@@ -125,11 +125,11 @@ LABEL_31:
   v17 = [v10 objectForKeyedSubscript:@"creationDate"];
   [v8 setCreationDate:v17];
 
-  v18 = [v8 creationDate];
-  if (v18)
+  creationDate = [v8 creationDate];
+  if (creationDate)
   {
-    v19 = v18;
-    v20 = [v8 creationDate];
+    v19 = creationDate;
+    creationDate2 = [v8 creationDate];
     objc_opt_class();
     v21 = objc_opt_isKindOfClass();
 
@@ -149,11 +149,11 @@ LABEL_31:
   v24 = [v23 objectForKeyedSubscript:@"serial"];
   [v8 setCreatorSN:v24];
 
-  v25 = [v8 creatorSN];
-  if (v25)
+  creatorSN = [v8 creatorSN];
+  if (creatorSN)
   {
-    v26 = v25;
-    v27 = [v8 creationDate];
+    v26 = creatorSN;
+    creationDate3 = [v8 creationDate];
     objc_opt_class();
     v28 = objc_opt_isKindOfClass();
 
@@ -173,11 +173,11 @@ LABEL_31:
   v31 = [v30 objectForKeyedSubscript:@"udid"];
   [v8 setCreatorUDID:v31];
 
-  v32 = [v8 creatorUDID];
-  if (v32)
+  creatorUDID = [v8 creatorUDID];
+  if (creatorUDID)
   {
-    v33 = v32;
-    v34 = [v8 creationDate];
+    v33 = creatorUDID;
+    creationDate4 = [v8 creationDate];
     objc_opt_class();
     v35 = objc_opt_isKindOfClass();
 
@@ -196,11 +196,11 @@ LABEL_31:
   v37 = [v10 objectForKeyedSubscript:@"modificationDate"];
   [v8 setModificationDate:v37];
 
-  v38 = [v8 modificationDate];
-  if (v38)
+  modificationDate = [v8 modificationDate];
+  if (modificationDate)
   {
-    v39 = v38;
-    v40 = [v8 modificationDate];
+    v39 = modificationDate;
+    modificationDate2 = [v8 modificationDate];
     objc_opt_class();
     v41 = objc_opt_isKindOfClass();
 
@@ -218,7 +218,7 @@ LABEL_31:
 
 LABEL_26:
 
-  v6 = v11;
+  errorCopy = v11;
 LABEL_27:
 
   return v8;

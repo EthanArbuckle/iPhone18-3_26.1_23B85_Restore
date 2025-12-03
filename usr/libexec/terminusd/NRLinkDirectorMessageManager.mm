@@ -28,7 +28,7 @@
   if (v23)
   {
     v20 = *v31;
-    v21 = self;
+    selfCopy = self;
     do
     {
       v5 = 0;
@@ -57,8 +57,8 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v9 = [v7 allKeys];
-        v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        allKeys = [v7 allKeys];
+        v10 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v10)
         {
           v11 = v10;
@@ -69,7 +69,7 @@
             {
               if (*v27 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(allKeys);
               }
 
               v14 = *(*(&v26 + 1) + 8 * i);
@@ -86,7 +86,7 @@
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v11 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v11);
@@ -94,7 +94,7 @@
 
         [v22 setObject:v8 forKeyedSubscript:v24];
         v5 = v25 + 1;
-        self = v21;
+        self = selfCopy;
       }
 
       while ((v25 + 1) != v23);

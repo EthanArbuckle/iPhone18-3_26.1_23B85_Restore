@@ -1,25 +1,25 @@
 @interface SWInspection
-- (SWInspection)initWithObject:(id)a3;
+- (SWInspection)initWithObject:(id)object;
 @end
 
 @implementation SWInspection
 
-- (SWInspection)initWithObject:(id)a3
+- (SWInspection)initWithObject:(id)object
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v38.receiver = self;
   v38.super_class = SWInspection;
   v5 = [(SWInspection *)&v38 init];
   v6 = v5;
-  if (v4)
+  if (objectCopy)
   {
     if (v5)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v29 = v4;
+        v29 = objectCopy;
         v7 = [v29 objectForKey:@"accessibilityElements"];
         v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v34 = 0u;
@@ -58,7 +58,7 @@
           while (v11);
         }
 
-        v28 = v4;
+        v28 = objectCopy;
 
         v15 = [v29 objectForKey:@"links"];
         v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -105,7 +105,7 @@
         links = v6->_links;
         v6->_links = v16;
 
-        v4 = v28;
+        objectCopy = v28;
       }
     }
   }

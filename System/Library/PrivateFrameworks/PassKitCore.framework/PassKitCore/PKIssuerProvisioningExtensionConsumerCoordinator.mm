@@ -1,23 +1,23 @@
 @interface PKIssuerProvisioningExtensionConsumerCoordinator
-+ (id)beginWithExtension:(id)a3 completion:(id)a4;
++ (id)beginWithExtension:(id)extension completion:(id)completion;
 - (BOOL)isInvalidated;
-- (id)_initWithExtension:(id)a3;
-- (void)_performWhenConnected:(id)a3;
+- (id)_initWithExtension:(id)extension;
+- (void)_performWhenConnected:(id)connected;
 - (void)dealloc;
-- (void)generateRequestWithEntryIdentifier:(id)a3 configuration:(id)a4 certificateChain:(id)a5 nonce:(id)a6 nonceSignature:(id)a7 completionHandler:(id)a8;
+- (void)generateRequestWithEntryIdentifier:(id)identifier configuration:(id)configuration certificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler;
 - (void)invalidate;
-- (void)passEntriesWithCompletion:(id)a3;
-- (void)remotePassEntriesWithCompletion:(id)a3;
-- (void)statusWithCompletion:(id)a3;
+- (void)passEntriesWithCompletion:(id)completion;
+- (void)remotePassEntriesWithCompletion:(id)completion;
+- (void)statusWithCompletion:(id)completion;
 @end
 
 @implementation PKIssuerProvisioningExtensionConsumerCoordinator
 
-+ (id)beginWithExtension:(id)a3 completion:(id)a4
++ (id)beginWithExtension:(id)extension completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  extensionCopy = extension;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     v21[0] = 0;
@@ -31,7 +31,7 @@
     v18[2] = __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_completion___block_invoke;
     v18[3] = &unk_1E79CB750;
     v20 = v21;
-    v8 = v5;
+    v8 = extensionCopy;
     v19 = v8;
     [(PKAsyncUnaryOperationComposer *)v7 addOperation:v18];
     v15[0] = MEMORY[0x1E69E9820];
@@ -41,14 +41,14 @@
     v17 = v21;
     v16 = v8;
     [(PKAsyncUnaryOperationComposer *)v7 addOperation:v15];
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_completion___block_invoke_3_22;
     v12[3] = &unk_1E79CB818;
-    v13 = v6;
+    v13 = completionCopy;
     v14 = v21;
-    v10 = [(PKAsyncUnaryOperationComposer *)v7 evaluateWithInput:v9 completion:v12];
+    v10 = [(PKAsyncUnaryOperationComposer *)v7 evaluateWithInput:null completion:v12];
 
     _Block_object_dispose(v21, 8);
   }
@@ -237,11 +237,11 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
   (*(v6 + 16))(v6, a2, v8, v9);
 }
 
-- (id)_initWithExtension:(id)a3
+- (id)_initWithExtension:(id)extension
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  extensionCopy = extension;
+  if (extensionCopy)
   {
     v23.receiver = self;
     v23.super_class = PKIssuerProvisioningExtensionConsumerCoordinator;
@@ -250,7 +250,7 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
     if (v6)
     {
       v6->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v6->_extension, a3);
+      objc_storeStrong(&v6->_extension, extension);
       extension = v7->_extension;
       v22 = 0;
       v9 = [(NSExtension *)extension beginExtensionRequestWithOptions:1 inputItems:0 error:&v22];
@@ -312,9 +312,9 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
         v19 = PKLogFacilityTypeGetObject(0x2CuLL);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v5 identifier];
+          identifier = [extensionCopy identifier];
           *buf = 138412546;
-          v25 = v20;
+          v25 = identifier;
           v26 = 2112;
           v27 = v10;
           _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Ex<%@>: PKIssuerProvisioningExtensionConsumerCoordinator: failed to begin extension request with error %@.", buf, 0x16u);
@@ -323,15 +323,15 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
     }
 
     self = v7;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -370,12 +370,12 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_performWhenConnected:(id)a3
+- (void)_performWhenConnected:(id)connected
 {
-  v4 = a3;
-  if (v4)
+  connectedCopy = connected;
+  if (connectedCopy)
   {
-    v6 = v4;
+    v6 = connectedCopy;
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_context;
     os_unfair_lock_unlock(&self->_lock);
@@ -389,16 +389,16 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
       v6[2]();
     }
 
-    v4 = v6;
+    connectedCopy = v6;
   }
 }
 
-- (void)statusWithCompletion:(id)a3
+- (void)statusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = v4;
+    v6 = completionCopy;
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_context;
     os_unfair_lock_unlock(&self->_lock);
@@ -412,16 +412,16 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
       v6[2](v6, 0);
     }
 
-    v4 = v6;
+    completionCopy = v6;
   }
 }
 
-- (void)passEntriesWithCompletion:(id)a3
+- (void)passEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = v4;
+    v6 = completionCopy;
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_context;
     os_unfair_lock_unlock(&self->_lock);
@@ -435,16 +435,16 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
       v6[2](v6, 0);
     }
 
-    v4 = v6;
+    completionCopy = v6;
   }
 }
 
-- (void)remotePassEntriesWithCompletion:(id)a3
+- (void)remotePassEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = v4;
+    v6 = completionCopy;
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_context;
     os_unfair_lock_unlock(&self->_lock);
@@ -458,19 +458,19 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
       v6[2](v6, 0);
     }
 
-    v4 = v6;
+    completionCopy = v6;
   }
 }
 
-- (void)generateRequestWithEntryIdentifier:(id)a3 configuration:(id)a4 certificateChain:(id)a5 nonce:(id)a6 nonceSignature:(id)a7 completionHandler:(id)a8
+- (void)generateRequestWithEntryIdentifier:(id)identifier configuration:(id)configuration certificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  chainCopy = chain;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v20 = self->_context;
@@ -483,14 +483,14 @@ void __82__PKIssuerProvisioningExtensionConsumerCoordinator_beginWithExtension_c
       v23[2] = __157__PKIssuerProvisioningExtensionConsumerCoordinator_generateRequestWithEntryIdentifier_configuration_certificateChain_nonce_nonceSignature_completionHandler___block_invoke;
       v23[3] = &unk_1E79CB840;
       v24 = v21;
-      v25 = v19;
+      v25 = handlerCopy;
       v22 = v21;
-      [(PKIssuerProvisioningExtensionConsumerContext *)v20 generateRequestWithEntryIdentifier:v14 configuration:v15 certificateChain:v16 nonce:v17 nonceSignature:v18 completionHandler:v23];
+      [(PKIssuerProvisioningExtensionConsumerContext *)v20 generateRequestWithEntryIdentifier:identifierCopy configuration:configurationCopy certificateChain:chainCopy nonce:nonceCopy nonceSignature:signatureCopy completionHandler:v23];
     }
 
     else
     {
-      (*(v19 + 2))(v19, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }

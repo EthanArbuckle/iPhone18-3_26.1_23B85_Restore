@@ -1,6 +1,6 @@
 @interface AVTimer
 - (AVTimer)init;
-- (AVTimer)initWithTimeInterval:(double)a3 queue:(id)a4 block:(id)a5 repeats:(BOOL)a6;
+- (AVTimer)initWithTimeInterval:(double)interval queue:(id)queue block:(id)block repeats:(BOOL)repeats;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -66,17 +66,17 @@ void __18__AVTimer_dealloc__block_invoke(uint64_t a1)
   return [(AVTimer *)self initWithTimeInterval:0 queue:0 block:0 repeats:0.0];
 }
 
-- (AVTimer)initWithTimeInterval:(double)a3 queue:(id)a4 block:(id)a5 repeats:(BOOL)a6
+- (AVTimer)initWithTimeInterval:(double)interval queue:(id)queue block:(id)block repeats:(BOOL)repeats
 {
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   v27.receiver = self;
   v27.super_class = AVTimer;
   v12 = [(AVTimer *)&v27 init];
   if (v12)
   {
-    v13 = a3;
-    if (a3 <= 0.0)
+    intervalCopy = interval;
+    if (interval <= 0.0)
     {
       v14 = _AVLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -85,10 +85,10 @@ void __18__AVTimer_dealloc__block_invoke(uint64_t a1)
         _os_log_error_impl(&dword_18B49C000, v14, OS_LOG_TYPE_ERROR, "Error: invalid timer update interval. Interval must be greater than 0.", buf, 2u);
       }
 
-      v13 = 0.0;
+      intervalCopy = 0.0;
     }
 
-    *(v12 + 4) = v13;
+    *(v12 + 4) = intervalCopy;
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.avkit.AVTimer.manage %p", v12];
     v16 = dispatch_queue_create([v15 UTF8String], 0);
     v17 = *(v12 + 1);
@@ -100,10 +100,10 @@ void __18__AVTimer_dealloc__block_invoke(uint64_t a1)
     block[2] = __52__AVTimer_initWithTimeInterval_queue_block_repeats___block_invoke;
     block[3] = &unk_1E72094F8;
     v21 = v12;
-    v24 = a3;
-    v25 = a6;
-    v22 = v10;
-    v23 = v11;
+    intervalCopy2 = interval;
+    repeatsCopy = repeats;
+    v22 = queueCopy;
+    v23 = blockCopy;
     dispatch_sync(v18, block);
   }
 

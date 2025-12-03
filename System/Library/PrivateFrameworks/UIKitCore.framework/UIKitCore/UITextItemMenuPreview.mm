@@ -7,7 +7,7 @@
 
 + (UITextItemMenuPreview)defaultPreview
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

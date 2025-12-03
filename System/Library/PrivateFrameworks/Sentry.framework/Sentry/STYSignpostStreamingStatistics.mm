@@ -1,8 +1,8 @@
 @interface STYSignpostStreamingStatistics
 - (STYSignpostStreamingStatistics)init;
-- (void)_emitTelemetryLockedEndTime:(uint64_t)a1;
+- (void)_emitTelemetryLockedEndTime:(uint64_t)time;
 - (void)_resetLocked;
-- (void)addSignpost:(id)a3;
+- (void)addSignpost:(id)signpost;
 - (void)dealloc;
 - (void)emitTelemetry;
 @end
@@ -84,17 +84,17 @@ void __38__STYSignpostStreamingStatistics_init__block_invoke(uint64_t a1)
   [(STYSignpostStreamingStatistics *)&v3 dealloc];
 }
 
-- (void)addSignpost:(id)a3
+- (void)addSignpost:(id)signpost
 {
-  v4 = a3;
+  signpostCopy = signpost;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__STYSignpostStreamingStatistics_addSignpost___block_invoke;
   v7[3] = &unk_279B9B4C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = signpostCopy;
+  v6 = signpostCopy;
   dispatch_async(queue, v7);
 }
 
@@ -151,26 +151,26 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
   dispatch_async(queue, v5);
 }
 
-- (void)_emitTelemetryLockedEndTime:(uint64_t)a1
+- (void)_emitTelemetryLockedEndTime:(uint64_t)time
 {
   v81 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (time)
   {
-    v3 = a1;
-    v4 = a2 - *(a1 + 40);
+    timeCopy = time;
+    v4 = a2 - *(time + 40);
     if (_MergedGlobals != -1)
     {
       dispatch_once(&_MergedGlobals, &__block_literal_global_557);
     }
 
     v5 = __udivti3() / 1000000000.0;
-    if (*(v3 + 48) || v5 >= 60.0)
+    if (*(timeCopy + 48) || v5 >= 60.0)
     {
       v74 = 0u;
       v75 = 0u;
       v72 = 0u;
       v73 = 0u;
-      obj = *(v3 + 16);
+      obj = *(timeCopy + 16);
       v51 = [obj countByEnumeratingWithState:&v72 objects:v80 count:16];
       v9 = 0;
       v10 = 0;
@@ -181,7 +181,7 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
         v13 = 0;
         v49 = *v73;
         v14 = v5;
-        v50 = v3;
+        v50 = timeCopy;
         do
         {
           v15 = 0;
@@ -196,7 +196,7 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
             v52 = v15;
             v56 = *(*(&v72 + 1) + 8 * v15);
             v57 = v9;
-            v16 = [*(v3 + 16) objectForKeyedSubscript:?];
+            v16 = [*(timeCopy + 16) objectForKeyedSubscript:?];
             v68 = 0u;
             v69 = 0u;
             v70 = 0u;
@@ -243,17 +243,17 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
 
                         v26 = *(*(&v64 + 1) + 8 * i);
                         v27 = [v18 objectForKeyedSubscript:v26];
-                        v2 = [v27 unsignedLongLongValue];
+                        unsignedLongLongValue = [v27 unsignedLongLongValue];
 
-                        if (v22 < v2)
+                        if (v22 < unsignedLongLongValue)
                         {
                           v28 = v26;
 
                           v21 = v28;
-                          v22 = v2;
+                          v22 = unsignedLongLongValue;
                         }
 
-                        v23 += v2;
+                        v23 += unsignedLongLongValue;
                       }
 
                       v20 = [v18 countByEnumeratingWithState:&v64 objects:v78 count:16];
@@ -273,12 +273,12 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
                   v30 = v29;
                   if (v59 < v23)
                   {
-                    v2 = v29;
+                    unsignedLongLongValue = v29;
 
                     v31 = v21;
                     v57 = v31;
                     v53 = v22;
-                    v54 = v2;
+                    v54 = unsignedLongLongValue;
                     v59 = v23;
                   }
 
@@ -305,13 +305,13 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
                   [v32 setObject:v34 forKeyedSubscript:@"duration"];
 
                   v35 = +[STYFrameworkHelper sharedHelper];
-                  v2 = [v35 logHandle];
+                  unsignedLongLongValue = [v35 logHandle];
 
-                  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+                  if (os_log_type_enabled(unsignedLongLongValue, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412290;
                     v77 = v32;
-                    _os_log_impl(&dword_2656CE000, v2, OS_LOG_TYPE_INFO, "Emitting com.apple.Sentry.SignpostStreaming.SubsystemCategory telemetry %@", buf, 0xCu);
+                    _os_log_impl(&dword_2656CE000, unsignedLongLongValue, OS_LOG_TYPE_INFO, "Emitting com.apple.Sentry.SignpostStreaming.SubsystemCategory telemetry %@", buf, 0xCu);
                   }
 
                   v13 = v23 + v63;
@@ -328,7 +328,7 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
             }
 
             v15 = v52 + 1;
-            v3 = v50;
+            timeCopy = v50;
             v9 = v57;
             v10 = v53;
           }
@@ -377,30 +377,30 @@ void __46__STYSignpostStreamingStatistics_addSignpost___block_invoke(uint64_t a1
       [OUTLINED_FUNCTION_6() setObject:? forKeyedSubscript:?];
 
       v46 = +[STYFrameworkHelper sharedHelper];
-      v47 = [v46 logHandle];
+      logHandle = [v46 logHandle];
 
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         v77 = v36;
-        _os_log_impl(&dword_2656CE000, v47, OS_LOG_TYPE_INFO, "Emitting com.apple.Sentry.SignpostStreaming telemetry %@", buf, 0xCu);
+        _os_log_impl(&dword_2656CE000, logHandle, OS_LOG_TYPE_INFO, "Emitting com.apple.Sentry.SignpostStreaming telemetry %@", buf, 0xCu);
       }
 
       AnalyticsSendEvent();
-      [(STYSignpostStreamingStatistics *)v3 _resetLocked];
+      [(STYSignpostStreamingStatistics *)timeCopy _resetLocked];
 
-      v7 = v40;
+      logHandle2 = v40;
     }
 
     else
     {
       v6 = +[STYFrameworkHelper sharedHelper];
-      v7 = [v6 logHandle];
+      logHandle2 = [v6 logHandle];
 
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        _os_log_debug_impl(&dword_2656CE000, v7, OS_LOG_TYPE_DEBUG, "No signposts, and only monitoring for less than a minute, not emitting telemetry", buf, 2u);
+        _os_log_debug_impl(&dword_2656CE000, logHandle2, OS_LOG_TYPE_DEBUG, "No signposts, and only monitoring for less than a minute, not emitting telemetry", buf, 2u);
       }
     }
   }
@@ -421,15 +421,15 @@ void __38__STYSignpostStreamingStatistics_init__block_invoke_61(uint64_t a1)
 
 - (void)_resetLocked
 {
-  if (a1)
+  if (self)
   {
-    a1[5] = mach_absolute_time();
-    a1[6] = 0;
+    self[5] = mach_absolute_time();
+    self[6] = 0;
     v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v3 = a1[2];
-    a1[2] = v2;
+    v3 = self[2];
+    self[2] = v2;
 
-    v4 = a1[3];
+    v4 = self[3];
     dispatch_time(0, 21600000000000);
     v5 = OUTLINED_FUNCTION_6();
 

@@ -1,21 +1,21 @@
 @interface ATXDigestOnboardingSuggestionLogging
 - (ATXDigestOnboardingSuggestionLogging)init;
-- (ATXDigestOnboardingSuggestionLogging)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)a3;
-- (void)logDigestOnboardingSuggestionWithOutcome:(int)a3 timeToResolution:(double)a4;
+- (ATXDigestOnboardingSuggestionLogging)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)stream;
+- (void)logDigestOnboardingSuggestionWithOutcome:(int)outcome timeToResolution:(double)resolution;
 @end
 
 @implementation ATXDigestOnboardingSuggestionLogging
 
-- (ATXDigestOnboardingSuggestionLogging)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)a3
+- (ATXDigestOnboardingSuggestionLogging)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXDigestOnboardingSuggestionLogging;
   v6 = [(ATXDigestOnboardingSuggestionLogging *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_digestOnboardingSuggestionLoggingBiomeStream, a3);
+    objc_storeStrong(&v6->_digestOnboardingSuggestionLoggingBiomeStream, stream);
   }
 
   return v7;
@@ -29,13 +29,13 @@
   return v4;
 }
 
-- (void)logDigestOnboardingSuggestionWithOutcome:(int)a3 timeToResolution:(double)a4
+- (void)logDigestOnboardingSuggestionWithOutcome:(int)outcome timeToResolution:(double)resolution
 {
-  v5 = *&a3;
+  v5 = *&outcome;
   v9 = objc_opt_new();
-  v7 = [[ATXDigestOnboardingSuggestionLoggingEvent alloc] initWithSessionUUID:v9 outcome:v5 timeToResolution:a4];
-  v8 = [(ATXDigestOnboardingSuggestionLoggingBiomeStream *)self->_digestOnboardingSuggestionLoggingBiomeStream source];
-  [v8 sendEvent:v7];
+  v7 = [[ATXDigestOnboardingSuggestionLoggingEvent alloc] initWithSessionUUID:v9 outcome:v5 timeToResolution:resolution];
+  source = [(ATXDigestOnboardingSuggestionLoggingBiomeStream *)self->_digestOnboardingSuggestionLoggingBiomeStream source];
+  [source sendEvent:v7];
 }
 
 @end

@@ -8,9 +8,9 @@
 + (id)mad_embeddingVersionAttribute
 {
   v0 = objc_alloc(MEMORY[0x1E69DF600]);
-  v1 = [objc_opt_class() mad_embeddingVersionAttributeName];
+  mad_embeddingVersionAttributeName = [objc_opt_class() mad_embeddingVersionAttributeName];
   v2 = [objc_alloc(MEMORY[0x1E69DF610]) initWithIntegerDefaultValue:0];
-  v3 = [v0 initWithName:v1 columnType:v2];
+  v3 = [v0 initWithName:mad_embeddingVersionAttributeName columnType:v2];
 
   return v3;
 }

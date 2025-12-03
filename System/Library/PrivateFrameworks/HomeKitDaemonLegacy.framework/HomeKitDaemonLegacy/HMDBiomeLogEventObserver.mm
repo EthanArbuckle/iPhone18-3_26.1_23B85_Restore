@@ -1,17 +1,17 @@
 @interface HMDBiomeLogEventObserver
 + (id)shortDescription;
-- (HMDBiomeLogEventObserver)initWithBiomeEventManager:(id)a3 dataSource:(id)a4;
-- (void)observeEvent:(id)a3;
+- (HMDBiomeLogEventObserver)initWithBiomeEventManager:(id)manager dataSource:(id)source;
+- (void)observeEvent:(id)event;
 @end
 
 @implementation HMDBiomeLogEventObserver
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -19,16 +19,16 @@
     *buf = 138543618;
     v47 = v8;
     v48 = 2112;
-    v49 = v4;
+    v49 = eventCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Received biome log event %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = v4;
+  v9 = eventCopy;
   if (objc_opt_respondsToSelector())
   {
     v38 = v9;
-    [v9 biomeEventsRepresentationForLogObserver:v6];
+    [v9 biomeEventsRepresentationForLogObserver:selfCopy];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -69,9 +69,9 @@
 
           if (v20)
           {
-            if (v6)
+            if (selfCopy)
             {
-              Property = objc_getProperty(v6, v21, 8, 1);
+              Property = objc_getProperty(selfCopy, v21, 8, 1);
             }
 
             else
@@ -100,9 +100,9 @@
 
             if (v25)
             {
-              if (v6)
+              if (selfCopy)
               {
-                v27 = objc_getProperty(v6, v26, 8, 1);
+                v27 = objc_getProperty(selfCopy, v26, 8, 1);
               }
 
               else
@@ -131,9 +131,9 @@
 
               if (v30)
               {
-                if (v6)
+                if (selfCopy)
                 {
-                  v32 = objc_getProperty(v6, v31, 8, 1);
+                  v32 = objc_getProperty(selfCopy, v31, 8, 1);
                 }
 
                 else
@@ -148,7 +148,7 @@
               else
               {
                 context = objc_autoreleasePoolPush();
-                v33 = v6;
+                v33 = selfCopy;
                 v34 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                 {
@@ -187,18 +187,18 @@
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDBiomeLogEventObserver)initWithBiomeEventManager:(id)a3 dataSource:(id)a4
+- (HMDBiomeLogEventObserver)initWithBiomeEventManager:(id)manager dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HMDBiomeLogEventObserver;
   v9 = [(HMDBiomeLogEventObserver *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_biomeEventManager, a3);
-    objc_storeWeak(&v10->_dataSource, v8);
+    objc_storeStrong(&v9->_biomeEventManager, manager);
+    objc_storeWeak(&v10->_dataSource, sourceCopy);
   }
 
   return v10;

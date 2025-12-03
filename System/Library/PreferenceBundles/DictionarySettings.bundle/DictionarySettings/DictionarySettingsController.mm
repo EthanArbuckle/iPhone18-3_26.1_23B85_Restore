@@ -1,20 +1,20 @@
 @interface DictionarySettingsController
 - (BOOL)isTTYEnabled;
 - (DUDictionaryManager)dictionaryManager;
-- (id)downloadFailedAlertWithError:(id)a3;
+- (id)downloadFailedAlertWithError:(id)error;
 - (id)specifiers;
-- (int64_t)runningAssetOperationForDictionary:(id)a3;
-- (void)activateDictionaryForSpecifier:(id)a3;
-- (void)deactivateDictionaryForSpecifier:(id)a3;
+- (int64_t)runningAssetOperationForDictionary:(id)dictionary;
+- (void)activateDictionaryForSpecifier:(id)specifier;
+- (void)deactivateDictionaryForSpecifier:(id)specifier;
 - (void)emitNavigationEventForRootController;
 - (void)reloadDictionariesList;
-- (void)setErrorMessageToContentUnavailableView:(id)a3;
-- (void)setRunningAssetOperation:(int64_t)a3 forDictionary:(id)a4;
-- (void)setupProgressHandlerForAsset:(id)a3 specifier:(id)a4;
+- (void)setErrorMessageToContentUnavailableView:(id)view;
+- (void)setRunningAssetOperation:(int64_t)operation forDictionary:(id)dictionary;
+- (void)setupProgressHandlerForAsset:(id)asset specifier:(id)specifier;
 - (void)showPlaceholderViewsIfNeeded;
-- (void)startDownloadForSpecifier:(id)a3;
-- (void)toggleDictionaryActivatedState:(id)a3;
-- (void)updateProgressForSpecifier:(id)a3 operationState:(id)a4;
+- (void)startDownloadForSpecifier:(id)specifier;
+- (void)toggleDictionaryActivatedState:(id)state;
+- (void)updateProgressForSpecifier:(id)specifier operationState:(id)state;
 - (void)viewDidLoad;
 @end
 
@@ -22,25 +22,25 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(DictionarySettingsController *)v2 loadSpecifiersFromPlistName:@"DictionarySettings" target:v2];
+    v5 = [(DictionarySettingsController *)selfCopy loadSpecifiersFromPlistName:@"DictionarySettings" target:selfCopy];
     v6 = [v5 mutableCopy];
 
     v30 = v3;
-    objc_storeStrong(&v2->PSListController_opaque[v3], v6);
-    v7 = [(DictionarySettingsController *)v2 dictionaryManager];
-    v8 = [v7 availableDefinitionDictionaries];
+    objc_storeStrong(&selfCopy->PSListController_opaque[v3], v6);
+    dictionaryManager = [(DictionarySettingsController *)selfCopy dictionaryManager];
+    availableDefinitionDictionaries = [dictionaryManager availableDefinitionDictionaries];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v29 = v8;
-    obj = [v8 reverseObjectEnumerator];
+    v29 = availableDefinitionDictionaries;
+    obj = [availableDefinitionDictionaries reverseObjectEnumerator];
     v9 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (!v9)
     {
@@ -51,7 +51,7 @@
     v11 = *v35;
     v12 = PSCellClassKey;
     v33 = PSValueKey;
-    v31 = v2;
+    v31 = selfCopy;
     while (1)
     {
       for (i = 0; i != v10; i = i + 1)
@@ -62,43 +62,43 @@
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        if (![v14 isTTYDictionary] || -[DictionarySettingsController isTTYEnabled](v2, "isTTYEnabled"))
+        if (![v14 isTTYDictionary] || -[DictionarySettingsController isTTYEnabled](selfCopy, "isTTYEnabled"))
         {
-          v15 = [PSSpecifier preferenceSpecifierNamed:0 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+          v15 = [PSSpecifier preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
           [v15 setButtonAction:"toggleDictionaryActivatedState:"];
           [v15 setProperty:objc_opt_class() forKey:v12];
           [v15 setProperty:v14 forKey:v33];
           [v6 insertObject:v15 atIndex:0];
           if ([v14 needsDownloadNewerVersion])
           {
-            [(DictionarySettingsController *)v2 deactivateDictionaryForSpecifier:v15];
+            [(DictionarySettingsController *)selfCopy deactivateDictionaryForSpecifier:v15];
             goto LABEL_16;
           }
 
-          v16 = [(DictionarySettingsController *)v2 runningAssetOperationForDictionary:v14];
+          v16 = [(DictionarySettingsController *)selfCopy runningAssetOperationForDictionary:v14];
           v17 = v10;
           v18 = v11;
           v19 = v12;
           v20 = v6;
           v21 = v16;
-          v22 = [v14 rawAsset];
-          v23 = [v22 state];
+          rawAsset = [v14 rawAsset];
+          state = [rawAsset state];
 
-          v24 = v23 != &dword_4 || v21 == 1;
+          v24 = state != &dword_4 || v21 == 1;
           v6 = v20;
           v12 = v19;
           v11 = v18;
           v10 = v17;
-          v2 = v31;
+          selfCopy = v31;
           if (!v24)
           {
-            v25 = [v14 rawAsset];
-            v26 = [v25 attributes];
-            v27 = [v26 objectForKeyedSubscript:@"DictionaryIdentifier"];
+            rawAsset2 = [v14 rawAsset];
+            attributes = [rawAsset2 attributes];
+            v27 = [attributes objectForKeyedSubscript:@"DictionaryIdentifier"];
             NSLog(@"DictionaryUI: DictionarySettings start download in '-specifiers' for dictionary(%@)", v27);
 
 LABEL_16:
-            [(DictionarySettingsController *)v2 activateDictionaryForSpecifier:v15];
+            [(DictionarySettingsController *)selfCopy activateDictionaryForSpecifier:v15];
           }
 
           continue;
@@ -110,8 +110,8 @@ LABEL_16:
       {
 LABEL_20:
 
-        [(DictionarySettingsController *)v2 showPlaceholderViewsIfNeeded];
-        v4 = *&v2->PSListController_opaque[v30];
+        [(DictionarySettingsController *)selfCopy showPlaceholderViewsIfNeeded];
+        v4 = *&selfCopy->PSListController_opaque[v30];
         break;
       }
     }
@@ -122,29 +122,29 @@ LABEL_20:
 
 - (void)showPlaceholderViewsIfNeeded
 {
-  v3 = [(DictionarySettingsController *)self dictionaryManager];
-  v4 = [v3 availableDefinitionDictionaries];
-  if ([v4 count])
+  dictionaryManager = [(DictionarySettingsController *)self dictionaryManager];
+  availableDefinitionDictionaries = [dictionaryManager availableDefinitionDictionaries];
+  if ([availableDefinitionDictionaries count])
   {
 
 LABEL_4:
-    v7 = [(DictionarySettingsController *)self loadingSpinner];
-    [v7 stopAnimating];
+    loadingSpinner = [(DictionarySettingsController *)self loadingSpinner];
+    [loadingSpinner stopAnimating];
 
-    v8 = [(DictionarySettingsController *)self loadingSpinner];
-    [v8 removeFromSuperview];
+    loadingSpinner2 = [(DictionarySettingsController *)self loadingSpinner];
+    [loadingSpinner2 removeFromSuperview];
 
     [(DictionarySettingsController *)self setLoadingSpinner:0];
 LABEL_5:
-    v9 = [(DictionarySettingsController *)self dictionariesUnavailableView];
-    [v9 removeFromSuperview];
+    dictionariesUnavailableView = [(DictionarySettingsController *)self dictionariesUnavailableView];
+    [dictionariesUnavailableView removeFromSuperview];
 
     [(DictionarySettingsController *)self setDictionariesUnavailableView:0];
     return;
   }
 
-  v5 = [(DictionarySettingsController *)self view];
-  [v5 frame];
+  view = [(DictionarySettingsController *)self view];
+  [view frame];
   IsEmpty = CGRectIsEmpty(v28);
 
   if (IsEmpty)
@@ -154,21 +154,21 @@ LABEL_5:
 
   if (![(DictionarySettingsController *)self performedRemoteQuery])
   {
-    v21 = [(DictionarySettingsController *)self loadingSpinner];
+    loadingSpinner3 = [(DictionarySettingsController *)self loadingSpinner];
 
-    if (!v21)
+    if (!loadingSpinner3)
     {
       v22 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
       [(DictionarySettingsController *)self setLoadingSpinner:v22];
-      v23 = [(DictionarySettingsController *)self view];
-      [v23 bounds];
+      view2 = [(DictionarySettingsController *)self view];
+      [view2 bounds];
       MidX = CGRectGetMidX(v29);
-      v25 = [(DictionarySettingsController *)self view];
-      [v25 bounds];
+      view3 = [(DictionarySettingsController *)self view];
+      [view3 bounds];
       [v22 setCenter:{MidX, CGRectGetMidY(v30)}];
 
-      v26 = [(DictionarySettingsController *)self view];
-      [v26 addSubview:v22];
+      view4 = [(DictionarySettingsController *)self view];
+      [view4 addSubview:v22];
 
       [v22 startAnimating];
     }
@@ -176,9 +176,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v10 = [(DictionarySettingsController *)self dictionariesUnavailableView];
+  dictionariesUnavailableView2 = [(DictionarySettingsController *)self dictionariesUnavailableView];
 
-  if (!v10)
+  if (!dictionariesUnavailableView2)
   {
     v11 = [_UIContentUnavailableView alloc];
     v12 = [NSBundle bundleForClass:objc_opt_class()];
@@ -187,12 +187,12 @@ LABEL_5:
 
     [(DictionarySettingsController *)self setErrorMessageToContentUnavailableView:v14];
     [v14 setAutoresizingMask:18];
-    v15 = [(DictionarySettingsController *)self view];
-    [v15 bounds];
+    view5 = [(DictionarySettingsController *)self view];
+    [view5 bounds];
     [v14 setFrame:?];
 
-    v16 = [(DictionarySettingsController *)self view];
-    [v16 addSubview:v14];
+    view6 = [(DictionarySettingsController *)self view];
+    [view6 addSubview:v14];
 
     [(DictionarySettingsController *)self setDictionariesUnavailableView:v14];
     v17 = DCSDictionaryAssetCopyDiagnosticLog();
@@ -204,29 +204,29 @@ LABEL_5:
     }
   }
 
-  v19 = [(DictionarySettingsController *)self loadingSpinner];
-  [v19 stopAnimating];
+  loadingSpinner4 = [(DictionarySettingsController *)self loadingSpinner];
+  [loadingSpinner4 stopAnimating];
 
-  v20 = [(DictionarySettingsController *)self loadingSpinner];
-  [v20 removeFromSuperview];
+  loadingSpinner5 = [(DictionarySettingsController *)self loadingSpinner];
+  [loadingSpinner5 removeFromSuperview];
 
   [(DictionarySettingsController *)self setLoadingSpinner:0];
 }
 
-- (void)setErrorMessageToContentUnavailableView:(id)a3
+- (void)setErrorMessageToContentUnavailableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_diagnostics())
   {
     v5 = DCSDictionaryAssetGetAssetType();
     v6 = ASServerURLForAssetType();
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"DICTIONARY_UNAVAILABLE_MESSAGE_INTERNAL" value:&stru_C998 table:@"DictionarySettings"];
-    v9 = [(DictionarySettingsController *)self catalogDownloadResult];
-    v10 = [v6 absoluteString];
-    v11 = [NSString stringWithFormat:v8, v9, v10];
+    catalogDownloadResult = [(DictionarySettingsController *)self catalogDownloadResult];
+    absoluteString = [v6 absoluteString];
+    v11 = [NSString stringWithFormat:v8, catalogDownloadResult, absoluteString];
 
-    [v4 setButtonTitle:@"Check Connection"];
+    [viewCopy setButtonTitle:@"Check Connection"];
     v12 = [v5 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
     v13 = [NSString stringWithFormat:@"/%@/%@.xml", v12, v12];
     v14 = [v6 URLByAppendingPathComponent:v13 isDirectory:0];
@@ -237,7 +237,7 @@ LABEL_5:
     v18[3] = &unk_C578;
     v19 = v14;
     v15 = v14;
-    [v4 setButtonAction:v18];
+    [viewCopy setButtonAction:v18];
   }
 
   else
@@ -247,7 +247,7 @@ LABEL_5:
     v11 = [NSMutableString stringWithString:v17];
   }
 
-  [v4 setMessage:v11];
+  [viewCopy setMessage:v11];
 }
 
 - (void)viewDidLoad
@@ -273,14 +273,14 @@ LABEL_5:
     [v6 setNetworkActivityIndicatorVisible:1];
 
     NSLog(@"DictionaryUI: Start catalog download");
-    v7 = [(DictionarySettingsController *)self dictionaryManager];
+    dictionaryManager = [(DictionarySettingsController *)self dictionaryManager];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_2698;
     v13[3] = &unk_C630;
     v8 = v3;
     v14 = v8;
-    [v7 _downloadDictionaryAssetCatalogWithTimeout:60 completion:v13];
+    [dictionaryManager _downloadDictionaryAssetCatalogWithTimeout:60 completion:v13];
 
     v9 = dispatch_time(0, 65000000000);
     block[0] = _NSConcreteStackBlock;
@@ -304,14 +304,14 @@ LABEL_5:
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"Dictionary" table:@"DictionarySettings" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"Dictionary" table:@"DictionarySettings" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"General" table:@"DictionarySettings" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"General" table:@"DictionarySettings" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];
@@ -322,41 +322,41 @@ LABEL_5:
 {
   if (![(NSMutableDictionary *)self->_downloadingAssets count])
   {
-    v3 = [(DictionarySettingsController *)self dictionaryManager];
-    v4 = [v3 _allAvailableDefinitionDictionaries];
+    dictionaryManager = [(DictionarySettingsController *)self dictionaryManager];
+    _allAvailableDefinitionDictionaries = [dictionaryManager _allAvailableDefinitionDictionaries];
 
     [(DictionarySettingsController *)self reloadSpecifiers];
   }
 }
 
-- (void)toggleDictionaryActivatedState:(id)a3
+- (void)toggleDictionaryActivatedState:(id)state
 {
-  v4 = a3;
-  [v4 propertyForKey:PSValueKey];
+  stateCopy = state;
+  [stateCopy propertyForKey:PSValueKey];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2B80;
   v8 = block[3] = &unk_C680;
-  v9 = self;
-  v10 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v10 = stateCopy;
+  v5 = stateCopy;
   v6 = v8;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setupProgressHandlerForAsset:(id)a3 specifier:(id)a4
+- (void)setupProgressHandlerForAsset:(id)asset specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_2CF0;
   v10[3] = &unk_C6D0;
-  v8 = v6;
+  v8 = assetCopy;
   v11 = v8;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = specifierCopy;
   v12 = v9;
   [v8 attachProgressCallBack:v10];
 
@@ -364,67 +364,67 @@ LABEL_5:
   objc_destroyWeak(&location);
 }
 
-- (void)updateProgressForSpecifier:(id)a3 operationState:(id)a4
+- (void)updateProgressForSpecifier:(id)specifier operationState:(id)state
 {
-  v12 = a4;
+  stateCopy = state;
   v5 = PSValueKey;
-  v6 = a3;
-  v7 = [v6 propertyForKey:v5];
-  v8 = [v6 propertyForKey:PSTableCellKey];
+  specifierCopy = specifier;
+  v7 = [specifierCopy propertyForKey:v5];
+  v8 = [specifierCopy propertyForKey:PSTableCellKey];
 
-  v9 = [v12 objectForKeyedSubscript:@"MAProgressNotification"];
+  v9 = [stateCopy objectForKeyedSubscript:@"MAProgressNotification"];
   if (([v9 isStalled] & 1) == 0)
   {
-    v10 = [v9 totalWritten];
-    *&v11 = v10 / [v9 totalExpected];
+    totalWritten = [v9 totalWritten];
+    *&v11 = totalWritten / [v9 totalExpected];
     [v7 setProgress:v11];
-    [v8 reloadDataWithAssetOperationState:v12];
+    [v8 reloadDataWithAssetOperationState:stateCopy];
   }
 }
 
-- (void)activateDictionaryForSpecifier:(id)a3
+- (void)activateDictionaryForSpecifier:(id)specifier
 {
-  v10 = a3;
-  v4 = [v10 propertyForKey:PSValueKey];
-  v5 = [v10 propertyForKey:PSTableCellKey];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:PSValueKey];
+  v5 = [specifierCopy propertyForKey:PSTableCellKey];
   [v4 setActivated:1];
-  v6 = [v4 rawAsset];
-  if (([v6 wasLocal] & 1) == 0)
+  rawAsset = [v4 rawAsset];
+  if (([rawAsset wasLocal] & 1) == 0)
   {
-    [(DictionarySettingsController *)self setupProgressHandlerForAsset:v6 specifier:v10];
-    v7 = [v4 rawAsset];
-    v8 = [v7 attributes];
-    v9 = [v8 objectForKeyedSubscript:@"DictionaryIdentifier"];
+    [(DictionarySettingsController *)self setupProgressHandlerForAsset:rawAsset specifier:specifierCopy];
+    rawAsset2 = [v4 rawAsset];
+    attributes = [rawAsset2 attributes];
+    v9 = [attributes objectForKeyedSubscript:@"DictionaryIdentifier"];
     NSLog(@"DictionaryUI: DictionarySettings start download in '-activateDictionaryForSpecifier' for dictionary(%@)", v9);
 
-    [(DictionarySettingsController *)self startDownloadForSpecifier:v10];
+    [(DictionarySettingsController *)self startDownloadForSpecifier:specifierCopy];
   }
 
   [v5 reloadDataWithAssetOperationState:0];
 }
 
-- (void)deactivateDictionaryForSpecifier:(id)a3
+- (void)deactivateDictionaryForSpecifier:(id)specifier
 {
   v4 = PSValueKey;
-  v5 = a3;
-  v24 = [v5 propertyForKey:v4];
-  v6 = [v5 propertyForKey:PSTableCellKey];
+  specifierCopy = specifier;
+  v24 = [specifierCopy propertyForKey:v4];
+  v6 = [specifierCopy propertyForKey:PSTableCellKey];
 
-  v7 = [v24 rawAsset];
-  v8 = [v7 state];
+  rawAsset = [v24 rawAsset];
+  state = [rawAsset state];
 
-  if (v8 == &dword_4)
+  if (state == &dword_4)
   {
     [(DictionarySettingsController *)self setRunningAssetOperation:2 forDictionary:v24];
-    v9 = [v24 rawAsset];
-    v10 = [v9 cancelDownloadSync];
+    rawAsset2 = [v24 rawAsset];
+    cancelDownloadSync = [rawAsset2 cancelDownloadSync];
 
-    v11 = [v24 rawAsset];
-    v12 = [v11 attributes];
-    v13 = [v12 objectForKeyedSubscript:@"DictionaryIdentifier"];
-    NSLog(@"DictionaryUI: DictionarySettings canceled download for dictionary(%@) with error(%ld)", v13, v10);
+    rawAsset3 = [v24 rawAsset];
+    attributes = [rawAsset3 attributes];
+    v13 = [attributes objectForKeyedSubscript:@"DictionaryIdentifier"];
+    NSLog(@"DictionaryUI: DictionarySettings canceled download for dictionary(%@) with error(%ld)", v13, cancelDownloadSync);
 
-    if (v10)
+    if (cancelDownloadSync)
     {
       [(DictionarySettingsController *)self setRunningAssetOperation:0 forDictionary:v24];
       goto LABEL_9;
@@ -435,29 +435,29 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v14 = [v24 rawAsset];
-  v15 = [v14 wasPurgeable];
+  rawAsset4 = [v24 rawAsset];
+  wasPurgeable = [rawAsset4 wasPurgeable];
 
-  if (v15)
+  if (wasPurgeable)
   {
-    v16 = [v24 rawAsset];
-    v17 = [v16 attributes];
+    rawAsset5 = [v24 rawAsset];
+    attributes2 = [rawAsset5 attributes];
     DCSDictionaryAssetAttributesWillBePurged();
 
-    v18 = [v24 rawAsset];
-    v19 = [v18 purgeSync];
+    rawAsset6 = [v24 rawAsset];
+    purgeSync = [rawAsset6 purgeSync];
 
-    v20 = [v24 rawAsset];
-    v21 = [v20 attributes];
-    v22 = [v21 objectForKeyedSubscript:@"DictionaryIdentifier"];
-    NSLog(@"DictionaryUI: DictionarySettings purged dictionary(%@) with error(%ld)", v22, v19);
+    rawAsset7 = [v24 rawAsset];
+    attributes3 = [rawAsset7 attributes];
+    v22 = [attributes3 objectForKeyedSubscript:@"DictionaryIdentifier"];
+    NSLog(@"DictionaryUI: DictionarySettings purged dictionary(%@) with error(%ld)", v22, purgeSync);
 
-    if (!v19)
+    if (!purgeSync)
     {
       [v24 setActivated:0];
 LABEL_8:
-      v23 = [v24 rawAsset];
-      [v23 refreshState];
+      rawAsset8 = [v24 rawAsset];
+      [rawAsset8 refreshState];
 
       [v6 reloadDataWithAssetOperationState:0];
     }
@@ -466,12 +466,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)startDownloadForSpecifier:(id)a3
+- (void)startDownloadForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v5 = [v4 propertyForKey:PSValueKey];
-  v6 = [v5 rawAsset];
+  v5 = [specifierCopy propertyForKey:PSValueKey];
+  rawAsset = [v5 rawAsset];
   downloadingAssets = self->_downloadingAssets;
   if (!downloadingAssets)
   {
@@ -482,8 +482,8 @@ LABEL_9:
   }
 
   v9 = +[NSNull null];
-  v10 = [v6 assetId];
-  [(NSMutableDictionary *)downloadingAssets setObject:v9 forKey:v10];
+  assetId = [rawAsset assetId];
+  [(NSMutableDictionary *)downloadingAssets setObject:v9 forKey:assetId];
 
   [(DictionarySettingsController *)self setRunningAssetOperation:1 forDictionary:v5];
   v11 = objc_opt_new();
@@ -493,11 +493,11 @@ LABEL_9:
   v15[1] = 3221225472;
   v15[2] = sub_35A4;
   v15[3] = &unk_C720;
-  v12 = v6;
+  v12 = rawAsset;
   v16 = v12;
   v13 = v5;
   v17 = v13;
-  v14 = v4;
+  v14 = specifierCopy;
   v18 = v14;
   objc_copyWeak(&v19, &location);
   [v12 startDownload:v11 then:v15];
@@ -507,15 +507,15 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (id)downloadFailedAlertWithError:(id)a3
+- (id)downloadFailedAlertWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"DICTIONARY_DOWNLOAD_FAILED_MESSAGE" value:&stru_C998 table:@"DictionarySettings"];
 
-  if (v3)
+  if (errorCopy)
   {
-    v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (%ld)", [v3 integerValue]);
+    v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (%ld)", [errorCopy integerValue]);
     v7 = [v5 stringByAppendingString:v6];
 
     v5 = v7;
@@ -531,20 +531,20 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)runningAssetOperationForDictionary:(id)a3
+- (int64_t)runningAssetOperationForDictionary:(id)dictionary
 {
   runningAssetOperationInfoForDictionary = self->_runningAssetOperationInfoForDictionary;
-  v4 = [a3 rawAsset];
-  v5 = [v4 assetId];
-  v6 = [(NSMutableDictionary *)runningAssetOperationInfoForDictionary objectForKey:v5];
-  v7 = [v6 integerValue];
+  rawAsset = [dictionary rawAsset];
+  assetId = [rawAsset assetId];
+  v6 = [(NSMutableDictionary *)runningAssetOperationInfoForDictionary objectForKey:assetId];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (void)setRunningAssetOperation:(int64_t)a3 forDictionary:(id)a4
+- (void)setRunningAssetOperation:(int64_t)operation forDictionary:(id)dictionary
 {
-  v11 = a4;
+  dictionaryCopy = dictionary;
   runningAssetOperationInfoForDictionary = self->_runningAssetOperationInfoForDictionary;
   if (!runningAssetOperationInfoForDictionary)
   {
@@ -554,10 +554,10 @@ LABEL_9:
     runningAssetOperationInfoForDictionary = self->_runningAssetOperationInfoForDictionary;
   }
 
-  v8 = [NSNumber numberWithInteger:a3];
-  v9 = [v11 rawAsset];
-  v10 = [v9 assetId];
-  [(NSMutableDictionary *)runningAssetOperationInfoForDictionary setObject:v8 forKey:v10];
+  v8 = [NSNumber numberWithInteger:operation];
+  rawAsset = [dictionaryCopy rawAsset];
+  assetId = [rawAsset assetId];
+  [(NSMutableDictionary *)runningAssetOperationInfoForDictionary setObject:v8 forKey:assetId];
 }
 
 - (DUDictionaryManager)dictionaryManager
@@ -575,9 +575,9 @@ LABEL_9:
 - (BOOL)isTTYEnabled
 {
   v2 = +[RTTSettings sharedInstance];
-  v3 = [v2 TTYSoftwareEnabled];
+  tTYSoftwareEnabled = [v2 TTYSoftwareEnabled];
 
-  return v3;
+  return tTYSoftwareEnabled;
 }
 
 @end

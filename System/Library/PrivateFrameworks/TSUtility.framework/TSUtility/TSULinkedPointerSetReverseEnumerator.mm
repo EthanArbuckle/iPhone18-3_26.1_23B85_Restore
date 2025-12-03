@@ -1,18 +1,18 @@
 @interface TSULinkedPointerSetReverseEnumerator
-- (TSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)a3;
+- (TSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)entry;
 - (id)nextObject;
 @end
 
 @implementation TSULinkedPointerSetReverseEnumerator
 
-- (TSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)a3
+- (TSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)entry
 {
   v5.receiver = self;
   v5.super_class = TSULinkedPointerSetReverseEnumerator;
   result = [(TSULinkedPointerSetReverseEnumerator *)&v5 init];
   if (result)
   {
-    result->mTail = a3;
+    result->mTail = entry;
     result->mLastUsed = 0;
   }
 

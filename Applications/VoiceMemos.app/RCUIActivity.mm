@@ -1,20 +1,20 @@
 @interface RCUIActivity
 - (NSArray)recordingUUIDs;
-- (RCUIActivity)initWithShareableCompositions:(id)a3;
+- (RCUIActivity)initWithShareableCompositions:(id)compositions;
 @end
 
 @implementation RCUIActivity
 
-- (RCUIActivity)initWithShareableCompositions:(id)a3
+- (RCUIActivity)initWithShareableCompositions:(id)compositions
 {
-  v4 = a3;
+  compositionsCopy = compositions;
   v8.receiver = self;
   v8.super_class = RCUIActivity;
   v5 = [(RCUIActivity *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(RCUIActivity *)v5 setShareableCompositions:v4];
+    [(RCUIActivity *)v5 setShareableCompositions:compositionsCopy];
   }
 
   return v6;
@@ -30,8 +30,8 @@
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(RCUIActivity *)self shareableCompositions];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    shareableCompositions = [(RCUIActivity *)self shareableCompositions];
+    v6 = [shareableCompositions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -43,17 +43,17 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(shareableCompositions);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) recordingUUID];
-          [v4 addObject:v10];
+          recordingUUID = [*(*(&v14 + 1) + 8 * v9) recordingUUID];
+          [v4 addObject:recordingUUID];
 
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [shareableCompositions countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);

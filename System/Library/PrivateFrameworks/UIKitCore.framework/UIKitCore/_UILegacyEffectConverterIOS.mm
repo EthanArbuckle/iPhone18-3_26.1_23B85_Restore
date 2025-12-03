@@ -1,59 +1,59 @@
 @interface _UILegacyEffectConverterIOS
-- (id)backdropSettingsForBlurStyle:(int64_t)a3;
-- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)a3;
-- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)a3;
+- (id)backdropSettingsForBlurStyle:(int64_t)style;
+- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)style;
+- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)style;
 @end
 
 @implementation _UILegacyEffectConverterIOS
 
-- (id)backdropSettingsForBlurStyle:(int64_t)a3
+- (id)backdropSettingsForBlurStyle:(int64_t)style
 {
   v3 = -2;
   v4 = 3901;
   v5 = 3902;
-  if (a3 != 502)
+  if (style != 502)
   {
     v5 = -2;
   }
 
-  if (a3 != 501)
+  if (style != 501)
   {
     v4 = v5;
   }
 
   v6 = 2050;
   v7 = 2080;
-  if (a3 != 100)
+  if (style != 100)
   {
     v7 = -2;
   }
 
-  if (a3 != 99)
+  if (style != 99)
   {
     v6 = v7;
   }
 
-  if (a3 <= 500)
+  if (style <= 500)
   {
     v4 = v6;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = 2020;
   }
 
-  if (!a3)
+  if (!style)
   {
     v3 = 2010;
   }
 
-  if ((a3 - 2) < 2)
+  if ((style - 2) < 2)
   {
     v3 = 2030;
   }
 
-  if (a3 <= 98)
+  if (style <= 98)
   {
     v8 = v3;
   }
@@ -66,16 +66,16 @@
   return [_UIBackdropViewSettings settingsForPrivateStyle:v8];
 }
 
-- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
     v3 = +[UIColor _vibrantLightDividerBurnColor];
     v6 = +[UIColor _vibrantLightDividerDarkeningColor];
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = +[UIColor _vibrantLightFillBurnColor];
     v6 = +[UIColor _vibrantLightFillDarkeningColor];
@@ -85,7 +85,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3 != 2)
+  if (style != 2)
   {
     v3 = 0;
     v7 = 0;
@@ -112,9 +112,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)style
 {
-  switch(a3)
+  switch(style)
   {
     case 0:
       v4 = 0.45;

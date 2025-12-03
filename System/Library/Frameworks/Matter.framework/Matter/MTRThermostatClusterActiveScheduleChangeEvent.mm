@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterActiveScheduleChangeEvent
 - (MTRThermostatClusterActiveScheduleChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterActiveScheduleChangeEvent);
-  v5 = [(MTRThermostatClusterActiveScheduleChangeEvent *)self previousScheduleHandle];
-  [(MTRThermostatClusterActiveScheduleChangeEvent *)v4 setPreviousScheduleHandle:v5];
+  previousScheduleHandle = [(MTRThermostatClusterActiveScheduleChangeEvent *)self previousScheduleHandle];
+  [(MTRThermostatClusterActiveScheduleChangeEvent *)v4 setPreviousScheduleHandle:previousScheduleHandle];
 
-  v6 = [(MTRThermostatClusterActiveScheduleChangeEvent *)self currentScheduleHandle];
-  [(MTRThermostatClusterActiveScheduleChangeEvent *)v4 setCurrentScheduleHandle:v6];
+  currentScheduleHandle = [(MTRThermostatClusterActiveScheduleChangeEvent *)self currentScheduleHandle];
+  [(MTRThermostatClusterActiveScheduleChangeEvent *)v4 setCurrentScheduleHandle:currentScheduleHandle];
 
   return v4;
 }

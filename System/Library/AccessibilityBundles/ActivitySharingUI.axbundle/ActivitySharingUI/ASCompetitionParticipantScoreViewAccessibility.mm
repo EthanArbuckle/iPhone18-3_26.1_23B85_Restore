@@ -1,5 +1,5 @@
 @interface ASCompetitionParticipantScoreViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityPointsLabel;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,29 +7,29 @@
 
 @implementation ASCompetitionParticipantScoreViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
-  [v3 validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_primaryScoreLabel" withType:"UILabel"];
-  [v3 validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_secondaryScoreLabel" withType:"UILabel"];
-  [v3 validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_configuration" withType:"ASCompetitionScoreViewConfiguration"];
-  [v3 validateClass:@"ASCompetitionScoreViewConfiguration" hasInstanceMethod:@"primaryScoreSource" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_primaryScoreLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_secondaryScoreLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ASCompetitionParticipantScoreView" hasInstanceVariable:@"_configuration" withType:"ASCompetitionScoreViewConfiguration"];
+  [validationsCopy validateClass:@"ASCompetitionScoreViewConfiguration" hasInstanceMethod:@"primaryScoreSource" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(ASCompetitionParticipantScoreViewAccessibility *)self _accessibilityStringForLabelKeyValues:@"_nameLabel"];
-  v3 = [v2 localizedLowercaseString];
+  localizedLowercaseString = [v2 localizedLowercaseString];
 
-  return v3;
+  return localizedLowercaseString;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(ASCompetitionParticipantScoreViewAccessibility *)self _accessibilityPointsLabel];
+  _accessibilityPointsLabel = [(ASCompetitionParticipantScoreViewAccessibility *)self _accessibilityPointsLabel];
   v4 = [(ASCompetitionParticipantScoreViewAccessibility *)self safeValueForKey:@"_secondaryScoreLabel"];
-  v7 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   v5 = __UIAXStringForVariables();
 
   return v5;
@@ -41,7 +41,7 @@
   v3 = [(ASCompetitionParticipantScoreViewAccessibility *)self safeValueForKey:@"_primaryScoreLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
   v6 = AXIntegerValueFromString();
 
   v7 = [(ASCompetitionParticipantScoreViewAccessibility *)self safeValueForKey:@"_configuration"];
@@ -54,7 +54,7 @@
       v10 = @"competition.points.count";
 LABEL_6:
       v11 = accessibilityLocalizedString(v10);
-      v12 = [NSString localizedStringWithFormat:v11, v6];
+      accessibilityLabel = [NSString localizedStringWithFormat:v11, v6];
 
       goto LABEL_8;
     }
@@ -66,10 +66,10 @@ LABEL_6:
     }
   }
 
-  v12 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 LABEL_8:
 
-  return v12;
+  return accessibilityLabel;
 }
 
 @end

@@ -6,21 +6,21 @@
 
 - (id)tuHandle
 {
-  v2 = [a1 value];
-  if (v2)
+  value = [self value];
+  if (value)
   {
-    v3 = [a1 type];
-    if (v3 > 3)
+    type = [self type];
+    if (type > 3)
     {
       v4 = 2;
     }
 
     else
     {
-      v4 = qword_25E509CC8[v3];
+      v4 = qword_25E509CC8[type];
     }
 
-    v5 = [objc_alloc(MEMORY[0x277D6EEE8]) initWithType:v4 value:v2];
+    v5 = [objc_alloc(MEMORY[0x277D6EEE8]) initWithType:v4 value:value];
   }
 
   else

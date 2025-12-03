@@ -2,12 +2,12 @@
 + (id)protobufSchema;
 - (BKSHIDEventDeferringChangeBasis)changeBasis;
 - (BKSHIDEventProvenance)provenance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)hitTestLocation;
 - (CGPoint)preciseLocation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)setProvenance:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)setProvenance:(id)provenance;
 @end
 
 @implementation BKSHIDEventDigitizerPathAttributes
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __52__BKSHIDEventDigitizerPathAttributes_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_318 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_318, block);
@@ -70,35 +70,35 @@ void __52__BKSHIDEventDigitizerPathAttributes_protobufSchema__block_invoke_2(uin
   return result;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v15 = a3;
-  v4 = [v15 appendInteger:self->_pathIndex withName:@"pathIndex"];
-  v5 = [v15 appendInteger:self->_touchIdentifier withName:@"touchIdentifier"];
-  v6 = [v15 appendInteger:self->_userIdentifier withName:@"userIdentifier"];
-  v7 = [v15 appendInteger:self->_locus withName:@"locus"];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendInteger:self->_pathIndex withName:@"pathIndex"];
+  v5 = [formatterCopy appendInteger:self->_touchIdentifier withName:@"touchIdentifier"];
+  v6 = [formatterCopy appendInteger:self->_userIdentifier withName:@"userIdentifier"];
+  v7 = [formatterCopy appendInteger:self->_locus withName:@"locus"];
   v8 = NSStringFromBKSTouchHitTestContextCategory(self->_hitTestContextCategory);
-  [v15 appendString:v8 withName:@"hitTestContextCategory"];
+  [formatterCopy appendString:v8 withName:@"hitTestContextCategory"];
 
-  v9 = [v15 appendFloat:@"zGradient" withName:self->_zGradient];
-  v10 = [v15 appendPoint:@"hitTestLocation" withName:{self->_hitTestLocation.x, self->_hitTestLocation.y}];
-  v11 = [v15 appendPoint:@"preciseLocation" withName:{self->_preciseLocation.x, self->_preciseLocation.y}];
-  v12 = [v15 appendObject:self->_authenticationMessage withName:@"authenticationMessage" skipIfNil:1];
-  v13 = [v15 appendObject:self->_simpleProvenance withName:@"simpleProvenance" skipIfNil:1];
-  v14 = [v15 appendObject:self->_securityAnalysis withName:@"securityAnalysis" skipIfNil:1];
+  v9 = [formatterCopy appendFloat:@"zGradient" withName:self->_zGradient];
+  v10 = [formatterCopy appendPoint:@"hitTestLocation" withName:{self->_hitTestLocation.x, self->_hitTestLocation.y}];
+  v11 = [formatterCopy appendPoint:@"preciseLocation" withName:{self->_preciseLocation.x, self->_preciseLocation.y}];
+  v12 = [formatterCopy appendObject:self->_authenticationMessage withName:@"authenticationMessage" skipIfNil:1];
+  v13 = [formatterCopy appendObject:self->_simpleProvenance withName:@"simpleProvenance" skipIfNil:1];
+  v14 = [formatterCopy appendObject:self->_securityAnalysis withName:@"securityAnalysis" skipIfNil:1];
 }
 
-- (void)setProvenance:(id)a3
+- (void)setProvenance:(id)provenance
 {
   v28 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  provenanceCopy = provenance;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     authenticationMessage = self->_authenticationMessage;
     self->_authenticationMessage = 0;
 
-    v7 = v15;
+    v7 = provenanceCopy;
     simpleProvenance = self->_simpleProvenance;
     self->_simpleProvenance = v7;
 LABEL_8:
@@ -111,14 +111,14 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_authenticationMessage, a3);
+    objc_storeStrong(&self->_authenticationMessage, provenance);
 LABEL_7:
     simpleProvenance = self->_simpleProvenance;
     self->_simpleProvenance = 0;
     goto LABEL_8;
   }
 
-  if (!v15)
+  if (!provenanceCopy)
   {
     v9 = self->_authenticationMessage;
     self->_authenticationMessage = 0;
@@ -137,7 +137,7 @@ LABEL_7:
     v18 = 2114;
     v19 = v14;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = @"BKSHIDEventAttributes.m";
     v24 = 1024;
@@ -155,8 +155,8 @@ LABEL_7:
 - (BKSHIDEventDeferringChangeBasis)changeBasis
 {
   v3 = [BKSHIDEventDeferringChangeBasis alloc];
-  v4 = [(BKSHIDEventDigitizerPathAttributes *)self provenance];
-  v5 = [(BKSHIDEventDeferringChangeBasis *)v3 initWithEventProvenance:v4];
+  provenance = [(BKSHIDEventDigitizerPathAttributes *)self provenance];
+  v5 = [(BKSHIDEventDeferringChangeBasis *)v3 initWithEventProvenance:provenance];
 
   return v5;
 }
@@ -172,13 +172,13 @@ LABEL_7:
   return authenticationMessage;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_pathIndex == v5[4] && self->_touchIdentifier == *(v5 + 5) && self->_userIdentifier == *(v5 + 6) && self->_locus == *(v5 + 16) && self->_hitTestContextCategory == v5[5] && self->_zGradient == *(v5 + 7) && self->_hitTestLocation.x == *(v5 + 8) && self->_hitTestLocation.y == *(v5 + 9) && self->_preciseLocation.x == *(v5 + 10) && self->_preciseLocation.y == *(v5 + 11) && (authenticationMessage = self->_authenticationMessage, v8 = v6[6], BSEqualObjects()) && (simpleProvenance = self->_simpleProvenance, v10 = v6[1], BSEqualObjects()))
     {
@@ -201,9 +201,9 @@ LABEL_7:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *(v4 + 32) = self->_pathIndex;
   *(v4 + 20) = self->_touchIdentifier;
   *(v4 + 24) = self->_userIdentifier;

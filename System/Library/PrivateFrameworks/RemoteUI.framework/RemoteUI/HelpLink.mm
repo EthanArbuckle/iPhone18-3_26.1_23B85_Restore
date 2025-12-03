@@ -1,6 +1,6 @@
 @interface HelpLink
 - (_TtC8RemoteUI8HelpLink)init;
-- (_TtC8RemoteUI8HelpLink)initWithAttributes:(id)a3 parent:(id)a4;
+- (_TtC8RemoteUI8HelpLink)initWithAttributes:(id)attributes parent:(id)parent;
 - (void)tapped;
 @end
 
@@ -9,7 +9,7 @@
 - (void)tapped
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0x70);
-  v6 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {
@@ -21,7 +21,7 @@
     aBlock[2] = sub_21B9CE7B4;
     aBlock[3] = &block_descriptor_5;
     v5 = _Block_copy(aBlock);
-    [v4 activateElement:v6 completion:v5];
+    [v4 activateElement:selfCopy completion:v5];
 
     _Block_release(v5);
   }
@@ -31,7 +31,7 @@
   }
 }
 
-- (_TtC8RemoteUI8HelpLink)initWithAttributes:(id)a3 parent:(id)a4
+- (_TtC8RemoteUI8HelpLink)initWithAttributes:(id)attributes parent:(id)parent
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

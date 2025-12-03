@@ -1,7 +1,7 @@
 @interface SAPhoneApplicationLauncher
 - (SAPhoneApplicationLauncher)init;
 - (void)cleanupInvalidAssertions;
-- (void)openApplicationInBackgroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5;
+- (void)openApplicationInBackgroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation SAPhoneApplicationLauncher
@@ -21,15 +21,15 @@
   return v2;
 }
 
-- (void)openApplicationInBackgroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5
+- (void)openApplicationInBackgroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v21 = a4;
-  v9 = [SABundleManager reasonToAttributeName:a4];
-  v10 = v7;
-  v23 = [MEMORY[0x277D46F60] identityForEmbeddedApplicationIdentifier:v7];
+  idCopy = id;
+  completionCopy = completion;
+  reasonCopy = reason;
+  v9 = [SABundleManager reasonToAttributeName:reason];
+  v10 = idCopy;
+  v23 = [MEMORY[0x277D46F60] identityForEmbeddedApplicationIdentifier:idCopy];
   v11 = [MEMORY[0x277D46EB0] contextWithIdentity:?];
   v12 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.SafetyKit" name:v9];
   v35[0] = v12;
@@ -41,13 +41,13 @@
   v25 = 0;
   v26 = 0;
   v24 = 0;
-  LOBYTE(v7) = [v14 execute:&v26 assertion:&v25 error:&v24];
+  LOBYTE(idCopy) = [v14 execute:&v26 assertion:&v25 error:&v24];
   v15 = v26;
   v16 = v25;
   v17 = v24;
   v18 = sa_default_log();
   v19 = v18;
-  if (v7)
+  if (idCopy)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -56,16 +56,16 @@
       v29 = 2112;
       v30 = v10;
       v31 = 2048;
-      v32 = v21;
+      v32 = reasonCopy;
       v33 = 2112;
       v34 = v15;
       _os_log_impl(&dword_23AA4D000, v19, OS_LOG_TYPE_DEFAULT, "%s - Successfully launched bundle, bundleId: %@, reason: %lu, process: %@", buf, 0x2Au);
     }
 
     -[SAPhoneApplicationLauncher addAssertion:forProcessId:](self, "addAssertion:forProcessId:", v16, [v15 pid]);
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -78,15 +78,15 @@
       v29 = 2112;
       v30 = v10;
       v31 = 2048;
-      v32 = v21;
+      v32 = reasonCopy;
       v33 = 2112;
       v34 = v17;
       _os_log_error_impl(&dword_23AA4D000, v19, OS_LOG_TYPE_ERROR, "%s - Unable to launch bundle, bundleId: %@, reason: %lu, error: %@", buf, 0x2Au);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      (v8)[2](v8, 0, v17);
+      (completionCopy)[2](completionCopy, 0, v17);
     }
   }
 

@@ -1,10 +1,10 @@
 @interface _DASBARMetricRecorder
-+ (BOOL)shouldRecordBARMetricForActivity:(id)a3;
++ (BOOL)shouldRecordBARMetricForActivity:(id)activity;
 + (id)sharedInstance;
 - (_DASBARMetricRecorder)init;
 - (id)fetchLatestBARMetric;
 - (void)loadState;
-- (void)recordBARMetric:(id)a3 atStage:(int64_t)a4;
+- (void)recordBARMetric:(id)metric atStage:(int64_t)stage;
 - (void)resetBARMetric;
 - (void)saveState;
 @end
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000291D8;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AEF8 != -1)
   {
     dispatch_once(&qword_10020AEF8, block);
@@ -59,19 +59,19 @@
   return v2;
 }
 
-+ (BOOL)shouldRecordBARMetricForActivity:(id)a3
++ (BOOL)shouldRecordBARMetricForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 launchReason];
-  if ([v4 isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
+  activityCopy = activity;
+  launchReason = [activityCopy launchReason];
+  if ([launchReason isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 launchReason];
-    v5 = [v6 isEqualToString:_DASLaunchReasonBackgroundRefresh];
+    launchReason2 = [activityCopy launchReason];
+    v5 = [launchReason2 isEqualToString:_DASLaunchReasonBackgroundRefresh];
   }
 
   return v5;
@@ -79,10 +79,10 @@
 
 - (void)loadState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSMutableDictionary *)v2->_barMetricDict removeAllObjects];
-  v3 = [(NSUserDefaults *)v2->_defaults objectForKey:@"BARMetricDict"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_barMetricDict removeAllObjects];
+  v3 = [(NSUserDefaults *)selfCopy->_defaults objectForKey:@"BARMetricDict"];
   v4 = [v3 mutableCopy];
 
   v15 = 0u;
@@ -104,7 +104,7 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        barMetricDict = v2->_barMetricDict;
+        barMetricDict = selfCopy->_barMetricDict;
         v11 = [v5 objectForKeyedSubscript:{v9, v13}];
         [(NSMutableDictionary *)barMetricDict setObject:v11 forKey:v9];
       }
@@ -115,58 +115,58 @@
     while (v6);
   }
 
-  log = v2->_log;
+  log = selfCopy->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    sub_10011D510(&v2->_barMetricDict, log);
+    sub_10011D510(&selfCopy->_barMetricDict, log);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)saveState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [[NSDictionary alloc] initWithDictionary:v2->_barMetricDict copyItems:1];
-  [(NSUserDefaults *)v2->_defaults setObject:v3 forKey:@"BARMetricDict"];
-  v4 = v2->_log;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [[NSDictionary alloc] initWithDictionary:selfCopy->_barMetricDict copyItems:1];
+  [(NSUserDefaults *)selfCopy->_defaults setObject:v3 forKey:@"BARMetricDict"];
+  v4 = selfCopy->_log;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(NSUserDefaults *)v2->_defaults objectForKey:@"BARMetricDict"];
+    v5 = [(NSUserDefaults *)selfCopy->_defaults objectForKey:@"BARMetricDict"];
     sub_10011D58C(v5, v6, v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)resetBARMetric
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSMutableDictionary *)v2->_barMetricDict removeAllObjects];
-  [(NSMutableDictionary *)v2->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"BgRefreshSubmissionCount"];
-  [(NSMutableDictionary *)v2->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"BgRefreshCompletionCount"];
-  [(NSMutableDictionary *)v2->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"PushLaunchSubmissionCount"];
-  [(NSMutableDictionary *)v2->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"PushLaunchCompletionCount"];
-  [(_DASBARMetricRecorder *)v2 saveState];
-  log = v2->_log;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_barMetricDict removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"BgRefreshSubmissionCount"];
+  [(NSMutableDictionary *)selfCopy->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"BgRefreshCompletionCount"];
+  [(NSMutableDictionary *)selfCopy->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"PushLaunchSubmissionCount"];
+  [(NSMutableDictionary *)selfCopy->_barMetricDict setObject:&off_1001C9760 forKeyedSubscript:@"PushLaunchCompletionCount"];
+  [(_DASBARMetricRecorder *)selfCopy saveState];
+  log = selfCopy->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    sub_10011D5E4(&v2->_barMetricDict, log);
+    sub_10011D5E4(&selfCopy->_barMetricDict, log);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)recordBARMetric:(id)a3 atStage:(int64_t)a4
+- (void)recordBARMetric:(id)metric atStage:(int64_t)stage
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1)
+  metricCopy = metric;
+  v7 = metricCopy;
+  if (stage == 1)
   {
-    v12 = [v6 launchReason];
-    v9 = [v12 isEqualToString:_DASLaunchReasonBackgroundRefresh];
+    launchReason = [metricCopy launchReason];
+    v9 = [launchReason isEqualToString:_DASLaunchReasonBackgroundRefresh];
 
     v10 = @"PushLaunchCompletionCount";
     v11 = @"BgRefreshCompletionCount";
@@ -184,10 +184,10 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!stage)
   {
-    v8 = [v6 launchReason];
-    v9 = [v8 isEqualToString:_DASLaunchReasonBackgroundRefresh];
+    launchReason2 = [metricCopy launchReason];
+    v9 = [launchReason2 isEqualToString:_DASLaunchReasonBackgroundRefresh];
 
     v10 = @"PushLaunchSubmissionCount";
     v11 = @"BgRefreshSubmissionCount";
@@ -197,29 +197,29 @@ LABEL_5:
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
-    sub_10011D660(a4, log);
+    sub_10011D660(stage, log);
   }
 
   v13 = 0;
 LABEL_11:
-  v15 = self;
-  objc_sync_enter(v15);
-  v16 = [(NSMutableDictionary *)v15->_barMetricDict objectForKeyedSubscript:v13];
-  v17 = [v16 intValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v16 = [(NSMutableDictionary *)selfCopy->_barMetricDict objectForKeyedSubscript:v13];
+  intValue = [v16 intValue];
 
-  v18 = [NSNumber numberWithInt:v17 + 1];
-  [(NSMutableDictionary *)v15->_barMetricDict setObject:v18 forKeyedSubscript:v13];
+  v18 = [NSNumber numberWithInt:intValue + 1];
+  [(NSMutableDictionary *)selfCopy->_barMetricDict setObject:v18 forKeyedSubscript:v13];
 
-  objc_sync_exit(v15);
-  [(_DASBARMetricRecorder *)v15 saveState];
+  objc_sync_exit(selfCopy);
+  [(_DASBARMetricRecorder *)selfCopy saveState];
 }
 
 - (id)fetchLatestBARMetric
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_barMetricDict;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_barMetricDict;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

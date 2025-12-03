@@ -1,25 +1,25 @@
 @interface PKAuxiliaryCapabilityFetchBarcodeRequest
 - (id)_dataToSign;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKAuxiliaryCapabilityFetchBarcodeRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v25[7] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PKAuxiliaryCapabilityWebServiceRequest *)self pass];
-  v12 = [v11 passTypeIdentifier];
-  v25[3] = v12;
-  v13 = [v11 serialNumber];
-  v25[4] = v13;
+  identifierCopy = identifier;
+  informationCopy = information;
+  lCopy = l;
+  pass = [(PKAuxiliaryCapabilityWebServiceRequest *)self pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  v25[3] = passTypeIdentifier;
+  serialNumber = [pass serialNumber];
+  v25[4] = serialNumber;
   v25[5] = @"barcodes";
   v25[6] = @"fetchBarcodes";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:7];
-  v15 = [(PKAuxiliaryCapabilityWebServiceRequest *)self _murlRequestWithServiceURL:v10 endpointComponents:v14 queryParameters:0 appleAccountInformation:v9];
+  v15 = [(PKAuxiliaryCapabilityWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v14 queryParameters:0 appleAccountInformation:informationCopy];
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = v16;
@@ -63,9 +63,9 @@
   v6 = [v5 dataUsingEncoding:4];
   [v3 appendData:v6];
 
-  v7 = [v3 SHA256Hash];
+  sHA256Hash = [v3 SHA256Hash];
 
-  return v7;
+  return sHA256Hash;
 }
 
 @end

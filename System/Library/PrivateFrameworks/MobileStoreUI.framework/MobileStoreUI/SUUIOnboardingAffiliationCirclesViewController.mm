@@ -1,33 +1,33 @@
 @interface SUUIOnboardingAffiliationCirclesViewController
-- (CGSize)_circleSizeForAffinityCount:(int64_t)a3;
+- (CGSize)_circleSizeForAffinityCount:(int64_t)count;
 - (SUUIOnboardingAffiliationCirclesDelegate)delegate;
 - (SUUIOnboardingInstructionsView)instructionsView;
-- (double)_circleImageAlphaForAffinityCount:(int64_t)a3;
+- (double)_circleImageAlphaForAffinityCount:(int64_t)count;
 - (double)_topLayoutMargin;
 - (double)maximumCircleDiameter;
-- (id)circlesView:(id)a3 circleForIndex:(int64_t)a4;
+- (id)circlesView:(id)view circleForIndex:(int64_t)index;
 - (void)_cancelDeletionTimer;
-- (void)_completeDeletionForCircleAtIndex:(int64_t)a3;
+- (void)_completeDeletionForCircleAtIndex:(int64_t)index;
 - (void)_reloadRepellors;
 - (void)_sendAffilationItemsDidChange;
-- (void)addAffiliationItems:(id)a3;
-- (void)circleView:(id)a3 didBeginLongPressForCircleAtIndex:(int64_t)a4;
-- (void)circleView:(id)a3 didEndLongPressForCircleAtIndex:(int64_t)a4;
-- (void)circleView:(id)a3 didTapCircleAtIndex:(int64_t)a4;
+- (void)addAffiliationItems:(id)items;
+- (void)circleView:(id)view didBeginLongPressForCircleAtIndex:(int64_t)index;
+- (void)circleView:(id)view didEndLongPressForCircleAtIndex:(int64_t)index;
+- (void)circleView:(id)view didTapCircleAtIndex:(int64_t)index;
 - (void)dealloc;
 - (void)loadView;
-- (void)performFinishAnimationWithCompletionBlock:(id)a3;
-- (void)removeAffiliationItemsInIndexSet:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)resetWithAffiliationItems:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)setAffiliationItems:(id)a3;
-- (void)setFooterView:(id)a3 animated:(BOOL)a4;
-- (void)setImage:(id)a3 forAffiliationItem:(id)a4;
-- (void)setUserAffinityCount:(int64_t)a3 forAffiliationItemAtIndex:(int64_t)a4 animated:(BOOL)a5 completionBlock:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)performFinishAnimationWithCompletionBlock:(id)block;
+- (void)removeAffiliationItemsInIndexSet:(id)set animated:(BOOL)animated completionBlock:(id)block;
+- (void)resetWithAffiliationItems:(id)items animated:(BOOL)animated completionBlock:(id)block;
+- (void)setAffiliationItems:(id)items;
+- (void)setFooterView:(id)view animated:(BOOL)animated;
+- (void)setImage:(id)image forAffiliationItem:(id)item;
+- (void)setUserAffinityCount:(int64_t)count forAffiliationItemAtIndex:(int64_t)index animated:(BOOL)animated completionBlock:(id)block;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUUIOnboardingAffiliationCirclesViewController
@@ -47,13 +47,13 @@
   [(SUUIOnboardingAffiliationCirclesViewController *)&v4 dealloc];
 }
 
-- (void)addAffiliationItems:(id)a3
+- (void)addAffiliationItems:(id)items
 {
   affiliationItems = self->_affiliationItems;
-  v5 = a3;
-  [(NSMutableArray *)affiliationItems addObjectsFromArray:v5];
+  itemsCopy = items;
+  [(NSMutableArray *)affiliationItems addObjectsFromArray:itemsCopy];
   circlesView = self->_circlesView;
-  v7 = [v5 count];
+  v7 = [itemsCopy count];
 
   [(SUUIPhysicalCirclesView *)circlesView addCirclesWithCount:v7];
 }
@@ -71,8 +71,8 @@
 
     [(SUUIOnboardingInstructionsView *)self->_instructionsView setAutoresizingMask:18];
     v7 = self->_instructionsView;
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIOnboardingInstructionsView *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIOnboardingInstructionsView *)v7 setBackgroundColor:clearColor];
 
     [(SUUIOnboardingInstructionsView *)self->_instructionsView setContentPosition:1];
     [(SUUIOnboardingInstructionsView *)self->_instructionsView setUserInteractionEnabled:0];
@@ -84,15 +84,15 @@
 
 - (double)maximumCircleDiameter
 {
-  v2 = [(SUUIOnboardingAffiliationCirclesViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  traitCollection = [(SUUIOnboardingAffiliationCirclesViewController *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 1;
 
   return dbl_259FCAA50[v3];
 }
 
-- (void)performFinishAnimationWithCompletionBlock:(id)a3
+- (void)performFinishAnimationWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   affiliationItems = self->_affiliationItems;
@@ -107,9 +107,9 @@
   [(NSMutableArray *)affiliationItems enumerateObjectsUsingBlock:v38];
   if (self->_didPerformFinishAnimation)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4, v9);
+      blockCopy[2](blockCopy, v9);
     }
   }
 
@@ -138,8 +138,8 @@
       *&v14 = v17 + v16 * 0.5;
       v18 = floorf(*&v14);
       circlesView = self->_circlesView;
-      v20 = [(UIView *)self->_footerView superview];
-      [(SUUIPhysicalCirclesView *)circlesView convertPoint:v20 fromView:v15, v18];
+      superview = [(UIView *)self->_footerView superview];
+      [(SUUIPhysicalCirclesView *)circlesView convertPoint:superview fromView:v15, v18];
       v22 = v21;
       v24 = v23;
 
@@ -166,7 +166,7 @@
     block[1] = 3221225472;
     block[2] = __92__SUUIOnboardingAffiliationCirclesViewController_performFinishAnimationWithCompletionBlock___block_invoke_6;
     block[3] = &unk_2798F5D58;
-    v30 = v4;
+    v30 = blockCopy;
     v29 = v9;
     dispatch_group_notify(v27, MEMORY[0x277D85CD0], block);
     self->_didPerformFinishAnimation = 1;
@@ -194,27 +194,27 @@ uint64_t __92__SUUIOnboardingAffiliationCirclesViewController_performFinishAnima
   return result;
 }
 
-- (void)removeAffiliationItemsInIndexSet:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)removeAffiliationItemsInIndexSet:(id)set animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
+  animatedCopy = animated;
   affiliationItems = self->_affiliationItems;
-  v9 = a5;
-  v10 = a3;
-  [(NSMutableArray *)affiliationItems removeObjectsAtIndexes:v10];
-  [(SUUIPhysicalCirclesView *)self->_circlesView removeCirclesInIndexSet:v10 animated:v5 completionBlock:v9];
+  blockCopy = block;
+  setCopy = set;
+  [(NSMutableArray *)affiliationItems removeObjectsAtIndexes:setCopy];
+  [(SUUIPhysicalCirclesView *)self->_circlesView removeCirclesInIndexSet:setCopy animated:animatedCopy completionBlock:blockCopy];
 }
 
-- (void)resetWithAffiliationItems:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)resetWithAffiliationItems:(id)items animated:(BOOL)animated completionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  animatedCopy = animated;
+  itemsCopy = items;
+  blockCopy = block;
+  v10 = blockCopy;
   if (self->_didPerformFinishAnimation)
   {
-    if (v9)
+    if (blockCopy)
     {
-      (*(v9 + 2))(v9, 1);
+      (*(blockCopy + 2))(blockCopy, 1);
     }
   }
 
@@ -227,9 +227,9 @@ uint64_t __92__SUUIOnboardingAffiliationCirclesViewController_performFinishAnima
     v12[2] = __101__SUUIOnboardingAffiliationCirclesViewController_resetWithAffiliationItems_animated_completionBlock___block_invoke;
     v12[3] = &unk_2798F5D80;
     objc_copyWeak(&v15, &location);
-    v13 = v8;
+    v13 = itemsCopy;
     v14 = v10;
-    [(SUUIPhysicalCirclesView *)circlesView removeAllCirclesAnimated:v6 completionBlock:v12];
+    [(SUUIPhysicalCirclesView *)circlesView removeAllCirclesAnimated:animatedCopy completionBlock:v12];
     self->_didPerformFinishAnimation = 1;
 
     objc_destroyWeak(&v15);
@@ -264,56 +264,56 @@ uint64_t __101__SUUIOnboardingAffiliationCirclesViewController_resetWithAffiliat
   return result;
 }
 
-- (void)setAffiliationItems:(id)a3
+- (void)setAffiliationItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   affiliationItems = self->_affiliationItems;
-  if (affiliationItems != v4)
+  if (affiliationItems != itemsCopy)
   {
-    v6 = v4;
-    if (v4)
+    v6 = itemsCopy;
+    if (itemsCopy)
     {
-      v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4 copyItems:1];
+      itemsCopy = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:itemsCopy copyItems:1];
       affiliationItems = self->_affiliationItems;
     }
 
-    self->_affiliationItems = v4;
+    self->_affiliationItems = itemsCopy;
 
     [(SUUIPhysicalCirclesView *)self->_circlesView reloadData];
     self->_didPerformFinishAnimation = 0;
-    v4 = v6;
+    itemsCopy = v6;
   }
 }
 
-- (void)setFooterView:(id)a3 animated:(BOOL)a4
+- (void)setFooterView:(id)view animated:(BOOL)animated
 {
-  v6 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  v9 = v6;
-  if (footerView != v6)
+  v9 = viewCopy;
+  if (footerView != viewCopy)
   {
     [(UIView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     if (self->_footerView)
     {
-      v8 = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
-      [v8 addSubview:self->_footerView];
-      [v8 setNeedsLayout];
+      view = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
+      [view addSubview:self->_footerView];
+      [view setNeedsLayout];
     }
   }
 }
 
-- (void)setImage:(id)a3 forAffiliationItem:(id)a4
+- (void)setImage:(id)image forAffiliationItem:(id)item
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->_affiliationItems indexOfObject:v6];
+  imageCopy = image;
+  itemCopy = item;
+  v7 = [(NSMutableArray *)self->_affiliationItems indexOfObject:itemCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [(SUUIPhysicalCirclesView *)self->_circlesView circleViewAtIndex:v7];
-    [v8 setBackgroundImage:v12];
+    [v8 setBackgroundImage:imageCopy];
     images = self->_images;
-    if (v12)
+    if (imageCopy)
     {
       if (!images)
       {
@@ -329,32 +329,32 @@ uint64_t __101__SUUIOnboardingAffiliationCirclesViewController_resetWithAffiliat
 
     else
     {
-      [(NSMapTable *)images removeObjectForKey:v6];
+      [(NSMapTable *)images removeObjectForKey:itemCopy];
     }
   }
 }
 
-- (void)setUserAffinityCount:(int64_t)a3 forAffiliationItemAtIndex:(int64_t)a4 animated:(BOOL)a5 completionBlock:(id)a6
+- (void)setUserAffinityCount:(int64_t)count forAffiliationItemAtIndex:(int64_t)index animated:(BOOL)animated completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = [(NSMutableArray *)self->_affiliationItems objectAtIndex:a4];
-  [v11 setUserAffinityCount:a3];
-  [(SUUIOnboardingAffiliationCirclesViewController *)self _circleSizeForAffinityCount:a3];
+  blockCopy = block;
+  v11 = [(NSMutableArray *)self->_affiliationItems objectAtIndex:index];
+  [v11 setUserAffinityCount:count];
+  [(SUUIOnboardingAffiliationCirclesViewController *)self _circleSizeForAffinityCount:count];
   v13 = v12;
   v15 = v14;
-  [(SUUIPhysicalCirclesView *)self->_circlesView setSize:a4 forCircleAtIndex:?];
+  [(SUUIPhysicalCirclesView *)self->_circlesView setSize:index forCircleAtIndex:?];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCount_forAffiliationItemAtIndex_animated_completionBlock___block_invoke;
   aBlock[3] = &unk_2798F5DA8;
   aBlock[4] = self;
-  aBlock[5] = a4;
+  aBlock[5] = index;
   aBlock[6] = v13;
   aBlock[7] = v15;
-  aBlock[8] = a3;
+  aBlock[8] = count;
   v16 = _Block_copy(aBlock);
   v17 = v16;
-  if (a5)
+  if (animated)
   {
     v18 = +[SUUISimpleAnimationFactory backOutTimingFunction];
     v19 = [SUUISimpleAnimationFactory factoryWithTimingFunction:v18];
@@ -364,7 +364,7 @@ uint64_t __101__SUUIOnboardingAffiliationCirclesViewController_resetWithAffiliat
     v21[1] = 3221225472;
     v21[2] = __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCount_forAffiliationItemAtIndex_animated_completionBlock___block_invoke_2;
     v21[3] = &unk_2798F5DD0;
-    v22 = v10;
+    v22 = blockCopy;
     [v20 _animateWithDuration:0 delay:v19 options:v17 factory:v21 animations:0.3 completion:0.1];
   }
 
@@ -400,8 +400,8 @@ uint64_t __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCo
 - (void)loadView
 {
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setBackgroundColor:v4];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v3 setBackgroundColor:whiteColor];
 
   if (!self->_circlesView)
   {
@@ -411,8 +411,8 @@ uint64_t __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCo
 
     [(SUUIPhysicalCirclesView *)self->_circlesView setAutoresizingMask:18];
     v7 = self->_circlesView;
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [(SUUIPhysicalCirclesView *)v7 setBackgroundColor:v8];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(SUUIPhysicalCirclesView *)v7 setBackgroundColor:whiteColor2];
 
     [(SUUIPhysicalCirclesView *)self->_circlesView setDataSource:self];
     [(SUUIPhysicalCirclesView *)self->_circlesView setDelegate:self];
@@ -423,8 +423,8 @@ uint64_t __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCo
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(SUUIOnboardingAffiliationCirclesViewController *)self traitCollection];
-  SUUIPhysicalCircleConstantsWithTraitCollection(v9, &v16);
+  traitCollection = [(SUUIOnboardingAffiliationCirclesViewController *)self traitCollection];
+  SUUIPhysicalCircleConstantsWithTraitCollection(traitCollection, &v16);
 
   [(SUUIOnboardingAffiliationCirclesViewController *)self _circleSizeForAffinityCount:0];
   *(&v17 + 1) = v10;
@@ -440,16 +440,16 @@ uint64_t __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCo
   [v3 bounds];
   [(SUUIPhysicalCirclesView *)v13 setFrame:?];
   [v3 addSubview:self->_circlesView];
-  v14 = [(SUUIOnboardingAffiliationCirclesViewController *)self instructionsView];
+  instructionsView = [(SUUIOnboardingAffiliationCirclesViewController *)self instructionsView];
   [v3 bounds];
-  [v14 setFrame:?];
-  [v3 addSubview:v14];
+  [instructionsView setFrame:?];
+  [v3 addSubview:instructionsView];
   [(SUUIOnboardingAffiliationCirclesViewController *)self setView:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIOnboardingAffiliationCirclesViewController *)self _reloadRepellors];
   [(SUUIPhysicalCirclesView *)self->_circlesView startPhysics];
   self->_didPerformFinishAnimation = 0;
@@ -461,22 +461,22 @@ uint64_t __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCo
 
   v5.receiver = self;
   v5.super_class = SUUIOnboardingAffiliationCirclesViewController;
-  [(SUUIOnboardingAffiliationCirclesViewController *)&v5 viewDidAppear:v3];
+  [(SUUIOnboardingAffiliationCirclesViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SUUIPhysicalCirclesView *)self->_circlesView stopPhysics];
   v5.receiver = self;
   v5.super_class = SUUIOnboardingAffiliationCirclesViewController;
-  [(SUUIOnboardingAffiliationCirclesViewController *)&v5 viewDidDisappear:v3];
+  [(SUUIOnboardingAffiliationCirclesViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
-  [v3 bounds];
+  view = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -514,65 +514,65 @@ uint64_t __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCo
   [(SUUIOnboardingAffiliationCirclesViewController *)&v20 viewDidLayoutSubviews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIOnboardingInstructionsView *)self->_instructionsView setAlpha:1.0];
   v5.receiver = self;
   v5.super_class = SUUIOnboardingAffiliationCirclesViewController;
-  [(SUUIOnboardingAffiliationCirclesViewController *)&v5 viewWillAppear:v3];
+  [(SUUIOnboardingAffiliationCirclesViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(SUUIOnboardingAffiliationCirclesViewController *)self transitionCoordinator];
+  disappearCopy = disappear;
+  transitionCoordinator = [(SUUIOnboardingAffiliationCirclesViewController *)self transitionCoordinator];
 
-  self->_needsReloadOnDidAppear = v5 != 0;
+  self->_needsReloadOnDidAppear = transitionCoordinator != 0;
   v6.receiver = self;
   v6.super_class = SUUIOnboardingAffiliationCirclesViewController;
-  [(SUUIOnboardingAffiliationCirclesViewController *)&v6 viewWillDisappear:v3];
+  [(SUUIOnboardingAffiliationCirclesViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (id)circlesView:(id)a3 circleForIndex:(int64_t)a4
+- (id)circlesView:(id)view circleForIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_affiliationItems objectAtIndex:a4];
-  v8 = [v7 userAffinityCount];
-  [(SUUIOnboardingAffiliationCirclesViewController *)self _circleSizeForAffinityCount:v8];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)self->_affiliationItems objectAtIndex:index];
+  userAffinityCount = [v7 userAffinityCount];
+  [(SUUIOnboardingAffiliationCirclesViewController *)self _circleSizeForAffinityCount:userAffinityCount];
   v11 = [[SUUIOnboardingCircleView alloc] initWithFrame:0.0, 0.0, v9, v10];
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [(SUUIOnboardingCircleView *)v11 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SUUIOnboardingCircleView *)v11 setBackgroundColor:clearColor];
 
   [(SUUIOnboardingCircleView *)v11 setEdgeInsets:1.0, 1.0, 1.0, 1.0];
   [(SUUIOnboardingAffiliationCirclesViewController *)self _circleSizeForAffinityCount:0];
   [(SUUIOnboardingCircleView *)v11 setMinimumDiameter:?];
-  [(SUUIOnboardingCircleView *)v11 setTitlePosition:[(SUUIOnboardingAffiliationCirclesViewController *)self _titlePositionForAffinityCount:v8]];
-  v13 = [v7 fillColor];
-  if (v13)
+  [(SUUIOnboardingCircleView *)v11 setTitlePosition:[(SUUIOnboardingAffiliationCirclesViewController *)self _titlePositionForAffinityCount:userAffinityCount]];
+  fillColor = [v7 fillColor];
+  if (fillColor)
   {
-    [(SUUIOnboardingCircleView *)v11 setFillColor:v13];
+    [(SUUIOnboardingCircleView *)v11 setFillColor:fillColor];
   }
 
   else
   {
-    v14 = [v6 tintColor];
-    [(SUUIOnboardingCircleView *)v11 setFillColor:v14];
+    tintColor = [viewCopy tintColor];
+    [(SUUIOnboardingCircleView *)v11 setFillColor:tintColor];
   }
 
-  [(SUUIOnboardingAffiliationCirclesViewController *)self _circleImageAlphaForAffinityCount:v8];
+  [(SUUIOnboardingAffiliationCirclesViewController *)self _circleImageAlphaForAffinityCount:userAffinityCount];
   [(SUUIOnboardingCircleView *)v11 setBackgroundImageAlpha:?];
   v15 = [(NSMapTable *)self->_images objectForKey:v7];
   [(SUUIOnboardingCircleView *)v11 setBackgroundImage:v15];
 
-  v16 = [(SUUIOnboardingCircleView *)v11 titleLabel];
-  v17 = [v7 title];
-  [v16 setText:v17];
+  titleLabel = [(SUUIOnboardingCircleView *)v11 titleLabel];
+  title = [v7 title];
+  [titleLabel setText:title];
 
   return v11;
 }
 
-- (void)circleView:(id)a3 didBeginLongPressForCircleAtIndex:(int64_t)a4
+- (void)circleView:(id)view didBeginLongPressForCircleAtIndex:(int64_t)index
 {
   [(SUUIOnboardingAffiliationCirclesViewController *)self _cancelDeletionTimer];
   v6 = self->_instructionsView;
@@ -594,7 +594,7 @@ uint64_t __122__SUUIOnboardingAffiliationCirclesViewController_setUserAffinityCo
   v11[3] = &unk_2798F5DF8;
   v13 = v16;
   objc_copyWeak(v14, &location);
-  v14[1] = a4;
+  v14[1] = index;
   v11[4] = self;
   v12 = v6;
   v10 = v6;
@@ -643,29 +643,29 @@ void __95__SUUIOnboardingAffiliationCirclesViewController_circleView_didBeginLon
   }
 }
 
-- (void)circleView:(id)a3 didEndLongPressForCircleAtIndex:(int64_t)a4
+- (void)circleView:(id)view didEndLongPressForCircleAtIndex:(int64_t)index
 {
-  [(SUUIOnboardingInstructionsView *)self->_instructionsView popLabelState:a3];
-  v5 = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
-  [v5 setNeedsLayout];
+  [(SUUIOnboardingInstructionsView *)self->_instructionsView popLabelState:view];
+  view = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
+  [view setNeedsLayout];
 
   [(SUUIOnboardingAffiliationCirclesViewController *)self _cancelDeletionTimer];
 }
 
-- (void)circleView:(id)a3 didTapCircleAtIndex:(int64_t)a4
+- (void)circleView:(id)view didTapCircleAtIndex:(int64_t)index
 {
-  v9 = [(SUUIOnboardingAffiliationCirclesViewController *)self delegate];
+  delegate = [(SUUIOnboardingAffiliationCirclesViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
-  v7 = [(NSMutableArray *)self->_affiliationItems objectAtIndex:a4];
+  v7 = [(NSMutableArray *)self->_affiliationItems objectAtIndex:index];
   v8 = v7;
   if (v6)
   {
-    [v9 onboardingCircles:self didSelectAffiliationItem:v7 atIndex:a4];
+    [delegate onboardingCircles:self didSelectAffiliationItem:v7 atIndex:index];
   }
 
   else
   {
-    -[SUUIOnboardingAffiliationCirclesViewController setUserAffinityCount:forAffiliationItemAtIndex:animated:completionBlock:](self, "setUserAffinityCount:forAffiliationItemAtIndex:animated:completionBlock:", ([v7 userAffinityCount] + 1) % 3, a4, 1, 0);
+    -[SUUIOnboardingAffiliationCirclesViewController setUserAffinityCount:forAffiliationItemAtIndex:animated:completionBlock:](self, "setUserAffinityCount:forAffiliationItemAtIndex:animated:completionBlock:", ([v7 userAffinityCount] + 1) % 3, index, 1, 0);
     [(SUUIOnboardingAffiliationCirclesViewController *)self _reloadRepellors];
     [(SUUIOnboardingAffiliationCirclesViewController *)self _sendAffilationItemsDidChange];
   }
@@ -682,15 +682,15 @@ void __95__SUUIOnboardingAffiliationCirclesViewController_circleView_didBeginLon
   }
 }
 
-- (double)_circleImageAlphaForAffinityCount:(int64_t)a3
+- (double)_circleImageAlphaForAffinityCount:(int64_t)count
 {
   result = 0.0;
-  if (a3 == 1)
+  if (count == 1)
   {
     result = 0.5;
   }
 
-  if (a3 == 2)
+  if (count == 2)
   {
     return 1.0;
   }
@@ -698,20 +698,20 @@ void __95__SUUIOnboardingAffiliationCirclesViewController_circleView_didBeginLon
   return result;
 }
 
-- (CGSize)_circleSizeForAffinityCount:(int64_t)a3
+- (CGSize)_circleSizeForAffinityCount:(int64_t)count
 {
-  v4 = [(SUUIOnboardingAffiliationCirclesViewController *)self traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  traitCollection = [(SUUIOnboardingAffiliationCirclesViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
-    if (a3 == 2)
+    if (count == 2)
     {
       v6 = 180.0;
       goto LABEL_11;
     }
 
-    if (a3 != 1)
+    if (count != 1)
     {
       v6 = 120.0;
       goto LABEL_11;
@@ -722,12 +722,12 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (count == 2)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (count == 1)
   {
     v6 = 110.0;
   }
@@ -744,21 +744,21 @@ LABEL_11:
   return result;
 }
 
-- (void)_completeDeletionForCircleAtIndex:(int64_t)a3
+- (void)_completeDeletionForCircleAtIndex:(int64_t)index
 {
   v7 = [(NSMutableArray *)self->_affiliationItems objectAtIndex:?];
   [(NSMapTable *)self->_images removeObjectForKey:?];
-  [(NSMutableArray *)self->_affiliationItems removeObjectAtIndex:a3];
-  [(SUUIPhysicalCirclesView *)self->_circlesView removeCircleAtIndex:a3 animated:1 completionBlock:0];
+  [(NSMutableArray *)self->_affiliationItems removeObjectAtIndex:index];
+  [(SUUIPhysicalCirclesView *)self->_circlesView removeCircleAtIndex:index animated:1 completionBlock:0];
   [(SUUIOnboardingInstructionsView *)self->_instructionsView popLabelState];
-  v5 = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(SUUIOnboardingAffiliationCirclesViewController *)self view];
+  [view setNeedsLayout];
 
   [(SUUIOnboardingAffiliationCirclesViewController *)self _cancelDeletionTimer];
-  v6 = [(SUUIOnboardingAffiliationCirclesViewController *)self delegate];
+  delegate = [(SUUIOnboardingAffiliationCirclesViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 onboardingCircles:self didRemoveAffiliationItem:v7];
+    [delegate onboardingCircles:self didRemoveAffiliationItem:v7];
   }
 
   [(SUUIOnboardingAffiliationCirclesViewController *)self _sendAffilationItemsDidChange];
@@ -789,8 +789,8 @@ LABEL_11:
       v38.size.width = v8;
       v38.size.height = v10;
       Height = CGRectGetHeight(v38);
-      v16 = [(SUUIOnboardingAffiliationCirclesViewController *)self bottomLayoutGuide];
-      [v16 length];
+      bottomLayoutGuide = [(SUUIOnboardingAffiliationCirclesViewController *)self bottomLayoutGuide];
+      [bottomLayoutGuide length];
       v18 = Height - v17 + 90.0;
 
       v19 = [(SUUIPhysicalCirclesView *)self->_circlesView addRepellorWithCenter:v14 radius:v18 bufferSize:ceil(v13 * 0.600000024), 20.0];
@@ -802,8 +802,8 @@ LABEL_11:
   v39.size.width = v8;
   v39.size.height = v10;
   v35 = ceil(CGRectGetWidth(v39) * 1.79999995);
-  v20 = [(SUUIOnboardingInstructionsView *)self->_instructionsView explanationLabel];
-  [v20 frame];
+  explanationLabel = [(SUUIOnboardingInstructionsView *)self->_instructionsView explanationLabel];
+  [explanationLabel frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -833,26 +833,26 @@ LABEL_11:
 
 - (void)_sendAffilationItemsDidChange
 {
-  v3 = [(SUUIOnboardingAffiliationCirclesViewController *)self delegate];
+  delegate = [(SUUIOnboardingAffiliationCirclesViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 onboardingCirclesDidChangeAffiliationItems:self];
+    [delegate onboardingCirclesDidChangeAffiliationItems:self];
   }
 }
 
 - (double)_topLayoutMargin
 {
-  v2 = [(SUUIOnboardingAffiliationCirclesViewController *)self navigationController];
+  navigationController = [(SUUIOnboardingAffiliationCirclesViewController *)self navigationController];
   v3 = 13.0;
-  if (v2)
+  if (navigationController)
   {
-    v4 = [SUUINavigationControllerAssistant existingAssistantForNavigationController:v2];
+    v4 = [SUUINavigationControllerAssistant existingAssistantForNavigationController:navigationController];
     if (v4)
     {
       v5 = v4;
-      v6 = [v4 hidesShadow];
+      hidesShadow = [v4 hidesShadow];
 
-      if (v6)
+      if (hidesShadow)
       {
         v3 = 0.0;
       }

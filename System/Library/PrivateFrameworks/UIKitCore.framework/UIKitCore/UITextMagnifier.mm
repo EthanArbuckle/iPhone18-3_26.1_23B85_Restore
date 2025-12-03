@@ -2,30 +2,30 @@
 - (CGPoint)animationPoint;
 - (CGPoint)magnificationPoint;
 - (CGPoint)terminalPoint;
-- (UITextMagnifier)initWithFrame:(CGRect)a3;
+- (UITextMagnifier)initWithFrame:(CGRect)frame;
 - (void)animateToAutoscrollRenderer;
 - (void)animateToMagnifierRenderer;
-- (void)beginMagnifyingTarget:(id)a3 text:(id)a4 magnificationPoint:(CGPoint)a5 offset:(CGPoint)a6 animated:(BOOL)a7;
-- (void)beginZoomDownAnimation:(id)a3 withDuration:(double)a4 postponeHandler:(id)a5;
-- (void)beginZoomUpAnimation:(id)a3 withDuration:(double)a4;
-- (void)detectLostTouches:(id)a3;
+- (void)beginMagnifyingTarget:(id)target text:(id)text magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
+- (void)beginZoomDownAnimation:(id)animation withDuration:(double)duration postponeHandler:(id)handler;
+- (void)beginZoomUpAnimation:(id)animation withDuration:(double)duration;
+- (void)detectLostTouches:(id)touches;
 - (void)remove;
-- (void)setAutoscrollDirections:(int)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMagnificationPoint:(CGPoint)a3;
+- (void)setAutoscrollDirections:(int)directions;
+- (void)setFrame:(CGRect)frame;
+- (void)setMagnificationPoint:(CGPoint)point;
 - (void)setNeedsDisplay;
 - (void)setToMagnifierRenderer;
-- (void)stopMagnifying:(BOOL)a3;
+- (void)stopMagnifying:(BOOL)magnifying;
 @end
 
 @implementation UITextMagnifier
 
-- (UITextMagnifier)initWithFrame:(CGRect)a3
+- (UITextMagnifier)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = UITextMagnifier;
   v7 = [(UIView *)&v14 initWithFrame:?];
@@ -57,10 +57,10 @@
   return result;
 }
 
-- (void)setMagnificationPoint:(CGPoint)a3
+- (void)setMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UITextMagnifierTimeWeightedPoint *)self->_weightedPoint addPoint:?];
   [(UITextMagnifier *)self adjustMagnificationPoint:x, y];
   v8 = v6;
@@ -125,11 +125,11 @@ uint64_t __46__UITextMagnifier_animateToAutoscrollRenderer__block_invoke(uint64_
   [UIView animateWithDuration:v2 animations:0.1];
 }
 
-- (void)setAutoscrollDirections:(int)a3
+- (void)setAutoscrollDirections:(int)directions
 {
-  if (a3)
+  if (directions)
   {
-    if (self->_autoscrollDirections != a3 || ([(UIView *)self->_autoscrollRenderer alpha], v5 <= 0.0))
+    if (self->_autoscrollDirections != directions || ([(UIView *)self->_autoscrollRenderer alpha], v5 <= 0.0))
     {
       if (!self->_autoscrollRenderer)
       {
@@ -143,7 +143,7 @@ uint64_t __46__UITextMagnifier_animateToAutoscrollRenderer__block_invoke(uint64_
         [(UIView *)self->_autoscrollRenderer setAlpha:0.0];
       }
 
-      self->_autoscrollDirections = a3;
+      self->_autoscrollDirections = directions;
       [(UIView *)self->_autoscrollRenderer setNeedsDisplay];
       [(UIView *)self->_autoscrollRenderer alpha];
       if (v9 == 0.0)
@@ -161,11 +161,11 @@ uint64_t __46__UITextMagnifier_animateToAutoscrollRenderer__block_invoke(uint64_
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UITextMagnifier;
-  [(UIView *)&v6 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v6 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   magnifierRenderer = self->_magnifierRenderer;
   [(UIView *)self bounds];
   [(UIView *)magnifierRenderer setFrame:?];
@@ -182,7 +182,7 @@ uint64_t __46__UITextMagnifier_animateToAutoscrollRenderer__block_invoke(uint64_
   [(UIView *)self->_magnifierRenderer setNeedsDisplay];
 }
 
-- (void)beginZoomUpAnimation:(id)a3 withDuration:(double)a4
+- (void)beginZoomUpAnimation:(id)animation withDuration:(double)duration
 {
   if (self->_isAnimating)
   {
@@ -205,7 +205,7 @@ uint64_t __46__UITextMagnifier_animateToAutoscrollRenderer__block_invoke(uint64_
     v6[1] = 3221225472;
     v6[2] = __53__UITextMagnifier_beginZoomUpAnimation_withDuration___block_invoke_2;
     v6[3] = &unk_1E70F5AC0;
-    [UIView animateWithDuration:v7 animations:v6 completion:a4];
+    [UIView animateWithDuration:v7 animations:v6 completion:duration];
   }
 }
 
@@ -234,17 +234,17 @@ void *__53__UITextMagnifier_beginZoomUpAnimation_withDuration___block_invoke_2(u
   return result;
 }
 
-- (void)beginZoomDownAnimation:(id)a3 withDuration:(double)a4 postponeHandler:(id)a5
+- (void)beginZoomDownAnimation:(id)animation withDuration:(double)duration postponeHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  animationCopy = animation;
+  handlerCopy = handler;
+  v10 = handlerCopy;
   if (self->_isAnimating)
   {
     self->_delayedAnimationType = 2;
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9);
+      (*(handlerCopy + 2))(handlerCopy);
     }
   }
 
@@ -259,7 +259,7 @@ void *__53__UITextMagnifier_beginZoomUpAnimation_withDuration___block_invoke_2(u
     v11[2] = __71__UITextMagnifier_beginZoomDownAnimation_withDuration_postponeHandler___block_invoke;
     v11[3] = &unk_1E70F5AC0;
     v11[4] = self;
-    [UIView animateWithDuration:v8 animations:v11 completion:a4];
+    [UIView animateWithDuration:animationCopy animations:v11 completion:duration];
   }
 }
 
@@ -298,11 +298,11 @@ void *__71__UITextMagnifier_beginZoomDownAnimation_withDuration_postponeHandler_
   [(UIView *)self setTransform:v4];
 }
 
-- (void)detectLostTouches:(id)a3
+- (void)detectLostTouches:(id)touches
 {
-  v4 = [(UITextMagnifier *)self target];
+  target = [(UITextMagnifier *)self target];
 
-  if (v4)
+  if (target)
   {
     if ([UIApp _isTrackingAnyTouch])
     {
@@ -318,28 +318,28 @@ void *__71__UITextMagnifier_beginZoomDownAnimation_withDuration_postponeHandler_
   }
 }
 
-- (void)beginMagnifyingTarget:(id)a3 text:(id)a4 magnificationPoint:(CGPoint)a5 offset:(CGPoint)a6 animated:(BOOL)a7
+- (void)beginMagnifyingTarget:(id)target text:(id)text magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  y = a5.y;
-  x = a5.x;
-  v21 = a3;
-  v11 = a4;
-  [(UITextMagnifier *)self setTarget:v21];
-  [(UITextMagnifier *)self setText:v11];
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
+  textCopy = text;
+  [(UITextMagnifier *)self setTarget:targetCopy];
+  [(UITextMagnifier *)self setText:textCopy];
 
   [(UITextMagnifier *)self performSelector:sel_detectLostTouches_ withObject:0 afterDelay:0.75];
   [(UITextMagnifierTimeWeightedPoint *)self->_weightedPoint clearHistory];
   [(UITextMagnifier *)self setToMagnifierRenderer];
-  v12 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (!v12)
+  if (!window)
   {
-    v13 = [v21 _window];
-    v14 = [v13 windowScene];
-    v15 = v14;
-    if (v14)
+    _window = [targetCopy _window];
+    windowScene = [_window windowScene];
+    v15 = windowScene;
+    if (windowScene)
     {
-      v16 = v14;
+      v16 = windowScene;
     }
 
     else
@@ -349,11 +349,11 @@ void *__71__UITextMagnifier_beginZoomDownAnimation_withDuration_postponeHandler_
 
     v17 = v16;
 
-    v18 = [v17 keyboardSceneDelegate];
-    v19 = [v18 containerWindow];
+    keyboardSceneDelegate = [v17 keyboardSceneDelegate];
+    containerWindow = [keyboardSceneDelegate containerWindow];
 
-    [v19 addSubview:self];
-    [v21 _convertVisualAltitude:self toView:0.0];
+    [containerWindow addSubview:self];
+    [targetCopy _convertVisualAltitude:self toView:0.0];
     [(UIView *)self _setVisualAltitude:?];
   }
 
@@ -361,15 +361,15 @@ void *__71__UITextMagnifier_beginZoomDownAnimation_withDuration_postponeHandler_
   [(UIView *)self->_magnifierRenderer update];
   [(UITextMagnifier *)self setMagnificationPoint:x, y];
   [(UITextMagnifier *)self zoomUpAnimation];
-  v20 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v20 addObserver:self selector:sel_windowWillRotate_ name:@"UIWindowWillRotateNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_windowWillRotate_ name:@"UIWindowWillRotateNotification" object:0];
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
-  v3 = a3;
+  magnifyingCopy = magnifying;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_detectLostTouches_ object:0];
-  if (v3)
+  if (magnifyingCopy)
   {
     [(UITextMagnifier *)self zoomDownAnimation];
   }
@@ -382,8 +382,8 @@ void *__71__UITextMagnifier_beginZoomDownAnimation_withDuration_postponeHandler_
   [(UITextMagnifier *)self setTarget:0];
   [(UITextMagnifier *)self setText:0];
   self->_magnificationPoint = vdupq_n_s64(0xC08F400000000000);
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (CGPoint)animationPoint

@@ -11,9 +11,9 @@
 - (BOOL)prioritize
 {
   v3 = MEMORY[0x277D28AB8];
-  v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+  applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requesting to prioritize placeholder."];
-  [v3 logStep:6 byParty:10 phase:3 success:1 forBundleID:v4 description:v5];
+  [v3 logStep:6 byParty:10 phase:3 success:1 forBundleID:applicationBundleID description:v5];
 
   v7.receiver = self;
   v7.super_class = SBApplicationPlaceholder;
@@ -23,9 +23,9 @@
 - (BOOL)cancel
 {
   v3 = MEMORY[0x277D28AB8];
-  v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+  applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requesting to cancel placeholder."];
-  [v3 logStep:7 byParty:10 phase:3 success:1 forBundleID:v4 description:v5];
+  [v3 logStep:7 byParty:10 phase:3 success:1 forBundleID:applicationBundleID description:v5];
 
   v7.receiver = self;
   v7.super_class = SBApplicationPlaceholder;
@@ -35,9 +35,9 @@
 - (BOOL)pause
 {
   v3 = MEMORY[0x277D28AB8];
-  v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+  applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requesting to pause placeholder."];
-  [v3 logStep:8 byParty:10 phase:3 success:1 forBundleID:v4 description:v5];
+  [v3 logStep:8 byParty:10 phase:3 success:1 forBundleID:applicationBundleID description:v5];
 
   v7.receiver = self;
   v7.super_class = SBApplicationPlaceholder;
@@ -47,9 +47,9 @@
 - (BOOL)resume
 {
   v3 = MEMORY[0x277D28AB8];
-  v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+  applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requesting to resume placeholder."];
-  [v3 logStep:9 byParty:10 phase:3 success:1 forBundleID:v4 description:v5];
+  [v3 logStep:9 byParty:10 phase:3 success:1 forBundleID:applicationBundleID description:v5];
 
   v7.receiver = self;
   v7.super_class = SBApplicationPlaceholder;
@@ -59,9 +59,9 @@
 - (void)_reloadThumbnailImage
 {
   v3 = MEMORY[0x277D28AB8];
-  v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+  applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Reloading icon image."];
-  [v3 logStep:2 byParty:10 phase:3 success:1 forBundleID:v4 description:v5];
+  [v3 logStep:2 byParty:10 phase:3 success:1 forBundleID:applicationBundleID description:v5];
 
   v6.receiver = self;
   v6.super_class = SBApplicationPlaceholder;

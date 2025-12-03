@@ -1,44 +1,44 @@
 @interface ICIAMMessageRule
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)ruleOperatorAsString:(int)a3;
-- (id)typeAsString:(int)a3;
-- (int)StringAsRuleOperator:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)ruleOperatorAsString:(int)string;
+- (id)typeAsString:(int)string;
+- (int)StringAsRuleOperator:(id)operator;
+- (int)StringAsType:(id)type;
 - (int)ruleOperator;
 - (int)type;
 - (unint64_t)hash;
-- (void)addSubrules:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSubrules:(id)subrules;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMMessageRule
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(ICIAMMessageRule *)self setIdentifier:?];
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 2) != 0)
   {
-    self->_type = *(v4 + 14);
+    self->_type = *(fromCopy + 14);
     *&self->_has |= 2u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
   }
 
   if (v5)
   {
-    self->_ruleOperator = *(v4 + 6);
+    self->_ruleOperator = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
@@ -46,7 +46,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -71,7 +71,7 @@
   }
 
   triggerCondition = self->_triggerCondition;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   if (triggerCondition)
   {
     if (v12)
@@ -85,12 +85,12 @@
     [(ICIAMMessageRule *)self setTriggerCondition:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ICIAMMessageRule *)self setTriggerEventName:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ICIAMMessageRule *)self setRequiredApplicationContextBundleIdentifier:?];
   }
@@ -127,16 +127,16 @@ LABEL_6:
   return v6 ^ v8 ^ [(NSString *)self->_requiredApplicationContextBundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 1))
+  if (identifier | *(equalCopy + 1))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -146,13 +146,13 @@ LABEL_6:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_type != *(v4 + 14))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_type != *(equalCopy + 14))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
 LABEL_22:
     v10 = 0;
@@ -161,25 +161,25 @@ LABEL_22:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_ruleOperator != *(v4 + 6))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_ruleOperator != *(equalCopy + 6))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_22;
   }
 
   subrules = self->_subrules;
-  if (subrules | *(v4 + 4) && ![(NSMutableArray *)subrules isEqual:?])
+  if (subrules | *(equalCopy + 4) && ![(NSMutableArray *)subrules isEqual:?])
   {
     goto LABEL_22;
   }
 
   triggerCondition = self->_triggerCondition;
-  if (triggerCondition | *(v4 + 5))
+  if (triggerCondition | *(equalCopy + 5))
   {
     if (![(ICIAMTriggerCondition *)triggerCondition isEqual:?])
     {
@@ -188,7 +188,7 @@ LABEL_22:
   }
 
   triggerEventName = self->_triggerEventName;
-  if (triggerEventName | *(v4 + 6))
+  if (triggerEventName | *(equalCopy + 6))
   {
     if (![(NSString *)triggerEventName isEqual:?])
     {
@@ -197,7 +197,7 @@ LABEL_22:
   }
 
   requiredApplicationContextBundleIdentifier = self->_requiredApplicationContextBundleIdentifier;
-  if (requiredApplicationContextBundleIdentifier | *(v4 + 2))
+  if (requiredApplicationContextBundleIdentifier | *(equalCopy + 2))
   {
     v10 = [(NSString *)requiredApplicationContextBundleIdentifier isEqual:?];
   }
@@ -212,11 +212,11 @@ LABEL_23:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -253,7 +253,7 @@ LABEL_23:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{a3, v22}];
+        v14 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{zone, v22}];
         [v5 addSubrules:v14];
       }
 
@@ -263,52 +263,52 @@ LABEL_23:
     while (v11);
   }
 
-  v15 = [(ICIAMTriggerCondition *)self->_triggerCondition copyWithZone:a3];
+  v15 = [(ICIAMTriggerCondition *)self->_triggerCondition copyWithZone:zone];
   v16 = *(v5 + 40);
   *(v5 + 40) = v15;
 
-  v17 = [(NSString *)self->_triggerEventName copyWithZone:a3];
+  v17 = [(NSString *)self->_triggerEventName copyWithZone:zone];
   v18 = *(v5 + 48);
   *(v5 + 48) = v17;
 
-  v19 = [(NSString *)self->_requiredApplicationContextBundleIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_requiredApplicationContextBundleIdentifier copyWithZone:zone];
   v20 = *(v5 + 16);
   *(v5 + 16) = v19;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v11;
+    [toCopy setIdentifier:?];
+    toCopy = v11;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 14) = self->_type;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 14) = self->_type;
+    *(toCopy + 60) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 6) = self->_ruleOperator;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 6) = self->_ruleOperator;
+    *(toCopy + 60) |= 1u;
   }
 
   if ([(ICIAMMessageRule *)self subrulesCount])
   {
     [v11 clearSubrules];
-    v6 = [(ICIAMMessageRule *)self subrulesCount];
-    if (v6)
+    subrulesCount = [(ICIAMMessageRule *)self subrulesCount];
+    if (subrulesCount)
     {
-      v7 = v6;
+      v7 = subrulesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ICIAMMessageRule *)self subrulesAtIndex:i];
@@ -336,10 +336,10 @@ LABEL_23:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -404,12 +404,12 @@ LABEL_23:
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -485,8 +485,8 @@ LABEL_23:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -501,8 +501,8 @@ LABEL_23:
   triggerCondition = self->_triggerCondition;
   if (triggerCondition)
   {
-    v19 = [(ICIAMTriggerCondition *)triggerCondition dictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"triggerCondition"];
+    dictionaryRepresentation2 = [(ICIAMTriggerCondition *)triggerCondition dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"triggerCondition"];
   }
 
   triggerEventName = self->_triggerEventName;
@@ -526,58 +526,58 @@ LABEL_23:
   v8.receiver = self;
   v8.super_class = ICIAMMessageRule;
   v4 = [(ICIAMMessageRule *)&v8 description];
-  v5 = [(ICIAMMessageRule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMMessageRule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addSubrules:(id)a3
+- (void)addSubrules:(id)subrules
 {
-  v4 = a3;
+  subrulesCopy = subrules;
   subrules = self->_subrules;
-  v8 = v4;
+  v8 = subrulesCopy;
   if (!subrules)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_subrules;
     self->_subrules = v6;
 
-    v4 = v8;
+    subrulesCopy = v8;
     subrules = self->_subrules;
   }
 
-  [(NSMutableArray *)subrules addObject:v4];
+  [(NSMutableArray *)subrules addObject:subrulesCopy];
 }
 
-- (int)StringAsRuleOperator:(id)a3
+- (int)StringAsRuleOperator:(id)operator
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AND"])
+  operatorCopy = operator;
+  if ([operatorCopy isEqualToString:@"AND"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"OR"];
+    v4 = [operatorCopy isEqualToString:@"OR"];
   }
 
   return v4;
 }
 
-- (id)ruleOperatorAsString:(int)a3
+- (id)ruleOperatorAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"OR";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -602,34 +602,34 @@ LABEL_23:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Simple"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Simple"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Compound"];
+    v4 = [typeCopy isEqualToString:@"Compound"];
   }
 
   return v4;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"Compound";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -641,9 +641,9 @@ LABEL_23:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

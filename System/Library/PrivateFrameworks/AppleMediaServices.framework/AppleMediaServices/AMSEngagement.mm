@@ -7,39 +7,39 @@
 + (double)_enqueueTimeout;
 + (id)_connection;
 + (id)createBagForSubProfile;
-+ (void)_recordLoggingEventWithBag:(id)a3 enqueueData:(id)a4 eventType:(id)a5 userInfo:(id)a6 destinations:(id)a7 error:(id)a8;
-- (AMSEngagement)initWithBag:(id)a3;
++ (void)_recordLoggingEventWithBag:(id)bag enqueueData:(id)data eventType:(id)type userInfo:(id)info destinations:(id)destinations error:(id)error;
+- (AMSEngagement)initWithBag:(id)bag;
 - (id)_createCombinedLogKey;
-- (id)_enqueue:(id)a3;
-- (id)_enqueueWithContext:(id)a3;
-- (id)_parseActions:(id)a3;
-- (id)contentInfoForApp:(id)a3 cacheKey:(id)a4 version:(id)a5;
-- (id)enqueueData:(id)a3 to:(id)a4;
-- (id)enqueueEvent:(id)a3;
-- (id)enqueueMessageEvent:(id)a3;
+- (id)_enqueue:(id)_enqueue;
+- (id)_enqueueWithContext:(id)context;
+- (id)_parseActions:(id)actions;
+- (id)contentInfoForApp:(id)app cacheKey:(id)key version:(id)version;
+- (id)enqueueData:(id)data to:(id)to;
+- (id)enqueueEvent:(id)event;
+- (id)enqueueMessageEvent:(id)event;
 - (id)fetchMetricsIdentifiers;
 - (id)manualSyncMetricsIdentifiers;
-- (id)syncDestinations:(id)a3;
+- (id)syncDestinations:(id)destinations;
 - (id)syncMetricsIdentifiers;
-- (id)syncWithRequest:(id)a3;
+- (id)syncWithRequest:(id)request;
 - (id)treatmentStoreService;
 - (void)_connectionErrorNotification;
-- (void)_failAllRunningPromisesWithError:(id)a3;
-- (void)_handleServiceResponse:(id)a3;
-- (void)_manageRunningPromise:(id)a3;
+- (void)_failAllRunningPromisesWithError:(id)error;
+- (void)_handleServiceResponse:(id)response;
+- (void)_manageRunningPromise:(id)promise;
 - (void)_observeNotifications;
-- (void)_pushEventReceived:(id)a3;
-- (void)_removeRunningPromise:(id)a3;
-- (void)_scheduleSyncIfNeeded:(id)a3;
-- (void)addCachePolicy:(int64_t)a3 forPlacements:(id)a4 serviceType:(id)a5;
-- (void)addObserver:(id)a3 placement:(id)a4 serviceType:(id)a5;
-- (void)addObserver:(id)a3 placement:(id)a4 serviceType:(id)a5 queue:(id)a6;
-- (void)addObserver:(id)a3 placements:(id)a4 serviceType:(id)a5;
-- (void)addObserver:(id)a3 placements:(id)a4 serviceType:(id)a5 queue:(id)a6;
+- (void)_pushEventReceived:(id)received;
+- (void)_removeRunningPromise:(id)promise;
+- (void)_scheduleSyncIfNeeded:(id)needed;
+- (void)addCachePolicy:(int64_t)policy forPlacements:(id)placements serviceType:(id)type;
+- (void)addObserver:(id)observer placement:(id)placement serviceType:(id)type;
+- (void)addObserver:(id)observer placement:(id)placement serviceType:(id)type queue:(id)queue;
+- (void)addObserver:(id)observer placements:(id)placements serviceType:(id)type;
+- (void)addObserver:(id)observer placements:(id)placements serviceType:(id)type queue:(id)queue;
 - (void)dealloc;
-- (void)handleDialogResult:(id)a3;
-- (void)handlePushEvent:(id)a3;
-- (void)removeObserver:(id)a3 placement:(id)a4 serviceType:(id)a5;
+- (void)handleDialogResult:(id)result;
+- (void)handlePushEvent:(id)event;
+- (void)removeObserver:(id)observer placement:(id)placement serviceType:(id)type;
 @end
 
 @implementation AMSEngagement
@@ -58,7 +58,7 @@
 
 + (id)_connection
 {
-  v3 = [a1 _engagementQueue];
+  _engagementQueue = [self _engagementQueue];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -70,8 +70,8 @@
   v11[2] = __28__AMSEngagement__connection__block_invoke;
   v11[3] = &unk_1E73B73A0;
   v13 = &v15;
-  v14 = a1;
-  v4 = v3;
+  selfCopy = self;
+  v4 = _engagementQueue;
   v12 = v4;
   v5 = v11;
   v6 = v4;
@@ -282,7 +282,7 @@ void __38__AMSEngagement_treatmentStoreService__block_invoke_2(uint64_t a1, void
   {
     v5 = [[AMSMutablePromise alloc] initWithTimeout:5.0];
     [(AMSEngagement *)self _manageRunningPromise:v5];
-    v6 = [objc_opt_class() _engagementQueue];
+    _engagementQueue = [objc_opt_class() _engagementQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __38__AMSEngagement_treatmentStoreService__block_invoke;
@@ -299,7 +299,7 @@ void __38__AMSEngagement_treatmentStoreService__block_invoke_2(uint64_t a1, void
     v16 = v9;
     v17 = v8;
     v10 = v9;
-    dispatch_async(v6, block);
+    dispatch_async(_engagementQueue, block);
 
     v11 = v14;
     v4 = v7;
@@ -315,11 +315,11 @@ void __28__AMSEngagement__connection__block_invoke_3(uint64_t a1)
   *(v1 + 40) = 0;
 }
 
-- (id)enqueueMessageEvent:(id)a3
+- (id)enqueueMessageEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSEngagement *)self enqueueEvent:v4];
+  v6 = [(AMSEngagement *)self enqueueEvent:eventCopy];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -380,44 +380,44 @@ void __48__AMSEngagement_Messaging__enqueueMessageEvent___block_invoke(uint64_t 
   [*(a1 + 40) finishWithResult:v4];
 }
 
-- (void)handleDialogResult:(id)a3
+- (void)handleDialogResult:(id)result
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 originalRequest];
-  v5 = [v3 selectedActionIdentifier];
+  resultCopy = result;
+  originalRequest = [resultCopy originalRequest];
+  selectedActionIdentifier = [resultCopy selectedActionIdentifier];
 
-  v6 = [v4 locateActionWithIdentifier:v5];
+  v6 = [originalRequest locateActionWithIdentifier:selectedActionIdentifier];
 
-  v7 = [v6 metricsEvent];
+  metricsEvent = [v6 metricsEvent];
 
-  if (v7)
+  if (metricsEvent)
   {
     v8 = [AMSMetrics internalInstanceUsingBag:0];
-    v9 = [v6 metricsEvent];
-    v11[0] = v9;
+    metricsEvent2 = [v6 metricsEvent];
+    v11[0] = metricsEvent2;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     [v8 enqueueEvents:v10];
   }
 }
 
-- (AMSEngagement)initWithBag:(id)a3
+- (AMSEngagement)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v20.receiver = self;
   v20.super_class = AMSEngagement;
   v6 = [(AMSEngagement *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
     v8 = +[AMSEngagement _connection];
     connection = v7->_connection;
     v7->_connection = v8;
 
-    v10 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     observerInfo = v7->_observerInfo;
-    v7->_observerInfo = v10;
+    v7->_observerInfo = weakToStrongObjectsMapTable;
 
     v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     runningPromises = v7->_runningPromises;
@@ -438,28 +438,28 @@ void __48__AMSEngagement_Messaging__enqueueMessageEvent___block_invoke(uint64_t 
   return v7;
 }
 
-- (id)contentInfoForApp:(id)a3 cacheKey:(id)a4 version:(id)a5
+- (id)contentInfoForApp:(id)app cacheKey:(id)key version:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appCopy = app;
+  keyCopy = key;
+  versionCopy = version;
   v11 = [[AMSMutablePromise alloc] initWithTimeout:5.0];
   [(AMSEngagement *)self _manageRunningPromise:v11];
-  v12 = [objc_opt_class() _engagementQueue];
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __52__AMSEngagement_contentInfoForApp_cacheKey_version___block_invoke;
   v23[3] = &unk_1E73B7138;
   v23[4] = self;
-  v24 = v8;
-  v25 = v9;
-  v26 = v10;
+  v24 = appCopy;
+  v25 = keyCopy;
+  v26 = versionCopy;
   v13 = v11;
   v27 = v13;
   v14 = v23;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v15 = versionCopy;
+  v16 = keyCopy;
+  v17 = appCopy;
   v18 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -468,7 +468,7 @@ void __48__AMSEngagement_Messaging__enqueueMessageEvent___block_invoke(uint64_t 
   v29 = v18;
   v30 = v14;
   v19 = v18;
-  dispatch_async(v12, block);
+  dispatch_async(_engagementQueue, block);
 
   v20 = v27;
   v21 = v13;
@@ -529,19 +529,19 @@ void __52__AMSEngagement_contentInfoForApp_cacheKey_version___block_invoke_16(ui
   }
 }
 
-- (id)enqueueEvent:(id)a3
+- (id)enqueueEvent:(id)event
 {
-  v4 = [a3 engagementData];
-  v5 = [(AMSEngagement *)self enqueueData:v4];
+  engagementData = [event engagementData];
+  v5 = [(AMSEngagement *)self enqueueData:engagementData];
 
   return v5;
 }
 
-- (id)enqueueData:(id)a3 to:(id)a4
+- (id)enqueueData:(id)data to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dataCopy = data;
+  toCopy = to;
+  if (!dataCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = @"Invalid Engagement Data";
     v9 = 2;
@@ -559,19 +559,19 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v6 copyItems:1];
+  v13 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:dataCopy copyItems:1];
 
   v14 = objc_alloc_init(AMSMutablePromise);
   v15 = AMSLogKey();
-  v16 = [objc_opt_class() _engagementQueue];
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __32__AMSEngagement_enqueueData_to___block_invoke;
   v23[3] = &unk_1E73B7138;
-  v6 = v13;
-  v24 = v6;
-  v25 = self;
-  v26 = v7;
+  dataCopy = v13;
+  v24 = dataCopy;
+  selfCopy = self;
+  v26 = toCopy;
   v17 = v14;
   v27 = v17;
   v28 = v15;
@@ -585,7 +585,7 @@ LABEL_6:
   v30 = v20;
   v31 = v18;
   v21 = v20;
-  dispatch_async(v16, block);
+  dispatch_async(_engagementQueue, block);
 
   v22 = v28;
   v11 = v17;
@@ -1033,21 +1033,21 @@ void __32__AMSEngagement_enqueueData_to___block_invoke_53(uint64_t a1)
   [v1 finishWithResult:v2];
 }
 
-- (id)_enqueue:(id)a3
+- (id)_enqueue:(id)_enqueue
 {
-  v4 = a3;
+  _enqueueCopy = _enqueue;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [objc_opt_class() _engagementQueue];
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __26__AMSEngagement__enqueue___block_invoke;
   v14[3] = &unk_1E73B71B0;
-  v15 = v4;
+  v15 = _enqueueCopy;
   v7 = v5;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v8 = v14;
-  v9 = v4;
+  v9 = _enqueueCopy;
   v10 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1056,7 +1056,7 @@ void __32__AMSEngagement_enqueueData_to___block_invoke_53(uint64_t a1)
   v19 = v10;
   v20 = v8;
   v11 = v10;
-  dispatch_async(v6, block);
+  dispatch_async(_engagementQueue, block);
 
   v12 = v7;
   return v7;
@@ -1122,11 +1122,11 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)_enqueueWithContext:(id)a3
+- (id)_enqueueWithContext:(id)context
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 signpostID])
+  contextCopy = context;
+  if (![contextCopy signpostID])
   {
     v5 = +[AMSLogConfig sharedEngagementConfig];
     v6 = v5;
@@ -1135,8 +1135,8 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    v8 = os_signpost_enabled(v7);
+    oSLogObject = [v6 OSLogObject];
+    v8 = os_signpost_enabled(oSLogObject);
 
     if (!v5)
     {
@@ -1151,8 +1151,8 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      [v4 setSignpostID:{os_signpost_id_make_with_pointer(v11, self)}];
+      oSLogObject2 = [v10 OSLogObject];
+      [contextCopy setSignpostID:{os_signpost_id_make_with_pointer(oSLogObject2, self)}];
 
       if (!v9)
       {
@@ -1162,35 +1162,35 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 OSLogObject];
+        oSLogObject3 = [v12 OSLogObject];
       }
 
       else
       {
         v15 = +[AMSLogConfig sharedConfig];
-        v14 = [v15 OSLogObject];
+        oSLogObject3 = [v15 OSLogObject];
       }
 
-      v16 = [v4 signpostID];
-      if ((v16 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostID = [contextCopy signpostID];
+      if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v17 = v16;
-        if (os_signpost_enabled(v14))
+        v17 = signpostID;
+        if (os_signpost_enabled(oSLogObject3))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_192869000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v17, "Engagement", "Enqueuing request", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_192869000, oSLogObject3, OS_SIGNPOST_INTERVAL_BEGIN, v17, "Engagement", "Enqueuing request", buf, 2u);
         }
       }
     }
   }
 
-  v18 = [v4 request];
-  v19 = [v18 events];
-  v20 = [v19 firstObject];
+  request = [contextCopy request];
+  events = [request events];
+  firstObject = [events firstObject];
 
-  if (v20)
+  if (firstObject)
   {
-    v21 = [v20 objectForKeyedSubscript:@"eventType"];
+    v21 = [firstObject objectForKeyedSubscript:@"eventType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1217,8 +1217,8 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
       v28 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v28 OSLogObject];
-    v30 = os_signpost_enabled(v29);
+    oSLogObject4 = [v28 OSLogObject];
+    v30 = os_signpost_enabled(oSLogObject4);
 
     if (!v27)
     {
@@ -1230,31 +1230,31 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
       v32 = v31;
       if (v31)
       {
-        v33 = [v31 OSLogObject];
+        oSLogObject5 = [v31 OSLogObject];
       }
 
       else
       {
         v34 = +[AMSLogConfig sharedConfig];
-        v33 = [v34 OSLogObject];
+        oSLogObject5 = [v34 OSLogObject];
       }
 
-      v35 = [v4 signpostID];
-      if (v35 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
+      signpostID2 = [contextCopy signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(oSLogObject5))
       {
-        v36 = [v4 request];
-        v37 = [v36 destinations];
-        v38 = [v37 componentsJoinedByString:{@", "}];
+        request2 = [contextCopy request];
+        destinations = [request2 destinations];
+        v38 = [destinations componentsJoinedByString:{@", "}];
         *buf = 138543618;
         *&buf[4] = v26;
         *&buf[12] = 2114;
         *&buf[14] = v38;
-        _os_signpost_emit_with_name_impl(&dword_192869000, v33, OS_SIGNPOST_EVENT, v35, "Engagement", "Enqueueing event for type: %{public}@, dest: [%{public}@]", buf, 0x16u);
+        _os_signpost_emit_with_name_impl(&dword_192869000, oSLogObject5, OS_SIGNPOST_EVENT, signpostID2, "Engagement", "Enqueueing event for type: %{public}@, dest: [%{public}@]", buf, 0x16u);
       }
     }
 
-    v39 = [v4 request];
-    v40 = [v39 logKey];
+    request3 = [contextCopy request];
+    logKey = [request3 logKey];
 
     +[AMSEngagement _enqueueTimeout];
     v42 = [[AMSMutablePromise alloc] initWithTimeout:v41];
@@ -1264,7 +1264,7 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
     *&buf[16] = 0x3032000000;
     v64 = __Block_byref_object_copy__24;
     v65 = __Block_byref_object_dispose__24;
-    v66 = [(AMSEngagement *)self connection];
+    connection = [(AMSEngagement *)self connection];
     v61[0] = 0;
     v61[1] = v61;
     v61[2] = 0x3032000000;
@@ -1272,28 +1272,28 @@ uint64_t __26__AMSEngagement__enqueue___block_invoke_2(uint64_t a1, void *a2)
     v61[4] = __Block_byref_object_dispose__24;
     v62 = 0;
     v43 = *(*&buf[8] + 40);
-    v44 = [v4 request];
+    request4 = [contextCopy request];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __37__AMSEngagement__enqueueWithContext___block_invoke;
     v55[3] = &unk_1E73B71D8;
     v55[4] = self;
     v59 = buf;
-    v45 = v40;
+    v45 = logKey;
     v56 = v45;
-    v46 = v4;
+    v46 = contextCopy;
     v57 = v46;
     v60 = v61;
     v47 = v42;
     v58 = v47;
-    [v43 enqueueWithRequest:v44 completion:v55];
+    [v43 enqueueWithRequest:request4 completion:v55];
 
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __37__AMSEngagement__enqueueWithContext___block_invoke_77;
     v50[3] = &unk_1E73B7200;
     v50[4] = self;
-    v51 = v20;
+    v51 = firstObject;
     v23 = v26;
     v52 = v23;
     v54 = v61;
@@ -1545,28 +1545,28 @@ void __37__AMSEngagement__enqueueWithContext___block_invoke_77(uint64_t a1, void
   [v4 _recordLoggingEventWithBag:v11 enqueueData:v5 eventType:v6 userInfo:v8 destinations:v10 error:v3];
 }
 
-+ (void)_recordLoggingEventWithBag:(id)a3 enqueueData:(id)a4 eventType:(id)a5 userInfo:(id)a6 destinations:(id)a7 error:(id)a8
++ (void)_recordLoggingEventWithBag:(id)bag enqueueData:(id)data eventType:(id)type userInfo:(id)info destinations:(id)destinations error:(id)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v17 ams_filterUsingTest:&__block_literal_global_80];
+  bagCopy = bag;
+  dataCopy = data;
+  typeCopy = type;
+  infoCopy = info;
+  destinationsCopy = destinations;
+  errorCopy = error;
+  v19 = [destinationsCopy ams_filterUsingTest:&__block_literal_global_80];
 
   if (v19)
   {
-    v46 = v15;
-    if (!v13)
+    v46 = typeCopy;
+    if (!bagCopy)
     {
-      v13 = +[AMSEngagement createBagForSubProfile];
+      bagCopy = +[AMSEngagement createBagForSubProfile];
     }
 
-    v44 = v18;
-    v20 = [[AMSMetricsLoggingEvent alloc] initWithSubsystem:@"Engagement" category:@"enqueue" error:v18];
-    v21 = [v14 objectForKeyedSubscript:@"placements"];
+    v44 = errorCopy;
+    v20 = [[AMSMetricsLoggingEvent alloc] initWithSubsystem:@"Engagement" category:@"enqueue" error:errorCopy];
+    v21 = [dataCopy objectForKeyedSubscript:@"placements"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1589,7 +1589,7 @@ void __37__AMSEngagement__enqueueWithContext___block_invoke_77(uint64_t a1, void
       v47 = v24;
     }
 
-    v25 = [v16 objectForKeyedSubscript:@"destination"];
+    v25 = [infoCopy objectForKeyedSubscript:@"destination"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1601,7 +1601,7 @@ void __37__AMSEngagement__enqueueWithContext___block_invoke_77(uint64_t a1, void
       v26 = 0;
     }
 
-    v45 = v16;
+    v45 = infoCopy;
 
     if ([v26 length])
     {
@@ -1612,7 +1612,7 @@ void __37__AMSEngagement__enqueueWithContext___block_invoke_77(uint64_t a1, void
 
     else
     {
-      v28 = v17;
+      v28 = destinationsCopy;
     }
 
     v29 = MEMORY[0x1E695DFD8];
@@ -1644,7 +1644,7 @@ void __37__AMSEngagement__enqueueWithContext___block_invoke_77(uint64_t a1, void
 
     [(AMSMetricsLoggingEvent *)v20 setEngagementEventType:v36];
     [(AMSMetricsLoggingEvent *)v20 setEventPlacement:v47];
-    v37 = [v14 objectForKeyedSubscript:@"serviceType"];
+    v37 = [dataCopy objectForKeyedSubscript:@"serviceType"];
     objc_opt_class();
     v38 = 0;
     if (objc_opt_isKindOfClass())
@@ -1654,7 +1654,7 @@ void __37__AMSEngagement__enqueueWithContext___block_invoke_77(uint64_t a1, void
 
     [(AMSMetricsLoggingEvent *)v20 setEventServiceType:v38];
     [(AMSMetricsLoggingEvent *)v20 setJsVersions:v34];
-    v39 = [v14 objectForKeyedSubscript:@"requestUrl"];
+    v39 = [dataCopy objectForKeyedSubscript:@"requestUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1667,20 +1667,20 @@ void __37__AMSEngagement__enqueueWithContext___block_invoke_77(uint64_t a1, void
     }
 
     [(AMSMetricsLoggingEvent *)v20 setUrl:v40];
-    v41 = [AMSMetricsLoggingEvent shouldSampleErrorsWithBag:v13];
+    v41 = [AMSMetricsLoggingEvent shouldSampleErrorsWithBag:bagCopy];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __94__AMSEngagement__recordLoggingEventWithBag_enqueueData_eventType_userInfo_destinations_error___block_invoke_4;
     v48[3] = &unk_1E73B3DE0;
-    v13 = v13;
-    v49 = v13;
+    bagCopy = bagCopy;
+    v49 = bagCopy;
     v50 = v20;
     v42 = v20;
     [v41 addSuccessBlock:v48];
 
-    v16 = v45;
-    v15 = v46;
-    v18 = v44;
+    infoCopy = v45;
+    typeCopy = v46;
+    errorCopy = v44;
   }
 }
 
@@ -1702,13 +1702,13 @@ void __94__AMSEngagement__recordLoggingEventWithBag_enqueueData_eventType_userIn
   [v2 enqueueEvent:*(a1 + 40)];
 }
 
-- (id)syncDestinations:(id)a3
+- (id)syncDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_alloc_init(AMSEngagementSyncRequest);
-  if ([v4 count])
+  if ([destinationsCopy count])
   {
-    v6 = v4;
+    v6 = destinationsCopy;
   }
 
   else
@@ -1727,24 +1727,24 @@ void __94__AMSEngagement__recordLoggingEventWithBag_enqueueData_eventType_userIn
   return v8;
 }
 
-- (id)syncWithRequest:(id)a3
+- (id)syncWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [[AMSMutablePromise alloc] initWithTimeout:300.0];
   [(AMSEngagement *)self _manageRunningPromise:v5];
   v6 = AMSLogKey();
-  v7 = [objc_opt_class() _engagementQueue];
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __33__AMSEngagement_syncWithRequest___block_invoke;
   v16[3] = &unk_1E73B72B8;
   v17 = v6;
-  v18 = self;
-  v19 = v4;
+  selfCopy = self;
+  v19 = requestCopy;
   v20 = v5;
   v8 = v16;
   v9 = v5;
-  v10 = v4;
+  v10 = requestCopy;
   v11 = v6;
   v12 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
@@ -1754,11 +1754,11 @@ void __94__AMSEngagement__recordLoggingEventWithBag_enqueueData_eventType_userIn
   v22 = v12;
   v23 = v8;
   v13 = v12;
-  dispatch_async(v7, block);
+  dispatch_async(_engagementQueue, block);
 
-  v14 = [(AMSPromise *)v9 binaryPromiseAdapter];
+  binaryPromiseAdapter = [(AMSPromise *)v9 binaryPromiseAdapter];
 
-  return v14;
+  return binaryPromiseAdapter;
 }
 
 void __33__AMSEngagement_syncWithRequest___block_invoke(uint64_t a1)
@@ -2055,7 +2055,7 @@ void __33__AMSEngagement_syncWithRequest___block_invoke_111(uint64_t a1, void *a
 {
   v3 = AMSLogKey();
   v4 = objc_alloc_init(AMSMutableBinaryPromise);
-  v5 = [objc_opt_class() _engagementQueue];
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __39__AMSEngagement_syncMetricsIdentifiers__block_invoke;
@@ -2074,7 +2074,7 @@ void __33__AMSEngagement_syncWithRequest___block_invoke_111(uint64_t a1, void *a
   v18 = v9;
   v19 = v7;
   v10 = v9;
-  dispatch_async(v5, block);
+  dispatch_async(_engagementQueue, block);
 
   v11 = v16;
   v12 = v6;
@@ -2117,7 +2117,7 @@ uint64_t __39__AMSEngagement_syncMetricsIdentifiers__block_invoke(uint64_t a1)
 {
   v3 = AMSLogKey();
   v4 = objc_alloc_init(AMSMutableBinaryPromise);
-  v5 = [objc_opt_class() _engagementQueue];
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __40__AMSEngagement_fetchMetricsIdentifiers__block_invoke;
@@ -2136,7 +2136,7 @@ uint64_t __39__AMSEngagement_syncMetricsIdentifiers__block_invoke(uint64_t a1)
   v18 = v9;
   v19 = v7;
   v10 = v9;
-  dispatch_async(v5, block);
+  dispatch_async(_engagementQueue, block);
 
   v11 = v16;
   v12 = v6;
@@ -2181,7 +2181,7 @@ uint64_t __40__AMSEngagement_fetchMetricsIdentifiers__block_invoke(uint64_t a1)
   if (os_variant_has_internal_content())
   {
     v4 = AMSLogKey();
-    v5 = [objc_opt_class() _engagementQueue];
+    _engagementQueue = [objc_opt_class() _engagementQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __45__AMSEngagement_manualSyncMetricsIdentifiers__block_invoke;
@@ -2199,7 +2199,7 @@ uint64_t __40__AMSEngagement_fetchMetricsIdentifiers__block_invoke(uint64_t a1)
     v15 = v8;
     v16 = v6;
     v9 = v8;
-    dispatch_async(v5, block);
+    dispatch_async(_engagementQueue, block);
   }
 
   else
@@ -2255,76 +2255,76 @@ uint64_t __45__AMSEngagement_manualSyncMetricsIdentifiers__block_invoke(uint64_t
   return v2;
 }
 
-- (void)addObserver:(id)a3 placement:(id)a4 serviceType:(id)a5
+- (void)addObserver:(id)observer placement:(id)placement serviceType:(id)type
 {
-  if (a4)
+  if (placement)
   {
     v8 = MEMORY[0x1E695DFD8];
-    v9 = a5;
-    v10 = a3;
-    v11 = [v8 setWithObject:a4];
-    [AMSEngagement addObserver:"addObserver:placements:serviceType:" placements:v10 serviceType:?];
+    typeCopy = type;
+    typeCopy2 = observer;
+    observerCopy2 = [v8 setWithObject:placement];
+    [AMSEngagement addObserver:"addObserver:placements:serviceType:" placements:typeCopy2 serviceType:?];
   }
 
   else
   {
-    v10 = a5;
-    v11 = a3;
+    typeCopy2 = type;
+    observerCopy2 = observer;
     [AMSEngagement addObserver:"addObserver:placements:serviceType:" placements:? serviceType:?];
   }
 }
 
-- (void)addObserver:(id)a3 placements:(id)a4 serviceType:(id)a5
+- (void)addObserver:(id)observer placements:(id)placements serviceType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _notifyQueue];
-  [(AMSEngagement *)self addObserver:v10 placements:v9 serviceType:v8 queue:v11];
+  typeCopy = type;
+  placementsCopy = placements;
+  observerCopy = observer;
+  _notifyQueue = [objc_opt_class() _notifyQueue];
+  [(AMSEngagement *)self addObserver:observerCopy placements:placementsCopy serviceType:typeCopy queue:_notifyQueue];
 }
 
-- (void)addObserver:(id)a3 placement:(id)a4 serviceType:(id)a5 queue:(id)a6
+- (void)addObserver:(id)observer placement:(id)placement serviceType:(id)type queue:(id)queue
 {
-  if (a4)
+  if (placement)
   {
     v10 = MEMORY[0x1E695DFD8];
-    v11 = a6;
-    v12 = a5;
-    v13 = a3;
-    v14 = [v10 setWithObject:a4];
-    [AMSEngagement addObserver:"addObserver:placements:serviceType:queue:" placements:v13 serviceType:? queue:?];
+    queueCopy = queue;
+    queueCopy2 = type;
+    typeCopy2 = observer;
+    observerCopy2 = [v10 setWithObject:placement];
+    [AMSEngagement addObserver:"addObserver:placements:serviceType:queue:" placements:typeCopy2 serviceType:? queue:?];
   }
 
   else
   {
-    v12 = a6;
-    v13 = a5;
-    v14 = a3;
+    queueCopy2 = queue;
+    typeCopy2 = type;
+    observerCopy2 = observer;
     [AMSEngagement addObserver:"addObserver:placements:serviceType:queue:" placements:? serviceType:? queue:?];
   }
 }
 
-- (void)addObserver:(id)a3 placements:(id)a4 serviceType:(id)a5 queue:(id)a6
+- (void)addObserver:(id)observer placements:(id)placements serviceType:(id)type queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_opt_class() _engagementQueue];
+  observerCopy = observer;
+  placementsCopy = placements;
+  typeCopy = type;
+  queueCopy = queue;
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __58__AMSEngagement_addObserver_placements_serviceType_queue___block_invoke;
   v22[3] = &unk_1E73B7138;
   v22[4] = self;
-  v23 = v10;
-  v24 = v13;
-  v25 = v11;
-  v26 = v12;
+  v23 = observerCopy;
+  v24 = queueCopy;
+  v25 = placementsCopy;
+  v26 = typeCopy;
   v15 = v22;
-  v16 = v12;
-  v17 = v11;
-  v18 = v13;
-  v19 = v10;
+  v16 = typeCopy;
+  v17 = placementsCopy;
+  v18 = queueCopy;
+  v19 = observerCopy;
   v20 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2333,7 +2333,7 @@ uint64_t __45__AMSEngagement_manualSyncMetricsIdentifiers__block_invoke(uint64_t
   v28 = v20;
   v29 = v15;
   v21 = v20;
-  dispatch_sync(v14, block);
+  dispatch_sync(_engagementQueue, block);
 }
 
 void __58__AMSEngagement_addObserver_placements_serviceType_queue___block_invoke(uint64_t a1)
@@ -2421,24 +2421,24 @@ void __58__AMSEngagement_addObserver_placements_serviceType_queue___block_invoke
   }
 }
 
-- (void)removeObserver:(id)a3 placement:(id)a4 serviceType:(id)a5
+- (void)removeObserver:(id)observer placement:(id)placement serviceType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() _engagementQueue];
+  observerCopy = observer;
+  placementCopy = placement;
+  typeCopy = type;
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __54__AMSEngagement_removeObserver_placement_serviceType___block_invoke;
   v18[3] = &unk_1E73B72B8;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
+  v19 = observerCopy;
+  v20 = placementCopy;
+  v21 = typeCopy;
   v12 = v18;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = typeCopy;
+  v14 = placementCopy;
+  v15 = observerCopy;
   v16 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2447,7 +2447,7 @@ void __58__AMSEngagement_addObserver_placements_serviceType_queue___block_invoke
   v23 = v16;
   v24 = v12;
   v17 = v16;
-  dispatch_sync(v11, block);
+  dispatch_sync(_engagementQueue, block);
 }
 
 void __54__AMSEngagement_removeObserver_placement_serviceType___block_invoke(uint64_t a1)
@@ -2546,16 +2546,16 @@ LABEL_20:
   }
 }
 
-- (void)addCachePolicy:(int64_t)a3 forPlacements:(id)a4 serviceType:(id)a5
+- (void)addCachePolicy:(int64_t)policy forPlacements:(id)placements serviceType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  placementsCopy = placements;
+  typeCopy = type;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [placementsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2567,36 +2567,36 @@ LABEL_20:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(placementsCopy);
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
-        v15 = [(AMSEngagement *)self cacheInfo];
-        [v15 addWithCachePolicy:a3 placement:v14 serviceType:v9];
+        cacheInfo = [(AMSEngagement *)self cacheInfo];
+        [cacheInfo addWithCachePolicy:policy placement:v14 serviceType:typeCopy];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [placementsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)_manageRunningPromise:(id)a3
+- (void)_manageRunningPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _engagementQueue];
+  promiseCopy = promise;
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__AMSEngagement__manageRunningPromise___block_invoke;
   v10[3] = &unk_1E73B3DE0;
   v10[4] = self;
-  v11 = v4;
+  v11 = promiseCopy;
   v6 = v10;
-  v7 = v4;
+  v7 = promiseCopy;
   v8 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2605,7 +2605,7 @@ LABEL_20:
   v13 = v8;
   v14 = v6;
   v9 = v8;
-  dispatch_async(v5, block);
+  dispatch_async(_engagementQueue, block);
 }
 
 void __39__AMSEngagement__manageRunningPromise___block_invoke(uint64_t a1)
@@ -2636,18 +2636,18 @@ void __39__AMSEngagement__manageRunningPromise___block_invoke_2(uint64_t a1)
   [WeakRetained _removeRunningPromise:v2];
 }
 
-- (void)_removeRunningPromise:(id)a3
+- (void)_removeRunningPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _engagementQueue];
+  promiseCopy = promise;
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__AMSEngagement__removeRunningPromise___block_invoke;
   v10[3] = &unk_1E73B3DE0;
   v10[4] = self;
-  v11 = v4;
+  v11 = promiseCopy;
   v6 = v10;
-  v7 = v4;
+  v7 = promiseCopy;
   v8 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2656,7 +2656,7 @@ void __39__AMSEngagement__manageRunningPromise___block_invoke_2(uint64_t a1)
   v13 = v8;
   v14 = v6;
   v9 = v8;
-  dispatch_async(v5, block);
+  dispatch_async(_engagementQueue, block);
 }
 
 void __39__AMSEngagement__removeRunningPromise___block_invoke(uint64_t a1)
@@ -2671,18 +2671,18 @@ void __39__AMSEngagement__removeRunningPromise___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_failAllRunningPromisesWithError:(id)a3
+- (void)_failAllRunningPromisesWithError:(id)error
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _engagementQueue];
+  errorCopy = error;
+  _engagementQueue = [objc_opt_class() _engagementQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke;
   v10[3] = &unk_1E73B3DE0;
   v10[4] = self;
-  v11 = v4;
+  v11 = errorCopy;
   v6 = v10;
-  v7 = v4;
+  v7 = errorCopy;
   v8 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2691,7 +2691,7 @@ void __39__AMSEngagement__removeRunningPromise___block_invoke(uint64_t a1)
   v13 = v8;
   v14 = v6;
   v9 = v8;
-  dispatch_async(v5, block);
+  dispatch_async(_engagementQueue, block);
 }
 
 void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke(uint64_t a1)
@@ -2773,16 +2773,16 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
   }
 }
 
-- (id)_parseActions:(id)a3
+- (id)_parseActions:(id)actions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  actionsCopy = actions;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = actionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -2825,14 +2825,14 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
   return v4;
 }
 
-- (void)_pushEventReceived:(id)a3
+- (void)_pushEventReceived:(id)received
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
+  object = [received object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -2849,8 +2849,8 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -2858,10 +2858,10 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
       *&buf[4] = v9;
       *&buf[12] = 2114;
       *&buf[14] = v10;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Received push event", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Received push event", buf, 0x16u);
     }
 
-    v11 = [objc_opt_class() _engagementQueue];
+    _engagementQueue = [objc_opt_class() _engagementQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __36__AMSEngagement__pushEventReceived___block_invoke;
@@ -2877,7 +2877,7 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
     v22 = v13;
     v23 = v12;
     v14 = v13;
-    dispatch_async(v11, buf);
+    dispatch_async(_engagementQueue, buf);
   }
 
   else
@@ -2887,8 +2887,8 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v7 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -2896,57 +2896,57 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
       *&buf[4] = v16;
       *&buf[12] = 2114;
       *&buf[14] = v17;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Rejecting received push event with no object", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Rejecting received push event with no object", buf, 0x16u);
     }
   }
 }
 
-- (void)handlePushEvent:(id)a3
+- (void)handlePushEvent:(id)event
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() _engagementQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  _engagementQueue = [objc_opt_class() _engagementQueue];
+  dispatch_assert_queue_V2(_engagementQueue);
 
-  v6 = [v4 actions];
-  v7 = [v6 count];
+  actions = [eventCopy actions];
+  v7 = [actions count];
 
   v8 = 0x1E73B0000uLL;
   v9 = +[AMSLogConfig sharedEngagementConfig];
-  v10 = v9;
+  actions3 = v9;
   if (v7)
   {
     if (!v9)
     {
-      v10 = +[AMSLogConfig sharedConfig];
+      actions3 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [actions3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
-      v14 = [v4 actions];
+      actions2 = [eventCopy actions];
       *buf = 138543874;
       v41 = v12;
       v8 = 0x1E73B0000uLL;
       v42 = 2114;
       v43 = v13;
       v44 = 2048;
-      v45 = [v14 count];
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Processing %lu push event", buf, 0x20u);
+      v45 = [actions2 count];
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Processing %lu push event", buf, 0x20u);
     }
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v10 = [v4 actions];
-    v15 = [v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    actions3 = [eventCopy actions];
+    v15 = [actions3 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v15)
     {
       v16 = v15;
-      v33 = v4;
+      v33 = eventCopy;
       v17 = *v36;
       v18 = 0x1E73B0000uLL;
       do
@@ -2957,7 +2957,7 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
         {
           if (*v36 != v17)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(actions3);
           }
 
           v20 = [objc_alloc(*(v18 + 3184)) initWithJSObject:*(*(&v35 + 1) + 8 * v19)];
@@ -2968,31 +2968,31 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
 
           else
           {
-            v21 = [*(v8 + 3552) sharedEngagementConfig];
-            if (!v21)
+            sharedEngagementConfig = [*(v8 + 3552) sharedEngagementConfig];
+            if (!sharedEngagementConfig)
             {
-              v21 = [*(v8 + 3552) sharedConfig];
+              sharedEngagementConfig = [*(v8 + 3552) sharedConfig];
             }
 
-            v22 = [v21 OSLogObject];
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+            oSLogObject2 = [sharedEngagementConfig OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
               v23 = v18;
               v24 = v17;
-              v25 = self;
-              v26 = v10;
+              selfCopy = self;
+              v26 = actions3;
               v27 = objc_opt_class();
               v28 = AMSLogKey();
               *buf = 138543618;
               v41 = v27;
-              v10 = v26;
-              self = v25;
+              actions3 = v26;
+              self = selfCopy;
               v17 = v24;
               v18 = v23;
               v16 = v34;
               v42 = 2114;
               v43 = v28;
-              _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to get service response from push event action", buf, 0x16u);
+              _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to get service response from push event action", buf, 0x16u);
 
               v8 = 0x1E73B0000;
             }
@@ -3002,11 +3002,11 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
         }
 
         while (v16 != v19);
-        v16 = [v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v16 = [actions3 countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v16);
-      v4 = v33;
+      eventCopy = v33;
     }
   }
 
@@ -3014,69 +3014,69 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
   {
     if (!v9)
     {
-      v10 = +[AMSLogConfig sharedConfig];
+      actions3 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v10 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+    oSLogObject3 = [actions3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
       v30 = objc_opt_class();
       AMSLogKey();
-      v32 = v31 = v4;
+      v32 = v31 = eventCopy;
       *buf = 138543618;
       v41 = v30;
       v42 = 2114;
       v43 = v32;
-      _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Push event contains no actions to push", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Push event contains no actions to push", buf, 0x16u);
 
-      v4 = v31;
+      eventCopy = v31;
     }
   }
 }
 
-- (void)_handleServiceResponse:(id)a3
+- (void)_handleServiceResponse:(id)response
 {
   v130 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v95 = self;
-  v5 = [objc_opt_class() _engagementQueue];
-  dispatch_assert_queue_V2(v5);
+  responseCopy = response;
+  selfCopy = self;
+  _engagementQueue = [objc_opt_class() _engagementQueue];
+  dispatch_assert_queue_V2(_engagementQueue);
 
-  v92 = [v4 serviceType];
+  serviceType = [responseCopy serviceType];
   v6 = +[AMSLogConfig sharedEngagementConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  v90 = v4;
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v6 OSLogObject];
+  v90 = responseCopy;
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
     *buf = 138543618;
     *&buf[4] = v8;
-    v4 = v90;
+    responseCopy = v90;
     *&buf[12] = 2114;
     *&buf[14] = v9;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Sending service response to observers", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Sending service response to observers", buf, 0x16u);
   }
 
   v122 = 0u;
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v10 = [(AMSEngagement *)self observerInfo];
-  v11 = [v10 keyEnumerator];
+  observerInfo = [(AMSEngagement *)self observerInfo];
+  keyEnumerator = [observerInfo keyEnumerator];
 
-  v12 = [v11 countByEnumeratingWithState:&v120 objects:v129 count:16];
+  v12 = [keyEnumerator countByEnumeratingWithState:&v120 objects:v129 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v121;
     v84 = *v121;
-    v85 = v11;
+    v85 = keyEnumerator;
     do
     {
       v15 = 0;
@@ -3085,47 +3085,47 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
       {
         if (*v121 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v16 = *(*(&v120 + 1) + 8 * v15);
-        v17 = [(AMSEngagement *)v95 observerInfo];
+        observerInfo2 = [(AMSEngagement *)selfCopy observerInfo];
         v93 = v16;
-        v18 = [v17 objectForKey:v16];
+        v18 = [observerInfo2 objectForKey:v16];
 
-        v19 = [v18 placements];
-        if (v19)
+        placements = [v18 placements];
+        if (placements)
         {
           v20 = 0;
         }
 
         else
         {
-          v21 = [v18 serviceTypes];
-          v20 = v21 == 0;
+          serviceTypes = [v18 serviceTypes];
+          v20 = serviceTypes == 0;
         }
 
-        v22 = [v18 serviceTypes];
-        v23 = [v22 containsObject:v92];
+        serviceTypes2 = [v18 serviceTypes];
+        v23 = [serviceTypes2 containsObject:serviceType];
 
         if (v20 || v23)
         {
-          v24 = [v4 engagementRequest];
-          if (v24)
+          engagementRequest = [responseCopy engagementRequest];
+          if (engagementRequest)
           {
-            v25 = v24;
+            v25 = engagementRequest;
             v26 = objc_opt_respondsToSelector();
 
             if (v26)
             {
-              v27 = [v18 dispatchQueue];
+              dispatchQueue = [v18 dispatchQueue];
               v118[0] = MEMORY[0x1E69E9820];
               v118[1] = 3221225472;
               v118[2] = __40__AMSEngagement__handleServiceResponse___block_invoke;
               v118[3] = &unk_1E73B71B0;
-              v118[4] = v95;
+              v118[4] = selfCopy;
               v118[5] = v93;
-              v119 = v4;
+              v119 = responseCopy;
               v28 = v118;
               v29 = AMSLogKey();
               *buf = MEMORY[0x1E69E9820];
@@ -3135,26 +3135,26 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
               *v127 = v29;
               *&v127[8] = v28;
               v30 = v29;
-              dispatch_async(v27, buf);
+              dispatch_async(dispatchQueue, buf);
             }
           }
 
-          v31 = [v4 fullScreenMessageRequest];
-          if (v31)
+          fullScreenMessageRequest = [responseCopy fullScreenMessageRequest];
+          if (fullScreenMessageRequest)
           {
-            v32 = v31;
+            v32 = fullScreenMessageRequest;
             v33 = objc_opt_respondsToSelector();
 
             if (v33)
             {
-              v34 = [v18 dispatchQueue];
+              dispatchQueue2 = [v18 dispatchQueue];
               v116[0] = MEMORY[0x1E69E9820];
               v116[1] = 3221225472;
               v116[2] = __40__AMSEngagement__handleServiceResponse___block_invoke_2;
               v116[3] = &unk_1E73B71B0;
-              v116[4] = v95;
+              v116[4] = selfCopy;
               v116[5] = v93;
-              v117 = v4;
+              v117 = responseCopy;
               v35 = v116;
               v36 = AMSLogKey();
               *buf = MEMORY[0x1E69E9820];
@@ -3164,27 +3164,27 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
               *v127 = v36;
               *&v127[8] = v35;
               v37 = v36;
-              dispatch_async(v34, buf);
+              dispatch_async(dispatchQueue2, buf);
             }
           }
 
-          v38 = [v4 placements];
+          placements2 = [responseCopy placements];
 
-          if (v38)
+          if (placements2)
           {
-            v39 = [v18 placements];
-            v40 = [v39 count];
+            placements3 = [v18 placements];
+            v40 = [placements3 count];
 
             if (v40)
             {
-              v41 = [v18 placements];
-              [v41 objectEnumerator];
+              placements4 = [v18 placements];
+              [placements4 objectEnumerator];
             }
 
             else
             {
-              v41 = [v4 placements];
-              [v41 keyEnumerator];
+              placements4 = [responseCopy placements];
+              [placements4 keyEnumerator];
             }
             v42 = ;
 
@@ -3216,24 +3216,24 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
                   }
 
                   v46 = *(*(&v112 + 1) + 8 * i);
-                  v47 = [v4 placements];
-                  v48 = [v47 objectForKeyedSubscript:v46];
+                  placements5 = [responseCopy placements];
+                  v48 = [placements5 objectForKeyedSubscript:v46];
 
                   if (v48)
                   {
                     if ([v48 presentationAction] == 1)
                     {
-                      v49 = [v48 makeDialogRequest];
+                      makeDialogRequest = [v48 makeDialogRequest];
                     }
 
                     else
                     {
-                      v49 = 0;
+                      makeDialogRequest = 0;
                     }
 
-                    v50 = [(AMSEngagement *)v95 cacheInfo];
-                    v51 = [v4 serviceType];
-                    v52 = [v50 isBlockedWithMessageRequest:v48 placement:v46 serviceType:v51];
+                    cacheInfo = [(AMSEngagement *)selfCopy cacheInfo];
+                    serviceType2 = [responseCopy serviceType];
+                    v52 = [cacheInfo isBlockedWithMessageRequest:v48 placement:v46 serviceType:serviceType2];
 
                     v53 = +[AMSLogConfig sharedEngagementConfig];
                     if (!v53)
@@ -3241,14 +3241,14 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
                       v53 = +[AMSLogConfig sharedConfig];
                     }
 
-                    v54 = [v53 OSLogObject];
-                    if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
+                    oSLogObject2 = [v53 OSLogObject];
+                    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
                     {
                       v55 = objc_opt_class();
                       v56 = AMSLogKey();
                       *buf = 138544386;
                       *&buf[4] = v55;
-                      v4 = v90;
+                      responseCopy = v90;
                       *&buf[12] = 2114;
                       *&buf[14] = v56;
                       *&buf[22] = 2048;
@@ -3256,15 +3256,15 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
                       *v127 = 2114;
                       *&v127[2] = v46;
                       *&v127[10] = 2114;
-                      *&v127[12] = v92;
-                      _os_log_impl(&dword_192869000, v54, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Cache Lookup %ld for placement %{public}@ serviceType %{public}@", buf, 0x34u);
+                      *&v127[12] = serviceType;
+                      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Cache Lookup %ld for placement %{public}@ serviceType %{public}@", buf, 0x34u);
                     }
 
                     if (v52)
                     {
-                      v57 = [v48 messageIdentifier];
+                      messageIdentifier = [v48 messageIdentifier];
 
-                      if (v57)
+                      if (messageIdentifier)
                       {
                         v58 = +[AMSLogConfig sharedEngagementConfig];
                         if (!v58)
@@ -3272,32 +3272,32 @@ void __50__AMSEngagement__failAllRunningPromisesWithError___block_invoke_135(uin
                           v58 = +[AMSLogConfig sharedConfig];
                         }
 
-                        v59 = [v58 OSLogObject];
-                        if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+                        oSLogObject3 = [v58 OSLogObject];
+                        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
                         {
                           v60 = objc_opt_class();
                           v61 = AMSLogKey();
-                          v62 = [v48 messageIdentifier];
+                          messageIdentifier2 = [v48 messageIdentifier];
                           *buf = 138544386;
                           *&buf[4] = v60;
                           *&buf[12] = 2114;
                           *&buf[14] = v61;
                           *&buf[22] = 2114;
-                          v126 = v62;
+                          v126 = messageIdentifier2;
                           *v127 = 2114;
                           *&v127[2] = v46;
                           *&v127[10] = 2114;
-                          *&v127[12] = v92;
-                          _os_log_impl(&dword_192869000, v59, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Notifying message blocked with identifier %{public}@ for placement %{public}@ serviceType %{public}@", buf, 0x34u);
+                          *&v127[12] = serviceType;
+                          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Notifying message blocked with identifier %{public}@ for placement %{public}@ serviceType %{public}@", buf, 0x34u);
                         }
 
-                        v63 = [(AMSEngagement *)v95 connection];
-                        v64 = [v48 messageIdentifier];
-                        v124 = v64;
+                        connection = [(AMSEngagement *)selfCopy connection];
+                        messageIdentifier3 = [v48 messageIdentifier];
+                        v124 = messageIdentifier3;
                         v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v124 count:1];
-                        [v63 notifyBlockedMessages:v65];
+                        [connection notifyBlockedMessages:v65];
 
-                        v4 = v90;
+                        responseCopy = v90;
                       }
 
 LABEL_58:
@@ -3305,8 +3305,8 @@ LABEL_58:
                       goto LABEL_59;
                     }
 
-                    v66 = [v48 engagementRequest];
-                    if (v66)
+                    engagementRequest2 = [v48 engagementRequest];
+                    if (engagementRequest2)
                     {
 
                       goto LABEL_50;
@@ -3314,18 +3314,18 @@ LABEL_58:
 
                     if (objc_opt_respondsToSelector())
                     {
-                      v67 = [v89 dispatchQueue];
+                      dispatchQueue3 = [v89 dispatchQueue];
                       v106[0] = MEMORY[0x1E69E9820];
                       v106[1] = 3221225472;
                       v106[2] = __40__AMSEngagement__handleServiceResponse___block_invoke_150;
                       v106[3] = &unk_1E73B7350;
-                      v106[4] = v95;
+                      v106[4] = selfCopy;
                       v106[5] = v46;
-                      v107 = v92;
+                      v107 = serviceType;
                       v108 = v93;
-                      v109 = v49;
+                      v109 = makeDialogRequest;
                       v110 = v48;
-                      v111 = v4;
+                      v111 = responseCopy;
                       v68 = v106;
                       v69 = AMSLogKey();
                       *buf = MEMORY[0x1E69E9820];
@@ -3335,31 +3335,31 @@ LABEL_58:
                       *v127 = v69;
                       *&v127[8] = v68;
                       v70 = v69;
-                      dispatch_async(v67, buf);
+                      dispatch_async(dispatchQueue3, buf);
 
                       v71 = v107;
                       goto LABEL_54;
                     }
 
 LABEL_50:
-                    v72 = [v48 engagementRequest];
-                    if (v72)
+                    engagementRequest3 = [v48 engagementRequest];
+                    if (engagementRequest3)
                     {
                     }
 
                     else if (objc_opt_respondsToSelector())
                     {
-                      v73 = [v89 dispatchQueue];
+                      dispatchQueue4 = [v89 dispatchQueue];
                       v101[0] = MEMORY[0x1E69E9820];
                       v101[1] = 3221225472;
                       v101[2] = __40__AMSEngagement__handleServiceResponse___block_invoke_153;
                       v101[3] = &unk_1E73B7378;
-                      v101[4] = v95;
+                      v101[4] = selfCopy;
                       v101[5] = v46;
-                      v102 = v92;
+                      v102 = serviceType;
                       v103 = v93;
-                      v104 = v49;
-                      v105 = v4;
+                      v104 = makeDialogRequest;
+                      v105 = responseCopy;
                       v74 = v101;
                       v75 = AMSLogKey();
                       *buf = MEMORY[0x1E69E9820];
@@ -3369,31 +3369,31 @@ LABEL_50:
                       *v127 = v75;
                       *&v127[8] = v74;
                       v76 = v75;
-                      dispatch_async(v73, buf);
+                      dispatch_async(dispatchQueue4, buf);
 
                       v71 = v102;
 LABEL_54:
                     }
 
-                    v77 = [v48 engagementRequest];
-                    if (v77)
+                    engagementRequest4 = [v48 engagementRequest];
+                    if (engagementRequest4)
                     {
-                      v78 = v77;
+                      v78 = engagementRequest4;
                       v79 = objc_opt_respondsToSelector();
 
                       if (v79)
                       {
-                        v80 = [v89 dispatchQueue];
+                        dispatchQueue5 = [v89 dispatchQueue];
                         v96[0] = MEMORY[0x1E69E9820];
                         v96[1] = 3221225472;
                         v96[2] = __40__AMSEngagement__handleServiceResponse___block_invoke_156;
                         v96[3] = &unk_1E73B7378;
-                        v96[4] = v95;
+                        v96[4] = selfCopy;
                         v96[5] = v46;
-                        v97 = v92;
+                        v97 = serviceType;
                         v98 = v93;
                         v99 = v48;
-                        v100 = v4;
+                        v100 = responseCopy;
                         v81 = v96;
                         v82 = AMSLogKey();
                         *buf = MEMORY[0x1E69E9820];
@@ -3403,7 +3403,7 @@ LABEL_54:
                         *v127 = v82;
                         *&v127[8] = v81;
                         v83 = v82;
-                        dispatch_async(v80, buf);
+                        dispatch_async(dispatchQueue5, buf);
                       }
                     }
 
@@ -3418,7 +3418,7 @@ LABEL_59:
                 {
 LABEL_61:
 
-                  v11 = v85;
+                  keyEnumerator = v85;
                   v13 = v86;
                   v14 = v84;
                   v42 = v87;
@@ -3435,7 +3435,7 @@ LABEL_61:
       }
 
       while (v15 != v13);
-      v13 = [v11 countByEnumeratingWithState:&v120 objects:v129 count:16];
+      v13 = [keyEnumerator countByEnumeratingWithState:&v120 objects:v129 count:16];
     }
 
     while (v13);
@@ -3620,25 +3620,25 @@ void __28__AMSEngagement__connection__block_invoke_2()
   [(AMSEngagement *)self _failAllRunningPromisesWithError:v3];
 }
 
-- (void)_scheduleSyncIfNeeded:(id)a3
+- (void)_scheduleSyncIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = +[AMSDevice buildVersion];
-  v6 = [v4 destinationsNeedingSyncSinceBuild:v5];
+  v6 = [neededCopy destinationsNeedingSyncSinceBuild:v5];
 
   if ([v6 count])
   {
-    v7 = [v6 allObjects];
+    allObjects = [v6 allObjects];
   }
 
   else
   {
-    v7 = 0;
+    allObjects = 0;
   }
 
-  v8 = [v4 lastSyncedBuild];
+  lastSyncedBuild = [neededCopy lastSyncedBuild];
   v9 = +[AMSDevice buildVersion];
-  if ([v8 isEqualToString:v9])
+  if ([lastSyncedBuild isEqualToString:v9])
   {
     v10 = [v6 count];
 
@@ -3652,14 +3652,14 @@ void __28__AMSEngagement__connection__block_invoke_2()
   {
   }
 
-  v11 = [v4 lastSyncedBuild];
+  lastSyncedBuild2 = [neededCopy lastSyncedBuild];
   v12 = +[AMSDevice buildVersion];
-  v13 = [v11 isEqualToString:v12];
+  v13 = [lastSyncedBuild2 isEqualToString:v12];
 
   if ((v13 & 1) == 0)
   {
 
-    v7 = 0;
+    allObjects = 0;
   }
 
   v14 = +[AMSEngagement _engagementQueue];
@@ -3668,8 +3668,8 @@ void __28__AMSEngagement__connection__block_invoke_2()
   v18[2] = __39__AMSEngagement__scheduleSyncIfNeeded___block_invoke;
   v18[3] = &unk_1E73B3DE0;
   v18[4] = self;
-  v7 = v7;
-  v19 = v7;
+  allObjects = allObjects;
+  v19 = allObjects;
   v15 = v18;
   v16 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
@@ -3753,9 +3753,9 @@ void __37__AMSEngagement_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

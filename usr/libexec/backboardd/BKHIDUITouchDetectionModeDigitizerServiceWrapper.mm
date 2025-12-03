@@ -1,23 +1,23 @@
 @interface BKHIDUITouchDetectionModeDigitizerServiceWrapper
-- (BKHIDUITouchDetectionModeDigitizerServiceWrapper)initWithIOHIDService:(id)a3;
-- (void)applyUIMode:(id)a3;
+- (BKHIDUITouchDetectionModeDigitizerServiceWrapper)initWithIOHIDService:(id)service;
+- (void)applyUIMode:(id)mode;
 @end
 
 @implementation BKHIDUITouchDetectionModeDigitizerServiceWrapper
 
-- (void)applyUIMode:(id)a3
+- (void)applyUIMode:(id)mode
 {
-  v4 = a3;
-  v5 = [v4 digitizerEnabled];
-  v6 = [v4 proximityDetectionMode];
-  if (v6 > 6 || ((1 << v6) & 0x4C) == 0)
+  modeCopy = mode;
+  digitizerEnabled = [modeCopy digitizerEnabled];
+  proximityDetectionMode = [modeCopy proximityDetectionMode];
+  if (proximityDetectionMode > 6 || ((1 << proximityDetectionMode) & 0x4C) == 0)
   {
-    if (v5)
+    if (digitizerEnabled)
     {
-      LODWORD(v8) = [v4 pocketTouchesExpected];
+      LODWORD(v8) = [modeCopy pocketTouchesExpected];
     }
 
-    else if ([v4 tapToWakeEnabled])
+    else if ([modeCopy tapToWakeEnabled])
     {
       LODWORD(v8) = 254;
     }
@@ -33,7 +33,7 @@
     LODWORD(v8) = 2;
   }
 
-  v9 = [v4 changeSource] & 0xFFFFFFFFFFFFFFFDLL;
+  v9 = [modeCopy changeSource] & 0xFFFFFFFFFFFFFFFDLL;
   if (v9 == 1)
   {
     v8 = v8 | 0x100;
@@ -44,7 +44,7 @@
     v8 = v8;
   }
 
-  v10 = [(BKIOHIDService *)self->_digitizerService senderID];
+  senderID = [(BKIOHIDService *)self->_digitizerService senderID];
   v11 = BKLogUISensor();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -70,7 +70,7 @@
     v18 = 1024;
     v19 = v8;
     v20 = 2048;
-    v21 = v10;
+    v21 = senderID;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "  send mode (%{public}@/0x%X) to digitizer service %llX", buf, 0x1Cu);
   }
 
@@ -79,16 +79,16 @@
   [(BKIOHIDService *)digitizerService asyncSetProperty:v15 forKey:@"TouchDetectionMode"];
 }
 
-- (BKHIDUITouchDetectionModeDigitizerServiceWrapper)initWithIOHIDService:(id)a3
+- (BKHIDUITouchDetectionModeDigitizerServiceWrapper)initWithIOHIDService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = BKHIDUITouchDetectionModeDigitizerServiceWrapper;
   v6 = [(BKHIDUITouchDetectionModeDigitizerServiceWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_digitizerService, a3);
+    objc_storeStrong(&v6->_digitizerService, service);
   }
 
   return v7;

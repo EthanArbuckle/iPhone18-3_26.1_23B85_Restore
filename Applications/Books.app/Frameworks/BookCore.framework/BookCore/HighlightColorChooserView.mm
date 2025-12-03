@@ -1,10 +1,10 @@
 @interface HighlightColorChooserView
-- (_TtC8BookCore25HighlightColorChooserView)initWithCoder:(id)a3;
+- (_TtC8BookCore25HighlightColorChooserView)initWithCoder:(id)coder;
 @end
 
 @implementation HighlightColorChooserView
 
-- (_TtC8BookCore25HighlightColorChooserView)initWithCoder:(id)a3
+- (_TtC8BookCore25HighlightColorChooserView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8BookCore25HighlightColorChooserView_pageTheme) = &dword_4;
   swift_unknownObjectWeakInit();

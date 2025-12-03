@@ -2,17 +2,17 @@
 + (OS_os_log)os_log;
 + (OS_os_log)os_log_summary;
 - (BOOL)changeHistoryIsValid;
-- (_CardDAVActionsContactsDataSource)initWithContactStore:(id)a3;
-- (id)_copyCoalescedChangesInContainer:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 isImageUploadRestricted:(BOOL)a6 databaseHelper:(id)a7 accountHomeURL:(id)a8 changeTrackingID:(id)a9 existingActions:(id)a10 maxImageSize:(int64_t)a11 maxResourceSize:(int64_t)a12 changeContext:(id)a13 outTouchedDB:(BOOL *)a14;
-- (id)coalesceExistingActions:(id)a3 withNewlyGeneratedActions:(id)a4 discardActionHandler:(id)a5;
-- (id)copyWithoutImageAction:(id)a3 withFolderURL:(id)a4 maxResourceSize:(int64_t)a5;
-- (id)extractContactActionsFromExistingActions:(id)a3;
-- (id)extractGroupActionsFromExistingActions:(id)a3;
-- (id)generateActionsFromContactChanges:(id)a3 databaseHelper:(id)a4 storeURL:(id)a5 maxImageSize:(int64_t)a6 maxResourceSize:(int64_t)a7 outTouchedDB:(BOOL *)a8;
-- (id)generateActionsFromGroupChanges:(id)a3 databaseHelper:(id)a4 storeURL:(id)a5 maxImageSize:(int64_t)a6 maxResourceSize:(int64_t)a7 outTouchedDB:(BOOL *)a8;
-- (id)itemForContactChange:(id)a3;
-- (id)itemForGroupChange:(id)a3;
-- (void)prepareChangeHistoryForClientWithIdentifier:(id)a3 forContainer:(id)a4 withChangeContext:(id)a5;
+- (_CardDAVActionsContactsDataSource)initWithContactStore:(id)store;
+- (id)_copyCoalescedChangesInContainer:(id)container isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account isImageUploadRestricted:(BOOL)restricted databaseHelper:(id)helper accountHomeURL:(id)l changeTrackingID:(id)d existingActions:(id)self0 maxImageSize:(int64_t)self1 maxResourceSize:(int64_t)self2 changeContext:(id)self3 outTouchedDB:(BOOL *)self4;
+- (id)coalesceExistingActions:(id)actions withNewlyGeneratedActions:(id)generatedActions discardActionHandler:(id)handler;
+- (id)copyWithoutImageAction:(id)action withFolderURL:(id)l maxResourceSize:(int64_t)size;
+- (id)extractContactActionsFromExistingActions:(id)actions;
+- (id)extractGroupActionsFromExistingActions:(id)actions;
+- (id)generateActionsFromContactChanges:(id)changes databaseHelper:(id)helper storeURL:(id)l maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize outTouchedDB:(BOOL *)b;
+- (id)generateActionsFromGroupChanges:(id)changes databaseHelper:(id)helper storeURL:(id)l maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize outTouchedDB:(BOOL *)b;
+- (id)itemForContactChange:(id)change;
+- (id)itemForGroupChange:(id)change;
+- (void)prepareChangeHistoryForClientWithIdentifier:(id)identifier forContainer:(id)container withChangeContext:(id)context;
 @end
 
 @implementation _CardDAVActionsContactsDataSource
@@ -41,59 +41,59 @@
   return v3;
 }
 
-- (_CardDAVActionsContactsDataSource)initWithContactStore:(id)a3
+- (_CardDAVActionsContactsDataSource)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _CardDAVActionsContactsDataSource;
   v6 = [(_CardDAVActionsContactsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)_copyCoalescedChangesInContainer:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 isImageUploadRestricted:(BOOL)a6 databaseHelper:(id)a7 accountHomeURL:(id)a8 changeTrackingID:(id)a9 existingActions:(id)a10 maxImageSize:(int64_t)a11 maxResourceSize:(int64_t)a12 changeContext:(id)a13 outTouchedDB:(BOOL *)a14
+- (id)_copyCoalescedChangesInContainer:(id)container isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account isImageUploadRestricted:(BOOL)restricted databaseHelper:(id)helper accountHomeURL:(id)l changeTrackingID:(id)d existingActions:(id)self0 maxImageSize:(int64_t)self1 maxResourceSize:(int64_t)self2 changeContext:(id)self3 outTouchedDB:(BOOL *)self4
 {
-  v17 = a3;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
+  containerCopy = container;
+  helperCopy = helper;
+  lCopy = l;
+  dCopy = d;
+  actionsCopy = actions;
+  changeHistoryResult = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
 
-  if (v22)
+  if (changeHistoryResult)
   {
-    v23 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
-    v24 = [v23 changesTruncated];
+    changeHistoryResult2 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
+    changesTruncated = [changeHistoryResult2 changesTruncated];
 
-    if (!v24)
+    if (!changesTruncated)
     {
-      v59 = [(_CardDAVActionsContactsDataSource *)self extractContactActionsFromExistingActions:v21];
-      v60 = [(_CardDAVActionsContactsDataSource *)self extractGroupActionsFromExistingActions:v21];
-      v61 = [v17 externalIdentifier];
-      [v61 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v19];
-      v41 = v63 = v17;
+      v59 = [(_CardDAVActionsContactsDataSource *)self extractContactActionsFromExistingActions:actionsCopy];
+      v60 = [(_CardDAVActionsContactsDataSource *)self extractGroupActionsFromExistingActions:actionsCopy];
+      externalIdentifier = [containerCopy externalIdentifier];
+      [externalIdentifier da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
+      v41 = v63 = containerCopy;
       [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
-      v42 = v57 = v21;
+      v42 = v57 = actionsCopy;
       [v42 contactChanges];
-      v43 = v62 = v19;
+      v43 = v62 = lCopy;
       v58 = v41;
-      v44 = [(_CardDAVActionsContactsDataSource *)self generateActionsFromContactChanges:v43 databaseHelper:v18 storeURL:v41 maxImageSize:a11 maxResourceSize:a12 outTouchedDB:a14];
+      v44 = [(_CardDAVActionsContactsDataSource *)self generateActionsFromContactChanges:v43 databaseHelper:helperCopy storeURL:v41 maxImageSize:size maxResourceSize:resourceSize outTouchedDB:b];
 
-      v45 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
-      v46 = [v45 groupChanges];
-      v47 = [(_CardDAVActionsContactsDataSource *)self generateActionsFromGroupChanges:v46 databaseHelper:v18 storeURL:v41 maxImageSize:a11 maxResourceSize:a12 outTouchedDB:a14];
+      changeHistoryResult3 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
+      groupChanges = [changeHistoryResult3 groupChanges];
+      v47 = [(_CardDAVActionsContactsDataSource *)self generateActionsFromGroupChanges:groupChanges databaseHelper:helperCopy storeURL:v41 maxImageSize:size maxResourceSize:resourceSize outTouchedDB:b];
 
       v66[0] = _NSConcreteStackBlock;
       v66[1] = 3221225472;
       v66[2] = sub_1B708;
       v66[3] = &unk_3CCB8;
       v66[4] = self;
-      v48 = v20;
+      v48 = dCopy;
       v67 = v48;
       v49 = objc_retainBlock(v66);
       v64[0] = _NSConcreteStackBlock;
@@ -105,59 +105,59 @@
       v50 = objc_retainBlock(v64);
       v51 = v44;
       v52 = [(_CardDAVActionsContactsDataSource *)self coalesceExistingActions:v59 withNewlyGeneratedActions:v44 discardActionHandler:v49];
-      v53 = v18;
+      v53 = helperCopy;
       v54 = v47;
       v55 = [(_CardDAVActionsContactsDataSource *)self coalesceExistingActions:v60 withNewlyGeneratedActions:v47 discardActionHandler:v50];
       v40 = [v52 arrayByAddingObjectsFromArray:v55];
 
-      v19 = v62;
-      v21 = v57;
+      lCopy = v62;
+      actionsCopy = v57;
 
-      v18 = v53;
-      v17 = v63;
+      helperCopy = v53;
+      containerCopy = v63;
 
       goto LABEL_9;
     }
 
-    v25 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      sub_258D4(v25, v26, v27, v28, v29, v30, v31, v32);
+      sub_258D4(os_log, v26, v27, v28, v29, v30, v31, v32);
     }
   }
 
   else
   {
-    v25 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      sub_2590C(v25, v33, v34, v35, v36, v37, v38, v39);
+      sub_2590C(os_log, v33, v34, v35, v36, v37, v38, v39);
     }
   }
 
-  v40 = [v21 copy];
+  v40 = [actionsCopy copy];
 LABEL_9:
 
   return v40;
 }
 
-- (id)copyWithoutImageAction:(id)a3 withFolderURL:(id)a4 maxResourceSize:(int64_t)a5
+- (id)copyWithoutImageAction:(id)action withFolderURL:(id)l maxResourceSize:(int64_t)size
 {
-  v7 = [NSAssertionHandler currentHandler:a3];
+  v7 = [NSAssertionHandler currentHandler:action];
   [v7 handleFailureInMethod:a2 object:self file:@"_CardDAVActionsContactsDataSource.m" lineNumber:152 description:@"Not implemented"];
 
   return 0;
 }
 
-- (id)extractContactActionsFromExistingActions:(id)a3
+- (id)extractContactActionsFromExistingActions:(id)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = actionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -173,11 +173,11 @@ LABEL_9:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 changedItem];
-        v12 = [v11 cardDAVRecordItem];
-        v13 = [v12 isContact];
+        changedItem = [v10 changedItem];
+        cardDAVRecordItem = [changedItem cardDAVRecordItem];
+        isContact = [cardDAVRecordItem isContact];
 
-        if (v13)
+        if (isContact)
         {
           [v4 addObject:v10];
         }
@@ -194,15 +194,15 @@ LABEL_9:
   return v14;
 }
 
-- (id)extractGroupActionsFromExistingActions:(id)a3
+- (id)extractGroupActionsFromExistingActions:(id)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = actionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -218,11 +218,11 @@ LABEL_9:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 changedItem];
-        v12 = [v11 cardDAVRecordItem];
-        v13 = [v12 isGroup];
+        changedItem = [v10 changedItem];
+        cardDAVRecordItem = [changedItem cardDAVRecordItem];
+        isGroup = [cardDAVRecordItem isGroup];
 
-        if (v13)
+        if (isGroup)
         {
           [v4 addObject:v10];
         }
@@ -239,110 +239,110 @@ LABEL_9:
   return v14;
 }
 
-- (void)prepareChangeHistoryForClientWithIdentifier:(id)a3 forContainer:(id)a4 withChangeContext:(id)a5
+- (void)prepareChangeHistoryForClientWithIdentifier:(id)identifier forContainer:(id)container withChangeContext:(id)context
 {
-  v8 = a4;
-  v27 = a5;
-  v9 = a3;
-  v10 = [[CNChangeHistoryFetchRequest alloc] initWithClientIdentifier:v9];
+  containerCopy = container;
+  contextCopy = context;
+  identifierCopy = identifier;
+  v10 = [[CNChangeHistoryFetchRequest alloc] initWithClientIdentifier:identifierCopy];
 
   [v10 setIncludeGroupChanges:1];
   [v10 setIncludeChangeIDs:1];
   [v10 setIncludeExternalIDs:1];
   [v10 setIncludeImagesChanged:1];
   [v10 setUnifyResults:0];
-  v11 = [v8 asContainer];
-  v12 = [v11 identifier];
-  [v10 setContainerIdentifier:v12];
+  asContainer = [containerCopy asContainer];
+  identifier = [asContainer identifier];
+  [v10 setContainerIdentifier:identifier];
 
-  v13 = [(_CardDAVActionsContactsDataSource *)self contactStore];
+  contactStore = [(_CardDAVActionsContactsDataSource *)self contactStore];
   v29 = 0;
-  v14 = [v13 changeHistoryWithFetchRequest:v10 error:&v29];
+  v14 = [contactStore changeHistoryWithFetchRequest:v10 error:&v29];
   v15 = v29;
 
   if (v15)
   {
-    v16 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      sub_259B0(v8, v15, v16);
+      sub_259B0(containerCopy, v15, os_log);
     }
   }
 
   if ([v14 changesTruncated])
   {
-    v17 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
-      sub_25A54(v8, v17);
+      sub_25A54(containerCopy, os_log2);
     }
 
     AnalyticsSendEvent();
   }
 
-  v18 = [objc_opt_class() os_log_summary];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  os_log_summary = [objc_opt_class() os_log_summary];
+  if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v14 contactChanges];
-    v20 = [v19 count];
-    v21 = [v8 identifier];
+    contactChanges = [v14 contactChanges];
+    v20 = [contactChanges count];
+    identifier2 = [containerCopy identifier];
     *buf = 134218242;
     v31 = v20;
     v32 = 2112;
-    v33 = v21;
-    _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Local contact changes: %lu for %@", buf, 0x16u);
+    v33 = identifier2;
+    _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "Local contact changes: %lu for %@", buf, 0x16u);
   }
 
-  v22 = [objc_opt_class() os_log_summary];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  os_log_summary2 = [objc_opt_class() os_log_summary];
+  if (os_log_type_enabled(os_log_summary2, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v14 groupChanges];
-    v24 = [v23 count];
-    v25 = [v8 identifier];
+    groupChanges = [v14 groupChanges];
+    v24 = [groupChanges count];
+    identifier3 = [containerCopy identifier];
     *buf = 134218242;
     v31 = v24;
     v32 = 2112;
-    v33 = v25;
-    _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "Local group changes:  %lu for %@", buf, 0x16u);
+    v33 = identifier3;
+    _os_log_impl(&dword_0, os_log_summary2, OS_LOG_TYPE_DEFAULT, "Local group changes:  %lu for %@", buf, 0x16u);
   }
 
-  v26 = [v14 latestChangeAnchor];
-  [v28 setCnChangeAnchor:v26];
+  latestChangeAnchor = [v14 latestChangeAnchor];
+  [v28 setCnChangeAnchor:latestChangeAnchor];
 
   [(_CardDAVActionsContactsDataSource *)self setChangeHistoryResult:v14];
 }
 
 - (BOOL)changeHistoryIsValid
 {
-  v3 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
+  changeHistoryResult = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
 
-  if (v3)
+  if (changeHistoryResult)
   {
-    v4 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
-    v5 = [v4 changesTruncated];
+    changeHistoryResult2 = [(_CardDAVActionsContactsDataSource *)self changeHistoryResult];
+    changesTruncated = [changeHistoryResult2 changesTruncated];
 
-    return v5 ^ 1;
+    return changesTruncated ^ 1;
   }
 
   else
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      sub_25AEC(v7, v8, v9, v10, v11, v12, v13, v14);
+      sub_25AEC(os_log, v8, v9, v10, v11, v12, v13, v14);
     }
 
     return 0;
   }
 }
 
-- (id)itemForContactChange:(id)a3
+- (id)itemForContactChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[CardDAVVCardItemCNImplementation keysToFetch];
   v6 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v5];
-  v7 = [v4 contactIdentifier];
-  v21 = v7;
+  contactIdentifier = [changeCopy contactIdentifier];
+  v21 = contactIdentifier;
   v8 = [NSArray arrayWithObjects:&v21 count:1];
   v9 = [CNContact predicateForContactsWithIdentifiers:v8];
   [v6 setPredicate:v9];
@@ -354,13 +354,13 @@ LABEL_9:
   v18 = sub_1C418;
   v19 = sub_1C428;
   v20 = 0;
-  v10 = [(_CardDAVActionsContactsDataSource *)self contactStore];
+  contactStore = [(_CardDAVActionsContactsDataSource *)self contactStore];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1C430;
   v14[3] = &unk_3CCE0;
   v14[4] = &v15;
-  [v10 enumerateContactsWithFetchRequest:v6 error:0 usingBlock:v14];
+  [contactStore enumerateContactsWithFetchRequest:v6 error:0 usingBlock:v14];
 
   if (v16[5])
   {
@@ -378,18 +378,18 @@ LABEL_9:
   return v12;
 }
 
-- (id)generateActionsFromContactChanges:(id)a3 databaseHelper:(id)a4 storeURL:(id)a5 maxImageSize:(int64_t)a6 maxResourceSize:(int64_t)a7 outTouchedDB:(BOOL *)a8
+- (id)generateActionsFromContactChanges:(id)changes databaseHelper:(id)helper storeURL:(id)l maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize outTouchedDB:(BOOL *)b
 {
-  v12 = a3;
-  v47 = a4;
-  v13 = a5;
+  changesCopy = changes;
+  helperCopy = helper;
+  lCopy = l;
   v52 = +[NSMutableArray array];
   v49 = objc_alloc_init(CNSaveRequest);
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v12;
+  obj = changesCopy;
   v54 = [obj countByEnumeratingWithState:&v55 objects:v67 count:16];
   if (v54)
   {
@@ -409,82 +409,82 @@ LABEL_9:
         v17 = v16;
         if (!v16)
         {
-          v20 = [v15 externalID];
+          externalID = [v15 externalID];
 
-          if (!v20)
+          if (!externalID)
           {
-            v21 = [objc_opt_class() os_log];
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+            os_log = [objc_opt_class() os_log];
+            if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
             {
               sub_25B24(v66, v15);
             }
           }
 
-          v19 = [v15 externalID];
+          externalID2 = [v15 externalID];
           goto LABEL_14;
         }
 
-        v18 = [v16 externalIdentifier];
+        externalIdentifier = [v16 externalIdentifier];
 
-        if (v18)
+        if (externalIdentifier)
         {
-          v19 = [v17 externalIdentifier];
+          externalID2 = [v17 externalIdentifier];
 LABEL_14:
-          v22 = v19;
-          v23 = [v19 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v13];
+          v22 = externalID2;
+          v23 = [externalID2 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
           goto LABEL_16;
         }
 
         v22 = +[NSString da_newGUID];
         v24 = [NSString stringWithFormat:@"%@.vcf", v22];
-        v23 = [v13 URLByAppendingPathComponent:v24];
+        v23 = [lCopy URLByAppendingPathComponent:v24];
 
-        v25 = [v23 da_leastInfoStringRepresentationRelativeToParentURL:v13];
+        v25 = [v23 da_leastInfoStringRepresentationRelativeToParentURL:lCopy];
         [v17 setExternalIdentifier:v25];
         [v17 updateSaveRequest:v49];
-        *a8 = 1;
+        *b = 1;
 
 LABEL_16:
-        v26 = [v17 externalUUID];
+        externalUUID = [v17 externalUUID];
 
-        if (!v26)
+        if (!externalUUID)
         {
           v27 = +[NSString da_newGUID];
           [v17 setExternalUUID:v27];
 
           [v17 updateSaveRequest:v49];
-          *a8 = 1;
+          *b = 1;
         }
 
         if (![v15 changeType])
         {
-          v34 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+          os_log2 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log2, OS_LOG_TYPE_INFO))
           {
-            v35 = [v15 contactIdentifier];
-            v36 = [v15 changeAnchor];
+            contactIdentifier = [v15 contactIdentifier];
+            changeAnchor = [v15 changeAnchor];
             *buf = 138412802;
-            v61 = v35;
+            v61 = contactIdentifier;
             v62 = 2112;
-            v63 = v36;
+            v63 = changeAnchor;
             v64 = 2112;
             v65 = &stru_3CFD8;
-            _os_log_impl(&dword_0, v34, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeAdd action for CONTACT CNChangeHistoryChangeTypeAdd with identifier: %@ anchored at: %@ in container: %@ ", buf, 0x20u);
+            _os_log_impl(&dword_0, os_log2, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeAdd action for CONTACT CNChangeHistoryChangeTypeAdd with identifier: %@ anchored at: %@ in container: %@ ", buf, 0x20u);
           }
 
           buf[0] = 0;
-          v37 = [(_CardDAVActionsContactsDataSource *)self contactStore];
-          v32 = [CardDAVVCardItem itemWithDACardDAVRecord:v17 contactStore:v37 outNeedsDBSave:buf maxImageSize:a6 maxResourceSize:a7 inContainerWithURL:v13];
+          contactStore = [(_CardDAVActionsContactsDataSource *)self contactStore];
+          v32 = [CardDAVVCardItem itemWithDACardDAVRecord:v17 contactStore:contactStore outNeedsDBSave:buf maxImageSize:size maxResourceSize:resourceSize inContainerWithURL:lCopy];
 
-          *a8 |= buf[0];
+          *b |= buf[0];
           v38 = [DAAction alloc];
-          v39 = [v15 contactIdentifier];
-          v33 = [v38 initWithItemChangeType:0 changedItem:v32 serverId:0 instanceId:v39];
+          contactIdentifier2 = [v15 contactIdentifier];
+          v33 = [v38 initWithItemChangeType:0 changedItem:v32 serverId:0 instanceId:contactIdentifier2];
 
 LABEL_26:
 LABEL_27:
-          v40 = [v15 changeID];
-          -[NSObject setChangeId:](v33, "setChangeId:", [v40 intValue]);
+          changeID = [v15 changeID];
+          -[NSObject setChangeId:](v33, "setChangeId:", [changeID intValue]);
 
           [v52 addObject:v33];
           goto LABEL_28;
@@ -492,40 +492,40 @@ LABEL_27:
 
         if ([v15 changeType] == &dword_0 + 1)
         {
-          v28 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+          os_log3 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log3, OS_LOG_TYPE_INFO))
           {
-            v29 = [v15 contactIdentifier];
-            v30 = [v15 changeAnchor];
+            contactIdentifier3 = [v15 contactIdentifier];
+            changeAnchor2 = [v15 changeAnchor];
             *buf = 138412802;
-            v61 = v29;
+            v61 = contactIdentifier3;
             v62 = 2112;
-            v63 = v30;
+            v63 = changeAnchor2;
             v64 = 2112;
             v65 = &stru_3CFD8;
-            _os_log_impl(&dword_0, v28, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeModify action for CONTACT CNChangeHistoryChangeTypeUpdate with identifier: %@ anchored at: %@ in container: %@ ", buf, 0x20u);
+            _os_log_impl(&dword_0, os_log3, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeModify action for CONTACT CNChangeHistoryChangeTypeUpdate with identifier: %@ anchored at: %@ in container: %@ ", buf, 0x20u);
           }
 
-          v31 = [(_CardDAVActionsContactsDataSource *)self contactStore];
-          v32 = [CardDAVVCardItem itemWithDACardDAVRecord:v17 contactStore:v31 outNeedsDBSave:0 maxImageSize:a6 maxResourceSize:a7 inContainerWithURL:v13];
+          contactStore2 = [(_CardDAVActionsContactsDataSource *)self contactStore];
+          v32 = [CardDAVVCardItem itemWithDACardDAVRecord:v17 contactStore:contactStore2 outNeedsDBSave:0 maxImageSize:size maxResourceSize:resourceSize inContainerWithURL:lCopy];
 
           v33 = [[DAAction alloc] initWithItemChangeType:1 changedItem:v32 serverId:0];
           goto LABEL_26;
         }
 
-        v41 = [v15 changeType];
-        v42 = [objc_opt_class() os_log];
-        v33 = v42;
-        if (v41 == &dword_0 + 2)
+        changeType = [v15 changeType];
+        os_log4 = [objc_opt_class() os_log];
+        v33 = os_log4;
+        if (changeType == &dword_0 + 2)
         {
-          if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(os_log4, OS_LOG_TYPE_INFO))
           {
-            v43 = [v15 changeType];
-            v44 = [v15 changeAnchor];
+            changeType2 = [v15 changeType];
+            changeAnchor3 = [v15 changeAnchor];
             *buf = 134218498;
-            v61 = v43;
+            v61 = changeType2;
             v62 = 2112;
-            v63 = v44;
+            v63 = changeAnchor3;
             v64 = 2112;
             v65 = &stru_3CFD8;
             _os_log_impl(&dword_0, v33, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeDelete action for CONTACT CNChangeHistoryChangeTypeDelete with identifier: %ld anchored at: %@ in container: %@ ", buf, 0x20u);
@@ -535,7 +535,7 @@ LABEL_27:
           goto LABEL_27;
         }
 
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(os_log4, OS_LOG_TYPE_ERROR))
         {
           sub_25B80(v59, v15);
         }
@@ -553,28 +553,28 @@ LABEL_28:
     while (v45);
   }
 
-  [v47 addSaveRequest:v49];
+  [helperCopy addSaveRequest:v49];
 
   return v52;
 }
 
-- (id)itemForGroupChange:(id)a3
+- (id)itemForGroupChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 groupIdentifier];
-  v17 = v5;
+  changeCopy = change;
+  groupIdentifier = [changeCopy groupIdentifier];
+  v17 = groupIdentifier;
   v6 = [NSArray arrayWithObjects:&v17 count:1];
   v7 = [CNGroup predicateForGroupsWithIdentifiers:v6];
 
-  v8 = [(_CardDAVActionsContactsDataSource *)self contactStore];
+  contactStore = [(_CardDAVActionsContactsDataSource *)self contactStore];
   v16 = 0;
-  v9 = [v8 groupsMatchingPredicate:v7 error:&v16];
+  v9 = [contactStore groupsMatchingPredicate:v7 error:&v16];
   v10 = v16;
 
   if (v10)
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       sub_25BD0();
     }
@@ -583,13 +583,13 @@ LABEL_28:
     goto LABEL_7;
   }
 
-  v13 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  if (v13)
+  if (firstObject)
   {
     v14 = [DAContactsGroup alloc];
-    v11 = [v9 firstObject];
-    v12 = [v14 initWithGroup:v11];
+    os_log = [v9 firstObject];
+    v12 = [v14 initWithGroup:os_log];
 LABEL_7:
 
     goto LABEL_8;
@@ -601,18 +601,18 @@ LABEL_8:
   return v12;
 }
 
-- (id)generateActionsFromGroupChanges:(id)a3 databaseHelper:(id)a4 storeURL:(id)a5 maxImageSize:(int64_t)a6 maxResourceSize:(int64_t)a7 outTouchedDB:(BOOL *)a8
+- (id)generateActionsFromGroupChanges:(id)changes databaseHelper:(id)helper storeURL:(id)l maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize outTouchedDB:(BOOL *)b
 {
-  v11 = a3;
-  v46 = a4;
-  v12 = a5;
+  changesCopy = changes;
+  helperCopy = helper;
+  lCopy = l;
   v52 = +[NSMutableArray array];
   v49 = objc_alloc_init(CNSaveRequest);
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v11;
+  obj = changesCopy;
   v13 = [obj countByEnumeratingWithState:&v54 objects:v65 count:16];
   if (v13)
   {
@@ -633,60 +633,60 @@ LABEL_8:
         v18 = v17;
         if (!v17)
         {
-          v20 = [v16 externalID];
+          externalID = [v16 externalID];
           goto LABEL_10;
         }
 
-        v19 = [v17 externalIdentifier];
+        externalIdentifier = [v17 externalIdentifier];
 
-        if (v19)
+        if (externalIdentifier)
         {
-          v20 = [v18 externalIdentifier];
+          externalID = [v18 externalIdentifier];
 LABEL_10:
-          v21 = v20;
-          v22 = [v20 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v12];
+          v21 = externalID;
+          v22 = [externalID da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
           goto LABEL_12;
         }
 
         v21 = +[NSString da_newGUID];
         v23 = [NSString stringWithFormat:@"%@.vcf", v21];
-        v22 = [v12 URLByAppendingPathComponent:v23];
+        v22 = [lCopy URLByAppendingPathComponent:v23];
 
-        v24 = [v22 da_leastInfoStringRepresentationRelativeToParentURL:v12];
+        v24 = [v22 da_leastInfoStringRepresentationRelativeToParentURL:lCopy];
         [v18 setExternalIdentifier:v24];
         [v18 updateSaveRequest:v49];
-        *a8 = 1;
+        *b = 1;
 
 LABEL_12:
-        v25 = [v18 externalUUID];
+        externalUUID = [v18 externalUUID];
 
-        if (!v25)
+        if (!externalUUID)
         {
           v26 = +[NSString da_newGUID];
           [v18 setExternalUUID:v26];
 
           [v18 updateSaveRequest:v49];
-          *a8 = 1;
+          *b = 1;
         }
 
         if (![v16 changeType])
         {
-          v34 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+          os_log = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
           {
-            v35 = [v16 changeType];
-            v36 = [v16 changeAnchor];
+            changeType = [v16 changeType];
+            changeAnchor = [v16 changeAnchor];
             *buf = 134218498;
-            v60 = v35;
+            v60 = changeType;
             v61 = 2112;
-            v62 = v36;
+            v62 = changeAnchor;
             v63 = 2112;
             v64 = &stru_3CFD8;
-            _os_log_impl(&dword_0, v34, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeAdd action for GROUP CNChangeHistoryChangeTypeAdd with identifier: %ld anchored at: %@ in container: %@ ", buf, 0x20u);
+            _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeAdd action for GROUP CNChangeHistoryChangeTypeAdd with identifier: %ld anchored at: %@ in container: %@ ", buf, 0x20u);
           }
 
-          v37 = [(_CardDAVActionsContactsDataSource *)self contactStore];
-          v31 = [CardDAVVCardItem itemWithDACardDAVRecord:0 contactStore:v37 outNeedsDBSave:0 maxImageSize:a6 maxResourceSize:a7 inContainerWithURL:v12];
+          contactStore = [(_CardDAVActionsContactsDataSource *)self contactStore];
+          v31 = [CardDAVVCardItem itemWithDACardDAVRecord:0 contactStore:contactStore outNeedsDBSave:0 maxImageSize:size maxResourceSize:resourceSize inContainerWithURL:lCopy];
 
           v32 = [DAAction alloc];
           v33 = 0;
@@ -694,8 +694,8 @@ LABEL_22:
           v38 = [v32 initWithItemChangeType:v33 changedItem:v31 serverId:0];
 
 LABEL_23:
-          v39 = [v16 changeID];
-          -[NSObject setChangeId:](v38, "setChangeId:", [v39 intValue]);
+          changeID = [v16 changeID];
+          -[NSObject setChangeId:](v38, "setChangeId:", [changeID intValue]);
 
           [v52 addObject:v38];
           goto LABEL_24;
@@ -703,41 +703,41 @@ LABEL_23:
 
         if ([v16 changeType] == &dword_0 + 1)
         {
-          v27 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+          os_log2 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log2, OS_LOG_TYPE_INFO))
           {
-            v28 = [v16 changeType];
-            v29 = [v16 changeAnchor];
+            changeType2 = [v16 changeType];
+            changeAnchor2 = [v16 changeAnchor];
             *buf = 134218498;
-            v60 = v28;
+            v60 = changeType2;
             v61 = 2112;
-            v62 = v29;
+            v62 = changeAnchor2;
             v63 = 2112;
             v64 = &stru_3CFD8;
-            _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeModify action for GROUP CNChangeHistoryChangeTypeUpdate with identifier: %ld anchored at: %@ in container: %@ ", buf, 0x20u);
+            _os_log_impl(&dword_0, os_log2, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeModify action for GROUP CNChangeHistoryChangeTypeUpdate with identifier: %ld anchored at: %@ in container: %@ ", buf, 0x20u);
           }
 
-          v30 = [(_CardDAVActionsContactsDataSource *)self contactStore];
-          v31 = [CardDAVVCardItem itemWithDACardDAVRecord:0 contactStore:v30 outNeedsDBSave:0 maxImageSize:a6 maxResourceSize:a7 inContainerWithURL:v12];
+          contactStore2 = [(_CardDAVActionsContactsDataSource *)self contactStore];
+          v31 = [CardDAVVCardItem itemWithDACardDAVRecord:0 contactStore:contactStore2 outNeedsDBSave:0 maxImageSize:size maxResourceSize:resourceSize inContainerWithURL:lCopy];
 
           v32 = [DAAction alloc];
           v33 = 1;
           goto LABEL_22;
         }
 
-        v40 = [v16 changeType];
-        v41 = [objc_opt_class() os_log];
-        v38 = v41;
-        if (v40 == &dword_0 + 2)
+        changeType3 = [v16 changeType];
+        os_log3 = [objc_opt_class() os_log];
+        v38 = os_log3;
+        if (changeType3 == &dword_0 + 2)
         {
-          if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(os_log3, OS_LOG_TYPE_INFO))
           {
-            v42 = [v16 changeType];
-            v43 = [v16 changeAnchor];
+            changeType4 = [v16 changeType];
+            changeAnchor3 = [v16 changeAnchor];
             *buf = 134218498;
-            v60 = v42;
+            v60 = changeType4;
             v61 = 2112;
-            v62 = v43;
+            v62 = changeAnchor3;
             v63 = 2112;
             v64 = &stru_3CFD8;
             _os_log_impl(&dword_0, v38, OS_LOG_TYPE_INFO, "generating DAItemChangeTypeDelete action for GROUP CNChangeHistoryChangeTypeDelete with identifier: %ld anchored at: %@ in container: %@ ", buf, 0x20u);
@@ -747,7 +747,7 @@ LABEL_23:
           goto LABEL_23;
         }
 
-        if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
         {
           sub_25C3C(v58, v16);
         }
@@ -765,14 +765,14 @@ LABEL_24:
     while (v44);
   }
 
-  [v46 addSaveRequest:v49];
+  [helperCopy addSaveRequest:v49];
 
   return v52;
 }
 
-- (id)coalesceExistingActions:(id)a3 withNewlyGeneratedActions:(id)a4 discardActionHandler:(id)a5
+- (id)coalesceExistingActions:(id)actions withNewlyGeneratedActions:(id)generatedActions discardActionHandler:(id)handler
 {
-  v5 = a4;
+  generatedActionsCopy = generatedActions;
   v6 = +[NSMutableDictionary dictionary];
   v7 = +[NSMutableArray array];
   v8 = +[NSArray array];
@@ -780,7 +780,7 @@ LABEL_24:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v5;
+  v9 = generatedActionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -796,12 +796,12 @@ LABEL_24:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 instanceId];
+        instanceId = [v14 instanceId];
 
-        if (v15)
+        if (instanceId)
         {
-          v16 = [v14 instanceId];
-          [v6 setObject:v14 forKeyedSubscript:v16];
+          instanceId2 = [v14 instanceId];
+          [v6 setObject:v14 forKeyedSubscript:instanceId2];
         }
 
         else

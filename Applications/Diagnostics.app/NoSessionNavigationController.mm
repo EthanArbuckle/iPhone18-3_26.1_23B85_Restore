@@ -1,8 +1,8 @@
 @interface NoSessionNavigationController
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithCoder:(id)a3;
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithRootViewController:(id)a3;
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithCoder:(id)coder;
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -10,52 +10,52 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001307F0();
 }
 
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NoSessionNavigationController();
-  return [(NoSessionNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(NoSessionNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithRootViewController:(id)a3
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for NoSessionNavigationController();
-  return [(NoSessionNavigationController *)&v5 initWithRootViewController:a3];
+  return [(NoSessionNavigationController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for NoSessionNavigationController();
-  v9 = [(NoSessionNavigationController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(NoSessionNavigationController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC11Diagnostics29NoSessionNavigationController)initWithCoder:(id)a3
+- (_TtC11Diagnostics29NoSessionNavigationController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NoSessionNavigationController();
-  v4 = a3;
-  v5 = [(NoSessionNavigationController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NoSessionNavigationController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

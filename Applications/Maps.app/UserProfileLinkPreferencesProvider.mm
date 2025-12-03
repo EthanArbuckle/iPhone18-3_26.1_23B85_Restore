@@ -4,23 +4,23 @@
 - (UserProfileLinkPreferencesProvider)init;
 - (id)createUserProfileLink;
 - (id)retrieveTravelPreference;
-- (void)_updateLinkAndNotifyObservers:(BOOL)a3;
+- (void)_updateLinkAndNotifyObservers:(BOOL)observers;
 - (void)dealloc;
 @end
 
 @implementation UserProfileLinkPreferencesProvider
 
-- (void)_updateLinkAndNotifyObservers:(BOOL)a3
+- (void)_updateLinkAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
-  v7 = [(UserProfileLinkPreferencesProvider *)self retrieveTravelPreference];
-  v5 = [(UserProfileLink *)self->_newLink subtitle];
-  v6 = [v5 isEqualToString:v7];
+  observersCopy = observers;
+  retrieveTravelPreference = [(UserProfileLinkPreferencesProvider *)self retrieveTravelPreference];
+  subtitle = [(UserProfileLink *)self->_newLink subtitle];
+  v6 = [subtitle isEqualToString:retrieveTravelPreference];
 
   if ((v6 & 1) == 0)
   {
-    [(UserProfileLink *)self->_newLink setSubtitle:v7];
-    if (v3)
+    [(UserProfileLink *)self->_newLink setSubtitle:retrieveTravelPreference];
+    if (observersCopy)
     {
       [(GEOObserverHashTable *)self->_observers dataDidUpdateForUserProfileLinkType:[(UserProfileLinkPreferencesProvider *)self userProfileLinkType]];
     }
@@ -94,12 +94,12 @@
 
   [(UserProfileLink *)self->_newLink setUserProfileLinkType:[(UserProfileLinkPreferencesProvider *)self userProfileLinkType]];
   v17 = +[UIDevice currentDevice];
-  v18 = [v17 userInterfaceIdiom];
+  userInterfaceIdiom = [v17 userInterfaceIdiom];
 
-  if (v18 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    v19 = [(UserProfileLinkPreferencesProvider *)self retrieveTravelPreference];
-    [(UserProfileLink *)self->_newLink setSubtitle:v19];
+    retrieveTravelPreference = [(UserProfileLinkPreferencesProvider *)self retrieveTravelPreference];
+    [(UserProfileLink *)self->_newLink setSubtitle:retrieveTravelPreference];
   }
 
   v20 = self->_newLink;

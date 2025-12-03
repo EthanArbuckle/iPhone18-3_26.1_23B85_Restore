@@ -1,12 +1,12 @@
 @interface BTDeviceNameEditingController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (BTDeviceNameEditingController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillShow:(id)show;
 - (void)suspend;
-- (void)textDidChange:(id)a3;
+- (void)textDidChange:(id)change;
 @end
 
 @implementation BTDeviceNameEditingController
@@ -18,8 +18,8 @@
   v2 = [(BTDeviceNameEditingController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
   }
 
   return v2;
@@ -27,8 +27,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BTDeviceNameEditingController;
@@ -41,25 +41,25 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+    userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
     v6 = +[HPSDevice deviceKey];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [userInfo objectForKeyedSubscript:v6];
     currentDevice = self->_currentDevice;
     self->_currentDevice = v7;
 
-    v9 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    v10 = [v9 name];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    name = [classicDevice name];
     deviceName = self->_deviceName;
-    self->_deviceName = v10;
+    self->_deviceName = name;
 
-    v12 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    v13 = [v12 productName];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    productName = [classicDevice2 productName];
     productName = self->_productName;
-    self->_productName = v13;
+    self->_productName = productName;
 
     v15 = objc_alloc(MEMORY[0x277CBEB18]);
-    v16 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v17 = [v15 initWithObjects:{v16, 0}];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    v17 = [v15 initWithObjects:{emptyGroupSpecifier, 0}];
 
     v18 = MEMORY[0x277D3FAD8];
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
@@ -78,24 +78,24 @@
 
 - (void)suspend
 {
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4.receiver = self;
   v4.super_class = BTDeviceNameEditingController;
   [(BTDeviceNameEditingController *)&v4 suspend];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = BTDeviceNameEditingController;
-  v5 = [(BTDeviceNameEditingController *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 editableTextField];
-  v7 = v6;
-  if (v6)
+  v5 = [(BTDeviceNameEditingController *)&v11 tableView:view cellForRowAtIndexPath:path];
+  editableTextField = [v5 editableTextField];
+  v7 = editableTextField;
+  if (editableTextField)
   {
-    [v6 setReturnKeyType:9];
+    [editableTextField setReturnKeyType:9];
     [v7 setAutocapitalizationType:0];
     [v7 setAutocorrectionType:1];
     [v7 setAutoresizesTextToFit:1];
@@ -105,8 +105,8 @@
     [v7 setDelegate:self];
     p_deviceName = &self->_deviceName;
     [v7 setText:self->_deviceName];
-    v9 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    if (([v9 magicPaired] & 1) == 0)
+    classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    if (([classicDevice magicPaired] & 1) == 0)
     {
       p_deviceName = &self->_productName;
     }
@@ -117,20 +117,20 @@
   return v5;
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [MEMORY[0x277D75658] activeKeyboard];
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
   if ([(BTDeviceNameEditingController *)self keyboardShownOnce])
   {
-    v5 = [(BluetoothDeviceProtocol *)self->_currentDevice connected];
+    connected = [(BluetoothDeviceProtocol *)self->_currentDevice connected];
   }
 
   else
   {
-    v5 = 0;
+    connected = 0;
   }
 
-  [v4 setReturnKeyEnabled:v5];
+  [activeKeyboard setReturnKeyEnabled:connected];
 
   if (![(BTDeviceNameEditingController *)self keyboardShownOnce])
   {
@@ -139,93 +139,93 @@
   }
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v10 = a3;
-  v4 = [v10 text];
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  changeCopy = change;
+  text = [changeCopy text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v6 length])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v10 setText:&stru_286339F58];
+      [changeCopy setText:&stru_286339F58];
     }
   }
 
   if ([v6 length] > 0x3C)
   {
-    v8 = 0;
+    connected = 0;
   }
 
   else
   {
-    v7 = [(BluetoothDeviceProtocol *)self->_currentDevice name];
-    if ([v6 isEqualToString:v7])
+    name = [(BluetoothDeviceProtocol *)self->_currentDevice name];
+    if ([v6 isEqualToString:name])
     {
-      v8 = 0;
+      connected = 0;
     }
 
     else
     {
-      v8 = [(BluetoothDeviceProtocol *)self->_currentDevice connected];
+      connected = [(BluetoothDeviceProtocol *)self->_currentDevice connected];
     }
   }
 
-  v9 = [MEMORY[0x277D75658] activeKeyboard];
-  [v9 setReturnKeyEnabled:v8];
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+  [activeKeyboard setReturnKeyEnabled:connected];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  returnCopy = return;
+  text = [returnCopy text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v7 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v7 length])
   {
     v8 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 placeholder];
+      placeholder = [returnCopy placeholder];
       v21 = 138477827;
-      v22 = v9;
+      v22 = placeholder;
       _os_log_impl(&dword_251143000, v8, OS_LOG_TYPE_DEFAULT, "Textfield empty, setting it as placeholder: %{private}@", &v21, 0xCu);
     }
 
-    v10 = [v4 placeholder];
+    placeholder2 = [returnCopy placeholder];
 
-    v7 = v10;
+    v7 = placeholder2;
   }
 
-  v11 = [(BluetoothDeviceProtocol *)self->_currentDevice connected];
-  if (v11)
+  connected = [(BluetoothDeviceProtocol *)self->_currentDevice connected];
+  if (connected)
   {
-    v12 = [(BluetoothDeviceProtocol *)self->_currentDevice name];
-    v13 = [v7 isEqualToString:v12];
+    name = [(BluetoothDeviceProtocol *)self->_currentDevice name];
+    v13 = [v7 isEqualToString:name];
 
     if ((v13 & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
       [WeakRetained setTitle:v7];
 
-      v15 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-      [v15 setUserName:v7];
+      classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+      [classicDevice setUserName:v7];
 
-      v16 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-      LODWORD(v15) = [v16 magicPaired];
+      classicDevice2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+      LODWORD(classicDevice) = [classicDevice2 magicPaired];
 
-      if (v15)
+      if (classicDevice)
       {
-        [v4 setPlaceholder:v7];
+        [returnCopy setPlaceholder:v7];
       }
     }
 
-    [v4 setText:v7];
+    [returnCopy setText:v7];
   }
 
   else
@@ -237,12 +237,12 @@
       _os_log_impl(&dword_251143000, v17, OS_LOG_TYPE_DEFAULT, "Cannot rename when device is disconnected", &v21, 2u);
     }
 
-    v18 = [MEMORY[0x277D75658] activeKeyboard];
-    [v18 setReturnKeyEnabled:0];
+    activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+    [activeKeyboard setReturnKeyEnabled:0];
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return v11;
+  return connected;
 }
 
 @end

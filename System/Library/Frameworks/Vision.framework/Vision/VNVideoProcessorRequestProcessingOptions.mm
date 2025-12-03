@@ -1,28 +1,28 @@
 @interface VNVideoProcessorRequestProcessingOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_createVCPVideoProcessorRequestConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation VNVideoProcessorRequestProcessingOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
   {
-    v5 = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
-    [v4 setCadence:v5];
+    cadence = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
+    [v4 setCadence:cadence];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -32,9 +32,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
-      v7 = [(VNVideoProcessorRequestProcessingOptions *)v5 cadence];
+      v5 = equalCopy;
+      cadence = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
+      cadence2 = [(VNVideoProcessorRequestProcessingOptions *)v5 cadence];
 
       v8 = VisionCoreEqualOrNilObjects();
     }
@@ -50,8 +50,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
-  v3 = [v2 hash];
+  cadence = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
+  v3 = [cadence hash];
 
   return v3;
 }
@@ -59,8 +59,8 @@
 - (id)_createVCPVideoProcessorRequestConfiguration
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
-  [v4 populateVCPVideoProcessorRequestConfiguration:v3];
+  cadence = [(VNVideoProcessorRequestProcessingOptions *)self cadence];
+  [cadence populateVCPVideoProcessorRequestConfiguration:v3];
 
   return v3;
 }

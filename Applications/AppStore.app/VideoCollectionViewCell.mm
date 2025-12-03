@@ -1,30 +1,30 @@
 @interface VideoCollectionViewCell
-- (_TtC8AppStore23VideoCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC8AppStore23VideoCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore23VideoCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC8AppStore23VideoCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation VideoCollectionViewCell
 
-- (_TtC8AppStore23VideoCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC8AppStore23VideoCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   static VideoConfiguration.defaultConfiguration.getter();
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = type metadata accessor for VideoCollectionViewCell();
-  v8 = [(VideoCollectionViewCell *)&v11 initWithFrame:x, y, width, height];
-  v9 = [(VideoCollectionViewCell *)v8 contentView];
-  [v9 setLayoutMargins:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  height = [(VideoCollectionViewCell *)&v11 initWithFrame:x, y, width, height];
+  contentView = [(VideoCollectionViewCell *)height contentView];
+  [contentView setLayoutMargins:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
 
-  return v8;
+  return height;
 }
 
-- (_TtC8AppStore23VideoCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore23VideoCollectionViewCell)initWithCoder:(id)coder
 {
   static VideoConfiguration.defaultConfiguration.getter();
   swift_unknownObjectWeakInit();
@@ -35,7 +35,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001923C0();
 }
 
@@ -45,7 +45,7 @@
   v13.super_class = type metadata accessor for VideoCollectionViewCell();
   v2 = v13.receiver;
   [(VideoCollectionViewCell *)&v13 layoutSubviews];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100028004();
   LayoutMarginsAware<>.layoutFrame.getter();
   v5 = v4;

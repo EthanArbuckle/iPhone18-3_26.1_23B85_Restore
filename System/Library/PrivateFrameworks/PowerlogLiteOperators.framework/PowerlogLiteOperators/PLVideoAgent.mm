@@ -3,24 +3,24 @@
 + (id)entryEventForwardDefinitions;
 + (id)entryEventIntervalDefinitionGroupSession;
 + (id)entryEventIntervalDefinitions;
-+ (id)stateEnumForStateString:(id)a3;
++ (id)stateEnumForStateString:(id)string;
 + (void)load;
 - (PLVideoAgent)init;
-- (int)convertPlaybackTypetoInt:(id)a3;
+- (int)convertPlaybackTypetoInt:(id)int;
 - (void)initOperatorDependancies;
-- (void)logEventBackwardCMVideoPlaybackWithEntry:(id)a3;
-- (void)logEventBackwardCMVideoQueueWithEntry:(id)a3;
-- (void)logEventBackwardVTSessionWithEntry:(id)a3;
-- (void)logEventBackwardVTTileWithEntry:(id)a3;
-- (void)logEventForwardVideoWithEntry:(id)a3;
-- (void)logEventIntervalGroupSession:(id)a3;
+- (void)logEventBackwardCMVideoPlaybackWithEntry:(id)entry;
+- (void)logEventBackwardCMVideoQueueWithEntry:(id)entry;
+- (void)logEventBackwardVTSessionWithEntry:(id)entry;
+- (void)logEventBackwardVTTileWithEntry:(id)entry;
+- (void)logEventForwardVideoWithEntry:(id)entry;
+- (void)logEventIntervalGroupSession:(id)session;
 @end
 
 @implementation PLVideoAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLVideoAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -43,17 +43,17 @@
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
   v21[0] = v4;
   v20[1] = *MEMORY[0x277D3F540];
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v17[0] = v6;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v17[0] = commonTypeDict_IntegerFormat;
   v16[1] = @"clientDisplayID";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat_withBundleID];
-  v17[1] = v8;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v17[1] = commonTypeDict_StringFormat_withBundleID;
   v16[2] = @"State";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v17[2] = v10;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v17[2] = commonTypeDict_IntegerFormat2;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
   v21[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -85,49 +85,49 @@
   v120 = *MEMORY[0x277D3F540];
   v6 = v120;
   v114[0] = @"logID";
-  v93 = [MEMORY[0x277D3F198] sharedInstance];
-  v92 = [v93 commonTypeDict_StringFormat];
-  v115[0] = v92;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v115[0] = commonTypeDict_StringFormat;
   v114[1] = @"videoCodecType";
-  v91 = [MEMORY[0x277D3F198] sharedInstance];
-  v90 = [v91 commonTypeDict_IntegerFormat];
-  v115[1] = v90;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v115[1] = commonTypeDict_IntegerFormat;
   v114[2] = @"resHeight";
-  v89 = [MEMORY[0x277D3F198] sharedInstance];
-  v88 = [v89 commonTypeDict_IntegerFormat];
-  v115[2] = v88;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v115[2] = commonTypeDict_IntegerFormat2;
   v114[3] = @"numFramesDecoded";
-  v87 = [MEMORY[0x277D3F198] sharedInstance];
-  v86 = [v87 commonTypeDict_IntegerFormat];
-  v115[3] = v86;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v115[3] = commonTypeDict_IntegerFormat3;
   v114[4] = @"numFramesEncoded";
-  v85 = [MEMORY[0x277D3F198] sharedInstance];
-  v84 = [v85 commonTypeDict_IntegerFormat];
-  v115[4] = v84;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v115[4] = commonTypeDict_IntegerFormat4;
   v114[5] = @"resWidth";
-  v83 = [MEMORY[0x277D3F198] sharedInstance];
-  v82 = [v83 commonTypeDict_IntegerFormat];
-  v115[5] = v82;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v115[5] = commonTypeDict_IntegerFormat5;
   v114[6] = @"isHDR";
-  v81 = [MEMORY[0x277D3F198] sharedInstance];
-  v80 = [v81 commonTypeDict_BoolFormat];
-  v115[6] = v80;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]7 commonTypeDict_BoolFormat];
+  v115[6] = commonTypeDict_BoolFormat;
   v114[7] = @"processID";
-  v79 = [MEMORY[0x277D3F198] sharedInstance];
-  v78 = [v79 commonTypeDict_IntegerFormat];
-  v115[7] = v78;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v115[7] = commonTypeDict_IntegerFormat6;
   v114[8] = @"BundleID";
-  v77 = [MEMORY[0x277D3F198] sharedInstance];
-  v76 = [v77 commonTypeDict_StringFormat_withBundleID];
-  v115[8] = v76;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat_withBundleID];
+  v115[8] = commonTypeDict_StringFormat_withBundleID;
   v114[9] = @"numFramesDropped";
-  v75 = [MEMORY[0x277D3F198] sharedInstance];
-  v74 = [v75 commonTypeDict_IntegerFormat];
-  v115[9] = v74;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v115[9] = commonTypeDict_IntegerFormat7;
   v114[10] = @"sessionDuration";
-  v73 = [MEMORY[0x277D3F198] sharedInstance];
-  v72 = [v73 commonTypeDict_IntegerFormat];
-  v115[10] = v72;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v115[10] = commonTypeDict_IntegerFormat8;
   v71 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v115 forKeys:v114 count:11];
   v121[1] = v71;
   v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v121 forKeys:&v119 count:2];
@@ -146,45 +146,45 @@
   v113[0] = v69;
   v112[1] = v6;
   v107[0] = @"videoCodecType";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_IntegerFormat];
-  v108[0] = v67;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v108[0] = commonTypeDict_IntegerFormat9;
   v107[1] = @"resHeight";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_IntegerFormat];
-  v108[1] = v65;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v108[1] = commonTypeDict_IntegerFormat10;
   v107[2] = @"numFramesDecoded";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_IntegerFormat];
-  v108[2] = v63;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v108[2] = commonTypeDict_IntegerFormat11;
   v107[3] = @"numFramesEncoded";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_IntegerFormat];
-  v108[3] = v61;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v108[3] = commonTypeDict_IntegerFormat12;
   v107[4] = @"resWidth";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v108[4] = v59;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v108[4] = commonTypeDict_IntegerFormat13;
   v107[5] = @"isHDR";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_BoolFormat];
-  v108[5] = v57;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]17 commonTypeDict_BoolFormat];
+  v108[5] = commonTypeDict_BoolFormat2;
   v107[6] = @"processID";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v108[6] = v55;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v108[6] = commonTypeDict_IntegerFormat14;
   v107[7] = @"BundleID";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_StringFormat_withBundleID];
-  v108[7] = v53;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID2 = [mEMORY[0x277D3F198]19 commonTypeDict_StringFormat_withBundleID];
+  v108[7] = commonTypeDict_StringFormat_withBundleID2;
   v107[8] = @"numFramesDropped";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v108[8] = v51;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v108[8] = commonTypeDict_IntegerFormat15;
   v107[9] = @"sessionDuration";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v108[9] = v49;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v108[9] = commonTypeDict_IntegerFormat16;
   v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v108 forKeys:v107 count:10];
   v113[1] = v48;
   v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v113 forKeys:v112 count:2];
@@ -204,49 +204,49 @@
   v106[0] = v46;
   v105[1] = v6;
   v101[0] = @"AuOn";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_BoolFormat];
-  v102[0] = v44;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]22 commonTypeDict_BoolFormat];
+  v102[0] = commonTypeDict_BoolFormat3;
   v101[1] = @"IfTy";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_IntegerFormat];
-  v102[1] = v42;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v102[1] = commonTypeDict_IntegerFormat17;
   v101[2] = @"logID";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_StringFormat];
-  v102[2] = v40;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]24 commonTypeDict_StringFormat];
+  v102[2] = commonTypeDict_StringFormat2;
   v101[3] = @"PlayTimeWC";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_IntegerFormat];
-  v102[3] = v38;
+  mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+  v102[3] = commonTypeDict_IntegerFormat18;
   v101[4] = @"ProcessName";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_StringFormat_withProcessName];
-  v102[4] = v36;
+  mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]26 commonTypeDict_StringFormat_withProcessName];
+  v102[4] = commonTypeDict_StringFormat_withProcessName;
   v101[5] = @"StallCount";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v102[5] = v34;
+  mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+  v102[5] = commonTypeDict_IntegerFormat19;
   v101[6] = @"TWIABR";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v102[6] = v32;
+  mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+  v102[6] = commonTypeDict_IntegerFormat20;
   v101[7] = @"TWIBR";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v102[7] = v30;
+  mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+  v102[7] = commonTypeDict_IntegerFormat21;
   v101[8] = @"TWOBR";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v102[8] = v28;
+  mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+  v102[8] = commonTypeDict_IntegerFormat22;
   v101[9] = @"TWVaRk";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v102[9] = v26;
+  mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+  v102[9] = commonTypeDict_IntegerFormat23;
   v101[10] = @"PlaybackType";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v102[10] = v24;
+  mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+  v102[10] = commonTypeDict_IntegerFormat24;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:v101 count:11];
   v106[1] = v23;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v106 forKeys:v105 count:2];
@@ -263,17 +263,17 @@
   v100[0] = v10;
   v99[1] = v6;
   v95[0] = @"logID";
-  v11 = [MEMORY[0x277D3F198] sharedInstance];
-  v12 = [v11 commonTypeDict_StringFormat];
-  v96[0] = v12;
+  mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]33 commonTypeDict_StringFormat];
+  v96[0] = commonTypeDict_StringFormat3;
   v95[1] = @"PlayTimeWC";
-  v13 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v13 commonTypeDict_IntegerFormat];
-  v96[1] = v14;
+  mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+  v96[1] = commonTypeDict_IntegerFormat25;
   v95[2] = @"ProcessName";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v15 commonTypeDict_StringFormat_withProcessName];
-  v96[2] = v16;
+  mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName2 = [mEMORY[0x277D3F198]35 commonTypeDict_StringFormat_withProcessName];
+  v96[2] = commonTypeDict_StringFormat_withProcessName2;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v96 forKeys:v95 count:3];
   v100[1] = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v100 forKeys:v99 count:2];
@@ -289,8 +289,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"GroupSession";
-  v2 = [a1 entryEventIntervalDefinitionGroupSession];
-  v7[0] = v2;
+  entryEventIntervalDefinitionGroupSession = [self entryEventIntervalDefinitionGroupSession];
+  v7[0] = entryEventIntervalDefinitionGroupSession;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -311,13 +311,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"timestampEnd";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
   v12[1] = @"BundleID";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withBundleID];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_DateFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v13[1] = commonTypeDict_StringFormat_withBundleID;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -331,7 +331,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -339,10 +339,10 @@
     v5.receiver = self;
     v5.super_class = PLVideoAgent;
     self = [(PLAgent *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -506,14 +506,14 @@ void __40__PLVideoAgent_initOperatorDependancies__block_invoke_167(uint64_t a1, 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardVideoWithEntry:(id)a3
+- (void)logEventForwardVideoWithEntry:(id)entry
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"State"];
+    v6 = [entryCopy objectForKeyedSubscript:@"State"];
     if (v6)
     {
       v7 = v6;
@@ -522,22 +522,22 @@ void __40__PLVideoAgent_initOperatorDependancies__block_invoke_167(uint64_t a1, 
       if (v8)
       {
         [(PLOperator *)self logEntry:v5];
-        v9 = [MEMORY[0x277CBEAA8] monotonicDate];
+        monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
         v10 = [v5 objectForKeyedSubscript:@"State"];
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
 
-        if (v11 == 1)
+        if (integerValue == 1)
         {
           v12 = 0;
-          v13 = v9;
+          v13 = monotonicDate;
         }
 
         else
         {
           v14 = [v5 objectForKeyedSubscript:@"State"];
-          v15 = [v14 integerValue];
+          integerValue2 = [v14 integerValue];
 
-          if (v15 != 2)
+          if (integerValue2 != 2)
           {
 LABEL_12:
 
@@ -545,10 +545,10 @@ LABEL_12:
           }
 
           v13 = 0;
-          v12 = v9;
+          v12 = monotonicDate;
         }
 
-        v16 = v9;
+        v16 = monotonicDate;
         v17 = [v5 objectForKeyedSubscript:@"clientDisplayID"];
         v18 = v17;
         v19 = @"video-unknown";
@@ -559,12 +559,12 @@ LABEL_12:
 
         v20 = v19;
 
-        v21 = [MEMORY[0x277D3F0C0] sharedInstance];
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
         v24 = v20;
         v25[0] = &unk_282C1C4F8;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
-        [v21 createDistributionEventForwardWithDistributionID:9 withChildNodeNameToWeight:v22 withStartDate:v16];
+        [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:9 withChildNodeNameToWeight:v22 withStartDate:v16];
         goto LABEL_12;
       }
     }
@@ -575,29 +575,29 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (int)convertPlaybackTypetoInt:(id)a3
+- (int)convertPlaybackTypetoInt:(id)int
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  intCopy = int;
   v4 = PLLogVideo();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v3;
+    v10 = intCopy;
     _os_log_debug_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEBUG, "PLVideoAgent::kPLVideoAgentRegistrationCMVideoPlayback converting playbackType %@ to an enum", &v9, 0xCu);
   }
 
-  if ([v3 isEqualToString:@"HLS"])
+  if ([intCopy isEqualToString:@"HLS"])
   {
     v5 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FILE"])
+  else if ([intCopy isEqualToString:@"FILE"])
   {
     v5 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CRABS"])
+  else if ([intCopy isEqualToString:@"CRABS"])
   {
     v5 = 2;
   }
@@ -608,7 +608,7 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = intCopy;
       _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "PLVideoAgent::kPLVideoAgentRegistrationCMVideoPlayback playbackType %@ does not fall in any enum", &v9, 0xCu);
     }
 
@@ -619,13 +619,13 @@ LABEL_13:
   return v5;
 }
 
-- (void)logEventBackwardCMVideoPlaybackWithEntry:(id)a3
+- (void)logEventBackwardCMVideoPlaybackWithEntry:(id)entry
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v5 = [(PLOperator *)PLVideoAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"CMVideoPlayback"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:v4];
-  v7 = [v4 objectForKeyedSubscript:@"TWIABR"];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:entryCopy];
+  v7 = [entryCopy objectForKeyedSubscript:@"TWIABR"];
 
   if (v7)
   {
@@ -636,7 +636,7 @@ LABEL_13:
     [v6 setObject:v11 forKeyedSubscript:@"TWIABR"];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"TWIBR"];
+  v12 = [entryCopy objectForKeyedSubscript:@"TWIBR"];
 
   if (v12)
   {
@@ -647,7 +647,7 @@ LABEL_13:
     [v6 setObject:v16 forKeyedSubscript:@"TWIBR"];
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"TWOBR"];
+  v17 = [entryCopy objectForKeyedSubscript:@"TWOBR"];
 
   if (v17)
   {
@@ -658,7 +658,7 @@ LABEL_13:
     [v6 setObject:v21 forKeyedSubscript:@"TWOBR"];
   }
 
-  v22 = [v4 objectForKeyedSubscript:@"TWIABR"];
+  v22 = [entryCopy objectForKeyedSubscript:@"TWIABR"];
 
   if (v22)
   {
@@ -669,12 +669,12 @@ LABEL_13:
     [v6 setObject:v26 forKeyedSubscript:@"TWIABR"];
   }
 
-  v27 = [v4 objectForKeyedSubscript:@"VideoPlaybackType"];
+  v27 = [entryCopy objectForKeyedSubscript:@"VideoPlaybackType"];
 
   if (v27)
   {
     v28 = MEMORY[0x277CCABB0];
-    v29 = [v4 objectForKeyedSubscript:@"VideoPlaybackType"];
+    v29 = [entryCopy objectForKeyedSubscript:@"VideoPlaybackType"];
     v30 = [v28 numberWithUnsignedInt:{-[PLVideoAgent convertPlaybackTypetoInt:](self, "convertPlaybackTypetoInt:", v29)}];
     [v6 setObject:v30 forKeyedSubscript:@"PlaybackType"];
 
@@ -688,14 +688,14 @@ LABEL_13:
     }
   }
 
-  v32 = [v4 objectForKeyedSubscript:@"PlayTimeWC"];
+  v32 = [entryCopy objectForKeyedSubscript:@"PlayTimeWC"];
   if (v32)
   {
     v33 = v32;
-    v34 = [v4 objectForKeyedSubscript:@"PlayTimeWC"];
-    v35 = [v34 intValue];
+    v34 = [entryCopy objectForKeyedSubscript:@"PlayTimeWC"];
+    intValue = [v34 intValue];
 
-    if (v35 >= 1001)
+    if (intValue >= 1001)
     {
       v36 = MEMORY[0x277CCABB0];
       v37 = MEMORY[0x277D3F258];
@@ -718,13 +718,13 @@ LABEL_13:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventBackwardCMVideoQueueWithEntry:(id)a3
+- (void)logEventBackwardCMVideoQueueWithEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = [(PLOperator *)PLVideoAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"CMVideoQueue"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:v4];
-  v7 = [v4 objectForKeyedSubscript:@"PlayTimeWC"];
-  if (v7 && (v8 = v7, [v4 objectForKeyedSubscript:@"PlayTimeWC"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "intValue"), v9, v8, v10 >= 1001))
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:entryCopy];
+  v7 = [entryCopy objectForKeyedSubscript:@"PlayTimeWC"];
+  if (v7 && (v8 = v7, [entryCopy objectForKeyedSubscript:@"PlayTimeWC"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "intValue"), v9, v8, v10 >= 1001))
   {
     v11 = MEMORY[0x277CCABB0];
     v12 = MEMORY[0x277D3F258];
@@ -746,16 +746,16 @@ LABEL_13:
   }
 }
 
-- (void)logEventBackwardVTSessionWithEntry:(id)a3
+- (void)logEventBackwardVTSessionWithEntry:(id)entry
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v5 = [(PLOperator *)PLVideoAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"VTSession"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:v4];
-  v7 = [v4 objectForKeyedSubscript:@"processID"];
-  v8 = [v7 intValue];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:entryCopy];
+  v7 = [entryCopy objectForKeyedSubscript:@"processID"];
+  intValue = [v7 intValue];
 
-  v9 = [MEMORY[0x277D3F258] bundleIDFromPid:v8];
+  v9 = [MEMORY[0x277D3F258] bundleIDFromPid:intValue];
   if (([MEMORY[0x277D3F180] liteMode] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F180], "taskMode"))
   {
     if (([v9 hasPrefix:@"com.apple"] & 1) != 0 || objc_msgSend(&unk_282C14C28, "containsObject:", v9))
@@ -763,13 +763,13 @@ LABEL_13:
       [v6 setObject:v9 forKeyedSubscript:@"BundleID"];
       v10 = MEMORY[0x277CCABB0];
       v11 = MEMORY[0x277D3F258];
-      v12 = [v4 objectForKeyedSubscript:@"numFramesDecoded"];
+      v12 = [entryCopy objectForKeyedSubscript:@"numFramesDecoded"];
       v13 = [v10 numberWithLong:{objc_msgSend(v11, "roundToSigFig:withSigFig:", objc_msgSend(v12, "intValue"), 3)}];
       [v6 setObject:v13 forKeyedSubscript:@"numFramesDecoded"];
 
       v14 = MEMORY[0x277CCABB0];
       v15 = MEMORY[0x277D3F258];
-      v16 = [v4 objectForKeyedSubscript:@"numFramesEncoded"];
+      v16 = [entryCopy objectForKeyedSubscript:@"numFramesEncoded"];
       v17 = [v14 numberWithLong:{objc_msgSend(v15, "roundToSigFig:withSigFig:", objc_msgSend(v16, "intValue"), 3)}];
       [v6 setObject:v17 forKeyedSubscript:@"numFramesEncoded"];
     }
@@ -780,7 +780,7 @@ LABEL_13:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         v21[0] = 67109120;
-        v21[1] = v8;
+        v21[1] = intValue;
         _os_log_debug_impl(&dword_21A4C6000, v19, OS_LOG_TYPE_DEBUG, "the appBundleID is not approved and pid is %d", v21, 8u);
       }
     }
@@ -788,7 +788,7 @@ LABEL_13:
 
   else
   {
-    v18 = [MEMORY[0x277D3F258] bundleIDFromPid:v8];
+    v18 = [MEMORY[0x277D3F258] bundleIDFromPid:intValue];
     [v6 setObject:v18 forKeyedSubscript:@"BundleID"];
   }
 
@@ -797,54 +797,54 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventBackwardVTTileWithEntry:(id)a3
+- (void)logEventBackwardVTTileWithEntry:(id)entry
 {
   v4 = *MEMORY[0x277D3F5C8];
-  v5 = a3;
+  entryCopy = entry;
   v7 = [(PLOperator *)PLVideoAgent entryKeyForType:v4 andName:@"VTTile"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:entryCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventIntervalGroupSession:(id)a3
+- (void)logEventIntervalGroupSession:(id)session
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  sessionCopy = session;
   v14 = [(PLOperator *)PLVideoAgent entryKeyForType:v4 andName:@"GroupSession"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v14 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"timestamp"];
-  v8 = [v7 convertFromSystemToMonotonic];
-  [v6 setEntryDate:v8];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v14 withRawData:sessionCopy];
+  v7 = [sessionCopy objectForKeyedSubscript:@"timestamp"];
+  convertFromSystemToMonotonic = [v7 convertFromSystemToMonotonic];
+  [v6 setEntryDate:convertFromSystemToMonotonic];
 
-  v9 = [v5 objectForKeyedSubscript:@"timestampEnd"];
-  v10 = [v9 convertFromSystemToMonotonic];
-  [v6 setObject:v10 forKeyedSubscript:@"timestampEnd"];
+  v9 = [sessionCopy objectForKeyedSubscript:@"timestampEnd"];
+  convertFromSystemToMonotonic2 = [v9 convertFromSystemToMonotonic];
+  [v6 setObject:convertFromSystemToMonotonic2 forKeyedSubscript:@"timestampEnd"];
 
-  v11 = [v5 objectForKeyedSubscript:@"bundleID"];
+  v11 = [sessionCopy objectForKeyedSubscript:@"bundleID"];
 
   [v6 setObject:v11 forKeyedSubscript:@"BundleID"];
   v12 = [v6 objectForKeyedSubscript:@"timestampEnd"];
 
   if (!v12)
   {
-    v13 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v6 setObject:v13 forKeyedSubscript:@"timestampEnd"];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [v6 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
   }
 
   [(PLOperator *)self logEntry:v6];
 }
 
-+ (id)stateEnumForStateString:(id)a3
++ (id)stateEnumForStateString:(id)string
 {
   v3 = qword_2811F4D68;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&qword_2811F4D68, &__block_literal_global_231);
   }
 
-  v5 = [qword_2811F4D60 objectForKeyedSubscript:v4];
+  v5 = [qword_2811F4D60 objectForKeyedSubscript:stringCopy];
 
   return v5;
 }

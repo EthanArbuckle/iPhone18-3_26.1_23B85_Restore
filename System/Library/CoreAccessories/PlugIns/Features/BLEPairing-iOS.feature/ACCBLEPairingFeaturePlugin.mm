@@ -1,18 +1,18 @@
 @interface ACCBLEPairingFeaturePlugin
-- (BOOL)_isSupportedType:(unsigned __int8)a3 supportedListData:(id)a4;
+- (BOOL)_isSupportedType:(unsigned __int8)type supportedListData:(id)data;
 - (NSString)description;
 - (NSString)pluginName;
-- (id)bleAccessoryForConnectionID:(unsigned int)a3;
-- (void)blePairing:(id)a3 accessoryAttached:(id)a4 blePairingUUID:(id)a5 accInfoDict:(id)a6 supportedPairTypes:(id)a7;
-- (void)blePairing:(id)a3 accessoryDetached:(id)a4 blePairingUUID:(id)a5;
-- (void)blePairingDataUpdate:(id)a3 pairType:(int)a4 pairData:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7;
-- (void)blePairingInfoUpdate:(id)a3 pairType:(int)a4 pairInfoList:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7;
-- (void)blePairingStateUpdate:(id)a3 validMask:(unsigned int)a4 btRadioOn:(BOOL)a5 pairingState:(int)a6 pairingModeOn:(BOOL)a7 accessory:(id)a8 blePairingUUID:(id)a9;
-- (void)deviceSend:(id)a3 pairType:(int)a4 pairingData:(id)a5;
-- (void)deviceStartBLEUpdates:(id)a3 pairType:(int)a4 btRadio:(BOOL)a5 pairInfo:(BOOL)a6;
-- (void)deviceStateUpdate:(id)a3 btRadio:(unsigned __int8)a4 pairStatus:(int)a5 pairModeOn:(BOOL)a6 forceUpdates:(BOOL)a7;
-- (void)deviceStopBLEUpdates:(id)a3;
-- (void)deviceUpdate:(id)a3 pairType:(int)a4 pairInfo:(id)a5;
+- (id)bleAccessoryForConnectionID:(unsigned int)d;
+- (void)blePairing:(id)pairing accessoryAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types;
+- (void)blePairing:(id)pairing accessoryDetached:(id)detached blePairingUUID:(id)d;
+- (void)blePairingDataUpdate:(id)update pairType:(int)type pairData:(id)data accessory:(id)accessory blePairingUUID:(id)d;
+- (void)blePairingInfoUpdate:(id)update pairType:(int)type pairInfoList:(id)list accessory:(id)accessory blePairingUUID:(id)d;
+- (void)blePairingStateUpdate:(id)update validMask:(unsigned int)mask btRadioOn:(BOOL)on pairingState:(int)state pairingModeOn:(BOOL)modeOn accessory:(id)accessory blePairingUUID:(id)d;
+- (void)deviceSend:(id)send pairType:(int)type pairingData:(id)data;
+- (void)deviceStartBLEUpdates:(id)updates pairType:(int)type btRadio:(BOOL)radio pairInfo:(BOOL)info;
+- (void)deviceStateUpdate:(id)update btRadio:(unsigned __int8)radio pairStatus:(int)status pairModeOn:(BOOL)on forceUpdates:(BOOL)updates;
+- (void)deviceStopBLEUpdates:(id)updates;
+- (void)deviceUpdate:(id)update pairType:(int)type pairInfo:(id)info;
 - (void)initPlugin;
 - (void)startPlugin;
 - (void)stopPlugin;
@@ -30,16 +30,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCBLEPairingFeaturePlugin *)self pluginName];
+  pluginName = [(ACCBLEPairingFeaturePlugin *)self pluginName];
   v5 = obfuscatedPointer(self);
-  v6 = [(ACCBLEPairingFeaturePlugin *)self isRunning];
+  isRunning = [(ACCBLEPairingFeaturePlugin *)self isRunning];
   v7 = "NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", pluginName, v5, v7];
 
   return v8;
 }
@@ -146,14 +146,14 @@
   }
 }
 
-- (void)blePairing:(id)a3 accessoryAttached:(id)a4 blePairingUUID:(id)a5 accInfoDict:(id)a6 supportedPairTypes:(id)a7
+- (void)blePairing:(id)pairing accessoryAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  pairingCopy = pairing;
+  attachedCopy = attached;
+  dCopy = d;
+  dictCopy = dict;
+  typesCopy = types;
   if (gLogObjects)
   {
     v17 = gNumLogObjects < 1;
@@ -186,11 +186,11 @@
     iap2server = self->_iap2server;
     blePairingProvider = self->_blePairingProvider;
     *buf = 138413570;
-    v35 = v12;
+    v35 = pairingCopy;
     v36 = 2112;
-    v37 = v13;
+    v37 = attachedCopy;
     v38 = 2112;
-    v39 = v14;
+    v39 = dCopy;
     v40 = 2112;
     v41 = blePairingProvider;
     v42 = 2112;
@@ -200,9 +200,9 @@
     _os_log_impl(&dword_2335AD000, v19, OS_LOG_TYPE_INFO, "blePairing: %@ accessoryAttached: %@, blePairingUUID=%@, _blePairingProvider=%@ _blePairingShim=%@ _iap2server=%@", buf, 0x3Eu);
   }
 
-  if (v15)
+  if (dictCopy)
   {
-    v23 = [v15 objectForKey:*MEMORY[0x277CE8070]];
+    v23 = [dictCopy objectForKey:*MEMORY[0x277CE8070]];
   }
 
   else
@@ -210,18 +210,18 @@
     v23 = 0;
   }
 
-  if ([v23 isEqualToString:@"A1603"] && !-[ACCBLEPairingFeaturePlugin _isSupportedType:supportedListData:](self, "_isSupportedType:supportedListData:", 1, v16))
+  if ([v23 isEqualToString:@"A1603"] && !-[ACCBLEPairingFeaturePlugin _isSupportedType:supportedListData:](self, "_isSupportedType:supportedListData:", 1, typesCopy))
   {
     blePairingQueue = self->_blePairingQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__ACCBLEPairingFeaturePlugin_blePairing_accessoryAttached_blePairingUUID_accInfoDict_supportedPairTypes___block_invoke;
     block[3] = &unk_2789E0FF8;
-    v29 = v13;
-    v30 = v15;
-    v31 = v14;
-    v32 = v16;
-    v33 = self;
+    v29 = attachedCopy;
+    v30 = dictCopy;
+    v31 = dCopy;
+    v32 = typesCopy;
+    selfCopy = self;
     dispatch_async(blePairingQueue, block);
 
     v24 = v29;
@@ -248,11 +248,11 @@
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v35 = v12;
+      v35 = pairingCopy;
       v36 = 2112;
-      v37 = v13;
+      v37 = attachedCopy;
       v38 = 2112;
-      v39 = v14;
+      v39 = dCopy;
       _os_log_impl(&dword_2335AD000, v24, OS_LOG_TYPE_INFO, "blePairing: %@ accessoryAttached: %@, blePairingUUID=%@, detected non-supported, don't use shim plugin", buf, 0x20u);
     }
   }
@@ -504,12 +504,12 @@ void __105__ACCBLEPairingFeaturePlugin_blePairing_accessoryAttached_blePairingUU
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blePairing:(id)a3 accessoryDetached:(id)a4 blePairingUUID:(id)a5
+- (void)blePairing:(id)pairing accessoryDetached:(id)detached blePairingUUID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pairingCopy = pairing;
+  detachedCopy = detached;
+  dCopy = d;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -542,11 +542,11 @@ void __105__ACCBLEPairingFeaturePlugin_blePairing_accessoryAttached_blePairingUU
     iap2server = self->_iap2server;
     blePairingProvider = self->_blePairingProvider;
     *buf = 138413570;
-    v25 = v8;
+    v25 = pairingCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = detachedCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = dCopy;
     v30 = 2112;
     v31 = blePairingProvider;
     v32 = 2112;
@@ -562,10 +562,10 @@ void __105__ACCBLEPairingFeaturePlugin_blePairing_accessoryAttached_blePairingUU
   block[2] = __74__ACCBLEPairingFeaturePlugin_blePairing_accessoryDetached_blePairingUUID___block_invoke;
   block[3] = &unk_2789E1020;
   block[4] = self;
-  v22 = v9;
-  v23 = v10;
-  v18 = v10;
-  v19 = v9;
+  v22 = detachedCopy;
+  v23 = dCopy;
+  v18 = dCopy;
+  v19 = detachedCopy;
   dispatch_async(blePairingQueue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -633,14 +633,14 @@ void __74__ACCBLEPairingFeaturePlugin_blePairing_accessoryDetached_blePairingUUI
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blePairingStateUpdate:(id)a3 validMask:(unsigned int)a4 btRadioOn:(BOOL)a5 pairingState:(int)a6 pairingModeOn:(BOOL)a7 accessory:(id)a8 blePairingUUID:(id)a9
+- (void)blePairingStateUpdate:(id)update validMask:(unsigned int)mask btRadioOn:(BOOL)on pairingState:(int)state pairingModeOn:(BOOL)modeOn accessory:(id)accessory blePairingUUID:(id)d
 {
-  v10 = a7;
-  v12 = a5;
+  modeOnCopy = modeOn;
+  onCopy = on;
   v52 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a8;
-  v17 = a9;
+  updateCopy = update;
+  accessoryCopy = accessory;
+  dCopy = d;
   if (gLogObjects)
   {
     v18 = gNumLogObjects < 1;
@@ -672,19 +672,19 @@ void __74__ACCBLEPairingFeaturePlugin_blePairing_accessoryDetached_blePairingUUI
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138414338;
-    v35 = v15;
+    v35 = updateCopy;
     v36 = 1024;
-    v37 = a4;
+    maskCopy = mask;
     v38 = 1024;
-    v39 = v12;
+    v39 = onCopy;
     v40 = 1024;
-    v41 = a6;
+    stateCopy = state;
     v42 = 1024;
-    v43 = v10;
+    v43 = modeOnCopy;
     v44 = 2112;
-    v45 = v16;
+    v45 = accessoryCopy;
     v46 = 2112;
-    v47 = v17;
+    v47 = dCopy;
     v48 = 2112;
     v49 = blePairingProvider;
     v50 = 2112;
@@ -698,14 +698,14 @@ void __74__ACCBLEPairingFeaturePlugin_blePairing_accessoryDetached_blePairingUUI
   block[2] = __124__ACCBLEPairingFeaturePlugin_blePairingStateUpdate_validMask_btRadioOn_pairingState_pairingModeOn_accessory_blePairingUUID___block_invoke;
   block[3] = &unk_2789E1048;
   block[4] = self;
-  v28 = v16;
-  v29 = v17;
-  v32 = v12;
-  v30 = a4;
-  v31 = a6;
-  v33 = v10;
-  v24 = v17;
-  v25 = v16;
+  v28 = accessoryCopy;
+  v29 = dCopy;
+  v32 = onCopy;
+  maskCopy2 = mask;
+  stateCopy2 = state;
+  v33 = modeOnCopy;
+  v24 = dCopy;
+  v25 = accessoryCopy;
   dispatch_async(blePairingQueue, block);
 
   v26 = *MEMORY[0x277D85DE8];
@@ -769,13 +769,13 @@ void __124__ACCBLEPairingFeaturePlugin_blePairingStateUpdate_validMask_btRadioOn
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blePairingInfoUpdate:(id)a3 pairType:(int)a4 pairInfoList:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7
+- (void)blePairingInfoUpdate:(id)update pairType:(int)type pairInfoList:(id)list accessory:(id)accessory blePairingUUID:(id)d
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  updateCopy = update;
+  listCopy = list;
+  accessoryCopy = accessory;
+  dCopy = d;
   if (gLogObjects)
   {
     v16 = gNumLogObjects < 1;
@@ -807,15 +807,15 @@ void __124__ACCBLEPairingFeaturePlugin_blePairingStateUpdate_validMask_btRadioOn
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138413826;
-    v32 = v12;
+    v32 = updateCopy;
     v33 = 1024;
-    v34 = a4;
+    typeCopy = type;
     v35 = 2112;
-    v36 = v13;
+    v36 = listCopy;
     v37 = 2112;
-    v38 = v14;
+    v38 = accessoryCopy;
     v39 = 2112;
-    v40 = v15;
+    v40 = dCopy;
     v41 = 2112;
     v42 = blePairingProvider;
     v43 = 2112;
@@ -829,13 +829,13 @@ void __124__ACCBLEPairingFeaturePlugin_blePairingStateUpdate_validMask_btRadioOn
   block[2] = __98__ACCBLEPairingFeaturePlugin_blePairingInfoUpdate_pairType_pairInfoList_accessory_blePairingUUID___block_invoke;
   block[3] = &unk_2789E1070;
   block[4] = self;
-  v27 = v14;
-  v30 = a4;
-  v28 = v15;
-  v29 = v13;
-  v22 = v13;
-  v23 = v15;
-  v24 = v14;
+  v27 = accessoryCopy;
+  typeCopy2 = type;
+  v28 = dCopy;
+  v29 = listCopy;
+  v22 = listCopy;
+  v23 = dCopy;
+  v24 = accessoryCopy;
   dispatch_async(blePairingQueue, block);
 
   v25 = *MEMORY[0x277D85DE8];
@@ -899,13 +899,13 @@ void __98__ACCBLEPairingFeaturePlugin_blePairingInfoUpdate_pairType_pairInfoList
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blePairingDataUpdate:(id)a3 pairType:(int)a4 pairData:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7
+- (void)blePairingDataUpdate:(id)update pairType:(int)type pairData:(id)data accessory:(id)accessory blePairingUUID:(id)d
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  updateCopy = update;
+  dataCopy = data;
+  accessoryCopy = accessory;
+  dCopy = d;
   if (gLogObjects)
   {
     v16 = gNumLogObjects < 1;
@@ -937,15 +937,15 @@ void __98__ACCBLEPairingFeaturePlugin_blePairingInfoUpdate_pairType_pairInfoList
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138413826;
-    v32 = v12;
+    v32 = updateCopy;
     v33 = 1024;
-    v34 = a4;
+    typeCopy = type;
     v35 = 2112;
-    v36 = v13;
+    v36 = dataCopy;
     v37 = 2112;
-    v38 = v14;
+    v38 = accessoryCopy;
     v39 = 2112;
-    v40 = v15;
+    v40 = dCopy;
     v41 = 2112;
     v42 = blePairingProvider;
     v43 = 2112;
@@ -959,13 +959,13 @@ void __98__ACCBLEPairingFeaturePlugin_blePairingInfoUpdate_pairType_pairInfoList
   block[2] = __94__ACCBLEPairingFeaturePlugin_blePairingDataUpdate_pairType_pairData_accessory_blePairingUUID___block_invoke;
   block[3] = &unk_2789E1070;
   block[4] = self;
-  v27 = v14;
-  v30 = a4;
-  v28 = v15;
-  v29 = v13;
-  v22 = v13;
-  v23 = v15;
-  v24 = v14;
+  v27 = accessoryCopy;
+  typeCopy2 = type;
+  v28 = dCopy;
+  v29 = dataCopy;
+  v22 = dataCopy;
+  v23 = dCopy;
+  v24 = accessoryCopy;
   dispatch_async(blePairingQueue, block);
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1029,7 +1029,7 @@ void __94__ACCBLEPairingFeaturePlugin_blePairingDataUpdate_pairType_pairData_acc
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bleAccessoryForConnectionID:(unsigned int)a3
+- (id)bleAccessoryForConnectionID:(unsigned int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -1044,7 +1044,7 @@ void __94__ACCBLEPairingFeaturePlugin_blePairingDataUpdate_pairType_pairData_acc
   block[3] = &unk_2789E1098;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(blePairingQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1062,12 +1062,12 @@ void __58__ACCBLEPairingFeaturePlugin_bleAccessoryForConnectionID___block_invoke
   *(v4 + 40) = v3;
 }
 
-- (void)deviceStartBLEUpdates:(id)a3 pairType:(int)a4 btRadio:(BOOL)a5 pairInfo:(BOOL)a6
+- (void)deviceStartBLEUpdates:(id)updates pairType:(int)type btRadio:(BOOL)radio pairInfo:(BOOL)info
 {
-  v6 = a6;
-  v7 = a5;
+  infoCopy = info;
+  radioCopy = radio;
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  updatesCopy = updates;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -1099,13 +1099,13 @@ void __58__ACCBLEPairingFeaturePlugin_bleAccessoryForConnectionID___block_invoke
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138413570;
-    v25 = v10;
+    v25 = updatesCopy;
     v26 = 1024;
-    v27 = a4;
+    typeCopy = type;
     v28 = 1024;
-    v29 = v7;
+    v29 = radioCopy;
     v30 = 1024;
-    v31 = v6;
+    v31 = infoCopy;
     v32 = 2112;
     v33 = blePairingProvider;
     v34 = 2112;
@@ -1119,11 +1119,11 @@ void __58__ACCBLEPairingFeaturePlugin_bleAccessoryForConnectionID___block_invoke
   block[2] = __78__ACCBLEPairingFeaturePlugin_deviceStartBLEUpdates_pairType_btRadio_pairInfo___block_invoke;
   block[3] = &unk_2789E10C0;
   block[4] = self;
-  v20 = v10;
-  v21 = a4;
-  v22 = v7;
-  v23 = v6;
-  v17 = v10;
+  v20 = updatesCopy;
+  typeCopy2 = type;
+  v22 = radioCopy;
+  v23 = infoCopy;
+  v17 = updatesCopy;
   dispatch_async(blePairingQueue, block);
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1187,13 +1187,13 @@ void __78__ACCBLEPairingFeaturePlugin_deviceStartBLEUpdates_pairType_btRadio_pai
   }
 }
 
-- (void)deviceStateUpdate:(id)a3 btRadio:(unsigned __int8)a4 pairStatus:(int)a5 pairModeOn:(BOOL)a6 forceUpdates:(BOOL)a7
+- (void)deviceStateUpdate:(id)update btRadio:(unsigned __int8)radio pairStatus:(int)status pairModeOn:(BOOL)on forceUpdates:(BOOL)updates
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = a4;
+  updatesCopy = updates;
+  onCopy = on;
+  radioCopy = radio;
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v13 = gNumLogObjects < 1;
@@ -1225,15 +1225,15 @@ void __78__ACCBLEPairingFeaturePlugin_deviceStartBLEUpdates_pairType_btRadio_pai
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138413826;
-    v27 = v12;
+    v27 = updateCopy;
     v28 = 1024;
-    v29 = v10;
+    v29 = radioCopy;
     v30 = 1024;
-    v31 = a5;
+    statusCopy = status;
     v32 = 1024;
-    v33 = v8;
+    v33 = onCopy;
     v34 = 1024;
-    v35 = v7;
+    v35 = updatesCopy;
     v36 = 2112;
     v37 = blePairingProvider;
     v38 = 2112;
@@ -1247,11 +1247,11 @@ void __78__ACCBLEPairingFeaturePlugin_deviceStartBLEUpdates_pairType_btRadio_pai
   block[2] = __91__ACCBLEPairingFeaturePlugin_deviceStateUpdate_btRadio_pairStatus_pairModeOn_forceUpdates___block_invoke;
   block[3] = &unk_2789E10C0;
   block[4] = self;
-  v22 = v12;
-  v24 = v10;
-  v23 = a5;
-  v25 = v8;
-  v19 = v12;
+  v22 = updateCopy;
+  v24 = radioCopy;
+  statusCopy2 = status;
+  v25 = onCopy;
+  v19 = updateCopy;
   dispatch_async(blePairingQueue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1315,11 +1315,11 @@ void __91__ACCBLEPairingFeaturePlugin_deviceStateUpdate_btRadio_pairStatus_pairM
   }
 }
 
-- (void)deviceSend:(id)a3 pairType:(int)a4 pairingData:(id)a5
+- (void)deviceSend:(id)send pairType:(int)type pairingData:(id)data
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  sendCopy = send;
+  dataCopy = data;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -1351,11 +1351,11 @@ void __91__ACCBLEPairingFeaturePlugin_deviceStateUpdate_btRadio_pairStatus_pairM
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138413314;
-    v24 = v8;
+    v24 = sendCopy;
     v25 = 1024;
-    v26 = a4;
+    typeCopy = type;
     v27 = 2112;
-    v28 = v9;
+    v28 = dataCopy;
     v29 = 2112;
     v30 = blePairingProvider;
     v31 = 2112;
@@ -1369,11 +1369,11 @@ void __91__ACCBLEPairingFeaturePlugin_deviceStateUpdate_btRadio_pairStatus_pairM
   v19[2] = __62__ACCBLEPairingFeaturePlugin_deviceSend_pairType_pairingData___block_invoke;
   v19[3] = &unk_2789E10E8;
   v19[4] = self;
-  v20 = v8;
-  v22 = a4;
-  v21 = v9;
-  v16 = v9;
-  v17 = v8;
+  v20 = sendCopy;
+  typeCopy2 = type;
+  v21 = dataCopy;
+  v16 = dataCopy;
+  v17 = sendCopy;
   dispatch_async(blePairingQueue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1437,11 +1437,11 @@ void __62__ACCBLEPairingFeaturePlugin_deviceSend_pairType_pairingData___block_in
   }
 }
 
-- (void)deviceUpdate:(id)a3 pairType:(int)a4 pairInfo:(id)a5
+- (void)deviceUpdate:(id)update pairType:(int)type pairInfo:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  updateCopy = update;
+  infoCopy = info;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -1473,11 +1473,11 @@ void __62__ACCBLEPairingFeaturePlugin_deviceSend_pairType_pairingData___block_in
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138413314;
-    v24 = v8;
+    v24 = updateCopy;
     v25 = 1024;
-    v26 = a4;
+    typeCopy = type;
     v27 = 2112;
-    v28 = v9;
+    v28 = infoCopy;
     v29 = 2112;
     v30 = blePairingProvider;
     v31 = 2112;
@@ -1491,11 +1491,11 @@ void __62__ACCBLEPairingFeaturePlugin_deviceSend_pairType_pairingData___block_in
   v19[2] = __61__ACCBLEPairingFeaturePlugin_deviceUpdate_pairType_pairInfo___block_invoke;
   v19[3] = &unk_2789E10E8;
   v19[4] = self;
-  v20 = v8;
-  v22 = a4;
-  v21 = v9;
-  v16 = v9;
-  v17 = v8;
+  v20 = updateCopy;
+  typeCopy2 = type;
+  v21 = infoCopy;
+  v16 = infoCopy;
+  v17 = updateCopy;
   dispatch_async(blePairingQueue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1559,10 +1559,10 @@ void __61__ACCBLEPairingFeaturePlugin_deviceUpdate_pairType_pairInfo___block_inv
   }
 }
 
-- (void)deviceStopBLEUpdates:(id)a3
+- (void)deviceStopBLEUpdates:(id)updates
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1594,7 +1594,7 @@ void __61__ACCBLEPairingFeaturePlugin_deviceUpdate_pairType_pairInfo___block_inv
     blePairingProvider = self->_blePairingProvider;
     blePairingShim = self->_blePairingShim;
     *buf = 138412802;
-    v16 = v4;
+    v16 = updatesCopy;
     v17 = 2112;
     v18 = blePairingProvider;
     v19 = 2112;
@@ -1608,8 +1608,8 @@ void __61__ACCBLEPairingFeaturePlugin_deviceUpdate_pairType_pairInfo___block_inv
   v13[2] = __51__ACCBLEPairingFeaturePlugin_deviceStopBLEUpdates___block_invoke;
   v13[3] = &unk_2789E1110;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = updatesCopy;
+  v11 = updatesCopy;
   dispatch_async(blePairingQueue, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1673,19 +1673,19 @@ void __51__ACCBLEPairingFeaturePlugin_deviceStopBLEUpdates___block_invoke(uint64
   }
 }
 
-- (BOOL)_isSupportedType:(unsigned __int8)a3 supportedListData:(id)a4
+- (BOOL)_isSupportedType:(unsigned __int8)type supportedListData:(id)data
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5 && [v5 length] && objc_msgSend(v6, "length"))
+  typeCopy = type;
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy && [dataCopy length] && objc_msgSend(v6, "length"))
   {
     v7 = 0;
     do
     {
       v8 = *([v6 bytes] + v7);
-      v9 = v8 == v4;
-      if (v8 == v4)
+      v9 = v8 == typeCopy;
+      if (v8 == typeCopy)
       {
         break;
       }

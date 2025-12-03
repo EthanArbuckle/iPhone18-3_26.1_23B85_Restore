@@ -11,12 +11,12 @@
   v11.receiver = self;
   v11.super_class = SBEntityRemovalDosidoDefaultAnimationSettings;
   [(PTSettings *)&v11 setDefaultValues];
-  v3 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v3 setBehaviorType:1];
-  [v3 setDampingRatio:1.0];
-  [v3 setResponse:0.550000012];
-  [v3 setRetargetImpulse:0.0280000009];
-  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setFromViewAlphaAnimationSettings:v3];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setBehaviorType:1];
+  [initWithDefaultValues setDampingRatio:1.0];
+  [initWithDefaultValues setResponse:0.550000012];
+  [initWithDefaultValues setRetargetImpulse:0.0280000009];
+  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setFromViewAlphaAnimationSettings:initWithDefaultValues];
   [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setFromViewAlphaAnimationDelay:0.140000001];
   [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setFromViewFinalScale:1.10000002];
   [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setFromViewFinalAlpha:0.0];
@@ -27,38 +27,38 @@
   [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewInitialBlurProgress:1.0];
   [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewScaleAndAlphaResetAnimationDelay:0.119999997];
   [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewDimmingViewFadeOutDelay:0.0];
-  v4 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v4 setBehaviorType:2];
-  [v4 setDampingRatio:0.879999995];
-  [v4 setResponse:0.699999988];
+  initWithDefaultValues2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues2 setBehaviorType:2];
+  [initWithDefaultValues2 setDampingRatio:0.879999995];
+  [initWithDefaultValues2 setResponse:0.699999988];
   v12 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v4 setFrameRateRange:1114113 highFrameRateReason:{*&v12.minimum, *&v12.maximum, *&v12.preferred}];
-  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setFromViewScaleAnimationSettings:v4];
+  [initWithDefaultValues2 setFrameRateRange:1114113 highFrameRateReason:{*&v12.minimum, *&v12.maximum, *&v12.preferred}];
+  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setFromViewScaleAnimationSettings:initWithDefaultValues2];
   v5 = SBEntityRemovalDefaultFluidAnimationSettings();
   [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewScaleAndAlphaResetAnimationSettings:v5];
 
-  v6 = [(SBEntityRemovalDosidoDefaultAnimationSettings *)self toViewScaleAndAlphaResetAnimationSettings];
-  [v6 setDampingRatio:1.29999995];
+  toViewScaleAndAlphaResetAnimationSettings = [(SBEntityRemovalDosidoDefaultAnimationSettings *)self toViewScaleAndAlphaResetAnimationSettings];
+  [toViewScaleAndAlphaResetAnimationSettings setDampingRatio:1.29999995];
 
-  v7 = [(SBEntityRemovalDosidoDefaultAnimationSettings *)self toViewScaleAndAlphaResetAnimationSettings];
-  [v7 setResponse:0.75];
+  toViewScaleAndAlphaResetAnimationSettings2 = [(SBEntityRemovalDosidoDefaultAnimationSettings *)self toViewScaleAndAlphaResetAnimationSettings];
+  [toViewScaleAndAlphaResetAnimationSettings2 setResponse:0.75];
 
-  v8 = [(SBEntityRemovalDosidoDefaultAnimationSettings *)self toViewScaleAndAlphaResetAnimationSettings];
-  [v8 setRetargetImpulse:0.0280000009];
+  toViewScaleAndAlphaResetAnimationSettings3 = [(SBEntityRemovalDosidoDefaultAnimationSettings *)self toViewScaleAndAlphaResetAnimationSettings];
+  [toViewScaleAndAlphaResetAnimationSettings3 setRetargetImpulse:0.0280000009];
 
-  v9 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v9 setBehaviorType:1];
-  [v9 setDampingRatio:1.29999995];
-  [v9 setResponse:0.75];
-  [v9 setRetargetImpulse:0.028];
+  initWithDefaultValues3 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues3 setBehaviorType:1];
+  [initWithDefaultValues3 setDampingRatio:1.29999995];
+  [initWithDefaultValues3 setResponse:0.75];
+  [initWithDefaultValues3 setRetargetImpulse:0.028];
   v13 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v9 setFrameRateRange:1114113 highFrameRateReason:{*&v13.minimum, *&v13.maximum, *&v13.preferred}];
-  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewWallpaperScaleAnimationSettings:v9];
-  v10 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v10 setBehaviorType:1];
-  [v10 setDampingRatio:1.0];
-  [v10 setResponse:0.31400001];
-  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewDimmingViewAlphaAnimationSettings:v10];
+  [initWithDefaultValues3 setFrameRateRange:1114113 highFrameRateReason:{*&v13.minimum, *&v13.maximum, *&v13.preferred}];
+  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewWallpaperScaleAnimationSettings:initWithDefaultValues3];
+  initWithDefaultValues4 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues4 setBehaviorType:1];
+  [initWithDefaultValues4 setDampingRatio:1.0];
+  [initWithDefaultValues4 setResponse:0.31400001];
+  [(SBEntityRemovalDosidoDefaultAnimationSettings *)self setToViewDimmingViewAlphaAnimationSettings:initWithDefaultValues4];
 }
 
 + (id)_settingsModule
@@ -120,8 +120,8 @@
 
   v25 = MEMORY[0x277D43210];
   v26 = MEMORY[0x277D431B0];
-  v27 = [MEMORY[0x277D43240] action];
-  v28 = [v26 rowWithTitle:@"Restore Dosido Default Animation Settings" action:v27];
+  action = [MEMORY[0x277D43240] action];
+  v28 = [v26 rowWithTitle:@"Restore Dosido Default Animation Settings" action:action];
   v51 = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
   v30 = [v25 sectionWithRows:v29];

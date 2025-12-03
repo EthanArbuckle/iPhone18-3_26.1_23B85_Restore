@@ -1,20 +1,20 @@
 @interface BKLibraryDataSourceMediaLibraryLocal
 + (id)localAudiobooksDataSource;
-- (BKLibraryDataSourceMediaLibraryLocal)initWithIdentifier:(id)a3;
+- (BKLibraryDataSourceMediaLibraryLocal)initWithIdentifier:(id)identifier;
 - (BKLibraryManager)libraryManager;
-- (void)_addAssetIDsToCacheManager:(id)a3;
-- (void)_removeAssetIDsFromCacheManager:(id)a3;
-- (void)assetAccountIdentifiersForAssetID:(id)a3 storeID:(id)a4 path:(id)a5 completion:(id)a6;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
+- (void)_addAssetIDsToCacheManager:(id)manager;
+- (void)_removeAssetIDsFromCacheManager:(id)manager;
+- (void)assetAccountIdentifiersForAssetID:(id)d storeID:(id)iD path:(id)path completion:(id)completion;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
 - (void)dealloc;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)fetchAssetsWithCompletion:(id)a3;
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4;
-- (void)mediaLibraryCacheAddedLocalAssets:(id)a3 updatedLocalAssets:(id)a4 removedLocalAssets:(id)a5;
-- (void)mediaLibraryCacheRequestsReload:(id)a3;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)fetchAssetsWithCompletion:(id)completion;
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion;
+- (void)mediaLibraryCacheAddedLocalAssets:(id)assets updatedLocalAssets:(id)localAssets removedLocalAssets:(id)removedLocalAssets;
+- (void)mediaLibraryCacheRequestsReload:(id)reload;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourceMediaLibraryLocal
@@ -26,14 +26,14 @@
   return v2;
 }
 
-- (BKLibraryDataSourceMediaLibraryLocal)initWithIdentifier:(id)a3
+- (BKLibraryDataSourceMediaLibraryLocal)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   kdebug_trace();
   v5 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100790580(v4, v5);
+    sub_100790580(identifierCopy, v5);
   }
 
   v12.receiver = self;
@@ -41,7 +41,7 @@
   v6 = [(BKLibraryDataSourceMediaLibraryLocal *)&v12 init];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     dataSourceIdentifier = v6->_dataSourceIdentifier;
     v6->_dataSourceIdentifier = v7;
 
@@ -70,96 +70,96 @@
   [(BKLibraryDataSourceMediaLibraryLocal *)&v4 dealloc];
 }
 
-- (void)mediaLibraryCacheRequestsReload:(id)a3
+- (void)mediaLibraryCacheRequestsReload:(id)reload
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
-  [v5 reloadDataSource:self completion:v4];
+  reloadCopy = reload;
+  libraryManager = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
+  [libraryManager reloadDataSource:self completion:reloadCopy];
 }
 
-- (void)mediaLibraryCacheAddedLocalAssets:(id)a3 updatedLocalAssets:(id)a4 removedLocalAssets:(id)a5
+- (void)mediaLibraryCacheAddedLocalAssets:(id)assets updatedLocalAssets:(id)localAssets removedLocalAssets:(id)removedLocalAssets
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  localAssetsCopy = localAssets;
+  removedLocalAssetsCopy = removedLocalAssets;
   v11 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134218496;
-    v19 = [v8 count];
+    v19 = [assetsCopy count];
     v20 = 2048;
-    v21 = [v10 count];
+    v21 = [removedLocalAssetsCopy count];
     v22 = 2048;
-    v23 = [v9 count];
+    v23 = [localAssetsCopy count];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Local library changed adding %lu, removing %lu, updating %lu.", &v18, 0x20u);
   }
 
-  if ([v10 count])
+  if ([removedLocalAssetsCopy count])
   {
-    v12 = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
-    [v12 libraryDataSource:self removedAssets:v10];
+    libraryManager = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
+    [libraryManager libraryDataSource:self removedAssets:removedLocalAssetsCopy];
 
-    [(BKLibraryDataSourceMediaLibraryLocal *)self _removeAssetIDsFromCacheManager:v10];
+    [(BKLibraryDataSourceMediaLibraryLocal *)self _removeAssetIDsFromCacheManager:removedLocalAssetsCopy];
   }
 
-  if ([v8 count])
+  if ([assetsCopy count])
   {
-    v13 = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
-    [v13 libraryDataSource:self addedAssets:v8];
+    libraryManager2 = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
+    [libraryManager2 libraryDataSource:self addedAssets:assetsCopy];
 
-    [(BKLibraryDataSourceMediaLibraryLocal *)self _addAssetIDsToCacheManager:v8];
+    [(BKLibraryDataSourceMediaLibraryLocal *)self _addAssetIDsToCacheManager:assetsCopy];
   }
 
-  if ([v9 count])
+  if ([localAssetsCopy count])
   {
     v14 = +[BCCacheManager defaultCacheManager];
-    v15 = [v9 valueForKey:@"assetID"];
+    v15 = [localAssetsCopy valueForKey:@"assetID"];
     v16 = [NSSet setWithArray:v15];
     [v14 incrementVersionForIdentifiers:v16];
 
-    v17 = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
-    [v17 libraryDataSource:self updatedAssets:v9];
+    libraryManager3 = [(BKLibraryDataSourceMediaLibraryLocal *)self libraryManager];
+    [libraryManager3 libraryDataSource:self updatedAssets:localAssetsCopy];
   }
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
-  [v5 fetchAssetIDsOfType:0 completion:v4];
+  completionCopy = completion;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
+  [mediaLibraryCache fetchAssetIDsOfType:0 completion:completionCopy];
 }
 
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
+  completionCopy = completion;
+  dsCopy = ds;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10011EA20;
   v10[3] = &unk_100A05E68;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 fetchAssetsWithIDs:v7 type:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [mediaLibraryCache fetchAssetsWithIDs:dsCopy type:0 completion:v10];
 }
 
-- (void)fetchAssetsWithCompletion:(id)a3
+- (void)fetchAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
-  [v5 fetchAssetsOfType:0 completion:v4];
+  completionCopy = completion;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
+  [mediaLibraryCache fetchAssetsOfType:0 completion:completionCopy];
 }
 
-- (void)_addAssetIDsToCacheManager:(id)a3
+- (void)_addAssetIDsToCacheManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[NSMutableDictionary dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = managerCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -175,10 +175,10 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 assetID];
-        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:v12 dataSourceID:self->_dataSourceIdentifier];
-        v14 = [v11 assetID];
-        [v5 setObject:v13 forKeyedSubscript:v14];
+        assetID = [v11 assetID];
+        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:assetID dataSourceID:self->_dataSourceIdentifier];
+        assetID2 = [v11 assetID];
+        [v5 setObject:v13 forKeyedSubscript:assetID2];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -194,15 +194,15 @@
   }
 }
 
-- (void)_removeAssetIDsFromCacheManager:(id)a3
+- (void)_removeAssetIDsFromCacheManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[NSMutableDictionary dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = managerCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -218,10 +218,10 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 assetID];
-        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:v12 dataSourceID:self->_dataSourceIdentifier];
-        v14 = [v11 assetID];
-        [v5 setObject:v13 forKeyedSubscript:v14];
+        assetID = [v11 assetID];
+        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:assetID dataSourceID:self->_dataSourceIdentifier];
+        assetID2 = [v11 assetID];
+        [v5 setObject:v13 forKeyedSubscript:assetID2];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -237,41 +237,41 @@
   }
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
-  [v9 bookCoverForLibraryAssetProperties:v8 type:0 completion:v7];
+  completionCopy = completion;
+  propertiesCopy = properties;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
+  [mediaLibraryCache bookCoverForLibraryAssetProperties:propertiesCopy type:0 completion:completionCopy];
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  exhaustiveCopy = exhaustive;
+  assetsCopy = assets;
+  completionCopy = completion;
   v10 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v8 count];
+    v16 = [assetsCopy count];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Deleting %lu media library assets", buf, 0xCu);
   }
 
-  v11 = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10011F054;
   v13[3] = &unk_100A07DF0;
   v13[4] = self;
-  v14 = v9;
-  v12 = v9;
-  [v11 deleteAssets:v8 type:0 exhaustive:v6 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [mediaLibraryCache deleteAssets:assetsCopy type:0 exhaustive:exhaustiveCopy completion:v13];
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -280,25 +280,25 @@
   }
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
-  [v8 assetForLibraryAsset:v7 type:0 completion:v6];
+  completionCopy = completion;
+  assetCopy = asset;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryLocal *)self mediaLibraryCache];
+  [mediaLibraryCache assetForLibraryAsset:assetCopy type:0 completion:completionCopy];
 }
 
-- (void)assetAccountIdentifiersForAssetID:(id)a3 storeID:(id)a4 path:(id)a5 completion:(id)a6
+- (void)assetAccountIdentifiersForAssetID:(id)d storeID:(id)iD path:(id)path completion:(id)completion
 {
-  v7 = a4;
-  v8 = a6;
-  if ([v7 length])
+  iDCopy = iD;
+  completionCopy = completion;
+  if ([iDCopy length])
   {
     v9 = +[MPMediaQuery bk_audiobooksQuery];
-    if (v9 && [v7 length])
+    if (v9 && [iDCopy length])
     {
-      v10 = [MPMediaPropertyPredicate predicateWithValue:v7 forProperty:MPMediaItemPropertyStorePlaylistID];
-      v11 = [MPMediaPropertyPredicate predicateWithValue:v7 forProperty:MPMediaItemPropertyStoreID];
+      v10 = [MPMediaPropertyPredicate predicateWithValue:iDCopy forProperty:MPMediaItemPropertyStorePlaylistID];
+      v11 = [MPMediaPropertyPredicate predicateWithValue:iDCopy forProperty:MPMediaItemPropertyStoreID];
       v59[0] = v10;
       v59[1] = v11;
       v12 = [NSArray arrayWithObjects:v59 count:2];
@@ -317,7 +317,7 @@
         v39 = v11;
         v40 = v10;
         v41 = v9;
-        v42 = v8;
+        v42 = completionCopy;
         v47 = *v54;
         v46 = MPMediaItemPropertyStoreAccountID;
         v45 = MPMediaItemPropertyStoreDownloaderAccountID;
@@ -336,8 +336,8 @@
             v50 = 0u;
             v51 = 0u;
             v52 = 0u;
-            v16 = [v15 items];
-            v17 = [v16 countByEnumeratingWithState:&v49 objects:v57 count:16];
+            items = [v15 items];
+            v17 = [items countByEnumeratingWithState:&v49 objects:v57 count:16];
             if (v17)
             {
               v18 = v17;
@@ -348,13 +348,13 @@ LABEL_11:
               {
                 if (*v50 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(items);
                 }
 
                 v21 = *(*(&v49 + 1) + 8 * v20);
-                v22 = [v21 bk_storeID];
-                v23 = [v22 stringValue];
-                v24 = [v7 isEqualToString:v23];
+                bk_storeID = [v21 bk_storeID];
+                stringValue = [bk_storeID stringValue];
+                v24 = [iDCopy isEqualToString:stringValue];
 
                 if (v24)
                 {
@@ -363,7 +363,7 @@ LABEL_11:
 
                 if (v18 == ++v20)
                 {
-                  v18 = [v16 countByEnumeratingWithState:&v49 objects:v57 count:16];
+                  v18 = [items countByEnumeratingWithState:&v49 objects:v57 count:16];
                   if (v18)
                   {
                     goto LABEL_11;
@@ -386,14 +386,14 @@ LABEL_11:
               v30 = BUDynamicCast();
 
               v31 = objc_opt_new();
-              v32 = [v26 bkdsml_nonZeroString];
-              [v31 setPurchasedDSID:v32];
+              bkdsml_nonZeroString = [v26 bkdsml_nonZeroString];
+              [v31 setPurchasedDSID:bkdsml_nonZeroString];
 
-              v33 = [v28 bkdsml_nonZeroString];
-              [v31 setDownloadedDSID:v33];
+              bkdsml_nonZeroString2 = [v28 bkdsml_nonZeroString];
+              [v31 setDownloadedDSID:bkdsml_nonZeroString2];
 
-              v34 = [v30 bkdsml_nonZeroString];
-              [v31 setFamilyID:v34];
+              bkdsml_nonZeroString3 = [v30 bkdsml_nonZeroString];
+              [v31 setFamilyID:bkdsml_nonZeroString3];
 
               if (v31)
               {
@@ -414,7 +414,7 @@ LABEL_17:
         v31 = 0;
 LABEL_22:
         v9 = v41;
-        v8 = v42;
+        completionCopy = v42;
         v11 = v39;
         v10 = v40;
       }
@@ -430,7 +430,7 @@ LABEL_22:
       v31 = 0;
     }
 
-    v37 = objc_retainBlock(v8);
+    v37 = objc_retainBlock(completionCopy);
     v38 = v37;
     if (v37)
     {
@@ -440,7 +440,7 @@ LABEL_22:
 
   else
   {
-    v35 = objc_retainBlock(v8);
+    v35 = objc_retainBlock(completionCopy);
     v36 = v35;
     if (v35)
     {

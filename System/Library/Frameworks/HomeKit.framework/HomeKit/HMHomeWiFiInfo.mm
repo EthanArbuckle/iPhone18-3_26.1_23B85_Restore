@@ -1,10 +1,10 @@
 @interface HMHomeWiFiInfo
-- (BOOL)isEqual:(id)a3;
-- (HMHomeWiFiInfo)initWithCoder:(id)a3;
-- (HMHomeWiFiInfo)initWithSSID:(id)a3 requiresPassword:(BOOL)a4 macAddress:(id)a5 BSSID:(id)a6 displayName:(id)a7 security:(id)a8 RSSI:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (HMHomeWiFiInfo)initWithCoder:(id)coder;
+- (HMHomeWiFiInfo)initWithSSID:(id)d requiresPassword:(BOOL)password macAddress:(id)address BSSID:(id)iD displayName:(id)name security:(id)security RSSI:(id)i;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMHomeWiFiInfo
@@ -12,45 +12,45 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMHomeWiFiInfo *)self SSID];
+  sSID = [(HMHomeWiFiInfo *)self SSID];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMHomeWiFiInfo requiresPassword](self, "requiresPassword")}];
-  v6 = [(HMHomeWiFiInfo *)self BSSID];
-  v7 = [(HMHomeWiFiInfo *)self displayName];
-  v8 = [(HMHomeWiFiInfo *)self security];
-  v9 = [(HMHomeWiFiInfo *)self RSSI];
-  v10 = [v3 stringWithFormat:@"[HMHomeWiFiInfo: SSID = %@, requiresPassword = %@ BSSID = %@ Display Name = %@ Security Type = %@ RSSI = %@]", v4, v5, v6, v7, v8, v9];
+  bSSID = [(HMHomeWiFiInfo *)self BSSID];
+  displayName = [(HMHomeWiFiInfo *)self displayName];
+  security = [(HMHomeWiFiInfo *)self security];
+  rSSI = [(HMHomeWiFiInfo *)self RSSI];
+  v10 = [v3 stringWithFormat:@"[HMHomeWiFiInfo: SSID = %@, requiresPassword = %@ BSSID = %@ Display Name = %@ Security Type = %@ RSSI = %@]", sSID, v5, bSSID, displayName, security, rSSI];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMHomeWiFiInfo *)self SSID];
-  v4 = [v3 hash];
+  sSID = [(HMHomeWiFiInfo *)self SSID];
+  v4 = [sSID hash];
 
   v5 = v4 + [(HMHomeWiFiInfo *)self requiresPassword];
-  v6 = [(HMHomeWiFiInfo *)self BSSID];
-  v7 = [v6 hash];
+  bSSID = [(HMHomeWiFiInfo *)self BSSID];
+  v7 = [bSSID hash];
 
-  v8 = [(HMHomeWiFiInfo *)self displayName];
-  v9 = v7 ^ [v8 hash];
+  displayName = [(HMHomeWiFiInfo *)self displayName];
+  v9 = v7 ^ [displayName hash];
 
-  v10 = [(HMHomeWiFiInfo *)self security];
-  v11 = v9 ^ [v10 hash] ^ v5;
+  security = [(HMHomeWiFiInfo *)self security];
+  v11 = v9 ^ [security hash] ^ v5;
 
-  v12 = [(HMHomeWiFiInfo *)self RSSI];
-  v13 = [v12 hash];
+  rSSI = [(HMHomeWiFiInfo *)self RSSI];
+  v13 = [rSSI hash];
 
   return v11 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -64,8 +64,8 @@
     goto LABEL_11;
   }
 
-  v7 = [(HMHomeWiFiInfo *)self SSID];
-  v8 = [v6 SSID];
+  sSID = [(HMHomeWiFiInfo *)self SSID];
+  sSID2 = [v6 SSID];
   v9 = HMFEqualObjects();
 
   if (!v9)
@@ -73,14 +73,14 @@
     goto LABEL_11;
   }
 
-  v10 = [(HMHomeWiFiInfo *)self requiresPassword];
-  if (v10 != [v6 requiresPassword])
+  requiresPassword = [(HMHomeWiFiInfo *)self requiresPassword];
+  if (requiresPassword != [v6 requiresPassword])
   {
     goto LABEL_11;
   }
 
-  v11 = [(HMHomeWiFiInfo *)self BSSID];
-  v12 = [v6 BSSID];
+  bSSID = [(HMHomeWiFiInfo *)self BSSID];
+  bSSID2 = [v6 BSSID];
   v13 = HMFEqualObjects();
 
   if (!v13)
@@ -88,8 +88,8 @@
     goto LABEL_11;
   }
 
-  v14 = [(HMHomeWiFiInfo *)self RSSI];
-  v15 = [v6 RSSI];
+  rSSI = [(HMHomeWiFiInfo *)self RSSI];
+  rSSI2 = [v6 RSSI];
   v16 = HMFEqualObjects();
 
   if (!v16)
@@ -97,14 +97,14 @@
     goto LABEL_11;
   }
 
-  v17 = [(HMHomeWiFiInfo *)self displayName];
-  v18 = [v6 displayName];
+  displayName = [(HMHomeWiFiInfo *)self displayName];
+  displayName2 = [v6 displayName];
   v19 = HMFEqualObjects();
 
   if (v19)
   {
-    v20 = [(HMHomeWiFiInfo *)self security];
-    v21 = [v6 security];
+    security = [(HMHomeWiFiInfo *)self security];
+    security2 = [v6 security];
     v22 = HMFEqualObjects();
   }
 
@@ -117,72 +117,72 @@ LABEL_11:
   return v22;
 }
 
-- (HMHomeWiFiInfo)initWithCoder:(id)a3
+- (HMHomeWiFiInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PWD"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MAC"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BSSID"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DISPLAY"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RSSI"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SEC"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PWD"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MAC"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BSSID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DISPLAY"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RSSI"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SEC"];
 
   v12 = -[HMHomeWiFiInfo initWithSSID:requiresPassword:macAddress:BSSID:displayName:security:RSSI:](self, "initWithSSID:requiresPassword:macAddress:BSSID:displayName:security:RSSI:", v5, [v6 BOOLValue], v7, v8, v9, v11, v10);
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(HMHomeWiFiInfo *)self SSID];
+  coderCopy = coder;
+  sSID = [(HMHomeWiFiInfo *)self SSID];
 
-  if (v4)
+  if (sSID)
   {
-    v5 = [(HMHomeWiFiInfo *)self SSID];
-    [v12 encodeObject:v5 forKey:@"SSID"];
+    sSID2 = [(HMHomeWiFiInfo *)self SSID];
+    [coderCopy encodeObject:sSID2 forKey:@"SSID"];
 
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMHomeWiFiInfo requiresPassword](self, "requiresPassword")}];
-    [v12 encodeObject:v6 forKey:@"PWD"];
+    [coderCopy encodeObject:v6 forKey:@"PWD"];
 
-    v7 = [(HMHomeWiFiInfo *)self macAddress];
-    [v12 encodeObject:v7 forKey:@"MAC"];
+    macAddress = [(HMHomeWiFiInfo *)self macAddress];
+    [coderCopy encodeObject:macAddress forKey:@"MAC"];
 
-    v8 = [(HMHomeWiFiInfo *)self BSSID];
-    [v12 encodeObject:v8 forKey:@"BSSID"];
+    bSSID = [(HMHomeWiFiInfo *)self BSSID];
+    [coderCopy encodeObject:bSSID forKey:@"BSSID"];
 
-    v9 = [(HMHomeWiFiInfo *)self RSSI];
-    [v12 encodeObject:v9 forKey:@"RSSI"];
+    rSSI = [(HMHomeWiFiInfo *)self RSSI];
+    [coderCopy encodeObject:rSSI forKey:@"RSSI"];
 
-    v10 = [(HMHomeWiFiInfo *)self displayName];
-    [v12 encodeObject:v10 forKey:@"DISPLAY"];
+    displayName = [(HMHomeWiFiInfo *)self displayName];
+    [coderCopy encodeObject:displayName forKey:@"DISPLAY"];
 
-    v11 = [(HMHomeWiFiInfo *)self security];
-    [v12 encodeObject:v11 forKey:@"SEC"];
+    security = [(HMHomeWiFiInfo *)self security];
+    [coderCopy encodeObject:security forKey:@"SEC"];
   }
 }
 
-- (HMHomeWiFiInfo)initWithSSID:(id)a3 requiresPassword:(BOOL)a4 macAddress:(id)a5 BSSID:(id)a6 displayName:(id)a7 security:(id)a8 RSSI:(id)a9
+- (HMHomeWiFiInfo)initWithSSID:(id)d requiresPassword:(BOOL)password macAddress:(id)address BSSID:(id)iD displayName:(id)name security:(id)security RSSI:(id)i
 {
-  v24 = a3;
-  v23 = a5;
-  v22 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  dCopy = d;
+  addressCopy = address;
+  iDCopy = iD;
+  nameCopy = name;
+  securityCopy = security;
+  iCopy = i;
   v25.receiver = self;
   v25.super_class = HMHomeWiFiInfo;
   v18 = [(HMHomeWiFiInfo *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_SSID, a3);
-    v19->_requiresPassword = a4;
-    objc_storeStrong(&v19->_macAddress, a5);
-    objc_storeStrong(&v19->_BSSID, a6);
-    objc_storeStrong(&v19->_displayName, a7);
-    objc_storeStrong(&v19->_security, a8);
-    objc_storeStrong(&v19->_RSSI, a9);
+    objc_storeStrong(&v18->_SSID, d);
+    v19->_requiresPassword = password;
+    objc_storeStrong(&v19->_macAddress, address);
+    objc_storeStrong(&v19->_BSSID, iD);
+    objc_storeStrong(&v19->_displayName, name);
+    objc_storeStrong(&v19->_security, security);
+    objc_storeStrong(&v19->_RSSI, i);
   }
 
   return v19;

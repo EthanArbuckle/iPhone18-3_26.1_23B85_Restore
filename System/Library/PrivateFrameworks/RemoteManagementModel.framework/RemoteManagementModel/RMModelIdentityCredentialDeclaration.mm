@@ -1,8 +1,8 @@
 @interface RMModelIdentityCredentialDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithPassword:(id)a3 identity:(id)a4;
-+ (id)buildWithPassword:(id)a3 identity:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)buildRequiredOnlyWithPassword:(id)password identity:(id)identity;
++ (id)buildWithPassword:(id)password identity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMModelIdentityCredentialDeclaration
@@ -21,35 +21,35 @@
   return v4;
 }
 
-+ (id)buildWithPassword:(id)a3 identity:(id)a4
++ (id)buildWithPassword:(id)password identity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
+  identityCopy = identity;
+  passwordCopy = password;
   v7 = objc_opt_new();
-  [v7 setPayloadPassword:v6];
+  [v7 setPayloadPassword:passwordCopy];
 
-  [v7 setPayloadIdentity:v5];
+  [v7 setPayloadIdentity:identityCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithPassword:(id)a3 identity:(id)a4
++ (id)buildRequiredOnlyWithPassword:(id)password identity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
+  identityCopy = identity;
+  passwordCopy = password;
   v7 = objc_opt_new();
-  [v7 setPayloadPassword:v6];
+  [v7 setPayloadPassword:passwordCopy];
 
-  [v7 setPayloadIdentity:v5];
+  [v7 setPayloadIdentity:identityCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelIdentityCredentialDeclaration;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadPassword copy];
   v6 = v4[2];
   v4[2] = v5;

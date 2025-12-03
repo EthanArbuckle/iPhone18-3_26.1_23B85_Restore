@@ -1,20 +1,20 @@
 @interface OspreyMessageReader
-- (OspreyMessageReader)initWithMessageHandler:(id)a3;
-- (void)_produceMessageBody:(id)a3;
-- (void)readData:(id)a3;
+- (OspreyMessageReader)initWithMessageHandler:(id)handler;
+- (void)_produceMessageBody:(id)body;
+- (void)readData:(id)data;
 @end
 
 @implementation OspreyMessageReader
 
-- (OspreyMessageReader)initWithMessageHandler:(id)a3
+- (OspreyMessageReader)initWithMessageHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = OspreyMessageReader;
   v5 = [(OspreyMessageReader *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     messageHandler = v5->_messageHandler;
     v5->_messageHandler = v6;
   }
@@ -22,31 +22,31 @@
   return v5;
 }
 
-- (void)_produceMessageBody:(id)a3
+- (void)_produceMessageBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   OspreyLoggingInit();
   v5 = OspreyLogContextGRPC;
   if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_DEBUG))
   {
-    [(OspreyMessageReader *)self _produceMessageBody:v5, v4];
+    [(OspreyMessageReader *)self _produceMessageBody:v5, bodyCopy];
   }
 
   messageHandler = self->_messageHandler;
   if (messageHandler)
   {
-    messageHandler[2](messageHandler, v4);
+    messageHandler[2](messageHandler, bodyCopy);
   }
 }
 
-- (void)readData:(id)a3
+- (void)readData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   OspreyLoggingInit();
   v5 = OspreyLogContextGRPC;
   if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_DEBUG))
   {
-    [(OspreyMessageReader *)self readData:v5, v4];
+    [(OspreyMessageReader *)self readData:v5, dataCopy];
   }
 
   if (self->_readerState == 1)
@@ -65,7 +65,7 @@
   v8[3] = &unk_2799F1DD0;
   v8[4] = self;
   v8[5] = 5;
-  [v4 enumerateByteRangesUsingBlock:v8];
+  [dataCopy enumerateByteRangesUsingBlock:v8];
   if (self->_readerState == 1)
   {
     OspreyLoggingInit();

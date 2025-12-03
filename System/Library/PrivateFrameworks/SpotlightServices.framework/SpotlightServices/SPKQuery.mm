@@ -3,13 +3,13 @@
 - (NSArray)childQueries;
 - (NSString)unmodifiedUserQueryString;
 - (SFFeedbackListener)feedbackListener;
-- (SPKQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6;
+- (SPKQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context;
 - (SPKQuery)parentQuery;
 - (SPKQueryDelegate)delegate;
 - (id)description;
 - (id)responseHandler;
 - (void)_queryWillStart;
-- (void)addChildQuery:(id)a3;
+- (void)addChildQuery:(id)query;
 - (void)cancel;
 - (void)sendEndLocalSearchFeedback;
 - (void)sendStartLocalSearchFeedback;
@@ -18,10 +18,10 @@
 
 @implementation SPKQuery
 
-- (SPKQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6
+- (SPKQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context
 {
-  v11 = a3;
-  v12 = a6;
+  queryCopy = query;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = SPKQuery;
   v13 = [(SPKQuery *)&v19 init];
@@ -29,17 +29,17 @@
   if (v13)
   {
     v13->_queryId = ++gQueryId;
-    v13->_queryGroupId = a4;
-    objc_storeStrong(&v13->_userQueryString, a3);
-    v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v16 = [v11 stringByTrimmingCharactersInSet:v15];
+    v13->_queryGroupId = id;
+    objc_storeStrong(&v13->_userQueryString, query);
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v16 = [queryCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     trimmedUserQueryString = v14->_trimmedUserQueryString;
     v14->_trimmedUserQueryString = v16;
 
-    v14->_queryOptions = a5;
+    v14->_queryOptions = options;
     v14->_queryStartTime = CFAbsoluteTimeGetCurrent();
-    objc_storeStrong(&v14->_queryContext, a6);
-    v14->_wantsSuggestions = [v12 queryKind] == 2;
+    objc_storeStrong(&v14->_queryContext, context);
+    v14->_wantsSuggestions = [contextCopy queryKind] == 2;
     v14->_queryState = 0;
   }
 
@@ -51,41 +51,41 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SPKQuery *)self queryId];
-  v7 = [(SPKQuery *)self queryState];
-  if (v7 > 6)
+  queryId = [(SPKQuery *)self queryId];
+  queryState = [(SPKQuery *)self queryState];
+  if (queryState > 6)
   {
     v8 = @"unknown state";
   }
 
   else
   {
-    v8 = off_1E85954F8[v7];
+    v8 = off_1E85954F8[queryState];
   }
 
-  v9 = [(SPKQuery *)self userQueryString];
-  v10 = [(SPKQuery *)self queryContext];
-  v11 = SSRedactStringClient(v9, 1, [v10 isSearchToolClient]);
-  v12 = [v3 stringWithFormat:@"<%@>[%p] (%lu:%@ - %@)", v5, self, v6, v8, v11];
+  userQueryString = [(SPKQuery *)self userQueryString];
+  queryContext = [(SPKQuery *)self queryContext];
+  v11 = SSRedactStringClient(userQueryString, 1, [queryContext isSearchToolClient]);
+  v12 = [v3 stringWithFormat:@"<%@>[%p] (%lu:%@ - %@)", v5, self, queryId, v8, v11];
 
   return v12;
 }
 
 - (NSString)unmodifiedUserQueryString
 {
-  v3 = [(SPKQuery *)self internalUnmodifiedUserQueryString];
-  v4 = v3;
-  if (v3)
+  internalUnmodifiedUserQueryString = [(SPKQuery *)self internalUnmodifiedUserQueryString];
+  v4 = internalUnmodifiedUserQueryString;
+  if (internalUnmodifiedUserQueryString)
   {
-    v5 = v3;
+    userQueryString = internalUnmodifiedUserQueryString;
   }
 
   else
   {
-    v5 = [(SPKQuery *)self userQueryString];
+    userQueryString = [(SPKQuery *)self userQueryString];
   }
 
-  v6 = v5;
+  v6 = userQueryString;
 
   return v6;
 }
@@ -272,33 +272,33 @@ LABEL_29:
   return v2;
 }
 
-- (void)addChildQuery:(id)a3
+- (void)addChildQuery:(id)query
 {
-  v4 = a3;
-  v7 = v4;
+  queryCopy = query;
+  v7 = queryCopy;
   if (!self->_childQueries)
   {
     v5 = objc_opt_new();
     childQueries = self->_childQueries;
     self->_childQueries = v5;
 
-    v4 = v7;
+    queryCopy = v7;
   }
 
-  [v4 setParentQuery:self];
+  [queryCopy setParentQuery:self];
   [(NSMutableArray *)self->_childQueries addObject:v7];
 }
 
 - (BOOL)shouldReturnEarly
 {
-  v2 = [(SPKQuery *)self queryContext];
-  v3 = [v2 searchDomains];
+  queryContext = [(SPKQuery *)self queryContext];
+  searchDomains = [queryContext searchDomains];
 
-  v4 = [objc_opt_class() searchDomain];
-  if ([v3 count])
+  searchDomain = [objc_opt_class() searchDomain];
+  if ([searchDomains count])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
-    v6 = [v3 containsObject:v5] ^ 1;
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:searchDomain];
+    v6 = [searchDomains containsObject:v5] ^ 1;
   }
 
   else
@@ -311,24 +311,24 @@ LABEL_29:
 
 - (void)sendStartLocalSearchFeedback
 {
-  v3 = [(SPKQuery *)self feedbackListener];
-  if (v3)
+  feedbackListener = [(SPKQuery *)self feedbackListener];
+  if (feedbackListener)
   {
-    v32 = v3;
-    v4 = [(SPKQuery *)self queryContext];
-    if ([v4 isSearchToolClient])
+    v32 = feedbackListener;
+    queryContext = [(SPKQuery *)self queryContext];
+    if ([queryContext isSearchToolClient])
     {
       [(SPKQuery *)self setStartLocalSearchFeedback:0];
 LABEL_18:
 
-      v3 = v32;
+      feedbackListener = v32;
       goto LABEL_19;
     }
 
-    v5 = [v4 searchEntities];
-    v6 = [v5 firstObject];
-    v7 = [v6 command];
-    v8 = [v7 copy];
+    searchEntities = [queryContext searchEntities];
+    firstObject = [searchEntities firstObject];
+    command = [firstObject command];
+    v8 = [command copy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -348,50 +348,50 @@ LABEL_18:
       [v10 setSearchString:0];
       [v11 setTokenString:0];
       v12 = objc_alloc(MEMORY[0x1E69CA478]);
-      v13 = [v4 whyQuery];
-      v14 = [(SPKQuery *)self queryContext];
-      v15 = [v14 queryIdent];
-      v16 = [MEMORY[0x1E696AAE8] mainBundle];
-      v17 = [v16 bundleIdentifier];
-      v18 = [v12 initWithEntityQueryCommand:v11 triggerEvent:v13 searchType:3 indexType:1 queryId:v15 originatingApp:v17];
+      whyQuery = [queryContext whyQuery];
+      queryContext2 = [(SPKQuery *)self queryContext];
+      queryIdent = [queryContext2 queryIdent];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v18 = [v12 initWithEntityQueryCommand:v11 triggerEvent:whyQuery searchType:3 indexType:1 queryId:queryIdent originatingApp:bundleIdentifier];
       [(SPKQuery *)self setStartLocalSearchFeedback:v18];
     }
 
     else
     {
       v19 = objc_alloc(MEMORY[0x1E69CA478]);
-      v14 = [v4 searchString];
-      v16 = [v19 initWithInput:v14 triggerEvent:objc_msgSend(v4 indexType:{"whyQuery"), 1}];
-      [(SPKQuery *)self setStartLocalSearchFeedback:v16];
+      queryContext2 = [queryContext searchString];
+      mainBundle = [v19 initWithInput:queryContext2 triggerEvent:objc_msgSend(queryContext indexType:{"whyQuery"), 1}];
+      [(SPKQuery *)self setStartLocalSearchFeedback:mainBundle];
     }
 
-    v20 = [v4 queryIdent];
-    v21 = [(SPKQuery *)self startLocalSearchFeedback];
-    [v21 setQueryId:v20];
+    queryIdent2 = [queryContext queryIdent];
+    startLocalSearchFeedback = [(SPKQuery *)self startLocalSearchFeedback];
+    [startLocalSearchFeedback setQueryId:queryIdent2];
 
-    v22 = SPQueryKindToSFSpotlightBrowsingSearchScope([v4 queryKind]);
-    v23 = [(SPKQuery *)self startLocalSearchFeedback];
-    [v23 setSpotlightBrowsingSearchScope:v22];
+    v22 = SPQueryKindToSFSpotlightBrowsingSearchScope([queryContext queryKind]);
+    startLocalSearchFeedback2 = [(SPKQuery *)self startLocalSearchFeedback];
+    [startLocalSearchFeedback2 setSpotlightBrowsingSearchScope:v22];
 
-    v24 = [v4 searchString];
-    v25 = [(SPKQuery *)self startLocalSearchFeedback];
-    [v25 setInput:v24];
+    searchString = [queryContext searchString];
+    startLocalSearchFeedback3 = [(SPKQuery *)self startLocalSearchFeedback];
+    [startLocalSearchFeedback3 setInput:searchString];
 
-    v26 = [v4 queryKind];
-    v27 = [(SPKQuery *)self startLocalSearchFeedback];
-    v28 = [v27 input];
-    if ([v28 length])
+    queryKind = [queryContext queryKind];
+    startLocalSearchFeedback4 = [(SPKQuery *)self startLocalSearchFeedback];
+    input = [startLocalSearchFeedback4 input];
+    if ([input length])
     {
-      v29 = [v4 searchEntities];
-      v30 = [v29 count];
+      searchEntities2 = [queryContext searchEntities];
+      v30 = [searchEntities2 count];
 
-      if (!v30 && (v26 > 0x11 || ((1 << v26) & 0x27000) == 0))
+      if (!v30 && (queryKind > 0x11 || ((1 << queryKind) & 0x27000) == 0))
       {
         goto LABEL_17;
       }
 
-      v27 = [(SPKQuery *)self startLocalSearchFeedback];
-      [v27 setInput:@"(redacted)"];
+      startLocalSearchFeedback4 = [(SPKQuery *)self startLocalSearchFeedback];
+      [startLocalSearchFeedback4 setInput:@"(redacted)"];
     }
 
     else
@@ -399,8 +399,8 @@ LABEL_18:
     }
 
 LABEL_17:
-    v31 = [(SPKQuery *)self startLocalSearchFeedback];
-    [v32 didStartSearch:v31];
+    startLocalSearchFeedback5 = [(SPKQuery *)self startLocalSearchFeedback];
+    [v32 didStartSearch:startLocalSearchFeedback5];
 
     goto LABEL_18;
   }
@@ -410,17 +410,17 @@ LABEL_19:
 
 - (void)sendEndLocalSearchFeedback
 {
-  v3 = [(SPKQuery *)self startLocalSearchFeedback];
+  startLocalSearchFeedback = [(SPKQuery *)self startLocalSearchFeedback];
 
-  if (v3)
+  if (startLocalSearchFeedback)
   {
     v4 = objc_alloc(MEMORY[0x1E69CA058]);
-    v5 = [(SPKQuery *)self startLocalSearchFeedback];
-    v7 = [v4 initWithStartSearch:v5];
+    startLocalSearchFeedback2 = [(SPKQuery *)self startLocalSearchFeedback];
+    v7 = [v4 initWithStartSearch:startLocalSearchFeedback2];
 
     [(SPKQuery *)self setStartLocalSearchFeedback:0];
-    v6 = [(SPKQuery *)self feedbackListener];
-    [v6 didEndSearch:v7];
+    feedbackListener = [(SPKQuery *)self feedbackListener];
+    [feedbackListener didEndSearch:v7];
   }
 }
 
@@ -445,8 +445,8 @@ LABEL_19:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(SPKQuery *)self childQueries];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childQueries = [(SPKQuery *)self childQueries];
+  v4 = [childQueries countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -458,14 +458,14 @@ LABEL_19:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childQueries);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) cancel];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childQueries countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

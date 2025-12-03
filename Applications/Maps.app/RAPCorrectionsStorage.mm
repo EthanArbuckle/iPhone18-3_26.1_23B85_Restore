@@ -1,44 +1,44 @@
 @interface RAPCorrectionsStorage
 + (id)basePathForCorrections;
-+ (id)pathForFeedbackRequestForSubmissionIdentifier:(id)a3;
-- (BOOL)removeCorrectionDataForSubmissionIdentifier:(id)a3;
-- (BOOL)saveCorrections:(id)a3 forSubmissionIdentifier:(id)a4;
-- (id)correctionsDataForSubmissionIdentifier:(id)a3;
++ (id)pathForFeedbackRequestForSubmissionIdentifier:(id)identifier;
+- (BOOL)removeCorrectionDataForSubmissionIdentifier:(id)identifier;
+- (BOOL)saveCorrections:(id)corrections forSubmissionIdentifier:(id)identifier;
+- (id)correctionsDataForSubmissionIdentifier:(id)identifier;
 @end
 
 @implementation RAPCorrectionsStorage
 
-- (id)correctionsDataForSubmissionIdentifier:(id)a3
+- (id)correctionsDataForSubmissionIdentifier:(id)identifier
 {
-  v3 = [RAPCorrectionsStorage pathForFeedbackRequestForSubmissionIdentifier:a3];
+  v3 = [RAPCorrectionsStorage pathForFeedbackRequestForSubmissionIdentifier:identifier];
   v4 = [RAPFileManager dataAtFileURL:v3];
 
   return v4;
 }
 
-- (BOOL)removeCorrectionDataForSubmissionIdentifier:(id)a3
+- (BOOL)removeCorrectionDataForSubmissionIdentifier:(id)identifier
 {
-  v3 = [RAPCorrectionsStorage pathForFeedbackRequestForSubmissionIdentifier:a3];
+  v3 = [RAPCorrectionsStorage pathForFeedbackRequestForSubmissionIdentifier:identifier];
   v4 = [RAPFileManager removeItemAtFilePath:v3];
 
   return v4;
 }
 
-- (BOOL)saveCorrections:(id)a3 forSubmissionIdentifier:(id)a4
+- (BOOL)saveCorrections:(id)corrections forSubmissionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  correctionsCopy = corrections;
   v7 = +[RAPCorrectionsStorage basePathForCorrections];
-  v8 = [RAPFileManager saveData:v6 toDirectory:v7 filename:v5];
+  v8 = [RAPFileManager saveData:correctionsCopy toDirectory:v7 filename:identifierCopy];
 
   return v8;
 }
 
-+ (id)pathForFeedbackRequestForSubmissionIdentifier:(id)a3
++ (id)pathForFeedbackRequestForSubmissionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[RAPCorrectionsStorage basePathForCorrections];
-  v5 = [v4 URLByAppendingPathComponent:v3];
+  v5 = [v4 URLByAppendingPathComponent:identifierCopy];
 
   return v5;
 }

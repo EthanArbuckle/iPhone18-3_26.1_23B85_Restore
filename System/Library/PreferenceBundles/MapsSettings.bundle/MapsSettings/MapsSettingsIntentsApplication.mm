@@ -1,38 +1,38 @@
 @interface MapsSettingsIntentsApplication
-+ (id)applicationsFromExtensions:(id)a3;
-- (MapsSettingsIntentsApplication)initWithExtension:(id)a3;
-- (void)addExtension:(id)a3;
-- (void)setEnabled:(BOOL)a3;
++ (id)applicationsFromExtensions:(id)extensions;
+- (MapsSettingsIntentsApplication)initWithExtension:(id)extension;
+- (void)addExtension:(id)extension;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation MapsSettingsIntentsApplication
 
-- (MapsSettingsIntentsApplication)initWithExtension:(id)a3
+- (MapsSettingsIntentsApplication)initWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v19.receiver = self;
   v19.super_class = MapsSettingsIntentsApplication;
   v5 = [(MapsSettingsIntentsApplication *)&v19 init];
   if (v5)
   {
-    v6 = [v4 _containingAppIdentifer];
+    _containingAppIdentifer = [extensionCopy _containingAppIdentifer];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = _containingAppIdentifer;
 
     v8 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v5->_identifier allowPlaceholder:0 error:0];
-    v9 = [v8 localizedName];
-    v10 = [v9 copy];
+    localizedName = [v8 localizedName];
+    v10 = [localizedName copy];
     displayName = v5->_displayName;
     v5->_displayName = v10;
 
     if (!v5->_displayName)
     {
-      v12 = [v4 displayName];
+      displayName = [extensionCopy displayName];
       v13 = v5->_displayName;
-      v5->_displayName = v12;
+      v5->_displayName = displayName;
     }
 
-    v14 = [v4 _iconWithFormat:0];
+    v14 = [extensionCopy _iconWithFormat:0];
     displayImage = v5->_displayImage;
     v5->_displayImage = v14;
 
@@ -40,22 +40,22 @@
     extensions = v5->_extensions;
     v5->_extensions = v16;
 
-    [(NSMutableArray *)v5->_extensions addObject:v4];
-    v5->_enabled = [v4 isEnabled];
+    [(NSMutableArray *)v5->_extensions addObject:extensionCopy];
+    v5->_enabled = [extensionCopy isEnabled];
   }
 
   return v5;
 }
 
-+ (id)applicationsFromExtensions:(id)a3
++ (id)applicationsFromExtensions:(id)extensions
 {
-  v3 = a3;
+  extensionsCopy = extensions;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = extensionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -71,10 +71,10 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 _containingAppIdentifer];
-        if (v11)
+        _containingAppIdentifer = [v10 _containingAppIdentifer];
+        if (_containingAppIdentifer)
         {
-          v12 = [v4 valueForKey:v11];
+          v12 = [v4 valueForKey:_containingAppIdentifer];
           v13 = v12;
           if (v12)
           {
@@ -85,7 +85,7 @@
           {
             v14 = [[MapsSettingsIntentsApplication alloc] initWithExtension:v10];
             [(MapsSettingsIntentsApplication *)v14 addExtension:v10];
-            [v4 setValue:v14 forKey:v11];
+            [v4 setValue:v14 forKey:_containingAppIdentifer];
           }
         }
       }
@@ -96,35 +96,35 @@
     while (v7);
   }
 
-  v15 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  return v15;
+  return allValues;
 }
 
-- (void)addExtension:(id)a3
+- (void)addExtension:(id)extension
 {
-  v6 = a3;
-  v4 = [v6 _containingAppIdentifer];
-  v5 = [v4 isEqualToString:self->_identifier];
+  extensionCopy = extension;
+  _containingAppIdentifer = [extensionCopy _containingAppIdentifer];
+  v5 = [_containingAppIdentifer isEqualToString:self->_identifier];
 
   if (v5)
   {
-    if (self->_enabled != [v6 isEnabled])
+    if (self->_enabled != [extensionCopy isEnabled])
     {
       NSLog(@"Discrepency in enabling of extensions for application: %@", self->_identifier);
-      [v6 _setEnabled:self->_enabled error:0];
+      [extensionCopy _setEnabled:self->_enabled error:0];
     }
 
-    [(NSMutableArray *)self->_extensions addObject:v6];
+    [(NSMutableArray *)self->_extensions addObject:extensionCopy];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -147,12 +147,12 @@
 
           v9 = *(*(&v13 + 1) + 8 * v8);
           v12 = 0;
-          [v9 _setEnabled:v3 error:&v12];
+          [v9 _setEnabled:enabledCopy error:&v12];
           v10 = v12;
           if (v10)
           {
-            v11 = [v9 identifier];
-            NSLog(@"Error Enabling Extension: %@", v11);
+            identifier = [v9 identifier];
+            NSLog(@"Error Enabling Extension: %@", identifier);
           }
 
           v8 = v8 + 1;

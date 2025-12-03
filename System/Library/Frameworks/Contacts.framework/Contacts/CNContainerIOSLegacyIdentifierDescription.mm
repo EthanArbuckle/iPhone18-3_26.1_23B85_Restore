@@ -1,28 +1,28 @@
 @interface CNContainerIOSLegacyIdentifierDescription
-- (id)CNValueForContainer:(id)a3;
-- (void)ABValueForABSource:(void *)a3;
-- (void)setCNValue:(id)a3 onContainer:(id)a4;
+- (id)CNValueForContainer:(id)container;
+- (void)ABValueForABSource:(void *)source;
+- (void)setCNValue:(id)value onContainer:(id)container;
 @end
 
 @implementation CNContainerIOSLegacyIdentifierDescription
 
-- (id)CNValueForContainer:(id)a3
+- (id)CNValueForContainer:(id)container
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 iOSLegacyIdentifier];
+  iOSLegacyIdentifier = [container iOSLegacyIdentifier];
 
-  return [v3 numberWithInt:v4];
+  return [v3 numberWithInt:iOSLegacyIdentifier];
 }
 
-- (void)setCNValue:(id)a3 onContainer:(id)a4
+- (void)setCNValue:(id)value onContainer:(id)container
 {
-  v5 = a4;
-  [v5 setIOSLegacyIdentifier:{objc_msgSend(a3, "intValue")}];
+  containerCopy = container;
+  [containerCopy setIOSLegacyIdentifier:{objc_msgSend(value, "intValue")}];
 }
 
-- (void)ABValueForABSource:(void *)a3
+- (void)ABValueForABSource:(void *)source
 {
-  valuePtr = ABRecordGetRecordID(a3);
+  valuePtr = ABRecordGetRecordID(source);
   result = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberIntType, &valuePtr);
   if (result)
   {

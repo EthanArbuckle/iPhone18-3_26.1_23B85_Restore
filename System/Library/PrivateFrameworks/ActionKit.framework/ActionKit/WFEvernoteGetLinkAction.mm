@@ -1,14 +1,14 @@
 @interface WFEvernoteGetLinkAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFEvernoteGetLinkAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFEvernoteGetLinkAction *)self parameterValueForKey:@"WFEvernoteShareInAppLink" ofClass:objc_opt_class()];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = +[WFEvernoteAccessResource evernoteSession];
   v8 = objc_opt_class();
@@ -16,7 +16,7 @@
   v11[1] = 3221225472;
   v11[2] = __54__WFEvernoteGetLinkAction_runAsynchronouslyWithInput___block_invoke;
   v11[3] = &unk_278C1B060;
-  v13 = v6;
+  v13 = bOOLValue;
   v12 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -24,7 +24,7 @@
   v10[3] = &unk_278C21E70;
   v10[4] = self;
   v9 = v7;
-  [v4 transformObjectRepresentationsForClass:v8 usingBlock:v11 completionHandler:v10];
+  [inputCopy transformObjectRepresentationsForClass:v8 usingBlock:v11 completionHandler:v10];
 }
 
 void __54__WFEvernoteGetLinkAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, void *a5)

@@ -3,39 +3,39 @@
 - (BOOL)_clientBLENearbyActionV2AdvertiserShouldRun;
 - (BOOL)_clientBLENeedsAWDLAdvertiserShouldRun;
 - (BOOL)_clientBonjourAWDLBrowserShouldRun;
-- (BOOL)_clientBonjourFoundDevice:(id)a3 reevaluate:(BOOL)a4;
-- (BOOL)_deviceSupportsLaguna:(id)a3;
+- (BOOL)_clientBonjourFoundDevice:(id)device reevaluate:(BOOL)reevaluate;
+- (BOOL)_deviceSupportsLaguna:(id)laguna;
 - (BOOL)_discoveriCloudDevicesOnly;
 - (BOOL)_needToHoldPowerAssertion;
 - (BOOL)_onenessEnabled;
 - (BOOL)_serverBLEDiscoveryShouldStart;
 - (BOOL)_serverBLENearbyActionV2DiscoveryShouldRun;
 - (BOOL)_serverBonjourAWDLNeeded;
-- (BOOL)addXPCMatchingToken:(unint64_t)a3 event:(id)a4 handler:(id)a5;
-- (BOOL)diagnosticCommand:(id)a3 params:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)removeXPCMatchingToken:(unint64_t)a3;
+- (BOOL)addXPCMatchingToken:(unint64_t)token event:(id)event handler:(id)handler;
+- (BOOL)diagnosticCommand:(id)command params:(id)params;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)removeXPCMatchingToken:(unint64_t)token;
 - (RPRemoteDisplayDaemon)init;
 - (RPRemoteDisplayDevice)dedicatedDevice;
-- (id)_acquireRBSAssertionForEntry:(id)a3 error:(id *)a4;
-- (id)_findMatchingDeviceWithIdentifier:(id)a3;
+- (id)_acquireRBSAssertionForEntry:(id)entry error:(id *)error;
+- (id)_findMatchingDeviceWithIdentifier:(id)identifier;
 - (id)_serverBonjourAuthTagString;
-- (id)_serverBonjourAuthTagStringWithData:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (id)_serverBonjourAuthTagStringWithData:(id)data;
+- (id)descriptionWithLevel:(int)level;
 - (unsigned)_serverDirectLinkInterfaceIndex;
 - (void)_activate;
-- (void)_bleDiscoveryEnsureStarted:(BOOL)a3;
+- (void)_bleDiscoveryEnsureStarted:(BOOL)started;
 - (void)_bleDiscoveryEnsureStopped;
-- (void)_bluetoothUseCaseFromWombatState:(unsigned int)a3 resultBlock:(id)a4;
+- (void)_bluetoothUseCaseFromWombatState:(unsigned int)state resultBlock:(id)block;
 - (void)_btAddressChanged;
 - (void)_btAddressMonitorEnsureStarted;
 - (void)_btAddressMonitorEnsureStopped;
-- (void)_cameraCapabilitiesChanged:(id)a3;
+- (void)_cameraCapabilitiesChanged:(id)changed;
 - (void)_clearCameraCapabilitiesUpdateCache;
 - (void)_clearConfirmationClientCache;
-- (void)_clientAWDLPairingSessionWithDevice:(id)a3;
-- (void)_clientBLEDiscoveryDeviceFound:(id)a3;
-- (void)_clientBLEDiscoveryDeviceLost:(id)a3;
+- (void)_clientAWDLPairingSessionWithDevice:(id)device;
+- (void)_clientBLEDiscoveryDeviceFound:(id)found;
+- (void)_clientBLEDiscoveryDeviceLost:(id)lost;
 - (void)_clientBLEDiscoveryEnsureStopped;
 - (void)_clientBLENearbyActionV2AdvertiserEnsureStarted;
 - (void)_clientBLENearbyActionV2AdvertiserEnsureStopped;
@@ -44,47 +44,47 @@
 - (void)_clientBLENeedsAWDLAdvertiserEnsureStopped;
 - (void)_clientBonjourAWDLBrowserEnsureStarted;
 - (void)_clientBonjourAWDLBrowserEnsureStopped;
-- (void)_clientBonjourAWDLBrowserFoundDevice:(id)a3;
-- (void)_clientBonjourAWDLBrowserLostDevice:(id)a3;
+- (void)_clientBonjourAWDLBrowserFoundDevice:(id)device;
+- (void)_clientBonjourAWDLBrowserLostDevice:(id)device;
 - (void)_clientBonjourEnsureStarted;
 - (void)_clientBonjourEnsureStopped;
-- (void)_clientBonjourFoundUnresolvedDevice:(id)a3;
-- (void)_clientBonjourLostDevice:(id)a3;
-- (void)_clientBonjourLostUnresolvedDevice:(id)a3;
-- (void)_clientBonjourReconfirmDevice:(id)a3 reason:(const char *)a4;
+- (void)_clientBonjourFoundUnresolvedDevice:(id)device;
+- (void)_clientBonjourLostDevice:(id)device;
+- (void)_clientBonjourLostUnresolvedDevice:(id)device;
+- (void)_clientBonjourReconfirmDevice:(id)device reason:(const char *)reason;
 - (void)_clientBonjourReevaluateDevices;
 - (void)_clientEnsureStarted;
 - (void)_clientEnsureStopped;
 - (void)_clientLostAllDevices;
-- (void)_connectionConfigureCommon:(id)a3;
-- (void)_deliverBufferedConnectionsToServer:(id)a3;
-- (void)_handleConfirmationResult:(id)a3 fromDevice:(id)a4;
-- (void)_handleServerActivation:(id)a3;
+- (void)_connectionConfigureCommon:(id)common;
+- (void)_deliverBufferedConnectionsToServer:(id)server;
+- (void)_handleConfirmationResult:(id)result fromDevice:(id)device;
+- (void)_handleServerActivation:(id)activation;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_localDeviceUpdate;
-- (void)_postNotificationForWombatActivity:(unsigned int)a3;
+- (void)_postNotificationForWombatActivity:(unsigned int)activity;
 - (void)_powerAssertionEnsureHeld;
 - (void)_powerAssertionEnsureReleased;
 - (void)_processPendingLostDevices;
-- (void)_receivedCameraCapabilitiesMessage:(id)a3 fromDevice:(id)a4 isFirstUpdate:(BOOL)a5;
-- (void)_receivedCameraExitEvent:(id)a3 from:(id)a4;
+- (void)_receivedCameraCapabilitiesMessage:(id)message fromDevice:(id)device isFirstUpdate:(BOOL)update;
+- (void)_receivedCameraExitEvent:(id)event from:(id)from;
 - (void)_registerForCameraCapabilitiesRequest;
 - (void)_registerForIncomingMessages;
 - (void)_registerForWombatStateNotifications;
-- (void)_requestCameraCapabilitiesForDevice:(id)a3;
-- (void)_requestConfirmationFromDevicesMatching:(id)a3 forPairingType:(unsigned int)a4;
-- (void)_scheduleCameraCapabilitiesRequest:(id)a3 interval:(unint64_t)a4;
+- (void)_requestCameraCapabilitiesForDevice:(id)device;
+- (void)_requestConfirmationFromDevicesMatching:(id)matching forPairingType:(unsigned int)type;
+- (void)_scheduleCameraCapabilitiesRequest:(id)request interval:(unint64_t)interval;
 - (void)_schedulePendingLostDeviceTimer;
-- (void)_sendCameraCapabilitiesUpdateEventForDevice:(id)a3;
+- (void)_sendCameraCapabilitiesUpdateEventForDevice:(id)device;
 - (void)_sendConfirmationCancelToAllDevices;
-- (void)_sendDiscoverySessionExitWithReason:(id)a3;
+- (void)_sendDiscoverySessionExitWithReason:(id)reason;
 - (void)_serverBLEDiscoveryEnsureStarted;
 - (void)_serverBLEDiscoveryEnsureStopped;
 - (void)_serverBLENearbyActionV2DiscoveryEnsureStarted;
 - (void)_serverBLENearbyActionV2DiscoveryEnsureStopped;
-- (void)_serverBLENeedsAWDLScannerDeviceFound:(id)a3;
-- (void)_serverBLENeedsAWDLScannerDeviceLost:(id)a3;
+- (void)_serverBLENeedsAWDLScannerDeviceFound:(id)found;
+- (void)_serverBLENeedsAWDLScannerDeviceLost:(id)lost;
 - (void)_serverBLENeedsAWDLScannerEnsureStarted;
 - (void)_serverBLENeedsAWDLScannerEnsureStopped;
 - (void)_serverBonjourAWDLAdvertiserEnsureStarted;
@@ -95,13 +95,13 @@
 - (void)_serverBonjourUpdateTXT;
 - (void)_serverEnsureStarted;
 - (void)_serverEnsureStopped;
-- (void)_serverHandleSessionStartWithID:(id)a3 netCnx:(id)a4 completion:(id)a5;
+- (void)_serverHandleSessionStartWithID:(id)d netCnx:(id)cnx completion:(id)completion;
 - (void)_serverProximityGetDeviceIdentifiers;
-- (void)_serverReceivedNeedsAWDLEvent:(id)a3;
+- (void)_serverReceivedNeedsAWDLEvent:(id)event;
 - (void)_serverRegisterForIncomingMessages;
 - (void)_serverTCPEnsureStarted;
 - (void)_serverTCPEnsureStopped;
-- (void)_serverTCPHandleConnectionStarted:(id)a3;
+- (void)_serverTCPHandleConnectionStarted:(id)started;
 - (void)_startDiscoverySessionExpirationTimer;
 - (void)_startInSessionDeviceLostTimer;
 - (void)_startObservingOnenessEnabledState;
@@ -112,14 +112,14 @@
 - (void)_updateCameraCapabilities;
 - (void)_updateForXPCClientChange;
 - (void)_updateXPCMatchingDiscovery;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
-- (void)addNeedsAWDLPeer:(id)a3;
-- (void)daemonInfoChanged:(unint64_t)a3;
+- (void)addNeedsAWDLPeer:(id)peer;
+- (void)daemonInfoChanged:(unint64_t)changed;
 - (void)invalidate;
 - (void)prefsChanged;
-- (void)saveDedicatedDevice:(id)a3;
-- (void)setDeviceConfirmedIdentifier:(id)a3;
+- (void)saveDedicatedDevice:(id)device;
+- (void)setDeviceConfirmedIdentifier:(id)identifier;
 @end
 
 @implementation RPRemoteDisplayDaemon
@@ -175,8 +175,8 @@ LABEL_9:
   if (v4)
   {
     v8 = +[RPCloudDaemon sharedCloudDaemon];
-    v9 = [v8 idsDeviceArray];
-    if ([v9 count] || objc_msgSend(v13, "count"))
+    idsDeviceArray = [v8 idsDeviceArray];
+    if ([idsDeviceArray count] || objc_msgSend(v13, "count"))
     {
 
 LABEL_16:
@@ -235,8 +235,8 @@ LABEL_25:
         v9 = *(*(&v16 + 1) + 8 * i);
         if ([v9 needsAWDL])
         {
-          v10 = [v9 processName];
-          v11 = [RPAssertionInfo assertionWithType:7 processName:v10];
+          processName = [v9 processName];
+          v11 = [RPAssertionInfo assertionWithType:7 processName:processName];
 
           [v11 setHandlerQueue:self->_dispatchQueue];
           [v11 setStartHandler:&stru_1001AED48];
@@ -294,25 +294,25 @@ LABEL_25:
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 clientNetCnx];
-        v11 = [v10 state];
+        clientNetCnx = [v9 clientNetCnx];
+        state = [clientNetCnx state];
 
-        if (v11 != 1)
+        if (state != 1)
         {
-          v12 = [v9 activatedSession];
-          v13 = [v12 needsAWDL];
+          activatedSession = [v9 activatedSession];
+          needsAWDL = [activatedSession needsAWDL];
 
-          if (v13)
+          if (needsAWDL)
           {
             if (([v9 usingNearbyActionV2] & 1) == 0)
             {
-              v14 = [v9 activatedSession];
-              v15 = [v14 bonjourDevice];
+              activatedSession2 = [v9 activatedSession];
+              bonjourDevice = [activatedSession2 bonjourDevice];
 
-              if (!v15)
+              if (!bonjourDevice)
               {
-                v16 = [v9 xpcCnx];
-                v17 = sub_10001B924([v16 processIdentifier]);
+                xpcCnx = [v9 xpcCnx];
+                v17 = sub_10001B924([xpcCnx processIdentifier]);
                 v18 = [RPAssertionInfo assertionWithType:5 processName:v17];
 
                 [v18 setHandlerQueue:self->_dispatchQueue];
@@ -412,7 +412,7 @@ LABEL_25:
 
 - (void)_localDeviceUpdate
 {
-  v3 = [(RPCompanionLinkDevice *)self->_localDeviceInfo changed];
+  changed = [(RPCompanionLinkDevice *)self->_localDeviceInfo changed];
   localDeviceInfo = self->_localDeviceInfo;
   if (!localDeviceInfo)
   {
@@ -425,33 +425,33 @@ LABEL_25:
     localDeviceInfo = self->_localDeviceInfo;
   }
 
-  v28 = [(RPCompanionLinkDevice *)localDeviceInfo identifier];
-  if (!v28)
+  identifier = [(RPCompanionLinkDevice *)localDeviceInfo identifier];
+  if (!identifier)
   {
     v7 = +[RPCloudDaemon sharedCloudDaemon];
-    v8 = [v7 idsDeviceIDSelf];
-    [(RPCompanionLinkDevice *)self->_localDeviceInfo setIdentifier:v8];
+    idsDeviceIDSelf = [v7 idsDeviceIDSelf];
+    [(RPCompanionLinkDevice *)self->_localDeviceInfo setIdentifier:idsDeviceIDSelf];
 
-    v3 = 1;
+    changed = 1;
   }
 
-  v9 = [(RPCompanionLinkDevice *)self->_localDeviceInfo idsDeviceIdentifier];
-  if (!v9)
+  idsDeviceIdentifier = [(RPCompanionLinkDevice *)self->_localDeviceInfo idsDeviceIdentifier];
+  if (!idsDeviceIdentifier)
   {
     v10 = +[RPCloudDaemon sharedCloudDaemon];
-    v11 = [v10 idsDeviceIDSelf];
-    [(RPCompanionLinkDevice *)self->_localDeviceInfo setIdsDeviceIdentifier:v11];
+    idsDeviceIDSelf2 = [v10 idsDeviceIDSelf];
+    [(RPCompanionLinkDevice *)self->_localDeviceInfo setIdsDeviceIdentifier:idsDeviceIDSelf2];
 
-    v3 = 1;
+    changed = 1;
   }
 
   v12 = +[RPIdentityDaemon sharedIdentityDaemon];
-  v13 = [v12 sessionPairingIdentifier];
-  v14 = [v13 UUIDString];
+  sessionPairingIdentifier = [v12 sessionPairingIdentifier];
+  uUIDString = [sessionPairingIdentifier UUIDString];
 
-  v15 = [(RPCompanionLinkDevice *)self->_localDeviceInfo sessionPairingIdentifier];
-  v16 = v14;
-  v17 = v15;
+  sessionPairingIdentifier2 = [(RPCompanionLinkDevice *)self->_localDeviceInfo sessionPairingIdentifier];
+  v16 = uUIDString;
+  v17 = sessionPairingIdentifier2;
   v18 = v17;
   if (v16 == v17)
   {
@@ -471,18 +471,18 @@ LABEL_25:
   {
 LABEL_13:
     [(RPCompanionLinkDevice *)self->_localDeviceInfo setSessionPairingIdentifier:v16];
-    v3 = 1;
+    changed = 1;
   }
 
 LABEL_14:
-  v20 = [(RPCompanionLinkDevice *)self->_localDeviceInfo model];
+  model = [(RPCompanionLinkDevice *)self->_localDeviceInfo model];
 
-  if (!v20)
+  if (!model)
   {
     v21 = GestaltCopyAnswer();
     [(RPCompanionLinkDevice *)self->_localDeviceInfo setModel:v21];
 
-    v3 = 1;
+    changed = 1;
   }
 
   btAdvAddrStr = self->_btAdvAddrStr;
@@ -491,9 +491,9 @@ LABEL_14:
     goto LABEL_22;
   }
 
-  v23 = [(RPCompanionLinkDevice *)self->_localDeviceInfo publicIdentifier];
+  publicIdentifier = [(RPCompanionLinkDevice *)self->_localDeviceInfo publicIdentifier];
   v24 = btAdvAddrStr;
-  v25 = v23;
+  v25 = publicIdentifier;
   v26 = v25;
   if (v24 == v25)
   {
@@ -511,7 +511,7 @@ LABEL_14:
     }
 
 LABEL_22:
-    if (!v3)
+    if (!changed)
     {
       goto LABEL_29;
     }
@@ -534,9 +534,9 @@ LABEL_29:
 - (BOOL)_clientBLENearbyActionV2AdvertiserShouldRun
 {
   v3 = +[RPCompanionLinkDaemon sharedCompanionLinkDaemon];
-  v4 = [v3 isNearbyActionV2AdvertiserActive];
+  isNearbyActionV2AdvertiserActive = [v3 isNearbyActionV2AdvertiserActive];
 
-  if (v4)
+  if (isNearbyActionV2AdvertiserActive)
   {
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
@@ -568,7 +568,7 @@ LABEL_50:
   v8 = v7;
   v40 = 0;
   v9 = *v44;
-  v41 = self;
+  selfCopy = self;
   while (2)
   {
     for (i = 0; i != v8; i = i + 1)
@@ -579,36 +579,36 @@ LABEL_50:
       }
 
       v11 = *(*(&v43 + 1) + 8 * i);
-      v12 = [v11 clientNetCnx];
-      v13 = [v12 state];
+      clientNetCnx = [v11 clientNetCnx];
+      state = [clientNetCnx state];
 
-      if (v13 != 1)
+      if (state != 1)
       {
-        v14 = [v11 activatedSession];
+        activatedSession = [v11 activatedSession];
 
-        if (v14)
+        if (activatedSession)
         {
-          v15 = [v11 activatedSession];
-          v16 = [v15 needsAWDL];
+          activatedSession2 = [v11 activatedSession];
+          needsAWDL = [activatedSession2 needsAWDL];
 
-          if (v16)
+          if (needsAWDL)
           {
-            v17 = [v11 activatedSession];
-            v18 = [v17 bonjourDevice];
+            activatedSession3 = [v11 activatedSession];
+            bonjourDevice = [activatedSession3 bonjourDevice];
 
-            if (!v18)
+            if (!bonjourDevice)
             {
-              v19 = [v11 activatedSession];
-              v20 = [v19 daemonDevice];
+              activatedSession4 = [v11 activatedSession];
+              daemonDevice = [activatedSession4 daemonDevice];
 
-              v21 = [v20 idsDeviceIdentifier];
+              idsDeviceIdentifier = [daemonDevice idsDeviceIdentifier];
               v22 = +[RPCloudDaemon sharedCloudDaemon];
-              v23 = [v22 idsDeviceMap];
-              v24 = [v23 objectForKeyedSubscript:v21];
+              idsDeviceMap = [v22 idsDeviceMap];
+              v24 = [idsDeviceMap objectForKeyedSubscript:idsDeviceIdentifier];
 
-              v25 = v20;
-              v42 = v21;
-              if (([v20 statusFlags] & 0x80000) != 0)
+              v25 = daemonDevice;
+              v42 = idsDeviceIdentifier;
+              if (([daemonDevice statusFlags] & 0x80000) != 0)
               {
                 if (!v24)
                 {
@@ -621,21 +621,21 @@ LABEL_50:
                   goto LABEL_49;
                 }
 
-                v26 = v20;
-                v28 = [v24 modelIdentifier];
+                v26 = daemonDevice;
+                modelIdentifier = [v24 modelIdentifier];
                 v29 = GestaltProductTypeStringToDeviceClass();
 
                 if ((v29 & 0xFFFFFFFD) != 1)
                 {
-                  v25 = v20;
+                  v25 = daemonDevice;
                   if (dword_1001D4BA0 > 30)
                   {
-                    v21 = v42;
+                    idsDeviceIdentifier = v42;
                   }
 
                   else
                   {
-                    v21 = v42;
+                    idsDeviceIdentifier = v42;
                     if (dword_1001D4BA0 != -1 || _LogCategory_Initialize())
                     {
                       sub_100128214(v24);
@@ -656,27 +656,27 @@ LABEL_50:
 LABEL_47:
                   v25 = v26;
 LABEL_48:
-                  v21 = v42;
+                  idsDeviceIdentifier = v42;
 LABEL_49:
 
                   goto LABEL_50;
                 }
 
-                v27 = v41;
+                v27 = selfCopy;
               }
 
               else
               {
-                v26 = v20;
-                v27 = v41;
-                if (([v20 statusFlags] & 0x3000000000) == 0)
+                v26 = daemonDevice;
+                v27 = selfCopy;
+                if (([daemonDevice statusFlags] & 0x3000000000) == 0)
                 {
                   if (dword_1001D4BA0 > 30)
                   {
                     goto LABEL_47;
                   }
 
-                  v25 = v20;
+                  v25 = daemonDevice;
                   if (dword_1001D4BA0 != -1 || _LogCategory_Initialize())
                   {
                     sub_10012831C();
@@ -691,8 +691,8 @@ LABEL_49:
                 goto LABEL_25;
               }
 
-              v30 = [v26 bleTargetData];
-              if (!v30)
+              bleTargetData = [v26 bleTargetData];
+              if (!bleTargetData)
               {
                 if (dword_1001D4BA0 > 30)
                 {
@@ -701,7 +701,7 @@ LABEL_49:
                 }
 
                 v25 = v26;
-                v21 = v42;
+                idsDeviceIdentifier = v42;
                 if (dword_1001D4BA0 != -1 || _LogCategory_Initialize())
                 {
                   sub_1001282E8();
@@ -710,7 +710,7 @@ LABEL_49:
                 goto LABEL_49;
               }
 
-              v31 = v30;
+              v31 = bleTargetData;
               objc_storeStrong(&v27->_bleNearbyActionV2Device, v26);
               [(RPRemoteDisplayDevice *)v27->_bleNearbyActionV2Device setNearbyActionV2Type:50];
               [v11 setUsingNearbyActionV2:1];
@@ -718,21 +718,21 @@ LABEL_49:
               if (v27->_bleNearbyActionV2Device)
               {
 LABEL_25:
-                v32 = [v11 xpcCnx];
-                v33 = sub_10001B924([v32 processIdentifier]);
+                xpcCnx = [v11 xpcCnx];
+                v33 = sub_10001B924([xpcCnx processIdentifier]);
                 v34 = [RPAssertionInfo assertionWithType:6 processName:v33];
 
-                [v34 setHandlerQueue:v41->_dispatchQueue];
+                [v34 setHandlerQueue:selfCopy->_dispatchQueue];
                 [v34 setStartHandler:v39];
                 [v34 setExpiredHandler:&stru_1001AED28];
-                bleNearbyActionV2AdvertiserAssertions = v41->_bleNearbyActionV2AdvertiserAssertions;
+                bleNearbyActionV2AdvertiserAssertions = selfCopy->_bleNearbyActionV2AdvertiserAssertions;
                 if (!bleNearbyActionV2AdvertiserAssertions)
                 {
                   v36 = +[NSMutableSet set];
-                  v37 = v41->_bleNearbyActionV2AdvertiserAssertions;
-                  v41->_bleNearbyActionV2AdvertiserAssertions = v36;
+                  v37 = selfCopy->_bleNearbyActionV2AdvertiserAssertions;
+                  selfCopy->_bleNearbyActionV2AdvertiserAssertions = v36;
 
-                  bleNearbyActionV2AdvertiserAssertions = v41->_bleNearbyActionV2AdvertiserAssertions;
+                  bleNearbyActionV2AdvertiserAssertions = selfCopy->_bleNearbyActionV2AdvertiserAssertions;
                 }
 
                 [(NSMutableSet *)bleNearbyActionV2AdvertiserAssertions addObject:v34];
@@ -869,8 +869,8 @@ LABEL_51:
     return 1;
   }
 
-  v3 = [(RPCompanionLinkDevice *)self->_localDeviceInfo model];
-  v4 = sub_10001AD94(v3) > 10;
+  model = [(RPCompanionLinkDevice *)self->_localDeviceInfo model];
+  v4 = sub_10001AD94(model) > 10;
 
   return v4;
 }
@@ -1080,8 +1080,8 @@ LABEL_51:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(NSMutableDictionary *)self->_discoveredDevices allValues];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  allValues = [(NSMutableDictionary *)self->_discoveredDevices allValues];
+  v4 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1092,17 +1092,17 @@ LABEL_51:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
-        v8 = [*(*(&v20 + 1) + 8 * i) bonjourDevice];
-        if (v8)
+        bonjourDevice = [*(*(&v20 + 1) + 8 * i) bonjourDevice];
+        if (bonjourDevice)
         {
-          [(RPRemoteDisplayDaemon *)self _clientBonjourFoundDevice:v8 reevaluate:1];
+          [(RPRemoteDisplayDaemon *)self _clientBonjourFoundDevice:bonjourDevice reevaluate:1];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v5);
@@ -1112,8 +1112,8 @@ LABEL_51:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(NSMutableDictionary *)self->_unresolvedDevices allValues];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_unresolvedDevices allValues];
+  v10 = [allValues2 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1125,7 +1125,7 @@ LABEL_51:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues2);
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
@@ -1143,7 +1143,7 @@ LABEL_51:
       }
 
       while (v11 != v13);
-      v15 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v15 = [allValues2 countByEnumeratingWithState:&v16 objects:v24 count:16];
       v11 = v15;
     }
 
@@ -1221,7 +1221,7 @@ LABEL_51:
   {
     if (self->_prefServerBonjourInfra)
     {
-      v3 = [(RPRemoteDisplayDaemon *)self _serverBonjourAWDLNeeded];
+      _serverBonjourAWDLNeeded = [(RPRemoteDisplayDaemon *)self _serverBonjourAWDLNeeded];
       [(RPRemoteDisplayDaemon *)self _serverTCPEnsureStarted];
 LABEL_4:
       [(RPRemoteDisplayDaemon *)self _serverBonjourEnsureStarted];
@@ -1256,7 +1256,7 @@ LABEL_14:
         [(RPRemoteDisplayDaemon *)self _serverBLENeedsAWDLScannerEnsureStopped];
       }
 
-      if (v3)
+      if (_serverBonjourAWDLNeeded)
       {
         [(RPRemoteDisplayDaemon *)self _serverBonjourAWDLAdvertiserEnsureStarted];
       }
@@ -1280,13 +1280,13 @@ LABEL_14:
       return;
     }
 
-    v4 = [(CUSystemMonitor *)self->_systemMonitor netFlags];
-    v5 = [(RPRemoteDisplayDaemon *)self _serverBonjourAWDLNeeded];
-    v3 = v5;
-    if (v4 & 1) != 0 || (v5)
+    netFlags = [(CUSystemMonitor *)self->_systemMonitor netFlags];
+    _serverBonjourAWDLNeeded2 = [(RPRemoteDisplayDaemon *)self _serverBonjourAWDLNeeded];
+    _serverBonjourAWDLNeeded = _serverBonjourAWDLNeeded2;
+    if (netFlags & 1) != 0 || (_serverBonjourAWDLNeeded2)
     {
       [(RPRemoteDisplayDaemon *)self _serverTCPEnsureStarted];
-      if (v4)
+      if (netFlags)
       {
         goto LABEL_4;
       }
@@ -1319,8 +1319,8 @@ LABEL_14:
 
   else
   {
-    v4 = [(RPNearbyActionV2Discovery *)self->_bleNearbyActionV2Discovery actionV2Devices];
-    v3 = [v4 count] || self->_bonjourAWDLAdvertiserForce || self->_awdlPairingID != 0;
+    actionV2Devices = [(RPNearbyActionV2Discovery *)self->_bleNearbyActionV2Discovery actionV2Devices];
+    v3 = [actionV2Devices count] || self->_bonjourAWDLAdvertiserForce || self->_awdlPairingID != 0;
   }
 
   v12 = v3;
@@ -1355,8 +1355,8 @@ LABEL_14:
 
   else if (self->_btAdvAddrData)
   {
-    v3 = [(CUTCPServer *)self->_tcpServer tcpListeningPort];
-    if (v3 <= 0)
+    tcpListeningPort = [(CUTCPServer *)self->_tcpServer tcpListeningPort];
+    if (tcpListeningPort <= 0)
     {
       if (dword_1001D4BA0 <= 20 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
@@ -1366,7 +1366,7 @@ LABEL_14:
 
     else
     {
-      v4 = v3;
+      v4 = tcpListeningPort;
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
         sub_100129090();
@@ -1403,10 +1403,10 @@ LABEL_14:
 {
   v5 = objc_alloc_init(NSMutableDictionary);
   [(RPRemoteDisplayDaemon *)self _localDeviceUpdate];
-  v3 = [(RPRemoteDisplayDaemon *)self _serverBonjourAuthTagString];
-  if (v3)
+  _serverBonjourAuthTagString = [(RPRemoteDisplayDaemon *)self _serverBonjourAuthTagString];
+  if (_serverBonjourAuthTagString)
   {
-    [v5 setObject:v3 forKeyedSubscript:@"rpAD"];
+    [v5 setObject:_serverBonjourAuthTagString forKeyedSubscript:@"rpAD"];
   }
 
   btAdvAddrStr = self->_btAdvAddrStr;
@@ -1445,8 +1445,8 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(RPNearbyActionV2Discovery *)self->_bleNearbyActionV2Discovery actionV2Devices];
-  v4 = [v3 count] != 0;
+  actionV2Devices = [(RPNearbyActionV2Discovery *)self->_bleNearbyActionV2Discovery actionV2Devices];
+  v4 = [actionV2Devices count] != 0;
 
   return v4;
 }
@@ -1508,12 +1508,12 @@ LABEL_14:
 {
   if (self->_bleNeedsAWDLScanner)
   {
-    v3 = [(RPRemoteDisplayDaemon *)self _serverBLENeedsAWDLScannerScreenOff];
-    if (v3 != [(SFDeviceDiscovery *)self->_bleNeedsAWDLScanner overrideScreenOff])
+    _serverBLENeedsAWDLScannerScreenOff = [(RPRemoteDisplayDaemon *)self _serverBLENeedsAWDLScannerScreenOff];
+    if (_serverBLENeedsAWDLScannerScreenOff != [(SFDeviceDiscovery *)self->_bleNeedsAWDLScanner overrideScreenOff])
     {
       bleNeedsAWDLScanner = self->_bleNeedsAWDLScanner;
 
-      [(SFDeviceDiscovery *)bleNeedsAWDLScanner setOverrideScreenOff:v3];
+      [(SFDeviceDiscovery *)bleNeedsAWDLScanner setOverrideScreenOff:_serverBLENeedsAWDLScannerScreenOff];
     }
   }
 
@@ -1653,8 +1653,8 @@ LABEL_14:
 {
   if (GestaltGetDeviceClass() == 1 || GestaltGetDeviceClass() == 3)
   {
-    v3 = [(RPNearbyActionV2Discovery *)self->_bleNearbyActionV2Discovery actionV2Devices];
-    v4 = [v3 count];
+    actionV2Devices = [(RPNearbyActionV2Discovery *)self->_bleNearbyActionV2Discovery actionV2Devices];
+    v4 = [actionV2Devices count];
 
     if (v4 || [(NSMutableSet *)self->_needsAWDLRequestIdentifiers count])
     {
@@ -1667,8 +1667,8 @@ LABEL_14:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [(NSMutableDictionary *)self->_tcpServerConnections allValues];
-      v5 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      allValues = [(NSMutableDictionary *)self->_tcpServerConnections allValues];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         v7 = 0;
@@ -1679,7 +1679,7 @@ LABEL_14:
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(allValues);
             }
 
             if ([*(*(&v11 + 1) + 8 * i) linkType] == 4)
@@ -1688,7 +1688,7 @@ LABEL_14:
             }
           }
 
-          v5 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v5);
@@ -1735,9 +1735,9 @@ LABEL_14:
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if (a3 < 21)
+  if (level < 21)
   {
     v200 = 0;
     v201 = &v200;
@@ -1748,7 +1748,7 @@ LABEL_14:
     obj = 0;
     NSAppendPrintF();
     objc_storeStrong(&v205, 0);
-    if (a3 >= 11)
+    if (level >= 11)
     {
       v6 = 50;
     }
@@ -1765,9 +1765,9 @@ LABEL_14:
     {
       v9 = (v201 + 5);
       v198 = v201[5];
-      v10 = [(CUSystemMonitor *)v7 firstUnlocked];
+      firstUnlocked = [(CUSystemMonitor *)v7 firstUnlocked];
       v11 = "no";
-      if (v10)
+      if (firstUnlocked)
       {
         v11 = "yes";
       }
@@ -1927,7 +1927,7 @@ LABEL_14:
       v46 = v43;
       if (objc_opt_respondsToSelector())
       {
-        v47 = [(CUTCPServer *)v46 detailedDescription];
+        detailedDescription = [(CUTCPServer *)v46 detailedDescription];
       }
 
       else
@@ -1941,10 +1941,10 @@ LABEL_14:
         {
           NSPrintF();
         }
-        v47 = ;
+        detailedDescription = ;
       }
 
-      v48 = v47;
+      v48 = detailedDescription;
 
       deviceConfirmedIdentifier = v48;
       NSAppendPrintF();
@@ -1971,16 +1971,16 @@ LABEL_14:
       objc_storeStrong(v52, v181);
     }
 
-    v53 = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
-    v54 = v53;
-    if (v53)
+    dedicatedDevice = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
+    v54 = dedicatedDevice;
+    if (dedicatedDevice)
     {
       v55 = (v201 + 5);
       v180 = v201[5];
-      v56 = v53;
+      v56 = dedicatedDevice;
       if (objc_opt_respondsToSelector())
       {
-        v57 = [v56 detailedDescription];
+        detailedDescription2 = [v56 detailedDescription];
       }
 
       else
@@ -1994,18 +1994,18 @@ LABEL_14:
         {
           NSPrintF();
         }
-        v57 = ;
+        detailedDescription2 = ;
       }
 
-      v58 = v57;
+      v58 = detailedDescription2;
 
       deviceConfirmedIdentifier = v58;
       NSAppendPrintF();
       objc_storeStrong(v55, v180);
     }
 
-    v59 = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap allValues];
-    v60 = [v59 count];
+    allValues = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap allValues];
+    v60 = [allValues count];
     if (v60)
     {
       v61 = (v201 + 5);
@@ -2019,7 +2019,7 @@ LABEL_14:
     v178 = 0u;
     v175 = 0u;
     v176 = 0u;
-    v134 = v59;
+    v134 = allValues;
     v62 = [v134 countByEnumeratingWithState:&v175 objects:v209 count:16];
     if (v62)
     {
@@ -2062,13 +2062,13 @@ LABEL_14:
     v169 = 0u;
     v170 = 0u;
     v69 = self->_bufferedConnections;
-    v70 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v169 objects:v208 count:16];
-    if (v70)
+    v118 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v169 objects:v208 count:16];
+    if (v118)
     {
       v71 = *v170;
       do
       {
-        for (j = 0; j != v70; j = j + 1)
+        for (j = 0; j != v118; j = j + 1)
         {
           if (*v170 != v71)
           {
@@ -2083,10 +2083,10 @@ LABEL_14:
           objc_storeStrong(v74, v168);
         }
 
-        v70 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v169 objects:v208 count:16, v118];
+        v118 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v169 objects:v208 count:16, v118];
       }
 
-      while (v70);
+      while (v118);
     }
 
     v75 = [(NSMutableDictionary *)self->_tcpServerConnections count];
@@ -2186,13 +2186,13 @@ LABEL_14:
       v148 = 0u;
       v149 = 0u;
       v131 = self->_xpcConnections;
-      v90 = [(NSMutableSet *)v131 countByEnumeratingWithState:&v148 objects:v207 count:16, v123];
-      if (v90)
+      v123 = [(NSMutableSet *)v131 countByEnumeratingWithState:&v148 objects:v207 count:16, v123];
+      if (v123)
       {
         v132 = *v149;
         do
         {
-          v133 = v90;
+          v133 = v123;
           for (k = 0; k != v133; k = k + 1)
           {
             if (*v149 != v132)
@@ -2203,50 +2203,50 @@ LABEL_14:
             v92 = *(*(&v148 + 1) + 8 * k);
             v93 = (v201 + 5);
             v147 = v201[5];
-            v94 = [v92 xpcCnx];
-            v124 = [v94 processIdentifier];
+            xpcCnx = [v92 xpcCnx];
+            processIdentifier = [xpcCnx processIdentifier];
             NSAppendPrintF();
             objc_storeStrong(v93, v147);
 
-            v95 = [v92 activatedDiscovery];
+            activatedDiscovery = [v92 activatedDiscovery];
 
-            if (v95)
+            if (activatedDiscovery)
             {
               v96 = (v201 + 5);
               v146 = v201[5];
-              v97 = [v92 activatedDiscovery];
+              activatedDiscovery2 = [v92 activatedDiscovery];
               v125 = CUDescriptionWithLevel();
               NSAppendPrintF();
               objc_storeStrong(v96, v146);
             }
 
-            v98 = [v92 activatedServer];
+            activatedServer = [v92 activatedServer];
 
-            if (v98)
+            if (activatedServer)
             {
               v99 = (v201 + 5);
               v145 = v201[5];
-              v100 = [v92 activatedServer];
+              activatedServer2 = [v92 activatedServer];
               v126 = CUDescriptionWithLevel();
               NSAppendPrintF();
               objc_storeStrong(v99, v145);
             }
 
-            v101 = [v92 activatedSession];
+            activatedSession = [v92 activatedSession];
 
-            if (v101)
+            if (activatedSession)
             {
               v102 = (v201 + 5);
               v144 = v201[5];
-              v103 = [v92 activatedSession];
+              activatedSession2 = [v92 activatedSession];
               v127 = CUDescriptionWithLevel();
               NSAppendPrintF();
               objc_storeStrong(v102, v144);
             }
 
-            v104 = [v92 activeNetCnx];
-            v105 = [v92 clientNetCnx];
-            if (v104)
+            activeNetCnx = [v92 activeNetCnx];
+            clientNetCnx = [v92 clientNetCnx];
+            if (activeNetCnx)
             {
               v106 = (v201 + 5);
               v143 = v201[5];
@@ -2255,7 +2255,7 @@ LABEL_14:
               objc_storeStrong(v106, v143);
             }
 
-            if (v105 && v105 != v104)
+            if (clientNetCnx && clientNetCnx != activeNetCnx)
             {
               v107 = (v201 + 5);
               v142 = v201[5];
@@ -2268,8 +2268,8 @@ LABEL_14:
             v141 = 0u;
             v138 = 0u;
             v139 = 0u;
-            v108 = [v92 serverNetCnxs];
-            v109 = [v108 countByEnumeratingWithState:&v138 objects:v206 count:16];
+            serverNetCnxs = [v92 serverNetCnxs];
+            v109 = [serverNetCnxs countByEnumeratingWithState:&v138 objects:v206 count:16];
             if (v109)
             {
               v110 = *v139;
@@ -2279,7 +2279,7 @@ LABEL_14:
                 {
                   if (*v139 != v110)
                   {
-                    objc_enumerationMutation(v108);
+                    objc_enumerationMutation(serverNetCnxs);
                   }
 
                   v112 = *(*(&v138 + 1) + 8 * m);
@@ -2290,7 +2290,7 @@ LABEL_14:
                   objc_storeStrong(v113, v137);
                 }
 
-                v109 = [v108 countByEnumeratingWithState:&v138 objects:v206 count:{16, v129}];
+                v109 = [serverNetCnxs countByEnumeratingWithState:&v138 objects:v206 count:{16, v129}];
               }
 
               while (v109);
@@ -2302,10 +2302,10 @@ LABEL_14:
             objc_storeStrong(v114, v136);
           }
 
-          v90 = [(NSMutableSet *)v131 countByEnumeratingWithState:&v148 objects:v207 count:16];
+          v123 = [(NSMutableSet *)v131 countByEnumeratingWithState:&v148 objects:v207 count:16];
         }
 
-        while (v90);
+        while (v123);
       }
     }
 
@@ -2434,8 +2434,8 @@ LABEL_14:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v25 + 1) + 8 * i) xpcCnx];
-          [v9 invalidate];
+          xpcCnx = [*(*(&v25 + 1) + 8 * i) xpcCnx];
+          [xpcCnx invalidate];
         }
 
         v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -2523,10 +2523,10 @@ LABEL_14:
   }
 }
 
-- (void)daemonInfoChanged:(unint64_t)a3
+- (void)daemonInfoChanged:(unint64_t)changed
 {
-  v3 = a3;
-  if ((a3 & 0x10) != 0)
+  changedCopy = changed;
+  if ((changed & 0x10) != 0)
   {
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
@@ -2536,10 +2536,10 @@ LABEL_14:
     [(RPRemoteDisplayDaemon *)self _clientEnsureStopped];
     [(RPRemoteDisplayDaemon *)self _serverEnsureStopped];
     [(RPRemoteDisplayDaemon *)self _update];
-    if ((v3 & 0x40) == 0)
+    if ((changedCopy & 0x40) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((changedCopy & 4) == 0)
       {
         goto LABEL_21;
       }
@@ -2548,13 +2548,13 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 0x40) == 0)
+  else if ((changed & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
   [(RPRemoteDisplayDaemon *)self _update];
-  if ((v3 & 4) == 0)
+  if ((changedCopy & 4) == 0)
   {
     goto LABEL_21;
   }
@@ -2584,16 +2584,16 @@ LABEL_10:
 
   [(RPRemoteDisplayDaemon *)self _update];
 LABEL_21:
-  if ((v3 & 9) != 0)
+  if ((changedCopy & 9) != 0)
   {
     [(RPRemoteDisplayDaemon *)self _clientBonjourReevaluateDevices];
     [(RPRemoteDisplayDaemon *)self _update];
   }
 
-  if ((v3 & 0x20) != 0)
+  if ((changedCopy & 0x20) != 0)
   {
     v7 = +[RPDaemon sharedDaemon];
-    v8 = [v7 errorFlags];
+    errorFlags = [v7 errorFlags];
 
     v16 = 0u;
     v17 = 0u;
@@ -2614,7 +2614,7 @@ LABEL_21:
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v14 + 1) + 8 * i) updateErrorFlags:{v8, v14}];
+          [*(*(&v14 + 1) + 8 * i) updateErrorFlags:{errorFlags, v14}];
         }
 
         v11 = [(NSMutableSet *)v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -2625,11 +2625,11 @@ LABEL_21:
   }
 }
 
-- (BOOL)diagnosticCommand:(id)a3 params:(id)a4
+- (BOOL)diagnosticCommand:(id)command params:(id)params
 {
-  v5 = a3;
+  commandCopy = command;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([v5 rangeOfString:@"rdAWDLa" options:9] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([commandCopy rangeOfString:@"rdAWDLa" options:9] != 0x7FFFFFFFFFFFFFFFLL)
   {
     bonjourAWDLAdvertiserForce = self->_bonjourAWDLAdvertiserForce;
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -2641,7 +2641,7 @@ LABEL_21:
     goto LABEL_13;
   }
 
-  if ([v5 rangeOfString:@"rdAWDLb" options:9] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([commandCopy rangeOfString:@"rdAWDLb" options:9] != 0x7FFFFFFFFFFFFFFFLL)
   {
     bonjourBrowserAWDLForce = self->_bonjourBrowserAWDLForce;
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -2657,7 +2657,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (![v5 caseInsensitiveCompare:@"rdEval"])
+  if (![commandCopy caseInsensitiveCompare:@"rdEval"])
   {
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
@@ -2896,10 +2896,10 @@ LABEL_77:
   [(RPRemoteDisplayDaemon *)self _update:v22];
 }
 
-- (BOOL)addXPCMatchingToken:(unint64_t)a3 event:(id)a4 handler:(id)a5
+- (BOOL)addXPCMatchingToken:(unint64_t)token event:(id)event handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  handlerCopy = handler;
   CFStringGetTypeID();
   v9 = CFDictionaryGetTypedValue();
   if (v9)
@@ -2927,10 +2927,10 @@ LABEL_8:
       v34 = v11;
       v35 = v10;
       v17 = objc_alloc_init(RPXPCMatchingEntry);
-      [(RPXPCMatchingEntry *)v17 setEvent:v7];
-      v36 = v8;
-      [(RPXPCMatchingEntry *)v17 setHandler:v8];
-      [(RPXPCMatchingEntry *)v17 setToken:a3];
+      [(RPXPCMatchingEntry *)v17 setEvent:eventCopy];
+      v36 = handlerCopy;
+      [(RPXPCMatchingEntry *)v17 setHandler:handlerCopy];
+      [(RPXPCMatchingEntry *)v17 setToken:token];
       [(RPXPCMatchingEntry *)v17 setAngelJobLabel:v14];
       [(RPXPCMatchingEntry *)v17 setAngelAssertionName:v13];
       xpcMatchingDiscoveryMap = self->_xpcMatchingDiscoveryMap;
@@ -2943,7 +2943,7 @@ LABEL_8:
         xpcMatchingDiscoveryMap = self->_xpcMatchingDiscoveryMap;
       }
 
-      v21 = [NSNumber numberWithUnsignedLongLong:a3, v29, v31];
+      v21 = [NSNumber numberWithUnsignedLongLong:token, v29, v31];
       [(NSMutableDictionary *)xpcMatchingDiscoveryMap setObject:v17 forKeyedSubscript:v21];
 
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -2955,13 +2955,13 @@ LABEL_8:
         }
 
         v32 = v22;
-        v33 = v7;
-        v30 = a3;
+        v33 = eventCopy;
+        tokenCopy = token;
         LogPrintF();
       }
 
-      [(RPRemoteDisplayDaemon *)self _updateXPCMatchingDiscovery:v30];
-      v8 = v36;
+      [(RPRemoteDisplayDaemon *)self _updateXPCMatchingDiscovery:tokenCopy];
+      handlerCopy = v36;
     }
 
     else
@@ -2976,10 +2976,10 @@ LABEL_32:
 
       v34 = v11;
       v17 = objc_alloc_init(RPXPCMatchingEntry);
-      [(RPXPCMatchingEntry *)v17 setEvent:v7];
-      v37 = v8;
-      [(RPXPCMatchingEntry *)v17 setHandler:v8];
-      [(RPXPCMatchingEntry *)v17 setToken:a3];
+      [(RPXPCMatchingEntry *)v17 setEvent:eventCopy];
+      v37 = handlerCopy;
+      [(RPXPCMatchingEntry *)v17 setHandler:handlerCopy];
+      [(RPXPCMatchingEntry *)v17 setToken:token];
       v35 = v10;
       [(RPXPCMatchingEntry *)v17 setServiceType:v10];
       [(RPXPCMatchingEntry *)v17 setAngelJobLabel:v14];
@@ -2994,13 +2994,13 @@ LABEL_32:
         xpcMatchingServerMap = self->_xpcMatchingServerMap;
       }
 
-      v26 = [NSNumber numberWithUnsignedLongLong:a3, v29, v31];
+      v26 = [NSNumber numberWithUnsignedLongLong:token, v29, v31];
       [(NSMutableDictionary *)xpcMatchingServerMap setObject:v17 forKeyedSubscript:v26];
 
       if (dword_1001D4BA0 > 30)
       {
         v10 = v35;
-        v8 = v37;
+        handlerCopy = v37;
 LABEL_31:
         v11 = v34;
 
@@ -3009,7 +3009,7 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v8 = v37;
+      handlerCopy = v37;
       if (dword_1001D4BA0 != -1 || _LogCategory_Initialize())
       {
         LogPrintF();
@@ -3045,7 +3045,7 @@ LABEL_37:
   return v27;
 }
 
-- (BOOL)removeXPCMatchingToken:(unint64_t)a3
+- (BOOL)removeXPCMatchingToken:(unint64_t)token
 {
   v4 = [NSNumber numberWithUnsignedLongLong:?];
   v5 = [(NSMutableDictionary *)self->_xpcMatchingDiscoveryMap objectForKeyedSubscript:v4];
@@ -3098,18 +3098,18 @@ LABEL_11:
   [(NSMutableDictionary *)xpcMatchingDiscoveryMap enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)_bluetoothUseCaseFromWombatState:(unsigned int)a3 resultBlock:(id)a4
+- (void)_bluetoothUseCaseFromWombatState:(unsigned int)state resultBlock:(id)block
 {
   v6 = 131078;
-  v7 = a4;
-  v11 = v7;
-  if (a3 == 2)
+  blockCopy = block;
+  v11 = blockCopy;
+  if (state == 2)
   {
     v8 = 40;
     v9 = 40;
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v6 = 131080;
     v8 = 30;
@@ -3119,7 +3119,7 @@ LABEL_11:
   else
   {
     v10 = ![(RPRemoteDisplayDaemon *)self _onenessEnabled];
-    v7 = v11;
+    blockCopy = v11;
     if (v10)
     {
       v6 = 0x20000;
@@ -3134,12 +3134,12 @@ LABEL_11:
     v8 = 30;
   }
 
-  (*(v7 + 2))(v7, v6, v8, v9);
+  (*(blockCopy + 2))(blockCopy, v6, v8, v9);
 }
 
-- (void)_connectionConfigureCommon:(id)a3
+- (void)_connectionConfigureCommon:(id)common
 {
-  v4 = a3;
+  commonCopy = common;
   [(NSMutableDictionary *)self->_activatedServerXPCCnxMap allValues];
   v20 = 0u;
   v21 = 0u;
@@ -3159,33 +3159,33 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * i) activatedServer];
-        v11 = [v10 passwordType];
-        if (v11 > 4 || ((1 << v11) & 0x19) == 0)
+        activatedServer = [*(*(&v20 + 1) + 8 * i) activatedServer];
+        passwordType = [activatedServer passwordType];
+        if (passwordType > 4 || ((1 << passwordType) & 0x19) == 0)
         {
-          v13 = [v10 password];
-          [v4 setPassword:v13];
+          password = [activatedServer password];
+          [commonCopy setPassword:password];
 
-          [v4 setPasswordType:{objc_msgSend(v10, "passwordType")}];
-          v14 = [v10 internalAuthFlags];
-          if (v14)
+          [commonCopy setPasswordType:{objc_msgSend(activatedServer, "passwordType")}];
+          internalAuthFlags = [activatedServer internalAuthFlags];
+          if (internalAuthFlags)
           {
             v19[0] = _NSConcreteStackBlock;
             v19[1] = 3221225472;
             v19[2] = sub_1000A86DC;
             v19[3] = &unk_1001AB7E8;
-            v19[4] = v10;
-            [v4 setShowPasswordHandler:v19];
+            v19[4] = activatedServer;
+            [commonCopy setShowPasswordHandler:v19];
           }
 
-          if ((v14 & 2) != 0)
+          if ((internalAuthFlags & 2) != 0)
           {
             v18[0] = _NSConcreteStackBlock;
             v18[1] = 3221225472;
             v18[2] = sub_1000A8754;
             v18[3] = &unk_1001AB810;
-            v18[4] = v10;
-            [v4 setHidePasswordHandler:v18];
+            v18[4] = activatedServer;
+            [commonCopy setHidePasswordHandler:v18];
           }
 
           goto LABEL_18;
@@ -3209,8 +3209,8 @@ LABEL_18:
   v16[2] = sub_1000A87B4;
   v16[3] = &unk_1001AAA40;
   v16[4] = self;
-  v17 = v4;
-  v15 = v4;
+  v17 = commonCopy;
+  v15 = commonCopy;
   [v15 setAuthCompletionHandler:v16];
 }
 
@@ -3247,18 +3247,18 @@ LABEL_18:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 rssiThreshold];
-        if (v11 >= v3)
+        rssiThreshold = [v10 rssiThreshold];
+        if (rssiThreshold >= v3)
         {
           v12 = v3;
         }
 
         else
         {
-          v12 = v11;
+          v12 = rssiThreshold;
         }
 
-        if (v11)
+        if (rssiThreshold)
         {
           v3 = v12;
         }
@@ -3307,9 +3307,9 @@ LABEL_18:
   }
 }
 
-- (void)_bleDiscoveryEnsureStarted:(BOOL)a3
+- (void)_bleDiscoveryEnsureStarted:(BOOL)started
 {
-  v3 = a3;
+  startedCopy = started;
   p_bleDiscovery = &self->_bleDiscovery;
   bleDiscovery = self->_bleDiscovery;
   if (!bleDiscovery)
@@ -3378,7 +3378,7 @@ LABEL_18:
     v17[4] = self;
     v18 = bleDiscoveryID;
     [(SFDeviceDiscovery *)self->_bleDiscovery setInterruptionHandler:v17];
-    if (v3)
+    if (startedCopy)
     {
       goto LABEL_25;
     }
@@ -3400,17 +3400,17 @@ LABEL_29:
     return;
   }
 
-  v7 = [(RPRemoteDisplayDaemon *)self _discoveriCloudDevicesOnly];
+  _discoveriCloudDevicesOnly = [(RPRemoteDisplayDaemon *)self _discoveriCloudDevicesOnly];
   v8 = self->_bleDiscovery;
-  v9 = [(SFDeviceDiscovery *)v8 discoveryFlags];
-  if (v7)
+  discoveryFlags = [(SFDeviceDiscovery *)v8 discoveryFlags];
+  if (_discoveriCloudDevicesOnly)
   {
-    v10 = v9 | 0x20;
+    v10 = discoveryFlags | 0x20;
   }
 
   else
   {
-    v10 = v9 & 0xFFFFFFDF;
+    v10 = discoveryFlags & 0xFFFFFFDF;
   }
 
   [(SFDeviceDiscovery *)v8 setDiscoveryFlags:v10];
@@ -3422,7 +3422,7 @@ LABEL_29:
     }
 
     [(SFDeviceDiscovery *)*p_bleDiscovery setRssiThreshold:self->_bleRSSIThreshold];
-    if (v3)
+    if (startedCopy)
     {
       goto LABEL_25;
     }
@@ -3430,7 +3430,7 @@ LABEL_29:
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!startedCopy)
   {
     goto LABEL_7;
   }
@@ -3487,10 +3487,10 @@ LABEL_25:
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) discoveryFlags];
-        if (v8)
+        discoveryFlags = [*(*(&v11 + 1) + 8 * i) discoveryFlags];
+        if (discoveryFlags)
         {
-          v5 |= v8;
+          v5 |= discoveryFlags;
         }
       }
 
@@ -3509,24 +3509,24 @@ LABEL_25:
   return v9;
 }
 
-- (void)_clientBLEDiscoveryDeviceFound:(id)a3
+- (void)_clientBLEDiscoveryDeviceFound:(id)found
 {
-  v4 = a3;
-  v5 = [v4 model];
-  v6 = v5;
-  if (v5)
+  foundCopy = found;
+  model = [foundCopy model];
+  v6 = model;
+  if (model)
   {
-    if (([v5 hasPrefix:@"iPhone"] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"iPad") & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"iPod") & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"RealityDevice") & 1) != 0 || self->_prefIgnoreRemoteDisplayChecks)
+    if (([model hasPrefix:@"iPhone"] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"iPad") & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"iPod") & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"RealityDevice") & 1) != 0 || self->_prefIgnoreRemoteDisplayChecks)
     {
-      v7 = [v4 idsIdentifier];
-      if (v7)
+      idsIdentifier = [foundCopy idsIdentifier];
+      if (idsIdentifier)
       {
-        v8 = v7;
+        v8 = idsIdentifier;
         v9 = +[RPCloudDaemon sharedCloudDaemon];
-        v10 = [v9 idsDeviceMap];
-        v11 = [v10 objectForKeyedSubscript:v8];
+        idsDeviceMap = [v9 idsDeviceMap];
+        v11 = [idsDeviceMap objectForKeyedSubscript:v8];
 
-        if (([v4 deviceFlags] & 8) != 0 && !v11)
+        if (([foundCopy deviceFlags] & 8) != 0 && !v11)
         {
           if (dword_1001D4BA0 <= 90 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
           {
@@ -3558,7 +3558,7 @@ LABEL_25:
           }
         }
 
-        if (GestaltGetDeviceClass() == 4 && ![(RPRemoteDisplayDaemon *)self _deviceSupportsLaguna:v4])
+        if (GestaltGetDeviceClass() == 4 && ![(RPRemoteDisplayDaemon *)self _deviceSupportsLaguna:foundCopy])
         {
           if (dword_1001D4BA0 <= 20 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
           {
@@ -3568,18 +3568,18 @@ LABEL_25:
           goto LABEL_103;
         }
 
-        if (([v4 deviceFlags] & 0xC008) != 0)
+        if (([foundCopy deviceFlags] & 0xC008) != 0)
         {
-          if (([v4 deviceFlags] & 0x400) != 0 && (objc_msgSend(v4, "deviceFlags") & 0x8000) != 0)
+          if (([foundCopy deviceFlags] & 0x400) != 0 && (objc_msgSend(foundCopy, "deviceFlags") & 0x8000) != 0)
           {
-            v14 = [v4 rapportIdentifier];
+            rapportIdentifier = [foundCopy rapportIdentifier];
 
             if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
             {
               sub_100127E48();
             }
 
-            v8 = v14;
+            v8 = rapportIdentifier;
           }
 
           v15 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:v8];
@@ -3606,10 +3606,10 @@ LABEL_25:
             [v34 setIdentifier:v8];
             [v34 setIdsDevice:v11];
             [v34 setPersistentIdentifier:v8];
-            v35 = [v4 idsIdentifier];
-            [v34 setVerifiedIdentity:v35];
+            idsIdentifier2 = [foundCopy idsIdentifier];
+            [v34 setVerifiedIdentity:idsIdentifier2];
 
-            [v34 updateWithSFDevice:v4];
+            [v34 updateWithSFDevice:foundCopy];
             [v34 setIdsDeviceIdentifier:v8];
             if (self->_prefIgnoreRemoteDisplayChecks)
             {
@@ -3652,14 +3652,14 @@ LABEL_25:
                   }
 
                   v45 = *(*(&v60 + 1) + 8 * i);
-                  v46 = [v45 activatedDiscovery];
-                  v47 = [v46 shouldReportDevice:v34];
+                  activatedDiscovery = [v45 activatedDiscovery];
+                  v47 = [activatedDiscovery shouldReportDevice:v34];
 
                   if (v47)
                   {
-                    v48 = [v45 xpcCnx];
-                    v49 = [v48 remoteObjectProxy];
-                    [v49 remoteDisplayFoundDevice:v34];
+                    xpcCnx = [v45 xpcCnx];
+                    remoteObjectProxy = [xpcCnx remoteObjectProxy];
+                    [remoteObjectProxy remoteDisplayFoundDevice:v34];
                   }
                 }
 
@@ -3681,8 +3681,8 @@ LABEL_25:
             sub_100127E88();
           }
 
-          v17 = [v16 statusFlags];
-          v18 = [v16 updateWithSFDevice:v4];
+          statusFlags = [v16 statusFlags];
+          v18 = [v16 updateWithSFDevice:foundCopy];
           [v16 setIdsDeviceIdentifier:v8];
           [(RPRemoteDisplayDaemon *)self _requestCameraCapabilitiesForDevice:v16];
           if (!v18)
@@ -3692,8 +3692,8 @@ LABEL_103:
             goto LABEL_104;
           }
 
-          v53 = v17;
-          v54 = self;
+          v53 = statusFlags;
+          selfCopy = self;
           v56 = v8;
           v58 = v11;
           v66 = 0u;
@@ -3716,14 +3716,14 @@ LABEL_103:
                 }
 
                 v24 = *(*(&v64 + 1) + 8 * j);
-                v25 = [v24 activatedDiscovery];
-                v26 = [v25 shouldReportDevice:v16];
+                activatedDiscovery2 = [v24 activatedDiscovery];
+                v26 = [activatedDiscovery2 shouldReportDevice:v16];
 
                 if (v26)
                 {
-                  v27 = [v24 xpcCnx];
-                  v28 = [v27 remoteObjectProxy];
-                  [v28 remoteDisplayChangedDevice:v16 changes:v18];
+                  xpcCnx2 = [v24 xpcCnx];
+                  remoteObjectProxy2 = [xpcCnx2 remoteObjectProxy];
+                  [remoteObjectProxy2 remoteDisplayChangedDevice:v16 changes:v18];
                 }
               }
 
@@ -3735,26 +3735,26 @@ LABEL_103:
 
           if ((v53 & 0x200) != 0 && ([v16 statusFlags] & 0x200) == 0)
           {
-            [(RPRemoteDisplayDaemon *)v54 _clientBonjourReconfirmDevice:v16 reason:"WiFiP2P lost"];
+            [(RPRemoteDisplayDaemon *)selfCopy _clientBonjourReconfirmDevice:v16 reason:"WiFiP2P lost"];
           }
 
           v6 = v55;
           v8 = v56;
           v11 = v58;
-          if ((v18 & 1) != 0 && [(RPRemoteDisplayDevice *)v54->_bleNearbyActionV2Device isEqualToDevice:v16])
+          if ((v18 & 1) != 0 && [(RPRemoteDisplayDevice *)selfCopy->_bleNearbyActionV2Device isEqualToDevice:v16])
           {
-            [(RPRemoteDisplayDevice *)v54->_bleNearbyActionV2Device updateWithSFDevice:v4];
-            [(RPRemoteDisplayDaemon *)v54 _clientBLENearbyActionV2AdvertiserUpdate];
+            [(RPRemoteDisplayDevice *)selfCopy->_bleNearbyActionV2Device updateWithSFDevice:foundCopy];
+            [(RPRemoteDisplayDaemon *)selfCopy _clientBLENearbyActionV2AdvertiserUpdate];
           }
 
           if ((v18 & 0x400) != 0)
           {
-            deviceConfirmedIdentifier = v54->_deviceConfirmedIdentifier;
+            deviceConfirmedIdentifier = selfCopy->_deviceConfirmedIdentifier;
             if (deviceConfirmedIdentifier)
             {
               if (-[NSString isEqualToString:](deviceConfirmedIdentifier, "isEqualToString:", v56) && ([v16 inDiscoverySession] & 1) == 0)
               {
-                [(RPRemoteDisplayDaemon *)v54 _startInSessionDeviceLostTimer];
+                [(RPRemoteDisplayDaemon *)selfCopy _startInSessionDeviceLostTimer];
               }
             }
           }
@@ -3768,12 +3768,12 @@ LABEL_103:
             if (dword_1001D4BA0 <= 20 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
             {
               v51 = v16;
-              v52 = v4;
+              v52 = foundCopy;
               LogPrintF();
             }
 
-            v50 = [v16 bleDevice];
-            [(RPRemoteDisplayDaemon *)self _clientBLEDiscoveryDeviceLost:v50];
+            bleDevice = [v16 bleDevice];
+            [(RPRemoteDisplayDaemon *)self _clientBLEDiscoveryDeviceLost:bleDevice];
           }
 
           else if (dword_1001D4BA0 <= 20 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -3805,25 +3805,25 @@ LABEL_103:
 LABEL_104:
 }
 
-- (void)_clientBLEDiscoveryDeviceLost:(id)a3
+- (void)_clientBLEDiscoveryDeviceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [v4 idsIdentifier];
-  if (v5)
+  lostCopy = lost;
+  idsIdentifier = [lostCopy idsIdentifier];
+  if (idsIdentifier)
   {
-    v6 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:v5];
+    v6 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:idsIdentifier];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 bleDevice];
-      v9 = [v8 identifier];
-      v10 = [v9 UUIDString];
+      bleDevice = [v6 bleDevice];
+      identifier = [bleDevice identifier];
+      uUIDString = [identifier UUIDString];
 
-      v11 = [v4 bleDevice];
-      v12 = [v11 identifier];
-      v13 = [v12 UUIDString];
+      bleDevice2 = [lostCopy bleDevice];
+      identifier2 = [bleDevice2 identifier];
+      uUIDString2 = [identifier2 UUIDString];
 
-      if (v10 && v13 && ([v10 isEqual:v13] & 1) == 0)
+      if (uUIDString && uUIDString2 && ([uUIDString isEqual:uUIDString2] & 1) == 0)
       {
         if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
@@ -3831,7 +3831,7 @@ LABEL_104:
         }
       }
 
-      else if ([v4 isBLEDeviceReplaced])
+      else if ([lostCopy isBLEDeviceReplaced])
       {
         if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
@@ -3841,18 +3841,18 @@ LABEL_104:
 
       else
       {
-        v39 = v13;
-        v40 = v10;
-        v37 = [v7 statusFlags];
-        v38 = self;
-        if ([v7 removeSFDevice:v4])
+        v39 = uUIDString2;
+        v40 = uUIDString;
+        statusFlags = [v7 statusFlags];
+        selfCopy = self;
+        if ([v7 removeSFDevice:lostCopy])
         {
           if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
           {
             sub_10012806C();
           }
 
-          [(NSMutableDictionary *)self->_discoveredDevices setObject:0 forKeyedSubscript:v5];
+          [(NSMutableDictionary *)self->_discoveredDevices setObject:0 forKeyedSubscript:idsIdentifier];
           [v7 clearCameraCapabilitiesRefetchTimer];
           v47 = 0u;
           v48 = 0u;
@@ -3874,14 +3874,14 @@ LABEL_104:
                 }
 
                 v19 = *(*(&v45 + 1) + 8 * i);
-                v20 = [v19 activatedDiscovery];
-                v21 = [v20 shouldReportDevice:v7];
+                activatedDiscovery = [v19 activatedDiscovery];
+                v21 = [activatedDiscovery shouldReportDevice:v7];
 
                 if (v21)
                 {
-                  v22 = [v19 xpcCnx];
-                  v23 = [v22 remoteObjectProxy];
-                  [v23 remoteDisplayLostDevice:v7];
+                  xpcCnx = [v19 xpcCnx];
+                  remoteObjectProxy = [xpcCnx remoteObjectProxy];
+                  [remoteObjectProxy remoteDisplayLostDevice:v7];
                 }
               }
 
@@ -3891,13 +3891,13 @@ LABEL_104:
             while (v16);
           }
 
-          v24 = v38;
-          v25 = [(RPRemoteDisplayDaemon *)v38 deviceConfirmedIdentifier];
-          v26 = [v5 isEqualToString:v25];
+          v24 = selfCopy;
+          deviceConfirmedIdentifier = [(RPRemoteDisplayDaemon *)selfCopy deviceConfirmedIdentifier];
+          v26 = [idsIdentifier isEqualToString:deviceConfirmedIdentifier];
 
           if (v26)
           {
-            [(RPRemoteDisplayDaemon *)v38 _startInSessionDeviceLostTimer];
+            [(RPRemoteDisplayDaemon *)selfCopy _startInSessionDeviceLostTimer];
           }
         }
 
@@ -3928,14 +3928,14 @@ LABEL_104:
                 }
 
                 v32 = *(*(&v41 + 1) + 8 * j);
-                v33 = [v32 activatedDiscovery];
-                v34 = [v33 shouldReportDevice:v7];
+                activatedDiscovery2 = [v32 activatedDiscovery];
+                v34 = [activatedDiscovery2 shouldReportDevice:v7];
 
                 if (v34)
                 {
-                  v35 = [v32 xpcCnx];
-                  v36 = [v35 remoteObjectProxy];
-                  [v36 remoteDisplayChangedDevice:v7 changes:2];
+                  xpcCnx2 = [v32 xpcCnx];
+                  remoteObjectProxy2 = [xpcCnx2 remoteObjectProxy];
+                  [remoteObjectProxy2 remoteDisplayChangedDevice:v7 changes:2];
                 }
               }
 
@@ -3945,13 +3945,13 @@ LABEL_104:
             while (v29);
           }
 
-          v24 = v38;
+          v24 = selfCopy;
         }
 
         [(RPRemoteDisplayDaemon *)v24 _updateXPCMatchingDiscovery];
-        v13 = v39;
-        v10 = v40;
-        if ((v37 & 0x200) != 0 && ([v7 statusFlags] & 0x200) == 0)
+        uUIDString2 = v39;
+        uUIDString = v40;
+        if ((statusFlags & 0x200) != 0 && ([v7 statusFlags] & 0x200) == 0)
         {
           [(RPRemoteDisplayDaemon *)v24 _clientBonjourReconfirmDevice:v7 reason:"BLE device lost"];
         }
@@ -4008,10 +4008,10 @@ LABEL_104:
     return;
   }
 
-  v4 = [(RPNearbyActionV2Advertiser *)bleNearbyActionV2Advertiser targetData];
-  v5 = [(RPRemoteDisplayDevice *)self->_bleNearbyActionV2Device bleTargetData];
-  v10 = v4;
-  v6 = v5;
+  targetData = [(RPNearbyActionV2Advertiser *)bleNearbyActionV2Advertiser targetData];
+  bleTargetData = [(RPRemoteDisplayDevice *)self->_bleNearbyActionV2Device bleTargetData];
+  v10 = targetData;
+  v6 = bleTargetData;
   if (v10 != v6)
   {
     if ((v10 != 0) != (v6 == 0))
@@ -4070,10 +4070,10 @@ LABEL_15:
   }
 }
 
-- (BOOL)_clientBonjourFoundDevice:(id)a3 reevaluate:(BOOL)a4
+- (BOOL)_clientBonjourFoundDevice:(id)device reevaluate:(BOOL)reevaluate
 {
-  v6 = a3;
-  v7 = [v6 txtDictionary];
+  deviceCopy = device;
+  txtDictionary = [deviceCopy txtDictionary];
   if (!self->_btAdvAddrStr)
   {
     goto LABEL_13;
@@ -4116,7 +4116,7 @@ LABEL_13:
     }
 
     v10 = +[RPIdentityDaemon sharedIdentityDaemon];
-    v11 = [v10 resolveIdentityForBonjourDevice:v6 typeFlags:3074];
+    v11 = [v10 resolveIdentityForBonjourDevice:deviceCopy typeFlags:3074];
     v12 = v11;
     if (!v11)
     {
@@ -4125,66 +4125,66 @@ LABEL_13:
         sub_10012863C();
       }
 
-      [(RPRemoteDisplayDaemon *)self _clientBonjourFoundUnresolvedDevice:v6];
+      [(RPRemoteDisplayDaemon *)self _clientBonjourFoundUnresolvedDevice:deviceCopy];
       v14 = 0;
       goto LABEL_92;
     }
 
-    v13 = [v11 idsDeviceID];
-    v14 = v13 != 0;
-    if (!v13)
+    idsDeviceID = [v11 idsDeviceID];
+    v14 = idsDeviceID != 0;
+    if (!idsDeviceID)
     {
       if (dword_1001D4BA0 <= 90 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
         sub_100128504();
       }
 
-      [(RPRemoteDisplayDaemon *)self _clientBonjourFoundUnresolvedDevice:v6];
+      [(RPRemoteDisplayDaemon *)self _clientBonjourFoundUnresolvedDevice:deviceCopy];
       goto LABEL_91;
     }
 
-    if (!a4)
+    if (!reevaluate)
     {
       [(RPRemoteDisplayDaemon *)self _clientBonjourReevaluateDevices];
     }
 
-    v59 = [v12 model];
+    model = [v12 model];
     v15 = +[RPCloudDaemon sharedCloudDaemon];
-    v16 = [v15 idsDeviceMap];
-    v17 = [v16 objectForKeyedSubscript:v13];
+    idsDeviceMap = [v15 idsDeviceMap];
+    v17 = [idsDeviceMap objectForKeyedSubscript:idsDeviceID];
 
     v58 = v17;
     if (v17)
     {
-      v18 = [v17 modelIdentifier];
-      v19 = v18;
-      if (v18)
+      modelIdentifier = [v17 modelIdentifier];
+      v19 = modelIdentifier;
+      if (modelIdentifier)
       {
-        v20 = v18;
+        v20 = modelIdentifier;
 
-        v59 = v20;
+        model = v20;
       }
     }
 
-    [(NSMutableDictionary *)self->_pendingLostDevices setObject:0 forKeyedSubscript:v13];
-    v21 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:v13];
-    v57 = v13;
+    [(NSMutableDictionary *)self->_pendingLostDevices setObject:0 forKeyedSubscript:idsDeviceID];
+    v21 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:idsDeviceID];
+    v57 = idsDeviceID;
     if (v21)
     {
       v22 = v21;
-      v23 = [v21 updateWithBonjourDevice:v6];
-      if (v59)
+      v23 = [v21 updateWithBonjourDevice:deviceCopy];
+      if (model)
       {
-        v24 = [v22 model];
-        v25 = v59;
+        model2 = [v22 model];
+        v25 = model;
         v26 = v25;
-        if (v24 == v25)
+        if (model2 == v25)
         {
         }
 
         else
         {
-          if (!v24)
+          if (!model2)
           {
 
 LABEL_73:
@@ -4209,7 +4209,7 @@ LABEL_74:
               v52 = v14;
               v53 = v12;
               v54 = v10;
-              v56 = v6;
+              v56 = deviceCopy;
               v45 = *v65;
               do
               {
@@ -4221,14 +4221,14 @@ LABEL_74:
                   }
 
                   v47 = *(*(&v64 + 1) + 8 * i);
-                  v48 = [v47 activatedDiscovery];
-                  v49 = [v48 shouldReportDevice:v22];
+                  activatedDiscovery = [v47 activatedDiscovery];
+                  v49 = [activatedDiscovery shouldReportDevice:v22];
 
                   if (v49)
                   {
-                    v50 = [v47 xpcCnx];
-                    v51 = [v50 remoteObjectProxy];
-                    [v51 remoteDisplayChangedDevice:v22 changes:v23];
+                    xpcCnx = [v47 xpcCnx];
+                    remoteObjectProxy = [xpcCnx remoteObjectProxy];
+                    [remoteObjectProxy remoteDisplayChangedDevice:v22 changes:v23];
                   }
                 }
 
@@ -4239,12 +4239,12 @@ LABEL_74:
 
 LABEL_87:
               v10 = v54;
-              v6 = v56;
+              deviceCopy = v56;
               v12 = v53;
               v14 = v52;
 LABEL_90:
 
-              v13 = v57;
+              idsDeviceID = v57;
 LABEL_91:
 
 LABEL_92:
@@ -4255,7 +4255,7 @@ LABEL_89:
             goto LABEL_90;
           }
 
-          v55 = [v24 isEqual:v25];
+          v55 = [model2 isEqual:v25];
 
           if ((v55 & 1) == 0)
           {
@@ -4279,11 +4279,11 @@ LABEL_89:
     }
 
     v22 = objc_alloc_init(RPRemoteDisplayDevice);
-    [v22 setIdentifier:v13];
+    [v22 setIdentifier:idsDeviceID];
     [v22 setIdsDevice:v58];
-    [v22 setIdsDeviceIdentifier:v13];
-    [v22 setModel:v59];
-    [v22 setPersistentIdentifier:v13];
+    [v22 setIdsDeviceIdentifier:idsDeviceID];
+    [v22 setModel:model];
+    [v22 setPersistentIdentifier:idsDeviceID];
     v54 = v10;
     if ([v12 type] == 2)
     {
@@ -4300,10 +4300,10 @@ LABEL_89:
       if ([v12 type] != 13)
       {
 LABEL_60:
-        v52 = v13 != 0;
+        v52 = idsDeviceID != 0;
         v53 = v12;
-        v56 = v6;
-        [v22 updateWithBonjourDevice:v6];
+        v56 = deviceCopy;
+        [v22 updateWithBonjourDevice:deviceCopy];
         discoveredDevices = self->_discoveredDevices;
         if (!discoveredDevices)
         {
@@ -4314,7 +4314,7 @@ LABEL_60:
           discoveredDevices = self->_discoveredDevices;
         }
 
-        [(NSMutableDictionary *)discoveredDevices setObject:v22 forKeyedSubscript:v13];
+        [(NSMutableDictionary *)discoveredDevices setObject:v22 forKeyedSubscript:idsDeviceID];
         [(RPRemoteDisplayDaemon *)self _requestCameraCapabilitiesForDevice:v22];
         v62 = 0u;
         v63 = 0u;
@@ -4336,14 +4336,14 @@ LABEL_60:
               }
 
               v37 = *(*(&v60 + 1) + 8 * j);
-              v38 = [v37 activatedDiscovery];
-              v39 = [v38 shouldReportDevice:v22];
+              activatedDiscovery2 = [v37 activatedDiscovery];
+              v39 = [activatedDiscovery2 shouldReportDevice:v22];
 
               if (v39)
               {
-                v40 = [v37 xpcCnx];
-                v41 = [v40 remoteObjectProxy];
-                [v41 remoteDisplayFoundDevice:v22];
+                xpcCnx2 = [v37 xpcCnx];
+                remoteObjectProxy2 = [xpcCnx2 remoteObjectProxy];
+                [remoteObjectProxy2 remoteDisplayFoundDevice:v22];
               }
             }
 
@@ -4380,18 +4380,18 @@ LABEL_37:
   return v14;
 }
 
-- (void)_clientBonjourLostDevice:(id)a3
+- (void)_clientBonjourLostDevice:(id)device
 {
-  v12 = a3;
+  deviceCopy = device;
   v4 = +[RPIdentityDaemon sharedIdentityDaemon];
-  v5 = [v4 resolveIdentityForBonjourDevice:v12 typeFlags:2];
+  v5 = [v4 resolveIdentityForBonjourDevice:deviceCopy typeFlags:2];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 idsDeviceID];
-    if (v7)
+    idsDeviceID = [v5 idsDeviceID];
+    if (idsDeviceID)
     {
-      v8 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:v7];
+      v8 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:idsDeviceID];
       if (v8)
       {
         pendingLostDevices = self->_pendingLostDevices;
@@ -4404,7 +4404,7 @@ LABEL_37:
           pendingLostDevices = self->_pendingLostDevices;
         }
 
-        [(NSMutableDictionary *)pendingLostDevices setObject:v12 forKeyedSubscript:v7];
+        [(NSMutableDictionary *)pendingLostDevices setObject:deviceCopy forKeyedSubscript:idsDeviceID];
         [(RPRemoteDisplayDaemon *)self _schedulePendingLostDeviceTimer];
       }
     }
@@ -4454,22 +4454,22 @@ LABEL_11:
 
 - (void)_processPendingLostDevices
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001286E4(v2);
+    sub_1001286E4(selfCopy);
   }
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = [(NSMutableDictionary *)v2->_pendingLostDevices allKeys];
+  obj = [(NSMutableDictionary *)selfCopy->_pendingLostDevices allKeys];
   v31 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v31)
   {
-    v29 = v2;
+    v29 = selfCopy;
     v30 = *v41;
     do
     {
@@ -4482,8 +4482,8 @@ LABEL_11:
         }
 
         v4 = *(*(&v40 + 1) + 8 * v3);
-        v5 = [(NSMutableDictionary *)v2->_pendingLostDevices objectForKeyedSubscript:v4];
-        v6 = [(RPRemoteDisplayDaemon *)v2 _findMatchingDeviceWithIdentifier:v4];
+        v5 = [(NSMutableDictionary *)selfCopy->_pendingLostDevices objectForKeyedSubscript:v4];
+        v6 = [(RPRemoteDisplayDaemon *)selfCopy _findMatchingDeviceWithIdentifier:v4];
         if ([v6 removeBonjourDevice:v5])
         {
           if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -4491,13 +4491,13 @@ LABEL_11:
             sub_100128784();
           }
 
-          [(NSMutableDictionary *)v2->_discoveredDevices setObject:0 forKeyedSubscript:v4];
+          [(NSMutableDictionary *)selfCopy->_discoveredDevices setObject:0 forKeyedSubscript:v4];
           [v6 clearCameraCapabilitiesRefetchTimer];
           v38 = 0u;
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v7 = v2->_xpcConnections;
+          v7 = selfCopy->_xpcConnections;
           v8 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v36 objects:v45 count:16];
           if (v8)
           {
@@ -4513,14 +4513,14 @@ LABEL_11:
                 }
 
                 v12 = *(*(&v36 + 1) + 8 * i);
-                v13 = [v12 activatedDiscovery];
-                v14 = [v13 shouldReportDevice:v6];
+                activatedDiscovery = [v12 activatedDiscovery];
+                v14 = [activatedDiscovery shouldReportDevice:v6];
 
                 if (v14)
                 {
-                  v15 = [v12 xpcCnx];
-                  v16 = [v15 remoteObjectProxy];
-                  [v16 remoteDisplayLostDevice:v6];
+                  xpcCnx = [v12 xpcCnx];
+                  remoteObjectProxy = [xpcCnx remoteObjectProxy];
+                  [remoteObjectProxy remoteDisplayLostDevice:v6];
                 }
               }
 
@@ -4529,7 +4529,7 @@ LABEL_11:
 
             while (v9);
 LABEL_35:
-            v2 = v29;
+            selfCopy = v29;
           }
         }
 
@@ -4544,7 +4544,7 @@ LABEL_35:
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v7 = v2->_xpcConnections;
+          v7 = selfCopy->_xpcConnections;
           v17 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v32 objects:v44 count:16];
           if (v17)
           {
@@ -4560,14 +4560,14 @@ LABEL_35:
                 }
 
                 v21 = *(*(&v32 + 1) + 8 * j);
-                v22 = [v21 activatedDiscovery];
-                v23 = [v22 shouldReportDevice:v6];
+                activatedDiscovery2 = [v21 activatedDiscovery];
+                v23 = [activatedDiscovery2 shouldReportDevice:v6];
 
                 if (v23)
                 {
-                  v24 = [v21 xpcCnx];
-                  v25 = [v24 remoteObjectProxy];
-                  [v25 remoteDisplayChangedDevice:v6 changes:2];
+                  xpcCnx2 = [v21 xpcCnx];
+                  remoteObjectProxy2 = [xpcCnx2 remoteObjectProxy];
+                  [remoteObjectProxy2 remoteDisplayChangedDevice:v6 changes:2];
                 }
               }
 
@@ -4590,20 +4590,20 @@ LABEL_35:
     while (v26);
   }
 
-  [(NSMutableDictionary *)v2->_pendingLostDevices removeAllObjects];
-  pendingLostDevices = v2->_pendingLostDevices;
-  v2->_pendingLostDevices = 0;
+  [(NSMutableDictionary *)selfCopy->_pendingLostDevices removeAllObjects];
+  pendingLostDevices = selfCopy->_pendingLostDevices;
+  selfCopy->_pendingLostDevices = 0;
 
-  [(RPRemoteDisplayDaemon *)v2 _updateXPCMatchingDiscovery];
+  [(RPRemoteDisplayDaemon *)selfCopy _updateXPCMatchingDiscovery];
 }
 
-- (void)_clientBonjourFoundUnresolvedDevice:(id)a3
+- (void)_clientBonjourFoundUnresolvedDevice:(id)device
 {
-  v9 = a3;
-  v4 = [v9 identifier];
-  v5 = [v4 UUIDString];
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v5)
+  if (uUIDString)
   {
     unresolvedDevices = self->_unresolvedDevices;
     if (!unresolvedDevices)
@@ -4615,43 +4615,43 @@ LABEL_35:
       unresolvedDevices = self->_unresolvedDevices;
     }
 
-    [(NSMutableDictionary *)unresolvedDevices setObject:v9 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)unresolvedDevices setObject:deviceCopy forKeyedSubscript:uUIDString];
   }
 }
 
-- (void)_clientBonjourLostUnresolvedDevice:(id)a3
+- (void)_clientBonjourLostUnresolvedDevice:(id)device
 {
-  v4 = [a3 identifier];
-  v6 = [v4 UUIDString];
+  identifier = [device identifier];
+  uUIDString = [identifier UUIDString];
 
-  v5 = v6;
-  if (v6)
+  v5 = uUIDString;
+  if (uUIDString)
   {
-    [(NSMutableDictionary *)self->_unresolvedDevices setObject:0 forKeyedSubscript:v6];
-    v5 = v6;
+    [(NSMutableDictionary *)self->_unresolvedDevices setObject:0 forKeyedSubscript:uUIDString];
+    v5 = uUIDString;
   }
 }
 
-- (void)_clientBonjourReconfirmDevice:(id)a3 reason:(const char *)a4
+- (void)_clientBonjourReconfirmDevice:(id)device reason:(const char *)reason
 {
-  v5 = a3;
-  v11 = v5;
+  deviceCopy = device;
+  v11 = deviceCopy;
   if (dword_1001D4BA0 <= 30)
   {
-    if (dword_1001D4BA0 != -1 || (v6 = _LogCategory_Initialize(), v5 = v11, v6))
+    if (dword_1001D4BA0 != -1 || (v6 = _LogCategory_Initialize(), deviceCopy = v11, v6))
     {
-      v9 = a4;
-      v10 = v5;
+      reasonCopy = reason;
+      v10 = deviceCopy;
       LogPrintF();
-      v5 = v11;
+      deviceCopy = v11;
     }
   }
 
-  v7 = [v5 bonjourDevice];
-  v8 = v7;
-  if (v7)
+  bonjourDevice = [deviceCopy bonjourDevice];
+  v8 = bonjourDevice;
+  if (bonjourDevice)
   {
-    [v7 reconfirm];
+    [bonjourDevice reconfirm];
   }
 }
 
@@ -4732,10 +4732,10 @@ LABEL_35:
   }
 }
 
-- (void)_clientBonjourAWDLBrowserFoundDevice:(id)a3
+- (void)_clientBonjourAWDLBrowserFoundDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 txtDictionary];
+  deviceCopy = device;
+  txtDictionary = [deviceCopy txtDictionary];
   if (CFDictionaryGetInt64())
   {
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -4751,26 +4751,26 @@ LABEL_35:
   {
     if ((Int64 & 0x80000) != 0)
     {
-      [(RPRemoteDisplayDaemon *)self _clientAWDLPairingSessionWithDevice:v4];
+      [(RPRemoteDisplayDaemon *)self _clientAWDLPairingSessionWithDevice:deviceCopy];
       goto LABEL_65;
     }
 
     v7 = +[RPIdentityDaemon sharedIdentityDaemon];
-    v8 = [v7 resolveIdentityForBonjourDevice:v4 typeFlags:3074];
+    v8 = [v7 resolveIdentityForBonjourDevice:deviceCopy typeFlags:3074];
     v9 = v8;
     if (v8)
     {
-      v46 = [v8 idsDeviceID];
-      if (v46)
+      idsDeviceID = [v8 idsDeviceID];
+      if (idsDeviceID)
       {
         if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
-          sub_1001288E4(v4, self, v46);
+          sub_1001288E4(deviceCopy, self, idsDeviceID);
         }
 
         v43 = v9;
         v44 = v7;
-        v45 = v5;
+        v45 = txtDictionary;
         bonjourAWDLDevices = self->_bonjourAWDLDevices;
         if (!bonjourAWDLDevices)
         {
@@ -4781,8 +4781,8 @@ LABEL_35:
           bonjourAWDLDevices = self->_bonjourAWDLDevices;
         }
 
-        v13 = v46;
-        [(NSMutableDictionary *)bonjourAWDLDevices setObject:v4 forKeyedSubscript:v46];
+        v13 = idsDeviceID;
+        [(NSMutableDictionary *)bonjourAWDLDevices setObject:deviceCopy forKeyedSubscript:idsDeviceID];
         v53 = 0u;
         v54 = 0u;
         v51 = 0u;
@@ -4807,22 +4807,22 @@ LABEL_35:
               }
 
               v19 = *(*(&v51 + 1) + 8 * v18);
-              v20 = [v19 clientNetCnx];
-              v21 = [v20 present];
+              clientNetCnx = [v19 clientNetCnx];
+              present = [clientNetCnx present];
 
-              if ((v21 & 1) == 0)
+              if ((present & 1) == 0)
               {
-                v22 = [v19 activatedSession];
-                v23 = v22;
-                if (v22 && [v22 needsAWDL])
+                activatedSession = [v19 activatedSession];
+                v23 = activatedSession;
+                if (activatedSession && [activatedSession needsAWDL])
                 {
-                  v24 = [v23 daemonDevice];
-                  v25 = [v24 identifier];
-                  if ([v25 isEqual:v13])
+                  daemonDevice = [v23 daemonDevice];
+                  identifier = [daemonDevice identifier];
+                  if ([identifier isEqual:v13])
                   {
 
 LABEL_30:
-                    [v23 setBonjourDevice:v4];
+                    [v23 setBonjourDevice:deviceCopy];
                     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
                     {
                       sub_100128A24(v23);
@@ -4834,20 +4834,20 @@ LABEL_30:
 
                     if (v36 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
                     {
-                      v37 = [v23 serviceType];
+                      serviceType = [v23 serviceType];
                       *buf = 138412546;
-                      *&buf[4] = v24;
+                      *&buf[4] = daemonDevice;
                       v56 = 2112;
-                      v57 = v37;
+                      v57 = serviceType;
                       _os_signpost_emit_with_name_impl(&_mh_execute_header, v34, OS_SIGNPOST_EVENT, v36, "Found AWDL device", "Start connection to found AWDL device (%@) for service type %@ \n", buf, 0x16u);
                     }
 
                     v50 = 0;
-                    v38 = [v19 netConnectionStartWithDevice:v24 session:v23 error:&v50];
+                    v38 = [v19 netConnectionStartWithDevice:daemonDevice session:v23 error:&v50];
                     v39 = v50;
                     if (v38)
                     {
-                      v13 = v46;
+                      v13 = idsDeviceID;
                       v14 = v47;
                     }
 
@@ -4856,15 +4856,15 @@ LABEL_30:
                       v14 = v47;
                       if (dword_1001D4BA0 > 90)
                       {
-                        v13 = v46;
+                        v13 = idsDeviceID;
                       }
 
                       else
                       {
-                        v13 = v46;
+                        v13 = idsDeviceID;
                         if (dword_1001D4BA0 != -1 || _LogCategory_Initialize())
                         {
-                          v41 = v24;
+                          v41 = daemonDevice;
                           v42 = v39;
                           LogPrintF();
                         }
@@ -4876,18 +4876,18 @@ LABEL_47:
 
                   else
                   {
-                    v26 = [v24 bleDevice];
-                    v27 = [v26 rapportIdentifier];
+                    bleDevice = [daemonDevice bleDevice];
+                    rapportIdentifier = [bleDevice rapportIdentifier];
                     v28 = v13;
-                    v29 = v24;
-                    v30 = self;
-                    v31 = v4;
-                    v32 = v27;
-                    v33 = [v27 isEqual:v28];
+                    v29 = daemonDevice;
+                    selfCopy = self;
+                    v31 = deviceCopy;
+                    v32 = rapportIdentifier;
+                    v33 = [rapportIdentifier isEqual:v28];
 
-                    v4 = v31;
-                    self = v30;
-                    v24 = v29;
+                    deviceCopy = v31;
+                    self = selfCopy;
+                    daemonDevice = v29;
 
                     v14 = v47;
                     if (v33)
@@ -4895,10 +4895,10 @@ LABEL_47:
                       goto LABEL_30;
                     }
 
-                    v13 = v46;
+                    v13 = idsDeviceID;
                     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
                     {
-                      sub_100128990(v24, v46, buf);
+                      sub_100128990(daemonDevice, idsDeviceID, buf);
                       v39 = *buf;
                       goto LABEL_47;
                     }
@@ -4921,7 +4921,7 @@ LABEL_47:
         }
 
         v7 = v44;
-        v5 = v45;
+        txtDictionary = v45;
         v9 = v43;
       }
 
@@ -4947,10 +4947,10 @@ LABEL_47:
 LABEL_65:
 }
 
-- (void)_clientAWDLPairingSessionWithDevice:(id)a3
+- (void)_clientAWDLPairingSessionWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 txtDictionary];
+  deviceCopy = device;
+  txtDictionary = [deviceCopy txtDictionary];
   CFStringGetTypeID();
   v6 = CFDictionaryGetTypedValue();
   v7 = v6;
@@ -4976,24 +4976,24 @@ LABEL_65:
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
-          v14 = [v13 clientNetCnx];
-          v15 = [v14 present];
+          clientNetCnx = [v13 clientNetCnx];
+          present = [clientNetCnx present];
 
-          if ((v15 & 1) == 0)
+          if ((present & 1) == 0)
           {
-            v16 = [v13 activatedSession];
-            v17 = v16;
-            if (v16)
+            activatedSession = [v13 activatedSession];
+            v17 = activatedSession;
+            if (activatedSession)
             {
-              if ([v16 needsAWDL])
+              if ([activatedSession needsAWDL])
               {
-                v18 = [v17 pairingInfo];
+                pairingInfo = [v17 pairingInfo];
 
-                if (v18)
+                if (pairingInfo)
                 {
-                  v19 = [v17 pairingInfo];
+                  pairingInfo2 = [v17 pairingInfo];
                   v29 = 0;
-                  v20 = [NSJSONSerialization JSONObjectWithData:v19 options:16 error:&v29];
+                  v20 = [NSJSONSerialization JSONObjectWithData:pairingInfo2 options:16 error:&v29];
                   v21 = v29;
 
                   if (v21 && dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -5012,15 +5012,15 @@ LABEL_65:
 
                   if (v22 && ([v22 isEqualToString:v7] & 1) != 0)
                   {
-                    v27 = [v17 daemonDevice];
-                    [v17 setBonjourDevice:v4];
+                    daemonDevice = [v17 daemonDevice];
+                    [v17 setBonjourDevice:deviceCopy];
                     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
                     {
                       sub_100128BDC(v17);
                     }
 
                     v28 = 0;
-                    v23 = [v13 netConnectionStartWithDevice:v27 session:v17 error:{&v28, v25, v26}];
+                    v23 = [v13 netConnectionStartWithDevice:daemonDevice session:v17 error:{&v28, v25, v26}];
                     v24 = v28;
                     if ((v23 & 1) == 0 && dword_1001D4BA0 <= 90 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
                     {
@@ -5059,23 +5059,23 @@ LABEL_45:
   }
 }
 
-- (void)_clientBonjourAWDLBrowserLostDevice:(id)a3
+- (void)_clientBonjourAWDLBrowserLostDevice:(id)device
 {
-  v8 = a3;
+  deviceCopy = device;
   v4 = +[RPIdentityDaemon sharedIdentityDaemon];
-  v5 = [v4 resolveIdentityForBonjourDevice:v8 typeFlags:2];
+  v5 = [v4 resolveIdentityForBonjourDevice:deviceCopy typeFlags:2];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 idsDeviceID];
-    if (v7)
+    idsDeviceID = [v5 idsDeviceID];
+    if (idsDeviceID)
     {
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
         sub_100128C74();
       }
 
-      [(NSMutableDictionary *)self->_bonjourAWDLDevices setObject:0 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_bonjourAWDLDevices setObject:0 forKeyedSubscript:idsDeviceID];
     }
 
     else if (dword_1001D4BA0 <= 90 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -5088,7 +5088,7 @@ LABEL_45:
 
   if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
-    v7 = CUDescriptionWithLevel();
+    idsDeviceID = CUDescriptionWithLevel();
     LogPrintF();
 LABEL_13:
   }
@@ -5137,14 +5137,14 @@ LABEL_13:
               }
 
               v11 = *(*(&v20 + 1) + 8 * j);
-              v12 = [v11 activatedDiscovery];
-              v13 = [v12 shouldReportDevice:v5];
+              activatedDiscovery = [v11 activatedDiscovery];
+              v13 = [activatedDiscovery shouldReportDevice:v5];
 
               if (v13)
               {
-                v14 = [v11 xpcCnx];
-                v15 = [v14 remoteObjectProxy];
-                [v15 remoteDisplayLostDevice:v5];
+                xpcCnx = [v11 xpcCnx];
+                remoteObjectProxy = [xpcCnx remoteObjectProxy];
+                [remoteObjectProxy remoteDisplayLostDevice:v5];
               }
             }
 
@@ -5241,16 +5241,16 @@ LABEL_13:
   }
 }
 
-- (void)_serverBLENeedsAWDLScannerDeviceFound:(id)a3
+- (void)_serverBLENeedsAWDLScannerDeviceFound:(id)found
 {
-  v10 = a3;
-  v4 = [v10 idsIdentifier];
-  if (v4 || ([v10 identifier], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "UUIDString"), v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
+  foundCopy = found;
+  idsIdentifier = [foundCopy idsIdentifier];
+  if (idsIdentifier || ([foundCopy identifier], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "UUIDString"), idsIdentifier = objc_claimAutoreleasedReturnValue(), v5, idsIdentifier))
   {
-    if (([v10 deviceFlags] & 0xC008) != 0)
+    if (([foundCopy deviceFlags] & 0xC008) != 0)
     {
-      v6 = [(NSMutableDictionary *)self->_needsAWDLDevices objectForKeyedSubscript:v4];
-      if ([v10 deviceActionType] == 50)
+      v6 = [(NSMutableDictionary *)self->_needsAWDLDevices objectForKeyedSubscript:idsIdentifier];
+      if ([foundCopy deviceActionType] == 50)
       {
         needsAWDLDevices = self->_needsAWDLDevices;
         if (!needsAWDLDevices)
@@ -5262,7 +5262,7 @@ LABEL_13:
           needsAWDLDevices = self->_needsAWDLDevices;
         }
 
-        [(NSMutableDictionary *)needsAWDLDevices setObject:v10 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)needsAWDLDevices setObject:foundCopy forKeyedSubscript:idsIdentifier];
         if (v6)
         {
           if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
@@ -5279,7 +5279,7 @@ LABEL_13:
 
       else if (v6)
       {
-        [(NSMutableDictionary *)self->_needsAWDLDevices setObject:0 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_needsAWDLDevices setObject:0 forKeyedSubscript:idsIdentifier];
         if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
           sub_100128E98();
@@ -5302,22 +5302,22 @@ LABEL_13:
       sub_100128F98();
     }
 
-    v4 = 0;
+    idsIdentifier = 0;
   }
 }
 
-- (void)_serverBLENeedsAWDLScannerDeviceLost:(id)a3
+- (void)_serverBLENeedsAWDLScannerDeviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 idsIdentifier];
-  if (v4)
+  lostCopy = lost;
+  idsIdentifier = [lostCopy idsIdentifier];
+  if (idsIdentifier)
   {
-    v5 = v4;
+    uUIDString = idsIdentifier;
 LABEL_4:
-    v7 = [(NSMutableDictionary *)self->_needsAWDLDevices objectForKeyedSubscript:v5];
+    v7 = [(NSMutableDictionary *)self->_needsAWDLDevices objectForKeyedSubscript:uUIDString];
     if (v7)
     {
-      [(NSMutableDictionary *)self->_needsAWDLDevices setObject:0 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_needsAWDLDevices setObject:0 forKeyedSubscript:uUIDString];
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
         sub_100128FD8();
@@ -5329,10 +5329,10 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v6 = [v8 identifier];
-  v5 = [v6 UUIDString];
+  identifier = [lostCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v5)
+  if (uUIDString)
   {
     goto LABEL_4;
   }
@@ -5376,11 +5376,11 @@ LABEL_10:
   }
 }
 
-- (id)_serverBonjourAuthTagStringWithData:(id)a3
+- (id)_serverBonjourAuthTagStringWithData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy)
   {
     v5 = +[RPIdentityDaemon sharedIdentityDaemon];
     v6 = [v5 identityOfSelfAndReturnError:0];
@@ -5431,8 +5431,8 @@ LABEL_10:
     v4 = self->_btAdvAddrData;
     if (v4)
     {
-      v5 = [(CUTCPServer *)self->_tcpServer tcpListeningPort];
-      if (v5 <= 0)
+      tcpListeningPort = [(CUTCPServer *)self->_tcpServer tcpListeningPort];
+      if (tcpListeningPort <= 0)
       {
         if (dword_1001D4BA0 <= 20 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
@@ -5442,7 +5442,7 @@ LABEL_10:
 
       else
       {
-        v6 = v5;
+        v6 = tcpListeningPort;
         v7 = +[RPWiFiP2PTransaction sharedInstance];
         [v7 activateForClient:@"Sidecar"];
 
@@ -5499,14 +5499,14 @@ LABEL_10:
     v6 = v5;
     if (v5)
     {
-      v12 = [(NSData *)v5 bytes];
+      bytes = [(NSData *)v5 bytes];
       v7 = NSPrintF();
       if (v7)
       {
-        [v14 setObject:v7 forKeyedSubscript:{@"rpBA", v12}];
+        [v14 setObject:v7 forKeyedSubscript:{@"rpBA", bytes}];
       }
 
-      v8 = [(RPRemoteDisplayDaemon *)self _serverBonjourAuthTagStringWithData:self->_deviceAWDLRandomID, v12];
+      v8 = [(RPRemoteDisplayDaemon *)self _serverBonjourAuthTagStringWithData:self->_deviceAWDLRandomID, bytes];
       if (v8)
       {
         [v14 setObject:v8 forKeyedSubscript:@"rpAD"];
@@ -5585,11 +5585,11 @@ LABEL_10:
   }
 }
 
-- (void)_serverTCPHandleConnectionStarted:(id)a3
+- (void)_serverTCPHandleConnectionStarted:(id)started
 {
   sessionIDLast = self->_sessionIDLast;
   self->_sessionIDLast = sessionIDLast + 1;
-  v5 = a3;
+  startedCopy = started;
   v6 = [NSNumber numberWithUnsignedInt:sessionIDLast];
   v7 = objc_alloc_init(RPConnection);
   [v7 setControlFlags:0x400000000240];
@@ -5605,7 +5605,7 @@ LABEL_10:
   [v7 setLabel:v11];
 
   [v7 setLocalDeviceInfo:self->_localDeviceInfo];
-  [v7 setTcpConnection:v5];
+  [v7 setTcpConnection:startedCopy];
 
   [(RPRemoteDisplayDaemon *)self _connectionConfigureCommon:v7];
   v22[0] = _NSConcreteStackBlock;
@@ -5670,24 +5670,24 @@ LABEL_10:
   [v7 activate];
 }
 
-- (void)_serverHandleSessionStartWithID:(id)a3 netCnx:(id)a4 completion:(id)a5
+- (void)_serverHandleSessionStartWithID:(id)d netCnx:(id)cnx completion:(id)completion
 {
-  v43 = a3;
-  v7 = a4;
+  dCopy = d;
+  cnxCopy = cnx;
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
   v56[2] = sub_1000AFDE8;
   v56[3] = &unk_1001AEEB8;
-  v44 = a5;
-  v59 = v44;
+  completionCopy = completion;
+  v59 = completionCopy;
   v57 = 0;
-  v8 = v7;
+  v8 = cnxCopy;
   v58 = v8;
   v45 = objc_retainBlock(v56);
-  v9 = [v8 serviceType];
-  LODWORD(a5) = v9 == 0;
+  serviceType = [v8 serviceType];
+  LODWORD(completion) = serviceType == 0;
 
-  if (a5)
+  if (completion)
   {
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
@@ -5697,22 +5697,22 @@ LABEL_10:
 
     else
     {
-      [v8 setServiceType:{@"_rdlink._tcp", v41}];
+      [v8 setServiceType:{@"_rdlink._tcp", allKeys}];
     }
   }
 
-  v10 = [v8 serviceType];
-  v11 = [v8 peerDeviceInfo];
-  v12 = [v11 model];
+  serviceType2 = [v8 serviceType];
+  peerDeviceInfo = [v8 peerDeviceInfo];
+  model = [peerDeviceInfo model];
   v13 = GestaltProductTypeStringToDeviceClass();
 
-  if (v13 == 4 && [v10 isEqualToString:@"com.apple.continuitycapture"])
+  if (v13 == 4 && [serviceType2 isEqualToString:@"com.apple.continuitycapture"])
   {
-    v14 = [v8 peerDeviceInfo];
-    v15 = [v14 verifiedIdentity];
+    peerDeviceInfo2 = [v8 peerDeviceInfo];
+    verifiedIdentity = [peerDeviceInfo2 verifiedIdentity];
 
     deviceConfirmedIdentifier = self->_deviceConfirmedIdentifier;
-    if (!deviceConfirmedIdentifier || ![(NSString *)deviceConfirmedIdentifier isEqualToString:v15])
+    if (!deviceConfirmedIdentifier || ![(NSString *)deviceConfirmedIdentifier isEqualToString:verifiedIdentity])
     {
       if (dword_1001D4BA0 <= 90 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
@@ -5727,19 +5727,19 @@ LABEL_57:
     }
   }
 
-  v17 = [(NSMutableDictionary *)self->_xpcMatchingServerMap allValues];
+  allValues = [(NSMutableDictionary *)self->_xpcMatchingServerMap allValues];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v15 = v17;
-  v18 = [v15 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  verifiedIdentity = allValues;
+  v18 = [verifiedIdentity countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (!v18)
   {
 LABEL_25:
 
 LABEL_29:
-    v31 = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap objectForKeyedSubscript:v10];
+    v31 = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap objectForKeyedSubscript:serviceType2];
     v32 = v31 == 0;
 
     if (!v32)
@@ -5765,28 +5765,28 @@ LABEL_14:
   {
     if (*v53 != v19)
     {
-      objc_enumerationMutation(v15);
+      objc_enumerationMutation(verifiedIdentity);
     }
 
     v21 = *(*(&v52 + 1) + 8 * v20);
-    v22 = [v21 serviceType];
-    v23 = v22 == 0;
+    serviceType3 = [v21 serviceType];
+    v23 = serviceType3 == 0;
 
     if (v23)
     {
       goto LABEL_23;
     }
 
-    v24 = [v21 serviceType];
-    v25 = v10;
-    v26 = v24;
+    serviceType4 = [v21 serviceType];
+    v25 = serviceType2;
+    v26 = serviceType4;
     v27 = v26;
     if (v25 == v26)
     {
       break;
     }
 
-    if ((v10 != 0) != (v26 == 0))
+    if ((serviceType2 != 0) != (v26 == 0))
     {
       v28 = [v25 isEqual:v26];
 
@@ -5803,7 +5803,7 @@ LABEL_14:
 LABEL_23:
     if (v18 == ++v20)
     {
-      v18 = [v15 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v18 = [verifiedIdentity countByEnumeratingWithState:&v52 objects:v60 count:16];
       if (v18)
       {
         goto LABEL_14;
@@ -5843,18 +5843,18 @@ LABEL_67:
       }
     }
 
-    v35 = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap objectForKeyedSubscript:v10];
+    v35 = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap objectForKeyedSubscript:serviceType2];
     v36 = v35;
     if (v35)
     {
-      v37 = [v35 serverNetCnxs];
-      if (!v37)
+      serverNetCnxs = [v35 serverNetCnxs];
+      if (!serverNetCnxs)
       {
-        v37 = objc_alloc_init(NSMutableSet);
-        [v36 setServerNetCnxs:v37];
+        serverNetCnxs = objc_alloc_init(NSMutableSet);
+        [v36 setServerNetCnxs:serverNetCnxs];
       }
 
-      [v37 addObject:v8];
+      [serverNetCnxs addObject:v8];
       [v8 setClient:v36];
       v38 = v47;
       v47[0] = _NSConcreteStackBlock;
@@ -5862,8 +5862,8 @@ LABEL_67:
       v47[2] = sub_1000AFEEC;
       v47[3] = &unk_1001AD4C0;
       v47[4] = v33;
-      v48 = v44;
-      [v36 sessionStartWithID:v43 netCnx:v8 completion:v47];
+      v48 = completionCopy;
+      [v36 sessionStartWithID:dCopy netCnx:v8 completion:v47];
       [(NSMutableSet *)self->_bufferedConnections removeObject:v8];
     }
 
@@ -5873,19 +5873,19 @@ LABEL_67:
       {
         if (dword_1001D4BA0 != -1 || _LogCategory_Initialize())
         {
-          v41 = v8;
+          allKeys = v8;
           LogPrintF();
         }
 
         if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
-          v41 = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap allKeys];
+          allKeys = [(NSMutableDictionary *)self->_activatedServerXPCCnxMap allKeys];
           LogPrintF();
         }
       }
 
-      v37 = [v29 handler];
-      if (!v37)
+      serverNetCnxs = [v29 handler];
+      if (!serverNetCnxs)
       {
         goto LABEL_66;
       }
@@ -5898,7 +5898,7 @@ LABEL_67:
       v49[4] = v29;
       v49[5] = self;
       v50 = v33;
-      (*(v37 + 2))(v37, 0, 0, v49);
+      (*(serverNetCnxs + 2))(serverNetCnxs, 0, 0, v49);
     }
 
 LABEL_66:
@@ -5986,20 +5986,20 @@ LABEL_69:
   }
 }
 
-- (void)_serverReceivedNeedsAWDLEvent:(id)a3
+- (void)_serverReceivedNeedsAWDLEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   CFStringGetTypeID();
   v5 = CFDictionaryGetTypedValue();
   if (v5)
   {
     v6 = NSDictionaryGetNSNumber();
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
       v8 = "disable";
-      if (v7)
+      if (bOOLValue)
       {
         v8 = "enable";
       }
@@ -6010,7 +6010,7 @@ LABEL_69:
     }
 
     needsAWDLRequestIdentifiers = self->_needsAWDLRequestIdentifiers;
-    if (v7)
+    if (bOOLValue)
     {
       if (!needsAWDLRequestIdentifiers)
       {
@@ -6100,7 +6100,7 @@ LABEL_22:
   {
     objc_storeStrong(&self->_btAdvAddrData, obj);
     v3 = obj;
-    v7 = [obj bytes];
+    bytes = [obj bytes];
     v4 = NSPrintF();
     btAdvAddrStr = self->_btAdvAddrStr;
     self->_btAdvAddrStr = v4;
@@ -6117,16 +6117,16 @@ LABEL_22:
   }
 }
 
-- (BOOL)_deviceSupportsLaguna:(id)a3
+- (BOOL)_deviceSupportsLaguna:(id)laguna
 {
-  v3 = a3;
-  v4 = [v3 model];
+  lagunaCopy = laguna;
+  model = [lagunaCopy model];
   v5 = GestaltProductTypeStringToDeviceClass();
 
   v6 = +[RPCloudDaemon sharedCloudDaemon];
-  v7 = [v6 idsDeviceMap];
-  v8 = [v3 idsIdentifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  idsDeviceMap = [v6 idsDeviceMap];
+  idsIdentifier = [lagunaCopy idsIdentifier];
+  v9 = [idsDeviceMap objectForKeyedSubscript:idsIdentifier];
 
   if (v9)
   {
@@ -6137,16 +6137,16 @@ LABEL_22:
   {
     if (v5 == 3)
     {
-      v10 = [v3 model];
-      if (sub_10001AC60(v10) > 7)
+      model2 = [lagunaCopy model];
+      if (sub_10001AC60(model2) > 7)
       {
         v12 = 1;
       }
 
       else
       {
-        v11 = [v3 model];
-        v12 = sub_10001AD0C(v11) > 12;
+        model3 = [lagunaCopy model];
+        v12 = sub_10001AD0C(model3) > 12;
       }
     }
 
@@ -6164,15 +6164,15 @@ LABEL_22:
   return v12;
 }
 
-- (id)_findMatchingDeviceWithIdentifier:(id)a3
+- (id)_findMatchingDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_discoveredDevices allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_discoveredDevices allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -6182,18 +6182,18 @@ LABEL_22:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 compareWithDeviceIdentifier:v4])
+        if ([v9 compareWithDeviceIdentifier:identifierCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -6237,8 +6237,8 @@ LABEL_11:
   }
 
   v7 = [RPRemoteDisplayDevice alloc];
-  v8 = [v4 metadata];
-  v9 = [v7 initWithKeychainDictionaryRepresentation:v8];
+  metadata = [v4 metadata];
+  v9 = [v7 initWithKeychainDictionaryRepresentation:metadata];
 
   if (!v9)
   {
@@ -6256,14 +6256,14 @@ LABEL_15:
   return v9;
 }
 
-- (void)saveDedicatedDevice:(id)a3
+- (void)saveDedicatedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
-    v6 = v5;
-    if (v5 == v4 || ([v5 isEqualToDevice:v4] & 1) != 0)
+    dedicatedDevice = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
+    v6 = dedicatedDevice;
+    if (dedicatedDevice == deviceCopy || ([dedicatedDevice isEqualToDevice:deviceCopy] & 1) != 0)
     {
 LABEL_42:
 
@@ -6275,15 +6275,15 @@ LABEL_42:
     [v8 setAccessGroup:@"com.apple.rapport"];
     v24 = v7;
     v25 = v6;
-    if (v4)
+    if (deviceCopy)
     {
       [v8 setAccessibleType:7];
       [v8 setInvisible:1];
       [v8 setSyncType:1];
       [v8 setType:@"RPIdentity-PairedDevice"];
       [v8 setIdentifier:@"RPRemoteDisplayDevice-Dedicated"];
-      v9 = [v4 keychainDictionaryRepresentation];
-      [v8 setMetadata:v9];
+      keychainDictionaryRepresentation = [deviceCopy keychainDictionaryRepresentation];
+      [v8 setMetadata:keychainDictionaryRepresentation];
 
       v31 = 0;
       [v7 addOrUpdateOrReAddItem:v8 logCategory:&dword_1001D4BA0 logLabel:@"DedicatedDevice" error:&v31];
@@ -6360,12 +6360,12 @@ LABEL_25:
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          v17 = [v16 activatedDiscovery];
+          activatedDiscovery = [v16 activatedDiscovery];
 
-          if (v17)
+          if (activatedDiscovery)
           {
-            v18 = [v16 xpcCnx];
-            v19 = [v18 valueForEntitlement:@"com.apple.RemoteDisplay.Dedicated"];
+            xpcCnx = [v16 xpcCnx];
+            v19 = [xpcCnx valueForEntitlement:@"com.apple.RemoteDisplay.Dedicated"];
 
             if (v19)
             {
@@ -6374,9 +6374,9 @@ LABEL_25:
               {
                 if ([v19 BOOLValue])
                 {
-                  v20 = [v16 xpcCnx];
-                  v21 = [v20 remoteObjectProxy];
-                  [v21 remoteDisplayDedicatedDeviceChanged:v4];
+                  xpcCnx2 = [v16 xpcCnx];
+                  remoteObjectProxy = [xpcCnx2 remoteObjectProxy];
+                  [remoteObjectProxy remoteDisplayDedicatedDeviceChanged:deviceCopy];
                 }
               }
             }
@@ -6410,18 +6410,18 @@ LABEL_43:
   [(RPRemoteDisplayDaemon *)self _update];
 }
 
-- (id)_acquireRBSAssertionForEntry:(id)a3 error:(id *)a4
+- (id)_acquireRBSAssertionForEntry:(id)entry error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 angelJobLabel];
-  if (v6 && (v7 = v6, [v5 angelAssertionName], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  entryCopy = entry;
+  angelJobLabel = [entryCopy angelJobLabel];
+  if (angelJobLabel && (v7 = angelJobLabel, [entryCopy angelAssertionName], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [v5 angelJobLabel];
-    v10 = [RBSProcessIdentity identityForAngelJobLabel:v9];
+    angelJobLabel2 = [entryCopy angelJobLabel];
+    v10 = [RBSProcessIdentity identityForAngelJobLabel:angelJobLabel2];
     v11 = [RBSTarget targetWithProcessIdentity:v10];
 
-    v12 = [v5 angelAssertionName];
-    v13 = [RBSDomainAttribute attributeWithDomain:@"com.apple.rapportd" name:v12];
+    angelAssertionName = [entryCopy angelAssertionName];
+    v13 = [RBSDomainAttribute attributeWithDomain:@"com.apple.rapportd" name:angelAssertionName];
 
     v14 = [RBSAssertion alloc];
     v22 = v13;
@@ -6440,11 +6440,11 @@ LABEL_43:
     {
       if (dword_1001D4BA0 <= 90 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
-        sub_1001295A4(v5);
+        sub_1001295A4(entryCopy);
       }
 
       RPErrorF();
-      *a4 = v19 = 0;
+      *error = v19 = 0;
     }
   }
 
@@ -6456,56 +6456,56 @@ LABEL_43:
   return v19;
 }
 
-- (void)_scheduleCameraCapabilitiesRequest:(id)a3 interval:(unint64_t)a4
+- (void)_scheduleCameraCapabilitiesRequest:(id)request interval:(unint64_t)interval
 {
-  v6 = a3;
-  v7 = [v6 cameraCapabilitiesRefetchTimer];
+  requestCopy = request;
+  cameraCapabilitiesRefetchTimer = [requestCopy cameraCapabilitiesRefetchTimer];
 
-  if (!v7)
+  if (!cameraCapabilitiesRefetchTimer)
   {
-    if (!a4)
+    if (!interval)
     {
       prefCameraCapabilitiesRetrySeconds = self->_prefCameraCapabilitiesRetrySeconds;
     }
 
     v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
-    [v6 setCameraCapabilitiesRefetchTimer:v9];
+    [requestCopy setCameraCapabilitiesRefetchTimer:v9];
 
-    v10 = [v6 cameraCapabilitiesRefetchTimer];
+    cameraCapabilitiesRefetchTimer2 = [requestCopy cameraCapabilitiesRefetchTimer];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_1000B1A60;
     v17 = &unk_1001AB488;
-    v11 = v6;
+    v11 = requestCopy;
     v18 = v11;
-    v19 = self;
-    dispatch_source_set_event_handler(v10, &v14);
+    selfCopy = self;
+    dispatch_source_set_event_handler(cameraCapabilitiesRefetchTimer2, &v14);
 
-    v12 = [v11 cameraCapabilitiesRefetchTimer];
+    cameraCapabilitiesRefetchTimer3 = [v11 cameraCapabilitiesRefetchTimer];
     CUDispatchTimerSet();
 
-    v13 = [v11 cameraCapabilitiesRefetchTimer];
-    dispatch_activate(v13);
+    cameraCapabilitiesRefetchTimer4 = [v11 cameraCapabilitiesRefetchTimer];
+    dispatch_activate(cameraCapabilitiesRefetchTimer4);
   }
 }
 
-- (void)_receivedCameraCapabilitiesMessage:(id)a3 fromDevice:(id)a4 isFirstUpdate:(BOOL)a5
+- (void)_receivedCameraCapabilitiesMessage:(id)message fromDevice:(id)device isFirstUpdate:(BOOL)update
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  messageCopy = message;
+  deviceCopy = device;
   v33 = 0;
   CFDictionaryGetTypeID();
   v10 = CFDictionaryGetTypedValue();
-  v28 = v8;
-  v27 = v5;
+  v28 = messageCopy;
+  v27 = updateCopy;
   if (v10)
   {
     v11 = v10;
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
-      v12 = [v9 identifier];
-      v26 = v12;
+      identifier = [deviceCopy identifier];
+      v26 = identifier;
       LogPrintF();
 LABEL_8:
     }
@@ -6515,8 +6515,8 @@ LABEL_8:
   {
     if (dword_1001D4BA0 <= 50 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
-      v12 = [v9 identifier];
-      v26 = v12;
+      identifier = [deviceCopy identifier];
+      v26 = identifier;
       LogPrintF();
       v11 = &__NSDictionary0__struct;
       goto LABEL_8;
@@ -6525,12 +6525,12 @@ LABEL_8:
     v11 = &__NSDictionary0__struct;
   }
 
-  [v9 setCameraCapabilities:{v11, v26}];
+  [deviceCopy setCameraCapabilities:{v11, v26}];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = self;
+  selfCopy = self;
   v14 = self->_xpcConnections;
   v15 = [(NSMutableSet *)v14 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v15)
@@ -6547,14 +6547,14 @@ LABEL_8:
         }
 
         v19 = *(*(&v29 + 1) + 8 * i);
-        v20 = [v19 activatedDiscovery];
-        v21 = [v20 shouldReportDevice:v9];
+        activatedDiscovery = [v19 activatedDiscovery];
+        v21 = [activatedDiscovery shouldReportDevice:deviceCopy];
 
         if (v21)
         {
-          v22 = [v19 xpcCnx];
-          v23 = [v22 remoteObjectProxy];
-          [v23 remoteDisplayChangedDevice:v9 changes:2];
+          xpcCnx = [v19 xpcCnx];
+          remoteObjectProxy = [xpcCnx remoteObjectProxy];
+          [remoteObjectProxy remoteDisplayChangedDevice:deviceCopy changes:2];
         }
       }
 
@@ -6566,28 +6566,28 @@ LABEL_8:
 
   if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
-    sub_100129600(v27, v9, v13);
+    sub_100129600(v27, deviceCopy, selfCopy);
   }
 
-  if (v27 && ([v9 statusFlags] & 0x2000000000) != 0)
+  if (v27 && ([deviceCopy statusFlags] & 0x2000000000) != 0)
   {
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
-      sub_100129688(v13);
+      sub_100129688(selfCopy);
     }
 
-    deviceSessionPaired = v13->_deviceSessionPaired;
-    v13->_deviceSessionPaired = 0;
+    deviceSessionPaired = selfCopy->_deviceSessionPaired;
+    selfCopy->_deviceSessionPaired = 0;
 
-    v25 = [v9 identifier];
-    [(RPRemoteDisplayDaemon *)v13 _changeDiscoverySessionStateForDevice:v25 startReason:v13->_guestPairingStartReason];
+    identifier2 = [deviceCopy identifier];
+    [(RPRemoteDisplayDaemon *)selfCopy _changeDiscoverySessionStateForDevice:identifier2 startReason:selfCopy->_guestPairingStartReason];
   }
 }
 
-- (void)_receivedCameraExitEvent:(id)a3 from:(id)a4
+- (void)_receivedCameraExitEvent:(id)event from:(id)from
 {
-  v6 = a4;
-  v7 = a3;
+  fromCopy = from;
+  eventCopy = event;
   CFStringGetTypeID();
   v8 = CFDictionaryGetTypedValue();
 
@@ -6596,22 +6596,22 @@ LABEL_8:
     if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
     {
       v12 = v8;
-      v14 = v6;
+      v14 = fromCopy;
       LogPrintF();
     }
 
     if ([v8 isEqualToString:{@"User disconnect", v12, v14}])
     {
-      v9 = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
-      v10 = [v9 idsDeviceIdentifier];
-      v11 = [v6 compareWithDeviceIdentifier:v10];
+      dedicatedDevice = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
+      idsDeviceIdentifier = [dedicatedDevice idsDeviceIdentifier];
+      v11 = [fromCopy compareWithDeviceIdentifier:idsDeviceIdentifier];
 
       if (v11)
       {
         if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
-          [(RPRemoteDisplayDaemon *)self saveDedicatedDevice:0, v8, v6];
+          [(RPRemoteDisplayDaemon *)self saveDedicatedDevice:0, v8, fromCopy];
         }
 
         else
@@ -6621,7 +6621,7 @@ LABEL_8:
       }
     }
 
-    if ([v6 compareWithDeviceIdentifier:self->_deviceConfirmedIdentifier])
+    if ([fromCopy compareWithDeviceIdentifier:self->_deviceConfirmedIdentifier])
     {
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
@@ -6665,47 +6665,47 @@ LABEL_8:
   }
 }
 
-- (void)_requestCameraCapabilitiesForDevice:(id)a3
+- (void)_requestCameraCapabilitiesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   DeviceClass = GestaltGetDeviceClass();
   v6 = DeviceClass;
   if (DeviceClass == 100 || DeviceClass == 4)
   {
-    v7 = [v4 cameraCapabilities];
+    cameraCapabilities = [deviceCopy cameraCapabilities];
 
-    if (v7 || ([v4 cameraCapabilityRequestIsActive] & 1) != 0 || (objc_msgSend(v4, "cameraCapabilitiesRefetchTimer"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (cameraCapabilities || ([deviceCopy cameraCapabilityRequestIsActive] & 1) != 0 || (objc_msgSend(deviceCopy, "cameraCapabilitiesRefetchTimer"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       if (dword_1001D4BA0 <= 10 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
-        sub_1001299E0(v4);
+        sub_1001299E0(deviceCopy);
       }
     }
 
     else
     {
-      v9 = [v4 idsDeviceIdentifier];
-      if (v9)
+      idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+      if (idsDeviceIdentifier)
       {
         v10 = +[RPCloudDaemon sharedCloudDaemon];
-        v11 = [v10 idsDeviceMap];
-        v12 = [v11 objectForKeyedSubscript:v9];
+        idsDeviceMap = [v10 idsDeviceMap];
+        v12 = [idsDeviceMap objectForKeyedSubscript:idsDeviceIdentifier];
 
-        if (v12 || ([v4 statusFlags] & 0x3000000000) != 0)
+        if (v12 || ([deviceCopy statusFlags] & 0x3000000000) != 0)
         {
-          v13 = [v12 modelIdentifier];
-          v14 = v13;
-          if (v13)
+          modelIdentifier = [v12 modelIdentifier];
+          v14 = modelIdentifier;
+          if (modelIdentifier)
           {
-            v15 = v13;
+            model = modelIdentifier;
           }
 
           else
           {
-            v15 = [v4 model];
+            model = [deviceCopy model];
           }
 
-          v16 = v15;
+          v16 = model;
 
           v27 = 0;
           v28 = 0;
@@ -6727,11 +6727,11 @@ LABEL_8:
                 sub_100129920();
               }
 
-              v20 = [v4 idsDeviceIdentifier];
-              [v4 setCameraCapabilityRequestIsActive:1];
+              idsDeviceIdentifier2 = [deviceCopy idsDeviceIdentifier];
+              [deviceCopy setCameraCapabilityRequestIsActive:1];
               v21 = objc_alloc_init(RPCompanionLinkClient);
               v22 = objc_alloc_init(RPCompanionLinkDevice);
-              [v22 setIdentifier:v20];
+              [v22 setIdentifier:idsDeviceIdentifier2];
               [v21 setDispatchQueue:self->_dispatchQueue];
               [v21 setDestinationDevice:v22];
               [v21 setControlFlags:6];
@@ -6740,9 +6740,9 @@ LABEL_8:
               v23[2] = sub_1000B2A00;
               v23[3] = &unk_1001AEFD0;
               v23[4] = v21;
-              v24 = v4;
-              v25 = self;
-              v26 = v20;
+              v24 = deviceCopy;
+              selfCopy = self;
+              v26 = idsDeviceIdentifier2;
               [v21 activateWithCompletion:v23];
             }
           }
@@ -6764,12 +6764,12 @@ LABEL_8:
 
 - (void)_clearCameraCapabilitiesUpdateCache
 {
-  v3 = [(NSMutableDictionary *)self->_cameraCapabilitiesUpdateSendMap allValues];
+  allValues = [(NSMutableDictionary *)self->_cameraCapabilitiesUpdateSendMap allValues];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -6781,7 +6781,7 @@ LABEL_8:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v9 + 1) + 8 * v7) invalidate];
@@ -6789,7 +6789,7 @@ LABEL_8:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -6800,7 +6800,7 @@ LABEL_8:
   self->_cameraCapabilitiesUpdateSendMap = 0;
 }
 
-- (void)_cameraCapabilitiesChanged:(id)a3
+- (void)_cameraCapabilitiesChanged:(id)changed
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -6826,9 +6826,9 @@ LABEL_8:
 
   if (off_1001D4D00[0]())
   {
-    v4 = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
+    dedicatedDevice = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
 
-    if (v4)
+    if (dedicatedDevice)
     {
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
@@ -6843,7 +6843,7 @@ LABEL_8:
   self->_cameraCapabilities = v3;
 }
 
-- (void)_postNotificationForWombatActivity:(unsigned int)a3
+- (void)_postNotificationForWombatActivity:(unsigned int)activity
 {
   if (dword_1001D4C28 == -1)
   {
@@ -6852,10 +6852,10 @@ LABEL_8:
 
   if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
-    sub_100129E0C(a3);
+    sub_100129E0C(activity);
   }
 
-  notify_set_state(dword_1001D4C28, a3);
+  notify_set_state(dword_1001D4C28, activity);
 
   notify_post("com.apple.rapport.wombat-activity");
 }
@@ -7026,11 +7026,11 @@ LABEL_8:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v6 = [[RPRemoteDisplayXPCConnection alloc] initWithDaemon:self xpcCnx:v5];
+  v6 = [[RPRemoteDisplayXPCConnection alloc] initWithDaemon:self xpcCnx:connectionCopy];
   [(RPRemoteDisplayXPCConnection *)v6 setDispatchQueue:self->_dispatchQueue];
   ++self->_xpcLastID;
   [(RPRemoteDisplayXPCConnection *)v6 setXpcID:?];
@@ -7045,36 +7045,36 @@ LABEL_8:
   }
 
   [(NSMutableSet *)xpcConnections addObject:v6];
-  [v5 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPRemoteDisplayXPCDaemonInterface];
-  [v5 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
-  [v5 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1000B451C;
   v17 = &unk_1001AB488;
-  v18 = self;
+  selfCopy = self;
   v11 = v6;
   v19 = v11;
-  [v5 setInvalidationHandler:&v14];
-  v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPRemoteDisplayXPCClientInterface, v14, v15, v16, v17, v18];
-  [v5 setRemoteObjectInterface:v12];
+  [connectionCopy setInvalidationHandler:&v14];
+  selfCopy = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPRemoteDisplayXPCClientInterface, v14, v15, v16, v17, selfCopy];
+  [connectionCopy setRemoteObjectInterface:selfCopy];
 
-  [v5 resume];
+  [connectionCopy resume];
   if (dword_1001D4BA0 <= 20 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
-    sub_10012A03C(v5);
+    sub_10012A03C(connectionCopy);
   }
 
   return 1;
 }
 
-- (void)_handleServerActivation:(id)a3
+- (void)_handleServerActivation:(id)activation
 {
-  v10 = a3;
-  v4 = [v10 activatedServer];
-  v5 = [v4 serviceType];
+  activationCopy = activation;
+  activatedServer = [activationCopy activatedServer];
+  serviceType = [activatedServer serviceType];
 
   activatedServerXPCCnxMap = self->_activatedServerXPCCnxMap;
   if (!activatedServerXPCCnxMap)
@@ -7086,9 +7086,9 @@ LABEL_8:
     activatedServerXPCCnxMap = self->_activatedServerXPCCnxMap;
   }
 
-  if (v5)
+  if (serviceType)
   {
-    v9 = v5;
+    v9 = serviceType;
   }
 
   else
@@ -7096,14 +7096,14 @@ LABEL_8:
     v9 = @"_rdlink._tcp";
   }
 
-  [(NSMutableDictionary *)activatedServerXPCCnxMap setObject:v10 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)activatedServerXPCCnxMap setObject:activationCopy forKeyedSubscript:v9];
 }
 
-- (void)_deliverBufferedConnectionsToServer:(id)a3
+- (void)_deliverBufferedConnectionsToServer:(id)server
 {
-  v23 = a3;
-  v4 = [v23 activatedServer];
-  v5 = [v4 serviceType];
+  serverCopy = server;
+  activatedServer = [serverCopy activatedServer];
+  serviceType = [activatedServer serviceType];
 
   v6 = [(NSMutableSet *)self->_bufferedConnections copy];
   v29 = 0u;
@@ -7128,10 +7128,10 @@ LABEL_8:
       }
 
       v11 = *(*(&v29 + 1) + 8 * i);
-      v12 = [v11 serviceType];
-      v13 = v5;
+      serviceType2 = [v11 serviceType];
+      v13 = serviceType;
       v14 = v13;
-      if (v12 == v13)
+      if (serviceType2 == v13)
       {
 
 LABEL_15:
@@ -7183,9 +7183,9 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      if ((v5 == 0) != (v12 != 0))
+      if ((serviceType == 0) != (serviceType2 != 0))
       {
-        v15 = [v12 isEqual:v13];
+        v15 = [serviceType2 isEqual:v13];
 
         if (v15)
         {
@@ -7210,16 +7210,16 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v7 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v7 activatedServer];
-  v5 = [v4 serviceType];
+  activatedServer = [invalidatedCopy activatedServer];
+  serviceType = [activatedServer serviceType];
 
-  if (v5)
+  if (serviceType)
   {
-    v6 = v5;
+    v6 = serviceType;
   }
 
   else
@@ -7227,19 +7227,19 @@ LABEL_22:
     v6 = @"_rdlink._tcp";
   }
 
-  [v7 connectionInvalidated];
+  [invalidatedCopy connectionInvalidated];
   [(NSMutableDictionary *)self->_activatedServerXPCCnxMap setObject:0 forKeyedSubscript:v6];
-  [(NSMutableSet *)self->_xpcConnections removeObject:v7];
+  [(NSMutableSet *)self->_xpcConnections removeObject:invalidatedCopy];
   [(RPRemoteDisplayDaemon *)self _updateForXPCClientChange];
 }
 
-- (void)addNeedsAWDLPeer:(id)a3
+- (void)addNeedsAWDLPeer:(id)peer
 {
-  v9 = a3;
-  v4 = [v9 identifier];
-  if (v4 || ([v9 idsDeviceIdentifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  peerCopy = peer;
+  identifier = [peerCopy identifier];
+  if (identifier || ([peerCopy idsDeviceIdentifier], (identifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    v5 = identifier;
     needsAWDLNewPeers = self->_needsAWDLNewPeers;
     if (!needsAWDLNewPeers)
     {
@@ -7259,9 +7259,9 @@ LABEL_22:
   }
 }
 
-- (void)_requestConfirmationFromDevicesMatching:(id)a3 forPairingType:(unsigned int)a4
+- (void)_requestConfirmationFromDevicesMatching:(id)matching forPairingType:(unsigned int)type
 {
-  v6 = a3;
+  matchingCopy = matching;
   if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
     sub_10012A0FC();
@@ -7274,16 +7274,16 @@ LABEL_22:
   block[2] = sub_1000B4E30;
   block[3] = &unk_1001ABA58;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = matchingCopy;
+  typeCopy = type;
+  v8 = matchingCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_handleConfirmationResult:(id)a3 fromDevice:(id)a4
+- (void)_handleConfirmationResult:(id)result fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  deviceCopy = device;
   if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
     sub_10012A16C();
@@ -7294,8 +7294,8 @@ LABEL_22:
   CFDictionaryGetTypeID();
   v9 = CFDictionaryGetTypedValue();
   v10 = NSDictionaryGetNSNumber();
-  v11 = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
-  v12 = v11;
+  dedicatedDevice = [(RPRemoteDisplayDaemon *)self dedicatedDevice];
+  v12 = dedicatedDevice;
   if (!v10)
   {
     sub_10012A328();
@@ -7307,22 +7307,22 @@ LABEL_22:
     goto LABEL_6;
   }
 
-  if (v11)
+  if (dedicatedDevice)
   {
-    v16 = v11;
-    v17 = [v11 idsDeviceIdentifier];
-    v18 = v7;
+    v16 = dedicatedDevice;
+    idsDeviceIdentifier = [dedicatedDevice idsDeviceIdentifier];
+    v18 = deviceCopy;
     v19 = v18;
-    if (v17 == v18)
+    if (idsDeviceIdentifier == v18)
     {
 
       v12 = v16;
       goto LABEL_6;
     }
 
-    if ((v18 == 0) != (v17 != 0))
+    if ((v18 == 0) != (idsDeviceIdentifier != 0))
     {
-      v35 = [v17 isEqual:v18];
+      v35 = [idsDeviceIdentifier isEqual:v18];
 
       v12 = v16;
       if ((v35 & 1) == 0)
@@ -7334,14 +7334,14 @@ LABEL_6:
       if (self->_personConfirmationSessionID)
       {
         v34 = v12;
-        v13 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
         if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
         {
-          sub_10012A1AC(v13);
+          sub_10012A1AC(unsignedIntegerValue);
         }
 
-        v14 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:v7];
-        if (v13 == 1)
+        v14 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:deviceCopy];
+        if (unsignedIntegerValue == 1)
         {
           [(RPRemoteDisplayDaemon *)self _sendConfirmationCancelToAllDevices];
           if (v14)
@@ -7356,7 +7356,7 @@ LABEL_6:
               v15 = 1;
             }
 
-            [(RPRemoteDisplayDaemon *)self _processDiscoverySessionStateChangeForDevice:v7 startReason:v15];
+            [(RPRemoteDisplayDaemon *)self _processDiscoverySessionStateChangeForDevice:deviceCopy startReason:v15];
           }
 
           else
@@ -7376,8 +7376,8 @@ LABEL_6:
         else if (![(NSMutableDictionary *)self->_personConfirmationClientMap count])
         {
           v31 = v8;
-          v32 = v7;
-          v33 = v6;
+          v32 = deviceCopy;
+          v33 = resultCopy;
           if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
           {
             sub_10012A20C(&self->_personSelected);
@@ -7403,13 +7403,13 @@ LABEL_6:
                 }
 
                 v25 = *(*(&v36 + 1) + 8 * i);
-                v26 = [v25 activatedDiscovery];
+                activatedDiscovery = [v25 activatedDiscovery];
 
-                if (v26)
+                if (activatedDiscovery)
                 {
-                  v27 = [v25 xpcCnx];
-                  v28 = [v27 remoteObjectProxy];
-                  [v28 remoteDisplayPersonDeclined];
+                  xpcCnx = [v25 xpcCnx];
+                  remoteObjectProxy = [xpcCnx remoteObjectProxy];
+                  [remoteObjectProxy remoteDisplayPersonDeclined];
                 }
               }
 
@@ -7423,8 +7423,8 @@ LABEL_6:
           self->_personSelected = 0;
 
           self->_selectedPersonPairingType = 0;
-          v7 = v32;
-          v6 = v33;
+          deviceCopy = v32;
+          resultCopy = v33;
           v8 = v31;
         }
 
@@ -7471,12 +7471,12 @@ LABEL_40:
 
 - (void)_clearConfirmationClientCache
 {
-  v3 = [(NSMutableDictionary *)self->_personConfirmationClientMap allValues];
+  allValues = [(NSMutableDictionary *)self->_personConfirmationClientMap allValues];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7488,7 +7488,7 @@ LABEL_40:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v7) invalidate];
@@ -7496,7 +7496,7 @@ LABEL_40:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -7510,9 +7510,9 @@ LABEL_40:
   self->_personConfirmationSessionID = 0;
 }
 
-- (void)_sendDiscoverySessionExitWithReason:(id)a3
+- (void)_sendDiscoverySessionExitWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_deviceConfirmedIdentifier)
   {
     v5 = [(RPRemoteDisplayDaemon *)self _findMatchingDeviceWithIdentifier:?];
@@ -7521,40 +7521,40 @@ LABEL_40:
     {
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
-        v13 = v4;
+        v13 = reasonCopy;
         v14 = v6;
         LogPrintF();
       }
 
-      v7 = [v6 idsDeviceIdentifier];
+      idsDeviceIdentifier = [v6 idsDeviceIdentifier];
       v8 = objc_alloc_init(RPCompanionLinkClient);
       v9 = objc_alloc_init(RPCompanionLinkDevice);
-      [v9 setIdentifier:v7];
+      [v9 setIdentifier:idsDeviceIdentifier];
       [v8 setDispatchQueue:self->_dispatchQueue];
       [v8 setDestinationDevice:v9];
       [v8 setControlFlags:2097162];
       v10 = +[NSMutableDictionary dictionary];
-      v11 = [(RPCompanionLinkDevice *)self->_localDeviceInfo identifier];
-      [v10 setObject:v11 forKeyedSubscript:@"_i"];
+      identifier = [(RPCompanionLinkDevice *)self->_localDeviceInfo identifier];
+      [v10 setObject:identifier forKeyedSubscript:@"_i"];
 
-      [v10 setObject:v4 forKeyedSubscript:@"_cExitReson"];
+      [v10 setObject:reasonCopy forKeyedSubscript:@"_cExitReson"];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1000B5F24;
       v15[3] = &unk_1001AEFD0;
       v15[4] = v8;
-      v15[5] = v7;
+      v15[5] = idsDeviceIdentifier;
       v16 = v10;
-      v17 = self;
+      selfCopy = self;
       v12 = v10;
       [v8 activateWithCompletion:v15];
     }
   }
 }
 
-- (void)setDeviceConfirmedIdentifier:(id)a3
+- (void)setDeviceConfirmedIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
   {
@@ -7563,7 +7563,7 @@ LABEL_40:
   }
 
   v5 = self->_deviceConfirmedIdentifier;
-  self->_deviceConfirmedIdentifier = v4;
+  self->_deviceConfirmedIdentifier = identifierCopy;
 }
 
 - (void)_startDiscoverySessionExpirationTimer
@@ -7678,8 +7678,8 @@ LABEL_10:
   self->_bleNearbyActionV2Advertiser = v7;
 
   [(RPNearbyActionV2Advertiser *)self->_bleNearbyActionV2Advertiser setDispatchQueue:self->_dispatchQueue];
-  v9 = [(RPRemoteDisplayDevice *)self->_bleNearbyActionV2Device bleTargetData];
-  [(RPNearbyActionV2Advertiser *)self->_bleNearbyActionV2Advertiser setTargetData:v9];
+  bleTargetData = [(RPRemoteDisplayDevice *)self->_bleNearbyActionV2Device bleTargetData];
+  [(RPNearbyActionV2Advertiser *)self->_bleNearbyActionV2Advertiser setTargetData:bleTargetData];
 
   [(RPNearbyActionV2Advertiser *)self->_bleNearbyActionV2Advertiser setNearbyActionType:[(RPRemoteDisplayDevice *)self->_bleNearbyActionV2Device nearbyActionV2Type]];
   v10 = self->_bleNearbyActionV2Advertiser;
@@ -7692,34 +7692,34 @@ LABEL_10:
   [(RPRemoteDisplayDaemon *)self _clientSendNeedsAWDLOverWiFi:1];
 }
 
-- (void)_sendCameraCapabilitiesUpdateEventForDevice:(id)a3
+- (void)_sendCameraCapabilitiesUpdateEventForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [v4 uniqueIDOverride];
-  v6 = [v4 modelIdentifier];
+  uniqueIDOverride = [deviceCopy uniqueIDOverride];
+  modelIdentifier = [deviceCopy modelIdentifier];
   v7 = GestaltProductTypeStringToDeviceClass();
 
   v22 = 0;
   v23 = 0;
   v24 = 0;
-  if (v4)
+  if (deviceCopy)
   {
-    [v4 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
   }
 
-  if (v5)
+  if (uniqueIDOverride)
   {
     v8 = v7 == 100 || v7 == 4;
     if (v8 && DeviceOSVersionAtOrLater())
     {
       if (dword_1001D4BA0 <= 30 && (dword_1001D4BA0 != -1 || _LogCategory_Initialize()))
       {
-        v16 = v4;
+        v16 = deviceCopy;
         LogPrintF();
       }
 
-      v9 = [(NSMutableDictionary *)self->_cameraCapabilitiesUpdateSendMap objectForKeyedSubscript:v5, v16];
+      v9 = [(NSMutableDictionary *)self->_cameraCapabilitiesUpdateSendMap objectForKeyedSubscript:uniqueIDOverride, v16];
       v10 = v9;
       if (!v9)
       {
@@ -7736,15 +7736,15 @@ LABEL_10:
           cameraCapabilitiesUpdateSendMap = self->_cameraCapabilitiesUpdateSendMap;
         }
 
-        [(NSMutableDictionary *)cameraCapabilitiesUpdateSendMap setObject:v10 forKeyedSubscript:v5];
+        [(NSMutableDictionary *)cameraCapabilitiesUpdateSendMap setObject:v10 forKeyedSubscript:uniqueIDOverride];
       }
 
-      v14 = [v10 destinationDevice];
-      if (!v14)
+      destinationDevice = [v10 destinationDevice];
+      if (!destinationDevice)
       {
-        v14 = objc_alloc_init(RPCompanionLinkDevice);
-        [v14 setIdentifier:v5];
-        [v10 setDestinationDevice:v14];
+        destinationDevice = objc_alloc_init(RPCompanionLinkDevice);
+        [destinationDevice setIdentifier:uniqueIDOverride];
+        [v10 setDestinationDevice:destinationDevice];
       }
 
       if (!v9)
@@ -7754,8 +7754,8 @@ LABEL_10:
         v18[2] = sub_1000B2E44;
         v18[3] = &unk_1001AEFF8;
         v19 = v10;
-        v20 = self;
-        v21 = v5;
+        selfCopy = self;
+        v21 = uniqueIDOverride;
         [v19 activateWithCompletion:v18];
       }
 
@@ -7766,7 +7766,7 @@ LABEL_10:
       v17[2] = sub_1000B2F08;
       v17[3] = &unk_1001AAA40;
       v17[4] = self;
-      v17[5] = v5;
+      v17[5] = uniqueIDOverride;
       [v10 sendEventID:@"_camCapUpdate" event:v15 options:0 completion:v17];
     }
   }

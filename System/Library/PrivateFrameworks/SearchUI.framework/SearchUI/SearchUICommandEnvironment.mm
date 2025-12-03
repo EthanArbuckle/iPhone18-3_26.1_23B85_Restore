@@ -9,7 +9,7 @@
 - (SearchUIWatchListDelegate)watchListDelegate;
 - (UIView)sourceView;
 - (UIViewController)presentingViewController;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SearchUICommandEnvironment
@@ -35,50 +35,50 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(SearchUICommandEnvironment *)self feedbackDelegate];
-  [v4 setFeedbackDelegate:v5];
+  feedbackDelegate = [(SearchUICommandEnvironment *)self feedbackDelegate];
+  [v4 setFeedbackDelegate:feedbackDelegate];
 
-  v6 = [(SearchUICommandEnvironment *)self commandDelegate];
-  [v4 setCommandDelegate:v6];
+  commandDelegate = [(SearchUICommandEnvironment *)self commandDelegate];
+  [v4 setCommandDelegate:commandDelegate];
 
-  v7 = [(SearchUICommandEnvironment *)self cardViewDelegate];
-  [v4 setCardViewDelegate:v7];
+  cardViewDelegate = [(SearchUICommandEnvironment *)self cardViewDelegate];
+  [v4 setCardViewDelegate:cardViewDelegate];
 
-  v8 = [(SearchUICommandEnvironment *)self watchListDelegate];
-  [v4 setWatchListDelegate:v8];
+  watchListDelegate = [(SearchUICommandEnvironment *)self watchListDelegate];
+  [v4 setWatchListDelegate:watchListDelegate];
 
   [v4 setShouldUseInsetRoundedSections:{-[SearchUICommandEnvironment shouldUseInsetRoundedSections](self, "shouldUseInsetRoundedSections")}];
   [v4 setShouldUseStandardSectionInsets:{-[SearchUICommandEnvironment shouldUseStandardSectionInsets](self, "shouldUseStandardSectionInsets")}];
   [v4 setThreeDTouchEnabled:{-[SearchUICommandEnvironment threeDTouchEnabled](self, "threeDTouchEnabled")}];
   [v4 setSelectableGridPunchoutIndex:{-[SearchUICommandEnvironment selectableGridPunchoutIndex](self, "selectableGridPunchoutIndex")}];
-  v9 = [(SearchUICommandEnvironment *)self searchString];
-  [v4 setSearchString:v9];
+  searchString = [(SearchUICommandEnvironment *)self searchString];
+  [v4 setSearchString:searchString];
 
-  v10 = [(SearchUICommandEnvironment *)self sectionTitle];
-  [v4 setSectionTitle:v10];
+  sectionTitle = [(SearchUICommandEnvironment *)self sectionTitle];
+  [v4 setSectionTitle:sectionTitle];
 
-  v11 = [(SearchUICommandEnvironment *)self presentingViewController];
-  [v4 setPresentingViewController:v11];
+  presentingViewController = [(SearchUICommandEnvironment *)self presentingViewController];
+  [v4 setPresentingViewController:presentingViewController];
 
-  v12 = [(SearchUICommandEnvironment *)self sourceView];
-  [v4 setSourceView:v12];
+  sourceView = [(SearchUICommandEnvironment *)self sourceView];
+  [v4 setSourceView:sourceView];
 
-  v13 = [(SearchUICommandEnvironment *)self rowModelViewDelegate];
-  [v4 setRowModelViewDelegate:v13];
+  rowModelViewDelegate = [(SearchUICommandEnvironment *)self rowModelViewDelegate];
+  [v4 setRowModelViewDelegate:rowModelViewDelegate];
 
   [v4 setQueryId:{-[SearchUICommandEnvironment queryId](self, "queryId")}];
-  v14 = [(SearchUICommandEnvironment *)self section];
-  [v4 setSection:v14];
+  section = [(SearchUICommandEnvironment *)self section];
+  [v4 setSection:section];
 
-  v15 = [(SearchUICommandEnvironment *)self resultsViewDelegate];
-  [v4 setResultsViewDelegate:v15];
+  resultsViewDelegate = [(SearchUICommandEnvironment *)self resultsViewDelegate];
+  [v4 setResultsViewDelegate:resultsViewDelegate];
 
-  v16 = [(SearchUICommandEnvironment *)self lastEngagedSection];
-  [v4 setLastEngagedSection:v16];
+  lastEngagedSection = [(SearchUICommandEnvironment *)self lastEngagedSection];
+  [v4 setLastEngagedSection:lastEngagedSection];
 
   [v4 setModifierFlags:{-[SearchUICommandEnvironment modifierFlags](self, "modifierFlags")}];
   return v4;
@@ -89,13 +89,13 @@
   WeakRetained = objc_loadWeakRetained(&self->_commandDelegate);
   if (!WeakRetained)
   {
-    v4 = [(SearchUICommandEnvironment *)self feedbackDelegate];
+    feedbackDelegate = [(SearchUICommandEnvironment *)self feedbackDelegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(SearchUICommandEnvironment *)self feedbackDelegate];
-      WeakRetained = [v6 commandDelegate];
+      feedbackDelegate2 = [(SearchUICommandEnvironment *)self feedbackDelegate];
+      WeakRetained = [feedbackDelegate2 commandDelegate];
     }
 
     else

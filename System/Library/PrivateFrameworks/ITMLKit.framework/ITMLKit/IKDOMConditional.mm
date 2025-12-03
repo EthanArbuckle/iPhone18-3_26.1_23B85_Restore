@@ -1,29 +1,29 @@
 @interface IKDOMConditional
-- (BOOL)passesForDataItem:(id)a3 default:(BOOL)a4;
-- (IKDOMConditional)initWithDOMElement:(id)a3;
+- (BOOL)passesForDataItem:(id)item default:(BOOL)default;
+- (IKDOMConditional)initWithDOMElement:(id)element;
 - (IKDOMElement)domElement;
 - (NSArray)exclusionExpressions;
 - (NSArray)inclusionExpressions;
 - (NSSet)dependentPathStrings;
-- (void)mutateWithDOMElement:(id)a3;
+- (void)mutateWithDOMElement:(id)element;
 @end
 
 @implementation IKDOMConditional
 
-- (IKDOMConditional)initWithDOMElement:(id)a3
+- (IKDOMConditional)initWithDOMElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v11.receiver = self;
   v11.super_class = IKDOMConditional;
   v5 = [(IKDOMConditional *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_domElement, v4);
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
+    objc_storeWeak(&v5->_domElement, elementCopy);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = uUIDString;
   }
 
   return v6;
@@ -34,8 +34,8 @@
   inclusionExpressions = self->_inclusionExpressions;
   if (!inclusionExpressions)
   {
-    v4 = [(IKDOMConditional *)self domElement];
-    v5 = [v4 getAttribute:@"state"];
+    domElement = [(IKDOMConditional *)self domElement];
+    v5 = [domElement getAttribute:@"state"];
     v6 = [_IKDOMConditionalExpression parseExpressionsFromString:v5];
     v7 = self->_inclusionExpressions;
     self->_inclusionExpressions = v6;
@@ -51,8 +51,8 @@
   exclusionExpressions = self->_exclusionExpressions;
   if (!exclusionExpressions)
   {
-    v4 = [(IKDOMConditional *)self domElement];
-    v5 = [v4 getAttribute:@"notInState"];
+    domElement = [(IKDOMConditional *)self domElement];
+    v5 = [domElement getAttribute:@"notInState"];
     v6 = [_IKDOMConditionalExpression parseExpressionsFromString:v5];
     v7 = self->_exclusionExpressions;
     self->_exclusionExpressions = v6;
@@ -74,8 +74,8 @@
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [(IKDOMConditional *)self inclusionExpressions];
-    v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    inclusionExpressions = [(IKDOMConditional *)self inclusionExpressions];
+    v6 = [inclusionExpressions countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -87,17 +87,17 @@
         {
           if (*v26 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(inclusionExpressions);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * v9) dependentPathStrings];
-          [v4 unionSet:v10];
+          dependentPathStrings = [*(*(&v25 + 1) + 8 * v9) dependentPathStrings];
+          [v4 unionSet:dependentPathStrings];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v7 = [inclusionExpressions countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v7);
@@ -107,8 +107,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [(IKDOMConditional *)self exclusionExpressions];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    exclusionExpressions = [(IKDOMConditional *)self exclusionExpressions];
+    v12 = [exclusionExpressions countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v12)
     {
       v13 = v12;
@@ -120,17 +120,17 @@
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(exclusionExpressions);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * v15) dependentPathStrings];
-          [v4 unionSet:v16];
+          dependentPathStrings2 = [*(*(&v21 + 1) + 8 * v15) dependentPathStrings];
+          [v4 unionSet:dependentPathStrings2];
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v13 = [exclusionExpressions countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v13);
@@ -148,38 +148,38 @@
   return dependentPathStrings;
 }
 
-- (BOOL)passesForDataItem:(id)a3 default:(BOOL)a4
+- (BOOL)passesForDataItem:(id)item default:(BOOL)default
 {
-  v6 = a3;
+  itemCopy = item;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __46__IKDOMConditional_passesForDataItem_default___block_invoke;
   v17[3] = &unk_279799548;
-  v18 = v6;
-  v7 = v6;
+  v18 = itemCopy;
+  v7 = itemCopy;
   v8 = MEMORY[0x259C21BA0](v17);
-  v9 = [(IKDOMConditional *)self inclusionExpressions];
-  v10 = [v9 count];
+  inclusionExpressions = [(IKDOMConditional *)self inclusionExpressions];
+  v10 = [inclusionExpressions count];
 
-  v11 = [(IKDOMConditional *)self exclusionExpressions];
-  v12 = [v11 count];
+  exclusionExpressions = [(IKDOMConditional *)self exclusionExpressions];
+  v12 = [exclusionExpressions count];
 
   if (v12)
   {
-    a4 = 0;
+    default = 0;
   }
 
   if (v10)
   {
-    v13 = [(IKDOMConditional *)self inclusionExpressions];
-    a4 = (v8)[2](v8, v13);
+    inclusionExpressions2 = [(IKDOMConditional *)self inclusionExpressions];
+    default = (v8)[2](v8, inclusionExpressions2);
   }
 
-  v14 = v12 != 0 || a4;
-  if (v12 && !a4)
+  v14 = v12 != 0 || default;
+  if (v12 && !default)
   {
-    v15 = [(IKDOMConditional *)self exclusionExpressions];
-    v14 = (v8)[2](v8, v15) ^ 1;
+    exclusionExpressions2 = [(IKDOMConditional *)self exclusionExpressions];
+    v14 = (v8)[2](v8, exclusionExpressions2) ^ 1;
   }
 
   return v14 & 1;
@@ -235,15 +235,15 @@ LABEL_11:
   return v8;
 }
 
-- (void)mutateWithDOMElement:(id)a3
+- (void)mutateWithDOMElement:(id)element
 {
-  v4 = a3;
-  v5 = [(IKDOMConditional *)self domElement];
-  v6 = [v5 parentNode];
-  v7 = [(IKDOMConditional *)self domElement];
-  v8 = [v6 replaceChild:v4 :v7];
+  elementCopy = element;
+  domElement = [(IKDOMConditional *)self domElement];
+  parentNode = [domElement parentNode];
+  domElement2 = [(IKDOMConditional *)self domElement];
+  v8 = [parentNode replaceChild:elementCopy :domElement2];
 
-  objc_storeWeak(&self->_domElement, v4);
+  objc_storeWeak(&self->_domElement, elementCopy);
   inclusionExpressions = self->_inclusionExpressions;
   self->_inclusionExpressions = 0;
 

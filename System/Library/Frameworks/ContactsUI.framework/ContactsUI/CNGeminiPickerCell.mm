@@ -1,90 +1,90 @@
 @interface CNGeminiPickerCell
-- (CNGeminiPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setText:(id)a3 detailText:(id)a4 badgeText:(id)a5;
+- (CNGeminiPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setText:(id)text detailText:(id)detailText badgeText:(id)badgeText;
 @end
 
 @implementation CNGeminiPickerCell
 
-- (void)setText:(id)a3 detailText:(id)a4 badgeText:(id)a5
+- (void)setText:(id)text detailText:(id)detailText badgeText:(id)badgeText
 {
-  v28 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CNGeminiPickerCell *)self badgeView];
-  [v10 setText:v8];
+  detailTextCopy = detailText;
+  badgeTextCopy = badgeText;
+  textCopy = text;
+  badgeView = [(CNGeminiPickerCell *)self badgeView];
+  [badgeView setText:badgeTextCopy];
 
-  v11 = [(CNGeminiPickerCell *)self labelLabel];
-  [v11 setText:v9];
+  labelLabel = [(CNGeminiPickerCell *)self labelLabel];
+  [labelLabel setText:textCopy];
 
-  v12 = [(CNGeminiPickerCell *)self centeredBadgeView];
-  [v12 setText:v8];
+  centeredBadgeView = [(CNGeminiPickerCell *)self centeredBadgeView];
+  [centeredBadgeView setText:badgeTextCopy];
 
-  v13 = [(CNGeminiPickerCell *)self centeredNameLabel];
-  [v13 setText:v9];
+  centeredNameLabel = [(CNGeminiPickerCell *)self centeredNameLabel];
+  [centeredNameLabel setText:textCopy];
 
-  v14 = [(__CFString *)v28 length];
-  v15 = [(CNGeminiPickerCell *)self badgeView];
-  v16 = v15;
+  v14 = [(__CFString *)detailTextCopy length];
+  badgeView2 = [(CNGeminiPickerCell *)self badgeView];
+  v16 = badgeView2;
   if (v14)
   {
-    [v15 setHidden:0];
+    [badgeView2 setHidden:0];
 
-    v17 = [(CNGeminiPickerCell *)self labelLabel];
-    [v17 setHidden:0];
+    labelLabel2 = [(CNGeminiPickerCell *)self labelLabel];
+    [labelLabel2 setHidden:0];
 
-    v18 = [(CNGeminiPickerCell *)self valueLabel];
-    [v18 setHidden:0];
+    valueLabel = [(CNGeminiPickerCell *)self valueLabel];
+    [valueLabel setHidden:0];
 
-    v19 = [(CNGeminiPickerCell *)self centeredBadgeView];
-    [v19 setHidden:1];
+    centeredBadgeView2 = [(CNGeminiPickerCell *)self centeredBadgeView];
+    [centeredBadgeView2 setHidden:1];
 
-    v20 = [(CNGeminiPickerCell *)self centeredNameLabel];
-    [v20 setHidden:1];
+    centeredNameLabel2 = [(CNGeminiPickerCell *)self centeredNameLabel];
+    [centeredNameLabel2 setHidden:1];
 
-    v21 = [(CNGeminiPickerCell *)self valueLabel];
-    v22 = v21;
-    v23 = v28;
+    valueLabel2 = [(CNGeminiPickerCell *)self valueLabel];
+    v22 = valueLabel2;
+    v23 = detailTextCopy;
   }
 
   else
   {
-    [v15 setHidden:1];
+    [badgeView2 setHidden:1];
 
-    v24 = [(CNGeminiPickerCell *)self labelLabel];
-    [v24 setHidden:1];
+    labelLabel3 = [(CNGeminiPickerCell *)self labelLabel];
+    [labelLabel3 setHidden:1];
 
-    v25 = [(CNGeminiPickerCell *)self valueLabel];
-    [v25 setHidden:1];
+    valueLabel3 = [(CNGeminiPickerCell *)self valueLabel];
+    [valueLabel3 setHidden:1];
 
-    v26 = [(CNGeminiPickerCell *)self centeredBadgeView];
-    [v26 setHidden:0];
+    centeredBadgeView3 = [(CNGeminiPickerCell *)self centeredBadgeView];
+    [centeredBadgeView3 setHidden:0];
 
-    v27 = [(CNGeminiPickerCell *)self centeredNameLabel];
-    [v27 setHidden:0];
+    centeredNameLabel3 = [(CNGeminiPickerCell *)self centeredNameLabel];
+    [centeredNameLabel3 setHidden:0];
 
-    v21 = [(CNGeminiPickerCell *)self valueLabel];
-    v22 = v21;
+    valueLabel2 = [(CNGeminiPickerCell *)self valueLabel];
+    v22 = valueLabel2;
     v23 = @"+1 (123) 456-7890";
   }
 
-  [v21 setText:v23];
+  [valueLabel2 setText:v23];
 }
 
-- (CNGeminiPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNGeminiPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v103[3] = *MEMORY[0x1E69E9840];
   v101.receiver = self;
   v101.super_class = CNGeminiPickerCell;
-  v4 = [(CNGeminiPickerCell *)&v101 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNGeminiPickerCell *)&v101 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [CNGeminiBadge geminiBadgeWithText:@"-"];
     badgeView = v4->_badgeView;
     v4->_badgeView = v5;
 
-    v7 = [MEMORY[0x1E69DCA40] defaultMetrics];
+    defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
     v8 = [MEMORY[0x1E69DB878] systemFontOfSize:20.0];
-    v100 = [v7 scaledFontForFont:v8];
+    v100 = [defaultMetrics scaledFontForFont:v8];
 
     v99 = +[CNUIColorRepository monogrammerBackTextWhiteColor];
     v98 = +[CNUIColorRepository contactCardStaticIdentityBadgeGlyphColor];
@@ -97,16 +97,16 @@
     v103[2] = v98;
     v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v103 forKeys:v102 count:3];
     [(CNGeminiBadge *)v4->_badgeView setViewAttributes:v97];
-    v10 = [(CNGeminiPickerCell *)v4 contentView];
-    v11 = [(CNGeminiPickerCell *)v4 badgeView];
-    [v10 addSubview:v11];
+    contentView = [(CNGeminiPickerCell *)v4 contentView];
+    badgeView = [(CNGeminiPickerCell *)v4 badgeView];
+    [contentView addSubview:badgeView];
 
-    v12 = [(CNGeminiPickerCell *)v4 badgeView];
-    v13 = [v12 leadingAnchor];
-    v14 = [(CNGeminiPickerCell *)v4 contentView];
-    v15 = [v14 layoutMarginsGuide];
-    v16 = [v15 leadingAnchor];
-    v17 = [v13 constraintEqualToAnchor:v16];
+    badgeView2 = [(CNGeminiPickerCell *)v4 badgeView];
+    leadingAnchor = [badgeView2 leadingAnchor];
+    contentView2 = [(CNGeminiPickerCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v17 setActive:1];
 
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -119,44 +119,44 @@
 
     [(UILabel *)v4->_labelLabel setNumberOfLines:0];
     [(UILabel *)v4->_labelLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v21 = [(CNGeminiPickerCell *)v4 contentView];
-    [v21 addSubview:v4->_labelLabel];
+    contentView3 = [(CNGeminiPickerCell *)v4 contentView];
+    [contentView3 addSubview:v4->_labelLabel];
 
-    v22 = [(UILabel *)v4->_labelLabel firstBaselineAnchor];
-    v23 = [(CNGeminiPickerCell *)v4 contentView];
-    v24 = [v23 topAnchor];
-    v25 = [v22 constraintEqualToSystemSpacingBelowAnchor:v24 multiplier:1.0];
+    firstBaselineAnchor = [(UILabel *)v4->_labelLabel firstBaselineAnchor];
+    contentView4 = [(CNGeminiPickerCell *)v4 contentView];
+    topAnchor = [contentView4 topAnchor];
+    v25 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor multiplier:1.0];
     [v25 setActive:1];
 
-    v26 = [(UILabel *)v4->_labelLabel leadingAnchor];
-    v27 = [(CNGeminiPickerCell *)v4 badgeView];
-    v28 = [v27 trailingAnchor];
-    v29 = [MEMORY[0x1E69DCA40] defaultMetrics];
-    [v29 scaledValueForValue:4.0];
-    v30 = [v26 constraintEqualToAnchor:v28 constant:?];
+    leadingAnchor3 = [(UILabel *)v4->_labelLabel leadingAnchor];
+    badgeView3 = [(CNGeminiPickerCell *)v4 badgeView];
+    trailingAnchor = [badgeView3 trailingAnchor];
+    defaultMetrics2 = [MEMORY[0x1E69DCA40] defaultMetrics];
+    [defaultMetrics2 scaledValueForValue:4.0];
+    v30 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
     [v30 setActive:1];
 
-    v31 = [(CNGeminiPickerCell *)v4 badgeView];
-    v32 = [v31 centerYAnchor];
-    v33 = [(UILabel *)v4->_labelLabel centerYAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    badgeView4 = [(CNGeminiPickerCell *)v4 badgeView];
+    centerYAnchor = [badgeView4 centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v4->_labelLabel centerYAnchor];
+    v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v34 setActive:1];
 
-    v35 = [(CNGeminiPickerCell *)v4 badgeView];
-    [v35 frame];
+    badgeView5 = [(CNGeminiPickerCell *)v4 badgeView];
+    [badgeView5 frame];
     v37 = v36;
-    v38 = [(CNGeminiPickerCell *)v4 badgeView];
-    [v38 frame];
+    badgeView6 = [(CNGeminiPickerCell *)v4 badgeView];
+    [badgeView6 frame];
     v40 = v39;
-    v41 = [(CNGeminiPickerCell *)v4 badgeView];
-    [v41 intrinsicContentSize];
+    badgeView7 = [(CNGeminiPickerCell *)v4 badgeView];
+    [badgeView7 intrinsicContentSize];
     v43 = v42;
-    v44 = [(CNGeminiPickerCell *)v4 labelLabel];
-    v45 = [v44 font];
-    [v45 capHeight];
+    labelLabel = [(CNGeminiPickerCell *)v4 labelLabel];
+    font = [labelLabel font];
+    [font capHeight];
     v47 = v46;
-    v48 = [(CNGeminiPickerCell *)v4 badgeView];
-    [v48 setFrame:{v37, v40, v43, v47}];
+    badgeView8 = [(CNGeminiPickerCell *)v4 badgeView];
+    [badgeView8 setFrame:{v37, v40, v43, v47}];
 
     v49 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     valueLabel = v4->_valueLabel;
@@ -167,34 +167,34 @@
 
     [(UILabel *)v4->_valueLabel setNumberOfLines:0];
     [(UILabel *)v4->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v52 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UILabel *)v4->_valueLabel setTextColor:v52];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UILabel *)v4->_valueLabel setTextColor:systemGrayColor];
 
-    v53 = [(CNGeminiPickerCell *)v4 contentView];
-    [v53 addSubview:v4->_valueLabel];
+    contentView5 = [(CNGeminiPickerCell *)v4 contentView];
+    [contentView5 addSubview:v4->_valueLabel];
 
-    v54 = [(UILabel *)v4->_valueLabel firstBaselineAnchor];
-    v55 = [(UILabel *)v4->_labelLabel lastBaselineAnchor];
-    v56 = [v54 constraintEqualToSystemSpacingBelowAnchor:v55 multiplier:1.0];
+    firstBaselineAnchor2 = [(UILabel *)v4->_valueLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v4->_labelLabel lastBaselineAnchor];
+    v56 = [firstBaselineAnchor2 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
     [v56 setActive:1];
 
-    v57 = [(UILabel *)v4->_valueLabel leadingAnchor];
-    v58 = [(CNGeminiPickerCell *)v4 badgeView];
-    v59 = [v58 leadingAnchor];
-    v60 = [v57 constraintEqualToAnchor:v59];
+    leadingAnchor4 = [(UILabel *)v4->_valueLabel leadingAnchor];
+    badgeView9 = [(CNGeminiPickerCell *)v4 badgeView];
+    leadingAnchor5 = [badgeView9 leadingAnchor];
+    v60 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     [v60 setActive:1];
 
-    v61 = [(UILabel *)v4->_valueLabel trailingAnchor];
-    v62 = [(CNGeminiPickerCell *)v4 contentView];
-    v63 = [v62 layoutMarginsGuide];
-    v64 = [v63 trailingAnchor];
-    v65 = [v61 constraintLessThanOrEqualToAnchor:v64];
+    trailingAnchor2 = [(UILabel *)v4->_valueLabel trailingAnchor];
+    contentView6 = [(CNGeminiPickerCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView6 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+    v65 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
     [v65 setActive:1];
 
-    v66 = [(CNGeminiPickerCell *)v4 contentView];
-    v67 = [v66 bottomAnchor];
-    v68 = [(UILabel *)v4->_valueLabel lastBaselineAnchor];
-    v69 = [v67 constraintEqualToSystemSpacingBelowAnchor:v68 multiplier:1.0];
+    contentView7 = [(CNGeminiPickerCell *)v4 contentView];
+    bottomAnchor = [contentView7 bottomAnchor];
+    lastBaselineAnchor2 = [(UILabel *)v4->_valueLabel lastBaselineAnchor];
+    v69 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor2 multiplier:1.0];
     [v69 setActive:1];
 
     v70 = [CNGeminiBadge geminiBadgeWithText:@"-"];
@@ -202,16 +202,16 @@
     v4->_centeredBadgeView = v70;
 
     [(CNGeminiBadge *)v4->_centeredBadgeView setViewAttributes:v97];
-    v72 = [(CNGeminiPickerCell *)v4 contentView];
-    v73 = [(CNGeminiPickerCell *)v4 centeredBadgeView];
-    [v72 addSubview:v73];
+    contentView8 = [(CNGeminiPickerCell *)v4 contentView];
+    centeredBadgeView = [(CNGeminiPickerCell *)v4 centeredBadgeView];
+    [contentView8 addSubview:centeredBadgeView];
 
-    v74 = [(CNGeminiPickerCell *)v4 centeredBadgeView];
-    v75 = [v74 leadingAnchor];
-    v76 = [(CNGeminiPickerCell *)v4 contentView];
-    v77 = [v76 layoutMarginsGuide];
-    v78 = [v77 leadingAnchor];
-    v79 = [v75 constraintEqualToAnchor:v78];
+    centeredBadgeView2 = [(CNGeminiPickerCell *)v4 centeredBadgeView];
+    leadingAnchor6 = [centeredBadgeView2 leadingAnchor];
+    contentView9 = [(CNGeminiPickerCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView9 layoutMarginsGuide];
+    leadingAnchor7 = [layoutMarginsGuide3 leadingAnchor];
+    v79 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     [v79 setActive:1];
 
     v80 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -223,25 +223,25 @@
 
     [(UILabel *)v4->_centeredNameLabel setNumberOfLines:0];
     [(UILabel *)v4->_centeredNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v83 = [(CNGeminiPickerCell *)v4 contentView];
-    [v83 addSubview:v4->_centeredNameLabel];
+    contentView10 = [(CNGeminiPickerCell *)v4 contentView];
+    [contentView10 addSubview:v4->_centeredNameLabel];
 
-    v84 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
-    v85 = [(CNGeminiPickerCell *)v4 contentView];
-    v86 = [v85 centerYAnchor];
-    v87 = [v84 constraintEqualToAnchor:v86];
+    centerYAnchor3 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
+    contentView11 = [(CNGeminiPickerCell *)v4 contentView];
+    centerYAnchor4 = [contentView11 centerYAnchor];
+    v87 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v87 setActive:1];
 
-    v88 = [(UILabel *)v4->_centeredNameLabel leadingAnchor];
-    v89 = [(CNGeminiBadge *)v4->_centeredBadgeView trailingAnchor];
-    v90 = [MEMORY[0x1E69DCA40] defaultMetrics];
-    [v90 scaledValueForValue:4.0];
-    v91 = [v88 constraintEqualToAnchor:v89 constant:?];
+    leadingAnchor8 = [(UILabel *)v4->_centeredNameLabel leadingAnchor];
+    trailingAnchor4 = [(CNGeminiBadge *)v4->_centeredBadgeView trailingAnchor];
+    defaultMetrics3 = [MEMORY[0x1E69DCA40] defaultMetrics];
+    [defaultMetrics3 scaledValueForValue:4.0];
+    v91 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor4 constant:?];
     [v91 setActive:1];
 
-    v92 = [(CNGeminiBadge *)v4->_centeredBadgeView centerYAnchor];
-    v93 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
-    v94 = [v92 constraintEqualToAnchor:v93];
+    centerYAnchor5 = [(CNGeminiBadge *)v4->_centeredBadgeView centerYAnchor];
+    centerYAnchor6 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
+    v94 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [v94 setActive:1];
   }
 

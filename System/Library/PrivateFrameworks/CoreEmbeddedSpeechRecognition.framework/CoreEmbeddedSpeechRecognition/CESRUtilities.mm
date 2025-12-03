@@ -1,72 +1,72 @@
 @interface CESRUtilities
-+ (BOOL)aFEnableFeatureAndCheckPreferenceValueWithKey:(__CFString *)a3;
-+ (BOOL)hasRecognizedAnythingInAFSpeechPackage:(id)a3;
++ (BOOL)aFEnableFeatureAndCheckPreferenceValueWithKey:(__CFString *)key;
++ (BOOL)hasRecognizedAnythingInAFSpeechPackage:(id)package;
 + (BOOL)isASRSupported;
 + (BOOL)isAssistantEnabled;
 + (BOOL)isAutomaticCompilationEnabled;
 + (BOOL)isDictationEnabled;
-+ (BOOL)isEARError:(id)a3;
-+ (BOOL)isFilePathValid:(id)a3;
-+ (BOOL)isInsufficientDiskSpaceError:(id)a3;
-+ (BOOL)isSamplingSupportedForTask:(id)a3;
++ (BOOL)isEARError:(id)error;
++ (BOOL)isFilePathValid:(id)valid;
++ (BOOL)isInsufficientDiskSpaceError:(id)error;
++ (BOOL)isSamplingSupportedForTask:(id)task;
 + (BOOL)isSiriUODSupported;
-+ (BOOL)isTaskDictationSpecific:(id)a3;
++ (BOOL)isTaskDictationSpecific:(id)specific;
 + (double)getHostClockFrequency;
-+ (float)hostTimeToSeconds:(unint64_t)a3;
-+ (id)AFSpeechInfoPackageForEARSpeechRecognitionResult:(id)a3;
-+ (id)AFSpeechInfoPackageForEARSpeechRecognitionResultPackage:(id)a3;
-+ (id)_alignTokenToFirstSeenPartialResult:(id)a3 tokenIndex:(unint64_t)a4 firstSeenPartialResultTokens:(id)a5 firstSeenPartialResultIndex:(unint64_t)a6;
-+ (id)_firstSeenPartialResultIndicesForTokens:(id)a3 firstSeenPartialResultTokens:(id)a4;
-+ (id)afRecognitionForEARSausage:(id)a3 processedAudioDuration:(double)a4;
-+ (id)afSpeechPackageForEARPackage:(id)a3 processedAudioDuration:(double)a4 speechProfileUsed:(BOOL)a5 recognizerModelInfo:(id)a6 isVoiceCommandCandidatePackage:(BOOL)a7;
-+ (id)afTokensForEARTokens:(id)a3 removeSpaceBefore:(BOOL)a4;
-+ (id)afVoiceCommandGrammarParseResultForEARTokenString:(id)a3 withEARVoiceCommandInterpretations:(id)a4;
-+ (id)alignedPartialResultIndicesForTokens:(id)a3 firstSeenPartialResultTokens:(id)a4;
-+ (id)audioData:(id)a3 withBytesFromEnd:(unint64_t)a4;
++ (float)hostTimeToSeconds:(unint64_t)seconds;
++ (id)AFSpeechInfoPackageForEARSpeechRecognitionResult:(id)result;
++ (id)AFSpeechInfoPackageForEARSpeechRecognitionResultPackage:(id)package;
++ (id)_alignTokenToFirstSeenPartialResult:(id)result tokenIndex:(unint64_t)index firstSeenPartialResultTokens:(id)tokens firstSeenPartialResultIndex:(unint64_t)resultIndex;
++ (id)_firstSeenPartialResultIndicesForTokens:(id)tokens firstSeenPartialResultTokens:(id)resultTokens;
++ (id)afRecognitionForEARSausage:(id)sausage processedAudioDuration:(double)duration;
++ (id)afSpeechPackageForEARPackage:(id)package processedAudioDuration:(double)duration speechProfileUsed:(BOOL)used recognizerModelInfo:(id)info isVoiceCommandCandidatePackage:(BOOL)candidatePackage;
++ (id)afTokensForEARTokens:(id)tokens removeSpaceBefore:(BOOL)before;
++ (id)afVoiceCommandGrammarParseResultForEARTokenString:(id)string withEARVoiceCommandInterpretations:(id)interpretations;
++ (id)alignedPartialResultIndicesForTokens:(id)tokens firstSeenPartialResultTokens:(id)resultTokens;
++ (id)audioData:(id)data withBytesFromEnd:(unint64_t)end;
 + (id)currentSiriLanguageCode;
-+ (id)earTokensForAFTokens:(id)a3 appendedAutoPunctuation:(BOOL)a4;
-+ (id)earTokensToString:(id)a3;
-+ (id)getNormString:(id)a3;
++ (id)earTokensForAFTokens:(id)tokens appendedAutoPunctuation:(BOOL)punctuation;
++ (id)earTokensToString:(id)string;
++ (id)getNormString:(id)string;
 + (id)installedAssistantLocale;
 + (id)installedDictationLocaleIdentifiers;
 + (id)installedDictationLocales;
-+ (id)languageCodeForLocale:(id)a3;
-+ (id)mapContextOptionToString:(unint64_t)a3;
-+ (id)recognizerSourceForTask:(id)a3;
-+ (id)speechProfileDateLastModifiedForLanguage:(id)a3;
-+ (id)speechProfilePathsWithLanguage:(id)a3;
++ (id)languageCodeForLocale:(id)locale;
++ (id)mapContextOptionToString:(unint64_t)string;
++ (id)recognizerSourceForTask:(id)task;
++ (id)speechProfileDateLastModifiedForLanguage:(id)language;
++ (id)speechProfilePathsWithLanguage:(id)language;
 + (id)speechProfileRootDirectories;
-+ (id)transcriptFromTokens:(id)a3;
-+ (int64_t)_freeSpaceInBytesForPath:(id)a3;
-+ (int64_t)calculateDiffInDaysFromTimestamp:(id)a3;
-+ (unint64_t)secondsToHostTime:(float)a3;
-+ (void)_cacheDeletePurgeSpaceWithInfo:(id)a3 completion:(id)a4;
-+ (void)generateABCSnapshotForType:(id)a3 subType:(id)a4 context:(id)a5;
-+ (void)loadSpeechProfiles:(id)a3 language:(id)a4;
-+ (void)logToPowerLogForEventCategory:(id)a3 eventDictionary:(id)a4;
-+ (void)purgeSpaceForModelCompilationAsNeeded:(unint64_t)a3 completion:(id)a4;
++ (id)transcriptFromTokens:(id)tokens;
++ (int64_t)_freeSpaceInBytesForPath:(id)path;
++ (int64_t)calculateDiffInDaysFromTimestamp:(id)timestamp;
++ (unint64_t)secondsToHostTime:(float)time;
++ (void)_cacheDeletePurgeSpaceWithInfo:(id)info completion:(id)completion;
++ (void)generateABCSnapshotForType:(id)type subType:(id)subType context:(id)context;
++ (void)loadSpeechProfiles:(id)profiles language:(id)language;
++ (void)logToPowerLogForEventCategory:(id)category eventDictionary:(id)dictionary;
++ (void)purgeSpaceForModelCompilationAsNeeded:(unint64_t)needed completion:(id)completion;
 @end
 
 @implementation CESRUtilities
 
-+ (id)transcriptFromTokens:(id)a3
++ (id)transcriptFromTokens:(id)tokens
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  tokensCopy = tokens;
+  if ([tokensCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = tokensCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = *v16;
-      v9 = 1;
+      removeSpaceAfter = 1;
       do
       {
         for (i = 0; i != v7; ++i)
@@ -77,18 +77,18 @@
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          if (((v9 | [v11 removeSpaceBefore]) & 1) == 0)
+          if (((removeSpaceAfter | [v11 removeSpaceBefore]) & 1) == 0)
           {
             [v4 appendString:@" "];
           }
 
-          v12 = [v11 text];
-          if (v12)
+          text = [v11 text];
+          if (text)
           {
-            [v4 appendString:v12];
+            [v4 appendString:text];
           }
 
-          v9 = [v11 removeSpaceAfter];
+          removeSpaceAfter = [v11 removeSpaceAfter];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -108,12 +108,12 @@
   return v4;
 }
 
-+ (BOOL)isInsufficientDiskSpaceError:(id)a3
++ (BOOL)isInsufficientDiskSpaceError:(id)error
 {
-  v3 = a3;
-  if ([CESRUtilities isEARError:v3])
+  errorCopy = error;
+  if ([CESRUtilities isEARError:errorCopy])
   {
-    v4 = [v3 code] == 201;
+    v4 = [errorCopy code] == 201;
   }
 
   else
@@ -124,25 +124,25 @@
   return v4;
 }
 
-+ (BOOL)isEARError:(id)a3
++ (BOOL)isEARError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v3 = [a3 domain];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D071C8]];
+  domain = [error domain];
+  v4 = [domain isEqualToString:*MEMORY[0x277D071C8]];
 
   return v4;
 }
 
-+ (void)_cacheDeletePurgeSpaceWithInfo:(id)a3 completion:(id)a4
++ (void)_cacheDeletePurgeSpaceWithInfo:(id)info completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ([v5 objectForKey:@"CACHE_DELETE_VOLUME"], (v7 = objc_claimAutoreleasedReturnValue()) == 0) || (v8 = v7, objc_msgSend(v5, "objectForKey:", @"CACHE_DELETE_AMOUNT"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy || ([infoCopy objectForKey:@"CACHE_DELETE_VOLUME"], (v7 = objc_claimAutoreleasedReturnValue()) == 0) || (v8 = v7, objc_msgSend(infoCopy, "objectForKey:", @"CACHE_DELETE_AMOUNT"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
   {
     v16 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -150,29 +150,29 @@
       *buf = 136315394;
       v20 = "+[CESRUtilities _cacheDeletePurgeSpaceWithInfo:completion:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = infoCopy;
       _os_log_error_impl(&dword_225EEB000, v16, OS_LOG_TYPE_ERROR, "%s The volume and/or amount to purge was not specified: %@", buf, 0x16u);
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!v6)
+    else if (!completionCopy)
     {
       goto LABEL_10;
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
-  v10 = [v5 objectForKey:@"CACHE_DELETE_VOLUME"];
-  v11 = [v5 objectForKey:@"CACHE_DELETE_AMOUNT"];
-  v12 = [v11 longLongValue];
+  v10 = [infoCopy objectForKey:@"CACHE_DELETE_VOLUME"];
+  v11 = [infoCopy objectForKey:@"CACHE_DELETE_AMOUNT"];
+  longLongValue = [v11 longLongValue];
 
-  v13 = [MEMORY[0x277CCA8E8] stringFromByteCount:v12 countStyle:3];
-  v18 = v6;
+  v13 = [MEMORY[0x277CCA8E8] stringFromByteCount:longLongValue countStyle:3];
+  v18 = completionCopy;
   v14 = v13;
   CacheDeletePurgeSpaceWithInfo();
   v15 = *MEMORY[0x277CEF0E8];
@@ -255,15 +255,15 @@ void __59__CESRUtilities__cacheDeletePurgeSpaceWithInfo_completion___block_invok
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)_freeSpaceInBytesForPath:(id)a3
++ (int64_t)_freeSpaceInBytesForPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v16 = 0;
-    v5 = [v4 attributesOfFileSystemForPath:v3 error:&v16];
+    v5 = [defaultManager attributesOfFileSystemForPath:pathCopy error:&v16];
     v6 = v16;
 
     if (v5)
@@ -272,15 +272,15 @@ void __59__CESRUtilities__cacheDeletePurgeSpaceWithInfo_completion___block_invok
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 longLongValue];
-        if (v9 <= 104857600)
+        longLongValue = [v7 longLongValue];
+        if (longLongValue <= 104857600)
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = v9 - 104857600;
+          v10 = longLongValue - 104857600;
         }
       }
 
@@ -331,10 +331,10 @@ void __59__CESRUtilities__cacheDeletePurgeSpaceWithInfo_completion___block_invok
   return v10;
 }
 
-+ (void)purgeSpaceForModelCompilationAsNeeded:(unint64_t)a3 completion:(id)a4
++ (void)purgeSpaceForModelCompilationAsNeeded:(unint64_t)needed completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = NSOpenStepRootDirectory();
   v7 = [CESRUtilities _freeSpaceInBytesForPath:v6];
   if (v7 < 0)
@@ -347,24 +347,24 @@ void __59__CESRUtilities__cacheDeletePurgeSpaceWithInfo_completion___block_invok
       v21 = 2112;
       v22 = v6;
       _os_log_error_impl(&dword_225EEB000, v14, OS_LOG_TYPE_ERROR, "%s Failed to evaluate the free space on volume: %@", buf, 0x16u);
-      if (!v5)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!v5)
+    else if (!completionCopy)
     {
       goto LABEL_12;
     }
 
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_12;
   }
 
   v8 = v7;
-  v9 = a3 << 20;
-  v10 = [MEMORY[0x277CCA8E8] stringFromByteCount:a3 << 20 countStyle:3];
+  v9 = needed << 20;
+  v10 = [MEMORY[0x277CCA8E8] stringFromByteCount:needed << 20 countStyle:3];
   v11 = [MEMORY[0x277CCA8E8] stringFromByteCount:v8 countStyle:3];
   if (v9 <= v8)
   {
@@ -380,9 +380,9 @@ void __59__CESRUtilities__cacheDeletePurgeSpaceWithInfo_completion___block_invok
       _os_log_impl(&dword_225EEB000, v15, OS_LOG_TYPE_DEFAULT, "%s Free space (%@) already meets or exceeds the requested space: %@", buf, 0x20u);
     }
 
-    if (v5)
+    if (completionCopy)
     {
-      v5[2](v5, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -395,19 +395,19 @@ void __59__CESRUtilities__cacheDeletePurgeSpaceWithInfo_completion___block_invok
     v18[2] = &unk_283952480;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
-    [CESRUtilities _cacheDeletePurgeSpaceWithInfo:v13 completion:v5];
+    [CESRUtilities _cacheDeletePurgeSpaceWithInfo:v13 completion:completionCopy];
   }
 
 LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isSamplingSupportedForTask:(id)a3
++ (BOOL)isSamplingSupportedForTask:(id)task
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  taskCopy = task;
   v5 = [v3 setWithObjects:{@"Dictation", @"WebSearch", @"SearchOrMessaging", @"SiriDictation", @"Beto", @"BetoDictation", 0}];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:taskCopy];
 
   return v6;
 }
@@ -434,8 +434,8 @@ LABEL_12:
   if (v8)
   {
     v9 = MEMORY[0x277CBEAF8];
-    v10 = [v6 language];
-    v11 = [v9 localeWithLocaleIdentifier:v10];
+    language = [v6 language];
+    v11 = [v9 localeWithLocaleIdentifier:language];
   }
 
   else
@@ -444,11 +444,11 @@ LABEL_12:
     if (os_log_type_enabled(*v2, OS_LOG_TYPE_INFO))
     {
       v13 = v12;
-      v14 = [v6 language];
+      language2 = [v6 language];
       v17 = 136315394;
       v18 = "+[CESRUtilities installedAssistantLocale]";
       v19 = 2112;
-      v20 = v14;
+      v20 = language2;
       _os_log_impl(&dword_225EEB000, v13, OS_LOG_TYPE_INFO, "%s No asset for language: %@", &v17, 0x16u);
     }
 
@@ -528,34 +528,34 @@ LABEL_12:
   return v14;
 }
 
-+ (BOOL)isTaskDictationSpecific:(id)a3
++ (BOOL)isTaskDictationSpecific:(id)specific
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Dictation"])
+  specificCopy = specific;
+  if ([specificCopy isEqualToString:@"Dictation"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"WebSearch"];
+    v4 = [specificCopy isEqualToString:@"WebSearch"];
   }
 
   return v4;
 }
 
-+ (void)generateABCSnapshotForType:(id)a3 subType:(id)a4 context:(id)a5
++ (void)generateABCSnapshotForType:(id)type subType:(id)subType context:(id)context
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
   if (AFIsInternalInstall())
   {
     v9 = objc_alloc(MEMORY[0x277CEF3A8]);
-    v10 = [MEMORY[0x277CEF2C8] defaultContext];
-    v11 = [v9 initWithInstanceContext:v10];
+    defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
+    v11 = [v9 initWithInstanceContext:defaultContext];
 
-    [v11 triggerABCForType:v12 subType:v7 context:v8 completionHandler:&__block_literal_global_382];
+    [v11 triggerABCForType:typeCopy subType:subTypeCopy context:contextCopy completionHandler:&__block_literal_global_382];
   }
 }
 
@@ -579,53 +579,53 @@ void __60__CESRUtilities_generateABCSnapshotForType_subType_context___block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logToPowerLogForEventCategory:(id)a3 eventDictionary:(id)a4
++ (void)logToPowerLogForEventCategory:(id)category eventDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
+  categoryCopy = category;
+  dictionaryCopy = dictionary;
   v7 = dispatch_get_global_queue(17, 0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__CESRUtilities_logToPowerLogForEventCategory_eventDictionary___block_invoke;
   v10[3] = &unk_278580398;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = categoryCopy;
+  v12 = dictionaryCopy;
+  v8 = dictionaryCopy;
+  v9 = categoryCopy;
   dispatch_async(v7, v10);
 }
 
-+ (id)_alignTokenToFirstSeenPartialResult:(id)a3 tokenIndex:(unint64_t)a4 firstSeenPartialResultTokens:(id)a5 firstSeenPartialResultIndex:(unint64_t)a6
++ (id)_alignTokenToFirstSeenPartialResult:(id)result tokenIndex:(unint64_t)index firstSeenPartialResultTokens:(id)tokens firstSeenPartialResultIndex:(unint64_t)resultIndex
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  resultCopy = result;
+  tokensCopy = tokens;
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v40 = v11;
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:resultIndex];
   v41[0] = v12;
   v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
 
-  v37 = v9;
-  v13 = [v9 count];
-  v14 = [v10 count];
+  v37 = resultCopy;
+  v13 = [resultCopy count];
+  v14 = [tokensCopy count];
   v35 = v13;
-  if (v13 > a4)
+  if (v13 > index)
   {
     v15 = v14;
     v16 = 0;
-    v33 = a6;
-    v34 = a6 + a4;
+    resultIndexCopy = resultIndex;
+    v34 = resultIndex + index;
     v17 = -1;
-    v18 = a6;
+    resultIndexCopy2 = resultIndex;
     while (1)
     {
-      v19 = [v37 objectAtIndexedSubscript:{a4, v33}];
-      v20 = [v19 tokenName];
-      v21 = [CESRUtilities getNormString:v20];
+      v19 = [v37 objectAtIndexedSubscript:{index, resultIndexCopy}];
+      tokenName = [v19 tokenName];
+      v21 = [CESRUtilities getNormString:tokenName];
 
-      v22 = v18;
-      if (v15 > v18)
+      v22 = resultIndexCopy2;
+      if (v15 > resultIndexCopy2)
       {
         break;
       }
@@ -639,10 +639,10 @@ LABEL_8:
       v16 = 0;
       v26 = v15;
 LABEL_11:
-      v27 = a4 - v34 + v22 + v26;
+      v27 = index - v34 + v22 + v26;
       if (v27 < v17)
       {
-        v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+        v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
         v38 = v28;
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
         v39 = v29;
@@ -659,19 +659,19 @@ LABEL_11:
         v17 = v27;
       }
 
-      ++a4;
-      v18 = v33;
-      if (a4 == v35)
+      ++index;
+      resultIndexCopy2 = resultIndexCopy;
+      if (index == v35)
       {
         goto LABEL_17;
       }
     }
 
     v23 = v16;
-    v22 = v18;
+    v22 = resultIndexCopy2;
     while (1)
     {
-      v24 = [v10 objectAtIndex:v22];
+      v24 = [tokensCopy objectAtIndex:v22];
       v25 = [v24 objectForKey:v21];
 
       if (v25)
@@ -700,15 +700,15 @@ LABEL_17:
   return v36;
 }
 
-+ (id)_firstSeenPartialResultIndicesForTokens:(id)a3 firstSeenPartialResultTokens:(id)a4
++ (id)_firstSeenPartialResultIndicesForTokens:(id)tokens firstSeenPartialResultTokens:(id)resultTokens
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v24 = v5;
-  v8 = [v5 count];
-  v23 = v6;
-  v9 = [v6 count];
+  tokensCopy = tokens;
+  resultTokensCopy = resultTokens;
+  array = [MEMORY[0x277CBEB18] array];
+  v24 = tokensCopy;
+  v8 = [tokensCopy count];
+  v23 = resultTokensCopy;
+  v9 = [resultTokensCopy count];
   if (v8)
   {
     v10 = v9;
@@ -717,59 +717,59 @@ LABEL_17:
     do
     {
       v13 = [CESRUtilities _alignTokenToFirstSeenPartialResult:v24 tokenIndex:v11 firstSeenPartialResultTokens:v23 firstSeenPartialResultIndex:v12];
-      v14 = [v13 allKeys];
-      v15 = [v14 firstObject];
-      v16 = [v15 unsignedIntegerValue];
+      allKeys = [v13 allKeys];
+      firstObject = [allKeys firstObject];
+      unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-      v17 = [v13 allValues];
-      v18 = [v17 firstObject];
-      v19 = [v18 unsignedIntegerValue];
+      allValues = [v13 allValues];
+      firstObject2 = [allValues firstObject];
+      unsignedIntegerValue2 = [firstObject2 unsignedIntegerValue];
 
-      v20 = v16 - v11;
-      if (v16 > v11)
+      v20 = unsignedIntegerValue - v11;
+      if (unsignedIntegerValue > v11)
       {
         do
         {
-          [v7 addObject:&unk_283952468];
+          [array addObject:&unk_283952468];
           --v20;
         }
 
         while (v20);
       }
 
-      if (v19 >= v10)
+      if (unsignedIntegerValue2 >= v10)
       {
-        [v7 addObject:&unk_283952468];
+        [array addObject:&unk_283952468];
         v12 = v10;
       }
 
       else
       {
-        v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-        [v7 addObject:v21];
+        v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
+        [array addObject:v21];
 
-        v12 = v19 + 1;
+        v12 = unsignedIntegerValue2 + 1;
       }
 
-      v11 = v16 + 1;
+      v11 = unsignedIntegerValue + 1;
     }
 
-    while (v16 + 1 < v8);
+    while (unsignedIntegerValue + 1 < v8);
   }
 
-  return v7;
+  return array;
 }
 
-+ (id)alignedPartialResultIndicesForTokens:(id)a3 firstSeenPartialResultTokens:(id)a4
++ (id)alignedPartialResultIndicesForTokens:(id)tokens firstSeenPartialResultTokens:(id)resultTokens
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v34 = v5;
-  v8 = [CESRUtilities _firstSeenPartialResultIndicesForTokens:v5 firstSeenPartialResultTokens:v6];
+  tokensCopy = tokens;
+  resultTokensCopy = resultTokens;
+  array = [MEMORY[0x277CBEB18] array];
+  v34 = tokensCopy;
+  v8 = [CESRUtilities _firstSeenPartialResultIndicesForTokens:tokensCopy firstSeenPartialResultTokens:resultTokensCopy];
   v9 = [v8 count];
-  v33 = v6;
-  v10 = [v6 count];
+  v33 = resultTokensCopy;
+  v10 = [resultTokensCopy count];
   if (v9)
   {
     v11 = v10;
@@ -791,20 +791,20 @@ LABEL_17:
       if ((v16 & 1) == 0)
       {
         v17 = [v8 objectAtIndexedSubscript:v12];
-        v18 = [v17 unsignedIntegerValue];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-        if (v18 < v11)
+        if (unsignedIntegerValue < v11)
         {
           v19 = v14;
           v20 = v13;
           v21 = v9;
           v22 = v11;
-          v23 = v7;
+          v23 = array;
           v24 = [v34 objectAtIndex:v12];
-          v25 = [v24 tokenName];
-          v26 = [CESRUtilities getNormString:v25];
+          tokenName = [v24 tokenName];
+          v26 = [CESRUtilities getNormString:tokenName];
 
-          v27 = [v33 objectAtIndex:v18];
+          v27 = [v33 objectAtIndex:unsignedIntegerValue];
           v28 = [v27 objectForKey:v26];
           if (v28)
           {
@@ -825,7 +825,7 @@ LABEL_17:
             [v27 enumerateKeysAndObjectsUsingBlock:v35];
           }
 
-          v7 = v23;
+          array = v23;
           v11 = v22;
           v9 = v21;
           v13 = v20;
@@ -834,7 +834,7 @@ LABEL_17:
         }
       }
 
-      [v7 addObject:v37[5]];
+      [array addObject:v37[5]];
       _Block_object_dispose(&v36, 8);
 
       ++v12;
@@ -843,7 +843,7 @@ LABEL_17:
     while (v9 != v12);
   }
 
-  return v7;
+  return array;
 }
 
 uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenPartialResultTokens___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -862,17 +862,17 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
   return MEMORY[0x2821F96F8](v7, v5);
 }
 
-+ (id)getNormString:(id)a3
++ (id)getNormString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 lowercaseString];
-  v6 = [v5 componentsSeparatedByString:@" "];
+  lowercaseString = [stringCopy lowercaseString];
+  v6 = [lowercaseString componentsSeparatedByString:@" "];
 
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
@@ -889,8 +889,8 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
         }
 
         v11 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:@"\\""];
-        v12 = [v11 firstObject];
-        [v4 addObject:v12];
+        firstObject = [v11 firstObject];
+        [array addObject:firstObject];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -899,18 +899,18 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
     while (v8);
   }
 
-  v13 = [v4 componentsJoinedByString:@" "];
+  v13 = [array componentsJoinedByString:@" "];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-+ (id)recognizerSourceForTask:(id)a3
++ (id)recognizerSourceForTask:(id)task
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 isEqualToString:@"SearchOrMessaging"])
+  taskCopy = task;
+  v4 = taskCopy;
+  if (taskCopy && [taskCopy isEqualToString:@"SearchOrMessaging"])
   {
     v5 = @"Assistant";
     v6 = @"Assistant";
@@ -924,7 +924,7 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
   return v5;
 }
 
-+ (BOOL)aFEnableFeatureAndCheckPreferenceValueWithKey:(__CFString *)a3
++ (BOOL)aFEnableFeatureAndCheckPreferenceValueWithKey:(__CFString *)key
 {
   v3 = _AFPreferencesValueForKeyWithContext();
   objc_opt_class();
@@ -933,20 +933,20 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
   return v4;
 }
 
-+ (id)audioData:(id)a3 withBytesFromEnd:(unint64_t)a4
++ (id)audioData:(id)data withBytesFromEnd:(unint64_t)end
 {
-  v5 = a3;
-  v6 = [v5 length];
-  if (a4)
+  dataCopy = data;
+  v6 = [dataCopy length];
+  if (end)
   {
-    if (v6 <= a4)
+    if (v6 <= end)
     {
-      v7 = v5;
+      v7 = dataCopy;
     }
 
     else
     {
-      v7 = [v5 subdataWithRange:{v6 - a4, a4}];
+      v7 = [dataCopy subdataWithRange:{v6 - end, end}];
     }
   }
 
@@ -960,39 +960,39 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
   return v8;
 }
 
-+ (BOOL)isFilePathValid:(id)a3
++ (BOOL)isFilePathValid:(id)valid
 {
   v8 = 0;
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:&v8];
+  validCopy = valid;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager fileExistsAtPath:validCopy isDirectory:&v8];
 
   return v6 & (v8 ^ 1);
 }
 
-+ (id)languageCodeForLocale:(id)a3
++ (id)languageCodeForLocale:(id)locale
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = *MEMORY[0x277CBE6C8];
-  v5 = a3;
-  v6 = [v5 objectForKey:v4];
-  v7 = [v5 objectForKey:*MEMORY[0x277CBE690]];
+  localeCopy = locale;
+  v6 = [localeCopy objectForKey:v4];
+  v7 = [localeCopy objectForKey:*MEMORY[0x277CBE690]];
 
   v8 = [v3 stringWithFormat:@"%@-%@", v6, v7];
 
   return v8;
 }
 
-+ (id)mapContextOptionToString:(unint64_t)a3
++ (id)mapContextOptionToString:(unint64_t)string
 {
   v3 = @"unconstrained";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"reduced";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"avoid";
   }
@@ -1003,17 +1003,17 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
   }
 }
 
-+ (id)earTokensForAFTokens:(id)a3 appendedAutoPunctuation:(BOOL)a4
++ (id)earTokensForAFTokens:(id)tokens appendedAutoPunctuation:(BOOL)punctuation
 {
-  v28 = a4;
+  punctuationCopy = punctuation;
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  tokensCopy = tokens;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(tokensCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = tokensCopy;
   v6 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v6)
   {
@@ -1030,19 +1030,19 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = objc_alloc(MEMORY[0x277D07268]);
-        v12 = [v10 text];
+        text = [v10 text];
         [v10 startTime];
         v14 = v13;
         [v10 endTime];
         v16 = v15;
         [v10 silenceStartTime];
         v18 = v17;
-        v19 = [v10 confidenceScore];
-        v20 = [v10 removeSpaceAfter];
-        v21 = [v10 removeSpaceBefore];
-        v22 = [v10 phoneSequence];
-        v23 = [v10 ipaPhoneSequence];
-        v24 = [v11 initWithTokenName:v12 start:v20 ^ 1u end:v21 ^ 1u silenceStart:v22 confidence:v23 hasSpaceAfter:v28 hasSpaceBefore:v14 phoneSequence:v16 ipaPhoneSequence:v18 appendedAutoPunctuation:v19];
+        confidenceScore = [v10 confidenceScore];
+        removeSpaceAfter = [v10 removeSpaceAfter];
+        removeSpaceBefore = [v10 removeSpaceBefore];
+        phoneSequence = [v10 phoneSequence];
+        ipaPhoneSequence = [v10 ipaPhoneSequence];
+        v24 = [v11 initWithTokenName:text start:removeSpaceAfter ^ 1u end:removeSpaceBefore ^ 1u silenceStart:phoneSequence confidence:ipaPhoneSequence hasSpaceAfter:punctuationCopy hasSpaceBefore:v14 phoneSequence:v16 ipaPhoneSequence:v18 appendedAutoPunctuation:confidenceScore];
 
         [v5 addObject:v24];
       }
@@ -1058,39 +1058,39 @@ uint64_t __83__CESRUtilities_alignedPartialResultIndicesForTokens_firstSeenParti
   return v5;
 }
 
-+ (id)AFSpeechInfoPackageForEARSpeechRecognitionResultPackage:(id)a3
++ (id)AFSpeechInfoPackageForEARSpeechRecognitionResultPackage:(id)package
 {
-  v3 = a3;
-  v4 = [v3 recognition];
+  packageCopy = package;
+  recognition = [packageCopy recognition];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [v3 recognition];
-  v7 = v6;
+  recognition2 = [packageCopy recognition];
+  v7 = recognition2;
   if (v5)
   {
-    v8 = [v6 potentialCommandRecognition];
-    v9 = [v8 nBest];
+    potentialCommandRecognition = [recognition2 potentialCommandRecognition];
+    nBest = [potentialCommandRecognition nBest];
 
-    v10 = [v3 nBestVoiceCommandInterpretations];
-    v11 = __73__CESRUtilities_AFSpeechInfoPackageForEARSpeechRecognitionResultPackage___block_invoke(v10, v9);
-    v12 = [v3 preITNRecognition];
-    v13 = [v12 potentialCommandRecognition];
-    v14 = [v13 nBest];
+    nBestVoiceCommandInterpretations = [packageCopy nBestVoiceCommandInterpretations];
+    v11 = __73__CESRUtilities_AFSpeechInfoPackageForEARSpeechRecognitionResultPackage___block_invoke(nBestVoiceCommandInterpretations, nBest);
+    preITNRecognition = [packageCopy preITNRecognition];
+    potentialCommandRecognition2 = [preITNRecognition potentialCommandRecognition];
+    nBest2 = [potentialCommandRecognition2 nBest];
   }
 
   else
   {
-    v9 = [v6 nBest];
+    nBest = [recognition2 nBest];
 
-    v10 = [v3 nBestVoiceCommandInterpretations];
-    v11 = __73__CESRUtilities_AFSpeechInfoPackageForEARSpeechRecognitionResultPackage___block_invoke(v10, v9);
-    v12 = [v3 preITNRecognition];
-    v14 = [v12 nBest];
+    nBestVoiceCommandInterpretations = [packageCopy nBestVoiceCommandInterpretations];
+    v11 = __73__CESRUtilities_AFSpeechInfoPackageForEARSpeechRecognitionResultPackage___block_invoke(nBestVoiceCommandInterpretations, nBest);
+    preITNRecognition = [packageCopy preITNRecognition];
+    nBest2 = [preITNRecognition nBest];
   }
 
-  v15 = [v3 preITNNBestVoiceCommandInterpretations];
+  preITNNBestVoiceCommandInterpretations = [packageCopy preITNNBestVoiceCommandInterpretations];
 
-  v16 = __73__CESRUtilities_AFSpeechInfoPackageForEARSpeechRecognitionResultPackage___block_invoke(v15, v14);
+  v16 = __73__CESRUtilities_AFSpeechInfoPackageForEARSpeechRecognitionResultPackage___block_invoke(preITNNBestVoiceCommandInterpretations, nBest2);
   if ([v11 count] || objc_msgSend(v16, "count"))
   {
     v17 = [objc_alloc(MEMORY[0x277CEF510]) initWithNBestParses:v11 preITNNBestParses:v16];
@@ -1157,22 +1157,22 @@ void __73__CESRUtilities_AFSpeechInfoPackageForEARSpeechRecognitionResultPackage
   }
 }
 
-+ (id)AFSpeechInfoPackageForEARSpeechRecognitionResult:(id)a3
++ (id)AFSpeechInfoPackageForEARSpeechRecognitionResult:(id)result
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 tokens];
-  v5 = [CESRUtilities earTokensToString:v4];
+  resultCopy = result;
+  tokens = [resultCopy tokens];
+  v5 = [CESRUtilities earTokensToString:tokens];
 
-  v6 = [v3 voiceCommandInterpretations];
-  v7 = [CESRUtilities afVoiceCommandGrammarParseResultForEARTokenString:v5 withEARVoiceCommandInterpretations:v6];
+  voiceCommandInterpretations = [resultCopy voiceCommandInterpretations];
+  v7 = [CESRUtilities afVoiceCommandGrammarParseResultForEARTokenString:v5 withEARVoiceCommandInterpretations:voiceCommandInterpretations];
 
-  v8 = [v3 preITNTokens];
-  v9 = [CESRUtilities earTokensToString:v8];
+  preITNTokens = [resultCopy preITNTokens];
+  v9 = [CESRUtilities earTokensToString:preITNTokens];
 
-  v10 = [v3 preITNVoiceCommandInterpretations];
+  preITNVoiceCommandInterpretations = [resultCopy preITNVoiceCommandInterpretations];
 
-  v11 = [CESRUtilities afVoiceCommandGrammarParseResultForEARTokenString:v9 withEARVoiceCommandInterpretations:v10];
+  v11 = [CESRUtilities afVoiceCommandGrammarParseResultForEARTokenString:v9 withEARVoiceCommandInterpretations:preITNVoiceCommandInterpretations];
 
   if (!(v7 | v11))
   {
@@ -1213,13 +1213,13 @@ LABEL_9:
   return v14;
 }
 
-+ (id)afVoiceCommandGrammarParseResultForEARTokenString:(id)a3 withEARVoiceCommandInterpretations:(id)a4
++ (id)afVoiceCommandGrammarParseResultForEARTokenString:(id)string withEARVoiceCommandInterpretations:(id)interpretations
 {
   v39 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5 && [v5 count])
+  stringCopy = string;
+  interpretationsCopy = interpretations;
+  v6 = interpretationsCopy;
+  if (interpretationsCopy && [interpretationsCopy count])
   {
     v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
     v34 = 0u;
@@ -1243,27 +1243,27 @@ LABEL_9:
 
           v11 = *(*(&v34 + 1) + 8 * i);
           v12 = objc_alloc(MEMORY[0x277CBEB38]);
-          v13 = [v11 arguments];
-          v14 = [v12 initWithCapacity:{objc_msgSend(v13, "count")}];
+          arguments = [v11 arguments];
+          v14 = [v12 initWithCapacity:{objc_msgSend(arguments, "count")}];
 
           v30 = 0;
           v31 = &v30;
           v32 = 0x2020000000;
           v33 = 1;
-          v15 = [v11 arguments];
+          arguments2 = [v11 arguments];
           v26[0] = MEMORY[0x277D85DD0];
           v26[1] = 3221225472;
           v26[2] = __102__CESRUtilities_afVoiceCommandGrammarParseResultForEARTokenString_withEARVoiceCommandInterpretations___block_invoke;
           v26[3] = &unk_27857F5B8;
           v16 = v14;
           v27 = v16;
-          v28 = v25;
+          v28 = stringCopy;
           v29 = &v30;
-          [v15 enumerateObjectsUsingBlock:v26];
+          [arguments2 enumerateObjectsUsingBlock:v26];
 
           v17 = objc_alloc(MEMORY[0x277CEF508]);
-          v18 = [v11 commandIdentifier];
-          v19 = [v17 initWithCommandId:v18 isComplete:*(v31 + 24) paramMatches:v16];
+          commandIdentifier = [v11 commandIdentifier];
+          v19 = [v17 initWithCommandId:commandIdentifier isComplete:*(v31 + 24) paramMatches:v16];
 
           [v7 addObject:v19];
           _Block_object_dispose(&v30, 8);
@@ -1275,7 +1275,7 @@ LABEL_9:
       while (v8);
     }
 
-    v20 = [objc_alloc(MEMORY[0x277CEF518]) initWithUtterance:v25 parseCandidates:v7];
+    v20 = [objc_alloc(MEMORY[0x277CEF518]) initWithUtterance:stringCopy parseCandidates:v7];
     v6 = v23;
   }
 
@@ -1351,10 +1351,10 @@ void __102__CESRUtilities_afVoiceCommandGrammarParseResultForEARTokenString_with
   [v3 appendString:v4];
 }
 
-+ (id)earTokensToString:(id)a3
++ (id)earTokensToString:(id)string
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1362,7 +1362,7 @@ void __102__CESRUtilities_afVoiceCommandGrammarParseResultForEARTokenString_with
   v8[3] = &unk_27857F568;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [stringCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -1388,14 +1388,14 @@ void __35__CESRUtilities_earTokensToString___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-+ (id)speechProfileDateLastModifiedForLanguage:(id)a3
++ (id)speechProfileDateLastModifiedForLanguage:(id)language
 {
-  v3 = [a1 speechProfilePathsWithLanguage:a3];
+  v3 = [self speechProfilePathsWithLanguage:language];
   if ([v3 count])
   {
     v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 attributesOfItemAtPath:v4 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager attributesOfItemAtPath:v4 error:0];
     v7 = [v6 objectForKey:*MEMORY[0x277CCA150]];
   }
 
@@ -1407,15 +1407,15 @@ void __35__CESRUtilities_earTokensToString___block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-+ (void)loadSpeechProfiles:(id)a3 language:(id)a4
++ (void)loadSpeechProfiles:(id)profiles language:(id)language
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  profilesCopy = profiles;
+  languageCopy = language;
+  if (profilesCopy)
   {
-    v39 = v7;
-    v8 = [a1 speechProfilePathsWithLanguage:v7];
+    v39 = languageCopy;
+    v8 = [self speechProfilePathsWithLanguage:languageCopy];
     v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v46 = 0u;
     v47 = 0u;
@@ -1438,17 +1438,17 @@ void __35__CESRUtilities_earTokensToString___block_invoke(uint64_t a1, void *a2)
           }
 
           v14 = *(*(&v46 + 1) + 8 * i);
-          v15 = [v6 objectForKeyedSubscript:v14];
+          v15 = [profilesCopy objectForKeyedSubscript:v14];
           if (v15)
           {
-            v16 = [MEMORY[0x277CCAA00] defaultManager];
-            v17 = [v16 attributesOfItemAtPath:v14 error:0];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+            v17 = [defaultManager attributesOfItemAtPath:v14 error:0];
 
             v18 = [v17 objectForKey:v12];
             [v18 timeIntervalSinceReferenceDate];
             v20 = v19;
-            v21 = [v15 loadDate];
-            [v21 timeIntervalSinceReferenceDate];
+            loadDate = [v15 loadDate];
+            [loadDate timeIntervalSinceReferenceDate];
             v23 = v22;
 
             if (v20 > 0.0 && v23 > 0.0 && v20 <= v23)
@@ -1473,8 +1473,8 @@ void __35__CESRUtilities_earTokensToString___block_invoke(uint64_t a1, void *a2)
       while (v10);
     }
 
-    [v6 removeAllObjects];
-    [v6 addEntriesFromDictionary:v40];
+    [profilesCopy removeAllObjects];
+    [profilesCopy addEntriesFromDictionary:v40];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -1496,11 +1496,11 @@ void __35__CESRUtilities_earTokensToString___block_invoke(uint64_t a1, void *a2)
           }
 
           v31 = *(*(&v42 + 1) + 8 * v30);
-          v32 = [v6 objectForKeyedSubscript:v31];
+          v32 = [profilesCopy objectForKeyedSubscript:v31];
 
           if (!v32)
           {
-            v33 = [MEMORY[0x277CBEAA8] date];
+            date = [MEMORY[0x277CBEAA8] date];
             v34 = [objc_alloc(MEMORY[0x277D072A0]) initWithPath:v31 error:0];
             v35 = *MEMORY[0x277CEF0E8];
             if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -1515,8 +1515,8 @@ void __35__CESRUtilities_earTokensToString___block_invoke(uint64_t a1, void *a2)
               if (v34)
               {
 LABEL_26:
-                [v34 setLoadDate:v33];
-                [v6 setObject:v34 forKeyedSubscript:v31];
+                [v34 setLoadDate:date];
+                [profilesCopy setObject:v34 forKeyedSubscript:v31];
               }
             }
 
@@ -1537,7 +1537,7 @@ LABEL_26:
       while (v36);
     }
 
-    v7 = v39;
+    languageCopy = v39;
   }
 
   else
@@ -1554,11 +1554,11 @@ LABEL_26:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)speechProfilePathsWithLanguage:(id)a3
++ (id)speechProfilePathsWithLanguage:(id)language
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  languageCopy = language;
+  if (!languageCopy)
   {
     v25 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -1571,8 +1571,8 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v5 = v4;
-  v6 = [v4 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  v5 = languageCopy;
+  v6 = [languageCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   v7 = SFReplacementLocaleCodeForLocaleIdentifier();
   v8 = v7;
@@ -1604,7 +1604,7 @@ LABEL_27:
   }
 
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [a1 speechProfileRootDirectories];
+  [self speechProfileRootDirectories];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -1629,8 +1629,8 @@ LABEL_27:
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v13 = [MEMORY[0x277CCAA00] defaultManager];
-        v14 = [v13 enumeratorAtPath:v12];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v14 = [defaultManager enumeratorAtPath:v12];
 
         v15 = [v14 countByEnumeratingWithState:&v34 objects:v43 count:16];
         if (v15)
@@ -1655,8 +1655,8 @@ LABEL_27:
               v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
               v22 = [v20 pathWithComponents:v21];
 
-              v23 = [MEMORY[0x277CCAA00] defaultManager];
-              v24 = [v23 fileExistsAtPath:v22];
+              defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+              v24 = [defaultManager2 fileExistsAtPath:v22];
 
               if (v24)
               {
@@ -1709,10 +1709,10 @@ LABEL_28:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) path];
-        if (v8)
+        path = [*(*(&v12 + 1) + 8 * i) path];
+        if (path)
         {
-          [v2 addObject:v8];
+          [v2 addObject:path];
         }
       }
 
@@ -1737,26 +1737,26 @@ LABEL_28:
   return v2;
 }
 
-+ (id)afSpeechPackageForEARPackage:(id)a3 processedAudioDuration:(double)a4 speechProfileUsed:(BOOL)a5 recognizerModelInfo:(id)a6 isVoiceCommandCandidatePackage:(BOOL)a7
++ (id)afSpeechPackageForEARPackage:(id)package processedAudioDuration:(double)duration speechProfileUsed:(BOOL)used recognizerModelInfo:(id)info isVoiceCommandCandidatePackage:(BOOL)candidatePackage
 {
-  v87 = a7;
+  candidatePackageCopy = candidatePackage;
   v108 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v93 = a6;
-  v10 = [v9 recognition];
-  v92 = [CESRUtilities afRecognitionForEARSausage:v10 processedAudioDuration:a4];
+  packageCopy = package;
+  infoCopy = info;
+  recognition = [packageCopy recognition];
+  v92 = [CESRUtilities afRecognitionForEARSausage:recognition processedAudioDuration:duration];
 
-  v11 = [v9 preITNRecognition];
-  v91 = [CESRUtilities afRecognitionForEARSausage:v11 processedAudioDuration:a4];
+  preITNRecognition = [packageCopy preITNRecognition];
+  v91 = [CESRUtilities afRecognitionForEARSausage:preITNRecognition processedAudioDuration:duration];
 
-  v85 = [v9 audioAnalytics];
-  v12 = [v85 acousticFeatures];
+  audioAnalytics = [packageCopy audioAnalytics];
+  acousticFeatures = [audioAnalytics acousticFeatures];
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v14 = v12;
+  v14 = acousticFeatures;
   v15 = [v14 countByEnumeratingWithState:&v94 objects:buf count:16];
   if (v15)
   {
@@ -1774,9 +1774,9 @@ LABEL_28:
         v19 = *(*(&v94 + 1) + 8 * i);
         v20 = [v14 objectForKey:v19];
         v21 = objc_alloc(MEMORY[0x277CEF438]);
-        v22 = [v20 acousticFeatureValuePerFrame];
+        acousticFeatureValuePerFrame = [v20 acousticFeatureValuePerFrame];
         [v20 frameDuration];
-        v23 = [v21 initWithAcousticFeatureValue:v22 frameDuration:?];
+        v23 = [v21 initWithAcousticFeatureValue:acousticFeatureValuePerFrame frameDuration:?];
 
         [v13 setValue:v23 forKey:v19];
       }
@@ -1787,26 +1787,26 @@ LABEL_28:
     while (v16);
   }
 
-  v24 = [v85 speechRecognitionFeatures];
+  speechRecognitionFeatures = [audioAnalytics speechRecognitionFeatures];
   v25 = objc_alloc(MEMORY[0x277CEF440]);
-  [v85 snr];
-  v26 = [v25 initWithSpeechRecognitionFeatures:v24 acousticFeatures:v13 snr:?];
+  [audioAnalytics snr];
+  v26 = [v25 initWithSpeechRecognitionFeatures:speechRecognitionFeatures acousticFeatures:v13 snr:?];
 
-  v27 = [v9 latticeMitigatorResult];
-  if (v27)
+  latticeMitigatorResult = [packageCopy latticeMitigatorResult];
+  if (latticeMitigatorResult)
   {
     v28 = *MEMORY[0x277CEF0E8];
-    v29 = v93;
+    v29 = infoCopy;
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
     {
       v74 = v28;
-      [v27 score];
+      [latticeMitigatorResult score];
       v76 = v75;
-      [v27 threshold];
+      [latticeMitigatorResult threshold];
       v78 = v77;
-      [v27 calibrationScale];
+      [latticeMitigatorResult calibrationScale];
       v80 = v79;
-      [v27 calibrationOffset];
+      [latticeMitigatorResult calibrationOffset];
       *buf = 136316162;
       v99 = "AFSpeechLatticeMitigatorResultForEar";
       v100 = 2048;
@@ -1821,51 +1821,51 @@ LABEL_28:
     }
 
     v30 = objc_alloc(MEMORY[0x277CEF460]);
-    v31 = [v27 version];
-    [v27 score];
+    version = [latticeMitigatorResult version];
+    [latticeMitigatorResult score];
     v33 = v32;
-    [v27 threshold];
+    [latticeMitigatorResult threshold];
     v35 = v34;
-    [v27 calibrationScale];
+    [latticeMitigatorResult calibrationScale];
     v37 = v36;
-    [v27 calibrationOffset];
+    [latticeMitigatorResult calibrationOffset];
     LODWORD(v39) = v38;
     LODWORD(v40) = v33;
     LODWORD(v41) = v35;
     LODWORD(v42) = v37;
-    v43 = [v30 initWithResults:v31 score:v40 threshold:v41 calibrationScale:v42 calibrationOffset:v39];
+    v43 = [v30 initWithResults:version score:v40 threshold:v41 calibrationScale:v42 calibrationOffset:v39];
   }
 
   else
   {
     v43 = 0;
-    v29 = v93;
+    v29 = infoCopy;
   }
 
   v84 = v43;
-  if ([v9 isFinal])
+  if ([packageCopy isFinal])
   {
-    v86 = -1;
+    intValue = -1;
   }
 
   else
   {
-    v44 = objc_getAssociatedObject(v9, kResultCandidateIdKey);
+    v44 = objc_getAssociatedObject(packageCopy, kResultCandidateIdKey);
     if (v44)
     {
-      v45 = objc_getAssociatedObject(v9, kResultCandidateIdKey);
-      v86 = [v45 intValue];
+      v45 = objc_getAssociatedObject(packageCopy, kResultCandidateIdKey);
+      intValue = [v45 intValue];
     }
 
     else
     {
-      v86 = -1;
+      intValue = -1;
     }
   }
 
-  if (v87)
+  if (candidatePackageCopy)
   {
-    v46 = [v9 recognition];
+    recognition2 = [packageCopy recognition];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v57 = 0;
@@ -1873,24 +1873,24 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v47 = [v9 recognition];
+    recognition3 = [packageCopy recognition];
     v48 = objc_opt_respondsToSelector();
 
     if (v48)
     {
-      v49 = [v9 recognition];
-      v50 = [v49 potentialPrecedingRecognition];
+      recognition4 = [packageCopy recognition];
+      potentialPrecedingRecognition = [recognition4 potentialPrecedingRecognition];
 
-      if (v50)
+      if (potentialPrecedingRecognition)
       {
         v51 = objc_alloc(MEMORY[0x277CEF470]);
-        v88 = [v9 recognition];
-        v52 = [v88 potentialPrecedingRecognition];
-        v53 = [CESRUtilities afRecognitionForEARSausage:v52 processedAudioDuration:a4];
-        v54 = [v9 preITNRecognition];
-        v55 = [v54 potentialPrecedingRecognition];
-        v56 = [CESRUtilities afRecognitionForEARSausage:v55 processedAudioDuration:a4];
-        [v9 utteranceStart];
+        recognition5 = [packageCopy recognition];
+        potentialPrecedingRecognition2 = [recognition5 potentialPrecedingRecognition];
+        v53 = [CESRUtilities afRecognitionForEARSausage:potentialPrecedingRecognition2 processedAudioDuration:duration];
+        preITNRecognition2 = [packageCopy preITNRecognition];
+        potentialPrecedingRecognition3 = [preITNRecognition2 potentialPrecedingRecognition];
+        v56 = [CESRUtilities afRecognitionForEARSausage:potentialPrecedingRecognition3 processedAudioDuration:duration];
+        [packageCopy utteranceStart];
         v57 = [v51 initWithRecognition:v53 rawRecognition:v56 audioAnalytics:0 isFinal:0 utteranceStart:?];
       }
 
@@ -1900,16 +1900,16 @@ LABEL_28:
       }
 
       v83 = objc_alloc(MEMORY[0x277CEF470]);
-      v46 = [v9 recognition];
-      v89 = [v46 potentialCommandRecognition];
-      v61 = [CESRUtilities afRecognitionForEARSausage:v89 processedAudioDuration:a4];
-      v62 = [v9 preITNRecognition];
-      v63 = [v62 potentialCommandRecognition];
-      v64 = [CESRUtilities afRecognitionForEARSausage:v63 processedAudioDuration:a4];
-      [v9 utteranceStart];
+      recognition2 = [packageCopy recognition];
+      potentialCommandRecognition = [recognition2 potentialCommandRecognition];
+      v61 = [CESRUtilities afRecognitionForEARSausage:potentialCommandRecognition processedAudioDuration:duration];
+      preITNRecognition3 = [packageCopy preITNRecognition];
+      potentialCommandRecognition2 = [preITNRecognition3 potentialCommandRecognition];
+      v64 = [CESRUtilities afRecognitionForEARSausage:potentialCommandRecognition2 processedAudioDuration:duration];
+      [packageCopy utteranceStart];
       v58 = [v83 initWithRecognition:v61 rawRecognition:v64 audioAnalytics:0 isFinal:0 utteranceStart:?];
 
-      v29 = v93;
+      v29 = infoCopy;
 LABEL_29:
 
       if (!v29)
@@ -1918,8 +1918,8 @@ LABEL_29:
       }
 
 LABEL_25:
-      v59 = [v29 version];
-      v60 = [v29 acousticModelVersion];
+      version2 = [v29 version];
+      acousticModelVersion = [v29 acousticModelVersion];
       goto LABEL_31;
     }
   }
@@ -1932,43 +1932,43 @@ LABEL_25:
   }
 
 LABEL_30:
-  v60 = &stru_283946208;
-  v59 = &stru_283946208;
+  acousticModelVersion = &stru_283946208;
+  version2 = &stru_283946208;
 LABEL_31:
   v65 = objc_alloc(MEMORY[0x277CEF470]);
-  v66 = [v9 isFinal];
-  [v9 utteranceStart];
+  isFinal = [packageCopy isFinal];
+  [packageCopy utteranceStart];
   v68 = v67;
-  v69 = [v9 recognitionPaused];
-  v70 = [v9 endOfSentenceLikelihood];
-  BYTE1(v82) = a5;
-  LOBYTE(v82) = v69;
-  v71 = [v65 initWithRecognition:v92 unfilteredRecognition:v92 rawRecognition:v91 audioAnalytics:v26 isFinal:v66 utteranceStart:v84 latticeMitigatorResult:v68 recognitionPaused:v82 speechProfileUsed:v86 resultCandidateId:v70 endOfSentenceLikelihood:v59 modelVersion:v60 acousticModelVersion:v57 potentialCommandPrecedingUtterance:v58 potentialCommandUtterance:objc_msgSend(v9 numOneBestTokensExcludingTriggerPhrase:"numTokensExcludingTriggerPhrase")];
+  recognitionPaused = [packageCopy recognitionPaused];
+  endOfSentenceLikelihood = [packageCopy endOfSentenceLikelihood];
+  BYTE1(v82) = used;
+  LOBYTE(v82) = recognitionPaused;
+  v71 = [v65 initWithRecognition:v92 unfilteredRecognition:v92 rawRecognition:v91 audioAnalytics:v26 isFinal:isFinal utteranceStart:v84 latticeMitigatorResult:v68 recognitionPaused:v82 speechProfileUsed:intValue resultCandidateId:endOfSentenceLikelihood endOfSentenceLikelihood:version2 modelVersion:acousticModelVersion acousticModelVersion:v57 potentialCommandPrecedingUtterance:v58 potentialCommandUtterance:objc_msgSend(packageCopy numOneBestTokensExcludingTriggerPhrase:"numTokensExcludingTriggerPhrase")];
 
   v72 = *MEMORY[0x277D85DE8];
 
   return v71;
 }
 
-+ (id)afRecognitionForEARSausage:(id)a3 processedAudioDuration:(double)a4
++ (id)afRecognitionForEARSausage:(id)sausage processedAudioDuration:(double)duration
 {
   v97 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 nBest];
-  v7 = [v5 tokenSausage];
-  v8 = [v5 interpretationIndices];
-  v9 = v6;
-  v10 = v7;
-  v11 = [MEMORY[0x277CBEB70] orderedSetWithArray:v8];
-  v12 = [v11 array];
+  sausageCopy = sausage;
+  nBest = [sausageCopy nBest];
+  tokenSausage = [sausageCopy tokenSausage];
+  interpretationIndices = [sausageCopy interpretationIndices];
+  v9 = nBest;
+  v10 = tokenSausage;
+  v11 = [MEMORY[0x277CBEB70] orderedSetWithArray:interpretationIndices];
+  array = [v11 array];
 
-  v73 = v12;
-  v13 = [v12 count];
+  v73 = array;
+  v13 = [array count];
   v70 = v9;
   v14 = [v9 count];
   v15 = v14;
-  v68 = v8;
-  v69 = v5;
+  v68 = interpretationIndices;
+  v69 = sausageCopy;
   if (v14 > v13)
   {
     v16 = *MEMORY[0x277CEF0E8];
@@ -2089,13 +2089,13 @@ LABEL_16:
         if (v36)
         {
           v37 = v36;
-          v38 = [v32 firstObject];
-          v39 = [v38 lastObject];
-          v29 = [v39 hasSpaceAfter] ^ 1;
+          firstObject = [v32 firstObject];
+          lastObject = [firstObject lastObject];
+          v29 = [lastObject hasSpaceAfter] ^ 1;
 
           v40 = objc_alloc_init(MEMORY[0x277CEF478]);
-          v41 = [v35 array];
-          v42 = [v41 copy];
+          array2 = [v35 array];
+          v42 = [array2 copy];
           [v40 setInterpretations:v42];
 
           [v40 setIsLowConfidence:v37 != 1];
@@ -2130,8 +2130,8 @@ LABEL_16:
         }
 
         v47 = *(*(&v76 + 1) + 8 * j);
-        v48 = [v47 interpretationIndices];
-        v49 = [v48 count];
+        interpretationIndices2 = [v47 interpretationIndices];
+        v49 = [interpretationIndices2 count];
 
         if (v49)
         {
@@ -2139,20 +2139,20 @@ LABEL_16:
           v51 = 0;
           do
           {
-            v52 = [v47 interpretationIndices];
-            v53 = [v52 objectAtIndex:v50];
-            v54 = [v53 unsignedIntegerValue];
+            interpretationIndices3 = [v47 interpretationIndices];
+            v53 = [interpretationIndices3 objectAtIndex:v50];
+            unsignedIntegerValue = [v53 unsignedIntegerValue];
 
             v55 = [v26 objectAtIndex:v50];
-            v56 = [v55 interpretations];
-            v57 = [v56 objectAtIndex:v54];
+            interpretations = [v55 interpretations];
+            v57 = [interpretations objectAtIndex:unsignedIntegerValue];
 
-            v58 = [v57 tokens];
-            v51 += [v58 count];
+            tokens = [v57 tokens];
+            v51 += [tokens count];
 
             ++v50;
-            v59 = [v47 interpretationIndices];
-            v60 = [v59 count];
+            interpretationIndices4 = [v47 interpretationIndices];
+            v60 = [interpretationIndices4 count];
           }
 
           while (v50 < v60);
@@ -2170,27 +2170,27 @@ LABEL_16:
   }
 
   v61 = [MEMORY[0x277CBEB70] orderedSetWithArray:v75];
-  v62 = [v61 array];
-  v63 = v62;
+  array3 = [v61 array];
+  v63 = array3;
 
-  v64 = v62;
-  v65 = [objc_alloc(MEMORY[0x277CEF480]) initWithPhrases:v26 utterances:v64 processedAudioDuration:a4];
+  v64 = array3;
+  v65 = [objc_alloc(MEMORY[0x277CEF480]) initWithPhrases:v26 utterances:v64 processedAudioDuration:duration];
 
   v66 = *MEMORY[0x277D85DE8];
 
   return v65;
 }
 
-+ (id)afTokensForEARTokens:(id)a3 removeSpaceBefore:(BOOL)a4
++ (id)afTokensForEARTokens:(id)tokens removeSpaceBefore:(BOOL)before
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  tokensCopy = tokens;
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(tokensCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v5;
+  v7 = tokensCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -2207,11 +2207,11 @@ LABEL_16:
 
         v12 = *(*(&v24 + 1) + 8 * i);
         v13 = objc_alloc_init(MEMORY[0x277CEF4B0]);
-        v14 = [v12 tokenName];
-        [v13 setText:v14];
+        tokenName = [v12 tokenName];
+        [v13 setText:tokenName];
 
-        v15 = [v12 phoneSequence];
-        [v13 setPhoneSequence:v15];
+        phoneSequence = [v12 phoneSequence];
+        [v13 setPhoneSequence:phoneSequence];
 
         [v12 start];
         [v13 setStartTime:?];
@@ -2219,12 +2219,12 @@ LABEL_16:
         [v13 setSilenceStartTime:?];
         [v12 end];
         [v13 setEndTime:?];
-        [v13 setRemoveSpaceBefore:a4];
-        a4 = [v12 hasSpaceAfter] ^ 1;
+        [v13 setRemoveSpaceBefore:before];
+        before = [v12 hasSpaceAfter] ^ 1;
         [v12 confidence];
         [v13 setConfidenceScore:v16];
-        v17 = [v12 ipaPhoneSequence];
-        [v13 setIpaPhoneSequence:v17];
+        ipaPhoneSequence = [v12 ipaPhoneSequence];
+        [v13 setIpaPhoneSequence:ipaPhoneSequence];
 
         v18 = MEMORY[0x277CCABB0];
         [v12 graphCost];
@@ -2250,16 +2250,16 @@ LABEL_16:
   return v6;
 }
 
-+ (BOOL)hasRecognizedAnythingInAFSpeechPackage:(id)a3
++ (BOOL)hasRecognizedAnythingInAFSpeechPackage:(id)package
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [a3 recognition];
+  recognition = [package recognition];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 utterances];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  utterances = [recognition utterances];
+  v5 = [utterances countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -2269,11 +2269,11 @@ LABEL_16:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(utterances);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) interpretationIndices];
-        v9 = [v8 count];
+        interpretationIndices = [*(*(&v12 + 1) + 8 * i) interpretationIndices];
+        v9 = [interpretationIndices count];
 
         if (v9)
         {
@@ -2282,7 +2282,7 @@ LABEL_16:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [utterances countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -2298,24 +2298,24 @@ LABEL_11:
   return v5;
 }
 
-+ (int64_t)calculateDiffInDaysFromTimestamp:(id)a3
++ (int64_t)calculateDiffInDaysFromTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  timestampCopy = timestamp;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
   [v5 setTimeZone:v6];
 
   v7 = MEMORY[0x277CBEAA8];
-  [v4 doubleValue];
+  [timestampCopy doubleValue];
   v9 = v8;
 
   v10 = [v7 dateWithTimeIntervalSince1970:v9];
   if (v10)
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [v12 components:16 fromDate:v10 toDate:v11 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v13 = [currentCalendar components:16 fromDate:v10 toDate:date options:0];
     v14 = [v13 day];
   }
 
@@ -2340,34 +2340,34 @@ LABEL_11:
   return v2 / info.numer * 1000000000.0;
 }
 
-+ (float)hostTimeToSeconds:(unint64_t)a3
++ (float)hostTimeToSeconds:(unint64_t)seconds
 {
-  v3 = a3;
+  secondsCopy = seconds;
   +[CESRUtilities getHostClockFrequency];
-  return v3 / v4;
+  return secondsCopy / v4;
 }
 
-+ (unint64_t)secondsToHostTime:(float)a3
++ (unint64_t)secondsToHostTime:(float)time
 {
-  v3 = a3;
+  timeCopy = time;
   +[CESRUtilities getHostClockFrequency];
-  return (v4 * v3);
+  return (v4 * timeCopy);
 }
 
 + (BOOL)isDictationEnabled
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 dictationIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  dictationIsEnabled = [mEMORY[0x277CEF368] dictationIsEnabled];
 
-  return v3;
+  return dictationIsEnabled;
 }
 
 + (BOOL)isAssistantEnabled
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 + (id)installedDictationLocaleIdentifiers
@@ -2376,8 +2376,8 @@ LABEL_11:
   v2 = [MEMORY[0x277CBEB58] set];
   v3 = objc_alloc_init(MEMORY[0x277CDCE98]);
   v4 = MEMORY[0x277CDCE98];
-  v5 = [MEMORY[0x277CDCEB8] systemClientId];
-  v6 = [v4 subscriptionsForSubscriberId:v5];
+  systemClientId = [MEMORY[0x277CDCEB8] systemClientId];
+  v6 = [v4 subscriptionsForSubscriberId:systemClientId];
 
   v20 = 0u;
   v21 = 0u;
@@ -2405,8 +2405,8 @@ LABEL_11:
 
           if (v13)
           {
-            v14 = [v12 language];
-            [v2 addObject:v14];
+            language = [v12 language];
+            [v2 addObject:language];
           }
         }
       }
@@ -2425,18 +2425,18 @@ LABEL_11:
 
 + (id)currentSiriLanguageCode
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  if (![v3 length])
+  if (![languageCode length])
   {
-    v4 = [MEMORY[0x277CEF368] sharedPreferences];
-    v5 = [v4 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    v5 = [mEMORY[0x277CEF368]2 bestSupportedLanguageCodeForLanguageCode:0];
 
-    v3 = v5;
+    languageCode = v5;
   }
 
-  return v3;
+  return languageCode;
 }
 
 + (BOOL)isASRSupported

@@ -1,12 +1,12 @@
 @interface HKSPDeleteButtonCell
-- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation HKSPDeleteButtonCell
 
-- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   sub_117CC();
   sub_117BC();
@@ -16,10 +16,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v7 = sub_116EC();
-    a4 = v8;
+    identifier = v8;
   }
 
   else
@@ -27,13 +27,13 @@
     v7 = 0;
   }
 
-  v9 = a5;
-  v10 = sub_3E68(v7, a4, a5);
+  specifierCopy = specifier;
+  v10 = sub_3E68(v7, identifier, specifier);
 
   return v10;
 }
 
-- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC25NanoBedtimeBridgeSettings20HKSPDeleteButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_117CC();
   sub_117BC();
@@ -43,15 +43,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     sub_116EC();
-    a4 = sub_116BC();
+    identifier = sub_116BC();
   }
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for HKSPDeleteButtonCell();
-  v6 = [(HKSPMultilinePSTableCell *)&v8 initWithStyle:0 reuseIdentifier:a4];
+  v6 = [(HKSPMultilinePSTableCell *)&v8 initWithStyle:0 reuseIdentifier:identifier];
 
   return v6;
 }
@@ -66,7 +66,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_204C();
 }
 

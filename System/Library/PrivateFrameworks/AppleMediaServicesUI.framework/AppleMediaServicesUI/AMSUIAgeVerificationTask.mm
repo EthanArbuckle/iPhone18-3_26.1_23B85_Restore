@@ -1,40 +1,40 @@
 @interface AMSUIAgeVerificationTask
 + (id)_dateFormatter;
-+ (id)_dialogForResult:(id)a3 withBag:(id)a4 expiration:(id)a5 dateFormatter:(id)a6;
-+ (id)_errorCheckWithAccount:(id)a3 bag:(id)a4;
-+ (id)_promiseResultForOpeningURL:(id)a3;
-- (AMSUIAgeVerificationTask)initWithAccount:(id)a3 bag:(id)a4 options:(id)a5 viewController:(id)a6;
++ (id)_dialogForResult:(id)result withBag:(id)bag expiration:(id)expiration dateFormatter:(id)formatter;
++ (id)_errorCheckWithAccount:(id)account bag:(id)bag;
++ (id)_promiseResultForOpeningURL:(id)l;
+- (AMSUIAgeVerificationTask)initWithAccount:(id)account bag:(id)bag options:(id)options viewController:(id)controller;
 - (NSString)pincode;
-- (id)_performTaskWithVerificationResult:(id)a3;
+- (id)_performTaskWithVerificationResult:(id)result;
 - (id)isVerificationNeeded;
 - (id)performTask;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
-- (void)setPincode:(id)a3;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
+- (void)setPincode:(id)pincode;
 @end
 
 @implementation AMSUIAgeVerificationTask
 
-- (AMSUIAgeVerificationTask)initWithAccount:(id)a3 bag:(id)a4 options:(id)a5 viewController:(id)a6
+- (AMSUIAgeVerificationTask)initWithAccount:(id)account bag:(id)bag options:(id)options viewController:(id)controller
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  bagCopy = bag;
+  optionsCopy = options;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = AMSUIAgeVerificationTask;
   v15 = [(AMSTask *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a3);
-    objc_storeStrong(&v16->_bag, a4);
-    objc_storeStrong(&v16->_options, a5);
-    v17 = [objc_alloc(MEMORY[0x1E698C7A0]) initWithAccount:v11 bag:v12 options:v13 presentationDelegate:v16];
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v16->_bag, bag);
+    objc_storeStrong(&v16->_options, options);
+    v17 = [objc_alloc(MEMORY[0x1E698C7A0]) initWithAccount:accountCopy bag:bagCopy options:optionsCopy presentationDelegate:v16];
     task = v16->_task;
     v16->_task = v17;
 
-    objc_storeStrong(&v16->_viewController, a6);
+    objc_storeStrong(&v16->_viewController, controller);
   }
 
   return v16;
@@ -42,18 +42,18 @@
 
 - (id)isVerificationNeeded
 {
-  v2 = [(AMSUIAgeVerificationTask *)self task];
-  v3 = [v2 isVerificationNeeded];
+  task = [(AMSUIAgeVerificationTask *)self task];
+  isVerificationNeeded = [task isVerificationNeeded];
 
-  return v3;
+  return isVerificationNeeded;
 }
 
 - (id)performTask
 {
   v3 = objc_opt_class();
-  v4 = [(AMSUIAgeVerificationTask *)self account];
+  account = [(AMSUIAgeVerificationTask *)self account];
   v5 = [(AMSUIAgeVerificationTask *)self bag];
-  v6 = [v3 _errorCheckWithAccount:v4 bag:v5];
+  v6 = [v3 _errorCheckWithAccount:account bag:v5];
 
   if (v6)
   {
@@ -62,48 +62,48 @@
 
   else
   {
-    v8 = [(AMSUIAgeVerificationTask *)self isVerificationNeeded];
+    isVerificationNeeded = [(AMSUIAgeVerificationTask *)self isVerificationNeeded];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __39__AMSUIAgeVerificationTask_performTask__block_invoke;
     v10[3] = &unk_1E7F242F8;
     v10[4] = self;
-    v7 = [v8 thenWithBlock:v10];
+    v7 = [isVerificationNeeded thenWithBlock:v10];
   }
 
   return v7;
 }
 
-- (void)setPincode:(id)a3
+- (void)setPincode:(id)pincode
 {
-  v4 = a3;
-  v5 = [(AMSUIAgeVerificationTask *)self task];
-  [v5 setPincode:v4];
+  pincodeCopy = pincode;
+  task = [(AMSUIAgeVerificationTask *)self task];
+  [task setPincode:pincodeCopy];
 }
 
 - (NSString)pincode
 {
-  v2 = [(AMSUIAgeVerificationTask *)self task];
-  v3 = [v2 pincode];
+  task = [(AMSUIAgeVerificationTask *)self task];
+  pincode = [task pincode];
 
-  return v3;
+  return pincode;
 }
 
-- (id)_performTaskWithVerificationResult:(id)a3
+- (id)_performTaskWithVerificationResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = [(AMSUIAgeVerificationTask *)self bag];
   v6 = [v5 URLForKey:@"korAgeVerificationUrl"];
 
-  v7 = [v6 valuePromise];
+  valuePromise = [v6 valuePromise];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__AMSUIAgeVerificationTask__performTaskWithVerificationResult___block_invoke;
   v11[3] = &unk_1E7F24348;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 thenWithBlock:v11];
+  v12 = resultCopy;
+  v8 = resultCopy;
+  v9 = [valuePromise thenWithBlock:v11];
 
   return v9;
 }
@@ -174,12 +174,12 @@ void __63__AMSUIAgeVerificationTask__performTaskWithVerificationResult___block_i
   }
 }
 
-+ (id)_promiseResultForOpeningURL:(id)a3
++ (id)_promiseResultForOpeningURL:(id)l
 {
   v3 = MEMORY[0x1E698CAD8];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x1E698CA98] openStandardURL:v4];
+  v6 = [MEMORY[0x1E698CA98] openStandardURL:lCopy];
 
   if (v6)
   {
@@ -197,20 +197,20 @@ void __63__AMSUIAgeVerificationTask__performTaskWithVerificationResult___block_i
   return v5;
 }
 
-+ (id)_dialogForResult:(id)a3 withBag:(id)a4 expiration:(id)a5 dateFormatter:(id)a6
++ (id)_dialogForResult:(id)result withBag:(id)bag expiration:(id)expiration dateFormatter:(id)formatter
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [AMSUIAgeVerificationCore _titleForResult:v12 withBag:v11 bundle:0];
-  v14 = [AMSUIAgeVerificationCore _messageForResult:v12 withBag:v11 expiration:v10 dateFormatter:v9 bundle:0];
+  formatterCopy = formatter;
+  expirationCopy = expiration;
+  bagCopy = bag;
+  resultCopy = result;
+  v13 = [AMSUIAgeVerificationCore _titleForResult:resultCopy withBag:bagCopy bundle:0];
+  v14 = [AMSUIAgeVerificationCore _messageForResult:resultCopy withBag:bagCopy expiration:expirationCopy dateFormatter:formatterCopy bundle:0];
 
   v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  v16 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_DIALOG_PROCEED_ACTION", v11, v15);
+  v16 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_DIALOG_PROCEED_ACTION", bagCopy, v15);
 
   v17 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  v18 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_DIALOG_CANCEL_ACTION", v11, v17);
+  v18 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_DIALOG_CANCEL_ACTION", bagCopy, v17);
 
   v19 = [objc_alloc(MEMORY[0x1E698C8C0]) initWithTitle:v13 message:v14];
   v20 = [MEMORY[0x1E698C8B8] actionWithTitle:v16];
@@ -231,12 +231,12 @@ void __63__AMSUIAgeVerificationTask__performTaskWithVerificationResult___block_i
   return v2;
 }
 
-+ (id)_errorCheckWithAccount:(id)a3 bag:(id)a4
++ (id)_errorCheckWithAccount:(id)account bag:(id)bag
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  accountCopy = account;
+  bagCopy = bag;
+  v7 = bagCopy;
+  if (accountCopy && bagCopy)
   {
     v8 = 0;
   }
@@ -250,40 +250,40 @@ void __63__AMSUIAgeVerificationTask__performTaskWithVerificationResult___block_i
   return v8;
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = [AMSUIAuthenticateTask alloc];
-  v9 = [(AMSUIAgeVerificationTask *)self viewController];
-  v10 = [(AMSUIAuthenticateTask *)v8 initWithRequest:v7 presentingViewController:v9];
+  viewController = [(AMSUIAgeVerificationTask *)self viewController];
+  v10 = [(AMSUIAuthenticateTask *)v8 initWithRequest:requestCopy presentingViewController:viewController];
 
-  v11 = [(AMSAuthenticateTask *)v10 performAuthentication];
+  performAuthentication = [(AMSAuthenticateTask *)v10 performAuthentication];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__AMSUIAgeVerificationTask_handleAuthenticateRequest_completion___block_invoke;
   v13[3] = &unk_1E7F24370;
-  v14 = v6;
-  v12 = v6;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [performAuthentication addFinishBlock:v13];
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = [AMSUIAlertDialogTask alloc];
-  v9 = [(AMSUIAgeVerificationTask *)self viewController];
-  v10 = [(AMSUIAlertDialogTask *)v8 initWithRequest:v7 presentingViewController:v9];
+  viewController = [(AMSUIAgeVerificationTask *)self viewController];
+  v10 = [(AMSUIAlertDialogTask *)v8 initWithRequest:requestCopy presentingViewController:viewController];
 
-  v11 = [(AMSUIAlertDialogTask *)v10 present];
+  present = [(AMSUIAlertDialogTask *)v10 present];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__AMSUIAgeVerificationTask_handleDialogRequest_completion___block_invoke;
   v13[3] = &unk_1E7F24398;
-  v14 = v6;
-  v12 = v6;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [present addFinishBlock:v13];
 }
 
 @end

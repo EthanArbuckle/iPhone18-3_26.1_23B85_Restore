@@ -1,43 +1,43 @@
 @interface BNBannerSourcePresentableSpecification
-- (BNBannerSourcePresentableSpecification)initWithBSXPCCoder:(id)a3;
+- (BNBannerSourcePresentableSpecification)initWithBSXPCCoder:(id)coder;
 - (CGSize)preferredContentSize;
 - (NSString)description;
 - (UIEdgeInsets)contentOutsets;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation BNBannerSourcePresentableSpecification
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = BNBannerSourcePresentableSpecification;
-  v4 = a3;
-  [(BNPresentableIdentification *)&v8 encodeWithBSXPCCoder:v4];
-  [v4 encodeInt64:self->_contentBehavior forKey:@"contentBehavior"];
-  [v4 encodeInt64:self->_presentableBehavior forKey:@"presentableBehavior"];
-  [v4 encodeCGSize:@"preferredContentSize" forKey:{self->_preferredContentSize.width, self->_preferredContentSize.height}];
+  coderCopy = coder;
+  [(BNPresentableIdentification *)&v8 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:self->_contentBehavior forKey:@"contentBehavior"];
+  [coderCopy encodeInt64:self->_presentableBehavior forKey:@"presentableBehavior"];
+  [coderCopy encodeCGSize:@"preferredContentSize" forKey:{self->_preferredContentSize.width, self->_preferredContentSize.height}];
   v5 = *&self->_contentOutsets.bottom;
   v7[0] = *&self->_contentOutsets.top;
   v7[1] = v5;
   v6 = [MEMORY[0x1E696B098] valueWithBytes:v7 objCType:"{UIEdgeInsets=dddd}"];
-  [v4 encodeObject:v6 forKey:@"contentOutsets"];
+  [coderCopy encodeObject:v6 forKey:@"contentOutsets"];
 }
 
-- (BNBannerSourcePresentableSpecification)initWithBSXPCCoder:(id)a3
+- (BNBannerSourcePresentableSpecification)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = BNBannerSourcePresentableSpecification;
-  v5 = [(BNPresentableIdentification *)&v17 initWithBSXPCCoder:v4];
+  v5 = [(BNPresentableIdentification *)&v17 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    *(v5 + 4) = [v4 decodeInt64ForKey:@"contentBehavior"];
-    *(v5 + 5) = [v4 decodeInt64ForKey:@"presentableBehavior"];
-    [v4 decodeCGSizeForKey:@"preferredContentSize"];
+    *(v5 + 4) = [coderCopy decodeInt64ForKey:@"contentBehavior"];
+    *(v5 + 5) = [coderCopy decodeInt64ForKey:@"presentableBehavior"];
+    [coderCopy decodeCGSizeForKey:@"preferredContentSize"];
     *(v5 + 6) = v6;
     *(v5 + 7) = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentOutsets"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentOutsets"];
     v9 = v8;
     v10 = v5 + 64;
     if (v8)

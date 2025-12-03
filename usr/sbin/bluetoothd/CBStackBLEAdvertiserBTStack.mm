@@ -1,8 +1,8 @@
 @interface CBStackBLEAdvertiserBTStack
-- (BOOL)shouldAdvertiseForWPDaemon:(id)a3 advData:(void *)a4 advInstanceType:(unsigned __int8)a5;
-- (BOOL)shouldAdvertiseSafetyAlerts:(unsigned __int8)a3 advData:(void *)a4;
+- (BOOL)shouldAdvertiseForWPDaemon:(id)daemon advData:(void *)data advInstanceType:(unsigned __int8)type;
+- (BOOL)shouldAdvertiseSafetyAlerts:(unsigned __int8)alerts advData:(void *)data;
 - (CBStackBLEAdvertiserBTStack)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_stopAllAdvertisings;
 - (void)_tearDownStackSessions;
 - (void)_updateMultiInstancesAdvertising;
@@ -310,9 +310,9 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v3 = 8;
   }
@@ -323,7 +323,7 @@
   }
 
   v95 = v3;
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -438,7 +438,7 @@ LABEL_27:
     v13 = v9;
   }
 
-  v14 = self;
+  selfCopy5 = self;
   proximityServiceSubType = self->_proximityServiceSubType;
   if (self->_proximityServiceSubType)
   {
@@ -1094,7 +1094,7 @@ LABEL_243:
             proximityServiceSubType = v88;
 
             v13 = proximityServiceSubType;
-            v14 = self;
+            selfCopy5 = self;
             goto LABEL_244;
         }
       }
@@ -1106,7 +1106,7 @@ LABEL_242:
   }
 
 LABEL_244:
-  if ([(NSArray *)v14->_saAddressDataArray count:v54])
+  if ([(NSArray *)selfCopy5->_saAddressDataArray count:v54])
   {
     v87 = v13;
     CUAppendF();
@@ -1161,10 +1161,10 @@ LABEL_244:
     }
 
     v13 = v20;
-    v14 = self;
+    selfCopy5 = self;
   }
 
-  if ([(NSArray *)v14->_saServiceDataArray count])
+  if ([(NSArray *)selfCopy5->_saServiceDataArray count])
   {
     v80 = v13;
     CUAppendF();
@@ -1193,19 +1193,19 @@ LABEL_244:
 
           v33 = *(*(&v76 + 1) + 8 * v31);
           v75 = v32;
-          v34 = [v33 serviceUUID16];
-          v35 = [v33 serviceData];
-          if (!v35)
+          serviceUUID16 = [v33 serviceUUID16];
+          serviceData = [v33 serviceData];
+          if (!serviceData)
           {
             proximityServiceSubType = +[NSData data];
           }
 
           CUPrintNSDataHex();
-          v59 = v55 = v34;
+          v59 = v55 = serviceUUID16;
           CUAppendF();
           v28 = v75;
 
-          if (!v35)
+          if (!serviceData)
           {
           }
 
@@ -1221,10 +1221,10 @@ LABEL_244:
     }
 
     v13 = v28;
-    v14 = self;
+    selfCopy5 = self;
   }
 
-  if ([(NSArray *)v14->_serviceDataArray count])
+  if ([(NSArray *)selfCopy5->_serviceDataArray count])
   {
     v74 = v13;
     CUAppendF();
@@ -1253,19 +1253,19 @@ LABEL_244:
 
           v41 = *(*(&v70 + 1) + 8 * v39);
           v69 = v40;
-          v42 = [v41 serviceUUID16];
-          v43 = [v41 serviceData];
-          if (!v43)
+          serviceUUID162 = [v41 serviceUUID16];
+          serviceData2 = [v41 serviceData];
+          if (!serviceData2)
           {
             proximityServiceSubType = +[NSData data];
           }
 
           CUPrintNSDataHex();
-          v59 = v55 = v42;
+          v59 = v55 = serviceUUID162;
           CUAppendF();
           v36 = v69;
 
-          if (!v43)
+          if (!serviceData2)
           {
           }
 
@@ -1281,10 +1281,10 @@ LABEL_244:
     }
 
     v13 = v36;
-    v14 = self;
+    selfCopy5 = self;
   }
 
-  if (_os_feature_enabled_impl() && [(NSArray *)v14->_swupPayloadDataArray count])
+  if (_os_feature_enabled_impl() && [(NSArray *)selfCopy5->_swupPayloadDataArray count])
   {
     v68 = v13;
     CUAppendF();
@@ -1346,19 +1346,19 @@ LABEL_244:
   return v44;
 }
 
-- (BOOL)shouldAdvertiseSafetyAlerts:(unsigned __int8)a3 advData:(void *)a4
+- (BOOL)shouldAdvertiseSafetyAlerts:(unsigned __int8)alerts advData:(void *)data
 {
-  v5 = a3;
+  alertsCopy = alerts;
   v7 = self->_saAddressDataArray;
   v8 = self->_saServiceDataArray;
-  if ([(NSArray *)v7 count]<= v5 || [(NSArray *)v8 count]<= v5)
+  if ([(NSArray *)v7 count]<= alertsCopy || [(NSArray *)v8 count]<= alertsCopy)
   {
     v16 = 0;
   }
 
   else
   {
-    v29 = [(NSArray *)v7 objectAtIndexedSubscript:v5];
+    v29 = [(NSArray *)v7 objectAtIndexedSubscript:alertsCopy];
     if ([v29 length] == 6)
     {
       v33 = 0;
@@ -1401,27 +1401,27 @@ LABEL_244:
           }
         }
 
-        v18 = *(a4 + 1);
+        v18 = *(data + 1);
         *(v18 + 256) = v14;
         *(v18 + 464) = 1;
         v32 = 0;
         sub_1000216B4(&v32);
         sub_1002D24BC(1);
         sub_100022214(&v32);
-        v19 = [(NSArray *)v8 objectAtIndexedSubscript:v5];
-        v20 = [v19 serviceData];
-        v21 = [v20 length];
+        v19 = [(NSArray *)v8 objectAtIndexedSubscript:alertsCopy];
+        serviceData = [v19 serviceData];
+        v21 = [serviceData length];
         v16 = v21 < 0x1C;
         if (v21 < 0x1C)
         {
           v30 = 0;
           v31 = 0;
-          v22 = v20;
-          v23 = [v20 bytes];
-          v24 = [v20 length];
-          v25 = v23 ? v23 : "";
+          v22 = serviceData;
+          bytes = [serviceData bytes];
+          v24 = [serviceData length];
+          v25 = bytes ? bytes : "";
           sub_10000C704(&v30, v25, v24);
-          v26 = *(a4 + 1);
+          v26 = *(data + 1);
           sub_10006C96C(__p, [v19 serviceUUID16]);
           v35 = __p;
           v27 = sub_100099408(v26 + 112, __p);
@@ -1452,24 +1452,24 @@ LABEL_244:
   return v16;
 }
 
-- (BOOL)shouldAdvertiseForWPDaemon:(id)a3 advData:(void *)a4 advInstanceType:(unsigned __int8)a5
+- (BOOL)shouldAdvertiseForWPDaemon:(id)daemon advData:(void *)data advInstanceType:(unsigned __int8)type
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || [v7 advInstanceType] != v5)
+  typeCopy = type;
+  daemonCopy = daemon;
+  v8 = daemonCopy;
+  if (!daemonCopy || [daemonCopy advInstanceType] != typeCopy)
   {
     goto LABEL_34;
   }
 
-  v9 = [v8 mfgData];
-  v10 = [v8 advDataPerType];
-  if (v9 && [v9 length] && objc_msgSend(v9, "length") <= 0x1C)
+  mfgData = [v8 mfgData];
+  advDataPerType = [v8 advDataPerType];
+  if (mfgData && [mfgData length] && objc_msgSend(mfgData, "length") <= 0x1C)
   {
     v29 = 0;
     v30[0] = 0;
-    sub_10000C704(&v29, [v9 bytes], objc_msgSend(v9, "length"));
-    sub_10000AE20(*(a4 + 1) + 48, &v29);
+    sub_10000C704(&v29, [mfgData bytes], objc_msgSend(mfgData, "length"));
+    sub_10000AE20(*(data + 1) + 48, &v29);
     v29 = &off_100AE0A78;
     if (v30[0])
     {
@@ -1479,7 +1479,7 @@ LABEL_244:
     goto LABEL_11;
   }
 
-  if (!v10 || ![v10 count])
+  if (!advDataPerType || ![advDataPerType count])
   {
 
 LABEL_34:
@@ -1491,33 +1491,33 @@ LABEL_34:
   v31[1] = 3221225472;
   v31[2] = sub_100112D54;
   v31[3] = &unk_100AE09A0;
-  v31[4] = a4;
-  [v10 enumerateKeysAndObjectsUsingBlock:v31];
+  v31[4] = data;
+  [advDataPerType enumerateKeysAndObjectsUsingBlock:v31];
 LABEL_11:
-  v11 = *(a4 + 1);
+  v11 = *(data + 1);
   *(v11 + 222) = [v8 advInterval];
   if ([v8 enableObjectLocatorResponseOnAdvertisingInstance])
   {
-    *(*(a4 + 1) + 308) = 1;
+    *(*(data + 1) + 308) = 1;
   }
 
   if ([v8 stopOnAdvertisingAddressChange])
   {
-    *(*(a4 + 1) + 307) = 1;
+    *(*(data + 1) + 307) = 1;
   }
 
   if ([v8 enableAdvertisingWithPowerAssertion])
   {
-    *(*(a4 + 1) + 360) = 1;
+    *(*(data + 1) + 360) = 1;
   }
 
   if ([v8 enableEPAForAdvertisement])
   {
-    *(*(a4 + 1) + 409) = 1;
+    *(*(data + 1) + 409) = 1;
   }
 
-  v12 = [v8 listOfClients];
-  v13 = v12 == 0;
+  listOfClients = [v8 listOfClients];
+  v13 = listOfClients == 0;
 
   if (!v13)
   {
@@ -1528,8 +1528,8 @@ LABEL_11:
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = [v8 listOfClients];
-    v15 = [v14 countByEnumeratingWithState:&v25 objects:v32 count:16];
+    listOfClients2 = [v8 listOfClients];
+    v15 = [listOfClients2 countByEnumeratingWithState:&v25 objects:v32 count:16];
     if (v15)
     {
       v16 = *v26;
@@ -1539,7 +1539,7 @@ LABEL_11:
         {
           if (*v26 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(listOfClients2);
           }
 
           sub_100007E30(__p, [*(*(&v25 + 1) + 8 * i) UTF8String]);
@@ -1550,13 +1550,13 @@ LABEL_11:
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v25 objects:v32 count:16];
+        v15 = [listOfClients2 countByEnumeratingWithState:&v25 objects:v32 count:16];
       }
 
       while (v15);
     }
 
-    v18 = *(a4 + 1);
+    v18 = *(data + 1);
     sub_100068968(&v21, &v29);
     if ((v18 + 416) != &v21)
     {

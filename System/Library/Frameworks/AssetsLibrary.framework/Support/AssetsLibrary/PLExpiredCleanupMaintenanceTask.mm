@@ -1,16 +1,16 @@
 @interface PLExpiredCleanupMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLExpiredCleanupMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v4 = [(PLMaintenanceTask *)self photoLibrary];
-  [v4 deleteExpiredTrashedAssetsAndAlbums];
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  [photoLibrary deleteExpiredTrashedAssetsAndAlbums];
 
-  v5 = [(PLMaintenanceTask *)self photoLibrary];
-  [v5 deleteExpiredTrashedResources];
+  photoLibrary2 = [(PLMaintenanceTask *)self photoLibrary];
+  [photoLibrary2 deleteExpiredTrashedResources];
 
   return 1;
 }

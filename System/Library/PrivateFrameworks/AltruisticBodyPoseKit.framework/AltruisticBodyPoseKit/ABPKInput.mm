@@ -1,7 +1,7 @@
 @interface ABPKInput
 - (ABPKInput)init;
-- (int)saveDataToDir:(id)a3 withFileNamePrefix:(id)a4;
-- (void)setVioPose:(__n128)a3;
+- (int)saveDataToDir:(id)dir withFileNamePrefix:(id)prefix;
+- (void)setVioPose:(__n128)pose;
 @end
 
 @implementation ABPKInput
@@ -21,25 +21,25 @@
   return result;
 }
 
-- (int)saveDataToDir:(id)a3 withFileNamePrefix:(id)a4
+- (int)saveDataToDir:(id)dir withFileNamePrefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  dirCopy = dir;
+  prefixCopy = prefix;
   [(ABPKInput *)self timestamp];
   v9 = v8;
-  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%f.png", v7, @"image", v8];
-  v30 = [v6 stringByAppendingPathComponent:v31];
+  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%f.png", prefixCopy, @"image", v8];
+  v30 = [dirCopy stringByAppendingPathComponent:v31];
   writeImage([(ABPKInput *)self image], v30);
   v32 = getPixelBufferFormatTypeAsString(self->_depthMap);
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%f.png", v7, @"depth", v9];
-  v28 = [v6 stringByAppendingPathComponent:v29];
+  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%f.png", prefixCopy, @"depth", v9];
+  v28 = [dirCopy stringByAppendingPathComponent:v29];
   saveDepthBufferToFile([(ABPKInput *)self depthMap], v28, 10000.0);
   v10 = getPixelBufferFormatTypeAsString(self->_depthConfidenceBuffer);
-  v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%f.png", v7, @"depth_confidence", v9];
-  v11 = [v6 stringByAppendingPathComponent:v27];
+  v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%f.png", prefixCopy, @"depth_confidence", v9];
+  v11 = [dirCopy stringByAppendingPathComponent:v27];
   saveDepthBufferToFile([(ABPKInput *)self depthConfidenceBuffer], v11, 10000.0);
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_inputs_%f.plist", v7, v9];
-  v13 = [v6 stringByAppendingPathComponent:v12];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_inputs_%f.plist", prefixCopy, v9];
+  v13 = [dirCopy stringByAppendingPathComponent:v12];
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v14 setObject:v32 forKey:@"depth_map_type"];
   [v14 setObject:v10 forKey:@"depth_confidence_map_type"];
@@ -60,21 +60,21 @@
   v23 = [v22 numberWithDouble:?];
   [v14 setObject:v23 forKey:@"timestamp"];
 
-  v24 = [(ABPKInput *)self cameraParams];
-  v25 = [v24 toDict];
-  [v14 setObject:v25 forKey:@"camera_params"];
+  cameraParams = [(ABPKInput *)self cameraParams];
+  toDict = [cameraParams toDict];
+  [v14 setObject:toDict forKey:@"camera_params"];
 
   [v14 writeToFile:v13 atomically:0];
   return 0;
 }
 
-- (void)setVioPose:(__n128)a3
+- (void)setVioPose:(__n128)pose
 {
   v5[0] = a2;
-  v5[1] = a3;
+  v5[1] = pose;
   v5[2] = a4;
   v5[3] = a5;
-  objc_copyStruct((a1 + 64), v5, 64, 1, 0);
+  objc_copyStruct((self + 64), v5, 64, 1, 0);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface TensorFeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation TensorFeatureProvider
@@ -15,7 +15,7 @@
   return v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_245F76878();
   v5 = v4;

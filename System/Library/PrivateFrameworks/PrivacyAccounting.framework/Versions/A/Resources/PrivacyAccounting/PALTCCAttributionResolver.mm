@@ -1,6 +1,6 @@
 @interface PALTCCAttributionResolver
 - (PALTCCAttributionResolver)init;
-- (id)resolveAttributionForTCCAccess:(id)a3 clientProvidedIdentity:(id)a4;
+- (id)resolveAttributionForTCCAccess:(id)access clientProvidedIdentity:(id)identity;
 @end
 
 @implementation PALTCCAttributionResolver
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (id)resolveAttributionForTCCAccess:(id)a3 clientProvidedIdentity:(id)a4
+- (id)resolveAttributionForTCCAccess:(id)access clientProvidedIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accessor];
-  v9 = [v8 identifierType];
+  accessCopy = access;
+  identityCopy = identity;
+  accessor = [accessCopy accessor];
+  identifierType = [accessor identifierType];
 
-  if (v9 == 2)
+  if (identifierType == 2)
   {
-    v10 = [v6 accessor];
-    v11 = v10;
-    if (v10)
+    accessor2 = [accessCopy accessor];
+    v11 = accessor2;
+    if (accessor2)
     {
-      [v10 auditToken];
+      [accessor2 auditToken];
     }
 
     v13 = PAAuthenticatedClientIdentity();
@@ -49,7 +49,7 @@
       v15 = [[PAApplication alloc] initWithTCCIdentity:v13];
       if (v15)
       {
-        v12 = [v6 copyWithNewAccessor:v15];
+        v12 = [accessCopy copyWithNewAccessor:v15];
       }
 
       else
@@ -71,7 +71,7 @@
 
   else
   {
-    v12 = v6;
+    v12 = accessCopy;
   }
 
   return v12;

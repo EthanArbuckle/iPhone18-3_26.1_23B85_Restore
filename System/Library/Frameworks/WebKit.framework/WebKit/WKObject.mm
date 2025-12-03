@@ -1,8 +1,8 @@
 @interface WKObject
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)isMemberOfClass:(Class)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)isMemberOfClass:(Class)class;
 - (BOOL)isNSArray__;
 - (BOOL)isNSCFConstantString__;
 - (BOOL)isNSData__;
@@ -15,16 +15,16 @@
 - (BOOL)isNSString__;
 - (BOOL)isNSTimeZone__;
 - (BOOL)isNSValue__;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (Class)classForCoder;
 - (Class)classForKeyedArchiver;
 - (NSString)debugDescription;
 - (NSString)description;
 - (Object)_apiObject;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation WKObject
@@ -51,14 +51,14 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -66,7 +66,7 @@
   initializeTargetIfNeeded(self);
   m_ptr = self->_target.m_ptr;
 
-  return [m_ptr isEqual:a3];
+  return [m_ptr isEqual:equal];
 }
 
 - (unint64_t)hash
@@ -87,14 +87,14 @@
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v4 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v4;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -103,14 +103,14 @@
   return objc_opt_isKindOfClass() & 1;
 }
 
-- (BOOL)isMemberOfClass:(Class)a3
+- (BOOL)isMemberOfClass:(Class)class
 {
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v5 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v5;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -118,10 +118,10 @@
 
   v7 = self->_target.m_ptr;
 
-  return [v7 isMemberOfClass:a3];
+  return [v7 isMemberOfClass:class];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   initializeTargetIfNeeded(self);
   if (objc_opt_respondsToSelector())
@@ -131,20 +131,20 @@
 
   v6.receiver = self;
   v6.super_class = WKObject;
-  return [(WKObject *)&v6 respondsToSelector:a3];
+  return [(WKObject *)&v6 respondsToSelector:selector];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   initializeTargetIfNeeded(self);
-  if (([self->_target.m_ptr conformsToProtocol:a3]& 1) != 0)
+  if (([self->_target.m_ptr conformsToProtocol:protocol]& 1) != 0)
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = WKObject;
-  return [(WKObject *)&v6 conformsToProtocol:a3];
+  return [(WKObject *)&v6 conformsToProtocol:protocol];
 }
 
 - (NSString)description
@@ -170,9 +170,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -197,9 +197,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -215,9 +215,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -228,14 +228,14 @@
   return [v5 classForKeyedArchiver];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v5 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v5;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -243,17 +243,17 @@
 
   v7 = self->_target.m_ptr;
 
-  [a3 invokeWithTarget:v7];
+  [invocation invokeWithTarget:v7];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v5 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v5;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -261,7 +261,7 @@
 
   v7 = self->_target.m_ptr;
 
-  return [v7 methodSignatureForSelector:a3];
+  return [v7 methodSignatureForSelector:selector];
 }
 
 - (BOOL)isNSObject__
@@ -269,9 +269,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -287,9 +287,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -305,9 +305,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -323,9 +323,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -341,9 +341,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -359,9 +359,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -377,9 +377,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -395,9 +395,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -413,9 +413,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -431,9 +431,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -449,9 +449,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }
@@ -467,9 +467,9 @@
   if (!self->_hasInitializedTarget)
   {
     self->_hasInitializedTarget = 1;
-    v3 = [(WKObject *)self _web_createTarget];
+    _web_createTarget = [(WKObject *)self _web_createTarget];
     m_ptr = self->_target.m_ptr;
-    self->_target.m_ptr = v3;
+    self->_target.m_ptr = _web_createTarget;
     if (m_ptr)
     {
     }

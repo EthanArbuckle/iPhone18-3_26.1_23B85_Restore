@@ -1,7 +1,7 @@
 @interface PLState
 + (void)load;
-- (BOOL)updateWithValue:(id)a3;
-- (PLState)initWithStateId:(unint64_t)a3 entryKey:(id)a4 currValue:(id)a5;
+- (BOOL)updateWithValue:(id)value;
+- (PLState)initWithStateId:(unint64_t)id entryKey:(id)key currValue:(id)value;
 - (void)updateWithLastEntry;
 @end
 
@@ -22,23 +22,23 @@
   }
 }
 
-- (PLState)initWithStateId:(unint64_t)a3 entryKey:(id)a4 currValue:(id)a5
+- (PLState)initWithStateId:(unint64_t)id entryKey:(id)key currValue:(id)value
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = PLState;
   v11 = [(PLState *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_stateId = a3;
-    objc_storeStrong(&v11->_entryKey, a4);
-    objc_storeStrong(&v12->_lastValue, a5);
-    objc_storeStrong(&v12->_currValue, a5);
-    v13 = [MEMORY[0x1E695DF00] distantPast];
+    v11->_stateId = id;
+    objc_storeStrong(&v11->_entryKey, key);
+    objc_storeStrong(&v12->_lastValue, value);
+    objc_storeStrong(&v12->_currValue, value);
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     stateChangeTime = v12->_stateChangeTime;
-    v12->_stateChangeTime = v13;
+    v12->_stateChangeTime = distantPast;
   }
 
   return v12;
@@ -47,30 +47,30 @@
 - (void)updateWithLastEntry
 {
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [(PLState *)self entryKey];
-  v8 = [v4 lastEntryForKey:v5];
+  storage = [v3 storage];
+  entryKey = [(PLState *)self entryKey];
+  v8 = [storage lastEntryForKey:entryKey];
 
   v6 = v8;
   if (v8)
   {
     [(PLState *)self updateWithEntry:v8];
-    v7 = [(PLState *)self currValue];
-    [(PLState *)self setLastValue:v7];
+    currValue = [(PLState *)self currValue];
+    [(PLState *)self setLastValue:currValue];
 
     v6 = v8;
   }
 }
 
-- (BOOL)updateWithValue:(id)a3
+- (BOOL)updateWithValue:(id)value
 {
-  v4 = a3;
-  if (v4 && (-[PLState currValue](self, "currValue"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 isEqual:v5], v5, (v6 & 1) == 0))
+  valueCopy = value;
+  if (valueCopy && (-[PLState currValue](self, "currValue"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [valueCopy isEqual:v5], v5, (v6 & 1) == 0))
   {
-    v8 = [(PLState *)self currValue];
-    [(PLState *)self setLastValue:v8];
+    currValue = [(PLState *)self currValue];
+    [(PLState *)self setLastValue:currValue];
 
-    [(PLState *)self setCurrValue:v4];
+    [(PLState *)self setCurrValue:valueCopy];
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {

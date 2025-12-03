@@ -1,8 +1,8 @@
 @interface OSLogEventDecomposedMessage
-- (OSLogEventDecomposedMessage)initWithEventProxy:(id)a3;
-- (id)argumentAtIndex:(unint64_t)a3;
-- (id)literalPrefixAtIndex:(unint64_t)a3;
-- (id)placeholderAtIndex:(unint64_t)a3;
+- (OSLogEventDecomposedMessage)initWithEventProxy:(id)proxy;
+- (id)argumentAtIndex:(unint64_t)index;
+- (id)literalPrefixAtIndex:(unint64_t)index;
+- (id)placeholderAtIndex:(unint64_t)index;
 - (unint64_t)placeholderCount;
 - (void)_initializePlaceholders;
 - (void)_populateFields;
@@ -273,7 +273,7 @@ LABEL_21:
   }
 }
 
-- (OSLogEventDecomposedMessage)initWithEventProxy:(id)a3
+- (OSLogEventDecomposedMessage)initWithEventProxy:(id)proxy
 {
   v7.receiver = self;
   v7.super_class = OSLogEventDecomposedMessage;
@@ -281,7 +281,7 @@ LABEL_21:
   v5 = v4;
   if (v4)
   {
-    v4->_proxy = a3;
+    v4->_proxy = proxy;
     [(OSLogEventDecomposedMessage *)v4 _populateFields];
   }
 
@@ -307,52 +307,52 @@ LABEL_21:
   [(OSLogEventDecomposedMessage *)&v5 dealloc];
 }
 
-- (id)argumentAtIndex:(unint64_t)a3
+- (id)argumentAtIndex:(unint64_t)index
 {
-  if ([(OSLogEventDecomposedMessage *)self placeholderCount]<= a3)
+  if ([(OSLogEventDecomposedMessage *)self placeholderCount]<= index)
   {
     return 0;
   }
 
-  v5 = [[OSLogEventMessageArgument alloc] initWithProxy:self index:a3];
+  v5 = [[OSLogEventMessageArgument alloc] initWithProxy:self index:index];
 
   return v5;
 }
 
-- (id)placeholderAtIndex:(unint64_t)a3
+- (id)placeholderAtIndex:(unint64_t)index
 {
-  if ([(OSLogEventDecomposedMessage *)self placeholderCount]<= a3 || !self->_rawPlaceholders)
+  if ([(OSLogEventDecomposedMessage *)self placeholderCount]<= index || !self->_rawPlaceholders)
   {
     return 0;
   }
 
-  v5 = [[OSLogMessagePlaceholder alloc] initWithPlaceholderStruct:&self->_rawPlaceholders->var1 + 104 * a3];
+  index = [[OSLogMessagePlaceholder alloc] initWithPlaceholderStruct:&self->_rawPlaceholders->var1 + 104 * index];
 
-  return v5;
+  return index;
 }
 
-- (id)literalPrefixAtIndex:(unint64_t)a3
+- (id)literalPrefixAtIndex:(unint64_t)index
 {
   if (self->_messageState || !self->_fmt)
   {
     return 0;
   }
 
-  if ([(OSLogEventDecomposedMessage *)self placeholderCount]| a3)
+  if ([(OSLogEventDecomposedMessage *)self placeholderCount]| index)
   {
-    if ([(OSLogEventDecomposedMessage *)self placeholderCount]>= a3 && self->_rawPlaceholders)
+    if ([(OSLogEventDecomposedMessage *)self placeholderCount]>= index && self->_rawPlaceholders)
     {
-      if ([(OSLogEventDecomposedMessage *)self placeholderCount]<= a3)
+      if ([(OSLogEventDecomposedMessage *)self placeholderCount]<= index)
       {
         v6 = 0;
       }
 
       else
       {
-        v6 = &self->_rawPlaceholders->var1.var0 + 13 * a3;
+        v6 = &self->_rawPlaceholders->var1.var0 + 13 * index;
       }
 
-      if (!a3 || (v9 = self->_rawPlaceholders + 104 * a3, v9 == 96))
+      if (!index || (v9 = self->_rawPlaceholders + 104 * index, v9 == 96))
       {
         if (v6)
         {

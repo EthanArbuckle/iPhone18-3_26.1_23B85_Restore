@@ -1,63 +1,63 @@
 @interface LSResourceProxy
 - (BOOL)boundIconIsBadge;
 - (LSIconResourceLocator)iconResourceLocator;
-- (LSResourceProxy)initWithCoder:(id)a3;
+- (LSResourceProxy)initWithCoder:(id)coder;
 - (NSDictionary)iconsDictionary;
 - (NSString)primaryIconName;
-- (id)_initWithLocalizedName:(id)a3;
+- (id)_initWithLocalizedName:(id)name;
 - (id)_privateDocumentFileNamesAsCacheKey;
 - (id)uniqueIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)primaryIconName;
 @end
 
 @implementation LSResourceProxy
 
-- (id)_initWithLocalizedName:(id)a3
+- (id)_initWithLocalizedName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = LSResourceProxy;
-  v5 = [(_LSQueryResult *)&v11 _init];
-  if (v5)
+  _init = [(_LSQueryResult *)&v11 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [nameCopy copy];
+    v7 = _init[1];
+    _init[1] = v6;
 
     if (IconServicesLibrary_frameworkLibrary_3 || (IconServicesLibrary_frameworkLibrary_3 = dlopen("/System/Library/PrivateFrameworks/IconServices.framework/IconServices", 2)) != 0)
     {
       v8 = objc_alloc_init(_LSBoundIconInfo);
-      v9 = v5[2];
-      v5[2] = v8;
+      v9 = _init[2];
+      _init[2] = v8;
     }
   }
 
-  return v5;
+  return _init;
 }
 
 - (BOOL)boundIconIsBadge
 {
   if (IconServicesLibrary_frameworkLibrary_3 || (v3 = dlopen("/System/Library/PrivateFrameworks/IconServices.framework/IconServices", 2), (IconServicesLibrary_frameworkLibrary_3 = v3) != 0))
   {
-    v4 = [(LSResourceProxy *)self _boundIconInfo];
-    v5 = [(_LSBoundIconInfo *)v4 isBadge];
+    _boundIconInfo = [(LSResourceProxy *)self _boundIconInfo];
+    isBadge = [(_LSBoundIconInfo *)_boundIconInfo isBadge];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = isBadge;
   }
 
   return v3;
 }
 
-- (LSResourceProxy)initWithCoder:(id)a3
+- (LSResourceProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = LSResourceProxy;
-  v5 = [(_LSQueryResult *)&v17 initWithCoder:v4];
+  v5 = [(_LSQueryResult *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     localizedName = v5->_localizedName;
     v5->_localizedName = v6;
 
@@ -96,7 +96,7 @@
     }
 
     v12 = *v10;
-    v13 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:v9];
+    v13 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:v9];
     v14 = *v8;
     v15 = *(&v5->super.super.isa + v14);
     *(&v5->super.super.isa + v14) = v13;
@@ -105,10 +105,10 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_localizedName forKey:@"localizedName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_localizedName forKey:@"localizedName"];
   v4 = @"boundIconInfo";
   v5 = &OBJC_IVAR___LSResourceProxy___boundIconInfo;
   if (!IconServicesLibrary_frameworkLibrary_3)
@@ -121,7 +121,7 @@
     }
   }
 
-  [v6 encodeObject:*(&self->super.super.isa + *v5) forKey:v4];
+  [coderCopy encodeObject:*(&self->super.super.isa + *v5) forKey:v4];
 }
 
 - (id)uniqueIdentifier
@@ -132,40 +132,40 @@
 
 - (LSIconResourceLocator)iconResourceLocator
 {
-  if (IconServicesLibrary_frameworkLibrary_3 || (v3 = dlopen("/System/Library/PrivateFrameworks/IconServices.framework/IconServices", 2), (IconServicesLibrary_frameworkLibrary_3 = v3) != 0))
+  if (IconServicesLibrary_frameworkLibrary_3 || (_boundIconInfo = dlopen("/System/Library/PrivateFrameworks/IconServices.framework/IconServices", 2), (IconServicesLibrary_frameworkLibrary_3 = _boundIconInfo) != 0))
   {
-    v3 = [(LSResourceProxy *)self _boundIconInfo];
+    _boundIconInfo = [(LSResourceProxy *)self _boundIconInfo];
   }
 
-  return v3;
+  return _boundIconInfo;
 }
 
 - (NSDictionary)iconsDictionary
 {
   if (IconServicesLibrary_frameworkLibrary_3 || (IconServicesLibrary_frameworkLibrary_3 = dlopen("/System/Library/PrivateFrameworks/IconServices.framework/IconServices", 2)) != 0)
   {
-    v3 = [(LSResourceProxy *)self _boundIconInfo];
-    v4 = [(_LSBoundIconInfo *)v3 iconsDictionary];
-    v5 = [(_LSLazyPropertyList *)v4 propertyList];
+    _boundIconInfo = [(LSResourceProxy *)self _boundIconInfo];
+    iconsDictionary = [(_LSBoundIconInfo *)_boundIconInfo iconsDictionary];
+    propertyList = [(_LSLazyPropertyList *)iconsDictionary propertyList];
   }
 
   else
   {
-    v3 = [(LSResourceProxy *)self _iconsDictionary];
-    v5 = [(_LSLazyPropertyList *)v3 propertyList];
+    _boundIconInfo = [(LSResourceProxy *)self _iconsDictionary];
+    propertyList = [(_LSLazyPropertyList *)_boundIconInfo propertyList];
   }
 
-  return v5;
+  return propertyList;
 }
 
 - (NSString)primaryIconName
 {
   if (IconServicesLibrary_frameworkLibrary_3 || (IconServicesLibrary_frameworkLibrary_3 = dlopen("/System/Library/PrivateFrameworks/IconServices.framework/IconServices", 2)) != 0)
   {
-    v3 = [(LSResourceProxy *)self _boundIconInfo];
-    v4 = [(_LSBoundIconInfo *)v3 iconsDictionary];
+    _boundIconInfo = [(LSResourceProxy *)self _boundIconInfo];
+    iconsDictionary = [(_LSBoundIconInfo *)_boundIconInfo iconsDictionary];
 
-    if (v4)
+    if (iconsDictionary)
     {
       goto LABEL_4;
     }
@@ -173,11 +173,11 @@
 
   else
   {
-    v4 = [(LSResourceProxy *)self _iconsDictionary];
-    if (v4)
+    iconsDictionary = [(LSResourceProxy *)self _iconsDictionary];
+    if (iconsDictionary)
     {
 LABEL_4:
-      v5 = [v4 objectForKey:@"CFBundlePrimaryIcon" ofClass:0];
+      v5 = [iconsDictionary objectForKey:@"CFBundlePrimaryIcon" ofClass:0];
       if (_NSIsNSDictionary())
       {
         v6 = [v5 objectForKey:@"CFBundleIconName"];
@@ -222,21 +222,21 @@ LABEL_17:
 - (id)_privateDocumentFileNamesAsCacheKey
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(LSResourceProxy *)self _boundIconInfo];
-  v3 = [(_LSBoundIconInfo *)v2 fileNames];
+  _boundIconInfo = [(LSResourceProxy *)self _boundIconInfo];
+  fileNames = [(_LSBoundIconInfo *)_boundIconInfo fileNames];
 
-  if (v3)
+  if (fileNames)
   {
     v4 = MEMORY[0x1E695DF70];
-    v5 = [(_LSBoundIconInfo *)v2 fileNames];
-    v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    fileNames2 = [(_LSBoundIconInfo *)_boundIconInfo fileNames];
+    v6 = [v4 arrayWithCapacity:{objc_msgSend(fileNames2, "count")}];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(_LSBoundIconInfo *)v2 fileNames];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    fileNames3 = [(_LSBoundIconInfo *)_boundIconInfo fileNames];
+    v8 = [fileNames3 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -247,14 +247,14 @@ LABEL_17:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(fileNames3);
           }
 
           v12 = [*(*(&v16 + 1) + 8 * i) stringByReplacingOccurrencesOfString:@"/" withString:{@":", v16}];
           [v6 addObject:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [fileNames3 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);

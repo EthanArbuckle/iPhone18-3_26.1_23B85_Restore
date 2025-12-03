@@ -1,6 +1,6 @@
 @interface RMStoreLocalizable
 + (id)_bundle;
-+ (id)string:(id)a3;
++ (id)string:(id)string;
 @end
 
 @implementation RMStoreLocalizable
@@ -24,11 +24,11 @@ uint64_t __29__RMStoreLocalizable__bundle__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)string:(id)a3
++ (id)string:(id)string
 {
-  v4 = a3;
-  v5 = [a1 _bundle];
-  v6 = [v5 localizedStringForKey:v4 value:0 table:@"Localizable"];
+  stringCopy = string;
+  _bundle = [self _bundle];
+  v6 = [_bundle localizedStringForKey:stringCopy value:0 table:@"Localizable"];
 
   return v6;
 }

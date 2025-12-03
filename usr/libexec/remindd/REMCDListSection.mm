@@ -1,62 +1,62 @@
 @interface REMCDListSection
 + (NSString)cdEntityName;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
 + (id)keyPathsForValuesAffectingEffectiveMinimumSupportedVersion;
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5;
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context;
 + (id)recordTypes;
-- (BOOL)mergeWithLocalObject:(id)a3;
-- (REMCDListSection)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (BOOL)mergeWithLocalObject:(id)object;
+- (REMCDListSection)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (REMCDObject)parentCDObject;
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3;
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate;
 - (id)newlyCreatedRecord;
 - (id)parentCloudObject;
 - (id)recordType;
 - (int64_t)parentEffectiveMinimumSupportedVersion;
 - (void)cleanUpAfterLocalObjectMerge;
 - (void)fixBrokenReferences;
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4;
+- (void)mergeDataFromRecord:(id)record accountID:(id)d;
 @end
 
 @implementation REMCDListSection
 
 - (REMCDObject)parentCDObject
 {
-  v2 = [(REMCDListSection *)self list];
+  list = [(REMCDListSection *)self list];
 
-  return v2;
+  return list;
 }
 
 + (NSString)cdEntityName
 {
   sub_1004461C8();
-  v2 = [swift_getObjCClassFromMetadata() cdEntityName];
-  if (!v2)
+  cdEntityName = [swift_getObjCClassFromMetadata() cdEntityName];
+  if (!cdEntityName)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v3 = String._bridgeToObjectiveC()();
 
-    v2 = v3;
+    cdEntityName = v3;
   }
 
-  return v2;
+  return cdEntityName;
 }
 
 - (int64_t)parentEffectiveMinimumSupportedVersion
 {
-  v2 = self;
-  v3 = [(REMCDListSection *)v2 list];
-  if (v3)
+  selfCopy = self;
+  list = [(REMCDListSection *)selfCopy list];
+  if (list)
   {
-    v4 = v3;
-    v5 = [v4 effectiveMinimumSupportedVersion];
+    v4 = list;
+    effectiveMinimumSupportedVersion = [v4 effectiveMinimumSupportedVersion];
   }
 
   else
   {
-    v5 = kREMSupportedVersionUnset;
+    effectiveMinimumSupportedVersion = kREMSupportedVersionUnset;
   }
 
-  return v5;
+  return effectiveMinimumSupportedVersion;
 }
 
 + (id)keyPathsForValuesAffectingEffectiveMinimumSupportedVersion
@@ -68,11 +68,11 @@
   return v2.super.isa;
 }
 
-- (REMCDListSection)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (REMCDListSection)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for REMCDListSection();
-  return [(REMCDBaseSection *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(REMCDBaseSection *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 + (id)recordTypes
@@ -82,25 +82,25 @@
   return v2.super.isa;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a5;
-  v12 = static REMCDListSection.existingCloudObject(for:accountID:managedObjectContext:)(v10, v7, v9, v11);
+  dCopy = d;
+  contextCopy = context;
+  v12 = static REMCDListSection.existingCloudObject(for:accountID:managedObjectContext:)(dCopy, v7, v9, contextCopy);
 
   return v12;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static REMCDListSection.newCloudObject(for:account:managedObjectContext:)(v8, v9, v10);
+  recordCopy = record;
+  accountCopy = account;
+  contextCopy = context;
+  v11 = static REMCDListSection.newCloudObject(for:account:managedObjectContext:)(recordCopy, accountCopy, contextCopy);
 
   return v11;
 }
@@ -112,20 +112,20 @@
   return v2;
 }
 
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4
+- (void)mergeDataFromRecord:(id)record accountID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  recordCopy = record;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  REMCDListSection.mergeData(from:accountID:)(v9, v11);
+  REMCDListSection.mergeData(from:accountID:)(recordCopy, v11);
 }
 
 - (id)newlyCreatedRecord
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDListSection.newlyCreatedRecord()();
 
   return v3;
@@ -133,24 +133,24 @@
 
 - (id)parentCloudObject
 {
-  v2 = [(REMCDListSection *)self list];
+  list = [(REMCDListSection *)self list];
 
-  return v2;
+  return list;
 }
 
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = self;
+  predicateCopy = predicate;
+  selfCopy = self;
   v6 = _s7remindd16REMCDListSectionC26existingLocalObjectToMerge4withSo11REMCDObjectCSgSo11NSPredicateCSg_tF_0();
 
   return v6;
 }
 
-- (BOOL)mergeWithLocalObject:(id)a3
+- (BOOL)mergeWithLocalObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
+  objectCopy = object;
+  selfCopy = self;
   LOBYTE(self) = _s7remindd16REMCDListSectionC5merge15withLocalObjectSbSo11REMCDObjectC_tF_0();
 
   return self & 1;
@@ -158,13 +158,13 @@
 
 - (void)cleanUpAfterLocalObjectMerge
 {
-  v2 = self;
+  selfCopy = self;
   REMCDListSection.cleanUpAfterLocalObjectMerge()();
 }
 
 - (void)fixBrokenReferences
 {
-  v2 = self;
+  selfCopy = self;
   REMCDListSection.fixBrokenReferences()();
 }
 

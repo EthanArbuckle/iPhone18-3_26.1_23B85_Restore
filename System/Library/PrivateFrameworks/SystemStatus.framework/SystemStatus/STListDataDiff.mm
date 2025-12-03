@@ -1,18 +1,18 @@
 @interface STListDataDiff
-+ (id)diffFromListData:(id)a3 toListData:(id)a4;
++ (id)diffFromListData:(id)data toListData:(id)listData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
-- (STListDataDiff)initWithCoder:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
-- (id)listDataByApplyingToListData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
+- (STListDataDiff)initWithCoder:(id)coder;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
+- (id)listDataByApplyingToListData:(id)data;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableListData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithObjectsAdded:(void *)a3 objectsRemoved:;
+- (void)applyToMutableListData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithObjectsAdded:(void *)added objectsRemoved:;
 @end
 
 @implementation STListDataDiff
@@ -53,36 +53,36 @@
   return v5;
 }
 
-+ (id)diffFromListData:(id)a3 toListData:(id)a4
++ (id)diffFromListData:(id)data toListData:(id)listData
 {
-  v5 = a4;
-  v6 = [a3 objects];
-  v7 = v6;
-  if (v6)
+  listDataCopy = listData;
+  objects = [data objects];
+  v7 = objects;
+  if (objects)
   {
-    v8 = v6;
+    array = objects;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
-  v10 = [v5 objects];
+  objects2 = [listDataCopy objects];
 
-  if (v10)
+  if (objects2)
   {
-    v11 = v10;
+    array2 = objects2;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DEC8] array];
+    array2 = [MEMORY[0x1E695DEC8] array];
   }
 
-  v12 = v11;
+  v12 = array2;
 
   v13 = [v12 mutableCopy];
   [v13 st_subtractArray:v9];
@@ -113,42 +113,42 @@
   return v17;
 }
 
-- (void)initWithObjectsAdded:(void *)a3 objectsRemoved:
+- (void)initWithObjectsAdded:(void *)added objectsRemoved:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  addedCopy = added;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = STListDataDiff;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      v9 = [v6 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [addedCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)listDataByApplyingToListData:(id)a3
+- (id)listDataByApplyingToListData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STListDataDiff *)self applyToMutableListData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableListData:(id)a3
+- (void)applyToMutableListData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     objectsAdded = self->_objectsAdded;
@@ -159,23 +159,23 @@
     objectsAdded = 0;
   }
 
-  v6 = [(STListData *)objectsAdded objects];
-  v7 = [v4 objects];
-  v8 = [v7 mutableCopy];
+  objects = [(STListData *)objectsAdded objects];
+  objects2 = [dataCopy objects];
+  v8 = [objects2 mutableCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    array = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  v11 = v10;
+  v11 = array;
 
-  [v11 addObjectsFromArray:v6];
+  [v11 addObjectsFromArray:objects];
   if (self)
   {
     objectsRemoved = self->_objectsRemoved;
@@ -218,18 +218,18 @@
     while (v15);
   }
 
-  [v4 setObjects:v11];
+  [dataCopy setObjects:v11];
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = diffCopy;
     if (self)
     {
       objectsAdded = self->_objectsAdded;
@@ -279,7 +279,7 @@
     v16 = v15;
 
     v41 = v5;
-    v42 = v4;
+    v42 = diffCopy;
     if (v5)
     {
       v17 = v5[1];
@@ -293,8 +293,8 @@
     }
 
     v39 = v18;
-    v19 = [v39 objects];
-    v20 = [v19 mutableCopy];
+    objects = [v39 objects];
+    v20 = [objects mutableCopy];
 
     v49 = 0u;
     v50 = 0u;
@@ -316,8 +316,8 @@
           }
 
           v26 = *(*(&v47 + 1) + 8 * i);
-          v27 = [(STListData *)v11 objects];
-          if ([v27 indexOfObject:v26] == 0x7FFFFFFFFFFFFFFFLL)
+          objects2 = [(STListData *)v11 objects];
+          if ([objects2 indexOfObject:v26] == 0x7FFFFFFFFFFFFFFFLL)
           {
             [(STMutableListData *)v16 addObject:v26];
           }
@@ -335,8 +335,8 @@
     }
 
     v40 = v17;
-    v28 = [v17 objects];
-    v29 = [v28 mutableCopy];
+    objects3 = [v17 objects];
+    v29 = [objects3 mutableCopy];
 
     v45 = 0u;
     v46 = 0u;
@@ -358,8 +358,8 @@
           }
 
           v35 = *(*(&v43 + 1) + 8 * j);
-          v36 = [(STListData *)v16 objects];
-          if ([v36 indexOfObject:v35] == 0x7FFFFFFFFFFFFFFFLL)
+          objects4 = [(STListData *)v16 objects];
+          if ([objects4 indexOfObject:v35] == 0x7FFFFFFFFFFFFFFFLL)
           {
             [(STMutableListData *)v11 addObject:v35];
           }
@@ -382,7 +382,7 @@
       v11 = 0;
     }
 
-    v4 = v42;
+    diffCopy = v42;
     if (![(STListData *)v16 count])
     {
 
@@ -402,26 +402,26 @@
   return v10;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STListDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     objectsAdded = self->_objectsAdded;
@@ -436,7 +436,7 @@
   v18[1] = 3221225472;
   v18[2] = __26__STListDataDiff_isEqual___block_invoke;
   v18[3] = &unk_1E85DDCD8;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendObject:objectsAdded counterpart:v18];
   if (self)
@@ -486,17 +486,17 @@ id __26__STListDataDiff_isEqual___block_invoke_2(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
-    v5 = [v3 appendObject:self->_objectsAdded];
+    v5 = [builder appendObject:self->_objectsAdded];
     objectsRemoved = self->_objectsRemoved;
   }
 
   else
   {
-    v10 = [v3 appendObject:0];
+    v10 = [builder appendObject:0];
     objectsRemoved = 0;
   }
 
@@ -506,84 +506,84 @@ id __26__STListDataDiff_isEqual___block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_objectsAdded forKey:@"objectsAdded"];
+    [coder encodeObject:self->_objectsAdded forKey:@"objectsAdded"];
     objectsRemoved = self->_objectsRemoved;
   }
 
   else
   {
-    [a3 encodeObject:0 forKey:@"objectsAdded"];
+    [coder encodeObject:0 forKey:@"objectsAdded"];
     objectsRemoved = 0;
   }
 
-  [a3 encodeObject:objectsRemoved forKey:@"objectsRemoved"];
+  [coder encodeObject:objectsRemoved forKey:@"objectsRemoved"];
 }
 
-- (STListDataDiff)initWithCoder:(id)a3
+- (STListDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectsAdded"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectsRemoved"];
-  v7 = [v4 error];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectsAdded"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectsRemoved"];
+  error = [coderCopy error];
 
-  if (v7)
+  if (error)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STListDataDiff *)self initWithObjectsAdded:v5 objectsRemoved:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STListDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STListDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STListDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STListDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
-    v4 = a3;
-    v5 = [(STListDataDiff *)v3 succinctDescriptionBuilder];
-    [v5 setUseDebugDescription:0];
-    [v5 setActiveMultilinePrefix:v4];
+    prefixCopy = prefix;
+    succinctDescriptionBuilder = [(STListDataDiff *)selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:0];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-    v6 = [v5 activeMultilinePrefix];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__STListDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v9[3] = &unk_1E85DDD00;
-    v7 = v5;
+    v7 = succinctDescriptionBuilder;
     v10 = v7;
-    v11 = v3;
-    [v7 appendBodySectionWithName:0 multilinePrefix:v6 block:v9];
+    v11 = selfCopy;
+    [v7 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v9];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

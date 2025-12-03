@@ -1,11 +1,11 @@
 @interface SUIKSearchResultCollectionViewSectionHeader
 - (SUIKSearchResultCollectionViewSectionHeader)init;
-- (SUIKSearchResultCollectionViewSectionHeader)initWithCoder:(id)a3;
-- (SUIKSearchResultCollectionViewSectionHeader)initWithFrame:(CGRect)a3;
+- (SUIKSearchResultCollectionViewSectionHeader)initWithCoder:(id)coder;
+- (SUIKSearchResultCollectionViewSectionHeader)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)prepareForReuse;
-- (void)setCategoryImage:(id)a3;
+- (void)setCategoryImage:(id)image;
 @end
 
 @implementation SUIKSearchResultCollectionViewSectionHeader
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (SUIKSearchResultCollectionViewSectionHeader)initWithFrame:(CGRect)a3
+- (SUIKSearchResultCollectionViewSectionHeader)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUIKSearchResultCollectionViewSectionHeader;
-  v3 = [(SUIKSearchResultCollectionViewSectionHeader *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUIKSearchResultCollectionViewSectionHeader *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,11 +38,11 @@
   return v4;
 }
 
-- (SUIKSearchResultCollectionViewSectionHeader)initWithCoder:(id)a3
+- (SUIKSearchResultCollectionViewSectionHeader)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SUIKSearchResultCollectionViewSectionHeader;
-  v3 = [(SUIKSearchResultCollectionViewSectionHeader *)&v6 initWithCoder:a3];
+  v3 = [(SUIKSearchResultCollectionViewSectionHeader *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -63,52 +63,52 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(SUIKSearchResultCollectionViewSectionHeader *)self setCategoryImageView:v4];
 
-  v5 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  categoryImageView = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  [categoryImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  [(SUIKSearchResultCollectionViewSectionHeader *)self addSubview:v6];
+  categoryImageView2 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  [(SUIKSearchResultCollectionViewSectionHeader *)self addSubview:categoryImageView2];
 
-  v31 = [MEMORY[0x1E695DF70] array];
-  v7 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  v8 = [v7 leadingAnchor];
-  v9 = [(SUIKSearchResultCollectionViewSectionHeader *)self leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
-  [v31 addObject:v10];
+  array = [MEMORY[0x1E695DF70] array];
+  categoryImageView3 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  leadingAnchor = [categoryImageView3 leadingAnchor];
+  leadingAnchor2 = [(SUIKSearchResultCollectionViewSectionHeader *)self leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v10];
 
-  v11 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  v12 = [v11 trailingAnchor];
-  v13 = [(SUIKSearchResultCollectionViewSectionHeader *)self trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
-  [v31 addObject:v14];
+  categoryImageView4 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  trailingAnchor = [categoryImageView4 trailingAnchor];
+  trailingAnchor2 = [(SUIKSearchResultCollectionViewSectionHeader *)self trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v14];
 
-  v15 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  v16 = [v15 topAnchor];
-  v17 = [(SUIKSearchResultCollectionViewSectionHeader *)self topAnchor];
-  v18 = [v16 constraintEqualToSystemSpacingBelowAnchor:v17 multiplier:1.0];
-  [v31 addObject:v18];
+  categoryImageView5 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  topAnchor = [categoryImageView5 topAnchor];
+  topAnchor2 = [(SUIKSearchResultCollectionViewSectionHeader *)self topAnchor];
+  v18 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
+  [array addObject:v18];
 
-  v19 = [(SUIKSearchResultCollectionViewSectionHeader *)self bottomAnchor];
-  v20 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToSystemSpacingBelowAnchor:v21 multiplier:1.0];
-  [v31 addObject:v22];
+  bottomAnchor = [(SUIKSearchResultCollectionViewSectionHeader *)self bottomAnchor];
+  categoryImageView6 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  bottomAnchor2 = [categoryImageView6 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
+  [array addObject:v22];
 
-  v23 = [v31 lastObject];
+  lastObject = [array lastObject];
   LODWORD(v24) = 1148829696;
-  [v23 setPriority:v24];
+  [lastObject setPriority:v24];
 
-  v25 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  v26 = [v25 heightAnchor];
-  v27 = [v26 constraintEqualToConstant:*&_commonInit_iconSize_1];
-  [v31 addObject:v27];
+  categoryImageView7 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  heightAnchor = [categoryImageView7 heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:*&_commonInit_iconSize_1];
+  [array addObject:v27];
 
-  v28 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  v29 = [v28 widthAnchor];
-  v30 = [v29 constraintEqualToConstant:*&_commonInit_iconSize_0];
-  [v31 addObject:v30];
+  categoryImageView8 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  widthAnchor = [categoryImageView8 widthAnchor];
+  v30 = [widthAnchor constraintEqualToConstant:*&_commonInit_iconSize_0];
+  [array addObject:v30];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v31];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
 void __58__SUIKSearchResultCollectionViewSectionHeader__commonInit__block_invoke()
@@ -128,27 +128,27 @@ void __58__SUIKSearchResultCollectionViewSectionHeader__commonInit__block_invoke
   v4.receiver = self;
   v4.super_class = SUIKSearchResultCollectionViewSectionHeader;
   [(SUIKSearchResultCollectionViewSectionHeader *)&v4 prepareForReuse];
-  v3 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  [v3 setImage:0];
+  categoryImageView = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  [categoryImageView setImage:0];
 }
 
-- (void)setCategoryImage:(id)a3
+- (void)setCategoryImage:(id)image
 {
-  v4 = a3;
-  v5 = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  categoryImageView = [(SUIKSearchResultCollectionViewSectionHeader *)self categoryImageView];
+  [categoryImageView setImage:imageCopy];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = SUIKSearchResultCollectionViewSectionHeader;
-  v4 = a3;
-  [(SUIKSearchResultCollectionViewSectionHeader *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 zIndex];
+  attributesCopy = attributes;
+  [(SUIKSearchResultCollectionViewSectionHeader *)&v7 applyLayoutAttributes:attributesCopy];
+  zIndex = [attributesCopy zIndex];
 
-  v6 = [(SUIKSearchResultCollectionViewSectionHeader *)self layer];
-  [v6 setZPosition:v5];
+  layer = [(SUIKSearchResultCollectionViewSectionHeader *)self layer];
+  [layer setZPosition:zIndex];
 }
 
 @end

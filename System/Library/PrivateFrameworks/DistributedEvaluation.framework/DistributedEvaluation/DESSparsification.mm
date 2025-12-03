@@ -1,61 +1,61 @@
 @interface DESSparsification
-- (BOOL)reportErrorWithErrorStr:(id)a3 error:(id *)a4;
-- (id)splitResultToChunksWithResult:(id)a3 recipe:(id)a4 baseKey:(id)a5 error:(id *)a6;
+- (BOOL)reportErrorWithErrorStr:(id)str error:(id *)error;
+- (id)splitResultToChunksWithResult:(id)result recipe:(id)recipe baseKey:(id)key error:(id *)error;
 @end
 
 @implementation DESSparsification
 
-- (BOOL)reportErrorWithErrorStr:(id)a3 error:(id *)a4
+- (BOOL)reportErrorWithErrorStr:(id)str error:(id *)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  strCopy = str;
   v6 = +[DESLogging coreChannel];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [DESSparsification reportErrorWithErrorStr:v5 error:v6];
+    [DESSparsification reportErrorWithErrorStr:strCopy error:v6];
   }
 
-  if (a4)
+  if (error)
   {
     v7 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277CCA450];
-    v12[0] = v5;
+    v12[0] = strCopy;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a4 = [v7 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2008 userInfo:v8];
+    *error = [v7 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2008 userInfo:v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return a4 != 0;
+  return error != 0;
 }
 
-- (id)splitResultToChunksWithResult:(id)a3 recipe:(id)a4 baseKey:(id)a5 error:(id *)a6
+- (id)splitResultToChunksWithResult:(id)result recipe:(id)recipe baseKey:(id)key error:(id *)error
 {
   v116 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  resultCopy = result;
+  recipeCopy = recipe;
+  keyCopy = key;
   v110 = 0.0;
-  v13 = [v11 useAdaptiveClipping];
-  if (v13)
+  useAdaptiveClipping = [recipeCopy useAdaptiveClipping];
+  if (useAdaptiveClipping)
   {
-    v14 = [v11 maxNorm];
-    [v14 doubleValue];
+    maxNorm = [recipeCopy maxNorm];
+    [maxNorm doubleValue];
     v16 = v15;
 
-    v17 = [v11 recipeUserInfo];
-    v18 = [v17 objectForKeyedSubscript:@"ClippingIndicatorScale"];
+    recipeUserInfo = [recipeCopy recipeUserInfo];
+    v18 = [recipeUserInfo objectForKeyedSubscript:@"ClippingIndicatorScale"];
     [v18 doubleValue];
     v20 = v19;
 
     *&v21 = v16;
     *&v22 = v20;
-    if (![DESAdaptiveClipping computeClippingIndicator:v10 clippingBound:&v110 scale:v21 clippingIndicator:v22])
+    if (![DESAdaptiveClipping computeClippingIndicator:resultCopy clippingBound:&v110 scale:v21 clippingIndicator:v22])
     {
       v63 = MEMORY[0x277CCACA8];
-      v64 = [v11 recipeID];
-      v40 = [v63 stringWithFormat:@"Recipe %@ has %@=%f but failed to compute the adaptive clipping indicator", v64, @"ClippingIndicatorScale", *&v20];
+      recipeID = [recipeCopy recipeID];
+      v40 = [v63 stringWithFormat:@"Recipe %@ has %@=%f but failed to compute the adaptive clipping indicator", recipeID, @"ClippingIndicatorScale", *&v20];
 
-      [(DESSparsification *)self reportErrorWithErrorStr:v40 error:a6];
+      [(DESSparsification *)self reportErrorWithErrorStr:v40 error:error];
       v62 = 0;
       goto LABEL_28;
     }
@@ -63,18 +63,18 @@
     v23 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [v11 recipeID];
+      recipeID2 = [recipeCopy recipeID];
       *buf = 138412546;
-      v113 = v24;
+      v113 = recipeID2;
       v114 = 2048;
       v115 = v110;
       _os_log_impl(&dword_248FF7000, v23, OS_LOG_TYPE_INFO, "Recipe %@ uses adaptive clipping, indicator=%f", buf, 0x16u);
     }
 
-    v99 = v13;
-    v102 = self;
-    v103 = a6;
-    v25 = v10;
+    v99 = useAdaptiveClipping;
+    selfCopy2 = self;
+    errorCopy2 = error;
+    v25 = resultCopy;
 
     v26 = 1;
   }
@@ -82,14 +82,14 @@
   else
   {
     v99 = 0;
-    v102 = self;
-    v103 = a6;
-    v25 = v10;
+    selfCopy2 = self;
+    errorCopy2 = error;
+    v25 = resultCopy;
     v26 = 0;
   }
 
-  v27 = [v11 recipeUserInfo];
-  v28 = [v27 objectForKeyedSubscript:@"sparsification"];
+  recipeUserInfo2 = [recipeCopy recipeUserInfo];
+  v28 = [recipeUserInfo2 objectForKeyedSubscript:@"sparsification"];
   v29 = [v28 objectForKeyedSubscript:@"chunkClippingBounds"];
   if (!v29)
   {
@@ -97,14 +97,14 @@
   }
 
   v30 = v29;
-  v104 = v12;
-  v31 = [v11 recipeUserInfo];
-  v32 = [v31 objectForKeyedSubscript:@"sparsification"];
+  v104 = keyCopy;
+  recipeUserInfo3 = [recipeCopy recipeUserInfo];
+  v32 = [recipeUserInfo3 objectForKeyedSubscript:@"sparsification"];
   v33 = [v32 objectForKeyedSubscript:@"numChunks"];
   if (!v33)
   {
 
-    v12 = v104;
+    keyCopy = v104;
 LABEL_23:
 
     goto LABEL_24;
@@ -112,41 +112,41 @@ LABEL_23:
 
   v34 = v33;
   obj = v26;
-  [v11 recipeUserInfo];
-  v35 = v105 = v11;
+  [recipeCopy recipeUserInfo];
+  v35 = v105 = recipeCopy;
   v36 = [v35 objectForKeyedSubscript:@"sparsification"];
   v37 = [v36 objectForKeyedSubscript:@"sparsificationMapFile"];
 
-  v11 = v105;
-  v12 = v104;
+  recipeCopy = v105;
+  keyCopy = v104;
   if (!v37)
   {
 LABEL_24:
     v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"Recipe does not include all keys required for sparsification and chunking. Required keys include %@, %@, %@, %@", @"sparsification", @"chunkClippingBounds", @"numChunks", @"sparsificationMapFile"];
-    [(DESSparsification *)v102 reportErrorWithErrorStr:v40 error:v103];
+    [(DESSparsification *)selfCopy2 reportErrorWithErrorStr:v40 error:errorCopy2];
     v62 = 0;
-    v10 = v25;
+    resultCopy = v25;
     goto LABEL_28;
   }
 
-  v38 = [v105 recipeUserInfo];
-  v39 = [v38 objectForKeyedSubscript:@"sparsification"];
+  recipeUserInfo4 = [v105 recipeUserInfo];
+  v39 = [recipeUserInfo4 objectForKeyedSubscript:@"sparsification"];
   v40 = [v39 objectForKeyedSubscript:@"chunkClippingBounds"];
 
-  v41 = [v105 recipeUserInfo];
-  v42 = [v41 objectForKeyedSubscript:@"sparsification"];
+  recipeUserInfo5 = [v105 recipeUserInfo];
+  v42 = [recipeUserInfo5 objectForKeyedSubscript:@"sparsification"];
   v43 = [v42 objectForKeyedSubscript:@"numChunks"];
-  v44 = [v43 intValue];
+  intValue = [v43 intValue];
 
   v45 = [v40 count];
-  v10 = v25;
+  resultCopy = v25;
   v46 = [v25 length];
   v47 = &obj[v46 >> 2];
-  if (v47 >= v44 && v45 == v44)
+  if (v47 >= intValue && v45 == intValue)
   {
     v48 = v46;
     v95 = &obj[v46 >> 2];
-    *__upper_bound = v44;
+    *__upper_bound = intValue;
     v97 = v40;
     v98 = v25;
     v108 = 0u;
@@ -171,11 +171,11 @@ LABEL_24:
           }
 
           v53 = *(*(&v106 + 1) + 8 * i);
-          v54 = [v53 lastPathComponent];
-          v55 = [v11 recipeUserInfo];
-          v56 = [v55 objectForKeyedSubscript:@"sparsification"];
+          lastPathComponent = [v53 lastPathComponent];
+          recipeUserInfo6 = [recipeCopy recipeUserInfo];
+          v56 = [recipeUserInfo6 objectForKeyedSubscript:@"sparsification"];
           v57 = [v56 objectForKeyedSubscript:@"sparsificationMapFile"];
-          v58 = [v54 isEqualToString:v57];
+          v58 = [lastPathComponent isEqualToString:v57];
 
           if (v58)
           {
@@ -185,11 +185,11 @@ LABEL_24:
               [DESSparsification splitResultToChunksWithResult:v53 recipe:v67 baseKey:? error:?];
             }
 
-            v68 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v53 options:1 error:v103];
+            v68 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v53 options:1 error:errorCopy2];
             v40 = v97;
-            v10 = v98;
-            v12 = v104;
-            v11 = v105;
+            resultCopy = v98;
+            keyCopy = v104;
+            recipeCopy = v105;
             if (v68)
             {
               v61 = v68;
@@ -204,14 +204,14 @@ LABEL_24:
                   do
                   {
                     v72 = [MEMORY[0x277CCABB0] numberWithInt:v71];
-                    v73 = [v12 resultsKeyStringForChunk:v72];
+                    v73 = [keyCopy resultsKeyStringForChunk:v72];
 
                     v74 = [DESChunk alloc];
                     v75 = [v97 objectAtIndexedSubscript:v71 - 1];
                     v76 = objc_alloc_init(MEMORY[0x277CBEB28]);
                     v77 = [(DESChunk *)v74 initWithKey:v73 clippingBound:v75 data:v76];
 
-                    v12 = v104;
+                    keyCopy = v104;
                     [v70 addObject:v77];
 
                     ++v71;
@@ -220,35 +220,35 @@ LABEL_24:
                   while (v71 != __upper_bound[0] + 1);
                 }
 
-                v78 = [v61 bytes];
-                v10 = v98;
-                v79 = [v98 bytes];
+                bytes = [v61 bytes];
+                resultCopy = v98;
+                bytes2 = [v98 bytes];
                 v80 = v94;
                 v81 = *__upper_bound;
                 if (v93 >= 4)
                 {
-                  v82 = v79;
+                  v82 = bytes2;
                   do
                   {
-                    v84 = *v78++;
+                    v84 = *bytes++;
                     v83 = v84;
                     if (v84)
                     {
                       if (v83 > *__upper_bound)
                       {
                         v92 = [MEMORY[0x277CCACA8] stringWithFormat:@"Chunk mapping value = %8u, which is greater than number of chunks = %lu, found in map file", v83, *__upper_bound];
-                        [(DESSparsification *)v102 reportErrorWithErrorStr:v92 error:v103];
+                        [(DESSparsification *)selfCopy2 reportErrorWithErrorStr:v92 error:errorCopy2];
 
                         v62 = 0;
-                        v11 = v105;
+                        recipeCopy = v105;
                         goto LABEL_49;
                       }
 
                       v85 = [v70 objectAtIndexedSubscript:(v83 - 1)];
-                      v86 = [v85 data];
-                      [v86 appendBytes:v82 length:4];
+                      data = [v85 data];
+                      [data appendBytes:v82 length:4];
 
-                      v12 = v104;
+                      keyCopy = v104;
                     }
 
                     v82 += 4;
@@ -261,11 +261,11 @@ LABEL_24:
                 if (v99)
                 {
                   v87 = [v70 objectAtIndexedSubscript:{objc_msgSend(v70, "count") - 1}];
-                  v88 = [v87 data];
-                  [v88 appendBytes:&v110 length:4];
+                  data2 = [v87 data];
+                  [data2 appendBytes:&v110 length:4];
                 }
 
-                v11 = v105;
+                recipeCopy = v105;
                 if (__upper_bound[0] >= 2)
                 {
                   do
@@ -284,7 +284,7 @@ LABEL_49:
               else
               {
                 v90 = [MEMORY[0x277CCACA8] stringWithFormat:@"Length of sparsification mapping file does not match number of statistics to be privatised and aggregated: number of statistics = %lu number of byte values in mapping file = %lu", v95, v69];;
-                [(DESSparsification *)v102 reportErrorWithErrorStr:v90 error:v103];
+                [(DESSparsification *)selfCopy2 reportErrorWithErrorStr:v90 error:errorCopy2];
 
                 v62 = 0;
               }
@@ -292,9 +292,9 @@ LABEL_49:
 
             else
             {
-              if (v103)
+              if (errorCopy2)
               {
-                v89 = *v103;
+                v89 = *errorCopy2;
               }
 
               else
@@ -303,7 +303,7 @@ LABEL_49:
               }
 
               v91 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sparsification map file was not readable: %@", v89];
-              [(DESSparsification *)v102 reportErrorWithErrorStr:v91 error:v103];
+              [(DESSparsification *)selfCopy2 reportErrorWithErrorStr:v91 error:errorCopy2];
 
               v62 = 0;
               v61 = obja;
@@ -312,7 +312,7 @@ LABEL_49:
             goto LABEL_27;
           }
 
-          v11 = v105;
+          recipeCopy = v105;
         }
 
         v50 = [obja countByEnumeratingWithState:&v106 objects:v111 count:16];
@@ -326,23 +326,23 @@ LABEL_49:
     }
 
     v59 = MEMORY[0x277CCACA8];
-    v60 = [v11 attachments];
-    v61 = [v59 stringWithFormat:@"Sparsification map file not found in recipe attachments. Recipe attachments = %@", v60];
+    attachments = [recipeCopy attachments];
+    v61 = [v59 stringWithFormat:@"Sparsification map file not found in recipe attachments. Recipe attachments = %@", attachments];
 
-    [(DESSparsification *)v102 reportErrorWithErrorStr:v61 error:v103];
+    [(DESSparsification *)selfCopy2 reportErrorWithErrorStr:v61 error:errorCopy2];
     v62 = 0;
     v40 = v97;
-    v10 = v98;
+    resultCopy = v98;
   }
 
   else
   {
-    v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"Incorrect settings for chunking parameters: size of result vector = %lu number of chunks = %lu; number of clipping bounds = %lu", v47, v44, v45];;
-    [(DESSparsification *)v102 reportErrorWithErrorStr:v61 error:v103];
+    v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"Incorrect settings for chunking parameters: size of result vector = %lu number of chunks = %lu; number of clipping bounds = %lu", v47, intValue, v45];;
+    [(DESSparsification *)selfCopy2 reportErrorWithErrorStr:v61 error:errorCopy2];
     v62 = 0;
   }
 
-  v12 = v104;
+  keyCopy = v104;
 LABEL_27:
 
 LABEL_28:

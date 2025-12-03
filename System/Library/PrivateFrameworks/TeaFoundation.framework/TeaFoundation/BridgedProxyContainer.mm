@@ -2,9 +2,9 @@
 - (TFCallbackRegistration)callback;
 - (TFRegistrationContainer)privateContainer;
 - (TFRegistrationContainer)publicContainer;
-- (void)setCallback:(id)a3;
-- (void)setPrivateContainer:(id)a3;
-- (void)setPublicContainer:(id)a3;
+- (void)setCallback:(id)callback;
+- (void)setPrivateContainer:(id)container;
+- (void)setPublicContainer:(id)container;
 @end
 
 @implementation BridgedProxyContainer
@@ -30,25 +30,25 @@
   return v2;
 }
 
-- (void)setPublicContainer:(id)a3
+- (void)setPublicContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BF0A9330(a3);
+  selfCopy = self;
+  sub_1BF0A9330(container);
 }
 
-- (void)setPrivateContainer:(id)a3
+- (void)setPrivateContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BF0A939C(a3);
+  selfCopy = self;
+  sub_1BF0A939C(container);
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BF0A9408(a3);
+  selfCopy = self;
+  sub_1BF0A9408(callback);
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface PXSettingsIndexer
 - (PXSettingsIndexer)init;
-- (PXSettingsIndexer)initWithRootSettings:(id)a3;
-- (id)startIndexingWithCompletionHandler:(id)a3;
+- (PXSettingsIndexer)initWithRootSettings:(id)settings;
+- (id)startIndexingWithCompletionHandler:(id)handler;
 - (void)_callCompletionHandlersIfNecessary;
-- (void)_handleResultIndex:(id)a3;
+- (void)_handleResultIndex:(id)index;
 - (void)_startIndexingIfNecessary;
 @end
 
@@ -14,13 +14,13 @@
   v16 = *MEMORY[0x1E69E9840];
   if ([(PXSettingsIndexer *)self state]== 2)
   {
-    v3 = [(PXSettingsIndexer *)self completionHandlers];
-    v4 = [v3 copy];
+    completionHandlers = [(PXSettingsIndexer *)self completionHandlers];
+    v4 = [completionHandlers copy];
 
     if ([v4 count])
     {
-      v5 = [(PXSettingsIndexer *)self completionHandlers];
-      [v5 removeAllObjects];
+      completionHandlers2 = [(PXSettingsIndexer *)self completionHandlers];
+      [completionHandlers2 removeAllObjects];
 
       v13 = 0u;
       v14 = 0u;
@@ -56,13 +56,13 @@
   }
 }
 
-- (void)_handleResultIndex:(id)a3
+- (void)_handleResultIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   [(PXSettingsIndexer *)self setIndexingProgress:0];
-  if (v4)
+  if (indexCopy)
   {
-    [(PXSettingsIndexer *)self setIndex:v4];
+    [(PXSettingsIndexer *)self setIndex:indexCopy];
     [(PXSettingsIndexer *)self setState:2];
     [(PXSettingsIndexer *)self _callCompletionHandlersIfNecessary];
   }
@@ -79,13 +79,13 @@
   {
     [(PXSettingsIndexer *)self setState:1];
     objc_initWeak(&location, self);
-    v3 = [(PXSettingsIndexer *)self rootSettings];
+    rootSettings = [(PXSettingsIndexer *)self rootSettings];
     v5 = MEMORY[0x1E69E9820];
     v6 = 3221225472;
     v7 = __46__PXSettingsIndexer__startIndexingIfNecessary__block_invoke;
     v8 = &unk_1E7742C68;
     objc_copyWeak(&v9, &location);
-    v4 = [PXSettingsIndex createIndexForSettings:v3 resultHandler:&v5];
+    v4 = [PXSettingsIndex createIndexForSettings:rootSettings resultHandler:&v5];
     [(PXSettingsIndexer *)self setIndexingProgress:v4, v5, v6, v7, v8];
 
     objc_destroyWeak(&v9);
@@ -100,14 +100,14 @@ void __46__PXSettingsIndexer__startIndexingIfNecessary__block_invoke(uint64_t a1
   [WeakRetained _handleResultIndex:v3];
 }
 
-- (id)startIndexingWithCompletionHandler:(id)a3
+- (id)startIndexingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXSettingsIndexer *)self completionHandlers];
-  v6 = [v4 copy];
+  handlerCopy = handler;
+  completionHandlers = [(PXSettingsIndexer *)self completionHandlers];
+  v6 = [handlerCopy copy];
 
   v7 = _Block_copy(v6);
-  [v5 addObject:v7];
+  [completionHandlers addObject:v7];
 
   [(PXSettingsIndexer *)self _startIndexingIfNecessary];
   [(PXSettingsIndexer *)self _callCompletionHandlersIfNecessary];
@@ -115,19 +115,19 @@ void __46__PXSettingsIndexer__startIndexingIfNecessary__block_invoke(uint64_t a1
   return [(PXSettingsIndexer *)self indexingProgress];
 }
 
-- (PXSettingsIndexer)initWithRootSettings:(id)a3
+- (PXSettingsIndexer)initWithRootSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = PXSettingsIndexer;
   v6 = [(PXSettingsIndexer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootSettings, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_rootSettings, settings);
+    array = [MEMORY[0x1E695DF70] array];
     completionHandlers = v7->_completionHandlers;
-    v7->_completionHandlers = v8;
+    v7->_completionHandlers = array;
   }
 
   return v7;
@@ -135,8 +135,8 @@ void __46__PXSettingsIndexer__startIndexingIfNecessary__block_invoke(uint64_t a1
 
 - (PXSettingsIndexer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSettingsIndexer.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSettingsIndexer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSettingsIndexer.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSettingsIndexer init]"}];
 
   abort();
 }

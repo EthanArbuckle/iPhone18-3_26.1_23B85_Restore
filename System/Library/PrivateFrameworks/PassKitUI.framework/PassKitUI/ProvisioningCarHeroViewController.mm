@@ -1,69 +1,69 @@
 @interface ProvisioningCarHeroViewController
-- (_TtC9PassKitUI33ProvisioningCarHeroViewController)initWithContext:(int64_t)a3;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (_TtC9PassKitUI33ProvisioningCarHeroViewController)initWithContext:(int64_t)context;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
 - (void)skipCardButtonPressed;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ProvisioningCarHeroViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD1E5D94();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ProvisioningCarHeroViewController *)&v5 viewDidAppear:v3];
+  [(ProvisioningCarHeroViewController *)&v5 viewDidAppear:appearCopy];
   [*&v4[OBJC_IVAR____TtC9PassKitUI33ProvisioningCarHeroViewController_reporter] reportViewAppeared];
 }
 
 - (void)skipCardButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD1E753C();
 }
 
-- (_TtC9PassKitUI33ProvisioningCarHeroViewController)initWithContext:(int64_t)a3
+- (_TtC9PassKitUI33ProvisioningCarHeroViewController)initWithContext:(int64_t)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
-  v5 = self;
+  continueCopy = continue;
+  selfCopy = self;
   sub_1BD1E8238();
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_1BD1E82EC();
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [(ProvisioningCarHeroViewController *)v7 view];
-  if (v5)
+  iCopy = i;
+  selfCopy = self;
+  view = [(ProvisioningCarHeroViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
-    [v5 setUserInteractionEnabled_];
+    v6 = view;
+    [view setUserInteractionEnabled_];
 
-    [(PKExplanationViewController *)v7 showSpinner:v4];
+    [(PKExplanationViewController *)selfCopy showSpinner:iCopy];
   }
 
   else

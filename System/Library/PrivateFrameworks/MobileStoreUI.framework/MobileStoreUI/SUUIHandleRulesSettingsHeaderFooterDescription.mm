@@ -1,18 +1,18 @@
 @interface SUUIHandleRulesSettingsHeaderFooterDescription
-- (SUUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)a3;
+- (SUUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)context;
 - (id)text;
 @end
 
 @implementation SUUIHandleRulesSettingsHeaderFooterDescription
 
-- (SUUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)a3
+- (SUUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(SUUIHandleRulesSettingsHeaderFooterDescription *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;

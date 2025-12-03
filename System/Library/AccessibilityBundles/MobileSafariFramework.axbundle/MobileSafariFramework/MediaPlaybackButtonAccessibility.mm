@@ -1,37 +1,37 @@
 @interface MediaPlaybackButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MediaPlaybackButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFMediaPlaybackButton" hasSwiftField:@"isPlaying" withSwiftType:"Bool"];
-  [v3 validateClass:@"SFMediaPlaybackButton" hasSwiftField:@"playbackType" withSwiftType:"PlaybackType"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFMediaPlaybackButton" hasSwiftField:@"isPlaying" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"SFMediaPlaybackButton" hasSwiftField:@"playbackType" withSwiftType:"PlaybackType"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(MediaPlaybackButtonAccessibility *)self safeSwiftValueForKey:@"playbackType"];
-  v4 = [v3 safeSwiftEnumCase];
+  safeSwiftEnumCase = [v3 safeSwiftEnumCase];
 
-  if ([v4 isEqualToString:@"back"])
+  if ([safeSwiftEnumCase isEqualToString:@"back"])
   {
     v5 = @"playback.back.button";
 LABEL_5:
-    v6 = accessibilityMobileSafariLocalizedString(v5);
+    accessibilityLabel = accessibilityMobileSafariLocalizedString(v5);
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"forward"])
+  if ([safeSwiftEnumCase isEqualToString:@"forward"])
   {
     v5 = @"playback.forward.button";
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"play"])
+  if ([safeSwiftEnumCase isEqualToString:@"play"])
   {
     if (([(MediaPlaybackButtonAccessibility *)self safeSwiftBoolForKey:@"isPlaying"]& 1) != 0)
     {
@@ -48,9 +48,9 @@ LABEL_5:
 
   v9.receiver = self;
   v9.super_class = MediaPlaybackButtonAccessibility;
-  v6 = [(MediaPlaybackButtonAccessibility *)&v9 accessibilityLabel];
+  accessibilityLabel = [(MediaPlaybackButtonAccessibility *)&v9 accessibilityLabel];
 LABEL_6:
-  v7 = v6;
+  v7 = accessibilityLabel;
 
   return v7;
 }

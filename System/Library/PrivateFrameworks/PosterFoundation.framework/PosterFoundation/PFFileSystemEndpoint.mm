@@ -1,31 +1,31 @@
 @interface PFFileSystemEndpoint
-- (BOOL)copyURL:(id)a3 relativeTo:(id)a4 fileManager:(id)a5 error:(id *)a6;
-- (BOOL)prepareEndpointForBaseURL:(id)a3 fileManager:(id)a4 error:(id *)a5;
-- (BOOL)writeData:(id)a3 relativeTo:(id)a4 fileManager:(id)a5 error:(id *)a6;
+- (BOOL)copyURL:(id)l relativeTo:(id)to fileManager:(id)manager error:(id *)error;
+- (BOOL)prepareEndpointForBaseURL:(id)l fileManager:(id)manager error:(id *)error;
+- (BOOL)writeData:(id)data relativeTo:(id)to fileManager:(id)manager error:(id *)error;
 - (NSString)pathComponents;
 - (PFFileSystemEndpoint)init;
-- (PFFileSystemEndpoint)initWithComponents:(id)a3 attributes:(id)a4 resourceValues:(id)a5;
-- (PFFileSystemEndpoint)initWithRelativePathComponents:(id)a3 attributes:(id)a4 resourceValues:(id)a5;
+- (PFFileSystemEndpoint)initWithComponents:(id)components attributes:(id)attributes resourceValues:(id)values;
+- (PFFileSystemEndpoint)initWithRelativePathComponents:(id)components attributes:(id)attributes resourceValues:(id)values;
 - (id)description;
-- (id)endPointByAppendingEndpoint:(id)a3;
-- (id)endPointByAppendingRelativePathComponents:(id)a3;
-- (id)resolveWithBaseURL:(id)a3;
+- (id)endPointByAppendingEndpoint:(id)endpoint;
+- (id)endPointByAppendingRelativePathComponents:(id)components;
+- (id)resolveWithBaseURL:(id)l;
 - (unint64_t)hash;
 @end
 
 @implementation PFFileSystemEndpoint
 
-- (PFFileSystemEndpoint)initWithRelativePathComponents:(id)a3 attributes:(id)a4 resourceValues:(id)a5
+- (PFFileSystemEndpoint)initWithRelativePathComponents:(id)components attributes:(id)attributes resourceValues:(id)values
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 length] >= 2 && objc_msgSend(v7, "hasPrefix:", @"/"))
+  componentsCopy = components;
+  valuesCopy = values;
+  if ([componentsCopy length] >= 2 && objc_msgSend(componentsCopy, "hasPrefix:", @"/"))
   {
     do
     {
-      v9 = [v7 substringFromIndex:0];
+      v9 = [componentsCopy substringFromIndex:0];
 
-      v7 = v9;
+      componentsCopy = v9;
     }
 
     while (([v9 hasPrefix:@"/"] & 1) != 0);
@@ -33,36 +33,36 @@
 
   else
   {
-    v9 = v7;
+    v9 = componentsCopy;
   }
 
   v10 = [MEMORY[0x1E696AF20] componentsWithString:v9];
-  v11 = [(PFFileSystemEndpoint *)self initWithComponents:v10 attributes:0 resourceValues:v8];
+  v11 = [(PFFileSystemEndpoint *)self initWithComponents:v10 attributes:0 resourceValues:valuesCopy];
 
   return v11;
 }
 
-- (PFFileSystemEndpoint)initWithComponents:(id)a3 attributes:(id)a4 resourceValues:(id)a5
+- (PFFileSystemEndpoint)initWithComponents:(id)components attributes:(id)attributes resourceValues:(id)values
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  componentsCopy = components;
+  attributesCopy = attributes;
+  valuesCopy = values;
+  if (!componentsCopy)
   {
     [PFFileSystemEndpoint initWithComponents:a2 attributes:? resourceValues:?];
   }
 
-  v12 = v11;
+  v12 = valuesCopy;
   v21.receiver = self;
   v21.super_class = PFFileSystemEndpoint;
   v13 = [(PFFileSystemEndpoint *)&v21 init];
   if (v13)
   {
-    v14 = [v9 copy];
+    v14 = [componentsCopy copy];
     components = v13->_components;
     v13->_components = v14;
 
-    v16 = [v10 copy];
+    v16 = [attributesCopy copy];
     attributes = v13->_attributes;
     v13->_attributes = v16;
 
@@ -104,45 +104,45 @@
     v6 = [v3 appendObject:self->_resourceValues withName:@"resourceValues"];
   }
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)prepareEndpointForBaseURL:(id)a3 fileManager:(id)a4 error:(id *)a5
+- (BOOL)prepareEndpointForBaseURL:(id)l fileManager:(id)manager error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v11)
+  lCopy = l;
+  managerCopy = manager;
+  if (!managerCopy)
   {
     [PFFileSystemEndpoint prepareEndpointForBaseURL:a2 fileManager:? error:?];
   }
 
-  if (!v10)
+  if (!lCopy)
   {
     [PFFileSystemEndpoint prepareEndpointForBaseURL:a2 fileManager:? error:?];
   }
 
-  v12 = v11;
-  if ([v10 pf_isWritable])
+  v12 = managerCopy;
+  if ([lCopy pf_isWritable])
   {
-    v13 = [(PFFileSystemEndpoint *)self resolveWithBaseURL:v10];
-    v14 = [(PFFileSystemEndpoint *)self attributes];
-    v15 = [v12 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:v14 error:a5];
+    v13 = [(PFFileSystemEndpoint *)self resolveWithBaseURL:lCopy];
+    attributes = [(PFFileSystemEndpoint *)self attributes];
+    v15 = [v12 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:attributes error:error];
 
     if (!v15)
     {
       goto LABEL_15;
     }
 
-    v16 = [(PFFileSystemEndpoint *)self attributes];
-    v17 = [v16 count];
+    attributes2 = [(PFFileSystemEndpoint *)self attributes];
+    v17 = [attributes2 count];
 
     if (v17)
     {
-      v18 = [(PFFileSystemEndpoint *)self attributes];
-      v19 = [v13 path];
-      v20 = [v12 setAttributes:v18 ofItemAtPath:v19 error:a5];
+      attributes3 = [(PFFileSystemEndpoint *)self attributes];
+      path = [v13 path];
+      v20 = [v12 setAttributes:attributes3 ofItemAtPath:path error:error];
 
       if (!v20)
       {
@@ -150,10 +150,10 @@
       }
     }
 
-    v21 = [(PFFileSystemEndpoint *)self resourceValues];
-    v22 = [v21 count];
+    resourceValues = [(PFFileSystemEndpoint *)self resourceValues];
+    v22 = [resourceValues count];
 
-    if (!v22 || (-[PFFileSystemEndpoint resourceValues](self, "resourceValues"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v13 setResourceValues:v23 error:a5], v23, v24))
+    if (!v22 || (-[PFFileSystemEndpoint resourceValues](self, "resourceValues"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v13 setResourceValues:v23 error:error], v23, v24))
     {
       v25 = 1;
     }
@@ -167,7 +167,7 @@ LABEL_15:
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_17;
@@ -186,7 +186,7 @@ LABEL_15:
     }
 
     PFGeneralErrorFromObjectWithLocalizedFailureReason(self, v29, 0, 0, 0, @"baseURL is not writable", v27, v28, 0);
-    *a5 = v25 = 0;
+    *error = v25 = 0;
   }
 
 LABEL_17:
@@ -195,20 +195,20 @@ LABEL_17:
 
 - (NSString)pathComponents
 {
-  v2 = [(PFFileSystemEndpoint *)self components];
-  v3 = [v2 string];
+  components = [(PFFileSystemEndpoint *)self components];
+  string = [components string];
 
-  return v3;
+  return string;
 }
 
-- (id)endPointByAppendingRelativePathComponents:(id)a3
+- (id)endPointByAppendingRelativePathComponents:(id)components
 {
-  v4 = a3;
-  v5 = [(PFFileSystemEndpoint *)self components];
-  v6 = [v5 path];
+  componentsCopy = components;
+  components = [(PFFileSystemEndpoint *)self components];
+  path = [components path];
 
   v7 = MEMORY[0x1E696AF20];
-  v8 = [v6 stringByAppendingPathComponent:v4];
+  v8 = [path stringByAppendingPathComponent:componentsCopy];
 
   v9 = [v7 componentsWithString:v8];
 
@@ -217,55 +217,55 @@ LABEL_17:
   return v10;
 }
 
-- (id)endPointByAppendingEndpoint:(id)a3
+- (id)endPointByAppendingEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(PFFileSystemEndpoint *)self pathComponents];
-  v6 = [v4 pathComponents];
+  endpointCopy = endpoint;
+  pathComponents = [(PFFileSystemEndpoint *)self pathComponents];
+  pathComponents2 = [endpointCopy pathComponents];
   v7 = MEMORY[0x1E696AF20];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v5, v6];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", pathComponents, pathComponents2];
   v9 = [v7 componentsWithString:v8];
 
   v10 = objc_alloc(objc_opt_class());
-  v11 = [v4 attributes];
-  v12 = [v4 resourceValues];
+  attributes = [endpointCopy attributes];
+  resourceValues = [endpointCopy resourceValues];
 
-  v13 = [v10 initWithComponents:v9 attributes:v11 resourceValues:v12];
+  v13 = [v10 initWithComponents:v9 attributes:attributes resourceValues:resourceValues];
 
   return v13;
 }
 
-- (id)resolveWithBaseURL:(id)a3
+- (id)resolveWithBaseURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(PFFileSystemEndpoint *)self components];
-  v6 = [v5 path];
+  path = [l path];
+  components = [(PFFileSystemEndpoint *)self components];
+  path2 = [components path];
 
-  v7 = [v4 stringByAppendingPathComponent:v6];
+  v7 = [path stringByAppendingPathComponent:path2];
   v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v7];
-  v9 = [v8 standardizedURL];
+  standardizedURL = [v8 standardizedURL];
 
-  return v9;
+  return standardizedURL;
 }
 
-- (BOOL)writeData:(id)a3 relativeTo:(id)a4 fileManager:(id)a5 error:(id *)a6
+- (BOOL)writeData:(id)data relativeTo:(id)to fileManager:(id)manager error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = [(PFFileSystemEndpoint *)self resolveWithBaseURL:a4];
-  v14 = [v13 absoluteURL];
-  v15 = [v14 URLByDeletingLastPathComponent];
+  dataCopy = data;
+  managerCopy = manager;
+  v13 = [(PFFileSystemEndpoint *)self resolveWithBaseURL:to];
+  absoluteURL = [v13 absoluteURL];
+  uRLByDeletingLastPathComponent = [absoluteURL URLByDeletingLastPathComponent];
 
   v36 = 0;
-  v16 = [v15 path];
-  v17 = [v12 fileExistsAtPath:v16 isDirectory:&v36];
+  path = [uRLByDeletingLastPathComponent path];
+  v17 = [managerCopy fileExistsAtPath:path isDirectory:&v36];
 
   if ((v17 & 1) == 0)
   {
-    if (![v12 createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:a6])
+    if (![managerCopy createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error])
     {
 LABEL_14:
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
       goto LABEL_20;
     }
 
@@ -276,23 +276,23 @@ LABEL_14:
   if (v36)
   {
 LABEL_10:
-    v23 = [v13 URLByStandardizingPath];
-    v24 = [v23 path];
-    v25 = [(PFFileSystemEndpoint *)self attributes];
-    v26 = [v12 createFileAtPath:v24 contents:v11 attributes:v25];
+    uRLByStandardizingPath = [v13 URLByStandardizingPath];
+    path2 = [uRLByStandardizingPath path];
+    attributes = [(PFFileSystemEndpoint *)self attributes];
+    v26 = [managerCopy createFileAtPath:path2 contents:dataCopy attributes:attributes];
 
     if (v26)
     {
-      v27 = [(PFFileSystemEndpoint *)self resourceValues];
-      v28 = [v27 count];
+      resourceValues = [(PFFileSystemEndpoint *)self resourceValues];
+      v28 = [resourceValues count];
 
-      if (!v28 || (-[PFFileSystemEndpoint resourceValues](self, "resourceValues"), v29 = objc_claimAutoreleasedReturnValue(), LODWORD(a6) = [v13 setResourceValues:v29 error:a6], v29, a6))
+      if (!v28 || (-[PFFileSystemEndpoint resourceValues](self, "resourceValues"), v29 = objc_claimAutoreleasedReturnValue(), LODWORD(error) = [v13 setResourceValues:v29 error:error], v29, error))
       {
-        LOBYTE(a6) = 1;
+        LOBYTE(error) = 1;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       v30 = PFFunctionNameForAddress(v6);
       v33 = v30;
@@ -306,15 +306,15 @@ LABEL_10:
         v34 = @"(Unknown Location)";
       }
 
-      *a6 = PFGeneralErrorFromObjectWithLocalizedFailureReason(self, v34, 0, 0, 1, @"unable to create file at endpoint '%@'", v31, v32, self);
+      *error = PFGeneralErrorFromObjectWithLocalizedFailureReason(self, v34, 0, 0, 1, @"unable to create file at endpoint '%@'", v31, v32, self);
 
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
     }
 
     goto LABEL_20;
   }
 
-  if (a6)
+  if (error)
   {
     v18 = PFFunctionNameForAddress(v6);
     v21 = v18;
@@ -328,34 +328,34 @@ LABEL_10:
       v22 = @"(Unknown Location)";
     }
 
-    *a6 = PFGeneralErrorFromObjectWithLocalizedFailureReason(self, v22, 0, 0, 1, @"Endpoint '%@' exists but was expecting a directory and not a file. Aborting.", v19, v20, self);
+    *error = PFGeneralErrorFromObjectWithLocalizedFailureReason(self, v22, 0, 0, 1, @"Endpoint '%@' exists but was expecting a directory and not a file. Aborting.", v19, v20, self);
 
     goto LABEL_14;
   }
 
 LABEL_20:
 
-  return a6;
+  return error;
 }
 
-- (BOOL)copyURL:(id)a3 relativeTo:(id)a4 fileManager:(id)a5 error:(id *)a6
+- (BOOL)copyURL:(id)l relativeTo:(id)to fileManager:(id)manager error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [(PFFileSystemEndpoint *)self resolveWithBaseURL:a4];
-  v13 = [v12 absoluteURL];
-  v14 = [v13 URLByDeletingLastPathComponent];
+  lCopy = l;
+  managerCopy = manager;
+  v12 = [(PFFileSystemEndpoint *)self resolveWithBaseURL:to];
+  absoluteURL = [v12 absoluteURL];
+  uRLByDeletingLastPathComponent = [absoluteURL URLByDeletingLastPathComponent];
 
   v34 = 0;
-  v15 = [v14 path];
-  v16 = [v11 fileExistsAtPath:v15 isDirectory:&v34];
+  path = [uRLByDeletingLastPathComponent path];
+  v16 = [managerCopy fileExistsAtPath:path isDirectory:&v34];
 
   if (v16)
   {
     if ((v34 & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
         v17 = MEMORY[0x1E696ABC0];
         v37 = *MEMORY[0x1E696A588];
@@ -364,7 +364,7 @@ LABEL_20:
         v19 = v17;
         v20 = 3;
 LABEL_15:
-        *a6 = [v19 pf_errorWithCode:v20 userInfo:v18];
+        *error = [v19 pf_errorWithCode:v20 userInfo:v18];
 
         goto LABEL_16;
       }
@@ -375,29 +375,29 @@ LABEL_15:
 
   else
   {
-    if (![v11 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:a6])
+    if (![managerCopy createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error])
     {
 LABEL_16:
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
       goto LABEL_17;
     }
 
     v34 = 1;
   }
 
-  v21 = [v10 URLByStandardizingPath];
-  v22 = [v11 copyItemAtURL:v21 toURL:v12 error:a6];
+  uRLByStandardizingPath = [lCopy URLByStandardizingPath];
+  v22 = [managerCopy copyItemAtURL:uRLByStandardizingPath toURL:v12 error:error];
 
   if (v22)
   {
-    v23 = [(PFFileSystemEndpoint *)self attributes];
-    v24 = [v23 count];
+    attributes = [(PFFileSystemEndpoint *)self attributes];
+    v24 = [attributes count];
 
     if (v24)
     {
-      v25 = [(PFFileSystemEndpoint *)self attributes];
-      v26 = [v12 path];
-      v27 = [v11 setAttributes:v25 ofItemAtPath:v26 error:a6];
+      attributes2 = [(PFFileSystemEndpoint *)self attributes];
+      path2 = [v12 path];
+      v27 = [managerCopy setAttributes:attributes2 ofItemAtPath:path2 error:error];
 
       if (!v27)
       {
@@ -405,16 +405,16 @@ LABEL_16:
       }
     }
 
-    v28 = [(PFFileSystemEndpoint *)self resourceValues];
-    v29 = [v28 count];
+    resourceValues = [(PFFileSystemEndpoint *)self resourceValues];
+    v29 = [resourceValues count];
 
-    if (!v29 || (-[PFFileSystemEndpoint resourceValues](self, "resourceValues"), v30 = objc_claimAutoreleasedReturnValue(), LODWORD(a6) = [v12 setResourceValues:v30 error:a6], v30, a6))
+    if (!v29 || (-[PFFileSystemEndpoint resourceValues](self, "resourceValues"), v30 = objc_claimAutoreleasedReturnValue(), LODWORD(error) = [v12 setResourceValues:v30 error:error], v30, error))
     {
-      LOBYTE(a6) = 1;
+      LOBYTE(error) = 1;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v31 = MEMORY[0x1E696ABC0];
     v35 = *MEMORY[0x1E696A588];
@@ -428,7 +428,7 @@ LABEL_16:
 LABEL_17:
 
   v32 = *MEMORY[0x1E69E9840];
-  return a6;
+  return error;
 }
 
 - (void)initWithComponents:(char *)a1 attributes:resourceValues:.cold.1(char *a1)

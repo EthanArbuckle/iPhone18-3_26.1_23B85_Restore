@@ -1,8 +1,8 @@
 @interface MapsRPTParameters
 - (CGPoint)center;
-- (MapsRPTParameters)initWithTestName:(id)a3 view:(id)a4 completionHandler:(id)a5 testActions:(id)a6 actionDuration:(double)a7;
+- (MapsRPTParameters)initWithTestName:(id)name view:(id)view completionHandler:(id)handler testActions:(id)actions actionDuration:(double)duration;
 - (id)composerBlock;
-- (void)prepareWithComposer:(id)a3;
+- (void)prepareWithComposer:(id)composer;
 @end
 
 @implementation MapsRPTParameters
@@ -16,11 +16,11 @@
   return result;
 }
 
-- (void)prepareWithComposer:(id)a3
+- (void)prepareWithComposer:(id)composer
 {
-  v3 = [(MapsRPTParameters *)self window];
+  window = [(MapsRPTParameters *)self window];
   v4 = objc_opt_class();
-  v5 = sub_10088A4A4(v3, v4);
+  v5 = sub_10088A4A4(window, v4);
 }
 
 - (id)composerBlock
@@ -35,30 +35,30 @@
   return v2;
 }
 
-- (MapsRPTParameters)initWithTestName:(id)a3 view:(id)a4 completionHandler:(id)a5 testActions:(id)a6 actionDuration:(double)a7
+- (MapsRPTParameters)initWithTestName:(id)name view:(id)view completionHandler:(id)handler testActions:(id)actions actionDuration:(double)duration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  nameCopy = name;
+  viewCopy = view;
+  handlerCopy = handler;
+  actionsCopy = actions;
   v26.receiver = self;
   v26.super_class = MapsRPTParameters;
   v17 = [(MapsRPTParameters *)&v26 init];
   if (v17)
   {
-    v18 = [v15 copy];
+    v18 = [handlerCopy copy];
     completionHandler = v17->_completionHandler;
     v17->_completionHandler = v18;
 
-    objc_storeStrong(&v17->_testName, a3);
-    objc_storeStrong(&v17->_testActions, a6);
-    objc_storeStrong(&v17->_view, a4);
-    [v14 bounds];
+    objc_storeStrong(&v17->_testName, name);
+    objc_storeStrong(&v17->_testActions, actions);
+    objc_storeStrong(&v17->_view, view);
+    [viewCopy bounds];
     v21 = v20 * 0.5;
     v17->_dragDist = v21;
     v17->_center.x = v21 + v24;
     v17->_center.y = v22 + v23 * 0.5;
-    v17->_actionDuration = a7;
+    v17->_actionDuration = duration;
   }
 
   return v17;

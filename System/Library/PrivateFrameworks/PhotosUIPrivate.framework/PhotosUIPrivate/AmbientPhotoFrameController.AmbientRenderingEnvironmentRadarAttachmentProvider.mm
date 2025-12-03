@@ -1,14 +1,14 @@
 @interface AmbientPhotoFrameController.AmbientRenderingEnvironmentRadarAttachmentProvider
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 @end
 
 @implementation AmbientPhotoFrameController.AmbientRenderingEnvironmentRadarAttachmentProvider
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   swift_unknownObjectRetain();
 
-  sub_1B37956CC(a3);
+  sub_1B37956CC(container);
   swift_unknownObjectRelease();
 }
 

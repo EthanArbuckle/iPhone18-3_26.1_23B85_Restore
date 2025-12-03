@@ -1,59 +1,59 @@
 @interface PKApplyRequiredFieldRow
-- (PKApplyRequiredFieldRow)initWithField:(id)a3 cellDelegate:(id)a4;
-- (void)configureCell:(id)a3;
+- (PKApplyRequiredFieldRow)initWithField:(id)field cellDelegate:(id)delegate;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation PKApplyRequiredFieldRow
 
-- (PKApplyRequiredFieldRow)initWithField:(id)a3 cellDelegate:(id)a4
+- (PKApplyRequiredFieldRow)initWithField:(id)field cellDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  fieldCopy = field;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKApplyRequiredFieldRow;
   v9 = [(PKApplyRequiredFieldRow *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_field, a3);
-    objc_storeWeak(&v10->_cellDelegate, v8);
+    objc_storeStrong(&v9->_field, field);
+    objc_storeWeak(&v10->_cellDelegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v13 = a3;
+  cellCopy = cell;
   [(PKApplyRequiredFieldRow *)self cellClass];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v13;
+    v4 = cellCopy;
     v5 = +[PKListTextFieldContentConfiguration valueCellConfiguration];
-    v6 = [(PKPaymentSetupField *)self->_field currentValue];
-    [v5 setText:v6];
+    currentValue = [(PKPaymentSetupField *)self->_field currentValue];
+    [v5 setText:currentValue];
 
-    v7 = [(PKPaymentSetupField *)self->_field localizedPlaceholder];
-    [v5 setPlaceholderText:v7];
+    localizedPlaceholder = [(PKPaymentSetupField *)self->_field localizedPlaceholder];
+    [v5 setPlaceholderText:localizedPlaceholder];
 
     [v5 setClearsOnBeginEditing:0];
     [v5 directionalLayoutMargins];
     [v5 setDirectionalLayoutMargins:10.0];
     [v5 setKeyboardType:1];
     [v5 setReturnKeyType:9];
-    v8 = [v5 secondaryTextProperties];
+    secondaryTextProperties = [v5 secondaryTextProperties];
     v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC70]);
-    [v8 setFont:v9];
+    [secondaryTextProperties setFont:v9];
 
     [v4 setContentConfiguration:v5];
     WeakRetained = objc_loadWeakRetained(&self->_cellDelegate);
     [v4 setDelegate:WeakRetained];
 
-    v11 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
-    v12 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v11 setBackgroundColor:v12];
+    listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [listCellConfiguration setBackgroundColor:secondarySystemBackgroundColor];
 
-    [v4 setBackgroundConfiguration:v11];
+    [v4 setBackgroundConfiguration:listCellConfiguration];
     [v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9B78]];
   }
 }

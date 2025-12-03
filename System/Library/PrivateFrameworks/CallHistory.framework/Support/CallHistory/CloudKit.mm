@@ -4,28 +4,28 @@
 - (CKDatabase)database;
 - (CKServerChangeToken)previousServerChangeToken;
 - (CloudKit)init;
-- (id)containerUserDefaultsObjectForKey:(id)a3;
-- (id)createRecord:(id)a3;
-- (void)addRecord:(id)a3 withInsertAndUpdate:(id)a4 withDelete:(id)a5;
-- (void)createRecordZoneWithAttemptCount:(unsigned int)a3 completionHandler:(id)a4;
+- (id)containerUserDefaultsObjectForKey:(id)key;
+- (id)createRecord:(id)record;
+- (void)addRecord:(id)record withInsertAndUpdate:(id)update withDelete:(id)delete;
+- (void)createRecordZoneWithAttemptCount:(unsigned int)count completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteAndRecreateRecordZone:(id)a3;
-- (void)fetchTransactionRecordZoneWithCompletion:(id)a3;
-- (void)getUpdatesWithRetryCount:(unsigned int)a3 withQualityOfService:(int64_t)a4 withCallback:(id)a5;
-- (void)handleCKAccountChangedNotification:(id)a3;
-- (void)handlePartialUploadFailure:(id)a3 withUploadRecordsToSave:(id)a4 withRecordsToDelete:(id)a5 withRetryCount:(unsigned int)a6 withCallback:(id)a7;
+- (void)deleteAndRecreateRecordZone:(id)zone;
+- (void)fetchTransactionRecordZoneWithCompletion:(id)completion;
+- (void)getUpdatesWithRetryCount:(unsigned int)count withQualityOfService:(int64_t)service withCallback:(id)callback;
+- (void)handleCKAccountChangedNotification:(id)notification;
+- (void)handlePartialUploadFailure:(id)failure withUploadRecordsToSave:(id)save withRecordsToDelete:(id)delete withRetryCount:(unsigned int)count withCallback:(id)callback;
 - (void)performInitialSyncIfNeeded;
-- (void)queryAccountStatusWithRetryCount:(unsigned int)a3;
+- (void)queryAccountStatusWithRetryCount:(unsigned int)count;
 - (void)registerForNotifications;
 - (void)removeLegacyUserDefaults;
-- (void)resolveUploadConflicts:(id)a3 withInsertAndUpdateRecords:(id)a4;
-- (void)retryCloudKitOperationForError:(id)a3 withRetryCount:(unsigned int)a4 withCallback:(id)a5;
-- (void)setAccountActive:(BOOL)a3;
-- (void)setContainerUserDefaultsObject:(id)a3 forKey:(id)a4;
-- (void)setPreviousServerChangeToken:(id)a3;
+- (void)resolveUploadConflicts:(id)conflicts withInsertAndUpdateRecords:(id)records;
+- (void)retryCloudKitOperationForError:(id)error withRetryCount:(unsigned int)count withCallback:(id)callback;
+- (void)setAccountActive:(BOOL)active;
+- (void)setContainerUserDefaultsObject:(id)object forKey:(id)key;
+- (void)setPreviousServerChangeToken:(id)token;
 - (void)setupSubscription;
-- (void)setupSubscriptionWithRetryCount:(unsigned int)a3;
-- (void)uploadRecordsToSave:(id)a3 withRecordsToDelete:(id)a4 withRetryCount:(unsigned int)a5 withCallback:(id)a6;
+- (void)setupSubscriptionWithRetryCount:(unsigned int)count;
+- (void)uploadRecordsToSave:(id)save withRecordsToDelete:(id)delete withRetryCount:(unsigned int)count withCallback:(id)callback;
 @end
 
 @implementation CloudKit
@@ -64,9 +64,9 @@
   {
     v2->_accountActive = 0;
     v4 = +[NSUUID UUID];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     operationIdentifier = v3->_operationIdentifier;
-    v3->_operationIdentifier = v5;
+    v3->_operationIdentifier = uUIDString;
 
     v7 = +[CKContainer chsh_secureContainer];
     container = v3->_container;
@@ -76,10 +76,10 @@
     transactionRecordZone = v3->_transactionRecordZone;
     v3->_transactionRecordZone = v9;
 
-    v11 = [(CKContainer *)v3->_container containerIdentifier];
-    if ([v11 length])
+    containerIdentifier = [(CKContainer *)v3->_container containerIdentifier];
+    if ([containerIdentifier length])
     {
-      v12 = [[CHSHCKContainerUserDefaults alloc] initWithContainerIdentifier:v11];
+      v12 = [[CHSHCKContainerUserDefaults alloc] initWithContainerIdentifier:containerIdentifier];
       p_super = &v3->_containerUserDefaults->super;
       v3->_containerUserDefaults = v12;
     }
@@ -134,39 +134,39 @@
   return v2;
 }
 
-- (void)setAccountActive:(BOOL)a3
+- (void)setAccountActive:(BOOL)active
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10001191C;
   v3[3] = &unk_1000512B8;
   v3[4] = self;
-  v4 = a3;
+  activeCopy = active;
   [(CloudKit *)self execute:v3];
 }
 
 - (CKDatabase)database
 {
-  v2 = [(CloudKit *)self container];
-  v3 = [v2 privateCloudDatabase];
+  container = [(CloudKit *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (CKServerChangeToken)previousServerChangeToken
 {
-  v3 = [(CloudKit *)self containerUserDefaults];
-  v4 = [v3 previousServerChangeTokenData];
+  containerUserDefaults = [(CloudKit *)self containerUserDefaults];
+  previousServerChangeTokenData = [containerUserDefaults previousServerChangeTokenData];
 
-  if (v4)
+  if (previousServerChangeTokenData)
   {
     v9 = 0;
-    v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+    v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:previousServerChangeTokenData error:&v9];
     v6 = v9;
     if (!v5)
     {
-      v7 = [(CloudKit *)self logHandle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      logHandle = [(CloudKit *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         sub_100032BF4();
       }
@@ -181,24 +181,24 @@
   return v5;
 }
 
-- (void)setPreviousServerChangeToken:(id)a3
+- (void)setPreviousServerChangeToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v9 = 0;
-    v5 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v9];
+    v5 = [NSKeyedArchiver archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v9];
     v6 = v9;
     if (v5)
     {
-      v7 = [(CloudKit *)self containerUserDefaults];
-      [v7 setPreviousServerChangeTokenData:v5];
+      containerUserDefaults = [(CloudKit *)self containerUserDefaults];
+      [containerUserDefaults setPreviousServerChangeTokenData:v5];
     }
 
     else
     {
-      v7 = [(CloudKit *)self logHandle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      containerUserDefaults = [(CloudKit *)self logHandle];
+      if (os_log_type_enabled(containerUserDefaults, OS_LOG_TYPE_ERROR))
       {
         sub_100032C60();
       }
@@ -207,25 +207,25 @@
 
   else
   {
-    v8 = [(CloudKit *)self containerUserDefaults];
-    [v8 setPreviousServerChangeTokenData:0];
+    containerUserDefaults2 = [(CloudKit *)self containerUserDefaults];
+    [containerUserDefaults2 setPreviousServerChangeTokenData:0];
   }
 }
 
-- (void)queryAccountStatusWithRetryCount:(unsigned int)a3
+- (void)queryAccountStatusWithRetryCount:(unsigned int)count
 {
   v5 = +[ACAccountStore ch_sharedAccountStore];
-  v6 = [v5 aa_primaryAppleAccount];
-  v7 = [v6 aa_isManagedAppleID];
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
+  aa_isManagedAppleID = [aa_primaryAppleAccount aa_isManagedAppleID];
 
-  v8 = [(CloudKit *)self logHandle];
-  v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  logHandle = [(CloudKit *)self logHandle];
+  v9 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT);
+  if (aa_isManagedAppleID)
   {
     if (v9)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Managed Apple ID detected; disabling CloudKit sync", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Managed Apple ID detected; disabling CloudKit sync", buf, 2u);
     }
 
     [(CloudKit *)self setAccountActive:0];
@@ -236,53 +236,53 @@
     if (v9)
     {
       *buf = 67109120;
-      v14 = a3;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Requesting account status; attempt %d", buf, 8u);
+      countCopy = count;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Requesting account status; attempt %d", buf, 8u);
     }
 
-    v10 = [(CloudKit *)self container];
+    container = [(CloudKit *)self container];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100011DC4;
     v11[3] = &unk_100051330;
     v11[4] = self;
-    v12 = a3;
-    [v10 accountInfoWithCompletionHandler:v11];
+    countCopy2 = count;
+    [container accountInfoWithCompletionHandler:v11];
   }
 }
 
-- (void)createRecordZoneWithAttemptCount:(unsigned int)a3 completionHandler:(id)a4
+- (void)createRecordZoneWithAttemptCount:(unsigned int)count completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  handlerCopy = handler;
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CloudKit *)self transactionRecordZone];
-    v9 = [v8 zoneID];
-    v10 = [v9 zoneName];
+    transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+    zoneID = [transactionRecordZone zoneID];
+    zoneName = [zoneID zoneName];
     *buf = 138543618;
-    v18 = v10;
+    v18 = zoneName;
     v19 = 1024;
-    v20 = a3;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating record zone %{public}@; attempt %d", buf, 0x12u);
+    countCopy = count;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Creating record zone %{public}@; attempt %d", buf, 0x12u);
   }
 
-  v11 = [(CloudKit *)self database];
-  v12 = [(CloudKit *)self transactionRecordZone];
+  database = [(CloudKit *)self database];
+  transactionRecordZone2 = [(CloudKit *)self transactionRecordZone];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001254C;
   v14[3] = &unk_100051380;
   v14[4] = self;
-  v15 = v6;
-  v16 = a3;
-  v13 = v6;
-  [v11 saveRecordZone:v12 completionHandler:v14];
+  v15 = handlerCopy;
+  countCopy2 = count;
+  v13 = handlerCopy;
+  [database saveRecordZone:transactionRecordZone2 completionHandler:v14];
 }
 
-- (void)getUpdatesWithRetryCount:(unsigned int)a3 withQualityOfService:(int64_t)a4 withCallback:(id)a5
+- (void)getUpdatesWithRetryCount:(unsigned int)count withQualityOfService:(int64_t)service withCallback:(id)callback
 {
-  v8 = a5;
+  callbackCopy = callback;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -290,10 +290,10 @@
   v26[4] = sub_100012A50;
   v27 = objc_alloc_init(NSMutableArray);
   v9 = [CKFetchRecordChangesOperation alloc];
-  v10 = [(CloudKit *)self transactionRecordZone];
-  v11 = [v10 zoneID];
-  v12 = [(CloudKit *)self previousServerChangeToken];
-  v13 = [v9 initWithRecordZoneID:v11 previousServerChangeToken:v12];
+  transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+  zoneID = [transactionRecordZone zoneID];
+  previousServerChangeToken = [(CloudKit *)self previousServerChangeToken];
+  v13 = [v9 initWithRecordZoneID:zoneID previousServerChangeToken:previousServerChangeToken];
 
   objc_initWeak(&location, v13);
   v20[0] = _NSConcreteStackBlock;
@@ -301,10 +301,10 @@
   v20[2] = sub_100012A58;
   v20[3] = &unk_1000513F8;
   v20[4] = self;
-  v23[1] = a4;
-  v14 = v8;
+  v23[1] = service;
+  v14 = callbackCopy;
   v21 = v14;
-  v24 = a3;
+  countCopy = count;
   objc_copyWeak(v23, &location);
   v22 = v26;
   [v13 setFetchRecordChangesCompletionBlock:v20];
@@ -324,22 +324,22 @@
   [v13 setRecordWithIDWasDeletedBlock:v18];
   [v13 setFetchAllChanges:0];
   [v13 setQualityOfService:17];
-  if (a4 >= 25)
+  if (service >= 25)
   {
-    v15 = [v13 configuration];
-    [v15 setDiscretionaryNetworkBehavior:0];
+    configuration = [v13 configuration];
+    [configuration setDiscretionaryNetworkBehavior:0];
   }
 
-  v16 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = a4;
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Fetching record changes with QoS (%ld)...", buf, 0xCu);
+    serviceCopy = service;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Fetching record changes with QoS (%ld)...", buf, 0xCu);
   }
 
-  v17 = [(CloudKit *)self database];
-  [v17 addOperation:v13];
+  database = [(CloudKit *)self database];
+  [database addOperation:v13];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
@@ -347,28 +347,28 @@
   _Block_object_dispose(v26, 8);
 }
 
-- (void)uploadRecordsToSave:(id)a3 withRecordsToDelete:(id)a4 withRetryCount:(unsigned int)a5 withCallback:(id)a6
+- (void)uploadRecordsToSave:(id)save withRecordsToDelete:(id)delete withRetryCount:(unsigned int)count withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  saveCopy = save;
+  deleteCopy = delete;
+  callbackCopy = callback;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
   v34 = 0;
-  v13 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 count];
-    v15 = [v11 count];
+    v14 = [saveCopy count];
+    v15 = [deleteCopy count];
     *buf = 134218240;
     v36 = v14;
     v37 = 2048;
     v38 = v15;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Modifying %lu insert and update records %lu delete records", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Modifying %lu insert and update records %lu delete records", buf, 0x16u);
   }
 
-  v16 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:v10 recordIDsToDelete:v11];
+  v16 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:saveCopy recordIDsToDelete:deleteCopy];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100013B2C;
@@ -388,27 +388,27 @@
   v25[3] = &unk_100051510;
   v29 = v33;
   v25[4] = self;
-  v17 = v10;
+  v17 = saveCopy;
   v26 = v17;
-  v18 = v11;
+  v18 = deleteCopy;
   v27 = v18;
-  v30 = a5;
-  v19 = v12;
+  countCopy = count;
+  v19 = callbackCopy;
   v28 = v19;
   [v16 setModifyRecordsCompletionBlock:v25];
   [v16 setQualityOfService:17];
-  v20 = [v16 configuration];
-  [v20 setDiscretionaryNetworkBehavior:0];
+  configuration = [v16 configuration];
+  [configuration setDiscretionaryNetworkBehavior:0];
 
-  v21 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  logHandle2 = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Modifying records...", buf, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Modifying records...", buf, 2u);
   }
 
-  v22 = [(CloudKit *)self database];
-  [v22 addOperation:v16];
+  database = [(CloudKit *)self database];
+  [database addOperation:v16];
 
   ct_green_tea_logger_create_static();
   v23 = getCTGreenTeaOsLogHandle();
@@ -422,23 +422,23 @@
   _Block_object_dispose(v33, 8);
 }
 
-- (void)handlePartialUploadFailure:(id)a3 withUploadRecordsToSave:(id)a4 withRecordsToDelete:(id)a5 withRetryCount:(unsigned int)a6 withCallback:(id)a7
+- (void)handlePartialUploadFailure:(id)failure withUploadRecordsToSave:(id)save withRecordsToDelete:(id)delete withRetryCount:(unsigned int)count withCallback:(id)callback
 {
-  v11 = a3;
-  v51 = a4;
-  v50 = a5;
-  v49 = a7;
+  failureCopy = failure;
+  saveCopy = save;
+  deleteCopy = delete;
+  callbackCopy = callback;
   v12 = objc_opt_new();
-  v13 = [v11 userInfo];
-  v14 = [v13 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  userInfo = [failureCopy userInfo];
+  v14 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
-  v55 = self;
-  v15 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  selfCopy = self;
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
     v73 = [v14 count];
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Partial failure modifying %lu records", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Partial failure modifying %lu records", buf, 0xCu);
   }
 
   v53 = v12;
@@ -477,20 +477,20 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [v22 domain];
-          v25 = [v24 isEqualToString:CKErrorDomain];
+          domain = [v22 domain];
+          v25 = [domain isEqualToString:CKErrorDomain];
 
           if (v25)
           {
             if ([v22 code] == 14)
             {
-              v26 = [(CloudKit *)self logHandle];
-              if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+              logHandle2 = [(CloudKit *)self logHandle];
+              if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
               {
-                v27 = [v23 recordName];
+                recordName = [v23 recordName];
                 *buf = 138543362;
-                v73 = v27;
-                _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Adding record %{public}@ to conflict list", buf, 0xCu);
+                v73 = recordName;
+                _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Adding record %{public}@ to conflict list", buf, 0xCu);
               }
 
               [v53 addObject:v23];
@@ -501,13 +501,13 @@
             {
               if (!v52)
               {
-                v29 = [(CloudKit *)self logHandle];
-                if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+                logHandle3 = [(CloudKit *)self logHandle];
+                if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
                 {
-                  v30 = [v23 recordName];
+                  recordName2 = [v23 recordName];
                   *buf = 138543362;
-                  v73 = v30;
-                  _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Partial failure was rate limited for record %{public}@, will retry", buf, 0xCu);
+                  v73 = recordName2;
+                  _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Partial failure was rate limited for record %{public}@, will retry", buf, 0xCu);
                 }
 
                 v52 = v22;
@@ -518,15 +518,15 @@
 
             if ([v22 code] != 22)
             {
-              v28 = [(CloudKit *)self logHandle];
-              if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+              logHandle4 = [(CloudKit *)self logHandle];
+              if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
               {
-                v31 = [v23 recordName];
+                recordName3 = [v23 recordName];
                 *buf = 138543618;
-                v73 = v31;
+                v73 = recordName3;
                 v74 = 2114;
                 v75 = v22;
-                _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Partial failure for record %{public}@: %{public}@", buf, 0x16u);
+                _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "Partial failure for record %{public}@: %{public}@", buf, 0x16u);
               }
 
               goto LABEL_17;
@@ -535,12 +535,12 @@
 
           else
           {
-            v28 = [(CloudKit *)self logHandle];
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+            logHandle4 = [(CloudKit *)self logHandle];
+            if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v73 = v11;
-              _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Partial failure error is not CloudKit: %{public}@", buf, 0xCu);
+              v73 = failureCopy;
+              _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "Partial failure error is not CloudKit: %{public}@", buf, 0xCu);
             }
 
 LABEL_17:
@@ -564,13 +564,13 @@ LABEL_32:
   v33 = v53;
   if ([v53 count])
   {
-    v54 = v11;
-    [(CloudKit *)self resolveUploadConflicts:v53 withInsertAndUpdateRecords:v51];
+    v54 = failureCopy;
+    [(CloudKit *)self resolveUploadConflicts:v53 withInsertAndUpdateRecords:saveCopy];
     v66 = 0u;
     v64 = 0u;
     v65 = 0u;
     v63 = 0u;
-    v34 = v51;
+    v34 = saveCopy;
     v35 = [v34 countByEnumeratingWithState:&v63 objects:v71 count:16];
     if (v35)
     {
@@ -586,14 +586,14 @@ LABEL_32:
           }
 
           v39 = *(*(&v63 + 1) + 8 * i);
-          v40 = [(CloudKit *)v55 logHandle];
-          if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+          logHandle5 = [(CloudKit *)selfCopy logHandle];
+          if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEFAULT))
           {
-            v41 = [v39 recordID];
-            v42 = [v41 recordName];
+            recordID = [v39 recordID];
+            recordName4 = [recordID recordName];
             *buf = 138543362;
-            v73 = v42;
-            _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "insert/update %{public}@", buf, 0xCu);
+            v73 = recordName4;
+            _os_log_impl(&_mh_execute_header, logHandle5, OS_LOG_TYPE_DEFAULT, "insert/update %{public}@", buf, 0xCu);
           }
         }
 
@@ -604,11 +604,11 @@ LABEL_32:
     }
 
     v43 = v34;
-    v45 = v49;
-    v44 = v50;
-    [(CloudKit *)v55 uploadRecordsToSave:v43 withRecordsToDelete:v50 withRetryCount:a6 withCallback:v49];
+    v45 = callbackCopy;
+    v44 = deleteCopy;
+    [(CloudKit *)selfCopy uploadRecordsToSave:v43 withRecordsToDelete:deleteCopy withRetryCount:count withCallback:callbackCopy];
     v33 = v53;
-    v11 = v54;
+    failureCopy = v54;
     v46 = v52;
   }
 
@@ -621,51 +621,51 @@ LABEL_32:
       v56[1] = 3221225472;
       v56[2] = sub_100014B08;
       v56[3] = &unk_100051538;
-      v56[4] = v55;
-      v57 = v51;
-      v44 = v50;
-      v58 = v50;
-      v62 = a6;
-      v45 = v49;
-      v61 = v49;
+      v56[4] = selfCopy;
+      v57 = saveCopy;
+      v44 = deleteCopy;
+      v58 = deleteCopy;
+      countCopy = count;
+      v45 = callbackCopy;
+      v61 = callbackCopy;
       v59 = v52;
-      v60 = v11;
+      v60 = failureCopy;
       v46 = v52;
-      [(CloudKit *)v55 retryCloudKitOperationForError:v59 withRetryCount:a6 + 1 withCallback:v56];
+      [(CloudKit *)selfCopy retryCloudKitOperationForError:v59 withRetryCount:count + 1 withCallback:v56];
     }
 
     else
     {
-      v47 = [(CloudKit *)v55 logHandle];
-      v45 = v49;
-      v44 = v50;
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+      logHandle6 = [(CloudKit *)selfCopy logHandle];
+      v45 = callbackCopy;
+      v44 = deleteCopy;
+      if (os_log_type_enabled(logHandle6, OS_LOG_TYPE_ERROR))
       {
         sub_1000331E0();
       }
 
-      (*(v49 + 2))(v49, v11);
+      (*(callbackCopy + 2))(callbackCopy, failureCopy);
     }
   }
 }
 
-- (void)resolveUploadConflicts:(id)a3 withInsertAndUpdateRecords:(id)a4
+- (void)resolveUploadConflicts:(id)conflicts withInsertAndUpdateRecords:(id)records
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  conflictsCopy = conflicts;
+  recordsCopy = records;
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v46 = [v6 count];
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Resolving %lu conflicting records", buf, 0xCu);
+    v46 = [conflictsCopy count];
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Resolving %lu conflicting records", buf, 0xCu);
   }
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = v6;
+  v9 = conflictsCopy;
   v40 = [v9 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v40)
   {
@@ -674,7 +674,7 @@ LABEL_32:
     *&v10 = 138543618;
     v35 = v10;
     v36 = v9;
-    v37 = self;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -687,7 +687,7 @@ LABEL_32:
         }
 
         v14 = *(*(&v41 + 1) + 8 * v12);
-        if (![v7 count])
+        if (![recordsCopy count])
         {
           goto LABEL_19;
         }
@@ -695,76 +695,76 @@ LABEL_32:
         v15 = 0;
         while (1)
         {
-          v16 = [v7 objectAtIndexedSubscript:v15];
-          v17 = [v16 recordID];
-          v18 = [v17 isEqual:v14];
+          logHandle5 = [recordsCopy objectAtIndexedSubscript:v15];
+          recordID = [logHandle5 recordID];
+          v18 = [recordID isEqual:v14];
 
           if (v18)
           {
             break;
           }
 
-          if (++v15 >= [v7 count])
+          if (++v15 >= [recordsCopy count])
           {
             goto LABEL_19;
           }
         }
 
-        if (v16)
+        if (logHandle5)
         {
-          v19 = [v16 encryptedValuesByKey];
-          v20 = [v19 objectForKeyedSubscript:@"encryptedData"];
+          encryptedValuesByKey = [logHandle5 encryptedValuesByKey];
+          v20 = [encryptedValuesByKey objectForKeyedSubscript:@"encryptedData"];
 
           if (v20)
           {
             v38 = v20;
             v11 = v13;
-            v21 = [v16 objectForKeyedSubscript:v13];
-            if (v21)
+            logHandle4 = [logHandle5 objectForKeyedSubscript:v13];
+            if (logHandle4)
             {
-              v22 = [(CloudKit *)self transactionRecordZone];
-              v23 = [v22 zoneID];
-              v24 = [CKRecord chsh_transactionRecordWithZoneID:v23];
+              transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+              zoneID = [transactionRecordZone zoneID];
+              logHandle3 = [CKRecord chsh_transactionRecordWithZoneID:zoneID];
 
-              v25 = [v24 encryptedValuesByKey];
-              [v25 setObject:v38 forKeyedSubscript:@"encryptedData"];
+              encryptedValuesByKey2 = [logHandle3 encryptedValuesByKey];
+              [encryptedValuesByKey2 setObject:v38 forKeyedSubscript:@"encryptedData"];
 
-              v26 = [v16 objectForKeyedSubscript:@"syncOperationIdentifier"];
-              v27 = [v24 valuesByKey];
-              [v27 setObject:v26 forKeyedSubscript:@"syncOperationIdentifier"];
+              v26 = [logHandle5 objectForKeyedSubscript:@"syncOperationIdentifier"];
+              valuesByKey = [logHandle3 valuesByKey];
+              [valuesByKey setObject:v26 forKeyedSubscript:@"syncOperationIdentifier"];
 
-              v28 = [v24 valuesByKey];
-              [v28 setObject:v21 forKeyedSubscript:@"type"];
+              valuesByKey2 = [logHandle3 valuesByKey];
+              [valuesByKey2 setObject:logHandle4 forKeyedSubscript:@"type"];
 
               v29 = [CKReference alloc];
-              v30 = [v16 recordID];
-              v31 = [v29 initWithRecordID:v30 action:1];
-              [v24 setObject:v31 forKeyedSubscript:@"parentTransaction"];
+              recordID2 = [logHandle5 recordID];
+              v31 = [v29 initWithRecordID:recordID2 action:1];
+              [logHandle3 setObject:v31 forKeyedSubscript:@"parentTransaction"];
 
-              self = v37;
-              v32 = [(CloudKit *)v37 logHandle];
-              if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+              self = selfCopy;
+              logHandle2 = [(CloudKit *)selfCopy logHandle];
+              if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = v35;
-                v46 = v24;
+                v46 = logHandle3;
                 v47 = 2114;
-                v48 = v16;
-                _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Created a reference between record %{public}@ and parent record %{public}@", buf, 0x16u);
+                v48 = logHandle5;
+                _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Created a reference between record %{public}@ and parent record %{public}@", buf, 0x16u);
               }
 
-              [v7 replaceObjectAtIndex:v15 withObject:v24];
+              [recordsCopy replaceObjectAtIndex:v15 withObject:logHandle3];
               v9 = v36;
               v11 = v13;
             }
 
             else
             {
-              v24 = [(CloudKit *)self logHandle];
-              if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+              logHandle3 = [(CloudKit *)self logHandle];
+              if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
                 v46 = v13;
-                _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Missing %{public}@ key in parent record", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Missing %{public}@ key in parent record", buf, 0xCu);
               }
             }
 
@@ -773,13 +773,13 @@ LABEL_32:
 
           else
           {
-            v21 = [(CloudKit *)self logHandle];
+            logHandle4 = [(CloudKit *)self logHandle];
             v11 = v13;
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
               v46 = @"encryptedData";
-              _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Missing %{public}@ key in parent record", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "Missing %{public}@ key in parent record", buf, 0xCu);
             }
           }
         }
@@ -787,13 +787,13 @@ LABEL_32:
         else
         {
 LABEL_19:
-          v16 = [(CloudKit *)self logHandle];
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+          logHandle5 = [(CloudKit *)self logHandle];
+          if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v14 recordName];
+            recordName = [v14 recordName];
             *buf = 138543362;
-            v46 = v33;
-            _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Could not find original record %{public}@ to resolve conflict", buf, 0xCu);
+            v46 = recordName;
+            _os_log_impl(&_mh_execute_header, logHandle5, OS_LOG_TYPE_DEFAULT, "Could not find original record %{public}@ to resolve conflict", buf, 0xCu);
           }
 
           v11 = v13;
@@ -811,93 +811,93 @@ LABEL_19:
   }
 }
 
-- (id)createRecord:(id)a3
+- (id)createRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 record];
+  recordCopy = record;
+  record = [recordCopy record];
   v33 = 0;
-  v6 = [CHRecentCall unarchivedObjectFromData:v5 error:&v33];
+  v6 = [CHRecentCall unarchivedObjectFromData:record error:&v33];
   v7 = v33;
 
   if (v6)
   {
-    v8 = [v6 uniqueId];
-    if ([v8 length])
+    uniqueId = [v6 uniqueId];
+    if ([uniqueId length])
     {
-      v9 = [v6 serviceProvider];
-      if (([v9 isEqualToString:@"com.apple.FaceTime"]& 1) != 0 || [v9 isEqualToString:@"com.apple.Telephony"])
+      serviceProvider = [v6 serviceProvider];
+      if (([serviceProvider isEqualToString:@"com.apple.FaceTime"]& 1) != 0 || [serviceProvider isEqualToString:@"com.apple.Telephony"])
       {
-        v10 = [CHRecentCallPb protoRecentCallWithRecentCall:v6];
-        [v10 setLocalParticipantUUID:0];
-        [v10 setOutgoingLocalParticipantUUID:0];
-        v11 = [v10 data];
-        v12 = v11;
-        if (v11)
+        logHandle4 = [CHRecentCallPb protoRecentCallWithRecentCall:v6];
+        [logHandle4 setLocalParticipantUUID:0];
+        [logHandle4 setOutgoingLocalParticipantUUID:0];
+        data = [logHandle4 data];
+        v12 = data;
+        if (data)
         {
-          v31 = v11;
+          v31 = data;
           v32 = v7;
-          if ([v4 transactionType])
+          if ([recordCopy transactionType])
           {
-            v13 = [(CloudKit *)self transactionRecordZone];
-            v14 = [v13 zoneID];
-            v15 = [CKRecord chsh_transactionRecordWithZoneID:v14];
+            transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+            zoneID = [transactionRecordZone zoneID];
+            v15 = [CKRecord chsh_transactionRecordWithZoneID:zoneID];
 
-            v16 = [(CloudKit *)self logHandle];
-            if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+            logHandle = [(CloudKit *)self logHandle];
+            if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
             {
-              log = v16;
-              v17 = +[CHTransaction toString:](CHTransaction, "toString:", [v4 transactionType]);
-              v18 = [v15 recordID];
-              v19 = [v18 recordName];
+              log = logHandle;
+              v17 = +[CHTransaction toString:](CHTransaction, "toString:", [recordCopy transactionType]);
+              recordID = [v15 recordID];
+              recordName = [recordID recordName];
               *buf = 138543874;
               v35 = v17;
               v36 = 2114;
-              v37 = v19;
+              v37 = recordName;
               v38 = 2114;
-              v39 = v8;
+              v39 = uniqueId;
               _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Created %{public}@ record with identifier %{public}@ for parent record with identifier %{public}@", buf, 0x20u);
 
-              v16 = log;
+              logHandle = log;
             }
           }
 
           else
           {
             v21 = [CKRecordID alloc];
-            v22 = [(CloudKit *)self transactionRecordZone];
-            v23 = [v22 zoneID];
-            v16 = [v21 initWithRecordName:v8 zoneID:v23];
+            transactionRecordZone2 = [(CloudKit *)self transactionRecordZone];
+            zoneID2 = [transactionRecordZone2 zoneID];
+            logHandle = [v21 initWithRecordName:uniqueId zoneID:zoneID2];
 
-            v15 = [CKRecord chsh_transactionRecordWithRecordID:v16];
-            v24 = [(CloudKit *)self logHandle];
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+            v15 = [CKRecord chsh_transactionRecordWithRecordID:logHandle];
+            logHandle2 = [(CloudKit *)self logHandle];
+            if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v35 = v8;
-              _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Created insert transaction record for call with UUID %{public}@", buf, 0xCu);
+              v35 = uniqueId;
+              _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Created insert transaction record for call with UUID %{public}@", buf, 0xCu);
             }
           }
 
           v12 = v31;
 
-          v25 = [v15 encryptedValuesByKey];
-          [v25 setObject:v31 forKeyedSubscript:@"encryptedData"];
+          encryptedValuesByKey = [v15 encryptedValuesByKey];
+          [encryptedValuesByKey setObject:v31 forKeyedSubscript:@"encryptedData"];
 
-          v26 = [(CloudKit *)self operationIdentifier];
-          v27 = [v15 valuesByKey];
-          [v27 setObject:v26 forKeyedSubscript:@"syncOperationIdentifier"];
+          operationIdentifier = [(CloudKit *)self operationIdentifier];
+          valuesByKey = [v15 valuesByKey];
+          [valuesByKey setObject:operationIdentifier forKeyedSubscript:@"syncOperationIdentifier"];
 
-          v20 = +[CHTransaction toString:](CHTransaction, "toString:", [v4 transactionType]);
-          v28 = [v15 valuesByKey];
-          [v28 setObject:v20 forKeyedSubscript:@"type"];
+          logHandle3 = +[CHTransaction toString:](CHTransaction, "toString:", [recordCopy transactionType]);
+          valuesByKey2 = [v15 valuesByKey];
+          [valuesByKey2 setObject:logHandle3 forKeyedSubscript:@"type"];
 
           v7 = v32;
         }
 
         else
         {
-          v20 = [(CloudKit *)self logHandle];
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+          logHandle3 = [(CloudKit *)self logHandle];
+          if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
           {
             sub_1000332F8();
           }
@@ -908,8 +908,8 @@ LABEL_19:
 
       else
       {
-        v10 = [(CloudKit *)self logHandle];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        logHandle4 = [(CloudKit *)self logHandle];
+        if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_ERROR))
         {
           sub_100033290();
         }
@@ -920,12 +920,12 @@ LABEL_19:
 
     else
     {
-      v9 = [(CloudKit *)self logHandle];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      serviceProvider = [(CloudKit *)self logHandle];
+      if (os_log_type_enabled(serviceProvider, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v35 = v6;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Cancelling transaction record creation; could not obtain a unique identifier from call %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, serviceProvider, OS_LOG_TYPE_DEFAULT, "Cancelling transaction record creation; could not obtain a unique identifier from call %@", buf, 0xCu);
       }
 
       v15 = 0;
@@ -940,8 +940,8 @@ LABEL_19:
       goto LABEL_31;
     }
 
-    v8 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    uniqueId = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(uniqueId, OS_LOG_TYPE_ERROR))
     {
       sub_100033360();
     }
@@ -954,22 +954,22 @@ LABEL_31:
   return v15;
 }
 
-- (void)addRecord:(id)a3 withInsertAndUpdate:(id)a4 withDelete:(id)a5
+- (void)addRecord:(id)record withInsertAndUpdate:(id)update withDelete:(id)delete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 encryptedValuesByKey];
-  v12 = [v11 objectForKeyedSubscript:@"encryptedData"];
+  recordCopy = record;
+  updateCopy = update;
+  deleteCopy = delete;
+  encryptedValuesByKey = [recordCopy encryptedValuesByKey];
+  v12 = [encryptedValuesByKey objectForKeyedSubscript:@"encryptedData"];
 
   if ([v12 length])
   {
     v13 = [[CHRecentCallPb alloc] initWithData:v12];
-    v14 = v13;
+    logHandle10 = v13;
     if (!v13)
     {
-      v15 = [(CloudKit *)self logHandle];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      logHandle = [(CloudKit *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         sub_1000334B0();
       }
@@ -977,56 +977,56 @@ LABEL_31:
       goto LABEL_62;
     }
 
-    v15 = [(CHRecentCallPb *)v13 uniqueId];
-    if ([v15 length])
+    logHandle = [(CHRecentCallPb *)v13 uniqueId];
+    if ([logHandle length])
     {
-      v16 = [v8 objectForKeyedSubscript:@"type"];
-      if ([v16 length])
+      logHandle9 = [recordCopy objectForKeyedSubscript:@"type"];
+      if ([logHandle9 length])
       {
-        v64 = v14;
+        v64 = logHandle10;
         v65 = v12;
         v17 = [CHTransaction toString:0];
-        v18 = [v16 isEqualToString:v17];
+        v18 = [logHandle9 isEqualToString:v17];
 
-        v66 = v16;
-        v67 = v10;
+        v66 = logHandle9;
+        v67 = deleteCopy;
         if ((v18 & 1) == 0)
         {
           v19 = [CKRecordID alloc];
-          v20 = [(CloudKit *)self transactionRecordZone];
-          v21 = [v20 zoneID];
-          v22 = [v19 initWithRecordName:v15 zoneID:v21];
+          transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+          zoneID = [transactionRecordZone zoneID];
+          v22 = [v19 initWithRecordName:logHandle zoneID:zoneID];
 
           v23 = [[CKReference alloc] initWithRecordID:v22 action:1];
-          [v8 setObject:v23 forKeyedSubscript:@"parentTransaction"];
-          v24 = [(CloudKit *)self logHandle];
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+          [recordCopy setObject:v23 forKeyedSubscript:@"parentTransaction"];
+          logHandle2 = [(CloudKit *)self logHandle];
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v8 recordID];
+            recordID = [recordCopy recordID];
             *buf = 138543618;
-            v80 = v25;
+            v80 = recordID;
             v81 = 2114;
             v82 = v22;
-            _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Created a reference between record %{public}@ and parent record %{public}@", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Created a reference between record %{public}@ and parent record %{public}@", buf, 0x16u);
           }
 
-          v16 = v66;
-          v10 = v67;
+          logHandle9 = v66;
+          deleteCopy = v67;
         }
 
         v26 = [CHTransaction toString:2];
-        v27 = [v16 isEqualToString:v26];
+        v27 = [logHandle9 isEqualToString:v26];
 
         if (v27)
         {
-          v63 = v8;
+          v63 = recordCopy;
           v68 = +[NSMutableArray array];
           v73 = 0u;
           v74 = 0u;
           v75 = 0u;
           v76 = 0u;
-          v62 = v9;
-          v28 = v9;
+          v62 = updateCopy;
+          v28 = updateCopy;
           v29 = [v28 countByEnumeratingWithState:&v73 objects:v78 count:16];
           if (v29)
           {
@@ -1042,18 +1042,18 @@ LABEL_31:
                 }
 
                 v33 = *(*(&v73 + 1) + 8 * i);
-                v34 = [v33 recordID];
-                v35 = [v34 recordName];
-                v36 = [v35 isEqualToString:v15];
+                recordID2 = [v33 recordID];
+                recordName = [recordID2 recordName];
+                v36 = [recordName isEqualToString:logHandle];
 
                 if (v36)
                 {
-                  v37 = [(CloudKit *)self logHandle];
-                  if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+                  logHandle3 = [(CloudKit *)self logHandle];
+                  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543362;
-                    v80 = v15;
-                    _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Removing record %{public}@ since we are deleting it", buf, 0xCu);
+                    v80 = logHandle;
+                    _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Removing record %{public}@ since we are deleting it", buf, 0xCu);
                   }
 
                   [v68 addObject:v33];
@@ -1067,7 +1067,7 @@ LABEL_31:
           }
 
           [v28 removeObjectsInArray:v68];
-          v8 = v63;
+          recordCopy = v63;
           v38 = [v63 objectForKeyedSubscript:@"parentTransaction"];
           v69 = 0u;
           v70 = 0u;
@@ -1089,19 +1089,19 @@ LABEL_31:
                 }
 
                 v44 = *(*(&v69 + 1) + 8 * j);
-                v45 = [v38 recordID];
-                LODWORD(v44) = [v44 isEqual:v45];
+                recordID3 = [v38 recordID];
+                LODWORD(v44) = [v44 isEqual:recordID3];
 
                 if (v44)
                 {
-                  v57 = [(CloudKit *)self logHandle];
+                  logHandle4 = [(CloudKit *)self logHandle];
                   v12 = v65;
-                  if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+                  if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
                   {
-                    v58 = [v38 recordID];
+                    recordID4 = [v38 recordID];
                     *buf = 138543362;
-                    v80 = v58;
-                    _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Found existing delete transaction record for identifier %{public}@", buf, 0xCu);
+                    v80 = recordID4;
+                    _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "Found existing delete transaction record for identifier %{public}@", buf, 0xCu);
                   }
 
                   goto LABEL_52;
@@ -1118,106 +1118,106 @@ LABEL_31:
             }
           }
 
-          v46 = [v38 recordID];
-          v47 = [(CloudKit *)self logHandle];
-          if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+          recordID5 = [v38 recordID];
+          logHandle5 = [(CloudKit *)self logHandle];
+          if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v80 = v46;
-            _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Deleting record with identifier %{public}@", buf, 0xCu);
+            v80 = recordID5;
+            _os_log_impl(&_mh_execute_header, logHandle5, OS_LOG_TYPE_DEFAULT, "Deleting record with identifier %{public}@", buf, 0xCu);
           }
 
-          [v39 addObject:v46];
-          v39 = v46;
+          [v39 addObject:recordID5];
+          v39 = recordID5;
           v12 = v65;
 LABEL_52:
-          v16 = v66;
+          logHandle9 = v66;
 
-          v9 = v62;
-          v10 = v67;
+          updateCopy = v62;
+          deleteCopy = v67;
         }
 
         else
         {
           v49 = [CHTransaction toString:0];
-          v50 = [v16 isEqualToString:v49];
+          v50 = [logHandle9 isEqualToString:v49];
 
           if (v50)
           {
-            if ([v9 count])
+            if ([updateCopy count])
             {
               v51 = 0;
               while (1)
               {
-                v52 = [v9 objectAtIndexedSubscript:v51];
-                v53 = [v52 recordID];
-                v54 = [v8 recordID];
-                v55 = [v53 isEqual:v54];
+                v52 = [updateCopy objectAtIndexedSubscript:v51];
+                recordID6 = [v52 recordID];
+                recordID7 = [recordCopy recordID];
+                v55 = [recordID6 isEqual:recordID7];
 
                 if (v55)
                 {
                   break;
                 }
 
-                if (++v51 >= [v9 count])
+                if (++v51 >= [updateCopy count])
                 {
                   goto LABEL_46;
                 }
               }
 
-              v61 = [(CloudKit *)self logHandle];
-              v16 = v66;
-              if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+              logHandle6 = [(CloudKit *)self logHandle];
+              logHandle9 = v66;
+              if (os_log_type_enabled(logHandle6, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543618;
                 v80 = v52;
                 v81 = 2114;
-                v82 = v8;
-                _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "Replacing record %{public}@ with record %{public}@", buf, 0x16u);
+                v82 = recordCopy;
+                _os_log_impl(&_mh_execute_header, logHandle6, OS_LOG_TYPE_DEFAULT, "Replacing record %{public}@ with record %{public}@", buf, 0x16u);
               }
 
-              [v9 replaceObjectAtIndex:v51 withObject:v8];
+              [updateCopy replaceObjectAtIndex:v51 withObject:recordCopy];
               v12 = v65;
             }
 
             else
             {
 LABEL_46:
-              v56 = [(CloudKit *)self logHandle];
-              if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+              logHandle7 = [(CloudKit *)self logHandle];
+              if (os_log_type_enabled(logHandle7, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v80 = v8;
-                _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "Adding record %{public}@", buf, 0xCu);
+                v80 = recordCopy;
+                _os_log_impl(&_mh_execute_header, logHandle7, OS_LOG_TYPE_DEFAULT, "Adding record %{public}@", buf, 0xCu);
               }
 
-              [v9 addObject:v8];
+              [updateCopy addObject:recordCopy];
               v12 = v65;
-              v16 = v66;
+              logHandle9 = v66;
             }
 
-            v10 = v67;
+            deleteCopy = v67;
             goto LABEL_61;
           }
 
           v59 = [CHTransaction toString:1];
-          v60 = [v16 isEqualToString:v59];
+          v60 = [logHandle9 isEqualToString:v59];
 
           if (v60)
           {
-            [v9 addObject:v8];
+            [updateCopy addObject:recordCopy];
           }
 
           v12 = v65;
         }
 
-        v14 = v64;
+        logHandle10 = v64;
       }
 
       else
       {
-        v48 = [(CloudKit *)self logHandle];
-        if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+        logHandle8 = [(CloudKit *)self logHandle];
+        if (os_log_type_enabled(logHandle8, OS_LOG_TYPE_ERROR))
         {
           sub_1000333C8();
         }
@@ -1226,8 +1226,8 @@ LABEL_46:
 
     else
     {
-      v16 = [(CloudKit *)self logHandle];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      logHandle9 = [(CloudKit *)self logHandle];
+      if (os_log_type_enabled(logHandle9, OS_LOG_TYPE_ERROR))
       {
         sub_100033448();
       }
@@ -1239,8 +1239,8 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v14 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  logHandle10 = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle10, OS_LOG_TYPE_ERROR))
   {
     sub_100033518();
   }
@@ -1248,45 +1248,45 @@ LABEL_62:
 LABEL_63:
 }
 
-- (void)deleteAndRecreateRecordZone:(id)a3
+- (void)deleteAndRecreateRecordZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  zoneCopy = zone;
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CloudKit *)self transactionRecordZone];
-    v7 = [v6 zoneID];
-    v8 = [v7 zoneName];
+    transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+    zoneID = [transactionRecordZone zoneID];
+    zoneName = [zoneID zoneName];
     *buf = 138543362;
-    v16 = v8;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleting and recreating CKRecordZone %{public}@", buf, 0xCu);
+    v16 = zoneName;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Deleting and recreating CKRecordZone %{public}@", buf, 0xCu);
   }
 
-  v9 = [(CloudKit *)self database];
-  v10 = [(CloudKit *)self transactionRecordZone];
-  v11 = [v10 zoneID];
+  database = [(CloudKit *)self database];
+  transactionRecordZone2 = [(CloudKit *)self transactionRecordZone];
+  zoneID2 = [transactionRecordZone2 zoneID];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100015F90;
   v13[3] = &unk_100051588;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
-  [v9 deleteRecordZoneWithID:v11 completionHandler:v13];
+  v14 = zoneCopy;
+  v12 = zoneCopy;
+  [database deleteRecordZoneWithID:zoneID2 completionHandler:v13];
 }
 
 - (void)performInitialSyncIfNeeded
 {
-  v3 = [(CloudKit *)self previousServerChangeToken];
+  previousServerChangeToken = [(CloudKit *)self previousServerChangeToken];
 
-  v4 = [(CloudKit *)self logHandle];
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  logHandle = [(CloudKit *)self logHandle];
+  v5 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT);
+  if (previousServerChangeToken)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Found previous change token, no need to perform initial sync", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Found previous change token, no need to perform initial sync", buf, 2u);
     }
   }
 
@@ -1295,92 +1295,92 @@ LABEL_63:
     if (v5)
     {
       *v6 = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Did not find previous change token, fetching initial changes from iCloud", v6, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Did not find previous change token, fetching initial changes from iCloud", v6, 2u);
     }
 
-    v4 = +[NSNotificationCenter defaultCenter];
-    [v4 postNotificationName:@"kCallHistoryFetchChangesNotification" object:0 userInfo:0];
+    logHandle = +[NSNotificationCenter defaultCenter];
+    [logHandle postNotificationName:@"kCallHistoryFetchChangesNotification" object:0 userInfo:0];
   }
 }
 
 - (void)setupSubscription
 {
-  v3 = [(CloudKit *)self containerUserDefaults];
-  v4 = [v3 transactionRecordZoneSubscriptionCreationDate];
+  containerUserDefaults = [(CloudKit *)self containerUserDefaults];
+  transactionRecordZoneSubscriptionCreationDate = [containerUserDefaults transactionRecordZoneSubscriptionCreationDate];
 
-  if (v4 && ([v4 timeIntervalSinceNow], v5 < 172800.0))
+  if (transactionRecordZoneSubscriptionCreationDate && ([transactionRecordZoneSubscriptionCreationDate timeIntervalSinceNow], v5 < 172800.0))
   {
-    v6 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Not attempting to create subscription, it was created on %{public}@", &v9, 0xCu);
+      v10 = transactionRecordZoneSubscriptionCreationDate;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Not attempting to create subscription, it was created on %{public}@", &v9, 0xCu);
     }
   }
 
   else
   {
-    v6 = +[NSDate date];
-    v7 = [(CloudKit *)self containerUserDefaults];
-    [v7 setTransactionRecordZoneSubscriptionCreationDate:v6];
+    logHandle = +[NSDate date];
+    containerUserDefaults2 = [(CloudKit *)self containerUserDefaults];
+    [containerUserDefaults2 setTransactionRecordZoneSubscriptionCreationDate:logHandle];
 
-    v8 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Set Transactions record zone subscription creation date to %{public}@", &v9, 0xCu);
+      v10 = logHandle;
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Set Transactions record zone subscription creation date to %{public}@", &v9, 0xCu);
     }
 
     [(CloudKit *)self setupSubscriptionWithRetryCount:0];
   }
 }
 
-- (void)fetchTransactionRecordZoneWithCompletion:(id)a3
+- (void)fetchTransactionRecordZoneWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CloudKit *)self transactionRecordZone];
-  v6 = [v5 zoneID];
+  completionCopy = completion;
+  transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+  zoneID = [transactionRecordZone zoneID];
 
-  v7 = [(CloudKit *)self containerUserDefaults];
-  v8 = [v7 transactionRecordZoneFetchDate];
+  containerUserDefaults = [(CloudKit *)self containerUserDefaults];
+  transactionRecordZoneFetchDate = [containerUserDefaults transactionRecordZoneFetchDate];
 
-  if (v8 && ([v8 timeIntervalSinceNow], v9 >= 604800.0))
+  if (transactionRecordZoneFetchDate && ([transactionRecordZoneFetchDate timeIntervalSinceNow], v9 >= 604800.0))
   {
-    v11 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = v6;
+      v16 = zoneID;
       v17 = 2114;
-      v18 = v8;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Fetched record zone with identifier %{public}@ on %{public}@", buf, 0x16u);
+      v18 = transactionRecordZoneFetchDate;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Fetched record zone with identifier %{public}@ on %{public}@", buf, 0x16u);
     }
 
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
   {
-    v10 = [(CloudKit *)self database];
+    database = [(CloudKit *)self database];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000166C8;
     v12[3] = &unk_1000515B0;
     v12[4] = self;
-    v14 = v4;
-    v13 = v6;
-    [v10 fetchRecordZoneWithID:v13 completionHandler:v12];
+    v14 = completionCopy;
+    v13 = zoneID;
+    [database fetchRecordZoneWithID:v13 completionHandler:v12];
   }
 }
 
-- (void)setupSubscriptionWithRetryCount:(unsigned int)a3
+- (void)setupSubscriptionWithRetryCount:(unsigned int)count
 {
   v5 = [CKRecordZoneSubscription alloc];
-  v6 = [(CloudKit *)self transactionRecordZone];
-  v7 = [v6 zoneID];
-  v8 = [v5 initWithZoneID:v7 subscriptionID:@"CallHistorySubscription"];
+  transactionRecordZone = [(CloudKit *)self transactionRecordZone];
+  zoneID = [transactionRecordZone zoneID];
+  v8 = [v5 initWithZoneID:zoneID subscriptionID:@"CallHistorySubscription"];
 
   v9 = [CKModifySubscriptionsOperation alloc];
   v10 = [NSArray arrayWithObject:v8];
@@ -1391,45 +1391,45 @@ LABEL_63:
   v15[1] = 3221225472;
   v15[2] = sub_100016BF0;
   v15[3] = &unk_1000515D8;
-  v16 = a3;
+  countCopy = count;
   v15[4] = self;
   [v11 setModifySubscriptionsCompletionBlock:v15];
-  v12 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v14 = 0;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Modifying subscription...", v14, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Modifying subscription...", v14, 2u);
   }
 
-  v13 = [(CloudKit *)self database];
-  [v13 addOperation:v11];
+  database = [(CloudKit *)self database];
+  [database addOperation:v11];
 }
 
-- (void)retryCloudKitOperationForError:(id)a3 withRetryCount:(unsigned int)a4 withCallback:(id)a5
+- (void)retryCloudKitOperationForError:(id)error withRetryCount:(unsigned int)count withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  errorCopy = error;
+  callbackCopy = callback;
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [CKPrettyError descriptionForError:v8];
+    v11 = [CKPrettyError descriptionForError:errorCopy];
     *buf = 138543362;
     *v34 = v11;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Operation failed: %{public}@ ", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Operation failed: %{public}@ ", buf, 0xCu);
   }
 
-  v12 = [v8 domain];
-  v13 = [v12 isEqualToString:CKErrorDomain];
+  domain = [errorCopy domain];
+  v13 = [domain isEqualToString:CKErrorDomain];
 
   if ((v13 & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  if (a4 >= 5)
+  if (count >= 5)
   {
-    v14 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logHandle2 = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
       sub_100033700();
     }
@@ -1437,46 +1437,46 @@ LABEL_63:
     goto LABEL_8;
   }
 
-  v15 = [v8 code];
-  if (v15 > 0x19 || ((1 << v15) & 0x29000F8) == 0)
+  code = [errorCopy code];
+  if (code > 0x19 || ((1 << code) & 0x29000F8) == 0)
   {
 LABEL_8:
-    v9[2](v9, 0);
+    callbackCopy[2](callbackCopy, 0);
     goto LABEL_20;
   }
 
-  v16 = [v8 userInfo];
-  v17 = [v16 objectForKeyedSubscript:CKErrorRetryAfterKey];
+  userInfo = [errorCopy userInfo];
+  v17 = [userInfo objectForKeyedSubscript:CKErrorRetryAfterKey];
 
   if (!v17)
   {
-    v17 = [&off_100053AF8 objectAtIndexedSubscript:a4];
-    v18 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    v17 = [&off_100053AF8 objectAtIndexedSubscript:count];
+    logHandle3 = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       *v34 = CKErrorRetryAfterKey;
       *&v34[8] = 2114;
       *&v34[10] = v17;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Missing %{public}@ key, defaulting to %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Missing %{public}@ key, defaulting to %{public}@", buf, 0x16u);
     }
   }
 
-  v19 = [v17 intValue];
-  v20 = [v17 intValue];
-  v21 = [v17 intValue];
-  v22 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  intValue = [v17 intValue];
+  intValue2 = [v17 intValue];
+  intValue3 = [v17 intValue];
+  logHandle4 = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = v21 % 60;
-    v24 = v20 / 60 % 60;
-    v25 = v19 / 3600;
-    v26 = [v17 intValue];
+    v23 = intValue3 % 60;
+    v24 = intValue2 / 60 % 60;
+    v25 = intValue / 3600;
+    intValue4 = [v17 intValue];
     *buf = 67110146;
     v27 = "s";
-    *v34 = a4;
+    *v34 = count;
     *&v34[4] = 2048;
-    if (v26 == 1)
+    if (intValue4 == 1)
     {
       v27 = "";
     }
@@ -1488,57 +1488,57 @@ LABEL_8:
     v36 = v23;
     v37 = 2080;
     v38 = v27;
-    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Retrying attempt %u after %lu hours %lu minutes and %lu second%s", buf, 0x30u);
+    _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "Retrying attempt %u after %lu hours %lu minutes and %lu second%s", buf, 0x30u);
   }
 
   v28 = sub_10001D104(v17);
   v29 = dispatch_time(0, 1000000000 * [v17 intValue]);
-  v30 = [(CloudKit *)self queue];
+  queue = [(CloudKit *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017214;
   block[3] = &unk_100051600;
-  v32 = v9;
-  dispatch_after(v29, v30, block);
+  v32 = callbackCopy;
+  dispatch_after(v29, queue, block);
 
 LABEL_20:
 }
 
-- (void)handleCKAccountChangedNotification:(id)a3
+- (void)handleCKAccountChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CloudKit *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  notificationCopy = notification;
+  logHandle = [(CloudKit *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
     v8 = objc_opt_class();
     v9 = 2114;
-    v10 = v4;
+    v10 = notificationCopy;
     v6 = v8;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ is handling %{public}@", &v7, 0x16u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "%{public}@ is handling %{public}@", &v7, 0x16u);
   }
 
   [(CloudKit *)self queryAccountStatus];
 }
 
-- (id)containerUserDefaultsObjectForKey:(id)a3
+- (id)containerUserDefaultsObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CloudKit *)self container];
-  v6 = [v5 containerIdentifier];
+  keyCopy = key;
+  container = [(CloudKit *)self container];
+  containerIdentifier = [container containerIdentifier];
 
-  if (v6)
+  if (containerIdentifier)
   {
     v7 = +[NSUserDefaults standardUserDefaults];
-    v8 = [v7 dictionaryForKey:v6];
+    v8 = [v7 dictionaryForKey:containerIdentifier];
 
-    v9 = [v8 objectForKeyedSubscript:v4];
+    v9 = [v8 objectForKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v10 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    logHandle = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100032B68(self);
     }
@@ -1549,17 +1549,17 @@ LABEL_20:
   return v9;
 }
 
-- (void)setContainerUserDefaultsObject:(id)a3 forKey:(id)a4
+- (void)setContainerUserDefaultsObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CloudKit *)self container];
-  v9 = [v8 containerIdentifier];
+  objectCopy = object;
+  keyCopy = key;
+  container = [(CloudKit *)self container];
+  containerIdentifier = [container containerIdentifier];
 
-  if (v9)
+  if (containerIdentifier)
   {
     v10 = +[NSUserDefaults standardUserDefaults];
-    v11 = [v10 dictionaryForKey:v9];
+    v11 = [v10 dictionaryForKey:containerIdentifier];
     v12 = [v11 mutableCopy];
 
     if (!v12)
@@ -1567,15 +1567,15 @@ LABEL_20:
       v12 = +[NSMutableDictionary dictionary];
     }
 
-    [v12 setObject:v6 forKeyedSubscript:v7];
+    [v12 setObject:objectCopy forKeyedSubscript:keyCopy];
     v13 = +[NSUserDefaults standardUserDefaults];
-    [v13 setObject:v12 forKey:v9];
+    [v13 setObject:v12 forKey:containerIdentifier];
   }
 
   else
   {
-    v14 = [(CloudKit *)self logHandle];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logHandle = [(CloudKit *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100032B68(self);
     }

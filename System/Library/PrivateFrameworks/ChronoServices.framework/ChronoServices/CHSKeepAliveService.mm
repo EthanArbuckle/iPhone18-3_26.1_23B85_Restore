@@ -1,7 +1,7 @@
 @interface CHSKeepAliveService
 - (CHSKeepAliveService)init;
-- (CHSKeepAliveService)initWithConnection:(id)a3;
-- (id)acquireKeepAliveAssertionForExtensionBundleIdentifier:(id)a3 reason:(id)a4 error:(id *)a5;
+- (CHSKeepAliveService)initWithConnection:(id)connection;
+- (id)acquireKeepAliveAssertionForExtensionBundleIdentifier:(id)identifier reason:(id)reason error:(id *)error;
 @end
 
 @implementation CHSKeepAliveService
@@ -14,24 +14,24 @@
   return v4;
 }
 
-- (CHSKeepAliveService)initWithConnection:(id)a3
+- (CHSKeepAliveService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CHSKeepAliveService;
   v6 = [(CHSKeepAliveService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (id)acquireKeepAliveAssertionForExtensionBundleIdentifier:(id)a3 reason:(id)a4 error:(id *)a5
+- (id)acquireKeepAliveAssertionForExtensionBundleIdentifier:(id)identifier reason:(id)reason error:(id *)error
 {
-  v5 = [(CHSChronoServicesConnection *)self->_connection acquireKeepAliveAssertionForExtensionBundleIdentifier:a3 reason:a4 error:a5];
+  v5 = [(CHSChronoServicesConnection *)self->_connection acquireKeepAliveAssertionForExtensionBundleIdentifier:identifier reason:reason error:error];
 
   return v5;
 }

@@ -1,26 +1,26 @@
 @interface RTLearnedLocationReconcilerModel
-- (double)_weightWithDeviceWeight:(double)a3 visitsPercentage:(double)a4 transitionsPercentage:(double)a5 semanticLabel:(BOOL)a6 firstVisit:(BOOL)a7 earliestTransition:(BOOL)a8 rawLocationCount:(unint64_t)a9;
-- (double)scoreForDeviceClass:(id)a3;
-- (double)weightForVisit:(id)a3 modelContext:(id)a4;
+- (double)_weightWithDeviceWeight:(double)weight visitsPercentage:(double)percentage transitionsPercentage:(double)transitionsPercentage semanticLabel:(BOOL)label firstVisit:(BOOL)visit earliestTransition:(BOOL)transition rawLocationCount:(unint64_t)count;
+- (double)scoreForDeviceClass:(id)class;
+- (double)weightForVisit:(id)visit modelContext:(id)context;
 @end
 
 @implementation RTLearnedLocationReconcilerModel
 
-- (double)scoreForDeviceClass:(id)a3
+- (double)scoreForDeviceClass:(id)class
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 containsString:@"iPhone"])
+  classCopy = class;
+  if ([classCopy containsString:@"iPhone"])
   {
     v4 = 0.3333;
   }
 
-  else if ([v3 containsString:@"Watch"])
+  else if ([classCopy containsString:@"Watch"])
   {
     v4 = 0.2667;
   }
 
-  else if ([v3 containsString:@"iPad"])
+  else if ([classCopy containsString:@"iPad"])
   {
     v4 = 0.2;
   }
@@ -28,9 +28,9 @@
   else
   {
     v4 = 0.1333;
-    if (([v3 containsString:@"Mac"] & 1) == 0 && (objc_msgSend(v3, "containsString:", @"VMWare") & 1) == 0)
+    if (([classCopy containsString:@"Mac"] & 1) == 0 && (objc_msgSend(classCopy, "containsString:", @"VMWare") & 1) == 0)
     {
-      if ([v3 containsString:@"iPod"])
+      if ([classCopy containsString:@"iPod"])
       {
         v4 = 0.0667;
       }
@@ -41,7 +41,7 @@
         if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
         {
           v8 = 138412290;
-          v9 = v3;
+          v9 = classCopy;
           _os_log_fault_impl(&dword_2304B3000, v5, OS_LOG_TYPE_FAULT, "cannot calculate score for device class, %@, because it is unknown.", &v8, 0xCu);
         }
 
@@ -49,7 +49,7 @@
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
           v8 = 138412802;
-          v9 = v3;
+          v9 = classCopy;
           v10 = 2080;
           v11 = "[RTLearnedLocationReconcilerModel scoreForDeviceClass:]";
           v12 = 1024;
@@ -65,42 +65,42 @@
   return v4;
 }
 
-- (double)weightForVisit:(id)a3 modelContext:(id)a4
+- (double)weightForVisit:(id)visit modelContext:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 device];
-  v9 = [v8 deviceClass];
-  [(RTLearnedLocationReconcilerModel *)self scoreForDeviceClass:v9];
+  visitCopy = visit;
+  contextCopy = context;
+  device = [visitCopy device];
+  deviceClass = [device deviceClass];
+  [(RTLearnedLocationReconcilerModel *)self scoreForDeviceClass:deviceClass];
   v11 = v10;
 
-  v12 = [v6 device];
-  v13 = [v12 visits];
-  v14 = [v13 count];
+  device2 = [visitCopy device];
+  visits = [device2 visits];
+  v14 = [visits count];
 
-  v15 = [v7 devices];
-  v16 = [v15 valueForKeyPath:@"@sum.visits.@count"];
-  v17 = [v16 unsignedIntegerValue];
+  devices = [contextCopy devices];
+  v16 = [devices valueForKeyPath:@"@sum.visits.@count"];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-  v18 = [v6 device];
-  v19 = [v18 transitions];
-  v20 = [v19 count];
+  device3 = [visitCopy device];
+  transitions = [device3 transitions];
+  v20 = [transitions count];
 
-  v21 = [v7 devices];
-  v22 = [v21 valueForKeyPath:@"@sum.transitions.@count"];
-  v23 = [v22 unsignedIntegerValue];
+  devices2 = [contextCopy devices];
+  v22 = [devices2 valueForKeyPath:@"@sum.transitions.@count"];
+  unsignedIntegerValue2 = [v22 unsignedIntegerValue];
 
-  v24 = [v6 place];
-  v25 = [v24 type];
-  v26 = [v25 unsignedIntegerValue];
+  place = [visitCopy place];
+  type = [place type];
+  unsignedIntegerValue3 = [type unsignedIntegerValue];
 
-  v27 = [v6 dataPointCount];
-  v56 = [v27 unsignedIntegerValue];
+  dataPointCount = [visitCopy dataPointCount];
+  unsignedIntegerValue4 = [dataPointCount unsignedIntegerValue];
 
-  if (v17)
+  if (unsignedIntegerValue)
   {
-    v28 = v14 / v17;
+    v28 = v14 / unsignedIntegerValue;
   }
 
   else
@@ -108,9 +108,9 @@
     v28 = 0.0;
   }
 
-  if (v23)
+  if (unsignedIntegerValue2)
   {
-    v29 = v20 / v23;
+    v29 = v20 / unsignedIntegerValue2;
   }
 
   else
@@ -118,17 +118,17 @@
     v29 = 0.0;
   }
 
-  v30 = [v6 place];
-  v31 = [v30 visits];
-  v57 = v26;
-  v58 = self;
-  if ([v31 count] == 1)
+  place2 = [visitCopy place];
+  visits2 = [place2 visits];
+  v57 = unsignedIntegerValue3;
+  selfCopy = self;
+  if ([visits2 count] == 1)
   {
-    v32 = [v6 place];
-    v33 = [v32 visits];
-    v34 = [v33 allObjects];
-    v35 = [v34 firstObject];
-    v55 = [v35 isEqual:v6];
+    place3 = [visitCopy place];
+    visits3 = [place3 visits];
+    allObjects = [visits3 allObjects];
+    firstObject = [allObjects firstObject];
+    v55 = [firstObject isEqual:visitCopy];
   }
 
   else
@@ -136,16 +136,16 @@
     v55 = 0;
   }
 
-  v36 = [v6 outbound];
-  v37 = [v36 startDate];
+  outbound = [visitCopy outbound];
+  startDate = [outbound startDate];
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v59 = v7;
-  v38 = [v7 overlappingVisits];
-  v39 = [v38 countByEnumeratingWithState:&v60 objects:v64 count:16];
+  v59 = contextCopy;
+  overlappingVisits = [contextCopy overlappingVisits];
+  v39 = [overlappingVisits countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v39)
   {
     v40 = v39;
@@ -156,43 +156,43 @@
       {
         if (*v61 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(overlappingVisits);
         }
 
         v43 = *(*(&v60 + 1) + 8 * i);
-        v44 = [v43 outbound];
-        v45 = [v44 startDate];
-        v46 = [v45 isBeforeDate:v37];
+        outbound2 = [v43 outbound];
+        startDate2 = [outbound2 startDate];
+        v46 = [startDate2 isBeforeDate:startDate];
 
         if (v46)
         {
-          v47 = [v43 outbound];
-          v48 = [v47 startDate];
+          outbound3 = [v43 outbound];
+          startDate3 = [outbound3 startDate];
 
-          v37 = v48;
+          startDate = startDate3;
         }
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v60 objects:v64 count:16];
+      v40 = [overlappingVisits countByEnumeratingWithState:&v60 objects:v64 count:16];
     }
 
     while (v40);
   }
 
-  v49 = [v6 outbound];
-  v50 = [v49 startDate];
-  v51 = [v37 isEqual:v50];
+  outbound4 = [visitCopy outbound];
+  startDate4 = [outbound4 startDate];
+  v51 = [startDate isEqual:startDate4];
 
-  [(RTLearnedLocationReconcilerModel *)v58 _weightWithDeviceWeight:(v57 - 1) < 3 visitsPercentage:v55 transitionsPercentage:v51 semanticLabel:v56 firstVisit:v11 earliestTransition:v28 rawLocationCount:v29];
+  [(RTLearnedLocationReconcilerModel *)selfCopy _weightWithDeviceWeight:(v57 - 1) < 3 visitsPercentage:v55 transitionsPercentage:v51 semanticLabel:unsignedIntegerValue4 firstVisit:v11 earliestTransition:v28 rawLocationCount:v29];
   v53 = v52;
 
   return v53;
 }
 
-- (double)_weightWithDeviceWeight:(double)a3 visitsPercentage:(double)a4 transitionsPercentage:(double)a5 semanticLabel:(BOOL)a6 firstVisit:(BOOL)a7 earliestTransition:(BOOL)a8 rawLocationCount:(unint64_t)a9
+- (double)_weightWithDeviceWeight:(double)weight visitsPercentage:(double)percentage transitionsPercentage:(double)transitionsPercentage semanticLabel:(BOOL)label firstVisit:(BOOL)visit earliestTransition:(BOOL)transition rawLocationCount:(unint64_t)count
 {
-  v9 = a4 * 0.1538 + a3 * 0.2308 + a5 * 0.0769 + a6 * 0.0769 + a7 * 0.2308 + a8 * 0.1923;
-  if (a9 <= 0xC7)
+  v9 = percentage * 0.1538 + weight * 0.2308 + transitionsPercentage * 0.0769 + label * 0.0769 + visit * 0.2308 + transition * 0.1923;
+  if (count <= 0xC7)
   {
     v10 = 0.0;
   }

@@ -1,40 +1,40 @@
 @interface BRCAppTelemetryConverter
-- (id)dictionaryRepresentationFromEvent:(id)a3;
-- (id)fixupValue:(id)a3 forKey:(id)a4;
-- (void)_fixupEventDataWithEvent:(id)a3;
-- (void)_payloadFromEventDictionary:(id)a3 dictionary:(id)a4;
+- (id)dictionaryRepresentationFromEvent:(id)event;
+- (id)fixupValue:(id)value forKey:(id)key;
+- (void)_fixupEventDataWithEvent:(id)event;
+- (void)_payloadFromEventDictionary:(id)dictionary dictionary:(id)a4;
 @end
 
 @implementation BRCAppTelemetryConverter
 
-- (id)fixupValue:(id)a3 forKey:(id)a4
+- (id)fixupValue:(id)value forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![v6 isEqualToString:@"telemetrySchema"])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![keyCopy isEqualToString:@"telemetrySchema"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:4];
+      v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:valueCopy encoding:4];
       if (v8)
       {
         goto LABEL_10;
       }
     }
 
-    v9 = v5;
+    v9 = valueCopy;
 LABEL_9:
     v8 = v9;
     goto LABEL_10;
   }
 
-  v7 = [v5 integerValue];
-  if (v7 <= 299)
+  integerValue = [valueCopy integerValue];
+  if (integerValue <= 299)
   {
     v8 = @"UNKNOWN";
-    switch(v7)
+    switch(integerValue)
     {
       case 0:
         goto LABEL_10;
@@ -262,7 +262,7 @@ LABEL_9:
         v8 = @"FILE_READ_ERROR";
         break;
       default:
-        switch(v7)
+        switch(integerValue)
         {
           case 200:
             v8 = @"CA_TOTAL_ERROR_COUNT";
@@ -316,11 +316,11 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v7 <= 402)
+  if (integerValue <= 402)
   {
-    if (v7 > 400)
+    if (integerValue > 400)
     {
-      if (v7 == 401)
+      if (integerValue == 401)
       {
         v8 = @"FPFS_MIGRATION_FINISHED";
       }
@@ -333,24 +333,24 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if (v7 == 300)
+    if (integerValue == 300)
     {
       v8 = @"INITIAL_SCAN_REJECTED_MISMATCH_TYPE";
       goto LABEL_10;
     }
 
-    if (v7 == 400)
+    if (integerValue == 400)
     {
       v8 = @"FPFS_MIGRATION_STARTED";
       goto LABEL_10;
     }
 
 LABEL_49:
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v7];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", integerValue];
     goto LABEL_9;
   }
 
-  switch(v7)
+  switch(integerValue)
   {
     case 500:
       v8 = @"ITEM_BOUNCE_APPLY_NEW_WITH_EXISTING";
@@ -413,14 +413,14 @@ LABEL_49:
       v8 = @"ITEM_BOUNCE_APPLY_EXISTING_WITH_NEW_UNTITLED_FILE_NAME";
       break;
     default:
-      if (v7 == 403)
+      if (integerValue == 403)
       {
         v8 = @"FPFS_MIGRATION_NON_MIGRATED_ITEM_REPORT";
       }
 
       else
       {
-        if (v7 != 404)
+        if (integerValue != 404)
         {
           goto LABEL_49;
         }
@@ -436,7 +436,7 @@ LABEL_10:
   return v8;
 }
 
-- (void)_payloadFromEventDictionary:(id)a3 dictionary:(id)a4
+- (void)_payloadFromEventDictionary:(id)dictionary dictionary:(id)a4
 {
   v6 = a4;
   v8[0] = MEMORY[0x277D85DD0];
@@ -446,7 +446,7 @@ LABEL_10:
   v8[4] = self;
   v9 = v6;
   v7 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __67__BRCAppTelemetryConverter__payloadFromEventDictionary_dictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -470,25 +470,25 @@ void __67__BRCAppTelemetryConverter__payloadFromEventDictionary_dictionary___blo
   }
 }
 
-- (void)_fixupEventDataWithEvent:(id)a3
+- (void)_fixupEventDataWithEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 hasTimestamp])
+  eventCopy = event;
+  if ([eventCopy hasTimestamp])
   {
-    [v3 setTimestamp:{60 * (objc_msgSend(v3, "timestamp") / 0x3CuLL)}];
+    [eventCopy setTimestamp:{60 * (objc_msgSend(eventCopy, "timestamp") / 0x3CuLL)}];
   }
 }
 
-- (id)dictionaryRepresentationFromEvent:(id)a3
+- (id)dictionaryRepresentationFromEvent:(id)event
 {
-  v4 = a3;
-  [(BRCAppTelemetryConverter *)self _fixupEventDataWithEvent:v4];
-  v5 = [v4 dictionaryRepresentation];
+  eventCopy = event;
+  [(BRCAppTelemetryConverter *)self _fixupEventDataWithEvent:eventCopy];
+  dictionaryRepresentation = [eventCopy dictionaryRepresentation];
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [(BRCAppTelemetryConverter *)self _payloadFromEventDictionary:v5 dictionary:v6];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(BRCAppTelemetryConverter *)self _payloadFromEventDictionary:dictionaryRepresentation dictionary:dictionary];
 
-  return v6;
+  return dictionary;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest
-- (MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)a3;
+- (MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)payload;
 @end
 
 @implementation MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest
 
-- (MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)a3
+- (MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest;
   v5 = [(MusicKit_SoftLinking_MPServerObjectDatabaseMediaKitImportRequest *)&v11 init];
@@ -30,7 +30,7 @@
 
     v7 = v6;
     _Block_object_dispose(&v13, 8);
-    v8 = [[v6 alloc] initWithPayload:v4];
+    v8 = [[v6 alloc] initWithPayload:payloadCopy];
     underlyingImportRequest = v5->_underlyingImportRequest;
     v5->_underlyingImportRequest = v8;
   }

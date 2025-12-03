@@ -1,7 +1,7 @@
 @interface CNContactCreateNewContactAction
 - (UIViewController)presentingViewController;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)performActionWithSender:(id)a3;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactCreateNewContactAction
@@ -13,26 +13,26 @@
   return WeakRetained;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a4;
-  v7 = a3;
-  [(CNContactCreateNewContactAction *)self setCreatedContact:v6];
-  v8 = [(CNContactAction *)self delegate];
-  v9 = [v8 contactViewCache];
-  v10 = [v9 contactStore];
+  contactCopy = contact;
+  controllerCopy = controller;
+  [(CNContactCreateNewContactAction *)self setCreatedContact:contactCopy];
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
-  v11 = [(CNContactAction *)self delegate];
-  v12 = [v7 parentViewController];
+  delegate2 = [(CNContactAction *)self delegate];
+  parentViewController = [controllerCopy parentViewController];
 
-  [v11 action:self dismissViewController:v12 sender:0];
-  v13 = [(CNContactAction *)self contact];
-  LODWORD(v11) = [v13 isSuggestedMe];
+  [delegate2 action:self dismissViewController:parentViewController sender:0];
+  contact = [(CNContactAction *)self contact];
+  LODWORD(delegate2) = [contact isSuggestedMe];
 
-  if (v11)
+  if (delegate2)
   {
     v20 = 0;
-    [v10 setMeContact:v6 error:&v20];
+    [contactStore setMeContact:contactCopy error:&v20];
     v14 = v20;
     v15 = v14;
     if (v14)
@@ -41,50 +41,50 @@
     }
   }
 
-  v16 = [(CNContactAction *)self delegate];
-  v17 = v16;
-  if (!v6)
+  delegate3 = [(CNContactAction *)self delegate];
+  mEMORY[0x1E695CD50] = delegate3;
+  if (!contactCopy)
   {
-    [v16 actionWasCanceled:self];
+    [delegate3 actionWasCanceled:self];
     goto LABEL_9;
   }
 
-  [v16 actionDidFinish:self];
+  [delegate3 actionDidFinish:self];
 
-  v18 = [(CNContactAction *)self contact];
-  v19 = [v18 isSuggested];
+  contact2 = [(CNContactAction *)self contact];
+  isSuggested = [contact2 isSuggested];
 
-  if (v19)
+  if (isSuggested)
   {
-    v17 = [MEMORY[0x1E695CD50] sharedNotifier];
-    [v17 didSaveChangesSuccessfully:1 fromContactStore:v10 requestIdentifier:0];
+    mEMORY[0x1E695CD50] = [MEMORY[0x1E695CD50] sharedNotifier];
+    [mEMORY[0x1E695CD50] didSaveChangesSuccessfully:1 fromContactStore:contactStore requestIdentifier:0];
 LABEL_9:
   }
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
-  v14 = [(CNContactAction *)self contact];
-  v5 = [CNContactViewController viewControllerForNewContact:v14];
-  v6 = [(CNContactAction *)self delegate];
-  v7 = [v6 contactViewCache];
-  v8 = [v7 contactStore];
-  [v5 setContactStore:v8];
+  senderCopy = sender;
+  contact = [(CNContactAction *)self contact];
+  v5 = [CNContactViewController viewControllerForNewContact:contact];
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
+  [v5 setContactStore:contactStore];
 
   [v5 setDelegate:self];
   [v5 loadView];
-  v9 = [(CNContactAction *)self delegate];
-  v10 = [v5 contentViewController];
-  [v9 action:self prepareChildContactViewController:v10 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  contentViewController = [v5 contentViewController];
+  [delegate2 action:self prepareChildContactViewController:contentViewController sender:self];
 
   [(CNContactCreateNewContactAction *)self setCreatedContact:0];
   v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
-  v12 = [v11 navigationBar];
-  [v12 _cnui_applyContactStyle];
+  navigationBar = [v11 navigationBar];
+  [navigationBar _cnui_applyContactStyle];
 
-  v13 = [(CNContactAction *)self delegate];
-  [v13 action:self presentViewController:v11 sender:v4];
+  delegate3 = [(CNContactAction *)self delegate];
+  [delegate3 action:self presentViewController:v11 sender:senderCopy];
 }
 
 @end

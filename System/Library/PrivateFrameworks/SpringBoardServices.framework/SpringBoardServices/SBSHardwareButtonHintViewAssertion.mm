@@ -1,30 +1,30 @@
 @interface SBSHardwareButtonHintViewAssertion
-- (SBSHardwareButtonHintViewAssertion)initWithButtonKind:(int64_t)a3 assertionName:(id)a4 reason:(id)a5 receiveRight:(id)a6;
-- (void)setContentVisibility:(int64_t)a3 animationSettings:(id)a4;
+- (SBSHardwareButtonHintViewAssertion)initWithButtonKind:(int64_t)kind assertionName:(id)name reason:(id)reason receiveRight:(id)right;
+- (void)setContentVisibility:(int64_t)visibility animationSettings:(id)settings;
 @end
 
 @implementation SBSHardwareButtonHintViewAssertion
 
-- (SBSHardwareButtonHintViewAssertion)initWithButtonKind:(int64_t)a3 assertionName:(id)a4 reason:(id)a5 receiveRight:(id)a6
+- (SBSHardwareButtonHintViewAssertion)initWithButtonKind:(int64_t)kind assertionName:(id)name reason:(id)reason receiveRight:(id)right
 {
   v8.receiver = self;
   v8.super_class = SBSHardwareButtonHintViewAssertion;
-  result = [(SBSAssertion *)&v8 initWithAssertionName:a4 reason:a5 receiveRight:a6];
+  result = [(SBSAssertion *)&v8 initWithAssertionName:name reason:reason receiveRight:right];
   if (result)
   {
-    result->_buttonKind = a3;
+    result->_buttonKind = kind;
   }
 
   return result;
 }
 
-- (void)setContentVisibility:(int64_t)a3 animationSettings:(id)a4
+- (void)setContentVisibility:(int64_t)visibility animationSettings:(id)settings
 {
-  v7 = a4;
+  settingsCopy = settings;
   if ([(SBSAssertion *)self isValid])
   {
     v6 = objc_alloc_init(SBSHardwareButtonService);
-    [(SBSHardwareButtonService *)v6 updateHintViewContentVisibility:a3 forButton:self->_buttonKind animationSettings:v7];
+    [(SBSHardwareButtonService *)v6 updateHintViewContentVisibility:visibility forButton:self->_buttonKind animationSettings:settingsCopy];
   }
 }
 

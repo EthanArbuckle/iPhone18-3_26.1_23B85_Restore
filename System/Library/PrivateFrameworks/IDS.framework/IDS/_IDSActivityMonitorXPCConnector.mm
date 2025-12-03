@@ -1,22 +1,22 @@
 @interface _IDSActivityMonitorXPCConnector
 + (id)weakSharedInstance;
-- (_IDSActivityMonitorXPCConnector)initWithSyncDaemonControllerBuilder:(id)a3 daemonControllerBuilder:(id)a4;
+- (_IDSActivityMonitorXPCConnector)initWithSyncDaemonControllerBuilder:(id)builder daemonControllerBuilder:(id)controllerBuilder;
 - (void)_handleInterruption;
-- (void)_updateActivity:(id)a3 isSupported:(BOOL)a4;
-- (void)addListener:(id)a3 forTopic:(id)a4;
+- (void)_updateActivity:(id)activity isSupported:(BOOL)supported;
+- (void)addListener:(id)listener forTopic:(id)topic;
 - (void)dealloc;
-- (void)handleIncomingUpdate:(id)a3 onActivity:(id)a4 completion:(id)a5;
-- (void)performAction:(id)a3 errorHandler:(id)a4;
-- (void)performSyncAction:(id)a3;
-- (void)removeListener:(id)a3 forTopic:(id)a4;
+- (void)handleIncomingUpdate:(id)update onActivity:(id)activity completion:(id)completion;
+- (void)performAction:(id)action errorHandler:(id)handler;
+- (void)performSyncAction:(id)action;
+- (void)removeListener:(id)listener forTopic:(id)topic;
 @end
 
 @implementation _IDSActivityMonitorXPCConnector
 
 + (id)weakSharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_1EAEDC050);
 
   if (WeakRetained)
@@ -32,25 +32,25 @@
     objc_storeWeak(&qword_1EAEDC050, v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (_IDSActivityMonitorXPCConnector)initWithSyncDaemonControllerBuilder:(id)a3 daemonControllerBuilder:(id)a4
+- (_IDSActivityMonitorXPCConnector)initWithSyncDaemonControllerBuilder:(id)builder daemonControllerBuilder:(id)controllerBuilder
 {
-  v6 = a3;
-  v7 = a4;
+  builderCopy = builder;
+  controllerBuilderCopy = controllerBuilder;
   v14.receiver = self;
   v14.super_class = _IDSActivityMonitorXPCConnector;
   v8 = [(_IDSActivityMonitorXPCConnector *)&v14 init];
   if (v8)
   {
-    v9 = MEMORY[0x19A8BBEF0](v7);
+    v9 = MEMORY[0x19A8BBEF0](controllerBuilderCopy);
     daemonControllerBuilder = v8->_daemonControllerBuilder;
     v8->_daemonControllerBuilder = v9;
 
-    v11 = MEMORY[0x19A8BBEF0](v6);
+    v11 = MEMORY[0x19A8BBEF0](builderCopy);
     syncDaemonControllerBuilder = v8->_syncDaemonControllerBuilder;
     v8->_syncDaemonControllerBuilder = v11;
   }
@@ -66,16 +66,16 @@
   [(_IDSActivityMonitorXPCConnector *)&v3 dealloc];
 }
 
-- (void)performSyncAction:(id)a3
+- (void)performSyncAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   syncDaemonController = self->_syncDaemonController;
   if (!syncDaemonController)
   {
     syncDaemonControllerBuilder = self->_syncDaemonControllerBuilder;
     v7 = +[IDSInternalQueueController sharedInstance];
-    v8 = [v7 queue];
-    v9 = syncDaemonControllerBuilder[2](syncDaemonControllerBuilder, v8);
+    queue = [v7 queue];
+    v9 = syncDaemonControllerBuilder[2](syncDaemonControllerBuilder, queue);
     v10 = self->_syncDaemonController;
     self->_syncDaemonController = v9;
 
@@ -99,10 +99,10 @@
     v12 = self->_syncDaemonController;
     self->_syncDaemonController = 0;
 
-    v13 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_ERROR))
     {
-      sub_195B44E84(v17, v13);
+      sub_195B44E84(v17, registration);
     }
 
     v11 = 0;
@@ -114,22 +114,22 @@
     v14 = 0;
   }
 
-  v4[2](v4, v11, v14);
+  actionCopy[2](actionCopy, v11, v14);
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)performAction:(id)a3 errorHandler:(id)a4
+- (void)performAction:(id)action errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   daemonController = self->_daemonController;
   if (!daemonController)
   {
     daemonControllerBuilder = self->_daemonControllerBuilder;
     v10 = +[IDSInternalQueueController sharedInstance];
-    v11 = [v10 queue];
-    v12 = daemonControllerBuilder[2](daemonControllerBuilder, v11);
+    queue = [v10 queue];
+    v12 = daemonControllerBuilder[2](daemonControllerBuilder, queue);
     v13 = self->_daemonController;
     self->_daemonController = v12;
 
@@ -150,17 +150,17 @@
   v17[1] = 3221225472;
   v17[2] = sub_195B20068;
   v17[3] = &unk_1E743FC78;
-  v18 = v7;
-  v19 = v6;
-  v15 = v6;
-  v16 = v7;
+  v18 = handlerCopy;
+  v19 = actionCopy;
+  v15 = actionCopy;
+  v16 = handlerCopy;
   [(IDSXPCDaemonController *)daemonController performTask:v17];
 }
 
-- (void)addListener:(id)a3 forTopic:(id)a4
+- (void)addListener:(id)listener forTopic:(id)topic
 {
-  v12 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  topicCopy = topic;
   listenersByActivity = self->_listenersByActivity;
   if (!listenersByActivity)
   {
@@ -171,38 +171,38 @@
     listenersByActivity = self->_listenersByActivity;
   }
 
-  v10 = [(NSMutableDictionary *)listenersByActivity objectForKeyedSubscript:v6];
-  if (!v10)
+  weakObjectsHashTable = [(NSMutableDictionary *)listenersByActivity objectForKeyedSubscript:topicCopy];
+  if (!weakObjectsHashTable)
   {
     v11 = self->_listenersByActivity;
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v6];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(NSMutableDictionary *)v11 setObject:weakObjectsHashTable forKeyedSubscript:topicCopy];
   }
 
-  [v10 addObject:v12];
-  if ([v10 count] == 1)
+  [weakObjectsHashTable addObject:listenerCopy];
+  if ([weakObjectsHashTable count] == 1)
   {
-    [(_IDSActivityMonitorXPCConnector *)self _updateActivity:v6 isSupported:1];
+    [(_IDSActivityMonitorXPCConnector *)self _updateActivity:topicCopy isSupported:1];
   }
 }
 
-- (void)removeListener:(id)a3 forTopic:(id)a4
+- (void)removeListener:(id)listener forTopic:(id)topic
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_listenersByActivity objectForKeyedSubscript:v6];
+  listenerCopy = listener;
+  topicCopy = topic;
+  v7 = [(NSMutableDictionary *)self->_listenersByActivity objectForKeyedSubscript:topicCopy];
   v8 = v7;
-  if (v7 && [v7 containsObject:v10])
+  if (v7 && [v7 containsObject:listenerCopy])
   {
     if ([v8 count] == 1)
     {
-      [(NSMutableDictionary *)self->_listenersByActivity setObject:0 forKeyedSubscript:v6];
-      [(_IDSActivityMonitorXPCConnector *)self _updateActivity:v6 isSupported:0];
+      [(NSMutableDictionary *)self->_listenersByActivity setObject:0 forKeyedSubscript:topicCopy];
+      [(_IDSActivityMonitorXPCConnector *)self _updateActivity:topicCopy isSupported:0];
     }
 
     else
     {
-      [v8 removeObject:v10];
+      [v8 removeObject:listenerCopy];
     }
 
     if (![(NSMutableDictionary *)self->_listenersByActivity count])
@@ -249,17 +249,17 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateActivity:(id)a3 isSupported:(BOOL)a4
+- (void)_updateActivity:(id)activity isSupported:(BOOL)supported
 {
-  v6 = a3;
+  activityCopy = activity;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B2054C;
   v8[3] = &unk_1E74435D8;
   objc_copyWeak(&v10, &location);
-  v11 = a4;
-  v7 = v6;
+  supportedCopy = supported;
+  v7 = activityCopy;
   v9 = v7;
   [(_IDSActivityMonitorXPCConnector *)self performAction:v8 errorHandler:&unk_1F09E7540];
 
@@ -267,22 +267,22 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleIncomingUpdate:(id)a3 onActivity:(id)a4 completion:(id)a5
+- (void)handleIncomingUpdate:(id)update onActivity:(id)activity completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  block = a5;
-  v10 = [(_IDSActivityMonitorXPCConnector *)self listenersByActivity];
-  v11 = [v10 objectForKeyedSubscript:v9];
-  v12 = [v11 allObjects];
+  updateCopy = update;
+  activityCopy = activity;
+  block = completion;
+  listenersByActivity = [(_IDSActivityMonitorXPCConnector *)self listenersByActivity];
+  v11 = [listenersByActivity objectForKeyedSubscript:activityCopy];
+  allObjects = [v11 allObjects];
 
   v13 = dispatch_group_create();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v12;
+  obj = allObjects;
   v14 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
@@ -305,7 +305,7 @@
         v24[2] = sub_195B207E0;
         v24[3] = &unk_1E743E878;
         v25 = v13;
-        [v18 handleIncomingUpdate:v8 onActivity:v9 completion:v24];
+        [v18 handleIncomingUpdate:updateCopy onActivity:activityCopy completion:v24];
 
         ++v17;
       }
@@ -318,8 +318,8 @@
   }
 
   v19 = +[IDSInternalQueueController sharedInstance];
-  v20 = [v19 queue];
-  dispatch_group_notify(v13, v20, block);
+  queue = [v19 queue];
+  dispatch_group_notify(v13, queue, block);
 
   v21 = *MEMORY[0x1E69E9840];
 }

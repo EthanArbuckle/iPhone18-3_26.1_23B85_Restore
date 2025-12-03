@@ -2,9 +2,9 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (_TtC14HomeKitMetrics23ProcessExitInfoLogEvent)init;
-- (_TtC14HomeKitMetrics23ProcessExitInfoLogEvent)initWithStartTime:(double)a3;
+- (_TtC14HomeKitMetrics23ProcessExitInfoLogEvent)initWithStartTime:(double)time;
 - (unint64_t)coreAnalyticsEventOptions;
-- (void)setCoreAnalyticsEventOptions:(unint64_t)a3;
+- (void)setCoreAnalyticsEventOptions:(unint64_t)options;
 @end
 
 @implementation ProcessExitInfoLogEvent
@@ -21,7 +21,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B0B86F0();
 
   sub_22B0A1440();
@@ -37,11 +37,11 @@
   return *(self + v3);
 }
 
-- (void)setCoreAnalyticsEventOptions:(unint64_t)a3
+- (void)setCoreAnalyticsEventOptions:(unint64_t)options
 {
   v5 = OBJC_IVAR____TtC14HomeKitMetrics23ProcessExitInfoLogEvent_coreAnalyticsEventOptions;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = options;
 }
 
 - (_TtC14HomeKitMetrics23ProcessExitInfoLogEvent)init
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (_TtC14HomeKitMetrics23ProcessExitInfoLogEvent)initWithStartTime:(double)a3
+- (_TtC14HomeKitMetrics23ProcessExitInfoLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

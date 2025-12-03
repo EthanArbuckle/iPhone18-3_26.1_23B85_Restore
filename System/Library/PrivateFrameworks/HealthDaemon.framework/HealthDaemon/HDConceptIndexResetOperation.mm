@@ -1,7 +1,7 @@
 @interface HDConceptIndexResetOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
 - (HDConceptIndexResetOperation)init;
-- (HDConceptIndexResetOperation)initWithCoder:(id)a3;
+- (HDConceptIndexResetOperation)initWithCoder:(id)coder;
 @end
 
 @implementation HDConceptIndexResetOperation
@@ -13,19 +13,19 @@
   return [(HDConceptIndexResetOperation *)&v3 init];
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 database];
+  profileCopy = profile;
+  database = [profileCopy database];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__HDConceptIndexResetOperation_performWithProfile_transaction_error___block_invoke;
   v10[3] = &unk_278616048;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a5) = [(HDHealthEntity *)HDConceptIndexEntity performWriteTransactionWithHealthDatabase:v7 error:a5 block:v10];
+  v11 = profileCopy;
+  v8 = profileCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDConceptIndexEntity performWriteTransactionWithHealthDatabase:database error:error block:v10];
 
-  return a5;
+  return error;
 }
 
 BOOL __69__HDConceptIndexResetOperation_performWithProfile_transaction_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -71,7 +71,7 @@ LABEL_9:
   return v10;
 }
 
-- (HDConceptIndexResetOperation)initWithCoder:(id)a3
+- (HDConceptIndexResetOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HDConceptIndexResetOperation;

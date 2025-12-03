@@ -1,15 +1,15 @@
 @interface SKUIStarRatingQueue
-- (SKUIStarRatingQueue)initWithReviewConfiguration:(id)a3;
+- (SKUIStarRatingQueue)initWithReviewConfiguration:(id)configuration;
 - (UIWindow)window;
-- (void)_setRating:(int64_t)a3 forItemID:(id)a4 account:(id)a5 completionBlock:(id)a6;
-- (void)setRating:(int64_t)a3 forItemID:(id)a4 completionBlock:(id)a5;
+- (void)_setRating:(int64_t)rating forItemID:(id)d account:(id)account completionBlock:(id)block;
+- (void)setRating:(int64_t)rating forItemID:(id)d completionBlock:(id)block;
 @end
 
 @implementation SKUIStarRatingQueue
 
-- (SKUIStarRatingQueue)initWithReviewConfiguration:(id)a3
+- (SKUIStarRatingQueue)initWithReviewConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIStarRatingQueue initWithReviewConfiguration:];
@@ -21,22 +21,22 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reviewConfiguration, a3);
+    objc_storeStrong(&v6->_reviewConfiguration, configuration);
   }
 
   return v7;
 }
 
-- (void)setRating:(int64_t)a3 forItemID:(id)a4 completionBlock:(id)a5
+- (void)setRating:(int64_t)rating forItemID:(id)d completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D69A20] defaultStore];
-  v11 = [v10 activeAccount];
+  dCopy = d;
+  blockCopy = block;
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v11)
+  if (activeAccount)
   {
-    [(SKUIStarRatingQueue *)self _setRating:a3 forItemID:v8 account:v11 completionBlock:v9];
+    [(SKUIStarRatingQueue *)self _setRating:rating forItemID:dCopy account:activeAccount completionBlock:blockCopy];
   }
 
   else
@@ -47,9 +47,9 @@
     v13[2] = __59__SKUIStarRatingQueue_setRating_forItemID_completionBlock___block_invoke;
     v13[3] = &unk_2781FF208;
     v13[4] = self;
-    v16 = a3;
-    v14 = v8;
-    v15 = v9;
+    ratingCopy = rating;
+    v14 = dCopy;
+    v15 = blockCopy;
     [v12 startWithAuthenticateResponseBlock:v13];
   }
 }
@@ -76,13 +76,13 @@ void __59__SKUIStarRatingQueue_setRating_forItemID_completionBlock___block_invok
   }
 }
 
-- (void)_setRating:(int64_t)a3 forItemID:(id)a4 account:(id)a5 completionBlock:(id)a6
+- (void)_setRating:(int64_t)rating forItemID:(id)d account:(id)account completionBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  accountCopy = account;
+  blockCopy = block;
   v13 = *MEMORY[0x277D767B0];
-  v14 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   v25[0] = MEMORY[0x277D85DD0];
@@ -90,21 +90,21 @@ void __59__SKUIStarRatingQueue_setRating_forItemID_completionBlock___block_invok
   v25[2] = __68__SKUIStarRatingQueue__setRating_forItemID_account_completionBlock___block_invoke;
   v25[3] = &__block_descriptor_40_e5_v8__0l;
   v25[4] = v13;
-  v17 = [v14 beginBackgroundTaskWithName:v16 expirationHandler:v25];
+  v17 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:v16 expirationHandler:v25];
 
-  v18 = [[SKUIPostRatingOperation alloc] initWithRating:a3 forItemID:v10 reviewConfiguration:self->_reviewConfiguration];
+  v18 = [[SKUIPostRatingOperation alloc] initWithRating:rating forItemID:dCopy reviewConfiguration:self->_reviewConfiguration];
   objc_initWeak(&location, v18);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __68__SKUIStarRatingQueue__setRating_forItemID_account_completionBlock___block_invoke_2;
   v21[3] = &unk_2781FF230;
   objc_copyWeak(v23, &location);
-  v19 = v12;
+  v19 = blockCopy;
   v22 = v19;
   v23[1] = v17;
   [(SKUIPostRatingOperation *)v18 setCompletionBlock:v21];
-  v20 = [MEMORY[0x277D7FD20] mainQueue];
-  [v20 addOperation:v18];
+  mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+  [mainQueue addOperation:v18];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);

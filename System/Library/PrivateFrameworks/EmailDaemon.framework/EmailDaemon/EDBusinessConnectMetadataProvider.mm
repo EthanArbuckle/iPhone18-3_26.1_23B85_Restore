@@ -1,8 +1,8 @@
 @interface EDBusinessConnectMetadataProvider
 + (id)sharedInstance;
 - (EDBusinessConnectMetadataProvider)init;
-- (id)cachedBusinessMetadataForEmail:(id)a3 error:(id *)a4;
-- (void)fetchBusinessMetadataForEmails:(id)a3 perItemCallback:(id)a4 completion:(id)a5;
+- (id)cachedBusinessMetadataForEmail:(id)email error:(id *)error;
+- (void)fetchBusinessMetadataForEmails:(id)emails perItemCallback:(id)callback completion:(id)completion;
 @end
 
 @implementation EDBusinessConnectMetadataProvider
@@ -59,22 +59,22 @@ void __51__EDBusinessConnectMetadataProvider_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)cachedBusinessMetadataForEmail:(id)a3 error:(id *)a4
+- (id)cachedBusinessMetadataForEmail:(id)email error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EDBusinessConnectMetadataProvider *)self businessQueryService];
-  v8 = [v7 cachedBusinessMetadataForEmail:v6 error:a4];
+  emailCopy = email;
+  businessQueryService = [(EDBusinessConnectMetadataProvider *)self businessQueryService];
+  v8 = [businessQueryService cachedBusinessMetadataForEmail:emailCopy error:error];
 
   return v8;
 }
 
-- (void)fetchBusinessMetadataForEmails:(id)a3 perItemCallback:(id)a4 completion:(id)a5
+- (void)fetchBusinessMetadataForEmails:(id)emails perItemCallback:(id)callback completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(EDBusinessConnectMetadataProvider *)self businessQueryService];
-  [v10 fetchBusinessMetadataForEmails:v11 perItemCallback:v8 completion:v9];
+  emailsCopy = emails;
+  callbackCopy = callback;
+  completionCopy = completion;
+  businessQueryService = [(EDBusinessConnectMetadataProvider *)self businessQueryService];
+  [businessQueryService fetchBusinessMetadataForEmails:emailsCopy perItemCallback:callbackCopy completion:completionCopy];
 }
 
 @end

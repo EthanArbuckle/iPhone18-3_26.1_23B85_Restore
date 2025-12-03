@@ -1,17 +1,17 @@
 @interface SRUIFCardLoader
-- (BOOL)loadCard:(id)a3 withCompletionHandler:(id)a4;
+- (BOOL)loadCard:(id)card withCompletionHandler:(id)handler;
 - (SRUIFCardLoaderDelegate)delegate;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation SRUIFCardLoader
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(SRUIFCardLoader *)self _registerWithSearchFoundation];
     }
@@ -23,25 +23,25 @@
   }
 }
 
-- (BOOL)loadCard:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)loadCard:(id)card withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  cardCopy = card;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
-  if ([v6 type] != 3 || objc_msgSend(v6, "source") != 2 || (-[SRUIFCardLoader delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "cardLoader:shouldLoadCard:", self, v6), v8, !v9))
+  if ([cardCopy type] != 3 || objc_msgSend(cardCopy, "source") != 2 || (-[SRUIFCardLoader delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "cardLoader:shouldLoadCard:", self, cardCopy), v8, !v9))
   {
-    v7[2](v7, v6, 0);
+    handlerCopy[2](handlerCopy, cardCopy, 0);
 LABEL_7:
     v11 = 0;
     goto LABEL_8;
   }
 
-  v10 = [(SRUIFCardLoader *)self delegate];
-  v11 = [v10 cardLoader:self loadCard:v6 withCompletionHandler:v7];
+  delegate = [(SRUIFCardLoader *)self delegate];
+  v11 = [delegate cardLoader:self loadCard:cardCopy withCompletionHandler:handlerCopy];
 
 LABEL_8:
   return v11;

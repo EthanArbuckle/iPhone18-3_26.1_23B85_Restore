@@ -1,24 +1,24 @@
 @interface ParkedCarManager
 + (id)sharedManager;
 - (ParkedCarManager)init;
-- (void)_authDidChange:(id)a3;
+- (void)_authDidChange:(id)change;
 - (void)_debug_showParkedCarNotification;
 - (void)_debug_showParkedCarReplacementNotification;
 - (void)_updateParkedCar;
 - (void)_updateParkedCarMapItem;
-- (void)addParkedCarAtLocation:(id)a3;
-- (void)addParkedCarObserver:(id)a3;
+- (void)addParkedCarAtLocation:(id)location;
+- (void)addParkedCarObserver:(id)observer;
 - (void)dealloc;
-- (void)fetchParkedCar:(id)a3;
-- (void)informCoreRoutineOfEngagementWithParkedCar:(id)a3;
-- (void)removeImageForParkedCar:(id)a3;
+- (void)fetchParkedCar:(id)car;
+- (void)informCoreRoutineOfEngagementWithParkedCar:(id)car;
+- (void)removeImageForParkedCar:(id)car;
 - (void)removeParkedCar;
-- (void)resolveMapItemFromVehicleEvent:(id)a3 overrideCoordinate:(CLLocationCoordinate2D)a4 referenceFrame:(int)a5 callback:(id)a6;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3 referenceFrame:(int)a4 forParkedCar:(id)a5;
-- (void)setImage:(id)a3 forParkedCar:(id)a4;
-- (void)setNotes:(id)a3 forParkedCar:(id)a4;
-- (void)setParkedCarWithMapItem:(id)a3 overrideCoordinate:(CLLocationCoordinate2D)a4 referenceFrame:(int)a5 vehicleEvent:(id)a6;
-- (void)updateParkedCarWithVehicleEvent:(id)a3 coordinate:(CLLocationCoordinate2D)a4 referenceFrame:(int)a5;
+- (void)resolveMapItemFromVehicleEvent:(id)event overrideCoordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame callback:(id)callback;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame forParkedCar:(id)car;
+- (void)setImage:(id)image forParkedCar:(id)car;
+- (void)setNotes:(id)notes forParkedCar:(id)car;
+- (void)setParkedCarWithMapItem:(id)item overrideCoordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame vehicleEvent:(id)event;
+- (void)updateParkedCarWithVehicleEvent:(id)event coordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame;
 @end
 
 @implementation ParkedCarManager
@@ -49,9 +49,9 @@
     [v4 addObserver:v2 selector:"_willResume:" name:MKApplicationStateWillEnterForegroundNotification object:0];
 
     v5 = MapsSuggestionsResourceDepotForMapsProcess();
-    v6 = [v5 oneRoutine];
+    oneRoutine = [v5 oneRoutine];
     routine = v2->_routine;
-    v2->_routine = v6;
+    v2->_routine = oneRoutine;
 
     [(MapsSuggestionsRoutine *)v2->_routine addParkedCarObserver:v2];
     [(ParkedCarManager *)v2 _updateParkedCar];
@@ -94,72 +94,72 @@
 - (void)_debug_showParkedCarReplacementNotification
 {
   v5 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-  v3 = [(ParkedCar *)self->_parkedCar vehicleEvent];
-  v4 = [(ParkedCar *)self->_parkedCar vehicleEvent];
-  [v5 showParkedCarReplacementBulletinForEvent:v3 replacingEvent:v4];
+  vehicleEvent = [(ParkedCar *)self->_parkedCar vehicleEvent];
+  vehicleEvent2 = [(ParkedCar *)self->_parkedCar vehicleEvent];
+  [v5 showParkedCarReplacementBulletinForEvent:vehicleEvent replacingEvent:vehicleEvent2];
 }
 
 - (void)_debug_showParkedCarNotification
 {
   v4 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-  v3 = [(ParkedCar *)self->_parkedCar vehicleEvent];
-  [v4 showParkedCarBulletinForEvent:v3];
+  vehicleEvent = [(ParkedCar *)self->_parkedCar vehicleEvent];
+  [v4 showParkedCarBulletinForEvent:vehicleEvent];
 }
 
-- (void)addParkedCarAtLocation:(id)a3
+- (void)addParkedCarAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = +[RTRoutineManager defaultManager];
-  [v5 vehicleEventAtLocation:v4 notes:0];
+  [v5 vehicleEventAtLocation:locationCopy notes:0];
 
   [(ParkedCarManager *)self _updateParkedCar];
 }
 
-- (void)informCoreRoutineOfEngagementWithParkedCar:(id)a3
+- (void)informCoreRoutineOfEngagementWithParkedCar:(id)car
 {
-  v3 = [a3 vehicleEvent];
-  if (v3)
+  vehicleEvent = [car vehicleEvent];
+  if (vehicleEvent)
   {
-    v6 = v3;
+    v6 = vehicleEvent;
     v4 = +[RTRoutineManager defaultManager];
-    v5 = [v6 identifier];
-    [v4 engageInVehicleEventWithIdentifier:v5];
+    identifier = [v6 identifier];
+    [v4 engageInVehicleEventWithIdentifier:identifier];
 
-    v3 = v6;
+    vehicleEvent = v6;
   }
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3 referenceFrame:(int)a4 forParkedCar:(id)a5
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame forParkedCar:(id)car
 {
-  v5 = *&a4;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a5;
-  [v9 setCoordinate:{latitude, longitude}];
-  [v9 setReferenceFrame:v5];
-  [v9 setMapItem:0];
-  v10 = [v9 vehicleEvent];
-  if (v10)
+  v5 = *&frame;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  carCopy = car;
+  [carCopy setCoordinate:{latitude, longitude}];
+  [carCopy setReferenceFrame:v5];
+  [carCopy setMapItem:0];
+  vehicleEvent = [carCopy vehicleEvent];
+  if (vehicleEvent)
   {
     v11 = [CLLocation alloc];
     v12 = +[NSDate date];
     v13 = [v11 initWithCoordinate:v12 altitude:v5 horizontalAccuracy:latitude verticalAccuracy:longitude timestamp:0.0 referenceFrame:{0.0, -1.0}];
 
     v14 = +[RTRoutineManager defaultManager];
-    v15 = [v10 identifier];
-    [v14 updateVehicleEventWithIdentifier:v15 geoMapItem:0];
+    identifier = [vehicleEvent identifier];
+    [v14 updateVehicleEventWithIdentifier:identifier geoMapItem:0];
 
     v16 = +[RTRoutineManager defaultManager];
-    v17 = [v10 identifier];
-    [v16 updateVehicleEventWithIdentifier:v17 location:v13];
+    identifier2 = [vehicleEvent identifier];
+    [v16 updateVehicleEventWithIdentifier:identifier2 location:v13];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = [(NSHashTable *)self->_observers allObjects];
-  v19 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v19 = [allObjects countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v19)
   {
     v20 = v19;
@@ -171,20 +171,20 @@
       {
         if (*v25 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allObjects);
         }
 
         v23 = *(*(&v24 + 1) + 8 * v22);
         if (objc_opt_respondsToSelector())
         {
-          [v23 parkedCarManager:self didUpdateParkedCar:v9];
+          [v23 parkedCarManager:self didUpdateParkedCar:carCopy];
         }
 
         v22 = v22 + 1;
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v20 = [allObjects countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v20);
@@ -193,26 +193,26 @@
   [(ParkedCarManager *)self _updateParkedCarMapItem];
 }
 
-- (void)setNotes:(id)a3 forParkedCar:(id)a4
+- (void)setNotes:(id)notes forParkedCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 vehicleEvent];
-  if (v8)
+  notesCopy = notes;
+  carCopy = car;
+  vehicleEvent = [carCopy vehicleEvent];
+  if (vehicleEvent)
   {
     v9 = +[RTRoutineManager defaultManager];
-    v10 = [v8 identifier];
-    [v9 updateVehicleEventWithIdentifier:v10 notes:v6];
+    identifier = [vehicleEvent identifier];
+    [v9 updateVehicleEventWithIdentifier:identifier notes:notesCopy];
   }
 
-  v17 = v6;
-  [v7 setNotes:v6];
+  v17 = notesCopy;
+  [carCopy setNotes:notesCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(NSHashTable *)self->_observers allObjects];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v12 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -224,20 +224,20 @@
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v16 = *(*(&v18 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 parkedCarManager:self didUpdateParkedCar:v7];
+          [v16 parkedCarManager:self didUpdateParkedCar:carCopy];
         }
 
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
@@ -246,12 +246,12 @@
   [(ParkedCarManager *)self _updateParkedCar];
 }
 
-- (void)setImage:(id)a3 forParkedCar:(id)a4
+- (void)setImage:(id)image forParkedCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 vehicleEvent];
-  if (v8)
+  imageCopy = image;
+  carCopy = car;
+  vehicleEvent = [carCopy vehicleEvent];
+  if (vehicleEvent)
   {
     v9 = +[UIScreen mainScreen];
     [v9 bounds];
@@ -269,20 +269,20 @@
       v17 = v19;
     }
 
-    [v6 size];
+    [imageCopy size];
     v21 = v20;
-    [v6 size];
+    [imageCopy size];
     v23 = v22;
-    [v6 size];
+    [imageCopy size];
     if (v21 <= v23)
     {
       v24 = v25;
     }
 
     v26 = fmax(v24 * 0.5 / v17, 1.0);
-    [v6 size];
+    [imageCopy size];
     v28 = v27 / v26;
-    [v6 size];
+    [imageCopy size];
     v51.size.height = v29 / v26;
     v51.origin.x = 0.0;
     v51.origin.y = 0.0;
@@ -291,15 +291,15 @@
     width = v52.size.width;
     height = v52.size.height;
     v32 = objc_autoreleasePoolPush();
-    [v6 scale];
+    [imageCopy scale];
     v34 = v33;
     v50.width = width;
     v50.height = height;
     UIGraphicsBeginImageContextWithOptions(v50, 1, v34);
-    [v6 drawInRect:{0.0, 0.0, width, height}];
+    [imageCopy drawInRect:{0.0, 0.0, width, height}];
     v35 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    if (v6)
+    if (imageCopy)
     {
       v36 = UIImageJPEGRepresentation(v35, 0.699999988);
     }
@@ -310,19 +310,19 @@
     }
 
     v37 = +[RTRoutineManager defaultManager];
-    v38 = [v8 identifier];
-    [v37 updateVehicleEventWithIdentifier:v38 photo:v36];
+    identifier = [vehicleEvent identifier];
+    [v37 updateVehicleEventWithIdentifier:identifier photo:v36];
 
     objc_autoreleasePoolPop(v32);
   }
 
-  [v7 setImage:v6];
+  [carCopy setImage:imageCopy];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v39 = [(NSHashTable *)self->_observers allObjects];
-  v40 = [v39 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v40 = [allObjects countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v40)
   {
     v41 = v40;
@@ -333,17 +333,17 @@
       {
         if (*v46 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(allObjects);
         }
 
         v44 = *(*(&v45 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v44 parkedCarManager:self didUpdateParkedCar:v7];
+          [v44 parkedCarManager:self didUpdateParkedCar:carCopy];
         }
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v41 = [allObjects countByEnumeratingWithState:&v45 objects:v49 count:16];
     }
 
     while (v41);
@@ -352,24 +352,24 @@
   [(ParkedCarManager *)self _updateParkedCar];
 }
 
-- (void)removeImageForParkedCar:(id)a3
+- (void)removeImageForParkedCar:(id)car
 {
-  v4 = a3;
-  v5 = [v4 vehicleEvent];
-  if (v5)
+  carCopy = car;
+  vehicleEvent = [carCopy vehicleEvent];
+  if (vehicleEvent)
   {
     v6 = +[RTRoutineManager defaultManager];
-    v7 = [v5 identifier];
-    [v6 updateVehicleEventWithIdentifier:v7 photo:0];
+    identifier = [vehicleEvent identifier];
+    [v6 updateVehicleEventWithIdentifier:identifier photo:0];
   }
 
-  [v4 setImage:0];
+  [carCopy setImage:0];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSHashTable *)self->_observers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -381,20 +381,20 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 parkedCarManager:self didUpdateParkedCar:v4];
+          [v13 parkedCarManager:self didUpdateParkedCar:carCopy];
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -443,27 +443,27 @@
   objc_destroyWeak(&location);
 }
 
-- (void)resolveMapItemFromVehicleEvent:(id)a3 overrideCoordinate:(CLLocationCoordinate2D)a4 referenceFrame:(int)a5 callback:(id)a6
+- (void)resolveMapItemFromVehicleEvent:(id)event overrideCoordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame callback:(id)callback
 {
-  v7 = *&a5;
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v11 = a3;
-  v12 = a6;
-  if (v11)
+  v7 = *&frame;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  eventCopy = event;
+  callbackCopy = callback;
+  if (eventCopy)
   {
     parkedCar = self->_parkedCar;
     if (parkedCar)
     {
-      v14 = [(ParkedCar *)parkedCar vehicleEvent];
-      v15 = [v14 identifier];
-      v16 = [v11 identifier];
-      v17 = [v15 isEqual:v16];
+      vehicleEvent = [(ParkedCar *)parkedCar vehicleEvent];
+      identifier = [vehicleEvent identifier];
+      identifier2 = [eventCopy identifier];
+      v17 = [identifier isEqual:identifier2];
 
       if (v17)
       {
-        [(ParkedCarManager *)self updateParkedCarWithVehicleEvent:v11 coordinate:v7 referenceFrame:latitude, longitude];
-        if (!v12)
+        [(ParkedCarManager *)self updateParkedCarWithVehicleEvent:eventCopy coordinate:v7 referenceFrame:latitude, longitude];
+        if (!callbackCopy)
         {
           goto LABEL_10;
         }
@@ -473,15 +473,15 @@
     }
   }
 
-  v18 = [v11 mapItem];
-  v19 = [v18 geoMapItemHandle];
+  mapItem = [eventCopy mapItem];
+  geoMapItemHandle = [mapItem geoMapItemHandle];
 
-  if (v19)
+  if (geoMapItemHandle)
   {
     objc_initWeak(&location, self);
     v20 = +[GEOMapService sharedService];
-    v21 = [v11 mapItem];
-    v22 = [v21 geoMapItemHandle];
+    mapItem2 = [eventCopy mapItem];
+    geoMapItemHandle2 = [mapItem2 geoMapItemHandle];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100F3FABC;
@@ -490,9 +490,9 @@
     v26[1] = *&latitude;
     v26[2] = *&longitude;
     v27 = v7;
-    v24 = v11;
-    v25 = v12;
-    [v20 resolveMapItemFromHandle:v22 completionHandler:v23];
+    v24 = eventCopy;
+    v25 = callbackCopy;
+    [v20 resolveMapItemFromHandle:geoMapItemHandle2 completionHandler:v23];
 
     objc_destroyWeak(v26);
     objc_destroyWeak(&location);
@@ -500,27 +500,27 @@
 
   else
   {
-    [(ParkedCarManager *)self setParkedCarWithMapItem:0 overrideCoordinate:v7 referenceFrame:v11 vehicleEvent:latitude, longitude];
-    if (v12)
+    [(ParkedCarManager *)self setParkedCarWithMapItem:0 overrideCoordinate:v7 referenceFrame:eventCopy vehicleEvent:latitude, longitude];
+    if (callbackCopy)
     {
 LABEL_9:
-      v12[2](v12);
+      callbackCopy[2](callbackCopy);
     }
   }
 
 LABEL_10:
 }
 
-- (void)setParkedCarWithMapItem:(id)a3 overrideCoordinate:(CLLocationCoordinate2D)a4 referenceFrame:(int)a5 vehicleEvent:(id)a6
+- (void)setParkedCarWithMapItem:(id)item overrideCoordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame vehicleEvent:(id)event
 {
-  v7 = *&a5;
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v11 = a3;
-  v12 = a6;
-  if (v12)
+  v7 = *&frame;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  itemCopy = item;
+  eventCopy = event;
+  if (eventCopy)
   {
-    v13 = [[ParkedCar alloc] initWithVehicleEvent:v12 geoMapItem:v11];
+    v13 = [[ParkedCar alloc] initWithVehicleEvent:eventCopy geoMapItem:itemCopy];
   }
 
   else
@@ -536,12 +536,12 @@ LABEL_10:
     [(ParkedCar *)v13 setReferenceFrame:v7];
   }
 
-  v39 = v12;
+  v39 = eventCopy;
   p_parkedCar = &self->_parkedCar;
   parkedCar = self->_parkedCar;
   if (parkedCar)
   {
-    v38 = v11;
+    v38 = itemCopy;
     v16 = parkedCar;
     v17 = self->_parkedCar;
     self->_parkedCar = 0;
@@ -550,8 +550,8 @@ LABEL_10:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v18 = [(NSHashTable *)self->_observers allObjects];
-    v19 = [v18 countByEnumeratingWithState:&v48 objects:v54 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v19 = [allObjects countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v19)
     {
       v20 = v19;
@@ -562,7 +562,7 @@ LABEL_10:
         {
           if (*v49 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allObjects);
           }
 
           v23 = *(*(&v48 + 1) + 8 * i);
@@ -572,14 +572,14 @@ LABEL_10:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v48 objects:v54 count:16];
+        v20 = [allObjects countByEnumeratingWithState:&v48 objects:v54 count:16];
       }
 
       while (v20);
     }
 
     p_parkedCar = &self->_parkedCar;
-    v11 = v38;
+    itemCopy = v38;
   }
 
   [(GEOMapServiceTicket *)self->_ticket cancel];
@@ -593,8 +593,8 @@ LABEL_10:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v25 = [(NSHashTable *)self->_observers allObjects];
-    v26 = [v25 countByEnumeratingWithState:&v44 objects:v53 count:16];
+    allObjects2 = [(NSHashTable *)self->_observers allObjects];
+    v26 = [allObjects2 countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v26)
     {
       v27 = v26;
@@ -605,7 +605,7 @@ LABEL_10:
         {
           if (*v45 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(allObjects2);
           }
 
           v30 = *(*(&v44 + 1) + 8 * j);
@@ -615,13 +615,13 @@ LABEL_10:
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v44 objects:v53 count:16];
+        v27 = [allObjects2 countByEnumeratingWithState:&v44 objects:v53 count:16];
       }
 
       while (v27);
     }
 
-    if (!v11)
+    if (!itemCopy)
     {
       [(ParkedCarManager *)self _updateParkedCarMapItem];
     }
@@ -660,16 +660,16 @@ LABEL_10:
   }
 }
 
-- (void)updateParkedCarWithVehicleEvent:(id)a3 coordinate:(CLLocationCoordinate2D)a4 referenceFrame:(int)a5
+- (void)updateParkedCarWithVehicleEvent:(id)event coordinate:(CLLocationCoordinate2D)coordinate referenceFrame:(int)frame
 {
-  v5 = *&a5;
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v9 = a3;
+  v5 = *&frame;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  eventCopy = event;
   parkedCar = self->_parkedCar;
-  v11 = [(ParkedCar *)parkedCar mapItem];
-  v12 = [v11 _geoMapItem];
-  [(ParkedCar *)parkedCar updateFromVehicleEvent:v9 geoMapItem:v12];
+  mapItem = [(ParkedCar *)parkedCar mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  [(ParkedCar *)parkedCar updateFromVehicleEvent:eventCopy geoMapItem:_geoMapItem];
 
   v36.latitude = latitude;
   v36.longitude = longitude;
@@ -683,8 +683,8 @@ LABEL_10:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = [(NSHashTable *)self->_observers allObjects];
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v14 = [allObjects countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v14)
   {
     v15 = v14;
@@ -695,7 +695,7 @@ LABEL_10:
       {
         if (*v31 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allObjects);
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
@@ -705,7 +705,7 @@ LABEL_10:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v15 = [allObjects countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v15);
@@ -744,13 +744,13 @@ LABEL_10:
   }
 }
 
-- (void)fetchParkedCar:(id)a3
+- (void)fetchParkedCar:(id)car
 {
-  v4 = a3;
-  if (v4)
+  carCopy = car;
+  if (carCopy)
   {
     fetchHandlers = self->_fetchHandlers;
-    v10 = v4;
+    v10 = carCopy;
     if (!fetchHandlers)
     {
       v6 = +[NSMutableArray array];
@@ -764,34 +764,34 @@ LABEL_10:
     v9 = objc_retainBlock(v8);
     [(NSMutableArray *)fetchHandlers addObject:v9];
 
-    v4 = v10;
+    carCopy = v10;
     if (!self->_isUpdating)
     {
       [(ParkedCarManager *)self _updateParkedCar];
-      v4 = v10;
+      carCopy = v10;
     }
   }
 }
 
-- (void)addParkedCarObserver:(id)a3
+- (void)addParkedCarObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_authDidChange:(id)a3
+- (void)_authDidChange:(id)change
 {
   v4 = +[MKLocationManager sharedLocationManager];
   if ([v4 isAuthorizedForPreciseLocation])

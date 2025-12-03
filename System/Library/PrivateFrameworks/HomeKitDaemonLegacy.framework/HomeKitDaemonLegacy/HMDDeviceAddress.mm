@@ -1,10 +1,10 @@
 @interface HMDDeviceAddress
-+ (id)addressWithIDSIdentifier:(id)a3 idsDestination:(id)a4;
++ (id)addressWithIDSIdentifier:(id)identifier idsDestination:(id)destination;
 + (id)localDeviceIDSIdentifier;
 - (BOOL)isCurrentDevice;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToDeviceAddress:(id)a3;
-- (HMDDeviceAddress)initWithIDSIdentifier:(id)a3 idsDestination:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToDeviceAddress:(id)address;
+- (HMDDeviceAddress)initWithIDSIdentifier:(id)identifier idsDestination:(id)destination;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -13,9 +13,9 @@
 
 - (BOOL)isCurrentDevice
 {
-  v2 = [(HMDDeviceAddress *)self idsIdentifier];
+  idsIdentifier = [(HMDDeviceAddress *)self idsIdentifier];
   v3 = +[HMDDeviceAddress localDeviceIDSIdentifier];
-  v4 = [v2 isEqual:v3];
+  v4 = [idsIdentifier isEqual:v3];
 
   return v4;
 }
@@ -24,39 +24,39 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDDeviceAddress *)self idsIdentifier];
-  v6 = [(HMDDeviceAddress *)self idsDestination];
-  v7 = [v3 stringWithFormat:@"<%@ %@ %{sensitive}@>", v4, v5, v6];
+  idsIdentifier = [(HMDDeviceAddress *)self idsIdentifier];
+  idsDestination = [(HMDDeviceAddress *)self idsDestination];
+  v7 = [v3 stringWithFormat:@"<%@ %@ %{sensitive}@>", v4, idsIdentifier, idsDestination];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDDeviceAddress *)self idsIdentifier];
-  v3 = [v2 hash];
+  idsIdentifier = [(HMDDeviceAddress *)self idsIdentifier];
+  v3 = [idsIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEquivalentToDeviceAddress:(id)a3
+- (BOOL)isEquivalentToDeviceAddress:(id)address
 {
-  if (!a3)
+  if (!address)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(HMDDeviceAddress *)self idsDestination];
-  v6 = [HMDDeviceHandle deviceHandleForDestination:v5];
+  addressCopy = address;
+  idsDestination = [(HMDDeviceAddress *)self idsDestination];
+  v6 = [HMDDeviceHandle deviceHandleForDestination:idsDestination];
 
-  v7 = [v4 idsDestination];
-  v8 = [HMDDeviceHandle deviceHandleForDestination:v7];
+  idsDestination2 = [addressCopy idsDestination];
+  v8 = [HMDDeviceHandle deviceHandleForDestination:idsDestination2];
 
-  v9 = [(HMDDeviceAddress *)self idsIdentifier];
-  v10 = [v4 idsIdentifier];
+  idsIdentifier = [(HMDDeviceAddress *)self idsIdentifier];
+  idsIdentifier2 = [addressCopy idsIdentifier];
 
-  if ([v9 isEqual:v10])
+  if ([idsIdentifier isEqual:idsIdentifier2])
   {
     v11 = [v6 isEqual:v8];
   }
@@ -69,10 +69,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -82,7 +82,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -93,13 +93,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDDeviceAddress *)self idsDestination];
-      v8 = [(HMDDeviceAddress *)v6 idsDestination];
-      if ([v7 isEqualToString:v8])
+      idsDestination = [(HMDDeviceAddress *)self idsDestination];
+      idsDestination2 = [(HMDDeviceAddress *)v6 idsDestination];
+      if ([idsDestination isEqualToString:idsDestination2])
       {
-        v9 = [(HMDDeviceAddress *)self idsIdentifier];
-        v10 = [(HMDDeviceAddress *)v6 idsIdentifier];
-        v11 = [v9 isEqual:v10];
+        idsIdentifier = [(HMDDeviceAddress *)self idsIdentifier];
+        idsIdentifier2 = [(HMDDeviceAddress *)v6 idsIdentifier];
+        v11 = [idsIdentifier isEqual:idsIdentifier2];
       }
 
       else
@@ -117,18 +117,18 @@
   return v11;
 }
 
-- (HMDDeviceAddress)initWithIDSIdentifier:(id)a3 idsDestination:(id)a4
+- (HMDDeviceAddress)initWithIDSIdentifier:(id)identifier idsDestination:(id)destination
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = destinationCopy;
+  if (!destinationCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -141,8 +141,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_idsIdentifier, a3);
-    objc_storeStrong(&v11->_idsDestination, a4);
+    objc_storeStrong(&v10->_idsIdentifier, identifier);
+    objc_storeStrong(&v11->_idsDestination, destination);
   }
 
   return v11;
@@ -202,14 +202,14 @@ LABEL_7:
   return v2;
 }
 
-+ (id)addressWithIDSIdentifier:(id)a3 idsDestination:(id)a4
++ (id)addressWithIDSIdentifier:(id)identifier idsDestination:(id)destination
 {
   v4 = 0;
-  if (a3 && a4)
+  if (identifier && destination)
   {
-    v7 = a4;
-    v8 = a3;
-    v4 = [[a1 alloc] initWithIDSIdentifier:v8 idsDestination:v7];
+    destinationCopy = destination;
+    identifierCopy = identifier;
+    v4 = [[self alloc] initWithIDSIdentifier:identifierCopy idsDestination:destinationCopy];
   }
 
   return v4;

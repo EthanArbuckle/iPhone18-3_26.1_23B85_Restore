@@ -1,16 +1,16 @@
 @interface VSMessagePortFeature
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 - (IKAppContext)appContext;
-- (VSMessagePortFeature)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (VSMessagePortFeature)initWithDOMNode:(id)node featureName:(id)name;
 - (VSMessagePortFeatureDelegate)delegate;
-- (void)messagePort:(id)a3 didReceiveMessage:(id)a4;
+- (void)messagePort:(id)port didReceiveMessage:(id)message;
 @end
 
 @implementation VSMessagePortFeature
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -24,10 +24,10 @@
       [v4 raise:v5 format:{@"Unexpectedly, feature was %@, instead of VSMessagePortFeature.", v7}];
     }
 
-    v8 = v3;
+    v8 = featureCopy;
     v9 = [VSJSMessagePort alloc];
-    v10 = [v8 appContext];
-    v11 = [(IKJSObject *)v9 initWithAppContext:v10];
+    appContext = [v8 appContext];
+    v11 = [(IKJSObject *)v9 initWithAppContext:appContext];
 
     [(VSJSMessagePort *)v11 setDelegate:v8];
   }
@@ -40,31 +40,31 @@
   return v11;
 }
 
-- (VSMessagePortFeature)initWithDOMNode:(id)a3 featureName:(id)a4
+- (VSMessagePortFeature)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = VSMessagePortFeature;
   v8 = [(VSMessagePortFeature *)&v13 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v9;
 
-    v11 = [v6 appContext];
-    objc_storeWeak(&v8->_appContext, v11);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v8->_appContext, appContext);
   }
 
   return v8;
 }
 
-- (void)messagePort:(id)a3 didReceiveMessage:(id)a4
+- (void)messagePort:(id)port didReceiveMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(VSMessagePortFeature *)self delegate];
-  [v6 messagePort:self didReceiveMessage:v5];
+  messageCopy = message;
+  delegate = [(VSMessagePortFeature *)self delegate];
+  [delegate messagePort:self didReceiveMessage:messageCopy];
 }
 
 - (IKAppContext)appContext

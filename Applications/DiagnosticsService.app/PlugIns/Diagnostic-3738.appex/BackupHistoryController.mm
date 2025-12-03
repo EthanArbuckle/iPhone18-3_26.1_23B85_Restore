@@ -1,5 +1,5 @@
 @interface BackupHistoryController
-- (void)parseLogsWithCollector:(id)a3;
+- (void)parseLogsWithCollector:(id)collector;
 - (void)start;
 @end
 
@@ -16,9 +16,9 @@
   [(BackupHistoryController *)self setFinished:1];
 }
 
-- (void)parseLogsWithCollector:(id)a3
+- (void)parseLogsWithCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -38,33 +38,33 @@
   v12[4] = self;
   v12[5] = &v13;
   v12[6] = &v19;
-  [v4 enumerateLogLinesWithBlock:v12];
+  [collectorCopy enumerateLogLinesWithBlock:v12];
   if (([(BackupHistoryController *)self isCancelled]& 1) == 0)
   {
     if (v20[5])
     {
       if (v14[5])
       {
-        v5 = [(BackupHistoryController *)self result];
-        [v5 setStatusCode:&off_100004348];
+        result = [(BackupHistoryController *)self result];
+        [result setStatusCode:&off_100004348];
       }
 
       else
       {
-        v5 = [(BackupHistoryController *)self result];
-        [v5 setStatusCode:&off_100004330];
+        result = [(BackupHistoryController *)self result];
+        [result setStatusCode:&off_100004330];
       }
     }
 
     else
     {
-      v5 = [(BackupHistoryController *)self result];
-      [v5 setStatusCode:&off_100004318];
+      result = [(BackupHistoryController *)self result];
+      [result setStatusCode:&off_100004318];
     }
 
     v25[0] = @"lastBackupEvent";
-    v6 = [v20[5] dictionary];
-    if (v6)
+    dictionary = [v20[5] dictionary];
+    if (dictionary)
     {
       [v20[5] dictionary];
     }
@@ -76,8 +76,8 @@
     v7 = ;
     v25[1] = @"lastSuccessfulBackupEvent";
     v26[0] = v7;
-    v8 = [v14[5] dictionary];
-    if (v8)
+    dictionary2 = [v14[5] dictionary];
+    if (dictionary2)
     {
       [v14[5] dictionary];
     }
@@ -89,8 +89,8 @@
     v9 = ;
     v26[1] = v9;
     v10 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
-    v11 = [(BackupHistoryController *)self result];
-    [v11 setData:v10];
+    result2 = [(BackupHistoryController *)self result];
+    [result2 setData:v10];
   }
 
   _Block_object_dispose(&v13, 8);

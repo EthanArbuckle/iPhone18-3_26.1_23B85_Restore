@@ -1,22 +1,22 @@
 @interface WBSForYouRecentParsecResultsManager
-+ (id)recommendationsMatchingTopic:(id)a3 fromArray:(id)a4;
-- (BOOL)_hasPermissibleResultTypeForResult:(id)a3;
-- (id)_bestAcceptableImageForSFResult:(id)a3;
++ (id)recommendationsMatchingTopic:(id)topic fromArray:(id)array;
+- (BOOL)_hasPermissibleResultTypeForResult:(id)result;
+- (id)_bestAcceptableImageForSFResult:(id)result;
 - (id)_cacheEnsuringExistence;
 - (void)_createInternalQueueIfNecessary;
-- (void)appendResultsIfApplicable:(id)a3 withDelayedExistenceCheck:(BOOL)a4;
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4;
+- (void)appendResultsIfApplicable:(id)applicable withDelayedExistenceCheck:(BOOL)check;
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler;
 @end
 
 @implementation WBSForYouRecentParsecResultsManager
 
-- (void)appendResultsIfApplicable:(id)a3 withDelayedExistenceCheck:(BOOL)a4
+- (void)appendResultsIfApplicable:(id)applicable withDelayedExistenceCheck:(BOOL)check
 {
   v54 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  if ([v36 count] <= 2)
+  applicableCopy = applicable;
+  if ([applicableCopy count] <= 2)
   {
-    v5 = [v36 count];
+    v5 = [applicableCopy count];
   }
 
   else
@@ -24,7 +24,7 @@
     v5 = 2;
   }
 
-  v35 = [v36 subarrayWithRange:{0, v5}];
+  v35 = [applicableCopy subarrayWithRange:{0, v5}];
   if ([v35 count])
   {
     objc_initWeak(&location, self);
@@ -60,55 +60,55 @@
           }
 
           v11 = v8;
-          v12 = [v11 sectionBundleIdentifier];
-          v13 = [v12 isEqualToString:@"com.apple.parsec.web_index"];
+          sectionBundleIdentifier = [v11 sectionBundleIdentifier];
+          v13 = [sectionBundleIdentifier isEqualToString:@"com.apple.parsec.web_index"];
 
           if (v13)
           {
             v14 = [v11 safari_firstInlineCardSectionOfClass:objc_opt_class()];
-            v15 = v14;
+            title3 = v14;
             if (v14)
             {
-              v16 = [v14 descriptions];
-              v17 = [v16 firstObject];
-              v18 = [v17 text];
+              descriptions = [v14 descriptions];
+              firstObject = [descriptions firstObject];
+              text = [firstObject text];
 
-              if (!v18)
+              if (!text)
               {
-                v19 = [v15 title];
-                v18 = [v19 text];
+                title = [title3 title];
+                text = [title text];
               }
 
-              if ([v18 length])
+              if ([text length])
               {
-                v20 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-                v21 = [v20 mutableCopy];
+                whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+                title2 = [whitespaceAndNewlineCharacterSet mutableCopy];
 
-                [v21 addCharactersInString:@"—"];
-                [v18 stringByTrimmingCharactersInSet:v21];
+                [title2 addCharactersInString:@"—"];
+                [text stringByTrimmingCharactersInSet:title2];
               }
 
               else
               {
-                v21 = [v11 title];
-                [v21 text];
+                title2 = [v11 title];
+                [title2 text];
               }
-              v24 = ;
+              text2 = ;
 
 LABEL_26:
 LABEL_28:
 
-              if ([v24 length])
+              if ([text2 length])
               {
                 v26 = [WBSForYouLinkRecommendation alloc];
-                v27 = [MEMORY[0x1E695DF00] date];
-                v28 = [(WBSForYouLinkRecommendation *)v26 initWithTitle:v24 url:v10 lastSeenDate:v27 source:2 topicSource:0];
+                date = [MEMORY[0x1E695DF00] date];
+                v28 = [(WBSForYouLinkRecommendation *)v26 initWithTitle:text2 url:v10 lastSeenDate:date source:2 topicSource:0];
 
                 v29 = _WBSLocalizedString();
                 [(WBSForYouLinkRecommendation *)v28 setFootnote:v29];
 
-                v30 = [v11 identifier];
-                [(WBSForYouLinkRecommendation *)v28 setSourceID:v30];
+                identifier = [v11 identifier];
+                [(WBSForYouLinkRecommendation *)v28 setSourceID:identifier];
 
                 v31 = [(WBSForYouRecentParsecResultsManager *)self _bestAcceptableImageForSFResult:v11];
                 v45[0] = MEMORY[0x1E69E9820];
@@ -119,7 +119,7 @@ LABEL_28:
                 v46 = v32;
                 objc_copyWeak(&v47, &location);
                 [v31 loadImageDataWithCompletionHandler:v45];
-                if (a4)
+                if (check)
                 {
                   objc_initWeak(&from, v11);
                   v33 = dispatch_time(0, 200000000);
@@ -139,8 +139,8 @@ LABEL_28:
 
                 else
                 {
-                  v34 = [(WBSForYouRecentParsecResultsManager *)self _cacheEnsuringExistence];
-                  [v34 setObject:v32 forKey:v10];
+                  _cacheEnsuringExistence = [(WBSForYouRecentParsecResultsManager *)self _cacheEnsuringExistence];
+                  [_cacheEnsuringExistence setObject:v32 forKey:v10];
                 }
 
                 objc_destroyWeak(&v47);
@@ -151,28 +151,28 @@ LABEL_34:
             }
 
             v22 = [v11 safari_firstInlineCardSectionOfClass:objc_opt_class()];
-            v15 = v22;
+            title3 = v22;
             if (v22)
             {
-              v18 = [v22 leadingText];
-              v23 = [v18 text];
+              text = [v22 leadingText];
+              v18Text = [text text];
 LABEL_25:
-              v24 = v23;
+              text2 = v18Text;
               goto LABEL_26;
             }
 
             v25 = [v11 safari_firstInlineCardSectionOfClass:objc_opt_class()];
-            v15 = v25;
+            title3 = v25;
             if (v25)
             {
-              v18 = [v25 title];
-              v23 = [v18 text];
+              text = [v25 title];
+              v18Text = [text text];
               goto LABEL_25;
             }
           }
 
-          v15 = [v11 title];
-          v24 = [v15 text];
+          title3 = [v11 title];
+          text2 = [title3 text];
           goto LABEL_28;
         }
       }
@@ -226,45 +226,45 @@ void __91__WBSForYouRecentParsecResultsManager_appendResultsIfApplicable_withDel
   }
 }
 
-- (id)_bestAcceptableImageForSFResult:(id)a3
+- (id)_bestAcceptableImageForSFResult:(id)result
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 thumbnail];
-  if (v5)
+  resultCopy = result;
+  array = [MEMORY[0x1E695DF70] array];
+  thumbnail = [resultCopy thumbnail];
+  if (thumbnail)
   {
-    [v4 addObject:v5];
+    [array addObject:thumbnail];
   }
 
-  v6 = [v3 icon];
-  if (v6)
+  icon = [resultCopy icon];
+  if (icon)
   {
-    [v4 addObject:v6];
+    [array addObject:icon];
   }
 
-  v7 = [v3 completionImage];
-  if (v7)
+  completionImage = [resultCopy completionImage];
+  if (completionImage)
   {
-    [v4 addObject:v7];
+    [array addObject:completionImage];
   }
 
-  v8 = [v3 secondaryTitleImage];
-  if (v8)
+  secondaryTitleImage = [resultCopy secondaryTitleImage];
+  if (secondaryTitleImage)
   {
-    [v4 addObject:v8];
+    [array addObject:secondaryTitleImage];
   }
 
-  v9 = [v3 inlineCard];
-  v10 = [v9 cardSections];
-  v11 = [v10 firstObject];
+  inlineCard = [resultCopy inlineCard];
+  cardSections = [inlineCard cardSections];
+  firstObject = [cardSections firstObject];
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v12 = [v11 performSelector:sel_thumbnail];
+  v12 = [firstObject performSelector:sel_thumbnail];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -276,7 +276,7 @@ LABEL_14:
 
   if (v12)
   {
-    [v4 addObject:v12];
+    [array addObject:v12];
   }
 
 LABEL_15:
@@ -284,7 +284,7 @@ LABEL_15:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = v4;
+  v13 = array;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
@@ -335,11 +335,11 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)_hasPermissibleResultTypeForResult:(id)a3
+- (BOOL)_hasPermissibleResultTypeForResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v4 hasPrefix:@"wiki:"];
+  resultCopy = result;
+  identifier = [resultCopy identifier];
+  v5 = [identifier hasPrefix:@"wiki:"];
 
   if (v5)
   {
@@ -348,7 +348,7 @@ LABEL_15:
 
   else
   {
-    v7 = [MEMORY[0x1E69C8FA8] typeForSFSearchResult:v3];
+    v7 = [MEMORY[0x1E69C8FA8] typeForSFSearchResult:resultCopy];
     if (v7 >= 6)
     {
       v6 = 1;
@@ -379,26 +379,26 @@ LABEL_15:
   return cache;
 }
 
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = WBSForYouRecentParsecResultsManager;
   [(WBSForYouRecommendationMediatorDataSource *)&v17 emitStartRetrievingRecommendationsPerformanceMarker];
   [(WBSForYouRecentParsecResultsManager *)self _createInternalQueueIfNecessary];
-  v8 = [(WBSForYouRecentParsecResultsManager *)self recentRecommendations];
+  recentRecommendations = [(WBSForYouRecentParsecResultsManager *)self recentRecommendations];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__WBSForYouRecentParsecResultsManager_retrieveRecommendationsMatchingTopic_withCompletionHandler___block_invoke;
   block[3] = &unk_1E8283708;
-  v15 = v8;
-  v16 = v7;
-  v14 = v6;
-  v10 = v8;
-  v11 = v6;
-  v12 = v7;
+  v15 = recentRecommendations;
+  v16 = handlerCopy;
+  v14 = topicCopy;
+  v10 = recentRecommendations;
+  v11 = topicCopy;
+  v12 = handlerCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -419,28 +419,28 @@ void __98__WBSForYouRecentParsecResultsManager_retrieveRecommendationsMatchingTo
   }
 }
 
-+ (id)recommendationsMatchingTopic:(id)a3 fromArray:(id)a4
++ (id)recommendationsMatchingTopic:(id)topic fromArray:(id)array
 {
   v35 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v5 = a4;
-  if ([v5 count])
+  topicCopy = topic;
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v22 = v5;
-    v23 = [v24 title];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"title contains[cd] %@", v23];
-    [v6 addObject:v7];
+    v22 = arrayCopy;
+    title = [topicCopy title];
+    array = [MEMORY[0x1E695DF70] array];
+    v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"title contains[cd] %@", title];
+    [array addObject:v7];
 
-    v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"originalQueriesString contains[cd] %@", v23];
-    [v6 addObject:v8];
+    v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"originalQueriesString contains[cd] %@", title];
+    [array addObject:v8];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = [v24 associatedTopics];
-    v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    associatedTopics = [topicCopy associatedTopics];
+    v10 = [associatedTopics countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v10)
     {
       v11 = *v30;
@@ -450,32 +450,32 @@ void __98__WBSForYouRecentParsecResultsManager_retrieveRecommendationsMatchingTo
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(associatedTopics);
           }
 
-          v13 = [*(*(&v29 + 1) + 8 * i) title];
-          v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"title contains[cd] %@", v13];
-          [v6 addObject:v14];
+          title2 = [*(*(&v29 + 1) + 8 * i) title];
+          v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"title contains[cd] %@", title2];
+          [array addObject:v14];
 
-          v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"originalQueriesString contains[cd] %@", v13];
-          [v6 addObject:v15];
+          v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"originalQueriesString contains[cd] %@", title2];
+          [array addObject:v15];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v10 = [associatedTopics countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v10);
     }
 
-    v16 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v6];
+    v16 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array];
     v17 = [v22 filteredArrayUsingPredicate:v16];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = v17;
-    v18 = [v5 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    arrayCopy = v17;
+    v18 = [arrayCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v18)
     {
       v19 = *v26;
@@ -485,20 +485,20 @@ void __98__WBSForYouRecentParsecResultsManager_retrieveRecommendationsMatchingTo
         {
           if (*v26 != v19)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(arrayCopy);
           }
 
-          [*(*(&v25 + 1) + 8 * j) setTopicSource:{objc_msgSend(v24, "source")}];
+          [*(*(&v25 + 1) + 8 * j) setTopicSource:{objc_msgSend(topicCopy, "source")}];
         }
 
-        v18 = [v5 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v18 = [arrayCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
       }
 
       while (v18);
     }
   }
 
-  return v5;
+  return arrayCopy;
 }
 
 @end

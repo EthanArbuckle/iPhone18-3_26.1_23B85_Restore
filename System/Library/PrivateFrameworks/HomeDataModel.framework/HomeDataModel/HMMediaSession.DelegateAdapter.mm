@@ -1,7 +1,7 @@
 @interface HMMediaSession.DelegateAdapter
 - (_TtCE13HomeDataModelCSo14HMMediaSession15DelegateAdapter)init;
-- (void)mediaSession:(id)a3 didUpdatePlaybackState:(int64_t)a4;
-- (void)mediaSessionDidUpdate:(id)a3;
+- (void)mediaSession:(id)session didUpdatePlaybackState:(int64_t)state;
+- (void)mediaSessionDidUpdate:(id)update;
 @end
 
 @implementation HMMediaSession.DelegateAdapter
@@ -13,18 +13,18 @@
   return result;
 }
 
-- (void)mediaSession:(id)a3 didUpdatePlaybackState:(int64_t)a4
+- (void)mediaSession:(id)session didUpdatePlaybackState:(int64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D1A73290(v6, a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1D1A73290(sessionCopy, state);
 }
 
-- (void)mediaSessionDidUpdate:(id)a3
+- (void)mediaSessionDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A73600(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_1D1A73600(updateCopy);
 }
 
 @end

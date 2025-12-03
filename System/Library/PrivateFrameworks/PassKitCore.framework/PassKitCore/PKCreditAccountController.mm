@@ -1,31 +1,31 @@
 @interface PKCreditAccountController
-+ (BOOL)_shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:(id)a3;
-+ (BOOL)_shouldDisplayBalanceForAccount:(id)a3;
-+ (BOOL)_shouldDisplayTransactionsForAccount:(id)a3;
-+ (BOOL)shouldDisplayAccountInformationForTransactionSourceCollection:(id)a3 withAccount:(id)a4;
-+ (BOOL)shouldDisplayScheduledPaymentsWithAccount:(id)a3 andPass:(id)a4;
-+ (BOOL)shouldDisplayTransactionsForTransactionSourceCollection:(id)a3 withAccount:(id)a4;
-+ (BOOL)shouldShowCardNumbersWithAccountAvailabilityInfo:(id)a3 dpanSuffixForPaymentApplication:(id)a4;
-+ (id)relevantScheduledPaymentFromScheduledPayments:(id)a3 account:(id)a4;
-+ (unint64_t)paymentEducationStateForAccount:(id)a3 mostRecentTransactions:(id)a4 pendingPayments:(id)a5 upcomingScheduledPayments:(id)a6;
-+ (void)resolutionToReceiveCashbackForAccount:(id)a3 accountUser:(id)a4 withPeerPaymentAccount:(id)a5 completion:(id)a6;
++ (BOOL)_shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:(id)collection;
++ (BOOL)_shouldDisplayBalanceForAccount:(id)account;
++ (BOOL)_shouldDisplayTransactionsForAccount:(id)account;
++ (BOOL)shouldDisplayAccountInformationForTransactionSourceCollection:(id)collection withAccount:(id)account;
++ (BOOL)shouldDisplayScheduledPaymentsWithAccount:(id)account andPass:(id)pass;
++ (BOOL)shouldDisplayTransactionsForTransactionSourceCollection:(id)collection withAccount:(id)account;
++ (BOOL)shouldShowCardNumbersWithAccountAvailabilityInfo:(id)info dpanSuffixForPaymentApplication:(id)application;
++ (id)relevantScheduledPaymentFromScheduledPayments:(id)payments account:(id)account;
++ (unint64_t)paymentEducationStateForAccount:(id)account mostRecentTransactions:(id)transactions pendingPayments:(id)payments upcomingScheduledPayments:(id)scheduledPayments;
++ (void)resolutionToReceiveCashbackForAccount:(id)account accountUser:(id)user withPeerPaymentAccount:(id)paymentAccount completion:(id)completion;
 @end
 
 @implementation PKCreditAccountController
 
-+ (void)resolutionToReceiveCashbackForAccount:(id)a3 accountUser:(id)a4 withPeerPaymentAccount:(id)a5 completion:(id)a6
++ (void)resolutionToReceiveCashbackForAccount:(id)account accountUser:(id)user withPeerPaymentAccount:(id)paymentAccount completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  accountCopy = account;
+  userCopy = user;
+  paymentAccountCopy = paymentAccount;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v13 = [v9 creditDetails];
-    v14 = v13;
-    if (v9 && v13)
+    creditDetails = [accountCopy creditDetails];
+    v14 = creditDetails;
+    if (accountCopy && creditDetails)
     {
-      v15 = [v13 rewardsDestination];
+      rewardsDestination = [creditDetails rewardsDestination];
       v16 = +[PKAccountService sharedInstance];
       v17 = objc_opt_new();
       v45[0] = 0;
@@ -54,15 +54,15 @@
       v34[3] = &unk_1E79DAB10;
       v24 = v18;
       v35 = v24;
-      v19 = v15;
-      v39 = v15;
-      v20 = v9;
+      v19 = rewardsDestination;
+      v39 = rewardsDestination;
+      v20 = accountCopy;
       v36 = v20;
-      v21 = v10;
+      v21 = userCopy;
       v37 = v21;
       v38 = v40;
       [v17 addOperation:v34];
-      v22 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __113__PKCreditAccountController_resolutionToReceiveCashbackForAccount_accountUser_withPeerPaymentAccount_completion___block_invoke_5;
@@ -72,10 +72,10 @@
       v28 = v20;
       v31 = v40;
       v32 = v45;
-      v29 = v11;
+      v29 = paymentAccountCopy;
       v33 = v19;
-      v30 = v12;
-      v23 = [v17 evaluateWithInput:v22 completion:v25];
+      v30 = completionCopy;
+      v23 = [v17 evaluateWithInput:null completion:v25];
 
       _Block_object_dispose(v40, 8);
       _Block_object_dispose(v45, 8);
@@ -83,7 +83,7 @@
 
     else
     {
-      (*(v12 + 2))(v12, 0, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
     }
   }
 }
@@ -286,27 +286,27 @@ LABEL_29:
   (*(*(a1 + 64) + 16))();
 }
 
-+ (BOOL)shouldDisplayAccountInformationForTransactionSourceCollection:(id)a3 withAccount:(id)a4
++ (BOOL)shouldDisplayAccountInformationForTransactionSourceCollection:(id)collection withAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 paymentPass];
-  v9 = [v8 devicePrimaryPaymentApplication];
+  collectionCopy = collection;
+  accountCopy = account;
+  paymentPass = [collectionCopy paymentPass];
+  devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
 
-  if ([v7 feature] == 2 && objc_msgSend(v7, "isClosedAndChargedOff") && !v9)
+  if ([accountCopy feature] == 2 && objc_msgSend(accountCopy, "isClosedAndChargedOff") && !devicePrimaryPaymentApplication)
   {
-    v10 = [a1 _shouldDisplayBalanceForAccount:v7];
+    v10 = [self _shouldDisplayBalanceForAccount:accountCopy];
   }
 
   else
   {
-    if (![a1 _shouldDisplayBalanceForAccount:v7])
+    if (![self _shouldDisplayBalanceForAccount:accountCopy])
     {
       v11 = 0;
       goto LABEL_9;
     }
 
-    v10 = [a1 _shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:v6];
+    v10 = [self _shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:collectionCopy];
   }
 
   v11 = v10;
@@ -315,12 +315,12 @@ LABEL_9:
   return v11;
 }
 
-+ (BOOL)shouldDisplayTransactionsForTransactionSourceCollection:(id)a3 withAccount:(id)a4
++ (BOOL)shouldDisplayTransactionsForTransactionSourceCollection:(id)collection withAccount:(id)account
 {
-  v6 = a3;
-  if ([a1 _shouldDisplayTransactionsForAccount:a4])
+  collectionCopy = collection;
+  if ([self _shouldDisplayTransactionsForAccount:account])
   {
-    v7 = [a1 _shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:v6];
+    v7 = [self _shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:collectionCopy];
   }
 
   else
@@ -331,17 +331,17 @@ LABEL_9:
   return v7;
 }
 
-+ (BOOL)_shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:(id)a3
++ (BOOL)_shouldDisplayBalanceAndTransactionsForTransactionSourceCollection:(id)collection
 {
-  v3 = [a3 paymentPass];
-  v4 = [v3 devicePrimaryPaymentApplication];
+  paymentPass = [collection paymentPass];
+  devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
 
-  if (v4)
+  if (devicePrimaryPaymentApplication)
   {
-    v5 = [v4 state];
-    if (v5 <= 0xF)
+    state = [devicePrimaryPaymentApplication state];
+    if (state <= 0xF)
     {
-      v6 = 0x867Eu >> v5;
+      v6 = 0x867Eu >> state;
     }
 
     else
@@ -358,18 +358,18 @@ LABEL_9:
   return v6 & 1;
 }
 
-+ (BOOL)_shouldDisplayBalanceForAccount:(id)a3
++ (BOOL)_shouldDisplayBalanceForAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 blockAllAccountAccess])
+  accountCopy = account;
+  if ([accountCopy blockAllAccountAccess])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 creditDetails];
-    if (v5 && (v6 = [v3 state], v6 <= 5) && ((1 << v6) & 0x29) == 0)
+    creditDetails = [accountCopy creditDetails];
+    if (creditDetails && (v6 = [accountCopy state], v6 <= 5) && ((1 << v6) & 0x29) == 0)
     {
       if (((1 << v6) & 6) != 0)
       {
@@ -378,15 +378,15 @@ LABEL_9:
 
       else
       {
-        v8 = [v3 creditDetails];
-        v9 = [v8 accountSummary];
-        v10 = [v9 currentBalance];
+        creditDetails2 = [accountCopy creditDetails];
+        accountSummary = [creditDetails2 accountSummary];
+        currentBalance = [accountSummary currentBalance];
 
         v4 = 0;
-        if ([v3 supportsSchedulePayment] && v10)
+        if ([accountCopy supportsSchedulePayment] && currentBalance)
         {
-          v11 = [MEMORY[0x1E696AB90] zero];
-          v4 = [v10 compare:v11] != 0;
+          zero = [MEMORY[0x1E696AB90] zero];
+          v4 = [currentBalance compare:zero] != 0;
         }
       }
     }
@@ -400,18 +400,18 @@ LABEL_9:
   return v4;
 }
 
-+ (BOOL)_shouldDisplayTransactionsForAccount:(id)a3
++ (BOOL)_shouldDisplayTransactionsForAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 blockAllAccountAccess])
+  accountCopy = account;
+  if ([accountCopy blockAllAccountAccess])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 creditDetails];
-    if (v5 && (v6 = [v3 state], v6 <= 5) && ((1 << v6) & 0x29) == 0)
+    creditDetails = [accountCopy creditDetails];
+    if (creditDetails && (v6 = [accountCopy state], v6 <= 5) && ((1 << v6) & 0x29) == 0)
     {
       if (((1 << v6) & 6) != 0)
       {
@@ -420,14 +420,14 @@ LABEL_9:
 
       else
       {
-        v8 = [v3 creditDetails];
-        v9 = [v8 accountSummary];
-        v10 = [v9 currentBalance];
+        creditDetails2 = [accountCopy creditDetails];
+        accountSummary = [creditDetails2 accountSummary];
+        currentBalance = [accountSummary currentBalance];
 
-        if (v10)
+        if (currentBalance)
         {
-          v11 = [MEMORY[0x1E696AB90] zero];
-          v4 = [v10 compare:v11] != 0;
+          zero = [MEMORY[0x1E696AB90] zero];
+          v4 = [currentBalance compare:zero] != 0;
         }
 
         else
@@ -446,20 +446,20 @@ LABEL_9:
   return v4;
 }
 
-+ (id)relevantScheduledPaymentFromScheduledPayments:(id)a3 account:(id)a4
++ (id)relevantScheduledPaymentFromScheduledPayments:(id)payments account:(id)account
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  accountCopy = account;
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a3;
+  paymentsCopy = payments;
   v8 = [v6 alloc];
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v10 = [v5 creditDetails];
-  v11 = [v10 productTimeZone];
-  [v9 setTimeZone:v11];
+  creditDetails = [accountCopy creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
+  [v9 setTimeZone:productTimeZone];
 
-  v12 = [MEMORY[0x1E695DF00] date];
-  v33 = [v9 components:28 fromDate:v12];
+  date = [MEMORY[0x1E695DF00] date];
+  v33 = [v9 components:28 fromDate:date];
   v34 = v9;
   v13 = [v9 dateFromComponents:v33];
 
@@ -467,9 +467,9 @@ LABEL_9:
   v40[1] = 3221225472;
   v40[2] = __83__PKCreditAccountController_relevantScheduledPaymentFromScheduledPayments_account___block_invoke;
   v40[3] = &unk_1E79DAB60;
-  v32 = v5;
+  v32 = accountCopy;
   v41 = v32;
-  v14 = [v7 pk_objectsPassingTest:v40];
+  v14 = [paymentsCopy pk_objectsPassingTest:v40];
 
   v38 = 0u;
   v39 = 0u;
@@ -493,20 +493,20 @@ LABEL_9:
         }
 
         v21 = *(*(&v36 + 1) + 8 * i);
-        v22 = [v21 scheduleDetails];
-        v23 = [v22 frequency];
+        scheduleDetails = [v21 scheduleDetails];
+        frequency = [scheduleDetails frequency];
 
-        v24 = [v21 scheduleDetails];
-        v25 = [v24 scheduledDate];
+        scheduleDetails2 = [v21 scheduleDetails];
+        scheduledDate = [scheduleDetails2 scheduledDate];
 
-        if (v23 >= 2 && ([v25 compare:v13] == 1 || !objc_msgSend(v25, "compare:", v13)) && (!v18 || v17 && objc_msgSend(v25, "compare:", v17) == -1))
+        if (frequency >= 2 && ([scheduledDate compare:v13] == 1 || !objc_msgSend(scheduledDate, "compare:", v13)) && (!v18 || v17 && objc_msgSend(scheduledDate, "compare:", v17) == -1))
         {
           v26 = v21;
 
-          v27 = [v26 scheduleDetails];
-          v28 = [v27 scheduledDate];
+          scheduleDetails3 = [v26 scheduleDetails];
+          scheduledDate2 = [scheduleDetails3 scheduledDate];
 
-          v17 = v28;
+          v17 = scheduledDate2;
           v18 = v26;
         }
       }
@@ -529,44 +529,44 @@ LABEL_9:
   return v18;
 }
 
-+ (unint64_t)paymentEducationStateForAccount:(id)a3 mostRecentTransactions:(id)a4 pendingPayments:(id)a5 upcomingScheduledPayments:(id)a6
++ (unint64_t)paymentEducationStateForAccount:(id)account mostRecentTransactions:(id)transactions pendingPayments:(id)payments upcomingScheduledPayments:(id)scheduledPayments
 {
   v96 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 creditDetails];
-  v15 = [v14 accountSummary];
-  v88 = [v15 remainingStatementBalance];
-  v87 = [v15 remainingMinimumPayment];
-  v86 = [v15 adjustedBalance];
-  v85 = [v15 pastDueAmount];
-  v71 = [v15 cyclesPastDue];
-  v77 = [v15 paymentDueDate];
-  v73 = v14;
-  v84 = [v14 createdDate];
-  v83 = [v11 firstObject];
-  v82 = [v83 transactionDate];
+  accountCopy = account;
+  transactionsCopy = transactions;
+  paymentsCopy = payments;
+  scheduledPaymentsCopy = scheduledPayments;
+  creditDetails = [accountCopy creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  remainingStatementBalance = [accountSummary remainingStatementBalance];
+  remainingMinimumPayment = [accountSummary remainingMinimumPayment];
+  adjustedBalance = [accountSummary adjustedBalance];
+  pastDueAmount = [accountSummary pastDueAmount];
+  cyclesPastDue = [accountSummary cyclesPastDue];
+  paymentDueDate = [accountSummary paymentDueDate];
+  v73 = creditDetails;
+  createdDate = [creditDetails createdDate];
+  firstObject = [transactionsCopy firstObject];
+  transactionDate = [firstObject transactionDate];
   v16 = objc_alloc(MEMORY[0x1E695DEE8]);
   v81 = [v16 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v74 = v13;
-  v76 = [a1 relevantScheduledPaymentFromScheduledPayments:v13 account:v10];
-  v79 = [MEMORY[0x1E695DF00] date];
+  v74 = scheduledPaymentsCopy;
+  v76 = [self relevantScheduledPaymentFromScheduledPayments:scheduledPaymentsCopy account:accountCopy];
+  date = [MEMORY[0x1E695DF00] date];
   v93[0] = MEMORY[0x1E69E9820];
   v93[1] = 3221225472;
   v93[2] = __126__PKCreditAccountController_paymentEducationStateForAccount_mostRecentTransactions_pendingPayments_upcomingScheduledPayments___block_invoke;
   v93[3] = &unk_1E79DAB88;
-  v80 = v15;
+  v80 = accountSummary;
   v94 = v80;
-  v75 = v11;
-  v78 = [v11 pk_objectsPassingTest:v93];
-  v17 = [MEMORY[0x1E696AB90] zero];
+  v75 = transactionsCopy;
+  v78 = [transactionsCopy pk_objectsPassingTest:v93];
+  zero = [MEMORY[0x1E696AB90] zero];
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v18 = v12;
+  v18 = paymentsCopy;
   v19 = [v18 countByEnumeratingWithState:&v89 objects:v95 count:16];
   if (v19)
   {
@@ -575,7 +575,7 @@ LABEL_9:
     do
     {
       v22 = 0;
-      v23 = v17;
+      v23 = zero;
       do
       {
         if (*v90 != v21)
@@ -583,12 +583,12 @@ LABEL_9:
           objc_enumerationMutation(v18);
         }
 
-        v24 = [*(*(&v89 + 1) + 8 * v22) currencyAmount];
-        v25 = [v24 amount];
-        v17 = [v23 decimalNumberByAdding:v25];
+        currencyAmount = [*(*(&v89 + 1) + 8 * v22) currencyAmount];
+        amount = [currencyAmount amount];
+        zero = [v23 decimalNumberByAdding:amount];
 
         ++v22;
-        v23 = v17;
+        v23 = zero;
       }
 
       while (v20 != v22);
@@ -598,31 +598,31 @@ LABEL_9:
     while (v20);
   }
 
-  if (v82)
+  if (transactionDate)
   {
     v26 = v81;
-    v27 = v79;
-    v28 = [v81 components:128 fromDate:v82 toDate:v79 options:0];
-    v29 = [v28 second];
+    v27 = date;
+    v28 = [v81 components:128 fromDate:transactionDate toDate:date options:0];
+    second = [v28 second];
 
-    v30 = v29 < 61;
-    v32 = v83;
-    v31 = v84;
-    if (v83)
+    v30 = second < 61;
+    v32 = firstObject;
+    v31 = createdDate;
+    if (firstObject)
     {
       goto LABEL_10;
     }
 
 LABEL_16:
     v70 = 0;
-    v34 = v88;
+    v34 = remainingStatementBalance;
     if (v31)
     {
       goto LABEL_20;
     }
 
 LABEL_23:
-    LOBYTE(v35) = 1;
+    LOBYTE(statementBalance) = 1;
     if (!v34)
     {
       goto LABEL_22;
@@ -632,21 +632,21 @@ LABEL_23:
   }
 
   v30 = 1;
-  v32 = v83;
-  v31 = v84;
+  v32 = firstObject;
+  v31 = createdDate;
   v26 = v81;
-  v27 = v79;
-  if (!v83)
+  v27 = date;
+  if (!firstObject)
   {
     goto LABEL_16;
   }
 
 LABEL_10:
-  v33 = [v32 transactionDate];
-  if ([v27 compare:v33] == 1)
+  transactionDate2 = [v32 transactionDate];
+  if ([v27 compare:transactionDate2] == 1)
   {
     v70 = v30;
-    v34 = v88;
+    v34 = remainingStatementBalance;
     if ([v32 transactionType] != 10 || objc_msgSend(v32, "transactionStatus") != 1 && objc_msgSend(v32, "transactionStatus"))
     {
       v70 = 0;
@@ -656,7 +656,7 @@ LABEL_10:
   else
   {
     v70 = 0;
-    v34 = v88;
+    v34 = remainingStatementBalance;
   }
 
   if (!v31)
@@ -670,7 +670,7 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  LODWORD(v35) = [v26 isDate:v31 equalToDate:v27 toUnitGranularity:4] ^ 1;
+  LODWORD(statementBalance) = [v26 isDate:v31 equalToDate:v27 toUnitGranularity:4] ^ 1;
   if (!v34)
   {
 LABEL_22:
@@ -679,15 +679,15 @@ LABEL_22:
   }
 
 LABEL_24:
-  v37 = [v34 decimalNumberBySubtracting:v17];
-  v38 = [MEMORY[0x1E696AB90] zero];
-  v36 = [v37 compare:v38] != 1;
+  v37 = [v34 decimalNumberBySubtracting:zero];
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  v36 = [v37 compare:zero2] != 1;
 
 LABEL_25:
-  if (v86)
+  if (adjustedBalance)
   {
-    v39 = [MEMORY[0x1E696AB90] zero];
-    v40 = [v86 compare:v39] == 1;
+    zero3 = [MEMORY[0x1E696AB90] zero];
+    v40 = [adjustedBalance compare:zero3] == 1;
   }
 
   else
@@ -695,11 +695,11 @@ LABEL_25:
     v40 = 0;
   }
 
-  if (v87)
+  if (remainingMinimumPayment)
   {
-    v41 = [v87 decimalNumberBySubtracting:v17];
-    v42 = [MEMORY[0x1E696AB90] zero];
-    v67 = [v41 compare:v42] == 1;
+    v41 = [remainingMinimumPayment decimalNumberBySubtracting:zero];
+    zero4 = [MEMORY[0x1E696AB90] zero];
+    v67 = [v41 compare:zero4] == 1;
   }
 
   else
@@ -707,12 +707,12 @@ LABEL_25:
     v67 = 0;
   }
 
-  if (v71 <= 0)
+  if (cyclesPastDue <= 0)
   {
-    if (v85)
+    if (pastDueAmount)
     {
-      v44 = [MEMORY[0x1E696AB90] zero];
-      v43 = [v85 compare:v44] == 1;
+      zero5 = [MEMORY[0x1E696AB90] zero];
+      v43 = [pastDueAmount compare:zero5] == 1;
     }
 
     else
@@ -726,9 +726,9 @@ LABEL_25:
     v43 = 1;
   }
 
-  if ([v10 state] == 4)
+  if ([accountCopy state] == 4)
   {
-    v45 = [v10 stateReason] == 1 || objc_msgSend(v10, "stateReason") == 8;
+    v45 = [accountCopy stateReason] == 1 || objc_msgSend(accountCopy, "stateReason") == 8;
     v72 = v45;
   }
 
@@ -738,26 +738,26 @@ LABEL_25:
   }
 
   v69 = [v78 count];
-  v46 = [v10 state];
-  v47 = [v80 currentStatement];
-  v48 = v47;
-  if (v47)
+  state = [accountCopy state];
+  currentStatement = [v80 currentStatement];
+  v48 = currentStatement;
+  if (currentStatement)
   {
-    v49 = [v47 openingDate];
-    if (v49)
+    openingDate = [currentStatement openingDate];
+    if (openingDate)
     {
-      v66 = v10;
+      v66 = accountCopy;
       v50 = v43;
       v51 = v40;
-      v52 = [v48 closingDate];
-      if (v52)
+      closingDate = [v48 closingDate];
+      if (closingDate)
       {
-        v65 = v35;
-        v35 = [v48 statementBalance];
-        if (v35)
+        v65 = statementBalance;
+        statementBalance = [v48 statementBalance];
+        if (statementBalance)
         {
-          v53 = [v48 paymentDueDate];
-          v68 = v53 != 0;
+          paymentDueDate2 = [v48 paymentDueDate];
+          v68 = paymentDueDate2 != 0;
         }
 
         else
@@ -765,7 +765,7 @@ LABEL_25:
           v68 = 0;
         }
 
-        LOBYTE(v35) = v65;
+        LOBYTE(statementBalance) = v65;
       }
 
       else
@@ -775,7 +775,7 @@ LABEL_25:
 
       v40 = v51;
       v43 = v50;
-      v10 = v66;
+      accountCopy = v66;
     }
 
     else
@@ -789,9 +789,9 @@ LABEL_25:
     v68 = 0;
   }
 
-  if (v46 == 1)
+  if (state == 1)
   {
-    v54 = v35;
+    v54 = statementBalance;
   }
 
   else
@@ -801,7 +801,7 @@ LABEL_25:
 
   if ((v54 & 1) == 0)
   {
-    v56 = v10;
+    v56 = accountCopy;
     if (v76)
     {
       v58 = 9;
@@ -817,7 +817,7 @@ LABEL_25:
 
   if (!v40)
   {
-    v56 = v10;
+    v56 = accountCopy;
     v58 = 2;
 LABEL_75:
     v60 = v74;
@@ -828,7 +828,7 @@ LABEL_75:
   }
 
   v55 = v36;
-  v56 = v10;
+  v56 = accountCopy;
   v57 = 9;
   if (v70)
   {
@@ -856,10 +856,10 @@ LABEL_75:
   v62 = v76;
   if (!v76)
   {
-    if (v69 != 0 || !v68 || v77 == 0 || v55)
+    if (v69 != 0 || !v68 || paymentDueDate == 0 || v55)
     {
       v63 = v67;
-      if (!v77)
+      if (!paymentDueDate)
       {
         v63 = 0;
       }
@@ -909,19 +909,19 @@ BOOL __126__PKCreditAccountController_paymentEducationStateForAccount_mostRecent
   return v10;
 }
 
-+ (BOOL)shouldDisplayScheduledPaymentsWithAccount:(id)a3 andPass:(id)a4
++ (BOOL)shouldDisplayScheduledPaymentsWithAccount:(id)account andPass:(id)pass
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[PKTransactionSource alloc] initWithPaymentPass:v6];
+  accountCopy = account;
+  passCopy = pass;
+  v7 = [[PKTransactionSource alloc] initWithPaymentPass:passCopy];
   v8 = [[PKTransactionSourceCollection alloc] initWithTransactionSource:v7];
-  if (v5)
+  if (accountCopy)
   {
-    v9 = [v5 creditDetails];
-    if (v9)
+    creditDetails = [accountCopy creditDetails];
+    if (creditDetails)
     {
-      v10 = [v6 associatedAccountServiceAccountIdentifier];
-      v11 = [v10 length] && objc_msgSend(v5, "supportsShowAccountSummary") && +[PKCreditAccountController shouldDisplayAccountInformationForTransactionSourceCollection:withAccount:](PKCreditAccountController, "shouldDisplayAccountInformationForTransactionSourceCollection:withAccount:", v8, v5);
+      associatedAccountServiceAccountIdentifier = [passCopy associatedAccountServiceAccountIdentifier];
+      v11 = [associatedAccountServiceAccountIdentifier length] && objc_msgSend(accountCopy, "supportsShowAccountSummary") && +[PKCreditAccountController shouldDisplayAccountInformationForTransactionSourceCollection:withAccount:](PKCreditAccountController, "shouldDisplayAccountInformationForTransactionSourceCollection:withAccount:", v8, accountCopy);
     }
 
     else
@@ -938,20 +938,20 @@ BOOL __126__PKCreditAccountController_paymentEducationStateForAccount_mostRecent
   return v11;
 }
 
-+ (BOOL)shouldShowCardNumbersWithAccountAvailabilityInfo:(id)a3 dpanSuffixForPaymentApplication:(id)a4
++ (BOOL)shouldShowCardNumbersWithAccountAvailabilityInfo:(id)info dpanSuffixForPaymentApplication:(id)application
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 accountType] == 1)
+  infoCopy = info;
+  applicationCopy = application;
+  if ([infoCopy accountType] == 1)
   {
-    v7 = [v5 accountState] - 3;
+    v7 = [infoCopy accountState] - 3;
     v8 = v7 > 0xFFFFFFFFFFFFFFFDLL;
-    v9 = [v5 supportedFeatures];
-    v10 = [v9 pk_hasObjectPassingTest:&__block_literal_global_151];
+    supportedFeatures = [infoCopy supportedFeatures];
+    v10 = [supportedFeatures pk_hasObjectPassingTest:&__block_literal_global_151];
 
     if (v7 >= 0xFFFFFFFFFFFFFFFELL && (v10 & 1) == 0)
     {
-      v8 = [v6 length] != 0;
+      v8 = [applicationCopy length] != 0;
     }
   }
 

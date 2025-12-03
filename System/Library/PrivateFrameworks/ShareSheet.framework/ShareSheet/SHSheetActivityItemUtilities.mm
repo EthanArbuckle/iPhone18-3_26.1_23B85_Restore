@@ -1,27 +1,27 @@
 @interface SHSheetActivityItemUtilities
-+ (BOOL)shouldShowHeaderSpecializationForMetadata:(id)a3;
-+ (id)itemProvidersFromActivityItems:(id)a3;
-+ (id)urlForActivityItem:(id)a3;
-+ (void)_loadMetadataFromRemainingGroupActivityItemProviders:(id)a3 loadedMetadata:(id)a4 loadedError:(id)a5 completion:(id)a6;
-+ (void)loadMetadataFromGroupActivityItemProviders:(id)a3 completion:(id)a4;
++ (BOOL)shouldShowHeaderSpecializationForMetadata:(id)metadata;
++ (id)itemProvidersFromActivityItems:(id)items;
++ (id)urlForActivityItem:(id)item;
++ (void)_loadMetadataFromRemainingGroupActivityItemProviders:(id)providers loadedMetadata:(id)metadata loadedError:(id)error completion:(id)completion;
++ (void)loadMetadataFromGroupActivityItemProviders:(id)providers completion:(id)completion;
 @end
 
 @implementation SHSheetActivityItemUtilities
 
-+ (id)urlForActivityItem:(id)a3
++ (id)urlForActivityItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    scheme = itemCopy;
     goto LABEL_11;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+    v5 = [MEMORY[0x1E695DFF8] URLWithString:itemCopy];
   }
 
   else
@@ -29,35 +29,35 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v4 = 0;
+      scheme = 0;
       goto LABEL_11;
     }
 
     v6 = MEMORY[0x1E695DFF8];
-    v7 = [v3 string];
-    v5 = [v6 URLWithString:v7];
+    string = [itemCopy string];
+    v5 = [v6 URLWithString:string];
   }
 
-  v4 = [v5 scheme];
+  scheme = [v5 scheme];
 
-  if (v4)
+  if (scheme)
   {
-    v4 = v5;
+    scheme = v5;
   }
 
 LABEL_11:
 
-  return v4;
+  return scheme;
 }
 
-+ (id)itemProvidersFromActivityItems:(id)a3
++ (id)itemProvidersFromActivityItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  itemsCopy = items;
+  v4 = itemsCopy;
+  if (itemsCopy && [itemsCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -81,7 +81,7 @@ LABEL_11:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v5 addObject:{v11, v13}];
+            [array addObject:{v11, v13}];
           }
         }
 
@@ -94,27 +94,27 @@ LABEL_11:
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-+ (void)loadMetadataFromGroupActivityItemProviders:(id)a3 completion:(id)a4
++ (void)loadMetadataFromGroupActivityItemProviders:(id)providers completion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  providersCopy = providers;
+  completionCopy = completion;
+  if (providersCopy && [providersCopy count])
   {
-    v8 = [v6 mutableCopy];
-    v9 = [MEMORY[0x1E695DF70] array];
+    v8 = [providersCopy mutableCopy];
+    array = [MEMORY[0x1E695DF70] array];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __86__SHSheetActivityItemUtilities_loadMetadataFromGroupActivityItemProviders_completion___block_invoke;
     v13[3] = &unk_1E71FB5B0;
-    v14 = v7;
-    [a1 _loadMetadataFromRemainingGroupActivityItemProviders:v8 loadedMetadata:v9 loadedError:0 completion:v13];
+    v14 = completionCopy;
+    [self _loadMetadataFromRemainingGroupActivityItemProviders:v8 loadedMetadata:array loadedError:0 completion:v13];
 
     v10 = v14;
   }
@@ -127,7 +127,7 @@ LABEL_11:
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v10 = [v11 errorWithDomain:@"com.apple.sharesheet.loadgroupactivitymetadata" code:-1 userInfo:v12];
 
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -161,27 +161,27 @@ void __86__SHSheetActivityItemUtilities_loadMetadataFromGroupActivityItemProvide
   }
 }
 
-+ (void)_loadMetadataFromRemainingGroupActivityItemProviders:(id)a3 loadedMetadata:(id)a4 loadedError:(id)a5 completion:(id)a6
++ (void)_loadMetadataFromRemainingGroupActivityItemProviders:(id)providers loadedMetadata:(id)metadata loadedError:(id)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 lastObject];
-  if (v14)
+  providersCopy = providers;
+  metadataCopy = metadata;
+  errorCopy = error;
+  completionCopy = completion;
+  lastObject = [providersCopy lastObject];
+  if (lastObject)
   {
-    [v10 removeLastObject];
-    objc_initWeak(&location, a1);
+    [providersCopy removeLastObject];
+    objc_initWeak(&location, self);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __123__SHSheetActivityItemUtilities__loadMetadataFromRemainingGroupActivityItemProviders_loadedMetadata_loadedError_completion___block_invoke;
     v15[3] = &unk_1E71FB5D8;
-    v16 = v11;
-    v17 = v12;
+    v16 = metadataCopy;
+    v17 = errorCopy;
     objc_copyWeak(&v20, &location);
-    v18 = v10;
-    v19 = v13;
-    [v14 loadGroupActivityMetadataWithCompletion:v15];
+    v18 = providersCopy;
+    v19 = completionCopy;
+    [lastObject loadGroupActivityMetadataWithCompletion:v15];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -189,7 +189,7 @@ void __86__SHSheetActivityItemUtilities_loadMetadataFromGroupActivityItemProvide
 
   else
   {
-    (*(v13 + 2))(v13, v11, v12);
+    (*(completionCopy + 2))(completionCopy, metadataCopy, errorCopy);
   }
 }
 
@@ -213,10 +213,10 @@ void __123__SHSheetActivityItemUtilities__loadMetadataFromRemainingGroupActivity
   [WeakRetained _loadMetadataFromRemainingGroupActivityItemProviders:*(a1 + 48) loadedMetadata:*(a1 + 32) loadedError:v7 completion:*(a1 + 56)];
 }
 
-+ (BOOL)shouldShowHeaderSpecializationForMetadata:(id)a3
++ (BOOL)shouldShowHeaderSpecializationForMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [v3 specialization];
+  metadataCopy = metadata;
+  specialization = [metadataCopy specialization];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -237,10 +237,10 @@ void __123__SHSheetActivityItemUtilities__loadMetadataFromRemainingGroupActivity
   _Block_object_dispose(&v13, 8);
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v3 URL];
+    v7 = [metadataCopy URL];
     v8 = [v7 valueForQueryKey:@"a"];
-    v9 = [v8 lowercaseString];
-    v10 = [v9 isEqualToString:@"join"];
+    lowercaseString = [v8 lowercaseString];
+    v10 = [lowercaseString isEqualToString:@"join"];
   }
 
   else

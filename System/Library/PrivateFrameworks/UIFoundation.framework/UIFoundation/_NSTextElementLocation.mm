@@ -1,26 +1,26 @@
 @interface _NSTextElementLocation
-- (_NSTextElementLocation)initWithTextElement:(id)a3 baseLocation:(id)a4 offset:(int64_t)a5;
-- (int64_t)compare:(id)a3;
+- (_NSTextElementLocation)initWithTextElement:(id)element baseLocation:(id)location offset:(int64_t)offset;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
 - (void)updateBaseLocation;
 @end
 
 @implementation _NSTextElementLocation
 
-- (_NSTextElementLocation)initWithTextElement:(id)a3 baseLocation:(id)a4 offset:(int64_t)a5
+- (_NSTextElementLocation)initWithTextElement:(id)element baseLocation:(id)location offset:(int64_t)offset
 {
-  v9 = [a3 textContentManager];
-  if (v9 && (v10 = v9, ([objc_msgSend(a3 "elementRange")] & 1) != 0))
+  textContentManager = [element textContentManager];
+  if (textContentManager && (v10 = textContentManager, ([objc_msgSend(element "elementRange")] & 1) != 0))
   {
     v14.receiver = self;
     v14.super_class = _NSTextElementLocation;
-    v11 = -[NSCountableTextLocation initWithIndex:](&v14, sel_initWithIndex_, [v10 offsetFromLocation:objc_msgSend(objc_msgSend(v10 toLocation:{"documentRange"), "location"), a4}]);
+    v11 = -[NSCountableTextLocation initWithIndex:](&v14, sel_initWithIndex_, [v10 offsetFromLocation:objc_msgSend(objc_msgSend(v10 toLocation:{"documentRange"), "location"), location}]);
     v12 = v11;
     if (v11)
     {
-      v11->_textElement = a3;
-      v11->_baseLocation = a4;
-      v12->_offset = a5;
+      v11->_textElement = element;
+      v11->_baseLocation = location;
+      v12->_offset = offset;
     }
   }
 
@@ -45,20 +45,20 @@
 
 - (void)updateBaseLocation
 {
-  v3 = [(NSTextRange *)[(NSTextElement *)self->_textElement elementRange] location];
-  if (([(NSTextLocation *)self->_baseLocation isEqual:v3]& 1) == 0)
+  location = [(NSTextRange *)[(NSTextElement *)self->_textElement elementRange] location];
+  if (([(NSTextLocation *)self->_baseLocation isEqual:location]& 1) == 0)
   {
-    v4 = [(NSTextElement *)self->_textElement textContentManager];
-    if (v4)
+    textContentManager = [(NSTextElement *)self->_textElement textContentManager];
+    if (textContentManager)
     {
-      [(NSCountableTextLocation *)self setCharacterIndex:[(NSTextContentManager *)v4 offsetFromLocation:[(NSTextRange *)[(NSTextContentManager *)v4 documentRange] location] toLocation:v3]];
+      [(NSCountableTextLocation *)self setCharacterIndex:[(NSTextContentManager *)textContentManager offsetFromLocation:[(NSTextRange *)[(NSTextContentManager *)textContentManager documentRange] location] toLocation:location]];
     }
 
-    self->_baseLocation = v3;
+    self->_baseLocation = location;
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v10.receiver = self;
   v10.super_class = _NSTextElementLocation;
@@ -68,7 +68,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = *(a3 + 4);
+      v6 = *(compare + 4);
     }
 
     else

@@ -1,134 +1,134 @@
 @interface RECondition
-+ (id)andConditions:(id)a3;
-+ (id)conditionForFeature:(id)a3 hasBoolValue:(BOOL)a4;
-+ (id)conditionForFeature:(id)a3 hasIntegerValue:(int64_t)a4;
-+ (id)conditionForFeature:(id)a3 hasValue:(id)a4;
-+ (id)conditionForFeature:(id)a3 relation:(int64_t)a4 feature:(id)a5;
-+ (id)conditionForFeature:(id)a3 relation:(int64_t)a4 floatValue:(float)a5;
-+ (id)conditionForFeature:(id)a3 relation:(int64_t)a4 integerValue:(int64_t)a5;
-+ (id)conditionForProbabilityForInteraction:(id)a3 relation:(int64_t)a4 feature:(id)a5;
-+ (id)conditionForProbabilityForInteraction:(id)a3 relation:(int64_t)a4 floatValue:(float)a5;
-+ (id)conditionHasValueForFeature:(id)a3;
-+ (id)notCondition:(id)a3;
-+ (id)orConditions:(id)a3;
++ (id)andConditions:(id)conditions;
++ (id)conditionForFeature:(id)feature hasBoolValue:(BOOL)value;
++ (id)conditionForFeature:(id)feature hasIntegerValue:(int64_t)value;
++ (id)conditionForFeature:(id)feature hasValue:(id)value;
++ (id)conditionForFeature:(id)feature relation:(int64_t)relation feature:(id)a5;
++ (id)conditionForFeature:(id)feature relation:(int64_t)relation floatValue:(float)value;
++ (id)conditionForFeature:(id)feature relation:(int64_t)relation integerValue:(int64_t)value;
++ (id)conditionForProbabilityForInteraction:(id)interaction relation:(int64_t)relation feature:(id)feature;
++ (id)conditionForProbabilityForInteraction:(id)interaction relation:(int64_t)relation floatValue:(float)value;
++ (id)conditionHasValueForFeature:(id)feature;
++ (id)notCondition:(id)condition;
++ (id)orConditions:(id)conditions;
 @end
 
 @implementation RECondition
 
-+ (id)conditionHasValueForFeature:(id)a3
++ (id)conditionHasValueForFeature:(id)feature
 {
-  v9 = a3;
-  if (!v9)
+  featureCopy = feature;
+  if (!featureCopy)
   {
     RERaiseInternalException(*MEMORY[0x277CBE660], @"Feature must be non-nil", v3, v4, v5, v6, v7, v8, v12);
   }
 
-  v10 = [[_REHasFeatureRuleCondition alloc] initWithFeature:v9 contains:1];
+  v10 = [[_REHasFeatureRuleCondition alloc] initWithFeature:featureCopy contains:1];
 
   return v10;
 }
 
-+ (id)conditionForFeature:(id)a3 relation:(int64_t)a4 floatValue:(float)a5
++ (id)conditionForFeature:(id)feature relation:(int64_t)relation floatValue:(float)value
 {
-  v6 = a3;
-  REEnsureFeatureWithType(v6, 2uLL);
+  featureCopy = feature;
+  REEnsureFeatureWithType(featureCopy, 2uLL);
   v7 = RECreateDoubleFeatureValueTaggedPointer();
-  v8 = [[_REValueRuleCondition alloc] initWithFeature:v6 relation:a4 value:v7];
+  v8 = [[_REValueRuleCondition alloc] initWithFeature:featureCopy relation:relation value:v7];
 
   REReleaseFeatureValueTaggedPointer(v7);
 
   return v8;
 }
 
-+ (id)conditionForFeature:(id)a3 relation:(int64_t)a4 integerValue:(int64_t)a5
++ (id)conditionForFeature:(id)feature relation:(int64_t)relation integerValue:(int64_t)value
 {
-  v7 = a3;
-  REEnsureFeatureWithType(v7, 2uLL);
-  v8 = RECreateIntegerFeatureValueTaggedPointer(a5);
-  v9 = [[_REValueRuleCondition alloc] initWithFeature:v7 relation:a4 value:v8];
+  featureCopy = feature;
+  REEnsureFeatureWithType(featureCopy, 2uLL);
+  v8 = RECreateIntegerFeatureValueTaggedPointer(value);
+  v9 = [[_REValueRuleCondition alloc] initWithFeature:featureCopy relation:relation value:v8];
 
   REReleaseFeatureValueTaggedPointer(v8);
 
   return v9;
 }
 
-+ (id)conditionForFeature:(id)a3 hasValue:(id)a4
++ (id)conditionForFeature:(id)feature hasValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  REEnsureFeatureWithType(v6, 1uLL);
-  v7 = [REFeatureValue featureValueWithString:v5];
+  valueCopy = value;
+  featureCopy = feature;
+  REEnsureFeatureWithType(featureCopy, 1uLL);
+  v7 = [REFeatureValue featureValueWithString:valueCopy];
 
   v8 = RECreateFeatureValueTaggedPointer(v7);
-  v9 = [[_REValueRuleCondition alloc] initWithFeature:v6 relation:0 value:v8];
+  v9 = [[_REValueRuleCondition alloc] initWithFeature:featureCopy relation:0 value:v8];
 
   RERetainFeatureValueTaggedPointer(v8);
 
   return v9;
 }
 
-+ (id)conditionForFeature:(id)a3 hasIntegerValue:(int64_t)a4
++ (id)conditionForFeature:(id)feature hasIntegerValue:(int64_t)value
 {
-  v5 = a3;
-  REEnsureFeatureWithType(v5, 1uLL);
-  v6 = RECreateIntegerFeatureValueTaggedPointer(a4);
-  v7 = [[_REValueRuleCondition alloc] initWithFeature:v5 relation:0 value:v6];
+  featureCopy = feature;
+  REEnsureFeatureWithType(featureCopy, 1uLL);
+  v6 = RECreateIntegerFeatureValueTaggedPointer(value);
+  v7 = [[_REValueRuleCondition alloc] initWithFeature:featureCopy relation:0 value:v6];
 
   REReleaseFeatureValueTaggedPointer(v6);
 
   return v7;
 }
 
-+ (id)conditionForFeature:(id)a3 hasBoolValue:(BOOL)a4
++ (id)conditionForFeature:(id)feature hasBoolValue:(BOOL)value
 {
-  v4 = a4;
-  v5 = a3;
-  REEnsureFeatureWithType(v5, 0);
-  v6 = RECreateBooleanFeatureValueTaggedPointer(v4);
-  v7 = [[_REValueRuleCondition alloc] initWithFeature:v5 relation:0 value:v6];
+  valueCopy = value;
+  featureCopy = feature;
+  REEnsureFeatureWithType(featureCopy, 0);
+  v6 = RECreateBooleanFeatureValueTaggedPointer(valueCopy);
+  v7 = [[_REValueRuleCondition alloc] initWithFeature:featureCopy relation:0 value:v6];
 
   REReleaseFeatureValueTaggedPointer(v6);
 
   return v7;
 }
 
-+ (id)conditionForFeature:(id)a3 relation:(int64_t)a4 feature:(id)a5
++ (id)conditionForFeature:(id)feature relation:(int64_t)relation feature:(id)a5
 {
   v7 = a5;
-  v8 = a3;
-  REEnsureMatchingFeatureTypes(v8, v7);
-  v9 = [[_REFeatureRuleCondition alloc] initWithFeature:v8 relation:a4 feature:v7];
+  featureCopy = feature;
+  REEnsureMatchingFeatureTypes(featureCopy, v7);
+  v9 = [[_REFeatureRuleCondition alloc] initWithFeature:featureCopy relation:relation feature:v7];
 
   return v9;
 }
 
-+ (id)conditionForProbabilityForInteraction:(id)a3 relation:(int64_t)a4 floatValue:(float)a5
++ (id)conditionForProbabilityForInteraction:(id)interaction relation:(int64_t)relation floatValue:(float)value
 {
-  v7 = a3;
+  interactionCopy = interaction;
   v8 = [_REProbabilityRuleCondition alloc];
-  *&v9 = a5;
-  v10 = [(_REProbabilityRuleCondition *)v8 initWithProbability:v7 relation:a4 feature:0 threshold:v9];
+  *&v9 = value;
+  v10 = [(_REProbabilityRuleCondition *)v8 initWithProbability:interactionCopy relation:relation feature:0 threshold:v9];
 
   return v10;
 }
 
-+ (id)conditionForProbabilityForInteraction:(id)a3 relation:(int64_t)a4 feature:(id)a5
++ (id)conditionForProbabilityForInteraction:(id)interaction relation:(int64_t)relation feature:(id)feature
 {
-  v7 = a5;
-  v8 = a3;
-  REEnsureFeatureWithType(v7, 2uLL);
-  v9 = [[_REProbabilityRuleCondition alloc] initWithProbability:v8 relation:a4 feature:v7 threshold:0.0];
+  featureCopy = feature;
+  interactionCopy = interaction;
+  REEnsureFeatureWithType(featureCopy, 2uLL);
+  v9 = [[_REProbabilityRuleCondition alloc] initWithProbability:interactionCopy relation:relation feature:featureCopy threshold:0.0];
 
   return v9;
 }
 
-+ (id)andConditions:(id)a3
++ (id)andConditions:(id)conditions
 {
-  v3 = a3;
+  conditionsCopy = conditions;
   v4 = [_REAggregateRuleCondition alloc];
-  if (v3)
+  if (conditionsCopy)
   {
-    v5 = v3;
+    v5 = conditionsCopy;
   }
 
   else
@@ -141,13 +141,13 @@
   return v6;
 }
 
-+ (id)orConditions:(id)a3
++ (id)orConditions:(id)conditions
 {
-  v3 = a3;
+  conditionsCopy = conditions;
   v4 = [_REAggregateRuleCondition alloc];
-  if (v3)
+  if (conditionsCopy)
   {
-    v5 = v3;
+    v5 = conditionsCopy;
   }
 
   else
@@ -160,17 +160,17 @@
   return v6;
 }
 
-+ (id)notCondition:(id)a3
++ (id)notCondition:(id)condition
 {
-  v9 = a3;
-  if (!v9)
+  conditionCopy = condition;
+  if (!conditionCopy)
   {
     RERaiseInternalException(*MEMORY[0x277CBE660], @"Condition must be non-nil", v3, v4, v5, v6, v7, v8, v12);
   }
 
-  v10 = [v9 _notCondition];
+  _notCondition = [conditionCopy _notCondition];
 
-  return v10;
+  return _notCondition;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface BKAccelerometerClientUIApp
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)_queue_invalidate;
-- (void)handleOrientationEvent:(int64_t)a3 orientationLocked:(BOOL)a4;
-- (void)setWantsAccelerometerEvents:(BOOL)a3;
+- (void)handleOrientationEvent:(int64_t)event orientationLocked:(BOOL)locked;
+- (void)setWantsAccelerometerEvents:(BOOL)events;
 @end
 
 @implementation BKAccelerometerClientUIApp
 
-- (void)handleOrientationEvent:(int64_t)a3 orientationLocked:(BOOL)a4
+- (void)handleOrientationEvent:(int64_t)event orientationLocked:(BOOL)locked
 {
-  if ([(BKAccelerometerClient *)self wantsOrientationEvents]&& !a4)
+  if ([(BKAccelerometerClient *)self wantsOrientationEvents]&& !locked)
   {
     mach_absolute_time();
     DeviceOrientationEventWithUsage = IOHIDEventCreateDeviceOrientationEventWithUsage();
@@ -20,7 +20,7 @@
       *buf = 138543618;
       v13 = v9;
       v14 = 2114;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending orientation: %{public}@ event to %{public}@", buf, 0x16u);
     }
 
@@ -32,7 +32,7 @@
     v10 = [BKSHIDEventDeferringResolution build:v11];
     BKSendHIDEventToClientWithDestination();
     CFRelease(DeviceOrientationEventWithUsage);
-    *(&self->super._lastAccelerometerEventTimestamp + 6) = a3;
+    *(&self->super._lastAccelerometerEventTimestamp + 6) = event;
   }
 }
 
@@ -43,9 +43,9 @@
   [(BKAccelerometerClient *)&v2 _queue_invalidate];
 }
 
-- (void)setWantsAccelerometerEvents:(BOOL)a3
+- (void)setWantsAccelerometerEvents:(BOOL)events
 {
-  if (a3)
+  if (events)
   {
     v3 = sub_100002C4C();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -56,11 +56,11 @@
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = BKAccelerometerClientUIApp;
-  v4 = [(BKAccelerometerClient *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BKAccelerometerClient *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendInt:*(&self->super._lastAccelerometerEventTimestamp + 6) withName:@"lastOrientation"];
 
   return v4;

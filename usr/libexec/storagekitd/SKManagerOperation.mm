@@ -2,9 +2,9 @@
 - (BOOL)run;
 - (SKManagerOperation)init;
 - (id)redactedDescription;
-- (id)validateWithRecachedDisk:(id)a3 error:(id)a4;
-- (void)dmAsyncMessageForDisk:(__DADisk *)a3 string:(id)a4 dictionary:(id)a5;
-- (void)dmAsyncStartedForDisk:(__DADisk *)a3;
+- (id)validateWithRecachedDisk:(id)disk error:(id)error;
+- (void)dmAsyncMessageForDisk:(__DADisk *)disk string:(id)string dictionary:(id)dictionary;
+- (void)dmAsyncStartedForDisk:(__DADisk *)disk;
 - (void)finished;
 @end
 
@@ -36,43 +36,43 @@
   v3 = +[SKDaemonManager sharedManager];
   [v3 _advanceOperationQueue];
 
-  v4 = [(SKManagerOperation *)self finishedSemaphore];
-  dispatch_semaphore_signal(v4);
+  finishedSemaphore = [(SKManagerOperation *)self finishedSemaphore];
+  dispatch_semaphore_signal(finishedSemaphore);
 }
 
-- (void)dmAsyncStartedForDisk:(__DADisk *)a3
+- (void)dmAsyncStartedForDisk:(__DADisk *)disk
 {
-  [(SKManagerOperation *)self setProgress:a3, 0.0];
-  v4 = [(SKManagerOperation *)self progressHandler];
+  [(SKManagerOperation *)self setProgress:disk, 0.0];
+  progressHandler = [(SKManagerOperation *)self progressHandler];
 
-  if (v4)
+  if (progressHandler)
   {
-    v5 = [(SKManagerOperation *)self progressHandler];
-    v5[2](v5, 0, 0.0);
+    progressHandler2 = [(SKManagerOperation *)self progressHandler];
+    progressHandler2[2](progressHandler2, 0, 0.0);
   }
 }
 
-- (void)dmAsyncMessageForDisk:(__DADisk *)a3 string:(id)a4 dictionary:(id)a5
+- (void)dmAsyncMessageForDisk:(__DADisk *)disk string:(id)string dictionary:(id)dictionary
 {
-  v8 = a4;
-  v6 = [(SKManagerOperation *)self progressHandler];
+  stringCopy = string;
+  progressHandler = [(SKManagerOperation *)self progressHandler];
 
-  if (v6)
+  if (progressHandler)
   {
-    v7 = [(SKManagerOperation *)self progressHandler];
+    progressHandler2 = [(SKManagerOperation *)self progressHandler];
     [(SKManagerOperation *)self progress];
-    (v7)[2](v7, v8);
+    (progressHandler2)[2](progressHandler2, stringCopy);
   }
 }
 
-- (id)validateWithRecachedDisk:(id)a3 error:(id)a4
+- (id)validateWithRecachedDisk:(id)disk error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  diskCopy = disk;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
-    v9 = v7;
+    v9 = errorCopy;
 LABEL_3:
     v10 = v9;
     goto LABEL_8;
@@ -80,14 +80,14 @@ LABEL_3:
 
   v11 = sub_10000BFD0();
   v12 = v11;
-  if (!v6)
+  if (!diskCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 136315394;
       v15 = "[SKManagerOperation validateWithRecachedDisk:error:]";
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s: Disk recache failed, failing %@", &v14, 0x16u);
     }
 
@@ -100,7 +100,7 @@ LABEL_3:
     v14 = 136315394;
     v15 = "[SKManagerOperation validateWithRecachedDisk:error:]";
     v16 = 2112;
-    v17 = v6;
+    selfCopy = diskCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s: Disk recached successfully: %@", &v14, 0x16u);
   }
 

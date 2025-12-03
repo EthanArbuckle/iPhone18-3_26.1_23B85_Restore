@@ -1,18 +1,18 @@
 @interface IDSIDInfoResult
-- (BOOL)hasAnyDeviceSupportCapability:(id)a3;
+- (BOOL)hasAnyDeviceSupportCapability:(id)capability;
 @end
 
 @implementation IDSIDInfoResult
 
-- (BOOL)hasAnyDeviceSupportCapability:(id)a3
+- (BOOL)hasAnyDeviceSupportCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(IDSIDInfoResult *)self endpoints];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  endpoints = [(IDSIDInfoResult *)self endpoints];
+  v6 = [endpoints countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -22,11 +22,11 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(endpoints);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) capabilities];
-        v10 = [v9 valueForCapability:v4];
+        capabilities = [*(*(&v12 + 1) + 8 * i) capabilities];
+        v10 = [capabilities valueForCapability:capabilityCopy];
 
         if (v10 == 1)
         {
@@ -35,7 +35,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [endpoints countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

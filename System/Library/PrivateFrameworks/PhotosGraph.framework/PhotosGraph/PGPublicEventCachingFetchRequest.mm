@@ -1,23 +1,23 @@
 @interface PGPublicEventCachingFetchRequest
-- (PGPublicEventCachingFetchRequest)initWithGraph:(id)a3 momentNodeCollection:(id)a4 cachingOptions:(id)a5;
+- (PGPublicEventCachingFetchRequest)initWithGraph:(id)graph momentNodeCollection:(id)collection cachingOptions:(id)options;
 @end
 
 @implementation PGPublicEventCachingFetchRequest
 
-- (PGPublicEventCachingFetchRequest)initWithGraph:(id)a3 momentNodeCollection:(id)a4 cachingOptions:(id)a5
+- (PGPublicEventCachingFetchRequest)initWithGraph:(id)graph momentNodeCollection:(id)collection cachingOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  graphCopy = graph;
+  collectionCopy = collection;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = PGPublicEventCachingFetchRequest;
   v12 = [(PGPublicEventCachingFetchRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_graph, a3);
-    objc_storeStrong(&v13->_momentNodes, a4);
-    objc_storeStrong(&v13->_cachingOptions, a5);
+    objc_storeStrong(&v12->_graph, graph);
+    objc_storeStrong(&v13->_momentNodes, collection);
+    objc_storeStrong(&v13->_cachingOptions, options);
   }
 
   return v13;

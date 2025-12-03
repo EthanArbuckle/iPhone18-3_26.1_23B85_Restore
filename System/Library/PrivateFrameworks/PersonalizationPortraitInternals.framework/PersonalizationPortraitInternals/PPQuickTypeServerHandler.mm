@@ -1,19 +1,19 @@
 @interface PPQuickTypeServerHandler
 - (PPQuickTypeServerHandler)init;
-- (void)hibernateWithCompletion:(id)a3;
-- (void)quickTypeItemsWithLanguageModelingTokens:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 bundleIdentifier:(id)a6 limit:(unint64_t)a7 completion:(id)a8;
-- (void)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 completion:(id)a5;
-- (void)recentQuickTypeItemsForRecipients:(id)a3 completion:(id)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)warmUpWithCompletion:(id)a3;
+- (void)hibernateWithCompletion:(id)completion;
+- (void)quickTypeItemsWithLanguageModelingTokens:(id)tokens localeIdentifier:(id)identifier recipients:(id)recipients bundleIdentifier:(id)bundleIdentifier limit:(unint64_t)limit completion:(id)completion;
+- (void)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit completion:(id)completion;
+- (void)recentQuickTypeItemsForRecipients:(id)recipients completion:(id)completion;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)warmUpWithCompletion:(id)completion;
 @end
 
 @implementation PPQuickTypeServerHandler
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,12 +22,12 @@
   }
 
   v8 = +[PPLocalQuickTypeBroker sharedInstance];
-  [v8 registerFeedback:v6 completion:v5];
+  [v8 registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (void)hibernateWithCompletion:(id)a3
+- (void)hibernateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,12 +36,12 @@
   }
 
   v5 = +[PPLocalQuickTypeBroker sharedInstance];
-  [v5 hibernateWithCompletion:v3];
+  [v5 hibernateWithCompletion:completionCopy];
 }
 
-- (void)warmUpWithCompletion:(id)a3
+- (void)warmUpWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -50,13 +50,13 @@
   }
 
   v5 = +[PPLocalQuickTypeBroker sharedInstance];
-  [v5 warmUpWithCompletion:v3];
+  [v5 warmUpWithCompletion:completionCopy];
 }
 
-- (void)recentQuickTypeItemsForRecipients:(id)a3 completion:(id)a4
+- (void)recentQuickTypeItemsForRecipients:(id)recipients completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  recipientsCopy = recipients;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -65,16 +65,16 @@
   }
 
   v8 = +[PPLocalQuickTypeBroker sharedInstance];
-  [v8 recentQuickTypeItemsForRecipients:v6 completion:v5];
+  [v8 recentQuickTypeItemsForRecipients:recipientsCopy completion:completionCopy];
 }
 
-- (void)quickTypeItemsWithLanguageModelingTokens:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 bundleIdentifier:(id)a6 limit:(unint64_t)a7 completion:(id)a8
+- (void)quickTypeItemsWithLanguageModelingTokens:(id)tokens localeIdentifier:(id)identifier recipients:(id)recipients bundleIdentifier:(id)bundleIdentifier limit:(unint64_t)limit completion:(id)completion
 {
-  v13 = a8;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  completionCopy = completion;
+  bundleIdentifierCopy = bundleIdentifier;
+  recipientsCopy = recipients;
+  identifierCopy = identifier;
+  tokensCopy = tokens;
   v18 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -83,13 +83,13 @@
   }
 
   v19 = +[PPLocalQuickTypeBroker sharedInstance];
-  [v19 quickTypeItemsWithLanguageModelingTokens:v17 localeIdentifier:v16 recipients:v15 bundleIdentifier:v14 limit:a7 completion:v13];
+  [v19 quickTypeItemsWithLanguageModelingTokens:tokensCopy localeIdentifier:identifierCopy recipients:recipientsCopy bundleIdentifier:bundleIdentifierCopy limit:limit completion:completionCopy];
 }
 
-- (void)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  queryCopy = query;
   v9 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -98,7 +98,7 @@
   }
 
   v10 = +[PPLocalQuickTypeBroker sharedInstance];
-  [v10 quickTypeItemsWithQuery:v8 limit:a4 completion:v7];
+  [v10 quickTypeItemsWithQuery:queryCopy limit:limit completion:completionCopy];
 }
 
 - (PPQuickTypeServerHandler)init

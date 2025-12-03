@@ -1,18 +1,18 @@
 @interface LTTextUtilities
-+ (id)trimPrependingPunctuation:(id)a3 locale:(id)a4;
++ (id)trimPrependingPunctuation:(id)punctuation locale:(id)locale;
 @end
 
 @implementation LTTextUtilities
 
-+ (id)trimPrependingPunctuation:(id)a3 locale:(id)a4
++ (id)trimPrependingPunctuation:(id)punctuation locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
+  punctuationCopy = punctuation;
+  localeCopy = locale;
   v7 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@", .?!:。，"}];;
-  v8 = [v5 mutableCopy];
+  v8 = [punctuationCopy mutableCopy];
   v9 = MEMORY[0x277CBEAF8];
-  v10 = [v6 languageCode];
-  v11 = 4 * ([v9 characterDirectionForLanguage:v10] == 2);
+  languageCode = [localeCopy languageCode];
+  v11 = 4 * ([v9 characterDirectionForLanguage:languageCode] == 2);
 
   while (![v8 rangeOfCharacterFromSet:v7 options:v11])
   {

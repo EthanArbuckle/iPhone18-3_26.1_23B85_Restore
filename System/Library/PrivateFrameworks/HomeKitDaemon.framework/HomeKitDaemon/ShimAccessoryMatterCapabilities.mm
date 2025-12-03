@@ -1,24 +1,24 @@
 @interface ShimAccessoryMatterCapabilities
-- (BOOL)isCapabilityAllowed:(int64_t)a3 vendorID:(int64_t)a4 productID:(int64_t)a5;
-- (BOOL)isCapabilityAllowed:(int64_t)a3 vendorID:(int64_t)a4 productID:(int64_t)a5 firmwareVersion:(int64_t)a6;
+- (BOOL)isCapabilityAllowed:(int64_t)allowed vendorID:(int64_t)d productID:(int64_t)iD;
+- (BOOL)isCapabilityAllowed:(int64_t)allowed vendorID:(int64_t)d productID:(int64_t)iD firmwareVersion:(int64_t)version;
 @end
 
 @implementation ShimAccessoryMatterCapabilities
 
-- (BOOL)isCapabilityAllowed:(int64_t)a3 vendorID:(int64_t)a4 productID:(int64_t)a5
+- (BOOL)isCapabilityAllowed:(int64_t)allowed vendorID:(int64_t)d productID:(int64_t)iD
 {
 
-  LOBYTE(a5) = sub_2297C3BC8(a3, a4, a5);
+  LOBYTE(iD) = sub_2297C3BC8(allowed, d, iD);
 
-  return a5 & 1;
+  return iD & 1;
 }
 
-- (BOOL)isCapabilityAllowed:(int64_t)a3 vendorID:(int64_t)a4 productID:(int64_t)a5 firmwareVersion:(int64_t)a6
+- (BOOL)isCapabilityAllowed:(int64_t)allowed vendorID:(int64_t)d productID:(int64_t)iD firmwareVersion:(int64_t)version
 {
 
-  LOBYTE(a6) = sub_2297C3EAC(a3, a4, a5, a6);
+  LOBYTE(version) = sub_2297C3EAC(allowed, d, iD, version);
 
-  return a6 & 1;
+  return version & 1;
 }
 
 @end

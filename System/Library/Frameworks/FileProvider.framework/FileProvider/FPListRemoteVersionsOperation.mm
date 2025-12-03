@@ -1,6 +1,6 @@
 @interface FPListRemoteVersionsOperation
 - (BOOL)isSandboxExtensionConsumed;
-- (FPListRemoteVersionsOperation)initWithDocumentURL:(id)a3;
+- (FPListRemoteVersionsOperation)initWithDocumentURL:(id)l;
 - (id)fp_prettyDescription;
 - (void)isSandboxExtensionConsumed;
 - (void)main;
@@ -8,10 +8,10 @@
 
 @implementation FPListRemoteVersionsOperation
 
-- (FPListRemoteVersionsOperation)initWithDocumentURL:(id)a3
+- (FPListRemoteVersionsOperation)initWithDocumentURL:(id)l
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     [(FPListRemoteVersionsOperation *)a2 initWithDocumentURL:?];
   }
@@ -22,7 +22,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_documentURL, a3);
+    objc_storeStrong(&v7->_documentURL, l);
     v9 = objc_opt_new();
     queue = v8->_queue;
     v8->_queue = v9;
@@ -38,13 +38,13 @@
   FPPrecheckTCCReadAccess(self->_documentURL);
   v3 = +[FPDaemonConnection sharedConnectionProxy];
   documentURL = self->_documentURL;
-  v5 = [(FPListRemoteVersionsOperation *)self includeCachedVersions];
+  includeCachedVersions = [(FPListRemoteVersionsOperation *)self includeCachedVersions];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__FPListRemoteVersionsOperation_main__block_invoke;
   v6[3] = &unk_1E793DD60;
   v6[4] = self;
-  [v3 listRemoteVersionsOfItemAtURL:documentURL includeCachedVersions:v5 completionHandler:v6];
+  [v3 listRemoteVersionsOfItemAtURL:documentURL includeCachedVersions:includeCachedVersions completionHandler:v6];
 }
 
 void __37__FPListRemoteVersionsOperation_main__block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -288,10 +288,10 @@ uint64_t __37__FPListRemoteVersionsOperation_main__block_invoke_15(uint64_t a1)
 
 - (BOOL)isSandboxExtensionConsumed
 {
-  v3 = [MEMORY[0x1E69A07C0] manager];
+  manager = [MEMORY[0x1E69A07C0] manager];
   documentURL = self->_documentURL;
   v9 = 0;
-  v5 = [v3 permanentStorageForItemAtURL:documentURL allocateIfNone:0 error:&v9];
+  v5 = [manager permanentStorageForItemAtURL:documentURL allocateIfNone:0 error:&v9];
   v6 = v9;
 
   if (v6)
@@ -309,8 +309,8 @@ uint64_t __37__FPListRemoteVersionsOperation_main__block_invoke_15(uint64_t a1)
 - (id)fp_prettyDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NSURL *)self->_documentURL fp_shortDescription];
-  v4 = [v2 stringWithFormat:@"list remote versions for URL (%@)", v3];
+  fp_shortDescription = [(NSURL *)self->_documentURL fp_shortDescription];
+  v4 = [v2 stringWithFormat:@"list remote versions for URL (%@)", fp_shortDescription];
 
   return v4;
 }
@@ -335,12 +335,12 @@ void __37__FPListRemoteVersionsOperation_main__block_invoke_cold_1(void *a1, NSO
 - (void)isSandboxExtensionConsumed
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = *a1;
-  v5 = [a2 fp_prettyDescription];
+  v4 = *self;
+  fp_prettyDescription = [a2 fp_prettyDescription];
   v7 = 138412546;
   v8 = v4;
   v9 = 2112;
-  v10 = v5;
+  v10 = fp_prettyDescription;
   _os_log_error_impl(&dword_1AAAE1000, a3, OS_LOG_TYPE_ERROR, "[ERROR] Failed to consume sandbox extension for URL %@. Error: %@", &v7, 0x16u);
 
   v6 = *MEMORY[0x1E69E9840];

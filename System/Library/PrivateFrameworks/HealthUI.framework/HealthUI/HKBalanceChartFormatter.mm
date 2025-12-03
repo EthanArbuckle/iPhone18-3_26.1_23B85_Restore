@@ -1,16 +1,16 @@
 @interface HKBalanceChartFormatter
 - (HKBalanceChartFormatter)init;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKBalanceChartFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   sub_1C3C82884();
   v6 = sub_1C3D202B4();
-  v7 = self;
-  sub_1C3CC4C08(v6, a4);
+  selfCopy = self;
+  sub_1C3CC4C08(v6, context);
 
   sub_1C3C27CB4(0, &qword_1EC0866B0);
   v8 = sub_1C3D202A4();

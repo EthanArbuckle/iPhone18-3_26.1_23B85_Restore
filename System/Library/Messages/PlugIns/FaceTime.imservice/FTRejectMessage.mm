@@ -1,5 +1,5 @@
 @interface FTRejectMessage
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
@@ -7,11 +7,11 @@
 
 @implementation FTRejectMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = FTRejectMessage;
-  return [(FTFaceTimeMessage *)&v4 copyWithZone:a3];
+  return [(FTFaceTimeMessage *)&v4 copyWithZone:zone];
 }
 
 - (void)dealloc
@@ -25,8 +25,8 @@
 {
   v21.receiver = self;
   v21.super_class = FTRejectMessage;
-  v2 = [(FTFaceTimeMessage *)&v21 requiredKeys];
-  v7 = objc_msgSend_mutableCopy(v2, v3, v4, v5, v6);
+  requiredKeys = [(FTFaceTimeMessage *)&v21 requiredKeys];
+  v7 = objc_msgSend_mutableCopy(requiredKeys, v3, v4, v5, v6);
   objc_msgSend_addObject_(v7, v8, @"peer-id", v9, v10);
   objc_msgSend_addObject_(v7, v11, @"self-push-token", v12, v13);
   objc_msgSend_addObject_(v7, v14, @"peer-push-token", v15, v16);
@@ -38,8 +38,8 @@
 {
   v40.receiver = self;
   v40.super_class = FTRejectMessage;
-  v3 = [(FTFaceTimeMessage *)&v40 messageBody];
-  v8 = objc_msgSend_mutableCopy(v3, v4, v5, v6, v7);
+  messageBody = [(FTFaceTimeMessage *)&v40 messageBody];
+  v8 = objc_msgSend_mutableCopy(messageBody, v4, v5, v6, v7);
   v13 = objc_msgSend_peerID(self, v9, v10, v11, v12);
   if (v13)
   {

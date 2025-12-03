@@ -1,152 +1,152 @@
 @interface PSMultilineTitleTableCell
-- (PSMultilineTitleTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSMultilineTitleTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation PSMultilineTitleTableCell
 
-- (PSMultilineTitleTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSMultilineTitleTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v77.receiver = self;
   v77.super_class = PSMultilineTitleTableCell;
-  v4 = [(PSTableCell *)&v77 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v77 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PSTableCell *)v4 titleLabel];
-    [v6 setNumberOfLines:0];
+    titleLabel = [(PSTableCell *)v4 titleLabel];
+    [titleLabel setNumberOfLines:0];
 
-    v7 = [(PSMultilineTitleTableCell *)v5 traitCollection];
-    v8 = [v7 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+    traitCollection = [(PSMultilineTitleTableCell *)v5 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v10 = [(PSTableCell *)v5 titleLabel];
-    v11 = [v10 topAnchor];
-    v12 = [(PSMultilineTitleTableCell *)v5 contentView];
-    v13 = [v12 layoutMarginsGuide];
-    v14 = [v13 topAnchor];
-    v15 = [v11 constraintEqualToAnchor:v14];
+    titleLabel2 = [(PSTableCell *)v5 titleLabel];
+    topAnchor = [titleLabel2 topAnchor];
+    contentView = [(PSMultilineTitleTableCell *)v5 contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v15 setActive:1];
 
-    v16 = [(PSTableCell *)v5 titleLabel];
-    v17 = [v16 leadingAnchor];
-    v18 = [(PSMultilineTitleTableCell *)v5 contentView];
-    v19 = [v18 layoutMarginsGuide];
-    v20 = [v19 leadingAnchor];
-    v21 = [v17 constraintEqualToAnchor:v20];
+    titleLabel3 = [(PSTableCell *)v5 titleLabel];
+    leadingAnchor = [titleLabel3 leadingAnchor];
+    contentView2 = [(PSMultilineTitleTableCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     titleLeadingCon = v5->_titleLeadingCon;
     v5->_titleLeadingCon = v21;
 
     [(NSLayoutConstraint *)v5->_titleLeadingCon setActive:1];
-    v23 = [(PSTableCell *)v5 titleLabel];
-    v24 = v23;
+    titleLabel4 = [(PSTableCell *)v5 titleLabel];
+    v24 = titleLabel4;
     if (IsAccessibilityCategory)
     {
-      v25 = [v23 trailingAnchor];
-      v26 = [(PSMultilineTitleTableCell *)v5 contentView];
-      v27 = [v26 safeAreaLayoutGuide];
-      v28 = [v27 trailingAnchor];
-      v29 = [v25 constraintEqualToAnchor:v28];
+      trailingAnchor = [titleLabel4 trailingAnchor];
+      contentView3 = [(PSMultilineTitleTableCell *)v5 contentView];
+      safeAreaLayoutGuide = [contentView3 safeAreaLayoutGuide];
+      trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+      v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v29 setActive:1];
 
-      v30 = [(PSTableCell *)v5 titleLabel];
-      v31 = [v30 bottomAnchor];
-      v32 = [(PSTableCell *)v5 valueLabel];
-      [v32 topAnchor];
+      titleLabel5 = [(PSTableCell *)v5 titleLabel];
+      bottomAnchor = [titleLabel5 bottomAnchor];
+      valueLabel = [(PSTableCell *)v5 valueLabel];
+      [valueLabel topAnchor];
     }
 
     else
     {
-      v33 = [v23 bottomAnchor];
-      v34 = [(PSMultilineTitleTableCell *)v5 contentView];
-      v35 = [v34 layoutMarginsGuide];
-      v36 = [v35 bottomAnchor];
-      v37 = [v33 constraintEqualToAnchor:v36];
+      bottomAnchor2 = [titleLabel4 bottomAnchor];
+      contentView4 = [(PSMultilineTitleTableCell *)v5 contentView];
+      layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+      bottomAnchor3 = [layoutMarginsGuide3 bottomAnchor];
+      v37 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       [v37 setActive:1];
 
-      v30 = [(PSTableCell *)v5 titleLabel];
-      v31 = [v30 trailingAnchor];
-      v32 = [(PSTableCell *)v5 valueLabel];
-      [v32 leadingAnchor];
+      titleLabel5 = [(PSTableCell *)v5 titleLabel];
+      bottomAnchor = [titleLabel5 trailingAnchor];
+      valueLabel = [(PSTableCell *)v5 valueLabel];
+      [valueLabel leadingAnchor];
     }
     v38 = ;
-    v39 = [v31 constraintEqualToAnchor:v38];
+    v39 = [bottomAnchor constraintEqualToAnchor:v38];
     [v39 setActive:1];
 
-    v40 = [(PSTableCell *)v5 titleLabel];
+    titleLabel6 = [(PSTableCell *)v5 titleLabel];
     LODWORD(v41) = 1148846080;
-    [v40 setContentCompressionResistancePriority:1 forAxis:v41];
+    [titleLabel6 setContentCompressionResistancePriority:1 forAxis:v41];
 
-    v42 = [(PSTableCell *)v5 titleLabel];
+    titleLabel7 = [(PSTableCell *)v5 titleLabel];
     LODWORD(v43) = 1148846080;
-    [v42 setContentHuggingPriority:1 forAxis:v43];
+    [titleLabel7 setContentHuggingPriority:1 forAxis:v43];
 
-    v44 = [(PSTableCell *)v5 titleLabel];
-    [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel8 = [(PSTableCell *)v5 titleLabel];
+    [titleLabel8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v45 = [(PSTableCell *)v5 valueLabel];
-    v46 = v45;
+    valueLabel2 = [(PSTableCell *)v5 valueLabel];
+    valueLabel4 = valueLabel2;
     if (IsAccessibilityCategory)
     {
-      v47 = [v45 leadingAnchor];
-      v48 = [(PSMultilineTitleTableCell *)v5 contentView];
-      v49 = [v48 layoutMarginsGuide];
-      v50 = [v49 leadingAnchor];
-      v51 = [v47 constraintEqualToAnchor:v50];
+      leadingAnchor3 = [valueLabel2 leadingAnchor];
+      contentView5 = [(PSMultilineTitleTableCell *)v5 contentView];
+      layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+      leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+      v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       [v51 setActive:1];
 
-      v52 = [(PSTableCell *)v5 valueLabel];
-      v53 = [v52 bottomAnchor];
-      v54 = [(PSMultilineTitleTableCell *)v5 contentView];
-      v55 = [v54 layoutMarginsGuide];
-      v56 = [v55 bottomAnchor];
-      v57 = [v53 constraintEqualToAnchor:v56];
+      valueLabel3 = [(PSTableCell *)v5 valueLabel];
+      bottomAnchor4 = [valueLabel3 bottomAnchor];
+      contentView6 = [(PSMultilineTitleTableCell *)v5 contentView];
+      layoutMarginsGuide5 = [contentView6 layoutMarginsGuide];
+      bottomAnchor5 = [layoutMarginsGuide5 bottomAnchor];
+      v57 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
       [v57 setActive:1];
 
-      v46 = [(PSTableCell *)v5 valueLabel];
-      v58 = [v46 topAnchor];
-      v59 = [(PSTableCell *)v5 titleLabel];
-      v60 = [v59 bottomAnchor];
-      v61 = [v58 constraintEqualToAnchor:v60];
-      [v61 setActive:1];
+      valueLabel4 = [(PSTableCell *)v5 valueLabel];
+      topAnchor3 = [valueLabel4 topAnchor];
+      titleLabel9 = [(PSTableCell *)v5 titleLabel];
+      bottomAnchor6 = [titleLabel9 bottomAnchor];
+      centerYAnchor = [topAnchor3 constraintEqualToAnchor:bottomAnchor6];
+      [centerYAnchor setActive:1];
     }
 
     else
     {
-      v58 = [v45 centerYAnchor];
-      v59 = [(PSMultilineTitleTableCell *)v5 contentView];
-      v60 = [v59 layoutMarginsGuide];
-      v61 = [v60 centerYAnchor];
-      v62 = [v58 constraintEqualToAnchor:v61];
+      topAnchor3 = [valueLabel2 centerYAnchor];
+      titleLabel9 = [(PSMultilineTitleTableCell *)v5 contentView];
+      bottomAnchor6 = [titleLabel9 layoutMarginsGuide];
+      centerYAnchor = [bottomAnchor6 centerYAnchor];
+      v62 = [topAnchor3 constraintEqualToAnchor:centerYAnchor];
       [v62 setActive:1];
     }
 
-    v63 = [(PSTableCell *)v5 valueLabel];
+    valueLabel5 = [(PSTableCell *)v5 valueLabel];
     LODWORD(v64) = 1148846080;
-    [v63 setContentCompressionResistancePriority:0 forAxis:v64];
+    [valueLabel5 setContentCompressionResistancePriority:0 forAxis:v64];
 
     if (!(IsAccessibilityCategory | (([(PSMultilineTitleTableCell *)v5 _shouldReverseLayoutDirection]& 1) == 0)))
     {
-      v65 = [(PSTableCell *)v5 valueLabel];
-      [v65 setTextAlignment:0];
+      valueLabel6 = [(PSTableCell *)v5 valueLabel];
+      [valueLabel6 setTextAlignment:0];
     }
 
-    v66 = [(PSTableCell *)v5 valueLabel];
-    v67 = [v66 trailingAnchor];
-    v68 = [(PSMultilineTitleTableCell *)v5 contentView];
-    v69 = [v68 layoutMarginsGuide];
-    v70 = [v69 trailingAnchor];
-    v71 = [v67 constraintEqualToAnchor:v70];
+    valueLabel7 = [(PSTableCell *)v5 valueLabel];
+    trailingAnchor3 = [valueLabel7 trailingAnchor];
+    contentView7 = [(PSMultilineTitleTableCell *)v5 contentView];
+    layoutMarginsGuide6 = [contentView7 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide6 trailingAnchor];
+    v71 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     valueTrailingCon = v5->_valueTrailingCon;
     v5->_valueTrailingCon = v71;
 
     [(NSLayoutConstraint *)v5->_valueTrailingCon setActive:1];
-    v73 = [(PSTableCell *)v5 valueLabel];
+    valueLabel8 = [(PSTableCell *)v5 valueLabel];
     LODWORD(v74) = 1144750080;
-    [v73 setContentHuggingPriority:1 forAxis:v74];
+    [valueLabel8 setContentHuggingPriority:1 forAxis:v74];
 
-    v75 = [(PSTableCell *)v5 valueLabel];
-    [v75 setTranslatesAutoresizingMaskIntoConstraints:0];
+    valueLabel9 = [(PSTableCell *)v5 valueLabel];
+    [valueLabel9 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   return v5;
@@ -157,15 +157,15 @@
   v29.receiver = self;
   v29.super_class = PSMultilineTitleTableCell;
   [(PSTableCell *)&v29 layoutSubviews];
-  v3 = [(PSMultilineTitleTableCell *)self contentView];
-  v4 = [(PSTableCell *)self valueLabel];
-  v5 = [v3 containsView:v4];
+  contentView = [(PSMultilineTitleTableCell *)self contentView];
+  valueLabel = [(PSTableCell *)self valueLabel];
+  v5 = [contentView containsView:valueLabel];
 
   if (v5)
   {
-    v6 = [(PSMultilineTitleTableCell *)self accessoryType];
+    accessoryType = [(PSMultilineTitleTableCell *)self accessoryType];
     valueTrailingCon = self->_valueTrailingCon;
-    if (v6 == 1)
+    if (accessoryType == 1)
     {
       if (valueTrailingCon)
       {
@@ -174,12 +174,12 @@
         self->_valueTrailingCon = 0;
       }
 
-      v9 = [(PSTableCell *)self valueLabel];
-      v10 = [v9 trailingAnchor];
-      v11 = [(PSMultilineTitleTableCell *)self contentView];
-      v12 = [v11 safeAreaLayoutGuide];
-      v13 = [v12 trailingAnchor];
-      v14 = [v10 constraintEqualToAnchor:v13];
+      valueLabel2 = [(PSTableCell *)self valueLabel];
+      trailingAnchor = [valueLabel2 trailingAnchor];
+      contentView2 = [(PSMultilineTitleTableCell *)self contentView];
+      safeAreaLayoutGuide = [contentView2 safeAreaLayoutGuide];
+      trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+      v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v15 = self->_valueTrailingCon;
       self->_valueTrailingCon = v14;
 
@@ -195,18 +195,18 @@
         self->_valueTrailingCon = 0;
       }
 
-      v17 = [(PSTableCell *)self valueLabel];
-      v18 = [v17 trailingAnchor];
-      v19 = [(PSMultilineTitleTableCell *)self contentView];
-      v20 = [v19 layoutMarginsGuide];
-      v21 = [v20 trailingAnchor];
-      v22 = [v18 constraintEqualToAnchor:v21];
+      valueLabel3 = [(PSTableCell *)self valueLabel];
+      trailingAnchor3 = [valueLabel3 trailingAnchor];
+      contentView3 = [(PSMultilineTitleTableCell *)self contentView];
+      layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+      trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+      v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
       [(NSLayoutConstraint *)v22 setActive:1];
-      v23 = [(PSMultilineTitleTableCell *)self contentView];
-      LODWORD(v18) = PSShouldInsetListView();
+      contentView4 = [(PSMultilineTitleTableCell *)self contentView];
+      LODWORD(trailingAnchor3) = PSShouldInsetListView();
 
-      if (v18)
+      if (trailingAnchor3)
       {
         [(NSLayoutConstraint *)v22 setConstant:-12.0];
       }
@@ -216,16 +216,16 @@
     }
   }
 
-  v25 = [(PSMultilineTitleTableCell *)self traitCollection];
-  v26 = [v25 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v26);
+  traitCollection = [(PSMultilineTitleTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if ([(PSMultilineTitleTableCell *)self _shouldReverseLayoutDirection])
   {
     if (!IsAccessibilityCategory)
     {
-      v28 = [(PSTableCell *)self valueLabel];
-      [v28 setTextAlignment:0];
+      valueLabel4 = [(PSTableCell *)self valueLabel];
+      [valueLabel4 setTextAlignment:0];
     }
   }
 }

@@ -1,17 +1,17 @@
 @interface _MTLSamplerState
-- (_MTLSamplerState)initWithDevice:(id)a3 samplerDescriptor:(id)a4;
-- (id)formattedDescription:(unint64_t)a3;
+- (_MTLSamplerState)initWithDevice:(id)device samplerDescriptor:(id)descriptor;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
 @implementation _MTLSamplerState
 
-- (_MTLSamplerState)initWithDevice:(id)a3 samplerDescriptor:(id)a4
+- (_MTLSamplerState)initWithDevice:(id)device samplerDescriptor:(id)descriptor
 {
   v67 = 0;
   memset(v66, 0, sizeof(v66));
-  _MTLMessageContextBegin_(v66, "[_MTLSamplerState initWithDevice:samplerDescriptor:]", 752, a3, 12, "New Sampler State Validation");
-  if (!a3)
+  _MTLMessageContextBegin_(v66, "[_MTLSamplerState initWithDevice:samplerDescriptor:]", 752, device, 12, "New Sampler State Validation");
+  if (!device)
   {
     v61 = @"device must not be nil.";
     v62 = 4;
@@ -25,7 +25,7 @@
     v62 = 8;
 LABEL_26:
     _MTLMessageContextPush_(v66, v62, v61, v7, v8, v9, v10, v11, v65.receiver);
-    if (a4)
+    if (descriptor)
     {
       goto LABEL_4;
     }
@@ -36,7 +36,7 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  if (!a4)
+  if (!descriptor)
   {
     goto LABEL_27;
   }
@@ -53,44 +53,44 @@ LABEL_4:
 LABEL_29:
   _MTLMessageContextPush_(v66, v64, v63, v7, v8, v9, v10, v11, v65.receiver);
 LABEL_5:
-  if ([a4 minFilter] >= 3)
+  if ([descriptor minFilter] >= 3)
   {
     _MTLMessageContextPush_(v66, 4, @"filter is not a valid MTLSamplerMinMagFilter.", v12, v13, v14, v15, v16, v65.receiver);
   }
 
-  if ([a4 magFilter] >= 3)
+  if ([descriptor magFilter] >= 3)
   {
     _MTLMessageContextPush_(v66, 4, @"filter is not a valid MTLSamplerMinMagFilter.", v17, v18, v19, v20, v21, v65.receiver);
   }
 
-  if ([a4 mipFilter] >= 3)
+  if ([descriptor mipFilter] >= 3)
   {
     _MTLMessageContextPush_(v66, 4, @"mipFilter is not a valid MTLSamplerMipFilter.", v22, v23, v24, v25, v26, v65.receiver);
   }
 
-  if ([a4 borderColor] >= 4)
+  if ([descriptor borderColor] >= 4)
   {
     _MTLMessageContextPush_(v66, 4, @"borderColor is not a valid MTLSamplerBorderColorSPI.", v27, v28, v29, v30, v31, v65.receiver);
   }
 
-  v32 = [a4 compareFunction];
-  validateMTLCompareFunction(v32, v66, v33, v34, v35, v36, v37, v38, v65.receiver);
-  if ([a4 reductionMode] >= 3)
+  compareFunction = [descriptor compareFunction];
+  validateMTLCompareFunction(compareFunction, v66, v33, v34, v35, v36, v37, v38, v65.receiver);
+  if ([descriptor reductionMode] >= 3)
   {
     _MTLMessageContextPush_(v66, 4, @"reductionMode is not a valid MTLSamplerReductionMode.", v39, v40, v41, v42, v43, v65.receiver);
   }
 
-  if ([a4 sAddressMode] >= 7)
+  if ([descriptor sAddressMode] >= 7)
   {
     _MTLMessageContextPush_(v66, 4, @"addressMode is not a valid MTLSamplerAddressMode.", v44, v45, v46, v47, v48, v65.receiver);
   }
 
-  if ([a4 tAddressMode] >= 7)
+  if ([descriptor tAddressMode] >= 7)
   {
     _MTLMessageContextPush_(v66, 4, @"addressMode is not a valid MTLSamplerAddressMode.", v49, v50, v51, v52, v53, v65.receiver);
   }
 
-  if ([a4 rAddressMode] >= 7)
+  if ([descriptor rAddressMode] >= 7)
   {
     _MTLMessageContextPush_(v66, 4, @"addressMode is not a valid MTLSamplerAddressMode.", v54, v55, v56, v57, v58, v65.receiver);
   }
@@ -101,9 +101,9 @@ LABEL_5:
   v59 = [(_MTLSamplerState *)&v65 init];
   if (v59)
   {
-    v59->_device = a3;
-    v59->_label = [a4 label];
-    v59->_pixelFormat = [a4 pixelFormat];
+    v59->_device = device;
+    v59->_label = [descriptor label];
+    v59->_pixelFormat = [descriptor pixelFormat];
   }
 
   return v59;
@@ -118,10 +118,10 @@ LABEL_5:
   [(_MTLSamplerState *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v14[6] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x1E696AEC0];
   v13.receiver = self;
   v13.super_class = _MTLSamplerState;
@@ -140,7 +140,7 @@ LABEL_5:
   v14[4] = @"device =";
   if (device)
   {
-    v10 = [(MTLDevice *)device formattedDescription:a3 + 4];
+    v10 = [(MTLDevice *)device formattedDescription:description + 4];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface APPersistentCacheStoreProvider
 + (APPersistentCachedStoreTransactionalProtocol)persistentCacheStore;
-+ (void)assignPersistentCacheStore:(id)a3;
++ (void)assignPersistentCacheStore:(id)store;
 @end
 
 @implementation APPersistentCacheStoreProvider
@@ -12,9 +12,9 @@
   return WeakRetained;
 }
 
-+ (void)assignPersistentCacheStore:(id)a3
++ (void)assignPersistentCacheStore:(id)store
 {
-  obj = a3;
+  obj = store;
   WeakRetained = objc_loadWeakRetained(&qword_1004EA1D0);
 
   if (!WeakRetained)

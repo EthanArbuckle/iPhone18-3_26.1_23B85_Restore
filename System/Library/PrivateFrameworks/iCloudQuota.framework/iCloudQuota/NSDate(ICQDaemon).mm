@@ -13,7 +13,7 @@
   v4 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
   [v3 setTimeZone:v4];
 
-  v5 = [v3 stringFromDate:a1];
+  v5 = [v3 stringFromDate:self];
 
   return v5;
 }

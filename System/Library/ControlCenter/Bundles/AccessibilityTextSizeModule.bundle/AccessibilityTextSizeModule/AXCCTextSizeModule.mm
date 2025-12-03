@@ -1,7 +1,7 @@
 @interface AXCCTextSizeModule
 - (AXCCTextSizeModule)init;
-- (id)backgroundViewControllerForContext:(id)a3;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)backgroundViewControllerForContext:(id)context;
+- (id)contentViewControllerForContext:(id)context;
 - (void)expandModule;
 @end
 
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v4 = [(CCUIButtonModuleViewController *)[AXCCTextSizeSliderModuleViewController alloc] initWithNibName:0 bundle:0];
   contentViewController = self->_contentViewController;
   self->_contentViewController = v4;
 
-  v6 = [(AXCCTextSizeModule *)self contentModuleContext];
-  [(CCUIContentModuleContentViewController *)self->_contentViewController setContentModuleContext:v6];
+  contentModuleContext = [(AXCCTextSizeModule *)self contentModuleContext];
+  [(CCUIContentModuleContentViewController *)self->_contentViewController setContentModuleContext:contentModuleContext];
 
   [(CCUIContentModuleContentViewController *)self->_contentViewController setTextSizeDelegate:self];
   [(CCUIContentModuleContentViewController *)self->_contentViewController setHelper:self->_helper];
@@ -38,7 +38,7 @@
   return v7;
 }
 
-- (id)backgroundViewControllerForContext:(id)a3
+- (id)backgroundViewControllerForContext:(id)context
 {
   v4 = [[AXCCTextSizeSliderBackgroundViewController alloc] initWithNibName:0 bundle:0];
   bgController = self->_bgController;
@@ -52,8 +52,8 @@
 
 - (void)expandModule
 {
-  v2 = [(AXCCTextSizeModule *)self contentModuleContext];
-  [v2 requestExpandModule];
+  contentModuleContext = [(AXCCTextSizeModule *)self contentModuleContext];
+  [contentModuleContext requestExpandModule];
 }
 
 @end

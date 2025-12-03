@@ -1,10 +1,10 @@
 @interface AVTMassSpringDamperSystem
 - (AVTMassSpringDamperSystem)init;
-- (_DWORD)initWithPerceptualDuration:(float)a3 bounce:;
-- (char)initWithMass:(float)a3 stiffness:(double)a4 damping:;
-- (double)float3ValueAtTime:(float32x4_t)a3 initialValue:(float32x4_t)a4 initialVelocity:(float32x4_t)a5 targetValue:;
+- (_DWORD)initWithPerceptualDuration:(float)duration bounce:;
+- (char)initWithMass:(float)mass stiffness:(double)stiffness damping:;
+- (double)float3ValueAtTime:(float32x4_t)time initialValue:(float32x4_t)value initialVelocity:(float32x4_t)velocity targetValue:;
 - (void)_updateParameters;
-- (void)float3VelocityAtTime:(float32x4_t)a3 initialValue:(double)a4 initialVelocity:(float32x4_t)a5 targetValue:;
+- (void)float3VelocityAtTime:(float32x4_t)time initialValue:(double)value initialVelocity:(float32x4_t)velocity targetValue:;
 @end
 
 @implementation AVTMassSpringDamperSystem
@@ -50,14 +50,14 @@ LABEL_3:
   }
 }
 
-- (char)initWithMass:(float)a3 stiffness:(double)a4 damping:
+- (char)initWithMass:(float)mass stiffness:(double)stiffness damping:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = AVTMassSpringDamperSystem;
   v5 = objc_msgSendSuper2(&v11, sel_init);
   v6 = v5;
@@ -70,7 +70,7 @@ LABEL_3:
     }
 
     *(v5 + 2) = v7;
-    *(v5 + 12) = vbsl_s8(vcltz_f32(__PAIR64__(LODWORD(a4), LODWORD(a3))), 0x4120000042C80000, __PAIR64__(LODWORD(a4), LODWORD(a3)));
+    *(v5 + 12) = vbsl_s8(vcltz_f32(__PAIR64__(LODWORD(stiffness), LODWORD(mass))), 0x4120000042C80000, __PAIR64__(LODWORD(stiffness), LODWORD(mass)));
     v5[24] = 1;
     [v5 _updateParameters];
   }
@@ -78,14 +78,14 @@ LABEL_3:
   return v6;
 }
 
-- (_DWORD)initWithPerceptualDuration:(float)a3 bounce:
+- (_DWORD)initWithPerceptualDuration:(float)duration bounce:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = AVTMassSpringDamperSystem;
   v5 = objc_msgSendSuper2(&v12, sel_init);
   v6 = v5;
@@ -104,14 +104,14 @@ LABEL_3:
     }
 
     *(v5 + 3) = v8;
-    if (a3 >= 0.0)
+    if (duration >= 0.0)
     {
-      v9 = 1.0 - a3;
+      v9 = 1.0 - duration;
     }
 
     else
     {
-      v9 = 1.0 / (a3 + 1.0);
+      v9 = 1.0 / (duration + 1.0);
     }
 
     v10 = v9 * 12.5663706 / a2;
@@ -123,36 +123,36 @@ LABEL_3:
   return v6;
 }
 
-- (double)float3ValueAtTime:(float32x4_t)a3 initialValue:(float32x4_t)a4 initialVelocity:(float32x4_t)a5 targetValue:
+- (double)float3ValueAtTime:(float32x4_t)time initialValue:(float32x4_t)value initialVelocity:(float32x4_t)velocity targetValue:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a5;
-    v7 = vabdq_f32(a3, a5);
+    velocityCopy = velocity;
+    v7 = vabdq_f32(time, velocity);
     v8.i64[0] = 0x3400000034000000;
     v8.i64[1] = 0x3400000034000000;
     v9 = vcgtq_f32(v8, v7);
     v9.i32[3] = v9.i32[2];
     if ((vminvq_u32(v9) & 0x80000000) == 0)
     {
-      v10 = vsubq_f32(a3, v5);
-      v11 = *(a1 + 40);
-      v44 = v5;
+      v10 = vsubq_f32(time, velocityCopy);
+      v11 = *(self + 40);
+      v44 = velocityCopy;
       if (v11 >= 1.0)
       {
-        if (v11 > 1.0 && *(a1 + 24) == 1)
+        if (v11 > 1.0 && *(self + 24) == 1)
         {
-          v21 = *(a1 + 48);
-          v22 = *(a1 + 32);
+          v21 = *(self + 48);
+          v22 = *(self + 32);
           v23 = v21 - v11 * v22;
           v24 = v23;
-          v25 = vmlaq_n_f32(vnegq_f32(a4), v10, v24);
+          v25 = vmlaq_n_f32(vnegq_f32(value), v10, v24);
           v26 = v21 + v21;
           *&v26 = v21 + v21;
           v27 = vdupq_lane_s32(*&v26, 0);
           v28 = vdivq_f32(v25, v27);
           v25.f32[0] = v21 + v11 * v22;
-          v40 = vdivq_f32(vmlaq_n_f32(a4, v10, v25.f32[0]), v27);
+          v40 = vdivq_f32(vmlaq_n_f32(value, v10, v25.f32[0]), v27);
           v42 = v28;
           v29 = exp(-(v21 + v11 * v22) * a2);
           v38 = v29;
@@ -162,66 +162,66 @@ LABEL_3:
 
         else
         {
-          v31 = *(a1 + 32);
+          v31 = *(self + 32);
           v32 = v31;
-          v33 = vmlaq_n_f32(a4, v10, v32);
+          v33 = vmlaq_n_f32(value, v10, v32);
           v34 = a2;
           v43 = vmlaq_n_f32(v10, v33, v34);
           v35 = exp(-(a2 * v31));
           v20 = vmulq_n_f32(v43, v35);
         }
 
-        v5 = v44;
+        velocityCopy = v44;
       }
 
       else
       {
-        v12 = *(a1 + 32);
+        v12 = *(self + 32);
         v13 = v11 * v12;
         *&v13 = v11 * v12;
-        v14 = vmlaq_n_f32(a4, v10, *&v13);
-        v15 = *(a1 + 48);
+        v14 = vmlaq_n_f32(value, v10, *&v13);
+        v15 = *(self + 48);
         *&v13 = v15;
         v39 = vdivq_f32(v14, vdupq_lane_s32(*&v13, 0));
         v41 = v10;
         v16 = exp(-(a2 * v11) * v12);
         v37 = v16;
         v17 = __sincos_stret(v15 * a2);
-        v5 = v44;
+        velocityCopy = v44;
         cosval = v17.__cosval;
         sinval = v17.__sinval;
         v20 = vmulq_n_f32(vmlaq_n_f32(vmulq_n_f32(v39, sinval), v41, cosval), v37);
       }
 
-      v5.i64[0] = vaddq_f32(v5, v20).u64[0];
+      velocityCopy.i64[0] = vaddq_f32(velocityCopy, v20).u64[0];
     }
   }
 
   else
   {
-    v5.i64[0] = 0;
+    velocityCopy.i64[0] = 0;
   }
 
-  return *v5.i64;
+  return *velocityCopy.i64;
 }
 
-- (void)float3VelocityAtTime:(float32x4_t)a3 initialValue:(double)a4 initialVelocity:(float32x4_t)a5 targetValue:
+- (void)float3VelocityAtTime:(float32x4_t)time initialValue:(double)value initialVelocity:(float32x4_t)velocity targetValue:
 {
-  if (a1)
+  if (self)
   {
     v6.i64[0] = 0x3400000034000000;
     v6.i64[1] = 0x3400000034000000;
-    v7 = vcgtq_f32(v6, vabdq_f32(a3, a5));
+    v7 = vcgtq_f32(v6, vabdq_f32(time, velocity));
     v7.i32[3] = v7.i32[2];
     if ((vminvq_u32(v7) & 0x80000000) == 0)
     {
-      v8 = *(a1 + 40);
+      v8 = *(self + 40);
       if (v8 >= 1.0)
       {
-        if (v8 > 1.0 && *(a1 + 24) == 1)
+        if (v8 > 1.0 && *(self + 24) == 1)
         {
-          v10 = *(a1 + 48);
-          v11 = *(a1 + 32);
+          v10 = *(self + 48);
+          v11 = *(self + 32);
           v12 = v10 - v8 * v11;
           exp(-(v10 + v8 * v11) * a2);
           exp(v12 * a2);
@@ -229,14 +229,14 @@ LABEL_3:
 
         else
         {
-          exp(-(a2 * *(a1 + 32)));
+          exp(-(a2 * *(self + 32)));
         }
       }
 
       else
       {
-        v9 = *(a1 + 48);
-        exp(-(a2 * v8) * *(a1 + 32));
+        v9 = *(self + 48);
+        exp(-(a2 * v8) * *(self + 32));
         __sincos_stret(v9 * a2);
       }
     }

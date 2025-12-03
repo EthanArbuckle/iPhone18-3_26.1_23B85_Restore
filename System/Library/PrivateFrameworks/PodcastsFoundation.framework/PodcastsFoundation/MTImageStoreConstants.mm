@@ -2,7 +2,7 @@
 + (id)defaultImageStoreURL;
 + (id)deprecatedImageStoreURL;
 + (id)fileExtension;
-+ (id)imagePathForPodcastUuid:(id)a3 relativeToURL:(id)a4;
++ (id)imagePathForPodcastUuid:(id)uuid relativeToURL:(id)l;
 @end
 
 @implementation MTImageStoreConstants
@@ -23,32 +23,32 @@
   return v3;
 }
 
-+ (id)imagePathForPodcastUuid:(id)a3 relativeToURL:(id)a4
++ (id)imagePathForPodcastUuid:(id)uuid relativeToURL:(id)l
 {
-  v5 = a4;
-  v6 = [a3 stringByAppendingPathComponent:@"jpg"];
-  v7 = [v5 URLByAppendingPathComponent:v6 isDirectory:0];
+  lCopy = l;
+  v6 = [uuid stringByAppendingPathComponent:@"jpg"];
+  v7 = [lCopy URLByAppendingPathComponent:v6 isDirectory:0];
 
   return v7;
 }
 
 + (id)fileExtension
 {
-  v3 = [a1 fileType];
-  v4 = [v3 isEqual:*MEMORY[0x1E6982E58]];
+  fileType = [self fileType];
+  v4 = [fileType isEqual:*MEMORY[0x1E6982E58]];
 
   if (v4)
   {
-    v5 = @"jpg";
+    preferredFilenameExtension = @"jpg";
   }
 
   else
   {
-    v6 = [a1 fileType];
-    v5 = [v6 preferredFilenameExtension];
+    fileType2 = [self fileType];
+    preferredFilenameExtension = [fileType2 preferredFilenameExtension];
   }
 
-  return v5;
+  return preferredFilenameExtension;
 }
 
 @end

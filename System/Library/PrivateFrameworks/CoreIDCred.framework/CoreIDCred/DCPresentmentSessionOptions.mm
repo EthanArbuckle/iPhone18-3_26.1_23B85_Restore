@@ -1,22 +1,22 @@
 @interface DCPresentmentSessionOptions
-- (DCPresentmentSessionOptions)initWithCoder:(id)a3;
-- (DCPresentmentSessionOptions)initWithSessionEncryptionMode:(unint64_t)a3 readerAuthenticationPolicy:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DCPresentmentSessionOptions)initWithCoder:(id)coder;
+- (DCPresentmentSessionOptions)initWithSessionEncryptionMode:(unint64_t)mode readerAuthenticationPolicy:(unint64_t)policy;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)elementFallbackModes;
 - (unint64_t)messageEncodingFormat;
 - (unint64_t)readerAuthenticationPolicy;
 - (unint64_t)sessionEncryptionMode;
-- (void)encodeWithCoder:(id)a3;
-- (void)setElementFallbackModes:(unint64_t)a3;
-- (void)setMessageEncodingFormat:(unint64_t)a3;
-- (void)setReaderAuthenticationPolicy:(unint64_t)a3;
-- (void)setSessionEncryptionMode:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setElementFallbackModes:(unint64_t)modes;
+- (void)setMessageEncodingFormat:(unint64_t)format;
+- (void)setReaderAuthenticationPolicy:(unint64_t)policy;
+- (void)setSessionEncryptionMode:(unint64_t)mode;
 @end
 
 @implementation DCPresentmentSessionOptions
 
-- (DCPresentmentSessionOptions)initWithSessionEncryptionMode:(unint64_t)a3 readerAuthenticationPolicy:(unint64_t)a4
+- (DCPresentmentSessionOptions)initWithSessionEncryptionMode:(unint64_t)mode readerAuthenticationPolicy:(unint64_t)policy
 {
   v7.receiver = self;
   v7.super_class = DCPresentmentSessionOptions;
@@ -24,8 +24,8 @@
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
-    result->_sessionEncryptionMode = a3;
-    result->_readerAuthenticationPolicy = a4;
+    result->_sessionEncryptionMode = mode;
+    result->_readerAuthenticationPolicy = policy;
     result->_elementFallbackModes = 0;
     result->_messageEncodingFormat = 0;
   }
@@ -33,26 +33,26 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeInteger:self->_sessionEncryptionMode forKey:0x28586D3E0];
-  [v4 encodeInteger:self->_readerAuthenticationPolicy forKey:0x28586D000];
-  [v4 encodeInteger:self->_elementFallbackModes forKey:0x28586D420];
-  [v4 encodeInteger:self->_messageEncodingFormat forKey:0x28586D440];
+  [coderCopy encodeInteger:self->_sessionEncryptionMode forKey:0x28586D3E0];
+  [coderCopy encodeInteger:self->_readerAuthenticationPolicy forKey:0x28586D000];
+  [coderCopy encodeInteger:self->_elementFallbackModes forKey:0x28586D420];
+  [coderCopy encodeInteger:self->_messageEncodingFormat forKey:0x28586D440];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (DCPresentmentSessionOptions)initWithCoder:(id)a3
+- (DCPresentmentSessionOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[DCPresentmentSessionOptions initWithSessionEncryptionMode:readerAuthenticationPolicy:](self, "initWithSessionEncryptionMode:readerAuthenticationPolicy:", [v4 decodeIntegerForKey:0x28586D3E0], objc_msgSend(v4, "decodeIntegerForKey:", 0x28586D000));
+  coderCopy = coder;
+  v5 = -[DCPresentmentSessionOptions initWithSessionEncryptionMode:readerAuthenticationPolicy:](self, "initWithSessionEncryptionMode:readerAuthenticationPolicy:", [coderCopy decodeIntegerForKey:0x28586D3E0], objc_msgSend(coderCopy, "decodeIntegerForKey:", 0x28586D000));
   if (v5)
   {
-    v5->_elementFallbackModes = [v4 decodeIntegerForKey:0x28586D420];
-    v5->_messageEncodingFormat = [v4 decodeIntegerForKey:0x28586D440];
+    v5->_elementFallbackModes = [coderCopy decodeIntegerForKey:0x28586D420];
+    v5->_messageEncodingFormat = [coderCopy decodeIntegerForKey:0x28586D440];
   }
 
   return v5;
@@ -81,10 +81,10 @@
   return sessionEncryptionMode;
 }
 
-- (void)setSessionEncryptionMode:(unint64_t)a3
+- (void)setSessionEncryptionMode:(unint64_t)mode
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_sessionEncryptionMode = a3;
+  self->_sessionEncryptionMode = mode;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -97,10 +97,10 @@
   return readerAuthenticationPolicy;
 }
 
-- (void)setReaderAuthenticationPolicy:(unint64_t)a3
+- (void)setReaderAuthenticationPolicy:(unint64_t)policy
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_readerAuthenticationPolicy = a3;
+  self->_readerAuthenticationPolicy = policy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -113,10 +113,10 @@
   return elementFallbackModes;
 }
 
-- (void)setElementFallbackModes:(unint64_t)a3
+- (void)setElementFallbackModes:(unint64_t)modes
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_elementFallbackModes = a3;
+  self->_elementFallbackModes = modes;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -129,15 +129,15 @@
   return messageEncodingFormat;
 }
 
-- (void)setMessageEncodingFormat:(unint64_t)a3
+- (void)setMessageEncodingFormat:(unint64_t)format
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_messageEncodingFormat = a3;
+  self->_messageEncodingFormat = format;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(DCPresentmentSessionOptions);
   os_unfair_lock_lock(&self->_lock);

@@ -1,37 +1,37 @@
 @interface ComposeServiceRemoteViewController
-- (ComposeServiceRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_sheetPresentationControllerUserActivityForTearOff:(id)a3;
-- (void)_addAttachmentData:(id)a3 itemProvider:(id)a4 mimeType:(id)a5 fileName:(id)a6 hostIdentifier:(id)a7;
-- (void)_firstDraw:(id)a3;
+- (ComposeServiceRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_sheetPresentationControllerUserActivityForTearOff:(id)off;
+- (void)_addAttachmentData:(id)data itemProvider:(id)provider mimeType:(id)type fileName:(id)name hostIdentifier:(id)identifier;
+- (void)_firstDraw:(id)draw;
 - (void)_hostApplicationDidEnterBackground;
 - (void)_hostApplicationWillEnterForeground;
-- (void)_sheetPresentationControllerDidTearOff:(id)a3;
+- (void)_sheetPresentationControllerDidTearOff:(id)off;
 - (void)_willAppearInRemoteViewController;
-- (void)addAttachmentWithPlaceholderData:(id)a3;
-- (void)autosaveWithReply:(id)a3;
-- (void)commitCompositionValuesWithReply:(id)a3;
+- (void)addAttachmentWithPlaceholderData:(id)data;
+- (void)autosaveWithReply:(id)reply;
+- (void)commitCompositionValuesWithReply:(id)reply;
 - (void)dealloc;
 - (void)donateShareInteractionToDuet;
-- (void)framesForAttachmentsWithIdentifiers:(id)a3 withReply:(id)a4;
+- (void)framesForAttachmentsWithIdentifiers:(id)identifiers withReply:(id)reply;
 - (void)loadView;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)mailComposeController:(id)a3 shouldSendMail:(id)a4 toRecipients:(id)a5 completion:(id)a6;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)securityScopeForURL:(id)a3 withReply:(id)a4;
-- (void)serializedPlaceholderForFileName:(id)a3 fileSize:(int64_t)a4 mimeType:(id)a5 contentID:(id)a6 withReply:(id)a7;
-- (void)setCompositionValues:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)mailComposeController:(id)controller shouldSendMail:(id)mail toRecipients:(id)recipients completion:(id)completion;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)securityScopeForURL:(id)l withReply:(id)reply;
+- (void)serializedPlaceholderForFileName:(id)name fileSize:(int64_t)size mimeType:(id)type contentID:(id)d withReply:(id)reply;
+- (void)setCompositionValues:(id)values;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation ComposeServiceRemoteViewController
 
-- (ComposeServiceRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ComposeServiceRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v22.receiver = self;
   v22.super_class = ComposeServiceRemoteViewController;
-  v8 = [(ComposeServiceRemoteViewController *)&v22 initWithNibName:v6 bundle:v7];
+  v8 = [(ComposeServiceRemoteViewController *)&v22 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = [[_MFMailCompositionContext alloc] initWithComposeType:1];
@@ -85,7 +85,7 @@
     *buf = 138412546;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "#CompositionServices <%@:%p> deallocating", buf, 0x16u);
   }
 
@@ -99,78 +99,78 @@
   v10.receiver = self;
   v10.super_class = ComposeServiceRemoteViewController;
   [(ComposeServiceRemoteViewController *)&v10 loadView];
-  v3 = [(ComposeServiceRemoteViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(ComposeServiceRemoteViewController *)self view];
+  [view setAutoresizingMask:18];
 
-  v4 = [(ComposeServiceRemoteViewController *)self view];
-  v5 = [(ComposeNavigationController *)self->_navigationController view];
-  [v4 addSubview:v5];
+  view2 = [(ComposeServiceRemoteViewController *)self view];
+  view3 = [(ComposeNavigationController *)self->_navigationController view];
+  [view2 addSubview:view3];
 
-  v6 = [(ComposeNavigationController *)self->_navigationController view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(ComposeNavigationController *)self->_navigationController view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(ComposeNavigationController *)self->_navigationController view];
-  v8 = [(ComposeServiceRemoteViewController *)self view];
-  [v7 mf_pinToView:v8 usingLayoutMargins:0];
+  view5 = [(ComposeNavigationController *)self->_navigationController view];
+  view6 = [(ComposeServiceRemoteViewController *)self view];
+  [view5 mf_pinToView:view6 usingLayoutMargins:0];
 
-  v9 = [(ComposeNavigationController *)self->_navigationController _mailComposeView];
-  [v9 setIsForEditing:1];
+  _mailComposeView = [(ComposeNavigationController *)self->_navigationController _mailComposeView];
+  [_mailComposeView setIsForEditing:1];
 }
 
 - (void)_willAppearInRemoteViewController
 {
-  v3 = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
-  v4 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  [v4 setRemoteViewControllerProxy:v3];
+  _remoteViewControllerProxy = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
+  _mailComposeController = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  [_mailComposeController setRemoteViewControllerProxy:_remoteViewControllerProxy];
 
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(ComposeServiceRemoteViewController *)self _hostApplicationBundleIdentifier];
+    _hostApplicationBundleIdentifier = [(ComposeServiceRemoteViewController *)self _hostApplicationBundleIdentifier];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v6;
+    v10 = _hostApplicationBundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#CompositionServices %p: will appear in host %@", &v7, 0x16u);
   }
 }
 
 - (void)_hostApplicationDidEnterBackground
 {
-  v3 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  [v3 hostApplicationDidEnterBackground];
+  _mailComposeController = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  [_mailComposeController hostApplicationDidEnterBackground];
 
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "#CompositionServices %p: host did enter background", &v5, 0xCu);
   }
 }
 
 - (void)_hostApplicationWillEnterForeground
 {
-  v3 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  [v3 hostApplicationWillEnterForeground];
+  _mailComposeController = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  [_mailComposeController hostApplicationWillEnterForeground];
 
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "#CompositionServices %p: host will enter foreground", &v5, 0xCu);
   }
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MFLogGeneral();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = " and error: ";
-    if (!v7)
+    if (!errorCopy)
     {
       v9 = "";
     }
@@ -178,11 +178,11 @@
     *v15 = 134218754;
     *&v15[4] = self;
     *&v15[12] = 2048;
-    *&v15[14] = a4;
+    *&v15[14] = result;
     v10 = &stru_1000188C0;
-    if (v7)
+    if (errorCopy)
     {
-      v10 = v7;
+      v10 = errorCopy;
     }
 
     *&v15[22] = 2080;
@@ -192,92 +192,92 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "#CompositionServices %p: Composition finished with result %ld%s%@", v15, 0x2Au);
   }
 
-  if (a4 == 2)
+  if (result == 2)
   {
-    v11 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-    v12 = [v11 compositionContext];
-    v13 = [v12 hasDuetDonationContext];
+    _mailComposeController = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+    compositionContext = [_mailComposeController compositionContext];
+    hasDuetDonationContext = [compositionContext hasDuetDonationContext];
 
-    if (v13)
+    if (hasDuetDonationContext)
     {
       [(ComposeServiceRemoteViewController *)self donateShareInteractionToDuet];
     }
   }
 
   v14 = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy:*v15];
-  [v14 serviceCompositionFinishedWithResult:a4 error:v7];
+  [v14 serviceCompositionFinishedWithResult:result error:errorCopy];
 }
 
-- (void)mailComposeController:(id)a3 shouldSendMail:(id)a4 toRecipients:(id)a5 completion:(id)a6
+- (void)mailComposeController:(id)controller shouldSendMail:(id)mail toRecipients:(id)recipients completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  mailCopy = mail;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   v12 = MFLogGeneral();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v14 = 134217984;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "#CompositionServices %p: Composition requests send", &v14, 0xCu);
   }
 
   [(ComposeServiceRemoteViewController *)self _hostAuditToken:0xAAAAAAAAAAAAAAAALL];
   if (UIAuditTokenTaskHasEntitlementOrIsSimulator())
   {
-    v13 = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
-    [v13 serviceCompositionRequestsSendWithBody:v9 recipients:v10 completion:v11];
+    _remoteViewControllerProxy = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy serviceCompositionRequestsSendWithBody:mailCopy recipients:recipientsCopy completion:completionCopy];
   }
 
   else
   {
-    v11[2](v11, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 ef_publicDescription];
+    ef_publicDescription = [errorCopy ef_publicDescription];
     v9 = 138412802;
     v10 = v7;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v8;
+    v14 = ef_publicDescription;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "#CompositionServices <%@:%p> %{public}@", &v9, 0x20u);
   }
 }
 
-- (void)_firstDraw:(id)a3
+- (void)_firstDraw:(id)draw
 {
-  v7 = a3;
+  drawCopy = draw;
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [v7 name];
-  [v4 removeObserver:self name:v5 object:0];
+  name = [drawCopy name];
+  [v4 removeObserver:self name:name object:0];
 
-  v6 = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
-  [v6 bodyFinishedDrawing];
+  _remoteViewControllerProxy = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy bodyFinishedDrawing];
 }
 
-- (void)setCompositionValues:(id)a3
+- (void)setCompositionValues:(id)values
 {
-  v8 = a3;
+  valuesCopy = values;
   v4 = [_MFMailCompositionContext alloc];
-  v5 = [(ComposeServiceRemoteViewController *)self _hostApplicationBundleIdentifier];
-  v6 = [v4 initWithCompositionValueRepresentation:v8 hostApplicationBundleIdentifier:v5];
+  _hostApplicationBundleIdentifier = [(ComposeServiceRemoteViewController *)self _hostApplicationBundleIdentifier];
+  v6 = [v4 initWithCompositionValueRepresentation:valuesCopy hostApplicationBundleIdentifier:_hostApplicationBundleIdentifier];
   compositionContext = self->_compositionContext;
   self->_compositionContext = v6;
 }
 
-- (void)addAttachmentWithPlaceholderData:(id)a3
+- (void)addAttachmentWithPlaceholderData:(id)data
 {
-  v4 = a3;
-  v5 = [MFAttachmentPlaceholder placeholderFromSerializedRepresentation:v4];
+  dataCopy = data;
+  v5 = [MFAttachmentPlaceholder placeholderFromSerializedRepresentation:dataCopy];
   compositionContext = self->_compositionContext;
   if (!compositionContext)
   {
@@ -288,15 +288,15 @@
     compositionContext = self->_compositionContext;
   }
 
-  v9 = [v5 fileName];
-  v10 = [v5 contentID];
-  v11 = [(_MFMailCompositionContext *)compositionContext addAttachmentData:v4 mimeType:0 fileName:v9 contentID:v10];
+  fileName = [v5 fileName];
+  contentID = [v5 contentID];
+  v11 = [(_MFMailCompositionContext *)compositionContext addAttachmentData:dataCopy mimeType:0 fileName:fileName contentID:contentID];
 
   [v11 setIsPlaceholder:1];
   [v11 setPlaceholder:v5];
-  v12 = [(_MFMailCompositionContext *)self->_compositionContext attachmentContext];
-  v13 = [v5 contentID];
-  [v12 setHostIdentifier:v13 forAttachment:v11];
+  attachmentContext = [(_MFMailCompositionContext *)self->_compositionContext attachmentContext];
+  contentID2 = [v5 contentID];
+  [attachmentContext setHostIdentifier:contentID2 forAttachment:v11];
 
   if (!self->_attachmentIdentifiersMap)
   {
@@ -308,35 +308,35 @@
   v16 = MFLogGeneral();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v11 contentID];
+    contentID3 = [v11 contentID];
     v18 = [v11 url];
     v22 = 134218498;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v17;
+    v25 = contentID3;
     v26 = 2112;
     v27 = v18;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "#CompositionServices %p: Mapping attachment with remote identifier %@ to local identifier %@", &v22, 0x20u);
   }
 
-  v19 = [v11 contentID];
+  contentID4 = [v11 contentID];
 
-  if (v19)
+  if (contentID4)
   {
     v20 = self->_attachmentIdentifiersMap;
-    v21 = [v11 contentID];
-    [(NSMutableDictionary *)v20 setObject:v11 forKey:v21];
+    contentID5 = [v11 contentID];
+    [(NSMutableDictionary *)v20 setObject:v11 forKey:contentID5];
   }
 }
 
-- (void)_addAttachmentData:(id)a3 itemProvider:(id)a4 mimeType:(id)a5 fileName:(id)a6 hostIdentifier:(id)a7
+- (void)_addAttachmentData:(id)data itemProvider:(id)provider mimeType:(id)type fileName:(id)name hostIdentifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a4;
-  v33 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!(v13 | v14))
+  dataCopy = data;
+  providerCopy = provider;
+  typeCopy = type;
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (!(dataCopy | providerCopy))
   {
     v32 = +[NSAssertionHandler currentHandler];
     [v32 handleFailureInMethod:a2 object:self file:@"ComposeServiceRemoteViewController.m" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"data || itemProvider"}];
@@ -346,11 +346,11 @@
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 134218496;
-    v35 = self;
+    selfCopy2 = self;
     v36 = 2048;
-    v37 = v13;
+    v37 = dataCopy;
     v38 = 2048;
-    v39 = v14;
+    v39 = providerCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "#CompositionServices %p: creating attachment for data:%p itemProvider:%p", buf, 0x20u);
   }
 
@@ -361,27 +361,27 @@
     self->_compositionContext = v18;
   }
 
-  if (v13)
+  if (dataCopy)
   {
-    v20 = [(_MFMailCompositionContext *)self->_compositionContext addAttachmentData:v13 mimeType:v33 fileName:v15];
+    v20 = [(_MFMailCompositionContext *)self->_compositionContext addAttachmentData:dataCopy mimeType:typeCopy fileName:nameCopy];
 LABEL_11:
     v21 = v20;
     goto LABEL_12;
   }
 
-  if (v14)
+  if (providerCopy)
   {
-    v20 = [(_MFMailCompositionContext *)self->_compositionContext addAttachmentDataItemProvider:v14 mimeType:v33 filename:v15 contentID:0];
+    v20 = [(_MFMailCompositionContext *)self->_compositionContext addAttachmentDataItemProvider:providerCopy mimeType:typeCopy filename:nameCopy contentID:0];
     goto LABEL_11;
   }
 
   v21 = 0;
 LABEL_12:
-  v22 = [(_MFMailCompositionContext *)self->_compositionContext attachmentContext];
-  [v22 setHostIdentifier:v16 forAttachment:v21];
+  attachmentContext = [(_MFMailCompositionContext *)self->_compositionContext attachmentContext];
+  [attachmentContext setHostIdentifier:identifierCopy forAttachment:v21];
 
-  v23 = [v21 contentID];
-  [(_MFMailCompositionContext *)self->_compositionContext setContentVariationAttachmentCID:v23];
+  contentID = [v21 contentID];
+  [(_MFMailCompositionContext *)self->_compositionContext setContentVariationAttachmentCID:contentID];
 
   if (!self->_attachmentIdentifiersMap)
   {
@@ -393,34 +393,34 @@ LABEL_12:
   v26 = MFLogGeneral();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
-    v27 = [v21 contentID];
+    contentID2 = [v21 contentID];
     v28 = [v21 url];
     *buf = 134218498;
-    v35 = self;
+    selfCopy2 = self;
     v36 = 2112;
-    v37 = v27;
+    v37 = contentID2;
     v38 = 2112;
     v39 = v28;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "#CompositionServices %p: Mapping attachment with remote identifier %@ to local identifier %@", buf, 0x20u);
   }
 
-  v29 = [v21 contentID];
+  contentID3 = [v21 contentID];
 
-  if (v29)
+  if (contentID3)
   {
     v30 = self->_attachmentIdentifiersMap;
-    v31 = [v21 contentID];
-    [(NSMutableDictionary *)v30 setObject:v21 forKey:v31];
+    contentID4 = [v21 contentID];
+    [(NSMutableDictionary *)v30 setObject:v21 forKey:contentID4];
   }
 }
 
-- (void)commitCompositionValuesWithReply:(id)a3
+- (void)commitCompositionValuesWithReply:(id)reply
 {
-  block = a3;
+  block = reply;
   if (self->_compositionContext)
   {
-    v4 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-    [v4 setCompositionContext:self->_compositionContext];
+    _mailComposeController = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+    [_mailComposeController setCompositionContext:self->_compositionContext];
 
     compositionContext = self->_compositionContext;
     self->_compositionContext = 0;
@@ -429,10 +429,10 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)framesForAttachmentsWithIdentifiers:(id)a3 withReply:(id)a4
+- (void)framesForAttachmentsWithIdentifiers:(id)identifiers withReply:(id)reply
 {
-  v19 = a3;
-  v18 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -450,20 +450,20 @@ LABEL_12:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
-    v33 = v19;
+    v33 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "#CompositionServices %p: Requested attachment frames for remote identifiers %@", buf, 0x16u);
   }
 
-  if ([v19 count] && (objc_opt_class(), _ArrayContainsKindOfObjects()))
+  if ([identifiersCopy count] && (objc_opt_class(), _ArrayContainsKindOfObjects()))
   {
-    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v19 count]);
+    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [identifiersCopy count]);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v19;
+    v10 = identifiersCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v29 count:16];
     if (v11)
     {
@@ -493,12 +493,12 @@ LABEL_12:
       while (v11);
     }
 
-    v18[2](v18, v9);
+    replyCopy[2](replyCopy, v9);
   }
 
   else
   {
-    v18[2](v18, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   v17 = +[UIApplication sharedApplication];
@@ -507,9 +507,9 @@ LABEL_12:
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)autosaveWithReply:(id)a3
+- (void)autosaveWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -529,7 +529,7 @@ LABEL_12:
   v9[2] = sub_100007660;
   v9[3] = &unk_1000186E0;
   v9[4] = self;
-  v8 = v4;
+  v8 = replyCopy;
   v10 = v8;
   v11 = &v13;
   [(ComposeNavigationController *)navigationController autosaveWithHandler:v9];
@@ -537,37 +537,37 @@ LABEL_12:
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)serializedPlaceholderForFileName:(id)a3 fileSize:(int64_t)a4 mimeType:(id)a5 contentID:(id)a6 withReply:(id)a7
+- (void)serializedPlaceholderForFileName:(id)name fileSize:(int64_t)size mimeType:(id)type contentID:(id)d withReply:(id)reply
 {
-  v12 = a7;
+  replyCopy = reply;
   navigationController = self->_navigationController;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007874;
   v15[3] = &unk_100018560;
-  v16 = v12;
-  v14 = v12;
-  [(ComposeNavigationController *)navigationController serializedPlaceholderForFileName:a3 fileSize:a4 mimeType:a5 contentID:a6 withHandler:v15];
+  v16 = replyCopy;
+  v14 = replyCopy;
+  [(ComposeNavigationController *)navigationController serializedPlaceholderForFileName:name fileSize:size mimeType:type contentID:d withHandler:v15];
 }
 
-- (void)securityScopeForURL:(id)a3 withReply:(id)a4
+- (void)securityScopeForURL:(id)l withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   navigationController = self->_navigationController;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000794C;
   v9[3] = &unk_100018560;
-  v10 = v6;
-  v8 = v6;
-  [(ComposeNavigationController *)navigationController securityScopeForURL:a3 withHandler:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [(ComposeNavigationController *)navigationController securityScopeForURL:l withHandler:v9];
 }
 
 - (void)donateShareInteractionToDuet
 {
   v3 = objc_alloc_init(_CDInteraction);
-  v4 = [(ComposeServiceRemoteViewController *)self _hostApplicationBundleIdentifier];
-  [v3 setBundleId:v4];
+  _hostApplicationBundleIdentifier = [(ComposeServiceRemoteViewController *)self _hostApplicationBundleIdentifier];
+  [v3 setBundleId:_hostApplicationBundleIdentifier];
 
   [v3 setTargetBundleId:UIActivityTypeMail];
   [v3 setDirection:1];
@@ -575,39 +575,39 @@ LABEL_12:
   v5 = +[NSDate date];
   [v3 setEndDate:v5];
 
-  v6 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  v7 = [v6 toRecipients];
-  v8 = [v7 ef_compactMap:&stru_100018720];
+  _mailComposeController = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  toRecipients = [_mailComposeController toRecipients];
+  v8 = [toRecipients ef_compactMap:&stru_100018720];
 
   if (v8)
   {
     [v3 setRecipients:v8];
   }
 
-  v9 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  v10 = [v9 compositionContext];
-  v11 = [v10 UTITypes];
-  v37 = [v11 ef_map:&stru_100018760];
+  _mailComposeController2 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  compositionContext = [_mailComposeController2 compositionContext];
+  uTITypes = [compositionContext UTITypes];
+  v37 = [uTITypes ef_map:&stru_100018760];
 
-  v12 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  v13 = [v12 compositionContext];
-  v14 = [v13 photoIDs];
-  v15 = [v14 ef_map:&stru_100018780];
+  _mailComposeController3 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  compositionContext2 = [_mailComposeController3 compositionContext];
+  photoIDs = [compositionContext2 photoIDs];
+  v15 = [photoIDs ef_map:&stru_100018780];
 
-  v16 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  v17 = [v16 compositionContext];
-  v18 = [v17 cloudPhotoIDs];
-  v19 = [v18 ef_map:&stru_1000187A0];
+  _mailComposeController4 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  compositionContext3 = [_mailComposeController4 compositionContext];
+  cloudPhotoIDs = [compositionContext3 cloudPhotoIDs];
+  v19 = [cloudPhotoIDs ef_map:&stru_1000187A0];
 
-  v20 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  v21 = [v20 compositionContext];
-  v22 = [v21 contentURLs];
-  v23 = [v22 ef_map:&stru_1000187C0];
+  _mailComposeController5 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  compositionContext4 = [_mailComposeController5 compositionContext];
+  contentURLs = [compositionContext4 contentURLs];
+  v23 = [contentURLs ef_map:&stru_1000187C0];
 
-  v24 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
-  v25 = [v24 compositionContext];
-  v26 = [v25 contentText];
-  v27 = [v26 ef_map:&stru_1000187E0];
+  _mailComposeController6 = [(ComposeNavigationController *)self->_navigationController _mailComposeController];
+  compositionContext5 = [_mailComposeController6 compositionContext];
+  contentText = [compositionContext5 contentText];
+  v27 = [contentText ef_map:&stru_1000187E0];
 
   if (v15 | v19)
   {
@@ -682,7 +682,7 @@ LABEL_12:
   [v36 recordInteractions:v35 completionHandler:v39];
 }
 
-- (id)_sheetPresentationControllerUserActivityForTearOff:(id)a3
+- (id)_sheetPresentationControllerUserActivityForTearOff:(id)off
 {
   [(ComposeNavigationController *)self->_navigationController _mailComposeController];
   v7[0] = _NSConcreteStackBlock;
@@ -691,18 +691,18 @@ LABEL_12:
   v4 = v7[3] = &unk_100018830;
   v8 = v4;
   [v4 autosaveWithHandler:v7];
-  v5 = [(ComposeNavigationController *)self->_navigationController userActivityForRestoration];
+  userActivityForRestoration = [(ComposeNavigationController *)self->_navigationController userActivityForRestoration];
 
-  return v5;
+  return userActivityForRestoration;
 }
 
-- (void)_sheetPresentationControllerDidTearOff:(id)a3
+- (void)_sheetPresentationControllerDidTearOff:(id)off
 {
-  v3 = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
-  [v3 serviceCompositionFinishedWithResult:1 error:0];
+  _remoteViewControllerProxy = [(ComposeServiceRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy serviceCompositionFinishedWithResult:1 error:0];
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
   [(ComposeNavigationController *)self->_navigationController _mailComposeController];
   block[0] = _NSConcreteStackBlock;

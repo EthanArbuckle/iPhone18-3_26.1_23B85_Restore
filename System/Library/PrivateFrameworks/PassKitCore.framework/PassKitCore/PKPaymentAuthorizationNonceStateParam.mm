@@ -1,35 +1,35 @@
 @interface PKPaymentAuthorizationNonceStateParam
-+ (id)paramWithAuthenticatorEvaluationResponse:(id)a3;
-+ (id)paramWithCredential:(id)a3;
++ (id)paramWithAuthenticatorEvaluationResponse:(id)response;
++ (id)paramWithCredential:(id)credential;
 - (id)description;
 @end
 
 @implementation PKPaymentAuthorizationNonceStateParam
 
-+ (id)paramWithCredential:(id)a3
++ (id)paramWithCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [a1 param];
-  [v5 setCredential:v4];
+  credentialCopy = credential;
+  param = [self param];
+  [param setCredential:credentialCopy];
 
-  return v5;
+  return param;
 }
 
-+ (id)paramWithAuthenticatorEvaluationResponse:(id)a3
++ (id)paramWithAuthenticatorEvaluationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [a1 param];
-  [v5 setEvaluationResponse:v4];
+  responseCopy = response;
+  param = [self param];
+  [param setEvaluationResponse:responseCopy];
 
-  return v5;
+  return param;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PKPaymentAuthorizationNonceStateParam *)self credential];
-  v6 = [v3 stringWithFormat:@"<%@: %p credential: (%tu bytes)>", v4, self, objc_msgSend(v5, "length")];;
+  credential = [(PKPaymentAuthorizationNonceStateParam *)self credential];
+  v6 = [v3 stringWithFormat:@"<%@: %p credential: (%tu bytes)>", v4, self, objc_msgSend(credential, "length")];;
 
   return v6;
 }

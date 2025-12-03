@@ -1,7 +1,7 @@
 @interface MUPunchoutViewModel
 + (id)viewModelForAddPhotos;
 + (id)viewModelForFullScreenGallery;
-+ (id)viewModelForVendorName:(id)a3;
++ (id)viewModelForVendorName:(id)name;
 @end
 
 @implementation MUPunchoutViewModel
@@ -26,16 +26,16 @@
   return v2;
 }
 
-+ (id)viewModelForVendorName:(id)a3
++ (id)viewModelForVendorName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(MUPunchoutViewModel);
   [(MUPunchoutViewModel *)v4 setSymbolName:@"arrow.up.forward.app.fill"];
   v5 = MEMORY[0x1E696AEC0];
   v6 = _MULocalizedStringFromThisBundle(@"Open %@ [Place Card]");
-  v7 = [v5 stringWithFormat:v6, v3];
+  nameCopy = [v5 stringWithFormat:v6, nameCopy];
 
-  [(MUPunchoutViewModel *)v4 setPunchoutText:v7];
+  [(MUPunchoutViewModel *)v4 setPunchoutText:nameCopy];
 
   return v4;
 }

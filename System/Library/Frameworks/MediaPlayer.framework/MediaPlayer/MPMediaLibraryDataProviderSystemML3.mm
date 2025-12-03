@@ -1,17 +1,17 @@
 @interface MPMediaLibraryDataProviderSystemML3
-+ (id)_localizedCloudGeniusErrorForError:(id)a3;
-+ (id)_localizedGeniusErrorForError:(id)a3 geniusEnabled:(BOOL)a4;
++ (id)_localizedCloudGeniusErrorForError:(id)error;
++ (id)_localizedGeniusErrorForError:(id)error geniusEnabled:(BOOL)enabled;
 - (BOOL)isGeniusEnabled;
-- (BOOL)supportsEntityChangeTrackingForMediaEntityType:(int64_t)a3 collectionGroupingType:(int64_t)a4 dataProviderClass:(Class *)a5;
-- (MPMediaLibraryDataProviderSystemML3)initWithLibrary:(id)a3;
-- (id)errorResolverForItem:(id)a3;
+- (BOOL)supportsEntityChangeTrackingForMediaEntityType:(int64_t)type collectionGroupingType:(int64_t)groupingType dataProviderClass:(Class *)class;
+- (MPMediaLibraryDataProviderSystemML3)initWithLibrary:(id)library;
+- (id)errorResolverForItem:(id)item;
 - (int64_t)_currentRevision;
-- (int64_t)generateItemIdentifiersForGeniusClusterPlaylist:(void *)a3 count:(unint64_t *)a4 error:(id *)a5;
+- (int64_t)generateItemIdentifiersForGeniusClusterPlaylist:(void *)playlist count:(unint64_t *)count error:(id *)error;
 - (void)_initInstanceVariableOnce;
-- (void)_seedCloudPlaylistWithTrack:(id)a3 container:(id)a4 completionBlock:(id)a5;
-- (void)createGeniusClusterPlaylistWithSeedItemIdentifiers:(int64_t *)a3 count:(unint64_t)a4 error:(id *)a5;
-- (void)geniusItemsForSeedItem:(id)a3 completion:(id)a4;
-- (void)seedPlaylistWithIdentifier:(int64_t)a3 withItemWithIdentifier:(int64_t)a4 completionBlock:(id)a5;
+- (void)_seedCloudPlaylistWithTrack:(id)track container:(id)container completionBlock:(id)block;
+- (void)createGeniusClusterPlaylistWithSeedItemIdentifiers:(int64_t *)identifiers count:(unint64_t)count error:(id *)error;
+- (void)geniusItemsForSeedItem:(id)item completion:(id)completion;
+- (void)seedPlaylistWithIdentifier:(int64_t)identifier withItemWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block;
 - (void)updateEntitesToCurrentRevision;
 @end
 
@@ -50,14 +50,14 @@ void __64__MPMediaLibraryDataProviderSystemML3__initInstanceVariableOnce__block_
   }
 }
 
-- (BOOL)supportsEntityChangeTrackingForMediaEntityType:(int64_t)a3 collectionGroupingType:(int64_t)a4 dataProviderClass:(Class *)a5
+- (BOOL)supportsEntityChangeTrackingForMediaEntityType:(int64_t)type collectionGroupingType:(int64_t)groupingType dataProviderClass:(Class *)class
 {
-  if (!a3 && a5)
+  if (!type && class)
   {
-    *a5 = objc_opt_class();
+    *class = objc_opt_class();
   }
 
-  return a3 == 0;
+  return type == 0;
 }
 
 - (void)updateEntitesToCurrentRevision
@@ -184,59 +184,59 @@ void __69__MPMediaLibraryDataProviderSystemML3_updateEntitesToCurrentRevision__b
   }
 }
 
-- (id)errorResolverForItem:(id)a3
+- (id)errorResolverForItem:(id)item
 {
-  v3 = [a3 mediaItem];
-  v4 = [v3 valueForProperty:@"storeAccountID"];
+  mediaItem = [item mediaItem];
+  v4 = [mediaItem valueForProperty:@"storeAccountID"];
   v5 = [[MPStorePurchaseErrorResolver alloc] initWithStoreAccountIdentifier:v4];
 
   return v5;
 }
 
-- (void)_seedCloudPlaylistWithTrack:(id)a3 container:(id)a4 completionBlock:(id)a5
+- (void)_seedCloudPlaylistWithTrack:(id)track container:(id)container completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v12 = [v11 networkType];
+  trackCopy = track;
+  containerCopy = container;
+  blockCopy = block;
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  networkType = [mEMORY[0x1E69E4428] networkType];
 
   IsCellular = ICEnvironmentNetworkTypeIsCellular();
   v14 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v15 = [v14 preferredMusicLowBandwidthResolution];
+  preferredMusicLowBandwidthResolution = [v14 preferredMusicLowBandwidthResolution];
 
   v16 = IsCellular ^ 1;
-  if (v15 > 0)
+  if (preferredMusicLowBandwidthResolution > 0)
   {
     v16 = 1;
   }
 
-  if (v12 && (v16 & 1) != 0)
+  if (networkType && (v16 & 1) != 0)
   {
-    v17 = v15 > 0;
-    v18 = [v8 valueForProperty:*MEMORY[0x1E69B3350]];
-    v19 = [v18 longLongValue];
+    v17 = preferredMusicLowBandwidthResolution > 0;
+    v18 = [trackCopy valueForProperty:*MEMORY[0x1E69B3350]];
+    longLongValue = [v18 longLongValue];
 
-    v20 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-    v21 = [MPCloudController controllerWithUserIdentity:v20];
+    userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+    v21 = [MPCloudController controllerWithUserIdentity:userIdentity];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __93__MPMediaLibraryDataProviderSystemML3__seedCloudPlaylistWithTrack_container_completionBlock___block_invoke;
     v23[3] = &unk_1E7677960;
     v27 = v17;
     v23[4] = self;
-    v24 = v9;
-    v25 = v8;
-    v26 = v10;
-    [v21 loadGeniusItemsForSagaID:v19 completionHandler:v23];
+    v24 = containerCopy;
+    v25 = trackCopy;
+    v26 = blockCopy;
+    [v21 loadGeniusItemsForSagaID:longLongValue completionHandler:v23];
   }
 
   else
   {
     v22 = [objc_opt_class() _localizedCloudGeniusErrorForError:0];
-    if (v10)
+    if (blockCopy)
     {
-      (*(v10 + 2))(v10, 0, v22);
+      (*(blockCopy + 2))(blockCopy, 0, v22);
     }
   }
 }
@@ -371,14 +371,14 @@ uint64_t __93__MPMediaLibraryDataProviderSystemML3__seedCloudPlaylistWithTrack_c
   return *(*(*(a1 + 72) + 8) + 24);
 }
 
-- (void)geniusItemsForSeedItem:(id)a3 completion:(id)a4
+- (void)geniusItemsForSeedItem:(id)item completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69B3538];
-  v8 = [a3 persistentID];
-  v9 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v10 = [v7 newWithPersistentID:v8 inLibrary:v9];
+  persistentID = [item persistentID];
+  library = [(MPMediaLibraryDataProviderML3 *)self library];
+  v10 = [v7 newWithPersistentID:persistentID inLibrary:library];
 
   v11 = [MEMORY[0x1E69B3540] geniusTracksForSeedTrack:v10 error:0];
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
@@ -417,18 +417,18 @@ uint64_t __93__MPMediaLibraryDataProviderSystemML3__seedCloudPlaylistWithTrack_c
     while (v15);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v12);
+    completionCopy[2](completionCopy, v12);
   }
 }
 
-- (int64_t)generateItemIdentifiersForGeniusClusterPlaylist:(void *)a3 count:(unint64_t *)a4 error:(id *)a5
+- (int64_t)generateItemIdentifiersForGeniusClusterPlaylist:(void *)playlist count:(unint64_t *)count error:(id *)error
 {
   v5 = 0;
-  if (a3 && a4)
+  if (playlist && count)
   {
-    v7 = [a3 tracksFromClusterForCount:*a4 error:a5];
+    v7 = [playlist tracksFromClusterForCount:*count error:error];
     v8 = [v7 count];
     v5 = malloc_type_malloc(8 * v8, 0x100004000313F17uLL);
     if (v8)
@@ -440,26 +440,26 @@ uint64_t __93__MPMediaLibraryDataProviderSystemML3__seedCloudPlaylistWithTrack_c
       }
     }
 
-    *a4 = v8;
+    *count = v8;
   }
 
   return v5;
 }
 
-- (void)createGeniusClusterPlaylistWithSeedItemIdentifiers:(int64_t *)a3 count:(unint64_t)a4 error:(id *)a5
+- (void)createGeniusClusterPlaylistWithSeedItemIdentifiers:(int64_t *)identifiers count:(unint64_t)count error:(id *)error
 {
-  v6 = a4;
-  for (i = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4]; v6; --v6)
+  countCopy = count;
+  for (i = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count]; countCopy; --countCopy)
   {
     v10 = MEMORY[0x1E69B3538];
-    v11 = *a3++;
-    v12 = [(MPMediaLibraryDataProviderML3 *)self library];
-    v13 = [v10 newWithPersistentID:v11 inLibrary:v12];
+    v11 = *identifiers++;
+    library = [(MPMediaLibraryDataProviderML3 *)self library];
+    v13 = [v10 newWithPersistentID:v11 inLibrary:library];
 
     [i addObject:v13];
   }
 
-  v14 = [MEMORY[0x1E69B3540] playlistControllerWithSeedTracks:i error:a5];
+  v14 = [MEMORY[0x1E69B3540] playlistControllerWithSeedTracks:i error:error];
   v15 = v14;
   if (v14)
   {
@@ -469,21 +469,21 @@ uint64_t __93__MPMediaLibraryDataProviderSystemML3__seedCloudPlaylistWithTrack_c
   return v15;
 }
 
-- (void)seedPlaylistWithIdentifier:(int64_t)a3 withItemWithIdentifier:(int64_t)a4 completionBlock:(id)a5
+- (void)seedPlaylistWithIdentifier:(int64_t)identifier withItemWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = MEMORY[0x1E69B34A0];
-  v10 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v11 = [v9 newWithPersistentID:a3 inLibrary:v10];
+  library = [(MPMediaLibraryDataProviderML3 *)self library];
+  v11 = [v9 newWithPersistentID:identifier inLibrary:library];
 
   v12 = MEMORY[0x1E69B3538];
-  v13 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v14 = [v12 newWithPersistentID:a4 inLibrary:v13];
+  library2 = [(MPMediaLibraryDataProviderML3 *)self library];
+  v14 = [v12 newWithPersistentID:withIdentifier inLibrary:library2];
 
   v15 = [v14 valueForProperty:*MEMORY[0x1E69B3350]];
-  v16 = [v15 longLongValue];
+  longLongValue = [v15 longLongValue];
 
-  if (([MEMORY[0x1E69B3540] hasGeniusDataAvailable] & 1) != 0 || !v16)
+  if (([MEMORY[0x1E69B3540] hasGeniusDataAvailable] & 1) != 0 || !longLongValue)
   {
     v17 = MEMORY[0x1E69B3540];
     v18[0] = MEMORY[0x1E69E9820];
@@ -491,16 +491,16 @@ uint64_t __93__MPMediaLibraryDataProviderSystemML3__seedCloudPlaylistWithTrack_c
     v18[2] = __105__MPMediaLibraryDataProviderSystemML3_seedPlaylistWithIdentifier_withItemWithIdentifier_completionBlock___block_invoke;
     v18[3] = &unk_1E7677910;
     v18[4] = self;
-    v22 = v16;
+    v22 = longLongValue;
     v19 = v14;
     v20 = v11;
-    v21 = v8;
+    v21 = blockCopy;
     [v17 populateContainer:v20 withSeedTrack:v19 completionBlock:v18];
   }
 
   else
   {
-    [(MPMediaLibraryDataProviderSystemML3 *)self _seedCloudPlaylistWithTrack:v14 container:v11 completionBlock:v8];
+    [(MPMediaLibraryDataProviderSystemML3 *)self _seedCloudPlaylistWithTrack:v14 container:v11 completionBlock:blockCopy];
   }
 }
 
@@ -550,11 +550,11 @@ LABEL_9:
     return 1;
   }
 
-  v4 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-  v5 = [MPCloudController controllerWithUserIdentity:v4];
-  v6 = [v5 isGeniusEnabled];
+  userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+  v5 = [MPCloudController controllerWithUserIdentity:userIdentity];
+  isGeniusEnabled = [v5 isGeniusEnabled];
 
-  return v6;
+  return isGeniusEnabled;
 }
 
 - (int64_t)_currentRevision
@@ -562,8 +562,8 @@ LABEL_9:
   result = self->_currentRevision;
   if (!result)
   {
-    v4 = [(MPMediaLibraryDataProviderML3 *)self library];
-    self->_currentRevision = [v4 currentRevision];
+    library = [(MPMediaLibraryDataProviderML3 *)self library];
+    self->_currentRevision = [library currentRevision];
 
     return self->_currentRevision;
   }
@@ -571,11 +571,11 @@ LABEL_9:
   return result;
 }
 
-- (MPMediaLibraryDataProviderSystemML3)initWithLibrary:(id)a3
+- (MPMediaLibraryDataProviderSystemML3)initWithLibrary:(id)library
 {
   v6.receiver = self;
   v6.super_class = MPMediaLibraryDataProviderSystemML3;
-  v3 = [(MPMediaLibraryDataProviderML3 *)&v6 initWithLibrary:a3];
+  v3 = [(MPMediaLibraryDataProviderML3 *)&v6 initWithLibrary:library];
   v4 = v3;
   if (v3)
   {
@@ -585,14 +585,14 @@ LABEL_9:
   return v4;
 }
 
-+ (id)_localizedGeniusErrorForError:(id)a3 geniusEnabled:(BOOL)a4
++ (id)_localizedGeniusErrorForError:(id)error geniusEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
+  enabledCopy = enabled;
+  errorCopy = error;
   v6 = objc_alloc(MEMORY[0x1E695DF20]);
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
   v8 = v7;
-  if (v4)
+  if (enabledCopy)
   {
     v9 = @"GENIUS_PICKER_NO_RESULTS_TITLE";
   }
@@ -602,7 +602,7 @@ LABEL_9:
     v9 = @"GENIUS_FEATURE_NOT_AVAILABLE_TITLE";
   }
 
-  if (v4)
+  if (enabledCopy)
   {
     v10 = @"GENIUS_PICKER_NO_RESULTS_MESSAGE";
   }
@@ -618,15 +618,15 @@ LABEL_9:
   v14 = [v13 localizedStringForKey:v10 value:&stru_1F149ECA8 table:@"MediaPlayer"];
   v15 = [v6 initWithObjectsAndKeys:{v11, v12, v14, *MEMORY[0x1E696A588], 0}];
 
-  if (v5)
+  if (errorCopy)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v17 = [v5 userInfo];
+    userInfo = [errorCopy userInfo];
 
-    if (v17)
+    if (userInfo)
     {
-      v18 = [v5 userInfo];
-      [v16 addEntriesFromDictionary:v18];
+      userInfo2 = [errorCopy userInfo];
+      [v16 addEntriesFromDictionary:userInfo2];
     }
 
     if (v15)
@@ -635,8 +635,8 @@ LABEL_9:
     }
 
     v19 = MEMORY[0x1E696ABC0];
-    v20 = [v5 domain];
-    v21 = [v19 errorWithDomain:v20 code:objc_msgSend(v5 userInfo:{"code"), v16}];
+    domain = [errorCopy domain];
+    v21 = [v19 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v16}];
   }
 
   else
@@ -647,11 +647,11 @@ LABEL_9:
   return v21;
 }
 
-+ (id)_localizedCloudGeniusErrorForError:(id)a3
++ (id)_localizedCloudGeniusErrorForError:(id)error
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  if ([v4 hasCellularDataCapability])
+  errorCopy = error;
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  if ([currentDeviceInfo hasCellularDataCapability])
   {
     v5 = +[MPPlaybackUserDefaults standardUserDefaults];
     v6 = [v5 preferredMusicLowBandwidthResolution] < 1;
@@ -662,17 +662,17 @@ LABEL_9:
     v6 = 1;
   }
 
-  v7 = [MEMORY[0x1E69E4428] sharedMonitor];
-  [v7 networkType];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  [mEMORY[0x1E69E4428] networkType];
 
   IsCellular = ICEnvironmentNetworkTypeIsCellular();
-  v9 = [v4 hasWiFiCapability];
-  v10 = [v4 hasWAPICapability];
-  if (v6 || !v9 || (IsCellular & 1) != 0)
+  hasWiFiCapability = [currentDeviceInfo hasWiFiCapability];
+  hasWAPICapability = [currentDeviceInfo hasWAPICapability];
+  if (v6 || !hasWiFiCapability || (IsCellular & 1) != 0)
   {
     if ((v6 | IsCellular))
     {
-      if (v9)
+      if (hasWiFiCapability)
       {
         v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
         v12 = v11;
@@ -712,7 +712,7 @@ LABEL_9:
   v13 = @"GENIUS_PLAYLIST_OFFLINE_SUBTITLE_ALL";
   v14 = @"GENIUS_PLAYLIST_OFFLINE_SUBTITLE_ALL_WLAN";
 LABEL_8:
-  if (v10)
+  if (hasWAPICapability)
   {
     v15 = v14;
   }
@@ -730,15 +730,15 @@ LABEL_8:
   v20 = [v17 initWithObjectsAndKeys:{v19, *MEMORY[0x1E696A578], v16, *MEMORY[0x1E696A588], 0}];
 LABEL_18:
 
-  if (v3)
+  if (errorCopy)
   {
     v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v27 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
 
-    if (v27)
+    if (userInfo)
     {
-      v28 = [v3 userInfo];
-      [v26 addEntriesFromDictionary:v28];
+      userInfo2 = [errorCopy userInfo];
+      [v26 addEntriesFromDictionary:userInfo2];
     }
 
     if (v20)
@@ -747,8 +747,8 @@ LABEL_18:
     }
 
     v29 = MEMORY[0x1E696ABC0];
-    v30 = [v3 domain];
-    v31 = [v29 errorWithDomain:v30 code:objc_msgSend(v3 userInfo:{"code"), v26}];
+    domain = [errorCopy domain];
+    v31 = [v29 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v26}];
   }
 
   else

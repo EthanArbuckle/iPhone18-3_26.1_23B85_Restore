@@ -1,7 +1,7 @@
 @interface MCDefaultsPayload
 - (BOOL)isAllowedToWriteDefaults;
-- (MCDefaultsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)defaultsForDomain:(id)a3;
+- (MCDefaultsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)defaultsForDomain:(id)domain;
 - (id)stubDictionary;
 - (id)title;
 - (id)verboseDescription;
@@ -12,50 +12,50 @@
 - (BOOL)isAllowedToWriteDefaults
 {
   v8 = 0;
-  v3 = [(MCPayload *)self profile];
-  v4 = [v3 signatureVersion];
+  profile = [(MCPayload *)self profile];
+  signatureVersion = [profile signatureVersion];
 
-  v5 = [(MCPayload *)self profile];
-  v6 = [v5 signerCertificates];
-  [MCProfile evaluateTrustOfCertificateChain:v6 signatureVersion:v4 outIsAllowedToWriteDefaults:&v8];
+  profile2 = [(MCPayload *)self profile];
+  signerCertificates = [profile2 signerCertificates];
+  [MCProfile evaluateTrustOfCertificateChain:signerCertificates signatureVersion:signatureVersion outIsAllowedToWriteDefaults:&v8];
 
-  LOBYTE(v5) = v8;
-  return v5;
+  LOBYTE(profile2) = v8;
+  return profile2;
 }
 
-- (MCDefaultsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCDefaultsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v65.receiver = self;
   v65.super_class = MCDefaultsPayload;
-  v10 = [(MCPayload *)&v65 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v65 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_51;
   }
 
   v64 = 0;
-  v11 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v64];
-  v12 = v64;
-  if (v12)
+  v11 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v64];
+  mCCopyAsPrimaryError = v64;
+  if (mCCopyAsPrimaryError)
   {
     goto LABEL_42;
   }
 
-  v13 = [(MCPayload *)v10 profile];
-  v14 = [v13 isStub];
+  profile = [(MCPayload *)v10 profile];
+  isStub = [profile isStub];
 
-  if ((v14 & 1) == 0 && v11 && ![(MCDefaultsPayload *)v10 isAllowedToWriteDefaults])
+  if ((isStub & 1) == 0 && v11 && ![(MCDefaultsPayload *)v10 isAllowedToWriteDefaults])
   {
     v31 = MEMORY[0x1E696ABC0];
-    v32 = [v9 friendlyName];
-    defaultsByDomain = MCErrorArray(@"ERROR_PROFILE_DEFAULTS_BAD_SIGNATURE_P_ID", v33, v34, v35, v36, v37, v38, v39, v32);
+    friendlyName = [profileCopy friendlyName];
+    defaultsByDomain = MCErrorArray(@"ERROR_PROFILE_DEFAULTS_BAD_SIGNATURE_P_ID", v33, v34, v35, v36, v37, v38, v39, friendlyName);
     v40 = [v31 MCErrorWithDomain:@"MCDefaultsErrorDomain" code:10001 descriptionArray:defaultsByDomain errorType:@"MCFatalError"];
-    v12 = [v40 MCCopyAsPrimaryError];
+    mCCopyAsPrimaryError = [v40 MCCopyAsPrimaryError];
 
-    v15 = v32;
+    v15 = friendlyName;
     goto LABEL_40;
   }
 
@@ -73,11 +73,11 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     defaultsByDomain = [MCPayload badFieldTypeErrorWithField:@"DefaultsData"];
-    v12 = [defaultsByDomain MCCopyAsPrimaryError];
+    mCCopyAsPrimaryError = [defaultsByDomain MCCopyAsPrimaryError];
     goto LABEL_40;
   }
 
-  v57 = v9;
+  v57 = profileCopy;
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
@@ -88,7 +88,7 @@
   {
 LABEL_28:
 
-    v9 = v57;
+    profileCopy = v57;
     goto LABEL_39;
   }
 
@@ -110,20 +110,20 @@ LABEL_12:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v21 = [MCPayload badFieldTypeErrorWithField:@"PayloadContent"];
-      v12 = [v21 MCCopyAsPrimaryError];
+      mCCopyAsPrimaryError = [v21 MCCopyAsPrimaryError];
       goto LABEL_38;
     }
 
     v21 = [v20 objectForKey:@"DefaultsDomainName"];
     if (!v21)
     {
-      v26 = [(MCPayload *)v10 profile];
-      v27 = [v26 isStub];
+      profile2 = [(MCPayload *)v10 profile];
+      isStub2 = [profile2 isStub];
 
-      if ((v27 & 1) == 0)
+      if ((isStub2 & 1) == 0)
       {
         v22 = [MCPayload missingFieldErrorWithField:@"DefaultsDomainName" underlyingError:0];
-        v12 = [v22 MCCopyAsPrimaryError];
+        mCCopyAsPrimaryError = [v22 MCCopyAsPrimaryError];
         goto LABEL_37;
       }
 
@@ -151,7 +151,7 @@ LABEL_12:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v42 = [MCPayload badFieldTypeErrorWithField:@"DefaultsData"];
-        v12 = [v42 MCCopyAsPrimaryError];
+        mCCopyAsPrimaryError = [v42 MCCopyAsPrimaryError];
 
         goto LABEL_36;
       }
@@ -180,10 +180,10 @@ LABEL_26:
     }
   }
 
-  v28 = [(MCPayload *)v10 profile];
-  v29 = [v28 isStub];
+  profile3 = [(MCPayload *)v10 profile];
+  isStub3 = [profile3 isStub];
 
-  if (v29)
+  if (isStub3)
   {
     goto LABEL_26;
   }
@@ -191,37 +191,37 @@ LABEL_26:
   v41 = [MCPayload missingFieldErrorWithField:@"DefaultsData" underlyingError:0];
 LABEL_35:
   v24 = v41;
-  v12 = [v41 MCCopyAsPrimaryError];
+  mCCopyAsPrimaryError = [v41 MCCopyAsPrimaryError];
 LABEL_36:
 
 LABEL_37:
 LABEL_38:
   v11 = v56;
-  v9 = v57;
+  profileCopy = v57;
   v15 = v59;
 
-  if (v12)
+  if (mCCopyAsPrimaryError)
   {
     goto LABEL_41;
   }
 
 LABEL_39:
   v15 = v15;
-  v12 = 0;
+  mCCopyAsPrimaryError = 0;
   defaultsByDomain = v10->_defaultsByDomain;
   v10->_defaultsByDomain = v15;
 LABEL_40:
 
 LABEL_41:
-  if (v12)
+  if (mCCopyAsPrimaryError)
   {
 LABEL_42:
-    v43 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
+    v43 = [(MCPayload *)v10 malformedPayloadErrorWithError:mCCopyAsPrimaryError];
     v44 = v43;
-    if (a5)
+    if (error)
     {
       v45 = v43;
-      *a5 = v44;
+      *error = v44;
     }
 
     v46 = _MCLogObjects;
@@ -230,28 +230,28 @@ LABEL_42:
       v47 = v46;
       v48 = objc_opt_class();
       v49 = v48;
-      v50 = [v44 MCVerboseDescription];
+      mCVerboseDescription = [v44 MCVerboseDescription];
       *buf = 138543618;
       v67 = v48;
       v68 = 2114;
-      v69 = v50;
+      v69 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v47, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
     v10 = 0;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v51 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v52 = v51;
-      v53 = [(MCPayload *)v10 friendlyName];
+      friendlyName2 = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v67 = v53;
+      v67 = friendlyName2;
       v68 = 2114;
-      v69 = v8;
+      v69 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v52, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -266,17 +266,17 @@ LABEL_51:
   v26 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = MCDefaultsPayload;
-  v17 = [(MCPayload *)&v22 stubDictionary];
+  stubDictionary = [(MCPayload *)&v22 stubDictionary];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(MCDefaultsPayload *)self domains];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  domains = [(MCDefaultsPayload *)self domains];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(domains, "count")}];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(MCDefaultsPayload *)self domains];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v25 count:16];
+  domains2 = [(MCDefaultsPayload *)self domains];
+  v7 = [domains2 countByEnumeratingWithState:&v18 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -287,7 +287,7 @@ LABEL_51:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(domains2);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -304,24 +304,24 @@ LABEL_51:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v25 count:16];
+      v8 = [domains2 countByEnumeratingWithState:&v18 objects:v25 count:16];
     }
 
     while (v8);
   }
 
-  [v17 setObject:v5 forKey:@"PayloadContent"];
+  [stubDictionary setObject:v5 forKey:@"PayloadContent"];
   v15 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
 {
   v6.receiver = self;
   v6.super_class = MCDefaultsPayload;
-  v3 = [(MCPayload *)&v6 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v6 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_defaultsByDomain)
   {
@@ -331,9 +331,9 @@ LABEL_51:
   return v4;
 }
 
-- (id)defaultsForDomain:(id)a3
+- (id)defaultsForDomain:(id)domain
 {
-  if (a3)
+  if (domain)
   {
     v4 = [(NSDictionary *)self->_defaultsByDomain objectForKey:?];
   }

@@ -3,39 +3,39 @@
 - (CGRect)salientContentRectangle;
 - (PBUIPosterComponentDelegate)delegate;
 - (PBUIPosterWallpaperViewController)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)posterComponentExternalDisplayConfiguration:(id)a3;
-- (id)replicaProviderForVariant:(int64_t)a3;
-- (id)requireWallpaperWithReason:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)posterComponentExternalDisplayConfiguration:(id)configuration;
+- (id)replicaProviderForVariant:(int64_t)variant;
+- (id)requireWallpaperWithReason:(id)reason;
 - (id)succinctDescription;
-- (uint64_t)setRotation:(_OWORD *)a3;
-- (void)_posterConfigsDidChange:(id)a3 withTransition:(id)a4;
+- (uint64_t)setRotation:(_OWORD *)rotation;
+- (void)_posterConfigsDidChange:(id)change withTransition:(id)transition;
 - (void)_posterControllerDidChange;
-- (void)_updateStyleForVariant:(int64_t)a3;
+- (void)_updateStyleForVariant:(int64_t)variant;
 - (void)invalidate;
-- (void)posterComponent:(id)a3 didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)a4;
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionEventsRequested:(BOOL)a4;
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionMode:(unint64_t)a4;
-- (void)posterComponent:(id)a3 didUpdateHideDimmingLayer:(BOOL)a4;
-- (void)posterComponent:(id)a3 didUpdateInExtendedRenderSession:(BOOL)a4;
-- (void)posterComponent:(id)a3 didUpdateLegibilitySettings:(id)a4;
-- (void)posterComponent:(id)a3 didUpdatePreferredDeviceMotionUpdateInterval:(double)a4;
-- (void)posterComponent:(id)a3 didUpdatePreferredProminentColor:(id)a4;
-- (void)posterComponent:(id)a3 didUpdatePreferredSalientContentRectangle:(CGRect)a4;
-- (void)posterComponent:(id)a3 didUpdateSalientContentRectangleUpdatesRequested:(BOOL)a4;
-- (void)removeWallpaperStyleForPriority:(int64_t)a3 forVariant:(int64_t)a4;
-- (void)rotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)setActiveVariant:(int64_t)a3;
-- (void)setDeviceMotionEventGenerationActive:(BOOL)a3;
-- (void)setDeviceMotionUpdateInterval:(double)a3;
-- (void)setDevicePitch:(double)a3 roll:(double)a4 yaw:(double)a5;
-- (void)setSalientContentRectangle:(CGRect)a3;
-- (void)setUnlockProgress:(double)a3;
-- (void)setWakeSourceIsSwipeToUnlock:(BOOL)a3;
-- (void)setWallpaperStyle:(int64_t)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5;
-- (void)updateActiveVariantTransitionProgress:(double)a3;
-- (void)updateConfiguration:(id)a3 withAnimationSettings:(id)a4;
+- (void)posterComponent:(id)component didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)rectangle;
+- (void)posterComponent:(id)component didUpdateDeviceMotionEventsRequested:(BOOL)requested;
+- (void)posterComponent:(id)component didUpdateDeviceMotionMode:(unint64_t)mode;
+- (void)posterComponent:(id)component didUpdateHideDimmingLayer:(BOOL)layer;
+- (void)posterComponent:(id)component didUpdateInExtendedRenderSession:(BOOL)session;
+- (void)posterComponent:(id)component didUpdateLegibilitySettings:(id)settings;
+- (void)posterComponent:(id)component didUpdatePreferredDeviceMotionUpdateInterval:(double)interval;
+- (void)posterComponent:(id)component didUpdatePreferredProminentColor:(id)color;
+- (void)posterComponent:(id)component didUpdatePreferredSalientContentRectangle:(CGRect)rectangle;
+- (void)posterComponent:(id)component didUpdateSalientContentRectangleUpdatesRequested:(BOOL)requested;
+- (void)removeWallpaperStyleForPriority:(int64_t)priority forVariant:(int64_t)variant;
+- (void)rotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)setActiveVariant:(int64_t)variant;
+- (void)setDeviceMotionEventGenerationActive:(BOOL)active;
+- (void)setDeviceMotionUpdateInterval:(double)interval;
+- (void)setDevicePitch:(double)pitch roll:(double)roll yaw:(double)yaw;
+- (void)setSalientContentRectangle:(CGRect)rectangle;
+- (void)setUnlockProgress:(double)progress;
+- (void)setWakeSourceIsSwipeToUnlock:(BOOL)unlock;
+- (void)setWallpaperStyle:(int64_t)style forPriority:(int64_t)priority forVariant:(int64_t)variant;
+- (void)updateActiveVariantTransitionProgress:(double)progress;
+- (void)updateConfiguration:(id)configuration withAnimationSettings:(id)settings;
 - (void)viewDidLoad;
 @end
 
@@ -104,8 +104,8 @@
     v3->_posterObserver = v12;
 
     [(PRSWallpaperObserver *)v3->_posterObserver activateWithConfiguration:v8];
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    LODWORD(v10) = [v14 BOOLForKey:@"PBKeepWallpaperForegroundRunning"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    LODWORD(v10) = [standardUserDefaults BOOLForKey:@"PBKeepWallpaperForegroundRunning"];
 
     if (v10)
     {
@@ -161,32 +161,32 @@ void __41__PBUIPosterWallpaperViewController_init__block_invoke(uint64_t a1, voi
   [WeakRetained _posterConfigsDidChange:v6 withTransition:v5];
 }
 
-- (void)updateActiveVariantTransitionProgress:(double)a3
+- (void)updateActiveVariantTransitionProgress:(double)progress
 {
   posterController = self->_posterController;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __75__PBUIPosterWallpaperViewController_updateActiveVariantTransitionProgress___block_invoke;
   v4[3] = &__block_descriptor_40_e30_v16__0___PBUIPosterUpdating__8l;
-  *&v4[4] = a3;
+  *&v4[4] = progress;
   [(PBUIPosterViewController *)posterController updatePoster:v4];
 }
 
-- (void)setActiveVariant:(int64_t)a3
+- (void)setActiveVariant:(int64_t)variant
 {
-  if (!PBUIWallpaperVariantIsValid(a3))
+  if (!PBUIWallpaperVariantIsValid(variant))
   {
     [(PBUIPosterWallpaperViewController *)a2 setActiveVariant:?];
   }
 
-  self->_activeVariant = a3;
+  self->_activeVariant = variant;
   posterController = self->_posterController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__PBUIPosterWallpaperViewController_setActiveVariant___block_invoke;
   v7[3] = &unk_278363210;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = variant;
   [(PBUIPosterViewController *)posterController updatePoster:v7];
 }
 
@@ -199,14 +199,14 @@ uint64_t __54__PBUIPosterWallpaperViewController_setActiveVariant___block_invoke
   return [v3 _updateStyleForVariant:v4];
 }
 
-- (void)setUnlockProgress:(double)a3
+- (void)setUnlockProgress:(double)progress
 {
-  if (self->_unlockProgress == a3)
+  if (self->_unlockProgress == progress)
   {
     return;
   }
 
-  self->_unlockProgress = a3;
+  self->_unlockProgress = progress;
   IsZero = BSFloatIsZero();
   IsOne = BSFloatIsOne();
   if (IsOne)
@@ -252,7 +252,7 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = __55__PBUIPosterWallpaperViewController_setUnlockProgress___block_invoke;
   v15[3] = &__block_descriptor_40_e30_v16__0___PBUIPosterUpdating__8l;
-  *&v15[4] = a3;
+  *&v15[4] = progress;
   [(PBUIPosterViewController *)posterController updatePoster:v15];
   if (v9)
   {
@@ -266,28 +266,28 @@ LABEL_13:
   }
 }
 
-- (uint64_t)setRotation:(_OWORD *)a3
+- (uint64_t)setRotation:(_OWORD *)rotation
 {
-  v3 = *(a1 + 1000);
-  v4 = a3[1];
-  v6[0] = *a3;
+  v3 = *(self + 1000);
+  v4 = rotation[1];
+  v6[0] = *rotation;
   v6[1] = v4;
   return [v3 updateMotionWithRotation:v6];
 }
 
-- (void)setDevicePitch:(double)a3 roll:(double)a4 yaw:(double)a5
+- (void)setDevicePitch:(double)pitch roll:(double)roll yaw:(double)yaw
 {
   devicePitch = self->_devicePitch;
-  if (devicePitch != a3)
+  if (devicePitch != pitch)
   {
-    self->_devicePitch = a3;
+    self->_devicePitch = pitch;
   }
 
-  if (self->_deviceRoll != a4)
+  if (self->_deviceRoll != roll)
   {
-    self->_deviceRoll = a4;
+    self->_deviceRoll = roll;
     p_deviceYaw = &self->_deviceYaw;
-    if (self->_deviceYaw == a5)
+    if (self->_deviceYaw == yaw)
     {
       goto LABEL_8;
     }
@@ -296,10 +296,10 @@ LABEL_13:
   }
 
   p_deviceYaw = &self->_deviceYaw;
-  if (self->_deviceYaw != a5)
+  if (self->_deviceYaw != yaw)
   {
 LABEL_7:
-    *p_deviceYaw = a5;
+    *p_deviceYaw = yaw;
 LABEL_8:
     v10[7] = v5;
     v10[8] = v6;
@@ -308,14 +308,14 @@ LABEL_8:
     v10[1] = 3221225472;
     v10[2] = __61__PBUIPosterWallpaperViewController_setDevicePitch_roll_yaw___block_invoke;
     v10[3] = &__block_descriptor_56_e30_v16__0___PBUIPosterUpdating__8l;
-    *&v10[4] = a3;
-    *&v10[5] = a4;
-    *&v10[6] = a5;
+    *&v10[4] = pitch;
+    *&v10[5] = roll;
+    *&v10[6] = yaw;
     [(PBUIPosterViewController *)posterController updatePoster:v10];
     return;
   }
 
-  if (devicePitch != a3)
+  if (devicePitch != pitch)
   {
     goto LABEL_8;
   }
@@ -330,25 +330,25 @@ void __61__PBUIPosterWallpaperViewController_setDevicePitch_roll_yaw___block_inv
   [v4 setDeviceYaw:a1[6]];
 }
 
-- (void)setWakeSourceIsSwipeToUnlock:(BOOL)a3
+- (void)setWakeSourceIsSwipeToUnlock:(BOOL)unlock
 {
   posterController = self->_posterController;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __66__PBUIPosterWallpaperViewController_setWakeSourceIsSwipeToUnlock___block_invoke;
   v4[3] = &__block_descriptor_33_e30_v16__0___PBUIPosterUpdating__8l;
-  v5 = a3;
+  unlockCopy = unlock;
   [(PBUIPosterViewController *)posterController updatePoster:v4];
 }
 
-- (void)setSalientContentRectangle:(CGRect)a3
+- (void)setSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   p_salientContentRectangle = &self->_salientContentRectangle;
-  if (!CGRectEqualToRect(a3, self->_salientContentRectangle))
+  if (!CGRectEqualToRect(rectangle, self->_salientContentRectangle))
   {
     p_salientContentRectangle->origin.x = x;
     p_salientContentRectangle->origin.y = y;
@@ -370,34 +370,34 @@ void __61__PBUIPosterWallpaperViewController_setDevicePitch_roll_yaw___block_inv
   }
 }
 
-- (void)setDeviceMotionUpdateInterval:(double)a3
+- (void)setDeviceMotionUpdateInterval:(double)interval
 {
-  if (self->_deviceMotionUpdateInterval != a3)
+  if (self->_deviceMotionUpdateInterval != interval)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_deviceMotionUpdateInterval = a3;
+    self->_deviceMotionUpdateInterval = interval;
     posterController = self->_posterController;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __67__PBUIPosterWallpaperViewController_setDeviceMotionUpdateInterval___block_invoke;
     v6[3] = &__block_descriptor_40_e30_v16__0___PBUIPosterUpdating__8l;
-    *&v6[4] = a3;
+    *&v6[4] = interval;
     [(PBUIPosterViewController *)posterController updatePoster:v6];
   }
 }
 
-- (void)setDeviceMotionEventGenerationActive:(BOOL)a3
+- (void)setDeviceMotionEventGenerationActive:(BOOL)active
 {
-  if (self->_deviceMotionEventGenerationActive == a3)
+  if (self->_deviceMotionEventGenerationActive == active)
   {
     return;
   }
 
-  v4 = a3;
-  self->_deviceMotionEventGenerationActive = a3;
+  activeCopy = active;
+  self->_deviceMotionEventGenerationActive = active;
   deviceMotionKeepActiveReason = self->_deviceMotionKeepActiveReason;
-  if (!a3)
+  if (!active)
   {
     [(BSInvalidatable *)deviceMotionKeepActiveReason invalidate];
     v7 = 0;
@@ -414,14 +414,14 @@ LABEL_6:
 
   posterController = self->_posterController;
 
-  [(PBUIPosterViewController *)posterController setDeviceMotionEventGenerationActive:v4];
+  [(PBUIPosterViewController *)posterController setDeviceMotionEventGenerationActive:activeCopy];
 }
 
-- (void)updateConfiguration:(id)a3 withAnimationSettings:(id)a4
+- (void)updateConfiguration:(id)configuration withAnimationSettings:(id)settings
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  configurationCopy = configuration;
+  settingsCopy = settings;
+  v9 = configurationCopy;
   NSClassFromString(&cfstr_Prsposterconfi.isa);
   if (!v9)
   {
@@ -446,17 +446,17 @@ LABEL_6:
     v29 = v11;
     v12 = MEMORY[0x223D62EE0](v28);
     v13 = objc_alloc_init(PBUIPosterViewController);
-    v14 = [(PBUIPosterViewController *)v13 view];
-    v15 = [(PBUIPosterWallpaperViewController *)self view];
-    [v15 bounds];
-    [v14 setFrame:?];
+    view = [(PBUIPosterViewController *)v13 view];
+    view2 = [(PBUIPosterWallpaperViewController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
 
-    [v14 setAutoresizingMask:18];
-    [v14 setAlpha:0.0];
-    if (v8)
+    [view setAutoresizingMask:18];
+    [view setAlpha:0.0];
+    if (settingsCopy)
     {
-      v16 = [v14 layer];
-      [v16 setAllowsGroupOpacity:1];
+      layer = [view layer];
+      [layer setAllowsGroupOpacity:1];
     }
 
     [(PBUIPosterWallpaperViewController *)self bs_addChildViewController:v13];
@@ -485,7 +485,7 @@ LABEL_6:
     v22[3] = &unk_278363310;
     v22[4] = self;
     v23 = v13;
-    v24 = v8;
+    v24 = settingsCopy;
     v25 = v12;
     v20 = v12;
     v21 = v13;
@@ -591,17 +591,17 @@ void __79__PBUIPosterWallpaperViewController_updateConfiguration_withAnimationSe
   }
 }
 
-- (void)rotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)rotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   if (soft_PF_IS_PAD_DEVICE() && soft_PUIDynamicRotationIsActive())
   {
-    [(PBUIPosterViewController *)self->_posterController willRotateToInterfaceOrientation:a3];
+    [(PBUIPosterViewController *)self->_posterController willRotateToInterfaceOrientation:orientation];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __75__PBUIPosterWallpaperViewController_rotateToInterfaceOrientation_duration___block_invoke;
     v11[3] = &unk_278363338;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = orientation;
     v7 = MEMORY[0x223D62EE0](v11);
   }
 
@@ -610,9 +610,9 @@ void __79__PBUIPosterWallpaperViewController_updateConfiguration_withAnimationSe
     v7 = 0;
   }
 
-  self->_activeOrientation = a3;
+  self->_activeOrientation = orientation;
   v8 = MEMORY[0x277CF0D38];
-  v9 = [MEMORY[0x277CF0B70] settingsWithDuration:a4];
+  v9 = [MEMORY[0x277CF0B70] settingsWithDuration:duration];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__PBUIPosterWallpaperViewController_rotateToInterfaceOrientation_duration___block_invoke_2;
@@ -656,12 +656,12 @@ void __75__PBUIPosterWallpaperViewController_rotateToInterfaceOrientation_durati
   }
 }
 
-- (id)requireWallpaperWithReason:(id)a3
+- (id)requireWallpaperWithReason:(id)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  v6 = v5;
+  v6 = reasonCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v6)
   {
@@ -762,15 +762,15 @@ uint64_t __64__PBUIPosterWallpaperViewController_requireWallpaperWithReason___bl
   return [*(a1 + 40) invalidate];
 }
 
-- (void)setWallpaperStyle:(int64_t)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5
+- (void)setWallpaperStyle:(int64_t)style forPriority:(int64_t)priority forVariant:(int64_t)variant
 {
   v19 = *MEMORY[0x277D85DE8];
   v9 = PBUILogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = PBUIStringForWallpaperVariant(a5);
-    v11 = PBUIWallpaperStyleDescription(a3);
-    v12 = PBUIStringForWallpaperStylePriority(a4);
+    v10 = PBUIStringForWallpaperVariant(variant);
+    v11 = PBUIWallpaperStyleDescription(style);
+    v12 = PBUIStringForWallpaperStylePriority(priority);
     v13 = 138412802;
     v14 = v10;
     v15 = 2112;
@@ -780,18 +780,18 @@ uint64_t __64__PBUIPosterWallpaperViewController_requireWallpaperWithReason___bl
     _os_log_impl(&dword_21E67D000, v9, OS_LOG_TYPE_DEFAULT, "Setting %@ override style %@ for %@", &v13, 0x20u);
   }
 
-  self->_activeStyles[a5][a4] = a3;
-  [(PBUIPosterWallpaperViewController *)self _updateStyleForVariant:a5];
+  self->_activeStyles[variant][priority] = style;
+  [(PBUIPosterWallpaperViewController *)self _updateStyleForVariant:variant];
 }
 
-- (void)removeWallpaperStyleForPriority:(int64_t)a3 forVariant:(int64_t)a4
+- (void)removeWallpaperStyleForPriority:(int64_t)priority forVariant:(int64_t)variant
 {
   v14 = *MEMORY[0x277D85DE8];
   v7 = PBUILogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = PBUIStringForWallpaperVariant(a4);
-    v9 = PBUIStringForWallpaperStylePriority(a3);
+    v8 = PBUIStringForWallpaperVariant(variant);
+    v9 = PBUIStringForWallpaperStylePriority(priority);
     v10 = 138412546;
     v11 = v8;
     v12 = 2112;
@@ -799,14 +799,14 @@ uint64_t __64__PBUIPosterWallpaperViewController_requireWallpaperWithReason___bl
     _os_log_impl(&dword_21E67D000, v7, OS_LOG_TYPE_DEFAULT, "Removing %@ override style for %@", &v10, 0x16u);
   }
 
-  self->_activeStyles[a4][a3] = -1;
-  [(PBUIPosterWallpaperViewController *)self _updateStyleForVariant:a4];
+  self->_activeStyles[variant][priority] = -1;
+  [(PBUIPosterWallpaperViewController *)self _updateStyleForVariant:variant];
 }
 
-- (id)replicaProviderForVariant:(int64_t)a3
+- (id)replicaProviderForVariant:(int64_t)variant
 {
   v3 = &OBJC_IVAR___PBUIPosterWallpaperViewController__lockPosterReplicaProvider;
-  if (a3 == 1)
+  if (variant == 1)
   {
     v3 = &OBJC_IVAR___PBUIPosterWallpaperViewController__homePosterReplicaProvider;
   }
@@ -838,10 +838,10 @@ uint64_t __64__PBUIPosterWallpaperViewController_requireWallpaperWithReason___bl
   [(PBUIDynamicProviderWrapper *)lockFloatingLayerPosterReplicaProvider setRootObject:posterController];
 }
 
-- (void)_posterConfigsDidChange:(id)a3 withTransition:(id)a4
+- (void)_posterConfigsDidChange:(id)change withTransition:(id)transition
 {
-  v5 = a3;
-  v4 = v5;
+  changeCopy = change;
+  v4 = changeCopy;
   BSDispatchMain();
 }
 
@@ -876,9 +876,9 @@ void __76__PBUIPosterWallpaperViewController__posterConfigsDidChange_withTransit
   }
 }
 
-- (void)_updateStyleForVariant:(int64_t)a3
+- (void)_updateStyleForVariant:(int64_t)variant
 {
-  v5 = self->_activeStyles[a3];
+  v5 = self->_activeStyles[variant];
   v6 = 4;
   while (1)
   {
@@ -901,7 +901,7 @@ void __76__PBUIPosterWallpaperViewController__posterConfigsDidChange_withTransit
   v9[2] = __60__PBUIPosterWallpaperViewController__updateStyleForVariant___block_invoke;
   v9[3] = &__block_descriptor_48_e30_v16__0___PBUIPosterUpdating__8l;
   v9[4] = v7;
-  v9[5] = a3;
+  v9[5] = variant;
   [(PBUIPosterViewController *)posterController updatePoster:v9];
 }
 
@@ -910,93 +910,93 @@ void __76__PBUIPosterWallpaperViewController__posterConfigsDidChange_withTransit
   v5.receiver = self;
   v5.super_class = PBUIPosterWallpaperViewController;
   [(PBUIPosterWallpaperViewController *)&v5 viewDidLoad];
-  v3 = [(PBUIPosterWallpaperViewController *)self view];
-  v4 = [(PBUIPosterViewController *)self->_posterController view];
-  [v3 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
-  [(PBUIPosterWallpaperViewController *)self bs_addChildViewController:self->_posterController withSuperview:v3];
+  view = [(PBUIPosterWallpaperViewController *)self view];
+  view2 = [(PBUIPosterViewController *)self->_posterController view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
+  [(PBUIPosterWallpaperViewController *)self bs_addChildViewController:self->_posterController withSuperview:view];
 }
 
-- (void)posterComponent:(id)a3 didUpdateLegibilitySettings:(id)a4
+- (void)posterComponent:(id)component didUpdateLegibilitySettings:(id)settings
 {
-  v5 = a4;
-  v6 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v6 posterComponent:self didUpdateLegibilitySettings:v5];
+  settingsCopy = settings;
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdateLegibilitySettings:settingsCopy];
 }
 
-- (void)posterComponent:(id)a3 didUpdateHideDimmingLayer:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateHideDimmingLayer:(BOOL)layer
 {
-  v4 = a4;
-  v6 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v6 posterComponent:self didUpdateHideDimmingLayer:v4];
+  layerCopy = layer;
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdateHideDimmingLayer:layerCopy];
 }
 
-- (void)posterComponent:(id)a3 didUpdatePreferredProminentColor:(id)a4
+- (void)posterComponent:(id)component didUpdatePreferredProminentColor:(id)color
 {
-  v5 = a4;
-  v6 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v6 posterComponent:self didUpdatePreferredProminentColor:v5];
+  colorCopy = color;
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdatePreferredProminentColor:colorCopy];
 }
 
-- (id)posterComponentExternalDisplayConfiguration:(id)a3
+- (id)posterComponentExternalDisplayConfiguration:(id)configuration
 {
-  v4 = [(PBUIPosterWallpaperViewController *)self delegate];
-  v5 = [v4 posterComponentExternalDisplayConfiguration:self];
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  v5 = [delegate posterComponentExternalDisplayConfiguration:self];
 
   return v5;
 }
 
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionEventsRequested:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateDeviceMotionEventsRequested:(BOOL)requested
 {
-  v4 = a4;
+  requestedCopy = requested;
   v9 = *MEMORY[0x277D85DE8];
   v6 = PBUILogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v4;
+    v8[1] = requestedCopy;
     _os_log_impl(&dword_21E67D000, v6, OS_LOG_TYPE_DEFAULT, "Poster didUpdateDeviceMotionEventsRequested:%{BOOL}u", v8, 8u);
   }
 
-  v7 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v7 posterComponent:self didUpdateDeviceMotionEventsRequested:v4];
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdateDeviceMotionEventsRequested:requestedCopy];
 }
 
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionMode:(unint64_t)a4
+- (void)posterComponent:(id)component didUpdateDeviceMotionMode:(unint64_t)mode
 {
   v6 = PBUILogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [PBUIPosterWallpaperViewController posterComponent:a4 didUpdateDeviceMotionMode:v6];
+    [PBUIPosterWallpaperViewController posterComponent:mode didUpdateDeviceMotionMode:v6];
   }
 
-  v7 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v7 posterComponent:self didUpdateDeviceMotionMode:a4];
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdateDeviceMotionMode:mode];
 }
 
-- (void)posterComponent:(id)a3 didUpdatePreferredSalientContentRectangle:(CGRect)a4
+- (void)posterComponent:(id)component didUpdatePreferredSalientContentRectangle:(CGRect)rectangle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v9 posterComponent:self didUpdatePreferredSalientContentRectangle:{x, y, width, height}];
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdatePreferredSalientContentRectangle:{x, y, width, height}];
 }
 
-- (void)posterComponent:(id)a3 didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)rectangle
 {
-  v4 = a4;
-  v6 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v6 posterComponent:self didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:v4];
+  rectangleCopy = rectangle;
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:rectangleCopy];
 }
 
-- (void)posterComponent:(id)a3 didUpdateSalientContentRectangleUpdatesRequested:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateSalientContentRectangleUpdatesRequested:(BOOL)requested
 {
-  v4 = a4;
-  v6 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v6 posterComponent:self didUpdateSalientContentRectangleUpdatesRequested:v4];
+  requestedCopy = requested;
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdateSalientContentRectangleUpdatesRequested:requestedCopy];
 
   if ([(PBUIPosterViewController *)self->_posterController salientContentRectangleUpdatesRequested])
   {
@@ -1010,20 +1010,20 @@ void __76__PBUIPosterWallpaperViewController__posterConfigsDidChange_withTransit
   }
 }
 
-- (void)posterComponent:(id)a3 didUpdatePreferredDeviceMotionUpdateInterval:(double)a4
+- (void)posterComponent:(id)component didUpdatePreferredDeviceMotionUpdateInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v7 posterComponent:v6 didUpdatePreferredDeviceMotionUpdateInterval:a4];
+  componentCopy = component;
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:componentCopy didUpdatePreferredDeviceMotionUpdateInterval:interval];
 }
 
-- (void)posterComponent:(id)a3 didUpdateInExtendedRenderSession:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateInExtendedRenderSession:(BOOL)session
 {
-  v4 = a4;
-  if (![a3 variant])
+  sessionCopy = session;
+  if (![component variant])
   {
     extendedRenderSessionKeepActiveReason = self->_extendedRenderSessionKeepActiveReason;
-    if (v4)
+    if (sessionCopy)
     {
       if (extendedRenderSessionKeepActiveReason)
       {
@@ -1044,38 +1044,38 @@ void __76__PBUIPosterWallpaperViewController__posterConfigsDidChange_withTransit
   }
 
 LABEL_7:
-  v9 = [(PBUIPosterWallpaperViewController *)self delegate];
-  [v9 posterComponent:self didUpdateInExtendedRenderSession:v4];
+  delegate = [(PBUIPosterWallpaperViewController *)self delegate];
+  [delegate posterComponent:self didUpdateInExtendedRenderSession:sessionCopy];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIPosterWallpaperViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIPosterWallpaperViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIPosterWallpaperViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIPosterWallpaperViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(PBUIPosterWallpaperViewController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(PBUIPosterWallpaperViewController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__PBUIPosterWallpaperViewController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783622E0;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

@@ -1,47 +1,47 @@
 @interface HDNotificationSyncClient
-- (BOOL)markPendingNotificationInstructionsAsProcessed:(id)a3 error:(id *)a4;
-- (BOOL)obliterateNotificationInstructionsWithError:(id *)a3;
-- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)a3 error:(id *)a4;
-- (BOOL)sendNotificationInstruction:(id)a3 criteria:(id)a4 error:(id *)a5;
+- (BOOL)markPendingNotificationInstructionsAsProcessed:(id)processed error:(id *)error;
+- (BOOL)obliterateNotificationInstructionsWithError:(id *)error;
+- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)kind error:(id *)error;
+- (BOOL)sendNotificationInstruction:(id)instruction criteria:(id)criteria error:(id *)error;
 - (HDNotificationInstructionManager)instructionManager;
-- (HDNotificationSyncClient)initWithProfile:(id)a3 clientIdentifier:(id)a4 queue:(id)a5;
-- (HDPendingNotificationInstructions)_pendingNotificationInstructionsForAction:(void *)a3 error:;
+- (HDNotificationSyncClient)initWithProfile:(id)profile clientIdentifier:(id)identifier queue:(id)queue;
+- (HDPendingNotificationInstructions)_pendingNotificationInstructionsForAction:(void *)action error:;
 - (id)diagnosticDescription;
-- (id)notificationHoldInstructionsWithError:(id *)a3;
+- (id)notificationHoldInstructionsWithError:(id *)error;
 - (void)_currentDate;
-- (void)fakeReceivedNotificationInstruction:(id)a3 sendingDeviceInfo:(id)a4 criteria:(id)a5 completion:(id)a6;
-- (void)notificationInstructionManager:(id)a3 didInsertNotificationInstruction:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)fakeReceivedNotificationInstruction:(id)instruction sendingDeviceInfo:(id)info criteria:(id)criteria completion:(id)completion;
+- (void)notificationInstructionManager:(id)manager didInsertNotificationInstruction:(id)instruction;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HDNotificationSyncClient
 
-- (HDNotificationSyncClient)initWithProfile:(id)a3 clientIdentifier:(id)a4 queue:(id)a5
+- (HDNotificationSyncClient)initWithProfile:(id)profile clientIdentifier:(id)identifier queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = HDNotificationSyncClient;
   v11 = [(HDNotificationSyncClient *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_profile, profileCopy);
+    v13 = [identifierCopy copy];
     clientIdentifier = v12->_clientIdentifier;
     v12->_clientIdentifier = v13;
 
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeStrong(&v12->_queue, queue);
     v12->_lock._os_unfair_lock_opaque = 0;
     v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
     lock_messageIdentifiersInFlight = v12->_lock_messageIdentifiersInFlight;
     v12->_lock_messageIdentifiersInFlight = v15;
 
-    [v8 registerProfileReadyObserver:v12 queue:v12->_queue];
-    v17 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v17 addObject:v12];
+    [profileCopy registerProfileReadyObserver:v12 queue:v12->_queue];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v12];
   }
 
   return v12;
@@ -50,37 +50,37 @@
 - (HDNotificationInstructionManager)instructionManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained notificationSyncManager];
-  v6 = [v5 notificationInstructionManager];
+  notificationSyncManager = [WeakRetained notificationSyncManager];
+  notificationInstructionManager = [notificationSyncManager notificationInstructionManager];
 
-  if (!v6)
+  if (!notificationInstructionManager)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDNotificationSyncClient.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"manager"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDNotificationSyncClient.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"manager"}];
   }
 
-  return v6;
+  return notificationInstructionManager;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_lock_delegate, v4);
+  objc_storeWeak(&self->_lock_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = [(HDNotificationSyncClient *)self instructionManager];
-  [v4 registerObserver:self forClientIdentifier:self->_clientIdentifier queue:self->_queue];
+  instructionManager = [(HDNotificationSyncClient *)self instructionManager];
+  [instructionManager registerObserver:self forClientIdentifier:self->_clientIdentifier queue:self->_queue];
 }
 
-- (void)notificationInstructionManager:(id)a3 didInsertNotificationInstruction:(id)a4
+- (void)notificationInstructionManager:(id)manager didInsertNotificationInstruction:(id)instruction
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  instructionCopy = instruction;
   dispatch_assert_queue_V2(self->_queue);
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_lock_delegate);
@@ -95,19 +95,19 @@
     *&v11[12] = 2114;
     *&v11[14] = WeakRetained;
     *&v11[22] = 2114;
-    v12 = v5;
+    v12 = instructionCopy;
     v9 = *&v11[4];
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying delegate %{public}@ of new instruction %{public}@", v11, 0x20u);
   }
 
-  [WeakRetained notificationSyncClient:self didReceiveInstructionWithAction:{objc_msgSend(v5, "action", *v11, *&v11[16], v12)}];
+  [WeakRetained notificationSyncClient:self didReceiveInstructionWithAction:{objc_msgSend(instructionCopy, "action", *v11, *&v11[16], v12)}];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HDPendingNotificationInstructions)_pendingNotificationInstructionsForAction:(void *)a3 error:
+- (HDPendingNotificationInstructions)_pendingNotificationInstructionsForAction:(void *)action error:
 {
-  if (a1)
+  if (self)
   {
     v26 = 0;
     v27 = &v26;
@@ -115,37 +115,37 @@
     v29 = __Block_byref_object_copy__18;
     v30 = __Block_byref_object_dispose__18;
     v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v6 = [a1 instructionManager];
-    v7 = *(a1 + 16);
+    instructionManager = [self instructionManager];
+    v7 = *(self + 16);
     v24[4] = &v26;
     v25 = 0;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __76__HDNotificationSyncClient__pendingNotificationInstructionsForAction_error___block_invoke;
     v24[3] = &unk_278615A98;
-    v8 = [v6 enumerateValidNotificationInstructionsForClientIdentifier:v7 action:a2 error:&v25 enumerationBlock:v24];
+    v8 = [instructionManager enumerateValidNotificationInstructionsForClientIdentifier:v7 action:a2 error:&v25 enumerationBlock:v24];
     v9 = v25;
 
     if (v8)
     {
-      os_unfair_lock_lock((a1 + 32));
+      os_unfair_lock_lock((self + 32));
       v10 = v27[5];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __76__HDNotificationSyncClient__pendingNotificationInstructionsForAction_error___block_invoke_2;
       v23[3] = &unk_278615AC0;
-      v23[4] = a1;
+      v23[4] = self;
       v11 = [v10 hk_filter:v23];
       v12 = objc_alloc(MEMORY[0x277CBEB98]);
-      v13 = [v11 allKeys];
-      v14 = [v12 initWithArray:v13];
+      allKeys = [v11 allKeys];
+      v14 = [v12 initWithArray:allKeys];
 
       v15 = objc_alloc(MEMORY[0x277CBEB98]);
-      v16 = [v11 allValues];
-      v17 = [v15 initWithArray:v16];
+      allValues = [v11 allValues];
+      v17 = [v15 initWithArray:allValues];
 
-      [*(a1 + 48) unionSet:v14];
-      os_unfair_lock_unlock((a1 + 32));
+      [*(self + 48) unionSet:v14];
+      os_unfair_lock_unlock((self + 32));
       v18 = [[HDPendingNotificationInstructions alloc] initWithAction:a2 instructions:v17];
     }
 
@@ -155,10 +155,10 @@
       v20 = v19;
       if (v19)
       {
-        if (a3)
+        if (action)
         {
           v21 = v19;
-          *a3 = v20;
+          *action = v20;
         }
 
         else
@@ -196,27 +196,27 @@ uint64_t __76__HDNotificationSyncClient__pendingNotificationInstructionsForActio
   return 1;
 }
 
-- (BOOL)markPendingNotificationInstructionsAsProcessed:(id)a3 error:(id *)a4
+- (BOOL)markPendingNotificationInstructionsAsProcessed:(id)processed error:(id *)error
 {
-  v7 = a3;
-  if ([v7 action] == 2)
+  processedCopy = processed;
+  if ([processedCopy action] == 2)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HDNotificationSyncClient.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"pendingNotificationInstructions.action != HKNotificationInstructionActionHold"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDNotificationSyncClient.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"pendingNotificationInstructions.action != HKNotificationInstructionActionHold"}];
   }
 
-  v8 = [(HDNotificationSyncClient *)self instructionManager];
-  v9 = [v7 messageIdentifiers];
+  instructionManager = [(HDNotificationSyncClient *)self instructionManager];
+  messageIdentifiers = [processedCopy messageIdentifiers];
   v18 = 0;
-  v10 = [v8 invalidateNotificationInstructionsWithMessageIdentifiers:v9 error:&v18];
+  v10 = [instructionManager invalidateNotificationInstructionsWithMessageIdentifiers:messageIdentifiers error:&v18];
   v11 = v18;
 
   if (v10)
   {
     os_unfair_lock_lock(&self->_lock);
     lock_messageIdentifiersInFlight = self->_lock_messageIdentifiersInFlight;
-    v13 = [v7 messageIdentifiers];
-    [(NSMutableSet *)lock_messageIdentifiersInFlight minusSet:v13];
+    messageIdentifiers2 = [processedCopy messageIdentifiers];
+    [(NSMutableSet *)lock_messageIdentifiersInFlight minusSet:messageIdentifiers2];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -226,10 +226,10 @@ uint64_t __76__HDNotificationSyncClient__pendingNotificationInstructionsForActio
     v14 = v11;
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v15 = v14;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -242,7 +242,7 @@ uint64_t __76__HDNotificationSyncClient__pendingNotificationInstructionsForActio
   return v10;
 }
 
-- (id)notificationHoldInstructionsWithError:(id *)a3
+- (id)notificationHoldInstructionsWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -250,16 +250,16 @@ uint64_t __76__HDNotificationSyncClient__pendingNotificationInstructionsForActio
   v13 = __Block_byref_object_copy__18;
   v14 = __Block_byref_object_dispose__18;
   v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = [(HDNotificationSyncClient *)self instructionManager];
+  instructionManager = [(HDNotificationSyncClient *)self instructionManager];
   clientIdentifier = self->_clientIdentifier;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__HDNotificationSyncClient_notificationHoldInstructionsWithError___block_invoke;
   v9[3] = &unk_278615A98;
   v9[4] = &v10;
-  LODWORD(a3) = [v5 enumerateValidNotificationInstructionsForClientIdentifier:clientIdentifier action:2 error:a3 enumerationBlock:v9];
+  LODWORD(error) = [instructionManager enumerateValidNotificationInstructionsForClientIdentifier:clientIdentifier action:2 error:error enumerationBlock:v9];
 
-  if (a3)
+  if (error)
   {
     v7 = [v11[5] copy];
   }
@@ -283,101 +283,101 @@ uint64_t __66__HDNotificationSyncClient_notificationHoldInstructionsWithError___
   return 1;
 }
 
-- (BOOL)sendNotificationInstruction:(id)a3 criteria:(id)a4 error:(id *)a5
+- (BOOL)sendNotificationInstruction:(id)instruction criteria:(id)criteria error:(id *)error
 {
   v7 = MEMORY[0x277CCDD30];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedBehavior];
+  criteriaCopy = criteria;
+  instructionCopy = instruction;
+  sharedBehavior = [v7 sharedBehavior];
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v10 currentDeviceDisplayName];
-  v13 = [v10 currentDeviceProductType];
-  v14 = [v10 currentOSBuild];
-  v25 = [v11 stringWithFormat:@"%@%@;%@", v12, v13, v14];;
+  currentDeviceDisplayName = [sharedBehavior currentDeviceDisplayName];
+  currentDeviceProductType = [sharedBehavior currentDeviceProductType];
+  currentOSBuild = [sharedBehavior currentOSBuild];
+  v25 = [v11 stringWithFormat:@"%@%@;%@", currentDeviceDisplayName, currentDeviceProductType, currentOSBuild];;
 
   v15 = [HDNotificationInstructionMessage alloc];
-  v16 = [(HDNotificationSyncClient *)self _currentDate];
-  v17 = [v9 action];
+  _currentDate = [(HDNotificationSyncClient *)self _currentDate];
+  action = [instructionCopy action];
   clientIdentifier = self->_clientIdentifier;
-  v19 = [v9 categoryIdentifier];
-  v20 = [v9 expirationDate];
+  categoryIdentifier = [instructionCopy categoryIdentifier];
+  expirationDate = [instructionCopy expirationDate];
 
-  v21 = [(HDNotificationInstructionMessage *)v15 initWithCreationDate:v16 sendingDeviceInfo:v25 action:v17 clientIdentifier:clientIdentifier categoryIdentifier:v19 expirationDate:v20 criteria:v8];
+  v21 = [(HDNotificationInstructionMessage *)v15 initWithCreationDate:_currentDate sendingDeviceInfo:v25 action:action clientIdentifier:clientIdentifier categoryIdentifier:categoryIdentifier expirationDate:expirationDate criteria:criteriaCopy];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v23 = [WeakRetained notificationSyncManager];
-  LOBYTE(v20) = [v23 sendNotificationInstructionMessage:v21 error:a5];
+  notificationSyncManager = [WeakRetained notificationSyncManager];
+  LOBYTE(expirationDate) = [notificationSyncManager sendNotificationInstructionMessage:v21 error:error];
 
-  return v20;
+  return expirationDate;
 }
 
 - (void)_currentDate
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[7];
+    v2 = self[7];
     if (v2)
     {
-      a1 = v2;
+      self = v2;
     }
 
     else
     {
-      a1 = [MEMORY[0x277CBEAA8] date];
+      self = [MEMORY[0x277CBEAA8] date];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)a3 error:(id *)a4
+- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)kind error:(id *)error
 {
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v7 currentDeviceProductType];
-  v10 = [v7 currentOSBuild];
-  v11 = [v8 stringWithFormat:@"%@%@", v9, v10];;
+  currentDeviceProductType = [mEMORY[0x277CCDD30] currentDeviceProductType];
+  currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
+  v11 = [v8 stringWithFormat:@"%@%@", currentDeviceProductType, currentOSBuild];;
 
-  v12 = [(HDNotificationSyncClient *)self _currentDate];
-  v13 = [v12 dateByAddingTimeInterval:2592000.0];
+  _currentDate = [(HDNotificationSyncClient *)self _currentDate];
+  v13 = [_currentDate dateByAddingTimeInterval:2592000.0];
 
   v14 = [HDNotificationInstructionMessage alloc];
-  v15 = [(HDNotificationSyncClient *)self _currentDate];
-  v16 = [(HDNotificationInstructionMessage *)v14 initWithCreationDate:v15 sendingDeviceInfo:v11 action:3 clientIdentifier:self->_clientIdentifier categoryIdentifier:@"DataAvailableOnNewDevice" expirationDate:v13 criteria:0];
+  _currentDate2 = [(HDNotificationSyncClient *)self _currentDate];
+  v16 = [(HDNotificationInstructionMessage *)v14 initWithCreationDate:_currentDate2 sendingDeviceInfo:v11 action:3 clientIdentifier:self->_clientIdentifier categoryIdentifier:@"DataAvailableOnNewDevice" expirationDate:v13 criteria:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v18 = [WeakRetained notificationSyncManager];
-  v19 = [v18 sendNotificationInstructionMessage:v16 error:a4];
+  notificationSyncManager = [WeakRetained notificationSyncManager];
+  v19 = [notificationSyncManager sendNotificationInstructionMessage:v16 error:error];
 
   v20 = objc_loadWeakRetained(&self->_profile);
-  v21 = [v20 daemon];
-  v22 = [v21 healthAppNewDeviceNotificationService];
-  LOBYTE(a4) = [v22 sendNewDeviceNotificationWithMessageKind:a3 error:a4];
+  daemon = [v20 daemon];
+  healthAppNewDeviceNotificationService = [daemon healthAppNewDeviceNotificationService];
+  LOBYTE(error) = [healthAppNewDeviceNotificationService sendNewDeviceNotificationWithMessageKind:kind error:error];
 
-  return (a4 | v19) & 1;
+  return (error | v19) & 1;
 }
 
-- (void)fakeReceivedNotificationInstruction:(id)a3 sendingDeviceInfo:(id)a4 criteria:(id)a5 completion:(id)a6
+- (void)fakeReceivedNotificationInstruction:(id)instruction sendingDeviceInfo:(id)info criteria:(id)criteria completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v30 = a6;
-  v28 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  criteriaCopy = criteria;
+  infoCopy = info;
+  instructionCopy = instruction;
   v27 = [HDNotificationInstruction alloc];
-  v29 = [MEMORY[0x277CCAD78] UUID];
-  v26 = [v29 UUIDString];
-  v12 = [(HDNotificationSyncClient *)self _currentDate];
-  v13 = [(HDNotificationSyncClient *)self _currentDate];
-  v14 = [(HDNotificationSyncClient *)self _currentDate];
-  v15 = [v11 action];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  _currentDate = [(HDNotificationSyncClient *)self _currentDate];
+  _currentDate2 = [(HDNotificationSyncClient *)self _currentDate];
+  _currentDate3 = [(HDNotificationSyncClient *)self _currentDate];
+  action = [instructionCopy action];
   clientIdentifier = self->_clientIdentifier;
-  v17 = [v11 categoryIdentifier];
-  v18 = [v11 expirationDate];
+  categoryIdentifier = [instructionCopy categoryIdentifier];
+  expirationDate = [instructionCopy expirationDate];
 
   LOBYTE(v25) = 0;
-  v19 = [(HDNotificationInstruction *)v27 initWithMessageIdentifier:v26 creationDate:v12 receivedDate:v13 modificationDate:v14 sendingDeviceName:v10 sendingDeviceInfo:v10 action:v15 clientIdentifier:clientIdentifier categoryIdentifier:v17 expirationDate:v18 criteria:v28 isInvalid:v25];
+  v19 = [(HDNotificationInstruction *)v27 initWithMessageIdentifier:uUIDString creationDate:_currentDate receivedDate:_currentDate2 modificationDate:_currentDate3 sendingDeviceName:infoCopy sendingDeviceInfo:infoCopy action:action clientIdentifier:clientIdentifier categoryIdentifier:categoryIdentifier expirationDate:expirationDate criteria:criteriaCopy isInvalid:v25];
 
   _HKInitializeLogging();
   v20 = *MEMORY[0x277CCC300];
@@ -392,18 +392,18 @@ uint64_t __66__HDNotificationSyncClient_notificationHoldInstructionsWithError___
     _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "[%{public}@] Faking received instruction: %{public}@", buf, 0x16u);
   }
 
-  v21 = [(HDNotificationSyncClient *)self instructionManager];
-  [v21 insertNotificationInstruction:v19 completion:v30];
+  instructionManager = [(HDNotificationSyncClient *)self instructionManager];
+  [instructionManager insertNotificationInstruction:v19 completion:completionCopy];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)obliterateNotificationInstructionsWithError:(id *)a3
+- (BOOL)obliterateNotificationInstructionsWithError:(id *)error
 {
-  v4 = [(HDNotificationSyncClient *)self instructionManager];
-  LOBYTE(a3) = [v4 obliterateNotificationInstructionsWithError:a3];
+  instructionManager = [(HDNotificationSyncClient *)self instructionManager];
+  LOBYTE(error) = [instructionManager obliterateNotificationInstructionsWithError:error];
 
-  return a3;
+  return error;
 }
 
 - (id)diagnosticDescription

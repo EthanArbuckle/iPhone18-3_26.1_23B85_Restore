@@ -1,52 +1,52 @@
 @interface HDRespiratoryProfileExtension
 - (HDProfile)profile;
-- (HDRespiratoryProfileExtension)initWithProfile:(id)a3;
-- (HDRespiratoryProfileExtension)initWithProfile:(id)a3 featureAvailabilityManager:(id)a4 companionAnalysisAvailabilityManager:(id)a5 ageGatingDefaults:(id)a6;
+- (HDRespiratoryProfileExtension)initWithProfile:(id)profile;
+- (HDRespiratoryProfileExtension)initWithProfile:(id)profile featureAvailabilityManager:(id)manager companionAnalysisAvailabilityManager:(id)availabilityManager ageGatingDefaults:(id)defaults;
 - (id)diagnosticDescription;
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3;
-- (id)oxygenSaturationSessionWithDelegate:(id)a3 queue:(id)a4;
-- (void)_setupOrResetSettingsIfNeededWithFeatureAvailabilityManager:(id)a3;
-- (void)_setupSettingsWithProfile:(id)a3;
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier;
+- (id)oxygenSaturationSessionWithDelegate:(id)delegate queue:(id)queue;
+- (void)_setupOrResetSettingsIfNeededWithFeatureAvailabilityManager:(id)manager;
+- (void)_setupSettingsWithProfile:(id)profile;
 - (void)_updateBackgroundRecordingSettings;
 - (void)dealloc;
-- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)a3;
-- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)a3;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)availability;
+- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)available;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDRespiratoryProfileExtension
 
-- (HDRespiratoryProfileExtension)initWithProfile:(id)a3
+- (HDRespiratoryProfileExtension)initWithProfile:(id)profile
 {
-  v4 = a3;
-  v5 = HDRPOxygenSaturationRecordingFeatureAvailabilityProvider(v4);
-  v6 = HDRPOxygenSaturationRecordingCompanionAnalysisFeatureAvailabilityProvider(v4);
+  profileCopy = profile;
+  v5 = HDRPOxygenSaturationRecordingFeatureAvailabilityProvider(profileCopy);
+  v6 = HDRPOxygenSaturationRecordingCompanionAnalysisFeatureAvailabilityProvider(profileCopy);
   v7 = objc_alloc(MEMORY[0x277CBEBD0]);
   v8 = [v7 initWithSuiteName:*MEMORY[0x277CCE228]];
-  v9 = [(HDRespiratoryProfileExtension *)self initWithProfile:v4 featureAvailabilityManager:v5 companionAnalysisAvailabilityManager:v6 ageGatingDefaults:v8];
+  v9 = [(HDRespiratoryProfileExtension *)self initWithProfile:profileCopy featureAvailabilityManager:v5 companionAnalysisAvailabilityManager:v6 ageGatingDefaults:v8];
 
   return v9;
 }
 
-- (HDRespiratoryProfileExtension)initWithProfile:(id)a3 featureAvailabilityManager:(id)a4 companionAnalysisAvailabilityManager:(id)a5 ageGatingDefaults:(id)a6
+- (HDRespiratoryProfileExtension)initWithProfile:(id)profile featureAvailabilityManager:(id)manager companionAnalysisAvailabilityManager:(id)availabilityManager ageGatingDefaults:(id)defaults
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  managerCopy = manager;
+  availabilityManagerCopy = availabilityManager;
+  defaultsCopy = defaults;
   v38.receiver = self;
   v38.super_class = HDRespiratoryProfileExtension;
   v14 = [(HDRespiratoryProfileExtension *)&v38 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    objc_storeStrong(&v15->_featureAvailabilityManager, a4);
-    objc_storeStrong(&v15->_companionAnalysisFeatureAvailabilityManager, a5);
-    v16 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v15->_companionAnalysisFeatureAvailabilityManager healthDataSource:v10];
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_featureAvailabilityManager, manager);
+    objc_storeStrong(&v15->_companionAnalysisFeatureAvailabilityManager, availabilityManager);
+    v16 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v15->_companionAnalysisFeatureAvailabilityManager healthDataSource:profileCopy];
     companionAnalysisFeatureStatusManager = v15->_companionAnalysisFeatureStatusManager;
     v15->_companionAnalysisFeatureStatusManager = v16;
 
@@ -65,24 +65,24 @@
       _os_log_impl(&dword_262086000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Plugin loaded", buf, 0xCu);
     }
 
-    objc_storeStrong(&v15->_ageGatingDefaults, a6);
-    v23 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v24 = [v23 isCompanionCapable];
+    objc_storeStrong(&v15->_ageGatingDefaults, defaults);
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isCompanionCapable = [mEMORY[0x277CCDD30] isCompanionCapable];
 
-    if (v24)
+    if (isCompanionCapable)
     {
       v25 = objc_alloc(MEMORY[0x277D105D8]);
       v26 = HKLogRespiratoryCategory();
-      v27 = [v25 initWithProfile:v10 featureAvailabilityExtension:v11 loggingCategory:v26];
+      v27 = [v25 initWithProfile:profileCopy featureAvailabilityExtension:managerCopy loggingCategory:v26];
       featureDeliveryManager = v15->_featureDeliveryManager;
       v15->_featureDeliveryManager = v27;
 
-      v29 = [[HDRPRespiratoryDailyAnalytics alloc] initWithProfile:v10 featureAvailabilityProvider:v15->_featureAvailabilityManager];
+      v29 = [[HDRPRespiratoryDailyAnalytics alloc] initWithProfile:profileCopy featureAvailabilityProvider:v15->_featureAvailabilityManager];
       dailyAnalytics = v15->_dailyAnalytics;
       v15->_dailyAnalytics = v29;
 
-      v31 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v15->_featureAvailabilityManager healthDataSource:v10];
-      v32 = [[HDRPOxygenSaturationAnalyzer alloc] initWithProfile:v10 oxygenSaturationFeatureStatusProvider:v31 oxygenSaturationCompanionAnalysisFeatureStatusProvider:v15->_companionAnalysisFeatureStatusManager];
+      v31 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v15->_featureAvailabilityManager healthDataSource:profileCopy];
+      v32 = [[HDRPOxygenSaturationAnalyzer alloc] initWithProfile:profileCopy oxygenSaturationFeatureStatusProvider:v31 oxygenSaturationCompanionAnalysisFeatureStatusProvider:v15->_companionAnalysisFeatureStatusManager];
       oxygenSaturationAnalyzer = v15->_oxygenSaturationAnalyzer;
       v15->_oxygenSaturationAnalyzer = v32;
     }
@@ -90,8 +90,8 @@
     WeakRetained = objc_loadWeakRetained(&v15->_profile);
     [WeakRetained registerProfileReadyObserver:v15 queue:0];
 
-    v35 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v35 addObject:v15];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v15];
   }
 
   v36 = *MEMORY[0x277D85DE8];
@@ -106,12 +106,12 @@
   [(HDRespiratoryProfileExtension *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:*MEMORY[0x277CCE250]])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:*MEMORY[0x277CCE250]])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -119,8 +119,8 @@
     block[2] = __80__HDRespiratoryProfileExtension_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_279B0E2F8;
     block[4] = self;
-    v16 = v10;
-    v17 = v12;
+    v16 = pathCopy;
+    v17 = changeCopy;
     dispatch_async(queue, block);
   }
 
@@ -128,7 +128,7 @@
   {
     v14.receiver = self;
     v14.super_class = HDRespiratoryProfileExtension;
-    [(HDRespiratoryProfileExtension *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HDRespiratoryProfileExtension *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -163,20 +163,20 @@ uint64_t __80__HDRespiratoryProfileExtension_observeValueForKeyPath_ofObject_cha
   return result;
 }
 
-- (id)oxygenSaturationSessionWithDelegate:(id)a3 queue:(id)a4
+- (id)oxygenSaturationSessionWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDRespiratoryProfileExtension *)self unitTesting_healthLiteSessionWithDelegateHandler];
-  v9 = v8;
-  if (v8)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  unitTesting_healthLiteSessionWithDelegateHandler = [(HDRespiratoryProfileExtension *)self unitTesting_healthLiteSessionWithDelegateHandler];
+  v9 = unitTesting_healthLiteSessionWithDelegateHandler;
+  if (unitTesting_healthLiteSessionWithDelegateHandler)
   {
-    v10 = (*(v8 + 16))(v8, v6, v7);
+    v10 = (*(unitTesting_healthLiteSessionWithDelegateHandler + 16))(unitTesting_healthLiteSessionWithDelegateHandler, delegateCopy, queueCopy);
   }
 
   else
   {
-    v10 = [[HLOxygenSaturationSession alloc] initWithDelegate:v6 onQueue:v7];
+    v10 = [[HLOxygenSaturationSession alloc] initWithDelegate:delegateCopy onQueue:queueCopy];
   }
 
   v11 = v10;
@@ -184,15 +184,15 @@ uint64_t __80__HDRespiratoryProfileExtension_observeValueForKeyPath_ofObject_cha
   return v11;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v5 = [v4 isCompanionCapable];
+  readyCopy = ready;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isCompanionCapable = [mEMORY[0x277CCDD30] isCompanionCapable];
 
-  if (v5)
+  if (isCompanionCapable)
   {
-    [(HDRespiratoryProfileExtension *)self _setupSettingsWithProfile:v6];
+    [(HDRespiratoryProfileExtension *)self _setupSettingsWithProfile:readyCopy];
     [(HDRespiratoryProfileExtension *)self _updateBackgroundRecordingSettings];
   }
 
@@ -200,10 +200,10 @@ uint64_t __80__HDRespiratoryProfileExtension_observeValueForKeyPath_ofObject_cha
   [(HDRespiratoryProfileExtension *)self startObservingAgeGatingDefaults];
 }
 
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277CCC0B0]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CCC0B0]])
   {
     v5 = 8;
 LABEL_5:
@@ -211,7 +211,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277CCC0B8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CCC0B8]])
   {
     v5 = 48;
     goto LABEL_5;
@@ -223,26 +223,26 @@ LABEL_7:
   return v6;
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogRespiratoryCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_262086000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received notice of onboarding completion change", &v7, 0xCu);
   }
 
   [(HDRespiratoryProfileExtension *)self _updateBackgroundRecordingSettings];
-  [(HDRespiratoryProfileExtension *)self _setupOrResetSettingsIfNeededWithFeatureAvailabilityManager:v4];
+  [(HDRespiratoryProfileExtension *)self _setupOrResetSettingsIfNeededWithFeatureAvailabilityManager:completionCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)a3
+- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)available
 {
   v8 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -250,7 +250,7 @@ LABEL_7:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_262086000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received notice of onboarding completion data becoming available", &v6, 0xCu);
   }
 
@@ -258,7 +258,7 @@ LABEL_7:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)a3
+- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)availability
 {
   v8 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -266,7 +266,7 @@ LABEL_7:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_262086000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received notice of region list change", &v6, 0xCu);
   }
 
@@ -274,27 +274,27 @@ LABEL_7:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupSettingsWithProfile:(id)a3
+- (void)_setupSettingsWithProfile:(id)profile
 {
-  v8 = [MEMORY[0x277CBEBD0] hkrp_respiratoryDefaults];
+  hkrp_respiratoryDefaults = [MEMORY[0x277CBEBD0] hkrp_respiratoryDefaults];
   v4 = objc_alloc(MEMORY[0x277D46BB0]);
   v5 = [v4 initWithUserDefaultsDomain:*MEMORY[0x277CCCD20]];
-  v6 = [objc_alloc(MEMORY[0x277D46BA8]) initWithUserDefaults:v8 userDefaultsSyncProvider:v5 companionAnalysisFeatureStatusManager:self->_companionAnalysisFeatureStatusManager];
+  v6 = [objc_alloc(MEMORY[0x277D46BA8]) initWithUserDefaults:hkrp_respiratoryDefaults userDefaultsSyncProvider:v5 companionAnalysisFeatureStatusManager:self->_companionAnalysisFeatureStatusManager];
   settings = self->_settings;
   self->_settings = v6;
 }
 
-- (void)_setupOrResetSettingsIfNeededWithFeatureAvailabilityManager:(id)a3
+- (void)_setupOrResetSettingsIfNeededWithFeatureAvailabilityManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
   v17 = 0;
-  v4 = [a3 featureOnboardingRecordWithError:&v17];
+  v4 = [manager featureOnboardingRecordWithError:&v17];
   v5 = v17;
   if (!v4)
   {
     _HKInitializeLogging();
-    v11 = HKLogRespiratoryCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    mEMORY[0x277CCDD30]2 = HKLogRespiratoryCategory();
+    if (os_log_type_enabled(mEMORY[0x277CCDD30]2, OS_LOG_TYPE_ERROR))
     {
       [HDRespiratoryProfileExtension _setupOrResetSettingsIfNeededWithFeatureAvailabilityManager:];
     }
@@ -302,12 +302,12 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if ([v6 isAppleInternalInstall])
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if ([mEMORY[0x277CCDD30] isAppleInternalInstall])
   {
-    v7 = [v4 onboardingState];
+    onboardingState = [v4 onboardingState];
 
-    if (v7 == 1)
+    if (onboardingState == 1)
     {
       _HKInitializeLogging();
       v8 = HKLogRespiratoryCategory();
@@ -329,17 +329,17 @@ LABEL_7:
   {
   }
 
-  v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if (![v11 isCompanionCapable])
+  mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+  if (![mEMORY[0x277CCDD30]2 isCompanionCapable])
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v12 = [v4 onboardingState];
+  onboardingState2 = [v4 onboardingState];
 
-  if (v12 == 2)
+  if (onboardingState2 == 2)
   {
     _HKInitializeLogging();
     v13 = HKLogRespiratoryCategory();

@@ -1,21 +1,21 @@
 @interface _UITextAttachmentInteractionHandler
-- (_UITextAttachmentInteractionHandler)initWithAttachmentItem:(id)a3 textContentView:(id)a4;
+- (_UITextAttachmentInteractionHandler)initWithAttachmentItem:(id)item textContentView:(id)view;
 - (id)_defaultMenuForInteractableItem;
 @end
 
 @implementation _UITextAttachmentInteractionHandler
 
-- (_UITextAttachmentInteractionHandler)initWithAttachmentItem:(id)a3 textContentView:(id)a4
+- (_UITextAttachmentInteractionHandler)initWithAttachmentItem:(id)item textContentView:(id)view
 {
-  v6 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = _UITextAttachmentInteractionHandler;
-  v7 = [(_UITextItemInteractionHandler *)&v11 initWithItem:v6 textContentView:a4];
+  v7 = [(_UITextItemInteractionHandler *)&v11 initWithItem:itemCopy textContentView:view];
   if (v7)
   {
-    v8 = [v6 attachment];
+    attachment = [itemCopy attachment];
     textAttachment = v7->_textAttachment;
-    v7->_textAttachment = v8;
+    v7->_textAttachment = attachment;
   }
 
   return v7;
@@ -24,8 +24,8 @@
 - (id)_defaultMenuForInteractableItem
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v2 = [(NSTextAttachment *)self->_textAttachment image];
-  if (v2)
+  image = [(NSTextAttachment *)self->_textAttachment image];
+  if (image)
   {
     v14 = _UIKitBundle();
     v13 = [v14 localizedStringForKey:@"Copy Image" value:@"Copy Image" table:@"Localizable"];
@@ -34,7 +34,7 @@
     v17[1] = 3221225472;
     v17[2] = __70___UITextAttachmentInteractionHandler__defaultMenuForInteractableItem__block_invoke;
     v17[3] = &unk_1E70F4708;
-    v4 = v2;
+    v4 = image;
     v18 = v4;
     v5 = [UIAction actionWithTitle:v13 image:v3 identifier:0 handler:v17];
     v19[0] = v5;

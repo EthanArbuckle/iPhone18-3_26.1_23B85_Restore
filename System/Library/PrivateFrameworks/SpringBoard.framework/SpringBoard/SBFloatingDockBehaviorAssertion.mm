@@ -1,52 +1,52 @@
 @interface SBFloatingDockBehaviorAssertion
-- (SBFloatingDockBehaviorAssertion)initWithFloatingDockController:(id)a3 visibleProgress:(double)a4 animated:(BOOL)a5 gesturePossible:(BOOL)a6 atLevel:(unint64_t)a7 reason:(id)a8 withCompletion:(id)a9;
+- (SBFloatingDockBehaviorAssertion)initWithFloatingDockController:(id)controller visibleProgress:(double)progress animated:(BOOL)animated gesturePossible:(BOOL)possible atLevel:(unint64_t)level reason:(id)reason withCompletion:(id)completion;
 - (SBFloatingDockController)floatingDockController;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
-- (void)invalidateWithCompletion:(id)a3;
-- (void)modifyProgress:(double)a3 interactive:(BOOL)a4 completion:(id)a5;
+- (void)invalidateWithCompletion:(id)completion;
+- (void)modifyProgress:(double)progress interactive:(BOOL)interactive completion:(id)completion;
 @end
 
 @implementation SBFloatingDockBehaviorAssertion
 
-- (SBFloatingDockBehaviorAssertion)initWithFloatingDockController:(id)a3 visibleProgress:(double)a4 animated:(BOOL)a5 gesturePossible:(BOOL)a6 atLevel:(unint64_t)a7 reason:(id)a8 withCompletion:(id)a9
+- (SBFloatingDockBehaviorAssertion)initWithFloatingDockController:(id)controller visibleProgress:(double)progress animated:(BOOL)animated gesturePossible:(BOOL)possible atLevel:(unint64_t)level reason:(id)reason withCompletion:(id)completion
 {
-  v17 = a3;
-  v18 = a8;
-  v19 = a9;
+  controllerCopy = controller;
+  reasonCopy = reason;
+  completionCopy = completion;
   v26.receiver = self;
   v26.super_class = SBFloatingDockBehaviorAssertion;
   v20 = [(SBFloatingDockBehaviorAssertion *)&v26 init];
   if (v20)
   {
-    if (a7 >= 0xE)
+    if (level >= 0xE)
     {
       [SBFloatingDockBehaviorAssertion initWithFloatingDockController:a2 visibleProgress:v20 animated:? gesturePossible:? atLevel:? reason:? withCompletion:?];
-      if (v18)
+      if (reasonCopy)
       {
         goto LABEL_4;
       }
     }
 
-    else if (v18)
+    else if (reasonCopy)
     {
 LABEL_4:
-      v20->_progress = a4;
-      v20->_level = a7;
-      v21 = [v18 copy];
+      v20->_progress = progress;
+      v20->_level = level;
+      v21 = [reasonCopy copy];
       reason = v20->_reason;
       v20->_reason = v21;
 
-      v23 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       timestamp = v20->_timestamp;
-      v20->_timestamp = v23;
+      v20->_timestamp = date;
 
-      v20->_gesturePossible = a6;
-      objc_storeWeak(&v20->_floatingDockController, v17);
-      v20->_animated = a5;
-      [v17 _addFloatingDockBehaviorAssertion:v20 withCompletion:v19];
+      v20->_gesturePossible = possible;
+      objc_storeWeak(&v20->_floatingDockController, controllerCopy);
+      v20->_animated = animated;
+      [controllerCopy _addFloatingDockBehaviorAssertion:v20 withCompletion:completionCopy];
       goto LABEL_5;
     }
 
@@ -67,53 +67,53 @@ LABEL_5:
   [(SBFloatingDockBehaviorAssertion *)&v3 dealloc];
 }
 
-- (void)invalidateWithCompletion:(id)a3
+- (void)invalidateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockBehaviorAssertion *)self floatingDockController];
-  [v5 _removeFloatingDockBehaviorAssertion:self withCompletion:v4];
+  completionCopy = completion;
+  floatingDockController = [(SBFloatingDockBehaviorAssertion *)self floatingDockController];
+  [floatingDockController _removeFloatingDockBehaviorAssertion:self withCompletion:completionCopy];
 }
 
-- (void)modifyProgress:(double)a3 interactive:(BOOL)a4 completion:(id)a5
+- (void)modifyProgress:(double)progress interactive:(BOOL)interactive completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  interactiveCopy = interactive;
+  completionCopy = completion;
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_progress = a3;
-    v8 = [(SBFloatingDockBehaviorAssertion *)self floatingDockController];
-    [v8 _updateFloatingDockBehaviorAssertionsInteractive:v5 completion:v9];
+    self->_progress = progress;
+    floatingDockController = [(SBFloatingDockBehaviorAssertion *)self floatingDockController];
+    [floatingDockController _updateFloatingDockBehaviorAssertionsInteractive:interactiveCopy completion:completionCopy];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBFloatingDockBehaviorAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFloatingDockBehaviorAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFloatingDockBehaviorAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFloatingDockBehaviorAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockBehaviorAssertion *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBFloatingDockBehaviorAssertion *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__SBFloatingDockBehaviorAssertion_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

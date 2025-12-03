@@ -1,58 +1,58 @@
 @interface FeatureRequestHandler
 - (_TtC25CloudSubscriptionFeatures21FeatureRequestHandler)init;
-- (void)clearCFUWithId:(id)a3 completion:(id)a4;
+- (void)clearCFUWithId:(id)id completion:(id)completion;
 - (void)clearCacheAndNotify;
 - (void)clearTicketCacheAndNotify;
-- (void)getFeatureEligibilityFor:(id)a3 bundleID:(id)a4 completion:(id)a5;
-- (void)getTicketForFeature:(id)a3 completion:(id)a4;
-- (void)getTicketStatusForFeature:(id)a3 completion:(id)a4;
-- (void)getTicketStatusFromCacheForFeature:(id)a3 completion:(id)a4;
-- (void)gmOptInToggleWithCompletion:(id)a3;
-- (void)performInternalValidationForFeature:(id)a3 completion:(id)a4;
-- (void)postCFUIfEligibleWithFeature:(id)a3 completion:(id)a4;
-- (void)requestFeatureWithId:(id)a3 ignoreCache:(BOOL)a4 allowStale:(BOOL)a5 completion:(id)a6;
-- (void)requestGeoClassificationFor:(id)a3 bundleID:(id)a4 altDSID:(id)a5 ignoreCache:(BOOL)a6 completion:(id)a7;
+- (void)getFeatureEligibilityFor:(id)for bundleID:(id)d completion:(id)completion;
+- (void)getTicketForFeature:(id)feature completion:(id)completion;
+- (void)getTicketStatusForFeature:(id)feature completion:(id)completion;
+- (void)getTicketStatusFromCacheForFeature:(id)feature completion:(id)completion;
+- (void)gmOptInToggleWithCompletion:(id)completion;
+- (void)performInternalValidationForFeature:(id)feature completion:(id)completion;
+- (void)postCFUIfEligibleWithFeature:(id)feature completion:(id)completion;
+- (void)requestFeatureWithId:(id)id ignoreCache:(BOOL)cache allowStale:(BOOL)stale completion:(id)completion;
+- (void)requestGeoClassificationFor:(id)for bundleID:(id)d altDSID:(id)iD ignoreCache:(BOOL)cache completion:(id)completion;
 - (void)revalidateCFU;
-- (void)signupForWaitlistWithFeatureID:(id)a3 completion:(id)a4;
-- (void)waitlistStatusWithFeatureID:(id)a3 completion:(id)a4;
+- (void)signupForWaitlistWithFeatureID:(id)d completion:(id)completion;
+- (void)waitlistStatusWithFeatureID:(id)d completion:(id)completion;
 @end
 
 @implementation FeatureRequestHandler
 
-- (void)requestFeatureWithId:(id)a3 ignoreCache:(BOOL)a4 allowStale:(BOOL)a5 completion:(id)a6
+- (void)requestFeatureWithId:(id)id ignoreCache:(BOOL)cache allowStale:(BOOL)stale completion:(id)completion
 {
-  v7 = a4;
-  v9 = _Block_copy(a6);
+  cacheCopy = cache;
+  v9 = _Block_copy(completion);
   v10 = sub_1DF564944();
   v12 = v11;
   v13 = swift_allocObject();
   *(v13 + 16) = v9;
-  v14 = self;
-  sub_1DF487318(v10, v12, v7, a5, 1, sub_1DF48C8FC, v13);
+  selfCopy = self;
+  sub_1DF487318(v10, v12, cacheCopy, stale, 1, sub_1DF48C8FC, v13);
 }
 
-- (void)getFeatureEligibilityFor:(id)a3 bundleID:(id)a4 completion:(id)a5
+- (void)getFeatureEligibilityFor:(id)for bundleID:(id)d completion:(id)completion
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   v7 = sub_1DF564944();
   v9 = v8;
   v10 = sub_1DF564944();
   v12 = v11;
   v13 = swift_allocObject();
   *(v13 + 16) = v6;
-  v14 = self;
+  selfCopy = self;
   sub_1DF492558(v7, v9, v10, v12, sub_1DF4D8568, v13);
 }
 
 - (void)clearCacheAndNotify
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DF4CBC30();
 }
 
-- (void)requestGeoClassificationFor:(id)a3 bundleID:(id)a4 altDSID:(id)a5 ignoreCache:(BOOL)a6 completion:(id)a7
+- (void)requestGeoClassificationFor:(id)for bundleID:(id)d altDSID:(id)iD ignoreCache:(BOOL)cache completion:(id)completion
 {
-  v9 = _Block_copy(a7);
+  v9 = _Block_copy(completion);
   v10 = sub_1DF564944();
   v12 = v11;
   v13 = sub_1DF564944();
@@ -61,47 +61,47 @@
   v18 = v17;
   v19 = swift_allocObject();
   *(v19 + 16) = v9;
-  v20 = self;
-  sub_1DF4CCE4C(v10, v12, v13, v15, v16, v18, a6, sub_1DF4D8564, v19);
+  selfCopy = self;
+  sub_1DF4CCE4C(v10, v12, v13, v15, v16, v18, cache, sub_1DF4D8564, v19);
 }
 
-- (void)getTicketStatusForFeature:(id)a3 completion:(id)a4
+- (void)getTicketStatusForFeature:(id)feature completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1DF564944();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_1DF4CF17C(v6, v8, sub_1DF4D8564, v9, "Fetching ticket %s", &unk_1F5A89828, &unk_1DF568D28);
 }
 
-- (void)getTicketStatusFromCacheForFeature:(id)a3 completion:(id)a4
+- (void)getTicketStatusFromCacheForFeature:(id)feature completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1DF564944();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_1DF4D6334(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_1DF4D6334(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)getTicketForFeature:(id)a3 completion:(id)a4
+- (void)getTicketForFeature:(id)feature completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1DF564944();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_1DF4CF17C(v6, v8, sub_1DF4D8564, v9, "Getting or fetching ticket %s", &unk_1F5A89788, &unk_1DF568CF0);
 }
 
-- (void)clearCFUWithId:(id)a3 completion:(id)a4
+- (void)clearCFUWithId:(id)id completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = sub_1DF564944();
   v7 = v6;
   if (_s25CloudSubscriptionFeatures8FollowUpCACSgycfC_0())
@@ -121,20 +121,20 @@
   }
 }
 
-- (void)postCFUIfEligibleWithFeature:(id)a3 completion:(id)a4
+- (void)postCFUIfEligibleWithFeature:(id)feature completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1DF564944();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_1DF4D1128(v6, v8, sub_1DF49BC58, v9);
 }
 
-- (void)gmOptInToggleWithCompletion:(id)a3
+- (void)gmOptInToggleWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = _s25CloudSubscriptionFeatures7GMOptInC7currentACSgvgZ_0();
   v5 = sub_1DF4BFA44();
 
@@ -143,35 +143,35 @@
   _Block_release(v3);
 }
 
-- (void)signupForWaitlistWithFeatureID:(id)a3 completion:(id)a4
+- (void)signupForWaitlistWithFeatureID:(id)d completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1DF564944();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_1DF4D33BC(v6, v8, sub_1DF4D8564, v9, "Signing up for ticket %{public}s", &unk_1F5A89530, &unk_1DF568C48);
 }
 
-- (void)waitlistStatusWithFeatureID:(id)a3 completion:(id)a4
+- (void)waitlistStatusWithFeatureID:(id)d completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1DF564944();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_1DF4D33BC(v6, v8, sub_1DF4D8564, v9, "Getting status for ticket %{public}s", &unk_1F5A894B8, &unk_1DF568C20);
 }
 
-- (void)performInternalValidationForFeature:(id)a3 completion:(id)a4
+- (void)performInternalValidationForFeature:(id)feature completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1DF4D5744(v7, v8, v6);
+  featureCopy = feature;
+  selfCopy = self;
+  sub_1DF4D5744(featureCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

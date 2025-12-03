@@ -1,39 +1,39 @@
 @interface _PSZKWFTFallbackInteractionsConfig
-- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 mechanisms:(id)a5 interactionCountMaxDepths:(id)a6 interactionHistoryRelativeStartDates:(id)a7 bundleIds:(id)a8 modelType:(int64_t)a9 clusterPruneThreshold:(unint64_t)a10 maxSuggestions:(unint64_t)a11;
-- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 modelType:(int64_t)a5;
+- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category mechanisms:(id)mechanisms interactionCountMaxDepths:(id)depths interactionHistoryRelativeStartDates:(id)dates bundleIds:(id)ids modelType:(int64_t)type clusterPruneThreshold:(unint64_t)self0 maxSuggestions:(unint64_t)self1;
+- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category modelType:(int64_t)type;
 @end
 
 @implementation _PSZKWFTFallbackInteractionsConfig
 
-- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 mechanisms:(id)a5 interactionCountMaxDepths:(id)a6 interactionHistoryRelativeStartDates:(id)a7 bundleIds:(id)a8 modelType:(int64_t)a9 clusterPruneThreshold:(unint64_t)a10 maxSuggestions:(unint64_t)a11
+- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category mechanisms:(id)mechanisms interactionCountMaxDepths:(id)depths interactionHistoryRelativeStartDates:(id)dates bundleIds:(id)ids modelType:(int64_t)type clusterPruneThreshold:(unint64_t)self0 maxSuggestions:(unint64_t)self1
 {
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  mechanismsCopy = mechanisms;
+  depthsCopy = depths;
+  datesCopy = dates;
+  idsCopy = ids;
   v25.receiver = self;
   v25.super_class = _PSZKWFTFallbackInteractionsConfig;
   v21 = [(_PSZKWFTFallbackInteractionsConfig *)&v25 init];
   v22 = v21;
   if (v21)
   {
-    v21->_isEnabled = a3;
-    v21->_defaultConfidenceCategory = a4;
-    objc_storeStrong(&v21->_mechanisms, a5);
-    objc_storeStrong(&v22->_interactionCountMaxDepths, a6);
-    objc_storeStrong(&v22->_interactionHistoryRelativeStartDates, a7);
-    objc_storeStrong(&v22->_bundleIds, a8);
-    v22->_modelType = a9;
-    v22->_maxSuggestions = a11;
-    v22->_clusterPruneThreshold = a10;
+    v21->_isEnabled = enabled;
+    v21->_defaultConfidenceCategory = category;
+    objc_storeStrong(&v21->_mechanisms, mechanisms);
+    objc_storeStrong(&v22->_interactionCountMaxDepths, depths);
+    objc_storeStrong(&v22->_interactionHistoryRelativeStartDates, dates);
+    objc_storeStrong(&v22->_bundleIds, ids);
+    v22->_modelType = type;
+    v22->_maxSuggestions = suggestions;
+    v22->_clusterPruneThreshold = threshold;
   }
 
   return v22;
 }
 
-- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 modelType:(int64_t)a5
+- (_PSZKWFTFallbackInteractionsConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category modelType:(int64_t)type
 {
-  v19 = a3;
+  enabledCopy = enabled;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v9 = objc_opt_new();
@@ -51,7 +51,7 @@
   v16 = [v14 setWithObject:v15];
 
   [v10 addObject:v16];
-  v17 = [(_PSZKWFTFallbackInteractionsConfig *)self initWithIsEnabled:v19 defaultConfidenceCategory:a4 mechanisms:v7 interactionCountMaxDepths:v8 interactionHistoryRelativeStartDates:v9 bundleIds:v10 modelType:a5 clusterPruneThreshold:5 maxSuggestions:12];
+  v17 = [(_PSZKWFTFallbackInteractionsConfig *)self initWithIsEnabled:enabledCopy defaultConfidenceCategory:category mechanisms:v7 interactionCountMaxDepths:v8 interactionHistoryRelativeStartDates:v9 bundleIds:v10 modelType:type clusterPruneThreshold:5 maxSuggestions:12];
 
   return v17;
 }

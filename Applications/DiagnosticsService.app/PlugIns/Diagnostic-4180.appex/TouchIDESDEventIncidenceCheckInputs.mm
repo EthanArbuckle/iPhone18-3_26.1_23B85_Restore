@@ -1,15 +1,15 @@
 @interface TouchIDESDEventIncidenceCheckInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation TouchIDESDEventIncidenceCheckInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
   v9 = 0;
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 dk_numberFromKey:@"kEsdMonitorTimeout" lowerBound:&off_1000041D8 upperBound:&off_1000041F0 defaultValue:0 failed:&v9];
+  v6 = [parametersCopy dk_numberFromKey:@"kEsdMonitorTimeout" lowerBound:&off_1000041D8 upperBound:&off_1000041F0 defaultValue:0 failed:&v9];
 
   if (v6)
   {

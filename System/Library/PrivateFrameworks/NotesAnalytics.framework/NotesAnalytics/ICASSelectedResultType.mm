@@ -1,33 +1,33 @@
 @interface ICASSelectedResultType
-- (ICASSelectedResultType)initWithSelectedResultType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASSelectedResultType)initWithSelectedResultType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASSelectedResultType
 
-- (ICASSelectedResultType)initWithSelectedResultType:(int64_t)a3
+- (ICASSelectedResultType)initWithSelectedResultType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASSelectedResultType;
   result = [(ICASSelectedResultType *)&v5 init];
   if (result)
   {
-    result->_selectedResultType = a3;
+    result->_selectedResultType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASSelectedResultType *)self selectedResultType];
+  selectedResultType = [(ICASSelectedResultType *)self selectedResultType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (selectedResultType == 1)
   {
     v4 = @"note";
   }
 
-  if (v3 == 2)
+  if (selectedResultType == 2)
   {
     return @"attachment";
   }

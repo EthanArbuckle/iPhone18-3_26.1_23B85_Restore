@@ -3,7 +3,7 @@
 - (RPBroadcastActivityViewController)broadcastActivityViewController;
 - (int64_t)modalPresentationStyle;
 - (unint64_t)popoverArrowDirection;
-- (void)presentationInfoWithCompletion:(id)a3;
+- (void)presentationInfoWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -14,33 +14,33 @@
   v5.receiver = self;
   v5.super_class = RPBroadcastActivityHostViewController;
   [(RPBroadcastActivityHostViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(RPBroadcastActivityHostViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(RPBroadcastActivityHostViewController *)self view];
+  [view setBackgroundColor:clearColor];
 }
 
 - (CGRect)popoverControllerSourceRect
 {
   WeakRetained = objc_loadWeakRetained(&self->_broadcastActivityViewController);
-  v4 = [WeakRetained popoverPresentationController];
+  popoverPresentationController = [WeakRetained popoverPresentationController];
 
-  if (v4)
+  if (popoverPresentationController)
   {
     v5 = objc_loadWeakRetained(&self->_broadcastActivityViewController);
-    v6 = [v5 popoverPresentationController];
-    v7 = [v6 sourceView];
+    popoverPresentationController2 = [v5 popoverPresentationController];
+    sourceView = [popoverPresentationController2 sourceView];
 
     v8 = objc_loadWeakRetained(&self->_broadcastActivityViewController);
-    v9 = [v8 popoverPresentationController];
-    [v9 sourceRect];
+    popoverPresentationController3 = [v8 popoverPresentationController];
+    [popoverPresentationController3 sourceRect];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [v7 superview];
-    v19 = [v7 window];
-    [v18 convertRect:v19 toView:{v11, v13, v15, v17}];
+    superview = [sourceView superview];
+    window = [sourceView window];
+    [superview convertRect:window toView:{v11, v13, v15, v17}];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -69,10 +69,10 @@
 - (unint64_t)popoverArrowDirection
 {
   WeakRetained = objc_loadWeakRetained(&self->_broadcastActivityViewController);
-  v3 = [WeakRetained popoverPresentationController];
-  v4 = [v3 arrowDirection];
+  popoverPresentationController = [WeakRetained popoverPresentationController];
+  arrowDirection = [popoverPresentationController arrowDirection];
 
-  return v4;
+  return arrowDirection;
 }
 
 - (int64_t)modalPresentationStyle
@@ -84,17 +84,17 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_broadcastActivityViewController);
-  v4 = [WeakRetained modalPresentationStyle];
+  modalPresentationStyle = [WeakRetained modalPresentationStyle];
 
-  return v4;
+  return modalPresentationStyle;
 }
 
-- (void)presentationInfoWithCompletion:(id)a3
+- (void)presentationInfoWithCompletion:(id)completion
 {
-  v10 = a3;
-  v5 = [(RPBroadcastActivityHostViewController *)self modalPresentationStyle];
+  completionCopy = completion;
+  modalPresentationStyle = [(RPBroadcastActivityHostViewController *)self modalPresentationStyle];
   [(RPBroadcastActivityHostViewController *)self popoverControllerSourceRect];
-  (*(a3 + 2))(v10, v5, [(RPBroadcastActivityHostViewController *)self popoverArrowDirection], v6, v7, v8, v9);
+  (*(completion + 2))(completionCopy, modalPresentationStyle, [(RPBroadcastActivityHostViewController *)self popoverArrowDirection], v6, v7, v8, v9);
 }
 
 - (RPBroadcastActivityViewController)broadcastActivityViewController

@@ -1,18 +1,18 @@
 @interface AVAnnotationPathRepresentation
-- (AVAnnotationPathRepresentation)initWithPaths:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVAnnotationPathRepresentation)initWithPaths:(id)paths;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)strokeColor;
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4;
-- (id)_propertyListAndBinaryData:(id *)a3;
+- (id)_initWithPropertyList:(id)list binaryData:(id)data;
+- (id)_propertyListAndBinaryData:(id *)data;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setStrokeColor:(CGColor *)a3;
+- (void)setStrokeColor:(CGColor *)color;
 @end
 
 @implementation AVAnnotationPathRepresentation
 
-- (AVAnnotationPathRepresentation)initWithPaths:(id)a3
+- (AVAnnotationPathRepresentation)initWithPaths:(id)paths
 {
   v30 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -22,12 +22,12 @@
   if (v4)
   {
     v18 = v4;
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(paths, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    v7 = [paths countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -38,7 +38,7 @@
         {
           if (*v24 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(paths);
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
@@ -73,7 +73,7 @@
           [v6 addObject:v12];
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v8 = [paths countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v8);
@@ -90,15 +90,15 @@
   return v5;
 }
 
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4
+- (id)_initWithPropertyList:(id)list binaryData:(id)data
 {
   v41 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = AVAnnotationPathRepresentation;
-  v24 = [(AVAnnotationRepresentation *)&v37 _initWithPropertyList:a3 binaryData:a4];
+  v24 = [(AVAnnotationRepresentation *)&v37 _initWithPropertyList:list binaryData:data];
   if (v24)
   {
-    v4 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyPaths"];
+    v4 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyPaths"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,7 +181,7 @@ LABEL_11:
       {
 LABEL_19:
         v24[4] = [v4 copy];
-        v14 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeColor"];
+        v14 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeColor"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 count] == 4)
         {
@@ -226,17 +226,17 @@ LABEL_23:
           {
 LABEL_29:
             v24[5] = FigCreateCGColorSRGBFromCFArray();
-            v19 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeWidth"];
+            v19 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeWidth"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v24[6] = [v19 integerValue];
-              v20 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyDashed"];
+              v20 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyDashed"];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 *(v24 + 56) = [v20 BOOLValue];
-                v21 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyHasShadow"];
+                v21 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyHasShadow"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -271,24 +271,24 @@ LABEL_33:
   return v2;
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
-  v4 = CGColorRetain(a3);
+  v4 = CGColorRetain(color);
   CGColorRelease(self->_strokeColor);
   self->_strokeColor = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10.receiver = self;
   v10.super_class = AVAnnotationPathRepresentation;
   v5 = [(AVAnnotationRepresentation *)&v10 isEqual:?];
-  if (a3 != self)
+  if (equal != self)
   {
-    if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & v5 & 1) != 0) && -[NSArray isEqualToArray:](-[AVAnnotationPathRepresentation paths](self, "paths"), "isEqualToArray:", [a3 paths]) && CGColorEqualToColor(-[AVAnnotationPathRepresentation strokeColor](self, "strokeColor"), objc_msgSend(a3, "strokeColor")) && (v6 = -[AVAnnotationPathRepresentation strokeWidth](self, "strokeWidth"), v6 == objc_msgSend(a3, "strokeWidth")) && (v7 = -[AVAnnotationPathRepresentation dashed](self, "dashed"), v7 == objc_msgSend(a3, "dashed")))
+    if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & v5 & 1) != 0) && -[NSArray isEqualToArray:](-[AVAnnotationPathRepresentation paths](self, "paths"), "isEqualToArray:", [equal paths]) && CGColorEqualToColor(-[AVAnnotationPathRepresentation strokeColor](self, "strokeColor"), objc_msgSend(equal, "strokeColor")) && (v6 = -[AVAnnotationPathRepresentation strokeWidth](self, "strokeWidth"), v6 == objc_msgSend(equal, "strokeWidth")) && (v7 = -[AVAnnotationPathRepresentation dashed](self, "dashed"), v7 == objc_msgSend(equal, "dashed")))
     {
-      v9 = [(AVAnnotationPathRepresentation *)self hasShadow];
-      return v9 ^ [a3 hasShadow] ^ 1;
+      hasShadow = [(AVAnnotationPathRepresentation *)self hasShadow];
+      return hasShadow ^ [equal hasShadow] ^ 1;
     }
 
     else
@@ -313,7 +313,7 @@ LABEL_33:
   return v6 ^ v7 ^ [objc_msgSend(MEMORY[0x1E696AD98] numberWithBool:{-[AVAnnotationPathRepresentation hasShadow](self, "hasShadow")), "hash"}];
 }
 
-- (id)_propertyListAndBinaryData:(id *)a3
+- (id)_propertyListAndBinaryData:(id *)data
 {
   v7.receiver = self;
   v7.super_class = AVAnnotationPathRepresentation;
@@ -324,9 +324,9 @@ LABEL_33:
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[AVAnnotationPathRepresentation strokeWidth](self, "strokeWidth")), @"AVAnnotationRepresentationArchiveKeyStrokeWidth"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[AVAnnotationPathRepresentation dashed](self, "dashed")), @"AVAnnotationRepresentationArchiveKeyDashed"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[AVAnnotationPathRepresentation hasShadow](self, "hasShadow")), @"AVAnnotationRepresentationArchiveKeyHasShadow"}];
-  if (a3)
+  if (data)
   {
-    *a3 = [MEMORY[0x1E695DEF0] data];
+    *data = [MEMORY[0x1E695DEF0] data];
   }
 
   return v5;

@@ -1,13 +1,13 @@
 @interface BCSBusinessItemMemoryCache
 + (id)sharedCache;
-- (id)itemMatching:(id)a3;
-- (id)lastFetchedBusinessItemIconDataForBizItem:(id *)a1;
+- (id)itemMatching:(id)matching;
+- (id)lastFetchedBusinessItemIconDataForBizItem:(id *)item;
 - (void)deleteCache;
-- (void)deleteItemMatching:(id)a3;
-- (void)deleteItemsOfType:(int64_t)a3;
-- (void)setLastFetchedBusinesIconData:(void *)a3 withMatchingBusinessItem:;
-- (void)setLastFetchedBusinessItem:(uint64_t)a1;
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4;
+- (void)deleteItemMatching:(id)matching;
+- (void)deleteItemsOfType:(int64_t)type;
+- (void)setLastFetchedBusinesIconData:(void *)data withMatchingBusinessItem:;
+- (void)setLastFetchedBusinessItem:(uint64_t)item;
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSBusinessItemMemoryCache
@@ -36,66 +36,66 @@ uint64_t __41__BCSBusinessItemMemoryCache_sharedCache__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)lastFetchedBusinessItemIconDataForBizItem:(id *)a1
+- (id)lastFetchedBusinessItemIconDataForBizItem:(id *)item
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (item)
   {
-    v5 = [v3 bizID];
-    v6 = [a1[2] bizID];
-    v7 = [v5 isEqualToString:v6];
+    bizID = [v3 bizID];
+    bizID2 = [item[2] bizID];
+    v7 = [bizID isEqualToString:bizID2];
 
     if (v7)
     {
-      a1 = a1[3];
+      item = item[3];
     }
 
     else
     {
-      a1 = 0;
+      item = 0;
     }
   }
 
-  return a1;
+  return item;
 }
 
-- (void)setLastFetchedBusinesIconData:(void *)a3 withMatchingBusinessItem:
+- (void)setLastFetchedBusinesIconData:(void *)data withMatchingBusinessItem:
 {
   v7 = a2;
-  v6 = a3;
-  if (a1)
+  dataCopy = data;
+  if (self)
   {
-    objc_storeStrong((a1 + 16), a3);
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((self + 16), data);
+    objc_storeStrong((self + 24), a2);
   }
 }
 
 - (void)deleteCache
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v2 = *(self + 8);
+    *(self + 8) = 0;
 
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v3 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
-- (void)setLastFetchedBusinessItem:(uint64_t)a1
+- (void)setLastFetchedBusinessItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((item + 8), a2);
   }
 }
 
-- (id)itemMatching:(id)a3
+- (id)itemMatching:(id)matching
 {
   if (self)
   {
-    if ([a3 matchesItemIdentifying:self->_lastFetchedBusinessItem])
+    if ([matching matchesItemIdentifying:self->_lastFetchedBusinessItem])
     {
       lastFetchedBusinessItem = self->_lastFetchedBusinessItem;
 LABEL_4:
@@ -108,7 +108,7 @@ LABEL_4:
 
   else
   {
-    v7 = [a3 matchesItemIdentifying:0];
+    v7 = [matching matchesItemIdentifying:0];
     lastFetchedBusinessItem = 0;
     v5 = 0;
     if (v7)
@@ -122,34 +122,34 @@ LABEL_6:
   return v5;
 }
 
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BCSBusinessItemMemoryCache *)self setLastFetchedBusinessItem:v5];
+    [(BCSBusinessItemMemoryCache *)self setLastFetchedBusinessItem:itemCopy];
   }
 }
 
-- (void)deleteItemMatching:(id)a3
+- (void)deleteItemMatching:(id)matching
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_lastFetchedBusinessItem;
   }
 
-  if ([(BCSBusinessItemMemoryCache *)self matchesItemIdentifying:a3])
+  if ([(BCSBusinessItemMemoryCache *)self matchesItemIdentifying:matching])
   {
 
-    [(BCSBusinessItemMemoryCache *)v3 setLastFetchedBusinessItem:?];
+    [(BCSBusinessItemMemoryCache *)selfCopy setLastFetchedBusinessItem:?];
   }
 }
 
-- (void)deleteItemsOfType:(int64_t)a3
+- (void)deleteItemsOfType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     [(BCSBusinessItemMemoryCache *)self deleteCache];
   }

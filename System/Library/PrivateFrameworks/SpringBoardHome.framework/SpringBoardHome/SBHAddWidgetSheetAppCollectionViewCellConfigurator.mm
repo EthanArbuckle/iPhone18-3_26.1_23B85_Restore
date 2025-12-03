@@ -1,13 +1,13 @@
 @interface SBHAddWidgetSheetAppCollectionViewCellConfigurator
-- (SBHAddWidgetSheetAppCollectionViewCellConfigurator)initWithIconImageInfo:(SBIconImageInfo *)a3;
-- (void)_hydrateCellImage:(void *)a3 forApplicationWidgetCollection:;
-- (void)_hydrateCellTitle:(void *)a3 forApplicationWidgetCollection:;
-- (void)configureCell:(id)a3 withApplicationWidgetCollection:(id)a4;
+- (SBHAddWidgetSheetAppCollectionViewCellConfigurator)initWithIconImageInfo:(SBIconImageInfo *)info;
+- (void)_hydrateCellImage:(void *)image forApplicationWidgetCollection:;
+- (void)_hydrateCellTitle:(void *)title forApplicationWidgetCollection:;
+- (void)configureCell:(id)cell withApplicationWidgetCollection:(id)collection;
 @end
 
 @implementation SBHAddWidgetSheetAppCollectionViewCellConfigurator
 
-- (SBHAddWidgetSheetAppCollectionViewCellConfigurator)initWithIconImageInfo:(SBIconImageInfo *)a3
+- (SBHAddWidgetSheetAppCollectionViewCellConfigurator)initWithIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -31,45 +31,45 @@
   return v12;
 }
 
-- (void)configureCell:(id)a3 withApplicationWidgetCollection:(id)a4
+- (void)configureCell:(id)cell withApplicationWidgetCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  [(SBHAddWidgetSheetAppCollectionViewCellConfigurator *)self _hydrateCellTitle:v7 forApplicationWidgetCollection:v6];
-  [(SBHAddWidgetSheetAppCollectionViewCellConfigurator *)self _hydrateCellImage:v7 forApplicationWidgetCollection:v6];
+  collectionCopy = collection;
+  cellCopy = cell;
+  [(SBHAddWidgetSheetAppCollectionViewCellConfigurator *)self _hydrateCellTitle:cellCopy forApplicationWidgetCollection:collectionCopy];
+  [(SBHAddWidgetSheetAppCollectionViewCellConfigurator *)self _hydrateCellImage:cellCopy forApplicationWidgetCollection:collectionCopy];
 }
 
-- (void)_hydrateCellTitle:(void *)a3 forApplicationWidgetCollection:
+- (void)_hydrateCellTitle:(void *)title forApplicationWidgetCollection:
 {
-  v9 = a3;
-  if (a1)
+  titleCopy = title;
+  if (self)
   {
     v5 = a2;
-    v6 = [v9 icon];
-    v7 = v6;
-    if (!v6)
+    icon = [titleCopy icon];
+    v7 = icon;
+    if (!icon)
     {
-      v6 = v9;
+      icon = titleCopy;
     }
 
-    v8 = [v6 displayName];
-    [v5 setAddWidgetSheetAppCollectionViewCellTitle:v8];
+    displayName = [icon displayName];
+    [v5 setAddWidgetSheetAppCollectionViewCellTitle:displayName];
   }
 }
 
-- (void)_hydrateCellImage:(void *)a3 forApplicationWidgetCollection:
+- (void)_hydrateCellImage:(void *)image forApplicationWidgetCollection:
 {
   v13 = a2;
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    v6 = [a1 iconImageAppearance];
-    v7 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:v6];
-    v8 = [v5 icon];
-    v9 = [v5 iconImageApplicationBundleIdentifier];
+    imageCopy = image;
+    iconImageAppearance = [self iconImageAppearance];
+    v7 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:iconImageAppearance];
+    icon = [imageCopy icon];
+    iconImageApplicationBundleIdentifier = [imageCopy iconImageApplicationBundleIdentifier];
 
     v11 = OUTLINED_FUNCTION_0_6();
-    if (v9)
+    if (iconImageApplicationBundleIdentifier)
     {
       [v10 iconLayerViewForApplicationWithBundleIdentifier:v11 iconImageInfo:? traitCollection:? options:? priority:?];
     }

@@ -1,10 +1,10 @@
 @interface CSLUIPBSize
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSLUIPBSize
@@ -15,47 +15,47 @@
   v8.receiver = self;
   v8.super_class = CSLUIPBSize;
   v4 = [(CSLUIPBSize *)&v8 description];
-  v5 = [(CSLUIPBSize *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CSLUIPBSize *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   *&v4 = self->_width;
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"width"];
+  [dictionary setObject:v5 forKey:@"width"];
 
   *&v6 = self->_height;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:@"height"];
+  [dictionary setObject:v7 forKey:@"height"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   width = self->_width;
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   height = self->_height;
   PBDataWriterWriteFloatField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = LODWORD(self->_width);
   *(result + 2) = LODWORD(self->_height);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_width == v4[3] && self->_height == v4[2];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_width == equalCopy[3] && self->_height == equalCopy[2];
 
   return v5;
 }

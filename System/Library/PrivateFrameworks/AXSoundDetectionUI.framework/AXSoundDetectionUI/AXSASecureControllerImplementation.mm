@@ -1,8 +1,8 @@
 @interface AXSASecureControllerImplementation
 - (_TtP18AXSoundDetectionUI34AXSDSoundActionsControllerDelegate_)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)startListening;
-- (void)startListeningOnQueue:(id)a3;
+- (void)startListeningOnQueue:(id)queue;
 - (void)stopListening;
 @end
 
@@ -18,32 +18,32 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC18AXSoundDetectionUI34AXSASecureControllerImplementation_delegate;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D6675F8();
 }
 
-- (void)startListeningOnQueue:(id)a3
+- (void)startListeningOnQueue:(id)queue
 {
-  v4 = a3;
-  v5 = self;
+  queueCopy = queue;
+  selfCopy = self;
   sub_23D6675F8();
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D664FBC();
 }
 

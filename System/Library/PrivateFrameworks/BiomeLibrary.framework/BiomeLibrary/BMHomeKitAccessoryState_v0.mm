@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMHomeKitAccessoryState_v0;
-  v2 = [(BMHomeKitAccessoryState *)&v4 valueType];
-  if (v2 < 3)
+  valueType = [(BMHomeKitAccessoryState *)&v4 valueType];
+  if (valueType < 3)
   {
-    return v2 + 1;
+    return valueType + 1;
   }
 
   else

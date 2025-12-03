@@ -7,8 +7,8 @@
 
 + (BOOL)shouldDisplay
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/var/mobile/Media/iTunes_Control/iTunes/ShowWarranty"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/var/mobile/Media/iTunes_Control/iTunes/ShowWarranty"];
 
   return v3;
 }
@@ -16,12 +16,12 @@
 + (void)acknowledge
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = 0;
-  v3 = [v2 removeItemAtPath:@"/var/mobile/Media/iTunes_Control/iTunes/ShowWarranty" error:&v10];
+  domain = [defaultManager removeItemAtPath:@"/var/mobile/Media/iTunes_Control/iTunes/ShowWarranty" error:&v10];
   v4 = v10;
 
-  if ((v3 & 1) == 0)
+  if ((domain & 1) == 0)
   {
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -35,8 +35,8 @@
       else if (v4)
       {
         v9 = MEMORY[0x1E696AEC0];
-        v3 = [v4 domain];
-        v8 = [v9 stringWithFormat:@"<Error domain: %@, code %ld>", v3, objc_msgSend(v4, "code")];
+        domain = [v4 domain];
+        v8 = [v9 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v4, "code")];
         v7 = 1;
       }
 

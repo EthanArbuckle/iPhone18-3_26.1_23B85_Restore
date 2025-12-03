@@ -1,27 +1,27 @@
 @interface NEKDaemon
-- (NEKDaemon)initWithEnvironment:(id)a3;
+- (NEKDaemon)initWithEnvironment:(id)environment;
 - (id)environment;
 - (void)_databaseChangedExternally;
 - (void)_registerForNotifications;
 - (void)_triggerFullSync;
 - (void)_triggerMigrationSync;
 - (void)_triggerNightlySync;
-- (void)didReceiveReunionSyncCommand:(id)a3;
-- (void)didReceiveStartSyncCommand:(id)a3;
+- (void)didReceiveReunionSyncCommand:(id)command;
+- (void)didReceiveStartSyncCommand:(id)command;
 @end
 
 @implementation NEKDaemon
 
-- (NEKDaemon)initWithEnvironment:(id)a3
+- (NEKDaemon)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v35.receiver = self;
   v35.super_class = NEKDaemon;
   v5 = [(NEKDaemon *)&v35 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = [NDTLog facilityWithSubsystem:@"com.apple.eventkitsync" category:@"phone"];
     v8 = qword_1000D18A8;
     qword_1000D18A8 = v7;
@@ -42,15 +42,15 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "== Started EventKitSync-419", buf, 2u);
     }
 
-    v14 = [(NEKDaemon *)v6 environment];
-    v15 = [v14 dbFileManager];
-    v16 = [v15 pairingID];
+    environment = [(NEKDaemon *)v6 environment];
+    dbFileManager = [environment dbFileManager];
+    pairingID = [dbFileManager pairingID];
 
     v17 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v37 = v16;
+      v37 = pairingID;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Pairing ID: %{public}@", buf, 0xCu);
     }
 
@@ -139,9 +139,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)didReceiveStartSyncCommand:(id)a3
+- (void)didReceiveStartSyncCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -164,17 +164,17 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Starting sync controller.", v10, 2u);
   }
 
-  v8 = [(NEKDaemon *)self environment];
-  v9 = [v8 syncController];
-  [v9 setNeedsFullSync];
+  environment = [(NEKDaemon *)self environment];
+  syncController = [environment syncController];
+  [syncController setNeedsFullSync];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
 
-- (void)didReceiveReunionSyncCommand:(id)a3
+- (void)didReceiveReunionSyncCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -197,9 +197,9 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Starting sync controller.", v10, 2u);
   }
 
-  v8 = [(NEKDaemon *)self environment];
-  v9 = [v8 syncController];
-  [v9 setNeedsReunionSync];
+  environment = [(NEKDaemon *)self environment];
+  syncController = [environment syncController];
+  [syncController setNeedsReunionSync];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -213,23 +213,23 @@
 
 - (void)_triggerFullSync
 {
-  v3 = [(NEKDaemon *)self environment];
-  v2 = [v3 syncController];
-  [v2 setNeedsFullSync];
+  environment = [(NEKDaemon *)self environment];
+  syncController = [environment syncController];
+  [syncController setNeedsFullSync];
 }
 
 - (void)_triggerNightlySync
 {
-  v3 = [(NEKDaemon *)self environment];
-  v2 = [v3 syncController];
-  [v2 setNeedsNightlySync];
+  environment = [(NEKDaemon *)self environment];
+  syncController = [environment syncController];
+  [syncController setNeedsNightlySync];
 }
 
 - (void)_triggerMigrationSync
 {
-  v3 = [(NEKDaemon *)self environment];
-  v2 = [v3 syncController];
-  [v2 setNeedsMigrationSync];
+  environment = [(NEKDaemon *)self environment];
+  syncController = [environment syncController];
+  [syncController setNeedsMigrationSync];
 }
 
 @end

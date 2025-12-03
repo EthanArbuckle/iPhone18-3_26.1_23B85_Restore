@@ -1,15 +1,15 @@
 @interface PXUIGenericViewTile
 - (UIView)view;
-- (void)_setSpec:(id)a3;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
+- (void)_setSpec:(id)spec;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
 @end
 
 @implementation PXUIGenericViewTile
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  v5 = [a4 viewSpec];
-  [(PXUIGenericViewTile *)self _setSpec:v5];
+  viewSpec = [data viewSpec];
+  [(PXUIGenericViewTile *)self _setSpec:viewSpec];
 }
 
 - (UIView)view
@@ -29,15 +29,15 @@
   return view;
 }
 
-- (void)_setSpec:(id)a3
+- (void)_setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->__spec != v5)
+  specCopy = spec;
+  if (self->__spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->__spec, spec);
     [(UIView *)self->_view px_setSpec:v6];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 

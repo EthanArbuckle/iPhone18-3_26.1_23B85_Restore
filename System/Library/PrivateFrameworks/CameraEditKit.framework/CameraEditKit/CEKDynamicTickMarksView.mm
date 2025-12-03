@@ -1,48 +1,48 @@
 @interface CEKDynamicTickMarksView
-- (BOOL)_bounds:(CGRect)a3 containsTickMarkAtIndex:(unint64_t)a4;
+- (BOOL)_bounds:(CGRect)_bounds containsTickMarkAtIndex:(unint64_t)index;
 - (BOOL)_isUsingCells;
 - (BOOL)_isUsingImages;
-- (CEKDynamicTickMarksView)initWithFrame:(CGRect)a3;
+- (CEKDynamicTickMarksView)initWithFrame:(CGRect)frame;
 - (CEKSliderTickMarksDelegate)delegate;
 - (CEKTickMarksCellDataProvider)cellDataProvider;
 - (CEKTickMarksImageDataProvider)imageDataProvider;
 - (CGAffineTransform)contentTransform;
-- (CGRect)_frameForTickMarkAtIndex:(unint64_t)a3 selected:(BOOL)a4;
-- (CGRect)frameForTickMarkAtIndex:(unint64_t)a3;
+- (CGRect)_frameForTickMarkAtIndex:(unint64_t)index selected:(BOOL)selected;
+- (CGRect)frameForTickMarkAtIndex:(unint64_t)index;
 - (CGRect)visibleBounds;
 - (double)_lengthForMagneticTickMark;
 - (double)_lengthForStandardTickMark;
-- (id)_colorForTickMarkAtIndex:(unint64_t)a3 selected:(BOOL)a4 isTickEnabled:(BOOL)a5;
+- (id)_colorForTickMarkAtIndex:(unint64_t)index selected:(BOOL)selected isTickEnabled:(BOOL)enabled;
 - (id)_indexesIntersectingVisibleBounds;
-- (void)_configureHighlightForTickMark:(id)a3 atIndex:(unint64_t)a4;
-- (void)_configureTickMark:(id)a3 forIndex:(unint64_t)a4;
-- (void)_configureTickMark:(id)a3 forIndex:(unint64_t)a4 selected:(BOOL)a5;
-- (void)_dequeueAndInstallTickMarkForIndex:(unint64_t)a3;
+- (void)_configureHighlightForTickMark:(id)mark atIndex:(unint64_t)index;
+- (void)_configureTickMark:(id)mark forIndex:(unint64_t)index;
+- (void)_configureTickMark:(id)mark forIndex:(unint64_t)index selected:(BOOL)selected;
+- (void)_dequeueAndInstallTickMarkForIndex:(unint64_t)index;
 - (void)_destroyAllTickMarks;
-- (void)_layoutDynamicCellTickMark:(id)a3 atIndex:(unint64_t)a4;
+- (void)_layoutDynamicCellTickMark:(id)mark atIndex:(unint64_t)index;
 - (void)_recycleTickMarks;
 - (void)_refreshTickMarks;
 - (void)_refreshTickMarksHighlight;
-- (void)_removeAndEnqueueTickMarkAtIndex:(unint64_t)a3;
+- (void)_removeAndEnqueueTickMarkAtIndex:(unint64_t)index;
 - (void)layoutSubviews;
 - (void)performWaveAnimation;
-- (void)setCellDataProvider:(id)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3 animated:(BOOL)a4;
-- (void)setHighlightSelectedIndex:(BOOL)a3 animated:(BOOL)a4;
-- (void)setImageDataProvider:(id)a3;
-- (void)setSelectedTickMarkIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setVisibleBounds:(CGRect)a3;
-- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)a3;
+- (void)setCellDataProvider:(id)provider;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setContentTransform:(CGAffineTransform *)transform animated:(BOOL)animated;
+- (void)setHighlightSelectedIndex:(BOOL)index animated:(BOOL)animated;
+- (void)setImageDataProvider:(id)provider;
+- (void)setSelectedTickMarkIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setVisibleBounds:(CGRect)bounds;
+- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)model;
 @end
 
 @implementation CEKDynamicTickMarksView
 
-- (CEKDynamicTickMarksView)initWithFrame:(CGRect)a3
+- (CEKDynamicTickMarksView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = CEKDynamicTickMarksView;
-  v3 = [(CEKDynamicTickMarksView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKDynamicTickMarksView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_TtC13CameraEditKit14TickMarksModel);
@@ -52,17 +52,17 @@
     [(TickMarksModel *)v3->_tickMarksModel setTickMarkWidth:2.0];
     [(TickMarksModel *)v3->_tickMarksModel setDataSource:v3];
     [(TickMarksModel *)v3->_tickMarksModel setDelegate:v3];
-    v6 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     installedTickMarkIndexes = v3->__installedTickMarkIndexes;
-    v3->__installedTickMarkIndexes = v6;
+    v3->__installedTickMarkIndexes = indexSet;
 
-    v8 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet2 = [MEMORY[0x1E696AD50] indexSet];
     waveIndexes = v3->__waveIndexes;
-    v3->__waveIndexes = v8;
+    v3->__waveIndexes = indexSet2;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     tickMarksByIndex = v3->__tickMarksByIndex;
-    v3->__tickMarksByIndex = v10;
+    v3->__tickMarksByIndex = dictionary;
 
     v12 = [[_TtC13CameraEditKit24TickMarksVisibilityModel alloc] initWithModel:v3->_tickMarksModel];
     tickMarksVisibilityModel = v3->__tickMarksVisibilityModel;
@@ -97,14 +97,14 @@
   }
 }
 
-- (void)setVisibleBounds:(CGRect)a3
+- (void)setVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_visibleBounds = &self->_visibleBounds;
-  if (!CGRectEqualToRect(a3, self->_visibleBounds))
+  if (!CGRectEqualToRect(bounds, self->_visibleBounds))
   {
     p_visibleBounds->origin.x = x;
     p_visibleBounds->origin.y = y;
@@ -115,54 +115,54 @@
   }
 }
 
-- (void)setSelectedTickMarkIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setSelectedTickMarkIndex:(unint64_t)index animated:(BOOL)animated
 {
   selectedTickMarkIndex = self->_selectedTickMarkIndex;
-  if (selectedTickMarkIndex != a3)
+  if (selectedTickMarkIndex != index)
   {
-    v5 = a4;
-    self->_selectedTickMarkIndex = a3;
-    v8 = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
+    animatedCopy = animated;
+    self->_selectedTickMarkIndex = index;
+    _tickMarksByIndex = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __61__CEKDynamicTickMarksView_setSelectedTickMarkIndex_animated___block_invoke;
     aBlock[3] = &unk_1E7CC6460;
-    v9 = v8;
+    v9 = _tickMarksByIndex;
     v40 = v9;
-    v41 = self;
+    selfCopy = self;
     v10 = _Block_copy(aBlock);
-    if (selectedTickMarkIndex <= a3)
+    if (selectedTickMarkIndex <= index)
     {
-      v11 = a3;
+      indexCopy = index;
     }
 
     else
     {
-      v11 = selectedTickMarkIndex;
+      indexCopy = selectedTickMarkIndex;
     }
 
-    if (selectedTickMarkIndex >= a3)
+    if (selectedTickMarkIndex >= index)
     {
-      v12 = a3;
+      indexCopy2 = index;
     }
 
     else
     {
-      v12 = selectedTickMarkIndex;
+      indexCopy2 = selectedTickMarkIndex;
     }
 
-    v13 = v11 - v12;
-    if (v5)
+    v13 = indexCopy - indexCopy2;
+    if (animatedCopy)
     {
-      v14 = v12;
+      indexCopy3 = indexCopy2;
     }
 
     else
     {
-      v14 = a3;
+      indexCopy3 = index;
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       v15 = v13 + 1;
     }
@@ -172,9 +172,9 @@
       v15 = 1;
     }
 
-    v16 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{v14, v15}];
+    v16 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{indexCopy3, v15}];
     [v16 removeIndex:selectedTickMarkIndex];
-    v17 = [(CEKDynamicTickMarksView *)self _selectedIndexes];
+    _selectedIndexes = [(CEKDynamicTickMarksView *)self _selectedIndexes];
     [(CEKDynamicTickMarksView *)self _setSelectedIndexes:v16];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
@@ -183,7 +183,7 @@
     v18 = v10;
     v38 = v18;
     [v16 enumerateIndexesUsingBlock:v37];
-    if (v5)
+    if (animatedCopy)
     {
       v19 = [MEMORY[0x1E69DD280] behaviorWithDampingRatio:0.75 response:0.4];
       v20 = MEMORY[0x1E69DD250];
@@ -191,7 +191,7 @@
       v32[1] = 3221225472;
       v32[2] = __61__CEKDynamicTickMarksView_setSelectedTickMarkIndex_animated___block_invoke_4;
       v32[3] = &unk_1E7CC64B0;
-      v33 = v17;
+      v33 = _selectedIndexes;
       v34 = v18;
       v21 = v18;
       [v20 _animateUsingSpringBehavior:v19 tracking:0 animations:v32 completion:0];
@@ -203,7 +203,7 @@
       v26[3] = &unk_1E7CC6528;
       objc_copyWeak(v30, &location);
       v23 = v16;
-      v30[1] = a3;
+      v30[1] = index;
       v27 = v23;
       v28 = v19;
       v29 = v9;
@@ -222,7 +222,7 @@
       v35[3] = &unk_1E7CC6488;
       v36 = v18;
       v25 = v18;
-      [v17 enumerateIndexesUsingBlock:v35];
+      [_selectedIndexes enumerateIndexesUsingBlock:v35];
       v24 = v36;
     }
   }
@@ -311,12 +311,12 @@ void __61__CEKDynamicTickMarksView_setSelectedTickMarkIndex_animated___block_inv
   [WeakRetained _configureTickMark:v4 forIndex:*(a1 + 48) selected:0];
 }
 
-- (void)setHighlightSelectedIndex:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlightSelectedIndex:(BOOL)index animated:(BOOL)animated
 {
-  if (self->_highlightSelectedIndex != a3)
+  if (self->_highlightSelectedIndex != index)
   {
-    self->_highlightSelectedIndex = a3;
-    if (a4)
+    self->_highlightSelectedIndex = index;
+    if (animated)
     {
       v6[5] = v4;
       v6[6] = v5;
@@ -338,20 +338,20 @@ void __61__CEKDynamicTickMarksView_setSelectedTickMarkIndex_animated___block_inv
 
 - (void)performWaveAnimation
 {
-  v3 = [MEMORY[0x1E696AD50] indexSet];
-  [(CEKDynamicTickMarksView *)self _setWaveIndexes:v3];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  [(CEKDynamicTickMarksView *)self _setWaveIndexes:indexSet];
 
   [(CEKDynamicTickMarksView *)self bounds];
   if (v4 != 0.0)
   {
     [(CEKDynamicTickMarksView *)self _setWaveAnimationDelayActive:1];
-    v5 = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
+    _installedTickMarkIndexes = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__CEKDynamicTickMarksView_performWaveAnimation__block_invoke;
     v8[3] = &unk_1E7CC6550;
     v8[4] = self;
-    [v5 enumerateIndexesUsingBlock:v8];
+    [_installedTickMarkIndexes enumerateIndexesUsingBlock:v8];
 
     v6 = dispatch_time(0, 100000000);
     v7[0] = MEMORY[0x1E69E9820];
@@ -435,13 +435,13 @@ uint64_t __47__CEKDynamicTickMarksView_performWaveAnimation__block_invoke_4(uint
   return [v3 _configureTickMark:v4 forIndex:v5];
 }
 
-- (id)_colorForTickMarkAtIndex:(unint64_t)a3 selected:(BOOL)a4 isTickEnabled:(BOOL)a5
+- (id)_colorForTickMarkAtIndex:(unint64_t)index selected:(BOOL)selected isTickEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  if (a4 && [(CEKDynamicTickMarksView *)self isEnabled])
+  enabledCopy = enabled;
+  if (selected && [(CEKDynamicTickMarksView *)self isEnabled])
   {
-    v7 = [(CEKDynamicTickMarksView *)self tintColor];
-    if (!v5)
+    tintColor = [(CEKDynamicTickMarksView *)self tintColor];
+    if (!enabledCopy)
     {
 LABEL_4:
       v8 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.4];
@@ -451,61 +451,61 @@ LABEL_4:
 
   else
   {
-    v9 = [(CEKDynamicTickMarksView *)self tickMarksModel];
-    v7 = [v9 mainTickMarkColor];
+    tickMarksModel = [(CEKDynamicTickMarksView *)self tickMarksModel];
+    tintColor = [tickMarksModel mainTickMarkColor];
 
-    if (!v5)
+    if (!enabledCopy)
     {
       goto LABEL_4;
     }
   }
 
-  v8 = v7;
+  v8 = tintColor;
 LABEL_7:
   v10 = v8;
 
   return v10;
 }
 
-- (void)_configureTickMark:(id)a3 forIndex:(unint64_t)a4
+- (void)_configureTickMark:(id)mark forIndex:(unint64_t)index
 {
-  v6 = a3;
-  [(CEKDynamicTickMarksView *)self _configureTickMark:v6 forIndex:a4 selected:[(CEKDynamicTickMarksView *)self selectedTickMarkIndex]== a4];
+  markCopy = mark;
+  [(CEKDynamicTickMarksView *)self _configureTickMark:markCopy forIndex:index selected:[(CEKDynamicTickMarksView *)self selectedTickMarkIndex]== index];
 }
 
-- (void)_configureTickMark:(id)a3 forIndex:(unint64_t)a4 selected:(BOOL)a5
+- (void)_configureTickMark:(id)mark forIndex:(unint64_t)index selected:(BOOL)selected
 {
-  v5 = a5;
-  v8 = a3;
-  if (v8)
+  selectedCopy = selected;
+  markCopy = mark;
+  if (markCopy)
   {
-    v9 = [(CEKDynamicTickMarksView *)self tickMarksModel];
-    v10 = [v9 tickMarksCount];
+    tickMarksModel = [(CEKDynamicTickMarksView *)self tickMarksModel];
+    tickMarksCount = [tickMarksModel tickMarksCount];
 
-    if (v10 > a4)
+    if (tickMarksCount > index)
     {
-      [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:a4 selected:v5];
+      [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:index selected:selectedCopy];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
       if ([(CEKDynamicTickMarksView *)self _isUsingCells])
       {
-        v19 = [(CEKDynamicTickMarksView *)self cellDataProvider];
-        v20 = [v19 configurationAtIndex:a4];
+        cellDataProvider = [(CEKDynamicTickMarksView *)self cellDataProvider];
+        v20 = [cellDataProvider configurationAtIndex:index];
 
-        v21 = v8;
+        v21 = markCopy;
         [v21 setContentConfiguration:v20];
         [(CEKDynamicTickMarksView *)self contentTransform];
         v47 = v50;
         v48 = v51;
         v49 = v52;
         [v21 setTransform:&v47];
-        v22 = [(CEKDynamicTickMarksView *)self _colorForTickMarkAtIndex:a4 selected:v5 isTickEnabled:1];
+        v22 = [(CEKDynamicTickMarksView *)self _colorForTickMarkAtIndex:index selected:selectedCopy isTickEnabled:1];
         [v21 setTintColor:v22];
 
         [v21 setAccessibilityIgnoresInvertColors:1];
-        [(CEKDynamicTickMarksView *)self _layoutDynamicCellTickMark:v21 atIndex:a4];
+        [(CEKDynamicTickMarksView *)self _layoutDynamicCellTickMark:v21 atIndex:index];
 LABEL_7:
 
         goto LABEL_23;
@@ -513,47 +513,47 @@ LABEL_7:
 
       if ([(CEKDynamicTickMarksView *)self _isUsingImages])
       {
-        v23 = [(CEKDynamicTickMarksView *)self imageDataProvider];
-        v20 = [v23 imageForTickMarkAtIndex:a4];
+        imageDataProvider = [(CEKDynamicTickMarksView *)self imageDataProvider];
+        v20 = [imageDataProvider imageForTickMarkAtIndex:index];
 
-        v24 = [(CEKDynamicTickMarksView *)self imageDataProvider];
-        v25 = [v24 isDisabledAtIndex:a4];
+        imageDataProvider2 = [(CEKDynamicTickMarksView *)self imageDataProvider];
+        v25 = [imageDataProvider2 isDisabledAtIndex:index];
 
-        v21 = v8;
+        v21 = markCopy;
         [v21 setImage:v20];
         [(CEKDynamicTickMarksView *)self contentTransform];
         v47 = v44;
         v48 = v45;
         v49 = v46;
         [v21 setTransform:&v47];
-        v26 = [(CEKDynamicTickMarksView *)self _colorForTickMarkAtIndex:a4 selected:v5 isTickEnabled:v25 ^ 1u];
+        v26 = [(CEKDynamicTickMarksView *)self _colorForTickMarkAtIndex:index selected:selectedCopy isTickEnabled:v25 ^ 1u];
         [v21 setTintColor:v26];
 
         [v21 setAccessibilityIgnoresInvertColors:1];
-        [(CEKDynamicTickMarksView *)self _configureHighlightForTickMark:v21 atIndex:a4];
+        [(CEKDynamicTickMarksView *)self _configureHighlightForTickMark:v21 atIndex:index];
         goto LABEL_7;
       }
 
-      [v8 setFrame:{v12, v14, v16, v18}];
-      [v8 frame];
+      [markCopy setFrame:{v12, v14, v16, v18}];
+      [markCopy frame];
       v28 = v27 * 0.5;
-      v29 = [v8 layer];
-      [v29 setCornerRadius:v28];
+      layer = [markCopy layer];
+      [layer setCornerRadius:v28];
 
-      [v8 setAccessibilityIgnoresInvertColors:1];
-      v30 = [(CEKDynamicTickMarksView *)self tickMarksModel];
-      v31 = [v30 isMainTickMarkAtIndex:a4];
+      [markCopy setAccessibilityIgnoresInvertColors:1];
+      tickMarksModel2 = [(CEKDynamicTickMarksView *)self tickMarksModel];
+      v31 = [tickMarksModel2 isMainTickMarkAtIndex:index];
 
-      v32 = [(CEKDynamicTickMarksView *)self magneticTickMarkIndexes];
-      v33 = [v32 containsIndex:a4];
+      magneticTickMarkIndexes = [(CEKDynamicTickMarksView *)self magneticTickMarkIndexes];
+      v33 = [magneticTickMarkIndexes containsIndex:index];
 
-      v34 = [(CEKDynamicTickMarksView *)self tickMarksModel];
-      if ([v34 endTickMarksProminent])
+      tickMarksModel3 = [(CEKDynamicTickMarksView *)self tickMarksModel];
+      if ([tickMarksModel3 endTickMarksProminent])
       {
-        if (a4)
+        if (index)
         {
-          v35 = [(CEKDynamicTickMarksView *)self tickMarksModel];
-          v36 = [v35 tickMarksCount] - 1 == a4;
+          tickMarksModel4 = [(CEKDynamicTickMarksView *)self tickMarksModel];
+          v36 = [tickMarksModel4 tickMarksCount] - 1 == index;
         }
 
         else
@@ -568,16 +568,16 @@ LABEL_7:
       }
 
       v37 = 1.0;
-      if (!v5)
+      if (!selectedCopy)
       {
-        v38 = [(CEKDynamicTickMarksView *)self _tickMarksVisibilityModel];
-        if ([v38 shouldHideTickMarkAtIndex:a4])
+        _tickMarksVisibilityModel = [(CEKDynamicTickMarksView *)self _tickMarksVisibilityModel];
+        if ([_tickMarksVisibilityModel shouldHideTickMarkAtIndex:index])
         {
         }
 
         else
         {
-          v39 = [(CEKDynamicTickMarksView *)self _waveAnimationDelayActive];
+          _waveAnimationDelayActive = [(CEKDynamicTickMarksView *)self _waveAnimationDelayActive];
 
           v37 = 0.4;
           if (v31)
@@ -590,7 +590,7 @@ LABEL_7:
             v37 = 1.0;
           }
 
-          if (!v39)
+          if (!_waveAnimationDelayActive)
           {
             goto LABEL_22;
           }
@@ -600,15 +600,15 @@ LABEL_7:
       }
 
 LABEL_22:
-      [v8 setAlpha:v37];
+      [markCopy setAlpha:v37];
       v40 = MEMORY[0x1E69DD250];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_invoke;
       v41[3] = &unk_1E7CC6578;
-      v43 = a4;
+      indexCopy = index;
       v41[4] = self;
-      v42 = v8;
+      v42 = markCopy;
       [v40 performWithoutAnimation:v41];
     }
   }
@@ -622,24 +622,24 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
   [*(a1 + 40) setBackgroundColor:v2];
 }
 
-- (void)_configureHighlightForTickMark:(id)a3 atIndex:(unint64_t)a4
+- (void)_configureHighlightForTickMark:(id)mark atIndex:(unint64_t)index
 {
-  v6 = a3;
+  markCopy = mark;
   if ([(CEKDynamicTickMarksView *)self _isUsingImages])
   {
-    v7 = [(CEKDynamicTickMarksView *)self selectedTickMarkIndex];
-    [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:a4 selected:v7 == a4];
+    selectedTickMarkIndex = [(CEKDynamicTickMarksView *)self selectedTickMarkIndex];
+    [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:index selected:selectedTickMarkIndex == index];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = v6;
-    v17 = [(CEKDynamicTickMarksView *)self imageDataProvider];
-    [v17 sizeForImageAtIndex:a4];
+    v16 = markCopy;
+    imageDataProvider = [(CEKDynamicTickMarksView *)self imageDataProvider];
+    [imageDataProvider sizeForImageAtIndex:index];
 
-    v18 = [(CEKDynamicTickMarksView *)self highlightSelectedIndex];
+    highlightSelectedIndex = [(CEKDynamicTickMarksView *)self highlightSelectedIndex];
     v19 = 1.0;
-    if (v7 == a4 && v18)
+    if (selectedTickMarkIndex == index && highlightSelectedIndex)
     {
       memset(&v21, 0, sizeof(v21));
       CGAffineTransformMakeScale(&v21, 0.75, 0.75);
@@ -654,8 +654,8 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
     [(CEKDynamicTickMarksView *)self bounds];
     CGRectGetMidY(v23);
     CEKRectWithSize();
-    v20 = [(CEKDynamicTickMarksView *)self traitCollection];
-    [v20 displayScale];
+    traitCollection = [(CEKDynamicTickMarksView *)self traitCollection];
+    [traitCollection displayScale];
     UIRectCenteredAboutPointScale();
 
     UIRectGetCenter();
@@ -665,18 +665,18 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
   }
 }
 
-- (void)_layoutDynamicCellTickMark:(id)a3 atIndex:(unint64_t)a4
+- (void)_layoutDynamicCellTickMark:(id)mark atIndex:(unint64_t)index
 {
-  v18 = a3;
+  markCopy = mark;
   if ([(CEKDynamicTickMarksView *)self _isUsingCells])
   {
-    [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:a4 selected:[(CEKDynamicTickMarksView *)self selectedTickMarkIndex]== a4];
+    [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:index selected:[(CEKDynamicTickMarksView *)self selectedTickMarkIndex]== index];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(CEKDynamicTickMarksView *)self traitCollection];
-    [v14 displayScale];
+    traitCollection = [(CEKDynamicTickMarksView *)self traitCollection];
+    [traitCollection displayScale];
 
     v20.origin.x = v7;
     v20.origin.y = v9;
@@ -685,14 +685,14 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
     MidX = CGRectGetMidX(v20);
     [(CEKDynamicTickMarksView *)self bounds];
     MidY = CGRectGetMidY(v21);
-    v17 = [v18 contentConfiguration];
-    [v17 contentSize];
+    contentConfiguration = [markCopy contentConfiguration];
+    [contentConfiguration contentSize];
     UISizeCeilToScale();
 
     CEKRectWithSize();
     UIRectCenteredAboutPointScale();
-    [v18 setCenter:{MidX, MidY}];
-    [v18 setBounds:CEKRectWithSize()];
+    [markCopy setCenter:{MidX, MidY}];
+    [markCopy setBounds:CEKRectWithSize()];
   }
 }
 
@@ -712,11 +712,11 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
   return result;
 }
 
-- (CGRect)frameForTickMarkAtIndex:(unint64_t)a3
+- (CGRect)frameForTickMarkAtIndex:(unint64_t)index
 {
-  v5 = [(CEKDynamicTickMarksView *)self selectedTickMarkIndex]== a3;
+  v5 = [(CEKDynamicTickMarksView *)self selectedTickMarkIndex]== index;
 
-  [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:a3 selected:v5];
+  [(CEKDynamicTickMarksView *)self _frameForTickMarkAtIndex:index selected:v5];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -724,15 +724,15 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
   return result;
 }
 
-- (CGRect)_frameForTickMarkAtIndex:(unint64_t)a3 selected:(BOOL)a4
+- (CGRect)_frameForTickMarkAtIndex:(unint64_t)index selected:(BOOL)selected
 {
-  v4 = a4;
-  v7 = [(CEKDynamicTickMarksView *)self tickMarksModel];
-  if ([v7 endTickMarksProminent])
+  selectedCopy = selected;
+  tickMarksModel = [(CEKDynamicTickMarksView *)self tickMarksModel];
+  if ([tickMarksModel endTickMarksProminent])
   {
-    if (a3)
+    if (index)
     {
-      v8 = a3 + 1 == [v7 tickMarksCount];
+      v8 = index + 1 == [tickMarksModel tickMarksCount];
     }
 
     else
@@ -746,10 +746,10 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
     v8 = 0;
   }
 
-  v9 = [(CEKDynamicTickMarksView *)self magneticTickMarkIndexes];
-  v10 = [v9 containsIndex:a3];
+  magneticTickMarkIndexes = [(CEKDynamicTickMarksView *)self magneticTickMarkIndexes];
+  v10 = [magneticTickMarkIndexes containsIndex:index];
 
-  if (v4)
+  if (selectedCopy)
   {
     [(CEKDynamicTickMarksView *)self _lengthForSelectedTickMark];
   }
@@ -765,19 +765,19 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
   }
 
   v12 = v11;
-  [v7 xOffsetForTickMarkIndex:a3];
+  [tickMarksModel xOffsetForTickMarkIndex:index];
   v14 = v13;
-  v15 = [(CEKDynamicTickMarksView *)self _waveIndexes];
-  v16 = [v15 containsIndex:a3];
+  _waveIndexes = [(CEKDynamicTickMarksView *)self _waveIndexes];
+  v16 = [_waveIndexes containsIndex:index];
 
-  if ((v16 & !v4) != 0)
+  if ((v16 & !selectedCopy) != 0)
   {
     v12 = 0.1;
   }
 
   [(CEKDynamicTickMarksView *)self bounds];
   v18 = v17 - v12;
-  [v7 tickMarkWidth];
+  [tickMarksModel tickMarkWidth];
   v20 = v19;
 
   v21 = v14;
@@ -793,12 +793,12 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
 
 - (void)_recycleTickMarks
 {
-  v3 = [(CEKDynamicTickMarksView *)self _indexesIntersectingVisibleBounds];
-  v4 = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
-  v5 = [v4 mutableCopy];
-  [v5 removeIndexes:v3];
-  v6 = [v3 mutableCopy];
-  [v6 removeIndexes:v4];
+  _indexesIntersectingVisibleBounds = [(CEKDynamicTickMarksView *)self _indexesIntersectingVisibleBounds];
+  _installedTickMarkIndexes = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
+  v5 = [_installedTickMarkIndexes mutableCopy];
+  [v5 removeIndexes:_indexesIntersectingVisibleBounds];
+  v6 = [_indexesIntersectingVisibleBounds mutableCopy];
+  [v6 removeIndexes:_installedTickMarkIndexes];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__CEKDynamicTickMarksView__recycleTickMarks__block_invoke;
@@ -811,18 +811,18 @@ void __64__CEKDynamicTickMarksView__configureTickMark_forIndex_selected___block_
   v7[3] = &unk_1E7CC6550;
   v7[4] = self;
   [v6 enumerateIndexesUsingBlock:v7];
-  [(CEKDynamicTickMarksView *)self _setInstalledTickMarkIndexes:v3];
+  [(CEKDynamicTickMarksView *)self _setInstalledTickMarkIndexes:_indexesIntersectingVisibleBounds];
 }
 
 - (void)_refreshTickMarks
 {
-  v3 = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
+  _installedTickMarkIndexes = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__CEKDynamicTickMarksView__refreshTickMarks__block_invoke;
   v4[3] = &unk_1E7CC6550;
   v4[4] = self;
-  [v3 enumerateIndexesUsingBlock:v4];
+  [_installedTickMarkIndexes enumerateIndexesUsingBlock:v4];
 
   self->__needsTickMarkRefresh = 0;
 }
@@ -838,13 +838,13 @@ void __44__CEKDynamicTickMarksView__refreshTickMarks__block_invoke(uint64_t a1, 
 
 - (void)_refreshTickMarksHighlight
 {
-  v3 = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
+  _installedTickMarkIndexes = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke;
   v4[3] = &unk_1E7CC6550;
   v4[4] = self;
-  [v3 enumerateIndexesUsingBlock:v4];
+  [_installedTickMarkIndexes enumerateIndexesUsingBlock:v4];
 }
 
 void __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke(uint64_t a1, uint64_t a2)
@@ -858,36 +858,36 @@ void __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke(uint
 
 - (id)_indexesIntersectingVisibleBounds
 {
-  v3 = [(CEKDynamicTickMarksView *)self tickMarksModel];
-  v4 = [v3 tickMarksCount];
+  tickMarksModel = [(CEKDynamicTickMarksView *)self tickMarksModel];
+  tickMarksCount = [tickMarksModel tickMarksCount];
 
-  if (v4 && ((-[CEKDynamicTickMarksView visibleBounds](self, "visibleBounds"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, -[CEKDynamicTickMarksView tickMarksModel](self, "tickMarksModel"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 floorTickMarkIndexForXOffset:v6], v13, -[CEKDynamicTickMarksView _bounds:containsTickMarkAtIndex:](self, "_bounds:containsTickMarkAtIndex:", v14, v6, v8, v10, v12)) || (++v14, -[CEKDynamicTickMarksView _bounds:containsTickMarkAtIndex:](self, "_bounds:containsTickMarkAtIndex:", v14, v6, v8, v10, v12))) && v14 != 0x7FFFFFFFFFFFFFFFLL)
+  if (tickMarksCount && ((-[CEKDynamicTickMarksView visibleBounds](self, "visibleBounds"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, -[CEKDynamicTickMarksView tickMarksModel](self, "tickMarksModel"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 floorTickMarkIndexForXOffset:v6], v13, -[CEKDynamicTickMarksView _bounds:containsTickMarkAtIndex:](self, "_bounds:containsTickMarkAtIndex:", v14, v6, v8, v10, v12)) || (++v14, -[CEKDynamicTickMarksView _bounds:containsTickMarkAtIndex:](self, "_bounds:containsTickMarkAtIndex:", v14, v6, v8, v10, v12))) && v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = [(CEKDynamicTickMarksView *)self tickMarksModel];
+    tickMarksModel2 = [(CEKDynamicTickMarksView *)self tickMarksModel];
     v20.origin.x = v6;
     v20.origin.y = v8;
     v20.size.width = v10;
     v20.size.height = v12;
-    v17 = [v16 floorTickMarkIndexForXOffset:CGRectGetMaxX(v20)];
+    v17 = [tickMarksModel2 floorTickMarkIndexForXOffset:CGRectGetMaxX(v20)];
 
-    v15 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v14, v17 - v14 + 1}];
+    indexSet = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v14, v17 - v14 + 1}];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
   }
 
-  return v15;
+  return indexSet;
 }
 
-- (BOOL)_bounds:(CGRect)a3 containsTickMarkAtIndex:(unint64_t)a4
+- (BOOL)_bounds:(CGRect)_bounds containsTickMarkAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(CEKDynamicTickMarksView *)self frameForTickMarkAtIndex:a4];
+  height = _bounds.size.height;
+  width = _bounds.size.width;
+  y = _bounds.origin.y;
+  x = _bounds.origin.x;
+  [(CEKDynamicTickMarksView *)self frameForTickMarkAtIndex:index];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -900,14 +900,14 @@ void __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke(uint
   return CGRectIntersectsRect(*&v16, *&v9);
 }
 
-- (void)_dequeueAndInstallTickMarkForIndex:(unint64_t)a3
+- (void)_dequeueAndInstallTickMarkForIndex:(unint64_t)index
 {
-  v10 = [(CEKDynamicTickMarksView *)self _tickMarksReusePool];
-  v5 = [v10 anyObject];
-  if (v5)
+  _tickMarksReusePool = [(CEKDynamicTickMarksView *)self _tickMarksReusePool];
+  anyObject = [_tickMarksReusePool anyObject];
+  if (anyObject)
   {
-    v6 = v5;
-    [v10 removeObject:v5];
+    v6 = anyObject;
+    [_tickMarksReusePool removeObject:anyObject];
   }
 
   else
@@ -931,61 +931,61 @@ void __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke(uint
   }
 
   [(CEKDynamicTickMarksView *)self addSubview:v6];
-  v8 = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v8 setObject:v6 forKeyedSubscript:v9];
+  _tickMarksByIndex = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [_tickMarksByIndex setObject:v6 forKeyedSubscript:v9];
 
-  [(CEKDynamicTickMarksView *)self _configureTickMark:v6 forIndex:a3];
+  [(CEKDynamicTickMarksView *)self _configureTickMark:v6 forIndex:index];
 }
 
-- (void)_removeAndEnqueueTickMarkAtIndex:(unint64_t)a3
+- (void)_removeAndEnqueueTickMarkAtIndex:(unint64_t)index
 {
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
-  v5 = [v4 objectForKeyedSubscript:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  _tickMarksByIndex = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
+  v5 = [_tickMarksByIndex objectForKeyedSubscript:v8];
 
-  v6 = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
-  [v6 setObject:0 forKeyedSubscript:v8];
+  _tickMarksByIndex2 = [(CEKDynamicTickMarksView *)self _tickMarksByIndex];
+  [_tickMarksByIndex2 setObject:0 forKeyedSubscript:v8];
 
   [v5 removeFromSuperview];
   [v5 _removeAllRetargetableAnimations:0];
-  v7 = [(CEKDynamicTickMarksView *)self _tickMarksReusePool];
-  [v7 addObject:v5];
+  _tickMarksReusePool = [(CEKDynamicTickMarksView *)self _tickMarksReusePool];
+  [_tickMarksReusePool addObject:v5];
 }
 
 - (void)_destroyAllTickMarks
 {
-  v3 = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
+  _installedTickMarkIndexes = [(CEKDynamicTickMarksView *)self _installedTickMarkIndexes];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__CEKDynamicTickMarksView__destroyAllTickMarks__block_invoke;
   v7[3] = &unk_1E7CC6550;
   v7[4] = self;
-  [v3 enumerateIndexesUsingBlock:v7];
+  [_installedTickMarkIndexes enumerateIndexesUsingBlock:v7];
 
-  v4 = [(CEKDynamicTickMarksView *)self _tickMarksReusePool];
-  [v4 removeAllObjects];
+  _tickMarksReusePool = [(CEKDynamicTickMarksView *)self _tickMarksReusePool];
+  [_tickMarksReusePool removeAllObjects];
 
-  v5 = [MEMORY[0x1E696AC90] indexSet];
-  [(CEKDynamicTickMarksView *)self _setInstalledTickMarkIndexes:v5];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
+  [(CEKDynamicTickMarksView *)self _setInstalledTickMarkIndexes:indexSet];
 
   v6 = [MEMORY[0x1E696AC90] indexSetWithIndex:{-[CEKDynamicTickMarksView selectedTickMarkIndex](self, "selectedTickMarkIndex")}];
   [(CEKDynamicTickMarksView *)self _setSelectedIndexes:v6];
 }
 
-- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)a3
+- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)model
 {
   [(CEKDynamicTickMarksView *)self _setNeedsRefreshTickMarks];
-  v4 = [(CEKDynamicTickMarksView *)self _tickMarksVisibilityModel];
-  [v4 setNeedsRebuild];
+  _tickMarksVisibilityModel = [(CEKDynamicTickMarksView *)self _tickMarksVisibilityModel];
+  [_tickMarksVisibilityModel setNeedsRebuild];
 
-  v5 = [(CEKDynamicTickMarksView *)self delegate];
-  [v5 tickMarksViewDidChangeWidthForTickMarkCount:self];
+  delegate = [(CEKDynamicTickMarksView *)self delegate];
+  [delegate tickMarksViewDidChangeWidthForTickMarkCount:self];
 }
 
-- (void)setImageDataProvider:(id)a3
+- (void)setImageDataProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_imageDataProvider);
 
   v5 = obj;
@@ -1007,15 +1007,15 @@ void __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke(uint
 
 - (BOOL)_isUsingImages
 {
-  v2 = [(CEKDynamicTickMarksView *)self imageDataProvider];
-  v3 = v2 != 0;
+  imageDataProvider = [(CEKDynamicTickMarksView *)self imageDataProvider];
+  v3 = imageDataProvider != 0;
 
   return v3;
 }
 
-- (void)setCellDataProvider:(id)a3
+- (void)setCellDataProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_cellDataProvider);
 
   v5 = obj;
@@ -1042,41 +1042,41 @@ void __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke(uint
     return 0;
   }
 
-  v4 = [(CEKDynamicTickMarksView *)self cellDataProvider];
-  v3 = v4 != 0;
+  cellDataProvider = [(CEKDynamicTickMarksView *)self cellDataProvider];
+  v3 = cellDataProvider != 0;
 
   return v3;
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(CEKDynamicTickMarksView *)self setContentTransform:v4 animated:0];
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3 animated:(BOOL)a4
+- (void)setContentTransform:(CGAffineTransform *)transform animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   p_contentTransform = &self->_contentTransform;
-  v8 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v8 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v8;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v9 = *&self->_contentTransform.c;
   *&t2.a = *&self->_contentTransform.a;
   *&t2.c = v9;
   *&t2.tx = *&self->_contentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    if (v4)
+    if (animatedCopy)
     {
       [(CEKDynamicTickMarksView *)self layoutIfNeeded];
-      v10 = *&a3->a;
-      v11 = *&a3->tx;
-      *&p_contentTransform->c = *&a3->c;
+      v10 = *&transform->a;
+      v11 = *&transform->tx;
+      *&p_contentTransform->c = *&transform->c;
       *&p_contentTransform->tx = v11;
       *&p_contentTransform->a = v10;
       v14[0] = MEMORY[0x1E69E9820];
@@ -1089,9 +1089,9 @@ void __53__CEKDynamicTickMarksView__refreshTickMarksHighlight__block_invoke(uint
 
     else
     {
-      v12 = *&a3->a;
-      v13 = *&a3->tx;
-      *&p_contentTransform->c = *&a3->c;
+      v12 = *&transform->a;
+      v13 = *&transform->tx;
+      *&p_contentTransform->c = *&transform->c;
       *&p_contentTransform->tx = v13;
       *&p_contentTransform->a = v12;
       [(CEKDynamicTickMarksView *)self _refreshTickMarks];

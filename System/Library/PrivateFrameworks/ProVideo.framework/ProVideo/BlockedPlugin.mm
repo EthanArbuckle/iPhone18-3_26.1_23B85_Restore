@@ -1,20 +1,20 @@
 @interface BlockedPlugin
-- (id)init:(id)a3 plugName:(id)a4 plugVersion:(id)a5;
+- (id)init:(id)init plugName:(id)name plugVersion:(id)version;
 - (void)dealloc;
 @end
 
 @implementation BlockedPlugin
 
-- (id)init:(id)a3 plugName:(id)a4 plugVersion:(id)a5
+- (id)init:(id)init plugName:(id)name plugVersion:(id)version
 {
   v10.receiver = self;
   v10.super_class = BlockedPlugin;
   v8 = [(BlockedPlugin *)&v10 init];
   if (v8)
   {
-    v8->_bundleName = a3;
-    v8->_plugName = a4;
-    v8->_plugVersion = a5;
+    v8->_bundleName = init;
+    v8->_plugName = name;
+    v8->_plugVersion = version;
   }
 
   return v8;

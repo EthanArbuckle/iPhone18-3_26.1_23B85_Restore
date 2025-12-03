@@ -1,10 +1,10 @@
 @interface _SFCreditCardCaptureViewController
 - (_SFCreditCardCaptureViewController)init;
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4;
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4;
-- (void)cameraReaderDidCancel:(id)a3;
-- (void)cameraReaderDidEnd:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)cameraReader:(id)reader didFailWithError:(id)error;
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects;
+- (void)cameraReaderDidCancel:(id)cancel;
+- (void)cameraReaderDidEnd:(id)end;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation _SFCreditCardCaptureViewController
@@ -21,10 +21,10 @@
     reader = v2->_reader;
     v2->_reader = v3;
 
-    v5 = [(CRCameraReader *)v2->_reader view];
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 bounds];
-    [v5 setFrame:?];
+    view = [(CRCameraReader *)v2->_reader view];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
+    [view setFrame:?];
 
     [(CRCameraReader *)v2->_reader setDelegate:v2];
     v7 = v2->_reader;
@@ -116,18 +116,18 @@ LABEL_13:
     [(CRCameraReader *)v7 setOutputObjectTypes:v21];
 
     [(_SFCreditCardCaptureViewController *)v2 pushViewController:v2->_reader animated:0];
-    v22 = [(CRCameraReader *)v2->_reader navigationController];
-    v23 = [v22 navigationBar];
+    navigationController = [(CRCameraReader *)v2->_reader navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    v24 = [v23 standardAppearance];
-    [v23 setScrollEdgeAppearance:v24];
+    standardAppearance = [navigationBar standardAppearance];
+    [navigationBar setScrollEdgeAppearance:standardAppearance];
 
-    v25 = [(CRCameraReader *)v2->_reader navigationItem];
+    navigationItem = [(CRCameraReader *)v2->_reader navigationItem];
     v26 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v2 action:sel__cancel_];
-    [v25 setLeftBarButtonItem:v26];
+    [navigationItem setLeftBarButtonItem:v26];
 
     v27 = _WBSLocalizedString();
-    [v25 setTitle:v27];
+    [navigationItem setTitle:v27];
 
     v28 = v2;
   }
@@ -135,17 +135,17 @@ LABEL_13:
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _SFCreditCardCaptureViewController;
-  [(_SFCreditCardCaptureViewController *)&v4 viewDidAppear:a3];
+  [(_SFCreditCardCaptureViewController *)&v4 viewDidAppear:appear];
   [(CRCameraReader *)self->_reader start];
 }
 
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4
+- (void)cameraReader:(id)reader didFailWithError:(id)error
 {
-  v5 = [(_SFCreditCardCaptureViewController *)self delegate:a3];
+  v5 = [(_SFCreditCardCaptureViewController *)self delegate:reader];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -159,7 +159,7 @@ LABEL_13:
   }
 }
 
-- (void)cameraReaderDidEnd:(id)a3
+- (void)cameraReaderDidEnd:(id)end
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -169,9 +169,9 @@ LABEL_13:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)cameraReaderDidCancel:(id)a3
+- (void)cameraReaderDidCancel:(id)cancel
 {
-  v4 = [(_SFCreditCardCaptureViewController *)self delegate];
+  delegate = [(_SFCreditCardCaptureViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
@@ -185,11 +185,11 @@ LABEL_13:
   }
 }
 
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects
 {
   v5 = MEMORY[0x1E69C8F08];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithCameraReaderOutput:v6];
+  objectsCopy = objects;
+  v7 = [[v5 alloc] initWithCameraReaderOutput:objectsCopy];
 
   receivedCardData = self->_receivedCardData;
   self->_receivedCardData = v7;

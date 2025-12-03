@@ -1,6 +1,6 @@
 @interface PowerUIWakeRequestSignalMonitor
-+ (id)monitorWithDelegate:(id)a3;
-- (PowerUIWakeRequestSignalMonitor)initWithDelegate:(id)a3;
++ (id)monitorWithDelegate:(id)delegate;
+- (PowerUIWakeRequestSignalMonitor)initWithDelegate:(id)delegate;
 - (id)nextUserVisibleWakeDate;
 - (void)startMonitoring;
 - (void)stopMonitoring;
@@ -8,7 +8,7 @@
 
 @implementation PowerUIWakeRequestSignalMonitor
 
-- (PowerUIWakeRequestSignalMonitor)initWithDelegate:(id)a3
+- (PowerUIWakeRequestSignalMonitor)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = PowerUIWakeRequestSignalMonitor;
@@ -23,10 +23,10 @@
   return v3;
 }
 
-+ (id)monitorWithDelegate:(id)a3
++ (id)monitorWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy];
 
   return v4;
 }
@@ -35,17 +35,17 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   context = self->_context;
-  v4 = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
-  v5 = [(_CDContext *)context objectForKeyedSubscript:v4];
+  keyPathForNextUserVisibleWakeDate = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
+  v5 = [(_CDContext *)context objectForKeyedSubscript:keyPathForNextUserVisibleWakeDate];
 
   if (v5)
   {
-    v6 = [v5 dateByAddingTimeInterval:15.01];
+    distantFuture = [v5 dateByAddingTimeInterval:15.01];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
   v7 = [MEMORY[0x277CFE358] keyPathWithKey:@"/system/nextUserVisibleWakeRequestor"];
@@ -56,11 +56,11 @@
     v13 = 138412546;
     v14 = v8;
     v15 = 2112;
-    v16 = v6;
+    v16 = distantFuture;
     _os_log_impl(&dword_21B766000, v9, OS_LOG_TYPE_DEFAULT, "%@ requests a wake at %@, requesting", &v13, 0x16u);
   }
 
-  v10 = [v6 dateByAddingTimeInterval:-3600.0];
+  v10 = [distantFuture dateByAddingTimeInterval:-3600.0];
 
   v11 = *MEMORY[0x277D85DE8];
 
@@ -71,14 +71,14 @@
 {
   if (!self->_context)
   {
-    v3 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     context = self->_context;
-    self->_context = v3;
+    self->_context = userContext;
   }
 
   v5 = MEMORY[0x277CFE360];
-  v6 = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
-  v7 = [v5 predicateForChangeAtKeyPath:v6];
+  keyPathForNextUserVisibleWakeDate = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
+  v7 = [v5 predicateForChangeAtKeyPath:keyPathForNextUserVisibleWakeDate];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;

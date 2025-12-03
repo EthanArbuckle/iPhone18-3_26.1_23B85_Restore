@@ -9,7 +9,7 @@
 
 + (id)optionsFromPreferences
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setIncludeNotes:{+[CNVCardUserDefaults includeNotesInVCards](CNVCardUserDefaults, "includeNotesInVCards")}];
   [v2 setIncludePhotos:{+[CNVCardUserDefaults includePhotosInVCards](CNVCardUserDefaults, "includePhotosInVCards")}];
   [v2 setOutputVersion:{+[CNVCardUserDefaults outputFormat](CNVCardUserDefaults, "outputFormat")}];
@@ -62,16 +62,16 @@
   v20 = NSStringFromSize(v30);
   v21 = [v3 appendName:@"maximumImageSize" object:v20];
 
-  v22 = [(CNVCardWritingOptions *)self treatAsUnknownProperties];
-  v23 = [v3 appendName:@"treatAsUnknownProperties" object:v22];
+  treatAsUnknownProperties = [(CNVCardWritingOptions *)self treatAsUnknownProperties];
+  v23 = [v3 appendName:@"treatAsUnknownProperties" object:treatAsUnknownProperties];
 
   v24 = [v3 appendName:@"outputVersion" vCardOutputVersionValue:{-[CNVCardWritingOptions outputVersion](self, "outputVersion")}];
-  v25 = [(CNVCardWritingOptions *)self availableEncodings];
-  v26 = [v3 appendName:@"availableEncodings" object:v25];
+  availableEncodings = [(CNVCardWritingOptions *)self availableEncodings];
+  v26 = [v3 appendName:@"availableEncodings" object:availableEncodings];
 
-  v27 = [v3 build];
+  build = [v3 build];
 
-  return v27;
+  return build;
 }
 
 - (CGSize)maximumImageSize

@@ -1,8 +1,8 @@
 @interface SFTabSwitcherTransaction
 - (SFTabSwitcherTransaction)init;
-- (void)setAnimationSettings:(id)a3;
-- (void)setInsertedItemToDismissTo:(id)a3;
-- (void)setTargetScrollPosition:(id)a3;
+- (void)setAnimationSettings:(id)settings;
+- (void)setInsertedItemToDismissTo:(id)to;
+- (void)setTargetScrollPosition:(id)position;
 @end
 
 @implementation SFTabSwitcherTransaction
@@ -18,25 +18,25 @@
   return [(SFTabSwitcherTransaction *)&v3 init];
 }
 
-- (void)setTargetScrollPosition:(id)a3
+- (void)setTargetScrollPosition:(id)position
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_targetScrollPosition);
-  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_targetScrollPosition) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_targetScrollPosition) = position;
+  positionCopy = position;
 }
 
-- (void)setAnimationSettings:(id)a3
+- (void)setAnimationSettings:(id)settings
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_animationSettings);
-  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_animationSettings) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_animationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setInsertedItemToDismissTo:(id)a3
+- (void)setInsertedItemToDismissTo:(id)to
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_insertedItemToDismissTo);
-  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_insertedItemToDismissTo) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherTransaction_insertedItemToDismissTo) = to;
+  toCopy = to;
 }
 
 @end

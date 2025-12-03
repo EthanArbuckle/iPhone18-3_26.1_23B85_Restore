@@ -1,6 +1,6 @@
 @interface DUFoundInEventResult
-+ (id)getErrorForFieldWithField:(id)a3 errorCode:(int64_t)a4;
-+ (id)mapErrorCodeToUserInfoWithFieldName:(id)a3 errorCode:(int64_t)a4;
++ (id)getErrorForFieldWithField:(id)field errorCode:(int64_t)code;
++ (id)mapErrorCodeToUserInfoWithFieldName:(id)name errorCode:(int64_t)code;
 - (NSError)endAddressError;
 - (NSError)endDateError;
 - (NSError)endPlaceError;
@@ -12,21 +12,21 @@
 - (NSError)startAddressError;
 - (NSError)startDateError;
 - (NSError)startPlaceError;
-- (_TtC21DocumentUnderstanding20DUFoundInEventResult)initWithFoundInEventResult:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (_TtC21DocumentUnderstanding20DUFoundInEventResult)initWithFoundInEventResult:(id)result;
+- (id)copyWithZone:(void *)zone;
 - (id)serializedData;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEndAddressError:(id)a3;
-- (void)setEndDateError:(id)a3;
-- (void)setEndPlaceError:(id)a3;
-- (void)setGuestNameError:(id)a3;
-- (void)setHotelNameError:(id)a3;
-- (void)setMovieNameError:(id)a3;
-- (void)setReservationIdError:(id)a3;
-- (void)setReservationNameError:(id)a3;
-- (void)setStartAddressError:(id)a3;
-- (void)setStartDateError:(id)a3;
-- (void)setStartPlaceError:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEndAddressError:(id)error;
+- (void)setEndDateError:(id)error;
+- (void)setEndPlaceError:(id)error;
+- (void)setGuestNameError:(id)error;
+- (void)setHotelNameError:(id)error;
+- (void)setMovieNameError:(id)error;
+- (void)setReservationIdError:(id)error;
+- (void)setReservationNameError:(id)error;
+- (void)setStartAddressError:(id)error;
+- (void)setStartDateError:(id)error;
+- (void)setStartPlaceError:(id)error;
 @end
 
 @implementation DUFoundInEventResult
@@ -38,10 +38,10 @@
   return v2;
 }
 
-- (void)setReservationIdError:(id)a3
+- (void)setReservationIdError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC352C();
 }
 
@@ -52,10 +52,10 @@
   return v2;
 }
 
-- (void)setReservationNameError:(id)a3
+- (void)setReservationNameError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC3748();
 }
 
@@ -66,10 +66,10 @@
   return v2;
 }
 
-- (void)setHotelNameError:(id)a3
+- (void)setHotelNameError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC3A88();
 }
 
@@ -80,10 +80,10 @@
   return v2;
 }
 
-- (void)setGuestNameError:(id)a3
+- (void)setGuestNameError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC3CA4();
 }
 
@@ -94,10 +94,10 @@
   return v2;
 }
 
-- (void)setMovieNameError:(id)a3
+- (void)setMovieNameError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC3EC0();
 }
 
@@ -108,10 +108,10 @@
   return v2;
 }
 
-- (void)setStartAddressError:(id)a3
+- (void)setStartAddressError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC40DC();
 }
 
@@ -122,10 +122,10 @@
   return v2;
 }
 
-- (void)setEndAddressError:(id)a3
+- (void)setEndAddressError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC43B8();
 }
 
@@ -136,10 +136,10 @@
   return v2;
 }
 
-- (void)setStartPlaceError:(id)a3
+- (void)setStartPlaceError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC4790();
 }
 
@@ -150,10 +150,10 @@
   return v2;
 }
 
-- (void)setEndPlaceError:(id)a3
+- (void)setEndPlaceError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC49AC();
 }
 
@@ -164,10 +164,10 @@
   return v2;
 }
 
-- (void)setStartDateError:(id)a3
+- (void)setStartDateError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC4BC8();
 }
 
@@ -178,34 +178,34 @@
   return v2;
 }
 
-- (void)setEndDateError:(id)a3
+- (void)setEndDateError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_232BC4DE4();
 }
 
-+ (id)mapErrorCodeToUserInfoWithFieldName:(id)a3 errorCode:(int64_t)a4
++ (id)mapErrorCodeToUserInfoWithFieldName:(id)name errorCode:(int64_t)code
 {
   v5 = sub_232CE9D50();
-  sub_232BC526C(v5, v6, a4);
+  sub_232BC526C(v5, v6, code);
 
   v7 = sub_232CE9C20();
 
   return v7;
 }
 
-+ (id)getErrorForFieldWithField:(id)a3 errorCode:(int64_t)a4
++ (id)getErrorForFieldWithField:(id)field errorCode:(int64_t)code
 {
   v5 = sub_232CE9D50();
-  v7 = static DUFoundInEventResult.getErrorForField(field:errorCode:)(v5, v6, a4);
+  v7 = static DUFoundInEventResult.getErrorForField(field:errorCode:)(v5, v6, code);
 
   return v7;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232BC77F0(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -216,22 +216,22 @@
 
 - (id)serializedData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_232BC78F4();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232BC7A40(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232BC7A40(coderCopy);
 }
 
-- (_TtC21DocumentUnderstanding20DUFoundInEventResult)initWithFoundInEventResult:(id)a3
+- (_TtC21DocumentUnderstanding20DUFoundInEventResult)initWithFoundInEventResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   DUFoundInEventResult.init(foundInEventResult:)();
   return result;
 }

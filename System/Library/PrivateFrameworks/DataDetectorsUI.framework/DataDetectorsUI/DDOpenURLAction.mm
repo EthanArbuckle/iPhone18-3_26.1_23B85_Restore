@@ -7,7 +7,7 @@
 - (id)localizedName;
 - (id)notificationIconBundleIdentifier;
 - (id)quickActionTitle;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDOpenURLAction
@@ -68,9 +68,9 @@
 
       else
       {
-        v5 = [(NSURL *)self->super._url scheme];
-        v6 = [v5 lowercaseString];
-        v7 = [v6 isEqualToString:@"rdar"];
+        scheme = [(NSURL *)self->super._url scheme];
+        lowercaseString = [scheme lowercaseString];
+        v7 = [lowercaseString isEqualToString:@"rdar"];
 
         if (v7)
         {
@@ -103,9 +103,9 @@
 
     else
     {
-      v9 = self;
+      selfCopy = self;
       [DDOpenURLAction appLink];
-      self = v9;
+      self = selfCopy;
       if (_MergedGlobals_8 != 1)
       {
         goto LABEL_6;
@@ -115,13 +115,13 @@
     url = self->super._url;
     if (url)
     {
-      v3 = self;
+      selfCopy2 = self;
       v4 = [MEMORY[0x277CC1E48] appLinksWithURL:url limit:1 error:0];
-      v5 = [v4 firstObject];
-      appLink = v3->_appLink;
-      v3->_appLink = v5;
+      firstObject = [v4 firstObject];
+      appLink = selfCopy2->_appLink;
+      selfCopy2->_appLink = firstObject;
 
-      self = v3;
+      self = selfCopy2;
     }
   }
 
@@ -147,9 +147,9 @@ uint64_t __26__DDOpenURLAction_appLink__block_invoke()
 
   else
   {
-    v6 = [(DDOpenURLAction *)self appLink];
+    appLink = [(DDOpenURLAction *)self appLink];
 
-    if (v6)
+    if (appLink)
     {
       v3 = [(DDAction *)[DDOpenURLAction alloc] initWithURL:self->super._url result:self->super._result context:self->super._context];
       if (v3)
@@ -172,13 +172,13 @@ uint64_t __26__DDOpenURLAction_appLink__block_invoke()
 {
   if (self->super._hasCompanion)
   {
-    v2 = [(DDOpenURLAction *)self appLink];
-    v3 = [v2 targetApplicationRecord];
-    v4 = [v3 localizedName];
+    appLink = [(DDOpenURLAction *)self appLink];
+    targetApplicationRecord = [appLink targetApplicationRecord];
+    localizedName = [targetApplicationRecord localizedName];
 
     v5 = MEMORY[0x277CCACA8];
     v6 = DDLocalizedString(@"Open in “%@”");
-    v7 = [v5 stringWithFormat:v6, v4];
+    v7 = [v5 stringWithFormat:v6, localizedName];
   }
 
   else if (self->super._isCompanion)
@@ -186,14 +186,14 @@ uint64_t __26__DDOpenURLAction_appLink__block_invoke()
     v8 = objc_alloc(MEMORY[0x277CC1E98]);
     v9 = [MEMORY[0x277CBEBC0] URLWithString:@"http://"];
     v10 = [v8 initWithURL:v9 error:0];
-    v11 = [v10 bundleRecord];
-    v12 = [v11 localizedName];
+    bundleRecord = [v10 bundleRecord];
+    localizedName2 = [bundleRecord localizedName];
 
-    if ([v12 length])
+    if ([localizedName2 length])
     {
       v13 = MEMORY[0x277CCACA8];
       v14 = DDLocalizedString(@"Open in %@");
-      v7 = [v13 stringWithFormat:v14, v12];
+      v7 = [v13 stringWithFormat:v14, localizedName2];
     }
 
     else
@@ -204,9 +204,9 @@ uint64_t __26__DDOpenURLAction_appLink__block_invoke()
 
   else
   {
-    v15 = [(NSURL *)self->super._url scheme];
-    v16 = [v15 lowercaseString];
-    v17 = [v16 isEqualToString:@"rdar"];
+    scheme = [(NSURL *)self->super._url scheme];
+    lowercaseString = [scheme lowercaseString];
+    v17 = [lowercaseString isEqualToString:@"rdar"];
 
     if (v17)
     {
@@ -238,8 +238,8 @@ uint64_t __26__DDOpenURLAction_appLink__block_invoke()
 LABEL_6:
     if ([v4 length] <= 0x3B)
     {
-      v6 = v4;
-      v4 = v6;
+      compactTitle = v4;
+      v4 = compactTitle;
       goto LABEL_10;
     }
 
@@ -262,9 +262,9 @@ LABEL_6:
 LABEL_9:
   v9.receiver = self;
   v9.super_class = DDOpenURLAction;
-  v6 = [(DDAction *)&v9 compactTitle];
+  compactTitle = [(DDAction *)&v9 compactTitle];
 LABEL_10:
-  v7 = v6;
+  v7 = compactTitle;
 
   return v7;
 }
@@ -274,51 +274,51 @@ LABEL_10:
   url = self->super._url;
   if (url)
   {
-    v4 = [(NSURL *)url _lp_highLevelDomain];
-    if ([v4 length])
+    _lp_highLevelDomain = [(NSURL *)url _lp_highLevelDomain];
+    if ([_lp_highLevelDomain length])
     {
-      v5 = v4;
+      quickActionTitle = _lp_highLevelDomain;
 
-      return v5;
+      return quickActionTitle;
     }
   }
 
   v7.receiver = self;
   v7.super_class = DDOpenURLAction;
-  v5 = [(DDAction *)&v7 quickActionTitle];
+  quickActionTitle = [(DDAction *)&v7 quickActionTitle];
 
-  return v5;
+  return quickActionTitle;
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  v10 = a3;
+  viewCopy = view;
   if ([(DDOpenURLAction *)self shouldOpenInApp]&& ([(DDOpenURLAction *)self appLink], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(DDOpenURLAction *)self appLink];
-    [v5 setEnabled:1];
+    appLink = [(DDOpenURLAction *)self appLink];
+    [appLink setEnabled:1];
 
-    v6 = [(DDOpenURLAction *)self appLink];
-    [v6 openWithCompletionHandler:0];
+    appLink2 = [(DDOpenURLAction *)self appLink];
+    [appLink2 openWithCompletionHandler:0];
 
-    v7 = v10;
+    v7 = viewCopy;
   }
 
   else
   {
     if ([(DDOpenURLAction *)self shouldOpenInBrowser])
     {
-      v8 = [(DDOpenURLAction *)self appLink];
+      appLink3 = [(DDOpenURLAction *)self appLink];
 
-      if (v8)
+      if (appLink3)
       {
-        v9 = [(DDOpenURLAction *)self appLink];
-        [v9 setEnabled:0];
+        appLink4 = [(DDOpenURLAction *)self appLink];
+        [appLink4 setEnabled:0];
       }
     }
 
-    [(DDAction *)self _performFromView:v10 byOpeningURL:self->super._url disableAppLink:[(DDOpenURLAction *)self shouldOpenInBrowser]];
-    v7 = v10;
+    [(DDAction *)self _performFromView:viewCopy byOpeningURL:self->super._url disableAppLink:[(DDOpenURLAction *)self shouldOpenInBrowser]];
+    v7 = viewCopy;
   }
 }
 
@@ -329,17 +329,17 @@ LABEL_10:
     return 1;
   }
 
-  v3 = [(DDOpenURLAction *)self appLink];
-  v4 = v3 == 0;
+  appLink = [(DDOpenURLAction *)self appLink];
+  v4 = appLink == 0;
 
   return v4;
 }
 
 - (id)notificationIconBundleIdentifier
 {
-  v2 = [(NSURL *)self->super._url scheme];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 hasPrefix:@"http"];
+  scheme = [(NSURL *)self->super._url scheme];
+  lowercaseString = [scheme lowercaseString];
+  v4 = [lowercaseString hasPrefix:@"http"];
 
   if (v4)
   {

@@ -1,6 +1,6 @@
 @interface HDNotificationSyncDiagnosticOperation
-- (void)_appendCSVLine:(id)a3;
-- (void)_appendNotificationInstructions:(id)a3;
+- (void)_appendCSVLine:(id)line;
+- (void)_appendNotificationInstructions:(id)instructions;
 - (void)run;
 @end
 
@@ -44,15 +44,15 @@ void __44__HDNotificationSyncDiagnosticOperation_run__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_appendNotificationInstructions:(id)a3
+- (void)_appendNotificationInstructions:(id)instructions
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  instructionsCopy = instructions;
+  v5 = [instructionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -64,20 +64,20 @@ void __44__HDNotificationSyncDiagnosticOperation_run__block_invoke(uint64_t a1, 
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(instructionsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 propertyValues];
-        [(HDNotificationSyncDiagnosticOperation *)self _appendCSVLine:v11];
+        propertyValues = [v9 propertyValues];
+        [(HDNotificationSyncDiagnosticOperation *)self _appendCSVLine:propertyValues];
 
         objc_autoreleasePoolPop(v10);
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [instructionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -86,9 +86,9 @@ void __44__HDNotificationSyncDiagnosticOperation_run__block_invoke(uint64_t a1, 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendCSVLine:(id)a3
+- (void)_appendCSVLine:(id)line
 {
-  v5 = [a3 hk_map:&__block_literal_global];
+  v5 = [line hk_map:&__block_literal_global];
   v4 = [v5 componentsJoinedByString:{@", "}];
   [(HDDiagnosticOperation *)self appendString:v4];
 }

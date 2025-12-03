@@ -1,7 +1,7 @@
 @interface CameraAudioConfigurationSettingsController
 + (id)titleForSelectedAudioConfiguration;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -124,8 +124,8 @@ LABEL_17:
     v7 = v37;
   }
 
-  v27 = [v5 isWindRemovalSupported];
-  if (v18 != &dword_0 + 1 && v27)
+  isWindRemovalSupported = [v5 isWindRemovalSupported];
+  if (v18 != &dword_0 + 1 && isWindRemovalSupported)
   {
     v28 = v20;
     v29 = [PSSpecifier groupSpecifierWithID:@"WindRemovalGroupSpecifierID"];
@@ -160,30 +160,30 @@ LABEL_23:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CameraAudioConfigurationSettingsController;
-  [(CameraAudioConfigurationSettingsController *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(CameraAudioConfigurationSettingsController *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(CameraAudioConfigurationSettingsController *)self specifierForID:@"AudioConfigurationGroupSpecifierID"];
   if (v7)
   {
     v8 = [(CameraAudioConfigurationSettingsController *)self indexPathForSpecifier:v7];
-    v9 = [v8 section];
+    section = [v8 section];
   }
 
   else
   {
-    v9 = -1;
+    section = -1;
   }
 
-  if ([v6 section] == v9)
+  if ([pathCopy section] == section)
   {
-    v10 = [(CameraAudioConfigurationSettingsController *)self specifierAtIndexPath:v6];
+    v10 = [(CameraAudioConfigurationSettingsController *)self specifierAtIndexPath:pathCopy];
     v11 = [v10 propertyForKey:PSValueKey];
-    v12 = [v11 integerValue];
-    CFPreferencesSetAppValue(CAMUserPreferenceAudioConfiguration, [NSNumber numberWithUnsignedInteger:v12], @"com.apple.camera");
+    integerValue = [v11 integerValue];
+    CFPreferencesSetAppValue(CAMUserPreferenceAudioConfiguration, [NSNumber numberWithUnsignedInteger:integerValue], @"com.apple.camera");
     CFPreferencesAppSynchronize(@"com.apple.camera");
     [(CameraSettingsBaseController *)self reloadSpecifiers];
   }

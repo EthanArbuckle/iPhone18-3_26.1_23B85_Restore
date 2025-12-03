@@ -1,21 +1,21 @@
 @interface CSUtils
-+ (BOOL)extractArchiveFromDirectory:(id)a3 toDir:(id)a4;
-+ (BOOL)readAudioChunksFrom:(id)a3 block:(id)a4;
-+ (id)distributionDictionary:(id)a3;
-+ (id)getInputoriginFromRecordType:(id)a3 withAsset:(id)a4;
++ (BOOL)extractArchiveFromDirectory:(id)directory toDir:(id)dir;
++ (BOOL)readAudioChunksFrom:(id)from block:(id)block;
++ (id)distributionDictionary:(id)dictionary;
++ (id)getInputoriginFromRecordType:(id)type withAsset:(id)asset;
 + (id)timeStampString;
-+ (unint64_t)getAssetTypeForNamespace:(id)a3;
-+ (void)getTrialIdsForAssetType:(unint64_t)a3 withCompletion:(id)a4;
-+ (void)logMitigationFeatures:(id)a3 forTask:(id)a4 withModelOutput:(id)a5 forMHRequestId:(id)a6 forRequestId:(id)a7;
++ (unint64_t)getAssetTypeForNamespace:(id)namespace;
++ (void)getTrialIdsForAssetType:(unint64_t)type withCompletion:(id)completion;
++ (void)logMitigationFeatures:(id)features forTask:(id)task withModelOutput:(id)output forMHRequestId:(id)id forRequestId:(id)requestId;
 @end
 
 @implementation CSUtils
 
-+ (id)getInputoriginFromRecordType:(id)a3 withAsset:(id)a4
++ (id)getInputoriginFromRecordType:(id)type withAsset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isRequestFromTriggerless])
+  typeCopy = type;
+  assetCopy = asset;
+  if ([typeCopy isRequestFromTriggerless])
   {
     v7 = +[CSUtils supportMedocAnnounce];
   }
@@ -25,10 +25,10 @@
     v7 = 0;
   }
 
-  if (([v5 isBuiltInVoiceTriggered] & 1) != 0 || objc_msgSend(v5, "isHearstVoiceTriggered") && ((objc_msgSend(v5, "isRequestFromSpokenNotification") | v7) & 1) == 0 || objc_msgSend(v5, "isDarwinVoiceTriggered"))
+  if (([typeCopy isBuiltInVoiceTriggered] & 1) != 0 || objc_msgSend(typeCopy, "isHearstVoiceTriggered") && ((objc_msgSend(typeCopy, "isRequestFromSpokenNotification") | v7) & 1) == 0 || objc_msgSend(typeCopy, "isDarwinVoiceTriggered"))
   {
-    v8 = [v5 activationMetadata];
-    v9 = [v6 isJSVoiceTrigger:v8];
+    activationMetadata = [typeCopy activationMetadata];
+    v9 = [assetCopy isJSVoiceTrigger:activationMetadata];
 
     if (v9)
     {
@@ -41,17 +41,17 @@
     }
   }
 
-  else if ([v5 isUIButtonPress])
+  else if ([typeCopy isUIButtonPress])
   {
     v10 = &off_10025DD48;
   }
 
-  else if ([v5 isHomePressed] & 1) != 0 || (objc_msgSend(v5, "isHearstDoubleTapTriggered") & 1) != 0 || (objc_msgSend(v5, "isRTSTriggered"))
+  else if ([typeCopy isHomePressed] & 1) != 0 || (objc_msgSend(typeCopy, "isHearstDoubleTapTriggered") & 1) != 0 || (objc_msgSend(typeCopy, "isRTSTriggered"))
   {
     v10 = &off_10025DD60;
   }
 
-  else if (([v5 isContinuousConversation] | v7))
+  else if (([typeCopy isContinuousConversation] | v7))
   {
     v10 = &off_10025DD78;
   }
@@ -77,36 +77,36 @@
   return v5;
 }
 
-+ (void)logMitigationFeatures:(id)a3 forTask:(id)a4 withModelOutput:(id)a5 forMHRequestId:(id)a6 forRequestId:(id)a7
++ (void)logMitigationFeatures:(id)features forTask:(id)task withModelOutput:(id)output forMHRequestId:(id)id forRequestId:(id)requestId
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  featuresCopy = features;
+  taskCopy = task;
+  outputCopy = output;
+  idCopy = id;
+  requestIdCopy = requestId;
   v16 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v81 = "+[CSUtils(AttSiri) logMitigationFeatures:forTask:withModelOutput:forMHRequestId:forRequestId:]";
     v82 = 2112;
-    v83 = v14;
+    v83 = idCopy;
     v84 = 2112;
-    v85 = v15;
+    v85 = requestIdCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s mhId:%@ requestId:%@", buf, 0x20u);
   }
 
   v17 = +[CSFPreferences sharedPreferences];
-  v18 = [v17 isAttentiveSiriAudioLoggingEnabled];
+  isAttentiveSiriAudioLoggingEnabled = [v17 isAttentiveSiriAudioLoggingEnabled];
 
-  if (v18)
+  if (isAttentiveSiriAudioLoggingEnabled)
   {
     v19 = +[NSFileManager defaultManager];
     v20 = +[CSFPreferences sharedPreferences];
-    v21 = [v20 mhLogDirectory];
+    mhLogDirectory = [v20 mhLogDirectory];
 
     v69 = v19;
-    if ([v19 fileExistsAtPath:v21])
+    if ([v19 fileExistsAtPath:mhLogDirectory])
     {
       v74 = 0;
     }
@@ -114,7 +114,7 @@
     else
     {
       v77 = 0;
-      v23 = [v19 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:0 error:&v77];
+      v23 = [v19 createDirectoryAtPath:mhLogDirectory withIntermediateDirectories:1 attributes:0 error:&v77];
       v74 = v77;
       if ((v23 & 1) == 0)
       {
@@ -122,37 +122,37 @@
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
           v57 = v24;
-          v58 = [v74 localizedDescription];
+          localizedDescription = [v74 localizedDescription];
           *buf = 136315650;
           v81 = "+[CSUtils(AttSiri) logMitigationFeatures:forTask:withModelOutput:forMHRequestId:forRequestId:]";
           v82 = 2114;
-          v83 = v21;
+          v83 = mhLogDirectory;
           v84 = 2114;
-          v85 = v58;
+          v85 = localizedDescription;
           _os_log_error_impl(&_mh_execute_header, v57, OS_LOG_TYPE_ERROR, "%s Couldn't create Ures slogging directory at path %{public}@ %{public}@", buf, 0x20u);
         }
 
-        v21 = @"/tmp";
+        mhLogDirectory = @"/tmp";
       }
     }
 
-    v70 = v15;
-    v71 = v14;
-    if (v15)
+    v70 = requestIdCopy;
+    v71 = idCopy;
+    if (requestIdCopy)
     {
-      v25 = v15;
+      v25 = requestIdCopy;
     }
 
     else
     {
-      v25 = v14;
+      v25 = idCopy;
     }
 
-    v67 = [NSString stringWithFormat:@"%@-%@.json", v25, v12];
-    v68 = v21;
-    v66 = [(__CFString *)v21 stringByAppendingPathComponent:?];
-    v26 = [v11 speechPackage];
-    v27 = [SLUresMitigator getTranscriptionForSpeechPackage:v26];
+    taskCopy = [NSString stringWithFormat:@"%@-%@.json", v25, taskCopy];
+    v68 = mhLogDirectory;
+    v66 = [(__CFString *)mhLogDirectory stringByAppendingPathComponent:?];
+    speechPackage = [featuresCopy speechPackage];
+    v27 = [SLUresMitigator getTranscriptionForSpeechPackage:speechPackage];
 
     v28 = @"N/A";
     if (v27)
@@ -164,53 +164,53 @@
 
     v78[0] = @"Task";
     v78[1] = @"Transcript";
-    v72 = v13;
-    v73 = v12;
-    v79[0] = v12;
+    v72 = outputCopy;
+    v73 = taskCopy;
+    v79[0] = taskCopy;
     v79[1] = v29;
     v65 = v29;
-    v79[2] = v13;
+    v79[2] = outputCopy;
     v78[2] = @"DetailedModelResult";
     v78[3] = @"AcousticFTMScore";
-    v64 = [v11 acousticFTMScores];
-    v79[3] = v64;
+    acousticFTMScores = [featuresCopy acousticFTMScores];
+    v79[3] = acousticFTMScores;
     v78[4] = @"InputOrigin";
-    v63 = [v11 inputOrigin];
-    v79[4] = v63;
+    inputOrigin = [featuresCopy inputOrigin];
+    v79[4] = inputOrigin;
     v78[5] = @"gazeSignal";
-    v62 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 didDetectGazeAtOrb]);
+    v62 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [featuresCopy didDetectGazeAtOrb]);
     v79[5] = v62;
     v78[6] = @"visualVadSignal";
-    v61 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 didDetectVisualActivity]);
+    v61 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [featuresCopy didDetectVisualActivity]);
     v79[6] = v61;
     v78[7] = @"attentionSignal";
-    v60 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 didDetectAttention]);
+    v60 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [featuresCopy didDetectAttention]);
     v79[7] = v60;
     v78[8] = @"osdSignal";
-    v59 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 didDetectSpeechActivity]);
+    v59 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [featuresCopy didDetectSpeechActivity]);
     v79[8] = v59;
     v78[9] = @"timeSinceLastQuery";
-    [v11 timeSinceLastQuery];
+    [featuresCopy timeSinceLastQuery];
     v30 = [NSNumber numberWithDouble:?];
     v79[9] = v30;
     v78[10] = @"airpodsConnected";
-    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isAirpodsConnected]);
+    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [featuresCopy isAirpodsConnected]);
     v79[10] = v31;
     v78[11] = @"boronSignal";
-    v32 = [v11 boronScore];
-    v79[11] = v32;
+    boronScore = [featuresCopy boronScore];
+    v79[11] = boronScore;
     v78[12] = @"decisionStage";
-    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 decisionStage]);
+    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [featuresCopy decisionStage]);
     v79[12] = v33;
     v78[13] = @"prevInputLevel";
-    v34 = [v11 prevStageOutput];
-    v79[13] = v34;
+    prevStageOutput = [featuresCopy prevStageOutput];
+    v79[13] = prevStageOutput;
     v78[14] = @"speakerIDScore";
-    v35 = [v11 speakerIDScore];
-    v79[14] = v35;
+    speakerIDScore = [featuresCopy speakerIDScore];
+    v79[14] = speakerIDScore;
     v78[15] = @"eosLikelihood";
-    v36 = [v11 eosLikelihood];
-    v79[15] = v36;
+    eosLikelihood = [featuresCopy eosLikelihood];
+    v79[15] = eosLikelihood;
     v78[16] = @"timestamp";
     v37 = +[CSUtils timeStampString];
     v79[16] = v37;
@@ -226,29 +226,29 @@
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%s Mitigation Dict :%@", buf, 0x16u);
     }
 
-    v40 = [v11 speechPackage];
-    v41 = [v40 dictionaryRepresentation];
+    speechPackage2 = [featuresCopy speechPackage];
+    dictionaryRepresentation = [speechPackage2 dictionaryRepresentation];
 
-    if (v41)
+    if (dictionaryRepresentation)
     {
       v42 = +[NSMutableDictionary dictionary];
       v43 = v38;
       [v42 addEntriesFromDictionary:v38];
-      [v42 setObject:v41 forKey:@"RawASRRecogCandidate"];
-      v44 = [v11 speechPackage];
-      v45 = [v44 latticeMitigatorResult];
-      v46 = [v45 dictionaryRepresentation];
+      [v42 setObject:dictionaryRepresentation forKey:@"RawASRRecogCandidate"];
+      speechPackage3 = [featuresCopy speechPackage];
+      latticeMitigatorResult = [speechPackage3 latticeMitigatorResult];
+      dictionaryRepresentation2 = [latticeMitigatorResult dictionaryRepresentation];
 
-      v12 = v73;
-      if (v46)
+      taskCopy = v73;
+      if (dictionaryRepresentation2)
       {
-        [v42 setObject:v46 forKey:@"LatticeRNNResult"];
+        [v42 setObject:dictionaryRepresentation2 forKey:@"LatticeRNNResult"];
       }
 
-      v47 = [v11 nldaScore];
-      if (v47)
+      nldaScore = [featuresCopy nldaScore];
+      if (nldaScore)
       {
-        [v42 setObject:v47 forKey:@"NLDAScore"];
+        [v42 setObject:nldaScore forKey:@"NLDAScore"];
       }
 
       v38 = [v42 copy];
@@ -256,7 +256,7 @@
 
     else
     {
-      v12 = v73;
+      taskCopy = v73;
     }
 
     v76 = v74;
@@ -270,15 +270,15 @@
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v55 = v54;
-        v56 = [v49 localizedDescription];
+        localizedDescription2 = [v49 localizedDescription];
         *buf = 136315394;
         v81 = "+[CSUtils(AttSiri) logMitigationFeatures:forTask:withModelOutput:forMHRequestId:forRequestId:]";
         v82 = 2114;
-        v83 = v56;
+        v83 = localizedDescription2;
         _os_log_error_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "%s Failed to serialize data with err: %{public}@", buf, 0x16u);
       }
 
-      v53 = v67;
+      v53 = taskCopy;
       v52 = v68;
       v51 = v66;
     }
@@ -290,13 +290,13 @@
       v51 = v66;
       [v48 writeToFile:v66 options:0 error:&v75];
       v49 = v75;
-      v53 = v67;
+      v53 = taskCopy;
       v52 = v68;
     }
 
-    v15 = v70;
-    v14 = v71;
-    v13 = v72;
+    requestIdCopy = v70;
+    idCopy = v71;
+    outputCopy = v72;
   }
 
   else
@@ -311,16 +311,16 @@
   }
 }
 
-+ (void)getTrialIdsForAssetType:(unint64_t)a3 withCompletion:(id)a4
++ (void)getTrialIdsForAssetType:(unint64_t)type withCompletion:(id)completion
 {
-  v5 = a4;
-  if (a3 == 3)
+  completionCopy = completion;
+  if (type == 3)
   {
     v6 = 114;
     v7 = 322;
   }
 
-  else if (a3 == 4)
+  else if (type == 4)
   {
     v6 = 117;
     v7 = 404;
@@ -337,25 +337,25 @@
       v11 = 136315394;
       v12 = "+[CSUtils(Trial) getTrialIdsForAssetType:withCompletion:]";
       v13 = 2050;
-      v14 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Unknown namespaceId for assetType %{public}lu ", &v11, 0x16u);
       v7 = 0;
       v6 = 0;
     }
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v10 = [TRINamespace namespaceNameFromId:v7];
-    v5[2](v5, v6, v10);
+    completionCopy[2](completionCopy, v6, v10);
   }
 }
 
-+ (unint64_t)getAssetTypeForNamespace:(id)a3
++ (unint64_t)getAssetTypeForNamespace:(id)namespace
 {
-  v3 = a3;
+  namespaceCopy = namespace;
   v4 = [TRINamespace namespaceNameFromId:322];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [namespaceCopy isEqualToString:v4];
 
   if (v5)
   {
@@ -365,7 +365,7 @@
   else
   {
     v7 = [TRINamespace namespaceNameFromId:404];
-    v8 = [v3 isEqualToString:v7];
+    v8 = [namespaceCopy isEqualToString:v7];
 
     if (v8)
     {
@@ -381,29 +381,29 @@
   return v6;
 }
 
-+ (BOOL)extractArchiveFromDirectory:(id)a3 toDir:(id)a4
++ (BOOL)extractArchiveFromDirectory:(id)directory toDir:(id)dir
 {
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  dirCopy = dir;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v9 = 136315650;
     v10 = "+[CSUtils(Compression) extractArchiveFromDirectory:toDir:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = directoryCopy;
     v13 = 2114;
-    v14 = v6;
+    v14 = dirCopy;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s Unable to expand archive %{public}@ to directory %{public}@", &v9, 0x20u);
   }
 
   return 0;
 }
 
-+ (id)distributionDictionary:(id)a3
++ (id)distributionDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v30[0] = @"Max";
     v30[1] = @"Min";
@@ -422,13 +422,13 @@
     v4 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:7];
     v5 = [NSMutableDictionary dictionaryWithDictionary:v4];
 
-    v6 = [v3 count];
+    v6 = [dictionaryCopy count];
     if (v6)
     {
       v7 = [NSNumber numberWithUnsignedInteger:v6];
       [v5 setObject:v7 forKeyedSubscript:@"Num"];
 
-      v8 = [NSExpression expressionForConstantValue:v3];
+      v8 = [NSExpression expressionForConstantValue:dictionaryCopy];
       v29 = v8;
       v9 = [NSArray arrayWithObjects:&v29 count:1];
       v10 = [NSExpression expressionForFunction:@"average:" arguments:v9];
@@ -436,7 +436,7 @@
       v11 = [v10 expressionValueWithObject:0 context:0];
       [v5 setObject:v11 forKeyedSubscript:@"Avg"];
 
-      v12 = [NSExpression expressionForConstantValue:v3];
+      v12 = [NSExpression expressionForConstantValue:dictionaryCopy];
       v28 = v12;
       v13 = [NSArray arrayWithObjects:&v28 count:1];
       v14 = [NSExpression expressionForFunction:@"stddev:" arguments:v13];
@@ -444,14 +444,14 @@
       v15 = [v14 expressionValueWithObject:0 context:0];
       [v5 setObject:v15 forKeyedSubscript:@"Std"];
 
-      [v3 sortUsingComparator:&stru_1002526D0];
-      v16 = [v3 objectAtIndexedSubscript:v6 >> 1];
+      [dictionaryCopy sortUsingComparator:&stru_1002526D0];
+      v16 = [dictionaryCopy objectAtIndexedSubscript:v6 >> 1];
       [v16 doubleValue];
       v18 = v17;
 
       if ((v6 & 1) == 0)
       {
-        v19 = [v3 objectAtIndexedSubscript:(v6 >> 1) - 1];
+        v19 = [dictionaryCopy objectAtIndexedSubscript:(v6 >> 1) - 1];
         [v19 doubleValue];
         v21 = v20;
 
@@ -461,13 +461,13 @@
       v22 = [NSNumber numberWithDouble:v18];
       [v5 setObject:v22 forKeyedSubscript:@"Median"];
 
-      v23 = [v3 objectAtIndexedSubscript:0];
+      v23 = [dictionaryCopy objectAtIndexedSubscript:0];
       [v5 setObject:v23 forKeyedSubscript:@"Min"];
 
-      v24 = [v3 objectAtIndexedSubscript:v6 - 1];
+      v24 = [dictionaryCopy objectAtIndexedSubscript:v6 - 1];
       [v5 setObject:v24 forKeyedSubscript:@"Max"];
 
-      v25 = [v3 objectAtIndexedSubscript:vcvtmd_u64_f64(v6 * 0.95)];
+      v25 = [dictionaryCopy objectAtIndexedSubscript:vcvtmd_u64_f64(v6 * 0.95)];
       [v5 setObject:v25 forKeyedSubscript:@"P95"];
 
       v6 = v5;
@@ -490,16 +490,16 @@
   return v6;
 }
 
-+ (BOOL)readAudioChunksFrom:(id)a3 block:(id)a4
++ (BOOL)readAudioChunksFrom:(id)from block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  blockCopy = block;
   inPropertyData[0] = xmmword_1001AA2A8;
   inPropertyData[1] = unk_1001AA2B8;
   v21 = 16;
   outExtAudioFile = 0;
   outAudioFile = 0;
-  if (!AudioFileOpenURL([NSURL URLWithString:v5], kAudioFileReadPermission, 0, &outAudioFile))
+  if (!AudioFileOpenURL([NSURL URLWithString:fromCopy], kAudioFileReadPermission, 0, &outAudioFile))
   {
     if (!ExtAudioFileWrapAudioFileID(outAudioFile, 0, &outExtAudioFile))
     {
@@ -537,9 +537,9 @@ LABEL_5:
         goto LABEL_14;
       }
 
-      if (v6)
+      if (blockCopy)
       {
-        v6[2](v6, ioData.mBuffers[0].mData, ioData.mBuffers[0].mDataByteSize >> 1);
+        blockCopy[2](blockCopy, ioData.mBuffers[0].mData, ioData.mBuffers[0].mDataByteSize >> 1);
       }
     }
 

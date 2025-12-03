@@ -1,12 +1,12 @@
 @interface DocumentContentCoordinator.DocumentGestures
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 @end
 
 @implementation DocumentContentCoordinator.DocumentGestures
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -16,15 +16,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_10001515C(v7, v8);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v10 = sub_10001515C(recognizerCopy, touchCopy);
 
   return v10 & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -34,14 +34,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_10001530C(v5);
+  beginCopy = begin;
+  selfCopy = self;
+  v7 = sub_10001530C(beginCopy);
 
   return v7 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -51,10 +51,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_10001694C(v8);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v10 = sub_10001694C(gestureRecognizerCopy);
 
   return v10;
 }

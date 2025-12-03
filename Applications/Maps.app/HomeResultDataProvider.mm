@@ -1,22 +1,22 @@
 @interface HomeResultDataProvider
-- (BOOL)_isNoNetworkError:(id)a3;
+- (BOOL)_isNoNetworkError:(id)error;
 - (GEOObserverHashTable)observers;
 - (HomeResult)homeResult;
-- (HomeResultDataProvider)initWithDelegate:(id)a3;
+- (HomeResultDataProvider)initWithDelegate:(id)delegate;
 - (HomeResultDataProviderDelegate)delegate;
 - (id)_currentCacheKey;
 - (void)_cancelExpirationTimer;
 - (void)_cancelTicket;
 - (void)_createExpirationTimerIfNeeded;
 - (void)_expirationTimerFired;
-- (void)_handleResult:(id)a3 error:(id)a4 cacheKey:(id)a5;
+- (void)_handleResult:(id)result error:(id)error cacheKey:(id)key;
 - (void)_networkReachabilityDidChange;
-- (void)_refreshCachedResultAndNotifyObservers:(BOOL)a3;
-- (void)_startTicketWithCacheKey:(id)a3;
-- (void)_updateWithResult:(id)a3 cacheKey:(id)a4 notifyObservers:(BOOL)a5;
-- (void)countryConfigurationDidChange:(id)a3;
+- (void)_refreshCachedResultAndNotifyObservers:(BOOL)observers;
+- (void)_startTicketWithCacheKey:(id)key;
+- (void)_updateWithResult:(id)result cacheKey:(id)key notifyObservers:(BOOL)observers;
+- (void)countryConfigurationDidChange:(id)change;
 - (void)dealloc;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation HomeResultDataProvider
@@ -24,10 +24,10 @@
 - (id)_currentCacheKey
 {
   v3 = +[GEOCountryConfiguration sharedConfiguration];
-  v4 = [v3 countryCode];
+  countryCode = [v3 countryCode];
 
-  v5 = [(MKLocationManager *)self->_locationManager currentLocation];
-  v6 = [[HomeResultCacheKey alloc] initWithCountryCode:v4 location:v5];
+  currentLocation = [(MKLocationManager *)self->_locationManager currentLocation];
+  v6 = [[HomeResultCacheKey alloc] initWithCountryCode:countryCode location:currentLocation];
 
   return v6;
 }
@@ -53,8 +53,8 @@
 {
   if (!self->_resultExpirationTimer)
   {
-    v3 = [(HomeResult *)self->_result expirationDate];
-    if (v3)
+    expirationDate = [(HomeResult *)self->_result expirationDate];
+    if (expirationDate)
     {
       objc_initWeak(&location, self);
       v6 = _NSConcreteStackBlock;
@@ -62,7 +62,7 @@
       v8 = sub_100BD0ED4;
       v9 = &unk_101661BC8;
       objc_copyWeak(&v10, &location);
-      v4 = [NSTimer _maps_scheduledTimerWithFireDate:v3 block:&v6];
+      v4 = [NSTimer _maps_scheduledTimerWithFireDate:expirationDate block:&v6];
       resultExpirationTimer = self->_resultExpirationTimer;
       self->_resultExpirationTimer = v4;
 
@@ -88,7 +88,7 @@
   return observers;
 }
 
-- (void)countryConfigurationDidChange:(id)a3
+- (void)countryConfigurationDidChange:(id)change
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
 
@@ -128,15 +128,15 @@
   self->_resultExpirationTimer = 0;
 }
 
-- (BOOL)_isNoNetworkError:(id)a3
+- (BOOL)_isNoNetworkError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:NSURLErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:NSURLErrorDomain];
 
   if (v5)
   {
-    if ([v3 code] != -1009)
+    if ([errorCopy code] != -1009)
     {
 LABEL_7:
       v9 = 0;
@@ -146,11 +146,11 @@ LABEL_7:
 
   else
   {
-    v6 = [v3 domain];
+    domain2 = [errorCopy domain];
     v7 = GEOErrorDomain();
-    v8 = [v6 isEqualToString:v7];
+    v8 = [domain2 isEqualToString:v7];
 
-    if (!v8 || [v3 code] != -9)
+    if (!v8 || [errorCopy code] != -9)
     {
       goto LABEL_7;
     }
@@ -162,29 +162,29 @@ LABEL_8:
   return v9;
 }
 
-- (void)_handleResult:(id)a3 error:(id)a4 cacheKey:(id)a5
+- (void)_handleResult:(id)result error:(id)error cacheKey:(id)key
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resultCopy = result;
+  errorCopy = error;
+  keyCopy = key;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   ticketCacheKey = self->_ticketCacheKey;
-  if (ticketCacheKey == v11 || [(HomeResultCacheKey *)ticketCacheKey isEqual:v11])
+  if (ticketCacheKey == keyCopy || [(HomeResultCacheKey *)ticketCacheKey isEqual:keyCopy])
   {
     [(HomeResultDataProvider *)self _cancelTicket];
-    if (v10)
+    if (errorCopy)
     {
-      if ([(HomeResultDataProvider *)self _isNoNetworkError:v10])
+      if ([(HomeResultDataProvider *)self _isNoNetworkError:errorCopy])
       {
         goto LABEL_11;
       }
 
-      v13 = [Result resultWithError:v10];
+      v13 = [Result resultWithError:errorCopy];
     }
 
     else
     {
-      if (!v9)
+      if (!resultCopy)
       {
         v19 = [NSError errorWithDomain:@"HomeResultDataProviderErrorDomain" code:1 userInfo:0];
         v14 = [Result resultWithError:v19];
@@ -197,7 +197,7 @@ LABEL_8:
         goto LABEL_11;
       }
 
-      v13 = [Result resultWithValue:v9];
+      v13 = [Result resultWithValue:resultCopy];
     }
 
     v14 = v13;
@@ -210,12 +210,12 @@ LABEL_9:
       v36[3] = &unk_10164CD10;
       v36[4] = self;
       v38 = a2;
-      v37 = v11;
+      v37 = keyCopy;
       v29 = _NSConcreteStackBlock;
       v30 = 3221225472;
       v31 = sub_100BD146C;
       v32 = &unk_10164CD38;
-      v33 = self;
+      selfCopy = self;
       v35 = a2;
       v15 = v37;
       v34 = v15;
@@ -246,23 +246,23 @@ LABEL_11:
     v14 = 0;
     v18 = 0;
 LABEL_14:
-    v24 = [(HomeResultDataProvider *)self _currentCacheKey];
-    v25 = v24;
+    _currentCacheKey = [(HomeResultDataProvider *)self _currentCacheKey];
+    v25 = _currentCacheKey;
     if (v18)
     {
-      if ([v24 isEqualivantToKey:v11])
+      if ([_currentCacheKey isEqualivantToKey:keyCopy])
       {
-        v26 = self;
+        selfCopy3 = self;
         v27 = v18;
-        v28 = v11;
+        v28 = keyCopy;
 LABEL_19:
-        [(HomeResultDataProvider *)v26 _updateWithResult:v27 cacheKey:v28 notifyObservers:1];
+        [(HomeResultDataProvider *)selfCopy3 _updateWithResult:v27 cacheKey:v28 notifyObservers:1];
       }
     }
 
-    else if (![(HomeResultCacheKey *)self->_resultCacheKey isEqualivantToKey:v11])
+    else if (![(HomeResultCacheKey *)self->_resultCacheKey isEqualivantToKey:keyCopy])
     {
-      v26 = self;
+      selfCopy3 = self;
       v27 = 0;
       v28 = 0;
       goto LABEL_19;
@@ -270,9 +270,9 @@ LABEL_19:
   }
 }
 
-- (void)_startTicketWithCacheKey:(id)a3
+- (void)_startTicketWithCacheKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = sub_1000410AC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -284,17 +284,17 @@ LABEL_19:
     v24 = 2112;
     v25 = v10;
     v26 = 2112;
-    v27 = v6;
+    v27 = keyCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ %@, cacheKey = %@", buf, 0x20u);
   }
 
   [(HomeResultDataProvider *)self _cancelTicket];
   objc_initWeak(buf, self);
-  objc_storeStrong(&self->_ticketCacheKey, a3);
+  objc_storeStrong(&self->_ticketCacheKey, key);
   v11 = +[GEOMapService sharedService];
-  v12 = [(HomeResultDataProvider *)self delegate];
-  v13 = [v12 newTraits];
-  v14 = [v11 ticketForMapsHomeWithTraits:v13];
+  delegate = [(HomeResultDataProvider *)self delegate];
+  newTraits = [delegate newTraits];
+  v14 = [v11 ticketForMapsHomeWithTraits:newTraits];
   ticket = self->_ticket;
   p_ticket = &self->_ticket;
   *p_ticket = v14;
@@ -305,7 +305,7 @@ LABEL_19:
   v19[2] = sub_100BD17A8;
   v19[3] = &unk_10164CCE8;
   objc_copyWeak(&v21, buf);
-  v18 = v6;
+  v18 = keyCopy;
   v20 = v18;
   [(GEOMapServiceMapsHomeTicket *)v17 submitWithHandler:v19 networkActivity:0];
 
@@ -313,21 +313,21 @@ LABEL_19:
   objc_destroyWeak(buf);
 }
 
-- (void)_refreshCachedResultAndNotifyObservers:(BOOL)a3
+- (void)_refreshCachedResultAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v4 = a3;
+    observersCopy = observers;
     v10 = +[NSDate date];
-    v6 = [(HomeResultDataProvider *)self _currentCacheKey];
-    v7 = v6;
-    if (!self->_resultCacheKey || ![v6 isEqualivantToKey:?] || -[HomeResult isExpiredAtDate:](self->_result, "isExpiredAtDate:", v10))
+    _currentCacheKey = [(HomeResultDataProvider *)self _currentCacheKey];
+    v7 = _currentCacheKey;
+    if (!self->_resultCacheKey || ![_currentCacheKey isEqualivantToKey:?] || -[HomeResult isExpiredAtDate:](self->_result, "isExpiredAtDate:", v10))
     {
       v8 = [(HomeResultCache *)self->_cache resultForKey:v7];
       v9 = v8;
       if (v8 && ([v8 isExpiredAtDate:v10] & 1) == 0)
       {
-        [(HomeResultDataProvider *)self _updateWithResult:v9 cacheKey:v7 notifyObservers:v4];
+        [(HomeResultDataProvider *)self _updateWithResult:v9 cacheKey:v7 notifyObservers:observersCopy];
       }
 
       else if (!self->_ticketCacheKey || ([v7 isEqualivantToKey:?] & 1) == 0)
@@ -338,56 +338,56 @@ LABEL_19:
   }
 }
 
-- (void)_updateWithResult:(id)a3 cacheKey:(id)a4 notifyObservers:(BOOL)a5
+- (void)_updateWithResult:(id)result cacheKey:(id)key notifyObservers:(BOOL)observers
 {
-  v5 = a5;
-  v10 = a3;
-  v11 = a4;
+  observersCopy = observers;
+  resultCopy = result;
+  keyCopy = key;
   if (self->_active)
   {
-    if (self->_result == v10)
+    if (self->_result == resultCopy)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = [(HomeResult *)v10 isEqual:?];
+      v12 = [(HomeResult *)resultCopy isEqual:?];
     }
 
     v33 = v12;
     aSelector = a2;
-    if (self->_resultCacheKey == v11)
+    if (self->_resultCacheKey == keyCopy)
     {
       v13 = 1;
     }
 
     else
     {
-      v13 = [(HomeResultCacheKey *)v11 isEqual:?];
+      v13 = [(HomeResultCacheKey *)keyCopy isEqual:?];
     }
 
-    v14 = [(HomeResult *)v10 expirationDate];
-    v15 = [(HomeResult *)self->_result expirationDate];
-    if (v14 == v15)
+    expirationDate = [(HomeResult *)resultCopy expirationDate];
+    expirationDate2 = [(HomeResult *)self->_result expirationDate];
+    if (expirationDate == expirationDate2)
     {
       v31 = 1;
     }
 
     else
     {
-      v31 = [v14 isEqual:v15];
+      v31 = [expirationDate isEqual:expirationDate2];
     }
 
     v16 = v33;
     if ((v33 & 1) == 0)
     {
-      objc_storeStrong(&self->_result, a3);
+      objc_storeStrong(&self->_result, result);
     }
 
     if ((v13 & 1) == 0)
     {
-      objc_storeStrong(&self->_resultCacheKey, a4);
+      objc_storeStrong(&self->_resultCacheKey, key);
     }
 
     if ((v31 & 1) == 0)
@@ -434,9 +434,9 @@ LABEL_19:
         v24 = @"YES";
       }
 
-      v32 = v11;
+      v32 = keyCopy;
       v25 = v24;
-      if (v5)
+      if (observersCopy)
       {
         v26 = @"YES";
       }
@@ -464,11 +464,11 @@ LABEL_19:
       v47 = v32;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@ %@, resultChanged = %@, cacheKeyChanged = %@, expirationDateChanged = %@, notifyObservers = %@, cacheKey = %@", buf, 0x48u);
 
-      v11 = v32;
+      keyCopy = v32;
       v16 = v33;
     }
 
-    if (((v16 | !v5) & 1) == 0)
+    if (((v16 | !observersCopy) & 1) == 0)
     {
       [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
     }
@@ -477,10 +477,10 @@ LABEL_19:
 
 - (HomeResult)homeResult
 {
-  v3 = [(HomeResult *)self->_result responseResult];
-  v4 = [v3 isSuccess];
+  responseResult = [(HomeResult *)self->_result responseResult];
+  isSuccess = [responseResult isSuccess];
 
-  if (v4)
+  if (isSuccess)
   {
     v5 = self->_result;
   }
@@ -493,12 +493,12 @@ LABEL_19:
   return v5;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v6 = sub_1000410AC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -506,7 +506,7 @@ LABEL_19:
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
       v10 = @"NO";
-      if (v3)
+      if (activeCopy)
       {
         v10 = @"YES";
       }
@@ -522,7 +522,7 @@ LABEL_19:
     }
 
     locationManager = self->_locationManager;
-    if (v3)
+    if (activeCopy)
     {
       [(MKLocationManager *)locationManager startLocationUpdateWithObserver:self];
       [(GEONetworkObserver *)self->_networkObserver addNetworkReachableObserver:self selector:"_networkReachabilityDidChange"];
@@ -561,16 +561,16 @@ LABEL_19:
   [(HomeResultDataProvider *)&v3 dealloc];
 }
 
-- (HomeResultDataProvider)initWithDelegate:(id)a3
+- (HomeResultDataProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HomeResultDataProvider;
   v5 = [(HomeResultDataProvider *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[MKLocationManager sharedLocationManager];
     locationManager = v6->_locationManager;
     v6->_locationManager = v7;

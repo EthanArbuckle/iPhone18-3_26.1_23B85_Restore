@@ -1,27 +1,27 @@
 @interface TTMSchemaTTMTCUResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTMSchemaTTMTCUResult)initWithDictionary:(id)a3;
-- (TTMSchemaTTMTCUResult)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTMSchemaTTMTCUResult)initWithDictionary:(id)dictionary;
+- (TTMSchemaTTMTCUResult)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDecisionSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDecisionSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTMSchemaTTMTCUResult
 
-- (TTMSchemaTTMTCUResult)initWithDictionary:(id)a3
+- (TTMSchemaTTMTCUResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = TTMSchemaTTMTCUResult;
   v5 = [(TTMSchemaTTMTCUResult *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tcuId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tcuId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(TTMSchemaTTMTCUResult *)v5 setTcuId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"decision"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"decision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTMSchemaTTMTCUResult setDecision:](v5, "setDecision:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"decisionSource"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"decisionSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (TTMSchemaTTMTCUResult)initWithJSON:(id)a3
+- (TTMSchemaTTMTCUResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTMSchemaTTMTCUResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTMSchemaTTMTCUResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTMSchemaTTMTCUResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,7 +85,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -100,20 +100,20 @@
       v6 = off_1E78E8078[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"decision"];
+    [dictionary setObject:v6 forKeyedSubscript:@"decision"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v7 = [(TTMSchemaTTMTCUResult *)self decisionSource];
+    decisionSource = [(TTMSchemaTTMTCUResult *)self decisionSource];
     v8 = @"TTMDECISIONSOURCE_UNKNOWN";
-    if (v7 == 1)
+    if (decisionSource == 1)
     {
       v8 = @"TTMDECISIONSOURCE_SIRI_DIRECTED_SPEECH_DETECTOR";
     }
 
-    if (v7 == 2)
+    if (decisionSource == 2)
     {
       v9 = @"TTMDECISIONSOURCE_OVERRIDE";
     }
@@ -123,28 +123,28 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"decisionSource"];
+    [dictionary setObject:v9 forKeyedSubscript:@"decisionSource"];
   }
 
   if (self->_tcuId)
   {
-    v10 = [(TTMSchemaTTMTCUResult *)self tcuId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    tcuId = [(TTMSchemaTTMTCUResult *)self tcuId];
+    dictionaryRepresentation = [tcuId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"tcuId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"tcuId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"tcuId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"tcuId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -174,30 +174,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(TTMSchemaTTMTCUResult *)self tcuId];
-  v6 = [v4 tcuId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  tcuId = [(TTMSchemaTTMTCUResult *)self tcuId];
+  tcuId2 = [equalCopy tcuId];
+  v7 = tcuId2;
+  if ((tcuId != 0) == (tcuId2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(TTMSchemaTTMTCUResult *)self tcuId];
-  if (v8)
+  tcuId3 = [(TTMSchemaTTMTCUResult *)self tcuId];
+  if (tcuId3)
   {
-    v9 = v8;
-    v10 = [(TTMSchemaTTMTCUResult *)self tcuId];
-    v11 = [v4 tcuId];
-    v12 = [v10 isEqual:v11];
+    v9 = tcuId3;
+    tcuId4 = [(TTMSchemaTTMTCUResult *)self tcuId];
+    tcuId5 = [equalCopy tcuId];
+    v12 = [tcuId4 isEqual:tcuId5];
 
     if (!v12)
     {
@@ -210,7 +210,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[24];
+  v14 = equalCopy[24];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -221,10 +221,10 @@ LABEL_16:
   if (*&has)
   {
     decision = self->_decision;
-    if (decision == [v4 decision])
+    if (decision == [equalCopy decision])
     {
       has = self->_has;
-      v14 = v4[24];
+      v14 = equalCopy[24];
       goto LABEL_12;
     }
 
@@ -241,7 +241,7 @@ LABEL_12:
   if (v16)
   {
     decisionSource = self->_decisionSource;
-    if (decisionSource != [v4 decisionSource])
+    if (decisionSource != [equalCopy decisionSource])
     {
       goto LABEL_16;
     }
@@ -253,14 +253,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(TTMSchemaTTMTCUResult *)self tcuId];
+  toCopy = to;
+  tcuId = [(TTMSchemaTTMTCUResult *)self tcuId];
 
-  if (v4)
+  if (tcuId)
   {
-    v5 = [(TTMSchemaTTMTCUResult *)self tcuId];
+    tcuId2 = [(TTMSchemaTTMTCUResult *)self tcuId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -271,17 +271,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasDecisionSource:(BOOL)a3
+- (void)setHasDecisionSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -294,17 +294,17 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = TTMSchemaTTMTCUResult;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(TTMSchemaTTMTCUResult *)self tcuId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(TTMSchemaTTMTCUResult *)self deleteTcuId];
   }

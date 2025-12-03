@@ -7,7 +7,7 @@
 
 - (char)_init
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &off_284624AD0;
   result = objc_msgSendSuper2(&v2, sel_init);
   if (result)
@@ -21,7 +21,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {

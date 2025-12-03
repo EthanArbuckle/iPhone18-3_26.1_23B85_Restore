@@ -2,14 +2,14 @@
 - (id)parameterOverrides;
 - (id)parameterSummary;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFLinkStartWorkoutAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFAction *)self parameterValueForKey:@"workoutStyle" ofClass:objc_opt_class()];
   if (v5)
   {
@@ -20,17 +20,17 @@
   {
     v6.receiver = self;
     v6.super_class = WFLinkStartWorkoutAction;
-    [(WFLinkAction *)&v6 runAsynchronouslyWithInput:v4];
+    [(WFLinkAction *)&v6 runAsynchronouslyWithInput:inputCopy];
   }
 }
 
 - (id)parameterOverrides
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v2 = [(WFAppIntentExecutionAction *)self metadata];
-  v3 = [v2 actionConfiguration];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  actionConfiguration = [metadata actionConfiguration];
 
-  if (v3)
+  if (actionConfiguration)
   {
     v4 = 0;
   }
@@ -72,15 +72,15 @@
   v7.receiver = self;
   v7.super_class = WFLinkStartWorkoutAction;
   [(WFLinkAction *)&v7 initializeParameters];
-  v3 = [(WFAppIntentExecutionAction *)self metadata];
-  v4 = [v3 actionConfiguration];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  actionConfiguration = [metadata actionConfiguration];
 
-  if (!v4)
+  if (!actionConfiguration)
   {
     v5 = [(WFAction *)self parameterForKey:@"workoutStyle"];
     [v5 setAction:self];
-    v6 = [(WFAction *)self parameters];
-    [v6 enumerateObjectsUsingBlock:&__block_literal_global_15931];
+    parameters = [(WFAction *)self parameters];
+    [parameters enumerateObjectsUsingBlock:&__block_literal_global_15931];
   }
 }
 

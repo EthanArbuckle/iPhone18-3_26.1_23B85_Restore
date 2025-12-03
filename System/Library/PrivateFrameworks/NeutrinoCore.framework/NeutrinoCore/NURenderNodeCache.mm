@@ -1,22 +1,22 @@
 @interface NURenderNodeCache
 + (NURenderNodeCache)sharedInstance;
 - (NURenderNodeCache)init;
-- (id)cachedNodeForNode:(id)a3;
+- (id)cachedNodeForNode:(id)node;
 - (id)debugDescription;
-- (id)retrieveAndCacheNode:(id)a3;
+- (id)retrieveAndCacheNode:(id)node;
 - (unint64_t)unhitCacheEntriesCount;
-- (void)_mediaServicesWereReset:(id)a3;
-- (void)addNode:(id)a3;
+- (void)_mediaServicesWereReset:(id)reset;
+- (void)addNode:(id)node;
 - (void)dealloc;
 @end
 
 @implementation NURenderNodeCache
 
-- (void)_mediaServicesWereReset:(id)a3
+- (void)_mediaServicesWereReset:(id)reset
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6987368]];
+  userInfo = [reset userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6987368]];
 
   if (_NULogOnceToken != -1)
   {
@@ -233,9 +233,9 @@ void __43__NURenderNodeCache_unhitCacheEntriesCount__block_invoke(uint64_t a1)
   }
 }
 
-- (id)retrieveAndCacheNode:(id)a3
+- (id)retrieveAndCacheNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -247,10 +247,10 @@ void __43__NURenderNodeCache_unhitCacheEntriesCount__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__NURenderNodeCache_retrieveAndCacheNode___block_invoke;
   block[3] = &unk_1E810B500;
-  v10 = v4;
+  v10 = nodeCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nodeCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -285,9 +285,9 @@ void __42__NURenderNodeCache_retrieveAndCacheNode___block_invoke(uint64_t a1)
   }
 }
 
-- (id)cachedNodeForNode:(id)a3
+- (id)cachedNodeForNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -299,10 +299,10 @@ void __42__NURenderNodeCache_retrieveAndCacheNode___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__NURenderNodeCache_cachedNodeForNode___block_invoke;
   block[3] = &unk_1E810B500;
-  v10 = v4;
+  v10 = nodeCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nodeCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -324,24 +324,24 @@ uint64_t __39__NURenderNodeCache_cachedNodeForNode___block_invoke(void *a1)
   return [v5 setCacheHitsCount:v6];
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__NURenderNodeCache_addNode___block_invoke;
   v7[3] = &unk_1E810B958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nodeCopy;
+  v6 = nodeCopy;
   dispatch_sync(queue, v7);
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6987370] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987370] object:0];
 
   v4.receiver = self;
   v4.super_class = NURenderNodeCache;
@@ -353,17 +353,17 @@ uint64_t __39__NURenderNodeCache_cachedNodeForNode___block_invoke(void *a1)
   v10.receiver = self;
   v10.super_class = NURenderNodeCache;
   v2 = [(NURenderNodeCache *)&v10 init];
-  v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   cache = v2->_cache;
-  v2->_cache = v3;
+  v2->_cache = weakObjectsHashTable;
 
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_create("NURenderNodeCache", v5);
   queue = v2->_queue;
   v2->_queue = v6;
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:v2 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x1E6987370] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x1E6987370] object:0];
 
   return v2;
 }
@@ -371,9 +371,9 @@ uint64_t __39__NURenderNodeCache_cachedNodeForNode___block_invoke(void *a1)
 + (NURenderNodeCache)sharedInstance
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 renderNodeCache];
+  renderNodeCache = [v2 renderNodeCache];
 
-  return v3;
+  return renderNodeCache;
 }
 
 @end

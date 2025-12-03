@@ -1,18 +1,18 @@
 @interface GEORPFeedbackSubmissionParameters
 - (BOOL)isPersonalizedMapsFeedback;
-- (id)stringForFeedbackType:(int)a3;
+- (id)stringForFeedbackType:(int)type;
 - (unint64_t)logDiscardTriggerType;
-- (void)addDirectionsContextWithReport:(id)a3 recording:(id)a4;
-- (void)appendImageIdToPoiEnrichment:(id)a3 withPhotoMetadata:(id)a4;
-- (void)appendServerImageId:(id)a3 withMatchingPhoto:(id)a4;
-- (void)insertDirectionStepCommentId:(id)a3 withMatchingPhoto:(id)a4;
-- (void)insertDirectionStepImageId:(id)a3 withMatchingPhoto:(id)a4;
-- (void)insertImageIdIntoCommonCorrections:(id)a3;
-- (void)insertImageIdIntoLookAroundContext:(id)a3;
-- (void)insertImageIdIntoMapViewContext:(id)a3;
-- (void)insertOverviewDirectionsImageId:(id)a3;
+- (void)addDirectionsContextWithReport:(id)report recording:(id)recording;
+- (void)appendImageIdToPoiEnrichment:(id)enrichment withPhotoMetadata:(id)metadata;
+- (void)appendServerImageId:(id)id withMatchingPhoto:(id)photo;
+- (void)insertDirectionStepCommentId:(id)id withMatchingPhoto:(id)photo;
+- (void)insertDirectionStepImageId:(id)id withMatchingPhoto:(id)photo;
+- (void)insertImageIdIntoCommonCorrections:(id)corrections;
+- (void)insertImageIdIntoLookAroundContext:(id)context;
+- (void)insertImageIdIntoMapViewContext:(id)context;
+- (void)insertOverviewDirectionsImageId:(id)id;
 - (void)setFeedbackType;
-- (void)updatePOIEnrichmentWithCloudKitReceipts:(id)a3;
+- (void)updatePOIEnrichmentWithCloudKitReceipts:(id)receipts;
 @end
 
 @implementation GEORPFeedbackSubmissionParameters
@@ -24,175 +24,175 @@
     return 0;
   }
 
-  v3 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v4 = [v3 addressPointFeedback];
-  v5 = [v4 hasPersonalizedMaps];
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
+  addressPointFeedback = [details addressPointFeedback];
+  hasPersonalizedMaps = [addressPointFeedback hasPersonalizedMaps];
 
-  return v5;
+  return hasPersonalizedMaps;
 }
 
-- (void)insertImageIdIntoLookAroundContext:(id)a3
+- (void)insertImageIdIntoLookAroundContext:(id)context
 {
-  v4 = a3;
-  v5 = [(GEORPFeedbackSubmissionParameters *)self details];
+  contextCopy = context;
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
 
-  if (!v5)
+  if (!details)
   {
     v6 = objc_alloc_init(GEORPFeedbackDetails);
     [(GEORPFeedbackSubmissionParameters *)self setDetails:v6];
   }
 
-  v7 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v8 = [v7 groundViewFeedback];
+  details2 = [(GEORPFeedbackSubmissionParameters *)self details];
+  groundViewFeedback = [details2 groundViewFeedback];
 
-  if (!v8)
+  if (!groundViewFeedback)
   {
     v9 = objc_alloc_init(GEORPGroundViewFeedback);
-    v10 = [(GEORPFeedbackSubmissionParameters *)self details];
-    [v10 setGroundViewFeedback:v9];
+    details3 = [(GEORPFeedbackSubmissionParameters *)self details];
+    [details3 setGroundViewFeedback:v9];
   }
 
-  v11 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v12 = [v11 groundViewFeedback];
-  v13 = [v12 groundViewContext];
+  details4 = [(GEORPFeedbackSubmissionParameters *)self details];
+  groundViewFeedback2 = [details4 groundViewFeedback];
+  groundViewContext = [groundViewFeedback2 groundViewContext];
 
-  if (!v13)
+  if (!groundViewContext)
   {
     v14 = objc_alloc_init(GEORPGroundViewFeedbackContext);
-    v15 = [(GEORPFeedbackSubmissionParameters *)self details];
-    v16 = [v15 groundViewFeedback];
-    [v16 setGroundViewContext:v14];
+    details5 = [(GEORPFeedbackSubmissionParameters *)self details];
+    groundViewFeedback3 = [details5 groundViewFeedback];
+    [groundViewFeedback3 setGroundViewContext:v14];
   }
 
-  v19 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v17 = [v19 groundViewFeedback];
-  v18 = [v17 groundViewContext];
-  [v18 setImageId:v4];
+  details6 = [(GEORPFeedbackSubmissionParameters *)self details];
+  groundViewFeedback4 = [details6 groundViewFeedback];
+  groundViewContext2 = [groundViewFeedback4 groundViewContext];
+  [groundViewContext2 setImageId:contextCopy];
 }
 
-- (void)insertImageIdIntoCommonCorrections:(id)a3
+- (void)insertImageIdIntoCommonCorrections:(id)corrections
 {
-  v4 = a3;
-  v5 = [(GEORPFeedbackSubmissionParameters *)self commonCorrections];
+  correctionsCopy = corrections;
+  commonCorrections = [(GEORPFeedbackSubmissionParameters *)self commonCorrections];
 
-  if (!v5)
+  if (!commonCorrections)
   {
     v6 = objc_alloc_init(GEORPFeedbackCommonCorrections);
     [(GEORPFeedbackSubmissionParameters *)self setCommonCorrections:v6];
   }
 
-  v7 = [(GEORPFeedbackSubmissionParameters *)self commonCorrections];
-  [v7 addImageId:v4];
+  commonCorrections2 = [(GEORPFeedbackSubmissionParameters *)self commonCorrections];
+  [commonCorrections2 addImageId:correctionsCopy];
 }
 
-- (void)insertImageIdIntoMapViewContext:(id)a3
+- (void)insertImageIdIntoMapViewContext:(id)context
 {
-  v4 = a3;
-  v5 = [(GEORPFeedbackSubmissionParameters *)self commonContext];
+  contextCopy = context;
+  commonContext = [(GEORPFeedbackSubmissionParameters *)self commonContext];
 
-  if (!v5)
+  if (!commonContext)
   {
     v6 = objc_alloc_init(GEORPFeedbackCommonContext);
     [(GEORPFeedbackSubmissionParameters *)self setCommonContext:v6];
   }
 
-  v7 = [(GEORPFeedbackSubmissionParameters *)self commonContext];
-  v8 = [v7 mapLocation];
+  commonContext2 = [(GEORPFeedbackSubmissionParameters *)self commonContext];
+  mapLocation = [commonContext2 mapLocation];
 
-  if (!v8)
+  if (!mapLocation)
   {
     v9 = objc_alloc_init(GEORPMapLocation);
-    v10 = [(GEORPFeedbackSubmissionParameters *)self commonContext];
-    [v10 setMapLocation:v9];
+    commonContext3 = [(GEORPFeedbackSubmissionParameters *)self commonContext];
+    [commonContext3 setMapLocation:v9];
   }
 
-  v12 = [(GEORPFeedbackSubmissionParameters *)self commonContext];
-  v11 = [v12 mapLocation];
-  [v11 setMapScreenshotId:v4];
+  commonContext4 = [(GEORPFeedbackSubmissionParameters *)self commonContext];
+  mapLocation2 = [commonContext4 mapLocation];
+  [mapLocation2 setMapScreenshotId:contextCopy];
 }
 
-- (void)insertOverviewDirectionsImageId:(id)a3
+- (void)insertOverviewDirectionsImageId:(id)id
 {
-  v14 = a3;
-  v4 = [(GEORPFeedbackSubmissionParameters *)self details];
+  idCopy = id;
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
 
-  if (!v4)
+  if (!details)
   {
     v5 = objc_alloc_init(GEORPFeedbackDetails);
     [(GEORPFeedbackSubmissionParameters *)self setDetails:v5];
   }
 
-  v6 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v7 = [v6 directionsFeedback];
+  details2 = [(GEORPFeedbackSubmissionParameters *)self details];
+  directionsFeedback = [details2 directionsFeedback];
 
-  if (!v7)
+  if (!directionsFeedback)
   {
-    v7 = objc_alloc_init(GEORPDirectionsFeedback);
-    v8 = [(GEORPFeedbackSubmissionParameters *)self details];
-    [v8 setDirectionsFeedback:v7];
+    directionsFeedback = objc_alloc_init(GEORPDirectionsFeedback);
+    details3 = [(GEORPFeedbackSubmissionParameters *)self details];
+    [details3 setDirectionsFeedback:directionsFeedback];
   }
 
-  v9 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v10 = [v9 directionsFeedback];
-  v11 = [v10 directionsCorrections];
+  details4 = [(GEORPFeedbackSubmissionParameters *)self details];
+  directionsFeedback2 = [details4 directionsFeedback];
+  directionsCorrections = [directionsFeedback2 directionsCorrections];
 
-  if (!v11)
+  if (!directionsCorrections)
   {
-    v11 = objc_alloc_init(GEORPDirectionsCorrections);
-    v12 = [(GEORPFeedbackSubmissionParameters *)self details];
-    v13 = [v12 directionsFeedback];
-    [v13 setDirectionsCorrections:v11];
+    directionsCorrections = objc_alloc_init(GEORPDirectionsCorrections);
+    details5 = [(GEORPFeedbackSubmissionParameters *)self details];
+    directionsFeedback3 = [details5 directionsFeedback];
+    [directionsFeedback3 setDirectionsCorrections:directionsCorrections];
   }
 
-  [v11 setOverviewScreenshotImageId:v14];
+  [directionsCorrections setOverviewScreenshotImageId:idCopy];
 }
 
-- (void)insertDirectionStepCommentId:(id)a3 withMatchingPhoto:(id)a4
+- (void)insertDirectionStepCommentId:(id)id withMatchingPhoto:(id)photo
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v9 = [v8 directionsFeedback];
-  v10 = [v9 directionsCorrections];
+  idCopy = id;
+  photoCopy = photo;
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
+  directionsFeedback = [details directionsFeedback];
+  directionsCorrections = [directionsFeedback directionsCorrections];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v23 = v10;
-  v11 = [v10 instructionCorrections];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v23 = directionsCorrections;
+  instructionCorrections = [directionsCorrections instructionCorrections];
+  v12 = [instructionCorrections countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v25;
-    v22 = v6;
+    v22 = idCopy;
     while (2)
     {
       for (i = 0; i != v13; i = i + 1)
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(instructionCorrections);
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 photoId];
-        v18 = [v7 photoMetadata];
-        v19 = [v18 clientImageUuid];
-        v20 = [v17 isEqualToString:v19];
+        photoId = [v16 photoId];
+        photoMetadata = [photoCopy photoMetadata];
+        clientImageUuid = [photoMetadata clientImageUuid];
+        v20 = [photoId isEqualToString:clientImageUuid];
 
         if (v20)
         {
           v21 = v16;
-          v6 = v22;
+          idCopy = v22;
           [v21 setPhotoId:v22];
           goto LABEL_11;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
-      v6 = v22;
+      v13 = [instructionCorrections countByEnumeratingWithState:&v24 objects:v28 count:16];
+      idCopy = v22;
       if (v13)
       {
         continue;
@@ -205,52 +205,52 @@
 LABEL_11:
 }
 
-- (void)insertDirectionStepImageId:(id)a3 withMatchingPhoto:(id)a4
+- (void)insertDirectionStepImageId:(id)id withMatchingPhoto:(id)photo
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v9 = [v8 directionsFeedback];
-  v10 = [v9 directionsCorrections];
+  idCopy = id;
+  photoCopy = photo;
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
+  directionsFeedback = [details directionsFeedback];
+  directionsCorrections = [directionsFeedback directionsCorrections];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v23 = v10;
-  v11 = [v10 instructionCorrections];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v23 = directionsCorrections;
+  instructionCorrections = [directionsCorrections instructionCorrections];
+  v12 = [instructionCorrections countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v25;
-    v22 = v6;
+    v22 = idCopy;
     while (2)
     {
       for (i = 0; i != v13; i = i + 1)
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(instructionCorrections);
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 routeStepScreenshotImageId];
-        v18 = [v7 photoMetadata];
-        v19 = [v18 clientImageUuid];
-        v20 = [v17 isEqualToString:v19];
+        routeStepScreenshotImageId = [v16 routeStepScreenshotImageId];
+        photoMetadata = [photoCopy photoMetadata];
+        clientImageUuid = [photoMetadata clientImageUuid];
+        v20 = [routeStepScreenshotImageId isEqualToString:clientImageUuid];
 
         if (v20)
         {
           v21 = v16;
-          v6 = v22;
+          idCopy = v22;
           [v21 setRouteStepScreenshotImageId:v22];
           goto LABEL_11;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
-      v6 = v22;
+      v13 = [instructionCorrections countByEnumeratingWithState:&v24 objects:v28 count:16];
+      idCopy = v22;
       if (v13)
       {
         continue;
@@ -277,11 +277,11 @@ LABEL_11:
   }
 }
 
-- (id)stringForFeedbackType:(int)a3
+- (id)stringForFeedbackType:(int)type
 {
-  if (a3 <= 0x15)
+  if (type <= 0x15)
   {
-    v4 = *(&off_101629CE8 + a3);
+    v4 = *(&off_101629CE8 + type);
     v5 = +[NSBundle mainBundle];
     v3 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }
@@ -293,160 +293,160 @@ LABEL_11:
 {
   if ([(GEORPFeedbackSubmissionParameters *)self hasDetails])
   {
-    v3 = [(GEORPFeedbackSubmissionParameters *)self details];
-    v4 = [v3 hasPoiFeedback];
+    details = [(GEORPFeedbackSubmissionParameters *)self details];
+    hasPoiFeedback = [details hasPoiFeedback];
 
-    if (v4)
+    if (hasPoiFeedback)
     {
       v5 = 2;
     }
 
     else
     {
-      v6 = [(GEORPFeedbackSubmissionParameters *)self details];
-      v7 = [v6 hasTransitPoiFeedback];
+      details2 = [(GEORPFeedbackSubmissionParameters *)self details];
+      hasTransitPoiFeedback = [details2 hasTransitPoiFeedback];
 
-      if (v7)
+      if (hasTransitPoiFeedback)
       {
         v5 = 3;
       }
 
       else
       {
-        v8 = [(GEORPFeedbackSubmissionParameters *)self details];
-        v9 = [v8 hasTileFeedback];
+        details3 = [(GEORPFeedbackSubmissionParameters *)self details];
+        hasTileFeedback = [details3 hasTileFeedback];
 
-        if (v9)
+        if (hasTileFeedback)
         {
           v5 = 5;
         }
 
         else
         {
-          v10 = [(GEORPFeedbackSubmissionParameters *)self details];
-          v11 = [v10 hasSearchFeedback];
+          details4 = [(GEORPFeedbackSubmissionParameters *)self details];
+          hasSearchFeedback = [details4 hasSearchFeedback];
 
-          if (v11)
+          if (hasSearchFeedback)
           {
             v5 = 6;
           }
 
           else
           {
-            v12 = [(GEORPFeedbackSubmissionParameters *)self details];
-            v13 = [v12 hasDirectionsFeedback];
+            details5 = [(GEORPFeedbackSubmissionParameters *)self details];
+            hasDirectionsFeedback = [details5 hasDirectionsFeedback];
 
-            if (v13)
+            if (hasDirectionsFeedback)
             {
               v5 = 8;
             }
 
             else
             {
-              v14 = [(GEORPFeedbackSubmissionParameters *)self details];
-              v15 = [v14 hasAddressPointFeedback];
+              details6 = [(GEORPFeedbackSubmissionParameters *)self details];
+              hasAddressPointFeedback = [details6 hasAddressPointFeedback];
 
-              if (v15)
+              if (hasAddressPointFeedback)
               {
                 v5 = 4;
               }
 
               else
               {
-                v16 = [(GEORPFeedbackSubmissionParameters *)self details];
-                v17 = [v16 hasGroundViewFeedback];
+                details7 = [(GEORPFeedbackSubmissionParameters *)self details];
+                hasGroundViewFeedback = [details7 hasGroundViewFeedback];
 
-                if (v17)
+                if (hasGroundViewFeedback)
                 {
                   v5 = 9;
                 }
 
                 else
                 {
-                  v18 = [(GEORPFeedbackSubmissionParameters *)self details];
-                  v19 = [v18 hasMerchantLookupFeedback];
+                  details8 = [(GEORPFeedbackSubmissionParameters *)self details];
+                  hasMerchantLookupFeedback = [details8 hasMerchantLookupFeedback];
 
-                  if (v19)
+                  if (hasMerchantLookupFeedback)
                   {
                     v5 = 7;
                   }
 
                   else
                   {
-                    v20 = [(GEORPFeedbackSubmissionParameters *)self details];
-                    v21 = [v20 hasPoiEnrichmentUpdate];
+                    details9 = [(GEORPFeedbackSubmissionParameters *)self details];
+                    hasPoiEnrichmentUpdate = [details9 hasPoiEnrichmentUpdate];
 
-                    if (v21)
+                    if (hasPoiEnrichmentUpdate)
                     {
                       v5 = 10;
                     }
 
                     else
                     {
-                      v22 = [(GEORPFeedbackSubmissionParameters *)self details];
-                      v23 = [v22 hasIncidentFeedback];
+                      details10 = [(GEORPFeedbackSubmissionParameters *)self details];
+                      hasIncidentFeedback = [details10 hasIncidentFeedback];
 
-                      if (v23)
+                      if (hasIncidentFeedback)
                       {
                         v5 = 11;
                       }
 
                       else
                       {
-                        v24 = [(GEORPFeedbackSubmissionParameters *)self details];
-                        v25 = [v24 hasPoiImageFeedback];
+                        details11 = [(GEORPFeedbackSubmissionParameters *)self details];
+                        hasPoiImageFeedback = [details11 hasPoiImageFeedback];
 
-                        if (v25)
+                        if (hasPoiImageFeedback)
                         {
                           v5 = 13;
                         }
 
                         else
                         {
-                          v26 = [(GEORPFeedbackSubmissionParameters *)self details];
-                          v27 = [v26 hasCuratedCollectionFeedback];
+                          details12 = [(GEORPFeedbackSubmissionParameters *)self details];
+                          hasCuratedCollectionFeedback = [details12 hasCuratedCollectionFeedback];
 
-                          if (v27)
+                          if (hasCuratedCollectionFeedback)
                           {
                             v5 = 12;
                           }
 
                           else
                           {
-                            v28 = [(GEORPFeedbackSubmissionParameters *)self details];
-                            v29 = [v28 hasAddMapFeedback];
+                            details13 = [(GEORPFeedbackSubmissionParameters *)self details];
+                            hasAddMapFeedback = [details13 hasAddMapFeedback];
 
-                            if (v29)
+                            if (hasAddMapFeedback)
                             {
                               v5 = 15;
                             }
 
                             else
                             {
-                              v30 = [(GEORPFeedbackSubmissionParameters *)self details];
-                              v31 = [v30 hasStreetFeedback];
+                              details14 = [(GEORPFeedbackSubmissionParameters *)self details];
+                              hasStreetFeedback = [details14 hasStreetFeedback];
 
-                              if (v31)
+                              if (hasStreetFeedback)
                               {
                                 v5 = 17;
                               }
 
                               else
                               {
-                                v32 = [(GEORPFeedbackSubmissionParameters *)self details];
-                                v33 = [v32 hasLocalityFeedback];
+                                details15 = [(GEORPFeedbackSubmissionParameters *)self details];
+                                hasLocalityFeedback = [details15 hasLocalityFeedback];
 
-                                if (v33)
+                                if (hasLocalityFeedback)
                                 {
                                   v5 = 16;
                                 }
 
                                 else
                                 {
-                                  v34 = [(GEORPFeedbackSubmissionParameters *)self details];
-                                  v35 = [v34 hasRapUserResponseFeedback];
+                                  details16 = [(GEORPFeedbackSubmissionParameters *)self details];
+                                  hasRapUserResponseFeedback = [details16 hasRapUserResponseFeedback];
 
-                                  if (v35)
+                                  if (hasRapUserResponseFeedback)
                                   {
                                     v5 = 21;
                                   }
@@ -480,156 +480,156 @@ LABEL_11:
   [(GEORPFeedbackSubmissionParameters *)self setType:v5];
 }
 
-- (void)addDirectionsContextWithReport:(id)a3 recording:(id)a4
+- (void)addDirectionsContextWithReport:(id)report recording:(id)recording
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GEORPFeedbackSubmissionParameters *)self details];
+  reportCopy = report;
+  recordingCopy = recording;
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
 
-  if (!v8)
+  if (!details)
   {
     v9 = objc_alloc_init(GEORPFeedbackDetails);
     [(GEORPFeedbackSubmissionParameters *)self setDetails:v9];
   }
 
-  v10 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v11 = [v10 directionsFeedback];
+  details2 = [(GEORPFeedbackSubmissionParameters *)self details];
+  directionsFeedback = [details2 directionsFeedback];
 
-  if (!v11)
+  if (!directionsFeedback)
   {
     v12 = objc_alloc_init(GEORPDirectionsFeedback);
-    v13 = [(GEORPFeedbackSubmissionParameters *)self details];
-    [v13 setDirectionsFeedback:v12];
+    details3 = [(GEORPFeedbackSubmissionParameters *)self details];
+    [details3 setDirectionsFeedback:v12];
   }
 
-  v14 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v15 = [v14 directionsFeedback];
-  v16 = [v15 directionsContext];
+  details4 = [(GEORPFeedbackSubmissionParameters *)self details];
+  directionsFeedback2 = [details4 directionsFeedback];
+  directionsContext = [directionsFeedback2 directionsContext];
 
-  if (!v16)
+  if (!directionsContext)
   {
-    v16 = objc_alloc_init(GEORPDirectionsFeedbackContext);
-    v17 = [(GEORPFeedbackSubmissionParameters *)self details];
-    v18 = [v17 directionsFeedback];
-    [v18 setDirectionsContext:v16];
+    directionsContext = objc_alloc_init(GEORPDirectionsFeedbackContext);
+    details5 = [(GEORPFeedbackSubmissionParameters *)self details];
+    directionsFeedback3 = [details5 directionsFeedback];
+    [directionsFeedback3 setDirectionsContext:directionsContext];
   }
 
-  v19 = [v7 directionsRequests];
-  [v16 setDirectionsRequests:v19];
+  directionsRequests = [recordingCopy directionsRequests];
+  [directionsContext setDirectionsRequests:directionsRequests];
 
-  v20 = [v7 directionsResponses];
-  [v16 setDirectionsResponses:v20];
+  directionsResponses = [recordingCopy directionsResponses];
+  [directionsContext setDirectionsResponses:directionsResponses];
 
-  v21 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v22 = [v21 directionsFeedback];
-  v23 = [v22 directionsCorrections];
+  details6 = [(GEORPFeedbackSubmissionParameters *)self details];
+  directionsFeedback4 = [details6 directionsFeedback];
+  directionsCorrections = [directionsFeedback4 directionsCorrections];
 
-  if (!v23)
+  if (!directionsCorrections)
   {
-    v23 = objc_alloc_init(GEORPDirectionsCorrections);
-    v24 = [(GEORPFeedbackSubmissionParameters *)self details];
-    v25 = [v24 directionsFeedback];
-    [v25 setDirectionsCorrections:v23];
+    directionsCorrections = objc_alloc_init(GEORPDirectionsCorrections);
+    details7 = [(GEORPFeedbackSubmissionParameters *)self details];
+    directionsFeedback5 = [details7 directionsFeedback];
+    [directionsFeedback5 setDirectionsCorrections:directionsCorrections];
   }
 
-  v26 = [v7 directionsResponseID];
-  [v23 setDirectionsResponseId:v26];
+  directionsResponseID = [recordingCopy directionsResponseID];
+  [directionsCorrections setDirectionsResponseId:directionsResponseID];
 
   v27 = [RAPPhoto alloc];
-  v28 = [v7 overviewScreenshotImageData];
-  v29 = [UIImage imageWithData:v28];
+  overviewScreenshotImageData = [recordingCopy overviewScreenshotImageData];
+  v29 = [UIImage imageWithData:overviewScreenshotImageData];
   v30 = +[NSDate date];
   v31 = [(RAPPhoto *)v27 initWithPhoto:v29 date:v30 location:0];
 
-  v32 = [(RAPPhoto *)v31 photo];
+  photo = [(RAPPhoto *)v31 photo];
 
-  if (v32)
+  if (photo)
   {
     v33 = [[RAPPhotoWithMetadata alloc] initWithRAPPhoto:v31 photoType:2];
-    [v6 addPhotoWithMetadata:v33];
+    [reportCopy addPhotoWithMetadata:v33];
   }
 
   v58 = v31;
-  v59 = v6;
+  v59 = reportCopy;
   v34 = [GEORPPlaceInfo alloc];
-  v35 = [v7 startWaypointCorrectedSearchTemplate];
-  v36 = [v34 initWithCorrectedSearch:v35];
+  startWaypointCorrectedSearchTemplate = [recordingCopy startWaypointCorrectedSearchTemplate];
+  v36 = [v34 initWithCorrectedSearch:startWaypointCorrectedSearchTemplate];
 
   [v36 clearSessionId];
   v37 = objc_alloc_init(GEORPPlaceRequestResponse);
-  v38 = [v36 placeRequest];
-  [v37 setPlaceRequest:v38];
+  placeRequest = [v36 placeRequest];
+  [v37 setPlaceRequest:placeRequest];
 
-  v39 = [v36 placeResponse];
-  [v37 setPlaceResponse:v39];
+  placeResponse = [v36 placeResponse];
+  [v37 setPlaceResponse:placeResponse];
 
   v40 = [GEORPPlaceInfo alloc];
-  v41 = [v7 endWaypointCorrectedSearchTemplate];
-  v42 = [v40 initWithCorrectedSearch:v41];
+  endWaypointCorrectedSearchTemplate = [recordingCopy endWaypointCorrectedSearchTemplate];
+  v42 = [v40 initWithCorrectedSearch:endWaypointCorrectedSearchTemplate];
 
   [v42 clearSessionId];
   v43 = objc_alloc_init(GEORPPlaceRequestResponse);
-  v44 = [v42 placeRequest];
-  [v43 setPlaceRequest:v44];
+  placeRequest2 = [v42 placeRequest];
+  [v43 setPlaceRequest:placeRequest2];
 
-  v45 = [v42 placeResponse];
-  [v43 setPlaceResponse:v45];
+  placeResponse2 = [v42 placeResponse];
+  [v43 setPlaceResponse:placeResponse2];
 
   v60[0] = v37;
   v60[1] = v43;
   v46 = [NSArray arrayWithObjects:v60 count:2];
   v47 = [v46 mutableCopy];
-  [v16 setDirectionsWaypointPlaceInfos:v47];
+  [directionsContext setDirectionsWaypointPlaceInfos:v47];
 
-  v48 = [v7 startWaypoint];
-  if (v48)
+  startWaypoint = [recordingCopy startWaypoint];
+  if (startWaypoint)
   {
-    v49 = [[GEORPUserSearchInput alloc] initWithRAPUserSearchInput:v48];
-    [v16 setStartWaypoint:v49];
+    v49 = [[GEORPUserSearchInput alloc] initWithRAPUserSearchInput:startWaypoint];
+    [directionsContext setStartWaypoint:v49];
   }
 
-  v50 = [v7 endWaypoint];
-  if (v50)
+  endWaypoint = [recordingCopy endWaypoint];
+  if (endWaypoint)
   {
-    v51 = [[GEORPUserSearchInput alloc] initWithRAPUserSearchInput:v50];
-    [v16 setEndWaypoint:v51];
+    v51 = [[GEORPUserSearchInput alloc] initWithRAPUserSearchInput:endWaypoint];
+    [directionsContext setEndWaypoint:v51];
   }
 
-  if (v7 && [v7 hasSelectedDirectionsResponseIndex] && objc_msgSend(v7, "hasSelectedSuggestedRouteIndexInDirectionsResponse") && !objc_msgSend(v23, "problematicRouteIndexsCount"))
+  if (recordingCopy && [recordingCopy hasSelectedDirectionsResponseIndex] && objc_msgSend(recordingCopy, "hasSelectedSuggestedRouteIndexInDirectionsResponse") && !objc_msgSend(directionsCorrections, "problematicRouteIndexsCount"))
   {
     v52 = objc_alloc_init(GEORPSuggestedRouteIndex);
-    [v52 setDirectionsResponseIndex:{objc_msgSend(v7, "selectedDirectionsResponseIndex")}];
+    [v52 setDirectionsResponseIndex:{objc_msgSend(recordingCopy, "selectedDirectionsResponseIndex")}];
     v57 = v52;
-    [v52 setDirectionsResponseSuggestedRoutesIndex:{objc_msgSend(v7, "selectedSuggestedRouteIndexInDirectionsResponse")}];
-    v55 = [v7 directionsResponses];
-    v53 = [v55 objectAtIndexedSubscript:{objc_msgSend(v7, "selectedDirectionsResponseIndex")}];
+    [v52 setDirectionsResponseSuggestedRoutesIndex:{objc_msgSend(recordingCopy, "selectedSuggestedRouteIndexInDirectionsResponse")}];
+    directionsResponses2 = [recordingCopy directionsResponses];
+    v53 = [directionsResponses2 objectAtIndexedSubscript:{objc_msgSend(recordingCopy, "selectedDirectionsResponseIndex")}];
 
     v56 = v53;
-    v54 = [v53 suggestedRoutes];
+    suggestedRoutes = [v53 suggestedRoutes];
 
-    if (v54)
+    if (suggestedRoutes)
     {
-      [v57 setClusteredRouteRideSelections:objc_msgSend(v7 count:{"clusteredRouteRideSelections"), objc_msgSend(v7, "clusteredRouteRideSelectionsCount")}];
+      [v57 setClusteredRouteRideSelections:objc_msgSend(recordingCopy count:{"clusteredRouteRideSelections"), objc_msgSend(recordingCopy, "clusteredRouteRideSelectionsCount")}];
     }
 
-    [v23 addProblematicRouteIndex:v57];
+    [directionsCorrections addProblematicRouteIndex:v57];
   }
 }
 
-- (void)updatePOIEnrichmentWithCloudKitReceipts:(id)a3
+- (void)updatePOIEnrichmentWithCloudKitReceipts:(id)receipts
 {
-  v4 = a3;
-  v5 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v6 = [v5 poiEnrichmentUpdate];
+  receiptsCopy = receipts;
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
+  poiEnrichmentUpdate = [details poiEnrichmentUpdate];
 
-  if (v6)
+  if (poiEnrichmentUpdate)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = v4;
+    v8 = receiptsCopy;
     v9 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v9)
     {
@@ -645,8 +645,8 @@ LABEL_11:
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
-          v14 = [v13 comparisonIdentifier];
-          [v7 setObject:v13 forKey:v14];
+          comparisonIdentifier = [v13 comparisonIdentifier];
+          [v7 setObject:v13 forKey:comparisonIdentifier];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
@@ -659,11 +659,11 @@ LABEL_11:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = [(GEORPFeedbackSubmissionParameters *)self details];
-    v16 = [v15 poiEnrichmentUpdate];
-    v17 = [v16 imageUpdates];
+    details2 = [(GEORPFeedbackSubmissionParameters *)self details];
+    poiEnrichmentUpdate2 = [details2 poiEnrichmentUpdate];
+    imageUpdates = [poiEnrichmentUpdate2 imageUpdates];
 
-    v18 = [v17 countByEnumeratingWithState:&v26 objects:v35 count:16];
+    v18 = [imageUpdates countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v18)
     {
       v19 = v18;
@@ -674,21 +674,21 @@ LABEL_11:
         {
           if (*v27 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(imageUpdates);
           }
 
           v22 = *(*(&v26 + 1) + 8 * j);
           if ([v22 action] == 1)
           {
-            v23 = [v22 comparisonIdentifier];
-            v24 = [v7 objectForKey:v23];
+            comparisonIdentifier2 = [v22 comparisonIdentifier];
+            v24 = [v7 objectForKey:comparisonIdentifier2];
 
-            v25 = [v24 uploadResponse];
-            [v22 setUploadResponse:v25];
+            uploadResponse = [v24 uploadResponse];
+            [v22 setUploadResponse:uploadResponse];
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        v19 = [imageUpdates countByEnumeratingWithState:&v26 objects:v35 count:16];
       }
 
       while (v19);
@@ -702,82 +702,82 @@ LABEL_11:
   }
 }
 
-- (void)appendImageIdToPoiEnrichment:(id)a3 withPhotoMetadata:(id)a4
+- (void)appendImageIdToPoiEnrichment:(id)enrichment withPhotoMetadata:(id)metadata
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(GEORPFeedbackSubmissionParameters *)self details];
+  enrichmentCopy = enrichment;
+  metadataCopy = metadata;
+  details = [(GEORPFeedbackSubmissionParameters *)self details];
 
-  if (!v7)
+  if (!details)
   {
     v8 = objc_alloc_init(GEORPFeedbackDetails);
     [(GEORPFeedbackSubmissionParameters *)self setDetails:v8];
   }
 
-  v9 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v10 = [v9 poiEnrichmentUpdate];
+  details2 = [(GEORPFeedbackSubmissionParameters *)self details];
+  poiEnrichmentUpdate = [details2 poiEnrichmentUpdate];
 
-  if (!v10)
+  if (!poiEnrichmentUpdate)
   {
     v11 = objc_alloc_init(GEORPPoiEnrichmentUpdate);
-    v12 = [(GEORPFeedbackSubmissionParameters *)self details];
-    [v12 setPoiEnrichmentUpdate:v11];
+    details3 = [(GEORPFeedbackSubmissionParameters *)self details];
+    [details3 setPoiEnrichmentUpdate:v11];
   }
 
-  v13 = [GEORPImageUpdate newImageUpdateWithImageId:v16 photoMetadata:v6];
-  v14 = [(GEORPFeedbackSubmissionParameters *)self details];
-  v15 = [v14 poiEnrichmentUpdate];
-  [v15 addImageUpdate:v13];
+  v13 = [GEORPImageUpdate newImageUpdateWithImageId:enrichmentCopy photoMetadata:metadataCopy];
+  details4 = [(GEORPFeedbackSubmissionParameters *)self details];
+  poiEnrichmentUpdate2 = [details4 poiEnrichmentUpdate];
+  [poiEnrichmentUpdate2 addImageUpdate:v13];
 }
 
-- (void)appendServerImageId:(id)a3 withMatchingPhoto:(id)a4
+- (void)appendServerImageId:(id)id withMatchingPhoto:(id)photo
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 photoType];
-  if (v7 <= 2)
+  idCopy = id;
+  photoCopy = photo;
+  photoType = [photoCopy photoType];
+  if (photoType <= 2)
   {
-    if (v7)
+    if (photoType)
     {
-      if (v7 == 1)
+      if (photoType == 1)
       {
-        [(GEORPFeedbackSubmissionParameters *)self insertImageIdIntoCommonCorrections:v9];
+        [(GEORPFeedbackSubmissionParameters *)self insertImageIdIntoCommonCorrections:idCopy];
       }
 
-      else if (v7 == 2)
+      else if (photoType == 2)
       {
-        [(GEORPFeedbackSubmissionParameters *)self insertOverviewDirectionsImageId:v9];
+        [(GEORPFeedbackSubmissionParameters *)self insertOverviewDirectionsImageId:idCopy];
       }
     }
 
     else
     {
-      [(GEORPFeedbackSubmissionParameters *)self insertImageIdIntoMapViewContext:v9];
+      [(GEORPFeedbackSubmissionParameters *)self insertImageIdIntoMapViewContext:idCopy];
     }
   }
 
-  else if (v7 > 4)
+  else if (photoType > 4)
   {
-    if (v7 == 5)
+    if (photoType == 5)
     {
-      [(GEORPFeedbackSubmissionParameters *)self insertImageIdIntoLookAroundContext:v9];
+      [(GEORPFeedbackSubmissionParameters *)self insertImageIdIntoLookAroundContext:idCopy];
     }
 
-    else if (v7 == 6)
+    else if (photoType == 6)
     {
-      v8 = [v6 photoMetadata];
-      [(GEORPFeedbackSubmissionParameters *)self appendImageIdToPoiEnrichment:v9 withPhotoMetadata:v8];
+      photoMetadata = [photoCopy photoMetadata];
+      [(GEORPFeedbackSubmissionParameters *)self appendImageIdToPoiEnrichment:idCopy withPhotoMetadata:photoMetadata];
     }
   }
 
-  else if (v7 == 3)
+  else if (photoType == 3)
   {
-    [(GEORPFeedbackSubmissionParameters *)self insertDirectionStepImageId:v9 withMatchingPhoto:v6];
+    [(GEORPFeedbackSubmissionParameters *)self insertDirectionStepImageId:idCopy withMatchingPhoto:photoCopy];
   }
 
   else
   {
-    [(GEORPFeedbackSubmissionParameters *)self insertDirectionStepCommentId:v9 withMatchingPhoto:v6];
+    [(GEORPFeedbackSubmissionParameters *)self insertDirectionStepCommentId:idCopy withMatchingPhoto:photoCopy];
   }
 }
 

@@ -2,44 +2,44 @@
 - (BOOL)isBrightnessKey;
 - (BOOL)isCapsLockKeyDown;
 - (BOOL)isCapsLockKeyUp;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVOTKeyInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVOTKeyInfo:(id)info;
 - (BOOL)keyDown;
 - (BOOL)keyUp;
 - (NSString)characters;
 - (NSString)originalCharacters;
-- (VOTKeyInfo)initWithEventRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VOTKeyInfo)initWithEventRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)mediaKeyCode;
 - (unint64_t)hash;
 - (unsigned)keyCode;
 - (unsigned)modifierState;
-- (void)_setCommandKeyPressed:(BOOL)a3;
-- (void)setKeyCode:(unsigned __int16)a3;
-- (void)setKeyDown:(BOOL)a3;
-- (void)setKeyUp:(BOOL)a3;
-- (void)setModifiersChanged:(BOOL)a3;
+- (void)_setCommandKeyPressed:(BOOL)pressed;
+- (void)setKeyCode:(unsigned __int16)code;
+- (void)setKeyDown:(BOOL)down;
+- (void)setKeyUp:(BOOL)up;
+- (void)setModifiersChanged:(BOOL)changed;
 @end
 
 @implementation VOTKeyInfo
 
-- (VOTKeyInfo)initWithEventRepresentation:(id)a3
+- (VOTKeyInfo)initWithEventRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = VOTKeyInfo;
   v5 = [(VOTKeyInfo *)&v13 init];
   v6 = v5;
   v7 = 0;
-  if (v4 && v5)
+  if (representationCopy && v5)
   {
-    v8 = [v4 keyInfo];
-    v9 = v8;
-    if (v8)
+    keyInfo = [representationCopy keyInfo];
+    v9 = keyInfo;
+    if (keyInfo)
     {
-      v10 = [v8 modifiedInput];
-      if (v10)
+      modifiedInput = [keyInfo modifiedInput];
+      if (modifiedInput)
       {
       }
 
@@ -50,7 +50,7 @@
       }
     }
 
-    [(VOTKeyInfo *)v6 setEventRecord:v4];
+    [(VOTKeyInfo *)v6 setEventRecord:representationCopy];
     *&v6->_flags = *&v6->_flags & 0xFE | [v9 keyDown];
     if ([v9 keyDown])
     {
@@ -69,10 +69,10 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(VOTKeyInfo *)self eventRecord];
-  v6 = [v5 copyWithZone:a3];
+  eventRecord = [(VOTKeyInfo *)self eventRecord];
+  v6 = [eventRecord copyWithZone:zone];
 
   v7 = objc_alloc_init(VOTKeyInfo);
   [(VOTKeyInfo *)v7 setEventRecord:v6];
@@ -85,31 +85,31 @@
 
 - (unsigned)modifierState
 {
-  v2 = [(AXEventRepresentation *)self->_eventRecord keyInfo];
-  v3 = [v2 modifierState];
+  keyInfo = [(AXEventRepresentation *)self->_eventRecord keyInfo];
+  modifierState = [keyInfo modifierState];
 
-  return v3;
+  return modifierState;
 }
 
 - (NSString)characters
 {
-  v2 = [(AXEventRepresentation *)self->_eventRecord keyInfo];
-  v3 = [v2 modifiedInput];
+  keyInfo = [(AXEventRepresentation *)self->_eventRecord keyInfo];
+  modifiedInput = [keyInfo modifiedInput];
 
-  return v3;
+  return modifiedInput;
 }
 
 - (NSString)originalCharacters
 {
-  v2 = [(AXEventRepresentation *)self->_eventRecord keyInfo];
-  v3 = [v2 unmodifiedInput];
+  keyInfo = [(AXEventRepresentation *)self->_eventRecord keyInfo];
+  unmodifiedInput = [keyInfo unmodifiedInput];
 
-  return v3;
+  return unmodifiedInput;
 }
 
-- (void)setModifiersChanged:(BOOL)a3
+- (void)setModifiersChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 4;
   }
@@ -124,19 +124,19 @@
 
 - (BOOL)keyDown
 {
-  v2 = [(VOTKeyInfo *)self eventRecord];
-  v3 = [v2 keyInfo];
-  v4 = [v3 keyDown];
+  eventRecord = [(VOTKeyInfo *)self eventRecord];
+  keyInfo = [eventRecord keyInfo];
+  keyDown = [keyInfo keyDown];
 
-  return v4;
+  return keyDown;
 }
 
-- (void)setKeyDown:(BOOL)a3
+- (void)setKeyDown:(BOOL)down
 {
-  v3 = a3;
-  v5 = [(VOTKeyInfo *)self eventRecord];
-  v6 = v5;
-  if (v3)
+  downCopy = down;
+  eventRecord = [(VOTKeyInfo *)self eventRecord];
+  v6 = eventRecord;
+  if (downCopy)
   {
     v7 = 10;
   }
@@ -146,29 +146,29 @@
     v7 = 11;
   }
 
-  [v5 setType:v7];
+  [eventRecord setType:v7];
 
-  *&self->_flags = *&self->_flags & 0xFE | v3;
-  v9 = [(VOTKeyInfo *)self eventRecord];
-  v8 = [v9 keyInfo];
-  [v8 setKeyDown:v3];
+  *&self->_flags = *&self->_flags & 0xFE | downCopy;
+  eventRecord2 = [(VOTKeyInfo *)self eventRecord];
+  keyInfo = [eventRecord2 keyInfo];
+  [keyInfo setKeyDown:downCopy];
 }
 
 - (BOOL)keyUp
 {
-  v2 = [(VOTKeyInfo *)self eventRecord];
-  v3 = [v2 keyInfo];
-  v4 = [v3 keyDown];
+  eventRecord = [(VOTKeyInfo *)self eventRecord];
+  keyInfo = [eventRecord keyInfo];
+  keyDown = [keyInfo keyDown];
 
-  return v4 ^ 1;
+  return keyDown ^ 1;
 }
 
-- (void)setKeyUp:(BOOL)a3
+- (void)setKeyUp:(BOOL)up
 {
-  v3 = a3;
-  v5 = [(VOTKeyInfo *)self eventRecord];
-  v6 = v5;
-  if (v3)
+  upCopy = up;
+  eventRecord = [(VOTKeyInfo *)self eventRecord];
+  v6 = eventRecord;
+  if (upCopy)
   {
     v7 = 11;
   }
@@ -178,29 +178,29 @@
     v7 = 10;
   }
 
-  [v5 setType:v7];
+  [eventRecord setType:v7];
 
-  *&self->_flags = *&self->_flags & 0xFE | v3;
-  v9 = [(VOTKeyInfo *)self eventRecord];
-  v8 = [v9 keyInfo];
-  [v8 setKeyDown:!v3];
+  *&self->_flags = *&self->_flags & 0xFE | upCopy;
+  eventRecord2 = [(VOTKeyInfo *)self eventRecord];
+  keyInfo = [eventRecord2 keyInfo];
+  [keyInfo setKeyDown:!upCopy];
 }
 
 - (unsigned)keyCode
 {
-  v2 = [(VOTKeyInfo *)self eventRecord];
-  v3 = [v2 keyInfo];
-  v4 = [v3 keyCode];
+  eventRecord = [(VOTKeyInfo *)self eventRecord];
+  keyInfo = [eventRecord keyInfo];
+  keyCode = [keyInfo keyCode];
 
-  return v4;
+  return keyCode;
 }
 
-- (void)setKeyCode:(unsigned __int16)a3
+- (void)setKeyCode:(unsigned __int16)code
 {
-  v3 = a3;
-  v5 = [(VOTKeyInfo *)self eventRecord];
-  v4 = [v5 keyInfo];
-  [v4 setKeyCode:v3];
+  codeCopy = code;
+  eventRecord = [(VOTKeyInfo *)self eventRecord];
+  keyInfo = [eventRecord keyInfo];
+  [keyInfo setKeyCode:codeCopy];
 }
 
 - (BOOL)isCapsLockKeyDown
@@ -238,18 +238,18 @@
 
 - (BOOL)isBrightnessKey
 {
-  v3 = [(VOTKeyInfo *)self isAppleVendorKey];
-  if (v3)
+  isAppleVendorKey = [(VOTKeyInfo *)self isAppleVendorKey];
+  if (isAppleVendorKey)
   {
-    LOBYTE(v3) = ([(AXEventRepresentation *)self->_eventRecord subtype]& 0xFFFFFFFE) == 32;
+    LOBYTE(isAppleVendorKey) = ([(AXEventRepresentation *)self->_eventRecord subtype]& 0xFFFFFFFE) == 32;
   }
 
-  return v3;
+  return isAppleVendorKey;
 }
 
 - (id)description
 {
-  v3 = [(AXEventRepresentation *)self->_eventRecord keyInfo];
+  keyInfo = [(AXEventRepresentation *)self->_eventRecord keyInfo];
   if ([(VOTKeyInfo *)self isAppleVendorKey])
   {
     v4 = [NSString stringWithFormat:@"Apple Vender KeyDown: code: %i", [(VOTKeyInfo *)self mediaKeyCode]];
@@ -264,32 +264,32 @@
 
     else
     {
-      v6 = [(AXEventRepresentation *)self->_eventRecord type];
+      type = [(AXEventRepresentation *)self->_eventRecord type];
       v5 = @"Flags changed";
-      if (v6 == 11)
+      if (type == 11)
       {
         v5 = @"Key up";
       }
     }
 
     v11 = v5;
-    v10 = [v3 keyCode];
-    v7 = [v3 modifiedInput];
-    v8 = [v3 unmodifiedInput];
-    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@: code: %u (MODIFIED: %@ : UNMODIFIED: %@), flags: %d, shift: %d, control: %d, option: %d, command: %d, fn: %d", v11, v10, v7, v8, [v3 modifierState], -[VOTKeyInfo isShiftKeyPressed](self, "isShiftKeyPressed"), -[VOTKeyInfo isControlKeyPressed](self, "isControlKeyPressed"), -[VOTKeyInfo isOptionKeyPressed](self, "isOptionKeyPressed"), -[VOTKeyInfo isCommandKeyPressed](self, "isCommandKeyPressed"), -[VOTKeyInfo isFNKeyPressed](self, "isFNKeyPressed"));
+    keyCode = [keyInfo keyCode];
+    modifiedInput = [keyInfo modifiedInput];
+    unmodifiedInput = [keyInfo unmodifiedInput];
+    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@: code: %u (MODIFIED: %@ : UNMODIFIED: %@), flags: %d, shift: %d, control: %d, option: %d, command: %d, fn: %d", v11, keyCode, modifiedInput, unmodifiedInput, [keyInfo modifierState], -[VOTKeyInfo isShiftKeyPressed](self, "isShiftKeyPressed"), -[VOTKeyInfo isControlKeyPressed](self, "isControlKeyPressed"), -[VOTKeyInfo isOptionKeyPressed](self, "isOptionKeyPressed"), -[VOTKeyInfo isCommandKeyPressed](self, "isCommandKeyPressed"), -[VOTKeyInfo isFNKeyPressed](self, "isFNKeyPressed"));
   }
 
   return v4;
 }
 
-- (BOOL)isEqualToVOTKeyInfo:(id)a3
+- (BOOL)isEqualToVOTKeyInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(VOTKeyInfo *)self keyDown];
-  if (v5 == [v4 keyDown] && (v6 = -[VOTKeyInfo keyUp](self, "keyUp"), v6 == objc_msgSend(v4, "keyUp")) && (v7 = -[VOTKeyInfo isShiftKeyPressed](self, "isShiftKeyPressed"), v7 == objc_msgSend(v4, "isShiftKeyPressed")) && (v8 = -[VOTKeyInfo isCommandKeyPressed](self, "isCommandKeyPressed"), v8 == objc_msgSend(v4, "isCommandKeyPressed")) && (v9 = -[VOTKeyInfo isOptionKeyPressed](self, "isOptionKeyPressed"), v9 == objc_msgSend(v4, "isOptionKeyPressed")) && (v10 = -[VOTKeyInfo isControlKeyPressed](self, "isControlKeyPressed"), v10 == objc_msgSend(v4, "isControlKeyPressed")) && (v11 = -[VOTKeyInfo isCapsLockKeyToggledOn](self, "isCapsLockKeyToggledOn"), v11 == objc_msgSend(v4, "isCapsLockKeyToggledOn")) && (v12 = -[VOTKeyInfo isCapsLockKeyDown](self, "isCapsLockKeyDown"), v12 == objc_msgSend(v4, "isCapsLockKeyDown")) && (v13 = -[VOTKeyInfo isCapsLockKeyUp](self, "isCapsLockKeyUp"), v13 == objc_msgSend(v4, "isCapsLockKeyUp")) && (v14 = -[VOTKeyInfo isFNKeyPressed](self, "isFNKeyPressed"), v14 == objc_msgSend(v4, "isFNKeyPressed")))
+  infoCopy = info;
+  keyDown = [(VOTKeyInfo *)self keyDown];
+  if (keyDown == [infoCopy keyDown] && (v6 = -[VOTKeyInfo keyUp](self, "keyUp"), v6 == objc_msgSend(infoCopy, "keyUp")) && (v7 = -[VOTKeyInfo isShiftKeyPressed](self, "isShiftKeyPressed"), v7 == objc_msgSend(infoCopy, "isShiftKeyPressed")) && (v8 = -[VOTKeyInfo isCommandKeyPressed](self, "isCommandKeyPressed"), v8 == objc_msgSend(infoCopy, "isCommandKeyPressed")) && (v9 = -[VOTKeyInfo isOptionKeyPressed](self, "isOptionKeyPressed"), v9 == objc_msgSend(infoCopy, "isOptionKeyPressed")) && (v10 = -[VOTKeyInfo isControlKeyPressed](self, "isControlKeyPressed"), v10 == objc_msgSend(infoCopy, "isControlKeyPressed")) && (v11 = -[VOTKeyInfo isCapsLockKeyToggledOn](self, "isCapsLockKeyToggledOn"), v11 == objc_msgSend(infoCopy, "isCapsLockKeyToggledOn")) && (v12 = -[VOTKeyInfo isCapsLockKeyDown](self, "isCapsLockKeyDown"), v12 == objc_msgSend(infoCopy, "isCapsLockKeyDown")) && (v13 = -[VOTKeyInfo isCapsLockKeyUp](self, "isCapsLockKeyUp"), v13 == objc_msgSend(infoCopy, "isCapsLockKeyUp")) && (v14 = -[VOTKeyInfo isFNKeyPressed](self, "isFNKeyPressed"), v14 == objc_msgSend(infoCopy, "isFNKeyPressed")))
   {
-    v17 = [(VOTKeyInfo *)self keyCode];
-    v15 = v17 == [v4 keyCode];
+    keyCode = [(VOTKeyInfo *)self keyCode];
+    v15 = keyCode == [infoCopy keyCode];
   }
 
   else
@@ -300,16 +300,16 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -445,11 +445,11 @@ LABEL_7:
   return 31 * (v20 - v19 + 32 * v19) + [(VOTKeyInfo *)self keyCode];
 }
 
-- (void)_setCommandKeyPressed:(BOOL)a3
+- (void)_setCommandKeyPressed:(BOOL)pressed
 {
-  v3 = a3;
-  v4 = [(AXEventRepresentation *)self->_eventRecord keyInfo];
-  [v4 setModifierState:{objc_msgSend(v4, "modifierState") & 0xFFFFFFFE | v3}];
+  pressedCopy = pressed;
+  keyInfo = [(AXEventRepresentation *)self->_eventRecord keyInfo];
+  [keyInfo setModifierState:{objc_msgSend(keyInfo, "modifierState") & 0xFFFFFFFE | pressedCopy}];
 }
 
 @end

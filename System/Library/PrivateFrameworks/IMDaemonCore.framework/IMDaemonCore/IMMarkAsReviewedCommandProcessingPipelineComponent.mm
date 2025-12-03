@@ -1,32 +1,32 @@
 @interface IMMarkAsReviewedCommandProcessingPipelineComponent
-- (IMMarkAsReviewedCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMMarkAsReviewedCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMMarkAsReviewedCommandProcessingPipelineComponent
 
-- (IMMarkAsReviewedCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMMarkAsReviewedCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMMarkAsReviewedCommandProcessingPipelineComponent;
   v6 = [(IMMarkAsReviewedCommandProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 reviewedChatGUIDs];
-  v5 = v4;
-  if (!v4 || ![v4 count])
+  inputCopy = input;
+  reviewedChatGUIDs = [inputCopy reviewedChatGUIDs];
+  v5 = reviewedChatGUIDs;
+  if (!reviewedChatGUIDs || ![reviewedChatGUIDs count])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -54,7 +54,7 @@
     }
   }
 
-  if ([v3 isFromMe])
+  if ([inputCopy isFromMe])
   {
     v7 = +[IMDChatRegistry sharedInstance];
     [v7 updatePendingReviewForChatsWithGUIDs:v5 pendingReview:0];
@@ -76,7 +76,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+  v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 

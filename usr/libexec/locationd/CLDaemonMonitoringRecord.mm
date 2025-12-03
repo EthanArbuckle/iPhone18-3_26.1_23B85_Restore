@@ -1,8 +1,8 @@
 @interface CLDaemonMonitoringRecord
 - (BOOL)isMonitoring;
 - (BOOL)shouldSendEvent;
-- (CLDaemonMonitoringRecord)initWithClientMonitoringRecord:(id)a3 clientKeyPath:(id)a4 authorizationContext:(id)a5 universe:(id)a6 identifier:(id)a7 initForStopMonitoring:(BOOL)a8 callbackHandler:(id)a9;
-- (CLDaemonMonitoringRecord)initWithCoder:(id)a3;
+- (CLDaemonMonitoringRecord)initWithClientMonitoringRecord:(id)record clientKeyPath:(id)path authorizationContext:(id)context universe:(id)universe identifier:(id)identifier initForStopMonitoring:(BOOL)monitoring callbackHandler:(id)handler;
+- (CLDaemonMonitoringRecord)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)description;
 - (id)getMonitoringRecordToNotifyClient;
@@ -11,29 +11,29 @@
 - (unint64_t)diagnosticMaskIfMonitoringIsNonFunctional;
 - (unint64_t)serviceTypeMask;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetDaemonPartOfCondition;
-- (void)setupDaemonPartOfConditionWithAuthContext:(id)a3 clientKeyPath:(id)a4 universe:(id)a5 identifier:(id)a6 stopMonitoring:(BOOL)a7 callbackHandler:(id)a8;
-- (void)updateClientEvent:(id)a3;
+- (void)setupDaemonPartOfConditionWithAuthContext:(id)context clientKeyPath:(id)path universe:(id)universe identifier:(id)identifier stopMonitoring:(BOOL)monitoring callbackHandler:(id)handler;
+- (void)updateClientEvent:(id)event;
 @end
 
 @implementation CLDaemonMonitoringRecord
 
-- (CLDaemonMonitoringRecord)initWithClientMonitoringRecord:(id)a3 clientKeyPath:(id)a4 authorizationContext:(id)a5 universe:(id)a6 identifier:(id)a7 initForStopMonitoring:(BOOL)a8 callbackHandler:(id)a9
+- (CLDaemonMonitoringRecord)initWithClientMonitoringRecord:(id)record clientKeyPath:(id)path authorizationContext:(id)context universe:(id)universe identifier:(id)identifier initForStopMonitoring:(BOOL)monitoring callbackHandler:(id)handler
 {
-  v9 = a8;
+  monitoringCopy = monitoring;
   v17.receiver = self;
   v17.super_class = CLDaemonMonitoringRecord;
   v15 = [(CLDaemonMonitoringRecord *)&v17 initRecordWithMonitoringRecord:?];
   if (v15)
   {
-    if (!v9)
+    if (!monitoringCopy)
     {
-      a7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@@%@", a7, [a3 identifier]);
+      identifier = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@@%@", identifier, [record identifier]);
     }
 
-    [(CLDaemonMonitoringRecord *)v15 setRecordIdentifier:a7];
-    [(CLDaemonMonitoringRecord *)v15 setupDaemonPartOfConditionWithAuthContext:a5 clientKeyPath:a4 universe:a6 identifier:[(CLDaemonMonitoringRecord *)v15 recordIdentifier] stopMonitoring:v9 callbackHandler:a9];
+    [(CLDaemonMonitoringRecord *)v15 setRecordIdentifier:identifier];
+    [(CLDaemonMonitoringRecord *)v15 setupDaemonPartOfConditionWithAuthContext:context clientKeyPath:path universe:universe identifier:[(CLDaemonMonitoringRecord *)v15 recordIdentifier] stopMonitoring:monitoringCopy callbackHandler:handler];
   }
 
   return v15;
@@ -50,51 +50,51 @@
   [(CLDaemonMonitoringRecord *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 requiresSecureCoding] & 1) == 0)
+  if (([coder requiresSecureCoding] & 1) == 0)
   {
     sub_101948BD0(a2, self);
   }
 
-  v6 = [(CLDaemonMonitoringRecord *)self recordIdentifier];
-  [a3 encodeObject:v6 forKey:off_1025D8748];
+  recordIdentifier = [(CLDaemonMonitoringRecord *)self recordIdentifier];
+  [coder encodeObject:recordIdentifier forKey:off_1025D8748];
   v7.receiver = self;
   v7.super_class = CLDaemonMonitoringRecord;
-  [(CLDaemonMonitoringRecord *)&v7 encodeWithCoder:a3];
+  [(CLDaemonMonitoringRecord *)&v7 encodeWithCoder:coder];
 }
 
-- (CLDaemonMonitoringRecord)initWithCoder:(id)a3
+- (CLDaemonMonitoringRecord)initWithCoder:(id)coder
 {
-  if (([a3 requiresSecureCoding] & 1) == 0)
+  if (([coder requiresSecureCoding] & 1) == 0)
   {
     sub_101948C34(a2, self);
   }
 
   v8.receiver = self;
   v8.super_class = CLDaemonMonitoringRecord;
-  v6 = [(CLDaemonMonitoringRecord *)&v8 initWithCoder:a3];
+  v6 = [(CLDaemonMonitoringRecord *)&v8 initWithCoder:coder];
   if (v6)
   {
-    -[CLDaemonMonitoringRecord setRecordIdentifier:](v6, "setRecordIdentifier:", [a3 decodeObjectOfClass:objc_opt_class() forKey:off_1025D8748]);
+    -[CLDaemonMonitoringRecord setRecordIdentifier:](v6, "setRecordIdentifier:", [coder decodeObjectOfClass:objc_opt_class() forKey:off_1025D8748]);
   }
 
   return v6;
 }
 
-- (void)setupDaemonPartOfConditionWithAuthContext:(id)a3 clientKeyPath:(id)a4 universe:(id)a5 identifier:(id)a6 stopMonitoring:(BOOL)a7 callbackHandler:(id)a8
+- (void)setupDaemonPartOfConditionWithAuthContext:(id)context clientKeyPath:(id)path universe:(id)universe identifier:(id)identifier stopMonitoring:(BOOL)monitoring callbackHandler:(id)handler
 {
-  v9 = a7;
+  monitoringCopy = monitoring;
   [(CLDaemonMonitoringRecord *)self condition];
   v15 = objc_opt_class();
   if (v15 == objc_opt_class())
   {
-    if (![objc_msgSend(a5 "vendor")])
+    if (![objc_msgSend(universe "vendor")])
     {
       goto LABEL_15;
     }
 
-    v17 = [[CLDaemonCircularGeographicCondition alloc] initFromClientCondition:[(CLDaemonMonitoringRecord *)self condition] clientKeyPath:a4 authorizationContext:a3 universe:a5 identifier:a6 removePersistingFenceFromMonitoring:v9 callbackHandler:a8];
+    v17 = [[CLDaemonCircularGeographicCondition alloc] initFromClientCondition:[(CLDaemonMonitoringRecord *)self condition] clientKeyPath:path authorizationContext:context universe:universe identifier:identifier removePersistingFenceFromMonitoring:monitoringCopy callbackHandler:handler];
 LABEL_14:
     [(CLDaemonMonitoringRecord *)self setDaemonCondition:v17];
     goto LABEL_16;
@@ -102,18 +102,18 @@ LABEL_14:
 
   if (v15 == objc_opt_class())
   {
-    if (![objc_msgSend(a5 "vendor")])
+    if (![objc_msgSend(universe "vendor")])
     {
       goto LABEL_15;
     }
 
-    v17 = [[CLDaemonBeaconIdentityCondition alloc] initFromClientCondition:[(CLDaemonMonitoringRecord *)self condition] clientKeyPath:a4 authorizationContext:a3 universe:a5 identifier:[(CLDaemonMonitoringRecord *)self recordIdentifier] removePersistingFenceFromMonitoring:v9 callbackHandler:a8];
+    v17 = [[CLDaemonBeaconIdentityCondition alloc] initFromClientCondition:[(CLDaemonMonitoringRecord *)self condition] clientKeyPath:path authorizationContext:context universe:universe identifier:[(CLDaemonMonitoringRecord *)self recordIdentifier] removePersistingFenceFromMonitoring:monitoringCopy callbackHandler:handler];
     goto LABEL_14;
   }
 
   if (v15 == objc_opt_class())
   {
-    if ([objc_msgSend(a5 "vendor")])
+    if ([objc_msgSend(universe "vendor")])
     {
       v16 = CLDaemonMinimumAltitudeCondition;
       goto LABEL_13;
@@ -187,11 +187,11 @@ LABEL_29:
       }
     }
 
-    if ([objc_msgSend(a5 "vendor")])
+    if ([objc_msgSend(universe "vendor")])
     {
       v16 = CLDaemonVisitCondition;
 LABEL_13:
-      v17 = [[v16 alloc] initFromClientCondition:-[CLDaemonMonitoringRecord condition](self clientKeyPath:"condition") authorizationContext:a4 universe:a3 identifier:a5 callbackHandler:{a6, a8}];
+      v17 = [[v16 alloc] initFromClientCondition:-[CLDaemonMonitoringRecord condition](self clientKeyPath:"condition") authorizationContext:path universe:context identifier:universe callbackHandler:{identifier, handler}];
       goto LABEL_14;
     }
   }
@@ -214,35 +214,35 @@ LABEL_16:
 
 - (unint64_t)clientState
 {
-  v2 = [(CLDaemonMonitoringRecord *)self clientEvent];
+  clientEvent = [(CLDaemonMonitoringRecord *)self clientEvent];
 
-  return [(CLMonitoringEvent *)v2 state];
+  return [(CLMonitoringEvent *)clientEvent state];
 }
 
 - (unint64_t)daemonState
 {
-  v2 = [(CLDaemonMonitoringRecord *)self daemonEvent];
+  daemonEvent = [(CLDaemonMonitoringRecord *)self daemonEvent];
 
-  return [(CLMonitoringEvent *)v2 state];
+  return [(CLMonitoringEvent *)daemonEvent state];
 }
 
 - (BOOL)shouldSendEvent
 {
-  v3 = [(CLMonitoringEvent *)[(CLDaemonMonitoringRecord *)self daemonEvent] state];
-  if (v3)
+  state = [(CLMonitoringEvent *)[(CLDaemonMonitoringRecord *)self daemonEvent] state];
+  if (state)
   {
-    v4 = [(CLDaemonMonitoringRecord *)self clientState];
-    LOBYTE(v3) = v4 != [(CLMonitoringEvent *)[(CLDaemonMonitoringRecord *)self daemonEvent] state];
+    clientState = [(CLDaemonMonitoringRecord *)self clientState];
+    LOBYTE(state) = clientState != [(CLMonitoringEvent *)[(CLDaemonMonitoringRecord *)self daemonEvent] state];
   }
 
-  return v3;
+  return state;
 }
 
-- (void)updateClientEvent:(id)a3
+- (void)updateClientEvent:(id)event
 {
   v3.receiver = self;
   v3.super_class = CLDaemonMonitoringRecord;
-  [(CLDaemonMonitoringRecord *)&v3 updateEvent:a3];
+  [(CLDaemonMonitoringRecord *)&v3 updateEvent:event];
 }
 
 - (id)getMonitoringRecordToNotifyClient
@@ -271,9 +271,9 @@ LABEL_16:
 
 - (BOOL)isMonitoring
 {
-  v2 = [(CLDaemonMonitoringRecord *)self daemonCondition];
+  daemonCondition = [(CLDaemonMonitoringRecord *)self daemonCondition];
 
-  return [(CLCondition *)v2 isMonitoring];
+  return [(CLCondition *)daemonCondition isMonitoring];
 }
 
 - (unint64_t)diagnosticMaskIfMonitoringIsNonFunctional

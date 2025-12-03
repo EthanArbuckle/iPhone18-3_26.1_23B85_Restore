@@ -1,17 +1,17 @@
 @interface PXGSpriteInfoSerializable
 - ($786F7D2F4E5B3A0CBB66DF574B7D98CF)spriteInfo;
-- (PXGSpriteInfoSerializable)initWithSerializableObject:(id)a3;
+- (PXGSpriteInfoSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
-- (void)setSpriteInfo:(id *)a3;
+- (void)setSpriteInfo:(id *)info;
 @end
 
 @implementation PXGSpriteInfoSerializable
 
-- (void)setSpriteInfo:(id *)a3
+- (void)setSpriteInfo:(id *)info
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var4;
-  *&self[2]._spriteInfo.presentationType = a3[1].var3;
+  v3 = *&info->var0;
+  v4 = *&info->var4;
+  *&self[2]._spriteInfo.presentationType = info[1].var3;
   *&self[1]._spriteInfo.presentationType = v4;
   *&self->_spriteInfo.presentationType = v3;
 }
@@ -33,15 +33,15 @@
   return v2;
 }
 
-- (PXGSpriteInfoSerializable)initWithSerializableObject:(id)a3
+- (PXGSpriteInfoSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = PXGSpriteInfoSerializable;
   v5 = [(PXGSpriteInfoSerializable *)&v8 init];
   if (v5)
   {
-    PXGDeserializeSpriteInfo(v4, v7);
+    PXGDeserializeSpriteInfo(objectCopy, v7);
     [(PXGSpriteInfoSerializable *)v5 setSpriteInfo:v7];
   }
 

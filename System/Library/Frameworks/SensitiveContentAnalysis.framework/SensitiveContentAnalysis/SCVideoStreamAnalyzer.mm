@@ -1,22 +1,22 @@
 @interface SCVideoStreamAnalyzer
 - (SCSensitivityAnalysis)analysis;
 - (SCVideoStreamAnalyzer)init;
-- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)a3 participantUUID:(id)a4 auditToken:(id *)a5 options:(unint64_t)a6 error:(id *)a7;
-- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)a3 participantUUID:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (SCVideoStreamAnalyzer)initWithCoder:(id)a3;
-- (SCVideoStreamAnalyzer)initWithParticipantUUID:(id)a3 auditToken:(id *)a4 options:(unint64_t)a5 error:(id *)a6;
-- (SCVideoStreamAnalyzer)initWithXPCObject:(id)a3 error:(id *)a4;
+- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)call participantUUID:(id)d auditToken:(id *)token options:(unint64_t)options error:(id *)error;
+- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)call participantUUID:(id)d options:(unint64_t)options error:(id *)error;
+- (SCVideoStreamAnalyzer)initWithCoder:(id)coder;
+- (SCVideoStreamAnalyzer)initWithParticipantUUID:(id)d auditToken:(id *)token options:(unint64_t)options error:(id *)error;
+- (SCVideoStreamAnalyzer)initWithXPCObject:(id)object error:(id *)error;
 - (id)analysisChangedHandler;
-- (id)encodeForConnection:(id)a3;
-- (uint64_t)beginAnalysisOfVideoProcessingDecompressionSession:(uint64_t)a3 error:;
-- (void)analyzePixelBuffer:(__CVBuffer *)a3;
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4;
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5;
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 presentationTimestamp:(id *)a4 orientation:(unsigned int)a5 regionOfInterest:(CGRect)a6;
+- (id)encodeForConnection:(id)connection;
+- (uint64_t)beginAnalysisOfVideoProcessingDecompressionSession:(uint64_t)session error:;
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer;
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation;
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest;
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer presentationTimestamp:(id *)timestamp orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest;
 - (void)continueStream;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)endAnalysis;
-- (void)setAnalysisChangedHandler:(id)a3;
+- (void)setAnalysisChangedHandler:(id)handler;
 - (void)streamBecameVisible;
 @end
 
@@ -24,7 +24,7 @@
 
 - (SCSensitivityAnalysis)analysis
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VideoStreamAnalyzer.analysisResult.getter();
   if (v4 == -1)
   {
@@ -72,9 +72,9 @@
   return v4;
 }
 
-- (void)setAnalysisChangedHandler:(id)a3
+- (void)setAnalysisChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -92,24 +92,24 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1AEA63D58(v4);
   sub_1AEA438E0(v7);
   sub_1AEA438E0(v4);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = self;
-  sub_1AEA92F28(v5);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1AEA92F28(coderCopy);
 }
 
-- (SCVideoStreamAnalyzer)initWithCoder:(id)a3
+- (SCVideoStreamAnalyzer)initWithCoder:(id)coder
 {
   type metadata accessor for VideoStreamAnalyzer();
-  v5 = a3;
-  v6 = VideoStreamAnalyzer.__allocating_init(coder:)(v5);
+  coderCopy = coder;
+  v6 = VideoStreamAnalyzer.__allocating_init(coder:)(coderCopy);
   if (v6)
   {
     *(&self->super.isa + OBJC_IVAR___SCVideoStreamAnalyzer_analyzer) = v6;
@@ -129,15 +129,15 @@
   return v7;
 }
 
-- (SCVideoStreamAnalyzer)initWithParticipantUUID:(id)a3 auditToken:(id *)a4 options:(unint64_t)a5 error:(id *)a6
+- (SCVideoStreamAnalyzer)initWithParticipantUUID:(id)d auditToken:(id *)token options:(unint64_t)options error:(id *)error
 {
-  v8 = *a4->var0;
-  v9 = *&a4->var0[2];
-  v10 = *&a4->var0[4];
-  v11 = *&a4->var0[6];
+  v8 = *token->var0;
+  v9 = *&token->var0[2];
+  v10 = *&token->var0[4];
+  v11 = *&token->var0[6];
   v12 = sub_1AEAF95BC();
   v14 = v13;
-  if (a5 == 2)
+  if (options == 2)
   {
     v15 = 2;
   }
@@ -154,15 +154,15 @@
   return [(SCVideoStreamAnalyzer *)&v17 init];
 }
 
-- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)a3 participantUUID:(id)a4 auditToken:(id *)a5 options:(unint64_t)a6 error:(id *)a7
+- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)call participantUUID:(id)d auditToken:(id *)token options:(unint64_t)options error:(id *)error
 {
-  v9 = *a5->var0;
-  v10 = *&a5->var0[2];
-  v11 = *&a5->var0[4];
-  v12 = *&a5->var0[6];
+  v9 = *token->var0;
+  v10 = *&token->var0[2];
+  v11 = *&token->var0[4];
+  v12 = *&token->var0[6];
   v13 = sub_1AEAF95BC();
   v15 = v14;
-  if (a6 == 2)
+  if (options == 2)
   {
     v16 = 2;
   }
@@ -173,8 +173,8 @@
   }
 
   type metadata accessor for VideoStreamAnalyzer();
-  v17 = a3;
-  *(&self->super.isa + OBJC_IVAR___SCVideoStreamAnalyzer_analyzer) = VideoStreamAnalyzer.__allocating_init(analysisOfPreviousCall:participantUUID:auditToken:streamDirection:)(v17, v13, v15, v9, v10, v11, v12, v16);
+  callCopy = call;
+  *(&self->super.isa + OBJC_IVAR___SCVideoStreamAnalyzer_analyzer) = VideoStreamAnalyzer.__allocating_init(analysisOfPreviousCall:participantUUID:auditToken:streamDirection:)(callCopy, v13, v15, v9, v10, v11, v12, v16);
   v21.receiver = self;
   v21.super_class = SCVideoStreamAnalyzer;
   v18 = [(SCVideoStreamAnalyzer *)&v21 init];
@@ -182,11 +182,11 @@
   return v18;
 }
 
-- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)a3 participantUUID:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (SCVideoStreamAnalyzer)initWithAnalysisOfPreviousCall:(id)call participantUUID:(id)d options:(unint64_t)options error:(id *)error
 {
   v9 = sub_1AEAF95BC();
   v11 = v10;
-  if (a5 == 2)
+  if (options == 2)
   {
     v12 = 2;
   }
@@ -197,8 +197,8 @@
   }
 
   type metadata accessor for VideoStreamAnalyzer();
-  v13 = a3;
-  *(&self->super.isa + OBJC_IVAR___SCVideoStreamAnalyzer_analyzer) = VideoStreamAnalyzer.__allocating_init(analysisOfPreviousCall:participantUUID:streamDirection:)(v13, v9, v11, v12);
+  callCopy = call;
+  *(&self->super.isa + OBJC_IVAR___SCVideoStreamAnalyzer_analyzer) = VideoStreamAnalyzer.__allocating_init(analysisOfPreviousCall:participantUUID:streamDirection:)(callCopy, v9, v11, v12);
   v16.receiver = self;
   v16.super_class = SCVideoStreamAnalyzer;
   v14 = [(SCVideoStreamAnalyzer *)&v16 init];
@@ -206,7 +206,7 @@
   return v14;
 }
 
-- (SCVideoStreamAnalyzer)initWithXPCObject:(id)a3 error:(id *)a4
+- (SCVideoStreamAnalyzer)initWithXPCObject:(id)object error:(id *)error
 {
   type metadata accessor for VideoStreamAnalyzer();
   swift_unknownObjectRetain_n();
@@ -218,16 +218,16 @@
   return v5;
 }
 
-- (void)analyzePixelBuffer:(__CVBuffer *)a3
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer
 {
-  v8 = a3;
-  v4 = self;
+  bufferCopy = buffer;
+  selfCopy = self;
   v5 = sub_1AEA5D60C();
   v6 = sub_1AEA61794();
   memset(v10, 0, sizeof(v10));
   v11 = 1;
   FrameDetails.init(orientation:frameSize:regionOfInterest:)(v5 | ((HIDWORD(v5) & 1) << 32), v10, v9, v6, v7);
-  VideoStreamAnalyzer.analyze(_:timestamp:frameDetails:)(v8, 0, 0, 0, 1, v9);
+  VideoStreamAnalyzer.analyze(_:timestamp:frameDetails:)(bufferCopy, 0, 0, 0, 1, v9);
 }
 
 - (SCVideoStreamAnalyzer)init
@@ -239,54 +239,54 @@
 
 - (void)endAnalysis
 {
-  v2 = self;
+  selfCopy = self;
   VideoStreamAnalyzer.endAnalysis()();
 }
 
 - (void)continueStream
 {
-  v2 = self;
+  selfCopy = self;
   VideoStreamAnalyzer.continueStream()();
 }
 
-- (id)encodeForConnection:(id)a3
+- (id)encodeForConnection:(id)connection
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = VideoStreamAnalyzer.encode(forConnection:)();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (uint64_t)beginAnalysisOfVideoProcessingDecompressionSession:(uint64_t)a3 error:
+- (uint64_t)beginAnalysisOfVideoProcessingDecompressionSession:(uint64_t)session error:
 {
-  v4 = a1;
-  sub_1AEAD6210(a3);
+  selfCopy = self;
+  sub_1AEAD6210(session);
 
   return 1;
 }
 
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation
 {
-  v9 = a3;
-  v6 = self;
+  bufferCopy = buffer;
+  selfCopy = self;
   v7 = sub_1AEA61794();
   memset(v11, 0, sizeof(v11));
   v12 = 1;
   LOBYTE(v10[0]) = 0;
-  FrameDetails.init(orientation:frameSize:regionOfInterest:)(a4, v11, v10, v7, v8);
-  VideoStreamAnalyzer.analyze(_:timestamp:frameDetails:)(v9, 0, 0, 0, 1, v10);
+  FrameDetails.init(orientation:frameSize:regionOfInterest:)(orientation, v11, v10, v7, v8);
+  VideoStreamAnalyzer.analyze(_:timestamp:frameDetails:)(bufferCopy, 0, 0, 0, 1, v10);
 }
 
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3;
-  v11 = self;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  bufferCopy = buffer;
+  selfCopy = self;
   v12 = sub_1AEA61794();
   *v16 = x;
   *&v16[1] = y;
@@ -294,27 +294,27 @@
   *&v16[3] = height;
   v17 = 0;
   LOBYTE(v15[0]) = 0;
-  FrameDetails.init(orientation:frameSize:regionOfInterest:)(a4, v16, v15, v12, v13);
-  VideoStreamAnalyzer.analyze(_:timestamp:frameDetails:)(v14, 0, 0, 0, 1, v15);
+  FrameDetails.init(orientation:frameSize:regionOfInterest:)(orientation, v16, v15, v12, v13);
+  VideoStreamAnalyzer.analyze(_:timestamp:frameDetails:)(bufferCopy, 0, 0, 0, 1, v15);
 }
 
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 presentationTimestamp:(id *)a4 orientation:(unsigned int)a5 regionOfInterest:(CGRect)a6
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer presentationTimestamp:(id *)timestamp orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  var0 = a4->var0;
-  v13 = *&a4->var1;
-  var3 = a4->var3;
-  v15 = a3;
-  v16 = self;
-  sub_1AEAB19D4(v15, var0, v13, var3, a5, x, y, width, height);
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  var0 = timestamp->var0;
+  v13 = *&timestamp->var1;
+  var3 = timestamp->var3;
+  bufferCopy = buffer;
+  selfCopy = self;
+  sub_1AEAB19D4(bufferCopy, var0, v13, var3, orientation, x, y, width, height);
 }
 
 - (void)streamBecameVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AEAD6F58();
 }
 

@@ -1,31 +1,31 @@
 @interface CRKHeaderTable
-- (CRKHeaderTable)initWithHeaders:(id)a3 keyPaths:(id)a4 objects:(id)a5;
+- (CRKHeaderTable)initWithHeaders:(id)headers keyPaths:(id)paths objects:(id)objects;
 - (CRKTable)table;
-- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)a3 sortKeys:(BOOL)a4;
+- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)printing sortKeys:(BOOL)keys;
 - (id)tableString;
 @end
 
 @implementation CRKHeaderTable
 
-- (CRKHeaderTable)initWithHeaders:(id)a3 keyPaths:(id)a4 objects:(id)a5
+- (CRKHeaderTable)initWithHeaders:(id)headers keyPaths:(id)paths objects:(id)objects
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  headersCopy = headers;
+  pathsCopy = paths;
+  objectsCopy = objects;
   v19.receiver = self;
   v19.super_class = CRKHeaderTable;
   v11 = [(CRKHeaderTable *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [headersCopy copy];
     headers = v11->_headers;
     v11->_headers = v12;
 
-    v14 = [v9 copy];
+    v14 = [pathsCopy copy];
     keyPaths = v11->_keyPaths;
     v11->_keyPaths = v14;
 
-    v16 = [v10 copy];
+    v16 = [objectsCopy copy];
     objects = v11->_objects;
     v11->_objects = v16;
   }
@@ -33,10 +33,10 @@
   return v11;
 }
 
-- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)a3 sortKeys:(BOOL)a4
+- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)printing sortKeys:(BOOL)keys
 {
-  v16 = a3;
-  v17 = a4;
+  printingCopy = printing;
+  keysCopy = keys;
   v28 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   v23 = 0u;
@@ -60,16 +60,16 @@
 
         v10 = *(*(&v23 + 1) + 8 * i);
         v11 = objc_opt_new();
-        v12 = [(CRKHeaderTable *)self keyPaths];
+        keyPaths = [(CRKHeaderTable *)self keyPaths];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __68__CRKHeaderTable_crk_JSONRepresentationWithPrettyPrinting_sortKeys___block_invoke;
         v19[3] = &unk_278DC1930;
         v20 = v11;
-        v21 = self;
+        selfCopy = self;
         v22 = v10;
         v13 = v11;
-        [v12 enumerateObjectsUsingBlock:v19];
+        [keyPaths enumerateObjectsUsingBlock:v19];
 
         [v5 addObject:v13];
       }
@@ -80,7 +80,7 @@
     while (v7);
   }
 
-  v14 = [v5 crk_JSONRepresentationWithPrettyPrinting:v16 sortKeys:v17];
+  v14 = [v5 crk_JSONRepresentationWithPrettyPrinting:printingCopy sortKeys:keysCopy];
 
   return v14;
 }
@@ -99,10 +99,10 @@ void __68__CRKHeaderTable_crk_JSONRepresentationWithPrettyPrinting_sortKeys___bl
   table = self->_table;
   if (!table)
   {
-    v4 = [(CRKHeaderTable *)self headers];
-    v5 = [(CRKHeaderTable *)self keyPaths];
-    v6 = [(CRKHeaderTable *)self objects];
-    v7 = [CRKTable tableWithHeaders:v4 keyPaths:v5 objects:v6];
+    headers = [(CRKHeaderTable *)self headers];
+    keyPaths = [(CRKHeaderTable *)self keyPaths];
+    objects = [(CRKHeaderTable *)self objects];
+    v7 = [CRKTable tableWithHeaders:headers keyPaths:keyPaths objects:objects];
     v8 = self->_table;
     self->_table = v7;
 
@@ -114,10 +114,10 @@ void __68__CRKHeaderTable_crk_JSONRepresentationWithPrettyPrinting_sortKeys___bl
 
 - (id)tableString
 {
-  v2 = [(CRKHeaderTable *)self table];
-  v3 = [v2 stringValue];
+  table = [(CRKHeaderTable *)self table];
+  stringValue = [table stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 @end

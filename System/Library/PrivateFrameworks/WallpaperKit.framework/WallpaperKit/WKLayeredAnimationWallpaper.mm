@@ -1,9 +1,9 @@
 @interface WKLayeredAnimationWallpaper
 + (id)na_identity;
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (WKLayeredAnimationWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 backgroundAnimationFileURL:(id)a5 foregroundAnimationFileURL:(id)a6 floatingAnimationFileURL:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (WKLayeredAnimationWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name backgroundAnimationFileURL:(id)l foregroundAnimationFileURL:(id)rL floatingAnimationFileURL:(id)uRL;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilderBlock;
 - (id)propertyListRepresentation;
 - (unint64_t)hash;
@@ -11,17 +11,17 @@
 
 @implementation WKLayeredAnimationWallpaper
 
-- (WKLayeredAnimationWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 backgroundAnimationFileURL:(id)a5 foregroundAnimationFileURL:(id)a6 floatingAnimationFileURL:(id)a7
+- (WKLayeredAnimationWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name backgroundAnimationFileURL:(id)l foregroundAnimationFileURL:(id)rL floatingAnimationFileURL:(id)uRL
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v19.receiver = self;
   v19.super_class = WKLayeredAnimationWallpaper;
-  v15 = [(WKAbstractWallpaper *)&v19 initWithIdentifier:a3 name:a4 type:7 representedType:7 backingType:1];
+  v15 = [(WKAbstractWallpaper *)&v19 initWithIdentifier:identifier name:name type:7 representedType:7 backingType:1];
   if (v15)
   {
-    v16 = [[WKLayeredAnimationWallpaperInput alloc] initWithBackgroundAnimationFileURL:v12 foregroundAnimationFileURL:v13 floatingAnimationFileURL:v14];
+    v16 = [[WKLayeredAnimationWallpaperInput alloc] initWithBackgroundAnimationFileURL:lCopy foregroundAnimationFileURL:rLCopy floatingAnimationFileURL:uRLCopy];
     wallpaperValue = v15->__wallpaperValue;
     v15->__wallpaperValue = v16;
   }
@@ -29,18 +29,18 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKAbstractWallpaper *)self identifier];
-  v6 = [(WKAbstractWallpaper *)self name];
-  v7 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v8 = [v7 backgroundAnimationFileURL];
-  v9 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v10 = [v9 foregroundAnimationFileURL];
-  v11 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v12 = [v11 floatingAnimationFileURL];
-  v13 = [v4 initWithIdentifier:v5 name:v6 backgroundAnimationFileURL:v8 foregroundAnimationFileURL:v10 floatingAnimationFileURL:v12];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(WKAbstractWallpaper *)self identifier];
+  name = [(WKAbstractWallpaper *)self name];
+  wallpaperValue = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  backgroundAnimationFileURL = [wallpaperValue backgroundAnimationFileURL];
+  wallpaperValue2 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  foregroundAnimationFileURL = [wallpaperValue2 foregroundAnimationFileURL];
+  wallpaperValue3 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  floatingAnimationFileURL = [wallpaperValue3 floatingAnimationFileURL];
+  v13 = [v4 initWithIdentifier:identifier name:name backgroundAnimationFileURL:backgroundAnimationFileURL foregroundAnimationFileURL:foregroundAnimationFileURL floatingAnimationFileURL:floatingAnimationFileURL];
 
   return v13;
 }
@@ -49,51 +49,51 @@
 {
   v16.receiver = self;
   v16.super_class = WKLayeredAnimationWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v16 propertyListRepresentation];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v4;
-  if (v3)
+  propertyListRepresentation = [(WKAbstractWallpaper *)&v16 propertyListRepresentation];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
+  if (propertyListRepresentation)
   {
-    [v4 addEntriesFromDictionary:v3];
+    [dictionary addEntriesFromDictionary:propertyListRepresentation];
   }
 
-  v6 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v7 = [v6 backgroundAnimationFileURL];
-  v8 = [v7 lastPathComponent];
-  [v5 na_safeSetObject:v8 forKey:@"backgroundAnimationFileName"];
+  wallpaperValue = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  backgroundAnimationFileURL = [wallpaperValue backgroundAnimationFileURL];
+  lastPathComponent = [backgroundAnimationFileURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent forKey:@"backgroundAnimationFileName"];
 
-  v9 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v10 = [v9 foregroundAnimationFileURL];
-  v11 = [v10 lastPathComponent];
-  [v5 na_safeSetObject:v11 forKey:@"foregroundAnimationFileName"];
+  wallpaperValue2 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  foregroundAnimationFileURL = [wallpaperValue2 foregroundAnimationFileURL];
+  lastPathComponent2 = [foregroundAnimationFileURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent2 forKey:@"foregroundAnimationFileName"];
 
-  v12 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v13 = [v12 floatingAnimationFileURL];
-  v14 = [v13 lastPathComponent];
-  [v5 na_safeSetObject:v14 forKey:@"floatingAnimationFileNameKey"];
+  wallpaperValue3 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  floatingAnimationFileURL = [wallpaperValue3 floatingAnimationFileURL];
+  lastPathComponent3 = [floatingAnimationFileURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent3 forKey:@"floatingAnimationFileNameKey"];
 
   return v5;
 }
 
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v8 = [v7 backgroundAnimationFileURL];
-  v43 = a4;
-  v44 = v6;
-  if (v8)
+  lCopy = l;
+  wallpaperValue = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  backgroundAnimationFileURL = [wallpaperValue backgroundAnimationFileURL];
+  errorCopy = error;
+  v44 = lCopy;
+  if (backgroundAnimationFileURL)
   {
-    v9 = v8;
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v41 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-    v11 = [v41 backgroundAnimationFileURL];
-    v12 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-    v13 = [v12 backgroundAnimationFileURL];
-    [v13 lastPathComponent];
+    v9 = backgroundAnimationFileURL;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    wallpaperValue2 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+    backgroundAnimationFileURL2 = [wallpaperValue2 backgroundAnimationFileURL];
+    wallpaperValue3 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+    backgroundAnimationFileURL3 = [wallpaperValue3 backgroundAnimationFileURL];
+    [backgroundAnimationFileURL3 lastPathComponent];
     v15 = v14 = self;
-    v16 = [v6 URLByAppendingPathComponent:v15];
-    v17 = [v10 copyItemAtURL:v11 toURL:v16 error:a4];
+    v16 = [lCopy URLByAppendingPathComponent:v15];
+    v17 = [defaultManager copyItemAtURL:backgroundAnimationFileURL2 toURL:v16 error:error];
 
     self = v14;
     if (!v17)
@@ -106,20 +106,20 @@
   {
   }
 
-  v18 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v19 = [v18 foregroundAnimationFileURL];
-  if (v19)
+  wallpaperValue4 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  foregroundAnimationFileURL = [wallpaperValue4 foregroundAnimationFileURL];
+  if (foregroundAnimationFileURL)
   {
-    v20 = v19;
-    v21 = [MEMORY[0x1E696AC08] defaultManager];
-    v22 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-    v23 = [v22 foregroundAnimationFileURL];
+    v20 = foregroundAnimationFileURL;
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    wallpaperValue5 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+    foregroundAnimationFileURL2 = [wallpaperValue5 foregroundAnimationFileURL];
     [(WKLayeredAnimationWallpaper *)self wallpaperValue];
     v25 = v24 = self;
-    v26 = [v25 foregroundAnimationFileURL];
-    v27 = [v26 lastPathComponent];
-    v28 = [v44 URLByAppendingPathComponent:v27];
-    v42 = [v21 copyItemAtURL:v23 toURL:v28 error:v43];
+    foregroundAnimationFileURL3 = [v25 foregroundAnimationFileURL];
+    lastPathComponent = [foregroundAnimationFileURL3 lastPathComponent];
+    v28 = [v44 URLByAppendingPathComponent:lastPathComponent];
+    v42 = [defaultManager2 copyItemAtURL:foregroundAnimationFileURL2 toURL:v28 error:errorCopy];
 
     self = v24;
     if (!v42)
@@ -134,19 +134,19 @@ LABEL_7:
   {
   }
 
-  v30 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-  v31 = [v30 floatingAnimationFileURL];
-  if (v31)
+  wallpaperValue6 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+  floatingAnimationFileURL = [wallpaperValue6 floatingAnimationFileURL];
+  if (floatingAnimationFileURL)
   {
-    v32 = v31;
-    v33 = [MEMORY[0x1E696AC08] defaultManager];
-    v34 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-    v35 = [v34 floatingAnimationFileURL];
-    v36 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
-    v37 = [v36 floatingAnimationFileURL];
-    v38 = [v37 lastPathComponent];
-    v39 = [v44 URLByAppendingPathComponent:v38];
-    v29 = [v33 copyItemAtURL:v35 toURL:v39 error:v43];
+    v32 = floatingAnimationFileURL;
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    wallpaperValue7 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+    floatingAnimationFileURL2 = [wallpaperValue7 floatingAnimationFileURL];
+    wallpaperValue8 = [(WKLayeredAnimationWallpaper *)self wallpaperValue];
+    floatingAnimationFileURL3 = [wallpaperValue8 floatingAnimationFileURL];
+    lastPathComponent2 = [floatingAnimationFileURL3 lastPathComponent];
+    v39 = [v44 URLByAppendingPathComponent:lastPathComponent2];
+    v29 = [defaultManager3 copyItemAtURL:floatingAnimationFileURL2 toURL:v39 error:errorCopy];
   }
 
   else
@@ -164,7 +164,7 @@ LABEL_13:
   v4[1] = 3221225472;
   v4[2] = __42__WKLayeredAnimationWallpaper_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __42__WKLayeredAnimationWallpaper_na_identity__block_invoke(v4);
 
   return v2;
@@ -213,19 +213,19 @@ id __42__WKLayeredAnimationWallpaper_na_identity__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -234,14 +234,14 @@ id __42__WKLayeredAnimationWallpaper_na_identity__block_invoke_3(uint64_t a1)
 {
   v9.receiver = self;
   v9.super_class = WKLayeredAnimationWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
+  descriptionBuilderBlock = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__WKLayeredAnimationWallpaper_descriptionBuilderBlock__block_invoke;
   aBlock[3] = &unk_1E8766BF0;
   objc_copyWeak(&v7, &location);
-  aBlock[4] = v3;
+  aBlock[4] = descriptionBuilderBlock;
   v4 = _Block_copy(aBlock);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

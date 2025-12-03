@@ -1,10 +1,10 @@
 @interface CRKConcreteStudentConnection
-+ (id)connectionWithStudentDaemonProxy:(id)a3 invalidationHandler:(id)a4;
-- (CRKConcreteStudentConnection)initWithStudentDaemonProxy:(id)a3 invalidationHandler:(id)a4;
-- (id)observeNotificationWithName:(id)a3 handler:(id)a4;
-- (id)operationForRequest:(id)a3;
-- (void)daemonProxy:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5;
-- (void)daemonProxyDidDisconnect:(id)a3;
++ (id)connectionWithStudentDaemonProxy:(id)proxy invalidationHandler:(id)handler;
+- (CRKConcreteStudentConnection)initWithStudentDaemonProxy:(id)proxy invalidationHandler:(id)handler;
+- (id)observeNotificationWithName:(id)name handler:(id)handler;
+- (id)operationForRequest:(id)request;
+- (void)daemonProxy:(id)proxy didReceiveNotificationWithName:(id)name userInfo:(id)info;
+- (void)daemonProxyDidDisconnect:(id)disconnect;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -19,95 +19,95 @@
   [(CRKConcreteStudentConnection *)&v3 dealloc];
 }
 
-- (CRKConcreteStudentConnection)initWithStudentDaemonProxy:(id)a3 invalidationHandler:(id)a4
+- (CRKConcreteStudentConnection)initWithStudentDaemonProxy:(id)proxy invalidationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = CRKConcreteStudentConnection;
   v9 = [(CRKConcreteStudentConnection *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_studentDaemonProxy, a3);
-    v11 = MEMORY[0x245D3AAD0](v8);
+    objc_storeStrong(&v9->_studentDaemonProxy, proxy);
+    v11 = MEMORY[0x245D3AAD0](handlerCopy);
     invalidationHandler = v10->_invalidationHandler;
     v10->_invalidationHandler = v11;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     notificationObservations = v10->_notificationObservations;
-    v10->_notificationObservations = v13;
+    v10->_notificationObservations = weakObjectsHashTable;
   }
 
   return v10;
 }
 
-+ (id)connectionWithStudentDaemonProxy:(id)a3 invalidationHandler:(id)a4
++ (id)connectionWithStudentDaemonProxy:(id)proxy invalidationHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
-  if (([v8 isConnected] & 1) == 0)
+  handlerCopy = handler;
+  proxyCopy = proxy;
+  if (([proxyCopy isConnected] & 1) == 0)
   {
-    [CRKConcreteStudentConnection connectionWithStudentDaemonProxy:a2 invalidationHandler:a1];
+    [CRKConcreteStudentConnection connectionWithStudentDaemonProxy:a2 invalidationHandler:self];
   }
 
-  v9 = [[a1 alloc] initWithStudentDaemonProxy:v8 invalidationHandler:v7];
+  v9 = [[self alloc] initWithStudentDaemonProxy:proxyCopy invalidationHandler:handlerCopy];
 
-  [v8 addObserver:v9];
+  [proxyCopy addObserver:v9];
 
   return v9;
 }
 
-- (id)operationForRequest:(id)a3
+- (id)operationForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CRKConcreteStudentConnection *)self studentDaemonProxy];
-  v6 = [v5 operationForRequest:v4];
+  requestCopy = request;
+  studentDaemonProxy = [(CRKConcreteStudentConnection *)self studentDaemonProxy];
+  v6 = [studentDaemonProxy operationForRequest:requestCopy];
 
   return v6;
 }
 
 - (void)invalidate
 {
-  v2 = [(CRKConcreteStudentConnection *)self studentDaemonProxy];
-  [v2 disconnect];
+  studentDaemonProxy = [(CRKConcreteStudentConnection *)self studentDaemonProxy];
+  [studentDaemonProxy disconnect];
 }
 
-- (id)observeNotificationWithName:(id)a3 handler:(id)a4
+- (id)observeNotificationWithName:(id)name handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CRKConcreteStudentNotificationObservation alloc] initWithNotificationName:v7 notificationHandler:v6];
+  handlerCopy = handler;
+  nameCopy = name;
+  v8 = [[CRKConcreteStudentNotificationObservation alloc] initWithNotificationName:nameCopy notificationHandler:handlerCopy];
 
-  v9 = [(CRKConcreteStudentConnection *)self notificationObservations];
-  [v9 addObject:v8];
+  notificationObservations = [(CRKConcreteStudentConnection *)self notificationObservations];
+  [notificationObservations addObject:v8];
 
   return v8;
 }
 
-- (void)daemonProxyDidDisconnect:(id)a3
+- (void)daemonProxyDidDisconnect:(id)disconnect
 {
-  v4 = [(CRKConcreteStudentConnection *)self invalidationHandler];
+  invalidationHandler = [(CRKConcreteStudentConnection *)self invalidationHandler];
 
-  if (v4)
+  if (invalidationHandler)
   {
-    v5 = [(CRKConcreteStudentConnection *)self invalidationHandler];
+    invalidationHandler2 = [(CRKConcreteStudentConnection *)self invalidationHandler];
     [(CRKConcreteStudentConnection *)self setInvalidationHandler:0];
-    v5[2]();
+    invalidationHandler2[2]();
   }
 }
 
-- (void)daemonProxy:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)daemonProxy:(id)proxy didReceiveNotificationWithName:(id)name userInfo:(id)info
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  infoCopy = info;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(CRKConcreteStudentConnection *)self notificationObservations];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  notificationObservations = [(CRKConcreteStudentConnection *)self notificationObservations];
+  v10 = [notificationObservations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -119,14 +119,14 @@
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(notificationObservations);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) receiveNotificationWithName:v7 userInfo:v8];
+        [*(*(&v14 + 1) + 8 * v13++) receiveNotificationWithName:nameCopy userInfo:infoCopy];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [notificationObservations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);

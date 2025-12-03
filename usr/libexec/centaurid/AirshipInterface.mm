@@ -1,7 +1,7 @@
 @interface AirshipInterface
-- (BOOL)start:(id *)a3;
-- (BOOL)write:(id)a3;
-- (id)read:(unint64_t)a3;
+- (BOOL)start:(id *)start;
+- (BOOL)write:(id)write;
+- (id)read:(unint64_t)read;
 - (void)dealloc;
 - (void)stop;
 @end
@@ -24,11 +24,11 @@
   }
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   if (self->_interface)
   {
-    *a3 = @"alreadyStarted";
+    *start = @"alreadyStarted";
     v19 = sub_100025204();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -54,7 +54,7 @@
   self->_interface = v9;
   if (!v9)
   {
-    *a3 = @"createFailure";
+    *start = @"createFailure";
     v19 = sub_100025204();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -82,7 +82,7 @@
   if (v14)
   {
     v20 = v14;
-    *a3 = [NSString stringWithFormat:@"openFailure:0x%08x", v14];
+    *start = [NSString stringWithFormat:@"openFailure:0x%08x", v14];
     v19 = sub_100025204();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -165,10 +165,10 @@ LABEL_17:
   }
 }
 
-- (BOOL)write:(id)a3
+- (BOOL)write:(id)write
 {
-  v5 = a3;
-  v6 = v5;
+  writeCopy = write;
+  v6 = writeCopy;
   if (!self->_interface)
   {
     v13 = sub_100025204();
@@ -180,7 +180,7 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  if (![v5 length] || objc_msgSend(v6, "length") >> 32)
+  if (![writeCopy length] || objc_msgSend(v6, "length") >> 32)
   {
     v13 = sub_100025204();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -268,11 +268,11 @@ LABEL_10:
   return v17;
 }
 
-- (id)read:(unint64_t)a3
+- (id)read:(unint64_t)read
 {
   if (self->_interface)
   {
-    v6 = a3 - 0x100000000;
+    v6 = read - 0x100000000;
     v7 = sub_100025204();
     v8 = v7;
     if (v6 <= 0xFFFFFFFF00000000)
@@ -286,7 +286,7 @@ LABEL_10:
         v28 = 2114;
         v29 = v25;
         v30 = 2048;
-        v31 = a3;
+        readCopy2 = read;
         _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid maximum size %lu", buf, 0x20u);
       }
     }
@@ -302,11 +302,11 @@ LABEL_10:
         v28 = 2114;
         v29 = v10;
         v30 = 2048;
-        v31 = a3;
+        readCopy2 = read;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: reading up to %lu bytes", buf, 0x20u);
       }
 
-      v11 = malloc_type_calloc(1uLL, a3, 0xB72CCBCuLL);
+      v11 = malloc_type_calloc(1uLL, read, 0xB72CCBCuLL);
       if (v11)
       {
         v12 = v11;
@@ -325,7 +325,7 @@ LABEL_10:
             v28 = 2114;
             v29 = v23;
             v30 = 1024;
-            LODWORD(v31) = v20;
+            LODWORD(readCopy2) = v20;
             _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: failed to read: 0x%x", buf, 0x1Cu);
           }
         }
@@ -342,7 +342,7 @@ LABEL_10:
             v28 = 2114;
             v29 = v17;
             v30 = 1024;
-            LODWORD(v31) = 0;
+            LODWORD(readCopy2) = 0;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: received %u bytes", buf, 0x1Cu);
           }
 

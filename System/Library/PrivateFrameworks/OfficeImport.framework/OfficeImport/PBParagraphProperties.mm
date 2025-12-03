@@ -1,29 +1,29 @@
 @interface PBParagraphProperties
-+ (int)pptAlignmentTypeWithOADTextAlignType:(unsigned __int8)a3;
-+ (int)pptFontAlignWithOADTextFontAlign:(unsigned __int8)a3;
-+ (signed)pptTextSpacingWithOADParaSpacing:(id)a3 defaultPptParaSpacing:(signed __int16)a4;
-+ (void)readAlign:(id)a3 pptAlignmentType:(int)a4;
-+ (void)readParagraphProperties:(id)a3 paragraphProperty:(void *)a4 bulletStyle:(PptParaProperty9 *)a5 isMaster:(BOOL)a6 state:(id)a7;
-+ (void)readParagraphProperties:(id)a3 paragraphPropertyRun:(void *)a4 bulletStyle:(PptParaProperty9 *)a5 state:(id)a6;
++ (int)pptAlignmentTypeWithOADTextAlignType:(unsigned __int8)type;
++ (int)pptFontAlignWithOADTextFontAlign:(unsigned __int8)align;
++ (signed)pptTextSpacingWithOADParaSpacing:(id)spacing defaultPptParaSpacing:(signed __int16)paraSpacing;
++ (void)readAlign:(id)align pptAlignmentType:(int)type;
++ (void)readParagraphProperties:(id)properties paragraphProperty:(void *)property bulletStyle:(PptParaProperty9 *)style isMaster:(BOOL)master state:(id)state;
++ (void)readParagraphProperties:(id)properties paragraphPropertyRun:(void *)run bulletStyle:(PptParaProperty9 *)style state:(id)state;
 @end
 
 @implementation PBParagraphProperties
 
-+ (void)readParagraphProperties:(id)a3 paragraphPropertyRun:(void *)a4 bulletStyle:(PptParaProperty9 *)a5 state:(id)a6
++ (void)readParagraphProperties:(id)properties paragraphPropertyRun:(void *)run bulletStyle:(PptParaProperty9 *)style state:(id)state
 {
-  v11 = a3;
-  v10 = a6;
-  [v11 setLevel:*(a4 + 2)];
-  [a1 readParagraphProperties:v11 paragraphProperty:a4 + 8 bulletStyle:a5 isMaster:0 state:v10];
+  propertiesCopy = properties;
+  stateCopy = state;
+  [propertiesCopy setLevel:*(run + 2)];
+  [self readParagraphProperties:propertiesCopy paragraphProperty:run + 8 bulletStyle:style isMaster:0 state:stateCopy];
 }
 
-+ (void)readParagraphProperties:(id)a3 paragraphProperty:(void *)a4 bulletStyle:(PptParaProperty9 *)a5 isMaster:(BOOL)a6 state:(id)a7
++ (void)readParagraphProperties:(id)properties paragraphProperty:(void *)property bulletStyle:(PptParaProperty9 *)style isMaster:(BOOL)master state:(id)state
 {
-  v11 = a3;
-  v12 = a7;
-  if ((*(a4 + 3) & 8) != 0)
+  propertiesCopy = properties;
+  stateCopy = state;
+  if ((*(property + 3) & 8) != 0)
   {
-    v14 = *(a4 + 5);
+    v14 = *(property + 5);
     if (v14 < 1)
     {
       v17 = [[OADPointBulletSize alloc] initWithPoints:-v14];
@@ -37,18 +37,18 @@
     }
 
     v13 = v17;
-    [v11 setBulletSize:v17];
+    [propertiesCopy setBulletSize:v17];
   }
 
   else
   {
     v13 = objc_alloc_init(OADBulletSizeFollowText);
-    [v11 setBulletSize:v13];
+    [propertiesCopy setBulletSize:v13];
   }
 
-  if ((*(a4 + 3) & 4) != 0)
+  if ((*(property + 3) & 4) != 0)
   {
-    v19 = *(a4 + 5);
+    v19 = *(property + 5);
     if (v19 == 255)
     {
       goto LABEL_15;
@@ -56,9 +56,9 @@
 
     if (v19 == 254)
     {
-      v20 = *(a4 + 7);
-      v21 = *(a4 + 8);
-      v22 = *(a4 + 9);
+      v20 = *(property + 7);
+      v21 = *(property + 8);
+      v22 = *(property + 9);
       v23 = [OADRgbColor alloc];
       *&v24 = v20;
       *&v25 = v21;
@@ -68,45 +68,45 @@
 
     else
     {
-      v27 = [[OADSchemeColor alloc] initWithSchemeColorIndex:[PBColorScheme oadSchemeColorValueForEshSchemeColorIndex:*(a4 + 5)]];
+      v27 = [[OADSchemeColor alloc] initWithSchemeColorIndex:[PBColorScheme oadSchemeColorValueForEshSchemeColorIndex:*(property + 5)]];
     }
 
     v18 = v27;
     TCVerifyInputMeetsCondition(v27 != 0);
     v28 = [[OADBulletColorSpecification alloc] initWithBulletColor:v18];
-    [v11 setBulletColor:v28];
+    [propertiesCopy setBulletColor:v28];
   }
 
   else
   {
     v18 = objc_alloc_init(OADBulletColorFollowText);
-    [v11 setBulletColor:v18];
+    [propertiesCopy setBulletColor:v18];
   }
 
 LABEL_15:
-  if ((*(a4 + 3) & 2) != 0)
+  if ((*(property + 3) & 2) != 0)
   {
-    v29 = [v12 fontEntityAtIndex:*(a4 + 4)];
+    v29 = [stateCopy fontEntityAtIndex:*(property + 4)];
     TCVerifyInputMeetsCondition(v29 != 0);
     v30 = [OADBulletFontSpecification alloc];
-    v31 = [(OADBulletFontFollowText *)v29 faceName];
-    v32 = [(OADBulletFontSpecification *)v30 initWithFont:v31];
+    faceName = [(OADBulletFontFollowText *)v29 faceName];
+    v32 = [(OADBulletFontSpecification *)v30 initWithFont:faceName];
 
-    [v11 setBulletFont:v32];
-    [v11 setBulletCharSet:{-[OADBulletFontFollowText charSet](v29, "charSet")}];
+    [propertiesCopy setBulletFont:v32];
+    [propertiesCopy setBulletCharSet:{-[OADBulletFontFollowText charSet](v29, "charSet")}];
   }
 
   else
   {
     v29 = objc_alloc_init(OADBulletFontFollowText);
-    [v11 setBulletFont:v29];
+    [propertiesCopy setBulletFont:v29];
   }
 
-  if (*(a4 + 3))
+  if (*(property + 3))
   {
-    if (!a5 || ([PBBulletProperties readBulletProperties:a5 state:v12], (v33 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!style || ([PBBulletProperties readBulletProperties:style state:stateCopy], (v33 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v63 = *(a4 + 3);
+      v63 = *(property + 3);
       v34 = [MEMORY[0x277CCACA8] stringWithCharacters:&v63 length:1];
       v33 = [[OADCharacterBulletProperties alloc] initWithBullet:v34];
     }
@@ -117,11 +117,11 @@ LABEL_15:
     v33 = objc_alloc_init(OADNullBulletProperties);
   }
 
-  [v11 setBulletProperties:v33];
-  v35 = *a4;
-  if ((*a4 & 0x800) != 0)
+  [propertiesCopy setBulletProperties:v33];
+  v35 = *property;
+  if ((*property & 0x800) != 0)
   {
-    v36 = *(a4 + 12);
+    v36 = *(property + 12);
     if ((v36 & 0x80000000) != 0)
     {
       v39 = [[OADPointTextSpacing alloc] initWithPoints:-v36 >> 3];
@@ -135,14 +135,14 @@ LABEL_15:
     }
 
     v40 = v39;
-    [v11 setLineSpacing:v39];
+    [propertiesCopy setLineSpacing:v39];
 
-    v35 = *a4;
+    v35 = *property;
   }
 
   if ((v35 & 0x1000) != 0)
   {
-    v41 = *(a4 + 13);
+    v41 = *(property + 13);
     if ((v41 & 0x80000000) != 0)
     {
       v44 = [[OADPointTextSpacing alloc] initWithPoints:-v41 >> 3];
@@ -156,14 +156,14 @@ LABEL_15:
     }
 
     v45 = v44;
-    [v11 setBeforeSpacing:v44];
+    [propertiesCopy setBeforeSpacing:v44];
 
-    v35 = *a4;
+    v35 = *property;
   }
 
   if ((v35 & 0x2000) != 0)
   {
-    v46 = *(a4 + 14);
+    v46 = *(property + 14);
     if ((v46 & 0x80000000) != 0)
     {
       v49 = [[OADPointTextSpacing alloc] initWithPoints:-v46 >> 3];
@@ -177,16 +177,16 @@ LABEL_15:
     }
 
     v50 = v49;
-    [v11 setAfterSpacing:v49];
+    [propertiesCopy setAfterSpacing:v49];
   }
 
-  [a1 readAlign:v11 pptAlignmentType:*(a4 + 4) & 0xF];
-  *&v51 = vcvts_n_f32_s32(*(a4 + 15), 3uLL);
-  [v11 setLeftMargin:v51];
-  v53 = *(a4 + 5);
+  [self readAlign:propertiesCopy pptAlignmentType:*(property + 4) & 0xF];
+  *&v51 = vcvts_n_f32_s32(*(property + 15), 3uLL);
+  [propertiesCopy setLeftMargin:v51];
+  v53 = *(property + 5);
   if (v53)
   {
-    v61 = v12;
+    v61 = stateCopy;
     v54 = v53[1] - *v53;
     v55 = (v54 >> 3);
     v56 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v55];
@@ -207,38 +207,38 @@ LABEL_15:
       while (v55 != v57);
     }
 
-    [v11 setTabStops:{v56, v61}];
+    [propertiesCopy setTabStops:{v56, v61}];
 
-    v12 = v62;
+    stateCopy = v62;
   }
 
-  *&v52 = vcvts_n_f32_s32(*(a4 + 16) - *(a4 + 15), 3uLL);
-  [v11 setIndent:v52];
-  *&v60 = vcvts_n_f32_s32(*(a4 + 17), 3uLL);
-  [v11 setDefaultTab:v60];
+  *&v52 = vcvts_n_f32_s32(*(property + 16) - *(property + 15), 3uLL);
+  [propertiesCopy setIndent:v52];
+  *&v60 = vcvts_n_f32_s32(*(property + 17), 3uLL);
+  [propertiesCopy setDefaultTab:v60];
 }
 
-+ (void)readAlign:(id)a3 pptAlignmentType:(int)a4
++ (void)readAlign:(id)align pptAlignmentType:(int)type
 {
-  v5 = a3;
-  v6 = 0x503020100uLL >> (8 * a4);
-  if (a4 >= 5)
+  alignCopy = align;
+  v6 = 0x503020100uLL >> (8 * type);
+  if (type >= 5)
   {
     LOBYTE(v6) = 0;
   }
 
-  v7 = v5;
-  [v5 setAlign:v6 & 7];
+  v7 = alignCopy;
+  [alignCopy setAlign:v6 & 7];
 }
 
-+ (signed)pptTextSpacingWithOADParaSpacing:(id)a3 defaultPptParaSpacing:(signed __int16)a4
++ (signed)pptTextSpacingWithOADParaSpacing:(id)spacing defaultPptParaSpacing:(signed __int16)paraSpacing
 {
-  LOWORD(v4) = a4;
-  v5 = a3;
+  LOWORD(v4) = paraSpacing;
+  spacingCopy = spacing;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 percent];
+    [spacingCopy percent];
     v4 = v6;
   }
 
@@ -247,36 +247,36 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      LOWORD(v4) = -8 * [v5 points];
+      LOWORD(v4) = -8 * [spacingCopy points];
     }
   }
 
   return v4;
 }
 
-+ (int)pptAlignmentTypeWithOADTextAlignType:(unsigned __int8)a3
++ (int)pptAlignmentTypeWithOADTextAlignType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D70F400[(a3 - 1)];
+    return dword_25D70F400[(type - 1)];
   }
 }
 
-+ (int)pptFontAlignWithOADTextFontAlign:(unsigned __int8)a3
++ (int)pptFontAlignWithOADTextFontAlign:(unsigned __int8)align
 {
-  if (a3 == 2)
+  if (align == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return align == 1;
   }
 }
 

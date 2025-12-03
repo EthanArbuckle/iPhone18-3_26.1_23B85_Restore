@@ -1,52 +1,52 @@
 @interface SCATElementNavigationController
 - (BOOL)_didFocusLastOnKeyboardElement;
-- (BOOL)_isKeyboardContainerElement:(id)a3 allowKeyboardContainerItself:(BOOL)a4;
-- (BOOL)_isScanningKeyboardContainer:(id)a3;
+- (BOOL)_isKeyboardContainerElement:(id)element allowKeyboardContainerItself:(BOOL)itself;
+- (BOOL)_isScanningKeyboardContainer:(id)container;
 - (BOOL)_shouldTrackNativeFocusElement;
 - (BOOL)isGroupingEnabled;
 - (HNDAccessibilityManagerProtocol)axManager;
 - (SCATElementNavigationController)init;
 - (SCATElementNavigationControllerDelegate)delegate;
 - (id)_firstKeyboardFocusContext;
-- (id)_indexPathForKeyboardElement:(id)a3;
-- (id)_keyboardElementForIndexPath:(id)a3;
+- (id)_indexPathForKeyboardElement:(id)element;
+- (id)_keyboardElementForIndexPath:(id)path;
 - (id)_nativeFocusElementContext;
 - (id)_replacementForLastFocusedKeyboardItem;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementForIndexInCurrentScanCycle:(int64_t)a3;
-- (id)firstElementWithOptions:(int *)a3;
-- (id)focusContextAfterDrillOutOnGroup:(id)a3;
-- (id)lastElementWithOptions:(int *)a3;
-- (id)nextFocusContextAfterActivatingKeyboardElement:(id)a3;
-- (id)nextFocusContextAfterDismissingMenuForElement:(id)a3;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementForIndexInCurrentScanCycle:(int64_t)cycle;
+- (id)firstElementWithOptions:(int *)options;
+- (id)focusContextAfterDrillOutOnGroup:(id)group;
+- (id)lastElementWithOptions:(int *)options;
+- (id)nextFocusContextAfterActivatingKeyboardElement:(id)element;
+- (id)nextFocusContextAfterDismissingMenuForElement:(id)element;
 - (id)numberOfItemsInCurrentScanCycle;
-- (int64_t)indexOfElementInCurrentScanCycle:(id)a3;
-- (unint64_t)_depthForElement:(id)a3;
-- (void)_attemptToRestoreFocusContext:(id)a3 scannerManager:(id)a4 foundNewElements:(BOOL)a5;
+- (int64_t)indexOfElementInCurrentScanCycle:(id)cycle;
+- (unint64_t)_depthForElement:(id)element;
+- (void)_attemptToRestoreFocusContext:(id)context scannerManager:(id)manager foundNewElements:(BOOL)elements;
 - (void)_giveUpWaitingForFetchAfterPause;
-- (void)_menuOpeningElementActivated:(id)a3;
+- (void)_menuOpeningElementActivated:(id)activated;
 - (void)_pauseScanningForLikelyScreenChange;
 - (void)_pauseScanningTemporarily;
 - (void)_resetFetchFlags;
-- (void)_trackLastFocusedKeyboardItem:(id)a3;
-- (void)_trackLastScannedElementCommunityFromFocusContext:(id)a3;
-- (void)_updateMenuOpeningElementEnabledWithFocusContext:(id)a3;
-- (void)_updateVisualScrollersWithFocusContext:(id)a3 oldContext:(id)a4;
-- (void)alertDidAppear:(id)a3;
-- (void)appTransitionDidOccur:(id)a3;
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6;
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5;
-- (void)driver:(id)a3 willUnfocusFromContext:(id)a4;
-- (void)firstResponderDidChange:(id)a3;
-- (void)orientationDidChange:(id)a3;
-- (void)scannerManager:(id)a3 didActivateElement:(id)a4;
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4;
-- (void)screenChangingButtonWasPressed:(id)a3;
-- (void)screenDidChange:(id)a3 data:(id)a4;
-- (void)setGroupVisualScrollersEnabled:(BOOL)a3;
-- (void)setMenuOpeningElementEnabled:(BOOL)a3;
-- (void)setTopLevelVisualScrollersEnabled:(BOOL)a3;
+- (void)_trackLastFocusedKeyboardItem:(id)item;
+- (void)_trackLastScannedElementCommunityFromFocusContext:(id)context;
+- (void)_updateMenuOpeningElementEnabledWithFocusContext:(id)context;
+- (void)_updateVisualScrollersWithFocusContext:(id)context oldContext:(id)oldContext;
+- (void)alertDidAppear:(id)appear;
+- (void)appTransitionDidOccur:(id)occur;
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager;
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext;
+- (void)driver:(id)driver willUnfocusFromContext:(id)context;
+- (void)firstResponderDidChange:(id)change;
+- (void)orientationDidChange:(id)change;
+- (void)scannerManager:(id)manager didActivateElement:(id)element;
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager;
+- (void)screenChangingButtonWasPressed:(id)pressed;
+- (void)screenDidChange:(id)change data:(id)data;
+- (void)setGroupVisualScrollersEnabled:(BOOL)enabled;
+- (void)setMenuOpeningElementEnabled:(BOOL)enabled;
+- (void)setTopLevelVisualScrollersEnabled:(BOOL)enabled;
 @end
 
 @implementation SCATElementNavigationController
@@ -68,9 +68,9 @@
 - (BOOL)isGroupingEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchGroupElementsEnabled];
+  assistiveTouchGroupElementsEnabled = [v2 assistiveTouchGroupElementsEnabled];
 
-  return v3;
+  return assistiveTouchGroupElementsEnabled;
 }
 
 - (HNDAccessibilityManagerProtocol)axManager
@@ -80,127 +80,127 @@
   return [v2 sharedManager];
 }
 
-- (void)_menuOpeningElementActivated:(id)a3
+- (void)_menuOpeningElementActivated:(id)activated
 {
-  v4 = [(SCATElementNavigationController *)self delegate];
-  [v4 presentPostScanningMenuForElementNavigationController:self];
+  delegate = [(SCATElementNavigationController *)self delegate];
+  [delegate presentPostScanningMenuForElementNavigationController:self];
 }
 
-- (void)setMenuOpeningElementEnabled:(BOOL)a3
+- (void)setMenuOpeningElementEnabled:(BOOL)enabled
 {
-  if (self->_menuOpeningElementEnabled != a3)
+  if (self->_menuOpeningElementEnabled != enabled)
   {
-    v4 = a3;
-    self->_menuOpeningElementEnabled = a3;
-    v6 = [(SCATElementNavigationController *)self menuOpeningAuxElementManager];
+    enabledCopy = enabled;
+    self->_menuOpeningElementEnabled = enabled;
+    menuOpeningAuxElementManager = [(SCATElementNavigationController *)self menuOpeningAuxElementManager];
 
-    if (!v6)
+    if (!menuOpeningAuxElementManager)
     {
       v7 = objc_opt_new();
       [(SCATElementNavigationController *)self setMenuOpeningAuxElementManager:v7];
       [(SCATElementManager *)self appendAuxiliaryElementManager:v7 withRole:1];
-      v8 = [v7 menuOpeningElement];
-      [v8 addTarget:self action:"_menuOpeningElementActivated:" forControlEvents:64];
+      menuOpeningElement = [v7 menuOpeningElement];
+      [menuOpeningElement addTarget:self action:"_menuOpeningElementActivated:" forControlEvents:64];
     }
 
-    v9 = [(SCATElementNavigationController *)self menuOpeningAuxElementManager];
-    [v9 setEnabled:v4];
+    menuOpeningAuxElementManager2 = [(SCATElementNavigationController *)self menuOpeningAuxElementManager];
+    [menuOpeningAuxElementManager2 setEnabled:enabledCopy];
   }
 }
 
-- (void)setTopLevelVisualScrollersEnabled:(BOOL)a3
+- (void)setTopLevelVisualScrollersEnabled:(BOOL)enabled
 {
-  if (self->_topLevelVisualScrollersEnabled != a3)
+  if (self->_topLevelVisualScrollersEnabled != enabled)
   {
-    v4 = a3;
-    self->_topLevelVisualScrollersEnabled = a3;
-    v6 = [(SCATElementNavigationController *)self topLevelVisualScrollersAuxElementManager];
+    enabledCopy = enabled;
+    self->_topLevelVisualScrollersEnabled = enabled;
+    topLevelVisualScrollersAuxElementManager = [(SCATElementNavigationController *)self topLevelVisualScrollersAuxElementManager];
 
-    if (!v6)
+    if (!topLevelVisualScrollersAuxElementManager)
     {
       v7 = [[SCATVisualScrollersAuxiliaryElementManager alloc] initWithMode:0];
       [(SCATElementNavigationController *)self setTopLevelVisualScrollersAuxElementManager:v7];
       [(SCATElementManager *)self appendAuxiliaryElementManager:v7 withRole:1];
     }
 
-    v8 = [(SCATElementNavigationController *)self topLevelVisualScrollersAuxElementManager];
-    [v8 setEnabled:v4];
+    topLevelVisualScrollersAuxElementManager2 = [(SCATElementNavigationController *)self topLevelVisualScrollersAuxElementManager];
+    [topLevelVisualScrollersAuxElementManager2 setEnabled:enabledCopy];
   }
 }
 
-- (void)setGroupVisualScrollersEnabled:(BOOL)a3
+- (void)setGroupVisualScrollersEnabled:(BOOL)enabled
 {
-  if (self->_groupVisualScrollersEnabled != a3)
+  if (self->_groupVisualScrollersEnabled != enabled)
   {
-    v4 = a3;
-    self->_groupVisualScrollersEnabled = a3;
-    v6 = [(SCATElementNavigationController *)self groupVisualScrollersAuxElementManager];
+    enabledCopy = enabled;
+    self->_groupVisualScrollersEnabled = enabled;
+    groupVisualScrollersAuxElementManager = [(SCATElementNavigationController *)self groupVisualScrollersAuxElementManager];
 
-    if (!v6)
+    if (!groupVisualScrollersAuxElementManager)
     {
       v7 = [[SCATVisualScrollersAuxiliaryElementManager alloc] initWithMode:1];
       [(SCATElementNavigationController *)self setGroupVisualScrollersAuxElementManager:v7];
       [(SCATElementManager *)self appendAuxiliaryElementManager:v7 withRole:2];
     }
 
-    v8 = [(SCATElementNavigationController *)self groupVisualScrollersAuxElementManager];
-    [v8 setEnabled:v4];
+    groupVisualScrollersAuxElementManager2 = [(SCATElementNavigationController *)self groupVisualScrollersAuxElementManager];
+    [groupVisualScrollersAuxElementManager2 setEnabled:enabledCopy];
   }
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
-  v4 = [(SCATElementNavigationController *)self startingSceneIdentifier];
-  v5 = [v4 length];
+  startingSceneIdentifier = [(SCATElementNavigationController *)self startingSceneIdentifier];
+  v5 = [startingSceneIdentifier length];
 
   if (!v5 || (-[SCATElementNavigationController axManager](self, "axManager"), v6 = objc_claimAutoreleasedReturnValue(), -[SCATElementNavigationController startingSceneIdentifier](self, "startingSceneIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), [v6 firstElementInScene:v7], v8 = objc_claimAutoreleasedReturnValue(), v7, v6, -[SCATElementNavigationController setStartingSceneIdentifier:](self, "setStartingSceneIdentifier:", 0), !v8))
   {
-    v9 = [(SCATElementNavigationController *)self axManager];
-    v10 = [(SCATElementNavigationController *)self lastScannedElementCommunity];
-    v8 = [v9 firstItemForScanningWithElementCommunity:v10];
+    axManager = [(SCATElementNavigationController *)self axManager];
+    lastScannedElementCommunity = [(SCATElementNavigationController *)self lastScannedElementCommunity];
+    v8 = [axManager firstItemForScanningWithElementCommunity:lastScannedElementCommunity];
   }
 
   return v8;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v4 = [(SCATElementNavigationController *)self axManager];
-  v5 = [(SCATElementNavigationController *)self lastScannedElementCommunity];
-  v6 = [v4 lastItemForScanningWithElementCommunity:v5];
+  axManager = [(SCATElementNavigationController *)self axManager];
+  lastScannedElementCommunity = [(SCATElementNavigationController *)self lastScannedElementCommunity];
+  v6 = [axManager lastItemForScanningWithElementCommunity:lastScannedElementCommunity];
 
   return v6;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
+  afterCopy = after;
   v22 = 0;
-  v8 = [v7 scatIsAuxiliaryElement];
-  if (v8)
+  scatIsAuxiliaryElement = [afterCopy scatIsAuxiliaryElement];
+  if (scatIsAuxiliaryElement)
   {
-    v9 = [(SCATElementManager *)self auxiliaryElementAfter:v7];
+    v9 = [(SCATElementManager *)self auxiliaryElementAfter:afterCopy];
     if (v9)
     {
       v10 = v9;
       goto LABEL_13;
     }
 
-    v11 = [v7 scatAuxiliaryElementManager];
-    v12 = [v11 contextElement];
+    scatAuxiliaryElementManager = [afterCopy scatAuxiliaryElementManager];
+    contextElement = [scatAuxiliaryElementManager contextElement];
 
-    if ([v12 isGroup])
+    if ([contextElement isGroup])
     {
-      v13 = [v12 lastChild];
+      lastChild = [contextElement lastChild];
     }
 
     else
     {
-      if (!v12)
+      if (!contextElement)
       {
-        v20 = [(SCATElementNavigationController *)self axManager];
-        v21 = [(SCATElementNavigationController *)self lastScannedElementCommunity];
-        v10 = [v20 firstItemForScanningWithElementCommunity:v21];
+        axManager = [(SCATElementNavigationController *)self axManager];
+        lastScannedElementCommunity = [(SCATElementNavigationController *)self lastScannedElementCommunity];
+        v10 = [axManager firstItemForScanningWithElementCommunity:lastScannedElementCommunity];
 
         v22 = 1;
         if (v10)
@@ -211,21 +211,21 @@
         goto LABEL_9;
       }
 
-      v13 = v12;
+      lastChild = contextElement;
     }
 
-    v14 = v13;
+    v14 = lastChild;
 
-    v7 = v14;
+    afterCopy = v14;
   }
 
 LABEL_9:
-  v15 = [(SCATElementNavigationController *)self axManager];
-  v10 = [v15 nextItemForScanningFromItem:v7 didWrap:&v22];
+  axManager2 = [(SCATElementNavigationController *)self axManager];
+  v10 = [axManager2 nextItemForScanningFromItem:afterCopy didWrap:&v22];
 
-  if (!(v8 & 1 | !v22))
+  if (!(scatIsAuxiliaryElement & 1 | !v22))
   {
-    v16 = [(SCATElementManager *)self firstAuxiliaryElementWithRole:[(SCATElementManager *)self roleForElement:v7]];
+    v16 = [(SCATElementManager *)self firstAuxiliaryElementWithRole:[(SCATElementManager *)self roleForElement:afterCopy]];
     v17 = v16;
     if (v16)
     {
@@ -237,43 +237,43 @@ LABEL_9:
   }
 
 LABEL_13:
-  if (a4)
+  if (wrap)
   {
-    *a4 = v22;
+    *wrap = v22;
   }
 
   return v10;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
+  beforeCopy = before;
   v22 = 0;
-  v8 = [v7 scatIsAuxiliaryElement];
-  if (v8)
+  scatIsAuxiliaryElement = [beforeCopy scatIsAuxiliaryElement];
+  if (scatIsAuxiliaryElement)
   {
-    v9 = [(SCATElementManager *)self auxiliaryElementBefore:v7];
+    v9 = [(SCATElementManager *)self auxiliaryElementBefore:beforeCopy];
     if (v9)
     {
       v10 = v9;
       goto LABEL_13;
     }
 
-    v11 = [v7 scatAuxiliaryElementManager];
-    v12 = [v11 contextElement];
+    scatAuxiliaryElementManager = [beforeCopy scatAuxiliaryElementManager];
+    contextElement = [scatAuxiliaryElementManager contextElement];
 
-    if ([v12 isGroup])
+    if ([contextElement isGroup])
     {
-      v13 = [v12 firstChild];
+      firstChild = [contextElement firstChild];
     }
 
     else
     {
-      if (!v12)
+      if (!contextElement)
       {
-        v20 = [(SCATElementNavigationController *)self axManager];
-        v21 = [(SCATElementNavigationController *)self lastScannedElementCommunity];
-        v10 = [v20 lastItemForScanningWithElementCommunity:v21];
+        axManager = [(SCATElementNavigationController *)self axManager];
+        lastScannedElementCommunity = [(SCATElementNavigationController *)self lastScannedElementCommunity];
+        v10 = [axManager lastItemForScanningWithElementCommunity:lastScannedElementCommunity];
 
         v22 = 1;
         if (v10)
@@ -284,21 +284,21 @@ LABEL_13:
         goto LABEL_9;
       }
 
-      v13 = v12;
+      firstChild = contextElement;
     }
 
-    v14 = v13;
+    v14 = firstChild;
 
-    v7 = v14;
+    beforeCopy = v14;
   }
 
 LABEL_9:
-  v15 = [(SCATElementNavigationController *)self axManager];
-  v10 = [v15 previousItemForScanningFromItem:v7 didWrap:&v22];
+  axManager2 = [(SCATElementNavigationController *)self axManager];
+  v10 = [axManager2 previousItemForScanningFromItem:beforeCopy didWrap:&v22];
 
-  if (!(v8 & 1 | !v22))
+  if (!(scatIsAuxiliaryElement & 1 | !v22))
   {
-    v16 = [(SCATElementManager *)self lastAuxiliaryElementWithRole:[(SCATElementManager *)self roleForElement:v7]];
+    v16 = [(SCATElementManager *)self lastAuxiliaryElementWithRole:[(SCATElementManager *)self roleForElement:beforeCopy]];
     v17 = v16;
     if (v16)
     {
@@ -310,9 +310,9 @@ LABEL_9:
   }
 
 LABEL_13:
-  if (a4)
+  if (wrap)
   {
-    *a4 = v22;
+    *wrap = v22;
   }
 
   return v10;
@@ -321,11 +321,11 @@ LABEL_13:
 - (id)_nativeFocusElementContext
 {
   v3 = +[HNDAccessibilityManager sharedManager];
-  v4 = [v3 nativeFocusElement];
+  nativeFocusElement = [v3 nativeFocusElement];
 
-  if (v4)
+  if (nativeFocusElement)
   {
-    v5 = [SCATFocusContext focusContextWithElement:v4 elementManager:self selectBehavior:0 options:0];
+    v5 = [SCATFocusContext focusContextWithElement:nativeFocusElement elementManager:self selectBehavior:0 options:0];
   }
 
   else
@@ -340,54 +340,54 @@ LABEL_13:
 {
   if (![(SCATElementNavigationController *)self isGroupingEnabled])
   {
-    v8 = [(SCATElementNavigationController *)self axManager];
-    v7 = [v8 elements];
+    axManager = [(SCATElementNavigationController *)self axManager];
+    elements = [axManager elements];
 
-    if (v7)
+    if (elements)
     {
-      v9 = [v7 count];
+      v9 = [elements count];
       goto LABEL_14;
     }
 
     goto LABEL_13;
   }
 
-  v3 = [(SCATElementNavigationController *)self currentFocusContext];
-  v4 = [v3 element];
-  v5 = [v4 scatIsAuxiliaryElement];
+  currentFocusContext = [(SCATElementNavigationController *)self currentFocusContext];
+  element = [currentFocusContext element];
+  scatIsAuxiliaryElement = [element scatIsAuxiliaryElement];
 
-  if (v5)
+  if (scatIsAuxiliaryElement)
   {
-    v6 = [(SCATElementNavigationController *)self axManager];
-    v7 = [v6 rootScannerGroup];
+    axManager2 = [(SCATElementNavigationController *)self axManager];
+    elements = [axManager2 rootScannerGroup];
   }
 
   else
   {
-    v6 = [(SCATElementNavigationController *)self currentFocusContext];
-    v10 = [v6 selectBehavior];
-    v11 = [(SCATElementNavigationController *)self currentFocusContext];
-    v12 = [v11 element];
-    v7 = v12;
-    if (v10 != 4)
+    axManager2 = [(SCATElementNavigationController *)self currentFocusContext];
+    selectBehavior = [axManager2 selectBehavior];
+    currentFocusContext2 = [(SCATElementNavigationController *)self currentFocusContext];
+    element2 = [currentFocusContext2 element];
+    elements = element2;
+    if (selectBehavior != 4)
     {
-      v13 = [v12 parentGroup];
+      parentGroup = [element2 parentGroup];
 
-      v7 = v13;
+      elements = parentGroup;
     }
   }
 
-  if (!v7)
+  if (!elements)
   {
 LABEL_13:
     v9 = 0;
     goto LABEL_14;
   }
 
-  v9 = [v7 count];
-  v14 = [v7 parentGroup];
+  v9 = [elements count];
+  parentGroup2 = [elements parentGroup];
 
-  if (v14)
+  if (parentGroup2)
   {
     ++v9;
   }
@@ -402,95 +402,95 @@ LABEL_14:
   return [NSNumber numberWithUnsignedInteger:v9];
 }
 
-- (int64_t)indexOfElementInCurrentScanCycle:(id)a3
+- (int64_t)indexOfElementInCurrentScanCycle:(id)cycle
 {
-  v4 = a3;
+  cycleCopy = cycle;
   if (![(SCATElementNavigationController *)self isGroupingEnabled])
   {
-    v8 = [(SCATElementNavigationController *)self axManager];
-    v9 = [v8 elements];
+    axManager = [(SCATElementNavigationController *)self axManager];
+    elements = [axManager elements];
     goto LABEL_5;
   }
 
-  v5 = [(SCATElementNavigationController *)self currentFocusContext];
-  v6 = [v5 element];
-  v7 = [v6 scatIsAuxiliaryElement];
+  currentFocusContext = [(SCATElementNavigationController *)self currentFocusContext];
+  element = [currentFocusContext element];
+  scatIsAuxiliaryElement = [element scatIsAuxiliaryElement];
 
-  if (v7)
+  if (scatIsAuxiliaryElement)
   {
-    v8 = [(SCATElementNavigationController *)self axManager];
-    v9 = [v8 rootScannerGroup];
+    axManager = [(SCATElementNavigationController *)self axManager];
+    elements = [axManager rootScannerGroup];
 LABEL_5:
-    v10 = v9;
+    numberOfItemsInCurrentScanCycle = elements;
     goto LABEL_6;
   }
 
-  v13 = [(SCATElementNavigationController *)self currentFocusContext];
-  v14 = [v13 selectBehavior];
+  currentFocusContext2 = [(SCATElementNavigationController *)self currentFocusContext];
+  selectBehavior = [currentFocusContext2 selectBehavior];
 
-  if (v14 == 4)
+  if (selectBehavior == 4)
   {
-    v10 = [(SCATElementNavigationController *)self numberOfItemsInCurrentScanCycle];
-    v11 = [v10 integerValue] - 1;
+    numberOfItemsInCurrentScanCycle = [(SCATElementNavigationController *)self numberOfItemsInCurrentScanCycle];
+    v11 = [numberOfItemsInCurrentScanCycle integerValue] - 1;
     goto LABEL_8;
   }
 
-  v8 = [(SCATElementNavigationController *)self currentFocusContext];
-  v15 = [v8 element];
-  v10 = [v15 parentGroup];
+  axManager = [(SCATElementNavigationController *)self currentFocusContext];
+  element2 = [axManager element];
+  numberOfItemsInCurrentScanCycle = [element2 parentGroup];
 
 LABEL_6:
-  if (!v10)
+  if (!numberOfItemsInCurrentScanCycle)
   {
     v11 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_10;
   }
 
-  v11 = [v10 indexOfObject:v4];
+  v11 = [numberOfItemsInCurrentScanCycle indexOfObject:cycleCopy];
 LABEL_8:
 
 LABEL_10:
   return v11;
 }
 
-- (id)elementForIndexInCurrentScanCycle:(int64_t)a3
+- (id)elementForIndexInCurrentScanCycle:(int64_t)cycle
 {
   if ([(SCATElementNavigationController *)self isGroupingEnabled])
   {
-    v5 = [(SCATElementNavigationController *)self currentFocusContext];
-    v6 = [v5 element];
-    v7 = [v6 scatIsAuxiliaryElement];
+    currentFocusContext = [(SCATElementNavigationController *)self currentFocusContext];
+    element = [currentFocusContext element];
+    scatIsAuxiliaryElement = [element scatIsAuxiliaryElement];
 
-    if (!v7)
+    if (!scatIsAuxiliaryElement)
     {
-      v8 = [(SCATElementNavigationController *)self currentFocusContext];
-      v11 = [v8 element];
-      v10 = [v11 parentGroup];
+      currentFocusContext2 = [(SCATElementNavigationController *)self currentFocusContext];
+      element2 = [currentFocusContext2 element];
+      parentGroup = [element2 parentGroup];
 
       goto LABEL_7;
     }
 
-    v8 = [(SCATElementNavigationController *)self axManager];
-    v9 = [v8 rootScannerGroup];
+    currentFocusContext2 = [(SCATElementNavigationController *)self axManager];
+    rootScannerGroup = [currentFocusContext2 rootScannerGroup];
   }
 
   else
   {
-    v8 = [(SCATElementNavigationController *)self axManager];
-    v9 = [v8 elements];
+    currentFocusContext2 = [(SCATElementNavigationController *)self axManager];
+    rootScannerGroup = [currentFocusContext2 elements];
   }
 
-  v10 = v9;
+  parentGroup = rootScannerGroup;
 LABEL_7:
 
-  if (a3 < 0 || [v10 count] <= a3)
+  if (cycle < 0 || [parentGroup count] <= cycle)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v10 objectAtIndexedSubscript:a3];
+    v12 = [parentGroup objectAtIndexedSubscript:cycle];
   }
 
   return v12;
@@ -585,7 +585,7 @@ LABEL_7:
   [(SCATElementNavigationController *)self setShouldRescanFromTopAfterFetch:0];
 }
 
-- (void)orientationDidChange:(id)a3
+- (void)orientationDidChange:(id)change
 {
   v4 = SWCHLogElementNav();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -597,7 +597,7 @@ LABEL_7:
   [(SCATElementNavigationController *)self _pauseScanningTemporarily];
 }
 
-- (void)appTransitionDidOccur:(id)a3
+- (void)appTransitionDidOccur:(id)occur
 {
   v4 = SWCHLogElementNav();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -610,9 +610,9 @@ LABEL_7:
   [(SCATElementNavigationController *)self setShouldRescanFromTopAfterFetch:1];
 }
 
-- (void)screenDidChange:(id)a3 data:(id)a4
+- (void)screenDidChange:(id)change data:(id)data
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = SWCHLogElementNav();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -632,10 +632,10 @@ LABEL_7:
     }
   }
 
-  [(SCATElementNavigationController *)self firstResponderDidChange:v5];
+  [(SCATElementNavigationController *)self firstResponderDidChange:changeCopy];
 }
 
-- (void)alertDidAppear:(id)a3
+- (void)alertDidAppear:(id)appear
 {
   v4 = SWCHLogElementNav();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -648,7 +648,7 @@ LABEL_7:
   [(SCATElementNavigationController *)self setShouldRescanFromTopAfterFetch:1];
 }
 
-- (void)screenChangingButtonWasPressed:(id)a3
+- (void)screenChangingButtonWasPressed:(id)pressed
 {
   v4 = SWCHLogElementNav();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -660,90 +660,90 @@ LABEL_7:
   [(SCATElementNavigationController *)self _pauseScanningForLikelyScreenChange];
 }
 
-- (void)_trackLastScannedElementCommunityFromFocusContext:(id)a3
+- (void)_trackLastScannedElementCommunityFromFocusContext:(id)context
 {
-  v10 = a3;
-  v4 = [v10 selectBehavior];
-  v5 = [v10 element];
-  v6 = v5;
-  if (v4 != 4)
+  contextCopy = context;
+  selectBehavior = [contextCopy selectBehavior];
+  element = [contextCopy element];
+  v6 = element;
+  if (selectBehavior != 4)
   {
-    v7 = [v5 parentGroup];
+    parentGroup = [element parentGroup];
 
-    v6 = v7;
+    v6 = parentGroup;
   }
 
   if (v6)
   {
     while (1)
     {
-      v8 = [v6 elementCommunity];
+      elementCommunity = [v6 elementCommunity];
 
-      if (v8)
+      if (elementCommunity)
       {
         break;
       }
 
-      v9 = [v6 parentGroup];
+      parentGroup2 = [v6 parentGroup];
 
-      v6 = v9;
-      if (!v9)
+      v6 = parentGroup2;
+      if (!parentGroup2)
       {
         goto LABEL_9;
       }
     }
 
-    v9 = [v6 elementCommunity];
+    parentGroup2 = [v6 elementCommunity];
   }
 
   else
   {
-    v9 = 0;
+    parentGroup2 = 0;
   }
 
 LABEL_9:
-  [(SCATElementNavigationController *)self setLastScannedElementCommunity:v9];
+  [(SCATElementNavigationController *)self setLastScannedElementCommunity:parentGroup2];
 }
 
-- (void)firstResponderDidChange:(id)a3
+- (void)firstResponderDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SCATElementNavigationController *)self axManager];
-  v6 = [v5 firstResponder];
+  changeCopy = change;
+  axManager = [(SCATElementNavigationController *)self axManager];
+  firstResponder = [axManager firstResponder];
 
   v7 = SWCHLogElementNav();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(SCATElementNavigationController *)self firstResponder];
-    v9 = [v8 elemLog];
-    v10 = [v6 elemLog];
+    firstResponder2 = [(SCATElementNavigationController *)self firstResponder];
+    elemLog = [firstResponder2 elemLog];
+    elemLog2 = [firstResponder elemLog];
     v16 = 138543618;
-    v17 = v9;
+    v17 = elemLog;
     v18 = 2114;
-    v19 = v10;
+    v19 = elemLog2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "*** First responder change: %{public}@ -> %{public}@", &v16, 0x16u);
   }
 
-  v11 = [(SCATElementNavigationController *)self firstResponder];
-  if (v11 == v6)
+  firstResponder3 = [(SCATElementNavigationController *)self firstResponder];
+  if (firstResponder3 == firstResponder)
   {
     goto LABEL_14;
   }
 
-  v12 = [(SCATElementNavigationController *)self firstResponder];
-  v13 = [v12 isEqual:v6];
+  firstResponder4 = [(SCATElementNavigationController *)self firstResponder];
+  v13 = [firstResponder4 isEqual:firstResponder];
 
   if ((v13 & 1) == 0)
   {
     [(SCATElementNavigationController *)self setShouldScanKeyboardOnAppearance:0];
-    if (v6)
+    if (firstResponder)
     {
       if (![(SCATElementNavigationController *)self _didFocusLastOnKeyboardElement])
       {
-        v11 = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
+        firstResponder3 = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
         v14 = SWCHLogElementNav();
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-        if (v11)
+        if (firstResponder3)
         {
           if (v15)
           {
@@ -751,7 +751,7 @@ LABEL_9:
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Was not scanning keyboard; will scan keyboard now", &v16, 2u);
           }
 
-          [v4 beginScanningWithFocusContext:v11];
+          [changeCopy beginScanningWithFocusContext:firstResponder3];
         }
 
         else
@@ -770,37 +770,37 @@ LABEL_14:
     }
   }
 
-  [(SCATElementNavigationController *)self setFirstResponder:v6];
+  [(SCATElementNavigationController *)self setFirstResponder:firstResponder];
 }
 
-- (void)_updateVisualScrollersWithFocusContext:(id)a3 oldContext:(id)a4
+- (void)_updateVisualScrollersWithFocusContext:(id)context oldContext:(id)oldContext
 {
-  v15 = a4;
+  oldContextCopy = oldContext;
   [(SCATElementNavigationController *)self setTopLevelVisualScrollersEnabled:1];
-  v5 = [(SCATElementNavigationController *)self currentFocusContext];
-  v6 = [v5 element];
+  currentFocusContext = [(SCATElementNavigationController *)self currentFocusContext];
+  element = [currentFocusContext element];
 
-  if (([v6 scatIsAuxiliaryElement] & 1) == 0)
+  if (([element scatIsAuxiliaryElement] & 1) == 0)
   {
-    v7 = [(SCATElementNavigationController *)self topLevelVisualScrollersAuxElementManager];
-    [v7 setContextElement:v6];
+    topLevelVisualScrollersAuxElementManager = [(SCATElementNavigationController *)self topLevelVisualScrollersAuxElementManager];
+    [topLevelVisualScrollersAuxElementManager setContextElement:element];
   }
 
   if ([(SCATElementNavigationController *)self isGroupingEnabled])
   {
-    if ([v6 scatIsAuxiliaryElement])
+    if ([element scatIsAuxiliaryElement])
     {
-      v8 = [v6 scatAuxiliaryElementManager];
-      v9 = [v8 contextElement];
+      scatAuxiliaryElementManager = [element scatAuxiliaryElementManager];
+      contextElement = [scatAuxiliaryElementManager contextElement];
     }
 
     else
     {
-      v10 = [v15 element];
-      if ([v10 isGroup])
+      element2 = [oldContextCopy element];
+      if ([element2 isGroup])
       {
-        v11 = [v15 element];
-        v12 = [v11 firstChild];
+        element3 = [oldContextCopy element];
+        firstChild = [element3 firstChild];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
       }
@@ -810,22 +810,22 @@ LABEL_14:
         isKindOfClass = 0;
       }
 
-      if ([v6 isGroup] && ((objc_msgSend(v6, "isRootGroup") | isKindOfClass) & 1) != 0)
+      if ([element isGroup] && ((objc_msgSend(element, "isRootGroup") | isKindOfClass) & 1) != 0)
       {
-        v14 = v6;
+        parentGroup = element;
       }
 
       else
       {
-        v14 = [v6 parentGroup];
+        parentGroup = [element parentGroup];
       }
 
-      v9 = v14;
-      v8 = [(SCATElementNavigationController *)self groupVisualScrollersAuxElementManager];
-      [v8 setContextElement:v9];
+      contextElement = parentGroup;
+      scatAuxiliaryElementManager = [(SCATElementNavigationController *)self groupVisualScrollersAuxElementManager];
+      [scatAuxiliaryElementManager setContextElement:contextElement];
     }
 
-    [(SCATElementNavigationController *)self setGroupVisualScrollersEnabled:v9 != 0];
+    [(SCATElementNavigationController *)self setGroupVisualScrollersEnabled:contextElement != 0];
   }
 
   else
@@ -834,17 +834,17 @@ LABEL_14:
   }
 }
 
-- (void)_updateMenuOpeningElementEnabledWithFocusContext:(id)a3
+- (void)_updateMenuOpeningElementEnabledWithFocusContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 switchControlTapBehavior];
+  switchControlTapBehavior = [v5 switchControlTapBehavior];
 
-  if (v6 == 2)
+  if (switchControlTapBehavior == 2)
   {
-    v7 = [v4 element];
-    v8 = [(SCATElementNavigationController *)self menuOpeningAuxElementManager];
-    v9 = [v8 containsElement:v7];
+    element = [contextCopy element];
+    menuOpeningAuxElementManager = [(SCATElementNavigationController *)self menuOpeningAuxElementManager];
+    v9 = [menuOpeningAuxElementManager containsElement:element];
 
     v10 = SWCHLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -852,7 +852,7 @@ LABEL_14:
       v19 = 67109379;
       v20 = v9;
       v21 = 2113;
-      v22 = v7;
+      v22 = element;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Always tap menu: %d contains element: %{private}@", &v19, 0x12u);
     }
 
@@ -863,11 +863,11 @@ LABEL_14:
 
     else
     {
-      v12 = v7;
+      v12 = element;
       if ([v12 scatIsAuxiliaryElement])
       {
-        v13 = [v12 scatAuxiliaryElementManager];
-        v14 = [v13 role] == 1;
+        scatAuxiliaryElementManager = [v12 scatAuxiliaryElementManager];
+        v14 = [scatAuxiliaryElementManager role] == 1;
       }
 
       else
@@ -875,11 +875,11 @@ LABEL_14:
         v14 = 0;
       }
 
-      v15 = [v12 parentGroup];
-      v16 = [(SCATElementNavigationController *)self axManager];
-      v17 = [v16 rootScannerGroup];
+      parentGroup = [v12 parentGroup];
+      axManager = [(SCATElementNavigationController *)self axManager];
+      rootScannerGroup = [axManager rootScannerGroup];
 
-      v11 = (v15 == v17 || v14) && [v4 selectBehavior] != 4;
+      v11 = (parentGroup == rootScannerGroup || v14) && [contextCopy selectBehavior] != 4;
     }
   }
 
@@ -899,38 +899,38 @@ LABEL_14:
   [(SCATElementNavigationController *)self setMenuOpeningElementEnabled:v11];
 }
 
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext
 {
-  v8 = a4;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SCATElementNavigationController;
-  [(SCATElementManager *)&v11 driver:a3 didFocusOnContext:v8 oldContext:a5];
+  [(SCATElementManager *)&v11 driver:driver didFocusOnContext:contextCopy oldContext:oldContext];
   v9 = SWCHLogElementNav();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012A218(v8);
+    sub_10012A218(contextCopy);
   }
 
-  [(SCATElementNavigationController *)self setCurrentFocusContext:v8];
-  [(SCATElementNavigationController *)self _trackLastFocusedKeyboardItem:v8];
-  [(SCATElementNavigationController *)self _trackLastScannedElementCommunityFromFocusContext:v8];
-  [(SCATElementNavigationController *)self _updateMenuOpeningElementEnabledWithFocusContext:v8];
-  v10 = [v8 element];
-  [v10 setScatAssistiveTechFocused:1];
+  [(SCATElementNavigationController *)self setCurrentFocusContext:contextCopy];
+  [(SCATElementNavigationController *)self _trackLastFocusedKeyboardItem:contextCopy];
+  [(SCATElementNavigationController *)self _trackLastScannedElementCommunityFromFocusContext:contextCopy];
+  [(SCATElementNavigationController *)self _updateMenuOpeningElementEnabledWithFocusContext:contextCopy];
+  element = [contextCopy element];
+  [element setScatAssistiveTechFocused:1];
 }
 
-- (void)driver:(id)a3 willUnfocusFromContext:(id)a4
+- (void)driver:(id)driver willUnfocusFromContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = SCATElementNavigationController;
-  v5 = a4;
-  [(SCATElementManager *)&v7 driver:a3 willUnfocusFromContext:v5];
-  v6 = [v5 element];
+  contextCopy = context;
+  [(SCATElementManager *)&v7 driver:driver willUnfocusFromContext:contextCopy];
+  element = [contextCopy element];
 
-  [v6 setScatAssistiveTechFocused:0];
+  [element setScatAssistiveTechFocused:0];
 }
 
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager
 {
   v5 = SWCHLogElementNav();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -944,77 +944,77 @@ LABEL_14:
   [(SCATElementNavigationController *)self setMenuOpeningElementEnabled:0];
 }
 
-- (unint64_t)_depthForElement:(id)a3
+- (unint64_t)_depthForElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 parentGroup];
+  elementCopy = element;
+  parentGroup = [elementCopy parentGroup];
 
-  if (v4)
+  if (parentGroup)
   {
-    v4 = 0;
-    v5 = v3;
+    parentGroup = 0;
+    v5 = elementCopy;
     do
     {
-      ++v4;
-      v3 = [v5 parentGroup];
+      ++parentGroup;
+      elementCopy = [v5 parentGroup];
 
-      v6 = [v3 parentGroup];
+      parentGroup2 = [elementCopy parentGroup];
 
-      v5 = v3;
+      v5 = elementCopy;
     }
 
-    while (v6);
+    while (parentGroup2);
   }
 
-  return v4;
+  return parentGroup;
 }
 
-- (void)_attemptToRestoreFocusContext:(id)a3 scannerManager:(id)a4 foundNewElements:(BOOL)a5
+- (void)_attemptToRestoreFocusContext:(id)context scannerManager:(id)manager foundNewElements:(BOOL)elements
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 element];
-  v11 = [(SCATElementNavigationController *)self axManager];
-  v12 = [v11 scannerElementMatchingElement:v10];
+  elementsCopy = elements;
+  contextCopy = context;
+  managerCopy = manager;
+  element = [contextCopy element];
+  axManager = [(SCATElementNavigationController *)self axManager];
+  v12 = [axManager scannerElementMatchingElement:element];
 
-  v13 = [v12 scatTraits];
-  if ((kAXAutoCorrectCandidateTrait & v13) != 0)
+  scatTraits = [v12 scatTraits];
+  if ((kAXAutoCorrectCandidateTrait & scatTraits) != 0)
   {
-    if ([v10 scatIsAXElement])
+    if ([element scatIsAXElement])
     {
-      v14 = [v10 label];
+      label = [element label];
     }
 
     else
     {
-      v14 = 0;
+      label = 0;
     }
 
     if ([v12 scatIsAXElement])
     {
-      v15 = [v12 label];
+      label2 = [v12 label];
     }
 
     else
     {
-      v15 = 0;
+      label2 = 0;
     }
 
-    if (v14 != v15)
+    if (label != label2)
     {
-      v16 = [v12 parentGroup];
-      v17 = [v16 firstLeafDescendant];
+      parentGroup = [v12 parentGroup];
+      firstLeafDescendant = [parentGroup firstLeafDescendant];
 
-      v12 = v17;
+      v12 = firstLeafDescendant;
     }
   }
 
   if (!v12)
   {
-    if ([v10 scatIsAuxiliaryElement])
+    if ([element scatIsAuxiliaryElement])
     {
-      v12 = v10;
+      v12 = element;
       v18 = 0;
       goto LABEL_16;
     }
@@ -1027,7 +1027,7 @@ LABEL_16:
   v19 = SWCHLogElementNav();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012A2A4(v10, v12);
+    sub_10012A2A4(element, v12);
   }
 
   if (!v12)
@@ -1040,7 +1040,7 @@ LABEL_16:
     goto LABEL_23;
   }
 
-  v20 = [(SCATElementNavigationController *)self _depthForElement:v10];
+  v20 = [(SCATElementNavigationController *)self _depthForElement:element];
   v21 = [(SCATElementNavigationController *)self _depthForElement:v12];
   v22 = SWCHLogElementNav();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -1051,11 +1051,11 @@ LABEL_16:
   if (v21 == v20)
   {
 LABEL_23:
-    v23 = +[SCATFocusContext focusContextWithElement:elementManager:selectBehavior:options:](SCATFocusContext, "focusContextWithElement:elementManager:selectBehavior:options:", v12, self, [v8 selectBehavior], 0);
+    _replacementForLastFocusedKeyboardItem = +[SCATFocusContext focusContextWithElement:elementManager:selectBehavior:options:](SCATFocusContext, "focusContextWithElement:elementManager:selectBehavior:options:", v12, self, [contextCopy selectBehavior], 0);
     v24 = SWCHLogElementNav();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      sub_10012A420(v23);
+      sub_10012A420(_replacementForLastFocusedKeyboardItem);
     }
   }
 
@@ -1064,20 +1064,20 @@ LABEL_23:
 LABEL_25:
     if (![(SCATElementNavigationController *)self _didFocusLastOnKeyboardElement])
     {
-      v23 = 0;
+      _replacementForLastFocusedKeyboardItem = 0;
       goto LABEL_30;
     }
 
-    v23 = [(SCATElementNavigationController *)self _replacementForLastFocusedKeyboardItem];
+    _replacementForLastFocusedKeyboardItem = [(SCATElementNavigationController *)self _replacementForLastFocusedKeyboardItem];
     v24 = SWCHLogElementNav();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      sub_10012A4AC(v23);
+      sub_10012A4AC(_replacementForLastFocusedKeyboardItem);
     }
   }
 
 LABEL_30:
-  if (-[SCATElementNavigationController shouldRescanAfterFetch](self, "shouldRescanAfterFetch") || [v9 isActive] && !v23)
+  if (-[SCATElementNavigationController shouldRescanAfterFetch](self, "shouldRescanAfterFetch") || [managerCopy isActive] && !_replacementForLastFocusedKeyboardItem)
   {
     v25 = SWCHLogElementNav();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1085,22 +1085,22 @@ LABEL_30:
       sub_10012A5B8();
     }
 
-    [v9 beginScanningWithFocusContext:v23];
+    [managerCopy beginScanningWithFocusContext:_replacementForLastFocusedKeyboardItem];
   }
 
   else
   {
-    v26 = [v9 isActive];
+    isActive = [managerCopy isActive];
     v27 = SWCHLogElementNav();
     v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG);
-    if (v26 && v23)
+    if (isActive && _replacementForLastFocusedKeyboardItem)
     {
       if (v28)
       {
         sub_10012A578();
       }
 
-      [v9 continueScanningWithFocusContext:v23 foundNewElements:v5];
+      [managerCopy continueScanningWithFocusContext:_replacementForLastFocusedKeyboardItem foundNewElements:elementsCopy];
     }
 
     else
@@ -1110,7 +1110,7 @@ LABEL_30:
         sub_10012A538();
       }
 
-      [v9 useFocusContextOnResume:v23];
+      [managerCopy useFocusContextOnResume:_replacementForLastFocusedKeyboardItem];
     }
   }
 }
@@ -1118,17 +1118,17 @@ LABEL_30:
 - (BOOL)_shouldTrackNativeFocusElement
 {
   v2 = +[SCATScannerManager sharedManager];
-  v3 = [v2 activeScannerDriver];
-  v4 = [v3 driverType] == 1;
+  activeScannerDriver = [v2 activeScannerDriver];
+  v4 = [activeScannerDriver driverType] == 1;
 
   return v4;
 }
 
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager
 {
-  v7 = a4;
-  v9 = a3;
-  v10 = a5;
+  newElementsCopy = newElements;
+  elementsCopy = elements;
+  contextCopy = context;
   v11 = SWCHLogElementNav();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -1137,8 +1137,8 @@ LABEL_30:
   }
 
   [(SCATElementNavigationController *)self _stopWaitingForFetchAfterTemporaryPause];
-  v12 = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
-  if (v12 && [(SCATElementNavigationController *)self shouldScanKeyboardOnAppearance])
+  _firstKeyboardFocusContext = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
+  if (_firstKeyboardFocusContext && [(SCATElementNavigationController *)self shouldScanKeyboardOnAppearance])
   {
     v13 = SWCHLogElementNav();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -1147,7 +1147,7 @@ LABEL_30:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Found keyboard and needed to scan it", v20, 2u);
     }
 
-    [v9 beginScanningWithFocusContext:v12];
+    [elementsCopy beginScanningWithFocusContext:_firstKeyboardFocusContext];
     [(SCATElementNavigationController *)self setShouldScanKeyboardOnAppearance:0];
   }
 
@@ -1163,10 +1163,10 @@ LABEL_30:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Needed to scan from top after fetch", v19, 2u);
       }
 
-      [v9 beginScanningWithFocusContext:0];
+      [elementsCopy beginScanningWithFocusContext:0];
     }
 
-    else if (v7 || [(SCATElementNavigationController *)self isGroupingEnabled])
+    else if (newElementsCopy || [(SCATElementNavigationController *)self isGroupingEnabled])
     {
       v15 = SWCHLogElementNav();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1175,7 +1175,7 @@ LABEL_30:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Will attempt to restore focus context", v18, 2u);
       }
 
-      [(SCATElementNavigationController *)self _attemptToRestoreFocusContext:v10 scannerManager:v9 foundNewElements:v7];
+      [(SCATElementNavigationController *)self _attemptToRestoreFocusContext:contextCopy scannerManager:elementsCopy foundNewElements:newElementsCopy];
     }
 
     else if ([(SCATElementNavigationController *)self shouldRescanAfterFetch])
@@ -1187,7 +1187,7 @@ LABEL_30:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Needed to rescan after fetch", v17, 2u);
       }
 
-      [v9 resumeScanning];
+      [elementsCopy resumeScanning];
     }
   }
 
@@ -1196,12 +1196,12 @@ LABEL_30:
 
 - (id)_firstKeyboardFocusContext
 {
-  v3 = [(SCATElementNavigationController *)self axManager];
-  v4 = [v3 firstKeyboardItem];
+  axManager = [(SCATElementNavigationController *)self axManager];
+  firstKeyboardItem = [axManager firstKeyboardItem];
 
-  if (v4)
+  if (firstKeyboardItem)
   {
-    v5 = [SCATFocusContext focusContextWithElement:v4 elementManager:self selectBehavior:0 options:0];
+    v5 = [SCATFocusContext focusContextWithElement:firstKeyboardItem elementManager:self selectBehavior:0 options:0];
   }
 
   else
@@ -1212,48 +1212,48 @@ LABEL_30:
   return v5;
 }
 
-- (BOOL)_isKeyboardContainerElement:(id)a3 allowKeyboardContainerItself:(BOOL)a4
+- (BOOL)_isKeyboardContainerElement:(id)element allowKeyboardContainerItself:(BOOL)itself
 {
-  v4 = a4;
-  v6 = a3;
+  itselfCopy = itself;
+  elementCopy = element;
   if ([(SCATElementNavigationController *)self isGroupingEnabled])
   {
-    v7 = [v6 keyboardContainer];
-    v8 = v7 != 0;
+    keyboardContainer = [elementCopy keyboardContainer];
+    scatIsKeyboardKey = keyboardContainer != 0;
   }
 
   else
   {
-    v8 = [v6 scatIsKeyboardKey];
+    scatIsKeyboardKey = [elementCopy scatIsKeyboardKey];
   }
 
-  v9 = [v6 isGroup] ^ 1;
-  LOBYTE(v10) = v9 & v8;
-  if ((v9 & 1) == 0 && v8)
+  v9 = [elementCopy isGroup] ^ 1;
+  LOBYTE(v10) = v9 & scatIsKeyboardKey;
+  if ((v9 & 1) == 0 && scatIsKeyboardKey)
   {
-    v10 = [v6 isKeyboardContainer] ^ 1 | v4;
+    v10 = [elementCopy isKeyboardContainer] ^ 1 | itselfCopy;
   }
 
   return v10;
 }
 
-- (BOOL)_isScanningKeyboardContainer:(id)a3
+- (BOOL)_isScanningKeyboardContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 element];
-  v6 = [v4 selectBehavior];
+  containerCopy = container;
+  element = [containerCopy element];
+  selectBehavior = [containerCopy selectBehavior];
 
-  LOBYTE(self) = [(SCATElementNavigationController *)self _isKeyboardContainerElement:v5 allowKeyboardContainerItself:v6 == 4];
+  LOBYTE(self) = [(SCATElementNavigationController *)self _isKeyboardContainerElement:element allowKeyboardContainerItself:selectBehavior == 4];
   return self;
 }
 
 - (BOOL)_didFocusLastOnKeyboardElement
 {
-  v3 = [(SCATElementNavigationController *)self isGroupingEnabled];
-  if (v3)
+  isGroupingEnabled = [(SCATElementNavigationController *)self isGroupingEnabled];
+  if (isGroupingEnabled)
   {
-    v4 = [(SCATElementNavigationController *)self keyboardIndexPath];
-    if (v4)
+    keyboardIndexPath = [(SCATElementNavigationController *)self keyboardIndexPath];
+    if (keyboardIndexPath)
     {
       v5 = 1;
 LABEL_10:
@@ -1263,7 +1263,7 @@ LABEL_10:
 
     if ([(SCATElementNavigationController *)self isGroupingEnabled])
     {
-      v4 = 0;
+      keyboardIndexPath = 0;
       v5 = 0;
       goto LABEL_10;
     }
@@ -1274,31 +1274,31 @@ LABEL_10:
     return 0;
   }
 
-  v6 = [(SCATElementNavigationController *)self keyboardKeyCenterPoint];
-  v5 = v6 != 0;
+  keyboardKeyCenterPoint = [(SCATElementNavigationController *)self keyboardKeyCenterPoint];
+  v5 = keyboardKeyCenterPoint != 0;
 
-  if (v3)
+  if (isGroupingEnabled)
   {
-    v4 = 0;
+    keyboardIndexPath = 0;
     goto LABEL_10;
   }
 
   return v5;
 }
 
-- (id)_indexPathForKeyboardElement:(id)a3
+- (id)_indexPathForKeyboardElement:(id)element
 {
-  v4 = a3;
-  if ([v4 isGroup] && objc_msgSend(v4, "isKeyboardContainer"))
+  elementCopy = element;
+  if ([elementCopy isGroup] && objc_msgSend(elementCopy, "isKeyboardContainer"))
   {
     v5 = [NSIndexPath indexPathWithIndex:0];
   }
 
   else
   {
-    v6 = [v4 parentGroup];
-    v7 = v6;
-    if (v6 && (v8 = [v6 indexOfObject:v4], v8 != 0x7FFFFFFFFFFFFFFFLL))
+    parentGroup = [elementCopy parentGroup];
+    v7 = parentGroup;
+    if (parentGroup && (v8 = [parentGroup indexOfObject:elementCopy], v8 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v9 = v8;
       v10 = [(SCATElementNavigationController *)self _indexPathForKeyboardElement:v7];
@@ -1314,38 +1314,38 @@ LABEL_10:
   return v5;
 }
 
-- (id)_keyboardElementForIndexPath:(id)a3
+- (id)_keyboardElementForIndexPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     _AXAssert();
   }
 
-  if ([v4 length] == 1)
+  if ([pathCopy length] == 1)
   {
-    v5 = [(SCATElementNavigationController *)self axManager];
-    v6 = [v5 rootKeyboardGroup];
+    axManager = [(SCATElementNavigationController *)self axManager];
+    rootKeyboardGroup = [axManager rootKeyboardGroup];
 LABEL_5:
 
     goto LABEL_9;
   }
 
-  v7 = [v4 indexPathByRemovingLastIndex];
-  v6 = [(SCATElementNavigationController *)self _keyboardElementForIndexPath:v7];
+  indexPathByRemovingLastIndex = [pathCopy indexPathByRemovingLastIndex];
+  rootKeyboardGroup = [(SCATElementNavigationController *)self _keyboardElementForIndexPath:indexPathByRemovingLastIndex];
 
-  if ([v6 isGroup])
+  if ([rootKeyboardGroup isGroup])
   {
-    v5 = v6;
-    v8 = [v4 indexAtPosition:{objc_msgSend(v4, "length") - 1}];
-    if (v8 >= [v5 count])
+    axManager = rootKeyboardGroup;
+    v8 = [pathCopy indexAtPosition:{objc_msgSend(pathCopy, "length") - 1}];
+    if (v8 >= [axManager count])
     {
-      v6 = v5;
+      rootKeyboardGroup = axManager;
     }
 
     else
     {
-      v6 = [v5 objectAtIndex:v8];
+      rootKeyboardGroup = [axManager objectAtIndex:v8];
     }
 
     goto LABEL_5;
@@ -1353,18 +1353,18 @@ LABEL_5:
 
 LABEL_9:
 
-  return v6;
+  return rootKeyboardGroup;
 }
 
-- (void)_trackLastFocusedKeyboardItem:(id)a3
+- (void)_trackLastFocusedKeyboardItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 element];
-  if ([(SCATElementNavigationController *)self _isScanningKeyboardContainer:v4])
+  itemCopy = item;
+  element = [itemCopy element];
+  if ([(SCATElementNavigationController *)self _isScanningKeyboardContainer:itemCopy])
   {
     if ([(SCATElementNavigationController *)self isGroupingEnabled])
     {
-      v6 = [(SCATElementNavigationController *)self _indexPathForKeyboardElement:v5];
+      v6 = [(SCATElementNavigationController *)self _indexPathForKeyboardElement:element];
       v7 = SWCHLogElementNav();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
@@ -1376,13 +1376,13 @@ LABEL_9:
 
     else
     {
-      if (([v5 scatIsAXElement] & 1) == 0)
+      if (([element scatIsAXElement] & 1) == 0)
       {
-        v9 = v5;
+        v9 = element;
         _AXAssert();
       }
 
-      [v5 centerPoint];
+      [element centerPoint];
       v8 = [NSValue valueWithCGPoint:?];
       v7 = SWCHLogElementNav();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1402,23 +1402,23 @@ LABEL_9:
 
   [(SCATElementNavigationController *)self setKeyboardIndexPath:v6];
   [(SCATElementNavigationController *)self setKeyboardKeyCenterPoint:v8];
-  -[SCATElementNavigationController setKeyboardSelectBehavior:](self, "setKeyboardSelectBehavior:", [v4 selectBehavior]);
+  -[SCATElementNavigationController setKeyboardSelectBehavior:](self, "setKeyboardSelectBehavior:", [itemCopy selectBehavior]);
 }
 
 - (id)_replacementForLastFocusedKeyboardItem
 {
   if ([(SCATElementNavigationController *)self isGroupingEnabled])
   {
-    v3 = [(SCATElementNavigationController *)self keyboardIndexPath];
-    v4 = [(SCATElementNavigationController *)self _keyboardElementForIndexPath:v3];
+    keyboardIndexPath = [(SCATElementNavigationController *)self keyboardIndexPath];
+    v4 = [(SCATElementNavigationController *)self _keyboardElementForIndexPath:keyboardIndexPath];
   }
 
   else
   {
-    v5 = [(SCATElementNavigationController *)self axManager];
-    v6 = [(SCATElementNavigationController *)self keyboardKeyCenterPoint];
-    [v6 CGPointValue];
-    v4 = [v5 elementAtPoint:?];
+    axManager = [(SCATElementNavigationController *)self axManager];
+    keyboardKeyCenterPoint = [(SCATElementNavigationController *)self keyboardKeyCenterPoint];
+    [keyboardKeyCenterPoint CGPointValue];
+    v4 = [axManager elementAtPoint:?];
 
     if (([v4 scatIsKeyboardKey] & 1) == 0)
     {
@@ -1430,7 +1430,7 @@ LABEL_9:
   if (!v4)
   {
 LABEL_11:
-    v7 = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
+    _firstKeyboardFocusContext = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
     goto LABEL_12;
   }
 
@@ -1439,41 +1439,41 @@ LABEL_11:
     [(SCATElementNavigationController *)self setKeyboardSelectBehavior:0];
   }
 
-  v7 = [SCATFocusContext focusContextWithElement:v4 elementManager:self selectBehavior:[(SCATElementNavigationController *)self keyboardSelectBehavior] options:0];
+  _firstKeyboardFocusContext = [SCATFocusContext focusContextWithElement:v4 elementManager:self selectBehavior:[(SCATElementNavigationController *)self keyboardSelectBehavior] options:0];
 
 LABEL_12:
 
-  return v7;
+  return _firstKeyboardFocusContext;
 }
 
-- (void)scannerManager:(id)a3 didActivateElement:(id)a4
+- (void)scannerManager:(id)manager didActivateElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SCATElementNavigationController *)self _isKeyboardContainerElement:v7 allowKeyboardContainerItself:0])
+  managerCopy = manager;
+  elementCopy = element;
+  if ([(SCATElementNavigationController *)self _isKeyboardContainerElement:elementCopy allowKeyboardContainerItself:0])
   {
-    v8 = [(SCATElementNavigationController *)self nextFocusContextAfterActivatingKeyboardElement:v7];
-    [v6 beginScanningWithFocusContext:v8];
+    v8 = [(SCATElementNavigationController *)self nextFocusContextAfterActivatingKeyboardElement:elementCopy];
+    [managerCopy beginScanningWithFocusContext:v8];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v9 = [v7 scatActivateBehavior];
+  scatActivateBehavior = [elementCopy scatActivateBehavior];
   v8 = SWCHLogElementNav();
   v10 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v9)
+  if (scatActivateBehavior)
   {
     if (v10)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v7 elemLog];
+        [elementCopy elemLog];
       }
 
       else
       {
-        [v7 description];
+        [elementCopy description];
       }
       v11 = ;
       v13 = 138543362;
@@ -1488,12 +1488,12 @@ LABEL_12:
   {
     if (objc_opt_respondsToSelector())
     {
-      [v7 elemLog];
+      [elementCopy elemLog];
     }
 
     else
     {
-      [v7 description];
+      [elementCopy description];
     }
     v12 = ;
     v13 = 138543362;
@@ -1501,39 +1501,39 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "After activating %{public}@, starting from the beginning again", &v13, 0xCu);
   }
 
-  [v6 beginScanningWithFocusContext:0];
+  [managerCopy beginScanningWithFocusContext:0];
 LABEL_13:
 }
 
-- (id)nextFocusContextAfterDismissingMenuForElement:(id)a3
+- (id)nextFocusContextAfterDismissingMenuForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SCATElementNavigationController *)self axManager];
-  v6 = [v5 scannerElementMatchingElement:v4];
+  elementCopy = element;
+  axManager = [(SCATElementNavigationController *)self axManager];
+  v6 = [axManager scannerElementMatchingElement:elementCopy];
 
   if (v6)
   {
     v7 = v6;
 
-    v4 = v7;
+    elementCopy = v7;
   }
 
-  if ([(SCATElementNavigationController *)self _isKeyboardContainerElement:v4 allowKeyboardContainerItself:0])
+  if ([(SCATElementNavigationController *)self _isKeyboardContainerElement:elementCopy allowKeyboardContainerItself:0])
   {
-    v8 = [(SCATElementNavigationController *)self nextFocusContextAfterActivatingKeyboardElement:v4];
+    v8 = [(SCATElementNavigationController *)self nextFocusContextAfterActivatingKeyboardElement:elementCopy];
   }
 
   else
   {
     v9 = +[SCATScannerManager sharedManager];
-    v10 = [v9 menu];
-    v11 = [v10 didActivateElement];
+    menu = [v9 menu];
+    didActivateElement = [menu didActivateElement];
 
-    if (v11)
+    if (didActivateElement)
     {
-      if ([v4 scatActivateBehavior] == 1)
+      if ([elementCopy scatActivateBehavior] == 1)
       {
-        v8 = [SCATFocusContext focusContextWithElement:v4 elementManager:self selectBehavior:0 options:0];
+        v8 = [SCATFocusContext focusContextWithElement:elementCopy elementManager:self selectBehavior:0 options:0];
       }
 
       else
@@ -1544,7 +1544,7 @@ LABEL_13:
       v12 = SWCHLogElementNav();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        sub_10012A6D8(v4);
+        sub_10012A6D8(elementCopy);
       }
     }
 
@@ -1557,34 +1557,34 @@ LABEL_13:
   return v8;
 }
 
-- (id)nextFocusContextAfterActivatingKeyboardElement:(id)a3
+- (id)nextFocusContextAfterActivatingKeyboardElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 switchControlRestartScanningAtCurrentKey];
+  switchControlRestartScanningAtCurrentKey = [v5 switchControlRestartScanningAtCurrentKey];
 
-  if (v6)
+  if (switchControlRestartScanningAtCurrentKey)
   {
-    v7 = [SCATFocusContext focusContextWithElement:v4 elementManager:self selectBehavior:0 options:0];
+    _firstKeyboardFocusContext = [SCATFocusContext focusContextWithElement:elementCopy elementManager:self selectBehavior:0 options:0];
   }
 
   else
   {
-    v7 = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
+    _firstKeyboardFocusContext = [(SCATElementNavigationController *)self _firstKeyboardFocusContext];
     v8 = SWCHLogElementNav();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      sub_10012A7B4(v4, v7);
+      sub_10012A7B4(elementCopy, _firstKeyboardFocusContext);
     }
   }
 
-  return v7;
+  return _firstKeyboardFocusContext;
 }
 
-- (id)focusContextAfterDrillOutOnGroup:(id)a3
+- (id)focusContextAfterDrillOutOnGroup:(id)group
 {
-  v4 = a3;
-  if ([v4 isKeyboardContainer] && (objc_msgSend(v4, "elementCommunity"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  groupCopy = group;
+  if ([groupCopy isKeyboardContainer] && (objc_msgSend(groupCopy, "elementCommunity"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = [(SCATElementNavigationController *)self firstElementWithOptions:0];
     v7 = [SCATFocusContext focusContextWithElement:v6 elementManager:self selectBehavior:0 options:0];
@@ -1594,7 +1594,7 @@ LABEL_13:
   {
     v9.receiver = self;
     v9.super_class = SCATElementNavigationController;
-    v7 = [(SCATElementManager *)&v9 focusContextAfterDrillOutOnGroup:v4];
+    v7 = [(SCATElementManager *)&v9 focusContextAfterDrillOutOnGroup:groupCopy];
   }
 
   return v7;

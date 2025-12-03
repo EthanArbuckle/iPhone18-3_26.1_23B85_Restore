@@ -1,26 +1,26 @@
 @interface CDPRPDProbationDurationProvider
-+ (double)_defaultProbationDurationForUserType:(unint64_t)a3;
-+ (id)_serverProbationDurationForUserType:(unint64_t)a3 rpdDurationConfigurations:(id)a4;
-+ (unint64_t)_userTypeForRecoveryContext:(id)a3;
-+ (void)probationDurationForRecoveryContext:(id)a3 completion:(id)a4;
++ (double)_defaultProbationDurationForUserType:(unint64_t)type;
++ (id)_serverProbationDurationForUserType:(unint64_t)type rpdDurationConfigurations:(id)configurations;
++ (unint64_t)_userTypeForRecoveryContext:(id)context;
++ (void)probationDurationForRecoveryContext:(id)context completion:(id)completion;
 @end
 
 @implementation CDPRPDProbationDurationProvider
 
-+ (void)probationDurationForRecoveryContext:(id)a3 completion:(id)a4
++ (void)probationDurationForRecoveryContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = MEMORY[0x277CFD560];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__CDPRPDProbationDurationProvider_probationDurationForRecoveryContext_completion___block_invoke;
   v11[3] = &unk_278E25B78;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = completionCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
   [v8 fetchRPDProbationDurationConfigsWithCompletion:v11];
 }
 
@@ -138,25 +138,25 @@ uint64_t __82__CDPRPDProbationDurationProvider_probationDurationForRecoveryConte
   return v3(v1, v2);
 }
 
-+ (unint64_t)_userTypeForRecoveryContext:(id)a3
++ (unint64_t)_userTypeForRecoveryContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 hasViableICSC];
-  v5 = [v3 isWalrusEnabled];
+  contextCopy = context;
+  hasViableICSC = [contextCopy hasViableICSC];
+  isWalrusEnabled = [contextCopy isWalrusEnabled];
 
   v6 = 3;
-  if (v4)
+  if (hasViableICSC)
   {
     v6 = 1;
   }
 
   v7 = 2;
-  if (v4)
+  if (hasViableICSC)
   {
     v7 = 0;
   }
 
-  if (v5)
+  if (isWalrusEnabled)
   {
     return v6;
   }
@@ -167,21 +167,21 @@ uint64_t __82__CDPRPDProbationDurationProvider_probationDurationForRecoveryConte
   }
 }
 
-+ (id)_serverProbationDurationForUserType:(unint64_t)a3 rpdDurationConfigurations:(id)a4
++ (id)_serverProbationDurationForUserType:(unint64_t)type rpdDurationConfigurations:(id)configurations
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 <= 3)
+  configurationsCopy = configurations;
+  v7 = configurationsCopy;
+  if (type <= 3)
   {
-    v4 = [v6 valueForKey:*(&off_278E25B98 + a3)];
+    v4 = [configurationsCopy valueForKey:*(&off_278E25B98 + type)];
   }
 
   return v4;
 }
 
-+ (double)_defaultProbationDurationForUserType:(unint64_t)a3
++ (double)_defaultProbationDurationForUserType:(unint64_t)type
 {
-  if (!a3 || a3 == 3)
+  if (!type || type == 3)
   {
     v4 = &CDPRPDProbationTimeInterval;
   }
@@ -189,7 +189,7 @@ uint64_t __82__CDPRPDProbationDurationProvider_probationDurationForRecoveryConte
   else
   {
     result = 0.0;
-    if (a3 != 1)
+    if (type != 1)
     {
       return result;
     }

@@ -1,14 +1,14 @@
 @interface MBBackupCloudFormatPolicy
-+ (int64_t)_snapshotFormatForAccount:(id)a3 behaviorOptionsFormat:(int64_t)a4 previousSnapshot:(id)a5;
-+ (int64_t)snapshotFormatForAccount:(id)a3 previousSnapshot:(id)a4 error:(id *)a5;
++ (int64_t)_snapshotFormatForAccount:(id)account behaviorOptionsFormat:(int64_t)format previousSnapshot:(id)snapshot;
++ (int64_t)snapshotFormatForAccount:(id)account previousSnapshot:(id)snapshot error:(id *)error;
 @end
 
 @implementation MBBackupCloudFormatPolicy
 
-+ (int64_t)snapshotFormatForAccount:(id)a3 previousSnapshot:(id)a4 error:(id *)a5
++ (int64_t)snapshotFormatForAccount:(id)account previousSnapshot:(id)snapshot error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  snapshotCopy = snapshot;
   v10 = +[MBBehaviorOptions sharedOptions];
   v17 = 0;
   v11 = [v10 _snapshotFormat:&v17];
@@ -16,10 +16,10 @@
   v13 = v12;
   if (v12)
   {
-    if (a5)
+    if (error)
     {
       v14 = v12;
-      *a5 = v13;
+      *error = v13;
     }
 
     v15 = -1;
@@ -27,18 +27,18 @@
 
   else
   {
-    v15 = [a1 _snapshotFormatForAccount:v8 behaviorOptionsFormat:v11 previousSnapshot:v9];
+    v15 = [self _snapshotFormatForAccount:accountCopy behaviorOptionsFormat:v11 previousSnapshot:snapshotCopy];
   }
 
   return v15;
 }
 
-+ (int64_t)_snapshotFormatForAccount:(id)a3 behaviorOptionsFormat:(int64_t)a4 previousSnapshot:(id)a5
++ (int64_t)_snapshotFormatForAccount:(id)account behaviorOptionsFormat:(int64_t)format previousSnapshot:(id)snapshot
 {
-  v7 = a5;
-  if (a4 == -1)
+  snapshotCopy = snapshot;
+  if (format == -1)
   {
-    a4 = [a3 _snapshotFormat];
+    format = [account _snapshotFormat];
     if (MBSnapshotFormatSupportedForBackup())
     {
       v8 = MBGetDefaultLog();
@@ -53,7 +53,7 @@
       }
     }
 
-    else if (v7 && (a4 = [v7 snapshotFormat], MBSnapshotFormatSupportedForBackup()))
+    else if (snapshotCopy && (format = [snapshotCopy snapshotFormat], MBSnapshotFormatSupportedForBackup()))
     {
       v8 = MBGetDefaultLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -70,7 +70,7 @@
     else
     {
       v8 = MBGetDefaultLog();
-      a4 = 3;
+      format = 3;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = MBStringForSnapshotFormat();
@@ -99,7 +99,7 @@ LABEL_13:
     }
   }
 
-  return a4;
+  return format;
 }
 
 @end

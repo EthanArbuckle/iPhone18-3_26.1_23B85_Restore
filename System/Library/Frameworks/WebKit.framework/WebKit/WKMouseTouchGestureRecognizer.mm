@@ -1,14 +1,14 @@
 @interface WKMouseTouchGestureRecognizer
-- (WKMouseTouchGestureRecognizer)initWithInteraction:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (WKMouseTouchGestureRecognizer)initWithInteraction:(id)interaction;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation WKMouseTouchGestureRecognizer
 
-- (WKMouseTouchGestureRecognizer)initWithInteraction:(id)a3
+- (WKMouseTouchGestureRecognizer)initWithInteraction:(id)interaction
 {
   v7.receiver = self;
   v7.super_class = WKMouseTouchGestureRecognizer;
@@ -16,42 +16,42 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_interaction, a3);
+    objc_storeWeak(&v4->_interaction, interaction);
   }
 
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [(WKMouseTouchGestureRecognizer *)self setState:1, a4];
+  [(WKMouseTouchGestureRecognizer *)self setState:1, event];
   Weak = objc_loadWeak(&self->_interaction);
 
-  [Weak _updateMouseTouches:a3];
+  [Weak _updateMouseTouches:began];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [(WKMouseTouchGestureRecognizer *)self setState:2, a4];
+  [(WKMouseTouchGestureRecognizer *)self setState:2, event];
   Weak = objc_loadWeak(&self->_interaction);
 
-  [Weak _updateMouseTouches:a3];
+  [Weak _updateMouseTouches:moved];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(WKMouseTouchGestureRecognizer *)self setState:3, a4];
+  [(WKMouseTouchGestureRecognizer *)self setState:3, event];
   Weak = objc_loadWeak(&self->_interaction);
 
-  [Weak _updateMouseTouches:a3];
+  [Weak _updateMouseTouches:ended];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(WKMouseTouchGestureRecognizer *)self setState:4, a4];
+  [(WKMouseTouchGestureRecognizer *)self setState:4, event];
   Weak = objc_loadWeak(&self->_interaction);
 
-  [Weak _updateMouseTouches:a3];
+  [Weak _updateMouseTouches:cancelled];
 }
 
 @end

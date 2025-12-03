@@ -1,25 +1,25 @@
 @interface MTCCTimerBackgroundViewController
 - (MTCCTimerBackgroundViewController)init;
 - (MTCCTimerBackgroundViewControllerDelegate)delegate;
-- (id)accessibilityCappedFontForStyle:(id)a3;
+- (id)accessibilityCappedFontForStyle:(id)style;
 - (id)landscapeConstraints;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)portraitConstraints;
 - (void)_reloadForCurrentState;
 - (void)_updateLabels;
-- (void)addTimerButtonTapped:(id)a3 forEvent:(id)a4;
+- (void)addTimerButtonTapped:(id)tapped forEvent:(id)event;
 - (void)dealloc;
-- (void)handleContentSizeChange:(id)a3;
-- (void)setTimer:(id)a3;
+- (void)handleContentSizeChange:(id)change;
+- (void)setTimer:(id)timer;
 - (void)setupAxFonts;
 - (void)setupConstraints;
 - (void)setupFonts;
 - (void)setupImage;
 - (void)setupRegularFonts;
-- (void)startStopButtonTapped:(id)a3;
+- (void)startStopButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTCCTimerBackgroundViewController
@@ -59,7 +59,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocing", buf, 0xCu);
   }
 
@@ -72,12 +72,12 @@
   v9 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setTimer:(id)a3
+- (void)setTimer:(id)timer
 {
-  v11 = a3;
-  if ((objc_msgSend_isEqual_(self->_timer, v4, v11) & 1) == 0)
+  timerCopy = timer;
+  if ((objc_msgSend_isEqual_(self->_timer, v4, timerCopy) & 1) == 0)
   {
-    v7 = objc_msgSend_copy(v11, v5, v6);
+    v7 = objc_msgSend_copy(timerCopy, v5, v6);
     timer = self->_timer;
     self->_timer = v7;
 
@@ -289,13 +289,13 @@
   objc_msgSend_setFont_(v18, v19, v15);
 }
 
-- (id)accessibilityCappedFontForStyle:(id)a3
+- (id)accessibilityCappedFontForStyle:(id)style
 {
   v3 = MEMORY[0x29EDC7D80];
   v4 = *MEMORY[0x29EDC8060];
-  v5 = a3;
+  styleCopy = style;
   v7 = objc_msgSend_traitCollectionWithPreferredContentSizeCategory_(v3, v6, v4);
-  v9 = objc_msgSend_preferredFontForTextStyle_compatibleWithTraitCollection_(MEMORY[0x29EDC76B0], v8, v5, v7);
+  v9 = objc_msgSend_preferredFontForTextStyle_compatibleWithTraitCollection_(MEMORY[0x29EDC76B0], v8, styleCopy, v7);
 
   return v9;
 }
@@ -806,24 +806,24 @@
   return v427;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v12.receiver = self;
   v12.super_class = MTCCTimerBackgroundViewController;
-  [(MTCCTimerBackgroundViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(MTCCTimerBackgroundViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   objc_msgSend_setupConstraints(self, v5, v6);
   v9 = objc_msgSend_view(self, v7, v8);
   objc_msgSend_setNeedsLayout(v9, v10, v11);
 }
 
-- (void)handleContentSizeChange:(id)a3
+- (void)handleContentSizeChange:(id)change
 {
   v19 = *MEMORY[0x29EDCA608];
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ handling content size chaged", &v17, 0xCu);
   }
 
@@ -836,7 +836,7 @@
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)startStopButtonTapped:(id)a3
+- (void)startStopButtonTapped:(id)tapped
 {
   v50 = *MEMORY[0x29EDCA608];
   v4 = MTLogForCategory();
@@ -844,7 +844,7 @@
   {
     v7 = objc_msgSend_timer(self, v5, v6);
     v46 = 138543618;
-    v47 = self;
+    selfCopy = self;
     v48 = 2050;
     v49 = objc_msgSend_state(v7, v8, v9);
     _os_log_impl(&dword_29C9FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ button tapped, current state:%{public}lu", &v46, 0x16u);
@@ -893,23 +893,23 @@
   v45 = *MEMORY[0x29EDCA608];
 }
 
-- (void)addTimerButtonTapped:(id)a3 forEvent:(id)a4
+- (void)addTimerButtonTapped:(id)tapped forEvent:(id)event
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  eventCopy = event;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_msgSend_timer(self, v7, v8);
     v17 = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2050;
     v20 = objc_msgSend_state(v9, v10, v11);
     _os_log_impl(&dword_29C9FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ add button tapped, current state:%{public}lu", &v17, 0x16u);
   }
 
   v14 = objc_msgSend_delegate(self, v12, v13);
-  objc_msgSend_timerBackgroundViewControllerAddButtonTapped_withEvent_(v14, v15, self, v5);
+  objc_msgSend_timerBackgroundViewControllerAddButtonTapped_withEvent_(v14, v15, self, eventCopy);
 
   v16 = *MEMORY[0x29EDCA608];
 }
@@ -1116,7 +1116,7 @@ LABEL_10:
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc(MEMORY[0x29EDC7D30]);
   v8 = objc_msgSend_startStopButton(self, v6, v7);

@@ -1,65 +1,65 @@
 @interface _SFPBRFReferenceFootnoteCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFReferenceFootnoteCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFReferenceFootnoteCardSection)initWithFacade:(id)a3;
-- (_SFPBRFReferenceFootnoteCardSection)initWithJSON:(id)a3;
+- (_SFPBRFReferenceFootnoteCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFReferenceFootnoteCardSection)initWithFacade:(id)facade;
+- (_SFPBRFReferenceFootnoteCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFReferenceFootnoteCardSection
 
-- (_SFPBRFReferenceFootnoteCardSection)initWithFacade:(id)a3
+- (_SFPBRFReferenceFootnoteCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFReferenceFootnoteCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [_SFPBRFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:v8];
+      text2 = [facadeCopy text];
+      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:text2];
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_1:v9];
     }
 
-    v10 = [v4 text];
+    text3 = [facadeCopy text];
 
-    if (v10)
+    if (text3)
     {
       v11 = [_SFPBRFTextProperty alloc];
-      v12 = [v4 text];
-      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:v12];
+      text4 = [facadeCopy text];
+      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:text4];
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_2:v13];
     }
 
-    v14 = [v4 text];
+    text5 = [facadeCopy text];
 
-    if (v14)
+    if (text5)
     {
       v15 = [_SFPBRFTextProperty alloc];
-      v16 = [v4 text];
-      v17 = [(_SFPBRFTextProperty *)v15 initWithFacade:v16];
+      text6 = [facadeCopy text];
+      v17 = [(_SFPBRFTextProperty *)v15 initWithFacade:text6];
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_3:v17];
     }
 
-    v18 = [v4 text];
+    text7 = [facadeCopy text];
 
-    if (v18)
+    if (text7)
     {
       v19 = [_SFPBRFTextProperty alloc];
-      v20 = [v4 text];
-      v21 = [(_SFPBRFTextProperty *)v19 initWithFacade:v20];
+      text8 = [facadeCopy text];
+      v21 = [(_SFPBRFTextProperty *)v19 initWithFacade:text8];
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_4:v21];
     }
 
-    if ([v4 hasAddTint])
+    if ([facadeCopy hasAddTint])
     {
-      -[_SFPBRFReferenceFootnoteCardSection setAddTint:](v5, "setAddTint:", [v4 addTint]);
+      -[_SFPBRFReferenceFootnoteCardSection setAddTint:](v5, "setAddTint:", [facadeCopy addTint]);
     }
 
     v22 = v5;
@@ -68,15 +68,15 @@
   return v5;
 }
 
-- (_SFPBRFReferenceFootnoteCardSection)initWithDictionary:(id)a3
+- (_SFPBRFReferenceFootnoteCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = _SFPBRFReferenceFootnoteCardSection;
   v5 = [(_SFPBRFReferenceFootnoteCardSection *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_1:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"text2"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"text2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_2:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"text3"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"text3"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_3:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"text4"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"text4"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
       [(_SFPBRFReferenceFootnoteCardSection *)v5 setText_4:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"addTint"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"addTint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -121,30 +121,30 @@
   return v5;
 }
 
-- (_SFPBRFReferenceFootnoteCardSection)initWithJSON:(id)a3
+- (_SFPBRFReferenceFootnoteCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFReferenceFootnoteCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFReferenceFootnoteCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFReferenceFootnoteCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -157,78 +157,78 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_addTint)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFReferenceFootnoteCardSection addTint](self, "addTint")}];
-    [v3 setObject:v4 forKeyedSubscript:@"addTint"];
+    [dictionary setObject:v4 forKeyedSubscript:@"addTint"];
   }
 
   if (self->_text_1)
   {
-    v5 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    text = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    dictionaryRepresentation = [text dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"text1"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"text1"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"text1"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"text1"];
     }
   }
 
   if (self->_text_2)
   {
-    v8 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    text2 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    dictionaryRepresentation2 = [text2 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"text2"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"text2"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"text2"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"text2"];
     }
   }
 
   if (self->_text_3)
   {
-    v11 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    text3 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    dictionaryRepresentation3 = [text3 dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"text3"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"text3"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"text3"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"text3"];
     }
   }
 
   if (self->_text_4)
   {
-    v14 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    text4 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    dictionaryRepresentation4 = [text4 dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"text4"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"text4"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"text4"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"text4"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -246,28 +246,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  if (v7)
+  text3 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -279,20 +279,20 @@
   {
   }
 
-  v5 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  if (v12)
+  text6 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  if (text6)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v15 = [v4 text];
-    v16 = [v14 isEqual:v15];
+    v13 = text6;
+    text7 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    text8 = [equalCopy text];
+    v16 = [text7 isEqual:text8];
 
     if (!v16)
     {
@@ -304,20 +304,20 @@
   {
   }
 
-  v5 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  if (v17)
+  text9 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  if (text9)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v20 = [v4 text];
-    v21 = [v19 isEqual:v20];
+    v18 = text9;
+    text10 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    text11 = [equalCopy text];
+    v21 = [text10 isEqual:text11];
 
     if (!v21)
     {
@@ -329,24 +329,24 @@
   {
   }
 
-  v5 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) != (v6 == 0))
+  text = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) != (text2 == 0))
   {
-    v22 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    if (!v22)
+    text12 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    if (!text12)
     {
 
 LABEL_25:
       addTint = self->_addTint;
-      v27 = addTint == [v4 addTint];
+      v27 = addTint == [equalCopy addTint];
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-    v25 = [v4 text];
-    v26 = [v24 isEqual:v25];
+    v23 = text12;
+    text13 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+    text14 = [equalCopy text];
+    v26 = [text13 isEqual:text14];
 
     if (v26)
     {
@@ -366,29 +366,29 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  if (v4)
+  toCopy = to;
+  text = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  if (v5)
+  text2 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  if (text2)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  if (v6)
+  text3 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  if (text3)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
-  if (v7)
+  text4 = [(_SFPBRFReferenceFootnoteCardSection *)self text];
+  if (text4)
   {
     PBDataWriterWriteSubmessage();
   }

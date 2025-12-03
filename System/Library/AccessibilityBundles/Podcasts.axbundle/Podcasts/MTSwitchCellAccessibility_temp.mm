@@ -1,5 +1,5 @@
 @interface MTSwitchCellAccessibility_temp
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,19 +7,19 @@
 
 @implementation MTSwitchCellAccessibility_temp
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTSwitchCell" hasInstanceMethod:@"toggle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTSwitchCell" hasInstanceMethod:@"toggleChanged:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTSwitchCell" hasInstanceMethod:@"toggle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTSwitchCell" hasInstanceMethod:@"toggleChanged:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(MTSwitchCellAccessibility_temp *)self safeValueForKey:@"toggle"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint

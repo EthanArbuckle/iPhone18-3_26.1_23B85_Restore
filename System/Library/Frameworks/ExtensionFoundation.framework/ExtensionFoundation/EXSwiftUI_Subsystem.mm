@@ -1,7 +1,7 @@
 @interface EXSwiftUI_Subsystem
 + (id)sharedInstance;
 - (EXSwiftUI_Subsystem)init;
-- (void)beginUsing:(id)a3 withBundle:(id)a4;
+- (void)beginUsing:(id)using withBundle:(id)bundle;
 - (void)init;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __37__EXSwiftUI_Subsystem_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -149,20 +149,20 @@ LABEL_34:
   return v2;
 }
 
-- (void)beginUsing:(id)a3 withBundle:(id)a4
+- (void)beginUsing:(id)using withBundle:(id)bundle
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  usingCopy = using;
+  bundleCopy = bundle;
   v8 = _EXLegacyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138543874;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v7;
+    v13 = bundleCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = usingCopy;
     _os_log_debug_impl(&dword_1847D1000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ - Begin using bunde %@ with personality: %@ personality.", &v10, 0x20u);
   }
 

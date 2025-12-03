@@ -1,7 +1,7 @@
 @interface AXElementFetcher
 + (id)springBoardElement;
 - (AXElement)nativeFocusElement;
-- (AXElementFetcher)initWithDelegate:(id)a3 fetchEvents:(unint64_t)a4 enableEventManagement:(BOOL)a5 enableGrouping:(BOOL)a6 shouldIncludeNonScannerElements:(BOOL)a7 beginEnabled:(BOOL)a8;
+- (AXElementFetcher)initWithDelegate:(id)delegate fetchEvents:(unint64_t)events enableEventManagement:(BOOL)management enableGrouping:(BOOL)grouping shouldIncludeNonScannerElements:(BOOL)elements beginEnabled:(BOOL)enabled;
 - (AXElementFetcherDelegate)delegate;
 - (AXElementGroup)elementCommunityGroup;
 - (AXElementGroup)firstKeyboardRow;
@@ -9,69 +9,69 @@
 - (AXElementGroup)lastKeyboardRow;
 - (AXElementGroup)rootGroup;
 - (AXElementGroupPruner)elementGroupPruner;
-- (BOOL)_fetchElements:(BOOL)a3;
-- (BOOL)_fetchGroups:(BOOL)a3;
+- (BOOL)_fetchElements:(BOOL)elements;
+- (BOOL)_fetchGroups:(BOOL)groups;
 - (BOOL)_updateCurrentApps;
 - (NSArray)availableElements;
 - (NSArray)currentApps;
-- (double)_delayForFetchEvent:(unint64_t)a3;
-- (id)_debugStringForFetchEvents:(unint64_t)a3;
+- (double)_delayForFetchEvent:(unint64_t)event;
+- (id)_debugStringForFetchEvents:(unint64_t)events;
 - (id)_fetchUnprocessedAppGroups;
-- (id)_fetchUnprocessedElements:(id)a3;
-- (id)_filterElements:(id)a3 withFilter:(id)a4;
-- (id)_filterGroup:(id)a3 withFilter:(id)a4;
-- (id)_findElementsMatchingBlock:(id)a3 internalRequest:(BOOL)a4;
-- (id)_findGroupableMatchingBlock:(id)a3 inElementGroup:(id)a4;
-- (id)_findGroupableMatchingGroupable:(id)a3 inElementGroup:(id)a4;
-- (id)_groupWithDictionary:(id)a3 currentPid:(int)a4;
-- (id)_groupWithItems:(id)a3 groupTraits:(unint64_t)a4 scanningBehaviorTraits:(unint64_t)a5 label:(id)a6 identifier:(id)a7 currentPid:(int)a8;
+- (id)_fetchUnprocessedElements:(id)elements;
+- (id)_filterElements:(id)elements withFilter:(id)filter;
+- (id)_filterGroup:(id)group withFilter:(id)filter;
+- (id)_findElementsMatchingBlock:(id)block internalRequest:(BOOL)request;
+- (id)_findGroupableMatchingBlock:(id)block inElementGroup:(id)group;
+- (id)_findGroupableMatchingGroupable:(id)groupable inElementGroup:(id)group;
+- (id)_groupWithDictionary:(id)dictionary currentPid:(int)pid;
+- (id)_groupWithItems:(id)items groupTraits:(unint64_t)traits scanningBehaviorTraits:(unint64_t)behaviorTraits label:(id)label identifier:(id)identifier currentPid:(int)pid;
 - (id)_occludedAppSceneIdentifiers;
-- (id)_processAppGroup:(id)a3 keyboardGroup:(id *)a4;
-- (id)_siblingOfGroupable:(id)a3 forDirection:(BOOL)a4 didWrap:(BOOL *)a5;
-- (id)closestElementToElement:(id)a3;
-- (id)closestElementToPoint:(CGPoint)a3;
+- (id)_processAppGroup:(id)group keyboardGroup:(id *)keyboardGroup;
+- (id)_siblingOfGroupable:(id)groupable forDirection:(BOOL)direction didWrap:(BOOL *)wrap;
+- (id)closestElementToElement:(id)element;
+- (id)closestElementToPoint:(CGPoint)point;
 - (id)description;
-- (id)findElementMatchingBlock:(id)a3;
-- (id)findElementMatchingElement:(id)a3;
-- (id)findGroupableMatchingBlock:(id)a3;
-- (id)findGroupableMatchingGroupable:(id)a3;
+- (id)findElementMatchingBlock:(id)block;
+- (id)findElementMatchingElement:(id)element;
+- (id)findGroupableMatchingBlock:(id)block;
+- (id)findGroupableMatchingGroupable:(id)groupable;
 - (id)firstElement;
 - (id)inCallServiceApplication;
 - (id)lastElement;
-- (id)nextSiblingOfElement:(id)a3 didWrap:(BOOL *)a4;
-- (id)previousSiblingOfElement:(id)a3 didWrap:(BOOL *)a4;
-- (int64_t)_priorityForFetchEvent:(unint64_t)a3;
+- (id)nextSiblingOfElement:(id)element didWrap:(BOOL *)wrap;
+- (id)previousSiblingOfElement:(id)element didWrap:(BOOL *)wrap;
+- (int64_t)_priorityForFetchEvent:(unint64_t)event;
 - (void)_debugLogElementCache;
-- (void)_fetchEventOccurred:(unint64_t)a3;
-- (void)_handleApplicationWasActivated:(id)a3;
-- (void)_handleMediaDidBegin:(__CFData *)a3;
-- (void)_handleNativeFocusItemDidChange:(__CFData *)a3;
-- (void)_handleScreenWillChange:(__CFData *)a3;
-- (void)_handleUpdateElementVisuals:(__CFData *)a3;
-- (void)_notifyObserversApplicationWasActivated:(id)a3;
-- (void)_notifyObserversDidFetchElementsForEvent:(unint64_t)a3 foundNewElements:(BOOL)a4;
-- (void)_notifyObserversDidScheduleFetchEvent:(unint64_t)a3;
-- (void)_notifyObserversMediaDidBegin:(__CFData *)a3;
-- (void)_notifyObserversNativeFocusElementDidChange:(id)a3;
-- (void)_notifyObserversScreenWillChange:(__CFData *)a3;
-- (void)_notifyObserversUpdateElementVisuals:(id)a3;
-- (void)_notifyObserversWillFetchElementsForEvent:(unint64_t)a3;
-- (void)_scheduleFetchEvent:(unint64_t)a3;
-- (void)_sendFakeScreenChangeIfNecessaryForGroups:(id)a3 orElements:(id)a4 appsDidChange:(BOOL)a5;
+- (void)_fetchEventOccurred:(unint64_t)occurred;
+- (void)_handleApplicationWasActivated:(id)activated;
+- (void)_handleMediaDidBegin:(__CFData *)begin;
+- (void)_handleNativeFocusItemDidChange:(__CFData *)change;
+- (void)_handleScreenWillChange:(__CFData *)change;
+- (void)_handleUpdateElementVisuals:(__CFData *)visuals;
+- (void)_notifyObserversApplicationWasActivated:(id)activated;
+- (void)_notifyObserversDidFetchElementsForEvent:(unint64_t)event foundNewElements:(BOOL)elements;
+- (void)_notifyObserversDidScheduleFetchEvent:(unint64_t)event;
+- (void)_notifyObserversMediaDidBegin:(__CFData *)begin;
+- (void)_notifyObserversNativeFocusElementDidChange:(id)change;
+- (void)_notifyObserversScreenWillChange:(__CFData *)change;
+- (void)_notifyObserversUpdateElementVisuals:(id)visuals;
+- (void)_notifyObserversWillFetchElementsForEvent:(unint64_t)event;
+- (void)_scheduleFetchEvent:(unint64_t)event;
+- (void)_sendFakeScreenChangeIfNecessaryForGroups:(id)groups orElements:(id)elements appsDidChange:(BOOL)change;
 - (void)_tearDownEventCoalesceTimer;
-- (void)addFetchEvents:(unint64_t)a3;
-- (void)addPostFetchFilter:(id)a3 withIdentifier:(id)a4;
+- (void)addFetchEvents:(unint64_t)events;
+- (void)addPostFetchFilter:(id)filter withIdentifier:(id)identifier;
 - (void)clearCache;
 - (void)dealloc;
 - (void)disableEventManagement;
 - (void)enableEventManagement;
-- (void)fetchEventOccurred:(unint64_t)a3;
-- (void)registerFetchObserver:(id)a3 targetQueue:(id)a4;
+- (void)fetchEventOccurred:(unint64_t)occurred;
+- (void)registerFetchObserver:(id)observer targetQueue:(id)queue;
 - (void)removeAllPostFetchFilters;
-- (void)removeFetchEvents:(unint64_t)a3;
-- (void)removePostFetchFilterWithIdentifier:(id)a3;
+- (void)removeFetchEvents:(unint64_t)events;
+- (void)removePostFetchFilterWithIdentifier:(id)identifier;
 - (void)unregisterAllFetchObservers;
-- (void)unregisterFetchObserver:(id)a3;
+- (void)unregisterFetchObserver:(id)observer;
 @end
 
 @implementation AXElementFetcher
@@ -84,10 +84,10 @@
   return v3;
 }
 
-- (AXElementFetcher)initWithDelegate:(id)a3 fetchEvents:(unint64_t)a4 enableEventManagement:(BOOL)a5 enableGrouping:(BOOL)a6 shouldIncludeNonScannerElements:(BOOL)a7 beginEnabled:(BOOL)a8
+- (AXElementFetcher)initWithDelegate:(id)delegate fetchEvents:(unint64_t)events enableEventManagement:(BOOL)management enableGrouping:(BOOL)grouping shouldIncludeNonScannerElements:(BOOL)elements beginEnabled:(BOOL)enabled
 {
-  v11 = a5;
-  v14 = a3;
+  managementCopy = management;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = AXElementFetcher;
   v15 = [(AXElementFetcher *)&v34 init];
@@ -97,19 +97,19 @@
     goto LABEL_9;
   }
 
-  objc_storeWeak(&v15->_delegate, v14);
-  v16->_enabled = a8;
-  v17 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+  objc_storeWeak(&v15->_delegate, delegateCopy);
+  v16->_enabled = enabled;
+  weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
   fetchObservers = v16->_fetchObservers;
-  v16->_fetchObservers = v17;
+  v16->_fetchObservers = weakToWeakObjectsMapTable;
 
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   postFetchFilters = v16->_postFetchFilters;
   v16->_postFetchFilters = v19;
 
-  [(AXElementFetcher *)v16 addFetchEvents:a4];
-  v16->_groupingEnabled = a6;
-  v16->_shouldIncludeNonScannerElements = a7;
+  [(AXElementFetcher *)v16 addFetchEvents:events];
+  v16->_groupingEnabled = grouping;
+  v16->_shouldIncludeNonScannerElements = elements;
   v21 = dispatch_queue_create("ax-element-fetch", 0);
   elementFetchQueue = v16->_elementFetchQueue;
   v16->_elementFetchQueue = v21;
@@ -130,7 +130,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v11)
+  if (managementCopy)
   {
     [(AXElementFetcher *)v16 enableEventManagement];
   }
@@ -194,19 +194,19 @@ void __31__AXElementFetcher_description__block_invoke(uint64_t a1)
 - (AXElement)nativeFocusElement
 {
   v2 = +[AXElement primaryApp];
-  v3 = [v2 nativeFocusPreferredElement];
+  nativeFocusPreferredElement = [v2 nativeFocusPreferredElement];
 
-  v4 = [v3 application];
-  v5 = [v4 isEqual:v3];
+  application = [nativeFocusPreferredElement application];
+  v5 = [application isEqual:nativeFocusPreferredElement];
 
   if (v5)
   {
-    v6 = [v3 nativeFocusPreferredElement];
+    v3NativeFocusPreferredElement = [nativeFocusPreferredElement nativeFocusPreferredElement];
 
-    v3 = v6;
+    nativeFocusPreferredElement = v3NativeFocusPreferredElement;
   }
 
-  return v3;
+  return nativeFocusPreferredElement;
 }
 
 - (id)inCallServiceApplication
@@ -241,15 +241,15 @@ void __31__AXElementFetcher_description__block_invoke(uint64_t a1)
 - (BOOL)_updateCurrentApps
 {
   v3 = +[AXElement systemWideElement];
-  v4 = [v3 systemApplication];
+  systemApplication = [v3 systemApplication];
 
-  v5 = [v4 currentApplications];
-  v6 = [v5 mutableCopy];
+  currentApplications = [systemApplication currentApplications];
+  v6 = [currentApplications mutableCopy];
 
-  if ([v4 isSpringBoard])
+  if ([systemApplication isSpringBoard])
   {
-    v7 = [v4 uiElement];
-    v8 = [v7 arrayWithAXAttribute:1111];
+    uiElement = [systemApplication uiElement];
+    v8 = [uiElement arrayWithAXAttribute:1111];
 
     if ([v8 count])
     {
@@ -263,12 +263,12 @@ void __31__AXElementFetcher_description__block_invoke(uint64_t a1)
       [v9 enumerateObjectsUsingBlock:&v16];
       if (![v9 count])
       {
-        v10 = [objc_opt_class() springBoardElement];
+        springBoardElement = [objc_opt_class() springBoardElement];
 
-        if (v10)
+        if (springBoardElement)
         {
-          v11 = [objc_opt_class() springBoardElement];
-          [v9 addObject:v11];
+          springBoardElement2 = [objc_opt_class() springBoardElement];
+          [v9 addObject:springBoardElement2];
         }
       }
     }
@@ -391,8 +391,8 @@ uint64_t __33__AXElementFetcher_keyboardGroup__block_invoke(uint64_t a1)
 
 - (AXElementGroup)firstKeyboardRow
 {
-  v2 = [(AXElementFetcher *)self keyboardGroup];
-  v3 = [v2 firstChildPassingTest:&__block_literal_global_12];
+  keyboardGroup = [(AXElementFetcher *)self keyboardGroup];
+  v3 = [keyboardGroup firstChildPassingTest:&__block_literal_global_12];
 
   return v3;
 }
@@ -416,15 +416,15 @@ uint64_t __36__AXElementFetcher_firstKeyboardRow__block_invoke(uint64_t a1, void
 - (AXElementGroup)lastKeyboardRow
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(AXElementFetcher *)self keyboardGroup];
-  v3 = [v2 descendantsPassingTest:&__block_literal_global_300];
+  keyboardGroup = [(AXElementFetcher *)self keyboardGroup];
+  v3 = [keyboardGroup descendantsPassingTest:&__block_literal_global_300];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  reverseObjectEnumerator = [v3 reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -434,7 +434,7 @@ uint64_t __36__AXElementFetcher_firstKeyboardRow__block_invoke(uint64_t a1, void
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -445,7 +445,7 @@ uint64_t __36__AXElementFetcher_firstKeyboardRow__block_invoke(uint64_t a1, void
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -508,12 +508,12 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
 - (id)_occludedAppSceneIdentifiers
 {
   v2 = +[AXElement systemWideElement];
-  v3 = [v2 springBoardApplication];
-  v4 = [v3 focusedOccludedAppSceneIdentifiers];
-  v5 = v4;
-  if (v4)
+  springBoardApplication = [v2 springBoardApplication];
+  focusedOccludedAppSceneIdentifiers = [springBoardApplication focusedOccludedAppSceneIdentifiers];
+  v5 = focusedOccludedAppSceneIdentifiers;
+  if (focusedOccludedAppSceneIdentifiers)
   {
-    v6 = v4;
+    v6 = focusedOccludedAppSceneIdentifiers;
   }
 
   else
@@ -526,45 +526,45 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)registerFetchObserver:(id)a3 targetQueue:(id)a4
+- (void)registerFetchObserver:(id)observer targetQueue:(id)queue
 {
-  v9 = a4;
-  if (!v9)
+  queueCopy = queue;
+  if (!queueCopy)
   {
-    v9 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v6 = MEMORY[0x1E69E96A0];
   }
 
-  v7 = a3;
-  v8 = [(AXElementFetcher *)self fetchObservers];
-  [v8 setObject:v9 forKey:v7];
+  observerCopy = observer;
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  [fetchObservers setObject:queueCopy forKey:observerCopy];
 }
 
-- (void)unregisterFetchObserver:(id)a3
+- (void)unregisterFetchObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AXElementFetcher *)self fetchObservers];
-  [v5 removeObjectForKey:v4];
+  observerCopy = observer;
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  [fetchObservers removeObjectForKey:observerCopy];
 }
 
 - (void)unregisterAllFetchObservers
 {
-  v2 = [(AXElementFetcher *)self fetchObservers];
-  [v2 removeAllObjects];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  [fetchObservers removeAllObjects];
 }
 
-- (void)_notifyObserversWillFetchElementsForEvent:(unint64_t)a3
+- (void)_notifyObserversWillFetchElementsForEvent:(unint64_t)event
 {
   v23 = *MEMORY[0x1E69E9840];
-  v14 = [(AXElementFetcher *)self currentApps];
+  currentApps = [(AXElementFetcher *)self currentApps];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(AXElementFetcher *)self fetchObservers];
-  v5 = [v4 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -576,14 +576,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v18 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(AXElementFetcher *)self fetchObservers];
-          v12 = [v11 objectForKey:v10];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v12 = [fetchObservers2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -591,8 +591,8 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D45A0;
           block[4] = v10;
           block[5] = self;
-          v17 = a3;
-          v16 = v14;
+          eventCopy = event;
+          v16 = currentApps;
           dispatch_sync(v12, block);
         }
 
@@ -600,25 +600,25 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversNativeFocusElementDidChange:(id)a3
+- (void)_notifyObserversNativeFocusElementDidChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  changeCopy = change;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(AXElementFetcher *)self fetchObservers];
-  v5 = [v4 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -630,14 +630,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(AXElementFetcher *)self fetchObservers];
-          v12 = [v11 objectForKey:v10];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v12 = [fetchObservers2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -645,7 +645,7 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D4380;
           block[4] = v10;
           block[5] = self;
-          v15 = v13;
+          v15 = changeCopy;
           dispatch_sync(v12, block);
         }
 
@@ -653,25 +653,25 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversUpdateElementVisuals:(id)a3
+- (void)_notifyObserversUpdateElementVisuals:(id)visuals
 {
   v21 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  visualsCopy = visuals;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(AXElementFetcher *)self fetchObservers];
-  v5 = [v4 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -683,14 +683,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(AXElementFetcher *)self fetchObservers];
-          v12 = [v11 objectForKey:v10];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v12 = [fetchObservers2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -698,7 +698,7 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D4380;
           block[4] = v10;
           block[5] = self;
-          v15 = v13;
+          v15 = visualsCopy;
           dispatch_sync(v12, block);
         }
 
@@ -706,25 +706,25 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversApplicationWasActivated:(id)a3
+- (void)_notifyObserversApplicationWasActivated:(id)activated
 {
   v21 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  activatedCopy = activated;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(AXElementFetcher *)self fetchObservers];
-  v5 = [v4 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -736,14 +736,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(AXElementFetcher *)self fetchObservers];
-          v12 = [v11 objectForKey:v10];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v12 = [fetchObservers2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -751,7 +751,7 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D4380;
           block[4] = v10;
           block[5] = self;
-          v15 = v13;
+          v15 = activatedCopy;
           dispatch_sync(v12, block);
         }
 
@@ -759,24 +759,24 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversScreenWillChange:(__CFData *)a3
+- (void)_notifyObserversScreenWillChange:(__CFData *)change
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AXElementFetcher *)self fetchObservers];
-  v5 = [v4 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -788,14 +788,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(AXElementFetcher *)self fetchObservers];
-          v12 = [v11 objectForKey:v10];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v12 = [fetchObservers2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -803,7 +803,7 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D45C8;
           block[4] = v10;
           block[5] = self;
-          block[6] = a3;
+          block[6] = change;
           dispatch_sync(v12, block);
         }
 
@@ -811,24 +811,24 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversMediaDidBegin:(__CFData *)a3
+- (void)_notifyObserversMediaDidBegin:(__CFData *)begin
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AXElementFetcher *)self fetchObservers];
-  v5 = [v4 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -840,14 +840,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(AXElementFetcher *)self fetchObservers];
-          v12 = [v11 objectForKey:v10];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v12 = [fetchObservers2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -855,7 +855,7 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D45C8;
           block[4] = v10;
           block[5] = self;
-          block[6] = a3;
+          block[6] = begin;
           dispatch_sync(v12, block);
         }
 
@@ -863,24 +863,24 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversDidFetchElementsForEvent:(unint64_t)a3 foundNewElements:(BOOL)a4
+- (void)_notifyObserversDidFetchElementsForEvent:(unint64_t)event foundNewElements:(BOOL)elements
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(AXElementFetcher *)self fetchObservers];
-  v6 = [v5 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -892,14 +892,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          v12 = [(AXElementFetcher *)self fetchObservers];
-          v13 = [v12 objectForKey:v11];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v13 = [fetchObservers2 objectForKey:v11];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -907,8 +907,8 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D45F0;
           block[4] = v11;
           block[5] = self;
-          block[6] = a3;
-          v17 = a4;
+          block[6] = event;
+          elementsCopy = elements;
           dispatch_sync(v13, block);
         }
 
@@ -916,24 +916,24 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_notifyObserversDidScheduleFetchEvent:(unint64_t)a3
+- (void)_notifyObserversDidScheduleFetchEvent:(unint64_t)event
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AXElementFetcher *)self fetchObservers];
-  v5 = [v4 keyEnumerator];
+  fetchObservers = [(AXElementFetcher *)self fetchObservers];
+  keyEnumerator = [fetchObservers keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -945,14 +945,14 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(AXElementFetcher *)self fetchObservers];
-          v12 = [v11 objectForKey:v10];
+          fetchObservers2 = [(AXElementFetcher *)self fetchObservers];
+          v12 = [fetchObservers2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -960,7 +960,7 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
           block[3] = &unk_1E80D45C8;
           block[4] = v10;
           block[5] = self;
-          block[6] = a3;
+          block[6] = event;
           dispatch_async(v12, block);
         }
 
@@ -968,45 +968,45 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addFetchEvents:(unint64_t)a3
+- (void)addFetchEvents:(unint64_t)events
 {
-  v4 = [(AXElementFetcher *)self activeFetchEvents]| a3 | 1;
+  v4 = [(AXElementFetcher *)self activeFetchEvents]| events | 1;
 
   [(AXElementFetcher *)self setActiveFetchEvents:v4];
 }
 
-- (void)removeFetchEvents:(unint64_t)a3
+- (void)removeFetchEvents:(unint64_t)events
 {
-  v4 = [(AXElementFetcher *)self activeFetchEvents]& ~a3 | 1;
+  v4 = [(AXElementFetcher *)self activeFetchEvents]& ~events | 1;
 
   [(AXElementFetcher *)self setActiveFetchEvents:v4];
 }
 
-- (void)fetchEventOccurred:(unint64_t)a3
+- (void)fetchEventOccurred:(unint64_t)occurred
 {
-  if (![(AXElementFetcher *)self isEventManagementEnabled]|| ![(AXElementFetcher *)self _fetchEventCanBeManaged:a3])
+  if (![(AXElementFetcher *)self isEventManagementEnabled]|| ![(AXElementFetcher *)self _fetchEventCanBeManaged:occurred])
   {
 
-    [(AXElementFetcher *)self _fetchEventOccurred:a3];
+    [(AXElementFetcher *)self _fetchEventOccurred:occurred];
   }
 }
 
-- (void)_fetchEventOccurred:(unint64_t)a3
+- (void)_fetchEventOccurred:(unint64_t)occurred
 {
   if (self->_enabled)
   {
-    v5 = [(AXElementFetcher *)self delegate];
+    delegate = [(AXElementFetcher *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(AXElementFetcher *)self delegate];
-      v7 = [v6 isSystemSleeping:self];
+      delegate2 = [(AXElementFetcher *)self delegate];
+      v7 = [delegate2 isSystemSleeping:self];
 
       if (v7)
       {
@@ -1018,20 +1018,20 @@ uint64_t __41__AXElementFetcher_elementCommunityGroup__block_invoke(uint64_t a1)
     {
     }
 
-    v8 = [(AXElementFetcher *)self _priorityForFetchEvent:a3];
+    v8 = [(AXElementFetcher *)self _priorityForFetchEvent:occurred];
     if ((v8 & 0x8000000000000000) == 0)
     {
       v9 = v8;
-      if (([(AXElementFetcher *)self activeFetchEvents]& a3) != 0 && v9 >= [(AXElementFetcher *)self _priorityForFetchEvent:self->_scheduledFetchEvent])
+      if (([(AXElementFetcher *)self activeFetchEvents]& occurred) != 0 && v9 >= [(AXElementFetcher *)self _priorityForFetchEvent:self->_scheduledFetchEvent])
       {
 
-        [(AXElementFetcher *)self _scheduleFetchEvent:a3];
+        [(AXElementFetcher *)self _scheduleFetchEvent:occurred];
       }
     }
   }
 }
 
-- (void)_handleNativeFocusItemDidChange:(__CFData *)a3
+- (void)_handleNativeFocusItemDidChange:(__CFData *)change
 {
   elementFetchQueue = self->_elementFetchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1049,7 +1049,7 @@ void __52__AXElementFetcher__handleNativeFocusItemDidChange___block_invoke(uint6
   [v1 _notifyObserversNativeFocusElementDidChange:v2];
 }
 
-- (void)_handleUpdateElementVisuals:(__CFData *)a3
+- (void)_handleUpdateElementVisuals:(__CFData *)visuals
 {
   elementFetchQueue = self->_elementFetchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1057,13 +1057,13 @@ void __52__AXElementFetcher__handleNativeFocusItemDidChange___block_invoke(uint6
   v4[2] = __48__AXElementFetcher__handleUpdateElementVisuals___block_invoke;
   v4[3] = &unk_1E80D4618;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = visuals;
   dispatch_async(elementFetchQueue, v4);
 }
 
-- (void)_handleApplicationWasActivated:(id)a3
+- (void)_handleApplicationWasActivated:(id)activated
 {
-  v4 = a3;
+  activatedCopy = activated;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1073,12 +1073,12 @@ void __52__AXElementFetcher__handleNativeFocusItemDidChange___block_invoke(uint6
     v6[2] = __51__AXElementFetcher__handleApplicationWasActivated___block_invoke;
     v6[3] = &unk_1E80D3DA8;
     v6[4] = self;
-    v7 = v4;
+    v7 = activatedCopy;
     dispatch_async(elementFetchQueue, v6);
   }
 }
 
-- (void)_handleScreenWillChange:(__CFData *)a3
+- (void)_handleScreenWillChange:(__CFData *)change
 {
   elementFetchQueue = self->_elementFetchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1086,11 +1086,11 @@ void __52__AXElementFetcher__handleNativeFocusItemDidChange___block_invoke(uint6
   v4[2] = __44__AXElementFetcher__handleScreenWillChange___block_invoke;
   v4[3] = &unk_1E80D4618;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = change;
   dispatch_async(elementFetchQueue, v4);
 }
 
-- (void)_handleMediaDidBegin:(__CFData *)a3
+- (void)_handleMediaDidBegin:(__CFData *)begin
 {
   elementFetchQueue = self->_elementFetchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1098,7 +1098,7 @@ void __52__AXElementFetcher__handleNativeFocusItemDidChange___block_invoke(uint6
   v4[2] = __41__AXElementFetcher__handleMediaDidBegin___block_invoke;
   v4[3] = &unk_1E80D4618;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = begin;
   dispatch_async(elementFetchQueue, v4);
 }
 
@@ -1113,12 +1113,12 @@ void __52__AXElementFetcher__handleNativeFocusItemDidChange___block_invoke(uint6
   }
 }
 
-- (void)_scheduleFetchEvent:(unint64_t)a3
+- (void)_scheduleFetchEvent:(unint64_t)event
 {
   [(AXElementFetcher *)self _notifyObserversDidScheduleFetchEvent:self->_scheduledFetchEvent];
-  [(AXElementFetcher *)self _delayForFetchEvent:a3];
+  [(AXElementFetcher *)self _delayForFetchEvent:event];
   v6 = v5;
-  self->_scheduledFetchEvent = a3;
+  self->_scheduledFetchEvent = event;
   eventCoalesceTimer = self->_eventCoalesceTimer;
   if (eventCoalesceTimer)
   {
@@ -1190,19 +1190,19 @@ uint64_t __40__AXElementFetcher__scheduleFetchEvent___block_invoke_2(uint64_t a1
   return result;
 }
 
-- (double)_delayForFetchEvent:(unint64_t)a3
+- (double)_delayForFetchEvent:(unint64_t)event
 {
-  if (a3 > 15)
+  if (event > 15)
   {
-    if (a3 > 127)
+    if (event > 127)
     {
-      if (a3 == 128)
+      if (event == 128)
       {
         v3 = 80;
         return *(&self->super.isa + v3);
       }
 
-      if (a3 == 256)
+      if (event == 256)
       {
         return 0.0500000007;
       }
@@ -1210,13 +1210,13 @@ uint64_t __40__AXElementFetcher__scheduleFetchEvent___block_invoke_2(uint64_t a1
 
     else
     {
-      if (a3 == 16)
+      if (event == 16)
       {
         v3 = 92;
         return *(&self->super.isa + v3);
       }
 
-      if (a3 == 64)
+      if (event == 64)
       {
         v3 = 88;
         return *(&self->super.isa + v3);
@@ -1228,15 +1228,15 @@ LABEL_20:
     return *(&self->super.isa + v3);
   }
 
-  if (a3 > 3)
+  if (event > 3)
   {
-    if (a3 == 4)
+    if (event == 4)
     {
       v3 = 84;
       return *(&self->super.isa + v3);
     }
 
-    if (a3 == 8)
+    if (event == 8)
     {
       v3 = 96;
       return *(&self->super.isa + v3);
@@ -1245,13 +1245,13 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     v3 = 76;
     return *(&self->super.isa + v3);
   }
 
-  if (a3 != 2)
+  if (event != 2)
   {
     goto LABEL_20;
   }
@@ -1260,14 +1260,14 @@ LABEL_20:
   return *(&self->super.isa + v3);
 }
 
-- (int64_t)_priorityForFetchEvent:(unint64_t)a3
+- (int64_t)_priorityForFetchEvent:(unint64_t)event
 {
   result = -1;
-  if (a3 > 15)
+  if (event > 15)
   {
-    if (a3 > 63)
+    if (event > 63)
     {
-      switch(a3)
+      switch(event)
       {
         case 0x40uLL:
           return 4;
@@ -1280,12 +1280,12 @@ LABEL_20:
       return 0;
     }
 
-    if (a3 == 16)
+    if (event == 16)
     {
       return 5;
     }
 
-    if (a3 != 32)
+    if (event != 32)
     {
       return 0;
     }
@@ -1293,9 +1293,9 @@ LABEL_20:
 
   else
   {
-    if (a3 > 1)
+    if (event > 1)
     {
-      switch(a3)
+      switch(event)
       {
         case 2uLL:
           return 7;
@@ -1308,9 +1308,9 @@ LABEL_20:
       return 0;
     }
 
-    if (a3)
+    if (event)
     {
-      return a3 == 1;
+      return event == 1;
     }
   }
 
@@ -1323,14 +1323,14 @@ LABEL_20:
   if (![(AXElementFetcher *)self isEventManagementEnabled])
   {
     v3 = +[AXElementFetcher systemWideElement];
-    v4 = [v3 elementRef];
+    elementRef = [v3 elementRef];
 
     pid = 0;
-    v5 = AXUIElementGetPid(v4, &pid);
+    v5 = AXUIElementGetPid(elementRef, &pid);
     if (v5)
     {
       v6 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-      NSLog(@"AXError: Not able to get pid for systemElement. error:%@. systemElementRef:%@", v6, v4);
+      NSLog(@"AXError: Not able to get pid for systemElement. error:%@. systemElementRef:%@", v6, elementRef);
 LABEL_6:
 
       return;
@@ -1348,8 +1348,8 @@ LABEL_6:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(AXElementFetcher *)self _axNotificationsForManagedEvents];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    _axNotificationsForManagedEvents = [(AXElementFetcher *)self _axNotificationsForManagedEvents];
+    v9 = [_axNotificationsForManagedEvents countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1360,11 +1360,11 @@ LABEL_6:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_axNotificationsForManagedEvents);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = AXObserverAddNotification(self->_axRuntimeNotificationObserver, v4, [v13 intValue], self);
+          v14 = AXObserverAddNotification(self->_axRuntimeNotificationObserver, elementRef, [v13 intValue], self);
           if (v14)
           {
             v15 = [MEMORY[0x1E696AD98] numberWithInt:v14];
@@ -1372,7 +1372,7 @@ LABEL_6:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v10 = [_axNotificationsForManagedEvents countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v10);
@@ -1397,14 +1397,14 @@ LABEL_6:
     if (self->_axRuntimeNotificationObserver)
     {
       v3 = +[AXElementFetcher systemWideElement];
-      v4 = [v3 elementRef];
+      elementRef = [v3 elementRef];
 
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [(AXElementFetcher *)self _axNotificationsForManagedEvents];
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      _axNotificationsForManagedEvents = [(AXElementFetcher *)self _axNotificationsForManagedEvents];
+      v6 = [_axNotificationsForManagedEvents countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1415,11 +1415,11 @@ LABEL_6:
           {
             if (*v15 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(_axNotificationsForManagedEvents);
             }
 
             v10 = *(*(&v14 + 1) + 8 * i);
-            v11 = AXObserverRemoveNotification(self->_axRuntimeNotificationObserver, v4, [v10 intValue]);
+            v11 = AXObserverRemoveNotification(self->_axRuntimeNotificationObserver, elementRef, [v10 intValue]);
             if (v11)
             {
               v12 = [MEMORY[0x1E696AD98] numberWithInt:v11];
@@ -1427,7 +1427,7 @@ LABEL_6:
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v7 = [_axNotificationsForManagedEvents countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v7);
@@ -1446,34 +1446,34 @@ LABEL_6:
   }
 }
 
-- (void)_sendFakeScreenChangeIfNecessaryForGroups:(id)a3 orElements:(id)a4 appsDidChange:(BOOL)a5
+- (void)_sendFakeScreenChangeIfNecessaryForGroups:(id)groups orElements:(id)elements appsDidChange:(BOOL)change
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  groupsCopy = groups;
+  elementsCopy = elements;
   if (![(AXElementFetcher *)self didSendFakeScreenChangeOnLastFetch])
   {
-    if (a5)
+    if (change)
     {
       goto LABEL_21;
     }
 
-    v10 = [(AXElementFetcher *)self currentApps];
-    if ([v10 count] == 1)
+    currentApps = [(AXElementFetcher *)self currentApps];
+    if ([currentApps count] == 1)
     {
-      v11 = [(AXElementFetcher *)self currentApps];
-      v12 = [v11 firstObject];
-      v13 = [v12 isSpringBoard];
+      currentApps2 = [(AXElementFetcher *)self currentApps];
+      firstObject = [currentApps2 firstObject];
+      isSpringBoard = [firstObject isSpringBoard];
 
-      if (!v13)
+      if (!isSpringBoard)
       {
         goto LABEL_21;
       }
 
-      if (v8)
+      if (groupsCopy)
       {
-        v14 = [v8 firstObject];
-        v15 = [v14 firstDescendantPassingTest:&__block_literal_global_350];
+        firstObject2 = [groupsCopy firstObject];
+        v15 = [firstObject2 firstDescendantPassingTest:&__block_literal_global_350];
 
         if (!v15)
         {
@@ -1483,7 +1483,7 @@ LABEL_6:
         goto LABEL_20;
       }
 
-      if (![v9 count])
+      if (![elementsCopy count])
       {
 LABEL_20:
         [(AXElementFetcher *)self setDidSendFakeScreenChangeOnLastFetch:1];
@@ -1500,8 +1500,8 @@ LABEL_20:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = v9;
-      v16 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      currentApps = elementsCopy;
+      v16 = [currentApps countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1513,7 +1513,7 @@ LABEL_20:
           {
             if (*v22 != v18)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(currentApps);
             }
 
             if (([*(*(&v21 + 1) + 8 * v19) traits] & 0x800000) != 0)
@@ -1526,7 +1526,7 @@ LABEL_20:
           }
 
           while (v17 != v19);
-          v17 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v17 = [currentApps countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v17)
           {
             continue;
@@ -1552,14 +1552,14 @@ BOOL __87__AXElementFetcher__sendFakeScreenChangeIfNecessaryForGroups_orElements
   return v3;
 }
 
-- (BOOL)_fetchElements:(BOOL)a3
+- (BOOL)_fetchElements:(BOOL)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v40 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = [(AXElementFetcher *)self _fetchUnprocessedElements:v5];
   v7 = [AXElementGroup groupWithElements:v5];
-  [(AXElementFetcher *)self _sendFakeScreenChangeIfNecessaryForGroups:0 orElements:v6 appsDidChange:v3];
+  [(AXElementFetcher *)self _sendFakeScreenChangeIfNecessaryForGroups:0 orElements:v6 appsDidChange:elementsCopy];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -1656,15 +1656,15 @@ uint64_t __35__AXElementFetcher__fetchElements___block_invoke_2(uint64_t a1)
   return [v3 setKeyboardGroupCache:0];
 }
 
-- (id)_fetchUnprocessedElements:(id)a3
+- (id)_fetchUnprocessedElements:(id)elements
 {
   v58[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementsCopy = elements;
   v58[0] = MEMORY[0x1E695E110];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXElementFetcher shouldIncludeNonScannerElements](self, "shouldIncludeNonScannerElements")}];
   v58[1] = v5;
-  v6 = [(AXElementFetcher *)self _occludedAppSceneIdentifiers];
-  v58[2] = v6;
+  _occludedAppSceneIdentifiers = [(AXElementFetcher *)self _occludedAppSceneIdentifiers];
+  v58[2] = _occludedAppSceneIdentifiers;
   v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:3];
 
   [MEMORY[0x1E695DF70] array];
@@ -1673,8 +1673,8 @@ uint64_t __35__AXElementFetcher__fetchElements___block_invoke_2(uint64_t a1)
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v7 = [(AXElementFetcher *)self currentApps];
-  v8 = [v7 countByEnumeratingWithState:&v49 objects:v57 count:16];
+  currentApps = [(AXElementFetcher *)self currentApps];
+  v8 = [currentApps countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1685,92 +1685,92 @@ uint64_t __35__AXElementFetcher__fetchElements___block_invoke_2(uint64_t a1)
       {
         if (*v50 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(currentApps);
         }
 
         v12 = *(*(&v49 + 1) + 8 * i);
-        v13 = [v12 uiElement];
-        v14 = [v13 uiElementsWithAttribute:94500 parameter:v48];
+        uiElement = [v12 uiElement];
+        v14 = [uiElement uiElementsWithAttribute:94500 parameter:v48];
         v15 = [AXElement elementsWithUIElements:v14];
 
         if ([v15 count])
         {
           [v47 addObjectsFromArray:v15];
-          v16 = [v15 firstObject];
-          v56 = v16;
+          firstObject = [v15 firstObject];
+          v56 = firstObject;
           [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
-          v18 = v17 = v4;
+          v18 = v17 = elementsCopy;
           v19 = [AXElementGroup groupWithElements:v18];
 
-          v4 = v17;
+          elementsCopy = v17;
           [v19 setElementCommunity:v12];
           [v17 addObject:v19];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v49 objects:v57 count:16];
+      v9 = [currentApps countByEnumeratingWithState:&v49 objects:v57 count:16];
     }
 
     while (v9);
   }
 
-  v20 = [(AXElementFetcher *)v46 inCallServiceApplication];
-  if (v20 && ![v47 count])
+  inCallServiceApplication = [(AXElementFetcher *)v46 inCallServiceApplication];
+  if (inCallServiceApplication && ![v47 count])
   {
-    v21 = [v20 uiElement];
-    v22 = [v21 uiElementsWithAttribute:94500 parameter:v48];
+    uiElement2 = [inCallServiceApplication uiElement];
+    v22 = [uiElement2 uiElementsWithAttribute:94500 parameter:v48];
     v23 = [AXElement elementsWithUIElements:v22];
 
     if ([v23 count])
     {
       [v47 addObjectsFromArray:v23];
-      v24 = [v23 firstObject];
-      v55 = v24;
+      firstObject2 = [v23 firstObject];
+      v55 = firstObject2;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
       v26 = [AXElementGroup groupWithElements:v25];
 
-      [v26 setElementCommunity:v20];
-      [v4 addObject:v26];
+      [v26 setElementCommunity:inCallServiceApplication];
+      [elementsCopy addObject:v26];
     }
   }
 
   v27 = +[AXElement systemWideElement];
-  v28 = [v27 accessibilityUIServerApplication];
+  accessibilityUIServerApplication = [v27 accessibilityUIServerApplication];
 
-  v29 = [v28 uiElement];
-  v30 = [v29 uiElementsWithAttribute:94500 parameter:v48];
+  uiElement3 = [accessibilityUIServerApplication uiElement];
+  v30 = [uiElement3 uiElementsWithAttribute:94500 parameter:v48];
   v31 = [AXElement elementsWithUIElements:v30];
 
   if ([v31 count])
   {
     [v47 addObjectsFromArray:v31];
-    v32 = [v31 firstObject];
-    v54 = v32;
+    firstObject3 = [v31 firstObject];
+    v54 = firstObject3;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
     v34 = [AXElementGroup groupWithElements:v33];
 
-    [v34 setElementCommunity:v28];
-    [v4 addObject:v34];
+    [v34 setElementCommunity:accessibilityUIServerApplication];
+    [elementsCopy addObject:v34];
   }
 
   v35 = +[AXElement systemWideElement];
-  v36 = [v35 systemApplication];
-  v37 = [v36 elementForAttribute:1513];
+  systemApplication = [v35 systemApplication];
+  v37 = [systemApplication elementForAttribute:1513];
 
-  v38 = [v37 uiElement];
-  v39 = [v38 uiElementsWithAttribute:94500 parameter:v48];
+  uiElement4 = [v37 uiElement];
+  v39 = [uiElement4 uiElementsWithAttribute:94500 parameter:v48];
   v40 = [AXElement elementsWithUIElements:v39];
 
   if ([v40 count])
   {
     [v47 addObjectsFromArray:v40];
-    v41 = [v40 firstObject];
-    v53 = v41;
+    firstObject4 = [v40 firstObject];
+    v53 = firstObject4;
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-    v43 = v42 = v4;
+    v43 = v42 = elementsCopy;
     v44 = [AXElementGroup groupWithElements:v43];
 
-    v4 = v42;
+    elementsCopy = v42;
     [v44 setElementCommunity:v37];
     [v42 addObject:v44];
   }
@@ -1778,12 +1778,12 @@ uint64_t __35__AXElementFetcher__fetchElements___block_invoke_2(uint64_t a1)
   return v47;
 }
 
-- (void)addPostFetchFilter:(id)a3 withIdentifier:(id)a4
+- (void)addPostFetchFilter:(id)filter withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  filterCopy = filter;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (filterCopy && identifierCopy)
   {
     filterAccessQueue = self->_filterAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1791,7 +1791,7 @@ uint64_t __35__AXElementFetcher__fetchElements___block_invoke_2(uint64_t a1)
     block[2] = __54__AXElementFetcher_addPostFetchFilter_withIdentifier___block_invoke;
     block[3] = &unk_1E80D4668;
     block[4] = self;
-    v12 = v6;
+    v12 = filterCopy;
     v11 = v8;
     dispatch_async(filterAccessQueue, block);
   }
@@ -1804,11 +1804,11 @@ void __54__AXElementFetcher_addPostFetchFilter_withIdentifier___block_invoke(uin
   [v3 setObject:v2 forKey:*(a1 + 40)];
 }
 
-- (void)removePostFetchFilterWithIdentifier:(id)a3
+- (void)removePostFetchFilterWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     filterAccessQueue = self->_filterAccessQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1816,7 +1816,7 @@ void __54__AXElementFetcher_addPostFetchFilter_withIdentifier___block_invoke(uin
     v7[2] = __56__AXElementFetcher_removePostFetchFilterWithIdentifier___block_invoke;
     v7[3] = &unk_1E80D3DA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     dispatch_async(filterAccessQueue, v7);
   }
 }
@@ -1844,21 +1844,21 @@ void __45__AXElementFetcher_removeAllPostFetchFilters__block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (id)_filterElements:(id)a3 withFilter:(id)a4
+- (id)_filterElements:(id)elements withFilter:(id)filter
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  elementsCopy = elements;
+  filterCopy = filter;
+  v7 = filterCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (elementsCopy && filterCopy)
   {
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(elementsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v5;
+    v9 = elementsCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -1890,10 +1890,10 @@ void __45__AXElementFetcher_removeAllPostFetchFilters__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)findElementMatchingElement:(id)a3
+- (id)findElementMatchingElement:(id)element
 {
-  v4 = a3;
-  if (v4 && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
+  elementCopy = element;
+  if (elementCopy && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
     v11 = 0;
     v12 = &v11;
@@ -1907,7 +1907,7 @@ void __45__AXElementFetcher_removeAllPostFetchFilters__block_invoke(uint64_t a1)
     block[2] = __47__AXElementFetcher_findElementMatchingElement___block_invoke;
     block[3] = &unk_1E80D4690;
     block[4] = self;
-    v9 = v4;
+    v9 = elementCopy;
     v10 = &v11;
     dispatch_sync(elementAccessQueue, block);
     v5 = v12[5];
@@ -1966,10 +1966,10 @@ void __47__AXElementFetcher_findElementMatchingElement___block_invoke(uint64_t a
 LABEL_11:
 }
 
-- (id)findElementMatchingBlock:(id)a3
+- (id)findElementMatchingBlock:(id)block
 {
-  v4 = a3;
-  if (v4 && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
+  blockCopy = block;
+  if (blockCopy && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
     v11 = 0;
     v12 = &v11;
@@ -1983,7 +1983,7 @@ LABEL_11:
     block[2] = __45__AXElementFetcher_findElementMatchingBlock___block_invoke;
     block[3] = &unk_1E80D46B8;
     block[4] = self;
-    v9 = v4;
+    v9 = blockCopy;
     v10 = &v11;
     dispatch_sync(elementAccessQueue, block);
     v5 = v12[5];
@@ -2042,25 +2042,25 @@ void __45__AXElementFetcher_findElementMatchingBlock___block_invoke(uint64_t a1)
 LABEL_11:
 }
 
-- (id)_findElementsMatchingBlock:(id)a3 internalRequest:(BOOL)a4
+- (id)_findElementsMatchingBlock:(id)block internalRequest:(BOOL)request
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 && (![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid]|| v4))
+  requestCopy = request;
+  blockCopy = block;
+  if (blockCopy && (![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid]|| requestCopy))
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__2;
     v18 = __Block_byref_object_dispose__2;
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     elementAccessQueue = self->_elementAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__AXElementFetcher__findElementsMatchingBlock_internalRequest___block_invoke;
     block[3] = &unk_1E80D46B8;
     block[4] = self;
-    v12 = v6;
+    v12 = blockCopy;
     v13 = &v14;
     dispatch_sync(elementAccessQueue, block);
     if (![v15[5] count])
@@ -2122,15 +2122,15 @@ void __63__AXElementFetcher__findElementsMatchingBlock_internalRequest___block_i
   }
 }
 
-- (id)closestElementToElement:(id)a3
+- (id)closestElementToElement:(id)element
 {
-  v4 = a3;
-  if (v4 && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
+  elementCopy = element;
+  if (elementCopy && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
-    v5 = [(AXElementFetcher *)self findElementMatchingElement:v4];
+    v5 = [(AXElementFetcher *)self findElementMatchingElement:elementCopy];
     if (!v5)
     {
-      [v4 visibleFrame];
+      [elementCopy visibleFrame];
       x = v13.origin.x;
       y = v13.origin.y;
       width = v13.size.width;
@@ -2152,10 +2152,10 @@ void __63__AXElementFetcher__findElementsMatchingBlock_internalRequest___block_i
   return v5;
 }
 
-- (id)closestElementToPoint:(CGPoint)a3
+- (id)closestElementToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
     v6 = 0;
@@ -2316,10 +2316,10 @@ void __31__AXElementFetcher_lastElement__block_invoke(uint64_t a1)
   }
 }
 
-- (id)nextSiblingOfElement:(id)a3 didWrap:(BOOL *)a4
+- (id)nextSiblingOfElement:(id)element didWrap:(BOOL *)wrap
 {
-  v6 = a3;
-  if (v6 && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
+  elementCopy = element;
+  if (elementCopy && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
     v14 = 0;
     v15 = &v14;
@@ -2334,8 +2334,8 @@ void __31__AXElementFetcher_lastElement__block_invoke(uint64_t a1)
     v10[3] = &unk_1E80D46E0;
     v10[4] = self;
     v12 = &v14;
-    v13 = a4;
-    v11 = v6;
+    wrapCopy = wrap;
+    v11 = elementCopy;
     dispatch_sync(elementAccessQueue, v10);
     v7 = v15[5];
 
@@ -2408,10 +2408,10 @@ void __49__AXElementFetcher_nextSiblingOfElement_didWrap___block_invoke(uint64_t
   }
 }
 
-- (id)previousSiblingOfElement:(id)a3 didWrap:(BOOL *)a4
+- (id)previousSiblingOfElement:(id)element didWrap:(BOOL *)wrap
 {
-  v6 = a3;
-  if (v6 && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
+  elementCopy = element;
+  if (elementCopy && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
     v14 = 0;
     v15 = &v14;
@@ -2426,8 +2426,8 @@ void __49__AXElementFetcher_nextSiblingOfElement_didWrap___block_invoke(uint64_t
     v10[3] = &unk_1E80D46E0;
     v10[4] = self;
     v12 = &v14;
-    v13 = a4;
-    v11 = v6;
+    wrapCopy = wrap;
+    v11 = elementCopy;
     dispatch_sync(elementAccessQueue, v10);
     v7 = v15[5];
 
@@ -2499,35 +2499,35 @@ void __53__AXElementFetcher_previousSiblingOfElement_didWrap___block_invoke(uint
   }
 }
 
-- (id)_siblingOfGroupable:(id)a3 forDirection:(BOOL)a4 didWrap:(BOOL *)a5
+- (id)_siblingOfGroupable:(id)groupable forDirection:(BOOL)direction didWrap:(BOOL *)wrap
 {
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  directionCopy = direction;
+  groupableCopy = groupable;
+  if (groupableCopy)
   {
-    v9 = v8;
-    v10 = [v8 parentGroup];
-    if (v10)
+    v9 = groupableCopy;
+    parentGroup = [groupableCopy parentGroup];
+    if (parentGroup)
     {
-      v11 = v10;
+      parentGroup2 = parentGroup;
     }
 
     else
     {
       v13 = [(AXElementFetcher *)self findGroupableMatchingGroupable:v9];
 
-      v11 = [v13 parentGroup];
+      parentGroup2 = [v13 parentGroup];
       v9 = v13;
     }
 
-    if (v6)
+    if (directionCopy)
     {
-      [v11 nextSiblingOfChild:v9 didWrap:a5];
+      [parentGroup2 nextSiblingOfChild:v9 didWrap:wrap];
     }
 
     else
     {
-      [v11 previousSiblingOfChild:v9 didWrap:a5];
+      [parentGroup2 previousSiblingOfChild:v9 didWrap:wrap];
     }
     v12 = ;
   }
@@ -2540,16 +2540,16 @@ void __53__AXElementFetcher_previousSiblingOfElement_didWrap___block_invoke(uint
   return v12;
 }
 
-- (id)_findGroupableMatchingGroupable:(id)a3 inElementGroup:(id)a4
+- (id)_findGroupableMatchingGroupable:(id)groupable inElementGroup:(id)group
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  groupableCopy = groupable;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  groupCopy = group;
+  v8 = [groupCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2560,11 +2560,11 @@ void __53__AXElementFetcher_previousSiblingOfElement_didWrap___block_invoke(uint
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(groupCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 isEqual:{v6, v16}])
+        if ([v12 isEqual:{groupableCopy, v16}])
         {
           v13 = v12;
 LABEL_13:
@@ -2574,7 +2574,7 @@ LABEL_13:
 
         if ([v12 isGroup])
         {
-          v13 = [(AXElementFetcher *)self _findGroupableMatchingGroupable:v6 inElementGroup:v12];
+          v13 = [(AXElementFetcher *)self _findGroupableMatchingGroupable:groupableCopy inElementGroup:v12];
           if (v13)
           {
             goto LABEL_13;
@@ -2582,7 +2582,7 @@ LABEL_13:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [groupCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -2598,10 +2598,10 @@ LABEL_14:
   return v14;
 }
 
-- (id)findGroupableMatchingGroupable:(id)a3
+- (id)findGroupableMatchingGroupable:(id)groupable
 {
-  v4 = a3;
-  if (v4 && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
+  groupableCopy = groupable;
+  if (groupableCopy && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
     v11 = 0;
     v12 = &v11;
@@ -2616,7 +2616,7 @@ LABEL_14:
     block[3] = &unk_1E80D4708;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = groupableCopy;
     dispatch_sync(elementAccessQueue, block);
     v5 = v12[5];
 
@@ -2642,16 +2642,16 @@ void __51__AXElementFetcher_findGroupableMatchingGroupable___block_invoke(void *
   *(v5 + 40) = v4;
 }
 
-- (id)_findGroupableMatchingBlock:(id)a3 inElementGroup:(id)a4
+- (id)_findGroupableMatchingBlock:(id)block inElementGroup:(id)group
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blockCopy = block;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  groupCopy = group;
+  v8 = [groupCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2662,11 +2662,11 @@ void __51__AXElementFetcher_findGroupableMatchingGroupable___block_invoke(void *
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(groupCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if (v6[2](v6, v12))
+        if (blockCopy[2](blockCopy, v12))
         {
           v13 = v12;
 LABEL_13:
@@ -2676,7 +2676,7 @@ LABEL_13:
 
         if ([v12 isGroup])
         {
-          v13 = [(AXElementFetcher *)self _findGroupableMatchingBlock:v6 inElementGroup:v12];
+          v13 = [(AXElementFetcher *)self _findGroupableMatchingBlock:blockCopy inElementGroup:v12];
           if (v13)
           {
             goto LABEL_13;
@@ -2684,7 +2684,7 @@ LABEL_13:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [groupCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -2700,10 +2700,10 @@ LABEL_14:
   return v14;
 }
 
-- (id)findGroupableMatchingBlock:(id)a3
+- (id)findGroupableMatchingBlock:(id)block
 {
-  v4 = a3;
-  if (v4 && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
+  blockCopy = block;
+  if (blockCopy && ![(AXElementFetcher *)self _shouldConsiderCacheAsInvalid])
   {
     v11 = 0;
     v12 = &v11;
@@ -2718,7 +2718,7 @@ LABEL_14:
     block[3] = &unk_1E80D4730;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = blockCopy;
     dispatch_sync(elementAccessQueue, block);
     v5 = v12[5];
 
@@ -2744,37 +2744,37 @@ void __47__AXElementFetcher_findGroupableMatchingBlock___block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)_groupWithDictionary:(id)a3 currentPid:(int)a4
+- (id)_groupWithDictionary:(id)dictionary currentPid:(int)pid
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"GroupElements"];
-  v8 = [v6 objectForKeyedSubscript:@"GroupTraits"];
-  v9 = [v8 intValue];
-  v10 = [v6 objectForKeyedSubscript:@"GroupScanBehaviorTraits"];
-  v11 = [v10 intValue];
-  v12 = [v6 objectForKeyedSubscript:@"GroupLabel"];
-  v13 = [v6 objectForKeyedSubscript:@"GroupIdentifier"];
+  v4 = *&pid;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"GroupElements"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"GroupTraits"];
+  intValue = [v8 intValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"GroupScanBehaviorTraits"];
+  intValue2 = [v10 intValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"GroupLabel"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"GroupIdentifier"];
 
-  v14 = [(AXElementFetcher *)self _groupWithItems:v7 groupTraits:v9 scanningBehaviorTraits:v11 label:v12 identifier:v13 currentPid:v4];
+  v14 = [(AXElementFetcher *)self _groupWithItems:v7 groupTraits:intValue scanningBehaviorTraits:intValue2 label:v12 identifier:v13 currentPid:v4];
 
   return v14;
 }
 
-- (id)_groupWithItems:(id)a3 groupTraits:(unint64_t)a4 scanningBehaviorTraits:(unint64_t)a5 label:(id)a6 identifier:(id)a7 currentPid:(int)a8
+- (id)_groupWithItems:(id)items groupTraits:(unint64_t)traits scanningBehaviorTraits:(unint64_t)behaviorTraits label:(id)label identifier:(id)identifier currentPid:(int)pid
 {
   v53 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v41 = a6;
-  v12 = a7;
-  v13 = self;
-  v40 = v12;
-  v44 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  labelCopy = label;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v40 = identifierCopy;
+  array = [MEMORY[0x1E695DF70] array];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v11;
+  obj = itemsCopy;
   v14 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (!v14)
   {
@@ -2803,7 +2803,7 @@ void __47__AXElementFetcher_findGroupableMatchingBlock___block_invoke(void *a1)
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [(AXElementFetcher *)v13 _groupWithDictionary:v20 currentPid:a8];
+        v22 = [(AXElementFetcher *)selfCopy _groupWithDictionary:v20 currentPid:pid];
         if (v22)
         {
           goto LABEL_17;
@@ -2825,40 +2825,40 @@ void __47__AXElementFetcher_findGroupableMatchingBlock___block_invoke(void *a1)
             [AXElement elementWithAXUIElement:v20];
           }
           v24 = ;
-          v25 = [v24 uiElement];
-          v26 = [v25 pid];
+          uiElement = [v24 uiElement];
+          v26 = [uiElement pid];
 
-          if (v26 == a8)
+          if (v26 == pid)
           {
             v22 = v24;
           }
 
           else
           {
-            v27 = [v24 uiElement];
+            uiElement2 = [v24 uiElement];
             v51[0] = MEMORY[0x1E695E118];
-            v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXElementFetcher shouldIncludeNonScannerElements](v13, "shouldIncludeNonScannerElements")}];
+            v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXElementFetcher shouldIncludeNonScannerElements](selfCopy, "shouldIncludeNonScannerElements")}];
             v51[1] = v28;
-            [(AXElementFetcher *)v13 _occludedAppSceneIdentifiers];
+            [(AXElementFetcher *)selfCopy _occludedAppSceneIdentifiers];
             v29 = v18;
             v30 = v17;
-            v32 = v31 = v13;
+            v32 = v31 = selfCopy;
             v51[2] = v32;
-            v33 = [v27 objectWithAXAttribute:94500 parameter:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v51, 3)}];
+            v33 = [uiElement2 objectWithAXAttribute:94500 parameter:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v51, 3)}];
 
-            v13 = v31;
+            selfCopy = v31;
             v17 = v30;
             v18 = v29;
             v15 = v43;
 
             v16 = v42;
-            v22 = [(AXElementFetcher *)v13 _groupWithItems:v33 groupTraits:0 scanningBehaviorTraits:0 label:0 identifier:0 currentPid:v26];
+            v22 = [(AXElementFetcher *)selfCopy _groupWithItems:v33 groupTraits:0 scanningBehaviorTraits:0 label:0 identifier:0 currentPid:v26];
           }
 
           if (v22)
           {
 LABEL_17:
-            [v44 addObject:v22];
+            [array addObject:v22];
           }
         }
       }
@@ -2873,12 +2873,12 @@ LABEL_17:
   while (v15);
 LABEL_20:
 
-  if ([v44 count])
+  if ([array count])
   {
-    v34 = v41;
-    v35 = [AXElementGroup groupWithElements:v44 label:v41];
-    [v35 setGroupTraits:a4];
-    [v35 setUserDefinedScanningBehaviorTraits:a5];
+    v34 = labelCopy;
+    v35 = [AXElementGroup groupWithElements:array label:labelCopy];
+    [v35 setGroupTraits:traits];
+    [v35 setUserDefinedScanningBehaviorTraits:behaviorTraits];
     v36 = v40;
     [v35 setIdentifier:v40];
   }
@@ -2887,23 +2887,23 @@ LABEL_20:
   {
     v35 = 0;
     v36 = v40;
-    v34 = v41;
+    v34 = labelCopy;
   }
 
   return v35;
 }
 
-- (id)_filterGroup:(id)a3 withFilter:(id)a4
+- (id)_filterGroup:(id)group withFilter:(id)filter
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  groupCopy = group;
+  filterCopy = filter;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(groupCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = groupCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -2921,14 +2921,14 @@ LABEL_20:
         v14 = *(*(&v20 + 1) + 8 * i);
         if ([v14 isGroup])
         {
-          v15 = [(AXElementFetcher *)self _filterGroup:v14 withFilter:v7];
+          v15 = [(AXElementFetcher *)self _filterGroup:v14 withFilter:filterCopy];
           if (v15)
           {
             [v8 addObject:v15];
           }
         }
 
-        else if (v7[2](v7, v14))
+        else if (filterCopy[2](filterCopy, v14))
         {
           [v8 addObject:v14];
         }
@@ -2942,13 +2942,13 @@ LABEL_20:
 
   if ([v8 count])
   {
-    v16 = [v9 label];
-    v17 = [AXElementGroup groupWithElements:v8 label:v16];
+    label = [v9 label];
+    v17 = [AXElementGroup groupWithElements:v8 label:label];
 
     [v17 setGroupTraits:{objc_msgSend(v9, "groupTraits")}];
     [v17 setUserDefinedScanningBehaviorTraits:{objc_msgSend(v9, "userDefinedScanningBehaviorTraits")}];
-    v18 = [v9 identifier];
-    [v17 setIdentifier:v18];
+    identifier = [v9 identifier];
+    [v17 setIdentifier:identifier];
   }
 
   else
@@ -2974,10 +2974,10 @@ LABEL_20:
   return elementGroupPruner;
 }
 
-- (id)_processAppGroup:(id)a3 keyboardGroup:(id *)a4
+- (id)_processAppGroup:(id)group keyboardGroup:(id *)keyboardGroup
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  groupCopy = group;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -2998,11 +2998,11 @@ LABEL_20:
   v25 = 0u;
   v8 = v30[5];
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v35 count:16];
-  v10 = v6;
+  v10 = groupCopy;
   if (v9)
   {
     v11 = *v25;
-    v10 = v6;
+    v10 = groupCopy;
     do
     {
       v12 = 0;
@@ -3027,8 +3027,8 @@ LABEL_20:
     while (v9);
   }
 
-  v14 = [(AXElementFetcher *)self visualElementGrouper];
-  v15 = v14 == 0;
+  visualElementGrouper = [(AXElementFetcher *)self visualElementGrouper];
+  v15 = visualElementGrouper == 0;
 
   if (v15)
   {
@@ -3036,19 +3036,19 @@ LABEL_20:
     [(AXElementFetcher *)self setVisualElementGrouper:v16];
   }
 
-  v17 = [(AXElementFetcher *)self visualElementGrouper];
-  v18 = [v17 groupElementsInRootGroup:v10];
+  visualElementGrouper2 = [(AXElementFetcher *)self visualElementGrouper];
+  v18 = [visualElementGrouper2 groupElementsInRootGroup:v10];
 
-  v19 = [(AXElementFetcher *)self elementGroupPruner];
-  v20 = [v19 pruneRootGroup:v18];
+  elementGroupPruner = [(AXElementFetcher *)self elementGroupPruner];
+  v20 = [elementGroupPruner pruneRootGroup:v18];
 
-  if (a4)
+  if (keyboardGroup)
   {
-    *a4 = [v20 firstChildPassingTest:&__block_literal_global_373];
+    *keyboardGroup = [v20 firstChildPassingTest:&__block_literal_global_373];
   }
 
-  v21 = [v6 elementCommunity];
-  [v20 setElementCommunity:v21];
+  elementCommunity = [groupCopy elementCommunity];
+  [v20 setElementCommunity:elementCommunity];
 
   v22 = v20;
   _Block_object_dispose(&v29, 8);
@@ -3084,52 +3084,52 @@ uint64_t __51__AXElementFetcher__processAppGroup_keyboardGroup___block_invoke_2(
 - (id)_fetchUnprocessedAppGroups
 {
   v57 = *MEMORY[0x1E69E9840];
-  v47 = [MEMORY[0x1E695DF70] array];
-  v3 = [(AXElementFetcher *)self currentApps];
-  v4 = [v3 mutableCopy];
+  array = [MEMORY[0x1E695DF70] array];
+  currentApps = [(AXElementFetcher *)self currentApps];
+  v4 = [currentApps mutableCopy];
 
   v5 = +[AXElement systemWideElement];
-  v6 = [v5 accessibilityUIServerApplication];
+  accessibilityUIServerApplication = [v5 accessibilityUIServerApplication];
 
-  if (v6)
+  if (accessibilityUIServerApplication)
   {
-    v7 = [v6 uiElement];
-    [v7 updateCache:14000];
+    uiElement = [accessibilityUIServerApplication uiElement];
+    [uiElement updateCache:14000];
 
-    v8 = [v6 elementsForAttribute:14000];
+    v8 = [accessibilityUIServerApplication elementsForAttribute:14000];
     [v4 addObjectsFromArray:v8];
 
-    v9 = [v6 uiElement];
-    [v9 updateCache:2076];
+    uiElement2 = [accessibilityUIServerApplication uiElement];
+    [uiElement2 updateCache:2076];
 
-    v10 = [v6 elementsForAttribute:2076];
+    v10 = [accessibilityUIServerApplication elementsForAttribute:2076];
     [v4 addObjectsFromArray:v10];
   }
 
   v11 = +[AXElement systemWideElement];
-  v12 = [v11 systemApplication];
+  systemApplication = [v11 systemApplication];
 
-  v48 = [v12 elementForAttribute:1513];
-  if (v48 && ([v12 isControlCenterVisible] & 1) == 0)
+  v48 = [systemApplication elementForAttribute:1513];
+  if (v48 && ([systemApplication isControlCenterVisible] & 1) == 0)
   {
     [v4 addObject:v48];
   }
 
-  v13 = [(AXElementFetcher *)self inCallServiceApplication];
-  if (v13)
+  inCallServiceApplication = [(AXElementFetcher *)self inCallServiceApplication];
+  if (inCallServiceApplication)
   {
-    v14 = [v4 firstObject];
-    v15 = [v14 isSpringBoard];
+    firstObject = [v4 firstObject];
+    isSpringBoard = [firstObject isSpringBoard];
 
-    if (v15)
+    if (isSpringBoard)
     {
-      [v4 addObject:v13];
+      [v4 addObject:inCallServiceApplication];
     }
   }
 
-  v43 = v13;
-  v44 = v12;
-  v45 = v6;
+  v43 = inCallServiceApplication;
+  v44 = systemApplication;
+  v45 = accessibilityUIServerApplication;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -3157,24 +3157,24 @@ uint64_t __51__AXElementFetcher__processAppGroup_keyboardGroup___block_invoke_2(
       }
 
       v20 = *(*(&v51 + 1) + 8 * i);
-      v21 = [v20 uiElement];
+      uiElement3 = [v20 uiElement];
       v55[0] = MEMORY[0x1E695E118];
       v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXElementFetcher shouldIncludeNonScannerElements](self, "shouldIncludeNonScannerElements")}];
       v55[1] = v22;
-      v23 = [(AXElementFetcher *)self _occludedAppSceneIdentifiers];
-      v55[2] = v23;
-      v24 = [v21 objectWithAXAttribute:94500 parameter:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v55, 3)}];
+      _occludedAppSceneIdentifiers = [(AXElementFetcher *)self _occludedAppSceneIdentifiers];
+      v55[2] = _occludedAppSceneIdentifiers;
+      v24 = [uiElement3 objectWithAXAttribute:94500 parameter:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v55, 3)}];
 
       if ([v24 count])
       {
-        v25 = [v20 uiElement];
-        v26 = -[AXElementFetcher _groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:](self, "_groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:", v24, 0, 0, 0, 0, [v25 pid]);
+        uiElement4 = [v20 uiElement];
+        v26 = -[AXElementFetcher _groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:](self, "_groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:", v24, 0, 0, 0, 0, [uiElement4 pid]);
 
         if (v26)
         {
           [v26 setElementCommunity:v20];
-          v27 = [v20 label];
-          [v26 setLabel:v27];
+          label = [v20 label];
+          [v26 setLabel:label];
 
           if (v20 == v48)
           {
@@ -3189,10 +3189,10 @@ uint64_t __51__AXElementFetcher__processAppGroup_keyboardGroup___block_invoke_2(
             goto LABEL_21;
           }
 
-          v30 = [v20 applicationIsModal];
+          applicationIsModal = [v20 applicationIsModal];
           v28 = v50;
           v29 = v26;
-          if (v30)
+          if (applicationIsModal)
           {
 LABEL_21:
             v31 = v26;
@@ -3200,7 +3200,7 @@ LABEL_21:
             v50 = v29;
           }
 
-          [v47 addObject:v26];
+          [array addObject:v26];
         }
       }
     }
@@ -3213,24 +3213,24 @@ LABEL_28:
 
   if (v45 | v48)
   {
-    v32 = [(AXElementFetcher *)self currentApps];
-    v33 = [v32 count];
+    currentApps2 = [(AXElementFetcher *)self currentApps];
+    v33 = [currentApps2 count];
 
     if (v33 != 1)
     {
       v35 = +[AXElement systemWideElement];
-      v36 = [v35 springBoardApplication];
-      v37 = [v36 applicationIsModal];
+      springBoardApplication = [v35 springBoardApplication];
+      applicationIsModal2 = [springBoardApplication applicationIsModal];
 
-      if (v37)
+      if (applicationIsModal2)
       {
-        [v47 removeAllObjects];
+        [array removeAllObjects];
         if (!v46)
         {
           goto LABEL_38;
         }
 
-        v38 = v47;
+        v38 = array;
         v39 = v46;
       }
 
@@ -3241,8 +3241,8 @@ LABEL_28:
           goto LABEL_38;
         }
 
-        [v47 removeAllObjects];
-        v38 = v47;
+        [array removeAllObjects];
+        v38 = array;
         v39 = v50;
       }
 
@@ -3250,43 +3250,43 @@ LABEL_28:
       goto LABEL_38;
     }
 
-    if ([v47 count])
+    if ([array count])
     {
-      v34 = [AXElementGroup groupWithElements:v47];
-      [v47 removeAllObjects];
-      [v47 addObject:v34];
+      v34 = [AXElementGroup groupWithElements:array];
+      [array removeAllObjects];
+      [array addObject:v34];
     }
   }
 
 LABEL_38:
-  if (_AXSClarityBoardEnabled() && [v47 count] >= 2)
+  if (_AXSClarityBoardEnabled() && [array count] >= 2)
   {
-    v40 = [AXElementGroup groupWithElements:v47];
-    [v47 removeAllObjects];
-    [v47 addObject:v40];
+    v40 = [AXElementGroup groupWithElements:array];
+    [array removeAllObjects];
+    [array addObject:v40];
   }
 
-  v41 = v47;
+  v41 = array;
 
-  return v47;
+  return array;
 }
 
-- (BOOL)_fetchGroups:(BOOL)a3
+- (BOOL)_fetchGroups:(BOOL)groups
 {
-  v3 = a3;
+  groupsCopy = groups;
   v49 = *MEMORY[0x1E69E9840];
-  v5 = [(AXElementFetcher *)self _fetchUnprocessedAppGroups];
-  [(AXElementFetcher *)self _sendFakeScreenChangeIfNecessaryForGroups:v5 orElements:0 appsDidChange:v3];
+  _fetchUnprocessedAppGroups = [(AXElementFetcher *)self _fetchUnprocessedAppGroups];
+  [(AXElementFetcher *)self _sendFakeScreenChangeIfNecessaryForGroups:_fetchUnprocessedAppGroups orElements:0 appsDidChange:groupsCopy];
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 0;
-  v33 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = v5;
+  v6 = _fetchUnprocessedAppGroups;
   v7 = 0;
   v8 = [v6 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v8)
@@ -3315,13 +3315,13 @@ LABEL_38:
 
         if ([v6 count] >= 2 && objc_msgSend(v12, "count") == 1 && (objc_msgSend(v12, "elementCommunity"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isSystemApplication"), v16, v17))
         {
-          v18 = [v12 firstObject];
-          [v33 addObject:v18];
+          firstObject = [v12 firstObject];
+          [array addObject:firstObject];
         }
 
         else if (v12)
         {
-          [v33 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -3331,18 +3331,18 @@ LABEL_38:
     while (v8);
   }
 
-  if ([v33 count] < 2)
+  if ([array count] < 2)
   {
-    if ([v33 count] == 1)
+    if ([array count] == 1)
     {
-      v26 = [v33 firstObject];
+      firstObject2 = [array firstObject];
       v25 = 0;
     }
 
     else
     {
       v25 = 0;
-      v26 = 0;
+      firstObject2 = 0;
     }
   }
 
@@ -3350,24 +3350,24 @@ LABEL_38:
   {
     if (v7)
     {
-      v19 = [v7 parentGroup];
-      v20 = [v33 indexOfObject:v19];
+      parentGroup = [v7 parentGroup];
+      v20 = [array indexOfObject:parentGroup];
       if (v20 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v21 = [v19 groupByRemovingGroupable:v7];
-        v22 = [(AXElementFetcher *)self elementGroupPruner];
-        v23 = [v22 pruneRootGroup:v21];
+        v21 = [parentGroup groupByRemovingGroupable:v7];
+        elementGroupPruner = [(AXElementFetcher *)self elementGroupPruner];
+        v23 = [elementGroupPruner pruneRootGroup:v21];
 
-        [v33 replaceObjectAtIndex:v20 withObject:v23];
-        v24 = [v23 elementCommunity];
-        [v7 setElementCommunity:v24];
+        [array replaceObjectAtIndex:v20 withObject:v23];
+        elementCommunity = [v23 elementCommunity];
+        [v7 setElementCommunity:elementCommunity];
 
-        [v33 addObject:v7];
+        [array addObject:v7];
       }
     }
 
-    v25 = [AXElementGroup groupWithElements:v33];
-    v26 = v25;
+    v25 = [AXElementGroup groupWithElements:array];
+    firstObject2 = v25;
   }
 
   elementAccessQueue = self->_elementAccessQueue;
@@ -3378,11 +3378,11 @@ LABEL_38:
   v37 = v25;
   v38 = &v44;
   block[4] = self;
-  v35 = v26;
+  v35 = firstObject2;
   v36 = v7;
   v28 = v25;
   v29 = v7;
-  v30 = v26;
+  v30 = firstObject2;
   dispatch_sync(elementAccessQueue, block);
   v31 = *(v45 + 24);
 
@@ -3438,24 +3438,24 @@ LABEL_9:
   [(AXElementFetcher *)self setElementCommunityGroupCache:0];
 }
 
-- (id)_debugStringForFetchEvents:(unint64_t)a3
+- (id)_debugStringForFetchEvents:(unint64_t)events
 {
-  if (AXFetchEventAllEvents == a3)
+  if (AXFetchEventAllEvents == events)
   {
     v3 = @"AllEvents";
     goto LABEL_12;
   }
 
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
-  v3 = v5;
-  if (v4)
+  eventsCopy = events;
+  string = [MEMORY[0x1E696AD60] string];
+  v3 = string;
+  if (eventsCopy)
   {
-    [(__CFString *)v5 appendFormat:@"UserRequested"];
-    if ((v4 & 8) == 0)
+    [(__CFString *)string appendFormat:@"UserRequested"];
+    if ((eventsCopy & 8) == 0)
     {
 LABEL_5:
-      if ((v4 & 4) == 0)
+      if ((eventsCopy & 4) == 0)
       {
         goto LABEL_6;
       }
@@ -3464,16 +3464,16 @@ LABEL_5:
     }
   }
 
-  else if ((v4 & 8) == 0)
+  else if ((eventsCopy & 8) == 0)
   {
     goto LABEL_5;
   }
 
   [(__CFString *)v3 appendFormat:@" | ScreenChange"];
-  if ((v4 & 4) == 0)
+  if ((eventsCopy & 4) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x100) == 0)
+    if ((eventsCopy & 0x100) == 0)
     {
       goto LABEL_7;
     }
@@ -3483,10 +3483,10 @@ LABEL_6:
 
 LABEL_17:
   [(__CFString *)v3 appendFormat:@" | LayoutChange"];
-  if ((v4 & 0x100) == 0)
+  if ((eventsCopy & 0x100) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x10) == 0)
+    if ((eventsCopy & 0x10) == 0)
     {
       goto LABEL_8;
     }
@@ -3496,10 +3496,10 @@ LABEL_7:
 
 LABEL_18:
   [(__CFString *)v3 appendFormat:@" | LayoutChange - Immediate"];
-  if ((v4 & 0x10) == 0)
+  if ((eventsCopy & 0x10) == 0)
   {
 LABEL_8:
-    if ((v4 & 0x40) == 0)
+    if ((eventsCopy & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -3509,10 +3509,10 @@ LABEL_8:
 
 LABEL_19:
   [(__CFString *)v3 appendFormat:@" | OrientationChange"];
-  if ((v4 & 0x40) == 0)
+  if ((eventsCopy & 0x40) == 0)
   {
 LABEL_9:
-    if ((v4 & 2) == 0)
+    if ((eventsCopy & 2) == 0)
     {
       goto LABEL_10;
     }
@@ -3522,10 +3522,10 @@ LABEL_9:
 
 LABEL_20:
   [(__CFString *)v3 appendFormat:@" | AlertAppeared"];
-  if ((v4 & 2) == 0)
+  if ((eventsCopy & 2) == 0)
   {
 LABEL_10:
-    if ((v4 & 0x80) == 0)
+    if ((eventsCopy & 0x80) == 0)
     {
       goto LABEL_12;
     }
@@ -3535,7 +3535,7 @@ LABEL_10:
 
 LABEL_21:
   [(__CFString *)v3 appendFormat:@" | AppTransition"];
-  if ((v4 & 0x80) != 0)
+  if ((eventsCopy & 0x80) != 0)
   {
 LABEL_11:
     [(__CFString *)v3 appendFormat:@" | ScrolledByPage"];

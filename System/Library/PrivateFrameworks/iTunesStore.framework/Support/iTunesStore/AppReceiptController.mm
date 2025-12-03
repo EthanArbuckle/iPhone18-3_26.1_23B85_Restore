@@ -1,14 +1,14 @@
 @interface AppReceiptController
-+ (BOOL)connectionHasEntitlement:(id)a3;
++ (BOOL)connectionHasEntitlement:(id)entitlement;
 + (id)sharedController;
-+ (void)getApplicationReceiptPathWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-+ (void)refreshAllReceipts:(id)a3 connection:(id)a4;
-+ (void)refreshAppReceipt:(id)a3 connection:(id)a4;
++ (void)getApplicationReceiptPathWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
++ (void)refreshAllReceipts:(id)receipts connection:(id)connection;
++ (void)refreshAppReceipt:(id)receipt connection:(id)connection;
 - (AppReceiptController)init;
 - (id)_operationQueue;
-- (void)_addOperation:(id)a3;
-- (void)_dispatchAsync:(id)a3;
+- (void)_addOperation:(id)operation;
+- (void)_dispatchAsync:(id)async;
 - (void)dealloc;
 @end
 
@@ -44,9 +44,9 @@
   [(AppReceiptController *)&v4 dealloc];
 }
 
-+ (BOOL)connectionHasEntitlement:(id)a3
++ (BOOL)connectionHasEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   HasEntitlement = SSXPCConnectionHasEntitlement();
   if ((HasEntitlement & 1) == 0)
   {
@@ -57,19 +57,19 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 &= 2u;
     }
@@ -91,7 +91,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [NSString stringWithCString:v11 encoding:4, v14, v13, *v14, *&v14[16]];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, v14, v13, *v14, *&v14[16]];
       free(v11);
       SSFileLog();
     }
@@ -104,34 +104,34 @@ LABEL_14:
   return HasEntitlement;
 }
 
-+ (void)getApplicationReceiptPathWithMessage:(id)a3 connection:(id)a4
++ (void)getApplicationReceiptPathWithMessage:(id)message connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   v7 = dispatch_get_global_queue(0, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001DFD7C;
   v10[3] = &unk_100327238;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
+  v11 = connectionCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = connectionCopy;
   dispatch_async(v7, v10);
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  v4 = a3;
-  [v4 addObserver:a1 selector:"getApplicationReceiptPathWithMessage:connection:" forMessage:700];
-  [v4 addObserver:a1 selector:"refreshAllReceipts:connection:" forMessage:117];
-  [v4 addObserver:a1 selector:"refreshAppReceipt:connection:" forMessage:10011];
+  serverCopy = server;
+  [serverCopy addObserver:self selector:"getApplicationReceiptPathWithMessage:connection:" forMessage:700];
+  [serverCopy addObserver:self selector:"refreshAllReceipts:connection:" forMessage:117];
+  [serverCopy addObserver:self selector:"refreshAppReceipt:connection:" forMessage:10011];
 }
 
-+ (void)refreshAllReceipts:(id)a3 connection:(id)a4
++ (void)refreshAllReceipts:(id)receipts connection:(id)connection
 {
-  v4 = a4;
-  v5 = [objc_opt_class() connectionHasEntitlement:v4];
+  connectionCopy = connection;
+  v5 = [objc_opt_class() connectionHasEntitlement:connectionCopy];
 
   if (v5)
   {
@@ -141,19 +141,19 @@ LABEL_14:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v8 &= 2u;
     }
@@ -173,7 +173,7 @@ LABEL_13:
         return;
       }
 
-      v9 = [NSString stringWithCString:v11 encoding:4, &v13, v12, v13];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, &v13, v12, v13];
       free(v11);
       SSFileLog();
     }
@@ -182,11 +182,11 @@ LABEL_13:
   }
 }
 
-+ (void)refreshAppReceipt:(id)a3 connection:(id)a4
++ (void)refreshAppReceipt:(id)receipt connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  if (xpc_dictionary_get_BOOL(v5, "3"))
+  receiptCopy = receipt;
+  connectionCopy = connection;
+  if (xpc_dictionary_get_BOOL(receiptCopy, "3"))
   {
     v7 = 8;
   }
@@ -196,7 +196,7 @@ LABEL_13:
     v7 = 0;
   }
 
-  if (xpc_dictionary_get_BOOL(v5, "2"))
+  if (xpc_dictionary_get_BOOL(receiptCopy, "2"))
   {
     v8 = v7 | 2;
   }
@@ -206,17 +206,17 @@ LABEL_13:
     v8 = v7;
   }
 
-  v9 = xpc_dictionary_get_BOOL(v5, "1");
+  v9 = xpc_dictionary_get_BOOL(receiptCopy, "1");
   if ((SSXPCConnectionHasEntitlement() & 1) != 0 || SSXPCConnectionHasEntitlement())
   {
     v10 = objc_alloc(sub_1001FA240());
-    v11 = xpc_dictionary_get_value(v5, "4");
+    v11 = xpc_dictionary_get_value(receiptCopy, "4");
     v12 = [v10 initWithXPCEncoding:v11];
 
     if (v12)
     {
-      v13 = [v12 storeExternalVersion];
-      if (v13 && (v14 = v13, [v12 storeItemIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+      storeExternalVersion = [v12 storeExternalVersion];
+      if (storeExternalVersion && (v14 = storeExternalVersion, [v12 storeItemIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
       {
         v16 = 0;
       }
@@ -226,21 +226,21 @@ LABEL_13:
         v16 = v8 | v9 | 4;
       }
 
-      v18 = [[XPCClient alloc] initWithInputConnection:v6];
-      v24 = [(XPCClient *)v18 clientIdentifier];
+      v18 = [[XPCClient alloc] initWithInputConnection:connectionCopy];
+      clientIdentifier = [(XPCClient *)v18 clientIdentifier];
       v25 = +[AppReceiptController sharedController];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_1001E04FC;
       v29[3] = &unk_10032BE28;
       v30 = v12;
-      v31 = v24;
+      v31 = clientIdentifier;
       v35 = v16;
-      v32 = v5;
-      v33 = v6;
+      v32 = receiptCopy;
+      v33 = connectionCopy;
       v34 = v25;
       v26 = v25;
-      v27 = v24;
+      v27 = clientIdentifier;
       v17 = v12;
       [v26 _dispatchAsync:v29];
 
@@ -257,19 +257,19 @@ LABEL_13:
       v18 = +[SSLogConfig sharedConfig];
     }
 
-    v19 = [(XPCClient *)v18 shouldLog];
+    shouldLog = [(XPCClient *)v18 shouldLog];
     if ([(XPCClient *)v18 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog;
     }
 
-    v21 = [(XPCClient *)v18 OSLogObject];
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [(XPCClient *)v18 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v20 &= 2u;
     }
@@ -291,7 +291,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v21 = [NSString stringWithCString:v23 encoding:4, &v36, v28];
+      oSLogObject = [NSString stringWithCString:v23 encoding:4, &v36, v28];
       free(v23);
       SSFileLog();
     }
@@ -308,7 +308,7 @@ LABEL_28:
   block[1] = 3221225472;
   block[2] = sub_1001E06E8;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003840C8 != -1)
   {
     dispatch_once(&qword_1003840C8, block);
@@ -319,17 +319,17 @@ LABEL_28:
   return v2;
 }
 
-- (void)_addOperation:(id)a3
+- (void)_addOperation:(id)operation
 {
-  v4 = a3;
-  objc_setAssociatedObject(v4, "com.apple.itunesstore.AppReceiptController.self", self, 0x301);
-  v5 = [(AppReceiptController *)self _operationQueue];
-  [v5 addOperation:v4];
+  operationCopy = operation;
+  objc_setAssociatedObject(operationCopy, "com.apple.itunesstore.AppReceiptController.self", self, 0x301);
+  _operationQueue = [(AppReceiptController *)self _operationQueue];
+  [_operationQueue addOperation:operationCopy];
 }
 
-- (void)_dispatchAsync:(id)a3
+- (void)_dispatchAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = +[Daemon daemon];
   [v5 takeKeepAliveAssertion:@"com.apple.itunesstored.ReceiptRevocation"];
 
@@ -338,8 +338,8 @@ LABEL_28:
   block[1] = 3221225472;
   block[2] = sub_1001E0864;
   block[3] = &unk_100327198;
-  v9 = v4;
-  v7 = v4;
+  v9 = asyncCopy;
+  v7 = asyncCopy;
   dispatch_async(dispatchQueue, block);
 }
 

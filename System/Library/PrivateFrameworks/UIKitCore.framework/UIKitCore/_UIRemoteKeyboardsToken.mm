@@ -1,6 +1,6 @@
 @interface _UIRemoteKeyboardsToken
 + (id)uniqueToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIRemoteKeyboardsToken)init;
 - (id)description;
 @end
@@ -9,7 +9,7 @@
 
 + (id)uniqueToken
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == v4[2];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == equalCopy[2];
 
   return v5;
 }
@@ -47,8 +47,8 @@
   v7.receiver = self;
   v7.super_class = _UIRemoteKeyboardsToken;
   v3 = [(_UIRemoteKeyboardsToken *)&v7 description];
-  v4 = [(_UIRemoteKeyboardsToken *)self sceneIdentityString];
-  v5 = [v3 stringByAppendingFormat:@" scene identity string %@", v4];
+  sceneIdentityString = [(_UIRemoteKeyboardsToken *)self sceneIdentityString];
+  v5 = [v3 stringByAppendingFormat:@" scene identity string %@", sceneIdentityString];
 
   return v5;
 }

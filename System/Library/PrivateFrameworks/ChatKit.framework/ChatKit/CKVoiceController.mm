@@ -1,22 +1,22 @@
 @interface CKVoiceController
-- (CKVoiceController)initWithActivationMode:(int64_t)a3 recordSettings:(id)a4 queue:(id)a5;
+- (CKVoiceController)initWithActivationMode:(int64_t)mode recordSettings:(id)settings queue:(id)queue;
 - (CKVoiceControllerDelegate)delegate;
 - (float)averagePower;
 - (void)cleanup;
 - (void)dealloc;
-- (void)messageSent:(id)a3;
-- (void)playAlertSoundForType:(int)a3;
+- (void)messageSent:(id)sent;
+- (void)playAlertSoundForType:(int)type;
 - (void)record;
 - (void)releaseAudioSession;
-- (void)setActivationMode:(int64_t)a3;
+- (void)setActivationMode:(int64_t)mode;
 - (void)startUpdatingPower;
 - (void)stop;
 - (void)stopUpdatingPower;
-- (void)voiceControllerAudioCallback:(id)a3 forStream:(unint64_t)a4 buffer:(id)a5;
-- (void)voiceControllerDidStartRecording:(id)a3 forStream:(unint64_t)a4 successfully:(BOOL)a5 error:(id)a6;
-- (void)voiceControllerDidStopRecording:(id)a3 forStream:(unint64_t)a4 forReason:(int64_t)a5;
+- (void)voiceControllerAudioCallback:(id)callback forStream:(unint64_t)stream buffer:(id)buffer;
+- (void)voiceControllerDidStartRecording:(id)recording forStream:(unint64_t)stream successfully:(BOOL)successfully error:(id)error;
+- (void)voiceControllerDidStopRecording:(id)recording forStream:(unint64_t)stream forReason:(int64_t)reason;
 - (void)voiceControllerDidStopRecordingForClientError;
-- (void)voiceControllerStreamInvalidated:(id)a3 forStream:(unint64_t)a4;
+- (void)voiceControllerStreamInvalidated:(id)invalidated forStream:(unint64_t)stream;
 @end
 
 @implementation CKVoiceController
@@ -31,27 +31,27 @@
 
 - (void)cleanup
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(CKVoiceController *)self voiceController];
+  voiceController = [(CKVoiceController *)self voiceController];
 
-  if (v4)
+  if (voiceController)
   {
     v7[0] = 0;
     v7[1] = v7;
     v7[2] = 0x3032000000;
     v7[3] = __Block_byref_object_copy__35;
     v7[4] = __Block_byref_object_dispose__35;
-    v8 = [(CKVoiceController *)self voiceController];
+    voiceController2 = [(CKVoiceController *)self voiceController];
     [(CKVoiceController *)self setVoiceController:0];
-    v5 = [(CKVoiceController *)self queue];
+    queue = [(CKVoiceController *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __28__CKVoiceController_cleanup__block_invoke;
     block[3] = &unk_1E72EB968;
     block[4] = v7;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
 
     _Block_object_dispose(v7, 8);
   }
@@ -76,33 +76,33 @@ void __28__CKVoiceController_cleanup__block_invoke(uint64_t a1)
   }
 }
 
-- (CKVoiceController)initWithActivationMode:(int64_t)a3 recordSettings:(id)a4 queue:(id)a5
+- (CKVoiceController)initWithActivationMode:(int64_t)mode recordSettings:(id)settings queue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  settingsCopy = settings;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = CKVoiceController;
   v10 = [(CKVoiceController *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    [(CKVoiceController *)v10 setQueue:v9];
-    [(CKVoiceController *)v11 setRecordSettings:v8];
-    [(CKVoiceController *)v11 _setActivationMode:a3];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v11 selector:sel_messageSent_ name:*MEMORY[0x1E69A58E8] object:0];
+    [(CKVoiceController *)v10 setQueue:queueCopy];
+    [(CKVoiceController *)v11 setRecordSettings:settingsCopy];
+    [(CKVoiceController *)v11 _setActivationMode:mode];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_messageSent_ name:*MEMORY[0x1E69A58E8] object:0];
 
-    v13 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    [v13 _setPostMessageSentNotifications:1];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    [mEMORY[0x1E69A5AF8] _setPostMessageSentNotifications:1];
 
-    v14 = [(CKVoiceController *)v11 queue];
+    queue = [(CKVoiceController *)v11 queue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __65__CKVoiceController_initWithActivationMode_recordSettings_queue___block_invoke;
     v16[3] = &unk_1E72ED810;
     v17 = v11;
-    v18 = a3;
-    dispatch_async(v14, v16);
+    modeCopy = mode;
+    dispatch_async(queue, v16);
   }
 
   return v11;
@@ -186,17 +186,17 @@ void __65__CKVoiceController_initWithActivationMode_recordSettings_queue___block
   }
 }
 
-- (void)setActivationMode:(int64_t)a3
+- (void)setActivationMode:(int64_t)mode
 {
   [(CKVoiceController *)self _setActivationMode:?];
-  v5 = [(CKVoiceController *)self queue];
+  queue = [(CKVoiceController *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__CKVoiceController_setActivationMode___block_invoke;
   v6[3] = &unk_1E72ED810;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = mode;
+  dispatch_async(queue, v6);
 }
 
 void __39__CKVoiceController_setActivationMode___block_invoke(uint64_t a1)
@@ -227,13 +227,13 @@ void __39__CKVoiceController_setActivationMode___block_invoke(uint64_t a1)
 
 - (void)record
 {
-  v3 = [(CKVoiceController *)self queue];
+  queue = [(CKVoiceController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __27__CKVoiceController_record__block_invoke;
   block[3] = &unk_1E72EBA18;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __27__CKVoiceController_record__block_invoke(uint64_t a1)
@@ -335,13 +335,13 @@ void __27__CKVoiceController_record__block_invoke(uint64_t a1)
 - (void)stop
 {
   [(CKVoiceController *)self stopUpdatingPower];
-  v3 = [(CKVoiceController *)self queue];
+  queue = [(CKVoiceController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __25__CKVoiceController_stop__block_invoke;
   block[3] = &unk_1E72EBA18;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __25__CKVoiceController_stop__block_invoke(uint64_t a1)
@@ -360,18 +360,18 @@ void __25__CKVoiceController_stop__block_invoke(uint64_t a1)
   [v3 stopRecordForStream:objc_msgSend(*(a1 + 32) error:{"streamID"), 0}];
 }
 
-- (void)playAlertSoundForType:(int)a3
+- (void)playAlertSoundForType:(int)type
 {
-  v5 = [(CKVoiceController *)self _activationMode];
-  v6 = [(CKVoiceController *)self queue];
+  _activationMode = [(CKVoiceController *)self _activationMode];
+  queue = [(CKVoiceController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CKVoiceController_playAlertSoundForType___block_invoke;
   block[3] = &unk_1E72F3740;
-  v8 = a3;
+  typeCopy = type;
   block[4] = self;
-  block[5] = v5;
-  dispatch_async(v6, block);
+  block[5] = _activationMode;
+  dispatch_async(queue, block);
 }
 
 void __43__CKVoiceController_playAlertSoundForType___block_invoke(uint64_t a1)
@@ -417,13 +417,13 @@ void __43__CKVoiceController_playAlertSoundForType___block_invoke(uint64_t a1)
 
 - (void)releaseAudioSession
 {
-  v3 = [(CKVoiceController *)self queue];
+  queue = [(CKVoiceController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__CKVoiceController_releaseAudioSession__block_invoke;
   block[3] = &unk_1E72EBA18;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __40__CKVoiceController_releaseAudioSession__block_invoke(uint64_t a1)
@@ -474,24 +474,24 @@ LABEL_11:
   }
 }
 
-- (void)voiceControllerDidStartRecording:(id)a3 forStream:(unint64_t)a4 successfully:(BOOL)a5 error:(id)a6
+- (void)voiceControllerDidStartRecording:(id)recording forStream:(unint64_t)stream successfully:(BOOL)successfully error:(id)error
 {
-  v7 = a5;
+  successfullyCopy = successfully;
   v15 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  recordingCopy = recording;
+  errorCopy = error;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v14 = v7;
+      v14 = successfullyCopy;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "voiceControllerDidStartRecording:successfully: %d", buf, 8u);
     }
   }
 
-  if (v7)
+  if (successfullyCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -524,16 +524,16 @@ void __83__CKVoiceController_voiceControllerDidStartRecording_forStream_successf
   [v3 voiceControllerDidStartRecording:*(a1 + 32)];
 }
 
-- (void)voiceControllerAudioCallback:(id)a3 forStream:(unint64_t)a4 buffer:(id)a5
+- (void)voiceControllerAudioCallback:(id)callback forStream:(unint64_t)stream buffer:(id)buffer
 {
-  v6 = a5;
+  bufferCopy = buffer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__CKVoiceController_voiceControllerAudioCallback_forStream_buffer___block_invoke;
   v8[3] = &unk_1E72EB8D0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = bufferCopy;
+  v7 = bufferCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
@@ -543,17 +543,17 @@ void __67__CKVoiceController_voiceControllerAudioCallback_forStream_buffer___blo
   [v2 voiceControllerRecordBufferAvailable:*(a1 + 32) buffer:*(a1 + 40)];
 }
 
-- (void)voiceControllerDidStopRecording:(id)a3 forStream:(unint64_t)a4 forReason:(int64_t)a5
+- (void)voiceControllerDidStopRecording:(id)recording forStream:(unint64_t)stream forReason:(int64_t)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  recordingCopy = recording;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v11 = a5;
+      reasonCopy = reason;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "voiceControllerDidStopRecording:forReason: %d", buf, 8u);
     }
   }
@@ -564,7 +564,7 @@ void __67__CKVoiceController_voiceControllerAudioCallback_forStream_buffer___blo
   v9[2] = __73__CKVoiceController_voiceControllerDidStopRecording_forStream_forReason___block_invoke;
   v9[3] = &unk_1E72ED810;
   v9[4] = self;
-  v9[5] = a5;
+  v9[5] = reason;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
@@ -596,30 +596,30 @@ void __73__CKVoiceController_voiceControllerDidStopRecording_forStream_forReason
   [v6 voiceControllerDidFinishRecording:*(a1 + 32) successfully:v5];
 }
 
-- (void)voiceControllerStreamInvalidated:(id)a3 forStream:(unint64_t)a4
+- (void)voiceControllerStreamInvalidated:(id)invalidated forStream:(unint64_t)stream
 {
-  [(CKVoiceController *)self setStreamID:*MEMORY[0x1E6958398], a4];
-  v5 = [(CKVoiceController *)self _activationMode];
+  [(CKVoiceController *)self setStreamID:*MEMORY[0x1E6958398], stream];
+  _activationMode = [(CKVoiceController *)self _activationMode];
 
-  [(CKVoiceController *)self setActivationMode:v5];
+  [(CKVoiceController *)self setActivationMode:_activationMode];
 }
 
 - (float)averagePower
 {
-  v3 = [(CKVoiceController *)self powerUpdateTimer];
+  powerUpdateTimer = [(CKVoiceController *)self powerUpdateTimer];
 
-  if (v3)
+  if (powerUpdateTimer)
   {
-    v4 = [(CKVoiceController *)self voiceController];
-    [v4 updateMeterForStream:{-[CKVoiceController streamID](self, "streamID")}];
-    [v4 getAveragePowerForStream:-[CKVoiceController streamID](self forChannel:{"streamID"), 0}];
+    voiceController = [(CKVoiceController *)self voiceController];
+    [voiceController updateMeterForStream:{-[CKVoiceController streamID](self, "streamID")}];
+    [voiceController getAveragePowerForStream:-[CKVoiceController streamID](self forChannel:{"streamID"), 0}];
     v6 = v5;
   }
 
   else
   {
-    v4 = +[CKUIBehavior sharedBehaviors];
-    [v4 audioRecordingViewMinimumDBLevel];
+    voiceController = +[CKUIBehavior sharedBehaviors];
+    [voiceController audioRecordingViewMinimumDBLevel];
     v6 = v7;
   }
 
@@ -638,14 +638,14 @@ void __73__CKVoiceController_voiceControllerDidStopRecording_forStream_forReason
     }
   }
 
-  v4 = [(CKVoiceController *)self voiceController];
-  [(CKVoiceController *)self voiceControllerDidStopRecording:v4 forStream:[(CKVoiceController *)self streamID] forReason:-11799];
+  voiceController = [(CKVoiceController *)self voiceController];
+  [(CKVoiceController *)self voiceControllerDidStopRecording:voiceController forStream:[(CKVoiceController *)self streamID] forReason:-11799];
 }
 
 - (void)startUpdatingPower
 {
-  v3 = [(CKVoiceController *)self powerUpdateTimer];
-  if (v3)
+  powerUpdateTimer = [(CKVoiceController *)self powerUpdateTimer];
+  if (powerUpdateTimer)
   {
     if (IMOSLoggingEnabled())
     {
@@ -660,8 +660,8 @@ void __73__CKVoiceController_voiceControllerDidStopRecording_forStream_forReason
     [(CKVoiceController *)self stopUpdatingPower];
   }
 
-  v5 = [(CKVoiceController *)self queue];
-  v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v5);
+  queue = [(CKVoiceController *)self queue];
+  v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queue);
 
   dispatch_source_set_timer(v6, 0, 0x3F940AAuLL, 0);
   objc_initWeak(buf, self);
@@ -670,7 +670,7 @@ void __73__CKVoiceController_voiceControllerDidStopRecording_forStream_forReason
   v9 = __39__CKVoiceController_startUpdatingPower__block_invoke;
   v10 = &unk_1E72EBB98;
   objc_copyWeak(&v12, buf);
-  v11 = self;
+  selfCopy = self;
   dispatch_source_set_event_handler(v6, &v7);
   [(CKVoiceController *)self setPowerUpdateTimer:v6, v7, v8, v9, v10];
   dispatch_resume(v6);
@@ -703,27 +703,27 @@ void __39__CKVoiceController_startUpdatingPower__block_invoke_2(uint64_t a1)
 
 - (void)stopUpdatingPower
 {
-  v3 = [(CKVoiceController *)self powerUpdateTimer];
-  if (v3)
+  powerUpdateTimer = [(CKVoiceController *)self powerUpdateTimer];
+  if (powerUpdateTimer)
   {
-    v4 = v3;
-    dispatch_source_cancel(v3);
+    v4 = powerUpdateTimer;
+    dispatch_source_cancel(powerUpdateTimer);
     [(CKVoiceController *)self setPowerUpdateTimer:0];
-    v3 = v4;
+    powerUpdateTimer = v4;
   }
 }
 
-- (void)messageSent:(id)a3
+- (void)messageSent:(id)sent
 {
-  v4 = a3;
-  v5 = [(CKVoiceController *)self queue];
+  sentCopy = sent;
+  queue = [(CKVoiceController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__CKVoiceController_messageSent___block_invoke;
   block[3] = &unk_1E72EBA18;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = sentCopy;
+  v6 = sentCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __33__CKVoiceController_messageSent___block_invoke(uint64_t a1)

@@ -1,21 +1,21 @@
 @interface PIAutoLoopStabVideoNode
-+ (id)nodeWithInput:(id)a3 recipe:(id)a4 error:(id *)a5;
-- (PIAutoLoopStabVideoNode)initWithInput:(id)a3 settings:(id)a4 bakedRecipe:(id)a5;
-- (PIAutoLoopStabVideoNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)_evaluateVideoProperties:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
++ (id)nodeWithInput:(id)input recipe:(id)recipe error:(id *)error;
+- (PIAutoLoopStabVideoNode)initWithInput:(id)input settings:(id)settings bakedRecipe:(id)recipe;
+- (PIAutoLoopStabVideoNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)_evaluateVideoProperties:(id *)properties;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIAutoLoopStabVideoNode
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v74 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v46 = NUAssertLogger_15642();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@
         v54 = dispatch_get_specific(*v48);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        v57 = [v55 callStackSymbols];
-        v58 = [v57 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v55 callStackSymbols];
+        v58 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(lhs.start.value) = 138543618;
         *(&lhs.start.value + 4) = v54;
         LOWORD(lhs.start.flags) = 2114;
@@ -49,8 +49,8 @@
 
     else if (v51)
     {
-      v52 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v53 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(lhs.start.value) = 138543362;
       *(&lhs.start.value + 4) = v53;
       _os_log_error_impl(&dword_1C7694000, v50, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &lhs, 0xCu);
@@ -68,20 +68,20 @@
   }
 
   v7 = [v5 tracksWithMediaType:*MEMORY[0x1E6987608]];
-  v8 = [(NURenderNode *)self inputs];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v9 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v10 = [v9 outputVideoComposition:a3];
+  v10 = [v9 outputVideoComposition:composition];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 instructions];
-    v13 = [v12 count];
+    instructions = [v10 instructions];
+    v13 = [instructions count];
 
     if (v13 == 1)
     {
-      v14 = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
-      v15 = [v14 objectForKeyedSubscript:@"loopRecipe_loopParams"];
+      bakedRecipe = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
+      v15 = [bakedRecipe objectForKeyedSubscript:@"loopRecipe_loopParams"];
       v16 = v15;
       if (v15)
       {
@@ -113,7 +113,7 @@
         v23 = v19;
         v24 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v19, "trackID")}];
         v72[0] = v24;
-        v63 = v14;
+        v63 = bakedRecipe;
         v25 = v20;
         v26 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v20, "trackID")}];
         v72[1] = v26;
@@ -151,9 +151,9 @@
 
         v38 = objc_alloc_init(MEMORY[0x1E6988060]);
         v39 = [v63 objectForKeyedSubscript:@"loopRecipe_frameInstructions"];
-        v40 = [v39 firstObject];
+        firstObject = [v39 firstObject];
         memset(&lhs, 0, 24);
-        v41 = [v40 objectForKeyedSubscript:@"loopFrameData_presDur"];
+        v41 = [firstObject objectForKeyedSubscript:@"loopFrameData_presDur"];
         CMTimeMakeFromDictionary(&lhs.start, v41);
 
         rhs = lhs.start;
@@ -164,23 +164,23 @@
         [v38 setInstructions:v42];
 
         v16 = v62;
-        v14 = v63;
+        bakedRecipe = v63;
 
         v9 = v60;
       }
 
       else
       {
-        [MEMORY[0x1E69B3A48] invalidError:@"Malformed loop recipe object:{missing loop params", v14}];
-        *a3 = v38 = 0;
+        [MEMORY[0x1E69B3A48] invalidError:@"Malformed loop recipe object:{missing loop params", bakedRecipe}];
+        *composition = v38 = 0;
       }
 
       goto LABEL_12;
     }
 
     v43 = MEMORY[0x1E69B3A48];
-    v44 = [v11 instructions];
-    *a3 = [v43 unsupportedError:@"Unsupported video configuration" object:v44];
+    instructions2 = [v11 instructions];
+    *composition = [v43 unsupportedError:@"Unsupported video configuration" object:instructions2];
   }
 
   v38 = 0;
@@ -191,10 +191,10 @@ LABEL_13:
   return v38;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v85 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v45 = NUAssertLogger_15642();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -216,8 +216,8 @@ LABEL_13:
         v53 = dispatch_get_specific(*v47);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v54 callStackSymbols];
+        v57 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v83.start.value) = 138543618;
         *(&v83.start.value + 4) = v53;
         LOWORD(v83.start.flags) = 2114;
@@ -228,8 +228,8 @@ LABEL_13:
 
     else if (v50)
     {
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v83.start.value) = 138543362;
       *(&v83.start.value + 4) = v52;
       _os_log_error_impl(&dword_1C7694000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v83, 0xCu);
@@ -238,10 +238,10 @@ LABEL_13:
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v7 = [v6 outputVideo:a3];
+  v7 = [v6 outputVideo:video];
   if (!v7)
   {
     v42 = 0;
@@ -252,26 +252,26 @@ LABEL_13:
   if (!v8)
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"[[AVMutableComposition alloc] init] failed." object:self];
-    *a3 = v42 = 0;
+    *video = v42 = 0;
     goto LABEL_38;
   }
 
-  v9 = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
-  v10 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v7 error:a3];
-  v64 = v9;
+  bakedRecipe = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
+  v10 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v7 error:video];
+  v64 = bakedRecipe;
   if (!v10)
   {
     v42 = 0;
     goto LABEL_37;
   }
 
-  v58 = self;
-  v61 = a3;
+  selfCopy = self;
+  videoCopy = video;
   v63 = v7;
   v11 = *MEMORY[0x1E6987608];
   v12 = [v8 addMutableTrackWithMediaType:*MEMORY[0x1E6987608] preferredTrackID:0];
   v13 = [v8 addMutableTrackWithMediaType:v11 preferredTrackID:1];
-  [v9 objectForKeyedSubscript:@"loopRecipe_frameInstructions"];
+  [bakedRecipe objectForKeyedSubscript:@"loopRecipe_frameInstructions"];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
@@ -311,12 +311,12 @@ LABEL_13:
       v19 = [v16 objectForKeyedSubscript:@"loopFrameData_frameTransforms"];
       if ([v19 count] != 1 && objc_msgSend(v19, "count") != 2)
       {
-        *v61 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Unexpected number of frame transforms" object:v19];
+        *videoCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Unexpected number of frame transforms" object:v19];
 
         v43 = v14;
         v42 = 0;
 LABEL_31:
-        v30 = v43;
+        firstObject = v43;
         v8 = v59;
         v6 = v60;
         v7 = v63;
@@ -337,7 +337,7 @@ LABEL_31:
       v22 = v75;
       if ((v21 & 1) == 0)
       {
-        *v61 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track" object:v58 underlyingError:v22];
+        *videoCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track" object:selfCopy underlyingError:v22];
 LABEL_30:
 
         v42 = 0;
@@ -380,7 +380,7 @@ LABEL_30:
           goto LABEL_17;
         }
 
-        *v61 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track" object:v58 underlyingError:v27];
+        *videoCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track" object:selfCopy underlyingError:v27];
 
         v22 = v27;
         v10 = v25;
@@ -408,9 +408,9 @@ LABEL_19:
   v28 = *MEMORY[0x1E69875A0];
   v7 = v63;
   v29 = [v63 tracksWithMediaType:*MEMORY[0x1E69875A0]];
-  v30 = [v29 firstObject];
+  firstObject = [v29 firstObject];
 
-  if (v30)
+  if (firstObject)
   {
     v31 = v10;
     v32 = v8;
@@ -440,29 +440,29 @@ LABEL_19:
       v71 = v78;
       CMTimeRangeMake(&v83, &rhs.start, &v71);
       v39 = MEMORY[0x1E69B3D40];
-      [v30 timeRange];
+      [firstObject timeRange];
       v70 = v83;
       [v39 conformRange:&v70 inRange:&v71];
       v83 = rhs;
       v69 = 0;
       v71 = **&MEMORY[0x1E6960CC0];
-      v40 = [v33 insertTimeRange:&rhs ofTrack:v30 atTime:&v71 error:&v69];
+      v40 = [v33 insertTimeRange:&rhs ofTrack:firstObject atTime:&v71 error:&v69];
       v41 = v69;
       if (v40)
       {
-        [v33 setNaturalTimeScale:{objc_msgSend(v30, "naturalTimeScale")}];
+        [v33 setNaturalTimeScale:{objc_msgSend(firstObject, "naturalTimeScale")}];
 
         v8 = v32;
         v10 = v31;
         goto LABEL_23;
       }
 
-      *v61 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track" object:v58 underlyingError:v41];
+      *videoCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track" object:selfCopy underlyingError:v41];
     }
 
     else
     {
-      *v61 = [MEMORY[0x1E69B3A48] invalidError:@"Malformed loop recipe object:{missing loop params", v64}];
+      *videoCopy = [MEMORY[0x1E69B3A48] invalidError:@"Malformed loop recipe object:{missing loop params", v64}];
     }
 
     v42 = 0;
@@ -487,10 +487,10 @@ LABEL_39:
   return v42;
 }
 
-- (id)_evaluateVideoProperties:(id *)a3
+- (id)_evaluateVideoProperties:(id *)properties
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!properties)
   {
     v22 = NUAssertLogger_15642();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -512,8 +512,8 @@ LABEL_39:
         v30 = dispatch_get_specific(*v24);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(time1.value) = 138543618;
         *(&time1.value + 4) = v30;
         LOWORD(time1.flags) = 2114;
@@ -524,8 +524,8 @@ LABEL_39:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(time1.value) = 138543362;
       *(&time1.value + 4) = v29;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &time1, 0xCu);
@@ -534,17 +534,17 @@ LABEL_39:
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v7 = [v6 videoProperties:a3];
+  v7 = [v6 videoProperties:properties];
   v8 = v7;
   if (v7)
   {
     memset(&v42, 0, sizeof(v42));
     [v7 livePhotoKeyFrameTime];
-    v9 = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
-    v10 = [v9 objectForKeyedSubscript:@"loopRecipe_loopParams"];
+    bakedRecipe = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
+    v10 = [bakedRecipe objectForKeyedSubscript:@"loopRecipe_loopParams"];
     v11 = v10;
     if (v10)
     {
@@ -557,7 +557,7 @@ LABEL_39:
       CMTimeMakeFromDictionary(&v40, v13);
 
       memset(&v39, 0, sizeof(v39));
-      PIAutoLoopRecipeGetFrameDuration(v9, &v39);
+      PIAutoLoopRecipeGetFrameDuration(bakedRecipe, &v39);
       memset(&v38, 0, sizeof(v38));
       lhs = v42;
       rhs = v41;
@@ -569,18 +569,18 @@ LABEL_39:
       v14 = [objc_alloc(MEMORY[0x1E69B3D68]) initWithProperties:v8];
       time1 = v38;
       [v14 setLivePhotoKeyFrameTime:&time1];
-      v15 = [(NURenderNode *)self outputImageGeometry:a3];
+      v15 = [(NURenderNode *)self outputImageGeometry:properties];
       v16 = v15;
       if (v15)
       {
-        v17 = [v15 scaledSize];
+        scaledSize = [v15 scaledSize];
         v19 = v18;
         time1.value = 0;
         *&time1.timescale = 0;
-        time1.epoch = v17;
+        time1.epoch = scaledSize;
         v44 = v18;
         [v14 setCleanAperture:&time1];
-        [v14 setSize:{v17, v19}];
+        [v14 setSize:{scaledSize, v19}];
         v20 = v14;
       }
 
@@ -592,8 +592,8 @@ LABEL_39:
 
     else
     {
-      [MEMORY[0x1E69B3A48] invalidError:@"Malformed loop recipe object:{missing loop params", v9}];
-      *a3 = v20 = 0;
+      [MEMORY[0x1E69B3A48] invalidError:@"Malformed loop recipe object:{missing loop params", bakedRecipe}];
+      *properties = v20 = 0;
     }
   }
 
@@ -605,10 +605,10 @@ LABEL_39:
   return v20;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!geometry)
   {
     v18 = NUAssertLogger_15642();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -630,8 +630,8 @@ LABEL_39:
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v26;
         *&buf[12] = 2114;
@@ -642,8 +642,8 @@ LABEL_39:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -652,19 +652,19 @@ LABEL_39:
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   v31 = 0;
   v7 = [v6 outputImageGeometry:&v31];
   v8 = v31;
   if (v7)
   {
-    v9 = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
-    v10 = [v7 orientation];
-    v11 = [v7 renderScale];
+    bakedRecipe = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
+    orientation = [v7 orientation];
+    renderScale = [v7 renderScale];
     v13 = v12;
-    v14 = PIAutoLoopRecipeComputeOutputGeometry(v9);
+    v14 = PIAutoLoopRecipeComputeOutputGeometry(bakedRecipe);
     v15 = objc_alloc(MEMORY[0x1E69B3B18]);
     if (v14)
     {
@@ -676,24 +676,24 @@ LABEL_39:
       memset(buf, 0, 32);
     }
 
-    v16 = [v15 initWithExtent:buf renderScale:v11 orientation:v13 spaceMap:v10 roundingPolicy:{0, 4}];
+    v16 = [v15 initWithExtent:buf renderScale:renderScale orientation:v13 spaceMap:orientation roundingPolicy:{0, 4}];
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get input geometry" object:self underlyingError:v8];
-    *a3 = v16 = 0;
+    *geometry = v16 = 0;
   }
 
   return v16;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v100 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v63 = NUAssertLogger_15642();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -715,8 +715,8 @@ LABEL_39:
         v71 = dispatch_get_specific(*v65);
         v72 = MEMORY[0x1E696AF00];
         v73 = v71;
-        v74 = [v72 callStackSymbols];
-        v75 = [v74 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v72 callStackSymbols];
+        v75 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(buf.value) = 138543618;
         *(&buf.value + 4) = v71;
         LOWORD(buf.flags) = 2114;
@@ -727,8 +727,8 @@ LABEL_39:
 
     else if (v68)
     {
-      v69 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v70 = [v69 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v70 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf.value) = 138543362;
       *(&buf.value + 4) = v70;
       _os_log_error_impl(&dword_1C7694000, v67, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -737,25 +737,25 @@ LABEL_39:
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  v11 = [v9 evaluationMode];
-  if ((v11 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  v10 = stateCopy;
+  evaluationMode = [stateCopy evaluationMode];
+  if ((evaluationMode & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     v87.receiver = self;
     v87.super_class = PIAutoLoopStabVideoNode;
-    v27 = [(NURenderNode *)&v87 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    v27 = [(NURenderNode *)&v87 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
     goto LABEL_37;
   }
 
-  v12 = v11;
-  v13 = [(NURenderNode *)self outputImageGeometry:a5];
+  v12 = evaluationMode;
+  v13 = [(NURenderNode *)self outputImageGeometry:error];
   if (v13)
   {
     v82 = v13;
-    v14 = [(NURenderNode *)self inputs];
-    v80 = [v14 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+    inputs = [(NURenderNode *)self inputs];
+    v80 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-    v15 = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
+    bakedRecipe = [(PIAutoLoopStabVideoNode *)self bakedRecipe];
     memset(&buf, 0, sizeof(buf));
     if (!v10 || ([v10 time], (buf.flags & 1) == 0))
     {
@@ -763,16 +763,16 @@ LABEL_39:
     }
 
     v98 = buf;
-    v16 = PIAutoLoopRecipeGetInstructionAtTime(v15, &v98);
+    v16 = PIAutoLoopRecipeGetInstructionAtTime(bakedRecipe, &v98);
     v17 = [v16 objectForKeyedSubscript:@"loopFrameData_frameTransforms"];
     v78 = v16;
     v18 = [v16 mutableCopy];
-    v79 = v15;
-    v19 = [v15 objectForKeyedSubscript:@"loopRecipe_stabCropRect"];
+    v79 = bakedRecipe;
+    v19 = [bakedRecipe objectForKeyedSubscript:@"loopRecipe_stabCropRect"];
     [v18 setObject:v19 forKeyedSubscript:@"loopRecipe_stabCropRect"];
 
-    v20 = [(NURenderNode *)self settings];
-    v21 = [v20 objectForKeyedSubscript:@"cleanAperture"];
+    settings = [(NURenderNode *)self settings];
+    v21 = [settings objectForKeyedSubscript:@"cleanAperture"];
     v22 = v17;
     [v18 setObject:v21 forKeyedSubscript:@"cleanAperture"];
 
@@ -787,12 +787,12 @@ LABEL_39:
       v25 = v80;
       if (v12 == 3)
       {
-        v26 = [v10 videoFrames];
-        v27 = [v26 objectForKeyedSubscript:@"primary"];
+        videoFrames = [v10 videoFrames];
+        v27 = [videoFrames objectForKeyedSubscript:@"primary"];
 
         if (!v27)
         {
-          *a5 = [MEMORY[0x1E69B3A48] missingError:@"Missing primary video frame" object:v10];
+          *error = [MEMORY[0x1E69B3A48] missingError:@"Missing primary video frame" object:v10];
 LABEL_27:
 
           v33 = 0;
@@ -813,7 +813,7 @@ LABEL_31:
       v98 = v86;
       [v24 setTime:&v98];
 
-      v27 = [v80 nodeByReplayingAgainstCache:v8 pipelineState:v24 error:a5];
+      v27 = [v80 nodeByReplayingAgainstCache:cacheCopy pipelineState:v24 error:error];
       if (v27)
       {
         v31 = [PIAutoLoopFrameNode alloc];
@@ -824,7 +824,7 @@ LABEL_31:
 
         v34 = v78;
 LABEL_34:
-        v27 = [MEMORY[0x1E69B3C28] nodeFromCache:v33 cache:v8];
+        v27 = [MEMORY[0x1E69B3C28] nodeFromCache:v33 cache:cacheCopy];
         [v27 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
         goto LABEL_35;
       }
@@ -837,7 +837,7 @@ LABEL_34:
       v34 = v78;
       [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Unexpected number of frame transforms" object:v78];
       v33 = 0;
-      *a5 = v27 = 0;
+      *error = v27 = 0;
       v25 = v80;
 LABEL_35:
 
@@ -849,12 +849,12 @@ LABEL_35:
     v25 = v80;
     if (v12 == 3)
     {
-      v36 = [v10 videoFrames];
-      v33 = [v36 objectForKeyedSubscript:@"primary"];
+      videoFrames2 = [v10 videoFrames];
+      v33 = [videoFrames2 objectForKeyedSubscript:@"primary"];
 
       if (!v33)
       {
-        *a5 = [MEMORY[0x1E69B3A48] missingError:@"Missing primary video frame" object:v10];
+        *error = [MEMORY[0x1E69B3A48] missingError:@"Missing primary video frame" object:v10];
 
 LABEL_30:
         v27 = 0;
@@ -875,7 +875,7 @@ LABEL_30:
     v98 = v85;
     [v35 setTime:&v98];
 
-    v77 = [v80 nodeByReplayingAgainstCache:v8 pipelineState:v35 error:a5];
+    v77 = [v80 nodeByReplayingAgainstCache:cacheCopy pipelineState:v35 error:error];
     if (v77)
     {
       v40 = [v10 copy];
@@ -883,8 +883,8 @@ LABEL_30:
       if (v12 == 3)
       {
         v76 = v40;
-        v42 = [v10 videoFrames];
-        v43 = [v42 objectForKeyedSubscript:@"secondary"];
+        videoFrames3 = [v10 videoFrames];
+        v43 = [videoFrames3 objectForKeyedSubscript:@"secondary"];
 
         if (!v43)
         {
@@ -902,15 +902,15 @@ LABEL_30:
           v55 = v84;
           v56 = [v54 alloc];
           v57 = MEMORY[0x1E695F658];
-          v58 = [MEMORY[0x1E695F610] redColor];
-          v59 = [v57 imageWithColor:v58];
+          redColor = [MEMORY[0x1E695F610] redColor];
+          v59 = [v57 imageWithColor:redColor];
           [v53 scaledExtent];
           v60 = [v59 imageByCroppingToRect:?];
-          v61 = [v53 orientation];
-          v27 = [v56 initWithImage:v60 settings:MEMORY[0x1E695E0F8] orientation:v61];
+          orientation = [v53 orientation];
+          v27 = [v56 initWithImage:v60 settings:MEMORY[0x1E695E0F8] orientation:orientation];
 
-          v62 = [v10 evaluationMode];
-          [v27 setEvaluatedForMode:v62];
+          evaluationMode2 = [v10 evaluationMode];
+          [v27 setEvaluatedForMode:evaluationMode2];
 
           v33 = 0;
           v25 = v80;
@@ -930,7 +930,7 @@ LABEL_30:
       v98 = v83;
       [v41 setTime:&v98];
 
-      v27 = [v80 nodeByReplayingAgainstCache:v8 pipelineState:v41 error:a5];
+      v27 = [v80 nodeByReplayingAgainstCache:cacheCopy pipelineState:v41 error:error];
       v47 = v41;
       if (v27)
       {
@@ -972,11 +972,11 @@ LABEL_37:
   return v27;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = PIAutoLoopStabVideoNode;
-  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   v8 = v7;
   if (v7)
   {
@@ -986,31 +986,31 @@ LABEL_37:
   return v8;
 }
 
-- (PIAutoLoopStabVideoNode)initWithInput:(id)a3 settings:(id)a4 bakedRecipe:(id)a5
+- (PIAutoLoopStabVideoNode)initWithInput:(id)input settings:(id)settings bakedRecipe:(id)recipe
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  recipeCopy = recipe;
   v17 = *MEMORY[0x1E695FAB0];
-  v18[0] = a3;
+  v18[0] = input;
   v9 = MEMORY[0x1E695DF20];
-  v10 = a4;
-  v11 = a3;
+  settingsCopy = settings;
+  inputCopy = input;
   v12 = [v9 dictionaryWithObjects:v18 forKeys:&v17 count:1];
   v16.receiver = self;
   v16.super_class = PIAutoLoopStabVideoNode;
-  v13 = [(NURenderNode *)&v16 initWithSettings:v10 inputs:v12];
+  v13 = [(NURenderNode *)&v16 initWithSettings:settingsCopy inputs:v12];
 
   bakedRecipe = v13->_bakedRecipe;
-  v13->_bakedRecipe = v8;
+  v13->_bakedRecipe = recipeCopy;
 
   return v13;
 }
 
-- (PIAutoLoopStabVideoNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIAutoLoopStabVideoNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1049,8 +1049,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -1077,8 +1077,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1096,20 +1096,20 @@ LABEL_14:
   }
 }
 
-+ (id)nodeWithInput:(id)a3 recipe:(id)a4 error:(id *)a5
++ (id)nodeWithInput:(id)input recipe:(id)recipe error:(id *)error
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  recipeCopy = recipe;
   v8 = objc_alloc_init(MEMORY[0x1E69B3A38]);
-  [v7 nu_updateDigest:v8];
-  v23 = [v8 stringValue];
-  v9 = [v6 videoProperties:a5];
+  [recipeCopy nu_updateDigest:v8];
+  stringValue = [v8 stringValue];
+  v9 = [inputCopy videoProperties:error];
   v10 = v9;
   if (v9)
   {
     [v9 cleanAperture];
-    v27[0] = v23;
+    v27[0] = stringValue;
     v26[0] = @"recipeDigest";
     v26[1] = @"cleanAperture";
     v24[0] = @"x";
@@ -1128,10 +1128,10 @@ LABEL_14:
     v27[1] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
 
-    v17 = PIAutoLoopRecipeForFlavor(v7, 3);
+    v17 = PIAutoLoopRecipeForFlavor(recipeCopy, 3);
     v18 = [v17 copy];
 
-    v19 = [[a1 alloc] initWithInput:v6 settings:v16 bakedRecipe:v18];
+    v19 = [[self alloc] initWithInput:inputCopy settings:v16 bakedRecipe:v18];
   }
 
   else

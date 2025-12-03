@@ -1,17 +1,17 @@
 @interface TSCEFunction_CLEAN
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_CLEAN
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v9 = v7;
   v60 = 0;
   if (v7)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v60);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v60);
     v10 = v60;
   }
 
@@ -24,12 +24,12 @@
   }
 
   v59 = v10;
-  v11 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v9, v8, a3, a4, 0, &v59);
+  v11 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v9, v8, context, spec, 0, &v59);
   v12 = v59;
 
   if (v12)
   {
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v12, v14, v15);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v13, v12, v14, v15);
   }
 
   else
@@ -52,7 +52,7 @@
         v56[0] = v37;
         v56[1] = v46 - v37;
         sub_2210780F0(&v61, v56, v47, v48, v49, v55);
-        sub_221077424(&v57, v55, a3);
+        sub_221077424(&v57, v55, context);
       }
 
       objc_msgSend_scanUpToCharactersFromSet_intoString_(v29, v42, v20, 0, v45);

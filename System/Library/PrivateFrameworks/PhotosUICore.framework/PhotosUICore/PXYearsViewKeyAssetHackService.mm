@@ -1,14 +1,14 @@
 @interface PXYearsViewKeyAssetHackService
 - (BOOL)canPerformAction;
-- (BOOL)shouldSetKeyAssetForHighlight:(id)a3;
+- (BOOL)shouldSetKeyAssetForHighlight:(id)highlight;
 @end
 
 @implementation PXYearsViewKeyAssetHackService
 
-- (BOOL)shouldSetKeyAssetForHighlight:(id)a3
+- (BOOL)shouldSetKeyAssetForHighlight:(id)highlight
 {
-  v4 = a3;
-  if ([v4 kind] == 1 || objc_msgSend(v4, "kind") == 2)
+  highlightCopy = highlight;
+  if ([highlightCopy kind] == 1 || objc_msgSend(highlightCopy, "kind") == 2)
   {
     v5 = 1;
   }
@@ -17,7 +17,7 @@
   {
     v7.receiver = self;
     v7.super_class = PXYearsViewKeyAssetHackService;
-    v5 = [(PXMonthsViewKeyAssetHackService *)&v7 shouldSetKeyAssetForHighlight:v4];
+    v5 = [(PXMonthsViewKeyAssetHackService *)&v7 shouldSetKeyAssetForHighlight:highlightCopy];
   }
 
   return v5;
@@ -30,8 +30,8 @@
     return 0;
   }
 
-  v3 = [(PXKeyAssetHackService *)self asset];
-  v4 = v3 != 0;
+  asset = [(PXKeyAssetHackService *)self asset];
+  v4 = asset != 0;
 
   return v4;
 }

@@ -1,39 +1,39 @@
 @interface NSObject
-- (BOOL)_imaxRespondsToSelector:(SEL)a3 fromExtrasProtocol:(id)a4 skipAssertions:(BOOL)a5;
-- (BOOL)imaxBoolValueForKey:(id)a3;
-- (CGPoint)imaxCGPointValueForKey:(id)a3;
-- (CGRect)imaxCGRectValueForKey:(id)a3;
-- (CGSize)imaxCGSizeValueForKey:(id)a3;
-- (_NSRange)imaxRangeValueForKey:(id)a3;
-- (double)imaxDoubleValueForKey:(id)a3;
-- (float)imaxFloatValueForKey:(id)a3;
-- (id)_accessibilityFindDescendant:(id)a3;
-- (id)_imaxValidatedValueForKey:(id)a3 expectedClass:(Class)a4 possibleExpectedTypeEncodings:(const char *)a5;
+- (BOOL)_imaxRespondsToSelector:(SEL)selector fromExtrasProtocol:(id)protocol skipAssertions:(BOOL)assertions;
+- (BOOL)imaxBoolValueForKey:(id)key;
+- (CGPoint)imaxCGPointValueForKey:(id)key;
+- (CGRect)imaxCGRectValueForKey:(id)key;
+- (CGSize)imaxCGSizeValueForKey:(id)key;
+- (_NSRange)imaxRangeValueForKey:(id)key;
+- (double)imaxDoubleValueForKey:(id)key;
+- (float)imaxFloatValueForKey:(id)key;
+- (id)_accessibilityFindDescendant:(id)descendant;
+- (id)_imaxValidatedValueForKey:(id)key expectedClass:(Class)class possibleExpectedTypeEncodings:(const char *)encodings;
 - (id)im_completeDescription;
 - (id)im_propertiesDescription;
-- (id)im_recursiveDescriptionChildrenBlock:(id)a3;
-- (id)imaxAncestorIsKindOf:(Class)a3;
-- (id)imaxDescendentOfType:(Class)a3;
-- (id)imaxElementIsAncestor:(id)a3;
-- (id)imaxFindAncestor:(id)a3;
-- (id)imaxValueForKey:(id)a3;
-- (int)imaxIntValueForKey:(id)a3;
-- (int64_t)imaxIntegerValueForKey:(id)a3;
-- (unint64_t)imaxUnsignedIntegerValueForKey:(id)a3;
-- (unsigned)imaxUnsignedIntValueForKey:(id)a3;
+- (id)im_recursiveDescriptionChildrenBlock:(id)block;
+- (id)imaxAncestorIsKindOf:(Class)of;
+- (id)imaxDescendentOfType:(Class)type;
+- (id)imaxElementIsAncestor:(id)ancestor;
+- (id)imaxFindAncestor:(id)ancestor;
+- (id)imaxValueForKey:(id)key;
+- (int)imaxIntValueForKey:(id)key;
+- (int64_t)imaxIntegerValueForKey:(id)key;
+- (unint64_t)imaxUnsignedIntegerValueForKey:(id)key;
+- (unsigned)imaxUnsignedIntValueForKey:(id)key;
 @end
 
 @implementation NSObject
 
-- (id)imaxFindAncestor:(id)a3
+- (id)imaxFindAncestor:(id)ancestor
 {
-  v4 = a3;
+  ancestorCopy = ancestor;
   v5 = [self imaxValueForKey:@"accessibilityContainer"];
   if (v5)
   {
     do
     {
-      if (v4[2](v4, v5))
+      if (ancestorCopy[2](ancestorCopy, v5))
       {
         break;
       }
@@ -49,49 +49,49 @@
   return v5;
 }
 
-- (id)imaxElementIsAncestor:(id)a3
+- (id)imaxElementIsAncestor:(id)ancestor
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_42FB8;
   v7[3] = &unk_2C9640;
-  v8 = a3;
-  v4 = v8;
+  ancestorCopy = ancestor;
+  v4 = ancestorCopy;
   v5 = [self imaxFindAncestor:v7];
 
   return v5;
 }
 
-- (id)imaxAncestorIsKindOf:(Class)a3
+- (id)imaxAncestorIsKindOf:(Class)of
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_43048;
   v5[3] = &unk_2C9660;
-  v5[4] = a3;
+  v5[4] = of;
   v3 = [self imaxFindAncestor:v5];
 
   return v3;
 }
 
-- (id)_accessibilityFindDescendant:(id)a3
+- (id)_accessibilityFindDescendant:(id)descendant
 {
-  v4 = a3;
+  descendantCopy = descendant;
   v5 = [objc_allocWithZone(NSMutableArray) init];
   [v5 addObject:self];
   if ([v5 count])
   {
     while (1)
     {
-      v6 = [v5 lastObject];
+      lastObject = [v5 lastObject];
       [v5 removeLastObject];
-      if (v4[2](v4, v6))
+      if (descendantCopy[2](descendantCopy, lastObject))
       {
         break;
       }
 
-      v7 = [v6 accessibilityElementCount];
-      if ((v7 - 1) > 0x7FFFFFFFFFFFFFFDLL)
+      accessibilityElementCount = [lastObject accessibilityElementCount];
+      if ((accessibilityElementCount - 1) > 0x7FFFFFFFFFFFFFFDLL)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -100,11 +100,11 @@
           v21 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v10 = [v6 subviews];
-          v11 = [v10 reverseObjectEnumerator];
-          v12 = [v11 allObjects];
+          subviews = [lastObject subviews];
+          reverseObjectEnumerator = [subviews reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
 
-          v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v13 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v13)
           {
             v14 = v13;
@@ -115,13 +115,13 @@
               {
                 if (*v19 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(allObjects);
                 }
 
                 [v5 addObject:*(*(&v18 + 1) + 8 * i)];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+              v14 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
             }
 
             while (v14);
@@ -131,10 +131,10 @@
 
       else
       {
-        v8 = (v7 + 1);
+        v8 = (accessibilityElementCount + 1);
         do
         {
-          v9 = [v6 accessibilityElementAtIndex:v8 - 2];
+          v9 = [lastObject accessibilityElementAtIndex:v8 - 2];
           if (v9)
           {
             [v5 addObject:v9];
@@ -156,19 +156,19 @@
   else
   {
 LABEL_19:
-    v6 = 0;
+    lastObject = 0;
   }
 
-  return v6;
+  return lastObject;
 }
 
-- (id)imaxDescendentOfType:(Class)a3
+- (id)imaxDescendentOfType:(Class)type
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_43320;
   v5[3] = &unk_2C9660;
-  v5[4] = a3;
+  v5[4] = type;
   v3 = [self _accessibilityFindDescendant:v5];
 
   return v3;
@@ -300,10 +300,10 @@ LABEL_27:
   InstanceMethod = class_getInstanceMethod(v3, "description");
   Implementation = method_getImplementation(InstanceMethod);
   v6 = (Implementation)(self, "description");
-  v7 = [self im_propertiesDescription];
-  if ([v7 length])
+  im_propertiesDescription = [self im_propertiesDescription];
+  if ([im_propertiesDescription length])
   {
-    v8 = [v6 stringByAppendingFormat:@"{\n%@\n}", v7];
+    v8 = [v6 stringByAppendingFormat:@"{\n%@\n}", im_propertiesDescription];
 
     v6 = v8;
   }
@@ -311,14 +311,14 @@ LABEL_27:
   return v6;
 }
 
-- (id)im_recursiveDescriptionChildrenBlock:(id)a3
+- (id)im_recursiveDescriptionChildrenBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [self description];
   v33 = [NSMutableString stringWithString:v5];
 
   v6 = +[NSMutableString string];
-  v7 = v4[2](v4, self);
+  v7 = blockCopy[2](blockCopy, self);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -338,12 +338,12 @@ LABEL_27:
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        v13 = [v12 im_recursiveDescriptionChildrenBlock:v4];
+        v13 = [v12 im_recursiveDescriptionChildrenBlock:blockCopy];
         [v6 appendString:v13];
 
-        v14 = [v7 lastObject];
+        lastObject = [v7 lastObject];
 
-        if (v12 != v14)
+        if (v12 != lastObject)
         {
           [v6 appendString:@"\n"];
         }
@@ -356,7 +356,7 @@ LABEL_27:
   }
 
   v32 = v7;
-  v34 = v4;
+  v34 = blockCopy;
   v15 = +[NSCharacterSet newlineCharacterSet];
   v16 = [v6 componentsSeparatedByCharactersInSet:v15];
 
@@ -388,9 +388,9 @@ LABEL_27:
         if (v26)
         {
           [v17 appendFormat:@"\t%@", v23];
-          v27 = [v18 lastObject];
+          lastObject2 = [v18 lastObject];
 
-          if (v23 != v27)
+          if (v23 != lastObject2)
           {
             [v17 appendString:@"\n"];
           }
@@ -415,10 +415,10 @@ LABEL_27:
   return v33;
 }
 
-- (id)_imaxValidatedValueForKey:(id)a3 expectedClass:(Class)a4 possibleExpectedTypeEncodings:(const char *)a5
+- (id)_imaxValidatedValueForKey:(id)key expectedClass:(Class)class possibleExpectedTypeEncodings:(const char *)encodings
 {
-  v8 = a3;
-  v9 = [self imaxValueForKey:v8];
+  keyCopy = key;
+  v9 = [self imaxValueForKey:keyCopy];
   if (v9)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -441,10 +441,10 @@ LABEL_27:
       v13 = byte_345F30;
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      v16 = NSStringFromClass(a4);
+      v16 = NSStringFromClass(class);
       v17 = objc_opt_class();
       v37 = NSStringFromClass(v17);
-      v23 = __IMAccessibilityHandleValidationErrorWithDescription(v13, 0, @"Value for key %@ on object <%@: %p> is not an %@; class: %@; value: %@", v18, v19, v20, v21, v22, v8);
+      v23 = __IMAccessibilityHandleValidationErrorWithDescription(v13, 0, @"Value for key %@ on object <%@: %p> is not an %@; class: %@; value: %@", v18, v19, v20, v21, v22, keyCopy);
 
       if (!v23)
       {
@@ -454,10 +454,10 @@ LABEL_27:
       goto LABEL_36;
     }
 
-    if (a5)
+    if (encodings)
     {
-      v10 = [v9 objCType];
-      if (strcmp(v10, a5))
+      objCType = [v9 objCType];
+      if (strcmp(objCType, encodings))
       {
         v11 = 0;
         v38 = &v41;
@@ -474,7 +474,7 @@ LABEL_27:
             v11 = 1;
           }
 
-          if (!strcmp(v10, *v12))
+          if (!strcmp(objCType, *v12))
           {
             goto LABEL_18;
           }
@@ -492,15 +492,15 @@ LABEL_27:
 
         if (v11)
         {
-          v25 = [[NSMutableString alloc] initWithFormat:@"%s", a5];
+          encodings = [[NSMutableString alloc] initWithFormat:@"%s", encodings];
           v39 = &v42;
           for (i = v41; i; i = *v27)
           {
-            [v25 appendFormat:@", %s", i];
+            [encodings appendFormat:@", %s", i];
             v27 = v39++;
           }
 
-          [v25 UTF8String];
+          [encodings UTF8String];
           if (qword_345F18 != -1)
           {
             sub_1EB0B0();
@@ -509,7 +509,7 @@ LABEL_27:
 
         else
         {
-          v25 = 0;
+          encodings = 0;
         }
 
         if (byte_345F10 != 1)
@@ -525,7 +525,7 @@ LABEL_27:
         v28 = byte_345F30;
         v29 = objc_opt_class();
         v36 = NSStringFromClass(v29);
-        v35 = __IMAccessibilityHandleValidationErrorWithDescription(v28, 0, @"Value for key %@ on object <%@: %p> doesn't encapsulate the right type; value: %@; actual type encoding: %s; %s: %s.", v30, v31, v32, v33, v34, v8);
+        v35 = __IMAccessibilityHandleValidationErrorWithDescription(v28, 0, @"Value for key %@ on object <%@: %p> doesn't encapsulate the right type; value: %@; actual type encoding: %s; %s: %s.", v30, v31, v32, v33, v34, keyCopy);
 
         if (!v35)
         {
@@ -547,63 +547,63 @@ LABEL_18:
   return v9;
 }
 
-- (id)imaxValueForKey:(id)a3
+- (id)imaxValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self valueForKey:v4];
+  keyCopy = key;
+  v5 = [self valueForKey:keyCopy];
 
   return v5;
 }
 
-- (BOOL)imaxBoolValueForKey:(id)a3
+- (BOOL)imaxBoolValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "c", "B", 0];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "c", "B", 0];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
-- (int)imaxIntValueForKey:(id)a3
+- (int)imaxIntValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"i"];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"i"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (unsigned)imaxUnsignedIntValueForKey:(id)a3
+- (unsigned)imaxUnsignedIntValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "I", 0];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "I", 0];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
-- (int64_t)imaxIntegerValueForKey:(id)a3
+- (int64_t)imaxIntegerValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"q", 0];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"q", 0];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
-- (unint64_t)imaxUnsignedIntegerValueForKey:(id)a3
+- (unint64_t)imaxUnsignedIntegerValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"Q", "q", "Q", 0];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"Q", "q", "Q", 0];
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (float)imaxFloatValueForKey:(id)a3
+- (float)imaxFloatValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"f"];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"f"];
 
   [v5 floatValue];
   v7 = v6;
@@ -611,10 +611,10 @@ LABEL_18:
   return v7;
 }
 
-- (double)imaxDoubleValueForKey:(id)a3
+- (double)imaxDoubleValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"d"];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"d"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -622,25 +622,25 @@ LABEL_18:
   return v7;
 }
 
-- (_NSRange)imaxRangeValueForKey:(id)a3
+- (_NSRange)imaxRangeValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
 
-  v6 = [v5 rangeValue];
+  rangeValue = [v5 rangeValue];
   v8 = v7;
 
-  v9 = v6;
+  v9 = rangeValue;
   v10 = v8;
   result.length = v10;
   result.location = v9;
   return result;
 }
 
-- (CGPoint)imaxCGPointValueForKey:(id)a3
+- (CGPoint)imaxCGPointValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
 
   [v5 CGPointValue];
   v7 = v6;
@@ -653,10 +653,10 @@ LABEL_18:
   return result;
 }
 
-- (CGSize)imaxCGSizeValueForKey:(id)a3
+- (CGSize)imaxCGSizeValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
 
   [v5 CGSizeValue];
   v7 = v6;
@@ -669,10 +669,10 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)imaxCGRectValueForKey:(id)a3
+- (CGRect)imaxCGRectValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _imaxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  keyCopy = key;
+  v5 = [self _imaxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
 
   [v5 CGRectValue];
   v7 = v6;
@@ -691,13 +691,13 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)_imaxRespondsToSelector:(SEL)a3 fromExtrasProtocol:(id)a4 skipAssertions:(BOOL)a5
+- (BOOL)_imaxRespondsToSelector:(SEL)selector fromExtrasProtocol:(id)protocol skipAssertions:(BOOL)assertions
 {
-  v8 = a4;
-  if (!a5)
+  protocolCopy = protocol;
+  if (!assertions)
   {
     ShouldPerformValidationChecks = IMAccessibilityShouldPerformValidationChecks();
-    if (!a3)
+    if (!selector)
     {
       if (ShouldPerformValidationChecks)
       {
@@ -710,7 +710,7 @@ LABEL_18:
     }
 
     v19 = IMAccessibilityShouldPerformValidationChecks();
-    if (!v8)
+    if (!protocolCopy)
     {
       if (v19)
       {
@@ -726,17 +726,17 @@ LABEL_18:
   }
 
   v9 = 0;
-  if (!a3 || !v8)
+  if (!selector || !protocolCopy)
   {
     goto LABEL_22;
   }
 
-  name = protocol_getMethodDescription(v8, a3, 1, 1).name;
-  v11 = [self conformsToProtocol:v8];
+  name = protocol_getMethodDescription(protocolCopy, selector, 1, 1).name;
+  v11 = [self conformsToProtocol:protocolCopy];
   v9 = v11;
-  if (!a5)
+  if (!assertions)
   {
-    if ((name == 0) | ((IMAccessibilityShouldPerformValidationChecks() & 1) == 0) | v11 & 1 || (v26 = IMAccessibilityShouldCrashOnValidationErrorAfterLaunch(), v27 = objc_opt_class(), NSStringFromClass(v27), v28 = objc_claimAutoreleasedReturnValue(), NSStringFromProtocol(v8), v46 = objc_claimAutoreleasedReturnValue(), v34 = __IMAccessibilityHandleValidationErrorWithDescription(v26, 0, @"<%@: %p> doesn't conform to the protocol: %@", v29, v30, v31, v32, v33, v28), v46, v28, !v34))
+    if ((name == 0) | ((IMAccessibilityShouldPerformValidationChecks() & 1) == 0) | v11 & 1 || (v26 = IMAccessibilityShouldCrashOnValidationErrorAfterLaunch(), v27 = objc_opt_class(), NSStringFromClass(v27), v28 = objc_claimAutoreleasedReturnValue(), NSStringFromProtocol(protocolCopy), v46 = objc_claimAutoreleasedReturnValue(), v34 = __IMAccessibilityHandleValidationErrorWithDescription(v26, 0, @"<%@: %p> doesn't conform to the protocol: %@", v29, v30, v31, v32, v33, v28), v46, v28, !v34))
     {
       if ((v9 & 1) == 0)
       {
@@ -752,7 +752,7 @@ LABEL_18:
       v35 = IMAccessibilityShouldCrashOnValidationErrorAfterLaunch();
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
-      v47 = NSStringFromSelector(a3);
+      v47 = NSStringFromSelector(selector);
       v43 = __IMAccessibilityHandleValidationErrorWithDescription(v35, 0, @"<%@: %p> doesn't respond to the following abstract method: %@", v38, v39, v40, v41, v42, v37);
 
       if (!v43)

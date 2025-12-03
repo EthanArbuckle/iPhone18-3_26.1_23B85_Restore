@@ -1,14 +1,14 @@
 @interface WorkoutDetailSectionHeader
-- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithCoder:(id)a3;
-- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithReuseIdentifier:(id)a3;
-- (void)configureWithTitle:(id)a3 buttonAction:(id)a4;
+- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithCoder:(id)coder;
+- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithReuseIdentifier:(id)identifier;
+- (void)configureWithTitle:(id)title buttonAction:(id)action;
 @end
 
 @implementation WorkoutDetailSectionHeader
 
-- (void)configureWithTitle:(id)a3 buttonAction:(id)a4
+- (void)configureWithTitle:(id)title buttonAction:(id)action
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(action);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   if (v5)
@@ -23,15 +23,15 @@
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_10050ADC0(v6, v8, 0, 0, v5, v9, 0.0);
 
   sub_1000245E0(v5);
 }
 
-- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithReuseIdentifier:(id)a3
+- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v4 = String._bridgeToObjectiveC()();
@@ -49,12 +49,12 @@
   return v5;
 }
 
-- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithCoder:(id)a3
+- (_TtC10FitnessApp26WorkoutDetailSectionHeader)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WorkoutDetailSectionHeader();
-  v4 = a3;
-  v5 = [(ActivityTileSectionHeader *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ActivityTileSectionHeader *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

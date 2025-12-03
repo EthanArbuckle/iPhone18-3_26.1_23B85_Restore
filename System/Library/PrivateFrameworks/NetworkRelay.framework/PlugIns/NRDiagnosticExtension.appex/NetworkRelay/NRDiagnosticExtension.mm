@@ -1,12 +1,12 @@
 @interface NRDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation NRDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  NSLog(@"Parameters = %@", a2, a3);
+  NSLog(@"Parameters = %@", a2, parameters);
   v3 = objc_alloc_init(NSMutableArray);
   v4 = NRDiagnosticSaveNetworkRelayStatusToTempDirectory();
   v7[0] = _NSConcreteStackBlock;

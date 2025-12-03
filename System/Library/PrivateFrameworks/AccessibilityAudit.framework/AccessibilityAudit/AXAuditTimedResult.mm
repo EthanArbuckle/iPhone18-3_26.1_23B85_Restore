@@ -6,9 +6,9 @@
 
 - (NSString)executionTimeString
 {
-  v3 = [(AXAuditTimedResult *)self endTime];
-  v4 = [(AXAuditTimedResult *)self startTime];
-  v5 = [v3 axAuditLogStringForDifferenceFromDate:v4];
+  endTime = [(AXAuditTimedResult *)self endTime];
+  startTime = [(AXAuditTimedResult *)self startTime];
+  v5 = [endTime axAuditLogStringForDifferenceFromDate:startTime];
 
   return v5;
 }

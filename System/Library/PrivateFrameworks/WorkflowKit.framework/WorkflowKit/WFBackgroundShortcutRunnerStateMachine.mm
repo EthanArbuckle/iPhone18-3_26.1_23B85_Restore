@@ -1,21 +1,21 @@
 @interface WFBackgroundShortcutRunnerStateMachine
 - (BOOL)isRunningShortcut;
-- (WFBackgroundShortcutRunnerStateMachine)initWithProcessPolicy:(unint64_t)a3;
+- (WFBackgroundShortcutRunnerStateMachine)initWithProcessPolicy:(unint64_t)policy;
 - (WFBackgroundShortcutRunnerStateMachineDelegate)delegate;
-- (void)exitWithReason:(id)a3;
-- (void)finishRunningWithReason:(id)a3 result:(id)a4;
-- (void)handlingRequestStateWithReason:(id)a3;
-- (void)idleStateWithReason:(id)a3;
+- (void)exitWithReason:(id)reason;
+- (void)finishRunningWithReason:(id)reason result:(id)result;
+- (void)handlingRequestStateWithReason:(id)reason;
+- (void)idleStateWithReason:(id)reason;
 - (void)invalidate;
-- (void)invalidateWithReason:(id)a3;
-- (void)stopShortcutWithError:(id)a3 reason:(id)a4;
+- (void)invalidateWithReason:(id)reason;
+- (void)stopShortcutWithError:(id)error reason:(id)reason;
 @end
 
 @implementation WFBackgroundShortcutRunnerStateMachine
 
 - (BOOL)isRunningShortcut
 {
-  v2 = [(WFStateMachine *)self currentState];
+  currentState = [(WFStateMachine *)self currentState];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -29,16 +29,16 @@
   return WeakRetained;
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFStateMachine *)self currentState];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  reasonCopy = reason;
+  currentState = [(WFStateMachine *)self currentState];
+  if (currentState && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if ([v5 stage] > 2)
+    if ([currentState stage] > 2)
     {
-      if ([v5 stage] == 4 || objc_msgSend(v5, "stage") == 5)
+      if ([currentState stage] == 4 || objc_msgSend(currentState, "stage") == 5)
       {
         v7 = getWFStateMachineLogObject();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@
           v8 = 136315394;
           v9 = "[WFBackgroundShortcutRunnerStateMachine invalidateWithReason:]";
           v10 = 2112;
-          v11 = v4;
+          v11 = reasonCopy;
           _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_DEFAULT, "%s %@ while finishing shortcut or exiting runner. Exiting should already be in process, not transitioning.", &v8, 0x16u);
         }
       }
@@ -54,14 +54,14 @@
 
     else
     {
-      [(WFBackgroundShortcutRunnerStateMachine *)self stopShortcutWithError:0 reason:v4];
+      [(WFBackgroundShortcutRunnerStateMachine *)self stopShortcutWithError:0 reason:reasonCopy];
     }
   }
 
   else
   {
 
-    v5 = 0;
+    currentState = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -82,10 +82,10 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)exitWithReason:(id)a3
+- (void)exitWithReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   if ([(WFBackgroundShortcutRunnerStateMachine *)self processPolicy]== 1)
   {
     v5 = getWFStateMachineLogObject();
@@ -94,7 +94,7 @@
       *buf = 136315394;
       v11 = "[WFBackgroundShortcutRunnerStateMachine exitWithReason:]";
       v12 = 2114;
-      v13 = v4;
+      v13 = reasonCopy;
       _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s exit was requested for reason '%{public}@', but not exiting because process policy is a shared runner", buf, 0x16u);
     }
   }
@@ -103,19 +103,19 @@
   {
     v5 = objc_opt_new();
     [v5 setStage:5];
-    if ([(WFStateMachine *)self transitionToState:v5 withReason:v4])
+    if ([(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy])
     {
-      v6 = [(WFBackgroundShortcutRunnerStateMachine *)self delegate];
+      delegate = [(WFBackgroundShortcutRunnerStateMachine *)self delegate];
 
-      if (v6)
+      if (delegate)
       {
-        v7 = [(WFBackgroundShortcutRunnerStateMachine *)self delegateQueue];
+        delegateQueue = [(WFBackgroundShortcutRunnerStateMachine *)self delegateQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __57__WFBackgroundShortcutRunnerStateMachine_exitWithReason___block_invoke;
         block[3] = &unk_1E837FA70;
         block[4] = self;
-        dispatch_async(v7, block);
+        dispatch_async(delegateQueue, block);
       }
     }
   }
@@ -129,28 +129,28 @@ void __57__WFBackgroundShortcutRunnerStateMachine_exitWithReason___block_invoke(
   [v2 runnerStateMachineDidRequestProcessExit:*(a1 + 32)];
 }
 
-- (void)finishRunningWithReason:(id)a3 result:(id)a4
+- (void)finishRunningWithReason:(id)reason result:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  reasonCopy = reason;
   v8 = objc_opt_new();
   [v8 setStage:4];
-  v9 = [(WFStateMachine *)self transitionToState:v8 withReason:v7];
+  v9 = [(WFStateMachine *)self transitionToState:v8 withReason:reasonCopy];
 
   if (v9)
   {
-    v10 = [(WFBackgroundShortcutRunnerStateMachine *)self delegate];
+    delegate = [(WFBackgroundShortcutRunnerStateMachine *)self delegate];
 
-    if (v10)
+    if (delegate)
     {
-      v11 = [(WFBackgroundShortcutRunnerStateMachine *)self delegateQueue];
+      delegateQueue = [(WFBackgroundShortcutRunnerStateMachine *)self delegateQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __73__WFBackgroundShortcutRunnerStateMachine_finishRunningWithReason_result___block_invoke;
       v12[3] = &unk_1E837F870;
       v12[4] = self;
-      v13 = v6;
-      dispatch_async(v11, v12);
+      v13 = resultCopy;
+      dispatch_async(delegateQueue, v12);
     }
   }
 }
@@ -161,35 +161,35 @@ void __73__WFBackgroundShortcutRunnerStateMachine_finishRunningWithReason_result
   [v2 runnerStateMachine:*(a1 + 32) didFinishRunningShortcutWithResult:*(a1 + 40)];
 }
 
-- (void)stopShortcutWithError:(id)a3 reason:(id)a4
+- (void)stopShortcutWithError:(id)error reason:(id)reason
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFStateMachine *)self currentState];
-  if (v8)
+  errorCopy = error;
+  reasonCopy = reason;
+  currentState = [(WFStateMachine *)self currentState];
+  if (currentState)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v8 stage] < 3)
+      if ([currentState stage] < 3)
       {
         v10 = objc_opt_new();
         [v10 setStage:3];
-        if ([(WFStateMachine *)self transitionToState:v10 withReason:v7])
+        if ([(WFStateMachine *)self transitionToState:v10 withReason:reasonCopy])
         {
-          v11 = [(WFBackgroundShortcutRunnerStateMachine *)self delegate];
+          delegate = [(WFBackgroundShortcutRunnerStateMachine *)self delegate];
 
-          if (v11)
+          if (delegate)
           {
-            v12 = [(WFBackgroundShortcutRunnerStateMachine *)self delegateQueue];
+            delegateQueue = [(WFBackgroundShortcutRunnerStateMachine *)self delegateQueue];
             v14[0] = MEMORY[0x1E69E9820];
             v14[1] = 3221225472;
             v14[2] = __71__WFBackgroundShortcutRunnerStateMachine_stopShortcutWithError_reason___block_invoke;
             v14[3] = &unk_1E837F870;
             v14[4] = self;
-            v15 = v6;
-            dispatch_async(v12, v14);
+            v15 = errorCopy;
+            dispatch_async(delegateQueue, v14);
           }
         }
       }
@@ -202,9 +202,9 @@ void __73__WFBackgroundShortcutRunnerStateMachine_finishRunningWithReason_result
           *buf = 136315650;
           v17 = "[WFBackgroundShortcutRunnerStateMachine stopShortcutWithError:reason:]";
           v18 = 2114;
-          v19 = v7;
+          v19 = reasonCopy;
           v20 = 2048;
-          v21 = [v8 stage];
+          stage = [currentState stage];
           _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_DEFAULT, "%s stop was requested because %{public}@, but we're already in the process of stopping/finishing (current stage: %lu)", buf, 0x20u);
         }
       }
@@ -249,23 +249,23 @@ void __116__WFBackgroundShortcutRunnerStateMachine_startRunningShortcutWithEnvir
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handlingRequestStateWithReason:(id)a3
+- (void)handlingRequestStateWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   [v5 setStage:1];
-  [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 }
 
-- (void)idleStateWithReason:(id)a3
+- (void)idleStateWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   [v5 setStage:0];
-  [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 }
 
-- (WFBackgroundShortcutRunnerStateMachine)initWithProcessPolicy:(unint64_t)a3
+- (WFBackgroundShortcutRunnerStateMachine)initWithProcessPolicy:(unint64_t)policy
 {
   v10.receiver = self;
   v10.super_class = WFBackgroundShortcutRunnerStateMachine;
@@ -277,7 +277,7 @@ void __116__WFBackgroundShortcutRunnerStateMachine_startRunningShortcutWithEnvir
     delegateQueue = v4->_delegateQueue;
     v4->_delegateQueue = v6;
 
-    v4->_processPolicy = a3;
+    v4->_processPolicy = policy;
     v8 = v4;
   }
 

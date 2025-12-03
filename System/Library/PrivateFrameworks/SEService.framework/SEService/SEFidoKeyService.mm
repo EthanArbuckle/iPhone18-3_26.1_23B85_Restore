@@ -1,13 +1,13 @@
 @interface SEFidoKeyService
 + (id)shared;
-- (BOOL)deleteFidoKeyFor:(id)a3 usingSession:(id)a4 withSessionSEID:(id)a5 error:(id *)a6;
-- (id)checkFidoKeyPresence:(id)a3 usingSession:(id)a4 withSessionSEID:(id)a5 error:(id *)a6;
-- (id)checkMultipleFidoKeyPresence:(id)a3 usingSession:(id)a4 withSessionSEID:(id)a5 error:(id *)a6;
-- (id)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 usingSession:(id)a6 withSessionSEID:(id)a7 error:(id *)a8;
-- (id)findAndAttest:(id)a3 challenge:(id)a4 usingSession:(id)a5 withSessionSEID:(id)a6 error:(id *)a7;
-- (id)signMultipleWithFidoKeysFor:(id)a3 challenges:(id)a4 forEndpointIdentifiers:(id)a5 usingSession:(id)a6 withSessionSEID:(id)a7 externalizedAuth:(id)a8 error:(id *)a9;
-- (id)signWithFidoKeyFor:(id)a3 challenge:(id)a4 forNFCKeyWithIdentifier:(id)a5 usingSession:(id)a6 withSessionSEID:(id)a7 externalizedAuth:(id)a8 error:(id *)a9;
-- (id)verifyWithFidoKeyFor:(id)a3 signedChallenge:(id)a4 usingSession:(id)a5 withSessionSEID:(id)a6 error:(id *)a7;
+- (BOOL)deleteFidoKeyFor:(id)for usingSession:(id)session withSessionSEID:(id)d error:(id *)error;
+- (id)checkFidoKeyPresence:(id)presence usingSession:(id)session withSessionSEID:(id)d error:(id *)error;
+- (id)checkMultipleFidoKeyPresence:(id)presence usingSession:(id)session withSessionSEID:(id)d error:(id *)error;
+- (id)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge usingSession:(id)session withSessionSEID:(id)d error:(id *)error;
+- (id)findAndAttest:(id)attest challenge:(id)challenge usingSession:(id)session withSessionSEID:(id)d error:(id *)error;
+- (id)signMultipleWithFidoKeysFor:(id)for challenges:(id)challenges forEndpointIdentifiers:(id)identifiers usingSession:(id)session withSessionSEID:(id)d externalizedAuth:(id)auth error:(id *)error;
+- (id)signWithFidoKeyFor:(id)for challenge:(id)challenge forNFCKeyWithIdentifier:(id)identifier usingSession:(id)session withSessionSEID:(id)d externalizedAuth:(id)auth error:(id *)error;
+- (id)verifyWithFidoKeyFor:(id)for signedChallenge:(id)challenge usingSession:(id)session withSessionSEID:(id)d error:(id *)error;
 @end
 
 @implementation SEFidoKeyService
@@ -31,13 +31,13 @@ uint64_t __26__SEFidoKeyService_shared__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 usingSession:(id)a6 withSessionSEID:(id)a7 error:(id *)a8
+- (id)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge usingSession:(id)session withSessionSEID:(id)d error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  sessionCopy = session;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -58,9 +58,9 @@ uint64_t __26__SEFidoKeyService_shared__block_invoke()
     v33 = __Block_byref_object_copy__2;
     v34 = __Block_byref_object_dispose__2;
     v35 = 0;
-    if (v16)
+    if (sessionCopy)
     {
-      v23 = [SEProxy withSession:v16 seid:v17];
+      v23 = [SEProxy withSession:sessionCopy seid:dCopy];
     }
 
     else
@@ -74,8 +74,8 @@ uint64_t __26__SEFidoKeyService_shared__block_invoke()
     v29[3] = &unk_1E82D1040;
     v29[4] = &v30;
     v29[5] = &v37;
-    [v20 createFiDOKeyForRelyingParty:v13 relyingPartyAccountHash:v14 challenge:v15 usingProxy:v23 callback:v29];
-    if (v16)
+    [v20 createFiDOKeyForRelyingParty:partyCopy relyingPartyAccountHash:hashCopy challenge:challengeCopy usingProxy:v23 callback:v29];
+    if (sessionCopy)
     {
     }
 
@@ -88,20 +88,20 @@ uint64_t __26__SEFidoKeyService_shared__block_invoke()
       v38[5] = v26;
     }
 
-    if (a8)
+    if (error)
     {
-      *a8 = v38[5];
+      *error = v38[5];
     }
 
     v22 = v31[5];
     _Block_object_dispose(&v30, 8);
   }
 
-  else if (a8)
+  else if (error)
   {
     v21 = v38[5];
     SESEnsureError();
-    *a8 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -128,16 +128,16 @@ void __118__SEFidoKeyService_createFidoKeyForRelyingParty_relyingPartyAccountHas
   *(v9 + 40) = v6;
 }
 
-- (id)checkFidoKeyPresence:(id)a3 usingSession:(id)a4 withSessionSEID:(id)a5 error:(id *)a6
+- (id)checkFidoKeyPresence:(id)presence usingSession:(id)session withSessionSEID:(id)d error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v25[0] = v10;
+  presenceCopy = presence;
+  v25[0] = presenceCopy;
   v11 = MEMORY[0x1E695DEC8];
-  v12 = a5;
-  v13 = a4;
+  dCopy = d;
+  sessionCopy = session;
   v14 = [v11 arrayWithObjects:v25 count:1];
-  v15 = [(SEFidoKeyService *)self checkMultipleFidoKeyPresence:v14 usingSession:v13 withSessionSEID:v12 error:a6];
+  v15 = [(SEFidoKeyService *)self checkMultipleFidoKeyPresence:v14 usingSession:sessionCopy withSessionSEID:dCopy error:error];
 
   if ([v15 count] == 1 && (objc_msgSend(v15, "objectAtIndexedSubscript:", 0), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, (isKindOfClass & 1) != 0))
   {
@@ -153,10 +153,10 @@ void __118__SEFidoKeyService_createFidoKeyForRelyingParty_relyingPartyAccountHas
     v20 = [v15 objectAtIndexedSubscript:0];
   }
 
-  else if (a6)
+  else if (error)
   {
     SESEnsureError();
-    *a6 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -169,23 +169,23 @@ void __118__SEFidoKeyService_createFidoKeyForRelyingParty_relyingPartyAccountHas
   return v20;
 }
 
-- (id)signWithFidoKeyFor:(id)a3 challenge:(id)a4 forNFCKeyWithIdentifier:(id)a5 usingSession:(id)a6 withSessionSEID:(id)a7 externalizedAuth:(id)a8 error:(id *)a9
+- (id)signWithFidoKeyFor:(id)for challenge:(id)challenge forNFCKeyWithIdentifier:(id)identifier usingSession:(id)session withSessionSEID:(id)d externalizedAuth:(id)auth error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v36 = v15;
-  v40[0] = v15;
+  forCopy = for;
+  challengeCopy = challenge;
+  identifierCopy = identifier;
+  sessionCopy = session;
+  dCopy = d;
+  authCopy = auth;
+  v36 = forCopy;
+  v40[0] = forCopy;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-  v39 = v16;
+  v39 = challengeCopy;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
-  if (v17)
+  if (identifierCopy)
   {
-    v38 = v17;
+    v38 = identifierCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
   }
 
@@ -195,9 +195,9 @@ void __118__SEFidoKeyService_createFidoKeyForRelyingParty_relyingPartyAccountHas
   }
 
   v37 = 0;
-  v24 = [(SEFidoKeyService *)self signMultipleWithFidoKeysFor:v21 challenges:v22 forEndpointIdentifiers:v23 usingSession:v18 withSessionSEID:v19 externalizedAuth:v20 error:&v37];
+  v24 = [(SEFidoKeyService *)self signMultipleWithFidoKeysFor:v21 challenges:v22 forEndpointIdentifiers:v23 usingSession:sessionCopy withSessionSEID:dCopy externalizedAuth:authCopy error:&v37];
   v25 = v37;
-  if (v17)
+  if (identifierCopy)
   {
   }
 
@@ -207,7 +207,7 @@ void __118__SEFidoKeyService_createFidoKeyForRelyingParty_relyingPartyAccountHas
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v28 = [v24 objectAtIndexedSubscript:0];
+    errorCopy2 = [v24 objectAtIndexedSubscript:0];
     if (isKindOfClass)
     {
       goto LABEL_17;
@@ -218,55 +218,55 @@ void __118__SEFidoKeyService_createFidoKeyForRelyingParty_relyingPartyAccountHas
 
     if (v29)
     {
-      v30 = a9;
-      if (a9)
+      errorCopy3 = error;
+      if (error)
       {
         v31 = [v24 objectAtIndexedSubscript:0];
 LABEL_13:
-        v28 = 0;
-        *v30 = v31;
+        errorCopy2 = 0;
+        *errorCopy3 = v31;
         goto LABEL_17;
       }
     }
 
     else
     {
-      v28 = a9;
-      if (!a9)
+      errorCopy2 = error;
+      if (!error)
       {
         goto LABEL_17;
       }
 
       v32 = SESDefaultLogObject();
       v33 = *MEMORY[0x1E69E5148];
-      *a9 = SESCreateAndLogError();
+      *error = SESCreateAndLogError();
     }
   }
 
   else
   {
-    v30 = a9;
-    if (a9)
+    errorCopy3 = error;
+    if (error)
     {
       v31 = SESEnsureError();
       goto LABEL_13;
     }
   }
 
-  v28 = 0;
+  errorCopy2 = 0;
 LABEL_17:
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return errorCopy2;
 }
 
-- (id)verifyWithFidoKeyFor:(id)a3 signedChallenge:(id)a4 usingSession:(id)a5 withSessionSEID:(id)a6 error:(id *)a7
+- (id)verifyWithFidoKeyFor:(id)for signedChallenge:(id)challenge usingSession:(id)session withSessionSEID:(id)d error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  forCopy = for;
+  challengeCopy = challenge;
+  sessionCopy = session;
+  dCopy = d;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -287,9 +287,9 @@ LABEL_17:
     v30 = __Block_byref_object_copy__2;
     v31 = __Block_byref_object_dispose__2;
     v32 = 0;
-    if (v13)
+    if (sessionCopy)
     {
-      v20 = [SEProxy withSession:v13 seid:v14];
+      v20 = [SEProxy withSession:sessionCopy seid:dCopy];
     }
 
     else
@@ -303,8 +303,8 @@ LABEL_17:
     v26[3] = &unk_1E82D1068;
     v26[4] = &v27;
     v26[5] = &v34;
-    [v17 verifyWithFidoKeyFor:v11 signedChallenge:v12 usingProxy:v20 callback:v26];
-    if (v13)
+    [v17 verifyWithFidoKeyFor:forCopy signedChallenge:challengeCopy usingProxy:v20 callback:v26];
+    if (sessionCopy)
     {
     }
 
@@ -317,20 +317,20 @@ LABEL_17:
       v35[5] = v23;
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = v35[5];
+      *error = v35[5];
     }
 
     v19 = v28[5];
     _Block_object_dispose(&v27, 8);
   }
 
-  else if (a7)
+  else if (error)
   {
     v18 = v35[5];
     SESEnsureError();
-    *a7 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -357,11 +357,11 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
   *(v9 + 40) = v6;
 }
 
-- (BOOL)deleteFidoKeyFor:(id)a3 usingSession:(id)a4 withSessionSEID:(id)a5 error:(id *)a6
+- (BOOL)deleteFidoKeyFor:(id)for usingSession:(id)session withSessionSEID:(id)d error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  forCopy = for;
+  sessionCopy = session;
+  dCopy = d;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -380,9 +380,9 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
     v26 = &v25;
     v27 = 0x2020000000;
     v28 = 0;
-    if (v10)
+    if (sessionCopy)
     {
-      v17 = [SEProxy withSession:v10 seid:v11];
+      v17 = [SEProxy withSession:sessionCopy seid:dCopy];
     }
 
     else
@@ -396,8 +396,8 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
     v24[3] = &unk_1E82D0DF0;
     v24[4] = &v25;
     v24[5] = &v30;
-    [v14 deleteFiDOKeyFor:v9 usingProxy:v17 callback:v24];
-    if (v10)
+    [v14 deleteFiDOKeyFor:forCopy usingProxy:v17 callback:v24];
+    if (sessionCopy)
     {
     }
 
@@ -413,9 +413,9 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
       v18 = v31;
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v18[5];
+      *error = v18[5];
       v18 = v31;
     }
 
@@ -423,11 +423,11 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
     _Block_object_dispose(&v25, 8);
   }
 
-  else if (a6)
+  else if (error)
   {
     v15 = v31[5];
     SESEnsureError();
-    *a6 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -439,12 +439,12 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
   return v16;
 }
 
-- (id)checkMultipleFidoKeyPresence:(id)a3 usingSession:(id)a4 withSessionSEID:(id)a5 error:(id *)a6
+- (id)checkMultipleFidoKeyPresence:(id)presence usingSession:(id)session withSessionSEID:(id)d error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  presenceCopy = presence;
+  sessionCopy = session;
+  dCopy = d;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -465,9 +465,9 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
     v30 = __Block_byref_object_copy__2;
     v31 = __Block_byref_object_dispose__2;
     v32 = 0;
-    if (v10)
+    if (sessionCopy)
     {
-      v17 = [SEProxy withSession:v10 seid:v11];
+      v17 = [SEProxy withSession:sessionCopy seid:dCopy];
     }
 
     else
@@ -481,8 +481,8 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
     v26[3] = &unk_1E82D0C38;
     v26[4] = &v27;
     v26[5] = &v34;
-    [v14 checkMultipleFidoKeyPresence:v9 usingProxy:v17 callback:v26];
-    if (v10)
+    [v14 checkMultipleFidoKeyPresence:presenceCopy usingProxy:v17 callback:v26];
+    if (sessionCopy)
     {
     }
 
@@ -508,11 +508,11 @@ void __92__SEFidoKeyService_verifyWithFidoKeyFor_signedChallenge_usingSession_wi
     _Block_object_dispose(&v27, 8);
   }
 
-  else if (a6)
+  else if (error)
   {
     v15 = v35[5];
     SESEnsureError();
-    *a6 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -540,13 +540,13 @@ void __84__SEFidoKeyService_checkMultipleFidoKeyPresence_usingSession_withSessio
   *(v9 + 40) = v6;
 }
 
-- (id)findAndAttest:(id)a3 challenge:(id)a4 usingSession:(id)a5 withSessionSEID:(id)a6 error:(id *)a7
+- (id)findAndAttest:(id)attest challenge:(id)challenge usingSession:(id)session withSessionSEID:(id)d error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  attestCopy = attest;
+  challengeCopy = challenge;
+  sessionCopy = session;
+  dCopy = d;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -561,11 +561,11 @@ void __84__SEFidoKeyService_checkMultipleFidoKeyPresence_usingSession_withSessio
 
   if (!v17 || v39[5])
   {
-    if (a7)
+    if (error)
     {
       v18 = v39[5];
       SESEnsureError();
-      *a7 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
@@ -582,9 +582,9 @@ void __84__SEFidoKeyService_checkMultipleFidoKeyPresence_usingSession_withSessio
   v34 = __Block_byref_object_copy__2;
   v35 = __Block_byref_object_dispose__2;
   v36 = 0;
-  if (v13)
+  if (sessionCopy)
   {
-    v20 = [SEProxy withSession:v13 seid:v14];
+    v20 = [SEProxy withSession:sessionCopy seid:dCopy];
   }
 
   else
@@ -598,15 +598,15 @@ void __84__SEFidoKeyService_checkMultipleFidoKeyPresence_usingSession_withSessio
   v30[3] = &unk_1E82D1040;
   v30[4] = &v31;
   v30[5] = &v38;
-  [v17 findAndAttest:v11 challenge:v12 usingProxy:v20 callback:v30];
-  if (v13)
+  [v17 findAndAttest:attestCopy challenge:challengeCopy usingProxy:v20 callback:v30];
+  if (sessionCopy)
   {
   }
 
   v21 = v39[5];
   if (v21)
   {
-    if (a7)
+    if (error)
     {
       goto LABEL_13;
     }
@@ -621,12 +621,12 @@ void __84__SEFidoKeyService_checkMultipleFidoKeyPresence_usingSession_withSessio
     v39[5] = v28;
 
     v21 = v39[5];
-    if (a7)
+    if (error)
     {
 LABEL_13:
       if (v21)
       {
-        *a7 = v21;
+        *error = v21;
       }
     }
   }
@@ -665,14 +665,14 @@ void __79__SEFidoKeyService_findAndAttest_challenge_usingSession_withSessionSEID
   *(v9 + 40) = v6;
 }
 
-- (id)signMultipleWithFidoKeysFor:(id)a3 challenges:(id)a4 forEndpointIdentifiers:(id)a5 usingSession:(id)a6 withSessionSEID:(id)a7 externalizedAuth:(id)a8 error:(id *)a9
+- (id)signMultipleWithFidoKeysFor:(id)for challenges:(id)challenges forEndpointIdentifiers:(id)identifiers usingSession:(id)session withSessionSEID:(id)d externalizedAuth:(id)auth error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  forCopy = for;
+  challengesCopy = challenges;
+  identifiersCopy = identifiers;
+  sessionCopy = session;
+  dCopy = d;
+  authCopy = auth;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -693,9 +693,9 @@ void __79__SEFidoKeyService_findAndAttest_challenge_usingSession_withSessionSEID
     v36 = __Block_byref_object_copy__2;
     v37 = __Block_byref_object_dispose__2;
     v38 = 0;
-    if (v17)
+    if (sessionCopy)
     {
-      v25 = [SEProxy withSession:v17 seid:v18];
+      v25 = [SEProxy withSession:sessionCopy seid:dCopy];
     }
 
     else
@@ -709,8 +709,8 @@ void __79__SEFidoKeyService_findAndAttest_challenge_usingSession_withSessionSEID
     v32[3] = &unk_1E82D0C38;
     v32[4] = &v33;
     v32[5] = &v40;
-    [v22 signMultipleWithFidoKeysFor:v14 challenges:v15 forEndpointIdentifiers:v16 externalizedAuth:v19 usingProxy:v25 callback:v32];
-    if (v17)
+    [v22 signMultipleWithFidoKeysFor:forCopy challenges:challengesCopy forEndpointIdentifiers:identifiersCopy externalizedAuth:authCopy usingProxy:v25 callback:v32];
+    if (sessionCopy)
     {
     }
 
@@ -738,11 +738,11 @@ void __79__SEFidoKeyService_findAndAttest_challenge_usingSession_withSessionSEID
     _Block_object_dispose(&v33, 8);
   }
 
-  else if (a9)
+  else if (error)
   {
     v23 = v41[5];
     SESEnsureError();
-    *a9 = v24 = 0;
+    *error = v24 = 0;
   }
 
   else

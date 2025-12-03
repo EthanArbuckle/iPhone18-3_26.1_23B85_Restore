@@ -1,20 +1,20 @@
 @interface COMTAlarmReadResult
-- (COMTAlarmReadResult)initWithAlarms:(id)a3 actionIdentifier:(id)a4;
-- (COMTAlarmReadResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COMTAlarmReadResult)initWithAlarms:(id)alarms actionIdentifier:(id)identifier;
+- (COMTAlarmReadResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTAlarmReadResult
 
-- (COMTAlarmReadResult)initWithAlarms:(id)a3 actionIdentifier:(id)a4
+- (COMTAlarmReadResult)initWithAlarms:(id)alarms actionIdentifier:(id)identifier
 {
-  v6 = a3;
+  alarmsCopy = alarms;
   v11.receiver = self;
   v11.super_class = COMTAlarmReadResult;
-  v7 = [(COMTResult *)&v11 initWithActionIdentifier:a4];
+  v7 = [(COMTResult *)&v11 initWithActionIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [alarmsCopy copy];
     alarms = v7->_alarms;
     v7->_alarms = v8;
   }
@@ -22,19 +22,19 @@
   return v7;
 }
 
-- (COMTAlarmReadResult)initWithCoder:(id)a3
+- (COMTAlarmReadResult)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = COMTAlarmReadResult;
-  v5 = [(COMTResult *)&v24 initWithCoder:v4];
+  v5 = [(COMTResult *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ARA"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARA"];
 
     v22 = 0u;
     v23 = 0u;
@@ -90,14 +90,14 @@ LABEL_13:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COMTAlarmReadResult;
-  v4 = a3;
-  [(COMTResult *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMTResult *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COMTAlarmReadResult *)self alarms:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"ARA"];
+  [coderCopy encodeObject:v5 forKey:@"ARA"];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface PXMapOptionsChooseMapSheetController
-- (PXMapOptionsChooseMapSheetController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PXMapOptionsChooseMapSheetController)initWithNibName:(id)name bundle:(id)bundle;
 - (PXMapOptionsChooseMapViewDelegate)delegate;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (unint64_t)mapStyle;
 - (void)handleCloseAction;
-- (void)setDelegate:(id)a3;
-- (void)setMapStyle:(unint64_t)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setMapStyle:(unint64_t)style;
 - (void)viewDidLoad;
 @end
 
@@ -14,34 +14,34 @@
 - (PXMapOptionsChooseMapViewDelegate)delegate
 {
   v2 = *((*MEMORY[0x1E69E7D40] & **(&self->super.super.super.isa + OBJC_IVAR___PXMapOptionsChooseMapSheetController_contentViewController)) + 0xC8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = *((*MEMORY[0x1E69E7D40] & **(&self->super.super.super.isa + OBJC_IVAR___PXMapOptionsChooseMapSheetController_contentViewController)) + 0xD0);
   swift_unknownObjectRetain();
-  v6 = self;
-  v5(a3);
+  selfCopy = self;
+  v5(delegate);
 }
 
 - (unint64_t)mapStyle
 {
   v2 = *((*MEMORY[0x1E69E7D40] & **(&self->super.super.super.isa + OBJC_IVAR___PXMapOptionsChooseMapSheetController_contentViewController)) + 0xE0);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
 }
 
-- (void)setMapStyle:(unint64_t)a3
+- (void)setMapStyle:(unint64_t)style
 {
   v4 = *((*MEMORY[0x1E69E7D40] & **(&self->super.super.super.isa + OBJC_IVAR___PXMapOptionsChooseMapSheetController_contentViewController)) + 0xE8);
-  v5 = self;
-  v4(a3);
+  selfCopy = self;
+  v4(style);
 }
 
 - (void)viewDidLoad
@@ -57,26 +57,26 @@
 - (void)handleCloseAction
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x70);
-  v6 = self;
+  selfCopy = self;
   if (v2())
   {
     v4 = v3;
     ObjectType = swift_getObjectType();
-    (*(v4 + 8))(v6, ObjectType, v4);
+    (*(v4 + 8))(selfCopy, ObjectType, v4);
     swift_unknownObjectRelease();
   }
 }
 
-- (PXMapOptionsChooseMapSheetController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXMapOptionsChooseMapSheetController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  if ([a4 horizontalSizeClass] == 1)
+  if ([collection horizontalSizeClass] == 1)
   {
     return -1;
   }

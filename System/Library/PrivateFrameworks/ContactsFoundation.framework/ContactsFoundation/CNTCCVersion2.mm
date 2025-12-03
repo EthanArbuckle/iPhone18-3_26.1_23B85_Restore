@@ -1,20 +1,20 @@
 @interface CNTCCVersion2
-+ (id)bundleIdentifierForIdentity:(id)a3;
++ (id)bundleIdentifierForIdentity:(id)identity;
 + (id)os_log;
 - (BOOL)isAuthorizationRestricted;
 - (BOOL)isUnitTesting;
 - (CNTCCVersion2)init;
-- (id)authorizationRecordForBundleIdentifier:(id)a3;
+- (id)authorizationRecordForBundleIdentifier:(id)identifier;
 - (id)authorizationRecords;
-- (id)bundleIdentifierForAuditToken:(id)a3 assumedIdentity:(id)a4;
-- (id)credentialForAuditToken:(id)a3 assumedIdentity:(id)a4;
+- (id)bundleIdentifierForAuditToken:(id)token assumedIdentity:(id)identity;
+- (id)credentialForAuditToken:(id)token assumedIdentity:(id)identity;
 - (id)isUnitTestingImpl;
-- (int64_t)checkAuthorizationStatusOfAuditToken:(id)a3 assumedIdentity:(id)a4;
-- (void)appWillGoForeground:(id)a3;
-- (void)requestAuthorization:(int64_t)a3 auditToken:(id)a4 assumedIdentity:(id)a5 completionHandler:(id)a6;
-- (void)requestAuthorizationWithCredential:(id)a3 messageOptions:(id)a4 completionHandler:(id)a5;
-- (void)setAuthorizationStatus:(int64_t)a3 forBundleIdentifier:(id)a4 noKillApp:(BOOL)a5;
-- (void)simulateStatus:(int64_t)a3;
+- (int64_t)checkAuthorizationStatusOfAuditToken:(id)token assumedIdentity:(id)identity;
+- (void)appWillGoForeground:(id)foreground;
+- (void)requestAuthorization:(int64_t)authorization auditToken:(id)token assumedIdentity:(id)identity completionHandler:(id)handler;
+- (void)requestAuthorizationWithCredential:(id)credential messageOptions:(id)options completionHandler:(id)handler;
+- (void)setAuthorizationStatus:(int64_t)status forBundleIdentifier:(id)identifier noKillApp:(BOOL)app;
+- (void)simulateStatus:(int64_t)status;
 @end
 
 @implementation CNTCCVersion2
@@ -52,8 +52,8 @@
     v15 = v2->_messageOptionsForAsyncPrompt;
     tcc_message_options_set_request_prompt_rights_mask();
     v2->_shouldRepromptUponForegrounding = 0;
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v2 selector:sel_appWillGoForeground_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_appWillGoForeground_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
 
     v17 = v2;
   }
@@ -63,17 +63,17 @@
 
 - (id)isUnitTestingImpl
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 executablePath];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  executablePath = [mainBundle executablePath];
 
-  if ([v3 hasSuffix:@"CNTestsHostiOS"] & 1) != 0 || (objc_msgSend(v3, "hasSuffix:", @"CNTestsHostiOS_XPC") & 1) != 0 || (objc_msgSend(v3, "hasSuffix:", @"otest"))
+  if ([executablePath hasSuffix:@"CNTestsHostiOS"] & 1) != 0 || (objc_msgSend(executablePath, "hasSuffix:", @"CNTestsHostiOS_XPC") & 1) != 0 || (objc_msgSend(executablePath, "hasSuffix:", @"otest"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasSuffix:@"xctest"];
+    v4 = [executablePath hasSuffix:@"xctest"];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:v4];
@@ -106,16 +106,16 @@ id __30__CNTCCVersion2_isUnitTesting__block_invoke(uint64_t a1)
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isAuthorizationRestricted
 {
-  v3 = [(CNTCCVersion2 *)self simulateStatus];
+  simulateStatus = [(CNTCCVersion2 *)self simulateStatus];
 
-  if (v3 || [(CNTCCVersion2 *)self isUnitTesting])
+  if (simulateStatus || [(CNTCCVersion2 *)self isUnitTesting])
   {
     return 0;
   }
@@ -143,107 +143,107 @@ uint64_t __23__CNTCCVersion2_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (int64_t)checkAuthorizationStatusOfAuditToken:(id)a3 assumedIdentity:(id)a4
+- (int64_t)checkAuthorizationStatusOfAuditToken:(id)token assumedIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNTCCVersion2 *)self simulateStatus];
+  tokenCopy = token;
+  identityCopy = identity;
+  simulateStatus = [(CNTCCVersion2 *)self simulateStatus];
 
-  if (v8)
+  if (simulateStatus)
   {
-    v9 = [(CNTCCVersion2 *)self simulateStatus];
-    v10 = [v9 integerValue];
+    simulateStatus2 = [(CNTCCVersion2 *)self simulateStatus];
+    integerValue = [simulateStatus2 integerValue];
   }
 
   else
   {
     if ([(CNTCCVersion2 *)self isUnitTesting])
     {
-      v10 = 3;
+      integerValue = 3;
       goto LABEL_4;
     }
 
-    v9 = [(CNTCCVersion2 *)self credentialForAuditToken:v6 assumedIdentity:v7];
-    if (v9)
+    simulateStatus2 = [(CNTCCVersion2 *)self credentialForAuditToken:tokenCopy assumedIdentity:identityCopy];
+    if (simulateStatus2)
     {
       v14 = 0;
       v15 = &v14;
       v16 = 0x2020000000;
       v17 = 0;
-      v12 = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
+      messageOptionsForSyncNoPrompt = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __70__CNTCCVersion2_checkAuthorizationStatusOfAuditToken_assumedIdentity___block_invoke;
       v13[3] = &unk_1E6ED7110;
       v13[4] = &v14;
-      [(CNTCCVersion2 *)self requestAuthorizationWithCredential:v9 messageOptions:v12 completionHandler:v13];
+      [(CNTCCVersion2 *)self requestAuthorizationWithCredential:simulateStatus2 messageOptions:messageOptionsForSyncNoPrompt completionHandler:v13];
 
-      v10 = v15[3];
+      integerValue = v15[3];
       _Block_object_dispose(&v14, 8);
     }
 
     else
     {
-      v10 = 0;
+      integerValue = 0;
     }
   }
 
 LABEL_4:
-  return v10;
+  return integerValue;
 }
 
-- (void)requestAuthorization:(int64_t)a3 auditToken:(id)a4 assumedIdentity:(id)a5 completionHandler:(id)a6
+- (void)requestAuthorization:(int64_t)authorization auditToken:(id)token assumedIdentity:(id)identity completionHandler:(id)handler
 {
-  v15 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(CNTCCVersion2 *)self simulateStatus];
+  tokenCopy = token;
+  identityCopy = identity;
+  handlerCopy = handler;
+  simulateStatus = [(CNTCCVersion2 *)self simulateStatus];
 
-  if (v11)
+  if (simulateStatus)
   {
-    v12 = [(CNTCCVersion2 *)self simulateStatus];
-    v10[2](v10, [v12 integerValue]);
+    simulateStatus2 = [(CNTCCVersion2 *)self simulateStatus];
+    handlerCopy[2](handlerCopy, [simulateStatus2 integerValue]);
   }
 
   else if ([(CNTCCVersion2 *)self isUnitTesting])
   {
-    v10[2](v10, 3);
+    handlerCopy[2](handlerCopy, 3);
   }
 
   else
   {
-    v13 = [(CNTCCVersion2 *)self credentialForAuditToken:v15 assumedIdentity:v9];
+    v13 = [(CNTCCVersion2 *)self credentialForAuditToken:tokenCopy assumedIdentity:identityCopy];
     if (v13)
     {
-      v14 = [(CNTCCVersion2 *)self messageOptionsForAsyncPrompt];
-      [(CNTCCVersion2 *)self requestAuthorizationWithCredential:v13 messageOptions:v14 completionHandler:v10];
+      messageOptionsForAsyncPrompt = [(CNTCCVersion2 *)self messageOptionsForAsyncPrompt];
+      [(CNTCCVersion2 *)self requestAuthorizationWithCredential:v13 messageOptions:messageOptionsForAsyncPrompt completionHandler:handlerCopy];
     }
 
     else
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
 
-- (id)credentialForAuditToken:(id)a3 assumedIdentity:(id)a4
+- (id)credentialForAuditToken:(id)token assumedIdentity:(id)identity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  tokenCopy = token;
+  identityCopy = identity;
+  v7 = identityCopy;
+  if (tokenCopy && identityCopy)
   {
-    [v5 audit_token];
+    [tokenCopy audit_token];
     v8 = tcc_credential_create_for_process_with_audit_token_and_assumed_identity();
   }
 
-  else if (v5)
+  else if (tokenCopy)
   {
-    [v5 audit_token];
+    [tokenCopy audit_token];
     v8 = tcc_credential_create_for_process_with_audit_token();
   }
 
-  else if (v6)
+  else if (identityCopy)
   {
     v8 = tcc_credential_create_for_self_with_assumed_identity();
   }
@@ -258,18 +258,18 @@ LABEL_4:
   return v9;
 }
 
-- (void)requestAuthorizationWithCredential:(id)a3 messageOptions:(id)a4 completionHandler:(id)a5
+- (void)requestAuthorizationWithCredential:(id)credential messageOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CNTCCVersion2 *)self server];
-  v12 = [(CNTCCVersion2 *)self service];
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  credentialCopy = credential;
+  optionsCopy = options;
+  handlerCopy = handler;
+  server = [(CNTCCVersion2 *)self server];
+  service = [(CNTCCVersion2 *)self service];
+  v16 = credentialCopy;
+  v17 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = credentialCopy;
+  v15 = handlerCopy;
   tcc_server_message_request_authorization();
 }
 
@@ -322,11 +322,11 @@ uint64_t __85__CNTCCVersion2_requestAuthorizationWithCredential_messageOptions_c
   }
 }
 
-- (id)bundleIdentifierForAuditToken:(id)a3 assumedIdentity:(id)a4
+- (id)bundleIdentifierForAuditToken:(id)token assumedIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNTCCVersion2 *)self credentialForAuditToken:v6 assumedIdentity:v7];
+  tokenCopy = token;
+  identityCopy = identity;
+  v8 = [(CNTCCVersion2 *)self credentialForAuditToken:tokenCopy assumedIdentity:identityCopy];
   if (v8)
   {
     v14 = 0;
@@ -335,8 +335,8 @@ uint64_t __85__CNTCCVersion2_requestAuthorizationWithCredential_messageOptions_c
     v17 = __Block_byref_object_copy__7;
     v18 = __Block_byref_object_dispose__7;
     v19 = 0;
-    v9 = [(CNTCCVersion2 *)self server];
-    v10 = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
+    server = [(CNTCCVersion2 *)self server];
+    messageOptionsForSyncNoPrompt = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
     v13 = MEMORY[0x1E69E9820];
     tcc_server_message_get_identity_for_credential();
 
@@ -380,19 +380,19 @@ void __63__CNTCCVersion2_bundleIdentifierForAuditToken_assumedIdentity___block_i
   }
 }
 
-+ (id)bundleIdentifierForIdentity:(id)a3
++ (id)bundleIdentifierForIdentity:(id)identity
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  identityCopy = identity;
   v5 = [v3 stringWithUTF8String:tcc_identity_get_identifier()];
   type = tcc_identity_get_type();
 
   if (type)
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [(CNTCCVersion2 *)v5 bundleIdentifierForIdentity:v7, v8, v9, v10, v11, v12, v13];
+      [(CNTCCVersion2 *)v5 bundleIdentifierForIdentity:os_log, v8, v9, v10, v11, v12, v13];
     }
 
     v14 = 0;
@@ -408,11 +408,11 @@ void __63__CNTCCVersion2_bundleIdentifierForAuditToken_assumedIdentity___block_i
 
 - (id)authorizationRecords
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNTCCVersion2 *)self server];
-  v5 = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
-  v6 = [(CNTCCVersion2 *)self service];
-  v8 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  server = [(CNTCCVersion2 *)self server];
+  messageOptionsForSyncNoPrompt = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
+  service = [(CNTCCVersion2 *)self service];
+  v8 = array;
   tcc_server_message_get_authorization_records_by_service();
 
   return v8;
@@ -429,17 +429,17 @@ void __37__CNTCCVersion2_authorizationRecords__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)authorizationRecordForBundleIdentifier:(id)a3
+- (id)authorizationRecordForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNTCCVersion2 *)self authorizationRecords];
+  identifierCopy = identifier;
+  authorizationRecords = [(CNTCCVersion2 *)self authorizationRecords];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__CNTCCVersion2_authorizationRecordForBundleIdentifier___block_invoke;
   v9[3] = &unk_1E6ED71B0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 _cn_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [authorizationRecords _cn_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -452,57 +452,57 @@ uint64_t __56__CNTCCVersion2_authorizationRecordForBundleIdentifier___block_invo
   return v4;
 }
 
-- (void)setAuthorizationStatus:(int64_t)a3 forBundleIdentifier:(id)a4 noKillApp:(BOOL)a5
+- (void)setAuthorizationStatus:(int64_t)status forBundleIdentifier:(id)identifier noKillApp:(BOOL)app
 {
-  v5 = a5;
-  v9 = a4;
-  [a4 UTF8String];
+  appCopy = app;
+  identifierCopy = identifier;
+  [identifier UTF8String];
   v13 = tcc_identity_create();
-  [CNTCCAppAuthorizationRecord authorizationRightFromAuthorizationStatus:a3];
-  v10 = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
-  if (v5)
+  [CNTCCAppAuthorizationRecord authorizationRightFromAuthorizationStatus:status];
+  messageOptionsForSyncNoPrompt = [(CNTCCVersion2 *)self messageOptionsForSyncNoPrompt];
+  if (appCopy)
   {
     tcc_message_options_set_nokill_policy();
   }
 
-  v11 = [(CNTCCVersion2 *)self server];
-  v12 = [(CNTCCVersion2 *)self service];
+  server = [(CNTCCVersion2 *)self server];
+  service = [(CNTCCVersion2 *)self service];
   tcc_server_message_set_authorization_value();
 }
 
-- (void)appWillGoForeground:(id)a3
+- (void)appWillGoForeground:(id)foreground
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = +[(CNEnvironmentBase *)CNEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:2];
+  featureFlags = [v4 featureFlags];
+  v6 = [featureFlags isFeatureEnabled:2];
 
   if (v6)
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       v12[0] = 67109120;
       v12[1] = [(CNTCCVersion2 *)self shouldRepromptUponForegrounding];
-      _os_log_impl(&dword_1859F0000, v7, OS_LOG_TYPE_DEFAULT, "CNTCCVersion2, app is coming into the foreground. reprompt? %d", v12, 8u);
+      _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_DEFAULT, "CNTCCVersion2, app is coming into the foreground. reprompt? %d", v12, 8u);
     }
 
     if ([(CNTCCVersion2 *)self shouldRepromptUponForegrounding])
     {
       self->_shouldRepromptUponForegrounding = 0;
-      v8 = [(CNTCCVersion2 *)self cachedCredentialForReprompt];
-      v9 = [(CNTCCVersion2 *)self cachedMessagesForReprompt];
-      v10 = [(CNTCCVersion2 *)self cachedCallbackForReprompt];
-      [(CNTCCVersion2 *)self requestAuthorizationWithCredential:v8 messageOptions:v9 completionHandler:v10];
+      cachedCredentialForReprompt = [(CNTCCVersion2 *)self cachedCredentialForReprompt];
+      cachedMessagesForReprompt = [(CNTCCVersion2 *)self cachedMessagesForReprompt];
+      cachedCallbackForReprompt = [(CNTCCVersion2 *)self cachedCallbackForReprompt];
+      [(CNTCCVersion2 *)self requestAuthorizationWithCredential:cachedCredentialForReprompt messageOptions:cachedMessagesForReprompt completionHandler:cachedCallbackForReprompt];
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)simulateStatus:(int64_t)a3
+- (void)simulateStatus:(int64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:status];
   [(CNTCCVersion2 *)self setSimulateStatus:v4];
 }
 

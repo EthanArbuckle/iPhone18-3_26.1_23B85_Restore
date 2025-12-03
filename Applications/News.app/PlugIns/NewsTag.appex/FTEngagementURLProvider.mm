@@ -1,7 +1,7 @@
 @interface FTEngagementURLProvider
 - (FTEngagementURLProvider)init;
-- (FTEngagementURLProvider)initWithAvailabilityMonitor:(id)a3;
-- (id)URLForEngagement:(id)a3 event:(id)a4 trackableWidgetState:(id)a5 prefetchAssetsByRemoteURL:(id)a6 sharedDirectoryFileURL:(id)a7;
+- (FTEngagementURLProvider)initWithAvailabilityMonitor:(id)monitor;
+- (id)URLForEngagement:(id)engagement event:(id)event trackableWidgetState:(id)state prefetchAssetsByRemoteURL:(id)l sharedDirectoryFileURL:(id)rL;
 @end
 
 @implementation FTEngagementURLProvider
@@ -29,10 +29,10 @@
   objc_exception_throw(v4);
 }
 
-- (FTEngagementURLProvider)initWithAvailabilityMonitor:(id)a3
+- (FTEngagementURLProvider)initWithAvailabilityMonitor:(id)monitor
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  monitorCopy = monitor;
+  if (!monitorCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10009FFB8();
   }
@@ -43,57 +43,57 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_availabilityMonitor, a3);
+    objc_storeStrong(&v6->_availabilityMonitor, monitor);
   }
 
   return v7;
 }
 
-- (id)URLForEngagement:(id)a3 event:(id)a4 trackableWidgetState:(id)a5 prefetchAssetsByRemoteURL:(id)a6 sharedDirectoryFileURL:(id)a7
+- (id)URLForEngagement:(id)engagement event:(id)event trackableWidgetState:(id)state prefetchAssetsByRemoteURL:(id)l sharedDirectoryFileURL:(id)rL
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  engagementCopy = engagement;
+  eventCopy = event;
+  stateCopy = state;
+  lCopy = l;
+  rLCopy = rL;
+  if (!engagementCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A0098();
   }
 
-  v17 = [(FTEngagementURLProvider *)self availabilityMonitor];
-  v18 = [v17 isNewsAvailable];
+  availabilityMonitor = [(FTEngagementURLProvider *)self availabilityMonitor];
+  isNewsAvailable = [availabilityMonitor isNewsAvailable];
 
-  v19 = [v12 baseNewsURL];
-  v20 = v19;
+  baseNewsURL = [engagementCopy baseNewsURL];
+  v20 = baseNewsURL;
   v21 = 0;
-  if (v18 && v19)
+  if (isNewsAvailable && baseNewsURL)
   {
-    v22 = [v12 openInNewsReferralItemWithTrackableWidgetState:v14 assetHandlesByRemoteURL:v15];
+    v22 = [engagementCopy openInNewsReferralItemWithTrackableWidgetState:stateCopy assetHandlesByRemoteURL:lCopy];
     v34 = v22;
-    v35 = v15;
+    v35 = lCopy;
     if (v22)
     {
       v23 = v22;
-      v24 = [v12 openInNewsReferralItemQueryItemName];
-      v25 = v24;
+      openInNewsReferralItemQueryItemName = [engagementCopy openInNewsReferralItemQueryItemName];
+      v25 = openInNewsReferralItemQueryItemName;
       v26 = &__NSArray0__struct;
-      if (!v16 || !v24)
+      if (!rLCopy || !openInNewsReferralItemQueryItemName)
       {
-        v28 = v24;
+        v28 = openInNewsReferralItemQueryItemName;
 LABEL_15:
 
 LABEL_17:
-        v29 = [v14 fetchInfoForVisibleResults];
-        v30 = [v29 todaySourceIdentifier];
-        v31 = [v29 appConfigTreatmentID];
-        v21 = [v20 ft_referralURLWithSourceIdentifier:v30 appConfigTreatmentID:v31 widgetEngagement:v13 otherQueryItems:v26 sharedDirectoryFileURL:v16];
+        fetchInfoForVisibleResults = [stateCopy fetchInfoForVisibleResults];
+        todaySourceIdentifier = [fetchInfoForVisibleResults todaySourceIdentifier];
+        appConfigTreatmentID = [fetchInfoForVisibleResults appConfigTreatmentID];
+        v21 = [v20 ft_referralURLWithSourceIdentifier:todaySourceIdentifier appConfigTreatmentID:appConfigTreatmentID widgetEngagement:eventCopy otherQueryItems:v26 sharedDirectoryFileURL:rLCopy];
 
-        v15 = v35;
+        lCopy = v35;
         goto LABEL_18;
       }
 
-      v33 = [[FRNewsReferralItemEncoder alloc] initWithReferralItem:v23 sharedDirectoryFileURL:v16];
+      v33 = [[FRNewsReferralItemEncoder alloc] initWithReferralItem:v23 sharedDirectoryFileURL:rLCopy];
       v27 = [(FRNewsReferralItemEncoder *)v33 encodeQueryValueWithError:0];
       if (v27)
       {

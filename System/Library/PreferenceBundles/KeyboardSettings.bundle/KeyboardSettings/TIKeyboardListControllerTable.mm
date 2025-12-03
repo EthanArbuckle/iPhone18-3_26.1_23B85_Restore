@@ -1,5 +1,5 @@
 @interface TIKeyboardListControllerTable
-- (void)addEditingChangeHandler:(id)a3;
+- (void)addEditingChangeHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(TIKeyboardListControllerTable *)&v3 dealloc];
 }
 
-- (void)addEditingChangeHandler:(id)a3
+- (void)addEditingChangeHandler:(id)handler
 {
   if (!self->_todoList)
   {
     self->_todoList = +[NSMutableArray array];
   }
 
-  v5 = [a3 copy];
+  v5 = [handler copy];
   [(NSMutableArray *)self->_todoList addObject:v5];
 }
 

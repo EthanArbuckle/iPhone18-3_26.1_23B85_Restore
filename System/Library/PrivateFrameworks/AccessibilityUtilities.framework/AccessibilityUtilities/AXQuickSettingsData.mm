@@ -1,37 +1,37 @@
 @interface AXQuickSettingsData
-- (AXQuickSettingsData)initWithCoder:(id)a3;
+- (AXQuickSettingsData)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXQuickSettingsData
 
-- (AXQuickSettingsData)initWithCoder:(id)a3
+- (AXQuickSettingsData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AXQuickSettingsData;
   v5 = [(AXQuickSettingsData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frontmostAppIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frontmostAppIdentifier"];
     [(AXQuickSettingsData *)v5 setFrontmostAppIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webAreaURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webAreaURL"];
     [(AXQuickSettingsData *)v5 setWebAreaURL:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXQuickSettingsData *)self frontmostAppIdentifier];
-  [v4 encodeObject:v5 forKey:@"frontmostAppIdentifier"];
+  coderCopy = coder;
+  frontmostAppIdentifier = [(AXQuickSettingsData *)self frontmostAppIdentifier];
+  [coderCopy encodeObject:frontmostAppIdentifier forKey:@"frontmostAppIdentifier"];
 
-  v6 = [(AXQuickSettingsData *)self webAreaURL];
-  [v4 encodeObject:v6 forKey:@"webAreaURL"];
+  webAreaURL = [(AXQuickSettingsData *)self webAreaURL];
+  [coderCopy encodeObject:webAreaURL forKey:@"webAreaURL"];
 }
 
 - (id)description
@@ -40,8 +40,8 @@
   v8.receiver = self;
   v8.super_class = AXQuickSettingsData;
   v4 = [(AXQuickSettingsData *)&v8 description];
-  v5 = [(AXQuickSettingsData *)self frontmostAppIdentifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  frontmostAppIdentifier = [(AXQuickSettingsData *)self frontmostAppIdentifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, frontmostAppIdentifier];
 
   return v6;
 }

@@ -1,16 +1,16 @@
 @interface BKAssetArrayController
-- (BOOL)_filterAsset:(id)a3;
-- (id)arrangeObjects:(id)a3;
+- (BOOL)_filterAsset:(id)asset;
+- (id)arrangeObjects:(id)objects;
 @end
 
 @implementation BKAssetArrayController
 
-- (BOOL)_filterAsset:(id)a3
+- (BOOL)_filterAsset:(id)asset
 {
   filter = self->_filter;
   if (filter)
   {
-    return filter[2](filter, a3);
+    return filter[2](filter, asset);
   }
 
   else
@@ -19,16 +19,16 @@
   }
 }
 
-- (id)arrangeObjects:(id)a3
+- (id)arrangeObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (self->_filter)
   {
     v5 = +[NSMutableArray array];
     v6 = +[BKLibraryManager defaultManager];
-    v7 = [v6 uiChildContext];
-    v8 = [v6 libraryAssetsWithAssetIDsContainedInList:v4 tempAssetIDs:0 inManagedObjectContext:v7];
+    uiChildContext = [v6 uiChildContext];
+    v8 = [v6 libraryAssetsWithAssetIDsContainedInList:objectsCopy tempAssetIDs:0 inManagedObjectContext:uiChildContext];
 
     v19 = 0u;
     v20 = 0u;
@@ -52,8 +52,8 @@
           v14 = *(*(&v17 + 1) + 8 * i);
           if ([(BKAssetArrayController *)self _filterAsset:v14, v17])
           {
-            v15 = [v14 assetID];
-            [v5 addObject:v15];
+            assetID = [v14 assetID];
+            [v5 addObject:assetID];
           }
         }
 
@@ -66,7 +66,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = objectsCopy;
   }
 
   return v5;

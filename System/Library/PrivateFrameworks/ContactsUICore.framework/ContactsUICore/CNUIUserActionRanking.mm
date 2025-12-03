@@ -1,59 +1,59 @@
 @interface CNUIUserActionRanking
-+ (id)advisorSettingsForIdentifyingMostRecentAction:(id)a3 actionType:(id)a4;
-+ (id)advisorSettingsForSortingAddresses:(id)a3 actionType:(id)a4;
-+ (id)constrainMechanismsForActionType:(id)a3;
++ (id)advisorSettingsForIdentifyingMostRecentAction:(id)action actionType:(id)type;
++ (id)advisorSettingsForSortingAddresses:(id)addresses actionType:(id)type;
++ (id)constrainMechanismsForActionType:(id)type;
 - (CNUIUserActionRanking)init;
-- (CNUIUserActionRanking)initWithInteractionAdvisor:(id)a3;
-- (id)selectMostRecentActionFromItems:(id)a3;
-- (id)selectRecentActionItems:(id)a3 schedulerProvider:(id)a4;
-- (id)sortActionItems:(id)a3 schedulerProvider:(id)a4 defaultAppsScorer:(id)a5;
-- (id)sortKeysByRankingAddresses:(id)a3 actionType:(id)a4 scheduler:(id)a5;
+- (CNUIUserActionRanking)initWithInteractionAdvisor:(id)advisor;
+- (id)selectMostRecentActionFromItems:(id)items;
+- (id)selectRecentActionItems:(id)items schedulerProvider:(id)provider;
+- (id)sortActionItems:(id)items schedulerProvider:(id)provider defaultAppsScorer:(id)scorer;
+- (id)sortKeysByRankingAddresses:(id)addresses actionType:(id)type scheduler:(id)scheduler;
 @end
 
 @implementation CNUIUserActionRanking
 
 - (CNUIUserActionRanking)init
 {
-  v3 = [MEMORY[0x1E69978D8] sharedInteractionAdvisor];
-  v4 = [(CNUIUserActionRanking *)self initWithInteractionAdvisor:v3];
+  mEMORY[0x1E69978D8] = [MEMORY[0x1E69978D8] sharedInteractionAdvisor];
+  v4 = [(CNUIUserActionRanking *)self initWithInteractionAdvisor:mEMORY[0x1E69978D8]];
 
   return v4;
 }
 
-- (CNUIUserActionRanking)initWithInteractionAdvisor:(id)a3
+- (CNUIUserActionRanking)initWithInteractionAdvisor:(id)advisor
 {
-  v5 = a3;
+  advisorCopy = advisor;
   v10.receiver = self;
   v10.super_class = CNUIUserActionRanking;
   v6 = [(CNUIUserActionRanking *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_interactionAdvisor, a3);
+    objc_storeStrong(&v6->_interactionAdvisor, advisor);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)sortActionItems:(id)a3 schedulerProvider:(id)a4 defaultAppsScorer:(id)a5
+- (id)sortActionItems:(id)items schedulerProvider:(id)provider defaultAppsScorer:(id)scorer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] > 1)
+  itemsCopy = items;
+  providerCopy = provider;
+  scorerCopy = scorer;
+  if ([itemsCopy count] > 1)
   {
-    v12 = [v8 _cn_map:&__block_literal_global_81];
-    v13 = [v8 firstObject];
-    v14 = [v13 type];
-    v15 = [v9 backgroundScheduler];
-    v16 = [(CNUIUserActionRanking *)self sortKeysByRankingAddresses:v12 actionType:v14 scheduler:v15];
+    v12 = [itemsCopy _cn_map:&__block_literal_global_81];
+    firstObject = [itemsCopy firstObject];
+    type = [firstObject type];
+    backgroundScheduler = [providerCopy backgroundScheduler];
+    v16 = [(CNUIUserActionRanking *)self sortKeysByRankingAddresses:v12 actionType:type scheduler:backgroundScheduler];
 
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __77__CNUIUserActionRanking_sortActionItems_schedulerProvider_defaultAppsScorer___block_invoke;
     v27[3] = &unk_1E76E9CD8;
-    v17 = v8;
+    v17 = itemsCopy;
     v28 = v17;
     v18 = [v16 recover:v27];
 
@@ -61,7 +61,7 @@
     v24[1] = 3221225472;
     v24[2] = __77__CNUIUserActionRanking_sortActionItems_schedulerProvider_defaultAppsScorer___block_invoke_2;
     v24[3] = &unk_1E76EA500;
-    v25 = v10;
+    v25 = scorerCopy;
     v19 = v17;
     v26 = v19;
     v20 = [v18 flatMap:v24];
@@ -75,7 +75,7 @@
 
   else
   {
-    v11 = [MEMORY[0x1E6996720] futureWithResult:v8];
+    v11 = [MEMORY[0x1E6996720] futureWithResult:itemsCopy];
   }
 
   return v11;
@@ -116,21 +116,21 @@ id __77__CNUIUserActionRanking_sortActionItems_schedulerProvider_defaultAppsScor
   return v13;
 }
 
-- (id)sortKeysByRankingAddresses:(id)a3 actionType:(id)a4 scheduler:(id)a5
+- (id)sortKeysByRankingAddresses:(id)addresses actionType:(id)type scheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
+  addressesCopy = addresses;
+  typeCopy = type;
   v10 = MEMORY[0x1E6996720];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__CNUIUserActionRanking_sortKeysByRankingAddresses_actionType_scheduler___block_invoke;
   v15[3] = &unk_1E76EA548;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = [v10 futureWithBlock:v15 scheduler:a5];
+  v16 = addressesCopy;
+  v17 = typeCopy;
+  v11 = typeCopy;
+  v12 = addressesCopy;
+  v13 = [v10 futureWithBlock:v15 scheduler:scheduler];
   [v13 addFailureBlock:&__block_literal_global_10_1];
 
   return v13;
@@ -162,52 +162,52 @@ id __73__CNUIUserActionRanking_sortKeysByRankingAddresses_actionType_scheduler__
   return v7;
 }
 
-+ (id)advisorSettingsForSortingAddresses:(id)a3 actionType:(id)a4
++ (id)advisorSettingsForSortingAddresses:(id)addresses actionType:(id)type
 {
   v5 = MEMORY[0x1E69978E0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 interactionAdvisorSettingsDefault];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [v8 setInteractionDate:v9];
+  typeCopy = type;
+  addressesCopy = addresses;
+  interactionAdvisorSettingsDefault = [v5 interactionAdvisorSettingsDefault];
+  date = [MEMORY[0x1E695DF00] date];
+  [interactionAdvisorSettingsDefault setInteractionDate:date];
 
-  v10 = [objc_opt_class() constrainMechanismsForActionType:v6];
+  v10 = [objc_opt_class() constrainMechanismsForActionType:typeCopy];
 
-  [v8 setConstrainMechanisms:v10];
-  v11 = [MEMORY[0x1E695DFD8] setWithArray:v7];
+  [interactionAdvisorSettingsDefault setConstrainMechanisms:v10];
+  v11 = [MEMORY[0x1E695DFD8] setWithArray:addressesCopy];
 
-  [v8 setConstrainIdentifiers:v11];
-  [v8 setResultLimit:10];
+  [interactionAdvisorSettingsDefault setConstrainIdentifiers:v11];
+  [interactionAdvisorSettingsDefault setResultLimit:10];
 
-  return v8;
+  return interactionAdvisorSettingsDefault;
 }
 
-+ (id)advisorSettingsForIdentifyingMostRecentAction:(id)a3 actionType:(id)a4
++ (id)advisorSettingsForIdentifyingMostRecentAction:(id)action actionType:(id)type
 {
   v5 = MEMORY[0x1E69978E0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 interactionAdvisorSettingsDefault];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [v8 setInteractionDate:v9];
+  typeCopy = type;
+  actionCopy = action;
+  interactionAdvisorSettingsDefault = [v5 interactionAdvisorSettingsDefault];
+  date = [MEMORY[0x1E695DF00] date];
+  [interactionAdvisorSettingsDefault setInteractionDate:date];
 
-  v10 = [objc_opt_class() constrainMechanismsForActionType:v6];
+  v10 = [objc_opt_class() constrainMechanismsForActionType:typeCopy];
 
-  [v8 setConstrainMechanisms:v10];
-  v11 = [MEMORY[0x1E695DFD8] setWithArray:v7];
+  [interactionAdvisorSettingsDefault setConstrainMechanisms:v10];
+  v11 = [MEMORY[0x1E695DFD8] setWithArray:actionCopy];
 
-  [v8 setConstrainIdentifiers:v11];
-  [v8 setConsumerIdentifier:@"recency"];
-  [v8 setResultLimit:1];
+  [interactionAdvisorSettingsDefault setConstrainIdentifiers:v11];
+  [interactionAdvisorSettingsDefault setConsumerIdentifier:@"recency"];
+  [interactionAdvisorSettingsDefault setResultLimit:1];
 
-  return v8;
+  return interactionAdvisorSettingsDefault;
 }
 
-+ (id)constrainMechanismsForActionType:(id)a3
++ (id)constrainMechanismsForActionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = [MEMORY[0x1E695DFA8] set];
-  if ([v3 isEqualToString:*MEMORY[0x1E695C170]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C170]])
   {
     v5 = &unk_1F1645EE0;
 LABEL_9:
@@ -215,7 +215,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E695C178]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C178]])
   {
     v5 = &unk_1F1645F28;
     v6 = &unk_1F1645F10;
@@ -227,14 +227,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E695C1B8]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C1B8]])
   {
     v5 = &unk_1F1645F58;
     v6 = &unk_1F1645F40;
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E695C150]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C150]])
   {
     [v4 addObject:&unk_1F1645F70];
     v5 = &unk_1F1645FB8;
@@ -248,20 +248,20 @@ LABEL_10:
   return v4;
 }
 
-- (id)selectRecentActionItems:(id)a3 schedulerProvider:(id)a4
+- (id)selectRecentActionItems:(id)items schedulerProvider:(id)provider
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  providerCopy = provider;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __67__CNUIUserActionRanking_selectRecentActionItems_schedulerProvider___block_invoke;
   v16 = &unk_1E76E9478;
-  v17 = v6;
-  v18 = self;
-  v7 = v6;
-  v8 = [a3 switchMap:&v13 schedulerProvider:v7];
-  v9 = [MEMORY[0x1E695DEC8] array];
-  v19[0] = v9;
+  v17 = providerCopy;
+  selfCopy = self;
+  v7 = providerCopy;
+  v8 = [items switchMap:&v13 schedulerProvider:v7];
+  array = [MEMORY[0x1E695DEC8] array];
+  v19[0] = array;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v11 = [v8 startWith:v10];
 
@@ -328,20 +328,20 @@ void __67__CNUIUserActionRanking_selectRecentActionItems_schedulerProvider___blo
   }
 }
 
-- (id)selectMostRecentActionFromItems:(id)a3
+- (id)selectMostRecentActionFromItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 _cn_map:&__block_literal_global_54_0];
-  v6 = [v5 _cn_distinctObjects];
-  v7 = [v4 firstObject];
-  v8 = [v7 type];
+  itemsCopy = items;
+  v5 = [itemsCopy _cn_map:&__block_literal_global_54_0];
+  _cn_distinctObjects = [v5 _cn_distinctObjects];
+  firstObject = [itemsCopy firstObject];
+  type = [firstObject type];
 
-  v9 = [objc_opt_class() advisorSettingsForIdentifyingMostRecentAction:v6 actionType:v8];
-  v10 = [(CNUIUserActionRanking *)self interactionAdvisor];
-  v11 = [v10 adviseInteractionsUsingSettings:v9];
+  v9 = [objc_opt_class() advisorSettingsForIdentifyingMostRecentAction:_cn_distinctObjects actionType:type];
+  interactionAdvisor = [(CNUIUserActionRanking *)self interactionAdvisor];
+  v11 = [interactionAdvisor adviseInteractionsUsingSettings:v9];
 
-  v12 = [v11 firstObject];
-  v13 = sSortKeyForAdvisedInteraction_block_invoke_3(v12, v12);
+  firstObject2 = [v11 firstObject];
+  v13 = sSortKeyForAdvisedInteraction_block_invoke_3(firstObject2, firstObject2);
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -349,7 +349,7 @@ void __67__CNUIUserActionRanking_selectRecentActionItems_schedulerProvider___blo
   v17[3] = &unk_1E76E8640;
   v18 = v13;
   v14 = v13;
-  v15 = [v4 _cn_firstObjectPassingTest:v17];
+  v15 = [itemsCopy _cn_firstObjectPassingTest:v17];
 
   return v15;
 }

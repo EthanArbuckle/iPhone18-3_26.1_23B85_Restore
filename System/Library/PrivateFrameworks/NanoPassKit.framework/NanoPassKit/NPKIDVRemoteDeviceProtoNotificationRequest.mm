@@ -1,66 +1,66 @@
 @interface NPKIDVRemoteDeviceProtoNotificationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDocumentType:(id)a3;
-- (int)StringAsNotificationType:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (int)StringAsDocumentType:(id)type;
+- (int)StringAsNotificationType:(id)type;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKIDVRemoteDeviceProtoNotificationRequest
 
-- (int)StringAsNotificationType:(id)a3
+- (int)StringAsNotificationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"ActionRequired"])
+  else if ([typeCopy isEqualToString:@"ActionRequired"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VerificationCodeRequired"])
+  else if ([typeCopy isEqualToString:@"VerificationCodeRequired"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ProvisioningRejected"])
+  else if ([typeCopy isEqualToString:@"ProvisioningRejected"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UnableToAddCredential"])
+  else if ([typeCopy isEqualToString:@"UnableToAddCredential"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FollowVerificationInstructionRequired"])
+  else if ([typeCopy isEqualToString:@"FollowVerificationInstructionRequired"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TryAgainVerificationCodeRequired"])
+  else if ([typeCopy isEqualToString:@"TryAgainVerificationCodeRequired"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VerificationETA"])
+  else if ([typeCopy isEqualToString:@"VerificationETA"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LivenessStepUpRequired"])
+  else if ([typeCopy isEqualToString:@"LivenessStepUpRequired"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ProofingExpired"])
+  else if ([typeCopy isEqualToString:@"ProofingExpired"])
   {
     v4 = 8;
   }
@@ -73,25 +73,25 @@
   return v4;
 }
 
-- (int)StringAsDocumentType:(id)a3
+- (int)StringAsDocumentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"DriverLicense"])
+  else if ([typeCopy isEqualToString:@"DriverLicense"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"StateID"])
+  else if ([typeCopy isEqualToString:@"StateID"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PhotoID"])
+  else if ([typeCopy isEqualToString:@"PhotoID"])
   {
     v4 = 2;
   }
@@ -110,15 +110,15 @@
   v8.receiver = self;
   v8.super_class = NPKIDVRemoteDeviceProtoNotificationRequest;
   v4 = [(NPKIDVRemoteDeviceProtoNotificationRequest *)&v8 description];
-  v5 = [(NPKIDVRemoteDeviceProtoNotificationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKIDVRemoteDeviceProtoNotificationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = self->_notificationType + 1;
   if (v4 >= 0xA)
   {
@@ -130,7 +130,7 @@
     v5 = off_2799455A0[v4];
   }
 
-  [v3 setObject:v5 forKey:@"notificationType"];
+  [dictionary setObject:v5 forKey:@"notificationType"];
 
   v6 = self->_documentType + 1;
   if (v6 >= 4)
@@ -143,20 +143,20 @@
     v7 = off_2799455F0[v6];
   }
 
-  [v3 setObject:v7 forKey:@"DocumentType"];
+  [dictionary setObject:v7 forKey:@"DocumentType"];
 
   issuerName = self->_issuerName;
   if (issuerName)
   {
-    [v3 setObject:issuerName forKey:@"issuerName"];
+    [dictionary setObject:issuerName forKey:@"issuerName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   notificationType = self->_notificationType;
   PBDataWriterWriteInt32Field();
   documentType = self->_documentType;
@@ -167,36 +167,36 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 6) = self->_notificationType;
-  *(a3 + 2) = self->_documentType;
+  *(to + 6) = self->_notificationType;
+  *(to + 2) = self->_documentType;
   issuerName = self->_issuerName;
   if (issuerName)
   {
-    [a3 setIssuerName:issuerName];
+    [to setIssuerName:issuerName];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_notificationType;
   *(v5 + 8) = self->_documentType;
-  v6 = [(NSString *)self->_issuerName copyWithZone:a3];
+  v6 = [(NSString *)self->_issuerName copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_notificationType == *(v4 + 6) && self->_documentType == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_notificationType == *(equalCopy + 6) && self->_documentType == *(equalCopy + 2))
   {
     issuerName = self->_issuerName;
-    if (issuerName | v4[2])
+    if (issuerName | equalCopy[2])
     {
       v6 = [(NSString *)issuerName isEqual:?];
     }
@@ -215,11 +215,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_notificationType = *(a3 + 6);
-  self->_documentType = *(a3 + 2);
-  if (*(a3 + 2))
+  self->_notificationType = *(from + 6);
+  self->_documentType = *(from + 2);
+  if (*(from + 2))
   {
     [(NPKIDVRemoteDeviceProtoNotificationRequest *)self setIssuerName:?];
   }

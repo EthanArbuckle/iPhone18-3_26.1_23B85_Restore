@@ -1,24 +1,24 @@
 @interface UIDictationTipController
-+ (id)dictationTipPreferenceKey:(int64_t)a3;
++ (id)dictationTipPreferenceKey:(int64_t)key;
 - (UIDictationTipController)init;
-- (void)dictationCommandUsed:(unint64_t)a3 firstTargetString:(id)a4 secondTargetString:(id)a5;
-- (void)emitTipShowingInstrumentation:(int64_t)a3;
+- (void)dictationCommandUsed:(unint64_t)used firstTargetString:(id)string secondTargetString:(id)targetString;
+- (void)emitTipShowingInstrumentation:(int64_t)instrumentation;
 - (void)finalizeSelectionTip;
-- (void)incrementDictationTipDisplayCount:(int64_t)a3 stopFutureShowing:(BOOL)a4;
+- (void)incrementDictationTipDisplayCount:(int64_t)count stopFutureShowing:(BOOL)showing;
 - (void)logDictationTipDimissialInstrumentation;
-- (void)markDictationTipPreferenceToShown:(int64_t)a3;
+- (void)markDictationTipPreferenceToShown:(int64_t)shown;
 - (void)presentDelayedTipIfNeeded;
 - (void)processSoftwareKeyboardInteraction;
 - (void)processUserInteractionEnded;
 - (void)reset;
 - (void)resetShowModelessTipSignal;
-- (void)showDictationTipWithTitle:(id)a3 description:(id)a4 dictationTipType:(int64_t)a5;
+- (void)showDictationTipWithTitle:(id)title description:(id)description dictationTipType:(int64_t)type;
 - (void)signalDictationClearAllTip;
-- (void)signalDictationDeletionTip:(id)a3;
-- (void)signalDictationEmojiTip:(id)a3;
-- (void)signalDictationInsertionTip:(id)a3;
-- (void)signalDictationReplacementTip:(id)a3;
-- (void)signalDictationSelectionTip:(id)a3;
+- (void)signalDictationDeletionTip:(id)tip;
+- (void)signalDictationEmojiTip:(id)tip;
+- (void)signalDictationInsertionTip:(id)tip;
+- (void)signalDictationReplacementTip:(id)tip;
+- (void)signalDictationSelectionTip:(id)tip;
 - (void)signalDictationSendMessageTip;
 - (void)signalShowModelessTipIfNeeded;
 - (void)triggerModelessInputTipDictationStoppedSignal;
@@ -67,20 +67,20 @@
 
 - (void)resetShowModelessTipSignal
 {
-  v2 = [(UIDictationTipController *)self dictationTipModelessInputHandler];
-  [v2 resetDictationTipModelessHandlerSignalFlags];
+  dictationTipModelessInputHandler = [(UIDictationTipController *)self dictationTipModelessInputHandler];
+  [dictationTipModelessInputHandler resetDictationTipModelessHandlerSignalFlags];
 }
 
-+ (id)dictationTipPreferenceKey:(int64_t)a3
++ (id)dictationTipPreferenceKey:(int64_t)key
 {
-  if (a3 > 8)
+  if (key > 8)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&unk_1E712ADA8 + a3);
+    v4 = **(&unk_1E712ADA8 + key);
   }
 
   return v4;
@@ -90,25 +90,25 @@
 {
   if (self->_delayedTip)
   {
-    v2 = [(UIDictationTipController *)self delayedTip];
-    v2[2]();
+    delayedTip = [(UIDictationTipController *)self delayedTip];
+    delayedTip[2]();
   }
 }
 
-- (void)showDictationTipWithTitle:(id)a3 description:(id)a4 dictationTipType:(int64_t)a5
+- (void)showDictationTipWithTitle:(id)title description:(id)description dictationTipType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v10 = +[UIDictationController sharedInstance];
-  v11 = [v10 isDictationPaused];
-  if (a5 == 7 || !v11)
+  isDictationPaused = [v10 isDictationPaused];
+  if (type == 7 || !isDictationPaused)
   {
   }
 
   else
   {
 
-    if (a5 != 5)
+    if (type != 5)
     {
       objc_initWeak(&location, self);
       v13[0] = MEMORY[0x1E69E9820];
@@ -116,9 +116,9 @@
       v13[2] = __83__UIDictationTipController_showDictationTipWithTitle_description_dictationTipType___block_invoke;
       v13[3] = &unk_1E70F9070;
       objc_copyWeak(v16, &location);
-      v14 = v8;
-      v15 = v9;
-      v16[1] = a5;
+      v14 = titleCopy;
+      v15 = descriptionCopy;
+      v16[1] = type;
       [(UIDictationTipController *)self setDelayedTip:v13];
 
       objc_destroyWeak(v16);
@@ -127,14 +127,14 @@
     }
   }
 
-  if (!-[UIDictationTipPresentationHandler isShowingTip](self->_dictationTipPresentationHandler, "isShowingTip") && ([v9 _containsEmoji] & 1) == 0)
+  if (!-[UIDictationTipPresentationHandler isShowingTip](self->_dictationTipPresentationHandler, "isShowingTip") && ([descriptionCopy _containsEmoji] & 1) == 0)
   {
     [(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler signalTipPresentedInCurrentDictationSession];
     v12 = +[UIKeyboardImpl activeInstance];
-    [v12 presentDictationMenuTipWithTitle:v8 description:v9];
+    [v12 presentDictationMenuTipWithTitle:titleCopy description:descriptionCopy];
 
-    [(UIDictationTipController *)self incrementDictationTipDisplayCount:a5 stopFutureShowing:0];
-    [(UIDictationTipController *)self emitTipShowingInstrumentation:a5];
+    [(UIDictationTipController *)self incrementDictationTipDisplayCount:type stopFutureShowing:0];
+    [(UIDictationTipController *)self emitTipShowingInstrumentation:type];
     [(UIDictationTipController *)self setDelayedTip:0];
   }
 
@@ -148,55 +148,55 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
   [WeakRetained showDictationTipWithTitle:*(a1 + 32) description:*(a1 + 40) dictationTipType:*(a1 + 56)];
 }
 
-- (void)dictationCommandUsed:(unint64_t)a3 firstTargetString:(id)a4 secondTargetString:(id)a5
+- (void)dictationCommandUsed:(unint64_t)used firstTargetString:(id)string secondTargetString:(id)targetString
 {
-  v9 = a5;
-  if (([a4 _containsEmoji] & 1) != 0 || objc_msgSend(v9, "_containsEmoji"))
+  targetStringCopy = targetString;
+  if (([string _containsEmoji] & 1) != 0 || objc_msgSend(targetStringCopy, "_containsEmoji"))
   {
     [(UIDictationTipController *)self incrementDictationTipDisplayCount:3 stopFutureShowing:1];
   }
 
-  v8 = a3 - 1;
-  if (a3 - 1 <= 0x13 && ((0x8603Bu >> v8) & 1) != 0)
+  v8 = used - 1;
+  if (used - 1 <= 0x13 && ((0x8603Bu >> v8) & 1) != 0)
   {
     [(UIDictationTipController *)self markDictationTipPreferenceToShown:qword_18A6838C8[v8]];
   }
 }
 
-- (void)incrementDictationTipDisplayCount:(int64_t)a3 stopFutureShowing:(BOOL)a4
+- (void)incrementDictationTipDisplayCount:(int64_t)count stopFutureShowing:(BOOL)showing
 {
-  if (a4)
+  if (showing)
   {
     v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v6 = [v5 valueForPreferenceKey:*MEMORY[0x1E69D9738]];
+    dictationTipPresentationHandler = [v5 valueForPreferenceKey:*MEMORY[0x1E69D9738]];
 
-    v7 = [v6 integerValue];
+    integerValue = [dictationTipPresentationHandler integerValue];
   }
 
   else
   {
-    v6 = [(UIDictationTipController *)self dictationTipPresentationHandler];
-    v7 = [v6 dictationTipDisplayCount:a3] + 1;
+    dictationTipPresentationHandler = [(UIDictationTipController *)self dictationTipPresentationHandler];
+    integerValue = [dictationTipPresentationHandler dictationTipDisplayCount:count] + 1;
   }
 
-  v8 = [UIDictationTipController dictationTipPreferenceKey:a3];
+  v8 = [UIDictationTipController dictationTipPreferenceKey:count];
   if (v8)
   {
     v12 = v8;
     v9 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v10 = [v9 preferencesActions];
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-    [v10 updateDictationTipDisplayCount:v11 dictationTipKey:v12];
+    preferencesActions = [v9 preferencesActions];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+    [preferencesActions updateDictationTipDisplayCount:v11 dictationTipKey:v12];
 
     v8 = v12;
   }
 }
 
-- (void)markDictationTipPreferenceToShown:(int64_t)a3
+- (void)markDictationTipPreferenceToShown:(int64_t)shown
 {
-  if (a3 != 9)
+  if (shown != 9)
   {
-    [(UIDictationTipController *)self incrementDictationTipDisplayCount:a3 stopFutureShowing:1];
+    [(UIDictationTipController *)self incrementDictationTipDisplayCount:shown stopFutureShowing:1];
   }
 }
 
@@ -212,12 +212,12 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
 
 - (void)logDictationTipDimissialInstrumentation
 {
-  v2 = [(UIDictationTipController *)self dismissalReasonType];
+  dismissalReasonType = [(UIDictationTipController *)self dismissalReasonType];
   v3 = objc_alloc_init(getSISchemaUEIDictationDiscoveryToolTipDisplayContextClass());
   v4 = objc_alloc(getSISchemaUUIDClass_0());
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 _sessionIdentifier];
-  v7 = [v4 initWithNSUUID:v6];
+  _sessionIdentifier = [v5 _sessionIdentifier];
+  v7 = [v4 initWithNSUUID:_sessionIdentifier];
   [v3 setContextId:v7];
 
   v15 = 0;
@@ -236,14 +236,14 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
     v8 = v16[3];
   }
 
-  if (v2 == 2)
+  if (dismissalReasonType == 2)
   {
     v9 = 2;
   }
 
   else
   {
-    v9 = v2 == 1;
+    v9 = dismissalReasonType == 1;
   }
 
   v10 = v8;
@@ -252,11 +252,11 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
   [v11 setDismissalReason:v9];
   [v3 setEnded:v11];
   v12 = +[UIDictationController sharedInstance];
-  v13 = [v12 currentInstrumentationContext];
-  [v13 emitInstrumentation:v3];
+  currentInstrumentationContext = [v12 currentInstrumentationContext];
+  [currentInstrumentationContext emitInstrumentation:v3];
 }
 
-- (void)emitTipShowingInstrumentation:(int64_t)a3
+- (void)emitTipShowingInstrumentation:(int64_t)instrumentation
 {
   v17 = 0;
   v18 = &v17;
@@ -278,58 +278,58 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
   _Block_object_dispose(&v17, 8);
   v6 = objc_alloc_init(v4);
   v7 = v6;
-  if (a3 > 6)
+  if (instrumentation > 6)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = dword_18A683968[a3];
+    v8 = dword_18A683968[instrumentation];
   }
 
   [v6 setToolTipShown:v8];
   v9 = objc_alloc_init(getSISchemaUEIDictationDiscoveryToolTipDisplayContextClass());
   v10 = objc_alloc(getSISchemaUUIDClass_0());
   v11 = +[UIKeyboardImpl activeInstance];
-  v12 = [v11 _sessionIdentifier];
-  v13 = [v10 initWithNSUUID:v12];
+  _sessionIdentifier = [v11 _sessionIdentifier];
+  v13 = [v10 initWithNSUUID:_sessionIdentifier];
   [v9 setContextId:v13];
 
   [v9 setStartedOrChanged:v7];
   v14 = +[UIDictationController sharedInstance];
-  v15 = [v14 currentInstrumentationContext];
-  [v15 emitInstrumentation:v9];
+  currentInstrumentationContext = [v14 currentInstrumentationContext];
+  [currentInstrumentationContext emitInstrumentation:v9];
 }
 
-- (void)signalDictationReplacementTip:(id)a3
+- (void)signalDictationReplacementTip:(id)tip
 {
-  v6 = a3;
+  tipCopy = tip;
   v4 = +[UIDictationController sharedInstance];
-  v5 = [v4 isDictationPaused];
+  isDictationPaused = [v4 isDictationPaused];
 
-  if (v5 && [(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:0])
+  if (isDictationPaused && [(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:0])
   {
-    [(UIDictationTipReplacementHandler *)self->_dictationReplacementTipHandler startRecodingReplacementText:v6];
+    [(UIDictationTipReplacementHandler *)self->_dictationReplacementTipHandler startRecodingReplacementText:tipCopy];
   }
 }
 
-- (void)signalDictationDeletionTip:(id)a3
+- (void)signalDictationDeletionTip:(id)tip
 {
-  v6 = a3;
+  tipCopy = tip;
   v4 = +[UIDictationController sharedInstance];
-  v5 = [v4 isDictationPaused];
+  isDictationPaused = [v4 isDictationPaused];
 
-  if (v5)
+  if (isDictationPaused)
   {
     if ([(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:1])
     {
-      [(UIDictationTipDeletionHandler *)self->_dictationDeletionTipHandler startRecodingDeletionText:v6];
+      [(UIDictationTipDeletionHandler *)self->_dictationDeletionTipHandler startRecodingDeletionText:tipCopy];
     }
 
     else if ([(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler getDictationTipSignaled]== 1)
     {
-      [(UIDictationTipDeletionHandler *)self->_dictationDeletionTipHandler recordDictationTipDeletionText:v6];
+      [(UIDictationTipDeletionHandler *)self->_dictationDeletionTipHandler recordDictationTipDeletionText:tipCopy];
     }
   }
 }
@@ -337,9 +337,9 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
 - (void)signalDictationClearAllTip
 {
   v3 = +[UIDictationController sharedInstance];
-  v4 = [v3 isDictationPaused];
+  isDictationPaused = [v3 isDictationPaused];
 
-  if (v4)
+  if (isDictationPaused)
   {
     [(UIDictationTipController *)self reset];
     if ([(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:5])
@@ -351,15 +351,15 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
   }
 }
 
-- (void)signalDictationSelectionTip:(id)a3
+- (void)signalDictationSelectionTip:(id)tip
 {
-  v6 = a3;
+  tipCopy = tip;
   v4 = +[UIDictationController sharedInstance];
-  v5 = [v4 isDictationPaused];
+  isDictationPaused = [v4 isDictationPaused];
 
-  if (v5 && [(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:4])
+  if (isDictationPaused && [(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:4])
   {
-    [(UIDictationTipSelectionHandler *)self->_dictationSelectionTipHandler signalSelectedText:v6];
+    [(UIDictationTipSelectionHandler *)self->_dictationSelectionTipHandler signalSelectedText:tipCopy];
   }
 }
 
@@ -384,14 +384,14 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
   }
 }
 
-- (void)signalDictationEmojiTip:(id)a3
+- (void)signalDictationEmojiTip:(id)tip
 {
-  v14 = a3;
+  tipCopy = tip;
   [(UIDictationTipController *)self reset];
   if ([(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:3])
   {
     dictationEmojiTipHandler = self->_dictationEmojiTipHandler;
-    v5 = [(UIDictationTipEmojiHandler *)dictationEmojiTipHandler replaceEmojiInStringWithEmojiDictationCommand:v14];
+    v5 = [(UIDictationTipEmojiHandler *)dictationEmojiTipHandler replaceEmojiInStringWithEmojiDictationCommand:tipCopy];
     v6 = [(UIDictationTipEmojiHandler *)dictationEmojiTipHandler replaceEmojiInStringWithEmojiDictationCommand:v5];
     v12 = _UILocalizedFormat(@"Dictation Emoji Tip Body", @"Description of the emoji tip", @"While dictating, just say '%@'", v7, v8, v9, v10, v11, v6);
 
@@ -400,41 +400,41 @@ void __83__UIDictationTipController_showDictationTipWithTitle_description_dictat
   }
 }
 
-- (void)signalDictationInsertionTip:(id)a3
+- (void)signalDictationInsertionTip:(id)tip
 {
-  v8 = a3;
+  tipCopy = tip;
   v4 = +[UIDictationController sharedInstance];
-  v5 = [v4 isDictationPaused];
+  isDictationPaused = [v4 isDictationPaused];
 
-  v6 = v8;
-  if (v5)
+  v6 = tipCopy;
+  if (isDictationPaused)
   {
-    if (-[UIDictationTipController dictationTipShown:](self, "dictationTipShown:", 3) || ![v8 _containsEmojiOnly])
+    if (-[UIDictationTipController dictationTipShown:](self, "dictationTipShown:", 3) || ![tipCopy _containsEmojiOnly])
     {
       if ([(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:2])
       {
-        [(UIDictationTipInsertionHandler *)self->_dictationInsertionTipHandler startRecodingText:v8];
+        [(UIDictationTipInsertionHandler *)self->_dictationInsertionTipHandler startRecodingText:tipCopy];
       }
 
       else
       {
-        v7 = [(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler getDictationTipSignaled];
-        v6 = v8;
-        if (v7 != 2)
+        getDictationTipSignaled = [(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler getDictationTipSignaled];
+        v6 = tipCopy;
+        if (getDictationTipSignaled != 2)
         {
           goto LABEL_10;
         }
 
-        [(UIDictationTipInsertionHandler *)self->_dictationInsertionTipHandler recordDictationTipText:v8];
+        [(UIDictationTipInsertionHandler *)self->_dictationInsertionTipHandler recordDictationTipText:tipCopy];
       }
     }
 
     else
     {
-      [(UIDictationTipController *)self signalDictationEmojiTip:v8];
+      [(UIDictationTipController *)self signalDictationEmojiTip:tipCopy];
     }
 
-    v6 = v8;
+    v6 = tipCopy;
   }
 
 LABEL_10:
@@ -442,29 +442,29 @@ LABEL_10:
 
 - (void)triggerModelessInputTipDictationStoppedSignal
 {
-  v2 = [(UIDictationTipController *)self dictationTipModelessInputHandler];
-  [v2 setModelessInputTipDictationStoppedSignal:1];
+  dictationTipModelessInputHandler = [(UIDictationTipController *)self dictationTipModelessInputHandler];
+  [dictationTipModelessInputHandler setModelessInputTipDictationStoppedSignal:1];
 }
 
 - (void)processSoftwareKeyboardInteraction
 {
-  v2 = [(UIDictationTipController *)self dictationTipModelessInputHandler];
-  [v2 processSoftwareKeyboardInteraction];
+  dictationTipModelessInputHandler = [(UIDictationTipController *)self dictationTipModelessInputHandler];
+  [dictationTipModelessInputHandler processSoftwareKeyboardInteraction];
 }
 
 - (void)processUserInteractionEnded
 {
   if ([(UIDictationTipPresentationHandler *)self->_dictationTipPresentationHandler shouldSignalDictationTip:6])
   {
-    v3 = [(UIDictationTipController *)self dictationTipModelessInputHandler];
-    [v3 processUserInteractionEnded];
+    dictationTipModelessInputHandler = [(UIDictationTipController *)self dictationTipModelessInputHandler];
+    [dictationTipModelessInputHandler processUserInteractionEnded];
   }
 }
 
 - (void)signalShowModelessTipIfNeeded
 {
-  v2 = [(UIDictationTipController *)self dictationTipModelessInputHandler];
-  [v2 setShouldAttemptToShowModelessTip:1];
+  dictationTipModelessInputHandler = [(UIDictationTipController *)self dictationTipModelessInputHandler];
+  [dictationTipModelessInputHandler setShouldAttemptToShowModelessTip:1];
 }
 
 @end

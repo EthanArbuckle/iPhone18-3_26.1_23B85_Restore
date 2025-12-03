@@ -1,6 +1,6 @@
 @interface FMNotifyWhenDetachedViewController
 - (void)doneAction;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -8,21 +8,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003E7E68();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for FMNotifyWhenDetachedViewController();
   v4 = v8.receiver;
-  v5 = a3;
-  [(FMNotifyWhenDetachedViewController *)&v8 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  changeCopy = change;
+  [(FMNotifyWhenDetachedViewController *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (!v5 || v7 != [v5 userInterfaceStyle])
+  if (!changeCopy || userInterfaceStyle != [changeCopy userInterfaceStyle])
   {
     sub_1003EA940();
   }
@@ -30,7 +30,7 @@
 
 - (void)doneAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003EAA50();
 }
 

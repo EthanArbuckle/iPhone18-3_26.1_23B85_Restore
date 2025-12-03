@@ -1,43 +1,43 @@
 @interface PKPerformActionSelectItemView
 - (BOOL)_showsExpirationSection;
-- (PKPerformActionSelectItemView)initWithPass:(id)a3 action:(id)a4 paymentDataProvider:(id)a5;
+- (PKPerformActionSelectItemView)initWithPass:(id)pass action:(id)action paymentDataProvider:(id)provider;
 - (PKPerformActionViewDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)transactionAmount;
 - (id)transactionCurrency;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addSubviews;
-- (void)fetchServiceProviderDataWithCompletion:(id)a3;
+- (void)fetchServiceProviderDataWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PKPerformActionSelectItemView
 
-- (PKPerformActionSelectItemView)initWithPass:(id)a3 action:(id)a4 paymentDataProvider:(id)a5
+- (PKPerformActionSelectItemView)initWithPass:(id)pass action:(id)action paymentDataProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
+  passCopy = pass;
+  actionCopy = action;
   v20.receiver = self;
   v20.super_class = PKPerformActionSelectItemView;
   v10 = [(PKPerformActionSelectItemView *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pass, a3);
-    objc_storeStrong(&v11->_action, a4);
-    v12 = [v9 selectedActionItems];
-    v13 = [v12 firstObject];
+    objc_storeStrong(&v10->_pass, pass);
+    objc_storeStrong(&v11->_action, action);
+    selectedActionItems = [actionCopy selectedActionItems];
+    firstObject = [selectedActionItems firstObject];
     selectedItem = v11->_selectedItem;
-    v11->_selectedItem = v13;
+    v11->_selectedItem = firstObject;
 
-    v15 = [(PKPerformActionSelectItemView *)v11 _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PKPerformActionSelectItemView *)v11 _shouldReverseLayoutDirection];
     v16 = 2;
-    if (!v15)
+    if (!_shouldReverseLayoutDirection)
     {
       v16 = 0;
     }
@@ -66,28 +66,28 @@
   [(UITableView *)tableView setFrame:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v5);
-  [v5 setRightBarButtonEnabled:self->_selectedItem != 0];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
+  [delegateCopy setRightBarButtonEnabled:self->_selectedItem != 0];
 }
 
 - (BOOL)_showsExpirationSection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPass *)self->_pass paymentPass];
-  if ([v3 isSuicaPass] && objc_msgSend(v3, "transitCommutePlanType") == 1)
+  paymentPass = [(PKPass *)self->_pass paymentPass];
+  if ([paymentPass isSuicaPass] && objc_msgSend(paymentPass, "transitCommutePlanType") == 1)
   {
     v4 = PKPaymentPassCommuteRouteIsValid() != 0;
   }
 
   else
   {
-    v5 = [(PKPaymentPassAction *)self->_action associatedPlan];
-    if (([v5 properties] & 3) == 1)
+    associatedPlan = [(PKPaymentPassAction *)self->_action associatedPlan];
+    if (([associatedPlan properties] & 3) == 1)
     {
-      v6 = [v5 passFieldForKey:@"expiryDate"];
+      v6 = [associatedPlan passFieldForKey:@"expiryDate"];
 
       v4 = v6 != 0;
     }
@@ -102,8 +102,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(PKPaymentPassAction *)self->_action selectedActionItems];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selectedActionItems = [(PKPaymentPassAction *)self->_action selectedActionItems];
+  v8 = [selectedActionItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -114,13 +114,13 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selectedActionItems);
         }
 
         if (v4)
         {
-          v12 = [*(*(&v14 + 1) + 8 * i) newExpirationDate];
-          v4 = v12 != 0;
+          newExpirationDate = [*(*(&v14 + 1) + 8 * i) newExpirationDate];
+          v4 = newExpirationDate != 0;
         }
 
         else
@@ -129,7 +129,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [selectedActionItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -138,68 +138,68 @@
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
-    v8 = [(PKPaymentPassAction *)self->_action selectedActionItems];
-    v7 = [v8 count];
+    selectedActionItems = [(PKPaymentPassAction *)self->_action selectedActionItems];
+    _showsExpirationSection = [selectedActionItems count];
   }
 
-  else if (a4)
+  else if (section)
   {
-    v7 = 0;
+    _showsExpirationSection = 0;
   }
 
   else
   {
-    v7 = [(PKPerformActionSelectItemView *)self _showsExpirationSection];
+    _showsExpirationSection = [(PKPerformActionSelectItemView *)self _showsExpirationSection];
   }
 
-  return v7;
+  return _showsExpirationSection;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy section])
   {
-    v8 = [v7 dequeueReusableCellWithIdentifier:@"PKPerformActionSelectItemOptionsCellIdentifier"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"PKPerformActionSelectItemOptionsCellIdentifier"];
 
     if (!v8)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"PKPerformActionSelectItemOptionsCellIdentifier"];
     }
 
-    v9 = [(PKPaymentPassAction *)self->_action selectedActionItems];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+    selectedActionItems = [(PKPaymentPassAction *)self->_action selectedActionItems];
+    associatedPlan = [selectedActionItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v11 = [(PKSelectedItemActionItem *)v10 amount];
-    v12 = [(PKSelectedItemActionItem *)v10 currency];
+    amount = [(PKSelectedItemActionItem *)associatedPlan amount];
+    currency = [(PKSelectedItemActionItem *)associatedPlan currency];
     v13 = PKFormattedCurrencyStringFromNumber();
 
-    v14 = [v8 textLabel];
-    v15 = [v8 detailTextLabel];
-    [v14 setTextAlignment:self->_textAlignment];
-    v16 = [(PKSelectedItemActionItem *)v10 title];
-    [v14 setText:v16];
+    textLabel = [v8 textLabel];
+    detailTextLabel = [v8 detailTextLabel];
+    [textLabel setTextAlignment:self->_textAlignment];
+    title = [(PKSelectedItemActionItem *)associatedPlan title];
+    [textLabel setText:title];
 
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [v14 setTextColor:v17];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [textLabel setTextColor:labelColor];
 
-    [v14 setLineBreakMode:4];
-    [v15 setTextAlignment:self->_textAlignment];
-    [v15 setText:v13];
+    [textLabel setLineBreakMode:4];
+    [detailTextLabel setTextAlignment:self->_textAlignment];
+    [detailTextLabel setText:v13];
     v18 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    [v15 setFont:v18];
+    [detailTextLabel setFont:v18];
 
-    v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v15 setTextColor:v19];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [detailTextLabel setTextColor:secondaryLabelColor];
 
     [v8 setSelectionStyle:3];
-    if (v10 == self->_selectedItem)
+    if (associatedPlan == self->_selectedItem)
     {
       v20 = 3;
     }
@@ -214,48 +214,48 @@
 
   else
   {
-    v35 = v6;
-    v8 = [v7 dequeueReusableCellWithIdentifier:@"PKPerformActionSelectItemExpiresCellIdentifier"];
+    v35 = pathCopy;
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"PKPerformActionSelectItemExpiresCellIdentifier"];
 
     if (!v8)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"PKPerformActionSelectItemExpiresCellIdentifier"];
     }
 
-    v10 = [(PKPaymentPassAction *)self->_action associatedPlan];
-    v34 = [(PKSelectedItemActionItem *)v10 passFieldForKey:@"expiryDate"];
+    associatedPlan = [(PKPaymentPassAction *)self->_action associatedPlan];
+    v34 = [(PKSelectedItemActionItem *)associatedPlan passFieldForKey:@"expiryDate"];
     -[NSDateFormatter setDateStyle:](self->_dateFormatter, "setDateStyle:", [v34 dateStyle]);
-    v14 = [v8 textLabel];
-    v15 = [v8 detailTextLabel];
+    textLabel = [v8 textLabel];
+    detailTextLabel = [v8 detailTextLabel];
     dateFormatter = self->_dateFormatter;
-    v22 = [(PKSelectedItemActionItem *)v10 expiryDate];
-    v23 = [(NSDateFormatter *)dateFormatter stringFromDate:v22];
-    [v14 setText:v23];
+    expiryDate = [(PKSelectedItemActionItem *)associatedPlan expiryDate];
+    v23 = [(NSDateFormatter *)dateFormatter stringFromDate:expiryDate];
+    [textLabel setText:v23];
 
-    v24 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v14 setTextColor:v24];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [textLabel setTextColor:secondaryLabelColor2];
 
     v25 = *MEMORY[0x1E69DDCF8];
     v26 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    [v14 setFont:v26];
+    [textLabel setFont:v26];
 
-    [v14 setTextAlignment:self->_textAlignment];
+    [textLabel setTextAlignment:self->_textAlignment];
     v27 = self->_dateFormatter;
-    v28 = [(PKSelectedItemActionItem *)self->_selectedItem newExpirationDate];
-    v29 = [(NSDateFormatter *)v27 stringFromDate:v28];
-    [v15 setText:v29];
+    newExpirationDate = [(PKSelectedItemActionItem *)self->_selectedItem newExpirationDate];
+    v29 = [(NSDateFormatter *)v27 stringFromDate:newExpirationDate];
+    [detailTextLabel setText:v29];
 
     v30 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v25];
-    [v15 setFont:v30];
+    [detailTextLabel setFont:v30];
 
-    v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v15 setTextColor:v31];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [detailTextLabel setTextColor:secondaryLabelColor3];
 
     v13 = v34;
-    [v15 setTextAlignment:self->_textAlignment];
+    [detailTextLabel setTextAlignment:self->_textAlignment];
     [v8 setSelectionStyle:0];
     [v8 setAccessoryType:0];
-    v6 = v35;
+    pathCopy = v35;
   }
 
   v32 = PKProvisioningSecondaryBackgroundColor();
@@ -264,21 +264,21 @@
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(PKPerformActionSelectItemView *)self tableView:a3 numberOfRowsInSection:?];
-  v7 = 0;
-  if (a4 == 1 && v6 >= 1)
+  v6 = [(PKPerformActionSelectItemView *)self tableView:view numberOfRowsInSection:?];
+  _optionsSectionHeaderText = 0;
+  if (section == 1 && v6 >= 1)
   {
-    v7 = [(PKPerformActionSelectItemView *)self _optionsSectionHeaderText];
+    _optionsSectionHeaderText = [(PKPerformActionSelectItemView *)self _optionsSectionHeaderText];
   }
 
-  return v7;
+  return _optionsSectionHeaderText;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v5 = 0;
   }
@@ -317,29 +317,29 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(PKPerformActionSelectItemView *)self tableView:a3 numberOfRowsInSection:?];
-  v7 = 0;
-  if (a4 == 1 && v6 >= 1)
+  v6 = [(PKPerformActionSelectItemView *)self tableView:view numberOfRowsInSection:?];
+  _optionsSectionFooterText = 0;
+  if (section == 1 && v6 >= 1)
   {
-    v7 = [(PKPerformActionSelectItemView *)self _optionsSectionFooterText];
+    _optionsSectionFooterText = [(PKPerformActionSelectItemView *)self _optionsSectionFooterText];
   }
 
-  return v7;
+  return _optionsSectionFooterText;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  if ([pathCopy section])
   {
     v8 = self->_selectedItem;
-    v9 = [(PKPaymentPassAction *)self->_action selectedActionItems];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
+    selectedActionItems = [(PKPaymentPassAction *)self->_action selectedActionItems];
+    v10 = [selectedActionItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     if (v8 != v10)
     {
@@ -352,16 +352,16 @@
         v12 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
         v19[0] = v12;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-        [v6 reloadRowsAtIndexPaths:v13 withRowAnimation:5];
+        [viewCopy reloadRowsAtIndexPaths:v13 withRowAnimation:5];
       }
 
-      v14 = [(PKPaymentPassAction *)self->_action selectedActionItems];
-      v15 = [v14 indexOfObject:v8];
+      selectedActionItems2 = [(PKPaymentPassAction *)self->_action selectedActionItems];
+      v15 = [selectedActionItems2 indexOfObject:v8];
 
-      v16 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:{objc_msgSend(v7, "section")}];
+      v16 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:{objc_msgSend(pathCopy, "section")}];
       v17 = [(UITableView *)self->_tableView cellForRowAtIndexPath:v16];
       [v17 setAccessoryType:0];
-      v18 = [(UITableView *)self->_tableView cellForRowAtIndexPath:v7];
+      v18 = [(UITableView *)self->_tableView cellForRowAtIndexPath:pathCopy];
       [v18 setAccessoryType:3];
     }
   }
@@ -396,26 +396,26 @@
   return selectedItem;
 }
 
-- (void)fetchServiceProviderDataWithCompletion:(id)a3
+- (void)fetchServiceProviderDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x1E69B88B0] passPropertiesForPass:self->_pass];
-  v6 = [v5 balance];
+  balance = [v5 balance];
   selectedItem = self->_selectedItem;
   if (selectedItem)
   {
-    v8 = [(PKPass *)self->_pass secureElementPass];
+    secureElementPass = [(PKPass *)self->_pass secureElementPass];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__PKPerformActionSelectItemView_fetchServiceProviderDataWithCompletion___block_invoke;
     v9[3] = &unk_1E8012A48;
-    v10 = v4;
-    [(PKSelectedItemActionItem *)selectedItem serviceProviderDataWithPass:v8 currentLocalBalance:v6 completion:v9];
+    v10 = completionCopy;
+    [(PKSelectedItemActionItem *)selectedItem serviceProviderDataWithPass:secureElementPass currentLocalBalance:balance completion:v9];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

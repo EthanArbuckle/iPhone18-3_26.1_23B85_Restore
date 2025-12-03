@@ -1,50 +1,50 @@
 @interface CRKEDUPayload
-- (BOOL)areCredentialsValidForStub:(BOOL)a3 error:(id *)a4;
-- (BOOL)parseDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5;
-- (CRKEDUPayload)initWithDictionary:(id)a3 isStub:(BOOL)a4 error:(id *)a5;
-- (CRKEDUPayload)initWithDictionary:(id)a3 isStub:(BOOL)a4 isEphemeralMultiUserDevice:(BOOL)a5 error:(id *)a6;
+- (BOOL)areCredentialsValidForStub:(BOOL)stub error:(id *)error;
+- (BOOL)parseDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error;
+- (CRKEDUPayload)initWithDictionary:(id)dictionary isStub:(BOOL)stub error:(id *)error;
+- (CRKEDUPayload)initWithDictionary:(id)dictionary isStub:(BOOL)stub isEphemeralMultiUserDevice:(BOOL)device error:(id *)error;
 - (NSDictionary)configuration;
 - (id)description;
-- (id)parseDepartmentFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5;
-- (id)parseDeviceGroupFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5;
-- (id)parseGroupFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5;
-- (id)parseUserFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5;
+- (id)parseDepartmentFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error;
+- (id)parseDeviceGroupFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error;
+- (id)parseGroupFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error;
+- (id)parseUserFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error;
 @end
 
 @implementation CRKEDUPayload
 
-- (CRKEDUPayload)initWithDictionary:(id)a3 isStub:(BOOL)a4 error:(id *)a5
+- (CRKEDUPayload)initWithDictionary:(id)dictionary isStub:(BOOL)stub error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  stubCopy = stub;
+  dictionaryCopy = dictionary;
   v9 = +[CRKSystemInfo sharedSystemInfo];
-  v10 = [v9 cloudConfigEnablesEphemeralMultiUser];
+  cloudConfigEnablesEphemeralMultiUser = [v9 cloudConfigEnablesEphemeralMultiUser];
 
-  v11 = [(CRKEDUPayload *)self initWithDictionary:v8 isStub:v6 isEphemeralMultiUserDevice:v10 error:a5];
+  v11 = [(CRKEDUPayload *)self initWithDictionary:dictionaryCopy isStub:stubCopy isEphemeralMultiUserDevice:cloudConfigEnablesEphemeralMultiUser error:error];
   return v11;
 }
 
-- (CRKEDUPayload)initWithDictionary:(id)a3 isStub:(BOOL)a4 isEphemeralMultiUserDevice:(BOOL)a5 error:(id *)a6
+- (CRKEDUPayload)initWithDictionary:(id)dictionary isStub:(BOOL)stub isEphemeralMultiUserDevice:(BOOL)device error:(id *)error
 {
-  v8 = a4;
-  v10 = a3;
+  stubCopy = stub;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = CRKEDUPayload;
   v11 = [(CRKEDUPayload *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    v11->_isEphemeralMultiUserDevice = a5;
+    v11->_isEphemeralMultiUserDevice = device;
     v18 = 0;
-    v13 = [(CRKEDUPayload *)v11 parseDictionary:v10 isStub:v8 outError:&v18];
+    v13 = [(CRKEDUPayload *)v11 parseDictionary:dictionaryCopy isStub:stubCopy outError:&v18];
     v14 = v18;
     v15 = v14;
     if (!v13)
     {
-      if (a6)
+      if (error)
       {
         v16 = v14;
-        *a6 = v15;
+        *error = v15;
       }
 
       v12 = 0;
@@ -54,11 +54,11 @@
   return v12;
 }
 
-- (BOOL)parseDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5
+- (BOOL)parseDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error
 {
-  v6 = a4;
+  stubCopy = stub;
   v138 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   if (_CRKLogGeneral_onceToken_6 != -1)
   {
     [CRKEDUPayload parseDictionary:isStub:outError:];
@@ -71,7 +71,7 @@
   }
 
   v133 = 0;
-  v10 = [v8 crk_validateAndRemoveNonZeroLengthStringWithKey:@"PayloadDisplayName" isRequired:0 outError:&v133];
+  v10 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"PayloadDisplayName" isRequired:0 outError:&v133];
   v11 = v133;
   payloadDisplayName = self->_payloadDisplayName;
   self->_payloadDisplayName = v10;
@@ -79,7 +79,7 @@
   if (!v11)
   {
     v132 = 0;
-    v13 = [v8 crk_validateAndRemoveNonZeroLengthStringWithKey:@"PayloadDescription" isRequired:0 outError:&v132];
+    v13 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"PayloadDescription" isRequired:0 outError:&v132];
     v11 = v132;
     payloadDescriptionName = self->_payloadDescriptionName;
     self->_payloadDescriptionName = v13;
@@ -87,7 +87,7 @@
     if (!v11)
     {
       v131 = 0;
-      v15 = [v8 crk_validateAndRemoveNonZeroLengthStringWithKey:@"OrganizationUUID" isRequired:v6 ^ 1 outError:&v131];
+      v15 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"OrganizationUUID" isRequired:stubCopy ^ 1 outError:&v131];
       v11 = v131;
       organizationUUID = self->_organizationUUID;
       self->_organizationUUID = v15;
@@ -95,7 +95,7 @@
       if (!v11)
       {
         v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:self->_organizationUUID];
-        if (!v17 && !v6)
+        if (!v17 && !stubCopy)
         {
           v11 = [MEMORY[0x277CCA9B8] crk_badFieldTypeErrorWithField:@"OrganizationUUID"];
 LABEL_22:
@@ -104,7 +104,7 @@ LABEL_22:
         }
 
         v130 = 0;
-        v18 = [v8 crk_validateAndRemoveNonZeroLengthStringWithKey:@"OrganizationName" isRequired:v6 ^ 1 outError:&v130];
+        v18 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"OrganizationName" isRequired:stubCopy ^ 1 outError:&v130];
         v11 = v130;
         organizationName = self->_organizationName;
         self->_organizationName = v18;
@@ -115,7 +115,7 @@ LABEL_22:
         }
 
         v129 = 0;
-        v20 = [v8 crk_validateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v129];
+        v20 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v129];
         v11 = v129;
         payloadCertificateUUID = self->_payloadCertificateUUID;
         self->_payloadCertificateUUID = v20;
@@ -126,7 +126,7 @@ LABEL_22:
         }
 
         v128 = 0;
-        v22 = [v8 crk_validateAndRemoveObjectOfClass:objc_opt_class() withKey:@"PayloadCertificatePersistentID" isRequired:0 outError:&v128];
+        v22 = [dictionaryCopy crk_validateAndRemoveObjectOfClass:objc_opt_class() withKey:@"PayloadCertificatePersistentID" isRequired:0 outError:&v128];
         v11 = v128;
         payloadCertificatePersistentID = self->_payloadCertificatePersistentID;
         self->_payloadCertificatePersistentID = v22;
@@ -137,7 +137,7 @@ LABEL_22:
         }
 
         v127 = 0;
-        v24 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"LeaderPayloadCertificateAnchorUUID" isRequired:0 outError:&v127];
+        v24 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"LeaderPayloadCertificateAnchorUUID" isRequired:0 outError:&v127];
         v11 = v127;
         leaderPayloadCertificateAnchorUUID = self->_leaderPayloadCertificateAnchorUUID;
         self->_leaderPayloadCertificateAnchorUUID = v24;
@@ -148,7 +148,7 @@ LABEL_22:
         }
 
         v126 = 0;
-        v26 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"LeaderPayloadCertificateAnchorPersistentID" isRequired:0 outError:&v126];
+        v26 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"LeaderPayloadCertificateAnchorPersistentID" isRequired:0 outError:&v126];
         v11 = v126;
         leaderPayloadCertificateAnchorPersistentID = self->_leaderPayloadCertificateAnchorPersistentID;
         self->_leaderPayloadCertificateAnchorPersistentID = v26;
@@ -159,7 +159,7 @@ LABEL_22:
         }
 
         v125 = 0;
-        v28 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MemberPayloadCertificateAnchorUUID" isRequired:0 outError:&v125];
+        v28 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MemberPayloadCertificateAnchorUUID" isRequired:0 outError:&v125];
         v11 = v125;
         memberPayloadCertificateAnchorUUID = self->_memberPayloadCertificateAnchorUUID;
         self->_memberPayloadCertificateAnchorUUID = v28;
@@ -170,19 +170,19 @@ LABEL_22:
         }
 
         v124 = 0;
-        v30 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MemberPayloadCertificateAnchorPersistentID" isRequired:0 outError:&v124];
+        v30 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MemberPayloadCertificateAnchorPersistentID" isRequired:0 outError:&v124];
         v31 = v124;
         memberPayloadCertificateAnchorPersistentID = self->_memberPayloadCertificateAnchorPersistentID;
         self->_memberPayloadCertificateAnchorPersistentID = v30;
 
-        if (v31 || (v123 = 0, [v8 crk_validateAndRemoveNonZeroLengthStringWithKey:@"ResourcePayloadCertificateUUID" isRequired:0 outError:&v123], v33 = objc_claimAutoreleasedReturnValue(), v31 = v123, resourcePayloadCertificateUUID = self->_resourcePayloadCertificateUUID, self->_resourcePayloadCertificateUUID = v33, resourcePayloadCertificateUUID, v31) || (v122 = 0, objc_msgSend(v8, "crk_validateAndRemoveObjectOfClass:withKey:isRequired:outError:", objc_opt_class(), @"ResourcePayloadCertificatePersistentID", 0, &v122), v35 = objc_claimAutoreleasedReturnValue(), v31 = v122, resourcePayloadCertificatePersistentID = self->_resourcePayloadCertificatePersistentID, self->_resourcePayloadCertificatePersistentID = v35, resourcePayloadCertificatePersistentID, v31) || (v121 = 0, objc_msgSend(v8, "crk_validateAndRemoveObjectOfClass:withKey:isRequired:outError:", objc_opt_class(), @"ScreenObservationPermissionModificationAllowed", 0, &v121), v37 = objc_claimAutoreleasedReturnValue(), v31 = v121, self->_screenObservationPermissionModificationAllowed = objc_msgSend(v37, "BOOLValue"), v37, v31))
+        if (v31 || (v123 = 0, [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"ResourcePayloadCertificateUUID" isRequired:0 outError:&v123], v33 = objc_claimAutoreleasedReturnValue(), v31 = v123, resourcePayloadCertificateUUID = self->_resourcePayloadCertificateUUID, self->_resourcePayloadCertificateUUID = v33, resourcePayloadCertificateUUID, v31) || (v122 = 0, objc_msgSend(dictionaryCopy, "crk_validateAndRemoveObjectOfClass:withKey:isRequired:outError:", objc_opt_class(), @"ResourcePayloadCertificatePersistentID", 0, &v122), v35 = objc_claimAutoreleasedReturnValue(), v31 = v122, resourcePayloadCertificatePersistentID = self->_resourcePayloadCertificatePersistentID, self->_resourcePayloadCertificatePersistentID = v35, resourcePayloadCertificatePersistentID, v31) || (v121 = 0, objc_msgSend(dictionaryCopy, "crk_validateAndRemoveObjectOfClass:withKey:isRequired:outError:", objc_opt_class(), @"ScreenObservationPermissionModificationAllowed", 0, &v121), v37 = objc_claimAutoreleasedReturnValue(), v31 = v121, self->_screenObservationPermissionModificationAllowed = objc_msgSend(v37, "BOOLValue"), v37, v31))
         {
           v11 = v31;
           goto LABEL_22;
         }
 
         v120 = 0;
-        v40 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Departments" isRequired:0 outError:&v120];
+        v40 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Departments" isRequired:0 outError:&v120];
         v41 = v120;
         if (v41)
         {
@@ -211,7 +211,7 @@ LABEL_22:
 
               v45 = [*(*(&v116 + 1) + 8 * i) mutableCopy];
               v115 = 0;
-              v46 = [(CRKEDUPayload *)self parseDepartmentFromDictionary:v45 isStub:v6 outError:&v115];
+              v46 = [(CRKEDUPayload *)self parseDepartmentFromDictionary:v45 isStub:stubCopy outError:&v115];
               v47 = v115;
 
               if (v47)
@@ -241,7 +241,7 @@ LABEL_39:
         self->_departments = v48;
 
         v114 = v47;
-        v40 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Groups" isRequired:v6 ^ 1 outError:&v114];
+        v40 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Groups" isRequired:stubCopy ^ 1 outError:&v114];
         v11 = v114;
 
         if (v11)
@@ -270,7 +270,7 @@ LABEL_39:
 
               v52 = [*(*(&v110 + 1) + 8 * j) mutableCopy];
               v109 = 0;
-              v53 = [(CRKEDUPayload *)self parseGroupFromDictionary:v52 isStub:v6 outError:&v109];
+              v53 = [(CRKEDUPayload *)self parseGroupFromDictionary:v52 isStub:stubCopy outError:&v109];
               v54 = v109;
 
               if (v54)
@@ -310,12 +310,12 @@ LABEL_52:
 
 LABEL_53:
 
-        v57 = [v50 allValues];
+        allValues = [v50 allValues];
         groups = self->_groups;
-        self->_groups = v57;
+        self->_groups = allValues;
 
         v108 = v54;
-        v40 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Users" isRequired:v6 ^ 1 outError:&v108];
+        v40 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Users" isRequired:stubCopy ^ 1 outError:&v108];
         v11 = v108;
 
         if (v11)
@@ -345,7 +345,7 @@ LABEL_53:
 
               v62 = [*(*(&v104 + 1) + 8 * k) mutableCopy];
               v103 = 0;
-              v63 = [(CRKEDUPayload *)self parseUserFromDictionary:v62 isStub:v6 outError:&v103];
+              v63 = [(CRKEDUPayload *)self parseUserFromDictionary:v62 isStub:stubCopy outError:&v103];
               v64 = v103;
 
               if (v64)
@@ -385,12 +385,12 @@ LABEL_67:
 
 LABEL_68:
 
-        v67 = [v93 allValues];
+        allValues2 = [v93 allValues];
         users = self->_users;
-        self->_users = v67;
+        self->_users = allValues2;
 
         v102 = v64;
-        v69 = [v8 crk_validateAndRemoveNonZeroLengthStringWithKey:@"UserIdentifier" isRequired:0 outError:&v102];
+        v69 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"UserIdentifier" isRequired:0 outError:&v102];
         v70 = v102;
 
         userIdentifier = self->_userIdentifier;
@@ -410,7 +410,7 @@ LABEL_68:
             {
 
               v101 = 0;
-              v40 = [v8 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"DeviceGroups" isRequired:0 outError:&v101];
+              v40 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"DeviceGroups" isRequired:0 outError:&v101];
               v41 = v101;
               if (!v41)
               {
@@ -435,7 +435,7 @@ LABEL_68:
 
                       v75 = [*(*(&v97 + 1) + 8 * m) mutableCopy];
                       v96 = 0;
-                      v76 = [(CRKEDUPayload *)self parseDeviceGroupFromDictionary:v75 isStub:v6 outError:&v96];
+                      v76 = [(CRKEDUPayload *)self parseDeviceGroupFromDictionary:v75 isStub:stubCopy outError:&v96];
                       v77 = v96;
 
                       if (v77)
@@ -475,12 +475,12 @@ LABEL_90:
 
 LABEL_91:
 
-                v81 = [v73 allValues];
+                allValues3 = [v73 allValues];
                 deviceGroups = self->_deviceGroups;
-                self->_deviceGroups = v81;
+                self->_deviceGroups = allValues3;
 
                 v95 = v77;
-                [(CRKEDUPayload *)self areCredentialsValidForStub:v6 error:&v95];
+                [(CRKEDUPayload *)self areCredentialsValidForStub:stubCopy error:&v95];
                 v11 = v95;
 
                 goto LABEL_22;
@@ -505,29 +505,29 @@ LABEL_54:
   }
 
 LABEL_23:
-  if (a5 && v11)
+  if (error && v11)
   {
     v38 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v11 == 0;
 }
 
-- (BOOL)areCredentialsValidForStub:(BOOL)a3 error:(id *)a4
+- (BOOL)areCredentialsValidForStub:(BOOL)stub error:(id *)error
 {
-  v5 = [[CRKEDUPayloadCredentialValidator alloc] initWithPayload:self isStub:a3 isEphemeralMultiUserDevice:[(CRKEDUPayload *)self isEphemeralMultiUserDevice]];
-  LOBYTE(a4) = [(CRKEDUPayloadCredentialValidator *)v5 areCredentialsValidWithError:a4];
+  v5 = [[CRKEDUPayloadCredentialValidator alloc] initWithPayload:self isStub:stub isEphemeralMultiUserDevice:[(CRKEDUPayload *)self isEphemeralMultiUserDevice]];
+  LOBYTE(error) = [(CRKEDUPayloadCredentialValidator *)v5 areCredentialsValidWithError:error];
 
-  return a4;
+  return error;
 }
 
-- (id)parseDepartmentFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5
+- (id)parseDepartmentFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  stubCopy = stub;
+  dictionaryCopy = dictionary;
   v15 = 0;
-  v8 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!v6 outError:&v15];
+  v8 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!stubCopy outError:&v15];
   v9 = v15;
   if (v9)
   {
@@ -536,16 +536,16 @@ LABEL_23:
   }
 
   v14 = 0;
-  v10 = [v7 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"GroupBeaconIDs" isRequired:!v6 outError:&v14];
+  v10 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"GroupBeaconIDs" isRequired:!stubCopy outError:&v14];
   v9 = v14;
   if (v9)
   {
 LABEL_4:
-    if (a5)
+    if (error)
     {
       v9 = v9;
       v11 = 0;
-      *a5 = v9;
+      *error = v9;
     }
 
     else
@@ -574,12 +574,12 @@ LABEL_12:
   return v11;
 }
 
-- (id)parseGroupFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5
+- (id)parseGroupFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  stubCopy = stub;
+  dictionaryCopy = dictionary;
   v28 = 0;
-  v8 = [v7 crk_validateAndRemoveObjectOfClass:objc_opt_class() withKey:@"BeaconID" isRequired:!v6 outError:&v28];
+  v8 = [dictionaryCopy crk_validateAndRemoveObjectOfClass:objc_opt_class() withKey:@"BeaconID" isRequired:!stubCopy outError:&v28];
   v9 = v28;
   if (v9 || [v8 unsignedIntegerValue] >= 0x10000 && (objc_msgSend(MEMORY[0x277CCA9B8], "crk_unsupportedValueErrorWithField:value:", @"BeaconID", v8), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -595,7 +595,7 @@ LABEL_3:
   }
 
   v27 = 0;
-  v20 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!v6 outError:&v27];
+  v20 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!stubCopy outError:&v27];
   v9 = v27;
   if (v9)
   {
@@ -603,7 +603,7 @@ LABEL_3:
   }
 
   v26 = 0;
-  v15 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"Description" isRequired:0 outError:&v26];
+  v15 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"Description" isRequired:0 outError:&v26];
   v9 = v26;
   if (v9)
   {
@@ -616,7 +616,7 @@ LABEL_3:
   }
 
   v25 = 0;
-  v14 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"ConfigurationSource" isRequired:0 outError:&v25];
+  v14 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"ConfigurationSource" isRequired:0 outError:&v25];
   v9 = v25;
   if (v9)
   {
@@ -628,7 +628,7 @@ LABEL_3:
   }
 
   v24 = 0;
-  v13 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"ImageURL" isRequired:0 outError:&v24];
+  v13 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"ImageURL" isRequired:0 outError:&v24];
   v9 = v24;
   if (v9)
   {
@@ -639,7 +639,7 @@ LABEL_3:
   }
 
   v23 = 0;
-  v12 = [v7 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"LeaderIdentifiers" isRequired:0 outError:&v23];
+  v12 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"LeaderIdentifiers" isRequired:0 outError:&v23];
   v9 = v23;
   if (v9)
   {
@@ -649,7 +649,7 @@ LABEL_3:
   }
 
   v22 = 0;
-  v11 = [v7 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MemberIdentifiers" isRequired:!v6 outError:&v22];
+  v11 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MemberIdentifiers" isRequired:!stubCopy outError:&v22];
   v9 = v22;
   if (v9)
   {
@@ -658,16 +658,16 @@ LABEL_3:
   }
 
   v21 = 0;
-  v10 = [v7 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"DeviceGroupIdentifiers" isRequired:0 outError:&v21];
+  v10 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"DeviceGroupIdentifiers" isRequired:0 outError:&v21];
   v9 = v21;
   if (v9)
   {
 LABEL_4:
-    if (a5)
+    if (error)
     {
       v9 = v9;
       v16 = 0;
-      *a5 = v9;
+      *error = v9;
     }
 
     else
@@ -728,12 +728,12 @@ LABEL_12:
   return v16;
 }
 
-- (id)parseUserFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5
+- (id)parseUserFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  stubCopy = stub;
+  dictionaryCopy = dictionary;
   v32 = 0;
-  v8 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"Identifier" isRequired:!v6 outError:&v32];
+  v8 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"Identifier" isRequired:!stubCopy outError:&v32];
   v9 = v32;
   if (v9)
   {
@@ -750,7 +750,7 @@ LABEL_12:
   }
 
   v31 = 0;
-  v22 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!v6 outError:&v31];
+  v22 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!stubCopy outError:&v31];
   v9 = v31;
   if (v9)
   {
@@ -766,7 +766,7 @@ LABEL_12:
   }
 
   v30 = 0;
-  v21 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"GivenName" isRequired:0 outError:&v30];
+  v21 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"GivenName" isRequired:0 outError:&v30];
   v9 = v30;
   if (v9)
   {
@@ -781,7 +781,7 @@ LABEL_12:
   }
 
   v29 = 0;
-  v20 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"FamilyName" isRequired:0 outError:&v29];
+  v20 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"FamilyName" isRequired:0 outError:&v29];
   v9 = v29;
   if (v9)
   {
@@ -795,7 +795,7 @@ LABEL_12:
   }
 
   v28 = 0;
-  v15 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"PhoneticGivenName" isRequired:0 outError:&v28];
+  v15 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"PhoneticGivenName" isRequired:0 outError:&v28];
   v9 = v28;
   if (v9)
   {
@@ -808,7 +808,7 @@ LABEL_12:
   }
 
   v27 = 0;
-  v14 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"PhoneticFamilyName" isRequired:0 outError:&v27];
+  v14 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"PhoneticFamilyName" isRequired:0 outError:&v27];
   v9 = v27;
   if (v9)
   {
@@ -820,7 +820,7 @@ LABEL_12:
   }
 
   v26 = 0;
-  v13 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"AppleID" isRequired:0 outError:&v26];
+  v13 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"AppleID" isRequired:0 outError:&v26];
   v9 = v26;
   if (v9)
   {
@@ -831,7 +831,7 @@ LABEL_12:
   }
 
   v25 = 0;
-  v12 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"ImageURL" isRequired:0 outError:&v25];
+  v12 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"ImageURL" isRequired:0 outError:&v25];
   v9 = v25;
   if (v9)
   {
@@ -841,7 +841,7 @@ LABEL_12:
   }
 
   v24 = 0;
-  v11 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"FullScreenImageURL" isRequired:0 outError:&v24];
+  v11 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"FullScreenImageURL" isRequired:0 outError:&v24];
   v9 = v24;
   if (v9)
   {
@@ -850,16 +850,16 @@ LABEL_12:
   }
 
   v23 = 0;
-  v10 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"PasscodeType" isRequired:0 outError:&v23];
+  v10 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"PasscodeType" isRequired:0 outError:&v23];
   v9 = v23;
   if (v9)
   {
 LABEL_20:
-    if (a5)
+    if (error)
     {
       v9 = v9;
       v16 = 0;
-      *a5 = v9;
+      *error = v9;
     }
 
     else
@@ -930,12 +930,12 @@ LABEL_23:
   return v16;
 }
 
-- (id)parseDeviceGroupFromDictionary:(id)a3 isStub:(BOOL)a4 outError:(id *)a5
+- (id)parseDeviceGroupFromDictionary:(id)dictionary isStub:(BOOL)stub outError:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  stubCopy = stub;
+  dictionaryCopy = dictionary;
   v18 = 0;
-  v8 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"Identifier" isRequired:!v6 outError:&v18];
+  v8 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"Identifier" isRequired:!stubCopy outError:&v18];
   v9 = v18;
   if (v9)
   {
@@ -945,7 +945,7 @@ LABEL_23:
   }
 
   v17 = 0;
-  v11 = [v7 crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!v6 outError:&v17];
+  v11 = [dictionaryCopy crk_validateAndRemoveNonZeroLengthStringWithKey:@"Name" isRequired:!stubCopy outError:&v17];
   v9 = v17;
   if (v9)
   {
@@ -954,16 +954,16 @@ LABEL_23:
   }
 
   v16 = 0;
-  v10 = [v7 crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SerialNumbers" isRequired:0 outError:&v16];
+  v10 = [dictionaryCopy crk_validateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SerialNumbers" isRequired:0 outError:&v16];
   v9 = v16;
   if (v9)
   {
 LABEL_6:
-    if (a5)
+    if (error)
     {
       v9 = v9;
       v12 = 0;
-      *a5 = v9;
+      *error = v9;
     }
 
     else
@@ -1002,92 +1002,92 @@ LABEL_9:
 - (NSDictionary)configuration
 {
   v3 = objc_opt_new();
-  v4 = [(CRKEDUPayload *)self organizationUUID];
+  organizationUUID = [(CRKEDUPayload *)self organizationUUID];
 
-  if (v4)
+  if (organizationUUID)
   {
-    v5 = [(CRKEDUPayload *)self organizationUUID];
-    [v3 setObject:v5 forKeyedSubscript:@"OrganizationUUID"];
+    organizationUUID2 = [(CRKEDUPayload *)self organizationUUID];
+    [v3 setObject:organizationUUID2 forKeyedSubscript:@"OrganizationUUID"];
   }
 
-  v6 = [(CRKEDUPayload *)self organizationName];
+  organizationName = [(CRKEDUPayload *)self organizationName];
 
-  if (v6)
+  if (organizationName)
   {
-    v7 = [(CRKEDUPayload *)self organizationName];
-    [v3 setObject:v7 forKeyedSubscript:@"OrganizationName"];
+    organizationName2 = [(CRKEDUPayload *)self organizationName];
+    [v3 setObject:organizationName2 forKeyedSubscript:@"OrganizationName"];
   }
 
-  v8 = [(CRKEDUPayload *)self payloadCertificateUUID];
+  payloadCertificateUUID = [(CRKEDUPayload *)self payloadCertificateUUID];
 
-  if (v8)
+  if (payloadCertificateUUID)
   {
-    v9 = [(CRKEDUPayload *)self payloadCertificateUUID];
-    [v3 setObject:v9 forKeyedSubscript:@"PayloadCertificateUUID"];
+    payloadCertificateUUID2 = [(CRKEDUPayload *)self payloadCertificateUUID];
+    [v3 setObject:payloadCertificateUUID2 forKeyedSubscript:@"PayloadCertificateUUID"];
   }
 
-  v10 = [(CRKEDUPayload *)self payloadCertificatePersistentID];
+  payloadCertificatePersistentID = [(CRKEDUPayload *)self payloadCertificatePersistentID];
 
-  if (v10)
+  if (payloadCertificatePersistentID)
   {
-    v11 = [(CRKEDUPayload *)self payloadCertificatePersistentID];
-    [v3 setObject:v11 forKeyedSubscript:@"PayloadCertificatePersistentID"];
+    payloadCertificatePersistentID2 = [(CRKEDUPayload *)self payloadCertificatePersistentID];
+    [v3 setObject:payloadCertificatePersistentID2 forKeyedSubscript:@"PayloadCertificatePersistentID"];
   }
 
-  v12 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorUUID];
+  leaderPayloadCertificateAnchorUUID = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorUUID];
 
-  if (v12)
+  if (leaderPayloadCertificateAnchorUUID)
   {
-    v13 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorUUID];
-    [v3 setObject:v13 forKeyedSubscript:@"LeaderPayloadCertificateAnchorUUID"];
+    leaderPayloadCertificateAnchorUUID2 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorUUID];
+    [v3 setObject:leaderPayloadCertificateAnchorUUID2 forKeyedSubscript:@"LeaderPayloadCertificateAnchorUUID"];
   }
 
-  v14 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorPersistentID];
+  leaderPayloadCertificateAnchorPersistentID = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorPersistentID];
 
-  if (v14)
+  if (leaderPayloadCertificateAnchorPersistentID)
   {
-    v15 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorPersistentID];
-    [v3 setObject:v15 forKeyedSubscript:@"LeaderPayloadCertificateAnchorPersistentID"];
+    leaderPayloadCertificateAnchorPersistentID2 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorPersistentID];
+    [v3 setObject:leaderPayloadCertificateAnchorPersistentID2 forKeyedSubscript:@"LeaderPayloadCertificateAnchorPersistentID"];
   }
 
-  v16 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorUUID];
+  memberPayloadCertificateAnchorUUID = [(CRKEDUPayload *)self memberPayloadCertificateAnchorUUID];
 
-  if (v16)
+  if (memberPayloadCertificateAnchorUUID)
   {
-    v17 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorUUID];
-    [v3 setObject:v17 forKeyedSubscript:@"MemberPayloadCertificateAnchorUUID"];
+    memberPayloadCertificateAnchorUUID2 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorUUID];
+    [v3 setObject:memberPayloadCertificateAnchorUUID2 forKeyedSubscript:@"MemberPayloadCertificateAnchorUUID"];
   }
 
-  v18 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorPersistentID];
+  memberPayloadCertificateAnchorPersistentID = [(CRKEDUPayload *)self memberPayloadCertificateAnchorPersistentID];
 
-  if (v18)
+  if (memberPayloadCertificateAnchorPersistentID)
   {
-    v19 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorPersistentID];
-    [v3 setObject:v19 forKeyedSubscript:@"MemberPayloadCertificateAnchorPersistentID"];
+    memberPayloadCertificateAnchorPersistentID2 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorPersistentID];
+    [v3 setObject:memberPayloadCertificateAnchorPersistentID2 forKeyedSubscript:@"MemberPayloadCertificateAnchorPersistentID"];
   }
 
-  v20 = [(CRKEDUPayload *)self resourcePayloadCertificateUUID];
+  resourcePayloadCertificateUUID = [(CRKEDUPayload *)self resourcePayloadCertificateUUID];
 
-  if (v20)
+  if (resourcePayloadCertificateUUID)
   {
-    v21 = [(CRKEDUPayload *)self resourcePayloadCertificateUUID];
-    [v3 setObject:v21 forKeyedSubscript:@"ResourcePayloadCertificateUUID"];
+    resourcePayloadCertificateUUID2 = [(CRKEDUPayload *)self resourcePayloadCertificateUUID];
+    [v3 setObject:resourcePayloadCertificateUUID2 forKeyedSubscript:@"ResourcePayloadCertificateUUID"];
   }
 
-  v22 = [(CRKEDUPayload *)self resourcePayloadCertificatePersistentID];
+  resourcePayloadCertificatePersistentID = [(CRKEDUPayload *)self resourcePayloadCertificatePersistentID];
 
-  if (v22)
+  if (resourcePayloadCertificatePersistentID)
   {
-    v23 = [(CRKEDUPayload *)self resourcePayloadCertificatePersistentID];
-    [v3 setObject:v23 forKeyedSubscript:@"ResourcePayloadCertificatePersistentID"];
+    resourcePayloadCertificatePersistentID2 = [(CRKEDUPayload *)self resourcePayloadCertificatePersistentID];
+    [v3 setObject:resourcePayloadCertificatePersistentID2 forKeyedSubscript:@"ResourcePayloadCertificatePersistentID"];
   }
 
-  v24 = [(CRKEDUPayload *)self userIdentifier];
+  userIdentifier = [(CRKEDUPayload *)self userIdentifier];
 
-  if (v24)
+  if (userIdentifier)
   {
-    v25 = [(CRKEDUPayload *)self userIdentifier];
-    [v3 setObject:v25 forKeyedSubscript:@"UserIdentifier"];
+    userIdentifier2 = [(CRKEDUPayload *)self userIdentifier];
+    [v3 setObject:userIdentifier2 forKeyedSubscript:@"UserIdentifier"];
   }
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKEDUPayload screenObservationPermissionModificationAllowed](self, "screenObservationPermissionModificationAllowed")}];
@@ -1098,36 +1098,36 @@ LABEL_9:
     [v3 setObject:v27 forKeyedSubscript:@"ScreenObservationPermissionModificationAllowed"];
   }
 
-  v28 = [(CRKEDUPayload *)self departments];
+  departments = [(CRKEDUPayload *)self departments];
 
-  if (v28)
+  if (departments)
   {
-    v29 = [(CRKEDUPayload *)self departments];
-    [v3 setObject:v29 forKeyedSubscript:@"Departments"];
+    departments2 = [(CRKEDUPayload *)self departments];
+    [v3 setObject:departments2 forKeyedSubscript:@"Departments"];
   }
 
-  v30 = [(CRKEDUPayload *)self groups];
+  groups = [(CRKEDUPayload *)self groups];
 
-  if (v30)
+  if (groups)
   {
-    v31 = [(CRKEDUPayload *)self groups];
-    [v3 setObject:v31 forKeyedSubscript:@"Groups"];
+    groups2 = [(CRKEDUPayload *)self groups];
+    [v3 setObject:groups2 forKeyedSubscript:@"Groups"];
   }
 
-  v32 = [(CRKEDUPayload *)self users];
+  users = [(CRKEDUPayload *)self users];
 
-  if (v32)
+  if (users)
   {
-    v33 = [(CRKEDUPayload *)self users];
-    [v3 setObject:v33 forKeyedSubscript:@"Users"];
+    users2 = [(CRKEDUPayload *)self users];
+    [v3 setObject:users2 forKeyedSubscript:@"Users"];
   }
 
-  v34 = [(CRKEDUPayload *)self deviceGroups];
+  deviceGroups = [(CRKEDUPayload *)self deviceGroups];
 
-  if (v34)
+  if (deviceGroups)
   {
-    v35 = [(CRKEDUPayload *)self deviceGroups];
-    [v3 setObject:v35 forKeyedSubscript:@"DeviceGroups"];
+    deviceGroups2 = [(CRKEDUPayload *)self deviceGroups];
+    [v3 setObject:deviceGroups2 forKeyedSubscript:@"DeviceGroups"];
   }
 
   v36 = [v3 copy];
@@ -1138,17 +1138,17 @@ LABEL_9:
 - (id)description
 {
   v18 = MEMORY[0x277CCACA8];
-  v17 = [(CRKEDUPayload *)self organizationUUID];
-  v16 = [(CRKEDUPayload *)self organizationName];
-  v15 = [(CRKEDUPayload *)self payloadCertificateUUID];
-  v21 = [(CRKEDUPayload *)self payloadCertificatePersistentID];
-  v14 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorUUID];
-  v20 = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorPersistentID];
-  v3 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorUUID];
-  v4 = [(CRKEDUPayload *)self memberPayloadCertificateAnchorPersistentID];
-  v5 = [(CRKEDUPayload *)self resourcePayloadCertificateUUID];
-  v6 = [(CRKEDUPayload *)self resourcePayloadCertificatePersistentID];
-  v13 = [(CRKEDUPayload *)self userIdentifier];
+  organizationUUID = [(CRKEDUPayload *)self organizationUUID];
+  organizationName = [(CRKEDUPayload *)self organizationName];
+  payloadCertificateUUID = [(CRKEDUPayload *)self payloadCertificateUUID];
+  payloadCertificatePersistentID = [(CRKEDUPayload *)self payloadCertificatePersistentID];
+  leaderPayloadCertificateAnchorUUID = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorUUID];
+  leaderPayloadCertificateAnchorPersistentID = [(CRKEDUPayload *)self leaderPayloadCertificateAnchorPersistentID];
+  memberPayloadCertificateAnchorUUID = [(CRKEDUPayload *)self memberPayloadCertificateAnchorUUID];
+  memberPayloadCertificateAnchorPersistentID = [(CRKEDUPayload *)self memberPayloadCertificateAnchorPersistentID];
+  resourcePayloadCertificateUUID = [(CRKEDUPayload *)self resourcePayloadCertificateUUID];
+  resourcePayloadCertificatePersistentID = [(CRKEDUPayload *)self resourcePayloadCertificatePersistentID];
+  userIdentifier = [(CRKEDUPayload *)self userIdentifier];
   if ([(CRKEDUPayload *)self screenObservationPermissionModificationAllowed])
   {
     v7 = @"YES";
@@ -1159,11 +1159,11 @@ LABEL_9:
     v7 = @"NO";
   }
 
-  v8 = [(CRKEDUPayload *)self departments];
-  v9 = [(CRKEDUPayload *)self groups];
-  v10 = [(CRKEDUPayload *)self users];
-  v11 = [(CRKEDUPayload *)self deviceGroups];
-  v19 = [v18 stringWithFormat:@"organizationUUID: %@             organizationName: %@             payloadCertificateUUID: %@             payloadCertificatePersistentID: %@             leaderPayloadCertificateAnchorUUID: %@             leaderPayloadCertificateAnchorPersistentID: %@             memberPayloadCertificateAnchorUUID: %@             memberPayloadCertificateAnchorPersistentID: %@             resourcePayloadCertificateUUID: %@             resourcePayloadCertificatePersistentID: %@             userIdentifier: %@             screenObservationPermissionModificationAllowed: %@             departments: %@             groups: %@             users: %@             deviceGroups: %@", v17, v16, v15, v21, v14, v20, v3, v4, v5, v6, v13, v7, v8, v9, v10, v11];
+  departments = [(CRKEDUPayload *)self departments];
+  groups = [(CRKEDUPayload *)self groups];
+  users = [(CRKEDUPayload *)self users];
+  deviceGroups = [(CRKEDUPayload *)self deviceGroups];
+  v19 = [v18 stringWithFormat:@"organizationUUID: %@             organizationName: %@             payloadCertificateUUID: %@             payloadCertificatePersistentID: %@             leaderPayloadCertificateAnchorUUID: %@             leaderPayloadCertificateAnchorPersistentID: %@             memberPayloadCertificateAnchorUUID: %@             memberPayloadCertificateAnchorPersistentID: %@             resourcePayloadCertificateUUID: %@             resourcePayloadCertificatePersistentID: %@             userIdentifier: %@             screenObservationPermissionModificationAllowed: %@             departments: %@             groups: %@             users: %@             deviceGroups: %@", organizationUUID, organizationName, payloadCertificateUUID, payloadCertificatePersistentID, leaderPayloadCertificateAnchorUUID, leaderPayloadCertificateAnchorPersistentID, memberPayloadCertificateAnchorUUID, memberPayloadCertificateAnchorPersistentID, resourcePayloadCertificateUUID, resourcePayloadCertificatePersistentID, userIdentifier, v7, departments, groups, users, deviceGroups];
 
   return v19;
 }

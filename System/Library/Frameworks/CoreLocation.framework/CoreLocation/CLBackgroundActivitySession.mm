@@ -1,26 +1,26 @@
 @interface CLBackgroundActivitySession
 + (CLBackgroundActivitySession)backgroundActivitySession;
-+ (CLBackgroundActivitySession)backgroundActivitySessionWithQueue:(id)a3 handler:(id)a4;
-+ (CLBackgroundActivitySession)sessionWithLocationManager:(id)a3 queue:(id)a4 handler:(id)a5;
-- (CLBackgroundActivitySession)initWithLocationManager:(id)a3 queue:(id)a4 handler:(id)a5;
++ (CLBackgroundActivitySession)backgroundActivitySessionWithQueue:(id)queue handler:(id)handler;
++ (CLBackgroundActivitySession)sessionWithLocationManager:(id)manager queue:(id)queue handler:(id)handler;
+- (CLBackgroundActivitySession)initWithLocationManager:(id)manager queue:(id)queue handler:(id)handler;
 - (void)createConnection;
 - (void)dealloc;
 - (void)destroyConnection;
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3;
-- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)a3;
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message;
+- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)diagnostics;
 - (void)invalidate;
 - (void)manageConnection;
-- (void)setHandler:(id)a3;
+- (void)setHandler:(id)handler;
 - (void)tearDown;
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4;
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken;
 @end
 
 @implementation CLBackgroundActivitySession
 
-+ (CLBackgroundActivitySession)sessionWithLocationManager:(id)a3 queue:(id)a4 handler:(id)a5
++ (CLBackgroundActivitySession)sessionWithLocationManager:(id)manager queue:(id)queue handler:(id)handler
 {
-  v6 = [[CLBackgroundActivitySession alloc] initWithLocationManager:a3 queue:a4 handler:a5];
-  [a3 addIdentifiableClient:v6];
+  v6 = [[CLBackgroundActivitySession alloc] initWithLocationManager:manager queue:queue handler:handler];
+  [manager addIdentifiableClient:v6];
   return v6;
 }
 
@@ -31,14 +31,14 @@
   return MEMORY[0x1EEE66B58](CLBackgroundActivitySession, sel_backgroundActivitySessionWithLocationManager_);
 }
 
-+ (CLBackgroundActivitySession)backgroundActivitySessionWithQueue:(id)a3 handler:(id)a4
++ (CLBackgroundActivitySession)backgroundActivitySessionWithQueue:(id)queue handler:(id)handler
 {
   +[CLLocationManager weakSharedInstance];
 
   return MEMORY[0x1EEE66B58](CLBackgroundActivitySession, sel_sessionWithLocationManager_requestPrivilege_queue_handler_);
 }
 
-- (CLBackgroundActivitySession)initWithLocationManager:(id)a3 queue:(id)a4 handler:(id)a5
+- (CLBackgroundActivitySession)initWithLocationManager:(id)manager queue:(id)queue handler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -69,17 +69,17 @@
       v26 = 2050;
       v27 = v9;
       v28 = 2050;
-      v29 = a3;
+      managerCopy = manager;
       _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLBackgroundActivitySession #backgroundActivitySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, manager:%{public}p}", buf, 0x3Au);
     }
 
-    if (([a3 isMasquerading] & 1) == 0 && (sub_19B8B8818() & 1) == 0)
+    if (([manager isMasquerading] & 1) == 0 && (sub_19B8B8818() & 1) == 0)
     {
       NSLog(&cfstr_ErrorClbackgro.isa);
     }
 
     [(CLBackgroundActivitySession *)v9 setShouldBeRunning:1];
-    if (!a4)
+    if (!queue)
     {
       if (qword_1ED519088 != -1)
       {
@@ -98,14 +98,14 @@
         _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#backgroundActivitySession, nil callback queue creating locally, self:%{public}p}", buf, 0x1Cu);
       }
 
-      a4 = +[CLLocationManager sharedQueue];
+      queue = +[CLLocationManager sharedQueue];
     }
 
-    v9->_silo = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a4];
-    [(CLBackgroundActivitySession *)v9 setManager:a3];
-    if (a5)
+    v9->_silo = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue];
+    [(CLBackgroundActivitySession *)v9 setManager:manager];
+    if (handler)
     {
-      v9->_clientCallback = _Block_copy(a5);
+      v9->_clientCallback = _Block_copy(handler);
     }
 
     os_activity_scope_leave(&v16);
@@ -115,7 +115,7 @@
   return v9;
 }
 
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken
 {
   silo = self->_silo;
   v5[0] = MEMORY[0x1E69E9820];
@@ -123,8 +123,8 @@
   v5[2] = sub_19B9511F0;
   v5[3] = &unk_1E753CF38;
   v5[4] = self;
-  v5[5] = a3;
-  [(CLDispatchSilo *)silo async:v5, a4];
+  v5[5] = token;
+  [(CLDispatchSilo *)silo async:v5, storageToken];
 }
 
 - (void)tearDown
@@ -163,7 +163,7 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLBackgroundActivitySession #backgroundActivitySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -203,7 +203,7 @@
     v20 = 2114;
     v21 = v6;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLBackgroundActivitySession #backgroundActivitySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -251,7 +251,7 @@
     v15 = 2114;
     v16 = v6;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLBackgroundActivitySession #backgroundActivitySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -303,9 +303,9 @@
         v12[0] = 2082;
         *&v12[1] = "";
         v13 = 2082;
-        v14 = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
+        uTF8String = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
         v15 = 2050;
-        v16 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#backgroundActivitySession destroyUponDisconnection(DIC), identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
         if (qword_1ED519088 != -1)
         {
@@ -316,15 +316,15 @@
       v4 = qword_1ED519090;
       if (os_signpost_enabled(qword_1ED519090))
       {
-        v5 = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
+        uTF8String2 = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
         *buf = 68289538;
         *&buf[4] = 0;
         v12[0] = 2082;
         *&v12[1] = "";
         v13 = 2082;
-        v14 = v5;
+        uTF8String = uTF8String2;
         v15 = 2050;
-        v16 = self;
+        selfCopy4 = self;
         _os_signpost_emit_with_name_impl(&dword_19B873000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#backgroundActivitySession destroyUponDisconnection(DIC)", "{msg%{public}.0s:#backgroundActivitySession destroyUponDisconnection(DIC), identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
       }
 
@@ -347,9 +347,9 @@
       v12[0] = 2082;
       *&v12[1] = "";
       v13 = 2082;
-      v14 = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
+      uTF8String = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
       v15 = 2050;
-      v16 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#backgroundActivitySession invalidated and destroyed connection, identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
       if (qword_1ED519088 != -1)
       {
@@ -360,15 +360,15 @@
     v8 = qword_1ED519090;
     if (os_signpost_enabled(qword_1ED519090))
     {
-      v9 = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
+      uTF8String3 = [(NSString *)[(CLBackgroundActivitySession *)self identityToken] UTF8String];
       *buf = 68289538;
       *&buf[4] = 0;
       v12[0] = 2082;
       *&v12[1] = "";
       v13 = 2082;
-      v14 = v9;
+      uTF8String = uTF8String3;
       v15 = 2050;
-      v16 = self;
+      selfCopy4 = self;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#backgroundActivitySession invalidated and destroyed connection", "{msg%{public}.0s:#backgroundActivitySession invalidated and destroyed connection, identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
     }
   }
@@ -376,9 +376,9 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   v32 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLBackgroundActivitySession #backgroundActivitySession", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v6, &state);
@@ -412,7 +412,7 @@
     v26 = 2114;
     v27 = v8;
     v28 = 2050;
-    v29 = self;
+    selfCopy = self;
     v30 = 2082;
     v31 = v10;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLBackgroundActivitySession #backgroundActivitySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, message:%{public, location:escape_only}s}", buf, 0x3Au);
@@ -445,11 +445,11 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)diagnostics
 {
-  var0 = a3.var0;
+  var0 = diagnostics.var0;
   v29 = *MEMORY[0x1E69E9840];
-  [(CLDispatchSilo *)self->_silo assertInside:a3.var0];
+  [(CLDispatchSilo *)self->_silo assertInside:diagnostics.var0];
   if ([(CLBackgroundActivitySession *)self shouldBeRunning]&& self->_clientCallback)
   {
     v6 = *var0;
@@ -478,7 +478,7 @@
       v23 = 2114;
       v24 = v13;
       v25 = 2050;
-      v26 = self;
+      selfCopy = self;
       v27 = 2113;
       v28 = DictionaryOfClasses;
       _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, payload:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -493,7 +493,7 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self->_clientCallback)
@@ -511,7 +511,7 @@
       v13 = 2082;
       v14 = "";
       v15 = 2050;
-      v16 = self;
+      selfCopy6 = self;
       v17 = 2082;
       v18 = "assert";
       v19 = 2081;
@@ -531,7 +531,7 @@
       v13 = 2082;
       v14 = "";
       v15 = 2050;
-      v16 = self;
+      selfCopy6 = self;
       v17 = 2082;
       v18 = "assert";
       v19 = 2081;
@@ -551,7 +551,7 @@
       v13 = 2082;
       v14 = "";
       v15 = 2050;
-      v16 = self;
+      selfCopy6 = self;
       v17 = 2082;
       v18 = "assert";
       v19 = 2081;
@@ -563,7 +563,7 @@ LABEL_25:
     abort_report_np();
   }
 
-  if (!a3)
+  if (!handler)
   {
     if (qword_1ED519088 != -1)
     {
@@ -578,7 +578,7 @@ LABEL_25:
       v13 = 2082;
       v14 = "";
       v15 = 2050;
-      v16 = self;
+      selfCopy6 = self;
       v17 = 2082;
       v18 = "assert";
       v19 = 2081;
@@ -598,7 +598,7 @@ LABEL_25:
       v13 = 2082;
       v14 = "";
       v15 = 2050;
-      v16 = self;
+      selfCopy6 = self;
       v17 = 2082;
       v18 = "assert";
       v19 = 2081;
@@ -618,7 +618,7 @@ LABEL_25:
       v13 = 2082;
       v14 = "";
       v15 = 2050;
-      v16 = self;
+      selfCopy6 = self;
       v17 = 2082;
       v18 = "assert";
       v19 = 2081;
@@ -629,7 +629,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  self->_clientCallback = _Block_copy(a3);
+  self->_clientCallback = _Block_copy(handler);
   v4 = *MEMORY[0x1E69E9840];
 }
 

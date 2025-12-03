@@ -1,29 +1,29 @@
 @interface FKApplePayRowViewModelCollection
-- (FKApplePayRowViewModelCollection)initWithOrderRowViewModel:(id)a3 barcodeRowViewModel:(id)a4 receiptRowViewModel:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FKApplePayRowViewModelCollection)initWithOrderRowViewModel:(id)model barcodeRowViewModel:(id)viewModel receiptRowViewModel:(id)rowViewModel;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FKApplePayRowViewModelCollection
 
-- (FKApplePayRowViewModelCollection)initWithOrderRowViewModel:(id)a3 barcodeRowViewModel:(id)a4 receiptRowViewModel:(id)a5
+- (FKApplePayRowViewModelCollection)initWithOrderRowViewModel:(id)model barcodeRowViewModel:(id)viewModel receiptRowViewModel:(id)rowViewModel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  rowViewModelCopy = rowViewModel;
   v19.receiver = self;
   v19.super_class = FKApplePayRowViewModelCollection;
   v11 = [(FKApplePayRowViewModelCollection *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [modelCopy copy];
     orderRowViewModel = v11->_orderRowViewModel;
     v11->_orderRowViewModel = v12;
 
-    v14 = [v9 copy];
+    v14 = [viewModelCopy copy];
     barcodeRowViewModel = v11->_barcodeRowViewModel;
     v11->_barcodeRowViewModel = v14;
 
-    v16 = [v10 copy];
+    v16 = [rowViewModelCopy copy];
     receiptRowViewModel = v11->_receiptRowViewModel;
     v11->_receiptRowViewModel = v16;
   }
@@ -31,9 +31,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(FKApplePayOrderRowViewModel *)self->_orderRowViewModel copy];
   v6 = v4[1];
   v4[1] = v5;

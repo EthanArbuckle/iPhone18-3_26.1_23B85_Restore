@@ -1,33 +1,33 @@
 @interface PSGWordBoundarySuggestionsExpConfigDefaults
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfig:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfig:(id)config;
 - (PSGWordBoundarySuggestionsExpConfigDefaults)init;
 @end
 
 @implementation PSGWordBoundarySuggestionsExpConfigDefaults
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGWordBoundarySuggestionsExpConfigDefaults *)self isEqualToConfig:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGWordBoundarySuggestionsExpConfigDefaults *)self isEqualToConfig:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_isMLModelEnabled != *(v4 + 8))
+  configCopy = config;
+  v5 = configCopy;
+  if (!configCopy || self->_isMLModelEnabled != *(configCopy + 8))
   {
     goto LABEL_13;
   }

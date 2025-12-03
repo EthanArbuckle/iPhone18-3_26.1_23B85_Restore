@@ -1,23 +1,23 @@
 @interface _SBPendingMesaUnlockBehaviorUnlockRequest
-- (_SBPendingMesaUnlockBehaviorUnlockRequest)initWithBehavior:(id)a3 request:(id)a4 feedback:(id)a5;
+- (_SBPendingMesaUnlockBehaviorUnlockRequest)initWithBehavior:(id)behavior request:(id)request feedback:(id)feedback;
 @end
 
 @implementation _SBPendingMesaUnlockBehaviorUnlockRequest
 
-- (_SBPendingMesaUnlockBehaviorUnlockRequest)initWithBehavior:(id)a3 request:(id)a4 feedback:(id)a5
+- (_SBPendingMesaUnlockBehaviorUnlockRequest)initWithBehavior:(id)behavior request:(id)request feedback:(id)feedback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  behaviorCopy = behavior;
+  requestCopy = request;
+  feedbackCopy = feedback;
   v15.receiver = self;
   v15.super_class = _SBPendingMesaUnlockBehaviorUnlockRequest;
   v12 = [(_SBPendingMesaUnlockBehaviorUnlockRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_behavior, a3);
-    objc_storeStrong(&v13->_request, a4);
-    objc_storeStrong(&v13->_feedback, a5);
+    objc_storeStrong(&v12->_behavior, behavior);
+    objc_storeStrong(&v13->_request, request);
+    objc_storeStrong(&v13->_feedback, feedback);
   }
 
   return v13;

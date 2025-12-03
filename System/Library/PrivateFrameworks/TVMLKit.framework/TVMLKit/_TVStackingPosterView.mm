@@ -1,41 +1,41 @@
 @interface _TVStackingPosterView
 - (CGPoint)focusDirection;
 - (CGSize)maxBoundsSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TVCellMetrics)_cellMetricsForMaxSize:(SEL)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TVCellMetrics)_cellMetricsForMaxSize:(SEL)size;
 - (TVCellMetrics)cellMetrics;
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3;
-- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)a3;
-- (_TVStackingPosterView)initWithCoder:(id)a3;
-- (_TVStackingPosterView)initWithFrame:(CGRect)a3;
-- (double)_labelWidthForWidth:(double)a3 component:(id)a4 expansionAmount:(double)a5;
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size;
+- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)width;
+- (_TVStackingPosterView)initWithCoder:(id)coder;
+- (_TVStackingPosterView)initWithFrame:(CGRect)frame;
+- (double)_labelWidthForWidth:(double)width component:(id)component expansionAmount:(double)amount;
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
 - (void)_commonInit;
 - (void)_configureSubviews;
 - (void)_resetSubviews;
 - (void)_updateComponentConstraints;
-- (void)_updateShadowForLabel:(id)a3 inFocus:(BOOL)a4;
-- (void)_updateSubviewHeirarchyWithComponents:(id)a3;
+- (void)_updateShadowForLabel:(id)label inFocus:(BOOL)focus;
+- (void)_updateSubviewHeirarchyWithComponents:(id)components;
 - (void)layoutSubviews;
-- (void)setCellMetrics:(TVCellMetrics *)a3;
-- (void)setComponents:(id)a3 mainImageComponent:(id)a4;
-- (void)setConfiguresForCollectionViewCell:(BOOL)a3;
-- (void)setFocusDirection:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaxBoundsSize:(CGSize)a3;
+- (void)setCellMetrics:(TVCellMetrics *)metrics;
+- (void)setComponents:(id)components mainImageComponent:(id)component;
+- (void)setConfiguresForCollectionViewCell:(BOOL)cell;
+- (void)setFocusDirection:(CGPoint)direction animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaxBoundsSize:(CGSize)size;
 - (void)setNeedsUpdateComponentLayout;
-- (void)setOverlayView:(id)a3;
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 focusUpdateContext:(id)a5 withAnimationCoordinator:(id)a6;
+- (void)setOverlayView:(id)view;
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated completion:(id)completion;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated focusUpdateContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation _TVStackingPosterView
 
-- (_TVStackingPosterView)initWithFrame:(CGRect)a3
+- (_TVStackingPosterView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVStackingPosterView;
-  v3 = [(_TVStackingPosterView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVStackingPosterView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,11 +45,11 @@
   return v4;
 }
 
-- (_TVStackingPosterView)initWithCoder:(id)a3
+- (_TVStackingPosterView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _TVStackingPosterView;
-  v3 = [(_TVStackingPosterView *)&v6 initWithCoder:a3];
+  v3 = [(_TVStackingPosterView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -66,13 +66,13 @@
   [(_TVStackingPosterView *)self _setIdleModeLayoutAttributes:v3];
 }
 
-- (void)setMaxBoundsSize:(CGSize)a3
+- (void)setMaxBoundsSize:(CGSize)size
 {
-  if (self->_maxBoundsSize.width != a3.width || self->_maxBoundsSize.height != a3.height)
+  if (self->_maxBoundsSize.width != size.width || self->_maxBoundsSize.height != size.height)
   {
     v17 = v3;
     v18 = v4;
-    self->_maxBoundsSize = a3;
+    self->_maxBoundsSize = size;
     v6 = *MEMORY[0x277D768C8];
     v10 = *(MEMORY[0x277D768C8] + 16);
     v11 = 0u;
@@ -91,12 +91,12 @@
   }
 }
 
-- (void)setComponents:(id)a3 mainImageComponent:(id)a4
+- (void)setComponents:(id)components mainImageComponent:(id)component
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 copy];
+  componentsCopy = components;
+  componentCopy = component;
+  v8 = [componentsCopy copy];
   components = self->_components;
   self->_components = v8;
 
@@ -115,12 +115,12 @@
   v51[1] = v13;
   [(_TVStackingPosterView *)self setCellMetrics:v51];
   v42 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v15 = v6;
+  v15 = componentsCopy;
   v16 = [v15 countByEnumeratingWithState:&v47 objects:v52 count:16];
   v41 = v15;
   if (!v16)
@@ -150,14 +150,14 @@ LABEL_37:
       }
 
       v23 = *(*(&v47 + 1) + 8 * v22);
-      if (!v7)
+      if (!componentCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || [v23 conformsToProtocol:&unk_287E58AD8])
         {
-          v7 = v23;
+          componentCopy = v23;
           v32 = v14;
-          v33 = v7;
+          v33 = componentCopy;
           goto LABEL_22;
         }
       }
@@ -191,25 +191,25 @@ LABEL_22:
       if (!v43)
       {
         v26 = [[_TVAnimatedLabel alloc] initWithSize:v19, v20];
-        v27 = [v24 tv_layout];
+        tv_layout = [v24 tv_layout];
 
-        if (v27)
+        if (tv_layout)
         {
-          v28 = [v24 tv_layout];
-          [(UIView *)v26 tv_setLayout:v28];
+          tv_layout2 = [v24 tv_layout];
+          [(UIView *)v26 tv_setLayout:tv_layout2];
         }
 
         [(_TVLabel *)v26 setNumberOfLines:1, v40];
         [(UIView *)v26 setValue:v25 forTVViewStyle:@"tv-text-highlight-style"];
         [(_TVLabel *)v26 setLineBreakMode:2];
-        v29 = [v24 _defaultAttributes];
-        v30 = [v29 copy];
+        _defaultAttributes = [v24 _defaultAttributes];
+        v30 = [_defaultAttributes copy];
         [(_TVAnimatedLabel *)v26 _setDefaultAttributes:v30];
 
         if ([v25 isEqualToString:@"marquee-on-highlight"])
         {
-          v31 = [v24 highlightedTextColor];
-          [(_TVAnimatedLabel *)v26 setHighlightedTextColor:v31];
+          highlightedTextColor = [v24 highlightedTextColor];
+          [(_TVAnimatedLabel *)v26 setHighlightedTextColor:highlightedTextColor];
         }
 
         else
@@ -224,13 +224,13 @@ LABEL_22:
         }
 
         [v44 addObject:v26];
-        v34 = [v24 tv_associatedIKViewElement];
+        tv_associatedIKViewElement = [v24 tv_associatedIKViewElement];
 
         v43 = v26;
-        if (v34)
+        if (tv_associatedIKViewElement)
         {
-          v35 = [v24 tv_associatedIKViewElement];
-          [(UIView *)v26 transferLayoutStylesFromElement:v35];
+          tv_associatedIKViewElement2 = [v24 tv_associatedIKViewElement];
+          [(UIView *)v26 transferLayoutStylesFromElement:tv_associatedIKViewElement2];
         }
 
         v15 = v41;
@@ -270,34 +270,34 @@ LABEL_23:
   v43 = 0;
 LABEL_39:
   [(_TVStackingPosterView *)self setFilteredComponents:v14, v40];
-  [(_TVStackingPosterView *)self setMainImageComponent:v7];
+  [(_TVStackingPosterView *)self setMainImageComponent:componentCopy];
   [(_TVStackingPosterView *)self _updateFocusSizeIncrease];
   [(_TVStackingPosterView *)self setAnimatedLabel:v43];
   v39 = [v42 copy];
   [(_TVStackingPosterView *)self setMarqueeLabels:v39];
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   overlayView = self->_overlayView;
-  v7 = v5;
-  if (overlayView != v5)
+  v7 = viewCopy;
+  if (overlayView != viewCopy)
   {
     [(UIView *)overlayView removeFromSuperview];
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
   }
 
   [(_TVStackingPosterView *)self setNeedsLayout];
 }
 
-- (void)setConfiguresForCollectionViewCell:(BOOL)a3
+- (void)setConfiguresForCollectionViewCell:(BOOL)cell
 {
-  if (self->_configuresForCollectionViewCell != a3)
+  if (self->_configuresForCollectionViewCell != cell)
   {
-    self->_configuresForCollectionViewCell = a3;
-    v4 = [(_TVStackingPosterView *)self components];
-    v5 = [v4 count];
+    self->_configuresForCollectionViewCell = cell;
+    components = [(_TVStackingPosterView *)self components];
+    v5 = [components count];
 
     if (v5)
     {
@@ -313,21 +313,21 @@ LABEL_39:
   v4 = self + 4;
   if (self[4].cellSize.width == *MEMORY[0x277CBF3A8] && self[4].cellSize.height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v6 = self;
+    selfCopy = self;
     [(TVCellMetrics *)self maxBoundsSize];
     if (v7 <= 0.0)
     {
-      [(TVCellMetrics *)v6 bounds];
+      [(TVCellMetrics *)selfCopy bounds];
       v8 = v10;
       v9 = v11;
     }
 
     else
     {
-      [(TVCellMetrics *)v6 maxBoundsSize];
+      [(TVCellMetrics *)selfCopy maxBoundsSize];
     }
 
-    self = [(TVCellMetrics *)v6 _cellMetricsForMaxSize:v8, v9];
+    self = [(TVCellMetrics *)selfCopy _cellMetricsForMaxSize:v8, v9];
     *&v4->cellInsetAlt.bottom = v22;
     *&v4->cellMargin.top = v23;
     *&v4->cellMargin.bottom = v24;
@@ -337,7 +337,7 @@ LABEL_39:
     *&v4->cellInsetAlt.top = v21;
     v4->cellSize = v16;
     *&v4->cellPadding.top = v17;
-    v6[3].cellInset.top = v4->cellMargin.left + v4->cellMargin.right;
+    selfCopy[3].cellInset.top = v4->cellMargin.left + v4->cellMargin.right;
   }
 
   v12 = *&v4->cellMargin.top;
@@ -375,53 +375,53 @@ LABEL_39:
   v21[1] = v22;
   [(_TVStackingPosterView *)self setCellMetrics:v21];
   v5 = MEMORY[0x277CBEB18];
-  v6 = [(_TVStackingPosterView *)self marqueeLabels];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  marqueeLabels = [(_TVStackingPosterView *)self marqueeLabels];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(marqueeLabels, "count")}];
 
-  v8 = [(_TVStackingPosterView *)self marqueeLabels];
+  marqueeLabels2 = [(_TVStackingPosterView *)self marqueeLabels];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __54___TVStackingPosterView_setNeedsUpdateComponentLayout__block_invoke;
   v19[3] = &unk_279D6F830;
   v20 = v7;
   v9 = v7;
-  [v8 enumerateObjectsUsingBlock:v19];
+  [marqueeLabels2 enumerateObjectsUsingBlock:v19];
 
-  v10 = [(_TVStackingPosterView *)self marqueeLabels];
-  v11 = [v10 firstObject];
+  marqueeLabels3 = [(_TVStackingPosterView *)self marqueeLabels];
+  firstObject = [marqueeLabels3 firstObject];
 
-  v12 = [(_TVStackingPosterView *)self animatedLabel];
-  v13 = [v11 _defaultAttributes];
-  v14 = [v13 copy];
-  [v12 _setDefaultAttributes:v14];
+  animatedLabel = [(_TVStackingPosterView *)self animatedLabel];
+  _defaultAttributes = [firstObject _defaultAttributes];
+  v14 = [_defaultAttributes copy];
+  [animatedLabel _setDefaultAttributes:v14];
 
-  v15 = [(_TVStackingPosterView *)self animatedLabel];
-  v16 = [v11 highlightedTextColor];
-  [v15 setHighlightedTextColor:v16];
+  animatedLabel2 = [(_TVStackingPosterView *)self animatedLabel];
+  highlightedTextColor = [firstObject highlightedTextColor];
+  [animatedLabel2 setHighlightedTextColor:highlightedTextColor];
 
-  v17 = [(_TVStackingPosterView *)self animatedLabel];
+  animatedLabel3 = [(_TVStackingPosterView *)self animatedLabel];
   v18 = [v9 copy];
-  [v17 setAttributedStrings:v18];
+  [animatedLabel3 setAttributedStrings:v18];
 
   [(_TVStackingPosterView *)self _updateFocusSizeIncrease];
   [(_TVStackingPosterView *)self setNeedsLayout];
 }
 
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
-  v6 = a4;
-  v7 = [(_TVStackingPosterView *)self mainImageComponent];
-  v8 = v7;
-  if (v7)
+  contextCopy = context;
+  mainImageComponent = [(_TVStackingPosterView *)self mainImageComponent];
+  v8 = mainImageComponent;
+  if (mainImageComponent)
   {
-    v9 = [v7 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v9 = [mainImageComponent _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = _TVStackingPosterView;
-    v9 = [(_TVStackingPosterView *)&v12 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v9 = [(_TVStackingPosterView *)&v12 _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   v10 = v9;
@@ -429,9 +429,9 @@ LABEL_39:
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_TVStackingPosterView *)self _cellMetricsForMaxSize:a3.width, a3.height];
+  [(_TVStackingPosterView *)self _cellMetricsForMaxSize:fits.width, fits.height];
   v3 = v5;
   v4 = v6;
   result.height = v4;
@@ -455,13 +455,13 @@ LABEL_39:
   v19.receiver = self;
   v19.super_class = _TVStackingPosterView;
   [(_TVStackingPosterView *)&v19 layoutSubviews];
-  v3 = [(_TVStackingPosterView *)self mainImageComponent];
-  if (v3)
+  mainImageComponent = [(_TVStackingPosterView *)self mainImageComponent];
+  if (mainImageComponent)
   {
-    v4 = v3;
-    v5 = [(_TVStackingPosterView *)self overlayView];
+    v4 = mainImageComponent;
+    overlayView = [(_TVStackingPosterView *)self overlayView];
 
-    if (v5)
+    if (overlayView)
     {
       [(_TVStackingPosterView *)self bounds];
       v7 = v6;
@@ -477,17 +477,17 @@ LABEL_39:
         v13 = v13 - (0.0 + 0.0);
       }
 
-      v14 = [(_TVStackingPosterView *)self overlayView];
-      [v14 setFrame:{v7, v9, v11, v13}];
+      overlayView2 = [(_TVStackingPosterView *)self overlayView];
+      [overlayView2 setFrame:{v7, v9, v11, v13}];
 
-      v15 = [(_TVStackingPosterView *)self overlayView];
-      v16 = [v15 superview];
+      overlayView3 = [(_TVStackingPosterView *)self overlayView];
+      superview = [overlayView3 superview];
 
-      if (v16 != self)
+      if (superview != self)
       {
-        v17 = [(_TVStackingPosterView *)self overlayView];
-        v18 = [(_TVStackingPosterView *)self mainImageComponent];
-        [(_TVStackingPosterView *)self insertSubview:v17 above:v18];
+        overlayView4 = [(_TVStackingPosterView *)self overlayView];
+        mainImageComponent2 = [(_TVStackingPosterView *)self mainImageComponent];
+        [(_TVStackingPosterView *)self insertSubview:overlayView4 above:mainImageComponent2];
       }
     }
   }
@@ -511,53 +511,53 @@ LABEL_39:
   return result;
 }
 
-- (void)setFocusDirection:(CGPoint)a3 animated:(BOOL)a4
+- (void)setFocusDirection:(CGPoint)direction animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  animatedCopy = animated;
+  y = direction.y;
+  x = direction.x;
   if (objc_opt_respondsToSelector())
   {
     mainImageComponent = self->_mainImageComponent;
 
-    [(UIView *)mainImageComponent setFocusDirection:v4 animated:x, y];
+    [(UIView *)mainImageComponent setFocusDirection:animatedCopy animated:x, y];
   }
 }
 
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  pressedCopy = pressed;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
-    [(UIView *)self->_mainImageComponent setPressed:v6 animated:v5 completion:v8];
+    [(UIView *)self->_mainImageComponent setPressed:pressedCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (objc_opt_respondsToSelector())
   {
     mainImageComponent = self->_mainImageComponent;
 
-    [(UIView *)mainImageComponent setHighlighted:v3];
+    [(UIView *)mainImageComponent setHighlighted:highlightedCopy];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 focusUpdateContext:(id)a5 withAnimationCoordinator:(id)a6
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated focusUpdateContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v8)
+  animatedCopy = animated;
+  selectedCopy = selected;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  if (selectedCopy)
   {
-    if (!v7)
+    if (!animatedCopy)
     {
-      v12 = [(_TVStackingPosterView *)self subviews];
-      v13 = [v12 count];
+      subviews = [(_TVStackingPosterView *)self subviews];
+      v13 = [subviews count];
 
       if (!v13)
       {
@@ -575,25 +575,25 @@ LABEL_39:
     }
   }
 
-  v14 = [(_TVStackingPosterView *)self mainImageComponent];
-  if ([v14 conformsToProtocol:&unk_287E58AD8])
+  mainImageComponent = [(_TVStackingPosterView *)self mainImageComponent];
+  if ([mainImageComponent conformsToProtocol:&unk_287E58AD8])
   {
-    v15 = [(_TVStackingPosterView *)self mainImageComponent];
+    mainImageComponent2 = [(_TVStackingPosterView *)self mainImageComponent];
   }
 
   else
   {
-    v15 = 0;
+    mainImageComponent2 = 0;
   }
 
-  if (v11)
+  if (coordinatorCopy)
   {
-    [v15 setSelected:v8 animated:v7 withAnimationCoordinator:v11];
+    [mainImageComponent2 setSelected:selectedCopy animated:animatedCopy withAnimationCoordinator:coordinatorCopy];
   }
 
   else
   {
-    [v15 setSelected:v8 animated:v7];
+    [mainImageComponent2 setSelected:selectedCopy animated:animatedCopy];
   }
 
   v37[0] = MEMORY[0x277D85DD0];
@@ -601,26 +601,26 @@ LABEL_39:
   v37[2] = __90___TVStackingPosterView_setSelected_animated_focusUpdateContext_withAnimationCoordinator___block_invoke;
   v37[3] = &unk_279D6F858;
   v37[4] = self;
-  v39 = v8;
-  v40 = v7;
-  v38 = v11;
+  v39 = selectedCopy;
+  v40 = animatedCopy;
+  v38 = coordinatorCopy;
   v16 = MEMORY[0x26D6AFBB0](v37);
   v16[2]();
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __90___TVStackingPosterView_setSelected_animated_focusUpdateContext_withAnimationCoordinator___block_invoke_2;
   v32[3] = &unk_279D6F858;
-  v17 = v15;
+  v17 = mainImageComponent2;
   v33 = v17;
-  v34 = self;
-  v35 = v8;
-  v36 = v7;
+  selfCopy = self;
+  v35 = selectedCopy;
+  v36 = animatedCopy;
   v18 = MEMORY[0x26D6AFBB0](v32);
   v19 = 0.0;
-  if (v7)
+  if (animatedCopy)
   {
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-    v19 = v8 ? 0.12 : 0.5;
+    v19 = selectedCopy ? 0.12 : 0.5;
     if (IsReduceMotionEnabled)
     {
       v19 = 0.0;
@@ -632,16 +632,16 @@ LABEL_39:
   v29[2] = __90___TVStackingPosterView_setSelected_animated_focusUpdateContext_withAnimationCoordinator___block_invoke_4;
   v29[3] = &unk_279D6F8A8;
   v29[4] = self;
-  v30 = v8;
-  v31 = v7;
+  v30 = selectedCopy;
+  v31 = animatedCopy;
   *&v29[5] = v19;
   v21 = MEMORY[0x26D6AFBB0](v29);
-  if (v7)
+  if (animatedCopy)
   {
     v22 = MEMORY[0x277D75D18];
     v23 = UIAccessibilityIsReduceMotionEnabled();
     v24 = 0.12;
-    if (!v8)
+    if (!selectedCopy)
     {
       v24 = 0.5;
     }
@@ -674,9 +674,9 @@ LABEL_39:
 LABEL_27:
 }
 
-- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)a3
+- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)width
 {
-  [(_TVStackingPosterView *)self _cellMetricsForMaxSize:a3, 0.0];
+  [(_TVStackingPosterView *)self _cellMetricsForMaxSize:width, 0.0];
   v3 = v7;
   v4 = v8;
   v5 = v9;
@@ -688,24 +688,24 @@ LABEL_27:
   return result;
 }
 
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_TVStackingPosterView *)self mainImageComponent];
-  v7 = [v6 conformsToProtocol:&unk_287E58AD8];
+  height = size.height;
+  width = size.width;
+  mainImageComponent = [(_TVStackingPosterView *)self mainImageComponent];
+  v7 = [mainImageComponent conformsToProtocol:&unk_287E58AD8];
 
   if (v7)
   {
-    v8 = [(_TVStackingPosterView *)self mainImageComponent];
-    [v8 selectionMarginsForSize:{width, height}];
+    mainImageComponent2 = [(_TVStackingPosterView *)self mainImageComponent];
+    [mainImageComponent2 selectionMarginsForSize:{width, height}];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [(_TVStackingPosterView *)self mainImageComponent];
-    v18 = [v17 valueForTVViewStyle:@"tv-focus-align"];
+    mainImageComponent3 = [(_TVStackingPosterView *)self mainImageComponent];
+    v18 = [mainImageComponent3 valueForTVViewStyle:@"tv-focus-align"];
     v19 = [v18 isEqualToString:@"bottom"];
 
     if (v19)
@@ -716,8 +716,8 @@ LABEL_27:
 
     else
     {
-      v22 = [(_TVStackingPosterView *)self mainImageComponent];
-      v23 = [v22 valueForTVViewStyle:@"tv-focus-align"];
+      mainImageComponent4 = [(_TVStackingPosterView *)self mainImageComponent];
+      v23 = [mainImageComponent4 valueForTVViewStyle:@"tv-focus-align"];
       v24 = [v23 isEqualToString:@"top"];
 
       if (v24)
@@ -757,11 +757,11 @@ LABEL_27:
 
 - (void)_resetSubviews
 {
-  v3 = [(_TVStackingPosterView *)self subviews];
-  [v3 makeObjectsPerformSelector:sel_removeFromSuperview];
+  subviews = [(_TVStackingPosterView *)self subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  v4 = [(_TVStackingPosterView *)self constraints];
-  [(_TVStackingPosterView *)self removeConstraints:v4];
+  constraints = [(_TVStackingPosterView *)self constraints];
+  [(_TVStackingPosterView *)self removeConstraints:constraints];
 
   topAnchorConstraint = self->_topAnchorConstraint;
   self->_topAnchorConstraint = 0;
@@ -782,12 +782,12 @@ LABEL_27:
   self->_requiresReconfiguration = 1;
 }
 
-- (void)_updateSubviewHeirarchyWithComponents:(id)a3
+- (void)_updateSubviewHeirarchyWithComponents:(id)components
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_TVStackingPosterView *)self subviews];
-  v6 = [v5 mutableCopy];
+  componentsCopy = components;
+  subviews = [(_TVStackingPosterView *)self subviews];
+  v6 = [subviews mutableCopy];
 
   v19 = 0u;
   v20 = 0u;
@@ -809,7 +809,7 @@ LABEL_27:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if (([v4 containsObject:v12] & 1) == 0)
+        if (([componentsCopy containsObject:v12] & 1) == 0)
         {
           [v12 removeFromSuperview];
           [v7 removeObject:v12];
@@ -827,24 +827,24 @@ LABEL_27:
   v14[2] = __63___TVStackingPosterView__updateSubviewHeirarchyWithComponents___block_invoke;
   v14[3] = &unk_279D6F8F8;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v13 = v7;
-  [v4 enumerateObjectsWithOptions:2 usingBlock:v14];
+  [componentsCopy enumerateObjectsWithOptions:2 usingBlock:v14];
 }
 
 - (void)_configureSubviews
 {
   v95 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVStackingPosterView *)self filteredComponents];
-  v4 = [v3 count];
+  filteredComponents = [(_TVStackingPosterView *)self filteredComponents];
+  v4 = [filteredComponents count];
 
   if (!v4)
   {
     return;
   }
 
-  v5 = [(_TVStackingPosterView *)self filteredComponents];
-  v6 = [(_TVStackingPosterView *)self mainImageComponent];
+  filteredComponents2 = [(_TVStackingPosterView *)self filteredComponents];
+  mainImageComponent = [(_TVStackingPosterView *)self mainImageComponent];
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
@@ -855,16 +855,16 @@ LABEL_27:
   v83 = 0u;
   v81 = 0u;
   [(_TVStackingPosterView *)self cellMetrics];
-  v71 = [(_TVStackingPosterView *)self configuresForCollectionViewCell];
+  configuresForCollectionViewCell = [(_TVStackingPosterView *)self configuresForCollectionViewCell];
   v73 = *&v81;
-  v68 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   labelWidthExpansionAmount = self->_labelWidthExpansionAmount;
-  [(_TVStackingPosterView *)self _updateSubviewHeirarchyWithComponents:v5];
+  [(_TVStackingPosterView *)self _updateSubviewHeirarchyWithComponents:filteredComponents2];
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v5;
+  obj = filteredComponents2;
   v76 = [obj countByEnumeratingWithState:&v77 objects:v94 count:16];
   v7 = 0;
   if (!v76)
@@ -889,14 +889,14 @@ LABEL_27:
       }
 
       v11 = *(*(&v77 + 1) + 8 * i);
-      if (v11 == v6)
+      if (v11 == mainImageComponent)
       {
-        v12 = v6;
+        v12 = mainImageComponent;
         [v12 tv_margin];
         v14 = v33;
         v18 = v34;
         v32 = 0.0;
-        if (v71)
+        if (configuresForCollectionViewCell)
         {
           v35 = 0.0;
         }
@@ -926,10 +926,10 @@ LABEL_27:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [v12 tv_showOnHighlight];
-          v23 = v22;
+          tv_showOnHighlight = [v12 tv_showOnHighlight];
+          v23 = tv_showOnHighlight;
           v24 = 0.0;
-          if (!v22)
+          if (!tv_showOnHighlight)
           {
             v24 = 1.0;
           }
@@ -940,15 +940,15 @@ LABEL_27:
           v27 = [MEMORY[0x277CCAAD0] constraintWithItem:v12 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v25];
           if ((v23 & 1) == 0)
           {
-            [v68 addObject:v27];
+            [array addObject:v27];
           }
 
           v28 = v12;
           [v28 tv_textSizeForWidth:v26];
           v30 = v29;
-          v31 = [v28 layer];
+          layer = [v28 layer];
 
-          [v31 setZPosition:901.0];
+          [layer setZPosition:901.0];
           v32 = 8.0;
         }
 
@@ -975,7 +975,7 @@ LABEL_27:
         {
           v40 = [MEMORY[0x277CCAAD0] constraintWithItem:v12 attribute:3 relatedBy:0 toItem:v7 attribute:4 multiplier:1.0 constant:{fmax(v14, v8) - v9 - v32}];
           [(_TVStackingPosterView *)self addConstraint:v40];
-          if (v12 == v6)
+          if (v12 == mainImageComponent)
           {
             v42 = v69;
             v43 = v74;
@@ -986,7 +986,7 @@ LABEL_27:
           v41 = v74;
           v42 = v74;
           v43 = v40;
-          if (v7 == v6)
+          if (v7 == mainImageComponent)
           {
 LABEL_26:
             v44 = v40;
@@ -1011,11 +1011,11 @@ LABEL_26:
   while (v76);
 LABEL_33:
 
-  if (v6)
+  if (mainImageComponent)
   {
-    [(_TVStackingPosterView *)self bringSubviewToFront:v6];
+    [(_TVStackingPosterView *)self bringSubviewToFront:mainImageComponent];
     v46 = *&v82;
-    if (v71)
+    if (configuresForCollectionViewCell)
     {
       v46 = 0.0;
       v47 = 0.0;
@@ -1026,11 +1026,11 @@ LABEL_33:
       v47 = -*&v83;
     }
 
-    v48 = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:v46];
+    v48 = [MEMORY[0x277CCAAD0] constraintWithItem:mainImageComponent attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:v46];
     topImageConstraint = self->_topImageConstraint;
     self->_topImageConstraint = v48;
 
-    v50 = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:v47];
+    v50 = [MEMORY[0x277CCAAD0] constraintWithItem:mainImageComponent attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:v47];
     bottomImageConstraint = self->_bottomImageConstraint;
     self->_bottomImageConstraint = v50;
 
@@ -1052,19 +1052,19 @@ LABEL_33:
     self->_topAnchorConstant = v58;
     [v74 constant];
     self->_bottomAnchorConstant = v59;
-    v60 = v68;
-    v61 = [v68 tv_arrayByMappingObjectsUsingBlock:&__block_literal_global_27];
+    v60 = array;
+    v61 = [array tv_arrayByMappingObjectsUsingBlock:&__block_literal_global_27];
     [(_TVStackingPosterView *)self setVisibleLabelWidths:v61];
 
-    v62 = v68;
+    v62 = array;
     labelWidthConstraints = self->_labelWidthConstraints;
     self->_labelWidthConstraints = v62;
   }
 
   else
   {
-    v64 = [(_TVStackingPosterView *)self subviews];
-    labelWidthConstraints = [v64 firstObject];
+    subviews = [(_TVStackingPosterView *)self subviews];
+    labelWidthConstraints = [subviews firstObject];
 
     [labelWidthConstraints tv_margin];
     v66 = [MEMORY[0x277CCAAD0] constraintWithItem:labelWidthConstraints attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:v65];
@@ -1072,7 +1072,7 @@ LABEL_33:
     v67 = [MEMORY[0x277CBEA60] arrayWithObjects:&v90 count:1];
     [(_TVStackingPosterView *)self addConstraints:v67];
 
-    v60 = v68;
+    v60 = array;
     v54 = v69;
     v55 = v74;
   }
@@ -1081,12 +1081,12 @@ LABEL_33:
 - (void)_updateComponentConstraints
 {
   v78 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVStackingPosterView *)self constraints];
+  constraints = [(_TVStackingPosterView *)self constraints];
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = __52___TVStackingPosterView__updateComponentConstraints__block_invoke;
   v75[3] = &unk_279D6F940;
-  v45 = v3;
+  v45 = constraints;
   v76 = v45;
   v4 = MEMORY[0x26D6AFBB0](v75);
   v5 = MEMORY[0x277D768C8];
@@ -1123,8 +1123,8 @@ LABEL_33:
   [(_TVStackingPosterView *)self cellMetrics];
   v50 = *&v57;
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(_TVStackingPosterView *)self visibleLabelWidths];
-  v46 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  visibleLabelWidths = [(_TVStackingPosterView *)self visibleLabelWidths];
+  v46 = [v8 arrayWithCapacity:{objc_msgSend(visibleLabelWidths, "count")}];
 
   v55 = 0u;
   v56 = 0u;
@@ -1151,13 +1151,13 @@ LABEL_33:
         }
 
         v15 = *(*(&v53 + 1) + 8 * i);
-        v16 = [(_TVStackingPosterView *)self mainImageComponent];
+        mainImageComponent = [(_TVStackingPosterView *)self mainImageComponent];
 
-        if (v15 == v16)
+        if (v15 == mainImageComponent)
         {
-          v31 = [(_TVStackingPosterView *)self configuresForCollectionViewCell];
+          configuresForCollectionViewCell = [(_TVStackingPosterView *)self configuresForCollectionViewCell];
           v30 = 0.0;
-          if (v31)
+          if (configuresForCollectionViewCell)
           {
             v32 = 0.0;
           }
@@ -1167,7 +1167,7 @@ LABEL_33:
             v32 = -(*(&v58 + 1) + *(&v59 + 1));
           }
 
-          if (v31)
+          if (configuresForCollectionViewCell)
           {
             v33 = 0.0;
           }
@@ -1177,7 +1177,7 @@ LABEL_33:
             v33 = *&v58;
           }
 
-          if (v31)
+          if (configuresForCollectionViewCell)
           {
             v34 = 0.0;
           }
@@ -1274,13 +1274,13 @@ LABEL_33:
   [(_TVStackingPosterView *)self setVisibleLabelWidths:v46];
 }
 
-- (TVCellMetrics)_cellMetricsForMaxSize:(SEL)a3
+- (TVCellMetrics)_cellMetricsForMaxSize:(SEL)size
 {
   height = a4.height;
   width = a4.width;
   v149 = *MEMORY[0x277D85DE8];
-  v5 = [(_TVStackingPosterView *)self filteredComponents];
-  v6 = [(_TVStackingPosterView *)self mainImageComponent];
+  filteredComponents = [(_TVStackingPosterView *)self filteredComponents];
+  mainImageComponent = [(_TVStackingPosterView *)self mainImageComponent];
   v7 = MEMORY[0x277D768C8];
   v8 = *MEMORY[0x277D768C8];
   v9 = *(MEMORY[0x277D768C8] + 16);
@@ -1290,14 +1290,14 @@ LABEL_33:
   v108 = v11;
   v106 = v12;
   v113 = *MEMORY[0x277D768C8];
-  if ([v6 conformsToProtocol:&unk_287E58AD8])
+  if ([mainImageComponent conformsToProtocol:&unk_287E58AD8])
   {
-    [v6 selectionMarginsForSize:{v12, v11}];
+    [mainImageComponent selectionMarginsForSize:{v12, v11}];
     v14 = v13;
     v103 = v16;
     v104 = v15;
     v18 = v17;
-    v19 = [v6 valueForTVViewStyle:@"tv-focus-align"];
+    v19 = [mainImageComponent valueForTVViewStyle:@"tv-focus-align"];
     v20 = [v19 isEqualToString:@"bottom"];
 
     if (v20)
@@ -1308,7 +1308,7 @@ LABEL_33:
 
     else
     {
-      v21 = [v6 valueForTVViewStyle:@"tv-focus-align"];
+      v21 = [mainImageComponent valueForTVViewStyle:@"tv-focus-align"];
       v22 = [v21 isEqualToString:@"top"];
 
       if (v22)
@@ -1363,19 +1363,19 @@ LABEL_33:
     width = v29;
   }
 
-  v32 = [(_TVStackingPosterView *)self mainImageComponent];
+  mainImageComponent2 = [(_TVStackingPosterView *)self mainImageComponent];
   v33 = MEMORY[0x277CBF3A8];
   v34 = *(MEMORY[0x277CBF3A8] + 8);
 
-  if (v32)
+  if (mainImageComponent2)
   {
     v35 = *v33;
-    [v6 tv_sizeThatFits:{*v33, v34}];
+    [mainImageComponent tv_sizeThatFits:{*v33, v34}];
     v38 = v37;
     v39 = v36;
     if (v37 == v35 && v36 == v34)
     {
-      [v6 frame];
+      [mainImageComponent frame];
       v38 = v41;
       v39 = v42;
     }
@@ -1399,7 +1399,7 @@ LABEL_33:
       v39 = floor(v39 * v46);
     }
 
-    [v6 tv_margin];
+    [mainImageComponent tv_margin];
     v112 = v49;
     v113 = v48;
     v51 = v50;
@@ -1446,13 +1446,13 @@ LABEL_33:
     v112 = v9;
   }
 
-  v54 = v6 != 0;
-  v110 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  v54 = mainImageComponent != 0;
+  v110 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(filteredComponents, "count")}];
   v146 = 0u;
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v55 = v5;
+  v55 = filteredComponents;
   v56 = [v55 countByEnumeratingWithState:&v144 objects:v148 count:16];
   v57 = v10[1];
   if (v56)
@@ -1469,7 +1469,7 @@ LABEL_33:
         }
 
         v61 = *(*(&v144 + 1) + 8 * i);
-        if (v61 == v6)
+        if (v61 == mainImageComponent)
         {
           v54 = 0;
           v79 = fmax(v9, v113);
@@ -1559,7 +1559,7 @@ LABEL_33:
   v127 = width;
   v125 = &v128;
   v126 = &v136;
-  v86 = v6;
+  v86 = mainImageComponent;
   v122 = v86;
   v87 = v55;
   v123 = v87;
@@ -1583,7 +1583,7 @@ LABEL_33:
   v92 = v109 + v107 + width;
   retstr->cellSize.width = v92;
   retstr->cellSize.height = v81;
-  if (v6)
+  if (mainImageComponent)
   {
     retstr->cellPadding.top = v101 + v57;
     retstr->cellPadding.left = v82;
@@ -1615,30 +1615,30 @@ LABEL_33:
   return result;
 }
 
-- (double)_labelWidthForWidth:(double)a3 component:(id)a4 expansionAmount:(double)a5
+- (double)_labelWidthForWidth:(double)width component:(id)component expansionAmount:(double)amount
 {
-  v7 = a4;
-  if ([v7 tv_showOnHighlight])
+  componentCopy = component;
+  if ([componentCopy tv_showOnHighlight])
   {
-    v8 = [v7 tv_marqueeOnHighlight];
+    tv_marqueeOnHighlight = [componentCopy tv_marqueeOnHighlight];
     v9 = 40.0;
-    if (!v8)
+    if (!tv_marqueeOnHighlight)
     {
       v9 = 0.0;
     }
 
-    a3 = v9 + a5 + a3;
+    width = v9 + amount + width;
   }
 
-  return a3;
+  return width;
 }
 
-- (void)_updateShadowForLabel:(id)a3 inFocus:(BOOL)a4
+- (void)_updateShadowForLabel:(id)label inFocus:(BOOL)focus
 {
-  v4 = a4;
-  v5 = a3;
-  v11 = v5;
-  if (v4)
+  focusCopy = focus;
+  labelCopy = label;
+  v11 = labelCopy;
+  if (focusCopy)
   {
     if (!_updateShadowForLabel_inFocus____ShadowColor)
     {
@@ -1646,10 +1646,10 @@ LABEL_33:
       v7 = _updateShadowForLabel_inFocus____ShadowColor;
       _updateShadowForLabel_inFocus____ShadowColor = v6;
 
-      v5 = v11;
+      labelCopy = v11;
     }
 
-    [v5 setShadowColor:?];
+    [labelCopy setShadowColor:?];
     v8 = 2.0;
     v9 = 0.0;
     v10 = 6.0;
@@ -1657,7 +1657,7 @@ LABEL_33:
 
   else
   {
-    [v5 setShadowColor:0];
+    [labelCopy setShadowColor:0];
     v9 = *MEMORY[0x277CBF3A8];
     v8 = *(MEMORY[0x277CBF3A8] + 8);
     v10 = 0.0;
@@ -1676,20 +1676,20 @@ LABEL_33:
   return result;
 }
 
-- (void)setCellMetrics:(TVCellMetrics *)a3
+- (void)setCellMetrics:(TVCellMetrics *)metrics
 {
-  self->_cellMetrics.cellSize = a3->cellSize;
-  v3 = *&a3->cellInset.bottom;
-  v5 = *&a3->cellPadding.top;
-  v4 = *&a3->cellPadding.bottom;
-  *&self->_cellMetrics.cellInset.top = *&a3->cellInset.top;
+  self->_cellMetrics.cellSize = metrics->cellSize;
+  v3 = *&metrics->cellInset.bottom;
+  v5 = *&metrics->cellPadding.top;
+  v4 = *&metrics->cellPadding.bottom;
+  *&self->_cellMetrics.cellInset.top = *&metrics->cellInset.top;
   *&self->_cellMetrics.cellInset.bottom = v3;
   *&self->_cellMetrics.cellPadding.top = v5;
   *&self->_cellMetrics.cellPadding.bottom = v4;
-  v6 = *&a3->cellMargin.bottom;
-  v8 = *&a3->cellInsetAlt.top;
-  v7 = *&a3->cellInsetAlt.bottom;
-  *&self->_cellMetrics.cellMargin.top = *&a3->cellMargin.top;
+  v6 = *&metrics->cellMargin.bottom;
+  v8 = *&metrics->cellInsetAlt.top;
+  v7 = *&metrics->cellInsetAlt.bottom;
+  *&self->_cellMetrics.cellMargin.top = *&metrics->cellMargin.top;
   *&self->_cellMetrics.cellMargin.bottom = v6;
   *&self->_cellMetrics.cellInsetAlt.top = v8;
   *&self->_cellMetrics.cellInsetAlt.bottom = v7;

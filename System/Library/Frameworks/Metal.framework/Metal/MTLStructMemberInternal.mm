@@ -1,9 +1,9 @@
 @interface MTLStructMemberInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMemberLayoutThreadSafeWith:(id)a3;
-- (MTLStructMemberInternal)initWithName:(id)a3 offset:(unint64_t)a4 dataType:(unint64_t)a5 pixelFormat:(unint64_t)a6 aluType:(unint64_t)a7 indirectArgumentIndex:(unint64_t)a8 render_target:(unint64_t)a9 raster_order_group:(unint64_t)a10 details:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMemberLayoutThreadSafeWith:(id)with;
+- (MTLStructMemberInternal)initWithName:(id)name offset:(unint64_t)offset dataType:(unint64_t)type pixelFormat:(unint64_t)format aluType:(unint64_t)aluType indirectArgumentIndex:(unint64_t)index render_target:(unint64_t)render_target raster_order_group:(unint64_t)self0 details:(id)self1;
 - (id)arrayType;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (id)pointerType;
 - (id)structType;
 - (id)tensorReferenceType;
@@ -46,24 +46,24 @@
   [(MTLStructMemberInternal *)&v3 dealloc];
 }
 
-- (MTLStructMemberInternal)initWithName:(id)a3 offset:(unint64_t)a4 dataType:(unint64_t)a5 pixelFormat:(unint64_t)a6 aluType:(unint64_t)a7 indirectArgumentIndex:(unint64_t)a8 render_target:(unint64_t)a9 raster_order_group:(unint64_t)a10 details:(id)a11
+- (MTLStructMemberInternal)initWithName:(id)name offset:(unint64_t)offset dataType:(unint64_t)type pixelFormat:(unint64_t)format aluType:(unint64_t)aluType indirectArgumentIndex:(unint64_t)index render_target:(unint64_t)render_target raster_order_group:(unint64_t)self0 details:(id)self1
 {
   v20.receiver = self;
   v20.super_class = MTLStructMemberInternal;
-  v21 = a5;
+  typeCopy = type;
   v17 = [(MTLStructMemberInternal *)&v20 init];
-  v17->_name = [a3 copy];
-  v17->_offset = a4;
-  *(v17 + 12) = a5;
-  v17->_pixelFormat = a6;
-  v17->_aluType = a7;
-  v17->_argumentIndex = a8;
-  v17->_render_target = a9;
-  v17->_raster_order_group = a10;
-  if (a5 == 57)
+  v17->_name = [name copy];
+  v17->_offset = offset;
+  *(v17 + 12) = type;
+  v17->_pixelFormat = format;
+  v17->_aluType = aluType;
+  v17->_argumentIndex = index;
+  v17->_render_target = render_target;
+  v17->_raster_order_group = raster_order_group;
+  if (type == 57)
   {
-    v17->_typeInfo = newDataTypeDescriptionForIndirectArgument(a11, &v21);
-    *(v17 + 12) = v21;
+    v17->_typeInfo = newDataTypeDescriptionForIndirectArgument(details, &typeCopy);
+    *(v17 + 12) = typeCopy;
     v18 = &OBJC_IVAR___MTLStructMemberInternal__details;
   }
 
@@ -72,7 +72,7 @@
     v18 = &OBJC_IVAR___MTLStructMemberInternal__typeInfo;
   }
 
-  *(&v17->super.super.isa + *v18) = a11;
+  *(&v17->super.super.isa + *v18) = details;
   return v17;
 }
 
@@ -133,21 +133,21 @@
   return result;
 }
 
-- (BOOL)isMemberLayoutThreadSafeWith:(id)a3
+- (BOOL)isMemberLayoutThreadSafeWith:(id)with
 {
-  v20 = [a3 aluType];
+  aluType = [with aluType];
   aluType = self->_aluType;
-  v6 = [a3 dataType];
+  dataType = [with dataType];
   v7 = *(self + 12);
-  v8 = [a3 offset];
+  offset = [with offset];
   offset = self->_offset;
-  v10 = [a3 pixelFormat];
+  pixelFormat = [with pixelFormat];
   pixelFormat = self->_pixelFormat;
-  v12 = [a3 arrayType];
-  v13 = [(MTLStructMemberInternal *)self arrayType];
-  v14 = v12 != 0;
-  v15 = v12 == 0;
-  if (v13)
+  arrayType = [with arrayType];
+  arrayType2 = [(MTLStructMemberInternal *)self arrayType];
+  v14 = arrayType != 0;
+  v15 = arrayType == 0;
+  if (arrayType2)
   {
     v15 = 1;
   }
@@ -158,22 +158,22 @@
   }
 
   v16 = v14 && v15;
-  if (v10 != pixelFormat)
+  if (pixelFormat != pixelFormat)
   {
     v16 = 0;
   }
 
-  if (v8 != offset)
+  if (offset != offset)
   {
     v16 = 0;
   }
 
-  if (v6 != v7)
+  if (dataType != v7)
   {
     v16 = 0;
   }
 
-  if (v20 == aluType)
+  if (aluType == aluType)
   {
     v17 = v16;
   }
@@ -183,20 +183,20 @@
     v17 = 0;
   }
 
-  if (v12 && v13)
+  if (arrayType && arrayType2)
   {
-    v17 &= [v13 isArrayLayoutThreadSafeWith:v12];
+    v17 &= [arrayType2 isArrayLayoutThreadSafeWith:arrayType];
   }
 
-  if (-[MTLStructMemberInternal structType](self, "structType") && [a3 structType])
+  if (-[MTLStructMemberInternal structType](self, "structType") && [with structType])
   {
     return v17 & [-[MTLStructMemberInternal structType](self "structType")];
   }
 
   else
   {
-    v18 = [(MTLStructMemberInternal *)self structType];
-    if (v18 != [a3 structType])
+    structType = [(MTLStructMemberInternal *)self structType];
+    if (structType != [with structType])
     {
       LOBYTE(v17) = 0;
     }
@@ -205,10 +205,10 @@
   return v17;
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v16[15] = *MEMORY[0x1E69E9840];
-  v7 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v7 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v8 = MEMORY[0x1E696AEC0];
   v15.receiver = self;
   v15.super_class = MTLStructMemberInternal;
@@ -231,7 +231,7 @@
   typeInfo = self->_typeInfo;
   if (typeInfo)
   {
-    v12 = [(MTLType *)typeInfo formattedDescription:a3 + 4 withPrintedTypes:a4];
+    v12 = [(MTLType *)typeInfo formattedDescription:description + 4 withPrintedTypes:types];
   }
 
   else
@@ -245,9 +245,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     LOBYTE(v6) = 0;
     return v6;
@@ -260,7 +260,7 @@
   }
 
   name = self->_name;
-  if (name | *(a3 + 1))
+  if (name | *(equal + 1))
   {
     v6 = [(NSString *)name isEqualToString:?];
     if (!v6)
@@ -269,13 +269,13 @@
     }
   }
 
-  if (self->_offset != *(a3 + 2) || *(self + 12) != *(a3 + 12))
+  if (self->_offset != *(equal + 2) || *(self + 12) != *(equal + 12))
   {
     goto LABEL_17;
   }
 
   details = self->_details;
-  if (details | *(a3 + 4))
+  if (details | *(equal + 4))
   {
     v6 = [details isEqual:?];
     if (!v6)
@@ -284,7 +284,7 @@
     }
   }
 
-  if (self->_pixelFormat != *(a3 + 5) || self->_aluType != *(a3 + 6) || self->_argumentIndex != *(a3 + 7) || self->_render_target != *(a3 + 8) || self->_raster_order_group != *(a3 + 9))
+  if (self->_pixelFormat != *(equal + 5) || self->_aluType != *(equal + 6) || self->_argumentIndex != *(equal + 7) || self->_render_target != *(equal + 8) || self->_raster_order_group != *(equal + 9))
   {
 LABEL_17:
     LOBYTE(v6) = 0;
@@ -292,7 +292,7 @@ LABEL_17:
   }
 
   typeInfo = self->_typeInfo;
-  if (!(typeInfo | *(a3 + 10)) || (v6 = [(MTLType *)typeInfo isEqual:?]) != 0)
+  if (!(typeInfo | *(equal + 10)) || (v6 = [(MTLType *)typeInfo isEqual:?]) != 0)
   {
     LOBYTE(v6) = 1;
   }

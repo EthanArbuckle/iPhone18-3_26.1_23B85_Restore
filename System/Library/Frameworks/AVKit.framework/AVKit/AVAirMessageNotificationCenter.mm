@@ -3,14 +3,14 @@
 - (AVAirMessageNotificationCenter)init;
 - (AVAirMessageNotificationCenterDelegate)delegate;
 - (id)_initPrivate;
-- (id)bonjourServiceAdditionalTXTRecordInfo:(id)a3;
-- (id)playerItemForIdentifier:(id)a3;
-- (void)airTransport:(id)a3 didReceiveObject:(id)a4;
-- (void)airTransportInputDidClose:(id)a3;
-- (void)bonjourService:(id)a3 didAcceptConnectionChannel:(id)a4;
-- (void)bonjourService:(id)a3 didCloseChannel:(id)a4;
+- (id)bonjourServiceAdditionalTXTRecordInfo:(id)info;
+- (id)playerItemForIdentifier:(id)identifier;
+- (void)airTransport:(id)transport didReceiveObject:(id)object;
+- (void)airTransportInputDidClose:(id)close;
+- (void)bonjourService:(id)service didAcceptConnectionChannel:(id)channel;
+- (void)bonjourService:(id)service didCloseChannel:(id)channel;
 - (void)dealloc;
-- (void)handleCommandMessage:(id)a3 completion:(id)a4;
+- (void)handleCommandMessage:(id)message completion:(id)completion;
 - (void)start;
 - (void)stop;
 @end
@@ -24,12 +24,12 @@
   return WeakRetained;
 }
 
-- (void)airTransportInputDidClose:(id)a3
+- (void)airTransportInputDidClose:(id)close
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVAirMessageNotificationCenter *)self activeChannels];
-  v6 = [v5 containsObject:v4];
+  closeCopy = close;
+  activeChannels = [(AVAirMessageNotificationCenter *)self activeChannels];
+  v6 = [activeChannels containsObject:closeCopy];
 
   if (v6)
   {
@@ -39,22 +39,22 @@
       v9 = 136315394;
       v10 = "[AVAirMessageNotificationCenter airTransportInputDidClose:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = closeCopy;
       _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s Removing channel from active list (%@)", &v9, 0x16u);
     }
 
-    v8 = [(AVAirMessageNotificationCenter *)self activeChannels];
-    [v8 removeObject:v4];
+    activeChannels2 = [(AVAirMessageNotificationCenter *)self activeChannels];
+    [activeChannels2 removeObject:closeCopy];
   }
 }
 
-- (void)airTransport:(id)a3 didReceiveObject:(id)a4
+- (void)airTransport:(id)transport didReceiveObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVAirMessageNotificationCenter *)self activeChannels];
-  v9 = [v8 containsObject:v6];
+  transportCopy = transport;
+  objectCopy = object;
+  activeChannels = [(AVAirMessageNotificationCenter *)self activeChannels];
+  v9 = [activeChannels containsObject:transportCopy];
 
   if (!v9)
   {
@@ -64,7 +64,7 @@
       *buf = 136315394;
       v21 = "[AVAirMessageNotificationCenter airTransport:didReceiveObject:]";
       v22 = 2112;
-      v23 = v6;
+      v23 = transportCopy;
       _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s Unexpectedly received object from inactive channel (%@)", buf, 0x16u);
     }
 
@@ -74,9 +74,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
-    v11 = [v10 airMessage];
-    if (v11)
+    v10 = objectCopy;
+    airMessage = [v10 airMessage];
+    if (airMessage)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -85,8 +85,8 @@
         v18[1] = 3221225472;
         v18[2] = __64__AVAirMessageNotificationCenter_airTransport_didReceiveObject___block_invoke;
         v18[3] = &unk_1E72074F8;
-        v19 = v6;
-        [(AVAirMessageNotificationCenter *)self handleCommandMessage:v11 completion:v18];
+        v19 = transportCopy;
+        [(AVAirMessageNotificationCenter *)self handleCommandMessage:airMessage completion:v18];
         v12 = v19;
 LABEL_17:
 
@@ -167,31 +167,31 @@ void __64__AVAirMessageNotificationCenter_airTransport_didReceiveObject___block_
   [*(a1 + 32) sendResponse:v5];
 }
 
-- (void)bonjourService:(id)a3 didCloseChannel:(id)a4
+- (void)bonjourService:(id)service didCloseChannel:(id)channel
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  channelCopy = channel;
   v6 = _avairlog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[AVAirMessageNotificationCenter bonjourService:didCloseChannel:]";
     v10 = 2114;
-    v11 = v5;
+    v11 = channelCopy;
     _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s %{public}@", &v8, 0x16u);
   }
 
-  [v5 setDelegate:0];
-  [v5 close];
-  v7 = [(AVAirMessageNotificationCenter *)self activeChannels];
-  [v7 removeObject:v5];
+  [channelCopy setDelegate:0];
+  [channelCopy close];
+  activeChannels = [(AVAirMessageNotificationCenter *)self activeChannels];
+  [activeChannels removeObject:channelCopy];
 }
 
-- (id)bonjourServiceAdditionalTXTRecordInfo:(id)a3
+- (id)bonjourServiceAdditionalTXTRecordInfo:(id)info
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [(AVAirMessageNotificationCenter *)self delegate];
-  v5 = [v4 airTrafficControllerCurrentItemIdentifier:self];
+  delegate = [(AVAirMessageNotificationCenter *)self delegate];
+  v5 = [delegate airTrafficControllerCurrentItemIdentifier:self];
 
   if ([v5 length])
   {
@@ -208,41 +208,41 @@ void __64__AVAirMessageNotificationCenter_airTransport_didReceiveObject___block_
   return v6;
 }
 
-- (void)bonjourService:(id)a3 didAcceptConnectionChannel:(id)a4
+- (void)bonjourService:(id)service didAcceptConnectionChannel:(id)channel
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  channelCopy = channel;
   v6 = _avairlog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(AVAirMessageNotificationCenter *)self activeChannels];
+    activeChannels = [(AVAirMessageNotificationCenter *)self activeChannels];
     v10 = 136315650;
     v11 = "[AVAirMessageNotificationCenter bonjourService:didAcceptConnectionChannel:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = channelCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = activeChannels;
     _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s new channel %@; activeChannels has %@", &v10, 0x20u);
   }
 
-  v8 = [(AVAirMessageNotificationCenter *)self activeChannels];
-  [v8 addObject:v5];
+  activeChannels2 = [(AVAirMessageNotificationCenter *)self activeChannels];
+  [activeChannels2 addObject:channelCopy];
 
   v9 = [AVDataValueTransformer messageTransformerWithClass:objc_opt_class()];
-  [v5 setStreamDataTransformer:v9];
+  [channelCopy setStreamDataTransformer:v9];
 
-  [v5 setDelegate:self];
-  [v5 open];
+  [channelCopy setDelegate:self];
+  [channelCopy open];
 }
 
-- (void)handleCommandMessage:(id)a3 completion:(id)a4
+- (void)handleCommandMessage:(id)message completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 copy];
-  v8 = [(AVAirMessageNotificationCenter *)self delegate];
+  messageCopy = message;
+  v7 = [completion copy];
+  delegate = [(AVAirMessageNotificationCenter *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
     v9 = _avairlog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -250,28 +250,28 @@ void __64__AVAirMessageNotificationCenter_airTransport_didReceiveObject___block_
       v12 = 136315394;
       v13 = "[AVAirMessageNotificationCenter handleCommandMessage:completion:]";
       v14 = 2114;
-      v15 = v6;
+      v15 = messageCopy;
       _os_log_impl(&dword_18B49C000, v9, OS_LOG_TYPE_DEFAULT, "%s received message %{public}@", &v12, 0x16u);
     }
 
-    v10 = [v6 type];
-    if (v10 <= 209)
+    type = [messageCopy type];
+    if (type <= 209)
     {
-      if (v10 != 100 && v10 != 200)
+      if (type != 100 && type != 200)
       {
         goto LABEL_13;
       }
     }
 
-    else if (v10 != 210 && v10 != 400 && v10 != 300)
+    else if (type != 210 && type != 400 && type != 300)
     {
 LABEL_13:
       v7[2](v7, -1999, 0);
       goto LABEL_14;
     }
 
-    v11 = [(AVAirMessageNotificationCenter *)self delegate];
-    [v11 airTrafficController:self didReceiveMessage:v6 completion:v7];
+    delegate2 = [(AVAirMessageNotificationCenter *)self delegate];
+    [delegate2 airTrafficController:self didReceiveMessage:messageCopy completion:v7];
   }
 
   else
@@ -282,17 +282,17 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)playerItemForIdentifier:(id)a3
+- (id)playerItemForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(AVAirMessageNotificationCenter *)self nowPlayingPlayerItem];
-    v6 = v5;
-    if (v5)
+    nowPlayingPlayerItem = [(AVAirMessageNotificationCenter *)self nowPlayingPlayerItem];
+    v6 = nowPlayingPlayerItem;
+    if (nowPlayingPlayerItem)
     {
-      v7 = [v5 avkitACMIdentifier];
-      if ([v7 isEqualToString:v4])
+      avkitACMIdentifier = [nowPlayingPlayerItem avkitACMIdentifier];
+      if ([avkitACMIdentifier isEqualToString:identifierCopy])
       {
         v8 = v6;
       }
@@ -322,8 +322,8 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    v3 = [(AVAirMessageNotificationCenter *)self activeChannels];
-    v4 = [v3 copy];
+    activeChannels = [(AVAirMessageNotificationCenter *)self activeChannels];
+    v4 = [activeChannels copy];
 
     v5 = [MEMORY[0x1E695DFA8] set];
     [(AVAirMessageNotificationCenter *)self setActiveChannels:v5];

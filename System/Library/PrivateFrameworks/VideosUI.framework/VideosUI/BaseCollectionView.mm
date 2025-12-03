@@ -1,23 +1,23 @@
 @interface BaseCollectionView
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (_TtC8VideosUI18BaseCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (_TtC8VideosUI18BaseCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation BaseCollectionView
 
-- (_TtC8VideosUI18BaseCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC8VideosUI18BaseCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   OUTLINED_FUNCTION_0_8();
   v5 = v4;
@@ -25,7 +25,7 @@
   return sub_1E373BA64(v6);
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
   v10 = OUTLINED_FUNCTION_4_279();
   OUTLINED_FUNCTION_0_10();
@@ -44,7 +44,7 @@
   (*(v12 + 8))(v16, v10);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_0_10();
@@ -60,46 +60,46 @@
   (*(v8 + 8))(v12, v6);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   OUTLINED_FUNCTION_178_0();
-  sub_1E4161690(v4, &selRef_vuiScrollViewDidScroll_);
+  sub_1E4161690(scrollCopy, &selRef_vuiScrollViewDidScroll_);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_1E4161514();
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   OUTLINED_FUNCTION_178_0();
-  sub_1E4161690(v4, &selRef_vuiScrollViewDidEndScrollingAnimation_);
+  sub_1E4161690(animationCopy, &selRef_vuiScrollViewDidEndScrollingAnimation_);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   OUTLINED_FUNCTION_178_0();
-  sub_1E4161690(v4, &selRef_vuiScrollViewDidEndDecelerating_);
+  sub_1E4161690(deceleratingCopy, &selRef_vuiScrollViewDidEndDecelerating_);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   OUTLINED_FUNCTION_178_0();
-  sub_1E416178C(v6, a4);
+  sub_1E416178C(draggingCopy, decelerate);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   OUTLINED_FUNCTION_5_16();
   v6 = v5;
@@ -110,16 +110,16 @@
   sub_1E4161890();
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
+  topCopy = top;
+  selfCopy = self;
   LOBYTE(self) = sub_1E41619B8();
 
   return self & 1;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   OUTLINED_FUNCTION_5_16();
   OUTLINED_FUNCTION_17_0();
@@ -132,35 +132,35 @@
   return v9;
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_5_257();
   sub_1E4162098();
 
   swift_unknownObjectRelease();
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_5_257();
   sub_1E41621B0();
 
   swift_unknownObjectRelease();
 }
 
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_1E41622C8();
 
   swift_unknownObjectRelease();

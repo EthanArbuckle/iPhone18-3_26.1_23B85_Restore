@@ -1,26 +1,26 @@
 @interface AWDWiFiMetricCustomNetworkSetting
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAutoProxySetCount:(BOOL)a3;
-- (void)setHasBootpSetCount:(BOOL)a3;
-- (void)setHasCustomNetworkCount:(BOOL)a3;
-- (void)setHasDhcpSetCount:(BOOL)a3;
-- (void)setHasManualProxySetCount:(BOOL)a3;
-- (void)setHasStaticSetCount:(BOOL)a3;
-- (void)setHasTotalNetworkCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAutoProxySetCount:(BOOL)count;
+- (void)setHasBootpSetCount:(BOOL)count;
+- (void)setHasCustomNetworkCount:(BOOL)count;
+- (void)setHasDhcpSetCount:(BOOL)count;
+- (void)setHasManualProxySetCount:(BOOL)count;
+- (void)setHasStaticSetCount:(BOOL)count;
+- (void)setHasTotalNetworkCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricCustomNetworkSetting
 
-- (void)setHasCustomNetworkCount:(BOOL)a3
+- (void)setHasCustomNetworkCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTotalNetworkCount:(BOOL)a3
+- (void)setHasTotalNetworkCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x80;
   }
@@ -48,9 +48,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasDhcpSetCount:(BOOL)a3
+- (void)setHasDhcpSetCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasBootpSetCount:(BOOL)a3
+- (void)setHasBootpSetCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStaticSetCount:(BOOL)a3
+- (void)setHasStaticSetCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasManualProxySetCount:(BOOL)a3
+- (void)setHasManualProxySetCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAutoProxySetCount:(BOOL)a3
+- (void)setHasAutoProxySetCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -155,7 +155,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_customNetworkCount), @"customNetworkCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_customNetworkCount), @"customNetworkCount"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalNetworkCount), @"totalNetworkCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalNetworkCount), @"totalNetworkCount"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dhcpSetCount), @"dhcpSetCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dhcpSetCount), @"dhcpSetCount"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bootpSetCount), @"bootpSetCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bootpSetCount), @"bootpSetCount"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -208,17 +208,17 @@ LABEL_7:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_manualProxySetCount), @"manualProxySetCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_manualProxySetCount), @"manualProxySetCount"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_staticSetCount), @"staticSetCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_staticSetCount), @"staticSetCount"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -229,13 +229,13 @@ LABEL_8:
   if ((has & 2) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_autoProxySetCount), @"autoProxySetCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_autoProxySetCount), @"autoProxySetCount"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -348,13 +348,13 @@ LABEL_17:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 6) = self->_customNetworkCount;
-  *(a3 + 44) |= 8u;
+  *(to + 6) = self->_customNetworkCount;
+  *(to + 44) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(a3 + 10) = self->_totalNetworkCount;
-  *(a3 + 44) |= 0x80u;
+  *(to + 10) = self->_totalNetworkCount;
+  *(to + 44) |= 0x80u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -403,8 +403,8 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(a3 + 7) = self->_dhcpSetCount;
-  *(a3 + 44) |= 0x10u;
+  *(to + 7) = self->_dhcpSetCount;
+  *(to + 44) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -418,8 +418,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 5) = self->_bootpSetCount;
-  *(a3 + 44) |= 4u;
+  *(to + 5) = self->_bootpSetCount;
+  *(to + 44) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 9) = self->_staticSetCount;
-  *(a3 + 44) |= 0x40u;
+  *(to + 9) = self->_staticSetCount;
+  *(to + 44) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -445,23 +445,23 @@ LABEL_8:
     }
 
 LABEL_17:
-    *(a3 + 4) = self->_autoProxySetCount;
-    *(a3 + 44) |= 2u;
+    *(to + 4) = self->_autoProxySetCount;
+    *(to + 44) |= 2u;
     return;
   }
 
 LABEL_16:
-  *(a3 + 8) = self->_manualProxySetCount;
-  *(a3 + 44) |= 0x20u;
+  *(to + 8) = self->_manualProxySetCount;
+  *(to + 44) |= 0x20u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_17;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -573,46 +573,46 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_41;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_customNetworkCount != *(a3 + 6))
+      if ((*(equal + 44) & 8) == 0 || self->_customNetworkCount != *(equal + 6))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 44) & 8) != 0)
+    else if ((*(equal + 44) & 8) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x80) != 0)
     {
-      if ((*(a3 + 44) & 0x80) == 0 || self->_totalNetworkCount != *(a3 + 10))
+      if ((*(equal + 44) & 0x80) == 0 || self->_totalNetworkCount != *(equal + 10))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 44) & 0x80) != 0)
+    else if ((*(equal + 44) & 0x80) != 0)
     {
 LABEL_41:
       LOBYTE(v5) = 0;
@@ -621,60 +621,60 @@ LABEL_41:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 44) & 0x10) == 0 || self->_dhcpSetCount != *(a3 + 7))
+      if ((*(equal + 44) & 0x10) == 0 || self->_dhcpSetCount != *(equal + 7))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 44) & 0x10) != 0)
+    else if ((*(equal + 44) & 0x10) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_bootpSetCount != *(a3 + 5))
+      if ((*(equal + 44) & 4) == 0 || self->_bootpSetCount != *(equal + 5))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 44) & 0x40) == 0 || self->_staticSetCount != *(a3 + 9))
+      if ((*(equal + 44) & 0x40) == 0 || self->_staticSetCount != *(equal + 9))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 44) & 0x40) != 0)
+    else if ((*(equal + 44) & 0x40) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 44) & 0x20) == 0 || self->_manualProxySetCount != *(a3 + 8))
+      if ((*(equal + 44) & 0x20) == 0 || self->_manualProxySetCount != *(equal + 8))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 44) & 0x20) != 0)
+    else if ((*(equal + 44) & 0x20) != 0)
     {
       goto LABEL_41;
     }
 
-    LOBYTE(v5) = (*(a3 + 44) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 44) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_autoProxySetCount != *(a3 + 4))
+      if ((*(equal + 44) & 2) == 0 || self->_autoProxySetCount != *(equal + 4))
       {
         goto LABEL_41;
       }
@@ -796,14 +796,14 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 44);
+    v3 = *(from + 44);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -816,14 +816,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 8) == 0)
+  else if ((*(from + 44) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_customNetworkCount = *(a3 + 6);
+  self->_customNetworkCount = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x80) == 0)
   {
 LABEL_4:
@@ -836,9 +836,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_totalNetworkCount = *(a3 + 10);
+  self->_totalNetworkCount = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -851,9 +851,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_dhcpSetCount = *(a3 + 7);
+  self->_dhcpSetCount = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 4) == 0)
   {
 LABEL_6:
@@ -866,9 +866,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_bootpSetCount = *(a3 + 5);
+  self->_bootpSetCount = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -881,9 +881,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_staticSetCount = *(a3 + 9);
+  self->_staticSetCount = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x20) == 0)
   {
 LABEL_8:
@@ -893,15 +893,15 @@ LABEL_8:
     }
 
 LABEL_17:
-    self->_autoProxySetCount = *(a3 + 4);
+    self->_autoProxySetCount = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_16:
-  self->_manualProxySetCount = *(a3 + 8);
+  self->_manualProxySetCount = *(from + 8);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 44) & 2) != 0)
+  if ((*(from + 44) & 2) != 0)
   {
     goto LABEL_17;
   }

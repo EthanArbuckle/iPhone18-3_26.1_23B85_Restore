@@ -1,24 +1,24 @@
 @interface PSUIOtherOptionsGroup
 - (PSListController)listController;
-- (PSUIOtherOptionsGroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PSUIOtherOptionsGroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)otherOptionsPressed:(id)a3;
+- (void)otherOptionsPressed:(id)pressed;
 @end
 
 @implementation PSUIOtherOptionsGroup
 
-- (PSUIOtherOptionsGroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUIOtherOptionsGroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v16.receiver = self;
   v16.super_class = PSUIOtherOptionsGroup;
   v8 = [(PSUIOtherOptionsGroup *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listController, v6);
-    objc_storeStrong(&v9->_groupSpecifier, a4);
+    objc_storeWeak(&v8->_listController, controllerCopy);
+    objc_storeStrong(&v9->_groupSpecifier, specifier);
     groupSpecifier = v9->_groupSpecifier;
     v11 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -44,7 +44,7 @@
   return v3;
 }
 
-- (void)otherOptionsPressed:(id)a3
+- (void)otherOptionsPressed:(id)pressed
 {
   v4 = objc_alloc(MEMORY[0x277D757A0]);
   v5 = objc_alloc_init(PSUIAddNewPlanController);

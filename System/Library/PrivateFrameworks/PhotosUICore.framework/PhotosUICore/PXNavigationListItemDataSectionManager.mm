@@ -1,96 +1,96 @@
 @interface PXNavigationListItemDataSectionManager
-+ (unint64_t)lockStateFromPrivacyController:(id)a3;
++ (unint64_t)lockStateFromPrivacyController:(id)controller;
 - (BOOL)allowsEmptyDataSection;
 - (BOOL)isCollectionEmpty;
 - (BOOL)isCollectionVisible;
 - (BOOL)isInitialDuplicateDetectorProcessingCompleted;
-- (PXNavigationListItemDataSectionManager)initWithChildDataSectionManagers:(id)a3;
-- (PXNavigationListItemDataSectionManager)initWithCollection:(id)a3 context:(id)a4;
-- (PXNavigationListItemDataSectionManager)initWithItem:(id)a3;
+- (PXNavigationListItemDataSectionManager)initWithChildDataSectionManagers:(id)managers;
+- (PXNavigationListItemDataSectionManager)initWithCollection:(id)collection context:(id)context;
+- (PXNavigationListItemDataSectionManager)initWithItem:(id)item;
 - (id)createDataSection;
-- (void)collectionFetchOperationDidComplete:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)setAccessoryTitle:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFetchResult:(id)a3;
-- (void)setHiddenWhenEmpty:(BOOL)a3;
-- (void)setLockState:(unint64_t)a3;
+- (void)collectionFetchOperationDidComplete:(id)complete;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)setAccessoryTitle:(id)title;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFetchResult:(id)result;
+- (void)setHiddenWhenEmpty:(BOOL)empty;
+- (void)setLockState:(unint64_t)state;
 - (void)updateDataSectionIfNecessary;
 @end
 
 @implementation PXNavigationListItemDataSectionManager
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PrivacyControllerObservationContext_228974 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PrivacyControllerObservationContext_228974 == context)
   {
-    if ((v6 & 3) == 0)
+    if ((changeCopy & 3) == 0)
     {
       goto LABEL_11;
     }
 
-    v13 = v9;
+    v13 = observableCopy;
     -[PXNavigationListItemDataSectionManager setLockState:](self, "setLockState:", [objc_opt_class() lockStateFromPrivacyController:self->_privacyController]);
     goto LABEL_10;
   }
 
-  if (PXLibraryFilterStateObservationContext_228975 == a5)
+  if (PXLibraryFilterStateObservationContext_228975 == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_11;
     }
 
-    v13 = v9;
+    v13 = observableCopy;
     [(PXNavigationListItemDataSectionManager *)self setFetchResult:0];
     goto LABEL_10;
   }
 
-  if (PXTabBadgeModelValueObservationContext != a5)
+  if (PXTabBadgeModelValueObservationContext != context)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXNavigationListItemDataSectionManager.m" lineNumber:282 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationListItemDataSectionManager.m" lineNumber:282 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v13 = v9;
-    v10 = [(PXNavigationListItemDataSectionManager *)self badgeModel];
-    v11 = [v10 localizedString];
-    [(PXNavigationListItemDataSectionManager *)self setAccessoryTitle:v11];
+    v13 = observableCopy;
+    badgeModel = [(PXNavigationListItemDataSectionManager *)self badgeModel];
+    localizedString = [badgeModel localizedString];
+    [(PXNavigationListItemDataSectionManager *)self setAccessoryTitle:localizedString];
 
 LABEL_10:
-    v9 = v13;
+    observableCopy = v13;
   }
 
 LABEL_11:
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(PXNavigationListItemDataSectionManager *)self fetchResult];
-  v8 = [v4 changeDetailsForFetchResult:v5];
+  queueCopy = queue;
+  fetchResult = [(PXNavigationListItemDataSectionManager *)self fetchResult];
+  v8 = [queueCopy changeDetailsForFetchResult:fetchResult];
 
   v6 = v8;
   if (v8)
   {
-    v7 = [v8 fetchResultAfterChanges];
-    [(PXNavigationListItemDataSectionManager *)self setFetchResult:v7];
+    fetchResultAfterChanges = [v8 fetchResultAfterChanges];
+    [(PXNavigationListItemDataSectionManager *)self setFetchResult:fetchResultAfterChanges];
 
     v6 = v8;
   }
 }
 
-- (void)collectionFetchOperationDidComplete:(id)a3
+- (void)collectionFetchOperationDidComplete:(id)complete
 {
-  v4 = [a3 outputFetchResult];
-  [(PXNavigationListItemDataSectionManager *)self setFetchResult:v4];
+  outputFetchResult = [complete outputFetchResult];
+  [(PXNavigationListItemDataSectionManager *)self setFetchResult:outputFetchResult];
 }
 
 - (id)createDataSection
@@ -110,11 +110,11 @@ LABEL_11:
     if ([(PXNavigationListItemDataSectionManager *)self isCollectionVisible]&& ([(PXNavigationListItemDataSectionManager *)self collection], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
       v8 = [PXCollectionsDataSection alloc];
-      v9 = [(PXNavigationListItemDataSectionManager *)self collection];
-      v10 = [(PXNavigationListItemDataSectionManager *)self accessoryTitle];
-      v11 = [(PXNavigationListItemDataSectionManager *)self lockState];
-      v12 = [(PXDataSectionManager *)self outlineObject];
-      v5 = [(PXCollectionsDataSection *)v8 initWithDisplayCollection:v9 accessoryTitle:v10 lockState:v11 outlineObject:v12];
+      collection = [(PXNavigationListItemDataSectionManager *)self collection];
+      accessoryTitle = [(PXNavigationListItemDataSectionManager *)self accessoryTitle];
+      lockState = [(PXNavigationListItemDataSectionManager *)self lockState];
+      outlineObject = [(PXDataSectionManager *)self outlineObject];
+      v5 = [(PXCollectionsDataSection *)v8 initWithDisplayCollection:collection accessoryTitle:accessoryTitle lockState:lockState outlineObject:outlineObject];
     }
 
     else
@@ -132,12 +132,12 @@ LABEL_11:
 
 - (void)updateDataSectionIfNecessary
 {
-  v5 = [(PXDataSectionManager *)self dataSectionIfCreated];
-  if (v5)
+  dataSectionIfCreated = [(PXDataSectionManager *)self dataSectionIfCreated];
+  if (dataSectionIfCreated)
   {
-    if ([v5 count] || !-[PXNavigationListItemDataSectionManager isCollectionVisible](self, "isCollectionVisible"))
+    if ([dataSectionIfCreated count] || !-[PXNavigationListItemDataSectionManager isCollectionVisible](self, "isCollectionVisible"))
     {
-      if ([v5 count] < 1 || -[PXNavigationListItemDataSectionManager isCollectionVisible](self, "isCollectionVisible"))
+      if ([dataSectionIfCreated count] < 1 || -[PXNavigationListItemDataSectionManager isCollectionVisible](self, "isCollectionVisible"))
       {
         if (![(PXNavigationListItemDataSectionManager *)self isCollectionVisible]|| ([(PXNavigationListItemDataSectionManager *)self currentChanges]& 0x10008) == 0)
         {
@@ -174,9 +174,9 @@ LABEL_13:
   v4 = v3;
   if (!self->_lastDuplicatesProcessingCheckDate || ([v3 timeIntervalSinceDate:?], v5 > 300.0))
   {
-    v6 = [(PXNavigationListItemDataSectionManager *)self collection];
-    v7 = [v6 photoLibrary];
-    self->_isInitialDuplicateDetectorProcessingCompleted = [v7 isInitialDuplicateDetectorProcessingCompleted];
+    collection = [(PXNavigationListItemDataSectionManager *)self collection];
+    photoLibrary = [collection photoLibrary];
+    self->_isInitialDuplicateDetectorProcessingCompleted = [photoLibrary isInitialDuplicateDetectorProcessingCompleted];
 
     objc_storeStrong(&self->_lastDuplicatesProcessingCheckDate, v4);
   }
@@ -190,8 +190,8 @@ LABEL_13:
 {
   if ([(PXNavigationListItemDataSectionManager *)self isCollectionEmpty])
   {
-    v3 = [(PXNavigationListItemDataSectionManager *)self collection];
-    if ([v3 px_isAllLibraryDuplicatesSmartAlbum])
+    collection = [(PXNavigationListItemDataSectionManager *)self collection];
+    if ([collection px_isAllLibraryDuplicatesSmartAlbum])
     {
       v4 = ![(PXNavigationListItemDataSectionManager *)self isInitialDuplicateDetectorProcessingCompleted];
     }
@@ -230,32 +230,32 @@ LABEL_13:
 
 - (BOOL)isCollectionEmpty
 {
-  v3 = [(PXNavigationListItemDataSectionManager *)self collection];
-  v4 = [(PXNavigationListItemDataSectionManager *)self fetchResult];
-  v5 = [(PXNavigationListItemDataSectionManager *)self context];
-  v6 = [v5 assetsFilterPredicate];
-  if (v4)
+  collection = [(PXNavigationListItemDataSectionManager *)self collection];
+  fetchResult = [(PXNavigationListItemDataSectionManager *)self fetchResult];
+  context = [(PXNavigationListItemDataSectionManager *)self context];
+  assetsFilterPredicate = [context assetsFilterPredicate];
+  if (fetchResult)
   {
-    v7 = [v4 count] == 0;
+    v7 = [fetchResult count] == 0;
   }
 
-  else if (v3)
+  else if (collection)
   {
-    v8 = [v3 photoLibrary];
-    v9 = [v8 librarySpecificFetchOptions];
+    photoLibrary = [collection photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v9 setInternalPredicate:v6];
-    if (([v3 px_isSharedAlbum] & 1) == 0 && (objc_msgSend(v3, "px_isUnableToUploadSmartAlbum") & 1) == 0)
+    [librarySpecificFetchOptions setInternalPredicate:assetsFilterPredicate];
+    if (([collection px_isSharedAlbum] & 1) == 0 && (objc_msgSend(collection, "px_isUnableToUploadSmartAlbum") & 1) == 0)
     {
-      v10 = [(PXNavigationListItemDataSectionManager *)self libraryFilterState];
-      [v9 setSharingFilter:{objc_msgSend(v10, "sharingFilter")}];
+      libraryFilterState = [(PXNavigationListItemDataSectionManager *)self libraryFilterState];
+      [librarySpecificFetchOptions setSharingFilter:{objc_msgSend(libraryFilterState, "sharingFilter")}];
     }
 
-    v7 = [v3 px_fetchIsEmptyWithOptions:v9];
-    v11 = [PXCollectionFetchOperation fetchOperationWithCollection:v3 delegate:self];
-    [v11 setFetchOptions:v9];
-    v12 = [v5 workQueue];
-    [v12 addOperation:v11];
+    v7 = [collection px_fetchIsEmptyWithOptions:librarySpecificFetchOptions];
+    v11 = [PXCollectionFetchOperation fetchOperationWithCollection:collection delegate:self];
+    [v11 setFetchOptions:librarySpecificFetchOptions];
+    workQueue = [context workQueue];
+    [workQueue addOperation:v11];
   }
 
   else
@@ -266,18 +266,18 @@ LABEL_13:
   return v7;
 }
 
-- (void)setAccessoryTitle:(id)a3
+- (void)setAccessoryTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_accessoryTitle;
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == titleCopy)
   {
   }
 
   else
   {
-    v7 = [(NSString *)v5 isEqual:v4];
+    v7 = [(NSString *)v5 isEqual:titleCopy];
 
     if ((v7 & 1) == 0)
     {
@@ -286,7 +286,7 @@ LABEL_13:
       v8[2] = __60__PXNavigationListItemDataSectionManager_setAccessoryTitle___block_invoke;
       v8[3] = &unk_1E77498F8;
       v8[4] = self;
-      v9 = v4;
+      v9 = titleCopy;
       [(PXNavigationListItemDataSectionManager *)self performChanges:v8];
     }
   }
@@ -305,9 +305,9 @@ uint64_t __60__PXNavigationListItemDataSectionManager_setAccessoryTitle___block_
   return [v5 updateDataSectionIfNecessary];
 }
 
-- (void)setLockState:(unint64_t)a3
+- (void)setLockState:(unint64_t)state
 {
-  if (self->_lockState != a3)
+  if (self->_lockState != state)
   {
     v5[6] = v3;
     v5[7] = v4;
@@ -316,7 +316,7 @@ uint64_t __60__PXNavigationListItemDataSectionManager_setAccessoryTitle___block_
     v5[2] = __55__PXNavigationListItemDataSectionManager_setLockState___block_invoke;
     v5[3] = &unk_1E7749D78;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = state;
     [(PXNavigationListItemDataSectionManager *)self performChanges:v5];
   }
 }
@@ -330,53 +330,53 @@ uint64_t __55__PXNavigationListItemDataSectionManager_setLockState___block_invok
   return [v2 updateDataSectionIfNecessary];
 }
 
-- (void)setFetchResult:(id)a3
+- (void)setFetchResult:(id)result
 {
-  v11 = a3;
+  resultCopy = result;
   v5 = self->_fetchResult;
   v6 = v5;
-  if (v5 != v11)
+  if (v5 != resultCopy)
   {
-    v7 = [(PHFetchResult *)v5 isEqual:v11];
+    v7 = [(PHFetchResult *)v5 isEqual:resultCopy];
 
-    v8 = v11;
+    v8 = resultCopy;
     if (v7)
     {
       goto LABEL_13;
     }
 
     fetchResult = self->_fetchResult;
-    if (!v11 || fetchResult)
+    if (!resultCopy || fetchResult)
     {
-      if (v11 || !fetchResult)
+      if (resultCopy || !fetchResult)
       {
         goto LABEL_11;
       }
 
-      v10 = [(PHCollection *)self->_collection photoLibrary];
-      [v10 px_unregisterChangeObserver:self];
+      photoLibrary = [(PHCollection *)self->_collection photoLibrary];
+      [photoLibrary px_unregisterChangeObserver:self];
     }
 
     else
     {
-      v10 = [(PHCollection *)self->_collection photoLibrary];
-      [v10 px_registerChangeObserver:self];
+      photoLibrary = [(PHCollection *)self->_collection photoLibrary];
+      [photoLibrary px_registerChangeObserver:self];
     }
 
 LABEL_11:
-    objc_storeStrong(&self->_fetchResult, a3);
+    objc_storeStrong(&self->_fetchResult, result);
     [(PXNavigationListItemDataSectionManager *)self updateDataSectionIfNecessary];
     goto LABEL_12;
   }
 
 LABEL_12:
-  v8 = v11;
+  v8 = resultCopy;
 LABEL_13:
 }
 
-- (void)setHiddenWhenEmpty:(BOOL)a3
+- (void)setHiddenWhenEmpty:(BOOL)empty
 {
-  if (self->_hiddenWhenEmpty != a3)
+  if (self->_hiddenWhenEmpty != empty)
   {
     v7 = v3;
     v8 = v4;
@@ -385,7 +385,7 @@ LABEL_13:
     v5[2] = __61__PXNavigationListItemDataSectionManager_setHiddenWhenEmpty___block_invoke;
     v5[3] = &unk_1E774C670;
     v5[4] = self;
-    v6 = a3;
+    emptyCopy = empty;
     [(PXNavigationListItemDataSectionManager *)self performChanges:v5];
   }
 }
@@ -399,9 +399,9 @@ uint64_t __61__PXNavigationListItemDataSectionManager_setHiddenWhenEmpty___block
   return [v2 updateDataSectionIfNecessary];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v7 = v3;
     v8 = v4;
@@ -410,7 +410,7 @@ uint64_t __61__PXNavigationListItemDataSectionManager_setHiddenWhenEmpty___block
     v5[2] = __53__PXNavigationListItemDataSectionManager_setEnabled___block_invoke;
     v5[3] = &unk_1E774C670;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     [(PXNavigationListItemDataSectionManager *)self performChanges:v5];
   }
 }
@@ -434,52 +434,52 @@ uint64_t __53__PXNavigationListItemDataSectionManager_setEnabled___block_invoke(
   return [(PXNavigationListItemDataSectionManager *)self isEnabled];
 }
 
-- (PXNavigationListItemDataSectionManager)initWithChildDataSectionManagers:(id)a3
+- (PXNavigationListItemDataSectionManager)initWithChildDataSectionManagers:(id)managers
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXNavigationListItemDataSectionManager.m" lineNumber:83 description:{@"%s is not available as initializer", "-[PXNavigationListItemDataSectionManager initWithChildDataSectionManagers:]"}];
+  managersCopy = managers;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationListItemDataSectionManager.m" lineNumber:83 description:{@"%s is not available as initializer", "-[PXNavigationListItemDataSectionManager initWithChildDataSectionManagers:]"}];
 
   abort();
 }
 
-- (PXNavigationListItemDataSectionManager)initWithItem:(id)a3
+- (PXNavigationListItemDataSectionManager)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PXNavigationListItemDataSectionManager;
   v6 = [(PXDataSectionManager *)&v9 initWithChildDataSectionManagers:MEMORY[0x1E695E0F0]];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listItem, a3);
+    objc_storeStrong(&v6->_listItem, item);
     v7->_enabled = 1;
   }
 
   return v7;
 }
 
-- (PXNavigationListItemDataSectionManager)initWithCollection:(id)a3 context:(id)a4
+- (PXNavigationListItemDataSectionManager)initWithCollection:(id)collection context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = PXNavigationListItemDataSectionManager;
   v9 = [(PXDataSectionManager *)&v20 initWithChildDataSectionManagers:MEMORY[0x1E695E0F0]];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_collection, collection);
+    objc_storeStrong(&v10->_context, context);
     v10->_enabled = 1;
-    v11 = [v8 tabBadgeModelForCollection:v7];
+    v11 = [contextCopy tabBadgeModelForCollection:collectionCopy];
     badgeModel = v10->_badgeModel;
     v10->_badgeModel = v11;
 
     [(PXTabBadgeModel *)v10->_badgeModel registerChangeObserver:v10 context:PXTabBadgeModelValueObservationContext];
-    v13 = [(PXTabBadgeModel *)v10->_badgeModel localizedString];
+    localizedString = [(PXTabBadgeModel *)v10->_badgeModel localizedString];
     accessoryTitle = v10->_accessoryTitle;
-    v10->_accessoryTitle = v13;
+    v10->_accessoryTitle = localizedString;
 
     v15 = [PXContentPrivacyController privacyControllerForCollection:v10->_collection];
     privacyController = v10->_privacyController;
@@ -487,9 +487,9 @@ uint64_t __53__PXNavigationListItemDataSectionManager_setEnabled___block_invoke(
 
     [(PXContentPrivacyController *)v10->_privacyController registerChangeObserver:v10 context:PrivacyControllerObservationContext_228974];
     v10->_lockState = [objc_opt_class() lockStateFromPrivacyController:v10->_privacyController];
-    v17 = [v8 libraryFilterState];
+    libraryFilterState = [contextCopy libraryFilterState];
     libraryFilterState = v10->_libraryFilterState;
-    v10->_libraryFilterState = v17;
+    v10->_libraryFilterState = libraryFilterState;
 
     [(PXLibraryFilterState *)v10->_libraryFilterState registerChangeObserver:v10 context:PXLibraryFilterStateObservationContext_228975];
   }
@@ -497,11 +497,11 @@ uint64_t __53__PXNavigationListItemDataSectionManager_setEnabled___block_invoke(
   return v10;
 }
 
-+ (unint64_t)lockStateFromPrivacyController:(id)a3
++ (unint64_t)lockStateFromPrivacyController:(id)controller
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 isContentPrivacyEnabled])
+  controllerCopy = controller;
+  v4 = controllerCopy;
+  if (controllerCopy && [controllerCopy isContentPrivacyEnabled])
   {
     if ([v4 isLocked])
     {

@@ -1,44 +1,44 @@
 @interface BuddyFinishFlow
 + (id)allowedFlowItems;
-- (BOOL)presentFindMyDisabledAlertIfNeededOnViewController:(id)a3;
-- (BuddyFinishFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
+- (BOOL)presentFindMyDisabledAlertIfNeededOnViewController:(id)controller;
+- (BuddyFinishFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
 - (void)_updateClassList;
-- (void)configureFlowItem:(id)a3;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)startFlowAnimated:(BOOL)a3;
+- (void)configureFlowItem:(id)item;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)startFlowAnimated:(BOOL)animated;
 @end
 
 @implementation BuddyFinishFlow
 
-- (BuddyFinishFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyFinishFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, delegate);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, starter);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
-  v9 = v17;
-  v17 = 0;
+  objc_storeStrong(&v13, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v9;
   v12.super_class = BuddyFinishFlow;
-  v17 = [(BuddyFinishFlow *)&v12 initWithNavigationController:location[0] flowDelegate:v15 flowStarter:v14 dependencyInjector:v13];
-  objc_storeStrong(&v17, v17);
-  if (v17)
+  selfCopy = [(BuddyFinishFlow *)&v12 initWithNavigationController:location[0] flowDelegate:v15 flowStarter:v14 dependencyInjector:v13];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [v17 _updateClassList];
+    [selfCopy _updateClassList];
   }
 
-  v10 = v17;
+  v10 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
@@ -49,46 +49,46 @@
   return [NSArray arrayWithObjects:v3 count:2];
 }
 
-- (void)startFlowAnimated:(BOOL)a3
+- (void)startFlowAnimated:(BOOL)animated
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  animatedCopy = animated;
   [(BuddyFinishFlow *)self _updateClassList];
   v3 = [BuddyFindMyDisabledAlertDebugPresenter alloc];
-  v4 = [(BuddyFinishFlow *)v9 buddyPreferencesExcludedFromBackup];
-  location = [(BuddyFindMyDisabledAlertDebugPresenter *)v3 initWithPreferences:v4];
+  buddyPreferencesExcludedFromBackup = [(BuddyFinishFlow *)selfCopy buddyPreferencesExcludedFromBackup];
+  location = [(BuddyFindMyDisabledAlertDebugPresenter *)v3 initWithPreferences:buddyPreferencesExcludedFromBackup];
 
   if (location)
   {
-    [(BuddyFinishFlow *)v9 setPresenter:location];
+    [(BuddyFinishFlow *)selfCopy setPresenter:location];
   }
 
   else
   {
-    [(BuddyFinishFlow *)v9 setPresenter:v9];
+    [(BuddyFinishFlow *)selfCopy setPresenter:selfCopy];
   }
 
-  v5.receiver = v9;
+  v5.receiver = selfCopy;
   v5.super_class = BuddyFinishFlow;
-  [(BuddyFinishFlow *)&v5 startFlowAnimated:v7];
+  [(BuddyFinishFlow *)&v5 startFlowAnimated:animatedCopy];
   objc_storeStrong(&location, 0);
 }
 
-- (void)configureFlowItem:(id)a3
+- (void)configureFlowItem:(id)item
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v7;
+  objc_storeStrong(location, item);
+  v5.receiver = selfCopy;
   v5.super_class = BuddyFinishFlow;
   [(BuddyFinishFlow *)&v5 configureFlowItem:location[0]];
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyFindMyDisabledAlertSource])
   {
     v3 = location[0];
-    v4 = [(BuddyFinishFlow *)v7 presenter];
-    [v3 setFindMyDisabledAlertPresenter:v4];
+    presenter = [(BuddyFinishFlow *)selfCopy presenter];
+    [v3 setFindMyDisabledAlertPresenter:presenter];
   }
 
   objc_storeStrong(location, 0);
@@ -100,9 +100,9 @@
   v2 = 0;
   if (os_variant_has_internal_ui())
   {
-    v13 = [(BuddyFinishFlow *)self buddyPreferencesExcludedFromBackup];
+    buddyPreferencesExcludedFromBackup = [(BuddyFinishFlow *)self buddyPreferencesExcludedFromBackup];
     v12 = 1;
-    v2 = [(BYPreferencesController *)v13 BOOLForKey:@"ForceAppStorePaneToShow"];
+    v2 = [(BYPreferencesController *)buddyPreferencesExcludedFromBackup BOOLForKey:@"ForceAppStorePaneToShow"];
   }
 
   if (v12)
@@ -116,13 +116,13 @@
 
   else
   {
-    v3 = [(BuddyFinishFlow *)self suspendTask];
-    v4 = [(BuddySuspendTask *)v3 launchURL];
+    suspendTask = [(BuddyFinishFlow *)self suspendTask];
+    launchURL = [(BuddySuspendTask *)suspendTask launchURL];
     v10 = 0;
     v5 = 0;
-    if (v4)
+    if (launchURL)
     {
-      v11 = [(BuddyFinishFlow *)self buddyPreferencesExcludedFromBackup];
+      buddyPreferencesExcludedFromBackup2 = [(BuddyFinishFlow *)self buddyPreferencesExcludedFromBackup];
       v10 = 1;
       v5 = [BuddySuspendTask hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:?];
     }
@@ -159,12 +159,12 @@
   }
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v35 = 0;
   oslog[1] = 0;
   v3 = SADSUninstallIneligibleAppsWithError();
@@ -203,9 +203,9 @@
 
       else if (v35)
       {
-        v31 = [v35 domain];
+        domain = [v35 domain];
         v30 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v31, [v35 code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v35 code]);
         v29 = v4;
         v28 = 1;
       }
@@ -231,10 +231,10 @@
 
   if (location[0])
   {
-    v7 = [(BuddyFinishFlow *)v37 lockdownModeProvider];
-    v8 = [(LockdownModeProvider *)v7 hasStagedEnablement];
+    lockdownModeProvider = [(BuddyFinishFlow *)selfCopy lockdownModeProvider];
+    hasStagedEnablement = [(LockdownModeProvider *)lockdownModeProvider hasStagedEnablement];
 
-    if (v8)
+    if (hasStagedEnablement)
     {
       (*(location[0] + 2))(location[0], 0);
       v24 = 1;
@@ -242,10 +242,10 @@
 
     else
     {
-      v9 = [(BuddyFinishFlow *)v37 runState];
-      v10 = [(BYRunState *)v9 hasCompletedInitialRun];
+      runState = [(BuddyFinishFlow *)selfCopy runState];
+      hasCompletedInitialRun = [(BYRunState *)runState hasCompletedInitialRun];
 
-      if (v10)
+      if (hasCompletedInitialRun)
       {
         (*(location[0] + 2))(location[0], 1);
         v24 = 1;
@@ -254,19 +254,19 @@
       else
       {
         v23 = +[BYDevice currentDevice];
-        v11 = [(BuddyFinishFlow *)v37 userDispositionProvider];
-        v12 = [(BuddyFinishFlow *)v37 setupMethod];
-        v13 = [(BuddySetupMethod *)v12 dataTransferMethod];
-        v14 = [v23 deviceClass];
-        v15 = [v23 serialNumber];
+        userDispositionProvider = [(BuddyFinishFlow *)selfCopy userDispositionProvider];
+        setupMethod = [(BuddyFinishFlow *)selfCopy setupMethod];
+        dataTransferMethod = [(BuddySetupMethod *)setupMethod dataTransferMethod];
+        deviceClass = [v23 deviceClass];
+        serialNumber = [v23 serialNumber];
         v16 = _NSConcreteStackBlock;
         v17 = -1073741824;
         v18 = 0;
         v19 = sub_100180404;
         v20 = &unk_10032DEC8;
-        v21 = v37;
+        v21 = selfCopy;
         v22 = location[0];
-        [(SetupUserDispositionProvider *)v11 isNewUserWithDataTransferMethod:v13 deviceClass:v14 serialNumber:v15 completionHandler:&v16];
+        [(SetupUserDispositionProvider *)userDispositionProvider isNewUserWithDataTransferMethod:dataTransferMethod deviceClass:deviceClass serialNumber:serialNumber completionHandler:&v16];
 
         objc_storeStrong(&v22, 0);
         objc_storeStrong(&v21, 0);
@@ -285,17 +285,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)presentFindMyDisabledAlertIfNeededOnViewController:(id)a3
+- (BOOL)presentFindMyDisabledAlertIfNeededOnViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v3 = +[ACAccountStore defaultStore];
-  v28 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
   v27 = 0;
-  if (v28)
+  if (aa_primaryAppleAccount)
   {
     v4 = +[ACAccountStore defaultStore];
     v26 = [v4 aa_accountsEnabledForDataclass:kAccountDataclassDeviceLocator];
@@ -324,13 +324,13 @@
 
             v10 = +[NSBundle mainBundle];
             v11 = [(NSBundle *)v10 localizedStringForKey:@"FMIP_ACCOUNT_DISABLE_TITLE" value:&stru_10032F900 table:@"Localizable"];
-            v12 = [v25 aa_primaryEmail];
-            v23 = [NSString localizedStringWithFormat:v11, v12];
+            aa_primaryEmail = [v25 aa_primaryEmail];
+            v23 = [NSString localizedStringWithFormat:v11, aa_primaryEmail];
 
             v13 = +[NSBundle mainBundle];
             v14 = [(NSBundle *)v13 localizedStringForKey:@"FMIP_ACCOUNT_DISABLE_MESSAGE" value:&stru_10032F900 table:@"Localizable"];
-            v15 = [v28 aa_primaryEmail];
-            v22 = [NSString localizedStringWithFormat:v14, v15];
+            aa_primaryEmail2 = [aa_primaryAppleAccount aa_primaryEmail];
+            v22 = [NSString localizedStringWithFormat:v14, aa_primaryEmail2];
 
             v21 = [UIAlertController alertControllerWithTitle:v23 message:v22 preferredStyle:1];
             v16 = +[NSBundle mainBundle];
@@ -359,7 +359,7 @@ LABEL_11:
   }
 
   v19 = v27;
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(location, 0);
   return v19 & 1;
 }

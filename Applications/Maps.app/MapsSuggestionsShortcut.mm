@@ -6,19 +6,19 @@
 
 - (id)styleAttributes
 {
-  v3 = [(MapsSuggestionsShortcut *)self type];
-  if (v3 > 4)
+  type = [(MapsSuggestionsShortcut *)self type];
+  if (type > 4)
   {
-    if (v3 == 5)
+    if (type == 5)
     {
       v4 = +[GEOFeatureStyleAttributes schoolStyleAttributes];
       goto LABEL_15;
     }
 
-    if (v3 == 6)
+    if (type == 6)
     {
-      v5 = [(MapsSuggestionsShortcut *)self identifier];
-      v6 = [v5 isEqualToString:@"NearbyTransit"];
+      identifier = [(MapsSuggestionsShortcut *)self identifier];
+      v6 = [identifier isEqualToString:@"NearbyTransit"];
 
       if (v6)
       {
@@ -30,13 +30,13 @@
 
   else
   {
-    if (v3 == 2)
+    if (type == 2)
     {
       v4 = +[GEOFeatureStyleAttributes homeStyleAttributes];
       goto LABEL_15;
     }
 
-    if (v3 == 3)
+    if (type == 3)
     {
       v4 = +[GEOFeatureStyleAttributes workStyleAttributes];
 LABEL_15:
@@ -45,9 +45,9 @@ LABEL_15:
     }
   }
 
-  v7 = [(MapsSuggestionsShortcut *)self geoMapItem];
-  v8 = v7;
-  if (!v7 || ([v7 _styleAttributes], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  geoMapItem = [(MapsSuggestionsShortcut *)self geoMapItem];
+  v8 = geoMapItem;
+  if (!geoMapItem || ([geoMapItem _styleAttributes], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = +[GEOFeatureStyleAttributes markerStyleAttributes];
   }

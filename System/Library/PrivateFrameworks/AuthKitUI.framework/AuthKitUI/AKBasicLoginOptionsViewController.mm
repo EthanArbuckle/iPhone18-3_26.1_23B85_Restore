@@ -1,35 +1,35 @@
 @interface AKBasicLoginOptionsViewController
 - (AKAppleIDAuthenticationInAppContext)context;
-- (AKBasicLoginOptionsViewController)initWithContext:(id)a3;
+- (AKBasicLoginOptionsViewController)initWithContext:(id)context;
 - (BOOL)_shouldHideCreateButton;
-- (id)_createLinkButtonWithSelector:(SEL)a3;
-- (void)_configureButtonForFontAdjustment:(id)a3;
+- (id)_createLinkButtonWithSelector:(SEL)selector;
+- (void)_configureButtonForFontAdjustment:(id)adjustment;
 - (void)_refreshCreateAppleIDButton;
-- (void)_setupPrivacyLinkControllerWithContext:(id)a3;
+- (void)_setupPrivacyLinkControllerWithContext:(id)context;
 - (void)_setupStackView;
-- (void)createPressed:(id)a3;
-- (void)forgotPressed:(id)a3;
+- (void)createPressed:(id)pressed;
+- (void)forgotPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation AKBasicLoginOptionsViewController
 
-- (AKBasicLoginOptionsViewController)initWithContext:(id)a3
+- (AKBasicLoginOptionsViewController)initWithContext:(id)context
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v16;
-  v16 = 0;
+  objc_storeStrong(location, context);
+  v3 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v3;
   v14.super_class = AKBasicLoginOptionsViewController;
-  v16 = [(AKBasicLoginOptionsViewController *)&v14 init];
-  objc_storeStrong(&v16, v16);
-  if (v16)
+  selfCopy = [(AKBasicLoginOptionsViewController *)&v14 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v16->_context, location[0]);
-    objc_initWeak(&v13, v16);
+    objc_storeWeak(&selfCopy->_context, location[0]);
+    objc_initWeak(&v13, selfCopy);
     queue = dispatch_get_global_queue(33, 0);
     v7 = MEMORY[0x277D85DD0];
     v8 = -1073741824;
@@ -43,9 +43,9 @@
     objc_destroyWeak(&v13);
   }
 
-  v5 = MEMORY[0x277D82BE0](v16);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -101,34 +101,34 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
 
 - (void)viewDidLoad
 {
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
   v28.receiver = self;
   v28.super_class = AKBasicLoginOptionsViewController;
   [(AKBasicLoginOptionsViewController *)&v28 viewDidLoad];
-  v27 = [(AKBasicLoginOptionsViewController *)v30 context];
-  [(AKBasicLoginOptionsViewController *)v30 _refreshCreateAppleIDButton];
-  v12 = [(AKBasicLoginOptionsViewController *)v30 _createLinkButtonWithSelector:sel_forgotPressed_];
-  [(AKBasicLoginOptionsViewController *)v30 setForgotButton:?];
+  context = [(AKBasicLoginOptionsViewController *)selfCopy context];
+  [(AKBasicLoginOptionsViewController *)selfCopy _refreshCreateAppleIDButton];
+  v12 = [(AKBasicLoginOptionsViewController *)selfCopy _createLinkButtonWithSelector:sel_forgotPressed_];
+  [(AKBasicLoginOptionsViewController *)selfCopy setForgotButton:?];
   *&v2 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-  v13 = [(AKBasicLoginOptionsViewController *)v30 _createLinkButtonWithSelector:sel_createPressed_, v2];
-  [(AKBasicLoginOptionsViewController *)v30 setCreateButton:?];
+  v13 = [(AKBasicLoginOptionsViewController *)selfCopy _createLinkButtonWithSelector:sel_createPressed_, v2];
+  [(AKBasicLoginOptionsViewController *)selfCopy setCreateButton:?];
   *&v3 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-  [(AKBasicLoginOptionsViewController *)v30 _setupStackView];
-  v14 = v30;
-  v15 = [(AKBasicLoginOptionsViewController *)v30 forgotButton];
+  [(AKBasicLoginOptionsViewController *)selfCopy _setupStackView];
+  v14 = selfCopy;
+  forgotButton = [(AKBasicLoginOptionsViewController *)selfCopy forgotButton];
   [(AKBasicLoginOptionsViewController *)v14 _configureButtonForFontAdjustment:?];
-  *&v4 = MEMORY[0x277D82BD8](v15).n128_u64[0];
-  v16 = v30;
-  v17 = [(AKBasicLoginOptionsViewController *)v30 createButton];
+  *&v4 = MEMORY[0x277D82BD8](forgotButton).n128_u64[0];
+  v16 = selfCopy;
+  createButton = [(AKBasicLoginOptionsViewController *)selfCopy createButton];
   [(AKBasicLoginOptionsViewController *)v16 _configureButtonForFontAdjustment:?];
-  *&v5 = MEMORY[0x277D82BD8](v17).n128_u64[0];
-  v18 = [(AKBasicLoginOptionsViewController *)v30 forgotButton];
+  *&v5 = MEMORY[0x277D82BD8](createButton).n128_u64[0];
+  forgotButton2 = [(AKBasicLoginOptionsViewController *)selfCopy forgotButton];
   v25 = 0;
   v23 = 0;
   v21 = 0;
   v19 = 0;
-  if ([(AKAppleIDAuthenticationInAppContext *)v27 isUsernameEditable])
+  if ([(AKAppleIDAuthenticationInAppContext *)context isUsernameEditable])
   {
     v22 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AuthKitUI"];
     v21 = 1;
@@ -146,7 +146,7 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
     v11 = v24;
   }
 
-  [(UIButton *)v18 setTitle:v11 forState:0];
+  [(UIButton *)forgotButton2 setTitle:v11 forState:0];
   if (v19)
   {
     MEMORY[0x277D82BD8](v20);
@@ -167,17 +167,17 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
     MEMORY[0x277D82BD8](v26);
   }
 
-  *&v6 = MEMORY[0x277D82BD8](v18).n128_u64[0];
-  v10 = [(AKBasicLoginOptionsViewController *)v30 createButton];
+  *&v6 = MEMORY[0x277D82BD8](forgotButton2).n128_u64[0];
+  createButton2 = [(AKBasicLoginOptionsViewController *)selfCopy createButton];
   v9 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AuthKitUI"];
   v8 = [v9 localizedStringForKey:@"CREATE_APPLE_ID_BUTTON_TITLE_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
-  [UIButton setTitle:v10 forState:"setTitle:forState:"];
+  [UIButton setTitle:createButton2 forState:"setTitle:forState:"];
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  *&v7 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  [(AKBasicLoginOptionsViewController *)v30 _setupPrivacyLinkControllerWithContext:v27, v7];
-  [(AKBasicLoginOptionsViewController *)v30 setView:v30->_stackView];
-  objc_storeStrong(&v27, 0);
+  *&v7 = MEMORY[0x277D82BD8](createButton2).n128_u64[0];
+  [(AKBasicLoginOptionsViewController *)selfCopy _setupPrivacyLinkControllerWithContext:context, v7];
+  [(AKBasicLoginOptionsViewController *)selfCopy setView:selfCopy->_stackView];
+  objc_storeStrong(&context, 0);
 }
 
 - (void)_setupStackView
@@ -193,31 +193,31 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
   [(UIStackView *)self->_stackView setSpacing:7.0];
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = self->_stackView;
-  v8 = [(AKBasicLoginOptionsViewController *)self forgotButton];
+  forgotButton = [(AKBasicLoginOptionsViewController *)self forgotButton];
   [(UIStackView *)v7 addArrangedSubview:?];
-  *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](forgotButton).n128_u64[0];
   v9 = self->_stackView;
-  v10 = [(AKBasicLoginOptionsViewController *)self createButton];
+  createButton = [(AKBasicLoginOptionsViewController *)self createButton];
   [(UIStackView *)v9 addArrangedSubview:?];
-  v11 = [MEMORY[0x277CF0228] sharedManager];
-  v12 = [v11 isAuthKitSolariumFeatureEnabled];
-  *&v6 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  if (v12)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v6 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled)
   {
     [(UIStackView *)self->_stackView setAlignment:1, v6];
   }
 }
 
-- (void)_setupPrivacyLinkControllerWithContext:(id)a3
+- (void)_setupPrivacyLinkControllerWithContext:(id)context
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v35 = [location[0] privacyBundleIdentifier];
-  MEMORY[0x277D82BD8](v35);
-  if (v35)
+  objc_storeStrong(location, context);
+  privacyBundleIdentifier = [location[0] privacyBundleIdentifier];
+  MEMORY[0x277D82BD8](privacyBundleIdentifier);
+  if (privacyBundleIdentifier)
   {
     v41 = _AKLogSystem();
     v40 = 2;
@@ -231,60 +231,60 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
 
     objc_storeStrong(&v41, 0);
     v26 = MEMORY[0x277D37670];
-    v28 = [location[0] privacyBundleIdentifier];
+    privacyBundleIdentifier2 = [location[0] privacyBundleIdentifier];
     v27 = [v26 linkWithBundleIdentifier:?];
-    [(AKBasicLoginOptionsViewController *)v43 setPrivacyController:?];
+    [(AKBasicLoginOptionsViewController *)selfCopy setPrivacyController:?];
     MEMORY[0x277D82BD8](v27);
-    *&v3 = MEMORY[0x277D82BD8](v28).n128_u64[0];
-    v29 = v43;
-    v30 = [(AKBasicLoginOptionsViewController *)v43 privacyController];
+    *&v3 = MEMORY[0x277D82BD8](privacyBundleIdentifier2).n128_u64[0];
+    v29 = selfCopy;
+    privacyController = [(AKBasicLoginOptionsViewController *)selfCopy privacyController];
     [(AKBasicLoginOptionsViewController *)v29 addChildViewController:?];
-    *&v4 = MEMORY[0x277D82BD8](v30).n128_u64[0];
-    v31 = [(UIStackView *)v43->_stackView arrangedSubviews];
-    v32 = [(NSArray *)v31 count];
-    *&v5 = MEMORY[0x277D82BD8](v31).n128_u64[0];
+    *&v4 = MEMORY[0x277D82BD8](privacyController).n128_u64[0];
+    arrangedSubviews = [(UIStackView *)selfCopy->_stackView arrangedSubviews];
+    v32 = [(NSArray *)arrangedSubviews count];
+    *&v5 = MEMORY[0x277D82BD8](arrangedSubviews).n128_u64[0];
     if (v32)
     {
-      v22 = [(UIStackView *)v43->_stackView arrangedSubviews];
-      v21 = [(UIStackView *)v43->_stackView arrangedSubviews];
-      v38 = [(NSArray *)v22 objectAtIndexedSubscript:[(NSArray *)v21 count]- 1];
-      MEMORY[0x277D82BD8](v21);
-      *&v6 = MEMORY[0x277D82BD8](v22).n128_u64[0];
-      stackView = v43->_stackView;
-      v25 = [(AKBasicLoginOptionsViewController *)v43 privacyController];
-      v24 = [(OBPrivacyLinkController *)v25 view];
+      arrangedSubviews2 = [(UIStackView *)selfCopy->_stackView arrangedSubviews];
+      arrangedSubviews3 = [(UIStackView *)selfCopy->_stackView arrangedSubviews];
+      v38 = [(NSArray *)arrangedSubviews2 objectAtIndexedSubscript:[(NSArray *)arrangedSubviews3 count]- 1];
+      MEMORY[0x277D82BD8](arrangedSubviews3);
+      *&v6 = MEMORY[0x277D82BD8](arrangedSubviews2).n128_u64[0];
+      stackView = selfCopy->_stackView;
+      privacyController2 = [(AKBasicLoginOptionsViewController *)selfCopy privacyController];
+      view = [(OBPrivacyLinkController *)privacyController2 view];
       [(UIStackView *)stackView addArrangedSubview:?];
-      MEMORY[0x277D82BD8](v24);
-      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](view);
+      MEMORY[0x277D82BD8](privacyController2);
       if (v38)
       {
-        [(UIStackView *)v43->_stackView setCustomSpacing:v38 afterView:20.0];
+        [(UIStackView *)selfCopy->_stackView setCustomSpacing:v38 afterView:20.0];
       }
 
       objc_storeStrong(&v38, 0);
     }
 
-    v10 = [(AKBasicLoginOptionsViewController *)v43 privacyController];
-    [(OBPrivacyLinkController *)v10 didMoveToParentViewController:v43];
-    *&v7 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-    v14 = [(AKBasicLoginOptionsViewController *)v43 privacyController];
-    v13 = [(OBPrivacyLinkController *)v14 view];
-    v12 = [v13 leadingAnchor];
-    v11 = [(UIStackView *)v43->_stackView leadingAnchor];
-    v37 = [v12 constraintEqualToAnchor:?];
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    *&v8 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-    v18 = [(AKBasicLoginOptionsViewController *)v43 privacyController];
-    v17 = [(OBPrivacyLinkController *)v18 view];
-    v16 = [v17 trailingAnchor];
-    v15 = [(UIStackView *)v43->_stackView trailingAnchor];
-    v36 = [v16 constraintEqualToAnchor:?];
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    *&v9 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+    privacyController3 = [(AKBasicLoginOptionsViewController *)selfCopy privacyController];
+    [(OBPrivacyLinkController *)privacyController3 didMoveToParentViewController:selfCopy];
+    *&v7 = MEMORY[0x277D82BD8](privacyController3).n128_u64[0];
+    privacyController4 = [(AKBasicLoginOptionsViewController *)selfCopy privacyController];
+    view2 = [(OBPrivacyLinkController *)privacyController4 view];
+    leadingAnchor = [view2 leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)selfCopy->_stackView leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:?];
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    MEMORY[0x277D82BD8](view2);
+    *&v8 = MEMORY[0x277D82BD8](privacyController4).n128_u64[0];
+    privacyController5 = [(AKBasicLoginOptionsViewController *)selfCopy privacyController];
+    view3 = [(OBPrivacyLinkController *)privacyController5 view];
+    trailingAnchor = [view3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)selfCopy->_stackView trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:?];
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
+    MEMORY[0x277D82BD8](view3);
+    *&v9 = MEMORY[0x277D82BD8](privacyController5).n128_u64[0];
     v19 = MEMORY[0x277CCAAD0];
     v44[0] = v37;
     v44[1] = v36;
@@ -299,113 +299,113 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
   *MEMORY[0x277D85DE8];
 }
 
-- (void)forgotPressed:(id)a3
+- (void)forgotPressed:(id)pressed
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKBasicLoginOptionsViewController *)v7 forgotAction];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  if (v5)
+  objc_storeStrong(location, pressed);
+  forgotAction = [(AKBasicLoginOptionsViewController *)selfCopy forgotAction];
+  *&v3 = MEMORY[0x277D82BD8](forgotAction).n128_u64[0];
+  if (forgotAction)
   {
-    v4 = [(AKBasicLoginOptionsViewController *)v7 forgotAction];
-    v4[2]();
-    MEMORY[0x277D82BD8](v4);
+    forgotAction2 = [(AKBasicLoginOptionsViewController *)selfCopy forgotAction];
+    forgotAction2[2]();
+    MEMORY[0x277D82BD8](forgotAction2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)createPressed:(id)a3
+- (void)createPressed:(id)pressed
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKBasicLoginOptionsViewController *)v7 createIDAction];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  if (v5)
+  objc_storeStrong(location, pressed);
+  createIDAction = [(AKBasicLoginOptionsViewController *)selfCopy createIDAction];
+  *&v3 = MEMORY[0x277D82BD8](createIDAction).n128_u64[0];
+  if (createIDAction)
   {
-    v4 = [(AKBasicLoginOptionsViewController *)v7 createIDAction];
-    v4[2]();
-    MEMORY[0x277D82BD8](v4);
+    createIDAction2 = [(AKBasicLoginOptionsViewController *)selfCopy createIDAction];
+    createIDAction2[2]();
+    MEMORY[0x277D82BD8](createIDAction2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_configureButtonForFontAdjustment:(id)a3
+- (void)_configureButtonForFontAdjustment:(id)adjustment
 {
   v48[4] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v46 = [location[0] titleLabel];
-  [v46 setTranslatesAutoresizingMaskIntoConstraints:0];
+  objc_storeStrong(location, adjustment);
+  titleLabel = [location[0] titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v45 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76918] addingSymbolicTraits:0x8000 options:?];
   v27 = [MEMORY[0x277D74300] fontWithDescriptor:v45 size:0.0];
-  [v46 setFont:?];
-  [v46 setNumberOfLines:{0, MEMORY[0x277D82BD8](v27).n128_f64[0]}];
-  [v46 setAdjustsFontForContentSizeCategory:1];
-  [v46 setLineBreakMode:0];
-  [v46 setTextAlignment:1];
+  [titleLabel setFont:?];
+  [titleLabel setNumberOfLines:{0, MEMORY[0x277D82BD8](v27).n128_f64[0]}];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
+  [titleLabel setLineBreakMode:0];
+  [titleLabel setTextAlignment:1];
   v28 = MEMORY[0x277CCAAD0];
-  v41 = [v46 leadingAnchor];
-  v40 = [location[0] leadingAnchor];
+  leadingAnchor = [titleLabel leadingAnchor];
+  leadingAnchor2 = [location[0] leadingAnchor];
   [location[0] contentEdgeInsets];
   v44[13] = v3;
   v44[14] = v4;
   v44[15] = v5;
   v44[16] = v6;
-  v39 = [v41 constraintGreaterThanOrEqualToAnchor:v40 constant:*&v4];
+  v39 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:*&v4];
   v48[0] = v39;
-  v38 = [v46 trailingAnchor];
-  v37 = [location[0] trailingAnchor];
+  trailingAnchor = [titleLabel trailingAnchor];
+  trailingAnchor2 = [location[0] trailingAnchor];
   [location[0] contentEdgeInsets];
   v44[9] = v7;
   v44[10] = v8;
   v44[11] = v9;
   v44[12] = v10;
-  v36 = [v38 constraintGreaterThanOrEqualToAnchor:v37 constant:*&v10];
+  v36 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:*&v10];
   v48[1] = v36;
-  v35 = [v46 topAnchor];
-  v34 = [location[0] topAnchor];
+  topAnchor = [titleLabel topAnchor];
+  topAnchor2 = [location[0] topAnchor];
   [location[0] contentEdgeInsets];
   v44[5] = v11;
   v44[6] = v12;
   v44[7] = v13;
   v44[8] = v14;
-  v33 = [v35 constraintGreaterThanOrEqualToAnchor:v34 constant:*&v11];
+  v33 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:*&v11];
   v48[2] = v33;
-  v32 = [v46 bottomAnchor];
-  v31 = [location[0] bottomAnchor];
+  bottomAnchor = [titleLabel bottomAnchor];
+  bottomAnchor2 = [location[0] bottomAnchor];
   [location[0] contentEdgeInsets];
   v44[1] = v15;
   v44[2] = v16;
   v44[3] = v17;
   v44[4] = v18;
-  v30 = [v32 constraintGreaterThanOrEqualToAnchor:v31 constant:*&v17];
+  v30 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:*&v17];
   v48[3] = v30;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:4];
   [v28 activateConstraints:?];
   MEMORY[0x277D82BD8](v29);
   MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
-  MEMORY[0x277D82BD8](v35);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](trailingAnchor);
   MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v40);
-  v42 = [MEMORY[0x277CF0228] sharedManager];
-  v43 = [v42 isAuthKitSolariumFeatureEnabled];
-  *&v19 = MEMORY[0x277D82BD8](v42).n128_u64[0];
-  if (v43)
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v19 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled)
   {
     v44[0] = [MEMORY[0x277D75230] plainButtonConfiguration];
     v24 = MEMORY[0x277D755B8];
@@ -423,7 +423,7 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
   }
 
   objc_storeStrong(&v45, 0);
-  objc_storeStrong(&v46, 0);
+  objc_storeStrong(&titleLabel, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -431,13 +431,13 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
 - (void)_refreshCreateAppleIDButton
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = [(AKBasicLoginOptionsViewController *)self _shouldHideCreateButton];
+  _shouldHideCreateButton = [(AKBasicLoginOptionsViewController *)self _shouldHideCreateButton];
   location = _AKLogSystem();
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
   {
-    if (v13)
+    if (_shouldHideCreateButton)
     {
       v2 = @"YES";
     }
@@ -452,41 +452,41 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
   }
 
   objc_storeStrong(&location, 0);
-  v6 = [(AKBasicLoginOptionsViewController *)v15 createButton];
-  [(UIButton *)v6 setHidden:v13];
-  v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  createButton = [(AKBasicLoginOptionsViewController *)selfCopy createButton];
+  [(UIButton *)createButton setHidden:_shouldHideCreateButton];
+  v3 = MEMORY[0x277D82BD8](createButton).n128_u64[0];
   v10 = 0;
   v8 = 0;
   v7 = 0;
-  if (v13)
+  if (_shouldHideCreateButton)
   {
-    v11 = [(AKBasicLoginOptionsViewController *)v15 privacyController];
+    privacyController = [(AKBasicLoginOptionsViewController *)selfCopy privacyController];
     v10 = 1;
     v7 = 0;
-    if (v11)
+    if (privacyController)
     {
-      v9 = [(AKBasicLoginOptionsViewController *)v15 forgotButton];
+      forgotButton = [(AKBasicLoginOptionsViewController *)selfCopy forgotButton];
       v8 = 1;
-      v7 = v9 != 0;
+      v7 = forgotButton != 0;
     }
   }
 
   if (v8)
   {
-    v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+    v3 = MEMORY[0x277D82BD8](forgotButton).n128_u64[0];
   }
 
   if (v10)
   {
-    v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+    v3 = MEMORY[0x277D82BD8](privacyController).n128_u64[0];
   }
 
   if (v7)
   {
-    stackView = v15->_stackView;
-    v5 = [(AKBasicLoginOptionsViewController *)v15 forgotButton];
+    stackView = selfCopy->_stackView;
+    forgotButton2 = [(AKBasicLoginOptionsViewController *)selfCopy forgotButton];
     [(UIStackView *)stackView setCustomSpacing:20.0 afterView:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](forgotButton2);
   }
 
   *MEMORY[0x277D85DE8];
@@ -494,25 +494,25 @@ void __53__AKBasicLoginOptionsViewController_initWithContext___block_invoke_3(ui
 
 - (BOOL)_shouldHideCreateButton
 {
-  v3 = [(AKBasicLoginOptionsViewController *)self context];
+  context = [(AKBasicLoginOptionsViewController *)self context];
   v4 = 1;
-  if ([(AKAppleIDAuthenticationInAppContext *)v3 shouldAllowAppleIDCreation])
+  if ([(AKAppleIDAuthenticationInAppContext *)context shouldAllowAppleIDCreation])
   {
     v4 = ![(AKBasicLoginOptionsViewController *)self isCreateAppleIDAllowed];
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](context);
   return v4;
 }
 
-- (id)_createLinkButtonWithSelector:(SEL)a3
+- (id)_createLinkButtonWithSelector:(SEL)selector
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  selectorCopy = selector;
   v5 = [MEMORY[0x277D75220] buttonWithType:1];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addTarget:v8 action:v6 forControlEvents:64];
+  [v5 addTarget:selfCopy action:selectorCopy forControlEvents:64];
   v4 = MEMORY[0x277D82BE0](v5);
   objc_storeStrong(&v5, 0);
 

@@ -5,43 +5,43 @@
 - (NSString)volumeAudioCategory;
 - (UIWindowScene)windowSceneForVolumeDisplay;
 - (void)didMoveToWindow;
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation NANowPlayingVolumeSlider
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7ADD9B8();
 }
 
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change
 {
-  v4 = self;
+  selfCopy = self;
   sub_1D7ADCD40();
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1D7ADE060();
 }
 
 - (UIWindowScene)windowSceneForVolumeDisplay
 {
-  v2 = self;
-  v3 = [(NANowPlayingVolumeSlider *)v2 window];
-  v4 = [v3 windowScene];
+  selfCopy = self;
+  window = [(NANowPlayingVolumeSlider *)selfCopy window];
+  windowScene = [window windowScene];
 
-  return v4;
+  return windowScene;
 }
 
 - (NSString)volumeAudioCategory
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7ADDCDC();
 
   v3 = sub_1D7D3031C();
@@ -51,8 +51,8 @@
 
 - (BOOL)isOnScreenForVolumeDisplay
 {
-  v2 = self;
-  if ([(NANowPlayingVolumeSlider *)v2 isHidden])
+  selfCopy = self;
+  if ([(NANowPlayingVolumeSlider *)selfCopy isHidden])
   {
 
     return 0;
@@ -60,7 +60,7 @@
 
   else
   {
-    [(NANowPlayingVolumeSlider *)v2 alpha];
+    [(NANowPlayingVolumeSlider *)selfCopy alpha];
     v5 = v4;
 
     return v5 > 0.0;
@@ -79,7 +79,7 @@
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___NANowPlayingVolumeSlider_slider);
   v3 = *&v2[OBJC_IVAR____TtC12NewsArticles10SliderView_elapsedTrack];
-  v4 = self;
+  selfCopy = self;
   [v3 accessibilityFrame];
   MaxX = CGRectGetMaxX(v10);
   [v2 accessibilityFrame];

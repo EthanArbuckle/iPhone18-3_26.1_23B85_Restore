@@ -8,10 +8,10 @@
 {
   v3 = objc_opt_self();
 
-  v4 = [v3 currentDevice];
-  v5 = [v4 batteryState];
+  currentDevice = [v3 currentDevice];
+  batteryState = [currentDevice batteryState];
 
-  (*(self->super.isa + 12))(v5 != 1);
+  (*(self->super.isa + 12))(batteryState != 1);
 }
 
 @end

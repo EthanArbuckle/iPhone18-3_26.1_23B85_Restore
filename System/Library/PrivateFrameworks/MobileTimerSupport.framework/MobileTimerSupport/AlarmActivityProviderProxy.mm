@@ -1,19 +1,19 @@
 @interface AlarmActivityProviderProxy
 - (_TtC18MobileTimerSupport26AlarmActivityProviderProxy)init;
-- (void)alertActivityWithContext:(id)a3 tlConfig:(id)a4 completion:(id)a5;
-- (void)endActivityWithId:(id)a3 completion:(id)a4;
-- (void)updateActivityWithContext:(id)a3 completion:(id)a4;
+- (void)alertActivityWithContext:(id)context tlConfig:(id)config completion:(id)completion;
+- (void)endActivityWithId:(id)id completion:(id)completion;
+- (void)updateActivityWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AlarmActivityProviderProxy
 
-- (void)updateActivityWithContext:(id)a3 completion:(id)a4
+- (void)updateActivityWithContext:(id)context completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = sub_22D81B4F8();
@@ -22,25 +22,25 @@
   v14[2] = 0;
   v14[3] = 0;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = context;
   v14[6] = sub_22D7CD9B8;
   v14[7] = v12;
-  v15 = a3;
-  v16 = self;
-  v17 = v15;
+  contextCopy = context;
+  selfCopy = self;
+  v17 = contextCopy;
   sub_22D81A198();
   sub_22D7BD9C8(0, 0, v10, &unk_22D824AD8, v14);
 
   sub_22D764440(v10, &unk_27DA01FF0, &qword_22D81FC70);
 }
 
-- (void)alertActivityWithContext:(id)a3 tlConfig:(id)a4 completion:(id)a5
+- (void)alertActivityWithContext:(id)context tlConfig:(id)config completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v22 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   v15 = sub_22D81B4F8();
@@ -49,28 +49,28 @@
   v16[2] = 0;
   v16[3] = 0;
   v16[4] = self;
-  v16[5] = a3;
-  v16[6] = a4;
+  v16[5] = context;
+  v16[6] = config;
   v16[7] = sub_22D7CD9B8;
   v16[8] = v14;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
-  v20 = v17;
-  v21 = v18;
+  contextCopy = context;
+  configCopy = config;
+  selfCopy = self;
+  v20 = contextCopy;
+  v21 = configCopy;
   sub_22D81A198();
   sub_22D7BD9C8(0, 0, v12, &unk_22D824AD0, v16);
 
   sub_22D764440(v12, &unk_27DA01FF0, &qword_22D81FC70);
 }
 
-- (void)endActivityWithId:(id)a3 completion:(id)a4
+- (void)endActivityWithId:(id)id completion:(id)completion
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6 - 8);
   v9 = &v18 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = sub_22D81B2C8();
   v13 = v12;
   v14 = swift_allocObject();
@@ -85,7 +85,7 @@
   v16[6] = v13;
   v16[7] = sub_22D7CD9B8;
   v16[8] = v14;
-  v17 = self;
+  selfCopy = self;
   sub_22D81A198();
   sub_22D7BD9C8(0, 0, v9, &unk_22D824AC8, v16);
 

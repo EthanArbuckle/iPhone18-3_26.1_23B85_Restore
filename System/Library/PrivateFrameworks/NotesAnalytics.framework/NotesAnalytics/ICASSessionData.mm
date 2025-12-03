@@ -1,42 +1,42 @@
 @interface ICASSessionData
-- (ICASSessionData)initWithUtcOffset:(id)a3 countryCode:(id)a4 languageCode:(id)a5 productType:(id)a6 cellularRadioAccessTechnology:(id)a7 bioAuthEnabled:(id)a8 localNotesEnabled:(id)a9 accountTypeSummary:(id)a10 sessionType:(id)a11 isSaltRegenerated:(id)a12 isGlobalSession:(id)a13;
+- (ICASSessionData)initWithUtcOffset:(id)offset countryCode:(id)code languageCode:(id)languageCode productType:(id)type cellularRadioAccessTechnology:(id)technology bioAuthEnabled:(id)enabled localNotesEnabled:(id)notesEnabled accountTypeSummary:(id)self0 sessionType:(id)self1 isSaltRegenerated:(id)self2 isGlobalSession:(id)self3;
 - (id)toDict;
 @end
 
 @implementation ICASSessionData
 
-- (ICASSessionData)initWithUtcOffset:(id)a3 countryCode:(id)a4 languageCode:(id)a5 productType:(id)a6 cellularRadioAccessTechnology:(id)a7 bioAuthEnabled:(id)a8 localNotesEnabled:(id)a9 accountTypeSummary:(id)a10 sessionType:(id)a11 isSaltRegenerated:(id)a12 isGlobalSession:(id)a13
+- (ICASSessionData)initWithUtcOffset:(id)offset countryCode:(id)code languageCode:(id)languageCode productType:(id)type cellularRadioAccessTechnology:(id)technology bioAuthEnabled:(id)enabled localNotesEnabled:(id)notesEnabled accountTypeSummary:(id)self0 sessionType:(id)self1 isSaltRegenerated:(id)self2 isGlobalSession:(id)self3
 {
-  v35 = a3;
-  v34 = a4;
-  v27 = a5;
-  v33 = a5;
-  v32 = a6;
-  v28 = a7;
-  v31 = a7;
-  v30 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
+  offsetCopy = offset;
+  codeCopy = code;
+  languageCodeCopy = languageCode;
+  languageCodeCopy2 = languageCode;
+  typeCopy = type;
+  technologyCopy = technology;
+  technologyCopy2 = technology;
+  enabledCopy = enabled;
+  notesEnabledCopy = notesEnabled;
+  summaryCopy = summary;
+  sessionTypeCopy = sessionType;
+  regeneratedCopy = regenerated;
+  sessionCopy = session;
   v36.receiver = self;
   v36.super_class = ICASSessionData;
   v23 = [(ICASSessionData *)&v36 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_utcOffset, a3);
-    objc_storeStrong(&v24->_countryCode, a4);
-    objc_storeStrong(&v24->_languageCode, v27);
-    objc_storeStrong(&v24->_productType, a6);
-    objc_storeStrong(&v24->_cellularRadioAccessTechnology, v28);
-    objc_storeStrong(&v24->_bioAuthEnabled, a8);
-    objc_storeStrong(&v24->_localNotesEnabled, a9);
-    objc_storeStrong(&v24->_accountTypeSummary, a10);
-    objc_storeStrong(&v24->_sessionType, a11);
-    objc_storeStrong(&v24->_isSaltRegenerated, a12);
-    objc_storeStrong(&v24->_isGlobalSession, a13);
+    objc_storeStrong(&v23->_utcOffset, offset);
+    objc_storeStrong(&v24->_countryCode, code);
+    objc_storeStrong(&v24->_languageCode, languageCodeCopy);
+    objc_storeStrong(&v24->_productType, type);
+    objc_storeStrong(&v24->_cellularRadioAccessTechnology, technologyCopy);
+    objc_storeStrong(&v24->_bioAuthEnabled, enabled);
+    objc_storeStrong(&v24->_localNotesEnabled, notesEnabled);
+    objc_storeStrong(&v24->_accountTypeSummary, summary);
+    objc_storeStrong(&v24->_sessionType, sessionType);
+    objc_storeStrong(&v24->_isSaltRegenerated, regenerated);
+    objc_storeStrong(&v24->_isGlobalSession, session);
   }
 
   return v24;
@@ -46,159 +46,159 @@
 {
   v40[11] = *MEMORY[0x277D85DE8];
   v39[0] = @"utcOffset";
-  v38 = [(ICASSessionData *)self utcOffset];
-  if (v38)
+  utcOffset = [(ICASSessionData *)self utcOffset];
+  if (utcOffset)
   {
-    v3 = [(ICASSessionData *)self utcOffset];
+    utcOffset2 = [(ICASSessionData *)self utcOffset];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    utcOffset2 = objc_opt_new();
   }
 
-  v37 = v3;
-  v40[0] = v3;
+  v37 = utcOffset2;
+  v40[0] = utcOffset2;
   v39[1] = @"countryCode";
-  v36 = [(ICASSessionData *)self countryCode];
-  if (v36)
+  countryCode = [(ICASSessionData *)self countryCode];
+  if (countryCode)
   {
-    v4 = [(ICASSessionData *)self countryCode];
+    countryCode2 = [(ICASSessionData *)self countryCode];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    countryCode2 = objc_opt_new();
   }
 
-  v35 = v4;
-  v40[1] = v4;
+  v35 = countryCode2;
+  v40[1] = countryCode2;
   v39[2] = @"languageCode";
-  v34 = [(ICASSessionData *)self languageCode];
-  if (v34)
+  languageCode = [(ICASSessionData *)self languageCode];
+  if (languageCode)
   {
-    v5 = [(ICASSessionData *)self languageCode];
+    languageCode2 = [(ICASSessionData *)self languageCode];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    languageCode2 = objc_opt_new();
   }
 
-  v33 = v5;
-  v40[2] = v5;
+  v33 = languageCode2;
+  v40[2] = languageCode2;
   v39[3] = @"productType";
-  v32 = [(ICASSessionData *)self productType];
-  if (v32)
+  productType = [(ICASSessionData *)self productType];
+  if (productType)
   {
-    v6 = [(ICASSessionData *)self productType];
+    productType2 = [(ICASSessionData *)self productType];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    productType2 = objc_opt_new();
   }
 
-  v31 = v6;
-  v40[3] = v6;
+  v31 = productType2;
+  v40[3] = productType2;
   v39[4] = @"cellularRadioAccessTechnology";
-  v30 = [(ICASSessionData *)self cellularRadioAccessTechnology];
-  if (v30)
+  cellularRadioAccessTechnology = [(ICASSessionData *)self cellularRadioAccessTechnology];
+  if (cellularRadioAccessTechnology)
   {
-    v7 = [(ICASSessionData *)self cellularRadioAccessTechnology];
+    cellularRadioAccessTechnology2 = [(ICASSessionData *)self cellularRadioAccessTechnology];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    cellularRadioAccessTechnology2 = objc_opt_new();
   }
 
-  v29 = v7;
-  v40[4] = v7;
+  v29 = cellularRadioAccessTechnology2;
+  v40[4] = cellularRadioAccessTechnology2;
   v39[5] = @"bioAuthEnabled";
-  v28 = [(ICASSessionData *)self bioAuthEnabled];
-  if (v28)
+  bioAuthEnabled = [(ICASSessionData *)self bioAuthEnabled];
+  if (bioAuthEnabled)
   {
-    v8 = [(ICASSessionData *)self bioAuthEnabled];
+    bioAuthEnabled2 = [(ICASSessionData *)self bioAuthEnabled];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    bioAuthEnabled2 = objc_opt_new();
   }
 
-  v27 = v8;
-  v40[5] = v8;
+  v27 = bioAuthEnabled2;
+  v40[5] = bioAuthEnabled2;
   v39[6] = @"localNotesEnabled";
-  v26 = [(ICASSessionData *)self localNotesEnabled];
-  if (v26)
+  localNotesEnabled = [(ICASSessionData *)self localNotesEnabled];
+  if (localNotesEnabled)
   {
-    v9 = [(ICASSessionData *)self localNotesEnabled];
+    localNotesEnabled2 = [(ICASSessionData *)self localNotesEnabled];
   }
 
   else
   {
-    v9 = objc_opt_new();
+    localNotesEnabled2 = objc_opt_new();
   }
 
-  v10 = v9;
-  v40[6] = v9;
+  v10 = localNotesEnabled2;
+  v40[6] = localNotesEnabled2;
   v39[7] = @"accountTypeSummary";
-  v11 = [(ICASSessionData *)self accountTypeSummary];
-  if (v11)
+  accountTypeSummary = [(ICASSessionData *)self accountTypeSummary];
+  if (accountTypeSummary)
   {
-    v12 = [(ICASSessionData *)self accountTypeSummary];
+    accountTypeSummary2 = [(ICASSessionData *)self accountTypeSummary];
   }
 
   else
   {
-    v12 = objc_opt_new();
+    accountTypeSummary2 = objc_opt_new();
   }
 
-  v13 = v12;
-  v40[7] = v12;
+  v13 = accountTypeSummary2;
+  v40[7] = accountTypeSummary2;
   v39[8] = @"sessionType";
-  v14 = [(ICASSessionData *)self sessionType];
-  if (v14)
+  sessionType = [(ICASSessionData *)self sessionType];
+  if (sessionType)
   {
-    v15 = [(ICASSessionData *)self sessionType];
+    sessionType2 = [(ICASSessionData *)self sessionType];
   }
 
   else
   {
-    v15 = objc_opt_new();
+    sessionType2 = objc_opt_new();
   }
 
-  v16 = v15;
-  v40[8] = v15;
+  v16 = sessionType2;
+  v40[8] = sessionType2;
   v39[9] = @"isSaltRegenerated";
-  v17 = [(ICASSessionData *)self isSaltRegenerated];
-  if (v17)
+  isSaltRegenerated = [(ICASSessionData *)self isSaltRegenerated];
+  if (isSaltRegenerated)
   {
-    v18 = [(ICASSessionData *)self isSaltRegenerated];
+    isSaltRegenerated2 = [(ICASSessionData *)self isSaltRegenerated];
   }
 
   else
   {
-    v18 = objc_opt_new();
+    isSaltRegenerated2 = objc_opt_new();
   }
 
-  v19 = v18;
-  v40[9] = v18;
+  v19 = isSaltRegenerated2;
+  v40[9] = isSaltRegenerated2;
   v39[10] = @"isGlobalSession";
-  v20 = [(ICASSessionData *)self isGlobalSession];
-  if (v20)
+  isGlobalSession = [(ICASSessionData *)self isGlobalSession];
+  if (isGlobalSession)
   {
-    v21 = [(ICASSessionData *)self isGlobalSession];
+    isGlobalSession2 = [(ICASSessionData *)self isGlobalSession];
   }
 
   else
   {
-    v21 = objc_opt_new();
+    isGlobalSession2 = objc_opt_new();
   }
 
-  v22 = v21;
-  v40[10] = v21;
+  v22 = isGlobalSession2;
+  v40[10] = isGlobalSession2;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:11];
 
   v24 = *MEMORY[0x277D85DE8];

@@ -1,30 +1,30 @@
 @interface ATXMicroLocationTrigger
-- (ATXMicroLocationTrigger)initWithCoder:(id)a3;
-- (ATXMicroLocationTrigger)initWithLocationUUID:(id)a3;
+- (ATXMicroLocationTrigger)initWithCoder:(id)coder;
+- (ATXMicroLocationTrigger)initWithLocationUUID:(id)d;
 @end
 
 @implementation ATXMicroLocationTrigger
 
-- (ATXMicroLocationTrigger)initWithLocationUUID:(id)a3
+- (ATXMicroLocationTrigger)initWithLocationUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = ATXMicroLocationTrigger;
   v6 = [(ATXMicroLocationTrigger *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ATXMicroLocationTrigger)initWithCoder:(id)a3
+- (ATXMicroLocationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"microLocationUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"microLocationUUID"];
 
   v6 = [(ATXMicroLocationTrigger *)self initWithLocationUUID:v5];
   return v6;

@@ -1,16 +1,16 @@
 @interface EMCertificateTrustInformation
 + (OS_os_log)log;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ECEmailAddressConvertible)firstEmailAddress;
-- (EMCertificateTrustInformation)initWithCoder:(id)a3;
-- (EMCertificateTrustInformation)initWithTrust:(__SecTrust *)a3 certificateType:(unint64_t)a4 sender:(id)a5;
+- (EMCertificateTrustInformation)initWithCoder:(id)coder;
+- (EMCertificateTrustInformation)initWithTrust:(__SecTrust *)trust certificateType:(unint64_t)type sender:(id)sender;
 - (NSArray)emailAddresses;
 - (NSString)commonName;
 - (__SecCertificate)certificate;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluateTrustWithOptions:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluateTrustWithOptions:(unint64_t)options;
 - (void)reevaluateTrustWithNetworkAccessAllowed;
 @end
 
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __36__EMCertificateTrustInformation_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_6 != -1)
   {
     dispatch_once(&log_onceToken_6, block);
@@ -41,19 +41,19 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
   log_log_6 = v1;
 }
 
-- (EMCertificateTrustInformation)initWithTrust:(__SecTrust *)a3 certificateType:(unint64_t)a4 sender:(id)a5
+- (EMCertificateTrustInformation)initWithTrust:(__SecTrust *)trust certificateType:(unint64_t)type sender:(id)sender
 {
-  v8 = a5;
+  senderCopy = sender;
   v14.receiver = self;
   v14.super_class = EMCertificateTrustInformation;
   v9 = [(EMCertificateTrustInformation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_trust = a3;
-    CFRetain(a3);
-    v10->_certificateType = a4;
-    v11 = [v8 copy];
+    v9->_trust = trust;
+    CFRetain(trust);
+    v10->_certificateType = type;
+    v11 = [senderCopy copy];
     sender = v10->_sender;
     v10->_sender = v11;
   }
@@ -69,17 +69,17 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
   [(EMCertificateTrustInformation *)&v3 dealloc];
 }
 
-- (EMCertificateTrustInformation)initWithCoder:(id)a3
+- (EMCertificateTrustInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_sender"];
-  v6 = [v4 decodeIntegerForKey:@"EFPropertyKey_certificateType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trust"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_sender"];
+  v6 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_certificateType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trust"];
   if (v7 && (v8 = SecTrustDeserialize()) != 0)
   {
     self = [(EMCertificateTrustInformation *)self initWithTrust:v8 certificateType:v6 sender:v5];
     CFRelease(v8);
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -90,24 +90,24 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
       [EMCertificateTrustInformation initWithCoder:v10];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(EMCertificateTrustInformation *)self sender];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_sender"];
+  coderCopy = coder;
+  sender = [(EMCertificateTrustInformation *)self sender];
+  [coderCopy encodeObject:sender forKey:@"EFPropertyKey_sender"];
 
-  [v4 encodeInteger:-[EMCertificateTrustInformation certificateType](self forKey:{"certificateType"), @"EFPropertyKey_certificateType"}];
+  [coderCopy encodeInteger:-[EMCertificateTrustInformation certificateType](self forKey:{"certificateType"), @"EFPropertyKey_certificateType"}];
   trust = self->_trust;
   v7 = SecTrustSerialize();
   if (v7)
   {
-    [v4 encodeObject:v7 forKey:@"trust"];
+    [coderCopy encodeObject:v7 forKey:@"trust"];
   }
 
   else
@@ -120,16 +120,16 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = CFEqual([(EMCertificateTrustInformation *)self certificate], [(EMCertificateTrustInformation *)v6 certificate]) != 0;
@@ -145,25 +145,25 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = [(EMCertificateTrustInformation *)self certificate];
+  certificate = [(EMCertificateTrustInformation *)self certificate];
 
-  return CFHash(v2);
+  return CFHash(certificate);
 }
 
 - (__SecCertificate)certificate
 {
   v2 = SecTrustCopyCertificateChain([(EMCertificateTrustInformation *)self trust]);
-  v3 = [(__CFArray *)v2 firstObject];
+  firstObject = [(__CFArray *)v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSString)commonName
 {
   [(EMCertificateTrustInformation *)self certificate];
   v2 = SecCertificateCopyCommonNames();
-  v3 = [v2 firstObject];
-  v4 = [v3 copy];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject copy];
 
   return v4;
 }
@@ -172,8 +172,8 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
 {
   [(EMCertificateTrustInformation *)self certificate];
   v2 = SecCertificateCopyRFC822Names();
-  v3 = [v2 firstObject];
-  v4 = [v3 copy];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject copy];
 
   return v4;
 }
@@ -187,25 +187,25 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)evaluateTrustWithOptions:(unint64_t)a3
+- (void)evaluateTrustWithOptions:(unint64_t)options
 {
-  v5 = [(EMCertificateTrustInformation *)self sender];
-  v6 = [v5 emailAddressValue];
-  v7 = [v6 simpleAddress];
-  v8 = v7;
-  if (v7)
+  sender = [(EMCertificateTrustInformation *)self sender];
+  emailAddressValue = [sender emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v8 = simpleAddress;
+  if (simpleAddress)
   {
-    v9 = v7;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v9 = [v5 stringValue];
+    stringValue = [sender stringValue];
   }
 
-  v12 = v9;
+  v12 = stringValue;
 
-  v10 = [MEMORY[0x1E699B318] evaluateTrust:self->_trust withOptions:a3 signerEmailAddress:v12];
+  v10 = [MEMORY[0x1E699B318] evaluateTrust:self->_trust withOptions:options signerEmailAddress:v12];
   trustEvaluation = self->_trustEvaluation;
   self->_trustEvaluation = v10;
 }
@@ -213,7 +213,7 @@ void __36__EMCertificateTrustInformation_log__block_invoke(uint64_t a1)
 - (void)reevaluateTrustWithNetworkAccessAllowed
 {
   v3 = MEMORY[0x1E699B318];
-  v6 = [(EMCertificateTrustInformation *)self trustEvaluation];
+  trustEvaluation = [(EMCertificateTrustInformation *)self trustEvaluation];
   v4 = [v3 reevaluateWithNetworkAccessAllowed:?];
   trustEvaluation = self->_trustEvaluation;
   self->_trustEvaluation = v4;

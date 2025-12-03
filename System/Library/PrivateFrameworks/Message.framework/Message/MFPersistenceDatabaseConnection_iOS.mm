@@ -1,5 +1,5 @@
 @interface MFPersistenceDatabaseConnection_iOS
-- (BOOL)performWithOptions:(unint64_t)a3 transactionError:(id *)a4 block:(id)a5;
+- (BOOL)performWithOptions:(unint64_t)options transactionError:(id *)error block:(id)block;
 - (int)configureSQLConnection;
 - (uint64_t)_handleProtectedDataIOError;
 - (void)_handleBusyError;
@@ -10,7 +10,7 @@
 - (void)_handleProtectedDataIOError;
 - (void)_logFileSystemStats;
 - (void)dealloc;
-- (void)handleSQLResult:(int)a3 message:(id)a4;
+- (void)handleSQLResult:(int)result message:(id)message;
 @end
 
 @implementation MFPersistenceDatabaseConnection_iOS
@@ -30,8 +30,8 @@
 
 - (int)configureSQLConnection
 {
-  v3 = [(EDPersistenceDatabaseConnection *)self sqlDB];
-  function = sqlite3_extended_result_codes(v3, 1);
+  sqlDB = [(EDPersistenceDatabaseConnection *)self sqlDB];
+  function = sqlite3_extended_result_codes(sqlDB, 1);
   if (function)
   {
     v5 = @"enabling extended error codes";
@@ -41,7 +41,7 @@
   {
     inited = initICUSearchContext();
     self->_ICUSearchContext = inited;
-    function = sqlite3_create_function(v3, "icusearch", 3, 1, inited, ICUSearch, 0, 0);
+    function = sqlite3_create_function(sqlDB, "icusearch", 3, 1, inited, ICUSearch, 0, 0);
     if (function)
     {
       v5 = @"creating custom icusearch function";
@@ -53,7 +53,7 @@
       CPSearchContext = self->_CPSearchContext;
       self->_CPSearchContext = v7;
 
-      function = sqlite3_create_function(v3, "cpsearch", 3, 1, self->_CPSearchContext, CPSearch, 0, 0);
+      function = sqlite3_create_function(sqlDB, "cpsearch", 3, 1, self->_CPSearchContext, CPSearch, 0, 0);
       if (function)
       {
         v5 = @"creating custom cpsearch function";
@@ -61,7 +61,7 @@
 
       else
       {
-        function = sqlite3_exec_retry(v3, "PRAGMA cache_size = 1000;", 0, 0, 0);
+        function = sqlite3_exec_retry(sqlDB, "PRAGMA cache_size = 1000;", 0, 0, 0);
         if (function)
         {
           v5 = @"setting cache_size";
@@ -79,25 +79,25 @@
           }
 
           v9 = MEMORY[0x1E696AEC0];
-          v10 = [(EDPersistenceDatabaseConnection *)self fullPath];
-          v5 = [v9 stringWithFormat:@"configuring sql connection for %@", v10];
+          fullPath = [(EDPersistenceDatabaseConnection *)self fullPath];
+          v5 = [v9 stringWithFormat:@"configuring sql connection for %@", fullPath];
         }
       }
     }
   }
 
-  MFLogSQLiteError(v3, function, v5);
+  MFLogSQLiteError(sqlDB, function, v5);
 LABEL_12:
 
   return function;
 }
 
-- (BOOL)performWithOptions:(unint64_t)a3 transactionError:(id *)a4 block:(id)a5
+- (BOOL)performWithOptions:(unint64_t)options transactionError:(id *)error block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = MFPersistenceDatabaseConnection_iOS;
-  v9 = [(EDPersistenceDatabaseConnection *)&v14 performWithOptions:a3 transactionError:a4 block:v8];
+  v9 = [(EDPersistenceDatabaseConnection *)&v14 performWithOptions:options transactionError:error block:blockCopy];
   if (!v9)
   {
     v10 = +[(EDPersistenceDatabaseConnection *)MFPersistenceDatabaseConnection_iOS];
@@ -114,23 +114,23 @@ LABEL_12:
   return v9;
 }
 
-- (void)handleSQLResult:(int)a3 message:(id)a4
+- (void)handleSQLResult:(int)result message:(id)message
 {
-  v7 = a4;
-  v6 = [(EDPersistenceDatabaseConnection *)self sqlDB];
-  if ((a3 - 100) >= 2 && a3)
+  messageCopy = message;
+  sqlDB = [(EDPersistenceDatabaseConnection *)self sqlDB];
+  if ((result - 100) >= 2 && result)
   {
-    MFLogSQLiteError(v6, a3, v7);
+    MFLogSQLiteError(sqlDB, result, messageCopy);
   }
 
-  if (a3 <= 0xAu)
+  if (result <= 0xAu)
   {
-    if (a3 == 5)
+    if (result == 5)
     {
       [(MFPersistenceDatabaseConnection_iOS *)self _handleBusyError];
     }
 
-    else if (a3 == 10)
+    else if (result == 10)
     {
       if ([(EDPersistenceDatabaseConnection *)self protectedDatabaseAttached])
       {
@@ -151,16 +151,16 @@ LABEL_12:
 
   else
   {
-    if (a3 == 26)
+    if (result == 26)
     {
 LABEL_8:
       [(MFPersistenceDatabaseConnection_iOS *)self _handleCorruptDatabase];
       goto LABEL_18;
     }
 
-    if (a3 != 13)
+    if (result != 13)
     {
-      if (a3 != 11)
+      if (result != 11)
       {
         goto LABEL_18;
       }
@@ -176,15 +176,15 @@ LABEL_18:
 
 - (void)_handleCorruptDatabase
 {
-  if (a1)
+  if (self)
   {
     +[MFMailMessageLibrary removeLibraryOnNextLaunch];
     v2 = MFUserAgent();
-    v3 = [v2 isMobileMail];
+    isMobileMail = [v2 isMobileMail];
 
-    if (v3)
+    if (isMobileMail)
     {
-      [a1 close];
+      [self close];
       v4 = MFLogGeneral();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
       {
@@ -199,15 +199,15 @@ LABEL_18:
 
 - (void)_handleFullDatabase
 {
-  if (a1)
+  if (self)
   {
-    [(MFPersistenceDatabaseConnection_iOS *)a1 _logFileSystemStats];
+    [(MFPersistenceDatabaseConnection_iOS *)self _logFileSystemStats];
     v2 = MFUserAgent();
-    v3 = [v2 isMobileMail];
+    isMobileMail = [v2 isMobileMail];
 
-    if (v3)
+    if (isMobileMail)
     {
-      [a1 close];
+      [self close];
       v4 = MFLogGeneral();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
       {
@@ -229,8 +229,8 @@ LABEL_18:
   }
 
   v1 = result;
-  v2 = [MEMORY[0x1E699B7B0] currentDevice];
-  if ([v2 isInternal])
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  if ([currentDevice isInternal])
   {
 
 LABEL_5:
@@ -276,14 +276,14 @@ LABEL_13:
 
 - (void)_handleInvalidDatabaseIOError
 {
-  if (a1)
+  if (self)
   {
     v2 = MFUserAgent();
-    v3 = [v2 isMobileMail];
+    isMobileMail = [v2 isMobileMail];
 
-    if (v3)
+    if (isMobileMail)
     {
-      [a1 close];
+      [self close];
       v4 = MFLogGeneral();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
       {
@@ -298,14 +298,14 @@ LABEL_13:
 
 - (void)_handleIOError
 {
-  if (a1)
+  if (self)
   {
     v2 = MFUserAgent();
-    v3 = [v2 isMobileMail];
+    isMobileMail = [v2 isMobileMail];
 
-    if (v3)
+    if (isMobileMail)
     {
-      [a1 close];
+      [self close];
       v4 = MFLogGeneral();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
       {
@@ -320,14 +320,14 @@ LABEL_13:
 
 - (void)_handleBusyError
 {
-  if (a1)
+  if (self)
   {
     v2 = MFUserAgent();
-    v3 = [v2 isMobileMail];
+    isMobileMail = [v2 isMobileMail];
 
-    if (v3)
+    if (isMobileMail)
     {
-      [a1 close];
+      [self close];
       v4 = MFLogGeneral();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
       {
@@ -343,13 +343,13 @@ LABEL_13:
 - (void)_logFileSystemStats
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = a2;
     v9 = 2112;
     v10 = a3;
-    _os_log_impl(&dword_1B0389000, a1, OS_LOG_TYPE_DEFAULT, "#Warning %@/%@ bytes (free/total)", &v7, 0x16u);
+    _os_log_impl(&dword_1B0389000, self, OS_LOG_TYPE_DEFAULT, "#Warning %@/%@ bytes (free/total)", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -358,7 +358,7 @@ LABEL_13:
 - (void)_handleProtectedDataIOError
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1B0389000, log, OS_LOG_TYPE_ERROR, "Got back IO error with protected database attached.  Protection state = %{public}@", buf, 0xCu);
 }
 

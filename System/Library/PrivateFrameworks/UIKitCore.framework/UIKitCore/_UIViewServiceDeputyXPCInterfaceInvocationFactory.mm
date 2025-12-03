@@ -1,18 +1,18 @@
 @interface _UIViewServiceDeputyXPCInterfaceInvocationFactory
-+ (id)invocationForConnectionSelector:(id)a3;
++ (id)invocationForConnectionSelector:(id)selector;
 @end
 
 @implementation _UIViewServiceDeputyXPCInterfaceInvocationFactory
 
-+ (id)invocationForConnectionSelector:(id)a3
++ (id)invocationForConnectionSelector:(id)selector
 {
-  v3 = a3;
-  v4 = [v3 connectionProtocol];
-  v5 = [v3 connectionSelector];
-  types = protocol_getMethodDescription(v4, v5, 1, 1).types;
+  selectorCopy = selector;
+  connectionProtocol = [selectorCopy connectionProtocol];
+  connectionSelector = [selectorCopy connectionSelector];
+  types = protocol_getMethodDescription(connectionProtocol, connectionSelector, 1, 1).types;
   if (!types)
   {
-    types = protocol_getMethodDescription(v4, v5, 0, 1).types;
+    types = protocol_getMethodDescription(connectionProtocol, connectionSelector, 0, 1).types;
   }
 
   v7 = MEMORY[0x1E695DF50];

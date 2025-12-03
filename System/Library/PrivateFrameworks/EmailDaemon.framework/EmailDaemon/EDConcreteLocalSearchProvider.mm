@@ -1,12 +1,12 @@
 @interface EDConcreteLocalSearchProvider
 + (id)log;
-- (EDConcreteLocalSearchProvider)initWithSearchableIndexManager:(id)a3 messagePersistence:(id)a4 messageQueryTransformer:(id)a5;
-- (id)_instantAnswersDebuggingIfNeededForMessage:(id)a3;
-- (id)_instantAnswersFromSuggestion:(id)a3;
-- (id)_snippetHintsFromQueryResultMatchingHints:(id)a3;
-- (id)liveSearchWithQuery:(id)a3 delegate:(id)a4;
-- (id)persistenceQueryForSearchableIndexQuery:(id)a3;
-- (id)topHitsSearchWithQuery:(id)a3 delegate:(id)a4 completion:(id)a5;
+- (EDConcreteLocalSearchProvider)initWithSearchableIndexManager:(id)manager messagePersistence:(id)persistence messageQueryTransformer:(id)transformer;
+- (id)_instantAnswersDebuggingIfNeededForMessage:(id)message;
+- (id)_instantAnswersFromSuggestion:(id)suggestion;
+- (id)_snippetHintsFromQueryResultMatchingHints:(id)hints;
+- (id)liveSearchWithQuery:(id)query delegate:(id)delegate;
+- (id)persistenceQueryForSearchableIndexQuery:(id)query;
+- (id)topHitsSearchWithQuery:(id)query delegate:(id)delegate completion:(id)completion;
 - (unint64_t)maxTopHitsInCommittedSearch;
 - (void)_updateParsecBundleIdentifierIfNeeded;
 @end
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __36__EDConcreteLocalSearchProvider_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_50 != -1)
   {
     dispatch_once(&log_onceToken_50, block);
@@ -38,76 +38,76 @@ void __36__EDConcreteLocalSearchProvider_log__block_invoke(uint64_t a1)
   log_log_50 = v1;
 }
 
-- (EDConcreteLocalSearchProvider)initWithSearchableIndexManager:(id)a3 messagePersistence:(id)a4 messageQueryTransformer:(id)a5
+- (EDConcreteLocalSearchProvider)initWithSearchableIndexManager:(id)manager messagePersistence:(id)persistence messageQueryTransformer:(id)transformer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  persistenceCopy = persistence;
+  transformerCopy = transformer;
   v17.receiver = self;
   v17.super_class = EDConcreteLocalSearchProvider;
   v12 = [(EDConcreteLocalSearchProvider *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_searchableIndexManager, a3);
-    objc_storeStrong(&v13->_messagePersistence, a4);
-    v14 = [[EDSearchableIndexQueryTransformer alloc] initWithSearchableIndexManager:v9];
+    objc_storeStrong(&v12->_searchableIndexManager, manager);
+    objc_storeStrong(&v13->_messagePersistence, persistence);
+    v14 = [[EDSearchableIndexQueryTransformer alloc] initWithSearchableIndexManager:managerCopy];
     queryTransformer = v13->_queryTransformer;
     v13->_queryTransformer = v14;
 
-    objc_storeStrong(&v13->_messageQueryTransformer, a5);
+    objc_storeStrong(&v13->_messageQueryTransformer, transformer);
   }
 
   return v13;
 }
 
-- (id)persistenceQueryForSearchableIndexQuery:(id)a3
+- (id)persistenceQueryForSearchableIndexQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(EDConcreteLocalSearchProvider *)self queryTransformer];
-  v6 = [v5 persistenceQueryForSearchableIndexQuery:v4];
+  queryCopy = query;
+  queryTransformer = [(EDConcreteLocalSearchProvider *)self queryTransformer];
+  v6 = [queryTransformer persistenceQueryForSearchableIndexQuery:queryCopy];
 
   return v6;
 }
 
-- (id)topHitsSearchWithQuery:(id)a3 delegate:(id)a4 completion:(id)a5
+- (id)topHitsSearchWithQuery:(id)query delegate:(id)delegate completion:(id)completion
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  val = a4;
-  v39 = a5;
-  v44 = v8;
-  v9 = [(EDConcreteLocalSearchProvider *)self searchableIndexManager];
-  v10 = [v9 index];
+  queryCopy = query;
+  val = delegate;
+  completionCopy = completion;
+  v44 = queryCopy;
+  searchableIndexManager = [(EDConcreteLocalSearchProvider *)self searchableIndexManager];
+  index = [searchableIndexManager index];
 
-  v41 = v10;
+  v41 = index;
   [(EDConcreteLocalSearchProvider *)self _updateParsecBundleIdentifierIfNeeded];
-  v11 = [(EDConcreteLocalSearchProvider *)self messageQueryTransformer];
-  v12 = [v8 predicate];
-  v43 = [v11 transformPredicate:v12];
+  messageQueryTransformer = [(EDConcreteLocalSearchProvider *)self messageQueryTransformer];
+  predicate = [queryCopy predicate];
+  v43 = [messageQueryTransformer transformPredicate:predicate];
 
-  v13 = [v8 suggestion];
-  v14 = [v10 searchableIndexBundleID];
+  suggestion = [queryCopy suggestion];
+  searchableIndexBundleID = [index searchableIndexBundleID];
   v59 = 0;
-  v42 = [EDSearchableIndexExpressionGenerator expressionForPredicate:v43 suggestion:v13 bundleID:v14 nonSpotlightPredicates:&v59];
+  v42 = [EDSearchableIndexExpressionGenerator expressionForPredicate:v43 suggestion:suggestion bundleID:searchableIndexBundleID nonSpotlightPredicates:&v59];
   v38 = v59;
 
-  v15 = [(EDConcreteLocalSearchProvider *)self maxTopHitsInCommittedSearch];
+  maxTopHitsInCommittedSearch = [(EDConcreteLocalSearchProvider *)self maxTopHitsInCommittedSearch];
   v16 = objc_alloc(MEMORY[0x1E699AE88]);
-  v17 = [v42 searchString];
-  v18 = [v42 queryString];
-  v61[0] = v18;
+  searchString = [v42 searchString];
+  queryString = [v42 queryString];
+  v61[0] = queryString;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:1];
-  v20 = [v10 searchableIndexBundleID];
-  v21 = [MEMORY[0x1E695DF58] _deviceLanguage];
-  v22 = [v44 suggestion];
-  v23 = [v16 initWithSearchString:v17 filterQueries:v19 bundleID:v20 keyboardLanguage:v21 updatedSuggestion:v22 generateSuggestions:0 logDescription:@"Top Hits" resultLimit:v15 suggestionLimit:0 customFlags:0 feedbackQueryID:-1];
+  searchableIndexBundleID2 = [index searchableIndexBundleID];
+  _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+  suggestion2 = [v44 suggestion];
+  v23 = [v16 initWithSearchString:searchString filterQueries:v19 bundleID:searchableIndexBundleID2 keyboardLanguage:_deviceLanguage updatedSuggestion:suggestion2 generateSuggestions:0 logDescription:@"Top Hits" resultLimit:maxTopHitsInCommittedSearch suggestionLimit:0 customFlags:0 feedbackQueryID:-1];
 
-  v24 = [v23 topHitsQueryResult];
+  topHitsQueryResult = [v23 topHitsQueryResult];
   v25 = MEMORY[0x1E699B7C8];
-  v60[0] = v24;
-  v26 = [v23 topHitsQueryInstantAnswersResult];
-  v60[1] = v26;
+  v60[0] = topHitsQueryResult;
+  topHitsQueryInstantAnswersResult = [v23 topHitsQueryInstantAnswersResult];
+  v60[1] = topHitsQueryInstantAnswersResult;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:2];
   v28 = [v25 join:v27];
 
@@ -121,7 +121,7 @@ void __36__EDConcreteLocalSearchProvider_log__block_invoke(uint64_t a1)
   objc_copyWeak(&v56, &from);
   v29 = v44;
   v53 = v29;
-  v30 = v39;
+  v30 = completionCopy;
   v54 = v30;
   [v28 addSuccessBlock:v52];
   v48[0] = MEMORY[0x1E69E9820];
@@ -316,34 +316,34 @@ void __76__EDConcreteLocalSearchProvider_topHitsSearchWithQuery_delegate_complet
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)liveSearchWithQuery:(id)a3 delegate:(id)a4
+- (id)liveSearchWithQuery:(id)query delegate:(id)delegate
 {
-  v6 = a3;
-  v22 = a4;
-  v7 = [(EDConcreteLocalSearchProvider *)self searchableIndexManager];
-  v8 = [v7 index];
+  queryCopy = query;
+  delegateCopy = delegate;
+  searchableIndexManager = [(EDConcreteLocalSearchProvider *)self searchableIndexManager];
+  index = [searchableIndexManager index];
 
-  v9 = [(EDConcreteLocalSearchProvider *)self messageQueryTransformer];
-  v10 = [v6 predicate];
-  v11 = [v9 transformPredicate:v10];
+  messageQueryTransformer = [(EDConcreteLocalSearchProvider *)self messageQueryTransformer];
+  predicate = [queryCopy predicate];
+  v11 = [messageQueryTransformer transformPredicate:predicate];
 
-  v12 = [v6 suggestion];
-  v13 = [v8 searchableIndexBundleID];
+  suggestion = [queryCopy suggestion];
+  searchableIndexBundleID = [index searchableIndexBundleID];
   v30 = 0;
-  v14 = [EDSearchableIndexExpressionGenerator expressionForPredicate:v11 suggestion:v12 bundleID:v13 nonSpotlightPredicates:&v30];
+  v14 = [EDSearchableIndexExpressionGenerator expressionForPredicate:v11 suggestion:suggestion bundleID:searchableIndexBundleID nonSpotlightPredicates:&v30];
   v15 = v30;
 
-  objc_initWeak(&location, v22);
+  objc_initWeak(&location, delegateCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__EDConcreteLocalSearchProvider_liveSearchWithQuery_delegate___block_invoke;
   aBlock[3] = &unk_1E8253270;
-  v16 = v8;
+  v16 = index;
   v24 = v16;
   objc_copyWeak(&v28, &location);
-  v17 = v6;
+  v17 = queryCopy;
   v25 = v17;
-  v26 = self;
+  selfCopy = self;
   v18 = v15;
   v27 = v18;
   v19 = _Block_copy(aBlock);
@@ -620,37 +620,37 @@ void __62__EDConcreteLocalSearchProvider_liveSearchWithQuery_delegate___block_in
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_instantAnswersDebuggingIfNeededForMessage:(id)a3
+- (id)_instantAnswersDebuggingIfNeededForMessage:(id)message
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && ([MEMORY[0x1E699ACE8] preferenceEnabled:62] & 1) != 0)
+  messageCopy = message;
+  if (messageCopy && ([MEMORY[0x1E699ACE8] preferenceEnabled:62] & 1) != 0)
   {
     v5 = objc_alloc(MEMORY[0x1E699ADA8]);
-    v6 = [v4 globalMessageID];
-    v7 = [MEMORY[0x1E699AD28] allMailboxesScope];
-    v8 = [v5 initWithGlobalMessageID:v6 mailboxScope:v7];
+    globalMessageID = [messageCopy globalMessageID];
+    allMailboxesScope = [MEMORY[0x1E699AD28] allMailboxesScope];
+    v8 = [v5 initWithGlobalMessageID:globalMessageID mailboxScope:allMailboxesScope];
 
-    v9 = [(EDConcreteLocalSearchProvider *)self messagePersistence];
+    messagePersistence = [(EDConcreteLocalSearchProvider *)self messagePersistence];
     v22[0] = v8;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    v11 = [v9 messagesForMessageObjectIDs:v10 missedMessageObjectIDs:0];
+    v11 = [messagePersistence messagesForMessageObjectIDs:v10 missedMessageObjectIDs:0];
 
     if ([v11 count])
     {
       v12 = +[EDConcreteLocalSearchProvider log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v11 firstObject];
-        v14 = [v13 ef_publicDescription];
+        firstObject = [v11 firstObject];
+        ef_publicDescription = [firstObject ef_publicDescription];
         v20 = 138543362;
-        v21 = v14;
+        v21 = ef_publicDescription;
         _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "[instant answers] created EMInstantAnswer for %{public}@", &v20, 0xCu);
       }
 
       v15 = objc_alloc(MEMORY[0x1E699ACE0]);
-      v16 = [v11 firstObject];
-      v17 = [v15 initFakeWithMessage:v16];
+      firstObject2 = [v11 firstObject];
+      v17 = [v15 initFakeWithMessage:firstObject2];
     }
 
     else
@@ -669,13 +669,13 @@ void __62__EDConcreteLocalSearchProvider_liveSearchWithQuery_delegate___block_in
   return v17;
 }
 
-- (id)_instantAnswersFromSuggestion:(id)a3
+- (id)_instantAnswersFromSuggestion:(id)suggestion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 instantAnswer];
-  v6 = [v5 messageId];
-  if (![v6 length])
+  suggestionCopy = suggestion;
+  instantAnswer = [suggestionCopy instantAnswer];
+  messageId = [instantAnswer messageId];
+  if (![messageId length])
   {
     v10 = +[EDConcreteLocalSearchProvider log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -686,15 +686,15 @@ void __62__EDConcreteLocalSearchProvider_liveSearchWithQuery_delegate___block_in
     goto LABEL_9;
   }
 
-  v7 = [v6 integerValue];
+  integerValue = [messageId integerValue];
   v8 = objc_alloc(MEMORY[0x1E699ADA8]);
-  v9 = [MEMORY[0x1E699AD28] allMailboxesScope];
-  v10 = [v8 initWithGlobalMessageID:v7 mailboxScope:v9];
+  allMailboxesScope = [MEMORY[0x1E699AD28] allMailboxesScope];
+  v10 = [v8 initWithGlobalMessageID:integerValue mailboxScope:allMailboxesScope];
 
-  v11 = [(EDConcreteLocalSearchProvider *)self messagePersistence];
+  messagePersistence = [(EDConcreteLocalSearchProvider *)self messagePersistence];
   v24[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v13 = [v11 messagesForMessageObjectIDs:v12 missedMessageObjectIDs:0];
+  v13 = [messagePersistence messagesForMessageObjectIDs:v12 missedMessageObjectIDs:0];
 
   if (![v13 count])
   {
@@ -707,16 +707,16 @@ LABEL_9:
   v14 = +[EDConcreteLocalSearchProvider log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v13 firstObject];
-    v16 = [v15 ef_publicDescription];
+    firstObject = [v13 firstObject];
+    ef_publicDescription = [firstObject ef_publicDescription];
     v22 = 138543362;
-    v23 = v16;
+    v23 = ef_publicDescription;
     _os_log_impl(&dword_1C61EF000, v14, OS_LOG_TYPE_DEFAULT, "[instant answers] created EMInstantAnswer for %{public}@", &v22, 0xCu);
   }
 
   v17 = objc_alloc(MEMORY[0x1E699ACE0]);
-  v18 = [v13 firstObject];
-  v19 = [v17 initWithCSInstantAnswers:v5 message:v18];
+  firstObject2 = [v13 firstObject];
+  v19 = [v17 initWithCSInstantAnswers:instantAnswer message:firstObject2];
 
 LABEL_10:
   v20 = *MEMORY[0x1E69E9840];
@@ -724,16 +724,16 @@ LABEL_10:
   return v19;
 }
 
-- (id)_snippetHintsFromQueryResultMatchingHints:(id)a3
+- (id)_snippetHintsFromQueryResultMatchingHints:(id)hints
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  hintsCopy = hints;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = hintsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -749,11 +749,11 @@ LABEL_10:
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = MEMORY[0x1E699ADD8];
-        v11 = [v9 attribute];
-        v12 = [v10 snippetHintZoneFromString:v11];
+        attribute = [v9 attribute];
+        v12 = [v10 snippetHintZoneFromString:attribute];
 
-        v13 = [v9 tokens];
-        [v4 setObject:v13 forKeyedSubscript:v12];
+        tokens = [v9 tokens];
+        [v4 setObject:tokens forKeyedSubscript:v12];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];

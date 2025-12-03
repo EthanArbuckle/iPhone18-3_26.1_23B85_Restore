@@ -1,24 +1,24 @@
 @interface OspreyConnectionHandle
-- (OspreyConnectionHandle)initWithConnectionKey:(id)a3 willRelease:(id)a4;
+- (OspreyConnectionHandle)initWithConnectionKey:(id)key willRelease:(id)release;
 - (void)dealloc;
 @end
 
 @implementation OspreyConnectionHandle
 
-- (OspreyConnectionHandle)initWithConnectionKey:(id)a3 willRelease:(id)a4
+- (OspreyConnectionHandle)initWithConnectionKey:(id)key willRelease:(id)release
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  releaseCopy = release;
   v14.receiver = self;
   v14.super_class = OspreyConnectionHandle;
   v8 = [(OspreyConnectionHandle *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     connectionKey = v8->_connectionKey;
     v8->_connectionKey = v9;
 
-    v11 = [v7 copy];
+    v11 = [releaseCopy copy];
     willRelease = v8->_willRelease;
     v8->_willRelease = v11;
   }

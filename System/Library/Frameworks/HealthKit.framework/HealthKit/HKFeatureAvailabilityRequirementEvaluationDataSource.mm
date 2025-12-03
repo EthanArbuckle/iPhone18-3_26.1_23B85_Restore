@@ -1,43 +1,43 @@
 @interface HKFeatureAvailabilityRequirementEvaluationDataSource
-+ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)a3;
-+ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)a3 currentCountryCodeProvider:(id)a4 onboardingRecordFallbackProvider:(id)a5;
-+ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)a3 currentCountryCodeProvider:(id)a4 wristDetectionSettingManager:(id)a5 requirementSatisfactionOverridesDataSource:(id)a6 onboardingRecordFallbackProvider:(id)a7;
-- (BOOL)_evaluateRequirementsOverrideWithFeatureIdentifier:(id)a3 requirementIdentifier:(id)a4;
++ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)source;
++ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)source currentCountryCodeProvider:(id)provider onboardingRecordFallbackProvider:(id)fallbackProvider;
++ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)source currentCountryCodeProvider:(id)provider wristDetectionSettingManager:(id)manager requirementSatisfactionOverridesDataSource:(id)dataSource onboardingRecordFallbackProvider:(id)fallbackProvider;
+- (BOOL)_evaluateRequirementsOverrideWithFeatureIdentifier:(id)identifier requirementIdentifier:(id)requirementIdentifier;
 - (HKFeatureAvailabilityHealthDataSource)weakHealthDataSource;
-- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)a3 bluetoothDeviceDataSource:(id)a4 privacyPreferencesDataSource:(id)a5 respiratoryPreferencesDataSource:(id)a6 ageGatingDataSource:(id)a7 userNotificationSettingsDataSource:(id)a8 wristDetectionSettingDataSource:(id)a9 devicePairingAndSwitchingNotificationDataSource:(id)a10 darwinNotificationDataSource:(id)a11 watchLowPowerModeDataSource:(id)a12 currentCountryCodeProvider:(id)a13 requirementSatisfactionOverridesDataSource:(id)a14 currentDateDataSource:(id)a15 OSEligibilityDataSource:(id)a16 watchAppInstallationDataSource:(id)a17 onboardingRecordFallbackProvider:(id)a18 userNotificationsDataSource:(id)a19;
-- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)a3 featureAvailabilityProvidingDataSource:(id)a4 featureStatusProvidingDataSource:(id)a5 bluetoothDeviceDataSource:(id)a6 privacyPreferencesDataSource:(id)a7 respiratoryPreferencesDataSource:(id)a8 ageGatingDataSource:(id)a9 userNotificationSettingsDataSource:(id)a10 wristDetectionSettingDataSource:(id)a11 devicePairingAndSwitchingNotificationDataSource:(id)a12 darwinNotificationDataSource:(id)a13 watchLowPowerModeDataSource:(id)a14 currentCountryCodeProvider:(id)a15 requirementSatisfactionOverridesDataSource:(id)a16 currentDateDataSource:(id)a17 OSEligibilityDataSource:(id)a18 watchAppInstallationDataSource:(id)a19 onboardingRecordFallbackProvider:(id)a20 userNotificationsDataSource:(id)a21 healthDataRequirementDataSource:(id)a22 importExclusionDeviceDataSource:(id)a23;
-- (id)featureStatusForFeatureWithIdentifier:(id)a3 context:(id)a4 error:(id *)a5;
+- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)source bluetoothDeviceDataSource:(id)dataSource privacyPreferencesDataSource:(id)preferencesDataSource respiratoryPreferencesDataSource:(id)respiratoryPreferencesDataSource ageGatingDataSource:(id)gatingDataSource userNotificationSettingsDataSource:(id)settingsDataSource wristDetectionSettingDataSource:(id)settingDataSource devicePairingAndSwitchingNotificationDataSource:(id)self0 darwinNotificationDataSource:(id)self1 watchLowPowerModeDataSource:(id)self2 currentCountryCodeProvider:(id)self3 requirementSatisfactionOverridesDataSource:(id)self4 currentDateDataSource:(id)self5 OSEligibilityDataSource:(id)self6 watchAppInstallationDataSource:(id)self7 onboardingRecordFallbackProvider:(id)self8 userNotificationsDataSource:(id)self9;
+- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)source featureAvailabilityProvidingDataSource:(id)dataSource featureStatusProvidingDataSource:(id)providingDataSource bluetoothDeviceDataSource:(id)deviceDataSource privacyPreferencesDataSource:(id)preferencesDataSource respiratoryPreferencesDataSource:(id)respiratoryPreferencesDataSource ageGatingDataSource:(id)gatingDataSource userNotificationSettingsDataSource:(id)self0 wristDetectionSettingDataSource:(id)self1 devicePairingAndSwitchingNotificationDataSource:(id)self2 darwinNotificationDataSource:(id)self3 watchLowPowerModeDataSource:(id)self4 currentCountryCodeProvider:(id)self5 requirementSatisfactionOverridesDataSource:(id)self6 currentDateDataSource:(id)self7 OSEligibilityDataSource:(id)self8 watchAppInstallationDataSource:(id)self9 onboardingRecordFallbackProvider:(id)fallbackProvider userNotificationsDataSource:(id)notificationsDataSource healthDataRequirementDataSource:(id)requirementDataSource importExclusionDeviceDataSource:(id)exclusionDeviceDataSource;
+- (id)featureStatusForFeatureWithIdentifier:(id)identifier context:(id)context error:(id *)error;
 - (id)healthDataSource;
-- (id)isWatchAppInstalledWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 countryCode:(id)a4 error:(id *)a5;
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 error:(id *)a4;
-- (id)onboardingRecordForFeatureWithIdentifier:(id)a3 error:(id *)a4;
-- (id)performLocalEvaluation:(id)a3;
-- (id)regionAvailabilityForFeatureWithIdentifier:(id)a3 error:(id *)a4;
-- (id)requirementSatisfactionOverridesForFeatureWithIdentifier:(id)a3;
-- (void)registerObserverForDeviceCharacteristicAndPairingChanges:(id)a3 block:(id)a4;
-- (void)unregisterObserverForDeviceCharacteristicAndPairingChanges:(id)a3;
+- (id)isWatchAppInstalledWithBundleIdentifier:(id)identifier error:(id *)error;
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier countryCode:(id)code error:(id *)error;
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier error:(id *)error;
+- (id)onboardingRecordForFeatureWithIdentifier:(id)identifier error:(id *)error;
+- (id)performLocalEvaluation:(id)evaluation;
+- (id)regionAvailabilityForFeatureWithIdentifier:(id)identifier error:(id *)error;
+- (id)requirementSatisfactionOverridesForFeatureWithIdentifier:(id)identifier;
+- (void)registerObserverForDeviceCharacteristicAndPairingChanges:(id)changes block:(id)block;
+- (void)unregisterObserverForDeviceCharacteristicAndPairingChanges:(id)changes;
 @end
 
 @implementation HKFeatureAvailabilityRequirementEvaluationDataSource
 
-- (void)registerObserverForDeviceCharacteristicAndPairingChanges:(id)a3 block:(id)a4
+- (void)registerObserverForDeviceCharacteristicAndPairingChanges:(id)changes block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  blockCopy = block;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__registerObserverForDeviceCharacteristicAndPairingChanges_block___block_invoke;
   aBlock[3] = &unk_1E737C428;
   objc_copyWeak(&v18, &location);
-  v8 = v7;
+  v8 = blockCopy;
   v17 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self devicePairingAndSwitchingNotificationDataSource];
-  [v10 registerObserverForDevicePairingChanges:v6 block:v9];
+  devicePairingAndSwitchingNotificationDataSource = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self devicePairingAndSwitchingNotificationDataSource];
+  [devicePairingAndSwitchingNotificationDataSource registerObserverForDevicePairingChanges:changesCopy block:v9];
 
-  v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self darwinNotificationDataSource];
+  darwinNotificationDataSource = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self darwinNotificationDataSource];
   v12 = getNRPairedDeviceRegistryPairedDeviceDidChangeCapabilitiesDarwinNotification();
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -45,7 +45,7 @@
   v14[3] = &unk_1E737C450;
   v13 = v9;
   v15 = v13;
-  [v11 registerObserver:v6 forKey:v12 newValueHandler:v14];
+  [darwinNotificationDataSource registerObserver:changesCopy forKey:v12 newValueHandler:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -61,119 +61,119 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
   }
 }
 
-- (void)unregisterObserverForDeviceCharacteristicAndPairingChanges:(id)a3
+- (void)unregisterObserverForDeviceCharacteristicAndPairingChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self devicePairingAndSwitchingNotificationDataSource];
-  [v5 unregisterObserverForDevicePairingChanges:v4];
+  changesCopy = changes;
+  devicePairingAndSwitchingNotificationDataSource = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self devicePairingAndSwitchingNotificationDataSource];
+  [devicePairingAndSwitchingNotificationDataSource unregisterObserverForDevicePairingChanges:changesCopy];
 
-  v7 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self darwinNotificationDataSource];
+  darwinNotificationDataSource = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self darwinNotificationDataSource];
   v6 = getNRPairedDeviceRegistryPairedDeviceDidChangeCapabilitiesDarwinNotification();
-  [v7 unregisterObserver:v4 forKey:v6];
+  [darwinNotificationDataSource unregisterObserver:changesCopy forKey:v6];
 }
 
-- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)a3 bluetoothDeviceDataSource:(id)a4 privacyPreferencesDataSource:(id)a5 respiratoryPreferencesDataSource:(id)a6 ageGatingDataSource:(id)a7 userNotificationSettingsDataSource:(id)a8 wristDetectionSettingDataSource:(id)a9 devicePairingAndSwitchingNotificationDataSource:(id)a10 darwinNotificationDataSource:(id)a11 watchLowPowerModeDataSource:(id)a12 currentCountryCodeProvider:(id)a13 requirementSatisfactionOverridesDataSource:(id)a14 currentDateDataSource:(id)a15 OSEligibilityDataSource:(id)a16 watchAppInstallationDataSource:(id)a17 onboardingRecordFallbackProvider:(id)a18 userNotificationsDataSource:(id)a19
+- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)source bluetoothDeviceDataSource:(id)dataSource privacyPreferencesDataSource:(id)preferencesDataSource respiratoryPreferencesDataSource:(id)respiratoryPreferencesDataSource ageGatingDataSource:(id)gatingDataSource userNotificationSettingsDataSource:(id)settingsDataSource wristDetectionSettingDataSource:(id)settingDataSource devicePairingAndSwitchingNotificationDataSource:(id)self0 darwinNotificationDataSource:(id)self1 watchLowPowerModeDataSource:(id)self2 currentCountryCodeProvider:(id)self3 requirementSatisfactionOverridesDataSource:(id)self4 currentDateDataSource:(id)self5 OSEligibilityDataSource:(id)self6 watchAppInstallationDataSource:(id)self7 onboardingRecordFallbackProvider:(id)self8 userNotificationsDataSource:(id)self9
 {
-  v34 = a19;
-  v33 = a18;
-  v19 = a17;
-  v32 = a16;
-  v20 = a15;
-  v21 = a14;
-  v31 = a13;
-  v37 = a12;
-  v38 = a11;
-  v39 = a10;
-  v50 = a9;
-  v49 = a8;
-  v47 = a7;
-  v45 = a6;
-  v43 = a5;
-  v41 = a4;
-  v22 = a3;
+  notificationsDataSourceCopy = notificationsDataSource;
+  fallbackProviderCopy = fallbackProvider;
+  installationDataSourceCopy = installationDataSource;
+  eligibilityDataSourceCopy = eligibilityDataSource;
+  dateDataSourceCopy = dateDataSource;
+  overridesDataSourceCopy = overridesDataSource;
+  providerCopy = provider;
+  modeDataSourceCopy = modeDataSource;
+  darwinNotificationDataSourceCopy = darwinNotificationDataSource;
+  notificationDataSourceCopy = notificationDataSource;
+  settingDataSourceCopy = settingDataSource;
+  settingsDataSourceCopy = settingsDataSource;
+  gatingDataSourceCopy = gatingDataSource;
+  respiratoryPreferencesDataSourceCopy = respiratoryPreferencesDataSource;
+  preferencesDataSourceCopy = preferencesDataSource;
+  dataSourceCopy = dataSource;
+  sourceCopy = source;
   v23 = [HKFeatureAvailabilityHealthDataRequirementDataSource alloc];
-  v24 = [v22 healthDataRequirementEvaluationProvider];
-  v30 = [(HKFeatureAvailabilityHealthDataRequirementDataSource *)v23 initWithEvaluationProvider:v24];
+  healthDataRequirementEvaluationProvider = [sourceCopy healthDataRequirementEvaluationProvider];
+  v30 = [(HKFeatureAvailabilityHealthDataRequirementDataSource *)v23 initWithEvaluationProvider:healthDataRequirementEvaluationProvider];
 
-  v25 = [[HKFeatureAvailabilityProvidingDataSource alloc] initWithHealthDataSource:v22];
+  v25 = [[HKFeatureAvailabilityProvidingDataSource alloc] initWithHealthDataSource:sourceCopy];
   v26 = objc_alloc_init(HKFeatureStatusProvidingDataSource);
   v28 = objc_alloc_init(HKImportExclusionDeviceDataSource);
-  v36 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self initWithHealthDataSource:v22 featureAvailabilityProvidingDataSource:v25 featureStatusProvidingDataSource:v26 bluetoothDeviceDataSource:v41 privacyPreferencesDataSource:v43 respiratoryPreferencesDataSource:v45 ageGatingDataSource:v47 userNotificationSettingsDataSource:v49 wristDetectionSettingDataSource:v50 devicePairingAndSwitchingNotificationDataSource:v39 darwinNotificationDataSource:v38 watchLowPowerModeDataSource:v37 currentCountryCodeProvider:v31 requirementSatisfactionOverridesDataSource:v21 currentDateDataSource:v20 OSEligibilityDataSource:v32 watchAppInstallationDataSource:v19 onboardingRecordFallbackProvider:v33 userNotificationsDataSource:v34 healthDataRequirementDataSource:v30 importExclusionDeviceDataSource:v28];
+  v36 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self initWithHealthDataSource:sourceCopy featureAvailabilityProvidingDataSource:v25 featureStatusProvidingDataSource:v26 bluetoothDeviceDataSource:dataSourceCopy privacyPreferencesDataSource:preferencesDataSourceCopy respiratoryPreferencesDataSource:respiratoryPreferencesDataSourceCopy ageGatingDataSource:gatingDataSourceCopy userNotificationSettingsDataSource:settingsDataSourceCopy wristDetectionSettingDataSource:settingDataSourceCopy devicePairingAndSwitchingNotificationDataSource:notificationDataSourceCopy darwinNotificationDataSource:darwinNotificationDataSourceCopy watchLowPowerModeDataSource:modeDataSourceCopy currentCountryCodeProvider:providerCopy requirementSatisfactionOverridesDataSource:overridesDataSourceCopy currentDateDataSource:dateDataSourceCopy OSEligibilityDataSource:eligibilityDataSourceCopy watchAppInstallationDataSource:installationDataSourceCopy onboardingRecordFallbackProvider:fallbackProviderCopy userNotificationsDataSource:notificationsDataSourceCopy healthDataRequirementDataSource:v30 importExclusionDeviceDataSource:v28];
 
   return v36;
 }
 
-- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)a3 featureAvailabilityProvidingDataSource:(id)a4 featureStatusProvidingDataSource:(id)a5 bluetoothDeviceDataSource:(id)a6 privacyPreferencesDataSource:(id)a7 respiratoryPreferencesDataSource:(id)a8 ageGatingDataSource:(id)a9 userNotificationSettingsDataSource:(id)a10 wristDetectionSettingDataSource:(id)a11 devicePairingAndSwitchingNotificationDataSource:(id)a12 darwinNotificationDataSource:(id)a13 watchLowPowerModeDataSource:(id)a14 currentCountryCodeProvider:(id)a15 requirementSatisfactionOverridesDataSource:(id)a16 currentDateDataSource:(id)a17 OSEligibilityDataSource:(id)a18 watchAppInstallationDataSource:(id)a19 onboardingRecordFallbackProvider:(id)a20 userNotificationsDataSource:(id)a21 healthDataRequirementDataSource:(id)a22 importExclusionDeviceDataSource:(id)a23
+- (HKFeatureAvailabilityRequirementEvaluationDataSource)initWithHealthDataSource:(id)source featureAvailabilityProvidingDataSource:(id)dataSource featureStatusProvidingDataSource:(id)providingDataSource bluetoothDeviceDataSource:(id)deviceDataSource privacyPreferencesDataSource:(id)preferencesDataSource respiratoryPreferencesDataSource:(id)respiratoryPreferencesDataSource ageGatingDataSource:(id)gatingDataSource userNotificationSettingsDataSource:(id)self0 wristDetectionSettingDataSource:(id)self1 devicePairingAndSwitchingNotificationDataSource:(id)self2 darwinNotificationDataSource:(id)self3 watchLowPowerModeDataSource:(id)self4 currentCountryCodeProvider:(id)self5 requirementSatisfactionOverridesDataSource:(id)self6 currentDateDataSource:(id)self7 OSEligibilityDataSource:(id)self8 watchAppInstallationDataSource:(id)self9 onboardingRecordFallbackProvider:(id)fallbackProvider userNotificationsDataSource:(id)notificationsDataSource healthDataRequirementDataSource:(id)requirementDataSource importExclusionDeviceDataSource:(id)exclusionDeviceDataSource
 {
-  v39 = a3;
-  obj = a4;
-  v58 = a4;
-  v38 = a5;
-  v57 = a5;
-  v56 = a6;
-  v55 = a7;
-  v54 = a8;
-  v53 = a9;
-  v52 = a10;
-  v51 = a11;
-  v50 = a12;
-  v49 = a13;
-  v48 = a14;
-  v47 = a15;
-  v46 = a16;
-  v28 = a17;
-  v29 = a18;
-  v45 = a19;
-  v44 = a20;
-  v43 = a21;
-  v42 = a22;
-  v41 = a23;
+  sourceCopy = source;
+  obj = dataSource;
+  dataSourceCopy = dataSource;
+  providingDataSourceCopy = providingDataSource;
+  providingDataSourceCopy2 = providingDataSource;
+  deviceDataSourceCopy = deviceDataSource;
+  preferencesDataSourceCopy = preferencesDataSource;
+  respiratoryPreferencesDataSourceCopy = respiratoryPreferencesDataSource;
+  gatingDataSourceCopy = gatingDataSource;
+  settingsDataSourceCopy = settingsDataSource;
+  settingDataSourceCopy = settingDataSource;
+  notificationDataSourceCopy = notificationDataSource;
+  darwinNotificationDataSourceCopy = darwinNotificationDataSource;
+  modeDataSourceCopy = modeDataSource;
+  providerCopy = provider;
+  overridesDataSourceCopy = overridesDataSource;
+  dateDataSourceCopy = dateDataSource;
+  eligibilityDataSourceCopy = eligibilityDataSource;
+  installationDataSourceCopy = installationDataSource;
+  fallbackProviderCopy = fallbackProvider;
+  notificationsDataSourceCopy = notificationsDataSource;
+  requirementDataSourceCopy = requirementDataSource;
+  exclusionDeviceDataSourceCopy = exclusionDeviceDataSource;
   v59.receiver = self;
   v59.super_class = HKFeatureAvailabilityRequirementEvaluationDataSource;
   v30 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v59 init];
   if (v30)
   {
-    if ([v39 requiresWeakRetention])
+    if ([sourceCopy requiresWeakRetention])
     {
-      objc_storeWeak(&v30->_weakHealthDataSource, v39);
+      objc_storeWeak(&v30->_weakHealthDataSource, sourceCopy);
       v31 = 0;
     }
 
     else
     {
       objc_storeWeak(&v30->_weakHealthDataSource, 0);
-      v31 = v39;
+      v31 = sourceCopy;
     }
 
     strongHealthDataSource = v30->_strongHealthDataSource;
     v30->_strongHealthDataSource = v31;
 
     objc_storeStrong(&v30->_featureAvailabilityProvidingDataSource, obj);
-    objc_storeStrong(&v30->_featureStatusProvidingDataSource, v38);
-    objc_storeStrong(&v30->_bluetoothDeviceDataSource, a6);
-    objc_storeStrong(&v30->_privacyPreferencesDataSource, a7);
-    objc_storeStrong(&v30->_respiratoryPreferencesDataSource, a8);
-    objc_storeStrong(&v30->_ageGatingDataSource, a9);
-    objc_storeStrong(&v30->_userNotificationSettingsDataSource, a10);
-    objc_storeStrong(&v30->_wristDetectionSettingDataSource, a11);
-    objc_storeStrong(&v30->_devicePairingAndSwitchingNotificationDataSource, a12);
-    objc_storeStrong(&v30->_darwinNotificationDataSource, a13);
-    objc_storeStrong(&v30->_watchLowPowerModeDataSource, a14);
-    objc_storeStrong(&v30->_currentCountryCodeProvider, a15);
-    objc_storeStrong(&v30->_requirementSatisfactionOverridesDataSource, a16);
-    v33 = _Block_copy(v28);
+    objc_storeStrong(&v30->_featureStatusProvidingDataSource, providingDataSourceCopy);
+    objc_storeStrong(&v30->_bluetoothDeviceDataSource, deviceDataSource);
+    objc_storeStrong(&v30->_privacyPreferencesDataSource, preferencesDataSource);
+    objc_storeStrong(&v30->_respiratoryPreferencesDataSource, respiratoryPreferencesDataSource);
+    objc_storeStrong(&v30->_ageGatingDataSource, gatingDataSource);
+    objc_storeStrong(&v30->_userNotificationSettingsDataSource, settingsDataSource);
+    objc_storeStrong(&v30->_wristDetectionSettingDataSource, settingDataSource);
+    objc_storeStrong(&v30->_devicePairingAndSwitchingNotificationDataSource, notificationDataSource);
+    objc_storeStrong(&v30->_darwinNotificationDataSource, darwinNotificationDataSource);
+    objc_storeStrong(&v30->_watchLowPowerModeDataSource, modeDataSource);
+    objc_storeStrong(&v30->_currentCountryCodeProvider, provider);
+    objc_storeStrong(&v30->_requirementSatisfactionOverridesDataSource, overridesDataSource);
+    v33 = _Block_copy(dateDataSourceCopy);
     currentDateDataSource = v30->_currentDateDataSource;
     v30->_currentDateDataSource = v33;
 
-    objc_storeStrong(&v30->_OSEligibilityDataSource, a18);
-    objc_storeStrong(&v30->_watchAppInstallationDataSource, a19);
-    objc_storeStrong(&v30->_onboardingRecordFallbackProvider, a20);
-    objc_storeStrong(&v30->_userNotificationsDataSource, a21);
-    objc_storeStrong(&v30->_healthDataRequirementDataSource, a22);
-    objc_storeStrong(&v30->_importExclusionDeviceDataSource, a23);
-    v35 = [(HKFeatureStatusProvidingDataSource *)v30->_featureStatusProvidingDataSource dataSource];
+    objc_storeStrong(&v30->_OSEligibilityDataSource, eligibilityDataSource);
+    objc_storeStrong(&v30->_watchAppInstallationDataSource, installationDataSource);
+    objc_storeStrong(&v30->_onboardingRecordFallbackProvider, fallbackProvider);
+    objc_storeStrong(&v30->_userNotificationsDataSource, notificationsDataSource);
+    objc_storeStrong(&v30->_healthDataRequirementDataSource, requirementDataSource);
+    objc_storeStrong(&v30->_importExclusionDeviceDataSource, exclusionDeviceDataSource);
+    dataSource = [(HKFeatureStatusProvidingDataSource *)v30->_featureStatusProvidingDataSource dataSource];
 
-    if (!v35)
+    if (!dataSource)
     {
       [(HKFeatureStatusProvidingDataSource *)v30->_featureStatusProvidingDataSource setDataSource:v30];
     }
@@ -182,55 +182,55 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
   return v30;
 }
 
-+ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)a3
++ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [[HKFixedCurrentCountryCodeProvider alloc] initWithCountryCode:0];
-  v6 = [a1 dataSourceWithHealthDataSource:v4 currentCountryCodeProvider:v5];
+  v6 = [self dataSourceWithHealthDataSource:sourceCopy currentCountryCodeProvider:v5];
 
   return v6;
 }
 
-+ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)a3 currentCountryCodeProvider:(id)a4 onboardingRecordFallbackProvider:(id)a5
++ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)source currentCountryCodeProvider:(id)provider onboardingRecordFallbackProvider:(id)fallbackProvider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 wristDetectionSettingManager];
-  v12 = [v10 requirementSatisfactionOverridesDataSource];
-  v13 = [a1 dataSourceWithHealthDataSource:v10 currentCountryCodeProvider:v9 wristDetectionSettingManager:v11 requirementSatisfactionOverridesDataSource:v12 onboardingRecordFallbackProvider:v8];
+  fallbackProviderCopy = fallbackProvider;
+  providerCopy = provider;
+  sourceCopy = source;
+  wristDetectionSettingManager = [sourceCopy wristDetectionSettingManager];
+  requirementSatisfactionOverridesDataSource = [sourceCopy requirementSatisfactionOverridesDataSource];
+  v13 = [self dataSourceWithHealthDataSource:sourceCopy currentCountryCodeProvider:providerCopy wristDetectionSettingManager:wristDetectionSettingManager requirementSatisfactionOverridesDataSource:requirementSatisfactionOverridesDataSource onboardingRecordFallbackProvider:fallbackProviderCopy];
 
   return v13;
 }
 
-+ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)a3 currentCountryCodeProvider:(id)a4 wristDetectionSettingManager:(id)a5 requirementSatisfactionOverridesDataSource:(id)a6 onboardingRecordFallbackProvider:(id)a7
++ (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSourceWithHealthDataSource:(id)source currentCountryCodeProvider:(id)provider wristDetectionSettingManager:(id)manager requirementSatisfactionOverridesDataSource:(id)dataSource onboardingRecordFallbackProvider:(id)fallbackProvider
 {
-  v12 = a3;
-  v30 = a7;
-  v29 = a6;
-  v13 = a5;
-  v28 = a4;
+  sourceCopy = source;
+  fallbackProviderCopy = fallbackProvider;
+  dataSourceCopy = dataSource;
+  managerCopy = manager;
+  providerCopy = provider;
   v31 = objc_alloc_init(HKBluetoothDeviceDataSource);
   v14 = objc_alloc_init(HKNanoRegistryPairingAndSwitchingNotificationDataSource);
   v15 = objc_alloc_init(HKDarwinNotificationDataSource);
-  v32 = v12;
-  v16 = [v12 watchLowPowerModeDataSource];
+  v32 = sourceCopy;
+  watchLowPowerModeDataSource = [sourceCopy watchLowPowerModeDataSource];
   v17 = objc_alloc_init(HKOSEligibilityDataSource);
   v27 = [[HKWatchAppInstallationDataSource alloc] initWithDevicePairingAndSwitchingNotificationDataSource:v14];
-  if (!v16)
+  if (!watchLowPowerModeDataSource)
   {
-    v16 = [[HKWatchLowPowerModeDataSource alloc] initWithDarwinNotificationDataSource:v15 devicePairingAndSwitchingNotificationDataSource:v14];
+    watchLowPowerModeDataSource = [[HKWatchLowPowerModeDataSource alloc] initWithDarwinNotificationDataSource:v15 devicePairingAndSwitchingNotificationDataSource:v14];
   }
 
   v25 = objc_alloc_init(HKUserNotificationsDataSource);
-  v18 = [a1 alloc];
+  v18 = [self alloc];
   v24 = +[HKUserDefaultsDataSource privacyPreferencesDataSource];
   v23 = +[HKUserDefaultsDataSource respiratoryPreferencesDataSource];
   v19 = +[HKUserDefaultsDataSource ageGatingDataSource];
   v20 = +[HKUserDefaultsDataSource sharedHealthPreferencesDataSource];
-  v21 = [[HKWristDetectionSettingDataSource alloc] initWithWristDetectionSettingManager:v13];
+  v21 = [[HKWristDetectionSettingDataSource alloc] initWithWristDetectionSettingManager:managerCopy];
 
-  v26 = [v18 initWithHealthDataSource:v32 bluetoothDeviceDataSource:v31 privacyPreferencesDataSource:v24 respiratoryPreferencesDataSource:v23 ageGatingDataSource:v19 userNotificationSettingsDataSource:v20 wristDetectionSettingDataSource:v21 devicePairingAndSwitchingNotificationDataSource:v14 darwinNotificationDataSource:v15 watchLowPowerModeDataSource:v16 currentCountryCodeProvider:v28 requirementSatisfactionOverridesDataSource:v29 currentDateDataSource:&__block_literal_global_121 OSEligibilityDataSource:v17 watchAppInstallationDataSource:v27 onboardingRecordFallbackProvider:v30 userNotificationsDataSource:v25];
+  v26 = [v18 initWithHealthDataSource:v32 bluetoothDeviceDataSource:v31 privacyPreferencesDataSource:v24 respiratoryPreferencesDataSource:v23 ageGatingDataSource:v19 userNotificationSettingsDataSource:v20 wristDetectionSettingDataSource:v21 devicePairingAndSwitchingNotificationDataSource:v14 darwinNotificationDataSource:v15 watchLowPowerModeDataSource:watchLowPowerModeDataSource currentCountryCodeProvider:providerCopy requirementSatisfactionOverridesDataSource:dataSourceCopy currentDateDataSource:&__block_literal_global_121 OSEligibilityDataSource:v17 watchAppInstallationDataSource:v27 onboardingRecordFallbackProvider:fallbackProviderCopy userNotificationsDataSource:v25];
 
   return v26;
 }
@@ -259,11 +259,11 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
   return v5;
 }
 
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self onboardingRecordForFeatureWithIdentifier:v7 error:a4];
+  identifierCopy = identifier;
+  v8 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self onboardingRecordForFeatureWithIdentifier:identifierCopy error:error];
   v9 = v8;
   if (!v8)
   {
@@ -271,37 +271,37 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
     goto LABEL_28;
   }
 
-  v10 = [v8 onboardingState];
-  if ((v10 - 2) >= 4)
+  onboardingState = [v8 onboardingState];
+  if ((onboardingState - 2) >= 4)
   {
-    if (v10 != 1)
+    if (onboardingState != 1)
     {
       goto LABEL_28;
     }
 
-    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self currentCountryCode];
-    v21 = self;
-    v22 = v7;
-    v23 = v11;
+    currentCountryCode = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self currentCountryCode];
+    selfCopy2 = self;
+    v22 = identifierCopy;
+    v23 = currentCountryCode;
   }
 
   else
   {
-    v11 = [v9 onboardedCountryCodesForOnboardingState];
-    if ([v11 count])
+    currentCountryCode = [v9 onboardedCountryCodesForOnboardingState];
+    if ([currentCountryCode count])
     {
-      v28 = v11;
+      v28 = currentCountryCode;
       v29 = v9;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      obj = v11;
+      obj = currentCountryCode;
       v12 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v12)
       {
         v13 = v12;
-        v14 = 0;
+        countryAvailabilityVersion = 0;
         v15 = *v32;
         v16 = -1;
         while (2)
@@ -313,7 +313,7 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
               objc_enumerationMutation(obj);
             }
 
-            v18 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self onboardingEligibilityForFeatureWithIdentifier:v7 countryCode:*(*(&v31 + 1) + 8 * i) error:a4];
+            v18 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self onboardingEligibilityForFeatureWithIdentifier:identifierCopy countryCode:*(*(&v31 + 1) + 8 * i) error:error];
             if (!v18)
             {
 
@@ -322,13 +322,13 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
             }
 
             v19 = v18;
-            v20 = [v18 ineligibilityReasons];
-            if (!v14)
+            ineligibilityReasons = [v18 ineligibilityReasons];
+            if (!countryAvailabilityVersion)
             {
-              v14 = [v19 countryAvailabilityVersion];
+              countryAvailabilityVersion = [v19 countryAvailabilityVersion];
             }
 
-            v16 &= v20;
+            v16 &= ineligibilityReasons;
           }
 
           v13 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -343,14 +343,14 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
 
       else
       {
-        v14 = 0;
+        countryAvailabilityVersion = 0;
         v16 = -1;
       }
 
       v24 = [HKFeatureAvailabilityOnboardingEligibility alloc];
-      if (v14)
+      if (countryAvailabilityVersion)
       {
-        v25 = v14;
+        v25 = countryAvailabilityVersion;
       }
 
       else
@@ -361,17 +361,17 @@ void __133__HKFeatureAvailabilityRequirementEvaluationDataSource_NanoRegistry__r
       v4 = [(HKFeatureAvailabilityOnboardingEligibility *)v24 initWithIneligibilityReasons:v16 countryAvailabilityVersion:v25];
 LABEL_26:
 
-      v11 = v28;
+      currentCountryCode = v28;
       v9 = v29;
       goto LABEL_27;
     }
 
-    v21 = self;
-    v22 = v7;
+    selfCopy2 = self;
+    v22 = identifierCopy;
     v23 = 0;
   }
 
-  v4 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)v21 onboardingEligibilityForFeatureWithIdentifier:v22 countryCode:v23 error:a4];
+  v4 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)selfCopy2 onboardingEligibilityForFeatureWithIdentifier:v22 countryCode:v23 error:error];
 LABEL_27:
 
 LABEL_28:
@@ -380,29 +380,29 @@ LABEL_28:
   return v4;
 }
 
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 countryCode:(id)a4 error:(id *)a5
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier countryCode:(id)code error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKFeatureAvailabilityProvidingDataSource *)self->_featureAvailabilityProvidingDataSource featureAvailabilityProvidingForFeatureIdentifier:v8];
+  identifierCopy = identifier;
+  codeCopy = code;
+  v10 = [(HKFeatureAvailabilityProvidingDataSource *)self->_featureAvailabilityProvidingDataSource featureAvailabilityProvidingForFeatureIdentifier:identifierCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 onboardingEligibilityForCountryCode:v9 error:a5];
+    v12 = [v10 onboardingEligibilityForCountryCode:codeCopy error:error];
   }
 
   else
   {
     v13 = MEMORY[0x1E696ABC0];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No extension found for feature with identifier %@", v8];
-    v15 = [v13 hk_error:110 description:v14];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No extension found for feature with identifier %@", identifierCopy];
+    v15 = [v13 hk_error:110 description:identifierCopy];
     v16 = v15;
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v17 = v15;
-        *a5 = v16;
+        *error = v16;
       }
 
       else
@@ -417,10 +417,10 @@ LABEL_28:
   return v12;
 }
 
-- (id)onboardingRecordForFeatureWithIdentifier:(id)a3 error:(id *)a4
+- (id)onboardingRecordForFeatureWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self->_featureAvailabilityProvidingDataSource featureAvailabilityProvidingForFeatureIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self->_featureAvailabilityProvidingDataSource featureAvailabilityProvidingForFeatureIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -430,22 +430,22 @@ LABEL_28:
     onboardingRecordFallbackProvider = self->_onboardingRecordFallbackProvider;
     if (v9)
     {
-      [(HKFeatureOnboardingRecordFallbackProviding *)onboardingRecordFallbackProvider updateForRetrievedOnboardingRecord:v9 featureIdentifier:v6];
+      [(HKFeatureOnboardingRecordFallbackProviding *)onboardingRecordFallbackProvider updateForRetrievedOnboardingRecord:v9 featureIdentifier:identifierCopy];
     }
 
     else
     {
-      v9 = [(HKFeatureOnboardingRecordFallbackProviding *)onboardingRecordFallbackProvider fallbackOnboardingRecordForError:v10 featureIdentifier:v6];
+      v9 = [(HKFeatureOnboardingRecordFallbackProviding *)onboardingRecordFallbackProvider fallbackOnboardingRecordForError:v10 featureIdentifier:identifierCopy];
       if (!v9)
       {
         v17 = v10;
         v18 = v17;
         if (v17)
         {
-          if (a4)
+          if (error)
           {
             v19 = v17;
-            *a4 = v18;
+            *error = v18;
           }
 
           else
@@ -462,15 +462,15 @@ LABEL_28:
   else
   {
     v12 = MEMORY[0x1E696ABC0];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No extension found for feature with identifier %@", v6];
-    v14 = [v12 hk_error:110 description:v13];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No extension found for feature with identifier %@", identifierCopy];
+    v14 = [v12 hk_error:110 description:identifierCopy];
     v15 = v14;
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v16 = v14;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -485,10 +485,10 @@ LABEL_28:
   return v20;
 }
 
-- (id)regionAvailabilityForFeatureWithIdentifier:(id)a3 error:(id *)a4
+- (id)regionAvailabilityForFeatureWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self->_featureAvailabilityProvidingDataSource featureAvailabilityProvidingForFeatureIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self->_featureAvailabilityProvidingDataSource featureAvailabilityProvidingForFeatureIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -502,10 +502,10 @@ LABEL_28:
       v13 = v12;
       if (v12)
       {
-        if (a4)
+        if (error)
         {
           v14 = v12;
-          *a4 = v13;
+          *error = v13;
         }
 
         else
@@ -519,15 +519,15 @@ LABEL_28:
   else
   {
     v15 = MEMORY[0x1E696ABC0];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No extension found for feature with identifier %@", v6];
-    v17 = [v15 hk_error:110 description:v16];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No extension found for feature with identifier %@", identifierCopy];
+    v17 = [v15 hk_error:110 description:identifierCopy];
     v18 = v17;
     if (v17)
     {
-      if (a4)
+      if (error)
       {
         v19 = v17;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -542,28 +542,28 @@ LABEL_28:
   return v9;
 }
 
-- (id)featureStatusForFeatureWithIdentifier:(id)a3 context:(id)a4 error:(id *)a5
+- (id)featureStatusForFeatureWithIdentifier:(id)identifier context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = [(HKFeatureStatusProvidingDataSource *)self->_featureStatusProvidingDataSource featureStatusProvidingForFeatureIdentifier:v8 context:a4];
+  identifierCopy = identifier;
+  v9 = [(HKFeatureStatusProvidingDataSource *)self->_featureStatusProvidingDataSource featureStatusProvidingForFeatureIdentifier:identifierCopy context:context];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 featureStatusWithError:a5];
+    v11 = [v9 featureStatusWithError:error];
   }
 
   else
   {
     v12 = MEMORY[0x1E696ABC0];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No feature status manager available for feature with identifier %@", v8];
-    v14 = [v12 hk_error:110 description:v13];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No feature status manager available for feature with identifier %@", identifierCopy];
+    v14 = [v12 hk_error:110 description:identifierCopy];
     v15 = v14;
     if (v14)
     {
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -578,43 +578,43 @@ LABEL_28:
   return v11;
 }
 
-- (id)performLocalEvaluation:(id)a3
+- (id)performLocalEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   v5 = [HKFeatureAvailabilityLocalRequirementEvaluationContext alloc];
-  v6 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self healthDataSource];
+  healthDataSource = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self healthDataSource];
   healthDataRequirementDataSource = self->_healthDataRequirementDataSource;
-  v8 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)v5 initWithHealthDataSource:v6 featureAvailabilityProvidingDataSource:self->_featureAvailabilityProvidingDataSource featureStatusProvidingDataSource:self->_featureStatusProvidingDataSource bluetoothDeviceDataSource:self->_bluetoothDeviceDataSource privacyPreferencesDataSource:self->_privacyPreferencesDataSource respiratoryPreferencesDataSource:self->_respiratoryPreferencesDataSource ageGatingDataSource:self->_ageGatingDataSource userNotificationSettingsDataSource:self->_userNotificationSettingsDataSource wristDetectionSettingDataSource:self->_wristDetectionSettingDataSource devicePairingAndSwitchingNotificationDataSource:self->_devicePairingAndSwitchingNotificationDataSource darwinNotificationDataSource:self->_darwinNotificationDataSource watchLowPowerModeDataSource:self->_watchLowPowerModeDataSource currentCountryCodeProvider:self->_currentCountryCodeProvider requirementSatisfactionOverridesDataSource:self->_requirementSatisfactionOverridesDataSource currentDateDataSource:self->_currentDateDataSource OSEligibilityDataSource:self->_OSEligibilityDataSource watchAppInstallationDataSource:self->_watchAppInstallationDataSource onboardingRecordFallbackProvider:self->_onboardingRecordFallbackProvider userNotificationsDataSource:self->_userNotificationsDataSource healthDataRequirementDataSource:healthDataRequirementDataSource importExclusionDeviceDataSource:self->_importExclusionDeviceDataSource];
+  v8 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)v5 initWithHealthDataSource:healthDataSource featureAvailabilityProvidingDataSource:self->_featureAvailabilityProvidingDataSource featureStatusProvidingDataSource:self->_featureStatusProvidingDataSource bluetoothDeviceDataSource:self->_bluetoothDeviceDataSource privacyPreferencesDataSource:self->_privacyPreferencesDataSource respiratoryPreferencesDataSource:self->_respiratoryPreferencesDataSource ageGatingDataSource:self->_ageGatingDataSource userNotificationSettingsDataSource:self->_userNotificationSettingsDataSource wristDetectionSettingDataSource:self->_wristDetectionSettingDataSource devicePairingAndSwitchingNotificationDataSource:self->_devicePairingAndSwitchingNotificationDataSource darwinNotificationDataSource:self->_darwinNotificationDataSource watchLowPowerModeDataSource:self->_watchLowPowerModeDataSource currentCountryCodeProvider:self->_currentCountryCodeProvider requirementSatisfactionOverridesDataSource:self->_requirementSatisfactionOverridesDataSource currentDateDataSource:self->_currentDateDataSource OSEligibilityDataSource:self->_OSEligibilityDataSource watchAppInstallationDataSource:self->_watchAppInstallationDataSource onboardingRecordFallbackProvider:self->_onboardingRecordFallbackProvider userNotificationsDataSource:self->_userNotificationsDataSource healthDataRequirementDataSource:healthDataRequirementDataSource importExclusionDeviceDataSource:self->_importExclusionDeviceDataSource];
 
-  v9 = v4[2](v4, v8);
+  v9 = evaluationCopy[2](evaluationCopy, v8);
 
   return v9;
 }
 
-- (BOOL)_evaluateRequirementsOverrideWithFeatureIdentifier:(id)a3 requirementIdentifier:(id)a4
+- (BOOL)_evaluateRequirementsOverrideWithFeatureIdentifier:(id)identifier requirementIdentifier:(id)requirementIdentifier
 {
-  v6 = a4;
-  v7 = a3;
+  requirementIdentifierCopy = requirementIdentifier;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(HKFeatureAvailabilityRequirementSatisfactionOverrideEligibility);
-  v9 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self importExclusionDeviceDataSource];
-  v10 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self behavior];
-  v11 = [(HKFeatureAvailabilityRequirementSatisfactionOverrideEligibility *)v8 isRequirementOverridable:v6 featureIdentifier:v7 importExclusionDeviceDataSource:v9 behavior:v10];
+  importExclusionDeviceDataSource = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self importExclusionDeviceDataSource];
+  behavior = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)self behavior];
+  v11 = [(HKFeatureAvailabilityRequirementSatisfactionOverrideEligibility *)v8 isRequirementOverridable:requirementIdentifierCopy featureIdentifier:identifierCopy importExclusionDeviceDataSource:importExclusionDeviceDataSource behavior:behavior];
 
   return v11;
 }
 
-- (id)requirementSatisfactionOverridesForFeatureWithIdentifier:(id)a3
+- (id)requirementSatisfactionOverridesForFeatureWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v5 = [HKFeatureAvailabilityRequirementSatisfactionOverrides alloc];
-  v6 = [(HKUserDefaultsDataSource *)self->_requirementSatisfactionOverridesDataSource userDefaults];
+  userDefaults = [(HKUserDefaultsDataSource *)self->_requirementSatisfactionOverridesDataSource userDefaults];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __113__HKFeatureAvailabilityRequirementEvaluationDataSource_requirementSatisfactionOverridesForFeatureWithIdentifier___block_invoke;
   v9[3] = &unk_1E73841F0;
   objc_copyWeak(&v10, &location);
-  v7 = [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)v5 initWithUserDefaults:v6 featureIdentifier:v4 requirementOverridableEvaluator:v9];
+  v7 = [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)v5 initWithUserDefaults:userDefaults featureIdentifier:identifierCopy requirementOverridableEvaluator:v9];
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(&location);
@@ -632,11 +632,11 @@ uint64_t __113__HKFeatureAvailabilityRequirementEvaluationDataSource_requirement
   return v8;
 }
 
-- (id)isWatchAppInstalledWithBundleIdentifier:(id)a3 error:(id *)a4
+- (id)isWatchAppInstalledWithBundleIdentifier:(id)identifier error:(id *)error
 {
   watchAppInstallationDataSource = self->_watchAppInstallationDataSource;
   v13 = 0;
-  v6 = [(HKWatchAppInstallationDataSource *)watchAppInstallationDataSource isWatchAppInstalledWithBundleIdentifier:a3 error:&v13];
+  v6 = [(HKWatchAppInstallationDataSource *)watchAppInstallationDataSource isWatchAppInstalledWithBundleIdentifier:identifier error:&v13];
   v7 = v13;
   v8 = v7;
   if (!v6)
@@ -645,10 +645,10 @@ uint64_t __113__HKFeatureAvailabilityRequirementEvaluationDataSource_requirement
     v10 = v9;
     if (v9)
     {
-      if (a4)
+      if (error)
       {
         v11 = v9;
-        *a4 = v10;
+        *error = v10;
       }
 
       else

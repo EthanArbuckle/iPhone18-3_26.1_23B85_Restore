@@ -1,27 +1,27 @@
 @interface TransitSchedulesDepartureDataProvider
-+ (double)durationForVisibleDeparturesStartingAtDate:(id)a3 timeZone:(id)a4;
-+ (id)departureSequenceContainingTripIdentifier:(unint64_t)a3 departureSequences:(id)a4;
-+ (id)serviceTraitsForScheduleDate:(id)a3 timeZone:(id)a4;
-- (BOOL)selectDepartureWithTripIdentifier:(unint64_t)a3;
++ (double)durationForVisibleDeparturesStartingAtDate:(id)date timeZone:(id)zone;
++ (id)departureSequenceContainingTripIdentifier:(unint64_t)identifier departureSequences:(id)sequences;
++ (id)serviceTraitsForScheduleDate:(id)date timeZone:(id)zone;
+- (BOOL)selectDepartureWithTripIdentifier:(unint64_t)identifier;
 - (NSArray)departures;
-- (TransitSchedulesDepartureDataProvider)initWithTransitMapItem:(id)a3 selectedDepartureSequence:(id)a4 departureSequences:(id)a5 timeZone:(id)a6 initialScheduleDate:(id)a7;
+- (TransitSchedulesDepartureDataProvider)initWithTransitMapItem:(id)item selectedDepartureSequence:(id)sequence departureSequences:(id)sequences timeZone:(id)zone initialScheduleDate:(id)date;
 - (TransitSchedulesDepartureDataProviderDelegate)delegate;
-- (id)_departureSequenceContainingTripIdentifier:(unint64_t)a3;
-- (id)filterActiveDepartureSequencesFrom:(id)a3 referenceDate:(id)a4;
-- (id)frequencyStringForDeparture:(id)a3;
-- (id)selectDepartureAtIndex:(unint64_t)a3;
+- (id)_departureSequenceContainingTripIdentifier:(unint64_t)identifier;
+- (id)filterActiveDepartureSequencesFrom:(id)from referenceDate:(id)date;
+- (id)frequencyStringForDeparture:(id)departure;
+- (id)selectDepartureAtIndex:(unint64_t)index;
 - (unint64_t)_indexForNextIncomingDeparture;
 - (unint64_t)_indexForSelectedTripIdentifier;
-- (unint64_t)_indexForTripIdentifier:(unint64_t)a3 scheduledDepartureDate:(id)a4;
-- (unint64_t)indexForDepartureSequence:(id)a3;
+- (unint64_t)_indexForTripIdentifier:(unint64_t)identifier scheduledDepartureDate:(id)date;
+- (unint64_t)indexForDepartureSequence:(id)sequence;
 - (unint64_t)timeDisplayStyle;
 - (void)_clearDepartures;
-- (void)_fetchNewScheduleDataForDate:(id)a3 tripIdentifier:(unint64_t)a4 withHandler:(id)a5;
-- (void)processDeparturesFromDepartureSequences:(id)a3 animatingDifferences:(BOOL)a4;
-- (void)selectDepartureSequence:(id)a3;
-- (void)selectDepartureSequenceAtIndex:(unint64_t)a3;
+- (void)_fetchNewScheduleDataForDate:(id)date tripIdentifier:(unint64_t)identifier withHandler:(id)handler;
+- (void)processDeparturesFromDepartureSequences:(id)sequences animatingDifferences:(BOOL)differences;
+- (void)selectDepartureSequence:(id)sequence;
+- (void)selectDepartureSequenceAtIndex:(unint64_t)index;
 - (void)selectNextIncomingDeparture;
-- (void)setScheduleWindowStartDate:(id)a3;
+- (void)setScheduleWindowStartDate:(id)date;
 @end
 
 @implementation TransitSchedulesDepartureDataProvider
@@ -35,27 +35,27 @@
 
 - (unint64_t)timeDisplayStyle
 {
-  v2 = [(NSArray *)self->_departureSequences firstObject];
-  v3 = [v2 departureTimeDisplayStyle];
+  firstObject = [(NSArray *)self->_departureSequences firstObject];
+  departureTimeDisplayStyle = [firstObject departureTimeDisplayStyle];
 
-  return v3;
+  return departureTimeDisplayStyle;
 }
 
 - (void)selectNextIncomingDeparture
 {
-  v3 = [(TransitSchedulesDepartureDataProvider *)self _indexForNextIncomingDeparture];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  _indexForNextIncomingDeparture = [(TransitSchedulesDepartureDataProvider *)self _indexForNextIncomingDeparture];
+  if (_indexForNextIncomingDeparture != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(TransitSchedulesDepartureDataProvider *)self selectDepartureAtIndex:v3];
+    v4 = [(TransitSchedulesDepartureDataProvider *)self selectDepartureAtIndex:_indexForNextIncomingDeparture];
   }
 }
 
-- (void)selectDepartureSequenceAtIndex:(unint64_t)a3
+- (void)selectDepartureSequenceAtIndex:(unint64_t)index
 {
   obj = [(NSArray *)self->_departureSequences objectAtIndexedSubscript:?];
-  v5 = [obj headsign];
-  v6 = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence headsign];
-  v7 = [v5 isEqualToString:v6];
+  headsign = [obj headsign];
+  headsign2 = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence headsign];
+  v7 = [headsign isEqualToString:headsign2];
 
   if ((v7 & 1) == 0)
   {
@@ -63,27 +63,27 @@
     self->_selectedDeparture = 0;
 
     objc_storeStrong(&self->_selectedDepartureSequence, obj);
-    v9 = [(TransitSchedulesDepartureDataProvider *)self delegate];
-    [v9 departureDataProvider:self selectedDepartureSequence:self->_selectedDepartureSequence withIndex:a3];
+    delegate = [(TransitSchedulesDepartureDataProvider *)self delegate];
+    [delegate departureDataProvider:self selectedDepartureSequence:self->_selectedDepartureSequence withIndex:index];
 
-    v10 = [(TransitSchedulesDepartureDataProvider *)self delegate];
-    v11 = [(TransitSchedulesDepartureDataProvider *)self departures];
-    [v10 departureDataProvider:self updatedDepartures:v11];
+    delegate2 = [(TransitSchedulesDepartureDataProvider *)self delegate];
+    departures = [(TransitSchedulesDepartureDataProvider *)self departures];
+    [delegate2 departureDataProvider:self updatedDepartures:departures];
   }
 }
 
-- (void)selectDepartureSequence:(id)a3
+- (void)selectDepartureSequence:(id)sequence
 {
-  v4 = a3;
-  v5 = [(TransitSchedulesDepartureDataProvider *)self indexForDepartureSequence:v4];
+  sequenceCopy = sequence;
+  v5 = [(TransitSchedulesDepartureDataProvider *)self indexForDepartureSequence:sequenceCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = sub_100798DBC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 headsign];
+      headsign = [sequenceCopy headsign];
       v8 = 138412290;
-      v9 = v7;
+      v9 = headsign;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "attempted to select headsign %@ but couldn't find it", &v8, 0xCu);
     }
   }
@@ -91,10 +91,10 @@
   [(TransitSchedulesDepartureDataProvider *)self selectDepartureSequenceAtIndex:v5];
 }
 
-- (unint64_t)indexForDepartureSequence:(id)a3
+- (unint64_t)indexForDepartureSequence:(id)sequence
 {
-  v4 = a3;
-  v5 = v4;
+  sequenceCopy = sequence;
+  v5 = sequenceCopy;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (self->_selectedDepartureSequence)
   {
@@ -107,7 +107,7 @@
     v9[1] = 3221225472;
     v9[2] = sub_100CBBCB8;
     v9[3] = &unk_101650480;
-    v10 = v4;
+    v10 = sequenceCopy;
     v11 = &v12;
     [(NSArray *)departureSequences enumerateObjectsUsingBlock:v9];
     v6 = v13[3];
@@ -118,18 +118,18 @@
   return v6;
 }
 
-- (id)selectDepartureAtIndex:(unint64_t)a3
+- (id)selectDepartureAtIndex:(unint64_t)index
 {
-  v5 = [(TransitSchedulesDepartureDataProvider *)self departures];
-  if ([v5 count] > a3)
+  departures = [(TransitSchedulesDepartureDataProvider *)self departures];
+  if ([departures count] > index)
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [departures objectAtIndexedSubscript:index];
     selectedDeparture = self->_selectedDeparture;
     self->_selectedDeparture = v6;
     v8 = v6;
 
-    v9 = [(TransitSchedulesDepartureDataProvider *)self delegate];
-    [v9 departureDataProvider:self selectedDeparture:v8 withIndex:a3];
+    delegate = [(TransitSchedulesDepartureDataProvider *)self delegate];
+    [delegate departureDataProvider:self selectedDeparture:v8 withIndex:index];
   }
 
   return 0;
@@ -137,8 +137,8 @@
 
 - (unint64_t)_indexForNextIncomingDeparture
 {
-  v2 = [(TransitSchedulesDepartureDataProvider *)self departures];
-  if ([v2 count])
+  departures = [(TransitSchedulesDepartureDataProvider *)self departures];
+  if ([departures count])
   {
     v8 = 0;
     v9 = &v8;
@@ -149,7 +149,7 @@
     v7[2] = sub_100CBBF3C;
     v7[3] = &unk_101650458;
     v7[4] = &v8;
-    [v2 enumerateObjectsUsingBlock:v7];
+    [departures enumerateObjectsUsingBlock:v7];
     v3 = v9[3];
     if (v3 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -160,7 +160,7 @@
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "No incoming departures, so selecting the most recent one", v6, 2u);
       }
 
-      v3 = [v2 count] - 1;
+      v3 = [departures count] - 1;
       v9[3] = v3;
     }
 
@@ -183,26 +183,26 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(GEOTransitDeparture *)selectedDeparture tripIdentifier];
-  v5 = [(GEOTransitDeparture *)self->_selectedDeparture scheduledDepartureDate];
-  v6 = [(TransitSchedulesDepartureDataProvider *)self _indexForTripIdentifier:v4 scheduledDepartureDate:v5];
+  tripIdentifier = [(GEOTransitDeparture *)selectedDeparture tripIdentifier];
+  scheduledDepartureDate = [(GEOTransitDeparture *)self->_selectedDeparture scheduledDepartureDate];
+  v6 = [(TransitSchedulesDepartureDataProvider *)self _indexForTripIdentifier:tripIdentifier scheduledDepartureDate:scheduledDepartureDate];
 
   return v6;
 }
 
-- (unint64_t)_indexForTripIdentifier:(unint64_t)a3 scheduledDepartureDate:(id)a4
+- (unint64_t)_indexForTripIdentifier:(unint64_t)identifier scheduledDepartureDate:(id)date
 {
-  v6 = a4;
-  v7 = [(TransitSchedulesDepartureDataProvider *)self departures];
-  if ([v7 count])
+  dateCopy = date;
+  departures = [(TransitSchedulesDepartureDataProvider *)self departures];
+  if ([departures count])
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100CBC0C8;
     v10[3] = &unk_101650430;
-    v12 = a3;
-    v11 = v6;
-    v8 = [v7 indexOfObjectPassingTest:v10];
+    identifierCopy = identifier;
+    v11 = dateCopy;
+    v8 = [departures indexOfObjectPassingTest:v10];
   }
 
   else
@@ -213,24 +213,24 @@
   return v8;
 }
 
-- (id)_departureSequenceContainingTripIdentifier:(unint64_t)a3
+- (id)_departureSequenceContainingTripIdentifier:(unint64_t)identifier
 {
   v5 = objc_opt_class();
   departureSequences = self->_departureSequences;
 
-  return [v5 departureSequenceContainingTripIdentifier:a3 departureSequences:departureSequences];
+  return [v5 departureSequenceContainingTripIdentifier:identifier departureSequences:departureSequences];
 }
 
-- (BOOL)selectDepartureWithTripIdentifier:(unint64_t)a3
+- (BOOL)selectDepartureWithTripIdentifier:(unint64_t)identifier
 {
   if (!self->_selectedDepartureSequence)
   {
-    v5 = [(TransitSchedulesDepartureDataProvider *)self _departureSequenceContainingTripIdentifier:a3];
+    v5 = [(TransitSchedulesDepartureDataProvider *)self _departureSequenceContainingTripIdentifier:identifier];
     selectedDepartureSequence = self->_selectedDepartureSequence;
     self->_selectedDepartureSequence = v5;
   }
 
-  v7 = [(TransitSchedulesDepartureDataProvider *)self _indexForTripIdentifier:a3 scheduledDepartureDate:0];
+  v7 = [(TransitSchedulesDepartureDataProvider *)self _indexForTripIdentifier:identifier scheduledDepartureDate:0];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [(TransitSchedulesDepartureDataProvider *)self selectDepartureAtIndex:v7];
@@ -254,22 +254,22 @@
   if ([(NSMutableDictionary *)self->_accruedDepartures count])
   {
     accruedDepartures = self->_accruedDepartures;
-    v5 = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence headsign];
-    v6 = [(NSMutableDictionary *)accruedDepartures objectForKeyedSubscript:v5];
+    headsign = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence headsign];
+    departures = [(NSMutableDictionary *)accruedDepartures objectForKeyedSubscript:headsign];
   }
 
   else
   {
-    v6 = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence departures];
+    departures = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence departures];
   }
 
-  return v6;
+  return departures;
 }
 
-- (void)processDeparturesFromDepartureSequences:(id)a3 animatingDifferences:(BOOL)a4
+- (void)processDeparturesFromDepartureSequences:(id)sequences animatingDifferences:(BOOL)differences
 {
-  v5 = a3;
-  if (![v5 count])
+  sequencesCopy = sequences;
+  if (![sequencesCopy count])
   {
     v6 = sub_100798DBC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -282,11 +282,11 @@
   }
 
   v8 = +[MKTransitItemReferenceDateUpdater referenceDate];
-  v9 = [(TransitSchedulesDepartureDataProvider *)self filterActiveDepartureSequencesFrom:v5 referenceDate:v8];
+  v9 = [(TransitSchedulesDepartureDataProvider *)self filterActiveDepartureSequencesFrom:sequencesCopy referenceDate:v8];
 
   v10 = [v9 copy];
   objc_storeStrong(&self->_departureSequences, v10);
-  v11 = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence headsign];
+  headsign = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence headsign];
   if (self->_arePastDeparturesDroppedByService)
   {
     if (!self->_accruedDepartures)
@@ -318,36 +318,36 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v27 = v11;
+      v27 = headsign;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_FAULT, "No selectedDepartureSequence found after update. Selected headsign prior to update: %@", buf, 0xCu);
     }
 
-    v18 = [(NSArray *)self->_departureSequences firstObject];
+    firstObject = [(NSArray *)self->_departureSequences firstObject];
     v19 = self->_selectedDepartureSequence;
-    self->_selectedDepartureSequence = v18;
+    self->_selectedDepartureSequence = firstObject;
   }
 
-  v20 = [(TransitSchedulesDepartureDataProvider *)self delegate];
-  [v20 departureDataProvider:self updatedDepartureSequences:self->_departureSequences];
+  delegate = [(TransitSchedulesDepartureDataProvider *)self delegate];
+  [delegate departureDataProvider:self updatedDepartureSequences:self->_departureSequences];
 
-  v21 = [(TransitSchedulesDepartureDataProvider *)self delegate];
-  v22 = [(TransitSchedulesDepartureDataProvider *)self departures];
-  [v21 departureDataProvider:self updatedDepartures:v22];
+  delegate2 = [(TransitSchedulesDepartureDataProvider *)self delegate];
+  departures = [(TransitSchedulesDepartureDataProvider *)self departures];
+  [delegate2 departureDataProvider:self updatedDepartures:departures];
 
-  v23 = [(TransitSchedulesDepartureDataProvider *)self _indexForSelectedTripIdentifier];
-  if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+  _indexForSelectedTripIdentifier = [(TransitSchedulesDepartureDataProvider *)self _indexForSelectedTripIdentifier];
+  if (_indexForSelectedTripIdentifier != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v24 = [(TransitSchedulesDepartureDataProvider *)self selectDepartureAtIndex:v23];
+    v24 = [(TransitSchedulesDepartureDataProvider *)self selectDepartureAtIndex:_indexForSelectedTripIdentifier];
   }
 }
 
-- (id)filterActiveDepartureSequencesFrom:(id)a3 referenceDate:(id)a4
+- (id)filterActiveDepartureSequencesFrom:(id)from referenceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] == 1)
+  fromCopy = from;
+  dateCopy = date;
+  if ([fromCopy count] == 1)
   {
-    v8 = v6;
+    v8 = fromCopy;
   }
 
   else
@@ -356,17 +356,17 @@
     v14 = 3221225472;
     v15 = sub_100CBCB44;
     v16 = &unk_101650390;
-    v17 = v7;
-    v18 = self;
-    v9 = [v6 indexesOfObjectsPassingTest:&v13];
-    if ([v9 count] && (v10 = objc_msgSend(v9, "count"), v10 != objc_msgSend(v6, "count")))
+    v17 = dateCopy;
+    selfCopy = self;
+    v9 = [fromCopy indexesOfObjectsPassingTest:&v13];
+    if ([v9 count] && (v10 = objc_msgSend(v9, "count"), v10 != objc_msgSend(fromCopy, "count")))
     {
-      v11 = [v6 objectsAtIndexes:v9];
+      v11 = [fromCopy objectsAtIndexes:v9];
     }
 
     else
     {
-      v11 = v6;
+      v11 = fromCopy;
     }
 
     v8 = v11;
@@ -375,12 +375,12 @@
   return v8;
 }
 
-- (id)frequencyStringForDeparture:(id)a3
+- (id)frequencyStringForDeparture:(id)departure
 {
-  if (a3)
+  if (departure)
   {
-    v4 = [a3 scheduledDepartureDate];
-    v5 = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence frequencyToDescribeAtDate:v4];
+    scheduledDepartureDate = [departure scheduledDepartureDate];
+    v5 = [(GEOTransitDepartureSequence *)self->_selectedDepartureSequence frequencyToDescribeAtDate:scheduledDepartureDate];
     if (v5)
     {
       v6 = [NSString _navigation_formattedDescriptionForFrequency:v5];
@@ -400,13 +400,13 @@
   return v6;
 }
 
-- (void)setScheduleWindowStartDate:(id)a3
+- (void)setScheduleWindowStartDate:(id)date
 {
-  v5 = a3;
-  if (![(NSDate *)self->_scheduleWindowStartDate isEqualToDate:v5])
+  dateCopy = date;
+  if (![(NSDate *)self->_scheduleWindowStartDate isEqualToDate:dateCopy])
   {
-    objc_storeStrong(&self->_scheduleWindowStartDate, a3);
-    v6 = [(GEOTransitDeparture *)self->_selectedDeparture tripIdentifier];
+    objc_storeStrong(&self->_scheduleWindowStartDate, date);
+    tripIdentifier = [(GEOTransitDeparture *)self->_selectedDeparture tripIdentifier];
     [(TransitSchedulesDepartureDataProvider *)self _clearDepartures];
     [(TransitSchedulesDepartureDataProvider *)self setRemoteNetworkState:2];
     objc_initWeak(&location, self);
@@ -416,7 +416,7 @@
     v8[2] = sub_100CBCDAC;
     v8[3] = &unk_101650368;
     objc_copyWeak(&v9, &location);
-    [(TransitSchedulesDepartureDataProvider *)self _fetchNewScheduleDataForDate:scheduleWindowStartDate tripIdentifier:v6 withHandler:v8];
+    [(TransitSchedulesDepartureDataProvider *)self _fetchNewScheduleDataForDate:scheduleWindowStartDate tripIdentifier:tripIdentifier withHandler:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
@@ -427,26 +427,26 @@
   departureSequences = self->_departureSequences;
   self->_departureSequences = 0;
 
-  v4 = [(TransitSchedulesDepartureDataProvider *)self delegate];
-  [v4 departureDataProvider:self updatedDepartures:0];
+  delegate = [(TransitSchedulesDepartureDataProvider *)self delegate];
+  [delegate departureDataProvider:self updatedDepartures:0];
 }
 
-- (void)_fetchNewScheduleDataForDate:(id)a3 tripIdentifier:(unint64_t)a4 withHandler:(id)a5
+- (void)_fetchNewScheduleDataForDate:(id)date tripIdentifier:(unint64_t)identifier withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MKMapItemIdentifier *)self->_stationIdentifier muid];
-  v11 = [objc_opt_class() serviceTraitsForScheduleDate:v8 timeZone:self->_timeZone];
+  dateCopy = date;
+  handlerCopy = handler;
+  muid = [(MKMapItemIdentifier *)self->_stationIdentifier muid];
+  v11 = [objc_opt_class() serviceTraitsForScheduleDate:dateCopy timeZone:self->_timeZone];
   objc_initWeak(&location, self);
   v12 = +[MKMapService sharedService];
-  v13 = [v12 ticketForTransitDeparturesAtStation:v10 line:self->_transitLineIdentifier referenceTripID:a4 includeAllDirectionNames:-[TransitSchedulesDepartureDataProvider requestAllDirections](self traits:{"requestAllDirections"), v11}];
+  v13 = [v12 ticketForTransitDeparturesAtStation:muid line:self->_transitLineIdentifier referenceTripID:identifier includeAllDirectionNames:-[TransitSchedulesDepartureDataProvider requestAllDirections](self traits:{"requestAllDirections"), v11}];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100CBD0FC;
   v15[3] = &unk_10165E308;
   objc_copyWeak(&v17, &location);
-  v14 = v9;
+  v14 = handlerCopy;
   v16 = v14;
   [v13 submitWithHandler:v15 networkActivity:0];
 
@@ -454,73 +454,73 @@
   objc_destroyWeak(&location);
 }
 
-- (TransitSchedulesDepartureDataProvider)initWithTransitMapItem:(id)a3 selectedDepartureSequence:(id)a4 departureSequences:(id)a5 timeZone:(id)a6 initialScheduleDate:(id)a7
+- (TransitSchedulesDepartureDataProvider)initWithTransitMapItem:(id)item selectedDepartureSequence:(id)sequence departureSequences:(id)sequences timeZone:(id)zone initialScheduleDate:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemCopy = item;
+  sequenceCopy = sequence;
+  sequencesCopy = sequences;
+  zoneCopy = zone;
+  dateCopy = date;
   v34.receiver = self;
   v34.super_class = TransitSchedulesDepartureDataProvider;
   v17 = [(TransitSchedulesDepartureDataProvider *)&v34 init];
   if (v17)
   {
-    if (v15)
+    if (zoneCopy)
     {
-      v18 = v15;
+      timeZone = zoneCopy;
     }
 
     else
     {
-      v18 = [v12 timeZone];
+      timeZone = [itemCopy timeZone];
     }
 
     timeZone = v17->_timeZone;
-    v17->_timeZone = v18;
+    v17->_timeZone = timeZone;
 
-    v20 = [v12 _identifier];
+    _identifier = [itemCopy _identifier];
     stationIdentifier = v17->_stationIdentifier;
-    v17->_stationIdentifier = v20;
+    v17->_stationIdentifier = _identifier;
 
-    v22 = [v12 name];
+    name = [itemCopy name];
     stationName = v17->_stationName;
-    v17->_stationName = v22;
+    v17->_stationName = name;
 
-    v24 = [v14 copy];
+    v24 = [sequencesCopy copy];
     departureSequences = v17->_departureSequences;
     v17->_departureSequences = v24;
 
-    objc_storeStrong(&v17->_selectedDepartureSequence, a4);
-    v26 = [(GEOTransitDepartureSequence *)v17->_selectedDepartureSequence departures];
-    v17->_remoteNetworkState = v26 != 0;
+    objc_storeStrong(&v17->_selectedDepartureSequence, sequence);
+    departures = [(GEOTransitDepartureSequence *)v17->_selectedDepartureSequence departures];
+    v17->_remoteNetworkState = departures != 0;
 
-    v27 = [v13 line];
-    v28 = v27;
-    if (v27)
+    line = [sequenceCopy line];
+    v28 = line;
+    if (line)
     {
-      v29 = v27;
+      line2 = line;
     }
 
     else
     {
-      v30 = [v14 firstObject];
-      v29 = [v30 line];
+      firstObject = [sequencesCopy firstObject];
+      line2 = [firstObject line];
     }
 
-    v17->_transitLineIdentifier = [v29 muid];
-    objc_storeStrong(&v17->_scheduleWindowStartDate, a7);
+    v17->_transitLineIdentifier = [line2 muid];
+    objc_storeStrong(&v17->_scheduleWindowStartDate, date);
     v31 = +[GEOCountryConfiguration sharedConfiguration];
-    v32 = [v31 countryCode];
-    v17->_arePastDeparturesDroppedByService = [v32 isEqualToString:@"CN"];
+    countryCode = [v31 countryCode];
+    v17->_arePastDeparturesDroppedByService = [countryCode isEqualToString:@"CN"];
   }
 
   return v17;
 }
 
-+ (id)departureSequenceContainingTripIdentifier:(unint64_t)a3 departureSequences:(id)a4
++ (id)departureSequenceContainingTripIdentifier:(unint64_t)identifier departureSequences:(id)sequences
 {
-  v5 = a4;
+  sequencesCopy = sequences;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -532,8 +532,8 @@
   v10[2] = sub_100CBD744;
   v10[3] = &unk_101650408;
   v10[4] = &v11;
-  v10[5] = a3;
-  [v5 enumerateObjectsUsingBlock:v10];
+  v10[5] = identifier;
+  [sequencesCopy enumerateObjectsUsingBlock:v10];
   v6 = v12[5];
   if (!v6)
   {
@@ -541,7 +541,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v18 = a3;
+      identifierCopy = identifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Could not find a departureSequence containing the trip identifier %llu", buf, 0xCu);
     }
 
@@ -554,63 +554,63 @@
   return v8;
 }
 
-+ (id)serviceTraitsForScheduleDate:(id)a3 timeZone:(id)a4
++ (id)serviceTraitsForScheduleDate:(id)date timeZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   v8 = +[MKMapService sharedService];
-  v9 = [v8 defaultTraits];
+  defaultTraits = [v8 defaultTraits];
 
-  [a1 durationForVisibleDeparturesStartingAtDate:v7 timeZone:v6];
+  [self durationForVisibleDeparturesStartingAtDate:dateCopy timeZone:zoneCopy];
   v11 = v10;
 
-  [v7 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
 
-  v14 = [v9 transitScheduleFilter];
-  v15 = [v14 highFrequencyFilter];
-  v16 = [v15 timeRange];
-  [v16 setStartTime:v13];
+  transitScheduleFilter = [defaultTraits transitScheduleFilter];
+  highFrequencyFilter = [transitScheduleFilter highFrequencyFilter];
+  timeRange = [highFrequencyFilter timeRange];
+  [timeRange setStartTime:v13];
 
-  v17 = [v14 highFrequencyFilter];
-  v18 = [v17 timeRange];
-  [v18 setDuration:v11];
+  highFrequencyFilter2 = [transitScheduleFilter highFrequencyFilter];
+  timeRange2 = [highFrequencyFilter2 timeRange];
+  [timeRange2 setDuration:v11];
 
-  v19 = [v14 highFrequencyFilter];
-  [v19 setNumAdditionalDepartures:0];
+  highFrequencyFilter3 = [transitScheduleFilter highFrequencyFilter];
+  [highFrequencyFilter3 setNumAdditionalDepartures:0];
 
-  v20 = [v14 lowFrequencyFilter];
-  v21 = [v20 timeRange];
-  [v21 setStartTime:v13];
+  lowFrequencyFilter = [transitScheduleFilter lowFrequencyFilter];
+  timeRange3 = [lowFrequencyFilter timeRange];
+  [timeRange3 setStartTime:v13];
 
-  v22 = [v14 lowFrequencyFilter];
-  v23 = [v22 timeRange];
-  [v23 setDuration:v11];
+  lowFrequencyFilter2 = [transitScheduleFilter lowFrequencyFilter];
+  timeRange4 = [lowFrequencyFilter2 timeRange];
+  [timeRange4 setDuration:v11];
 
-  v24 = [v14 lowFrequencyFilter];
-  [v24 setNumAdditionalDepartures:0];
+  lowFrequencyFilter3 = [transitScheduleFilter lowFrequencyFilter];
+  [lowFrequencyFilter3 setNumAdditionalDepartures:0];
 
-  v25 = [v14 operatingHoursRange];
-  [v25 setStartTime:v13];
+  operatingHoursRange = [transitScheduleFilter operatingHoursRange];
+  [operatingHoursRange setStartTime:v13];
 
-  v26 = [v14 operatingHoursRange];
-  [v26 setDuration:v11];
+  operatingHoursRange2 = [transitScheduleFilter operatingHoursRange];
+  [operatingHoursRange2 setDuration:v11];
 
-  return v9;
+  return defaultTraits;
 }
 
-+ (double)durationForVisibleDeparturesStartingAtDate:(id)a3 timeZone:(id)a4
++ (double)durationForVisibleDeparturesStartingAtDate:(id)date timeZone:(id)zone
 {
-  v5 = a4;
-  v6 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   v7 = +[NSCalendar currentCalendar];
-  [v7 setTimeZone:v5];
+  [v7 setTimeZone:zoneCopy];
 
-  v8 = [v7 components:2097180 fromDate:v6];
+  v8 = [v7 components:2097180 fromDate:dateCopy];
   [v8 setDay:{objc_msgSend(v8, "day") + 1}];
   [v8 setHour:3];
   v9 = [v7 dateFromComponents:v8];
-  [v9 timeIntervalSinceDate:v6];
+  [v9 timeIntervalSinceDate:dateCopy];
   v11 = v10;
 
   return fmax(v11, 43200.0);

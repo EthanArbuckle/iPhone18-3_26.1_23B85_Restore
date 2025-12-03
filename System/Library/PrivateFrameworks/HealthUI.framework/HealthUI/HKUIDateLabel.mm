@@ -1,10 +1,10 @@
 @interface HKUIDateLabel
-+ (id)_formattedTextFromDate:(id)a3 formatTemplate:(int64_t)a4 useUppercase:(BOOL)a5;
-+ (id)dateStringForDateRange:(id)a3 formatTemplate:(int64_t)a4 useUppercase:(BOOL)a5;
-- (BOOL)_setDateRange:(id)a3;
++ (id)_formattedTextFromDate:(id)date formatTemplate:(int64_t)template useUppercase:(BOOL)uppercase;
++ (id)dateStringForDateRange:(id)range formatTemplate:(int64_t)template useUppercase:(BOOL)uppercase;
+- (BOOL)_setDateRange:(id)range;
 - (HKUIDateLabel)init;
-- (void)setDate:(id)a3 formatTemplate:(int64_t)a4;
-- (void)setDateRange:(id)a3 formatTemplate:(int64_t)a4;
+- (void)setDate:(id)date formatTemplate:(int64_t)template;
+- (void)setDateRange:(id)range formatTemplate:(int64_t)template;
 @end
 
 @implementation HKUIDateLabel
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (void)setDate:(id)a3 formatTemplate:(int64_t)a4
+- (void)setDate:(id)date formatTemplate:(int64_t)template
 {
-  if (a3)
+  if (date)
   {
-    v6 = [HKValueRange valueRangeWithMinValue:a3 maxValue:a3];
+    v6 = [HKValueRange valueRangeWithMinValue:date maxValue:date];
   }
 
   else
@@ -35,54 +35,54 @@
   }
 
   v7 = v6;
-  [(HKUIDateLabel *)self setDateRange:v6 formatTemplate:a4];
+  [(HKUIDateLabel *)self setDateRange:v6 formatTemplate:template];
 }
 
-- (void)setDateRange:(id)a3 formatTemplate:(int64_t)a4
+- (void)setDateRange:(id)range formatTemplate:(int64_t)template
 {
-  v7 = a3;
+  rangeCopy = range;
   if ([(HKUIDateLabel *)self _setDateRange:?])
   {
-    v6 = [HKUIDateLabel dateStringForDateRange:v7 formatTemplate:a4 useUppercase:self->_useUppercase];
+    v6 = [HKUIDateLabel dateStringForDateRange:rangeCopy formatTemplate:template useUppercase:self->_useUppercase];
     [(HKUIDateLabel *)self setText:v6];
   }
 }
 
-- (BOOL)_setDateRange:(id)a3
+- (BOOL)_setDateRange:(id)range
 {
-  v5 = a3;
-  if (v5 && [(HKValueRange *)self->_dateRange isEqual:v5])
+  rangeCopy = range;
+  if (rangeCopy && [(HKValueRange *)self->_dateRange isEqual:rangeCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_dateRange, a3);
+    objc_storeStrong(&self->_dateRange, range);
     v6 = 1;
   }
 
   return v6;
 }
 
-+ (id)dateStringForDateRange:(id)a3 formatTemplate:(int64_t)a4 useUppercase:(BOOL)a5
++ (id)dateStringForDateRange:(id)range formatTemplate:(int64_t)template useUppercase:(BOOL)uppercase
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  uppercaseCopy = uppercase;
+  rangeCopy = range;
+  v8 = rangeCopy;
+  if (rangeCopy)
   {
-    v9 = [v7 minValue];
-    v10 = [v8 maxValue];
-    v11 = [v9 isEqual:v10];
+    minValue = [rangeCopy minValue];
+    maxValue = [v8 maxValue];
+    v11 = [minValue isEqual:maxValue];
 
-    v12 = [v8 minValue];
-    v13 = [HKUIDateLabel _formattedTextFromDate:v12 formatTemplate:a4 useUppercase:v5];
+    minValue2 = [v8 minValue];
+    v13 = [HKUIDateLabel _formattedTextFromDate:minValue2 formatTemplate:template useUppercase:uppercaseCopy];
 
     if ((v11 & 1) == 0)
     {
-      v14 = [v8 maxValue];
-      v15 = [HKUIDateLabel _formattedTextFromDate:v14 formatTemplate:a4 useUppercase:v5];
+      maxValue2 = [v8 maxValue];
+      v15 = [HKUIDateLabel _formattedTextFromDate:maxValue2 formatTemplate:template useUppercase:uppercaseCopy];
 
       v16 = MEMORY[0x1E696AEC0];
       v17 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -101,29 +101,29 @@
   return v13;
 }
 
-+ (id)_formattedTextFromDate:(id)a3 formatTemplate:(int64_t)a4 useUppercase:(BOOL)a5
++ (id)_formattedTextFromDate:(id)date formatTemplate:(int64_t)template useUppercase:(BOOL)uppercase
 {
-  if (a3)
+  if (date)
   {
-    v6 = HKLocalizedStringForDateAndTemplate(a3, a4);
-    v7 = v6;
-    if (a5)
+    v6 = HKLocalizedStringForDateAndTemplate(date, template);
+    currentHandler = v6;
+    if (uppercase)
     {
-      v8 = [MEMORY[0x1E695DF58] currentLocale];
-      v9 = [v7 uppercaseStringWithLocale:v8];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      v9 = [currentHandler uppercaseStringWithLocale:currentLocale];
     }
 
     else
     {
-      v7 = v6;
-      v9 = v7;
+      currentHandler = v6;
+      v9 = currentHandler;
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"HKUIDateLabel.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"date != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKUIDateLabel.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"date != nil"}];
     v9 = 0;
   }
 

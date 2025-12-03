@@ -1,44 +1,44 @@
 @interface EKStructuredLocation
-+ (EKStructuredLocation)locationWithCalLocation:(id)a3;
-+ (EKStructuredLocation)locationWithGEOMapItem:(id)a3;
++ (EKStructuredLocation)locationWithCalLocation:(id)location;
++ (EKStructuredLocation)locationWithGEOMapItem:(id)item;
 + (EKStructuredLocation)locationWithMapItem:(MKMapItem *)mapItem;
-+ (EKStructuredLocation)locationWithPlacemark:(id)a3;
++ (EKStructuredLocation)locationWithPlacemark:(id)placemark;
 + (EKStructuredLocation)locationWithTitle:(NSString *)title;
-+ (id)_stringByStrippingControlCharactersFromString:(id)a3;
-+ (id)displayLabelForContact:(id)a3 unlocalizedLabel:(id)a4;
++ (id)_stringByStrippingControlCharactersFromString:(id)string;
++ (id)displayLabelForContact:(id)contact unlocalizedLabel:(id)label;
 + (id)knownIdentityKeysForComparison;
 + (id)knownRelationshipWeakKeys;
 + (id)knownSingleValueKeysForComparison;
 + (id)knownSingleValueKeysToSkipForUIComparison;
 - (BOOL)_reset;
 - (BOOL)hasKnownSpatialData;
-- (BOOL)isEqualToLocation:(id)a3;
+- (BOOL)isEqualToLocation:(id)location;
 - (BOOL)isPrediction;
 - (BOOL)isStructured;
 - (CLLocation)geoLocation;
-- (EKStructuredLocation)initWithPersistentObject:(id)a3 objectForCopy:(id)a4;
+- (EKStructuredLocation)initWithPersistentObject:(id)object objectForCopy:(id)copy;
 - (NSString)contactLabel;
 - (double)radius;
 - (id)cacheKey;
 - (id)calLocation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)geoURLString;
 - (id)semanticIdentifier;
 - (void)setGeoLocation:(CLLocation *)geoLocation;
-- (void)setLatitude:(id)a3;
-- (void)setLongitude:(id)a3;
+- (void)setLatitude:(id)latitude;
+- (void)setLongitude:(id)longitude;
 - (void)setRadius:(double)radius;
-- (void)setReferenceFrame:(id)a3;
-- (void)updateFromMapItem:(id)a3;
+- (void)setReferenceFrame:(id)frame;
+- (void)updateFromMapItem:(id)item;
 @end
 
 @implementation EKStructuredLocation
 
 - (BOOL)isPrediction
 {
-  v2 = [(EKStructuredLocation *)self predictedLOI];
-  v3 = v2 != 0;
+  predictedLOI = [(EKStructuredLocation *)self predictedLOI];
+  v3 = predictedLOI != 0;
 
   return v3;
 }
@@ -206,16 +206,16 @@ void __49__EKStructuredLocation_knownRelationshipWeakKeys__block_invoke()
   return v4;
 }
 
-+ (id)_stringByStrippingControlCharactersFromString:(id)a3
++ (id)_stringByStrippingControlCharactersFromString:(id)string
 {
   v3 = _stringByStrippingControlCharactersFromString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[EKStructuredLocation _stringByStrippingControlCharactersFromString:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:_stringByStrippingControlCharactersFromString__s_charSet];
+  v5 = [stringCopy componentsSeparatedByCharactersInSet:_stringByStrippingControlCharactersFromString__s_charSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F1B49D68];
 
@@ -239,24 +239,24 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
   return [v5 invert];
 }
 
-+ (EKStructuredLocation)locationWithPlacemark:(id)a3
++ (EKStructuredLocation)locationWithPlacemark:(id)placemark
 {
-  v3 = a3;
+  placemarkCopy = placemark;
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [v3 name];
-  [v4 setTitle:v5];
+  name = [placemarkCopy name];
+  [v4 setTitle:name];
 
-  v6 = [v3 postalAddress];
-  v7 = [v6 formattedAddressString];
-  [v4 setAddress:v7];
+  postalAddress = [placemarkCopy postalAddress];
+  formattedAddressString = [postalAddress formattedAddressString];
+  [v4 setAddress:formattedAddressString];
 
-  v8 = [v3 location];
-  [v4 setGeoLocation:v8];
+  location = [placemarkCopy location];
+  [v4 setGeoLocation:location];
 
-  v9 = [v3 region];
+  region = [placemarkCopy region];
 
-  [v9 radius];
+  [region radius];
   [v4 setRadius:?];
 
   return v4;
@@ -266,72 +266,72 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
 {
   v4 = mapItem;
   v5 = objc_opt_class();
-  v6 = [(MKMapItem *)v4 placemark];
-  v7 = [v5 locationWithPlacemark:v6];
+  placemark = [(MKMapItem *)v4 placemark];
+  v7 = [v5 locationWithPlacemark:placemark];
 
-  v8 = [(MKMapItem *)v4 name];
-  v9 = [a1 _stringByStrippingControlCharactersFromString:v8];
+  name = [(MKMapItem *)v4 name];
+  v9 = [self _stringByStrippingControlCharactersFromString:name];
   [v7 setTitle:v9];
 
-  v10 = [(MKMapItem *)v4 _handle];
+  _handle = [(MKMapItem *)v4 _handle];
 
-  [v7 setMapKitHandle:v10];
+  [v7 setMapKitHandle:_handle];
 
   return v7;
 }
 
-+ (EKStructuredLocation)locationWithGEOMapItem:(id)a3
++ (EKStructuredLocation)locationWithGEOMapItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x1E695FC20] placemarkWithGEOMapItem:v3];
+  v5 = [MEMORY[0x1E695FC20] placemarkWithGEOMapItem:itemCopy];
   v6 = [v4 locationWithPlacemark:v5];
 
-  v7 = [v3 _place];
-  v8 = [v7 name];
-  if (v8)
+  _place = [itemCopy _place];
+  name = [_place name];
+  if (name)
   {
-    [v6 setTitle:v8];
+    [v6 setTitle:name];
   }
 
   else
   {
-    v9 = [v3 name];
-    [v6 setTitle:v9];
+    name2 = [itemCopy name];
+    [v6 setTitle:name2];
   }
 
-  v10 = [EKWeakLinkClass() sharedService];
-  v11 = [v10 handleForMapItem:v3];
+  eKWeakLinkClass() = [EKWeakLinkClass() sharedService];
+  v11 = [eKWeakLinkClass() handleForMapItem:itemCopy];
   [v6 setMapKitHandle:v11];
 
   return v6;
 }
 
-+ (EKStructuredLocation)locationWithCalLocation:(id)a3
++ (EKStructuredLocation)locationWithCalLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [a1 locationWithTitle:v5];
+  locationCopy = location;
+  title = [locationCopy title];
+  v6 = [self locationWithTitle:title];
 
-  v7 = [v4 address];
-  [v6 setAddress:v7];
+  address = [locationCopy address];
+  [v6 setAddress:address];
 
-  [v4 radius];
+  [locationCopy radius];
   [v6 setRadius:?];
-  v8 = [v4 location];
-  [v6 setGeoLocation:v8];
+  location = [locationCopy location];
+  [v6 setGeoLocation:location];
 
-  v9 = [v4 mapKitHandle];
+  mapKitHandle = [locationCopy mapKitHandle];
 
-  [v6 setMapKitHandle:v9];
+  [v6 setMapKitHandle:mapKitHandle];
 
   return v6;
 }
 
-- (EKStructuredLocation)initWithPersistentObject:(id)a3 objectForCopy:(id)a4
+- (EKStructuredLocation)initWithPersistentObject:(id)object objectForCopy:(id)copy
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  copyCopy = copy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -341,11 +341,11 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
 
   v12.receiver = self;
   v12.super_class = EKStructuredLocation;
-  v9 = [(EKObject *)&v12 initWithPersistentObject:v6 objectForCopy:v7];
+  v9 = [(EKObject *)&v12 initWithPersistentObject:objectCopy objectForCopy:copyCopy];
   if (v9)
   {
-    v10 = [v7 predictedLOI];
-    [(EKStructuredLocation *)v9 setPredictedLOI:v10];
+    predictedLOI = [copyCopy predictedLOI];
+    [(EKStructuredLocation *)v9 setPredictedLOI:predictedLOI];
   }
 
   return v9;
@@ -353,16 +353,16 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
 
 - (BOOL)isStructured
 {
-  v3 = [(EKStructuredLocation *)self geoLocation];
-  if (v3)
+  geoLocation = [(EKStructuredLocation *)self geoLocation];
+  if (geoLocation)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(EKStructuredLocation *)self contactLabel];
-    v4 = v5 != 0;
+    contactLabel = [(EKStructuredLocation *)self contactLabel];
+    v4 = contactLabel != 0;
   }
 
   return v4;
@@ -370,38 +370,38 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
 
 - (BOOL)hasKnownSpatialData
 {
-  v3 = [(EKStructuredLocation *)self geoLocation];
-  if (v3)
+  geoLocation = [(EKStructuredLocation *)self geoLocation];
+  if (geoLocation)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(EKStructuredLocation *)self mapKitHandle];
-    v4 = v5 != 0;
+    mapKitHandle = [(EKStructuredLocation *)self mapKitHandle];
+    v4 = mapKitHandle != 0;
   }
 
   return v4;
 }
 
-- (void)setReferenceFrame:(id)a3
+- (void)setReferenceFrame:(id)frame
 {
-  [(EKObject *)self setSingleChangedValue:a3 forKey:*MEMORY[0x1E6992A78]];
+  [(EKObject *)self setSingleChangedValue:frame forKey:*MEMORY[0x1E6992A78]];
 
   [(EKStructuredLocation *)self _clearGeoLocationCache];
 }
 
-- (void)setLatitude:(id)a3
+- (void)setLatitude:(id)latitude
 {
-  [(EKObject *)self setSingleChangedValue:a3 forKey:*MEMORY[0x1E6992A58]];
+  [(EKObject *)self setSingleChangedValue:latitude forKey:*MEMORY[0x1E6992A58]];
 
   [(EKStructuredLocation *)self _clearGeoLocationCache];
 }
 
-- (void)setLongitude:(id)a3
+- (void)setLongitude:(id)longitude
 {
-  [(EKObject *)self setSingleChangedValue:a3 forKey:*MEMORY[0x1E6992A60]];
+  [(EKObject *)self setSingleChangedValue:longitude forKey:*MEMORY[0x1E6992A60]];
 
   [(EKStructuredLocation *)self _clearGeoLocationCache];
 }
@@ -439,11 +439,11 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
 - (id)cacheKey
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(EKStructuredLocation *)self latitude];
-  [v4 floatValue];
+  latitude = [(EKStructuredLocation *)self latitude];
+  [latitude floatValue];
   v6 = v5;
-  v7 = [(EKStructuredLocation *)self longitude];
-  [v7 floatValue];
+  longitude = [(EKStructuredLocation *)self longitude];
+  [longitude floatValue];
   v9 = [v3 stringWithFormat:@"%4f, %4f", *&v6, v8];
 
   return v9;
@@ -451,8 +451,8 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
 
 - (double)radius
 {
-  v2 = [(EKStructuredLocation *)self radiusRaw];
-  [v2 doubleValue];
+  radiusRaw = [(EKStructuredLocation *)self radiusRaw];
+  [radiusRaw doubleValue];
   v4 = v3;
 
   return v4;
@@ -470,11 +470,11 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
   v3 = [v2 stringByReplacingOccurrencesOfString:@"ab://" withString:&stru_1F1B49D68];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"ab\\://" withString:&stru_1F1B49D68];
 
-  v5 = [v4 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v4 stringByRemovingPercentEncoding];
 
-  if ([v5 length])
+  if ([stringByRemovingPercentEncoding length])
   {
-    v6 = v5;
+    v6 = stringByRemovingPercentEncoding;
   }
 
   else
@@ -491,8 +491,8 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
 {
   v7.receiver = self;
   v7.super_class = EKStructuredLocation;
-  v3 = [(EKObject *)&v7 _reset];
-  if (v3)
+  _reset = [(EKObject *)&v7 _reset];
+  if (_reset)
   {
     v4 = objc_opt_class();
     v6[0] = MEMORY[0x1E69E9820];
@@ -500,10 +500,10 @@ uint64_t __70__EKStructuredLocation__stringByStrippingControlCharactersFromStrin
     v6[2] = __30__EKStructuredLocation__reset__block_invoke;
     v6[3] = &unk_1E77FE7D0;
     v6[4] = self;
-    LOBYTE(v3) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
+    LOBYTE(_reset) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
   }
 
-  return v3;
+  return _reset;
 }
 
 id __30__EKStructuredLocation__reset__block_invoke(uint64_t a1, void *a2)
@@ -517,49 +517,49 @@ id __30__EKStructuredLocation__reset__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E30901FFFFFFFFLL])
   {
     v17.receiver = self;
     v17.super_class = EKStructuredLocation;
-    return [(EKObject *)&v17 copyWithZone:a3];
+    return [(EKObject *)&v17 copyWithZone:zone];
   }
 
   else
   {
     v5 = objc_alloc_init(EKStructuredLocation);
-    v6 = [(EKStructuredLocation *)self title];
-    [(EKStructuredLocation *)v5 setTitle:v6];
+    title = [(EKStructuredLocation *)self title];
+    [(EKStructuredLocation *)v5 setTitle:title];
 
-    v7 = [(EKStructuredLocation *)self geoLocation];
-    [(EKStructuredLocation *)v5 setGeoLocation:v7];
+    geoLocation = [(EKStructuredLocation *)self geoLocation];
+    [(EKStructuredLocation *)v5 setGeoLocation:geoLocation];
 
-    v8 = [(EKStructuredLocation *)self mapKitHandle];
-    [(EKStructuredLocation *)v5 setMapKitHandle:v8];
+    mapKitHandle = [(EKStructuredLocation *)self mapKitHandle];
+    [(EKStructuredLocation *)v5 setMapKitHandle:mapKitHandle];
 
     [(EKStructuredLocation *)self radius];
     [(EKStructuredLocation *)v5 setRadius:?];
-    v9 = [(EKObject *)self backingObject];
+    backingObject = [(EKObject *)self backingObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [(EKStructuredLocation *)self address];
-      [(EKStructuredLocation *)v5 setAddress:v11];
+      address = [(EKStructuredLocation *)self address];
+      [(EKStructuredLocation *)v5 setAddress:address];
 
-      v12 = [(EKStructuredLocation *)self contactLabel];
-      [(EKStructuredLocation *)v5 setContactLabel:v12];
+      contactLabel = [(EKStructuredLocation *)self contactLabel];
+      [(EKStructuredLocation *)v5 setContactLabel:contactLabel];
 
-      v13 = [(EKStructuredLocation *)self routing];
-      [(EKStructuredLocation *)v5 setRouting:v13];
+      routing = [(EKStructuredLocation *)self routing];
+      [(EKStructuredLocation *)v5 setRouting:routing];
 
-      v14 = [(EKStructuredLocation *)self derivedFrom];
-      [(EKStructuredLocation *)v5 setDerivedFrom:v14];
+      derivedFrom = [(EKStructuredLocation *)self derivedFrom];
+      [(EKStructuredLocation *)v5 setDerivedFrom:derivedFrom];
 
-      v15 = [(EKStructuredLocation *)self predictedLOI];
-      [(EKStructuredLocation *)v5 setPredictedLOI:v15];
+      predictedLOI = [(EKStructuredLocation *)self predictedLOI];
+      [(EKStructuredLocation *)v5 setPredictedLOI:predictedLOI];
 
       [(EKStructuredLocation *)v5 setImprecise:[(EKStructuredLocation *)self isImprecise]];
     }
@@ -568,127 +568,127 @@ id __30__EKStructuredLocation__reset__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (BOOL)isEqualToLocation:(id)a3
+- (BOOL)isEqualToLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v6 = [(EKStructuredLocation *)self title];
-    if (v6)
+    title = [(EKStructuredLocation *)self title];
+    if (title)
     {
     }
 
     else
     {
-      v8 = [v4 title];
+      title2 = [locationCopy title];
 
-      if (!v8)
+      if (!title2)
       {
         goto LABEL_7;
       }
     }
 
-    v9 = [(EKStructuredLocation *)self title];
-    v10 = [v4 title];
-    isKindOfClass &= [v9 isEqualToString:v10];
+    title3 = [(EKStructuredLocation *)self title];
+    title4 = [locationCopy title];
+    isKindOfClass &= [title3 isEqualToString:title4];
 
 LABEL_7:
-    v11 = [(EKStructuredLocation *)self address];
-    if (v11)
+    address = [(EKStructuredLocation *)self address];
+    if (address)
     {
     }
 
     else
     {
-      v12 = [v4 address];
+      address2 = [locationCopy address];
 
-      if (!v12)
+      if (!address2)
       {
         goto LABEL_11;
       }
     }
 
-    v13 = [(EKStructuredLocation *)self address];
-    v14 = [v4 address];
-    isKindOfClass &= [v13 isEqualToString:v14];
+    address3 = [(EKStructuredLocation *)self address];
+    address4 = [locationCopy address];
+    isKindOfClass &= [address3 isEqualToString:address4];
 
 LABEL_11:
-    v15 = [(EKStructuredLocation *)self contactLabel];
-    if (v15)
+    contactLabel = [(EKStructuredLocation *)self contactLabel];
+    if (contactLabel)
     {
     }
 
     else
     {
-      v16 = [v4 contactLabel];
+      contactLabel2 = [locationCopy contactLabel];
 
-      if (!v16)
+      if (!contactLabel2)
       {
         goto LABEL_15;
       }
     }
 
-    v17 = [(EKStructuredLocation *)self contactLabel];
-    v18 = [v4 contactLabel];
-    isKindOfClass &= [v17 isEqualToString:v18];
+    contactLabel3 = [(EKStructuredLocation *)self contactLabel];
+    contactLabel4 = [locationCopy contactLabel];
+    isKindOfClass &= [contactLabel3 isEqualToString:contactLabel4];
 
 LABEL_15:
-    v19 = [(EKStructuredLocation *)self geoLocation];
-    if (v19)
+    geoLocation = [(EKStructuredLocation *)self geoLocation];
+    if (geoLocation)
     {
     }
 
     else
     {
-      v20 = [v4 geoLocation];
+      geoLocation2 = [locationCopy geoLocation];
 
-      if (!v20)
+      if (!geoLocation2)
       {
         goto LABEL_22;
       }
     }
 
-    v21 = [(EKStructuredLocation *)self geoLocation];
-    [v21 coordinate];
+    geoLocation3 = [(EKStructuredLocation *)self geoLocation];
+    [geoLocation3 coordinate];
     v23 = v22;
-    v24 = [v4 geoLocation];
-    [v24 coordinate];
+    geoLocation4 = [locationCopy geoLocation];
+    [geoLocation4 coordinate];
     v26 = vabdd_f64(v23, v25) < 2.22044605e-16;
 
-    v27 = [(EKStructuredLocation *)self geoLocation];
-    [v27 coordinate];
+    geoLocation5 = [(EKStructuredLocation *)self geoLocation];
+    [geoLocation5 coordinate];
     v29 = v28;
-    v30 = [v4 geoLocation];
-    [v30 coordinate];
+    geoLocation6 = [locationCopy geoLocation];
+    [geoLocation6 coordinate];
     v32 = vabdd_f64(v29, v31) < 2.22044605e-16 && v26;
     isKindOfClass &= v32;
 
 LABEL_22:
-    v33 = [(EKStructuredLocation *)self mapKitHandle];
-    if (v33)
+    mapKitHandle = [(EKStructuredLocation *)self mapKitHandle];
+    if (mapKitHandle)
     {
     }
 
     else
     {
-      v34 = [v4 mapKitHandle];
+      mapKitHandle2 = [locationCopy mapKitHandle];
 
-      if (!v34)
+      if (!mapKitHandle2)
       {
 LABEL_26:
         [(EKStructuredLocation *)self radius];
         v38 = v37;
-        [v4 radius];
+        [locationCopy radius];
         v7 = isKindOfClass & (vabdd_f64(v38, v39) < 2.22044605e-16);
         goto LABEL_27;
       }
     }
 
-    v35 = [(EKStructuredLocation *)self mapKitHandle];
-    v36 = [v4 mapKitHandle];
-    isKindOfClass &= [v35 isEqualToData:v36];
+    mapKitHandle3 = [(EKStructuredLocation *)self mapKitHandle];
+    mapKitHandle4 = [locationCopy mapKitHandle];
+    isKindOfClass &= [mapKitHandle3 isEqualToData:mapKitHandle4];
 
     goto LABEL_26;
   }
@@ -703,13 +703,13 @@ LABEL_27:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKStructuredLocation *)self title];
-  v6 = [(EKStructuredLocation *)self address];
-  v7 = [(EKStructuredLocation *)self geoLocation];
-  v8 = [(EKStructuredLocation *)self contactLabel];
-  v9 = [(EKStructuredLocation *)self routing];
+  title = [(EKStructuredLocation *)self title];
+  address = [(EKStructuredLocation *)self address];
+  geoLocation = [(EKStructuredLocation *)self geoLocation];
+  contactLabel = [(EKStructuredLocation *)self contactLabel];
+  routing = [(EKStructuredLocation *)self routing];
   [(EKStructuredLocation *)self radius];
-  v11 = [v3 stringWithFormat:@"%@ <%p> {title = %@ address = %@; geo = %@; abID = %@; routing = %@; radius = %f;}", v4, self, v5, v6, v7, v8, v9, v10];;
+  v11 = [v3 stringWithFormat:@"%@ <%p> {title = %@ address = %@; geo = %@; abID = %@; routing = %@; radius = %f;}", v4, self, title, address, geoLocation, contactLabel, routing, v10];;
 
   return v11;
 }
@@ -717,26 +717,26 @@ LABEL_27:
 - (id)calLocation
 {
   v3 = objc_alloc_init(MEMORY[0x1E6992FD8]);
-  v4 = [(EKStructuredLocation *)self title];
-  [v3 setTitle:v4];
+  title = [(EKStructuredLocation *)self title];
+  [v3 setTitle:title];
 
-  v5 = [(EKStructuredLocation *)self address];
-  [v3 setAddress:v5];
+  address = [(EKStructuredLocation *)self address];
+  [v3 setAddress:address];
 
-  v6 = [(EKStructuredLocation *)self title];
-  [v3 setDisplayName:v6];
+  title2 = [(EKStructuredLocation *)self title];
+  [v3 setDisplayName:title2];
 
   [v3 setType:1];
   [(EKStructuredLocation *)self radius];
   [v3 setRadius:?];
-  v7 = [(EKStructuredLocation *)self geoLocation];
-  [v3 setLocation:v7];
+  geoLocation = [(EKStructuredLocation *)self geoLocation];
+  [v3 setLocation:geoLocation];
 
-  v8 = [(EKStructuredLocation *)self routing];
-  [v3 setRouteType:v8];
+  routing = [(EKStructuredLocation *)self routing];
+  [v3 setRouteType:routing];
 
-  v9 = [(EKStructuredLocation *)self mapKitHandle];
-  [v3 setMapKitHandle:v9];
+  mapKitHandle = [(EKStructuredLocation *)self mapKitHandle];
+  [v3 setMapKitHandle:mapKitHandle];
 
   return v3;
 }
@@ -744,65 +744,65 @@ LABEL_27:
 - (id)geoURLString
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(EKStructuredLocation *)self geoLocation];
-  [v4 coordinate];
+  geoLocation = [(EKStructuredLocation *)self geoLocation];
+  [geoLocation coordinate];
   v6 = v5;
-  v7 = [(EKStructuredLocation *)self geoLocation];
-  [v7 coordinate];
+  geoLocation2 = [(EKStructuredLocation *)self geoLocation];
+  [geoLocation2 coordinate];
   v9 = [v3 stringWithFormat:@"geo:%f, %f", v6, v8];
 
   return v9;
 }
 
-- (void)updateFromMapItem:(id)a3
+- (void)updateFromMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 placemark];
-  v6 = [v5 location];
-  [(EKStructuredLocation *)self setGeoLocation:v6];
+  itemCopy = item;
+  placemark = [itemCopy placemark];
+  location = [placemark location];
+  [(EKStructuredLocation *)self setGeoLocation:location];
 
-  v7 = [v4 placemark];
-  v8 = [v7 region];
-  [v8 radius];
+  placemark2 = [itemCopy placemark];
+  region = [placemark2 region];
+  [region radius];
   [(EKStructuredLocation *)self setRadius:?];
 
-  v9 = [v4 _handle];
+  _handle = [itemCopy _handle];
 
-  [(EKStructuredLocation *)self setMapKitHandle:v9];
+  [(EKStructuredLocation *)self setMapKitHandle:_handle];
 }
 
-+ (id)displayLabelForContact:(id)a3 unlocalizedLabel:(id)a4
++ (id)displayLabelForContact:(id)contact unlocalizedLabel:(id)label
 {
-  v5 = a3;
+  contactCopy = contact;
   v6 = MEMORY[0x1E695CD80];
-  v7 = a4;
-  v8 = [v6 stringFromContact:v5 style:0];
-  v9 = [MEMORY[0x1E695CEE0] localizedStringForLabel:v7];
+  labelCopy = label;
+  v8 = [v6 stringFromContact:contactCopy style:0];
+  v9 = [MEMORY[0x1E695CEE0] localizedStringForLabel:labelCopy];
 
-  v10 = [v9 capitalizedString];
+  capitalizedString = [v9 capitalizedString];
 
-  if ([v5 contactType] == 1)
+  if ([contactCopy contactType] == 1)
   {
     goto LABEL_2;
   }
 
-  if (v10)
+  if (capitalizedString)
   {
-    v12 = [MEMORY[0x1E6992F50] defaultProvider];
-    v13 = [v5 identifier];
-    v14 = [v12 contactIdentifierIsMe:v13];
+    defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+    identifier = [contactCopy identifier];
+    v14 = [defaultProvider contactIdentifierIsMe:identifier];
 
     if (!v14 && v8)
     {
       v15 = MEMORY[0x1E696AEC0];
       v16 = EKBundle();
       v17 = [v16 localizedStringForKey:@"%@’s %@" value:&stru_1F1B49D68 table:0];
-      v18 = [v15 localizedStringWithFormat:v17, v8, v10];
+      v18 = [v15 localizedStringWithFormat:v17, v8, capitalizedString];
 
       goto LABEL_9;
     }
 
-    v11 = v10;
+    v11 = capitalizedString;
     goto LABEL_8;
   }
 
@@ -832,16 +832,16 @@ LABEL_9:
 
 - (id)semanticIdentifier
 {
-  v3 = [(EKStructuredLocation *)self title];
-  v4 = [(EKStructuredLocation *)self address];
-  v5 = [(EKStructuredLocation *)self mapKitHandle];
-  v6 = [(EKStructuredLocation *)self contactLabel];
-  v7 = [(EKStructuredLocation *)self latitude];
-  v8 = [(EKStructuredLocation *)self longitude];
+  title = [(EKStructuredLocation *)self title];
+  address = [(EKStructuredLocation *)self address];
+  mapKitHandle = [(EKStructuredLocation *)self mapKitHandle];
+  contactLabel = [(EKStructuredLocation *)self contactLabel];
+  latitude = [(EKStructuredLocation *)self latitude];
+  longitude = [(EKStructuredLocation *)self longitude];
   v9 = MEMORY[0x1E696AD98];
   [(EKStructuredLocation *)self radius];
   v10 = [v9 numberWithDouble:?];
-  v11 = [EKStructuredLocationSemanticIdentifierGenerator semanticIdentifierForLocationWithTitle:v3 address:v4 mapKitHandle:v5 contactLabel:v6 latitude:v7 longitude:v8 radius:v10];
+  v11 = [EKStructuredLocationSemanticIdentifierGenerator semanticIdentifierForLocationWithTitle:title address:address mapKitHandle:mapKitHandle contactLabel:contactLabel latitude:latitude longitude:longitude radius:v10];
 
   return v11;
 }

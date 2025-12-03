@@ -1,28 +1,28 @@
 @interface AXInvertColors_AVKit
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_AVKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVPlayerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AVFullScreenViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AVPresentationController" hasInstanceMethod:@"presentationTransitionWillBegin" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIPresentationController" hasInstanceMethod:@"containerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPresentationContext" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPresentationController" hasInstanceVariable:@"_context" withType:"AVPresentationContext"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVPlayerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AVFullScreenViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AVPresentationController" hasInstanceMethod:@"presentationTransitionWillBegin" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIPresentationController" hasInstanceMethod:@"containerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPresentationContext" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPresentationController" hasInstanceVariable:@"_context" withType:"AVPresentationContext"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"AVPlayerViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"AVPresentationContainerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"__AVPlayerLayerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"AVPresentationControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"AVPlayerViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"AVPresentationContainerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"__AVPlayerLayerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"AVPresentationControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

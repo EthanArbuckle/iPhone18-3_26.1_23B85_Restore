@@ -1,10 +1,10 @@
 @interface _UIIntelligenceNoisyLightView
 + (Class)layerClass;
-- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithCoder:(id)a3;
-- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithFrame:(CGRect)a3;
-- (void)_layerCornerCurveDidChange:(id)a3;
-- (void)_layerCornerRadiusDidChange:(double)a3;
-- (void)_layerMaskedCornersDidChange:(unint64_t)a3;
+- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithCoder:(id)coder;
+- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithFrame:(CGRect)frame;
+- (void)_layerCornerCurveDidChange:(id)change;
+- (void)_layerCornerRadiusDidChange:(double)change;
+- (void)_layerMaskedCornersDidChange:(unint64_t)change;
 - (void)layoutSubviews;
 @end
 
@@ -28,36 +28,36 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithCoder:(id)a3
+- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithCoder:(id)coder
 {
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return 0;
 }
 
-- (void)_layerCornerRadiusDidChange:(double)a3
+- (void)_layerCornerRadiusDidChange:(double)change
 {
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_18912BB88();
 }
 
-- (void)_layerCornerCurveDidChange:(id)a3
+- (void)_layerCornerCurveDidChange:(id)change
 {
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
-  sub_18912BC24(v5);
+  changeCopy = change;
+  selfCopy = self;
+  sub_18912BC24(changeCopy);
 }
 
-- (void)_layerMaskedCornersDidChange:(unint64_t)a3
+- (void)_layerMaskedCornersDidChange:(unint64_t)change
 {
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_18912BCBC();
 }
 
-- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit29_UIIntelligenceNoisyLightView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

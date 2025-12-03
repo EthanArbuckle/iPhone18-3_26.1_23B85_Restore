@@ -2,7 +2,7 @@
 - (CGSize)targetSize;
 - (id)description;
 - (void)dealloc;
-- (void)setGainMapImage:(CGImage *)a3;
+- (void)setGainMapImage:(CGImage *)image;
 @end
 
 @implementation _PUImageRequesterResult
@@ -21,15 +21,15 @@
   v21 = objc_alloc(MEMORY[0x1E696AEC0]);
   v3 = objc_opt_class();
   v20 = NSStringFromClass(v3);
-  v22 = [(_PUImageRequesterResult *)self asset];
+  asset = [(_PUImageRequesterResult *)self asset];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_PUImageRequesterResult *)self asset];
-  v7 = [v6 uuid];
+  asset2 = [(_PUImageRequesterResult *)self asset];
+  uuid = [asset2 uuid];
   [(_PUImageRequesterResult *)self targetSize];
   v8 = NSStringFromCGSize(v24);
-  v9 = [(_PUImageRequesterResult *)self image];
-  [v9 size];
+  image = [(_PUImageRequesterResult *)self image];
+  [image size];
   v10 = NSStringFromCGSize(v25);
   if ([(_PUImageRequesterResult *)self gainMapImage])
   {
@@ -56,7 +56,7 @@
 
   v16 = v15;
   [(_PUImageRequesterResult *)self timeIntervalSinceRequest];
-  v18 = [v21 initWithFormat:@"<%@ %p>:\n\tAsset: %@ %@\n\tTargetSize: %@\n\tImageSize: %@\n\tGainMapImage: %@\n\tGainMapValue: %f\n\tFullQuality: %@\n\tLatency: %.3f", v20, self, v5, v7, v8, v10, v12, *&v14, v16, v17];
+  v18 = [v21 initWithFormat:@"<%@ %p>:\n\tAsset: %@ %@\n\tTargetSize: %@\n\tImageSize: %@\n\tGainMapImage: %@\n\tGainMapValue: %f\n\tFullQuality: %@\n\tLatency: %.3f", v20, self, v5, uuid, v8, v10, v12, *&v14, v16, v17];
 
   return v18;
 }
@@ -69,13 +69,13 @@
   [(_PUImageRequesterResult *)&v3 dealloc];
 }
 
-- (void)setGainMapImage:(CGImage *)a3
+- (void)setGainMapImage:(CGImage *)image
 {
   gainMapImage = self->_gainMapImage;
-  if (gainMapImage != a3)
+  if (gainMapImage != image)
   {
     CGImageRelease(gainMapImage);
-    self->_gainMapImage = CGImageRetain(a3);
+    self->_gainMapImage = CGImageRetain(image);
   }
 }
 

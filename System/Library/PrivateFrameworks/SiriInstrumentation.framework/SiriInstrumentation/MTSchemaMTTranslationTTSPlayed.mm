@@ -1,49 +1,49 @@
 @interface MTSchemaMTTranslationTTSPlayed
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTTranslationTTSPlayed)initWithDictionary:(id)a3;
-- (MTSchemaMTTranslationTTSPlayed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTTranslationTTSPlayed)initWithDictionary:(id)dictionary;
+- (MTSchemaMTTranslationTTSPlayed)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAudioChannel:(BOOL)a3;
-- (void)setHasIsAutoplayTranslation:(BOOL)a3;
-- (void)setHasPlaybackSpeed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAudioChannel:(BOOL)channel;
+- (void)setHasIsAutoplayTranslation:(BOOL)translation;
+- (void)setHasPlaybackSpeed:(BOOL)speed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTTranslationTTSPlayed
 
-- (MTSchemaMTTranslationTTSPlayed)initWithDictionary:(id)a3
+- (MTSchemaMTTranslationTTSPlayed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MTSchemaMTTranslationTTSPlayed;
   v5 = [(MTSchemaMTTranslationTTSPlayed *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sourceOrTarget"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sourceOrTarget"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTTranslationTTSPlayed setSourceOrTarget:](v5, "setSourceOrTarget:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isAutoplayTranslation"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isAutoplayTranslation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTTranslationTTSPlayed setIsAutoplayTranslation:](v5, "setIsAutoplayTranslation:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"playbackSpeed"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"playbackSpeed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTTranslationTTSPlayed setPlaybackSpeed:](v5, "setPlaybackSpeed:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"audioChannel"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"audioChannel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (MTSchemaMTTranslationTTSPlayed)initWithJSON:(id)a3
+- (MTSchemaMTTranslationTTSPlayed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTTranslationTTSPlayed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTTranslationTTSPlayed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTTranslationTTSPlayed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,7 +92,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -107,7 +107,7 @@
       v10 = off_1E78DA5A8[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"audioChannel"];
+    [dictionary setObject:v10 forKeyedSubscript:@"audioChannel"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -127,7 +127,7 @@ LABEL_3:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[MTSchemaMTTranslationTTSPlayed isAutoplayTranslation](self, "isAutoplayTranslation")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isAutoplayTranslation"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isAutoplayTranslation"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -153,21 +153,21 @@ LABEL_19:
     v13 = off_1E78DA5D0[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"playbackSpeed"];
+  [dictionary setObject:v13 forKeyedSubscript:@"playbackSpeed"];
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  v5 = [(MTSchemaMTTranslationTTSPlayed *)self sourceOrTarget];
+  sourceOrTarget = [(MTSchemaMTTranslationTTSPlayed *)self sourceOrTarget];
   v6 = @"MTSOURCEORTARGETLANGUAGE_UNKNOWN";
-  if (v5 == 1)
+  if (sourceOrTarget == 1)
   {
     v6 = @"MTSOURCEORTARGETLANGUAGE_SOURCE";
   }
 
-  if (v5 == 2)
+  if (sourceOrTarget == 2)
   {
     v7 = @"MTSOURCEORTARGETLANGUAGE_TARGET";
   }
@@ -177,11 +177,11 @@ LABEL_5:
     v7 = v6;
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"sourceOrTarget"];
+  [dictionary setObject:v7 forKeyedSubscript:@"sourceOrTarget"];
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -238,16 +238,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -256,13 +256,13 @@ LABEL_5:
   if (*&has)
   {
     sourceOrTarget = self->_sourceOrTarget;
-    if (sourceOrTarget != [v4 sourceOrTarget])
+    if (sourceOrTarget != [equalCopy sourceOrTarget])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -274,13 +274,13 @@ LABEL_5:
   if (v8)
   {
     isAutoplayTranslation = self->_isAutoplayTranslation;
-    if (isAutoplayTranslation != [v4 isAutoplayTranslation])
+    if (isAutoplayTranslation != [equalCopy isAutoplayTranslation])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -292,10 +292,10 @@ LABEL_5:
   if (v10)
   {
     playbackSpeed = self->_playbackSpeed;
-    if (playbackSpeed == [v4 playbackSpeed])
+    if (playbackSpeed == [equalCopy playbackSpeed])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -314,7 +314,7 @@ LABEL_14:
   if (v12)
   {
     audioChannel = self->_audioChannel;
-    if (audioChannel != [v4 audioChannel])
+    if (audioChannel != [equalCopy audioChannel])
     {
       goto LABEL_18;
     }
@@ -326,9 +326,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -375,9 +375,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasAudioChannel:(BOOL)a3
+- (void)setHasAudioChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 8;
   }
@@ -390,9 +390,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPlaybackSpeed:(BOOL)a3
+- (void)setHasPlaybackSpeed:(BOOL)speed
 {
-  if (a3)
+  if (speed)
   {
     v3 = 4;
   }
@@ -405,9 +405,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsAutoplayTranslation:(BOOL)a3
+- (void)setHasIsAutoplayTranslation:(BOOL)translation
 {
-  if (a3)
+  if (translation)
   {
     v3 = 2;
   }

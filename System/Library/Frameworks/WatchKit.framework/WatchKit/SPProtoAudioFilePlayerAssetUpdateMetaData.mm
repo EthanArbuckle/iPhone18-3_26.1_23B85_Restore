@@ -1,13 +1,13 @@
 @interface SPProtoAudioFilePlayerAssetUpdateMetaData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sockPuppetMessage;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoAudioFilePlayerAssetUpdateMetaData
@@ -18,20 +18,20 @@
   v8.receiver = self;
   v8.super_class = SPProtoAudioFilePlayerAssetUpdateMetaData;
   v4 = [(SPProtoAudioFilePlayerAssetUpdateMetaData *)&v8 description];
-  v5 = [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   uRL = self->_uRL;
@@ -73,11 +73,11 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   identifier = self->_identifier;
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_uRL)
   {
@@ -116,55 +116,55 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setIdentifier:self->_identifier];
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
   if (self->_uRL)
   {
-    [v5 setURL:?];
+    [toCopy setURL:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (*&self->_has)
   {
-    *(v5 + 1) = *&self->_duration;
-    *(v5 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_duration;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_title)
   {
-    [v5 setTitle:?];
-    v4 = v5;
+    [toCopy setTitle:?];
+    v4 = toCopy;
   }
 
   if (self->_albumTitle)
   {
-    [v5 setAlbumTitle:?];
-    v4 = v5;
+    [toCopy setAlbumTitle:?];
+    v4 = toCopy;
   }
 
   if (self->_artist)
   {
-    [v5 setArtist:?];
-    v4 = v5;
+    [toCopy setArtist:?];
+    v4 = toCopy;
   }
 
   if (self->_sandboxExtensionToken)
   {
-    [v5 setSandboxExtensionToken:?];
-    v4 = v5;
+    [toCopy setSandboxExtensionToken:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_uRL copyWithZone:a3];
+  v8 = [(NSString *)self->_uRL copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
@@ -174,35 +174,35 @@
     *(v5 + 64) |= 1u;
   }
 
-  v10 = [(NSString *)self->_title copyWithZone:a3];
+  v10 = [(NSString *)self->_title copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_albumTitle copyWithZone:a3];
+  v12 = [(NSString *)self->_albumTitle copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSString *)self->_artist copyWithZone:a3];
+  v14 = [(NSString *)self->_artist copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
-  v16 = [(NSString *)self->_sandboxExtensionToken copyWithZone:a3];
+  v16 = [(NSString *)self->_sandboxExtensionToken copyWithZone:zone];
   v17 = *(v5 + 40);
   *(v5 + 40) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -211,7 +211,7 @@
   }
 
   uRL = self->_uRL;
-  if (uRL | *(v4 + 7))
+  if (uRL | *(equalCopy + 7))
   {
     if (![(NSString *)uRL isEqual:?])
     {
@@ -219,16 +219,16 @@
     }
   }
 
-  v7 = *(v4 + 64);
+  v7 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -236,13 +236,13 @@ LABEL_19:
   }
 
   title = self->_title;
-  if (title | *(v4 + 6) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 6) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_19;
   }
 
   albumTitle = self->_albumTitle;
-  if (albumTitle | *(v4 + 2))
+  if (albumTitle | *(equalCopy + 2))
   {
     if (![(NSString *)albumTitle isEqual:?])
     {
@@ -251,7 +251,7 @@ LABEL_19:
   }
 
   artist = self->_artist;
-  if (artist | *(v4 + 3))
+  if (artist | *(equalCopy + 3))
   {
     if (![(NSString *)artist isEqual:?])
     {
@@ -260,7 +260,7 @@ LABEL_19:
   }
 
   sandboxExtensionToken = self->_sandboxExtensionToken;
-  if (sandboxExtensionToken | *(v4 + 5))
+  if (sandboxExtensionToken | *(equalCopy + 5))
   {
     v12 = [(NSString *)sandboxExtensionToken isEqual:?];
   }
@@ -318,50 +318,50 @@ LABEL_20:
   return v11 ^ v13 ^ [(NSString *)self->_sandboxExtensionToken hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self setURL:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_duration = v4[1];
+    self->_duration = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self setTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self setAlbumTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self setArtist:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self setSandboxExtensionToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -369,9 +369,9 @@ LABEL_20:
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerAsset);
   [(SPProtoAudioFilePlayerAsset *)v3 setUpsertWithMetaData:self];
-  v4 = [(SPProtoAudioFilePlayerAsset *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerAsset *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 @end

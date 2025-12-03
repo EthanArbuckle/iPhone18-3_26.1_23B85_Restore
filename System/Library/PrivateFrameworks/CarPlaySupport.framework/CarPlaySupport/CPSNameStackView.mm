@@ -6,7 +6,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v11 = 0.0;
   v12 = 0.0;
@@ -15,10 +15,10 @@
   [(CPSNameStackView *)&v8 intrinsicContentSize];
   v11 = v2;
   v12 = v3;
-  [(CPSNameStackView *)v10 fittingWidth];
+  [(CPSNameStackView *)selfCopy fittingWidth];
   if (v4 > 0.0)
   {
-    [(CPSNameStackView *)v10 fittingWidth];
+    [(CPSNameStackView *)selfCopy fittingWidth];
     v11 = v5;
   }
 

@@ -1,11 +1,11 @@
 @interface PSUIWiFiAssistSwitchSpecifier
-+ (BOOL)shouldShowWifiAssist:(id)a3;
++ (BOOL)shouldShowWifiAssist:(id)assist;
 + (id)wifiAssistGroupSpecifier;
 - (id)initDefault;
 - (id)usagePolicy;
 - (unint64_t)dataUsage;
 - (void)dealloc;
-- (void)setUsagePolicy:(id)a3;
+- (void)setUsagePolicy:(id)policy;
 @end
 
 @implementation PSUIWiFiAssistSwitchSpecifier
@@ -15,10 +15,10 @@
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = SFLocalizableWAPIStringKeyForKey();
   v5 = [v3 localizedStringForKey:v4 value:&stru_287733598 table:@"Cellular"];
-  v6 = [MEMORY[0x277D4D860] sharedInstance];
+  mEMORY[0x277D4D860] = [MEMORY[0x277D4D860] sharedInstance];
   v10.receiver = self;
   v10.super_class = PSUIWiFiAssistSwitchSpecifier;
-  v7 = [(PSAppDataUsagePolicySwitchSpecifier *)&v10 initWithBundleID:@"com.apple.datausage.wifiassist" displayName:v5 statisticsCache:v6];
+  v7 = [(PSAppDataUsagePolicySwitchSpecifier *)&v10 initWithBundleID:@"com.apple.datausage.wifiassist" displayName:v5 statisticsCache:mEMORY[0x277D4D860]];
 
   if (v7)
   {
@@ -43,59 +43,59 @@
   [(PSUIWiFiAssistSwitchSpecifier *)&v4 dealloc];
 }
 
-+ (BOOL)shouldShowWifiAssist:(id)a3
++ (BOOL)shouldShowWifiAssist:(id)assist
 {
-  v3 = a3;
+  assistCopy = assist;
   if (MGGetBoolAnswer())
   {
-    v4 = 0;
+    shouldShowWifiAssistForActiveDataPlan = 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *v6 = 0;
       _os_log_impl(&dword_2658DE000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "RNF not supported", v6, 2u);
-      v4 = 0;
+      shouldShowWifiAssistForActiveDataPlan = 0;
     }
   }
 
   else
   {
-    v4 = [v3 shouldShowWifiAssistForActiveDataPlan];
+    shouldShowWifiAssistForActiveDataPlan = [assistCopy shouldShowWifiAssistForActiveDataPlan];
   }
 
-  return v4;
+  return shouldShowWifiAssistForActiveDataPlan;
 }
 
 + (id)wifiAssistGroupSpecifier
 {
-  v2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = SFLocalizableWAPIStringKeyForKey();
   v5 = [v3 localizedStringForKey:v4 value:&stru_287733598 table:@"Cellular"];
-  [v2 setProperty:v5 forKey:*MEMORY[0x277D3FF88]];
+  [emptyGroupSpecifier setProperty:v5 forKey:*MEMORY[0x277D3FF88]];
 
-  return v2;
+  return emptyGroupSpecifier;
 }
 
 - (unint64_t)dataUsage
 {
-  v2 = [(PSAppCellularUsageSpecifier *)self billingPeriodSource];
-  v3 = [MEMORY[0x277D4D860] sharedInstance];
-  if (v2)
+  billingPeriodSource = [(PSAppCellularUsageSpecifier *)self billingPeriodSource];
+  mEMORY[0x277D4D860] = [MEMORY[0x277D4D860] sharedInstance];
+  if (billingPeriodSource)
   {
-    v4 = [v2 selectedPeriod];
+    selectedPeriod = [billingPeriodSource selectedPeriod];
   }
 
   else
   {
-    v4 = 0;
+    selectedPeriod = 0;
   }
 
-  v5 = [v3 wifiAssistUsageForPeriod:v4];
+  v5 = [mEMORY[0x277D4D860] wifiAssistUsageForPeriod:selectedPeriod];
 
-  v6 = [v5 cellularHome];
-  v7 = [v5 cellularRoaming];
+  cellularHome = [v5 cellularHome];
+  cellularRoaming = [v5 cellularRoaming];
 
-  return v7 + v6;
+  return cellularRoaming + cellularHome;
 }
 
 - (id)usagePolicy
@@ -103,8 +103,8 @@
   v20 = *MEMORY[0x277D85DE8];
   if (!self->_serverConnection)
   {
-    v8 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
+    if (!os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
@@ -116,8 +116,8 @@
 
   if ([(PSAppCellularUsageSpecifier *)self shouldShowUsage])
   {
-    v3 = [(PSAppCellularUsageSpecifier *)self dataUsageString];
-    [(PSUIWiFiAssistSwitchSpecifier *)self setProperty:v3 forKey:*MEMORY[0x277D40160]];
+    dataUsageString = [(PSAppCellularUsageSpecifier *)self dataUsageString];
+    [(PSUIWiFiAssistSwitchSpecifier *)self setProperty:dataUsageString forKey:*MEMORY[0x277D40160]];
   }
 
   serverConnection = self->_serverConnection;
@@ -126,8 +126,8 @@
   if (HIDWORD(v5))
   {
     v10 = v5;
-    v8 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
+    if (!os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
@@ -137,7 +137,7 @@
     v18 = 1024;
     v19 = v6;
     v9 = "Failed to fetch RNF setting with error %i:%i";
-    v11 = v8;
+    v11 = getLogger;
     v12 = 14;
     goto LABEL_13;
   }
@@ -145,13 +145,13 @@
   v7 = +[PSUICoreTelephonyDataCache sharedInstance];
   [v7 isCellularDataEnabled];
 
-  v8 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
     v9 = "Missing RNF setting!";
 LABEL_12:
-    v11 = v8;
+    v11 = getLogger;
     v12 = 2;
 LABEL_13:
     _os_log_error_impl(&dword_2658DE000, v11, OS_LOG_TYPE_ERROR, v9, buf, v12);
@@ -165,28 +165,28 @@ LABEL_14:
   return v13;
 }
 
-- (void)setUsagePolicy:(id)a3
+- (void)setUsagePolicy:(id)policy
 {
   *&v20[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  policyCopy = policy;
+  getLogger = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [policyCopy BOOLValue];
     v7 = "NO";
-    if (v6)
+    if (bOOLValue)
     {
       v7 = "YES";
     }
 
     v19 = 136315138;
     *v20 = v7;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Setting policy to %s", &v19, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Setting policy to %s", &v19, 0xCu);
   }
 
   if (self->_serverConnection)
   {
-    [v4 BOOLValue];
+    [policyCopy BOOLValue];
     v8 = _CTServerConnectionSetReliableNetworkFallbackToCellular();
     v9 = HIDWORD(v8);
     if (!HIDWORD(v8))
@@ -195,15 +195,15 @@ LABEL_14:
     }
 
     v10 = v8;
-    v11 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       v19 = 67109376;
       v20[0] = v10;
       LOWORD(v20[1]) = 1024;
       *(&v20[1] + 2) = v9;
       v12 = "Failed to set RNF setting with error %i:%i";
-      v13 = v11;
+      v13 = getLogger2;
       v14 = 14;
 LABEL_17:
       _os_log_error_impl(&dword_2658DE000, v13, OS_LOG_TYPE_ERROR, v12, &v19, v14);
@@ -212,33 +212,33 @@ LABEL_17:
 
   else
   {
-    v11 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v19) = 0;
       v12 = "Failed to get CT connection";
-      v13 = v11;
+      v13 = getLogger2;
       v14 = 2;
       goto LABEL_17;
     }
   }
 
-  v15 = [(PSAppCellularUsageSpecifier *)self delegate];
+  delegate = [(PSAppCellularUsageSpecifier *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(PSAppCellularUsageSpecifier *)self delegate];
-    [v17 didFailToSetPolicyForSpecifier:self];
+    delegate2 = [(PSAppCellularUsageSpecifier *)self delegate];
+    [delegate2 didFailToSetPolicyForSpecifier:self];
   }
 
   else
   {
-    v17 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    delegate2 = [(PSUIWiFiAssistSwitchSpecifier *)self getLogger];
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v19) = 0;
-      _os_log_error_impl(&dword_2658DE000, v17, OS_LOG_TYPE_ERROR, "Delegate does not respond to didFailToSetPolicyForSpecifier:", &v19, 2u);
+      _os_log_error_impl(&dword_2658DE000, delegate2, OS_LOG_TYPE_ERROR, "Delegate does not respond to didFailToSetPolicyForSpecifier:", &v19, 2u);
     }
   }
 

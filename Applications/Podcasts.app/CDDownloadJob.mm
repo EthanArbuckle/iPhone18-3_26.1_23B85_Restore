@@ -1,14 +1,14 @@
 @interface CDDownloadJob
-- (_TtC8Podcasts13CDDownloadJob)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC8Podcasts13CDDownloadJob)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation CDDownloadJob
 
-- (_TtC8Podcasts13CDDownloadJob)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC8Podcasts13CDDownloadJob)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CDDownloadJob();
-  return [(CDDownloadJob *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(CDDownloadJob *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

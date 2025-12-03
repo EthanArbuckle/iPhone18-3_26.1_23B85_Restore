@@ -1,20 +1,20 @@
 @interface HMDMessageFilterChain
-- (BOOL)acceptMessage:(id)a3 error:(id *)a4;
+- (BOOL)acceptMessage:(id)message error:(id *)error;
 - (BOOL)shouldCloudSyncData;
 - (HMDMessageFilterChain)init;
 - (NSArray)filters;
-- (void)addMessageFilter:(id)a3;
-- (void)removeMessageFilter:(id)a3;
-- (void)resetConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)addMessageFilter:(id)filter;
+- (void)removeMessageFilter:(id)filter;
+- (void)resetConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation HMDMessageFilterChain
 
-- (void)resetConfiguration:(id)a3 completionHandler:(id)a4
+- (void)resetConfiguration:(id)configuration completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   v17 = 0u;
   v18 = 0u;
@@ -46,14 +46,14 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v6 && v7)
+  if (configurationCopy && handlerCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__HMDMessageFilterChain_resetConfiguration_completionHandler___block_invoke;
     block[3] = &unk_2797348C0;
-    v14 = v7;
-    dispatch_async(v6, block);
+    v14 = handlerCopy;
+    dispatch_async(configurationCopy, block);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -66,8 +66,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDMessageFilterChain *)self filters];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  filters = [(HMDMessageFilterChain *)self filters];
+  v3 = [filters countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -77,7 +77,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(filters);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) shouldCloudSyncData])
@@ -87,7 +87,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [filters countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -103,24 +103,24 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)acceptMessage:(id)a3 error:(id *)a4
+- (BOOL)acceptMessage:(id)message error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 destination];
-  v8 = [v7 target];
+  messageCopy = message;
+  destination = [messageCopy destination];
+  target = [destination target];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [(HMDMessageFilterChain *)self filters];
-  v10 = [v9 countByEnumeratingWithState:&v31 objects:v43 count:16];
+  filters = [(HMDMessageFilterChain *)self filters];
+  v10 = [filters countByEnumeratingWithState:&v31 objects:v43 count:16];
   if (v10)
   {
     v11 = v10;
-    v28 = self;
-    v29 = a4;
+    selfCopy = self;
+    errorCopy = error;
     v12 = 0;
     v13 = *v32;
     while (2)
@@ -131,30 +131,30 @@ LABEL_11:
       {
         if (*v32 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(filters);
         }
 
         v16 = *(*(&v31 + 1) + 8 * v14);
         v30 = v15;
-        v17 = [v16 acceptMessage:v6 target:v8 errorReason:&v30];
+        v17 = [v16 acceptMessage:messageCopy target:target errorReason:&v30];
         v12 = v30;
 
         if ((v17 & 1) == 0)
         {
           v19 = objc_autoreleasePoolPush();
-          v20 = v28;
+          v20 = selfCopy;
           v21 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             v22 = HMFGetLogIdentifier();
-            v23 = [v16 name];
-            v24 = [v6 name];
+            name = [v16 name];
+            name2 = [messageCopy name];
             *buf = 138544130;
             v36 = v22;
             v37 = 2112;
-            v38 = v23;
+            v38 = name;
             v39 = 2112;
-            v40 = v24;
+            v40 = name2;
             v41 = 2112;
             v42 = v12;
             _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@%@ Message %@ was rejected due to reason: %@", buf, 0x2Au);
@@ -170,7 +170,7 @@ LABEL_11:
       }
 
       while (v11 != v14);
-      v11 = [v9 countByEnumeratingWithState:&v31 objects:v43 count:16];
+      v11 = [filters countByEnumeratingWithState:&v31 objects:v43 count:16];
       if (v11)
       {
         continue;
@@ -181,7 +181,7 @@ LABEL_11:
 
     v18 = 1;
 LABEL_13:
-    a4 = v29;
+    error = errorCopy;
   }
 
   else
@@ -190,7 +190,7 @@ LABEL_13:
     v18 = 1;
   }
 
-  if (a4)
+  if (error)
   {
     if (v18)
     {
@@ -202,26 +202,26 @@ LABEL_13:
       v25 = v12;
     }
 
-    *a4 = v25;
+    *error = v25;
   }
 
   v26 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (void)removeMessageFilter:(id)a3
+- (void)removeMessageFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_filters removeObject:v4];
+  [(NSMutableArray *)self->_filters removeObject:filterCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addMessageFilter:(id)a3
+- (void)addMessageFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_filters addObject:v4];
+  [(NSMutableArray *)self->_filters addObject:filterCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -241,9 +241,9 @@ LABEL_13:
   v2 = [(HMDMessageFilterChain *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     filters = v2->_filters;
-    v2->_filters = v3;
+    v2->_filters = array;
   }
 
   return v2;

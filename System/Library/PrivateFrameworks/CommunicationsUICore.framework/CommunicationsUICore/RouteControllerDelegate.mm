@@ -1,15 +1,15 @@
 @interface RouteControllerDelegate
 - (_TtC20CommunicationsUICoreP33_958756A54F68EF1F0D6D0FD8C6158AC223RouteControllerDelegate)init;
-- (void)routesChangedForRouteController:(id)a3;
+- (void)routesChangedForRouteController:(id)controller;
 @end
 
 @implementation RouteControllerDelegate
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2F22180(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1C2F22180(controllerCopy);
 }
 
 - (_TtC20CommunicationsUICoreP33_958756A54F68EF1F0D6D0FD8C6158AC223RouteControllerDelegate)init

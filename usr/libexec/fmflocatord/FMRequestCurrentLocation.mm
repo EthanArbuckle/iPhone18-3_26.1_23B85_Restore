@@ -1,6 +1,6 @@
 @interface FMRequestCurrentLocation
-+ (id)serializedFormOfLocation:(id)a3;
-- (BOOL)canReplace:(id)a3;
++ (id)serializedFormOfLocation:(id)location;
+- (BOOL)canReplace:(id)replace;
 - (BOOL)canRequestBeRetriedNow;
 - (id)requestBody;
 - (id)requestUrl;
@@ -20,8 +20,8 @@
 
 - (id)requestUrl
 {
-  v2 = [(FMRequest *)self provider];
-  v3 = [v2 formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/currentLocation"];
+  provider = [(FMRequest *)self provider];
+  v3 = [provider formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/currentLocation"];
 
   return v3;
 }
@@ -30,19 +30,19 @@
 {
   v18.receiver = self;
   v18.super_class = FMRequestCurrentLocation;
-  v3 = [(FMRequest *)&v18 requestBody];
-  [v3 setObject:&off_100062FA0 forKeyedSubscript:@"statusCode"];
-  v4 = [(FMRequestCurrentLocation *)self location];
-  v5 = [FMRequestCurrentLocation serializedFormOfLocation:v4];
-  [v3 addEntriesFromDictionary:v5];
+  requestBody = [(FMRequest *)&v18 requestBody];
+  [requestBody setObject:&off_100062FA0 forKeyedSubscript:@"statusCode"];
+  location = [(FMRequestCurrentLocation *)self location];
+  v5 = [FMRequestCurrentLocation serializedFormOfLocation:location];
+  [requestBody addEntriesFromDictionary:v5];
 
   v6 = [NSNumber numberWithBool:[(FMRequestCurrentLocation *)self finalLocation]];
-  [v3 setObject:v6 forKeyedSubscript:@"locationFinished"];
+  [requestBody setObject:v6 forKeyedSubscript:@"locationFinished"];
 
   if ([(FMRequestCurrentLocation *)self publishReason])
   {
     v7 = [NSNumber numberWithInteger:[(FMRequestCurrentLocation *)self publishReason]];
-    [v3 setObject:v7 forKeyedSubscript:@"reason"];
+    [requestBody setObject:v7 forKeyedSubscript:@"reason"];
   }
 
   [(FMRequestCurrentLocation *)self accuracyChange];
@@ -54,74 +54,74 @@
     {
       [(FMRequestCurrentLocation *)self accuracyChange];
       v10 = [NSNumber numberWithDouble:?];
-      [v3 setObject:v10 forKeyedSubscript:@"accuracyChange"];
+      [requestBody setObject:v10 forKeyedSubscript:@"accuracyChange"];
     }
   }
 
-  v11 = [(FMRequest *)self provider];
-  v12 = [v11 standardDeviceContext];
+  provider = [(FMRequest *)self provider];
+  standardDeviceContext = [provider standardDeviceContext];
 
-  v13 = [(FMRequestCurrentLocation *)self locateCommand];
-  v14 = [v13 objectForKeyedSubscript:@"id"];
+  locateCommand = [(FMRequestCurrentLocation *)self locateCommand];
+  v14 = [locateCommand objectForKeyedSubscript:@"id"];
 
-  [v12 fm_safelyMapKey:@"cmdId" toObject:v14];
-  if (v12)
+  [standardDeviceContext fm_safelyMapKey:@"cmdId" toObject:v14];
+  if (standardDeviceContext)
   {
-    [v3 setObject:v12 forKeyedSubscript:@"deviceContext"];
+    [requestBody setObject:standardDeviceContext forKeyedSubscript:@"deviceContext"];
   }
 
-  v15 = [(FMRequest *)self provider];
-  v16 = [v15 locationDeviceInfo];
-  [v3 setObject:v16 forKeyedSubscript:@"deviceInfo"];
+  provider2 = [(FMRequest *)self provider];
+  locationDeviceInfo = [provider2 locationDeviceInfo];
+  [requestBody setObject:locationDeviceInfo forKeyedSubscript:@"deviceInfo"];
 
-  return v3;
+  return requestBody;
 }
 
-+ (id)serializedFormOfLocation:(id)a3
++ (id)serializedFormOfLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 timestamp];
-  v6 = [v5 stringValueForServer];
+  timestamp = [locationCopy timestamp];
+  stringValueForServer = [timestamp stringValueForServer];
 
-  if (v6)
+  if (stringValueForServer)
   {
-    [v4 setObject:v6 forKeyedSubscript:@"timestamp"];
+    [v4 setObject:stringValueForServer forKeyedSubscript:@"timestamp"];
   }
 
-  [v3 coordinate];
+  [locationCopy coordinate];
   v7 = [NSNumber numberWithDouble:?];
   [v4 setObject:v7 forKeyedSubscript:@"latitude"];
 
-  [v3 coordinate];
+  [locationCopy coordinate];
   v9 = [NSNumber numberWithDouble:v8];
   [v4 setObject:v9 forKeyedSubscript:@"longitude"];
 
-  [v3 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v10 = [NSNumber numberWithDouble:?];
   [v4 setObject:v10 forKeyedSubscript:@"horizontalAccuracy"];
 
-  [v3 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   v11 = [NSNumber numberWithDouble:?];
   [v4 setObject:v11 forKeyedSubscript:@"vertAcc"];
 
-  [v3 altitude];
+  [locationCopy altitude];
   v12 = [NSNumber numberWithDouble:?];
   [v4 setObject:v12 forKeyedSubscript:@"alt"];
 
-  [v3 speed];
+  [locationCopy speed];
   v13 = [NSNumber numberWithDouble:?];
   [v4 setObject:v13 forKeyedSubscript:@"speed"];
 
-  [v3 course];
+  [locationCopy course];
   v14 = [NSNumber numberWithDouble:?];
   [v4 setObject:v14 forKeyedSubscript:@"course"];
 
-  v15 = [v3 floor];
-  v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v15 level]);
+  floor = [locationCopy floor];
+  v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [floor level]);
   [v4 setObject:v16 forKeyedSubscript:@"floorLevel"];
 
-  v17 = +[CommonUtil stringForLocationType:](CommonUtil, "stringForLocationType:", [v3 type]);
+  v17 = +[CommonUtil stringForLocationType:](CommonUtil, "stringForLocationType:", [locationCopy type]);
   [v4 setObject:v17 forKeyedSubscript:@"positionType"];
 
   return v4;
@@ -129,42 +129,42 @@
 
 - (BOOL)canRequestBeRetriedNow
 {
-  v3 = [(FMRequestCurrentLocation *)self location];
-  v4 = [v3 timestamp];
-  v5 = [(FMRequestCurrentLocation *)self locateCommand];
-  v6 = [v5 objectForKeyedSubscript:@"locationValidityDuration"];
+  location = [(FMRequestCurrentLocation *)self location];
+  timestamp = [location timestamp];
+  locateCommand = [(FMRequestCurrentLocation *)self locateCommand];
+  v6 = [locateCommand objectForKeyedSubscript:@"locationValidityDuration"];
   [v6 doubleValue];
-  v7 = [v4 dateByAddingTimeInterval:?];
+  v7 = [timestamp dateByAddingTimeInterval:?];
 
   v8 = +[NSDate date];
   if ([v8 compare:v7] == 1)
   {
-    v9 = 0;
+    canRequestBeRetriedNow = 0;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = FMRequestCurrentLocation;
-    v9 = [(FMRequest *)&v11 canRequestBeRetriedNow];
+    canRequestBeRetriedNow = [(FMRequest *)&v11 canRequestBeRetriedNow];
   }
 
-  return v9;
+  return canRequestBeRetriedNow;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMRequest *)self delegate];
-      v7 = [v5 delegate];
-      v8 = v6 == v7;
+      delegate = [(FMRequest *)self delegate];
+      delegate2 = [v5 delegate];
+      v8 = delegate == delegate2;
     }
 
     else

@@ -1,5 +1,5 @@
 @interface VariableBlurView
-- (_TtC13PCViewService16VariableBlurView)initWithFrame:(CGRect)a3;
+- (_TtC13PCViewService16VariableBlurView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,7 +16,7 @@
   [v3 setFrame:?];
 }
 
-- (_TtC13PCViewService16VariableBlurView)initWithFrame:(CGRect)a3
+- (_TtC13PCViewService16VariableBlurView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -6,9 +6,9 @@
 - (NSString)name;
 - (SGREMaterialSource)init;
 - (int64_t)hash;
-- (void)setContainsPreReleaseNodes:(BOOL)a3;
-- (void)setTextures:(id)a3;
-- (void)setUniforms:(id)a3;
+- (void)setContainsPreReleaseNodes:(BOOL)nodes;
+- (void)setTextures:(id)textures;
+- (void)setUniforms:(id)uniforms;
 @end
 
 @implementation SGREMaterialSource
@@ -36,7 +36,7 @@
   return v5.super.isa;
 }
 
-- (void)setUniforms:(id)a3
+- (void)setUniforms:(id)uniforms
 {
   type metadata accessor for SGInput();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -57,7 +57,7 @@
   return v5.super.isa;
 }
 
-- (void)setTextures:(id)a3
+- (void)setTextures:(id)textures
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___SGREMaterialSource_textures;
@@ -73,11 +73,11 @@
   return *(self + v3);
 }
 
-- (void)setContainsPreReleaseNodes:(BOOL)a3
+- (void)setContainsPreReleaseNodes:(BOOL)nodes
 {
   v5 = OBJC_IVAR___SGREMaterialSource_containsPreReleaseNodes;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = nodes;
 }
 
 - (NSData)SHA512Hash
@@ -89,7 +89,7 @@
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(v11);
   (*(*(v4 - 8) + 16))(boxed_opaque_existential_0, self + v3, v4);
   __swift_project_boxed_opaque_existential_1(v11, v12);
-  v6 = self;
+  selfCopy = self;
   dispatch thunk of ContiguousBytes.withUnsafeBytes<A>(_:)();
   __swift_destroy_boxed_opaque_existential_1Tm(v11);
   v7.super.isa = Data._bridgeToObjectiveC()().super.isa;
@@ -101,7 +101,7 @@
 - (int64_t)hash
 {
   Hasher.init()();
-  v3 = self;
+  selfCopy = self;
   SHA512Digest.hash(into:)();
   v4 = Hasher.finalize()();
 

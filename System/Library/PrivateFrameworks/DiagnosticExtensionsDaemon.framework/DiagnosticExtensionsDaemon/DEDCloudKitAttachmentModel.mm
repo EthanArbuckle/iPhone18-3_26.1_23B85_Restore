@@ -1,44 +1,44 @@
 @interface DEDCloudKitAttachmentModel
-- (DEDCloudKitAttachmentModel)initWithURL:(id)a3 withQueueItem:(id)a4 parameters:(id)a5;
+- (DEDCloudKitAttachmentModel)initWithURL:(id)l withQueueItem:(id)item parameters:(id)parameters;
 @end
 
 @implementation DEDCloudKitAttachmentModel
 
-- (DEDCloudKitAttachmentModel)initWithURL:(id)a3 withQueueItem:(id)a4 parameters:(id)a5
+- (DEDCloudKitAttachmentModel)initWithURL:(id)l withQueueItem:(id)item parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  itemCopy = item;
   v27.receiver = self;
   v27.super_class = DEDCloudKitAttachmentModel;
-  v10 = [(DEDCloudKitBaseModel *)&v27 initModelWithDictionary:a5];
+  v10 = [(DEDCloudKitBaseModel *)&v27 initModelWithDictionary:parameters];
   v11 = v10;
   if (v10)
   {
-    [(DEDCloudKitAttachmentModel *)v10 setUrl:v8];
-    [(DEDCloudKitAttachmentModel *)v11 setQueueItem:v9];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v8 path];
-    v14 = [v12 attributesOfItemAtPath:v13 error:0];
-    v15 = [v14 fileSize];
+    [(DEDCloudKitAttachmentModel *)v10 setUrl:lCopy];
+    [(DEDCloudKitAttachmentModel *)v11 setQueueItem:itemCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    v14 = [defaultManager attributesOfItemAtPath:path error:0];
+    fileSize = [v14 fileSize];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithLongLong:v15];
+    v16 = [MEMORY[0x277CCABB0] numberWithLongLong:fileSize];
     [(DEDCloudKitAttachmentModel *)v11 setFileSize:v16];
 
     v17 = objc_alloc(MEMORY[0x277CBC190]);
     v18 = [(DEDCloudKitAttachmentModel *)v11 url];
     v19 = [v17 initWithFileURL:v18];
 
-    v20 = [(DEDCloudKitBaseModel *)v11 cloudKitModel];
-    [v20 setObject:v19 forKeyedSubscript:@"asset"];
+    cloudKitModel = [(DEDCloudKitBaseModel *)v11 cloudKitModel];
+    [cloudKitModel setObject:v19 forKeyedSubscript:@"asset"];
 
     v21 = [(DEDCloudKitAttachmentModel *)v11 url];
-    v22 = [v21 lastPathComponent];
-    v23 = [(DEDCloudKitBaseModel *)v11 cloudKitModel];
-    [v23 setObject:v22 forKeyedSubscript:@"fileName"];
+    lastPathComponent = [v21 lastPathComponent];
+    cloudKitModel2 = [(DEDCloudKitBaseModel *)v11 cloudKitModel];
+    [cloudKitModel2 setObject:lastPathComponent forKeyedSubscript:@"fileName"];
 
-    v24 = [(DEDCloudKitAttachmentModel *)v11 queueItem];
-    v25 = [(DEDCloudKitBaseModel *)v11 cloudKitModel];
-    [v25 setObject:v24 forKeyedSubscript:@"queueItem"];
+    queueItem = [(DEDCloudKitAttachmentModel *)v11 queueItem];
+    cloudKitModel3 = [(DEDCloudKitBaseModel *)v11 cloudKitModel];
+    [cloudKitModel3 setObject:queueItem forKeyedSubscript:@"queueItem"];
   }
 
   return v11;

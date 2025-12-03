@@ -1,9 +1,9 @@
 @interface EKDayViewContentItemStateWrapper
-+ (id)wrapperWithContentItem:(id)a3 viewContent:(id)a4;
++ (id)wrapperWithContentItem:(id)item viewContent:(id)content;
 - (BOOL)isDimmed;
 - (BOOL)isSelected;
 - (CGRect)backgroundRect;
-- (EKDayViewContentItemStateWrapper)initWithContentItem:(id)a3 viewContent:(id)a4;
+- (EKDayViewContentItemStateWrapper)initWithContentItem:(id)item viewContent:(id)content;
 - (int64_t)horizontalSizeClass;
 - (int64_t)userInterfaceStyle;
 @end
@@ -12,10 +12,10 @@
 
 - (BOOL)isSelected
 {
-  v2 = [(EKDayViewContentItem *)self->_item view];
-  v3 = [v2 selected];
+  view = [(EKDayViewContentItem *)self->_item view];
+  selected = [view selected];
 
-  return v3;
+  return selected;
 }
 
 - (BOOL)isDimmed
@@ -25,9 +25,9 @@
     return 1;
   }
 
-  v4 = [(EKDayViewContentItem *)self->_item event];
-  v5 = [(EKDayViewContent *)self->_content dimmedOccurrence];
-  v6 = [v4 isEqual:v5];
+  event = [(EKDayViewContentItem *)self->_item event];
+  dimmedOccurrence = [(EKDayViewContent *)self->_content dimmedOccurrence];
+  v6 = [event isEqual:dimmedOccurrence];
 
   return v6;
 }
@@ -49,41 +49,41 @@
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(EKDayViewContent *)self->_content traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(EKDayViewContent *)self->_content traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3;
+  return userInterfaceStyle;
 }
 
 - (int64_t)horizontalSizeClass
 {
-  v2 = [(EKDayViewContent *)self->_content traitCollection];
-  v3 = [v2 horizontalSizeClass];
+  traitCollection = [(EKDayViewContent *)self->_content traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  return v3;
+  return horizontalSizeClass;
 }
 
-+ (id)wrapperWithContentItem:(id)a3 viewContent:(id)a4
++ (id)wrapperWithContentItem:(id)item viewContent:(id)content
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[EKDayViewContentItemStateWrapper alloc] initWithContentItem:v6 viewContent:v5];
+  contentCopy = content;
+  itemCopy = item;
+  v7 = [[EKDayViewContentItemStateWrapper alloc] initWithContentItem:itemCopy viewContent:contentCopy];
 
   return v7;
 }
 
-- (EKDayViewContentItemStateWrapper)initWithContentItem:(id)a3 viewContent:(id)a4
+- (EKDayViewContentItemStateWrapper)initWithContentItem:(id)item viewContent:(id)content
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  contentCopy = content;
   v12.receiver = self;
   v12.super_class = EKDayViewContentItemStateWrapper;
   v9 = [(EKDayViewContentItemStateWrapper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_item, a3);
-    objc_storeStrong(&v10->_content, a4);
+    objc_storeStrong(&v9->_item, item);
+    objc_storeStrong(&v10->_content, content);
   }
 
   return v10;

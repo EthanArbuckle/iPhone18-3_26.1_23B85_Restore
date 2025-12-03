@@ -1,6 +1,6 @@
 @interface _SUIAShockwaveEdgeLightOverlayConfiguration
-+ (CGRect)edgeLightMaskRectForState:(int64_t)a3 variant:(int64_t)a4 normalizedStartLocation:(CGRect)a5 settings:(id)a6 inBounds:(CGRect)a7 idiom:(int64_t)a8 outSourceRadius:(double *)a9;
-+ (id)edgeLightOverlayConfigurationForState:(int64_t)a3 variant:(int64_t)a4 normalizedStartLocation:(CGRect)a5 settings:(id)a6 bounds:(CGRect)a7 idiom:(int64_t)a8;
++ (CGRect)edgeLightMaskRectForState:(int64_t)state variant:(int64_t)variant normalizedStartLocation:(CGRect)location settings:(id)settings inBounds:(CGRect)bounds idiom:(int64_t)idiom outSourceRadius:(double *)radius;
++ (id)edgeLightOverlayConfigurationForState:(int64_t)state variant:(int64_t)variant normalizedStartLocation:(CGRect)location settings:(id)settings bounds:(CGRect)bounds idiom:(int64_t)idiom;
 - (CGPoint)edgeLightMaskCenter;
 - (CGPoint)fillLightMaskCenter;
 - (CGRect)edgeLightMaskFrame;
@@ -15,28 +15,28 @@
 - (double)fillLightMaskOuterRadius;
 - (double)fillLightMaskSourceBlurRadius;
 - (double)fillLightMaskSourceRadius;
-- (void)_setEdgeLightIntensity:(double)a3;
-- (void)_setEdgeLightMaskCenter:(CGPoint)a3;
-- (void)_setEdgeLightMaskFrame:(CGRect)a3;
-- (void)_setEdgeLightMaskInnerRadius:(double)a3;
-- (void)_setEdgeLightMaskOuterRadius:(double)a3;
-- (void)_setEdgeLightMaskSourceBlurRadius:(double)a3;
-- (void)_setEdgeLightMaskSourceRadius:(double)a3;
-- (void)_setFillLightIntensity:(double)a3;
-- (void)_setFillLightMaskCenter:(CGPoint)a3;
-- (void)_setFillLightMaskFrame:(CGRect)a3;
-- (void)_setFillLightMaskInnerRadius:(double)a3;
-- (void)_setFillLightMaskOuterRadius:(double)a3;
-- (void)_setFillLightMaskSourceBlurRadius:(double)a3;
-- (void)_setFillLightMaskSourceRadius:(double)a3;
+- (void)_setEdgeLightIntensity:(double)intensity;
+- (void)_setEdgeLightMaskCenter:(CGPoint)center;
+- (void)_setEdgeLightMaskFrame:(CGRect)frame;
+- (void)_setEdgeLightMaskInnerRadius:(double)radius;
+- (void)_setEdgeLightMaskOuterRadius:(double)radius;
+- (void)_setEdgeLightMaskSourceBlurRadius:(double)radius;
+- (void)_setEdgeLightMaskSourceRadius:(double)radius;
+- (void)_setFillLightIntensity:(double)intensity;
+- (void)_setFillLightMaskCenter:(CGPoint)center;
+- (void)_setFillLightMaskFrame:(CGRect)frame;
+- (void)_setFillLightMaskInnerRadius:(double)radius;
+- (void)_setFillLightMaskOuterRadius:(double)radius;
+- (void)_setFillLightMaskSourceBlurRadius:(double)radius;
+- (void)_setFillLightMaskSourceRadius:(double)radius;
 @end
 
 @implementation _SUIAShockwaveEdgeLightOverlayConfiguration
 
-- (void)_setEdgeLightIntensity:(double)a3
+- (void)_setEdgeLightIntensity:(double)intensity
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:intensity];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"edgeLightIntensity"];
 }
 
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (void)_setEdgeLightMaskFrame:(CGRect)a3
+- (void)_setEdgeLightMaskFrame:(CGRect)frame
 {
   propertyDictionary = self->super._propertyDictionary;
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  frameCopy = frame;
+  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&frameCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"edgeLightMaskFrame"];
 }
 
@@ -75,11 +75,11 @@
   return result;
 }
 
-- (void)_setEdgeLightMaskCenter:(CGPoint)a3
+- (void)_setEdgeLightMaskCenter:(CGPoint)center
 {
   propertyDictionary = self->super._propertyDictionary;
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGPoint=dd}"];
+  centerCopy = center;
+  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&centerCopy objCType:"{CGPoint=dd}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"edgeLightMaskCenter"];
 }
 
@@ -97,10 +97,10 @@
   return result;
 }
 
-- (void)_setEdgeLightMaskInnerRadius:(double)a3
+- (void)_setEdgeLightMaskInnerRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"edgeLightMaskInnerRadius"];
 }
 
@@ -113,10 +113,10 @@
   return v4;
 }
 
-- (void)_setEdgeLightMaskOuterRadius:(double)a3
+- (void)_setEdgeLightMaskOuterRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"edgeLightMaskOuterRadius"];
 }
 
@@ -129,10 +129,10 @@
   return v4;
 }
 
-- (void)_setEdgeLightMaskSourceRadius:(double)a3
+- (void)_setEdgeLightMaskSourceRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"edgeLightMaskSourceRadius"];
 }
 
@@ -145,10 +145,10 @@
   return v4;
 }
 
-- (void)_setEdgeLightMaskSourceBlurRadius:(double)a3
+- (void)_setEdgeLightMaskSourceBlurRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"edgeLightMaskSourceBlurRadius"];
 }
 
@@ -161,10 +161,10 @@
   return v4;
 }
 
-- (void)_setFillLightIntensity:(double)a3
+- (void)_setFillLightIntensity:(double)intensity
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:intensity];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"fillLightIntensity"];
 }
 
@@ -177,11 +177,11 @@
   return v4;
 }
 
-- (void)_setFillLightMaskFrame:(CGRect)a3
+- (void)_setFillLightMaskFrame:(CGRect)frame
 {
   propertyDictionary = self->super._propertyDictionary;
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  frameCopy = frame;
+  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&frameCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"fillLightMaskFrame"];
 }
 
@@ -203,11 +203,11 @@
   return result;
 }
 
-- (void)_setFillLightMaskCenter:(CGPoint)a3
+- (void)_setFillLightMaskCenter:(CGPoint)center
 {
   propertyDictionary = self->super._propertyDictionary;
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGPoint=dd}"];
+  centerCopy = center;
+  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&centerCopy objCType:"{CGPoint=dd}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"fillLightMaskCenter"];
 }
 
@@ -225,10 +225,10 @@
   return result;
 }
 
-- (void)_setFillLightMaskInnerRadius:(double)a3
+- (void)_setFillLightMaskInnerRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"fillLightMaskInnerRadius"];
 }
 
@@ -241,10 +241,10 @@
   return v4;
 }
 
-- (void)_setFillLightMaskOuterRadius:(double)a3
+- (void)_setFillLightMaskOuterRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"fillLightMaskOuterRadius"];
 }
 
@@ -257,10 +257,10 @@
   return v4;
 }
 
-- (void)_setFillLightMaskSourceRadius:(double)a3
+- (void)_setFillLightMaskSourceRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"fillLightMaskSourceRadius"];
 }
 
@@ -273,10 +273,10 @@
   return v4;
 }
 
-- (void)_setFillLightMaskSourceBlurRadius:(double)a3
+- (void)_setFillLightMaskSourceBlurRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"fillLightMaskSourceBlurRadius"];
 }
 
@@ -289,19 +289,19 @@
   return v4;
 }
 
-+ (CGRect)edgeLightMaskRectForState:(int64_t)a3 variant:(int64_t)a4 normalizedStartLocation:(CGRect)a5 settings:(id)a6 inBounds:(CGRect)a7 idiom:(int64_t)a8 outSourceRadius:(double *)a9
++ (CGRect)edgeLightMaskRectForState:(int64_t)state variant:(int64_t)variant normalizedStartLocation:(CGRect)location settings:(id)settings inBounds:(CGRect)bounds idiom:(int64_t)idiom outSourceRadius:(double *)radius
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a5.size.height;
-  v16 = a5.size.width;
-  v17 = a5.origin.y;
-  v18 = a5.origin.x;
-  v21 = a6;
-  v22 = v21;
-  if (a3 > 5)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v15 = location.size.height;
+  v16 = location.size.width;
+  v17 = location.origin.y;
+  v18 = location.origin.x;
+  settingsCopy = settings;
+  v22 = settingsCopy;
+  if (state > 5)
   {
     v39 = *MEMORY[0x277CBF398];
     v41 = *(MEMORY[0x277CBF398] + 8);
@@ -310,23 +310,23 @@
     goto LABEL_12;
   }
 
-  if (((1 << a3) & 0x2C) == 0)
+  if (((1 << state) & 0x2C) == 0)
   {
-    if (((1 << a3) & 0x11) != 0)
+    if (((1 << state) & 0x11) != 0)
     {
-      v23 = [v21 edgeLightInitialCircleMask];
-      v51 = [v23 gradientLayerSize];
-      [v51 sizeValue];
+      edgeLightInitialCircleMask = [settingsCopy edgeLightInitialCircleMask];
+      gradientLayerSize = [edgeLightInitialCircleMask gradientLayerSize];
+      [gradientLayerSize sizeValue];
       BSRectWithSize();
 
-      [objc_opt_class() donutMaskRectForState:a3 variant:a4 normalizedStartLocation:v22 settings:a8 inBounds:v18 idiom:{v17, v16, v15, x, y, width, height}];
+      [objc_opt_class() donutMaskRectForState:state variant:variant normalizedStartLocation:v22 settings:idiom inBounds:v18 idiom:{v17, v16, v15, x, y, width, height}];
       UIRectGetCenter();
       BSRectCenteredAboutPoint();
       v39 = v52;
       v41 = v53;
       v43 = v54;
       v45 = v55;
-      if (!a9)
+      if (!radius)
       {
         goto LABEL_11;
       }
@@ -334,9 +334,9 @@
 
     else
     {
-      v23 = [v21 edgeLightHintCircleMask];
-      v56 = [v23 gradientLayerSize];
-      [v56 sizeValue];
+      edgeLightInitialCircleMask = [settingsCopy edgeLightHintCircleMask];
+      gradientLayerSize2 = [edgeLightInitialCircleMask gradientLayerSize];
+      [gradientLayerSize2 sizeValue];
       BSRectWithSize();
       v74 = v58;
       v75 = v57;
@@ -347,28 +347,28 @@
       v41 = v64;
       v43 = v65;
       v45 = v66;
-      if (!a9)
+      if (!radius)
       {
         goto LABEL_11;
       }
     }
 
-    [v23 majorDiameter];
+    [edgeLightInitialCircleMask majorDiameter];
     v50 = v67 * 0.5;
     goto LABEL_10;
   }
 
-  v23 = [v21 edgeLightFinalCircleMask];
-  [objc_opt_class() donutMaskRectForState:a3 variant:a4 normalizedStartLocation:v22 settings:a8 inBounds:v18 idiom:{v17, v16, v15, x, y, width, height}];
+  edgeLightInitialCircleMask = [settingsCopy edgeLightFinalCircleMask];
+  [objc_opt_class() donutMaskRectForState:state variant:variant normalizedStartLocation:v22 settings:idiom inBounds:v18 idiom:{v17, v16, v15, x, y, width, height}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [v22 chromaticAberrationFinalDonutMaskForIdiom:a8];
+  v32 = [v22 chromaticAberrationFinalDonutMaskForIdiom:idiom];
   [v32 radiusOfMaximumOpacity];
   v34 = v33;
 
-  [v23 innerRadius];
+  [edgeLightInitialCircleMask innerRadius];
   v36 = v34 / v35;
   v76.origin.x = v25;
   v76.origin.y = v27;
@@ -382,16 +382,16 @@
   v41 = v40;
   v43 = v42;
   v45 = v44;
-  if (a9)
+  if (radius)
   {
-    v46 = [v23 gradientLayerSize];
-    [v46 width];
+    gradientLayerSize3 = [edgeLightInitialCircleMask gradientLayerSize];
+    [gradientLayerSize3 width];
     v48 = v37 / v47;
 
-    [v23 majorDiameter];
+    [edgeLightInitialCircleMask majorDiameter];
     v50 = v48 * (v49 * 0.5);
 LABEL_10:
-    *a9 = v50;
+    *radius = v50;
   }
 
 LABEL_11:
@@ -408,19 +408,19 @@ LABEL_12:
   return result;
 }
 
-+ (id)edgeLightOverlayConfigurationForState:(int64_t)a3 variant:(int64_t)a4 normalizedStartLocation:(CGRect)a5 settings:(id)a6 bounds:(CGRect)a7 idiom:(int64_t)a8
++ (id)edgeLightOverlayConfigurationForState:(int64_t)state variant:(int64_t)variant normalizedStartLocation:(CGRect)location settings:(id)settings bounds:(CGRect)bounds idiom:(int64_t)idiom
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a5.size.height;
-  v14 = a5.size.width;
-  v15 = a5.origin.y;
-  v16 = a5.origin.x;
-  v19 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v13 = location.size.height;
+  v14 = location.size.width;
+  v15 = location.origin.y;
+  v16 = location.origin.x;
+  settingsCopy = settings;
   v20 = objc_alloc_init(_SUIAShockwaveEdgeLightOverlayConfiguration);
-  v21 = [v19 donutMaskPositionAnimationSettings];
+  donutMaskPositionAnimationSettings = [settingsCopy donutMaskPositionAnimationSettings];
   v90 = width;
   v91 = height;
   v88 = x;
@@ -429,52 +429,52 @@ LABEL_12:
   v87 = v13;
   v84 = v16;
   v85 = v15;
-  if (a3 > 5)
+  if (state > 5)
   {
-    v22 = 0;
+    edgeLightFinalCircleMask = 0;
   }
 
-  else if (((1 << a3) & 0x2C) != 0)
+  else if (((1 << state) & 0x2C) != 0)
   {
     v92 = 0.0;
-    v22 = [v19 edgeLightFinalCircleMask];
-    [objc_opt_class() edgeLightMaskRectForState:a3 variant:a4 normalizedStartLocation:v19 settings:a8 inBounds:&v92 idiom:v16 outSourceRadius:{v15, v14, v13, x, y, width, height}];
+    edgeLightFinalCircleMask = [settingsCopy edgeLightFinalCircleMask];
+    [objc_opt_class() edgeLightMaskRectForState:state variant:variant normalizedStartLocation:settingsCopy settings:idiom inBounds:&v92 idiom:v16 outSourceRadius:{v15, v14, v13, x, y, width, height}];
     [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskFrame:?];
-    v23 = [v21 copy];
+    v23 = [donutMaskPositionAnimationSettings copy];
     [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v23 forKeypath:@"edgeLightMaskFrame"];
 
-    v24 = [v22 locations];
-    [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientLocations:v24];
+    locations = [edgeLightFinalCircleMask locations];
+    [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientLocations:locations];
 
-    v25 = [v21 copy];
+    v25 = [donutMaskPositionAnimationSettings copy];
     [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v25 forKeypath:@"edgeLightMaskGradientLocations"];
 
-    v26 = [v22 colors];
-    [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientColors:v26];
+    colors = [edgeLightFinalCircleMask colors];
+    [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientColors:colors];
 
-    v27 = [v21 copy];
+    v27 = [donutMaskPositionAnimationSettings copy];
     [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v27 forKeypath:@"edgeLightMaskGradientColors"];
 
     [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskSourceRadius:v92];
-    v28 = [v21 copy];
+    v28 = [donutMaskPositionAnimationSettings copy];
     [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v28 forKeypath:@"edgeLightMaskSourceRadius"];
 
-    [v22 blurRadius];
+    [edgeLightFinalCircleMask blurRadius];
     [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskSourceBlurRadius:?];
-    v29 = [v21 copy];
+    v29 = [donutMaskPositionAnimationSettings copy];
     [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v29 forKeypath:@"edgeLightMaskSourceBlurRadius"];
 
-    if (a3 == 5)
+    if (state == 5)
     {
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightIntensity:0.0];
-      v30 = [v19 lightIntensityCancelledAnimationSettings];
-      v31 = [v30 copy];
+      lightIntensityCancelledAnimationSettings = [settingsCopy lightIntensityCancelledAnimationSettings];
+      v31 = [lightIntensityCancelledAnimationSettings copy];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v31 forKeypath:@"edgeLightIntensity"];
     }
 
     else
     {
-      [v19 donutMaskEndTransitionDelay];
+      [settingsCopy donutMaskEndTransitionDelay];
       v43 = v42;
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightIntensity:1.0];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"edgeLightMaskFrame" forApplicationOfKeypath:v43];
@@ -487,41 +487,41 @@ LABEL_12:
 
   else
   {
-    if (((1 << a3) & 0x11) != 0)
+    if (((1 << state) & 0x11) != 0)
     {
       v92 = 0.0;
-      v22 = [v19 edgeLightInitialCircleMask];
-      [objc_opt_class() edgeLightMaskRectForState:a3 variant:a4 normalizedStartLocation:v19 settings:a8 inBounds:&v92 idiom:v16 outSourceRadius:{v15, v14, v13, x, y, width, height}];
+      edgeLightFinalCircleMask = [settingsCopy edgeLightInitialCircleMask];
+      [objc_opt_class() edgeLightMaskRectForState:state variant:variant normalizedStartLocation:settingsCopy settings:idiom inBounds:&v92 idiom:v16 outSourceRadius:{v15, v14, v13, x, y, width, height}];
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskFrame:?];
-      v32 = [v22 locations];
-      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientLocations:v32];
+      locations2 = [edgeLightFinalCircleMask locations];
+      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientLocations:locations2];
 
-      v33 = [v22 colors];
-      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientColors:v33];
+      colors2 = [edgeLightFinalCircleMask colors];
+      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientColors:colors2];
 
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskSourceRadius:v92];
-      [v22 blurRadius];
+      [edgeLightFinalCircleMask blurRadius];
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskSourceBlurRadius:?];
       v34 = 1.0;
-      if (a3 == 4)
+      if (state == 4)
       {
-        v35 = [v21 copy];
+        v35 = [donutMaskPositionAnimationSettings copy];
         [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v35 forKeypath:@"edgeLightMaskFrame"];
 
-        v36 = [v21 copy];
+        v36 = [donutMaskPositionAnimationSettings copy];
         [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v36 forKeypath:@"edgeLightMaskGradientLocations"];
 
-        v37 = [v21 copy];
+        v37 = [donutMaskPositionAnimationSettings copy];
         [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v37 forKeypath:@"edgeLightMaskGradientColors"];
 
-        v38 = [v21 copy];
+        v38 = [donutMaskPositionAnimationSettings copy];
         [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v38 forKeypath:@"edgeLightMaskSourceRadius"];
 
-        v39 = [v21 copy];
+        v39 = [donutMaskPositionAnimationSettings copy];
         [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v39 forKeypath:@"edgeLightMaskSourceBlurRadius"];
 
-        v40 = [v19 lightIntensityCancelledAnimationSettings];
-        v41 = [v40 copy];
+        lightIntensityCancelledAnimationSettings2 = [settingsCopy lightIntensityCancelledAnimationSettings];
+        v41 = [lightIntensityCancelledAnimationSettings2 copy];
         [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v41 forKeypath:@"edgeLightIntensity"];
 
         v34 = 0.0;
@@ -530,38 +530,38 @@ LABEL_12:
 
     else
     {
-      [v19 edgeLightHintTransitionDelay];
+      [settingsCopy edgeLightHintTransitionDelay];
       v82 = v44;
       v92 = 0.0;
-      v22 = [v19 edgeLightHintCircleMask];
-      [objc_opt_class() edgeLightMaskRectForState:1 variant:a4 normalizedStartLocation:v19 settings:a8 inBounds:&v92 idiom:v16 outSourceRadius:{v15, v14, v13, x, y, width, height}];
+      edgeLightFinalCircleMask = [settingsCopy edgeLightHintCircleMask];
+      [objc_opt_class() edgeLightMaskRectForState:1 variant:variant normalizedStartLocation:settingsCopy settings:idiom inBounds:&v92 idiom:v16 outSourceRadius:{v15, v14, v13, x, y, width, height}];
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskFrame:?];
-      v45 = [v21 copy];
+      v45 = [donutMaskPositionAnimationSettings copy];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v45 forKeypath:@"edgeLightMaskFrame"];
 
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"edgeLightMaskFrame" forApplicationOfKeypath:v82];
-      v46 = [v22 locations];
-      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientLocations:v46];
+      locations3 = [edgeLightFinalCircleMask locations];
+      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientLocations:locations3];
 
-      v47 = [v21 copy];
+      v47 = [donutMaskPositionAnimationSettings copy];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v47 forKeypath:@"edgeLightMaskGradientLocations"];
 
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"edgeLightMaskGradientLocations" forApplicationOfKeypath:v82];
-      v48 = [v22 colors];
-      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientColors:v48];
+      colors3 = [edgeLightFinalCircleMask colors];
+      [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskGradientColors:colors3];
 
-      v49 = [v21 copy];
+      v49 = [donutMaskPositionAnimationSettings copy];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v49 forKeypath:@"edgeLightMaskGradientColors"];
 
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"edgeLightMaskGradientColors" forApplicationOfKeypath:v82];
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskSourceRadius:v92];
-      v50 = [v21 copy];
+      v50 = [donutMaskPositionAnimationSettings copy];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v50 forKeypath:@"edgeLightMaskSourceRadius"];
 
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"edgeLightMaskSourceRadius" forApplicationOfKeypath:v82];
-      [v22 blurRadius];
+      [edgeLightFinalCircleMask blurRadius];
       [(_SUIAShockwaveEdgeLightOverlayConfiguration *)v20 _setEdgeLightMaskSourceBlurRadius:?];
-      v51 = [v21 copy];
+      v51 = [donutMaskPositionAnimationSettings copy];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v51 forKeypath:@"edgeLightMaskSourceBlurRadius"];
 
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"edgeLightMaskSourceBlurRadius" forApplicationOfKeypath:v82];
@@ -579,14 +579,14 @@ LABEL_12:
   UIRectGetCenter();
   v61 = v60;
   v63 = v62;
-  [v22 innerRadius];
+  [edgeLightFinalCircleMask innerRadius];
   v65 = v64;
   v94.origin.x = v53;
   v94.origin.y = v55;
   v94.size.width = v57;
   v94.size.height = v59;
   v83 = v65 * CGRectGetWidth(v94) * 0.5;
-  [v22 outerRadius];
+  [edgeLightFinalCircleMask outerRadius];
   v67 = v66;
   v95.origin.x = v53;
   v95.origin.y = v55;
@@ -611,7 +611,7 @@ LABEL_12:
 
   [(_SUIAAbstractDictionaryBackedConfiguration *)v20 delayForApplicationOfKeypath:@"edgeLightMaskGradientLocations"];
   [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"edgeLightMaskOuterRadius" forApplicationOfKeypath:?];
-  v72 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:a3 variant:a4 normalizedStartLocation:v19 settings:a8 bounds:0 idiom:v84 usesIntelligentFillLight:v85, v86, v87, v88, v89, v90, v91];
+  v72 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:state variant:variant normalizedStartLocation:settingsCopy settings:idiom bounds:0 idiom:v84 usesIntelligentFillLight:v85, v86, v87, v88, v89, v90, v91];
   __139___SUIAShockwaveEdgeLightOverlayConfiguration_edgeLightOverlayConfigurationForState_variant_normalizedStartLocation_settings_bounds_idiom___block_invoke(v72, v20, v72, @"fillLightIntensity", @"lightIntensity");
   __139___SUIAShockwaveEdgeLightOverlayConfiguration_edgeLightOverlayConfigurationForState_variant_normalizedStartLocation_settings_bounds_idiom___block_invoke(v73, v20, v72, @"fillLightMaskFrame", @"circleMaskFrame");
   __139___SUIAShockwaveEdgeLightOverlayConfiguration_edgeLightOverlayConfigurationForState_variant_normalizedStartLocation_settings_bounds_idiom___block_invoke(v74, v20, v72, @"fillLightMaskGradientLocations", @"circleGradientLocations");

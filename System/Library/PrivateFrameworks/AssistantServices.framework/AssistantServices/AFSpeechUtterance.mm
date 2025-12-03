@@ -1,12 +1,12 @@
 @interface AFSpeechUtterance
-- (AFSpeechUtterance)initWithCoder:(id)a3;
-- (AFSpeechUtterance)initWithDictionary:(id)a3;
-- (AFSpeechUtterance)initWithInterpretationIndices:(id)a3 confidenceScore:(int64_t)a4 interpretation:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (AFSpeechUtterance)initWithCoder:(id)coder;
+- (AFSpeechUtterance)initWithDictionary:(id)dictionary;
+- (AFSpeechUtterance)initWithInterpretationIndices:(id)indices confidenceScore:(int64_t)score interpretation:(id)interpretation;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechUtterance
@@ -43,11 +43,11 @@
   return v8;
 }
 
-- (AFSpeechUtterance)initWithDictionary:(id)a3
+- (AFSpeechUtterance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"interpretationIndices"];
-  v6 = [v4 objectForKey:@"interpretationIndices"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"interpretationIndices"];
+  v6 = [dictionaryCopy objectForKey:@"interpretationIndices"];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = v6;
@@ -76,7 +76,7 @@
       [v5 enumerateObjectsUsingBlock:v23];
       if ((v31[3] & 1) != 0 || ![v25[5] count])
       {
-        v16 = 0;
+        selfCopy = 0;
 LABEL_15:
         _Block_object_dispose(&v24, 8);
 
@@ -84,7 +84,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v10 = [v4 objectForKey:@"confidenceScore"];
+      v10 = [dictionaryCopy objectForKey:@"confidenceScore"];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = v10;
@@ -98,13 +98,13 @@ LABEL_15:
 
           if (([(AFSpeechInterpretation *)v13 intValue]& 0x80000000) != 0 || [(AFSpeechInterpretation *)v13 intValue]> 1000)
           {
-            v16 = 0;
+            selfCopy = 0;
 LABEL_14:
 
             goto LABEL_15;
           }
 
-          v19 = [v4 objectForKey:@"interpretation"];
+          v19 = [dictionaryCopy objectForKey:@"interpretation"];
           v20 = objc_opt_class();
           v21 = NSStringFromClass(v20);
           v15 = v19;
@@ -117,7 +117,7 @@ LABEL_14:
             if (v17)
             {
               self = [(AFSpeechUtterance *)self initWithInterpretationIndices:v25[5] confidenceScore:[(AFSpeechInterpretation *)v13 intValue] interpretation:v17];
-              v16 = self;
+              selfCopy = self;
               goto LABEL_13;
             }
           }
@@ -126,12 +126,12 @@ LABEL_14:
           {
           }
 
-          v16 = 0;
+          selfCopy = 0;
           goto LABEL_13;
         }
       }
 
-      v16 = 0;
+      selfCopy = 0;
       v17 = v13;
 LABEL_13:
 
@@ -139,10 +139,10 @@ LABEL_13:
     }
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v16;
+  return selfCopy;
 }
 
 void __40__AFSpeechUtterance_initWithDictionary___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -172,30 +172,30 @@ void __40__AFSpeechUtterance_initWithDictionary___block_invoke(uint64_t a1, void
   [*(*(*(a1 + 40) + 8) + 40) addObject:v11];
 }
 
-- (AFSpeechUtterance)initWithInterpretationIndices:(id)a3 confidenceScore:(int64_t)a4 interpretation:(id)a5
+- (AFSpeechUtterance)initWithInterpretationIndices:(id)indices confidenceScore:(int64_t)score interpretation:(id)interpretation
 {
-  v8 = a3;
-  v9 = a5;
+  indicesCopy = indices;
+  interpretationCopy = interpretation;
   v14.receiver = self;
   v14.super_class = AFSpeechUtterance;
   v10 = [(AFSpeechUtterance *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [indicesCopy copy];
     interpretationIndices = v10->_interpretationIndices;
     v10->_interpretationIndices = v11;
 
-    v10->_confidenceScore = a4;
-    objc_storeStrong(&v10->_interpretation, a5);
+    v10->_confidenceScore = score;
+    objc_storeStrong(&v10->_interpretation, interpretation);
   }
 
   return v10;
 }
 
-- (AFSpeechUtterance)initWithCoder:(id)a3
+- (AFSpeechUtterance)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = AFSpeechUtterance;
   v5 = [(AFSpeechUtterance *)&v15 init];
@@ -206,13 +206,13 @@ void __40__AFSpeechUtterance_initWithDictionary___block_invoke(uint64_t a1, void
     v16[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_interpretationIndices"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_interpretationIndices"];
     interpretationIndices = v5->_interpretationIndices;
     v5->_interpretationIndices = v9;
 
-    v5->_confidenceScore = [v4 decodeIntegerForKey:@"_confidenceScore"];
-    v5->_source = [v4 decodeIntegerForKey:@"_source"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_interpretation"];
+    v5->_confidenceScore = [coderCopy decodeIntegerForKey:@"_confidenceScore"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"_source"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_interpretation"];
     interpretation = v5->_interpretation;
     v5->_interpretation = v11;
   }
@@ -221,14 +221,14 @@ void __40__AFSpeechUtterance_initWithDictionary___block_invoke(uint64_t a1, void
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   interpretationIndices = self->_interpretationIndices;
-  v5 = a3;
-  [v5 encodeObject:interpretationIndices forKey:@"_interpretationIndices"];
-  [v5 encodeInteger:self->_confidenceScore forKey:@"_confidenceScore"];
-  [v5 encodeInteger:self->_source forKey:@"_source"];
-  [v5 encodeObject:self->_interpretation forKey:@"_interpretation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:interpretationIndices forKey:@"_interpretationIndices"];
+  [coderCopy encodeInteger:self->_confidenceScore forKey:@"_confidenceScore"];
+  [coderCopy encodeInteger:self->_source forKey:@"_source"];
+  [coderCopy encodeObject:self->_interpretation forKey:@"_interpretation"];
 }
 
 - (id)description
@@ -245,13 +245,13 @@ void __40__AFSpeechUtterance_initWithDictionary___block_invoke(uint64_t a1, void
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = v4[1], v5 == self->_interpretationIndices) || [(NSArray *)v5 isEqualToArray:?]) && v4[2] == self->_confidenceScore && v4[3] == self->_source)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = equalCopy[1], v5 == self->_interpretationIndices) || [(NSArray *)v5 isEqualToArray:?]) && equalCopy[2] == self->_confidenceScore && equalCopy[3] == self->_source)
   {
-    v6 = v4[4];
+    v6 = equalCopy[4];
     if (v6 == self->_interpretation)
     {
       v7 = 1;
@@ -274,8 +274,8 @@ void __40__AFSpeechUtterance_initWithDictionary___block_invoke(uint64_t a1, void
 - (unint64_t)hash
 {
   v3 = [(NSArray *)self->_interpretationIndices hash];
-  v4 = [(NSArray *)self->_interpretationIndices firstObject];
-  v5 = [v4 hash];
+  firstObject = [(NSArray *)self->_interpretationIndices firstObject];
+  v5 = [firstObject hash];
 
   return v5 ^ v3;
 }

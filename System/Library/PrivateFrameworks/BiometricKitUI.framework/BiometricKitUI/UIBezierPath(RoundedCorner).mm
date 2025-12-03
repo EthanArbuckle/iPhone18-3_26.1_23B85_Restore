@@ -6,9 +6,9 @@
 
 - (void)bkui_bezierPathAddRoundedCorner:()RoundedCorner withRadius:followingAngle:
 {
-  [a1 currentPoint];
+  [self currentPoint];
   v10 = v9;
-  [a1 currentPoint];
+  [self currentPoint];
   v12 = v11;
   v13 = __sincos_stret(a3);
   v14 = fabs(v13.__cosval * a2);
@@ -55,7 +55,7 @@ LABEL_10:
   a3 = a3 + v18;
 LABEL_12:
 
-  [a1 addArcWithCenter:1 radius:v16 startAngle:v17 endAngle:a2 clockwise:{a3, a3 + 1.57079633}];
+  [self addArcWithCenter:1 radius:v16 startAngle:v17 endAngle:a2 clockwise:{a3, a3 + 1.57079633}];
 }
 
 @end

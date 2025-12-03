@@ -1,22 +1,22 @@
 @interface SBCaptureButtonDisabledUserDefaultRestriction
-- (SBCaptureButtonDisabledUserDefaultRestriction)initWithCoordinator:(id)a3;
+- (SBCaptureButtonDisabledUserDefaultRestriction)initWithCoordinator:(id)coordinator;
 - (void)_evaluateCaptureButtonDisablement;
 @end
 
 @implementation SBCaptureButtonDisabledUserDefaultRestriction
 
-- (SBCaptureButtonDisabledUserDefaultRestriction)initWithCoordinator:(id)a3
+- (SBCaptureButtonDisabledUserDefaultRestriction)initWithCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v21.receiver = self;
   v21.super_class = SBCaptureButtonDisabledUserDefaultRestriction;
-  v5 = [(SBCaptureButtonInternalRestrictionGlue *)&v21 initWithCoordinator:v4];
+  v5 = [(SBCaptureButtonInternalRestrictionGlue *)&v21 initWithCoordinator:coordinatorCopy];
   if (v5)
   {
     v6 = +[SBDefaults localDefaults];
-    v7 = [v6 captureButtonDefaults];
+    captureButtonDefaults = [v6 captureButtonDefaults];
     captureButtonDefaults = v5->_captureButtonDefaults;
-    v5->_captureButtonDefaults = v7;
+    v5->_captureButtonDefaults = captureButtonDefaults;
 
     objc_initWeak(&location, v5);
     v9 = v5->_captureButtonDefaults;

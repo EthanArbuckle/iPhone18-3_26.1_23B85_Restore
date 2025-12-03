@@ -1,7 +1,7 @@
 @interface WOReminderHaptic
 - (NSString)identifier;
 - (WOReminderHaptic)init;
-- (void)setIdentifier:(id)a3;
+- (void)setIdentifier:(id)identifier;
 - (void)startTimer;
 - (void)stopTimer;
 @end
@@ -20,7 +20,7 @@
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -32,13 +32,13 @@
 
 - (void)startTimer
 {
-  v2 = self;
+  selfCopy = self;
   ReminderHaptic.startTimer()();
 }
 
 - (void)stopTimer
 {
-  v2 = self;
+  selfCopy = self;
   ReminderHaptic.stopTimer()();
 }
 

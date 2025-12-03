@@ -1,43 +1,43 @@
 @interface _FCUIActivityControlMenuFooterView
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_configureFooterLabelIfNecessary;
 - (void)_configureHightlightViewIfNecessary;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)_setNeedsTextAttributesUpdate;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesForFooterLabel;
 - (void)_updateTextAttributesIfNecessary;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6 observerBlock:(id)a7;
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider observerBlock:(id)block;
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingProvider:(id)outgoingProvider;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setFooterAction:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setFooterAction:(id)action;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation _FCUIActivityControlMenuFooterView
 
-- (void)setFooterAction:(id)a3
+- (void)setFooterAction:(id)action
 {
-  v7 = a3;
+  actionCopy = action;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_footerAction, a3);
+    objc_storeStrong(&self->_footerAction, action);
     [(_FCUIActivityControlMenuFooterView *)self _configureFooterLabelIfNecessary];
     footerLabel = self->_footerLabel;
-    v6 = [(UIAction *)self->_footerAction title];
-    [(UILabel *)footerLabel setText:v6];
+    title = [(UIAction *)self->_footerAction title];
+    [(UILabel *)footerLabel setText:title];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(_FCUIActivityControlMenuFooterView *)self _updateTextAttributesIfNecessary];
-  v4 = [(UILabel *)self->_footerLabel font];
-  [v4 lineHeight];
+  font = [(UILabel *)self->_footerLabel font];
+  [font lineHeight];
   UISizeRoundToScale();
   v6 = v5;
   v8 = v7;
@@ -54,8 +54,8 @@
   [(_FCUIActivityControlMenuFooterView *)self _updateTextAttributesIfNecessary];
   [(_FCUIActivityControlMenuFooterView *)self bounds];
   CGRectGetWidth(v14);
-  v3 = [(UILabel *)self->_footerLabel font];
-  [v3 lineHeight];
+  font = [(UILabel *)self->_footerLabel font];
+  [font lineHeight];
   BSRectWithSize();
   UIRectCenteredIntegralRectScale();
   v5 = v4;
@@ -68,30 +68,30 @@
   [(UILabel *)footerLabel setFrame:v5, v7, v9, v11];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(_FCUIActivityControlMenuFooterView *)self _configureHightlightViewIfNecessary];
   [(UIView *)self->_highlightView frame];
   v6 = v5;
   v8 = v7;
   [(_FCUIActivityControlMenuFooterView *)self bounds];
-  [(UIView *)self->_highlightView setFrame:v6, v9 - a3 * 3.0, v8, a3 * 3.0];
-  [(UIView *)self->_highlightView _setContinuousCornerRadius:a3];
-  v10 = [(UIView *)self->_highlightView layer];
-  [v10 setMaskedCorners:12];
+  [(UIView *)self->_highlightView setFrame:v6, v9 - radius * 3.0, v8, radius * 3.0];
+  [(UIView *)self->_highlightView _setContinuousCornerRadius:radius];
+  layer = [(UIView *)self->_highlightView layer];
+  [layer setMaskedCorners:12];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   if (self->_footerAction)
   {
-    v3 = a3;
-    if ([(_FCUIActivityControlMenuFooterView *)self isHighlighted]!= a3)
+    highlightedCopy = highlighted;
+    if ([(_FCUIActivityControlMenuFooterView *)self isHighlighted]!= highlighted)
     {
       [(_FCUIActivityControlMenuFooterView *)self _configureHightlightViewIfNecessary];
       highlightView = self->_highlightView;
       v6 = 0.0;
-      if (v3)
+      if (highlightedCopy)
       {
         v6 = 1.0;
       }
@@ -101,37 +101,37 @@
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(_FCUIActivityControlMenuFooterView *)self _setNeedsTextAttributesUpdate];
   }
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(_FCUIActivityControlMenuFooterView *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(_FCUIActivityControlMenuFooterView *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
     [(_FCUIActivityControlMenuFooterView *)self _setNeedsTextAttributesUpdate];
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v18 = a3;
-  v6 = [(_FCUIActivityControlMenuFooterView *)self requiredVisualStyleCategories];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v8 = [v6 containsObject:v7];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(_FCUIActivityControlMenuFooterView *)self requiredVisualStyleCategories];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v8 = [requiredVisualStyleCategories containsObject:v7];
 
   if (v8)
   {
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:category];
     v11 = [(NSMutableDictionary *)categoriesToVisualStylingProviders objectForKey:v10];
 
     v12 = self->_categoriesToVisualStylingProviders;
@@ -144,14 +144,14 @@
       v12 = self->_categoriesToVisualStylingProviders;
     }
 
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-    [(NSMutableDictionary *)v12 setObject:v18 forKeyedSubscript:v15];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+    [(NSMutableDictionary *)v12 setObject:providerCopy forKeyedSubscript:v15];
 
     v16 = self->_categoriesToVisualStylingProviders;
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-    if (v18)
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+    if (providerCopy)
     {
-      [(NSMutableDictionary *)v16 setObject:v18 forKey:v17];
+      [(NSMutableDictionary *)v16 setObject:providerCopy forKey:v17];
     }
 
     else
@@ -159,26 +159,26 @@
       [(NSMutableDictionary *)v16 removeObjectForKey:v17];
     }
 
-    [(_FCUIActivityControlMenuFooterView *)self _visualStylingProvider:v18 didChangeForCategory:a4 outgoingProvider:v11];
+    [(_FCUIActivityControlMenuFooterView *)self _visualStylingProvider:providerCopy didChangeForCategory:category outgoingProvider:v11];
   }
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -190,48 +190,48 @@
   return v12;
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6 observerBlock:(id)a7
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider observerBlock:(id)block
 {
-  if (a3)
+  if (view)
   {
-    v11 = a7;
-    v12 = a5;
-    v13 = a3;
-    [a6 stopAutomaticallyUpdatingView:v13];
-    [v12 automaticallyUpdateView:v13 withStyle:a4 andObserverBlock:v11];
+    blockCopy = block;
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style andObserverBlock:blockCopy];
   }
 }
 
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingProvider:(id)outgoingProvider
 {
-  v15 = a3;
-  v8 = a5;
-  if (a4 == 2)
+  providerCopy = provider;
+  outgoingProviderCopy = outgoingProvider;
+  if (category == 2)
   {
     highlightView = self->_highlightView;
     v14 = &__block_literal_global_0;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1;
-    v12 = v15;
-    v13 = v8;
+    v12 = providerCopy;
+    v13 = outgoingProviderCopy;
   }
 
   else
   {
-    if (a4 != 1)
+    if (category != 1)
     {
       goto LABEL_6;
     }
 
     highlightView = self->_footerLabel;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
-    v12 = v15;
-    v13 = v8;
+    v12 = providerCopy;
+    v13 = outgoingProviderCopy;
     v14 = 0;
   }
 
-  [(_FCUIActivityControlMenuFooterView *)v10 _updateVisualStylingOfView:highlightView style:v11 visualStylingProvider:v12 outgoingProvider:v13 observerBlock:v14];
+  [(_FCUIActivityControlMenuFooterView *)selfCopy2 _updateVisualStylingOfView:highlightView style:v11 visualStylingProvider:v12 outgoingProvider:v13 observerBlock:v14];
 LABEL_6:
 }
 
@@ -245,10 +245,10 @@ LABEL_6:
 
 - (void)_updateTextAttributes
 {
-  v3 = [(_FCUIActivityControlMenuFooterView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(_FCUIActivityControlMenuFooterView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   [(_FCUIActivityControlMenuFooterView *)self _updateTextAttributesForFooterLabel];
 }
@@ -308,8 +308,8 @@ LABEL_6:
     [(UIView *)self->_highlightView setAlpha:0.0];
     [(_FCUIActivityControlMenuFooterView *)self insertSubview:self->_highlightView atIndex:0];
     [(_FCUIActivityControlMenuFooterView *)self setClipsToBounds:0];
-    v6 = [(_FCUIActivityControlMenuFooterView *)self layer];
-    [v6 setMasksToBounds:1];
+    layer = [(_FCUIActivityControlMenuFooterView *)self layer];
+    [layer setMasksToBounds:1];
 
     v7 = self->_highlightView;
     v8 = [(NSMutableDictionary *)self->_categoriesToVisualStylingProviders objectForKey:&unk_285ED9418];

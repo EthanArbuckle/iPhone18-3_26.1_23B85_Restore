@@ -1,5 +1,5 @@
 @interface AMSUIWebNavigationBarModel
-- (AMSUIWebNavigationBarModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebNavigationBarModel)initWithJSObject:(id)object context:(id)context;
 - (BOOL)includesLeftItems;
 - (BOOL)includesRightItems;
 - (NSString)description;
@@ -7,11 +7,11 @@
 
 @implementation AMSUIWebNavigationBarModel
 
-- (AMSUIWebNavigationBarModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebNavigationBarModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  objectCopy = object;
+  contextCopy = context;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v47.receiver = self;
     v47.super_class = AMSUIWebNavigationBarModel;
@@ -19,12 +19,12 @@
     if (v9)
     {
       v10 = [AMSUIWebBarButtonItemModel alloc];
-      v11 = [v6 objectForKeyedSubscript:@"accessoryButton"];
-      v12 = [(AMSUIWebBarButtonItemModel *)v10 initWithJSObject:v11 context:v7];
+      v11 = [objectCopy objectForKeyedSubscript:@"accessoryButton"];
+      v12 = [(AMSUIWebBarButtonItemModel *)v10 initWithJSObject:v11 context:contextCopy];
       accessoryBarButtonItemModel = v9->_accessoryBarButtonItemModel;
       v9->_accessoryBarButtonItemModel = v12;
 
-      v14 = [v6 objectForKeyedSubscript:@"backButtonTitle"];
+      v14 = [objectCopy objectForKeyedSubscript:@"backButtonTitle"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -39,14 +39,14 @@
       backButtonTitle = v9->_backButtonTitle;
       v9->_backButtonTitle = v15;
 
-      v17 = [AMSUIWebModel backgroundColorFromPageModel:v6];
+      v17 = [AMSUIWebModel backgroundColorFromPageModel:objectCopy];
       backgroundColor = v9->_backgroundColor;
       v9->_backgroundColor = v17;
 
-      v19 = [v6 objectForKeyedSubscript:@"backgroundStyle"];
+      v19 = [objectCopy objectForKeyedSubscript:@"backgroundStyle"];
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v6 objectForKeyedSubscript:@"backgroundStyle"];
+        v20 = [objectCopy objectForKeyedSubscript:@"backgroundStyle"];
         v9->_backgroundStyle = [v20 longLongValue];
       }
 
@@ -55,19 +55,19 @@
         v9->_backgroundStyle = 0;
       }
 
-      v21 = [v6 objectForKeyedSubscript:@"hideBackButton"];
+      v21 = [objectCopy objectForKeyedSubscript:@"hideBackButton"];
       if (objc_opt_respondsToSelector())
       {
         v9->_hidesBackButton = [v21 BOOLValue];
       }
 
       v22 = [AMSUIWebBarButtonItemModel alloc];
-      v23 = [v6 objectForKeyedSubscript:@"leftButton"];
-      v24 = [(AMSUIWebBarButtonItemModel *)v22 initWithJSObject:v23 context:v7];
+      v23 = [objectCopy objectForKeyedSubscript:@"leftButton"];
+      v24 = [(AMSUIWebBarButtonItemModel *)v22 initWithJSObject:v23 context:contextCopy];
       leftBarButtonItemModel = v9->_leftBarButtonItemModel;
       v9->_leftBarButtonItemModel = v24;
 
-      v26 = [v6 objectForKeyedSubscript:@"otherButtons"];
+      v26 = [objectCopy objectForKeyedSubscript:@"otherButtons"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -85,7 +85,7 @@
         v45[1] = 3221225472;
         v45[2] = __55__AMSUIWebNavigationBarModel_initWithJSObject_context___block_invoke;
         v45[3] = &unk_1E7F267C8;
-        v46 = v7;
+        v46 = contextCopy;
         v28 = [v27 ams_mapWithTransformIgnoresNil:v45];
         otherBarButtonItemModels = v9->_otherBarButtonItemModels;
         v9->_otherBarButtonItemModels = v28;
@@ -95,7 +95,7 @@
 
       else
       {
-        v31 = [v6 objectForKeyedSubscript:@"otherButton"];
+        v31 = [objectCopy objectForKeyedSubscript:@"otherButton"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -108,25 +108,25 @@
         }
 
         v32 = objc_alloc(MEMORY[0x1E695DEC8]);
-        v33 = [[AMSUIWebBarButtonItemModel alloc] initWithJSObject:v30 context:v7];
+        v33 = [[AMSUIWebBarButtonItemModel alloc] initWithJSObject:v30 context:contextCopy];
         v34 = [v32 initWithObjects:{v33, 0}];
         v35 = v9->_otherBarButtonItemModels;
         v9->_otherBarButtonItemModels = v34;
       }
 
       v36 = [AMSUIWebBarButtonItemModel alloc];
-      v37 = [v6 objectForKeyedSubscript:@"rightButton"];
-      v38 = [(AMSUIWebBarButtonItemModel *)v36 initWithJSObject:v37 context:v7];
+      v37 = [objectCopy objectForKeyedSubscript:@"rightButton"];
+      v38 = [(AMSUIWebBarButtonItemModel *)v36 initWithJSObject:v37 context:contextCopy];
       rightBarButtonItemModel = v9->_rightBarButtonItemModel;
       v9->_rightBarButtonItemModel = v38;
 
-      v40 = [v6 objectForKeyedSubscript:@"style"];
+      v40 = [objectCopy objectForKeyedSubscript:@"style"];
       if (objc_opt_respondsToSelector())
       {
         v9->_style = [v40 integerValue];
       }
 
-      v41 = [v6 objectForKeyedSubscript:@"title"];
+      v41 = [objectCopy objectForKeyedSubscript:@"title"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -143,15 +143,15 @@
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 AMSUIWebBarButtonItemModel *__55__AMSUIWebNavigationBarModel_initWithJSObject_context___block_invoke(uint64_t a1, void *a2)
@@ -164,18 +164,18 @@ AMSUIWebBarButtonItemModel *__55__AMSUIWebNavigationBarModel_initWithJSObject_co
 
 - (BOOL)includesLeftItems
 {
-  v2 = [(AMSUIWebNavigationBarModel *)self leftBarButtonItemModel];
-  v3 = [v2 isEmpty];
+  leftBarButtonItemModel = [(AMSUIWebNavigationBarModel *)self leftBarButtonItemModel];
+  isEmpty = [leftBarButtonItemModel isEmpty];
 
-  return v3 ^ 1;
+  return isEmpty ^ 1;
 }
 
 - (BOOL)includesRightItems
 {
-  v2 = [(AMSUIWebNavigationBarModel *)self rightBarButtonItemModel];
-  v3 = [v2 isEmpty];
+  rightBarButtonItemModel = [(AMSUIWebNavigationBarModel *)self rightBarButtonItemModel];
+  isEmpty = [rightBarButtonItemModel isEmpty];
 
-  return v3 ^ 1;
+  return isEmpty ^ 1;
 }
 
 - (NSString)description
@@ -226,60 +226,60 @@ AMSUIWebBarButtonItemModel *__55__AMSUIWebNavigationBarModel_initWithJSObject_co
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:5];
   v9 = [v8 mutableCopy];
 
-  v10 = [(AMSUIWebNavigationBarModel *)self accessoryBarButtonItemModel];
+  accessoryBarButtonItemModel = [(AMSUIWebNavigationBarModel *)self accessoryBarButtonItemModel];
 
-  if (v10)
+  if (accessoryBarButtonItemModel)
   {
-    v11 = [(AMSUIWebNavigationBarModel *)self accessoryBarButtonItemModel];
-    [v9 setObject:v11 forKey:@"accessoryButton"];
+    accessoryBarButtonItemModel2 = [(AMSUIWebNavigationBarModel *)self accessoryBarButtonItemModel];
+    [v9 setObject:accessoryBarButtonItemModel2 forKey:@"accessoryButton"];
   }
 
-  v12 = [(AMSUIWebNavigationBarModel *)self backButtonTitle];
+  backButtonTitle = [(AMSUIWebNavigationBarModel *)self backButtonTitle];
 
-  if (v12)
+  if (backButtonTitle)
   {
-    v13 = [(AMSUIWebNavigationBarModel *)self backButtonTitle];
-    [v9 setObject:v13 forKey:@"backButtonTitle"];
+    backButtonTitle2 = [(AMSUIWebNavigationBarModel *)self backButtonTitle];
+    [v9 setObject:backButtonTitle2 forKey:@"backButtonTitle"];
   }
 
-  v14 = [(AMSUIWebNavigationBarModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebNavigationBarModel *)self backgroundColor];
 
-  if (v14)
+  if (backgroundColor)
   {
-    v15 = [(AMSUIWebNavigationBarModel *)self backgroundColor];
-    [v9 setObject:v15 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebNavigationBarModel *)self backgroundColor];
+    [v9 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v16 = [(AMSUIWebNavigationBarModel *)self leftBarButtonItemModel];
+  leftBarButtonItemModel = [(AMSUIWebNavigationBarModel *)self leftBarButtonItemModel];
 
-  if (v16)
+  if (leftBarButtonItemModel)
   {
-    v17 = [(AMSUIWebNavigationBarModel *)self leftBarButtonItemModel];
-    [v9 setObject:v17 forKey:@"leftButton"];
+    leftBarButtonItemModel2 = [(AMSUIWebNavigationBarModel *)self leftBarButtonItemModel];
+    [v9 setObject:leftBarButtonItemModel2 forKey:@"leftButton"];
   }
 
-  v18 = [(AMSUIWebNavigationBarModel *)self otherBarButtonItemModels];
+  otherBarButtonItemModels = [(AMSUIWebNavigationBarModel *)self otherBarButtonItemModels];
 
-  if (v18)
+  if (otherBarButtonItemModels)
   {
-    v19 = [(AMSUIWebNavigationBarModel *)self otherBarButtonItemModels];
-    [v9 setObject:v19 forKey:@"otherButtons"];
+    otherBarButtonItemModels2 = [(AMSUIWebNavigationBarModel *)self otherBarButtonItemModels];
+    [v9 setObject:otherBarButtonItemModels2 forKey:@"otherButtons"];
   }
 
-  v20 = [(AMSUIWebNavigationBarModel *)self rightBarButtonItemModel];
+  rightBarButtonItemModel = [(AMSUIWebNavigationBarModel *)self rightBarButtonItemModel];
 
-  if (v20)
+  if (rightBarButtonItemModel)
   {
-    v21 = [(AMSUIWebNavigationBarModel *)self rightBarButtonItemModel];
-    [v9 setObject:v21 forKey:@"rightButton"];
+    rightBarButtonItemModel2 = [(AMSUIWebNavigationBarModel *)self rightBarButtonItemModel];
+    [v9 setObject:rightBarButtonItemModel2 forKey:@"rightButton"];
   }
 
-  v22 = [(AMSUIWebNavigationBarModel *)self title];
+  title = [(AMSUIWebNavigationBarModel *)self title];
 
-  if (v22)
+  if (title)
   {
-    v23 = [(AMSUIWebNavigationBarModel *)self title];
-    [v9 setObject:v23 forKey:@"title"];
+    title2 = [(AMSUIWebNavigationBarModel *)self title];
+    [v9 setObject:title2 forKey:@"title"];
   }
 
   v24 = [v9 description];

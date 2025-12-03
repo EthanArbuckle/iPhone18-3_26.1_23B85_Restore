@@ -1,13 +1,13 @@
 @interface COSWristSelectionViewController
 + (BOOL)controllerNeedsToRun;
-+ (void)_madeWristSelectionForLeftWrist:(BOOL)a3;
-+ (void)resumePairingWithSavedValue:(id)a3;
++ (void)_madeWristSelectionForLeftWrist:(BOOL)wrist;
++ (void)resumePairingWithSavedValue:(id)value;
 - (COSWristSelectionViewController)init;
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)_madeWristSelectionForLeftWrist:(BOOL)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)_madeWristSelectionForLeftWrist:(BOOL)wrist;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -29,18 +29,18 @@
 
 + (BOOL)controllerNeedsToRun
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 resumePairingController];
-  LOBYTE(a1) = [v4 didRestoreValueForPaneClass:a1];
+  setupController = [UIApp setupController];
+  resumePairingController = [setupController resumePairingController];
+  LOBYTE(self) = [resumePairingController didRestoreValueForPaneClass:self];
 
-  return a1 ^ 1;
+  return self ^ 1;
 }
 
-+ (void)resumePairingWithSavedValue:(id)a3
++ (void)resumePairingWithSavedValue:(id)value
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [value BOOLValue];
 
-  [a1 _madeWristSelectionForLeftWrist:v4];
+  [self _madeWristSelectionForLeftWrist:bOOLValue];
 }
 
 - (void)viewDidLoad
@@ -58,54 +58,54 @@
   self->_choiceView = v8;
 
   [(COSHorizontalCheckmarkChoiceView *)self->_choiceView setDelegate:self];
-  v10 = [(COSWristSelectionViewController *)self contentView];
-  [v10 addSubview:self->_choiceView];
+  contentView = [(COSWristSelectionViewController *)self contentView];
+  [contentView addSubview:self->_choiceView];
 
   [(COSHorizontalCheckmarkChoiceView *)self->_choiceView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(COSWristSelectionViewController *)self watchViewBottomConstraint];
-  [v11 setActive:0];
+  watchViewBottomConstraint = [(COSWristSelectionViewController *)self watchViewBottomConstraint];
+  [watchViewBottomConstraint setActive:0];
 
-  v12 = [(COSWristSelectionViewController *)self watchView];
+  watchView = [(COSWristSelectionViewController *)self watchView];
 
-  if (v12)
+  if (watchView)
   {
-    v13 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView topAnchor];
-    v14 = [(COSWristSelectionViewController *)self watchView];
+    topAnchor = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView topAnchor];
+    watchView2 = [(COSWristSelectionViewController *)self watchView];
 LABEL_5:
-    v16 = v14;
-    v17 = [v14 bottomAnchor];
-    v18 = [v13 constraintEqualToAnchor:v17 constant:8.0];
+    v16 = watchView2;
+    bottomAnchor = [watchView2 bottomAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:8.0];
     [v18 setActive:1];
 
     goto LABEL_6;
   }
 
-  v15 = [(COSWristSelectionViewController *)self illustratedWatchView];
+  illustratedWatchView = [(COSWristSelectionViewController *)self illustratedWatchView];
 
-  if (v15)
+  if (illustratedWatchView)
   {
-    v13 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView topAnchor];
-    v14 = [(COSWristSelectionViewController *)self illustratedWatchView];
+    topAnchor = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView topAnchor];
+    watchView2 = [(COSWristSelectionViewController *)self illustratedWatchView];
     goto LABEL_5;
   }
 
 LABEL_6:
-  v19 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView leadingAnchor];
-  v20 = [(COSWristSelectionViewController *)self contentView];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  leadingAnchor = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView leadingAnchor];
+  contentView2 = [(COSWristSelectionViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v22 setActive:1];
 
-  v23 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView trailingAnchor];
-  v24 = [(COSWristSelectionViewController *)self contentView];
-  v25 = [v24 trailingAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  trailingAnchor = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView trailingAnchor];
+  contentView3 = [(COSWristSelectionViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v26 setActive:1];
 
-  v27 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView bottomAnchor];
-  v28 = [(COSWristSelectionViewController *)self contentView];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  bottomAnchor2 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView bottomAnchor];
+  contentView4 = [(COSWristSelectionViewController *)self contentView];
+  bottomAnchor3 = [contentView4 bottomAnchor];
+  v30 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v30 setActive:1];
 
   [(COSHorizontalCheckmarkChoiceView *)self->_choiceView setSelectedChoice:1];
@@ -121,12 +121,12 @@ LABEL_6:
 
 - (id)detailString
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (isTinkerPairing)
   {
     v6 = @"WRIST_CHOICE_TINKER";
     v7 = @"Localizable-tinker";
@@ -151,7 +151,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -161,15 +161,15 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v5 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView selectedChoice];
-  if (v5 == 2)
+  selectedChoice = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView selectedChoice];
+  if (selectedChoice == 2)
   {
     [(COSWristSelectionViewController *)self _madeWristSelectionForLeftWrist:0];
-    v7 = [(COSWristSelectionViewController *)self delegate];
-    [v7 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+    delegate = [(COSWristSelectionViewController *)self delegate];
+    [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
   }
 
-  else if (v5 == 1)
+  else if (selectedChoice == 1)
   {
     [(COSWristSelectionViewController *)self _madeWristSelectionForLeftWrist:1];
     [COSCrownOrientationChoiceViewController sendCrownOnRightChoiceToWatch:1];
@@ -179,69 +179,69 @@ LABEL_6:
       [v6 beginMacroActivity:@"COSPostWristChoiceUserWaitPhase" beginTime:CFAbsoluteTimeGetCurrent()];
     }
 
-    v7 = [(COSWristSelectionViewController *)self delegate];
-    [v7 buddyControllerDone:self];
+    delegate = [(COSWristSelectionViewController *)self delegate];
+    [delegate buddyControllerDone:self];
   }
 
   else
   {
-    v7 = pbb_bridge_log();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    delegate = pbb_bridge_log();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR) && os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v8) = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Attempted to continue past wrist selection but no choice was found!", &v8, 2u);
+      _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "Attempted to continue past wrist selection but no choice was found!", &v8, 2u);
     }
   }
 }
 
-- (void)_madeWristSelectionForLeftWrist:(BOOL)a3
+- (void)_madeWristSelectionForLeftWrist:(BOOL)wrist
 {
-  v3 = a3;
-  [objc_opt_class() _madeWristSelectionForLeftWrist:a3];
-  v6 = [(COSWristSelectionViewController *)self delegate];
-  v5 = [v6 resumePairingController];
-  [v5 saveBoolValue:v3 forPaneClass:objc_opt_class()];
+  wristCopy = wrist;
+  [objc_opt_class() _madeWristSelectionForLeftWrist:wrist];
+  delegate = [(COSWristSelectionViewController *)self delegate];
+  resumePairingController = [delegate resumePairingController];
+  [resumePairingController saveBoolValue:wristCopy forPaneClass:objc_opt_class()];
 }
 
-+ (void)_madeWristSelectionForLeftWrist:(BOOL)a3
++ (void)_madeWristSelectionForLeftWrist:(BOOL)wrist
 {
-  v3 = a3;
+  wristCopy = wrist;
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [NSNumber numberWithBool:v3];
+    v5 = [NSNumber numberWithBool:wristCopy];
     v17 = 138412290;
     v18 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Set Wrist Choice: Left: %@", &v17, 0xCu);
   }
 
-  v6 = [UIApp setupController];
-  [v6 setWristChoicesDetected:1];
+  setupController = [UIApp setupController];
+  [setupController setWristChoicesDetected:1];
 
-  v7 = [UIApp setupController];
-  v8 = [v7 pairingReportManager];
+  setupController2 = [UIApp setupController];
+  pairingReportManager = [setupController2 pairingReportManager];
 
-  v9 = [NSNumber numberWithBool:v3];
-  [v8 addPairingTimeEventToPairingReportPlist:10 withValue:v9 withError:0];
+  v9 = [NSNumber numberWithBool:wristCopy];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:10 withValue:v9 withError:0];
 
-  [v8 addPairingTimeEventToPairingReportPlist:11 withValue:&__kCFBooleanFalse withError:0];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:11 withValue:&__kCFBooleanFalse withError:0];
   if (sub_10002D16C())
   {
-    v10 = +[COSInternalUserStudyDataManager sharedManager];
-    [v10 setWristChoice:v3 ^ 1];
+    activeWatch = +[COSInternalUserStudyDataManager sharedManager];
+    [activeWatch setWristChoice:wristCopy ^ 1];
   }
 
   else
   {
     v11 = +[UIApplication sharedApplication];
-    v10 = [v11 activeWatch];
+    activeWatch = [v11 activeWatch];
 
-    v12 = [v10 valueForProperty:NRDevicePropertyPairingID];
-    v13 = [v10 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+    v12 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
+    v13 = [activeWatch valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
     v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano" pairingID:v12 pairingDataStore:v13];
-    [v14 setBool:v3 ^ 1 forKey:@"wornOnRightArm"];
-    v15 = [v14 synchronize];
-    if (v3)
+    [v14 setBool:wristCopy ^ 1 forKey:@"wornOnRightArm"];
+    synchronize = [v14 synchronize];
+    if (wristCopy)
     {
       v16 = 1;
     }

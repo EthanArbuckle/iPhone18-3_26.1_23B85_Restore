@@ -1,20 +1,20 @@
 @interface SIRINLUEXTERNALNLU_ROUTERTypeIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERTypeIdentifier
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   custom = self->_custom;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (custom)
   {
     if (v6)
@@ -31,13 +31,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     custom = self->_custom;
-    if (custom | v4[1])
+    if (custom | equalCopy[1])
     {
       v6 = [(SIRINLUEXTERNALNLU_ROUTERCustom *)custom isEqual:?];
     }
@@ -56,26 +56,26 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALNLU_ROUTERCustom *)self->_custom copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALNLU_ROUTERCustom *)self->_custom copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   custom = self->_custom;
   if (custom)
   {
-    [a3 setCustom:custom];
+    [to setCustom:custom];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_custom)
   {
@@ -85,15 +85,15 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   custom = self->_custom;
   if (custom)
   {
-    v5 = [(SIRINLUEXTERNALNLU_ROUTERCustom *)custom dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"custom"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERCustom *)custom dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"custom"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -102,8 +102,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERTypeIdentifier;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERTypeIdentifier *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERTypeIdentifier *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERTypeIdentifier *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

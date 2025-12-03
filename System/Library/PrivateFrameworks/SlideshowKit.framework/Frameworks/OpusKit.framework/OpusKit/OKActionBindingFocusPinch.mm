@@ -1,13 +1,13 @@
 @interface OKActionBindingFocusPinch
 + (id)supportedSettings;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (OKActionBindingFocusPinch)init;
-- (OKActionBindingFocusPinch)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setFocusSize:(CGSize)a3 angle:(float)a4 toWidgetView:(id)a5;
+- (OKActionBindingFocusPinch)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setFocusSize:(CGSize)size angle:(float)angle toWidgetView:(id)view;
 - (void)dealloc;
-- (void)handlePinch:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)handlePinch:(id)pinch;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -26,14 +26,14 @@
   return result;
 }
 
-- (OKActionBindingFocusPinch)initWithSettings:(id)a3
+- (OKActionBindingFocusPinch)initWithSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingFocusPinch;
   v4 = [(OKActionBinding *)&v7 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"mode"];
+    v5 = [settings objectForKey:@"mode"];
     if (v5)
     {
       v4->_mode = [v5 unsignedIntegerValue];
@@ -59,11 +59,11 @@
   [(OKActionBinding *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingFocusPinch;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -76,7 +76,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingFocusPinch;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"mode";
@@ -91,17 +91,17 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingFocusPinch;
-  [(OKActionBindingProxy *)&v9 loadForResponder:a3 scope:a4];
+  [(OKActionBindingProxy *)&v9 loadForResponder:responder scope:scope];
   if (([(OKActionBindingProxy *)self scope]& 1) != 0)
   {
-    v6 = [a3 actionView];
-    if (v6)
+    actionView = [responder actionView];
+    if (actionView)
     {
-      v7 = v6;
+      v7 = actionView;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -129,49 +129,49 @@
   [(OKActionBindingProxy *)&v4 unload];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  [a3 view];
+  [recognizer view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] interactivityEnabled];
-    if (v6)
+    interactivityEnabled = [(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] interactivityEnabled];
+    if (interactivityEnabled)
     {
-      if (self->_pinchGestureRecognizer == a3)
+      if (self->_pinchGestureRecognizer == recognizer)
       {
         -[OFUITrackingPinchGestureRecognizer setZoomMode:](self->_pinchGestureRecognizer, "setZoomMode:", [-[OKActionResponder actionView](-[OKActionBindingProxy actionResponder](self "actionResponder")] == 2);
       }
 
-      LOBYTE(v6) = 1;
+      LOBYTE(interactivityEnabled) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(interactivityEnabled) = 0;
   }
 
-  return v6;
+  return interactivityEnabled;
 }
 
-- (void)_setFocusSize:(CGSize)a3 angle:(float)a4 toWidgetView:(id)a5
+- (void)_setFocusSize:(CGSize)size angle:(float)angle toWidgetView:(id)view
 {
-  height = a3.height;
-  width = a3.width;
-  [a5 frame];
-  v9 = a4;
-  [a5 _focusGestureHelper];
+  height = size.height;
+  width = size.width;
+  [view frame];
+  angleCopy = angle;
+  [view _focusGestureHelper];
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   *&v20.a = *MEMORY[0x277CBF2C0];
   *&v20.c = v10;
   *&v20.tx = *(MEMORY[0x277CBF2C0] + 32);
-  CGAffineTransformMakeRotation(&v20, a4);
-  v11 = [a5 layer];
+  CGAffineTransformMakeRotation(&v20, angle);
+  layer = [view layer];
   v18 = v20;
   CATransform3DMakeAffineTransform(&v19, &v18);
-  [v11 setTransform:&v19];
-  if (width >= *([a5 _focusGestureHelper] + 40) && height >= *(objc_msgSend(a5, "_focusGestureHelper") + 48))
+  [layer setTransform:&v19];
+  if (width >= *([view _focusGestureHelper] + 40) && height >= *(objc_msgSend(view, "_focusGestureHelper") + 48))
   {
     v15 = height;
     v13 = width;
@@ -179,131 +179,131 @@
 
   else
   {
-    v12 = *([a5 _focusGestureHelper] + 40);
-    v13 = v12 - (*([a5 _focusGestureHelper] + 40) - width) * 0.400000006;
-    v14 = *([a5 _focusGestureHelper] + 48);
-    v15 = v14 - (*([a5 _focusGestureHelper] + 48) - height) * 0.400000006;
+    v12 = *([view _focusGestureHelper] + 40);
+    v13 = v12 - (*([view _focusGestureHelper] + 40) - width) * 0.400000006;
+    v14 = *([view _focusGestureHelper] + 48);
+    v15 = v14 - (*([view _focusGestureHelper] + 48) - height) * 0.400000006;
   }
 
-  if (width > *([a5 _focusGestureHelper] + 152) || height > *(objc_msgSend(a5, "_focusGestureHelper") + 160))
+  if (width > *([view _focusGestureHelper] + 152) || height > *(objc_msgSend(view, "_focusGestureHelper") + 160))
   {
-    v16 = *([a5 _focusGestureHelper] + 152);
-    v13 = v16 + (width - *([a5 _focusGestureHelper] + 152)) * 0.400000006;
-    v17 = *([a5 _focusGestureHelper] + 160);
-    v15 = v17 + (height - *([a5 _focusGestureHelper] + 160)) * 0.400000006;
+    v16 = *([view _focusGestureHelper] + 152);
+    v13 = v16 + (width - *([view _focusGestureHelper] + 152)) * 0.400000006;
+    v17 = *([view _focusGestureHelper] + 160);
+    v15 = v17 + (height - *([view _focusGestureHelper] + 160)) * 0.400000006;
   }
 
-  [a5 setBounds:{0.0, 0.0, v13, v15}];
-  *([a5 _focusGestureHelper] + 192) = v9;
+  [view setBounds:{0.0, 0.0, v13, v15}];
+  *([view _focusGestureHelper] + 192) = angleCopy;
 }
 
-- (void)handlePinch:(id)a3
+- (void)handlePinch:(id)pinch
 {
-  v5 = [a3 view];
-  if ([a3 state] == 1)
+  view = [pinch view];
+  if ([pinch state] == 1)
   {
-    self->_presentationMode = [v5 presentationMode];
-    if ([v5 presentationMode] == 1)
+    self->_presentationMode = [view presentationMode];
+    if ([view presentationMode] == 1)
     {
-      [v5 _prepareToFocus];
+      [view _prepareToFocus];
     }
 
-    else if ([v5 presentationMode] == 2)
+    else if ([view presentationMode] == 2)
     {
-      [v5 _prepareToUnfocus];
+      [view _prepareToUnfocus];
     }
 
-    [v5 frame];
+    [view frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [a3 locationInView:{objc_msgSend(v5, "superview")}];
+    [pinch locationInView:{objc_msgSend(view, "superview")}];
     v15 = v14;
     v17 = v16;
-    v18 = [v5 _focusGestureHelper];
-    [v5 center];
-    *(v18 + 112) = v19;
-    *(v18 + 120) = v20;
-    v21 = [v5 _focusGestureHelper];
-    [v5 frame];
-    *(v21 + 128) = v22;
-    *(v21 + 136) = v23;
-    *([v5 _focusGestureHelper] + 168) = (v15 - v7) / v11;
-    *([v5 _focusGestureHelper] + 176) = (v17 - v9) / v13;
-    [a3 pinchAngle];
-    *([v5 _focusGestureHelper] + 144) = v24;
+    _focusGestureHelper = [view _focusGestureHelper];
+    [view center];
+    *(_focusGestureHelper + 112) = v19;
+    *(_focusGestureHelper + 120) = v20;
+    _focusGestureHelper2 = [view _focusGestureHelper];
+    [view frame];
+    *(_focusGestureHelper2 + 128) = v22;
+    *(_focusGestureHelper2 + 136) = v23;
+    *([view _focusGestureHelper] + 168) = (v15 - v7) / v11;
+    *([view _focusGestureHelper] + 176) = (v17 - v9) / v13;
+    [pinch pinchAngle];
+    *([view _focusGestureHelper] + 144) = v24;
     return;
   }
 
-  if ([a3 state] == 2)
+  if ([pinch state] == 2)
   {
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __41__OKActionBindingFocusPinch_handlePinch___block_invoke;
     v55[3] = &unk_279C8E600;
-    v55[4] = a3;
+    v55[4] = pinch;
     v55[5] = self;
-    v55[6] = v5;
+    v55[6] = view;
     [(OKActionBindingFocusPinch *)self performBlockWithoutAnimations:v55];
     return;
   }
 
-  if ([a3 state] == 3)
+  if ([pinch state] == 3)
   {
     self->_presentationMode = 0;
-    [v5 bounds];
+    [view bounds];
     MidX = CGRectGetMidX(v57);
-    [v5 bounds];
-    [v5 convertPoint:objc_msgSend(v5 toView:{"superview"), MidX, CGRectGetMidY(v58)}];
+    [view bounds];
+    [view convertPoint:objc_msgSend(view toView:{"superview"), MidX, CGRectGetMidY(v58)}];
     v27 = v26;
     v29 = v28;
-    v30 = [v5 _focusGestureHelper];
+    _focusGestureHelper3 = [view _focusGestureHelper];
     __asm { FMOV            V0.2D, #0.5 }
 
-    *(v30 + 168) = _Q0;
-    v36 = [v5 layer];
-    v37 = [v5 _focusGestureHelper];
-    [v36 setAnchorPoint:{*(v37 + 168), *(v37 + 176)}];
-    [v5 setCenter:{v27, v29}];
-    [objc_msgSend(v5 "superview")];
+    *(_focusGestureHelper3 + 168) = _Q0;
+    layer = [view layer];
+    _focusGestureHelper4 = [view _focusGestureHelper];
+    [layer setAnchorPoint:{*(_focusGestureHelper4 + 168), *(_focusGestureHelper4 + 176)}];
+    [view setCenter:{v27, v29}];
+    [objc_msgSend(view "superview")];
     v39 = v38;
-    [objc_msgSend(v5 "superview")];
+    [objc_msgSend(view "superview")];
     v41 = v40;
-    [v5 frame];
-    if (v42 <= v39 * 0.5 && ([v5 frame], v43 <= v41 * 0.5) || (v44 = *(objc_msgSend(v5, "_focusGestureHelper") + 128) * 1.1, objc_msgSend(v5, "frame"), v44 >= v45))
+    [view frame];
+    if (v42 <= v39 * 0.5 && ([view frame], v43 <= v41 * 0.5) || (v44 = *(objc_msgSend(view, "_focusGestureHelper") + 128) * 1.1, objc_msgSend(view, "frame"), v44 >= v45))
     {
 LABEL_22:
 
-      [v5 _animateToUnfocus:0 completion:0.25];
+      [view _animateToUnfocus:0 completion:0.25];
       return;
     }
   }
 
   else
   {
-    if ([a3 state] != 5 && objc_msgSend(a3, "state") != 4)
+    if ([pinch state] != 5 && objc_msgSend(pinch, "state") != 4)
     {
       return;
     }
 
-    [v5 bounds];
+    [view bounds];
     v46 = CGRectGetMidX(v59);
-    [v5 bounds];
-    [v5 convertPoint:objc_msgSend(v5 toView:{"superview"), v46, CGRectGetMidY(v60)}];
+    [view bounds];
+    [view convertPoint:objc_msgSend(view toView:{"superview"), v46, CGRectGetMidY(v60)}];
     v48 = v47;
     v50 = v49;
-    v51 = [v5 _focusGestureHelper];
+    _focusGestureHelper5 = [view _focusGestureHelper];
     __asm { FMOV            V0.2D, #0.5 }
 
-    *(v51 + 168) = _Q0;
-    v53 = [v5 layer];
-    v54 = [v5 _focusGestureHelper];
-    [v53 setAnchorPoint:{*(v54 + 168), *(v54 + 176)}];
-    [v5 setCenter:{v48, v50}];
-    if ([v5 presentationMode] != 1)
+    *(_focusGestureHelper5 + 168) = _Q0;
+    layer2 = [view layer];
+    _focusGestureHelper6 = [view _focusGestureHelper];
+    [layer2 setAnchorPoint:{*(_focusGestureHelper6 + 168), *(_focusGestureHelper6 + 176)}];
+    [view setCenter:{v48, v50}];
+    if ([view presentationMode] != 1)
     {
-      if ([v5 presentationMode] != 2)
+      if ([view presentationMode] != 2)
       {
         return;
       }
@@ -312,7 +312,7 @@ LABEL_22:
     }
   }
 
-  [v5 _animateToFocus:0 completion:0.25];
+  [view _animateToFocus:0 completion:0.25];
 }
 
 uint64_t __41__OKActionBindingFocusPinch_handlePinch___block_invoke(uint64_t a1)

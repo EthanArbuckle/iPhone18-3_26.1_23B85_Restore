@@ -1,26 +1,26 @@
 @interface _UIMainMenuStateResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIMainMenuState)menuState;
-- (_UIMainMenuStateResponse)initWithCoder:(id)a3;
-- (id)_initWithMenuStates:(id)a3 uncategorizedMenuState:(id)a4;
+- (_UIMainMenuStateResponse)initWithCoder:(id)coder;
+- (id)_initWithMenuStates:(id)states uncategorizedMenuState:(id)state;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuStateResponse
 
-- (id)_initWithMenuStates:(id)a3 uncategorizedMenuState:(id)a4
+- (id)_initWithMenuStates:(id)states uncategorizedMenuState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  statesCopy = states;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = _UIMainMenuStateResponse;
   v9 = [(_UIMainMenuStateResponse *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_menuStates, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_menuStates, states);
+    objc_storeStrong(p_isa + 2, state);
   }
 
   return p_isa;
@@ -28,23 +28,23 @@
 
 - (_UIMainMenuState)menuState
 {
-  v2 = [(NSDictionary *)self->_menuStates allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSDictionary *)self->_menuStates allValues];
+  firstObject = [allValues firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   menuStates = self->_menuStates;
-  v5 = a3;
-  [v5 encodeObject:menuStates forKey:@"MenuStates"];
-  [v5 encodeObject:self->_uncategorizedMenuState forKey:@"UncategorizedMenuState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:menuStates forKey:@"MenuStates"];
+  [coderCopy encodeObject:self->_uncategorizedMenuState forKey:@"UncategorizedMenuState"];
 }
 
-- (_UIMainMenuStateResponse)initWithCoder:(id)a3
+- (_UIMainMenuStateResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuStateResponse *)self init];
   if (v5)
   {
@@ -53,12 +53,12 @@
     v8 = objc_opt_self();
     v9 = objc_opt_self();
     v10 = [v6 setWithObjects:{v7, v8, v9, 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"MenuStates"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"MenuStates"];
     menuStates = v5->_menuStates;
     v5->_menuStates = v11;
 
     v13 = objc_opt_self();
-    v14 = [v4 decodeObjectOfClass:v13 forKey:@"UncategorizedMenuState"];
+    v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"UncategorizedMenuState"];
     uncategorizedMenuState = v5->_uncategorizedMenuState;
     v5->_uncategorizedMenuState = v14;
   }
@@ -66,10 +66,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -81,7 +81,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       menuStates = v7->_menuStates;
       v9 = self->_menuStates;
       v10 = menuStates;
@@ -144,9 +144,9 @@ LABEL_18:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_menuStates withName:@"menuStates" skipIfNil:1];
   v5 = [v3 appendObject:self->_uncategorizedMenuState withName:@"uncategorizedMenuState" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

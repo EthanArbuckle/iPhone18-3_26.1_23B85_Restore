@@ -1,19 +1,19 @@
 @interface HDDatabaseJournal
-+ (id)_journalEntriesFromChapterEnties:(uint64_t)a1;
-- (BOOL)addJournalEntries:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)mergeWithProfile:(id)a3 activity:(id)a4 shouldContinueHandler:(id)a5;
-- (BOOL)performMergeTransactionWithProfile:(id)a3 transactionContext:(id)a4 error:(id *)a5 block:(id)a6;
++ (id)_journalEntriesFromChapterEnties:(uint64_t)enties;
+- (BOOL)addJournalEntries:(id)entries profile:(id)profile error:(id *)error;
+- (BOOL)mergeWithProfile:(id)profile activity:(id)activity shouldContinueHandler:(id)handler;
+- (BOOL)performMergeTransactionWithProfile:(id)profile transactionContext:(id)context error:(id *)error block:(id)block;
 - (HDDatabaseJournal)init;
-- (HDDatabaseJournal)initWithType:(int64_t)a3 path:(id)a4;
+- (HDDatabaseJournal)initWithType:(int64_t)type path:(id)path;
 - (HDDatabaseJournalDelegate)delegate;
 - (double)ageOfOldestJournal;
 - (id)description;
 - (id)journalMergeInterruptions;
 - (id)progressForJournalMerge;
 - (int64_t)journalChapterCount;
-- (uint64_t)_setActiveTransactionAndReturnInterrupted:(uint64_t)a1;
+- (uint64_t)_setActiveTransactionAndReturnInterrupted:(uint64_t)interrupted;
 - (unint64_t)sizeOnDisk;
-- (void)_executeAtomically:(os_unfair_lock_s *)a1;
+- (void)_executeAtomically:(os_unfair_lock_s *)atomically;
 - (void)_unitTesting_closeCurrentJournalChapter;
 - (void)dealloc;
 - (void)interruptJournalMerge;
@@ -24,14 +24,14 @@
 
 @implementation HDDatabaseJournal
 
-- (HDDatabaseJournal)initWithType:(int64_t)a3 path:(id)a4
+- (HDDatabaseJournal)initWithType:(int64_t)type path:(id)path
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!a3)
+  pathCopy = path;
+  if (!type)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HDDatabaseJournal.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"type != HDDatabaseJournalTypeDefault"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseJournal.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"type != HDDatabaseJournalTypeDefault"}];
   }
 
   v25.receiver = self;
@@ -40,8 +40,8 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
+    v8->_type = type;
+    v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
     URL = v9->_URL;
     v9->_URL = v10;
 
@@ -62,11 +62,11 @@
     journalMergeInterruptions = v9->_journalMergeInterruptions;
     v9->_journalMergeInterruptions = v15;
 
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    if (([v17 fileExistsAtPath:v7 isDirectory:0] & 1) == 0)
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if (([defaultManager fileExistsAtPath:pathCopy isDirectory:0] & 1) == 0)
     {
       v24 = 0;
-      v18 = [v17 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v24];
+      v18 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v24];
       v19 = v24;
       if ((v18 & 1) == 0)
       {
@@ -75,7 +75,7 @@
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v27 = v7;
+          v27 = pathCopy;
           v28 = 2114;
           v29 = v19;
           _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "Error creating journal directory %{public}@: %{public}@", buf, 0x16u);
@@ -122,9 +122,9 @@
     v7 = off_278621460[journalStatus];
   }
 
-  v8 = [(HDJournalChapter *)self->_currentJournalChapter isOpen];
+  isOpen = [(HDJournalChapter *)self->_currentJournalChapter isOpen];
   v9 = @"Closed";
-  if (v8)
+  if (isOpen)
   {
     v9 = @"Open";
   }
@@ -134,46 +134,46 @@
   return v10;
 }
 
-- (BOOL)addJournalEntries:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)addJournalEntries:(id)entries profile:(id)profile error:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v58 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   os_unfair_lock_assert_owner(&self->_journalLock);
   if (self->_invalidated)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:@"Journal has already been invalidated."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"Journal has already been invalidated."];
     v9 = 0;
     goto LABEL_55;
   }
 
-  v56 = a5;
+  errorCopy = error;
   self->_journalStatus = 2;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC2A0];
-  v57 = v8;
+  v57 = entriesCopy;
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEBUG))
   {
     v49 = v10;
-    v50 = [v8 count];
-    v51 = [(NSURL *)self->_URL path];
+    v50 = [entriesCopy count];
+    path = [(NSURL *)self->_URL path];
     *buf = 134218242;
     v80 = v50;
-    v8 = v57;
+    entriesCopy = v57;
     v81 = 2114;
-    v82 = v51;
+    v82 = path;
     _os_log_debug_impl(&dword_228986000, v49, OS_LOG_TYPE_DEBUG, "Appending %lu journal entries to %{public}@", buf, 0x16u);
   }
 
-  v11 = [(HDDatabaseJournal *)self maximumJournalBytes];
-  if (v11)
+  maximumJournalBytes = [(HDDatabaseJournal *)self maximumJournalBytes];
+  if (maximumJournalBytes)
   {
-    v66 = [(HDDatabaseJournal *)self sizeOnDisk];
+    sizeOnDisk = [(HDDatabaseJournal *)self sizeOnDisk];
   }
 
   else
   {
-    v66 = 0;
+    sizeOnDisk = 0;
   }
 
   v59 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -181,7 +181,7 @@
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v8;
+  obj = entriesCopy;
   v64 = [obj countByEnumeratingWithState:&v75 objects:v87 count:16];
   if (!v64)
   {
@@ -193,7 +193,7 @@
   v61 = 0;
   v65 = 0;
   v63 = *v76;
-  v62 = v11;
+  v62 = maximumJournalBytes;
 LABEL_10:
   v12 = 0;
   while (1)
@@ -208,10 +208,10 @@ LABEL_10:
     v74 = 0;
     v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v74];
     v16 = v74;
-    if (v11)
+    if (maximumJournalBytes)
     {
-      v17 = [v11 unsignedLongValue];
-      if ([v15 length] + v66 > v17)
+      unsignedLongValue = [maximumJournalBytes unsignedLongValue];
+      if ([v15 length] + sizeOnDisk > unsignedLongValue)
       {
         break;
       }
@@ -291,22 +291,22 @@ LABEL_29:
           v31 = objc_opt_class();
           v32 = NSStringFromClass(v31);
           v33 = [v59 objectForKeyedSubscript:v32];
-          v34 = [v33 integerValue];
+          integerValue = [v33 integerValue];
           v35 = [v21 length];
-          if (v34 <= v35)
+          if (integerValue <= v35)
           {
             v36 = v35;
           }
 
           else
           {
-            v36 = v34;
+            v36 = integerValue;
           }
 
           v37 = [MEMORY[0x277CCABB0] numberWithInteger:v36 >> 10];
           [v59 setObject:v37 forKeyedSubscript:v32];
 
-          v66 += [v21 length];
+          sizeOnDisk += [v21 length];
           goto LABEL_39;
         }
 
@@ -328,7 +328,7 @@ LABEL_33:
     }
 
 LABEL_39:
-    v11 = v62;
+    maximumJournalBytes = v62;
 
     objc_autoreleasePoolPop(v68);
     v12 = v67 + 1;
@@ -344,7 +344,7 @@ LABEL_39:
     }
   }
 
-  v38 = [MEMORY[0x277CCA9B8] hk_error:123 format:{@"Cannot append journal entry of %lu bytes: current size is %lu and maximum is %zu", objc_msgSend(v15, "length"), v66, v17}];
+  v38 = [MEMORY[0x277CCA9B8] hk_error:123 format:{@"Cannot append journal entry of %lu bytes: current size is %lu and maximum is %zu", objc_msgSend(v15, "length"), sizeOnDisk, unsignedLongValue}];
 
   objc_autoreleasePoolPop(v14);
   v65 = v38;
@@ -354,8 +354,8 @@ LABEL_44:
   v70[1] = 3221225472;
   v70[2] = __53__HDDatabaseJournal_addJournalEntries_profile_error___block_invoke;
   v70[3] = &unk_278621358;
-  v71 = v58;
-  v72 = self;
+  v71 = profileCopy;
+  selfCopy = self;
   [v59 enumerateKeysAndObjectsUsingBlock:v70];
   v9 = v65 == 0;
   if (v65)
@@ -366,13 +366,13 @@ LABEL_44:
     {
       v52 = v39;
       v53 = [obj count];
-      v54 = [(NSURL *)self->_URL path];
+      path2 = [(NSURL *)self->_URL path];
       *buf = 134218754;
       v80 = v61;
       v81 = 2048;
       v82 = v53;
       v83 = 2114;
-      v84 = v54;
+      v84 = path2;
       v85 = 2114;
       v86 = v65;
       _os_log_error_impl(&dword_228986000, v52, OS_LOG_TYPE_ERROR, "Added %lu of %lu entries to %{public}@, error: %{public}@", buf, 0x2Au);
@@ -402,10 +402,10 @@ LABEL_44:
   v45 = v44;
   if (v65)
   {
-    if (v56)
+    if (errorCopy)
     {
       v46 = v44;
-      *v56 = v45;
+      *errorCopy = v45;
     }
 
     else
@@ -414,7 +414,7 @@ LABEL_44:
     }
   }
 
-  v8 = v57;
+  entriesCopy = v57;
 LABEL_55:
 
   v47 = *MEMORY[0x277D85DE8];
@@ -431,15 +431,15 @@ void __53__HDDatabaseJournal_addJournalEntries_profile_error___block_invoke(uint
   [v8 database_reportJournalEntryInsertedForJournal:*(*(a1 + 40) + 104) entryClass:v7 entrySize:v6];
 }
 
-- (BOOL)performMergeTransactionWithProfile:(id)a3 transactionContext:(id)a4 error:(id *)a5 block:(id)a6
+- (BOOL)performMergeTransactionWithProfile:(id)profile transactionContext:(id)context error:(id *)error block:(id)block
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = [a3 database];
-  if (!v13)
+  contextCopy = context;
+  blockCopy = block;
+  database = [profile database];
+  if (!database)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HDDatabaseJournal.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseJournal.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
 
     if (self)
     {
@@ -457,7 +457,7 @@ LABEL_9:
   }
 
 LABEL_3:
-  v14 = [v11 mutableCopy];
+  v14 = [contextCopy mutableCopy];
   v15 = v14;
   if (v14)
   {
@@ -476,7 +476,7 @@ LABEL_3:
   [(HDMutableDatabaseTransactionContext *)v17 setRequiresWrite:1];
   [(HDMutableDatabaseTransactionContext *)v17 setRequiresProtectedData:1];
 LABEL_7:
-  v18 = [v13 performTransactionWithContext:v17 error:a5 block:v12 inaccessibilityHandler:0];
+  v18 = [database performTransactionWithContext:v17 error:error block:blockCopy inaccessibilityHandler:0];
 
   return v18;
 }
@@ -503,11 +503,11 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)mergeWithProfile:(id)a3 activity:(id)a4 shouldContinueHandler:(id)a5
+- (BOOL)mergeWithProfile:(id)profile activity:(id)activity shouldContinueHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  activityCopy = activity;
+  handlerCopy = handler;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -528,12 +528,12 @@ LABEL_7:
   v17[3] = &unk_278621380;
   v17[4] = self;
   v21 = &v34;
-  v11 = v8;
+  v11 = profileCopy;
   v18 = v11;
   v22 = &v24;
-  v12 = v9;
+  v12 = activityCopy;
   v19 = v12;
-  v13 = v10;
+  v13 = handlerCopy;
   v20 = v13;
   v23 = &v30;
   [(HDDatabaseJournal *)self _executeAtomically:v17];
@@ -1049,14 +1049,14 @@ LABEL_92:
   v79 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeAtomically:(os_unfair_lock_s *)a1
+- (void)_executeAtomically:(os_unfair_lock_s *)atomically
 {
   v3 = a2;
-  if (a1)
+  if (atomically)
   {
-    os_unfair_lock_lock(a1 + 8);
+    os_unfair_lock_lock(atomically + 8);
     v3[2]();
-    os_unfair_lock_unlock(a1 + 8);
+    os_unfair_lock_unlock(atomically + 8);
   }
 }
 
@@ -1066,10 +1066,10 @@ LABEL_92:
   os_unfair_lock_lock(&self->_interruptionsInfoLock);
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:dispatch_queue_get_label(0)];
   v4 = [(NSMutableDictionary *)self->_journalMergeInterruptions objectForKeyedSubscript:v3];
-  v5 = [v4 unsignedIntValue];
+  unsignedIntValue = [v4 unsignedIntValue];
 
   journalMergeInterruptions = self->_journalMergeInterruptions;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5 + 1];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntValue + 1];
   [(NSMutableDictionary *)journalMergeInterruptions setObject:v7 forKey:v3];
 
   os_unfair_lock_unlock(&self->_interruptionsInfoLock);
@@ -1083,7 +1083,7 @@ LABEL_92:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v3;
       _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Journal merge interruption requested on %@", &v10, 0x16u);
@@ -1330,7 +1330,7 @@ uint64_t __31__HDDatabaseJournal_sizeOnDisk__block_invoke(uint64_t a1, void *a2,
   if (v12)
   {
     v13 = v12;
-    v33 = self;
+    selfCopy = self;
     v14 = *v41;
     v15 = 0.0;
     v34 = *v41;
@@ -1356,7 +1356,7 @@ uint64_t __31__HDDatabaseJournal_sizeOnDisk__block_invoke(uint64_t a1, void *a2,
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543874;
-            v46 = v33;
+            v46 = selfCopy;
             v47 = 2114;
             v48 = v17;
             v49 = 2114;
@@ -1395,7 +1395,7 @@ LABEL_17:
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138544130;
-            v46 = v33;
+            v46 = selfCopy;
             v47 = 2112;
             v48 = v17;
             v49 = 2114;
@@ -1413,7 +1413,7 @@ LABEL_17:
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543874;
-            v46 = v33;
+            v46 = selfCopy;
             v47 = 2114;
             v48 = v17;
             v49 = 2114;
@@ -1641,21 +1641,21 @@ LABEL_33:
   return 1;
 }
 
-- (uint64_t)_setActiveTransactionAndReturnInterrupted:(uint64_t)a1
+- (uint64_t)_setActiveTransactionAndReturnInterrupted:(uint64_t)interrupted
 {
   v4 = a2;
-  if (a1)
+  if (interrupted)
   {
-    os_unfair_lock_lock((a1 + 36));
-    if (v4 && !*(a1 + 48) && *(a1 + 64) == 1)
+    os_unfair_lock_lock((interrupted + 36));
+    if (v4 && !*(interrupted + 48) && *(interrupted + 64) == 1)
     {
       [v4 requestTransactionInterruption];
       [v4 requireRollback];
     }
 
-    objc_storeStrong((a1 + 48), a2);
-    v5 = *(a1 + 64);
-    os_unfair_lock_unlock((a1 + 36));
+    objc_storeStrong((interrupted + 48), a2);
+    v5 = *(interrupted + 64);
+    os_unfair_lock_unlock((interrupted + 36));
   }
 
   else
@@ -2020,7 +2020,7 @@ uint64_t __58__HDDatabaseJournal__mergeJournalEntries_metrics_profile___block_in
   return 1;
 }
 
-+ (id)_journalEntriesFromChapterEnties:(uint64_t)a1
++ (id)_journalEntriesFromChapterEnties:(uint64_t)enties
 {
   v2 = a2;
   objc_opt_self();

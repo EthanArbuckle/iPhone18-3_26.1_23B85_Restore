@@ -1,6 +1,6 @@
 @interface SBHWidgetContainerViewSnapshotResizeCoordinator
 - (SBHViewResizeCoordinatorDelegate)delegate;
-- (SBHWidgetContainerViewSnapshotResizeCoordinator)initWithResizableView:(id)a3 multiplexingView:(id)a4 newSize:(CGSize)a5 hideMultiplexingViewInitially:(BOOL)a6 showMultiplexingViewWhenFinished:(BOOL)a7;
+- (SBHWidgetContainerViewSnapshotResizeCoordinator)initWithResizableView:(id)view multiplexingView:(id)multiplexingView newSize:(CGSize)size hideMultiplexingViewInitially:(BOOL)initially showMultiplexingViewWhenFinished:(BOOL)finished;
 - (void)finishResize;
 - (void)resize;
 - (void)setUpResize;
@@ -8,34 +8,34 @@
 
 @implementation SBHWidgetContainerViewSnapshotResizeCoordinator
 
-- (SBHWidgetContainerViewSnapshotResizeCoordinator)initWithResizableView:(id)a3 multiplexingView:(id)a4 newSize:(CGSize)a5 hideMultiplexingViewInitially:(BOOL)a6 showMultiplexingViewWhenFinished:(BOOL)a7
+- (SBHWidgetContainerViewSnapshotResizeCoordinator)initWithResizableView:(id)view multiplexingView:(id)multiplexingView newSize:(CGSize)size hideMultiplexingViewInitially:(BOOL)initially showMultiplexingViewWhenFinished:(BOOL)finished
 {
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a4;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  multiplexingViewCopy = multiplexingView;
   v25.receiver = self;
   v25.super_class = SBHWidgetContainerViewSnapshotResizeCoordinator;
   v16 = [(SBHWidgetContainerViewSnapshotResizeCoordinator *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_resizableView, a3);
-    objc_storeStrong(&v17->_multiplexingView, a4);
+    objc_storeStrong(&v16->_resizableView, view);
+    objc_storeStrong(&v17->_multiplexingView, multiplexingView);
     v17->_newSize.width = width;
     v17->_newSize.height = height;
-    [v14 bounds];
+    [viewCopy bounds];
     v17->_currentSize.width = v18;
     v17->_currentSize.height = v19;
-    v17->_shouldHideMultiplexingViewInitially = a6;
-    v17->_shouldShowMultiplexingViewWhenFinished = a7;
-    v20 = v14;
+    v17->_shouldHideMultiplexingViewInitially = initially;
+    v17->_shouldShowMultiplexingViewWhenFinished = finished;
+    v20 = viewCopy;
     v21 = v20;
     if (v20)
     {
-      v22 = [v20 backgroundView];
+      backgroundView = [v20 backgroundView];
       backgroundView = v17->_backgroundView;
-      v17->_backgroundView = v22;
+      v17->_backgroundView = backgroundView;
     }
   }
 

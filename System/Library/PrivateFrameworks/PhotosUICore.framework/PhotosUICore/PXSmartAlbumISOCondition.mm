@@ -1,11 +1,11 @@
 @interface PXSmartAlbumISOCondition
-+ (id)defaultSingleQueryForEditingContext:(id)a3;
++ (id)defaultSingleQueryForEditingContext:(id)context;
 + (id)formatter;
 - (NSArray)ISOValues;
 - (PXLabeledValue)ISOValue;
 - (PXLabeledValue)secondISOValue;
-- (void)setISOValue:(id)a3;
-- (void)setSecondISOValue:(id)a3;
+- (void)setISOValue:(id)value;
+- (void)setSecondISOValue:(id)value;
 @end
 
 @implementation PXSmartAlbumISOCondition
@@ -25,7 +25,7 @@
   return v2;
 }
 
-+ (id)defaultSingleQueryForEditingContext:(id)a3
++ (id)defaultSingleQueryForEditingContext:(id)context
 {
   v3 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v3 setKey:304];
@@ -35,12 +35,12 @@
   return v3;
 }
 
-- (void)setSecondISOValue:(id)a3
+- (void)setSecondISOValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 value];
-  if (v6)
+  valueCopy = value;
+  value = [valueCopy value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -48,54 +48,54 @@
       goto LABEL_3;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v6 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"ISOValue.value", v12, v14}];
+    px_descriptionForAssertionMessage = [value px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"ISOValue.value", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"ISOValue.value", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"ISOValue.value", v12}];
   }
 
 LABEL_3:
-  v7 = [(PXSmartAlbumCondition *)self singleQuery];
-  [v7 setSecondIntegerValue:{objc_msgSend(v6, "integerValue")}];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  [singleQuery setSecondIntegerValue:{objc_msgSend(value, "integerValue")}];
   v8 = PLUIGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = valueCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: second iso value set to: %@", buf, 0xCu);
   }
 
-  v9 = [(PXSmartAlbumCondition *)self delegate];
-  [v9 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (PXLabeledValue)secondISOValue
 {
-  v2 = [(PXSmartAlbumCondition *)self singleQuery];
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v2, "secondIntegerValue")}];
-  v4 = [objc_opt_class() formatter];
-  v5 = [v4 stringFromNumber:v3];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(singleQuery, "secondIntegerValue")}];
+  formatter = [objc_opt_class() formatter];
+  v5 = [formatter stringFromNumber:v3];
 
   v6 = [[PXLabeledValue alloc] initWithValue:v3 localizedLabel:v5];
 
   return v6;
 }
 
-- (void)setISOValue:(id)a3
+- (void)setISOValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 value];
-  if (v6)
+  valueCopy = value;
+  value = [valueCopy value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -103,42 +103,42 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v6 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:237 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"ISOValue.value", v12, v14}];
+    px_descriptionForAssertionMessage = [value px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:237 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"ISOValue.value", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:237 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"ISOValue.value", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:237 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"ISOValue.value", v12}];
   }
 
 LABEL_3:
-  v7 = [(PXSmartAlbumCondition *)self singleQuery];
-  [v7 setIntegerValue:{objc_msgSend(v6, "integerValue")}];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  [singleQuery setIntegerValue:{objc_msgSend(value, "integerValue")}];
   v8 = PLUIGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = valueCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: iso value set to: %@", buf, 0xCu);
   }
 
-  v9 = [(PXSmartAlbumCondition *)self delegate];
-  [v9 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (PXLabeledValue)ISOValue
 {
-  v2 = [(PXSmartAlbumCondition *)self singleQuery];
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v2, "integerValue")}];
-  v4 = [objc_opt_class() formatter];
-  v5 = [v4 stringFromNumber:v3];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(singleQuery, "integerValue")}];
+  formatter = [objc_opt_class() formatter];
+  v5 = [formatter stringFromNumber:v3];
 
   v6 = [[PXLabeledValue alloc] initWithValue:v3 localizedLabel:v5];
 
@@ -150,9 +150,9 @@ LABEL_3:
   ISOValues = self->_ISOValues;
   if (!ISOValues)
   {
-    v4 = [objc_opt_class() formatter];
-    v5 = [(PXSmartAlbumCondition *)self editingContext];
-    v6 = [v5 ISOValuesWithFormatter:v4];
+    formatter = [objc_opt_class() formatter];
+    editingContext = [(PXSmartAlbumCondition *)self editingContext];
+    v6 = [editingContext ISOValuesWithFormatter:formatter];
     v7 = self->_ISOValues;
     self->_ISOValues = v6;
 

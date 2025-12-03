@@ -1,20 +1,20 @@
 @interface CKVisionAppMenuViewFactory
-+ (id)appMenuViewControllerWithConversation:(id)a3 selectionHandler:(id)a4 dismissHandler:(id)a5;
++ (id)appMenuViewControllerWithConversation:(id)conversation selectionHandler:(id)handler dismissHandler:(id)dismissHandler;
 - (_TtC7ChatKit26CKVisionAppMenuViewFactory)init;
 @end
 
 @implementation CKVisionAppMenuViewFactory
 
-+ (id)appMenuViewControllerWithConversation:(id)a3 selectionHandler:(id)a4 dismissHandler:(id)a5
++ (id)appMenuViewControllerWithConversation:(id)conversation selectionHandler:(id)handler dismissHandler:(id)dismissHandler
 {
-  v7 = _Block_copy(a4);
-  v8 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
+  v8 = _Block_copy(dismissHandler);
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
   v10 = swift_allocObject();
   *(v10 + 16) = v8;
-  v11 = a3;
-  v12 = sub_1909F8104(v11, sub_19084CED8, v9, sub_190841A8C, v10);
+  conversationCopy = conversation;
+  v12 = sub_1909F8104(conversationCopy, sub_19084CED8, v9, sub_190841A8C, v10);
 
   return v12;
 }

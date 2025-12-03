@@ -1,31 +1,31 @@
 @interface SXFollowingConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXFollowingConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a4;
-  v6 = [a3 following];
-  v7 = v6;
-  if (v6)
+  contextCopy = context;
+  following = [condition following];
+  v7 = following;
+  if (following)
   {
-    v8 = [v6 tagIdentifier];
+    tagIdentifier = [following tagIdentifier];
 
-    v9 = [v5 tagSubscriptionStatus];
-    v10 = v9;
-    if (v8)
+    tagSubscriptionStatus = [contextCopy tagSubscriptionStatus];
+    v10 = tagSubscriptionStatus;
+    if (tagIdentifier)
     {
-      v11 = [v9 tags];
-      v12 = [v7 tagIdentifier];
-      v13 = [v11 containsObject:v12];
+      tags = [tagSubscriptionStatus tags];
+      tagIdentifier2 = [v7 tagIdentifier];
+      v13 = [tags containsObject:tagIdentifier2];
     }
 
     else
     {
-      v14 = [v9 following];
-      v15 = v14 ^ [v7 following];
+      following2 = [tagSubscriptionStatus following];
+      v15 = following2 ^ [v7 following];
 
       v13 = v15 ^ 1;
     }

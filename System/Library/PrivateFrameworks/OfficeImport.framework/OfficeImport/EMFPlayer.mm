@@ -1,78 +1,78 @@
 @interface EMFPlayer
-+ (CGRect)boundsInLogicalUnits:(id)a3;
-+ (CGRect)boundsInPoints:(id)a3;
-- (EMFPlayer)initWithGraphicsDevice:(id)a3;
-- (int)play:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playAlphaBlend:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playAngleArc:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playArc:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playArcTo:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playBitBlt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playChord:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playCreateBrushIndirect:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playCreateDibPatternBrushPT:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playCreateMonoBrush:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playCreatePalette:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playCreatePen:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playDeleteObject:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playEllipse:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playExcludeClipRect:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playExtCreateFontIndirectW:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playExtCreatePen:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playExtTextOut:(unsigned int)a3 in_pRecord:(const char *)a4 wideChars:(BOOL)a5;
-- (int)playFillRgn:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playHeader:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playIntersectClipRect:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playInvertRgn:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playLineTo:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playMaskBlt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playModifyWorldTransform:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playMoveToEx:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playOffsetClipRegion:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playPaintRgn:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playPie:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playPlgBlt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playPolyBezier:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playPolyBezierTo:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playPolyDraw:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playPolyLine:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playPolyLineTo:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playPolyPolyLine:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playPolyPolygon:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playPolygon:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5;
-- (int)playRealizePalette:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playRectangle:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playResizePalette:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playRestoreDC:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playRoundRect:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSaveDC:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playScaleViewportExt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playScaleWindowExt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSelectClipPath:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSelectClipRegion:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSelectObject:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSelectPalette:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetArcDirection:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetBkColour:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetBkMode:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetBrushOrg:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetDIBitsToDevice:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetMapMode:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetMiterLimit:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetPaletteEntries:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetPolyFillMode:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetRop2:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetStretchBltMode:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetTextAlign:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetTextColour:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetTextJustification:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetViewportExt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetViewportOrg:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetWindowExt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetWindowOrg:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playSetWorldTransform:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playStretchBlt:(unsigned int)a3 in_pRecord:(const char *)a4;
-- (int)playStretchDIBits:(unsigned int)a3 in_pRecord:(const char *)a4;
++ (CGRect)boundsInLogicalUnits:(id)units;
++ (CGRect)boundsInPoints:(id)points;
+- (EMFPlayer)initWithGraphicsDevice:(id)device;
+- (int)play:(unsigned int)play in_pRecord:(const char *)record;
+- (int)playAlphaBlend:(unsigned int)blend in_pRecord:(const char *)record;
+- (int)playAngleArc:(unsigned int)arc in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playArc:(unsigned int)arc in_pRecord:(const char *)record;
+- (int)playArcTo:(unsigned int)to in_pRecord:(const char *)record;
+- (int)playBitBlt:(unsigned int)blt in_pRecord:(const char *)record;
+- (int)playChord:(unsigned int)chord in_pRecord:(const char *)record;
+- (int)playCreateBrushIndirect:(unsigned int)indirect in_pRecord:(const char *)record;
+- (int)playCreateDibPatternBrushPT:(unsigned int)t in_pRecord:(const char *)record;
+- (int)playCreateMonoBrush:(unsigned int)brush in_pRecord:(const char *)record;
+- (int)playCreatePalette:(unsigned int)palette in_pRecord:(const char *)record;
+- (int)playCreatePen:(unsigned int)pen in_pRecord:(const char *)record;
+- (int)playDeleteObject:(unsigned int)object in_pRecord:(const char *)record;
+- (int)playEllipse:(unsigned int)ellipse in_pRecord:(const char *)record;
+- (int)playExcludeClipRect:(unsigned int)rect in_pRecord:(const char *)record;
+- (int)playExtCreateFontIndirectW:(unsigned int)w in_pRecord:(const char *)record;
+- (int)playExtCreatePen:(unsigned int)pen in_pRecord:(const char *)record;
+- (int)playExtTextOut:(unsigned int)out in_pRecord:(const char *)record wideChars:(BOOL)chars;
+- (int)playFillRgn:(unsigned int)rgn in_pRecord:(const char *)record;
+- (int)playHeader:(unsigned int)header in_pRecord:(const char *)record;
+- (int)playIntersectClipRect:(unsigned int)rect in_pRecord:(const char *)record;
+- (int)playInvertRgn:(unsigned int)rgn in_pRecord:(const char *)record;
+- (int)playLineTo:(unsigned int)to in_pRecord:(const char *)record;
+- (int)playMaskBlt:(unsigned int)blt in_pRecord:(const char *)record;
+- (int)playModifyWorldTransform:(unsigned int)transform in_pRecord:(const char *)record;
+- (int)playMoveToEx:(unsigned int)ex in_pRecord:(const char *)record;
+- (int)playOffsetClipRegion:(unsigned int)region in_pRecord:(const char *)record;
+- (int)playPaintRgn:(unsigned int)rgn in_pRecord:(const char *)record;
+- (int)playPie:(unsigned int)pie in_pRecord:(const char *)record;
+- (int)playPlgBlt:(unsigned int)blt in_pRecord:(const char *)record;
+- (int)playPolyBezier:(unsigned int)bezier in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playPolyBezierTo:(unsigned int)to in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playPolyDraw:(unsigned int)draw in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playPolyLine:(unsigned int)line in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playPolyLineTo:(unsigned int)to in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playPolyPolyLine:(unsigned int)line in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playPolyPolygon:(unsigned int)polygon in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playPolygon:(unsigned int)polygon in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit;
+- (int)playRealizePalette:(unsigned int)palette in_pRecord:(const char *)record;
+- (int)playRectangle:(unsigned int)rectangle in_pRecord:(const char *)record;
+- (int)playResizePalette:(unsigned int)palette in_pRecord:(const char *)record;
+- (int)playRestoreDC:(unsigned int)c in_pRecord:(const char *)record;
+- (int)playRoundRect:(unsigned int)rect in_pRecord:(const char *)record;
+- (int)playSaveDC:(unsigned int)c in_pRecord:(const char *)record;
+- (int)playScaleViewportExt:(unsigned int)ext in_pRecord:(const char *)record;
+- (int)playScaleWindowExt:(unsigned int)ext in_pRecord:(const char *)record;
+- (int)playSelectClipPath:(unsigned int)path in_pRecord:(const char *)record;
+- (int)playSelectClipRegion:(unsigned int)region in_pRecord:(const char *)record;
+- (int)playSelectObject:(unsigned int)object in_pRecord:(const char *)record;
+- (int)playSelectPalette:(unsigned int)palette in_pRecord:(const char *)record;
+- (int)playSetArcDirection:(unsigned int)direction in_pRecord:(const char *)record;
+- (int)playSetBkColour:(unsigned int)colour in_pRecord:(const char *)record;
+- (int)playSetBkMode:(unsigned int)mode in_pRecord:(const char *)record;
+- (int)playSetBrushOrg:(unsigned int)org in_pRecord:(const char *)record;
+- (int)playSetDIBitsToDevice:(unsigned int)device in_pRecord:(const char *)record;
+- (int)playSetMapMode:(unsigned int)mode in_pRecord:(const char *)record;
+- (int)playSetMiterLimit:(unsigned int)limit in_pRecord:(const char *)record;
+- (int)playSetPaletteEntries:(unsigned int)entries in_pRecord:(const char *)record;
+- (int)playSetPolyFillMode:(unsigned int)mode in_pRecord:(const char *)record;
+- (int)playSetRop2:(unsigned int)rop2 in_pRecord:(const char *)record;
+- (int)playSetStretchBltMode:(unsigned int)mode in_pRecord:(const char *)record;
+- (int)playSetTextAlign:(unsigned int)align in_pRecord:(const char *)record;
+- (int)playSetTextColour:(unsigned int)colour in_pRecord:(const char *)record;
+- (int)playSetTextJustification:(unsigned int)justification in_pRecord:(const char *)record;
+- (int)playSetViewportExt:(unsigned int)ext in_pRecord:(const char *)record;
+- (int)playSetViewportOrg:(unsigned int)org in_pRecord:(const char *)record;
+- (int)playSetWindowExt:(unsigned int)ext in_pRecord:(const char *)record;
+- (int)playSetWindowOrg:(unsigned int)org in_pRecord:(const char *)record;
+- (int)playSetWorldTransform:(unsigned int)transform in_pRecord:(const char *)record;
+- (int)playStretchBlt:(unsigned int)blt in_pRecord:(const char *)record;
+- (int)playStretchDIBits:(unsigned int)bits in_pRecord:(const char *)record;
 - (void)done;
 @end
 
@@ -85,19 +85,19 @@
   self->m_emfPlusPlayer = 0;
 }
 
-- (EMFPlayer)initWithGraphicsDevice:(id)a3
+- (EMFPlayer)initWithGraphicsDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = EMFPlayer;
   v6 = [(EMFPlayer *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->m_gdi, a3);
+    objc_storeStrong(&v6->m_gdi, device);
     v7->m_headerDone = 0;
     v8 = [EMFPlusPlayer alloc];
-    [v5 getCanvas];
+    [deviceCopy getCanvas];
     v9 = [(EMFPlusPlayer *)v8 initWithOwner:v7 canvas:?];
     m_emfPlusPlayer = v7->m_emfPlusPlayer;
     v7->m_emfPlusPlayer = v9;
@@ -106,30 +106,30 @@
   return v7;
 }
 
-- (int)play:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)play:(unsigned int)play in_pRecord:(const char *)record
 {
-  if (a3 < 4)
+  if (play < 4)
   {
     return -7;
   }
 
-  v7 = *a4;
+  v7 = *record;
   if (self->m_headerDone)
   {
     if (!self->m_ignoreEMFPlusRecords && v7 == 70)
     {
-      if (a3 < 0x10)
+      if (play < 0x10)
       {
         return -7;
       }
 
-      if (*(a4 + 3) == 726027589)
+      if (*(record + 3) == 726027589)
       {
-        v8 = *(a4 + 2);
+        v8 = *(record + 2);
         self->m_ignoreEMFRecords = 1;
-        if (v8 - 4 <= a3 - 16)
+        if (v8 - 4 <= play - 16)
         {
-          return [(EMFPlusPlayer *)self->m_emfPlusPlayer play:a4 + 16 in_size:?];
+          return [(EMFPlusPlayer *)self->m_emfPlusPlayer play:record + 16 in_size:?];
         }
 
         return -7;
@@ -439,26 +439,26 @@
   return result;
 }
 
-- (int)playHeader:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playHeader:(unsigned int)header in_pRecord:(const char *)record
 {
-  if (a3 < 0x58)
+  if (header < 0x58)
   {
     return -7;
   }
 
-  v6 = *(a4 + 20);
-  v5 = *(a4 + 21);
+  v6 = *(record + 20);
+  v5 = *(record + 21);
   if (!v6 || v5 == 0)
   {
     return -7;
   }
 
-  v11 = *(a4 + 15);
-  v12 = *(a4 + 16);
-  v13 = *(a4 + 28);
-  v14 = *(a4 + 18) / (v6 * 100.0);
-  v15 = *(a4 + 19) / (v5 * 100.0);
-  [(MFGraphicsDevice *)self->m_gdi setViewBox:v14 * *(a4 + 6) top:v15 * *(a4 + 7) width:v14 * (*(a4 + 8) - *(a4 + 6)) height:v15 * (*(a4 + 9) - *(a4 + 7))];
+  v11 = *(record + 15);
+  v12 = *(record + 16);
+  v13 = *(record + 28);
+  v14 = *(record + 18) / (v6 * 100.0);
+  v15 = *(record + 19) / (v5 * 100.0);
+  [(MFGraphicsDevice *)self->m_gdi setViewBox:v14 * *(record + 6) top:v15 * *(record + 7) width:v14 * (*(record + 8) - *(record + 6)) height:v15 * (*(record + 9) - *(record + 7))];
   if (v13)
   {
     v16 = (v13 + 1);
@@ -477,9 +477,9 @@
     {
       v17 = v12 + v11;
       v8 = -7;
-      if (!HIDWORD(v17) && v17 <= a3)
+      if (!HIDWORD(v17) && v17 <= header)
       {
-        v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&a4[v12] length:v11 encoding:10];
+        v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&record[v12] length:v11 encoding:10];
         v8 = [(MFGraphicsDevice *)self->m_gdi description:v18];
       }
     }
@@ -489,11 +489,11 @@
   return v8;
 }
 
-- (int)playSetWindowExt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetWindowExt:(unsigned int)ext in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (ext >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setWindowExt:*(a4 + 2) in_y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi setWindowExt:*(record + 2) in_y:*(record + 3)];
   }
 
   else
@@ -502,11 +502,11 @@
   }
 }
 
-- (int)playSetWindowOrg:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetWindowOrg:(unsigned int)org in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (org >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setWindowOrg:*(a4 + 2) in_y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi setWindowOrg:*(record + 2) in_y:*(record + 3)];
   }
 
   else
@@ -515,11 +515,11 @@
   }
 }
 
-- (int)playScaleWindowExt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playScaleWindowExt:(unsigned int)ext in_pRecord:(const char *)record
 {
-  if (a3 >= 0x18)
+  if (ext >= 0x18)
   {
-    return [(MFGraphicsDevice *)self->m_gdi scaleWindowExt:*(a4 + 2) in_xDenom:*(a4 + 3) in_yNum:*(a4 + 4) in_yDenom:*(a4 + 5)];
+    return [(MFGraphicsDevice *)self->m_gdi scaleWindowExt:*(record + 2) in_xDenom:*(record + 3) in_yNum:*(record + 4) in_yDenom:*(record + 5)];
   }
 
   else
@@ -528,57 +528,57 @@
   }
 }
 
-- (int)playSetWorldTransform:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetWorldTransform:(unsigned int)transform in_pRecord:(const char *)record
 {
-  if (a3 < 0x20)
+  if (transform < 0x20)
   {
     return -7;
   }
 
   v15[10] = v4;
   v15[11] = v5;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:8];
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:12, v9];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:8];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:12, v9];
   *&v15[1] = v10;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:16];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:16];
   *&v15[2] = v11;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:20];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:20];
   *&v15[3] = v12;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:24];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:24];
   *&v15[4] = v13;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:28];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:28];
   *&v15[5] = v14;
   return [(MFGraphicsDevice *)self->m_gdi setWorldTransform:v15];
 }
 
-- (int)playModifyWorldTransform:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playModifyWorldTransform:(unsigned int)transform in_pRecord:(const char *)record
 {
-  if (a3 < 0x24)
+  if (transform < 0x24)
   {
     return -7;
   }
 
   v15[10] = v4;
   v15[11] = v5;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:8];
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:12, v9];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:8];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:12, v9];
   *&v15[1] = v10;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:16];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:16];
   *&v15[2] = v11;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:20];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:20];
   *&v15[3] = v12;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:24];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:24];
   *&v15[4] = v13;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:28];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:28];
   *&v15[5] = v14;
-  return [(MFGraphicsDevice *)self->m_gdi modifyWorldTransform:v15 in_command:*(a4 + 8)];
+  return [(MFGraphicsDevice *)self->m_gdi modifyWorldTransform:v15 in_command:*(record + 8)];
 }
 
-- (int)playSetViewportExt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetViewportExt:(unsigned int)ext in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (ext >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setViewportExt:*(a4 + 2) in_y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi setViewportExt:*(record + 2) in_y:*(record + 3)];
   }
 
   else
@@ -587,11 +587,11 @@
   }
 }
 
-- (int)playSetViewportOrg:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetViewportOrg:(unsigned int)org in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (org >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setViewportOrg:*(a4 + 2) in_y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi setViewportOrg:*(record + 2) in_y:*(record + 3)];
   }
 
   else
@@ -600,11 +600,11 @@
   }
 }
 
-- (int)playScaleViewportExt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playScaleViewportExt:(unsigned int)ext in_pRecord:(const char *)record
 {
-  if (a3 >= 0x18)
+  if (ext >= 0x18)
   {
-    return [(MFGraphicsDevice *)self->m_gdi scaleViewportExt:*(a4 + 2) in_xDenom:*(a4 + 3) in_yNum:*(a4 + 4) in_yDenom:*(a4 + 5)];
+    return [(MFGraphicsDevice *)self->m_gdi scaleViewportExt:*(record + 2) in_xDenom:*(record + 3) in_yNum:*(record + 4) in_yDenom:*(record + 5)];
   }
 
   else
@@ -613,51 +613,51 @@
   }
 }
 
-- (int)playSelectPalette:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSelectPalette:(unsigned int)palette in_pRecord:(const char *)record
 {
-  if (a3 < 0xC)
+  if (palette < 0xC)
   {
     return -7;
   }
 
-  v5 = *(a4 + 11);
+  v5 = *(record + 11);
   m_gdi = self->m_gdi;
   if (v5 << 24 < 0)
   {
-    return [(MFGraphicsDevice *)m_gdi getStockObject:(*(a4 + 4) | (*(a4 + 10) << 16)) & 0xFFFFFF | (v5 << 24) & 0x7FFFFFFFu];
+    return [(MFGraphicsDevice *)m_gdi getStockObject:(*(record + 4) | (*(record + 10) << 16)) & 0xFFFFFF | (v5 << 24) & 0x7FFFFFFFu];
   }
 
   else
   {
-    return [(MFGraphicsDevice *)m_gdi selectObject:(*(a4 + 4) | (*(a4 + 10) << 16)) & 0xFFFFFF | (v5 << 24)];
+    return [(MFGraphicsDevice *)m_gdi selectObject:(*(record + 4) | (*(record + 10) << 16)) & 0xFFFFFF | (v5 << 24)];
   }
 }
 
-- (int)playSelectObject:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSelectObject:(unsigned int)object in_pRecord:(const char *)record
 {
-  if (a3 < 0xC)
+  if (object < 0xC)
   {
     return -7;
   }
 
-  v5 = *(a4 + 11);
+  v5 = *(record + 11);
   m_gdi = self->m_gdi;
   if (v5 << 24 < 0)
   {
-    return [(MFGraphicsDevice *)m_gdi getStockObject:(*(a4 + 4) | (*(a4 + 10) << 16)) & 0xFFFFFF | (v5 << 24) & 0x7FFFFFFFu];
+    return [(MFGraphicsDevice *)m_gdi getStockObject:(*(record + 4) | (*(record + 10) << 16)) & 0xFFFFFF | (v5 << 24) & 0x7FFFFFFFu];
   }
 
   else
   {
-    return [(MFGraphicsDevice *)m_gdi selectObject:(*(a4 + 4) | (*(a4 + 10) << 16)) & 0xFFFFFF | (v5 << 24)];
+    return [(MFGraphicsDevice *)m_gdi selectObject:(*(record + 4) | (*(record + 10) << 16)) & 0xFFFFFF | (v5 << 24)];
   }
 }
 
-- (int)playDeleteObject:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playDeleteObject:(unsigned int)object in_pRecord:(const char *)record
 {
-  if (a3 >= 0xC)
+  if (object >= 0xC)
   {
-    return [(MFGraphicsDevice *)self->m_gdi deleteObject:*(a4 + 2)];
+    return [(MFGraphicsDevice *)self->m_gdi deleteObject:*(record + 2)];
   }
 
   else
@@ -666,42 +666,42 @@
   }
 }
 
-- (int)playCreatePen:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playCreatePen:(unsigned int)pen in_pRecord:(const char *)record
 {
-  if (a3 < 0x1C)
+  if (pen < 0x1C)
   {
     return -7;
   }
 
-  v7 = *(a4 + 3);
-  v6 = *(a4 + 4);
-  v8 = *(a4 + 2);
-  v9 = [OITSUColor colorWithRGBBytes:*(a4 + 24) green:*(a4 + 25) blue:*(a4 + 26)];
+  v7 = *(record + 3);
+  v6 = *(record + 4);
+  v8 = *(record + 2);
+  v9 = [OITSUColor colorWithRGBBytes:*(record + 24) green:*(record + 25) blue:*(record + 26)];
   v4 = [(MFGraphicsDevice *)self->m_gdi createPen:v7 width:v6 in_colour:v9 in_userStyleArray:0 index:v8];
 
   return v4;
 }
 
-- (int)playExtCreatePen:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playExtCreatePen:(unsigned int)pen in_pRecord:(const char *)record
 {
-  if (a3 < 0x34)
+  if (pen < 0x34)
   {
     return -7;
   }
 
-  v5 = *(a4 + 51);
-  v6 = *(a4 + 24) | (*(a4 + 50) << 16) | (v5 << 24);
+  v5 = *(record + 51);
+  v6 = *(record + 24) | (*(record + 50) << 16) | (v5 << 24);
   if ((4 * v6) > 0xFFFFFFCB)
   {
     return -7;
   }
 
   v7 = -7;
-  if (v5 <= 0x3F && 4 * v6 + 52 <= a3)
+  if (v5 <= 0x3F && 4 * v6 + 52 <= pen)
   {
-    v9 = *(a4 + 2);
-    v11 = *(a4 + 7);
-    v10 = *(a4 + 8);
+    v9 = *(record + 2);
+    v11 = *(record + 7);
+    v10 = *(record + 8);
     if (v6)
     {
       v12 = smalloc_typed(v6, 8uLL, 0x100004000313F17uLL);
@@ -716,14 +716,14 @@
       v12 = 0;
     }
 
-    v14 = [OITSUColor colorWithRGBBytes:*(a4 + 40) green:*(a4 + 41) blue:*(a4 + 42)];
+    v14 = [OITSUColor colorWithRGBBytes:*(record + 40) green:*(record + 41) blue:*(record + 42)];
     if (v6)
     {
       v15 = 55;
       v16 = v12;
       do
       {
-        *v16++ = (a4[v15 - 3] | (a4[v15 - 2] << 8) | (a4[v15 - 1] << 16) | (a4[v15] << 24));
+        *v16++ = (record[v15 - 3] | (record[v15 - 2] << 8) | (record[v15 - 1] << 16) | (record[v15] << 24));
         v15 += 4;
         --v6;
       }
@@ -741,24 +741,24 @@
   return v7;
 }
 
-- (int)playCreatePalette:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playCreatePalette:(unsigned int)palette in_pRecord:(const char *)record
 {
-  if (a3 < 0xC)
+  if (palette < 0xC)
   {
     return -7;
   }
 
-  v5 = *(a4 + 7);
-  if (4 * v5 + 16 > a3)
+  v5 = *(record + 7);
+  if (4 * v5 + 16 > palette)
   {
     return -7;
   }
 
-  v8 = *(a4 + 2);
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:*(a4 + 7)];
+  v8 = *(record + 2);
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:*(record + 7)];
   if (v5)
   {
-    v10 = (a4 + 18);
+    v10 = (record + 18);
     do
     {
       v11 = [OITSUColor colorWithRGBBytes:*(v10 - 2) green:*(v10 - 1) blue:*v10];
@@ -776,32 +776,32 @@
   return v6;
 }
 
-- (int)playSetPaletteEntries:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetPaletteEntries:(unsigned int)entries in_pRecord:(const char *)record
 {
-  if (a3 < 0x14)
+  if (entries < 0x14)
   {
     return -7;
   }
 
-  v5 = *(a4 + 19);
-  v6 = *(a4 + 8) | (*(a4 + 18) << 16) | (v5 << 24);
+  v5 = *(record + 19);
+  v6 = *(record + 8) | (*(record + 18) << 16) | (v5 << 24);
   if ((4 * v6) > 0xFFFFFFEB)
   {
     return -7;
   }
 
   v7 = -7;
-  if (v5 <= 0x3F && 4 * v6 + 20 <= a3)
+  if (v5 <= 0x3F && 4 * v6 + 20 <= entries)
   {
-    v9 = *(a4 + 2);
-    v10 = *(a4 + 3);
+    v9 = *(record + 2);
+    v10 = *(record + 3);
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v6];
     if (v6)
     {
       v12 = 20;
       do
       {
-        v13 = [OITSUColor colorWithRGBBytes:a4[v12] green:a4[v12 + 1] blue:a4[v12 + 2]];
+        v13 = [OITSUColor colorWithRGBBytes:record[v12] green:record[v12 + 1] blue:record[v12 + 2]];
         [v11 addObject:v13];
 
         v12 += 4;
@@ -817,11 +817,11 @@
   return v7;
 }
 
-- (int)playResizePalette:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playResizePalette:(unsigned int)palette in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (palette >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi resizePalette:*(a4 + 3) in_index:*(a4 + 2)];
+    return [(MFGraphicsDevice *)self->m_gdi resizePalette:*(record + 3) in_index:*(record + 2)];
   }
 
   else
@@ -830,9 +830,9 @@
   }
 }
 
-- (int)playRealizePalette:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playRealizePalette:(unsigned int)palette in_pRecord:(const char *)record
 {
-  if (a3 >= 8)
+  if (palette >= 8)
   {
     return [(MFGraphicsDevice *)self->m_gdi realizePalette];
   }
@@ -843,30 +843,30 @@
   }
 }
 
-- (int)playExtCreateFontIndirectW:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playExtCreateFontIndirectW:(unsigned int)w in_pRecord:(const char *)record
 {
   v49 = *MEMORY[0x277D85DE8];
-  if (a3 < 0x149)
+  if (w < 0x149)
   {
     return -7;
   }
 
   v6 = 0;
-  v44 = *(a4 + 4);
-  v45 = *(a4 + 3);
-  v43 = *(a4 + 5);
-  v42 = *(a4 + 6);
-  v40 = *(a4 + 2);
-  v41 = *(a4 + 7);
-  v35 = *(a4 + 32);
-  v36 = *(a4 + 33);
-  v37 = *(a4 + 34);
-  v38 = a4[37];
-  v34 = *(a4 + 38);
-  v7 = a4 + 41;
-  v8 = *(a4 + 39);
-  v46 = *(a4 + 36);
-  v47 = *(a4 + 35);
+  v44 = *(record + 4);
+  v45 = *(record + 3);
+  v43 = *(record + 5);
+  v42 = *(record + 6);
+  v40 = *(record + 2);
+  v41 = *(record + 7);
+  v35 = *(record + 32);
+  v36 = *(record + 33);
+  v37 = *(record + 34);
+  v38 = record[37];
+  v34 = *(record + 38);
+  v7 = record + 41;
+  v8 = *(record + 39);
+  v46 = *(record + 36);
+  v47 = *(record + 35);
   do
   {
     v9 = *(v7 - 1);
@@ -884,7 +884,7 @@
   v10 = [MEMORY[0x277CCACA8] stringWithCharacters:v48 length:?];
   v11 = 0;
   v12 = v10;
-  v13 = a4 + 105;
+  v13 = record + 105;
   do
   {
     v14 = *(v13 - 1);
@@ -902,7 +902,7 @@
   v15 = [MEMORY[0x277CCACA8] stringWithCharacters:v48 length:?];
   v16 = 0;
   v17 = v15;
-  v18 = a4 + 233;
+  v18 = record + 233;
   do
   {
     v19 = *(v18 - 1);
@@ -918,11 +918,11 @@
 
   while (v16 != 32);
   v20 = [MEMORY[0x277CCACA8] stringWithCharacters:v48 length:?];
-  v21 = *(a4 + 74);
-  v22 = *(a4 + 75);
-  v23 = *(a4 + 76);
-  v24 = *(a4 + 78);
-  v25 = *(a4 + 79);
+  v21 = *(record + 74);
+  v22 = *(record + 75);
+  v23 = *(record + 76);
+  v24 = *(record + 78);
+  v25 = *(record + 79);
   IsValidCharSet = ChValueIsValidCharSet(v47);
   v28 = v8 < 0x60 && v46 < 0xBu;
   if (v28 & IsValidCharSet)
@@ -950,19 +950,19 @@
   return v4;
 }
 
-- (int)playCreateBrushIndirect:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playCreateBrushIndirect:(unsigned int)indirect in_pRecord:(const char *)record
 {
-  if (a3 < 0x18)
+  if (indirect < 0x18)
   {
     return -7;
   }
 
-  v7 = *(a4 + 8);
-  v8 = *(a4 + 9);
-  v9 = *(a4 + 10);
-  v10 = *(a4 + 11);
-  v11 = *(a4 + 3);
-  v12 = [OITSUColor colorWithRGBBytes:*(a4 + 16) green:*(a4 + 17) blue:*(a4 + 18)];
+  v7 = *(record + 8);
+  v8 = *(record + 9);
+  v9 = *(record + 10);
+  v10 = *(record + 11);
+  v11 = *(record + 3);
+  v12 = [OITSUColor colorWithRGBBytes:*(record + 16) green:*(record + 17) blue:*(record + 18)];
   if (v11 > 9)
   {
     v4 = -7;
@@ -970,7 +970,7 @@
 
   else
   {
-    v13 = *(a4 + 5);
+    v13 = *(record + 5);
     if (v13 >= 6)
     {
       v14 = 0xFFFFFFLL;
@@ -987,30 +987,30 @@
   return v4;
 }
 
-- (int)playCreateMonoBrush:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playCreateMonoBrush:(unsigned int)brush in_pRecord:(const char *)record
 {
-  if (a3 < 0x20)
+  if (brush < 0x20)
   {
     return -7;
   }
 
-  v5 = *(a4 + 4);
-  v4 = *(a4 + 5);
-  if (v5 + v4 > a3)
+  v5 = *(record + 4);
+  v4 = *(record + 5);
+  if (v5 + v4 > brush)
   {
     return -7;
   }
 
-  v6 = *(a4 + 6);
-  v7 = v6 + *(a4 + 7);
+  v6 = *(record + 6);
+  v7 = v6 + *(record + 7);
   v8 = !HIDWORD(v7) && (v5 + v4) >> 32 == 0;
-  if (!v8 || v7 > a3)
+  if (!v8 || v7 > brush)
   {
     return -7;
   }
 
-  v13 = *(a4 + 2);
-  v14 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&a4[v5] in_bitmap:*(a4 + 5) in_bitmapSize:&a4[v6] in_usage:?];
+  v13 = *(record + 2);
+  v14 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&record[v5] in_bitmap:*(record + 5) in_bitmapSize:&record[v6] in_usage:?];
   v15 = v14;
   if (v14)
   {
@@ -1025,30 +1025,30 @@
   return v10;
 }
 
-- (int)playCreateDibPatternBrushPT:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playCreateDibPatternBrushPT:(unsigned int)t in_pRecord:(const char *)record
 {
-  if (a3 < 0x20)
+  if (t < 0x20)
   {
     return -7;
   }
 
-  v5 = *(a4 + 4);
-  v4 = *(a4 + 5);
-  if (v5 + v4 > a3)
+  v5 = *(record + 4);
+  v4 = *(record + 5);
+  if (v5 + v4 > t)
   {
     return -7;
   }
 
-  v6 = *(a4 + 6);
-  v7 = v6 + *(a4 + 7);
+  v6 = *(record + 6);
+  v7 = v6 + *(record + 7);
   v8 = !HIDWORD(v7) && (v5 + v4) >> 32 == 0;
-  if (!v8 || v7 > a3)
+  if (!v8 || v7 > t)
   {
     return -7;
   }
 
-  v13 = *(a4 + 2);
-  v14 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&a4[v5] in_bitmap:*(a4 + 5) in_bitmapSize:&a4[v6] in_usage:?];
+  v13 = *(record + 2);
+  v14 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&record[v5] in_bitmap:*(record + 5) in_bitmapSize:&record[v6] in_usage:?];
   v15 = v14;
   if (v14)
   {
@@ -1063,15 +1063,15 @@
   return v10;
 }
 
-- (int)playExtTextOut:(unsigned int)a3 in_pRecord:(const char *)a4 wideChars:(BOOL)a5
+- (int)playExtTextOut:(unsigned int)out in_pRecord:(const char *)record wideChars:(BOOL)chars
 {
   v64 = *MEMORY[0x277D85DE8];
-  if (a3 < 0x38)
+  if (out < 0x38)
   {
     return -7;
   }
 
-  if (a5)
+  if (chars)
   {
     v9 = 2;
   }
@@ -1081,16 +1081,16 @@
     v9 = 1;
   }
 
-  v10 = *(a4 + 44) | (*(a4 + 45) << 8) | (*(a4 + 46) << 16) & 0xFFFFFF | (*(a4 + 47) << 24);
-  v11 = *(a4 + 50);
-  v12 = *(a4 + 48) | (*(a4 + 49) << 8) | (*(a4 + 50) << 16) & 0xFFFFFF | (*(a4 + 51) << 24);
-  v13 = *(a4 + 52);
+  v10 = *(record + 44) | (*(record + 45) << 8) | (*(record + 46) << 16) & 0xFFFFFF | (*(record + 47) << 24);
+  v11 = *(record + 50);
+  v12 = *(record + 48) | (*(record + 49) << 8) | (*(record + 50) << 16) & 0xFFFFFF | (*(record + 51) << 24);
+  v13 = *(record + 52);
   if ((v13 & 6) != 0)
   {
-    v14 = *(a4 + 14);
-    v15 = *(a4 + 15);
-    v17 = *(a4 + 16);
-    v16 = *(a4 + 17);
+    v14 = *(record + 14);
+    v15 = *(record + 15);
+    v17 = *(record + 16);
+    v16 = *(record + 17);
   }
 
   else
@@ -1112,27 +1112,27 @@
 
   else
   {
-    v21 = v20 > a3;
+    v21 = v20 > out;
   }
 
   if (!v21 && !v19)
   {
-    v22 = *(a4 + 53);
-    v54 = *(a4 + 54);
+    v22 = *(record + 53);
+    v54 = *(record + 54);
     v55 = v22;
-    v23 = *(a4 + 9);
-    v56 = *(a4 + 10);
+    v23 = *(record + 9);
+    v56 = *(record + 10);
     v57 = v23;
-    v53 = *(a4 + 55);
-    v24 = *(a4 + 72);
-    v25 = *(a4 + 73);
-    v62 = *(a4 + 74);
+    v53 = *(record + 55);
+    v24 = *(record + 72);
+    v25 = *(record + 73);
+    v62 = *(record + 74);
     v63 = v24;
-    v60 = *(a4 + 75);
+    v60 = *(record + 75);
     v61 = v25;
     v58 = v16;
     v59 = v17;
-    if (a5)
+    if (chars)
     {
       v26 = MEMORY[0x28223BE20](v11);
       v35 = &v52 - v34;
@@ -1143,7 +1143,7 @@
         v38 = v35;
         do
         {
-          *v38++ = a4[v37] | (a4[v37 + 1] << 8);
+          *v38++ = record[v37] | (record[v37 + 1] << 8);
           v37 += 2;
           --v36;
         }
@@ -1165,8 +1165,8 @@
 
     else
     {
-      v39 = [(MFGraphicsDevice *)self->m_gdi getCurrentFont];
-      v40 = [v39 stringWithBytes:&a4[v12] length:v10];
+      getCurrentFont = [(MFGraphicsDevice *)self->m_gdi getCurrentFont];
+      v40 = [getCurrentFont stringWithBytes:&record[v12] length:v10];
     }
 
     v41 = 0;
@@ -1174,8 +1174,8 @@
     v43 = v63 | (v61 << 8) | (v62 << 16) & 0xFFFFFF | (v60 << 24);
     if (v43)
     {
-      v44 = a3 >= v43;
-      v45 = a3 - v43;
+      v44 = out >= v43;
+      v45 = out - v43;
       if (v45 != 0 && v44)
       {
         v46 = v45 >> 2;
@@ -1203,7 +1203,7 @@
           v49 = (v60 << 24) + (v62 << 16) + (v61 << 8) + v63;
           do
           {
-            *&v47[v48] = a4[(v49 + v48)] | (a4[(v49 + v48 + 1)] << 8) | (a4[(v49 + v48 + 2)] << 16) | (a4[(v49 + v48 + 3)] << 24);
+            *&v47[v48] = record[(v49 + v48)] | (record[(v49 + v48 + 1)] << 8) | (record[(v49 + v48 + 2)] << 16) | (record[(v49 + v48 + 3)] << 24);
             v48 += 4;
           }
 
@@ -1221,11 +1221,11 @@ LABEL_34:
   return v5;
 }
 
-- (int)playSetTextAlign:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetTextAlign:(unsigned int)align in_pRecord:(const char *)record
 {
-  if (a3 >= 0xC)
+  if (align >= 0xC)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setTextAlign:a4[8] & 1 textHorizontalAlign:a4[8] & 6 textVerticalAlign:a4[8] & 0x18 textDirection:(a4[9] & 1) << 8];
+    return [(MFGraphicsDevice *)self->m_gdi setTextAlign:record[8] & 1 textHorizontalAlign:record[8] & 6 textVerticalAlign:record[8] & 0x18 textDirection:(record[9] & 1) << 8];
   }
 
   else
@@ -1234,24 +1234,24 @@ LABEL_34:
   }
 }
 
-- (int)playSetTextColour:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetTextColour:(unsigned int)colour in_pRecord:(const char *)record
 {
-  if (a3 < 0xC)
+  if (colour < 0xC)
   {
     return -7;
   }
 
-  v6 = [OITSUColor colorWithRGBBytes:*(a4 + 8) green:*(a4 + 9) blue:*(a4 + 10)];
+  v6 = [OITSUColor colorWithRGBBytes:*(record + 8) green:*(record + 9) blue:*(record + 10)];
   v4 = [(MFGraphicsDevice *)self->m_gdi setTextColour:v6];
 
   return v4;
 }
 
-- (int)playSetTextJustification:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetTextJustification:(unsigned int)justification in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (justification >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setTextJustification:*(a4 + 3) in_breakCount:*(a4 + 2)];
+    return [(MFGraphicsDevice *)self->m_gdi setTextJustification:*(record + 3) in_breakCount:*(record + 2)];
   }
 
   else
@@ -1260,24 +1260,24 @@ LABEL_34:
   }
 }
 
-- (int)playSetBkColour:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetBkColour:(unsigned int)colour in_pRecord:(const char *)record
 {
-  if (a3 < 0xC)
+  if (colour < 0xC)
   {
     return -7;
   }
 
-  v6 = [OITSUColor colorWithRGBBytes:*(a4 + 8) green:*(a4 + 9) blue:*(a4 + 10)];
+  v6 = [OITSUColor colorWithRGBBytes:*(record + 8) green:*(record + 9) blue:*(record + 10)];
   v4 = [(MFGraphicsDevice *)self->m_gdi setBkColour:v6];
 
   return v4;
 }
 
-- (int)playOffsetClipRegion:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playOffsetClipRegion:(unsigned int)region in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (region >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi offsetClipRegionByX:*(a4 + 2) y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi offsetClipRegionByX:*(record + 2) y:*(record + 3)];
   }
 
   else
@@ -1286,9 +1286,9 @@ LABEL_34:
   }
 }
 
-- (int)playSetBkMode:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetBkMode:(unsigned int)mode in_pRecord:(const char *)record
 {
-  if (a3 < 0xC || (*(a4 + 2) - 1) > 1)
+  if (mode < 0xC || (*(record + 2) - 1) > 1)
   {
     return -7;
   }
@@ -1299,11 +1299,11 @@ LABEL_34:
   }
 }
 
-- (int)playSetBrushOrg:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetBrushOrg:(unsigned int)org in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (org >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setBrushOrg:*(a4 + 2) y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi setBrushOrg:*(record + 2) y:*(record + 3)];
   }
 
   else
@@ -1312,9 +1312,9 @@ LABEL_34:
   }
 }
 
-- (int)playSetMapMode:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetMapMode:(unsigned int)mode in_pRecord:(const char *)record
 {
-  if (a3 < 0xC || (*(a4 + 2) - 1) > 7)
+  if (mode < 0xC || (*(record + 2) - 1) > 7)
   {
     return -7;
   }
@@ -1325,18 +1325,18 @@ LABEL_34:
   }
 }
 
-- (int)playPolyDraw:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolyDraw:(unsigned int)draw in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a3 < 0x1C)
+  if (draw < 0x1C)
   {
     return -7;
   }
 
   v23 = v5;
   v24 = v6;
-  v8 = a5;
-  v10 = *(a4 + 6);
-  if (a5)
+  in_is16bitCopy = in_is16bit;
+  v10 = *(record + 6);
+  if (in_is16bit)
   {
     v11 = 5;
   }
@@ -1353,9 +1353,9 @@ LABEL_34:
   }
 
   result = -7;
-  if (v12 + 28 <= a3 && (v12 & 0xFFFFFFFF00000000) == 0)
+  if (v12 + 28 <= draw && (v12 & 0xFFFFFFFF00000000) == 0)
   {
-    if (a5)
+    if (in_is16bit)
     {
       v14 = 2;
     }
@@ -1373,8 +1373,8 @@ LABEL_34:
       {
         *v22 = 0;
         v17 = v15 + v16;
-        v18 = a4[v15 + v16];
-        parsePoint((a4 + 28), v15, &v22[1], v22, v8);
+        v18 = record[v15 + v16];
+        parsePoint((record + 28), v15, &v22[1], v22, in_is16bitCopy);
         v19 = v18 & 0xFE;
         switch(v19)
         {
@@ -1389,16 +1389,16 @@ LABEL_34:
           case 4:
             *v20 = 0;
             *v21 = 0;
-            if (v10 - v15 > 2 || (a4[v17 + 1] & 0xFE) != 6 || (a4[v17 + 2] & 0xFE) != 6)
+            if (v10 - v15 > 2 || (record[v17 + 1] & 0xFE) != 6 || (record[v17 + 2] & 0xFE) != 6)
             {
               return -7;
             }
 
-            parsePoint((a4 + 28), v15 + 1, &v21[1], v21, v8);
+            parsePoint((record + 28), v15 + 1, &v21[1], v21, in_is16bitCopy);
             v15 += 2;
-            parsePoint((a4 + 28), v15, &v20[1], v20, v8);
+            parsePoint((record + 28), v15, &v20[1], v20, in_is16bitCopy);
             result = [(MFGraphicsDevice *)self->m_gdi bezierTo:v22[1] y:v22[0] x2:v21[1] y2:v21[0] x3:v20[1] y3:v20[0]];
-            v18 = a4[v15 + v16];
+            v18 = record[v15 + v16];
             if (result)
             {
               return result;
@@ -1436,17 +1436,17 @@ LABEL_34:
   return result;
 }
 
-- (int)playPolyBezier:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolyBezier:(unsigned int)bezier in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a3 < 0x1C)
+  if (bezier < 0x1C)
   {
     return -7;
   }
 
   v24 = v5;
   v25 = v6;
-  v8 = a5;
-  if (a5)
+  in_is16bitCopy = in_is16bit;
+  if (in_is16bit)
   {
     v10 = 4;
   }
@@ -1456,7 +1456,7 @@ LABEL_34:
     v10 = 8;
   }
 
-  v11 = *(a4 + 6);
+  v11 = *(record + 6);
   v12 = v11 * v10;
   if (v12 > 0xFFFFFFE3)
   {
@@ -1464,13 +1464,13 @@ LABEL_34:
   }
 
   result = -7;
-  if (v11 && v12 + 28 <= a3 && (v12 & 0xFFFFFFFF00000000) == 0 && -1431655765 * v11 + 1431655765 <= 0x55555555)
+  if (v11 && v12 + 28 <= bezier && (v12 & 0xFFFFFFFF00000000) == 0 && -1431655765 * v11 + 1431655765 <= 0x55555555)
   {
     *v22 = 0;
     *v23 = 0;
     *v20 = 0;
     *v21 = 0;
-    parsePoint((a4 + 28), 0, &v23[1], v23, a5);
+    parsePoint((record + 28), 0, &v23[1], v23, in_is16bit);
     if (v11 < 2)
     {
       return 0;
@@ -1483,10 +1483,10 @@ LABEL_34:
       v16 = 1;
       while (1)
       {
-        parsePoint((a4 + 28), v16, &v22[1], v22, v8);
-        parsePoint((a4 + 28), v16 + 1, &v21[1], v21, v8);
+        parsePoint((record + 28), v16, &v22[1], v22, in_is16bitCopy);
+        parsePoint((record + 28), v16 + 1, &v21[1], v21, in_is16bitCopy);
         v17 = v16 + 2;
-        parsePoint((a4 + 28), v17, &v20[1], v20, v8);
+        parsePoint((record + 28), v17, &v20[1], v20, in_is16bitCopy);
         v19 = v20[0];
         v18 = v20[1];
         result = [(MFGraphicsDevice *)self->m_gdi bezier:v15 y:v14 x2:v22[1] y2:v22[0] x3:v21[1] y3:v21[0] x4:__PAIR64__(v20[0] y4:v20[1])];
@@ -1509,17 +1509,17 @@ LABEL_34:
   return result;
 }
 
-- (int)playPolyBezierTo:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolyBezierTo:(unsigned int)to in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a3 < 0x1C)
+  if (to < 0x1C)
   {
     return -7;
   }
 
   v20 = v5;
   v21 = v6;
-  v8 = a5;
-  if (a5)
+  in_is16bitCopy = in_is16bit;
+  if (in_is16bit)
   {
     v11 = 4;
   }
@@ -1529,10 +1529,10 @@ LABEL_34:
     v11 = 8;
   }
 
-  v12 = *(a4 + 6);
+  v12 = *(record + 6);
   v13 = v12 * v11;
   result = -7;
-  v15 = -1431655765 * v12 > 0x55555555 || v12 == 0 || v13 + 28 > a3;
+  v15 = -1431655765 * v12 > 0x55555555 || v12 == 0 || v13 + 28 > to;
   if (!v15 && (v13 & 0xFFFFFFFF00000000) == 0 && v13 <= 0xFFFFFFE3)
   {
     v16 = 0;
@@ -1541,9 +1541,9 @@ LABEL_34:
     *v17 = 0;
     while (v16 < v12)
     {
-      parsePoint((a4 + 28), v16, &v19[1], v19, v8);
-      parsePoint((a4 + 28), v16 + 1, &v18[1], v18, v8);
-      parsePoint((a4 + 28), v16 + 2, &v17[1], v17, v8);
+      parsePoint((record + 28), v16, &v19[1], v19, in_is16bitCopy);
+      parsePoint((record + 28), v16 + 1, &v18[1], v18, in_is16bitCopy);
+      parsePoint((record + 28), v16 + 2, &v17[1], v17, in_is16bitCopy);
       result = [(MFGraphicsDevice *)self->m_gdi bezierTo:v19[1] y:v19[0] x2:v18[1] y2:v18[0] x3:v17[1] y3:v17[0]];
       v16 += 3;
       if (result)
@@ -1558,13 +1558,13 @@ LABEL_34:
   return result;
 }
 
-- (int)playPolygon:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolygon:(unsigned int)polygon in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
   result = -7;
-  if (a3 >= 0x1C && a4)
+  if (polygon >= 0x1C && record)
   {
-    v8 = a5;
-    if (a5)
+    in_is16bitCopy = in_is16bit;
+    if (in_is16bit)
     {
       v9 = 4;
     }
@@ -1574,13 +1574,13 @@ LABEL_34:
       v9 = 8;
     }
 
-    v10 = *(a4 + 24);
-    v11 = *(a4 + 25);
-    v12 = *(a4 + 26);
-    v13 = *(a4 + 27);
-    v14 = v10 | (*(a4 + 25) << 8) | (v12 << 16) & 0xFFFFFF | (v13 << 24);
+    v10 = *(record + 24);
+    v11 = *(record + 25);
+    v12 = *(record + 26);
+    v13 = *(record + 27);
+    v14 = v10 | (*(record + 25) << 8) | (v12 << 16) & 0xFFFFFF | (v13 << 24);
     v15 = v14 * v9;
-    if (v15 <= 0xFFFFFFE3 && v15 + 28 <= a3 && (v15 & 0xFFFFFFFF00000000) == 0)
+    if (v15 <= 0xFFFFFFE3 && v15 + 28 <= polygon && (v15 & 0xFFFFFFFF00000000) == 0)
     {
       if (v14 < 2)
       {
@@ -1589,7 +1589,7 @@ LABEL_34:
 
       else
       {
-        v16 = smalloc_typed(*(a4 + 24) | (*(a4 + 25) << 8) | (*(a4 + 26) << 16) & 0xFFFFFF | (v13 << 24), 0x10uLL, 0x1000040451B5BE8uLL);
+        v16 = smalloc_typed(*(record + 24) | (*(record + 25) << 8) | (*(record + 26) << 16) & 0xFFFFFF | (v13 << 24), 0x10uLL, 0x1000040451B5BE8uLL);
         if (v16)
         {
           v17 = v16;
@@ -1599,7 +1599,7 @@ LABEL_34:
           v20 = v16 + 1;
           do
           {
-            parsePoint((a4 + 28), v18, &v23[1], v23, v8);
+            parsePoint((record + 28), v18, &v23[1], v23, in_is16bitCopy);
             v21 = v23[0];
             *(v20 - 1) = v23[1];
             *v20 = v21;
@@ -1624,9 +1624,9 @@ LABEL_34:
   return result;
 }
 
-- (int)playPolyLine:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolyLine:(unsigned int)line in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a5)
+  if (in_is16bit)
   {
     v6 = 4;
   }
@@ -1637,18 +1637,18 @@ LABEL_34:
   }
 
   result = -7;
-  if (a3 >= 0x1C)
+  if (line >= 0x1C)
   {
-    if (a4)
+    if (record)
     {
-      v9 = *(a4 + 6);
+      v9 = *(record + 6);
       if (v9 >= 2)
       {
         v10 = v9 * v6;
-        if (v10 <= 0xFFFFFFE3 && (v10 & 0xFFFFFFFF00000000) == 0 && v10 + 28 <= a3)
+        if (v10 <= 0xFFFFFFE3 && (v10 & 0xFFFFFFFF00000000) == 0 && v10 + 28 <= line)
         {
-          v11 = a5;
-          v12 = smalloc_typed(*(a4 + 6), 0x10uLL, 0x1000040451B5BE8uLL);
+          in_is16bitCopy = in_is16bit;
+          v12 = smalloc_typed(*(record + 6), 0x10uLL, 0x1000040451B5BE8uLL);
           if (v12)
           {
             v13 = v12;
@@ -1657,7 +1657,7 @@ LABEL_34:
             v15 = v12 + 1;
             do
             {
-              parsePoint((a4 + 28), v14, &v18[1], v18, v11);
+              parsePoint((record + 28), v14, &v18[1], v18, in_is16bitCopy);
               v16 = v18[0];
               *(v15 - 1) = v18[1];
               *v15 = v16;
@@ -1683,17 +1683,17 @@ LABEL_34:
   return result;
 }
 
-- (int)playPolyLineTo:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolyLineTo:(unsigned int)to in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a3 < 2)
+  if (to < 2)
   {
     return -7;
   }
 
   v21 = v5;
   v22 = v6;
-  v8 = a5;
-  if (a5)
+  in_is16bitCopy = in_is16bit;
+  if (in_is16bit)
   {
     v10 = 4;
   }
@@ -1703,11 +1703,11 @@ LABEL_34:
     v10 = 8;
   }
 
-  v11 = *(a4 + 24);
-  v12 = *(a4 + 25);
-  v13 = *(a4 + 26);
-  v14 = *(a4 + 27);
-  v15 = v11 | (*(a4 + 25) << 8) | (v13 << 16) & 0xFFFFFF | (v14 << 24);
+  v11 = *(record + 24);
+  v12 = *(record + 25);
+  v13 = *(record + 26);
+  v14 = *(record + 27);
+  v15 = v11 | (*(record + 25) << 8) | (v13 << 16) & 0xFFFFFF | (v14 << 24);
   v16 = v15 * v10;
   if (v16 > 0xFFFFFFE3)
   {
@@ -1715,7 +1715,7 @@ LABEL_34:
   }
 
   result = -7;
-  if (v16 + 28 <= a3 && (v16 & 0xFFFFFFFF00000000) == 0)
+  if (v16 + 28 <= to && (v16 & 0xFFFFFFFF00000000) == 0)
   {
     if (v15)
     {
@@ -1724,7 +1724,7 @@ LABEL_34:
       v19 = (v14 << 24) + (v13 << 16) + (v12 << 8) + v11;
       while (1)
       {
-        parsePoint((a4 + 28), v18, &v20[1], v20, v8);
+        parsePoint((record + 28), v18, &v20[1], v20, in_is16bitCopy);
         result = [(MFGraphicsDevice *)self->m_gdi lineTo:v20[1] y:v20[0]];
         if (result)
         {
@@ -1747,11 +1747,11 @@ LABEL_34:
   return result;
 }
 
-- (int)playRoundRect:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playRoundRect:(unsigned int)rect in_pRecord:(const char *)record
 {
-  if (a3 >= 0x20)
+  if (rect >= 0x20)
   {
-    return [(MFGraphicsDevice *)self->m_gdi roundRect:*(a4 + 2) top:*(a4 + 3) right:*(a4 + 4) bottom:*(a4 + 5) rx:vcvtd_n_f64_s32(*(a4 + 6) ry:1uLL), vcvtd_n_f64_s32(*(a4 + 7), 1uLL)];
+    return [(MFGraphicsDevice *)self->m_gdi roundRect:*(record + 2) top:*(record + 3) right:*(record + 4) bottom:*(record + 5) rx:vcvtd_n_f64_s32(*(record + 6) ry:1uLL), vcvtd_n_f64_s32(*(record + 7), 1uLL)];
   }
 
   else
@@ -1760,9 +1760,9 @@ LABEL_34:
   }
 }
 
-- (int)playSetStretchBltMode:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetStretchBltMode:(unsigned int)mode in_pRecord:(const char *)record
 {
-  if (a3 < 0xC || (*(a4 + 2) - 1) > 3)
+  if (mode < 0xC || (*(record + 2) - 1) > 3)
   {
     return -7;
   }
@@ -1773,9 +1773,9 @@ LABEL_34:
   }
 }
 
-- (int)playSaveDC:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSaveDC:(unsigned int)c in_pRecord:(const char *)record
 {
-  if (a3 >= 8)
+  if (c >= 8)
   {
     return [(MFGraphicsDevice *)self->m_gdi saveDC];
   }
@@ -1786,11 +1786,11 @@ LABEL_34:
   }
 }
 
-- (int)playRestoreDC:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playRestoreDC:(unsigned int)c in_pRecord:(const char *)record
 {
-  if (a3 >= 0xC)
+  if (c >= 0xC)
   {
-    return [(MFGraphicsDevice *)self->m_gdi restoreDC:*(a4 + 2)];
+    return [(MFGraphicsDevice *)self->m_gdi restoreDC:*(record + 2)];
   }
 
   else
@@ -1799,11 +1799,11 @@ LABEL_34:
   }
 }
 
-- (int)playLineTo:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playLineTo:(unsigned int)to in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (to >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi lineTo:*(a4 + 2) y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi lineTo:*(record + 2) y:*(record + 3)];
   }
 
   else
@@ -1812,11 +1812,11 @@ LABEL_34:
   }
 }
 
-- (int)playMoveToEx:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playMoveToEx:(unsigned int)ex in_pRecord:(const char *)record
 {
-  if (a3 >= 0x10)
+  if (ex >= 0x10)
   {
-    return [(MFGraphicsDevice *)self->m_gdi moveTo:*(a4 + 2) y:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi moveTo:*(record + 2) y:*(record + 3)];
   }
 
   else
@@ -1825,11 +1825,11 @@ LABEL_34:
   }
 }
 
-- (int)playSetArcDirection:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetArcDirection:(unsigned int)direction in_pRecord:(const char *)record
 {
-  if (a3 >= 0xC)
+  if (direction >= 0xC)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setArcDirection:*(a4 + 2)];
+    return [(MFGraphicsDevice *)self->m_gdi setArcDirection:*(record + 2)];
   }
 
   else
@@ -1838,11 +1838,11 @@ LABEL_34:
   }
 }
 
-- (int)playArc:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playArc:(unsigned int)arc in_pRecord:(const char *)record
 {
-  if (a3 >= 0x28)
+  if (arc >= 0x28)
   {
-    return [(MFGraphicsDevice *)self->m_gdi arc:*(a4 + 2) nTopRect:*(a4 + 3) nRightRect:*(a4 + 4) nBottomRect:*(a4 + 5) nXStartArc:*(a4 + 6) nYStartArc:*(a4 + 7) nXEndArc:*(a4 + 4) nYEndArc:?];
+    return [(MFGraphicsDevice *)self->m_gdi arc:*(record + 2) nTopRect:*(record + 3) nRightRect:*(record + 4) nBottomRect:*(record + 5) nXStartArc:*(record + 6) nYStartArc:*(record + 7) nXEndArc:*(record + 4) nYEndArc:?];
   }
 
   else
@@ -1851,11 +1851,11 @@ LABEL_34:
   }
 }
 
-- (int)playArcTo:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playArcTo:(unsigned int)to in_pRecord:(const char *)record
 {
-  if (a3 >= 0x28)
+  if (to >= 0x28)
   {
-    return [(MFGraphicsDevice *)self->m_gdi arcTo:*(a4 + 2) nTopRect:*(a4 + 3) nRightRect:*(a4 + 4) nBottomRect:*(a4 + 5) nXStartArc:*(a4 + 6) nYStartArc:*(a4 + 7) nXEndArc:*(a4 + 4) nYEndArc:?];
+    return [(MFGraphicsDevice *)self->m_gdi arcTo:*(record + 2) nTopRect:*(record + 3) nRightRect:*(record + 4) nBottomRect:*(record + 5) nXStartArc:*(record + 6) nYStartArc:*(record + 7) nXEndArc:*(record + 4) nYEndArc:?];
   }
 
   else
@@ -1864,11 +1864,11 @@ LABEL_34:
   }
 }
 
-- (int)playChord:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playChord:(unsigned int)chord in_pRecord:(const char *)record
 {
-  if (a3 >= 0x28)
+  if (chord >= 0x28)
   {
-    return [(MFGraphicsDevice *)self->m_gdi chord:*(a4 + 2) nTopRect:*(a4 + 3) nRightRect:*(a4 + 4) nBottomRect:*(a4 + 5) nXStartArc:*(a4 + 6) nYStartArc:*(a4 + 7) nXEndArc:*(a4 + 4) nYEndArc:?];
+    return [(MFGraphicsDevice *)self->m_gdi chord:*(record + 2) nTopRect:*(record + 3) nRightRect:*(record + 4) nBottomRect:*(record + 5) nXStartArc:*(record + 6) nYStartArc:*(record + 7) nXEndArc:*(record + 4) nYEndArc:?];
   }
 
   else
@@ -1877,11 +1877,11 @@ LABEL_34:
   }
 }
 
-- (int)playPie:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playPie:(unsigned int)pie in_pRecord:(const char *)record
 {
-  if (a3 >= 0x28)
+  if (pie >= 0x28)
   {
-    return [(MFGraphicsDevice *)self->m_gdi pie:*(a4 + 2) nTopRect:*(a4 + 3) nRightRect:*(a4 + 4) nBottomRect:*(a4 + 5) nXStartArc:*(a4 + 6) nYStartArc:*(a4 + 7) nXEndArc:*(a4 + 4) nYEndArc:?];
+    return [(MFGraphicsDevice *)self->m_gdi pie:*(record + 2) nTopRect:*(record + 3) nRightRect:*(record + 4) nBottomRect:*(record + 5) nXStartArc:*(record + 6) nYStartArc:*(record + 7) nXEndArc:*(record + 4) nYEndArc:?];
   }
 
   else
@@ -1890,11 +1890,11 @@ LABEL_34:
   }
 }
 
-- (int)playEllipse:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playEllipse:(unsigned int)ellipse in_pRecord:(const char *)record
 {
-  if (a3 >= 0x18)
+  if (ellipse >= 0x18)
   {
-    return [(MFGraphicsDevice *)self->m_gdi ellipse:*(a4 + 4) y1:*(a4 + 5) x2:*(a4 + 2) y2:*(a4 + 3)];
+    return [(MFGraphicsDevice *)self->m_gdi ellipse:*(record + 4) y1:*(record + 5) x2:*(record + 2) y2:*(record + 3)];
   }
 
   else
@@ -1903,11 +1903,11 @@ LABEL_34:
   }
 }
 
-- (int)playRectangle:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playRectangle:(unsigned int)rectangle in_pRecord:(const char *)record
 {
-  if (a3 >= 0x18)
+  if (rectangle >= 0x18)
   {
-    return [(MFGraphicsDevice *)self->m_gdi rectangle:*(a4 + 2) y1:*(a4 + 3) x2:*(a4 + 4) y2:*(a4 + 5)];
+    return [(MFGraphicsDevice *)self->m_gdi rectangle:*(record + 2) y1:*(record + 3) x2:*(record + 4) y2:*(record + 5)];
   }
 
   else
@@ -1916,22 +1916,22 @@ LABEL_34:
   }
 }
 
-- (int)playPolyPolygon:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolyPolygon:(unsigned int)polygon in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a3 < 0x20)
+  if (polygon < 0x20)
   {
     return -7;
   }
 
-  v5 = a5;
-  v7 = a5 ? 4 : 8;
-  v8 = *(a4 + 27);
-  v9 = *(a4 + 12) | (*(a4 + 26) << 16) | (v8 << 24);
-  v10 = *(a4 + 28);
-  v11 = *(a4 + 29);
-  v12 = *(a4 + 30);
-  v13 = *(a4 + 31);
-  v14 = v10 | (*(a4 + 29) << 8) | (v12 << 16) & 0xFFFFFF | (v13 << 24);
+  in_is16bitCopy = in_is16bit;
+  v7 = in_is16bit ? 4 : 8;
+  v8 = *(record + 27);
+  v9 = *(record + 12) | (*(record + 26) << 16) | (v8 << 24);
+  v10 = *(record + 28);
+  v11 = *(record + 29);
+  v12 = *(record + 30);
+  v13 = *(record + 31);
+  v14 = v10 | (*(record + 29) << 8) | (v12 << 16) & 0xFFFFFF | (v13 << 24);
   v15 = 4 * v9;
   v16 = v14 * v7;
   v17 = (v16 & 0xFFFFFFFF00000000) != 0;
@@ -1942,7 +1942,7 @@ LABEL_34:
   }
 
   v19 = -7;
-  if (v15 <= 0xFFFFFFDF && !v17 && v8 <= 0x3F && v18 <= a3)
+  if (v15 <= 0xFFFFFFDF && !v17 && v8 <= 0x3F && v18 <= polygon)
   {
     v20 = smalloc_typed(v14, 0x10uLL, 0x1000040451B5BE8uLL);
     v21 = smalloc_typed(v9, 4uLL, 0x100004052888210uLL);
@@ -1958,7 +1958,7 @@ LABEL_34:
         v25 = v21;
         while (1)
         {
-          v26 = a4[v23 - 3] | (a4[v23 - 2] << 8) | (a4[v23 - 1] << 16) | (a4[v23] << 24);
+          v26 = record[v23 - 3] | (record[v23 - 2] << 8) | (record[v23 - 1] << 16) | (record[v23] << 24);
           *v25 = v26;
           v22 += v26;
           if (v26 <= 1)
@@ -2000,13 +2000,13 @@ LABEL_26:
         if (v14)
         {
           v30 = 0;
-          v31 = &a4[v15];
+          v31 = &record[v15];
           v32 = (v13 << 24) | (v12 << 16) | (v11 << 8) | v10;
           v33 = v36 + 1;
           do
           {
             *v38 = 0;
-            parsePoint((v31 + 32), v30, &v38[1], v38, v5);
+            parsePoint((v31 + 32), v30, &v38[1], v38, in_is16bitCopy);
             v34 = v38[0];
             *(v33 - 1) = v38[1];
             *v33 = v34;
@@ -2045,22 +2045,22 @@ LABEL_26:
   return v19;
 }
 
-- (int)playPolyPolyLine:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playPolyPolyLine:(unsigned int)line in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a3 < 0x20)
+  if (line < 0x20)
   {
     return -7;
   }
 
-  v5 = a5;
-  v7 = a5 ? 4 : 8;
-  v8 = *(a4 + 27);
-  v9 = *(a4 + 12) | (*(a4 + 26) << 16) | (v8 << 24);
-  v10 = *(a4 + 28);
-  v11 = *(a4 + 29);
-  v12 = *(a4 + 30);
-  v13 = *(a4 + 31);
-  v14 = v10 | (*(a4 + 29) << 8) | (v12 << 16) & 0xFFFFFF | (v13 << 24);
+  in_is16bitCopy = in_is16bit;
+  v7 = in_is16bit ? 4 : 8;
+  v8 = *(record + 27);
+  v9 = *(record + 12) | (*(record + 26) << 16) | (v8 << 24);
+  v10 = *(record + 28);
+  v11 = *(record + 29);
+  v12 = *(record + 30);
+  v13 = *(record + 31);
+  v14 = v10 | (*(record + 29) << 8) | (v12 << 16) & 0xFFFFFF | (v13 << 24);
   v15 = 4 * v9;
   v16 = v14 * v7;
   v17 = (v16 & 0xFFFFFFFF00000000) != 0;
@@ -2071,7 +2071,7 @@ LABEL_26:
   }
 
   v19 = -7;
-  if (v15 <= 0xFFFFFFDF && !v17 && v8 <= 0x3F && v18 <= a3)
+  if (v15 <= 0xFFFFFFDF && !v17 && v8 <= 0x3F && v18 <= line)
   {
     v20 = smalloc_typed(v14, 0x10uLL, 0x1000040451B5BE8uLL);
     v21 = smalloc_typed(v9, 4uLL, 0x100004052888210uLL);
@@ -2087,7 +2087,7 @@ LABEL_26:
         v25 = v21;
         while (1)
         {
-          v26 = a4[v23 - 3] | (a4[v23 - 2] << 8) | (a4[v23 - 1] << 16) | (a4[v23] << 24);
+          v26 = record[v23 - 3] | (record[v23 - 2] << 8) | (record[v23 - 1] << 16) | (record[v23] << 24);
           *v25 = v26;
           v22 += v26;
           if (v26 <= 1)
@@ -2129,13 +2129,13 @@ LABEL_26:
         if (v14)
         {
           v30 = 0;
-          v31 = &a4[v15];
+          v31 = &record[v15];
           v32 = (v13 << 24) | (v12 << 16) | (v11 << 8) | v10;
           v33 = v36 + 1;
           do
           {
             *v38 = 0;
-            parsePoint((v31 + 32), v30, &v38[1], v38, v5);
+            parsePoint((v31 + 32), v30, &v38[1], v38, in_is16bitCopy);
             v34 = v38[0];
             *(v33 - 1) = v38[1];
             *v33 = v34;
@@ -2174,69 +2174,69 @@ LABEL_26:
   return v19;
 }
 
-- (int)playAngleArc:(unsigned int)a3 in_pRecord:(const char *)a4 in_is16bit:(BOOL)a5
+- (int)playAngleArc:(unsigned int)arc in_pRecord:(const char *)record in_is16bit:(BOOL)in_is16bit
 {
-  if (a3 < 0x1C)
+  if (arc < 0x1C)
   {
     return -7;
   }
 
-  v9 = *(a4 + 2);
-  v10 = *(a4 + 3);
-  v11 = *(a4 + 4);
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:20, a5];
+  v9 = *(record + 2);
+  v10 = *(record + 3);
+  v11 = *(record + 4);
+  [MFByteUtils readFloat32FromByteArray:record in_offset:20, in_is16bit];
   v13 = v12;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:24];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:24];
   m_gdi = self->m_gdi;
 
   return [(MFGraphicsDevice *)m_gdi angleArc:v9 y:v10 radius:v11 startAngle:v13 sweepAngle:v14];
 }
 
-- (int)playBitBlt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playBitBlt:(unsigned int)blt in_pRecord:(const char *)record
 {
-  if (a3 < 0x64)
+  if (blt < 0x64)
   {
     return -7;
   }
 
-  v6 = *(a4 + 21);
-  v5 = *(a4 + 22);
-  if (v6 + v5 > a3)
+  v6 = *(record + 21);
+  v5 = *(record + 22);
+  if (v6 + v5 > blt)
   {
     return -7;
   }
 
-  v8 = *(a4 + 23);
-  v7 = *(a4 + 24);
+  v8 = *(record + 23);
+  v7 = *(record + 24);
   v9 = v8 + v7;
   v10 = !HIDWORD(v9) && (v6 + v5) >> 32 == 0;
-  if (!v10 || v9 > a3)
+  if (!v10 || v9 > blt)
   {
     return -7;
   }
 
-  v32 = *(a4 + 20);
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:52];
+  v32 = *(record + 20);
+  [MFByteUtils readFloat32FromByteArray:record in_offset:52];
   v33[0] = v15;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:56];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:56];
   v33[1] = v16;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:60];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:60];
   v33[2] = v17;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:64];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:64];
   v33[3] = v18;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:68];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:68];
   v33[4] = v19;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:72];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:72];
   v33[5] = v20;
-  v30 = *(a4 + 7);
-  v31 = *(a4 + 6);
-  v28 = *(a4 + 9);
-  v29 = *(a4 + 8);
-  v21 = *(a4 + 12);
-  v27 = *(a4 + 11);
-  v22 = *(a4 + 10);
-  v23 = *(a4 + 19);
-  v24 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&a4[v6] in_headerSize:v5 in_bitmap:&a4[v8] in_bitmapSize:v7 in_usage:v32];
+  v30 = *(record + 7);
+  v31 = *(record + 6);
+  v28 = *(record + 9);
+  v29 = *(record + 8);
+  v21 = *(record + 12);
+  v27 = *(record + 11);
+  v22 = *(record + 10);
+  v23 = *(record + 19);
+  v24 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&record[v6] in_headerSize:v5 in_bitmap:&record[v8] in_bitmapSize:v7 in_usage:v32];
   v25 = v24;
   if (v24)
   {
@@ -2252,53 +2252,53 @@ LABEL_26:
   return v12;
 }
 
-- (int)playStretchBlt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playStretchBlt:(unsigned int)blt in_pRecord:(const char *)record
 {
-  if (a3 < 0x6C)
+  if (blt < 0x6C)
   {
     return -7;
   }
 
-  v6 = *(a4 + 21);
-  v5 = *(a4 + 22);
-  if (v6 + v5 > a3)
+  v6 = *(record + 21);
+  v5 = *(record + 22);
+  if (v6 + v5 > blt)
   {
     return -7;
   }
 
-  v8 = *(a4 + 23);
-  v7 = *(a4 + 24);
+  v8 = *(record + 23);
+  v7 = *(record + 24);
   v9 = v8 + v7;
   v10 = !HIDWORD(v9) && (v6 + v5) >> 32 == 0;
-  if (!v10 || v9 > a3)
+  if (!v10 || v9 > blt)
   {
     return -7;
   }
 
-  v34 = *(a4 + 20);
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:52];
+  v34 = *(record + 20);
+  [MFByteUtils readFloat32FromByteArray:record in_offset:52];
   v35[0] = v15;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:56];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:56];
   v35[1] = v16;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:60];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:60];
   v35[2] = v17;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:64];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:64];
   v35[3] = v18;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:68];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:68];
   v35[4] = v19;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:72];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:72];
   v35[5] = v20;
-  v32 = *(a4 + 7);
-  v33 = *(a4 + 6);
-  v30 = *(a4 + 9);
-  v31 = *(a4 + 8);
-  v21 = *(a4 + 26);
-  v27 = *(a4 + 25);
-  v28 = *(a4 + 12);
-  v22 = *(a4 + 10);
-  v29 = *(a4 + 11);
-  v23 = *(a4 + 19);
-  v24 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&a4[v6] in_headerSize:v5 in_bitmap:&a4[v8] in_bitmapSize:v7 in_usage:v34];
+  v32 = *(record + 7);
+  v33 = *(record + 6);
+  v30 = *(record + 9);
+  v31 = *(record + 8);
+  v21 = *(record + 26);
+  v27 = *(record + 25);
+  v28 = *(record + 12);
+  v22 = *(record + 10);
+  v29 = *(record + 11);
+  v23 = *(record + 19);
+  v24 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&record[v6] in_headerSize:v5 in_bitmap:&record[v8] in_bitmapSize:v7 in_usage:v34];
   v25 = v24;
   if (v24)
   {
@@ -2314,54 +2314,54 @@ LABEL_26:
   return v12;
 }
 
-- (int)playAlphaBlend:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playAlphaBlend:(unsigned int)blend in_pRecord:(const char *)record
 {
-  if (a3 < 0x6C)
+  if (blend < 0x6C)
   {
     return -7;
   }
 
-  v6 = *(a4 + 21);
-  v5 = *(a4 + 22);
-  if (v6 + v5 > a3)
+  v6 = *(record + 21);
+  v5 = *(record + 22);
+  if (v6 + v5 > blend)
   {
     return -7;
   }
 
-  v8 = *(a4 + 23);
-  v7 = *(a4 + 24);
+  v8 = *(record + 23);
+  v7 = *(record + 24);
   v9 = v8 + v7;
   v10 = !HIDWORD(v9) && (v6 + v5) >> 32 == 0;
-  if (!v10 || v9 > a3)
+  if (!v10 || v9 > blend)
   {
     return -7;
   }
 
-  v35 = *(a4 + 20);
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:52];
+  v35 = *(record + 20);
+  [MFByteUtils readFloat32FromByteArray:record in_offset:52];
   v36[0] = v15;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:56];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:56];
   v36[1] = v16;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:60];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:60];
   v36[2] = v17;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:64];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:64];
   v36[3] = v18;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:68];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:68];
   v36[4] = v19;
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:72];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:72];
   v36[5] = v20;
-  v32 = *(a4 + 7);
-  v33 = *(a4 + 6);
-  v30 = *(a4 + 9);
-  v31 = *(a4 + 8);
-  v34 = *(a4 + 11);
-  v28 = *(a4 + 25);
-  v29 = *(a4 + 12);
-  HIDWORD(v27) = *(a4 + 26);
-  v21 = a4[42];
-  v22 = *(a4 + 43);
-  v23 = *(a4 + 19);
-  v24 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&a4[v6] in_headerSize:v5 in_bitmap:&a4[v8] in_bitmapSize:v7 in_usage:v35];
+  v32 = *(record + 7);
+  v33 = *(record + 6);
+  v30 = *(record + 9);
+  v31 = *(record + 8);
+  v34 = *(record + 11);
+  v28 = *(record + 25);
+  v29 = *(record + 12);
+  HIDWORD(v27) = *(record + 26);
+  v21 = record[42];
+  v22 = *(record + 43);
+  v23 = *(record + 19);
+  v24 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&record[v6] in_headerSize:v5 in_bitmap:&record[v8] in_bitmapSize:v7 in_usage:v35];
   v25 = v24;
   if (v24)
   {
@@ -2380,67 +2380,67 @@ LABEL_26:
   return v12;
 }
 
-- (int)playMaskBlt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playMaskBlt:(unsigned int)blt in_pRecord:(const char *)record
 {
-  if (a3 < 0x80)
+  if (blt < 0x80)
   {
     return -7;
   }
 
-  v6 = *(a4 + 21);
-  v5 = *(a4 + 22);
-  if (v6 + v5 > a3)
+  v6 = *(record + 21);
+  v5 = *(record + 22);
+  if (v6 + v5 > blt)
   {
     return -7;
   }
 
-  v7 = *(a4 + 23);
-  v8 = *(a4 + 24);
+  v7 = *(record + 23);
+  v8 = *(record + 24);
   v9 = v7 + v8;
-  if (v9 > a3)
+  if (v9 > blt)
   {
     return -7;
   }
 
-  v10 = *(a4 + 28);
-  v11 = v10 + *(a4 + 29);
-  if (v11 > a3)
+  v10 = *(record + 28);
+  v11 = v10 + *(record + 29);
+  if (v11 > blt)
   {
     return -7;
   }
 
-  v14 = *(a4 + 30) + *(a4 + 31);
+  v14 = *(record + 30) + *(record + 31);
   v12 = -7;
-  if (!HIDWORD(v14) && v14 <= a3 && !((v11 | (v6 + v5) | v9) >> 32))
+  if (!HIDWORD(v14) && v14 <= blt && !((v11 | (v6 + v5) | v9) >> 32))
   {
-    v38 = *(a4 + 30);
-    v39 = *(a4 + 31);
-    v40 = *(a4 + 29);
-    v41 = *(a4 + 20);
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:52];
+    v38 = *(record + 30);
+    v39 = *(record + 31);
+    v40 = *(record + 29);
+    v41 = *(record + 20);
+    [MFByteUtils readFloat32FromByteArray:record in_offset:52];
     v42[0] = v16;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:56];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:56];
     v42[1] = v17;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:60];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:60];
     v42[2] = v18;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:64];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:64];
     v42[3] = v19;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:68];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:68];
     v42[4] = v20;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:72];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:72];
     v42[5] = v21;
-    v36 = *(a4 + 7);
-    v37 = *(a4 + 6);
-    v34 = *(a4 + 9);
-    v35 = *(a4 + 8);
-    v31 = *(a4 + 25);
-    v32 = *(a4 + 12);
-    v33 = *(a4 + 11);
-    v29 = *(a4 + 10);
-    v30 = *(a4 + 26);
-    v28 = *(a4 + 19);
-    v22 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&a4[v6] in_headerSize:v5 in_bitmap:&a4[v7] in_bitmapSize:v8 in_usage:v41];
-    v23 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&a4[v10] in_headerSize:v40 in_bitmap:&a4[v38] in_bitmapSize:v39 in_usage:0];
+    v36 = *(record + 7);
+    v37 = *(record + 6);
+    v34 = *(record + 9);
+    v35 = *(record + 8);
+    v31 = *(record + 25);
+    v32 = *(record + 12);
+    v33 = *(record + 11);
+    v29 = *(record + 10);
+    v30 = *(record + 26);
+    v28 = *(record + 19);
+    v22 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&record[v6] in_headerSize:v5 in_bitmap:&record[v7] in_bitmapSize:v8 in_usage:v41];
+    v23 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&record[v10] in_headerSize:v40 in_bitmap:&record[v38] in_bitmapSize:v39 in_usage:0];
     v24 = v23;
     v12 = -7;
     if (v22 && v23)
@@ -2455,62 +2455,62 @@ LABEL_26:
   return v12;
 }
 
-- (int)playPlgBlt:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playPlgBlt:(unsigned int)blt in_pRecord:(const char *)record
 {
   v43[5] = *MEMORY[0x277D85DE8];
-  if (a3 < 0x8C)
+  if (blt < 0x8C)
   {
     return -7;
   }
 
-  v6 = *(a4 + 24);
-  v5 = *(a4 + 25);
-  if (v6 + v5 > a3)
+  v6 = *(record + 24);
+  v5 = *(record + 25);
+  if (v6 + v5 > blt)
   {
     return -7;
   }
 
-  v7 = *(a4 + 26);
-  v8 = *(a4 + 27);
+  v7 = *(record + 26);
+  v8 = *(record + 27);
   v9 = v7 + v8;
-  if (v9 > a3)
+  if (v9 > blt)
   {
     return -7;
   }
 
-  v10 = *(a4 + 31);
-  v11 = v10 + *(a4 + 32);
-  if (v11 > a3)
+  v10 = *(record + 31);
+  v11 = v10 + *(record + 32);
+  if (v11 > blt)
   {
     return -7;
   }
 
-  v14 = *(a4 + 33) + *(a4 + 34);
+  v14 = *(record + 33) + *(record + 34);
   v12 = -7;
-  if (!HIDWORD(v14) && v14 <= a3 && !((v11 | (v6 + v5) | v9) >> 32))
+  if (!HIDWORD(v14) && v14 <= blt && !((v11 | (v6 + v5) | v9) >> 32))
   {
-    v36 = *(a4 + 33);
-    v37 = *(a4 + 34);
-    v38 = *(a4 + 32);
-    v39 = *(a4 + 23);
+    v36 = *(record + 33);
+    v37 = *(record + 34);
+    v38 = *(record + 32);
+    v39 = *(record + 23);
     *v41 = 0;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:64];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:64];
     v40[0] = v16;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:68];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:68];
     v40[1] = v17;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:72];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:72];
     v40[2] = v18;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:76];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:76];
     v40[3] = v19;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:80];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:80];
     v40[4] = v20;
-    [MFByteUtils readFloat32FromByteArray:a4 in_offset:82];
+    [MFByteUtils readFloat32FromByteArray:record in_offset:82];
     v21 = 0;
     v40[5] = v22;
     v23 = v43;
     do
     {
-      parsePoint32((a4 + 24), v21, &v41[1], v41);
+      parsePoint32((record + 24), v21, &v41[1], v41);
       v24 = v41[0];
       *(v23 - 1) = v41[1];
       *v23 = v24;
@@ -2519,15 +2519,15 @@ LABEL_26:
     }
 
     while (v21 != 3);
-    v30 = *(a4 + 29);
-    v31 = *(a4 + 28);
-    v29 = *(a4 + 22);
-    v34 = *(a4 + 13);
-    v35 = *(a4 + 12);
-    v32 = *(a4 + 15);
-    v33 = *(a4 + 14);
-    v25 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&a4[v6] in_headerSize:v5 in_bitmap:&a4[v7] in_bitmapSize:v8 in_usage:v39];
-    v26 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&a4[v10] in_headerSize:v38 in_bitmap:&a4[v36] in_bitmapSize:v37 in_usage:0];
+    v30 = *(record + 29);
+    v31 = *(record + 28);
+    v29 = *(record + 22);
+    v34 = *(record + 13);
+    v35 = *(record + 12);
+    v32 = *(record + 15);
+    v33 = *(record + 14);
+    v25 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&record[v6] in_headerSize:v5 in_bitmap:&record[v7] in_bitmapSize:v8 in_usage:v39];
+    v26 = [(MFGraphicsDevice *)self->m_gdi createDIBitmap:&record[v10] in_headerSize:v38 in_bitmap:&record[v36] in_bitmapSize:v37 in_usage:0];
     v27 = v26;
     v12 = -7;
     if (v25 && v26)
@@ -2540,31 +2540,31 @@ LABEL_26:
   return v12;
 }
 
-- (int)playSetDIBitsToDevice:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetDIBitsToDevice:(unsigned int)device in_pRecord:(const char *)record
 {
-  if (a3 < 0x4C)
+  if (device < 0x4C)
   {
     return -7;
   }
 
-  v6 = *(a4 + 12);
-  v5 = *(a4 + 13);
-  if (v6 + v5 > a3)
+  v6 = *(record + 12);
+  v5 = *(record + 13);
+  if (v6 + v5 > device)
   {
     return -1;
   }
 
-  v7 = *(a4 + 14);
-  v8 = v7 + *(a4 + 15);
+  v7 = *(record + 14);
+  v8 = v7 + *(record + 15);
   v9 = !HIDWORD(v8) && (v6 + v5) >> 32 == 0;
-  if (!v9 || v8 > a3)
+  if (!v9 || v8 > device)
   {
     return -1;
   }
 
-  v12 = *(a4 + 9);
-  v13 = *(a4 + 11);
-  v14 = *(a4 + 17);
+  v12 = *(record + 9);
+  v13 = *(record + 11);
+  v14 = *(record + 17);
   if (v12 >= v14)
   {
     v15 = 0;
@@ -2576,7 +2576,7 @@ LABEL_26:
   }
 
   v16 = v13 - v15;
-  v17 = *(a4 + 18) + v14;
+  v17 = *(record + 18) + v14;
   v18 = v13 + v12;
   v19 = __OFSUB__(v17, v18);
   v20 = v17 - v18;
@@ -2591,11 +2591,11 @@ LABEL_26:
     return 0;
   }
 
-  v23 = *(a4 + 6);
-  v24 = *(a4 + 7);
-  v25 = *(a4 + 8);
-  v26 = *(a4 + 10);
-  v27 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&a4[v6] in_bitmap:*(a4 + 13) in_bitmapSize:&a4[v7] in_usage:?];
+  v23 = *(record + 6);
+  v24 = *(record + 7);
+  v25 = *(record + 8);
+  v26 = *(record + 10);
+  v27 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&record[v6] in_bitmap:*(record + 13) in_bitmapSize:&record[v7] in_usage:?];
   if (v27)
   {
     LODWORD(v29) = 0;
@@ -2612,38 +2612,38 @@ LABEL_26:
   return v4;
 }
 
-- (int)playStretchDIBits:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playStretchDIBits:(unsigned int)bits in_pRecord:(const char *)record
 {
-  if (a3 < 0x50)
+  if (bits < 0x50)
   {
     return -7;
   }
 
-  v5 = *(a4 + 12);
-  v4 = *(a4 + 13);
-  if (v5 + v4 > a3)
+  v5 = *(record + 12);
+  v4 = *(record + 13);
+  if (v5 + v4 > bits)
   {
     return -7;
   }
 
-  v6 = *(a4 + 14);
-  v7 = v6 + *(a4 + 15);
+  v6 = *(record + 14);
+  v7 = v6 + *(record + 15);
   v8 = !HIDWORD(v7) && (v5 + v4) >> 32 == 0;
-  if (!v8 || v7 > a3)
+  if (!v8 || v7 > bits)
   {
     return -7;
   }
 
-  v13 = *(a4 + 7);
-  v23 = *(a4 + 6);
-  v14 = *(a4 + 18);
-  v15 = *(a4 + 19);
-  v16 = *(a4 + 9);
-  v24 = *(a4 + 8);
-  v17 = *(a4 + 10);
-  v18 = *(a4 + 11);
-  v19 = *(a4 + 17);
-  v20 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&a4[v5] in_bitmap:v4 in_bitmapSize:&a4[v6] in_usage:?];
+  v13 = *(record + 7);
+  v23 = *(record + 6);
+  v14 = *(record + 18);
+  v15 = *(record + 19);
+  v16 = *(record + 9);
+  v24 = *(record + 8);
+  v17 = *(record + 10);
+  v18 = *(record + 11);
+  v19 = *(record + 17);
+  v20 = [MFGraphicsDevice createDIBitmap:"createDIBitmap:in_headerSize:in_bitmap:in_bitmapSize:in_usage:" in_headerSize:&record[v5] in_bitmap:v4 in_bitmapSize:&record[v6] in_usage:?];
   v21 = v20;
   if (v20)
   {
@@ -2660,15 +2660,15 @@ LABEL_26:
   return v10;
 }
 
-- (int)playSetPolyFillMode:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetPolyFillMode:(unsigned int)mode in_pRecord:(const char *)record
 {
-  if (a3 < 0xC)
+  if (mode < 0xC)
   {
     return -7;
   }
 
   m_gdi = self->m_gdi;
-  if (*(a4 + 2) == 1)
+  if (*(record + 2) == 1)
   {
     v6 = 1;
   }
@@ -2681,25 +2681,25 @@ LABEL_26:
   return [(MFGraphicsDevice *)m_gdi setPolyFillMode:v6];
 }
 
-- (int)playSetMiterLimit:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetMiterLimit:(unsigned int)limit in_pRecord:(const char *)record
 {
-  if (a3 < 0xC)
+  if (limit < 0xC)
   {
     return -7;
   }
 
-  [MFByteUtils readFloat32FromByteArray:a4 in_offset:8];
+  [MFByteUtils readFloat32FromByteArray:record in_offset:8];
   v8 = v7;
   m_gdi = self->m_gdi;
 
   return [(MFGraphicsDevice *)m_gdi setMiterLimit:v8];
 }
 
-- (int)playSetRop2:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSetRop2:(unsigned int)rop2 in_pRecord:(const char *)record
 {
-  if (a3 >= 0xC)
+  if (rop2 >= 0xC)
   {
-    return [(MFGraphicsDevice *)self->m_gdi setRop2:*(a4 + 2)];
+    return [(MFGraphicsDevice *)self->m_gdi setRop2:*(record + 2)];
   }
 
   else
@@ -2708,11 +2708,11 @@ LABEL_26:
   }
 }
 
-- (int)playSelectClipPath:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSelectClipPath:(unsigned int)path in_pRecord:(const char *)record
 {
-  if (a3 >= 0xC)
+  if (path >= 0xC)
   {
-    return [(MFGraphicsDevice *)self->m_gdi selectClipPath:*(a4 + 2)];
+    return [(MFGraphicsDevice *)self->m_gdi selectClipPath:*(record + 2)];
   }
 
   else
@@ -2721,21 +2721,21 @@ LABEL_26:
   }
 }
 
-- (int)playSelectClipRegion:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playSelectClipRegion:(unsigned int)region in_pRecord:(const char *)record
 {
-  if (a3 < 0x10)
+  if (region < 0x10)
   {
     return -7;
   }
 
-  v5 = *(a4 + 2);
-  if (v5 > 0xFFFFFFEF || v5 + 16 > a3)
+  v5 = *(record + 2);
+  if (v5 > 0xFFFFFFEF || v5 + 16 > region)
   {
     return -7;
   }
 
-  v8 = *(a4 + 3);
-  v9 = parseRegion(v5, a4 + 16);
+  v8 = *(record + 3);
+  v9 = parseRegion(v5, record + 16);
   v10 = v9;
   if (v9)
   {
@@ -2750,21 +2750,21 @@ LABEL_26:
   return v7;
 }
 
-- (int)playFillRgn:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playFillRgn:(unsigned int)rgn in_pRecord:(const char *)record
 {
-  if (a3 < 0x20)
+  if (rgn < 0x20)
   {
     return -7;
   }
 
-  v5 = *(a4 + 6);
-  if (v5 > 0xFFFFFFDF || v5 + 32 > a3)
+  v5 = *(record + 6);
+  if (v5 > 0xFFFFFFDF || v5 + 32 > rgn)
   {
     return -7;
   }
 
-  v8 = *(a4 + 7);
-  v9 = parseRegion(v5, a4 + 32);
+  v8 = *(record + 7);
+  v9 = parseRegion(v5, record + 32);
   v10 = v9;
   if (v9)
   {
@@ -2779,20 +2779,20 @@ LABEL_26:
   return v7;
 }
 
-- (int)playPaintRgn:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playPaintRgn:(unsigned int)rgn in_pRecord:(const char *)record
 {
-  if (a3 < 0x1C)
+  if (rgn < 0x1C)
   {
     return -7;
   }
 
-  v5 = *(a4 + 6);
-  if (v5 > 0xFFFFFFE3 || v5 + 28 > a3)
+  v5 = *(record + 6);
+  if (v5 > 0xFFFFFFE3 || v5 + 28 > rgn)
   {
     return -7;
   }
 
-  v8 = parseRegion(v5, a4 + 28);
+  v8 = parseRegion(v5, record + 28);
   v9 = v8;
   if (v8)
   {
@@ -2807,20 +2807,20 @@ LABEL_26:
   return v7;
 }
 
-- (int)playInvertRgn:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playInvertRgn:(unsigned int)rgn in_pRecord:(const char *)record
 {
-  if (a3 < 0x1C)
+  if (rgn < 0x1C)
   {
     return -7;
   }
 
-  v5 = *(a4 + 6);
-  if (v5 > 0xFFFFFFE3 || v5 + 28 > a3)
+  v5 = *(record + 6);
+  if (v5 > 0xFFFFFFE3 || v5 + 28 > rgn)
   {
     return -7;
   }
 
-  v8 = parseRegion(v5, a4 + 28);
+  v8 = parseRegion(v5, record + 28);
   v9 = v8;
   if (v8)
   {
@@ -2835,11 +2835,11 @@ LABEL_26:
   return v7;
 }
 
-- (int)playExcludeClipRect:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playExcludeClipRect:(unsigned int)rect in_pRecord:(const char *)record
 {
-  if (a3 >= 0x18)
+  if (rect >= 0x18)
   {
-    return [(MFGraphicsDevice *)self->m_gdi excludeClipRect:*(a4 + 2), *(a4 + 3), *(a4 + 4), *(a4 + 5)];
+    return [(MFGraphicsDevice *)self->m_gdi excludeClipRect:*(record + 2), *(record + 3), *(record + 4), *(record + 5)];
   }
 
   else
@@ -2848,11 +2848,11 @@ LABEL_26:
   }
 }
 
-- (int)playIntersectClipRect:(unsigned int)a3 in_pRecord:(const char *)a4
+- (int)playIntersectClipRect:(unsigned int)rect in_pRecord:(const char *)record
 {
-  if (a3 >= 0x18)
+  if (rect >= 0x18)
   {
-    return [(MFGraphicsDevice *)self->m_gdi intersectClipRect:*(a4 + 2), *(a4 + 3), (*(a4 + 4) - *(a4 + 2)), (*(a4 + 5) - *(a4 + 3))];
+    return [(MFGraphicsDevice *)self->m_gdi intersectClipRect:*(record + 2), *(record + 3), (*(record + 4) - *(record + 2)), (*(record + 5) - *(record + 3))];
   }
 
   else
@@ -2861,18 +2861,18 @@ LABEL_26:
   }
 }
 
-+ (CGRect)boundsInLogicalUnits:(id)a3
++ (CGRect)boundsInLogicalUnits:(id)units
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  if ([v3 length] > 0x4F)
+  unitsCopy = units;
+  bytes = [unitsCopy bytes];
+  if ([unitsCopy length] > 0x4F)
   {
-    v9 = v4[18] / (v4[20] * 100.0);
-    v10 = v4[19] / (v4[21] * 100.0);
-    v5 = v9 * v4[6];
-    v6 = v10 * v4[7];
-    v7 = v9 * v4[8] - v5;
-    v8 = v10 * v4[9] - v6;
+    v9 = bytes[18] / (bytes[20] * 100.0);
+    v10 = bytes[19] / (bytes[21] * 100.0);
+    v5 = v9 * bytes[6];
+    v6 = v10 * bytes[7];
+    v7 = v9 * bytes[8] - v5;
+    v8 = v10 * bytes[9] - v6;
   }
 
   else
@@ -2894,16 +2894,16 @@ LABEL_26:
   return result;
 }
 
-+ (CGRect)boundsInPoints:(id)a3
++ (CGRect)boundsInPoints:(id)points
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  if ([v3 length] > 0x4F)
+  pointsCopy = points;
+  bytes = [pointsCopy bytes];
+  if ([pointsCopy length] > 0x4F)
   {
-    v5 = v4[6] * 0.0283464569;
-    v6 = v4[7] * 0.0283464569;
-    v7 = v4[8] * 0.0283464569 - v5;
-    v8 = v4[9] * 0.0283464569 - v6;
+    v5 = bytes[6] * 0.0283464569;
+    v6 = bytes[7] * 0.0283464569;
+    v7 = bytes[8] * 0.0283464569 - v5;
+    v8 = bytes[9] * 0.0283464569 - v6;
   }
 
   else

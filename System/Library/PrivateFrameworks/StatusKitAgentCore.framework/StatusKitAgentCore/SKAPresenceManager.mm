@@ -1,72 +1,72 @@
 @interface SKAPresenceManager
-+ (BOOL)isClientPayloadValid:(id)a3 withError:(id *)a4;
++ (BOOL)isClientPayloadValid:(id)valid withError:(id *)error;
 + (id)logger;
 + (id)oversizeLogger;
-+ (id)payloadFromActivityUpdate:(id)a3 forChannel:(id)a4;
++ (id)payloadFromActivityUpdate:(id)update forChannel:(id)channel;
 + (int64_t)_maxPayloadSizeBytes;
-+ (int64_t)decideUpdateActionForCurrentCheckpoint:(unint64_t)a3 payloadLastCheckpoint:(unint64_t)a4 payloadCurrentCheckpoint:(unint64_t)a5;
++ (int64_t)decideUpdateActionForCurrentCheckpoint:(unint64_t)checkpoint payloadLastCheckpoint:(unint64_t)lastCheckpoint payloadCurrentCheckpoint:(unint64_t)currentCheckpoint;
 - (BOOL)_activePersistentPresenceAssertionsExist;
 - (BOOL)_activeTransientPresenceAssertionsExist;
 - (BOOL)_shouldCryptoRoll;
-- (BOOL)addPersistentPresenceAssertionForPresenceIdentifier:(id)a3 presenceOptions:(id)a4 assertionOptions:(id)a5 payload:(id)a6;
-- (BOOL)addTransientPresenceAssertionForClient:(id)a3 presenceIdentifier:(id)a4 presenceOptions:(id)a5 assertionOptions:(id)a6 payload:(id)a7;
-- (BOOL)removeTransientPresenceAssertionForClient:(id)a3 presenceIdentifier:(id)a4;
-- (SKAPresenceManager)initWithDatabaseManager:(id)a3 channelManager:(id)a4 subscriptionManager:(id)a5 accountProvider:(id)a6 messagingProvider:(id)a7 delegate:(id)a8;
+- (BOOL)addPersistentPresenceAssertionForPresenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload;
+- (BOOL)addTransientPresenceAssertionForClient:(id)client presenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload;
+- (BOOL)removeTransientPresenceAssertionForClient:(id)client presenceIdentifier:(id)identifier;
+- (SKAPresenceManager)initWithDatabaseManager:(id)manager channelManager:(id)channelManager subscriptionManager:(id)subscriptionManager accountProvider:(id)provider messagingProvider:(id)messagingProvider delegate:(id)delegate;
 - (SKAPresenceManagingDelegate)delegate;
-- (id)_sortAndDedupePresenceIdentifiers:(id)a3;
+- (id)_sortAndDedupePresenceIdentifiers:(id)identifiers;
 - (int64_t)_cryptoRollResetTimeSeconds;
-- (unint64_t)_currentCheckpointForChannel:(id)a3;
-- (void)_createPresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6;
-- (void)_findOrCreatePresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6;
-- (void)_handleIncomingPayloadUpdate:(id)a3 onChannel:(id)a4 withIdentifier:(unint64_t)a5;
+- (unint64_t)_currentCheckpointForChannel:(id)channel;
+- (void)_createPresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion;
+- (void)_findOrCreatePresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion;
+- (void)_handleIncomingPayloadUpdate:(id)update onChannel:(id)channel withIdentifier:(unint64_t)identifier;
 - (void)_markCryptoRoll;
-- (void)_presencePayloadForChannel:(id)a3 clientPayload:(id)a4 options:(id)a5 timestamp:(id)a6 completion:(id)a7;
-- (void)_presentDevicesChanged:(id)a3 forChannel:(id)a4;
-- (void)_rollChannelForCryptoFailureIfAllowed:(id)a3;
-- (void)_sendPollingMessageForChannel:(id)a3 completion:(id)a4;
-- (void)_sendPresenceAssertionMessageForChannel:(id)a3 withPayload:(id)a4 withPriority:(int64_t)a5 options:(id)a6 isRefresh:(BOOL)a7 completion:(id)a8;
-- (void)_sendPresenceDeactivationMessageForChannel:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_setCheckpointForChannel:(id)a3 checkpoint:(unint64_t)a4;
-- (void)channelReceivedIncomingPayloadUpdate:(id)a3 channel:(id)a4 withIdentifier:(unint64_t)a5;
-- (void)createPresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6;
-- (void)didUpdatePresentDevices:(id)a3 forChannel:(id)a4;
-- (void)findOrCreatePresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6;
-- (void)findPresenceChannelForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5 completion:(id)a6;
-- (void)pollAndUpdatePresentDevicesForChannel:(id)a3 completion:(id)a4;
-- (void)presentDevicesForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 completion:(id)a5;
+- (void)_presencePayloadForChannel:(id)channel clientPayload:(id)payload options:(id)options timestamp:(id)timestamp completion:(id)completion;
+- (void)_presentDevicesChanged:(id)changed forChannel:(id)channel;
+- (void)_rollChannelForCryptoFailureIfAllowed:(id)allowed;
+- (void)_sendPollingMessageForChannel:(id)channel completion:(id)completion;
+- (void)_sendPresenceAssertionMessageForChannel:(id)channel withPayload:(id)payload withPriority:(int64_t)priority options:(id)options isRefresh:(BOOL)refresh completion:(id)completion;
+- (void)_sendPresenceDeactivationMessageForChannel:(id)channel options:(id)options completion:(id)completion;
+- (void)_setCheckpointForChannel:(id)channel checkpoint:(unint64_t)checkpoint;
+- (void)channelReceivedIncomingPayloadUpdate:(id)update channel:(id)channel withIdentifier:(unint64_t)identifier;
+- (void)createPresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion;
+- (void)didUpdatePresentDevices:(id)devices forChannel:(id)channel;
+- (void)findOrCreatePresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion;
+- (void)findPresenceChannelForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context completion:(id)completion;
+- (void)pollAndUpdatePresentDevicesForChannel:(id)channel completion:(id)completion;
+- (void)presentDevicesForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal completion:(id)completion;
 - (void)recalculateActivityTracking;
-- (void)releaseAllTransientPresenceAssertionsAssociatedWithClient:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)releasePersistentPresenceAssertionForPresenceIdentifier:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)releaseTransientPresenceAssertionForPresenceIdentifier:(id)a3 options:(id)a4 client:(id)a5 completion:(id)a6;
-- (void)retainPersistentPresenceAssertionForPresenceIdentifier:(id)a3 withPresencePayload:(id)a4 assertionOptions:(id)a5 presenceOptions:(id)a6 completion:(id)a7;
-- (void)retainTransientPresenceAssertionForPresenceIdentifier:(id)a3 withPresencePayload:(id)a4 assertionOptions:(id)a5 presenceOptions:(id)a6 client:(id)a7 completion:(id)a8;
+- (void)releaseAllTransientPresenceAssertionsAssociatedWithClient:(id)client options:(id)options completion:(id)completion;
+- (void)releasePersistentPresenceAssertionForPresenceIdentifier:(id)identifier options:(id)options completion:(id)completion;
+- (void)releaseTransientPresenceAssertionForPresenceIdentifier:(id)identifier options:(id)options client:(id)client completion:(id)completion;
+- (void)retainPersistentPresenceAssertionForPresenceIdentifier:(id)identifier withPresencePayload:(id)payload assertionOptions:(id)options presenceOptions:(id)presenceOptions completion:(id)completion;
+- (void)retainTransientPresenceAssertionForPresenceIdentifier:(id)identifier withPresencePayload:(id)payload assertionOptions:(id)options presenceOptions:(id)presenceOptions client:(id)client completion:(id)completion;
 @end
 
 @implementation SKAPresenceManager
 
-- (SKAPresenceManager)initWithDatabaseManager:(id)a3 channelManager:(id)a4 subscriptionManager:(id)a5 accountProvider:(id)a6 messagingProvider:(id)a7 delegate:(id)a8
+- (SKAPresenceManager)initWithDatabaseManager:(id)manager channelManager:(id)channelManager subscriptionManager:(id)subscriptionManager accountProvider:(id)provider messagingProvider:(id)messagingProvider delegate:(id)delegate
 {
-  v36 = a3;
-  v35 = a4;
-  v34 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  managerCopy = manager;
+  channelManagerCopy = channelManager;
+  subscriptionManagerCopy = subscriptionManager;
+  providerCopy = provider;
+  messagingProviderCopy = messagingProvider;
+  delegateCopy = delegate;
   v37.receiver = self;
   v37.super_class = SKAPresenceManager;
   v18 = [(SKAPresenceManager *)&v37 init];
   if (v18)
   {
-    v19 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     activeTransientPresenceAssertionsByClient = v18->_activeTransientPresenceAssertionsByClient;
-    v18->_activeTransientPresenceAssertionsByClient = v19;
+    v18->_activeTransientPresenceAssertionsByClient = weakToStrongObjectsMapTable;
 
-    objc_storeStrong(&v18->_databaseManager, a3);
-    objc_storeStrong(&v18->_channelManager, a4);
-    objc_storeStrong(&v18->_accountProvider, a6);
-    objc_storeStrong(&v18->_messagingProvider, a7);
-    objc_storeWeak(&v18->_delegate, v17);
-    objc_storeStrong(&v18->_subscriptionManager, a5);
+    objc_storeStrong(&v18->_databaseManager, manager);
+    objc_storeStrong(&v18->_channelManager, channelManager);
+    objc_storeStrong(&v18->_accountProvider, provider);
+    objc_storeStrong(&v18->_messagingProvider, messagingProvider);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_subscriptionManager, subscriptionManager);
     v21 = [[SKAPresentDevicesManager alloc] initWithChannelManager:v18->_channelManager databaseManager:v18->_databaseManager messagingProvider:v18->_messagingProvider delegate:v18];
     presentDevicesManager = v18->_presentDevicesManager;
     v18->_presentDevicesManager = v21;
@@ -96,14 +96,14 @@
   return v18;
 }
 
-- (void)retainTransientPresenceAssertionForPresenceIdentifier:(id)a3 withPresencePayload:(id)a4 assertionOptions:(id)a5 presenceOptions:(id)a6 client:(id)a7 completion:(id)a8
+- (void)retainTransientPresenceAssertionForPresenceIdentifier:(id)identifier withPresencePayload:(id)payload assertionOptions:(id)options presenceOptions:(id)presenceOptions client:(id)client completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  optionsCopy = options;
+  presenceOptionsCopy = presenceOptions;
+  clientCopy = client;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -111,19 +111,19 @@
   block[2] = __147__SKAPresenceManager_retainTransientPresenceAssertionForPresenceIdentifier_withPresencePayload_assertionOptions_presenceOptions_client_completion___block_invoke;
   block[3] = &unk_27843EA00;
   objc_copyWeak(&v35, &location);
-  v33 = v16;
-  v34 = v19;
-  v28 = v17;
-  v29 = v15;
-  v30 = self;
-  v31 = v14;
-  v32 = v18;
-  v21 = v16;
-  v22 = v18;
-  v23 = v14;
-  v24 = v15;
-  v25 = v17;
-  v26 = v19;
+  v33 = optionsCopy;
+  v34 = completionCopy;
+  v28 = presenceOptionsCopy;
+  v29 = payloadCopy;
+  selfCopy = self;
+  v31 = identifierCopy;
+  v32 = clientCopy;
+  v21 = optionsCopy;
+  v22 = clientCopy;
+  v23 = identifierCopy;
+  v24 = payloadCopy;
+  v25 = presenceOptionsCopy;
+  v26 = completionCopy;
   dispatch_async(internalWorkQueue, block);
 
   objc_destroyWeak(&v35);
@@ -286,13 +286,13 @@ void __147__SKAPresenceManager_retainTransientPresenceAssertionForPresenceIdenti
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retainPersistentPresenceAssertionForPresenceIdentifier:(id)a3 withPresencePayload:(id)a4 assertionOptions:(id)a5 presenceOptions:(id)a6 completion:(id)a7
+- (void)retainPersistentPresenceAssertionForPresenceIdentifier:(id)identifier withPresencePayload:(id)payload assertionOptions:(id)options presenceOptions:(id)presenceOptions completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  optionsCopy = options;
+  presenceOptionsCopy = presenceOptions;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   v23[0] = MEMORY[0x277D85DD0];
@@ -300,17 +300,17 @@ void __147__SKAPresenceManager_retainTransientPresenceAssertionForPresenceIdenti
   v23[2] = __141__SKAPresenceManager_retainPersistentPresenceAssertionForPresenceIdentifier_withPresencePayload_assertionOptions_presenceOptions_completion___block_invoke;
   v23[3] = &unk_27843EA50;
   objc_copyWeak(&v30, &location);
-  v24 = v15;
-  v25 = v13;
-  v26 = self;
-  v27 = v12;
-  v28 = v14;
-  v29 = v16;
-  v18 = v14;
-  v19 = v12;
-  v20 = v13;
-  v21 = v15;
-  v22 = v16;
+  v24 = presenceOptionsCopy;
+  v25 = payloadCopy;
+  selfCopy = self;
+  v27 = identifierCopy;
+  v28 = optionsCopy;
+  v29 = completionCopy;
+  v18 = optionsCopy;
+  v19 = identifierCopy;
+  v20 = payloadCopy;
+  v21 = presenceOptionsCopy;
+  v22 = completionCopy;
   dispatch_async(internalWorkQueue, v23);
 
   objc_destroyWeak(&v30);
@@ -472,10 +472,10 @@ void __141__SKAPresenceManager_retainPersistentPresenceAssertionForPresenceIdent
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isClientPayloadValid:(id)a3 withError:(id *)a4
++ (BOOL)isClientPayloadValid:(id)valid withError:(id *)error
 {
-  v5 = a3;
-  if (v5 && (v6 = +[SKAPresenceManager _maxPayloadSizeBytes](SKAPresenceManager, "_maxPayloadSizeBytes"), [v5 payloadData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8 > v6))
+  validCopy = valid;
+  if (validCopy && (v6 = +[SKAPresenceManager _maxPayloadSizeBytes](SKAPresenceManager, "_maxPayloadSizeBytes"), [validCopy payloadData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8 > v6))
   {
     v9 = +[SKAPresenceManager logger];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -483,10 +483,10 @@ void __141__SKAPresenceManager_retainPersistentPresenceAssertionForPresenceIdent
       +[SKAPresenceManager isClientPayloadValid:withError:];
     }
 
-    if (a4)
+    if (error)
     {
       [SKAError errorWithCode:902];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -503,64 +503,64 @@ void __141__SKAPresenceManager_retainPersistentPresenceAssertionForPresenceIdent
   return v10;
 }
 
-- (void)_sendPresenceAssertionMessageForChannel:(id)a3 withPayload:(id)a4 withPriority:(int64_t)a5 options:(id)a6 isRefresh:(BOOL)a7 completion:(id)a8
+- (void)_sendPresenceAssertionMessageForChannel:(id)channel withPayload:(id)payload withPriority:(int64_t)priority options:(id)options isRefresh:(BOOL)refresh completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v36 = a4;
-  v13 = a6;
-  v14 = a8;
-  v15 = [v12 identifier];
+  channelCopy = channel;
+  payloadCopy = payload;
+  optionsCopy = options;
+  completionCopy = completion;
+  identifier = [channelCopy identifier];
   v16 = [SKAPresenceMembershipKey alloc];
-  v17 = [v12 presenceMembershipKey];
-  v18 = [(SKAPresenceMembershipKey *)v16 initWithPrivateKeyMaterial:v17];
+  presenceMembershipKey = [channelCopy presenceMembershipKey];
+  v18 = [(SKAPresenceMembershipKey *)v16 initWithPrivateKeyMaterial:presenceMembershipKey];
 
   v19 = [SKAPresenceEncryptionKey alloc];
-  v20 = [v12 presenceServerKey];
-  v21 = [(SKAPresenceEncryptionKey *)v19 initWithKeyMaterial:v20];
+  presenceServerKey = [channelCopy presenceServerKey];
+  v21 = [(SKAPresenceEncryptionKey *)v19 initWithKeyMaterial:presenceServerKey];
 
   if (v18 && v21)
   {
     v22 = +[SKAPresenceManager oversizeLogger];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v12 identifier];
-      [v12 presenceIdentifier];
+      identifier2 = [channelCopy identifier];
+      [channelCopy presenceIdentifier];
       v25 = v24 = self;
       *buf = 138412802;
-      v49 = v23;
+      v49 = identifier2;
       v50 = 2112;
       v51 = v25;
       v52 = 2112;
-      v53 = v36;
+      v53 = payloadCopy;
       _os_log_impl(&dword_220099000, v22, OS_LOG_TYPE_DEFAULT, "Attempting to assert on channel %@ for presence identifier %@ with payload %@", buf, 0x20u);
 
       self = v24;
     }
 
-    v26 = [v12 channelToken];
-    v27 = [(SKAPresenceManager *)self channelManager];
-    [v27 serverTime];
+    channelToken = [channelCopy channelToken];
+    channelManager = [(SKAPresenceManager *)self channelManager];
+    [channelManager serverTime];
     v29 = v28 = self;
 
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __116__SKAPresenceManager__sendPresenceAssertionMessageForChannel_withPayload_withPriority_options_isRefresh_completion___block_invoke;
     v37[3] = &unk_27843EB40;
-    v45 = v14;
+    v45 = completionCopy;
     v37[4] = v28;
-    v38 = v12;
-    v39 = v15;
-    v46 = a5;
+    v38 = channelCopy;
+    v39 = identifier;
+    priorityCopy = priority;
     v40 = v18;
     v41 = v21;
     v42 = v29;
-    v43 = v26;
-    v44 = v13;
-    v47 = a7;
-    v35 = v26;
+    v43 = channelToken;
+    v44 = optionsCopy;
+    refreshCopy = refresh;
+    v35 = channelToken;
     v30 = v29;
-    [(SKAPresenceManager *)v28 _presencePayloadForChannel:v38 clientPayload:v36 options:v44 timestamp:v30 completion:v37];
+    [(SKAPresenceManager *)v28 _presencePayloadForChannel:v38 clientPayload:payloadCopy options:v44 timestamp:v30 completion:v37];
   }
 
   else
@@ -572,8 +572,8 @@ void __141__SKAPresenceManager_retainPersistentPresenceAssertionForPresenceIdent
     }
 
     v30 = [SKAError errorWithCode:402];
-    [(SKAPresenceManager *)self _rollChannelForCryptoFailureIfAllowed:v12];
-    (*(v14 + 2))(v14, v30, MEMORY[0x277CBEBF8], 1.79769313e308);
+    [(SKAPresenceManager *)self _rollChannelForCryptoFailureIfAllowed:channelCopy];
+    (*(completionCopy + 2))(completionCopy, v30, MEMORY[0x277CBEBF8], 1.79769313e308);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -934,16 +934,16 @@ void __116__SKAPresenceManager__sendPresenceAssertionMessageForChannel_withPaylo
   dispatch_resume(v9);
 }
 
-- (void)pollAndUpdatePresentDevicesForChannel:(id)a3 completion:(id)a4
+- (void)pollAndUpdatePresentDevicesForChannel:(id)channel completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  completionCopy = completion;
   v8 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = channelCopy;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Polling for channel: %@", buf, 0xCu);
   }
 
@@ -953,9 +953,9 @@ void __116__SKAPresenceManager__sendPresenceAssertionMessageForChannel_withPaylo
   v12[2] = __71__SKAPresenceManager_pollAndUpdatePresentDevicesForChannel_completion___block_invoke;
   v12[3] = &unk_27843EB68;
   objc_copyWeak(&v15, buf);
-  v9 = v6;
+  v9 = channelCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v14 = v10;
   [(SKAPresenceManager *)self _sendPollingMessageForChannel:v9 completion:v12];
 
@@ -1006,51 +1006,51 @@ void __71__SKAPresenceManager_pollAndUpdatePresentDevicesForChannel_completion__
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendPollingMessageForChannel:(id)a3 completion:(id)a4
+- (void)_sendPollingMessageForChannel:(id)channel completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  completionCopy = completion;
   v8 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v33 = v6;
+    v33 = channelCopy;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Sending polling request for channel: %@", buf, 0xCu);
   }
 
-  v9 = [v6 identifier];
+  identifier = [channelCopy identifier];
   v10 = [SKAPresenceMembershipKey alloc];
-  v11 = [v6 presenceMembershipKey];
-  v22 = [(SKAPresenceMembershipKey *)v10 initWithPrivateKeyMaterial:v11];
+  presenceMembershipKey = [channelCopy presenceMembershipKey];
+  v22 = [(SKAPresenceMembershipKey *)v10 initWithPrivateKeyMaterial:presenceMembershipKey];
 
   v12 = [SKAPresenceEncryptionKey alloc];
-  v13 = [v6 presenceServerKey];
-  v21 = [(SKAPresenceEncryptionKey *)v12 initWithKeyMaterial:v13];
+  presenceServerKey = [channelCopy presenceServerKey];
+  v21 = [(SKAPresenceEncryptionKey *)v12 initWithKeyMaterial:presenceServerKey];
 
   if (v22 && v21)
   {
-    v14 = [v6 channelToken];
+    channelToken = [channelCopy channelToken];
     v15 = +[SKAPowerLogger shared];
-    [v15 logEvent:3 ofType:0 onDatabaseChannel:v6];
+    [v15 logEvent:3 ofType:0 onDatabaseChannel:channelCopy];
 
     objc_initWeak(buf, self);
-    v16 = [(SKAPresenceManager *)self channelManager];
-    v17 = [v6 serviceIdentifier];
+    channelManager = [(SKAPresenceManager *)self channelManager];
+    serviceIdentifier = [channelCopy serviceIdentifier];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __63__SKAPresenceManager__sendPollingMessageForChannel_completion___block_invoke;
     v23[3] = &unk_27843EC30;
     objc_copyWeak(&v31, buf);
-    v24 = v6;
-    v30 = v7;
-    v25 = v9;
+    v24 = channelCopy;
+    v30 = completionCopy;
+    v25 = identifier;
     v26 = v22;
     v27 = v21;
-    v18 = v14;
+    v18 = channelToken;
     v28 = v18;
-    v29 = self;
-    [v16 pollActiveParticipantsForChannel:v25 membershipKey:v26 serverKey:v27 withChannelToken:v18 serviceIdentifier:v17 completion:v23];
+    selfCopy = self;
+    [channelManager pollActiveParticipantsForChannel:v25 membershipKey:v26 serverKey:v27 withChannelToken:v18 serviceIdentifier:serviceIdentifier completion:v23];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
@@ -1065,8 +1065,8 @@ void __71__SKAPresenceManager_pollAndUpdatePresentDevicesForChannel_completion__
     }
 
     v18 = [SKAError errorWithCode:402];
-    [(SKAPresenceManager *)self _rollChannelForCryptoFailureIfAllowed:v6];
-    (*(v7 + 2))(v7, v18, MEMORY[0x277CBEBF8]);
+    [(SKAPresenceManager *)self _rollChannelForCryptoFailureIfAllowed:channelCopy];
+    (*(completionCopy + 2))(completionCopy, v18, MEMORY[0x277CBEBF8]);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1267,12 +1267,12 @@ uint64_t __63__SKAPresenceManager__sendPollingMessageForChannel_completion___blo
   return v8();
 }
 
-- (void)releaseTransientPresenceAssertionForPresenceIdentifier:(id)a3 options:(id)a4 client:(id)a5 completion:(id)a6
+- (void)releaseTransientPresenceAssertionForPresenceIdentifier:(id)identifier options:(id)options client:(id)client completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  clientCopy = client;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1280,15 +1280,15 @@ uint64_t __63__SKAPresenceManager__sendPollingMessageForChannel_completion___blo
   block[2] = __103__SKAPresenceManager_releaseTransientPresenceAssertionForPresenceIdentifier_options_client_completion___block_invoke;
   block[3] = &unk_27843ECA8;
   objc_copyWeak(&v25, &location);
-  v23 = self;
-  v24 = v13;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  selfCopy = self;
+  v24 = completionCopy;
+  v20 = identifierCopy;
+  v21 = optionsCopy;
+  v22 = clientCopy;
+  v15 = clientCopy;
+  v16 = optionsCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
   dispatch_async(internalWorkQueue, block);
 
   objc_destroyWeak(&v25);
@@ -1458,11 +1458,11 @@ void __103__SKAPresenceManager_releaseTransientPresenceAssertionForPresenceIdent
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)releasePersistentPresenceAssertionForPresenceIdentifier:(id)a3 options:(id)a4 completion:(id)a5
+- (void)releasePersistentPresenceAssertionForPresenceIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   v15[0] = MEMORY[0x277D85DD0];
@@ -1470,13 +1470,13 @@ void __103__SKAPresenceManager_releaseTransientPresenceAssertionForPresenceIdent
   v15[2] = __97__SKAPresenceManager_releasePersistentPresenceAssertionForPresenceIdentifier_options_completion___block_invoke;
   v15[3] = &unk_27843ECF8;
   objc_copyWeak(&v20, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = identifierCopy;
+  v17 = optionsCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = optionsCopy;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   dispatch_async(internalWorkQueue, v15);
 
   objc_destroyWeak(&v20);
@@ -1645,48 +1645,48 @@ void __97__SKAPresenceManager_releasePersistentPresenceAssertionForPresenceIdent
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendPresenceDeactivationMessageForChannel:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_sendPresenceDeactivationMessageForChannel:(id)channel options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identifier];
+  channelCopy = channel;
+  optionsCopy = options;
+  completionCopy = completion;
+  identifier = [channelCopy identifier];
   v12 = [SKAPresenceMembershipKey alloc];
-  v13 = [v8 presenceMembershipKey];
-  v14 = [(SKAPresenceMembershipKey *)v12 initWithPrivateKeyMaterial:v13];
+  presenceMembershipKey = [channelCopy presenceMembershipKey];
+  v14 = [(SKAPresenceMembershipKey *)v12 initWithPrivateKeyMaterial:presenceMembershipKey];
 
   v15 = [SKAPresenceEncryptionKey alloc];
-  v16 = [v8 presenceServerKey];
-  v17 = [(SKAPresenceEncryptionKey *)v15 initWithKeyMaterial:v16];
+  presenceServerKey = [channelCopy presenceServerKey];
+  v17 = [(SKAPresenceEncryptionKey *)v15 initWithKeyMaterial:presenceServerKey];
 
   if (v14 && v17)
   {
-    v18 = [v8 channelToken];
-    v19 = [(SKAPresenceManager *)self channelManager];
-    v20 = [v19 serverTime];
+    channelToken = [channelCopy channelToken];
+    channelManager = [(SKAPresenceManager *)self channelManager];
+    serverTime = [channelManager serverTime];
 
     v21 = +[SKAPowerLogger shared];
-    [v21 logEvent:8 ofType:0 onDatabaseChannel:v8];
+    [v21 logEvent:8 ofType:0 onDatabaseChannel:channelCopy];
 
     objc_initWeak(location, self);
-    v22 = [(SKAPresenceManager *)self channelManager];
-    v23 = [v9 serviceIdentifier];
+    channelManager2 = [(SKAPresenceManager *)self channelManager];
+    serviceIdentifier = [optionsCopy serviceIdentifier];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __84__SKAPresenceManager__sendPresenceDeactivationMessageForChannel_options_completion___block_invoke;
     v27[3] = &unk_27843ED98;
     objc_copyWeak(&v36, location);
-    v28 = v8;
-    v35 = v10;
-    v29 = v11;
+    v28 = channelCopy;
+    v35 = completionCopy;
+    v29 = identifier;
     v30 = v14;
     v31 = v17;
-    v24 = v20;
+    v24 = serverTime;
     v32 = v24;
-    v25 = v18;
+    v25 = channelToken;
     v33 = v25;
-    v34 = v9;
-    [v22 releasePresenceOnChannel:v29 membershipKey:v30 serverKey:v31 timestamp:v24 withChannelToken:v25 serviceIdentifier:v23 completion:v27];
+    v34 = optionsCopy;
+    [channelManager2 releasePresenceOnChannel:v29 membershipKey:v30 serverKey:v31 timestamp:v24 withChannelToken:v25 serviceIdentifier:serviceIdentifier completion:v27];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(location);
@@ -1701,8 +1701,8 @@ void __97__SKAPresenceManager_releasePersistentPresenceAssertionForPresenceIdent
     }
 
     v25 = [SKAError errorWithCode:402];
-    [(SKAPresenceManager *)self _rollChannelForCryptoFailureIfAllowed:v8];
-    (*(v10 + 2))(v10, v25);
+    [(SKAPresenceManager *)self _rollChannelForCryptoFailureIfAllowed:channelCopy];
+    (*(completionCopy + 2))(completionCopy, v25);
   }
 }
 
@@ -1873,11 +1873,11 @@ uint64_t __84__SKAPresenceManager__sendPresenceDeactivationMessageForChannel_opt
   return (*(a1[6] + 16))();
 }
 
-- (void)releaseAllTransientPresenceAssertionsAssociatedWithClient:(id)a3 options:(id)a4 completion:(id)a5
+- (void)releaseAllTransientPresenceAssertionsAssociatedWithClient:(id)client options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   v15[0] = MEMORY[0x277D85DD0];
@@ -1885,13 +1885,13 @@ uint64_t __84__SKAPresenceManager__sendPresenceDeactivationMessageForChannel_opt
   v15[2] = __99__SKAPresenceManager_releaseAllTransientPresenceAssertionsAssociatedWithClient_options_completion___block_invoke;
   v15[3] = &unk_27843ECF8;
   objc_copyWeak(&v20, &location);
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = optionsCopy;
+  v17 = clientCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = clientCopy;
+  v13 = optionsCopy;
+  v14 = completionCopy;
   dispatch_async(internalWorkQueue, v15);
 
   objc_destroyWeak(&v20);
@@ -2111,10 +2111,10 @@ void __99__SKAPresenceManager_releaseAllTransientPresenceAssertionsAssociatedWit
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentDevicesForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 completion:(id)a5
+- (void)presentDevicesForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -2122,12 +2122,12 @@ void __99__SKAPresenceManager_releaseAllTransientPresenceAssertionsAssociatedWit
   v13[2] = __80__SKAPresenceManager_presentDevicesForPresenceIdentifier_isPersonal_completion___block_invoke;
   v13[3] = &unk_27843EE60;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v17 = a4;
-  v11 = v8;
-  v12 = v9;
+  personalCopy = personal;
+  v11 = identifierCopy;
+  v12 = completionCopy;
   dispatch_async(internalWorkQueue, v13);
 
   objc_destroyWeak(&v16);
@@ -2262,27 +2262,27 @@ void __80__SKAPresenceManager_presentDevicesForPresenceIdentifier_isPersonal_com
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)channelReceivedIncomingPayloadUpdate:(id)a3 channel:(id)a4 withIdentifier:(unint64_t)a5
+- (void)channelReceivedIncomingPayloadUpdate:(id)update channel:(id)channel withIdentifier:(unint64_t)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SKAPresenceManager *)self presenceEnabledByServer];
+  updateCopy = update;
+  channelCopy = channel;
+  presenceEnabledByServer = [(SKAPresenceManager *)self presenceEnabledByServer];
   v11 = +[SKAPresenceManager logger];
   v12 = v11;
-  if (v10)
+  if (presenceEnabledByServer)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v9;
+      v21 = channelCopy;
       _os_log_impl(&dword_220099000, &v12->super.super, OS_LOG_TYPE_DEFAULT, "Received incoming payload on channel %@", buf, 0xCu);
     }
 
-    v12 = [[ChannelActivityUpdate alloc] initWithData:v8];
+    v12 = [[ChannelActivityUpdate alloc] initWithData:updateCopy];
     if (v12)
     {
-      v13 = [(SKAPresenceManager *)self payloadUpdateProcessingQueue];
+      payloadUpdateProcessingQueue = [(SKAPresenceManager *)self payloadUpdateProcessingQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __82__SKAPresenceManager_channelReceivedIncomingPayloadUpdate_channel_withIdentifier___block_invoke;
@@ -2290,9 +2290,9 @@ void __80__SKAPresenceManager_presentDevicesForPresenceIdentifier_isPersonal_com
       v16[4] = self;
       v12 = v12;
       v17 = v12;
-      v18 = v9;
-      v19 = a5;
-      dispatch_async(v13, v16);
+      v18 = channelCopy;
+      identifierCopy = identifier;
+      dispatch_async(payloadUpdateProcessingQueue, v16);
     }
 
     else
@@ -2330,27 +2330,27 @@ void __82__SKAPresenceManager_channelReceivedIncomingPayloadUpdate_channel_withI
   dispatch_async(v2, v6);
 }
 
-+ (int64_t)decideUpdateActionForCurrentCheckpoint:(unint64_t)a3 payloadLastCheckpoint:(unint64_t)a4 payloadCurrentCheckpoint:(unint64_t)a5
++ (int64_t)decideUpdateActionForCurrentCheckpoint:(unint64_t)checkpoint payloadLastCheckpoint:(unint64_t)lastCheckpoint payloadCurrentCheckpoint:(unint64_t)currentCheckpoint
 {
   v5 = 1;
   v6 = 3;
   v7 = 1;
-  if (a5 > a3)
+  if (currentCheckpoint > checkpoint)
   {
     v7 = 2;
   }
 
-  if (!a4)
+  if (!lastCheckpoint)
   {
     v6 = v7;
   }
 
-  if (a3 != a5)
+  if (checkpoint != currentCheckpoint)
   {
     v5 = v6;
   }
 
-  if (a3 == a4)
+  if (checkpoint == lastCheckpoint)
   {
     return 0;
   }
@@ -2361,15 +2361,15 @@ void __82__SKAPresenceManager_channelReceivedIncomingPayloadUpdate_channel_withI
   }
 }
 
-+ (id)payloadFromActivityUpdate:(id)a3 forChannel:(id)a4
++ (id)payloadFromActivityUpdate:(id)update forChannel:(id)channel
 {
-  v5 = a4;
-  v6 = [a3 encryptedUpdatePayload];
-  if (v6)
+  channelCopy = channel;
+  encryptedUpdatePayload = [update encryptedUpdatePayload];
+  if (encryptedUpdatePayload)
   {
     v7 = [SKAPresenceEncryptionKey alloc];
-    v8 = [v5 presenceServerKey];
-    v9 = [(SKAPresenceEncryptionKey *)v7 initWithKeyMaterial:v8];
+    presenceServerKey = [channelCopy presenceServerKey];
+    v9 = [(SKAPresenceEncryptionKey *)v7 initWithKeyMaterial:presenceServerKey];
 
     if (!v9)
     {
@@ -2383,7 +2383,7 @@ void __82__SKAPresenceManager_channelReceivedIncomingPayloadUpdate_channel_withI
       goto LABEL_17;
     }
 
-    v10 = [v9 decryptPayload:v6];
+    v10 = [v9 decryptPayload:encryptedUpdatePayload];
     if (v10)
     {
       v11 = [[ChannelActivityUpdatePayload alloc] initWithData:v10];
@@ -2427,27 +2427,27 @@ LABEL_18:
   return v11;
 }
 
-- (void)_handleIncomingPayloadUpdate:(id)a3 onChannel:(id)a4 withIdentifier:(unint64_t)a5
+- (void)_handleIncomingPayloadUpdate:(id)update onChannel:(id)channel withIdentifier:(unint64_t)identifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SKAPresenceManager *)self _currentCheckpointForChannel:v9];
-  v11 = [v8 prevVersion];
-  v12 = [v8 currentVersion];
+  updateCopy = update;
+  channelCopy = channel;
+  v10 = [(SKAPresenceManager *)self _currentCheckpointForChannel:channelCopy];
+  prevVersion = [updateCopy prevVersion];
+  currentVersion = [updateCopy currentVersion];
   v13 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v37 = a5;
+    identifierCopy = identifier;
     v38 = 2048;
-    v39 = v11;
+    v39 = prevVersion;
     v40 = 2048;
-    v41 = v12;
+    v41 = currentVersion;
     _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Handling payload update %lu with lastCheckpoint %llu and previous checkpoint %llu", buf, 0x20u);
   }
 
-  v14 = [SKAPresenceManager decideUpdateActionForCurrentCheckpoint:v10 payloadLastCheckpoint:v11 payloadCurrentCheckpoint:v12];
+  v14 = [SKAPresenceManager decideUpdateActionForCurrentCheckpoint:v10 payloadLastCheckpoint:prevVersion payloadCurrentCheckpoint:currentVersion];
   if (v14 <= 1)
   {
     if (v14)
@@ -2456,7 +2456,7 @@ LABEL_18:
       {
         v15 = +[SKAPresenceManager logger];
         v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-        if (v10 == v12)
+        if (v10 == currentVersion)
         {
           if (v16)
           {
@@ -2490,14 +2490,14 @@ LABEL_37:
     v24 = 0;
 LABEL_26:
 
-    [(SKAPresenceManager *)self _setCheckpointForChannel:v9 checkpoint:v12];
-    v25 = [SKAPresenceManager payloadFromActivityUpdate:v8 forChannel:v9];
+    [(SKAPresenceManager *)self _setCheckpointForChannel:channelCopy checkpoint:currentVersion];
+    v25 = [SKAPresenceManager payloadFromActivityUpdate:updateCopy forChannel:channelCopy];
     v26 = v25;
     if (v25)
     {
-      v27 = [v25 participantPayloads];
+      participantPayloads = [v25 participantPayloads];
 
-      if (v27)
+      if (participantPayloads)
       {
         if (v24)
         {
@@ -2510,8 +2510,8 @@ LABEL_26:
         }
 
         presentDevicesManager = self->_presentDevicesManager;
-        v30 = [v26 participantPayloads];
-        -[SKAPresentDevicesManaging handleParticipantPayloads:forChannel:withUpdateType:resetState:](presentDevicesManager, "handleParticipantPayloads:forChannel:withUpdateType:resetState:", v30, v9, [v26 updateType], v24);
+        participantPayloads2 = [v26 participantPayloads];
+        -[SKAPresentDevicesManaging handleParticipantPayloads:forChannel:withUpdateType:resetState:](presentDevicesManager, "handleParticipantPayloads:forChannel:withUpdateType:resetState:", participantPayloads2, channelCopy, [v26 updateType], v24);
 
         goto LABEL_42;
       }
@@ -2555,7 +2555,7 @@ LABEL_42:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v37 = v11;
+      identifierCopy = prevVersion;
       v38 = 2048;
       v39 = v10;
       _os_log_impl(&dword_220099000, v18, OS_LOG_TYPE_DEFAULT, "Last checkpoint does not match current checkpoint -- polling because we missed something. Payload last checkpoint:%llu ; Current saved checkpoint: %llu", buf, 0x16u);
@@ -2573,19 +2573,19 @@ LABEL_13:
 
 LABEL_15:
 
-  v19 = [(SKAPresenceManager *)self subscriptionManager];
-  v20 = [v9 identifier];
-  v21 = [v19 activePresenceSubscriptionAssertionsExistForChannelIdentifier:v20];
+  subscriptionManager = [(SKAPresenceManager *)self subscriptionManager];
+  identifier = [channelCopy identifier];
+  v21 = [subscriptionManager activePresenceSubscriptionAssertionsExistForChannelIdentifier:identifier];
 
   if (v21)
   {
-    [(SKAPresenceManager *)self _setCheckpointForChannel:v9 checkpoint:v12];
+    [(SKAPresenceManager *)self _setCheckpointForChannel:channelCopy checkpoint:currentVersion];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __76__SKAPresenceManager__handleIncomingPayloadUpdate_onChannel_withIdentifier___block_invoke;
     v33[3] = &unk_27843EEB0;
-    v34 = v9;
-    v35 = self;
+    v34 = channelCopy;
+    selfCopy = self;
     [(SKAPresenceManager *)self _sendPollingMessageForChannel:v34 completion:v33];
   }
 
@@ -2598,7 +2598,7 @@ LABEL_15:
       _os_log_impl(&dword_220099000, v22, OS_LOG_TYPE_DEFAULT, "We want to poll but we currently have no connected clients with an active subscription.  Resetting state and dropping payload", buf, 2u);
     }
 
-    [(SKAPresentDevicesManaging *)self->_presentDevicesManager clearPresentDevicesForChannel:v9];
+    [(SKAPresentDevicesManaging *)self->_presentDevicesManager clearPresentDevicesForChannel:channelCopy];
   }
 
 LABEL_43:
@@ -2637,12 +2637,12 @@ void __76__SKAPresenceManager__handleIncomingPayloadUpdate_onChannel_withIdentif
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findOrCreatePresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6
+- (void)findOrCreatePresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   v19[0] = MEMORY[0x277D85DD0];
@@ -2650,14 +2650,14 @@ void __76__SKAPresenceManager__handleIncomingPayloadUpdate_onChannel_withIdentif
   v19[2] = __106__SKAPresenceManager_findOrCreatePresenceChannelForPresenceIdentifier_options_databaseContext_completion___block_invoke;
   v19[3] = &unk_27843ECF8;
   objc_copyWeak(&v24, &location);
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  v23 = v13;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
-  v18 = v13;
+  v20 = optionsCopy;
+  v21 = identifierCopy;
+  v22 = contextCopy;
+  v23 = completionCopy;
+  v15 = contextCopy;
+  v16 = identifierCopy;
+  v17 = optionsCopy;
+  v18 = completionCopy;
   dispatch_async(internalWorkQueue, v19);
 
   objc_destroyWeak(&v24);
@@ -2726,11 +2726,11 @@ LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findPresenceChannelForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5 completion:(id)a6
+- (void)findPresenceChannelForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   v17[0] = MEMORY[0x277D85DD0];
@@ -2738,13 +2738,13 @@ LABEL_14:
   v17[2] = __101__SKAPresenceManager_findPresenceChannelForPresenceIdentifier_isPersonal_databaseContext_completion___block_invoke;
   v17[3] = &unk_27843EE60;
   objc_copyWeak(&v21, &location);
-  v19 = v11;
-  v20 = v12;
-  v22 = a4;
-  v18 = v10;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v19 = contextCopy;
+  v20 = completionCopy;
+  personalCopy = personal;
+  v18 = identifierCopy;
+  v14 = contextCopy;
+  v15 = identifierCopy;
+  v16 = completionCopy;
   dispatch_async(internalWorkQueue, v17);
 
   objc_destroyWeak(&v21);
@@ -2816,12 +2816,12 @@ void __101__SKAPresenceManager_findPresenceChannelForPresenceIdentifier_isPerson
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createPresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6
+- (void)createPresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   v19[0] = MEMORY[0x277D85DD0];
@@ -2829,14 +2829,14 @@ void __101__SKAPresenceManager_findPresenceChannelForPresenceIdentifier_isPerson
   v19[2] = __100__SKAPresenceManager_createPresenceChannelForPresenceIdentifier_options_databaseContext_completion___block_invoke;
   v19[3] = &unk_27843ECF8;
   objc_copyWeak(&v24, &location);
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  v23 = v13;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
-  v18 = v13;
+  v20 = optionsCopy;
+  v21 = identifierCopy;
+  v22 = contextCopy;
+  v23 = completionCopy;
+  v15 = contextCopy;
+  v16 = identifierCopy;
+  v17 = optionsCopy;
+  v18 = completionCopy;
   dispatch_async(internalWorkQueue, v19);
 
   objc_destroyWeak(&v24);
@@ -2934,22 +2934,22 @@ void __100__SKAPresenceManager_createPresenceChannelForPresenceIdentifier_option
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addTransientPresenceAssertionForClient:(id)a3 presenceIdentifier:(id)a4 presenceOptions:(id)a5 assertionOptions:(id)a6 payload:(id)a7
+- (BOOL)addTransientPresenceAssertionForClient:(id)client presenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v34 = a5;
-  v31 = a6;
-  v33 = a7;
+  clientCopy = client;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  assertionOptionsCopy = assertionOptions;
+  payloadCopy = payload;
   os_unfair_lock_lock(&self->_transientAssertionsLock);
-  v30 = self;
-  v32 = v12;
-  v14 = [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient objectForKey:v12];
+  selfCopy = self;
+  v32 = clientCopy;
+  v14 = [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient objectForKey:clientCopy];
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB40]);
-    [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient setObject:v14 forKey:v12];
+    [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient setObject:v14 forKey:clientCopy];
   }
 
   v37 = 0u;
@@ -2972,11 +2972,11 @@ void __100__SKAPresenceManager_createPresenceChannelForPresenceIdentifier_option
         }
 
         v20 = *(*(&v35 + 1) + 8 * i);
-        v21 = [v20 presenceIdentifier];
-        if ([v21 isEqualToString:v13])
+        presenceIdentifier = [v20 presenceIdentifier];
+        if ([presenceIdentifier isEqualToString:identifierCopy])
         {
-          v22 = [v20 presenceOptions];
-          v23 = [v22 isEqual:v34];
+          presenceOptions = [v20 presenceOptions];
+          v23 = [presenceOptions isEqual:optionsCopy];
 
           if (v23)
           {
@@ -2984,7 +2984,7 @@ void __100__SKAPresenceManager_createPresenceChannelForPresenceIdentifier_option
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
-              v40 = v13;
+              v40 = identifierCopy;
               v41 = 2112;
               v42 = v32;
               v43 = 2112;
@@ -2992,7 +2992,7 @@ void __100__SKAPresenceManager_createPresenceChannelForPresenceIdentifier_option
               _os_log_impl(&dword_220099000, v24, OS_LOG_TYPE_DEFAULT, "Found an existing transient presence assertion for %@ and client: %@. ExistingAssertion: %@", buf, 0x20u);
             }
 
-            [v20 setPayload:v33];
+            [v20 setPayload:payloadCopy];
             v17 = 1;
           }
         }
@@ -3025,37 +3025,37 @@ void __100__SKAPresenceManager_createPresenceChannelForPresenceIdentifier_option
   {
   }
 
-  v25 = [[SKAPresenceAssertion alloc] initWithPresenceIdentifier:v13 presenceOptions:v34 assertionOptions:v31 payload:v33];
+  v25 = [[SKAPresenceAssertion alloc] initWithPresenceIdentifier:identifierCopy presenceOptions:optionsCopy assertionOptions:assertionOptionsCopy payload:payloadCopy];
   [v15 addObject:v25];
   v27 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v40 = v13;
+    v40 = identifierCopy;
     v41 = 2112;
-    v42 = v34;
+    v42 = optionsCopy;
     _os_log_impl(&dword_220099000, v27, OS_LOG_TYPE_DEFAULT, "Successfully added transient presence assertion to in memory model for presence identifier: %@ options: %@", buf, 0x16u);
   }
 
   v26 = 1;
 LABEL_24:
 
-  os_unfair_lock_unlock(&v30->_transientAssertionsLock);
+  os_unfair_lock_unlock(&selfCopy->_transientAssertionsLock);
   v28 = *MEMORY[0x277D85DE8];
   return v26;
 }
 
-- (BOOL)removeTransientPresenceAssertionForClient:(id)a3 presenceIdentifier:(id)a4
+- (BOOL)removeTransientPresenceAssertionForClient:(id)client presenceIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_transientAssertionsLock);
-  v8 = [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient objectForKey:v6];
+  v8 = [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient objectForKey:clientCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB40]);
-    [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient setObject:v8 forKey:v6];
+    [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient setObject:v8 forKey:clientCopy];
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -3063,7 +3063,7 @@ LABEL_24:
   v19 = 3221225472;
   v20 = __83__SKAPresenceManager_removeTransientPresenceAssertionForClient_presenceIdentifier___block_invoke;
   v21 = &unk_27843EED8;
-  v10 = v7;
+  v10 = identifierCopy;
   v22 = v10;
   v11 = v9;
   v23 = v11;
@@ -3084,7 +3084,7 @@ LABEL_24:
       v28 = 2048;
       v29 = v14;
       v30 = 2112;
-      v31 = v6;
+      v31 = clientCopy;
       _os_log_impl(&dword_220099000, v15, OS_LOG_TYPE_DEFAULT, "Successfully removed transient presence assertion for identifier: %@. Client had %ld presence assertions, now has %ld. Client: %@", buf, 0x2Au);
     }
   }
@@ -3099,7 +3099,7 @@ LABEL_24:
       v26 = 2112;
       v27 = v8;
       v28 = 2112;
-      v29 = v6;
+      v29 = clientCopy;
       _os_log_error_impl(&dword_220099000, v15, OS_LOG_TYPE_ERROR, "Could not find transient presence assertion for subscription identifier: %@. Active presence assertions: %@ for client: %@", buf, 0x20u);
     }
   }
@@ -3131,8 +3131,8 @@ void __83__SKAPresenceManager_removeTransientPresenceAssertionForClient_presence
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMapTable *)self->_activeTransientPresenceAssertionsByClient objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3143,7 +3143,7 @@ void __83__SKAPresenceManager_removeTransientPresenceAssertionForClient_presence
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) count])
@@ -3161,7 +3161,7 @@ void __83__SKAPresenceManager_removeTransientPresenceAssertionForClient_presence
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -3172,11 +3172,11 @@ void __83__SKAPresenceManager_removeTransientPresenceAssertionForClient_presence
   }
 
   os_unfair_lock_unlock(&self->_transientAssertionsLock);
-  v3 = +[SKAPresenceManager logger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  objectEnumerator = +[SKAPresenceManager logger];
+  if (os_log_type_enabled(objectEnumerator, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 0;
-    _os_log_impl(&dword_220099000, v3, OS_LOG_TYPE_DEFAULT, "Active transient presence assertions exist?: NO", v12, 2u);
+    _os_log_impl(&dword_220099000, objectEnumerator, OS_LOG_TYPE_DEFAULT, "Active transient presence assertions exist?: NO", v12, 2u);
   }
 
   v8 = 0;
@@ -3186,17 +3186,17 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)addPersistentPresenceAssertionForPresenceIdentifier:(id)a3 presenceOptions:(id)a4 assertionOptions:(id)a5 payload:(id)a6
+- (BOOL)addPersistentPresenceAssertionForPresenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
-  v15 = -[SKAPresenceManager _activePersistentPresenceAssertionForPresenceIdentifier:isPersonal:](self, "_activePersistentPresenceAssertionForPresenceIdentifier:isPersonal:", v10, [v11 isPersonal]);
+  identifierCopy = identifier;
+  optionsCopy = options;
+  assertionOptionsCopy = assertionOptions;
+  payloadCopy = payload;
+  newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+  v15 = -[SKAPresenceManager _activePersistentPresenceAssertionForPresenceIdentifier:isPersonal:](self, "_activePersistentPresenceAssertionForPresenceIdentifier:isPersonal:", identifierCopy, [optionsCopy isPersonal]);
 
-  v16 = [(SKADatabaseManaging *)self->_databaseManager createOrUpdatePresenceAssertionForPresenceIdentifier:v10 presenceOptions:v11 assertionOptions:v12 payload:v13 databaseContext:v14];
+  v16 = [(SKADatabaseManaging *)self->_databaseManager createOrUpdatePresenceAssertionForPresenceIdentifier:identifierCopy presenceOptions:optionsCopy assertionOptions:assertionOptionsCopy payload:payloadCopy databaseContext:newBackgroundContext];
   v17 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -3209,9 +3209,9 @@ LABEL_15:
 
     v22 = v18;
     v23 = 2112;
-    v24 = v10;
+    v24 = identifierCopy;
     v25 = 2112;
-    v26 = v11;
+    v26 = optionsCopy;
     _os_log_impl(&dword_220099000, v17, OS_LOG_TYPE_DEFAULT, "Successfully %@ persistent presence assertion in database for presence identifier: %@ options: %@", &v21, 0x20u);
   }
 
@@ -3222,8 +3222,8 @@ LABEL_15:
 - (BOOL)_activePersistentPresenceAssertionsExist
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
-  v4 = [(SKADatabaseManaging *)self->_databaseManager activePresenceAssertionsExistWithDatabaseContext:v3];
+  newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+  v4 = [(SKADatabaseManaging *)self->_databaseManager activePresenceAssertionsExistWithDatabaseContext:newBackgroundContext];
   v5 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3242,13 +3242,13 @@ LABEL_15:
   return v4;
 }
 
-- (void)_presentDevicesChanged:(id)a3 forChannel:(id)a4
+- (void)_presentDevicesChanged:(id)changed forChannel:(id)channel
 {
   v38 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v27 = a4;
-  v5 = [v27 presenceIdentifier];
-  v25 = -[SKAPresenceManager activePresenceAssertionForPresenceIdentifier:isPersonal:](self, "activePresenceAssertionForPresenceIdentifier:isPersonal:", v5, [v27 isPersonal]);
+  changedCopy = changed;
+  channelCopy = channel;
+  presenceIdentifier = [channelCopy presenceIdentifier];
+  v25 = -[SKAPresenceManager activePresenceAssertionForPresenceIdentifier:isPersonal:](self, "activePresenceAssertionForPresenceIdentifier:isPersonal:", presenceIdentifier, [channelCopy isPersonal]);
 
   if (v25)
   {
@@ -3256,7 +3256,7 @@ LABEL_15:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v37 = v27;
+      v37 = channelCopy;
       _os_log_impl(&dword_220099000, v6, OS_LOG_TYPE_DEFAULT, "Looking for self device in channel: %@", buf, 0xCu);
     }
 
@@ -3264,8 +3264,8 @@ LABEL_15:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v7 = v24;
-    v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    payload = changedCopy;
+    v8 = [payload countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v8)
     {
       v9 = *v32;
@@ -3275,7 +3275,7 @@ LABEL_6:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(payload);
         }
 
         v11 = *(*(&v31 + 1) + 8 * v10);
@@ -3294,7 +3294,7 @@ LABEL_6:
 
         if (v8 == ++v10)
         {
-          v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          v8 = [payload countByEnumeratingWithState:&v31 objects:v35 count:16];
           if (v8)
           {
             goto LABEL_6;
@@ -3315,10 +3315,10 @@ LABEL_14:
         [SKAPresenceManager _presentDevicesChanged:forChannel:];
       }
 
-      v14 = [(SKARateLimiter *)self->_rateLimiter isUnderRequestLimit];
-      v7 = +[SKAPresenceManager logger];
-      v15 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
-      if (v14)
+      isUnderRequestLimit = [(SKARateLimiter *)self->_rateLimiter isUnderRequestLimit];
+      payload = +[SKAPresenceManager logger];
+      v15 = os_log_type_enabled(payload, OS_LOG_TYPE_ERROR);
+      if (isUnderRequestLimit)
       {
         if (v15)
         {
@@ -3326,18 +3326,18 @@ LABEL_14:
         }
 
         [(SKARateLimiter *)self->_rateLimiter recordRequest];
-        v7 = [v25 payload];
+        payload = [v25 payload];
         objc_initWeak(buf, self);
-        v16 = [v25 assertionOptions];
-        v17 = [v16 priority];
-        v18 = [v25 presenceOptions];
+        assertionOptions = [v25 assertionOptions];
+        priority = [assertionOptions priority];
+        presenceOptions = [v25 presenceOptions];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __56__SKAPresenceManager__presentDevicesChanged_forChannel___block_invoke;
         v28[3] = &unk_27843EF00;
         objc_copyWeak(&v30, buf);
-        v29 = v27;
-        [(SKAPresenceManager *)self _sendPresenceAssertionMessageForChannel:v29 withPayload:v7 withPriority:v17 options:v18 isRefresh:1 completion:v28];
+        v29 = channelCopy;
+        [(SKAPresenceManager *)self _sendPresenceAssertionMessageForChannel:v29 withPayload:payload withPriority:priority options:presenceOptions isRefresh:1 completion:v28];
 
         objc_destroyWeak(&v30);
         objc_destroyWeak(buf);
@@ -3351,14 +3351,14 @@ LABEL_14:
   }
 
   subscriptionManager = self->_subscriptionManager;
-  v20 = [v27 identifier];
-  LOBYTE(subscriptionManager) = [(SKAStatusSubscriptionManaging *)subscriptionManager activePresenceSubscriptionAssertionsExistForChannelIdentifier:v20];
+  identifier = [channelCopy identifier];
+  LOBYTE(subscriptionManager) = [(SKAStatusSubscriptionManaging *)subscriptionManager activePresenceSubscriptionAssertionsExistForChannelIdentifier:identifier];
 
   if ((v25 != 0) | subscriptionManager & 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v22 = [v27 presenceIdentifier];
-    [WeakRetained presenceManager:self didReceivePresentDevicesUpdate:v24 forPresenceIdentifier:v22];
+    presenceIdentifier2 = [channelCopy presenceIdentifier];
+    [WeakRetained presenceManager:self didReceivePresentDevicesUpdate:changedCopy forPresenceIdentifier:presenceIdentifier2];
   }
 
   else
@@ -3366,7 +3366,7 @@ LABEL_14:
     WeakRetained = +[SKAPresenceManager logger];
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_ERROR))
     {
-      [SKAPresenceManager _presentDevicesChanged:v27 forChannel:?];
+      [SKAPresenceManager _presentDevicesChanged:channelCopy forChannel:?];
     }
   }
 
@@ -3405,35 +3405,35 @@ void __56__SKAPresenceManager__presentDevicesChanged_forChannel___block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_currentCheckpointForChannel:(id)a3
+- (unint64_t)_currentCheckpointForChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(SKAPresenceManager *)self databaseManager];
-  v6 = [v5 newBackgroundContext];
+  channelCopy = channel;
+  databaseManager = [(SKAPresenceManager *)self databaseManager];
+  newBackgroundContext = [databaseManager newBackgroundContext];
 
-  v7 = [(SKAPresenceManager *)self databaseManager];
-  v8 = [v7 currentCheckpointForChannel:v4 databaseContext:v6];
+  databaseManager2 = [(SKAPresenceManager *)self databaseManager];
+  v8 = [databaseManager2 currentCheckpointForChannel:channelCopy databaseContext:newBackgroundContext];
 
   return v8;
 }
 
-- (void)_setCheckpointForChannel:(id)a3 checkpoint:(unint64_t)a4
+- (void)_setCheckpointForChannel:(id)channel checkpoint:(unint64_t)checkpoint
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SKAPresenceManager *)self databaseManager];
-  v8 = [v7 newBackgroundContext];
+  channelCopy = channel;
+  databaseManager = [(SKAPresenceManager *)self databaseManager];
+  newBackgroundContext = [databaseManager newBackgroundContext];
 
-  v9 = [(SKAPresenceManager *)self databaseManager];
-  v10 = [v9 setCurrentCheckpointForChannel:v6 checkpoint:a4 databaseContext:v8];
+  databaseManager2 = [(SKAPresenceManager *)self databaseManager];
+  v10 = [databaseManager2 setCurrentCheckpointForChannel:channelCopy checkpoint:checkpoint databaseContext:newBackgroundContext];
 
   v11 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134218498;
-    v14 = a4;
+    checkpointCopy = checkpoint;
     v15 = 2112;
-    v16 = v6;
+    v16 = channelCopy;
     v17 = 1024;
     v18 = v10;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Updated checkpoint to %llu on channel %@ with result %d", &v13, 0x1Cu);
@@ -3442,12 +3442,12 @@ void __56__SKAPresenceManager__presentDevicesChanged_forChannel___block_invoke(u
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sortAndDedupePresenceIdentifiers:(id)a3
+- (id)_sortAndDedupePresenceIdentifiers:(id)identifiers
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithArray:v4];
+  identifiersCopy = identifiers;
+  v5 = [[v3 alloc] initWithArray:identifiersCopy];
 
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:1 selector:sel_compare_];
   v11[0] = v6;
@@ -3461,13 +3461,13 @@ void __56__SKAPresenceManager__presentDevicesChanged_forChannel___block_invoke(u
 
 - (void)recalculateActivityTracking
 {
-  v3 = [(SKAPresenceManager *)self internalWorkQueue];
+  internalWorkQueue = [(SKAPresenceManager *)self internalWorkQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SKAPresenceManager_recalculateActivityTracking__block_invoke;
   block[3] = &unk_27843E5A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalWorkQueue, block);
 }
 
 void __49__SKAPresenceManager_recalculateActivityTracking__block_invoke(uint64_t a1)
@@ -3487,12 +3487,12 @@ void __49__SKAPresenceManager_recalculateActivityTracking__block_invoke(uint64_t
   }
 }
 
-- (void)_findOrCreatePresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6
+- (void)_findOrCreatePresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  contextCopy = context;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalWorkQueue);
   v14 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -3502,22 +3502,22 @@ void __49__SKAPresenceManager_recalculateActivityTracking__block_invoke(uint64_t
   }
 
   objc_initWeak(buf, self);
-  v15 = [v11 isPersonal];
+  isPersonal = [optionsCopy isPersonal];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __107__SKAPresenceManager__findOrCreatePresenceChannelForPresenceIdentifier_options_databaseContext_completion___block_invoke;
   v20[3] = &unk_27843EF50;
-  v16 = v13;
+  v16 = completionCopy;
   v24 = v16;
   v20[4] = self;
-  v17 = v10;
+  v17 = identifierCopy;
   v21 = v17;
-  v18 = v11;
+  v18 = optionsCopy;
   v22 = v18;
-  v19 = v12;
+  v19 = contextCopy;
   v23 = v19;
   objc_copyWeak(&v25, buf);
-  [(SKAPresenceManager *)self _findPresenceChannelForPresenceIdentifier:v17 isPersonal:v15 databaseContext:v19 completion:v20];
+  [(SKAPresenceManager *)self _findPresenceChannelForPresenceIdentifier:v17 isPersonal:isPersonal databaseContext:v19 completion:v20];
   objc_destroyWeak(&v25);
 
   objc_destroyWeak(buf);
@@ -3618,53 +3618,53 @@ void __107__SKAPresenceManager__findOrCreatePresenceChannelForPresenceIdentifier
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createPresenceChannelForPresenceIdentifier:(id)a3 options:(id)a4 databaseContext:(id)a5 completion:(id)a6
+- (void)_createPresenceChannelForPresenceIdentifier:(id)identifier options:(id)options databaseContext:(id)context completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v31 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  contextCopy = context;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalWorkQueue);
-  v13 = [[SKAPresenceMembershipKey alloc] initWithNewKeyMaterial];
-  v14 = [[SKAPresenceEncryptionKey alloc] initWithNewKeyMaterial];
-  v15 = [[SKAPresenceEncryptionKey alloc] initWithNewKeyMaterial];
-  v16 = v15;
-  if (v13 && v14 && v15)
+  initWithNewKeyMaterial = [[SKAPresenceMembershipKey alloc] initWithNewKeyMaterial];
+  initWithNewKeyMaterial2 = [[SKAPresenceEncryptionKey alloc] initWithNewKeyMaterial];
+  initWithNewKeyMaterial3 = [[SKAPresenceEncryptionKey alloc] initWithNewKeyMaterial];
+  v16 = initWithNewKeyMaterial3;
+  if (initWithNewKeyMaterial && initWithNewKeyMaterial2 && initWithNewKeyMaterial3)
   {
-    v17 = [(SKAPresenceMembershipKey *)v13 privateKeyMaterial];
-    v30 = [(SKAPresenceEncryptionKey *)v14 keyMaterial];
-    v29 = [(SKAPresenceEncryptionKey *)v16 keyMaterial];
-    if (v17 && v30 && v29)
+    privateKeyMaterial = [(SKAPresenceMembershipKey *)initWithNewKeyMaterial privateKeyMaterial];
+    keyMaterial = [(SKAPresenceEncryptionKey *)initWithNewKeyMaterial2 keyMaterial];
+    keyMaterial2 = [(SKAPresenceEncryptionKey *)v16 keyMaterial];
+    if (privateKeyMaterial && keyMaterial && keyMaterial2)
     {
       v18 = +[SKAPowerLogger shared];
-      [v18 logEvent:1 ofType:0 channelType:1 identifier:v10];
+      [v18 logEvent:1 ofType:0 channelType:1 identifier:identifierCopy];
 
       objc_initWeak(location, self);
-      v28 = [(SKAPresenceManager *)self channelManager];
-      v19 = [v11 serviceIdentifier];
+      channelManager = [(SKAPresenceManager *)self channelManager];
+      serviceIdentifier = [optionsCopy serviceIdentifier];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __101__SKAPresenceManager__createPresenceChannelForPresenceIdentifier_options_databaseContext_completion___block_invoke;
       v32[3] = &unk_27843F018;
       objc_copyWeak(&v43, location);
-      v33 = v10;
-      v34 = v13;
-      v20 = v14;
-      v21 = v11;
+      v33 = identifierCopy;
+      v34 = initWithNewKeyMaterial;
+      v20 = initWithNewKeyMaterial2;
+      v21 = optionsCopy;
       v22 = v20;
       v35 = v20;
       v23 = v21;
       v36 = v21;
-      v42 = v12;
-      v37 = v29;
-      v38 = v30;
-      v39 = v17;
-      v40 = v31;
-      v41 = self;
-      [v28 createPresenceChannelWithMembershipKey:v34 serverKey:v22 serviceIdentifier:v19 completion:v32];
+      v42 = completionCopy;
+      v37 = keyMaterial2;
+      v38 = keyMaterial;
+      v39 = privateKeyMaterial;
+      v40 = contextCopy;
+      selfCopy = self;
+      [channelManager createPresenceChannelWithMembershipKey:v34 serverKey:v22 serviceIdentifier:serviceIdentifier completion:v32];
 
-      v11 = v23;
+      optionsCopy = v23;
       objc_destroyWeak(&v43);
       objc_destroyWeak(location);
     }
@@ -3678,7 +3678,7 @@ void __107__SKAPresenceManager__findOrCreatePresenceChannelForPresenceIdentifier
       }
 
       v26 = [SKAError errorWithCode:402];
-      (*(v12 + 2))(v12, 0, v26);
+      (*(completionCopy + 2))(completionCopy, 0, v26);
     }
   }
 
@@ -3688,16 +3688,16 @@ void __107__SKAPresenceManager__findOrCreatePresenceChannelForPresenceIdentifier
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *location = 138412802;
-      *&location[4] = v13;
+      *&location[4] = initWithNewKeyMaterial;
       v45 = 2112;
-      v46 = v14;
+      v46 = initWithNewKeyMaterial2;
       v47 = 2112;
       v48 = v16;
       _os_log_error_impl(&dword_220099000, v24, OS_LOG_TYPE_ERROR, "_sendPresenceDeactivationMessageForChannel - Failed to create one or more required crypto keys. membershipKey %@ serverKey %@ peerKey %@", location, 0x20u);
     }
 
-    v17 = [SKAError errorWithCode:402];
-    (*(v12 + 2))(v12, 0, v17);
+    privateKeyMaterial = [SKAError errorWithCode:402];
+    (*(completionCopy + 2))(completionCopy, 0, privateKeyMaterial);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -3936,21 +3936,21 @@ void __101__SKAPresenceManager__createPresenceChannelForPresenceIdentifier_optio
   }
 }
 
-- (void)_presencePayloadForChannel:(id)a3 clientPayload:(id)a4 options:(id)a5 timestamp:(id)a6 completion:(id)a7
+- (void)_presencePayloadForChannel:(id)channel clientPayload:(id)payload options:(id)options timestamp:(id)timestamp completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v14 clientSpecifiedURI];
+  channelCopy = channel;
+  payloadCopy = payload;
+  optionsCopy = options;
+  timestampCopy = timestamp;
+  completionCopy = completion;
+  clientSpecifiedURI = [optionsCopy clientSpecifiedURI];
 
-  if (v17)
+  if (clientSpecifiedURI)
   {
     messagingProvider = self->_messagingProvider;
-    v19 = [v14 clientSpecifiedURI];
-    LODWORD(messagingProvider) = [(SKAMessagingProviding *)messagingProvider isValidURI:v19];
+    clientSpecifiedURI2 = [optionsCopy clientSpecifiedURI];
+    LODWORD(messagingProvider) = [(SKAMessagingProviding *)messagingProvider isValidURI:clientSpecifiedURI2];
 
     if (!messagingProvider)
     {
@@ -3960,18 +3960,18 @@ void __101__SKAPresenceManager__createPresenceChannelForPresenceIdentifier_optio
     }
 
     v20 = self->_messagingProvider;
-    v21 = [v14 clientSpecifiedURI];
+    clientSpecifiedURI3 = [optionsCopy clientSpecifiedURI];
     v46 = 0;
     v22 = &v46;
-    v23 = [(SKAMessagingProviding *)v20 selfAddressedURIForURI:v21 error:&v46];
+    v23 = [(SKAMessagingProviding *)v20 selfAddressedURIForURI:clientSpecifiedURI3 error:&v46];
   }
 
   else
   {
-    v21 = [(SKAPresenceManager *)self messagingProvider];
+    clientSpecifiedURI3 = [(SKAPresenceManager *)self messagingProvider];
     v45 = 0;
     v22 = &v45;
-    v23 = [v21 tokenURIWithError:&v45];
+    v23 = [clientSpecifiedURI3 tokenURIWithError:&v45];
   }
 
   v24 = v23;
@@ -3979,8 +3979,8 @@ void __101__SKAPresenceManager__createPresenceChannelForPresenceIdentifier_optio
 
   if (v24 && ![v24 isEqualToString:&stru_2833DEA50])
   {
-    v40 = v15;
-    v26 = v13;
+    v40 = timestampCopy;
+    v26 = payloadCopy;
     v27 = +[SKAPresenceManager logger];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
@@ -3991,31 +3991,31 @@ void __101__SKAPresenceManager__createPresenceChannelForPresenceIdentifier_optio
 
     v28 = objc_alloc_init(DecryptedParticipantPayload);
     [(DecryptedParticipantPayload *)v28 setTokenUri:v24];
-    v29 = [v12 identifier];
-    [(DecryptedParticipantPayload *)v28 setChannelIdentifier:v29];
+    identifier = [channelCopy identifier];
+    [(DecryptedParticipantPayload *)v28 setChannelIdentifier:identifier];
 
-    v30 = [v12 presenceIdentifier];
-    [(DecryptedParticipantPayload *)v28 setPresenceIdentifier:v30];
+    presenceIdentifier = [channelCopy presenceIdentifier];
+    [(DecryptedParticipantPayload *)v28 setPresenceIdentifier:presenceIdentifier];
 
-    v31 = [v26 payloadData];
-    v32 = [v31 copy];
+    payloadData = [v26 payloadData];
+    v32 = [payloadData copy];
     [(DecryptedParticipantPayload *)v28 setClientPayload:v32];
 
-    v13 = v26;
-    v15 = v40;
+    payloadCopy = v26;
+    timestampCopy = v40;
     [v40 timeIntervalSince1970];
     [(DecryptedParticipantPayload *)v28 setTimestamp:v33];
-    v34 = [(SKAPresenceManager *)self messagingProvider];
-    v35 = [(DecryptedParticipantPayload *)v28 data];
+    messagingProvider = [(SKAPresenceManager *)self messagingProvider];
+    data = [(DecryptedParticipantPayload *)v28 data];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __92__SKAPresenceManager__presencePayloadForChannel_clientPayload_options_timestamp_completion___block_invoke;
     v41[3] = &unk_27843F040;
-    v44 = v16;
+    v44 = completionCopy;
     v42 = v28;
-    v43 = v12;
+    v43 = channelCopy;
     v36 = v28;
-    [v34 signPayload:v35 completion:v41];
+    [messagingProvider signPayload:data completion:v41];
 
     goto LABEL_16;
   }
@@ -4024,11 +4024,11 @@ LABEL_11:
   v37 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
   {
-    v39 = [v14 clientSpecifiedURI];
+    clientSpecifiedURI4 = [optionsCopy clientSpecifiedURI];
     *buf = 138412802;
     v48 = v24;
     v49 = 2112;
-    v50 = v39;
+    v50 = clientSpecifiedURI4;
     v51 = 2112;
     v52 = v25;
     _os_log_error_impl(&dword_220099000, v37, OS_LOG_TYPE_ERROR, "Failed to get senderTokenURI: %@ clientSpecifiedURI %@ error %@", buf, 0x20u);
@@ -4039,7 +4039,7 @@ LABEL_11:
     v25 = [SKAError errorWithCode:706 customDescription:@"Failed to get sender token URI"];
   }
 
-  (*(v16 + 2))(v16, 0, v25);
+  (*(completionCopy + 2))(completionCopy, 0, v25);
 LABEL_16:
 
   v38 = *MEMORY[0x277D85DE8];
@@ -4105,13 +4105,13 @@ void __92__SKAPresenceManager__presencePayloadForChannel_clientPayload_options_t
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_rollChannelForCryptoFailureIfAllowed:(id)a3
+- (void)_rollChannelForCryptoFailureIfAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(SKAPresenceManager *)self _shouldCryptoRoll];
-  v6 = +[SKAPresenceManager logger];
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
-  if (v5)
+  allowedCopy = allowed;
+  _shouldCryptoRoll = [(SKAPresenceManager *)self _shouldCryptoRoll];
+  delegate = +[SKAPresenceManager logger];
+  v7 = os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR);
+  if (_shouldCryptoRoll)
   {
     if (v7)
     {
@@ -4119,8 +4119,8 @@ void __92__SKAPresenceManager__presencePayloadForChannel_clientPayload_options_t
     }
 
     [(SKAPresenceManager *)self _markCryptoRoll];
-    v6 = [(SKAPresenceManager *)self delegate];
-    [v6 presenceManager:self didRequestToRollChannel:v4];
+    delegate = [(SKAPresenceManager *)self delegate];
+    [delegate presenceManager:self didRequestToRollChannel:allowedCopy];
   }
 
   else if (v7)
@@ -4132,10 +4132,10 @@ void __92__SKAPresenceManager__presencePayloadForChannel_clientPayload_options_t
 - (BOOL)_shouldCryptoRoll
 {
   v3 = CFPreferencesCopyAppValue(@"lastCryptoRollTime", @"com.apple.StatusKitAgent");
-  v4 = [(SKAPresenceManager *)self _cryptoRollResetTimeSeconds];
+  _cryptoRollResetTimeSeconds = [(SKAPresenceManager *)self _cryptoRollResetTimeSeconds];
   if (v3)
   {
-    v5 = v4;
+    v5 = _cryptoRollResetTimeSeconds;
     v6 = [MEMORY[0x277CBEAA8] now];
     [v6 timeIntervalSinceDate:v3];
     v8 = v7 > v5;
@@ -4155,20 +4155,20 @@ void __92__SKAPresenceManager__presencePayloadForChannel_clientPayload_options_t
   CFPreferencesSetAppValue(@"lastCryptoRollTime", v2, @"com.apple.StatusKitAgent");
 }
 
-- (void)didUpdatePresentDevices:(id)a3 forChannel:(id)a4
+- (void)didUpdatePresentDevices:(id)devices forChannel:(id)channel
 {
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  channelCopy = channel;
   internalWorkQueue = self->_internalWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SKAPresenceManager_didUpdatePresentDevices_forChannel___block_invoke;
   block[3] = &unk_27843E358;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = devicesCopy;
+  v13 = channelCopy;
+  v9 = channelCopy;
+  v10 = devicesCopy;
   dispatch_async(internalWorkQueue, block);
 }
 
@@ -4180,23 +4180,23 @@ void __92__SKAPresenceManager__presencePayloadForChannel_clientPayload_options_t
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
     v5 = +[SKAPresenceManager logger];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = v4;
+      v9 = intValue;
       _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Server bag indicates our reset time for resetting crypto roll rate limits presence should be %lu", &v8, 0xCu);
     }
   }
 
   else
   {
-    v4 = 18000;
+    intValue = 18000;
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v4;
+  return intValue;
 }
 
 + (int64_t)_maxPayloadSizeBytes
@@ -4229,17 +4229,17 @@ void __92__SKAPresenceManager__presencePayloadForChannel_clientPayload_options_t
     if (!v10)
     {
 LABEL_17:
-      v13 = 2048;
+      intValue = 2048;
       goto LABEL_18;
     }
 
 LABEL_9:
-    v13 = [v10 intValue];
+    intValue = [v10 intValue];
     v14 = +[SKAPresenceManager logger];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134217984;
-      v19 = v13;
+      v19 = intValue;
       v15 = "User override indicates our maxPayload size should be %lu";
 LABEL_11:
       _os_log_impl(&dword_220099000, v14, OS_LOG_TYPE_DEFAULT, v15, &v18, 0xCu);
@@ -4268,12 +4268,12 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v13 = [v11 intValue];
+  intValue = [v11 intValue];
   v14 = +[SKAPresenceManager logger];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134217984;
-    v19 = v13;
+    v19 = intValue;
     v15 = "Server bag indicates our maxPayload size should be %lu";
     goto LABEL_11;
   }
@@ -4282,7 +4282,7 @@ LABEL_12:
 
 LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
-  return v13;
+  return intValue;
 }
 
 + (id)logger

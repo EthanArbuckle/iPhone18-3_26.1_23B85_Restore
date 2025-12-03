@@ -1,8 +1,8 @@
 @interface MyMagazinesStore
 - (_TtC7NewsUI216MyMagazinesStore)init;
-- (void)issueReadingHistoryDidChange:(id)a3 forIssueIDs:(id)a4;
-- (void)offlineIssueList:(id)a3 didAddIssues:(id)a4 removeIssues:(id)a5;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
+- (void)issueReadingHistoryDidChange:(id)change forIssueIDs:(id)ds;
+- (void)offlineIssueList:(id)list didAddIssues:(id)issues removeIssues:(id)removeIssues;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
 @end
 
 @implementation MyMagazinesStore
@@ -14,20 +14,20 @@
   return result;
 }
 
-- (void)issueReadingHistoryDidChange:(id)a3 forIssueIDs:(id)a4
+- (void)issueReadingHistoryDidChange:(id)change forIssueIDs:(id)ds
 {
   v6 = sub_219BF5924();
-  v7 = a3;
-  v8 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_2195FBA60(v6);
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  if (a4)
+  if (tags)
   {
     v13 = sub_219BF5D44();
-    if (!a5)
+    if (!changeTags)
     {
       goto LABEL_4;
     }
@@ -36,22 +36,22 @@
   }
 
   v13 = 0;
-  if (a5)
+  if (changeTags)
   {
 LABEL_3:
     sub_219BF5D44();
   }
 
 LABEL_4:
-  if (a6)
+  if (moveTags)
   {
     sub_219BF5D44();
   }
 
-  v14 = a3;
-  v15 = a7;
-  v16 = self;
-  if (v15)
+  controllerCopy = controller;
+  removeTagsCopy = removeTags;
+  selfCopy = self;
+  if (removeTagsCopy)
   {
     v17 = sub_219BF5D44();
   }
@@ -64,19 +64,19 @@ LABEL_4:
   sub_2195FBF18(v13, v17);
 }
 
-- (void)offlineIssueList:(id)a3 didAddIssues:(id)a4 removeIssues:(id)a5
+- (void)offlineIssueList:(id)list didAddIssues:(id)issues removeIssues:(id)removeIssues
 {
   v7 = sub_2194B2E44(&unk_282A28590);
-  v8 = a3;
-  v9 = self;
+  listCopy = list;
+  selfCopy = self;
   sub_219BE3204();
   v10 = swift_allocObject();
-  *(v10 + 16) = v9;
+  *(v10 + 16) = selfCopy;
   *(v10 + 24) = v7;
   v11 = swift_allocObject();
   *(v11 + 16) = sub_2195FC778;
   *(v11 + 24) = v10;
-  v12 = v9;
+  v12 = selfCopy;
   v13 = sub_219BE2E54();
   sub_219BE2F64();
 }

@@ -1,5 +1,5 @@
 @interface IDSLocalMessageTimedOutMetric
-- (IDSLocalMessageTimedOutMetric)initWithService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 deliveryError:(unint64_t)a7 RTT:(unint64_t)a8 priority:(unint64_t)a9;
+- (IDSLocalMessageTimedOutMetric)initWithService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type deliveryError:(unint64_t)error RTT:(unint64_t)t priority:(unint64_t)priority;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSLocalMessageTimedOutMetric *)self service];
-  if (v4)
+  service = [(IDSLocalMessageTimedOutMetric *)self service];
+  if (service)
   {
-    CFDictionarySetValue(v3, @"service", v4);
+    CFDictionarySetValue(v3, @"service", service);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSLocalMessageTimedOutMetric isToDefaultPairedDevice](self, "isToDefaultPairedDevice")}];
@@ -53,22 +53,22 @@
   return v3;
 }
 
-- (IDSLocalMessageTimedOutMetric)initWithService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 deliveryError:(unint64_t)a7 RTT:(unint64_t)a8 priority:(unint64_t)a9
+- (IDSLocalMessageTimedOutMetric)initWithService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type deliveryError:(unint64_t)error RTT:(unint64_t)t priority:(unint64_t)priority
 {
-  v16 = a3;
+  serviceCopy = service;
   v20.receiver = self;
   v20.super_class = IDSLocalMessageTimedOutMetric;
   v17 = [(IDSLocalMessageTimedOutMetric *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_service, a3);
-    v18->_isToDefaultPairedDevice = a4;
-    v18->_messageSize = a5;
-    v18->_linkType = a6;
-    v18->_deliveryError = a7;
-    v18->_RTT = a8;
-    v18->_priority = a9;
+    objc_storeStrong(&v17->_service, service);
+    v18->_isToDefaultPairedDevice = device;
+    v18->_messageSize = size;
+    v18->_linkType = type;
+    v18->_deliveryError = error;
+    v18->_RTT = t;
+    v18->_priority = priority;
   }
 
   return v18;

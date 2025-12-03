@@ -1,16 +1,16 @@
 @interface PLAssetCollectionGenerator
-+ (id)_createMomentOrUpdateForAssetCluster:(id)a3 existingMomentDataForAssets:(id)a4 dataManager:(id)a5 usedMomentObjectIDs:(id)a6 debugDateFormatter:(id)a7;
-+ (id)createMomentOrUpdateForAssetCluster:(id)a3 affectedMoment:(id)a4 dataManager:(id)a5;
++ (id)_createMomentOrUpdateForAssetCluster:(id)cluster existingMomentDataForAssets:(id)assets dataManager:(id)manager usedMomentObjectIDs:(id)ds debugDateFormatter:(id)formatter;
++ (id)createMomentOrUpdateForAssetCluster:(id)cluster affectedMoment:(id)moment dataManager:(id)manager;
 - (BOOL)_updateMomentProcessedLocationAndReturnFrequentLocationsDidChange;
 - (NSDateFormatter)debugDateFormatter;
-- (PLAssetCollectionGenerator)initWithDataManager:(id)a3 frequentLocationManager:(id)a4 localCreationDateCreator:(id)a5;
+- (PLAssetCollectionGenerator)initWithDataManager:(id)manager frequentLocationManager:(id)locationManager localCreationDateCreator:(id)creator;
 - (PLMomentGenerationDataManagement)manager;
-- (id)_createMomentOrUpdateForAssetCluster:(id)a3 existingMomentDataForAssets:(id)a4;
-- (id)_processMomentsCollectionsYearsWithAssets:(id)a3 affectedMoments:(id)a4;
+- (id)_createMomentOrUpdateForAssetCluster:(id)cluster existingMomentDataForAssets:(id)assets;
+- (id)_processMomentsCollectionsYearsWithAssets:(id)assets affectedMoments:(id)moments;
 - (id)dataManager;
-- (id)libraryClusterer:(id)a3 createMomentClustersForAssetClusters:(id)a4 existingMomentDataForAssets:(id)a5;
-- (id)processMomentsWithAssets:(id)a3 affectedMoments:(id)a4;
-- (void)_cleanUpMoment:(id)a3;
+- (id)libraryClusterer:(id)clusterer createMomentClustersForAssetClusters:(id)clusters existingMomentDataForAssets:(id)assets;
+- (id)processMomentsWithAssets:(id)assets affectedMoments:(id)moments;
+- (void)_cleanUpMoment:(id)moment;
 - (void)logRoutineInformation;
 @end
 
@@ -42,18 +42,18 @@
   return debugDateFormatter;
 }
 
-- (id)libraryClusterer:(id)a3 createMomentClustersForAssetClusters:(id)a4 existingMomentDataForAssets:(id)a5
+- (id)libraryClusterer:(id)clusterer createMomentClustersForAssetClusters:(id)clusters existingMomentDataForAssets:(id)assets
 {
   v31 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  clustererCopy = clusterer;
+  clustersCopy = clusters;
+  assetsCopy = assets;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(clustersCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v8;
+  obj = clustersCopy;
   v11 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -70,19 +70,19 @@
 
         v15 = *(*(&v26 + 1) + 8 * i);
         v16 = objc_autoreleasePoolPush();
-        v17 = [(PLAssetCollectionGenerator *)self _createMomentOrUpdateForAssetCluster:v15 existingMomentDataForAssets:v9, v24];
-        if (v17)
+        clustererCopy = [(PLAssetCollectionGenerator *)self _createMomentOrUpdateForAssetCluster:v15 existingMomentDataForAssets:assetsCopy, clustererCopy];
+        if (clustererCopy)
         {
           [(PLAssetCollectionGenerator *)self insertedOrUpdatedMoments];
           v19 = v18 = v10;
-          [v19 addObject:v17];
+          [v19 addObject:clustererCopy];
 
-          v20 = [(PLAssetCollectionGenerator *)self usedMomentObjectIDs];
-          v21 = [v17 uniqueObjectID];
-          [v20 addObject:v21];
+          usedMomentObjectIDs = [(PLAssetCollectionGenerator *)self usedMomentObjectIDs];
+          uniqueObjectID = [clustererCopy uniqueObjectID];
+          [usedMomentObjectIDs addObject:uniqueObjectID];
 
           v10 = v18;
-          [v18 addObject:v17];
+          [v18 addObject:clustererCopy];
         }
 
         objc_autoreleasePoolPop(v16);
@@ -94,8 +94,8 @@
     while (v12);
   }
 
-  v22 = [(PLAssetCollectionGenerator *)self momentsFromAssetClusters];
-  [v22 addObject:v10];
+  momentsFromAssetClusters = [(PLAssetCollectionGenerator *)self momentsFromAssetClusters];
+  [momentsFromAssetClusters addObject:v10];
 
   return v10;
 }
@@ -113,17 +113,17 @@
   return WeakRetained;
 }
 
-- (void)_cleanUpMoment:(id)a3
+- (void)_cleanUpMoment:(id)moment
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (([v3 isDeleted] & 1) == 0)
+  momentCopy = moment;
+  if (([momentCopy isDeleted] & 1) == 0)
   {
-    v4 = [v3 assets];
-    v5 = [v4 count];
+    assets = [momentCopy assets];
+    v5 = [assets count];
     if (v5 >= 1)
     {
-      if ([v3 cachedCount] == v5)
+      if ([momentCopy cachedCount] == v5)
       {
 LABEL_32:
 
@@ -131,14 +131,14 @@ LABEL_32:
       }
 
       v21 = v5;
-      v23 = v3;
-      [v3 recalculateSharedAssetContainerCachedValues];
+      v23 = momentCopy;
+      [momentCopy recalculateSharedAssetContainerCachedValues];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v22 = v4;
-      v6 = v4;
+      v22 = assets;
+      v6 = assets;
       v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v7)
       {
@@ -170,11 +170,11 @@ LABEL_32:
                 v9 = v9 + [v15 isVideo];
               }
 
-              v16 = [v15 pl_date];
-              v17 = v16;
+              pl_date = [v15 pl_date];
+              v17 = pl_date;
               if (v12)
               {
-                v18 = [v12 earlierDate:v16];
+                v18 = [v12 earlierDate:pl_date];
 
                 v12 = v18;
                 if (v11)
@@ -188,7 +188,7 @@ LABEL_17:
 
               else
               {
-                v12 = v16;
+                v12 = pl_date;
                 if (!v11)
                 {
                   goto LABEL_17;
@@ -218,7 +218,7 @@ LABEL_15:
       v12 = 0;
 LABEL_23:
 
-      v3 = v23;
+      momentCopy = v23;
       [v23 setCachedPhotosCount:v10];
       [v23 setCachedVideosCount:v9];
       if (v12 && v11)
@@ -243,12 +243,12 @@ LABEL_23:
         }
       }
 
-      v4 = v22;
+      assets = v22;
     }
 
     if (!v5)
     {
-      [v3 delete];
+      [momentCopy delete];
     }
 
     goto LABEL_32;
@@ -257,15 +257,15 @@ LABEL_23:
 LABEL_33:
 }
 
-- (id)_createMomentOrUpdateForAssetCluster:(id)a3 existingMomentDataForAssets:(id)a4
+- (id)_createMomentOrUpdateForAssetCluster:(id)cluster existingMomentDataForAssets:(id)assets
 {
-  v6 = a4;
-  v7 = a3;
+  assetsCopy = assets;
+  clusterCopy = cluster;
   v8 = objc_opt_class();
-  v9 = [(PLAssetCollectionGenerator *)self manager];
-  v10 = [(PLAssetCollectionGenerator *)self usedMomentObjectIDs];
-  v11 = [(PLAssetCollectionGenerator *)self debugDateFormatter];
-  v12 = [v8 _createMomentOrUpdateForAssetCluster:v7 existingMomentDataForAssets:v6 dataManager:v9 usedMomentObjectIDs:v10 debugDateFormatter:v11];
+  manager = [(PLAssetCollectionGenerator *)self manager];
+  usedMomentObjectIDs = [(PLAssetCollectionGenerator *)self usedMomentObjectIDs];
+  debugDateFormatter = [(PLAssetCollectionGenerator *)self debugDateFormatter];
+  v12 = [v8 _createMomentOrUpdateForAssetCluster:clusterCopy existingMomentDataForAssets:assetsCopy dataManager:manager usedMomentObjectIDs:usedMomentObjectIDs debugDateFormatter:debugDateFormatter];
 
   return v12;
 }
@@ -273,12 +273,12 @@ LABEL_33:
 - (BOOL)_updateMomentProcessedLocationAndReturnFrequentLocationsDidChange
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(PLAssetCollectionGenerator *)self manager];
+  manager = [(PLAssetCollectionGenerator *)self manager];
   v35 = 0;
-  v4 = [v3 allMomentsWithError:&v35];
+  v4 = [manager allMomentsWithError:&v35];
   v5 = v35;
 
-  v6 = [(PLAssetCollectionGenerator *)self manager];
+  manager2 = [(PLAssetCollectionGenerator *)self manager];
   v7 = [objc_opt_class() processingMomentsFromMoments:v4];
 
   v8 = [(PLFrequentLocationManager *)self->_frequentLocationManager frequentLocationsDidChangeFromUpdateWithMoments:v7];
@@ -300,17 +300,17 @@ LABEL_33:
     v10 = v8;
   }
 
-  v11 = [(PLAssetCollectionGenerator *)self insertedOrUpdatedMoments];
-  v12 = [v11 mutableCopy];
+  insertedOrUpdatedMoments = [(PLAssetCollectionGenerator *)self insertedOrUpdatedMoments];
+  v12 = [insertedOrUpdatedMoments mutableCopy];
 
   v28 = v4;
   v26 = v7;
   if (v10)
   {
 
-    v13 = [(PLAssetCollectionGenerator *)self manager];
+    manager3 = [(PLAssetCollectionGenerator *)self manager];
     v34 = 0;
-    v14 = [v13 momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:&v34];
+    v14 = [manager3 momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:&v34];
     v15 = v34;
 
     if (v15)
@@ -359,8 +359,8 @@ LABEL_33:
         v21 = *(*(&v30 + 1) + 8 * i);
         v22 = objc_autoreleasePoolPush();
         WeakRetained = objc_loadWeakRetained(&self->_manager);
-        v24 = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
-        [PLMomentGenerationUtils processLocationIfNecessaryInMoment:v21 usingManager:WeakRetained frequentLocations:v24 frequentLocationsDidChange:v10];
+        currentFrequentLocations = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
+        [PLMomentGenerationUtils processLocationIfNecessaryInMoment:v21 usingManager:WeakRetained frequentLocations:currentFrequentLocations frequentLocationsDidChange:v10];
 
         objc_autoreleasePoolPop(v22);
       }
@@ -374,11 +374,11 @@ LABEL_33:
   return v10;
 }
 
-- (id)_processMomentsCollectionsYearsWithAssets:(id)a3 affectedMoments:(id)a4
+- (id)_processMomentsCollectionsYearsWithAssets:(id)assets affectedMoments:(id)moments
 {
   v86 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v63 = a4;
+  assetsCopy = assets;
+  momentsCopy = moments;
   v7 = PLMomentGenerationGetLog();
   v8 = os_signpost_id_generate(v7);
   info = 0;
@@ -410,23 +410,23 @@ LABEL_33:
   v61 = mach_absolute_time();
   v17 = [[PLLibraryClusterer alloc] initWithLocalCreationDateCreator:self->_localCreationDateCreator frequentLocationManager:self->_frequentLocationManager];
   [(PLLibraryClusterer *)v17 setDelegate:self];
-  [(PLLibraryClusterer *)v17 processMomentsWithAssets:v6];
-  v18 = [(PLAssetCollectionGenerator *)self manager];
-  v19 = [v18 cameraIsActive];
+  [(PLLibraryClusterer *)v17 processMomentsWithAssets:assetsCopy];
+  manager = [(PLAssetCollectionGenerator *)self manager];
+  cameraIsActive = [manager cameraIsActive];
 
   v65 = v8 - 1;
-  v66 = v6;
+  v66 = assetsCopy;
   v59 = v8;
   v60 = v11;
-  v64 = (v19 & 1) == 0 && [(PLAssetCollectionGenerator *)self _updateMomentProcessedLocationAndReturnFrequentLocationsDidChange];
-  v20 = [MEMORY[0x1E695DF70] array];
+  v64 = (cameraIsActive & 1) == 0 && [(PLAssetCollectionGenerator *)self _updateMomentProcessedLocationAndReturnFrequentLocationsDidChange];
+  array = [MEMORY[0x1E695DF70] array];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v67 = self;
-  v21 = [(PLAssetCollectionGenerator *)self momentsFromAssetClusters];
-  v22 = [v21 countByEnumeratingWithState:&v72 objects:v85 count:16];
+  selfCopy = self;
+  momentsFromAssetClusters = [(PLAssetCollectionGenerator *)self momentsFromAssetClusters];
+  v22 = [momentsFromAssetClusters countByEnumeratingWithState:&v72 objects:v85 count:16];
   if (v22)
   {
     v23 = v22;
@@ -437,18 +437,18 @@ LABEL_33:
       {
         if (*v73 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(momentsFromAssetClusters);
         }
 
         v26 = *(*(&v72 + 1) + 8 * i);
         v27 = objc_autoreleasePoolPush();
         v28 = [(PLLibraryClusterer *)v17 locationBasedMomentClustersForMomentsSortedByDate:v26];
-        [v20 addObjectsFromArray:v28];
+        [array addObjectsFromArray:v28];
 
         objc_autoreleasePoolPop(v27);
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v72 objects:v85 count:16];
+      v23 = [momentsFromAssetClusters countByEnumeratingWithState:&v72 objects:v85 count:16];
     }
 
     while (v23);
@@ -481,13 +481,13 @@ LABEL_33:
   }
 
   v62 = v33;
-  v38 = [(PLAssetCollectionGenerator *)v67 insertedOrUpdatedMoments];
-  v39 = [v38 mutableCopy];
+  insertedOrUpdatedMoments = [(PLAssetCollectionGenerator *)selfCopy insertedOrUpdatedMoments];
+  v39 = [insertedOrUpdatedMoments mutableCopy];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v40 = v63;
+  v40 = momentsCopy;
   v41 = [v40 countByEnumeratingWithState:&v68 objects:v78 count:16];
   if (v41)
   {
@@ -503,11 +503,11 @@ LABEL_33:
         }
 
         v45 = *(*(&v68 + 1) + 8 * j);
-        if (([v38 containsObject:v45] & 1) == 0)
+        if (([insertedOrUpdatedMoments containsObject:v45] & 1) == 0)
         {
           v46 = objc_autoreleasePoolPush();
           [v39 addObject:v45];
-          [(PLAssetCollectionGenerator *)v67 _cleanUpMoment:v45];
+          [(PLAssetCollectionGenerator *)selfCopy _cleanUpMoment:v45];
           objc_autoreleasePoolPop(v46);
         }
       }
@@ -552,54 +552,54 @@ LABEL_33:
   return v56;
 }
 
-- (id)processMomentsWithAssets:(id)a3 affectedMoments:(id)a4
+- (id)processMomentsWithAssets:(id)assets affectedMoments:(id)moments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  assetsCopy = assets;
+  momentsCopy = moments;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = [MEMORY[0x1E695DFA8] set];
-  [(PLAssetCollectionGenerator *)v8 setUsedMomentObjectIDs:v9];
+  [(PLAssetCollectionGenerator *)selfCopy setUsedMomentObjectIDs:v9];
 
   v10 = [MEMORY[0x1E695DFA8] set];
-  [(PLAssetCollectionGenerator *)v8 setInsertedOrUpdatedMoments:v10];
+  [(PLAssetCollectionGenerator *)selfCopy setInsertedOrUpdatedMoments:v10];
 
-  v11 = [MEMORY[0x1E695DF70] array];
-  [(PLAssetCollectionGenerator *)v8 setMomentsFromAssetClusters:v11];
+  array = [MEMORY[0x1E695DF70] array];
+  [(PLAssetCollectionGenerator *)selfCopy setMomentsFromAssetClusters:array];
 
-  v12 = [(PLAssetCollectionGenerator *)v8 _processMomentsCollectionsYearsWithAssets:v6 affectedMoments:v7];
-  objc_sync_exit(v8);
+  v12 = [(PLAssetCollectionGenerator *)selfCopy _processMomentsCollectionsYearsWithAssets:assetsCopy affectedMoments:momentsCopy];
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (PLAssetCollectionGenerator)initWithDataManager:(id)a3 frequentLocationManager:(id)a4 localCreationDateCreator:(id)a5
+- (PLAssetCollectionGenerator)initWithDataManager:(id)manager frequentLocationManager:(id)locationManager localCreationDateCreator:(id)creator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  creatorCopy = creator;
   v14.receiver = self;
   v14.super_class = PLAssetCollectionGenerator;
   v11 = [(PLAssetCollectionGenerator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_manager, v8);
-    objc_storeStrong(&v12->_frequentLocationManager, a4);
-    objc_storeStrong(&v12->_localCreationDateCreator, a5);
+    objc_storeWeak(&v11->_manager, managerCopy);
+    objc_storeStrong(&v12->_frequentLocationManager, locationManager);
+    objc_storeStrong(&v12->_localCreationDateCreator, creator);
   }
 
   return v12;
 }
 
-+ (id)createMomentOrUpdateForAssetCluster:(id)a3 affectedMoment:(id)a4 dataManager:(id)a5
++ (id)createMomentOrUpdateForAssetCluster:(id)cluster affectedMoment:(id)moment dataManager:(id)manager
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PLExistingMomentData alloc] initWithMoment:v9];
+  managerCopy = manager;
+  momentCopy = moment;
+  clusterCopy = cluster;
+  v11 = [[PLExistingMomentData alloc] initWithMoment:momentCopy];
 
-  if (v9)
+  if (momentCopy)
   {
     [MEMORY[0x1E695DFD8] setWithObject:v11];
   }
@@ -609,46 +609,46 @@ LABEL_33:
     [MEMORY[0x1E695DFD8] set];
   }
   v12 = ;
-  v13 = [a1 _createMomentOrUpdateForAssetCluster:v10 existingMomentDataForAssets:v12 dataManager:v8 usedMomentObjectIDs:0 debugDateFormatter:0];
+  v13 = [self _createMomentOrUpdateForAssetCluster:clusterCopy existingMomentDataForAssets:v12 dataManager:managerCopy usedMomentObjectIDs:0 debugDateFormatter:0];
 
   return v13;
 }
 
-+ (id)_createMomentOrUpdateForAssetCluster:(id)a3 existingMomentDataForAssets:(id)a4 dataManager:(id)a5 usedMomentObjectIDs:(id)a6 debugDateFormatter:(id)a7
++ (id)_createMomentOrUpdateForAssetCluster:(id)cluster existingMomentDataForAssets:(id)assets dataManager:(id)manager usedMomentObjectIDs:(id)ds debugDateFormatter:(id)formatter
 {
   v147 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v11 assets];
-  v17 = [v11 location];
-  v18 = [v16 count];
+  clusterCopy = cluster;
+  assetsCopy = assets;
+  managerCopy = manager;
+  dsCopy = ds;
+  formatterCopy = formatter;
+  assets = [clusterCopy assets];
+  location = [clusterCopy location];
+  v18 = [assets count];
   if (!v18)
   {
-    v40 = v12;
+    v40 = assetsCopy;
     v41 = 0;
     goto LABEL_82;
   }
 
   v104 = v18;
-  v105 = v17;
-  v109 = v15;
-  v118 = v14;
+  v105 = location;
+  v109 = formatterCopy;
+  v118 = dsCopy;
   v19 = objc_alloc_init(MEMORY[0x1E696AB50]);
   v20 = objc_alloc_init(MEMORY[0x1E696AB50]);
-  v112 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v16, "count")}];
+  v112 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assets, "count")}];
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v106 = v16;
-  obj = v16;
+  v106 = assets;
+  obj = assets;
   v21 = [obj countByEnumeratingWithState:&v128 objects:v146 count:16];
-  v107 = v13;
-  v108 = v12;
-  v110 = v11;
+  v107 = managerCopy;
+  v108 = assetsCopy;
+  v110 = clusterCopy;
   v111 = v20;
   if (v21)
   {
@@ -677,9 +677,9 @@ LABEL_33:
           HIDWORD(v117) += [v26 isVideo];
         }
 
-        v28 = [v26 inferredTimeZoneOffset];
-        v29 = [v26 location];
-        [v29 coordinate];
+        inferredTimeZoneOffset = [v26 inferredTimeZoneOffset];
+        location2 = [v26 location];
+        [location2 coordinate];
         v31 = v30;
         v33 = v32;
 
@@ -695,12 +695,12 @@ LABEL_33:
 
           if (v34 && (v31 != 40.0 || v33 != -100.0))
           {
-            v36 = [MEMORY[0x1E696AD98] numberWithInt:v28];
+            v36 = [MEMORY[0x1E696AD98] numberWithInt:inferredTimeZoneOffset];
             [v111 addObject:v36];
           }
         }
 
-        v37 = [MEMORY[0x1E696AD98] numberWithInt:v28];
+        v37 = [MEMORY[0x1E696AD98] numberWithInt:inferredTimeZoneOffset];
         [v19 addObject:v37];
 
         [v26 pl_coordinate];
@@ -720,7 +720,7 @@ LABEL_33:
 
     while (v22);
     v20 = v111;
-    v12 = v108;
+    assetsCopy = v108;
   }
 
   else
@@ -773,7 +773,7 @@ LABEL_33:
         }
 
         v54 = *(*(&v124 + 1) + 8 * j);
-        v55 = [v54 intValue];
+        intValue = [v54 intValue];
         v56 = [v48 countForObject:v54];
         if (v56 > v51)
         {
@@ -782,14 +782,14 @@ LABEL_33:
 
         if (v56 == v51)
         {
-          if (v55 >= 0)
+          if (intValue >= 0)
           {
-            v57 = v55;
+            v57 = intValue;
           }
 
           else
           {
-            v57 = -v55;
+            v57 = -intValue;
           }
 
           v58 = v116;
@@ -802,7 +802,7 @@ LABEL_33:
           {
 LABEL_37:
             v51 = v56;
-            v116 = v55;
+            v116 = intValue;
           }
         }
       }
@@ -818,19 +818,19 @@ LABEL_37:
     v116 = 0;
   }
 
-  v59 = [v11 startDate];
-  v102 = [v11 endDate];
-  v114 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v59 endDate:v102];
+  startDate = [clusterCopy startDate];
+  endDate = [clusterCopy endDate];
+  v114 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate endDate:endDate];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v60 = v12;
+  v60 = assetsCopy;
   v61 = [v60 countByEnumeratingWithState:&v120 objects:v144 count:16];
   if (v61)
   {
     v62 = v61;
-    v101 = v59;
+    v101 = startDate;
     v63 = 0;
     v115 = 0;
     v64 = *v121;
@@ -846,8 +846,8 @@ LABEL_37:
         v66 = *(*(&v120 + 1) + 8 * k);
         if (v118)
         {
-          v67 = [*(*(&v120 + 1) + 8 * k) objectID];
-          v68 = [v118 containsObject:v67];
+          objectID = [*(*(&v120 + 1) + 8 * k) objectID];
+          v68 = [v118 containsObject:objectID];
 
           if (v68)
           {
@@ -855,8 +855,8 @@ LABEL_37:
           }
         }
 
-        v69 = [v66 dateInterval];
-        v70 = [v114 intersectionWithDateInterval:v69];
+        dateInterval = [v66 dateInterval];
+        v70 = [v114 intersectionWithDateInterval:dateInterval];
 
         [v70 duration];
         v72 = v71;
@@ -888,10 +888,10 @@ LABEL_37:
 
     if (v115)
     {
-      v78 = [v115 objectID];
+      objectID2 = [v115 objectID];
       v119 = 0;
-      v79 = [v107 momentWithUniqueID:v78 error:&v119];
-      v59 = v101;
+      insertNewMoment = [v107 momentWithUniqueID:objectID2 error:&v119];
+      startDate = v101;
       v100 = v119;
       if (v100)
       {
@@ -899,7 +899,7 @@ LABEL_37:
         if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v133 = v78;
+          v133 = objectID2;
           v134 = 2112;
           v135 = v100;
           _os_log_impl(&dword_19BF1F000, v80, OS_LOG_TYPE_ERROR, "[MomentsGeneration] Error fetching moment with object ID %@. %@", buf, 0x16u);
@@ -911,32 +911,32 @@ LABEL_37:
         v81 = objc_alloc_init(MEMORY[0x1E696AB78]);
         [v81 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
         [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
-        v82 = v78;
-        v84 = v83 = v79;
+        v82 = objectID2;
+        v84 = v83 = insertNewMoment;
         v109 = v81;
         [v81 setTimeZone:v84];
 
-        v79 = v83;
-        v78 = v82;
+        insertNewMoment = v83;
+        objectID2 = v82;
       }
 
       v85 = PLBackendGetLog();
       if (os_log_type_enabled(v85, OS_LOG_TYPE_DEBUG))
       {
-        v94 = [v79 uuid];
-        v97 = [v79 startDate];
-        v99 = [v109 stringFromDate:v97];
-        v96 = [v79 endDate];
-        v93 = [v109 stringFromDate:v96];
-        v95 = [v110 startDate];
-        v86 = [v109 stringFromDate:v95];
-        [v79 endDate];
-        v87 = v98 = v79;
+        uuid = [insertNewMoment uuid];
+        startDate2 = [insertNewMoment startDate];
+        v99 = [v109 stringFromDate:startDate2];
+        endDate2 = [insertNewMoment endDate];
+        v93 = [v109 stringFromDate:endDate2];
+        startDate3 = [v110 startDate];
+        v86 = [v109 stringFromDate:startDate3];
+        [insertNewMoment endDate];
+        v87 = v98 = insertNewMoment;
         v88 = [v109 stringFromDate:v87];
         *buf = 138413570;
-        v133 = v78;
+        v133 = objectID2;
         v134 = 2112;
-        v135 = v94;
+        v135 = uuid;
         v136 = 2112;
         v137 = v99;
         v138 = 2112;
@@ -948,12 +948,12 @@ LABEL_37:
         v89 = v88;
         _os_log_impl(&dword_19BF1F000, v85, OS_LOG_TYPE_DEBUG, "[MomentsGeneration] Found existing moment with OID %@, UID %@, old [%@ - %@], new [%@ - %@]", buf, 0x3Eu);
 
-        v79 = v98;
+        insertNewMoment = v98;
       }
 
-      v13 = v107;
+      managerCopy = v107;
       v40 = v108;
-      if (v79)
+      if (insertNewMoment)
       {
         goto LABEL_81;
       }
@@ -962,9 +962,9 @@ LABEL_37:
     else
     {
       v115 = 0;
-      v13 = v107;
+      managerCopy = v107;
       v40 = v108;
-      v59 = v101;
+      startDate = v101;
     }
   }
 
@@ -973,18 +973,18 @@ LABEL_37:
 
     v63 = 0;
     v115 = 0;
-    v13 = v107;
+    managerCopy = v107;
     v40 = v108;
   }
 
-  v79 = [v13 insertNewMoment];
+  insertNewMoment = [managerCopy insertNewMoment];
 LABEL_81:
-  [v79 setStartDate:v59];
-  [v79 setEndDate:v102];
-  [v79 setTimeZoneOffset:v116];
-  [v79 setRepresentativeDate:v59];
+  [insertNewMoment setStartDate:startDate];
+  [insertNewMoment setEndDate:endDate];
+  [insertNewMoment setTimeZoneOffset:v116];
+  [insertNewMoment setRepresentativeDate:startDate];
   [MEMORY[0x1E695DFD8] setWithArray:obj];
-  v91 = v90 = v79;
+  v91 = v90 = insertNewMoment;
   [v90 setAssets:v91];
 
   [v90 setCachedCount:v104];
@@ -996,11 +996,11 @@ LABEL_81:
   v41 = v90;
   [v90 setOriginatorState:v23];
 
-  v17 = v105;
-  v14 = v118;
-  v15 = v109;
-  v11 = v110;
-  v16 = v106;
+  location = v105;
+  dsCopy = v118;
+  formatterCopy = v109;
+  clusterCopy = v110;
+  assets = v106;
 LABEL_82:
 
   return v41;

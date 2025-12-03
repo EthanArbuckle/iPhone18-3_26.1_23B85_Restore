@@ -1,19 +1,19 @@
 @interface TUISystemInputAssistantLayout
-- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)a3 withSystemInputAssistantItem:(id)a4 forAssistantView:(id)a5;
+- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)item withSystemInputAssistantItem:(id)assistantItem forAssistantView:(id)view;
 @end
 
 @implementation TUISystemInputAssistantLayout
 
-- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)a3 withSystemInputAssistantItem:(id)a4 forAssistantView:(id)a5
+- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)item withSystemInputAssistantItem:(id)assistantItem forAssistantView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 leadingBarButtonGroups];
-  v9 = v8;
+  assistantItemCopy = assistantItem;
+  itemCopy = item;
+  leadingBarButtonGroups = [itemCopy leadingBarButtonGroups];
+  v9 = leadingBarButtonGroups;
   v10 = MEMORY[0x1E695E0F0];
-  if (v8)
+  if (leadingBarButtonGroups)
   {
-    v11 = v8;
+    v11 = leadingBarButtonGroups;
   }
 
   else
@@ -23,11 +23,11 @@
 
   v12 = v11;
 
-  v13 = [v7 trailingBarButtonGroups];
+  trailingBarButtonGroups = [itemCopy trailingBarButtonGroups];
 
-  if (v13)
+  if (trailingBarButtonGroups)
   {
-    v14 = v13;
+    v14 = trailingBarButtonGroups;
   }
 
   else
@@ -37,11 +37,11 @@
 
   v15 = v14;
 
-  v16 = [v6 leadingBarButtonGroups];
-  v17 = v16;
-  if (v16)
+  leadingBarButtonGroups2 = [assistantItemCopy leadingBarButtonGroups];
+  v17 = leadingBarButtonGroups2;
+  if (leadingBarButtonGroups2)
   {
-    v18 = v16;
+    v18 = leadingBarButtonGroups2;
   }
 
   else
@@ -51,11 +51,11 @@
 
   v19 = v18;
 
-  v20 = [v6 trailingBarButtonGroups];
+  trailingBarButtonGroups2 = [assistantItemCopy trailingBarButtonGroups];
 
-  if (v20)
+  if (trailingBarButtonGroups2)
   {
-    v21 = v20;
+    v21 = trailingBarButtonGroups2;
   }
 
   else
@@ -72,9 +72,9 @@
   v25 = [v15 arrayByAddingObjectsFromArray:v22];
 
   [(TUIButtonBarGroupSet *)v23 setTrailingButtonGroups:v25];
-  v26 = [(TUIButtonBarGroupSet *)v23 leadingButtonGroups];
-  v27 = [(TUIButtonBarGroupSet *)v23 trailingButtonGroups];
-  v28 = [v26 arrayByAddingObjectsFromArray:v27];
+  leadingButtonGroups = [(TUIButtonBarGroupSet *)v23 leadingButtonGroups];
+  trailingButtonGroups = [(TUIButtonBarGroupSet *)v23 trailingButtonGroups];
+  v28 = [leadingButtonGroups arrayByAddingObjectsFromArray:trailingButtonGroups];
   [(TUIButtonBarGroupSet *)v23 setUnifiedButtonGroups:v28];
 
   return v23;

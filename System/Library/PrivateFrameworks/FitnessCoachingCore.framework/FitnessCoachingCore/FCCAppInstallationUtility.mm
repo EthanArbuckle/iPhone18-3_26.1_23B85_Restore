@@ -23,8 +23,8 @@
 
   if (v5)
   {
-    v8 = [v2 applicationState];
-    v7 = [v8 isInstalled];
+    applicationState = [v2 applicationState];
+    isInstalled = [applicationState isInstalled];
   }
 
   else
@@ -36,17 +36,17 @@
       [(FCCAppInstallationUtility *)v4 fitnessAppInstalled];
     }
 
-    v7 = 0;
+    isInstalled = 0;
   }
 
-  return v7;
+  return isInstalled;
 }
 
 - (void)fitnessAppInstalled
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24B53B000, a2, OS_LOG_TYPE_ERROR, "Error creating application record %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

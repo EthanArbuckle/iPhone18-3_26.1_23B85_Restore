@@ -1,10 +1,10 @@
 @interface HKDismissedPregnancyLactationInteraction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToPregnancyLactationInteraction:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToPregnancyLactationInteraction:(id)interaction;
 - (HKDismissedPregnancyLactationInteraction)init;
-- (HKDismissedPregnancyLactationInteraction)initWithCoder:(id)a3;
-- (id)_initWithMedicationIdentifier:(id)a3 interactionType:(int64_t)a4 creationDate:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (HKDismissedPregnancyLactationInteraction)initWithCoder:(id)coder;
+- (id)_initWithMedicationIdentifier:(id)identifier interactionType:(int64_t)type creationDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDismissedPregnancyLactationInteraction
@@ -19,14 +19,14 @@
   return 0;
 }
 
-- (id)_initWithMedicationIdentifier:(id)a3 interactionType:(int64_t)a4 creationDate:(id)a5
+- (id)_initWithMedicationIdentifier:(id)identifier interactionType:(int64_t)type creationDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  dateCopy = date;
+  v10 = dateCopy;
+  if (identifierCopy)
   {
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -48,42 +48,42 @@ LABEL_3:
   v11 = [(HKDismissedPregnancyLactationInteraction *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     medicationIdentifier = v11->_medicationIdentifier;
     v11->_medicationIdentifier = v12;
 
-    v11->_interactionType = a4;
-    objc_storeStrong(&v11->_creationDate, a5);
+    v11->_interactionType = type;
+    objc_storeStrong(&v11->_creationDate, date);
   }
 
   return v11;
 }
 
-- (BOOL)isEquivalentToPregnancyLactationInteraction:(id)a3
+- (BOOL)isEquivalentToPregnancyLactationInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   medicationIdentifier = self->_medicationIdentifier;
-  v6 = [v4 medication];
-  v7 = [v6 firstConceptIdentifier];
-  if (medicationIdentifier == v7)
+  medication = [interactionCopy medication];
+  firstConceptIdentifier = [medication firstConceptIdentifier];
+  if (medicationIdentifier == firstConceptIdentifier)
   {
     interactionType = self->_interactionType;
-    v14 = interactionType == [v4 interactionType];
+    v14 = interactionType == [interactionCopy interactionType];
   }
 
   else
   {
-    v8 = [v4 medication];
-    v9 = [v8 firstConceptIdentifier];
-    if (v9)
+    medication2 = [interactionCopy medication];
+    firstConceptIdentifier2 = [medication2 firstConceptIdentifier];
+    if (firstConceptIdentifier2)
     {
       v10 = self->_medicationIdentifier;
-      v11 = [v4 medication];
-      v12 = [v11 firstConceptIdentifier];
-      if ([(HKConceptIdentifier *)v10 isEqual:v12])
+      medication3 = [interactionCopy medication];
+      firstConceptIdentifier3 = [medication3 firstConceptIdentifier];
+      if ([(HKConceptIdentifier *)v10 isEqual:firstConceptIdentifier3])
       {
         v13 = self->_interactionType;
-        v14 = v13 == [v4 interactionType];
+        v14 = v13 == [interactionCopy interactionType];
       }
 
       else
@@ -101,10 +101,10 @@ LABEL_3:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -114,7 +114,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       medicationIdentifier = self->_medicationIdentifier;
       v7 = v5->_medicationIdentifier;
       v8 = (medicationIdentifier == v7 || v7 && [(HKConceptIdentifier *)medicationIdentifier isEqual:?]) && self->_interactionType == v5->_interactionType;
@@ -129,29 +129,29 @@ LABEL_3:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   medicationIdentifier = self->_medicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:medicationIdentifier forKey:@"MedicationIdentifier"];
-  [v5 encodeInteger:self->_interactionType forKey:@"InteractionType"];
-  [v5 encodeObject:self->_creationDate forKey:@"CreationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:medicationIdentifier forKey:@"MedicationIdentifier"];
+  [coderCopy encodeInteger:self->_interactionType forKey:@"InteractionType"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"CreationDate"];
 }
 
-- (HKDismissedPregnancyLactationInteraction)initWithCoder:(id)a3
+- (HKDismissedPregnancyLactationInteraction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKDismissedPregnancyLactationInteraction;
   v5 = [(HKDismissedPregnancyLactationInteraction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
     medicationIdentifier = v5->_medicationIdentifier;
     v5->_medicationIdentifier = v6;
 
-    v5->_interactionType = [v4 decodeIntegerForKey:@"InteractionType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+    v5->_interactionType = [coderCopy decodeIntegerForKey:@"InteractionType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v8;
 

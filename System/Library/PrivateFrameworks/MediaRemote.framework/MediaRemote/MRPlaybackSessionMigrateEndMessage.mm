@@ -1,5 +1,5 @@
 @interface MRPlaybackSessionMigrateEndMessage
-- (MRPlaybackSessionMigrateEndMessage)initWithRequest:(id)a3 error:(id)a4 setPlaybackSessionCommandStatus:(id)a5 playerPath:(id)a6;
+- (MRPlaybackSessionMigrateEndMessage)initWithRequest:(id)request error:(id)error setPlaybackSessionCommandStatus:(id)status playerPath:(id)path;
 - (MRPlaybackSessionRequest)request;
 - (MRPlayerPath)playerPath;
 - (MRSendCommandResultStatus)setPlaybackSessionCommandStatus;
@@ -8,30 +8,30 @@
 
 @implementation MRPlaybackSessionMigrateEndMessage
 
-- (MRPlaybackSessionMigrateEndMessage)initWithRequest:(id)a3 error:(id)a4 setPlaybackSessionCommandStatus:(id)a5 playerPath:(id)a6
+- (MRPlaybackSessionMigrateEndMessage)initWithRequest:(id)request error:(id)error setPlaybackSessionCommandStatus:(id)status playerPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  errorCopy = error;
+  statusCopy = status;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = MRPlaybackSessionMigrateEndMessage;
   v14 = [(MRProtocolMessage *)&v21 init];
   if (v14)
   {
     v15 = objc_alloc_init(_MRPlaybackSessionMigrateEndMessageProtobuf);
-    v16 = [v10 protobuf];
-    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setRequest:v16];
+    protobuf = [requestCopy protobuf];
+    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setRequest:protobuf];
 
-    -[_MRPlaybackSessionMigrateEndMessageProtobuf setErrorCode:](v15, "setErrorCode:", [v11 code]);
-    v17 = [v11 localizedDescription];
-    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setErrorDescription:v17];
+    -[_MRPlaybackSessionMigrateEndMessageProtobuf setErrorCode:](v15, "setErrorCode:", [errorCopy code]);
+    localizedDescription = [errorCopy localizedDescription];
+    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setErrorDescription:localizedDescription];
 
-    v18 = [v13 protobuf];
-    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setPlayerPath:v18];
+    protobuf2 = [pathCopy protobuf];
+    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setPlayerPath:protobuf2];
 
-    v19 = [v12 protobuf];
-    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setSetPlaybackSessionCommandStatus:v19];
+    protobuf3 = [statusCopy protobuf];
+    [(_MRPlaybackSessionMigrateEndMessageProtobuf *)v15 setSetPlaybackSessionCommandStatus:protobuf3];
 
     [(MRProtocolMessage *)v14 setUnderlyingCodableMessage:v15];
   }
@@ -42,9 +42,9 @@
 - (MRPlaybackSessionRequest)request
 {
   v3 = [MRPlaybackSessionRequest alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 request];
-  v6 = [(MRPlaybackSessionRequest *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  request = [underlyingCodableMessage request];
+  v6 = [(MRPlaybackSessionRequest *)v3 initWithProtobuf:request];
 
   return v6;
 }
@@ -52,9 +52,9 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }
@@ -62,41 +62,41 @@
 - (MRSendCommandResultStatus)setPlaybackSessionCommandStatus
 {
   v3 = [MRSendCommandResultStatus alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 setPlaybackSessionCommandStatus];
-  v6 = [(MRSendCommandResultStatus *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  setPlaybackSessionCommandStatus = [underlyingCodableMessage setPlaybackSessionCommandStatus];
+  v6 = [(MRSendCommandResultStatus *)v3 initWithProtobuf:setPlaybackSessionCommandStatus];
 
   return v6;
 }
 
 - (NSError)error
 {
-  v3 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v4 = [v3 error];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  error = [underlyingCodableMessage error];
 
-  if (v4)
+  if (error)
   {
-    v5 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v6 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v7 = [v6 error];
-    v8 = [v5 mr_initWithProtobuf:v7];
+    underlyingCodableMessage4 = objc_alloc(MEMORY[0x1E696ABC0]);
+    underlyingCodableMessage2 = [(MRProtocolMessage *)self underlyingCodableMessage];
+    error2 = [underlyingCodableMessage2 error];
+    v8 = [underlyingCodableMessage4 mr_initWithProtobuf:error2];
 LABEL_5:
     v13 = v8;
 
     goto LABEL_6;
   }
 
-  v9 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v10 = [v9 errorCode];
+  underlyingCodableMessage3 = [(MRProtocolMessage *)self underlyingCodableMessage];
+  errorCode = [underlyingCodableMessage3 errorCode];
 
-  if (v10 >= 1)
+  if (errorCode >= 1)
   {
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v5 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v12 = [v5 errorCode];
-    v6 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v7 = [v6 errorDescription];
-    v8 = [v11 initWithMRError:v12 description:v7];
+    underlyingCodableMessage4 = [(MRProtocolMessage *)self underlyingCodableMessage];
+    errorCode2 = [underlyingCodableMessage4 errorCode];
+    underlyingCodableMessage2 = [(MRProtocolMessage *)self underlyingCodableMessage];
+    error2 = [underlyingCodableMessage2 errorDescription];
+    v8 = [v11 initWithMRError:errorCode2 description:error2];
     goto LABEL_5;
   }
 

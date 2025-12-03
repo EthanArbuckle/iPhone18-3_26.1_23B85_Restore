@@ -1,5 +1,5 @@
 @interface PHTelephonyAccountUnavailableAlert
-- (PHTelephonyAccountUnavailableAlert)initWithSenderIdentities:(id)a3 completion:(id)a4;
+- (PHTelephonyAccountUnavailableAlert)initWithSenderIdentities:(id)identities completion:(id)completion;
 - (id)alternateButtonTitle;
 - (id)defaultButtonTitle;
 - (id)message;
@@ -12,16 +12,16 @@
 
 @implementation PHTelephonyAccountUnavailableAlert
 
-- (PHTelephonyAccountUnavailableAlert)initWithSenderIdentities:(id)a3 completion:(id)a4
+- (PHTelephonyAccountUnavailableAlert)initWithSenderIdentities:(id)identities completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identitiesCopy = identities;
+  completionCopy = completion;
   v12.receiver = self;
   v12.super_class = PHTelephonyAccountUnavailableAlert;
   v8 = [(PHTelephonyAccountUnavailableAlert *)&v12 init];
   if (v8)
   {
-    v9 = [UIAlertController telephonyAccountUnavailableAlertControllerWithSenderIdentities:v6 preferredStyle:1 completion:v7];
+    v9 = [UIAlertController telephonyAccountUnavailableAlertControllerWithSenderIdentities:identitiesCopy preferredStyle:1 completion:completionCopy];
     alertController = v8->_alertController;
     v8->_alertController = v9;
   }
@@ -31,124 +31,124 @@
 
 - (id)title
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v3 = [v2 title];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  title = [alertController title];
 
-  return v3;
+  return title;
 }
 
 - (id)message
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v3 = [v2 message];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  message = [alertController message];
 
-  return v3;
+  return message;
 }
 
 - (id)defaultButtonTitle
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count])
+  if ([actions count])
   {
-    v4 = [v3 lastObject];
-    v5 = [v4 title];
+    lastObject = [actions lastObject];
+    title = [lastObject title];
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
-  return v5;
+  return title;
 }
 
 - (id)alternateButtonTitle
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count] < 2)
+  if ([actions count] < 2)
   {
-    v5 = 0;
+    title = 0;
   }
 
   else
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 title];
+    firstObject = [actions firstObject];
+    title = [firstObject title];
   }
 
-  return v5;
+  return title;
 }
 
 - (id)otherButtonTitle
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count] < 3)
+  if ([actions count] < 3)
   {
-    v5 = 0;
+    title = 0;
   }
 
   else
   {
-    v4 = [v3 objectAtIndex:1];
-    v5 = [v4 title];
+    v4 = [actions objectAtIndex:1];
+    title = [v4 title];
   }
 
-  return v5;
+  return title;
 }
 
 - (void)defaultResponse
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v5 = [v2 actions];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v5 count])
+  if ([actions count])
   {
-    v3 = [v5 lastObject];
-    v4 = [v3 handler];
+    lastObject = [actions lastObject];
+    handler = [lastObject handler];
 
-    if (v4)
+    if (handler)
     {
-      v4[2](v4, 0);
+      handler[2](handler, 0);
     }
   }
 }
 
 - (void)alternateResponse
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v5 = [v2 actions];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v5 count] >= 2)
+  if ([actions count] >= 2)
   {
-    v3 = [v5 firstObject];
-    v4 = [v3 handler];
+    firstObject = [actions firstObject];
+    handler = [firstObject handler];
 
-    if (v4)
+    if (handler)
     {
-      v4[2](v4, 0);
+      handler[2](handler, 0);
     }
   }
 }
 
 - (void)otherResponse
 {
-  v2 = [(PHTelephonyAccountUnavailableAlert *)self alertController];
-  v5 = [v2 actions];
+  alertController = [(PHTelephonyAccountUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v5 count] >= 3)
+  if ([actions count] >= 3)
   {
-    v3 = [v5 objectAtIndex:1];
-    v4 = [v3 handler];
+    v3 = [actions objectAtIndex:1];
+    handler = [v3 handler];
 
-    if (v4)
+    if (handler)
     {
-      v4[2](v4, 0);
+      handler[2](handler, 0);
     }
   }
 }

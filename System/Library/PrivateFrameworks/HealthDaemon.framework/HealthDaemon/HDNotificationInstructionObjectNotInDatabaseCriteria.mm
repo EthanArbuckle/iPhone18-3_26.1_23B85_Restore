@@ -1,21 +1,21 @@
 @interface HDNotificationInstructionObjectNotInDatabaseCriteria
-- (int64_t)isValidWithDatabaseTransaction:(id)a3 error:(id *)a4;
+- (int64_t)isValidWithDatabaseTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDNotificationInstructionObjectNotInDatabaseCriteria
 
-- (int64_t)isValidWithDatabaseTransaction:(id)a3 error:(id *)a4
+- (int64_t)isValidWithDatabaseTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v7 = [v6 databaseForEntityClass:objc_opt_class()];
+  v7 = [transactionCopy databaseForEntityClass:objc_opt_class()];
   v8 = v7;
   if (!v7)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:6 description:@"Protected database is inaccessible"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:6 description:@"Protected database is inaccessible"];
     goto LABEL_5;
   }
 
@@ -29,7 +29,7 @@
   v11[2] = __93__HDNotificationInstructionObjectNotInDatabaseCriteria_isValidWithDatabaseTransaction_error___block_invoke_3;
   v11[3] = &unk_278614620;
   v11[4] = &v13;
-  if (![v7 executeCachedStatementForKey:&isValidWithDatabaseTransaction_error__lookupKey_0 error:a4 SQLGenerator:&__block_literal_global_192 bindingHandler:v12 enumerationHandler:v11])
+  if (![v7 executeCachedStatementForKey:&isValidWithDatabaseTransaction_error__lookupKey_0 error:error SQLGenerator:&__block_literal_global_192 bindingHandler:v12 enumerationHandler:v11])
   {
 LABEL_5:
     v9 = 0;

@@ -1,43 +1,43 @@
 @interface LSPlugInQueryAllUnitsResult
-- (LSPlugInQueryAllUnitsResult)initWithCoder:(id)a3;
-- (LSPlugInQueryAllUnitsResult)initWithPlugInUnits:(id)a3 forDatabaseWithUUID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (LSPlugInQueryAllUnitsResult)initWithCoder:(id)coder;
+- (LSPlugInQueryAllUnitsResult)initWithPlugInUnits:(id)units forDatabaseWithUUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSPlugInQueryAllUnitsResult
 
-- (LSPlugInQueryAllUnitsResult)initWithPlugInUnits:(id)a3 forDatabaseWithUUID:(id)a4
+- (LSPlugInQueryAllUnitsResult)initWithPlugInUnits:(id)units forDatabaseWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  unitsCopy = units;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = LSPlugInQueryAllUnitsResult;
-  v8 = [(_LSQueryResult *)&v12 _init];
-  if (v8)
+  _init = [(_LSQueryResult *)&v12 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    pluginUnits = v8->_pluginUnits;
-    v8->_pluginUnits = v9;
+    v9 = [unitsCopy copy];
+    pluginUnits = _init->_pluginUnits;
+    _init->_pluginUnits = v9;
 
-    objc_storeStrong(&v8->_dbUUID, a4);
+    objc_storeStrong(&_init->_dbUUID, d);
   }
 
-  return v8;
+  return _init;
 }
 
-- (LSPlugInQueryAllUnitsResult)initWithCoder:(id)a3
+- (LSPlugInQueryAllUnitsResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = LSPlugInQueryAllUnitsResult;
-  v5 = [(_LSQueryResult *)&v11 initWithCoder:v4];
+  v5 = [(_LSQueryResult *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"pluginUnits"];
+    v6 = [coderCopy ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"pluginUnits"];
     pluginUnits = v5->_pluginUnits;
     v5->_pluginUnits = v6;
 
-    v8 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"dbUUID"];
+    v8 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"dbUUID"];
     dbUUID = v5->_dbUUID;
     v5->_dbUUID = v8;
   }
@@ -45,12 +45,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pluginUnits = self->_pluginUnits;
-  v5 = a3;
-  [v5 encodeObject:pluginUnits forKey:@"pluginUnits"];
-  [v5 encodeObject:self->_dbUUID forKey:@"dbUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pluginUnits forKey:@"pluginUnits"];
+  [coderCopy encodeObject:self->_dbUUID forKey:@"dbUUID"];
 }
 
 @end

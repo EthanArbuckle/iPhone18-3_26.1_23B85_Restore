@@ -1,5 +1,5 @@
 @interface RMSynchronous
-- (BOOL)waitForCompletionWithTimeout:(double)a3;
+- (BOOL)waitForCompletionWithTimeout:(double)timeout;
 - (RMSynchronous)init;
 - (void)complete;
 - (void)waitForCompletion;
@@ -38,9 +38,9 @@
   [(NSConditionLock *)lock unlock];
 }
 
-- (BOOL)waitForCompletionWithTimeout:(double)a3
+- (BOOL)waitForCompletionWithTimeout:(double)timeout
 {
-  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
+  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
   v5 = [(NSConditionLock *)self->_lock lockWhenCondition:0 beforeDate:v4];
   if (v5)
   {

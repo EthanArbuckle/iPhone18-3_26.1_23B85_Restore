@@ -1,32 +1,32 @@
 @interface SBNotifyIconWillZoomDownSwitcherEventResponse
-- (SBNotifyIconWillZoomDownSwitcherEventResponse)initWithAppLayout:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBNotifyIconWillZoomDownSwitcherEventResponse)initWithAppLayout:(id)layout;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBNotifyIconWillZoomDownSwitcherEventResponse
 
-- (SBNotifyIconWillZoomDownSwitcherEventResponse)initWithAppLayout:(id)a3
+- (SBNotifyIconWillZoomDownSwitcherEventResponse)initWithAppLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBNotifyIconWillZoomDownSwitcherEventResponse;
   v6 = [(SBChainableModifierEventResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appLayout, a3);
+    objc_storeStrong(&v6->_appLayout, layout);
   }
 
   return v7;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v8.receiver = self;
   v8.super_class = SBNotifyIconWillZoomDownSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v8 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(SBAppLayout *)self->_appLayout succinctDescription];
-  v6 = [v4 appendObject:v5 withName:@"appLayout"];
+  v4 = [(SBChainableModifierEventResponse *)&v8 descriptionBuilderWithMultilinePrefix:prefix];
+  succinctDescription = [(SBAppLayout *)self->_appLayout succinctDescription];
+  v6 = [v4 appendObject:succinctDescription withName:@"appLayout"];
 
   return v4;
 }

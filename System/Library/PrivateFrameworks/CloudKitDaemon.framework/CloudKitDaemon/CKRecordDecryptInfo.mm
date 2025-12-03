@@ -1,7 +1,7 @@
 @interface CKRecordDecryptInfo
 - (CKRecordDecryptInfo)init;
-- (CKRecordDecryptInfo)initWithRecord:(id)a3 callbackQueue:(id)a4;
-- (void)_setupDecryptCallbackForQueue:(id)a3;
+- (CKRecordDecryptInfo)initWithRecord:(id)record callbackQueue:(id)queue;
+- (void)_setupDecryptCallbackForQueue:(id)queue;
 @end
 
 @implementation CKRecordDecryptInfo
@@ -18,14 +18,14 @@
   objc_exception_throw(v7);
 }
 
-- (CKRecordDecryptInfo)initWithRecord:(id)a3 callbackQueue:(id)a4
+- (CKRecordDecryptInfo)initWithRecord:(id)record callbackQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = v9;
-  if (v8)
+  recordCopy = record;
+  queueCopy = queue;
+  v12 = queueCopy;
+  if (recordCopy)
   {
-    if (v9)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -52,16 +52,16 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_record, a3);
+    objc_storeStrong(&v13->_record, record);
     objc_msgSend__setupDecryptCallbackForQueue_(v14, v15, v12);
   }
 
   return v14;
 }
 
-- (void)_setupDecryptCallbackForQueue:(id)a3
+- (void)_setupDecryptCallbackForQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = dispatch_group_create();
   decryptGroup = self->_decryptGroup;
   self->_decryptGroup = v5;
@@ -76,7 +76,7 @@ LABEL_3:
   v13[2] = sub_225254B00;
   v13[3] = &unk_278547098;
   objc_copyWeak(&v14, &location);
-  dispatch_group_notify(v12, v4, v13);
+  dispatch_group_notify(v12, queueCopy, v13);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

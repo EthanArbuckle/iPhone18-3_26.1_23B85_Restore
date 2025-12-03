@@ -1,29 +1,29 @@
 @interface NPTOTransaction
-- (NPTOTransaction)initWithDescription:(id)a3 userInfo:(id)a4 context:(id)a5;
+- (NPTOTransaction)initWithDescription:(id)description userInfo:(id)info context:(id)context;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation NPTOTransaction
 
-- (NPTOTransaction)initWithDescription:(id)a3 userInfo:(id)a4 context:(id)a5
+- (NPTOTransaction)initWithDescription:(id)description userInfo:(id)info context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptionCopy = description;
+  infoCopy = info;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = NPTOTransaction;
   v12 = [(NPTOTransaction *)&v17 init];
   if (v12)
   {
-    [v9 UTF8String];
+    [descriptionCopy UTF8String];
     v13 = os_transaction_create();
     transaction = v12->_transaction;
     v12->_transaction = v13;
 
-    objc_storeStrong(&v12->_transactionDescription, a3);
-    objc_storeStrong(&v12->_userInfo, a4);
-    objc_storeStrong(&v12->_context, a5);
+    objc_storeStrong(&v12->_transactionDescription, description);
+    objc_storeStrong(&v12->_userInfo, info);
+    objc_storeStrong(&v12->_context, context);
   }
 
   v15 = sub_10000268C();
@@ -43,7 +43,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Destroyed transaction: %@", buf, 0xCu);
   }
 

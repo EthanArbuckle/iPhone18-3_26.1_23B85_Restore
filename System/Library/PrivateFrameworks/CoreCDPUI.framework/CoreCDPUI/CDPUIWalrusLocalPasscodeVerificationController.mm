@@ -1,30 +1,30 @@
 @interface CDPUIWalrusLocalPasscodeVerificationController
-- (CDPUIWalrusLocalPasscodeVerificationController)initWithTitle:(id)a3 presentWithViewController:(id)a4 presentationType:(unint64_t)a5;
+- (CDPUIWalrusLocalPasscodeVerificationController)initWithTitle:(id)title presentWithViewController:(id)controller presentationType:(unint64_t)type;
 - (void)_setupControllers;
-- (void)finishWalrusLocalPasscodeVerificationWithCompletion:(id)a3;
-- (void)uiController:(id)a3 prepareAlertContext:(id)a4;
-- (void)uiController:(id)a3 preparePresentationContext:(id)a4;
+- (void)finishWalrusLocalPasscodeVerificationWithCompletion:(id)completion;
+- (void)uiController:(id)controller prepareAlertContext:(id)context;
+- (void)uiController:(id)controller preparePresentationContext:(id)context;
 @end
 
 @implementation CDPUIWalrusLocalPasscodeVerificationController
 
-- (CDPUIWalrusLocalPasscodeVerificationController)initWithTitle:(id)a3 presentWithViewController:(id)a4 presentationType:(unint64_t)a5
+- (CDPUIWalrusLocalPasscodeVerificationController)initWithTitle:(id)title presentWithViewController:(id)controller presentationType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  titleCopy = title;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = CDPUIWalrusLocalPasscodeVerificationController;
   v11 = [(CDPUIWalrusLocalPasscodeVerificationController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_title, a3);
-    v13 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+    objc_storeStrong(&v11->_title, title);
+    contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
     context = v12->_context;
-    v12->_context = v13;
+    v12->_context = contextForPrimaryAccount;
 
-    objc_storeStrong(&v12->_viewController, a4);
-    v12->_presentationType = a5;
+    objc_storeStrong(&v12->_viewController, controller);
+    v12->_presentationType = type;
   }
 
   [(CDPUIWalrusLocalPasscodeVerificationController *)v12 _setupControllers];
@@ -57,25 +57,25 @@
   [(CDPStateController *)v8 setUiProvider:v7];
 }
 
-- (void)finishWalrusLocalPasscodeVerificationWithCompletion:(id)a3
+- (void)finishWalrusLocalPasscodeVerificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x277CE44D8]);
   v6 = [v5 initWithEventName:*MEMORY[0x277CFD768] eventCategory:*MEMORY[0x277CFD930] initData:0];
-  v7 = [(CDPContext *)self->_context telemetryFlowID];
+  telemetryFlowID = [(CDPContext *)self->_context telemetryFlowID];
 
-  if (v7)
+  if (telemetryFlowID)
   {
-    v8 = [(CDPContext *)self->_context telemetryFlowID];
-    [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277CE45A8]];
+    telemetryFlowID2 = [(CDPContext *)self->_context telemetryFlowID];
+    [v6 setObject:telemetryFlowID2 forKeyedSubscript:*MEMORY[0x277CE45A8]];
   }
 
-  v9 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [(CDPContext *)self->_context telemetryDeviceSessionID];
 
-  if (v9)
+  if (telemetryDeviceSessionID)
   {
-    v10 = [(CDPContext *)self->_context telemetryDeviceSessionID];
-    [v6 setObject:v10 forKeyedSubscript:*MEMORY[0x277CE4578]];
+    telemetryDeviceSessionID2 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+    [v6 setObject:telemetryDeviceSessionID2 forKeyedSubscript:*MEMORY[0x277CE4578]];
   }
 
   uiController = self->_uiController;
@@ -85,9 +85,9 @@
   v15[2] = __102__CDPUIWalrusLocalPasscodeVerificationController_finishWalrusLocalPasscodeVerificationWithCompletion___block_invoke;
   v15[3] = &unk_278E2AF60;
   v16 = v6;
-  v17 = self;
-  v18 = v4;
-  v13 = v4;
+  selfCopy = self;
+  v18 = completionCopy;
+  v13 = completionCopy;
   v14 = v6;
   [(CDPUIController *)uiController cdpContext:context promptForLocalSecretWithCompletion:v15];
 }
@@ -182,19 +182,19 @@ uint64_t __102__CDPUIWalrusLocalPasscodeVerificationController_finishWalrusLocal
   return result;
 }
 
-- (void)uiController:(id)a3 preparePresentationContext:(id)a4
+- (void)uiController:(id)controller preparePresentationContext:(id)context
 {
-  if (a4)
+  if (context)
   {
-    (*(a4 + 2))(a4);
+    (*(context + 2))(context);
   }
 }
 
-- (void)uiController:(id)a3 prepareAlertContext:(id)a4
+- (void)uiController:(id)controller prepareAlertContext:(id)context
 {
-  if (a4)
+  if (context)
   {
-    (*(a4 + 2))(a4);
+    (*(context + 2))(context);
   }
 }
 

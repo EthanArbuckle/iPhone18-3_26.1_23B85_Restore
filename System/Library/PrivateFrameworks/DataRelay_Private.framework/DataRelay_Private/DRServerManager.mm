@@ -1,11 +1,11 @@
 @interface DRServerManager
 - (DRServerManager)init;
-- (id)getClientFromClientDictionary:(id)a3 fromAvail:(BOOL)a4;
-- (id)identifierFromOptions:(id)a3;
-- (void)addAvailableDataTypesToClient:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6;
-- (void)addRequestedDataTypes:(id)a3 types:(unint64_t)a4;
-- (void)removeAvailableDataTypesToClient:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6;
-- (void)removeRequestedDataTypes:(id)a3 types:(unint64_t)a4;
+- (id)getClientFromClientDictionary:(id)dictionary fromAvail:(BOOL)avail;
+- (id)identifierFromOptions:(id)options;
+- (void)addAvailableDataTypesToClient:(id)client dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion;
+- (void)addRequestedDataTypes:(id)types types:(unint64_t)a4;
+- (void)removeAvailableDataTypesToClient:(id)client dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion;
+- (void)removeRequestedDataTypes:(id)types types:(unint64_t)a4;
 - (void)setupAAS;
 - (void)setupRapport;
 @end
@@ -25,9 +25,9 @@
   cidDictionary = v2->_cidDictionary;
   v2->_cidDictionary = v5;
 
-  v7 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
   wxRoute = v2->_wxRoute;
-  v2->_wxRoute = v7;
+  v2->_wxRoute = data;
 
   v9 = dispatch_queue_create("com.apple.DataRelay.clientDictionaryQueue", 0);
   clientDictionaryQueue = v2->_clientDictionaryQueue;
@@ -38,10 +38,10 @@
   return v2;
 }
 
-- (void)addRequestedDataTypes:(id)a3 types:(unint64_t)a4
+- (void)addRequestedDataTypes:(id)types types:(unint64_t)a4
 {
-  v6 = a3;
-  v7 = [(DRServerManager *)self getClientFromClientDictionary:v6 fromAvail:0];
+  typesCopy = types;
+  v7 = [(DRServerManager *)self getClientFromClientDictionary:typesCopy fromAvail:0];
   if (gLogCategory_DRServerManager <= 50 && (gLogCategory_DRServerManager != -1 || _LogCategory_Initialize()))
   {
     [DRServerManager addRequestedDataTypes:a4 types:?];
@@ -53,7 +53,7 @@
   v9[2] = __47__DRServerManager_addRequestedDataTypes_types___block_invoke;
   v9[3] = &unk_278F4EC58;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = typesCopy;
   v10 = v8;
   [v7 addRequestedDataTypes:a4 completion:v9];
 
@@ -75,9 +75,9 @@ void __47__DRServerManager_addRequestedDataTypes_types___block_invoke(uint64_t a
   }
 }
 
-- (void)removeRequestedDataTypes:(id)a3 types:(unint64_t)a4
+- (void)removeRequestedDataTypes:(id)types types:(unint64_t)a4
 {
-  v6 = a3;
+  typesCopy = types;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -90,10 +90,10 @@ void __47__DRServerManager_addRequestedDataTypes_types___block_invoke(uint64_t a
   v9[2] = __50__DRServerManager_removeRequestedDataTypes_types___block_invoke;
   v9[3] = &unk_278F4ECA8;
   v9[4] = self;
-  v10 = v6;
+  v10 = typesCopy;
   v11 = v13;
   v12 = a4;
-  v8 = v6;
+  v8 = typesCopy;
   dispatch_sync(clientDictionaryQueue, v9);
 
   _Block_object_dispose(v13, 8);
@@ -156,25 +156,25 @@ void __50__DRServerManager_removeRequestedDataTypes_types___block_invoke_3(uint6
   [v3 removeObjectForKey:*(a1 + 32)];
 }
 
-- (void)addAvailableDataTypesToClient:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6
+- (void)addAvailableDataTypesToClient:(id)client dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(DRServerManager *)self getClientFromClientDictionary:v10 fromAvail:1];
+  clientCopy = client;
+  completionCopy = completion;
+  v12 = [(DRServerManager *)self getClientFromClientDictionary:clientCopy fromAvail:1];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__DRServerManager_addAvailableDataTypesToClient_dataTypes_connectionID_completion___block_invoke;
   v15[3] = &unk_278F4ECD0;
   objc_copyWeak(v19, &location);
-  v13 = v10;
+  v13 = clientCopy;
   v16 = v13;
-  v14 = v11;
-  v17 = self;
+  v14 = completionCopy;
+  selfCopy = self;
   v18 = v14;
-  v20 = a5;
-  v19[1] = a4;
-  [v12 addAvailableDataTypes:a4 completion:v15];
+  dCopy = d;
+  v19[1] = types;
+  [v12 addAvailableDataTypes:types completion:v15];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -217,10 +217,10 @@ void __83__DRServerManager_addAvailableDataTypesToClient_dataTypes_connectionID_
 LABEL_7:
 }
 
-- (void)removeAvailableDataTypesToClient:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6
+- (void)removeAvailableDataTypesToClient:(id)client dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  clientCopy = client;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -234,13 +234,13 @@ LABEL_7:
   v15[2] = __86__DRServerManager_removeAvailableDataTypesToClient_dataTypes_connectionID_completion___block_invoke;
   v15[3] = &unk_278F4ED20;
   v15[4] = self;
-  v16 = v10;
-  v20 = a5;
-  v19[1] = a4;
-  v17 = v11;
+  v16 = clientCopy;
+  dCopy = d;
+  v19[1] = types;
+  v17 = completionCopy;
   v18 = v22;
-  v13 = v11;
-  v14 = v10;
+  v13 = completionCopy;
+  v14 = clientCopy;
   objc_copyWeak(v19, &location);
   dispatch_sync(clientDictionaryQueue, v15);
   objc_destroyWeak(v19);
@@ -314,9 +314,9 @@ void __86__DRServerManager_removeAvailableDataTypesToClient_dataTypes_connection
   [v3 removeObjectForKey:*(a1 + 32)];
 }
 
-- (id)getClientFromClientDictionary:(id)a3 fromAvail:(BOOL)a4
+- (id)getClientFromClientDictionary:(id)dictionary fromAvail:(BOOL)avail
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -328,11 +328,11 @@ void __86__DRServerManager_removeAvailableDataTypesToClient_dataTypes_connection
   v11[1] = 3221225472;
   v11[2] = __59__DRServerManager_getClientFromClientDictionary_fromAvail___block_invoke;
   v11[3] = &unk_278F4ED48;
-  v12 = v6;
+  v12 = dictionaryCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  availCopy = avail;
+  v8 = dictionaryCopy;
   dispatch_sync(clientDictionaryQueue, v11);
   v9 = v16[5];
 
@@ -388,10 +388,10 @@ uint64_t __59__DRServerManager_getClientFromClientDictionary_fromAvail___block_i
   return [v2 removeRequestedDataTypes:v3 types:-1];
 }
 
-- (id)identifierFromOptions:(id)a3
+- (id)identifierFromOptions:(id)options
 {
   v3 = *MEMORY[0x277D442E8];
-  v4 = a3;
+  optionsCopy = options;
   Int64 = CFDictionaryGetInt64();
   v6 = MEMORY[0x277D442D0];
   if (Int64 < 0)
@@ -399,7 +399,7 @@ uint64_t __59__DRServerManager_getClientFromClientDictionary_fromAvail___block_i
     v6 = MEMORY[0x277D442A8];
   }
 
-  v7 = [v4 objectForKeyedSubscript:*v6];
+  v7 = [optionsCopy objectForKeyedSubscript:*v6];
 
   return v7;
 }

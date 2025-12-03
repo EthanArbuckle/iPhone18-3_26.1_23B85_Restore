@@ -8,24 +8,24 @@
 {
   v4 = a4;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = [a4 rightExpression];
-  v8 = [a1 operatorType];
-  if (v8 == 99)
+  rightExpression = [a4 rightExpression];
+  operatorType = [self operatorType];
+  if (operatorType == 99)
   {
-    v7 = [v4 leftExpression];
+    rightExpression = [v4 leftExpression];
   }
 
-  v9 = [v7 expressionType];
-  v10 = v9;
-  if (v9 != 14 && v9)
+  expressionType = [rightExpression expressionType];
+  v10 = expressionType;
+  if (expressionType != 14 && expressionType)
   {
     goto LABEL_42;
   }
 
-  v11 = [v7 constantValue];
-  if ([v11 isNSString])
+  constantValue = [rightExpression constantValue];
+  if ([constantValue isNSString])
   {
-    if ([v11 length])
+    if ([constantValue length])
     {
       goto LABEL_42;
     }
@@ -34,12 +34,12 @@
     goto LABEL_33;
   }
 
-  if (([v11 isNSArray] & 1) == 0 && (objc_msgSend(v11, "isNSSet") & 1) == 0 && (objc_msgSend(v11, "isNSOrderedSet") & 1) == 0 && !objc_msgSend(v11, "isNSDictionary"))
+  if (([constantValue isNSArray] & 1) == 0 && (objc_msgSend(constantValue, "isNSSet") & 1) == 0 && (objc_msgSend(constantValue, "isNSOrderedSet") & 1) == 0 && !objc_msgSend(constantValue, "isNSDictionary"))
   {
     goto LABEL_42;
   }
 
-  if (![v11 count])
+  if (![constantValue count])
   {
     v12 = MEMORY[0x1E696ABE8];
 LABEL_33:
@@ -48,12 +48,12 @@ LABEL_33:
     return [v12 defaultInstance];
   }
 
-  if (v10 || ([v11 isNSDictionary] & 1) != 0)
+  if (v10 || ([constantValue isNSDictionary] & 1) != 0)
   {
     goto LABEL_42;
   }
 
-  v28 = v8;
+  v28 = operatorType;
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_opt_class();
   objc_opt_class();
@@ -62,7 +62,7 @@ LABEL_33:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v15 = [constantValue countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v15)
   {
     goto LABEL_29;
@@ -76,7 +76,7 @@ LABEL_33:
     {
       if (*v30 != v17)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(constantValue);
       }
 
       v19 = *(*(&v29 + 1) + 8 * i);
@@ -107,44 +107,44 @@ LABEL_26:
       }
     }
 
-    v16 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v16 = [constantValue countByEnumeratingWithState:&v29 objects:v33 count:16];
   }
 
   while (v16);
 LABEL_29:
   if ([v13 count])
   {
-    v20 = [v11 count];
+    v20 = [constantValue count];
     if (v20 == [v13 count])
     {
 
       goto LABEL_42;
     }
 
-    v24 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v13];
+    rightExpression2 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v13];
 
     v25 = MEMORY[0x1E696AB18];
     if (v28 == 10)
     {
-      v26 = [v4 leftExpression];
+      leftExpression = [v4 leftExpression];
     }
 
     else
     {
-      v26 = v24;
-      v24 = [v4 rightExpression];
+      leftExpression = rightExpression2;
+      rightExpression2 = [v4 rightExpression];
     }
 
-    v23 = [v25 predicateWithLeftExpression:v26 rightExpression:v24 modifier:objc_msgSend(v4 type:"comparisonPredicateModifier") options:{v28, objc_msgSend(v4, "options")}];
+    defaultInstance = [v25 predicateWithLeftExpression:leftExpression rightExpression:rightExpression2 modifier:objc_msgSend(v4 type:"comparisonPredicateModifier") options:{v28, objc_msgSend(v4, "options")}];
   }
 
   else
   {
 
-    v23 = [MEMORY[0x1E696ABE8] defaultInstance];
+    defaultInstance = [MEMORY[0x1E696ABE8] defaultInstance];
   }
 
-  v4 = v23;
+  v4 = defaultInstance;
 LABEL_42:
   v27 = *MEMORY[0x1E69E9840];
   return v4;

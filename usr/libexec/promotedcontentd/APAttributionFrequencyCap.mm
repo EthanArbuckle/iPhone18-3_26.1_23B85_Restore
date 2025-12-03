@@ -1,23 +1,23 @@
 @interface APAttributionFrequencyCap
-- (APAttributionFrequencyCap)initWithDictionary:(id)a3;
-- (APAttributionFrequencyCap)initWithIdentifier:(id)a3;
+- (APAttributionFrequencyCap)initWithDictionary:(id)dictionary;
+- (APAttributionFrequencyCap)initWithIdentifier:(id)identifier;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)splitCapData:(id)a3;
+- (id)splitCapData:(id)data;
 @end
 
 @implementation APAttributionFrequencyCap
 
-- (APAttributionFrequencyCap)initWithIdentifier:(id)a3
+- (APAttributionFrequencyCap)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = APAttributionFrequencyCap;
   v5 = [(APAttributionFrequencyCap *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(APAttributionFrequencyCap *)v5 splitCapData:v4];
+    v7 = [(APAttributionFrequencyCap *)v5 splitCapData:identifierCopy];
     v8 = [v7 objectForKeyedSubscript:@"ADIdentifierKey"];
     identifier = v6->_identifier;
     v6->_identifier = v8;
@@ -35,26 +35,26 @@
   return v6;
 }
 
-- (APAttributionFrequencyCap)initWithDictionary:(id)a3
+- (APAttributionFrequencyCap)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = APAttributionFrequencyCap;
   v5 = [(APAttributionFrequencyCap *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ADIdentifierKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ADIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"ADAdMetadataKey"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ADAdMetadataKey"];
     adMetadata = v5->_adMetadata;
     v5->_adMetadata = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"ADDownloadTypeKey"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"ADDownloadTypeKey"];
     v5->_downloadType = [v10 intValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"ADSetTimeKey"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"ADSetTimeKey"];
     [v11 doubleValue];
     v5->_timestamp = v12;
   }
@@ -62,11 +62,11 @@
   return v5;
 }
 
-- (id)splitCapData:(id)a3
+- (id)splitCapData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 componentsSeparatedByString:@"|"];
+  v5 = [dataCopy componentsSeparatedByString:@"|"];
   v6 = [v5 count];
   if (v6)
   {
@@ -123,8 +123,8 @@
 
 - (id)description
 {
-  v2 = [(APAttributionFrequencyCap *)self dictionaryRepresentation];
-  v3 = [NSString stringWithFormat:@"%@", v2];
+  dictionaryRepresentation = [(APAttributionFrequencyCap *)self dictionaryRepresentation];
+  v3 = [NSString stringWithFormat:@"%@", dictionaryRepresentation];
 
   return v3;
 }

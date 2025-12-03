@@ -1,5 +1,5 @@
 @interface FCNetworkEventGroupKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -23,17 +23,17 @@
   return [(FCNetworkEventGroupKey *)self hash]^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   if (self)
   {
     eventType = self->_eventType;
-    if (v4)
+    if (equalCopy)
     {
 LABEL_3:
-      v7 = *(v4 + 2);
+      v7 = *(equalCopy + 2);
       goto LABEL_4;
     }
   }
@@ -41,7 +41,7 @@ LABEL_3:
   else
   {
     eventType = 0;
-    if (v4)
+    if (equalCopy)
     {
       goto LABEL_3;
     }
@@ -59,10 +59,10 @@ LABEL_13:
   if (self)
   {
     sessionID = self->_sessionID;
-    if (v4)
+    if (equalCopy)
     {
 LABEL_7:
-      v9 = v4[2];
+      v9 = equalCopy[2];
       goto LABEL_8;
     }
   }
@@ -70,7 +70,7 @@ LABEL_7:
   else
   {
     sessionID = 0;
-    if (v4)
+    if (equalCopy)
     {
       goto LABEL_7;
     }
@@ -87,7 +87,7 @@ LABEL_8:
   if (!self)
   {
     respondingPOP = 0;
-    if (v4)
+    if (equalCopy)
     {
       goto LABEL_11;
     }
@@ -98,13 +98,13 @@ LABEL_20:
   }
 
   respondingPOP = self->_respondingPOP;
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_20;
   }
 
 LABEL_11:
-  v12 = v4[3];
+  v12 = equalCopy[3];
 LABEL_12:
   v13 = respondingPOP;
   v14 = [v10 nf_object:v13 isEqualToObject:v12];

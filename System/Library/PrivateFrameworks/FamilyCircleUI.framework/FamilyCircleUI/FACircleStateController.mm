@@ -1,49 +1,49 @@
 @interface FACircleStateController
-- (BOOL)_contextRequiresRemoteService:(id)a3;
+- (BOOL)_contextRequiresRemoteService:(id)service;
 - (BOOL)_processRequiresSpringBoardServices;
 - (FACircleStateController)init;
-- (FACircleStateController)initWithPresenter:(id)a3;
-- (FACircleStateController)initWithRequestConfigurator:(id)a3 presenter:(id)a4 circlePresenterFactory:(id)a5;
+- (FACircleStateController)initWithPresenter:(id)presenter;
+- (FACircleStateController)initWithRequestConfigurator:(id)configurator presenter:(id)presenter circlePresenterFactory:(id)factory;
 - (UIViewController)presenter;
-- (void)_ensurePresenterWithCompletion:(id)a3;
-- (void)_performOperationWithContext:(id)a3 viewController:(id)a4 completion:(id)a5;
-- (void)_presentFlowUsingSpringBoardWithContext:(id)a3 completion:(id)a4;
-- (void)_presentPlatformUnsupportedAlertWithCompletion:(id)a3;
-- (void)_presentViewServiceWithContext:(id)a3 viewController:(id)a4 completion:(id)a5;
+- (void)_ensurePresenterWithCompletion:(id)completion;
+- (void)_performOperationWithContext:(id)context viewController:(id)controller completion:(id)completion;
+- (void)_presentFlowUsingSpringBoardWithContext:(id)context completion:(id)completion;
+- (void)_presentPlatformUnsupportedAlertWithCompletion:(id)completion;
+- (void)_presentViewServiceWithContext:(id)context viewController:(id)controller completion:(id)completion;
 - (void)cancel;
-- (void)circlePresenterDidPresent:(id)a3;
+- (void)circlePresenterDidPresent:(id)present;
 - (void)dealloc;
-- (void)performOperationWithContext:(id)a3 completion:(id)a4;
-- (void)performWithContext:(id)a3 completion:(id)a4;
-- (void)remoteViewControllerDidStartFlow:(id)a3;
-- (void)setPresenter:(id)a3;
+- (void)performOperationWithContext:(id)context completion:(id)completion;
+- (void)performWithContext:(id)context completion:(id)completion;
+- (void)remoteViewControllerDidStartFlow:(id)flow;
+- (void)setPresenter:(id)presenter;
 @end
 
 @implementation FACircleStateController
 
-- (FACircleStateController)initWithRequestConfigurator:(id)a3 presenter:(id)a4 circlePresenterFactory:(id)a5
+- (FACircleStateController)initWithRequestConfigurator:(id)configurator presenter:(id)presenter circlePresenterFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configuratorCopy = configurator;
+  presenterCopy = presenter;
+  factoryCopy = factory;
   v20.receiver = self;
   v20.super_class = FACircleStateController;
   v12 = [(FACircleStateController *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestConfigurator, a3);
-    objc_storeWeak(&v13->_presenter, v10);
-    v14 = _Block_copy(v11);
+    objc_storeStrong(&v12->_requestConfigurator, configurator);
+    objc_storeWeak(&v13->_presenter, presenterCopy);
+    v14 = _Block_copy(factoryCopy);
     circlePresenterFactory = v13->_circlePresenterFactory;
     v13->_circlePresenterFactory = v14;
 
     v13->_isCanceled = 0;
-    v16 = [MEMORY[0x277D75418] currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v18 = 2;
-    if (v17 != 1)
+    if (userInterfaceIdiom != 1)
     {
       v18 = -2;
     }
@@ -57,18 +57,18 @@
 - (void)cancel
 {
   [(FACircleStateController *)self setIsCanceled:1];
-  v3 = [(FACircleStateController *)self circlePresenter];
-  [v3 cancel];
+  circlePresenter = [(FACircleStateController *)self circlePresenter];
+  [circlePresenter cancel];
 
   [(FACircleStateController *)self setCirclePresenter:0];
-  v4 = [(FACircleStateController *)self completion];
+  completion = [(FACircleStateController *)self completion];
 
-  if (v4)
+  if (completion)
   {
     v7 = [MEMORY[0x277CCA9B8] fa_familyErrorWithCode:-1018];
-    v5 = [(FACircleStateController *)self completion];
+    completion2 = [(FACircleStateController *)self completion];
     v6 = [objc_alloc(MEMORY[0x277D08230]) initWithLoadSuccess:0 error:v7 userInfo:0];
-    (v5)[2](v5, v6);
+    (completion2)[2](completion2, v6);
 
     [(FACircleStateController *)self setCompletion:0];
   }
@@ -91,12 +91,12 @@ FACirclePresenter *__31__FACircleStateController_init__block_invoke(uint64_t a1,
   return v6;
 }
 
-- (FACircleStateController)initWithPresenter:(id)a3
+- (FACircleStateController)initWithPresenter:(id)presenter
 {
   v4 = MEMORY[0x277D082E8];
-  v5 = a3;
+  presenterCopy = presenter;
   v6 = objc_alloc_init(v4);
-  v7 = [(FACircleStateController *)self initWithRequestConfigurator:v6 presenter:v5 circlePresenterFactory:&__block_literal_global_22];
+  v7 = [(FACircleStateController *)self initWithRequestConfigurator:v6 presenter:presenterCopy circlePresenterFactory:&__block_literal_global_22];
 
   return v7;
 }
@@ -110,16 +110,16 @@ FACirclePresenter *__45__FACircleStateController_initWithPresenter___block_invok
   return v6;
 }
 
-- (void)performOperationWithContext:(id)a3 completion:(id)a4
+- (void)performOperationWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__FACircleStateController_performOperationWithContext_completion___block_invoke;
   v8[3] = &unk_2782F2E88;
-  v9 = v6;
-  v7 = v6;
-  [(FACircleStateController *)self performWithContext:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(FACircleStateController *)self performWithContext:context completion:v8];
 }
 
 void __66__FACircleStateController_performOperationWithContext_completion___block_invoke(uint64_t a1, void *a2)
@@ -135,20 +135,20 @@ void __66__FACircleStateController_performOperationWithContext_completion___bloc
   }
 }
 
-- (void)performWithContext:(id)a3 completion:(id)a4
+- (void)performWithContext:(id)context completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v20 = v6;
+    v20 = contextCopy;
     _os_log_impl(&dword_21BB35000, v8, OS_LOG_TYPE_DEFAULT, "Performing operation with context: %{private}@", buf, 0xCu);
   }
 
-  [(FACircleStateController *)self setCompletion:v7];
+  [(FACircleStateController *)self setCompletion:completionCopy];
   objc_initWeak(buf, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -161,7 +161,7 @@ void __66__FACircleStateController_performOperationWithContext_completion___bloc
   v13[2] = __57__FACircleStateController_performWithContext_completion___block_invoke_2;
   v13[3] = &unk_2782F36F8;
   objc_copyWeak(&v16, buf);
-  v10 = v6;
+  v10 = contextCopy;
   v14 = v10;
   v11 = v9;
   v15 = v11;
@@ -341,10 +341,10 @@ void __57__FACircleStateController_performWithContext_completion___block_invoke_
 LABEL_7:
 }
 
-- (void)_presentPlatformUnsupportedAlertWithCompletion:(id)a3
+- (void)_presentPlatformUnsupportedAlertWithCompletion:(id)completion
 {
-  v4 = a3;
-  v19 = [(FACircleStateController *)self presenter];
+  completionCopy = completion;
+  presenter = [(FACircleStateController *)self presenter];
   v5 = MEMORY[0x277D75110];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"FEATURE_NOT_SUPPORTED_TITLE" value:&stru_282D9AA68 table:@"Localizable"];
@@ -364,12 +364,12 @@ LABEL_7:
   v20[1] = 3221225472;
   v20[2] = __74__FACircleStateController__presentPlatformUnsupportedAlertWithCompletion___block_invoke;
   v20[3] = &unk_2782F35B8;
-  v21 = v4;
-  v17 = v4;
+  v21 = completionCopy;
+  v17 = completionCopy;
   v18 = [v14 actionWithTitle:v16 style:0 handler:v20];
   [v10 addAction:v18];
 
-  [v19 presentViewController:v10 animated:1 completion:0];
+  [presenter presentViewController:v10 animated:1 completion:0];
 }
 
 void __74__FACircleStateController__presentPlatformUnsupportedAlertWithCompletion___block_invoke(uint64_t a1)
@@ -379,38 +379,38 @@ void __74__FACircleStateController__presentPlatformUnsupportedAlertWithCompletio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_ensurePresenterWithCompletion:(id)a3
+- (void)_ensurePresenterWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(FACircleStateController *)self presenter];
-  if (v4)
+  completionCopy = completion;
+  presenter = [(FACircleStateController *)self presenter];
+  if (presenter)
   {
-    v6[2](v6, v4, 0);
+    completionCopy[2](completionCopy, presenter, 0);
   }
 
   else
   {
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D080B8] code:-1000 userInfo:0];
-    (v6)[2](v6, 0, v5);
+    (completionCopy)[2](completionCopy, 0, v5);
   }
 }
 
-- (void)setPresenter:(id)a3
+- (void)setPresenter:(id)presenter
 {
-  v4 = a3;
-  objc_storeWeak(&self->_presenter, v4);
-  [(FACirclePresenter *)self->_circlePresenter setPresenter:v4];
+  presenterCopy = presenter;
+  objc_storeWeak(&self->_presenter, presenterCopy);
+  [(FACirclePresenter *)self->_circlePresenter setPresenter:presenterCopy];
 }
 
-- (BOOL)_contextRequiresRemoteService:(id)a3
+- (BOOL)_contextRequiresRemoteService:(id)service
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134217984;
-    v17 = [(FACircleStateController *)self presentationType];
+    presentationType = [(FACircleStateController *)self presentationType];
     _os_log_impl(&dword_21BB35000, v5, OS_LOG_TYPE_DEFAULT, "presentationtype: %lu", &v16, 0xCu);
   }
 
@@ -426,10 +426,10 @@ void __74__FACircleStateController__presentPlatformUnsupportedAlertWithCompletio
 
   else
   {
-    v7 = [(FACircleStateController *)self _whitelistedInProcessClients];
-    v8 = [v4 clientBundleID];
-    v9 = [v8 lowercaseString];
-    v10 = [v7 containsObject:v9];
+    _whitelistedInProcessClients = [(FACircleStateController *)self _whitelistedInProcessClients];
+    clientBundleID = [serviceCopy clientBundleID];
+    lowercaseString = [clientBundleID lowercaseString];
+    v10 = [_whitelistedInProcessClients containsObject:lowercaseString];
 
     v11 = _FALogSystem();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -437,9 +437,9 @@ void __74__FACircleStateController__presentPlatformUnsupportedAlertWithCompletio
     {
       if (v12)
       {
-        v13 = [v4 clientBundleID];
+        clientBundleID2 = [serviceCopy clientBundleID];
         v16 = 138412290;
-        v17 = v13;
+        presentationType = clientBundleID2;
         _os_log_impl(&dword_21BB35000, v11, OS_LOG_TYPE_DEFAULT, "%@ is allowed in process UI", &v16, 0xCu);
       }
     }
@@ -459,19 +459,19 @@ void __74__FACircleStateController__presentPlatformUnsupportedAlertWithCompletio
 
 - (BOOL)_processRequiresSpringBoardServices
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = ([v3 isSuspended] & 1) != 0 || -[FACircleStateController presentationType](self, "presentationType") == 3;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v4 = ([mEMORY[0x277D75128] isSuspended] & 1) != 0 || -[FACircleStateController presentationType](self, "presentationType") == 3;
 
   return v4;
 }
 
-- (void)_presentFlowUsingSpringBoardWithContext:(id)a3 completion:(id)a4
+- (void)_presentFlowUsingSpringBoardWithContext:(id)context completion:(id)completion
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v13 = @"FARemoteAlertServiceUserInfoContextData";
-  v6 = [a3 dataRepresentation];
-  v14[0] = v6;
+  dataRepresentation = [context dataRepresentation];
+  v14[0] = dataRepresentation;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
   v8 = objc_alloc_init(MEMORY[0x277D082C0]);
@@ -479,8 +479,8 @@ void __74__FACircleStateController__presentPlatformUnsupportedAlertWithCompletio
   v11[1] = 3221225472;
   v11[2] = __78__FACircleStateController__presentFlowUsingSpringBoardWithContext_completion___block_invoke;
   v11[3] = &unk_2782F2E88;
-  v12 = v5;
-  v9 = v5;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [v8 launchOutOfProcessUIWithOptions:v7 completion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -511,24 +511,24 @@ uint64_t __78__FACircleStateController__presentFlowUsingSpringBoardWithContext_c
   return result;
 }
 
-- (void)_presentViewServiceWithContext:(id)a3 viewController:(id)a4 completion:(id)a5
+- (void)_presentViewServiceWithContext:(id)context viewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  controllerCopy = controller;
+  completionCopy = completion;
   modalPresentationStyle = self->_modalPresentationStyle;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __84__FACircleStateController__presentViewServiceWithContext_viewController_completion___block_invoke;
   v16[3] = &unk_2782F3720;
-  v19 = v10;
+  v19 = completionCopy;
   v20 = modalPresentationStyle;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = contextCopy;
+  v18 = controllerCopy;
+  v12 = controllerCopy;
+  v13 = contextCopy;
+  v14 = completionCopy;
   v15 = [FARemoteViewController requestViewControllerWithCompletion:v16];
 }
 
@@ -554,24 +554,24 @@ void __84__FACircleStateController__presentViewServiceWithContext_viewController
   }
 }
 
-- (void)_performOperationWithContext:(id)a3 viewController:(id)a4 completion:(id)a5
+- (void)_performOperationWithContext:(id)context viewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(FACircleStateController *)self requestConfigurator];
+  requestConfigurator = [(FACircleStateController *)self requestConfigurator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__FACircleStateController__performOperationWithContext_viewController_completion___block_invoke;
   v14[3] = &unk_2782F3770;
   objc_copyWeak(&v18, &location);
-  v12 = v8;
+  v12 = contextCopy;
   v15 = v12;
-  v13 = v10;
-  v16 = self;
+  v13 = completionCopy;
+  selfCopy = self;
   v17 = v13;
-  [v11 requestForContext:v12 withCompletion:v14];
+  [requestConfigurator requestForContext:v12 withCompletion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -676,12 +676,12 @@ void __82__FACircleStateController__performOperationWithContext_viewController_c
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21BB35000, a2, OS_LOG_TYPE_DEBUG, "%@ deallocated", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteViewControllerDidStartFlow:(id)a3
+- (void)remoteViewControllerDidStartFlow:(id)flow
 {
   presentationHandler = self->_presentationHandler;
   if (presentationHandler)
@@ -690,12 +690,12 @@ void __82__FACircleStateController__performOperationWithContext_viewController_c
   }
 }
 
-- (void)circlePresenterDidPresent:(id)a3
+- (void)circlePresenterDidPresent:(id)present
 {
   presentationHandler = self->_presentationHandler;
   if (presentationHandler)
   {
-    presentationHandler[2](presentationHandler, a2, a3);
+    presentationHandler[2](presentationHandler, a2, present);
     v5 = self->_presentationHandler;
     self->_presentationHandler = 0;
   }

@@ -1,25 +1,25 @@
 @interface PersonalizationService
-- (void)flushMetricsWithCompletionBlock:(id)a3;
-- (void)getAppEventsWithCompletionBlock:(id)a3;
-- (void)getClusterMappingsWithCompletionBlock:(id)a3;
-- (void)getGroupingToken:(id)a3;
-- (void)recordLaunchesWithCompletionBlock:(id)a3;
-- (void)recordMetricsWithCompletionBlock:(id)a3;
-- (void)reloadClusterMappingsWithCompletionBlock:(id)a3;
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4;
-- (void)resetActorIDWithCompletionBlock:(id)a3;
-- (void)resetMetricsWithCompletionBlock:(id)a3;
-- (void)sendMetricsWithCompletionBlock:(id)a3;
-- (void)setClusterMapping:(id)a3 completionBlock:(id)a4;
-- (void)setClusterMappings:(id)a3 completionBlock:(id)a4;
-- (void)tasteProfileFeatureEnabledWithCompletionBlock:(id)a3;
+- (void)flushMetricsWithCompletionBlock:(id)block;
+- (void)getAppEventsWithCompletionBlock:(id)block;
+- (void)getClusterMappingsWithCompletionBlock:(id)block;
+- (void)getGroupingToken:(id)token;
+- (void)recordLaunchesWithCompletionBlock:(id)block;
+- (void)recordMetricsWithCompletionBlock:(id)block;
+- (void)reloadClusterMappingsWithCompletionBlock:(id)block;
+- (void)reportAppEvent:(id)event completionBlock:(id)block;
+- (void)resetActorIDWithCompletionBlock:(id)block;
+- (void)resetMetricsWithCompletionBlock:(id)block;
+- (void)sendMetricsWithCompletionBlock:(id)block;
+- (void)setClusterMapping:(id)mapping completionBlock:(id)block;
+- (void)setClusterMappings:(id)mappings completionBlock:(id)block;
+- (void)tasteProfileFeatureEnabledWithCompletionBlock:(id)block;
 @end
 
 @implementation PersonalizationService
 
-- (void)flushMetricsWithCompletionBlock:(id)a3
+- (void)flushMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -34,12 +34,12 @@
   }
 
   v9 = sub_1002EDEC8();
-  sub_1002EE080(v9, @"User request", v4);
+  sub_1002EE080(v9, @"User request", blockCopy);
 }
 
-- (void)getGroupingToken:(id)a3
+- (void)getGroupingToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -53,16 +53,16 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: getGroupingToken for client: %{public}@", &v10, 0x16u);
   }
 
-  if (v4)
+  if (tokenCopy)
   {
     v9 = ASDErrorWithDescription();
-    v4[2](v4, 0, v9);
+    tokenCopy[2](tokenCopy, 0, v9);
   }
 }
 
-- (void)getClusterMappingsWithCompletionBlock:(id)a3
+- (void)getClusterMappingsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -76,16 +76,16 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: getClusterMappingsWithCompletionBlock for client: %{public}@", &v10, 0x16u);
   }
 
-  if (v4)
+  if (blockCopy)
   {
     v9 = ASDErrorWithDescription();
-    v4[2](v4, 0, v9);
+    blockCopy[2](blockCopy, 0, v9);
   }
 }
 
-- (void)getAppEventsWithCompletionBlock:(id)a3
+- (void)getAppEventsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -100,12 +100,12 @@
   }
 
   v9 = sub_1002EDEC8();
-  sub_1002EE160(v9, v4);
+  sub_1002EE160(v9, blockCopy);
 }
 
-- (void)recordMetricsWithCompletionBlock:(id)a3
+- (void)recordMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,12 +120,12 @@
   }
 
   v9 = sub_1002EDEC8();
-  sub_1002EE998(v9, v4);
+  sub_1002EE998(v9, blockCopy);
 }
 
-- (void)recordLaunchesWithCompletionBlock:(id)a3
+- (void)recordLaunchesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -140,12 +140,12 @@
   }
 
   v9 = sub_1002EDEC8();
-  sub_1002EE484(v9, v4);
+  sub_1002EE484(v9, blockCopy);
 }
 
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4
+- (void)reportAppEvent:(id)event completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,16 +159,16 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]: reportAppEvent for client: %{public}@", &v11, 0x16u);
   }
 
-  if (v5)
+  if (blockCopy)
   {
     v10 = ASDErrorWithDescription();
-    v5[2](v5, 0, v10);
+    blockCopy[2](blockCopy, 0, v10);
   }
 }
 
-- (void)reloadClusterMappingsWithCompletionBlock:(id)a3
+- (void)reloadClusterMappingsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -182,16 +182,16 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: reloadClusterMappingsWithCompletionBlock for client: %{public}@", &v10, 0x16u);
   }
 
-  if (v4)
+  if (blockCopy)
   {
     v9 = ASDErrorWithDescription();
-    v4[2](v4, 0, v9);
+    blockCopy[2](blockCopy, 0, v9);
   }
 }
 
-- (void)resetActorIDWithCompletionBlock:(id)a3
+- (void)resetActorIDWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -206,12 +206,12 @@
   }
 
   v9 = sub_1002EDEC8();
-  sub_1002EED00(v9, v4);
+  sub_1002EED00(v9, blockCopy);
 }
 
-- (void)resetMetricsWithCompletionBlock:(id)a3
+- (void)resetMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -226,12 +226,12 @@
   }
 
   v9 = sub_1002EDEC8();
-  sub_1002EEE9C(v9, v4);
+  sub_1002EEE9C(v9, blockCopy);
 }
 
-- (void)sendMetricsWithCompletionBlock:(id)a3
+- (void)sendMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -246,12 +246,12 @@
   }
 
   v9 = sub_1002EDEC8();
-  sub_1002EF0F0(v9, v4);
+  sub_1002EF0F0(v9, blockCopy);
 }
 
-- (void)setClusterMapping:(id)a3 completionBlock:(id)a4
+- (void)setClusterMapping:(id)mapping completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -265,16 +265,16 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]: setClusterMapping for client: %{public}@", &v11, 0x16u);
   }
 
-  if (v5)
+  if (blockCopy)
   {
     v10 = ASDErrorWithDescription();
-    v5[2](v5, 0, v10);
+    blockCopy[2](blockCopy, 0, v10);
   }
 }
 
-- (void)setClusterMappings:(id)a3 completionBlock:(id)a4
+- (void)setClusterMappings:(id)mappings completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -288,20 +288,20 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]: setClusterMapping for client: %{public}@", &v11, 0x16u);
   }
 
-  if (v5)
+  if (blockCopy)
   {
     v10 = ASDErrorWithDescription();
-    v5[2](v5, 0, v10);
+    blockCopy[2](blockCopy, 0, v10);
   }
 }
 
-- (void)tasteProfileFeatureEnabledWithCompletionBlock:(id)a3
+- (void)tasteProfileFeatureEnabledWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v5 = a3;
+    blockCopy = block;
     v4 = sub_1003D4840();
-    (*(a3 + 2))(v5, v4, 0);
+    (*(block + 2))(blockCopy, v4, 0);
   }
 }
 

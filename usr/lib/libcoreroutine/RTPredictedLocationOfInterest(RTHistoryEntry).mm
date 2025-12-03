@@ -13,8 +13,8 @@
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D012E8]);
-    v7 = [v4 usageDate];
-    v8 = [v6 initWithUsageDate:v7 navigationWasInterrupted:{objc_msgSend(v4, "navigationWasInterrupted")}];
+    usageDate = [v4 usageDate];
+    v8 = [v6 initWithUsageDate:usageDate navigationWasInterrupted:{objc_msgSend(v4, "navigationWasInterrupted")}];
 
     v9 = objc_alloc(MEMORY[0x277D01270]);
     if ([v4 navigationWasInterrupted])
@@ -48,8 +48,8 @@
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D012E0]);
-    v7 = [v4 usageDate];
-    v8 = [v6 initWithUsageDate:v7];
+    usageDate = [v4 usageDate];
+    v8 = [v6 initWithUsageDate:usageDate];
 
     v9 = objc_alloc(MEMORY[0x277D01270]);
     v13[0] = v8;

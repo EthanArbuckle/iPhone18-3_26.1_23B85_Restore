@@ -1,67 +1,67 @@
 @interface ULMapItemGenerator
-+ (void)_generateParkingMapItemsWithBiomeEventStreamCarPlayConnected:(id)a3 biomeEventStreamLocationSemantic:(id)a4 dbStore:(ULDatabaseStoreInterface *)a5 task:(id)a6 startDate:(id)a7;
-+ (void)generateMapItemsWithEnvironment:(id)a3 dbStore:(ULDatabaseStoreInterface *)a4 task:(id)a5;
++ (void)_generateParkingMapItemsWithBiomeEventStreamCarPlayConnected:(id)connected biomeEventStreamLocationSemantic:(id)semantic dbStore:(ULDatabaseStoreInterface *)store task:(id)task startDate:(id)date;
++ (void)generateMapItemsWithEnvironment:(id)environment dbStore:(ULDatabaseStoreInterface *)store task:(id)task;
 @end
 
 @implementation ULMapItemGenerator
 
-+ (void)generateMapItemsWithEnvironment:(id)a3 dbStore:(ULDatabaseStoreInterface *)a4 task:(id)a5
++ (void)generateMapItemsWithEnvironment:(id)environment dbStore:(ULDatabaseStoreInterface *)store task:(id)task
 {
-  v25 = a3;
-  v8 = a5;
+  environmentCopy = environment;
+  taskCopy = task;
   v9 = +[ULDefaultsSingleton shared];
-  v10 = [v9 defaultsDictionary];
+  defaultsDictionary = [v9 defaultsDictionary];
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULGenerateParkingMapItemsEnabled"];
-  v12 = [v10 objectForKey:v11];
+  v12 = [defaultsDictionary objectForKey:v11];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEC28] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC28] BOOLValue];
   }
 
-  v14 = v13;
+  v14 = bOOLValue;
 
   if (v14)
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v16 = +[ULDefaultsSingleton shared];
-    v17 = [v16 defaultsDictionary];
+    defaultsDictionary2 = [v16 defaultsDictionary];
 
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULGenerateParkingMapItemsInterval"];
-    v19 = [v17 objectForKey:v18];
+    v19 = [defaultsDictionary2 objectForKey:v18];
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v20 = [v19 intValue];
+      intValue = [v19 intValue];
     }
 
     else
     {
-      v20 = [&unk_286A72AC8 intValue];
+      intValue = [&unk_286A72AC8 intValue];
     }
 
-    v21 = v20;
+    v21 = intValue;
 
-    v22 = [v25 biomeEventStreamCarPlayConnected];
-    v23 = [v25 biomeEventStreamLocationSemantic];
-    v24 = [v15 dateByAddingTimeInterval:-v21];
-    [a1 _generateParkingMapItemsWithBiomeEventStreamCarPlayConnected:v22 biomeEventStreamLocationSemantic:v23 dbStore:a4 task:v8 startDate:v24];
+    biomeEventStreamCarPlayConnected = [environmentCopy biomeEventStreamCarPlayConnected];
+    biomeEventStreamLocationSemantic = [environmentCopy biomeEventStreamLocationSemantic];
+    v24 = [date dateByAddingTimeInterval:-v21];
+    [self _generateParkingMapItemsWithBiomeEventStreamCarPlayConnected:biomeEventStreamCarPlayConnected biomeEventStreamLocationSemantic:biomeEventStreamLocationSemantic dbStore:store task:taskCopy startDate:v24];
   }
 }
 
-+ (void)_generateParkingMapItemsWithBiomeEventStreamCarPlayConnected:(id)a3 biomeEventStreamLocationSemantic:(id)a4 dbStore:(ULDatabaseStoreInterface *)a5 task:(id)a6 startDate:(id)a7
++ (void)_generateParkingMapItemsWithBiomeEventStreamCarPlayConnected:(id)connected biomeEventStreamLocationSemantic:(id)semantic dbStore:(ULDatabaseStoreInterface *)store task:(id)task startDate:(id)date
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v33 = a4;
-  v35 = a6;
-  v30 = v10;
-  v31 = a7;
-  v11 = [v10 streamEventsWithStartDate:? endDate:? maxEvents:? lastN:? reversed:?];
+  connectedCopy = connected;
+  semanticCopy = semantic;
+  taskCopy = task;
+  v30 = connectedCopy;
+  dateCopy = date;
+  v11 = [connectedCopy streamEventsWithStartDate:? endDate:? maxEvents:? lastN:? reversed:?];
   v12 = [v11 ul_allWhere:&__block_literal_global_164];
 
   v38 = 0u;
@@ -84,7 +84,7 @@ LABEL_3:
       }
 
       v17 = *(*(&v36 + 1) + 8 * v16);
-      if ([v35 shouldCancel])
+      if ([taskCopy shouldCancel])
       {
         break;
       }
@@ -97,12 +97,12 @@ LABEL_3:
       v18 = logObject_MicroLocation_Default;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v17 timestamp];
+        timestamp = [v17 timestamp];
         v20 = v15;
         v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v17, "starting")}];
         v22 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v17, "reason")}];
         *buf = 138412802;
-        v44 = v19;
+        v44 = timestamp;
         v45 = 2112;
         v46 = v21;
         v47 = 2112;
@@ -114,18 +114,18 @@ LABEL_3:
 
       if ([v17 starting])
       {
-        v23 = [v17 timestamp];
-        v24 = [v33 streamEventsWithStartDate:0 endDate:v23 maxEvents:0 lastN:1 reversed:0];
+        timestamp2 = [v17 timestamp];
+        v24 = [semanticCopy streamEventsWithStartDate:0 endDate:timestamp2 maxEvents:0 lastN:1 reversed:0];
         v25 = [v24 ul_firstWhere:&__block_literal_global_6];
 
         if (v25)
         {
-          v26 = [v25 loiIdentifier];
-          CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v26, buf);
+          loiIdentifier = [v25 loiIdentifier];
+          CLMicroLocationProtobufHelper::boostUuidFromNSUUID(loiIdentifier, buf);
 
           if (BYTE2(v46))
           {
-            v27 = (*(a5->var0 + 8))(a5);
+            v27 = (*(store->var0 + 8))(store);
             v28 = v27;
             if ((BYTE2(v46) & 1) == 0)
             {

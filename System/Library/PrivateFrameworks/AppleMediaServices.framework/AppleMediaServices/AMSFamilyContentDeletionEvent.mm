@@ -1,13 +1,13 @@
 @interface AMSFamilyContentDeletionEvent
-+ (id)_notificationPayloadWithAccountPairs:(id)a3;
-+ (void)postDistributedNotificationWithAccountPairs:(id)a3;
++ (id)_notificationPayloadWithAccountPairs:(id)pairs;
++ (void)postDistributedNotificationWithAccountPairs:(id)pairs;
 @end
 
 @implementation AMSFamilyContentDeletionEvent
 
-+ (void)postDistributedNotificationWithAccountPairs:(id)a3
++ (void)postDistributedNotificationWithAccountPairs:(id)pairs
 {
-  v3 = [a1 _notificationPayloadWithAccountPairs:a3];
+  v3 = [self _notificationPayloadWithAccountPairs:pairs];
   if (v3)
   {
     userInfo = v3;
@@ -17,16 +17,16 @@
   }
 }
 
-+ (id)_notificationPayloadWithAccountPairs:(id)a3
++ (id)_notificationPayloadWithAccountPairs:(id)pairs
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pairsCopy = pairs;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = pairsCopy;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {

@@ -1,23 +1,23 @@
 @interface WBProfile
-- (BOOL)isEqual:(id)a3;
-- (Class)_copyClassIsMutable:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (Class)_copyClassIsMutable:(BOOL)mutable;
 - (NSString)description;
 - (NSString)identifier;
 - (NSString)identifierForExtensions;
 - (NSString)privacyPreservingDescription;
 - (NSString)symbolImageName;
 - (NSString)title;
-- (WBProfile)initWithBookmark:(id)a3;
-- (WBProfile)initWithBookmark:(id)a3 kind:(int64_t)a4;
-- (WBProfile)initWithTitle:(id)a3 symbolImageName:(id)a4 favoritesFolderServerID:(id)a5 deviceIdentifier:(id)a6;
+- (WBProfile)initWithBookmark:(id)bookmark;
+- (WBProfile)initWithBookmark:(id)bookmark kind:(int64_t)kind;
+- (WBProfile)initWithTitle:(id)title symbolImageName:(id)name favoritesFolderServerID:(id)d deviceIdentifier:(id)identifier;
 - (WBSCRDTPosition)syncPosition;
 - (WBSNamedColorOption)color;
-- (id)_defaultSettingForKey:(id)a3;
-- (id)differenceFromProfile:(id)a3;
-- (id)settingForKey:(id)a3;
+- (id)_defaultSettingForKey:(id)key;
+- (id)differenceFromProfile:(id)profile;
+- (id)settingForKey:(id)key;
 - (int)databaseIdentifier;
 - (unint64_t)hash;
-- (void)setCustomFavoritesFolderServerID:(id)a3;
+- (void)setCustomFavoritesFolderServerID:(id)d;
 @end
 
 @implementation WBProfile
@@ -26,15 +26,15 @@
 {
   if (self->_kind)
   {
-    v2 = [(WebBookmark *)self->_bookmark UUID];
+    uUID = [(WebBookmark *)self->_bookmark UUID];
   }
 
   else
   {
-    v2 = *MEMORY[0x277D49BD8];
+    uUID = *MEMORY[0x277D49BD8];
   }
 
-  return v2;
+  return uUID;
 }
 
 - (NSString)privacyPreservingDescription
@@ -42,11 +42,11 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBProfile *)self databaseIdentifier];
-  v7 = [(WBProfile *)self kind];
-  v8 = [(WBProfile *)self identifier];
-  v9 = [(WBProfile *)self serverID];
-  v10 = [v3 stringWithFormat:@"<%@: %p databaseIdentifier = %d; kind = %ld; identifier = %@; serverID = %@>", v5, self, v6, v7, v8, v9];;
+  databaseIdentifier = [(WBProfile *)self databaseIdentifier];
+  kind = [(WBProfile *)self kind];
+  identifier = [(WBProfile *)self identifier];
+  serverID = [(WBProfile *)self serverID];
+  v10 = [v3 stringWithFormat:@"<%@: %p databaseIdentifier = %d; kind = %ld; identifier = %@; serverID = %@>", v5, self, databaseIdentifier, kind, identifier, serverID];;
 
   return v10;
 }
@@ -68,31 +68,31 @@
 {
   if (self->_kind)
   {
-    v2 = [(WebBookmark *)self->_bookmark serverID];
+    serverID = [(WebBookmark *)self->_bookmark serverID];
   }
 
   else
   {
-    v2 = *MEMORY[0x277D49BD8];
+    serverID = *MEMORY[0x277D49BD8];
   }
 
-  return v2;
+  return serverID;
 }
 
 - (NSString)title
 {
-  v3 = [(WebBookmark *)self->_bookmark title];
-  if ([v3 length])
+  title = [(WebBookmark *)self->_bookmark title];
+  if ([title length])
   {
-    v4 = [v3 length];
+    v4 = [title length];
     if (v4 <= *MEMORY[0x277D49D00])
     {
-      v5 = v3;
+      v5 = title;
     }
 
     else
     {
-      v5 = [v3 substringToIndex:?];
+      v5 = [title substringToIndex:?];
     }
 
     goto LABEL_7;
@@ -115,74 +115,74 @@ LABEL_8:
 
 - (NSString)symbolImageName
 {
-  v2 = [(WebBookmark *)self->_bookmark symbolImageName];
-  v3 = v2;
-  if (v2)
+  symbolImageName = [(WebBookmark *)self->_bookmark symbolImageName];
+  v3 = symbolImageName;
+  if (symbolImageName)
   {
-    v4 = v2;
+    firstObject = symbolImageName;
   }
 
   else
   {
-    v5 = [objc_opt_class() availableSymbolImageNames];
-    v4 = [v5 firstObject];
+    availableSymbolImageNames = [objc_opt_class() availableSymbolImageNames];
+    firstObject = [availableSymbolImageNames firstObject];
   }
 
-  v6 = [objc_opt_class() availableSymbolImageNames];
-  v7 = [v6 containsObject:v4];
+  availableSymbolImageNames2 = [objc_opt_class() availableSymbolImageNames];
+  v7 = [availableSymbolImageNames2 containsObject:firstObject];
 
   if (v7)
   {
-    v8 = v4;
+    firstObject2 = firstObject;
   }
 
   else
   {
-    v9 = [objc_opt_class() availableSymbolImageNames];
-    v8 = [v9 firstObject];
+    availableSymbolImageNames3 = [objc_opt_class() availableSymbolImageNames];
+    firstObject2 = [availableSymbolImageNames3 firstObject];
   }
 
-  return v8;
+  return firstObject2;
 }
 
-- (WBProfile)initWithTitle:(id)a3 symbolImageName:(id)a4 favoritesFolderServerID:(id)a5 deviceIdentifier:(id)a6
+- (WBProfile)initWithTitle:(id)title symbolImageName:(id)name favoritesFolderServerID:(id)d deviceIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[WebBookmark alloc] initFolderWithParentID:0 subtype:2 deviceIdentifier:v10 collectionType:1];
+  identifierCopy = identifier;
+  dCopy = d;
+  nameCopy = name;
+  titleCopy = title;
+  v14 = [[WebBookmark alloc] initFolderWithParentID:0 subtype:2 deviceIdentifier:identifierCopy collectionType:1];
 
-  [v14 setTitle:v13];
-  [v14 setSymbolImageName:v12];
+  [v14 setTitle:titleCopy];
+  [v14 setSymbolImageName:nameCopy];
 
-  [v14 setCustomFavoritesFolderServerID:v11];
+  [v14 setCustomFavoritesFolderServerID:dCopy];
   v15 = [(WBProfile *)self initWithBookmark:v14];
 
   return v15;
 }
 
-- (WBProfile)initWithBookmark:(id)a3
+- (WBProfile)initWithBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D49BD8]] ^ 1;
+  bookmarkCopy = bookmark;
+  uUID = [bookmarkCopy UUID];
+  v6 = [uUID isEqualToString:*MEMORY[0x277D49BD8]] ^ 1;
 
-  v7 = [(WBProfile *)self initWithBookmark:v4 kind:v6];
+  v7 = [(WBProfile *)self initWithBookmark:bookmarkCopy kind:v6];
   return v7;
 }
 
-- (WBProfile)initWithBookmark:(id)a3 kind:(int64_t)a4
+- (WBProfile)initWithBookmark:(id)bookmark kind:(int64_t)kind
 {
-  v7 = a3;
+  bookmarkCopy = bookmark;
   v12.receiver = self;
   v12.super_class = WBProfile;
   v8 = [(WBProfile *)&v12 init];
-  if (v8 && [v7 isFolder] && objc_msgSend(v7, "subtype") == 2)
+  if (v8 && [bookmarkCopy isFolder] && objc_msgSend(bookmarkCopy, "subtype") == 2)
   {
-    objc_storeStrong(&v8->_bookmark, a3);
-    v8->_kind = a4;
-    if (!a4)
+    objc_storeStrong(&v8->_bookmark, bookmark);
+    v8->_kind = kind;
+    if (!kind)
     {
       titleProvider = v8->_titleProvider;
       v8->_titleProvider = &__block_literal_global_12;
@@ -199,10 +199,10 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -212,9 +212,9 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WBProfile *)v4 identifier];
-      v6 = [(WBProfile *)self identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(WBProfile *)equalCopy identifier];
+      identifier2 = [(WBProfile *)self identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else
@@ -228,25 +228,25 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v2 = [(WBProfile *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(WBProfile *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)differenceFromProfile:(id)a3
+- (id)differenceFromProfile:(id)profile
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && WBSIsEqual())
+  profileCopy = profile;
+  if (profileCopy && WBSIsEqual())
   {
-    v5 = [(WBProfile *)self title];
-    v6 = [v4 title];
+    title = [(WBProfile *)self title];
+    title2 = [profileCopy title];
     v7 = WBSIsEqual();
 
     v8 = v7 ^ 1u;
-    v9 = [(WBProfile *)self symbolImageName];
-    v10 = [v4 symbolImageName];
+    symbolImageName = [(WBProfile *)self symbolImageName];
+    symbolImageName2 = [profileCopy symbolImageName];
     v11 = WBSIsEqual();
 
     if (!v11)
@@ -254,8 +254,8 @@ LABEL_8:
       v8 |= 2uLL;
     }
 
-    v12 = [(WBProfile *)self customFavoritesFolderServerID];
-    v13 = [v4 customFavoritesFolderServerID];
+    customFavoritesFolderServerID = [(WBProfile *)self customFavoritesFolderServerID];
+    customFavoritesFolderServerID2 = [profileCopy customFavoritesFolderServerID];
     v14 = WBSIsEqual();
 
     if (!v14)
@@ -263,8 +263,8 @@ LABEL_8:
       v8 |= 4uLL;
     }
 
-    v15 = [(WBProfile *)self color];
-    v16 = [v4 color];
+    color = [(WBProfile *)self color];
+    color2 = [profileCopy color];
     v17 = WBSIsEqual();
 
     if (!v17)
@@ -272,8 +272,8 @@ LABEL_8:
       v8 |= 8uLL;
     }
 
-    v18 = [(WBProfile *)self startPageSectionsDataRepresentation];
-    v19 = [v4 startPageSectionsDataRepresentation];
+    startPageSectionsDataRepresentation = [(WBProfile *)self startPageSectionsDataRepresentation];
+    startPageSectionsDataRepresentation2 = [profileCopy startPageSectionsDataRepresentation];
     v20 = WBSIsEqual();
 
     if (!v20)
@@ -281,8 +281,8 @@ LABEL_8:
       v8 |= 0x10uLL;
     }
 
-    v21 = [(WBProfile *)self syncPosition];
-    v22 = [v4 syncPosition];
+    syncPosition = [(WBProfile *)self syncPosition];
+    syncPosition2 = [profileCopy syncPosition];
     v23 = WBSIsEqual();
 
     if (!v23)
@@ -292,16 +292,16 @@ LABEL_8:
 
     v24 = [MEMORY[0x277CBEB58] set];
     settingsDictionary = self->_settingsDictionary;
-    if (settingsDictionary && ([(NSMutableDictionary *)settingsDictionary isEqualToDictionary:v4[3]]& 1) == 0)
+    if (settingsDictionary && ([(NSMutableDictionary *)settingsDictionary isEqualToDictionary:profileCopy[3]]& 1) == 0)
     {
       v43 = v8 | 0x40;
-      v44 = v4;
-      v26 = v4[3];
+      v44 = profileCopy;
+      v26 = profileCopy[3];
       v27 = MEMORY[0x277CBEB98];
-      v28 = [(NSMutableDictionary *)self->_settingsDictionary allKeys];
-      v29 = [v27 setWithArray:v28];
-      v30 = [v26 allKeys];
-      v31 = [v29 setByAddingObjectsFromArray:v30];
+      allKeys = [(NSMutableDictionary *)self->_settingsDictionary allKeys];
+      v29 = [v27 setWithArray:allKeys];
+      allKeys2 = [v26 allKeys];
+      v31 = [v29 setByAddingObjectsFromArray:allKeys2];
 
       v47 = 0u;
       v48 = 0u;
@@ -338,7 +338,7 @@ LABEL_8:
       }
 
       v8 = v43;
-      v4 = v44;
+      profileCopy = v44;
     }
 
     v40 = [[WBProfileDifference alloc] initWithResult:v8 settingsKeys:v24];
@@ -354,50 +354,50 @@ LABEL_8:
   return v40;
 }
 
-- (void)setCustomFavoritesFolderServerID:(id)a3
+- (void)setCustomFavoritesFolderServerID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   [(WebBookmark *)self->_bookmark setCustomFavoritesFolderServerID:v4];
 }
 
 - (WBSCRDTPosition)syncPosition
 {
-  v2 = [(WBProfile *)self bookmark];
-  v3 = [v2 syncPosition];
+  bookmark = [(WBProfile *)self bookmark];
+  syncPosition = [bookmark syncPosition];
 
-  return v3;
+  return syncPosition;
 }
 
-- (id)settingForKey:(id)a3
+- (id)settingForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WBProfile *)self bookmark];
-  [v5 lockFields];
+  keyCopy = key;
+  bookmark = [(WBProfile *)self bookmark];
+  [bookmark lockFields];
 
-  v6 = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:v4];
-  v7 = [v6 value];
+  v6 = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:keyCopy];
+  value = [v6 value];
 
-  v8 = [(WBProfile *)self bookmark];
-  [v8 unlockFields];
+  bookmark2 = [(WBProfile *)self bookmark];
+  [bookmark2 unlockFields];
 
-  if (!v7)
+  if (!value)
   {
-    v7 = [(WBProfile *)self _defaultSettingForKey:v4];
+    value = [(WBProfile *)self _defaultSettingForKey:keyCopy];
   }
 
-  return v7;
+  return value;
 }
 
-- (id)_defaultSettingForKey:(id)a3
+- (id)_defaultSettingForKey:(id)key
 {
   v3 = _defaultSettingForKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     [WBProfile _defaultSettingForKey:];
   }
 
-  v5 = [_defaultSettingForKey__defaultSettingValues objectForKeyedSubscript:v4];
+  v5 = [_defaultSettingForKey__defaultSettingValues objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -442,10 +442,10 @@ void *__41__WBProfile_modifiedSettingsFieldsByName__block_invoke(uint64_t a1, ui
   return v4;
 }
 
-- (Class)_copyClassIsMutable:(BOOL)a3
+- (Class)_copyClassIsMutable:(BOOL)mutable
 {
   v3 = off_279E749D8;
-  if (!a3)
+  if (!mutable)
   {
     v3 = off_279E749F0;
   }
@@ -461,13 +461,13 @@ void *__41__WBProfile_modifiedSettingsFieldsByName__block_invoke(uint64_t a1, ui
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBProfile *)self databaseIdentifier];
-  v7 = [(WBProfile *)self title];
-  v8 = [(WBProfile *)self symbolImageName];
-  v9 = [(WBProfile *)self kind];
-  v10 = [(WBProfile *)self identifier];
-  v11 = [(WBProfile *)self serverID];
-  v12 = [v3 stringWithFormat:@"<%@: %p databaseIdentifier = %d; title = %@; symbolImage = %@; kind = %ld; identifier = %@; serverID = %@>", v5, self, v6, v7, v8, v9, v10, v11];;
+  databaseIdentifier = [(WBProfile *)self databaseIdentifier];
+  title = [(WBProfile *)self title];
+  symbolImageName = [(WBProfile *)self symbolImageName];
+  kind = [(WBProfile *)self kind];
+  identifier = [(WBProfile *)self identifier];
+  serverID = [(WBProfile *)self serverID];
+  v12 = [v3 stringWithFormat:@"<%@: %p databaseIdentifier = %d; title = %@; symbolImage = %@; kind = %ld; identifier = %@; serverID = %@>", v5, self, databaseIdentifier, title, symbolImageName, kind, identifier, serverID];;
 
   return v12;
 }

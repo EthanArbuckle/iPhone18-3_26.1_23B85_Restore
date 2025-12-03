@@ -1,19 +1,19 @@
 @interface PKFelicaTransitAppletState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInShinkansenStation;
 - (BOOL)isInStation;
 - (PKFelicaTransitAppletState)init;
-- (PKFelicaTransitAppletState)initWithCoder:(id)a3;
-- (id)_concreteTransactionForRecordAtIndex:(unint64_t)a3 withBalance:(unsigned int *)a4 historyRecords:(id)a5 terminalState:(id)a6 numberProcessed:(unint64_t *)a7 exitedShinkansen:(BOOL *)a8;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)processUpdateWithAppletHistory:(id)a3 concreteTransactions:(id *)a4 ephemeralTransaction:(id *)a5;
-- (id)transitPassPropertiesWithPaymentApplication:(id)a3;
-- (id)transitPassPropertiesWithPaymentApplication:(id)a3 fieldCollection:(id)a4;
-- (id)transitPassPropertiesWithPaymentApplication:(id)a3 pass:(id)a4;
+- (PKFelicaTransitAppletState)initWithCoder:(id)coder;
+- (id)_concreteTransactionForRecordAtIndex:(unint64_t)index withBalance:(unsigned int *)balance historyRecords:(id)records terminalState:(id)state numberProcessed:(unint64_t *)processed exitedShinkansen:(BOOL *)shinkansen;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)processUpdateWithAppletHistory:(id)history concreteTransactions:(id *)transactions ephemeralTransaction:(id *)transaction;
+- (id)transitPassPropertiesWithPaymentApplication:(id)application;
+- (id)transitPassPropertiesWithPaymentApplication:(id)application fieldCollection:(id)collection;
+- (id)transitPassPropertiesWithPaymentApplication:(id)application pass:(id)pass;
 - (unint64_t)hash;
-- (void)_resolveTransactionsFromState:(id)a3 toState:(id)a4 withHistoryRecords:(id)a5 concreteTransactions:(id *)a6 ephemeralTransaction:(id *)a7;
+- (void)_resolveTransactionsFromState:(id)state toState:(id)toState withHistoryRecords:(id)records concreteTransactions:(id *)transactions ephemeralTransaction:(id *)transaction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFelicaTransitAppletState
@@ -32,150 +32,150 @@
   return v3;
 }
 
-- (PKFelicaTransitAppletState)initWithCoder:(id)a3
+- (PKFelicaTransitAppletState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v65.receiver = self;
   v65.super_class = PKFelicaTransitAppletState;
-  v5 = [(PKTransitAppletState *)&v65 initWithCoder:v4];
+  v5 = [(PKTransitAppletState *)&v65 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PKTransitAppletState *)v5 setCurrency:@"JPY"];
-    v7 = [(PKTransitAppletState *)v6 enrouteTransitTypes];
-    v8 = [v7 containsObject:@"TransitMetro"];
+    enrouteTransitTypes = [(PKTransitAppletState *)v6 enrouteTransitTypes];
+    v8 = [enrouteTransitTypes containsObject:@"TransitMetro"];
 
     if (v8)
     {
       [(PKTransitAppletState *)v6 setEnrouteTransitTypes:0];
     }
 
-    v9 = [(PKTransitAppletState *)v6 enrouteTransitTypes];
+    enrouteTransitTypes2 = [(PKTransitAppletState *)v6 enrouteTransitTypes];
 
-    if (!v9)
+    if (!enrouteTransitTypes2)
     {
-      if ([v4 decodeBoolForKey:@"inStation"])
+      if ([coderCopy decodeBoolForKey:@"inStation"])
       {
         [(PKTransitAppletState *)v6 addEnrouteTransitType:@"Transit"];
       }
 
-      if ([v4 decodeBoolForKey:@"inShinkansenStation"])
+      if ([coderCopy decodeBoolForKey:@"inShinkansenStation"])
       {
         [(PKTransitAppletState *)v6 addEnrouteTransitType:@"TransitTrainShinkansen"];
       }
     }
 
-    v6->_shinkansenTicketActive = [v4 decodeBoolForKey:@"shinkansenTicketActive"];
-    v6->_greenCarTicketUsed = [v4 decodeBoolForKey:@"greenCarTicketUsed"];
-    v6->_balanceAllowedForCommute = [v4 decodeBoolForKey:@"balanceAllowedForCommute"];
-    v6->_lowBalanceNotificationEnabled = [v4 decodeBoolForKey:@"lowBalanceNotificationEnabled"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenValidityStartDate"];
+    v6->_shinkansenTicketActive = [coderCopy decodeBoolForKey:@"shinkansenTicketActive"];
+    v6->_greenCarTicketUsed = [coderCopy decodeBoolForKey:@"greenCarTicketUsed"];
+    v6->_balanceAllowedForCommute = [coderCopy decodeBoolForKey:@"balanceAllowedForCommute"];
+    v6->_lowBalanceNotificationEnabled = [coderCopy decodeBoolForKey:@"lowBalanceNotificationEnabled"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenValidityStartDate"];
     shinkansenValidityStartDate = v6->_shinkansenValidityStartDate;
     v6->_shinkansenValidityStartDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenValidityTerm"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenValidityTerm"];
     shinkansenValidityTerm = v6->_shinkansenValidityTerm;
     v6->_shinkansenValidityTerm = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenOriginStation"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenOriginStation"];
     shinkansenOriginStationCode = v6->_shinkansenOriginStationCode;
     v6->_shinkansenOriginStationCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenDestinationStation"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenDestinationStation"];
     shinkansenDestinationStationCode = v6->_shinkansenDestinationStationCode;
     v6->_shinkansenDestinationStationCode = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenDepartureTime"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenDepartureTime"];
     shinkansenDepartureTime = v6->_shinkansenDepartureTime;
     v6->_shinkansenDepartureTime = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenArrivalTime"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenArrivalTime"];
     shinkansenArrivalTime = v6->_shinkansenArrivalTime;
     v6->_shinkansenArrivalTime = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenTrainName"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenTrainName"];
     shinkansenTrainName = v6->_shinkansenTrainName;
     v6->_shinkansenTrainName = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenCarNumber"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenCarNumber"];
     shinkansenCarNumber = v6->_shinkansenCarNumber;
     v6->_shinkansenCarNumber = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSeatRow"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSeatRow"];
     shinkansenSeatRow = v6->_shinkansenSeatRow;
     v6->_shinkansenSeatRow = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSeatNumber"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSeatNumber"];
     shinkansenSeatNumber = v6->_shinkansenSeatNumber;
     v6->_shinkansenSeatNumber = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryOriginStation"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryOriginStation"];
     shinkansenSecondaryOriginStationCode = v6->_shinkansenSecondaryOriginStationCode;
     v6->_shinkansenSecondaryOriginStationCode = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryDestinationStation"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryDestinationStation"];
     shinkansenSecondaryDestinationStationCode = v6->_shinkansenSecondaryDestinationStationCode;
     v6->_shinkansenSecondaryDestinationStationCode = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryDepartureTime"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryDepartureTime"];
     shinkansenSecondaryDepartureTime = v6->_shinkansenSecondaryDepartureTime;
     v6->_shinkansenSecondaryDepartureTime = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryArrivalTime"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryArrivalTime"];
     shinkansenSecondaryArrivalTime = v6->_shinkansenSecondaryArrivalTime;
     v6->_shinkansenSecondaryArrivalTime = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryTrainName"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryTrainName"];
     shinkansenSecondaryTrainName = v6->_shinkansenSecondaryTrainName;
     v6->_shinkansenSecondaryTrainName = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryCarNumber"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryCarNumber"];
     shinkansenSecondaryCarNumber = v6->_shinkansenSecondaryCarNumber;
     v6->_shinkansenSecondaryCarNumber = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondarySeatRow"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondarySeatRow"];
     shinkansenSecondarySeatRow = v6->_shinkansenSecondarySeatRow;
     v6->_shinkansenSecondarySeatRow = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondarySeatNumber"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondarySeatNumber"];
     shinkansenSecondarySeatNumber = v6->_shinkansenSecondarySeatNumber;
     v6->_shinkansenSecondarySeatNumber = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"greenCarOriginStation"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"greenCarOriginStation"];
     greenCarOriginStationCode = v6->_greenCarOriginStationCode;
     v6->_greenCarOriginStationCode = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"greenCarDestinationStation"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"greenCarDestinationStation"];
     greenCarDestinationStationCode = v6->_greenCarDestinationStationCode;
     v6->_greenCarDestinationStationCode = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"greenCarValidityStartDate"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"greenCarValidityStartDate"];
     greenCarValidityStartDate = v6->_greenCarValidityStartDate;
     v6->_greenCarValidityStartDate = v50;
 
-    v6->_hasShinkansenTicket = [v4 decodeBoolForKey:@"hasShinkansenTicket"];
-    v6->_hasGreenCarTicket = [v4 decodeBoolForKey:@"hasGreenCarTicket"];
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenOriginStationString"];
+    v6->_hasShinkansenTicket = [coderCopy decodeBoolForKey:@"hasShinkansenTicket"];
+    v6->_hasGreenCarTicket = [coderCopy decodeBoolForKey:@"hasGreenCarTicket"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenOriginStationString"];
     shinkansenOriginStationString = v6->_shinkansenOriginStationString;
     v6->_shinkansenOriginStationString = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenDestinationStationString"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenDestinationStationString"];
     shinkansenDestinationStationString = v6->_shinkansenDestinationStationString;
     v6->_shinkansenDestinationStationString = v54;
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryOriginStationString"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryOriginStationString"];
     shinkansenSecondaryOriginStationString = v6->_shinkansenSecondaryOriginStationString;
     v6->_shinkansenSecondaryOriginStationString = v56;
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryDestinationStationString"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenSecondaryDestinationStationString"];
     shinkansenSecondaryDestinationStationString = v6->_shinkansenSecondaryDestinationStationString;
     v6->_shinkansenSecondaryDestinationStationString = v58;
 
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"greenCarOriginStationString"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"greenCarOriginStationString"];
     greenCarOriginStationString = v6->_greenCarOriginStationString;
     v6->_greenCarOriginStationString = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"greenCarDestinationStationString"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"greenCarDestinationStationString"];
     greenCarDestinationStationString = v6->_greenCarDestinationStationString;
     v6->_greenCarDestinationStationString = v62;
   }
@@ -183,53 +183,53 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKFelicaTransitAppletState;
-  v4 = a3;
-  [(PKTransitAppletState *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[PKFelicaTransitAppletState isInShinkansenStation](self forKey:{"isInShinkansenStation", v5.receiver, v5.super_class), @"inShinkansenStation"}];
-  [v4 encodeBool:self->_shinkansenTicketActive forKey:@"shinkansenTicketActive"];
-  [v4 encodeBool:self->_greenCarTicketUsed forKey:@"greenCarTicketUsed"];
-  [v4 encodeBool:self->_balanceAllowedForCommute forKey:@"balanceAllowedForCommute"];
-  [v4 encodeBool:self->_lowBalanceNotificationEnabled forKey:@"lowBalanceNotificationEnabled"];
-  [v4 encodeObject:self->_shinkansenValidityStartDate forKey:@"shinkansenValidityStartDate"];
-  [v4 encodeObject:self->_shinkansenValidityTerm forKey:@"shinkansenValidityTerm"];
-  [v4 encodeObject:self->_shinkansenOriginStationCode forKey:@"shinkansenOriginStation"];
-  [v4 encodeObject:self->_shinkansenDestinationStationCode forKey:@"shinkansenDestinationStation"];
-  [v4 encodeObject:self->_shinkansenDepartureTime forKey:@"shinkansenDepartureTime"];
-  [v4 encodeObject:self->_shinkansenArrivalTime forKey:@"shinkansenArrivalTime"];
-  [v4 encodeObject:self->_shinkansenTrainName forKey:@"shinkansenTrainName"];
-  [v4 encodeObject:self->_shinkansenCarNumber forKey:@"shinkansenCarNumber"];
-  [v4 encodeObject:self->_shinkansenSeatRow forKey:@"shinkansenSeatRow"];
-  [v4 encodeObject:self->_shinkansenSeatNumber forKey:@"shinkansenSeatNumber"];
-  [v4 encodeObject:self->_shinkansenSecondaryOriginStationCode forKey:@"shinkansenSecondaryOriginStation"];
-  [v4 encodeObject:self->_shinkansenSecondaryDestinationStationCode forKey:@"shinkansenSecondaryDestinationStation"];
-  [v4 encodeObject:self->_shinkansenSecondaryDepartureTime forKey:@"shinkansenSecondaryDepartureTime"];
-  [v4 encodeObject:self->_shinkansenSecondaryArrivalTime forKey:@"shinkansenSecondaryArrivalTime"];
-  [v4 encodeObject:self->_shinkansenSecondaryTrainName forKey:@"shinkansenSecondaryTrainName"];
-  [v4 encodeObject:self->_shinkansenSecondaryCarNumber forKey:@"shinkansenSecondaryCarNumber"];
-  [v4 encodeObject:self->_shinkansenSecondarySeatRow forKey:@"shinkansenSecondarySeatRow"];
-  [v4 encodeObject:self->_shinkansenSecondarySeatNumber forKey:@"shinkansenSecondarySeatNumber"];
-  [v4 encodeObject:self->_greenCarOriginStationCode forKey:@"greenCarOriginStation"];
-  [v4 encodeObject:self->_greenCarDestinationStationCode forKey:@"greenCarDestinationStation"];
-  [v4 encodeObject:self->_greenCarValidityStartDate forKey:@"greenCarValidityStartDate"];
-  [v4 encodeBool:self->_hasShinkansenTicket forKey:@"hasShinkansenTicket"];
-  [v4 encodeBool:self->_hasGreenCarTicket forKey:@"hasGreenCarTicket"];
-  [v4 encodeObject:self->_shinkansenOriginStationString forKey:@"shinkansenOriginStationString"];
-  [v4 encodeObject:self->_shinkansenDestinationStationString forKey:@"shinkansenDestinationStationString"];
-  [v4 encodeObject:self->_shinkansenSecondaryOriginStationString forKey:@"shinkansenSecondaryOriginStationString"];
-  [v4 encodeObject:self->_shinkansenSecondaryDestinationStationString forKey:@"shinkansenSecondaryDestinationStationString"];
-  [v4 encodeObject:self->_greenCarOriginStationString forKey:@"greenCarOriginStationString"];
-  [v4 encodeObject:self->_greenCarDestinationStationString forKey:@"greenCarDestinationStationString"];
+  coderCopy = coder;
+  [(PKTransitAppletState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[PKFelicaTransitAppletState isInShinkansenStation](self forKey:{"isInShinkansenStation", v5.receiver, v5.super_class), @"inShinkansenStation"}];
+  [coderCopy encodeBool:self->_shinkansenTicketActive forKey:@"shinkansenTicketActive"];
+  [coderCopy encodeBool:self->_greenCarTicketUsed forKey:@"greenCarTicketUsed"];
+  [coderCopy encodeBool:self->_balanceAllowedForCommute forKey:@"balanceAllowedForCommute"];
+  [coderCopy encodeBool:self->_lowBalanceNotificationEnabled forKey:@"lowBalanceNotificationEnabled"];
+  [coderCopy encodeObject:self->_shinkansenValidityStartDate forKey:@"shinkansenValidityStartDate"];
+  [coderCopy encodeObject:self->_shinkansenValidityTerm forKey:@"shinkansenValidityTerm"];
+  [coderCopy encodeObject:self->_shinkansenOriginStationCode forKey:@"shinkansenOriginStation"];
+  [coderCopy encodeObject:self->_shinkansenDestinationStationCode forKey:@"shinkansenDestinationStation"];
+  [coderCopy encodeObject:self->_shinkansenDepartureTime forKey:@"shinkansenDepartureTime"];
+  [coderCopy encodeObject:self->_shinkansenArrivalTime forKey:@"shinkansenArrivalTime"];
+  [coderCopy encodeObject:self->_shinkansenTrainName forKey:@"shinkansenTrainName"];
+  [coderCopy encodeObject:self->_shinkansenCarNumber forKey:@"shinkansenCarNumber"];
+  [coderCopy encodeObject:self->_shinkansenSeatRow forKey:@"shinkansenSeatRow"];
+  [coderCopy encodeObject:self->_shinkansenSeatNumber forKey:@"shinkansenSeatNumber"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryOriginStationCode forKey:@"shinkansenSecondaryOriginStation"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryDestinationStationCode forKey:@"shinkansenSecondaryDestinationStation"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryDepartureTime forKey:@"shinkansenSecondaryDepartureTime"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryArrivalTime forKey:@"shinkansenSecondaryArrivalTime"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryTrainName forKey:@"shinkansenSecondaryTrainName"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryCarNumber forKey:@"shinkansenSecondaryCarNumber"];
+  [coderCopy encodeObject:self->_shinkansenSecondarySeatRow forKey:@"shinkansenSecondarySeatRow"];
+  [coderCopy encodeObject:self->_shinkansenSecondarySeatNumber forKey:@"shinkansenSecondarySeatNumber"];
+  [coderCopy encodeObject:self->_greenCarOriginStationCode forKey:@"greenCarOriginStation"];
+  [coderCopy encodeObject:self->_greenCarDestinationStationCode forKey:@"greenCarDestinationStation"];
+  [coderCopy encodeObject:self->_greenCarValidityStartDate forKey:@"greenCarValidityStartDate"];
+  [coderCopy encodeBool:self->_hasShinkansenTicket forKey:@"hasShinkansenTicket"];
+  [coderCopy encodeBool:self->_hasGreenCarTicket forKey:@"hasGreenCarTicket"];
+  [coderCopy encodeObject:self->_shinkansenOriginStationString forKey:@"shinkansenOriginStationString"];
+  [coderCopy encodeObject:self->_shinkansenDestinationStationString forKey:@"shinkansenDestinationStationString"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryOriginStationString forKey:@"shinkansenSecondaryOriginStationString"];
+  [coderCopy encodeObject:self->_shinkansenSecondaryDestinationStationString forKey:@"shinkansenSecondaryDestinationStationString"];
+  [coderCopy encodeObject:self->_greenCarOriginStationString forKey:@"greenCarOriginStationString"];
+  [coderCopy encodeObject:self->_greenCarDestinationStationString forKey:@"greenCarDestinationStationString"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PKFelicaTransitAppletState;
-  v4 = [(PKTransitAppletState *)&v6 copyWithZone:a3];
+  v4 = [(PKTransitAppletState *)&v6 copyWithZone:zone];
   [v4 setShinkansenTicketActive:self->_shinkansenTicketActive];
   [v4 setGreenCarTicketUsed:self->_greenCarTicketUsed];
   [v4 setBalanceAllowedForCommute:self->_balanceAllowedForCommute];
@@ -275,30 +275,30 @@
 
 - (BOOL)isInStation
 {
-  v2 = [(PKTransitAppletState *)self enrouteTransitTypes];
-  v3 = [v2 containsObject:@"Transit"];
+  enrouteTransitTypes = [(PKTransitAppletState *)self enrouteTransitTypes];
+  v3 = [enrouteTransitTypes containsObject:@"Transit"];
 
   return v3;
 }
 
 - (BOOL)isInShinkansenStation
 {
-  v2 = [(PKTransitAppletState *)self enrouteTransitTypes];
-  v3 = [v2 containsObject:@"TransitTrainShinkansen"];
+  enrouteTransitTypes = [(PKTransitAppletState *)self enrouteTransitTypes];
+  v3 = [enrouteTransitTypes containsObject:@"TransitTrainShinkansen"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  equalCopy = equal;
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v5 = 0;
     goto LABEL_13;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v62.receiver = self;
   v62.super_class = PKFelicaTransitAppletState;
   if (![(PKTransitAppletState *)&v62 isEqual:v5]|| self->_shinkansenTicketActive != *(v5 + 88) || self->_greenCarTicketUsed != *(v5 + 89) || self->_balanceAllowedForCommute != *(v5 + 90) || self->_lowBalanceNotificationEnabled != *(v5 + 91))
@@ -754,41 +754,41 @@ LABEL_14:
   return v17 ^ v25 ^ [(NSNumber *)self->_greenCarValidityStartDate hash];
 }
 
-- (id)processUpdateWithAppletHistory:(id)a3 concreteTransactions:(id *)a4 ephemeralTransaction:(id *)a5
+- (id)processUpdateWithAppletHistory:(id)history concreteTransactions:(id *)transactions ephemeralTransaction:(id *)transaction
 {
-  *(&v79 + 1) = a4;
+  *(&v79 + 1) = transactions;
   v84 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  historyCopy = history;
   v8 = [(PKFelicaTransitAppletState *)self copy];
-  v9 = [v7 source];
-  [v7 sanitizeValuesWithState:self];
-  [v8 setBlacklisted:{objc_msgSend(v7, "isBlacklisted")}];
-  [v8 setShinkansenTicketActive:{objc_msgSend(v7, "isShinkansenTicketActive")}];
-  [v8 setGreenCarTicketUsed:{objc_msgSend(v7, "isGreenCarTicketUsed")}];
-  [v8 setBalanceAllowedForCommute:{objc_msgSend(v7, "isBalanceAllowedForCommute")}];
-  [v8 setLowBalanceNotificationEnabled:{objc_msgSend(v7, "isLowBalanceNotificationEnabled")}];
-  v10 = [v8 enrouteTransitTypes];
-  v11 = [v7 enrouteTransitTypes];
-  v78 = self;
-  v12 = [(PKTransitAppletState *)self updatedEnrouteTransitTypesFromExistingTypes:v10 newTypes:v11];
+  source = [historyCopy source];
+  [historyCopy sanitizeValuesWithState:self];
+  [v8 setBlacklisted:{objc_msgSend(historyCopy, "isBlacklisted")}];
+  [v8 setShinkansenTicketActive:{objc_msgSend(historyCopy, "isShinkansenTicketActive")}];
+  [v8 setGreenCarTicketUsed:{objc_msgSend(historyCopy, "isGreenCarTicketUsed")}];
+  [v8 setBalanceAllowedForCommute:{objc_msgSend(historyCopy, "isBalanceAllowedForCommute")}];
+  [v8 setLowBalanceNotificationEnabled:{objc_msgSend(historyCopy, "isLowBalanceNotificationEnabled")}];
+  enrouteTransitTypes = [v8 enrouteTransitTypes];
+  enrouteTransitTypes2 = [historyCopy enrouteTransitTypes];
+  selfCopy = self;
+  v12 = [(PKTransitAppletState *)self updatedEnrouteTransitTypesFromExistingTypes:enrouteTransitTypes newTypes:enrouteTransitTypes2];
   [v8 setEnrouteTransitTypes:v12];
 
-  v13 = [v7 shinkansenTicket];
-  v14 = v13;
-  *&v79 = a5;
-  if (v13 || v9 == 1)
+  shinkansenTicket = [historyCopy shinkansenTicket];
+  v14 = shinkansenTicket;
+  *&v79 = transaction;
+  if (shinkansenTicket || source == 1)
   {
-    v17 = [v13 validityStartDate];
-    [v8 setShinkansenValidityStartDate:v17];
+    validityStartDate = [shinkansenTicket validityStartDate];
+    [v8 setShinkansenValidityStartDate:validityStartDate];
 
-    v18 = [v14 validityTerm];
-    [v8 setShinkansenValidityTerm:v18];
+    validityTerm = [v14 validityTerm];
+    [v8 setShinkansenValidityTerm:validityTerm];
 
-    v19 = [v14 trains];
-    v20 = [v19 count];
+    trains = [v14 trains];
+    v20 = [trains count];
     if (v20)
     {
-      v21 = [v19 objectAtIndexedSubscript:0];
+      v21 = [trains objectAtIndexedSubscript:0];
     }
 
     else
@@ -796,45 +796,45 @@ LABEL_14:
       v21 = 0;
     }
 
-    v77 = v9;
-    v22 = [v21 departureTime];
-    [v8 setShinkansenDepartureTime:v22];
+    v77 = source;
+    departureTime = [v21 departureTime];
+    [v8 setShinkansenDepartureTime:departureTime];
 
-    v23 = [v21 arrivalTime];
-    [v8 setShinkansenArrivalTime:v23];
+    arrivalTime = [v21 arrivalTime];
+    [v8 setShinkansenArrivalTime:arrivalTime];
 
-    v24 = [v21 trainName];
-    [v8 setShinkansenTrainName:v24];
+    trainName = [v21 trainName];
+    [v8 setShinkansenTrainName:trainName];
 
-    v25 = [v21 carNumber];
-    [v8 setShinkansenCarNumber:v25];
+    carNumber = [v21 carNumber];
+    [v8 setShinkansenCarNumber:carNumber];
 
-    v26 = [v21 seatRow];
-    [v8 setShinkansenSeatRow:v26];
+    seatRow = [v21 seatRow];
+    [v8 setShinkansenSeatRow:seatRow];
 
-    v27 = [v21 seatNumber];
-    [v8 setShinkansenSeatNumber:v27];
+    seatNumber = [v21 seatNumber];
+    [v8 setShinkansenSeatNumber:seatNumber];
 
-    v28 = [v21 originStation];
-    v29 = [v8 shinkansenOriginStationCode];
-    v30 = v29;
-    v16 = v28 != 0;
-    if (v28 && v29)
+    originStation = [v21 originStation];
+    shinkansenOriginStationCode = [v8 shinkansenOriginStationCode];
+    v30 = shinkansenOriginStationCode;
+    v16 = originStation != 0;
+    if (originStation && shinkansenOriginStationCode)
     {
-      v31 = [v28 isEqual:v29];
+      v31 = [originStation isEqual:shinkansenOriginStationCode];
 
       if (v31)
       {
 LABEL_10:
         v16 = 0;
 LABEL_13:
-        v32 = [v21 destinationStation];
+        destinationStation = [v21 destinationStation];
 
-        v33 = [v8 shinkansenDestinationStationCode];
-        v34 = v33;
-        if (v32 && v33)
+        shinkansenDestinationStationCode = [v8 shinkansenDestinationStationCode];
+        v34 = shinkansenDestinationStationCode;
+        if (destinationStation && shinkansenDestinationStationCode)
         {
-          v35 = [v32 isEqual:v33];
+          v35 = [destinationStation isEqual:shinkansenDestinationStationCode];
 
           if (v35)
           {
@@ -845,15 +845,15 @@ LABEL_13:
         else
         {
 
-          if (v32 == v34)
+          if (destinationStation == v34)
           {
             goto LABEL_20;
           }
         }
 
-        [v8 setShinkansenDestinationStationCode:v32];
+        [v8 setShinkansenDestinationStationCode:destinationStation];
         [v8 setShinkansenDestinationStationString:0];
-        if (v32)
+        if (destinationStation)
         {
           v16 = 1;
         }
@@ -866,34 +866,34 @@ LABEL_20:
 
         else
         {
-          v36 = [v19 objectAtIndexedSubscript:1];
+          v36 = [trains objectAtIndexedSubscript:1];
         }
 
-        v37 = [v36 departureTime];
-        [v8 setShinkansenSecondaryDepartureTime:v37];
+        departureTime2 = [v36 departureTime];
+        [v8 setShinkansenSecondaryDepartureTime:departureTime2];
 
-        v38 = [v36 arrivalTime];
-        [v8 setShinkansenSecondaryArrivalTime:v38];
+        arrivalTime2 = [v36 arrivalTime];
+        [v8 setShinkansenSecondaryArrivalTime:arrivalTime2];
 
-        v39 = [v36 trainName];
-        [v8 setShinkansenSecondaryTrainName:v39];
+        trainName2 = [v36 trainName];
+        [v8 setShinkansenSecondaryTrainName:trainName2];
 
-        v40 = [v36 carNumber];
-        [v8 setShinkansenSecondaryCarNumber:v40];
+        carNumber2 = [v36 carNumber];
+        [v8 setShinkansenSecondaryCarNumber:carNumber2];
 
-        v41 = [v36 seatRow];
-        [v8 setShinkansenSecondarySeatRow:v41];
+        seatRow2 = [v36 seatRow];
+        [v8 setShinkansenSecondarySeatRow:seatRow2];
 
-        v42 = [v36 seatNumber];
-        [v8 setShinkansenSecondarySeatNumber:v42];
+        seatNumber2 = [v36 seatNumber];
+        [v8 setShinkansenSecondarySeatNumber:seatNumber2];
 
-        v43 = [v36 originStation];
+        originStation2 = [v36 originStation];
 
-        v44 = [v8 shinkansenSecondaryOriginStationCode];
-        v45 = v44;
-        if (v43 && v44)
+        shinkansenSecondaryOriginStationCode = [v8 shinkansenSecondaryOriginStationCode];
+        v45 = shinkansenSecondaryOriginStationCode;
+        if (originStation2 && shinkansenSecondaryOriginStationCode)
         {
-          v46 = [v43 isEqual:v44];
+          v46 = [originStation2 isEqual:shinkansenSecondaryOriginStationCode];
 
           if (v46)
           {
@@ -904,28 +904,28 @@ LABEL_20:
         else
         {
 
-          if (v43 == v45)
+          if (originStation2 == v45)
           {
             goto LABEL_30;
           }
         }
 
-        [v8 setShinkansenSecondaryOriginStationCode:v43];
+        [v8 setShinkansenSecondaryOriginStationCode:originStation2];
         [v8 setShinkansenSecondaryOriginStationString:0];
-        if (v43)
+        if (originStation2)
         {
           v16 = 1;
         }
 
 LABEL_30:
-        v15 = [v36 destinationStation];
+        destinationStation2 = [v36 destinationStation];
 
-        v47 = [v8 shinkansenSecondaryDestinationStationCode];
-        v48 = v47;
-        v9 = v77;
-        if (v15 && v47)
+        shinkansenSecondaryDestinationStationCode = [v8 shinkansenSecondaryDestinationStationCode];
+        v48 = shinkansenSecondaryDestinationStationCode;
+        source = v77;
+        if (destinationStation2 && shinkansenSecondaryDestinationStationCode)
         {
-          v49 = [v15 isEqual:v47];
+          v49 = [destinationStation2 isEqual:shinkansenSecondaryDestinationStationCode];
 
           if (v49)
           {
@@ -936,7 +936,7 @@ LABEL_30:
         else
         {
 
-          if (v15 == v48)
+          if (destinationStation2 == v48)
           {
 LABEL_37:
             [v8 setHasShinkansenTicket:v14 != 0];
@@ -945,9 +945,9 @@ LABEL_37:
           }
         }
 
-        [v8 setShinkansenSecondaryDestinationStationCode:v15];
+        [v8 setShinkansenSecondaryDestinationStationCode:destinationStation2];
         [v8 setShinkansenSecondaryDestinationStationString:0];
-        if (v15)
+        if (destinationStation2)
         {
           v16 = 1;
         }
@@ -959,31 +959,31 @@ LABEL_37:
     else
     {
 
-      if (v28 == v30)
+      if (originStation == v30)
       {
         goto LABEL_10;
       }
     }
 
-    [v8 setShinkansenOriginStationCode:v28];
+    [v8 setShinkansenOriginStationCode:originStation];
     [v8 setShinkansenOriginStationString:0];
     goto LABEL_13;
   }
 
-  v15 = 0;
+  destinationStation2 = 0;
   v16 = 0;
 LABEL_38:
-  v50 = [v7 greenCarTicket];
-  v51 = v50;
-  if (v50 || v9 == 1)
+  greenCarTicket = [historyCopy greenCarTicket];
+  v51 = greenCarTicket;
+  if (greenCarTicket || source == 1)
   {
-    v52 = [v50 originStation];
+    originStation3 = [greenCarTicket originStation];
 
-    v53 = [v8 greenCarOriginStationCode];
-    v54 = v53;
-    if (v52 && v53)
+    greenCarOriginStationCode = [v8 greenCarOriginStationCode];
+    v54 = greenCarOriginStationCode;
+    if (originStation3 && greenCarOriginStationCode)
     {
-      v55 = [v52 isEqual:v53];
+      v55 = [originStation3 isEqual:greenCarOriginStationCode];
 
       if (v55)
       {
@@ -994,27 +994,27 @@ LABEL_38:
     else
     {
 
-      if (v52 == v54)
+      if (originStation3 == v54)
       {
         goto LABEL_47;
       }
     }
 
-    [v8 setGreenCarOriginStationCode:v52];
+    [v8 setGreenCarOriginStationCode:originStation3];
     [v8 setGreenCarOriginStationString:0];
-    if (v52)
+    if (originStation3)
     {
       v16 = 1;
     }
 
 LABEL_47:
-    v15 = [v51 destinationStation];
+    destinationStation2 = [v51 destinationStation];
 
-    v56 = [v8 greenCarDestinationStationCode];
-    v57 = v56;
-    if (v15 && v56)
+    greenCarDestinationStationCode = [v8 greenCarDestinationStationCode];
+    v57 = greenCarDestinationStationCode;
+    if (destinationStation2 && greenCarDestinationStationCode)
     {
-      v58 = [v15 isEqual:v56];
+      v58 = [destinationStation2 isEqual:greenCarDestinationStationCode];
 
       if (v58)
       {
@@ -1025,20 +1025,20 @@ LABEL_47:
     else
     {
 
-      if (v15 == v57)
+      if (destinationStation2 == v57)
       {
 LABEL_54:
-        v59 = [v51 validityStartDate];
-        [v8 setGreenCarValidityStartDate:v59];
+        validityStartDate2 = [v51 validityStartDate];
+        [v8 setGreenCarValidityStartDate:validityStartDate2];
 
         [v8 setHasGreenCarTicket:v51 != 0];
         goto LABEL_55;
       }
     }
 
-    [v8 setGreenCarDestinationStationCode:v15];
+    [v8 setGreenCarDestinationStationCode:destinationStation2];
     [v8 setGreenCarDestinationStationString:0];
-    if (v15)
+    if (destinationStation2)
     {
       v16 = 1;
     }
@@ -1047,53 +1047,53 @@ LABEL_54:
   }
 
 LABEL_55:
-  v60 = [v8 shinkansenOriginStationCode];
-  if (v60)
+  shinkansenOriginStationCode2 = [v8 shinkansenOriginStationCode];
+  if (shinkansenOriginStationCode2)
   {
     v61 = 0;
   }
 
   else
   {
-    v62 = [v8 shinkansenDestinationStationCode];
-    if (v62)
+    shinkansenDestinationStationCode2 = [v8 shinkansenDestinationStationCode];
+    if (shinkansenDestinationStationCode2)
     {
       v61 = 0;
     }
 
     else
     {
-      v63 = [v8 shinkansenSecondaryOriginStationCode];
-      if (v63)
+      shinkansenSecondaryOriginStationCode2 = [v8 shinkansenSecondaryOriginStationCode];
+      if (shinkansenSecondaryOriginStationCode2)
       {
         v61 = 0;
       }
 
       else
       {
-        v64 = [v8 shinkansenSecondaryDestinationStationCode];
-        if (v64)
+        shinkansenSecondaryDestinationStationCode2 = [v8 shinkansenSecondaryDestinationStationCode];
+        if (shinkansenSecondaryDestinationStationCode2)
         {
           v61 = 0;
         }
 
         else
         {
-          v65 = [v8 greenCarOriginStationCode];
-          if (v65)
+          greenCarOriginStationCode2 = [v8 greenCarOriginStationCode];
+          if (greenCarOriginStationCode2)
           {
             v61 = 0;
           }
 
           else
           {
-            v66 = [v8 greenCarDestinationStationCode];
-            v61 = v66 == 0;
+            greenCarDestinationStationCode2 = [v8 greenCarDestinationStationCode];
+            v61 = greenCarDestinationStationCode2 == 0;
 
-            v65 = 0;
+            greenCarOriginStationCode2 = 0;
           }
 
-          v64 = 0;
+          shinkansenSecondaryDestinationStationCode2 = 0;
         }
       }
     }
@@ -1101,32 +1101,32 @@ LABEL_55:
 
   if (v61 || v16)
   {
-    v67 = !v61;
+    needsStationProcessing = !v61;
   }
 
   else
   {
-    v67 = [v8 needsStationProcessing];
+    needsStationProcessing = [v8 needsStationProcessing];
   }
 
-  [v8 setNeedsStationProcessing:v67];
-  v68 = [v7 balance];
-  [v8 setBalance:v68];
+  [v8 setNeedsStationProcessing:needsStationProcessing];
+  balance = [historyCopy balance];
+  [v8 setBalance:balance];
 
-  v69 = [v7 historyRecords];
-  if ([v69 count])
+  historyRecords = [historyCopy historyRecords];
+  if ([historyRecords count])
   {
-    v70 = [v69 objectAtIndexedSubscript:0];
-    v71 = [v70 historySequenceNumber];
-    if (v71)
+    v70 = [historyRecords objectAtIndexedSubscript:0];
+    historySequenceNumber = [v70 historySequenceNumber];
+    if (historySequenceNumber)
     {
-      [v8 setHistorySequenceNumber:v71];
+      [v8 setHistorySequenceNumber:historySequenceNumber];
     }
   }
 
-  if (v79 != 0 && ![(PKFelicaTransitAppletState *)v78 isEqual:v8])
+  if (v79 != 0 && ![(PKFelicaTransitAppletState *)selfCopy isEqual:v8])
   {
-    [(PKFelicaTransitAppletState *)v78 _resolveTransactionsFromState:v78 toState:v8 withHistoryRecords:v69 concreteTransactions:*(&v79 + 1) ephemeralTransaction:v79];
+    [(PKFelicaTransitAppletState *)selfCopy _resolveTransactionsFromState:selfCopy toState:v8 withHistoryRecords:historyRecords concreteTransactions:*(&v79 + 1) ephemeralTransaction:v79];
     v72 = PKLogFacilityTypeGetObject(0xDuLL);
     if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
     {
@@ -1140,9 +1140,9 @@ LABEL_55:
         v73 = &stru_1F227FD28;
       }
 
-      v74 = [v8 isInShinkansenStation];
+      isInShinkansenStation = [v8 isInShinkansenStation];
       v75 = @"inShinkansenStation";
-      if (!v74)
+      if (!isInShinkansenStation)
       {
         v75 = &stru_1F227FD28;
       }
@@ -1158,43 +1158,43 @@ LABEL_55:
   return v8;
 }
 
-- (void)_resolveTransactionsFromState:(id)a3 toState:(id)a4 withHistoryRecords:(id)a5 concreteTransactions:(id *)a6 ephemeralTransaction:(id *)a7
+- (void)_resolveTransactionsFromState:(id)state toState:(id)toState withHistoryRecords:(id)records concreteTransactions:(id *)transactions ephemeralTransaction:(id *)transaction
 {
   v78 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [v12 historySequenceNumber];
-  v16 = [v15 unsignedIntegerValue];
-  v69 = v15;
-  if (v15 && ([v13 historySequenceNumber], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "unsignedIntegerValue"), v17, v16 == v18))
+  stateCopy = state;
+  toStateCopy = toState;
+  recordsCopy = records;
+  historySequenceNumber = [stateCopy historySequenceNumber];
+  unsignedIntegerValue = [historySequenceNumber unsignedIntegerValue];
+  v69 = historySequenceNumber;
+  if (historySequenceNumber && ([toStateCopy historySequenceNumber], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "unsignedIntegerValue"), v17, unsignedIntegerValue == v18))
   {
-    v19 = 0;
+    allObjects = 0;
   }
 
   else
   {
-    v62 = v13;
+    v62 = toStateCopy;
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v21 = v14;
+    v21 = recordsCopy;
     v22 = [v21 countByEnumeratingWithState:&v73 objects:v77 count:16];
     if (v22)
     {
       v23 = v22;
-      v61 = self;
-      v63 = a6;
-      v65 = a7;
-      v67 = v14;
-      v24 = 0;
+      selfCopy = self;
+      transactionsCopy = transactions;
+      transactionCopy = transaction;
+      v67 = recordsCopy;
+      historySequenceNumber2 = 0;
       v25 = *v74;
       while (2)
       {
         v26 = 0;
-        v27 = v24;
+        v27 = historySequenceNumber2;
         do
         {
           if (*v74 != v25)
@@ -1203,22 +1203,22 @@ LABEL_55:
           }
 
           v28 = *(*(&v73 + 1) + 8 * v26);
-          v24 = [v28 historySequenceNumber];
-          v29 = [v24 unsignedIntegerValue];
-          if (v69 && v16 == v29)
+          historySequenceNumber2 = [v28 historySequenceNumber];
+          unsignedIntegerValue2 = [historySequenceNumber2 unsignedIntegerValue];
+          if (v69 && unsignedIntegerValue == unsignedIntegerValue2)
           {
 
-            v24 = v27;
+            historySequenceNumber2 = v27;
             goto LABEL_18;
           }
 
-          if (!v27 || v29 != [v27 unsignedIntegerValue])
+          if (!v27 || unsignedIntegerValue2 != [v27 unsignedIntegerValue])
           {
             [v20 addObject:v28];
           }
 
           ++v26;
-          v27 = v24;
+          v27 = historySequenceNumber2;
         }
 
         while (v23 != v26);
@@ -1233,40 +1233,40 @@ LABEL_55:
 
 LABEL_18:
 
-      a7 = v65;
-      v14 = v67;
-      a6 = v63;
-      self = v61;
+      transaction = transactionCopy;
+      recordsCopy = v67;
+      transactions = transactionsCopy;
+      self = selfCopy;
     }
 
-    v30 = [v20 reverseObjectEnumerator];
-    v19 = [v30 allObjects];
+    reverseObjectEnumerator = [v20 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v13 = v62;
+    toStateCopy = v62;
   }
 
   v72 = 0;
-  v31 = [v19 count];
-  if (a6)
+  v31 = [allObjects count];
+  if (transactions)
   {
     v32 = v31;
     v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v31 + 2];
     if (v32)
     {
-      v64 = a6;
-      v66 = a7;
-      v68 = v14;
-      v34 = [v12 balance];
-      v35 = self;
-      v36 = [v34 unsignedLongLongValue];
+      transactionsCopy2 = transactions;
+      transactionCopy2 = transaction;
+      v68 = recordsCopy;
+      balance = [stateCopy balance];
+      selfCopy2 = self;
+      unsignedLongLongValue = [balance unsignedLongLongValue];
 
       v37 = 0;
-      v71 = v36;
-      v38 = v35;
+      v71 = unsignedLongLongValue;
+      v38 = selfCopy2;
       while (v37 < v32)
       {
         v70 = 0;
-        v39 = [(PKFelicaTransitAppletState *)v38 _concreteTransactionForRecordAtIndex:v37 withBalance:&v71 historyRecords:v19 terminalState:v13 numberProcessed:&v70 exitedShinkansen:&v72];
+        v39 = [(PKFelicaTransitAppletState *)v38 _concreteTransactionForRecordAtIndex:v37 withBalance:&v71 historyRecords:allObjects terminalState:toStateCopy numberProcessed:&v70 exitedShinkansen:&v72];
         if (v39)
         {
           [v33 addObject:v39];
@@ -1298,17 +1298,17 @@ LABEL_18:
         }
       }
 
-      a7 = v66;
-      v14 = v68;
-      a6 = v64;
+      transaction = transactionCopy2;
+      recordsCopy = v68;
+      transactions = transactionsCopy2;
     }
 
     v43 = [v33 count];
-    v44 = [v12 isInShinkansenStation];
-    if (v44 == [v13 isInShinkansenStation] || (v72 & 1) != 0 || objc_msgSend(v13, "isInShinkansenStation"))
+    isInShinkansenStation = [stateCopy isInShinkansenStation];
+    if (isInShinkansenStation == [toStateCopy isInShinkansenStation] || (v72 & 1) != 0 || objc_msgSend(toStateCopy, "isInShinkansenStation"))
     {
-      v45 = [v12 isInStation];
-      if (v45 == [v13 isInStation] || (objc_msgSend(v13, "isInStation") & 1) != 0 || v43)
+      isInStation = [stateCopy isInStation];
+      if (isInStation == [toStateCopy isInStation] || (objc_msgSend(toStateCopy, "isInStation") & 1) != 0 || v43)
       {
         goto LABEL_43;
       }
@@ -1328,8 +1328,8 @@ LABEL_18:
     [v33 addObject:v47];
 
 LABEL_43:
-    v48 = [v12 isGreenCarTicketUsed];
-    if (v48 != [v13 isGreenCarTicketUsed] && objc_msgSend(v13, "isGreenCarTicketUsed"))
+    isGreenCarTicketUsed = [stateCopy isGreenCarTicketUsed];
+    if (isGreenCarTicketUsed != [toStateCopy isGreenCarTicketUsed] && objc_msgSend(toStateCopy, "isGreenCarTicketUsed"))
     {
       v49 = [PKPaymentTransaction paymentTransactionWithSource:1];
       [v49 setTransactionType:2];
@@ -1345,22 +1345,22 @@ LABEL_43:
     }
 
     v50 = [v33 copy];
-    v51 = *a6;
-    *a6 = v50;
+    v51 = *transactions;
+    *transactions = v50;
   }
 
-  if (a7)
+  if (transaction)
   {
-    v52 = [v12 enrouteTransitTypes];
-    v53 = [v52 lastObject];
+    enrouteTransitTypes = [stateCopy enrouteTransitTypes];
+    lastObject = [enrouteTransitTypes lastObject];
 
-    v54 = [v13 enrouteTransitTypes];
-    v55 = [v54 lastObject];
+    enrouteTransitTypes2 = [toStateCopy enrouteTransitTypes];
+    lastObject2 = [enrouteTransitTypes2 lastObject];
 
-    if (v55 && ([v55 isEqual:v53] & 1) == 0)
+    if (lastObject2 && ([lastObject2 isEqual:lastObject] & 1) == 0)
     {
-      v57 = a7;
-      v58 = PKPaymentTransactionTransitSubtypeForTransactionDetailString(v55);
+      transactionCopy3 = transaction;
+      v58 = PKPaymentTransactionTransitSubtypeForTransactionDetailString(lastObject2);
       if (v58)
       {
         v59 = v58;
@@ -1376,7 +1376,7 @@ LABEL_43:
         v56 = 0;
       }
 
-      a7 = v57;
+      transaction = transactionCopy3;
     }
 
     else
@@ -1384,66 +1384,66 @@ LABEL_43:
       v56 = 0;
     }
 
-    v60 = *a7;
-    *a7 = v56;
+    v60 = *transaction;
+    *transaction = v56;
   }
 }
 
-- (id)_concreteTransactionForRecordAtIndex:(unint64_t)a3 withBalance:(unsigned int *)a4 historyRecords:(id)a5 terminalState:(id)a6 numberProcessed:(unint64_t *)a7 exitedShinkansen:(BOOL *)a8
+- (id)_concreteTransactionForRecordAtIndex:(unint64_t)index withBalance:(unsigned int *)balance historyRecords:(id)records terminalState:(id)state numberProcessed:(unint64_t *)processed exitedShinkansen:(BOOL *)shinkansen
 {
   v91 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 count];
-  v14 = [v11 objectAtIndexedSubscript:a3];
+  recordsCopy = records;
+  stateCopy = state;
+  v13 = [recordsCopy count];
+  v14 = [recordsCopy objectAtIndexedSubscript:index];
   v15 = v14;
-  v73 = v11;
-  if (a3 + 1 >= v13)
+  v73 = recordsCopy;
+  if (index + 1 >= v13)
   {
-    v24 = 0;
-    v26 = 0;
+    endStation = 0;
+    startStation2 = 0;
     v27 = 0;
     v23 = 0;
     v71 = 1;
-    v28 = a4;
+    balanceCopy6 = balance;
     goto LABEL_75;
   }
 
-  v76 = a8;
-  v79 = v12;
+  shinkansenCopy = shinkansen;
+  v79 = stateCopy;
   v16 = v14;
-  v17 = [v11 objectAtIndexedSubscript:a3 + 1];
+  v17 = [recordsCopy objectAtIndexedSubscript:index + 1];
   v18 = FelicaTransitHistoryRecordFromFelicaRecord(v16);
   v20 = v19;
   v81 = v17;
   v21 = FelicaTransitHistoryRecordFromFelicaRecord(v17);
   v23 = 0;
-  v24 = 0;
+  endStation = 0;
   v25 = 1;
   if (v18 > 0x15u)
   {
-    v26 = 0;
+    startStation2 = 0;
     v27 = 0;
     v15 = v16;
-    v28 = a4;
+    balanceCopy6 = balance;
     goto LABEL_74;
   }
 
-  v26 = 0;
+  startStation2 = 0;
   v27 = 0;
   v15 = v16;
-  v28 = a4;
+  balanceCopy6 = balance;
   if (((1 << v18) & 0x380062) != 0)
   {
     v23 = 0;
-    v24 = 0;
+    endStation = 0;
     v25 = 1;
     if (v21 > 0x15u)
     {
       goto LABEL_30;
     }
 
-    v26 = 0;
+    startStation2 = 0;
     v27 = 0;
     v15 = v16;
     if (((1 << v21) & 0x380062) == 0)
@@ -1452,14 +1452,14 @@ LABEL_43:
     }
 
     v23 = 0;
-    v24 = 0;
+    endStation = 0;
     v25 = 1;
     if (HIBYTE(v18) > 0x1Cu)
     {
       goto LABEL_30;
     }
 
-    v26 = 0;
+    startStation2 = 0;
     v27 = 0;
     v15 = v16;
     if (((1 << SHIBYTE(v18)) & 0x12000090) == 0)
@@ -1468,18 +1468,18 @@ LABEL_43:
     }
 
     v23 = 0;
-    v24 = 0;
+    endStation = 0;
     v70 = v21 >> 8;
     v25 = 1;
     if (BYTE1(v21) > 0x1Bu)
     {
 LABEL_30:
-      v26 = 0;
+      startStation2 = 0;
       v27 = 0;
       goto LABEL_31;
     }
 
-    v26 = 0;
+    startStation2 = 0;
     v27 = 0;
     v15 = v16;
     if (((1 << SBYTE1(v21)) & 0x9000048) != 0)
@@ -1489,8 +1489,8 @@ LABEL_30:
       v31 = HIDWORD(v22);
       if (HIDWORD(v20) && v31 && v22 != v20)
       {
-        v24 = 0;
-        v26 = 0;
+        endStation = 0;
+        startStation2 = 0;
         v27 = 0;
         v23 = 0;
         v25 = 1;
@@ -1503,14 +1503,14 @@ LABEL_31:
       v32 = PKLogFacilityTypeGetObject(0xDuLL);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v16 historySequenceNumber];
-        v34 = [v81 historySequenceNumber];
+        historySequenceNumber = [v16 historySequenceNumber];
+        historySequenceNumber2 = [v81 historySequenceNumber];
         *buf = 138413058;
-        v84 = v33;
+        v84 = historySequenceNumber;
         v85 = 1024;
         v86 = HIBYTE(v18);
         v87 = 2112;
-        v88 = v34;
+        v88 = historySequenceNumber2;
         v89 = 1024;
         v90 = HIBYTE(v74);
         _os_log_impl(&dword_1AD337000, v32, OS_LOG_TYPE_DEFAULT, "Combining history records [{sequence number: %@, sector combination: %hhu}, {sequence number: %@, sector combination: %hhu}].", buf, 0x22u);
@@ -1548,13 +1548,13 @@ LABEL_31:
       v41 = v70;
       if (v74 <= 0x15u && ((1 << v74) & 0x380062) != 0 && v70 <= 0x1Bu && ((1 << v70) & 0xFFF7AF8) != 0)
       {
-        v24 = [v81 endStation];
-        v28 = a4;
+        endStation = [v81 endStation];
+        balanceCopy6 = balance;
         v42 = HIBYTE(v18);
         goto LABEL_28;
       }
 
-      v28 = a4;
+      balanceCopy6 = balance;
       v42 = HIBYTE(v18);
       if (IsStartStationAvailable(v74, v70))
       {
@@ -1565,26 +1565,26 @@ LABEL_31:
       {
         if (v18 <= 0x15u && ((1 << v18) & 0x380062) != 0 && HIBYTE(v18) <= 0x1Cu && ((1 << SHIBYTE(v18)) & 0x1FFF7AF0) != 0)
         {
-          v45 = [v16 endStation];
+          endStation2 = [v16 endStation];
           goto LABEL_41;
         }
 
         if (!IsStartStationAvailable(v18, HIBYTE(v18)))
         {
-          v24 = 0;
+          endStation = 0;
           goto LABEL_45;
         }
 
         v44 = v16;
       }
 
-      v45 = [v44 startStation];
+      endStation2 = [v44 startStation];
 LABEL_41:
-      v24 = v45;
+      endStation = endStation2;
 LABEL_28:
       if (IsStartStationAvailable(v18, v42))
       {
-        v43 = [v16 startStation];
+        startStation = [v16 startStation];
         goto LABEL_51;
       }
 
@@ -1598,9 +1598,9 @@ LABEL_45:
       {
         if (IsStartStationAvailable(v74, v70))
         {
-          v26 = [v81 startStation];
+          startStation2 = [v81 startStation];
           v41 = v70;
-          if (!v24)
+          if (!endStation)
           {
             goto LABEL_147;
           }
@@ -1608,19 +1608,19 @@ LABEL_45:
           goto LABEL_52;
         }
 
-        v26 = 0;
+        startStation2 = 0;
         if (v74 > 0x15u || ((1 << v74) & 0x380062) == 0)
         {
           v41 = v70;
           goto LABEL_147;
         }
 
-        v26 = 0;
+        startStation2 = 0;
         v41 = v70;
         if (v70 > 0x1Bu || ((1 << v70) & 0xFFF7AF8) == 0)
         {
 LABEL_147:
-          if (v26 != v24)
+          if (startStation2 != endStation)
           {
             goto LABEL_55;
           }
@@ -1631,18 +1631,18 @@ LABEL_147:
         v46 = v81;
       }
 
-      v43 = [v46 endStation];
+      startStation = [v46 endStation];
 LABEL_51:
-      v26 = v43;
-      if (!v24)
+      startStation2 = startStation;
+      if (!endStation)
       {
         goto LABEL_147;
       }
 
 LABEL_52:
-      if (v26)
+      if (startStation2)
       {
-        if (([v26 isEqual:v24] & 1) == 0)
+        if (([startStation2 isEqual:endStation] & 1) == 0)
         {
 LABEL_55:
           v15 = v35;
@@ -1679,7 +1679,7 @@ LABEL_55:
 
 LABEL_54:
 
-        v24 = 0;
+        endStation = 0;
         goto LABEL_55;
       }
 
@@ -1690,8 +1690,8 @@ LABEL_54:
 LABEL_74:
   v71 = v25;
 
-  v12 = v79;
-  a8 = v76;
+  stateCopy = v79;
+  shinkansen = shinkansenCopy;
 LABEL_75:
   v82 = v23;
   v50 = FelicaTransitHistoryRecordFromFelicaRecord(v15);
@@ -1707,9 +1707,9 @@ LABEL_75:
   }
 
   v77 = HIDWORD(v50);
-  if (v28)
+  if (balanceCopy6)
   {
-    v75 = *v28;
+    v75 = *balanceCopy6;
   }
 
   else
@@ -1717,7 +1717,7 @@ LABEL_75:
     v75 = 0;
   }
 
-  v80 = v26;
+  startStation3 = startStation2;
   if (!v15)
   {
     if (v82)
@@ -1739,8 +1739,8 @@ LABEL_75:
   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
   {
     [v15 historySequenceNumber];
-    v55 = a8;
-    v57 = v56 = v12;
+    shinkansenCopy2 = shinkansen;
+    v57 = v56 = stateCopy;
     *buf = 138412802;
     v84 = v57;
     v85 = 1024;
@@ -1749,30 +1749,30 @@ LABEL_75:
     LODWORD(v88) = HIBYTE(v51);
     _os_log_impl(&dword_1AD337000, v54, OS_LOG_TYPE_DEFAULT, "Processing History Record: {sequence number: %@, type: %hhu, sector combination: %hhu}", buf, 0x18u);
 
-    v12 = v56;
-    a8 = v55;
-    v28 = a4;
+    stateCopy = v56;
+    shinkansen = shinkansenCopy2;
+    balanceCopy6 = balance;
   }
 
-  if (!(v24 | v80))
+  if (!(endStation | startStation3))
   {
     if (IsStartStationAvailable(v51, v53))
     {
-      v80 = [v15 startStation];
+      startStation3 = [v15 startStation];
     }
 
     else
     {
-      v80 = 0;
+      startStation3 = 0;
     }
 
-    v24 = 0;
+    endStation = 0;
     if (v51 <= 0x15u && ((1 << v51) & 0x380062) != 0)
     {
-      v24 = 0;
+      endStation = 0;
       if (v53 <= 0x1Fu && ((1 << v53) & 0xDFFF7AFC) != 0)
       {
-        v24 = [v15 endStation];
+        endStation = [v15 endStation];
       }
     }
   }
@@ -1821,7 +1821,7 @@ LABEL_75:
   }
 
   v59 = 1;
-  if (v28 && v75 != v77)
+  if (balanceCopy6 && v75 != v77)
   {
     if (!v58)
     {
@@ -1844,7 +1844,7 @@ LABEL_75:
       if (v58 == 257)
       {
 LABEL_118:
-        if ([v12 isInShinkansenStation])
+        if ([stateCopy isInShinkansenStation])
         {
           goto LABEL_119;
         }
@@ -1856,7 +1856,7 @@ LABEL_118:
 
       if (v58 == 1)
       {
-        if ([v12 isInStation])
+        if ([stateCopy isInStation])
         {
 LABEL_119:
           v59 = 0;
@@ -1884,8 +1884,8 @@ LABEL_124:
   [v63 setTransactionType:2];
   [v63 setTransitType:v58];
   [v63 setTransitModifiers:v27];
-  v64 = [v15 transactionID];
-  [v63 setPaymentHash:v64];
+  transactionID = [v15 transactionID];
+  [v63 setPaymentHash:transactionID];
 
   [v63 setOriginatedByDevice:1];
   if ((v59 & 1) == 0)
@@ -1910,19 +1910,19 @@ LABEL_124:
     v67 = [MEMORY[0x1E696AB90] decimalNumberWithMantissa:v66 exponent:0 isNegative:v75 < v77];
     [v63 setAmount:v67];
 
-    *v28 = v77;
+    *balanceCopy6 = v77;
   }
 
-  [v63 setStartStationCode:v80];
-  [v63 setEndStationCode:v24];
-  if (a7)
+  [v63 setStartStationCode:startStation3];
+  [v63 setEndStationCode:endStation];
+  if (processed)
   {
-    *a7 = v71;
+    *processed = v71;
   }
 
-  if (a8)
+  if (shinkansen)
   {
-    *a8 = v82;
+    *shinkansen = v82;
   }
 
   v68 = v63;
@@ -1930,30 +1930,30 @@ LABEL_124:
   return v63;
 }
 
-- (id)transitPassPropertiesWithPaymentApplication:(id)a3
+- (id)transitPassPropertiesWithPaymentApplication:(id)application
 {
-  v4 = a3;
-  v5 = [[PKFelicaPassProperties alloc] initWithTransitAppletState:self paymentApplication:v4 fieldCollection:0];
+  applicationCopy = application;
+  v5 = [[PKFelicaPassProperties alloc] initWithTransitAppletState:self paymentApplication:applicationCopy fieldCollection:0];
 
   return v5;
 }
 
-- (id)transitPassPropertiesWithPaymentApplication:(id)a3 pass:(id)a4
+- (id)transitPassPropertiesWithPaymentApplication:(id)application pass:(id)pass
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKSecureElementPassFieldCollection alloc] initWithBalanceFieldsFromPass:v6];
+  passCopy = pass;
+  applicationCopy = application;
+  v8 = [[PKSecureElementPassFieldCollection alloc] initWithBalanceFieldsFromPass:passCopy];
 
-  v9 = [(PKFelicaTransitAppletState *)self transitPassPropertiesWithPaymentApplication:v7 fieldCollection:v8];
+  v9 = [(PKFelicaTransitAppletState *)self transitPassPropertiesWithPaymentApplication:applicationCopy fieldCollection:v8];
 
   return v9;
 }
 
-- (id)transitPassPropertiesWithPaymentApplication:(id)a3 fieldCollection:(id)a4
+- (id)transitPassPropertiesWithPaymentApplication:(id)application fieldCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKFelicaPassProperties alloc] initWithTransitAppletState:self paymentApplication:v7 fieldCollection:v6];
+  collectionCopy = collection;
+  applicationCopy = application;
+  v8 = [[PKFelicaPassProperties alloc] initWithTransitAppletState:self paymentApplication:applicationCopy fieldCollection:collectionCopy];
 
   return v8;
 }

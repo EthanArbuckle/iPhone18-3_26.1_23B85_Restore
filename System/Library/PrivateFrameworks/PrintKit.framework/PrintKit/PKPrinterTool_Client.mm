@@ -3,30 +3,30 @@
 - (PKPrinterTool_Client)init;
 - (id)ptConn;
 - (id)ptConn_locked;
-- (void)addPrinterToiCloud:(id)a3;
-- (void)browseInfoForPrinter:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
-- (void)cancelJob:(int)a3;
-- (void)endpointResolve:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
-- (void)finishRequestWithCancel:(BOOL)a3 completionHandler:(id)a4;
-- (void)getJobUpdateStatus:(int)a3 includeThumbnail:(BOOL)a4 completionHandler:(id)a5;
-- (void)getLastUsedPrintersForCurrentNetworkCompletionHandler:(id)a3;
-- (void)getRecentJobsCompletionHandler:(id)a3;
-- (void)getiCloudPrintersWithCompletionHandler:(id)a3;
+- (void)addPrinterToiCloud:(id)cloud;
+- (void)browseInfoForPrinter:(id)printer timeout:(double)timeout completionHandler:(id)handler;
+- (void)cancelJob:(int)job;
+- (void)endpointResolve:(id)resolve timeout:(double)timeout completionHandler:(id)handler;
+- (void)finishRequestWithCancel:(BOOL)cancel completionHandler:(id)handler;
+- (void)getJobUpdateStatus:(int)status includeThumbnail:(BOOL)thumbnail completionHandler:(id)handler;
+- (void)getLastUsedPrintersForCurrentNetworkCompletionHandler:(id)handler;
+- (void)getRecentJobsCompletionHandler:(id)handler;
+- (void)getiCloudPrintersWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)logiCloudPrintersCompletionHandler:(id)a3;
-- (void)printerTool_checkAccessState:(id)a3 completionHandler:(id)a4;
-- (void)printerTool_getPrinterDescription:(id)a3 assertReachability:(BOOL)a4 completionHandler:(id)a5;
-- (void)printerTool_identifyPrinter:(id)a3 message:(id)a4 actions:(id)a5;
-- (void)printerTool_queryPrinter:(id)a3 attributes:(id)a4 completionHandler:(id)a5;
-- (void)printerTool_realPathForTmp:(id)a3;
-- (void)printerTool_removeKeychainItem:(id)a3;
+- (void)logiCloudPrintersCompletionHandler:(id)handler;
+- (void)printerTool_checkAccessState:(id)state completionHandler:(id)handler;
+- (void)printerTool_getPrinterDescription:(id)description assertReachability:(BOOL)reachability completionHandler:(id)handler;
+- (void)printerTool_identifyPrinter:(id)printer message:(id)message actions:(id)actions;
+- (void)printerTool_queryPrinter:(id)printer attributes:(id)attributes completionHandler:(id)handler;
+- (void)printerTool_realPathForTmp:(id)tmp;
+- (void)printerTool_removeKeychainItem:(id)item;
 - (void)ptConn_locked;
-- (void)removePrinterFromiCloud:(id)a3;
+- (void)removePrinterFromiCloud:(id)cloud;
 - (void)resetPKCloudData;
-- (void)setLastUsedPrintersForCurrentNetwork:(id)a3;
-- (void)setiCloudPrinters:(id)a3;
-- (void)startStreamingRequest:(id)a3 printSettings:(id)a4 completionHandler:(id)a5;
-- (void)updateiCloudPrinter:(id)a3 withInfo:(id)a4 forInfoKey:(id)a5;
+- (void)setLastUsedPrintersForCurrentNetwork:(id)network;
+- (void)setiCloudPrinters:(id)printers;
+- (void)startStreamingRequest:(id)request printSettings:(id)settings completionHandler:(id)handler;
+- (void)updateiCloudPrinter:(id)printer withInfo:(id)info forInfoKey:(id)key;
 @end
 
 @implementation PKPrinterTool_Client
@@ -52,12 +52,12 @@
 
 - (id)ptConn
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(PKPrinterTool_Client *)v2 ptConn_locked];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ptConn_locked = [(PKPrinterTool_Client *)selfCopy ptConn_locked];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return ptConn_locked;
 }
 
 - (id)ptConn_locked
@@ -69,8 +69,8 @@
     if (v4)
     {
       v5 = objc_alloc(MEMORY[0x277CCAE80]);
-      v6 = [v4 endpoint];
-      v7 = [v5 initWithListenerEndpoint:v6];
+      endpoint = [v4 endpoint];
+      v7 = [v5 initWithListenerEndpoint:endpoint];
       v8 = self->_conn_needsLock;
       self->_conn_needsLock = v7;
 
@@ -123,31 +123,31 @@
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v4 = v2->_conn_needsLock;
-  conn_needsLock = v2->_conn_needsLock;
-  v2->_conn_needsLock = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = selfCopy->_conn_needsLock;
+  conn_needsLock = selfCopy->_conn_needsLock;
+  selfCopy->_conn_needsLock = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v4)
   {
     [(NSXPCConnection *)v4 invalidate];
   }
 }
 
-- (void)getRecentJobsCompletionHandler:(id)a3
+- (void)getRecentJobsCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(PKPrinterTool_Client *)self ptConn];
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __55__PKPrinterTool_Client_getRecentJobsCompletionHandler___block_invoke;
   v12 = &unk_279A855A8;
   v14 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:&v9];
+  v8 = [ptConn remoteObjectProxyWithErrorHandler:&v9];
 
   if (v8)
   {
@@ -160,24 +160,24 @@
   }
 }
 
-- (void)getJobUpdateStatus:(int)a3 includeThumbnail:(BOOL)a4 completionHandler:(id)a5
+- (void)getJobUpdateStatus:(int)status includeThumbnail:(BOOL)thumbnail completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = *&a3;
-  v9 = a5;
-  v10 = [(PKPrinterTool_Client *)self ptConn];
+  thumbnailCopy = thumbnail;
+  v6 = *&status;
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __78__PKPrinterTool_Client_getJobUpdateStatus_includeThumbnail_completionHandler___block_invoke;
   v16 = &unk_279A855A8;
   v18 = a2;
-  v11 = v9;
+  v11 = handlerCopy;
   v17 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:&v13];
+  v12 = [ptConn remoteObjectProxyWithErrorHandler:&v13];
 
   if (v12)
   {
-    [v12 getJobUpdateStatus:v6 includeThumbnail:v5 reply:{v11, v13, v14, v15, v16}];
+    [v12 getJobUpdateStatus:v6 includeThumbnail:thumbnailCopy reply:{v11, v13, v14, v15, v16}];
   }
 
   else
@@ -186,30 +186,30 @@
   }
 }
 
-- (void)cancelJob:(int)a3
+- (void)cancelJob:(int)job
 {
-  v3 = *&a3;
-  v4 = [(PKPrinterTool_Client *)self ptConn];
-  v5 = [v4 remoteObjectProxy];
+  v3 = *&job;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v5)
+  if (remoteObjectProxy)
   {
-    [v5 cancelJob:v3];
+    [remoteObjectProxy cancelJob:v3];
   }
 }
 
-- (void)getLastUsedPrintersForCurrentNetworkCompletionHandler:(id)a3
+- (void)getLastUsedPrintersForCurrentNetworkCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(PKPrinterTool_Client *)self ptConn];
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __78__PKPrinterTool_Client_getLastUsedPrintersForCurrentNetworkCompletionHandler___block_invoke;
   v12 = &unk_279A855A8;
   v14 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:&v9];
+  v8 = [ptConn remoteObjectProxyWithErrorHandler:&v9];
 
   if (v8)
   {
@@ -222,30 +222,30 @@
   }
 }
 
-- (void)setLastUsedPrintersForCurrentNetwork:(id)a3
+- (void)setLastUsedPrintersForCurrentNetwork:(id)network
 {
-  v6 = a3;
-  v4 = [(PKPrinterTool_Client *)self ptConn];
-  v5 = [v4 remoteObjectProxy];
+  networkCopy = network;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v5)
+  if (remoteObjectProxy)
   {
-    [v5 setLastUsedPrintersForCurrentNetwork:v6];
+    [remoteObjectProxy setLastUsedPrintersForCurrentNetwork:networkCopy];
   }
 }
 
-- (void)getiCloudPrintersWithCompletionHandler:(id)a3
+- (void)getiCloudPrintersWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(PKPrinterTool_Client *)self ptConn];
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __63__PKPrinterTool_Client_getiCloudPrintersWithCompletionHandler___block_invoke;
   v12 = &unk_279A855A8;
   v14 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:&v9];
+  v8 = [ptConn remoteObjectProxyWithErrorHandler:&v9];
 
   if (v8)
   {
@@ -258,82 +258,82 @@
   }
 }
 
-- (void)addPrinterToiCloud:(id)a3
+- (void)addPrinterToiCloud:(id)cloud
 {
-  v7 = a3;
-  v4 = [(PKPrinterTool_Client *)self ptConn];
-  v5 = [v4 remoteObjectProxy];
+  cloudCopy = cloud;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v5)
+  if (remoteObjectProxy)
   {
-    v6 = [v7 iCloudInfo];
-    [v5 addPrinterToiCloudWithInfo:v6];
+    iCloudInfo = [cloudCopy iCloudInfo];
+    [remoteObjectProxy addPrinterToiCloudWithInfo:iCloudInfo];
   }
 }
 
-- (void)removePrinterFromiCloud:(id)a3
+- (void)removePrinterFromiCloud:(id)cloud
 {
-  v7 = a3;
-  v4 = [(PKPrinterTool_Client *)self ptConn];
-  v5 = [v4 remoteObjectProxy];
+  cloudCopy = cloud;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v5)
+  if (remoteObjectProxy)
   {
-    v6 = [v7 iCloudInfo];
-    [v5 removePrinterFromiCloudWithInfo:v6];
+    iCloudInfo = [cloudCopy iCloudInfo];
+    [remoteObjectProxy removePrinterFromiCloudWithInfo:iCloudInfo];
   }
 }
 
-- (void)updateiCloudPrinter:(id)a3 withInfo:(id)a4 forInfoKey:(id)a5
+- (void)updateiCloudPrinter:(id)printer withInfo:(id)info forInfoKey:(id)key
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PKPrinterTool_Client *)self ptConn];
-  v11 = [v10 remoteObjectProxy];
+  printerCopy = printer;
+  infoCopy = info;
+  keyCopy = key;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v11)
+  if (remoteObjectProxy)
   {
-    v12 = [v13 iCloudInfo];
-    [v11 updateiCloudPrinterInfo:v12 withNewInfo:v8 forInfoKey:v9];
+    iCloudInfo = [printerCopy iCloudInfo];
+    [remoteObjectProxy updateiCloudPrinterInfo:iCloudInfo withNewInfo:infoCopy forInfoKey:keyCopy];
   }
 }
 
-- (void)setiCloudPrinters:(id)a3
+- (void)setiCloudPrinters:(id)printers
 {
-  v6 = a3;
-  v4 = [(PKPrinterTool_Client *)self ptConn];
-  v5 = [v4 remoteObjectProxy];
+  printersCopy = printers;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v5)
+  if (remoteObjectProxy)
   {
-    [v5 setiCloudPrinters:v6];
+    [remoteObjectProxy setiCloudPrinters:printersCopy];
   }
 }
 
 - (void)resetPKCloudData
 {
-  v2 = [(PKPrinterTool_Client *)self ptConn];
-  v3 = [v2 remoteObjectProxy];
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v3)
+  if (remoteObjectProxy)
   {
-    [v3 resetPKCloudData];
+    [remoteObjectProxy resetPKCloudData];
   }
 }
 
-- (void)logiCloudPrintersCompletionHandler:(id)a3
+- (void)logiCloudPrintersCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(PKPrinterTool_Client *)self ptConn];
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __59__PKPrinterTool_Client_logiCloudPrintersCompletionHandler___block_invoke;
   v12 = &unk_279A855A8;
   v14 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:&v9];
+  v8 = [ptConn remoteObjectProxyWithErrorHandler:&v9];
 
   if (v8)
   {
@@ -346,23 +346,23 @@
   }
 }
 
-- (void)browseInfoForPrinter:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)browseInfoForPrinter:(id)printer timeout:(double)timeout completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PKPrinterTool_Client *)self ptConn];
+  printerCopy = printer;
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __71__PKPrinterTool_Client_browseInfoForPrinter_timeout_completionHandler___block_invoke;
   v17 = &unk_279A855A8;
   v19 = a2;
-  v12 = v10;
+  v12 = handlerCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:&v14];
+  v13 = [ptConn remoteObjectProxyWithErrorHandler:&v14];
 
   if (v13)
   {
-    [v13 browseInfoForPrinter:v9 timeout:v12 reply:{a4, v14, v15, v16, v17}];
+    [v13 browseInfoForPrinter:printerCopy timeout:v12 reply:{timeout, v14, v15, v16, v17}];
   }
 
   else
@@ -371,23 +371,23 @@
   }
 }
 
-- (void)endpointResolve:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)endpointResolve:(id)resolve timeout:(double)timeout completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PKPrinterTool_Client *)self ptConn];
+  resolveCopy = resolve;
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __66__PKPrinterTool_Client_endpointResolve_timeout_completionHandler___block_invoke;
   v17 = &unk_279A855A8;
   v19 = a2;
-  v12 = v10;
+  v12 = handlerCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:&v14];
+  v13 = [ptConn remoteObjectProxyWithErrorHandler:&v14];
 
   if (v13)
   {
-    [v13 _endpointResolve:v9 timeout:v12 reply:{a4, v14, v15, v16, v17}];
+    [v13 _endpointResolve:resolveCopy timeout:v12 reply:{timeout, v14, v15, v16, v17}];
   }
 
   else
@@ -396,18 +396,18 @@
   }
 }
 
-- (void)printerTool_realPathForTmp:(id)a3
+- (void)printerTool_realPathForTmp:(id)tmp
 {
-  v5 = a3;
-  v6 = [(PKPrinterTool_Client *)self ptConn];
+  tmpCopy = tmp;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __51__PKPrinterTool_Client_printerTool_realPathForTmp___block_invoke;
   v12 = &unk_279A855A8;
   v14 = a2;
-  v7 = v5;
+  v7 = tmpCopy;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:&v9];
+  v8 = [ptConn remoteObjectProxyWithErrorHandler:&v9];
 
   if (v8)
   {
@@ -420,50 +420,50 @@
   }
 }
 
-- (void)printerTool_removeKeychainItem:(id)a3
+- (void)printerTool_removeKeychainItem:(id)item
 {
-  v6 = a3;
-  v4 = [(PKPrinterTool_Client *)self ptConn];
-  v5 = [v4 remoteObjectProxy];
+  itemCopy = item;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v5)
+  if (remoteObjectProxy)
   {
-    [v5 _removeKeychainItem:v6];
+    [remoteObjectProxy _removeKeychainItem:itemCopy];
   }
 }
 
-- (void)printerTool_identifyPrinter:(id)a3 message:(id)a4 actions:(id)a5
+- (void)printerTool_identifyPrinter:(id)printer message:(id)message actions:(id)actions
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PKPrinterTool_Client *)self ptConn];
-  v11 = [v10 remoteObjectProxy];
+  printerCopy = printer;
+  messageCopy = message;
+  actionsCopy = actions;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v11)
+  if (remoteObjectProxy)
   {
-    [v11 _identifyPrinter:v12 message:v8 actions:v9];
+    [remoteObjectProxy _identifyPrinter:printerCopy message:messageCopy actions:actionsCopy];
   }
 }
 
-- (void)printerTool_getPrinterDescription:(id)a3 assertReachability:(BOOL)a4 completionHandler:(id)a5
+- (void)printerTool_getPrinterDescription:(id)description assertReachability:(BOOL)reachability completionHandler:(id)handler
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PKPrinterTool_Client *)self ptConn];
+  reachabilityCopy = reachability;
+  descriptionCopy = description;
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __95__PKPrinterTool_Client_printerTool_getPrinterDescription_assertReachability_completionHandler___block_invoke;
   v17 = &unk_279A855A8;
   v19 = a2;
-  v12 = v10;
+  v12 = handlerCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:&v14];
+  v13 = [ptConn remoteObjectProxyWithErrorHandler:&v14];
 
   if (v13)
   {
-    [v13 _getPrinterDescription:v9 assertReachability:v6 reply:{v12, v14, v15, v16, v17}];
+    [v13 _getPrinterDescription:descriptionCopy assertReachability:reachabilityCopy reply:{v12, v14, v15, v16, v17}];
   }
 
   else
@@ -472,20 +472,20 @@
   }
 }
 
-- (void)printerTool_queryPrinter:(id)a3 attributes:(id)a4 completionHandler:(id)a5
+- (void)printerTool_queryPrinter:(id)printer attributes:(id)attributes completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PKPrinterTool_Client *)self ptConn];
+  printerCopy = printer;
+  attributesCopy = attributes;
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __78__PKPrinterTool_Client_printerTool_queryPrinter_attributes_completionHandler___block_invoke;
   v17[3] = &unk_279A855A8;
   v19 = a2;
-  v13 = v11;
+  v13 = handlerCopy;
   v18 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v17];
+  v14 = [ptConn remoteObjectProxyWithErrorHandler:v17];
 
   if (v14)
   {
@@ -494,7 +494,7 @@
     v15[2] = __78__PKPrinterTool_Client_printerTool_queryPrinter_attributes_completionHandler___block_invoke_2;
     v15[3] = &unk_279A855D0;
     v16 = v13;
-    [v14 _queryPrinter:v9 attributes:v10 reply:v15];
+    [v14 _queryPrinter:printerCopy attributes:attributesCopy reply:v15];
   }
 
   else
@@ -503,23 +503,23 @@
   }
 }
 
-- (void)printerTool_checkAccessState:(id)a3 completionHandler:(id)a4
+- (void)printerTool_checkAccessState:(id)state completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PKPrinterTool_Client *)self ptConn];
+  stateCopy = state;
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __71__PKPrinterTool_Client_printerTool_checkAccessState_completionHandler___block_invoke;
   v15 = &unk_279A855A8;
   v17 = a2;
-  v10 = v8;
+  v10 = handlerCopy;
   v16 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:&v12];
+  v11 = [ptConn remoteObjectProxyWithErrorHandler:&v12];
 
   if (v11)
   {
-    [v11 _checkAccessState:v7 reply:{v10, v12, v13, v14, v15}];
+    [v11 _checkAccessState:stateCopy reply:{v10, v12, v13, v14, v15}];
   }
 
   else
@@ -528,24 +528,24 @@
   }
 }
 
-- (void)startStreamingRequest:(id)a3 printSettings:(id)a4 completionHandler:(id)a5
+- (void)startStreamingRequest:(id)request printSettings:(id)settings completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PKPrinterTool_Client *)self ptConn];
+  requestCopy = request;
+  settingsCopy = settings;
+  handlerCopy = handler;
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __78__PKPrinterTool_Client_startStreamingRequest_printSettings_completionHandler___block_invoke;
   v18 = &unk_279A855A8;
   v20 = a2;
-  v13 = v11;
+  v13 = handlerCopy;
   v19 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:&v15];
+  v14 = [ptConn remoteObjectProxyWithErrorHandler:&v15];
 
   if (v14)
   {
-    [v14 startStreamingRequest:v9 printSettings:v10 reply:{v13, v15, v16, v17, v18}];
+    [v14 startStreamingRequest:requestCopy printSettings:settingsCopy reply:{v13, v15, v16, v17, v18}];
   }
 
   else
@@ -554,10 +554,10 @@
   }
 }
 
-- (void)finishRequestWithCancel:(BOOL)a3 completionHandler:(id)a4
+- (void)finishRequestWithCancel:(BOOL)cancel completionHandler:(id)handler
 {
-  v4 = a3;
-  v7 = a4;
+  cancelCopy = cancel;
+  handlerCopy = handler;
   streamHandle = self->_streamHandle;
   if (streamHandle)
   {
@@ -566,19 +566,19 @@
     self->_streamHandle = 0;
   }
 
-  v10 = [(PKPrinterTool_Client *)self ptConn];
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __66__PKPrinterTool_Client_finishRequestWithCancel_completionHandler___block_invoke;
   v16 = &unk_279A855A8;
   v18 = a2;
-  v11 = v7;
+  v11 = handlerCopy;
   v17 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:&v13];
+  v12 = [ptConn remoteObjectProxyWithErrorHandler:&v13];
 
   if (v12)
   {
-    [v12 finishRequestWithCancel:v4 reply:{v11, v13, v14, v15, v16}];
+    [v12 finishRequestWithCancel:cancelCopy reply:{v11, v13, v14, v15, v16}];
   }
 
   else
@@ -589,10 +589,10 @@
 
 - (void)ptConn_locked
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEFAULT))
   {
     *v2 = 0;
-    _os_log_impl(&dword_25F5FC000, a1, OS_LOG_TYPE_DEFAULT, "Couldn't create an XLC connection from proxy listener", v2, 2u);
+    _os_log_impl(&dword_25F5FC000, self, OS_LOG_TYPE_DEFAULT, "Couldn't create an XLC connection from proxy listener", v2, 2u);
   }
 
   abort();

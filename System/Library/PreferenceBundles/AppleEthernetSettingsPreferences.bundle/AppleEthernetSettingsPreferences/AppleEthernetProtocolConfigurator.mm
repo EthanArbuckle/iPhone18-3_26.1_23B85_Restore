@@ -1,6 +1,6 @@
 @interface AppleEthernetProtocolConfigurator
 - (AppleEthernetProtocolConfiguratorDelegate)delegate;
-- (void)updateSettingsFromCurrentConfig:(id)a3 toNewConfig:(id)a4 forService:(__SCNetworkService *)a5;
+- (void)updateSettingsFromCurrentConfig:(id)config toNewConfig:(id)newConfig forService:(__SCNetworkService *)service;
 @end
 
 @implementation AppleEthernetProtocolConfigurator
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (void)updateSettingsFromCurrentConfig:(id)a3 toNewConfig:(id)a4 forService:(__SCNetworkService *)a5
+- (void)updateSettingsFromCurrentConfig:(id)config toNewConfig:(id)newConfig forService:(__SCNetworkService *)service
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = SCNetworkServiceCopyProtocol(a5, self->_protocol);
+  configCopy = config;
+  newConfigCopy = newConfig;
+  v9 = SCNetworkServiceCopyProtocol(service, self->_protocol);
   if (v9)
   {
     v10 = v9;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [WeakRetained getPersistentSettingsForKey:self->_protocol inService:a5];
+    v12 = [WeakRetained getPersistentSettingsForKey:self->_protocol inService:service];
     v13 = [v12 mutableCopy];
 
     if (!v13)
@@ -37,7 +37,7 @@ LABEL_6:
       v13 = v14;
     }
 
-    [(AppleEthernetProtocolConfigurator *)self updateSettings:v13 fromCurrentConfig:v15 toNewConfig:v8];
+    [(AppleEthernetProtocolConfigurator *)self updateSettings:v13 fromCurrentConfig:configCopy toNewConfig:newConfigCopy];
     SCNetworkProtocolSetConfiguration(v10, v13);
 
     goto LABEL_6;

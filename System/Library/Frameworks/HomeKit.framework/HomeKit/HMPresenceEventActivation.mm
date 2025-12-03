@@ -1,15 +1,15 @@
 @interface HMPresenceEventActivation
-+ (id)activationGranularityWithCoder:(id)a3;
-+ (id)activationGranularityWithDict:(id)a3;
-+ (id)activationGranularityWithMessage:(id)a3;
-+ (id)activationGranularityWithNumber:(id)a3;
-+ (id)activationGranularityWithValue:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMPresenceEventActivation)initWithNumber:(id)a3;
++ (id)activationGranularityWithCoder:(id)coder;
++ (id)activationGranularityWithDict:(id)dict;
++ (id)activationGranularityWithMessage:(id)message;
++ (id)activationGranularityWithNumber:(id)number;
++ (id)activationGranularityWithValue:(unint64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (HMPresenceEventActivation)initWithNumber:(id)number;
 - (NSNumber)number;
 - (id)description;
-- (void)addToCoder:(id)a3;
-- (void)addToPayload:(id)a3;
+- (void)addToCoder:(id)coder;
+- (void)addToPayload:(id)payload;
 @end
 
 @implementation HMPresenceEventActivation
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -47,8 +47,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMPresenceEventActivation *)self value];
-      v8 = v7 == [(HMPresenceEventActivation *)v6 value];
+      value = [(HMPresenceEventActivation *)self value];
+      v8 = value == [(HMPresenceEventActivation *)v6 value];
     }
 
     else
@@ -63,88 +63,88 @@
 - (NSNumber)number
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(HMPresenceEventActivation *)self value];
+  value = [(HMPresenceEventActivation *)self value];
 
-  return [v2 numberWithUnsignedInteger:v3];
+  return [v2 numberWithUnsignedInteger:value];
 }
 
-- (void)addToPayload:(id)a3
+- (void)addToPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMPresenceEventActivation *)self number];
-  [v4 setObject:v5 forKeyedSubscript:@"kPresenceEventActivationGranularity"];
+  payloadCopy = payload;
+  number = [(HMPresenceEventActivation *)self number];
+  [payloadCopy setObject:number forKeyedSubscript:@"kPresenceEventActivationGranularity"];
 }
 
-- (void)addToCoder:(id)a3
+- (void)addToCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMPresenceEventActivation *)self number];
-  [v4 encodeObject:v5 forKey:@"kPresenceEventActivationGranularity"];
+  coderCopy = coder;
+  number = [(HMPresenceEventActivation *)self number];
+  [coderCopy encodeObject:number forKey:@"kPresenceEventActivationGranularity"];
 }
 
-- (HMPresenceEventActivation)initWithNumber:(id)a3
+- (HMPresenceEventActivation)initWithNumber:(id)number
 {
-  v4 = a3;
-  if (v4)
+  numberCopy = number;
+  if (numberCopy)
   {
     v8.receiver = self;
     v8.super_class = HMPresenceEventActivation;
     v5 = [(HMPresenceEventActivation *)&v8 init];
     if (v5)
     {
-      v5->_value = [v4 unsignedIntegerValue];
+      v5->_value = [numberCopy unsignedIntegerValue];
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)activationGranularityWithCoder:(id)a3
++ (id)activationGranularityWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"kPresenceEventActivationGranularity"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPresenceEventActivationGranularity"];
 
   v5 = [HMPresenceEventActivation activationGranularityWithNumber:v4];
 
   return v5;
 }
 
-+ (id)activationGranularityWithDict:(id)a3
++ (id)activationGranularityWithDict:(id)dict
 {
-  v3 = [a3 hmf_numberForKey:@"kPresenceEventActivationGranularity"];
+  v3 = [dict hmf_numberForKey:@"kPresenceEventActivationGranularity"];
   v4 = [HMPresenceEventActivation activationGranularityWithNumber:v3];
 
   return v4;
 }
 
-+ (id)activationGranularityWithMessage:(id)a3
++ (id)activationGranularityWithMessage:(id)message
 {
-  v3 = [a3 numberForKey:@"kPresenceEventActivationGranularity"];
+  v3 = [message numberForKey:@"kPresenceEventActivationGranularity"];
   v4 = [HMPresenceEventActivation activationGranularityWithNumber:v3];
 
   return v4;
 }
 
-+ (id)activationGranularityWithNumber:(id)a3
++ (id)activationGranularityWithNumber:(id)number
 {
-  v3 = a3;
-  v4 = [[HMPresenceEventActivation alloc] initWithNumber:v3];
+  numberCopy = number;
+  v4 = [[HMPresenceEventActivation alloc] initWithNumber:numberCopy];
 
   return v4;
 }
 
-+ (id)activationGranularityWithValue:(unint64_t)a3
++ (id)activationGranularityWithValue:(unint64_t)value
 {
   v4 = [HMPresenceEventActivation alloc];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
   v6 = [(HMPresenceEventActivation *)v4 initWithNumber:v5];
 
   return v6;

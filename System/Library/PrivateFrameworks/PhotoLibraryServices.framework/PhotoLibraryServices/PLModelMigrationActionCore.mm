@@ -1,12 +1,12 @@
 @interface PLModelMigrationActionCore
 + (id)actionDescription;
 + (id)shortenedMigrationActionClassName;
-- (BOOL)isCancelledWithError:(id *)a3;
+- (BOOL)isCancelledWithError:(id *)error;
 - (NSString)actionName;
 - (NSString)description;
-- (PLModelMigrationActionCore)initWithMigrationContext:(id)a3 logger:(id)a4 progress:(id)a5;
-- (id)cancellableDiscreteProgressWithTotalUnitCount:(int64_t)a3 pendingParentUnitCount:(int64_t)a4;
-- (int64_t)saveWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (PLModelMigrationActionCore)initWithMigrationContext:(id)context logger:(id)logger progress:(id)progress;
+- (id)cancellableDiscreteProgressWithTotalUnitCount:(int64_t)count pendingParentUnitCount:(int64_t)unitCount;
+- (int64_t)saveWithManagedObjectContext:(id)context error:(id *)error;
 - (void)finalizeProgress;
 @end
 
@@ -14,7 +14,7 @@
 
 - (NSString)actionName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
@@ -24,22 +24,22 @@
   v10.receiver = self;
   v10.super_class = PLModelMigrationActionCore;
   v3 = [(PLModelMigrationActionCore *)&v10 description];
-  v4 = [(PLModelMigrationActionCore *)self actionName];
-  v5 = [objc_opt_class() actionDescription];
-  v6 = [(PLModelMigrationActionCore *)self progress];
-  v7 = [v6 localizedDescription];
-  v8 = [v3 stringByAppendingFormat:@": [%@] description: %@, progress: %@", v4, v5, v7];
+  actionName = [(PLModelMigrationActionCore *)self actionName];
+  actionDescription = [objc_opt_class() actionDescription];
+  progress = [(PLModelMigrationActionCore *)self progress];
+  localizedDescription = [progress localizedDescription];
+  v8 = [v3 stringByAppendingFormat:@": [%@] description: %@, progress: %@", actionName, actionDescription, localizedDescription];
 
   return v8;
 }
 
-- (BOOL)isCancelledWithError:(id *)a3
+- (BOOL)isCancelledWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PLModelMigrationActionCore *)self progress];
-  v5 = [v4 isCancelled];
+  progress = [(PLModelMigrationActionCore *)self progress];
+  isCancelled = [progress isCancelled];
 
-  if (a3 && v5)
+  if (error && isCancelled)
   {
     v6 = objc_opt_class();
     if ([v6 isSubclassOfClass:objc_opt_class()])
@@ -57,10 +57,10 @@
     v12 = *MEMORY[0x1E696A588];
     v13[0] = @"Migration was cancelled";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    *a3 = [v8 errorWithDomain:v9 code:v7 userInfo:v10];
+    *error = [v8 errorWithDomain:v9 code:v7 userInfo:v10];
   }
 
-  return v5;
+  return isCancelled;
 }
 
 + (id)shortenedMigrationActionClassName
@@ -71,15 +71,15 @@
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
     v5 = [v4 componentsSeparatedByString:@"_"];
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
   }
 
   else
   {
-    v6 = @"unknown";
+    lastObject = @"unknown";
   }
 
-  return v6;
+  return lastObject;
 }
 
 + (id)actionDescription
@@ -93,9 +93,9 @@
   return v6;
 }
 
-- (int64_t)saveWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)saveWithManagedObjectContext:(id)context error:(id *)error
 {
-  if ([a3 save:a4])
+  if ([context save:error])
   {
     return 1;
   }
@@ -108,25 +108,25 @@
 
 - (void)finalizeProgress
 {
-  v5 = [(PLModelMigrationActionCore *)self progress];
-  v3 = [v5 totalUnitCount];
-  v4 = [(PLModelMigrationActionCore *)self progress];
-  [v4 setCompletedUnitCount:v3];
+  progress = [(PLModelMigrationActionCore *)self progress];
+  totalUnitCount = [progress totalUnitCount];
+  progress2 = [(PLModelMigrationActionCore *)self progress];
+  [progress2 setCompletedUnitCount:totalUnitCount];
 }
 
-- (id)cancellableDiscreteProgressWithTotalUnitCount:(int64_t)a3 pendingParentUnitCount:(int64_t)a4
+- (id)cancellableDiscreteProgressWithTotalUnitCount:(int64_t)count pendingParentUnitCount:(int64_t)unitCount
 {
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(PLModelMigrationActionCore *)self progress];
-  v10 = [(PLModelMigrationActionCore *)self logger];
+  progress = [(PLModelMigrationActionCore *)self progress];
+  logger = [(PLModelMigrationActionCore *)self logger];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__PLModelMigrationActionCore_cancellableDiscreteProgressWithTotalUnitCount_pendingParentUnitCount___block_invoke;
   v14[3] = &unk_1E7573650;
   v15 = v8;
   v11 = v8;
-  v12 = PLCancellableDiscreteProgress(v9, v10, a3, a4, v14);
+  v12 = PLCancellableDiscreteProgress(progress, logger, count, unitCount, v14);
 
   return v12;
 }
@@ -203,16 +203,16 @@ void __99__PLModelMigrationActionCore_cancellableDiscreteProgressWithTotalUnitCo
   }
 }
 
-- (PLModelMigrationActionCore)initWithMigrationContext:(id)a3 logger:(id)a4 progress:(id)a5
+- (PLModelMigrationActionCore)initWithMigrationContext:(id)context logger:(id)logger progress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  contextCopy = context;
+  loggerCopy = logger;
+  progressCopy = progress;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLModelMigrationAction.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"[migrationContext isKindOfClass:PLMigrationContext.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationAction.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"[migrationContext isKindOfClass:PLMigrationContext.class]"}];
   }
 
   v21.receiver = self;
@@ -221,16 +221,16 @@ void __99__PLModelMigrationActionCore_cancellableDiscreteProgressWithTotalUnitCo
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_migrationContext, a3);
-    objc_storeStrong(&v14->_logger, a4);
-    objc_storeStrong(&v14->_progress, a5);
-    v15 = [v10 userInfo];
+    objc_storeStrong(&v13->_migrationContext, context);
+    objc_storeStrong(&v14->_logger, logger);
+    objc_storeStrong(&v14->_progress, progress);
+    userInfo = [contextCopy userInfo];
     migrationContextUserInfo = v14->_migrationContextUserInfo;
-    v14->_migrationContextUserInfo = v15;
+    v14->_migrationContextUserInfo = userInfo;
 
-    v17 = [v10 analyticsEventManager];
+    analyticsEventManager = [contextCopy analyticsEventManager];
     analyticsEventManager = v14->_analyticsEventManager;
-    v14->_analyticsEventManager = v17;
+    v14->_analyticsEventManager = analyticsEventManager;
 
     [(PLModelMigrationActionCore *)v14 setup];
   }

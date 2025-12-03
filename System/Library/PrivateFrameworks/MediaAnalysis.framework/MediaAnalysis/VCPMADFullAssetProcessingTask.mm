@@ -1,35 +1,35 @@
 @interface VCPMADFullAssetProcessingTask
-+ (id)taskWithPhotoLibrary:(id)a3 localIdentifiers:(id)a4;
-- (BOOL)shouldSkipAnalysisForAsset:(id)a3 withResources:(id)a4 logPrefix:(id)a5;
-- (VCPMADFullAssetProcessingTask)initWithPhotoLibrary:(id)a3 localIdentifiers:(id)a4;
++ (id)taskWithPhotoLibrary:(id)library localIdentifiers:(id)identifiers;
+- (BOOL)shouldSkipAnalysisForAsset:(id)asset withResources:(id)resources logPrefix:(id)prefix;
+- (VCPMADFullAssetProcessingTask)initWithPhotoLibrary:(id)library localIdentifiers:(id)identifiers;
 - (int)mainInternal;
-- (int)processAsset:(id)a3;
-- (int)processAssetsWithProgressReporter:(id)a3;
+- (int)processAsset:(id)asset;
+- (int)processAssetsWithProgressReporter:(id)reporter;
 - (int)processPendingBatch;
 - (void)resetPendingBatch;
 @end
 
 @implementation VCPMADFullAssetProcessingTask
 
-- (VCPMADFullAssetProcessingTask)initWithPhotoLibrary:(id)a3 localIdentifiers:(id)a4
+- (VCPMADFullAssetProcessingTask)initWithPhotoLibrary:(id)library localIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VCPTask *)self initWithPhotoLibrary:v6];
+  libraryCopy = library;
+  identifiersCopy = identifiers;
+  v8 = [(VCPTask *)self initWithPhotoLibrary:libraryCopy];
   v9 = v8;
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v8->_localIdentifiers, a4);
-  v10 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v6];
+  objc_storeStrong(&v8->_localIdentifiers, identifiers);
+  v10 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
   database = v9->_database;
   v9->_database = v10;
 
   if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
   {
-    v12 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:v6];
+    v12 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:libraryCopy];
     embeddingChangeManager = v9->_embeddingChangeManager;
     v9->_embeddingChangeManager = v12;
 
@@ -53,7 +53,7 @@
     }
   }
 
-  v14 = [VCPPhotosAssetChangeManager managerForPhotoLibrary:v6];
+  v14 = [VCPPhotosAssetChangeManager managerForPhotoLibrary:libraryCopy];
   changeManager = v9->_changeManager;
   v9->_changeManager = v14;
 
@@ -87,45 +87,45 @@ LABEL_14:
   return v16;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3 localIdentifiers:(id)a4
++ (id)taskWithPhotoLibrary:(id)library localIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v5 localIdentifiers:v6];
+  libraryCopy = library;
+  identifiersCopy = identifiers;
+  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy localIdentifiers:identifiersCopy];
 
   return v7;
 }
 
 - (void)resetPendingBatch
 {
-  v5 = [(VCPTask *)self photoLibrary];
+  photoLibrary = [(VCPTask *)self photoLibrary];
   v3 = [VCPBatchAnalysisTask taskWithPhotoLibrary:?];
   pendingBatch = self->_pendingBatch;
   self->_pendingBatch = v3;
 
   [(VCPBatchAnalysisTask *)self->_pendingBatch setPhotosChangeManager:self->_changeManager];
   [(VCPBatchAnalysisTask *)self->_pendingBatch setEmbeddingChangeManager:self->_embeddingChangeManager];
-  v6 = [(VCPTask *)self cancel];
+  cancel = [(VCPTask *)self cancel];
   [(VCPTask *)self->_pendingBatch setCancel:?];
 }
 
 - (int)processPendingBatch
 {
   [(VCPBatchAnalysisTask *)self->_pendingBatch start];
-  v3 = [(VCPTask *)self->_pendingBatch error];
-  if (!v3)
+  error = [(VCPTask *)self->_pendingBatch error];
+  if (!error)
   {
     [(VCPMADFullAssetProcessingTask *)self resetPendingBatch];
   }
 
-  return v3;
+  return error;
 }
 
-- (BOOL)shouldSkipAnalysisForAsset:(id)a3 withResources:(id)a4 logPrefix:(id)a5
+- (BOOL)shouldSkipAnalysisForAsset:(id)asset withResources:(id)resources logPrefix:(id)prefix
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  resourcesCopy = resources;
+  prefixCopy = prefix;
   if (!self->_networkAvailable)
   {
     if (MediaAnalysisLogLevel() < 7)
@@ -140,12 +140,12 @@ LABEL_14:
     }
 
     v19 = 138412290;
-    v20 = v10;
+    v20 = prefixCopy;
     v12 = "%@ Network unavailable; skipping";
     goto LABEL_11;
   }
 
-  if ([v8 vcp_isLivePhoto] && (objc_msgSend(v9, "vcp_hasLocalPhoto:", objc_msgSend(v8, "hasAdjustments")) & 1) == 0)
+  if ([assetCopy vcp_isLivePhoto] && (objc_msgSend(resourcesCopy, "vcp_hasLocalPhoto:", objc_msgSend(assetCopy, "hasAdjustments")) & 1) == 0)
   {
     if (MediaAnalysisLogLevel() < 7)
     {
@@ -159,20 +159,20 @@ LABEL_14:
     }
 
     v19 = 138412290;
-    v20 = v10;
+    v20 = prefixCopy;
     v12 = "%@ Live Photo has no local image; skipping";
     goto LABEL_11;
   }
 
-  if (![v8 vcp_isVideoSlowmo])
+  if (![assetCopy vcp_isVideoSlowmo])
   {
-    v13 = [v9 vcp_smallMovieDerivativeResource];
-    if (v13)
+    vcp_smallMovieDerivativeResource = [resourcesCopy vcp_smallMovieDerivativeResource];
+    if (vcp_smallMovieDerivativeResource)
     {
-      if ([v8 isVideo])
+      if ([assetCopy isVideo])
       {
-        v14 = [v13 fileSize];
-        if (v14 > +[VCPDownloadManager maxSizeBytes])
+        fileSize = [vcp_smallMovieDerivativeResource fileSize];
+        if (fileSize > +[VCPDownloadManager maxSizeBytes])
         {
           if (MediaAnalysisLogLevel() < 7)
           {
@@ -186,7 +186,7 @@ LABEL_14:
           }
 
           v19 = 138412290;
-          v20 = v10;
+          v20 = prefixCopy;
           v16 = "%@ File size exceeds streaming threshold; skipping";
 LABEL_26:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v15, v16, &v19, 0xCu);
@@ -197,7 +197,7 @@ LABEL_34:
           goto LABEL_22;
         }
 
-        if (!v14 && [v8 vcp_isLongMovie])
+        if (!fileSize && [assetCopy vcp_isLongMovie])
         {
           if (MediaAnalysisLogLevel() < 7)
           {
@@ -211,7 +211,7 @@ LABEL_34:
           }
 
           v19 = 138412290;
-          v20 = v10;
+          v20 = prefixCopy;
           v16 = "%@ Duration exceeds streaming threshold; skipping";
           goto LABEL_26;
         }
@@ -233,7 +233,7 @@ LABEL_34:
     }
 
     v19 = 138412290;
-    v20 = v10;
+    v20 = prefixCopy;
     v16 = "%@ Asset has no small video derivative; skipping";
     goto LABEL_26;
   }
@@ -250,7 +250,7 @@ LABEL_34:
   }
 
   v19 = 138412290;
-  v20 = v10;
+  v20 = prefixCopy;
   v12 = "%@ Slowmo not supported for streaming analysis; skipping";
 LABEL_11:
   _os_log_impl(&_mh_execute_header, &_os_log_default, v11, v12, &v19, 0xCu);
@@ -261,49 +261,49 @@ LABEL_22:
   return v17;
 }
 
-- (int)processAsset:(id)a3
+- (int)processAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 localIdentifier];
-  v6 = [NSString stringWithFormat:@"[VCPMADFullAssetProcessingTask][%@]", v5];
+  assetCopy = asset;
+  localIdentifier = [assetCopy localIdentifier];
+  v6 = [NSString stringWithFormat:@"[VCPMADFullAssetProcessingTask][%@]", localIdentifier];
 
   if (MediaAnalysisLogLevel() >= 7)
   {
     v7 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
-      v8 = [v4 vcp_typeDescription];
+      vcp_typeDescription = [assetCopy vcp_typeDescription];
       *buf = 138412546;
       v49 = v6;
       v50 = 2112;
-      v51 = v8;
+      v51 = vcp_typeDescription;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "%@ Evaluating %@ asset", buf, 0x16u);
     }
   }
 
-  if ([v4 vcp_eligibleForFullAnalysis] && !-[VCPBatchAnalysisTask containsAsset:](self->_pendingBatch, "containsAsset:", v4))
+  if ([assetCopy vcp_eligibleForFullAnalysis] && !-[VCPBatchAnalysisTask containsAsset:](self->_pendingBatch, "containsAsset:", assetCopy))
   {
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
-      v10 = [(VCPTask *)self photoLibrary];
-      v11 = [v10 mad_fetchRequest];
+      photoLibrary = [(VCPTask *)self photoLibrary];
+      mad_fetchRequest = [photoLibrary mad_fetchRequest];
 
-      v12 = [v4 localIdentifier];
-      v13 = [v11 fetchAnalysisWithLocalIdentifier:v12 predicate:0];
+      localIdentifier2 = [assetCopy localIdentifier];
+      v13 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier2 predicate:0];
     }
 
     else
     {
       database = self->_database;
-      v11 = [v4 localIdentifier];
+      mad_fetchRequest = [assetCopy localIdentifier];
       v47 = 0;
-      [(VCPDatabaseWriter *)database analysisForAsset:v11 analysis:&v47];
+      [(VCPDatabaseWriter *)database analysisForAsset:mad_fetchRequest analysis:&v47];
       v13 = v47;
     }
 
     v15 = MediaAnalysisStripOutdatedAnalysis();
 
-    v43 = [v4 vcp_fullAnalysisTypes] & 0xFFFFFFFFDFEFFFFFLL;
+    v43 = [assetCopy vcp_fullAnalysisTypes] & 0xFFFFFFFFDFEFFFFFLL;
     v16 = v43 & ~[v15 vcp_types];
     if (!v16)
     {
@@ -342,8 +342,8 @@ LABEL_45:
       }
     }
 
-    v21 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v4];
-    v22 = [v4 vcp_fullAnalysisTypesForResources:v21];
+    v21 = [PHAssetResource vcp_allAcceptableResourcesForAsset:assetCopy];
+    v22 = [assetCopy vcp_fullAnalysisTypesForResources:v21];
     v41 = v22 & v16;
     v42 = v22;
     if ((v22 & v16) == v16)
@@ -354,7 +354,7 @@ LABEL_45:
     else
     {
       v23 = v16;
-      if ([(VCPMADFullAssetProcessingTask *)self shouldSkipAnalysisForAsset:v4 withResources:v21 logPrefix:v6])
+      if ([(VCPMADFullAssetProcessingTask *)self shouldSkipAnalysisForAsset:assetCopy withResources:v21 logPrefix:v6])
       {
         v9 = 0;
 LABEL_44:
@@ -375,9 +375,9 @@ LABEL_44:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v27, OS_SIGNPOST_INTERVAL_BEGIN, v25, "VCPMADFullAssetProcessingTask_UnpackComputeSync", "", buf, 2u);
     }
 
-    v44 = [v45 mad_computeSyncResource];
-    v28 = [(VCPTask *)self cancel];
-    v46 = [v44 mad_existingAnalysisFromComputeSyncForAsset:v4 allowDownload:0 cancel:v28];
+    mad_computeSyncResource = [v45 mad_computeSyncResource];
+    cancel = [(VCPTask *)self cancel];
+    v46 = [mad_computeSyncResource mad_existingAnalysisFromComputeSyncForAsset:assetCopy allowDownload:0 cancel:cancel];
 
     v29 = VCPSignPostLog();
     v30 = v29;
@@ -387,12 +387,12 @@ LABEL_44:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v30, OS_SIGNPOST_INTERVAL_END, v25, "VCPMADFullAssetProcessingTask_UnpackComputeSync", "", buf, 2u);
     }
 
-    v31 = [v46 fullAnalysisResults];
-    v32 = v31 == 0;
+    fullAnalysisResults = [v46 fullAnalysisResults];
+    v32 = fullAnalysisResults == 0;
 
     if (!v32)
     {
-      v33 = [v46 fullAnalysisResults];
+      fullAnalysisResults2 = [v46 fullAnalysisResults];
       v34 = MediaAnalysisStripOutdatedAnalysis();
 
       v23 = v43 & ~[v34 vcp_types];
@@ -416,7 +416,7 @@ LABEL_44:
 
       if ((v23 & ~v42) != 0)
       {
-        if ([(VCPMADFullAssetProcessingTask *)self shouldSkipAnalysisForAsset:v4 withResources:v45 logPrefix:v6])
+        if ([(VCPMADFullAssetProcessingTask *)self shouldSkipAnalysisForAsset:assetCopy withResources:v45 logPrefix:v6])
         {
           v9 = 0;
           v15 = v34;
@@ -446,7 +446,7 @@ LABEL_43:
       }
     }
 
-    [(VCPBatchAnalysisTask *)self->_pendingBatch addAnalysis:v23 withExistingAnalysis:v15 forAsset:v4 allowStreaming:v41 != v16];
+    [(VCPBatchAnalysisTask *)self->_pendingBatch addAnalysis:v23 withExistingAnalysis:v15 forAsset:assetCopy allowStreaming:v41 != v16];
     [(VCPBatchAnalysisTask *)self->_pendingBatch cost];
     if (v39 < 100.0 || (v9 = [(VCPMADFullAssetProcessingTask *)self processPendingBatch]) == 0)
     {
@@ -462,12 +462,12 @@ LABEL_46:
   return v9;
 }
 
-- (int)processAssetsWithProgressReporter:(id)a3
+- (int)processAssetsWithProgressReporter:(id)reporter
 {
-  v4 = a3;
+  reporterCopy = reporter;
   v5 = off_100281000;
-  v6 = [(VCPTask *)self photoLibrary];
-  v7 = [PHAsset vcp_fetchOptionsForLibrary:v6 forTaskID:1];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  v7 = [PHAsset vcp_fetchOptionsForLibrary:photoLibrary forTaskID:1];
 
   v8 = [PHAsset fetchAssetsWithLocalIdentifiers:self->_localIdentifiers options:v7];
   v9 = 0;
@@ -496,7 +496,7 @@ LABEL_46:
 
       else
       {
-        [v4 increaseProcessedJobCountByOne];
+        [reporterCopy increaseProcessedJobCountByOne];
         v11 = 1;
       }
     }
@@ -539,19 +539,19 @@ LABEL_13:
     }
   }
 
-  v5 = [(VCPTask *)self photoLibrary];
-  v6 = [v5 isCloudPhotoLibraryEnabled];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  if (v6)
+  if (isCloudPhotoLibraryEnabled)
   {
     v7 = +[VCPInternetReachability sharedInstance];
     self->_networkAvailable = [v7 hasWifiOrEthernetConnection];
 
     if (self->_networkAvailable)
     {
-      v8 = [(VCPTask *)self cancel];
+      cancel = [(VCPTask *)self cancel];
       v9 = +[VCPDownloadManager sharedManager];
-      [v9 setCancel:v8];
+      [v9 setCancel:cancel];
     }
 
     else if (MediaAnalysisLogLevel() >= 6)
@@ -567,8 +567,8 @@ LABEL_13:
   }
 
   [(VCPMADFullAssetProcessingTask *)self resetPendingBatch];
-  v11 = [(VCPTask *)self progressHandler];
-  v12 = v11 == 0;
+  progressHandler = [(VCPTask *)self progressHandler];
+  v12 = progressHandler == 0;
 
   if (v12)
   {
@@ -578,8 +578,8 @@ LABEL_13:
   else
   {
     v13 = [(NSArray *)self->_localIdentifiers count];
-    v14 = [(VCPTask *)self progressHandler];
-    v15 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v13 andBlock:v14];
+    progressHandler2 = [(VCPTask *)self progressHandler];
+    v15 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v13 andBlock:progressHandler2];
 
     v16 = v15;
   }
@@ -610,8 +610,8 @@ LABEL_13:
   v24 = +[VCPDownloadManager sharedManager];
   [v24 flush];
 
-  v25 = [(MADVectorDatabaseChangeManager *)self->_embeddingChangeManager publishPendingChanges];
-  if (v25)
+  publishPendingChanges = [(MADVectorDatabaseChangeManager *)self->_embeddingChangeManager publishPendingChanges];
+  if (publishPendingChanges)
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
@@ -652,29 +652,29 @@ LABEL_13:
       goto LABEL_38;
     }
 
-    v29 = [(VCPDatabaseWriter *)self->_database commit];
-    if (v29 == -108 || v29 == -36)
+    commit = [(VCPDatabaseWriter *)self->_database commit];
+    if (commit == -108 || commit == -36)
     {
-      v25 = v29;
+      publishPendingChanges = commit;
     }
 
     else
     {
-      v25 = v29;
-      if (v29 != -23)
+      publishPendingChanges = commit;
+      if (commit != -23)
       {
-        v25 = 0;
+        publishPendingChanges = 0;
       }
     }
 
-    if (v29 != -108 && v29 != -36 && v29 != -23)
+    if (commit != -108 && commit != -36 && commit != -23)
     {
 LABEL_38:
-      v25 = v21;
+      publishPendingChanges = v21;
     }
   }
 
-  return v25;
+  return publishPendingChanges;
 }
 
 @end

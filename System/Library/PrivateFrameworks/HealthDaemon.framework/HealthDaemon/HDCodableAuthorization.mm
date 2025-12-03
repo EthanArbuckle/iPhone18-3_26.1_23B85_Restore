@@ -1,30 +1,30 @@
 @interface HDCodableAuthorization
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_modificationDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_setAuthorizationModeWithNumber:(id)a3;
-- (void)_setAuthorizationRequestWithNumber:(id)a3;
-- (void)_setAuthorizationStatusWithNumber:(id)a3;
-- (void)_setDataTypeCodeWithObjectType:(id)a3;
-- (void)_setModificationDate:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAuthorizationRequest:(BOOL)a3;
-- (void)setHasAuthorizationStatus:(BOOL)a3;
-- (void)setHasModificationDate:(BOOL)a3;
-- (void)setHasModificationEpoch:(BOOL)a3;
-- (void)setHasObjectType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)_setAuthorizationModeWithNumber:(id)number;
+- (void)_setAuthorizationRequestWithNumber:(id)number;
+- (void)_setAuthorizationStatusWithNumber:(id)number;
+- (void)_setDataTypeCodeWithObjectType:(id)type;
+- (void)_setModificationDate:(id)date;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAuthorizationRequest:(BOOL)request;
+- (void)setHasAuthorizationStatus:(BOOL)status;
+- (void)setHasModificationDate:(BOOL)date;
+- (void)setHasModificationEpoch:(BOOL)epoch;
+- (void)setHasObjectType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableAuthorization
 
-- (void)setHasObjectType:(BOOL)a3
+- (void)setHasObjectType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAuthorizationStatus:(BOOL)a3
+- (void)setHasAuthorizationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAuthorizationRequest:(BOOL)a3
+- (void)setHasAuthorizationRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 2;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasModificationDate:(BOOL)a3
+- (void)setHasModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasModificationEpoch:(BOOL)a3
+- (void)setHasModificationEpoch:(BOOL)epoch
 {
-  if (a3)
+  if (epoch)
   {
     v3 = 16;
   }
@@ -103,20 +103,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableAuthorization;
   v4 = [(HDCodableAuthorization *)&v8 description];
-  v5 = [(HDCodableAuthorization *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableAuthorization *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_objectType];
-    [v3 setObject:v9 forKey:@"objectType"];
+    [dictionary setObject:v9 forKey:@"objectType"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -137,7 +137,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_authorizationStatus];
-  [v3 setObject:v10 forKey:@"authorizationStatus"];
+  [dictionary setObject:v10 forKey:@"authorizationStatus"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -153,7 +153,7 @@ LABEL_4:
 
 LABEL_15:
   v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_authorizationRequest];
-  [v3 setObject:v11 forKey:@"authorizationRequest"];
+  [dictionary setObject:v11 forKey:@"authorizationRequest"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -169,7 +169,7 @@ LABEL_5:
 
 LABEL_16:
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_modificationDate];
-  [v3 setObject:v12 forKey:@"modificationDate"];
+  [dictionary setObject:v12 forKey:@"modificationDate"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -185,36 +185,36 @@ LABEL_6:
 
 LABEL_17:
   v13 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_modificationEpoch];
-  [v3 setObject:v13 forKey:@"modificationEpoch"];
+  [dictionary setObject:v13 forKey:@"modificationEpoch"];
 
   if (*&self->_has)
   {
 LABEL_7:
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_authorizationMode];
-    [v3 setObject:v5 forKey:@"authorizationMode"];
+    [dictionary setObject:v5 forKey:@"authorizationMode"];
   }
 
 LABEL_8:
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v7 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v12 = v4;
+  v12 = toCopy;
   if ((has & 0x20) != 0)
   {
     objectType = self->_objectType;
     PBDataWriterWriteInt64Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -235,7 +235,7 @@ LABEL_3:
 
   authorizationStatus = self->_authorizationStatus;
   PBDataWriterWriteInt64Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -251,7 +251,7 @@ LABEL_4:
 LABEL_15:
   authorizationRequest = self->_authorizationRequest;
   PBDataWriterWriteInt64Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -267,7 +267,7 @@ LABEL_5:
 LABEL_16:
   modificationDate = self->_modificationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -283,31 +283,31 @@ LABEL_6:
 LABEL_17:
   modificationEpoch = self->_modificationEpoch;
   PBDataWriterWriteInt64Field();
-  v4 = v12;
+  toCopy = v12;
   if (*&self->_has)
   {
 LABEL_7:
     authorizationMode = self->_authorizationMode;
     PBDataWriterWriteInt64Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_8:
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[6] = self->_objectType;
-    *(v4 + 64) |= 0x20u;
+    toCopy[6] = self->_objectType;
+    *(toCopy + 64) |= 0x20u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -326,8 +326,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_authorizationStatus;
-  *(v4 + 64) |= 4u;
+  toCopy[3] = self->_authorizationStatus;
+  *(toCopy + 64) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -341,8 +341,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  v4[2] = self->_authorizationRequest;
-  *(v4 + 64) |= 2u;
+  toCopy[2] = self->_authorizationRequest;
+  *(toCopy + 64) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -356,8 +356,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  v4[4] = *&self->_modificationDate;
-  *(v4 + 64) |= 8u;
+  toCopy[4] = *&self->_modificationDate;
+  *(toCopy + 64) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -371,27 +371,27 @@ LABEL_6:
   }
 
 LABEL_17:
-  v4[5] = self->_modificationEpoch;
-  *(v4 + 64) |= 0x10u;
+  toCopy[5] = self->_modificationEpoch;
+  *(toCopy + 64) |= 0x10u;
   if (*&self->_has)
   {
 LABEL_7:
-    v4[1] = self->_authorizationMode;
-    *(v4 + 64) |= 1u;
+    toCopy[1] = self->_authorizationMode;
+    *(toCopy + 64) |= 1u;
   }
 
 LABEL_8:
   if (self->_syncIdentity)
   {
-    v6 = v4;
-    [v4 setSyncIdentity:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSyncIdentity:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x20) != 0)
@@ -471,31 +471,31 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v8 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v9 = v6[7];
   v6[7] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) == 0 || self->_objectType != *(v4 + 6))
+    if ((*(equalCopy + 64) & 0x20) == 0 || self->_objectType != *(equalCopy + 6))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 64) & 0x20) != 0)
+  else if ((*(equalCopy + 64) & 0x20) != 0)
   {
 LABEL_34:
     v7 = 0;
@@ -504,71 +504,71 @@ LABEL_34:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_authorizationStatus != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_authorizationStatus != *(equalCopy + 3))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_authorizationRequest != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_authorizationRequest != *(equalCopy + 2))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_modificationDate != *(v4 + 4))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_modificationDate != *(equalCopy + 4))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_modificationEpoch != *(v4 + 5))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_modificationEpoch != *(equalCopy + 5))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
     goto LABEL_34;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_authorizationMode != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_authorizationMode != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_34;
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 7))
+  if (syncIdentity | *(equalCopy + 7))
   {
     v7 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -683,16 +683,16 @@ LABEL_15:
   return v9 ^ v8 ^ v10 ^ v14 ^ v15 ^ v16 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 64);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 64);
   if ((v6 & 0x20) != 0)
   {
-    self->_objectType = *(v4 + 6);
+    self->_objectType = *(fromCopy + 6);
     *&self->_has |= 0x20u;
-    v6 = *(v4 + 64);
+    v6 = *(fromCopy + 64);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -705,14 +705,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 64) & 4) == 0)
+  else if ((*(fromCopy + 64) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_authorizationStatus = *(v4 + 3);
+  self->_authorizationStatus = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v6 = *(v4 + 64);
+  v6 = *(fromCopy + 64);
   if ((v6 & 2) == 0)
   {
 LABEL_4:
@@ -725,9 +725,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_authorizationRequest = *(v4 + 2);
+  self->_authorizationRequest = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v6 = *(v4 + 64);
+  v6 = *(fromCopy + 64);
   if ((v6 & 8) == 0)
   {
 LABEL_5:
@@ -740,9 +740,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_modificationDate = *(v4 + 4);
+  self->_modificationDate = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v6 = *(v4 + 64);
+  v6 = *(fromCopy + 64);
   if ((v6 & 0x10) == 0)
   {
 LABEL_6:
@@ -755,12 +755,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_modificationEpoch = *(v4 + 5);
+  self->_modificationEpoch = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
 LABEL_7:
-    self->_authorizationMode = *(v4 + 1);
+    self->_authorizationMode = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -783,32 +783,32 @@ LABEL_8:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setDataTypeCodeWithObjectType:(id)a3
+- (void)_setDataTypeCodeWithObjectType:(id)type
 {
-  v4 = [a3 code];
+  code = [type code];
 
-  [(HDCodableAuthorization *)self setObjectType:v4];
+  [(HDCodableAuthorization *)self setObjectType:code];
 }
 
-- (void)_setAuthorizationStatusWithNumber:(id)a3
+- (void)_setAuthorizationStatusWithNumber:(id)number
 {
-  v4 = [a3 integerValue];
+  integerValue = [number integerValue];
 
-  [(HDCodableAuthorization *)self setAuthorizationStatus:v4];
+  [(HDCodableAuthorization *)self setAuthorizationStatus:integerValue];
 }
 
-- (void)_setAuthorizationRequestWithNumber:(id)a3
+- (void)_setAuthorizationRequestWithNumber:(id)number
 {
-  v4 = [a3 integerValue];
+  integerValue = [number integerValue];
 
-  [(HDCodableAuthorization *)self setAuthorizationRequest:v4];
+  [(HDCodableAuthorization *)self setAuthorizationRequest:integerValue];
 }
 
-- (void)_setAuthorizationModeWithNumber:(id)a3
+- (void)_setAuthorizationModeWithNumber:(id)number
 {
-  v4 = [a3 integerValue];
+  integerValue = [number integerValue];
 
-  [(HDCodableAuthorization *)self setAuthorizationMode:v4];
+  [(HDCodableAuthorization *)self setAuthorizationMode:integerValue];
 }
 
 - (id)_modificationDate
@@ -827,11 +827,11 @@ LABEL_8:
   return v3;
 }
 
-- (void)_setModificationDate:(id)a3
+- (void)_setModificationDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
 
     [(HDCodableAuthorization *)self setModificationDate:?];
   }

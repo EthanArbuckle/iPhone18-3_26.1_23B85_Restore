@@ -1,20 +1,20 @@
 @interface AAUISpyglassSpecifierFactory
 + (id)currentSpecifierForPaymentAndShipping;
-+ (id)currentSpecifierForPersonalInformation:(BOOL)a3;
++ (id)currentSpecifierForPersonalInformation:(BOOL)information;
 + (id)currentSpecifierForSignInAndSecurity;
-+ (id)specifierForPaymentAndShipping:(id)a3 isPaymentSpecifierProviderNil:(BOOL)a4;
-+ (id)specifierForPersonalInformationWithAppleIDType:(BOOL)a3;
++ (id)specifierForPaymentAndShipping:(id)shipping isPaymentSpecifierProviderNil:(BOOL)nil;
++ (id)specifierForPersonalInformationWithAppleIDType:(BOOL)type;
 + (id)specifierForSignInAndSecurity;
-+ (id)specifierForSubscriptions:(id)a3;
++ (id)specifierForSubscriptions:(id)subscriptions;
 @end
 
 @implementation AAUISpyglassSpecifierFactory
 
-+ (id)specifierForPersonalInformationWithAppleIDType:(BOOL)a3
++ (id)specifierForPersonalInformationWithAppleIDType:(BOOL)type
 {
   v3 = [[AAUISpyglassSpecifierRowModel alloc] initForSpecifierType:1];
-  v4 = [v3 title];
-  v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:0 set:0 get:0 detail:0 cell:1 edit:0];
+  title = [v3 title];
+  v5 = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:0 cell:1 edit:0];
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:PSLazyIconLoading];
   [v5 setObject:@"com.apple.graphic-icon.account.info" forKeyedSubscript:PSIconUTTypeIdentifierKey];
   [v5 setIdentifier:@"APPLE_ACCOUNT_CONTACT"];
@@ -22,9 +22,9 @@
   return v5;
 }
 
-+ (id)currentSpecifierForPersonalInformation:(BOOL)a3
++ (id)currentSpecifierForPersonalInformation:(BOOL)information
 {
-  if (a3)
+  if (information)
   {
     v3 = @"APPLEID_CONTACT_CELL_TITLE_MAID";
   }
@@ -46,8 +46,8 @@
 + (id)specifierForSignInAndSecurity
 {
   v2 = [[AAUISpyglassSpecifierRowModel alloc] initForSpecifierType:2];
-  v3 = [v2 title];
-  v4 = [PSSpecifier preferenceSpecifierNamed:v3 target:0 set:0 get:0 detail:0 cell:1 edit:0];
+  title = [v2 title];
+  v4 = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:0 cell:1 edit:0];
   [v4 setIdentifier:@"PASSWORD_AND_SECURITY"];
   [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:PSLazyIconLoading];
   [v4 setObject:@"com.apple.graphic-icon.account.security" forKeyedSubscript:PSIconUTTypeIdentifierKey];
@@ -66,22 +66,22 @@
   return v4;
 }
 
-+ (id)specifierForPaymentAndShipping:(id)a3 isPaymentSpecifierProviderNil:(BOOL)a4
++ (id)specifierForPaymentAndShipping:(id)shipping isPaymentSpecifierProviderNil:(BOOL)nil
 {
-  v4 = a3;
+  shippingCopy = shipping;
   v5 = [[AAUISpyglassSpecifierRowModel alloc] initForSpecifierType:3];
   v6 = v5;
-  if (!v4)
+  if (!shippingCopy)
   {
-    v7 = [v5 title];
-    v4 = [PSSpecifier preferenceSpecifierNamed:v7 target:0 set:0 get:0 detail:0 cell:2 edit:0];
-    [v4 setIdentifier:@"PAYMENT_AND_SHIPPING"];
+    title = [v5 title];
+    shippingCopy = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:0 cell:2 edit:0];
+    [shippingCopy setIdentifier:@"PAYMENT_AND_SHIPPING"];
   }
 
-  [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:PSLazyIconLoading];
-  [v4 setObject:@"com.apple.graphic-icon.account.payment" forKeyedSubscript:PSIconUTTypeIdentifierKey];
+  [shippingCopy setObject:&__kCFBooleanTrue forKeyedSubscript:PSLazyIconLoading];
+  [shippingCopy setObject:@"com.apple.graphic-icon.account.payment" forKeyedSubscript:PSIconUTTypeIdentifierKey];
 
-  return v4;
+  return shippingCopy;
 }
 
 + (id)currentSpecifierForPaymentAndShipping
@@ -95,10 +95,10 @@
   return v4;
 }
 
-+ (id)specifierForSubscriptions:(id)a3
++ (id)specifierForSubscriptions:(id)subscriptions
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithArray:v3];
+  subscriptionsCopy = subscriptions;
+  v4 = [[NSMutableArray alloc] initWithArray:subscriptionsCopy];
   v14 = [[AAUISpyglassSpecifierRowModel alloc] initForSpecifierType:4];
   v15 = 0u;
   v16 = 0u;

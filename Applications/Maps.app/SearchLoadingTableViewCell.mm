@@ -1,9 +1,9 @@
 @interface SearchLoadingTableViewCell
 + (id)identifier;
-- (SearchLoadingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SearchLoadingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)clearHeightConstraint;
 - (void)prepareForReuse;
-- (void)setHeightConstraint:(double)a3 withPriority:(float)a4;
+- (void)setHeightConstraint:(double)constraint withPriority:(float)priority;
 @end
 
 @implementation SearchLoadingTableViewCell
@@ -16,7 +16,7 @@
   [(UIActivityIndicatorView *)self->_loadingIndicator startAnimating];
 }
 
-- (void)setHeightConstraint:(double)a3 withPriority:(float)a4
+- (void)setHeightConstraint:(double)constraint withPriority:(float)priority
 {
   heightConstraint = self->_heightConstraint;
   if (!heightConstraint)
@@ -25,10 +25,10 @@
   }
 
   [(NSLayoutConstraint *)heightConstraint priority];
-  if (v8 != a4)
+  if (v8 != priority)
   {
     [(NSLayoutConstraint *)self->_heightConstraint priority];
-    if (v9 == 1000.0 || a4 == 1000.0)
+    if (v9 == 1000.0 || priority == 1000.0)
     {
       [(SearchLoadingTableViewCell *)self clearHeightConstraint];
     }
@@ -37,12 +37,12 @@
   v11 = self->_heightConstraint;
   if (v11)
   {
-    [(NSLayoutConstraint *)v11 setConstant:a3];
+    [(NSLayoutConstraint *)v11 setConstant:constraint];
     [(NSLayoutConstraint *)self->_heightConstraint priority];
-    if (*&v12 != a4)
+    if (*&v12 != priority)
     {
       v13 = self->_heightConstraint;
-      *&v12 = a4;
+      *&v12 = priority;
 
       [(NSLayoutConstraint *)v13 setPriority:v12];
     }
@@ -51,13 +51,13 @@
   else
   {
 LABEL_14:
-    v14 = [(SearchLoadingTableViewCell *)self contentView];
-    v15 = [v14 heightAnchor];
-    v16 = [v15 constraintEqualToConstant:a3];
+    contentView = [(SearchLoadingTableViewCell *)self contentView];
+    heightAnchor = [contentView heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:constraint];
     v17 = self->_heightConstraint;
     self->_heightConstraint = v16;
 
-    *&v18 = a4;
+    *&v18 = priority;
     [(NSLayoutConstraint *)self->_heightConstraint setPriority:v18];
     v19 = self->_heightConstraint;
 
@@ -72,11 +72,11 @@ LABEL_14:
   self->_heightConstraint = 0;
 }
 
-- (SearchLoadingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SearchLoadingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v42.receiver = self;
   v42.super_class = SearchLoadingTableViewCell;
-  v4 = [(SearchLoadingTableViewCell *)&v42 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SearchLoadingTableViewCell *)&v42 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UILabel alloc];
@@ -99,8 +99,8 @@ LABEL_14:
     v14 = [v13 localizedStringForKey:@"Loading ..." value:@"localized string not found" table:0];
     [(UILabel *)v4->_loadingLabel setText:v14];
 
-    v15 = [(SearchLoadingTableViewCell *)v4 contentView];
-    [v15 addSubview:v4->_loadingLabel];
+    contentView = [(SearchLoadingTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_loadingLabel];
 
     v16 = [[UIActivityIndicatorView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     loadingIndicator = v4->_loadingIndicator;
@@ -111,37 +111,37 @@ LABEL_14:
     v18 = +[UIColor secondaryLabelColor];
     [(UIActivityIndicatorView *)v4->_loadingIndicator setColor:v18];
 
-    v19 = [(SearchLoadingTableViewCell *)v4 contentView];
-    [v19 addSubview:v4->_loadingIndicator];
+    contentView2 = [(SearchLoadingTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_loadingIndicator];
 
     [(UIActivityIndicatorView *)v4->_loadingIndicator setHidesWhenStopped:0];
     v20 = +[UIColor clearColor];
     [(SearchLoadingTableViewCell *)v4 setBackgroundColor:v20];
 
     [(UIActivityIndicatorView *)v4->_loadingIndicator startAnimating];
-    v40 = [(UIActivityIndicatorView *)v4->_loadingIndicator leadingAnchor];
-    v41 = [(SearchLoadingTableViewCell *)v4 contentView];
-    v39 = [v41 leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:10.0];
+    leadingAnchor = [(UIActivityIndicatorView *)v4->_loadingIndicator leadingAnchor];
+    contentView3 = [(SearchLoadingTableViewCell *)v4 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v43[0] = v38;
-    v36 = [(UIActivityIndicatorView *)v4->_loadingIndicator centerYAnchor];
-    v37 = [(SearchLoadingTableViewCell *)v4 contentView];
-    v35 = [v37 centerYAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    centerYAnchor = [(UIActivityIndicatorView *)v4->_loadingIndicator centerYAnchor];
+    contentView4 = [(SearchLoadingTableViewCell *)v4 contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v43[1] = v34;
-    v33 = [(UILabel *)v4->_loadingLabel leadingAnchor];
-    v32 = [(UIActivityIndicatorView *)v4->_loadingIndicator trailingAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32 constant:6.0];
+    leadingAnchor3 = [(UILabel *)v4->_loadingLabel leadingAnchor];
+    trailingAnchor = [(UIActivityIndicatorView *)v4->_loadingIndicator trailingAnchor];
+    v31 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:6.0];
     v43[2] = v31;
-    v21 = [(UILabel *)v4->_loadingLabel trailingAnchor];
-    v22 = [(SearchLoadingTableViewCell *)v4 contentView];
-    v23 = [v22 trailingAnchor];
-    v24 = [v21 constraintLessThanOrEqualToAnchor:v23 constant:-10.0];
+    trailingAnchor2 = [(UILabel *)v4->_loadingLabel trailingAnchor];
+    contentView5 = [(SearchLoadingTableViewCell *)v4 contentView];
+    trailingAnchor3 = [contentView5 trailingAnchor];
+    v24 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-10.0];
     v43[3] = v24;
-    v25 = [(UILabel *)v4->_loadingLabel centerYAnchor];
-    v26 = [(SearchLoadingTableViewCell *)v4 contentView];
-    v27 = [v26 centerYAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    centerYAnchor3 = [(UILabel *)v4->_loadingLabel centerYAnchor];
+    contentView6 = [(SearchLoadingTableViewCell *)v4 contentView];
+    centerYAnchor4 = [contentView6 centerYAnchor];
+    v28 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v43[4] = v28;
     v29 = [NSArray arrayWithObjects:v43 count:5];
     [NSLayoutConstraint activateConstraints:v29];

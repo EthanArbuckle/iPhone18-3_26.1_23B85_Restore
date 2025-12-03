@@ -1,6 +1,6 @@
 @interface SLRemoteServicePlistLoader
 + (id)allServices;
-+ (id)loadRemoteServicesFromPlistResourceName:(id)a3 inBundle:(id)a4;
++ (id)loadRemoteServicesFromPlistResourceName:(id)name inBundle:(id)bundle;
 @end
 
 @implementation SLRemoteServicePlistLoader
@@ -14,11 +14,11 @@
   return v4;
 }
 
-+ (id)loadRemoteServicesFromPlistResourceName:(id)a3 inBundle:(id)a4
++ (id)loadRemoteServicesFromPlistResourceName:(id)name inBundle:(id)bundle
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 pathForResource:a3 ofType:@"plist"];
+  bundleCopy = bundle;
+  v7 = [bundleCopy pathForResource:name ofType:@"plist"];
   v8 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:v7];
   if (v8)
   {
@@ -46,7 +46,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [[SLRemoteService alloc] initWithServiceBundle:v6 socialInfoDictionary:v14];
+            v15 = [[SLRemoteService alloc] initWithServiceBundle:bundleCopy socialInfoDictionary:v14];
             if (v15)
             {
               [v17 addObject:v15];

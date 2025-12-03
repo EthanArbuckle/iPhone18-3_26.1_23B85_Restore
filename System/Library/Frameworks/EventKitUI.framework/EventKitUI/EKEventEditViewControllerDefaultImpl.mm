@@ -1,11 +1,11 @@
 @interface EKEventEditViewControllerDefaultImpl
-+ (void)setDefaultDatesForEvent:(id)a3;
++ (void)setDefaultDatesForEvent:(id)event;
 - (BOOL)displayingRootView;
-- (BOOL)editor:(id)a3 shouldCompleteWithAction:(int64_t)a4;
+- (BOOL)editor:(id)editor shouldCompleteWithAction:(int64_t)action;
 - (BOOL)hasUnsavedChanges;
 - (BOOL)isModalInPresentation;
 - (CGSize)preferredContentSize;
-- (EKEventEditViewControllerDefaultImpl)initWithNibName:(id)a3 bundle:(id)a4;
+- (EKEventEditViewControllerDefaultImpl)initWithNibName:(id)name bundle:(id)bundle;
 - (EKEventEditViewDelegate)editViewDelegate;
 - (id)_confirmDismissAlertExplanationText;
 - (id)_leftBarButtonItem;
@@ -13,46 +13,46 @@
 - (id)alertIconImage;
 - (id)confirmDismissAlertController;
 - (id)confirmPendingConferenceDismissAlertController;
-- (id)pasteboardManagerForCalendarItemEditor:(id)a3;
-- (unint64_t)animationOptionsForCurve:(int64_t)a3;
+- (id)pasteboardManagerForCalendarItemEditor:(id)editor;
+- (unint64_t)animationOptionsForCurve:(int64_t)curve;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_storeChanged:(id)a3;
+- (void)_storeChanged:(id)changed;
 - (void)attemptDisplayReviewPrompt;
-- (void)editor:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)editor:(id)a3 prepareCalendarItemForEdit:(id)a4;
+- (void)editor:(id)editor didCompleteWithAction:(int64_t)action;
+- (void)editor:(id)editor prepareCalendarItemForEdit:(id)edit;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)presentationControllerDidAttemptToDismiss;
 - (void)presentationControllerDidAttemptToDismissWithPendingConference;
 - (void)refreshUIForUpdatedEvent;
-- (void)setEvent:(id)a3;
-- (void)setEventStore:(id)a3;
-- (void)setSuggestionKey:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setEvent:(id)event;
+- (void)setEventStore:(id)store;
+- (void)setSuggestionKey:(id)key;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation EKEventEditViewControllerDefaultImpl
 
-+ (void)setDefaultDatesForEvent:(id)a3
++ (void)setDefaultDatesForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v6 = CUIKDateRangeForNewEventOnDay();
-  v4 = [v6 startDate];
-  [v3 setStartDate:v4];
+  startDate = [v6 startDate];
+  [eventCopy setStartDate:startDate];
 
-  v5 = [v6 endDate];
-  [v3 setEndDateUnadjustedForLegacyClients:v5];
+  endDate = [v6 endDate];
+  [eventCopy setEndDateUnadjustedForLegacyClients:endDate];
 }
 
-- (EKEventEditViewControllerDefaultImpl)initWithNibName:(id)a3 bundle:(id)a4
+- (EKEventEditViewControllerDefaultImpl)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = EKEventEditViewControllerDefaultImpl;
-  v4 = [(EKEventEditViewControllerDefaultImpl *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(EKEventEditViewControllerDefaultImpl *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
     EKUILogInitIfNeeded();
@@ -63,11 +63,11 @@
     [(EKCalendarItemEditor *)v4->_editor setEditorDelegate:v4];
     [(EKEventEditViewControllerDefaultImpl *)v4 addChildViewController:v4->_editor];
     [(EKEventEditor *)v4->_editor didMoveToParentViewController:v4];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v4 selector:sel__storeChanged_ name:*MEMORY[0x1E6966928] object:v4->_store];
-    [v7 addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v7 addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
-    [v7 addObserver:v4 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__storeChanged_ name:*MEMORY[0x1E6966928] object:v4->_store];
+    [defaultCenter addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    [defaultCenter addObserver:v4 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
   }
 
   return v4;
@@ -79,37 +79,37 @@
   v28.receiver = self;
   v28.super_class = EKEventEditViewControllerDefaultImpl;
   [(EKEventEditViewControllerDefaultImpl *)&v28 loadView];
-  v3 = [(EKEventEditViewControllerDefaultImpl *)self view];
-  v4 = [(EKEventEditor *)self->_editor view];
-  [v3 addSubview:v4];
+  view = [(EKEventEditViewControllerDefaultImpl *)self view];
+  view2 = [(EKEventEditor *)self->_editor view];
+  [view addSubview:view2];
 
-  v5 = [(EKEventEditor *)self->_editor view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(EKEventEditor *)self->_editor view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v18 = MEMORY[0x1E696ACD8];
-  v27 = [(EKEventEditor *)self->_editor view];
-  v25 = [v27 leadingAnchor];
-  v26 = [(EKEventEditViewControllerDefaultImpl *)self view];
-  v24 = [v26 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  view4 = [(EKEventEditor *)self->_editor view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(EKEventEditViewControllerDefaultImpl *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v23;
-  v22 = [(EKEventEditor *)self->_editor view];
-  v20 = [v22 trailingAnchor];
-  v21 = [(EKEventEditViewControllerDefaultImpl *)self view];
-  v19 = [v21 trailingAnchor];
-  v17 = [v20 constraintEqualToAnchor:v19];
+  view6 = [(EKEventEditor *)self->_editor view];
+  trailingAnchor = [view6 trailingAnchor];
+  view7 = [(EKEventEditViewControllerDefaultImpl *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[1] = v17;
-  v16 = [(EKEventEditor *)self->_editor view];
-  v15 = [v16 topAnchor];
-  v6 = [(EKEventEditViewControllerDefaultImpl *)self view];
-  v7 = [v6 topAnchor];
-  v8 = [v15 constraintEqualToAnchor:v7];
+  view8 = [(EKEventEditor *)self->_editor view];
+  topAnchor = [view8 topAnchor];
+  view9 = [(EKEventEditViewControllerDefaultImpl *)self view];
+  topAnchor2 = [view9 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[2] = v8;
-  v9 = [(EKEventEditor *)self->_editor view];
-  v10 = [v9 bottomAnchor];
-  v11 = [(EKEventEditViewControllerDefaultImpl *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  view10 = [(EKEventEditor *)self->_editor view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(EKEventEditViewControllerDefaultImpl *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   [v18 activateConstraints:v14];
@@ -131,31 +131,31 @@
   [(EKEventEditViewControllerDefaultImpl *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v3.receiver = self;
   v3.super_class = EKEventEditViewControllerDefaultImpl;
-  [(EKEventEditViewControllerDefaultImpl *)&v3 viewIsAppearing:a3];
+  [(EKEventEditViewControllerDefaultImpl *)&v3 viewIsAppearing:appearing];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = EKEventEditViewControllerDefaultImpl;
-  v4 = a3;
-  [(EKEventEditViewControllerDefaultImpl *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(EKEventEditViewControllerDefaultImpl *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   [(EKEventEditViewControllerDefaultImpl *)self setPreferredContentSize:v6, v8];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = EKEventEditViewControllerDefaultImpl;
-  [(EKEventEditViewControllerDefaultImpl *)&v3 viewDidAppear:a3];
+  [(EKEventEditViewControllerDefaultImpl *)&v3 viewDidAppear:appear];
   if ([*MEMORY[0x1E69DDA98] isRunningTest])
   {
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global);
@@ -168,17 +168,17 @@ void __54__EKEventEditViewControllerDefaultImpl_viewDidAppear___block_invoke()
   [v0 postNotificationName:@"EKEventEditViewControllerDidAppear" object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = EKEventEditViewControllerDefaultImpl;
-  [(EKEventEditViewControllerDefaultImpl *)&v6 viewDidDisappear:a3];
+  [(EKEventEditViewControllerDefaultImpl *)&v6 viewDidDisappear:disappear];
   if (!self->_completedWithAction)
   {
-    v4 = [(EKEventEditViewControllerDefaultImpl *)self parentViewController];
-    v5 = [v4 isBeingDismissed];
+    parentViewController = [(EKEventEditViewControllerDefaultImpl *)self parentViewController];
+    isBeingDismissed = [parentViewController isBeingDismissed];
 
-    if (v5)
+    if (isBeingDismissed)
     {
       [(EKEventEditViewControllerDefaultImpl *)self editor:self->_editor didCompleteWithAction:0];
     }
@@ -202,19 +202,19 @@ void __54__EKEventEditViewControllerDefaultImpl_viewDidAppear___block_invoke()
   return ![(EKEventEditViewControllerDefaultImpl *)self displayingRootView];
 }
 
-- (void)setEventStore:(id)a3
+- (void)setEventStore:(id)store
 {
-  objc_storeStrong(&self->_store, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_store, store);
+  storeCopy = store;
   [(EKCalendarItemEditor *)self->_editor setStore:self->_store];
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  objc_storeStrong(&self->_event, a3);
-  v5 = a3;
-  v6 = [(EKEvent *)self->_event eventIdentifier];
-  v7 = [v6 copy];
+  objc_storeStrong(&self->_event, event);
+  eventCopy = event;
+  eventIdentifier = [(EKEvent *)self->_event eventIdentifier];
+  v7 = [eventIdentifier copy];
   eventId = self->_eventId;
   self->_eventId = v7;
 
@@ -223,24 +223,24 @@ void __54__EKEventEditViewControllerDefaultImpl_viewDidAppear___block_invoke()
   [(EKEventEditViewControllerDefaultImpl *)self _annotateEventEntityIfNeeded];
 }
 
-- (unint64_t)animationOptionsForCurve:(int64_t)a3
+- (unint64_t)animationOptionsForCurve:(int64_t)curve
 {
-  if ((a3 - 1) >= 3)
+  if ((curve - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return ((a3 - 1) << 16) + 0x10000;
+    return ((curve - 1) << 16) + 0x10000;
   }
 }
 
-- (void)setSuggestionKey:(id)a3
+- (void)setSuggestionKey:(id)key
 {
-  objc_storeStrong(&self->_suggestionKey, a3);
-  v5 = a3;
-  [(EKEventEditor *)self->_editor setSuggestionKey:v5];
+  objc_storeStrong(&self->_suggestionKey, key);
+  keyCopy = key;
+  [(EKEventEditor *)self->_editor setSuggestionKey:keyCopy];
 }
 
 - (void)refreshUIForUpdatedEvent
@@ -249,16 +249,16 @@ void __54__EKEventEditViewControllerDefaultImpl_viewDidAppear___block_invoke()
   [(EKEventEditor *)self->_editor refreshURLAndNotes];
   [(EKEventEditor *)self->_editor refreshStartAndEndDates];
   [(EKEventEditor *)self->_editor refreshRecurrence];
-  v3 = [(EKEventEditor *)self->_editor tableView];
-  [v3 reloadData];
+  tableView = [(EKEventEditor *)self->_editor tableView];
+  [tableView reloadData];
 }
 
-- (BOOL)editor:(id)a3 shouldCompleteWithAction:(int64_t)a4
+- (BOOL)editor:(id)editor shouldCompleteWithAction:(int64_t)action
 {
-  v6 = a3;
-  if (a4 == 1)
+  editorCopy = editor;
+  if (action == 1)
   {
-    if (-[EKEventEditViewControllerDefaultImpl isModalInPresentation](self, "isModalInPresentation") && [v6 pendingVideoConference])
+    if (-[EKEventEditViewControllerDefaultImpl isModalInPresentation](self, "isModalInPresentation") && [editorCopy pendingVideoConference])
     {
       [(EKEventEditViewControllerDefaultImpl *)self presentationControllerDidAttemptToDismissWithPendingConference];
       goto LABEL_9;
@@ -269,7 +269,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a4 || ![(EKEventEditViewControllerDefaultImpl *)self isModalInPresentation]|| [(EKEventEditViewControllerDefaultImpl *)self ignoreUnsavedChanges])
+  if (action || ![(EKEventEditViewControllerDefaultImpl *)self isModalInPresentation]|| [(EKEventEditViewControllerDefaultImpl *)self ignoreUnsavedChanges])
   {
     goto LABEL_10;
   }
@@ -282,7 +282,7 @@ LABEL_11:
   return v7;
 }
 
-- (void)editor:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)editor:(id)editor didCompleteWithAction:(int64_t)action
 {
   objc_storeStrong(&self->_strongSelf, self);
   WeakRetained = objc_loadWeakRetained(&self->_editViewDelegate);
@@ -295,29 +295,29 @@ LABEL_11:
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_editViewDelegate);
-      v11 = [(EKEventEditViewControllerDefaultImpl *)self _ekEventEditViewControllerForDelegate];
-      [v10 eventEditViewController:v11 didCompleteWithAction:a4];
+      _ekEventEditViewControllerForDelegate = [(EKEventEditViewControllerDefaultImpl *)self _ekEventEditViewControllerForDelegate];
+      [v10 eventEditViewController:_ekEventEditViewControllerForDelegate didCompleteWithAction:action];
     }
   }
 
-  if (a4)
+  if (action)
   {
-    if (a4 == 1)
+    if (action == 1)
     {
       p_event = &self->_event;
       if (([(EKEvent *)self->_event isNew]& 1) != 0 || [(EKEvent *)*p_event _hasChangesForKey:@"location"])
       {
-        v13 = [(EKEvent *)*p_event preferredLocation];
-        v14 = [v13 isPrediction];
+        preferredLocation = [(EKEvent *)*p_event preferredLocation];
+        isPrediction = [preferredLocation isPrediction];
 
-        if (v14)
+        if (isPrediction)
         {
           v15 = 5;
 LABEL_14:
           v18 = MEMORY[0x1E6966B10];
-          v19 = [(EKEvent *)*p_event preferredLocation];
-          v20 = [v19 predictedLOI];
-          [v18 userInteractionWithPredictedLocationOfInterest:v20 interaction:v15];
+          preferredLocation2 = [(EKEvent *)*p_event preferredLocation];
+          predictedLOI = [preferredLocation2 predictedLOI];
+          [v18 userInteractionWithPredictedLocationOfInterest:predictedLOI interaction:v15];
         }
       }
     }
@@ -328,10 +328,10 @@ LABEL_14:
     p_event = &self->_event;
     if (([(EKEvent *)self->_event isNew]& 1) != 0 || [(EKEvent *)*p_event _hasChangesForKey:@"location"])
     {
-      v16 = [(EKEvent *)*p_event preferredLocation];
-      v17 = [v16 isPrediction];
+      preferredLocation3 = [(EKEvent *)*p_event preferredLocation];
+      isPrediction2 = [preferredLocation3 isPrediction];
 
-      if (v17)
+      if (isPrediction2)
       {
         v15 = 6;
         goto LABEL_14;
@@ -339,8 +339,8 @@ LABEL_14:
     }
   }
 
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 removeObserver:self name:*MEMORY[0x1E6966928] object:self->_store];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6966928] object:self->_store];
 
   strongSelf = self->_strongSelf;
   self->_strongSelf = 0;
@@ -348,40 +348,40 @@ LABEL_14:
   self->_completedWithAction = 1;
 }
 
-- (void)editor:(id)a3 prepareCalendarItemForEdit:(id)a4
+- (void)editor:(id)editor prepareCalendarItemForEdit:(id)edit
 {
-  v14 = a4;
-  v5 = [v14 calendar];
+  editCopy = edit;
+  calendar = [editCopy calendar];
 
-  if (!v5)
+  if (!calendar)
   {
     WeakRetained = objc_loadWeakRetained(&self->_editViewDelegate);
-    if (!WeakRetained || (v7 = WeakRetained, v8 = objc_loadWeakRetained(&self->_editViewDelegate), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) == 0) || (v10 = objc_loadWeakRetained(&self->_editViewDelegate), -[EKEventEditViewControllerDefaultImpl _ekEventEditViewControllerForDelegate](self, "_ekEventEditViewControllerForDelegate"), v11 = objc_claimAutoreleasedReturnValue(), [v10 eventEditViewControllerDefaultCalendarForNewEvents:v11], v12 = objc_claimAutoreleasedReturnValue(), v11, v10, !v12))
+    if (!WeakRetained || (v7 = WeakRetained, v8 = objc_loadWeakRetained(&self->_editViewDelegate), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) == 0) || (v10 = objc_loadWeakRetained(&self->_editViewDelegate), -[EKEventEditViewControllerDefaultImpl _ekEventEditViewControllerForDelegate](self, "_ekEventEditViewControllerForDelegate"), v11 = objc_claimAutoreleasedReturnValue(), [v10 eventEditViewControllerDefaultCalendarForNewEvents:v11], defaultCalendarForNewEvents = objc_claimAutoreleasedReturnValue(), v11, v10, !defaultCalendarForNewEvents))
     {
-      v12 = [(EKEventStore *)self->_store defaultCalendarForNewEvents];
+      defaultCalendarForNewEvents = [(EKEventStore *)self->_store defaultCalendarForNewEvents];
     }
 
-    [v14 setCalendar:v12];
+    [editCopy setCalendar:defaultCalendarForNewEvents];
   }
 
-  v13 = [v14 startDate];
+  startDate = [editCopy startDate];
 
-  if (!v13)
+  if (!startDate)
   {
-    [objc_opt_class() setDefaultDatesForEvent:v14];
+    [objc_opt_class() setDefaultDatesForEvent:editCopy];
   }
 }
 
-- (id)pasteboardManagerForCalendarItemEditor:(id)a3
+- (id)pasteboardManagerForCalendarItemEditor:(id)editor
 {
-  v4 = [(EKEventEditViewControllerDefaultImpl *)self editViewDelegate];
+  editViewDelegate = [(EKEventEditViewControllerDefaultImpl *)self editViewDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKEventEditViewControllerDefaultImpl *)self editViewDelegate];
-    v7 = [(EKEventEditViewControllerDefaultImpl *)self _ekEventEditViewControllerForDelegate];
-    v8 = [v6 pasteboardManagerForEventEditViewController:v7];
+    editViewDelegate2 = [(EKEventEditViewControllerDefaultImpl *)self editViewDelegate];
+    _ekEventEditViewControllerForDelegate = [(EKEventEditViewControllerDefaultImpl *)self _ekEventEditViewControllerForDelegate];
+    v8 = [editViewDelegate2 pasteboardManagerForEventEditViewController:_ekEventEditViewControllerForDelegate];
   }
 
   else
@@ -394,10 +394,10 @@ LABEL_14:
 
 - (void)attemptDisplayReviewPrompt
 {
-  v3 = [(EKEventEditViewControllerDefaultImpl *)self editViewDelegate];
-  if (v3 != self)
+  editViewDelegate = [(EKEventEditViewControllerDefaultImpl *)self editViewDelegate];
+  if (editViewDelegate != self)
   {
-    v4 = v3;
+    v4 = editViewDelegate;
     if (objc_opt_respondsToSelector())
     {
       [(EKEventEditViewControllerDefaultImpl *)v4 attemptDisplayReviewPrompt];
@@ -407,19 +407,19 @@ LABEL_14:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_storeChanged:(id)a3
+- (void)_storeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (self->_eventId)
   {
-    v6 = v4;
-    v5 = [(EKEvent *)self->_event eventStore];
+    v6 = changedCopy;
+    eventStore = [(EKEvent *)self->_event eventStore];
 
-    v4 = v6;
-    if (!v5)
+    changedCopy = v6;
+    if (!eventStore)
     {
       [(EKCalendarItemEditor *)self->_editor completeWithAction:2 animated:0];
-      v4 = v6;
+      changedCopy = v6;
     }
   }
 }
@@ -435,8 +435,8 @@ LABEL_14:
 
   else
   {
-    v5 = [(EKEventEditViewControllerDefaultImpl *)self view];
-    IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v5);
+    view = [(EKEventEditViewControllerDefaultImpl *)self view];
+    IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view);
 
     if (IsRegularInViewHierarchy)
     {
@@ -477,10 +477,10 @@ LABEL_14:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(EKCalendarItemEditor *)self->_editor navigationItem];
-  v3 = [v2 leftBarButtonItems];
+  navigationItem = [(EKCalendarItemEditor *)self->_editor navigationItem];
+  leftBarButtonItems = [navigationItem leftBarButtonItems];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [leftBarButtonItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -490,7 +490,7 @@ LABEL_14:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(leftBarButtonItems);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -501,7 +501,7 @@ LABEL_14:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [leftBarButtonItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -523,10 +523,10 @@ LABEL_12:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(EKCalendarItemEditor *)self->_editor navigationItem];
-  v3 = [v2 rightBarButtonItems];
+  navigationItem = [(EKCalendarItemEditor *)self->_editor navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [rightBarButtonItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -536,7 +536,7 @@ LABEL_12:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rightBarButtonItems);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -547,7 +547,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [rightBarButtonItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -564,10 +564,10 @@ LABEL_12:
 
 - (id)_confirmDismissAlertExplanationText
 {
-  v2 = [(EKEvent *)self->_event isNew];
+  isNew = [(EKEvent *)self->_event isNew];
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isNew)
   {
     v5 = @"Are you sure you want to discard this new event?";
   }
@@ -586,8 +586,8 @@ LABEL_12:
 {
   v2 = objc_alloc(MEMORY[0x1E69A8A00]);
   v3 = [v2 initWithBundleIdentifier:*MEMORY[0x1E69930E8]];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   v7 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:100.0 scale:{100.0, v6}];
@@ -606,11 +606,11 @@ LABEL_12:
 
 - (id)confirmDismissAlertController
 {
-  v3 = [(EKEventEditViewControllerDefaultImpl *)self _confirmDismissAlertExplanationText];
-  v4 = [EKUIAlertController alertControllerWithTitle:0 message:v3 preferredStyle:0];
+  _confirmDismissAlertExplanationText = [(EKEventEditViewControllerDefaultImpl *)self _confirmDismissAlertExplanationText];
+  v4 = [EKUIAlertController alertControllerWithTitle:0 message:_confirmDismissAlertExplanationText preferredStyle:0];
   [v4 setProhibitsRotation:1];
-  v5 = [(EKEventEditViewControllerDefaultImpl *)self alertIconImage];
-  [v4 setImage:v5];
+  alertIconImage = [(EKEventEditViewControllerDefaultImpl *)self alertIconImage];
+  [v4 setImage:alertIconImage];
 
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"Discard Changes" value:&stru_1F4EF6790 table:0];
@@ -629,9 +629,9 @@ LABEL_12:
   v11 = [MEMORY[0x1E69DC648] actionWithTitle:v10 style:1 handler:0];
   [v4 addAction:v11];
 
-  v12 = [(EKEventEditViewControllerDefaultImpl *)self _leftBarButtonItem];
-  v13 = [v4 popoverPresentationController];
-  [v13 setBarButtonItem:v12];
+  _leftBarButtonItem = [(EKEventEditViewControllerDefaultImpl *)self _leftBarButtonItem];
+  popoverPresentationController = [v4 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:_leftBarButtonItem];
 
   return v4;
 }
@@ -646,8 +646,8 @@ LABEL_12:
 
   v7 = [EKUIAlertController alertControllerWithTitle:v4 message:v6 preferredStyle:0];
   [v7 setProhibitsRotation:1];
-  v8 = [(EKEventEditViewControllerDefaultImpl *)self alertIconImage];
-  [v7 setImage:v8];
+  alertIconImage = [(EKEventEditViewControllerDefaultImpl *)self alertIconImage];
+  [v7 setImage:alertIconImage];
 
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"Save Event" value:&stru_1F4EF6790 table:0];
@@ -666,9 +666,9 @@ LABEL_12:
   v14 = [MEMORY[0x1E69DC648] actionWithTitle:v13 style:1 handler:0];
   [v7 addAction:v14];
 
-  v15 = [(EKEventEditViewControllerDefaultImpl *)self _rightBarButtonItem];
-  v16 = [v7 popoverPresentationController];
-  [v16 setBarButtonItem:v15];
+  _rightBarButtonItem = [(EKEventEditViewControllerDefaultImpl *)self _rightBarButtonItem];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:_rightBarButtonItem];
 
   return v7;
 }
@@ -694,8 +694,8 @@ uint64_t __86__EKEventEditViewControllerDefaultImpl_confirmPendingConferenceDism
 
     else
     {
-      v3 = [(EKEventEditViewControllerDefaultImpl *)self confirmDismissAlertController];
-      [(EKEventEditViewControllerDefaultImpl *)self presentViewController:v3 animated:1 completion:0];
+      confirmDismissAlertController = [(EKEventEditViewControllerDefaultImpl *)self confirmDismissAlertController];
+      [(EKEventEditViewControllerDefaultImpl *)self presentViewController:confirmDismissAlertController animated:1 completion:0];
     }
   }
 }
@@ -705,18 +705,18 @@ uint64_t __86__EKEventEditViewControllerDefaultImpl_confirmPendingConferenceDism
   if (([(EKEventEditViewControllerDefaultImpl *)self _isInPopoverPresentation]& 1) != 0 || [(EKEventEditViewControllerDefaultImpl *)self displayingRootView])
   {
     [(EKCalendarItemEditor *)self->_editor resignCurrentEditItemFirstResponder];
-    v3 = [(EKEventEditViewControllerDefaultImpl *)self confirmPendingConferenceDismissAlertController];
-    [(EKEventEditViewControllerDefaultImpl *)self presentViewController:v3 animated:1 completion:0];
+    confirmPendingConferenceDismissAlertController = [(EKEventEditViewControllerDefaultImpl *)self confirmPendingConferenceDismissAlertController];
+    [(EKEventEditViewControllerDefaultImpl *)self presentViewController:confirmPendingConferenceDismissAlertController animated:1 completion:0];
   }
 }
 
 - (BOOL)displayingRootView
 {
-  v2 = [(EKEventEditViewControllerDefaultImpl *)self navigationController];
-  v3 = [v2 visibleViewController];
-  v4 = [v2 viewControllers];
-  v5 = [v4 firstObject];
-  v6 = v3 == v5;
+  navigationController = [(EKEventEditViewControllerDefaultImpl *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  v6 = visibleViewController == firstObject;
 
   return v6;
 }

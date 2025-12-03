@@ -2,45 +2,45 @@
 - (BOOL)_dropTemporaryView;
 - (BOOL)_ensureTempMessagesView;
 - (BOOL)addMailboxes;
-- (BOOL)addRecipients:(id)a3 ofType:(unint64_t)a4;
-- (BOOL)addRecipientsForType:(unint64_t)a3;
+- (BOOL)addRecipients:(id)recipients ofType:(unint64_t)type;
+- (BOOL)addRecipientsForType:(unint64_t)type;
 - (BOOL)addSenders;
-- (BOOL)addSenders:(id)a3;
-- (BOOL)recipientDatabaseIDsAndDatesForRecipientType:(unint64_t)a3 recipients:(id *)a4;
-- (BOOL)senderDatabaseIDsAndDates:(id *)a3;
+- (BOOL)addSenders:(id)senders;
+- (BOOL)recipientDatabaseIDsAndDatesForRecipientType:(unint64_t)type recipients:(id *)recipients;
+- (BOOL)senderDatabaseIDsAndDates:(id *)dates;
 - (BOOL)setPriorityForDisplayMessageSender;
-- (BOOL)updateDisplayMessageWithUnreadWrappedMessages:(id)a3;
-- (BOOL)updateNewestReadMessage:(id)a3;
+- (BOOL)updateDisplayMessageWithUnreadWrappedMessages:(id)messages;
+- (BOOL)updateNewestReadMessage:(id)message;
 - (EDMessagePersistence)messagePersistence;
 - (EMThread)thread;
 - (EMThreadObjectID)threadObjectID;
 - (NSArray)wrappedMessages;
-- (_EDThreadPersistence_PersistedThread)initWithMessages:(id)a3 threadDatabaseID:(int64_t)a4;
+- (_EDThreadPersistence_PersistedThread)initWithMessages:(id)messages threadDatabaseID:(int64_t)d;
 - (id)_mailboxDatabaseIDsForWrappedMessages;
 - (id)debugDescription;
 - (id)updateNewestReadAndDisplayMessage;
 - (int64_t)threadScopeDatabaseID;
 - (unint64_t)currentSenderCounts;
 - (void)_ensureTempMessagesView;
-- (void)addKeyPathsForDisplayMessageChangeToKeyPaths:(id)a3;
+- (void)addKeyPathsForDisplayMessageChangeToKeyPaths:(id)paths;
 @end
 
 @implementation _EDThreadPersistence_PersistedThread
 
-- (_EDThreadPersistence_PersistedThread)initWithMessages:(id)a3 threadDatabaseID:(int64_t)a4
+- (_EDThreadPersistence_PersistedThread)initWithMessages:(id)messages threadDatabaseID:(int64_t)d
 {
-  v7 = a3;
+  messagesCopy = messages;
   v13.receiver = self;
   v13.super_class = _EDThreadPersistence_PersistedThread;
   v8 = [(_EDThreadPersistence_PersistedThread *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_messages, a3);
-    v9->_threadDatabaseID = a4;
-    v10 = [v7 sqlHelper];
+    objc_storeStrong(&v8->_messages, messages);
+    v9->_threadDatabaseID = d;
+    sqlHelper = [messagesCopy sqlHelper];
     sqlHelper = v9->_sqlHelper;
-    v9->_sqlHelper = v10;
+    v9->_sqlHelper = sqlHelper;
   }
 
   return v9;
@@ -48,107 +48,107 @@
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), self];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"thread DB ID: %lld", -[_EDThreadPersistence_PersistedThread threadDatabaseID](self, "threadDatabaseID")];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v8 = [v6 stringWithFormat:@"thread scope DB ID: %lld", objc_msgSend(v7, "threadScopeDatabaseID")];
-  [v3 addObject:v8];
+  messages = [(_EDThreadPersistence_PersistedThread *)self messages];
+  v8 = [v6 stringWithFormat:@"thread scope DB ID: %lld", objc_msgSend(messages, "threadScopeDatabaseID")];
+  [array addObject:v8];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(_EDThreadPersistence_PersistedThread *)self threadObjectID];
-  v11 = [v9 stringWithFormat:@"conversation ID: %lld", objc_msgSend(v10, "conversationID")];
-  [v3 addObject:v11];
+  threadObjectID = [(_EDThreadPersistence_PersistedThread *)self threadObjectID];
+  v11 = [v9 stringWithFormat:@"conversation ID: %lld", objc_msgSend(threadObjectID, "conversationID")];
+  [array addObject:v11];
 
-  v12 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v13 = [v12 wrappedMessages];
-  v14 = [v13 ef_map:&__block_literal_global_232];
+  messages2 = [(_EDThreadPersistence_PersistedThread *)self messages];
+  wrappedMessages = [messages2 wrappedMessages];
+  v14 = [wrappedMessages ef_map:&__block_literal_global_232];
   v15 = [v14 componentsJoinedByString:{@", "}];
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v18 = [v17 wrappedMessages];
-  v19 = [v16 stringWithFormat:@"%u wrapped messages: {%@}", objc_msgSend(v18, "count"), v15];
-  [v3 addObject:v19];
+  messages3 = [(_EDThreadPersistence_PersistedThread *)self messages];
+  wrappedMessages2 = [messages3 wrappedMessages];
+  v19 = [v16 stringWithFormat:@"%u wrapped messages: {%@}", objc_msgSend(wrappedMessages2, "count"), v15];
+  [array addObject:v19];
 
-  v20 = [v3 componentsJoinedByString:@" "];
+  v20 = [array componentsJoinedByString:@" "];
 
   return v20;
 }
 
 - (EDMessagePersistence)messagePersistence
 {
-  v2 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v3 = [v2 messagePersistence];
+  messages = [(_EDThreadPersistence_PersistedThread *)self messages];
+  messagePersistence = [messages messagePersistence];
 
-  return v3;
+  return messagePersistence;
 }
 
 - (int64_t)threadScopeDatabaseID
 {
-  v2 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v3 = [v2 threadScopeDatabaseID];
+  messages = [(_EDThreadPersistence_PersistedThread *)self messages];
+  threadScopeDatabaseID = [messages threadScopeDatabaseID];
 
-  return v3;
+  return threadScopeDatabaseID;
 }
 
 - (EMThreadObjectID)threadObjectID
 {
-  v2 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v3 = [v2 threadObjectID];
+  messages = [(_EDThreadPersistence_PersistedThread *)self messages];
+  threadObjectID = [messages threadObjectID];
 
-  return v3;
+  return threadObjectID;
 }
 
 - (NSArray)wrappedMessages
 {
-  v2 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v3 = [v2 wrappedMessages];
+  messages = [(_EDThreadPersistence_PersistedThread *)self messages];
+  wrappedMessages = [messages wrappedMessages];
 
-  return v3;
+  return wrappedMessages;
 }
 
 - (EMThread)thread
 {
-  v2 = [(_EDThreadPersistence_PersistedThread *)self messages];
-  v3 = [v2 thread];
+  messages = [(_EDThreadPersistence_PersistedThread *)self messages];
+  thread = [messages thread];
 
-  return v3;
+  return thread;
 }
 
 - (id)updateNewestReadAndDisplayMessage
 {
-  v3 = [(_EDThreadPersistence_PersistedThread *)self messages];
+  messages = [(_EDThreadPersistence_PersistedThread *)self messages];
   v8 = 0;
-  v4 = [v3 _newestUnreadWrappedMessagesWithNewestReadWrappedMessage:&v8];
+  v4 = [messages _newestUnreadWrappedMessagesWithNewestReadWrappedMessage:&v8];
   v5 = v8;
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(_EDThreadPersistence_PersistedThread *)self updateNewestReadMessage:v5];
   if ([(_EDThreadPersistence_PersistedThread *)self updateDisplayMessageWithUnreadWrappedMessages:v4])
   {
-    [(_EDThreadPersistence_PersistedThread *)self addKeyPathsForDisplayMessageChangeToKeyPaths:v6];
+    [(_EDThreadPersistence_PersistedThread *)self addKeyPathsForDisplayMessageChangeToKeyPaths:array];
     if ([(_EDThreadPersistence_PersistedThread *)self setPriorityForDisplayMessageSender])
     {
-      [v6 ef_addObjectIfAbsent:*MEMORY[0x1E699A990]];
+      [array ef_addObjectIfAbsent:*MEMORY[0x1E699A990]];
     }
   }
 
-  return v6;
+  return array;
 }
 
-- (BOOL)updateNewestReadMessage:(id)a3
+- (BOOL)updateNewestReadMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(_EDThreadPersistence_PersistedThread *)self _ensureTempMessagesView];
-  if (v4)
+  messageCopy = message;
+  _ensureTempMessagesView = [(_EDThreadPersistence_PersistedThread *)self _ensureTempMessagesView];
+  if (messageCopy)
   {
-    v6 = v5;
+    v6 = _ensureTempMessagesView;
   }
 
   else
@@ -158,14 +158,14 @@
 
   if (v6)
   {
-    v7 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+    sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __64___EDThreadPersistence_PersistedThread_updateNewestReadMessage___block_invoke;
     v11[3] = &unk_1E8250CF8;
     v11[4] = self;
-    v12 = v4;
-    v8 = [v7 executeUpdateSQL:@"UPDATE OR IGNORE threads SET  newest_read_message = :newest_read_message WHERE   rowid = :thread AND   :date > (SELECT date_received FROM temp_persisted_messages WHERE temp_persisted_messages.ROWID = threads.newest_read_message);" bindings:v11 errorHandler:&__block_literal_global_243];
+    v12 = messageCopy;
+    v8 = [sqlHelper executeUpdateSQL:@"UPDATE OR IGNORE threads SET  newest_read_message = :newest_read_message WHERE   rowid = :thread AND   :date > (SELECT date_received FROM temp_persisted_messages WHERE temp_persisted_messages.ROWID = threads.newest_read_message);" bindings:v11 errorHandler:&__block_literal_global_243];
 
     v9 = v8 == 2;
   }
@@ -178,9 +178,9 @@
   return v9;
 }
 
-- (BOOL)updateDisplayMessageWithUnreadWrappedMessages:(id)a3
+- (BOOL)updateDisplayMessageWithUnreadWrappedMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   if ([(_EDThreadPersistence_PersistedThread *)self _ensureTempMessagesView])
   {
     v29 = 0;
@@ -195,7 +195,7 @@
     v26 = __Block_byref_object_copy__48;
     v27 = __Block_byref_object_dispose__48;
     v28 = 0;
-    v5 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+    sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __86___EDThreadPersistence_PersistedThread_updateDisplayMessageWithUnreadWrappedMessages___block_invoke;
@@ -207,7 +207,7 @@
     v21[3] = &unk_1E8250468;
     v21[4] = &v29;
     v21[5] = &v23;
-    v6 = [v5 executeSelectSQL:@"SELECT   (SELECT date_received FROM temp_persisted_messages    WHERE temp_persisted_messages.ROWID = threads.newest_read_message) bindings:(SELECT date_received FROM temp_persisted_messages    WHERE temp_persisted_messages.ROWID = threads.display_message) FROM threads WHERE threads.ROWID = :thread;" errorHandler:v22 rowHandler:{&__block_literal_global_248, v21}];
+    v6 = [sqlHelper executeSelectSQL:@"SELECT   (SELECT date_received FROM temp_persisted_messages    WHERE temp_persisted_messages.ROWID = threads.newest_read_message) bindings:(SELECT date_received FROM temp_persisted_messages    WHERE temp_persisted_messages.ROWID = threads.display_message) FROM threads WHERE threads.ROWID = :thread;" errorHandler:v22 rowHandler:{&__block_literal_global_248, v21}];
 
     if ((v6 & 1) == 0)
     {
@@ -231,7 +231,7 @@ LABEL_13:
     v16[4] = &v29;
     v16[5] = &v23;
     v16[6] = &v17;
-    [v4 enumerateObjectsWithOptions:2 usingBlock:v16];
+    [messagesCopy enumerateObjectsWithOptions:2 usingBlock:v16];
     v8 = v18[3];
     if (v8 == v7 || !v8)
     {
@@ -241,25 +241,25 @@ LABEL_13:
         goto LABEL_12;
       }
 
-      v9 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+      sqlHelper2 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __86___EDThreadPersistence_PersistedThread_updateDisplayMessageWithUnreadWrappedMessages___block_invoke_261;
       v14[3] = &unk_1E8250D20;
       v14[4] = self;
-      v10 = [v9 executeUpdateSQL:@"UPDATE OR IGNORE threads SET   display_message = threads.newest_read_message WHERE threads.ROWID = :thread ;" bindings:v14 errorHandler:&__block_literal_global_264];
+      v10 = [sqlHelper2 executeUpdateSQL:@"UPDATE OR IGNORE threads SET   display_message = threads.newest_read_message WHERE threads.ROWID = :thread ;" bindings:v14 errorHandler:&__block_literal_global_264];
     }
 
     else
     {
-      v9 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+      sqlHelper2 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __86___EDThreadPersistence_PersistedThread_updateDisplayMessageWithUnreadWrappedMessages___block_invoke_3;
       v15[3] = &unk_1E8251888;
       v15[4] = self;
       v15[5] = &v17;
-      v10 = [v9 executeUpdateSQL:@"UPDATE OR IGNORE threads SET   display_message = :display_message WHERE ROWID = :thread ;" bindings:v15 errorHandler:&__block_literal_global_256];
+      v10 = [sqlHelper2 executeUpdateSQL:@"UPDATE OR IGNORE threads SET   display_message = :display_message WHERE ROWID = :thread ;" bindings:v15 errorHandler:&__block_literal_global_256];
     }
 
     v12 = v10;
@@ -276,16 +276,16 @@ LABEL_14:
   return v11;
 }
 
-- (void)addKeyPathsForDisplayMessageChangeToKeyPaths:(id)a3
+- (void)addKeyPathsForDisplayMessageChangeToKeyPaths:(id)paths
 {
   v7[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathsCopy = paths;
   v4 = *MEMORY[0x1E699A9A8];
   v7[0] = *MEMORY[0x1E699A9A0];
   v7[1] = v4;
   v7[2] = *MEMORY[0x1E699A890];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:3];
-  [v3 ef_addAbsentObjectsFromArrayAccordingToEquals:v5];
+  [pathsCopy ef_addAbsentObjectsFromArrayAccordingToEquals:v5];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -316,14 +316,14 @@ LABEL_14:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+        sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __52___EDThreadPersistence_PersistedThread_addMailboxes__block_invoke;
         v17[3] = &unk_1E8250CF8;
         v17[4] = self;
         v17[5] = v9;
-        v11 = [v10 executeUpsertSQL:@"INSERT OR IGNORE INTO thread_mailboxes (thread bindings:mailbox) VALUES (:thread errorHandler:{:mailbox);", v17, &__block_literal_global_272}];
+        v11 = [sqlHelper executeUpsertSQL:@"INSERT OR IGNORE INTO thread_mailboxes (thread bindings:mailbox) VALUES (:thread errorHandler:{:mailbox);", v17, &__block_literal_global_272}];
 
         if (v11)
         {
@@ -372,8 +372,8 @@ LABEL_18:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(_EDThreadPersistence_PersistedThread *)self wrappedMessages];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  wrappedMessages = [(_EDThreadPersistence_PersistedThread *)self wrappedMessages];
+  v5 = [wrappedMessages countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -383,62 +383,62 @@ LABEL_18:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(wrappedMessages);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * i) message];
-        v9 = [v8 mailboxObjectIDs];
-        [v3 addObjectsFromArray:v9];
+        message = [*(*(&v16 + 1) + 8 * i) message];
+        mailboxObjectIDs = [message mailboxObjectIDs];
+        [v3 addObjectsFromArray:mailboxObjectIDs];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [wrappedMessages countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(_EDThreadPersistence_PersistedThread *)self messagePersistence];
-  v11 = [v10 mailboxPersistence];
-  v12 = [v11 mailboxDatabaseIDsForMailboxObjectIDs:v3 createIfNecessary:0];
-  v13 = [v12 allObjects];
+  messagePersistence = [(_EDThreadPersistence_PersistedThread *)self messagePersistence];
+  mailboxPersistence = [messagePersistence mailboxPersistence];
+  v12 = [mailboxPersistence mailboxDatabaseIDsForMailboxObjectIDs:v3 createIfNecessary:0];
+  allObjects = [v12 allObjects];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return allObjects;
 }
 
 - (BOOL)addSenders
 {
-  v3 = [(_EDThreadPersistence_PersistedThread *)self currentSenderCounts];
+  currentSenderCounts = [(_EDThreadPersistence_PersistedThread *)self currentSenderCounts];
   v8 = 0;
   v4 = [(_EDThreadPersistence_PersistedThread *)self senderDatabaseIDsAndDates:&v8];
   v5 = v8;
-  v6 = v4 && -[_EDThreadPersistence_PersistedThread addSenders:](self, "addSenders:", v5) && (-[_EDThreadPersistence_PersistedThread setPriorityForDisplayMessageSender](self, "setPriorityForDisplayMessageSender") || v3 != [v5 count]);
+  v6 = v4 && -[_EDThreadPersistence_PersistedThread addSenders:](self, "addSenders:", v5) && (-[_EDThreadPersistence_PersistedThread setPriorityForDisplayMessageSender](self, "setPriorityForDisplayMessageSender") || currentSenderCounts != [v5 count]);
 
   return v6;
 }
 
 - (unint64_t)currentSenderCounts
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+  sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59___EDThreadPersistence_PersistedThread_currentSenderCounts__block_invoke;
   v7[3] = &unk_1E8250D20;
-  v7[4] = v2;
+  v7[4] = selfCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59___EDThreadPersistence_PersistedThread_currentSenderCounts__block_invoke_279;
   v6[3] = &unk_1E8250418;
   v6[4] = &v8;
-  LOBYTE(v2) = [v3 executeSelectSQL:@"SELECT count(address) as count FROM thread_senders WHERE thread == :thread;" bindings:v7 errorHandler:&__block_literal_global_278 rowHandler:v6];
+  LOBYTE(selfCopy) = [sqlHelper executeSelectSQL:@"SELECT count(address) as count FROM thread_senders WHERE thread == :thread;" bindings:v7 errorHandler:&__block_literal_global_278 rowHandler:v6];
 
-  if (v2)
+  if (selfCopy)
   {
     v4 = v9[3];
   }
@@ -452,23 +452,23 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)senderDatabaseIDsAndDates:(id *)a3
+- (BOOL)senderDatabaseIDsAndDates:(id *)dates
 {
-  v5 = [(_EDThreadPersistence_PersistedThread *)self _ensureTempMessagesView];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  if (v5)
+  _ensureTempMessagesView = [(_EDThreadPersistence_PersistedThread *)self _ensureTempMessagesView];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (_ensureTempMessagesView)
   {
-    v7 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+    sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66___EDThreadPersistence_PersistedThread_senderDatabaseIDsAndDates___block_invoke_288;
     v13[3] = &unk_1E8250300;
-    v8 = v6;
+    v8 = dictionary;
     v14 = v8;
-    v9 = [v7 executeSelectSQL:@"SELECT temp_persisted_messages.sender bindings:temp_persisted_messages.date_received FROM temp_persisted_messages;" errorHandler:&__block_literal_global_285 rowHandler:{&__block_literal_global_287, v13}];
+    v9 = [sqlHelper executeSelectSQL:@"SELECT temp_persisted_messages.sender bindings:temp_persisted_messages.date_received FROM temp_persisted_messages;" errorHandler:&__block_literal_global_285 rowHandler:{&__block_literal_global_287, v13}];
 
     v10 = v9 ^ 1;
-    if (!a3)
+    if (!dates)
     {
       v10 = 1;
     }
@@ -476,7 +476,7 @@ LABEL_18:
     if ((v10 & 1) == 0)
     {
       v11 = v8;
-      *a3 = v8;
+      *dates = v8;
     }
   }
 
@@ -488,7 +488,7 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)addSenders:(id)a3
+- (BOOL)addSenders:(id)senders
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0;
@@ -502,7 +502,7 @@ LABEL_18:
   v8[4] = self;
   v9 = @"INSERT INTO thread_senders( thread,   address,   date) VALUES( :thread,   :address,   :date) ON CONFLICT (thread, address) DO UPDATE SET   date = max(date, excluded.date) ;";
   v10 = &v11;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  [senders enumerateKeysAndObjectsUsingBlock:v8];
   v4 = *(v12 + 6);
   if (v4 >= 1)
   {
@@ -530,7 +530,7 @@ LABEL_18:
   v25 = 0x2020000000;
   v3 = *MEMORY[0x1E699A728];
   v26 = *MEMORY[0x1E699A728];
-  v4 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+  sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74___EDThreadPersistence_PersistedThread_setPriorityForDisplayMessageSender__block_invoke;
@@ -541,7 +541,7 @@ LABEL_18:
   v21[2] = __74___EDThreadPersistence_PersistedThread_setPriorityForDisplayMessageSender__block_invoke_309;
   v21[3] = &unk_1E8250418;
   v21[4] = &v23;
-  v5 = [v4 executeSelectSQL:@"SELECT address FROM thread_senders WHERE thread == :thread AND priority == 1;" bindings:v22 errorHandler:&__block_literal_global_308 rowHandler:v21];
+  v5 = [sqlHelper executeSelectSQL:@"SELECT address FROM thread_senders WHERE thread == :thread AND priority == 1;" bindings:v22 errorHandler:&__block_literal_global_308 rowHandler:v21];
 
   if (v5)
   {
@@ -549,7 +549,7 @@ LABEL_18:
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = v3;
-    v6 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+    sqlHelper2 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
     v15[4] = &v17;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -560,28 +560,28 @@ LABEL_18:
     v15[1] = 3221225472;
     v15[2] = __74___EDThreadPersistence_PersistedThread_setPriorityForDisplayMessageSender__block_invoke_316;
     v15[3] = &unk_1E8250418;
-    v7 = [v6 executeSelectSQL:@"SELECT sender FROM temp_persisted_messages WHERE ROWID IN (SELECT display_message FROM threads WHERE ROWID == :thread);" bindings:v16 errorHandler:&__block_literal_global_315 rowHandler:v15];
+    v7 = [sqlHelper2 executeSelectSQL:@"SELECT sender FROM temp_persisted_messages WHERE ROWID IN (SELECT display_message FROM threads WHERE ROWID == :thread);" bindings:v16 errorHandler:&__block_literal_global_315 rowHandler:v15];
 
     if ((v7 & 1) != 0 && v24[3] != v18[3])
     {
-      v9 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+      sqlHelper3 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __74___EDThreadPersistence_PersistedThread_setPriorityForDisplayMessageSender__block_invoke_2_320;
       v14[3] = &unk_1E8250D20;
       v14[4] = self;
-      v10 = [v9 executeUpdateSQL:@"UPDATE thread_senders SET priority = 0 WHERE thread == :thread AND priority == 1;" bindings:v14 errorHandler:&__block_literal_global_323];
+      v10 = [sqlHelper3 executeUpdateSQL:@"UPDATE thread_senders SET priority = 0 WHERE thread == :thread AND priority == 1;" bindings:v14 errorHandler:&__block_literal_global_323];
 
       if (v10)
       {
-        v11 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+        sqlHelper4 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __74___EDThreadPersistence_PersistedThread_setPriorityForDisplayMessageSender__block_invoke_327;
         v13[3] = &unk_1E8251888;
         v13[4] = self;
         v13[5] = &v17;
-        [v11 executeUpdateSQL:@"UPDATE thread_senders SET priority = 1 WHERE thread == :thread AND address == :address;" bindings:v13 errorHandler:&__block_literal_global_330];
+        [sqlHelper4 executeUpdateSQL:@"UPDATE thread_senders SET priority = 1 WHERE thread == :thread AND address == :address;" bindings:v13 errorHandler:&__block_literal_global_330];
       }
 
       v8 = 1;
@@ -604,38 +604,38 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)addRecipientsForType:(unint64_t)a3
+- (BOOL)addRecipientsForType:(unint64_t)type
 {
   v9 = 0;
-  v5 = [(_EDThreadPersistence_PersistedThread *)self recipientDatabaseIDsAndDatesForRecipientType:a3 recipients:&v9];
+  v5 = [(_EDThreadPersistence_PersistedThread *)self recipientDatabaseIDsAndDatesForRecipientType:type recipients:&v9];
   v6 = v9;
-  v7 = v5 && [(_EDThreadPersistence_PersistedThread *)self addRecipients:v6 ofType:a3];
+  v7 = v5 && [(_EDThreadPersistence_PersistedThread *)self addRecipients:v6 ofType:type];
 
   return v7;
 }
 
-- (BOOL)recipientDatabaseIDsAndDatesForRecipientType:(unint64_t)a3 recipients:(id *)a4
+- (BOOL)recipientDatabaseIDsAndDatesForRecipientType:(unint64_t)type recipients:(id *)recipients
 {
-  v7 = [(_EDThreadPersistence_PersistedThread *)self _ensureTempMessagesView];
+  _ensureTempMessagesView = [(_EDThreadPersistence_PersistedThread *)self _ensureTempMessagesView];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v7)
+  if (_ensureTempMessagesView)
   {
-    v9 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+    sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __96___EDThreadPersistence_PersistedThread_recipientDatabaseIDsAndDatesForRecipientType_recipients___block_invoke;
     v17[3] = &__block_descriptor_40_e29_v16__0__NSMutableDictionary_8l;
-    v17[4] = a3;
+    v17[4] = type;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __96___EDThreadPersistence_PersistedThread_recipientDatabaseIDsAndDatesForRecipientType_recipients___block_invoke_340;
     v15[3] = &unk_1E8250300;
     v10 = v8;
     v16 = v10;
-    v11 = [v9 executeSelectSQL:@"SELECT recipients.address bindings:temp_persisted_messages.date_received FROM recipients JOIN temp_persisted_messages ON recipients.message = temp_persisted_messages.ROWID WHERE recipients.type = :recipients_type;" errorHandler:v17 rowHandler:{&__block_literal_global_339, v15}];
+    v11 = [sqlHelper executeSelectSQL:@"SELECT recipients.address bindings:temp_persisted_messages.date_received FROM recipients JOIN temp_persisted_messages ON recipients.message = temp_persisted_messages.ROWID WHERE recipients.type = :recipients_type;" errorHandler:v17 rowHandler:{&__block_literal_global_339, v15}];
 
     v12 = v11 ^ 1;
-    if (!a4)
+    if (!recipients)
     {
       v12 = 1;
     }
@@ -643,7 +643,7 @@ LABEL_18:
     if ((v12 & 1) == 0)
     {
       v13 = v10;
-      *a4 = v10;
+      *recipients = v10;
     }
   }
 
@@ -655,11 +655,11 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)addRecipients:(id)a3 ofType:(unint64_t)a4
+- (BOOL)addRecipients:(id)recipients ofType:(unint64_t)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  recipientsCopy = recipients;
+  if ([recipientsCopy count])
   {
     v15 = 0;
     v16 = &v15;
@@ -670,9 +670,9 @@ LABEL_18:
     v14[2] = __61___EDThreadPersistence_PersistedThread_addRecipients_ofType___block_invoke;
     v14[3] = &unk_1E8258C38;
     v14[5] = &v15;
-    v14[6] = a4;
+    v14[6] = type;
     v14[4] = self;
-    [v6 enumerateKeysAndObjectsUsingBlock:v14];
+    [recipientsCopy enumerateKeysAndObjectsUsingBlock:v14];
     v7 = *(v16 + 6);
     v8 = v7 > 0;
     if (v7 >= 1)
@@ -681,13 +681,13 @@ LABEL_18:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v12 = *(v16 + 6);
-        v13 = [(_EDThreadPersistence_PersistedThread *)self threadDatabaseID];
+        threadDatabaseID = [(_EDThreadPersistence_PersistedThread *)self threadDatabaseID];
         *buf = 67109632;
         v20 = v12;
         v21 = 1024;
-        v22 = a4;
+        typeCopy = type;
         v23 = 2048;
-        v24 = v13;
+        v24 = threadDatabaseID;
         _os_log_debug_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEBUG, "Added/updated %u type %u recipient(s) for thread DB ID %lld.", buf, 0x18u);
       }
     }
@@ -720,8 +720,8 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+    array = [MEMORY[0x1E695DF70] array];
+    sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __63___EDThreadPersistence_PersistedThread__ensureTempMessagesView__block_invoke;
@@ -731,9 +731,9 @@ LABEL_24:
     v24[1] = 3221225472;
     v24[2] = __63___EDThreadPersistence_PersistedThread__ensureTempMessagesView__block_invoke_357;
     v24[3] = &unk_1E8250300;
-    v7 = v5;
+    v7 = array;
     v25 = v7;
-    v8 = [v6 executeSelectSQL:@"SELECT ROWID FROM temp_thread_scope_message WHERE (conversation_id = :conversation_id)" bindings:v26 errorHandler:&__block_literal_global_356 rowHandler:v24];
+    v8 = [sqlHelper executeSelectSQL:@"SELECT ROWID FROM temp_thread_scope_message WHERE (conversation_id = :conversation_id)" bindings:v26 errorHandler:&__block_literal_global_356 rowHandler:v24];
 
     if ([v7 count])
     {
@@ -759,13 +759,13 @@ LABEL_24:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v22 = [v7 count];
-        v23 = [(_EDThreadPersistence_PersistedThread *)self threadDatabaseID];
+        threadDatabaseID = [(_EDThreadPersistence_PersistedThread *)self threadDatabaseID];
         *buf = 67109634;
         v28 = v22;
         v29 = 2114;
         v30 = v9;
         v31 = 2048;
-        v32 = v23;
+        v32 = threadDatabaseID;
         _os_log_debug_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEBUG, "Found %u rows {%{public}@} for thread DB ID %lld.", buf, 0x1Cu);
       }
     }
@@ -780,9 +780,9 @@ LABEL_24:
 
       if (v8)
       {
-        v17 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
-        v18 = [v17 connection];
-        v19 = [v18 executeStatementString:@"CREATE TEMP VIEW temp_persisted_messages AS SELECT * FROM messages LIMIT 0;" errorMessage:@"CREATE TEMP VIEW"];
+        sqlHelper2 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+        connection = [sqlHelper2 connection];
+        v19 = [connection executeStatementString:@"CREATE TEMP VIEW temp_persisted_messages AS SELECT * FROM messages LIMIT 0;" errorMessage:@"CREATE TEMP VIEW"];
 
         if (v19)
         {
@@ -812,9 +812,9 @@ LABEL_25:
 
 - (BOOL)_dropTemporaryView
 {
-  v2 = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
-  v3 = [v2 connection];
-  v4 = [v3 executeStatementString:@"DROP VIEW IF EXISTS temp_persisted_messages;" errorMessage:@"DROP TEMP VIEW"];
+  sqlHelper = [(_EDThreadPersistence_PersistedThread *)self sqlHelper];
+  connection = [sqlHelper connection];
+  v4 = [connection executeStatementString:@"DROP VIEW IF EXISTS temp_persisted_messages;" errorMessage:@"DROP TEMP VIEW"];
 
   if ((v4 & 1) == 0)
   {
@@ -830,9 +830,9 @@ LABEL_25:
 
 - (void)_ensureTempMessagesView
 {
-  *a1 = 134217984;
-  *(a1 + 4) = a2;
-  OUTLINED_FUNCTION_5_1(&dword_1C61EF000, a2, a3, "Found no rows for thread DB ID %lld.", a1);
+  *self = 134217984;
+  *(self + 4) = a2;
+  OUTLINED_FUNCTION_5_1(&dword_1C61EF000, a2, a3, "Found no rows for thread DB ID %lld.", self);
 }
 
 @end

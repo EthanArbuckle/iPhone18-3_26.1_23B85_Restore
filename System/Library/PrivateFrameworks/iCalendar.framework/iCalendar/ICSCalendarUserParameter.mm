@@ -1,14 +1,14 @@
 @interface ICSCalendarUserParameter
-+ (id)calendarUserTypeParameterFromCode:(int)a3;
-+ (id)calendarUserTypeParameterFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)calendarUserTypeParameterFromCode:(int)code;
++ (id)calendarUserTypeParameterFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSCalendarUserParameter
 
-+ (id)calendarUserTypeParameterFromICSString:(id)a3
++ (id)calendarUserTypeParameterFromICSString:(id)string
 {
-  v3 = [ICSUserAddress calendarUserFromICSString:a3];
+  v3 = [ICSUserAddress calendarUserFromICSString:string];
   if (v3)
   {
     v4 = [ICSCalendarUserParameter calendarUserTypeParameterFromCode:v3];
@@ -22,19 +22,19 @@
   return v4;
 }
 
-+ (id)calendarUserTypeParameterFromCode:(int)a3
++ (id)calendarUserTypeParameterFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSCalendarUserParameter alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSCalendarUserParameter alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v7 = [ICSUserAddress ICSStringFromCalendarUser:[(ICSPredefinedValue *)self longValue]];
-  iCalendarAppendStringToStringWithOptions(v7, v6, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

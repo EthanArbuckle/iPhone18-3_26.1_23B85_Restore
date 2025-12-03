@@ -1,10 +1,10 @@
 @interface VLFCalloutView
-- (VLFCalloutView)initWithFrame:(CGRect)a3;
+- (VLFCalloutView)initWithFrame:(CGRect)frame;
 - (VLFCalloutViewDelegate)delegate;
 - (void)_updateDescriptionNumberOfLines;
 - (void)_updateFonts;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)userDismissedVLFCallout:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)userDismissedVLFCallout:(id)callout;
 @end
 
 @implementation VLFCalloutView
@@ -16,25 +16,25 @@
   return WeakRetained;
 }
 
-- (void)userDismissedVLFCallout:(id)a3
+- (void)userDismissedVLFCallout:(id)callout
 {
-  v4 = [(VLFCalloutView *)self delegate];
-  [v4 calloutViewWasDismissed:self];
+  delegate = [(VLFCalloutView *)self delegate];
+  [delegate calloutViewWasDismissed:self];
 }
 
 - (void)_updateDescriptionNumberOfLines
 {
-  v3 = [(VLFCalloutView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(VLFCalloutView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (v4)
+  if (preferredContentSizeCategory)
   {
-    v5 = [(VLFCalloutView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = UIContentSizeCategoryCompareToCategory(v6, UIContentSizeCategoryLarge);
+    traitCollection2 = [(VLFCalloutView *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+    v7 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, UIContentSizeCategoryLarge);
 
-    v8 = [(VLFCalloutView *)self descriptionLabel];
-    v10 = v8;
+    descriptionLabel = [(VLFCalloutView *)self descriptionLabel];
+    v10 = descriptionLabel;
     if (v7 == NSOrderedDescending)
     {
       v9 = 5;
@@ -44,19 +44,19 @@
 
   else
   {
-    v8 = [(VLFCalloutView *)self descriptionLabel];
-    v10 = v8;
+    descriptionLabel = [(VLFCalloutView *)self descriptionLabel];
+    v10 = descriptionLabel;
   }
 
   v9 = 4;
 LABEL_6:
-  [v8 setNumberOfLines:v9];
+  [descriptionLabel setNumberOfLines:v9];
 }
 
 - (void)_updateFonts
 {
-  v3 = [(VLFCalloutView *)self traitCollection];
-  v4 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
+  traitCollection = [(VLFCalloutView *)self traitCollection];
+  v4 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
 
   v5 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v4];
   v18 = UIFontDescriptorTraitsAttribute;
@@ -69,31 +69,31 @@ LABEL_6:
   v9 = [v5 fontDescriptorByAddingAttributes:v8];
 
   v10 = [UIFont fontWithDescriptor:v9 size:0.0];
-  v11 = [(VLFCalloutView *)self titleLabel];
-  [v11 setFont:v10];
+  titleLabel = [(VLFCalloutView *)self titleLabel];
+  [titleLabel setFont:v10];
 
-  v12 = [(VLFCalloutView *)self traitCollection];
-  v13 = [v12 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
+  traitCollection2 = [(VLFCalloutView *)self traitCollection];
+  v13 = [traitCollection2 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
 
   v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline compatibleWithTraitCollection:v13];
-  v15 = [(VLFCalloutView *)self descriptionLabel];
-  [v15 setFont:v14];
+  descriptionLabel = [(VLFCalloutView *)self descriptionLabel];
+  [descriptionLabel setFont:v14];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = VLFCalloutView;
-  [(VLFCalloutView *)&v4 traitCollectionDidChange:a3];
+  [(VLFCalloutView *)&v4 traitCollectionDidChange:change];
   [(VLFCalloutView *)self _updateFonts];
   [(VLFCalloutView *)self _updateDescriptionNumberOfLines];
 }
 
-- (VLFCalloutView)initWithFrame:(CGRect)a3
+- (VLFCalloutView)initWithFrame:(CGRect)frame
 {
   v74.receiver = self;
   v74.super_class = VLFCalloutView;
-  v3 = [(VLFCalloutView *)&v74 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VLFCalloutView *)&v74 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -150,13 +150,13 @@ LABEL_6:
     [(UILabel *)v3->_titleLabel setTextColor:v15];
 
     [(VLFCalloutView *)v3 addSubview:v3->_titleLabel];
-    v16 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v17 = [(VLFCalloutView *)v3 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    leadingAnchor = [(UILabel *)v3->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(VLFCalloutView *)v3 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v77[0] = v18;
-    v19 = [(UILabel *)v3->_titleLabel topAnchor];
-    v20 = [(VLFCalloutView *)v3 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:2.0];
+    topAnchor = [(UILabel *)v3->_titleLabel topAnchor];
+    topAnchor2 = [(VLFCalloutView *)v3 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
     v77[1] = v21;
     v22 = [NSArray arrayWithObjects:v77 count:2];
     [NSLayoutConstraint activateConstraints:v22];
@@ -254,21 +254,21 @@ LABEL_26:
     [(UILabel *)v3->_descriptionLabel setTextColor:v33];
 
     [(VLFCalloutView *)v3 addSubview:v3->_descriptionLabel];
-    v71 = [(UILabel *)v3->_descriptionLabel leadingAnchor];
-    v69 = [(VLFCalloutView *)v3 leadingAnchor];
-    v67 = [v71 constraintEqualToAnchor:v69];
+    leadingAnchor3 = [(UILabel *)v3->_descriptionLabel leadingAnchor];
+    leadingAnchor4 = [(VLFCalloutView *)v3 leadingAnchor];
+    v67 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v76[0] = v67;
-    v65 = [(UILabel *)v3->_descriptionLabel trailingAnchor];
-    v34 = [(VLFCalloutView *)v3 trailingAnchor];
-    v35 = [v65 constraintEqualToAnchor:v34 constant:-16.0];
+    trailingAnchor = [(UILabel *)v3->_descriptionLabel trailingAnchor];
+    trailingAnchor2 = [(VLFCalloutView *)v3 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v76[1] = v35;
-    v36 = [(UILabel *)v3->_descriptionLabel topAnchor];
-    v37 = [(UILabel *)v3->_titleLabel bottomAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:2.0];
+    topAnchor3 = [(UILabel *)v3->_descriptionLabel topAnchor];
+    bottomAnchor = [(UILabel *)v3->_titleLabel bottomAnchor];
+    v38 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:2.0];
     v76[2] = v38;
-    v39 = [(UILabel *)v3->_descriptionLabel bottomAnchor];
-    v40 = [(VLFCalloutView *)v3 bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    bottomAnchor2 = [(UILabel *)v3->_descriptionLabel bottomAnchor];
+    bottomAnchor3 = [(VLFCalloutView *)v3 bottomAnchor];
+    v41 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v76[3] = v41;
     v42 = [NSArray arrayWithObjects:v76 count:4];
     [NSLayoutConstraint activateConstraints:v42];
@@ -290,26 +290,26 @@ LABEL_26:
 
     [v47 addTarget:v3 action:"userDismissedVLFCallout:" forControlEvents:64];
     [(VLFCalloutView *)v3 addSubview:v47];
-    v70 = [v47 leadingAnchor];
-    v73 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v73 constant:14.0];
+    leadingAnchor5 = [v47 leadingAnchor];
+    trailingAnchor3 = [(UILabel *)v3->_titleLabel trailingAnchor];
+    v68 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:14.0];
     v75[0] = v68;
-    v66 = [v47 trailingAnchor];
-    v64 = [(VLFCalloutView *)v3 trailingAnchor];
-    v63 = [v66 constraintEqualToAnchor:v64];
+    trailingAnchor4 = [v47 trailingAnchor];
+    trailingAnchor5 = [(VLFCalloutView *)v3 trailingAnchor];
+    v63 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v75[1] = v63;
-    v49 = [v47 topAnchor];
-    v50 = [(VLFCalloutView *)v3 topAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    topAnchor4 = [v47 topAnchor];
+    topAnchor5 = [(VLFCalloutView *)v3 topAnchor];
+    v51 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v75[2] = v51;
-    v52 = [v47 widthAnchor];
+    widthAnchor = [v47 widthAnchor];
     v62 = v46;
     [v46 size];
-    v53 = [v52 constraintEqualToConstant:?];
+    v53 = [widthAnchor constraintEqualToConstant:?];
     v75[3] = v53;
-    v54 = [v47 heightAnchor];
+    heightAnchor = [v47 heightAnchor];
     [v46 size];
-    v56 = [v54 constraintEqualToConstant:v55];
+    v56 = [heightAnchor constraintEqualToConstant:v55];
     v75[4] = v56;
     v57 = [NSArray arrayWithObjects:v75 count:5];
     [NSLayoutConstraint activateConstraints:v57];

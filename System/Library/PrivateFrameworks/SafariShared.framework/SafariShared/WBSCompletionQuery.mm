@@ -1,33 +1,33 @@
 @interface WBSCompletionQuery
-+ (id)recentAndSuggestedCompletionStringsByMergingRecentSearches:(id)a3 withSuggestions:(id)a4 literalSearch:(id)a5;
-- (BOOL)_bagOfWordsContainsString:(id)a3;
++ (id)recentAndSuggestedCompletionStringsByMergingRecentSearches:(id)searches withSuggestions:(id)suggestions literalSearch:(id)search;
+- (BOOL)_bagOfWordsContainsString:(id)string;
 - (NSString)canonicalQueryString;
-- (WBSCompletionQuery)initWithNewQueryString:(id)a3 queryBeforeRewriting:(id)a4;
-- (WBSCompletionQuery)initWithQueryString:(id)a3 queryID:(int64_t)a4 triggerEvent:(unint64_t)a5;
+- (WBSCompletionQuery)initWithNewQueryString:(id)string queryBeforeRewriting:(id)rewriting;
+- (WBSCompletionQuery)initWithQueryString:(id)string queryID:(int64_t)d triggerEvent:(unint64_t)event;
 - (id)_bagOfWords;
-- (id)_initWithQueryString:(id)a3 queryID:(int64_t)a4 timestamp:()time_point<std:(std:()std:(1000000000>>>)a5 :(unint64_t)a6 ratio<1 :(unint64_t)a7 chrono::duration<long)long :chrono::steady_clock indexInFeedbackArray:triggerEvent:;
-- (id)_rangesOfMatchedTextInString:(id)a3 offset:(unint64_t)a4;
+- (id)_initWithQueryString:(id)string queryID:(int64_t)d timestamp:()time_point<std:(std:()std:(1000000000>>>)std :(unint64_t)a6 ratio<1 :(unint64_t)a7 chrono::duration<long)long :chrono::steady_clock indexInFeedbackArray:triggerEvent:;
+- (id)_rangesOfMatchedTextInString:(id)string offset:(unint64_t)offset;
 - (id)description;
-- (id)rangesOfMatchedTextInTitle:(id)a3 displayOnlyAddress:(id)a4;
-- (id)rangesToHighlightInSearchSuggestion:(id)a3;
+- (id)rangesOfMatchedTextInTitle:(id)title displayOnlyAddress:(id)address;
+- (id)rangesToHighlightInSearchSuggestion:(id)suggestion;
 @end
 
 @implementation WBSCompletionQuery
 
-- (id)_initWithQueryString:(id)a3 queryID:(int64_t)a4 timestamp:()time_point<std:(std:()std:(1000000000>>>)a5 :(unint64_t)a6 ratio<1 :(unint64_t)a7 chrono::duration<long)long :chrono::steady_clock indexInFeedbackArray:triggerEvent:
+- (id)_initWithQueryString:(id)string queryID:(int64_t)d timestamp:()time_point<std:(std:()std:(1000000000>>>)std :(unint64_t)a6 ratio<1 :(unint64_t)a7 chrono::duration<long)long :chrono::steady_clock indexInFeedbackArray:triggerEvent:
 {
-  v12 = a3;
+  stringCopy = string;
   v18.receiver = self;
   v18.super_class = WBSCompletionQuery;
   v13 = [(WBSCompletionQuery *)&v18 init];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [stringCopy copy];
     queryString = v13->_queryString;
     v13->_queryString = v14;
 
-    v13->_queryID = a4;
-    v13->_timestamp = a5;
+    v13->_queryID = d;
+    v13->_timestamp = std;
     v13->_indexInFeedbackArray = a6;
     v13->_triggerEvent = a7;
     v16 = v13;
@@ -36,21 +36,21 @@
   return v13;
 }
 
-- (WBSCompletionQuery)initWithNewQueryString:(id)a3 queryBeforeRewriting:(id)a4
+- (WBSCompletionQuery)initWithNewQueryString:(id)string queryBeforeRewriting:(id)rewriting
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSCompletionQuery *)self initWithQueryString:v6 queryID:atomic_fetch_add(&_currentQueryID, 1uLL) + 1];
+  stringCopy = string;
+  rewritingCopy = rewriting;
+  v8 = [(WBSCompletionQuery *)self initWithQueryString:stringCopy queryID:atomic_fetch_add(&_currentQueryID, 1uLL) + 1];
   if (v8)
   {
-    v9 = [v7 queryString];
+    queryString = [rewritingCopy queryString];
     queryStringBeforeRewriting = v8->_queryStringBeforeRewriting;
-    v8->_queryStringBeforeRewriting = v9;
+    v8->_queryStringBeforeRewriting = queryString;
 
-    if (v7)
+    if (rewritingCopy)
     {
-      objc_storeStrong(&v8->_cachedBagOfWords, v7[1]);
-      objc_storeStrong(&v8->_profileIdentifierToFilterResults, v7[7]);
+      objc_storeStrong(&v8->_cachedBagOfWords, rewritingCopy[1]);
+      objc_storeStrong(&v8->_profileIdentifierToFilterResults, rewritingCopy[7]);
     }
 
     v11 = v8;
@@ -59,10 +59,10 @@
   return v8;
 }
 
-- (WBSCompletionQuery)initWithQueryString:(id)a3 queryID:(int64_t)a4 triggerEvent:(unint64_t)a5
+- (WBSCompletionQuery)initWithQueryString:(id)string queryID:(int64_t)d triggerEvent:(unint64_t)event
 {
-  v8 = a3;
-  v9 = [(WBSCompletionQuery *)self _initWithQueryString:v8 queryID:a4 timestamp:std::chrono::steady_clock::now().__d_.__rep_ indexInFeedbackArray:0x7FFFFFFFFFFFFFFFLL triggerEvent:a5];
+  stringCopy = string;
+  v9 = [(WBSCompletionQuery *)self _initWithQueryString:stringCopy queryID:d timestamp:std::chrono::steady_clock::now().__d_.__rep_ indexInFeedbackArray:0x7FFFFFFFFFFFFFFFLL triggerEvent:event];
 
   return v9;
 }
@@ -145,16 +145,16 @@ void __33__WBSCompletionQuery__bagOfWords__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (BOOL)_bagOfWordsContainsString:(id)a3
+- (BOOL)_bagOfWordsContainsString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(WBSCompletionQuery *)self _bagOfWords];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _bagOfWords = [(WBSCompletionQuery *)self _bagOfWords];
+  v6 = [_bagOfWords countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -164,18 +164,18 @@ void __33__WBSCompletionQuery__bagOfWords__block_invoke(uint64_t a1, void *a2)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_bagOfWords);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if (![v9 safari_caseAndDiacriticInsensitiveStandardRangeOfString:v4 additionalOptions:8] && v10 == objc_msgSend(v9, "length"))
+        if (![v9 safari_caseAndDiacriticInsensitiveStandardRangeOfString:stringCopy additionalOptions:8] && v10 == objc_msgSend(v9, "length"))
         {
           LOBYTE(v6) = 1;
           goto LABEL_12;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_bagOfWords countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -190,10 +190,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)rangesToHighlightInSearchSuggestion:(id)a3
+- (id)rangesToHighlightInSearchSuggestion:(id)suggestion
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = 64;
   if (!self->_queryStringBeforeRewriting)
   {
@@ -201,29 +201,29 @@ LABEL_12:
   }
 
   v6 = *(&self->super.isa + v5);
-  v7 = [v6 safari_stringByTrimmingWhitespace];
-  v8 = [v7 lowercaseString];
+  safari_stringByTrimmingWhitespace = [v6 safari_stringByTrimmingWhitespace];
+  lowercaseString = [safari_stringByTrimmingWhitespace lowercaseString];
 
-  if (v4 && [v8 length])
+  if (suggestionCopy && [lowercaseString length])
   {
-    if ([v4 safari_caseAndDiacriticInsensitiveStandardRangeOfString:v8 additionalOptions:8] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([suggestionCopy safari_caseAndDiacriticInsensitiveStandardRangeOfString:lowercaseString additionalOptions:8] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = [v4 length];
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = [suggestionCopy length];
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __58__WBSCompletionQuery_rangesToHighlightInSearchSuggestion___block_invoke;
       v18 = &unk_1E7FB8AD0;
-      v19 = self;
-      v12 = v10;
+      selfCopy = self;
+      v12 = array;
       v20 = v12;
-      [v4 enumerateSubstringsInRange:0 options:v11 usingBlock:{3, &v15}];
+      [suggestionCopy enumerateSubstringsInRange:0 options:v11 usingBlock:{3, &v15}];
       v13 = [v12 copy];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696B098] valueWithRange:{v9, objc_msgSend(v4, "length") - v9}];
+      v12 = [MEMORY[0x1E696B098] valueWithRange:{v9, objc_msgSend(suggestionCopy, "length") - v9}];
       v21[0] = v12;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     }
@@ -309,11 +309,11 @@ LABEL_15:
   }
 }
 
-- (id)rangesOfMatchedTextInTitle:(id)a3 displayOnlyAddress:(id)a4
+- (id)rangesOfMatchedTextInTitle:(id)title displayOnlyAddress:(id)address
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v32 = a4;
+  titleCopy = title;
+  addressCopy = address;
   v6 = 64;
   if (!self->_queryStringBeforeRewriting)
   {
@@ -321,31 +321,31 @@ LABEL_15:
   }
 
   v29 = *(&self->super.isa + v6);
-  v7 = [v29 safari_stringByTrimmingWhitespace];
-  v8 = [v7 lowercaseString];
+  safari_stringByTrimmingWhitespace = [v29 safari_stringByTrimmingWhitespace];
+  lowercaseString = [safari_stringByTrimmingWhitespace lowercaseString];
 
-  if (![v8 length])
+  if (![lowercaseString length])
   {
     v17 = 0;
     goto LABEL_21;
   }
 
-  v9 = [v31 lowercaseString];
-  v10 = [v9 hasPrefix:v8];
+  lowercaseString2 = [titleCopy lowercaseString];
+  v10 = [lowercaseString2 hasPrefix:lowercaseString];
 
-  v11 = [v32 lowercaseString];
-  v12 = [v11 substringFromIndex:1];
-  v13 = [v12 hasPrefix:v8];
+  lowercaseString3 = [addressCopy lowercaseString];
+  v12 = [lowercaseString3 substringFromIndex:1];
+  v13 = [v12 hasPrefix:lowercaseString];
 
   if (((v10 | v13) & 1) == 0)
   {
-    v30 = [(WBSCompletionQuery *)self _rangesOfMatchedTextInString:v31 offset:0];
-    v16 = [MEMORY[0x1E695DF70] array];
+    v30 = [(WBSCompletionQuery *)self _rangesOfMatchedTextInString:titleCopy offset:0];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v18 = [v32 componentsSeparatedByString:@"."];
+    v18 = [addressCopy componentsSeparatedByString:@"."];
     v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v19)
     {
@@ -362,7 +362,7 @@ LABEL_15:
 
           v23 = *(*(&v33 + 1) + 8 * i);
           v24 = [(WBSCompletionQuery *)self _rangesOfMatchedTextInString:v23 offset:v20];
-          [v16 addObjectsFromArray:v24];
+          [array addObjectsFromArray:v24];
           v25 = [v23 length];
 
           v20 += v25 + 1;
@@ -375,7 +375,7 @@ LABEL_15:
     }
 
     v26 = objc_alloc(MEMORY[0x1E69C88F0]);
-    v27 = [v16 copy];
+    v27 = [array copy];
     v17 = [v26 initWithFirst:v30 second:v27];
 
     goto LABEL_20;
@@ -390,11 +390,11 @@ LABEL_15:
     }
 
 LABEL_18:
-    v16 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
     goto LABEL_19;
   }
 
-  v14 = [MEMORY[0x1E696B098] valueWithRange:{0, objc_msgSend(v8, "length")}];
+  v14 = [MEMORY[0x1E696B098] valueWithRange:{0, objc_msgSend(lowercaseString, "length")}];
   v39[0] = v14;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
 
@@ -404,12 +404,12 @@ LABEL_18:
   }
 
 LABEL_7:
-  v15 = [MEMORY[0x1E696B098] valueWithRange:{1, objc_msgSend(v8, "length")}];
+  v15 = [MEMORY[0x1E696B098] valueWithRange:{1, objc_msgSend(lowercaseString, "length")}];
   v38 = v15;
-  v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
+  array = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
 
 LABEL_19:
-  v17 = [objc_alloc(MEMORY[0x1E69C88F0]) initWithFirst:v30 second:v16];
+  v17 = [objc_alloc(MEMORY[0x1E69C88F0]) initWithFirst:v30 second:array];
 LABEL_20:
 
 LABEL_21:
@@ -417,20 +417,20 @@ LABEL_21:
   return v17;
 }
 
-- (id)_rangesOfMatchedTextInString:(id)a3 offset:(unint64_t)a4
+- (id)_rangesOfMatchedTextInString:(id)string offset:(unint64_t)offset
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [v6 length];
+  stringCopy = string;
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [stringCopy length];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__WBSCompletionQuery__rangesOfMatchedTextInString_offset___block_invoke;
   v12[3] = &unk_1E7FB8AF8;
   v12[4] = self;
-  v9 = v7;
+  v9 = array;
   v13 = v9;
-  v14 = a4;
-  [v6 enumerateSubstringsInRange:0 options:v8 usingBlock:{3, v12}];
+  offsetCopy = offset;
+  [stringCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{3, v12}];
   v10 = [v9 copy];
 
   return v10;
@@ -503,24 +503,24 @@ LABEL_14:
   }
 }
 
-+ (id)recentAndSuggestedCompletionStringsByMergingRecentSearches:(id)a3 withSuggestions:(id)a4 literalSearch:(id)a5
++ (id)recentAndSuggestedCompletionStringsByMergingRecentSearches:(id)searches withSuggestions:(id)suggestions literalSearch:(id)search
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 count];
+  searchesCopy = searches;
+  suggestionsCopy = suggestions;
+  searchCopy = search;
+  v10 = [searchesCopy count];
   v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v10];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __111__WBSCompletionQuery_recentAndSuggestedCompletionStringsByMergingRecentSearches_withSuggestions_literalSearch___block_invoke;
   v30[3] = &unk_1E7FB8B20;
-  v12 = v9;
+  v12 = searchCopy;
   v31 = v12;
   v33 = v10;
   v13 = v11;
   v32 = v13;
-  [v7 enumerateObjectsUsingBlock:v30];
-  v14 = [v8 count];
+  [searchesCopy enumerateObjectsUsingBlock:v30];
+  v14 = [suggestionsCopy count];
   v15 = [v13 copy];
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
   v24[0] = MEMORY[0x1E69E9820];
@@ -536,7 +536,7 @@ LABEL_14:
   v29 = v14;
   v20 = v13;
   v28 = v20;
-  [v8 enumerateObjectsUsingBlock:v24];
+  [suggestionsCopy enumerateObjectsUsingBlock:v24];
   v21 = [v20 keysSortedByValueUsingComparator:&__block_literal_global_24];
   v22 = [v21 arrayByAddingObjectsFromArray:v19];
 

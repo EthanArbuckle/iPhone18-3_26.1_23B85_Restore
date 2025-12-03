@@ -1,21 +1,21 @@
 @interface MBManager
-- (MBManager)initWithAccount:(id)a3 delegate:(id)a4 eventQueue:(id)a5;
-- (MBManager)initWithAccount:(id)a3 delegate:(id)a4 eventQueue:(id)a5 error:(id *)a6;
-- (MBManager)initWithDelegate:(id)a3 eventQueue:(id)a4;
-- (MBManager)initWithDelegate:(id)a3 eventQueue:(id)a4 personaIdentifier:(id)a5;
+- (MBManager)initWithAccount:(id)account delegate:(id)delegate eventQueue:(id)queue;
+- (MBManager)initWithAccount:(id)account delegate:(id)delegate eventQueue:(id)queue error:(id *)error;
+- (MBManager)initWithDelegate:(id)delegate eventQueue:(id)queue;
+- (MBManager)initWithDelegate:(id)delegate eventQueue:(id)queue personaIdentifier:(id)identifier;
 - (MBManagerDelegate)delegate;
 - (id)_init;
-- (void)fetchAppBundleIDsForSnapshot:(id)a3 completion:(id)a4;
-- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)a3;
-- (void)fetchRestorableSnapshotsWithCompletion:(id)a3;
-- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)a3;
-- (void)saveBackgroundRestoreCellularAccess:(id)a3 completion:(id)a4;
-- (void)startDataTransferWithPreflightInfo:(id)a3 completionHandler:(id)a4;
-- (void)startKeychainDataImportWithKeychainInfo:(id)a3 completionHandler:(id)a4;
-- (void)startKeychainDataTransferWithCompletionHandler:(id)a3;
-- (void)startPreflightWithCompletionHandler:(id)a3;
-- (void)startRestoreForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 options:(id)a5 completion:(id)a6;
-- (void)startRestoreForSnapshot:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)fetchAppBundleIDsForSnapshot:(id)snapshot completion:(id)completion;
+- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)completion;
+- (void)fetchRestorableSnapshotsWithCompletion:(id)completion;
+- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)completion;
+- (void)saveBackgroundRestoreCellularAccess:(id)access completion:(id)completion;
+- (void)startDataTransferWithPreflightInfo:(id)info completionHandler:(id)handler;
+- (void)startKeychainDataImportWithKeychainInfo:(id)info completionHandler:(id)handler;
+- (void)startKeychainDataTransferWithCompletionHandler:(id)handler;
+- (void)startPreflightWithCompletionHandler:(id)handler;
+- (void)startRestoreForBackupUDID:(id)d snapshotID:(unint64_t)iD options:(id)options completion:(id)completion;
+- (void)startRestoreForSnapshot:(id)snapshot options:(id)options completion:(id)completion;
 @end
 
 @implementation MBManager
@@ -27,11 +27,11 @@
   return WeakRetained;
 }
 
-- (MBManager)initWithDelegate:(id)a3 eventQueue:(id)a4
+- (MBManager)initWithDelegate:(id)delegate eventQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MBXPCClient alloc] initWithDelegate:v7 eventQueue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v8 = [[MBXPCClient alloc] initWithDelegate:delegateCopy eventQueue:queueCopy];
 
   return &v8->super;
 }
@@ -43,111 +43,111 @@
   return [(MBManager *)&v3 init];
 }
 
-- (MBManager)initWithDelegate:(id)a3 eventQueue:(id)a4 personaIdentifier:(id)a5
+- (MBManager)initWithDelegate:(id)delegate eventQueue:(id)queue personaIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[MBXPCClient alloc] initWithDelegate:v10 eventQueue:v9 personaIdentifier:v8];
+  identifierCopy = identifier;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v11 = [[MBXPCClient alloc] initWithDelegate:delegateCopy eventQueue:queueCopy personaIdentifier:identifierCopy];
 
   return &v11->super;
 }
 
-- (MBManager)initWithAccount:(id)a3 delegate:(id)a4 eventQueue:(id)a5
+- (MBManager)initWithAccount:(id)account delegate:(id)delegate eventQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[MBXPCClient alloc] initWithAccount:v10 delegate:v9 eventQueue:v8];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  accountCopy = account;
+  v11 = [[MBXPCClient alloc] initWithAccount:accountCopy delegate:delegateCopy eventQueue:queueCopy];
 
   return &v11->super;
 }
 
-- (MBManager)initWithAccount:(id)a3 delegate:(id)a4 eventQueue:(id)a5 error:(id *)a6
+- (MBManager)initWithAccount:(id)account delegate:(id)delegate eventQueue:(id)queue error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[MBXPCClient alloc] initWithAccount:v12 delegate:v11 eventQueue:v10 error:a6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  accountCopy = account;
+  v13 = [[MBXPCClient alloc] initWithAccount:accountCopy delegate:delegateCopy eventQueue:queueCopy error:error];
 
   return &v13->super;
 }
 
-- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)a3
+- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  (*(v5 + 2))(v5, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
-- (void)saveBackgroundRestoreCellularAccess:(id)a3 completion:(id)a4
+- (void)saveBackgroundRestoreCellularAccess:(id)access completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  v6[2](v6, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)a3
+- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  (*(v5 + 2))(v5, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
-- (void)startRestoreForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 options:(id)a5 completion:(id)a6
+- (void)startRestoreForBackupUDID:(id)d snapshotID:(unint64_t)iD options:(id)options completion:(id)completion
 {
-  v8 = a6;
+  completionCopy = completion;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  v8[2](v8, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)fetchAppBundleIDsForSnapshot:(id)a3 completion:(id)a4
+- (void)fetchAppBundleIDsForSnapshot:(id)snapshot completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  (*(v6 + 2))(v6, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
-- (void)fetchRestorableSnapshotsWithCompletion:(id)a3
+- (void)fetchRestorableSnapshotsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  (*(v5 + 2))(v5, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
-- (void)startRestoreForSnapshot:(id)a3 options:(id)a4 completion:(id)a5
+- (void)startRestoreForSnapshot:(id)snapshot options:(id)options completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)startPreflightWithCompletionHandler:(id)a3
+- (void)startPreflightWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  (*(v5 + 2))(v5, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (void)startKeychainDataTransferWithCompletionHandler:(id)a3
+- (void)startKeychainDataTransferWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  (*(v5 + 2))(v5, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (void)startKeychainDataImportWithKeychainInfo:(id)a3 completionHandler:(id)a4
+- (void)startKeychainDataImportWithKeychainInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)startDataTransferWithPreflightInfo:(id)a3 completionHandler:(id)a4
+- (void)startDataTransferWithPreflightInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   [(MBManager *)self doesNotRecognizeSelector:a2];
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

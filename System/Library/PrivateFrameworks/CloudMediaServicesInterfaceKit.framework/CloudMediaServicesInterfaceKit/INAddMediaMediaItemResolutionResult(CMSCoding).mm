@@ -73,15 +73,15 @@
           v15 = 7;
         }
 
-        v17 = [v13 unsupportedForReason:v15];
+        unsupported = [v13 unsupportedForReason:v15];
       }
 
       else
       {
-        v17 = [MEMORY[0x277CD3A08] unsupported];
+        unsupported = [MEMORY[0x277CD3A08] unsupported];
       }
 
-      v9 = v17;
+      v9 = unsupported;
 
       goto LABEL_34;
     }
@@ -90,7 +90,7 @@
 
     if (v16)
     {
-      v8 = [MEMORY[0x277CD3A08] needsValue];
+      needsValue = [MEMORY[0x277CD3A08] needsValue];
       goto LABEL_5;
     }
 
@@ -98,7 +98,7 @@
 
     if (v18)
     {
-      v8 = [MEMORY[0x277CD3A08] notRequired];
+      needsValue = [MEMORY[0x277CD3A08] notRequired];
       goto LABEL_5;
     }
 
@@ -107,7 +107,7 @@ LABEL_18:
     goto LABEL_34;
   }
 
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = &off_2856BBE20;
   v7 = objc_msgSendSuper2(&v20, sel_instanceFromCMSCoded_, v5);
   if (!v7)
@@ -115,9 +115,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CD3A08]) initWithMediaItemResolutionResult:v7];
+  needsValue = [objc_alloc(MEMORY[0x277CD3A08]) initWithMediaItemResolutionResult:v7];
 LABEL_5:
-  v9 = v8;
+  v9 = needsValue;
 LABEL_34:
 
 LABEL_35:

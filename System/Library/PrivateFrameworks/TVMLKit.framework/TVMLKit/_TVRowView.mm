@@ -1,33 +1,33 @@
 @interface _TVRowView
-+ (CGRect)_boundingRectForComponents:(id)a3 interitemSpacing:(double)a4 boundingSize:(CGSize)a5 horizontalAlignment:(int64_t)a6 allowsOverflow:(BOOL)a7;
-+ (CGRect)_leftAlignedFrameForComponent:(id)a3 previousComponent:(id)a4 interitemSpacing:(double)a5;
-+ (void)_alignComponents:(id)a3 withLineSize:(CGSize)a4 boundingRect:(CGRect)a5 originYBump:(double)a6 verticalAlignment:(int64_t)a7 horizontalAlignment:(int64_t)a8;
-- (CGSize)_sizeThatFitsComponents:(id)a3 boundingSize:(CGSize)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (CGRect)_boundingRectForComponents:(id)components interitemSpacing:(double)spacing boundingSize:(CGSize)size horizontalAlignment:(int64_t)alignment allowsOverflow:(BOOL)overflow;
++ (CGRect)_leftAlignedFrameForComponent:(id)component previousComponent:(id)previousComponent interitemSpacing:(double)spacing;
++ (void)_alignComponents:(id)components withLineSize:(CGSize)size boundingRect:(CGRect)rect originYBump:(double)bump verticalAlignment:(int64_t)alignment horizontalAlignment:(int64_t)horizontalAlignment;
+- (CGSize)_sizeThatFitsComponents:(id)components boundingSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIView)lastFocusedView;
 - (UIView)preferredFocusedComponent;
-- (_TVRowView)initWithFrame:(CGRect)a3;
-- (id)impressionableElementsContainedInDocument:(id)a3;
+- (_TVRowView)initWithFrame:(CGRect)frame;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (id)preferredFocusEnvironments;
-- (int64_t)_alignmentFromView:(id)a3;
-- (void)_addSubview:(id)a3 maxViewWidth:(double)a4;
-- (void)_lineUpComponents:(id)a3 alignment:(int64_t)a4 attribute:(int64_t)a5;
+- (int64_t)_alignmentFromView:(id)view;
+- (void)_addSubview:(id)subview maxViewWidth:(double)width;
+- (void)_lineUpComponents:(id)components alignment:(int64_t)alignment attribute:(int64_t)attribute;
 - (void)_resetSubviews;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setComponents:(id)a3;
-- (void)setContentVerticalAlignment:(int64_t)a3;
-- (void)setPreferredFocusedComponent:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setComponents:(id)components;
+- (void)setContentVerticalAlignment:(int64_t)alignment;
+- (void)setPreferredFocusedComponent:(id)component;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation _TVRowView
 
-- (_TVRowView)initWithFrame:(CGRect)a3
+- (_TVRowView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _TVRowView;
-  result = [(_TVFocusRedirectView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(_TVFocusRedirectView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_contentVerticalAlignment = 2;
@@ -36,22 +36,22 @@
   return result;
 }
 
-- (void)setContentVerticalAlignment:(int64_t)a3
+- (void)setContentVerticalAlignment:(int64_t)alignment
 {
-  if (a3)
+  if (alignment)
   {
-    if (self->_contentVerticalAlignment != a3)
+    if (self->_contentVerticalAlignment != alignment)
     {
-      self->_contentVerticalAlignment = a3;
+      self->_contentVerticalAlignment = alignment;
       [(_TVRowView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
   v53 = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  componentsCopy = components;
   if ([(NSArray *)self->_components isEqual:?])
   {
     [(_TVRowView *)self setNeedsLayout];
@@ -73,7 +73,7 @@
     v47[3] = &unk_279D6E848;
     v47[4] = self;
     v47[5] = &v48;
-    [v41 enumerateObjectsUsingBlock:v47];
+    [componentsCopy enumerateObjectsUsingBlock:v47];
     if (v49[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
       components = self->_components;
@@ -83,15 +83,15 @@
     }
   }
 
-  objc_storeStrong(&self->_components, a3);
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v41, "count")}];
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v41, "count")}];
-  v42 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v41, "count")}];
+  objc_storeStrong(&self->_components, components);
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
+  v42 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = v41;
+  v11 = componentsCopy;
   v12 = 0;
   v13 = [v11 countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v13)
@@ -125,7 +125,7 @@ LABEL_16:
             goto LABEL_16;
           }
 
-          v20 = [v17 canBecomeFocused];
+          canBecomeFocused = [v17 canBecomeFocused];
           if (v12)
           {
             v21 = 0;
@@ -133,7 +133,7 @@ LABEL_16:
 
           else
           {
-            v21 = v20;
+            v21 = canBecomeFocused;
           }
 
           if (v21 == 1)
@@ -200,14 +200,14 @@ LABEL_16:
   }
 
   v28 = MEMORY[0x277CBEB18];
-  v29 = [(_TVRowView *)self leftComponents];
-  v30 = [v28 arrayWithArray:v29];
+  leftComponents = [(_TVRowView *)self leftComponents];
+  v30 = [v28 arrayWithArray:leftComponents];
 
-  v31 = [(_TVRowView *)self centerComponents];
-  [v30 addObjectsFromArray:v31];
+  centerComponents = [(_TVRowView *)self centerComponents];
+  [v30 addObjectsFromArray:centerComponents];
 
-  v32 = [(_TVRowView *)self rightComponents];
-  [v30 addObjectsFromArray:v32];
+  rightComponents = [(_TVRowView *)self rightComponents];
+  [v30 addObjectsFromArray:rightComponents];
 
   v33 = [v30 count];
   if (v33)
@@ -243,20 +243,20 @@ LABEL_16:
 LABEL_51:
 }
 
-- (void)setPreferredFocusedComponent:(id)a3
+- (void)setPreferredFocusedComponent:(id)component
 {
-  v4 = objc_storeWeak(&self->_preferredFocusedComponent, a3);
-  v5 = a3;
-  if (a3)
+  v4 = objc_storeWeak(&self->_preferredFocusedComponent, component);
+  componentCopy2 = component;
+  if (component)
   {
-    objc_storeWeak(&self->_lastFocusedView, a3);
-    v5 = a3;
+    objc_storeWeak(&self->_lastFocusedView, component);
+    componentCopy2 = component;
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
+  selectedCopy = selected;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
@@ -282,7 +282,7 @@ LABEL_51:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 setHighlighted:{v4, v11}];
+          [v10 setHighlighted:{selectedCopy, v11}];
         }
 
         ++v9;
@@ -315,11 +315,11 @@ LABEL_51:
   return v5;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [a3 nextFocusedView];
-  if ([v5 isDescendantOfView:self])
+  nextFocusedView = [context nextFocusedView];
+  if ([nextFocusedView isDescendantOfView:self])
   {
     v13 = 0u;
     v14 = 0u;
@@ -340,7 +340,7 @@ LABEL_51:
           }
 
           v10 = *(*(&v11 + 1) + 8 * i);
-          if ([v5 isDescendantOfView:{v10, v11}])
+          if ([nextFocusedView isDescendantOfView:{v10, v11}])
           {
             v7 = v10;
             goto LABEL_12;
@@ -363,9 +363,9 @@ LABEL_12:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_TVRowView *)self _sizeThatFitsComponents:self->_allComponents boundingSize:a3.width, a3.height];
+  [(_TVRowView *)self _sizeThatFitsComponents:self->_allComponents boundingSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -410,44 +410,44 @@ LABEL_12:
     while (v5);
   }
 
-  v10 = [(_TVRowView *)self leftComponents];
-  v11 = [v10 count];
+  leftComponents = [(_TVRowView *)self leftComponents];
+  v11 = [leftComponents count];
 
   if (v11)
   {
-    v12 = [(_TVRowView *)self leftComponents];
-    [(_TVRowView *)self _lineUpComponents:v12 alignment:[(_TVRowView *)self contentVerticalAlignment] attribute:1];
+    leftComponents2 = [(_TVRowView *)self leftComponents];
+    [(_TVRowView *)self _lineUpComponents:leftComponents2 alignment:[(_TVRowView *)self contentVerticalAlignment] attribute:1];
   }
 
-  v13 = [(_TVRowView *)self centerComponents];
-  v14 = [v13 count];
+  centerComponents = [(_TVRowView *)self centerComponents];
+  v14 = [centerComponents count];
 
   if (v14)
   {
-    v15 = [(_TVRowView *)self centerComponents];
-    [(_TVRowView *)self _lineUpComponents:v15 alignment:[(_TVRowView *)self contentVerticalAlignment] attribute:9];
+    centerComponents2 = [(_TVRowView *)self centerComponents];
+    [(_TVRowView *)self _lineUpComponents:centerComponents2 alignment:[(_TVRowView *)self contentVerticalAlignment] attribute:9];
   }
 
-  v16 = [(_TVRowView *)self rightComponents];
-  v17 = [v16 count];
+  rightComponents = [(_TVRowView *)self rightComponents];
+  v17 = [rightComponents count];
 
   if (v17)
   {
-    v18 = [(_TVRowView *)self rightComponents];
-    [(_TVRowView *)self _lineUpComponents:v18 alignment:[(_TVRowView *)self contentVerticalAlignment] attribute:2];
+    rightComponents2 = [(_TVRowView *)self rightComponents];
+    [(_TVRowView *)self _lineUpComponents:rightComponents2 alignment:[(_TVRowView *)self contentVerticalAlignment] attribute:2];
   }
 }
 
-- (void)_lineUpComponents:(id)a3 alignment:(int64_t)a4 attribute:(int64_t)a5
+- (void)_lineUpComponents:(id)components alignment:(int64_t)alignment attribute:(int64_t)attribute
 {
   v89 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  componentsCopy = components;
   if ([(_TVRowView *)self effectiveUserInterfaceLayoutDirection]!= 1)
   {
-    v8 = [(_TVRowView *)self leftComponents];
-    if ([v8 count])
+    leftComponents = [(_TVRowView *)self leftComponents];
+    if ([leftComponents count])
     {
-      v9 = [(_TVRowView *)self rightComponents];
+      rightComponents = [(_TVRowView *)self rightComponents];
       goto LABEL_6;
     }
 
@@ -456,24 +456,24 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v8 = [(_TVRowView *)self rightComponents];
-  if (![v8 count])
+  leftComponents = [(_TVRowView *)self rightComponents];
+  if (![leftComponents count])
   {
     goto LABEL_8;
   }
 
-  v9 = [(_TVRowView *)self leftComponents];
+  rightComponents = [(_TVRowView *)self leftComponents];
 LABEL_6:
-  v10 = v9;
-  if ([v9 count])
+  v10 = rightComponents;
+  if ([rightComponents count])
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [(_TVRowView *)self centerComponents];
-    v11 = [v12 count] == 0;
+    centerComponents = [(_TVRowView *)self centerComponents];
+    v11 = [centerComponents count] == 0;
   }
 
 LABEL_11:
@@ -482,12 +482,12 @@ LABEL_11:
   v14 = MEMORY[0x277CBF3A0];
   v16 = *(MEMORY[0x277CBF3A0] + 16);
   height = *(MEMORY[0x277CBF3A0] + 24);
-  v81 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  v81 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v7;
+  obj = componentsCopy;
   v17 = [obj countByEnumeratingWithState:&v84 objects:v88 count:16];
   v18 = &stru_287E12870;
   if (v17)
@@ -554,7 +554,7 @@ LABEL_11:
 
         else
         {
-          v40 = a5 == 9;
+          v40 = attribute == 9;
         }
 
         if (v40)
@@ -564,8 +564,8 @@ LABEL_11:
 
         if (v11)
         {
-          v41 = a5;
-          if (a5 == 9)
+          attributeCopy = attribute;
+          if (attribute == 9)
           {
             v42 = 0.0;
           }
@@ -601,18 +601,18 @@ LABEL_11:
           if (v44 <= v46 && (v51 & 1) != 0)
           {
             v18 = v50;
-            a5 = v41;
+            attribute = attributeCopy;
           }
 
           else
           {
-            v52 = [v81 lastObject];
-            [v52 tv_nonDirectionalMargin];
+            lastObject = [v81 lastObject];
+            [lastObject tv_nonDirectionalMargin];
             v54 = v16 + v53;
 
             v55 = objc_opt_class();
             [(_TVRowView *)self bounds];
-            [v55 _alignComponents:v81 withLineSize:a4 boundingRect:v41 originYBump:v54 verticalAlignment:height horizontalAlignment:{v56, v57, v58, v59, v77}];
+            [v55 _alignComponents:v81 withLineSize:alignment boundingRect:attributeCopy originYBump:v54 verticalAlignment:height horizontalAlignment:{v56, v57, v58, v59, v77}];
             v93.origin.x = x;
             v93.origin.y = y;
             v93.size.width = v16;
@@ -622,7 +622,7 @@ LABEL_11:
             [v81 removeAllObjects];
             v20 = 0;
             v18 = v50;
-            a5 = v41;
+            attribute = attributeCopy;
             v27 = 0.0;
             height = v73;
             v16 = v74;
@@ -684,36 +684,36 @@ LABEL_11:
     height = v62;
   }
 
-  v63 = [v81 lastObject];
-  [v63 tv_nonDirectionalMargin];
+  lastObject2 = [v81 lastObject];
+  [lastObject2 tv_nonDirectionalMargin];
   v65 = v16 + v64;
 
   v66 = objc_opt_class();
   [(_TVRowView *)self bounds];
-  [v66 _alignComponents:v81 withLineSize:a4 boundingRect:a5 originYBump:v65 verticalAlignment:height horizontalAlignment:{v67, v68, v69, v70, v77}];
+  [v66 _alignComponents:v81 withLineSize:alignment boundingRect:attribute originYBump:v65 verticalAlignment:height horizontalAlignment:{v67, v68, v69, v70, v77}];
 }
 
-- (CGSize)_sizeThatFitsComponents:(id)a3 boundingSize:(CGSize)a4
+- (CGSize)_sizeThatFitsComponents:(id)components boundingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
   v10 = *(MEMORY[0x277CBF3A0] + 16);
   v9 = *(MEMORY[0x277CBF3A0] + 24);
   [(UIView *)self tv_interitemSpacing];
   v12 = v11;
-  v13 = [(_TVRowView *)self effectiveUserInterfaceLayoutDirection];
-  if (v13 == 1)
+  effectiveUserInterfaceLayoutDirection = [(_TVRowView *)self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
-    v14 = [(_TVRowView *)self rightComponents];
-    if ([v14 count])
+    rightComponents = [(_TVRowView *)self rightComponents];
+    if ([rightComponents count])
     {
-      v15 = [(_TVRowView *)self leftComponents];
-      if (![v15 count])
+      leftComponents = [(_TVRowView *)self leftComponents];
+      if (![leftComponents count])
       {
-        v16 = [(_TVRowView *)self centerComponents];
-        v17 = [v16 count];
+        centerComponents = [(_TVRowView *)self centerComponents];
+        v17 = [centerComponents count];
 
         if (!v17)
         {
@@ -721,8 +721,8 @@ LABEL_11:
           v19 = 1;
 LABEL_14:
           v23 = objc_opt_class();
-          v24 = [(_TVRowView *)self rightComponents];
-          [v23 _boundingRectForComponents:v24 interitemSpacing:1 boundingSize:v19 horizontalAlignment:v12 allowsOverflow:{width, height}];
+          rightComponents2 = [(_TVRowView *)self rightComponents];
+          [v23 _boundingRectForComponents:rightComponents2 interitemSpacing:1 boundingSize:v19 horizontalAlignment:v12 allowsOverflow:{width, height}];
           v84.origin.x = v25;
           v84.origin.y = v26;
           v84.size.width = v27;
@@ -738,8 +738,8 @@ LABEL_14:
           v32 = v74.size.height;
 
           v33 = objc_opt_class();
-          v34 = [(_TVRowView *)self leftComponents];
-          [v33 _boundingRectForComponents:v34 interitemSpacing:3 boundingSize:v19 horizontalAlignment:v12 allowsOverflow:{width, height}];
+          leftComponents2 = [(_TVRowView *)self leftComponents];
+          [v33 _boundingRectForComponents:leftComponents2 interitemSpacing:3 boundingSize:v19 horizontalAlignment:v12 allowsOverflow:{width, height}];
           v36 = v35;
           v38 = v37;
           v40 = v39;
@@ -758,22 +758,22 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v14 = [(_TVRowView *)self leftComponents];
-  if (![v14 count])
+  rightComponents = [(_TVRowView *)self leftComponents];
+  if (![rightComponents count])
   {
     goto LABEL_9;
   }
 
-  v15 = [(_TVRowView *)self rightComponents];
-  if ([v15 count])
+  leftComponents = [(_TVRowView *)self rightComponents];
+  if ([leftComponents count])
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v43 = [(_TVRowView *)self centerComponents];
-  v44 = [v43 count];
+  centerComponents2 = [(_TVRowView *)self centerComponents];
+  v44 = [centerComponents2 count];
 
   if (!v44)
   {
@@ -783,29 +783,29 @@ LABEL_8:
   }
 
 LABEL_10:
-  v20 = [(_TVRowView *)self leftComponents];
-  if ([v20 count])
+  leftComponents3 = [(_TVRowView *)self leftComponents];
+  if ([leftComponents3 count])
   {
     v18 = 0;
   }
 
   else
   {
-    v21 = [(_TVRowView *)self rightComponents];
-    v18 = [v21 count] == 0;
+    rightComponents3 = [(_TVRowView *)self rightComponents];
+    v18 = [rightComponents3 count] == 0;
   }
 
   v19 = 0;
   v22 = 0;
-  if (v13 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     goto LABEL_14;
   }
 
 LABEL_17:
   v45 = objc_opt_class();
-  v46 = [(_TVRowView *)self leftComponents];
-  [v45 _boundingRectForComponents:v46 interitemSpacing:1 boundingSize:v22 horizontalAlignment:v12 allowsOverflow:{width, height}];
+  leftComponents4 = [(_TVRowView *)self leftComponents];
+  [v45 _boundingRectForComponents:leftComponents4 interitemSpacing:1 boundingSize:v22 horizontalAlignment:v12 allowsOverflow:{width, height}];
   v85.origin.x = v47;
   v85.origin.y = v48;
   v85.size.width = v49;
@@ -821,8 +821,8 @@ LABEL_17:
   v32 = v76.size.height;
 
   v51 = objc_opt_class();
-  v34 = [(_TVRowView *)self rightComponents];
-  [v51 _boundingRectForComponents:v34 interitemSpacing:3 boundingSize:v22 horizontalAlignment:v12 allowsOverflow:{width, height}];
+  leftComponents2 = [(_TVRowView *)self rightComponents];
+  [v51 _boundingRectForComponents:leftComponents2 interitemSpacing:3 boundingSize:v22 horizontalAlignment:v12 allowsOverflow:{width, height}];
   v36 = v52;
   v38 = v53;
   v40 = v54;
@@ -840,8 +840,8 @@ LABEL_18:
   v59 = v78.size.height;
 
   v60 = objc_opt_class();
-  v61 = [(_TVRowView *)self centerComponents];
-  [v60 _boundingRectForComponents:v61 interitemSpacing:2 boundingSize:v19 horizontalAlignment:v12 allowsOverflow:{width, height}];
+  centerComponents3 = [(_TVRowView *)self centerComponents];
+  [v60 _boundingRectForComponents:centerComponents3 interitemSpacing:2 boundingSize:v19 horizontalAlignment:v12 allowsOverflow:{width, height}];
   v86.origin.x = v62;
   v86.origin.y = v63;
   v86.size.width = v64;
@@ -896,14 +896,14 @@ LABEL_18:
   return result;
 }
 
-- (void)_addSubview:(id)a3 maxViewWidth:(double)a4
+- (void)_addSubview:(id)subview maxViewWidth:(double)width
 {
-  v11 = a3;
-  v6 = [v11 superview];
+  subviewCopy = subview;
+  superview = [subviewCopy superview];
 
-  if (v6 != self)
+  if (superview != self)
   {
-    [(_TVRowView *)self addSubview:v11];
+    [(_TVRowView *)self addSubview:subviewCopy];
   }
 
   [(_TVRowView *)self bounds];
@@ -911,20 +911,20 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 tv_textSizeForWidth:a4];
+    [subviewCopy tv_textSizeForWidth:width];
   }
 
   else
   {
-    [v11 sizeThatFits:{a4, v8}];
+    [subviewCopy sizeThatFits:{width, v8}];
   }
 
-  [v11 setBounds:{0.0, 0.0, v9, v10}];
+  [subviewCopy setBounds:{0.0, 0.0, v9, v10}];
 }
 
-- (int64_t)_alignmentFromView:(id)a3
+- (int64_t)_alignmentFromView:(id)view
 {
-  result = [a3 tv_alignment];
+  result = [view tv_alignment];
   if (!result)
   {
     return 2;
@@ -935,23 +935,23 @@ LABEL_18:
 
 - (void)_resetSubviews
 {
-  v3 = [(_TVRowView *)self subviews];
-  [v3 makeObjectsPerformSelector:sel_removeFromSuperview];
+  subviews = [(_TVRowView *)self subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   [(_TVRowView *)self setNeedsLayout];
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  documentCopy = document;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(_TVRowView *)self components];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  components = [(_TVRowView *)self components];
+  v7 = [components countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -962,22 +962,22 @@ LABEL_18:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(components);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) tv_impressionableElementsForDocument:v4];
-        [v5 addObjectsFromArray:v11];
+        v11 = [*(*(&v14 + 1) + 8 * i) tv_impressionableElementsForDocument:documentCopy];
+        [array addObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [components countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v12 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
+    v12 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   }
 
   else
@@ -988,31 +988,31 @@ LABEL_18:
   return v12;
 }
 
-+ (void)_alignComponents:(id)a3 withLineSize:(CGSize)a4 boundingRect:(CGRect)a5 originYBump:(double)a6 verticalAlignment:(int64_t)a7 horizontalAlignment:(int64_t)a8
++ (void)_alignComponents:(id)components withLineSize:(CGSize)size boundingRect:(CGRect)rect originYBump:(double)bump verticalAlignment:(int64_t)alignment horizontalAlignment:(int64_t)horizontalAlignment
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a4.height;
-  v16 = a4.width;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = size.height;
+  v16 = size.width;
   v42 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  componentsCopy = components;
   v43.origin.x = x;
   v43.origin.y = y;
   v43.size.width = width;
   v43.size.height = height;
   v18 = CGRectGetWidth(v43) - v16;
-  if (a8 != 2)
+  if (horizontalAlignment != 2)
   {
-    if (a8 == 9)
+    if (horizontalAlignment == 9)
     {
-      v19 = [v17 firstObject];
-      [v19 origin];
+      firstObject = [componentsCopy firstObject];
+      [firstObject origin];
       v21 = v20;
 
-      v22 = [v17 lastObject];
-      [v22 tv_nonDirectionalMargin];
+      lastObject = [componentsCopy lastObject];
+      [lastObject tv_nonDirectionalMargin];
       v24 = v23;
 
       v18 = floor((v18 - v21 - v24) * 0.5);
@@ -1028,7 +1028,7 @@ LABEL_18:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v25 = v17;
+  v25 = componentsCopy;
   v26 = [v25 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v26)
   {
@@ -1044,7 +1044,7 @@ LABEL_18:
         }
 
         v30 = *(*(&v37 + 1) + 8 * i);
-        if (a7 == 3)
+        if (alignment == 3)
         {
           [v30 bounds];
           v33 = v15 - CGRectGetHeight(v44);
@@ -1052,7 +1052,7 @@ LABEL_18:
           v32 = v33 - v34;
         }
 
-        else if (a7 == 1)
+        else if (alignment == 1)
         {
           [v30 tv_margin];
           v32 = v31 + 0.0;
@@ -1067,7 +1067,7 @@ LABEL_18:
         [v30 origin];
         v36 = v18 + v35;
         [v30 bounds];
-        [v30 setFrame:{v36, v32 + a6}];
+        [v30 setFrame:{v36, v32 + bump}];
       }
 
       v27 = [v25 countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -1077,14 +1077,14 @@ LABEL_18:
   }
 }
 
-+ (CGRect)_leftAlignedFrameForComponent:(id)a3 previousComponent:(id)a4 interitemSpacing:(double)a5
++ (CGRect)_leftAlignedFrameForComponent:(id)component previousComponent:(id)previousComponent interitemSpacing:(double)spacing
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  componentCopy = component;
+  previousComponentCopy = previousComponent;
+  v9 = previousComponentCopy;
+  if (previousComponentCopy)
   {
-    [v8 tv_nonDirectionalMargin];
+    [previousComponentCopy tv_nonDirectionalMargin];
     v11 = v10;
   }
 
@@ -1093,23 +1093,23 @@ LABEL_18:
     v11 = *(MEMORY[0x277D768C8] + 24);
   }
 
-  [v7 tv_nonDirectionalMargin];
+  [componentCopy tv_nonDirectionalMargin];
   v13 = v12;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 tv_textSizeForWidth:1.79769313e308];
+    [componentCopy tv_textSizeForWidth:1.79769313e308];
   }
 
   else
   {
-    [v7 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [componentCopy sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   }
 
   v16 = v14;
   v17 = v15;
   v18 = fmax(v13, v11);
-  v19 = fmax(v18, a5);
+  v19 = fmax(v18, spacing);
   if (v9)
   {
     v20 = v19;
@@ -1131,23 +1131,23 @@ LABEL_18:
   return result;
 }
 
-+ (CGRect)_boundingRectForComponents:(id)a3 interitemSpacing:(double)a4 boundingSize:(CGSize)a5 horizontalAlignment:(int64_t)a6 allowsOverflow:(BOOL)a7
++ (CGRect)_boundingRectForComponents:(id)components interitemSpacing:(double)spacing boundingSize:(CGSize)size horizontalAlignment:(int64_t)alignment allowsOverflow:(BOOL)overflow
 {
-  v7 = a7;
-  width = a5.width;
+  overflowCopy = overflow;
+  width = size.width;
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  componentsCopy = components;
   v51 = *(MEMORY[0x277CBF3A0] + 8);
   v52 = *MEMORY[0x277CBF3A0];
   v49 = *(MEMORY[0x277CBF3A0] + 24);
   v50 = *(MEMORY[0x277CBF3A0] + 16);
-  if ([v10 count])
+  if ([componentsCopy count])
   {
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    obj = v10;
+    obj = componentsCopy;
     v11 = [obj countByEnumeratingWithState:&v64 objects:v68 count:16];
     if (v11)
     {
@@ -1177,13 +1177,13 @@ LABEL_18:
           }
 
           v20 = *(*(&v64 + 1) + 8 * v19);
-          [objc_opt_class() _leftAlignedFrameForComponent:v20 previousComponent:v13 interitemSpacing:a4];
+          [objc_opt_class() _leftAlignedFrameForComponent:v20 previousComponent:v13 interitemSpacing:spacing];
           v22 = v21;
           v24 = v23;
           v26 = v25;
           v28 = v27;
           [v20 tv_nonDirectionalMargin];
-          if (a6 == 2)
+          if (alignment == 2)
           {
             v30 = 0.0;
           }
@@ -1200,7 +1200,7 @@ LABEL_18:
 
           else
           {
-            v31 = a6 == 2;
+            v31 = alignment == 2;
           }
 
           if (v31)
@@ -1208,12 +1208,12 @@ LABEL_18:
             v22 = 0.0;
           }
 
-          if (v7)
+          if (overflowCopy)
           {
             v60 = v30;
             v32 = v14;
-            v33 = a1;
-            v34 = v7;
+            selfCopy = self;
+            v34 = overflowCopy;
             v70.origin.x = x;
             v70.origin.y = y;
             v70.size.width = v16;
@@ -1259,8 +1259,8 @@ LABEL_18:
               x = v52;
             }
 
-            v7 = v34;
-            a1 = v33;
+            overflowCopy = v34;
+            self = selfCopy;
             v14 = v32;
             v12 = v57;
             v24 = v61;

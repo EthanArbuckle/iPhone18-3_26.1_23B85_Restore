@@ -1,25 +1,25 @@
 @interface AWDWiFiMetricsManagerChipMemory
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHeapFree:(BOOL)a3;
-- (void)setHasHeapFreeMax:(BOOL)a3;
-- (void)setHasHeapFreeMin:(BOOL)a3;
-- (void)setHasHeapTotal:(BOOL)a3;
-- (void)setHasHeapTotalMax:(BOOL)a3;
-- (void)setHasHeapTotalMin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHeapFree:(BOOL)free;
+- (void)setHasHeapFreeMax:(BOOL)max;
+- (void)setHasHeapFreeMin:(BOOL)min;
+- (void)setHasHeapTotal:(BOOL)total;
+- (void)setHasHeapTotalMax:(BOOL)max;
+- (void)setHasHeapTotalMin:(BOOL)min;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerChipMemory
 
-- (void)setHasHeapTotal:(BOOL)a3
+- (void)setHasHeapTotal:(BOOL)total
 {
-  if (a3)
+  if (total)
   {
     v3 = 16;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasHeapTotalMin:(BOOL)a3
+- (void)setHasHeapTotalMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 64;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasHeapTotalMax:(BOOL)a3
+- (void)setHasHeapTotalMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 32;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasHeapFree:(BOOL)a3
+- (void)setHasHeapFree:(BOOL)free
 {
-  if (a3)
+  if (free)
   {
     v3 = 2;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasHeapFreeMin:(BOOL)a3
+- (void)setHasHeapFreeMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 8;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHeapFreeMax:(BOOL)a3
+- (void)setHasHeapFreeMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 4;
   }
@@ -116,11 +116,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -139,7 +139,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapTotal), @"heapTotal"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapTotal), @"heapTotal"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -153,7 +153,7 @@ LABEL_4:
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapTotalMin), @"heapTotal_min"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapTotalMin), @"heapTotal_min"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -167,7 +167,7 @@ LABEL_5:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapTotalMax), @"heapTotal_max"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapTotalMax), @"heapTotal_max"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -178,17 +178,17 @@ LABEL_6:
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapFreeMin), @"heapFree_min"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapFreeMin), @"heapFree_min"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_8;
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapFree), @"heapFree"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapFree), @"heapFree"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -199,13 +199,13 @@ LABEL_7:
   if ((has & 4) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapFreeMax), @"heapFree_max"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_heapFreeMax), @"heapFree_max"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -303,13 +303,13 @@ LABEL_15:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 40) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -328,8 +328,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_heapTotal;
-  *(a3 + 40) |= 0x10u;
+  *(to + 7) = self->_heapTotal;
+  *(to + 40) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -343,8 +343,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(a3 + 9) = self->_heapTotalMin;
-  *(a3 + 40) |= 0x40u;
+  *(to + 9) = self->_heapTotalMin;
+  *(to + 40) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -358,8 +358,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  *(a3 + 8) = self->_heapTotalMax;
-  *(a3 + 40) |= 0x20u;
+  *(to + 8) = self->_heapTotalMax;
+  *(to + 40) |= 0x20u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -373,8 +373,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 4) = self->_heapFree;
-  *(a3 + 40) |= 2u;
+  *(to + 4) = self->_heapFree;
+  *(to + 40) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -385,23 +385,23 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(a3 + 5) = self->_heapFreeMax;
-    *(a3 + 40) |= 4u;
+    *(to + 5) = self->_heapFreeMax;
+    *(to + 40) |= 4u;
     return;
   }
 
 LABEL_14:
-  *(a3 + 6) = self->_heapFreeMin;
-  *(a3 + 40) |= 8u;
+  *(to + 6) = self->_heapFreeMin;
+  *(to + 40) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -498,20 +498,20 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
 LABEL_36:
       LOBYTE(v5) = 0;
@@ -520,73 +520,73 @@ LABEL_36:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 40) & 0x10) == 0 || self->_heapTotal != *(a3 + 7))
+      if ((*(equal + 40) & 0x10) == 0 || self->_heapTotal != *(equal + 7))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 0x10) != 0)
+    else if ((*(equal + 40) & 0x10) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 40) & 0x40) == 0 || self->_heapTotalMin != *(a3 + 9))
+      if ((*(equal + 40) & 0x40) == 0 || self->_heapTotalMin != *(equal + 9))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 0x40) != 0)
+    else if ((*(equal + 40) & 0x40) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 40) & 0x20) == 0 || self->_heapTotalMax != *(a3 + 8))
+      if ((*(equal + 40) & 0x20) == 0 || self->_heapTotalMax != *(equal + 8))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 0x20) != 0)
+    else if ((*(equal + 40) & 0x20) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_heapFree != *(a3 + 4))
+      if ((*(equal + 40) & 2) == 0 || self->_heapFree != *(equal + 4))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 40) & 8) == 0 || self->_heapFreeMin != *(a3 + 6))
+      if ((*(equal + 40) & 8) == 0 || self->_heapFreeMin != *(equal + 6))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 8) != 0)
+    else if ((*(equal + 40) & 8) != 0)
     {
       goto LABEL_36;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_heapFreeMax != *(a3 + 5))
+      if ((*(equal + 40) & 4) == 0 || self->_heapFreeMax != *(equal + 5))
       {
         goto LABEL_36;
       }
@@ -694,14 +694,14 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 40);
+    v3 = *(from + 40);
     if ((v3 & 0x10) == 0)
     {
 LABEL_3:
@@ -714,14 +714,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 40) & 0x10) == 0)
+  else if ((*(from + 40) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_heapTotal = *(a3 + 7);
+  self->_heapTotal = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x40) == 0)
   {
 LABEL_4:
@@ -734,9 +734,9 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_heapTotalMin = *(a3 + 9);
+  self->_heapTotalMin = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x20) == 0)
   {
 LABEL_5:
@@ -749,9 +749,9 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_heapTotalMax = *(a3 + 8);
+  self->_heapTotalMax = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 2) == 0)
   {
 LABEL_6:
@@ -764,9 +764,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_heapFree = *(a3 + 4);
+  self->_heapFree = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 8) == 0)
   {
 LABEL_7:
@@ -776,15 +776,15 @@ LABEL_7:
     }
 
 LABEL_15:
-    self->_heapFreeMax = *(a3 + 5);
+    self->_heapFreeMax = *(from + 5);
     *&self->_has |= 4u;
     return;
   }
 
 LABEL_14:
-  self->_heapFreeMin = *(a3 + 6);
+  self->_heapFreeMin = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 40) & 4) != 0)
+  if ((*(from + 40) & 4) != 0)
   {
     goto LABEL_15;
   }

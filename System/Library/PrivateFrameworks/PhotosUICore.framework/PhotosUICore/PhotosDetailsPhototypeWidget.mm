@@ -3,7 +3,7 @@
 - (PXPhotosDetailsContext)context;
 - (PXWidgetInteractionDelegate)widgetInteractionDelegate;
 - (_TtC12PhotosUICore28PhotosDetailsPhototypeWidget)init;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation PhotosDetailsPhototypeWidget
@@ -18,17 +18,17 @@
 
 - (PXPhotosDetailsContext)context
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4110EF8();
 
   return v3;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A3E76688(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1A3E76688(contextCopy);
 }
 
 - (NSString)snappableWidgetIdentifier

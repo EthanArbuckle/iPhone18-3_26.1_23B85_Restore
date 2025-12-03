@@ -1,18 +1,18 @@
 @interface CKAppMenuDismissalAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CKAppMenuDismissalAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v3 = *MEMORY[0x1E69DE768];
-  v4 = a3;
-  v6 = [v4 viewControllerForKey:v3];
-  v5 = [v6 view];
-  [v5 removeFromSuperview];
+  transitionCopy = transition;
+  v6 = [transitionCopy viewControllerForKey:v3];
+  view = [v6 view];
+  [view removeFromSuperview];
 
-  [v4 completeTransition:1];
+  [transitionCopy completeTransition:1];
 }
 
 @end

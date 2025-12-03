@@ -1,25 +1,25 @@
 @interface HUContactView
 - (BOOL)_isPhoneNumberOnlyAccount;
-- (HUContactView)initWithFrame:(CGRect)a3;
+- (HUContactView)initWithFrame:(CGRect)frame;
 - (NSAttributedString)message;
 - (void)_setupViews;
 - (void)_updateConstraints;
 - (void)_updateNameLabelFont;
-- (void)setAccounts:(id)a3;
-- (void)setAvatarDiameter:(double)a3;
-- (void)setContact:(id)a3;
-- (void)setContactNameFontTextStyle:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setNumberOfLinesForMessage:(unint64_t)a3;
+- (void)setAccounts:(id)accounts;
+- (void)setAvatarDiameter:(double)diameter;
+- (void)setContact:(id)contact;
+- (void)setContactNameFontTextStyle:(id)style;
+- (void)setMessage:(id)message;
+- (void)setNumberOfLinesForMessage:(unint64_t)message;
 @end
 
 @implementation HUContactView
 
-- (HUContactView)initWithFrame:(CGRect)a3
+- (HUContactView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUContactView;
-  v3 = [(HUContactView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUContactView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,31 +31,31 @@
   return v4;
 }
 
-- (void)setAvatarDiameter:(double)a3
+- (void)setAvatarDiameter:(double)diameter
 {
-  if (self->_avatarDiameter != a3)
+  if (self->_avatarDiameter != diameter)
   {
-    self->_avatarDiameter = a3;
+    self->_avatarDiameter = diameter;
     [(HUContactView *)self _updateConstraints];
   }
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v10 = a3;
+  contactCopy = contact;
   if (([(CNContact *)self->_contact isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_contact, a3);
+    objc_storeStrong(&self->_contact, contact);
     if (self->_contact)
     {
-      v5 = [(HUContactView *)self avatarView];
-      [v5 setContact:v10];
+      avatarView = [(HUContactView *)self avatarView];
+      [avatarView setContact:contactCopy];
 
       v6 = MEMORY[0x277CBDA78];
-      v7 = [(HUContactView *)self contact];
-      v8 = [v6 stringFromContact:v7 style:{-[HUContactView contactNameFormatStyle](self, "contactNameFormatStyle")}];
-      v9 = [(HUContactView *)self nameLabel];
-      [v9 setText:v8];
+      contact = [(HUContactView *)self contact];
+      v8 = [v6 stringFromContact:contact style:{-[HUContactView contactNameFormatStyle](self, "contactNameFormatStyle")}];
+      nameLabel = [(HUContactView *)self nameLabel];
+      [nameLabel setText:v8];
     }
 
     [(HUContactView *)self _updateConstraints];
@@ -64,60 +64,60 @@
 
 - (NSAttributedString)message
 {
-  v2 = [(HUContactView *)self messageLabel];
-  v3 = [v2 attributedText];
+  messageLabel = [(HUContactView *)self messageLabel];
+  attributedText = [messageLabel attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v12 = a3;
-  v4 = [(HUContactView *)self messageLabel];
-  if (v12)
+  messageCopy = message;
+  messageLabel = [(HUContactView *)self messageLabel];
+  if (messageCopy)
   {
 
-    if (!v4)
+    if (!messageLabel)
     {
       v5 = objc_alloc_init(MEMORY[0x277D756B8]);
       [(HUContactView *)self setMessageLabel:v5];
 
-      v6 = [(HUContactView *)self messageLabel];
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+      messageLabel2 = [(HUContactView *)self messageLabel];
+      [messageLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v7 = [(HUContactView *)self messageLabel];
-      [(HUContactView *)self addSubview:v7];
+      messageLabel3 = [(HUContactView *)self messageLabel];
+      [(HUContactView *)self addSubview:messageLabel3];
     }
 
-    v8 = [(HUContactView *)self numberOfLinesForMessage];
-    v9 = [(HUContactView *)self messageLabel];
-    [v9 setNumberOfLines:v8];
+    numberOfLinesForMessage = [(HUContactView *)self numberOfLinesForMessage];
+    messageLabel4 = [(HUContactView *)self messageLabel];
+    [messageLabel4 setNumberOfLines:numberOfLinesForMessage];
 
-    v10 = [(HUContactView *)self messageLabel];
-    [v10 setAttributedText:v12];
+    messageLabel5 = [(HUContactView *)self messageLabel];
+    [messageLabel5 setAttributedText:messageCopy];
 
-    v11 = [(HUContactView *)self messageLabel];
-    [v11 sizeToFit];
+    messageLabel6 = [(HUContactView *)self messageLabel];
+    [messageLabel6 sizeToFit];
 
     [(HUContactView *)self _updateConstraints];
   }
 
   else
   {
-    [v4 removeFromSuperview];
+    [messageLabel removeFromSuperview];
 
     [(HUContactView *)self setMessageLabel:0];
   }
 }
 
-- (void)setAccounts:(id)a3
+- (void)setAccounts:(id)accounts
 {
   v66 = *MEMORY[0x277D85DE8];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = a3;
+  obj = accounts;
   v3 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (!v3)
   {
@@ -218,8 +218,8 @@ LABEL_20:
     }
 
 LABEL_27:
-    v22 = [(HUContactView *)self appleMusicAccountLabel];
-    [v22 removeFromSuperview];
+    appleMusicAccountLabel = [(HUContactView *)self appleMusicAccountLabel];
+    [appleMusicAccountLabel removeFromSuperview];
 
     [(HUContactView *)self setAppleMusicAccountLabel:0];
     if (v5)
@@ -230,8 +230,8 @@ LABEL_27:
 
   else
   {
-    v21 = [(HUContactView *)self appleIDAccountLabel];
-    [v21 removeFromSuperview];
+    appleIDAccountLabel = [(HUContactView *)self appleIDAccountLabel];
+    [appleIDAccountLabel removeFromSuperview];
 
     [(HUContactView *)self setAppleIDAccountLabel:0];
     if (!v54)
@@ -243,42 +243,42 @@ LABEL_24:
     if (v5)
     {
 LABEL_28:
-      v23 = [(HUContactView *)self appleIDAccountLabel];
+      appleIDAccountLabel2 = [(HUContactView *)self appleIDAccountLabel];
 
-      if (!v23)
+      if (!appleIDAccountLabel2)
       {
         v24 = objc_alloc_init(MEMORY[0x277D756B8]);
         [(HUContactView *)self setAppleIDAccountLabel:v24];
 
-        v25 = [(HUContactView *)self appleIDAccountLabel];
-        [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+        appleIDAccountLabel3 = [(HUContactView *)self appleIDAccountLabel];
+        [appleIDAccountLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v26 = [(HUContactView *)self appleIDAccountLabel];
-        [(HUContactView *)self addSubview:v26];
+        appleIDAccountLabel4 = [(HUContactView *)self appleIDAccountLabel];
+        [(HUContactView *)self addSubview:appleIDAccountLabel4];
       }
     }
   }
 
   if (v54)
   {
-    v27 = [v54 username];
-    if ([v27 isEqualToString:v5])
+    username = [v54 username];
+    if ([username isEqualToString:v5])
     {
       goto LABEL_34;
     }
 
-    v28 = [(HUContactView *)self appleMusicAccountLabel];
+    appleMusicAccountLabel2 = [(HUContactView *)self appleMusicAccountLabel];
 
-    if (!v28)
+    if (!appleMusicAccountLabel2)
     {
       v29 = objc_alloc_init(MEMORY[0x277D756B8]);
       [(HUContactView *)self setAppleMusicAccountLabel:v29];
 
-      v30 = [(HUContactView *)self appleMusicAccountLabel];
-      [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+      appleMusicAccountLabel3 = [(HUContactView *)self appleMusicAccountLabel];
+      [appleMusicAccountLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v27 = [(HUContactView *)self appleMusicAccountLabel];
-      [(HUContactView *)self addSubview:v27];
+      username = [(HUContactView *)self appleMusicAccountLabel];
+      [(HUContactView *)self addSubview:username];
 LABEL_34:
     }
   }
@@ -296,15 +296,15 @@ LABEL_34:
 
     v33 = *MEMORY[0x277D76968];
     v34 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    v35 = [(HUContactView *)self appleIDAccountLabel];
-    [v35 setFont:v34];
+    appleIDAccountLabel5 = [(HUContactView *)self appleIDAccountLabel];
+    [appleIDAccountLabel5 setFont:v34];
 
-    v36 = [(HUContactView *)self appleMusicAccountLabel];
-    if (v36)
+    appleMusicAccountLabel4 = [(HUContactView *)self appleMusicAccountLabel];
+    if (appleMusicAccountLabel4)
     {
       v37 = MEMORY[0x277CCACA8];
-      v35 = _HULocalizedStringWithDefaultValue(@"HUUseriCloudAccount_Title", @"HUUseriCloudAccount_Title", 1);
-      v38 = [v37 stringWithFormat:@"%@: %@", v35, v5];
+      appleIDAccountLabel5 = _HULocalizedStringWithDefaultValue(@"HUUseriCloudAccount_Title", @"HUUseriCloudAccount_Title", 1);
+      v38 = [v37 stringWithFormat:@"%@: %@", appleIDAccountLabel5, v5];
     }
 
     else
@@ -312,46 +312,46 @@ LABEL_34:
       v38 = v5;
     }
 
-    v39 = [(HUContactView *)self appleIDAccountLabel];
-    [v39 setText:v38];
+    appleIDAccountLabel6 = [(HUContactView *)self appleIDAccountLabel];
+    [appleIDAccountLabel6 setText:v38];
 
-    if (v36)
+    if (appleMusicAccountLabel4)
     {
     }
 
-    v40 = [MEMORY[0x277D75348] grayColor];
-    v41 = [(HUContactView *)self appleIDAccountLabel];
-    [v41 setTextColor:v40];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    appleIDAccountLabel7 = [(HUContactView *)self appleIDAccountLabel];
+    [appleIDAccountLabel7 setTextColor:grayColor];
 
     v42 = [MEMORY[0x277D74300] preferredFontForTextStyle:v33];
-    v43 = [(HUContactView *)self appleMusicAccountLabel];
-    [v43 setFont:v42];
+    appleMusicAccountLabel5 = [(HUContactView *)self appleMusicAccountLabel];
+    [appleMusicAccountLabel5 setFont:v42];
 
     v44 = MEMORY[0x277CCACA8];
     v45 = _HULocalizedStringWithDefaultValue(@"HUUserAppleMusicAccount_Title", @"HUUserAppleMusicAccount_Title", 1);
     v19 = v54;
-    v46 = [v54 username];
-    v47 = [v44 stringWithFormat:@" %@: %@", v45, v46];
-    v48 = [(HUContactView *)self appleMusicAccountLabel];
-    [v48 setText:v47];
+    username2 = [v54 username];
+    v47 = [v44 stringWithFormat:@" %@: %@", v45, username2];
+    appleMusicAccountLabel6 = [(HUContactView *)self appleMusicAccountLabel];
+    [appleMusicAccountLabel6 setText:v47];
 
-    v49 = [MEMORY[0x277D75348] grayColor];
-    v50 = [(HUContactView *)self appleMusicAccountLabel];
-    [v50 setTextColor:v49];
+    grayColor2 = [MEMORY[0x277D75348] grayColor];
+    appleMusicAccountLabel7 = [(HUContactView *)self appleMusicAccountLabel];
+    [appleMusicAccountLabel7 setTextColor:grayColor2];
   }
 
   [(HUContactView *)self _updateConstraints];
 }
 
-- (void)setNumberOfLinesForMessage:(unint64_t)a3
+- (void)setNumberOfLinesForMessage:(unint64_t)message
 {
-  v4 = [(HUContactView *)self messageLabel];
-  [v4 setNumberOfLines:a3];
+  messageLabel = [(HUContactView *)self messageLabel];
+  [messageLabel setNumberOfLines:message];
 }
 
-- (void)setContactNameFontTextStyle:(id)a3
+- (void)setContactNameFontTextStyle:(id)style
 {
-  objc_storeStrong(&self->_contactNameFontTextStyle, a3);
+  objc_storeStrong(&self->_contactNameFontTextStyle, style);
 
   [(HUContactView *)self _updateNameLabelFont];
 }
@@ -361,322 +361,322 @@ LABEL_34:
   v3 = objc_alloc_init(MEMORY[0x277CBDBE8]);
   [(HUContactView *)self setAvatarView:v3];
 
-  v4 = [(HUContactView *)self avatarView];
-  [v4 setUserInteractionEnabled:0];
+  avatarView = [(HUContactView *)self avatarView];
+  [avatarView setUserInteractionEnabled:0];
 
-  v5 = [(HUContactView *)self avatarView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  avatarView2 = [(HUContactView *)self avatarView];
+  [avatarView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(HUContactView *)self avatarView];
-  [(HUContactView *)self addSubview:v6];
+  avatarView3 = [(HUContactView *)self avatarView];
+  [(HUContactView *)self addSubview:avatarView3];
 
   v7 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUContactView *)self setNameLabel:v7];
 
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  v9 = [(HUContactView *)self nameLabel];
-  [v9 setFont:v8];
+  nameLabel = [(HUContactView *)self nameLabel];
+  [nameLabel setFont:v8];
 
-  v10 = [(HUContactView *)self nameLabel];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nameLabel2 = [(HUContactView *)self nameLabel];
+  [nameLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HUContactView *)self nameLabel];
-  [v11 setNumberOfLines:2];
+  nameLabel3 = [(HUContactView *)self nameLabel];
+  [nameLabel3 setNumberOfLines:2];
 
-  v12 = [(HUContactView *)self nameLabel];
-  [v12 setTextAlignment:1];
+  nameLabel4 = [(HUContactView *)self nameLabel];
+  [nameLabel4 setTextAlignment:1];
 
-  v13 = [(HUContactView *)self nameLabel];
-  [(HUContactView *)self addSubview:v13];
+  nameLabel5 = [(HUContactView *)self nameLabel];
+  [(HUContactView *)self addSubview:nameLabel5];
 }
 
 - (void)_updateNameLabelFont
 {
   v3 = MEMORY[0x277D74300];
-  v4 = [(HUContactView *)self contactNameFontTextStyle];
-  v5 = [v3 preferredFontForTextStyle:v4];
-  v6 = [(HUContactView *)self nameLabel];
-  [v6 setFont:v5];
+  contactNameFontTextStyle = [(HUContactView *)self contactNameFontTextStyle];
+  v5 = [v3 preferredFontForTextStyle:contactNameFontTextStyle];
+  nameLabel = [(HUContactView *)self nameLabel];
+  [nameLabel setFont:v5];
 
-  v7 = [(HUContactView *)self nameLabel];
-  [v7 setNeedsLayout];
+  nameLabel2 = [(HUContactView *)self nameLabel];
+  [nameLabel2 setNeedsLayout];
 }
 
 - (void)_updateConstraints
 {
-  v3 = [(HUContactView *)self constraints];
+  constraints = [(HUContactView *)self constraints];
 
-  if (v3)
+  if (constraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(HUContactView *)self constraints];
-    [v4 deactivateConstraints:v5];
+    constraints2 = [(HUContactView *)self constraints];
+    [v4 deactivateConstraints:constraints2];
 
-    v6 = [(HUContactView *)self constraints];
-    [v6 removeAllObjects];
+    constraints3 = [(HUContactView *)self constraints];
+    [constraints3 removeAllObjects];
   }
 
   else
   {
-    v6 = objc_opt_new();
-    [(HUContactView *)self setConstraints:v6];
+    constraints3 = objc_opt_new();
+    [(HUContactView *)self setConstraints:constraints3];
   }
 
-  v7 = [(HUContactView *)self constraints];
-  v8 = [(HUContactView *)self avatarView];
-  v9 = [v8 topAnchor];
-  v10 = [(HUContactView *)self topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
-  [v7 addObject:v11];
+  constraints4 = [(HUContactView *)self constraints];
+  avatarView = [(HUContactView *)self avatarView];
+  topAnchor = [avatarView topAnchor];
+  topAnchor2 = [(HUContactView *)self topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [constraints4 addObject:v11];
 
-  v12 = [(HUContactView *)self constraints];
-  v13 = [(HUContactView *)self avatarView];
-  v14 = [v13 centerXAnchor];
-  v15 = [(HUContactView *)self centerXAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
-  [v12 addObject:v16];
+  constraints5 = [(HUContactView *)self constraints];
+  avatarView2 = [(HUContactView *)self avatarView];
+  centerXAnchor = [avatarView2 centerXAnchor];
+  centerXAnchor2 = [(HUContactView *)self centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [constraints5 addObject:v16];
 
-  v17 = [(HUContactView *)self constraints];
-  v18 = [(HUContactView *)self avatarView];
-  v19 = [v18 leadingAnchor];
-  v20 = [(HUContactView *)self leadingAnchor];
-  v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20];
-  [v17 addObject:v21];
+  constraints6 = [(HUContactView *)self constraints];
+  avatarView3 = [(HUContactView *)self avatarView];
+  leadingAnchor = [avatarView3 leadingAnchor];
+  leadingAnchor2 = [(HUContactView *)self leadingAnchor];
+  v21 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+  [constraints6 addObject:v21];
 
-  v22 = [(HUContactView *)self constraints];
-  v23 = [(HUContactView *)self avatarView];
-  v24 = [v23 trailingAnchor];
-  v25 = [(HUContactView *)self trailingAnchor];
-  v26 = [v24 constraintLessThanOrEqualToAnchor:v25];
-  [v22 addObject:v26];
+  constraints7 = [(HUContactView *)self constraints];
+  avatarView4 = [(HUContactView *)self avatarView];
+  trailingAnchor = [avatarView4 trailingAnchor];
+  trailingAnchor2 = [(HUContactView *)self trailingAnchor];
+  v26 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+  [constraints7 addObject:v26];
 
-  v27 = [(HUContactView *)self constraints];
-  v28 = [(HUContactView *)self avatarView];
-  v29 = [v28 widthAnchor];
+  constraints8 = [(HUContactView *)self constraints];
+  avatarView5 = [(HUContactView *)self avatarView];
+  widthAnchor = [avatarView5 widthAnchor];
   [(HUContactView *)self avatarDiameter];
-  v30 = [v29 constraintEqualToConstant:?];
-  [v27 addObject:v30];
+  v30 = [widthAnchor constraintEqualToConstant:?];
+  [constraints8 addObject:v30];
 
-  v31 = [(HUContactView *)self constraints];
-  v32 = [(HUContactView *)self avatarView];
-  v33 = [v32 heightAnchor];
+  constraints9 = [(HUContactView *)self constraints];
+  avatarView6 = [(HUContactView *)self avatarView];
+  heightAnchor = [avatarView6 heightAnchor];
   [(HUContactView *)self avatarDiameter];
-  v34 = [v33 constraintEqualToConstant:?];
-  [v31 addObject:v34];
+  v34 = [heightAnchor constraintEqualToConstant:?];
+  [constraints9 addObject:v34];
 
-  v35 = [(HUContactView *)self nameLabel];
-  v36 = [v35 firstBaselineAnchor];
-  v37 = [(HUContactView *)self avatarView];
-  v38 = [v37 bottomAnchor];
-  v142 = [v36 constraintEqualToAnchor:v38 constant:20.0];
+  nameLabel = [(HUContactView *)self nameLabel];
+  firstBaselineAnchor = [nameLabel firstBaselineAnchor];
+  avatarView7 = [(HUContactView *)self avatarView];
+  bottomAnchor = [avatarView7 bottomAnchor];
+  v142 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:20.0];
 
   LODWORD(v39) = 1144750080;
   [v142 setPriority:v39];
-  v40 = [(HUContactView *)self constraints];
-  [v40 addObject:v142];
+  constraints10 = [(HUContactView *)self constraints];
+  [constraints10 addObject:v142];
 
-  v41 = [(HUContactView *)self constraints];
-  v42 = [(HUContactView *)self nameLabel];
-  v43 = [v42 topAnchor];
-  v44 = [(HUContactView *)self avatarView];
-  v45 = [v44 bottomAnchor];
-  v46 = [v43 constraintGreaterThanOrEqualToAnchor:v45];
-  [v41 addObject:v46];
+  constraints11 = [(HUContactView *)self constraints];
+  nameLabel2 = [(HUContactView *)self nameLabel];
+  topAnchor3 = [nameLabel2 topAnchor];
+  avatarView8 = [(HUContactView *)self avatarView];
+  bottomAnchor2 = [avatarView8 bottomAnchor];
+  v46 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
+  [constraints11 addObject:v46];
 
-  v47 = [(HUContactView *)self constraints];
-  v48 = [(HUContactView *)self nameLabel];
-  v49 = [v48 centerXAnchor];
-  v50 = [(HUContactView *)self centerXAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
-  [v47 addObject:v51];
+  constraints12 = [(HUContactView *)self constraints];
+  nameLabel3 = [(HUContactView *)self nameLabel];
+  centerXAnchor3 = [nameLabel3 centerXAnchor];
+  centerXAnchor4 = [(HUContactView *)self centerXAnchor];
+  v51 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [constraints12 addObject:v51];
 
-  v52 = [(HUContactView *)self constraints];
-  v53 = [(HUContactView *)self nameLabel];
-  v54 = [v53 leadingAnchor];
-  v55 = [(HUContactView *)self leadingAnchor];
-  v56 = [v54 constraintGreaterThanOrEqualToAnchor:v55];
-  [v52 addObject:v56];
+  constraints13 = [(HUContactView *)self constraints];
+  nameLabel4 = [(HUContactView *)self nameLabel];
+  leadingAnchor3 = [nameLabel4 leadingAnchor];
+  leadingAnchor4 = [(HUContactView *)self leadingAnchor];
+  v56 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
+  [constraints13 addObject:v56];
 
-  v57 = [(HUContactView *)self constraints];
-  v58 = [(HUContactView *)self nameLabel];
-  v59 = [v58 trailingAnchor];
-  v60 = [(HUContactView *)self trailingAnchor];
-  v61 = [v59 constraintLessThanOrEqualToAnchor:v60];
-  [v57 addObject:v61];
+  constraints14 = [(HUContactView *)self constraints];
+  nameLabel5 = [(HUContactView *)self nameLabel];
+  trailingAnchor3 = [nameLabel5 trailingAnchor];
+  trailingAnchor4 = [(HUContactView *)self trailingAnchor];
+  v61 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
+  [constraints14 addObject:v61];
 
-  v62 = [(HUContactView *)self appleIDAccountLabel];
+  appleIDAccountLabel = [(HUContactView *)self appleIDAccountLabel];
 
-  if (v62)
+  if (appleIDAccountLabel)
   {
-    v63 = [(HUContactView *)self constraints];
-    v64 = [(HUContactView *)self appleIDAccountLabel];
-    v65 = [v64 firstBaselineAnchor];
-    v66 = [(HUContactView *)self nameLabel];
-    v67 = [v66 lastBaselineAnchor];
-    v68 = [v65 constraintEqualToSystemSpacingBelowAnchor:v67 multiplier:1.0];
-    [v63 addObject:v68];
+    constraints15 = [(HUContactView *)self constraints];
+    appleIDAccountLabel2 = [(HUContactView *)self appleIDAccountLabel];
+    firstBaselineAnchor2 = [appleIDAccountLabel2 firstBaselineAnchor];
+    nameLabel6 = [(HUContactView *)self nameLabel];
+    lastBaselineAnchor = [nameLabel6 lastBaselineAnchor];
+    v68 = [firstBaselineAnchor2 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
+    [constraints15 addObject:v68];
 
-    v69 = [(HUContactView *)self constraints];
-    v70 = [(HUContactView *)self appleIDAccountLabel];
-    v71 = [v70 centerXAnchor];
-    v72 = [(HUContactView *)self centerXAnchor];
-    v73 = [v71 constraintEqualToAnchor:v72];
-    [v69 addObject:v73];
+    constraints16 = [(HUContactView *)self constraints];
+    appleIDAccountLabel3 = [(HUContactView *)self appleIDAccountLabel];
+    centerXAnchor5 = [appleIDAccountLabel3 centerXAnchor];
+    centerXAnchor6 = [(HUContactView *)self centerXAnchor];
+    v73 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
+    [constraints16 addObject:v73];
 
-    v74 = [(HUContactView *)self constraints];
-    v75 = [(HUContactView *)self appleIDAccountLabel];
-    v76 = [v75 leadingAnchor];
-    v77 = [(HUContactView *)self leadingAnchor];
-    v78 = [v76 constraintGreaterThanOrEqualToAnchor:v77];
-    [v74 addObject:v78];
+    constraints17 = [(HUContactView *)self constraints];
+    appleIDAccountLabel4 = [(HUContactView *)self appleIDAccountLabel];
+    leadingAnchor5 = [appleIDAccountLabel4 leadingAnchor];
+    leadingAnchor6 = [(HUContactView *)self leadingAnchor];
+    v78 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
+    [constraints17 addObject:v78];
 
-    v79 = [(HUContactView *)self constraints];
-    v80 = [(HUContactView *)self appleIDAccountLabel];
-    v81 = [v80 trailingAnchor];
-    v82 = [(HUContactView *)self trailingAnchor];
-    v83 = [v81 constraintLessThanOrEqualToAnchor:v82];
-    [v79 addObject:v83];
+    constraints18 = [(HUContactView *)self constraints];
+    appleIDAccountLabel5 = [(HUContactView *)self appleIDAccountLabel];
+    trailingAnchor5 = [appleIDAccountLabel5 trailingAnchor];
+    trailingAnchor6 = [(HUContactView *)self trailingAnchor];
+    v83 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
+    [constraints18 addObject:v83];
   }
 
-  v84 = [(HUContactView *)self appleMusicAccountLabel];
+  appleMusicAccountLabel = [(HUContactView *)self appleMusicAccountLabel];
 
-  if (v84)
+  if (appleMusicAccountLabel)
   {
-    v85 = [(HUContactView *)self appleIDAccountLabel];
-    v86 = [v85 lastBaselineAnchor];
+    appleIDAccountLabel6 = [(HUContactView *)self appleIDAccountLabel];
+    lastBaselineAnchor2 = [appleIDAccountLabel6 lastBaselineAnchor];
 
-    if (!v86)
+    if (!lastBaselineAnchor2)
     {
-      v87 = [(HUContactView *)self nameLabel];
-      v86 = [v87 lastBaselineAnchor];
+      nameLabel7 = [(HUContactView *)self nameLabel];
+      lastBaselineAnchor2 = [nameLabel7 lastBaselineAnchor];
     }
 
-    v88 = [(HUContactView *)self constraints];
-    v89 = [(HUContactView *)self appleMusicAccountLabel];
-    v90 = [v89 firstBaselineAnchor];
-    v91 = [v90 constraintEqualToSystemSpacingBelowAnchor:v86 multiplier:1.0];
-    [v88 addObject:v91];
+    constraints19 = [(HUContactView *)self constraints];
+    appleMusicAccountLabel2 = [(HUContactView *)self appleMusicAccountLabel];
+    firstBaselineAnchor3 = [appleMusicAccountLabel2 firstBaselineAnchor];
+    v91 = [firstBaselineAnchor3 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor2 multiplier:1.0];
+    [constraints19 addObject:v91];
 
-    v92 = [(HUContactView *)self constraints];
-    v93 = [(HUContactView *)self appleMusicAccountLabel];
-    v94 = [v93 centerXAnchor];
-    v95 = [(HUContactView *)self centerXAnchor];
-    v96 = [v94 constraintEqualToAnchor:v95];
-    [v92 addObject:v96];
+    constraints20 = [(HUContactView *)self constraints];
+    appleMusicAccountLabel3 = [(HUContactView *)self appleMusicAccountLabel];
+    centerXAnchor7 = [appleMusicAccountLabel3 centerXAnchor];
+    centerXAnchor8 = [(HUContactView *)self centerXAnchor];
+    v96 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
+    [constraints20 addObject:v96];
 
-    v97 = [(HUContactView *)self constraints];
-    v98 = [(HUContactView *)self appleMusicAccountLabel];
-    v99 = [v98 trailingAnchor];
-    v100 = [(HUContactView *)self trailingAnchor];
-    v101 = [v99 constraintLessThanOrEqualToAnchor:v100];
-    [v97 addObject:v101];
+    constraints21 = [(HUContactView *)self constraints];
+    appleMusicAccountLabel4 = [(HUContactView *)self appleMusicAccountLabel];
+    trailingAnchor7 = [appleMusicAccountLabel4 trailingAnchor];
+    trailingAnchor8 = [(HUContactView *)self trailingAnchor];
+    v101 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
+    [constraints21 addObject:v101];
   }
 
-  v102 = [(HUContactView *)self messageLabel];
+  messageLabel = [(HUContactView *)self messageLabel];
 
-  v103 = [(HUContactView *)self nameLabel];
-  v104 = [v103 lastBaselineAnchor];
+  nameLabel8 = [(HUContactView *)self nameLabel];
+  lastBaselineAnchor3 = [nameLabel8 lastBaselineAnchor];
 
-  v105 = [(HUContactView *)self appleIDAccountLabel];
-  v106 = v105;
-  if (v102)
+  appleIDAccountLabel7 = [(HUContactView *)self appleIDAccountLabel];
+  v106 = appleIDAccountLabel7;
+  if (messageLabel)
   {
-    if (v105 && ([(HUContactView *)self appleMusicAccountLabel], v107 = objc_claimAutoreleasedReturnValue(), v107, v106, v107))
+    if (appleIDAccountLabel7 && ([(HUContactView *)self appleMusicAccountLabel], v107 = objc_claimAutoreleasedReturnValue(), v107, v106, v107))
     {
-      v108 = [(HUContactView *)self appleMusicAccountLabel];
+      appleMusicAccountLabel5 = [(HUContactView *)self appleMusicAccountLabel];
     }
 
     else
     {
-      v109 = [(HUContactView *)self appleIDAccountLabel];
+      appleIDAccountLabel8 = [(HUContactView *)self appleIDAccountLabel];
 
-      if (!v109)
+      if (!appleIDAccountLabel8)
       {
 LABEL_17:
-        v112 = [(HUContactView *)self constraints];
-        v113 = [(HUContactView *)self messageLabel];
-        v114 = [v113 firstBaselineAnchor];
-        v115 = [v114 constraintEqualToAnchor:v104 constant:25.0];
-        [v112 addObject:v115];
+        constraints22 = [(HUContactView *)self constraints];
+        messageLabel2 = [(HUContactView *)self messageLabel];
+        firstBaselineAnchor4 = [messageLabel2 firstBaselineAnchor];
+        v115 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor3 constant:25.0];
+        [constraints22 addObject:v115];
 
-        v116 = [(HUContactView *)self constraints];
-        v117 = [(HUContactView *)self messageLabel];
-        v118 = [v117 centerXAnchor];
-        v119 = [(HUContactView *)self centerXAnchor];
-        v120 = [v118 constraintEqualToAnchor:v119];
-        [v116 addObject:v120];
+        constraints23 = [(HUContactView *)self constraints];
+        messageLabel3 = [(HUContactView *)self messageLabel];
+        centerXAnchor9 = [messageLabel3 centerXAnchor];
+        centerXAnchor10 = [(HUContactView *)self centerXAnchor];
+        v120 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
+        [constraints23 addObject:v120];
 
-        v121 = [(HUContactView *)self constraints];
-        v122 = [(HUContactView *)self messageLabel];
-        v123 = [v122 leadingAnchor];
-        v124 = [(HUContactView *)self leadingAnchor];
-        v125 = [v123 constraintGreaterThanOrEqualToAnchor:v124];
-        [v121 addObject:v125];
+        constraints24 = [(HUContactView *)self constraints];
+        messageLabel4 = [(HUContactView *)self messageLabel];
+        leadingAnchor7 = [messageLabel4 leadingAnchor];
+        leadingAnchor8 = [(HUContactView *)self leadingAnchor];
+        v125 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:leadingAnchor8];
+        [constraints24 addObject:v125];
 
-        v126 = [(HUContactView *)self constraints];
-        v127 = [(HUContactView *)self messageLabel];
-        v128 = [v127 trailingAnchor];
-        v129 = [(HUContactView *)self trailingAnchor];
-        v130 = [v128 constraintLessThanOrEqualToAnchor:v129];
-        [v126 addObject:v130];
+        constraints25 = [(HUContactView *)self constraints];
+        messageLabel5 = [(HUContactView *)self messageLabel];
+        trailingAnchor9 = [messageLabel5 trailingAnchor];
+        trailingAnchor10 = [(HUContactView *)self trailingAnchor];
+        v130 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10];
+        [constraints25 addObject:v130];
 
-        v131 = [(HUContactView *)self constraints];
-        v132 = [(HUContactView *)self messageLabel];
-        v133 = [v132 lastBaselineAnchor];
-        v134 = [(HUContactView *)self bottomAnchor];
-        v135 = [v133 constraintEqualToAnchor:v134];
-        [v131 addObject:v135];
+        constraints26 = [(HUContactView *)self constraints];
+        messageLabel6 = [(HUContactView *)self messageLabel];
+        lastBaselineAnchor4 = [messageLabel6 lastBaselineAnchor];
+        bottomAnchor3 = [(HUContactView *)self bottomAnchor];
+        v135 = [lastBaselineAnchor4 constraintEqualToAnchor:bottomAnchor3];
+        [constraints26 addObject:v135];
 
         goto LABEL_24;
       }
 
-      v108 = [(HUContactView *)self appleIDAccountLabel];
+      appleMusicAccountLabel5 = [(HUContactView *)self appleIDAccountLabel];
     }
 
-    v110 = v108;
-    v111 = [v108 lastBaselineAnchor];
+    v110 = appleMusicAccountLabel5;
+    lastBaselineAnchor5 = [appleMusicAccountLabel5 lastBaselineAnchor];
 
-    v104 = v111;
+    lastBaselineAnchor3 = lastBaselineAnchor5;
     goto LABEL_17;
   }
 
   if (v106)
   {
-    v136 = [(HUContactView *)self appleIDAccountLabel];
+    appleIDAccountLabel9 = [(HUContactView *)self appleIDAccountLabel];
 LABEL_22:
-    v138 = v136;
-    v139 = [v136 lastBaselineAnchor];
+    v138 = appleIDAccountLabel9;
+    lastBaselineAnchor6 = [appleIDAccountLabel9 lastBaselineAnchor];
 
-    v104 = v139;
+    lastBaselineAnchor3 = lastBaselineAnchor6;
     goto LABEL_23;
   }
 
-  v137 = [(HUContactView *)self appleMusicAccountLabel];
+  appleMusicAccountLabel6 = [(HUContactView *)self appleMusicAccountLabel];
 
-  if (v137)
+  if (appleMusicAccountLabel6)
   {
-    v136 = [(HUContactView *)self appleMusicAccountLabel];
+    appleIDAccountLabel9 = [(HUContactView *)self appleMusicAccountLabel];
     goto LABEL_22;
   }
 
 LABEL_23:
-  v131 = [(HUContactView *)self constraints];
-  v132 = [(HUContactView *)self bottomAnchor];
-  v133 = [v104 constraintEqualToAnchor:v132];
-  [v131 addObject:v133];
+  constraints26 = [(HUContactView *)self constraints];
+  messageLabel6 = [(HUContactView *)self bottomAnchor];
+  lastBaselineAnchor4 = [lastBaselineAnchor3 constraintEqualToAnchor:messageLabel6];
+  [constraints26 addObject:lastBaselineAnchor4];
 LABEL_24:
 
   v140 = MEMORY[0x277CCAAD0];
-  v141 = [(HUContactView *)self constraints];
-  [v140 activateConstraints:v141];
+  constraints27 = [(HUContactView *)self constraints];
+  [v140 activateConstraints:constraints27];
 }
 
 - (BOOL)_isPhoneNumberOnlyAccount
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBDA78];
-  v4 = [(HUContactView *)self contact];
-  v5 = [v3 stringFromContact:v4 style:{-[HUContactView contactNameFormatStyle](self, "contactNameFormatStyle")}];
+  contact = [(HUContactView *)self contact];
+  v5 = [v3 stringFromContact:contact style:{-[HUContactView contactNameFormatStyle](self, "contactNameFormatStyle")}];
 
   v6 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v5];
   v7 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v6];

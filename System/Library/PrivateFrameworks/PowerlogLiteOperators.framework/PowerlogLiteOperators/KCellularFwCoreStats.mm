@@ -1,20 +1,20 @@
 @interface KCellularFwCoreStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularFwCoreStats
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -33,61 +33,61 @@
   v8.receiver = self;
   v8.super_class = KCellularFwCoreStats;
   v4 = [(KCellularFwCoreStats *)&v8 description];
-  v5 = [(KCellularFwCoreStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularFwCoreStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   geraStats = self->_geraStats;
   if (geraStats)
   {
-    v6 = [(GeraStats *)geraStats dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"gera_stats"];
+    dictionaryRepresentation = [(GeraStats *)geraStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"gera_stats"];
   }
 
   utraFddStats = self->_utraFddStats;
   if (utraFddStats)
   {
-    v8 = [(UtraFddStats *)utraFddStats dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"utra_fdd_stats"];
+    dictionaryRepresentation2 = [(UtraFddStats *)utraFddStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"utra_fdd_stats"];
   }
 
   utraTddStats = self->_utraTddStats;
   if (utraTddStats)
   {
-    v10 = [(UtraTddStats *)utraTddStats dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"utra_tdd_stats"];
+    dictionaryRepresentation3 = [(UtraTddStats *)utraTddStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"utra_tdd_stats"];
   }
 
   eutraStats = self->_eutraStats;
   if (eutraStats)
   {
-    v12 = [(EutraStats *)eutraStats dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"eutra_stats"];
+    dictionaryRepresentation4 = [(EutraStats *)eutraStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"eutra_stats"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v13 forKey:@"subs_id"];
+    [dictionary setObject:v13 forKey:@"subs_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -121,50 +121,50 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 56) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_geraStats)
   {
-    [v4 setGeraStats:?];
-    v4 = v5;
+    [toCopy setGeraStats:?];
+    toCopy = v5;
   }
 
   if (self->_utraFddStats)
   {
     [v5 setUtraFddStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_utraTddStats)
   {
     [v5 setUtraTddStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_eutraStats)
   {
     [v5 setEutraStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 8) = self->_subsId;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 8) = self->_subsId;
+    *(toCopy + 56) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -172,19 +172,19 @@
     *(v5 + 56) |= 1u;
   }
 
-  v7 = [(GeraStats *)self->_geraStats copyWithZone:a3];
+  v7 = [(GeraStats *)self->_geraStats copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
-  v9 = [(UtraFddStats *)self->_utraFddStats copyWithZone:a3];
+  v9 = [(UtraFddStats *)self->_utraFddStats copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
-  v11 = [(UtraTddStats *)self->_utraTddStats copyWithZone:a3];
+  v11 = [(UtraTddStats *)self->_utraTddStats copyWithZone:zone];
   v12 = *(v6 + 48);
   *(v6 + 48) = v11;
 
-  v13 = [(EutraStats *)self->_eutraStats copyWithZone:a3];
+  v13 = [(EutraStats *)self->_eutraStats copyWithZone:zone];
   v14 = *(v6 + 16);
   *(v6 + 16) = v13;
 
@@ -197,24 +197,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_19:
     v10 = 0;
@@ -222,13 +222,13 @@ LABEL_19:
   }
 
   geraStats = self->_geraStats;
-  if (geraStats | *(v4 + 3) && ![(GeraStats *)geraStats isEqual:?])
+  if (geraStats | *(equalCopy + 3) && ![(GeraStats *)geraStats isEqual:?])
   {
     goto LABEL_19;
   }
 
   utraFddStats = self->_utraFddStats;
-  if (utraFddStats | *(v4 + 5))
+  if (utraFddStats | *(equalCopy + 5))
   {
     if (![(UtraFddStats *)utraFddStats isEqual:?])
     {
@@ -237,7 +237,7 @@ LABEL_19:
   }
 
   utraTddStats = self->_utraTddStats;
-  if (utraTddStats | *(v4 + 6))
+  if (utraTddStats | *(equalCopy + 6))
   {
     if (![(UtraTddStats *)utraTddStats isEqual:?])
     {
@@ -246,7 +246,7 @@ LABEL_19:
   }
 
   eutraStats = self->_eutraStats;
-  if (eutraStats | *(v4 + 2))
+  if (eutraStats | *(equalCopy + 2))
   {
     if (![(EutraStats *)eutraStats isEqual:?])
     {
@@ -254,10 +254,10 @@ LABEL_19:
     }
   }
 
-  v10 = (*(v4 + 56) & 2) == 0;
+  v10 = (*(equalCopy + 56) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_subsId != *(v4 + 8))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
@@ -299,13 +299,13 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[7])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[7])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

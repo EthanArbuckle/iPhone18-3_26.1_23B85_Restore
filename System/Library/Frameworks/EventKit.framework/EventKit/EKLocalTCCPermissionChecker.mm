@@ -1,15 +1,15 @@
 @interface EKLocalTCCPermissionChecker
-- (void)requestAuthorization:(unint64_t)a3 forService:(__CFString *)a4 clientDictionary:(id)a5 completion:(id)a6;
+- (void)requestAuthorization:(unint64_t)authorization forService:(__CFString *)service clientDictionary:(id)dictionary completion:(id)completion;
 @end
 
 @implementation EKLocalTCCPermissionChecker
 
-- (void)requestAuthorization:(unint64_t)a3 forService:(__CFString *)a4 clientDictionary:(id)a5 completion:(id)a6
+- (void)requestAuthorization:(unint64_t)authorization forService:(__CFString *)service clientDictionary:(id)dictionary completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
+  completionCopy = completion;
+  dictionaryCopy = dictionary;
   v9 = tcc_credential_singleton_for_self();
-  v10 = v7;
+  v10 = completionCopy;
   CalRequestAuthorizationForServiceWithCompletion();
 }
 

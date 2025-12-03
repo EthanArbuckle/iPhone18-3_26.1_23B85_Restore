@@ -1,33 +1,33 @@
 @interface VTKAssertID
-- (BOOL)isEqual:(id)a3;
-- (VTKAssertID)initWithName:(id)a3 decorationMask:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VTKAssertID)initWithName:(id)name decorationMask:(unint64_t)mask;
 @end
 
 @implementation VTKAssertID
 
-- (VTKAssertID)initWithName:(id)a3 decorationMask:(unint64_t)a4
+- (VTKAssertID)initWithName:(id)name decorationMask:(unint64_t)mask
 {
   if (self)
   {
-    v5 = a4;
-    v6 = [a3 copy];
+    maskCopy = mask;
+    v6 = [name copy];
     vtkAssertName = self->_vtkAssertName;
     self->_vtkAssertName = v6;
 
-    self->_vtkIDDecorationsMask = v5 & 0x3F;
+    self->_vtkIDDecorationsMask = maskCopy & 0x3F;
   }
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___VTKAssertID] && (v5 = -[VTKAssertID vtkIDDecorationsMask](self, "vtkIDDecorationsMask"), v5 == objc_msgSend(v4, "vtkIDDecorationsMask")))
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&OBJC_PROTOCOL___VTKAssertID] && (v5 = -[VTKAssertID vtkIDDecorationsMask](self, "vtkIDDecorationsMask"), v5 == objc_msgSend(equalCopy, "vtkIDDecorationsMask")))
   {
-    v6 = [(VTKAssertID *)self vtkAssertName];
-    v7 = [v4 vtkAssertName];
-    v8 = [v6 isEqualToString:v7];
+    vtkAssertName = [(VTKAssertID *)self vtkAssertName];
+    vtkAssertName2 = [equalCopy vtkAssertName];
+    v8 = [vtkAssertName isEqualToString:vtkAssertName2];
   }
 
   else

@@ -1,45 +1,45 @@
 @interface ASAuthorizationController
 - (ASAuthorizationController)init;
 - (ASAuthorizationController)initWithAuthorizationRequests:(NSArray *)authorizationRequests;
-- (BOOL)_onlyHasAppleIDRequest:(id)a3;
+- (BOOL)_onlyHasAppleIDRequest:(id)request;
 - (BOOL)_shouldConvertExtensionAndWebKitErrors;
-- (id)_authKitRequestFromAppleIDRequest:(id)a3;
+- (id)_authKitRequestFromAppleIDRequest:(id)request;
 - (id)_authKitRequests;
-- (id)_authenticatedResponseFromHTTPResponse:(id)a3 httpBody:(id)a4;
+- (id)_authenticatedResponseFromHTTPResponse:(id)response httpBody:(id)body;
 - (id)_authenticationServicesAgentProxy;
-- (id)_authorizationFromAuthKitResult:(id)a3;
-- (id)_convertCoreErrorToPublicError:(id)a3;
-- (id)_convertCredentialProviderErrorToPublicError:(id)a3;
-- (id)_convertWebKitErrorToPublicError:(id)a3;
-- (id)_publicErrorFromAuthKitError:(id)a3;
-- (id)_requestContextWithRequests:(id)a3 error:(id *)a4;
+- (id)_authorizationFromAuthKitResult:(id)result;
+- (id)_convertCoreErrorToPublicError:(id)error;
+- (id)_convertCredentialProviderErrorToPublicError:(id)error;
+- (id)_convertWebKitErrorToPublicError:(id)error;
+- (id)_publicErrorFromAuthKitError:(id)error;
+- (id)_requestContextWithRequests:(id)requests error:(id *)error;
 - (id)delegate;
 - (id)presentationContextProvider;
-- (id)publicKeyAccountRegistrationOptionsForRequest:(id)a3;
-- (id)relyingPartyIdentifierForRequest:(id)a3;
+- (id)publicKeyAccountRegistrationOptionsForRequest:(id)request;
+- (id)relyingPartyIdentifierForRequest:(id)request;
 - (id)testOptionsIfNeeded;
-- (void)_completeWithAuthorization:(id)a3;
-- (void)_failWithError:(id)a3;
+- (void)_completeWithAuthorization:(id)authorization;
+- (void)_failWithError:(id)error;
 - (void)_finishAppSSO;
-- (void)_performAuthKitRequests:(id)a3 options:(unint64_t)a4;
-- (void)_performAuthorizationRequests:(id)a3 requestStyle:(int64_t)a4 requestOptions:(unint64_t)a5;
-- (void)_performRequestsWithStyle:(int64_t)a3 options:(unint64_t)a4;
+- (void)_performAuthKitRequests:(id)requests options:(unint64_t)options;
+- (void)_performAuthorizationRequests:(id)requests requestStyle:(int64_t)style requestOptions:(unint64_t)options;
+- (void)_performRequestsWithStyle:(int64_t)style options:(unint64_t)options;
 - (void)_shouldConvertExtensionAndWebKitErrors;
-- (void)authorization:(id)a3 didCompleteWithAuthorizationResult:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithHTTPAuthorizationHeaders:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5;
-- (void)authorization:(id)a3 presentViewController:(id)a4 withCompletion:(id)a5;
-- (void)authorizationDidCancel:(id)a3;
-- (void)authorizationDidComplete:(id)a3;
-- (void)authorizationDidNotHandle:(id)a3;
+- (void)authorization:(id)authorization didCompleteWithAuthorizationResult:(id)result;
+- (void)authorization:(id)authorization didCompleteWithError:(id)error;
+- (void)authorization:(id)authorization didCompleteWithHTTPAuthorizationHeaders:(id)headers;
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body;
+- (void)authorization:(id)authorization presentViewController:(id)controller withCompletion:(id)completion;
+- (void)authorizationDidCancel:(id)cancel;
+- (void)authorizationDidComplete:(id)complete;
+- (void)authorizationDidNotHandle:(id)handle;
 - (void)cancel;
-- (void)deleteAllPasskeysForRelyingParty:(id)a3 completionHandler:(id)a4;
-- (void)deletePasskeyForRelyingParty:(id)a3 withCredentialID:(id)a4 completionHandler:(id)a5;
-- (void)getPasskeysDataForRelyingParty:(id)a3 withCompletionHandler:(id)a4;
+- (void)deleteAllPasskeysForRelyingParty:(id)party completionHandler:(id)handler;
+- (void)deletePasskeyForRelyingParty:(id)party withCredentialID:(id)d completionHandler:(id)handler;
+- (void)getPasskeysDataForRelyingParty:(id)party withCompletionHandler:(id)handler;
 - (void)performAutoFillAssistedRequests;
 - (void)performRequestsWithOptions:(ASAuthorizationControllerRequestOptions)options;
-- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)a3;
+- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASAuthorizationController
@@ -71,7 +71,7 @@
   return v8;
 }
 
-- (void)_performRequestsWithStyle:(int64_t)a3 options:(unint64_t)a4
+- (void)_performRequestsWithStyle:(int64_t)style options:(unint64_t)options
 {
   v67[1] = *MEMORY[0x1E69E9840];
   authorizationRequests = self->_authorizationRequests;
@@ -79,20 +79,20 @@
   v64[1] = 3221225472;
   v64[2] = __63__ASAuthorizationController__performRequestsWithStyle_options___block_invoke;
   v64[3] = &__block_descriptor_40_e32_B16__0__ASAuthorizationRequest_8l;
-  v64[4] = a3;
+  v64[4] = style;
   v48 = [(NSArray *)authorizationRequests safari_filterObjectsUsingBlock:v64];
   if ([v48 count])
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       v8 = @"%@ does not support AutoFill assistance.";
     }
 
     else
     {
-      if (a3 != 2)
+      if (style != 2)
       {
-        v9 = @"Unexpected failure.";
+        _authKitRequests = @"Unexpected failure.";
         goto LABEL_10;
       }
 
@@ -100,15 +100,15 @@
     }
 
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v48 firstObject];
+    firstObject = [v48 firstObject];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v9 = [v10 stringWithFormat:v8, v13];
+    _authKitRequests = [v10 stringWithFormat:v8, v13];
 
 LABEL_10:
     v14 = MEMORY[0x1E696ABC0];
     v66 = *MEMORY[0x1E696A588];
-    v67[0] = v9;
+    v67[0] = _authKitRequests;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v66 count:1];
     v16 = [v14 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v15];
 
@@ -118,24 +118,24 @@ LABEL_10:
 
   if ([(ASAuthorizationController *)self _shouldPerformRequestsWithAuthKit:self->_authorizationRequests])
   {
-    v9 = [(ASAuthorizationController *)self _authKitRequests];
-    [(ASAuthorizationController *)self _performAuthKitRequests:v9 options:a4];
+    _authKitRequests = [(ASAuthorizationController *)self _authKitRequests];
+    [(ASAuthorizationController *)self _performAuthKitRequests:_authKitRequests options:options];
   }
 
   else
   {
-    v9 = [(ASAuthorizationController *)self _authorizationRequestsHandledByAuthenticationServicesDaemon:self->_authorizationRequests];
-    if ([(__CFString *)v9 count])
+    _authKitRequests = [(ASAuthorizationController *)self _authorizationRequestsHandledByAuthenticationServicesDaemon:self->_authorizationRequests];
+    if ([(__CFString *)_authKitRequests count])
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __63__ASAuthorizationController__performRequestsWithStyle_options___block_invoke_2;
       block[3] = &unk_1E7AF8738;
       block[4] = self;
-      v9 = v9;
-      v61 = v9;
-      v62 = a3;
-      v63 = a4;
+      _authKitRequests = _authKitRequests;
+      v61 = _authKitRequests;
+      styleCopy = style;
+      optionsCopy = options;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
@@ -157,18 +157,18 @@ LABEL_10:
       v19 = v55[5];
       if (v19)
       {
-        v20 = [v19 provider];
-        v21 = [v20 url];
+        provider = [v19 provider];
+        v21 = [provider url];
         appSSORequestURL = self->_appSSORequestURL;
         self->_appSSORequestURL = v21;
 
-        v23 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v51 = 0u;
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v24 = [v55[5] authorizationOptions];
-        v25 = [v24 countByEnumeratingWithState:&v49 objects:v65 count:16];
+        authorizationOptions = [v55[5] authorizationOptions];
+        v25 = [authorizationOptions countByEnumeratingWithState:&v49 objects:v65 count:16];
         if (v25)
         {
           v26 = *v50;
@@ -178,15 +178,15 @@ LABEL_10:
             {
               if (*v50 != v26)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(authorizationOptions);
               }
 
               v28 = *(*(&v49 + 1) + 8 * i);
-              v29 = [v28 value];
-              v30 = [v28 name];
-              if (v29)
+              value = [v28 value];
+              name = [v28 name];
+              if (value)
               {
-                v31 = v29;
+                v31 = value;
               }
 
               else
@@ -194,46 +194,46 @@ LABEL_10:
                 v31 = &stru_1F28DE020;
               }
 
-              [v23 setObject:v31 forKeyedSubscript:v30];
+              [dictionary setObject:v31 forKeyedSubscript:name];
             }
 
-            v25 = [v24 countByEnumeratingWithState:&v49 objects:v65 count:16];
+            v25 = [authorizationOptions countByEnumeratingWithState:&v49 objects:v65 count:16];
           }
 
           while (v25);
         }
 
-        v32 = [v55[5] state];
+        state = [v55[5] state];
 
-        if (v32)
+        if (state)
         {
-          v33 = [v55[5] state];
-          [v23 setObject:v33 forKeyedSubscript:@"state"];
+          state2 = [v55[5] state];
+          [dictionary setObject:state2 forKeyedSubscript:@"state"];
         }
 
-        v34 = [v55[5] nonce];
+        nonce = [v55[5] nonce];
 
-        if (v34)
+        if (nonce)
         {
-          v35 = [v55[5] nonce];
-          [v23 setObject:v35 forKeyedSubscript:@"nonce"];
+          nonce2 = [v55[5] nonce];
+          [dictionary setObject:nonce2 forKeyedSubscript:@"nonce"];
         }
 
-        v36 = [v55[5] requestedScopes];
+        requestedScopes = [v55[5] requestedScopes];
 
-        if (v36)
+        if (requestedScopes)
         {
-          v37 = [v55[5] requestedScopes];
-          v38 = [v37 componentsJoinedByString:@" "];
-          [v23 setObject:v38 forKeyedSubscript:@"scope"];
+          requestedScopes2 = [v55[5] requestedScopes];
+          v38 = [requestedScopes2 componentsJoinedByString:@" "];
+          [dictionary setObject:v38 forKeyedSubscript:@"scope"];
         }
 
         v39 = objc_alloc_init(MEMORY[0x1E698B130]);
-        v40 = [v55[5] requestedOperation];
-        [v39 setOperation:v40];
+        requestedOperation = [v55[5] requestedOperation];
+        [v39 setOperation:requestedOperation];
 
         [v39 setUrl:self->_appSSORequestURL];
-        v41 = [v23 copy];
+        v41 = [dictionary copy];
         [v39 setHttpHeaders:v41];
 
         v42 = objc_alloc_init(MEMORY[0x1E695DEF0]);
@@ -244,13 +244,13 @@ LABEL_10:
         appSSOAuthorization = self->_appSSOAuthorization;
         self->_appSSOAuthorization = v43;
 
-        v45 = [v23 copy];
+        v45 = [dictionary copy];
         [self->_appSSOAuthorization setAuthorizationOptions:v45];
 
         -[SOAuthorization setEnableUserInteraction:](self->_appSSOAuthorization, "setEnableUserInteraction:", [v55[5] isUserInterfaceEnabled]);
         [self->_appSSOAuthorization setDelegate:self];
-        v46 = [(ASAuthorizationController *)self presentationContextProvider];
-        v47 = [v46 presentationAnchorForAuthorizationController:self];
+        presentationContextProvider = [(ASAuthorizationController *)self presentationContextProvider];
+        v47 = [presentationContextProvider presentationAnchorForAuthorizationController:self];
         [self->_appSSOAuthorization setEnableEmbeddedAuthorizationViewController:v47 != 0];
 
         [self->_appSSOAuthorization beginAuthorizationWithParameters:v39];
@@ -280,15 +280,15 @@ void __63__ASAuthorizationController__performRequestsWithStyle_options___block_i
   }
 }
 
-- (void)_performAuthKitRequests:(id)a3 options:(unint64_t)a4
+- (void)_performAuthKitRequests:(id)requests options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v6 = MEMORY[0x1E698DD58];
-  v7 = a3;
+  requestsCopy = requests;
   v8 = objc_alloc_init(v6);
-  [v8 setCredentialRequests:v7];
+  [v8 setCredentialRequests:requestsCopy];
 
-  [v8 setRequestOptions:v4 & 1];
+  [v8 setRequestOptions:optionsCopy & 1];
   v9 = objc_alloc_init(MEMORY[0x1E698DCE0]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -314,16 +314,16 @@ void __61__ASAuthorizationController__performAuthKitRequests_options___block_inv
   }
 }
 
-- (id)_publicErrorFromAuthKitError:(id)a3
+- (id)_publicErrorFromAuthKitError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E698DB28]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E698DB28]];
 
   if (v5)
   {
-    v6 = [v3 code];
-    if (v6 == -7089 || v6 == -7003)
+    code = [errorCopy code];
+    if (code == -7089 || code == -7003)
     {
       v8 = 1001;
     }
@@ -359,42 +359,42 @@ void __61__ASAuthorizationController__performAuthKitRequests_options___block_inv
   os_activity_apply(v5, block);
 }
 
-- (void)getPasskeysDataForRelyingParty:(id)a3 withCompletionHandler:(id)a4
+- (void)getPasskeysDataForRelyingParty:(id)party withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
-  [v8 getPasskeysDataForRelyingParty:v7 withCompletionHandler:v6];
+  handlerCopy = handler;
+  partyCopy = party;
+  _authenticationServicesAgentProxy = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
+  [_authenticationServicesAgentProxy getPasskeysDataForRelyingParty:partyCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)deletePasskeyForRelyingParty:(id)a3 withCredentialID:(id)a4 completionHandler:(id)a5
+- (void)deletePasskeyForRelyingParty:(id)party withCredentialID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
-  [v11 deletePasskeyForRelyingParty:v10 withCredentialID:v9 completionHandler:v8];
+  handlerCopy = handler;
+  dCopy = d;
+  partyCopy = party;
+  _authenticationServicesAgentProxy = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
+  [_authenticationServicesAgentProxy deletePasskeyForRelyingParty:partyCopy withCredentialID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteAllPasskeysForRelyingParty:(id)a3 completionHandler:(id)a4
+- (void)deleteAllPasskeysForRelyingParty:(id)party completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
-  [v8 deleteAllPasskeysForRelyingParty:v7 completionHandler:v6];
+  handlerCopy = handler;
+  partyCopy = party;
+  _authenticationServicesAgentProxy = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
+  [_authenticationServicesAgentProxy deleteAllPasskeysForRelyingParty:partyCopy completionHandler:handlerCopy];
 }
 
-- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)a3
+- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
-  [v5 preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _authenticationServicesAgentProxy = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
+  [_authenticationServicesAgentProxy preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:handlerCopy];
 }
 
 - (void)cancel
 {
-  v2 = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
-  [v2 cancelCurrentRequest];
+  _authenticationServicesAgentProxy = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
+  [_authenticationServicesAgentProxy cancelCurrentRequest];
 }
 
 - (id)_authKitRequests
@@ -405,7 +405,7 @@ void __61__ASAuthorizationController__performAuthKitRequests_options___block_inv
   v9 = 3221225472;
   v10 = __45__ASAuthorizationController__authKitRequests__block_invoke;
   v11 = &unk_1E7AF87B0;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   [(NSArray *)authorizationRequests enumerateObjectsUsingBlock:&v8];
@@ -440,30 +440,30 @@ void __45__ASAuthorizationController__authKitRequests__block_invoke(uint64_t a1,
 LABEL_6:
 }
 
-- (id)_authKitRequestFromAppleIDRequest:(id)a3
+- (id)_authKitRequestFromAppleIDRequest:(id)request
 {
   v3 = MEMORY[0x1E698DD08];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 user];
-  [v5 setUserIdentifier:v6];
+  user = [requestCopy user];
+  [v5 setUserIdentifier:user];
 
-  v7 = [v4 state];
-  [v5 setState:v7];
+  state = [requestCopy state];
+  [v5 setState:state];
 
-  v8 = [v4 nonce];
-  [v5 setNonce:v8];
+  nonce = [requestCopy nonce];
+  [v5 setNonce:nonce];
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [v4 requestedScopes];
+  array = [MEMORY[0x1E695DF70] array];
+  requestedScopes = [requestCopy requestedScopes];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__ASAuthorizationController__authKitRequestFromAppleIDRequest___block_invoke;
   v13[3] = &unk_1E7AF87D8;
-  v14 = v9;
-  v11 = v9;
-  [v10 enumerateObjectsUsingBlock:v13];
+  v14 = array;
+  v11 = array;
+  [requestedScopes enumerateObjectsUsingBlock:v13];
 
   [v5 setRequestedScopes:v11];
 
@@ -492,42 +492,42 @@ void __63__ASAuthorizationController__authKitRequestFromAppleIDRequest___block_i
 LABEL_6:
 }
 
-- (id)_authorizationFromAuthKitResult:(id)a3
+- (id)_authorizationFromAuthKitResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 credential];
-  v5 = [v3 credential];
+  resultCopy = result;
+  credential = [resultCopy credential];
+  credential2 = [resultCopy credential];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 authenticationServicesCredential];
+    authenticationServicesCredential = [credential authenticationServicesCredential];
     v8 = off_1E7AF67B0;
 LABEL_5:
     v14 = objc_alloc_init(*v8);
     goto LABEL_7;
   }
 
-  v9 = [v3 credential];
+  credential3 = [resultCopy credential];
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
 
   if (v10)
   {
     v11 = [ASPasswordCredential alloc];
-    v12 = [v4 userIdentifier];
-    v13 = [v4 password];
-    v7 = [(ASPasswordCredential *)v11 initWithUser:v12 password:v13];
+    userIdentifier = [credential userIdentifier];
+    password = [credential password];
+    authenticationServicesCredential = [(ASPasswordCredential *)v11 initWithUser:userIdentifier password:password];
 
     v8 = off_1E7AF67C8;
     goto LABEL_5;
   }
 
-  v7 = 0;
+  authenticationServicesCredential = 0;
   v14 = 0;
 LABEL_7:
-  v15 = [[ASAuthorization alloc] initWithProvider:v14 credential:v7];
+  v15 = [[ASAuthorization alloc] initWithProvider:v14 credential:authenticationServicesCredential];
 
   return v15;
 }
@@ -552,31 +552,31 @@ LABEL_7:
   }
 }
 
-- (id)_authenticatedResponseFromHTTPResponse:(id)a3 httpBody:(id)a4
+- (id)_authenticatedResponseFromHTTPResponse:(id)response httpBody:(id)body
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a4 options:0 error:0];
+  responseCopy = response;
+  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:body options:0 error:0];
   objc_opt_class();
-  v7 = v5;
+  v7 = responseCopy;
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = responseCopy;
     if ([v6 count])
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
-      v9 = [v5 allHeaderFields];
-      v10 = [v9 count];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      allHeaderFields = [responseCopy allHeaderFields];
+      v10 = [allHeaderFields count];
 
       if (v10)
       {
-        v11 = [v5 allHeaderFields];
-        [v8 addEntriesFromDictionary:v11];
+        allHeaderFields2 = [responseCopy allHeaderFields];
+        [dictionary addEntriesFromDictionary:allHeaderFields2];
       }
 
-      [v8 addEntriesFromDictionary:v6];
+      [dictionary addEntriesFromDictionary:v6];
       v12 = objc_alloc(MEMORY[0x1E696AC68]);
-      v13 = [v5 URL];
-      v7 = [v12 initWithURL:v13 statusCode:objc_msgSend(v5 HTTPVersion:"statusCode") headerFields:{@"HTTP/1.1", v8}];
+      v13 = [responseCopy URL];
+      v7 = [v12 initWithURL:v13 statusCode:objc_msgSend(responseCopy HTTPVersion:"statusCode") headerFields:{@"HTTP/1.1", dictionary}];
     }
   }
 
@@ -629,7 +629,7 @@ uint64_t __56__ASAuthorizationController_performRequestsWithOptions___block_invo
   return isKindOfClass & 1;
 }
 
-- (void)authorizationDidNotHandle:(id)a3
+- (void)authorizationDidNotHandle:(id)handle
 {
   if (dyld_program_sdk_at_least() & 1) != 0 || (WeakRetained = objc_loadWeakRetained(&self->_delegate), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), WeakRetained, (isKindOfClass))
   {
@@ -648,14 +648,14 @@ uint64_t __56__ASAuthorizationController_performRequestsWithOptions___block_invo
   [(ASAuthorizationController *)self _finishAppSSO];
 }
 
-- (void)authorizationDidCancel:(id)a3
+- (void)authorizationDidCancel:(id)cancel
 {
   v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1001 userInfo:0];
   [(ASAuthorizationController *)self _failWithError:v4];
   [(ASAuthorizationController *)self _finishAppSSO];
 }
 
-- (void)authorizationDidComplete:(id)a3
+- (void)authorizationDidComplete:(id)complete
 {
   v6 = +[ASAuthorizationSingleSignOnCredential emptyCredential];
   v4 = [ASAuthorizationSingleSignOnProvider authorizationProviderWithIdentityProviderURL:self->_appSSORequestURL];
@@ -664,16 +664,16 @@ uint64_t __56__ASAuthorizationController_performRequestsWithOptions___block_invo
   [(ASAuthorizationController *)self _finishAppSSO];
 }
 
-- (void)authorization:(id)a3 didCompleteWithHTTPAuthorizationHeaders:(id)a4
+- (void)authorization:(id)authorization didCompleteWithHTTPAuthorizationHeaders:(id)headers
 {
   v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1002 userInfo:0];
   [(ASAuthorizationController *)self _failWithError:v5];
   [(ASAuthorizationController *)self _finishAppSSO];
 }
 
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body
 {
-  v9 = [(ASAuthorizationController *)self _authenticatedResponseFromHTTPResponse:a4 httpBody:a5];
+  v9 = [(ASAuthorizationController *)self _authenticatedResponseFromHTTPResponse:response httpBody:body];
   if (v9)
   {
     v6 = [[ASAuthorizationSingleSignOnCredential alloc] initWithAuthenticatedResponse:v9];
@@ -691,32 +691,32 @@ uint64_t __56__ASAuthorizationController_performRequestsWithOptions___block_invo
   [(ASAuthorizationController *)self _finishAppSSO];
 }
 
-- (void)authorization:(id)a3 didCompleteWithAuthorizationResult:(id)a4
+- (void)authorization:(id)authorization didCompleteWithAuthorizationResult:(id)result
 {
-  v14 = a4;
-  v5 = [v14 httpAuthorizationHeaders];
+  resultCopy = result;
+  httpAuthorizationHeaders = [resultCopy httpAuthorizationHeaders];
 
-  if (v5)
+  if (httpAuthorizationHeaders)
   {
     goto LABEL_2;
   }
 
-  v6 = [v14 httpResponse];
+  httpResponse = [resultCopy httpResponse];
 
-  if (!v6)
+  if (!httpResponse)
   {
     goto LABEL_5;
   }
 
-  v7 = [v14 httpResponse];
-  v8 = [v14 httpBody];
-  v6 = [(ASAuthorizationController *)self _authenticatedResponseFromHTTPResponse:v7 httpBody:v8];
+  httpResponse2 = [resultCopy httpResponse];
+  httpBody = [resultCopy httpBody];
+  httpResponse = [(ASAuthorizationController *)self _authenticatedResponseFromHTTPResponse:httpResponse2 httpBody:httpBody];
 
-  if (!v6)
+  if (!httpResponse)
   {
 LABEL_2:
-    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1002 userInfo:0];
-    [(ASAuthorizationController *)self _failWithError:v6];
+    httpResponse = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1002 userInfo:0];
+    [(ASAuthorizationController *)self _failWithError:httpResponse];
     [(ASAuthorizationController *)self _finishAppSSO];
   }
 
@@ -724,8 +724,8 @@ LABEL_2:
   {
 LABEL_5:
     v9 = [ASAuthorizationSingleSignOnCredential alloc];
-    v10 = [v14 privateKeys];
-    v11 = [(ASAuthorizationSingleSignOnCredential *)v9 initWithAuthenticatedResponse:v6 privateKeys:v10];
+    privateKeys = [resultCopy privateKeys];
+    v11 = [(ASAuthorizationSingleSignOnCredential *)v9 initWithAuthenticatedResponse:httpResponse privateKeys:privateKeys];
 
     v12 = [ASAuthorizationSingleSignOnProvider authorizationProviderWithIdentityProviderURL:self->_appSSORequestURL];
     v13 = [[ASAuthorization alloc] initWithProvider:v12 credential:v11];
@@ -734,20 +734,20 @@ LABEL_5:
   }
 }
 
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4
+- (void)authorization:(id)authorization didCompleteWithError:(id)error
 {
-  v10 = a4;
-  v5 = [v10 domain];
-  v6 = [v5 isEqualToString:@"com.apple.AuthenticationServices.AuthorizationError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"com.apple.AuthenticationServices.AuthorizationError"];
 
   if (v6)
   {
-    v7 = v10;
+    v7 = errorCopy;
   }
 
   else
   {
-    if ([v10 safari_matchesErrorDomain:*MEMORY[0x1E698B140] andCode:-12])
+    if ([errorCopy safari_matchesErrorDomain:*MEMORY[0x1E698B140] andCode:-12])
     {
       v8 = 1005;
     }
@@ -767,26 +767,26 @@ LABEL_5:
   [(ASAuthorizationController *)self _finishAppSSO];
 }
 
-- (void)authorization:(id)a3 presentViewController:(id)a4 withCompletion:(id)a5
+- (void)authorization:(id)authorization presentViewController:(id)controller withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  authorizationCopy = authorization;
+  controllerCopy = controller;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __80__ASAuthorizationController_authorization_presentViewController_withCompletion___block_invoke;
   aBlock[3] = &unk_1E7AF8848;
-  v11 = v10;
+  v11 = completionCopy;
   v37 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [(ASAuthorizationController *)self presentationContextProvider];
-  v14 = [v13 presentationAnchorForAuthorizationController:self];
+  presentationContextProvider = [(ASAuthorizationController *)self presentationContextProvider];
+  v14 = [presentationContextProvider presentationAnchorForAuthorizationController:self];
   appSSOPresentationAnchor = self->_appSSOPresentationAnchor;
   self->_appSSOPresentationAnchor = v14;
 
   if (self->_appSSOPresentationAnchor)
   {
-    objc_storeStrong(&self->_appSSOViewController, a4);
+    objc_storeStrong(&self->_appSSOViewController, controller);
     v16 = [MEMORY[0x1E69DD258] _viewControllerForFullScreenPresentationFromView:self->_appSSOPresentationAnchor];
     if (v16)
     {
@@ -808,8 +808,8 @@ LABEL_5:
       v20 = v31[5];
       v31[5] = v19;
 
-      v21 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v21 addTimer:v31[5] forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:v31[5] forMode:*MEMORY[0x1E695DA28]];
 
       appSSOViewController = self->_appSSOViewController;
       v24[0] = MEMORY[0x1E69E9820];
@@ -887,12 +887,12 @@ void *__80__ASAuthorizationController_authorization_presentViewController_withCo
   return result;
 }
 
-- (BOOL)_onlyHasAppleIDRequest:(id)a3
+- (BOOL)_onlyHasAppleIDRequest:(id)request
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  requestCopy = request;
+  if ([requestCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [requestCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -923,55 +923,55 @@ uint64_t __89__ASAuthorizationController__authorizationRequestsHandledByAuthenti
   return isKindOfClass & 1;
 }
 
-- (void)_performAuthorizationRequests:(id)a3 requestStyle:(int64_t)a4 requestOptions:(unint64_t)a5
+- (void)_performAuthorizationRequests:(id)requests requestStyle:(int64_t)style requestOptions:(unint64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__ASAuthorizationController__performAuthorizationRequests_requestStyle_requestOptions___block_invoke;
   aBlock[3] = &unk_1E7AF88C0;
   aBlock[4] = self;
-  v8 = a3;
+  requestsCopy = requests;
   v9 = _Block_copy(aBlock);
   v19 = 0;
-  v10 = [(ASAuthorizationController *)self _requestContextWithRequests:v8 error:&v19];
+  v10 = [(ASAuthorizationController *)self _requestContextWithRequests:requestsCopy error:&v19];
 
   v11 = v19;
   if (v10)
   {
-    v12 = [v10 authenticatedContext];
+    authenticatedContext = [v10 authenticatedContext];
 
-    if (v12)
+    if (authenticatedContext)
     {
-      a4 = 2;
+      style = 2;
     }
 
-    [v10 setRequestStyle:a4];
-    [v10 setRequestOptions:v5 & 1];
-    v13 = [(ASAuthorizationController *)self presentationContextProvider];
-    v14 = [v13 presentationAnchorForAuthorizationController:self];
+    [v10 setRequestStyle:style];
+    [v10 setRequestOptions:optionsCopy & 1];
+    presentationContextProvider = [(ASAuthorizationController *)self presentationContextProvider];
+    v14 = [presentationContextProvider presentationAnchorForAuthorizationController:self];
 
-    v15 = [v14 windowScene];
-    v16 = [v15 _sceneIdentifier];
-    [v10 setWindowSceneIdentifier:v16];
+    windowScene = [v14 windowScene];
+    _sceneIdentifier = [windowScene _sceneIdentifier];
+    [v10 setWindowSceneIdentifier:_sceneIdentifier];
 
-    if (a4 >= 2)
+    if (style >= 2)
     {
-      if (a4 != 2)
+      if (style != 2)
       {
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v17 = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
-      [v17 performSilentAuthorizationRequestsForContext:v10 withCompletionHandler:v9];
+      _authenticationServicesAgentProxy = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
+      [_authenticationServicesAgentProxy performSilentAuthorizationRequestsForContext:v10 withCompletionHandler:v9];
     }
 
     else
     {
-      v17 = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
-      [v17 performAuthorizationRequestsForContext:v10 withCompletionHandler:v9];
+      _authenticationServicesAgentProxy = [(ASAuthorizationController *)self _authenticationServicesAgentProxy];
+      [_authenticationServicesAgentProxy performAuthorizationRequestsForContext:v10 withCompletionHandler:v9];
     }
 
     goto LABEL_12;
@@ -1019,15 +1019,15 @@ void __87__ASAuthorizationController__performAuthorizationRequests_requestStyle_
   return authenticationServicesAgentProxy;
 }
 
-- (id)_requestContextWithRequests:(id)a3 error:(id *)a4
+- (id)_requestContextWithRequests:(id)requests error:(id *)error
 {
   v110[1] = *MEMORY[0x1E69E9840];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v78 objects:v98 count:16];
+  requestsCopy = requests;
+  v5 = [requestsCopy countByEnumeratingWithState:&v78 objects:v98 count:16];
   if (!v5)
   {
     v73 = 0;
@@ -1054,7 +1054,7 @@ void __87__ASAuthorizationController__performAuthorizationRequests_requestStyle_
   v10 = 0;
   v11 = *v79;
   v12 = 0x1E7AF6000uLL;
-  v76 = v4;
+  v76 = requestsCopy;
   v71 = *v79;
   do
   {
@@ -1064,7 +1064,7 @@ void __87__ASAuthorizationController__performAuthorizationRequests_requestStyle_
     {
       if (*v79 != v11)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(requestsCopy);
       }
 
       v14 = *(*(&v78 + 1) + 8 * v13);
@@ -1077,18 +1077,18 @@ void __87__ASAuthorizationController__performAuthorizationRequests_requestStyle_
         {
           v18 = objc_alloc_init(MEMORY[0x1E698DD08]);
 
-          v19 = [v14 user];
-          [v18 setUserIdentifier:v19];
+          user = [v14 user];
+          [v18 setUserIdentifier:user];
 
-          v20 = [v14 state];
-          [v18 setState:v20];
+          state = [v14 state];
+          [v18 setState:state];
 
-          v21 = [v14 nonce];
-          [v18 setNonce:v21];
-          v16 = 0;
+          nonce = [v14 nonce];
+          [v18 setNonce:nonce];
+          relyingPartyIdentifier = 0;
           v17 = 2;
           v9 = v18;
-          v4 = v76;
+          requestsCopy = v76;
         }
 
         else
@@ -1097,17 +1097,17 @@ void __87__ASAuthorizationController__performAuthorizationRequests_requestStyle_
           if (objc_opt_isKindOfClass())
           {
             v22 = v9;
-            v21 = v14;
-            v23 = [v21 coreCredentialCreationOptions];
+            nonce = v14;
+            coreCredentialCreationOptions = [nonce coreCredentialCreationOptions];
 
-            v16 = [v21 relyingPartyIdentifier];
-            v24 = [v21 attestationPreference];
-            v25 = [v24 isEqualToString:@"none"];
+            relyingPartyIdentifier = [nonce relyingPartyIdentifier];
+            attestationPreference = [nonce attestationPreference];
+            v25 = [attestationPreference isEqualToString:@"none"];
 
             if ((v25 & 1) == 0)
             {
-              v26 = [v21 attestationPreference];
-              v27 = [v26 isEqualToString:@"enterprise"];
+              attestationPreference2 = [nonce attestationPreference];
+              v27 = [attestationPreference2 isEqualToString:@"enterprise"];
 
               if ((v27 & 1) == 0)
               {
@@ -1115,14 +1115,14 @@ void __87__ASAuthorizationController__performAuthorizationRequests_requestStyle_
                 v96 = *MEMORY[0x1E696A578];
                 v97 = @"Passkeys do not support attestation.";
                 v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
-                *a4 = [v57 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v58];
+                *error = [v57 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v58];
 
                 v44 = 0;
                 v59 = v76;
-                v39 = v76;
-                v77 = v23;
+                relyingPartyIdentifier2 = v76;
+                v77 = coreCredentialCreationOptions;
 LABEL_84:
-                v4 = v59;
+                requestsCopy = v59;
                 v7 = v69;
                 v41 = v73;
                 v9 = v22;
@@ -1131,7 +1131,7 @@ LABEL_84:
             }
 
             v17 = 4;
-            v77 = v23;
+            v77 = coreCredentialCreationOptions;
           }
 
           else
@@ -1139,16 +1139,16 @@ LABEL_84:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v21 = v14;
-              v16 = [v21 relyingPartyIdentifier];
-              [v21 coreCredentialAssertionOptions];
+              nonce = v14;
+              relyingPartyIdentifier = [nonce relyingPartyIdentifier];
+              [nonce coreCredentialAssertionOptions];
               v28 = v22 = v9;
 
-              v29 = [v21 authenticatedContext];
+              authenticatedContext = [nonce authenticatedContext];
 
               v17 = 8;
               v73 = v28;
-              v74 = v29;
+              v74 = authenticatedContext;
             }
 
             else
@@ -1160,12 +1160,12 @@ LABEL_84:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v21 = v14;
-                  v16 = [v21 relyingPartyIdentifier];
-                  v35 = [v21 coreCredentialAssertionOptions];
+                  nonce = v14;
+                  relyingPartyIdentifier = [nonce relyingPartyIdentifier];
+                  coreCredentialAssertionOptions = [nonce coreCredentialAssertionOptions];
 
                   v17 = 32;
-                  v69 = v35;
+                  v69 = coreCredentialAssertionOptions;
                 }
 
                 else
@@ -1179,25 +1179,25 @@ LABEL_84:
                       [(ASAuthorizationController *)v90 _requestContextWithRequests:v37 error:v14, &v91];
                     }
 
-                    v4 = v76;
+                    requestsCopy = v76;
                     goto LABEL_41;
                   }
 
-                  v21 = v14;
-                  v36 = [(ASAuthorizationController *)self publicKeyAccountRegistrationOptionsForRequest:v21];
+                  nonce = v14;
+                  v36 = [(ASAuthorizationController *)self publicKeyAccountRegistrationOptionsForRequest:nonce];
 
-                  v16 = [(ASAuthorizationController *)self relyingPartyIdentifierForRequest:v21];
+                  relyingPartyIdentifier = [(ASAuthorizationController *)self relyingPartyIdentifierForRequest:nonce];
                   if (!v36)
                   {
                     v64 = MEMORY[0x1E696ABC0];
                     v92 = *MEMORY[0x1E696A578];
                     v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-                    *a4 = [v64 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v65];
+                    *error = [v64 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v65];
 
                     v72 = 0;
                     v44 = 0;
-                    v4 = v76;
-                    v39 = v76;
+                    requestsCopy = v76;
+                    relyingPartyIdentifier2 = v76;
                     v7 = v69;
                     v41 = v73;
                     v9 = v66;
@@ -1206,7 +1206,7 @@ LABEL_84:
 
                   v17 = 512;
                   v72 = v36;
-                  v4 = v76;
+                  requestsCopy = v76;
                 }
 
                 v9 = v66;
@@ -1214,11 +1214,11 @@ LABEL_84:
               }
 
               v22 = v9;
-              v21 = v14;
-              v30 = [v21 coreCredentialCreationOptions];
+              nonce = v14;
+              coreCredentialCreationOptions2 = [nonce coreCredentialCreationOptions];
 
-              v31 = [v30 supportedAlgorithmIdentifiers];
-              v32 = [v31 count];
+              supportedAlgorithmIdentifiers = [coreCredentialCreationOptions2 supportedAlgorithmIdentifiers];
+              v32 = [supportedAlgorithmIdentifiers count];
 
               if (!v32)
               {
@@ -1226,23 +1226,23 @@ LABEL_84:
                 v94 = *MEMORY[0x1E696A578];
                 v95 = @"No algorithms specified for ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest.";
                 v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-                *a4 = [v62 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v63];
+                *error = [v62 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v63];
 
                 v44 = 0;
-                v16 = v21;
+                relyingPartyIdentifier = nonce;
                 v59 = v76;
-                v39 = v76;
-                v75 = v30;
+                relyingPartyIdentifier2 = v76;
+                v75 = coreCredentialCreationOptions2;
                 goto LABEL_84;
               }
 
-              v16 = [v21 relyingPartyIdentifier];
+              relyingPartyIdentifier = [nonce relyingPartyIdentifier];
               v17 = 16;
-              v75 = v30;
+              v75 = coreCredentialCreationOptions2;
             }
           }
 
-          v4 = v76;
+          requestsCopy = v76;
           v9 = v22;
           v11 = v71;
         }
@@ -1253,7 +1253,7 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v16 = 0;
+      relyingPartyIdentifier = 0;
       v17 = 1;
 LABEL_21:
       v33 = dyld_program_sdk_at_least();
@@ -1288,13 +1288,13 @@ LABEL_33:
           v55 = &v99;
 LABEL_71:
           v56 = [v53 dictionaryWithObjects:v54 forKeys:v55 count:1];
-          *a4 = [v52 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v56];
+          *error = [v52 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v56];
 
 LABEL_72:
           v9 = v51;
 LABEL_73:
           v44 = 0;
-          v39 = v4;
+          relyingPartyIdentifier2 = requestsCopy;
           v7 = v69;
           v41 = v73;
           goto LABEL_80;
@@ -1367,27 +1367,27 @@ LABEL_73:
 
 LABEL_35:
       v10 |= v17;
-      if (v16 && v8)
+      if (relyingPartyIdentifier && v8)
       {
-        if (([v16 isEqualToString:v8] & 1) == 0)
+        if (([relyingPartyIdentifier isEqualToString:v8] & 1) == 0)
         {
           v48 = MEMORY[0x1E696ABC0];
           v88 = *MEMORY[0x1E696A578];
           v89 = @"All Public Key Credential requests must use the same relyingPartyIdentifier.";
           [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
           v49 = v51 = v9;
-          *a4 = [v48 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v49];
+          *error = [v48 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v49];
 
           goto LABEL_72;
         }
       }
 
-      else if (!v16)
+      else if (!relyingPartyIdentifier)
       {
         goto LABEL_41;
       }
 
-      v34 = v16;
+      v34 = relyingPartyIdentifier;
 
       v8 = v34;
 LABEL_41:
@@ -1395,7 +1395,7 @@ LABEL_41:
     }
 
     while (v6 != v13);
-    v38 = [v4 countByEnumeratingWithState:&v78 objects:v98 count:16];
+    v38 = [requestsCopy countByEnumeratingWithState:&v78 objects:v98 count:16];
     v6 = v38;
     v7 = v69;
   }
@@ -1403,17 +1403,17 @@ LABEL_41:
   while (v38);
 LABEL_55:
 
-  v39 = [v77 relyingPartyIdentifier];
-  v40 = [v75 relyingPartyIdentifier];
-  v16 = v40;
-  if (v39 && v40 && ([v39 isEqualToString:v40] & 1) == 0)
+  relyingPartyIdentifier2 = [v77 relyingPartyIdentifier];
+  relyingPartyIdentifier3 = [v75 relyingPartyIdentifier];
+  relyingPartyIdentifier = relyingPartyIdentifier3;
+  if (relyingPartyIdentifier2 && relyingPartyIdentifier3 && ([relyingPartyIdentifier2 isEqualToString:relyingPartyIdentifier3] & 1) == 0)
   {
     v50 = MEMORY[0x1E696ABC0];
     v86 = *MEMORY[0x1E696A578];
     v87 = @"All Public Key Credential requests must use the same relyingPartyIdentifier.";
     v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
     [v50 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v43];
-    *a4 = v44 = 0;
+    *error = v44 = 0;
     v41 = v73;
     goto LABEL_79;
   }
@@ -1430,8 +1430,8 @@ LABEL_55:
     [v43 setSecurityKeyCredentialCreationOptions:v75];
     [v43 setSecurityKeyCredentialAssertionOptions:v7];
     [v43 setPlatformAccountRegistrationOptions:v72];
-    v45 = [(ASAuthorizationController *)self testOptionsIfNeeded];
-    [v43 setTestOptions:v45];
+    testOptionsIfNeeded = [(ASAuthorizationController *)self testOptionsIfNeeded];
+    [v43 setTestOptions:testOptionsIfNeeded];
 
     [v43 setAuthenticatedContext:v74];
     [v43 setProxiedAppName:self->_proxiedAppName];
@@ -1457,7 +1457,7 @@ LABEL_66:
         v82 = *MEMORY[0x1E696A578];
         v83 = @"Proxy sheet overrides are only available for security key requests.";
         v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
-        *a4 = [v46 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v47];
+        *error = [v46 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v47];
 
         v41 = v73;
         v44 = 0;
@@ -1472,7 +1472,7 @@ LABEL_78:
       goto LABEL_66;
     }
 
-    *a4 = 0;
+    *error = 0;
     v43 = v43;
     v44 = v43;
     goto LABEL_78;
@@ -1483,7 +1483,7 @@ LABEL_78:
   v85 = @"All Public Key Credential requests must specify a relyingPartyIdentifier.";
   v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
   [v42 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1004 userInfo:v43];
-  *a4 = v44 = 0;
+  *error = v44 = 0;
 LABEL_79:
 
 LABEL_80:
@@ -1492,58 +1492,58 @@ LABEL_80:
   return v44;
 }
 
-- (id)_convertCoreErrorToPublicError:(id)a3
+- (id)_convertCoreErrorToPublicError:(id)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 code];
+  errorCopy = error;
+  code = [errorCopy code];
   v5 = 0;
-  if (v4 <= 11)
+  if (code <= 11)
   {
-    if (!v4)
+    if (!code)
     {
       v12 = MEMORY[0x1E696ABC0];
-      v7 = [v3 userInfo];
+      userInfo = [errorCopy userInfo];
       v8 = v12;
       v9 = 1000;
       goto LABEL_17;
     }
 
-    if (v4 != 1)
+    if (code != 1)
     {
-      if (v4 != 2)
+      if (code != 2)
       {
         goto LABEL_18;
       }
 
 LABEL_9:
       v10 = MEMORY[0x1E696ABC0];
-      v7 = [v3 userInfo];
+      userInfo = [errorCopy userInfo];
       v8 = v10;
       v9 = 1001;
       goto LABEL_17;
     }
 
     v13 = MEMORY[0x1E696ABC0];
-    v14 = [v3 userInfo];
+    userInfo2 = [errorCopy userInfo];
 LABEL_16:
-    v7 = v14;
+    userInfo = userInfo2;
     v8 = v13;
     v9 = 1004;
     goto LABEL_17;
   }
 
-  if (v4 <= 16)
+  if (code <= 16)
   {
-    if (v4 != 12)
+    if (code != 12)
     {
-      if (v4 != 14)
+      if (code != 14)
       {
         goto LABEL_18;
       }
 
       v6 = MEMORY[0x1E696ABC0];
-      v7 = [v3 userInfo];
+      userInfo = [errorCopy userInfo];
       v8 = v6;
       v9 = 1002;
       goto LABEL_17;
@@ -1552,26 +1552,26 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  if (v4 == 17)
+  if (code == 17)
   {
     v13 = MEMORY[0x1E696ABC0];
     v17 = *MEMORY[0x1E696AA08];
-    v18[0] = v3;
-    v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
+    v18[0] = errorCopy;
+    userInfo2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     goto LABEL_16;
   }
 
-  if (v4 != 22)
+  if (code != 22)
   {
     goto LABEL_18;
   }
 
   v11 = MEMORY[0x1E696ABC0];
-  v7 = [v3 userInfo];
+  userInfo = [errorCopy userInfo];
   v8 = v11;
   v9 = 1010;
 LABEL_17:
-  v5 = [v8 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:v9 userInfo:v7];
+  v5 = [v8 errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:v9 userInfo:userInfo];
 
 LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
@@ -1579,18 +1579,18 @@ LABEL_18:
   return v5;
 }
 
-- (id)_convertCredentialProviderErrorToPublicError:(id)a3
+- (id)_convertCredentialProviderErrorToPublicError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 code];
-  if (v5 == 102)
+  errorCopy = error;
+  code = [errorCopy code];
+  if (code == 102)
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = 1006;
     goto LABEL_5;
   }
 
-  if (v5 == 100)
+  if (code == 100)
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = 1001;
@@ -1604,7 +1604,7 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = __74__ASAuthorizationController__convertCredentialProviderErrorToPublicError___block_invoke;
   block[3] = &unk_1E7AF7608;
-  v12 = v4;
+  v12 = errorCopy;
   os_activity_apply(authorizationActivity, block);
 
   v8 = 0;
@@ -1622,19 +1622,19 @@ void __74__ASAuthorizationController__convertCredentialProviderErrorToPublicErro
   }
 }
 
-- (id)_convertWebKitErrorToPublicError:(id)a3
+- (id)_convertWebKitErrorToPublicError:(id)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 code];
-  if (v5 == 31)
+  errorCopy = error;
+  code = [errorCopy code];
+  if (code == 31)
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = 1001;
     goto LABEL_5;
   }
 
-  if (v5 == 8)
+  if (code == 8)
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = 1006;
@@ -1648,7 +1648,7 @@ LABEL_5:
   v16 = 3221225472;
   v17 = __62__ASAuthorizationController__convertWebKitErrorToPublicError___block_invoke;
   v18 = &unk_1E7AF7608;
-  v10 = v4;
+  v10 = errorCopy;
   v19 = v10;
   os_activity_apply(authorizationActivity, &v15);
   v11 = MEMORY[0x1E696ABC0];
@@ -1672,9 +1672,9 @@ void __62__ASAuthorizationController__convertWebKitErrorToPublicError___block_in
   }
 }
 
-- (void)_completeWithAuthorization:(id)a3
+- (void)_completeWithAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__ASAuthorizationController__completeWithAuthorization___block_invoke;
@@ -1684,7 +1684,7 @@ void __62__ASAuthorizationController__convertWebKitErrorToPublicError___block_in
   appSSOAuthorization = self->_appSSOAuthorization;
   if (appSSOAuthorization && ([appSSOAuthorization isUserInteractionEnabled]& 1) == 0)
   {
-    v5[2](v5, v4);
+    v5[2](v5, authorizationCopy);
   }
 
   else
@@ -1694,7 +1694,7 @@ void __62__ASAuthorizationController__convertWebKitErrorToPublicError___block_in
     block[2] = __56__ASAuthorizationController__completeWithAuthorization___block_invoke_126;
     block[3] = &unk_1E7AF8050;
     v9 = v5;
-    v8 = v4;
+    v8 = authorizationCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -1737,9 +1737,9 @@ void __56__ASAuthorizationController__completeWithAuthorization___block_invoke_2
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__ASAuthorizationController__failWithError___block_invoke;
@@ -1749,7 +1749,7 @@ void __56__ASAuthorizationController__completeWithAuthorization___block_invoke_2
   appSSOAuthorization = self->_appSSOAuthorization;
   if (appSSOAuthorization && ([appSSOAuthorization isUserInteractionEnabled]& 1) == 0)
   {
-    v5[2](v5, v4);
+    v5[2](v5, errorCopy);
   }
 
   else
@@ -1759,7 +1759,7 @@ void __56__ASAuthorizationController__completeWithAuthorization___block_invoke_2
     block[2] = __44__ASAuthorizationController__failWithError___block_invoke_133;
     block[3] = &unk_1E7AF8050;
     v9 = v5;
-    v8 = v4;
+    v8 = errorCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -1839,10 +1839,10 @@ LABEL_9:
 - (BOOL)_shouldConvertExtensionAndWebKitErrors
 {
   v2 = objc_alloc(MEMORY[0x1E69635F8]);
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v15 = 0;
-  v5 = [v2 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v15];
+  v5 = [v2 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v15];
   v6 = v15;
 
   if (v6)
@@ -1865,13 +1865,13 @@ LABEL_8:
   }
 
   v9 = qword_1B1D84C70[v8];
-  v10 = [v5 SDKVersion];
-  v11 = [v10 componentsSeparatedByString:@"."];
-  v12 = [v11 firstObject];
+  sDKVersion = [v5 SDKVersion];
+  v11 = [sDKVersion componentsSeparatedByString:@"."];
+  firstObject = [v11 firstObject];
 
-  if ([v12 length])
+  if ([firstObject length])
   {
-    v13 = [v12 integerValue] >= v9;
+    v13 = [firstObject integerValue] >= v9;
   }
 
   else
@@ -1904,9 +1904,9 @@ LABEL_9:
   return v2;
 }
 
-- (id)publicKeyAccountRegistrationOptionsForRequest:(id)a3
+- (id)publicKeyAccountRegistrationOptionsForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = sub_1B1CE4C40();
   v5 = sub_1B1D7B8EC();
 
@@ -1919,10 +1919,10 @@ LABEL_9:
   return v4;
 }
 
-- (id)relyingPartyIdentifierForRequest:(id)a3
+- (id)relyingPartyIdentifierForRequest:(id)request
 {
-  v3 = *(a3 + OBJC_IVAR____TtC22AuthenticationServices64ASAuthorizationAccountCreationPlatformPublicKeyCredentialRequest_relyingPartyIdentifier);
-  v4 = *(a3 + OBJC_IVAR____TtC22AuthenticationServices64ASAuthorizationAccountCreationPlatformPublicKeyCredentialRequest_relyingPartyIdentifier + 8);
+  v3 = *(request + OBJC_IVAR____TtC22AuthenticationServices64ASAuthorizationAccountCreationPlatformPublicKeyCredentialRequest_relyingPartyIdentifier);
+  v4 = *(request + OBJC_IVAR____TtC22AuthenticationServices64ASAuthorizationAccountCreationPlatformPublicKeyCredentialRequest_relyingPartyIdentifier + 8);
 
   v5 = sub_1B1D7BE1C();
 
@@ -1982,8 +1982,8 @@ void __44__ASAuthorizationController__failWithError___block_invoke_2_cold_1(void
 - (void)_shouldConvertExtensionAndWebKitErrors
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_1_1() safari_privacyPreservingError];
+  selfCopy = self;
+  safari_privacyPreservingError = [OUTLINED_FUNCTION_1_1() safari_privacyPreservingError];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0(&dword_1B1C8D000, v4, v5, "Failed to get application extension record: %{public}@", v6, v7, v8, v9, v11);
 

@@ -1,36 +1,36 @@
 @interface _SBWindowReference
-+ (id)referenceForObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_SBWindowReference)initWithObject:(id)a3;
++ (id)referenceForObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (_SBWindowReference)initWithObject:(id)object;
 @end
 
 @implementation _SBWindowReference
 
-+ (id)referenceForObject:(id)a3
++ (id)referenceForObject:(id)object
 {
-  v3 = a3;
-  v4 = [[_SBWindowReference alloc] initWithObject:v3];
+  objectCopy = object;
+  v4 = [[_SBWindowReference alloc] initWithObject:objectCopy];
 
   return v4;
 }
 
-- (_SBWindowReference)initWithObject:(id)a3
+- (_SBWindowReference)initWithObject:(id)object
 {
   v5.receiver = self;
   v5.super_class = _SBWindowReference;
   result = [(_SBWindowReference *)&v5 init];
   if (result)
   {
-    result->_object = a3;
+    result->_object = object;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -38,7 +38,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_object == v4->_object;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_object == equalCopy->_object;
   }
 
   return v5;

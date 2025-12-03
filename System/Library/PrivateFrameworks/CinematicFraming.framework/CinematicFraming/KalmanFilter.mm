@@ -1,23 +1,23 @@
 @interface KalmanFilter
 - (CGRect)estimatedBounds;
 - (KalmanFilter)init;
-- (void)addObservation:(id)a3;
+- (void)addObservation:(id)observation;
 @end
 
 @implementation KalmanFilter
 
-- (void)addObservation:(id)a3
+- (void)addObservation:(id)observation
 {
-  v4 = a3;
-  v17 = v4;
+  observationCopy = observation;
+  v17 = observationCopy;
   if (self->_isFirstObservation)
   {
-    self->_observationIdentifier = [v4 oid];
-    v4 = v17;
+    self->_observationIdentifier = [observationCopy oid];
+    observationCopy = v17;
     self->_isFirstObservation = 0;
   }
 
-  [v4 oid];
+  [observationCopy oid];
   [v17 bounds];
   v6 = v5;
   [v17 bounds];

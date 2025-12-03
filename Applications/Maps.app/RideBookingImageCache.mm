@@ -1,22 +1,22 @@
 @interface RideBookingImageCache
 + (id)sharedCache;
-- (id)imageForKey:(id)a3;
-- (void)cacheINImageData:(id)a3 withKey:(id)a4;
+- (id)imageForKey:(id)key;
+- (void)cacheINImageData:(id)data withKey:(id)key;
 @end
 
 @implementation RideBookingImageCache
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    imageCache = v5->_imageCache;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    imageCache = selfCopy->_imageCache;
     if (imageCache)
     {
-      v7 = [(NSMutableDictionary *)imageCache objectForKey:v4];
+      v7 = [(NSMutableDictionary *)imageCache objectForKey:keyCopy];
       v8 = v7;
       if (v7)
       {
@@ -44,7 +44,7 @@
       v8 = 0;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -55,25 +55,25 @@
   return v8;
 }
 
-- (void)cacheINImageData:(id)a3 withKey:(id)a4
+- (void)cacheINImageData:(id)data withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  keyCopy = key;
+  if (dataCopy)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    imageCache = v8->_imageCache;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    imageCache = selfCopy->_imageCache;
     if (!imageCache)
     {
       v10 = objc_opt_new();
-      v11 = v8->_imageCache;
-      v8->_imageCache = v10;
+      v11 = selfCopy->_imageCache;
+      selfCopy->_imageCache = v10;
 
-      imageCache = v8->_imageCache;
+      imageCache = selfCopy->_imageCache;
     }
 
-    v12 = [(NSMutableDictionary *)imageCache objectForKeyedSubscript:v7];
+    v12 = [(NSMutableDictionary *)imageCache objectForKeyedSubscript:keyCopy];
 
     if (!v12)
     {
@@ -82,7 +82,7 @@
         dispatch_once(&qword_10195CC00, &stru_1016234B8);
       }
 
-      v13 = [UIImage imageWithData:v6 scale:*&qword_10195CBF8];
+      v13 = [UIImage imageWithData:dataCopy scale:*&qword_10195CBF8];
       if (v13)
       {
         v14 = GEOFindOrCreateLog();
@@ -92,19 +92,19 @@
           v16 = [NSString alloc];
           [v13 size];
           v17 = NSStringFromCGSize(v23);
-          v18 = [v16 initWithFormat:@"Caching image for key %@. Size: %@, Scale: %g", v7, v17, qword_10195CBF8];
+          qword_10195CBF8 = [v16 initWithFormat:@"Caching image for key %@. Size: %@, Scale: %g", keyCopy, v17, qword_10195CBF8];
           *buf = 136315394;
           v20 = v15;
           v21 = 2112;
-          v22 = v18;
+          v22 = qword_10195CBF8;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
         }
 
-        [(NSMutableDictionary *)v8->_imageCache setObject:v13 forKeyedSubscript:v7];
+        [(NSMutableDictionary *)selfCopy->_imageCache setObject:v13 forKeyedSubscript:keyCopy];
       }
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 }
 

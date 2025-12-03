@@ -2,113 +2,113 @@
 - (NSMutableDictionary)XPCForegroundRequestByPersonID;
 - (NSMutableDictionary)foregroundPingTimerByPersonID;
 - (id)workQueue;
-- (void)XPCNSServiceConnection:(id)a3 didReceiveRequest:(id)a4 sequenceNumber:(unint64_t)a5;
-- (void)XPCNSServiceConnectionDidDisconnect:(id)a3;
-- (void)_foregroundPingTimerDidExpire:(id)a3;
-- (void)_handleFocusAlbum:(id)a3;
-- (void)_handleForegroundPing:(id)a3 request:(id)a4;
+- (void)XPCNSServiceConnection:(id)connection didReceiveRequest:(id)request sequenceNumber:(unint64_t)number;
+- (void)XPCNSServiceConnectionDidDisconnect:(id)disconnect;
+- (void)_foregroundPingTimerDidExpire:(id)expire;
+- (void)_handleFocusAlbum:(id)album;
+- (void)_handleForegroundPing:(id)ping request:(id)request;
 @end
 
 @implementation MSMSASServiceConnection
 
-- (void)XPCNSServiceConnectionDidDisconnect:(id)a3
+- (void)XPCNSServiceConnectionDidDisconnect:(id)disconnect
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000073CC;
   v4[3] = &unk_100018B00;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  disconnectCopy = disconnect;
+  v3 = disconnectCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)XPCNSServiceConnection:(id)a3 didReceiveRequest:(id)a4 sequenceNumber:(unint64_t)a5
+- (void)XPCNSServiceConnection:(id)connection didReceiveRequest:(id)request sequenceNumber:(unint64_t)number
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 message];
-  [v9 objectForKey:kMSASFunctionNameKey];
+  connectionCopy = connection;
+  requestCopy = request;
+  message = [requestCopy message];
+  [message objectForKey:kMSASFunctionNameKey];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000759C;
   block[3] = &unk_100018BA0;
   v15 = block[4] = self;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v16 = connectionCopy;
+  v17 = requestCopy;
+  v18 = message;
+  v10 = message;
+  v11 = requestCopy;
+  v12 = connectionCopy;
   v13 = v15;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handleFocusAlbum:(id)a3
+- (void)_handleFocusAlbum:(id)album
 {
-  v3 = a3;
+  albumCopy = album;
   v4 = MSASPlatform();
-  v7 = [v4 albumSharingDaemon];
+  albumSharingDaemon = [v4 albumSharingDaemon];
 
-  v5 = [v3 objectForKey:kMSASAlbumGUIDKey];
-  v6 = [v3 objectForKey:kMSASPersonIDKey];
+  v5 = [albumCopy objectForKey:kMSASAlbumGUIDKey];
+  v6 = [albumCopy objectForKey:kMSASPersonIDKey];
 
-  [v7 setFocusAlbumGUID:v5 forPersonID:v6];
+  [albumSharingDaemon setFocusAlbumGUID:v5 forPersonID:v6];
 }
 
-- (void)_foregroundPingTimerDidExpire:(id)a3
+- (void)_foregroundPingTimerDidExpire:(id)expire
 {
-  v4 = a3;
+  expireCopy = expire;
   v5 = MSASPlatform();
-  v6 = [v5 albumSharingDaemon];
+  albumSharingDaemon = [v5 albumSharingDaemon];
 
-  v7 = [v4 userInfo];
+  userInfo = [expireCopy userInfo];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v7;
+    v15 = userInfo;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@: Dropping foreground assertion for personID “%@”", &v12, 0x16u);
   }
 
-  [v6 didEndForegroundFocusForPersonID:v7];
-  v8 = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
-  v9 = [v8 objectForKey:v7];
+  [albumSharingDaemon didEndForegroundFocusForPersonID:userInfo];
+  xPCForegroundRequestByPersonID = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
+  v9 = [xPCForegroundRequestByPersonID objectForKey:userInfo];
 
   if (v9)
   {
     [v9 sendReply:0];
-    v10 = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
-    [v10 removeObjectForKey:v7];
+    xPCForegroundRequestByPersonID2 = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
+    [xPCForegroundRequestByPersonID2 removeObjectForKey:userInfo];
   }
 
-  v11 = [(MSMSASServiceConnection *)self foregroundPingTimerByPersonID];
-  [v11 removeObjectForKey:v7];
+  foregroundPingTimerByPersonID = [(MSMSASServiceConnection *)self foregroundPingTimerByPersonID];
+  [foregroundPingTimerByPersonID removeObjectForKey:userInfo];
 
-  [v4 invalidate];
+  [expireCopy invalidate];
 }
 
-- (void)_handleForegroundPing:(id)a3 request:(id)a4
+- (void)_handleForegroundPing:(id)ping request:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:kMSASPersonIDKey];
+  pingCopy = ping;
+  requestCopy = request;
+  v8 = [pingCopy objectForKey:kMSASPersonIDKey];
   if (v8)
   {
-    v9 = [v6 objectForKey:kMSASIsUIForegroundKey];
-    v10 = [v9 BOOLValue];
+    v9 = [pingCopy objectForKey:kMSASIsUIForegroundKey];
+    bOOLValue = [v9 BOOLValue];
 
     v11 = MSASPlatform();
-    v12 = [v11 albumSharingDaemon];
+    albumSharingDaemon = [v11 albumSharingDaemon];
 
-    v13 = [v12 delegate];
-    [v13 MSAlbumSharingDaemonDidUnidleMomentarily:v12];
+    delegate = [albumSharingDaemon delegate];
+    [delegate MSAlbumSharingDaemonDidUnidleMomentarily:albumSharingDaemon];
 
-    if (v10)
+    if (bOOLValue)
     {
-      v14 = [(MSMSASServiceConnection *)self foregroundPingTimerByPersonID];
-      v15 = [v14 objectForKey:v8];
+      foregroundPingTimerByPersonID = [(MSMSASServiceConnection *)self foregroundPingTimerByPersonID];
+      v15 = [foregroundPingTimerByPersonID objectForKey:v8];
 
       if (v15)
       {
@@ -119,10 +119,10 @@
       else
       {
         v15 = [NSTimer timerWithTimeInterval:self target:"_foregroundPingTimerDidExpire:" selector:v8 userInfo:0 repeats:8.0];
-        v17 = [(MSMSASServiceConnection *)self foregroundPingTimerByPersonID];
-        [v17 setObject:v15 forKey:v8];
+        foregroundPingTimerByPersonID2 = [(MSMSASServiceConnection *)self foregroundPingTimerByPersonID];
+        [foregroundPingTimerByPersonID2 setObject:v15 forKey:v8];
 
-        [v12 didBeginForegroundFocusForPersonID:v8];
+        [albumSharingDaemon didBeginForegroundFocusForPersonID:v8];
         v16 = +[NSRunLoop currentRunLoop];
         [v16 addTimer:v15 forMode:NSRunLoopCommonModes];
       }
@@ -130,24 +130,24 @@
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
         v21 = 138543618;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
         v24 = v8;
         _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%{public}@: Holding foreground assertion for personID “%@”", &v21, 0x16u);
       }
 
-      v18 = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
-      v19 = [v18 objectForKey:v8];
+      xPCForegroundRequestByPersonID = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
+      v19 = [xPCForegroundRequestByPersonID objectForKey:v8];
 
       if (v19)
       {
         [v19 sendReply:0];
       }
 
-      v20 = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
-      [v20 setObject:v7 forKey:v8];
+      xPCForegroundRequestByPersonID2 = [(MSMSASServiceConnection *)self XPCForegroundRequestByPersonID];
+      [xPCForegroundRequestByPersonID2 setObject:requestCopy forKey:v8];
 
-      [v12 retryOutstandingActivities];
+      [albumSharingDaemon retryOutstandingActivities];
     }
   }
 }

@@ -1,5 +1,5 @@
 @interface NTKAkitaFaceView
-- (NTKAkitaFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKAkitaFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (id)dateProvider;
 - (void)_applyFrozen;
 - (void)_loadActiveViews;
@@ -8,16 +8,16 @@
 - (void)_pauseContentViewIfNecessary;
 - (void)_unloadActiveViews;
 - (void)dealloc;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKAkitaFaceView
 
-- (NTKAkitaFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKAkitaFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NTKAkitaFaceView;
-  return [(NTKAkitaFaceView *)&v6 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  return [(NTKAkitaFaceView *)&v6 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
 }
 
 - (void)dealloc
@@ -40,8 +40,8 @@
   v4.receiver = self;
   v4.super_class = NTKAkitaFaceView;
   [(NTKAkitaFaceView *)&v4 _applyFrozen];
-  v3 = [(NTKAkitaFaceView *)self isFrozen];
-  if (v3)
+  isFrozen = [(NTKAkitaFaceView *)self isFrozen];
+  if (isFrozen)
   {
     [(NTKAkitaFaceView *)self _stopTimer];
   }
@@ -51,28 +51,28 @@
     [(NTKAkitaFaceView *)self _startTimer];
   }
 
-  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:v3 ^ 1];
+  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:isFrozen ^ 1];
   [(NTKAkitaFaceView *)self _pauseContentViewIfNecessary];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
-  if (self->_overrideDate != v6)
+  dateCopy = date;
+  if (self->_overrideDate != dateCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_overrideDate, a3);
+    v7 = dateCopy;
+    objc_storeStrong(&self->_overrideDate, date);
     [(NTKAkitaContentView *)self->_contentActiveView updateDate];
-    v6 = v7;
+    dateCopy = v7;
   }
 }
 
 - (void)_pauseContentViewIfNecessary
 {
-  v3 = [(NTKAkitaFaceView *)self isFrozen];
+  isFrozen = [(NTKAkitaFaceView *)self isFrozen];
   contentActiveView = self->_contentActiveView;
 
-  [(NTKAkitaContentView *)contentActiveView setPaused:v3];
+  [(NTKAkitaContentView *)contentActiveView setPaused:isFrozen];
 }
 
 - (id)dateProvider
@@ -94,8 +94,8 @@
 
 - (void)_loadMorphConfig
 {
-  v3 = [(NTKAkitaFaceView *)self delegate];
-  v6 = [v3 faceViewDidRequestCustomDataForKey:NTKAkitaFaceKeyMorphConfig];
+  delegate = [(NTKAkitaFaceView *)self delegate];
+  v6 = [delegate faceViewDidRequestCustomDataForKey:NTKAkitaFaceKeyMorphConfig];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -118,22 +118,22 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v19 = [(NTKAkitaFaceView *)self device];
-  v11 = [(NTKAkitaFaceView *)self contentView];
+  device = [(NTKAkitaFaceView *)self device];
+  contentView = [(NTKAkitaFaceView *)self contentView];
   v12 = [NTKAkitaContentView alloc];
   morph = self->_morph;
-  v14 = [(NTKAkitaFaceView *)self dateProvider];
-  v15 = [(NTKAkitaContentView *)v12 initWithFrame:0 role:morph morph:v14 dateProvider:self->_is24HourMode is24HourMode:v19 device:v4, v6, v8, v10];
+  dateProvider = [(NTKAkitaFaceView *)self dateProvider];
+  v15 = [(NTKAkitaContentView *)v12 initWithFrame:0 role:morph morph:dateProvider dateProvider:self->_is24HourMode is24HourMode:device device:v4, v6, v8, v10];
   contentActiveView = self->_contentActiveView;
   self->_contentActiveView = v15;
 
-  [v11 addSubview:self->_contentActiveView];
-  [v11 bringSubviewToFront:self->_contentActiveView];
-  v17 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:v19 forDeviceCornerRadius:{v4, v6, v8, v10}];
+  [contentView addSubview:self->_contentActiveView];
+  [contentView bringSubviewToFront:self->_contentActiveView];
+  v17 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:device forDeviceCornerRadius:{v4, v6, v8, v10}];
   cornerView = self->_cornerView;
   self->_cornerView = v17;
 
-  [v11 insertSubview:self->_cornerView aboveSubview:self->_contentActiveView];
+  [contentView insertSubview:self->_cornerView aboveSubview:self->_contentActiveView];
 }
 
 - (void)_unloadActiveViews

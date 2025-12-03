@@ -1,8 +1,8 @@
 @interface MKUserLocation
 + (id)title;
-+ (void)_setAnnotationClass:(Class)a3;
++ (void)_setAnnotationClass:(Class)class;
 - (BOOL)hasValidHeading;
-- (BOOL)isEqualToLocation:(id)a3;
+- (BOOL)isEqualToLocation:(id)location;
 - (CLLocation)location;
 - (CLLocationCoordinate2D)coordinate;
 - (MKUserLocation)init;
@@ -13,8 +13,8 @@
 - (void)_updateCoordinate;
 - (void)dealloc;
 - (void)reset;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setLocation:(id)a3;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setLocation:(id)location;
 - (void)setSubtitle:(NSString *)subtitle;
 @end
 
@@ -51,29 +51,29 @@
   fixedLocation = self->_internal->fixedLocation;
   if (fixedLocation)
   {
-    v3 = fixedLocation;
+    location = fixedLocation;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v3 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+    location = [(MKAnnotationPrivate *)self->_internal->_annotation location];
   }
 
   else
   {
-    v3 = 0;
+    location = 0;
   }
 
-  return v3;
+  return location;
 }
 
 - (void)_updateCoordinate
 {
-  v3 = [(MKUserLocation *)self location];
-  v5 = v3;
-  if (v3)
+  location = [(MKUserLocation *)self location];
+  v5 = location;
+  if (location)
   {
-    [v3 coordinate];
+    [location coordinate];
   }
 
   else
@@ -99,8 +99,8 @@
     return -1.0;
   }
 
-  v3 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-  [v3 horizontalAccuracy];
+  location = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+  [location horizontalAccuracy];
   v5 = v4;
 
   return v5;
@@ -137,12 +137,12 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+    location = [(MKAnnotationPrivate *)self->_internal->_annotation location];
 
-    if (v6)
+    if (location)
     {
-      v7 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-      [v7 coordinate];
+      location2 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+      [location2 coordinate];
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+.8f, %+.8f", v8, v9];
       [v5 appendFormat:@" %@", v10];
     }
@@ -172,17 +172,17 @@
   heading = internal->heading;
   if (heading)
   {
-    v21 = [(CLHeading *)heading compactDescription];
-    [v5 appendFormat:@" heading:%@", v21];
+    compactDescription = [(CLHeading *)heading compactDescription];
+    [v5 appendFormat:@" heading:%@", compactDescription];
   }
 
   return v5;
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   if (objc_opt_respondsToSelector())
   {
     annotation = self->_internal->_annotation;
@@ -191,19 +191,19 @@
   }
 }
 
-- (BOOL)isEqualToLocation:(id)a3
+- (BOOL)isEqualToLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-    [v4 coordinate];
-    if ([v5 _navigation_isEqualToLocationCoordinate:?])
+    location = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+    [locationCopy coordinate];
+    if ([location _navigation_isEqualToLocationCoordinate:?])
     {
-      v6 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-      [v6 horizontalAccuracy];
+      location2 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+      [location2 horizontalAccuracy];
       v8 = v7;
-      [v4 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       if (vabdd_f64(v8, v9) >= 0.001)
       {
         v14 = 0;
@@ -211,26 +211,26 @@
 
       else
       {
-        v10 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-        v11 = [v10 type];
-        if (v11 == [v4 type])
+        location3 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+        type = [location3 type];
+        if (type == [locationCopy type])
         {
-          v12 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-          v13 = [v12 _navigation_isStale];
-          if (v13 == [v4 _navigation_isStale])
+          location4 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+          _navigation_isStale = [location4 _navigation_isStale];
+          if (_navigation_isStale == [locationCopy _navigation_isStale])
           {
-            v15 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-            v16 = [v15 _navigation_hasValidCourse];
-            if (v16 == [v4 _navigation_hasValidCourse])
+            location5 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+            _navigation_hasValidCourse = [location5 _navigation_hasValidCourse];
+            if (_navigation_hasValidCourse == [locationCopy _navigation_hasValidCourse])
             {
-              v17 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+              location6 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
               v18 = objc_opt_class();
               if (v18 == objc_opt_class())
               {
-                v19 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
-                v20 = [v19 _navigation_routeMatch];
-                v21 = [v4 _navigation_routeMatch];
-                v14 = v20 == v21;
+                location7 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+                _navigation_routeMatch = [location7 _navigation_routeMatch];
+                _navigation_routeMatch2 = [locationCopy _navigation_routeMatch];
+                v14 = _navigation_routeMatch == _navigation_routeMatch2;
               }
 
               else
@@ -272,18 +272,18 @@
   return v14;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v6 = a3;
+  locationCopy = location;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v4 = [(MKAnnotationPrivate *)self->_internal->_annotation location];
+    location = [(MKAnnotationPrivate *)self->_internal->_annotation location];
 
-    if (v4 != v6)
+    if (location != locationCopy)
     {
-      [(MKAnnotationPrivate *)self->_internal->_annotation setLocation:v6];
+      [(MKAnnotationPrivate *)self->_internal->_annotation setLocation:locationCopy];
       [(MKUserLocation *)self _updateCoordinate];
-      [v6 course];
+      [locationCopy course];
       self->_internal->course = v5;
     }
   }
@@ -292,51 +292,51 @@
 - (void)setSubtitle:(NSString *)subtitle
 {
   v9 = subtitle;
-  v4 = [(MKUserLocation *)self annotation];
+  annotation = [(MKUserLocation *)self annotation];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MKUserLocation *)self annotation];
-    [v6 setSubtitle:v9];
+    annotation2 = [(MKUserLocation *)self annotation];
+    [annotation2 setSubtitle:v9];
   }
 
   else
   {
     v7 = [(NSString *)v9 copy];
     internal = self->_internal;
-    v6 = internal->subtitle;
+    annotation2 = internal->subtitle;
     internal->subtitle = v7;
   }
 }
 
 - (NSString)subtitle
 {
-  v3 = [(MKUserLocation *)self annotation];
+  annotation = [(MKUserLocation *)self annotation];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MKUserLocation *)self annotation];
-    v6 = [v5 subtitle];
+    annotation2 = [(MKUserLocation *)self annotation];
+    subtitle = [annotation2 subtitle];
   }
 
   else
   {
-    v6 = self->_internal->subtitle;
+    subtitle = self->_internal->subtitle;
   }
 
-  return v6;
+  return subtitle;
 }
 
 - (NSString)title
 {
-  v3 = [(MKUserLocationInternal *)self->_internal title];
+  title = [(MKUserLocationInternal *)self->_internal title];
 
-  if (!v3)
+  if (!title)
   {
-    v4 = [objc_opt_class() title];
-    [(MKUserLocationInternal *)self->_internal setTitle:v4];
+    title2 = [objc_opt_class() title];
+    [(MKUserLocationInternal *)self->_internal setTitle:title2];
   }
 
   internal = self->_internal;
@@ -359,13 +359,13 @@
   [(MKUserLocation *)&v5 dealloc];
 }
 
-+ (void)_setAnnotationClass:(Class)a3
++ (void)_setAnnotationClass:(Class)class
 {
-  if (sAnnotationClass != a3)
+  if (sAnnotationClass != class)
   {
-    if ([(objc_class *)a3 conformsToProtocol:&unk_1F16678E0])
+    if ([(objc_class *)class conformsToProtocol:&unk_1F16678E0])
     {
-      sAnnotationClass = a3;
+      sAnnotationClass = class;
     }
   }
 }

@@ -2,9 +2,9 @@
 + (id)getSharedInstance;
 - (FederatedMobility)init;
 - (void)dealloc;
-- (void)initializeWithConfig:(id)a3;
+- (void)initializeWithConfig:(id)config;
 - (void)significantLocationsDidClear;
-- (void)updateServicePredictionConfiguration:(id)a3;
+- (void)updateServicePredictionConfiguration:(id)configuration;
 @end
 
 @implementation FederatedMobility
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000EBC34;
   block[3] = &unk_1002AB480;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D85B8 != -1)
   {
     dispatch_once(&qword_1002D85B8, block);
@@ -45,22 +45,22 @@
   return v2;
 }
 
-- (void)initializeWithConfig:(id)a3
+- (void)initializeWithConfig:(id)config
 {
-  v4 = a3;
-  if (capabilities::abs::supportsBasebandInsights(v4))
+  configCopy = config;
+  if (capabilities::abs::supportsBasebandInsights(configCopy))
   {
-    v5 = [(FederatedMobility *)self queue];
+    queue = [(FederatedMobility *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000EBE54;
     block[3] = &unk_1002AD7E0;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v5, block);
+    v8 = configCopy;
+    dispatch_async(queue, block);
   }
 
-  [(FederatedMobility *)self updateServicePredictionConfiguration:v4];
+  [(FederatedMobility *)self updateServicePredictionConfiguration:configCopy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000EC560;
@@ -78,8 +78,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "FederatedMobility:#I Received notification from CoreRoutine that significant locations have been deleted, resetting database", v5, 2u);
   }
 
-  v4 = [(FederatedMobility *)self fmCoreData];
-  [v4 clearDatabase];
+  fmCoreData = [(FederatedMobility *)self fmCoreData];
+  [fmCoreData clearDatabase];
 }
 
 - (void)dealloc
@@ -99,7 +99,7 @@
   [(FederatedMobility *)&v3 dealloc];
 }
 
-- (void)updateServicePredictionConfiguration:(id)a3
+- (void)updateServicePredictionConfiguration:(id)configuration
 {
   v3 = sub_100164A3C(&qword_1002D7180, &qword_10024ABF0);
   v4 = *(*(v3 - 8) + 64);

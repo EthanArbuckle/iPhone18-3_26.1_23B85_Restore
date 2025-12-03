@@ -9,18 +9,18 @@
   v70[2] = *MEMORY[0x1E69E9840];
   v3 = nw_resolver_config_create();
   nw_resolver_config_set_class();
-  v4 = [(NEDNSSettingsNetworkAgent *)self settings];
-  v5 = [v4 dnsProtocol];
+  settings = [(NEDNSSettingsNetworkAgent *)self settings];
+  dnsProtocol = [settings dnsProtocol];
 
-  if (v5 != 1)
+  if (dnsProtocol != 1)
   {
-    if (v5 == 3)
+    if (dnsProtocol == 3)
     {
-      v6 = [(NEDNSSettingsNetworkAgent *)self settings];
-      [v6 proxyAgentUUID];
+      settings2 = [(NEDNSSettingsNetworkAgent *)self settings];
+      [settings2 proxyAgentUUID];
     }
 
-    else if (v5 != 2)
+    else if (dnsProtocol != 2)
     {
       v52 = 0;
       goto LABEL_42;
@@ -30,22 +30,22 @@
   nw_resolver_config_set_protocol();
   v70[0] = 0;
   v70[1] = 0;
-  v7 = [(NENetworkAgent *)self configurationUUID];
-  [v7 getUUIDBytes:v70];
+  configurationUUID = [(NENetworkAgent *)self configurationUUID];
+  [configurationUUID getUUIDBytes:v70];
 
   nw_resolver_config_set_identifier();
-  v8 = [(NEDNSSettingsNetworkAgent *)self settings];
-  [v8 allowFailover];
+  settings3 = [(NEDNSSettingsNetworkAgent *)self settings];
+  [settings3 allowFailover];
   nw_resolver_config_set_allow_failover();
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v9 = [(NEDNSSettingsNetworkAgent *)self settings];
-  v10 = [v9 servers];
+  settings4 = [(NEDNSSettingsNetworkAgent *)self settings];
+  servers = [settings4 servers];
 
-  v11 = [v10 countByEnumeratingWithState:&v63 objects:v69 count:16];
+  v11 = [servers countByEnumeratingWithState:&v63 objects:v69 count:16];
   if (v11)
   {
     v12 = v11;
@@ -56,14 +56,14 @@
       {
         if (*v64 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(servers);
         }
 
         [*(*(&v63 + 1) + 8 * i) UTF8String];
         nw_resolver_config_add_name_server();
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v63 objects:v69 count:16];
+      v12 = [servers countByEnumeratingWithState:&v63 objects:v69 count:16];
     }
 
     while (v12);
@@ -73,10 +73,10 @@
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v15 = [(NEDNSSettingsNetworkAgent *)self settings];
-  v16 = [v15 searchDomains];
+  settings5 = [(NEDNSSettingsNetworkAgent *)self settings];
+  searchDomains = [settings5 searchDomains];
 
-  v17 = [v16 countByEnumeratingWithState:&v59 objects:v68 count:16];
+  v17 = [searchDomains countByEnumeratingWithState:&v59 objects:v68 count:16];
   if (v17)
   {
     v18 = v17;
@@ -87,14 +87,14 @@
       {
         if (*v60 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(searchDomains);
         }
 
         [*(*(&v59 + 1) + 8 * j) UTF8String];
         nw_resolver_config_add_search_domain();
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v59 objects:v68 count:16];
+      v18 = [searchDomains countByEnumeratingWithState:&v59 objects:v68 count:16];
     }
 
     while (v18);
@@ -104,11 +104,11 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v21 = [(NEDNSSettingsNetworkAgent *)self settings];
-  v22 = [v21 matchDomains];
-  v23 = [(NEDNSSettingsNetworkAgent *)self settings];
-  v24 = [v23 matchDomains];
-  v25 = [v24 count];
+  settings6 = [(NEDNSSettingsNetworkAgent *)self settings];
+  matchDomains = [settings6 matchDomains];
+  settings7 = [(NEDNSSettingsNetworkAgent *)self settings];
+  matchDomains2 = [settings7 matchDomains];
+  v25 = [matchDomains2 count];
 
   if (v25 >= 0x32)
   {
@@ -120,7 +120,7 @@
     v26 = v25;
   }
 
-  v27 = [v22 subarrayWithRange:{0, v26}];
+  v27 = [matchDomains subarrayWithRange:{0, v26}];
 
   v28 = [v27 countByEnumeratingWithState:&v55 objects:v67 count:16];
   if (v28)
@@ -146,64 +146,64 @@
     while (v29);
   }
 
-  v32 = [(NEDNSSettingsNetworkAgent *)self settings];
-  v33 = [v32 proxyAgentUUID];
+  settings8 = [(NEDNSSettingsNetworkAgent *)self settings];
+  proxyAgentUUID = [settings8 proxyAgentUUID];
 
-  if (v33)
+  if (proxyAgentUUID)
   {
-    v34 = [(NEDNSSettingsNetworkAgent *)self settings];
-    v35 = [v34 proxyAgentUUID];
-    v36 = [v35 UUIDString];
+    settings9 = [(NEDNSSettingsNetworkAgent *)self settings];
+    proxyAgentUUID2 = [settings9 proxyAgentUUID];
+    uUIDString = [proxyAgentUUID2 UUIDString];
 
-    [v36 UTF8String];
+    [uUIDString UTF8String];
     nw_resolver_config_set_proxy_agent();
   }
 
-  v37 = [(NEDNSSettingsNetworkAgent *)self settings];
+  settings10 = [(NEDNSSettingsNetworkAgent *)self settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v39 = [(NEDNSSettingsNetworkAgent *)self settings];
-    v40 = [v39 serverName];
+    settings11 = [(NEDNSSettingsNetworkAgent *)self settings];
+    serverName = [settings11 serverName];
 
-    [v40 UTF8String];
+    [serverName UTF8String];
     nw_resolver_config_set_provider_name();
-    v41 = [(NEDNSSettingsNetworkAgent *)self settings];
-    v42 = [v41 identityReference];
+    settings12 = [(NEDNSSettingsNetworkAgent *)self settings];
+    identityReference = [settings12 identityReference];
 
-    if (v42)
+    if (identityReference)
     {
-      [v42 bytes];
-      [v42 length];
+      [identityReference bytes];
+      [identityReference length];
       nw_resolver_config_set_identity_reference();
     }
   }
 
-  v43 = [(NEDNSSettingsNetworkAgent *)self settings];
+  settings13 = [(NEDNSSettingsNetworkAgent *)self settings];
   objc_opt_class();
   v44 = objc_opt_isKindOfClass();
 
   if (v44)
   {
-    v45 = [(NEDNSSettingsNetworkAgent *)self settings];
-    v46 = [v45 serverURL];
+    settings14 = [(NEDNSSettingsNetworkAgent *)self settings];
+    serverURL = [settings14 serverURL];
 
-    v47 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v46 resolvingAgainstBaseURL:0];
-    v48 = [v47 percentEncodedHost];
-    v49 = [v47 percentEncodedPath];
-    [v48 UTF8String];
+    v47 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:serverURL resolvingAgainstBaseURL:0];
+    percentEncodedHost = [v47 percentEncodedHost];
+    percentEncodedPath = [v47 percentEncodedPath];
+    [percentEncodedHost UTF8String];
     nw_resolver_config_set_provider_name();
-    [v49 UTF8String];
+    [percentEncodedPath UTF8String];
     nw_resolver_config_set_provider_path();
-    v50 = [(NEDNSSettingsNetworkAgent *)self settings];
-    v51 = [v50 identityReference];
+    settings15 = [(NEDNSSettingsNetworkAgent *)self settings];
+    identityReference2 = [settings15 identityReference];
 
-    if (v51)
+    if (identityReference2)
     {
-      [v51 bytes];
-      [v51 length];
+      [identityReference2 bytes];
+      [identityReference2 length];
       nw_resolver_config_set_identity_reference();
     }
   }

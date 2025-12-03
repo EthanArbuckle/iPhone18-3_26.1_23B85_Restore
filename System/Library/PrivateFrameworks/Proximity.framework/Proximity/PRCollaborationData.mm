@@ -1,44 +1,44 @@
 @interface PRCollaborationData
-- (BOOL)isEqual:(id)a3;
-- (PRCollaborationData)initWithCoder:(id)a3;
-- (PRCollaborationData)initWithData:(id)a3 sendingPeer:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRCollaborationData)initWithCoder:(id)coder;
+- (PRCollaborationData)initWithData:(id)data sendingPeer:(id)peer;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRCollaborationData
 
-- (PRCollaborationData)initWithData:(id)a3 sendingPeer:(id)a4
+- (PRCollaborationData)initWithData:(id)data sendingPeer:(id)peer
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  peerCopy = peer;
   v12.receiver = self;
   v12.super_class = PRCollaborationData;
   v9 = [(PRCollaborationData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_sendingPeer, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_sendingPeer, peer);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     data = self->_data;
-    v7 = [v5 data];
-    if ([(NSData *)data isEqualToData:v7])
+    data = [v5 data];
+    if ([(NSData *)data isEqualToData:data])
     {
       sendingPeer = self->_sendingPeer;
-      v9 = [v5 sendingPeer];
-      v10 = [(PRPeer *)sendingPeer isEqual:v9];
+      sendingPeer = [v5 sendingPeer];
+      v10 = [(PRPeer *)sendingPeer isEqual:sendingPeer];
     }
 
     else
@@ -55,7 +55,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRCollaborationData alloc];
   data = self->_data;
@@ -64,22 +64,22 @@
   return [(PRCollaborationData *)v4 initWithData:data sendingPeer:sendingPeer];
 }
 
-- (PRCollaborationData)initWithCoder:(id)a3
+- (PRCollaborationData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SendingPeer"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SendingPeer"];
 
   v7 = [(PRCollaborationData *)self initWithData:v5 sendingPeer:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"Data"];
-  [v5 encodeObject:self->_sendingPeer forKey:@"SendingPeer"];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"Data"];
+  [coderCopy encodeObject:self->_sendingPeer forKey:@"SendingPeer"];
 }
 
 @end

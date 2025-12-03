@@ -1,37 +1,37 @@
 @interface BKAccessoryGroup
-- (BKAccessoryGroup)initWithServerAccessoryGroup:(id)a3 device:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccessoryGroup:(id)a3;
-- (BOOL)isEqualToServerAccessoryGroup:(id)a3;
-- (id)accessoriesWithError:(id *)a3;
-- (id)connectedAccessoriesWithError:(id *)a3;
+- (BKAccessoryGroup)initWithServerAccessoryGroup:(id)group device:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccessoryGroup:(id)group;
+- (BOOL)isEqualToServerAccessoryGroup:(id)group;
+- (id)accessoriesWithError:(id *)error;
+- (id)connectedAccessoriesWithError:(id *)error;
 - (id)serverAccessoryGroup;
 @end
 
 @implementation BKAccessoryGroup
 
-- (BKAccessoryGroup)initWithServerAccessoryGroup:(id)a3 device:(id)a4
+- (BKAccessoryGroup)initWithServerAccessoryGroup:(id)group device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = BKAccessoryGroup;
   v8 = [(BKAccessoryGroup *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (groupCopy)
     {
-      v8->_type = [v6 type];
-      v10 = [v6 uuid];
+      v8->_type = [groupCopy type];
+      uuid = [groupCopy uuid];
       uuid = v9->_uuid;
-      v9->_uuid = v10;
+      v9->_uuid = uuid;
 
-      v12 = [v6 name];
+      name = [groupCopy name];
       name = v9->_name;
-      v9->_name = v12;
+      v9->_name = name;
 
-      objc_storeStrong(&v9->_device, a4);
+      objc_storeStrong(&v9->_device, device);
     }
 
     else
@@ -54,7 +54,7 @@
   return v3;
 }
 
-- (id)accessoriesWithError:(id *)a3
+- (id)accessoriesWithError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69E9C10];
@@ -73,22 +73,22 @@
     xpcClient = self->_device->_xpcClient;
     v7 = v5;
     *buf = 134217984;
-    v36 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v7, OS_LOG_TYPE_DEFAULT, "BKAccessoryGroup::accessories (_cid:%lu)\n", buf, 0xCu);
   }
 
   v8 = self->_device->_xpcClient;
   v34 = 0;
-  v9 = [(BiometricKitXPCClient *)v8 listAccessories:&v34, a3];
+  error = [(BiometricKitXPCClient *)v8 listAccessories:&v34, error];
   v10 = v34;
-  if (v9)
+  if (error)
   {
-    [(BKAccessoryGroup *)v9 accessoriesWithError:v9, v28];
+    [(BKAccessoryGroup *)error accessoriesWithError:error, v28];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -110,13 +110,13 @@
           }
 
           v17 = *(*(&v30 + 1) + 8 * i);
-          v18 = [v17 group];
-          v19 = [(BKAccessoryGroup *)self isEqualToServerAccessoryGroup:v18];
+          group = [v17 group];
+          v19 = [(BKAccessoryGroup *)self isEqualToServerAccessoryGroup:group];
 
           if (v19)
           {
             v20 = [[BKAccessory alloc] initWithServerAccessory:v17 device:self->_device];
-            [v11 addObject:v20];
+            [array addObject:v20];
           }
         }
 
@@ -128,7 +128,7 @@
 
     v10 = v29;
     v4 = MEMORY[0x1E69E9C10];
-    if (v11)
+    if (array)
     {
       if (__osLogTrace)
       {
@@ -149,7 +149,7 @@
         }
 
         *buf = 138412546;
-        v36 = v11;
+        connectionId = array;
         v37 = 2112;
         v38 = v22;
         _os_log_impl(&dword_1C82AD000, v21, OS_LOG_TYPE_DEFAULT, "BKAccessoryGroup::accessories -> %@, error:%@\n", buf, 0x16u);
@@ -178,21 +178,21 @@
     }
 
     *buf = 138412546;
-    v36 = 0;
+    connectionId = 0;
     v37 = 2112;
     v38 = v24;
     _os_log_impl(&dword_1C82AD000, v23, OS_LOG_TYPE_ERROR, "BKAccessoryGroup::accessories -> %@, error:%@\n", buf, 0x16u);
   }
 
-  v11 = 0;
+  array = 0;
 LABEL_33:
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return array;
 }
 
-- (id)connectedAccessoriesWithError:(id *)a3
+- (id)connectedAccessoriesWithError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69E9C10];
@@ -211,21 +211,21 @@ LABEL_33:
     xpcClient = self->_device->_xpcClient;
     v7 = v5;
     *buf = 134217984;
-    v35 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v7, OS_LOG_TYPE_DEFAULT, "BKAccessoryGroup::connectedAccessories (_cid:%lu)\n", buf, 0xCu);
   }
 
   v8 = self->_device->_xpcClient;
   v33 = 0;
-  v9 = [(BiometricKitXPCClient *)v8 listAccessories:&v33, a3];
+  error = [(BiometricKitXPCClient *)v8 listAccessories:&v33, error];
   v10 = v33;
-  if (v9)
+  if (error)
   {
-    [(BKAccessoryGroup *)v9 connectedAccessoriesWithError:v9, v27];
+    [(BKAccessoryGroup *)error connectedAccessoriesWithError:error, v27];
     goto LABEL_27;
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -250,18 +250,18 @@ LABEL_33:
       }
 
       v17 = *(*(&v29 + 1) + 8 * i);
-      v18 = [v17 group];
-      if ([(BKAccessoryGroup *)self isEqualToServerAccessoryGroup:v18])
+      group = [v17 group];
+      if ([(BKAccessoryGroup *)self isEqualToServerAccessoryGroup:group])
       {
-        v19 = [v17 flags];
+        flags = [v17 flags];
 
-        if ((v19 & 2) == 0)
+        if ((flags & 2) == 0)
         {
           continue;
         }
 
-        v18 = [[BKAccessory alloc] initWithServerAccessory:v17 device:self->_device];
-        [v11 addObject:v18];
+        group = [[BKAccessory alloc] initWithServerAccessory:v17 device:self->_device];
+        [array addObject:group];
       }
     }
 
@@ -273,7 +273,7 @@ LABEL_18:
 
   v10 = v28;
   v4 = MEMORY[0x1E69E9C10];
-  if (v11)
+  if (array)
   {
     if (__osLogTrace)
     {
@@ -294,7 +294,7 @@ LABEL_18:
       }
 
       *buf = 138412546;
-      v35 = v11;
+      connectionId = array;
       v36 = 2112;
       v37 = v21;
       _os_log_impl(&dword_1C82AD000, v20, OS_LOG_TYPE_DEFAULT, "BKAccessoryGroup::connectedAccessories -> %@, error:%@\n", buf, 0x16u);
@@ -323,29 +323,29 @@ LABEL_27:
     }
 
     *buf = 138412546;
-    v35 = 0;
+    connectionId = 0;
     v36 = 2112;
     v37 = v23;
     _os_log_impl(&dword_1C82AD000, v22, OS_LOG_TYPE_ERROR, "BKAccessoryGroup::connectedAccessories -> %@, error:%@\n", buf, 0x16u);
   }
 
-  v11 = 0;
+  array = 0;
 LABEL_35:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return array;
 }
 
-- (BOOL)isEqualToServerAccessoryGroup:(id)a3
+- (BOOL)isEqualToServerAccessoryGroup:(id)group
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (type = self->_type, type == [v4 type]))
+  groupCopy = group;
+  v5 = groupCopy;
+  if (groupCopy && (type = self->_type, type == [groupCopy type]))
   {
     uuid = self->_uuid;
-    v8 = [v5 uuid];
-    v9 = [(NSUUID *)uuid isEqual:v8];
+    uuid = [v5 uuid];
+    v9 = [(NSUUID *)uuid isEqual:uuid];
   }
 
   else
@@ -356,13 +356,13 @@ LABEL_35:
   return v9;
 }
 
-- (BOOL)isEqualToAccessoryGroup:(id)a3
+- (BOOL)isEqualToAccessoryGroup:(id)group
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_type == *(v4 + 2))
+  groupCopy = group;
+  v5 = groupCopy;
+  if (groupCopy && self->_type == *(groupCopy + 2))
   {
-    v6 = [(NSUUID *)self->_uuid isEqual:*(v4 + 2)];
+    v6 = [(NSUUID *)self->_uuid isEqual:*(groupCopy + 2)];
   }
 
   else
@@ -373,10 +373,10 @@ LABEL_35:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -384,7 +384,7 @@ LABEL_35:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BKAccessoryGroup *)self isEqualToAccessoryGroup:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BKAccessoryGroup *)self isEqualToAccessoryGroup:equalCopy];
   }
 
   return v5;

@@ -1,18 +1,18 @@
 @interface EDCollection
-+ (EDCollection)collectionWithObject:(id)a3;
++ (EDCollection)collectionWithObject:(id)object;
 + (id)collection;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EDCollection)init;
-- (EDCollection)initWithObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EDCollection)initWithObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)addObject:(id)a3;
-- (unint64_t)addOrEquivalentObject:(id)a3;
-- (unint64_t)indexOfObject:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)addObject:(id)object;
+- (unint64_t)addOrEquivalentObject:(id)object;
+- (unint64_t)indexOfObject:(id)object;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation EDCollection
@@ -39,31 +39,31 @@
   return v2;
 }
 
-- (EDCollection)initWithObject:(id)a3
+- (EDCollection)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [(EDCollection *)self init];
   v6 = v5;
   if (v5)
   {
-    [(NSMutableArray *)v5->mObjects addObject:v4];
+    [(NSMutableArray *)v5->mObjects addObject:objectCopy];
   }
 
   return v6;
 }
 
-+ (EDCollection)collectionWithObject:(id)a3
++ (EDCollection)collectionWithObject:(id)object
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithObject:v3];
+  objectCopy = object;
+  v4 = [objc_alloc(objc_opt_class()) initWithObject:objectCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  if (v5 && (v6 = [(NSMutableArray *)self->mObjects mutableCopyWithZone:a3], v7 = v5[1], v5[1] = v6, v7, v5[1]))
+  if (v5 && (v6 = [(NSMutableArray *)self->mObjects mutableCopyWithZone:zone], v7 = v5[1], v5[1] = v6, v7, v5[1]))
   {
     v8 = v5;
   }
@@ -76,47 +76,47 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDCollection *)self isEqualToCollection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDCollection *)self isEqualToCollection:v5];
   }
 
   return v6;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mObjects count]<= a3)
+  if ([(NSMutableArray *)self->mObjects count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->mObjects objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mObjects objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    [(NSMutableArray *)self->mObjects addObject:v4];
-    if ([v4 conformsToProtocol:&unk_286FA7348])
+    [(NSMutableArray *)self->mObjects addObject:objectCopy];
+    if ([objectCopy conformsToProtocol:&unk_286FA7348])
     {
-      [v4 setDoNotModify:1];
+      [objectCopy setDoNotModify:1];
     }
 
     v5 = [(NSMutableArray *)self->mObjects count]- 1;
@@ -130,21 +130,21 @@
   return v5;
 }
 
-- (unint64_t)addOrEquivalentObject:(id)a3
+- (unint64_t)addOrEquivalentObject:(id)object
 {
-  v4 = a3;
-  v5 = [(EDCollection *)self indexOfObject:v4];
+  objectCopy = object;
+  v5 = [(EDCollection *)self indexOfObject:objectCopy];
   if (v5 == -1)
   {
-    v5 = [(EDCollection *)self addObject:v4];
+    v5 = [(EDCollection *)self addObject:objectCopy];
   }
 
   return v5;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  result = [(NSMutableArray *)self->mObjects indexOfObject:a3];
+  result = [(NSMutableArray *)self->mObjects indexOfObject:object];
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -1;
@@ -153,31 +153,31 @@
   return result;
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mObjects count]> a3)
+  if ([(NSMutableArray *)self->mObjects count]> index)
   {
     mObjects = self->mObjects;
 
-    [(NSMutableArray *)mObjects removeObjectAtIndex:a3];
+    [(NSMutableArray *)mObjects removeObjectAtIndex:index];
   }
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(NSMutableArray *)self->mObjects count]>= a4)
+  objectCopy = object;
+  if ([(NSMutableArray *)self->mObjects count]>= index)
   {
-    [(NSMutableArray *)self->mObjects insertObject:v6 atIndex:a4];
+    [(NSMutableArray *)self->mObjects insertObject:objectCopy atIndex:index];
   }
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  if ([(NSMutableArray *)self->mObjects count]>= a3)
+  objectCopy = object;
+  if ([(NSMutableArray *)self->mObjects count]>= index)
   {
-    [(NSMutableArray *)self->mObjects replaceObjectAtIndex:a3 withObject:v6];
+    [(NSMutableArray *)self->mObjects replaceObjectAtIndex:index withObject:objectCopy];
   }
 }
 

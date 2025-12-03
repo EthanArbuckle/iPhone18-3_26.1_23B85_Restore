@@ -1,46 +1,46 @@
 @interface PDSXPCConnector
-- (BOOL)validateConnectionWithError:(id *)a3;
-- (PDSXPCConnector)initWithClientID:(id)a3;
-- (PDSXPCConnector)initWithClientID:(id)a3 interfaceVendor:(id)a4 connectionVendor:(id)a5;
-- (id)_genericProxyWithError:(id *)a3 remoteBlock:(id)a4;
-- (id)_genericSyncProxyWithErrorHandler:(id)a3 localStorage:(id *)a4 remoteBlock:(id)a5;
-- (id)_lockedPerformConnectWithBlock:(id)a3;
+- (BOOL)validateConnectionWithError:(id *)error;
+- (PDSXPCConnector)initWithClientID:(id)d;
+- (PDSXPCConnector)initWithClientID:(id)d interfaceVendor:(id)vendor connectionVendor:(id)connectionVendor;
+- (id)_genericProxyWithError:(id *)error remoteBlock:(id)block;
+- (id)_genericSyncProxyWithErrorHandler:(id)handler localStorage:(id *)storage remoteBlock:(id)block;
+- (id)_lockedPerformConnectWithBlock:(id)block;
 - (id)_lockedRemoteInternalObject;
 - (id)_lockedRemoteObject;
 - (id)_lockedXPCConnection;
-- (id)internalRemoteObjectProxyWithError:(id *)a3;
-- (id)remoteObjectProxyWithError:(id *)a3;
-- (id)synchronousInternalRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)internalRemoteObjectProxyWithError:(id *)error;
+- (id)remoteObjectProxyWithError:(id *)error;
+- (id)synchronousInternalRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 @end
 
 @implementation PDSXPCConnector
 
-- (PDSXPCConnector)initWithClientID:(id)a3
+- (PDSXPCConnector)initWithClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[PDSXPCAdapter defaultInterfaceVendor];
   v6 = +[PDSXPCAdapter defaultConnectionVendor];
-  v7 = [(PDSXPCConnector *)self initWithClientID:v4 interfaceVendor:v5 connectionVendor:v6];
+  v7 = [(PDSXPCConnector *)self initWithClientID:dCopy interfaceVendor:v5 connectionVendor:v6];
 
   return v7;
 }
 
-- (PDSXPCConnector)initWithClientID:(id)a3 interfaceVendor:(id)a4 connectionVendor:(id)a5
+- (PDSXPCConnector)initWithClientID:(id)d interfaceVendor:(id)vendor connectionVendor:(id)connectionVendor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  dCopy = d;
+  vendorCopy = vendor;
+  connectionVendorCopy = connectionVendor;
+  if (dCopy)
   {
-    if (v11)
+    if (vendorCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [PDSXPCConnector initWithClientID:a2 interfaceVendor:self connectionVendor:?];
-    if (v12)
+    if (connectionVendorCopy)
     {
       goto LABEL_4;
     }
@@ -49,13 +49,13 @@ LABEL_8:
   }
 
   [PDSXPCConnector initWithClientID:a2 interfaceVendor:self connectionVendor:?];
-  if (!v11)
+  if (!vendorCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (connectionVendorCopy)
   {
     goto LABEL_4;
   }
@@ -69,25 +69,25 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_clientID, a3);
+    objc_storeStrong(&v13->_clientID, d);
     v14->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_interfaceVendor, a4);
-    objc_storeStrong(&v14->_connectionVendor, a5);
+    objc_storeStrong(&v14->_interfaceVendor, vendor);
+    objc_storeStrong(&v14->_connectionVendor, connectionVendor);
   }
 
   return v14;
 }
 
-- (BOOL)validateConnectionWithError:(id *)a3
+- (BOOL)validateConnectionWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PDSXPCConnector *)self _lockedRemoteObject];
-  v6 = [(PDSXPCConnector *)self connectionError];
-  v7 = v6;
-  if (a3 && v6)
+  _lockedRemoteObject = [(PDSXPCConnector *)self _lockedRemoteObject];
+  connectionError = [(PDSXPCConnector *)self connectionError];
+  v7 = connectionError;
+  if (error && connectionError)
   {
-    v8 = v6;
-    *a3 = v7;
+    v8 = connectionError;
+    *error = v7;
   }
 
   if (v7)
@@ -97,7 +97,7 @@ LABEL_4:
 
   else
   {
-    v9 = v5 == 0;
+    v9 = _lockedRemoteObject == 0;
   }
 
   v10 = !v9;
@@ -106,23 +106,23 @@ LABEL_4:
   return v10;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__PDSXPCConnector_synchronousRemoteObjectProxyWithErrorHandler___block_invoke;
   v7[3] = &unk_2799F7838;
   v7[4] = self;
-  v5 = [(PDSXPCConnector *)self _genericSyncProxyWithErrorHandler:v4 localStorage:&self->_syncRemoteObject remoteBlock:v7];
+  v5 = [(PDSXPCConnector *)self _genericSyncProxyWithErrorHandler:handlerCopy localStorage:&self->_syncRemoteObject remoteBlock:v7];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)remoteObjectProxyWithError:(id *)a3
+- (id)remoteObjectProxyWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   v7[0] = MEMORY[0x277D85DD0];
@@ -130,29 +130,29 @@ LABEL_4:
   v7[2] = __46__PDSXPCConnector_remoteObjectProxyWithError___block_invoke;
   v7[3] = &unk_2799F7838;
   v7[4] = self;
-  v5 = [(PDSXPCConnector *)self _genericProxyWithError:a3 remoteBlock:v7];
+  v5 = [(PDSXPCConnector *)self _genericProxyWithError:error remoteBlock:v7];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)synchronousInternalRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousInternalRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__PDSXPCConnector_synchronousInternalRemoteObjectProxyWithErrorHandler___block_invoke;
   v7[3] = &unk_2799F7838;
   v7[4] = self;
-  v5 = [(PDSXPCConnector *)self _genericSyncProxyWithErrorHandler:v4 localStorage:&self->_syncInternalRemoteObject remoteBlock:v7];
+  v5 = [(PDSXPCConnector *)self _genericSyncProxyWithErrorHandler:handlerCopy localStorage:&self->_syncInternalRemoteObject remoteBlock:v7];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)internalRemoteObjectProxyWithError:(id *)a3
+- (id)internalRemoteObjectProxyWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   v7[0] = MEMORY[0x277D85DD0];
@@ -160,7 +160,7 @@ LABEL_4:
   v7[2] = __54__PDSXPCConnector_internalRemoteObjectProxyWithError___block_invoke;
   v7[3] = &unk_2799F7838;
   v7[4] = self;
-  v5 = [(PDSXPCConnector *)self _genericProxyWithError:a3 remoteBlock:v7];
+  v5 = [(PDSXPCConnector *)self _genericProxyWithError:error remoteBlock:v7];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
@@ -203,18 +203,18 @@ LABEL_4:
   return internalRemoteObject;
 }
 
-- (id)_genericProxyWithError:(id *)a3 remoteBlock:(id)a4
+- (id)_genericProxyWithError:(id *)error remoteBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [(PDSXPCConnector *)self connectionError];
+  connectionError = [(PDSXPCConnector *)self connectionError];
 
-  if (v7)
+  if (connectionError)
   {
-    if (a3)
+    if (error)
     {
       [(PDSXPCConnector *)self connectionError];
-      *a3 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -225,32 +225,32 @@ LABEL_4:
 
   else
   {
-    v9 = v6[2](v6);
+    v9 = blockCopy[2](blockCopy);
     v8 = v9;
     if (v9)
     {
       v10 = v9;
     }
 
-    else if (a3)
+    else if (error)
     {
-      *a3 = [(PDSXPCConnector *)self connectionError];
+      *error = [(PDSXPCConnector *)self connectionError];
     }
   }
 
   return v8;
 }
 
-- (id)_genericSyncProxyWithErrorHandler:(id)a3 localStorage:(id *)a4 remoteBlock:(id)a5
+- (id)_genericSyncProxyWithErrorHandler:(id)handler localStorage:(id *)storage remoteBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  handlerCopy = handler;
+  blockCopy = block;
   os_unfair_lock_assert_owner(&self->_lock);
-  v10 = *a4;
-  if (!*a4)
+  v10 = *storage;
+  if (!*storage)
   {
     v20 = 0;
-    v11 = [(PDSXPCConnector *)self _genericProxyWithError:&v20 remoteBlock:v9];
+    v11 = [(PDSXPCConnector *)self _genericProxyWithError:&v20 remoteBlock:blockCopy];
     v12 = v20;
     v13 = v12;
     if (v11)
@@ -259,18 +259,18 @@ LABEL_4:
       v18[1] = 3221225472;
       v18[2] = __78__PDSXPCConnector__genericSyncProxyWithErrorHandler_localStorage_remoteBlock___block_invoke;
       v18[3] = &unk_2799F78A8;
-      v19 = v8;
+      v19 = handlerCopy;
       v14 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v18];
-      v15 = *a4;
-      *a4 = v14;
+      v15 = *storage;
+      *storage = v14;
     }
 
-    else if (v8 && v12)
+    else if (handlerCopy && v12)
     {
-      (*(v8 + 2))(v8, v12);
+      (*(handlerCopy + 2))(handlerCopy, v12);
     }
 
-    v10 = *a4;
+    v10 = *storage;
   }
 
   v16 = v10;
@@ -289,10 +289,10 @@ uint64_t __78__PDSXPCConnector__genericSyncProxyWithErrorHandler_localStorage_re
   return result;
 }
 
-- (id)_lockedPerformConnectWithBlock:(id)a3
+- (id)_lockedPerformConnectWithBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_connectionError)
   {
@@ -316,13 +316,13 @@ uint64_t __78__PDSXPCConnector__genericSyncProxyWithErrorHandler_localStorage_re
     v6 = self->_handshakeProxy;
     if (!self->_handshakeProxy)
     {
-      v7 = [(PDSXPCConnector *)self _lockedXPCConnection];
+      _lockedXPCConnection = [(PDSXPCConnector *)self _lockedXPCConnection];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __50__PDSXPCConnector__lockedPerformConnectWithBlock___block_invoke;
       v18[3] = &unk_2799F78D0;
       v18[4] = &v25;
-      v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v18];
+      v8 = [_lockedXPCConnection synchronousRemoteObjectProxyWithErrorHandler:v18];
       handshakeProxy = self->_handshakeProxy;
       self->_handshakeProxy = v8;
 
@@ -361,7 +361,7 @@ uint64_t __78__PDSXPCConnector__genericSyncProxyWithErrorHandler_localStorage_re
       v17[3] = &unk_2799F78F8;
       v17[4] = &v19;
       v17[5] = buf;
-      v4[2](v4, v6, v17);
+      blockCopy[2](blockCopy, v6, v17);
     }
 
     if (v26[5] || v20[5])

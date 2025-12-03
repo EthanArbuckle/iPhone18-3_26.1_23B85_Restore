@@ -1,29 +1,29 @@
 @interface ODDSiriSchemaODDGeneralProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDGeneralProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDGeneralProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDGeneralProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDGeneralProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBuildInstallationTimestampInSecondsSince1970:(BOOL)a3;
-- (void)setHasIsStoreDemoMode:(BOOL)a3;
-- (void)setHasUTCOffset:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBuildInstallationTimestampInSecondsSince1970:(BOOL)since1970;
+- (void)setHasIsStoreDemoMode:(BOOL)mode;
+- (void)setHasUTCOffset:(BOOL)offset;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDGeneralProperties
 
-- (ODDSiriSchemaODDGeneralProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDGeneralProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = ODDSiriSchemaODDGeneralProperties;
   v5 = [(ODDSiriSchemaODDGeneralProperties *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"systemLocale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"systemLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
     }
 
     v26 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"storefrontId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"storefrontId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
     }
 
     v25 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"UTCOffset"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"UTCOffset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
     }
 
     v24 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(ODDSiriSchemaODDGeneralProperties *)v5 setDeviceType:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"modelNumber"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"modelNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(ODDSiriSchemaODDGeneralProperties *)v5 setModelNumber:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"deviceOS"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"deviceOS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,21 +72,21 @@
       [(ODDSiriSchemaODDGeneralProperties *)v5 setDeviceOS:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isStoreDemoMode"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isStoreDemoMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDGeneralProperties setIsStoreDemoMode:](v5, "setIsStoreDemoMode:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDGeneralProperties setBuildInstallationTimestampInSecondsSince1970:](v5, "setBuildInstallationTimestampInSecondsSince1970:", [v17 unsignedLongLongValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"assetSetStatus"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"assetSetStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(ODDSiriSchemaODDGeneralProperties *)v5 setAssetSetStatus:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"dataCollectionId"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"dataCollectionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,30 +108,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDGeneralProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDGeneralProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDGeneralProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDGeneralProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDGeneralProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -144,7 +144,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [(ODDSiriSchemaODDGeneralProperties *)self UTCOffset]- 1;
@@ -158,90 +158,90 @@
       v5 = off_1E78DD708[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"UTCOffset"];
+    [dictionary setObject:v5 forKeyedSubscript:@"UTCOffset"];
   }
 
   if (self->_assetSetStatus)
   {
-    v6 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    assetSetStatus = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
+    dictionaryRepresentation = [assetSetStatus dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"assetSetStatus"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assetSetStatus"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"assetSetStatus"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assetSetStatus"];
     }
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODDSiriSchemaODDGeneralProperties buildInstallationTimestampInSecondsSince1970](self, "buildInstallationTimestampInSecondsSince1970")}];
-    [v3 setObject:v9 forKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
+    [dictionary setObject:v9 forKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
   }
 
   if (self->_dataCollectionId)
   {
-    v10 = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"dataCollectionId"];
+    dataCollectionId = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
+    v11 = [dataCollectionId copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"dataCollectionId"];
   }
 
   if (self->_deviceOS)
   {
-    v12 = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"deviceOS"];
+    deviceOS = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
+    v13 = [deviceOS copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"deviceOS"];
   }
 
   if (self->_deviceType)
   {
-    v14 = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"deviceType"];
+    deviceType = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
+    v15 = [deviceType copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"deviceType"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDGeneralProperties isStoreDemoMode](self, "isStoreDemoMode")}];
-    [v3 setObject:v16 forKeyedSubscript:@"isStoreDemoMode"];
+    [dictionary setObject:v16 forKeyedSubscript:@"isStoreDemoMode"];
   }
 
   if (self->_modelNumber)
   {
-    v17 = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"modelNumber"];
+    modelNumber = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
+    v18 = [modelNumber copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"modelNumber"];
   }
 
   if (*&self->_has)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithInt:{-[ODDSiriSchemaODDGeneralProperties storefrontId](self, "storefrontId")}];
-    [v3 setObject:v19 forKeyedSubscript:@"storefrontId"];
+    [dictionary setObject:v19 forKeyedSubscript:@"storefrontId"];
   }
 
   if (self->_systemLocale)
   {
-    v20 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
+    dictionaryRepresentation2 = [systemLocale dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"systemLocale"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"systemLocale"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"systemLocale"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"systemLocale"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -299,28 +299,28 @@ LABEL_11:
   return v11 ^ v12 ^ [(NSString *)self->_dataCollectionId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
-  v5 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
-  v6 = [v4 systemLocale];
-  if ((v5 != 0) == (v6 == 0))
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
+  systemLocale2 = [equalCopy systemLocale];
+  if ((systemLocale != 0) == (systemLocale2 == 0))
   {
     goto LABEL_45;
   }
 
-  v7 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
-  if (v7)
+  systemLocale3 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
+  if (systemLocale3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
-    v10 = [v4 systemLocale];
-    v11 = [v9 isEqual:v10];
+    v8 = systemLocale3;
+    systemLocale4 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
+    systemLocale5 = [equalCopy systemLocale];
+    v11 = [systemLocale4 isEqual:systemLocale5];
 
     if (!v11)
     {
@@ -333,7 +333,7 @@ LABEL_11:
   }
 
   has = self->_has;
-  v13 = v4[80];
+  v13 = equalCopy[80];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_46;
@@ -342,13 +342,13 @@ LABEL_11:
   if (*&has)
   {
     storefrontId = self->_storefrontId;
-    if (storefrontId != [v4 storefrontId])
+    if (storefrontId != [equalCopy storefrontId])
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v13 = v4[80];
+    v13 = equalCopy[80];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -360,26 +360,26 @@ LABEL_11:
   if (v15)
   {
     UTCOffset = self->_UTCOffset;
-    if (UTCOffset != [v4 UTCOffset])
+    if (UTCOffset != [equalCopy UTCOffset])
     {
       goto LABEL_46;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
-  v6 = [v4 deviceType];
-  if ((v5 != 0) == (v6 == 0))
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
+  systemLocale2 = [equalCopy deviceType];
+  if ((systemLocale != 0) == (systemLocale2 == 0))
   {
     goto LABEL_45;
   }
 
-  v17 = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
-  if (v17)
+  deviceType = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
+  if (deviceType)
   {
-    v18 = v17;
-    v19 = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
-    v20 = [v4 deviceType];
-    v21 = [v19 isEqual:v20];
+    v18 = deviceType;
+    deviceType2 = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
+    deviceType3 = [equalCopy deviceType];
+    v21 = [deviceType2 isEqual:deviceType3];
 
     if (!v21)
     {
@@ -391,20 +391,20 @@ LABEL_11:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
-  v6 = [v4 modelNumber];
-  if ((v5 != 0) == (v6 == 0))
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
+  systemLocale2 = [equalCopy modelNumber];
+  if ((systemLocale != 0) == (systemLocale2 == 0))
   {
     goto LABEL_45;
   }
 
-  v22 = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
-  if (v22)
+  modelNumber = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
+  if (modelNumber)
   {
-    v23 = v22;
-    v24 = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
-    v25 = [v4 modelNumber];
-    v26 = [v24 isEqual:v25];
+    v23 = modelNumber;
+    modelNumber2 = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
+    modelNumber3 = [equalCopy modelNumber];
+    v26 = [modelNumber2 isEqual:modelNumber3];
 
     if (!v26)
     {
@@ -416,20 +416,20 @@ LABEL_11:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
-  v6 = [v4 deviceOS];
-  if ((v5 != 0) == (v6 == 0))
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
+  systemLocale2 = [equalCopy deviceOS];
+  if ((systemLocale != 0) == (systemLocale2 == 0))
   {
     goto LABEL_45;
   }
 
-  v27 = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
-  if (v27)
+  deviceOS = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
+  if (deviceOS)
   {
-    v28 = v27;
-    v29 = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
-    v30 = [v4 deviceOS];
-    v31 = [v29 isEqual:v30];
+    v28 = deviceOS;
+    deviceOS2 = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
+    deviceOS3 = [equalCopy deviceOS];
+    v31 = [deviceOS2 isEqual:deviceOS3];
 
     if (!v31)
     {
@@ -443,7 +443,7 @@ LABEL_11:
 
   v32 = self->_has;
   v33 = (*&v32 >> 2) & 1;
-  v34 = v4[80];
+  v34 = equalCopy[80];
   if (v33 != ((v34 >> 2) & 1))
   {
     goto LABEL_46;
@@ -452,13 +452,13 @@ LABEL_11:
   if (v33)
   {
     isStoreDemoMode = self->_isStoreDemoMode;
-    if (isStoreDemoMode != [v4 isStoreDemoMode])
+    if (isStoreDemoMode != [equalCopy isStoreDemoMode])
     {
       goto LABEL_46;
     }
 
     v32 = self->_has;
-    v34 = v4[80];
+    v34 = equalCopy[80];
   }
 
   v36 = (*&v32 >> 3) & 1;
@@ -470,26 +470,26 @@ LABEL_11:
   if (v36)
   {
     buildInstallationTimestampInSecondsSince1970 = self->_buildInstallationTimestampInSecondsSince1970;
-    if (buildInstallationTimestampInSecondsSince1970 != [v4 buildInstallationTimestampInSecondsSince1970])
+    if (buildInstallationTimestampInSecondsSince1970 != [equalCopy buildInstallationTimestampInSecondsSince1970])
     {
       goto LABEL_46;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
-  v6 = [v4 assetSetStatus];
-  if ((v5 != 0) == (v6 == 0))
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
+  systemLocale2 = [equalCopy assetSetStatus];
+  if ((systemLocale != 0) == (systemLocale2 == 0))
   {
     goto LABEL_45;
   }
 
-  v38 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
-  if (v38)
+  assetSetStatus = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
+  if (assetSetStatus)
   {
-    v39 = v38;
-    v40 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
-    v41 = [v4 assetSetStatus];
-    v42 = [v40 isEqual:v41];
+    v39 = assetSetStatus;
+    assetSetStatus2 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
+    assetSetStatus3 = [equalCopy assetSetStatus];
+    v42 = [assetSetStatus2 isEqual:assetSetStatus3];
 
     if (!v42)
     {
@@ -501,17 +501,17 @@ LABEL_11:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
-  v6 = [v4 dataCollectionId];
-  if ((v5 != 0) == (v6 == 0))
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
+  systemLocale2 = [equalCopy dataCollectionId];
+  if ((systemLocale != 0) == (systemLocale2 == 0))
   {
 LABEL_45:
 
     goto LABEL_46;
   }
 
-  v43 = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
-  if (!v43)
+  dataCollectionId = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
+  if (!dataCollectionId)
   {
 
 LABEL_49:
@@ -519,10 +519,10 @@ LABEL_49:
     goto LABEL_47;
   }
 
-  v44 = v43;
-  v45 = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
-  v46 = [v4 dataCollectionId];
-  v47 = [v45 isEqual:v46];
+  v44 = dataCollectionId;
+  dataCollectionId2 = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
+  dataCollectionId3 = [equalCopy dataCollectionId];
+  v47 = [dataCollectionId2 isEqual:dataCollectionId3];
 
   if (v47)
   {
@@ -536,14 +536,14 @@ LABEL_47:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
+  toCopy = to;
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
 
-  if (v4)
+  if (systemLocale)
   {
-    v5 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
+    systemLocale2 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -559,23 +559,23 @@ LABEL_47:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
+  deviceType = [(ODDSiriSchemaODDGeneralProperties *)self deviceType];
 
-  if (v7)
+  if (deviceType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
+  modelNumber = [(ODDSiriSchemaODDGeneralProperties *)self modelNumber];
 
-  if (v8)
+  if (modelNumber)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
+  deviceOS = [(ODDSiriSchemaODDGeneralProperties *)self deviceOS];
 
-  if (v9)
+  if (deviceOS)
   {
     PBDataWriterWriteStringField();
   }
@@ -592,27 +592,27 @@ LABEL_47:
     PBDataWriterWriteUint64Field();
   }
 
-  v11 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
+  assetSetStatus = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
 
-  if (v11)
+  if (assetSetStatus)
   {
-    v12 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
+    assetSetStatus2 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
+  dataCollectionId = [(ODDSiriSchemaODDGeneralProperties *)self dataCollectionId];
 
-  v14 = v15;
-  if (v13)
+  v14 = toCopy;
+  if (dataCollectionId)
   {
     PBDataWriterWriteStringField();
-    v14 = v15;
+    v14 = toCopy;
   }
 }
 
-- (void)setHasBuildInstallationTimestampInSecondsSince1970:(BOOL)a3
+- (void)setHasBuildInstallationTimestampInSecondsSince1970:(BOOL)since1970
 {
-  if (a3)
+  if (since1970)
   {
     v3 = 8;
   }
@@ -625,9 +625,9 @@ LABEL_47:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsStoreDemoMode:(BOOL)a3
+- (void)setHasIsStoreDemoMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -640,9 +640,9 @@ LABEL_47:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUTCOffset:(BOOL)a3
+- (void)setHasUTCOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 2;
   }
@@ -655,26 +655,26 @@ LABEL_47:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODDSiriSchemaODDGeneralProperties;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  systemLocale = [(ODDSiriSchemaODDGeneralProperties *)self systemLocale];
+  v7 = [systemLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDGeneralProperties *)self deleteSystemLocale];
   }
 
-  v9 = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  assetSetStatus = [(ODDSiriSchemaODDGeneralProperties *)self assetSetStatus];
+  v10 = [assetSetStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDGeneralProperties *)self deleteAssetSetStatus];
   }

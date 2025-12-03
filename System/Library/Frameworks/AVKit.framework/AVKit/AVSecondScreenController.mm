@@ -1,41 +1,41 @@
 @interface AVSecondScreenController
 + (id)sharedInstance;
 - (AVSecondScreenController)init;
-- (id)_connectionForPlayer:(id)a3;
+- (id)_connectionForPlayer:(id)player;
 - (id)_targetScreen;
-- (id)addConnectionForPlayer:(id)a3 playerLayer:(id)a4;
-- (id)connectionPassingTest:(id)a3;
+- (id)addConnectionForPlayer:(id)player playerLayer:(id)layer;
+- (id)connectionPassingTest:(id)test;
 - (id)preferredConnection;
-- (void)_insertConnection:(id)a3 atIndex:(unint64_t)a4;
+- (void)_insertConnection:(id)connection atIndex:(unint64_t)index;
 - (void)_updateActiveConnection;
-- (void)addConnection:(id)a3;
-- (void)addSecondScreen:(id)a3;
+- (void)addConnection:(id)connection;
+- (void)addSecondScreen:(id)screen;
 - (void)dealloc;
-- (void)removeConnection:(id)a3;
-- (void)removeSecondScreen:(id)a3;
-- (void)setPreferredConnection:(id)a3;
+- (void)removeConnection:(id)connection;
+- (void)removeSecondScreen:(id)screen;
+- (void)setPreferredConnection:(id)connection;
 @end
 
 @implementation AVSecondScreenController
 
-- (void)_insertConnection:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertConnection:(id)connection atIndex:(unint64_t)index
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  connectionCopy = connection;
   v7 = _AVLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[AVSecondScreenController _insertConnection:atIndex:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = connectionCopy;
     v13 = 2048;
-    v14 = a4;
+    indexCopy = index;
     _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s %@ %ld", &v9, 0x20u);
   }
 
-  v8 = [(AVSecondScreenController *)self connections];
-  [v8 insertObject:v6 atIndex:a4];
+  connections = [(AVSecondScreenController *)self connections];
+  [connections insertObject:connectionCopy atIndex:index];
 }
 
 - (void)_updateActiveConnection
@@ -43,15 +43,15 @@
   v27 = *MEMORY[0x1E69E9840];
   if ([(AVSecondScreenController *)self allowsUpdatingActiveConnection])
   {
-    v3 = [(AVSecondScreenController *)self _targetScreen];
-    v4 = v3;
-    if (v3)
+    _targetScreen = [(AVSecondScreenController *)self _targetScreen];
+    v4 = _targetScreen;
+    if (_targetScreen)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __51__AVSecondScreenController__updateActiveConnection__block_invoke;
       v18[3] = &unk_1E7207798;
-      v5 = v3;
+      v5 = _targetScreen;
       v19 = v5;
       v6 = [(AVSecondScreenController *)self connectionPassingTest:v18];
       v7 = _AVLog();
@@ -73,8 +73,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(AVSecondScreenController *)self secondScreens];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+    secondScreens = [(AVSecondScreenController *)self secondScreens];
+    v9 = [secondScreens countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -86,7 +86,7 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(secondScreens);
           }
 
           v13 = *(*(&v14 + 1) + 8 * v12);
@@ -99,7 +99,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+        v10 = [secondScreens countByEnumeratingWithState:&v14 objects:v20 count:16];
       }
 
       while (v10);
@@ -138,10 +138,10 @@ uint64_t __51__AVSecondScreenController__updateActiveConnection__block_invoke(ui
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AVSecondScreenController *)self secondScreens];
-  v3 = [v2 reverseObjectEnumerator];
+  secondScreens = [(AVSecondScreenController *)self secondScreens];
+  reverseObjectEnumerator = [secondScreens reverseObjectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v18 count:16];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v18 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -151,7 +151,7 @@ uint64_t __51__AVSecondScreenController__updateActiveConnection__block_invoke(ui
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -162,7 +162,7 @@ uint64_t __51__AVSecondScreenController__updateActiveConnection__block_invoke(ui
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v18 count:16];
+      v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v18 count:16];
       if (v4)
       {
         continue;
@@ -187,16 +187,16 @@ LABEL_11:
   return v4;
 }
 
-- (id)_connectionForPlayer:(id)a3
+- (id)_connectionForPlayer:(id)player
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  playerCopy = player;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AVSecondScreenController *)self connections];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  connections = [(AVSecondScreenController *)self connections];
+  v6 = [connections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -206,20 +206,20 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connections);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 player];
+        player = [v9 player];
 
-        if (v10 == v4)
+        if (player == playerCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [connections countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -234,31 +234,31 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeSecondScreen:(id)a3
+- (void)removeSecondScreen:(id)screen
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  screenCopy = screen;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[AVSecondScreenController removeSecondScreen:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = screenCopy;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v7, 0x16u);
   }
 
-  v6 = [(AVSecondScreenController *)self secondScreens];
-  [v6 removeObject:v4];
+  secondScreens = [(AVSecondScreenController *)self secondScreens];
+  [secondScreens removeObject:screenCopy];
 
   [(AVSecondScreenController *)self _updateActiveConnection];
 }
 
-- (void)addSecondScreen:(id)a3
+- (void)addSecondScreen:(id)screen
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  screenCopy = screen;
+  if (screenCopy)
   {
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -266,40 +266,40 @@ LABEL_11:
       v9 = 136315394;
       v10 = "[AVSecondScreenController addSecondScreen:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = screenCopy;
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v9, 0x16u);
     }
 
-    v6 = [v4 isTVOutScreen];
-    v7 = [(AVSecondScreenController *)self secondScreens];
-    v8 = v7;
-    if (v6)
+    isTVOutScreen = [screenCopy isTVOutScreen];
+    secondScreens = [(AVSecondScreenController *)self secondScreens];
+    v8 = secondScreens;
+    if (isTVOutScreen)
     {
-      [v7 addObject:v4];
+      [secondScreens addObject:screenCopy];
     }
 
     else
     {
-      [v7 insertObject:v4 atIndex:0];
+      [secondScreens insertObject:screenCopy atIndex:0];
     }
 
     [(AVSecondScreenController *)self _updateActiveConnection];
   }
 }
 
-- (void)setPreferredConnection:(id)a3
+- (void)setPreferredConnection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVSecondScreenController *)self preferredConnection];
-  if ([v4 isEqual:v5])
+  connectionCopy = connection;
+  preferredConnection = [(AVSecondScreenController *)self preferredConnection];
+  if ([connectionCopy isEqual:preferredConnection])
   {
   }
 
   else
   {
-    v6 = [(AVSecondScreenController *)self connections];
-    v7 = [v6 containsObject:v4];
+    connections = [(AVSecondScreenController *)self connections];
+    v7 = [connections containsObject:connectionCopy];
 
     if (v7)
     {
@@ -309,21 +309,21 @@ LABEL_11:
         v15 = 136315394;
         v16 = "[AVSecondScreenController setPreferredConnection:]";
         v17 = 2112;
-        v18 = v4;
+        v18 = connectionCopy;
         _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", &v15, 0x16u);
       }
 
-      v9 = [(AVSecondScreenController *)self connections];
-      v10 = [v9 indexOfObject:v4];
+      connections2 = [(AVSecondScreenController *)self connections];
+      v10 = [connections2 indexOfObject:connectionCopy];
 
-      v11 = [(AVSecondScreenController *)self connections];
-      v12 = [v11 count] - 1;
+      connections3 = [(AVSecondScreenController *)self connections];
+      v12 = [connections3 count] - 1;
 
       if (v10 != v12)
       {
-        v13 = [(AVSecondScreenController *)self connections];
+        connections4 = [(AVSecondScreenController *)self connections];
         v14 = [MEMORY[0x1E696AC90] indexSetWithIndex:v10];
-        [v13 moveObjectsAtIndexes:v14 toIndex:v12];
+        [connections4 moveObjectsAtIndexes:v14 toIndex:v12];
 
         [(AVSecondScreenController *)self _updateActiveConnection];
       }
@@ -333,24 +333,24 @@ LABEL_11:
 
 - (id)preferredConnection
 {
-  v2 = [(AVSecondScreenController *)self connections];
-  v3 = [v2 lastObject];
+  connections = [(AVSecondScreenController *)self connections];
+  lastObject = [connections lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)connectionPassingTest:(id)a3
+- (id)connectionPassingTest:(id)test
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AVSecondScreenController *)self connections];
-  v6 = [v5 reverseObjectEnumerator];
+  connections = [(AVSecondScreenController *)self connections];
+  reverseObjectEnumerator = [connections reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -360,18 +360,18 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v10 && v4[2](v4, *(*(&v12 + 1) + 8 * i)))
+        if (v10 && testCopy[2](testCopy, *(*(&v12 + 1) + 8 * i)))
         {
           v7 = v10;
           goto LABEL_12;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -386,10 +386,10 @@ LABEL_12:
   return v7;
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -400,17 +400,17 @@ LABEL_12:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %d", &v7, 0x12u);
   }
 
-  v6 = [(AVSecondScreenController *)self connections];
-  [v6 removeObject:v4];
+  connections = [(AVSecondScreenController *)self connections];
+  [connections removeObject:connectionCopy];
 
-  [v4 connectWithScreen:0 active:0];
+  [connectionCopy connectWithScreen:0 active:0];
   [(AVSecondScreenController *)self _updateActiveConnection];
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -421,32 +421,32 @@ LABEL_12:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %d", &v8, 0x12u);
   }
 
-  if ([v4 isReadyToConnect] && ((objc_msgSend(v4, "isPlaying") & 1) != 0 || (-[AVSecondScreenController activeConnection](self, "activeConnection"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6)))
+  if ([connectionCopy isReadyToConnect] && ((objc_msgSend(connectionCopy, "isPlaying") & 1) != 0 || (-[AVSecondScreenController activeConnection](self, "activeConnection"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6)))
   {
-    v7 = [(AVSecondScreenController *)self connections];
-    -[AVSecondScreenController _insertConnection:atIndex:](self, "_insertConnection:atIndex:", v4, [v7 count]);
+    connections = [(AVSecondScreenController *)self connections];
+    -[AVSecondScreenController _insertConnection:atIndex:](self, "_insertConnection:atIndex:", connectionCopy, [connections count]);
   }
 
   else
   {
-    [(AVSecondScreenController *)self _insertConnection:v4 atIndex:0];
+    [(AVSecondScreenController *)self _insertConnection:connectionCopy atIndex:0];
   }
 
   [(AVSecondScreenController *)self _updateActiveConnection];
 }
 
-- (id)addConnectionForPlayer:(id)a3 playerLayer:(id)a4
+- (id)addConnectionForPlayer:(id)player playerLayer:(id)layer
 {
-  v6 = a3;
-  v7 = a4;
+  playerCopy = player;
+  layerCopy = layer;
   if (AVSecondScreenTVSupportEnabled_onceToken != -1)
   {
     dispatch_once(&AVSecondScreenTVSupportEnabled_onceToken, &__block_literal_global_125);
   }
 
-  if (AVSecondScreenTVSupportEnabled_AVSecondScreenTVSupportEnabled == 1 && ([(AVSecondScreenController *)self _connectionForPlayer:v6], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  if (AVSecondScreenTVSupportEnabled_AVSecondScreenTVSupportEnabled == 1 && ([(AVSecondScreenController *)self _connectionForPlayer:playerCopy], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
-    v9 = [[AVSecondScreenConnection alloc] initWithPlayer:v6 playerLayer:v7];
+    v9 = [[AVSecondScreenConnection alloc] initWithPlayer:playerCopy playerLayer:layerCopy];
     [(AVSecondScreenController *)self addConnection:v9];
     [(AVSecondScreenConnection *)v9 startUpdates];
   }
@@ -476,13 +476,13 @@ LABEL_12:
   v2 = [(AVSecondScreenController *)&v23 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     connections = v2->_connections;
-    v2->_connections = v3;
+    v2->_connections = orderedSet;
 
-    v5 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
     secondScreens = v2->_secondScreens;
-    v2->_secondScreens = v5;
+    v2->_secondScreens = orderedSet2;
 
     v7 = [[AVObservationController alloc] initWithOwner:v2];
     observationController = v2->_observationController;
@@ -499,8 +499,8 @@ LABEL_12:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [MEMORY[0x1E69DCE70] avkit_secondScreenScenes];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    avkit_secondScreenScenes = [MEMORY[0x1E69DCE70] avkit_secondScreenScenes];
+    v10 = [avkit_secondScreenScenes countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -512,7 +512,7 @@ LABEL_12:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(avkit_secondScreenScenes);
           }
 
           v14 = [[AVSecondScreen alloc] initWithScene:*(*(&v19 + 1) + 8 * v13)];
@@ -522,7 +522,7 @@ LABEL_12:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v11 = [avkit_secondScreenScenes countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v11);
@@ -670,7 +670,7 @@ void __32__AVSecondScreenController_init__block_invoke(uint64_t a1, void *a2, ui
   block[1] = 3221225472;
   block[2] = __42__AVSecondScreenController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken[0] != -1)
   {
     dispatch_once(sharedInstance_onceToken, block);

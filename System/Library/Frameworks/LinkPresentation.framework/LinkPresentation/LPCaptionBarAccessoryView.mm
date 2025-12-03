@@ -1,27 +1,27 @@
 @interface LPCaptionBarAccessoryView
 - (CGSize)size;
-- (LPCaptionBarAccessoryView)initWithHost:(id)a3 type:(int64_t)a4 side:(int64_t)a5;
-- (id)_createImageViewWithImage:(id)a3;
+- (LPCaptionBarAccessoryView)initWithHost:(id)host type:(int64_t)type side:(int64_t)side;
+- (id)_createImageViewWithImage:(id)image;
 - (id)ensureAccessoryView;
 - (void)layoutComponentView;
 @end
 
 @implementation LPCaptionBarAccessoryView
 
-- (LPCaptionBarAccessoryView)initWithHost:(id)a3 type:(int64_t)a4 side:(int64_t)a5
+- (LPCaptionBarAccessoryView)initWithHost:(id)host type:(int64_t)type side:(int64_t)side
 {
-  v7 = a3;
+  hostCopy = host;
   v14.receiver = self;
   v14.super_class = LPCaptionBarAccessoryView;
-  v8 = [(LPComponentView *)&v14 initWithHost:v7];
+  v8 = [(LPComponentView *)&v14 initWithHost:hostCopy];
   v9 = v8;
   v10 = 0;
-  if (a4 && v8)
+  if (type && v8)
   {
-    v8->_type = a4;
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v8->_type = type;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     color = v9->_color;
-    v9->_color = v11;
+    v9->_color = secondaryLabelColor;
 
     v10 = v9;
   }
@@ -65,7 +65,7 @@
 
 - (void)layoutComponentView
 {
-  v3 = [(LPCaptionBarAccessoryView *)self ensureAccessoryView];
+  ensureAccessoryView = [(LPCaptionBarAccessoryView *)self ensureAccessoryView];
   [(LPCaptionBarAccessoryView *)self bounds];
   accessoryView = self->_accessoryView;
 
@@ -74,8 +74,8 @@
 
 - (CGSize)size
 {
-  v2 = [(LPCaptionBarAccessoryView *)self ensureAccessoryView];
-  [v2 intrinsicContentSize];
+  ensureAccessoryView = [(LPCaptionBarAccessoryView *)self ensureAccessoryView];
+  [ensureAccessoryView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -86,12 +86,12 @@
   return result;
 }
 
-- (id)_createImageViewWithImage:(id)a3
+- (id)_createImageViewWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v6 = [v4 platformImage];
-  v7 = [v5 initWithImage:v6];
+  platformImage = [imageCopy platformImage];
+  v7 = [v5 initWithImage:platformImage];
 
   [v7 setTintColor:self->_color];
   [v7 setContentMode:4];

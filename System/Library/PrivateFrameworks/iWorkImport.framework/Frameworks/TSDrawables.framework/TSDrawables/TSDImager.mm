@@ -1,46 +1,46 @@
 @interface TSDImager
-- (BOOL)drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4;
-- (BOOL)isCanvasDrawingIntoPDF:(id)a3;
+- (BOOL)drawPageInContext:(CGContext *)context createPage:(BOOL)page;
+- (BOOL)isCanvasDrawingIntoPDF:(id)f;
 - (BOOL)p_configureCanvas;
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3;
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout;
 - (CGImage)newImage;
 - (CGImage)p_newImageInReusableContext;
 - (CGRect)actualScaledClipRect;
 - (CGRect)unscaledClipRect;
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3;
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas;
 - (CGSize)maximumImagePixelSize;
-- (CGSize)p_evenDimensionsWithSize:(CGSize)a3;
+- (CGSize)p_evenDimensionsWithSize:(CGSize)size;
 - (CGSize)scaledImageSize;
 - (TSDImager)init;
-- (TSDImager)initWithDocumentRoot:(id)a3 renderForWideGamut:(BOOL)a4 renderHDRContent:(BOOL)a5 willBeCalledSafelyOutsideOfReadLock:(BOOL)a6;
+- (TSDImager)initWithDocumentRoot:(id)root renderForWideGamut:(BOOL)gamut renderHDRContent:(BOOL)content willBeCalledSafelyOutsideOfReadLock:(BOOL)lock;
 - (double)contentsScale;
 - (double)viewScale;
 - (id)documentRoot;
-- (id)dynamicOverrideForLayout:(id)a3;
-- (id)dynamicOverrideForRep:(id)a3;
+- (id)dynamicOverrideForLayout:(id)layout;
+- (id)dynamicOverrideForRep:(id)rep;
 - (id)generateImage;
 - (id)pdfData;
 - (id)pngData;
 - (void)dealloc;
 - (void)p_assertHasReadLock;
-- (void)p_drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4;
-- (void)setContentsScale:(double)a3;
-- (void)setDynamicOverride:(id)a3 forInfo:(id)a4;
-- (void)setInfos:(id)a3 allowLayoutIfNeeded:(BOOL)a4;
-- (void)setMaximumImagePixelSize:(CGSize)a3;
-- (void)setPostRenderAction:(id)a3;
-- (void)setScaledImageSize:(CGSize)a3;
-- (void)setViewScale:(double)a3;
+- (void)p_drawPageInContext:(CGContext *)context createPage:(BOOL)page;
+- (void)setContentsScale:(double)scale;
+- (void)setDynamicOverride:(id)override forInfo:(id)info;
+- (void)setInfos:(id)infos allowLayoutIfNeeded:(BOOL)needed;
+- (void)setMaximumImagePixelSize:(CGSize)size;
+- (void)setPostRenderAction:(id)action;
+- (void)setScaledImageSize:(CGSize)size;
+- (void)setViewScale:(double)scale;
 @end
 
 @implementation TSDImager
 
-- (TSDImager)initWithDocumentRoot:(id)a3 renderForWideGamut:(BOOL)a4 renderHDRContent:(BOOL)a5 willBeCalledSafelyOutsideOfReadLock:(BOOL)a6
+- (TSDImager)initWithDocumentRoot:(id)root renderForWideGamut:(BOOL)gamut renderHDRContent:(BOOL)content willBeCalledSafelyOutsideOfReadLock:(BOOL)lock
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = a3;
-  if (!v11)
+  contentCopy = content;
+  gamutCopy = gamut;
+  rootCopy = root;
+  if (!rootCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSDImager initWithDocumentRoot:renderForWideGamut:renderHDRContent:willBeCalledSafelyOutsideOfReadLock:]");
@@ -56,7 +56,7 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->mDocumentRoot, v11);
+    objc_storeWeak(&v19->mDocumentRoot, rootCopy);
     v21 = *(MEMORY[0x277CBF390] + 16);
     *(v20 + 24) = *MEMORY[0x277CBF390];
     *(v20 + 40) = v21;
@@ -67,11 +67,11 @@
     v28 = *(v20 + 120);
     *(v20 + 120) = v27;
 
-    objc_msgSend_i_setCanvasIsWideGamut_(*(v20 + 120), v29, v8);
-    objc_msgSend_setSupportsHDR_(*(v20 + 120), v30, v7);
+    objc_msgSend_i_setCanvasIsWideGamut_(*(v20 + 120), v29, gamutCopy);
+    objc_msgSend_setSupportsHDR_(*(v20 + 120), v30, contentCopy);
     *(v20 + 350) = 1;
     objc_msgSend_setDelegate_(*(v20 + 120), v31, v20);
-    *(v20 + 344) = a6;
+    *(v20 + 344) = lock;
   }
 
   return v20;
@@ -104,24 +104,24 @@
   [(TSDImager *)&v4 dealloc];
 }
 
-- (void)setPostRenderAction:(id)a3
+- (void)setPostRenderAction:(id)action
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(action, a2, action);
   mPostRenderAction = self->mPostRenderAction;
   self->mPostRenderAction = v4;
 }
 
-- (void)setInfos:(id)a3 allowLayoutIfNeeded:(BOOL)a4
+- (void)setInfos:(id)infos allowLayoutIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v7 = a3;
-  v9 = v7;
-  if (self->mInfos != v7)
+  neededCopy = needed;
+  infosCopy = infos;
+  v9 = infosCopy;
+  if (self->mInfos != infosCopy)
   {
-    v24 = v7;
-    if (v7)
+    v24 = infosCopy;
+    if (infosCopy)
     {
-      if (objc_msgSend_count(v7, v7, v8))
+      if (objc_msgSend_count(infosCopy, infosCopy, v8))
       {
         objc_msgSend_p_assertHasReadLock(self, v10, v11);
         if (self->mHasBeenUsed && !self->mMayBeReused)
@@ -136,14 +136,14 @@
       }
     }
 
-    objc_storeStrong(&self->mInfos, a3);
+    objc_storeStrong(&self->mInfos, infos);
     v22 = objc_msgSend_count(self->mInfos, v20, v21);
     v9 = v24;
     if (!v22)
     {
       objc_msgSend_setInfosToDisplay_(self->mCanvas, v24, self->mInfos);
       v9 = v24;
-      if (v4)
+      if (neededCopy)
       {
         objc_msgSend_nonInteractiveLayoutIfNeeded(self->mCanvas, v24, v23);
         v9 = v24;
@@ -167,9 +167,9 @@
   return self->mViewScale;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     v4 = MEMORY[0x277D81150];
     v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImager setViewScale:]");
@@ -183,7 +183,7 @@
 
   else
   {
-    self->mViewScale = a3;
+    self->mViewScale = scale;
     self->mScaledImageSize = *MEMORY[0x277CBF3A8];
     self->mUseScaledImageSize = 0;
   }
@@ -204,9 +204,9 @@
   return self->mContentsScale;
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     v4 = MEMORY[0x277D81150];
     v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImager setContentsScale:]");
@@ -220,7 +220,7 @@
 
   else
   {
-    self->mContentsScale = a3;
+    self->mContentsScale = scale;
     self->mScaledImageSize = *MEMORY[0x277CBF3A8];
     self->mUseScaledImageSize = 0;
   }
@@ -245,11 +245,11 @@
   return result;
 }
 
-- (void)setScaledImageSize:(CGSize)a3
+- (void)setScaledImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width <= 0.0 || a3.height <= 0.0)
+  height = size.height;
+  width = size.width;
+  if (size.width <= 0.0 || size.height <= 0.0)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImager setScaledImageSize:]");
@@ -289,10 +289,10 @@
   return result;
 }
 
-- (void)setMaximumImagePixelSize:(CGSize)a3
+- (void)setMaximumImagePixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   TSUCeilSize();
   v9 = v8;
   v10 = v7;
@@ -310,10 +310,10 @@
   self->mMaximumImagePixelSize.height = v10;
 }
 
-- (void)setDynamicOverride:(id)a3 forInfo:(id)a4
+- (void)setDynamicOverride:(id)override forInfo:(id)info
 {
-  v12 = a3;
-  v8 = a4;
+  overrideCopy = override;
+  infoCopy = info;
   mDynamicOverrides = self->mDynamicOverrides;
   if (!mDynamicOverrides)
   {
@@ -324,7 +324,7 @@
     mDynamicOverrides = self->mDynamicOverrides;
   }
 
-  objc_msgSend_setObject_forKey_(mDynamicOverrides, v6, v12, v8);
+  objc_msgSend_setObject_forKey_(mDynamicOverrides, v6, overrideCopy, infoCopy);
 }
 
 - (CGImage)newImage
@@ -471,20 +471,20 @@
   return v26;
 }
 
-- (BOOL)drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4
+- (BOOL)drawPageInContext:(CGContext *)context createPage:(BOOL)page
 {
-  v4 = a4;
-  objc_msgSend_p_assertHasReadLock(self, a2, a3);
+  pageCopy = page;
+  objc_msgSend_p_assertHasReadLock(self, a2, context);
   v9 = objc_msgSend_p_configureCanvas(self, v7, v8);
   if (v9)
   {
-    v11 = TSDCGContextGetBitmapQualityInfo(a3);
+    v11 = TSDCGContextGetBitmapQualityInfo(context);
     if (v11)
     {
-      objc_msgSend_addBitmapsToRenderingQualityInfo_inContext_(self->mCanvas, v10, v11, a3);
+      objc_msgSend_addBitmapsToRenderingQualityInfo_inContext_(self->mCanvas, v10, v11, context);
     }
 
-    objc_msgSend_p_drawPageInContext_createPage_(self, v10, a3, v4);
+    objc_msgSend_p_drawPageInContext_createPage_(self, v10, context, pageCopy);
   }
 
   return v9;
@@ -497,10 +497,10 @@
   return WeakRetained;
 }
 
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas
 {
   mCanvas = self->mCanvas;
-  if (mCanvas != a3)
+  if (mCanvas != canvas)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImager visibleScaledBoundsForClippingRepsOnCanvas:]");
@@ -511,7 +511,7 @@
     mCanvas = self->mCanvas;
   }
 
-  objc_msgSend_viewScale(mCanvas, a2, a3);
+  objc_msgSend_viewScale(mCanvas, a2, canvas);
 
   TSUMultiplyRectScalar();
   result.size.height = v15;
@@ -521,9 +521,9 @@
   return result;
 }
 
-- (BOOL)isCanvasDrawingIntoPDF:(id)a3
+- (BOOL)isCanvasDrawingIntoPDF:(id)f
 {
-  if (self->mCanvas != a3)
+  if (self->mCanvas != f)
   {
     v4 = MEMORY[0x277D81150];
     v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImager isCanvasDrawingIntoPDF:]");
@@ -536,9 +536,9 @@
   return self->mDrawingIntoPDF;
 }
 
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   shouldShowInstructionalText = objc_msgSend_shouldShowInstructionalText(self, v5, v6);
   if ((shouldShowInstructionalText & 1) != 0 || !objc_msgSend_shouldShowCaptionInstructionalText(self, v7, v8))
   {
@@ -548,7 +548,7 @@
   else
   {
     objc_opt_class();
-    v12 = objc_msgSend_info(v4, v10, v11);
+    v12 = objc_msgSend_info(layoutCopy, v10, v11);
     v13 = TSUDynamicCast();
     v14 = objc_opt_class();
     isCaption = objc_msgSend_isCaption(v14, v15, v16);
@@ -557,9 +557,9 @@
   return shouldShowInstructionalText | isCaption;
 }
 
-- (id)dynamicOverrideForLayout:(id)a3
+- (id)dynamicOverrideForLayout:(id)layout
 {
-  v5 = objc_msgSend_info(a3, a2, a3);
+  v5 = objc_msgSend_info(layout, a2, layout);
   if (v5)
   {
     v6 = objc_msgSend_objectForKey_(self->mDynamicOverrides, v4, v5);
@@ -573,9 +573,9 @@
   return v6;
 }
 
-- (id)dynamicOverrideForRep:(id)a3
+- (id)dynamicOverrideForRep:(id)rep
 {
-  v4 = objc_msgSend_layout(a3, a2, a3);
+  v4 = objc_msgSend_layout(rep, a2, rep);
   v6 = objc_msgSend_dynamicOverrideForLayout_(self, v5, v4);
 
   return v6;
@@ -876,10 +876,10 @@ LABEL_51:
   return v42;
 }
 
-- (CGSize)p_evenDimensionsWithSize:(CGSize)a3
+- (CGSize)p_evenDimensionsWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   TSURoundedSize();
   *v8.i64 = *v7.i64 - trunc(*v7.i64 * 0.5) * 2.0;
   v9.f64[0] = NAN;
@@ -932,45 +932,45 @@ LABEL_14:
   return result;
 }
 
-- (void)p_drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4
+- (void)p_drawPageInContext:(CGContext *)context createPage:(BOOL)page
 {
-  v4 = a4;
+  pageCopy = page;
   self->mDrawingIntoPDF = 1;
-  isPrinting = objc_msgSend_isPrinting(self, a2, a3);
+  isPrinting = objc_msgSend_isPrinting(self, a2, context);
   mDrawingIntoPDF = self->mDrawingIntoPDF;
   shouldSuppressBackgrounds = objc_msgSend_shouldSuppressBackgrounds(self->mCanvas, v9, v10);
-  TSDSetCGContextInfo(a3, isPrinting, mDrawingIntoPDF, 0, shouldSuppressBackgrounds, 1.0);
+  TSDSetCGContextInfo(context, isPrinting, mDrawingIntoPDF, 0, shouldSuppressBackgrounds, 1.0);
   x = self->mActualScaledClipRect.origin.x;
   y = self->mActualScaledClipRect.origin.y;
   height = self->mActualScaledClipRect.size.height;
-  if (v4)
+  if (pageCopy)
   {
     TSURectWithSize();
     v22.origin.x = v15;
     v22.origin.y = v16;
     v22.size.width = v17;
     v22.size.height = v18;
-    CGContextBeginPage(a3, &v22);
+    CGContextBeginPage(context, &v22);
   }
 
-  CGContextTranslateCTM(a3, 0.0, height);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  CGContextTranslateCTM(a3, -x, -y);
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextTranslateCTM(context, -x, -y);
   CGContextClipToRectSafe();
-  objc_msgSend_i_drawBackgroundInContext_(self->mCanvas, v19, a3);
-  objc_msgSend_i_drawRepsInContext_passingTest_(self->mCanvas, v20, a3, self->mInfoToDrawBeneathFilter);
+  objc_msgSend_i_drawBackgroundInContext_(self->mCanvas, v19, context);
+  objc_msgSend_i_drawRepsInContext_passingTest_(self->mCanvas, v20, context, self->mInfoToDrawBeneathFilter);
   mPostRenderAction = self->mPostRenderAction;
   if (mPostRenderAction)
   {
-    mPostRenderAction[2](mPostRenderAction, a3, self->mCanvas);
+    mPostRenderAction[2](mPostRenderAction, context, self->mCanvas);
   }
 
-  if (v4)
+  if (pageCopy)
   {
-    CGContextEndPage(a3);
+    CGContextEndPage(context);
   }
 
-  TSDClearCGContextInfo(a3);
+  TSDClearCGContextInfo(context);
   self->mDrawingIntoPDF = 0;
 }
 

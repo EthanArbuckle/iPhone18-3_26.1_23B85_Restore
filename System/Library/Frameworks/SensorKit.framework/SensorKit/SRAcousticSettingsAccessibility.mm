@@ -1,18 +1,18 @@
 @interface SRAcousticSettingsAccessibility
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRAcousticSettingsAccessibility)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRAcousticSettingsAccessibility)initWithCoder:(id)a3;
-- (SRAcousticSettingsAccessibility)initWithLeftRightBalance:(double)a3 monoAudioEnabled:(BOOL)a4 backgroundSounds:(id)a5 headphoneAccommodations:(id)a6;
+- (SRAcousticSettingsAccessibility)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRAcousticSettingsAccessibility)initWithCoder:(id)coder;
+- (SRAcousticSettingsAccessibility)initWithLeftRightBalance:(double)balance monoAudioEnabled:(BOOL)enabled backgroundSounds:(id)sounds headphoneAccommodations:(id)accommodations;
 - (id)binarySampleRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRAcousticSettingsAccessibility
 
-- (SRAcousticSettingsAccessibility)initWithLeftRightBalance:(double)a3 monoAudioEnabled:(BOOL)a4 backgroundSounds:(id)a5 headphoneAccommodations:(id)a6
+- (SRAcousticSettingsAccessibility)initWithLeftRightBalance:(double)balance monoAudioEnabled:(BOOL)enabled backgroundSounds:(id)sounds headphoneAccommodations:(id)accommodations
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -21,7 +21,7 @@
   v11 = v10;
   if (v10)
   {
-    if (fabs(a3) > 1.0)
+    if (fabs(balance) > 1.0)
     {
       v12 = SRLogAcousticSettings;
       if (os_log_type_enabled(SRLogAcousticSettings, OS_LOG_TYPE_FAULT))
@@ -29,7 +29,7 @@
         *buf = 138412546;
         v17 = @"SRAcousticSettingsAccessibility";
         v18 = 2048;
-        v19 = a3;
+        balanceCopy = balance;
         _os_log_fault_impl(&dword_1C914D000, v12, OS_LOG_TYPE_FAULT, "Failed to construct SRAcousticSettingsAccessibility object. %@: %f and is out of range of expected input.", buf, 0x16u);
       }
 
@@ -38,10 +38,10 @@
 
     else
     {
-      v10->_leftRightBalance = a3;
-      v10->_monoAudioEnabled = a4;
-      v10->_backgroundSounds = a5;
-      v11->_headphoneAccommodations = a6;
+      v10->_leftRightBalance = balance;
+      v10->_monoAudioEnabled = enabled;
+      v10->_backgroundSounds = sounds;
+      v11->_headphoneAccommodations = accommodations;
     }
   }
 
@@ -49,10 +49,10 @@
   return v11;
 }
 
-- (SRAcousticSettingsAccessibility)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRAcousticSettingsAccessibility)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_7;
   }
@@ -64,7 +64,7 @@
   {
     self = result;
     v12 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v12];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v12];
     if (v8)
     {
       v9 = v8;
@@ -132,9 +132,9 @@ LABEL_8:
   [(SRAcousticSettingsAccessibility *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v8) = 1;
   }
@@ -142,15 +142,15 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (leftRightBalance = self->_leftRightBalance, [a3 leftRightBalance], vabdd_f64(leftRightBalance, v6) < 0.00000011920929) && (monoAudioEnabled = self->_monoAudioEnabled, monoAudioEnabled == objc_msgSend(a3, "isMonoAudioEnabled")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (leftRightBalance = self->_leftRightBalance, [equal leftRightBalance], vabdd_f64(leftRightBalance, v6) < 0.00000011920929) && (monoAudioEnabled = self->_monoAudioEnabled, monoAudioEnabled == objc_msgSend(equal, "isMonoAudioEnabled")))
     {
-      v8 = -[SRAcousticSettingsAccessibilityBackgroundSounds isEqual:](self->_backgroundSounds, "isEqual:", [a3 backgroundSounds]);
+      v8 = -[SRAcousticSettingsAccessibilityBackgroundSounds isEqual:](self->_backgroundSounds, "isEqual:", [equal backgroundSounds]);
       if (v8)
       {
         headphoneAccommodations = self->_headphoneAccommodations;
-        v10 = [a3 headphoneAccommodations];
+        headphoneAccommodations = [equal headphoneAccommodations];
 
-        LOBYTE(v8) = [(SRAcousticSettingsAccessibilityHeadphoneAccommodations *)headphoneAccommodations isEqual:v10];
+        LOBYTE(v8) = [(SRAcousticSettingsAccessibilityHeadphoneAccommodations *)headphoneAccommodations isEqual:headphoneAccommodations];
       }
     }
 
@@ -180,35 +180,35 @@ LABEL_8:
   return [v3 stringWithFormat:@"%@ (%p) {Accessibility Settings leftRightBalance: %f, monoAudioIsEnabled: %d, backgroundSounds: %@, headphoneAccommodations: %@}", v5, self, v6, -[SRAcousticSettingsAccessibility isMonoAudioEnabled](self, "isMonoAudioEnabled"), -[SRAcousticSettingsAccessibility backgroundSounds](self, "backgroundSounds"), -[SRAcousticSettingsAccessibility headphoneAccommodations](self, "headphoneAccommodations")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   [(SRAcousticSettingsAccessibility *)self leftRightBalance];
-  [a3 encodeDouble:@"leftRightBalance" forKey:?];
-  [a3 encodeBool:-[SRAcousticSettingsAccessibility isMonoAudioEnabled](self forKey:{"isMonoAudioEnabled"), @"monoAudioEnabled"}];
-  [a3 encodeObject:-[SRAcousticSettingsAccessibility backgroundSounds](self forKey:{"backgroundSounds"), @"SRAcousticSettingsAccessibilityBackgroundSounds"}];
-  v6 = [(SRAcousticSettingsAccessibility *)self headphoneAccommodations];
+  [coder encodeDouble:@"leftRightBalance" forKey:?];
+  [coder encodeBool:-[SRAcousticSettingsAccessibility isMonoAudioEnabled](self forKey:{"isMonoAudioEnabled"), @"monoAudioEnabled"}];
+  [coder encodeObject:-[SRAcousticSettingsAccessibility backgroundSounds](self forKey:{"backgroundSounds"), @"SRAcousticSettingsAccessibilityBackgroundSounds"}];
+  headphoneAccommodations = [(SRAcousticSettingsAccessibility *)self headphoneAccommodations];
 
-  [a3 encodeObject:v6 forKey:@"SRAcousticSettingsAccessibilityHeadphoneAccommodations"];
+  [coder encodeObject:headphoneAccommodations forKey:@"SRAcousticSettingsAccessibilityHeadphoneAccommodations"];
 }
 
-- (SRAcousticSettingsAccessibility)initWithCoder:(id)a3
+- (SRAcousticSettingsAccessibility)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 decodeDoubleForKey:@"leftRightBalance"];
+  [coder decodeDoubleForKey:@"leftRightBalance"];
   v7 = v6;
-  v8 = [a3 decodeBoolForKey:@"monoAudioEnabled"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsAccessibilityBackgroundSounds"];
-  v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsAccessibilityHeadphoneAccommodations"];
+  v8 = [coder decodeBoolForKey:@"monoAudioEnabled"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsAccessibilityBackgroundSounds"];
+  v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsAccessibilityHeadphoneAccommodations"];
   if (!v9)
   {
     v15 = SRLogAcousticSettings;

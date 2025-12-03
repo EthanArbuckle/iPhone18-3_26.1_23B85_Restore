@@ -1,27 +1,27 @@
 @interface CellularNrRrcConnCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)rrcConnReestReqAtIndex:(unint64_t)a3;
-- (unsigned)rrcConnRejectAtIndex:(unint64_t)a3;
-- (unsigned)rrcConnRelAtIndex:(unint64_t)a3;
-- (unsigned)rrcConnRlfAtIndex:(unint64_t)a3;
-- (unsigned)rrcConnSetupReqAtIndex:(unint64_t)a3;
-- (unsigned)rrcResumeReqAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)rrcConnReestReqAtIndex:(unint64_t)index;
+- (unsigned)rrcConnRejectAtIndex:(unint64_t)index;
+- (unsigned)rrcConnRelAtIndex:(unint64_t)index;
+- (unsigned)rrcConnRlfAtIndex:(unint64_t)index;
+- (unsigned)rrcConnSetupReqAtIndex:(unint64_t)index;
+- (unsigned)rrcResumeReqAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationSeconds:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasRrcConnDrbEstComp:(BOOL)a3;
-- (void)setHasRrcConnReestComp:(BOOL)a3;
-- (void)setHasRrcConnSetupComp:(BOOL)a3;
-- (void)setHasRrcResumeComp:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationSeconds:(BOOL)seconds;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasRrcConnDrbEstComp:(BOOL)comp;
+- (void)setHasRrcConnReestComp:(BOOL)comp;
+- (void)setHasRrcConnSetupComp:(BOOL)comp;
+- (void)setHasRrcResumeComp:(BOOL)comp;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrRrcConnCount
@@ -39,9 +39,9 @@
   [(CellularNrRrcConnCount *)&v3 dealloc];
 }
 
-- (void)setHasDurationSeconds:(BOOL)a3
+- (void)setHasDurationSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -54,23 +54,23 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (unsigned)rrcConnSetupReqAtIndex:(unint64_t)a3
+- (unsigned)rrcConnSetupReqAtIndex:(unint64_t)index
 {
   p_rrcConnSetupReqs = &self->_rrcConnSetupReqs;
   count = self->_rrcConnSetupReqs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rrcConnSetupReqs->list[a3];
+  return p_rrcConnSetupReqs->list[index];
 }
 
-- (void)setHasRrcConnSetupComp:(BOOL)a3
+- (void)setHasRrcConnSetupComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 64;
   }
@@ -83,51 +83,51 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (unsigned)rrcConnRejectAtIndex:(unint64_t)a3
+- (unsigned)rrcConnRejectAtIndex:(unint64_t)index
 {
   p_rrcConnRejects = &self->_rrcConnRejects;
   count = self->_rrcConnRejects.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rrcConnRejects->list[a3];
+  return p_rrcConnRejects->list[index];
 }
 
-- (unsigned)rrcConnRlfAtIndex:(unint64_t)a3
+- (unsigned)rrcConnRlfAtIndex:(unint64_t)index
 {
   p_rrcConnRlfs = &self->_rrcConnRlfs;
   count = self->_rrcConnRlfs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rrcConnRlfs->list[a3];
+  return p_rrcConnRlfs->list[index];
 }
 
-- (unsigned)rrcConnReestReqAtIndex:(unint64_t)a3
+- (unsigned)rrcConnReestReqAtIndex:(unint64_t)index
 {
   p_rrcConnReestReqs = &self->_rrcConnReestReqs;
   count = self->_rrcConnReestReqs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rrcConnReestReqs->list[a3];
+  return p_rrcConnReestReqs->list[index];
 }
 
-- (void)setHasRrcConnDrbEstComp:(BOOL)a3
+- (void)setHasRrcConnDrbEstComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 16;
   }
@@ -140,23 +140,23 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (unsigned)rrcConnRelAtIndex:(unint64_t)a3
+- (unsigned)rrcConnRelAtIndex:(unint64_t)index
 {
   p_rrcConnRels = &self->_rrcConnRels;
   count = self->_rrcConnRels.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rrcConnRels->list[a3];
+  return p_rrcConnRels->list[index];
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 4;
   }
@@ -169,9 +169,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 256;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 8;
   }
@@ -199,23 +199,23 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (unsigned)rrcResumeReqAtIndex:(unint64_t)a3
+- (unsigned)rrcResumeReqAtIndex:(unint64_t)index
 {
   p_rrcResumeReqs = &self->_rrcResumeReqs;
   count = self->_rrcResumeReqs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rrcResumeReqs->list[a3];
+  return p_rrcResumeReqs->list[index];
 }
 
-- (void)setHasRrcResumeComp:(BOOL)a3
+- (void)setHasRrcResumeComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 128;
   }
@@ -228,9 +228,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRrcConnReestComp:(BOOL)a3
+- (void)setHasRrcConnReestComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 32;
   }
@@ -248,8 +248,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrRrcConnCount;
   v3 = [(CellularNrRrcConnCount *)&v7 description];
-  v4 = [(CellularNrRrcConnCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrRrcConnCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -347,16 +347,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v29 = v4;
+  v29 = toCopy;
   if (has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v29;
+    toCopy = v29;
     has = self->_has;
   }
 
@@ -364,7 +364,7 @@
   {
     durationSeconds = self->_durationSeconds;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
   }
 
   if (self->_rrcConnSetupReqs.count)
@@ -374,7 +374,7 @@
     {
       v9 = self->_rrcConnSetupReqs.list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v29;
+      toCopy = v29;
       ++v8;
     }
 
@@ -385,7 +385,7 @@
   {
     rrcConnSetupComp = self->_rrcConnSetupComp;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
   }
 
   if (self->_rrcConnRejects.count)
@@ -395,7 +395,7 @@
     {
       v12 = self->_rrcConnRejects.list[v11];
       PBDataWriterWriteUint32Field();
-      v4 = v29;
+      toCopy = v29;
       ++v11;
     }
 
@@ -409,7 +409,7 @@
     {
       v14 = self->_rrcConnRlfs.list[v13];
       PBDataWriterWriteUint32Field();
-      v4 = v29;
+      toCopy = v29;
       ++v13;
     }
 
@@ -423,7 +423,7 @@
     {
       v16 = self->_rrcConnReestReqs.list[v15];
       PBDataWriterWriteUint32Field();
-      v4 = v29;
+      toCopy = v29;
       ++v15;
     }
 
@@ -434,7 +434,7 @@
   {
     rrcConnDrbEstComp = self->_rrcConnDrbEstComp;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
   }
 
   if (self->_rrcConnRels.count)
@@ -444,7 +444,7 @@
     {
       v19 = self->_rrcConnRels.list[v18];
       PBDataWriterWriteUint32Field();
-      v4 = v29;
+      toCopy = v29;
       ++v18;
     }
 
@@ -455,13 +455,13 @@
   {
     numSubs = self->_numSubs;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
   }
 
   if (self->_plmn)
   {
     PBDataWriterWriteDataField();
-    v4 = v29;
+    toCopy = v29;
   }
 
   v21 = self->_has;
@@ -469,7 +469,7 @@
   {
     subsId = self->_subsId;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
     v21 = self->_has;
   }
 
@@ -477,7 +477,7 @@
   {
     psPref = self->_psPref;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
   }
 
   if (self->_rrcResumeReqs.count)
@@ -487,7 +487,7 @@
     {
       v25 = self->_rrcResumeReqs.list[v24];
       PBDataWriterWriteUint32Field();
-      v4 = v29;
+      toCopy = v29;
       ++v24;
     }
 
@@ -499,7 +499,7 @@
   {
     rrcResumeComp = self->_rrcResumeComp;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
     v26 = self->_has;
   }
 
@@ -507,35 +507,35 @@
   {
     rrcConnReestComp = self->_rrcConnReestComp;
     PBDataWriterWriteUint32Field();
-    v4 = v29;
+    toCopy = v29;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[19] = self->_timestamp;
-    *(v4 + 100) |= 1u;
+    toCopy[19] = self->_timestamp;
+    *(toCopy + 100) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 40) = self->_durationSeconds;
-    *(v4 + 100) |= 2u;
+    *(toCopy + 40) = self->_durationSeconds;
+    *(toCopy + 100) |= 2u;
   }
 
-  v27 = v4;
+  v27 = toCopy;
   if ([(CellularNrRrcConnCount *)self rrcConnSetupReqsCount])
   {
     [v27 clearRrcConnSetupReqs];
-    v6 = [(CellularNrRrcConnCount *)self rrcConnSetupReqsCount];
-    if (v6)
+    rrcConnSetupReqsCount = [(CellularNrRrcConnCount *)self rrcConnSetupReqsCount];
+    if (rrcConnSetupReqsCount)
     {
-      v7 = v6;
+      v7 = rrcConnSetupReqsCount;
       for (i = 0; i != v7; ++i)
       {
         [v27 addRrcConnSetupReq:{-[CellularNrRrcConnCount rrcConnSetupReqAtIndex:](self, "rrcConnSetupReqAtIndex:", i)}];
@@ -552,10 +552,10 @@
   if ([(CellularNrRrcConnCount *)self rrcConnRejectsCount])
   {
     [v27 clearRrcConnRejects];
-    v9 = [(CellularNrRrcConnCount *)self rrcConnRejectsCount];
-    if (v9)
+    rrcConnRejectsCount = [(CellularNrRrcConnCount *)self rrcConnRejectsCount];
+    if (rrcConnRejectsCount)
     {
-      v10 = v9;
+      v10 = rrcConnRejectsCount;
       for (j = 0; j != v10; ++j)
       {
         [v27 addRrcConnReject:{-[CellularNrRrcConnCount rrcConnRejectAtIndex:](self, "rrcConnRejectAtIndex:", j)}];
@@ -566,10 +566,10 @@
   if ([(CellularNrRrcConnCount *)self rrcConnRlfsCount])
   {
     [v27 clearRrcConnRlfs];
-    v12 = [(CellularNrRrcConnCount *)self rrcConnRlfsCount];
-    if (v12)
+    rrcConnRlfsCount = [(CellularNrRrcConnCount *)self rrcConnRlfsCount];
+    if (rrcConnRlfsCount)
     {
-      v13 = v12;
+      v13 = rrcConnRlfsCount;
       for (k = 0; k != v13; ++k)
       {
         [v27 addRrcConnRlf:{-[CellularNrRrcConnCount rrcConnRlfAtIndex:](self, "rrcConnRlfAtIndex:", k)}];
@@ -580,10 +580,10 @@
   if ([(CellularNrRrcConnCount *)self rrcConnReestReqsCount])
   {
     [v27 clearRrcConnReestReqs];
-    v15 = [(CellularNrRrcConnCount *)self rrcConnReestReqsCount];
-    if (v15)
+    rrcConnReestReqsCount = [(CellularNrRrcConnCount *)self rrcConnReestReqsCount];
+    if (rrcConnReestReqsCount)
     {
-      v16 = v15;
+      v16 = rrcConnReestReqsCount;
       for (m = 0; m != v16; ++m)
       {
         [v27 addRrcConnReestReq:{-[CellularNrRrcConnCount rrcConnReestReqAtIndex:](self, "rrcConnReestReqAtIndex:", m)}];
@@ -600,10 +600,10 @@
   if ([(CellularNrRrcConnCount *)self rrcConnRelsCount])
   {
     [v27 clearRrcConnRels];
-    v18 = [(CellularNrRrcConnCount *)self rrcConnRelsCount];
-    if (v18)
+    rrcConnRelsCount = [(CellularNrRrcConnCount *)self rrcConnRelsCount];
+    if (rrcConnRelsCount)
     {
-      v19 = v18;
+      v19 = rrcConnRelsCount;
       for (n = 0; n != v19; ++n)
       {
         [v27 addRrcConnRel:{-[CellularNrRrcConnCount rrcConnRelAtIndex:](self, "rrcConnRelAtIndex:", n)}];
@@ -641,10 +641,10 @@
   if ([(CellularNrRrcConnCount *)self rrcResumeReqsCount])
   {
     [v27 clearRrcResumeReqs];
-    v23 = [(CellularNrRrcConnCount *)self rrcResumeReqsCount];
-    if (v23)
+    rrcResumeReqsCount = [(CellularNrRrcConnCount *)self rrcResumeReqsCount];
+    if (rrcResumeReqsCount)
     {
-      v24 = v23;
+      v24 = rrcResumeReqsCount;
       for (ii = 0; ii != v24; ++ii)
       {
         [v27 addRrcResumeReq:{-[CellularNrRrcConnCount rrcResumeReqAtIndex:](self, "rrcResumeReqAtIndex:", ii)}];
@@ -667,9 +667,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -708,7 +708,7 @@
     *(v6 + 100) |= 4u;
   }
 
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = *(v6 + 21);
   *(v6 + 21) = v8;
 
@@ -744,19 +744,19 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
   has = self->_has;
-  v6 = *(v4 + 100);
+  v6 = *(equalCopy + 100);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 19))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 19))
     {
       goto LABEL_56;
     }
@@ -769,7 +769,7 @@
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_durationSeconds != *(v4 + 40))
+    if ((v6 & 2) == 0 || self->_durationSeconds != *(equalCopy + 40))
     {
       goto LABEL_56;
     }
@@ -785,10 +785,10 @@
     goto LABEL_56;
   }
 
-  v7 = *(v4 + 100);
+  v7 = *(equalCopy + 100);
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_rrcConnSetupComp != *(v4 + 47))
+    if ((v7 & 0x40) == 0 || self->_rrcConnSetupComp != *(equalCopy + 47))
     {
       goto LABEL_56;
     }
@@ -804,10 +804,10 @@
     goto LABEL_56;
   }
 
-  v8 = *(v4 + 100);
+  v8 = *(equalCopy + 100);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_rrcConnDrbEstComp != *(v4 + 45))
+    if ((v8 & 0x10) == 0 || self->_rrcConnDrbEstComp != *(equalCopy + 45))
     {
       goto LABEL_56;
     }
@@ -824,10 +824,10 @@
   }
 
   v9 = self->_has;
-  v10 = *(v4 + 100);
+  v10 = *(equalCopy + 100);
   if ((v9 & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_numSubs != *(v4 + 41))
+    if ((v10 & 4) == 0 || self->_numSubs != *(equalCopy + 41))
     {
       goto LABEL_56;
     }
@@ -839,7 +839,7 @@
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 21))
+  if (plmn | *(equalCopy + 21))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -849,23 +849,23 @@
     v9 = self->_has;
   }
 
-  v12 = *(v4 + 100);
+  v12 = *(equalCopy + 100);
   if ((v9 & 0x100) != 0)
   {
-    if ((*(v4 + 100) & 0x100) == 0 || self->_subsId != *(v4 + 49))
+    if ((*(equalCopy + 100) & 0x100) == 0 || self->_subsId != *(equalCopy + 49))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 100) & 0x100) != 0)
+  else if ((*(equalCopy + 100) & 0x100) != 0)
   {
     goto LABEL_56;
   }
 
   if ((v9 & 8) != 0)
   {
-    if ((v12 & 8) == 0 || self->_psPref != *(v4 + 44))
+    if ((v12 & 8) == 0 || self->_psPref != *(equalCopy + 44))
     {
       goto LABEL_56;
     }
@@ -884,10 +884,10 @@ LABEL_56:
   }
 
   v13 = self->_has;
-  v14 = *(v4 + 100);
+  v14 = *(equalCopy + 100);
   if ((v13 & 0x80) != 0)
   {
-    if ((v14 & 0x80) == 0 || self->_rrcResumeComp != *(v4 + 48))
+    if ((v14 & 0x80) == 0 || self->_rrcResumeComp != *(equalCopy + 48))
     {
       goto LABEL_56;
     }
@@ -900,7 +900,7 @@ LABEL_56:
 
   if ((v13 & 0x20) != 0)
   {
-    if ((v14 & 0x20) == 0 || self->_rrcConnReestComp != *(v4 + 46))
+    if ((v14 & 0x20) == 0 || self->_rrcConnReestComp != *(equalCopy + 46))
     {
       goto LABEL_56;
     }
@@ -1028,28 +1028,28 @@ LABEL_22:
   return v22 ^ v23 ^ v20 ^ v21 ^ v19 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 100);
+  fromCopy = from;
+  v5 = *(fromCopy + 100);
   if (v5)
   {
-    self->_timestamp = *(v4 + 19);
+    self->_timestamp = *(fromCopy + 19);
     *&self->_has |= 1u;
-    v5 = *(v4 + 100);
+    v5 = *(fromCopy + 100);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_durationSeconds = *(v4 + 40);
+    self->_durationSeconds = *(fromCopy + 40);
     *&self->_has |= 2u;
   }
 
-  v27 = v4;
-  v6 = [v4 rrcConnSetupReqsCount];
-  if (v6)
+  v27 = fromCopy;
+  rrcConnSetupReqsCount = [fromCopy rrcConnSetupReqsCount];
+  if (rrcConnSetupReqsCount)
   {
-    v7 = v6;
+    v7 = rrcConnSetupReqsCount;
     for (i = 0; i != v7; ++i)
     {
       -[CellularNrRrcConnCount addRrcConnSetupReq:](self, "addRrcConnSetupReq:", [v27 rrcConnSetupReqAtIndex:i]);
@@ -1062,30 +1062,30 @@ LABEL_22:
     *&self->_has |= 0x40u;
   }
 
-  v9 = [v27 rrcConnRejectsCount];
-  if (v9)
+  rrcConnRejectsCount = [v27 rrcConnRejectsCount];
+  if (rrcConnRejectsCount)
   {
-    v10 = v9;
+    v10 = rrcConnRejectsCount;
     for (j = 0; j != v10; ++j)
     {
       -[CellularNrRrcConnCount addRrcConnReject:](self, "addRrcConnReject:", [v27 rrcConnRejectAtIndex:j]);
     }
   }
 
-  v12 = [v27 rrcConnRlfsCount];
-  if (v12)
+  rrcConnRlfsCount = [v27 rrcConnRlfsCount];
+  if (rrcConnRlfsCount)
   {
-    v13 = v12;
+    v13 = rrcConnRlfsCount;
     for (k = 0; k != v13; ++k)
     {
       -[CellularNrRrcConnCount addRrcConnRlf:](self, "addRrcConnRlf:", [v27 rrcConnRlfAtIndex:k]);
     }
   }
 
-  v15 = [v27 rrcConnReestReqsCount];
-  if (v15)
+  rrcConnReestReqsCount = [v27 rrcConnReestReqsCount];
+  if (rrcConnReestReqsCount)
   {
-    v16 = v15;
+    v16 = rrcConnReestReqsCount;
     for (m = 0; m != v16; ++m)
     {
       -[CellularNrRrcConnCount addRrcConnReestReq:](self, "addRrcConnReestReq:", [v27 rrcConnReestReqAtIndex:m]);
@@ -1098,10 +1098,10 @@ LABEL_22:
     *&self->_has |= 0x10u;
   }
 
-  v18 = [v27 rrcConnRelsCount];
-  if (v18)
+  rrcConnRelsCount = [v27 rrcConnRelsCount];
+  if (rrcConnRelsCount)
   {
-    v19 = v18;
+    v19 = rrcConnRelsCount;
     for (n = 0; n != v19; ++n)
     {
       -[CellularNrRrcConnCount addRrcConnRel:](self, "addRrcConnRel:", [v27 rrcConnRelAtIndex:n]);
@@ -1135,10 +1135,10 @@ LABEL_22:
     *&self->_has |= 8u;
   }
 
-  v23 = [v21 rrcResumeReqsCount];
-  if (v23)
+  rrcResumeReqsCount = [v21 rrcResumeReqsCount];
+  if (rrcResumeReqsCount)
   {
-    v24 = v23;
+    v24 = rrcResumeReqsCount;
     for (ii = 0; ii != v24; ++ii)
     {
       -[CellularNrRrcConnCount addRrcResumeReq:](self, "addRrcResumeReq:", [v27 rrcResumeReqAtIndex:ii]);

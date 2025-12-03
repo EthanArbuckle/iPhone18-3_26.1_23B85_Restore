@@ -15,8 +15,8 @@
   {
     v2->_documentUpdateOffsetInterval = 1.0;
     v2->_duration = 30.0;
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:@"maximumAutoPlayableItemsQAOverride"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"maximumAutoPlayableItemsQAOverride"];
 
     if (v5)
     {
@@ -33,24 +33,24 @@
 
     else
     {
-      v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v8 = [v7 objectForKey:@"maximumAutoPlayableItems"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v8 = [standardUserDefaults2 objectForKey:@"maximumAutoPlayableItems"];
 
       if (v8)
       {
-        v9 = [v8 unsignedIntegerValue];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
       }
 
       else
       {
-        v9 = 3;
+        unsignedIntegerValue = 3;
       }
 
-      v3->_maximumAutoPlayableItems = v9;
+      v3->_maximumAutoPlayableItems = unsignedIntegerValue;
     }
 
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v11 = [v10 objectForKey:@"autoPlayTimerDuration"];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v11 = [standardUserDefaults3 objectForKey:@"autoPlayTimerDuration"];
 
     if (v11)
     {
@@ -63,8 +63,8 @@
     }
 
     v3->_autoPlayTimerDuration = v12;
-    v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v14 = [v13 objectForKey:@"bootStrapInterval"];
+    standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v14 = [standardUserDefaults4 objectForKey:@"bootStrapInterval"];
 
     if (v14)
     {
@@ -77,8 +77,8 @@
     }
 
     v3->_bootstrapInterval = v15;
-    v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v17 = [v16 objectForKey:@"minAutoPlayStopTimeQAOverride"];
+    standardUserDefaults5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v17 = [standardUserDefaults5 objectForKey:@"minAutoPlayStopTimeQAOverride"];
 
     if (v17)
     {
@@ -88,8 +88,8 @@
 
     else
     {
-      v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v20 = [v19 objectForKey:@"minAutoPlayStopTime"];
+      standardUserDefaults6 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v20 = [standardUserDefaults6 objectForKey:@"minAutoPlayStopTime"];
 
       if (v20)
       {
@@ -104,8 +104,8 @@
       *&v3->_minAutoPlayStopTime = v21;
     }
 
-    v22 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v23 = [v22 objectForKey:@"minTimeIntervalFromEndToDisplay"];
+    standardUserDefaults7 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v23 = [standardUserDefaults7 objectForKey:@"minTimeIntervalFromEndToDisplay"];
 
     if (v23)
     {

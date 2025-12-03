@@ -6,8 +6,8 @@
 
 - (unsigned)capabilities
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = MRCapabilitiesFromProtobuf(v2);
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  v3 = MRCapabilitiesFromProtobuf(underlyingCodableMessage);
 
   return v3;
 }

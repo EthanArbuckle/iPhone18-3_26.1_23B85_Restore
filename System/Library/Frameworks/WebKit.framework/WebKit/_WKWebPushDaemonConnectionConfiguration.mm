@@ -1,7 +1,7 @@
 @interface _WKWebPushDaemonConnectionConfiguration
 - ($115C4C562B26FF47E01F9F4EA65B5887)hostApplicationAuditToken;
 - (_WKWebPushDaemonConnectionConfiguration)init;
-- (void)setHostApplicationAuditToken:(id *)a3;
+- (void)setHostApplicationAuditToken:(id *)token;
 @end
 
 @implementation _WKWebPushDaemonConnectionConfiguration
@@ -27,10 +27,10 @@
   return self;
 }
 
-- (void)setHostApplicationAuditToken:(id *)a3
+- (void)setHostApplicationAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_hostApplicationAuditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_hostApplicationAuditToken.val = *token->var0;
   *&self->_hostApplicationAuditToken.val[4] = v3;
 }
 

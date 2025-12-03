@@ -1,14 +1,14 @@
 @interface PosterEditingConfirmationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PosterEditingConfirmationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PosterBoard.PosterEditingConfirmationViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PosterBoard.PosterEditingConfirmationViewController" hasSwiftFieldOfAnyClass:@"continueButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PosterBoard.PosterEditingConfirmationViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PosterBoard.PosterEditingConfirmationViewController" hasSwiftFieldOfAnyClass:@"continueButton"];
 }
 
 @end

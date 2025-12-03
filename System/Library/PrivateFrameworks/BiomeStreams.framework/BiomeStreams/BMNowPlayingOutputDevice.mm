@@ -1,23 +1,23 @@
 @interface BMNowPlayingOutputDevice
-- (BMNowPlayingOutputDevice)initWithDeviceType:(unint64_t)a3 deviceSubType:(unint64_t)a4 deviceId:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMNowPlayingOutputDevice)initWithDeviceType:(unint64_t)type deviceSubType:(unint64_t)subType deviceId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (id)proto;
 @end
 
 @implementation BMNowPlayingOutputDevice
 
-- (BMNowPlayingOutputDevice)initWithDeviceType:(unint64_t)a3 deviceSubType:(unint64_t)a4 deviceId:(id)a5
+- (BMNowPlayingOutputDevice)initWithDeviceType:(unint64_t)type deviceSubType:(unint64_t)subType deviceId:(id)id
 {
-  v8 = a5;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = BMNowPlayingOutputDevice;
   v9 = [(BMNowPlayingOutputDevice *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_deviceType = a3;
-    v9->_deviceSubType = a4;
-    v11 = [v8 copy];
+    v9->_deviceType = type;
+    v9->_deviceSubType = subType;
+    v11 = [idCopy copy];
     deviceId = v10->_deviceId;
     v10->_deviceId = v11;
   }
@@ -101,13 +101,13 @@ LABEL_24:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     deviceType = self->_deviceType;
     if (deviceType == [v5 deviceType] && (deviceSubType = self->_deviceSubType, deviceSubType == objc_msgSend(v5, "deviceSubType")))
     {
@@ -127,8 +127,8 @@ LABEL_14:
         v9 = self->_deviceId;
       }
 
-      v10 = [v5 deviceId];
-      v11 = [(NSString *)v9 isEqual:v10];
+      deviceId = [v5 deviceId];
+      v11 = [(NSString *)v9 isEqual:deviceId];
 
       if (!deviceId)
       {

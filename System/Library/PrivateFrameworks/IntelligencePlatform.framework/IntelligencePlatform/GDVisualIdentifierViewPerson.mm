@@ -1,6 +1,6 @@
 @interface GDVisualIdentifierViewPerson
 - (id)description;
-- (id)shortArrayDescription:(id)a3;
+- (id)shortArrayDescription:(id)description;
 @end
 
 @implementation GDVisualIdentifierViewPerson
@@ -8,13 +8,13 @@
 - (id)description
 {
   v28 = MEMORY[0x1E696AEC0];
-  v26 = [(GDPerson *)self entityIdentifier];
-  v37 = [(GDPerson *)self nameComponents];
-  v3 = [(GDPerson *)self dateOfBirth];
-  v34 = v3;
-  if (v3)
+  entityIdentifier = [(GDPerson *)self entityIdentifier];
+  nameComponents = [(GDPerson *)self nameComponents];
+  dateOfBirth = [(GDPerson *)self dateOfBirth];
+  v34 = dateOfBirth;
+  if (dateOfBirth)
   {
-    v4 = v3;
+    v4 = dateOfBirth;
   }
 
   else
@@ -23,11 +23,11 @@
   }
 
   v24 = v4;
-  v5 = [(GDPerson *)self nonGregorianDateOfBirth];
-  v33 = v5;
-  if (v5)
+  nonGregorianDateOfBirth = [(GDPerson *)self nonGregorianDateOfBirth];
+  v33 = nonGregorianDateOfBirth;
+  if (nonGregorianDateOfBirth)
   {
-    v6 = v5;
+    v6 = nonGregorianDateOfBirth;
   }
 
   else
@@ -36,11 +36,11 @@
   }
 
   v23 = v6;
-  v7 = [(GDPerson *)self anniversary];
-  v32 = v7;
-  if (v7)
+  anniversary = [(GDPerson *)self anniversary];
+  v32 = anniversary;
+  if (anniversary)
   {
-    v8 = v7;
+    v8 = anniversary;
   }
 
   else
@@ -49,45 +49,45 @@
   }
 
   v22 = v8;
-  v31 = [(GDPerson *)self names];
-  v36 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v31];
-  v30 = [(GDPerson *)self relatedPeople];
-  v35 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v30];
-  v27 = [(GDVisualIdentifierViewPerson *)self locations];
-  v19 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v27];
-  v25 = [(GDPerson *)self phoneNumbers];
-  v9 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v25];
-  v21 = [(GDPerson *)self emails];
-  v10 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v21];
-  v20 = [(GDPerson *)self contactIdentifiers];
-  v11 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v20];
-  v12 = [(GDPerson *)self visualIdentifierObjects];
-  v13 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v12];
-  v14 = [(GDVisualIdentifierViewPerson *)self conversationIdentifiers];
-  v15 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v14];
-  v16 = [(GDVisualIdentifierViewPerson *)self bundleIdentifiers];
-  v17 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:v16];
-  v29 = [v28 stringWithFormat:@"<GDVisualIdentifierViewPerson %@, %@, dob: %@ ngdob: %@ an: %@ names: %@ related: %@ loc: %@ phone: %@ email: %@ cnid: %@ vido: %@ cnvid: %@ bndl: %@>", v26, v37, v24, v23, v22, v36, v35, v19, v9, v10, v11, v13, v15, v17];
+  names = [(GDPerson *)self names];
+  v36 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:names];
+  relatedPeople = [(GDPerson *)self relatedPeople];
+  v35 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:relatedPeople];
+  locations = [(GDVisualIdentifierViewPerson *)self locations];
+  v19 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:locations];
+  phoneNumbers = [(GDPerson *)self phoneNumbers];
+  v9 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:phoneNumbers];
+  emails = [(GDPerson *)self emails];
+  v10 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:emails];
+  contactIdentifiers = [(GDPerson *)self contactIdentifiers];
+  v11 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:contactIdentifiers];
+  visualIdentifierObjects = [(GDPerson *)self visualIdentifierObjects];
+  v13 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:visualIdentifierObjects];
+  conversationIdentifiers = [(GDVisualIdentifierViewPerson *)self conversationIdentifiers];
+  v15 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:conversationIdentifiers];
+  bundleIdentifiers = [(GDVisualIdentifierViewPerson *)self bundleIdentifiers];
+  v17 = [(GDVisualIdentifierViewPerson *)self shortArrayDescription:bundleIdentifiers];
+  v29 = [v28 stringWithFormat:@"<GDVisualIdentifierViewPerson %@, %@, dob: %@ ngdob: %@ an: %@ names: %@ related: %@ loc: %@ phone: %@ email: %@ cnid: %@ vido: %@ cnvid: %@ bndl: %@>", entityIdentifier, nameComponents, v24, v23, v22, v36, v35, v19, v9, v10, v11, v13, v15, v17];
 
   return v29;
 }
 
-- (id)shortArrayDescription:(id)a3
+- (id)shortArrayDescription:(id)description
 {
-  v3 = a3;
-  if ([v3 count])
+  descriptionCopy = description;
+  if ([descriptionCopy count])
   {
-    if ([v3 count] == 1)
+    if ([descriptionCopy count] == 1)
     {
-      v4 = [v3 firstObject];
+      firstObject = [descriptionCopy firstObject];
     }
 
     else
     {
-      v4 = v3;
+      firstObject = descriptionCopy;
     }
 
-    v5 = v4;
+    v5 = firstObject;
   }
 
   else

@@ -1,15 +1,15 @@
 @interface HMDUserPresenceUpdateReason
-+ (HMDUserPresenceUpdateReason)reasonWithCoder:(id)a3;
-+ (HMDUserPresenceUpdateReason)reasonWithDict:(id)a3;
-+ (HMDUserPresenceUpdateReason)reasonWithMessage:(id)a3;
-+ (HMDUserPresenceUpdateReason)reasonWithNumber:(id)a3;
-+ (HMDUserPresenceUpdateReason)reasonWithValue:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDUserPresenceUpdateReason)initWithNumber:(id)a3;
++ (HMDUserPresenceUpdateReason)reasonWithCoder:(id)coder;
++ (HMDUserPresenceUpdateReason)reasonWithDict:(id)dict;
++ (HMDUserPresenceUpdateReason)reasonWithMessage:(id)message;
++ (HMDUserPresenceUpdateReason)reasonWithNumber:(id)number;
++ (HMDUserPresenceUpdateReason)reasonWithValue:(unint64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (HMDUserPresenceUpdateReason)initWithNumber:(id)number;
 - (NSNumber)number;
 - (id)description;
-- (void)addToCoder:(id)a3;
-- (void)addToPayload:(id)a3;
+- (void)addToCoder:(id)coder;
+- (void)addToPayload:(id)payload;
 @end
 
 @implementation HMDUserPresenceUpdateReason
@@ -17,15 +17,15 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDUserPresenceUpdateReason *)self value];
-  if (v3 - 2 >= 0xB)
+  value = [(HMDUserPresenceUpdateReason *)self value];
+  if (value - 2 >= 0xB)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDUserPresenceUpdateReasonStatus %tu", v3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDUserPresenceUpdateReasonStatus %tu", value];
   }
 
   else
   {
-    v4 = off_279735818[v3 - 2];
+    v4 = off_279735818[value - 2];
   }
 
   v5 = [v2 stringWithFormat:@"%@", v4];
@@ -33,10 +33,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -46,7 +46,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -57,8 +57,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDUserPresenceUpdateReason *)self value];
-      v8 = v7 == [(HMDUserPresenceUpdateReason *)v6 value];
+      value = [(HMDUserPresenceUpdateReason *)self value];
+      v8 = value == [(HMDUserPresenceUpdateReason *)v6 value];
     }
 
     else
@@ -73,88 +73,88 @@
 - (NSNumber)number
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HMDUserPresenceUpdateReason *)self value];
+  value = [(HMDUserPresenceUpdateReason *)self value];
 
-  return [v2 numberWithUnsignedInteger:v3];
+  return [v2 numberWithUnsignedInteger:value];
 }
 
-- (void)addToPayload:(id)a3
+- (void)addToPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMDUserPresenceUpdateReason *)self number];
-  [v4 setObject:v5 forKeyedSubscript:@"kUserPresenceStatusUpdateReasonKey"];
+  payloadCopy = payload;
+  number = [(HMDUserPresenceUpdateReason *)self number];
+  [payloadCopy setObject:number forKeyedSubscript:@"kUserPresenceStatusUpdateReasonKey"];
 }
 
-- (void)addToCoder:(id)a3
+- (void)addToCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDUserPresenceUpdateReason *)self number];
-  [v4 encodeObject:v5 forKey:@"kUserPresenceStatusUpdateReasonKey"];
+  coderCopy = coder;
+  number = [(HMDUserPresenceUpdateReason *)self number];
+  [coderCopy encodeObject:number forKey:@"kUserPresenceStatusUpdateReasonKey"];
 }
 
-- (HMDUserPresenceUpdateReason)initWithNumber:(id)a3
+- (HMDUserPresenceUpdateReason)initWithNumber:(id)number
 {
-  v4 = a3;
-  if (v4)
+  numberCopy = number;
+  if (numberCopy)
   {
     v8.receiver = self;
     v8.super_class = HMDUserPresenceUpdateReason;
     v5 = [(HMDUserPresenceUpdateReason *)&v8 init];
     if (v5)
     {
-      v5->_value = [v4 unsignedIntegerValue];
+      v5->_value = [numberCopy unsignedIntegerValue];
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (HMDUserPresenceUpdateReason)reasonWithCoder:(id)a3
++ (HMDUserPresenceUpdateReason)reasonWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceStatusUpdateReasonKey"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceStatusUpdateReasonKey"];
 
   v5 = [HMDUserPresenceUpdateReason reasonWithNumber:v4];
 
   return v5;
 }
 
-+ (HMDUserPresenceUpdateReason)reasonWithDict:(id)a3
++ (HMDUserPresenceUpdateReason)reasonWithDict:(id)dict
 {
-  v3 = [a3 hmf_numberForKey:@"kUserPresenceStatusUpdateReasonKey"];
+  v3 = [dict hmf_numberForKey:@"kUserPresenceStatusUpdateReasonKey"];
   v4 = [HMDUserPresenceUpdateReason reasonWithNumber:v3];
 
   return v4;
 }
 
-+ (HMDUserPresenceUpdateReason)reasonWithMessage:(id)a3
++ (HMDUserPresenceUpdateReason)reasonWithMessage:(id)message
 {
-  v3 = [a3 numberForKey:@"kUserPresenceStatusUpdateReasonKey"];
+  v3 = [message numberForKey:@"kUserPresenceStatusUpdateReasonKey"];
   v4 = [HMDUserPresenceUpdateReason reasonWithNumber:v3];
 
   return v4;
 }
 
-+ (HMDUserPresenceUpdateReason)reasonWithNumber:(id)a3
++ (HMDUserPresenceUpdateReason)reasonWithNumber:(id)number
 {
-  v3 = a3;
-  v4 = [[HMDUserPresenceUpdateReason alloc] initWithNumber:v3];
+  numberCopy = number;
+  v4 = [[HMDUserPresenceUpdateReason alloc] initWithNumber:numberCopy];
 
   return v4;
 }
 
-+ (HMDUserPresenceUpdateReason)reasonWithValue:(unint64_t)a3
++ (HMDUserPresenceUpdateReason)reasonWithValue:(unint64_t)value
 {
   v4 = [HMDUserPresenceUpdateReason alloc];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   v6 = [(HMDUserPresenceUpdateReason *)v4 initWithNumber:v5];
 
   return v6;

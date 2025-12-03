@@ -1,22 +1,22 @@
 @interface MPModelPlaylistEntriesShareEligibilityRequest
-- (MPModelPlaylistEntriesShareEligibilityRequest)initWithPlaylist:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (MPModelPlaylistEntriesShareEligibilityRequest)initWithPlaylist:(id)playlist;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelPlaylistEntriesShareEligibilityRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelPlaylistEntriesShareEligibilityRequestOperation);
   [(MPModelPlaylistEntriesShareEligibilityRequestOperation *)v5 setRequest:self];
-  [(MPModelPlaylistEntriesShareEligibilityRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelPlaylistEntriesShareEligibilityRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   playlist = self->_playlist;
@@ -24,14 +24,14 @@
   return [v4 initWithPlaylist:playlist];
 }
 
-- (MPModelPlaylistEntriesShareEligibilityRequest)initWithPlaylist:(id)a3
+- (MPModelPlaylistEntriesShareEligibilityRequest)initWithPlaylist:(id)playlist
 {
-  v5 = a3;
+  playlistCopy = playlist;
   v6 = [(MPModelPlaylistEntriesShareEligibilityRequest *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playlist, a3);
+    objc_storeStrong(&v6->_playlist, playlist);
   }
 
   return v7;

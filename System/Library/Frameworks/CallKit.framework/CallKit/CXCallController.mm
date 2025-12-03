@@ -1,7 +1,7 @@
 @interface CXCallController
 - (CXCallController)init;
 - (CXCallController)initWithQueue:(dispatch_queue_t)queue;
-- (void)_requestTransaction:(id)a3 completion:(id)a4;
+- (void)_requestTransaction:(id)transaction completion:(id)completion;
 - (void)requestTransaction:(CXTransaction *)transaction completion:(void *)completion;
 - (void)requestTransactionWithAction:(CXAction *)action completion:(void *)completion;
 - (void)requestTransactionWithActions:(NSArray *)actions completion:(void *)completion;
@@ -111,22 +111,22 @@ void __50__CXCallController_requestTransaction_completion___block_invoke(uint64_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestTransaction:(id)a3 completion:(id)a4
+- (void)_requestTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallController *)self callObserver];
-  v9 = [v8 concurrentQueue];
+  transactionCopy = transaction;
+  completionCopy = completion;
+  callObserver = [(CXCallController *)self callObserver];
+  concurrentQueue = [callObserver concurrentQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CXCallController__requestTransaction_completion___block_invoke;
   block[3] = &unk_1E7C06D20;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_barrier_async(v9, block);
+  v13 = transactionCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = transactionCopy;
+  dispatch_barrier_async(concurrentQueue, block);
 }
 
 void __51__CXCallController__requestTransaction_completion___block_invoke(uint64_t a1)

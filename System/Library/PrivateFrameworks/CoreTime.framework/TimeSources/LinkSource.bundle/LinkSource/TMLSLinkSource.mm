@@ -1,33 +1,33 @@
 @interface TMLSLinkSource
 - ($1AB5FA073B851C12C2339EC22442E995)lastRTCSample;
 - (TMLSLinkSource)init;
-- (TMLSLinkSource)initWithClock:(id)a3;
-- (TMLSLinkSource)initWithClock:(id)a3 daemonCore:(id)a4;
+- (TMLSLinkSource)initWithClock:(id)clock;
+- (TMLSLinkSource)initWithClock:(id)clock daemonCore:(id)core;
 - (double)nextResetDebounceInterval;
-- (double)rtcWhenBeyondUncertainty:(double)a3;
+- (double)rtcWhenBeyondUncertainty:(double)uncertainty;
 - (id)daemonCore;
-- (id)timeAtRtc:(double)a3;
-- (void)_systemTimeChanged:(id)a3;
+- (id)timeAtRtc:(double)rtc;
+- (void)_systemTimeChanged:(id)changed;
 - (void)dealloc;
-- (void)link:(id)a3 didReceiveAutomaticTimeEnabled:(BOOL)a4;
-- (void)link:(id)a3 didReceiveDrift:(double)a4;
-- (void)link:(id)a3 didReceiveTime:(double)a4 remoteRTC:(double)a5 uncertainty:(double)a6 source:(id)a7;
-- (void)link:(id)a3 didReceiveTimeZone:(id)a4 forSource:(id)a5;
-- (void)link:(id)a3 didSyncLocalRTC:(double)a4 remoteRTC:(double)a5 uncertainty:(double)a6;
-- (void)linkBecameAvailable:(id)a3;
-- (void)linkBecameCompatible:(id)a3;
-- (void)linkBecameUnavailable:(id)a3;
-- (void)linkDidReceiveReset:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCompanionTimeZone:(id)a3;
-- (void)setLastRTCSampleValid:(BOOL)a3;
+- (void)link:(id)link didReceiveAutomaticTimeEnabled:(BOOL)enabled;
+- (void)link:(id)link didReceiveDrift:(double)drift;
+- (void)link:(id)link didReceiveTime:(double)time remoteRTC:(double)c uncertainty:(double)uncertainty source:(id)source;
+- (void)link:(id)link didReceiveTimeZone:(id)zone forSource:(id)source;
+- (void)link:(id)link didSyncLocalRTC:(double)c remoteRTC:(double)tC uncertainty:(double)uncertainty;
+- (void)linkBecameAvailable:(id)available;
+- (void)linkBecameCompatible:(id)compatible;
+- (void)linkBecameUnavailable:(id)unavailable;
+- (void)linkDidReceiveReset:(id)reset;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCompanionTimeZone:(id)zone;
+- (void)setLastRTCSampleValid:(BOOL)valid;
 - (void)setupThresholds;
 - (void)significantTimeChange;
 - (void)syncAutomaticTimeEnabled;
 - (void)syncTimeZone;
-- (void)systemTimeChanged:(id)a3;
+- (void)systemTimeChanged:(id)changed;
 - (void)systemTimeZoneChanged;
-- (void)timeWasReset:(id)a3;
+- (void)timeWasReset:(id)reset;
 @end
 
 @implementation TMLSLinkSource
@@ -67,23 +67,23 @@
   return 0;
 }
 
-- (TMLSLinkSource)initWithClock:(id)a3
+- (TMLSLinkSource)initWithClock:(id)clock
 {
-  v4 = a3;
+  clockCopy = clock;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_FAULT))
   {
     sub_7E34();
   }
 
-  v5 = [(TMLSLinkSource *)self initWithClock:v4 daemonCore:0];
+  v5 = [(TMLSLinkSource *)self initWithClock:clockCopy daemonCore:0];
 
   return v5;
 }
 
-- (TMLSLinkSource)initWithClock:(id)a3 daemonCore:(id)a4
+- (TMLSLinkSource)initWithClock:(id)clock daemonCore:(id)core
 {
-  v7 = a3;
-  v8 = a4;
+  clockCopy = clock;
+  coreCopy = core;
   v27.receiver = self;
   v27.super_class = TMLSLinkSource;
   v9 = [(TMLSLinkSource *)&v27 init];
@@ -97,21 +97,21 @@
     v13 = TIMELINK_FACILITY;
     TIMELINK_FACILITY = v12;
 
-    objc_storeStrong(&v9->_clock, a3);
-    objc_storeWeak(&v9->_daemonCore, v8);
-    v14 = [v8 workloop];
+    objc_storeStrong(&v9->_clock, clock);
+    objc_storeWeak(&v9->_daemonCore, coreCopy);
+    workloop = [coreCopy workloop];
     workloop = v9->_workloop;
-    v9->_workloop = v14;
+    v9->_workloop = workloop;
 
     [(TMLSLinkSource *)v9 setupThresholds];
     if ([(TMLSLinkSource *)v9 isGizmo])
     {
-      [v8 addTimeProvider:v9 forKey:@"Manual"];
+      [coreCopy addTimeProvider:v9 forKey:@"Manual"];
     }
 
     v16 = [TMLSLink alloc];
-    v17 = [(TMLSLinkSource *)v9 workloop];
-    v18 = [(TMLSLink *)v16 initWithDelegate:v9 clock:v7 workloop:v17];
+    workloop2 = [(TMLSLinkSource *)v9 workloop];
+    v18 = [(TMLSLink *)v16 initWithDelegate:v9 clock:clockCopy workloop:workloop2];
     link = v9->_link;
     v9->_link = v18;
 
@@ -131,7 +131,7 @@
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "Setting up notification listeners", v26, 2u);
       }
 
-      [v8 addObserver:v9 forKeyPath:@"automaticTimeEnabled" options:0 context:&off_10480];
+      [coreCopy addObserver:v9 forKeyPath:@"automaticTimeEnabled" options:0 context:&off_10480];
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterAddObserver(DarwinNotifyCenter, v9, sub_1F8C, @"SignificantTimeChangeNotification", 0, 0);
       v23 = +[NSNotificationCenter defaultCenter];
@@ -171,27 +171,27 @@
   [(TMLSLinkSource *)&v7 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(TMLSLinkSource *)self workloop];
+  pathCopy = path;
+  objectCopy = object;
+  workloop = [(TMLSLinkSource *)self workloop];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_2190;
   v14[3] = &unk_10490;
-  v15 = v9;
-  v16 = v10;
-  v17 = self;
-  v18 = a6;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, v14);
+  v15 = pathCopy;
+  v16 = objectCopy;
+  selfCopy = self;
+  contextCopy = context;
+  v12 = objectCopy;
+  v13 = pathCopy;
+  dispatch_async(workloop, v14);
 }
 
-- (void)setCompanionTimeZone:(id)a3
+- (void)setCompanionTimeZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   if ([(TMLSLinkSource *)self isGizmo])
   {
     sub_7FE0();
@@ -199,13 +199,13 @@
 
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
   {
-    sub_7F58(v5, self);
+    sub_7F58(zoneCopy, self);
   }
 
   companionTimeZone = self->_companionTimeZone;
-  if (companionTimeZone != v5 && (!v5 || ![(NSString *)companionTimeZone isEqualToString:v5]))
+  if (companionTimeZone != zoneCopy && (!zoneCopy || ![(NSString *)companionTimeZone isEqualToString:zoneCopy]))
   {
-    objc_storeStrong(&self->_companionTimeZone, a3);
+    objc_storeStrong(&self->_companionTimeZone, zone);
     [(TMLSLinkSource *)self syncTimeZone];
   }
 }
@@ -223,9 +223,9 @@
     sub_800C(v3, self);
   }
 
-  v4 = [(TMLSLinkSource *)self link];
-  v5 = [(TMLSLinkSource *)self companionTimeZone];
-  [v4 sendTimeZone:v5 forSource:@"TMLSSourceDevice"];
+  link = [(TMLSLinkSource *)self link];
+  companionTimeZone = [(TMLSLinkSource *)self companionTimeZone];
+  [link sendTimeZone:companionTimeZone forSource:@"TMLSSourceDevice"];
 }
 
 - (void)syncAutomaticTimeEnabled
@@ -235,19 +235,19 @@
     sub_80DC();
   }
 
-  v3 = [(TMLSLinkSource *)self daemonCore];
-  v4 = [v3 isAutomaticTimeEnabled];
+  daemonCore = [(TMLSLinkSource *)self daemonCore];
+  isAutomaticTimeEnabled = [daemonCore isAutomaticTimeEnabled];
 
-  v5 = [(TMLSLinkSource *)self link];
-  [v5 sendAutomaticTimeEnabled:v4];
+  link = [(TMLSLinkSource *)self link];
+  [link sendAutomaticTimeEnabled:isAutomaticTimeEnabled];
 
-  v6 = [(TMLSLinkSource *)self link];
-  [v6 syncRTC];
+  link2 = [(TMLSLinkSource *)self link];
+  [link2 syncRTC];
 }
 
-- (void)setLastRTCSampleValid:(BOOL)a3
+- (void)setLastRTCSampleValid:(BOOL)valid
 {
-  if (a3)
+  if (valid)
   {
     sub_8108(a2, self);
   }
@@ -267,13 +267,13 @@
     sub_8184();
   }
 
-  v3 = [(TMLSLinkSource *)self daemonCore];
-  v4 = [v3 isAutomaticTimeEnabled];
+  daemonCore = [(TMLSLinkSource *)self daemonCore];
+  isAutomaticTimeEnabled = [daemonCore isAutomaticTimeEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isAutomaticTimeEnabled & 1) == 0)
   {
-    v5 = [(TMLSLinkSource *)self link];
-    [v5 syncRTC];
+    link = [(TMLSLinkSource *)self link];
+    [link syncRTC];
   }
 }
 
@@ -291,19 +291,19 @@
 
   +[NSTimeZone resetSystemTimeZone];
   v3 = +[NSTimeZone systemTimeZone];
-  v4 = [v3 name];
-  [(TMLSLinkSource *)self setCompanionTimeZone:v4];
+  name = [v3 name];
+  [(TMLSLinkSource *)self setCompanionTimeZone:name];
 }
 
-- (void)_systemTimeChanged:(id)a3
+- (void)_systemTimeChanged:(id)changed
 {
-  v4 = [(TMLSLinkSource *)self clock];
-  [v4 coarseMonotonicTime];
+  clock = [(TMLSLinkSource *)self clock];
+  [clock coarseMonotonicTime];
   v6 = v5;
 
-  v7 = [(TMLSLinkSource *)self daemonCore];
-  v8 = [v7 timeProvider];
-  v9 = [v8 timeAtRtc:v6];
+  daemonCore = [(TMLSLinkSource *)self daemonCore];
+  timeProvider = [daemonCore timeProvider];
+  v9 = [timeProvider timeAtRtc:v6];
 
   p_lastTime = &self->_lastTime;
   lastTime = self->_lastTime;
@@ -357,31 +357,31 @@
   if (v19)
   {
     objc_storeStrong(&self->_lastTime, v9);
-    v22 = [(TMLSLinkSource *)self link];
-    [v22 syncRTC];
+    link = [(TMLSLinkSource *)self link];
+    [link syncRTC];
   }
 }
 
-- (void)systemTimeChanged:(id)a3
+- (void)systemTimeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
   {
     sub_825C();
   }
 
-  v5 = [(TMLSLinkSource *)self workloop];
+  workloop = [(TMLSLinkSource *)self workloop];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2874;
   v7[3] = &unk_10410;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(workloop, v7);
 }
 
-- (void)timeWasReset:(id)a3
+- (void)timeWasReset:(id)reset
 {
   v4 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEFAULT))
@@ -390,29 +390,29 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "timeWasReset: resetting throttling state", buf, 2u);
   }
 
-  v5 = [(TMLSLinkSource *)self workloop];
+  workloop = [(TMLSLinkSource *)self workloop];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2A74;
   block[3] = &unk_104B8;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workloop, block);
 }
 
-- (void)link:(id)a3 didSyncLocalRTC:(double)a4 remoteRTC:(double)a5 uncertainty:(double)a6
+- (void)link:(id)link didSyncLocalRTC:(double)c remoteRTC:(double)tC uncertainty:(double)uncertainty
 {
-  v10 = a3;
+  linkCopy = link;
   v11 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v31 = v10;
+    v31 = linkCopy;
     v32 = 2048;
-    v33 = a4;
+    cCopy2 = c;
     v34 = 2048;
-    v35 = a5;
+    tCCopy2 = tC;
     v36 = 2048;
-    v37 = a6;
+    uncertaintyCopy2 = uncertainty;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "didSyncLocalRTC, %@, %f, %f, %f", buf, 0x2Au);
   }
 
@@ -422,11 +422,11 @@
     *buf = 138413058;
     v31 = @"didSyncLocalRTC";
     v32 = 2048;
-    v33 = a4;
+    cCopy2 = c;
     v34 = 2048;
-    v35 = a5;
+    tCCopy2 = tC;
     v36 = 2048;
-    v37 = a6;
+    uncertaintyCopy2 = uncertainty;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "cmd,%@,local_rtc_s,%.9f,remote_rtc_s,%.9f,unc,%.9f", buf, 0x2Au);
   }
 
@@ -434,13 +434,13 @@
   v29[6] = 3221225472;
   v29[7] = sub_2E38;
   v29[8] = &unk_104D8;
-  *&v29[9] = a4;
-  *&v29[10] = a5;
-  *&v29[11] = a6;
+  *&v29[9] = c;
+  *&v29[10] = tC;
+  *&v29[11] = uncertainty;
   AnalyticsSendEventLazy();
-  self->_lastRTCSample.remoteRTC = a5;
-  self->_lastRTCSample.localRTC = a4;
-  self->_lastRTCSample.uncertainty = a6;
+  self->_lastRTCSample.remoteRTC = tC;
+  self->_lastRTCSample.localRTC = c;
+  self->_lastRTCSample.uncertainty = uncertainty;
   if (![(TMLSLinkSource *)self isGizmo])
   {
     v29[0] = _NSConcreteStackBlock;
@@ -449,24 +449,24 @@
     v29[3] = &unk_10500;
     v29[4] = self;
     v13 = objc_retainBlock(v29);
-    v14 = [(TMLSLinkSource *)self daemonCore];
-    v15 = [v14 timeProvider];
-    v16 = [v15 timeAtRtc:a4];
+    daemonCore = [(TMLSLinkSource *)self daemonCore];
+    timeProvider = [daemonCore timeProvider];
+    v16 = [timeProvider timeAtRtc:c];
 
-    v17 = [v16 dictionary];
-    v18 = [v17 mutableCopy];
+    dictionary = [v16 dictionary];
+    v18 = [dictionary mutableCopy];
 
     [v18 setObject:@"TMLSSourceComputed" forKeyedSubscript:@"TMSource"];
     v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v16 reliability]);
     [v18 setObject:v19 forKeyedSubscript:@"TMTimeReliable"];
 
     (v13[2])(v13, v18);
-    v20 = [(TMLSLinkSource *)self clock];
-    v21 = [v20 machTime];
+    clock = [(TMLSLinkSource *)self clock];
+    machTime = [clock machTime];
 
     Current = CFAbsoluteTimeGetCurrent();
-    v23 = [(TMLSLinkSource *)self clock];
-    v24 = [(TMLSLinkSource *)self workloop];
+    clock2 = [(TMLSLinkSource *)self clock];
+    workloop = [(TMLSLinkSource *)self workloop];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_3170;
@@ -475,27 +475,27 @@
     v27 = v13;
     v28 = Current;
     v25 = v13;
-    [v23 montonicTimeForMachTime:v21 toQueue:v24 withCompletionHandler:v26];
+    [clock2 montonicTimeForMachTime:machTime toQueue:workloop withCompletionHandler:v26];
   }
 }
 
-- (void)link:(id)a3 didReceiveTime:(double)a4 remoteRTC:(double)a5 uncertainty:(double)a6 source:(id)a7
+- (void)link:(id)link didReceiveTime:(double)time remoteRTC:(double)c uncertainty:(double)uncertainty source:(id)source
 {
-  v12 = a3;
-  v13 = a7;
+  linkCopy = link;
+  sourceCopy = source;
   v14 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
   {
     *buf = 138413314;
-    v31 = v12;
+    v31 = linkCopy;
     v32 = 2048;
-    v33 = a4;
+    timeCopy = time;
     v34 = 2048;
-    v35 = a5;
+    cCopy = c;
     v36 = 2048;
-    v37 = a6;
+    uncertaintyCopy = uncertainty;
     v38 = 2112;
-    v39 = v13;
+    v39 = sourceCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "didReceiveTime, %@, %f, %f, %f, %@", buf, 0x34u);
   }
 
@@ -507,14 +507,14 @@
   if ([(TMLSLinkSource *)self isGizmo]&& [(TMLSLinkSource *)self isLastRTCSampleValid])
   {
     [(TMLSLinkSource *)self lastRTCSample];
-    v16 = a5 - v15;
+    v16 = c - v15;
     [(TMLSLinkSource *)self lastRTCSample];
     v18 = v16 + v17;
     [(TMLSLinkSource *)self lastRTCSample];
-    v20 = v19 + a6;
+    v20 = v19 + uncertainty;
     v29[0] = @"TMSetSourceTime";
-    v29[1] = v13;
-    v21 = [NSNumber numberWithDouble:a4, @"TMCommand", @"TMSource", @"TMCurrentTime"];
+    v29[1] = sourceCopy;
+    v21 = [NSNumber numberWithDouble:time, @"TMCommand", @"TMSource", @"TMCurrentTime"];
     v29[2] = v21;
     v28[3] = @"TMTimeError";
     v22 = [NSNumber numberWithDouble:v20];
@@ -525,12 +525,12 @@
     v24 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:5];
 
     WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
-    if (([v13 isEqualToString:@"TMLSSourceComputed"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"TMLSSourceComputedReliable"))
+    if (([sourceCopy isEqualToString:@"TMLSSourceComputed"] & 1) != 0 || objc_msgSend(sourceCopy, "isEqualToString:", @"TMLSSourceComputedReliable"))
     {
       [WeakRetained setSourceTime:v24];
     }
 
-    else if ([v13 isEqualToString:@"TMLSSourceDevice"])
+    else if ([sourceCopy isEqualToString:@"TMLSSourceDevice"])
     {
       v26 = [v24 copy];
       lastCompanionTimeUpdate = self->_lastCompanionTimeUpdate;
@@ -541,32 +541,32 @@
   }
 }
 
-- (void)link:(id)a3 didReceiveTimeZone:(id)a4 forSource:(id)a5
+- (void)link:(id)link didReceiveTimeZone:(id)zone forSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (([v11 isEqualToString:@"TMLSSourceDevice"] & 1) == 0)
+  linkCopy = link;
+  zoneCopy = zone;
+  sourceCopy = source;
+  if (([sourceCopy isEqualToString:@"TMLSSourceDevice"] & 1) == 0)
   {
-    sub_8468(a2, self, v11);
+    sub_8468(a2, self, sourceCopy);
   }
 
   v12 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v19 = v9;
+    v19 = linkCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = zoneCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = sourceCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "didReceiveTimeZone, %@, %@, %@", buf, 0x20u);
   }
 
   if ([(TMLSLinkSource *)self isGizmo])
   {
-    v13 = [NSNumber numberWithDouble:TMLSHackedRTC(), @"TMCommand", @"TMSource", @"TMTimeZone", @"TMRtcTime", @"TMSetSourceTimeZone", v11, v10];
-    v17[3] = v13;
+    zoneCopy = [NSNumber numberWithDouble:TMLSHackedRTC(), @"TMCommand", @"TMSource", @"TMTimeZone", @"TMRtcTime", @"TMSetSourceTimeZone", sourceCopy, zoneCopy];
+    v17[3] = zoneCopy;
     v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:&v16 count:4];
 
     WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
@@ -574,25 +574,25 @@
   }
 }
 
-- (void)link:(id)a3 didReceiveAutomaticTimeEnabled:(BOOL)a4
+- (void)link:(id)link didReceiveAutomaticTimeEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(TMLSLinkSource *)self isGizmo];
+  enabledCopy = enabled;
+  linkCopy = link;
+  isGizmo = [(TMLSLinkSource *)self isGizmo];
   v8 = TIMELINK_FACILITY;
-  if (v7)
+  if (isGizmo)
   {
     if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v16 = v6;
+      v16 = linkCopy;
       v17 = 1024;
-      v18 = v4;
+      v18 = enabledCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "didReceiveAutomaticTimeEnabled, %@, %d", buf, 0x12u);
     }
 
     v9 = @"Manual";
-    if (v4)
+    if (enabledCopy)
     {
       v9 = @"Filtered";
     }
@@ -609,13 +609,13 @@
     v12 = +[NSUserDefaults standardUserDefaults];
     [v12 setObject:v10 forKey:@"TimeProvider"];
 
-    v13 = [(TMLSLinkSource *)self workloop];
+    workloop = [(TMLSLinkSource *)self workloop];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_3978;
     block[3] = &unk_104B8;
     block[4] = self;
-    dispatch_async(v13, block);
+    dispatch_async(workloop, block);
   }
 
   else if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_ERROR))
@@ -624,28 +624,28 @@
   }
 }
 
-- (void)link:(id)a3 didReceiveDrift:(double)a4
+- (void)link:(id)link didReceiveDrift:(double)drift
 {
-  v5 = a3;
+  linkCopy = link;
   v6 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = v5;
+    v8 = linkCopy;
     v9 = 2048;
-    v10 = a4;
+    driftCopy = drift;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "didReceiveDrift, %@, %f", &v7, 0x16u);
   }
 }
 
-- (void)linkDidReceiveReset:(id)a3
+- (void)linkDidReceiveReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v5 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = resetCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "linkDidReceiveReset, %@", &v6, 0xCu);
   }
 
@@ -676,9 +676,9 @@
   return result;
 }
 
-- (void)linkBecameAvailable:(id)a3
+- (void)linkBecameAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (![(TMLSLinkSource *)self isGizmo])
   {
     sub_8570();
@@ -719,8 +719,8 @@
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "sending reset because backoff interval has elapsed", &v20, 2u);
     }
 
-    v16 = [(TMLSLinkSource *)self link];
-    [v16 sendReset];
+    link = [(TMLSLinkSource *)self link];
+    [link sendReset];
   }
 
   v17 = TIMELINK_FACILITY;
@@ -742,9 +742,9 @@
   }
 }
 
-- (void)linkBecameUnavailable:(id)a3
+- (void)linkBecameUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   if (![(TMLSLinkSource *)self isGizmo])
   {
     sub_859C();
@@ -760,21 +760,21 @@
   [WeakRetained setSourceUnavailable:v7];
 }
 
-- (void)linkBecameCompatible:(id)a3
+- (void)linkBecameCompatible:(id)compatible
 {
-  v4 = a3;
+  compatibleCopy = compatible;
   if ([(TMLSLinkSource *)self isGizmo])
   {
     sub_85C8();
   }
 
-  v5 = [(TMLSLinkSource *)self workloop];
+  workloop = [(TMLSLinkSource *)self workloop];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_3F9C;
   block[3] = &unk_104B8;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workloop, block);
 }
 
 - ($1AB5FA073B851C12C2339EC22442E995)lastRTCSample
@@ -788,7 +788,7 @@
   return result;
 }
 
-- (id)timeAtRtc:(double)a3
+- (id)timeAtRtc:(double)rtc
 {
   if (![(TMLSLinkSource *)self isGizmo])
   {
@@ -808,7 +808,7 @@
   return v4;
 }
 
-- (double)rtcWhenBeyondUncertainty:(double)a3
+- (double)rtcWhenBeyondUncertainty:(double)uncertainty
 {
   if (![(TMLSLinkSource *)self isGizmo])
   {

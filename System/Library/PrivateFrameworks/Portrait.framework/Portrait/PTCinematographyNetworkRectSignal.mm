@@ -1,19 +1,19 @@
 @interface PTCinematographyNetworkRectSignal
-- (PTCinematographyNetworkRectSignal)initWithModelDictionary:(id)a3;
-- (void)writePayload:(id)a3 toStream:(id)a4;
+- (PTCinematographyNetworkRectSignal)initWithModelDictionary:(id)dictionary;
+- (void)writePayload:(id)payload toStream:(id)stream;
 @end
 
 @implementation PTCinematographyNetworkRectSignal
 
-- (PTCinematographyNetworkRectSignal)initWithModelDictionary:(id)a3
+- (PTCinematographyNetworkRectSignal)initWithModelDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PTCinematographyNetworkRectSignal;
-  v5 = [(PTCinematographyNetworkSignal *)&v9 initWithModelDictionary:v4];
+  v5 = [(PTCinematographyNetworkSignal *)&v9 initWithModelDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"params"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"params"];
     v7 = [v6 objectForKeyedSubscript:@"width_height"];
     v5->_useSqrtForArea = [v7 isEqualToString:@"geomean"];
   }
@@ -21,21 +21,21 @@
   return v5;
 }
 
-- (void)writePayload:(id)a3 toStream:(id)a4
+- (void)writePayload:(id)payload toStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PTCinematographyNetworkSignal *)self checkSignalForStream:v7])
+  payloadCopy = payload;
+  streamCopy = stream;
+  if ([(PTCinematographyNetworkSignal *)self checkSignalForStream:streamCopy])
   {
-    if ([v6 isMissingDetection])
+    if ([payloadCopy isMissingDetection])
     {
-      [v7 writeZerosWithCount:3];
+      [streamCopy writeZerosWithCount:3];
     }
 
     else
     {
-      v9 = [v6 detection];
-      [v9 rect];
+      detection = [payloadCopy detection];
+      [detection rect];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -52,18 +52,18 @@
       v26.size.width = v15;
       v26.size.height = v17;
       MidY = CGRectGetMidY(v26);
-      v21 = [(PTCinematographyNetworkRectSignal *)self useSqrtForArea];
+      useSqrtForArea = [(PTCinematographyNetworkRectSignal *)self useSqrtForArea];
       *&v22 = sqrtf(Area);
-      if (!v21)
+      if (!useSqrtForArea)
       {
         *&v22 = Area;
       }
 
-      [v7 writeFloat:v22];
+      [streamCopy writeFloat:v22];
       *&v23 = MidX;
-      [v7 writeFloat:v23];
+      [streamCopy writeFloat:v23];
       *&v24 = MidY;
-      [v7 writeFloat:v24];
+      [streamCopy writeFloat:v24];
     }
   }
 

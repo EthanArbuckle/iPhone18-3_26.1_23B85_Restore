@@ -1,16 +1,16 @@
 @interface SearchUIImageDerivedColorGenerator
-+ (id)colorsForImageRef:(CGImage *)a3;
-+ (void)fetchColorsForImage:(id)a3 withCompletionHandler:(id)a4;
-- (void)generateUIColorsForSFImage:(id)a3 isDark:(BOOL)a4 completionHandler:(id)a5;
-- (void)generateUIColorsIsDark:(BOOL)a3 completionHandler:(id)a4;
++ (id)colorsForImageRef:(CGImage *)ref;
++ (void)fetchColorsForImage:(id)image withCompletionHandler:(id)handler;
+- (void)generateUIColorsForSFImage:(id)image isDark:(BOOL)dark completionHandler:(id)handler;
+- (void)generateUIColorsIsDark:(BOOL)dark completionHandler:(id)handler;
 @end
 
 @implementation SearchUIImageDerivedColorGenerator
 
-+ (id)colorsForImageRef:(CGImage *)a3
++ (id)colorsForImageRef:(CGImage *)ref
 {
-  CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  CGImageGetWidth(ref);
+  Height = CGImageGetHeight(ref);
   if (Height <= 160.0)
   {
     v5 = Height;
@@ -29,7 +29,7 @@
   v27.origin.y = 0.0;
   v27.size.width = 1.0;
   v27.size.height = v5;
-  CGContextDrawImage(v9, v27, a3);
+  CGContextDrawImage(v9, v27, ref);
   CGContextRelease(v9);
   CGColorSpaceRelease(DeviceRGB);
   v10 = 0;
@@ -106,15 +106,15 @@ LABEL_19:
   return v14;
 }
 
-+ (void)fetchColorsForImage:(id)a3 withCompletionHandler:(id)a4
++ (void)fetchColorsForImage:(id)image withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__SearchUIImageDerivedColorGenerator_fetchColorsForImage_withCompletionHandler___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (fetchColorsForImage_withCompletionHandler__onceToken != -1)
   {
     dispatch_once(&fetchColorsForImage_withCompletionHandler__onceToken, block);
@@ -125,11 +125,11 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = __80__SearchUIImageDerivedColorGenerator_fetchColorsForImage_withCompletionHandler___block_invoke_2;
   v11[3] = &unk_1E85B28D8;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = imageCopy;
+  v9 = handlerCopy;
+  v10 = imageCopy;
   dispatch_async(v8, v11);
 }
 
@@ -259,12 +259,12 @@ void __80__SearchUIImageDerivedColorGenerator_fetchColorsForImage_withCompletion
   (*(*(v55 + 40) + 16))();
 }
 
-- (void)generateUIColorsIsDark:(BOOL)a3 completionHandler:(id)a4
+- (void)generateUIColorsIsDark:(BOOL)dark completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SearchUIColorGenerator *)self sfColor];
-  v8 = [v7 image];
+  darkCopy = dark;
+  handlerCopy = handler;
+  sfColor = [(SearchUIColorGenerator *)self sfColor];
+  image = [sfColor image];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -272,12 +272,12 @@ void __80__SearchUIImageDerivedColorGenerator_fetchColorsForImage_withCompletion
     goto LABEL_5;
   }
 
-  v9 = [v8 contactIdentifiers];
-  if ([v9 count] != 1)
+  contactIdentifiers = [image contactIdentifiers];
+  if ([contactIdentifiers count] != 1)
   {
 
 LABEL_5:
-    [(SearchUIImageDerivedColorGenerator *)self generateUIColorsForSFImage:v8 isDark:v4 completionHandler:v6];
+    [(SearchUIImageDerivedColorGenerator *)self generateUIColorsForSFImage:image isDark:darkCopy completionHandler:handlerCopy];
     goto LABEL_6;
   }
 
@@ -286,11 +286,11 @@ LABEL_5:
   v11[1] = 3221225472;
   v11[2] = __79__SearchUIImageDerivedColorGenerator_generateUIColorsIsDark_completionHandler___block_invoke;
   v11[3] = &unk_1E85B4450;
-  v13 = v6;
+  v13 = handlerCopy;
   v11[4] = self;
-  v12 = v8;
-  v14 = v4;
-  [v10 fetchContactsForIdentifiers:v9 completionHandler:v11];
+  v12 = image;
+  v14 = darkCopy;
+  [v10 fetchContactsForIdentifiers:contactIdentifiers completionHandler:v11];
 
 LABEL_6:
 }
@@ -311,20 +311,20 @@ void __79__SearchUIImageDerivedColorGenerator_generateUIColorsIsDark_completionH
   }
 }
 
-- (void)generateUIColorsForSFImage:(id)a3 isDark:(BOOL)a4 completionHandler:(id)a5
+- (void)generateUIColorsForSFImage:(id)image isDark:(BOOL)dark completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  imageCopy = image;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__SearchUIImageDerivedColorGenerator_generateUIColorsForSFImage_isDark_completionHandler___block_invoke;
   v12[3] = &unk_1E85B44A0;
-  v13 = v8;
-  v14 = self;
-  v16 = a4;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = imageCopy;
+  selfCopy = self;
+  darkCopy = dark;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = imageCopy;
   [SearchUIUtilities dispatchMainIfNecessary:v12];
 }
 

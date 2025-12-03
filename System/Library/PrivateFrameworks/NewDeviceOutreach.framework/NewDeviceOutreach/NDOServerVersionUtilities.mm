@@ -5,38 +5,38 @@
 + (id)readAPSSupportedOverride;
 + (id)readULWebURLOverride;
 + (id)readWebURLOverride;
-+ (void)_dictionaryFromURL:(id)a3 shouldRetry:(BOOL)a4 withCompletion:(id)a5;
-+ (void)_supportedVersionsForClientAndServer:(unint64_t)a3 withCompletion:(id)a4;
-+ (void)getDecodedParamsForPath:(id)a3 withCompletion:(id)a4;
++ (void)_dictionaryFromURL:(id)l shouldRetry:(BOOL)retry withCompletion:(id)completion;
++ (void)_supportedVersionsForClientAndServer:(unint64_t)server withCompletion:(id)completion;
++ (void)getDecodedParamsForPath:(id)path withCompletion:(id)completion;
 + (void)getValidServerVersionCache;
-+ (void)isHighServerVersionFeaturesetEnabled:(id)a3;
-+ (void)isHighServerVersionFeaturesetEnabled:(unint64_t)a3 withCompletion:(id)a4;
++ (void)isHighServerVersionFeaturesetEnabled:(id)enabled;
++ (void)isHighServerVersionFeaturesetEnabled:(unint64_t)enabled withCompletion:(id)completion;
 + (void)readAPSSupportedOverride;
-+ (void)serverVersionSupported:(id)a3;
++ (void)serverVersionSupported:(id)supported;
 @end
 
 @implementation NDOServerVersionUtilities
 
-+ (void)_dictionaryFromURL:(id)a3 shouldRetry:(BOOL)a4 withCompletion:(id)a5
++ (void)_dictionaryFromURL:(id)l shouldRetry:(BOOL)retry withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy__2;
   v21[4] = __Block_byref_object_dispose__2;
   v22 = 0;
-  if (a4)
+  if (retry)
   {
-    v10 = [MEMORY[0x277CCAD30] sharedSession];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v11 setRequestCachePolicy:1];
-    v10 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v11];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setRequestCachePolicy:1];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
   }
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -44,13 +44,13 @@
   v15[2] = __75__NDOServerVersionUtilities__dictionaryFromURL_shouldRetry_withCompletion___block_invoke;
   v15[3] = &unk_2799763F0;
   v18 = v21;
-  v12 = v8;
+  v12 = lCopy;
   v16 = v12;
-  v13 = v9;
-  v20 = a4;
+  v13 = completionCopy;
+  retryCopy = retry;
   v17 = v13;
-  v19 = a1;
-  v14 = [v10 dataTaskWithURL:v12 completionHandler:v15];
+  selfCopy = self;
+  v14 = [mEMORY[0x277CCAD30] dataTaskWithURL:v12 completionHandler:v15];
   [v14 resume];
 
   _Block_object_dispose(v21, 8);
@@ -129,10 +129,10 @@ LABEL_19:
 LABEL_20:
 }
 
-+ (void)_supportedVersionsForClientAndServer:(unint64_t)a3 withCompletion:(id)a4
++ (void)_supportedVersionsForClientAndServer:(unint64_t)server withCompletion:(id)completion
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v55[0] = 0;
   v55[1] = v55;
   v55[2] = 0x3032000000;
@@ -144,14 +144,14 @@ LABEL_20:
   v51 = 0x3032000000;
   v52 = __Block_byref_object_copy__2;
   v53 = __Block_byref_object_dispose__2;
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v54 = [v7 objectForKey:@"ServerVersionOverride"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v54 = [standardUserDefaults objectForKey:@"ServerVersionOverride"];
 
   v8 = _NDOLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v60 = a3;
+    serverCopy = server;
     _os_log_impl(&dword_25BD52000, v8, OS_LOG_TYPE_DEFAULT, " Server lookup policy:%ld", buf, 0xCu);
   }
 
@@ -160,14 +160,14 @@ LABEL_20:
   aBlock[2] = __81__NDOServerVersionUtilities__supportedVersionsForClientAndServer_withCompletion___block_invoke;
   aBlock[3] = &unk_279976418;
   v47 = &v49;
-  v9 = v6;
+  v9 = completionCopy;
   v46 = v9;
   v48 = v55;
   v10 = _Block_copy(aBlock);
   if (!v50[5])
   {
     v14 = +[NDOServerVersionUtilities getValidServerVersionCache];
-    if (a3 == 1)
+    if (server == 1)
     {
       objc_storeStrong(v50 + 5, v14);
       if (v50[5])
@@ -177,7 +177,7 @@ LABEL_20:
         {
           v21 = v50[5];
           *buf = 138412290;
-          v60 = v21;
+          serverCopy = v21;
           _os_log_impl(&dword_25BD52000, v20, OS_LOG_TYPE_DEFAULT, "Using Cached Server version: %@", buf, 0xCu);
         }
       }
@@ -185,8 +185,8 @@ LABEL_20:
       else
       {
         v22 = MEMORY[0x277CCABB0];
-        v23 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v24 = [v22 numberWithInteger:{objc_msgSend(v23, "integerForKey:", @"LowServerVersion"}];
+        standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v24 = [v22 numberWithInteger:{objc_msgSend(standardUserDefaults2, "integerForKey:", @"LowServerVersion"}];
         v25 = v24;
         v26 = &unk_286D6E4E0;
         if (v24)
@@ -197,8 +197,8 @@ LABEL_20:
         v20 = v26;
 
         v27 = MEMORY[0x277CCABB0];
-        v28 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v29 = [v27 numberWithInteger:{objc_msgSend(v28, "integerForKey:", @"HighServerVersion"}];
+        standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v29 = [v27 numberWithInteger:{objc_msgSend(standardUserDefaults3, "integerForKey:", @"HighServerVersion"}];
         v30 = v29;
         v31 = &unk_286D6E4F8;
         if (v29)
@@ -221,7 +221,7 @@ LABEL_20:
         {
           v36 = v50[5];
           *buf = 138412290;
-          v60 = v36;
+          serverCopy = v36;
           _os_log_impl(&dword_25BD52000, v35, OS_LOG_TYPE_DEFAULT, "Using Client version: %@", buf, 0xCu);
         }
       }
@@ -230,11 +230,11 @@ LABEL_20:
       goto LABEL_25;
     }
 
-    if (a3 == 2)
+    if (server == 2)
     {
       v15 = MEMORY[0x277CBEBC0];
-      v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v17 = [v16 objectForKey:@"ServerVersionURL"];
+      standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v17 = [standardUserDefaults4 objectForKey:@"ServerVersionURL"];
       v18 = [v15 URLWithString:v17];
 
       v19 = v42;
@@ -245,7 +245,7 @@ LABEL_20:
       v44 = &v49;
       v42[4] = v14;
       v43 = v10;
-      [a1 _dictionaryFromURL:v18 shouldRetry:1 withCompletion:v42];
+      [self _dictionaryFromURL:v18 shouldRetry:1 withCompletion:v42];
     }
 
     else
@@ -257,8 +257,8 @@ LABEL_20:
       }
 
       v38 = MEMORY[0x277CBEBC0];
-      v39 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v40 = [v39 objectForKey:@"ServerVersionURL"];
+      standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v40 = [standardUserDefaults5 objectForKey:@"ServerVersionURL"];
       v18 = [v38 URLWithString:v40];
 
       v19 = v41;
@@ -268,7 +268,7 @@ LABEL_20:
       v41[3] = &unk_279976378;
       v41[5] = &v49;
       v41[4] = v10;
-      [a1 _dictionaryFromURL:v18 shouldRetry:1 withCompletion:v41];
+      [self _dictionaryFromURL:v18 shouldRetry:1 withCompletion:v41];
     }
 
 LABEL_25:
@@ -280,12 +280,12 @@ LABEL_25:
   {
     v12 = v50[5];
     *buf = 138412290;
-    v60 = v12;
+    serverCopy = v12;
     _os_log_impl(&dword_25BD52000, v11, OS_LOG_TYPE_DEFAULT, "Using Overridden Server version  %@", buf, 0xCu);
   }
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v13 setObject:v50[5] forKey:@"ServerVersionCache"];
+  standardUserDefaults6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults6 setObject:v50[5] forKey:@"ServerVersionCache"];
 
   (v10)[2](v10, v50[5]);
 LABEL_26:
@@ -598,8 +598,8 @@ void __81__NDOServerVersionUtilities__supportedVersionsForClientAndServer_withCo
 
 + (id)getValidServerVersionCache
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"ServerVersionCache"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"ServerVersionCache"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -609,8 +609,8 @@ void __81__NDOServerVersionUtilities__supportedVersionsForClientAndServer_withCo
       +[NDOServerVersionUtilities getValidServerVersionCache];
     }
 
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v6 removeObjectForKey:@"ServerVersionCache"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 removeObjectForKey:@"ServerVersionCache"];
 
     v4 = 0;
   }
@@ -623,16 +623,16 @@ void __81__NDOServerVersionUtilities__supportedVersionsForClientAndServer_withCo
   return v4;
 }
 
-+ (void)serverVersionSupported:(id)a3
++ (void)serverVersionSupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__NDOServerVersionUtilities_serverVersionSupported___block_invoke;
   v6[3] = &unk_279976468;
-  v7 = v4;
-  v5 = v4;
-  [a1 _supportedVersionsForClientAndServer:2 withCompletion:v6];
+  v7 = supportedCopy;
+  v5 = supportedCopy;
+  [self _supportedVersionsForClientAndServer:2 withCompletion:v6];
 }
 
 void __52__NDOServerVersionUtilities_serverVersionSupported___block_invoke(uint64_t a1, void *a2)
@@ -655,16 +655,16 @@ void __52__NDOServerVersionUtilities_serverVersionSupported___block_invoke(uint6
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)isHighServerVersionFeaturesetEnabled:(unint64_t)a3 withCompletion:(id)a4
++ (void)isHighServerVersionFeaturesetEnabled:(unint64_t)enabled withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCompletion___block_invoke;
   v8[3] = &unk_279976468;
-  v9 = v6;
-  v7 = v6;
-  [a1 _supportedVersionsForClientAndServer:a3 withCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [self _supportedVersionsForClientAndServer:enabled withCompletion:v8];
 }
 
 void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -703,16 +703,16 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)isHighServerVersionFeaturesetEnabled:(id)a3
++ (void)isHighServerVersionFeaturesetEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled___block_invoke;
   v6[3] = &unk_279976490;
-  v7 = v4;
-  v5 = v4;
-  [a1 isHighServerVersionFeaturesetEnabled:0 withCompletion:v6];
+  v7 = enabledCopy;
+  v5 = enabledCopy;
+  [self isHighServerVersionFeaturesetEnabled:0 withCompletion:v6];
 }
 
 + (BOOL)isHighServerVersionFeaturesetEnabled
@@ -729,12 +729,12 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
   v10[2] = __65__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled__block_invoke;
   v10[3] = &unk_2799764B8;
   v10[4] = &v11;
-  [a1 _supportedVersionsForClientAndServer:1 withCompletion:v10];
+  [self _supportedVersionsForClientAndServer:1 withCompletion:v10];
   if ([v12[5] count])
   {
     v2 = MEMORY[0x277CCABB0];
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v2 numberWithInteger:{objc_msgSend(v3, "integerForKey:", @"HighServerVersion"}];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [v2 numberWithInteger:{objc_msgSend(standardUserDefaults, "integerForKey:", @"HighServerVersion"}];
 
     v5 = [v12[5] containsObject:v4];
   }
@@ -774,8 +774,8 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
     _os_log_impl(&dword_25BD52000, v2, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"WebFlowURL"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"WebFlowURL"];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -793,8 +793,8 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
     _os_log_impl(&dword_25BD52000, v2, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"ULWebFlowURL"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"ULWebFlowURL"];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -812,8 +812,8 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
     _os_log_impl(&dword_25BD52000, v2, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"isAPSSupported"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"isAPSSupported"];
 
   if (!v4)
   {
@@ -829,11 +829,11 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
   return v4;
 }
 
-+ (void)getDecodedParamsForPath:(id)a3 withCompletion:(id)a4
++ (void)getDecodedParamsForPath:(id)path withCompletion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   v8 = _NDOLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -846,16 +846,16 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
   v30[3] = __Block_byref_object_copy__2;
   v30[4] = __Block_byref_object_dispose__2;
   v31 = 0;
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 stringForKey:@"UniversalLinkEncodedParams"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults stringForKey:@"UniversalLinkEncodedParams"];
 
   v11 = dispatch_group_create();
-  if (v6 && [v6 length] || v10)
+  if (pathCopy && [pathCopy length] || v10)
   {
     dispatch_group_enter(v11);
     v13 = MEMORY[0x277CBEBC0];
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v15 = [v14 objectForKey:@"ServerVersionURL"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v15 = [standardUserDefaults2 objectForKey:@"ServerVersionURL"];
     v16 = [v13 URLWithString:v15];
 
     v25[0] = MEMORY[0x277D85DD0];
@@ -863,19 +863,19 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
     v25[2] = __68__NDOServerVersionUtilities_getDecodedParamsForPath_withCompletion___block_invoke;
     v25[3] = &unk_2799764E0;
     v26 = v10;
-    v17 = v6;
+    v17 = pathCopy;
     v27 = v17;
     v29 = v30;
     v18 = v11;
     v28 = v18;
-    [a1 _dictionaryFromURL:v16 shouldRetry:1 withCompletion:v25];
+    [self _dictionaryFromURL:v16 shouldRetry:1 withCompletion:v25];
     v19 = dispatch_get_global_queue(21, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__NDOServerVersionUtilities_getDecodedParamsForPath_withCompletion___block_invoke_2;
     block[3] = &unk_279976508;
     v24 = v30;
-    v23 = v7;
+    v23 = completionCopy;
     v22 = v17;
     dispatch_group_notify(v18, v19, block);
   }
@@ -888,11 +888,11 @@ void __81__NDOServerVersionUtilities_isHighServerVersionFeaturesetEnabled_withCo
       *buf = 136446466;
       v33 = "+[NDOServerVersionUtilities getDecodedParamsForPath:withCompletion:]";
       v34 = 2114;
-      v35 = v6;
+      v35 = pathCopy;
       _os_log_impl(&dword_25BD52000, v12, OS_LOG_TYPE_DEFAULT, "%{public}s: No valid params found for: %{public}@", buf, 0x16u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   _Block_object_dispose(v30, 8);
@@ -968,11 +968,11 @@ uint64_t __68__NDOServerVersionUtilities_getDecodedParamsForPath_withCompletion_
 
 + (id)clientConfig
 {
-  v2 = [a1 getValidServerVersionCache];
+  getValidServerVersionCache = [self getValidServerVersionCache];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 objectForKey:@"clientConfig"];
+    v3 = [getValidServerVersionCache objectForKey:@"clientConfig"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

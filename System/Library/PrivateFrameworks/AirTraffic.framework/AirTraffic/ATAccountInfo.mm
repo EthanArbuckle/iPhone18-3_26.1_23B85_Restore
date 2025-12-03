@@ -1,12 +1,12 @@
 @interface ATAccountInfo
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ATAccountInfo
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   objc_opt_class();
@@ -15,11 +15,11 @@
     v5 = objc_opt_class();
   }
 
-  __Copy(self, a3, v5);
+  __Copy(self, zone, v5);
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   objc_opt_class();
@@ -28,7 +28,7 @@
     v5 = objc_opt_class();
   }
 
-  __Copy(self, a3, v5);
+  __Copy(self, zone, v5);
   return objc_claimAutoreleasedReturnValue();
 }
 

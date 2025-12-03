@@ -1,23 +1,23 @@
 @interface CNVisualIdentityAvatarLayoutManager
 - (BOOL)hasMediaContextBadge;
-- (CGRect)adHocAvatarFrameInBounds:(CGRect)a3 forItemCount:(int64_t)a4;
-- (CGRect)adHocAvatarFrameInView:(id)a3 forItemCount:(int64_t)a4;
-- (CGRect)avatarFrameForFocusedAvatarInView:(id)a3;
-- (CGRect)avatarFrameInBounds:(CGRect)a3 forItemCount:(int64_t)a4;
-- (CGRect)avatarFrameInBounds:(CGRect)a3 forItemCount:(int64_t)a4 withConfiguration:(id)a5;
-- (CNVisualIdentityAvatarLayoutManager)initWithLayoutType:(unint64_t)a3;
-- (id)layoutConfigurationForIndex:(int64_t)a3 inItemCount:(int64_t)a4 withLayoutType:(unint64_t)a5;
-- (id)rearrangedLayersItemsFor:(id)a3 shouldAnimateRemoval:(BOOL)a4;
-- (void)updateAvatarLayersForItemCount:(int64_t)a3 inView:(id)a4 identifiers:(id)a5 shouldAnimateRemoval:(BOOL)a6;
-- (void)updateAvatarLayersForItemCount:(int64_t)a3 inView:(id)a4 withLayoutType:(unint64_t)a5;
-- (void)updateLayer:(id)a3 forItemCount:(int64_t)a4 atIndex:(int64_t)a5 inView:(id)a6 withLayoutType:(unint64_t)a7;
+- (CGRect)adHocAvatarFrameInBounds:(CGRect)bounds forItemCount:(int64_t)count;
+- (CGRect)adHocAvatarFrameInView:(id)view forItemCount:(int64_t)count;
+- (CGRect)avatarFrameForFocusedAvatarInView:(id)view;
+- (CGRect)avatarFrameInBounds:(CGRect)bounds forItemCount:(int64_t)count;
+- (CGRect)avatarFrameInBounds:(CGRect)bounds forItemCount:(int64_t)count withConfiguration:(id)configuration;
+- (CNVisualIdentityAvatarLayoutManager)initWithLayoutType:(unint64_t)type;
+- (id)layoutConfigurationForIndex:(int64_t)index inItemCount:(int64_t)count withLayoutType:(unint64_t)type;
+- (id)rearrangedLayersItemsFor:(id)for shouldAnimateRemoval:(BOOL)removal;
+- (void)updateAvatarLayersForItemCount:(int64_t)count inView:(id)view identifiers:(id)identifiers shouldAnimateRemoval:(BOOL)removal;
+- (void)updateAvatarLayersForItemCount:(int64_t)count inView:(id)view withLayoutType:(unint64_t)type;
+- (void)updateLayer:(id)layer forItemCount:(int64_t)count atIndex:(int64_t)index inView:(id)view withLayoutType:(unint64_t)type;
 @end
 
 @implementation CNVisualIdentityAvatarLayoutManager
 
-- (id)layoutConfigurationForIndex:(int64_t)a3 inItemCount:(int64_t)a4 withLayoutType:(unint64_t)a5
+- (id)layoutConfigurationForIndex:(int64_t)index inItemCount:(int64_t)count withLayoutType:(unint64_t)type
 {
-  if ((a5 | 2) == 2)
+  if ((type | 2) == 2)
   {
     [(CNVisualIdentityAvatarLayoutManager *)self avatarViewLayoutConfiguration];
   }
@@ -27,23 +27,23 @@
     [(CNVisualIdentityAvatarLayoutManager *)self avatarViewAdHocLayoutConfiguration];
   }
   v7 = ;
-  v8 = [v7 objectAtIndexedSubscript:a4 - 1];
+  v8 = [v7 objectAtIndexedSubscript:count - 1];
 
-  v9 = [v8 objectAtIndexedSubscript:a3];
+  v9 = [v8 objectAtIndexedSubscript:index];
 
   return v9;
 }
 
-- (CGRect)avatarFrameInBounds:(CGRect)a3 forItemCount:(int64_t)a4 withConfiguration:(id)a5
+- (CGRect)avatarFrameInBounds:(CGRect)bounds forItemCount:(int64_t)count withConfiguration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = v10;
-  if (a4 <= 0)
+  configurationCopy = configuration;
+  v11 = configurationCopy;
+  if (count <= 0)
   {
     v28 = *MEMORY[0x1E695F058];
     v29 = *(MEMORY[0x1E695F058] + 8);
@@ -53,7 +53,7 @@
 
   else
   {
-    v12 = [v10 objectAtIndexedSubscript:a4 - 1];
+    v12 = [configurationCopy objectAtIndexedSubscript:count - 1];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -135,14 +135,14 @@
   return result;
 }
 
-- (CGRect)avatarFrameInBounds:(CGRect)a3 forItemCount:(int64_t)a4
+- (CGRect)avatarFrameInBounds:(CGRect)bounds forItemCount:(int64_t)count
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(CNVisualIdentityAvatarLayoutManager *)self avatarViewLayoutConfiguration];
-  [(CNVisualIdentityAvatarLayoutManager *)self avatarFrameInBounds:a4 forItemCount:v10 withConfiguration:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  avatarViewLayoutConfiguration = [(CNVisualIdentityAvatarLayoutManager *)self avatarViewLayoutConfiguration];
+  [(CNVisualIdentityAvatarLayoutManager *)self avatarFrameInBounds:count forItemCount:avatarViewLayoutConfiguration withConfiguration:x, y, width, height];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -159,14 +159,14 @@
   return result;
 }
 
-- (CGRect)adHocAvatarFrameInBounds:(CGRect)a3 forItemCount:(int64_t)a4
+- (CGRect)adHocAvatarFrameInBounds:(CGRect)bounds forItemCount:(int64_t)count
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(CNVisualIdentityAvatarLayoutManager *)self avatarViewAdHocLayoutConfiguration];
-  [(CNVisualIdentityAvatarLayoutManager *)self avatarFrameInBounds:a4 forItemCount:v10 withConfiguration:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  avatarViewAdHocLayoutConfiguration = [(CNVisualIdentityAvatarLayoutManager *)self avatarViewAdHocLayoutConfiguration];
+  [(CNVisualIdentityAvatarLayoutManager *)self avatarFrameInBounds:count forItemCount:avatarViewAdHocLayoutConfiguration withConfiguration:x, y, width, height];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -183,11 +183,11 @@
   return result;
 }
 
-- (CGRect)adHocAvatarFrameInView:(id)a3 forItemCount:(int64_t)a4
+- (CGRect)adHocAvatarFrameInView:(id)view forItemCount:(int64_t)count
 {
-  [a3 bounds];
+  [view bounds];
 
-  [(CNVisualIdentityAvatarLayoutManager *)self adHocAvatarFrameInBounds:a4 forItemCount:?];
+  [(CNVisualIdentityAvatarLayoutManager *)self adHocAvatarFrameInBounds:count forItemCount:?];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -195,11 +195,11 @@
   return result;
 }
 
-- (CGRect)avatarFrameForFocusedAvatarInView:(id)a3
+- (CGRect)avatarFrameForFocusedAvatarInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(CNVisualIdentityAvatarLayoutManager *)self layoutConfigurationForIndex:0 inItemCount:1 withLayoutType:0];
-  [v4 bounds];
+  [viewCopy bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -224,30 +224,30 @@
 
 - (BOOL)hasMediaContextBadge
 {
-  v2 = [(CNVisualIdentityAvatarLayoutManager *)self mediaContextBadge];
-  v3 = v2 != 0;
+  mediaContextBadge = [(CNVisualIdentityAvatarLayoutManager *)self mediaContextBadge];
+  v3 = mediaContextBadge != 0;
 
   return v3;
 }
 
-- (void)updateLayer:(id)a3 forItemCount:(int64_t)a4 atIndex:(int64_t)a5 inView:(id)a6 withLayoutType:(unint64_t)a7
+- (void)updateLayer:(id)layer forItemCount:(int64_t)count atIndex:(int64_t)index inView:(id)view withLayoutType:(unint64_t)type
 {
-  v19 = a3;
-  v12 = a6;
-  v13 = [(CNVisualIdentityAvatarLayoutManager *)self layoutConfigurationForIndex:a5 inItemCount:a4 withLayoutType:a7];
-  v14 = [v12 effectiveUserInterfaceLayoutDirection];
-  [v12 bounds];
-  [v13 updateLayer:v19 inBounds:a5 atIndex:v14 == 1 isRTL:a7 layoutType:?];
-  if (!a7)
+  layerCopy = layer;
+  viewCopy = view;
+  v13 = [(CNVisualIdentityAvatarLayoutManager *)self layoutConfigurationForIndex:index inItemCount:count withLayoutType:type];
+  effectiveUserInterfaceLayoutDirection = [viewCopy effectiveUserInterfaceLayoutDirection];
+  [viewCopy bounds];
+  [v13 updateLayer:layerCopy inBounds:index atIndex:effectiveUserInterfaceLayoutDirection == 1 isRTL:type layoutType:?];
+  if (!type)
   {
     if ([(CNVisualIdentityAvatarLayoutManager *)self hasMediaContextBadge])
     {
       [v13 x];
       if (v15 > 0.0)
       {
-        [(CNVisualIdentityAvatarLayoutManager *)self avatarFrameForFocusedAvatarInView:v12];
-        [MEMORY[0x1E6996AB0] avatarBadgeRectForAvatarInRect:2 badgeType:v14 == 1 isRTL:?];
-        if (v14 == 1)
+        [(CNVisualIdentityAvatarLayoutManager *)self avatarFrameForFocusedAvatarInView:viewCopy];
+        [MEMORY[0x1E6996AB0] avatarBadgeRectForAvatarInRect:2 badgeType:effectiveUserInterfaceLayoutDirection == 1 isRTL:?];
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
           v17 = -(v16 * 0.75);
         }
@@ -257,31 +257,31 @@
           v17 = v16 * 0.75;
         }
 
-        [v19 frame];
-        [v19 setFrame:v18 + v17];
+        [layerCopy frame];
+        [layerCopy setFrame:v18 + v17];
       }
     }
   }
 }
 
-- (void)updateAvatarLayersForItemCount:(int64_t)a3 inView:(id)a4 withLayoutType:(unint64_t)a5
+- (void)updateAvatarLayersForItemCount:(int64_t)count inView:(id)view withLayoutType:(unint64_t)type
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-  v10 = [v9 count];
+  viewCopy = view;
+  avatarLayerItems = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+  v10 = [avatarLayerItems count];
 
-  v11 = v10 - a3;
-  if (v10 == a3)
+  v11 = v10 - count;
+  if (v10 == count)
   {
-    v12 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-    [v12 _cn_each:&__block_literal_global_34299];
+    avatarLayerItems2 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+    [avatarLayerItems2 _cn_each:&__block_literal_global_34299];
   }
 
   if (v11 >= 1)
   {
-    v13 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-    v14 = [v13 _cn_takeLast:v11];
+    avatarLayerItems3 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+    v14 = [avatarLayerItems3 _cn_takeLast:v11];
 
     v34 = 0u;
     v35 = 0u;
@@ -303,8 +303,8 @@
           }
 
           v20 = *(*(&v32 + 1) + 8 * i);
-          v21 = [v20 layer];
-          [v21 removeFromSuperlayer];
+          layer = [v20 layer];
+          [layer removeFromSuperlayer];
 
           [v20 resetToken];
         }
@@ -315,54 +315,54 @@
       while (v17);
     }
 
-    v22 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-    v23 = [v22 _cn_take:a3];
+    avatarLayerItems4 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+    v23 = [avatarLayerItems4 _cn_take:count];
     [(CNVisualIdentityAvatarLayoutManager *)self setAvatarLayerItems:v23];
   }
 
-  if (a3 >= 1)
+  if (count >= 1)
   {
     v24 = 0;
     do
     {
-      v25 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-      v26 = [v25 count];
+      avatarLayerItems5 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+      v26 = [avatarLayerItems5 count];
 
       if (v24 >= v26)
       {
-        v29 = [MEMORY[0x1E6979398] layer];
-        v28 = [objc_alloc(MEMORY[0x1E6996AA8]) initWithLayer:v29];
-        v30 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-        v31 = [v30 arrayByAddingObject:v28];
+        layer2 = [MEMORY[0x1E6979398] layer];
+        v28 = [objc_alloc(MEMORY[0x1E6996AA8]) initWithLayer:layer2];
+        avatarLayerItems6 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+        v31 = [avatarLayerItems6 arrayByAddingObject:v28];
         [(CNVisualIdentityAvatarLayoutManager *)self setAvatarLayerItems:v31];
       }
 
       else
       {
-        v27 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-        v28 = [v27 objectAtIndexedSubscript:v24];
+        avatarLayerItems7 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+        v28 = [avatarLayerItems7 objectAtIndexedSubscript:v24];
 
-        v29 = [v28 layer];
+        layer2 = [v28 layer];
       }
 
       [v28 resetToken];
-      [(CNVisualIdentityAvatarLayoutManager *)self updateLayer:v29 forItemCount:a3 atIndex:v24 inView:v8 withLayoutType:a5];
+      [(CNVisualIdentityAvatarLayoutManager *)self updateLayer:layer2 forItemCount:count atIndex:v24 inView:viewCopy withLayoutType:type];
 
       ++v24;
     }
 
-    while (a3 != v24);
+    while (count != v24);
   }
 }
 
-- (void)updateAvatarLayersForItemCount:(int64_t)a3 inView:(id)a4 identifiers:(id)a5 shouldAnimateRemoval:(BOOL)a6
+- (void)updateAvatarLayersForItemCount:(int64_t)count inView:(id)view identifiers:(id)identifiers shouldAnimateRemoval:(BOOL)removal
 {
-  v6 = a6;
-  v13 = a4;
-  v10 = a5;
+  removalCopy = removal;
+  viewCopy = view;
+  identifiersCopy = identifiers;
   if ([(CNVisualIdentityAvatarLayoutManager *)self layoutType]== 3)
   {
-    v11 = [(CNVisualIdentityAvatarLayoutManager *)self rearrangedLayersItemsFor:v10 shouldAnimateRemoval:v6];
+    v11 = [(CNVisualIdentityAvatarLayoutManager *)self rearrangedLayersItemsFor:identifiersCopy shouldAnimateRemoval:removalCopy];
     [(CNVisualIdentityAvatarLayoutManager *)self setAvatarLayerItems:v11];
 
     v12 = 3;
@@ -373,23 +373,23 @@
     v12 = 1;
   }
 
-  [(CNVisualIdentityAvatarLayoutManager *)self updateAvatarLayersForItemCount:a3 inView:v13 withLayoutType:v12];
+  [(CNVisualIdentityAvatarLayoutManager *)self updateAvatarLayersForItemCount:count inView:viewCopy withLayoutType:v12];
 }
 
-- (id)rearrangedLayersItemsFor:(id)a3 shouldAnimateRemoval:(BOOL)a4
+- (id)rearrangedLayersItemsFor:(id)for shouldAnimateRemoval:(BOOL)removal
 {
-  v41 = a4;
+  removalCopy = removal;
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
-  v7 = [v6 mutableCopy];
+  forCopy = for;
+  avatarLayerItems = [(CNVisualIdentityAvatarLayoutManager *)self avatarLayerItems];
+  v7 = [avatarLayerItems mutableCopy];
 
-  v42 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v42 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(forCopy, "count")}];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v5;
+  obj = forCopy;
   v8 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v8)
   {
@@ -414,8 +414,8 @@
         if (v13 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v14 = objc_alloc(MEMORY[0x1E6996AA8]);
-          v15 = [MEMORY[0x1E6979398] layer];
-          v16 = [v14 initWithLayer:v15];
+          layer = [MEMORY[0x1E6979398] layer];
+          v16 = [v14 initWithLayer:layer];
 
           [v16 setIdentifier:v12];
           [v42 addObject:v16];
@@ -461,51 +461,51 @@
         }
 
         v27 = *(*(&v46 + 1) + 8 * j);
-        if ([(CNVisualIdentityAvatarLayoutManager *)self layoutType]== 3 && v41)
+        if ([(CNVisualIdentityAvatarLayoutManager *)self layoutType]== 3 && removalCopy)
         {
           [MEMORY[0x1E6979518] begin];
           [MEMORY[0x1E6979518] setDisableActions:1];
-          v28 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds.size"];
-          [v28 setDuration:0.5];
-          [v28 setMass:2.0];
-          [v28 setStiffness:350.0];
-          [v28 setDamping:40.0];
-          [v28 setInitialVelocity:0.0];
+          layer6 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds.size"];
+          [layer6 setDuration:0.5];
+          [layer6 setMass:2.0];
+          [layer6 setStiffness:350.0];
+          [layer6 setDamping:40.0];
+          [layer6 setInitialVelocity:0.0];
           v29 = MEMORY[0x1E696B098];
-          v30 = [v27 layer];
-          [v30 bounds];
+          layer2 = [v27 layer];
+          [layer2 bounds];
           v45[0] = v31;
           v45[1] = v32;
           v33 = [v29 valueWithBytes:v45 objCType:"{CGSize=dd}"];
-          [v28 setFromValue:v33];
+          [layer6 setFromValue:v33];
 
           v44 = *MEMORY[0x1E695F060];
           v34 = [MEMORY[0x1E696B098] valueWithBytes:&v44 objCType:"{CGSize=dd}"];
-          [v28 setToValue:v34];
+          [layer6 setToValue:v34];
 
-          [v28 setDuration:0.300000012];
+          [layer6 setDuration:0.300000012];
           v43[0] = MEMORY[0x1E69E9820];
           v43[1] = 3221225472;
           v43[2] = __85__CNVisualIdentityAvatarLayoutManager_rearrangedLayersItemsFor_shouldAnimateRemoval___block_invoke_2;
           v43[3] = &unk_1E74E6A88;
           v43[4] = v27;
           [MEMORY[0x1E6979518] setCompletionBlock:v43];
-          v35 = [v27 layer];
-          [v35 addAnimation:v28 forKey:@"bounds.size"];
+          layer3 = [v27 layer];
+          [layer3 addAnimation:layer6 forKey:@"bounds.size"];
 
-          v36 = [v27 layer];
-          [v36 setBounds:{v22, v23, v24, v25}];
+          layer4 = [v27 layer];
+          [layer4 setBounds:{v22, v23, v24, v25}];
 
-          v37 = [v27 layer];
-          [v37 setZPosition:-INFINITY];
+          layer5 = [v27 layer];
+          [layer5 setZPosition:-INFINITY];
 
           [MEMORY[0x1E6979518] commit];
         }
 
         else
         {
-          v28 = [v27 layer];
-          [v28 removeFromSuperlayer];
+          layer6 = [v27 layer];
+          [layer6 removeFromSuperlayer];
         }
       }
 
@@ -532,25 +532,25 @@ void __85__CNVisualIdentityAvatarLayoutManager_rearrangedLayersItemsFor_shouldAn
   [v1 removeFromSuperlayer];
 }
 
-- (CNVisualIdentityAvatarLayoutManager)initWithLayoutType:(unint64_t)a3
+- (CNVisualIdentityAvatarLayoutManager)initWithLayoutType:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = CNVisualIdentityAvatarLayoutManager;
   v4 = [(CNVisualIdentityAvatarLayoutManager *)&v12 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E6996AB0] avatarViewLayoutConfigurationsForType:a3];
+    v5 = [MEMORY[0x1E6996AB0] avatarViewLayoutConfigurationsForType:type];
     avatarViewLayoutConfiguration = v4->_avatarViewLayoutConfiguration;
     v4->_avatarViewLayoutConfiguration = v5;
 
     avatarLayerItems = v4->_avatarLayerItems;
     v4->_avatarLayerItems = MEMORY[0x1E695E0F0];
 
-    v4->_maxAvatarCount = [MEMORY[0x1E6996AB0] maxAvatarCountForType:a3];
-    v4->_layoutType = a3;
-    if (a3 <= 3)
+    v4->_maxAvatarCount = [MEMORY[0x1E6996AB0] maxAvatarCountForType:type];
+    v4->_layoutType = type;
+    if (type <= 3)
     {
-      v8 = [MEMORY[0x1E6996AB0] avatarViewLayoutConfigurationsForType:qword_199E43EA0[a3]];
+      v8 = [MEMORY[0x1E6996AB0] avatarViewLayoutConfigurationsForType:qword_199E43EA0[type]];
       avatarViewAdHocLayoutConfiguration = v4->_avatarViewAdHocLayoutConfiguration;
       v4->_avatarViewAdHocLayoutConfiguration = v8;
     }

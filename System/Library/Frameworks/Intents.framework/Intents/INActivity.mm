@@ -1,12 +1,12 @@
 @interface INActivity
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INActivity)initWithActivityType:(id)a3 activityDescriptors:(id)a4;
-- (INActivity)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INActivity)initWithActivityType:(id)type activityDescriptors:(id)descriptors;
+- (INActivity)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INActivity
@@ -16,22 +16,22 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"activityType";
   activityType = self->_activityType;
-  v4 = activityType;
+  null = activityType;
   if (!activityType)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"activityDescriptors";
-  v11[0] = v4;
+  v11[0] = null;
   activityDescriptors = self->_activityDescriptors;
-  v6 = activityDescriptors;
+  null2 = activityDescriptors;
   if (!activityDescriptors)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (activityDescriptors)
   {
@@ -56,63 +56,63 @@ LABEL_7:
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INActivity;
   v6 = [(INActivity *)&v11 description];
-  v7 = [(INActivity *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INActivity *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_activityType];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"activityType"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_activityType];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"activityType"];
 
-  v9 = [v6 encodeObject:self->_activityDescriptors];
+  v9 = [encoderCopy encodeObject:self->_activityDescriptors];
 
-  [v7 if_setObjectIfNonNil:v9 forKey:@"activityDescriptors"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"activityDescriptors"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityType = self->_activityType;
-  v5 = a3;
-  [v5 encodeObject:activityType forKey:@"activityType"];
-  [v5 encodeObject:self->_activityDescriptors forKey:@"activityDescriptors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activityType forKey:@"activityType"];
+  [coderCopy encodeObject:self->_activityDescriptors forKey:@"activityDescriptors"];
 }
 
-- (INActivity)initWithCoder:(id)a3
+- (INActivity)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
   v6 = MEMORY[0x1E695DFD8];
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"activityDescriptors"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"activityDescriptors"];
 
   v10 = [(INActivity *)self initWithActivityType:v5 activityDescriptors:v9];
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -122,7 +122,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       activityType = self->_activityType;
       v8 = 0;
       if (activityType == v5->_activityType || [(NSString *)activityType isEqual:?])
@@ -144,20 +144,20 @@ LABEL_7:
   return v8;
 }
 
-- (INActivity)initWithActivityType:(id)a3 activityDescriptors:(id)a4
+- (INActivity)initWithActivityType:(id)type activityDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  descriptorsCopy = descriptors;
   v14.receiver = self;
   v14.super_class = INActivity;
   v8 = [(INActivity *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     activityType = v8->_activityType;
     v8->_activityType = v9;
 
-    v11 = [v7 copy];
+    v11 = [descriptorsCopy copy];
     activityDescriptors = v8->_activityDescriptors;
     v8->_activityDescriptors = v11;
   }
@@ -165,22 +165,22 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"activityType"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"activityType"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"activityDescriptors"];
-    v14 = [v7 decodeObjectsOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"activityDescriptors"];
+    v14 = [decoderCopy decodeObjectsOfClass:v12 from:v13];
 
-    v15 = [[a1 alloc] initWithActivityType:v11 activityDescriptors:v14];
+    v15 = [[self alloc] initWithActivityType:v11 activityDescriptors:v14];
   }
 
   else

@@ -1,41 +1,41 @@
 @interface ECMessageAuthenticator
 - (ECMessageAuthenticator)init;
-- (ECMessageAuthenticator)initWithDKIMVerifier:(id)a3 dmarcVerifier:(id)a4;
-- (ECMessageAuthenticator)initWithDNSClient:(id)a3;
-- (id)_onDeviceResultsForMessage:(id)a3 sender:(id)a4 dkimHeaders:(id)a5;
-- (id)_resultForDKIMStatement:(id)a3;
-- (id)_resultForDMARCStatement:(id)a3;
-- (id)_signingDomainForDKIMStatement:(id)a3;
-- (id)_verifyMessage:(id)a3 withDKIMSignatureHeaders:(id)a4 sender:(id)a5 identifierAlignment:(int64_t)a6 dkimVerifierOptions:(int64_t)a7;
-- (id)_verifyMessage:(id)a3 withSender:(id)a4 strictlyAlignedDKIMSignatureHeaders:(id)a5 relaxedAlignedDKIMSignatureHeaders:(id)a6 dkimVerifierOptions:(int64_t)a7;
-- (id)authenticateMessageData:(id)a3 onDevice:(BOOL)a4 sender:(id)a5;
-- (void)_addServerResultsFromMessage:(id)a3 toResult:(id)a4;
+- (ECMessageAuthenticator)initWithDKIMVerifier:(id)verifier dmarcVerifier:(id)dmarcVerifier;
+- (ECMessageAuthenticator)initWithDNSClient:(id)client;
+- (id)_onDeviceResultsForMessage:(id)message sender:(id)sender dkimHeaders:(id)headers;
+- (id)_resultForDKIMStatement:(id)statement;
+- (id)_resultForDMARCStatement:(id)statement;
+- (id)_signingDomainForDKIMStatement:(id)statement;
+- (id)_verifyMessage:(id)message withDKIMSignatureHeaders:(id)headers sender:(id)sender identifierAlignment:(int64_t)alignment dkimVerifierOptions:(int64_t)options;
+- (id)_verifyMessage:(id)message withSender:(id)sender strictlyAlignedDKIMSignatureHeaders:(id)headers relaxedAlignedDKIMSignatureHeaders:(id)signatureHeaders dkimVerifierOptions:(int64_t)options;
+- (id)authenticateMessageData:(id)data onDevice:(BOOL)device sender:(id)sender;
+- (void)_addServerResultsFromMessage:(id)message toResult:(id)result;
 @end
 
 @implementation ECMessageAuthenticator
 
-- (ECMessageAuthenticator)initWithDKIMVerifier:(id)a3 dmarcVerifier:(id)a4
+- (ECMessageAuthenticator)initWithDKIMVerifier:(id)verifier dmarcVerifier:(id)dmarcVerifier
 {
-  v7 = a3;
-  v8 = a4;
+  verifierCopy = verifier;
+  dmarcVerifierCopy = dmarcVerifier;
   v12.receiver = self;
   v12.super_class = ECMessageAuthenticator;
   v9 = [(ECMessageAuthenticator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dkimVerifier, a3);
-    objc_storeStrong(&v10->_dmarcVerifier, a4);
+    objc_storeStrong(&v9->_dkimVerifier, verifier);
+    objc_storeStrong(&v10->_dmarcVerifier, dmarcVerifier);
   }
 
   return v10;
 }
 
-- (ECMessageAuthenticator)initWithDNSClient:(id)a3
+- (ECMessageAuthenticator)initWithDNSClient:(id)client
 {
-  v4 = a3;
-  v5 = [[ECDKIMVerifier alloc] initWithPublicKeySource:v4];
-  v6 = [[ECDMARCVerifier alloc] initWithRecordSource:v4];
+  clientCopy = client;
+  v5 = [[ECDKIMVerifier alloc] initWithPublicKeySource:clientCopy];
+  v6 = [[ECDMARCVerifier alloc] initWithRecordSource:clientCopy];
   v7 = [(ECMessageAuthenticator *)self initWithDKIMVerifier:v5 dmarcVerifier:v6];
 
   return v7;
@@ -49,35 +49,35 @@
   return v4;
 }
 
-- (id)authenticateMessageData:(id)a3 onDevice:(BOOL)a4 sender:(id)a5
+- (id)authenticateMessageData:(id)data onDevice:(BOOL)device sender:(id)sender
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 emailAddressValue];
-  v11 = v10;
-  if (v10)
+  deviceCopy = device;
+  dataCopy = data;
+  senderCopy = sender;
+  emailAddressValue = [senderCopy emailAddressValue];
+  v11 = emailAddressValue;
+  if (emailAddressValue)
   {
-    v12 = v10;
+    v12 = emailAddressValue;
   }
 
   else
   {
-    v12 = v9;
+    v12 = senderCopy;
   }
 
   v13 = v12;
 
-  v14 = [(ECMessageAuthenticator *)self dkimVerifier];
+  dkimVerifier = [(ECMessageAuthenticator *)self dkimVerifier];
   v21 = 0;
   v22 = 0;
-  v15 = [v14 verifiableMessageForMessageData:v8 dkimSignatureHeaders:&v22 error:&v21];
+  v15 = [dkimVerifier verifiableMessageForMessageData:dataCopy dkimSignatureHeaders:&v22 error:&v21];
   v16 = v22;
   v17 = v21;
 
   if (v15)
   {
-    if (v6)
+    if (deviceCopy)
     {
       v18 = [(ECMessageAuthenticator *)self _onDeviceResultsForMessage:v15 sender:v13 dkimHeaders:v16];
     }
@@ -103,20 +103,20 @@
   return v19;
 }
 
-- (id)_onDeviceResultsForMessage:(id)a3 sender:(id)a4 dkimHeaders:(id)a5
+- (id)_onDeviceResultsForMessage:(id)message sender:(id)sender dkimHeaders:(id)headers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 emailAddressValue];
+  messageCopy = message;
+  senderCopy = sender;
+  headersCopy = headers;
+  emailAddressValue = [senderCopy emailAddressValue];
 
-  if (v11)
+  if (emailAddressValue)
   {
-    v12 = [v9 emailAddressValue];
+    emailAddressValue2 = [senderCopy emailAddressValue];
     v20 = 0;
     v21 = 0;
-    [ECDMARCVerifier partitionDKIMSignatureHeadersByIdentifierAlignment:v10 forSender:v12 strictAligned:&v21 relaxedAligned:&v20 unaligned:0];
-    v11 = v21;
+    [ECDMARCVerifier partitionDKIMSignatureHeadersByIdentifierAlignment:headersCopy forSender:emailAddressValue2 strictAligned:&v21 relaxedAligned:&v20 unaligned:0];
+    emailAddressValue = v21;
     v13 = v20;
   }
 
@@ -125,25 +125,25 @@
     v13 = 0;
   }
 
-  if (![v11 count] && !objc_msgSend(v13, "count"))
+  if (![emailAddressValue count] && !objc_msgSend(v13, "count"))
   {
-    v14 = [(ECMessageAuthenticator *)self _verifyMessage:v8 withDKIMSignatureHeaders:v10 sender:v9 identifierAlignment:0 dkimVerifierOptions:7];
-    if (![v10 count] || (objc_msgSend(v14, "dkimHeadersVerified") & 1) != 0)
+    v14 = [(ECMessageAuthenticator *)self _verifyMessage:messageCopy withDKIMSignatureHeaders:headersCopy sender:senderCopy identifierAlignment:0 dkimVerifierOptions:7];
+    if (![headersCopy count] || (objc_msgSend(v14, "dkimHeadersVerified") & 1) != 0)
     {
       goto LABEL_7;
     }
 
-    v16 = [(ECMessageAuthenticator *)self _verifyMessage:v8 withDKIMSignatureHeaders:v10 sender:v9 identifierAlignment:0 dkimVerifierOptions:1];
+    v16 = [(ECMessageAuthenticator *)self _verifyMessage:messageCopy withDKIMSignatureHeaders:headersCopy sender:senderCopy identifierAlignment:0 dkimVerifierOptions:1];
 LABEL_9:
     v15 = v16;
 
     goto LABEL_10;
   }
 
-  v14 = [(ECMessageAuthenticator *)self _verifyMessage:v8 withSender:v9 strictlyAlignedDKIMSignatureHeaders:v11 relaxedAlignedDKIMSignatureHeaders:v13 dkimVerifierOptions:7];
+  v14 = [(ECMessageAuthenticator *)self _verifyMessage:messageCopy withSender:senderCopy strictlyAlignedDKIMSignatureHeaders:emailAddressValue relaxedAlignedDKIMSignatureHeaders:v13 dkimVerifierOptions:7];
   if (([v14 dkimHeadersVerified] & 1) == 0)
   {
-    v16 = [(ECMessageAuthenticator *)self _verifyMessage:v8 withSender:v9 strictlyAlignedDKIMSignatureHeaders:v11 relaxedAlignedDKIMSignatureHeaders:v13 dkimVerifierOptions:1];
+    v16 = [(ECMessageAuthenticator *)self _verifyMessage:messageCopy withSender:senderCopy strictlyAlignedDKIMSignatureHeaders:emailAddressValue relaxedAlignedDKIMSignatureHeaders:v13 dkimVerifierOptions:1];
     goto LABEL_9;
   }
 
@@ -152,8 +152,8 @@ LABEL_7:
 LABEL_10:
   if (([v15 dkimAttemptedBodyVerification] & 1) == 0)
   {
-    v17 = [v8 bodyData];
-    v18 = [v17 length];
+    bodyData = [messageCopy bodyData];
+    v18 = [bodyData length];
 
     if (v18)
     {
@@ -164,15 +164,15 @@ LABEL_10:
   return v15;
 }
 
-- (id)_verifyMessage:(id)a3 withSender:(id)a4 strictlyAlignedDKIMSignatureHeaders:(id)a5 relaxedAlignedDKIMSignatureHeaders:(id)a6 dkimVerifierOptions:(int64_t)a7
+- (id)_verifyMessage:(id)message withSender:(id)sender strictlyAlignedDKIMSignatureHeaders:(id)headers relaxedAlignedDKIMSignatureHeaders:(id)signatureHeaders dkimVerifierOptions:(int64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([v14 count])
+  messageCopy = message;
+  senderCopy = sender;
+  headersCopy = headers;
+  signatureHeadersCopy = signatureHeaders;
+  if ([headersCopy count])
   {
-    v16 = [(ECMessageAuthenticator *)self _verifyMessage:v12 withDKIMSignatureHeaders:v14 sender:v13 identifierAlignment:2 dkimVerifierOptions:a7];
+    v16 = [(ECMessageAuthenticator *)self _verifyMessage:messageCopy withDKIMSignatureHeaders:headersCopy sender:senderCopy identifierAlignment:2 dkimVerifierOptions:options];
     v17 = v16;
     if ([v16 dmarcStatus] == 2)
     {
@@ -185,14 +185,14 @@ LABEL_10:
     v17 = 0;
   }
 
-  if ([v15 count])
+  if ([signatureHeadersCopy count])
   {
-    v18 = [(ECMessageAuthenticator *)self _verifyMessage:v12 withDKIMSignatureHeaders:v15 sender:v13 identifierAlignment:1 dkimVerifierOptions:a7];
+    v18 = [(ECMessageAuthenticator *)self _verifyMessage:messageCopy withDKIMSignatureHeaders:signatureHeadersCopy sender:senderCopy identifierAlignment:1 dkimVerifierOptions:options];
     v19 = v18;
     if (v17)
     {
-      v20 = [v18 dmarcStatus];
-      if (v20 == 2 || v20 == 3 && (v21 = [v17 dmarcStatus], v21 <= 5) && ((1 << v21) & 0x33) != 0)
+      dmarcStatus = [v18 dmarcStatus];
+      if (dmarcStatus == 2 || dmarcStatus == 3 && (v21 = [v17 dmarcStatus], v21 <= 5) && ((1 << v21) & 0x33) != 0)
       {
         v22 = v19;
 
@@ -213,18 +213,18 @@ LABEL_15:
   return v16;
 }
 
-- (id)_verifyMessage:(id)a3 withDKIMSignatureHeaders:(id)a4 sender:(id)a5 identifierAlignment:(int64_t)a6 dkimVerifierOptions:(int64_t)a7
+- (id)_verifyMessage:(id)message withDKIMSignatureHeaders:(id)headers sender:(id)sender identifierAlignment:(int64_t)alignment dkimVerifierOptions:(int64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v24 = v12;
+  messageCopy = message;
+  headersCopy = headers;
+  senderCopy = sender;
+  v24 = messageCopy;
   v15 = objc_alloc_init(ECMessageAuthenticationResult);
-  if ([v13 count])
+  if ([headersCopy count])
   {
-    v16 = [(ECMessageAuthenticator *)self dkimVerifier];
+    dkimVerifier = [(ECMessageAuthenticator *)self dkimVerifier];
     v26 = 0;
-    v17 = [v16 verifyMessage:v12 withDKIMSignatureHeaders:v13 options:a7 error:&v26];
+    v17 = [dkimVerifier verifyMessage:messageCopy withDKIMSignatureHeaders:headersCopy options:options error:&v26];
     v18 = v26;
   }
 
@@ -235,15 +235,15 @@ LABEL_15:
   }
 
   v25 = 0;
-  v19 = [v14 emailAddressValue];
+  emailAddressValue = [senderCopy emailAddressValue];
 
-  if (v19)
+  if (emailAddressValue)
   {
-    v20 = [(ECMessageAuthenticator *)self dmarcVerifier];
-    v21 = [v14 emailAddressValue];
-    v22 = [v20 dmarcStatusForSender:v21 dkimResult:v17 != 0 identifierAlignment:a6 receiverPolicy:&v25];
+    dmarcVerifier = [(ECMessageAuthenticator *)self dmarcVerifier];
+    emailAddressValue2 = [senderCopy emailAddressValue];
+    v22 = [dmarcVerifier dmarcStatusForSender:emailAddressValue2 dkimResult:v17 != 0 identifierAlignment:alignment receiverPolicy:&v25];
 
-    if ((a7 & 1) == 0)
+    if ((options & 1) == 0)
     {
 LABEL_6:
       [(ECMessageAuthenticationResult *)v15 setDkimAttemptedHeaderVerification:0];
@@ -254,7 +254,7 @@ LABEL_6:
   else
   {
     v22 = 5;
-    if ((a7 & 1) == 0)
+    if ((options & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -263,7 +263,7 @@ LABEL_6:
   [(ECMessageAuthenticationResult *)v15 setDkimAttemptedHeaderVerification:1];
   [(ECMessageAuthenticationResult *)v15 setDkimHeadersVerified:v17 != 0];
 LABEL_9:
-  if ((a7 & 2) != 0)
+  if ((options & 2) != 0)
   {
     [(ECMessageAuthenticationResult *)v15 setDkimAttemptedBodyVerification:1];
     [(ECMessageAuthenticationResult *)v15 setDkimBodyVerified:v17 != 0];
@@ -278,17 +278,17 @@ LABEL_9:
   [(ECMessageAuthenticationResult *)v15 setDkimError:v18];
   [(ECMessageAuthenticationResult *)v15 setDmarcStatus:v22];
   [(ECMessageAuthenticationResult *)v15 setDmarcReceiverPolicy:v25];
-  [(ECMessageAuthenticationResult *)v15 setDmarcIdentifierAlignment:a6];
+  [(ECMessageAuthenticationResult *)v15 setDmarcIdentifierAlignment:alignment];
 
   return v15;
 }
 
-- (void)_addServerResultsFromMessage:(id)a3 toResult:(id)a4
+- (void)_addServerResultsFromMessage:(id)message toResult:(id)result
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 headers];
-  v8 = [ECHeaderAuthenticationResults authenticationResultsForRawHeaders:v7];
+  resultCopy = result;
+  headers = [message headers];
+  v8 = [ECHeaderAuthenticationResults authenticationResultsForRawHeaders:headers];
 
   v22 = 0;
   v23 = &v22;
@@ -315,15 +315,15 @@ LABEL_9:
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v18 + 1) + 8 * v11) statements];
+        statements = [*(*(&v18 + 1) + 8 * v11) statements];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __64__ECMessageAuthenticator__addServerResultsFromMessage_toResult___block_invoke;
         v15[3] = &unk_27874BBF8;
         v15[4] = self;
         v17 = &v22;
-        v16 = v6;
-        [v12 enumerateObjectsUsingBlock:v15];
+        v16 = resultCopy;
+        [statements enumerateObjectsUsingBlock:v15];
 
         ++v11;
       }
@@ -335,7 +335,7 @@ LABEL_9:
     while (v9);
   }
 
-  [v6 setDkimServerStatements:v23[5]];
+  [resultCopy setDkimServerStatements:v23[5]];
   _Block_object_dispose(&v22, 8);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -403,17 +403,17 @@ LABEL_13:
   }
 }
 
-- (id)_resultForDKIMStatement:(id)a3
+- (id)_resultForDKIMStatement:(id)statement
 {
-  v3 = a3;
+  statementCopy = statement;
   if (_resultForDKIMStatement__onceToken != -1)
   {
     [ECMessageAuthenticator _resultForDKIMStatement:];
   }
 
   v4 = _resultForDKIMStatement__kDKIMResultByResultString;
-  v5 = [v3 result];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  result = [statementCopy result];
+  v6 = [v4 objectForKeyedSubscript:result];
 
   return v6;
 }
@@ -442,39 +442,39 @@ void __50__ECMessageAuthenticator__resultForDKIMStatement___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_signingDomainForDKIMStatement:(id)a3
+- (id)_signingDomainForDKIMStatement:(id)statement
 {
-  v3 = a3;
-  v4 = [v3 valueForPropertyType:@"header" property:@"d"];
-  if (!v4)
+  statementCopy = statement;
+  domain = [statementCopy valueForPropertyType:@"header" property:@"d"];
+  if (!domain)
   {
-    v5 = [v3 valueForPropertyType:@"header" property:@"i"];
+    v5 = [statementCopy valueForPropertyType:@"header" property:@"i"];
     if ([v5 length] && objc_msgSend(v5, "characterAtIndex:", 0) == 64)
     {
-      v4 = [v5 substringFromIndex:1];
+      domain = [v5 substringFromIndex:1];
     }
 
     else
     {
-      v6 = [v5 emailAddressValue];
-      v4 = [v6 domain];
+      emailAddressValue = [v5 emailAddressValue];
+      domain = [emailAddressValue domain];
     }
   }
 
-  return v4;
+  return domain;
 }
 
-- (id)_resultForDMARCStatement:(id)a3
+- (id)_resultForDMARCStatement:(id)statement
 {
-  v3 = a3;
+  statementCopy = statement;
   if (_resultForDMARCStatement__onceToken != -1)
   {
     [ECMessageAuthenticator _resultForDMARCStatement:];
   }
 
   v4 = _resultForDMARCStatement__kDMARCStatusByResultString;
-  v5 = [v3 result];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  result = [statementCopy result];
+  v6 = [v4 objectForKeyedSubscript:result];
 
   return v6;
 }

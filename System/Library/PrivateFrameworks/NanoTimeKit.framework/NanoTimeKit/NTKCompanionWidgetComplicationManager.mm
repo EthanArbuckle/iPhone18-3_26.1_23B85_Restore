@@ -1,39 +1,39 @@
 @interface NTKCompanionWidgetComplicationManager
-+ (id)instanceForDevice:(id)a3;
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4;
-- (BOOL)vendorExistsForContainerBundleIdentifier:(id)a3;
-- (BOOL)vendorExistsWithDescriptor:(id)a3;
-- (NTKCompanionWidgetComplicationManager)initWithDevice:(id)a3;
-- (id)_lock_sampleTemplateForWidget:(id)a3 family:(int64_t)a4;
-- (id)infoForDescriptor:(id)a3;
-- (id)sampleTemplateForWidget:(id)a3 family:(int64_t)a4;
++ (id)instanceForDevice:(id)device;
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families;
+- (BOOL)vendorExistsForContainerBundleIdentifier:(id)identifier;
+- (BOOL)vendorExistsWithDescriptor:(id)descriptor;
+- (NTKCompanionWidgetComplicationManager)initWithDevice:(id)device;
+- (id)_lock_sampleTemplateForWidget:(id)widget family:(int64_t)family;
+- (id)infoForDescriptor:(id)descriptor;
+- (id)sampleTemplateForWidget:(id)widget family:(int64_t)family;
 - (void)_fetchInstalledApps;
 - (void)_lock_updateAppNames;
-- (void)_lock_updateAppNamesForClientIdentifer:(id)a3;
+- (void)_lock_updateAppNamesForClientIdentifer:(id)identifer;
 - (void)_lock_updateRecordsForAllClients;
-- (void)_lock_updateRecordsForClientIdentifier:(id)a3;
-- (void)_setAppLookup:(id)a3;
+- (void)_lock_updateRecordsForClientIdentifier:(id)identifier;
+- (void)_setAppLookup:(id)lookup;
 - (void)_setup;
 - (void)_updateInstalledApps;
 - (void)_updateLoaded;
-- (void)complicationCollection:(id)a3 didUpdateComplicationDescriptorsForClient:(id)a4;
-- (void)complicationCollection:(id)a3 didUpdateSampleTemplateForClient:(id)a4 descriptor:(id)a5;
-- (void)complicationCollectionDidLoad:(id)a3;
-- (void)complicationCollectionDidReload:(id)a3;
-- (void)enumerateDescriptorsCompatibleWithFamilies:(id)a3 locationStyle:(unint64_t)a4 withBlock:(id)a5;
-- (void)performAfterLoad:(id)a3;
+- (void)complicationCollection:(id)collection didUpdateComplicationDescriptorsForClient:(id)client;
+- (void)complicationCollection:(id)collection didUpdateSampleTemplateForClient:(id)client descriptor:(id)descriptor;
+- (void)complicationCollectionDidLoad:(id)load;
+- (void)complicationCollectionDidReload:(id)reload;
+- (void)enumerateDescriptorsCompatibleWithFamilies:(id)families locationStyle:(unint64_t)style withBlock:(id)block;
+- (void)performAfterLoad:(id)load;
 @end
 
 @implementation NTKCompanionWidgetComplicationManager
 
-+ (id)instanceForDevice:(id)a3
++ (id)instanceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  deviceCopy = device;
+  v4 = deviceCopy;
+  if (deviceCopy)
   {
-    v5 = [v3 pairingID];
-    if (v5)
+    pairingID = [deviceCopy pairingID];
+    if (pairingID)
     {
       os_unfair_lock_lock(&instanceForDevice__lock);
       v6 = instanceForDevice__uuidToProvider;
@@ -46,11 +46,11 @@
         v6 = instanceForDevice__uuidToProvider;
       }
 
-      v9 = [v6 objectForKeyedSubscript:v5];
+      v9 = [v6 objectForKeyedSubscript:pairingID];
       if (!v9)
       {
         v9 = [[NTKCompanionWidgetComplicationManager alloc] initWithDevice:v4];
-        [instanceForDevice__uuidToProvider setObject:v9 forKeyedSubscript:v5];
+        [instanceForDevice__uuidToProvider setObject:v9 forKeyedSubscript:pairingID];
       }
 
       os_unfair_lock_unlock(&instanceForDevice__lock);
@@ -70,16 +70,16 @@
   return v9;
 }
 
-- (NTKCompanionWidgetComplicationManager)initWithDevice:(id)a3
+- (NTKCompanionWidgetComplicationManager)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = NTKCompanionWidgetComplicationManager;
   v6 = [(NTKCompanionWidgetComplicationManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = objc_opt_new();
     lock_clientToRecords = v7->_lock_clientToRecords;
@@ -93,13 +93,13 @@
     lock_appLookup = v7->_lock_appLookup;
     v7->_lock_appLookup = v12;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     lock_loadCompletionBlocks = v7->_lock_loadCompletionBlocks;
-    v7->_lock_loadCompletionBlocks = v14;
+    v7->_lock_loadCompletionBlocks = array;
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v7 selector:sel__fetchInstalledApps name:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:0];
-    [v16 addObserver:v7 selector:sel__fetchInstalledApps name:@"NTKSystemAppStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__fetchInstalledApps name:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__fetchInstalledApps name:@"NTKSystemAppStateChangedNotification" object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v7, _handleAppConduitApplicationsChangedNotification_1, *MEMORY[0x277CEAF60], v7, 0);
     [(NTKCompanionWidgetComplicationManager *)v7 _setup];
@@ -108,17 +108,17 @@
   return v7;
 }
 
-- (void)performAfterLoad:(id)a3
+- (void)performAfterLoad:(id)load
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  loadCopy = load;
+  v5 = loadCopy;
+  if (loadCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__NTKCompanionWidgetComplicationManager_performAfterLoad___block_invoke;
     aBlock[3] = &unk_27877E960;
-    v6 = v4;
+    v6 = loadCopy;
     v11 = v6;
     v7 = _Block_copy(aBlock);
     os_unfair_lock_lock(&self->_lock);
@@ -173,10 +173,10 @@ void __58__NTKCompanionWidgetComplicationManager_performAfterLoad___block_invoke
   [(NTKCompanionWidgetComplicationManager *)self _fetchInstalledApps];
 }
 
-- (void)enumerateDescriptorsCompatibleWithFamilies:(id)a3 locationStyle:(unint64_t)a4 withBlock:(id)a5
+- (void)enumerateDescriptorsCompatibleWithFamilies:(id)families locationStyle:(unint64_t)style withBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  familiesCopy = families;
   os_unfair_lock_lock(&self->_lock);
   v9 = [(NSMutableDictionary *)self->_lock_clientToRecords copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -185,10 +185,10 @@ void __58__NTKCompanionWidgetComplicationManager_performAfterLoad___block_invoke
   v12[2] = __108__NTKCompanionWidgetComplicationManager_enumerateDescriptorsCompatibleWithFamilies_locationStyle_withBlock___block_invoke;
   v12[3] = &unk_278783BE0;
   v13 = v9;
-  v14 = v7;
-  v10 = v7;
+  v14 = blockCopy;
+  v10 = blockCopy;
   v11 = v9;
-  [v8 enumerateObjectsUsingBlock:v12];
+  [familiesCopy enumerateObjectsUsingBlock:v12];
 }
 
 void __108__NTKCompanionWidgetComplicationManager_enumerateDescriptorsCompatibleWithFamilies_locationStyle_withBlock___block_invoke(uint64_t a1, void *a2)
@@ -247,31 +247,31 @@ void __108__NTKCompanionWidgetComplicationManager_enumerateDescriptorsCompatible
 LABEL_6:
 }
 
-- (id)infoForDescriptor:(id)a3
+- (id)infoForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_lock_descriptorToRecord objectForKey:v4];
+  v5 = [(NSMapTable *)self->_lock_descriptorToRecord objectForKey:descriptorCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
     goto LABEL_7;
   }
 
-  v6 = [v5 appName];
-  v7 = [v5 displayName];
-  if (!v6)
+  appName = [v5 appName];
+  displayName = [v5 displayName];
+  if (!appName)
   {
     v8 = _NTKLoggingObjectForDomain(47, "NTKLoggingDomainWidget");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(NTKCompanionWidgetComplicationManager *)v4 infoForDescriptor:v5, v8];
+      [(NTKCompanionWidgetComplicationManager *)descriptorCopy infoForDescriptor:v5, v8];
     }
 
-    v6 = [v4 containerBundleIdentifier];
+    appName = [descriptorCopy containerBundleIdentifier];
   }
 
-  v9 = [[NTKWidgetComplicationInfo alloc] initWithAppName:v6 displayName:v7];
+  v9 = [[NTKWidgetComplicationInfo alloc] initWithAppName:appName displayName:displayName];
 
   if (!v9)
   {
@@ -283,7 +283,7 @@ LABEL_7:
     }
 
     v11 = +[NTKCompanionWidgetFallbackPreviewProvider sharedInstance];
-    v9 = [v11 fallbackInfoForDescriptor:v4];
+    v9 = [v11 fallbackInfoForDescriptor:descriptorCopy];
 
     if (!v9)
     {
@@ -295,12 +295,12 @@ LABEL_7:
 
       os_unfair_lock_lock(&self->_lock);
       lock_appLookup = self->_lock_appLookup;
-      v14 = [v4 containerBundleIdentifier];
-      v15 = [(NSDictionary *)lock_appLookup objectForKeyedSubscript:v14];
-      v16 = [v15 applicationName];
+      containerBundleIdentifier = [descriptorCopy containerBundleIdentifier];
+      v15 = [(NSDictionary *)lock_appLookup objectForKeyedSubscript:containerBundleIdentifier];
+      applicationName = [v15 applicationName];
 
       os_unfair_lock_unlock(&self->_lock);
-      v17 = v16;
+      v17 = applicationName;
       v9 = [[NTKWidgetComplicationInfo alloc] initWithAppName:v17 displayName:v17];
     }
   }
@@ -308,14 +308,14 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)vendorExistsWithDescriptor:(id)a3
+- (BOOL)vendorExistsWithDescriptor:(id)descriptor
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_lock);
   lock_clientToRecords = self->_lock_clientToRecords;
-  v6 = [v4 containerBundleIdentifier];
-  v7 = [(NSMutableDictionary *)lock_clientToRecords objectForKeyedSubscript:v6];
+  containerBundleIdentifier = [descriptorCopy containerBundleIdentifier];
+  v7 = [(NSMutableDictionary *)lock_clientToRecords objectForKeyedSubscript:containerBundleIdentifier];
 
   os_unfair_lock_unlock(&self->_lock);
   v33 = 0u;
@@ -338,38 +338,38 @@ LABEL_3:
       }
 
       v12 = *(*(&v31 + 1) + 8 * v11);
-      v13 = [v12 widgetDescriptor];
-      v14 = [v13 extensionBundleIdentifier];
-      v15 = [v4 extensionBundleIdentifier];
-      if ([v14 isEqualToString:v15])
+      widgetDescriptor = [v12 widgetDescriptor];
+      extensionBundleIdentifier = [widgetDescriptor extensionBundleIdentifier];
+      extensionBundleIdentifier2 = [descriptorCopy extensionBundleIdentifier];
+      if ([extensionBundleIdentifier isEqualToString:extensionBundleIdentifier2])
       {
         v28 = v12;
-        v16 = [v12 widgetDescriptor];
-        v17 = [v16 kind];
-        [v4 kind];
+        widgetDescriptor2 = [v12 widgetDescriptor];
+        kind = [widgetDescriptor2 kind];
+        [descriptorCopy kind];
         v18 = v9;
         v19 = v10;
-        v21 = v20 = v4;
-        v30 = [v17 isEqualToString:v21];
+        v21 = v20 = descriptorCopy;
+        v30 = [kind isEqualToString:v21];
 
-        v4 = v20;
+        descriptorCopy = v20;
         v10 = v19;
         v9 = v18;
 
         if (v30)
         {
-          v23 = [v28 widgetDescriptor];
-          v24 = [v23 containerBundleIdentifier];
+          widgetDescriptor3 = [v28 widgetDescriptor];
+          containerBundleIdentifier2 = [widgetDescriptor3 containerBundleIdentifier];
 
           v25 = _NTKHiddenWidgetVendingBundleIdentifiers();
-          v26 = [v28 appName];
-          if (v26)
+          appName = [v28 appName];
+          if (appName)
           {
 
             goto LABEL_16;
           }
 
-          if ([v25 containsObject:v24])
+          if ([v25 containsObject:containerBundleIdentifier2])
           {
 LABEL_16:
             v22 = 1;
@@ -407,11 +407,11 @@ LABEL_18:
   return v22;
 }
 
-- (BOOL)vendorExistsForContainerBundleIdentifier:(id)a3
+- (BOOL)vendorExistsForContainerBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_clientToRecords objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_clientToRecords objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   LOBYTE(self) = [v5 count] != 0;
@@ -419,19 +419,19 @@ LABEL_18:
   return self;
 }
 
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v22 = a4;
+  availableCopy = available;
+  familiesCopy = families;
   os_unfair_lock_lock(&self->_lock);
   lock_clientToRecords = self->_lock_clientToRecords;
-  v27 = v6;
-  v8 = [v6 containerBundleIdentifier];
-  v9 = [(NSMutableDictionary *)lock_clientToRecords objectForKeyedSubscript:v8];
+  v27 = availableCopy;
+  containerBundleIdentifier = [availableCopy containerBundleIdentifier];
+  v9 = [(NSMutableDictionary *)lock_clientToRecords objectForKeyedSubscript:containerBundleIdentifier];
 
   os_unfair_lock_unlock(&self->_lock);
-  v24 = [MEMORY[0x277CBEB98] setWithArray:v22];
+  v24 = [MEMORY[0x277CBEB98] setWithArray:familiesCopy];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -452,15 +452,15 @@ LABEL_18:
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
-        v13 = [v12 widgetDescriptor];
-        v14 = [v13 extensionBundleIdentifier];
-        v15 = [v27 extensionBundleIdentifier];
-        if ([v14 isEqualToString:v15])
+        widgetDescriptor = [v12 widgetDescriptor];
+        extensionBundleIdentifier = [widgetDescriptor extensionBundleIdentifier];
+        extensionBundleIdentifier2 = [v27 extensionBundleIdentifier];
+        if ([extensionBundleIdentifier isEqualToString:extensionBundleIdentifier2])
         {
-          v16 = [v12 widgetDescriptor];
-          v17 = [v16 kind];
-          v18 = [v27 kind];
-          v19 = [v17 isEqualToString:v18];
+          widgetDescriptor2 = [v12 widgetDescriptor];
+          kind = [widgetDescriptor2 kind];
+          kind2 = [v27 kind];
+          v19 = [kind isEqualToString:kind2];
 
           if (v19)
           {
@@ -468,18 +468,18 @@ LABEL_18:
             v33 = &v32;
             v34 = 0x2020000000;
             v35 = 0;
-            v20 = [v12 supportedClockKitFamilies];
+            supportedClockKitFamilies = [v12 supportedClockKitFamilies];
             v28[0] = MEMORY[0x277D85DD0];
             v28[1] = 3221225472;
             v29[0] = __77__NTKCompanionWidgetComplicationManager_isComplicationAvailable_forFamilies___block_invoke;
             v29[1] = &unk_27877F780;
             v30 = v24;
             v31 = &v32;
-            [v20 enumerateObjectsUsingBlock:v28];
+            [supportedClockKitFamilies enumerateObjectsUsingBlock:v28];
 
-            LOBYTE(v20) = *(v33 + 24);
+            LOBYTE(supportedClockKitFamilies) = *(v33 + 24);
             _Block_object_dispose(&v32, 8);
-            if (v20)
+            if (supportedClockKitFamilies)
             {
               LOBYTE(v10) = 1;
               goto LABEL_13;
@@ -599,25 +599,25 @@ void __54__NTKCompanionWidgetComplicationManager__updateLoaded__block_invoke(uin
 - (void)_lock_updateAppNames
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_clientToRecords allKeys];
+  allKeys = [(NSMutableDictionary *)self->_lock_clientToRecords allKeys];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __61__NTKCompanionWidgetComplicationManager__lock_updateAppNames__block_invoke;
   v4[3] = &unk_27877DED0;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [allKeys enumerateObjectsUsingBlock:v4];
 }
 
-- (void)_lock_updateAppNamesForClientIdentifer:(id)a3
+- (void)_lock_updateAppNamesForClientIdentifer:(id)identifer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identiferCopy = identifer;
   os_unfair_lock_assert_owner(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_lock_clientToRecords objectForKeyedSubscript:v4, 0];
+  v5 = [(NSMutableDictionary *)self->_lock_clientToRecords objectForKeyedSubscript:identiferCopy, 0];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -634,9 +634,9 @@ void __54__NTKCompanionWidgetComplicationManager__updateLoaded__block_invoke(uin
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(NSDictionary *)self->_lock_appLookup objectForKeyedSubscript:v4];
-        v12 = [v11 applicationName];
-        [v10 setAppName:v12];
+        v11 = [(NSDictionary *)self->_lock_appLookup objectForKeyedSubscript:identiferCopy];
+        applicationName = [v11 applicationName];
+        [v10 setAppName:applicationName];
 
         ++v9;
       }
@@ -681,7 +681,7 @@ void __54__NTKCompanionWidgetComplicationManager__updateLoaded__block_invoke(uin
   os_unfair_lock_lock(&self->_lock);
   *&self->_lock_fetchingApps = 1;
   os_unfair_lock_unlock(&self->_lock);
-  v3 = [(CLKDevice *)self->_device pairingID];
+  pairingID = [(CLKDevice *)self->_device pairingID];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -697,17 +697,17 @@ void __54__NTKCompanionWidgetComplicationManager__updateLoaded__block_invoke(uin
   block[4] = self;
   block[5] = v13;
   dispatch_group_notify(v4, MEMORY[0x277D85CD0], block);
-  v5 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__NTKCompanionWidgetComplicationManager__updateInstalledApps__block_invoke_2;
   v8[3] = &unk_278787378;
-  v6 = v3;
+  v6 = pairingID;
   v9 = v6;
   v7 = v4;
   v10 = v7;
   v11 = v13;
-  [v5 enumerateInstalledApplicationsOnDeviceWithPairingID:v6 withBlock:v8];
+  [mEMORY[0x277CEAF80] enumerateInstalledApplicationsOnDeviceWithPairingID:v6 withBlock:v8];
 
   _Block_object_dispose(v13, 8);
 }
@@ -793,13 +793,13 @@ uint64_t __61__NTKCompanionWidgetComplicationManager__updateInstalledApps__block
   return 1;
 }
 
-- (void)_setAppLookup:(id)a3
+- (void)_setAppLookup:(id)lookup
 {
-  v4 = a3;
+  lookupCopy = lookup;
   os_unfair_lock_lock(&self->_lock);
   lock_appLookup = self->_lock_appLookup;
-  self->_lock_appLookup = v4;
-  v6 = v4;
+  self->_lock_appLookup = lookupCopy;
+  v6 = lookupCopy;
 
   [(NTKCompanionWidgetComplicationManager *)self _lock_updateAppNames];
   self->_lock_appsLoaded = 1;
@@ -819,12 +819,12 @@ void __55__NTKCompanionWidgetComplicationManager__setAppLookup___block_invoke(ui
   [v2 postNotificationName:@"NTKWidgetComplicationProviderComplicationsDidChange" object:*(a1 + 32)];
 }
 
-- (void)_lock_updateRecordsForClientIdentifier:(id)a3
+- (void)_lock_updateRecordsForClientIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(NTKComplicationCollection *)self->_lock_complicationCollection complicationDescriptorsForClientIdentifier:v4];
+  v5 = [(NTKComplicationCollection *)self->_lock_complicationCollection complicationDescriptorsForClientIdentifier:identifierCopy];
   v6 = [v5 copy];
 
   v7 = objc_opt_new();
@@ -851,24 +851,24 @@ void __55__NTKCompanionWidgetComplicationManager__setAppLookup___block_invoke(ui
         v12 = *(*(&v24 + 1) + 8 * v11);
         v13 = objc_opt_new();
         [v13 setComplicationDescriptor:v12];
-        v14 = [v12 widgetDescriptor];
-        [v13 setWidgetDescriptor:v14];
+        widgetDescriptor = [v12 widgetDescriptor];
+        [v13 setWidgetDescriptor:widgetDescriptor];
 
-        v15 = [v12 supportedFamilies];
-        v16 = [v15 copy];
+        supportedFamilies = [v12 supportedFamilies];
+        v16 = [supportedFamilies copy];
         [v13 setSupportedClockKitFamilies:v16];
 
-        v17 = [v12 displayName];
-        [v13 setDisplayName:v17];
+        displayName = [v12 displayName];
+        [v13 setDisplayName:displayName];
 
-        v18 = [(NSDictionary *)self->_lock_appLookup objectForKeyedSubscript:v4];
-        v19 = [v18 applicationName];
-        [v13 setAppName:v19];
+        v18 = [(NSDictionary *)self->_lock_appLookup objectForKeyedSubscript:identifierCopy];
+        applicationName = [v18 applicationName];
+        [v13 setAppName:applicationName];
 
         [v7 addObject:v13];
         lock_descriptorToRecord = self->_lock_descriptorToRecord;
-        v21 = [v13 widgetDescriptor];
-        [(NSMapTable *)lock_descriptorToRecord setObject:v13 forKey:v21];
+        widgetDescriptor2 = [v13 widgetDescriptor];
+        [(NSMapTable *)lock_descriptorToRecord setObject:v13 forKey:widgetDescriptor2];
 
         ++v11;
       }
@@ -883,12 +883,12 @@ void __55__NTKCompanionWidgetComplicationManager__setAppLookup___block_invoke(ui
   if ([v7 count])
   {
     v22 = [v7 copy];
-    [(NSMutableDictionary *)self->_lock_clientToRecords setObject:v22 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_lock_clientToRecords setObject:v22 forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_lock_clientToRecords removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_lock_clientToRecords removeObjectForKey:identifierCopy];
   }
 }
 
@@ -900,8 +900,8 @@ void __55__NTKCompanionWidgetComplicationManager__setAppLookup___block_invoke(ui
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(NTKComplicationCollection *)self->_lock_complicationCollection clients];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  clients = [(NTKComplicationCollection *)self->_lock_complicationCollection clients];
+  v4 = [clients countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -913,21 +913,21 @@ void __55__NTKCompanionWidgetComplicationManager__setAppLookup___block_invoke(ui
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clients);
         }
 
         [(NTKCompanionWidgetComplicationManager *)self _lock_updateRecordsForClientIdentifier:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [clients countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)complicationCollectionDidLoad:(id)a3
+- (void)complicationCollectionDidLoad:(id)load
 {
   v4 = _NTKLoggingObjectForDomain(47, "NTKLoggingDomainWidget");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -940,13 +940,13 @@ void __55__NTKCompanionWidgetComplicationManager__setAppLookup___block_invoke(ui
   [(NTKCompanionWidgetComplicationManager *)self _lock_updateRecordsForAllClients];
   self->_lock_collectionLoaded = 1;
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"NTKCompanionWidgetComplicationManagerComplicationTemplatesDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKCompanionWidgetComplicationManagerComplicationTemplatesDidChange" object:self];
 
   [(NTKCompanionWidgetComplicationManager *)self _updateLoaded];
 }
 
-- (void)complicationCollectionDidReload:(id)a3
+- (void)complicationCollectionDidReload:(id)reload
 {
   v4 = _NTKLoggingObjectForDomain(47, "NTKLoggingDomainWidget");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -976,22 +976,22 @@ void __73__NTKCompanionWidgetComplicationManager_complicationCollectionDidReload
   [v3 postNotificationName:@"NTKCompanionWidgetComplicationManagerComplicationTemplatesDidChange" object:*(a1 + 32)];
 }
 
-- (void)complicationCollection:(id)a3 didUpdateSampleTemplateForClient:(id)a4 descriptor:(id)a5
+- (void)complicationCollection:(id)collection didUpdateSampleTemplateForClient:(id)client descriptor:(id)descriptor
 {
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"NTKCompanionWidgetComplicationManagerComplicationTemplatesDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKCompanionWidgetComplicationManagerComplicationTemplatesDidChange" object:self];
 }
 
-- (void)complicationCollection:(id)a3 didUpdateComplicationDescriptorsForClient:(id)a4
+- (void)complicationCollection:(id)collection didUpdateComplicationDescriptorsForClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  collectionCopy = collection;
   os_unfair_lock_lock(&self->_lock);
   lock_complicationCollection = self->_lock_complicationCollection;
 
-  if (lock_complicationCollection == v7)
+  if (lock_complicationCollection == collectionCopy)
   {
-    [(NTKCompanionWidgetComplicationManager *)self _lock_updateRecordsForClientIdentifier:v6];
+    [(NTKCompanionWidgetComplicationManager *)self _lock_updateRecordsForClientIdentifier:clientCopy];
     os_unfair_lock_unlock(&self->_lock);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1013,11 +1013,11 @@ void __106__NTKCompanionWidgetComplicationManager_complicationCollection_didUpda
   [v2 postNotificationName:@"NTKWidgetComplicationProviderComplicationsDidChange" object:*(a1 + 32)];
 }
 
-- (id)sampleTemplateForWidget:(id)a3 family:(int64_t)a4
+- (id)sampleTemplateForWidget:(id)widget family:(int64_t)family
 {
-  v6 = a3;
+  widgetCopy = widget;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NTKCompanionWidgetComplicationManager *)self _lock_sampleTemplateForWidget:v6 family:a4];
+  v7 = [(NTKCompanionWidgetComplicationManager *)self _lock_sampleTemplateForWidget:widgetCopy family:family];
   os_unfair_lock_unlock(&self->_lock);
   if (!v7)
   {
@@ -1028,26 +1028,26 @@ void __106__NTKCompanionWidgetComplicationManager_complicationCollection_didUpda
     }
 
     v9 = +[NTKCompanionWidgetFallbackPreviewProvider sharedInstance];
-    v7 = [v9 fallbackSampleTemplateForDescriptor:v6 family:a4];
+    v7 = [v9 fallbackSampleTemplateForDescriptor:widgetCopy family:family];
   }
 
   return v7;
 }
 
-- (id)_lock_sampleTemplateForWidget:(id)a3 family:(int64_t)a4
+- (id)_lock_sampleTemplateForWidget:(id)widget family:(int64_t)family
 {
-  v6 = a3;
+  widgetCopy = widget;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_lock_collectionLoaded)
   {
-    v7 = [(NSMapTable *)self->_lock_descriptorToRecord objectForKey:v6];
+    v7 = [(NSMapTable *)self->_lock_descriptorToRecord objectForKey:widgetCopy];
     if (v7)
     {
       lock_complicationCollection = self->_lock_complicationCollection;
-      v9 = [v6 containerBundleIdentifier];
-      v10 = [v7 complicationDescriptor];
-      v11 = [v6 containerBundleIdentifier];
-      v12 = [(NTKComplicationCollection *)lock_complicationCollection sampleTemplateForClientIdentifier:v9 descriptor:v10 applicationID:v11 family:a4];
+      containerBundleIdentifier = [widgetCopy containerBundleIdentifier];
+      complicationDescriptor = [v7 complicationDescriptor];
+      containerBundleIdentifier2 = [widgetCopy containerBundleIdentifier];
+      v12 = [(NTKComplicationCollection *)lock_complicationCollection sampleTemplateForClientIdentifier:containerBundleIdentifier descriptor:complicationDescriptor applicationID:containerBundleIdentifier2 family:family];
 
       if (v12)
       {
@@ -1057,7 +1057,7 @@ void __106__NTKCompanionWidgetComplicationManager_complicationCollection_didUpda
       v13 = _NTKLoggingObjectForDomain(47, "NTKLoggingDomainWidget");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(NTKCompanionWidgetComplicationManager *)a4 _lock_sampleTemplateForWidget:v6 family:v13];
+        [(NTKCompanionWidgetComplicationManager *)family _lock_sampleTemplateForWidget:widgetCopy family:v13];
       }
     }
 

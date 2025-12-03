@@ -18,68 +18,68 @@
   objc_opt_class();
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695B830]];
   v6 = ICDynamicCast();
-  [a1 setRootObjectType:v6];
+  [self setRootObjectType:v6];
 
-  [a1 setServerShare:v4];
+  [self setServerShare:v4];
   objc_opt_class();
   v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695B828]];
   v8 = ICDynamicCast();
-  [a1 setTitle:v8];
+  [self setTitle:v8];
 
-  v9 = [v4 creationDate];
-  [a1 setCreationDate:v9];
+  creationDate = [v4 creationDate];
+  [self setCreationDate:creationDate];
 
-  v10 = [v4 modificationDate];
-  [a1 setModificationDate:v10];
+  modificationDate = [v4 modificationDate];
+  [self setModificationDate:modificationDate];
 
   objc_opt_class();
-  v11 = [v4 encryptedValues];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69B75B8]];
+  encryptedValues = [v4 encryptedValues];
+  v12 = [encryptedValues objectForKeyedSubscript:*MEMORY[0x1E69B75B8]];
   v13 = ICDynamicCast();
-  [a1 setSnippet:v13];
+  [self setSnippet:v13];
 
   objc_opt_class();
   v14 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B75B0]];
   v15 = ICDynamicCast();
-  [a1 setSnippetAttachmentType:{objc_msgSend(v15, "integerValue")}];
+  [self setSnippetAttachmentType:{objc_msgSend(v15, "integerValue")}];
 
   objc_opt_class();
   v16 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B75A8]];
   v17 = ICDynamicCast();
-  [a1 setSnippetAttachmentCount:{objc_msgSend(v17, "integerValue")}];
+  [self setSnippetAttachmentCount:{objc_msgSend(v17, "integerValue")}];
 
   v18 = [v4 ic_encryptedInlineableDataAssetForKeyPrefix:*MEMORY[0x1E69B7590]];
-  [a1 setThumbnailDataLight:v18];
+  [self setThumbnailDataLight:v18];
 
   v19 = [v4 ic_encryptedInlineableDataAssetForKeyPrefix:*MEMORY[0x1E69B7588]];
-  [a1 setThumbnailDataDark:v19];
+  [self setThumbnailDataDark:v19];
 
   objc_opt_class();
   v20 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B7578]];
   v21 = ICDynamicCast();
-  [a1 setNoteCount:{objc_msgSend(v21, "integerValue")}];
+  [self setNoteCount:{objc_msgSend(v21, "integerValue")}];
 
   objc_opt_class();
   v22 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B7580]];
   v23 = ICDynamicCast();
-  [a1 setNoteCountRecursive:{objc_msgSend(v23, "integerValue")}];
+  [self setNoteCountRecursive:{objc_msgSend(v23, "integerValue")}];
 
   objc_opt_class();
   v24 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B75C0]];
   v25 = ICDynamicCast();
-  [a1 setSubfolderCount:{objc_msgSend(v25, "integerValue")}];
+  [self setSubfolderCount:{objc_msgSend(v25, "integerValue")}];
 
   objc_opt_class();
   v27 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B75C8]];
 
   v26 = ICDynamicCast();
-  [a1 setSubfolderCountRecursive:{objc_msgSend(v26, "integerValue")}];
+  [self setSubfolderCountRecursive:{objc_msgSend(v26, "integerValue")}];
 }
 
 - (id)typeDescription
 {
-  v2 = [a1 rootObjectType];
-  v3 = [v2 isEqualToString:@"com.apple.notes.note"];
+  rootObjectType = [self rootObjectType];
+  v3 = [rootObjectType isEqualToString:@"com.apple.notes.note"];
 
   if (v3)
   {
@@ -88,8 +88,8 @@
 
   else
   {
-    v5 = [a1 rootObjectType];
-    v6 = [v5 isEqualToString:@"com.apple.notes.folder"];
+    rootObjectType2 = [self rootObjectType];
+    v6 = [rootObjectType2 isEqualToString:@"com.apple.notes.folder"];
 
     if (v6)
     {
@@ -109,12 +109,12 @@
 
 - (id)participantsInfoDescription
 {
-  v2 = [a1 serverShare];
-  v3 = [v2 ic_nonCurrentUserAcceptedParticipants];
+  serverShare = [self serverShare];
+  ic_nonCurrentUserAcceptedParticipants = [serverShare ic_nonCurrentUserAcceptedParticipants];
 
-  v4 = [v3 ic_compactMap:&__block_literal_global_36];
-  v5 = [a1 rootObjectType];
-  v6 = [v5 isEqualToString:@"com.apple.notes.note"];
+  v4 = [ic_nonCurrentUserAcceptedParticipants ic_compactMap:&__block_literal_global_36];
+  rootObjectType = [self rootObjectType];
+  v6 = [rootObjectType isEqualToString:@"com.apple.notes.note"];
 
   if (v6)
   {
@@ -122,7 +122,7 @@
     {
       if ([v4 count] == 1)
       {
-        v7 = [v3 count];
+        v7 = [ic_nonCurrentUserAcceptedParticipants count];
         v8 = MEMORY[0x1E696AEC0];
         if (v7 == 1)
         {
@@ -147,7 +147,7 @@ LABEL_20:
 LABEL_33:
         v15 = __ICLocalizedFrameworkString_impl(v21, v21, 0, 1);
         v16 = [v4 objectAtIndexedSubscript:0];
-        [v8 localizedStringWithFormat:v15, v16, objc_msgSend(v3, "count") - 1];
+        [v8 localizedStringWithFormat:v15, v16, objc_msgSend(ic_nonCurrentUserAcceptedParticipants, "count") - 1];
         goto LABEL_34;
       }
 
@@ -162,13 +162,13 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if ([v3 count])
+    if ([ic_nonCurrentUserAcceptedParticipants count])
     {
       v17 = MEMORY[0x1E696AEC0];
       v18 = @"Shared note with %lu people";
 LABEL_25:
       v15 = __ICLocalizedFrameworkString_impl(v18, v18, 0, 1);
-      v22 = [v17 localizedStringWithFormat:v15, objc_msgSend(v3, "count")];
+      v22 = [v17 localizedStringWithFormat:v15, objc_msgSend(ic_nonCurrentUserAcceptedParticipants, "count")];
 LABEL_36:
 
       goto LABEL_37;
@@ -179,8 +179,8 @@ LABEL_36:
 
   else
   {
-    v10 = [a1 rootObjectType];
-    v11 = [v10 isEqualToString:@"com.apple.notes.folder"];
+    rootObjectType2 = [self rootObjectType];
+    v11 = [rootObjectType2 isEqualToString:@"com.apple.notes.folder"];
 
     v12 = [v4 count];
     if (v11)
@@ -189,7 +189,7 @@ LABEL_36:
       {
         if ([v4 count] == 1)
         {
-          v13 = [v3 count];
+          v13 = [ic_nonCurrentUserAcceptedParticipants count];
           v8 = MEMORY[0x1E696AEC0];
           if (v13 == 1)
           {
@@ -213,7 +213,7 @@ LABEL_36:
         goto LABEL_33;
       }
 
-      if ([v3 count])
+      if ([ic_nonCurrentUserAcceptedParticipants count])
       {
         v17 = MEMORY[0x1E696AEC0];
         v18 = @"Shared folder with %lu people";
@@ -229,7 +229,7 @@ LABEL_36:
       {
         if ([v4 count] == 1)
         {
-          v14 = [v3 count];
+          v14 = [ic_nonCurrentUserAcceptedParticipants count];
           v8 = MEMORY[0x1E696AEC0];
           if (v14 == 1)
           {
@@ -253,7 +253,7 @@ LABEL_36:
         goto LABEL_33;
       }
 
-      if ([v3 count])
+      if ([ic_nonCurrentUserAcceptedParticipants count])
       {
         v17 = MEMORY[0x1E696AEC0];
         v18 = @"With %lu people";
@@ -272,39 +272,39 @@ LABEL_37:
 
 - (id)contentDescription
 {
-  v2 = [a1 rootObjectType];
-  v3 = [v2 isEqualToString:@"com.apple.notes.note"];
+  rootObjectType = [self rootObjectType];
+  v3 = [rootObjectType isEqualToString:@"com.apple.notes.note"];
 
   if (v3)
   {
     v4 = MEMORY[0x1E69B77F0];
-    v5 = [a1 snippet];
-    v6 = [a1 snippetAttachmentType];
-    v7 = [a1 snippetAttachmentCount];
-    v8 = [a1 account];
-    v9 = [v4 contentInfoTextWithSnippet:v5 attachmentContentInfoType:v6 attachmentContentInfoCount:v7 account:v8];
+    snippet = [self snippet];
+    snippetAttachmentType = [self snippetAttachmentType];
+    snippetAttachmentCount = [self snippetAttachmentCount];
+    account = [self account];
+    v9 = [v4 contentInfoTextWithSnippet:snippet attachmentContentInfoType:snippetAttachmentType attachmentContentInfoCount:snippetAttachmentCount account:account];
   }
 
   else
   {
-    v10 = [a1 rootObjectType];
-    v11 = [v10 isEqualToString:@"com.apple.notes.folder"];
+    rootObjectType2 = [self rootObjectType];
+    v11 = [rootObjectType2 isEqualToString:@"com.apple.notes.folder"];
 
     if (v11)
     {
-      [MEMORY[0x1E69B7760] contentInfoTextWithNoteCount:objc_msgSend(a1 subfolderCount:{"noteCount"), objc_msgSend(a1, "subfolderCount")}];
+      [MEMORY[0x1E69B7760] contentInfoTextWithNoteCount:objc_msgSend(self subfolderCount:{"noteCount"), objc_msgSend(self, "subfolderCount")}];
     }
 
     else
     {
-      [a1 snippet];
+      [self snippet];
     }
     v12 = ;
-    v5 = v12;
+    snippet = v12;
     if (v12)
     {
       v13 = v12;
-      v5 = v13;
+      snippet = v13;
     }
 
     else
@@ -320,35 +320,35 @@ LABEL_37:
 
 - (id)joinDescription
 {
-  v2 = [a1 account];
-  v3 = [v2 fullName];
-  v4 = [v3 ic_localizedNameWithDefaultFormattingStyle];
+  account = [self account];
+  fullName = [account fullName];
+  ic_localizedNameWithDefaultFormattingStyle = [fullName ic_localizedNameWithDefaultFormattingStyle];
 
-  v5 = [a1 account];
-  v6 = [v5 primaryEmail];
+  account2 = [self account];
+  primaryEmail = [account2 primaryEmail];
 
-  if (v4 && v6)
+  if (ic_localizedNameWithDefaultFormattingStyle && primaryEmail)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = __ICLocalizedFrameworkString_impl(@"You will join as %@ (%@)", @"You will join as %@ (%@)", 0, 1);
-    [v7 localizedStringWithFormat:v8, v4, v6];
+    [v7 localizedStringWithFormat:v8, ic_localizedNameWithDefaultFormattingStyle, primaryEmail];
     v11 = LABEL_9:;
 
     goto LABEL_11;
   }
 
-  if (v4 | v6)
+  if (ic_localizedNameWithDefaultFormattingStyle | primaryEmail)
   {
     v9 = MEMORY[0x1E696AEC0];
     v8 = __ICLocalizedFrameworkString_impl(@"You will join as %@", @"You will join as %@", 0, 1);
-    if (v4)
+    if (ic_localizedNameWithDefaultFormattingStyle)
     {
-      v10 = v4;
+      v10 = ic_localizedNameWithDefaultFormattingStyle;
     }
 
     else
     {
-      v10 = v6;
+      v10 = primaryEmail;
     }
 
     [v9 localizedStringWithFormat:v8, v10, v13];
@@ -363,8 +363,8 @@ LABEL_11:
 
 - (id)joinActionTitle
 {
-  v2 = [a1 rootObjectType];
-  v3 = [v2 isEqualToString:@"com.apple.notes.note"];
+  rootObjectType = [self rootObjectType];
+  v3 = [rootObjectType isEqualToString:@"com.apple.notes.note"];
 
   if (v3)
   {
@@ -373,8 +373,8 @@ LABEL_11:
 
   else
   {
-    v5 = [a1 rootObjectType];
-    v6 = [v5 isEqualToString:@"com.apple.notes.folder"];
+    rootObjectType2 = [self rootObjectType];
+    v6 = [rootObjectType2 isEqualToString:@"com.apple.notes.folder"];
 
     if (v6)
     {
@@ -394,8 +394,8 @@ LABEL_11:
 
 - (id)removeActionTitle
 {
-  v2 = [a1 rootObjectType];
-  v3 = [v2 isEqualToString:@"com.apple.notes.note"];
+  rootObjectType = [self rootObjectType];
+  v3 = [rootObjectType isEqualToString:@"com.apple.notes.note"];
 
   if (v3)
   {
@@ -404,8 +404,8 @@ LABEL_11:
 
   else
   {
-    v5 = [a1 rootObjectType];
-    v6 = [v5 isEqualToString:@"com.apple.notes.folder"];
+    rootObjectType2 = [self rootObjectType];
+    v6 = [rootObjectType2 isEqualToString:@"com.apple.notes.folder"];
 
     if (v6)
     {
@@ -425,11 +425,11 @@ LABEL_11:
 
 - (BOOL)hasThumbnail
 {
-  v2 = [a1 thumbnailDataLight];
-  if (v2)
+  thumbnailDataLight = [self thumbnailDataLight];
+  if (thumbnailDataLight)
   {
-    v3 = [a1 thumbnailDataDark];
-    v4 = v3 != 0;
+    thumbnailDataDark = [self thumbnailDataDark];
+    v4 = thumbnailDataDark != 0;
   }
 
   else
@@ -442,26 +442,26 @@ LABEL_11:
 
 - (id)thumbnailImageForAppearance:()UI size:
 {
-  v9 = [a5 type];
-  if (v9 == 1)
+  type = [a5 type];
+  if (type == 1)
   {
     v10 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v11 = [a1 thumbnailDataDark];
+    thumbnailDataDark = [self thumbnailDataDark];
   }
 
   else
   {
-    if (v9)
+    if (type)
     {
       goto LABEL_6;
     }
 
     v10 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v11 = [a1 thumbnailDataLight];
+    thumbnailDataDark = [self thumbnailDataLight];
   }
 
-  v12 = v11;
-  v13 = [v10 initWithData:v11];
+  v12 = thumbnailDataDark;
+  v13 = [v10 initWithData:thumbnailDataDark];
   [MEMORY[0x1E69DCEB0] ic_scale];
   v5 = [v13 ic_scaledImageWithSize:a2 scale:{a3, v14}];
 

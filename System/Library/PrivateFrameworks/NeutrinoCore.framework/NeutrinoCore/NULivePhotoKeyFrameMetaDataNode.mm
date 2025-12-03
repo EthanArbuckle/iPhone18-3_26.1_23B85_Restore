@@ -1,27 +1,27 @@
 @interface NULivePhotoKeyFrameMetaDataNode
-- (NULivePhotoKeyFrameMetaDataNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (NULivePhotoKeyFrameMetaDataNode)initWithTime:(id *)a3 input:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoProperties:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (NULivePhotoKeyFrameMetaDataNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (NULivePhotoKeyFrameMetaDataNode)initWithTime:(id *)time input:(id)input;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoProperties:(id *)properties;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NULivePhotoKeyFrameMetaDataNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v4 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v4 _evaluateImage:a3];
+  v5 = [v4 _evaluateImage:image];
 
   return v5;
 }
 
-- (id)_evaluateVideoProperties:(id *)a3
+- (id)_evaluateVideoProperties:(id *)properties
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!properties)
   {
     v8 = NUAssertLogger_1092();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -42,8 +42,8 @@
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v15;
         *&buf[12] = 2114;
@@ -54,8 +54,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -84,10 +84,10 @@
   return v6;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v10 = NUAssertLogger_1092();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -108,8 +108,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -120,8 +120,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -149,7 +149,7 @@
 
       else
       {
-        *a3 = [NUError errorWithCode:1 reason:@"[NULivePhotoKeyFrameMetaDataNode _evaluateVideo] failed to get mutableCopy" object:v4];
+        *video = [NUError errorWithCode:1 reason:@"[NULivePhotoKeyFrameMetaDataNode _evaluateVideo] failed to get mutableCopy" object:v4];
       }
     }
 
@@ -167,11 +167,11 @@
   return v6;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = NULivePhotoKeyFrameMetaDataNode;
-  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   if (v7)
   {
     epoch = self->_timeFromAdjustment.epoch;
@@ -182,12 +182,12 @@
   return v7;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 copy];
-  if (!v9)
+  cacheCopy = cache;
+  stateCopy = state;
+  v10 = [stateCopy copy];
+  if (!stateCopy)
   {
     v16 = 0;
     v17 = 0;
@@ -195,7 +195,7 @@
     goto LABEL_5;
   }
 
-  [v9 time];
+  [stateCopy time];
   if ((v17 & 0x100000000) == 0)
   {
 LABEL_5:
@@ -206,16 +206,16 @@ LABEL_5:
 
   v13.receiver = self;
   v13.super_class = NULivePhotoKeyFrameMetaDataNode;
-  v11 = [(NURenderNode *)&v13 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+  v11 = [(NURenderNode *)&v13 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 
   return v11;
 }
 
-- (NULivePhotoKeyFrameMetaDataNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NULivePhotoKeyFrameMetaDataNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1107);
@@ -259,8 +259,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -276,8 +276,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -293,11 +293,11 @@ LABEL_14:
   _NUAssertFailHandler("[NULivePhotoKeyFrameMetaDataNode initWithSettings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+KeyFrame.m", 38, @"Initializer not available: [%@ %@], use designated initializer instead.", v30, v31, v32, v33, v29);
 }
 
-- (NULivePhotoKeyFrameMetaDataNode)initWithTime:(id *)a3 input:(id)a4
+- (NULivePhotoKeyFrameMetaDataNode)initWithTime:(id *)time input:(id)input
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6)
+  inputCopy = input;
+  if (!inputCopy)
   {
     v15 = NUAssertLogger_1092();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -318,8 +318,8 @@ LABEL_14:
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(time.value) = 138543618;
         *(&time.value + 4) = v22;
         LOWORD(time.flags) = 2114;
@@ -330,8 +330,8 @@ LABEL_14:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(time.value) = 138543362;
       *(&time.value + 4) = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &time, 0xCu);
@@ -340,9 +340,9 @@ LABEL_14:
     _NUAssertFailHandler("[NULivePhotoKeyFrameMetaDataNode initWithTime:input:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+KeyFrame.m", 27, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "input != nil");
   }
 
-  v7 = v6;
+  v7 = inputCopy;
   v8 = *MEMORY[0x1E695FB30];
-  time = *a3;
+  time = *time;
   v35 = v8;
   v9 = CMTimeCopyAsDictionary(&time, 0);
   v36[0] = v9;
@@ -354,8 +354,8 @@ LABEL_14:
   v31.super_class = NULivePhotoKeyFrameMetaDataNode;
   v12 = [(NURenderNode *)&v31 initWithSettings:v10 inputs:v11];
 
-  var3 = a3->var3;
-  *(v12 + 168) = *&a3->var0;
+  var3 = time->var3;
+  *(v12 + 168) = *&time->var0;
   *(v12 + 23) = var3;
 
   return v12;

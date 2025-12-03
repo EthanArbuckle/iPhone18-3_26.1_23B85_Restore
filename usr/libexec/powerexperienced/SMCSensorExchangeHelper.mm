@@ -1,11 +1,11 @@
 @interface SMCSensorExchangeHelper
 + (id)sharedInstance;
 - (SMCSensorExchangeHelper)init;
-- (void)updateCLTMChargingPolicy:(unint64_t)a3;
-- (void)updateCLTMMobileChargingPolicy:(unint64_t)a3;
-- (void)updateCLTMThermalPolicy:(unint64_t)a3;
-- (void)updateInductiveChargingPowerPolicy:(unint64_t)a3;
-- (void)updateSMCDebugKey:(id)a3 withState:(BOOL)a4;
+- (void)updateCLTMChargingPolicy:(unint64_t)policy;
+- (void)updateCLTMMobileChargingPolicy:(unint64_t)policy;
+- (void)updateCLTMThermalPolicy:(unint64_t)policy;
+- (void)updateInductiveChargingPowerPolicy:(unint64_t)policy;
+- (void)updateSMCDebugKey:(id)key withState:(BOOL)state;
 @end
 
 @implementation SMCSensorExchangeHelper
@@ -39,61 +39,61 @@
   return v2;
 }
 
-- (void)updateCLTMChargingPolicy:(unint64_t)a3
+- (void)updateCLTMChargingPolicy:(unint64_t)policy
 {
   v4 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000BED8;
   block[3] = &unk_10002C960;
-  block[4] = a3;
+  block[4] = policy;
   dispatch_async(v4, block);
 }
 
-- (void)updateCLTMMobileChargingPolicy:(unint64_t)a3
+- (void)updateCLTMMobileChargingPolicy:(unint64_t)policy
 {
   v4 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C2AC;
   block[3] = &unk_10002C960;
-  block[4] = a3;
+  block[4] = policy;
   dispatch_async(v4, block);
 }
 
-- (void)updateSMCDebugKey:(id)a3 withState:(BOOL)a4
+- (void)updateSMCDebugKey:(id)key withState:(BOOL)state
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = sub_100001600();
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000C4A0;
   v8[3] = &unk_10002C988;
-  v9 = v5;
-  v10 = a4;
-  v7 = v5;
+  v9 = keyCopy;
+  stateCopy = state;
+  v7 = keyCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)updateCLTMThermalPolicy:(unint64_t)a3
+- (void)updateCLTMThermalPolicy:(unint64_t)policy
 {
   v4 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C6D4;
   block[3] = &unk_10002C960;
-  block[4] = a3;
+  block[4] = policy;
   dispatch_async(v4, block);
 }
 
-- (void)updateInductiveChargingPowerPolicy:(unint64_t)a3
+- (void)updateInductiveChargingPowerPolicy:(unint64_t)policy
 {
   v4 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C88C;
   block[3] = &unk_10002C960;
-  block[4] = a3;
+  block[4] = policy;
   dispatch_async(v4, block);
 }
 

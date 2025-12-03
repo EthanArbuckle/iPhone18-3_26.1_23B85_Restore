@@ -6,10 +6,10 @@
 
 - (id)TSDBezierPath
 {
-  v2 = [MEMORY[0x1E69D5628] bezierPath];
-  CGPathApply([a1 CGPath], v2, UIBezierPathSilexPathApplier);
+  bezierPath = [MEMORY[0x1E69D5628] bezierPath];
+  CGPathApply([self CGPath], bezierPath, UIBezierPathSilexPathApplier);
 
-  return v2;
+  return bezierPath;
 }
 
 @end

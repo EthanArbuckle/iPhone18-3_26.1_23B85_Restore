@@ -16,7 +16,7 @@
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS___SBHFolderZoomSettings;
   v3 = objc_msgSendSuper2(&v18, sel_settingsControllerModule);
   v4 = [v2 submoduleWithModule:v3 childSettingsKeyPath:0];
@@ -27,8 +27,8 @@
 
   v8 = MEMORY[0x1E69C6638];
   v9 = MEMORY[0x1E69C65E8];
-  v10 = [MEMORY[0x1E69C6640] action];
-  v11 = [v9 rowWithTitle:@"Restore Defaults" action:v10];
+  action = [MEMORY[0x1E69C6640] action];
+  v11 = [v9 rowWithTitle:@"Restore Defaults" action:action];
   v20[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v13 = [v8 sectionWithRows:v12];

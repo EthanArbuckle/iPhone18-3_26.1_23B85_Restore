@@ -4,9 +4,9 @@
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth;
 - (BOOL)_needsRenderModel;
-- (BOOL)_needsSubviewsRenderModelWithContext:(id)a3;
+- (BOOL)_needsSubviewsRenderModelWithContext:(id)context;
 - (BOOL)groupedContainingIsGrouped;
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4;
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge;
 - (CGRect)computedErasableBounds;
 - (TUILayout)contentChild;
 - (UIEdgeInsets)groupedContainingInsets;
@@ -16,13 +16,13 @@
 - (id)effectiveGuideTop;
 - (id)effectiveGuideTrailing;
 - (id)groupedContainingLayouts;
-- (id)guideProviderForLayout:(id)a3;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)guideProviderForLayout:(id)layout;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)_updateSpecifiedWidth;
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6;
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
 - (void)computeLayout;
-- (void)groupedContainingValidateWithSize:(CGSize)a3;
-- (void)layoutNonContentChildrenWithSize:(CGSize)a3;
+- (void)groupedContainingValidateWithSize:(CGSize)size;
+- (void)layoutNonContentChildrenWithSize:(CGSize)size;
 - (void)onChildrenUpdated;
 @end
 
@@ -35,11 +35,11 @@
   v6 = v5;
   v8 = v7;
 
-  v9 = [(TUIStyledBoxLayout *)self contentChild];
-  v10 = [v9 validatedIntrinsicWidthConsideringSpecified];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  validatedIntrinsicWidthConsideringSpecified = [contentChild validatedIntrinsicWidthConsideringSpecified];
   v12 = v11;
 
-  return TUILengthWithDelta(v10, v12, v6 + v8);
+  return TUILengthWithDelta(validatedIntrinsicWidthConsideringSpecified, v12, v6 + v8);
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight
@@ -49,11 +49,11 @@
   v6 = v5;
   v8 = v7;
 
-  v9 = [(TUIStyledBoxLayout *)self contentChild];
-  v10 = [v9 validatedIntrinsicHeightConsideringSpecified];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  validatedIntrinsicHeightConsideringSpecified = [contentChild validatedIntrinsicHeightConsideringSpecified];
   v12 = v11;
 
-  return TUILengthWithDelta(v10, v12, v6 + v8);
+  return TUILengthWithDelta(validatedIntrinsicHeightConsideringSpecified, v12, v6 + v8);
 }
 
 - (double)computedHeightAbovePivot
@@ -62,8 +62,8 @@
   [v3 insets];
   v5 = v4;
 
-  v6 = [(TUIStyledBoxLayout *)self contentChild];
-  [v6 computedHeightAbovePivot];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  [contentChild computedHeightAbovePivot];
   v8 = v5 + v7;
 
   return v8;
@@ -78,37 +78,37 @@
   v8 = v7;
   v10 = v9;
 
-  v20 = [(TUIStyledBoxLayout *)self contentChild];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
   [(TUILayout *)self flexedWidth];
   [(TUILayout *)self flexedWidth];
-  [v20 setFlexedWidth:v11 - v6 - v10];
+  [contentChild setFlexedWidth:v11 - v6 - v10];
   [(TUILayout *)self flexedHeight];
   [(TUILayout *)self flexedHeight];
-  [v20 setFlexedHeight:v12 - v4 - v8];
+  [contentChild setFlexedHeight:v12 - v4 - v8];
   [(TUILayout *)self computeWidth];
-  [v20 setContainingWidth:v13 - v6 - v10];
+  [contentChild setContainingWidth:v13 - v6 - v10];
   [(TUILayout *)self containingHeight];
   [(TUILayout *)self containingHeight];
-  [v20 setContainingHeight:v14 - v4 - v8];
-  [v20 validateLayout];
-  [v20 setComputedOrigin:{v6, v4}];
-  [v20 computedTransformedSize];
+  [contentChild setContainingHeight:v14 - v4 - v8];
+  [contentChild validateLayout];
+  [contentChild setComputedOrigin:{v6, v4}];
+  [contentChild computedTransformedSize];
   v16 = v6 + v10 + v15;
   v18 = v4 + v8 + v17;
   [(TUILayout *)self setComputedNaturalSize:v16, v18];
   [(TUIStyledBoxLayout *)self layoutNonContentChildrenWithSize:v16, v18];
 }
 
-- (void)layoutNonContentChildrenWithSize:(CGSize)a3
+- (void)layoutNonContentChildrenWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(TUILayout *)self children];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  children = [(TUILayout *)self children];
+  v6 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -118,7 +118,7 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -149,7 +149,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -158,29 +158,29 @@
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth
 {
-  v4 = [(TUIStyledBoxLayout *)self contentChild];
-  v5 = [v4 computedWidth];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  computedWidth = [contentChild computedWidth];
   v7 = v6;
   v8 = [(TUILayout *)self box];
   [v8 insets];
   v10 = v9;
   v12 = v11;
 
-  v13 = TUILengthWithDelta(v5, v7, v10 + v12);
+  v13 = TUILengthWithDelta(computedWidth, v7, v10 + v12);
   return v13;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight
 {
-  v4 = [(TUIStyledBoxLayout *)self contentChild];
-  v5 = [v4 computedHeight];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  computedHeight = [contentChild computedHeight];
   v7 = v6;
   v8 = [(TUILayout *)self box];
   [v8 insets];
   v10 = v9;
   v12 = v11;
 
-  v13 = TUILengthWithDelta(v5, v7, v10 + v12);
+  v13 = TUILengthWithDelta(computedHeight, v7, v10 + v12);
   return v13;
 }
 
@@ -196,12 +196,12 @@
 
 - (void)_updateSpecifiedWidth
 {
-  v9 = [(TUIStyledBoxLayout *)self contentChild];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
   v3 = [(TUILayout *)self box];
   [v3 width];
   if ((v4 & 0x6000000000000) == 0x2000000000000)
   {
-    [v9 specifiedWidth];
+    [contentChild specifiedWidth];
     v6 = HIWORD(v5) & 7;
     v8 = v6 == 4 || v6 == 1;
   }
@@ -217,8 +217,8 @@
 - (BOOL)_needsRenderModel
 {
   v3 = [(TUILayout *)self box];
-  v4 = [v3 backgroundColor];
-  if (v4)
+  backgroundColor = [v3 backgroundColor];
+  if (backgroundColor)
   {
     v5 = 1;
   }
@@ -226,8 +226,8 @@
   else
   {
     v6 = [(TUILayout *)self box];
-    v7 = [v6 shadowColor];
-    if (v7)
+    shadowColor = [v6 shadowColor];
+    if (shadowColor)
     {
       v5 = 1;
     }
@@ -235,8 +235,8 @@
     else
     {
       v8 = [(TUILayout *)self box];
-      v9 = [v8 borderColor];
-      if (v9)
+      borderColor = [v8 borderColor];
+      if (borderColor)
       {
         v5 = 1;
       }
@@ -252,8 +252,8 @@
         else
         {
           v11 = [(TUILayout *)self box];
-          v12 = [v11 blendMode];
-          v5 = v12 != 0;
+          blendMode = [v11 blendMode];
+          v5 = blendMode != 0;
         }
       }
     }
@@ -262,9 +262,9 @@
   return v5;
 }
 
-- (BOOL)_needsSubviewsRenderModelWithContext:(id)a3
+- (BOOL)_needsSubviewsRenderModelWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(TUILayout *)self box];
   if ([v5 clipsToBounds])
   {
@@ -274,8 +274,8 @@
   else
   {
     v7 = [(TUILayout *)self box];
-    v8 = [v7 blendMode];
-    if (v8)
+    blendMode = [v7 blendMode];
+    if (blendMode)
     {
       v6 = 1;
     }
@@ -284,113 +284,113 @@
     {
       v10.receiver = self;
       v10.super_class = TUIStyledBoxLayout;
-      v6 = [(TUILayout *)&v10 shouldUseSubviewRenderModelWithContext:v4];
+      v6 = [(TUILayout *)&v10 shouldUseSubviewRenderModelWithContext:contextCopy];
     }
   }
 
   return v6;
 }
 
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
-  v10 = a4;
-  v11 = a6;
-  if ([(TUIStyledBoxLayout *)self _needsRenderModel]&& ![(TUIStyledBoxLayout *)self _needsSubviewsRenderModelWithContext:v10])
+  contextCopy = context;
+  modelsCopy = models;
+  if ([(TUIStyledBoxLayout *)self _needsRenderModel]&& ![(TUIStyledBoxLayout *)self _needsSubviewsRenderModelWithContext:contextCopy])
   {
     v12 = [_TUIStyledBoxStyler alloc];
-    [v10 contentsScale];
+    [contextCopy contentsScale];
     v54 = [(_TUIStyledBoxStyler *)v12 initWithLayout:self contentsScale:?];
     v13 = [[_TUIStyledLayerConfig alloc] initWithStyler:v54];
     v14 = [[TUIRenderModelLayer alloc] initWithSubmodels:0 config:v13 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-    [(TUILayout *)self renderModelSizeWithContext:v10];
+    [(TUILayout *)self renderModelSizeWithContext:contextCopy];
     [(TUIRenderModelLayer *)v14 setSize:?];
     v15 = [(TUILayout *)self box];
-    v16 = [v15 identifier];
-    v17 = [v16 tui_identifierByAppendingString:@"background"];
+    identifier = [v15 identifier];
+    v17 = [identifier tui_identifierByAppendingString:@"background"];
     [(TUIRenderModelLayer *)v14 setIdentifier:v17];
 
     if (v14)
     {
-      v18 = [v10 convertRenderModel:v14 toKind:4];
+      v18 = [contextCopy convertRenderModel:v14 toKind:4];
 
       y = CGPointZero.y;
-      a = a5->a;
-      b = a5->b;
-      tx = a5->tx;
-      c = a5->c;
-      ty = a5->ty;
-      d = a5->d;
+      a = transform->a;
+      b = transform->b;
+      tx = transform->tx;
+      c = transform->c;
+      ty = transform->ty;
+      d = transform->d;
       [v18 size];
       v20 = v19;
       [v18 size];
       v22 = v21;
-      v24 = a5->a;
-      v23 = a5->b;
-      v25 = a5->c;
-      v26 = a5->d;
-      v27 = a5->tx;
-      v28 = a5->ty;
-      [v10 contentsScale];
+      v24 = transform->a;
+      v23 = transform->b;
+      v25 = transform->c;
+      v26 = transform->d;
+      v27 = transform->tx;
+      v28 = transform->ty;
+      [contextCopy contentsScale];
       v29 = v20 * -0.5;
       v30 = v27 + v22 * -0.5 * v25 + v24 * (v20 * -0.5);
       v31 = v28 + v22 * -0.5 * v26 + v23 * v29;
       v33 = tx + y * c + a * CGPointZero.x + TUIPointRoundedForScale(v30, v31, v32) - v30;
       v35 = ty + y * d + b * CGPointZero.x + v34 - v31;
-      v36 = *&a5->c;
-      *&t1.a = *&a5->a;
+      v36 = *&transform->c;
+      *&t1.a = *&transform->a;
       *&t1.c = v36;
-      *&t1.tx = *&a5->tx;
+      *&t1.tx = *&transform->tx;
       memset(&v58, 0, sizeof(v58));
       CGAffineTransformMakeTranslation(&t2, -v33, -v35);
       CGAffineTransformConcat(&v58, &t1, &t2);
       v37 = v58.tx;
-      [v10 contentsScale];
+      [contextCopy contentsScale];
       v58.tx = TUIFloatRoundedForScale(v37, v38);
       v39 = v58.ty;
-      [v10 contentsScale];
+      [contextCopy contentsScale];
       v58.ty = TUIFloatRoundedForScale(v39, v40);
       v41 = [[TUIRenderModelTransform alloc] initWithSubmodel:v18];
       [(TUIRenderModelTransform *)v41 setCenter:v33, v35];
       t1 = v58;
       [(TUIRenderModelTransform *)v41 setTransform:&t1];
-      v42 = [v10 currentLiveTransform];
-      [(TUIRenderModelTransform *)v41 setLiveTransform:v42];
+      currentLiveTransform = [contextCopy currentLiveTransform];
+      [(TUIRenderModelTransform *)v41 setLiveTransform:currentLiveTransform];
 
       v43 = [(TUILayout *)self box];
       [v43 renderOutsets];
       [(TUIRenderModelTransform *)v41 setOutsets:?];
 
       [(TUIRenderModelTransform *)v41 setZIndex:[(TUILayout *)self computeZIndexWithDefault:-999]- 1];
-      v44 = [(TUILayout *)self computedRefIdWithContext:v10];
+      v44 = [(TUILayout *)self computedRefIdWithContext:contextCopy];
       [(TUIRenderModelTransform *)v41 setRefId:v44];
 
-      v45 = [(TUILayout *)self computedRefInstanceWithContext:v10];
+      v45 = [(TUILayout *)self computedRefInstanceWithContext:contextCopy];
       [(TUIRenderModelTransform *)v41 setRefInstance:v45];
 
-      [v11 addObject:v41];
+      [modelsCopy addObject:v41];
     }
   }
 
-  v46 = *&a5->c;
-  *&v58.a = *&a5->a;
+  v46 = *&transform->c;
+  *&v58.a = *&transform->a;
   *&v58.c = v46;
-  *&v58.tx = *&a5->tx;
+  *&v58.tx = *&transform->tx;
   v55.receiver = self;
   v55.super_class = TUIStyledBoxLayout;
-  [(TUILayout *)&v55 appendChildRenderModelCompatibleWithKind:a3 context:v10 transform:&v58 toModels:v11];
+  [(TUILayout *)&v55 appendChildRenderModelCompatibleWithKind:kind context:contextCopy transform:&v58 toModels:modelsCopy];
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   if (![(TUIStyledBoxLayout *)self _needsRenderModel])
   {
     goto LABEL_8;
   }
 
-  if (a3 < 4)
+  if (kind < 4)
   {
-    if (a3 == 3)
+    if (kind == 3)
     {
       v7 = objc_opt_new();
       [(TUILayout *)self computedNaturalSize];
@@ -399,18 +399,18 @@
       v23 = v24;
       v22.receiver = self;
       v22.super_class = TUIStyledBoxLayout;
-      [(TUILayout *)&v22 appendChildRenderModelCompatibleWithKind:3 context:v6 transform:&v23 toModels:v7];
-      v15 = [v6 renderModelConvertModels:v7 toKind:3];
+      [(TUILayout *)&v22 appendChildRenderModelCompatibleWithKind:3 context:contextCopy transform:&v23 toModels:v7];
+      v15 = [contextCopy renderModelConvertModels:v7 toKind:3];
       v16 = [_TUIStyledBoxStyler alloc];
-      [v6 contentsScale];
+      [contextCopy contentsScale];
       v17 = [(_TUIStyledBoxStyler *)v16 initWithLayout:self contentsScale:?];
       v18 = [[_TUIStyledLayerConfig alloc] initWithStyler:v17];
       v12 = [[TUIRenderModelLayer alloc] initWithSubmodels:v15 config:v18 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-      [(TUILayout *)self renderModelSizeWithContext:v6];
+      [(TUILayout *)self renderModelSizeWithContext:contextCopy];
       [(TUIRenderModelLayer *)v12 setSize:?];
       v19 = [(TUILayout *)self box];
-      v20 = [v19 identifier];
-      [(TUIRenderModelLayer *)v12 setIdentifier:v20];
+      identifier = [v19 identifier];
+      [(TUIRenderModelLayer *)v12 setIdentifier:identifier];
 
       goto LABEL_7;
     }
@@ -420,20 +420,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![(TUIStyledBoxLayout *)self _needsSubviewsRenderModelWithContext:v6])
+  if (![(TUIStyledBoxLayout *)self _needsSubviewsRenderModelWithContext:contextCopy])
   {
     goto LABEL_8;
   }
 
-  v7 = [v6 renderModelForContainerLayout:self kind:6];
+  v7 = [contextCopy renderModelForContainerLayout:self kind:6];
   v8 = [_TUIStyledBoxStyler alloc];
-  [v6 contentsScale];
+  [contextCopy contentsScale];
   v9 = [(_TUIStyledBoxStyler *)v8 initWithLayout:self contentsScale:?];
   v10 = [(TUILayout *)self box];
-  v11 = [v10 identifier];
-  v12 = [TUIContainerView renderModelWithSubviewsModel:v7 style:v9 identifier:v11];
+  identifier2 = [v10 identifier];
+  v12 = [TUIContainerView renderModelWithSubviewsModel:v7 style:v9 identifier:identifier2];
 
-  [(TUILayout *)self renderModelSizeWithContext:v6];
+  [(TUILayout *)self renderModelSizeWithContext:contextCopy];
   [(TUIRenderModelLayer *)v12 setSize:?];
 LABEL_7:
 
@@ -513,8 +513,8 @@ LABEL_9:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(TUILayout *)self children];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    children = [(TUILayout *)self children];
+    v5 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = *v14;
@@ -524,7 +524,7 @@ LABEL_9:
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(children);
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
@@ -538,7 +538,7 @@ LABEL_9:
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v5)
         {
           continue;
@@ -556,22 +556,22 @@ LABEL_12:
   return v11;
 }
 
-- (id)guideProviderForLayout:(id)a3
+- (id)guideProviderForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(TUILayout *)self layoutAncestor];
-  v6 = [v5 guideProviderForLayout:v4];
+  layoutCopy = layout;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v6 = [layoutAncestor guideProviderForLayout:layoutCopy];
 
   return v6;
 }
 
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge
 {
-  v6 = a3;
-  v7 = [v6 layoutAncestor];
-  if (v7 == self)
+  layoutCopy = layout;
+  layoutAncestor = [layoutCopy layoutAncestor];
+  if (layoutAncestor == self)
   {
-    v9 = [v6 box];
+    v9 = [layoutCopy box];
     if ([v9 role])
     {
       v8 = 0;
@@ -579,8 +579,8 @@ LABEL_12:
 
     else
     {
-      v10 = [(TUILayout *)self layoutAncestor];
-      v8 = [v10 shouldUseDefaultGuideForLayout:self edge:a4];
+      layoutAncestor2 = [(TUILayout *)self layoutAncestor];
+      v8 = [layoutAncestor2 shouldUseDefaultGuideForLayout:self edge:edge];
     }
   }
 
@@ -594,51 +594,51 @@ LABEL_12:
 
 - (id)effectiveGuideTop
 {
-  v2 = [(TUIStyledBoxLayout *)self contentChild];
-  v3 = [v2 effectiveGuideTop];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  effectiveGuideTop = [contentChild effectiveGuideTop];
 
-  return v3;
+  return effectiveGuideTop;
 }
 
 - (id)effectiveGuideBottom
 {
-  v2 = [(TUIStyledBoxLayout *)self contentChild];
-  v3 = [v2 effectiveGuideBottom];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  effectiveGuideBottom = [contentChild effectiveGuideBottom];
 
-  return v3;
+  return effectiveGuideBottom;
 }
 
 - (id)effectiveGuideLeading
 {
-  v2 = [(TUIStyledBoxLayout *)self contentChild];
-  v3 = [v2 effectiveGuideLeading];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  effectiveGuideLeading = [contentChild effectiveGuideLeading];
 
-  return v3;
+  return effectiveGuideLeading;
 }
 
 - (id)effectiveGuideTrailing
 {
-  v2 = [(TUIStyledBoxLayout *)self contentChild];
-  v3 = [v2 effectiveGuideTrailing];
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  effectiveGuideTrailing = [contentChild effectiveGuideTrailing];
 
-  return v3;
+  return effectiveGuideTrailing;
 }
 
 - (BOOL)groupedContainingIsGrouped
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 grouped];
+  grouped = [v2 grouped];
 
-  return v3;
+  return grouped;
 }
 
 - (id)groupedContainingLayouts
 {
-  v2 = [(TUIStyledBoxLayout *)self contentChild];
-  v3 = v2;
-  if (v2)
+  contentChild = [(TUIStyledBoxLayout *)self contentChild];
+  v3 = contentChild;
+  if (contentChild)
   {
-    v6 = v2;
+    v6 = contentChild;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -650,10 +650,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)groupedContainingValidateWithSize:(CGSize)a3
+- (void)groupedContainingValidateWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TUILayout *)self setComputedNaturalSize:?];
 
   [(TUIStyledBoxLayout *)self layoutNonContentChildrenWithSize:width, height];

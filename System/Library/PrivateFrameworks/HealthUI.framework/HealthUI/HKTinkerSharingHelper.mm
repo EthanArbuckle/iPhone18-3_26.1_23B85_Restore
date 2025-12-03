@@ -3,7 +3,7 @@
 - (BOOL)networkAccessEnabledForHealth;
 - (HKTinkerSharingHelper)init;
 - (void)networkAccessEnabledForHealth;
-- (void)setNetworkAccessEnabledForHealth:(BOOL)a3;
+- (void)setNetworkAccessEnabledForHealth:(BOOL)health;
 @end
 
 @implementation HKTinkerSharingHelper
@@ -62,11 +62,11 @@ void __41__HKTinkerSharingHelper_isChinaSKUDevice__block_invoke()
   return 1;
 }
 
-- (void)setNetworkAccessEnabledForHealth:(BOOL)a3
+- (void)setNetworkAccessEnabledForHealth:(BOOL)health
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6965238];
-  if (!a3)
+  if (!health)
   {
     v3 = MEMORY[0x1E6965240];
   }

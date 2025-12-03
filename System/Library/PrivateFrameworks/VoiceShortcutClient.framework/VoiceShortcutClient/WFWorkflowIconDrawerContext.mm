@@ -3,15 +3,15 @@
 - (CGFont)glyphFont;
 - (NSSet)coreGlyphsCatalogs;
 - (__CTFont)glyphTestFont;
-- (__CTFont)newGlyphFontForSize:(double)a3;
+- (__CTFont)newGlyphFontForSize:(double)size;
 - (void)dealloc;
 @end
 
 @implementation WFWorkflowIconDrawerContext
 
-- (__CTFont)newGlyphFontForSize:(double)a3
+- (__CTFont)newGlyphFontForSize:(double)size
 {
-  v4 = [(WFWorkflowIconDrawerContext *)self glyphFont];
+  glyphFont = [(WFWorkflowIconDrawerContext *)self glyphFont];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -31,12 +31,12 @@
   _Block_object_dispose(&v10, 8);
   if (v5)
   {
-    return (v5)(v4, 0, 0, a3);
+    return (v5)(glyphFont, 0, 0, size);
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CTFontRef WFCTFontCreateWithGraphicsFont(CGFontRef, CGFloat, const CGAffineTransform * _Nullable, CTFontDescriptorRef _Nullable)"}];
-  [v7 handleFailureInFunction:v8 file:@"WFWorkflowIconDrawerContext.m" lineNumber:20 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v8 file:@"WFWorkflowIconDrawerContext.m" lineNumber:20 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -142,7 +142,7 @@
 
   else
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
   }
 
   v4 = v3;

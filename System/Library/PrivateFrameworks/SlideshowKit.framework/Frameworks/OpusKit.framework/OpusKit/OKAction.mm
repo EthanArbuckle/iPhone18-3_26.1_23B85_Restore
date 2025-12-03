@@ -1,14 +1,14 @@
 @interface OKAction
 + (id)action;
 + (id)createContext;
-+ (unint64_t)directionFromPoint:(CGPoint)a3;
-+ (void)setupJavascriptContext:(id)a3;
++ (unint64_t)directionFromPoint:(CGPoint)point;
++ (void)setupJavascriptContext:(id)context;
 - (CGPoint)location;
 - (OKAction)init;
-- (OKAction)initWithCoder:(id)a3;
-- (OKAction)initWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 context:(id)a6;
+- (OKAction)initWithCoder:(id)coder;
+- (OKAction)initWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count context:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKAction
@@ -43,20 +43,20 @@
   return v3;
 }
 
-- (OKAction)initWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 context:(id)a6
+- (OKAction)initWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count context:(id)context
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v11 = [(OKAction *)self init];
   v12 = v11;
   if (v11)
   {
     v11->_location.x = x;
     v11->_location.y = y;
-    v11->_state = a3;
-    v11->_touchCount = a5;
+    v11->_state = state;
+    v11->_touchCount = count;
     v11->_timestamp = CFAbsoluteTimeGetCurrent();
-    v12->_context = a6;
+    v12->_context = context;
   }
 
   return v12;
@@ -84,41 +84,41 @@
   [(OKAction *)&v5 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyPath = self->_keyPath;
   if (keyPath)
   {
-    [a3 encodeObject:keyPath forKey:@"keyPath"];
+    [coder encodeObject:keyPath forKey:@"keyPath"];
   }
 
-  [a3 encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coder encodeDouble:@"timestamp" forKey:self->_timestamp];
   if (self->_location.x != *MEMORY[0x277CBF348] || self->_location.y != *(MEMORY[0x277CBF348] + 8))
   {
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"location"}];
+    [coder encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"location"}];
   }
 
-  [a3 encodeInt32:LODWORD(self->_state) forKey:@"state"];
-  [a3 encodeInt32:LODWORD(self->_touchCount) forKey:@"touchCount"];
-  [a3 encodeBool:self->_shouldCancelCouchPotato forKey:@"shouldCancelCouchPotato"];
-  [a3 encodeBool:self->_shouldPropagate forKey:@"shouldPropagate"];
-  [a3 encodeBool:self->_isInstantaneous forKey:@"isInstantaneous"];
-  [a3 encodeInteger:self->_scope forKey:@"scope"];
-  [a3 encodeInt32:LODWORD(self->_platform) forKey:@"platform"];
+  [coder encodeInt32:LODWORD(self->_state) forKey:@"state"];
+  [coder encodeInt32:LODWORD(self->_touchCount) forKey:@"touchCount"];
+  [coder encodeBool:self->_shouldCancelCouchPotato forKey:@"shouldCancelCouchPotato"];
+  [coder encodeBool:self->_shouldPropagate forKey:@"shouldPropagate"];
+  [coder encodeBool:self->_isInstantaneous forKey:@"isInstantaneous"];
+  [coder encodeInteger:self->_scope forKey:@"scope"];
+  [coder encodeInt32:LODWORD(self->_platform) forKey:@"platform"];
   context = self->_context;
 
-  [a3 encodeObject:context forKey:@"context"];
+  [coder encodeObject:context forKey:@"context"];
 }
 
-- (OKAction)initWithCoder:(id)a3
+- (OKAction)initWithCoder:(id)coder
 {
   v4 = [(OKAction *)self init];
   if (v4)
   {
-    v4->_keyPath = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
-    [a3 decodeDoubleForKey:@"timestamp"];
+    v4->_keyPath = [coder decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
+    [coder decodeDoubleForKey:@"timestamp"];
     v4->_timestamp = v5;
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     if (v6)
     {
       [v6 CGPointValue];
@@ -126,42 +126,42 @@
       v4->_location.y = v8;
     }
 
-    v4->_state = [a3 decodeInt32ForKey:@"state"];
-    v4->_touchCount = [a3 decodeInt32ForKey:@"touchCount"];
-    v4->_shouldCancelCouchPotato = [a3 decodeBoolForKey:@"shouldCancelCouchPotato"];
-    v4->_shouldPropagate = [a3 decodeBoolForKey:@"shouldPropagate"];
-    v4->_isInstantaneous = [a3 decodeBoolForKey:@"isInstantaneous"];
-    v4->_scope = [a3 decodeIntegerForKey:@"scope"];
-    v4->_platform = [a3 decodeInt32ForKey:@"platform"];
+    v4->_state = [coder decodeInt32ForKey:@"state"];
+    v4->_touchCount = [coder decodeInt32ForKey:@"touchCount"];
+    v4->_shouldCancelCouchPotato = [coder decodeBoolForKey:@"shouldCancelCouchPotato"];
+    v4->_shouldPropagate = [coder decodeBoolForKey:@"shouldPropagate"];
+    v4->_isInstantaneous = [coder decodeBoolForKey:@"isInstantaneous"];
+    v4->_scope = [coder decodeIntegerForKey:@"scope"];
+    v4->_platform = [coder decodeInt32ForKey:@"platform"];
     v9 = objc_opt_class();
-    v4->_context = [objc_msgSend(a3 decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:{@"context", "mutableCopy"}];
+    v4->_context = [objc_msgSend(coder decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:{@"context", "mutableCopy"}];
   }
 
   return v4;
 }
 
-+ (unint64_t)directionFromPoint:(CGPoint)a3
++ (unint64_t)directionFromPoint:(CGPoint)point
 {
   v3 = 5;
   v4 = 1;
-  if (a3.x < 0.0)
+  if (point.x < 0.0)
   {
     v4 = 3;
   }
 
-  if (a3.x <= 0.0)
+  if (point.x <= 0.0)
   {
     v3 = v4;
   }
 
   v5 = v3 | 0x10;
-  if (a3.y >= 0.0)
+  if (point.y >= 0.0)
   {
     v5 = v3;
   }
 
   v6 = v3 | 8;
-  if (a3.y > 0.0)
+  if (point.y > 0.0)
   {
     return v6;
   }
@@ -180,20 +180,20 @@
   return v3;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKAction"];
-  [a3 setObject:&unk_287AF19D0 forKeyedSubscript:@"OKActionDirectionNone"];
-  [a3 setObject:&unk_287AF19E8 forKeyedSubscript:@"OKActionDirectionLeft"];
-  [a3 setObject:&unk_287AF1A00 forKeyedSubscript:@"OKActionDirectionRight"];
-  [a3 setObject:&unk_287AF1A18 forKeyedSubscript:@"OKActionDirectionUp"];
-  [a3 setObject:&unk_287AF1A30 forKeyedSubscript:@"OKActionDirectionDown"];
-  [a3 setObject:&unk_287AF1A48 forKeyedSubscript:@"OKActionStateUnknown"];
-  [a3 setObject:&unk_287AF19D0 forKeyedSubscript:@"OKActionStateBegan"];
-  [a3 setObject:&unk_287AF19E8 forKeyedSubscript:@"OKActionStateChanged"];
-  [a3 setObject:&unk_287AF1A60 forKeyedSubscript:@"OKActionStateEnded"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKAction"];
+  [context setObject:&unk_287AF19D0 forKeyedSubscript:@"OKActionDirectionNone"];
+  [context setObject:&unk_287AF19E8 forKeyedSubscript:@"OKActionDirectionLeft"];
+  [context setObject:&unk_287AF1A00 forKeyedSubscript:@"OKActionDirectionRight"];
+  [context setObject:&unk_287AF1A18 forKeyedSubscript:@"OKActionDirectionUp"];
+  [context setObject:&unk_287AF1A30 forKeyedSubscript:@"OKActionDirectionDown"];
+  [context setObject:&unk_287AF1A48 forKeyedSubscript:@"OKActionStateUnknown"];
+  [context setObject:&unk_287AF19D0 forKeyedSubscript:@"OKActionStateBegan"];
+  [context setObject:&unk_287AF19E8 forKeyedSubscript:@"OKActionStateChanged"];
+  [context setObject:&unk_287AF1A60 forKeyedSubscript:@"OKActionStateEnded"];
 
-  [a3 setObject:&unk_287AF1A00 forKeyedSubscript:@"OKActionStateAborted"];
+  [context setObject:&unk_287AF1A00 forKeyedSubscript:@"OKActionStateAborted"];
 }
 
 - (CGPoint)location

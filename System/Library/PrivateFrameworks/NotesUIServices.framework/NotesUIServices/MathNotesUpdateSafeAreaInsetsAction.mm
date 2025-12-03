@@ -1,20 +1,20 @@
 @interface MathNotesUpdateSafeAreaInsetsAction
-- (_TtC15NotesUIServices35MathNotesUpdateSafeAreaInsetsAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6;
-- (void)performActionForSceneController:(id)a3;
+- (_TtC15NotesUIServices35MathNotesUpdateSafeAreaInsetsAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (void)performActionForSceneController:(id)controller;
 @end
 
 @implementation MathNotesUpdateSafeAreaInsetsAction
 
-- (void)performActionForSceneController:(id)a3
+- (void)performActionForSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  MathNotesUpdateSafeAreaInsetsAction.performAction(forSceneController:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  MathNotesUpdateSafeAreaInsetsAction.performAction(forSceneController:)(controllerCopy);
 }
 
-- (_TtC15NotesUIServices35MathNotesUpdateSafeAreaInsetsAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6
+- (_TtC15NotesUIServices35MathNotesUpdateSafeAreaInsetsAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -27,9 +27,9 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a5;
-  return MathNotesUpdateSafeAreaInsetsAction.init(info:timeout:forResponseOn:withHandler:)(a3, a5, v9, v10, a4);
+  infoCopy = info;
+  queueCopy = queue;
+  return MathNotesUpdateSafeAreaInsetsAction.init(info:timeout:forResponseOn:withHandler:)(info, queue, v9, v10, timeout);
 }
 
 @end

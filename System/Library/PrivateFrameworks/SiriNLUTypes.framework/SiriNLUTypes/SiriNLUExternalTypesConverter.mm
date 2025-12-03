@@ -1,49 +1,49 @@
 @interface SiriNLUExternalTypesConverter
-+ (id)convertFromAsrHypothesis:(id)a3;
-+ (id)convertFromAsrOutputs:(id)a3;
-+ (id)convertFromAsrTokenInformation:(id)a3;
-+ (id)convertFromAsrTokens:(id)a3;
-+ (id)convertFromContext:(id)a3;
-+ (id)convertFromDouble:(double)a3;
-+ (id)convertFromEntityCandidate:(id)a3;
-+ (id)convertFromEntityCandidates:(id)a3;
-+ (id)convertFromMatchingSpan:(id)a3;
-+ (id)convertFromMatchingSpans:(id)a3;
-+ (id)convertFromNluLegacyNLContext:(id)a3;
-+ (id)convertFromNluRequest:(id)a3;
-+ (id)convertFromNluResponse:(id)a3;
-+ (id)convertFromNluTurnContext:(id)a3;
-+ (id)convertFromNluTurnInput:(id)a3;
-+ (id)convertFromNumber:(id)a3;
-+ (id)convertFromRRAnnotation:(id)a3;
-+ (id)convertFromRRAnnotations:(id)a3;
-+ (id)convertFromRRGroupIdentifer:(id)a3;
-+ (id)convertFromRepetitionResult:(id)a3;
-+ (id)convertFromRepetitionResults:(id)a3;
-+ (id)convertFromString:(id)a3;
-+ (id)convertFromTask:(id)a3;
-+ (id)convertFromTasks:(id)a3;
-+ (id)convertFromUUID:(id)a3;
-+ (id)convertFromUserParse:(id)a3;
-+ (id)convertFromUserParses:(id)a3;
-+ (id)convertParser:(id)a3;
-+ (id)convertfromRequestID:(id)a3;
++ (id)convertFromAsrHypothesis:(id)hypothesis;
++ (id)convertFromAsrOutputs:(id)outputs;
++ (id)convertFromAsrTokenInformation:(id)information;
++ (id)convertFromAsrTokens:(id)tokens;
++ (id)convertFromContext:(id)context;
++ (id)convertFromDouble:(double)double;
++ (id)convertFromEntityCandidate:(id)candidate;
++ (id)convertFromEntityCandidates:(id)candidates;
++ (id)convertFromMatchingSpan:(id)span;
++ (id)convertFromMatchingSpans:(id)spans;
++ (id)convertFromNluLegacyNLContext:(id)context;
++ (id)convertFromNluRequest:(id)request;
++ (id)convertFromNluResponse:(id)response;
++ (id)convertFromNluTurnContext:(id)context;
++ (id)convertFromNluTurnInput:(id)input;
++ (id)convertFromNumber:(id)number;
++ (id)convertFromRRAnnotation:(id)annotation;
++ (id)convertFromRRAnnotations:(id)annotations;
++ (id)convertFromRRGroupIdentifer:(id)identifer;
++ (id)convertFromRepetitionResult:(id)result;
++ (id)convertFromRepetitionResults:(id)results;
++ (id)convertFromString:(id)string;
++ (id)convertFromTask:(id)task;
++ (id)convertFromTasks:(id)tasks;
++ (id)convertFromUUID:(id)d;
++ (id)convertFromUserParse:(id)parse;
++ (id)convertFromUserParses:(id)parses;
++ (id)convertParser:(id)parser;
++ (id)convertfromRequestID:(id)d;
 @end
 
 @implementation SiriNLUExternalTypesConverter
 
-+ (id)convertFromMatchingSpans:(id)a3
++ (id)convertFromMatchingSpans:(id)spans
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  spansCopy = spans;
+  if (spansCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = spansCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -57,7 +57,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromMatchingSpan:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromMatchingSpan:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -78,33 +78,33 @@
   return v5;
 }
 
-+ (id)convertFromMatchingSpan:(id)a3
++ (id)convertFromMatchingSpan:(id)span
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  spanCopy = span;
+  if (spanCopy)
   {
     v4 = objc_alloc_init(SIRINLUEXTERNALSpan);
-    v5 = [v3 input];
-    [(SIRINLUEXTERNALSpan *)v4 setInput:v5];
+    input = [spanCopy input];
+    [(SIRINLUEXTERNALSpan *)v4 setInput:input];
 
-    v6 = [v3 label];
-    [(SIRINLUEXTERNALSpan *)v4 setLabel:v6];
+    label = [spanCopy label];
+    [(SIRINLUEXTERNALSpan *)v4 setLabel:label];
 
-    -[SIRINLUEXTERNALSpan setStartTokenIndex:](v4, "setStartTokenIndex:", [v3 startTokenIndex]);
-    -[SIRINLUEXTERNALSpan setEndTokenIndex:](v4, "setEndTokenIndex:", [v3 endTokenIndex]);
-    [v3 score];
+    -[SIRINLUEXTERNALSpan setStartTokenIndex:](v4, "setStartTokenIndex:", [spanCopy startTokenIndex]);
+    -[SIRINLUEXTERNALSpan setEndTokenIndex:](v4, "setEndTokenIndex:", [spanCopy endTokenIndex]);
+    [spanCopy score];
     [(SIRINLUEXTERNALSpan *)v4 setScore:?];
-    v7 = [v3 usoGraph];
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    usoGraph = [spanCopy usoGraph];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:usoGraph];
     [(SIRINLUEXTERNALSpan *)v4 setUsoGraph:v8];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v3 matcherNames];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    matcherNames = [spanCopy matcherNames];
+    v10 = [matcherNames countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = *v18;
@@ -114,7 +114,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(matcherNames);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
@@ -141,7 +141,7 @@
           [(SIRINLUEXTERNALSpan *)v4 addMatcherNames:v14];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [matcherNames countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -158,18 +158,18 @@
   return v4;
 }
 
-+ (id)convertFromRepetitionResults:(id)a3
++ (id)convertFromRepetitionResults:(id)results
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (resultsCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = resultsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -183,7 +183,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromRepetitionResult:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromRepetitionResult:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -199,14 +199,14 @@
   return v5;
 }
 
-+ (id)convertFromRepetitionResult:(id)a3
++ (id)convertFromRepetitionResult:(id)result
 {
-  v3 = a3;
-  if (v3)
+  resultCopy = result;
+  if (resultCopy)
   {
     v4 = objc_alloc_init(SIRINLUEXTERNALRepetitionResult);
-    -[SIRINLUEXTERNALRepetitionResult setAsrHypothesisIndex:](v4, "setAsrHypothesisIndex:", [v3 asrHypothesisIndex]);
-    -[SIRINLUEXTERNALRepetitionResult setRepetitionType:](v4, "setRepetitionType:", [v3 repetitionType]);
+    -[SIRINLUEXTERNALRepetitionResult setAsrHypothesisIndex:](v4, "setAsrHypothesisIndex:", [resultCopy asrHypothesisIndex]);
+    -[SIRINLUEXTERNALRepetitionResult setRepetitionType:](v4, "setRepetitionType:", [resultCopy repetitionType]);
   }
 
   else
@@ -217,18 +217,18 @@
   return v4;
 }
 
-+ (id)convertFromUserParses:(id)a3
++ (id)convertFromUserParses:(id)parses
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  parsesCopy = parses;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (parsesCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = parsesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -242,7 +242,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromUserParse:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromUserParse:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -258,34 +258,34 @@
   return v5;
 }
 
-+ (id)convertFromUserParse:(id)a3
++ (id)convertFromUserParse:(id)parse
 {
-  v4 = a3;
-  if (v4)
+  parseCopy = parse;
+  if (parseCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALUserParse);
-    v6 = [v4 userDialogActs];
-    v7 = [SiriNLUExternalTypesUDAConverter convertFromUserDialogActs:v6];
+    userDialogActs = [parseCopy userDialogActs];
+    v7 = [SiriNLUExternalTypesUDAConverter convertFromUserDialogActs:userDialogActs];
     [(SIRINLUEXTERNALUserParse *)v5 setUserDialogActs:v7];
 
-    [v4 probability];
+    [parseCopy probability];
     [(SIRINLUEXTERNALUserParse *)v5 setProbability:?];
-    v8 = [v4 nsUUID];
-    v9 = [a1 convertFromUUID:v8];
+    nsUUID = [parseCopy nsUUID];
+    v9 = [self convertFromUUID:nsUUID];
     [(SIRINLUEXTERNALUserParse *)v5 setIdA:v9];
 
-    v10 = [v4 parserId];
-    [(SIRINLUEXTERNALUserParse *)v5 setParserId:v10];
+    parserId = [parseCopy parserId];
+    [(SIRINLUEXTERNALUserParse *)v5 setParserId:parserId];
 
-    v11 = [v4 parser];
-    v12 = [a1 convertParser:v11];
+    parser = [parseCopy parser];
+    v12 = [self convertParser:parser];
     [(SIRINLUEXTERNALUserParse *)v5 setParser:v12];
 
-    v13 = [v4 repetitionResult];
-    v14 = [a1 convertFromRepetitionResult:v13];
+    repetitionResult = [parseCopy repetitionResult];
+    v14 = [self convertFromRepetitionResult:repetitionResult];
     [(SIRINLUEXTERNALUserParse *)v5 setRepetitionResult:v14];
 
-    [v4 comparableProbability];
+    [parseCopy comparableProbability];
     [(SIRINLUEXTERNALUserParse *)v5 setComparableProbability:?];
   }
 
@@ -297,22 +297,22 @@
   return v5;
 }
 
-+ (id)convertParser:(id)a3
++ (id)convertParser:(id)parser
 {
-  v3 = a3;
-  if (v3)
+  parserCopy = parser;
+  if (parserCopy)
   {
     v4 = objc_alloc_init(SIRINLUEXTERNALParser);
-    v5 = [v3 algorithmType];
-    if (v5 < 3)
+    algorithmType = [parserCopy algorithmType];
+    if (algorithmType < 3)
     {
-      [(SIRINLUEXTERNALParser *)v4 setAlgorithm:v5];
+      [(SIRINLUEXTERNALParser *)v4 setAlgorithm:algorithmType];
     }
 
-    v6 = [v3 parserIdentifier];
-    if (v6 <= 7)
+    parserIdentifier = [parserCopy parserIdentifier];
+    if (parserIdentifier <= 7)
     {
-      [(SIRINLUEXTERNALParser *)v4 setParserId:v6];
+      [(SIRINLUEXTERNALParser *)v4 setParserId:parserIdentifier];
     }
   }
 
@@ -324,18 +324,18 @@
   return v4;
 }
 
-+ (id)convertFromAsrOutputs:(id)a3
++ (id)convertFromAsrOutputs:(id)outputs
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  outputsCopy = outputs;
+  if (outputsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = outputsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -349,7 +349,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromAsrHypothesis:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromAsrHypothesis:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -370,16 +370,16 @@
   return v5;
 }
 
-+ (id)convertFromUUID:(id)a3
++ (id)convertFromUUID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
     v10 = 0;
     v11 = 0;
-    [v3 getUUIDBytes:&v10];
+    [dCopy getUUIDBytes:&v10];
     v6 = v10;
     v5 = v11;
     v7 = objc_alloc_init(SIRINLUEXTERNALUUID);
@@ -397,30 +397,30 @@
   return v7;
 }
 
-+ (id)convertFromAsrTokenInformation:(id)a3
++ (id)convertFromAsrTokenInformation:(id)information
 {
-  v3 = a3;
-  if (v3)
+  informationCopy = information;
+  if (informationCopy)
   {
     v4 = objc_alloc_init(SIRINLUEXTERNALAsrTokenInformation);
-    v5 = [v3 phoneSequence];
-    [(SIRINLUEXTERNALAsrTokenInformation *)v4 setPhoneSequence:v5];
+    phoneSequence = [informationCopy phoneSequence];
+    [(SIRINLUEXTERNALAsrTokenInformation *)v4 setPhoneSequence:phoneSequence];
 
-    [v3 confidenceScore];
+    [informationCopy confidenceScore];
     [(SIRINLUEXTERNALAsrTokenInformation *)v4 setConfidenceScore:?];
-    -[SIRINLUEXTERNALAsrTokenInformation setBeginIndex:](v4, "setBeginIndex:", [v3 beginIndex]);
-    -[SIRINLUEXTERNALAsrTokenInformation setEndIndex:](v4, "setEndIndex:", [v3 endIndex]);
-    v6 = [v3 ipaPhoneSequence];
-    [(SIRINLUEXTERNALAsrTokenInformation *)v4 setIpaPhoneSequence:v6];
+    -[SIRINLUEXTERNALAsrTokenInformation setBeginIndex:](v4, "setBeginIndex:", [informationCopy beginIndex]);
+    -[SIRINLUEXTERNALAsrTokenInformation setEndIndex:](v4, "setEndIndex:", [informationCopy endIndex]);
+    ipaPhoneSequence = [informationCopy ipaPhoneSequence];
+    [(SIRINLUEXTERNALAsrTokenInformation *)v4 setIpaPhoneSequence:ipaPhoneSequence];
 
-    v7 = [v3 postITNText];
-    [(SIRINLUEXTERNALAsrTokenInformation *)v4 setPostItnText:v7];
+    postITNText = [informationCopy postITNText];
+    [(SIRINLUEXTERNALAsrTokenInformation *)v4 setPostItnText:postITNText];
 
-    -[SIRINLUEXTERNALAsrTokenInformation setAddSpaceAfter:](v4, "setAddSpaceAfter:", [v3 addSpaceAfter]);
-    -[SIRINLUEXTERNALAsrTokenInformation setRemoveSpaceAfter:](v4, "setRemoveSpaceAfter:", [v3 removeSpaceAfter]);
-    -[SIRINLUEXTERNALAsrTokenInformation setRemoveSpaceBefore:](v4, "setRemoveSpaceBefore:", [v3 removeSpaceBefore]);
-    -[SIRINLUEXTERNALAsrTokenInformation setStartMilliSeconds:](v4, "setStartMilliSeconds:", [v3 startMilliSeconds]);
-    -[SIRINLUEXTERNALAsrTokenInformation setEndMilliSeconds:](v4, "setEndMilliSeconds:", [v3 endMilliSeconds]);
+    -[SIRINLUEXTERNALAsrTokenInformation setAddSpaceAfter:](v4, "setAddSpaceAfter:", [informationCopy addSpaceAfter]);
+    -[SIRINLUEXTERNALAsrTokenInformation setRemoveSpaceAfter:](v4, "setRemoveSpaceAfter:", [informationCopy removeSpaceAfter]);
+    -[SIRINLUEXTERNALAsrTokenInformation setRemoveSpaceBefore:](v4, "setRemoveSpaceBefore:", [informationCopy removeSpaceBefore]);
+    -[SIRINLUEXTERNALAsrTokenInformation setStartMilliSeconds:](v4, "setStartMilliSeconds:", [informationCopy startMilliSeconds]);
+    -[SIRINLUEXTERNALAsrTokenInformation setEndMilliSeconds:](v4, "setEndMilliSeconds:", [informationCopy endMilliSeconds]);
   }
 
   else
@@ -431,18 +431,18 @@
   return v4;
 }
 
-+ (id)convertFromAsrTokens:(id)a3
++ (id)convertFromAsrTokens:(id)tokens
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  tokensCopy = tokens;
+  if (tokensCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = tokensCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -456,7 +456,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromAsrTokenInformation:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromAsrTokenInformation:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -477,23 +477,23 @@
   return v5;
 }
 
-+ (id)convertFromAsrHypothesis:(id)a3
++ (id)convertFromAsrHypothesis:(id)hypothesis
 {
-  v4 = a3;
-  if (v4)
+  hypothesisCopy = hypothesis;
+  if (hypothesisCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALAsrHypothesis);
-    v6 = [v4 utterance];
-    [(SIRINLUEXTERNALAsrHypothesis *)v5 setUtterance:v6];
+    utterance = [hypothesisCopy utterance];
+    [(SIRINLUEXTERNALAsrHypothesis *)v5 setUtterance:utterance];
 
-    [v4 probability];
+    [hypothesisCopy probability];
     [(SIRINLUEXTERNALAsrHypothesis *)v5 setProbability:?];
-    v7 = [v4 uuid];
-    v8 = [a1 convertFromUUID:v7];
+    uuid = [hypothesisCopy uuid];
+    v8 = [self convertFromUUID:uuid];
     [(SIRINLUEXTERNALAsrHypothesis *)v5 setIdA:v8];
 
-    v9 = [v4 asrTokens];
-    v10 = [a1 convertFromAsrTokens:v9];
+    asrTokens = [hypothesisCopy asrTokens];
+    v10 = [self convertFromAsrTokens:asrTokens];
     [(SIRINLUEXTERNALAsrHypothesis *)v5 setAsrTokens:v10];
   }
 
@@ -505,13 +505,13 @@
   return v5;
 }
 
-+ (id)convertFromString:(id)a3
++ (id)convertFromString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v4 = objc_alloc_init(SIRICOMMONStringValue);
-    [(SIRICOMMONStringValue *)v4 setValue:v3];
+    [(SIRICOMMONStringValue *)v4 setValue:stringCopy];
   }
 
   else
@@ -522,21 +522,21 @@
   return v4;
 }
 
-+ (id)convertFromDouble:(double)a3
++ (id)convertFromDouble:(double)double
 {
   v4 = objc_alloc_init(SIRICOMMONDoubleValue);
-  [(SIRICOMMONDoubleValue *)v4 setValue:a3];
+  [(SIRICOMMONDoubleValue *)v4 setValue:double];
 
   return v4;
 }
 
-+ (id)convertFromNumber:(id)a3
++ (id)convertFromNumber:(id)number
 {
-  v3 = a3;
-  if (v3)
+  numberCopy = number;
+  if (numberCopy)
   {
     v4 = objc_alloc_init(SIRICOMMONInt64Value);
-    -[SIRICOMMONInt64Value setValue:](v4, "setValue:", [v3 intValue]);
+    -[SIRICOMMONInt64Value setValue:](v4, "setValue:", [numberCopy intValue]);
   }
 
   else
@@ -547,18 +547,18 @@
   return v4;
 }
 
-+ (id)convertFromTasks:(id)a3
++ (id)convertFromTasks:(id)tasks
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  tasksCopy = tasks;
+  if (tasksCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = tasksCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -572,7 +572,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromTask:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromTask:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -593,18 +593,18 @@
   return v5;
 }
 
-+ (id)convertFromTask:(id)a3
++ (id)convertFromTask:(id)task
 {
-  v4 = a3;
-  if (v4)
+  taskCopy = task;
+  if (taskCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALTask);
-    [v4 score];
-    v6 = [a1 convertFromDouble:?];
+    [taskCopy score];
+    v6 = [self convertFromDouble:?];
     [(SIRINLUEXTERNALTask *)v5 setScore:v6];
 
-    v7 = [v4 task];
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    task = [taskCopy task];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:task];
     [(SIRINLUEXTERNALTask *)v5 setTask:v8];
   }
 
@@ -616,18 +616,18 @@
   return v5;
 }
 
-+ (id)convertFromEntityCandidates:(id)a3
++ (id)convertFromEntityCandidates:(id)candidates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  candidatesCopy = candidates;
+  if (candidatesCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = candidatesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -641,7 +641,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromEntityCandidate:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromEntityCandidate:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -662,35 +662,35 @@
   return v5;
 }
 
-+ (id)convertFromEntityCandidate:(id)a3
++ (id)convertFromEntityCandidate:(id)candidate
 {
-  v4 = a3;
-  if (v4)
+  candidateCopy = candidate;
+  if (candidateCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALEntityCandidate);
-    [v4 score];
-    v6 = [a1 convertFromDouble:?];
+    [candidateCopy score];
+    v6 = [self convertFromDouble:?];
     [(SIRINLUEXTERNALEntityCandidate *)v5 setScore:v6];
 
-    v7 = [v4 entity];
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    entity = [candidateCopy entity];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:entity];
     [(SIRINLUEXTERNALEntityCandidate *)v5 setEntity:v8];
 
-    v9 = [v4 appBundleId];
-    v10 = [a1 convertFromString:v9];
+    appBundleId = [candidateCopy appBundleId];
+    v10 = [self convertFromString:appBundleId];
     [(SIRINLUEXTERNALEntityCandidate *)v5 setAppBundleId:v10];
 
-    v11 = [v4 annotations];
-    v12 = [v11 mutableCopy];
-    v13 = [a1 convertFromRRAnnotations:v12];
+    annotations = [candidateCopy annotations];
+    v12 = [annotations mutableCopy];
+    v13 = [self convertFromRRAnnotations:v12];
     [(SIRINLUEXTERNALEntityCandidate *)v5 setAnnotations:v13];
 
-    v14 = [v4 groupId];
-    v15 = [a1 convertFromRRGroupIdentifer:v14];
+    groupId = [candidateCopy groupId];
+    v15 = [self convertFromRRGroupIdentifer:groupId];
     [(SIRINLUEXTERNALEntityCandidate *)v5 setGroupId:v15];
 
-    v16 = [v4 entityId];
-    v17 = [a1 convertFromString:v16];
+    entityId = [candidateCopy entityId];
+    v17 = [self convertFromString:entityId];
     [(SIRINLUEXTERNALEntityCandidate *)v5 setEntityId:v17];
   }
 
@@ -702,17 +702,17 @@
   return v5;
 }
 
-+ (id)convertFromRRGroupIdentifer:(id)a3
++ (id)convertFromRRGroupIdentifer:(id)identifer
 {
-  v4 = a3;
-  if (v4)
+  identiferCopy = identifer;
+  if (identiferCopy)
   {
     v5 = objc_opt_new();
-    v6 = [v4 groupId];
-    v7 = [a1 convertFromString:v6];
+    groupId = [identiferCopy groupId];
+    v7 = [self convertFromString:groupId];
     [v5 setGroupId:v7];
 
-    [v5 setSeq:{objc_msgSend(v4, "seq")}];
+    [v5 setSeq:{objc_msgSend(identiferCopy, "seq")}];
   }
 
   else
@@ -723,18 +723,18 @@
   return v5;
 }
 
-+ (id)convertFromRRAnnotations:(id)a3
++ (id)convertFromRRAnnotations:(id)annotations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  annotationsCopy = annotations;
+  if (annotationsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = annotationsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -748,7 +748,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertFromRRAnnotation:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertFromRRAnnotation:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -769,18 +769,18 @@
   return v5;
 }
 
-+ (id)convertFromRRAnnotation:(id)a3
++ (id)convertFromRRAnnotation:(id)annotation
 {
-  v4 = a3;
-  if (v4)
+  annotationCopy = annotation;
+  if (annotationCopy)
   {
     v5 = objc_opt_new();
-    v6 = [v4 key];
-    v7 = [a1 convertFromString:v6];
+    v6 = [annotationCopy key];
+    v7 = [self convertFromString:v6];
     [v5 setKey:v7];
 
-    v8 = [v4 value];
-    v9 = [a1 convertFromString:v8];
+    value = [annotationCopy value];
+    v9 = [self convertFromString:value];
     [v5 setValue:v9];
   }
 
@@ -792,26 +792,26 @@
   return v5;
 }
 
-+ (id)convertFromContext:(id)a3
++ (id)convertFromContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALNLContext);
-    v6 = [v4 activeTasks];
-    v7 = [a1 convertFromTasks:v6];
+    activeTasks = [contextCopy activeTasks];
+    v7 = [self convertFromTasks:activeTasks];
     [(SIRINLUEXTERNALNLContext *)v5 setActiveTasks:v7];
 
-    v8 = [v4 executedTasks];
-    v9 = [a1 convertFromTasks:v8];
+    executedTasks = [contextCopy executedTasks];
+    v9 = [self convertFromTasks:executedTasks];
     [(SIRINLUEXTERNALNLContext *)v5 setExecutedTasks:v9];
 
-    v10 = [v4 systemDialogActs];
-    v11 = [SiriNLUExternalTypesSDAConverter convertFromSystemDialogActs:v10];
+    systemDialogActs = [contextCopy systemDialogActs];
+    v11 = [SiriNLUExternalTypesSDAConverter convertFromSystemDialogActs:systemDialogActs];
     [(SIRINLUEXTERNALNLContext *)v5 setSystemDialogActs:v11];
 
-    v12 = [v4 salientEntities];
-    v13 = [a1 convertFromEntityCandidates:v12];
+    salientEntities = [contextCopy salientEntities];
+    v13 = [self convertFromEntityCandidates:salientEntities];
     [(SIRINLUEXTERNALNLContext *)v5 setSalientEntities:v13];
   }
 
@@ -823,23 +823,23 @@
   return v5;
 }
 
-+ (id)convertFromNluLegacyNLContext:(id)a3
++ (id)convertFromNluLegacyNLContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v5 = 0;
     goto LABEL_17;
   }
 
   v5 = objc_alloc_init(SIRINLUEXTERNALLegacyNLContext);
-  -[SIRINLUEXTERNALLegacyNLContext setListenAfterSpeaking:](v5, "setListenAfterSpeaking:", [v4 listenAfterSpeaking]);
-  v6 = [v4 previousDomainName];
-  [(SIRINLUEXTERNALLegacyNLContext *)v5 setPreviousDomainName:v6];
+  -[SIRINLUEXTERNALLegacyNLContext setListenAfterSpeaking:](v5, "setListenAfterSpeaking:", [contextCopy listenAfterSpeaking]);
+  previousDomainName = [contextCopy previousDomainName];
+  [(SIRINLUEXTERNALLegacyNLContext *)v5 setPreviousDomainName:previousDomainName];
 
-  -[SIRINLUEXTERNALLegacyNLContext setStrictPrompt:](v5, "setStrictPrompt:", [v4 strictPrompt]);
-  -[SIRINLUEXTERNALLegacyNLContext setDictationPrompt:](v5, "setDictationPrompt:", [v4 dictationPrompt]);
+  -[SIRINLUEXTERNALLegacyNLContext setStrictPrompt:](v5, "setStrictPrompt:", [contextCopy strictPrompt]);
+  -[SIRINLUEXTERNALLegacyNLContext setDictationPrompt:](v5, "setDictationPrompt:", [contextCopy dictationPrompt]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(SIRINLUEXTERNALLegacyNLContext *)v5 setRenderedTexts:v7];
 
@@ -847,8 +847,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v4 renderedTexts];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  renderedTexts = [contextCopy renderedTexts];
+  v9 = [renderedTexts countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = *v20;
@@ -858,35 +858,35 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(renderedTexts);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [(SIRINLUEXTERNALLegacyNLContext *)v5 renderedTexts];
-        v14 = [a1 convertFromString:v12];
-        [v13 addObject:v14];
+        renderedTexts2 = [(SIRINLUEXTERNALLegacyNLContext *)v5 renderedTexts];
+        v14 = [self convertFromString:v12];
+        [renderedTexts2 addObject:v14];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [renderedTexts countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v4 legacyContextSource];
-  v16 = v15;
-  if (v15 < 2)
+  legacyContextSource = [contextCopy legacyContextSource];
+  v16 = legacyContextSource;
+  if (legacyContextSource < 2)
   {
     goto LABEL_16;
   }
 
-  if (v15 == 2)
+  if (legacyContextSource == 2)
   {
     [(SIRINLUEXTERNALLegacyNLContext *)v5 setLegacyContextSource:2];
     goto LABEL_15;
   }
 
-  if (v15 == 3)
+  if (legacyContextSource == 3)
   {
 LABEL_15:
     v16 = 3;
@@ -901,60 +901,60 @@ LABEL_17:
   return v5;
 }
 
-+ (id)convertFromNluTurnContext:(id)a3
++ (id)convertFromNluTurnContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v5 = 0;
     goto LABEL_13;
   }
 
   v5 = objc_alloc_init(SIRINLUEXTERNALTurnContext);
-  v6 = [v4 legacyNLContextNullable];
+  legacyNLContextNullable = [contextCopy legacyNLContextNullable];
 
-  if (v6)
+  if (legacyNLContextNullable)
   {
-    v7 = [v4 legacyNLContextNullable];
-    v8 = [a1 convertFromNluLegacyNLContext:v7];
+    legacyNLContextNullable2 = [contextCopy legacyNLContextNullable];
+    v8 = [self convertFromNluLegacyNLContext:legacyNLContextNullable2];
     [(SIRINLUEXTERNALTurnContext *)v5 setLegacyNlContext:v8];
   }
 
   else
   {
-    v9 = [v4 legacyNLContext];
+    legacyNLContext = [contextCopy legacyNLContext];
 
-    if (!v9)
+    if (!legacyNLContext)
     {
       goto LABEL_8;
     }
 
-    v7 = [v4 legacyNLContext];
-    v8 = [a1 convertFromNluLegacyNLContext:v7];
+    legacyNLContextNullable2 = [contextCopy legacyNLContext];
+    v8 = [self convertFromNluLegacyNLContext:legacyNLContextNullable2];
     [(SIRINLUEXTERNALTurnContext *)v5 setLegacyNlContext:v8];
   }
 
 LABEL_8:
-  v10 = [v4 nlContextNullable];
+  nlContextNullable = [contextCopy nlContextNullable];
 
-  if (v10)
+  if (nlContextNullable)
   {
-    v11 = [v4 nlContextNullable];
-    v12 = [a1 convertFromContext:v11];
+    nlContextNullable2 = [contextCopy nlContextNullable];
+    v12 = [self convertFromContext:nlContextNullable2];
     [(SIRINLUEXTERNALTurnContext *)v5 setNlContext:v12];
   }
 
   else
   {
-    v13 = [v4 nlContext];
+    nlContext = [contextCopy nlContext];
 
-    if (!v13)
+    if (!nlContext)
     {
       goto LABEL_13;
     }
 
-    v11 = [v4 nlContext];
-    v12 = [a1 convertFromContext:v11];
+    nlContextNullable2 = [contextCopy nlContext];
+    v12 = [self convertFromContext:nlContextNullable2];
     [(SIRINLUEXTERNALTurnContext *)v5 setNlContext:v12];
   }
 
@@ -963,46 +963,46 @@ LABEL_13:
   return v5;
 }
 
-+ (id)convertFromNluTurnInput:(id)a3
++ (id)convertFromNluTurnInput:(id)input
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  inputCopy = input;
+  if (inputCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALTurnInput);
-    v6 = [v4 asrOutputs];
-    v7 = [a1 convertFromAsrOutputs:v6];
+    asrOutputs = [inputCopy asrOutputs];
+    v7 = [self convertFromAsrOutputs:asrOutputs];
     [(SIRINLUEXTERNALTurnInput *)v5 setAsrOutputs:v7];
 
-    v8 = [v4 turnContext];
-    v9 = [a1 convertFromNluTurnContext:v8];
+    turnContext = [inputCopy turnContext];
+    v9 = [self convertFromNluTurnContext:turnContext];
     [(SIRINLUEXTERNALTurnInput *)v5 setTurnContext:v9];
 
-    v10 = [v4 locale];
-    [(SIRINLUEXTERNALTurnInput *)v5 setLocale:v10];
+    locale = [inputCopy locale];
+    [(SIRINLUEXTERNALTurnInput *)v5 setLocale:locale];
 
-    -[SIRINLUEXTERNALTurnInput setTapToEdit:](v5, "setTapToEdit:", [v4 tapToEdit]);
-    -[SIRINLUEXTERNALTurnInput setStartTimestamp:](v5, "setStartTimestamp:", [v4 startTimestamp]);
-    v11 = [v4 systemDialogActs];
-    v12 = [v11 count];
+    -[SIRINLUEXTERNALTurnInput setTapToEdit:](v5, "setTapToEdit:", [inputCopy tapToEdit]);
+    -[SIRINLUEXTERNALTurnInput setStartTimestamp:](v5, "setStartTimestamp:", [inputCopy startTimestamp]);
+    systemDialogActs = [inputCopy systemDialogActs];
+    v12 = [systemDialogActs count];
 
     if (v12 == 1)
     {
-      v13 = [v4 systemDialogActs];
-      v14 = [SiriNLUExternalTypesSDAConverter convertFromSystemDialogActs:v13];
+      systemDialogActs2 = [inputCopy systemDialogActs];
+      v14 = [SiriNLUExternalTypesSDAConverter convertFromSystemDialogActs:systemDialogActs2];
 
       v15 = objc_alloc_init(SIRINLUEXTERNALSystemDialogActGroup);
       [(SIRINLUEXTERNALTurnInput *)v5 setSystemDialogActGroup:v15];
 
-      v16 = [v14 firstObject];
-      v17 = [(SIRINLUEXTERNALTurnInput *)v5 systemDialogActGroup];
-      [v17 setSystemDialogAct:v16];
+      firstObject = [v14 firstObject];
+      systemDialogActGroup = [(SIRINLUEXTERNALTurnInput *)v5 systemDialogActGroup];
+      [systemDialogActGroup setSystemDialogAct:firstObject];
     }
 
     else
     {
-      v18 = [v4 systemDialogActs];
-      v19 = [v18 count];
+      systemDialogActs3 = [inputCopy systemDialogActs];
+      v19 = [systemDialogActs3 count];
 
       if (v19 >= 2)
       {
@@ -1027,20 +1027,20 @@ LABEL_13:
   return v5;
 }
 
-+ (id)convertfromRequestID:(id)a3
++ (id)convertfromRequestID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = objc_alloc_init(SIRINLUEXTERNALRequestID);
-    v5 = [v3 idAsString];
-    [(SIRINLUEXTERNALRequestID *)v4 setIdA:v5];
+    idAsString = [dCopy idAsString];
+    [(SIRINLUEXTERNALRequestID *)v4 setIdA:idAsString];
 
-    v6 = [v3 connectionID];
-    [(SIRINLUEXTERNALRequestID *)v4 setConnectionId:v6];
+    connectionID = [dCopy connectionID];
+    [(SIRINLUEXTERNALRequestID *)v4 setConnectionId:connectionID];
 
-    v7 = [v3 nluRequestId];
-    v8 = [SiriNLUExternalTypesConverter convertFromUUID:v7];
+    nluRequestId = [dCopy nluRequestId];
+    v8 = [SiriNLUExternalTypesConverter convertFromUUID:nluRequestId];
     [(SIRINLUEXTERNALRequestID *)v4 setNluRequestId:v8];
   }
 
@@ -1052,22 +1052,22 @@ LABEL_13:
   return v4;
 }
 
-+ (id)convertFromNluResponse:(id)a3
++ (id)convertFromNluResponse:(id)response
 {
-  v4 = a3;
-  if (v4)
+  responseCopy = response;
+  if (responseCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALCDMNluResponse);
-    v6 = [v4 requestId];
-    v7 = [a1 convertfromRequestID:v6];
+    requestId = [responseCopy requestId];
+    v7 = [self convertfromRequestID:requestId];
     [(SIRINLUEXTERNALCDMNluResponse *)v5 setRequestId:v7];
 
-    v8 = [v4 parses];
-    v9 = [a1 convertFromUserParses:v8];
+    parses = [responseCopy parses];
+    v9 = [self convertFromUserParses:parses];
     [(SIRINLUEXTERNALCDMNluResponse *)v5 setParses:v9];
 
-    v10 = [v4 repetitionResults];
-    v11 = [a1 convertFromRepetitionResults:v10];
+    repetitionResults = [responseCopy repetitionResults];
+    v11 = [self convertFromRepetitionResults:repetitionResults];
     [(SIRINLUEXTERNALCDMNluResponse *)v5 setRepetitionResults:v11];
   }
 
@@ -1079,19 +1079,19 @@ LABEL_13:
   return v5;
 }
 
-+ (id)convertFromNluRequest:(id)a3
++ (id)convertFromNluRequest:(id)request
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v5 = objc_alloc_init(SIRINLUEXTERNALCDMNluRequest);
-    v6 = [v4 requestId];
-    v7 = [a1 convertfromRequestID:v6];
+    requestId = [requestCopy requestId];
+    v7 = [self convertfromRequestID:requestId];
     [(SIRINLUEXTERNALCDMNluRequest *)v5 setRequestId:v7];
 
-    v8 = [v4 currentTurnInput];
-    v9 = [a1 convertFromNluTurnInput:v8];
+    currentTurnInput = [requestCopy currentTurnInput];
+    v9 = [self convertFromNluTurnInput:currentTurnInput];
     [(SIRINLUEXTERNALCDMNluRequest *)v5 setCurrentTurnInput:v9];
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1099,8 +1099,8 @@ LABEL_13:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [v4 previousTurnInputs];
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    previousTurnInputs = [requestCopy previousTurnInputs];
+    v12 = [previousTurnInputs countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = *v19;
@@ -1110,14 +1110,14 @@ LABEL_13:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(previousTurnInputs);
           }
 
-          v15 = [a1 convertFromNluTurnInput:*(*(&v18 + 1) + 8 * i)];
+          v15 = [self convertFromNluTurnInput:*(*(&v18 + 1) + 8 * i)];
           [v10 addObject:v15];
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [previousTurnInputs countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);

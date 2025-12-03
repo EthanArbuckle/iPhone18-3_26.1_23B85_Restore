@@ -1,5 +1,5 @@
 @interface IDSWiProxDidConnectToPeerMetric
-- (IDSWiProxDidConnectToPeerMetric)initWithDuration:(unint64_t)a3 resultCode:(unint64_t)a4;
+- (IDSWiProxDidConnectToPeerMetric)initWithDuration:(unint64_t)duration resultCode:(unint64_t)code;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -23,15 +23,15 @@
   return v3;
 }
 
-- (IDSWiProxDidConnectToPeerMetric)initWithDuration:(unint64_t)a3 resultCode:(unint64_t)a4
+- (IDSWiProxDidConnectToPeerMetric)initWithDuration:(unint64_t)duration resultCode:(unint64_t)code
 {
   v7.receiver = self;
   v7.super_class = IDSWiProxDidConnectToPeerMetric;
   result = [(IDSWiProxDidConnectToPeerMetric *)&v7 init];
   if (result)
   {
-    result->_duration = a3;
-    result->_resultCode = a4;
+    result->_duration = duration;
+    result->_resultCode = code;
   }
 
   return result;

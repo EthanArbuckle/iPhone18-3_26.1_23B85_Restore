@@ -1,97 +1,97 @@
 @interface SUSSoftwareUpdateUpdateOptionsCell
-- (SUSSoftwareUpdateUpdateOptionsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (SUSSoftwareUpdateUpdateOptionsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)_configurePrimaryButton;
 - (id)_configureSecondaryButton;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)_addActivityIndicatorFor:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)_addActivityIndicatorFor:(id)for;
 - (void)_configureStackViewMargin;
-- (void)_primaryButtonLongTapped:(id)a3;
+- (void)_primaryButtonLongTapped:(id)tapped;
 - (void)_setupView;
-- (void)setActivityIndicatorDisplayStyle:(int64_t)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setPrimaryButtonActionHandler:(id)a3;
-- (void)setPrimaryButtonLongTapActionHandler:(id)a3;
-- (void)setPrimaryButtonText:(id)a3;
-- (void)setSecondaryButtonActionHandler:(id)a3;
-- (void)setSecondaryButtonMenu:(id)a3;
-- (void)setSecondaryButtonText:(id)a3;
+- (void)setActivityIndicatorDisplayStyle:(int64_t)style;
+- (void)setHidden:(BOOL)hidden;
+- (void)setPrimaryButtonActionHandler:(id)handler;
+- (void)setPrimaryButtonLongTapActionHandler:(id)handler;
+- (void)setPrimaryButtonText:(id)text;
+- (void)setSecondaryButtonActionHandler:(id)handler;
+- (void)setSecondaryButtonMenu:(id)menu;
+- (void)setSecondaryButtonText:(id)text;
 @end
 
 @implementation SUSSoftwareUpdateUpdateOptionsCell
 
-- (SUSSoftwareUpdateUpdateOptionsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SUSSoftwareUpdateUpdateOptionsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, identifier);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v11, specifier);
+  v5 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v5;
   v10.super_class = SUSSoftwareUpdateUpdateOptionsCell;
-  v9 = [(PSTableCell *)&v10 initWithStyle:v13 reuseIdentifier:location specifier:v11];
-  v15 = v9;
-  objc_storeStrong(&v15, v9);
+  v9 = [(PSTableCell *)&v10 initWithStyle:styleCopy reuseIdentifier:location specifier:v11];
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
-    [(SUSSoftwareUpdateUpdateOptionsCell *)v15 setSelectionStyle:0];
-    [(SUSSoftwareUpdateUpdateOptionsCell *)v15 setHoverStyle:0];
-    [(SUSSoftwareUpdateUpdateOptionsCell *)v15 _setupView];
+    [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy setSelectionStyle:0];
+    [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy setHoverStyle:0];
+    [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy _setupView];
   }
 
-  v7 = MEMORY[0x277D82BE0](v15);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  [(UIButton *)self->_primaryButton setHidden:a3];
-  [(UIButton *)self->_secondaryButton setHidden:a3];
+  [(UIButton *)self->_primaryButton setHidden:hidden];
+  [(UIButton *)self->_secondaryButton setHidden:hidden];
   [(SUSSoftwareUpdateUpdateOptionsCell *)self _configureStackViewMargin];
 }
 
-- (void)setPrimaryButtonText:(id)a3
+- (void)setPrimaryButtonText:(id)text
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UIButton *)v4->_primaryButton setTitle:location[0] forState:0];
+  objc_storeStrong(location, text);
+  [(UIButton *)selfCopy->_primaryButton setTitle:location[0] forState:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)setSecondaryButtonText:(id)a3
+- (void)setSecondaryButtonText:(id)text
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UIButton *)v4->_secondaryButton setTitle:location[0] forState:0];
+  objc_storeStrong(location, text);
+  [(UIButton *)selfCopy->_secondaryButton setTitle:location[0] forState:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)setActivityIndicatorDisplayStyle:(int64_t)a3
+- (void)setActivityIndicatorDisplayStyle:(int64_t)style
 {
   v12 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  styleCopy = style;
   if (self->_activityIndicator)
   {
-    [(UIActivityIndicatorView *)v9->_activityIndicator removeFromSuperview];
+    [(UIActivityIndicatorView *)selfCopy->_activityIndicator removeFromSuperview];
   }
 
-  v9->_currentActivityIndicatorStyle = v7;
-  if (v7 == 1)
+  selfCopy->_currentActivityIndicatorStyle = styleCopy;
+  if (styleCopy == 1)
   {
-    if (!v9->_primaryButton || ([(UIButton *)v9->_primaryButton isHidden]& 1) != 0)
+    if (!selfCopy->_primaryButton || ([(UIButton *)selfCopy->_primaryButton isHidden]& 1) != 0)
     {
       location = _SUSLoggingFacility();
       v5 = OS_LOG_TYPE_ERROR;
@@ -104,12 +104,12 @@
       objc_storeStrong(&location, 0);
     }
 
-    [(SUSSoftwareUpdateUpdateOptionsCell *)v9 _addActivityIndicatorFor:v9->_primaryButton];
+    [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy _addActivityIndicatorFor:selfCopy->_primaryButton];
   }
 
-  else if (v7 == 2)
+  else if (styleCopy == 2)
   {
-    if (!v9->_secondaryButton || ([(UIButton *)v9->_secondaryButton isHidden]& 1) != 0)
+    if (!selfCopy->_secondaryButton || ([(UIButton *)selfCopy->_secondaryButton isHidden]& 1) != 0)
     {
       oslog = _SUSLoggingFacility();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -122,82 +122,82 @@
       objc_storeStrong(&oslog, 0);
     }
 
-    [(SUSSoftwareUpdateUpdateOptionsCell *)v9 _addActivityIndicatorFor:v9->_secondaryButton, v3];
+    [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy _addActivityIndicatorFor:selfCopy->_secondaryButton, v3];
   }
 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setPrimaryButtonActionHandler:(id)a3
+- (void)setPrimaryButtonActionHandler:(id)handler
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v3 = MEMORY[0x26D669A60](location[0]);
-  primaryButtonAction = v6->_primaryButtonAction;
-  v6->_primaryButtonAction = v3;
+  primaryButtonAction = selfCopy->_primaryButtonAction;
+  selfCopy->_primaryButtonAction = v3;
   MEMORY[0x277D82BD8](primaryButtonAction);
   objc_storeStrong(location, 0);
 }
 
-- (void)setPrimaryButtonLongTapActionHandler:(id)a3
+- (void)setPrimaryButtonLongTapActionHandler:(id)handler
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v3 = MEMORY[0x26D669A60](location[0]);
-  primaryButtonLongTapAction = v6->_primaryButtonLongTapAction;
-  v6->_primaryButtonLongTapAction = v3;
+  primaryButtonLongTapAction = selfCopy->_primaryButtonLongTapAction;
+  selfCopy->_primaryButtonLongTapAction = v3;
   MEMORY[0x277D82BD8](primaryButtonLongTapAction);
   objc_storeStrong(location, 0);
 }
 
-- (void)setSecondaryButtonActionHandler:(id)a3
+- (void)setSecondaryButtonActionHandler:(id)handler
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v3 = MEMORY[0x26D669A60](location[0]);
-  secondaryButtonAction = v6->_secondaryButtonAction;
-  v6->_secondaryButtonAction = v3;
+  secondaryButtonAction = selfCopy->_secondaryButtonAction;
+  selfCopy->_secondaryButtonAction = v3;
   MEMORY[0x277D82BD8](secondaryButtonAction);
   objc_storeStrong(location, 0);
 }
 
-- (void)setSecondaryButtonMenu:(id)a3
+- (void)setSecondaryButtonMenu:(id)menu
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v8->_secondaryButtonContextMenuInteraction)
+  objc_storeStrong(location, menu);
+  if (selfCopy->_secondaryButtonContextMenuInteraction)
   {
-    [(UIButton *)v8->_secondaryButton removeInteraction:v8->_secondaryButtonContextMenuInteraction];
-    objc_storeStrong(&v8->_secondaryButtonContextMenuInteraction, 0);
+    [(UIButton *)selfCopy->_secondaryButton removeInteraction:selfCopy->_secondaryButtonContextMenuInteraction];
+    objc_storeStrong(&selfCopy->_secondaryButtonContextMenuInteraction, 0);
   }
 
-  objc_storeStrong(&v8->_secondaryButtonMenu, location[0]);
+  objc_storeStrong(&selfCopy->_secondaryButtonMenu, location[0]);
   v3 = objc_alloc(MEMORY[0x277D753B8]);
-  v4 = [v3 initWithDelegate:v8];
-  secondaryButtonContextMenuInteraction = v8->_secondaryButtonContextMenuInteraction;
-  v8->_secondaryButtonContextMenuInteraction = v4;
+  v4 = [v3 initWithDelegate:selfCopy];
+  secondaryButtonContextMenuInteraction = selfCopy->_secondaryButtonContextMenuInteraction;
+  selfCopy->_secondaryButtonContextMenuInteraction = v4;
   *&v6 = MEMORY[0x277D82BD8](secondaryButtonContextMenuInteraction).n128_u64[0];
-  [(UIButton *)v8->_secondaryButton addInteraction:v8->_secondaryButtonContextMenuInteraction, v6];
+  [(UIButton *)selfCopy->_secondaryButton addInteraction:selfCopy->_secondaryButtonContextMenuInteraction, v6];
   objc_storeStrong(location, 0);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v10 = a4;
-  v9 = self;
+  locationCopy = location;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interaction);
   v5 = MEMORY[0x277D753B0];
-  v7 = MEMORY[0x277D82BE0](v9);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   v6 = [v5 configurationWithIdentifier:0 previewProvider:? actionProvider:?];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -216,27 +216,27 @@ id __92__SUSSoftwareUpdateUpdateOptionsCell_contextMenuInteraction_configuration
   return v4;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interaction);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, configuration);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, identifier);
   v18 = objc_alloc_init(MEMORY[0x277D758D8]);
-  v14 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   [v18 setBackgroundColor:?];
-  *&v5 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](clearColor).n128_u64[0];
   v15 = MEMORY[0x277D75208];
-  [(UIButton *)v22->_secondaryButton bounds];
+  [(UIButton *)selfCopy->_secondaryButton bounds];
   v16 = [v15 bezierPathWithRoundedRect:v6 cornerRadius:{v7, v8, v9, 18.0}];
   [v18 setVisiblePath:?];
   MEMORY[0x277D82BD8](v16);
   v10 = objc_alloc(MEMORY[0x277D75B90]);
-  v17 = [v10 initWithView:v22->_secondaryButton parameters:v18];
+  v17 = [v10 initWithView:selfCopy->_secondaryButton parameters:v18];
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
@@ -248,7 +248,7 @@ id __92__SUSSoftwareUpdateUpdateOptionsCell_contextMenuInteraction_configuration
 - (void)_setupView
 {
   v48[8] = *MEMORY[0x277D85DE8];
-  v47 = self;
+  selfCopy = self;
   v46[1] = a2;
   if (*&self->_primaryButton == 0)
   {
@@ -262,97 +262,97 @@ id __92__SUSSoftwareUpdateUpdateOptionsCell_contextMenuInteraction_configuration
     v45 = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v45 addSubview:v46[0]];
-    v16 = [(SUSSoftwareUpdateUpdateOptionsCell *)v47 contentView];
-    [v16 addSubview:v45];
-    *&v3 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-    v4 = [(SUSSoftwareUpdateUpdateOptionsCell *)v47 _configurePrimaryButton];
-    primaryButton = v47->_primaryButton;
-    v47->_primaryButton = v4;
+    contentView = [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy contentView];
+    [contentView addSubview:v45];
+    *&v3 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
+    _configurePrimaryButton = [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy _configurePrimaryButton];
+    primaryButton = selfCopy->_primaryButton;
+    selfCopy->_primaryButton = _configurePrimaryButton;
     *&v6 = MEMORY[0x277D82BD8](primaryButton).n128_u64[0];
-    v7 = [(SUSSoftwareUpdateUpdateOptionsCell *)v47 _configureSecondaryButton];
-    secondaryButton = v47->_secondaryButton;
-    v47->_secondaryButton = v7;
+    _configureSecondaryButton = [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy _configureSecondaryButton];
+    secondaryButton = selfCopy->_secondaryButton;
+    selfCopy->_secondaryButton = _configureSecondaryButton;
     MEMORY[0x277D82BD8](secondaryButton);
-    objc_storeStrong(&v47->_activityIndicator, 0);
-    [v46[0] addArrangedSubview:v47->_primaryButton];
-    [v46[0] addArrangedSubview:v47->_secondaryButton];
-    v19 = [v45 topAnchor];
-    v18 = [(SUSSoftwareUpdateUpdateOptionsCell *)v47 contentView];
-    v17 = [v18 topAnchor];
-    v9 = [v19 constraintEqualToAnchor:? constant:?];
-    stackViewTopAnchor = v47->_stackViewTopAnchor;
-    v47->_stackViewTopAnchor = v9;
+    objc_storeStrong(&selfCopy->_activityIndicator, 0);
+    [v46[0] addArrangedSubview:selfCopy->_primaryButton];
+    [v46[0] addArrangedSubview:selfCopy->_secondaryButton];
+    topAnchor = [v45 topAnchor];
+    contentView2 = [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:? constant:?];
+    stackViewTopAnchor = selfCopy->_stackViewTopAnchor;
+    selfCopy->_stackViewTopAnchor = v9;
     MEMORY[0x277D82BD8](stackViewTopAnchor);
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    *&v11 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-    v22 = [v45 bottomAnchor];
-    v21 = [(SUSSoftwareUpdateUpdateOptionsCell *)v47 contentView];
-    v20 = [v21 bottomAnchor];
-    v12 = [v22 constraintEqualToAnchor:0.0 constant:?];
-    stackViewBottomAnchor = v47->_stackViewBottomAnchor;
-    v47->_stackViewBottomAnchor = v12;
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](contentView2);
+    *&v11 = MEMORY[0x277D82BD8](topAnchor).n128_u64[0];
+    bottomAnchor = [v45 bottomAnchor];
+    contentView3 = [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:0.0 constant:?];
+    stackViewBottomAnchor = selfCopy->_stackViewBottomAnchor;
+    selfCopy->_stackViewBottomAnchor = v12;
     MEMORY[0x277D82BD8](stackViewBottomAnchor);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    *&v14 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](contentView3);
+    *&v14 = MEMORY[0x277D82BD8](bottomAnchor).n128_u64[0];
     v23 = MEMORY[0x277CCAAD0];
-    v48[0] = v47->_stackViewTopAnchor;
-    v48[1] = v47->_stackViewBottomAnchor;
-    v44 = [v46[0] leadingAnchor];
-    v43 = [(SUSSoftwareUpdateUpdateOptionsCell *)v47 contentView];
-    v42 = [v43 leadingAnchor];
-    v41 = [v44 constraintEqualToAnchor:17.0 constant:?];
+    v48[0] = selfCopy->_stackViewTopAnchor;
+    v48[1] = selfCopy->_stackViewBottomAnchor;
+    leadingAnchor = [v46[0] leadingAnchor];
+    contentView4 = [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v41 = [leadingAnchor constraintEqualToAnchor:17.0 constant:?];
     v48[2] = v41;
-    v40 = [v46[0] trailingAnchor];
-    v39 = [(SUSSoftwareUpdateUpdateOptionsCell *)v47 contentView];
-    v38 = [v39 trailingAnchor];
-    v37 = [v40 constraintEqualToAnchor:-17.0 constant:?];
+    trailingAnchor = [v46[0] trailingAnchor];
+    contentView5 = [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v37 = [trailingAnchor constraintEqualToAnchor:-17.0 constant:?];
     v48[3] = v37;
-    v36 = [v46[0] topAnchor];
-    v35 = [v45 topAnchor];
-    v34 = [v36 constraintEqualToAnchor:?];
+    topAnchor3 = [v46[0] topAnchor];
+    topAnchor4 = [v45 topAnchor];
+    v34 = [topAnchor3 constraintEqualToAnchor:?];
     v48[4] = v34;
-    v33 = [v46[0] bottomAnchor];
-    v32 = [v45 bottomAnchor];
-    v31 = [v33 constraintEqualToAnchor:?];
+    bottomAnchor3 = [v46[0] bottomAnchor];
+    bottomAnchor4 = [v45 bottomAnchor];
+    v31 = [bottomAnchor3 constraintEqualToAnchor:?];
     v48[5] = v31;
-    v30 = [v46[0] leadingAnchor];
-    v29 = [v45 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:?];
+    leadingAnchor3 = [v46[0] leadingAnchor];
+    leadingAnchor4 = [v45 leadingAnchor];
+    v28 = [leadingAnchor3 constraintEqualToAnchor:?];
     v48[6] = v28;
-    v27 = [v46[0] trailingAnchor];
-    v26 = [v45 trailingAnchor];
-    v25 = [v27 constraintEqualToAnchor:?];
+    trailingAnchor3 = [v46[0] trailingAnchor];
+    trailingAnchor4 = [v45 trailingAnchor];
+    v25 = [trailingAnchor3 constraintEqualToAnchor:?];
     v48[7] = v25;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:8];
     [v23 activateConstraints:?];
     MEMORY[0x277D82BD8](v24);
     MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
+    MEMORY[0x277D82BD8](trailingAnchor4);
+    MEMORY[0x277D82BD8](trailingAnchor3);
     MEMORY[0x277D82BD8](v28);
-    MEMORY[0x277D82BD8](v29);
-    MEMORY[0x277D82BD8](v30);
+    MEMORY[0x277D82BD8](leadingAnchor4);
+    MEMORY[0x277D82BD8](leadingAnchor3);
     MEMORY[0x277D82BD8](v31);
-    MEMORY[0x277D82BD8](v32);
-    MEMORY[0x277D82BD8](v33);
+    MEMORY[0x277D82BD8](bottomAnchor4);
+    MEMORY[0x277D82BD8](bottomAnchor3);
     MEMORY[0x277D82BD8](v34);
-    MEMORY[0x277D82BD8](v35);
-    MEMORY[0x277D82BD8](v36);
+    MEMORY[0x277D82BD8](topAnchor4);
+    MEMORY[0x277D82BD8](topAnchor3);
     MEMORY[0x277D82BD8](v37);
-    MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
-    MEMORY[0x277D82BD8](v40);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](contentView5);
+    MEMORY[0x277D82BD8](trailingAnchor);
     MEMORY[0x277D82BD8](v41);
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
-    *&v15 = MEMORY[0x277D82BD8](v44).n128_u64[0];
-    [(SUSSoftwareUpdateUpdateOptionsCell *)v47 setClipsToBounds:0, v15];
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](contentView4);
+    *&v15 = MEMORY[0x277D82BD8](leadingAnchor).n128_u64[0];
+    [(SUSSoftwareUpdateUpdateOptionsCell *)selfCopy setClipsToBounds:0, v15];
     [v46[0] setClipsToBounds:0];
     [v45 setClipsToBounds:0];
-    [(UIButton *)v47->_secondaryButton setClipsToBounds:0];
-    v47->_currentActivityIndicatorStyle = 0;
+    [(UIButton *)selfCopy->_secondaryButton setClipsToBounds:0];
+    selfCopy->_currentActivityIndicatorStyle = 0;
     objc_storeStrong(&v45, 0);
     objc_storeStrong(v46, 0);
   }
@@ -362,33 +362,33 @@ id __92__SUSSoftwareUpdateUpdateOptionsCell_contextMenuInteraction_configuration
 
 - (id)_configurePrimaryButton
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v21[0] = [MEMORY[0x277D75230] filledButtonConfiguration];
   [v21[0] setCornerStyle:4];
   v10 = MEMORY[0x277D75220];
   v9 = v21[0];
   v8 = MEMORY[0x277D750C8];
-  v19 = MEMORY[0x277D82BE0](v22);
+  v19 = MEMORY[0x277D82BE0](selfCopy);
   v11 = [v8 actionWithHandler:?];
   v20 = [v10 buttonWithConfiguration:v9 primaryAction:?];
   *&v2 = MEMORY[0x277D82BD8](v11).n128_u64[0];
   v12 = v20;
-  v13 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   [v12 setTitleColor:? forState:?];
-  *&v3 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-  v15 = [v20 titleLabel];
+  *&v3 = MEMORY[0x277D82BD8](whiteColor).n128_u64[0];
+  titleLabel = [v20 titleLabel];
   v14 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76918] weight:*MEMORY[0x277D74410]];
-  [v15 setFont:?];
+  [titleLabel setFont:?];
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](titleLabel);
   [v20 setContentHuggingPriority:0 forAxis:?];
   [v20 setClipsToBounds:0];
   LODWORD(v4) = 1148846080;
   [v20 setContentCompressionResistancePriority:1 forAxis:v4];
   v16 = v20;
   v5 = objc_alloc(MEMORY[0x277D75708]);
-  v17 = [v5 initWithTarget:v22 action:sel__primaryButtonLongTapped_];
+  v17 = [v5 initWithTarget:selfCopy action:sel__primaryButtonLongTapped_];
   [v16 addGestureRecognizer:?];
   *&v6 = MEMORY[0x277D82BD8](v17).n128_u64[0];
   [v20 setContentHorizontalAlignment:{0, v6}];
@@ -416,26 +416,26 @@ void __61__SUSSoftwareUpdateUpdateOptionsCell__configurePrimaryButton__block_inv
 
 - (id)_configureSecondaryButton
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v17[0] = [MEMORY[0x277D75230] plainButtonConfiguration];
   [v17[0] setCornerStyle:4];
   v8 = MEMORY[0x277D75220];
   v7 = v17[0];
   v6 = MEMORY[0x277D750C8];
-  v15 = MEMORY[0x277D82BE0](v18);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v9 = [v6 actionWithHandler:?];
   v16 = [v8 buttonWithConfiguration:v7 primaryAction:?];
   *&v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
   v10 = v16;
-  v11 = [MEMORY[0x277D75348] systemBlueColor];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   [v10 setTitleColor:? forState:?];
-  *&v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  v13 = [v16 titleLabel];
+  *&v3 = MEMORY[0x277D82BD8](systemBlueColor).n128_u64[0];
+  titleLabel = [v16 titleLabel];
   v12 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76918] weight:*MEMORY[0x277D74418]];
-  [v13 setFont:?];
+  [titleLabel setFont:?];
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](titleLabel);
   [v16 setContentHuggingPriority:0 forAxis:?];
   [v16 setClipsToBounds:0];
   LODWORD(v4) = 1148846080;
@@ -463,41 +463,41 @@ void __63__SUSSoftwareUpdateUpdateOptionsCell__configureSecondaryButton__block_i
   objc_storeStrong(location, 0);
 }
 
-- (void)_addActivityIndicatorFor:(id)a3
+- (void)_addActivityIndicatorFor:(id)for
 {
   v19 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, for);
   if (location[0])
   {
     v3 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-    activityIndicator = v16->_activityIndicator;
-    v16->_activityIndicator = v3;
+    activityIndicator = selfCopy->_activityIndicator;
+    selfCopy->_activityIndicator = v3;
     *&v5 = MEMORY[0x277D82BD8](activityIndicator).n128_u64[0];
-    [(UIActivityIndicatorView *)v16->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0, v5];
-    [(UIActivityIndicatorView *)v16->_activityIndicator setHidden:0];
-    [(UIActivityIndicatorView *)v16->_activityIndicator startAnimating];
-    [location[0] addSubview:v16->_activityIndicator];
+    [(UIActivityIndicatorView *)selfCopy->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0, v5];
+    [(UIActivityIndicatorView *)selfCopy->_activityIndicator setHidden:0];
+    [(UIActivityIndicatorView *)selfCopy->_activityIndicator startAnimating];
+    [location[0] addSubview:selfCopy->_activityIndicator];
     v6 = MEMORY[0x277CCAAD0];
-    v13 = [(UIActivityIndicatorView *)v16->_activityIndicator centerYAnchor];
-    v12 = [location[0] centerYAnchor];
-    v11 = [v13 constraintEqualToAnchor:?];
+    centerYAnchor = [(UIActivityIndicatorView *)selfCopy->_activityIndicator centerYAnchor];
+    centerYAnchor2 = [location[0] centerYAnchor];
+    v11 = [centerYAnchor constraintEqualToAnchor:?];
     v17[0] = v11;
-    v10 = [(UIActivityIndicatorView *)v16->_activityIndicator trailingAnchor];
-    v9 = [location[0] trailingAnchor];
-    v8 = [v10 constraintEqualToAnchor:-10.0 constant:?];
+    trailingAnchor = [(UIActivityIndicatorView *)selfCopy->_activityIndicator trailingAnchor];
+    trailingAnchor2 = [location[0] trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:-10.0 constant:?];
     v17[1] = v8;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
     [v6 activateConstraints:?];
     MEMORY[0x277D82BD8](v7);
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](centerYAnchor2);
+    MEMORY[0x277D82BD8](centerYAnchor);
   }
 
   else
@@ -531,15 +531,15 @@ void __63__SUSSoftwareUpdateUpdateOptionsCell__configureSecondaryButton__block_i
   }
 }
 
-- (void)_primaryButtonLongTapped:(id)a3
+- (void)_primaryButtonLongTapped:(id)tapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_primaryButtonLongTapAction)
+  objc_storeStrong(location, tapped);
+  if (selfCopy->_primaryButtonLongTapAction)
   {
-    (*(v4->_primaryButtonLongTapAction + 2))();
+    (*(selfCopy->_primaryButtonLongTapAction + 2))();
   }
 
   objc_storeStrong(location, 0);

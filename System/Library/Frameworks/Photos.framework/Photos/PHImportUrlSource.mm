@@ -1,34 +1,34 @@
 @interface PHImportUrlSource
-+ (BOOL)treatAsReadonlyVolume:(id)a3;
-- (BOOL)containsSupportedMediaWithImportExceptions:(id *)a3;
++ (BOOL)treatAsReadonlyVolume:(id)volume;
+- (BOOL)containsSupportedMediaWithImportExceptions:(id *)exceptions;
 - (BOOL)isAvailable;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToImportUrlSource:(id)a3;
-- (PHImportUrlSource)initWithURLs:(id)a3;
-- (id)assetsByProcessingItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToImportUrlSource:(id)source;
+- (PHImportUrlSource)initWithURLs:(id)ls;
+- (id)assetsByProcessingItem:(id)item;
 - (id)name;
-- (id)resourcePathsInUrls:(id)a3;
-- (id)rootUrlOfUrls:(id)a3;
-- (void)beginProcessingWithCompletion:(id)a3;
+- (id)resourcePathsInUrls:(id)urls;
+- (id)rootUrlOfUrls:(id)urls;
+- (void)beginProcessingWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)dispatchAssetDataRequestAsyncUsingBlock:(id)a3;
+- (void)dispatchAssetDataRequestAsyncUsingBlock:(id)block;
 - (void)endWork;
 @end
 
 @implementation PHImportUrlSource
 
-- (id)rootUrlOfUrls:(id)a3
+- (id)rootUrlOfUrls:(id)urls
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 path];
+  urlsCopy = urls;
+  v4 = [urlsCopy objectAtIndexedSubscript:0];
+  path = [v4 path];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count", 0) - 1}];
+  v6 = [urlsCopy subarrayWithRange:{1, objc_msgSend(urlsCopy, "count", 0) - 1}];
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -44,27 +44,27 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = v5;
+        v12 = path;
         while (1)
         {
-          v13 = [v11 path];
-          v14 = [v13 hasPrefix:v12];
+          path2 = [v11 path];
+          v14 = [path2 hasPrefix:v12];
 
           if (v14)
           {
             break;
           }
 
-          v5 = [v12 stringByDeletingLastPathComponent];
+          path = [v12 stringByDeletingLastPathComponent];
 
-          v12 = v5;
-          if ([v5 isEqualToString:@"/"])
+          v12 = path;
+          if ([path isEqualToString:@"/"])
           {
             goto LABEL_11;
           }
         }
 
-        v5 = v12;
+        path = v12;
 LABEL_11:
         ;
       }
@@ -75,22 +75,22 @@ LABEL_11:
     while (v8);
   }
 
-  v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
+  v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
 
   return v15;
 }
 
-- (void)dispatchAssetDataRequestAsyncUsingBlock:(id)a3
+- (void)dispatchAssetDataRequestAsyncUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   pendingAssetDataRequestQueue = self->_pendingAssetDataRequestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__PHImportUrlSource_dispatchAssetDataRequestAsyncUsingBlock___block_invoke;
   v7[3] = &unk_1E75AA820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(pendingAssetDataRequestQueue, v7);
 }
 
@@ -144,9 +144,9 @@ intptr_t __61__PHImportUrlSource_dispatchAssetDataRequestAsyncUsingBlock___block
 
 - (id)name
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PHImportUrlSource *)self prefix];
-  v5 = [v3 displayNameAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  prefix = [(PHImportUrlSource *)self prefix];
+  v5 = [defaultManager displayNameAtPath:prefix];
 
   return v5;
 }
@@ -160,8 +160,8 @@ intptr_t __61__PHImportUrlSource_dispatchAssetDataRequestAsyncUsingBlock___block
   v12[3] = &unk_1E75AB270;
   v4 = v3;
   v13 = v4;
-  v5 = [(PHImportSource *)self progress];
-  [v5 setCancellationHandler:v12];
+  progress = [(PHImportSource *)self progress];
+  [progress setCancellationHandler:v12];
 
   v6 = dispatch_time(0, 2000000000);
   v7 = dispatch_get_global_queue(17, 0);
@@ -215,10 +215,10 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
   [v3 loadMetadataSync];
 }
 
-- (id)assetsByProcessingItem:(id)a3
+- (id)assetsByProcessingItem:(id)item
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [(NSDictionary *)self->_resourcePathsByIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_resourcePathsByIdentifier objectForKeyedSubscript:item];
   v5 = [v4 mutableCopy];
 
   v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
@@ -263,8 +263,8 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
 
         else
         {
-          v14 = [v11 lastPathComponent];
-          v15 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:v14 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportUrlSource.m" line:252];
+          lastPathComponent = [v11 lastPathComponent];
+          v15 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:lastPathComponent underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportUrlSource.m" line:252];
         }
       }
 
@@ -287,12 +287,12 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
   return v16;
 }
 
-- (void)beginProcessingWithCompletion:(id)a3
+- (void)beginProcessingWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHImportUrlSource *)self urls];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  completionCopy = completion;
+  urls = [(PHImportUrlSource *)self urls];
+  v6 = [urls objectAtIndexedSubscript:0];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -302,8 +302,8 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
 
   v25 = v6;
   [(PHImportUrlSource *)self setIsReadonlyVolume:[PHImportUrlSource treatAsReadonlyVolume:v6]];
-  v7 = [(PHImportUrlSource *)self urls];
-  v8 = [(PHImportUrlSource *)self resourcePathsInUrls:v7];
+  urls2 = [(PHImportUrlSource *)self urls];
+  v8 = [(PHImportUrlSource *)self resourcePathsInUrls:urls2];
 
   v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
   v26 = 0u;
@@ -326,15 +326,15 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 stringByDeletingPathExtension];
-        v17 = [(NSDictionary *)v9 objectForKeyedSubscript:v16];
-        if (!v17)
+        stringByDeletingPathExtension = [v15 stringByDeletingPathExtension];
+        array = [(NSDictionary *)v9 objectForKeyedSubscript:stringByDeletingPathExtension];
+        if (!array)
         {
-          v17 = [MEMORY[0x1E695DF70] array];
-          [(NSDictionary *)v9 setObject:v17 forKeyedSubscript:v16];
+          array = [MEMORY[0x1E695DF70] array];
+          [(NSDictionary *)v9 setObject:array forKeyedSubscript:stringByDeletingPathExtension];
         }
 
-        [v17 addObject:v15];
+        [array addObject:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -347,29 +347,29 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
   self->_resourcePathsByIdentifier = v9;
   v19 = v9;
 
-  v20 = [(NSDictionary *)self->_resourcePathsByIdentifier allKeys];
+  allKeys = [(NSDictionary *)self->_resourcePathsByIdentifier allKeys];
 
-  v21 = [v20 mutableCopy];
+  v21 = [allKeys mutableCopy];
   [(PHImportSource *)self setItems:v21];
 
-  v22 = [(PHImportSource *)self items];
-  v23 = [v22 count];
-  v24 = [(PHImportSource *)self progress];
-  [v24 setTotalUnitCount:v23];
+  items = [(PHImportSource *)self items];
+  v23 = [items count];
+  progress = [(PHImportSource *)self progress];
+  [progress setTotalUnitCount:v23];
 
-  v4[2](v4);
+  completionCopy[2](completionCopy);
 }
 
-- (id)resourcePathsInUrls:(id)a3
+- (id)resourcePathsInUrls:(id)urls
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = malloc_type_malloc(8 * [v3 count] + 8, 0x10040436913F5uLL);
+  urlsCopy = urls;
+  v4 = malloc_type_malloc(8 * [urlsCopy count] + 8, 0x10040436913F5uLL);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = v3;
+  v5 = urlsCopy;
   v6 = [v5 countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v6)
   {
@@ -385,8 +385,8 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v39 + 1) + 8 * i) path];
-        v4[v8] = [v11 fileSystemRepresentation];
+        path = [*(*(&v39 + 1) + 8 * i) path];
+        v4[v8] = [path fileSystemRepresentation];
 
         ++v8;
       }
@@ -407,7 +407,7 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
   v12 = [MEMORY[0x1E695DFA8] setWithCapacity:100000];
   [(PHImportSource *)self setFolders:v12];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v14 = fts_open(v4, 92, 0);
   v34 = *MEMORY[0x1E695DBA0];
   v33 = *MEMORY[0x1E6982E80];
@@ -422,7 +422,7 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
     v16 = v15;
     if (v15->fts_info != 10)
     {
-      v17 = [v13 stringWithFileSystemRepresentation:v15->fts_path length:strlen(v15->fts_path)];
+      v17 = [defaultManager stringWithFileSystemRepresentation:v15->fts_path length:strlen(v15->fts_path)];
       v18 = v17;
       fts_info = v16->fts_info;
       if (fts_info == 1)
@@ -441,12 +441,12 @@ void __28__PHImportUrlSource_endWork__block_invoke_3(uint64_t a1, uint64_t a2)
             v26 = [MEMORY[0x1E69C08F0] typeForURL:v22 error:0];
             if (([v26 conformsToType:v33] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69C0668], "contentType"), v27 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v26, "conformsToType:", v27), v27, v32))
             {
-              v28 = v36;
+              folders2 = v36;
               goto LABEL_27;
             }
 
-            v30 = [(PHImportSource *)self folders];
-            [v30 addObject:v18];
+            folders = [(PHImportSource *)self folders];
+            [folders addObject:v18];
 
 LABEL_28:
             goto LABEL_29;
@@ -466,17 +466,17 @@ LABEL_28:
           }
         }
 
-        v28 = [(PHImportSource *)self folders];
-        v26 = v28;
+        folders2 = [(PHImportSource *)self folders];
+        v26 = folders2;
 LABEL_27:
-        [v28 addObject:v18];
+        [folders2 addObject:v18];
         goto LABEL_28;
       }
 
       if (fts_info == 11 || fts_info == 8)
       {
-        v20 = [v17 lastPathComponent];
-        v21 = [v20 hasPrefix:@"."];
+        lastPathComponent = [v17 lastPathComponent];
+        v21 = [lastPathComponent hasPrefix:@"."];
 
         if ((v21 & 1) == 0)
         {
@@ -494,10 +494,10 @@ LABEL_29:
   return v36;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -505,21 +505,21 @@ LABEL_29:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PHImportUrlSource *)self isEqualToImportUrlSource:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PHImportUrlSource *)self isEqualToImportUrlSource:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToImportUrlSource:(id)a3
+- (BOOL)isEqualToImportUrlSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v5 = [v4 urls];
-  v6 = [v5 count];
+  urls = [sourceCopy urls];
+  v6 = [urls count];
   if (v6 == [(NSArray *)self->_urls count])
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -528,7 +528,7 @@ LABEL_29:
     v9[3] = &unk_1E75A5FD0;
     v9[4] = self;
     v9[5] = &v10;
-    [v5 enumerateObjectsUsingBlock:v9];
+    [urls enumerateObjectsUsingBlock:v9];
     v7 = *(v11 + 24);
   }
 
@@ -595,10 +595,10 @@ void __46__PHImportUrlSource_isEqualToImportUrlSource___block_invoke(uint64_t a1
   [(PHImportUrlSource *)&v8 dealloc];
 }
 
-- (BOOL)containsSupportedMediaWithImportExceptions:(id *)a3
+- (BOOL)containsSupportedMediaWithImportExceptions:(id *)exceptions
 {
   v30 = *MEMORY[0x1E69E9840];
-  v24 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(PHImportUrlSource *)self resourcePathsInUrls:self->_urls];
   v25 = 0u;
   v26 = 0u;
@@ -609,7 +609,7 @@ void __46__PHImportUrlSource_isEqualToImportUrlSource___block_invoke(uint64_t a1
   {
     v7 = v6;
     v8 = *v26;
-    v23 = a3;
+    exceptionsCopy = exceptions;
     while (2)
     {
       for (i = 0; i != v7; ++i)
@@ -620,7 +620,7 @@ void __46__PHImportUrlSource_isEqualToImportUrlSource___block_invoke(uint64_t a1
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:{v10, v23}];
+        v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:{v10, exceptionsCopy}];
         v12 = [PHValidator mediaTypeForURL:v11];
 
         if (v12 <= 0x20 && ((1 << v12) & 0x100010004) != 0)
@@ -640,8 +640,8 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v17 = [MEMORY[0x1E69C0668] contentType];
-        v18 = [v16 conformsToType:v17];
+        contentType = [MEMORY[0x1E69C0668] contentType];
+        v18 = [v16 conformsToType:contentType];
 
         if ((v18 & 1) != 0 || v12 > 1)
         {
@@ -655,12 +655,12 @@ LABEL_22:
         else
         {
           v19 = [[PHImportException alloc] initWithType:1 path:v10 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportUrlSource.m" line:94];
-          [v24 addObject:v19];
+          [array addObject:v19];
         }
       }
 
       v7 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
-      a3 = v23;
+      exceptions = exceptionsCopy;
       if (v7)
       {
         continue;
@@ -670,12 +670,12 @@ LABEL_22:
     }
   }
 
-  v20 = [v24 count];
+  v20 = [array count];
   v21 = 0;
-  if (a3 && v20)
+  if (exceptions && v20)
   {
     v21 = 0;
-    *a3 = v24;
+    *exceptions = array;
   }
 
 LABEL_23:
@@ -683,36 +683,36 @@ LABEL_23:
   return v21;
 }
 
-- (PHImportUrlSource)initWithURLs:(id)a3
+- (PHImportUrlSource)initWithURLs:(id)ls
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  lsCopy = ls;
+  if ([lsCopy count])
   {
     v5 = [(PHImportSource *)self init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [lsCopy copy];
       urls = v5->_urls;
       v5->_urls = v6;
 
       v8 = [(NSArray *)v5->_urls mutableCopy];
       [(PHImportSource *)v5 setItems:v8];
 
-      v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+      v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(lsCopy, "count")}];
       accessedURLs = v5->_accessedURLs;
       v5->_accessedURLs = v9;
 
       v11 = [(PHImportUrlSource *)v5 rootUrlOfUrls:v5->_urls];
-      v12 = [v11 path];
+      path = [v11 path];
       prefix = v5->_prefix;
-      v5->_prefix = v12;
+      v5->_prefix = path;
 
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v14 = v4;
+      v14 = lsCopy;
       v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v15)
       {
@@ -772,18 +772,18 @@ LABEL_23:
   return v5;
 }
 
-+ (BOOL)treatAsReadonlyVolume:(id)a3
++ (BOOL)treatAsReadonlyVolume:(id)volume
 {
   v14 = *MEMORY[0x1E69E9840];
   v11 = 0;
   v3 = *MEMORY[0x1E695DDB0];
   v10 = 0;
-  v4 = [a3 getResourceValue:&v11 forKey:v3 error:&v10];
+  v4 = [volume getResourceValue:&v11 forKey:v3 error:&v10];
   v5 = v11;
   v6 = v10;
   if (v4)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -796,10 +796,10 @@ LABEL_23:
       _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_ERROR, "Unable to value for key 'NSURLVolumeIsReadOnlyKey': %@", buf, 0xCu);
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

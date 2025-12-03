@@ -1,17 +1,17 @@
 @interface LPARAssetProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LPARAssetProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPARAssetProperties allocWithZone:a3];
+  v4 = [LPARAssetProperties allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPVisualMediaProperties *)self accessibilityText];
-    v6 = [v5 copy];
+    accessibilityText = [(LPVisualMediaProperties *)self accessibilityText];
+    v6 = [accessibilityText copy];
     [(LPVisualMediaProperties *)v4 setAccessibilityText:v6];
 
     v7 = v4;
@@ -20,12 +20,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = LPARAssetProperties;
-  if ([(LPVisualMediaProperties *)&v11 isEqual:v4])
+  if ([(LPVisualMediaProperties *)&v11 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -35,10 +35,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 accessibilityText];
-      v7 = [(LPVisualMediaProperties *)self accessibilityText];
-      v8 = v6;
-      v9 = v7;
+      accessibilityText = [equalCopy accessibilityText];
+      accessibilityText2 = [(LPVisualMediaProperties *)self accessibilityText];
+      v8 = accessibilityText;
+      v9 = accessibilityText2;
       if (v8 | v9)
       {
         v5 = [v8 isEqual:v9];

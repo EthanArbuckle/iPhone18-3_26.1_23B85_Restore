@@ -2,7 +2,7 @@
 - (MSRHDRProcessingT4)init;
 - (float)getDolby84DegammaScale;
 - (float)getDolby84PostDegammaScale;
-- (void)populateMSRColorConfigStageHwOOTF:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10;
+- (void)populateMSRColorConfigStageHwOOTF:(id *)f Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0;
 - (void)setupHardwareConfigUnit;
 @end
 
@@ -75,17 +75,17 @@
   }
 }
 
-- (void)populateMSRColorConfigStageHwOOTF:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10
+- (void)populateMSRColorConfigStageHwOOTF:(id *)f Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0
 {
   v10 = &self->super.super.super.super._msrCU->var8.var12[175];
-  if (a4)
+  if (enabled)
   {
     self->super.super.super.super._msrCU->var10.var0 = 1;
     *(v10 + 3288) = 24;
     *(v10 + 3289) = [(MSRHDRProcessingT4 *)self getOotfLumaShiftBits];
     v10[827] = 0.0;
     v10[823] = 0.0;
-    var15 = a9->var15;
+    var15 = hdrControl->var15;
     v18 = v10 + 828;
     v19 = &RGB2020toHLGY_coeff;
     if (var15 == 1)
@@ -114,10 +114,10 @@
     }
 
     while (v21);
-    v10[831] = a6->var67 + 1.0;
+    v10[831] = config->var67 + 1.0;
     v23.receiver = self;
     v23.super_class = MSRHDRProcessingT4;
-    [(MSRHDRProcessing *)&v23 populateMSRColorConfigStageHwOOTF:a3 Enabled:1 Prefix:a5 DMConfig:a6 DMData:a7 tcControl:a8 hdrControl:a9 MSRHDRContext:a10];
+    [(MSRHDRProcessing *)&v23 populateMSRColorConfigStageHwOOTF:f Enabled:1 Prefix:prefix DMConfig:config DMData:data tcControl:control hdrControl:hdrControl MSRHDRContext:context];
   }
 
   else

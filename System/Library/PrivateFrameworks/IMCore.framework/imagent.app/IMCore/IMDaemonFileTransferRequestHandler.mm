@@ -1,33 +1,33 @@
 @interface IMDaemonFileTransferRequestHandler
-- (void)createItemForPHAssetWithUUID:(id)a3 parentChatItemGUID:(id)a4 chatGUID:(id)a5;
-- (void)deleteFileTransferWithGUID:(id)a3;
-- (void)downloadHighQualityVariantOfFileTransferWithGUID:(id)a3;
-- (void)fileTransfer:(id)a3 createdWithProperties:(id)a4;
-- (void)fileTransfer:(id)a3 rejectedWithProperties:(id)a4;
-- (void)fileTransfer:(id)a3 updatedWithProperties:(id)a4;
-- (void)fileTransferRemoved:(id)a3;
-- (void)fileTransferStopped:(id)a3;
-- (void)fileTransfersRecoverablyDeleted:(id)a3;
-- (void)successfullyGeneratedPreviewForTransfer:(id)a3 withPreviewSize:(CGSize)a4;
+- (void)createItemForPHAssetWithUUID:(id)d parentChatItemGUID:(id)iD chatGUID:(id)uID;
+- (void)deleteFileTransferWithGUID:(id)d;
+- (void)downloadHighQualityVariantOfFileTransferWithGUID:(id)d;
+- (void)fileTransfer:(id)transfer createdWithProperties:(id)properties;
+- (void)fileTransfer:(id)transfer rejectedWithProperties:(id)properties;
+- (void)fileTransfer:(id)transfer updatedWithProperties:(id)properties;
+- (void)fileTransferRemoved:(id)removed;
+- (void)fileTransferStopped:(id)stopped;
+- (void)fileTransfersRecoverablyDeleted:(id)deleted;
+- (void)successfullyGeneratedPreviewForTransfer:(id)transfer withPreviewSize:(CGSize)size;
 @end
 
 @implementation IMDaemonFileTransferRequestHandler
 
-- (void)deleteFileTransferWithGUID:(id)a3
+- (void)deleteFileTransferWithGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = dCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Deleting attachment with guid %@", &v7, 0xCu);
     }
   }
 
-  if ([v3 length])
+  if ([dCopy length])
   {
     v5 = +[IMDAttachmentStore sharedInstance];
     v6 = IMSingleObjectArray();
@@ -35,24 +35,24 @@
   }
 }
 
-- (void)fileTransfer:(id)a3 createdWithProperties:(id)a4
+- (void)fileTransfer:(id)transfer createdWithProperties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
+  transferCopy = transfer;
+  propertiesCopy = properties;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *&buf[4] = v5;
+      *&buf[4] = transferCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = propertiesCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "File transfer: %@   created with properties: %@", buf, 0x16u);
     }
   }
 
-  if ([v5 length])
+  if ([transferCopy length])
   {
     memset(buf, 0, 32);
     v8 = +[IMDClientRequestContext currentContext];
@@ -70,7 +70,7 @@
     v11 = +[IMDFileTransferCenter sharedInstance];
     v12[0] = *buf;
     v12[1] = *&buf[16];
-    [v11 _handleFileTransfer:v5 createdWithProperties:v6 withAuditToken:v12];
+    [v11 _handleFileTransfer:transferCopy createdWithProperties:propertiesCopy withAuditToken:v12];
   }
 
   else if (IMOSLoggingEnabled())
@@ -84,14 +84,14 @@
   }
 }
 
-- (void)fileTransfer:(id)a3 updatedWithProperties:(id)a4
+- (void)fileTransfer:(id)transfer updatedWithProperties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  transferCopy = transfer;
+  propertiesCopy = properties;
+  if ([transferCopy length])
   {
     v7 = +[IMDFileTransferCenter sharedInstance];
-    [v7 _handleFileTransfer:v5 updatedWithProperties:v6];
+    [v7 _handleFileTransfer:transferCopy updatedWithProperties:propertiesCopy];
   }
 
   else
@@ -112,13 +112,13 @@
 LABEL_4:
 }
 
-- (void)fileTransferStopped:(id)a3
+- (void)fileTransferStopped:(id)stopped
 {
-  v3 = a3;
-  if ([v3 length])
+  stoppedCopy = stopped;
+  if ([stoppedCopy length])
   {
     v4 = +[IMDFileTransferCenter sharedInstance];
-    [v4 _handleFileTransferStopped:v3];
+    [v4 _handleFileTransferStopped:stoppedCopy];
   }
 
   else
@@ -139,13 +139,13 @@ LABEL_4:
 LABEL_4:
 }
 
-- (void)fileTransferRemoved:(id)a3
+- (void)fileTransferRemoved:(id)removed
 {
-  v3 = a3;
-  if ([v3 length])
+  removedCopy = removed;
+  if ([removedCopy length])
   {
     v4 = +[IMDFileTransferCenter sharedInstance];
-    [v4 _handleFileTransferRemoved:v3];
+    [v4 _handleFileTransferRemoved:removedCopy];
   }
 
   else
@@ -166,20 +166,20 @@ LABEL_4:
 LABEL_4:
 }
 
-- (void)fileTransfersRecoverablyDeleted:(id)a3
+- (void)fileTransfersRecoverablyDeleted:(id)deleted
 {
-  v3 = a3;
-  if ([v3 count])
+  deletedCopy = deleted;
+  if ([deletedCopy count])
   {
     v4 = +[IMDPersistenceService indexingQueryProvider];
-    v5 = [v3 allObjects];
+    allObjects = [deletedCopy allObjects];
     v6 = [IMDIndexingContext contextWithReason:1005];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000086EC;
     v9[3] = &unk_1000817C8;
-    v10 = v3;
-    [v4 deleteAttachmentGUIDs:v5 context:v6 completionHandler:v9];
+    v10 = deletedCopy;
+    [v4 deleteAttachmentGUIDs:allObjects context:v6 completionHandler:v9];
   }
 
   else if (IMOSLoggingEnabled())
@@ -193,21 +193,21 @@ LABEL_4:
   }
 }
 
-- (void)createItemForPHAssetWithUUID:(id)a3 parentChatItemGUID:(id)a4 chatGUID:(id)a5
+- (void)createItemForPHAssetWithUUID:(id)d parentChatItemGUID:(id)iD chatGUID:(id)uID
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
   v10 = +[IMDChatStore sharedInstance];
-  v11 = [v10 chatWithGUID:v9];
+  v11 = [v10 chatWithGUID:uIDCopy];
 
   v12 = +[IMDMessageStore sharedInstance];
-  v13 = [v12 messageWithGUID:v8 registerAttachments:0];
+  v13 = [v12 messageWithGUID:iDCopy registerAttachments:0];
 
   if (v11 && v13)
   {
     v14 = +[IMDMomentShareManager sharedInstance];
-    [v14 regenerateTransfersForMessage:v13 inChat:v11 addingAssetWithUUID:v7];
+    [v14 regenerateTransfersForMessage:v13 inChat:v11 addingAssetWithUUID:dCopy];
   }
 
   else
@@ -236,9 +236,9 @@ LABEL_4:
   }
 }
 
-- (void)downloadHighQualityVariantOfFileTransferWithGUID:(id)a3
+- (void)downloadHighQualityVariantOfFileTransferWithGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -250,17 +250,17 @@ LABEL_4:
   }
 }
 
-- (void)successfullyGeneratedPreviewForTransfer:(id)a3 withPreviewSize:(CGSize)a4
+- (void)successfullyGeneratedPreviewForTransfer:(id)transfer withPreviewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_opt_self();
-  v10 = a3;
-  v8 = [v7 sharedInstance];
-  if (v8)
+  transferCopy = transfer;
+  sharedInstance = [v7 sharedInstance];
+  if (sharedInstance)
   {
-    v9 = v8;
-    [v8 successfullyGeneratedPreviewForTransfer:v10 withPreviewSize:{width, height}];
+    v9 = sharedInstance;
+    [sharedInstance successfullyGeneratedPreviewForTransfer:transferCopy withPreviewSize:{width, height}];
   }
 
   else
@@ -270,12 +270,12 @@ LABEL_4:
   }
 }
 
-- (void)fileTransfer:(id)a3 rejectedWithProperties:(id)a4
+- (void)fileTransfer:(id)transfer rejectedWithProperties:(id)properties
 {
   v5 = sub_100054164();
   v7 = v6;
   sub_100054134();
-  v8 = self;
+  selfCopy = self;
   _sSo34IMDaemonFileTransferRequestHandlerC7imagentE04fileC0_22rejectedWithPropertiesySS_SDys11AnyHashableVypGtF_0(v5, v7);
 }
 

@@ -3,12 +3,12 @@
 - (BOOL)_shouldForceSensitivityResult;
 - (IMCommSafetyRequestsManager)init;
 - (MADService)service;
-- (id)_identifierForURL:(id)a3 withChatID:(id)a4;
-- (id)cachedResultForContentAttachment:(id)a3 withChatID:(id)a4;
-- (void)_setSensitiveValue:(BOOL)a3 forIdentifier:(id)a4;
+- (id)_identifierForURL:(id)l withChatID:(id)d;
+- (id)cachedResultForContentAttachment:(id)attachment withChatID:(id)d;
+- (void)_setSensitiveValue:(BOOL)value forIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)isSensitiveCGImage:(CGImage *)a3 withOrientation:(unsigned int)a4 completionHandler:(id)a5;
-- (void)isSensitiveContent:(id)a3 contentAttachmentType:(int64_t)a4 useBlastDoor:(BOOL)a5 withChatID:(id)a6 completionHandler:(id)a7;
+- (void)isSensitiveCGImage:(CGImage *)image withOrientation:(unsigned int)orientation completionHandler:(id)handler;
+- (void)isSensitiveContent:(id)content contentAttachmentType:(int64_t)type useBlastDoor:(BOOL)door withChatID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation IMCommSafetyRequestsManager
@@ -69,8 +69,8 @@
 {
   if (self->_service)
   {
-    v3 = [(IMCommSafetyRequestsManager *)self service];
-    [v3 cancelAllRequests];
+    service = [(IMCommSafetyRequestsManager *)self service];
+    [service cancelAllRequests];
   }
 
   v4.receiver = self;
@@ -101,9 +101,9 @@
 
     v5 = v4;
     _Block_object_dispose(&v10, 8);
-    v6 = [v4 service];
+    service = [v4 service];
     v7 = self->_service;
-    self->_service = v6;
+    self->_service = service;
 
     service = self->_service;
   }
@@ -111,27 +111,27 @@
   return service;
 }
 
-- (id)_identifierForURL:(id)a3 withChatID:(id)a4
+- (id)_identifierForURL:(id)l withChatID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 path];
-  v8 = IMSharedHelperMD5HashOfFileAtPath(v7);
+  lCopy = l;
+  dCopy = d;
+  path = [lCopy path];
+  v8 = IMSharedHelperMD5HashOfFileAtPath(path);
 
   if (v8)
   {
-    v9 = v8;
+    lastPathComponent = v8;
   }
 
   else
   {
-    v10 = [v5 path];
-    v9 = [v10 lastPathComponent];
+    path2 = [lCopy path];
+    lastPathComponent = [path2 lastPathComponent];
   }
 
-  if (v6)
+  if (dCopy)
   {
-    v11 = v6;
+    v11 = dCopy;
   }
 
   else
@@ -139,72 +139,72 @@
     v11 = @"<unknown>";
   }
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v11, v9];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v11, lastPathComponent];
 
   return v12;
 }
 
-- (void)_setSensitiveValue:(BOOL)a3 forIdentifier:(id)a4
+- (void)_setSensitiveValue:(BOOL)value forIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = [(IMCommSafetyRequestsManager *)self cachedResults];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  [v8 setValue:v7 forKey:v6];
+  valueCopy = value;
+  identifierCopy = identifier;
+  cachedResults = [(IMCommSafetyRequestsManager *)self cachedResults];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:valueCopy];
+  [cachedResults setValue:v7 forKey:identifierCopy];
 }
 
-- (void)isSensitiveContent:(id)a3 contentAttachmentType:(int64_t)a4 useBlastDoor:(BOOL)a5 withChatID:(id)a6 completionHandler:(id)a7
+- (void)isSensitiveContent:(id)content contentAttachmentType:(int64_t)type useBlastDoor:(BOOL)door withChatID:(id)d completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  contentCopy = content;
+  dCopy = d;
+  handlerCopy = handler;
   operationQueue = self->operationQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = sub_1A86745B4;
   v19[3] = &unk_1E7828570;
-  v20 = v12;
-  v21 = self;
-  v22 = v13;
-  v23 = v14;
-  v24 = a4;
-  v25 = a5;
-  v16 = v13;
-  v17 = v14;
-  v18 = v12;
+  v20 = contentCopy;
+  selfCopy = self;
+  v22 = dCopy;
+  v23 = handlerCopy;
+  typeCopy = type;
+  doorCopy = door;
+  v16 = dCopy;
+  v17 = handlerCopy;
+  v18 = contentCopy;
   [(NSOperationQueue *)operationQueue addOperationWithBlock:v19];
 }
 
-- (id)cachedResultForContentAttachment:(id)a3 withChatID:(id)a4
+- (id)cachedResultForContentAttachment:(id)attachment withChatID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  attachmentCopy = attachment;
+  dCopy = d;
+  if (attachmentCopy)
   {
-    v8 = [(IMCommSafetyRequestsManager *)self _identifierForURL:v6 withChatID:v7];
-    v9 = [(IMCommSafetyRequestsManager *)self cachedResults];
-    v10 = [v9 objectForKey:v8];
+    v8 = [(IMCommSafetyRequestsManager *)self _identifierForURL:attachmentCopy withChatID:dCopy];
+    cachedResults = [(IMCommSafetyRequestsManager *)self cachedResults];
+    v10 = [cachedResults objectForKey:v8];
 
-    if (v7 && !v10)
+    if (dCopy && !v10)
     {
       if (IMOSLoggingEnabled())
       {
         v11 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v6 absoluteString];
+          absoluteString = [attachmentCopy absoluteString];
           v16 = 138412546;
-          v17 = v12;
+          v17 = absoluteString;
           v18 = 2112;
-          v19 = v7;
+          v19 = dCopy;
           _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Failed to retrieve cached result for fileURL '%@' and chatID '%@", &v16, 0x16u);
         }
       }
 
-      v13 = [(IMCommSafetyRequestsManager *)self cachedResults];
-      v14 = [(IMCommSafetyRequestsManager *)self _identifierForURL:v6 withChatID:0];
-      v10 = [v13 objectForKey:v14];
+      cachedResults2 = [(IMCommSafetyRequestsManager *)self cachedResults];
+      v14 = [(IMCommSafetyRequestsManager *)self _identifierForURL:attachmentCopy withChatID:0];
+      v10 = [cachedResults2 objectForKey:v14];
     }
   }
 
@@ -216,18 +216,18 @@
   return v10;
 }
 
-- (void)isSensitiveCGImage:(CGImage *)a3 withOrientation:(unsigned int)a4 completionHandler:(id)a5
+- (void)isSensitiveCGImage:(CGImage *)image withOrientation:(unsigned int)orientation completionHandler:(id)handler
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = [(IMCommSafetyRequestsManager *)self userSafetyClient];
+  v5 = *&orientation;
+  handlerCopy = handler;
+  userSafetyClient = [(IMCommSafetyRequestsManager *)self userSafetyClient];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1A867535C;
   v11[3] = &unk_1E7828598;
-  v12 = v8;
-  v10 = v8;
-  [v9 analyzeCGImage:a3 withOrientation:v5 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [userSafetyClient analyzeCGImage:image withOrientation:v5 completionHandler:v11];
 }
 
 - (BOOL)_shouldForceSensitivityResult
@@ -235,14 +235,14 @@
   v2 = +[IMDefaults sharedInstance];
   v3 = [v2 getValueFromDomain:@"com.apple.messages" forKey:@"kMarkSensitiveKey"];
 
-  v4 = [v3 integerValue];
-  if (v4 == 1)
+  integerValue = [v3 integerValue];
+  if (integerValue == 1)
   {
     v5 = +[IMDefaults sharedInstance];
     [v5 setValue:&unk_1F1BFA670 forDomain:@"com.apple.messages" forKey:@"kMarkSensitiveKey"];
   }
 
-  return v4 != 0;
+  return integerValue != 0;
 }
 
 @end

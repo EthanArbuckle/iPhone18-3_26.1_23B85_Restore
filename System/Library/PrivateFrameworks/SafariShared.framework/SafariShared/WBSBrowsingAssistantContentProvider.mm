@@ -1,16 +1,16 @@
 @interface WBSBrowsingAssistantContentProvider
 + (BOOL)assistantEnabledForCurrentDevice;
-+ (BOOL)assistantEnabledForLocale:(id)a3;
++ (BOOL)assistantEnabledForLocale:(id)locale;
 + (PARSession)sharedPARSession;
 + (id)_assetManagerForCurrentSystemLocale;
 + (id)_sharedSessionConfiguration;
-+ (id)filteredStringForURL:(id)a3 needsVariants:(BOOL *)a4;
++ (id)filteredStringForURL:(id)l needsVariants:(BOOL *)variants;
 + (void)_assetManagerForCurrentSystemLocale;
 + (void)clearAssistantAssetCache;
-+ (void)subscribeToAssistantAssetAndDownloadNow:(BOOL)a3;
++ (void)subscribeToAssistantAssetAndDownloadNow:(BOOL)now;
 + (void)unsubscribeFromAssistantAsset;
-- (void)checkContentAvailabilityForURL:(id)a3 locale:(id)a4 webpageIdentifier:(id)a5 completion:(id)a6;
-- (void)fetchContentForURL:(id)a3 completion:(id)a4;
+- (void)checkContentAvailabilityForURL:(id)l locale:(id)locale webpageIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchContentForURL:(id)l completion:(id)completion;
 @end
 
 @implementation WBSBrowsingAssistantContentProvider
@@ -37,11 +37,11 @@ void __66__WBSBrowsingAssistantContentProvider__sharedSessionConfiguration__bloc
 
 + (PARSession)sharedPARSession
 {
-  v2 = [a1 _sharedSessionConfiguration];
+  _sharedSessionConfiguration = [self _sharedSessionConfiguration];
   objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [MEMORY[0x1E6998670] sharedPARSessionWithConfiguration:v2];
+    v3 = [MEMORY[0x1E6998670] sharedPARSessionWithConfiguration:_sharedSessionConfiguration];
   }
 
   else
@@ -50,7 +50,7 @@ void __66__WBSBrowsingAssistantContentProvider__sharedSessionConfiguration__bloc
     block[1] = 3221225472;
     block[2] = __55__WBSBrowsingAssistantContentProvider_sharedPARSession__block_invoke;
     block[3] = &unk_1E7FB6D90;
-    v6 = v2;
+    v6 = _sharedSessionConfiguration;
     if (sharedPARSession_onceToken != -1)
     {
       dispatch_once(&sharedPARSession_onceToken, block);
@@ -71,8 +71,8 @@ void __55__WBSBrowsingAssistantContentProvider_sharedPARSession__block_invoke(ui
 
 + (BOOL)assistantEnabledForCurrentDevice
 {
-  v2 = [objc_opt_class() sharedPARSession];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v2 safariAssistantEnabledStatus] != 1)
+  sharedPARSession = [objc_opt_class() sharedPARSession];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [sharedPARSession safariAssistantEnabledStatus] != 1)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
     v3 = 0;
@@ -92,19 +92,19 @@ void __55__WBSBrowsingAssistantContentProvider_sharedPARSession__block_invoke(ui
   return v3;
 }
 
-+ (BOOL)assistantEnabledForLocale:(id)a3
++ (BOOL)assistantEnabledForLocale:(id)locale
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() sharedPARSession];
-  v5 = [v4 safariAssistantEnabledStatusForPageLanguage:v3];
+  localeCopy = locale;
+  sharedPARSession = [objc_opt_class() sharedPARSession];
+  v5 = [sharedPARSession safariAssistantEnabledStatusForPageLanguage:localeCopy];
   if (v5 != 1)
   {
     v6 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138739971;
-      v9 = v3;
+      v9 = localeCopy;
       _os_log_impl(&dword_1BB6F3000, v6, OS_LOG_TYPE_INFO, "Assitant is not eligible for page language: %{sensitive}@", &v8, 0xCu);
     }
   }
@@ -112,48 +112,48 @@ void __55__WBSBrowsingAssistantContentProvider_sharedPARSession__block_invoke(ui
   return v5 == 1;
 }
 
-+ (id)filteredStringForURL:(id)a3 needsVariants:(BOOL *)a4
++ (id)filteredStringForURL:(id)l needsVariants:(BOOL *)variants
 {
-  v6 = [a3 absoluteString];
-  v7 = [a1 _assetManagerForCurrentSystemLocale];
-  if (v7)
+  absoluteString = [l absoluteString];
+  _assetManagerForCurrentSystemLocale = [self _assetManagerForCurrentSystemLocale];
+  if (_assetManagerForCurrentSystemLocale)
   {
-    v8 = [a1 sharedPARSession];
-    v9 = [v8 bag];
+    sharedPARSession = [self sharedPARSession];
+    v9 = [sharedPARSession bag];
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 safariAssistantHashPrefixLength];
+      safariAssistantHashPrefixLength = [v9 safariAssistantHashPrefixLength];
     }
 
     else
     {
-      v10 = 21;
+      safariAssistantHashPrefixLength = 21;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v7 prefilterSafariSummarizationPrefetchRequestModelWithUrlString:v6 prefetchHashPrefixLength:v10];
+      v12 = [_assetManagerForCurrentSystemLocale prefilterSafariSummarizationPrefetchRequestModelWithUrlString:absoluteString prefetchHashPrefixLength:safariAssistantHashPrefixLength];
       if (([v12 hasMatchedPattern] & 1) == 0)
       {
-        *a4 = 1;
+        *variants = 1;
       }
 
-      v11 = [v12 prefilterUrl];
+      prefilterUrl = [v12 prefilterUrl];
     }
 
     else
     {
-      v11 = v6;
+      prefilterUrl = absoluteString;
     }
   }
 
   else
   {
-    v11 = v6;
+    prefilterUrl = absoluteString;
   }
 
-  return v11;
+  return prefilterUrl;
 }
 
 + (id)_assetManagerForCurrentSystemLocale
@@ -167,19 +167,19 @@ void __55__WBSBrowsingAssistantContentProvider_sharedPARSession__block_invoke(ui
 
   if (!_assetManagerForCurrentSystemLocale__localeToAssetManagerMap)
   {
-    v2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v3 = _assetManagerForCurrentSystemLocale__localeToAssetManagerMap;
-    _assetManagerForCurrentSystemLocale__localeToAssetManagerMap = v2;
+    _assetManagerForCurrentSystemLocale__localeToAssetManagerMap = dictionary;
   }
 
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v6 = [_assetManagerForCurrentSystemLocale__localeToAssetManagerMap objectForKeyedSubscript:v5];
+  v6 = [_assetManagerForCurrentSystemLocale__localeToAssetManagerMap objectForKeyedSubscript:localeIdentifier];
   if (!v6)
   {
     v12 = 0;
-    v6 = [getSAAssetManagerFactoryClass() safariAssistantAssetManagerWithLocale:v5 error:&v12];
+    v6 = [getSAAssetManagerFactoryClass() safariAssistantAssetManagerWithLocale:localeIdentifier error:&v12];
     v8 = v12;
     if (v8)
     {
@@ -187,14 +187,14 @@ void __55__WBSBrowsingAssistantContentProvider_sharedPARSession__block_invoke(ui
       v10 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        +[(WBSBrowsingAssistantContentProvider *)v5];
+        +[(WBSBrowsingAssistantContentProvider *)localeIdentifier];
       }
 
       v7 = 0;
       goto LABEL_11;
     }
 
-    [_assetManagerForCurrentSystemLocale__localeToAssetManagerMap setObject:v6 forKeyedSubscript:v5];
+    [_assetManagerForCurrentSystemLocale__localeToAssetManagerMap setObject:v6 forKeyedSubscript:localeIdentifier];
   }
 
   v6 = v6;
@@ -206,14 +206,14 @@ LABEL_12:
   return v7;
 }
 
-+ (void)subscribeToAssistantAssetAndDownloadNow:(BOOL)a3
++ (void)subscribeToAssistantAssetAndDownloadNow:(BOOL)now
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _assetManagerForCurrentSystemLocale];
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v5 localeIdentifier];
+  _assetManagerForCurrentSystemLocale = [self _assetManagerForCurrentSystemLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  if (v4)
+  if (_assetManagerForCurrentSystemLocale)
   {
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
@@ -221,9 +221,9 @@ LABEL_12:
       v8[1] = 3221225472;
       v8[2] = __79__WBSBrowsingAssistantContentProvider_subscribeToAssistantAssetAndDownloadNow___block_invoke;
       v8[3] = &unk_1E7FB7098;
-      v9 = v6;
-      v11 = a3;
-      v10 = v4;
+      v9 = localeIdentifier;
+      nowCopy = now;
+      v10 = _assetManagerForCurrentSystemLocale;
       [v10 subscribeToAndPreloadSafariSummarizationAssetsForLocale:v9 completionHandler:v8];
     }
   }
@@ -234,7 +234,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138739971;
-      v13 = v6;
+      v13 = localeIdentifier;
       _os_log_impl(&dword_1BB6F3000, v7, OS_LOG_TYPE_DEFAULT, "Safari failed to subscribe to UAF asset download for locale: %{sensitive}@", buf, 0xCu);
     }
   }
@@ -280,11 +280,11 @@ void __79__WBSBrowsingAssistantContentProvider_subscribeToAssistantAssetAndDownl
 
 + (void)clearAssistantAssetCache
 {
-  v2 = [a1 _assetManagerForCurrentSystemLocale];
-  v3 = v2;
-  if (v2)
+  _assetManagerForCurrentSystemLocale = [self _assetManagerForCurrentSystemLocale];
+  v3 = _assetManagerForCurrentSystemLocale;
+  if (_assetManagerForCurrentSystemLocale)
   {
-    v5 = v2;
+    v5 = _assetManagerForCurrentSystemLocale;
     v4 = objc_opt_respondsToSelector();
     v3 = v5;
     if (v4)
@@ -297,8 +297,8 @@ void __79__WBSBrowsingAssistantContentProvider_subscribeToAssistantAssetAndDownl
 
 + (void)unsubscribeFromAssistantAsset
 {
-  v2 = [a1 _assetManagerForCurrentSystemLocale];
-  [v2 unsubscribeFromSafariSummarizationAssetsWithCompletionHandler:&__block_literal_global_26];
+  _assetManagerForCurrentSystemLocale = [self _assetManagerForCurrentSystemLocale];
+  [_assetManagerForCurrentSystemLocale unsubscribeFromSafariSummarizationAssetsWithCompletionHandler:&__block_literal_global_26];
 }
 
 void __68__WBSBrowsingAssistantContentProvider_unsubscribeFromAssistantAsset__block_invoke()
@@ -311,43 +311,43 @@ void __68__WBSBrowsingAssistantContentProvider_unsubscribeFromAssistantAsset__bl
   }
 }
 
-- (void)checkContentAvailabilityForURL:(id)a3 locale:(id)a4 webpageIdentifier:(id)a5 completion:(id)a6
+- (void)checkContentAvailabilityForURL:(id)l locale:(id)locale webpageIdentifier:(id)identifier completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v34 = 0;
-  v11 = [objc_opt_class() filteredStringForURL:v8 needsVariants:&v34];
+  v11 = [objc_opt_class() filteredStringForURL:lCopy needsVariants:&v34];
   v12 = v11;
-  if (v8 && v11)
+  if (lCopy && v11)
   {
     v13 = +[WBSBiomeDonationManager sharedManager];
-    [v13 donateBrowsingAssistantBloomFilterPassedEventWithWebPageID:v9];
+    [v13 donateBrowsingAssistantBloomFilterPassedEventWithWebPageID:identifierCopy];
 
     v14 = MEMORY[0x1E6998648];
-    v15 = [MEMORY[0x1E695DF58] currentLocale];
-    v16 = [v15 localeIdentifier];
-    v17 = [v14 prefetchRequestForUrl:v12 locale:v16];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    v17 = [v14 prefetchRequestForUrl:v12 locale:localeIdentifier];
 
     if (v34 == 1 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v18 = [WBSBrowsingAssistantURLVariants variantsForURL:v8];
-      v19 = [v18 variants];
-      [v17 setUrlVariants:v19];
+      v18 = [WBSBrowsingAssistantURLVariants variantsForURL:lCopy];
+      variants = [v18 variants];
+      [v17 setUrlVariants:variants];
     }
 
     if (v34)
     {
-      v20 = [v8 absoluteString];
+      absoluteString = [lCopy absoluteString];
     }
 
     else
     {
-      v20 = v12;
+      absoluteString = v12;
     }
 
-    v23 = v20;
+    v23 = absoluteString;
     v24 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
     if (os_signpost_enabled(v24))
     {
@@ -356,18 +356,18 @@ void __68__WBSBrowsingAssistantContentProvider_unsubscribeFromAssistantAsset__bl
       _os_signpost_emit_with_name_impl(&dword_1BB6F3000, v24, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "HashPrefixFetching", "Request [%p]", buf, 0xCu);
     }
 
-    v25 = [objc_opt_class() sharedPARSession];
+    sharedPARSession = [objc_opt_class() sharedPARSession];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __106__WBSBrowsingAssistantContentProvider_checkContentAvailabilityForURL_locale_webpageIdentifier_completion___block_invoke;
     v29[3] = &unk_1E7FB70C0;
     v30 = v17;
-    v31 = v8;
+    v31 = lCopy;
     v32 = v23;
-    v33 = v10;
+    v33 = completionCopy;
     v26 = v23;
     v27 = v17;
-    v28 = [v25 taskWithRequest:v27 completion:v29];
+    v28 = [sharedPARSession taskWithRequest:v27 completion:v29];
 
     [v28 resume];
   }
@@ -378,7 +378,7 @@ void __68__WBSBrowsingAssistantContentProvider_unsubscribeFromAssistantAsset__bl
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138739971;
-      v36 = v8;
+      v36 = lCopy;
       _os_log_impl(&dword_1BB6F3000, v21, OS_LOG_TYPE_INFO, "Safari didn't find a match for the URL in bloom filter or pattern list. URL: %{sensitive}@", buf, 0xCu);
     }
 
@@ -391,7 +391,7 @@ void __68__WBSBrowsingAssistantContentProvider_unsubscribeFromAssistantAsset__bl
       }
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -591,41 +591,41 @@ void __106__WBSBrowsingAssistantContentProvider_checkContentAvailabilityForURL_l
   }
 }
 
-- (void)fetchContentForURL:(id)a3 completion:(id)a4
+- (void)fetchContentForURL:(id)l completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
     v21 = 0;
-    v7 = [objc_opt_class() filteredStringForURL:v5 needsVariants:&v21];
+    v7 = [objc_opt_class() filteredStringForURL:lCopy needsVariants:&v21];
     v8 = v7;
     if (v7)
     {
       if (v21)
       {
-        v9 = [v5 absoluteString];
+        absoluteString = [lCopy absoluteString];
       }
 
       else
       {
-        v9 = v7;
+        absoluteString = v7;
       }
 
-      v11 = v9;
+      v11 = absoluteString;
       v12 = MEMORY[0x1E6998648];
-      v13 = [MEMORY[0x1E695DF58] currentLocale];
-      v14 = [v13 localeIdentifier];
-      v15 = [v12 summarizeRequestForUrl:v11 locale:v14];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      localeIdentifier = [currentLocale localeIdentifier];
+      v15 = [v12 summarizeRequestForUrl:v11 locale:localeIdentifier];
 
-      v16 = [objc_opt_class() sharedPARSession];
+      sharedPARSession = [objc_opt_class() sharedPARSession];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __69__WBSBrowsingAssistantContentProvider_fetchContentForURL_completion___block_invoke;
       v18[3] = &unk_1E7FB70E8;
-      v19 = v5;
-      v20 = v6;
-      v17 = [v16 taskWithRequest:v15 completion:v18];
+      v19 = lCopy;
+      v20 = completionCopy;
+      v17 = [sharedPARSession taskWithRequest:v15 completion:v18];
 
       [v17 resume];
     }
@@ -635,16 +635,16 @@ void __106__WBSBrowsingAssistantContentProvider_checkContentAvailabilityForURL_l
       v10 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [WBSBrowsingAssistantContentProvider fetchContentForURL:v5 completion:v10];
+        [WBSBrowsingAssistantContentProvider fetchContentForURL:lCopy completion:v10];
       }
 
-      (*(v6 + 2))(v6, MEMORY[0x1E695E0F0]);
+      (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0]);
     }
   }
 
   else
   {
-    (*(v6 + 2))(v6, MEMORY[0x1E695E0F0]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -693,7 +693,7 @@ void __69__WBSBrowsingAssistantContentProvider_fetchContentForURL_completion___b
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138739971;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BB6F3000, a2, OS_LOG_TYPE_ERROR, "Safari failed to create assistant assitant manager for locale: %{sensitive}@", &v2, 0xCu);
 }
 

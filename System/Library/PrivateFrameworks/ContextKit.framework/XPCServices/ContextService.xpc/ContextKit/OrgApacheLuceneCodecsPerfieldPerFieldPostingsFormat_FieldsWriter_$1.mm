@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter_$1
-- (OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter_$1)initWithOrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsGroup:(id)a3 withOrgApacheLuceneIndexFields:(id)a4;
+- (OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter_$1)initWithOrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsGroup:(id)group withOrgApacheLuceneIndexFields:(id)fields;
 - (id)iterator;
 - (void)dealloc;
 @end
@@ -17,10 +17,10 @@
   return [(JavaUtilSet *)fields iterator];
 }
 
-- (OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter_$1)initWithOrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsGroup:(id)a3 withOrgApacheLuceneIndexFields:(id)a4
+- (OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter_$1)initWithOrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsGroup:(id)group withOrgApacheLuceneIndexFields:(id)fields
 {
-  JreStrongAssign(&self->val$group_, a3);
-  OrgApacheLuceneIndexFilterLeafReader_FilterFields_initWithOrgApacheLuceneIndexFields_(self, a4);
+  JreStrongAssign(&self->val$group_, group);
+  OrgApacheLuceneIndexFilterLeafReader_FilterFields_initWithOrgApacheLuceneIndexFields_(self, fields);
   return self;
 }
 

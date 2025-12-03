@@ -1,138 +1,138 @@
 @interface PSListControllerDefaultNavigationCoordinator
-- (BOOL)listControllerIsOnTopOfNavigationStack:(id)a3 searchTopMostViewControllerChildren:(BOOL)a4;
-- (BOOL)listControllerShouldDeselectAfterFormSheetDisappearance:(id)a3 givenRootController:(id)a4;
-- (BOOL)listControllerShouldNotDeselectAfterAppearing:(id)a3;
-- (void)listController:(id)a3 pushViewController:(id)a4 givenRootController:(id)a5 withModalStylePopupStateApplicator:(id)a6 animated:(BOOL)a7;
+- (BOOL)listControllerIsOnTopOfNavigationStack:(id)stack searchTopMostViewControllerChildren:(BOOL)children;
+- (BOOL)listControllerShouldDeselectAfterFormSheetDisappearance:(id)disappearance givenRootController:(id)controller;
+- (BOOL)listControllerShouldNotDeselectAfterAppearing:(id)appearing;
+- (void)listController:(id)controller pushViewController:(id)viewController givenRootController:(id)rootController withModalStylePopupStateApplicator:(id)applicator animated:(BOOL)animated;
 @end
 
 @implementation PSListControllerDefaultNavigationCoordinator
 
-- (BOOL)listControllerIsOnTopOfNavigationStack:(id)a3 searchTopMostViewControllerChildren:(BOOL)a4
+- (BOOL)listControllerIsOnTopOfNavigationStack:(id)stack searchTopMostViewControllerChildren:(BOOL)children
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 navigationController];
-  v7 = [v6 topViewController];
+  childrenCopy = children;
+  stackCopy = stack;
+  navigationController = [stackCopy navigationController];
+  topViewController = [navigationController topViewController];
 
-  v8 = v7 == v5;
-  if (v7 != v5 && v4)
+  v8 = topViewController == stackCopy;
+  if (topViewController != stackCopy && childrenCopy)
   {
-    v9 = [v5 navigationController];
-    v10 = [v9 topViewController];
-    v11 = [v10 childViewControllers];
-    v8 = [v11 containsObject:v5];
+    navigationController2 = [stackCopy navigationController];
+    topViewController2 = [navigationController2 topViewController];
+    childViewControllers = [topViewController2 childViewControllers];
+    v8 = [childViewControllers containsObject:stackCopy];
   }
 
   return v8;
 }
 
-- (BOOL)listControllerShouldNotDeselectAfterAppearing:(id)a3
+- (BOOL)listControllerShouldNotDeselectAfterAppearing:(id)appearing
 {
-  v3 = a3;
-  v4 = [v3 navigationController];
-  v5 = [v3 splitViewController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 firstObject];
-  v8 = v4 == v7;
+  appearingCopy = appearing;
+  navigationController = [appearingCopy navigationController];
+  splitViewController = [appearingCopy splitViewController];
+  viewControllers = [splitViewController viewControllers];
+  firstObject = [viewControllers firstObject];
+  v8 = navigationController == firstObject;
 
-  v9 = [v3 splitViewController];
+  splitViewController2 = [appearingCopy splitViewController];
 
-  LOBYTE(v3) = [v9 isCollapsed];
-  return v8 & ~v3;
+  LOBYTE(appearingCopy) = [splitViewController2 isCollapsed];
+  return v8 & ~appearingCopy;
 }
 
-- (BOOL)listControllerShouldDeselectAfterFormSheetDisappearance:(id)a3 givenRootController:(id)a4
+- (BOOL)listControllerShouldDeselectAfterFormSheetDisappearance:(id)disappearance givenRootController:(id)controller
 {
-  v5 = a4;
-  v6 = [a3 navigationController];
+  controllerCopy = controller;
+  navigationController = [disappearance navigationController];
 
-  return v6 == v5;
+  return navigationController == controllerCopy;
 }
 
-- (void)listController:(id)a3 pushViewController:(id)a4 givenRootController:(id)a5 withModalStylePopupStateApplicator:(id)a6 animated:(BOOL)a7
+- (void)listController:(id)controller pushViewController:(id)viewController givenRootController:(id)rootController withModalStylePopupStateApplicator:(id)applicator animated:(BOOL)animated
 {
-  v7 = a7;
-  v28 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  rootControllerCopy = rootController;
+  applicatorCopy = applicator;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 presentedViewController];
+    presentedViewController = [rootControllerCopy presentedViewController];
 
-    if (v14)
+    if (presentedViewController)
     {
-      [v12 dismissViewControllerAnimated:0 completion:0];
+      [rootControllerCopy dismissViewControllerAnimated:0 completion:0];
     }
 
-    v15 = v11;
-    [v15 setupController];
-    if ([v15 usePopupStyle])
+    navigationController = viewControllerCopy;
+    [navigationController setupController];
+    if ([navigationController usePopupStyle])
     {
-      v13[2](v13, [v15 popupStyleIsModal]);
-      [v15 setModalPresentationStyle:7];
-      v16 = [v15 popoverPresentationController];
-      [v16 setDelegate:v28];
-      [v16 setPermittedArrowDirections:0];
-      [v16 setSourceView:0];
-      [v16 _setCentersPopoverIfSourceViewNotSet:1];
-      [v28 presentViewController:v15 animated:1 completion:0];
-      v17 = [v28 table];
-      v18 = [v17 indexPathForSelectedRow];
-      [v17 deselectRowAtIndexPath:v18 animated:1];
+      applicatorCopy[2](applicatorCopy, [navigationController popupStyleIsModal]);
+      [navigationController setModalPresentationStyle:7];
+      popoverPresentationController = [navigationController popoverPresentationController];
+      [popoverPresentationController setDelegate:controllerCopy];
+      [popoverPresentationController setPermittedArrowDirections:0];
+      [popoverPresentationController setSourceView:0];
+      [popoverPresentationController _setCentersPopoverIfSourceViewNotSet:1];
+      [controllerCopy presentViewController:navigationController animated:1 completion:0];
+      table = [controllerCopy table];
+      indexPathForSelectedRow = [table indexPathForSelectedRow];
+      [table deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
     }
 
     else
     {
-      v19 = [v28 splitViewController];
-      v20 = [v19 isCollapsed];
+      splitViewController = [controllerCopy splitViewController];
+      isCollapsed = [splitViewController isCollapsed];
 
-      if ((v20 & 1) == 0)
+      if ((isCollapsed & 1) == 0)
       {
-        v21 = [v28 table];
-        v22 = [v21 indexPathForSelectedRow];
-        [v21 deselectRowAtIndexPath:v22 animated:1];
+        table2 = [controllerCopy table];
+        indexPathForSelectedRow2 = [table2 indexPathForSelectedRow];
+        [table2 deselectRowAtIndexPath:indexPathForSelectedRow2 animated:1];
       }
 
       if (PSIsRunningInAssistant())
       {
-        v23 = [v15 view];
-        [v23 layoutIfNeeded];
+        view = [navigationController view];
+        [view layoutIfNeeded];
       }
 
-      v24 = [MEMORY[0x1E69DC938] currentDevice];
-      v25 = [v24 sf_isiPhone];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      sf_isiPhone = [currentDevice sf_isiPhone];
 
-      if (v25)
+      if (sf_isiPhone)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = [v15 viewControllers];
-          v27 = [v26 firstObject];
+          viewControllers = [navigationController viewControllers];
+          firstObject = [viewControllers firstObject];
 
           if (objc_opt_respondsToSelector())
           {
-            [v27 setEdgeToEdgeCells:1];
+            [firstObject setEdgeToEdgeCells:1];
           }
         }
       }
 
-      [v28 presentViewController:v15 animated:v7 completion:0];
+      [controllerCopy presentViewController:navigationController animated:animatedCopy completion:0];
     }
   }
 
   else
   {
-    if (v7)
+    if (animatedCopy)
     {
-      [v28 showViewController:v11 sender:v28];
+      [controllerCopy showViewController:viewControllerCopy sender:controllerCopy];
       goto LABEL_20;
     }
 
-    v15 = [v28 navigationController];
-    [v15 pushViewController:v11 animated:0];
+    navigationController = [controllerCopy navigationController];
+    [navigationController pushViewController:viewControllerCopy animated:0];
   }
 
 LABEL_20:

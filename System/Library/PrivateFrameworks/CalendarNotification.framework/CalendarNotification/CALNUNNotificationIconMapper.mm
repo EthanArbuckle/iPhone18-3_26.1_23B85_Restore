@@ -1,49 +1,49 @@
 @interface CALNUNNotificationIconMapper
-- (CALNUNNotificationIconMapper)initWithIconProvider:(id)a3;
-- (id)iconIdentifierFromUNNotificationIcon:(id)a3;
-- (id)unNotificationIconFromIconIdentifier:(id)a3;
+- (CALNUNNotificationIconMapper)initWithIconProvider:(id)provider;
+- (id)iconIdentifierFromUNNotificationIcon:(id)icon;
+- (id)unNotificationIconFromIconIdentifier:(id)identifier;
 @end
 
 @implementation CALNUNNotificationIconMapper
 
-- (CALNUNNotificationIconMapper)initWithIconProvider:(id)a3
+- (CALNUNNotificationIconMapper)initWithIconProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CALNUNNotificationIconMapper;
   v6 = [(CALNUNNotificationIconMapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconProvider, a3);
+    objc_storeStrong(&v6->_iconProvider, provider);
   }
 
   return v7;
 }
 
-- (id)iconIdentifierFromUNNotificationIcon:(id)a3
+- (id)iconIdentifierFromUNNotificationIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(CALNUNNotificationIconMapper *)self iconProvider];
-  v6 = [v5 iconIdentifierForIcon:v4];
+  iconCopy = icon;
+  iconProvider = [(CALNUNNotificationIconMapper *)self iconProvider];
+  v6 = [iconProvider iconIdentifierForIcon:iconCopy];
 
   if (!v6)
   {
     v7 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CALNUNNotificationIconMapper *)v4 iconIdentifierFromUNNotificationIcon:v7];
+      [(CALNUNNotificationIconMapper *)iconCopy iconIdentifierFromUNNotificationIcon:v7];
     }
   }
 
   return v6;
 }
 
-- (id)unNotificationIconFromIconIdentifier:(id)a3
+- (id)unNotificationIconFromIconIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNUNNotificationIconMapper *)self iconProvider];
-  v6 = [v5 iconWithIdentifier:v4];
+  identifierCopy = identifier;
+  iconProvider = [(CALNUNNotificationIconMapper *)self iconProvider];
+  v6 = [iconProvider iconWithIdentifier:identifierCopy];
 
   return v6;
 }

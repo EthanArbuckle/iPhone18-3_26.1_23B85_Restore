@@ -1,31 +1,31 @@
 @interface TransitDirectionsStepView
-+ (double)estimatedHeightForListItem:(id)a3;
-+ (id)reuseIdentifierForItem:(id)a3;
++ (double)estimatedHeightForListItem:(id)item;
++ (id)reuseIdentifierForItem:(id)item;
 - (HairlineView)separatorView;
 - (NSString)description;
 - (NSString)reuseIdentifier;
 - (TransitDirectionsCell)cell;
-- (TransitDirectionsStepView)initWithFrame:(CGRect)a3;
+- (TransitDirectionsStepView)initWithFrame:(CGRect)frame;
 - (TransitDirectionsStepViewSelectionDelegate)selectionDelegate;
 - (double)_alphaForCurrentNavigationState;
 - (double)bottomSpacerHeight;
 - (id)_initialConstraints;
 - (void)_createSubviews;
 - (void)_invalidateConstraints;
-- (void)_stepViewHighlighted:(id)a3;
-- (void)_stepViewSelected:(id)a3;
-- (void)_stepViewUnhighlighted:(id)a3;
+- (void)_stepViewHighlighted:(id)highlighted;
+- (void)_stepViewSelected:(id)selected;
+- (void)_stepViewUnhighlighted:(id)unhighlighted;
 - (void)_updateBottomSpacer;
 - (void)_updateConstraints;
 - (void)_updateVisibilityForItemFromDisplayOptions;
-- (void)configureWithItem:(id)a3;
+- (void)configureWithItem:(id)item;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDisplayOptions:(unint64_t)a3;
-- (void)setLeadingInstructionMargin:(double)a3;
-- (void)setNavigationState:(int64_t)a3;
-- (void)setTrailingView:(id)a3;
-- (void)setUseNavigationMetrics:(BOOL)a3;
+- (void)setDisplayOptions:(unint64_t)options;
+- (void)setLeadingInstructionMargin:(double)margin;
+- (void)setNavigationState:(int64_t)state;
+- (void)setTrailingView:(id)view;
+- (void)setUseNavigationMetrics:(BOOL)metrics;
 @end
 
 @implementation TransitDirectionsStepView
@@ -46,31 +46,31 @@
 
 - (double)bottomSpacerHeight
 {
-  v3 = [(TransitDirectionsStepView *)self transitListItem];
-  v4 = [v3 nextItem];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  nextItem = [transitListItem nextItem];
 
-  if (([(TransitDirectionsStepView *)self displayOptions]& 4) != 0 && v4)
+  if (([(TransitDirectionsStepView *)self displayOptions]& 4) != 0 && nextItem)
   {
     do
     {
-      if (![v4 shouldHideInExpandedDisplayStyle])
+      if (![nextItem shouldHideInExpandedDisplayStyle])
       {
         break;
       }
 
-      v5 = [v4 nextItem];
+      v4NextItem = [nextItem nextItem];
 
-      v4 = v5;
+      nextItem = v4NextItem;
     }
 
-    while (v5);
+    while (v4NextItem);
   }
 
-  v6 = [v4 type];
-  if ([(TransitDirectionsStepView *)self _isProminentItemType:v6])
+  type = [nextItem type];
+  if ([(TransitDirectionsStepView *)self _isProminentItemType:type])
   {
-    v7 = [(TransitDirectionsStepView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom] == 5;
+    traitCollection = [(TransitDirectionsStepView *)self traitCollection];
+    v8 = [traitCollection userInterfaceIdiom] == 5;
     v9 = 16.0;
 LABEL_7:
     v10 = 10.0;
@@ -78,12 +78,12 @@ LABEL_7:
   }
 
   v11 = 0.0;
-  if (v6 > 14)
+  if (type > 14)
   {
-    if (v6 == 16)
+    if (type == 16)
     {
-      v7 = [(TransitDirectionsStepView *)self traitCollection];
-      v8 = [v7 userInterfaceIdiom] == 5;
+      traitCollection = [(TransitDirectionsStepView *)self traitCollection];
+      v8 = [traitCollection userInterfaceIdiom] == 5;
       v9 = 7.0;
       v10 = 5.0;
 LABEL_8:
@@ -100,28 +100,28 @@ LABEL_8:
       goto LABEL_18;
     }
 
-    if (v6 != 15)
+    if (type != 15)
     {
       goto LABEL_19;
     }
 
 LABEL_17:
-    v7 = [(TransitDirectionsStepView *)self traitCollection];
-    [v7 userInterfaceIdiom];
+    traitCollection = [(TransitDirectionsStepView *)self traitCollection];
+    [traitCollection userInterfaceIdiom];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  if (v6 == 10)
+  if (type == 10)
   {
     goto LABEL_17;
   }
 
-  if (v6 == 13)
+  if (type == 13)
   {
-    v7 = [(TransitDirectionsStepView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom] == 5;
+    traitCollection = [(TransitDirectionsStepView *)self traitCollection];
+    v8 = [traitCollection userInterfaceIdiom] == 5;
     v9 = 14.0;
     goto LABEL_7;
   }
@@ -131,60 +131,60 @@ LABEL_19:
   return v11;
 }
 
-- (void)_stepViewSelected:(id)a3
+- (void)_stepViewSelected:(id)selected
 {
-  v4 = [(TransitDirectionsStepView *)self selectionDelegate];
-  [v4 stepViewSelected:self];
+  selectionDelegate = [(TransitDirectionsStepView *)self selectionDelegate];
+  [selectionDelegate stepViewSelected:self];
 }
 
-- (void)_stepViewUnhighlighted:(id)a3
+- (void)_stepViewUnhighlighted:(id)unhighlighted
 {
-  v4 = [(TransitDirectionsStepView *)self selectionDelegate];
-  [v4 stepViewUnhighlighted:self];
+  selectionDelegate = [(TransitDirectionsStepView *)self selectionDelegate];
+  [selectionDelegate stepViewUnhighlighted:self];
 }
 
-- (void)_stepViewHighlighted:(id)a3
+- (void)_stepViewHighlighted:(id)highlighted
 {
-  v4 = [(TransitDirectionsStepView *)self selectionDelegate];
-  [v4 stepViewHighlighted:self];
+  selectionDelegate = [(TransitDirectionsStepView *)self selectionDelegate];
+  [selectionDelegate stepViewHighlighted:self];
 }
 
-- (void)setTrailingView:(id)a3
+- (void)setTrailingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   trailingView = self->_trailingView;
-  if (trailingView != v5)
+  if (trailingView != viewCopy)
   {
     [(UIView *)trailingView removeFromSuperview];
-    objc_storeStrong(&self->_trailingView, a3);
+    objc_storeStrong(&self->_trailingView, view);
     [(UIView *)self->_trailingView _mapkit_fittingSize];
     [(NSLayoutConstraint *)self->_trailingContentLayoutGuideWidthConstraint setConstant:?];
     if (self->_trailingView)
     {
       [(TransitDirectionsStepView *)self addSubview:?];
-      v27 = [(UIView *)self->_trailingView topAnchor];
-      v26 = [(UILayoutGuide *)self->_trailingContentLayoutGuide topAnchor];
-      v25 = [v27 constraintGreaterThanOrEqualToAnchor:v26];
+      topAnchor = [(UIView *)self->_trailingView topAnchor];
+      topAnchor2 = [(UILayoutGuide *)self->_trailingContentLayoutGuide topAnchor];
+      v25 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
       v24 = [v25 _maps_withIdentifier:@"trailingViewTopToTrailingLayoutTop"];
       v28[0] = v24;
-      v23 = [(UIView *)self->_trailingView bottomAnchor];
-      v22 = [(UILayoutGuide *)self->_trailingContentLayoutGuide bottomAnchor];
-      v21 = [v23 constraintLessThanOrEqualToAnchor:v22];
+      bottomAnchor = [(UIView *)self->_trailingView bottomAnchor];
+      bottomAnchor2 = [(UILayoutGuide *)self->_trailingContentLayoutGuide bottomAnchor];
+      v21 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
       v20 = [v21 _maps_withIdentifier:@"trailingViewBottomToTrailingLayoutBottom"];
       v28[1] = v20;
-      v19 = [(UIView *)self->_trailingView leadingAnchor];
-      v18 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
-      v17 = [v19 constraintEqualToAnchor:v18];
+      leadingAnchor = [(UIView *)self->_trailingView leadingAnchor];
+      leadingAnchor2 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
+      v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v16 = [v17 _maps_withIdentifier:@"trailingViewLeadingToTrailingLayoutLeading"];
       v28[2] = v16;
-      v7 = [(UIView *)self->_trailingView trailingAnchor];
-      v8 = [(UILayoutGuide *)self->_trailingContentLayoutGuide trailingAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8];
+      trailingAnchor = [(UIView *)self->_trailingView trailingAnchor];
+      trailingAnchor2 = [(UILayoutGuide *)self->_trailingContentLayoutGuide trailingAnchor];
+      v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v10 = [v9 _maps_withIdentifier:@"trailingViewTrailingToTrailingLayoutTrailing"];
       v28[3] = v10;
-      v11 = [(UIView *)self->_trailingView centerYAnchor];
-      v12 = [(UILayoutGuide *)self->_trailingContentLayoutGuide centerYAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      centerYAnchor = [(UIView *)self->_trailingView centerYAnchor];
+      centerYAnchor2 = [(UILayoutGuide *)self->_trailingContentLayoutGuide centerYAnchor];
+      v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v14 = [v13 _maps_withIdentifier:@"trailingViewCenterYToTrailingLayoutCenterY"];
       v28[4] = v14;
       v15 = [NSArray arrayWithObjects:v28 count:5];
@@ -241,96 +241,96 @@ LABEL_19:
 - (id)_initialConstraints
 {
   v73 = +[NSMutableArray array];
-  v3 = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide widthAnchor];
-  v4 = [v3 constraintEqualToConstant:0.0];
+  widthAnchor = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide widthAnchor];
+  v4 = [widthAnchor constraintEqualToConstant:0.0];
   v5 = [v4 _maps_withIdentifier:@"leadingAccessoryLayoutGuideWidthConstraint"];
   leadingAccessoryLayoutGuideWidthConstraint = self->_leadingAccessoryLayoutGuideWidthConstraint;
   self->_leadingAccessoryLayoutGuideWidthConstraint = v5;
 
-  v7 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide heightAnchor];
+  heightAnchor = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide heightAnchor];
   [(TransitDirectionsStepView *)self bottomSpacerHeight];
-  v8 = [v7 constraintEqualToConstant:?];
+  v8 = [heightAnchor constraintEqualToConstant:?];
   v9 = [v8 _maps_withIdentifier:@"bottomSpacingLayoutGuideHeight"];
   bottomSpacingLayoutGuideHeightConstraint = self->_bottomSpacingLayoutGuideHeightConstraint;
   self->_bottomSpacingLayoutGuideHeightConstraint = v9;
 
-  v11 = [(UILayoutGuide *)self->_trailingContentLayoutGuide widthAnchor];
-  v12 = [v11 constraintEqualToConstant:0.0];
+  widthAnchor2 = [(UILayoutGuide *)self->_trailingContentLayoutGuide widthAnchor];
+  v12 = [widthAnchor2 constraintEqualToConstant:0.0];
   v13 = [v12 _maps_withIdentifier:@"trailingContentLayoutGuideWidth"];
   trailingContentLayoutGuideWidthConstraint = self->_trailingContentLayoutGuideWidthConstraint;
   self->_trailingContentLayoutGuideWidthConstraint = v13;
 
-  v15 = [(TransitDirectionsStepView *)self trailingAnchor];
-  v16 = [(UILayoutGuide *)self->_trailingContentLayoutGuide trailingAnchor];
+  trailingAnchor = [(TransitDirectionsStepView *)self trailingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_trailingContentLayoutGuide trailingAnchor];
   [(TransitDirectionsStepView *)self _trailingGuideToContentViewDistance];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:?];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:?];
   v18 = [v17 _maps_withIdentifier:@"contentViewTrailingToTrailingContentTrailing"];
   trailingGuideToContentViewConstraint = self->_trailingGuideToContentViewConstraint;
   self->_trailingGuideToContentViewConstraint = v18;
 
-  v72 = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide leadingAnchor];
-  v71 = [(TransitDirectionsStepView *)self leadingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  leadingAnchor = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide leadingAnchor];
+  leadingAnchor2 = [(TransitDirectionsStepView *)self leadingAnchor];
+  v70 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v69 = [v70 _maps_withIdentifier:@"leadingAccessoryLayoutLeadingToContentViewLeading"];
   v74[0] = v69;
-  v68 = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide topAnchor];
-  v67 = [(TransitDirectionsStepView *)self topAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  topAnchor = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide topAnchor];
+  topAnchor2 = [(TransitDirectionsStepView *)self topAnchor];
+  v66 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v65 = [v66 _maps_withIdentifier:@"leadingAccessoryLayoutTopToContentViewTop"];
   v74[1] = v65;
-  v64 = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide bottomAnchor];
-  v63 = [(TransitDirectionsStepView *)self bottomAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  bottomAnchor = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide bottomAnchor];
+  bottomAnchor2 = [(TransitDirectionsStepView *)self bottomAnchor];
+  v62 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v61 = [v62 _maps_withIdentifier:@"leadingAccessoryLayoutBottomToContentViewBottom"];
   v20 = self->_leadingAccessoryLayoutGuideWidthConstraint;
   v74[2] = v61;
   v74[3] = v20;
-  v60 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-  v59 = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide trailingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  leadingAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+  trailingAnchor3 = [(UILayoutGuide *)self->_leadingAccessoryLayoutGuide trailingAnchor];
+  v58 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3];
   v57 = [v58 _maps_withIdentifier:@"contentLayoutLeadingToLeadingLayoutLeading"];
   v74[4] = v57;
-  v56 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-  v55 = [(TransitDirectionsStepView *)self topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+  topAnchor4 = [(TransitDirectionsStepView *)self topAnchor];
+  v54 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v53 = [v54 _maps_withIdentifier:@"contentLayoutTopToContentViewTop"];
   v74[5] = v53;
-  v52 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-  v51 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide topAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  bottomAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+  topAnchor5 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide topAnchor];
+  v50 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5];
   v49 = [v50 _maps_withIdentifier:@"contentLayoutBottomToBottomSpacingTop"];
   v74[6] = v49;
-  v48 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
-  v47 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  leadingAnchor4 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
+  trailingAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+  v46 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4];
   v45 = [v46 _maps_withIdentifier:@"trailingContentLeadingToContentLeading"];
   v74[7] = v45;
-  v44 = [(UILayoutGuide *)self->_trailingContentLayoutGuide topAnchor];
-  v43 = [(TransitDirectionsStepView *)self topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  topAnchor6 = [(UILayoutGuide *)self->_trailingContentLayoutGuide topAnchor];
+  topAnchor7 = [(TransitDirectionsStepView *)self topAnchor];
+  v42 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v41 = [v42 _maps_withIdentifier:@"trailingContentTopToContentViewTop"];
   v74[8] = v41;
-  v40 = [(UILayoutGuide *)self->_trailingContentLayoutGuide bottomAnchor];
-  v39 = [(TransitDirectionsStepView *)self bottomAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  bottomAnchor4 = [(UILayoutGuide *)self->_trailingContentLayoutGuide bottomAnchor];
+  bottomAnchor5 = [(TransitDirectionsStepView *)self bottomAnchor];
+  v38 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v37 = [v38 _maps_withIdentifier:@"trailingContentBottomToContentViewBottom"];
   v21 = self->_trailingGuideToContentViewConstraint;
   v74[9] = v37;
   v74[10] = v21;
   v74[11] = self->_trailingContentLayoutGuideWidthConstraint;
-  v36 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide leadingAnchor];
-  v35 = [(TransitDirectionsStepView *)self leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  leadingAnchor5 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide leadingAnchor];
+  leadingAnchor6 = [(TransitDirectionsStepView *)self leadingAnchor];
+  v34 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v22 = [v34 _maps_withIdentifier:@"bottomSpacingLeadingToContentViewLeading"];
   v74[12] = v22;
-  v23 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide trailingAnchor];
-  v24 = [(TransitDirectionsStepView *)self trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor5 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide trailingAnchor];
+  trailingAnchor6 = [(TransitDirectionsStepView *)self trailingAnchor];
+  v25 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v26 = [v25 _maps_withIdentifier:@"bottomSpacingTrailingToContentViewTrailing"];
   v74[13] = v26;
-  v27 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide bottomAnchor];
-  v28 = [(TransitDirectionsStepView *)self bottomAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  bottomAnchor6 = [(UILayoutGuide *)self->_bottomSpacingLayoutGuide bottomAnchor];
+  bottomAnchor7 = [(TransitDirectionsStepView *)self bottomAnchor];
+  v29 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v30 = [v29 _maps_withIdentifier:@"bottomSpacingBottomToContentViewBottom"];
   v31 = self->_bottomSpacingLayoutGuideHeightConstraint;
   v74[14] = v30;
@@ -364,14 +364,14 @@ LABEL_19:
   [(TransitDirectionsStepView *)self _updateBottomSpacer];
 }
 
-- (void)setDisplayOptions:(unint64_t)a3
+- (void)setDisplayOptions:(unint64_t)options
 {
   displayOptions = self->_displayOptions;
-  if (displayOptions != a3)
+  if (displayOptions != options)
   {
-    self->_displayOptions = a3;
-    v5 = displayOptions ^ a3;
-    if (((displayOptions ^ a3) & 2) != 0)
+    self->_displayOptions = options;
+    v5 = displayOptions ^ options;
+    if (((displayOptions ^ options) & 2) != 0)
     {
       [(TransitDirectionsStepView *)self _alphaForCurrentNavigationState];
       [(TransitDirectionsStepView *)self _updateNavigationStateAlpha:?];
@@ -390,38 +390,38 @@ LABEL_19:
   v2 = 1.0;
   if ((self->_displayOptions & 2) == 0)
   {
-    v3 = [(TransitDirectionsStepView *)self navigationState];
-    if ((v3 - 1) <= 4)
+    navigationState = [(TransitDirectionsStepView *)self navigationState];
+    if ((navigationState - 1) <= 4)
     {
-      return dbl_1012163B0[v3 - 1];
+      return dbl_1012163B0[navigationState - 1];
     }
   }
 
   return v2;
 }
 
-- (void)setNavigationState:(int64_t)a3
+- (void)setNavigationState:(int64_t)state
 {
-  if (self->_navigationState != a3)
+  if (self->_navigationState != state)
   {
-    self->_navigationState = a3;
+    self->_navigationState = state;
     [(TransitDirectionsStepView *)self _alphaForCurrentNavigationState];
 
     [(TransitDirectionsStepView *)self _updateNavigationStateAlpha:?];
   }
 }
 
-- (void)setUseNavigationMetrics:(BOOL)a3
+- (void)setUseNavigationMetrics:(BOOL)metrics
 {
-  if (self->_useNavigationMetrics != a3)
+  if (self->_useNavigationMetrics != metrics)
   {
-    self->_useNavigationMetrics = a3;
+    self->_useNavigationMetrics = metrics;
   }
 }
 
-- (void)setLeadingInstructionMargin:(double)a3
+- (void)setLeadingInstructionMargin:(double)margin
 {
-  v3 = floor(a3);
+  v3 = floor(margin);
   if (v3 != self->_leadingInstructionMargin)
   {
     self->_leadingInstructionMargin = v3;
@@ -480,11 +480,11 @@ LABEL_19:
   [(UIControl *)self->_backgroundControlForHitTesting setFrame:?];
 }
 
-- (void)configureWithItem:(id)a3
+- (void)configureWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   transitListItem = self->_transitListItem;
-  v10 = v5;
+  v10 = itemCopy;
   v7 = transitListItem;
   v8 = v10;
   if (v10 | v7)
@@ -494,7 +494,7 @@ LABEL_19:
     v8 = v10;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_transitListItem, a3);
+      objc_storeStrong(&self->_transitListItem, item);
       [(TransitDirectionsStepView *)self _updateBottomSpacer];
       [(TransitDirectionsStepView *)self _updateVisibilityForItemFromDisplayOptions];
       v8 = v10;
@@ -512,11 +512,11 @@ LABEL_19:
   [(TransitDirectionsStepView *)&v4 dealloc];
 }
 
-- (TransitDirectionsStepView)initWithFrame:(CGRect)a3
+- (TransitDirectionsStepView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = TransitDirectionsStepView;
-  v3 = [(TransitDirectionsStepView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsStepView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -525,8 +525,8 @@ LABEL_19:
 
     v3->_trailingGuideToContentViewDistance = 16.0;
     [(TransitDirectionsStepView *)v3 _createSubviews];
-    v6 = [(TransitDirectionsStepView *)v3 _initialConstraints];
-    [NSLayoutConstraint activateConstraints:v6];
+    _initialConstraints = [(TransitDirectionsStepView *)v3 _initialConstraints];
+    [NSLayoutConstraint activateConstraints:_initialConstraints];
 
     [(TransitDirectionsStepView *)v3 _updateConstraints];
     v7 = +[NSNotificationCenter defaultCenter];
@@ -543,8 +543,8 @@ LABEL_19:
   v7.receiver = self;
   v7.super_class = TransitDirectionsStepView;
   v3 = [(TransitDirectionsStepView *)&v7 description];
-  v4 = [(TransitDirectionsStepView *)self transitListItem];
-  v5 = [NSString stringWithFormat:@"%@ item: %@", v3, v4];;
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  v5 = [NSString stringWithFormat:@"%@ item: %@", v3, transitListItem];;
 
   return v5;
 }
@@ -552,23 +552,23 @@ LABEL_19:
 - (NSString)reuseIdentifier
 {
   v3 = objc_opt_class();
-  v4 = [(TransitDirectionsStepView *)self transitListItem];
-  v5 = [v3 reuseIdentifierForItem:v4];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  v5 = [v3 reuseIdentifierForItem:transitListItem];
 
   return v5;
 }
 
-+ (double)estimatedHeightForListItem:(id)a3
++ (double)estimatedHeightForListItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = 20.0;
-  if ([v3 type] == 5)
+  if ([itemCopy type] == 5)
   {
     goto LABEL_4;
   }
 
   v5 = 13.0;
-  if ([v3 type] != 6)
+  if ([itemCopy type] != 6)
   {
     v4 = 70.0;
 LABEL_4:
@@ -580,21 +580,21 @@ LABEL_4:
   return v5;
 }
 
-+ (id)reuseIdentifierForItem:(id)a3
++ (id)reuseIdentifierForItem:(id)item
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  itemCopy = item;
+  v4 = itemCopy;
+  if (itemCopy)
   {
-    v5 = [v3 type];
-    if (v5 >= 0x12)
+    type = [itemCopy type];
+    if (type >= 0x12)
     {
-      v6 = [NSString stringWithFormat:@"Unknown (%ld)", v5];
+      v6 = [NSString stringWithFormat:@"Unknown (%ld)", type];
     }
 
     else
     {
-      v6 = off_101636CF0[v5];
+      v6 = off_101636CF0[type];
     }
 
     v7 = [NSString stringWithFormat:@"%@-%p", v6, v4];

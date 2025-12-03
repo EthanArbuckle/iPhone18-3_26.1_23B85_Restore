@@ -1,21 +1,21 @@
 @interface CLKWidgetComplicationDescriptor
 + (Class)_INIntentClass;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDescriptor:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDescriptor:(id)descriptor;
 - (CHSExtensionIdentity)extensionIdentity;
 - (CLKWidgetComplicationDescriptor)init;
-- (CLKWidgetComplicationDescriptor)initWithCoder:(id)a3;
-- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 intent:(id)a6;
-- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 intentReference:(id)a6;
-- (CLKWidgetComplicationDescriptor)initWithJSONObjectRepresentation:(id)a3;
-- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)a3 intent:(id)a4;
-- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)a3 intentRecommendation:(id)a4;
-- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)a3 intentReference:(id)a4;
+- (CLKWidgetComplicationDescriptor)initWithCoder:(id)coder;
+- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind intent:(id)intent;
+- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind intentReference:(id)reference;
+- (CLKWidgetComplicationDescriptor)initWithJSONObjectRepresentation:(id)representation;
+- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)descriptor intent:(id)intent;
+- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)descriptor intentRecommendation:(id)recommendation;
+- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)descriptor intentReference:(id)reference;
 - (id)JSONObjectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKWidgetComplicationDescriptor
@@ -74,74 +74,74 @@
   return v7;
 }
 
-- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)a3 intentRecommendation:(id)a4
+- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)descriptor intentRecommendation:(id)recommendation
 {
-  v6 = a3;
-  v7 = [a4 intentReference];
-  v8 = [v7 intent];
-  v9 = [(CLKWidgetComplicationDescriptor *)self initWithWidgetDescriptor:v6 intent:v8];
+  descriptorCopy = descriptor;
+  intentReference = [recommendation intentReference];
+  intent = [intentReference intent];
+  v9 = [(CLKWidgetComplicationDescriptor *)self initWithWidgetDescriptor:descriptorCopy intent:intent];
 
   return v9;
 }
 
-- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)a3 intent:(id)a4
+- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)descriptor intent:(id)intent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CLKIntentReference alloc] initWithIntent:v6];
+  intentCopy = intent;
+  descriptorCopy = descriptor;
+  v8 = [[CLKIntentReference alloc] initWithIntent:intentCopy];
 
-  v9 = [(CLKWidgetComplicationDescriptor *)self initWithWidgetDescriptor:v7 intentReference:v8];
+  v9 = [(CLKWidgetComplicationDescriptor *)self initWithWidgetDescriptor:descriptorCopy intentReference:v8];
   return v9;
 }
 
-- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)a3 intentReference:(id)a4
+- (CLKWidgetComplicationDescriptor)initWithWidgetDescriptor:(id)descriptor intentReference:(id)reference
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 extensionBundleIdentifier];
-  v9 = [v7 containerBundleIdentifier];
-  v10 = [v7 kind];
+  referenceCopy = reference;
+  descriptorCopy = descriptor;
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  containerBundleIdentifier = [descriptorCopy containerBundleIdentifier];
+  kind = [descriptorCopy kind];
 
-  v11 = [(CLKWidgetComplicationDescriptor *)self initWithExtensionBundleIdentifier:v8 containerBundleIdentifier:v9 kind:v10 intentReference:v6];
+  v11 = [(CLKWidgetComplicationDescriptor *)self initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier kind:kind intentReference:referenceCopy];
   return v11;
 }
 
-- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 intent:(id)a6
+- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind intent:(id)intent
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[CLKIntentReference alloc] initWithIntent:v10];
+  intentCopy = intent;
+  kindCopy = kind;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  v14 = [[CLKIntentReference alloc] initWithIntent:intentCopy];
 
-  v15 = [(CLKWidgetComplicationDescriptor *)self initWithExtensionBundleIdentifier:v13 containerBundleIdentifier:v12 kind:v11 intentReference:v14];
+  v15 = [(CLKWidgetComplicationDescriptor *)self initWithExtensionBundleIdentifier:identifierCopy containerBundleIdentifier:bundleIdentifierCopy kind:kindCopy intentReference:v14];
   return v15;
 }
 
-- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 intentReference:(id)a6
+- (CLKWidgetComplicationDescriptor)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind intentReference:(id)reference
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  referenceCopy = reference;
   v24.receiver = self;
   v24.super_class = CLKWidgetComplicationDescriptor;
   v14 = [(CLKWidgetComplicationDescriptor *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     extensionBundleIdentifier = v14->_extensionBundleIdentifier;
     v14->_extensionBundleIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [bundleIdentifierCopy copy];
     containerBundleIdentifier = v14->_containerBundleIdentifier;
     v14->_containerBundleIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [kindCopy copy];
     kind = v14->_kind;
     v14->_kind = v19;
 
-    v21 = [v13 copy];
+    v21 = [referenceCopy copy];
     intentReference = v14->_intentReference;
     v14->_intentReference = v21;
   }
@@ -149,10 +149,10 @@
   return v14;
 }
 
-- (CLKWidgetComplicationDescriptor)initWithCoder:(id)a3
+- (CLKWidgetComplicationDescriptor)initWithCoder:(id)coder
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = CLKWidgetComplicationDescriptor;
   v5 = [(CLKWidgetComplicationDescriptor *)&v26 init];
@@ -161,24 +161,24 @@
     goto LABEL_14;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
   extensionBundleIdentifier = v5->_extensionBundleIdentifier;
   v5->_extensionBundleIdentifier = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
   containerBundleIdentifier = v5->_containerBundleIdentifier;
   v5->_containerBundleIdentifier = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
   kind = v5->_kind;
   v5->_kind = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentReference"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentReference"];
   intentReference = v5->_intentReference;
   v5->_intentReference = v12;
 
   v14 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), +[CLKWidgetComplicationDescriptor _INIntentClass](CLKWidgetComplicationDescriptor, "_INIntentClass"), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"intent"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"intent"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -227,14 +227,14 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
-  [v5 encodeObject:self->_containerBundleIdentifier forKey:@"containerBundleIdentifier"];
-  [v5 encodeObject:self->_kind forKey:@"kind"];
-  [v5 encodeObject:self->_intentReference forKey:@"intentReference"];
+  coderCopy = coder;
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
+  [coderCopy encodeObject:self->_containerBundleIdentifier forKey:@"containerBundleIdentifier"];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
+  [coderCopy encodeObject:self->_intentReference forKey:@"intentReference"];
 }
 
 - (id)JSONObjectRepresentation
@@ -246,33 +246,33 @@ LABEL_14:
   intentReference = self->_intentReference;
   if (intentReference)
   {
-    v5 = [(CLKIntentReference *)intentReference keyedArchiverEncodedData];
-    v6 = [v5 base64EncodedStringWithOptions:0];
+    keyedArchiverEncodedData = [(CLKIntentReference *)intentReference keyedArchiverEncodedData];
+    v6 = [keyedArchiverEncodedData base64EncodedStringWithOptions:0];
     [v3 setObject:v6 forKeyedSubscript:@"intent"];
   }
 
   return v3;
 }
 
-- (CLKWidgetComplicationDescriptor)initWithJSONObjectRepresentation:(id)a3
+- (CLKWidgetComplicationDescriptor)initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(CLKWidgetComplicationDescriptor *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"extensionBundleIdentifier"];
+    v6 = [representationCopy objectForKeyedSubscript:@"extensionBundleIdentifier"];
     extensionBundleIdentifier = v5->_extensionBundleIdentifier;
     v5->_extensionBundleIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"containerBundleIdentifier"];
+    v8 = [representationCopy objectForKeyedSubscript:@"containerBundleIdentifier"];
     containerBundleIdentifier = v5->_containerBundleIdentifier;
     v5->_containerBundleIdentifier = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"kind"];
+    v10 = [representationCopy objectForKeyedSubscript:@"kind"];
     kind = v5->_kind;
     v5->_kind = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"intent"];
+    v12 = [representationCopy objectForKeyedSubscript:@"intent"];
     v13 = MEMORY[0x277CCA2A8];
     if (v12)
     {
@@ -305,7 +305,7 @@ LABEL_14:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CLKWidgetComplicationDescriptor);
   objc_storeStrong(&v4->_extensionBundleIdentifier, self->_extensionBundleIdentifier);
@@ -318,18 +318,18 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isEqualToDescriptor:(id)a3
+- (BOOL)isEqualToDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (v4)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
-    v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+    v5 = [MEMORY[0x277CF0C20] builderWithObject:descriptorCopy ofExpectedClass:objc_opt_class()];
     extensionBundleIdentifier = self->_extensionBundleIdentifier;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __55__CLKWidgetComplicationDescriptor_isEqualToDescriptor___block_invoke;
     v28[3] = &unk_278A1F118;
-    v7 = v4;
+    v7 = descriptorCopy;
     v29 = v7;
     v8 = [v5 appendString:extensionBundleIdentifier counterpart:v28];
     containerBundleIdentifier = self->_containerBundleIdentifier;
@@ -366,23 +366,23 @@ LABEL_14:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CLKWidgetComplicationDescriptor *)self isEqualToDescriptor:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CLKWidgetComplicationDescriptor *)self isEqualToDescriptor:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_extensionBundleIdentifier];
-  v5 = [v3 appendString:self->_containerBundleIdentifier];
-  v6 = [v3 appendString:self->_kind];
-  v7 = [v3 appendObject:self->_intentReference];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_extensionBundleIdentifier];
+  v5 = [builder appendString:self->_containerBundleIdentifier];
+  v6 = [builder appendString:self->_kind];
+  v7 = [builder appendObject:self->_intentReference];
+  v8 = [builder hash];
 
   return v8;
 }

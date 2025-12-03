@@ -1,6 +1,6 @@
 @interface SAFileOutputStream
-- (int)appendData:(id)a3;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (int)appendData:(id)data;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (void)initWithFileStream:(void *)result;
 @end
 
@@ -22,12 +22,12 @@
   return result;
 }
 
-- (int)appendData:(id)a3
+- (int)appendData:(id)data
 {
-  v5 = a3;
-  if (fwrite([a3 bytes], objc_msgSend(a3, "length"), 1uLL, self->_outputFileStream) == 1)
+  dataCopy = data;
+  if (fwrite([data bytes], objc_msgSend(data, "length"), 1uLL, self->_outputFileStream) == 1)
   {
-    return [a3 length];
+    return [data length];
   }
 
   else
@@ -36,11 +36,11 @@
   }
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
-  if (fwrite(a3, a4, 1uLL, self->_outputFileStream) == 1)
+  if (fwrite(write, length, 1uLL, self->_outputFileStream) == 1)
   {
-    return a4;
+    return length;
   }
 
   else

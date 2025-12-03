@@ -1,13 +1,13 @@
 @interface SCSharingReminderServiceProvider
 + (id)tasks;
 - (SCSharingReminderServiceProvider)init;
-- (void)fetchStatusWithCompletion:(id)a3;
-- (void)handleSignals:(id)a3 completion:(id)a4;
-- (void)handleXPCEventWithName:(id)a3;
-- (void)postWifiSyncNotificationWithCompletion:(id)a3;
-- (void)resetFeatureWithCompletion:(id)a3;
-- (void)setReminderDelays:(id)a3 completion:(id)a4;
-- (void)userOpenedSafetyCheckWithCompletion:(id)a3;
+- (void)fetchStatusWithCompletion:(id)completion;
+- (void)handleSignals:(id)signals completion:(id)completion;
+- (void)handleXPCEventWithName:(id)name;
+- (void)postWifiSyncNotificationWithCompletion:(id)completion;
+- (void)resetFeatureWithCompletion:(id)completion;
+- (void)setReminderDelays:(id)delays completion:(id)completion;
+- (void)userOpenedSafetyCheckWithCompletion:(id)completion;
 @end
 
 @implementation SCSharingReminderServiceProvider
@@ -40,75 +40,75 @@
   return v4;
 }
 
-- (void)userOpenedSafetyCheckWithCompletion:(id)a3
+- (void)userOpenedSafetyCheckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
-  [v5 userOpenedSafetyCheckWithCompletion:v4];
+  completionCopy = completion;
+  sharingReminderManager = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
+  [sharingReminderManager userOpenedSafetyCheckWithCompletion:completionCopy];
 }
 
-- (void)handleSignals:(id)a3 completion:(id)a4
+- (void)handleSignals:(id)signals completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
-  [v8 handleSignals:v7 completion:v6];
+  completionCopy = completion;
+  signalsCopy = signals;
+  sharingReminderManager = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
+  [sharingReminderManager handleSignals:signalsCopy completion:completionCopy];
 }
 
-- (void)fetchStatusWithCompletion:(id)a3
+- (void)fetchStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
-  [v5 fetchStatusWithCompletion:v4];
+  completionCopy = completion;
+  sharingReminderManager = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
+  [sharingReminderManager fetchStatusWithCompletion:completionCopy];
 }
 
-- (void)postWifiSyncNotificationWithCompletion:(id)a3
+- (void)postWifiSyncNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
-  [v5 postWifiSyncNotificationWithCompletion:v4];
+  completionCopy = completion;
+  sharingReminderManager = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
+  [sharingReminderManager postWifiSyncNotificationWithCompletion:completionCopy];
 }
 
-- (void)resetFeatureWithCompletion:(id)a3
+- (void)resetFeatureWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
-  [v5 resetFeatureWithCompletion:v4];
+  completionCopy = completion;
+  sharingReminderManager = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
+  [sharingReminderManager resetFeatureWithCompletion:completionCopy];
 }
 
-- (void)setReminderDelays:(id)a3 completion:(id)a4
+- (void)setReminderDelays:(id)delays completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
-  [v8 setReminderDelays:v7 completion:v6];
+  completionCopy = completion;
+  delaysCopy = delays;
+  sharingReminderManager = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
+  [sharingReminderManager setReminderDelays:delaysCopy completion:completionCopy];
 }
 
-- (void)handleXPCEventWithName:(id)a3
+- (void)handleXPCEventWithName:(id)name
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SCSharingReminderServiceProvider *)self interestedEvents];
-  v6 = [v5 containsObject:v4];
+  nameCopy = name;
+  interestedEvents = [(SCSharingReminderServiceProvider *)self interestedEvents];
+  v6 = [interestedEvents containsObject:nameCopy];
 
   v7 = SCLogger();
-  v8 = v7;
+  sharingReminderManager = v7;
   if (v6)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
-      _os_log_impl(&dword_262556000, v8, OS_LOG_TYPE_INFO, "Handling event with name: %@", &v10, 0xCu);
+      v11 = nameCopy;
+      _os_log_impl(&dword_262556000, sharingReminderManager, OS_LOG_TYPE_INFO, "Handling event with name: %@", &v10, 0xCu);
     }
 
-    v8 = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
-    [v8 handleNotificationEventWithName:v4];
+    sharingReminderManager = [(SCSharingReminderServiceProvider *)self sharingReminderManager];
+    [sharingReminderManager handleNotificationEventWithName:nameCopy];
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(SCSharingReminderServiceProvider *)v4 handleXPCEventWithName:v8];
+    [(SCSharingReminderServiceProvider *)nameCopy handleXPCEventWithName:sharingReminderManager];
   }
 
   v9 = *MEMORY[0x277D85DE8];

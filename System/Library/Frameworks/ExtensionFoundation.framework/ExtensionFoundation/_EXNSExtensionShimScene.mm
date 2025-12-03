@@ -1,8 +1,8 @@
 @interface _EXNSExtensionShimScene
-- (BOOL)shouldAcceptConnection:(id)a3;
+- (BOOL)shouldAcceptConnection:(id)connection;
 - (_EXNSExtensionShimScene)init;
-- (id)makePrincipalObjectForExtension:(id)a3;
-- (void)connectToSession:(id)a3;
+- (id)makePrincipalObjectForExtension:(id)extension;
+- (void)connectToSession:(id)session;
 - (void)dealloc;
 @end
 
@@ -27,17 +27,17 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)makePrincipalObjectForExtension:(id)a3
+- (id)makePrincipalObjectForExtension:(id)extension
 {
-  v3 = objc_alloc_init([a3 principalClass]);
+  v3 = objc_alloc_init([extension principalClass]);
 
   return v3;
 }
 
-- (void)connectToSession:(id)a3
+- (void)connectToSession:(id)session
 {
-  v12 = a3;
-  v4 = [v12 extension];
+  sessionCopy = session;
+  extension = [sessionCopy extension];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -51,8 +51,8 @@
     goto LABEL_13;
   }
 
-  v5 = [(_EXNSExtensionShimScene *)self makePrincipalObjectForExtension:v4];
-  v6 = [_EXNSExtensionContextShimImplementation makeContextWithSceneSession:v12];
+  v5 = [(_EXNSExtensionShimScene *)self makePrincipalObjectForExtension:extension];
+  v6 = [_EXNSExtensionContextShimImplementation makeContextWithSceneSession:sessionCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -78,7 +78,7 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v8 = [MEMORY[0x1E696B0F8] _sharedExtensionContextVendor];
+  _sharedExtensionContextVendor = [MEMORY[0x1E696B0F8] _sharedExtensionContextVendor];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -94,26 +94,26 @@ LABEL_19:
     return;
   }
 
-  [v8 _addExtensionContext:v6];
+  [_sharedExtensionContextVendor _addExtensionContext:v6];
   [(_EXNSExtensionShimScene *)self setContext:v6];
-  v9 = [v6 internalImplementation];
-  [v9 set__principalObject:v5];
+  internalImplementation = [v6 internalImplementation];
+  [internalImplementation set__principalObject:v5];
   if ([v5 conformsToProtocol:&unk_1EF2ABFF8])
   {
     [v5 beginRequestWithExtensionContext:v6];
   }
 }
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(_EXNSExtensionShimScene *)self context];
-  v6 = [v5 conformsToProtocol:&unk_1EF2A1588];
+  connectionCopy = connection;
+  context = [(_EXNSExtensionShimScene *)self context];
+  v6 = [context conformsToProtocol:&unk_1EF2A1588];
 
   if (v6)
   {
-    v7 = [(_EXNSExtensionShimScene *)self context];
-    v8 = [v7 shouldAcceptXPCConnection:v4];
+    context2 = [(_EXNSExtensionShimScene *)self context];
+    v8 = [context2 shouldAcceptXPCConnection:connectionCopy];
   }
 
   else

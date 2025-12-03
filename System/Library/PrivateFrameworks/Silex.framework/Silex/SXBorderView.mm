@@ -1,6 +1,6 @@
 @interface SXBorderView
 - (SXBorderView)init;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation SXBorderView
@@ -12,8 +12,8 @@
   v2 = [(SXBorderView *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(SXBorderView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SXBorderView *)v2 setBackgroundColor:clearColor];
 
     [(SXBorderView *)v2 setOpaque:0];
     [(SXBorderView *)v2 setUserInteractionEnabled:0];
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v22.receiver = self;
   v22.super_class = SXBorderView;
   [(SXBorderView *)&v22 drawRect:?];
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(SXBorderView *)self backgroundColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v5 CGColor]);
+  backgroundColor = [(SXBorderView *)self backgroundColor];
+  CGContextSetFillColorWithColor(CurrentContext, [backgroundColor CGColor]);
 
   v23.origin.x = OUTLINED_FUNCTION_0_0();
   CGContextFillRect(v6, v23);
@@ -40,8 +40,8 @@
   MaxY = CGRectGetMaxY(v25);
   CGContextTranslateCTM(CurrentContext, MinX, MaxY);
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v11 = v10;
 
   CGAffineTransformMakeScale(&v21, v11, v11);
@@ -61,12 +61,12 @@
     image = 0;
   }
 
-  v18 = [(UIImage *)image CGImage];
+  cGImage = [(UIImage *)image CGImage];
   v28.origin.x = x;
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  v19 = CGImageCreateWithImageInRect(v18, v28);
+  v19 = CGImageCreateWithImageInRect(cGImage, v28);
   v29.origin.x = OUTLINED_FUNCTION_0_0();
   v20 = CGRectGetWidth(v29);
   v30.origin.x = OUTLINED_FUNCTION_0_0();

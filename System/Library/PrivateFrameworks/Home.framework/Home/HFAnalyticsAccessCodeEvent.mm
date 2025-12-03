@@ -1,15 +1,15 @@
 @interface HFAnalyticsAccessCodeEvent
-- (HFAnalyticsAccessCodeEvent)initWithData:(id)a3;
+- (HFAnalyticsAccessCodeEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsAccessCodeEvent
 
-- (HFAnalyticsAccessCodeEvent)initWithData:(id)a3
+- (HFAnalyticsAccessCodeEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"home"];
+  v5 = [dataCopy objectForKeyedSubscript:@"home"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"operationType"];
+  v8 = [dataCopy objectForKeyedSubscript:@"operationType"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -47,7 +47,7 @@
   }
 
   objc_opt_class();
-  v11 = [v4 objectForKeyedSubscript:@"pinCodeItem"];
+  v11 = [dataCopy objectForKeyedSubscript:@"pinCodeItem"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -60,7 +60,7 @@
 
   v41 = v12;
 
-  v13 = [v4 objectForKeyedSubscript:@"pinCodeItem"];
+  v13 = [dataCopy objectForKeyedSubscript:@"pinCodeItem"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -70,7 +70,7 @@
   }
 
   objc_opt_class();
-  v15 = [v4 objectForKeyedSubscript:@"duringOnboarding"];
+  v15 = [dataCopy objectForKeyedSubscript:@"duringOnboarding"];
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -89,7 +89,7 @@
   }
 
   objc_opt_class();
-  v18 = [v4 objectForKeyedSubscript:@"error"];
+  v18 = [dataCopy objectForKeyedSubscript:@"error"];
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -112,11 +112,11 @@
     v22->_operationType = [v10 integerValue];
     objc_storeStrong(&v22->_pinCodeItem, v12);
     objc_storeStrong(&v22->_duringOnboarding, v15);
-    v23 = [v20 domain];
-    v24 = v23;
-    if (v23)
+    domain = [v20 domain];
+    v24 = domain;
+    if (domain)
     {
-      v25 = v23;
+      v25 = domain;
     }
 
     else
@@ -131,34 +131,34 @@
     v22->_errorCode = v26;
 
     v28 = +[HFHomeKitDispatcher sharedDispatcher];
-    v29 = [(HFAnalyticsAccessCodeEvent *)v22 home];
-    v30 = [v28 pinCodeManagerForHome:v29];
+    home = [(HFAnalyticsAccessCodeEvent *)v22 home];
+    v30 = [v28 pinCodeManagerForHome:home];
 
     v31 = MEMORY[0x277CBEB58];
-    v32 = [v7 users];
-    v33 = [v31 setWithArray:v32];
+    users = [v7 users];
+    v33 = [v31 setWithArray:users];
 
-    v34 = [v7 currentUser];
-    [v33 addObject:v34];
+    currentUser = [v7 currentUser];
+    [v33 addObject:currentUser];
 
     v35 = [v33 count];
     objc_initWeak(&location, v22);
-    v36 = [v30 userPinCodes];
+    userPinCodes = [v30 userPinCodes];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __43__HFAnalyticsAccessCodeEvent_initWithData___block_invoke;
     v44[3] = &unk_277DFD838;
     objc_copyWeak(v45, &location);
     *&v45[1] = v35;
-    v37 = [v36 addSuccessBlock:v44];
+    v37 = [userPinCodes addSuccessBlock:v44];
 
-    v38 = [v30 guestPinCodes];
+    guestPinCodes = [v30 guestPinCodes];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __43__HFAnalyticsAccessCodeEvent_initWithData___block_invoke_2;
     v42[3] = &unk_277DFD860;
     objc_copyWeak(&v43, &location);
-    v39 = [v38 addSuccessBlock:v42];
+    v39 = [guestPinCodes addSuccessBlock:v42];
 
     objc_destroyWeak(&v43);
     objc_destroyWeak(v45);
@@ -199,22 +199,22 @@ void __43__HFAnalyticsAccessCodeEvent_initWithData___block_invoke_2(uint64_t a1,
 {
   v34.receiver = self;
   v34.super_class = HFAnalyticsAccessCodeEvent;
-  v3 = [(HFAnalyticsEvent *)&v34 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v34 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsAccessCodeEvent *)self operationType];
-  if (v5 > 2)
+  operationType = [(HFAnalyticsAccessCodeEvent *)self operationType];
+  if (operationType > 2)
   {
-    switch(v5)
+    switch(operationType)
     {
       case 3:
         v8 = @"modifyAccessories";
         break;
       case 4:
-        v9 = [(HFAnalyticsAccessCodeEvent *)self duringOnboarding];
-        v10 = [v9 BOOLValue];
+        duringOnboarding = [(HFAnalyticsAccessCodeEvent *)self duringOnboarding];
+        bOOLValue = [duringOnboarding BOOLValue];
 
-        if ((v10 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           NSLog(&cfstr_ErrorDuringonb.isa);
         }
@@ -234,17 +234,17 @@ void __43__HFAnalyticsAccessCodeEvent_initWithData___block_invoke_2(uint64_t a1,
   {
     v6 = @"remove";
     v7 = @"modifyValue";
-    if (v5 != 2)
+    if (operationType != 2)
     {
       v7 = 0;
     }
 
-    if (v5 != 1)
+    if (operationType != 1)
     {
       v6 = v7;
     }
 
-    if (v5)
+    if (operationType)
     {
       v8 = v6;
     }
@@ -256,23 +256,23 @@ void __43__HFAnalyticsAccessCodeEvent_initWithData___block_invoke_2(uint64_t a1,
   }
 
   [v4 na_safeSetObject:v8 forKey:@"operationType"];
-  v11 = [(HFAnalyticsAccessCodeEvent *)self duringOnboarding];
-  [v4 na_safeSetObject:v11 forKey:@"duringOnboarding"];
+  duringOnboarding2 = [(HFAnalyticsAccessCodeEvent *)self duringOnboarding];
+  [v4 na_safeSetObject:duringOnboarding2 forKey:@"duringOnboarding"];
 
-  v12 = [(HFAnalyticsAccessCodeEvent *)self errorCode];
-  [v4 na_safeSetObject:v12 forKey:@"errorCode"];
+  errorCode = [(HFAnalyticsAccessCodeEvent *)self errorCode];
+  [v4 na_safeSetObject:errorCode forKey:@"errorCode"];
 
-  v13 = [(HFAnalyticsAccessCodeEvent *)self errorDomain];
-  [v4 na_safeSetObject:v13 forKey:@"errorDomain"];
+  errorDomain = [(HFAnalyticsAccessCodeEvent *)self errorDomain];
+  [v4 na_safeSetObject:errorDomain forKey:@"errorDomain"];
 
-  v14 = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
+  pinCodeItem = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
 
-  if (v14)
+  if (pinCodeItem)
   {
-    v15 = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
-    v16 = [v15 isGuest];
+    pinCodeItem2 = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
+    isGuest = [pinCodeItem2 isGuest];
     v17 = @"user";
-    if (v16)
+    if (isGuest)
     {
       v17 = @"guest";
     }
@@ -287,30 +287,30 @@ void __43__HFAnalyticsAccessCodeEvent_initWithData___block_invoke_2(uint64_t a1,
 
   [v4 na_safeSetObject:v18 forKey:@"userType"];
   v19 = MEMORY[0x277CCABB0];
-  v20 = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
-  v21 = [v20 pinCodeValue];
-  v22 = [v19 numberWithUnsignedInteger:{objc_msgSend(v21, "length")}];
+  pinCodeItem3 = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
+  pinCodeValue = [pinCodeItem3 pinCodeValue];
+  v22 = [v19 numberWithUnsignedInteger:{objc_msgSend(pinCodeValue, "length")}];
   [v4 na_safeSetObject:v22 forKey:@"codeLength"];
 
-  v23 = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
-  v24 = [v23 accessories];
-  v25 = [v24 count];
+  pinCodeItem4 = [(HFAnalyticsAccessCodeEvent *)self pinCodeItem];
+  accessories = [pinCodeItem4 accessories];
+  v25 = [accessories count];
 
   v26 = [MEMORY[0x277CCABB0] numberWithDouble:v25];
   [v4 na_safeSetObject:v26 forKey:@"countOfAccessoriesEnabled"];
 
-  v27 = [(HFAnalyticsAccessCodeEvent *)self home];
-  v28 = [v27 hf_accessoriesSupportingAccessCodes];
-  v29 = [v28 count];
+  home = [(HFAnalyticsAccessCodeEvent *)self home];
+  hf_accessoriesSupportingAccessCodes = [home hf_accessoriesSupportingAccessCodes];
+  v29 = [hf_accessoriesSupportingAccessCodes count];
 
   v30 = [MEMORY[0x277CCABB0] numberWithDouble:v25 / v29];
   [v4 na_safeSetObject:v30 forKey:@"ratioOfAccessoriesEnabled"];
 
-  v31 = [(HFAnalyticsAccessCodeEvent *)self totalGuestPINCodes];
-  [v4 na_safeSetObject:v31 forKey:@"totalCountGuests"];
+  totalGuestPINCodes = [(HFAnalyticsAccessCodeEvent *)self totalGuestPINCodes];
+  [v4 na_safeSetObject:totalGuestPINCodes forKey:@"totalCountGuests"];
 
-  v32 = [(HFAnalyticsAccessCodeEvent *)self ratioOfUserPINCodes];
-  [v4 na_safeSetObject:v32 forKey:@"ratioOfUsersWithPIN"];
+  ratioOfUserPINCodes = [(HFAnalyticsAccessCodeEvent *)self ratioOfUserPINCodes];
+  [v4 na_safeSetObject:ratioOfUserPINCodes forKey:@"ratioOfUsersWithPIN"];
 
   return v4;
 }

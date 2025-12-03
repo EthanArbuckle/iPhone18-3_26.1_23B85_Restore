@@ -2,9 +2,9 @@
 - (AVResult)init;
 - (BOOL)isFailed;
 - (void)dealloc;
-- (void)getStatus:(int64_t *)a3 error:(id *)a4;
+- (void)getStatus:(int64_t *)status error:(id *)error;
 - (void)markAsCompleted;
-- (void)markAsFailedWithError:(id)a3;
+- (void)markAsFailedWithError:(id)error;
 @end
 
 @implementation AVResult
@@ -54,26 +54,26 @@
   [(AVResult *)&v3 dealloc];
 }
 
-- (void)markAsFailedWithError:(id)a3
+- (void)markAsFailedWithError:(id)error
 {
   FigSimpleMutexLock();
   self->_status = 2;
-  self->_error = [a3 copy];
+  self->_error = [error copy];
 
   FigSimpleMutexUnlock();
 }
 
-- (void)getStatus:(int64_t *)a3 error:(id *)a4
+- (void)getStatus:(int64_t *)status error:(id *)error
 {
   FigSimpleMutexLock();
-  if (a3)
+  if (status)
   {
-    *a3 = self->_status;
+    *status = self->_status;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [(NSError *)self->_error copy];
+    *error = [(NSError *)self->_error copy];
   }
 
   FigSimpleMutexUnlock();

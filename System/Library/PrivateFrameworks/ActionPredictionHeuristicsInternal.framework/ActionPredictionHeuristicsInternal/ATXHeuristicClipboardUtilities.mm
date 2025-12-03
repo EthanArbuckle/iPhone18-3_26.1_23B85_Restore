@@ -1,24 +1,24 @@
 @interface ATXHeuristicClipboardUtilities
-- (ATXHeuristicClipboardUtilities)initWithDevice:(id)a3;
-- (id)_appNameFromBundleID:(id)a3;
-- (id)_dataDetectorsWithContent:(id)a3;
-- (id)resultWithActions:(id)a3 predictionReasons:(unint64_t)a4;
+- (ATXHeuristicClipboardUtilities)initWithDevice:(id)device;
+- (id)_appNameFromBundleID:(id)d;
+- (id)_dataDetectorsWithContent:(id)content;
+- (id)resultWithActions:(id)actions predictionReasons:(unint64_t)reasons;
 - (void)_resetContents;
 - (void)fetchContents;
 @end
 
 @implementation ATXHeuristicClipboardUtilities
 
-- (ATXHeuristicClipboardUtilities)initWithDevice:(id)a3
+- (ATXHeuristicClipboardUtilities)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXHeuristicClipboardUtilities;
   v6 = [(ATXHeuristicClipboardUtilities *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_heuristicDevice, a3);
+    objc_storeStrong(&v6->_heuristicDevice, device);
   }
 
   return v7;
@@ -121,8 +121,8 @@ LABEL_13:
       }
 
       v11 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v28[5] sinceDate:600.0];
-      v18 = [MEMORY[0x277CBEAA8] date];
-      v19 = [v18 compare:v11] == 1;
+      date = [MEMORY[0x277CBEAA8] date];
+      v19 = [date compare:v11] == 1;
 
       if (v19)
       {
@@ -147,15 +147,15 @@ LABEL_13:
         v20 = __atxlog_handle_context_heuristic();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(ATXHeuristicClipboardUtilities *)self content];
-          v24 = [(ATXHeuristicClipboardUtilities *)self dataDetectors];
-          v25 = [(ATXHeuristicClipboardUtilities *)self appName];
+          content = [(ATXHeuristicClipboardUtilities *)self content];
+          dataDetectors = [(ATXHeuristicClipboardUtilities *)self dataDetectors];
+          appName = [(ATXHeuristicClipboardUtilities *)self appName];
           *buf = 138740483;
-          v46 = v23;
+          v46 = content;
           v47 = 2112;
-          v48 = v24;
+          v48 = dataDetectors;
           v49 = 2112;
-          v50 = v25;
+          v50 = appName;
           _os_log_impl(&dword_23E3EA000, v20, OS_LOG_TYPE_DEFAULT, "ATXHeuristicClipboardUtilities: content %{sensitive}@ dataDetectors:%@ appName:%@", buf, 0x20u);
         }
       }
@@ -214,18 +214,18 @@ void __47__ATXHeuristicClipboardUtilities_fetchContents__block_invoke(void *a1, 
   [(ATXHeuristicClipboardUtilities *)self setAppName:0];
 }
 
-- (id)_appNameFromBundleID:(id)a3
+- (id)_appNameFromBundleID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.Pasteboard.pbutil"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.Pasteboard.pbutil"])
   {
     v4 = @"pbutil";
     goto LABEL_19;
   }
 
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v6 = [v5 applicationIsInstalled:v3];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v6 = [defaultWorkspace applicationIsInstalled:dCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -233,7 +233,7 @@ void __47__ATXHeuristicClipboardUtilities_fetchContents__block_invoke(void *a1, 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v23 = v3;
+      v23 = dCopy;
       _os_log_impl(&dword_23E3EA000, v8, OS_LOG_TYPE_INFO, "bundleID has no installed application: %@", buf, 0xCu);
     }
 
@@ -242,14 +242,14 @@ void __47__ATXHeuristicClipboardUtilities_fetchContents__block_invoke(void *a1, 
   }
 
   v21 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v21];
+  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v21];
   v8 = v21;
   if (v8)
   {
     v9 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ATXHeuristicClipboardUtilities *)v3 _appNameFromBundleID:v8, v9];
+      [(ATXHeuristicClipboardUtilities *)dCopy _appNameFromBundleID:v8, v9];
     }
   }
 
@@ -263,16 +263,16 @@ void __47__ATXHeuristicClipboardUtilities_fetchContents__block_invoke(void *a1, 
     v9 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ATXHeuristicClipboardUtilities *)v3 _appNameFromBundleID:v9, v15, v16, v17, v18, v19, v20];
+      [(ATXHeuristicClipboardUtilities *)dCopy _appNameFromBundleID:v9, v15, v16, v17, v18, v19, v20];
     }
   }
 
 LABEL_12:
-  v10 = [v7 localizedName];
-  v4 = v10;
-  if (v10)
+  localizedName = [v7 localizedName];
+  v4 = localizedName;
+  if (localizedName)
   {
-    v11 = v10;
+    v11 = localizedName;
   }
 
   else
@@ -281,7 +281,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v23 = v3;
+      v23 = dCopy;
       _os_log_impl(&dword_23E3EA000, v12, OS_LOG_TYPE_INFO, "LSApplicationRecord cannot find localizedName for bundleID even though it is installed: %@", buf, 0xCu);
     }
   }
@@ -294,11 +294,11 @@ LABEL_19:
   return v4;
 }
 
-- (id)_dataDetectorsWithContent:(id)a3
+- (id)_dataDetectorsWithContent:(id)content
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![(__CFString *)v3 length])
+  contentCopy = content;
+  if (![(__CFString *)contentCopy length])
   {
 LABEL_11:
     v10 = MEMORY[0x277CBEBF8];
@@ -309,7 +309,7 @@ LABEL_11:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138739971;
-    *&buf[4] = v3;
+    *&buf[4] = contentCopy;
     _os_log_impl(&dword_23E3EA000, v4, OS_LOG_TYPE_DEFAULT, "Running data detectors on: %{sensitive}@", buf, 0xCu);
   }
 
@@ -360,7 +360,7 @@ LABEL_17:
   }
 
   v9 = v8;
-  v10 = dataDetectorResultsToPlist(v8, v3, 0);
+  v10 = dataDetectorResultsToPlist(v8, contentCopy, 0);
   CFRelease(v9);
 LABEL_18:
   CFRelease(v6);
@@ -371,9 +371,9 @@ LABEL_19:
   return v10;
 }
 
-- (id)resultWithActions:(id)a3 predictionReasons:(unint64_t)a4
+- (id)resultWithActions:(id)actions predictionReasons:(unint64_t)reasons
 {
-  v5 = a3;
+  actionsCopy = actions;
   v6 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -385,8 +385,8 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = __70__ATXHeuristicClipboardUtilities_resultWithActions_predictionReasons___block_invoke;
   v11[3] = &__block_descriptor_40_e43___ATXProactiveSuggestion_16__0__ATXAction_8l;
-  v11[4] = a4;
-  v7 = [v5 _pas_mappedArrayWithTransform:v11];
+  v11[4] = reasons;
+  v7 = [actionsCopy _pas_mappedArrayWithTransform:v11];
 
   v8 = objc_opt_new();
   v9 = [[ATXContextHeuristicResult alloc] initWithSuggestions:v7 additionalRefreshTriggers:v8];

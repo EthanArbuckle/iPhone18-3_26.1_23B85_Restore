@@ -2,12 +2,12 @@
 - (CGRect)bitmapRect;
 - (CGRect)textureRect;
 - (CGSize)textureSize;
-- (PVRenderedTexture)initWithHGGLTexture:(HGRef<HGGLTexture>)a3;
+- (PVRenderedTexture)initWithHGGLTexture:(HGRef<HGGLTexture>)texture;
 @end
 
 @implementation PVRenderedTexture
 
-- (PVRenderedTexture)initWithHGGLTexture:(HGRef<HGGLTexture>)a3
+- (PVRenderedTexture)initWithHGGLTexture:(HGRef<HGGLTexture>)texture
 {
   v9.receiver = self;
   v9.super_class = PVRenderedTexture;
@@ -16,13 +16,13 @@
   if (v4)
   {
     m_Obj = v4->_glTexture.m_Obj;
-    v7 = *a3.m_Obj;
-    if (m_Obj != *a3.m_Obj)
+    v7 = *texture.m_Obj;
+    if (m_Obj != *texture.m_Obj)
     {
       if (m_Obj)
       {
         (*(*m_Obj + 24))(v5->_glTexture.m_Obj);
-        v7 = *a3.m_Obj;
+        v7 = *texture.m_Obj;
       }
 
       v5->_glTexture.m_Obj = v7;

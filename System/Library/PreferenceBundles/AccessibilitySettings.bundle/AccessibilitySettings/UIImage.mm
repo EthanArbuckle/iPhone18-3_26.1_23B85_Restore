@@ -1,14 +1,14 @@
 @interface UIImage
-- (id)imageScaledToSize:(CGSize)a3;
+- (id)imageScaledToSize:(CGSize)size;
 @end
 
 @implementation UIImage
 
-- (id)imageScaledToSize:(CGSize)a3
+- (id)imageScaledToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  UIGraphicsBeginImageContextWithOptions(a3, 0, 0.0);
+  height = size.height;
+  width = size.width;
+  UIGraphicsBeginImageContextWithOptions(size, 0, 0.0);
   [(UIImage *)self drawInRect:0.0, 0.0, width, height];
   v6 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();

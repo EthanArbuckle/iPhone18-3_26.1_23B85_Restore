@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_DeleteOrphanedFaces
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeleteOrphanedFaces
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v115[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = +[PLDetectedFace fetchRequest];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == nil", @"assetForFace"];
@@ -38,7 +38,7 @@
   v74 = __Block_byref_object_dispose__23793;
   v75 = 0;
   v69 = 0;
-  v13 = [v5 executeFetchRequest:v6 error:&v69];
+  v13 = [contextCopy executeFetchRequest:v6 error:&v69];
   v62 = v69;
   if ([v13 count])
   {
@@ -50,7 +50,7 @@
     v64[4] = self;
     v67 = &v70;
     v68 = &v76;
-    v65 = v5;
+    v65 = contextCopy;
     v15 = v14;
     v66 = v15;
     v16 = [v65 enumerateWithIncrementalSaveUsingObjects:v13 withBlock:v64];
@@ -62,8 +62,8 @@
 
       if (v18)
       {
-        v19 = [(PLModelMigrationActionCore *)self logger];
-        v20 = v19 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v20 = logger == 0;
 
         if (v20)
         {
@@ -154,8 +154,8 @@
 
       if (v36)
       {
-        v37 = [(PLModelMigrationActionCore *)self logger];
-        v38 = v37 == 0;
+        logger2 = [(PLModelMigrationActionCore *)self logger];
+        v38 = logger2 == 0;
 
         if (v38)
         {
@@ -233,8 +233,8 @@ LABEL_26:
 
     if (v27)
     {
-      v28 = [(PLModelMigrationActionCore *)self logger];
-      v29 = v28 == 0;
+      logger3 = [(PLModelMigrationActionCore *)self logger];
+      v29 = logger3 == 0;
 
       if (v29)
       {
@@ -321,15 +321,15 @@ LABEL_26:
 LABEL_27:
   v47 = +[PLManagedLegacyFace entityName];
   v48 = [MEMORY[0x1E696AE18] predicateWithFormat:@"asset == nil"];
-  [PLModelMigrator executeBatchDeleteWithEntityName:v47 predicate:v48 managedObjectContext:v5 error:0];
+  [PLModelMigrator executeBatchDeleteWithEntityName:v47 predicate:v48 managedObjectContext:contextCopy error:0];
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v49 = v77[3];
   v50 = v71[5];
-  if (v49 != 1 && a4)
+  if (v49 != 1 && error)
   {
     v50 = v50;
-    *a4 = v50;
+    *error = v50;
   }
 
   v51 = v77[3];

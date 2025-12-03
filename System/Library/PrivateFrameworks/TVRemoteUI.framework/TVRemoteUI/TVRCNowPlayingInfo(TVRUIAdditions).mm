@@ -17,26 +17,26 @@
 
 - (BOOL)tvrui_hasMetadata
 {
-  v1 = [a1 metadata];
-  v2 = v1 != 0;
+  metadata = [self metadata];
+  v2 = metadata != 0;
 
   return v2;
 }
 
 - (BOOL)tvrui_hasArtworkImage
 {
-  v1 = [a1 imageData];
-  v2 = v1 != 0;
+  imageData = [self imageData];
+  v2 = imageData != 0;
 
   return v2;
 }
 
 - (id)tvrui_artworkImage
 {
-  v1 = [a1 imageData];
-  if (v1)
+  imageData = [self imageData];
+  if (imageData)
   {
-    v2 = [MEMORY[0x277D755B8] imageWithData:v1];
+    v2 = [MEMORY[0x277D755B8] imageWithData:imageData];
   }
 
   else
@@ -49,26 +49,26 @@
 
 - (uint64_t)tvrui_hasActivePlayer
 {
-  v2 = [a1 playerIdentifier];
-  v3 = v2 != 0;
+  playerIdentifier = [self playerIdentifier];
+  v3 = playerIdentifier != 0;
 
-  v4 = [a1 playerIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D6C5A8]];
+  playerIdentifier2 = [self playerIdentifier];
+  v5 = [playerIdentifier2 isEqualToString:*MEMORY[0x277D6C5A8]];
 
   return v3 & (v5 ^ 1u);
 }
 
 - (uint64_t)tvrui_isSimpleCaptionStateUpdate
 {
-  v2 = [a1 tvrui_hasArtworkImage];
-  v3 = [a1 tvrui_hasMetadata];
-  v4 = [a1 captionsEnabled];
+  tvrui_hasArtworkImage = [self tvrui_hasArtworkImage];
+  tvrui_hasMetadata = [self tvrui_hasMetadata];
+  captionsEnabled = [self captionsEnabled];
 
-  v5 = [a1 hasValidCaptionOptions];
+  hasValidCaptionOptions = [self hasValidCaptionOptions];
 
-  if (v4)
+  if (captionsEnabled)
   {
-    v6 = v5 == 0;
+    v6 = hasValidCaptionOptions == 0;
   }
 
   else
@@ -77,55 +77,55 @@
   }
 
   v7 = !v6;
-  return v7 & ((v2 | v3) ^ 1u);
+  return v7 & ((tvrui_hasArtworkImage | tvrui_hasMetadata) ^ 1u);
 }
 
 - (uint64_t)tvrui_isSimplePlaybackRateUpdate
 {
-  v1 = a1;
-  v2 = [a1 tvrui_hasArtworkImage];
-  v3 = [v1 tvrui_hasMetadata];
-  v4 = [v1 playbackRate];
-  LODWORD(v1) = v4 != 0;
+  selfCopy = self;
+  tvrui_hasArtworkImage = [self tvrui_hasArtworkImage];
+  tvrui_hasMetadata = [selfCopy tvrui_hasMetadata];
+  playbackRate = [selfCopy playbackRate];
+  LODWORD(selfCopy) = playbackRate != 0;
 
-  return v1 & ((v2 | v3) ^ 1);
+  return selfCopy & ((tvrui_hasArtworkImage | tvrui_hasMetadata) ^ 1);
 }
 
 - (uint64_t)tvrui_isSimplePlaybackStateUpdate
 {
-  v1 = a1;
-  v2 = [a1 tvrui_hasArtworkImage];
-  v3 = [v1 tvrui_hasMetadata];
-  v4 = [v1 playbackState];
-  LODWORD(v1) = v4 != 0;
+  selfCopy = self;
+  tvrui_hasArtworkImage = [self tvrui_hasArtworkImage];
+  tvrui_hasMetadata = [selfCopy tvrui_hasMetadata];
+  playbackState = [selfCopy playbackState];
+  LODWORD(selfCopy) = playbackState != 0;
 
-  return v1 & ((v2 | v3) ^ 1);
+  return selfCopy & ((tvrui_hasArtworkImage | tvrui_hasMetadata) ^ 1);
 }
 
 - (BOOL)tvrui_mediaIsStopped
 {
-  v1 = [a1 playbackState];
-  v2 = [v1 integerValue] == 3;
+  playbackState = [self playbackState];
+  v2 = [playbackState integerValue] == 3;
 
   return v2;
 }
 
 - (BOOL)tvrui_mediaIsIsPlaying
 {
-  v1 = [a1 playbackState];
-  v2 = [v1 integerValue] == 1;
+  playbackState = [self playbackState];
+  v2 = [playbackState integerValue] == 1;
 
   return v2;
 }
 
 - (uint64_t)tvrui_hasCanonicalID
 {
-  v2 = [a1 metadata];
-  v3 = [v2 canonicalID];
+  metadata = [self metadata];
+  canonicalID = [metadata canonicalID];
 
-  if ([v3 length])
+  if ([canonicalID length])
   {
-    v4 = [a1 tvrui_hasUnknownCanonicalID] ^ 1;
+    v4 = [self tvrui_hasUnknownCanonicalID] ^ 1;
   }
 
   else
@@ -138,27 +138,27 @@
 
 - (uint64_t)tvrui_hasUnknownCanonicalID
 {
-  v1 = [a1 metadata];
-  v2 = [v1 canonicalID];
+  metadata = [self metadata];
+  canonicalID = [metadata canonicalID];
 
-  v3 = [v2 isEqualToString:*MEMORY[0x277D6C5B0]];
+  v3 = [canonicalID isEqualToString:*MEMORY[0x277D6C5B0]];
   return v3;
 }
 
 - (id)tvrui_effectiveCanonicalID
 {
-  if ([a1 tvrui_hasUnknownCanonicalID])
+  if ([self tvrui_hasUnknownCanonicalID])
   {
-    v2 = 0;
+    canonicalID = 0;
   }
 
   else
   {
-    v3 = [a1 metadata];
-    v2 = [v3 canonicalID];
+    metadata = [self metadata];
+    canonicalID = [metadata canonicalID];
   }
 
-  return v2;
+  return canonicalID;
 }
 
 @end

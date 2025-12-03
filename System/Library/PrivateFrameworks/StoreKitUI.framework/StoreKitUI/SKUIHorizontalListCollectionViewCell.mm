@@ -1,22 +1,22 @@
 @interface SKUIHorizontalListCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SKUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SKUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIHorizontalListCollectionViewCell
 
-- (SKUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -31,38 +31,38 @@
 
   v22.receiver = self;
   v22.super_class = SKUIHorizontalListCollectionViewCell;
-  v16 = [(SKUICollectionViewCell *)&v22 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUICollectionViewCell *)&v22 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = [SKUIHorizontalListView alloc];
-    [(SKUIHorizontalListCollectionViewCell *)v16 bounds];
+    [(SKUIHorizontalListCollectionViewCell *)height bounds];
     v18 = [(SKUIHorizontalListView *)v17 initWithFrame:?];
-    horizontalList = v16->_horizontalList;
-    v16->_horizontalList = v18;
+    horizontalList = height->_horizontalList;
+    height->_horizontalList = v18;
 
-    v20 = [(SKUIHorizontalListCollectionViewCell *)v16 contentView];
-    [v20 addSubview:v16->_horizontalList];
+    contentView = [(SKUIHorizontalListCollectionViewCell *)height contentView];
+    [contentView addSubview:height->_horizontalList];
   }
 
-  return v16;
+  return height;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   horizontalList = self->_horizontalList;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SKUIViewReuseView *)horizontalList setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIViewReuseView *)horizontalList setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SKUIHorizontalListCollectionViewCell;
-  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -75,17 +75,17 @@
     }
   }
 
-  v17 = [SKUIHorizontalListView prefetchResourcesForViewElement:v7 reason:a4 context:v8];
+  v17 = [SKUIHorizontalListView prefetchResourcesForViewElement:elementCopy reason:reason context:contextCopy];
 
   return v17;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -96,10 +96,10 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -112,7 +112,7 @@
     }
   }
 
-  [SKUIHorizontalListView sizeThatFitsWidth:v7 viewElement:v8 context:a3];
+  [SKUIHorizontalListView sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
   v18 = v17;
   v20 = v19;
 
@@ -129,19 +129,19 @@
   v5.super_class = SKUIHorizontalListCollectionViewCell;
   [(SKUICollectionViewCell *)&v5 layoutSubviews];
   horizontalList = self->_horizontalList;
-  v4 = [(SKUIHorizontalListCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUIHorizontalListCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUIHorizontalListView *)horizontalList setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   horizontalList = self->_horizontalList;
-  v5 = a3;
-  [(SKUIViewReuseView *)horizontalList setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)horizontalList setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIHorizontalListCollectionViewCell;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (UIEdgeInsets)contentInset

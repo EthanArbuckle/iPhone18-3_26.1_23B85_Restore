@@ -1,30 +1,30 @@
 @interface LPEmailCompatibleHTMLInnerLinkComponent
-- (LPEmailCompatibleHTMLInnerLinkComponent)initWithThemePath:(id)a3 generator:(id)a4;
+- (LPEmailCompatibleHTMLInnerLinkComponent)initWithThemePath:(id)path generator:(id)generator;
 @end
 
 @implementation LPEmailCompatibleHTMLInnerLinkComponent
 
-- (LPEmailCompatibleHTMLInnerLinkComponent)initWithThemePath:(id)a3 generator:(id)a4
+- (LPEmailCompatibleHTMLInnerLinkComponent)initWithThemePath:(id)path generator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  generatorCopy = generator;
   v18.receiver = self;
   v18.super_class = LPEmailCompatibleHTMLInnerLinkComponent;
-  v8 = [(LPHTMLComponent *)&v18 initWithTagName:@"a" themePath:v6 generator:v7];
+  v8 = [(LPHTMLComponent *)&v18 initWithTagName:@"a" themePath:pathCopy generator:generatorCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(LPHTMLComponent *)v8 element];
-    [v10 setAttribute:@"rel" value:@"nofollow"];
+    element = [(LPHTMLComponent *)v8 element];
+    [element setAttribute:@"rel" value:@"nofollow"];
 
-    v11 = [(LPHTMLComponent *)v9 element];
-    v12 = [(LPHTMLComponent *)v9 generator];
-    v13 = [v12 URL];
-    v14 = [v13 absoluteString];
-    [v11 setAttribute:@"href" value:v14];
+    element2 = [(LPHTMLComponent *)v9 element];
+    generator = [(LPHTMLComponent *)v9 generator];
+    v13 = [generator URL];
+    absoluteString = [v13 absoluteString];
+    [element2 setAttribute:@"href" value:absoluteString];
 
-    v15 = [(LPHTMLComponent *)v9 element];
-    [v15 setAttribute:@"draggable" value:@"false"];
+    element3 = [(LPHTMLComponent *)v9 element];
+    [element3 setAttribute:@"draggable" value:@"false"];
 
     v16 = v9;
   }

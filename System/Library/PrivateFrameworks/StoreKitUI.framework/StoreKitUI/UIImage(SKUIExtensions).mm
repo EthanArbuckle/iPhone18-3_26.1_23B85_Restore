@@ -13,17 +13,17 @@
     +[UIImage(SKUIExtensions) singlePointImageWithColor:];
   }
 
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
   v12.width = 1.0;
   v12.height = 1.0;
   UIGraphicsBeginImageContextWithOptions(v12, 0, v6);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v8 = [v3 CGColor];
+  cGColor = [v3 CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v8);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v13.origin.x = 0.0;
   v13.origin.y = 0.0;
   v13.size.width = 1.0;
@@ -43,10 +43,10 @@
     +[UIImage(SKUIExtensions) resizeImage:toSize:];
   }
 
-  v11.width = a1;
+  v11.width = self;
   v11.height = a2;
   UIGraphicsBeginImageContextWithOptions(v11, 0, 0.0);
-  [v7 drawInRect:{0.0, 0.0, a1, a2}];
+  [v7 drawInRect:{0.0, 0.0, self, a2}];
 
   v8 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();

@@ -1,15 +1,15 @@
 @interface PaperKitPDFDocument
-- (BOOL)unlockWithPassword:(id)a3;
-- (Class)annotationSubclassForType:(id)a3;
+- (BOOL)unlockWithPassword:(id)password;
+- (Class)annotationSubclassForType:(id)type;
 - (Class)pageClass;
 - (_TtC8PaperKit19PaperKitPDFDocument)init;
-- (_TtC8PaperKit19PaperKitPDFDocument)initWithData:(id)a3;
-- (_TtC8PaperKit19PaperKitPDFDocument)initWithURL:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (id)pageAtIndex:(int64_t)a3;
-- (void)exchangePageAtIndex:(int64_t)a3 withPageAtIndex:(int64_t)a4;
-- (void)insertPage:(id)a3 atIndex:(int64_t)a4;
-- (void)removePageAtIndex:(int64_t)a3;
+- (_TtC8PaperKit19PaperKitPDFDocument)initWithData:(id)data;
+- (_TtC8PaperKit19PaperKitPDFDocument)initWithURL:(id)l;
+- (id)copyWithZone:(void *)zone;
+- (id)pageAtIndex:(int64_t)index;
+- (void)exchangePageAtIndex:(int64_t)index withPageAtIndex:(int64_t)atIndex;
+- (void)insertPage:(id)page atIndex:(int64_t)index;
+- (void)removePageAtIndex:(int64_t)index;
 @end
 
 @implementation PaperKitPDFDocument
@@ -21,7 +21,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (Class)annotationSubclassForType:(id)a3
+- (Class)annotationSubclassForType:(id)type
 {
   type metadata accessor for CanvasElementPDFAnnotation();
 
@@ -41,7 +41,7 @@
   return [(PDFDocument *)&v7 init];
 }
 
-- (_TtC8PaperKit19PaperKitPDFDocument)initWithURL:(id)a3
+- (_TtC8PaperKit19PaperKitPDFDocument)initWithURL:(id)l
 {
   v3 = type metadata accessor for URL();
   MEMORY[0x1EEE9AC00](v3 - 8);
@@ -50,19 +50,19 @@
   return PaperKitPDFDocument.init(url:)(v5);
 }
 
-- (_TtC8PaperKit19PaperKitPDFDocument)initWithData:(id)a3
+- (_TtC8PaperKit19PaperKitPDFDocument)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 
   return PaperKitPDFDocument.init(data:)(v4, v6);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  PaperKitPDFDocument.copy(with:)(a3, v7);
+  selfCopy = self;
+  PaperKitPDFDocument.copy(with:)(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -70,35 +70,35 @@
   return v5;
 }
 
-- (id)pageAtIndex:(int64_t)a3
+- (id)pageAtIndex:(int64_t)index
 {
-  v4 = self;
-  PaperKitPDFDocument.page(at:)(v5, a3);
+  selfCopy = self;
+  PaperKitPDFDocument.page(at:)(v5, index);
   v7 = v6;
 
   return v7;
 }
 
-- (void)removePageAtIndex:(int64_t)a3
+- (void)removePageAtIndex:(int64_t)index
 {
-  v4 = self;
-  PaperKitPDFDocument.removePage(at:)(a3);
+  selfCopy = self;
+  PaperKitPDFDocument.removePage(at:)(index);
 }
 
-- (void)insertPage:(id)a3 atIndex:(int64_t)a4
+- (void)insertPage:(id)page atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  PaperKitPDFDocument.insert(_:at:)(v6, a4);
+  pageCopy = page;
+  selfCopy = self;
+  PaperKitPDFDocument.insert(_:at:)(pageCopy, index);
 }
 
-- (void)exchangePageAtIndex:(int64_t)a3 withPageAtIndex:(int64_t)a4
+- (void)exchangePageAtIndex:(int64_t)index withPageAtIndex:(int64_t)atIndex
 {
-  v6 = self;
-  PaperKitPDFDocument.exchangePage(at:withPageAt:)(a3, a4);
+  selfCopy = self;
+  PaperKitPDFDocument.exchangePage(at:withPageAt:)(index, atIndex);
 }
 
-- (BOOL)unlockWithPassword:(id)a3
+- (BOOL)unlockWithPassword:(id)password
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s8PaperKit6PageIdVSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -106,16 +106,16 @@
   v8 = type metadata accessor for PaperKitPDFDocument();
   v16.receiver = self;
   v16.super_class = v8;
-  v9 = self;
-  v10 = [(PDFDocument *)&v16 unlockWithPassword:a3];
+  selfCopy = self;
+  v10 = [(PDFDocument *)&v16 unlockWithPassword:password];
   if (v10)
   {
     v11 = type metadata accessor for PageId(0);
     (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
-    v12 = _sSa9repeating5countSayxGx_SitcfC8PaperKit6PageIdVSg_Tt1g5(v7, [(PDFDocument *)v9 pageCount]);
+    v12 = _sSa9repeating5countSayxGx_SitcfC8PaperKit6PageIdVSg_Tt1g5(v7, [(PDFDocument *)selfCopy pageCount]);
     v13 = OBJC_IVAR____TtC8PaperKit19PaperKitPDFDocument_pageProxies;
     swift_beginAccess();
-    *(&v9->super.super.isa + v13) = v12;
+    *(&selfCopy->super.super.isa + v13) = v12;
   }
 
   else

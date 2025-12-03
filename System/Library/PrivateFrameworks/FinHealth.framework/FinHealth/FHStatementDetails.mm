@@ -1,5 +1,5 @@
 @interface FHStatementDetails
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -8,109 +8,109 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FHStatementDetails *)self statementIdentifier];
-  v4 = [v3 hash];
+  statementIdentifier = [(FHStatementDetails *)self statementIdentifier];
+  v4 = [statementIdentifier hash];
 
-  v5 = [(FHStatementDetails *)self openingDate];
-  v6 = 17 * (17 * v4 + [v5 hash]);
+  openingDate = [(FHStatementDetails *)self openingDate];
+  v6 = 17 * (17 * v4 + [openingDate hash]);
 
-  v7 = [(FHStatementDetails *)self closingDate];
-  v8 = 17 * (v6 + [v7 hash]);
+  closingDate = [(FHStatementDetails *)self closingDate];
+  v8 = 17 * (v6 + [closingDate hash]);
 
-  v9 = [(FHStatementDetails *)self remainingStatementBalance];
-  v10 = 17 * (v8 + [v9 hash]);
+  remainingStatementBalance = [(FHStatementDetails *)self remainingStatementBalance];
+  v10 = 17 * (v8 + [remainingStatementBalance hash]);
 
-  v11 = [(FHStatementDetails *)self remainingMinimumPayment];
-  v12 = 17 * (v10 + [v11 hash]);
+  remainingMinimumPayment = [(FHStatementDetails *)self remainingMinimumPayment];
+  v12 = 17 * (v10 + [remainingMinimumPayment hash]);
 
-  v13 = [(FHStatementDetails *)self minimumDue];
-  v14 = 17 * (v12 + [v13 hash]);
+  minimumDue = [(FHStatementDetails *)self minimumDue];
+  v14 = 17 * (v12 + [minimumDue hash]);
 
-  v15 = [(FHStatementDetails *)self creditLimit];
-  v16 = 17 * (v14 + [v15 hash]);
+  creditLimit = [(FHStatementDetails *)self creditLimit];
+  v16 = 17 * (v14 + [creditLimit hash]);
 
-  v17 = [(FHStatementDetails *)self statementBalance];
-  v18 = 17 * (v16 + [v17 hash]);
+  statementBalance = [(FHStatementDetails *)self statementBalance];
+  v18 = 17 * (v16 + [statementBalance hash]);
 
-  v19 = [(FHStatementDetails *)self currentBalance];
-  v20 = 17 * (v18 + [v19 hash]);
+  currentBalance = [(FHStatementDetails *)self currentBalance];
+  v20 = 17 * (v18 + [currentBalance hash]);
 
-  v21 = [(FHStatementDetails *)self currentBalanceForMonthZero];
-  v22 = 17 * (v20 + [v21 hash]);
+  currentBalanceForMonthZero = [(FHStatementDetails *)self currentBalanceForMonthZero];
+  v22 = 17 * (v20 + [currentBalanceForMonthZero hash]);
 
-  v23 = [(FHStatementDetails *)self currentStatementIdentifier];
-  v24 = 17 * (v22 + [v23 hash]);
+  currentStatementIdentifier = [(FHStatementDetails *)self currentStatementIdentifier];
+  v24 = 17 * (v22 + [currentStatementIdentifier hash]);
 
   v25 = 17 * (v24 + [(FHStatementDetails *)self isMonthZero]);
   v26 = 17 * (v25 + [(FHStatementDetails *)self isMonthOne]);
   return v26 + [(FHStatementDetails *)self isMonthOfMerge]+ 0x25632BDBC201BE1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v23) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(FHStatementDetails *)self statementIdentifier];
-    v7 = [(FHStatementDetails *)v5 statementIdentifier];
-    if ([v6 isEqual:v7])
+    statementIdentifier = [(FHStatementDetails *)self statementIdentifier];
+    statementIdentifier2 = [(FHStatementDetails *)v5 statementIdentifier];
+    if ([statementIdentifier isEqual:statementIdentifier2])
     {
-      v8 = [(FHStatementDetails *)self openingDate];
-      v9 = [(FHStatementDetails *)v5 openingDate];
-      if ([v8 isEqual:v9])
+      openingDate = [(FHStatementDetails *)self openingDate];
+      openingDate2 = [(FHStatementDetails *)v5 openingDate];
+      if ([openingDate isEqual:openingDate2])
       {
-        v10 = [(FHStatementDetails *)self closingDate];
-        v11 = [(FHStatementDetails *)v5 closingDate];
-        if ([v10 isEqual:v11])
+        closingDate = [(FHStatementDetails *)self closingDate];
+        closingDate2 = [(FHStatementDetails *)v5 closingDate];
+        if ([closingDate isEqual:closingDate2])
         {
-          v12 = [(FHStatementDetails *)self remainingStatementBalance];
-          v13 = [(FHStatementDetails *)v5 remainingStatementBalance];
-          if ([v12 isEqual:v13])
+          remainingStatementBalance = [(FHStatementDetails *)self remainingStatementBalance];
+          remainingStatementBalance2 = [(FHStatementDetails *)v5 remainingStatementBalance];
+          if ([remainingStatementBalance isEqual:remainingStatementBalance2])
           {
-            v39 = v12;
-            v14 = [(FHStatementDetails *)self remainingMinimumPayment];
+            v39 = remainingStatementBalance;
+            remainingMinimumPayment = [(FHStatementDetails *)self remainingMinimumPayment];
             [(FHStatementDetails *)v5 remainingMinimumPayment];
-            v38 = v40 = v14;
-            if ([v14 isEqual:?])
+            v38 = v40 = remainingMinimumPayment;
+            if ([remainingMinimumPayment isEqual:?])
             {
-              v15 = [(FHStatementDetails *)self minimumDue];
-              v36 = [(FHStatementDetails *)v5 minimumDue];
-              v37 = v15;
-              if ([v15 isEqual:?])
+              minimumDue = [(FHStatementDetails *)self minimumDue];
+              minimumDue2 = [(FHStatementDetails *)v5 minimumDue];
+              v37 = minimumDue;
+              if ([minimumDue isEqual:?])
               {
-                v16 = [(FHStatementDetails *)self creditLimit];
-                v34 = [(FHStatementDetails *)v5 creditLimit];
-                v35 = v16;
-                if ([v16 isEqual:?])
+                creditLimit = [(FHStatementDetails *)self creditLimit];
+                creditLimit2 = [(FHStatementDetails *)v5 creditLimit];
+                v35 = creditLimit;
+                if ([creditLimit isEqual:?])
                 {
-                  v17 = [(FHStatementDetails *)self statementBalance];
-                  v32 = [(FHStatementDetails *)v5 statementBalance];
-                  v33 = v17;
-                  if ([v17 isEqual:?])
+                  statementBalance = [(FHStatementDetails *)self statementBalance];
+                  statementBalance2 = [(FHStatementDetails *)v5 statementBalance];
+                  v33 = statementBalance;
+                  if ([statementBalance isEqual:?])
                   {
-                    v18 = [(FHStatementDetails *)self currentBalance];
-                    v30 = [(FHStatementDetails *)v5 currentBalance];
-                    v31 = v18;
-                    if ([v18 isEqual:?])
+                    currentBalance = [(FHStatementDetails *)self currentBalance];
+                    currentBalance2 = [(FHStatementDetails *)v5 currentBalance];
+                    v31 = currentBalance;
+                    if ([currentBalance isEqual:?])
                     {
-                      v19 = [(FHStatementDetails *)self currentBalanceForMonthZero];
-                      v28 = [(FHStatementDetails *)v5 currentBalanceForMonthZero];
-                      v29 = v19;
-                      if ([v19 isEqual:?])
+                      currentBalanceForMonthZero = [(FHStatementDetails *)self currentBalanceForMonthZero];
+                      currentBalanceForMonthZero2 = [(FHStatementDetails *)v5 currentBalanceForMonthZero];
+                      v29 = currentBalanceForMonthZero;
+                      if ([currentBalanceForMonthZero isEqual:?])
                       {
-                        v20 = [(FHStatementDetails *)self currentStatementIdentifier];
-                        v26 = [(FHStatementDetails *)v5 currentStatementIdentifier];
-                        v27 = v20;
-                        if ([v20 isEqual:?] && (v21 = -[FHStatementDetails isMonthZero](self, "isMonthZero"), v21 == -[FHStatementDetails isMonthZero](v5, "isMonthZero")) && (v22 = -[FHStatementDetails isMonthOne](self, "isMonthOne"), v22 == -[FHStatementDetails isMonthOne](v5, "isMonthOne")))
+                        currentStatementIdentifier = [(FHStatementDetails *)self currentStatementIdentifier];
+                        currentStatementIdentifier2 = [(FHStatementDetails *)v5 currentStatementIdentifier];
+                        v27 = currentStatementIdentifier;
+                        if ([currentStatementIdentifier isEqual:?] && (v21 = -[FHStatementDetails isMonthZero](self, "isMonthZero"), v21 == -[FHStatementDetails isMonthZero](v5, "isMonthZero")) && (v22 = -[FHStatementDetails isMonthOne](self, "isMonthOne"), v22 == -[FHStatementDetails isMonthOne](v5, "isMonthOne")))
                         {
-                          v25 = [(FHStatementDetails *)self isMonthOfMerge];
-                          v23 = v25 ^ [(FHStatementDetails *)v5 isMonthOfMerge]^ 1;
+                          isMonthOfMerge = [(FHStatementDetails *)self isMonthOfMerge];
+                          v23 = isMonthOfMerge ^ [(FHStatementDetails *)v5 isMonthOfMerge]^ 1;
                         }
 
                         else
@@ -118,48 +118,48 @@
                           LOBYTE(v23) = 0;
                         }
 
-                        v12 = v39;
+                        remainingStatementBalance = v39;
                       }
 
                       else
                       {
                         LOBYTE(v23) = 0;
-                        v12 = v39;
+                        remainingStatementBalance = v39;
                       }
                     }
 
                     else
                     {
                       LOBYTE(v23) = 0;
-                      v12 = v39;
+                      remainingStatementBalance = v39;
                     }
                   }
 
                   else
                   {
                     LOBYTE(v23) = 0;
-                    v12 = v39;
+                    remainingStatementBalance = v39;
                   }
                 }
 
                 else
                 {
                   LOBYTE(v23) = 0;
-                  v12 = v39;
+                  remainingStatementBalance = v39;
                 }
               }
 
               else
               {
                 LOBYTE(v23) = 0;
-                v12 = v39;
+                remainingStatementBalance = v39;
               }
             }
 
             else
             {
               LOBYTE(v23) = 0;
-              v12 = v39;
+              remainingStatementBalance = v39;
             }
           }
 

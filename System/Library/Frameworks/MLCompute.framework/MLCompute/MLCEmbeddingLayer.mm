@@ -1,12 +1,12 @@
 @interface MLCEmbeddingLayer
 + (MLCEmbeddingLayer)layerWithDescriptor:(MLCEmbeddingDescriptor *)descriptor weights:(MLCTensor *)weights;
-- (BOOL)allocateDataForOptimizer:(id)a3;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCEmbeddingLayer)initWithDescriptor:(id)a3 weight:(id)a4;
+- (BOOL)allocateDataForOptimizer:(id)optimizer;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCEmbeddingLayer)initWithDescriptor:(id)descriptor weight:(id)weight;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
-- (unint64_t)allocatedDataSizeForTraining:(BOOL)a3 optimizer:(id)a4;
+- (unint64_t)allocatedDataSizeForTraining:(BOOL)training optimizer:(id)optimizer;
 - (void)allocateGradientsForParameters;
 - (void)linkAssociatedTensors;
 - (void)unlinkAssociatedTensors;
@@ -18,34 +18,34 @@
 {
   v6 = weights;
   v7 = descriptor;
-  v8 = [[a1 alloc] initWithDescriptor:v7 weight:v6];
+  v8 = [[self alloc] initWithDescriptor:v7 weight:v6];
 
   return v8;
 }
 
-- (MLCEmbeddingLayer)initWithDescriptor:(id)a3 weight:(id)a4
+- (MLCEmbeddingLayer)initWithDescriptor:(id)descriptor weight:(id)weight
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 paddingIndex];
+  descriptorCopy = descriptor;
+  weightCopy = weight;
+  paddingIndex = [descriptorCopy paddingIndex];
 
-  if (v9)
+  if (paddingIndex)
   {
-    v10 = [v8 descriptor];
-    v11 = [v10 stride];
-    v12 = [v8 descriptor];
-    v13 = [v11 objectAtIndexedSubscript:{objc_msgSend(v12, "dimensionCount") - 1}];
-    v14 = [v13 unsignedIntegerValue];
+    descriptor = [weightCopy descriptor];
+    stride = [descriptor stride];
+    descriptor2 = [weightCopy descriptor];
+    v13 = [stride objectAtIndexedSubscript:{objc_msgSend(descriptor2, "dimensionCount") - 1}];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-    v15 = [v7 paddingIndex];
-    v16 = [v15 unsignedIntegerValue];
-    v17 = [v7 embeddingDimension];
-    v18 = [v17 unsignedIntegerValue] * v16;
+    paddingIndex2 = [descriptorCopy paddingIndex];
+    unsignedIntegerValue2 = [paddingIndex2 unsignedIntegerValue];
+    embeddingDimension = [descriptorCopy embeddingDimension];
+    v18 = [embeddingDimension unsignedIntegerValue] * unsignedIntegerValue2;
 
-    v19 = [v8 data];
-    v20 = ([v19 bytes] + 4 * v18);
-    v21 = [v7 embeddingDimension];
-    bzero(v20, [v21 unsignedIntegerValue] * v14);
+    data = [weightCopy data];
+    v20 = ([data bytes] + 4 * v18);
+    embeddingDimension2 = [descriptorCopy embeddingDimension];
+    bzero(v20, [embeddingDimension2 unsignedIntegerValue] * unsignedIntegerValue);
   }
 
   v28.receiver = self;
@@ -54,9 +54,9 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_descriptor, a3);
-    objc_storeStrong(&v23->_weights, a4);
-    v24 = [MLCTensorParameter parameterWithTensor:v8];
+    objc_storeStrong(&v22->_descriptor, descriptor);
+    objc_storeStrong(&v23->_weights, weight);
+    v24 = [MLCTensorParameter parameterWithTensor:weightCopy];
     weightsParameter = v23->_weightsParameter;
     v23->_weightsParameter = v24;
 
@@ -69,44 +69,44 @@
   return v23;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v8 = a3;
-  v76 = a4;
-  v9 = a5;
-  v10 = [(MLCEmbeddingLayer *)self weights];
-  v74 = [v10 descriptor];
-  v11 = [v74 shape];
-  v12 = [(MLCTensor *)self->_weights descriptor];
-  v72 = v11;
-  v13 = [v11 objectAtIndexedSubscript:{objc_msgSend(v12, "dimensionCount") - 1}];
-  v14 = [v13 unsignedIntegerValue];
-  v15 = [(MLCEmbeddingLayer *)self descriptor];
-  v16 = [v15 embeddingDimension];
-  if (v14 != [v16 unsignedIntegerValue])
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  weights = [(MLCEmbeddingLayer *)self weights];
+  descriptor = [weights descriptor];
+  shape = [descriptor shape];
+  descriptor2 = [(MLCTensor *)self->_weights descriptor];
+  v72 = shape;
+  v13 = [shape objectAtIndexedSubscript:{objc_msgSend(descriptor2, "dimensionCount") - 1}];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
+  descriptor3 = [(MLCEmbeddingLayer *)self descriptor];
+  embeddingDimension = [descriptor3 embeddingDimension];
+  if (unsignedIntegerValue != [embeddingDimension unsignedIntegerValue])
   {
 
     goto LABEL_13;
   }
 
-  v65 = [(MLCEmbeddingLayer *)self weights];
-  [v65 descriptor];
-  v17 = v71 = v8;
+  weights2 = [(MLCEmbeddingLayer *)self weights];
+  [weights2 descriptor];
+  v17 = v71 = deviceCopy;
   [v17 shape];
-  v18 = v70 = v9;
-  v19 = [(MLCTensor *)self->_weights descriptor];
-  [v18 objectAtIndexedSubscript:{objc_msgSend(v19, "dimensionCount") - 2}];
-  v20 = v67 = v10;
-  v63 = [v20 unsignedIntegerValue];
-  v21 = [(MLCEmbeddingLayer *)self descriptor];
-  [v21 embeddingCount];
+  v18 = v70 = tensorCopy;
+  descriptor4 = [(MLCTensor *)self->_weights descriptor];
+  [v18 objectAtIndexedSubscript:{objc_msgSend(descriptor4, "dimensionCount") - 2}];
+  v20 = v67 = weights;
+  unsignedIntegerValue2 = [v20 unsignedIntegerValue];
+  descriptor5 = [(MLCEmbeddingLayer *)self descriptor];
+  [descriptor5 embeddingCount];
   v22 = v60 = self;
-  v61 = [v22 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v22 unsignedIntegerValue];
 
-  v9 = v70;
-  v8 = v71;
+  tensorCopy = v70;
+  deviceCopy = v71;
 
-  if (v63 != v61)
+  if (unsignedIntegerValue2 != unsignedIntegerValue3)
   {
 LABEL_13:
     v50 = +[MLCLog framework];
@@ -116,24 +116,24 @@ LABEL_13:
     }
 
     v51 = 0;
-    v34 = v76;
+    v34 = tensorsCopy;
     goto LABEL_16;
   }
 
-  v23 = [v70 descriptor];
-  v24 = [v23 shape];
-  v25 = [v70 descriptor];
-  v26 = [v24 objectAtIndexedSubscript:{objc_msgSend(v25, "dimensionCount") - 1}];
-  v27 = [v26 unsignedIntegerValue];
-  v28 = [(MLCEmbeddingLayer *)v60 descriptor];
-  v29 = [v28 embeddingDimension];
-  v30 = [v29 unsignedIntegerValue];
+  descriptor6 = [v70 descriptor];
+  shape2 = [descriptor6 shape];
+  descriptor7 = [v70 descriptor];
+  v26 = [shape2 objectAtIndexedSubscript:{objc_msgSend(descriptor7, "dimensionCount") - 1}];
+  unsignedIntegerValue4 = [v26 unsignedIntegerValue];
+  descriptor8 = [(MLCEmbeddingLayer *)v60 descriptor];
+  embeddingDimension2 = [descriptor8 embeddingDimension];
+  unsignedIntegerValue5 = [embeddingDimension2 unsignedIntegerValue];
 
-  if (v27 != v30)
+  if (unsignedIntegerValue4 != unsignedIntegerValue5)
   {
     v50 = +[MLCLog framework];
-    v8 = v71;
-    v34 = v76;
+    deviceCopy = v71;
+    v34 = tensorsCopy;
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
       [MLCEmbeddingLayer compileForDevice:a2 sourceTensors:? resultTensor:?];
@@ -142,43 +142,43 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v31 = [v70 descriptor];
-  v32 = [v31 shape];
-  v75 = [v70 descriptor];
-  v73 = [v32 objectAtIndexedSubscript:{objc_msgSend(v75, "dimensionCount") - 2}];
-  v33 = [v73 unsignedIntegerValue];
-  v34 = v76;
-  v68 = [v76 objectAtIndexedSubscript:0];
-  v66 = [v68 descriptor];
-  v35 = [v66 shape];
-  v36 = [v76 objectAtIndexedSubscript:0];
-  v37 = [v36 descriptor];
-  v38 = [v35 objectAtIndexedSubscript:{objc_msgSend(v37, "dimensionCount") - 1}];
-  v9 = v70;
-  if (v33 != [v38 unsignedIntegerValue])
+  descriptor9 = [v70 descriptor];
+  shape3 = [descriptor9 shape];
+  descriptor10 = [v70 descriptor];
+  v73 = [shape3 objectAtIndexedSubscript:{objc_msgSend(descriptor10, "dimensionCount") - 2}];
+  unsignedIntegerValue6 = [v73 unsignedIntegerValue];
+  v34 = tensorsCopy;
+  v68 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor11 = [v68 descriptor];
+  shape4 = [descriptor11 shape];
+  v36 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor12 = [v36 descriptor];
+  v38 = [shape4 objectAtIndexedSubscript:{objc_msgSend(descriptor12, "dimensionCount") - 1}];
+  tensorCopy = v70;
+  if (unsignedIntegerValue6 != [v38 unsignedIntegerValue])
   {
 
-    v8 = v71;
+    deviceCopy = v71;
     goto LABEL_21;
   }
 
-  v57 = [v70 descriptor];
-  [v57 shape];
-  v39 = v64 = v31;
+  descriptor13 = [v70 descriptor];
+  [descriptor13 shape];
+  v39 = v64 = descriptor9;
   v40 = [v39 objectAtIndexedSubscript:0];
-  v62 = [v40 unsignedIntegerValue];
-  v41 = [v76 objectAtIndexedSubscript:0];
+  unsignedIntegerValue7 = [v40 unsignedIntegerValue];
+  v41 = [tensorsCopy objectAtIndexedSubscript:0];
   [v41 descriptor];
-  v42 = v59 = v32;
-  v43 = [v42 shape];
-  v44 = [v43 objectAtIndexedSubscript:0];
-  v58 = [v44 unsignedIntegerValue];
+  v42 = v59 = shape3;
+  shape5 = [v42 shape];
+  v44 = [shape5 objectAtIndexedSubscript:0];
+  unsignedIntegerValue8 = [v44 unsignedIntegerValue];
 
-  v34 = v76;
-  v9 = v70;
+  v34 = tensorsCopy;
+  tensorCopy = v70;
 
-  v8 = v71;
-  if (v62 != v58)
+  deviceCopy = v71;
+  if (unsignedIntegerValue7 != unsignedIntegerValue8)
   {
 LABEL_21:
     v50 = +[MLCLog framework];
@@ -191,11 +191,11 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  v45 = [v76 objectAtIndexedSubscript:0];
-  v46 = [v45 descriptor];
-  v47 = [v46 dataType];
+  v45 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor14 = [v45 descriptor];
+  dataType = [descriptor14 dataType];
 
-  if (v47 != 5)
+  if (dataType != 5)
   {
     v50 = +[MLCLog framework];
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -208,10 +208,10 @@ LABEL_21:
 
   if ([v71 type] == 1 && !-[MLCLayer compileForInferenceOnly](v60, "compileForInferenceOnly"))
   {
-    v48 = [(MLCEmbeddingLayer *)v60 descriptor];
-    v49 = [v48 scalesGradientByFrequency];
+    descriptor15 = [(MLCEmbeddingLayer *)v60 descriptor];
+    scalesGradientByFrequency = [descriptor15 scalesGradientByFrequency];
 
-    if (v49)
+    if (scalesGradientByFrequency)
     {
       v50 = +[MLCLog framework];
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -221,32 +221,32 @@ LABEL_21:
 
 LABEL_19:
       v51 = 0;
-      v9 = v70;
+      tensorCopy = v70;
       goto LABEL_16;
     }
   }
 
-  v53 = [v71 computeEngine];
-  v54 = [(MLCEmbeddingLayer *)v60 descriptor];
-  v55 = [(MLCEmbeddingLayer *)v60 weights];
-  v50 = [v53 embeddingLayerWithDescriptor:v54 weights:v55 inferenceOnly:{-[MLCLayer compileForInferenceOnly](v60, "compileForInferenceOnly")}];
+  computeEngine = [v71 computeEngine];
+  descriptor16 = [(MLCEmbeddingLayer *)v60 descriptor];
+  weights3 = [(MLCEmbeddingLayer *)v60 weights];
+  v50 = [computeEngine embeddingLayerWithDescriptor:descriptor16 weights:weights3 inferenceOnly:{-[MLCLayer compileForInferenceOnly](v60, "compileForInferenceOnly")}];
 
   if (v50 && [v50 count])
   {
     v77.receiver = v60;
     v77.super_class = MLCEmbeddingLayer;
     [(MLCLayer *)&v77 bindDevice:v71 deviceOps:v50];
-    v56 = [(MLCEmbeddingLayer *)v60 weights];
-    [v56 setDevice:v71];
+    weights4 = [(MLCEmbeddingLayer *)v60 weights];
+    [weights4 setDevice:v71];
     v51 = 1;
-    v9 = v70;
+    tensorCopy = v70;
   }
 
   else
   {
-    v56 = +[MLCLog framework];
-    v9 = v70;
-    if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+    weights4 = +[MLCLog framework];
+    tensorCopy = v70;
+    if (os_log_type_enabled(weights4, OS_LOG_TYPE_ERROR))
     {
       [MLCScatterLayer compileForDevice:a2 sourceTensors:? resultTensor:?];
     }
@@ -258,18 +258,18 @@ LABEL_16:
   return v51;
 }
 
-- (BOOL)allocateDataForOptimizer:(id)a3
+- (BOOL)allocateDataForOptimizer:(id)optimizer
 {
-  v4 = a3;
-  v5 = [(MLCEmbeddingLayer *)self weightsParameter];
-  v6 = [(MLCLayer *)self device];
-  [v5 allocateDataForOptimizer:v4 device:v6 isVector:0];
+  optimizerCopy = optimizer;
+  weightsParameter = [(MLCEmbeddingLayer *)self weightsParameter];
+  device = [(MLCLayer *)self device];
+  [weightsParameter allocateDataForOptimizer:optimizerCopy device:device isVector:0];
 
-  v7 = [(MLCLayer *)self device];
-  v8 = [v7 computeEngine];
-  v9 = [(MLCLayer *)self deviceOps];
-  v10 = [(MLCEmbeddingLayer *)self weights];
-  [v8 setConvolutionLayerOptimizerDataForDeviceOps:v9 weights:v10 bias:0];
+  device2 = [(MLCLayer *)self device];
+  computeEngine = [device2 computeEngine];
+  deviceOps = [(MLCLayer *)self deviceOps];
+  weights = [(MLCEmbeddingLayer *)self weights];
+  [computeEngine setConvolutionLayerOptimizerDataForDeviceOps:deviceOps weights:weights bias:0];
 
   return 1;
 }
@@ -277,47 +277,47 @@ LABEL_16:
 - (void)allocateGradientsForParameters
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MLCLayer *)self device];
-  v4 = [v3 computeEngine];
-  v5 = [(MLCLayer *)self deviceOps];
-  v6 = [(MLCEmbeddingLayer *)self weights];
-  v9[0] = v6;
+  device = [(MLCLayer *)self device];
+  computeEngine = [device computeEngine];
+  deviceOps = [(MLCLayer *)self deviceOps];
+  weights = [(MLCEmbeddingLayer *)self weights];
+  v9[0] = weights;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v4 allocateParameterGradientsForDeviceOps:v5 parameters:v7];
+  [computeEngine allocateParameterGradientsForDeviceOps:deviceOps parameters:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)allocatedDataSizeForTraining:(BOOL)a3 optimizer:(id)a4
+- (unint64_t)allocatedDataSizeForTraining:(BOOL)training optimizer:(id)optimizer
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MLCEmbeddingLayer *)self weights];
-  v8 = [v7 descriptor];
-  v9 = [v8 tensorAllocationSizeInBytes];
+  trainingCopy = training;
+  optimizerCopy = optimizer;
+  weights = [(MLCEmbeddingLayer *)self weights];
+  descriptor = [weights descriptor];
+  tensorAllocationSizeInBytes = [descriptor tensorAllocationSizeInBytes];
 
-  if (v4)
+  if (trainingCopy)
   {
-    v9 *= [v6 numOptimizerDataBuffers] + 2;
+    tensorAllocationSizeInBytes *= [optimizerCopy numOptimizerDataBuffers] + 2;
   }
 
-  return v9;
+  return tensorAllocationSizeInBytes;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v4 = [a3 objectAtIndexedSubscript:0];
-  v5 = [v4 descriptor];
-  v6 = [v5 shape];
-  v7 = [v6 mutableCopy];
+  v4 = [sources objectAtIndexedSubscript:0];
+  descriptor = [v4 descriptor];
+  shape = [descriptor shape];
+  v7 = [shape mutableCopy];
 
-  v8 = [(MLCEmbeddingLayer *)self descriptor];
-  v9 = [v8 embeddingDimension];
-  [v7 addObject:v9];
+  descriptor2 = [(MLCEmbeddingLayer *)self descriptor];
+  embeddingDimension = [descriptor2 embeddingDimension];
+  [v7 addObject:embeddingDimension];
 
-  v10 = [(MLCEmbeddingLayer *)self weights];
-  v11 = [v10 descriptor];
-  v12 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v7, [v11 dataType]);
+  weights = [(MLCEmbeddingLayer *)self weights];
+  descriptor3 = [weights descriptor];
+  v12 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v7, [descriptor3 dataType]);
 
   v13 = [MLCTensor tensorWithDescriptor:v12];
 
@@ -329,10 +329,10 @@ LABEL_16:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCEmbeddingLayer *)self descriptor];
-  v7 = [(MLCEmbeddingLayer *)self weights];
-  v8 = [(MLCLayer *)self resultTensors];
-  v9 = [v3 stringWithFormat:@"%@: { descriptor=%@ : weight=%@ : resultTensor=%@ }", v5, v6, v7, v8];
+  descriptor = [(MLCEmbeddingLayer *)self descriptor];
+  weights = [(MLCEmbeddingLayer *)self weights];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v9 = [v3 stringWithFormat:@"%@: { descriptor=%@ : weight=%@ : resultTensor=%@ }", v5, descriptor, weights, resultTensors];
 
   return v9;
 }
@@ -342,35 +342,35 @@ LABEL_16:
   v17 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v15 = NSStringFromClass(v3);
-  v16 = [(MLCLayer *)self layerID];
-  v19 = [(MLCEmbeddingLayer *)self descriptor];
-  v4 = [v19 embeddingCount];
-  v18 = [(MLCEmbeddingLayer *)self descriptor];
-  v5 = [v18 embeddingDimension];
-  v6 = [(MLCEmbeddingLayer *)self descriptor];
-  v7 = [v6 paddingIndex];
-  v8 = [(MLCEmbeddingLayer *)self descriptor];
-  v9 = [v8 maximumNorm];
-  v10 = [(MLCEmbeddingLayer *)self descriptor];
-  v11 = [v10 pNorm];
-  v12 = [(MLCEmbeddingLayer *)self descriptor];
-  v13 = [v17 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Embedding Count: %@    Embedding Dimension: %@<BR />PaddingIndex: %@   Maximum Norm: %@   P Norm: %@<BR />Scale Gradient By Frequency: %hhd</FONT>>", v15, v16, v4, v5, v7, v9, v11, objc_msgSend(v12, "scalesGradientByFrequency")];
+  layerID = [(MLCLayer *)self layerID];
+  descriptor = [(MLCEmbeddingLayer *)self descriptor];
+  embeddingCount = [descriptor embeddingCount];
+  descriptor2 = [(MLCEmbeddingLayer *)self descriptor];
+  embeddingDimension = [descriptor2 embeddingDimension];
+  descriptor3 = [(MLCEmbeddingLayer *)self descriptor];
+  paddingIndex = [descriptor3 paddingIndex];
+  descriptor4 = [(MLCEmbeddingLayer *)self descriptor];
+  maximumNorm = [descriptor4 maximumNorm];
+  descriptor5 = [(MLCEmbeddingLayer *)self descriptor];
+  pNorm = [descriptor5 pNorm];
+  descriptor6 = [(MLCEmbeddingLayer *)self descriptor];
+  v13 = [v17 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Embedding Count: %@    Embedding Dimension: %@<BR />PaddingIndex: %@   Maximum Norm: %@   P Norm: %@<BR />Scale Gradient By Frequency: %hhd</FONT>>", v15, layerID, embeddingCount, embeddingDimension, paddingIndex, maximumNorm, pNorm, objc_msgSend(descriptor6, "scalesGradientByFrequency")];
 
   return v13;
 }
 
 - (void)linkAssociatedTensors
 {
-  v4 = [(MLCEmbeddingLayer *)self weights];
-  v3 = [v4 childLayers];
-  [v3 addObject:self];
+  weights = [(MLCEmbeddingLayer *)self weights];
+  childLayers = [weights childLayers];
+  [childLayers addObject:self];
 }
 
 - (void)unlinkAssociatedTensors
 {
-  v4 = [(MLCEmbeddingLayer *)self weights];
-  v3 = [v4 childLayers];
-  [v3 removeObject:self];
+  weights = [(MLCEmbeddingLayer *)self weights];
+  childLayers = [weights childLayers];
+  [childLayers removeObject:self];
 }
 
 - (void)compileForDevice:(const char *)a1 sourceTensors:resultTensor:.cold.1(const char *a1)

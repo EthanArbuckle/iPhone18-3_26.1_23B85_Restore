@@ -1,38 +1,38 @@
 @interface _CPLPrequeliteHasCompletedGeneration
-- (_CPLPrequeliteHasCompletedGeneration)initWithSQL:(id)a3 generation:(int64_t)a4 now:(id)a5;
-- (int)bindWithStatement:(sqlite3_stmt *)a3 startingAtIndex:(int)a4;
+- (_CPLPrequeliteHasCompletedGeneration)initWithSQL:(id)l generation:(int64_t)generation now:(id)now;
+- (int)bindWithStatement:(sqlite3_stmt *)statement startingAtIndex:(int)index;
 @end
 
 @implementation _CPLPrequeliteHasCompletedGeneration
 
-- (_CPLPrequeliteHasCompletedGeneration)initWithSQL:(id)a3 generation:(int64_t)a4 now:(id)a5
+- (_CPLPrequeliteHasCompletedGeneration)initWithSQL:(id)l generation:(int64_t)generation now:(id)now
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  nowCopy = now;
   v14.receiver = self;
   v14.super_class = _CPLPrequeliteHasCompletedGeneration;
   v11 = [(_CPLPrequeliteHasCompletedGeneration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_generation = a4;
-    objc_storeStrong(&v11->_sql, a3);
-    objc_storeStrong(&v12->_now, a5);
+    v11->_generation = generation;
+    objc_storeStrong(&v11->_sql, l);
+    objc_storeStrong(&v12->_now, now);
   }
 
   return v12;
 }
 
-- (int)bindWithStatement:(sqlite3_stmt *)a3 startingAtIndex:(int)a4
+- (int)bindWithStatement:(sqlite3_stmt *)statement startingAtIndex:(int)index
 {
-  sqlite3_bind_int64(a3, a4, self->_generation);
+  sqlite3_bind_int64(statement, index, self->_generation);
   now = self->_now;
   if (!now)
   {
     return 1;
   }
 
-  [(PQLBindable *)now sqliteBind:a3 index:(a4 + 1)];
+  [(PQLBindable *)now sqliteBind:statement index:(index + 1)];
   return 2;
 }
 

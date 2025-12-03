@@ -1,57 +1,57 @@
 @interface VCPSimpleMovieAssetWriter
-+ (id)assetWriterWithURL:(id)a3;
-+ (id)assetWriterWithURL:(id)a3 orientation:(unsigned int)a4;
-- (CGAffineTransform)trackMatrixForWidth:(SEL)a3 height:(unint64_t)a4 orientation:(unint64_t)a5;
-- (VCPSimpleMovieAssetWriter)initWithURL:(id)a3 orientation:(unsigned int)a4;
++ (id)assetWriterWithURL:(id)l;
++ (id)assetWriterWithURL:(id)l orientation:(unsigned int)orientation;
+- (CGAffineTransform)trackMatrixForWidth:(SEL)width height:(unint64_t)height orientation:(unint64_t)orientation;
+- (VCPSimpleMovieAssetWriter)initWithURL:(id)l orientation:(unsigned int)orientation;
 - (id).cxx_construct;
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4;
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4;
-- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)a3 transform:(CGAffineTransform *)a4;
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time;
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)description transform:(CGAffineTransform *)transform;
 - (int)finish;
 - (opaqueCMSampleBuffer)popSample;
 - (void)dealloc;
 - (void)processMediaRequest;
-- (void)pushSample:(opaqueCMSampleBuffer *)a3;
+- (void)pushSample:(opaqueCMSampleBuffer *)sample;
 @end
 
 @implementation VCPSimpleMovieAssetWriter
 
-- (VCPSimpleMovieAssetWriter)initWithURL:(id)a3 orientation:(unsigned int)a4
+- (VCPSimpleMovieAssetWriter)initWithURL:(id)l orientation:(unsigned int)orientation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v34.receiver = self;
   v34.super_class = VCPSimpleMovieAssetWriter;
   v7 = [(VCPSimpleMovieAssetWriter *)&v34 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v6 path];
-    v10 = [v8 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     if (v10)
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v6 path];
+        path2 = [lCopy path];
         *buf = 138412290;
-        v36 = v11;
+        v36 = path2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Removing existing file at path %@", buf, 0xCu);
       }
 
-      v12 = [v6 path];
+      path3 = [lCopy path];
       v33 = 0;
-      v13 = [v8 removeItemAtPath:v12 error:&v33];
+      v13 = [defaultManager removeItemAtPath:path3 error:&v33];
       v14 = v33;
 
       if ((v13 & 1) == 0)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v15 = [v6 path];
+          path4 = [lCopy path];
           v16 = [v14 description];
           *buf = 138412546;
-          v36 = v15;
+          v36 = path4;
           v37 = 2112;
           v38 = v16;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to remove existing file at path %@ (%@)", buf, 0x16u);
@@ -71,7 +71,7 @@ LABEL_18:
 
     v17 = *MEMORY[0x1E69874C0];
     v32 = v14;
-    v18 = [MEMORY[0x1E6987ED8] assetWriterWithURL:v6 fileType:v17 error:&v32];
+    v18 = [MEMORY[0x1E6987ED8] assetWriterWithURL:lCopy fileType:v17 error:&v32];
     v19 = v32;
 
     writer = v7->_writer;
@@ -91,9 +91,9 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sampleQueue = v7->_sampleQueue;
-    v7->_sampleQueue = v21;
+    v7->_sampleQueue = array;
 
     v23 = dispatch_semaphore_create(5);
     enqueueSemaphore = v7->_enqueueSemaphore;
@@ -108,7 +108,7 @@ LABEL_18:
     v7->_completionSemaphore = v27;
 
     atomic_store(1u, &v7->_status);
-    v7->_orientation = a4;
+    v7->_orientation = orientation;
   }
 
   v29 = v7;
@@ -117,19 +117,19 @@ LABEL_19:
   return v29;
 }
 
-+ (id)assetWriterWithURL:(id)a3 orientation:(unsigned int)a4
++ (id)assetWriterWithURL:(id)l orientation:(unsigned int)orientation
 {
-  v4 = *&a4;
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithURL:v5 orientation:v4];
+  v4 = *&orientation;
+  lCopy = l;
+  v6 = [objc_alloc(objc_opt_class()) initWithURL:lCopy orientation:v4];
 
   return v6;
 }
 
-+ (id)assetWriterWithURL:(id)a3
++ (id)assetWriterWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_opt_class() assetWriterWithURL:v3 orientation:1];
+  lCopy = l;
+  v4 = [objc_opt_class() assetWriterWithURL:lCopy orientation:1];
 
   return v4;
 }
@@ -155,14 +155,14 @@ LABEL_19:
   [(VCPSimpleMovieAssetWriter *)&v4 dealloc];
 }
 
-- (void)pushSample:(opaqueCMSampleBuffer *)a3
+- (void)pushSample:(opaqueCMSampleBuffer *)sample
 {
   dispatch_semaphore_wait(self->_enqueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (sample)
   {
     v5 = self->_sampleQueue;
     objc_sync_enter(v5);
-    [(NSMutableArray *)self->_sampleQueue addObject:a3];
+    [(NSMutableArray *)self->_sampleQueue addObject:sample];
     objc_sync_exit(v5);
   }
 
@@ -200,9 +200,9 @@ LABEL_19:
   {
     while (1)
     {
-      v6 = [(VCPSimpleMovieAssetWriter *)self popSample];
+      popSample = [(VCPSimpleMovieAssetWriter *)self popSample];
       input = self->_input;
-      if (!v6)
+      if (!popSample)
       {
         [(AVAssetWriterInput *)input markAsFinished];
         writer = self->_writer;
@@ -220,7 +220,7 @@ LABEL_19:
         break;
       }
 
-      CF<__CVBuffer *>::~CF(&v6);
+      CF<__CVBuffer *>::~CF(&popSample);
       if (![(AVAssetWriterInput *)self->_input isReadyForMoreMediaData])
       {
         return;
@@ -231,17 +231,17 @@ LABEL_19:
     [(AVAssetWriter *)self->_writer cancelWriting];
     dispatch_semaphore_signal(self->_completionSemaphore);
 LABEL_8:
-    CF<__CVBuffer *>::~CF(&v6);
+    CF<__CVBuffer *>::~CF(&popSample);
   }
 }
 
-- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)a3 transform:(CGAffineTransform *)a4
+- (int)createAssetWriterInputWithFormatDescription:(opaqueCMFormatDescription *)description transform:(CGAffineTransform *)transform
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v23 = *MEMORY[0x1E6987CB0];
   v24[0] = *MEMORY[0x1E6987CE8];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  v8 = [MEMORY[0x1E6987EE0] assetWriterInputWithMediaType:*MEMORY[0x1E6987608] outputSettings:v7 sourceFormatHint:a3];
+  v8 = [MEMORY[0x1E6987EE0] assetWriterInputWithMediaType:*MEMORY[0x1E6987608] outputSettings:v7 sourceFormatHint:description];
   input = self->_input;
   self->_input = v8;
 
@@ -259,10 +259,10 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v11 = *&a4->c;
-  *buf = *&a4->a;
+  v11 = *&transform->c;
+  *buf = *&transform->a;
   v21 = v11;
-  v22 = *&a4->tx;
+  v22 = *&transform->tx;
   [(AVAssetWriterInput *)v10 setTransform:buf];
   [(AVAssetWriter *)self->_writer addInput:self->_input];
   if (![(AVAssetWriter *)self->_writer startWriting])
@@ -301,7 +301,7 @@ LABEL_12:
   return v15;
 }
 
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   v17[4] = *MEMORY[0x1E69E9840];
   p_pixelBufferPool = &self->_pixelBufferPool;
@@ -312,13 +312,13 @@ LABEL_12:
 
   fwrite("[WARNING] Pixel buffers are not IOSurface-backed; copying\n", 0x3AuLL, 1uLL, *MEMORY[0x1E69E9848]);
   v16[0] = *MEMORY[0x1E6966130];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(a3)];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(buffer)];
   v17[0] = v11;
   v16[1] = *MEMORY[0x1E6966208];
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(a3)];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(buffer)];
   v17[1] = v12;
   v16[2] = *MEMORY[0x1E69660B8];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(a3)];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(buffer)];
   v16[3] = *MEMORY[0x1E69660D8];
   v17[2] = v13;
   v17[3] = MEMORY[0x1E695E0F8];
@@ -339,10 +339,10 @@ LABEL_2:
     p_transferSession = &self->_transferSession;
     if (value || (PixelBuffer = VTPixelTransferSessionCreate(0, &p_transferSession->value_)) == 0)
     {
-      PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, p_pixelBufferPool->value_, a4);
+      PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, p_pixelBufferPool->value_, pixelBuffer);
       if (!PixelBuffer)
       {
-        return VTPixelTransferSessionTransferImage(p_transferSession->value_, a3, *a4);
+        return VTPixelTransferSessionTransferImage(p_transferSession->value_, buffer, *pixelBuffer);
       }
     }
   }
@@ -350,13 +350,13 @@ LABEL_2:
   return PixelBuffer;
 }
 
-- (CGAffineTransform)trackMatrixForWidth:(SEL)a3 height:(unint64_t)a4 orientation:(unint64_t)a5
+- (CGAffineTransform)trackMatrixForWidth:(SEL)width height:(unint64_t)height orientation:(unint64_t)orientation
 {
   if (a6 <= 4)
   {
     if (a6 == 2)
     {
-      v6 = a4;
+      orientationCopy4 = height;
       retstr->a = -1.0;
       retstr->b = 0.0;
       retstr->c = 0.0;
@@ -368,13 +368,13 @@ LABEL_2:
     {
       if (a6 == 4)
       {
-        v7 = a5;
+        heightCopy3 = orientation;
         retstr->b = 0.0;
         retstr->c = 0.0;
         retstr->a = 1.0;
         *&retstr->d = xmmword_1C9F60600;
 LABEL_12:
-        retstr->ty = v7;
+        retstr->ty = heightCopy3;
         return self;
       }
 
@@ -387,15 +387,15 @@ LABEL_15:
       return self;
     }
 
-    v10 = a4;
-    v11 = a5;
+    orientationCopy3 = height;
+    heightCopy4 = orientation;
     retstr->a = -1.0;
     retstr->b = 0.0;
     retstr->c = 0.0;
     retstr->d = -1.0;
 LABEL_19:
-    retstr->tx = v10;
-    retstr->ty = v11;
+    retstr->tx = orientationCopy3;
+    retstr->ty = heightCopy4;
     return self;
   }
 
@@ -405,7 +405,7 @@ LABEL_19:
     {
       if (a6 == 8)
       {
-        v7 = a4;
+        heightCopy3 = height;
         *&retstr->a = xmmword_1C9F60790;
         retstr->d = 0.0;
         retstr->tx = 0.0;
@@ -416,8 +416,8 @@ LABEL_19:
       goto LABEL_15;
     }
 
-    v10 = a5;
-    v11 = a4;
+    orientationCopy3 = orientation;
+    heightCopy4 = height;
     *&retstr->a = xmmword_1C9F60790;
     *&retstr->c = xmmword_1C9F60600;
     goto LABEL_19;
@@ -425,11 +425,11 @@ LABEL_19:
 
   if (a6 != 5)
   {
-    v6 = a5;
+    orientationCopy4 = orientation;
     *&retstr->a = xmmword_1C9F61010;
     *&retstr->c = xmmword_1C9F60600;
 LABEL_14:
-    retstr->tx = v6;
+    retstr->tx = orientationCopy4;
     retstr->ty = 0.0;
     return self;
   }
@@ -442,9 +442,9 @@ LABEL_14:
   return self;
 }
 
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time
 {
-  if (!a3)
+  if (!buffer)
   {
     return -50;
   }
@@ -453,17 +453,17 @@ LABEL_14:
   if (v5 == 1)
   {
     formatDescriptionOut = 0;
-    v8 = CMVideoFormatDescriptionCreateForImageBuffer(0, a3, &formatDescriptionOut);
+    v8 = CMVideoFormatDescriptionCreateForImageBuffer(0, buffer, &formatDescriptionOut);
     if (v8)
     {
       goto LABEL_20;
     }
 
-    Width = CVPixelBufferGetWidth(a3);
+    Width = CVPixelBufferGetWidth(buffer);
     v16 = 0u;
     v17 = 0u;
     v15 = 0u;
-    [(VCPSimpleMovieAssetWriter *)self trackMatrixForWidth:Width height:CVPixelBufferGetHeight(a3) orientation:self->_orientation];
+    [(VCPSimpleMovieAssetWriter *)self trackMatrixForWidth:Width height:CVPixelBufferGetHeight(buffer) orientation:self->_orientation];
     if (!self->_input)
     {
       *&sampleTiming.duration.value = v15;
@@ -478,19 +478,19 @@ LABEL_14:
 
     *&sampleTiming.duration.value = *MEMORY[0x1E6960C70];
     sampleTiming.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-    sampleTiming.presentationTimeStamp = *a4;
+    sampleTiming.presentationTimeStamp = *time;
     sampleTiming.decodeTimeStamp = sampleTiming.duration;
     cf = 0;
-    if (CVPixelBufferGetIOSurface(a3))
+    if (CVPixelBufferGetIOSurface(buffer))
     {
       v12 = 0;
-      cf = CFRetain(a3);
+      cf = CFRetain(buffer);
       CF<__CVBuffer *>::~CF(&v12);
     }
 
     else
     {
-      v8 = [(VCPSimpleMovieAssetWriter *)self copyPixelBuffer:a3 toPixelBuffer:&cf];
+      v8 = [(VCPSimpleMovieAssetWriter *)self copyPixelBuffer:buffer toPixelBuffer:&cf];
       if (v8)
       {
 LABEL_19:

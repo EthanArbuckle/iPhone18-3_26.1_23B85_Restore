@@ -1,28 +1,28 @@
 @interface INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsNotebookGroupPresent:(BOOL)a3;
-- (void)setHasIsNotebookPayloadPresent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsNotebookGroupPresent:(BOOL)present;
+- (void)setHasIsNotebookPayloadPresent:(BOOL)present;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals
 
-- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals;
   v5 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"commonIndependent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"commonIndependent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,21 +30,21 @@
       [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)v5 setCommonIndependent:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isNotebookTitlePresent"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isNotebookTitlePresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals setIsNotebookTitlePresent:](v5, "setIsNotebookTitlePresent:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isNotebookPayloadPresent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isNotebookPayloadPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals setIsNotebookPayloadPresent:](v5, "setIsNotebookPayloadPresent:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isNotebookGroupPresent"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isNotebookGroupPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,20 +93,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_commonIndependent)
   {
-    v4 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    commonIndependent = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
+    dictionaryRepresentation = [commonIndependent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"commonIndependent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"commonIndependent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"commonIndependent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"commonIndependent"];
     }
   }
 
@@ -114,7 +114,7 @@
   if ((v7 & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals isNotebookGroupPresent](self, "isNotebookGroupPresent")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isNotebookGroupPresent"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isNotebookGroupPresent"];
 
     v7 = *(&self->_isNotebookGroupPresent + 1);
     if ((v7 & 2) == 0)
@@ -135,19 +135,19 @@ LABEL_8:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals isNotebookPayloadPresent](self, "isNotebookPayloadPresent")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isNotebookPayloadPresent"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isNotebookPayloadPresent"];
 
   if (*(&self->_isNotebookGroupPresent + 1))
   {
 LABEL_9:
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals isNotebookTitlePresent](self, "isNotebookTitlePresent")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isNotebookTitlePresent"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isNotebookTitlePresent"];
   }
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -191,30 +191,30 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
-  v6 = [v4 commonIndependent];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  commonIndependent = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
+  commonIndependent2 = [equalCopy commonIndependent];
+  v7 = commonIndependent2;
+  if ((commonIndependent != 0) == (commonIndependent2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
-  if (v8)
+  commonIndependent3 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
+  if (commonIndependent3)
   {
-    v9 = v8;
-    v10 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
-    v11 = [v4 commonIndependent];
-    v12 = [v10 isEqual:v11];
+    v9 = commonIndependent3;
+    commonIndependent4 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
+    commonIndependent5 = [equalCopy commonIndependent];
+    v12 = [commonIndependent4 isEqual:commonIndependent5];
 
     if (!v12)
     {
@@ -227,7 +227,7 @@ LABEL_4:
   }
 
   v13 = *(&self->_isNotebookGroupPresent + 1);
-  v14 = v4[19];
+  v14 = equalCopy[19];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -238,13 +238,13 @@ LABEL_20:
   if (v13)
   {
     isNotebookTitlePresent = self->_isNotebookTitlePresent;
-    if (isNotebookTitlePresent != [v4 isNotebookTitlePresent])
+    if (isNotebookTitlePresent != [equalCopy isNotebookTitlePresent])
     {
       goto LABEL_20;
     }
 
     v13 = *(&self->_isNotebookGroupPresent + 1);
-    v14 = v4[19];
+    v14 = equalCopy[19];
   }
 
   v16 = (v13 >> 1) & 1;
@@ -256,10 +256,10 @@ LABEL_20:
   if (v16)
   {
     isNotebookPayloadPresent = self->_isNotebookPayloadPresent;
-    if (isNotebookPayloadPresent == [v4 isNotebookPayloadPresent])
+    if (isNotebookPayloadPresent == [equalCopy isNotebookPayloadPresent])
     {
       v13 = *(&self->_isNotebookGroupPresent + 1);
-      v14 = v4[19];
+      v14 = equalCopy[19];
       goto LABEL_16;
     }
 
@@ -276,7 +276,7 @@ LABEL_16:
   if (v18)
   {
     isNotebookGroupPresent = self->_isNotebookGroupPresent;
-    if (isNotebookGroupPresent != [v4 isNotebookGroupPresent])
+    if (isNotebookGroupPresent != [equalCopy isNotebookGroupPresent])
     {
       goto LABEL_20;
     }
@@ -288,14 +288,14 @@ LABEL_21:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
+  toCopy = to;
+  commonIndependent = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
 
-  if (v4)
+  if (commonIndependent)
   {
-    v5 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
+    commonIndependent2 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent];
     PBDataWriterWriteSubmessage();
   }
 
@@ -306,24 +306,24 @@ LABEL_21:
     v6 = *(&self->_isNotebookGroupPresent + 1);
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((v6 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
     v6 = *(&self->_isNotebookGroupPresent + 1);
   }
 
   if ((v6 & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasIsNotebookGroupPresent:(BOOL)a3
+- (void)setHasIsNotebookGroupPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 4;
   }
@@ -336,9 +336,9 @@ LABEL_21:
   *(&self->_isNotebookGroupPresent + 1) = *(&self->_isNotebookGroupPresent + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsNotebookPayloadPresent:(BOOL)a3
+- (void)setHasIsNotebookPayloadPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 2;
   }
@@ -351,17 +351,17 @@ LABEL_21:
   *(&self->_isNotebookGroupPresent + 1) = *(&self->_isNotebookGroupPresent + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self commonIndependent:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(INFERENCESchemaINFERENCENotebookAppSelectionTrainingIndependentSignals *)self deleteCommonIndependent];
   }

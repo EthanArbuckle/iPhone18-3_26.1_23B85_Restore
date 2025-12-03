@@ -1,10 +1,10 @@
 @interface BCSParsingServiceConnection
 - (NSXPCConnection)parsingServiceConnection;
 - (void)dealloc;
-- (void)parseQRCodeFeature:(id)a3 withReply:(id)a4;
-- (void)parseQRCodeMetadata:(id)a3 withReply:(id)a4;
-- (void)parseQRCodeString:(id)a3 withReply:(id)a4;
-- (void)setPreferredBundleIdentifier:(id)a3 forURL:(id)a4;
+- (void)parseQRCodeFeature:(id)feature withReply:(id)reply;
+- (void)parseQRCodeMetadata:(id)metadata withReply:(id)reply;
+- (void)parseQRCodeString:(id)string withReply:(id)reply;
+- (void)setPreferredBundleIdentifier:(id)identifier forURL:(id)l;
 @end
 
 @implementation BCSParsingServiceConnection
@@ -17,25 +17,25 @@
   [(BCSParsingServiceConnection *)&v3 dealloc];
 }
 
-- (void)parseQRCodeString:(id)a3 withReply:(id)a4
+- (void)parseQRCodeString:(id)string withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCSParsingServiceConnection *)self parsingServiceConnection];
+  replyCopy = reply;
+  stringCopy = string;
+  parsingServiceConnection = [(BCSParsingServiceConnection *)self parsingServiceConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__BCSParsingServiceConnection_parseQRCodeString_withReply___block_invoke;
   v14[3] = &unk_278CFED28;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [parsingServiceConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__BCSParsingServiceConnection_parseQRCodeString_withReply___block_invoke_1;
   v12[3] = &unk_278CFF1C0;
   v13 = v9;
   v11 = v9;
-  [v10 parseQRCodeString:v7 withReply:v12];
+  [v10 parseQRCodeString:stringCopy withReply:v12];
 }
 
 void __59__BCSParsingServiceConnection_parseQRCodeString_withReply___block_invoke(uint64_t a1, void *a2)
@@ -49,25 +49,25 @@ void __59__BCSParsingServiceConnection_parseQRCodeString_withReply___block_invok
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)parseQRCodeMetadata:(id)a3 withReply:(id)a4
+- (void)parseQRCodeMetadata:(id)metadata withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCSParsingServiceConnection *)self parsingServiceConnection];
+  replyCopy = reply;
+  metadataCopy = metadata;
+  parsingServiceConnection = [(BCSParsingServiceConnection *)self parsingServiceConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__BCSParsingServiceConnection_parseQRCodeMetadata_withReply___block_invoke;
   v14[3] = &unk_278CFED28;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [parsingServiceConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__BCSParsingServiceConnection_parseQRCodeMetadata_withReply___block_invoke_3;
   v12[3] = &unk_278CFF1C0;
   v13 = v9;
   v11 = v9;
-  [v10 parseQRCodeMetadata:v7 withReply:v12];
+  [v10 parseQRCodeMetadata:metadataCopy withReply:v12];
 }
 
 void __61__BCSParsingServiceConnection_parseQRCodeMetadata_withReply___block_invoke(uint64_t a1, void *a2)
@@ -81,25 +81,25 @@ void __61__BCSParsingServiceConnection_parseQRCodeMetadata_withReply___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)parseQRCodeFeature:(id)a3 withReply:(id)a4
+- (void)parseQRCodeFeature:(id)feature withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCSParsingServiceConnection *)self parsingServiceConnection];
+  replyCopy = reply;
+  featureCopy = feature;
+  parsingServiceConnection = [(BCSParsingServiceConnection *)self parsingServiceConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__BCSParsingServiceConnection_parseQRCodeFeature_withReply___block_invoke;
   v14[3] = &unk_278CFED28;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [parsingServiceConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__BCSParsingServiceConnection_parseQRCodeFeature_withReply___block_invoke_4;
   v12[3] = &unk_278CFF1C0;
   v13 = v9;
   v11 = v9;
-  [v10 parseQRCodeFeature:v7 withReply:v12];
+  [v10 parseQRCodeFeature:featureCopy withReply:v12];
 }
 
 void __60__BCSParsingServiceConnection_parseQRCodeFeature_withReply___block_invoke(uint64_t a1, void *a2)
@@ -124,13 +124,13 @@ void __113__BCSParsingServiceConnection_decodeAppClipCodeURLWithEncodedData_codi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setPreferredBundleIdentifier:(id)a3 forURL:(id)a4
+- (void)setPreferredBundleIdentifier:(id)identifier forURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BCSParsingServiceConnection *)self parsingServiceConnection];
-  v8 = [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
-  [v8 setPreferredBundleIdentifier:v7 forURL:v6];
+  lCopy = l;
+  identifierCopy = identifier;
+  parsingServiceConnection = [(BCSParsingServiceConnection *)self parsingServiceConnection];
+  v8 = [parsingServiceConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
+  [v8 setPreferredBundleIdentifier:identifierCopy forURL:lCopy];
 }
 
 void __67__BCSParsingServiceConnection_setPreferredBundleIdentifier_forURL___block_invoke(uint64_t a1, void *a2)

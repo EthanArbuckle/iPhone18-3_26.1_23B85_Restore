@@ -1,22 +1,22 @@
 @interface FBSApplicationTrustFacade
-- (unint64_t)trustStateForApplication:(id)a3;
+- (unint64_t)trustStateForApplication:(id)application;
 @end
 
 @implementation FBSApplicationTrustFacade
 
-- (unint64_t)trustStateForApplication:(id)a3
+- (unint64_t)trustStateForApplication:(id)application
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  applicationCopy = application;
   if (!self->_legacyProvider)
   {
     v6 = [FBSLegacySignatureValidationService alloc];
     v7 = +[FBSProfileManager sharedInstance];
-    v8 = [v5 signerIdentity];
-    v9 = [v7 profilesForSignerIdentity:v8];
+    signerIdentity = [applicationCopy signerIdentity];
+    v9 = [v7 profilesForSignerIdentity:signerIdentity];
     v10 = +[FBSProfileManager sharedInstance];
-    v11 = [v5 bundleIdentifier];
-    v12 = -[FBSLegacySignatureValidationService initWithApplicationInfo:andProvisioningProfiles:isManaged:](v6, "initWithApplicationInfo:andProvisioningProfiles:isManaged:", v5, v9, [v10 isManaged:v11]);
+    bundleIdentifier = [applicationCopy bundleIdentifier];
+    v12 = -[FBSLegacySignatureValidationService initWithApplicationInfo:andProvisioningProfiles:isManaged:](v6, "initWithApplicationInfo:andProvisioningProfiles:isManaged:", applicationCopy, v9, [v10 isManaged:bundleIdentifier]);
     legacyProvider = self->_legacyProvider;
     self->_legacyProvider = v12;
   }
@@ -37,19 +37,19 @@
     [(FBSSignatureValidationService *)self->_authoritativeProvider setAuthoritative:1];
   }
 
-  v18 = [(FBSApplicationTrustDataProvider *)self->_modernProvider trustStateForApplication:v5];
-  v19 = [(FBSApplicationTrustDataProvider *)self->_legacyProvider trustStateForApplication:v5];
-  v20 = [(FBSSignatureValidationService *)self->_authoritativeProvider trustStateForApplication:v5];
+  v18 = [(FBSApplicationTrustDataProvider *)self->_modernProvider trustStateForApplication:applicationCopy];
+  v19 = [(FBSApplicationTrustDataProvider *)self->_legacyProvider trustStateForApplication:applicationCopy];
+  v20 = [(FBSSignatureValidationService *)self->_authoritativeProvider trustStateForApplication:applicationCopy];
   v21 = FBLogCommon();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v5 bundleIdentifier];
+    bundleIdentifier2 = [applicationCopy bundleIdentifier];
     v23 = NSStringFromFBSApplicationTrustState(v19);
     NSStringFromFBSApplicationTrustState(v18);
     v24 = v37 = a2;
     v25 = NSStringFromFBSApplicationTrustState(v20);
     *buf = 138413058;
-    v39 = v22;
+    v39 = bundleIdentifier2;
     v40 = 2112;
     v41 = v23;
     v42 = 2112;

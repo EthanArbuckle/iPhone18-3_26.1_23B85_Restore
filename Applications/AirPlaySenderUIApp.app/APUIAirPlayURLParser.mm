@@ -1,18 +1,18 @@
 @interface APUIAirPlayURLParser
-+ (id)setupPayloadFromAirPlayURL:(id)a3;
++ (id)setupPayloadFromAirPlayURL:(id)l;
 @end
 
 @implementation APUIAirPlayURLParser
 
-+ (id)setupPayloadFromAirPlayURL:(id)a3
++ (id)setupPayloadFromAirPlayURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if (dword_100022680 <= 50 && (dword_100022680 != -1 || _LogCategory_Initialize()))
   {
-    sub_10000C7C0(v3);
+    sub_10000C7C0(lCopy);
   }
 
-  v4 = [NSURLComponents componentsWithString:v3];
+  v4 = [NSURLComponents componentsWithString:lCopy];
   if (!v4)
   {
     sub_10000C90C();
@@ -26,8 +26,8 @@ LABEL_56:
     sub_10000C824(v4);
   }
 
-  v5 = [v4 scheme];
-  v6 = [v5 isEqualToString:@"airplay"];
+  scheme = [v4 scheme];
+  v6 = [scheme isEqualToString:@"airplay"];
 
   if ((v6 & 1) == 0)
   {
@@ -40,8 +40,8 @@ LABEL_56:
     sub_10000C898(v4);
   }
 
-  v7 = [v4 host];
-  v8 = [v7 isEqualToString:@"setup"];
+  host = [v4 host];
+  v8 = [host isEqualToString:@"setup"];
 
   if ((v8 & 1) == 0)
   {
@@ -54,13 +54,13 @@ LABEL_56:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [v4 queryItems];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  queryItems = [v4 queryItems];
+  v11 = [queryItems countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
     v21 = v4;
-    v22 = v3;
+    v22 = lCopy;
     v13 = *v24;
     while (2)
     {
@@ -68,13 +68,13 @@ LABEL_56:
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(queryItems);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 name];
-        v17 = [v15 value];
-        v18 = [v17 lengthOfBytesUsingEncoding:4];
+        name = [v15 name];
+        value = [v15 value];
+        v18 = [value lengthOfBytesUsingEncoding:4];
         if (!v18)
         {
 LABEL_47:
@@ -85,68 +85,68 @@ LABEL_47:
         }
 
         v19 = v18;
-        if ([v16 isEqualToString:@"bt"])
+        if ([name isEqualToString:@"bt"])
         {
           if (v19 > 0x80)
           {
             goto LABEL_47;
           }
 
-          [v9 setBrokerToken:v17];
+          [v9 setBrokerToken:value];
         }
 
-        else if ([v16 isEqualToString:@"rp"])
+        else if ([name isEqualToString:@"rp"])
         {
           if (v19 > 0x80)
           {
             goto LABEL_47;
           }
 
-          [v9 setReceiverToken:v17];
+          [v9 setReceiverToken:value];
         }
 
-        else if ([v16 isEqualToString:@"rr"])
+        else if ([name isEqualToString:@"rr"])
         {
-          [v9 setRouteToReceiver:{objc_msgSend(v17, "isEqualToString:", @"1"}];
+          [v9 setRouteToReceiver:{objc_msgSend(value, "isEqualToString:", @"1"}];
         }
 
-        else if ([v16 isEqualToString:@"wid"])
+        else if ([name isEqualToString:@"wid"])
         {
           if (v19 > 0x20)
           {
             goto LABEL_47;
           }
 
-          [v9 setWifiSSID:v17];
+          [v9 setWifiSSID:value];
         }
 
-        else if ([v16 isEqualToString:@"wp"])
+        else if ([name isEqualToString:@"wp"])
         {
           if (v19 > 0x80)
           {
             goto LABEL_47;
           }
 
-          [v9 setWifiPassphrase:v17];
+          [v9 setWifiPassphrase:value];
         }
 
-        else if ([v16 isEqualToString:@"ca"])
+        else if ([name isEqualToString:@"ca"])
         {
           if (v19 > 0x400)
           {
             goto LABEL_47;
           }
 
-          [v9 setCaptivePortalAuthToken:v17];
+          [v9 setCaptivePortalAuthToken:value];
         }
 
-        else if ([v16 isEqualToString:@"h"])
+        else if ([name isEqualToString:@"h"])
         {
-          [v9 setIsNetworkHidden:{objc_msgSend(v17, "isEqualToString:", @"1"}];
+          [v9 setIsNetworkHidden:{objc_msgSend(value, "isEqualToString:", @"1"}];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v12 = [queryItems countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
         continue;
@@ -157,7 +157,7 @@ LABEL_47:
 
 LABEL_48:
     v4 = v21;
-    v3 = v22;
+    lCopy = v22;
   }
 
 LABEL_50:

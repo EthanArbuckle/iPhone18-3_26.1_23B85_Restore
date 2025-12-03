@@ -1,7 +1,7 @@
 @interface _UITextLayoutBaselineCalculator
-- (_UITextLayoutBaselineCalculator)initWithTextLayoutController:(id)a3 typingAttributes:(id)a4 usesLineFragmentOrigin:(BOOL)a5 coordinateSpace:(id)a6 scale:(double)a7 fallbackTextContainerOrigin:(CGPoint)a8;
-- (double)_baselineOffsetAtPosition:(id)a3;
-- (double)_convertOffset:(double)a3;
+- (_UITextLayoutBaselineCalculator)initWithTextLayoutController:(id)controller typingAttributes:(id)attributes usesLineFragmentOrigin:(BOOL)origin coordinateSpace:(id)space scale:(double)scale fallbackTextContainerOrigin:(CGPoint)containerOrigin;
+- (double)_baselineOffsetAtPosition:(id)position;
+- (double)_convertOffset:(double)offset;
 - (double)firstBaselineOffsetFromTop;
 - (double)lastBaselineOffsetFromBottom;
 @end
@@ -10,8 +10,8 @@
 
 - (double)firstBaselineOffsetFromTop
 {
-  v3 = [(_UITextLayoutController *)self->_textLayoutController beginningOfDocument];
-  [(_UITextLayoutBaselineCalculator *)self _baselineOffsetAtPosition:v3];
+  beginningOfDocument = [(_UITextLayoutController *)self->_textLayoutController beginningOfDocument];
+  [(_UITextLayoutBaselineCalculator *)self _baselineOffsetAtPosition:beginningOfDocument];
   v5 = v4;
 
   v6 = self->_coordinateSpace;
@@ -40,8 +40,8 @@
 
 - (double)lastBaselineOffsetFromBottom
 {
-  v3 = [(_UITextLayoutController *)self->_textLayoutController endOfDocument];
-  [(_UITextLayoutBaselineCalculator *)self _baselineOffsetAtPosition:v3];
+  endOfDocument = [(_UITextLayoutController *)self->_textLayoutController endOfDocument];
+  [(_UITextLayoutBaselineCalculator *)self _baselineOffsetAtPosition:endOfDocument];
   v5 = v4;
 
   v6 = self->_coordinateSpace;
@@ -82,24 +82,24 @@
   return result;
 }
 
-- (_UITextLayoutBaselineCalculator)initWithTextLayoutController:(id)a3 typingAttributes:(id)a4 usesLineFragmentOrigin:(BOOL)a5 coordinateSpace:(id)a6 scale:(double)a7 fallbackTextContainerOrigin:(CGPoint)a8
+- (_UITextLayoutBaselineCalculator)initWithTextLayoutController:(id)controller typingAttributes:(id)attributes usesLineFragmentOrigin:(BOOL)origin coordinateSpace:(id)space scale:(double)scale fallbackTextContainerOrigin:(CGPoint)containerOrigin
 {
-  y = a8.y;
-  x = a8.x;
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
+  y = containerOrigin.y;
+  x = containerOrigin.x;
+  controllerCopy = controller;
+  attributesCopy = attributes;
+  spaceCopy = space;
   v22.receiver = self;
   v22.super_class = _UITextLayoutBaselineCalculator;
   v19 = [(_UITextLayoutBaselineCalculator *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_textLayoutController, a3);
-    objc_storeStrong(&v20->_typingAttributes, a4);
-    objc_storeStrong(&v20->_coordinateSpace, a6);
-    v20->_scale = a7;
-    v20->_usesLineFragmentOrigin = a5;
+    objc_storeStrong(&v19->_textLayoutController, controller);
+    objc_storeStrong(&v20->_typingAttributes, attributes);
+    objc_storeStrong(&v20->_coordinateSpace, space);
+    v20->_scale = scale;
+    v20->_usesLineFragmentOrigin = origin;
     v20->_fallbackTextContainerOrigin.x = x;
     v20->_fallbackTextContainerOrigin.y = y;
   }
@@ -107,9 +107,9 @@
   return v20;
 }
 
-- (double)_baselineOffsetAtPosition:(id)a3
+- (double)_baselineOffsetAtPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   v42 = 0;
   v43 = &v42;
   v44 = 0x4010000000;
@@ -136,7 +136,7 @@
   v31[4] = &v32;
   v31[5] = &v42;
   v31[6] = &v38;
-  [(_UITextLayoutController *)textLayoutController requestTextGeometryAtPosition:v4 typingAttributes:typingAttributes resultBlock:v31];
+  [(_UITextLayoutController *)textLayoutController requestTextGeometryAtPosition:positionCopy typingAttributes:typingAttributes resultBlock:v31];
   if (CGRectIsNull(v43[1]))
   {
     v8 = self->_coordinateSpace;
@@ -165,9 +165,9 @@
 
   if (v39[3] == 0.0)
   {
-    v18 = [(_UITextLayoutController *)self->_textLayoutController textStorage];
+    textStorage = [(_UITextLayoutController *)self->_textLayoutController textStorage];
     v19 = objc_opt_respondsToSelector();
-    coordinateSpace = v18;
+    coordinateSpace = textStorage;
     if ((v19 & 1) == 0)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -178,12 +178,12 @@
       coordinateSpace = self->_coordinateSpace;
     }
 
-    v21 = [(UICoordinateSpace *)coordinateSpace font];
-    if (v21)
+    font = [(UICoordinateSpace *)coordinateSpace font];
+    if (font)
     {
 LABEL_12:
       MinY = CGRectGetMinY(v43[1]);
-      [v21 ascender];
+      [font ascender];
       v39[3] = MinY + v23;
 
       goto LABEL_13;
@@ -191,7 +191,7 @@ LABEL_12:
 
 LABEL_11:
     [off_1E70ECC18 defaultFontSize];
-    v21 = [off_1E70ECC18 systemFontOfSize:?];
+    font = [off_1E70ECC18 systemFontOfSize:?];
     goto LABEL_12;
   }
 
@@ -200,8 +200,8 @@ LABEL_13:
   y = 0.0;
   if (v25 > 0.0)
   {
-    v26 = [v33[5] textView];
-    if (v26)
+    textView = [v33[5] textView];
+    if (textView)
     {
       [v33[5] textContainerOrigin];
       y = v27;
@@ -223,21 +223,21 @@ LABEL_13:
   return v29;
 }
 
-- (double)_convertOffset:(double)a3
+- (double)_convertOffset:(double)offset
 {
   if (self->_coordinateSpace)
   {
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([(UICoordinateSpace *)self->_coordinateSpace _baselineCalculatorSourceCoordinateSpace], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v6 = v5;
+      textView = v5;
     }
 
     else
     {
-      v7 = [(_UITextLayoutController *)self->_textLayoutController firstTextContainer];
-      v6 = [v7 textView];
+      firstTextContainer = [(_UITextLayoutController *)self->_textLayoutController firstTextContainer];
+      textView = [firstTextContainer textView];
 
-      if (!v6)
+      if (!textView)
       {
 LABEL_8:
 
@@ -245,10 +245,10 @@ LABEL_8:
       }
     }
 
-    if (v6 != self->_coordinateSpace)
+    if (textView != self->_coordinateSpace)
     {
-      [(UICoordinateSpace *)v6 convertPoint:0.0 toCoordinateSpace:a3];
-      a3 = v8;
+      [(UICoordinateSpace *)textView convertPoint:0.0 toCoordinateSpace:offset];
+      offset = v8;
     }
 
     goto LABEL_8;
@@ -257,7 +257,7 @@ LABEL_8:
 LABEL_9:
   scale = self->_scale;
 
-  UIRoundToScale(a3, scale);
+  UIRoundToScale(offset, scale);
   return result;
 }
 

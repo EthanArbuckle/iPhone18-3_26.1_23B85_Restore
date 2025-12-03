@@ -1,7 +1,7 @@
 @interface SpatialPhoto.GenerationEffectUIView
 + (Class)layerClass;
 - (void)didMoveToWindow;
-- (void)drawFrameWithDisplayLink:(id)a3;
+- (void)drawFrameWithDisplayLink:(id)link;
 - (void)layoutSubviews;
 @end
 
@@ -16,21 +16,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_25E6D0270();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_25E6D0430();
 }
 
-- (void)drawFrameWithDisplayLink:(id)a3
+- (void)drawFrameWithDisplayLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_25E6D068C(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_25E6D068C(linkCopy);
 }
 
 @end

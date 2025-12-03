@@ -1,30 +1,30 @@
 @interface SBMixedGridSwitcherModifier
 - (BOOL)_isDoubleStackingFullScreenCards;
-- (BOOL)_isIndexFullScreen:(unint64_t)a3;
-- (BOOL)isIndexFullyVisible:(unint64_t)a3;
-- (BOOL)isIndexVisible:(unint64_t)a3;
-- (BOOL)isLayoutRoleDraggable:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleKillable:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)a3;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGRect)_adjustedFrame:(CGRect)a3 forFloatingAppIndex:(unint64_t)a4;
-- (CGRect)_frameForIndex:(unint64_t)a3 applyScrollViewContentOffset:(BOOL)a4;
-- (CGRect)_unpaddedCoplanarFrameForIndex:(unint64_t)a3 doubleStack:(BOOL)a4 count:(unint64_t)a5 cardSize:(CGSize)a6 scale:(double)a7 contentWidth:(double)a8;
-- (CGRect)frameForIndex:(unint64_t)a3;
+- (BOOL)_isIndexFullScreen:(unint64_t)screen;
+- (BOOL)isIndexFullyVisible:(unint64_t)visible;
+- (BOOL)isIndexVisible:(unint64_t)visible;
+- (BOOL)isLayoutRoleDraggable:(int64_t)draggable inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleKillable:(int64_t)killable inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)layout;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGRect)_adjustedFrame:(CGRect)frame forFloatingAppIndex:(unint64_t)index;
+- (CGRect)_frameForIndex:(unint64_t)index applyScrollViewContentOffset:(BOOL)offset;
+- (CGRect)_unpaddedCoplanarFrameForIndex:(unint64_t)index doubleStack:(BOOL)stack count:(unint64_t)count cardSize:(CGSize)size scale:(double)scale contentWidth:(double)width;
+- (CGRect)frameForIndex:(unint64_t)index;
 - (CGSize)_contentSize;
 - (CGSize)_fittedContentSize;
 - (CGSize)_fittedFloatingContentSize;
 - (CGSize)_fittedFullScreenContentSize;
 - (CGSize)_minimumFullScreenContentSize;
-- (CGSize)_scaledCardSizeForIndex:(unint64_t)a3;
+- (CGSize)_scaledCardSizeForIndex:(unint64_t)index;
 - (CGSize)floatingCardSize;
 - (CGSize)fullScreenCardSize;
-- (SBMixedGridSwitcherModifier)initWithFullScreenCardSize:(CGSize)a3 floatingCardSize:(CGSize)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (SBMixedGridSwitcherModifier)initWithFullScreenCardSize:(CGSize)size floatingCardSize:(CGSize)cardSize;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (_NSRange)_floatingAppsStackRange;
-- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)a3;
-- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)a3 lastVisibleIndex:(unint64_t)a4;
+- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)offset;
+- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)offset lastVisibleIndex:(unint64_t)index;
 - (_NSRange)rangeOfVisibleAppLayouts;
 - (double)_cachedFullScreenCardScale;
 - (double)_cardCornerRadiusInSwitcher;
@@ -33,56 +33,56 @@
 - (double)_fullScreenCardScale;
 - (double)_horizontalSpacing;
 - (double)_verticalSpacing;
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4;
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3;
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale;
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search;
 - (double)firstFloatingCardPeekingWidth;
-- (double)minimumTranslationToKillIndex:(unint64_t)a3;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (double)minimumTranslationToKillIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)splitViewInnerCornerRadius;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)unadjustedScaleForIndex:(unint64_t)a3;
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3;
-- (id)_appLayoutWithPrimaryLeafAppLayout:(id)a3 sideLeafAppLayout:(id)a4 configuration:(int64_t)a5;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)unadjustedScaleForIndex:(unint64_t)index;
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index;
+- (id)_appLayoutWithPrimaryLeafAppLayout:(id)layout sideLeafAppLayout:(id)appLayout configuration:(int64_t)configuration;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheFullsizeSnapshots;
 - (id)appLayoutsToCacheSnapshots;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)handleScrollEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)neighboringAppLayoutsForFocusedAppLayout:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)handleScrollEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)neighboringAppLayoutsForFocusedAppLayout:(id)layout;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
 - (id)scrollViewAttributes;
-- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atLocation:(CGPoint)a5;
+- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)role inAppLayout:(id)layout atLocation:(CGPoint)location;
 - (id)topMostLayoutElements;
 - (id)visibleAppLayouts;
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)_indexOfFirstFloatingLayoutFromAppLayouts:(id)a3;
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)_indexOfFirstFloatingLayoutFromAppLayouts:(id)layouts;
 - (unint64_t)_indexOfLeadingCard;
 - (unint64_t)_numberOfFullScreenAppLayouts;
 - (unint64_t)_numberOfFullScreenColumns;
 - (unint64_t)_numberOfFullScreenRows;
-- (unint64_t)_numberOfOffScreenTrailingFloatingCardsForContentOffset:(CGPoint)a3;
-- (unint64_t)_numberOfOffScreenTrailingFullScreenCardsForContentOffset:(CGPoint)a3;
-- (unint64_t)_subtreeIndexForIndex:(unint64_t)a3 indexOfFirstMainAppLayout:(unint64_t)a4;
-- (unint64_t)indexOfFirstMainAppLayoutFromAppLayouts:(id)a3;
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3;
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3;
+- (unint64_t)_numberOfOffScreenTrailingFloatingCardsForContentOffset:(CGPoint)offset;
+- (unint64_t)_numberOfOffScreenTrailingFullScreenCardsForContentOffset:(CGPoint)offset;
+- (unint64_t)_subtreeIndexForIndex:(unint64_t)index indexOfFirstMainAppLayout:(unint64_t)layout;
+- (unint64_t)indexOfFirstMainAppLayoutFromAppLayouts:(id)layouts;
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index;
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index;
 - (unint64_t)numberOfFloatingAppLayouts;
 - (unint64_t)slideOverTongueDirection;
 - (void)_invalidateCachesIfNeeded;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBMixedGridSwitcherModifier
 
-- (SBMixedGridSwitcherModifier)initWithFullScreenCardSize:(CGSize)a3 floatingCardSize:(CGSize)a4
+- (SBMixedGridSwitcherModifier)initWithFullScreenCardSize:(CGSize)size floatingCardSize:(CGSize)cardSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = cardSize.height;
+  width = cardSize.width;
+  v6 = size.height;
+  v7 = size.width;
   v13.receiver = self;
   v13.super_class = SBMixedGridSwitcherModifier;
   v8 = [(SBSwitcherModifier *)&v13 init];
@@ -106,12 +106,12 @@
   return v9;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v8.receiver = self;
   v8.super_class = SBMixedGridSwitcherModifier;
   [(SBChainableModifier *)&v8 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (!self->_gridModifier)
     {
@@ -126,11 +126,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SBMixedGridSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v7 copyWithZone:a3];
+  v4 = [(SBChainableModifier *)&v7 copyWithZone:zone];
   *(v4 + 280) = self->_fullScreenCardSize;
   *(v4 + 296) = self->_floatingCardSize;
   v4[260] = self->_reversesFloatingCardDirection;
@@ -148,11 +148,11 @@
   return v4;
 }
 
-- (id)handleScrollEvent:(id)a3
+- (id)handleScrollEvent:(id)event
 {
-  v4 = a3;
-  self->_isScrolling = [v4 phase] == 0;
-  [v4 contentOffset];
+  eventCopy = event;
+  self->_isScrolling = [eventCopy phase] == 0;
+  [eventCopy contentOffset];
   x = self->_previousContentOffset.x;
   if (x != 1.79769313e308 || self->_previousContentOffset.y != 1.79769313e308)
   {
@@ -164,59 +164,59 @@
   self->_cachedVisibleAppsRangeIsValid = 0;
   v11.receiver = self;
   v11.super_class = SBMixedGridSwitcherModifier;
-  v9 = [(SBSwitcherModifier *)&v11 handleScrollEvent:v4];
+  v9 = [(SBSwitcherModifier *)&v11 handleScrollEvent:eventCopy];
 
   return v9;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBMixedGridSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v12 handleTransitionEvent:v4];
-  if ([v4 toEnvironmentMode] == 2 && objc_msgSend(v4, "fromEnvironmentMode") != 2)
+  v5 = [(SBSwitcherModifier *)&v12 handleTransitionEvent:eventCopy];
+  if ([eventCopy toEnvironmentMode] == 2 && objc_msgSend(eventCopy, "fromEnvironmentMode") != 2)
   {
     self->_previousContentOffset = SBInvalidPoint;
     self->_isScrollingForward = 1;
-    self->_floatingConfiguration = [v4 fromFloatingConfiguration];
-    if ([v4 phase] == 2 && !-[SBMixedGridSwitcherModifier _numberOfFullScreenAppLayouts](self, "_numberOfFullScreenAppLayouts") && -[SBMixedGridSwitcherModifier numberOfFloatingAppLayouts](self, "numberOfFloatingAppLayouts"))
+    self->_floatingConfiguration = [eventCopy fromFloatingConfiguration];
+    if ([eventCopy phase] == 2 && !-[SBMixedGridSwitcherModifier _numberOfFullScreenAppLayouts](self, "_numberOfFullScreenAppLayouts") && -[SBMixedGridSwitcherModifier numberOfFloatingAppLayouts](self, "numberOfFloatingAppLayouts"))
     {
-      v6 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-      v7 = [v6 lastObject];
+      appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+      lastObject = [appLayouts lastObject];
 
-      v8 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v7 alignment:0 animated:1];
+      v8 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:lastObject alignment:0 animated:1];
       v9 = SBAppendSwitcherModifierResponse(v8, v5);
 
       v5 = v9;
     }
   }
 
-  v10 = [v4 toAppLayout];
-  self->_hasForegroundFullScreenApp = v10 != 0;
+  toAppLayout = [eventCopy toAppLayout];
+  self->_hasForegroundFullScreenApp = toAppLayout != 0;
 
-  self->_isSwitcherVisible = [v4 toEnvironmentMode] == 2;
+  self->_isSwitcherVisible = [eventCopy toEnvironmentMode] == 2;
 
   return v5;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
-  v8 = a5;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBMixedGridSwitcherModifier;
-  v9 = [(SBChainableModifier *)&v15 responseForProposedChildResponse:a3 childModifier:a4 event:v8];
-  if (v9 && [v8 type] == 17)
+  v9 = [(SBChainableModifier *)&v15 responseForProposedChildResponse:response childModifier:modifier event:eventCopy];
+  if (v9 && [eventCopy type] == 17)
   {
-    v10 = [v8 appLayout];
-    if ([v10 environment] == 2 && !self->_hasForegroundFullScreenApp)
+    appLayout = [eventCopy appLayout];
+    if ([appLayout environment] == 2 && !self->_hasForegroundFullScreenApp)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke;
       v13[3] = &unk_2783AFC80;
       v13[4] = self;
-      v14 = v10;
+      v14 = appLayout;
       v11 = [v9 responseByTransformingResponseWithTransformer:v13];
 
       v9 = v11;
@@ -387,18 +387,18 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
   [v4 setObject:v6 forKey:v7];
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(SBMixedGridSwitcherModifier *)self reversesFloatingCardDirection];
+  reversesFloatingCardDirection = [(SBMixedGridSwitcherModifier *)self reversesFloatingCardDirection];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v4;
+  v8 = layoutsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -424,7 +424,7 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
           else
           {
             v14 = v6;
-            if (v7)
+            if (reversesFloatingCardDirection)
             {
               [v6 insertObject:v13 atIndex:0];
               continue;
@@ -446,16 +446,16 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
   return v6;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  [(SBMixedGridSwitcherModifier *)self _frameForIndex:a3 applyScrollViewContentOffset:1];
+  [(SBMixedGridSwitcherModifier *)self _frameForIndex:index applyScrollViewContentOffset:1];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (![(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:a3])
+  if (![(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:index])
   {
-    [(SBMixedGridSwitcherModifier *)self _adjustedFrame:a3 forFloatingAppIndex:v6, v8, v10, v12];
+    [(SBMixedGridSwitcherModifier *)self _adjustedFrame:index forFloatingAppIndex:v6, v8, v10, v12];
   }
 
   UIRectGetCenter();
@@ -469,42 +469,42 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
   return result;
 }
 
-- (CGRect)_adjustedFrame:(CGRect)a3 forFloatingAppIndex:(unint64_t)a4
+- (CGRect)_adjustedFrame:(CGRect)frame forFloatingAppIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
-  v11 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v12 = [(SBMixedGridSwitcherModifier *)self _floatingAppsStackRange];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  isRTLEnabled = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  _floatingAppsStackRange = [(SBMixedGridSwitcherModifier *)self _floatingAppsStackRange];
   if (!v13)
   {
     goto LABEL_35;
   }
 
-  v14 = v12;
-  if (a4 < v12)
+  v14 = _floatingAppsStackRange;
+  if (index < _floatingAppsStackRange)
   {
     goto LABEL_35;
   }
 
   v15 = v13;
-  if (a4 - v12 >= v13)
+  if (index - _floatingAppsStackRange >= v13)
   {
     goto LABEL_35;
   }
 
   [(SBMixedGridSwitcherModifier *)self floatingCardSize];
   v17 = v16;
-  [(SBMixedGridSwitcherModifier *)self unadjustedScaleForIndex:a4];
+  [(SBMixedGridSwitcherModifier *)self unadjustedScaleForIndex:index];
   v19 = v18;
   [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
   v21 = v20;
   [(SBMixedGridSwitcherModifier *)self scrollViewContentOffset];
   v23 = v22;
-  v24 = [(SBMixedGridSwitcherModifier *)self _indexOfFirstFloatingLayoutFromAppLayouts:v11];
-  if (v24 == a4)
+  v24 = [(SBMixedGridSwitcherModifier *)self _indexOfFirstFloatingLayoutFromAppLayouts:appLayouts];
+  if (v24 == index)
   {
     goto LABEL_35;
   }
@@ -512,12 +512,12 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
   v25 = v24;
   v26 = v17 * v19 + v21;
   v27 = v24 - 1;
-  [(SBMixedGridSwitcherModifier *)self contentOffsetForIndex:a4 alignment:0];
+  [(SBMixedGridSwitcherModifier *)self contentOffsetForIndex:index alignment:0];
   v29 = v28;
-  if (v27 == a4)
+  if (v27 == index)
   {
     v30 = v28 - v26 + 20.0;
-    if (v10)
+    if (isRTLEnabled)
     {
       v30 = v26 + v29 + -20.0;
     }
@@ -525,12 +525,12 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
 
   else
   {
-    v31 = v15 - a4 + v14;
+    v31 = v15 - index + v14;
     if (v27 < v14 || v27 - v14 >= v15 || v25 < v14 || v25 - v14 >= v15)
     {
-      v32 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled2 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
       v33 = -v26;
-      if (!v32)
+      if (!isRTLEnabled2)
       {
         v33 = v26;
       }
@@ -541,7 +541,7 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
     else
     {
       v30 = v28 + v26 * v31 + -20.0;
-      if (!v10)
+      if (!isRTLEnabled)
       {
         v30 = v29 - v26 * v31 + 20.0;
       }
@@ -563,14 +563,14 @@ void __84__SBMixedGridSwitcherModifier_responseForProposedChildResponse_childMod
     v30 = v23;
   }
 
-  if (v10)
+  if (isRTLEnabled)
   {
     v30 = v34;
   }
 
   v35 = x - (v29 - v30);
   [(SBMixedGridSwitcherModifier *)self _frameForIndex:v25 applyScrollViewContentOffset:1];
-  if (v10)
+  if (isRTLEnabled)
   {
     if (v35 >= x)
     {
@@ -612,11 +612,11 @@ LABEL_35:
 
 - (_NSRange)_floatingAppsStackRange
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v4 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v3];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v4 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v3 count];
+    v4 = [appLayouts count];
   }
 
   if (v4 >= 4)
@@ -671,9 +671,9 @@ LABEL_35:
   return result;
 }
 
-- (double)unadjustedScaleForIndex:(unint64_t)a3
+- (double)unadjustedScaleForIndex:(unint64_t)index
 {
-  if ([(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:a3])
+  if ([(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:index])
   {
 
     [(SBMixedGridSwitcherModifier *)self _fullScreenCardScale];
@@ -688,7 +688,7 @@ LABEL_35:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if ([(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:?])
   {
@@ -701,8 +701,8 @@ LABEL_35:
     [(SBMixedGridSwitcherModifier *)self _floatingCardScale];
     v7 = v6;
     v8 = v6 * 0.899999976;
-    v9 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-    [(SBMixedGridSwitcherModifier *)self _indexOfFirstFloatingLayoutFromAppLayouts:v9];
+    appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+    [(SBMixedGridSwitcherModifier *)self _indexOfFirstFloatingLayoutFromAppLayouts:appLayouts];
 
     [(SBMixedGridSwitcherModifier *)self scrollViewContentOffset];
     v11 = v10;
@@ -719,7 +719,7 @@ LABEL_35:
     }
 
     v15 = v11 + v14;
-    [(SBMixedGridSwitcherModifier *)self _frameForIndex:a3 applyScrollViewContentOffset:0];
+    [(SBMixedGridSwitcherModifier *)self _frameForIndex:index applyScrollViewContentOffset:0];
     x = v24.origin.x;
     v17 = v7 * CGRectGetWidth(v24);
     [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
@@ -766,8 +766,8 @@ LABEL_35:
   v3 = [(SBMixedGridSwitcherModifier *)self _visibleAppLayoutRangeForContentOffset:?];
   v5 = v4;
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v8 = [v7 subarrayWithRange:{v3, v5}];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts subarrayWithRange:{v3, v5}];
   v9 = [v6 setWithArray:v8];
 
   return v9;
@@ -783,81 +783,81 @@ LABEL_35:
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   v5 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
   [(SBSwitcherAnimationAttributes *)v5 setUpdateMode:1];
   [(SBSwitcherAnimationAttributes *)v5 setCornerRadiusUpdateMode:3];
-  v6 = [v4 layoutSettings];
-  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:v6];
+  layoutSettings = [animationSettings layoutSettings];
+  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:layoutSettings];
 
-  v7 = [v4 opacitySettings];
-  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:v7];
+  opacitySettings = [animationSettings opacitySettings];
+  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:opacitySettings];
 
   return v5;
 }
 
-- (id)neighboringAppLayoutsForFocusedAppLayout:(id)a3
+- (id)neighboringAppLayoutsForFocusedAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v6 = [v5 indexOfObject:v4];
+  layoutCopy = layout;
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts indexOfObject:layoutCopy];
 
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL || [v5 count] < 3)
+  if (v6 == 0x7FFFFFFFFFFFFFFFLL || [appLayouts count] < 3)
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCAB58] indexSet];
-    v8 = v7;
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    v8 = indexSet;
     if (v6)
     {
-      [v7 addIndex:v6 - 1];
+      [indexSet addIndex:v6 - 1];
       if (v6 != 1)
       {
         [v8 addIndex:v6 - 2];
       }
     }
 
-    if (v6 < [v5 count] - 1)
+    if (v6 < [appLayouts count] - 1)
     {
       [v8 addIndex:v6 + 1];
     }
 
-    if (v6 < [v5 count] - 2)
+    if (v6 < [appLayouts count] - 2)
     {
       [v8 addIndex:v6 + 2];
     }
 
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v5 objectsAtIndexes:v8];
+    v10 = [appLayouts objectsAtIndexes:v8];
     v11 = [v9 setWithArray:v10];
   }
 
   return v11;
 }
 
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index
 {
-  [(SBMixedGridSwitcherModifier *)self frameForIndex:a3];
+  [(SBMixedGridSwitcherModifier *)self frameForIndex:index];
 
   return CGRectGetWidth(*&v3);
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
   v5 = 1.0;
   if (![(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:?])
   {
-    v6 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-    v7 = [(SBSwitcherModifier *)self indexOfFirstFloatingAppFromAppLayouts:v6];
+    appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+    v7 = [(SBSwitcherModifier *)self indexOfFirstFloatingAppFromAppLayouts:appLayouts];
 
-    if (v7 != a3)
+    if (v7 != index)
     {
       [(SBMixedGridSwitcherModifier *)self scrollViewContentOffset];
       v9 = v8;
@@ -874,7 +874,7 @@ LABEL_35:
       }
 
       v13 = v9 + v12;
-      [(SBMixedGridSwitcherModifier *)self _frameForIndex:a3 applyScrollViewContentOffset:0];
+      [(SBMixedGridSwitcherModifier *)self _frameForIndex:index applyScrollViewContentOffset:0];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -928,9 +928,9 @@ LABEL_35:
   return v5;
 }
 
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  if (a3 == 4)
+  if (role == 4)
   {
     return 2;
   }
@@ -941,10 +941,10 @@ LABEL_35:
   }
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBMixedGridSwitcherModifier *)self _cardCornerRadiusInSwitcher];
-  [(SBMixedGridSwitcherModifier *)self scaleForIndex:a3];
+  [(SBMixedGridSwitcherModifier *)self scaleForIndex:index];
 
   SBRectCornerRadiiForRadius();
   result.topRight = v8;
@@ -978,12 +978,12 @@ LABEL_35:
   [(SBMixedGridSwitcherModifier *)self scrollViewContentOffset];
   v3 = [(SBMixedGridSwitcherModifier *)self _visibleAppLayoutRangeForContentOffset:?];
   v5 = v4;
-  v6 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
-  v7 = [v6 numberOfSnapshotsToCacheInSwitcher];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  numberOfSnapshotsToCacheInSwitcher = [switcherSettings numberOfSnapshotsToCacheInSwitcher];
 
   isScrollingForward = self->_isScrollingForward;
 
-  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v3 numberOfSnapshotsToCache:v5 biasForward:v7, isScrollingForward];
+  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v3 numberOfSnapshotsToCache:v5 biasForward:numberOfSnapshotsToCacheInSwitcher, isScrollingForward];
 }
 
 - (id)appLayoutsToCacheFullsizeSnapshots
@@ -996,15 +996,15 @@ LABEL_35:
   else
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(SBMixedGridSwitcherModifier *)self appLayoutsToCacheSnapshots];
+    appLayoutsToCacheSnapshots = [(SBMixedGridSwitcherModifier *)self appLayoutsToCacheSnapshots];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __65__SBMixedGridSwitcherModifier_appLayoutsToCacheFullsizeSnapshots__block_invoke;
     v8[3] = &unk_2783AE4E0;
     v6 = v4;
     v9 = v6;
-    v10 = self;
-    [v5 enumerateObjectsUsingBlock:v8];
+    selfCopy = self;
+    [appLayoutsToCacheSnapshots enumerateObjectsUsingBlock:v8];
 
     v3 = v6;
   }
@@ -1024,7 +1024,7 @@ void __65__SBMixedGridSwitcherModifier_appLayoutsToCacheFullsizeSnapshots__block
   *a4 = v6 == [*(a1 + 40) maximumNumberOfFullScreenCardsForSingleRow];
 }
 
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index
 {
   result = [(SBMixedGridSwitcherModifier *)self _indexOfLeadingCard];
   if (result == 0x7FFFFFFFFFFFFFFFLL)
@@ -1035,21 +1035,21 @@ void __65__SBMixedGridSwitcherModifier_appLayoutsToCacheFullsizeSnapshots__block
   return result;
 }
 
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index
 {
-  v4 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v5 = [v4 count];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v5 = [appLayouts count];
 
   if (v5 < 2)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = [(SBMixedGridSwitcherModifier *)self _indexOfLeadingCard];
-  v8 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
-  if (v7 >= v5 - 1)
+  _indexOfLeadingCard = [(SBMixedGridSwitcherModifier *)self _indexOfLeadingCard];
+  isRTLEnabled = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+  if (_indexOfLeadingCard >= v5 - 1)
   {
-    v9 = v8;
+    v9 = isRTLEnabled;
   }
 
   else
@@ -1057,12 +1057,12 @@ void __65__SBMixedGridSwitcherModifier_appLayoutsToCacheFullsizeSnapshots__block
     v9 = 0;
   }
 
-  return v7 - v9;
+  return _indexOfLeadingCard - v9;
 }
 
-- (unint64_t)indexOfFirstMainAppLayoutFromAppLayouts:(id)a3
+- (unint64_t)indexOfFirstMainAppLayoutFromAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   [(SBMixedGridSwitcherModifier *)self _invalidateCachesIfNeeded];
   if (*&self->_cachesValidity)
   {
@@ -1080,7 +1080,7 @@ void __65__SBMixedGridSwitcherModifier_appLayoutsToCacheFullsizeSnapshots__block
     v8[2] = __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayouts___block_invoke;
     v8[3] = &unk_2783AFC08;
     v8[4] = &v9;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [layoutsCopy enumerateObjectsUsingBlock:v8];
     v5 = v10;
     self->_cachedIndexOfFirstMainAppLayout = v10[3];
     *&self->_cachesValidity |= 1u;
@@ -1103,14 +1103,14 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   return result;
 }
 
-- (unint64_t)_indexOfFirstFloatingLayoutFromAppLayouts:(id)a3
+- (unint64_t)_indexOfFirstFloatingLayoutFromAppLayouts:(id)layouts
 {
-  v4 = a3;
-  v5 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v4];
+  layoutsCopy = layouts;
+  v5 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:layoutsCopy];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 count];
+    v7 = [layoutsCopy count];
     if (v7)
     {
       v6 = v7 - 1;
@@ -1127,27 +1127,27 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
 
 - (unint64_t)numberOfFloatingAppLayouts
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v4 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v3];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v4 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v3 count];
+    v4 = [appLayouts count];
   }
 
   return v4;
 }
 
-- (BOOL)isIndexVisible:(unint64_t)a3
+- (BOOL)isIndexVisible:(unint64_t)visible
 {
-  [(SBMixedGridSwitcherModifier *)self _frameForIndex:a3 applyScrollViewContentOffset:1];
-  [(SBMixedGridSwitcherModifier *)self scaleForIndex:a3];
+  [(SBMixedGridSwitcherModifier *)self _frameForIndex:visible applyScrollViewContentOffset:1];
+  [(SBMixedGridSwitcherModifier *)self scaleForIndex:visible];
   SBTransformedRectWithScale();
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
-  [v13 switcherCardShadowRadius];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCardShadowRadius];
   v15 = v14;
 
   [(SBMixedGridSwitcherModifier *)self switcherViewBounds];
@@ -1160,17 +1160,17 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   return CGRectIntersectsRect(v23, *&v16);
 }
 
-- (BOOL)isIndexFullyVisible:(unint64_t)a3
+- (BOOL)isIndexFullyVisible:(unint64_t)visible
 {
-  [(SBMixedGridSwitcherModifier *)self _frameForIndex:a3 applyScrollViewContentOffset:1];
-  [(SBMixedGridSwitcherModifier *)self scaleForIndex:a3];
+  [(SBMixedGridSwitcherModifier *)self _frameForIndex:visible applyScrollViewContentOffset:1];
+  [(SBMixedGridSwitcherModifier *)self scaleForIndex:visible];
   SBTransformedRectWithScale();
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
-  [v13 switcherCardShadowRadius];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCardShadowRadius];
   v15 = v14;
 
   [(SBMixedGridSwitcherModifier *)self switcherViewBounds];
@@ -1183,10 +1183,10 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   return CGRectContainsRect(v23, *&v16);
 }
 
-- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)a3
+- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isCenterOverFull])
+  layoutCopy = layout;
+  if ([layoutCopy isCenterOverFull])
   {
     v5 = 1;
   }
@@ -1195,7 +1195,7 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   {
     v7.receiver = self;
     v7.super_class = SBMixedGridSwitcherModifier;
-    v5 = [(SBMixedGridSwitcherModifier *)&v7 shouldTetherItemsAndAccessoriesInAppLayout:v4];
+    v5 = [(SBMixedGridSwitcherModifier *)&v7 shouldTetherItemsAndAccessoriesInAppLayout:layoutCopy];
   }
 
   return v5;
@@ -1203,12 +1203,12 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
 
 - (double)firstFloatingCardPeekingWidth
 {
-  v2 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
-  [v2 spacingBetweenLeadingEdgeAndIcon];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  [switcherSettings spacingBetweenLeadingEdgeAndIcon];
   v4 = v3;
-  [v2 iconSideLength];
+  [switcherSettings iconSideLength];
   v6 = v4 + v5;
-  [v2 spacingBetweenLeadingEdgeAndIcon];
+  [switcherSettings spacingBetweenLeadingEdgeAndIcon];
   v8 = v6 + v7 * 2.0;
 
   return v8;
@@ -1216,7 +1216,7 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
 
 - (unint64_t)_indexOfLeadingCard
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
   [(SBMixedGridSwitcherModifier *)self scrollViewContentOffset];
   v4 = [(SBMixedGridSwitcherModifier *)self _visibleAppLayoutRangeForContentOffset:?];
   if (!v5)
@@ -1239,7 +1239,7 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   {
     if (v6)
     {
-      v15 = v3;
+      v15 = isRTLEnabled;
     }
 
     else
@@ -1252,10 +1252,10 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
       --v6;
     }
 
-    else if ((v3 & 1) == 0)
+    else if ((isRTLEnabled & 1) == 0)
     {
-      v17 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-      v18 = [v17 count] - 1;
+      appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+      v18 = [appLayouts count] - 1;
 
       if (v6 < v18)
       {
@@ -1267,9 +1267,9 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   return v6;
 }
 
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  if ([a4 environment] == 1)
+  if ([layout environment] == 1)
   {
 
     [(SBMixedGridSwitcherModifier *)self _fullScreenCardScale];
@@ -1284,9 +1284,9 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   return result;
 }
 
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale
 {
-  if ([a3 environment] == 1)
+  if ([layout environment] == 1)
   {
 
     [(SBMixedGridSwitcherModifier *)self _fullScreenCardScale];
@@ -1330,10 +1330,10 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   return result;
 }
 
-- (double)minimumTranslationToKillIndex:(unint64_t)a3
+- (double)minimumTranslationToKillIndex:(unint64_t)index
 {
   [(SBMixedGridSwitcherModifier *)self frameForIndex:?];
-  [(SBMixedGridSwitcherModifier *)self scaleForIndex:a3];
+  [(SBMixedGridSwitcherModifier *)self scaleForIndex:index];
   SBTransformedRectWithScale();
 
   return CGRectGetMinY(*&v5);
@@ -1428,15 +1428,15 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
 
 - (CGSize)_fittedFullScreenContentSize
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
+  _numberOfFullScreenAppLayouts = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
   [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
   v5 = v4;
-  v6 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenColumns];
+  _numberOfFullScreenColumns = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenColumns];
   width = self->_fullScreenCardSize.width;
   [(SBMixedGridSwitcherModifier *)self _fullScreenCardScale];
-  if (v3)
+  if (_numberOfFullScreenAppLayouts)
   {
-    v9 = -(v5 - v6 * (v5 + width * v8));
+    v9 = -(v5 - _numberOfFullScreenColumns * (v5 + width * v8));
   }
 
   else
@@ -1454,15 +1454,15 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
 
 - (CGSize)_fittedFloatingContentSize
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
+  numberOfFloatingAppLayouts = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
   [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
   v5 = v4;
-  v6 = [(SBMixedGridSwitcherModifier *)self _numberOfFloatingColumns];
+  _numberOfFloatingColumns = [(SBMixedGridSwitcherModifier *)self _numberOfFloatingColumns];
   width = self->_floatingCardSize.width;
   [(SBMixedGridSwitcherModifier *)self _floatingCardScale];
-  if (v3)
+  if (numberOfFloatingAppLayouts)
   {
-    v9 = -(v5 - v6 * (v5 + width * v8));
+    v9 = -(v5 - _numberOfFloatingColumns * (v5 + width * v8));
   }
 
   else
@@ -1505,31 +1505,31 @@ uint64_t __71__SBMixedGridSwitcherModifier_indexOfFirstMainAppLayoutFromAppLayou
   return result;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
-  v7 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
   [(SBMixedGridSwitcherModifier *)self _contentSize];
   v9 = v8;
   [(SBMixedGridSwitcherModifier *)self switcherViewBounds];
   v11 = v10;
-  [(SBMixedGridSwitcherModifier *)self _scaledCardSizeForIndex:a3];
+  [(SBMixedGridSwitcherModifier *)self _scaledCardSizeForIndex:index];
   v13 = v12;
   [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
   v15 = v14;
   v16 = v13 + v14;
-  [(SBMixedGridSwitcherModifier *)self _frameForIndex:a3 applyScrollViewContentOffset:0];
-  [(SBMixedGridSwitcherModifier *)self unadjustedScaleForIndex:a3];
+  [(SBMixedGridSwitcherModifier *)self _frameForIndex:index applyScrollViewContentOffset:0];
+  [(SBMixedGridSwitcherModifier *)self unadjustedScaleForIndex:index];
   SBTransformedRectWithScale();
   v21 = v17;
   v22 = 0.0;
-  if (a4 > 1)
+  if (alignment > 1)
   {
-    if (a4 == 2)
+    if (alignment == 2)
     {
       v23 = -(v15 + v16);
       v24 = v16 + v16;
 LABEL_23:
-      if (v7)
+      if (isRTLEnabled)
       {
         v22 = v23;
       }
@@ -1542,9 +1542,9 @@ LABEL_23:
       goto LABEL_26;
     }
 
-    if (a4 == 3)
+    if (alignment == 3)
     {
-      if (v7)
+      if (isRTLEnabled)
       {
         Width = CGRectGetWidth(*&v17);
         [(SBMixedGridSwitcherModifier *)self firstFloatingCardPeekingWidth];
@@ -1559,9 +1559,9 @@ LABEL_23:
     }
   }
 
-  else if (a4)
+  else if (alignment)
   {
-    if (a4 == 1)
+    if (alignment == 1)
     {
       v23 = v16 - v11;
       v24 = v11 - v15;
@@ -1571,7 +1571,7 @@ LABEL_23:
 
   else
   {
-    if (v7)
+    if (isRTLEnabled)
     {
       v22 = -v15;
     }
@@ -1581,21 +1581,21 @@ LABEL_23:
       v22 = v16;
     }
 
-    v27 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-    v28 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v27];
+    appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+    v28 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
     if (v28 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v28 = [v27 count];
+      v28 = [appLayouts count];
     }
 
-    v29 = [v27 objectAtIndex:a3];
-    v30 = [(SBMixedGridSwitcherModifier *)self keyboardFocusedAppLayout];
-    v31 = v30;
-    if (a3 && v30 == v29 && v28 - 1 > a3 && [v29 environment] == 2)
+    v29 = [appLayouts objectAtIndex:index];
+    keyboardFocusedAppLayout = [(SBMixedGridSwitcherModifier *)self keyboardFocusedAppLayout];
+    v31 = keyboardFocusedAppLayout;
+    if (index && keyboardFocusedAppLayout == v29 && v28 - 1 > index && [v29 environment] == 2)
     {
-      v32 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled2 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
       v33 = 20.0;
-      if (v32)
+      if (isRTLEnabled2)
       {
         v33 = -20.0;
       }
@@ -1606,7 +1606,7 @@ LABEL_23:
 
 LABEL_26:
   v34 = 0.0;
-  if (v7)
+  if (isRTLEnabled)
   {
     v35 = 0.0;
   }
@@ -1627,24 +1627,24 @@ LABEL_26:
   return result;
 }
 
-- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)a3
+- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v7 = [v6 count];
+  y = offset.y;
+  x = offset.x;
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts count];
 
   if (v7)
   {
-    v8 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
-    v9 = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
+    _numberOfFullScreenAppLayouts = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
+    numberOfFloatingAppLayouts = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
     if ([(SBMixedGridSwitcherModifier *)self isRTLEnabled])
     {
       v10 = [(SBMixedGridSwitcherModifier *)self _numberOfOffScreenTrailingFloatingCardsForContentOffset:x, y];
-      if (v10 == v9)
+      if (v10 == numberOfFloatingAppLayouts)
       {
         v11 = x;
-        if (v8 && v9)
+        if (_numberOfFullScreenAppLayouts && numberOfFloatingAppLayouts)
         {
           [(SBMixedGridSwitcherModifier *)self _fittedFloatingContentSize:v10];
           v13 = v12;
@@ -1652,16 +1652,16 @@ LABEL_26:
           v11 = x - (v13 + v14);
         }
 
-        v10 = [(SBMixedGridSwitcherModifier *)self _numberOfOffScreenTrailingFullScreenCardsForContentOffset:v10, v11, y]+ v9;
+        v10 = [(SBMixedGridSwitcherModifier *)self _numberOfOffScreenTrailingFullScreenCardsForContentOffset:v10, v11, y]+ numberOfFloatingAppLayouts;
       }
     }
 
     else
     {
       v17 = [(SBMixedGridSwitcherModifier *)self _numberOfOffScreenTrailingFullScreenCardsForContentOffset:x, y];
-      if (v17 == v8)
+      if (v17 == _numberOfFullScreenAppLayouts)
       {
-        if (v8)
+        if (_numberOfFullScreenAppLayouts)
         {
           [(SBMixedGridSwitcherModifier *)self _fittedFullScreenContentSize];
           v19 = v18;
@@ -1679,7 +1679,7 @@ LABEL_26:
         }
 
         [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
-        v17 = [(SBMixedGridSwitcherModifier *)self _numberOfOffScreenTrailingFloatingCardsForContentOffset:x - (v19 + v22), y]+ v8;
+        v17 = [(SBMixedGridSwitcherModifier *)self _numberOfOffScreenTrailingFloatingCardsForContentOffset:x - (v19 + v22), y]+ _numberOfFullScreenAppLayouts;
       }
 
       v10 = v7 + ~v17;
@@ -1699,37 +1699,37 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = SBMixedGridSwitcherModifier;
-  v5 = a4;
-  v6 = [(SBMixedGridSwitcherModifier *)&v10 shouldSuppressHighlightEffectForLayoutRole:a3 inAppLayout:v5];
-  v7 = [v5 isCenterOverSplit];
+  layoutCopy = layout;
+  v6 = [(SBMixedGridSwitcherModifier *)&v10 shouldSuppressHighlightEffectForLayoutRole:role inAppLayout:layoutCopy];
+  isCenterOverSplit = [layoutCopy isCenterOverSplit];
 
-  if (a3 == 4)
+  if (role == 4)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v7;
+    v8 = isCenterOverSplit;
   }
 
   return (v8 | v6) & 1;
 }
 
-- (BOOL)isLayoutRoleKillable:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)isLayoutRoleKillable:(int64_t)killable inAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v12.receiver = self;
   v12.super_class = SBMixedGridSwitcherModifier;
-  v7 = a4;
-  v8 = [(SBMixedGridSwitcherModifier *)&v12 isLayoutRoleKillable:a3 inAppLayout:v7 atIndex:a5];
-  v9 = [v7 isCenterOverSplit];
+  layoutCopy = layout;
+  v8 = [(SBMixedGridSwitcherModifier *)&v12 isLayoutRoleKillable:killable inAppLayout:layoutCopy atIndex:index];
+  isCenterOverSplit = [layoutCopy isCenterOverSplit];
 
-  v10 = v9 ^ 1;
-  if (a3 == 4)
+  v10 = isCenterOverSplit ^ 1;
+  if (killable == 4)
   {
     v10 = 1;
   }
@@ -1737,17 +1737,17 @@ LABEL_26:
   return v10 & v8;
 }
 
-- (BOOL)isLayoutRoleDraggable:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleDraggable:(int64_t)draggable inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   if ([(SBMixedGridSwitcherModifier *)self isSplitViewSupported])
   {
-    v7 = [v6 itemForLayoutRole:4];
+    v7 = [layoutCopy itemForLayoutRole:4];
     v8 = v7 == 0;
 
-    v9 = [v6 itemForLayoutRole:a3];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v10 isEqualToString:@"com.apple.PrintKit.Print-Center"];
+    v9 = [layoutCopy itemForLayoutRole:draggable];
+    bundleIdentifier = [v9 bundleIdentifier];
+    v11 = [bundleIdentifier isEqualToString:@"com.apple.PrintKit.Print-Center"];
 
     v12 = v8 & ~v11;
   }
@@ -1760,12 +1760,12 @@ LABEL_26:
   return v12;
 }
 
-- (id)_appLayoutWithPrimaryLeafAppLayout:(id)a3 sideLeafAppLayout:(id)a4 configuration:(int64_t)a5
+- (id)_appLayoutWithPrimaryLeafAppLayout:(id)layout sideLeafAppLayout:(id)appLayout configuration:(int64_t)configuration
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [a3 itemForLayoutRole:1];
-  v10 = [v8 itemForLayoutRole:1];
+  appLayoutCopy = appLayout;
+  v9 = [layout itemForLayoutRole:1];
+  v10 = [appLayoutCopy itemForLayoutRole:1];
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:1];
   v16[0] = v11;
@@ -1775,25 +1775,25 @@ LABEL_26:
   v17[1] = v10;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  v14 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v13 configuration:a5 environment:1 preferredDisplayOrdinal:[(SBMixedGridSwitcherModifier *)self displayOrdinal]];
+  v14 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v13 configuration:configuration environment:1 preferredDisplayOrdinal:[(SBMixedGridSwitcherModifier *)self displayOrdinal]];
 
   return v14;
 }
 
-- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atLocation:(CGPoint)a5
+- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)role inAppLayout:(id)layout atLocation:(CGPoint)location
 {
-  point = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v154 = [v8 leafAppLayoutForRole:a3];
+  point = location.y;
+  x = location.x;
+  layoutCopy = layout;
+  v154 = [layoutCopy leafAppLayoutForRole:role];
   [(SBMixedGridSwitcherModifier *)self scrollViewContentOffset];
   v9 = [(SBMixedGridSwitcherModifier *)self _visibleAppLayoutRangeForContentOffset:?];
   v11 = v10;
-  v12 = [(SBMixedGridSwitcherModifier *)self switcherInterfaceOrientation];
-  v13 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v14 = [v13 indexOfObject:v8];
+  switcherInterfaceOrientation = [(SBMixedGridSwitcherModifier *)self switcherInterfaceOrientation];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts indexOfObject:layoutCopy];
 
-  [(SBSwitcherModifier *)self scaledFrameForLayoutRole:a3 inAppLayout:v8 atIndex:v14];
+  [(SBSwitcherModifier *)self scaledFrameForLayoutRole:role inAppLayout:layoutCopy atIndex:v14];
   v147 = v15;
   v17 = v16;
   v19 = v18;
@@ -1802,11 +1802,11 @@ LABEL_26:
   v23 = *(MEMORY[0x277CBF3A0] + 8);
   v24 = *(MEMORY[0x277CBF3A0] + 16);
   rect = *(MEMORY[0x277CBF3A0] + 24);
-  v138 = a3;
-  v151 = v8;
-  v150 = [[SBSwitcherDropRegionContext alloc] initWithDraggingLayoutRole:a3 inAppLayout:v8];
-  v25 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v26 = [(SBSwitcherModifier *)self indexOfFirstFloatingAppFromAppLayouts:v25];
+  roleCopy = role;
+  v151 = layoutCopy;
+  v150 = [[SBSwitcherDropRegionContext alloc] initWithDraggingLayoutRole:role inAppLayout:layoutCopy];
+  appLayouts2 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v26 = [(SBSwitcherModifier *)self indexOfFirstFloatingAppFromAppLayouts:appLayouts2];
 
   v145 = v19;
   v146 = v17;
@@ -1820,8 +1820,8 @@ LABEL_26:
 
   else
   {
-    v30 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-    v31 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v30];
+    appLayouts3 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+    v31 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts3];
 
     [(SBSwitcherModifier *)self scaledFrameForIndex:v31];
     v33 = v32;
@@ -1837,8 +1837,8 @@ LABEL_26:
 
     else
     {
-      v40 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-      v41 = [v40 objectAtIndex:v26];
+      appLayouts4 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+      v41 = [appLayouts4 objectAtIndex:v26];
 
       v42 = v26;
       v28 = v41;
@@ -1848,7 +1848,7 @@ LABEL_26:
       v23 = v44;
       v24 = v45;
       rect = v46;
-      v27 = SBEffectiveAppLayoutConfigurationForInterfaceOrientation([v28 configuration], v12);
+      v27 = SBEffectiveAppLayoutConfigurationForInterfaceOrientation([v28 configuration], switcherInterfaceOrientation);
     }
 
     v19 = v145;
@@ -1866,8 +1866,8 @@ LABEL_26:
     v50 = v9;
     while (1)
     {
-      v51 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-      v52 = [v51 objectAtIndex:v50];
+      appLayouts5 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+      v52 = [appLayouts5 objectAtIndex:v50];
 
       [(SBMixedGridSwitcherModifier *)self frameForIndex:v50];
       [(SBMixedGridSwitcherModifier *)self scaleForIndex:v50];
@@ -1900,7 +1900,7 @@ LABEL_26:
     }
 
     v62 = v52;
-    v27 = SBEffectiveAppLayoutConfigurationForInterfaceOrientation([v62 configuration], v12);
+    v27 = SBEffectiveAppLayoutConfigurationForInterfaceOrientation([v62 configuration], switcherInterfaceOrientation);
     if ([v62 environment] == 2)
     {
       v47 = 1;
@@ -1933,11 +1933,11 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      v63 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-      v64 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v63];
+      appLayouts6 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+      v64 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts6];
 
-      LODWORD(v63) = [(SBMixedGridSwitcherModifier *)self _subtreeIndexForIndex:v50 indexOfFirstMainAppLayout:v64];
-      v65 = [(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards]& v63;
+      LODWORD(appLayouts6) = [(SBMixedGridSwitcherModifier *)self _subtreeIndexForIndex:v50 indexOfFirstMainAppLayout:v64];
+      v65 = [(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards]& appLayouts6;
       if ([v62 isSplitConfiguration])
       {
         v66 = v62;
@@ -1976,16 +1976,16 @@ LABEL_45:
 
       v140 = v82;
       v152 = v62;
-      if ([v62 isSplitConfiguration] && objc_msgSend(v62, "isOrContainsAppLayout:", v154) && v140 != v138)
+      if ([v62 isSplitConfiguration] && objc_msgSend(v62, "isOrContainsAppLayout:", v154) && v140 != roleCopy)
       {
         v134 = [v62 appLayoutByModifyingConfiguration:v27];
-        v83 = [v134 flippedAppLayout];
-        [(SBSwitcherModifier *)self scaledFrameForLayoutRole:1 inAppLayout:v83 atIndex:v50];
+        flippedAppLayout = [v134 flippedAppLayout];
+        [(SBSwitcherModifier *)self scaledFrameForLayoutRole:1 inAppLayout:flippedAppLayout atIndex:v50];
         v69 = v84;
         v71 = v85;
         v73 = v86;
         v75 = v87;
-        [(SBSwitcherModifier *)self scaledFrameForLayoutRole:2 inAppLayout:v83 atIndex:v50];
+        [(SBSwitcherModifier *)self scaledFrameForLayoutRole:2 inAppLayout:flippedAppLayout atIndex:v50];
         v22 = v88;
         v78 = v89;
         v143 = v90;
@@ -2103,10 +2103,10 @@ LABEL_56:
 
   v153 = v28;
   v95 = [v28 itemForLayoutRole:v94];
-  v96 = [v95 uniqueIdentifier];
+  uniqueIdentifier = [v95 uniqueIdentifier];
   v97 = [v154 itemForLayoutRole:1];
-  v98 = [v97 uniqueIdentifier];
-  v99 = [v96 isEqualToString:v98];
+  uniqueIdentifier2 = [v97 uniqueIdentifier];
+  v99 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
   if (v57 & 1) != 0 || (v99)
   {
@@ -2193,8 +2193,8 @@ LABEL_79:
   v112 = v153;
   if (v103 == 2 && !v111)
   {
-    v113 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-    [v113 indexOfObject:v109];
+    appLayouts7 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+    [appLayouts7 indexOfObject:v109];
 
     if (v9 >= v9 + v11)
     {
@@ -2207,8 +2207,8 @@ LABEL_79:
       v103 = 3;
       do
       {
-        v115 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-        v116 = [v115 objectAtIndex:v9];
+        appLayouts8 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+        v116 = [appLayouts8 objectAtIndex:v9];
 
         if ([v116 environment] == 1)
         {
@@ -2240,7 +2240,7 @@ LABEL_79:
   [(SBSwitcherDropRegionContext *)v150 setCurrentDropRegion:v103];
   if ([v109 isSplitConfiguration] && SBSwitcherDropRegionWarrantsModelUpdate(v103))
   {
-    if (v138 == 1)
+    if (roleCopy == 1)
     {
       v129 = 2;
     }
@@ -2254,8 +2254,8 @@ LABEL_79:
     [(SBSwitcherDropRegionContext *)v150 setRemainingAppLayout:v130];
   }
 
-  v131 = [v112 isSplitConfiguration];
-  if (v103 == 3 || v131)
+  isSplitConfiguration = [v112 isSplitConfiguration];
+  if (v103 == 3 || isSplitConfiguration)
   {
     if ((v103 & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
@@ -2272,76 +2272,76 @@ LABEL_79:
   return v150;
 }
 
-- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)a3 lastVisibleIndex:(unint64_t)a4
+- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)offset lastVisibleIndex:(unint64_t)index
 {
-  if (([(SBMixedGridSwitcherModifier *)self isRTLEnabled:a3.x]& 1) != 0)
+  if (([(SBMixedGridSwitcherModifier *)self isRTLEnabled:offset.x]& 1) != 0)
   {
-    v6 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-    v7 = [v6 count];
+    appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+    v7 = [appLayouts count];
 
-    if (v7 > a4 && [(SBMixedGridSwitcherModifier *)self isIndexVisible:a4])
+    if (v7 > index && [(SBMixedGridSwitcherModifier *)self isIndexVisible:index])
     {
       v8 = v7 - 1;
-      v9 = a4;
+      indexCopy = index;
       do
       {
-        v10 = v9;
-        if (v8 == v9)
+        indexCopy5 = indexCopy;
+        if (v8 == indexCopy)
         {
           break;
         }
 
-        ++v9;
+        ++indexCopy;
       }
 
-      while ([(SBMixedGridSwitcherModifier *)self isIndexVisible:v10 + 1]);
+      while ([(SBMixedGridSwitcherModifier *)self isIndexVisible:indexCopy5 + 1]);
     }
 
     else
     {
-      v10 = 0x7FFFFFFFFFFFFFFFLL;
+      indexCopy5 = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  else if ((a4 & 0x8000000000000000) != 0 || ![(SBMixedGridSwitcherModifier *)self isIndexVisible:a4])
+  else if ((index & 0x8000000000000000) != 0 || ![(SBMixedGridSwitcherModifier *)self isIndexVisible:index])
   {
-    v10 = a4;
-    a4 = 0x7FFFFFFFFFFFFFFFLL;
+    indexCopy5 = index;
+    index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v11 = a4;
-    while (v11-- >= 1)
+    indexCopy3 = index;
+    while (indexCopy3-- >= 1)
     {
-      if (![(SBMixedGridSwitcherModifier *)self isIndexVisible:v11])
+      if (![(SBMixedGridSwitcherModifier *)self isIndexVisible:indexCopy3])
       {
-        v10 = a4;
-        a4 = v11 + 1;
+        indexCopy5 = index;
+        index = indexCopy3 + 1;
         goto LABEL_16;
       }
     }
 
-    v10 = a4;
-    a4 = 0;
+    indexCopy5 = index;
+    index = 0;
   }
 
 LABEL_16:
-  v13 = a4 != 0x7FFFFFFFFFFFFFFFLL;
-  v14 = v10 != 0x7FFFFFFFFFFFFFFFLL;
+  v13 = index != 0x7FFFFFFFFFFFFFFFLL;
+  v14 = indexCopy5 != 0x7FFFFFFFFFFFFFFFLL;
   if (v14 && v13)
   {
-    v15 = a4;
+    indexCopy6 = index;
   }
 
   else
   {
-    v15 = 0;
+    indexCopy6 = 0;
   }
 
   if (v14 && v13)
   {
-    v16 = v10 - a4 + 1;
+    v16 = indexCopy5 - index + 1;
   }
 
   else
@@ -2350,14 +2350,14 @@ LABEL_16:
   }
 
   result.length = v16;
-  result.location = v15;
+  result.location = indexCopy6;
   return result;
 }
 
-- (unint64_t)_numberOfOffScreenTrailingFullScreenCardsForContentOffset:(CGPoint)a3
+- (unint64_t)_numberOfOffScreenTrailingFullScreenCardsForContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  v5 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts:a3.x];
+  x = offset.x;
+  v5 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts:offset.x];
   if (!v5)
   {
     return 0;
@@ -2389,10 +2389,10 @@ LABEL_16:
     v17 = v16;
   }
 
-  v18 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenColumns];
-  if (v17 >= v18)
+  _numberOfFullScreenColumns = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenColumns];
+  if (v17 >= _numberOfFullScreenColumns)
   {
-    v17 = v18;
+    v17 = _numberOfFullScreenColumns;
   }
 
   if (![(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards]|| !v17)
@@ -2415,10 +2415,10 @@ LABEL_16:
   return result;
 }
 
-- (unint64_t)_numberOfOffScreenTrailingFloatingCardsForContentOffset:(CGPoint)a3
+- (unint64_t)_numberOfOffScreenTrailingFloatingCardsForContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  result = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts:a3.x];
+  x = offset.x;
+  result = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts:offset.x];
   if (result)
   {
     [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
@@ -2448,11 +2448,11 @@ LABEL_16:
   return result;
 }
 
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search
 {
   [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
 
-  [(SBSwitcherModifier *)self distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:a3 numberOfRows:1 padding:0 layoutDirection:?];
+  [(SBSwitcherModifier *)self distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:search numberOfRows:1 padding:0 layoutDirection:?];
   return result;
 }
 
@@ -2472,13 +2472,13 @@ LABEL_16:
 - (id)topMostLayoutElements
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = appLayouts;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -2511,15 +2511,15 @@ LABEL_16:
 
 - (double)_verticalSpacing
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
   if (([(SBMixedGridSwitcherModifier *)self switcherInterfaceOrientation]- 1) > 1)
   {
-    [v3 gridSwitcherVerticalNaturalSpacingLandscape];
+    [switcherSettings gridSwitcherVerticalNaturalSpacingLandscape];
   }
 
   else
   {
-    [v3 gridSwitcherVerticalNaturalSpacingPortrait];
+    [switcherSettings gridSwitcherVerticalNaturalSpacingPortrait];
   }
 
   [(SBMixedGridSwitcherModifier *)self screenScale];
@@ -2531,15 +2531,15 @@ LABEL_16:
 
 - (double)_horizontalSpacing
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
   if (([(SBMixedGridSwitcherModifier *)self switcherInterfaceOrientation]- 1) > 1)
   {
-    [v3 gridSwitcherHorizontalInterpageSpacingLandscape];
+    [switcherSettings gridSwitcherHorizontalInterpageSpacingLandscape];
   }
 
   else
   {
-    [v3 gridSwitcherHorizontalInterpageSpacingPortrait];
+    [switcherSettings gridSwitcherHorizontalInterpageSpacingPortrait];
   }
 
   [(SBMixedGridSwitcherModifier *)self screenScale];
@@ -2551,8 +2551,8 @@ LABEL_16:
 
 - (unint64_t)_numberOfFullScreenAppLayouts
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v4 = [v3 count];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts count];
   v5 = v4 - [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
 
   return v5;
@@ -2573,11 +2573,11 @@ LABEL_16:
 
 - (unint64_t)_numberOfFullScreenColumns
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
-  v4 = [(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards];
-  v5 = v3;
-  v6 = ceil(vcvtd_n_f64_u64(v3, 1uLL));
-  if (v4)
+  _numberOfFullScreenAppLayouts = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
+  _isDoubleStackingFullScreenCards = [(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards];
+  v5 = _numberOfFullScreenAppLayouts;
+  v6 = ceil(vcvtd_n_f64_u64(_numberOfFullScreenAppLayouts, 1uLL));
+  if (_isDoubleStackingFullScreenCards)
   {
     return v6;
   }
@@ -2600,15 +2600,15 @@ LABEL_16:
 
 - (double)_fullScreenCardScale
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
   if ([(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards])
   {
-    [v3 appExposeNonFloatingDoubleRowScale];
+    [switcherSettings appExposeNonFloatingDoubleRowScale];
   }
 
   else
   {
-    [v3 appExposeNonFloatingSingleRowScale];
+    [switcherSettings appExposeNonFloatingSingleRowScale];
   }
 
   v5 = v4;
@@ -2633,10 +2633,10 @@ LABEL_16:
 
 - (double)_floatingCardScale
 {
-  v3 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
   if ([(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards])
   {
-    [v3 appExposeFloatingDoubleRowScale];
+    [switcherSettings appExposeFloatingDoubleRowScale];
     v5 = v4;
   }
 
@@ -2644,16 +2644,16 @@ LABEL_16:
   {
     [(SBMixedGridSwitcherModifier *)self switcherViewBounds];
     v7 = v6;
-    [v3 appExposeNonFloatingSingleRowScale];
+    [switcherSettings appExposeNonFloatingSingleRowScale];
     v5 = v8 * v7 / self->_floatingCardSize.height;
   }
 
   return v5;
 }
 
-- (CGSize)_scaledCardSizeForIndex:(unint64_t)a3
+- (CGSize)_scaledCardSizeForIndex:(unint64_t)index
 {
-  v4 = [(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:a3];
+  v4 = [(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:index];
   v5 = &OBJC_IVAR___SBMixedGridSwitcherModifier__floatingCardSize;
   if (v4)
   {
@@ -2687,20 +2687,20 @@ LABEL_16:
     return 1;
   }
 
-  v3 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
-  return v3 > [(SBMixedGridSwitcherModifier *)self maximumNumberOfFullScreenCardsForSingleRow];
+  _numberOfFullScreenAppLayouts = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
+  return _numberOfFullScreenAppLayouts > [(SBMixedGridSwitcherModifier *)self maximumNumberOfFullScreenCardsForSingleRow];
 }
 
-- (CGRect)_frameForIndex:(unint64_t)a3 applyScrollViewContentOffset:(BOOL)a4
+- (CGRect)_frameForIndex:(unint64_t)index applyScrollViewContentOffset:(BOOL)offset
 {
-  v4 = a4;
+  offsetCopy = offset;
   [(SBMixedGridSwitcherModifier *)self _invalidateCachesIfNeeded];
   v7 = &OBJC_IVAR___SBWiFiManager__currentNetworkIsIOSHotspot;
   v8 = 0x277CCA000uLL;
   if ((*&self->_cachesValidity & 8) != 0)
   {
     cachedFrameForIndex = self->_cachedFrameForIndex;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     v11 = [(NSMutableDictionary *)cachedFrameForIndex objectForKeyedSubscript:v10];
 
     if (v11)
@@ -2711,7 +2711,7 @@ LABEL_16:
       v17 = v16;
       v19 = v18;
 
-      if (!v4)
+      if (!offsetCopy)
       {
         goto LABEL_23;
       }
@@ -2722,39 +2722,39 @@ LABEL_16:
 
   [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
   v21 = v20;
-  v22 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v23 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v22];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v23 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
 
-  if ([(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:a3])
+  if ([(SBMixedGridSwitcherModifier *)self _isIndexFullScreen:index])
   {
-    v24 = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
-    v25 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+    numberOfFloatingAppLayouts = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
+    isRTLEnabled = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
     [(SBMixedGridSwitcherModifier *)self _contentSize];
     v27 = v26;
-    v28 = [(SBMixedGridSwitcherModifier *)self _subtreeIndexForIndex:a3 indexOfFirstMainAppLayout:v23];
-    v29 = [(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards];
-    v30 = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
+    v28 = [(SBMixedGridSwitcherModifier *)self _subtreeIndexForIndex:index indexOfFirstMainAppLayout:v23];
+    _isDoubleStackingFullScreenCards = [(SBMixedGridSwitcherModifier *)self _isDoubleStackingFullScreenCards];
+    _numberOfFullScreenAppLayouts = [(SBMixedGridSwitcherModifier *)self _numberOfFullScreenAppLayouts];
     [(SBMixedGridSwitcherModifier *)self _fullScreenCardScale];
-    [(SBMixedGridSwitcherModifier *)self _unpaddedCoplanarFrameForIndex:v28 doubleStack:v29 count:v30 cardSize:self->_fullScreenCardSize.width scale:self->_fullScreenCardSize.height contentWidth:v31, v27];
+    [(SBMixedGridSwitcherModifier *)self _unpaddedCoplanarFrameForIndex:v28 doubleStack:_isDoubleStackingFullScreenCards count:_numberOfFullScreenAppLayouts cardSize:self->_fullScreenCardSize.width scale:self->_fullScreenCardSize.height contentWidth:v31, v27];
     v33 = v32;
     v15 = v34;
     v17 = v35;
     v19 = v36;
-    v37 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled2 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
     v38 = -v21;
-    if (v37)
+    if (isRTLEnabled2)
     {
       v38 = v21;
     }
 
     v13 = v33 + v38;
-    if (v24)
+    if (numberOfFloatingAppLayouts)
     {
       [(SBMixedGridSwitcherModifier *)self _fittedFloatingContentSize];
       v40 = v21 + v39;
       v41 = v13 + v40;
       v42 = v13 - v40;
-      if (v25)
+      if (isRTLEnabled)
       {
         v13 = v41;
       }
@@ -2773,17 +2773,17 @@ LABEL_16:
   {
     [(SBMixedGridSwitcherModifier *)self _contentSize];
     v44 = v43;
-    v45 = [(SBMixedGridSwitcherModifier *)self _subtreeIndexForIndex:a3 indexOfFirstMainAppLayout:v23];
-    v46 = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
-    [(SBMixedGridSwitcherModifier *)self unadjustedScaleForIndex:a3];
-    [(SBMixedGridSwitcherModifier *)self _unpaddedCoplanarFrameForIndex:v45 doubleStack:0 count:v46 cardSize:self->_floatingCardSize.width scale:self->_floatingCardSize.height contentWidth:v47, v44];
+    v45 = [(SBMixedGridSwitcherModifier *)self _subtreeIndexForIndex:index indexOfFirstMainAppLayout:v23];
+    numberOfFloatingAppLayouts2 = [(SBMixedGridSwitcherModifier *)self numberOfFloatingAppLayouts];
+    [(SBMixedGridSwitcherModifier *)self unadjustedScaleForIndex:index];
+    [(SBMixedGridSwitcherModifier *)self _unpaddedCoplanarFrameForIndex:v45 doubleStack:0 count:numberOfFloatingAppLayouts2 cardSize:self->_floatingCardSize.width scale:self->_floatingCardSize.height contentWidth:v47, v44];
     v49 = v48;
     v15 = v50;
     v17 = v51;
     v19 = v52;
-    v53 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled3 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
     v54 = -v21;
-    if (v53)
+    if (isRTLEnabled3)
     {
       v54 = v21;
     }
@@ -2799,9 +2799,9 @@ LABEL_16:
     v58 = v57 + v21 * 2.0;
     if (BSFloatLessThanOrEqualToFloat())
     {
-      v59 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled4 = [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
       v60 = -0.5;
-      if (v59)
+      if (isRTLEnabled4)
       {
         v60 = 0.5;
       }
@@ -2812,11 +2812,11 @@ LABEL_16:
 
   v61 = [MEMORY[0x277CCAE60] valueWithRect:{v13, v15, v17, v19}];
   v62 = *(&self->super.super.super.super.isa + v7[202]);
-  v63 = [*(v8 + 2992) numberWithUnsignedInteger:a3];
+  v63 = [*(v8 + 2992) numberWithUnsignedInteger:index];
   [v62 setObject:v61 forKeyedSubscript:v63];
 
   *&self->_cachesValidity |= 8u;
-  if (v4)
+  if (offsetCopy)
   {
 LABEL_22:
     [(SBMixedGridSwitcherModifier *)self scrollViewContentOffset];
@@ -2835,9 +2835,9 @@ LABEL_23:
   return result;
 }
 
-- (CGRect)_unpaddedCoplanarFrameForIndex:(unint64_t)a3 doubleStack:(BOOL)a4 count:(unint64_t)a5 cardSize:(CGSize)a6 scale:(double)a7 contentWidth:(double)a8
+- (CGRect)_unpaddedCoplanarFrameForIndex:(unint64_t)index doubleStack:(BOOL)stack count:(unint64_t)count cardSize:(CGSize)size scale:(double)scale contentWidth:(double)width
 {
-  [(SBMixedGridSwitcherModifier *)self switcherViewBounds:a3];
+  [(SBMixedGridSwitcherModifier *)self switcherViewBounds:index];
   [(SBMixedGridSwitcherModifier *)self _horizontalSpacing];
   [(SBMixedGridSwitcherModifier *)self _verticalSpacing];
   [(SBMixedGridSwitcherModifier *)self isRTLEnabled];
@@ -2856,39 +2856,39 @@ LABEL_23:
 
 - (double)_cardHeaderHeight
 {
-  v2 = [(SBMixedGridSwitcherModifier *)self switcherSettings];
-  [v2 spacingBetweenSnapshotAndIcon];
+  switcherSettings = [(SBMixedGridSwitcherModifier *)self switcherSettings];
+  [switcherSettings spacingBetweenSnapshotAndIcon];
   v4 = v3;
-  [v2 iconSideLength];
+  [switcherSettings iconSideLength];
   v6 = v4 + v5;
 
   return v6;
 }
 
-- (BOOL)_isIndexFullScreen:(unint64_t)a3
+- (BOOL)_isIndexFullScreen:(unint64_t)screen
 {
-  v5 = [(SBMixedGridSwitcherModifier *)self appLayouts];
-  v6 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v5];
+  appLayouts = [(SBMixedGridSwitcherModifier *)self appLayouts];
+  v6 = [(SBMixedGridSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
 
-  return v6 != 0x7FFFFFFFFFFFFFFFLL && v6 <= a3;
+  return v6 != 0x7FFFFFFFFFFFFFFFLL && v6 <= screen;
 }
 
-- (unint64_t)_subtreeIndexForIndex:(unint64_t)a3 indexOfFirstMainAppLayout:(unint64_t)a4
+- (unint64_t)_subtreeIndexForIndex:(unint64_t)index indexOfFirstMainAppLayout:(unint64_t)layout
 {
-  if (a3 < a4 || a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index < layout || index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    layoutCopy = 0;
   }
 
   else
   {
-    v5 = a4;
+    layoutCopy = layout;
   }
 
-  v6 = a3 - v5;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  v6 = index - layoutCopy;
+  if (layout == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return index;
   }
 
   else
@@ -2901,12 +2901,12 @@ LABEL_23:
 {
   v5.receiver = self;
   v5.super_class = SBMixedGridSwitcherModifier;
-  v3 = [(SBMixedGridSwitcherModifier *)&v5 appLayoutsGenerationCount];
-  v4 = [(SBMixedGridSwitcherModifier *)self switcherInterfaceOrientation];
-  if (self->_lastAppLayoutsGenerationCount != v3 || self->_lastInterfaceOrientation == v4)
+  appLayoutsGenerationCount = [(SBMixedGridSwitcherModifier *)&v5 appLayoutsGenerationCount];
+  switcherInterfaceOrientation = [(SBMixedGridSwitcherModifier *)self switcherInterfaceOrientation];
+  if (self->_lastAppLayoutsGenerationCount != appLayoutsGenerationCount || self->_lastInterfaceOrientation == switcherInterfaceOrientation)
   {
-    self->_lastAppLayoutsGenerationCount = v3;
-    self->_lastInterfaceOrientation = v4;
+    self->_lastAppLayoutsGenerationCount = appLayoutsGenerationCount;
+    self->_lastInterfaceOrientation = switcherInterfaceOrientation;
     *&self->_cachesValidity &= 0xF0u;
     [(NSMutableDictionary *)self->_cachedFrameForIndex removeAllObjects];
   }

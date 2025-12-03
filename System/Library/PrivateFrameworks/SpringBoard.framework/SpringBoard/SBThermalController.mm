@@ -1,14 +1,14 @@
 @interface SBThermalController
 + (SBThermalController)sharedInstance;
-+ (void)logThermalEvent:(id)a3;
++ (void)logThermalEvent:(id)event;
 - (NSString)description;
 - (SBThermalController)init;
 - (void)_respondToCurrentThermalCondition;
-- (void)_setBlocked:(BOOL)a3;
+- (void)_setBlocked:(BOOL)blocked;
 - (void)_updateThermalJetsamCPUSamplingState;
-- (void)addThermalObserver:(id)a3;
+- (void)addThermalObserver:(id)observer;
 - (void)dealloc;
-- (void)removeThermalObserver:(id)a3;
+- (void)removeThermalObserver:(id)observer;
 - (void)startListeningForThermalEvents;
 @end
 
@@ -44,18 +44,18 @@ uint64_t __37__SBThermalController_sharedInstance__block_invoke()
   if (v2)
   {
     v3 = +[SBDefaults localDefaults];
-    v4 = [v3 thermalDefaults];
+    thermalDefaults = [v3 thermalDefaults];
     thermalDefaults = v2->_thermalDefaults;
-    v2->_thermalDefaults = v4;
+    v2->_thermalDefaults = thermalDefaults;
 
-    v6 = [v3 securityDefaults];
+    securityDefaults = [v3 securityDefaults];
     securityDefaults = v2->_securityDefaults;
-    v2->_securityDefaults = v6;
+    v2->_securityDefaults = securityDefaults;
 
     v8 = +[SBDefaults externalDefaults];
-    v9 = [v8 networkDefaults];
+    networkDefaults = [v8 networkDefaults];
     networkDefaults = v2->_networkDefaults;
-    v2->_networkDefaults = v9;
+    v2->_networkDefaults = networkDefaults;
 
     v2->_hotToken = -1;
     v2->_coldToken = -1;
@@ -90,11 +90,11 @@ uint64_t __37__SBThermalController_sharedInstance__block_invoke()
   [(SBThermalController *)&v6 dealloc];
 }
 
-+ (void)logThermalEvent:(id)a3
++ (void)logThermalEvent:(id)event
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithFormat:v4 arguments:&v8];
+  eventCopy = event;
+  v5 = [[v3 alloc] initWithFormat:eventCopy arguments:&v8];
 
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v5, 0}];
   v7 = GetThermalState();
@@ -105,9 +105,9 @@ uint64_t __37__SBThermalController_sharedInstance__block_invoke()
 
 - (void)startListeningForThermalEvents
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBThermalController startListeningForThermalEvents]"];
-  [v1 handleFailureInFunction:v0 file:@"SBThermalController.m" lineNumber:139 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBThermalController.m" lineNumber:139 description:@"this call must be made on the main thread"];
 }
 
 uint64_t __53__SBThermalController_startListeningForThermalEvents__block_invoke(uint64_t a1)
@@ -203,35 +203,35 @@ uint64_t __53__SBThermalController_startListeningForThermalEvents__block_invoke_
   v7 = [v3 appendUInt64:self->_hotLevel withName:@"hotLevel"];
   v8 = [v3 appendUInt64:self->_coldLevel withName:@"coldLevel"];
   v9 = [v3 appendUInt64:self->_sunLevel withName:@"sunLevel"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (void)addThermalObserver:(id)a3
+- (void)addThermalObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeThermalObserver:(id)a3
+- (void)removeThermalObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -239,15 +239,15 @@ uint64_t __53__SBThermalController_startListeningForThermalEvents__block_invoke_
 
 - (void)_respondToCurrentThermalCondition
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBThermalController _respondToCurrentThermalCondition]"];
-  [v1 handleFailureInFunction:v0 file:@"SBThermalController.m" lineNumber:238 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBThermalController.m" lineNumber:238 description:@"this call must be made on the main thread"];
 }
 
 - (void)_updateThermalJetsamCPUSamplingState
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBThermalController.m" lineNumber:293 description:@"failed to create a sampling token"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBThermalController.m" lineNumber:293 description:@"failed to create a sampling token"];
 }
 
 id __59__SBThermalController__updateThermalJetsamCPUSamplingState__block_invoke()
@@ -580,11 +580,11 @@ uint64_t __59__SBThermalController__updateThermalJetsamCPUSamplingState__block_i
   return result;
 }
 
-- (void)_setBlocked:(BOOL)a3
+- (void)_setBlocked:(BOOL)blocked
 {
-  v3 = a3;
+  blockedCopy = blocked;
   v33 = *MEMORY[0x277D85DE8];
-  if ([(SBThermalController *)self _isBlocked]!= a3)
+  if ([(SBThermalController *)self _isBlocked]!= blocked)
   {
     v5 = SBLogThermal();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -604,7 +604,7 @@ uint64_t __59__SBThermalController__updateThermalJetsamCPUSamplingState__block_i
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "Will toggle bricked state to: %{public}@", buf, 0xCu);
     }
 
-    if (v3)
+    if (blockedCopy)
     {
       v9 = @"ThermalUIAlertEnter";
     }
@@ -618,7 +618,7 @@ uint64_t __59__SBThermalController__updateThermalJetsamCPUSamplingState__block_i
     v10 = +[SBTelephonyManager sharedTelephonyManager];
     if ([v10 _serverConnection])
     {
-      if (v3)
+      if (blockedCopy)
       {
         v11 = _CTServerConnectionDisableRegistration();
       }
@@ -651,7 +651,7 @@ uint64_t __59__SBThermalController__updateThermalJetsamCPUSamplingState__block_i
       }
     }
 
-    if (v3)
+    if (blockedCopy)
     {
       v15 = +[SBWiFiManager sharedInstance];
       if ([v15 wiFiEnabled])
@@ -672,7 +672,7 @@ uint64_t __59__SBThermalController__updateThermalJetsamCPUSamplingState__block_i
       [(SBThermalDefaults *)self->_thermalDefaults setWasConnectedToWiFiWhenBrickedForThermalConditions:0];
     }
 
-    [(SBSecurityDefaults *)self->_securityDefaults setBlockedForThermal:v3];
+    [(SBSecurityDefaults *)self->_securityDefaults setBlockedForThermal:blockedCopy];
     [(SBSecurityDefaults *)self->_securityDefaults synchronizeDefaults];
     v17 = SBLogThermal();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))

@@ -1,6 +1,6 @@
 @interface FKBankConnectImageProvider
 - (FKBankConnectImageProvider)init;
-- (void)logoForInstitutionID:(id)a3 size:(CGSize)a4 scale:(double)a5 completion:(id)a6;
+- (void)logoForInstitutionID:(id)d size:(CGSize)size scale:(double)scale completion:(id)completion;
 @end
 
 @implementation FKBankConnectImageProvider
@@ -20,19 +20,19 @@
   return v2;
 }
 
-- (void)logoForInstitutionID:(id)a3 size:(CGSize)a4 scale:(double)a5 completion:(id)a6
+- (void)logoForInstitutionID:(id)d size:(CGSize)size scale:(double)scale completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   imageProvider = self->_imageProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__FKBankConnectImageProvider_logoForInstitutionID_size_scale_completion___block_invoke;
   v14[3] = &unk_278A54EA0;
-  v15 = v11;
-  v13 = v11;
-  [(BankConnectImageProvider *)imageProvider logoFor:a3 size:v14 scale:width completionHandler:height, a5];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(BankConnectImageProvider *)imageProvider logoFor:d size:v14 scale:width completionHandler:height, scale];
 }
 
 @end

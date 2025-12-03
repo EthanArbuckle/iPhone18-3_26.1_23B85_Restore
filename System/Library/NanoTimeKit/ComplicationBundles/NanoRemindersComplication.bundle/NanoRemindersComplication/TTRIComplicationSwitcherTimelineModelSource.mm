@@ -2,7 +2,7 @@
 - (TTRComplicationTimelineModel)model;
 - (TTRComplicationTimelineModelSourceDelegate)delegate;
 - (_TtC25NanoRemindersComplication43TTRIComplicationSwitcherTimelineModelSource)init;
-- (void)setModel:(id)a3;
+- (void)setModel:(id)model;
 @end
 
 @implementation TTRIComplicationSwitcherTimelineModelSource
@@ -26,12 +26,12 @@
   return v5;
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
   v5 = OBJC_IVAR____TtC25NanoRemindersComplication43TTRIComplicationSwitcherTimelineModelSource_model;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = model;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }

@@ -1,22 +1,22 @@
 @interface SiriUIActionableFooterView
 - (NSString)title;
-- (SiriUIActionableFooterView)initWithFrame:(CGRect)a3;
+- (SiriUIActionableFooterView)initWithFrame:(CGRect)frame;
 - (SiriUIActionableFooterViewDelegate)delegate;
 - (UIEdgeInsets)edgeInsets;
 - (id)snippetViewController;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setHasKeyline:(BOOL)a3;
-- (void)setSnippetViewController:(id)a3;
+- (void)setHasKeyline:(BOOL)keyline;
+- (void)setSnippetViewController:(id)controller;
 @end
 
 @implementation SiriUIActionableFooterView
 
-- (SiriUIActionableFooterView)initWithFrame:(CGRect)a3
+- (SiriUIActionableFooterView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SiriUIActionableFooterView;
-  v3 = [(SiriUIActionableFooterView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIActionableFooterView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SiriUIContentButton buttonWithLightWeightFont];
@@ -24,8 +24,8 @@
     v3->_button = v4;
 
     [(UIButton *)v3->_button addTarget:v3 action:sel__buttonTapped_ forControlEvents:64];
-    v6 = [(UIButton *)v3->_button titleLabel];
-    [v6 setTextAlignment:0];
+    titleLabel = [(UIButton *)v3->_button titleLabel];
+    [titleLabel setTextAlignment:0];
 
     [(UIButton *)v3->_button setContentHorizontalAlignment:1];
     [(UIButton *)v3->_button setTitleEdgeInsets:0.0, 30.0, 0.0, 0.0];
@@ -55,18 +55,18 @@
 
 - (NSString)title
 {
-  v2 = [(UIButton *)self->_button titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(UIButton *)self->_button titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setHasKeyline:(BOOL)a3
+- (void)setHasKeyline:(BOOL)keyline
 {
-  if (self->_hasKeyline != a3)
+  if (self->_hasKeyline != keyline)
   {
-    self->_hasKeyline = a3;
-    if (a3)
+    self->_hasKeyline = keyline;
+    if (keyline)
     {
       [(SiriUIActionableFooterView *)self addSubview:self->_keyline];
     }
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)setSnippetViewController:(id)a3
+- (void)setSnippetViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_snippetViewController);
 
   v5 = obj;
@@ -100,10 +100,10 @@
   }
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = [(SiriUIActionableFooterView *)self delegate];
-  [v4 footerViewTapped:self];
+  delegate = [(SiriUIActionableFooterView *)self delegate];
+  [delegate footerViewTapped:self];
 }
 
 - (UIEdgeInsets)edgeInsets

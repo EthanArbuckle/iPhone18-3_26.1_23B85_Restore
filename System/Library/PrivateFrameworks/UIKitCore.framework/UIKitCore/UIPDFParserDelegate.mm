@@ -1,8 +1,8 @@
 @interface UIPDFParserDelegate
 - (UIPDFParserDelegate)init;
 - (void)dealloc;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation UIPDFParserDelegate
@@ -29,15 +29,15 @@
   [(UIPDFParserDelegate *)&v3 dealloc];
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  if ([a4 isEqualToString:@"UIPDFSelection"])
+  if ([element isEqualToString:@"UIPDFSelection"])
   {
     self->_path = CGPathCreateMutable();
     return;
   }
 
-  if ([a4 isEqualToString:@"Rectangle"])
+  if ([element isEqualToString:@"Rectangle"])
   {
     v10 = *MEMORY[0x1E695EFF8];
     self->_p[3] = *MEMORY[0x1E695EFF8];
@@ -47,11 +47,11 @@
     return;
   }
 
-  if ([a4 isEqualToString:@"Point"])
+  if ([element isEqualToString:@"Point"])
   {
-    v11 = [a7 valueForKey:@"id"];
-    v12 = [a7 valueForKey:@"x"];
-    v13 = [a7 valueForKey:@"y"];
+    v11 = [attributes valueForKey:@"id"];
+    v12 = [attributes valueForKey:@"x"];
+    v13 = [attributes valueForKey:@"y"];
     if (v11)
     {
       if (v12)
@@ -100,11 +100,11 @@
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  if (([a4 isEqualToString:@"UIPDFSelection"] & 1) == 0)
+  if (([element isEqualToString:@"UIPDFSelection"] & 1) == 0)
   {
-    if ([a4 isEqualToString:@"Rectangle"])
+    if ([element isEqualToString:@"Rectangle"])
     {
       CGPathAddLines(self->_path, 0, self->_p, 4uLL);
       path = self->_path;
@@ -115,7 +115,7 @@
     else
     {
 
-      [a4 isEqualToString:@"Point"];
+      [element isEqualToString:@"Point"];
     }
   }
 }

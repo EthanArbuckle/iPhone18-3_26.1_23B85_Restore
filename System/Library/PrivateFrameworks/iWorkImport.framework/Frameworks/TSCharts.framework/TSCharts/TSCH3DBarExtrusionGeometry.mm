@@ -5,9 +5,9 @@
 - (id)selectionKnobPositions;
 - (void)debug_printDataPoints;
 - (void)generateArrays;
-- (void)p_insertCrossPointsIntoVector:(void *)a3;
-- (void)p_updateNormalizedSpineScaleMappingsUsingTransform:(void *)a3 forSpineGenerator:(id)a4;
-- (void)setExtrusionSetting:(BarExtrusionSetting *)a3;
+- (void)p_insertCrossPointsIntoVector:(void *)vector;
+- (void)p_updateNormalizedSpineScaleMappingsUsingTransform:(void *)transform forSpineGenerator:(id)generator;
+- (void)setExtrusionSetting:(BarExtrusionSetting *)setting;
 @end
 
 @implementation TSCH3DBarExtrusionGeometry
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (void)p_insertCrossPointsIntoVector:(void *)a3
+- (void)p_insertCrossPointsIntoVector:(void *)vector
 {
   v33 = *MEMORY[0x277D85DE8];
   v31[0] = xmmword_2764D64C0;
@@ -60,13 +60,13 @@
   switch(crossType)
   {
     case 3:
-      sub_2761ECEC0(a3, *(a3 + 1), v25, v27, 29);
+      sub_2761ECEC0(vector, *(vector + 1), v25, v27, 29);
       break;
     case 2:
-      sub_2761ECEC0(a3, *(a3 + 1), v31, &v33, 9);
+      sub_2761ECEC0(vector, *(vector + 1), v31, &v33, 9);
       break;
     case 1:
-      sub_2761ECEC0(a3, *(a3 + 1), v28, v30, 9);
+      sub_2761ECEC0(vector, *(vector + 1), v28, v30, 9);
       break;
     default:
       v10 = MEMORY[0x277D81150];
@@ -75,7 +75,7 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 173, 0, "invalid cross type %ld", crossType);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
-      sub_2761ECEC0(a3, *(a3 + 1), v28, v30, 9);
+      sub_2761ECEC0(vector, *(vector + 1), v28, v30, 9);
       break;
   }
 }
@@ -228,10 +228,10 @@
   }
 }
 
-- (void)p_updateNormalizedSpineScaleMappingsUsingTransform:(void *)a3 forSpineGenerator:(id)a4
+- (void)p_updateNormalizedSpineScaleMappingsUsingTransform:(void *)transform forSpineGenerator:(id)generator
 {
-  v7 = a4;
-  if (!v7)
+  generatorCopy = generator;
+  if (!generatorCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCH3DBarExtrusionGeometry p_updateNormalizedSpineScaleMappingsUsingTransform:forSpineGenerator:]");
@@ -245,11 +245,11 @@
   self->_normalizedSpine.__end_ = self->_normalizedSpine.__begin_;
   begin = self->super._spine.__begin_;
   end = self->super._spine.__end_;
-  v29 = *(a3 + 1);
-  v90 = *a3;
+  v29 = *(transform + 1);
+  v90 = *transform;
   v91 = v29;
-  v30 = *(a3 + 2);
-  v31 = *(a3 + 3);
+  v30 = *(transform + 2);
+  v31 = *(transform + 3);
   v92 = v30;
   v93 = v31;
   while (begin != end)
@@ -259,7 +259,7 @@
     begin += 12;
   }
 
-  started = objc_msgSend_bottomNonBevelStartIndex(v7, v6, *&v30, *&v31, v10);
+  started = objc_msgSend_bottomNonBevelStartIndex(generatorCopy, v6, *&v30, *&v31, v10);
   LODWORD(v36) = *(self->_normalizedSpine.__begin_ + 3 * started + 1);
   self->_scaleMappingStartingHeight = *&v36;
   self->_bottomCapScale = 1.0;
@@ -500,12 +500,12 @@
   return self;
 }
 
-- (void)setExtrusionSetting:(BarExtrusionSetting *)a3
+- (void)setExtrusionSetting:(BarExtrusionSetting *)setting
 {
-  v3 = *&a3->details.spine.stride;
-  v5 = *&a3->size;
-  v4 = *&a3->details.crossSection.adaptiveThreshold;
-  *&self->_extrusionSetting.details.spine.bevelHeight = *&a3->details.spine.bevelHeight;
+  v3 = *&setting->details.spine.stride;
+  v5 = *&setting->size;
+  v4 = *&setting->details.crossSection.adaptiveThreshold;
+  *&self->_extrusionSetting.details.spine.bevelHeight = *&setting->details.spine.bevelHeight;
   *&self->_extrusionSetting.details.spine.stride = v3;
   *&self->_extrusionSetting.size = v5;
   *&self->_extrusionSetting.details.crossSection.adaptiveThreshold = v4;

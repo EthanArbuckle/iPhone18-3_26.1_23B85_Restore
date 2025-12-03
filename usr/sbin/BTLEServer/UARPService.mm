@@ -1,31 +1,31 @@
 @interface UARPService
-- (UARPService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
-- (id)_createPacket:(unint64_t)a3 payloadOffset:(unint64_t)a4 payloadLength:(unint64_t)a5 payload:(id)a6;
-- (id)_extractPayload:(id)a3;
-- (id)_packetizeData:(id)a3;
-- (unsigned)_extractHeader:(id)a3;
-- (void)_parseRecvdAACPData:(id)a3;
-- (void)_parseRecvdData:(id)a3;
+- (UARPService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
+- (id)_createPacket:(unint64_t)packet payloadOffset:(unint64_t)offset payloadLength:(unint64_t)length payload:(id)payload;
+- (id)_extractPayload:(id)payload;
+- (id)_packetizeData:(id)data;
+- (unsigned)_extractHeader:(id)header;
+- (void)_parseRecvdAACPData:(id)data;
+- (void)_parseRecvdData:(id)data;
 - (void)_prepareForFirmwareDownload;
 - (void)assetSolicitationComplete;
 - (void)decOpportunisticConnection;
 - (void)incOpportunisticConnection;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)sendData:(id)a3;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)sendData:(id)data;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation UARPService
 
-- (UARPService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (UARPService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v8.receiver = self;
   v8.super_class = UARPService;
-  v5 = [(ClientService *)&v8 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v8 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -56,31 +56,31 @@
   }
 
   v5 = +[LoggingManager instance];
-  v6 = [(ClientService *)self peripheral];
-  v7 = [v6 identifier];
-  v8 = [v5 wasUUIDRequestedForLogRetrieval:v7];
+  peripheral = [(ClientService *)self peripheral];
+  identifier = [peripheral identifier];
+  v8 = [v5 wasUUIDRequestedForLogRetrieval:identifier];
 
   if (!v8)
   {
 LABEL_7:
     v9 = +[CattManager instance];
-    v10 = [(ClientService *)self peripheral];
-    [v9 setOpportunisticConnection:v10];
+    peripheral2 = [(ClientService *)self peripheral];
+    [v9 setOpportunisticConnection:peripheral2];
     goto LABEL_8;
   }
 
   v9 = +[CattManager instance];
-  v10 = [(ClientService *)self peripheral];
-  [v9 removeOpportunisticConnection:v10];
+  peripheral2 = [(ClientService *)self peripheral];
+  [v9 removeOpportunisticConnection:peripheral2];
 LABEL_8:
 
   v11 = [CBUUID UUIDWithString:CBUUIDUARPDataControlPointCharacteristicString];
   v17 = v11;
   v12 = [NSArray arrayWithObjects:&v17 count:1];
 
-  v13 = [(ClientService *)self peripheral];
-  v14 = [(ClientService *)self service];
-  [v13 discoverCharacteristics:v12 forService:v14];
+  peripheral3 = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral3 discoverCharacteristics:v12 forService:service];
 }
 
 - (void)stop
@@ -93,8 +93,8 @@ LABEL_8:
   }
 
   v4 = +[UARPServiceUARPControllerManager instance];
-  v5 = [(UARPService *)self uarpAccessory];
-  [v4 unregisterUARPService:self withUARPAccessory:v5];
+  uarpAccessory = [(UARPService *)self uarpAccessory];
+  [v4 unregisterUARPService:self withUARPAccessory:uarpAccessory];
 
   v6.receiver = self;
   v6.super_class = UARPService;
@@ -110,8 +110,8 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "_prepareForFirmwareDownload", v10, 2u);
   }
 
-  v4 = [(ClientService *)self peripheral];
-  v5 = [v4 maximumWriteValueLengthForType:0];
+  peripheral = [(ClientService *)self peripheral];
+  v5 = [peripheral maximumWriteValueLengthForType:0];
 
   [(UARPService *)self setMaxPayloadSize:v5 - 1];
   v6 = objc_alloc_init(NSMutableArray);
@@ -120,19 +120,19 @@ LABEL_8:
   v7 = objc_alloc_init(NSMutableData);
   [(UARPService *)self setRecvDataMessage:v7];
 
-  v8 = [(ClientService *)self peripheral];
-  v9 = [(UARPService *)self uarpDataControlPointCharacteristic];
-  [v8 setNotifyValue:1 forCharacteristic:v9];
+  peripheral2 = [(ClientService *)self peripheral];
+  uarpDataControlPointCharacteristic = [(UARPService *)self uarpDataControlPointCharacteristic];
+  [peripheral2 setNotifyValue:1 forCharacteristic:uarpDataControlPointCharacteristic];
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1000699D8;
   v17 = &unk_1000BD398;
-  v18 = self;
+  selfCopy = self;
   if (self->_transportSetupToken != -1)
   {
     dispatch_once(&self->_transportSetupToken, &v14);
@@ -142,21 +142,21 @@ LABEL_8:
   {
     v5 = +[BTLEXpcServer instance];
     v19[0] = @"kUARPDeviceUUID";
-    v6 = [(ClientService *)self peripheral];
-    v7 = [v6 identifier];
-    v8 = [v7 UUIDString];
+    peripheral = [(ClientService *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
     v19[1] = @"kUARPData";
-    v20[0] = v8;
-    v20[1] = v4;
+    v20[0] = uUIDString;
+    v20[1] = dataCopy;
     v9 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
     [v5 sendMsg:@"UARPDataOverAACP" args:v9];
   }
 
   else
   {
-    v5 = [(UARPService *)self _packetizeData:v4];
-    v10 = [(UARPService *)self txDataQueue];
-    [v10 addObjectsFromArray:v5];
+    v5 = [(UARPService *)self _packetizeData:dataCopy];
+    txDataQueue = [(UARPService *)self txDataQueue];
+    [txDataQueue addObjectsFromArray:v5];
 
     if ([(UARPService *)self isSendingData])
     {
@@ -165,32 +165,32 @@ LABEL_8:
     }
 
     [(UARPService *)self setIsSendingData:1];
-    v11 = [(UARPService *)self txDataQueue];
-    v6 = [v11 firstObject];
+    txDataQueue2 = [(UARPService *)self txDataQueue];
+    peripheral = [txDataQueue2 firstObject];
 
-    v12 = [(UARPService *)self txDataQueue];
-    [v12 removeObjectAtIndex:0];
+    txDataQueue3 = [(UARPService *)self txDataQueue];
+    [txDataQueue3 removeObjectAtIndex:0];
 
-    v7 = [(ClientService *)self peripheral];
-    v8 = [(UARPService *)self uarpDataControlPointCharacteristic];
-    [v7 writeValue:v6 forCharacteristic:v8 type:0];
+    identifier = [(ClientService *)self peripheral];
+    uUIDString = [(UARPService *)self uarpDataControlPointCharacteristic];
+    [identifier writeValue:peripheral forCharacteristic:uUIDString type:0];
   }
 
   v13 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10007C01C(v13, self, v4);
+    sub_10007C01C(v13, self, dataCopy);
   }
 
 LABEL_10:
 }
 
-- (id)_packetizeData:(id)a3
+- (id)_packetizeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(UARPService *)self maxPayloadSize];
-  if (v6 >= [v4 length])
+  maxPayloadSize = [(UARPService *)self maxPayloadSize];
+  if (maxPayloadSize >= [dataCopy length])
   {
     v7 = 0;
   }
@@ -200,113 +200,113 @@ LABEL_10:
     v7 = 0;
     do
     {
-      v8 = [(UARPService *)self _createPacket:0 payloadOffset:v7 payloadLength:[(UARPService *)self maxPayloadSize] payload:v4];
+      v8 = [(UARPService *)self _createPacket:0 payloadOffset:v7 payloadLength:[(UARPService *)self maxPayloadSize] payload:dataCopy];
       [v5 addObject:v8];
       v7 += [(UARPService *)self maxPayloadSize];
 
       v9 = [(UARPService *)self maxPayloadSize]+ v7;
     }
 
-    while (v9 < [v4 length]);
+    while (v9 < [dataCopy length]);
   }
 
-  v10 = -[UARPService _createPacket:payloadOffset:payloadLength:payload:](self, "_createPacket:payloadOffset:payloadLength:payload:", 1, v7, [v4 length] - v7, v4);
+  v10 = -[UARPService _createPacket:payloadOffset:payloadLength:payload:](self, "_createPacket:payloadOffset:payloadLength:payload:", 1, v7, [dataCopy length] - v7, dataCopy);
   [v5 addObject:v10];
 
   return v5;
 }
 
-- (id)_createPacket:(unint64_t)a3 payloadOffset:(unint64_t)a4 payloadLength:(unint64_t)a5 payload:(id)a6
+- (id)_createPacket:(unint64_t)packet payloadOffset:(unint64_t)offset payloadLength:(unint64_t)length payload:(id)payload
 {
-  v13 = a3;
-  v8 = a6;
+  packetCopy = packet;
+  payloadCopy = payload;
   v9 = objc_alloc_init(NSMutableData);
-  v10 = [NSData dataWithBytes:&v13 length:1];
+  v10 = [NSData dataWithBytes:&packetCopy length:1];
   [v9 appendData:v10];
-  v11 = [v8 subdataWithRange:{a4, a5}];
+  v11 = [payloadCopy subdataWithRange:{offset, length}];
 
   [v9 appendData:v11];
 
   return v9;
 }
 
-- (void)_parseRecvdAACPData:(id)a3
+- (void)_parseRecvdAACPData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7 = +[UARPServiceUARPControllerManager instance];
-  v5 = [v7 uarpController];
-  v6 = [(UARPService *)self uarpAccessory];
-  [v5 recvDataFromAccessory:v6 data:v4 error:0];
+  uarpController = [v7 uarpController];
+  uarpAccessory = [(UARPService *)self uarpAccessory];
+  [uarpController recvDataFromAccessory:uarpAccessory data:dataCopy error:0];
 }
 
-- (void)_parseRecvdData:(id)a3
+- (void)_parseRecvdData:(id)data
 {
-  v4 = a3;
-  v5 = [(UARPService *)self _extractHeader:v4];
-  v13 = [(UARPService *)self _extractPayload:v4];
+  dataCopy = data;
+  v5 = [(UARPService *)self _extractHeader:dataCopy];
+  v13 = [(UARPService *)self _extractPayload:dataCopy];
 
-  v6 = [(UARPService *)self recvDataMessage];
-  [v6 appendData:v13];
+  recvDataMessage = [(UARPService *)self recvDataMessage];
+  [recvDataMessage appendData:v13];
 
   if (v5)
   {
     v7 = +[UARPServiceUARPControllerManager instance];
-    v8 = [v7 uarpController];
-    v9 = [(UARPService *)self uarpAccessory];
-    v10 = [(UARPService *)self recvDataMessage];
-    v11 = [v10 copy];
-    [v8 recvDataFromAccessory:v9 data:v11 error:0];
+    uarpController = [v7 uarpController];
+    uarpAccessory = [(UARPService *)self uarpAccessory];
+    recvDataMessage2 = [(UARPService *)self recvDataMessage];
+    v11 = [recvDataMessage2 copy];
+    [uarpController recvDataFromAccessory:uarpAccessory data:v11 error:0];
 
-    v12 = [(UARPService *)self recvDataMessage];
-    [v12 setLength:0];
+    recvDataMessage3 = [(UARPService *)self recvDataMessage];
+    [recvDataMessage3 setLength:0];
   }
 }
 
-- (unsigned)_extractHeader:(id)a3
+- (unsigned)_extractHeader:(id)header
 {
   v6 = 0;
-  v3 = [a3 subdataWithRange:{0, 1}];
+  v3 = [header subdataWithRange:{0, 1}];
   [v3 getBytes:&v6 length:1];
   v4 = v6;
 
   return v4;
 }
 
-- (id)_extractPayload:(id)a3
+- (id)_extractPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 subdataWithRange:{1, objc_msgSend(v3, "length") - 1}];
+  payloadCopy = payload;
+  v4 = [payloadCopy subdataWithRange:{1, objc_msgSend(payloadCopy, "length") - 1}];
 
   return v4;
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v31 = v8;
+    v31 = peripheralCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = serviceCopy;
     v34 = 2112;
-    v35 = v10;
+    v35 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService - peripheral:%@ service:%@ error:%@", buf, 0x20u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v23 = v9;
-    v24 = v8;
+    v23 = serviceCopy;
+    v24 = peripheralCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = [v9 characteristics];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    characteristics = [serviceCopy characteristics];
+    v13 = [characteristics countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -318,20 +318,20 @@ LABEL_10:
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(characteristics);
           }
 
           v18 = *(*(&v25 + 1) + 8 * i);
-          v19 = [(UARPService *)self uarpDataControlPointCharacteristic];
-          if (v19)
+          uarpDataControlPointCharacteristic = [(UARPService *)self uarpDataControlPointCharacteristic];
+          if (uarpDataControlPointCharacteristic)
           {
           }
 
           else
           {
-            v20 = [v18 UUID];
+            uUID = [v18 UUID];
             v21 = [CBUUID UUIDWithString:v16];
-            v22 = [v20 isEqual:v21];
+            v22 = [uUID isEqual:v21];
 
             if (v22)
             {
@@ -341,60 +341,60 @@ LABEL_10:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v14 = [characteristics countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v14);
     }
 
     [(ClientService *)self notifyDidStart];
-    v9 = v23;
-    v8 = v24;
-    v10 = 0;
+    serviceCopy = v23;
+    peripheralCopy = v24;
+    errorCopy = 0;
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_10007C13C(v10, v11, v12, v13, v14, v15, v16, v17);
+      sub_10007C13C(errorCopy, v11, v12, v13, v14, v15, v16, v17);
     }
 
-    v18 = [(UARPService *)self txDataQueue];
-    [v18 removeAllObjects];
+    txDataQueue = [(UARPService *)self txDataQueue];
+    [txDataQueue removeAllObjects];
 
     [(UARPService *)self setIsSendingData:0];
   }
 
   else
   {
-    v19 = [(UARPService *)self txDataQueue];
-    v20 = [v19 firstObject];
+    txDataQueue2 = [(UARPService *)self txDataQueue];
+    firstObject = [txDataQueue2 firstObject];
 
-    if (v20)
+    if (firstObject)
     {
-      v21 = [(UARPService *)self txDataQueue];
-      [v21 removeObjectAtIndex:0];
+      txDataQueue3 = [(UARPService *)self txDataQueue];
+      [txDataQueue3 removeObjectAtIndex:0];
 
-      v22 = [(ClientService *)self peripheral];
-      v23 = [(UARPService *)self uarpDataControlPointCharacteristic];
-      [v22 writeValue:v20 forCharacteristic:v23 type:0];
+      peripheral = [(ClientService *)self peripheral];
+      uarpDataControlPointCharacteristic = [(UARPService *)self uarpDataControlPointCharacteristic];
+      [peripheral writeValue:firstObject forCharacteristic:uarpDataControlPointCharacteristic type:0];
 
       v24 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v25 = v24;
         v26 = 138412802;
-        v27 = v20;
+        v27 = firstObject;
         v28 = 2048;
-        v29 = [v20 length];
+        v29 = [firstObject length];
         v30 = 2112;
         v31 = 0;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "didWriteValueForCharacteristic - peripheral:%@ length:%lu error:%@", &v26, 0x20u);
@@ -408,62 +408,62 @@ LABEL_10:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_10007C1A8(v10, v11, v12, v13, v14, v15, v16, v17);
+      sub_10007C1A8(errorCopy, v11, v12, v13, v14, v15, v16, v17);
     }
   }
 
   else
   {
-    v18 = [v9 value];
-    [(UARPService *)self _parseRecvdData:v18];
+    value = [characteristicCopy value];
+    [(UARPService *)self _parseRecvdData:value];
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v42 = v8;
+    v42 = peripheralCopy;
     v43 = 2112;
-    v44 = v9;
+    v44 = characteristicCopy;
     v45 = 2112;
-    v46 = v10;
+    v46 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didUpdateNotificationStateForCharacteristic - peripheral:%@ characteristic:%@ error:%@", buf, 0x20u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v12 = [(ClientService *)self manager];
+    manager = [(ClientService *)self manager];
     v13 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-    v14 = [v12 clientServiceForUUID:v13];
+    v14 = [manager clientServiceForUUID:v13];
 
     v15 = [[UARPAccessoryHardwareBluetooth alloc] initWithVendorIDSource:1 vendorID:objc_msgSend(v14 productID:"vendorID") productVersion:{objc_msgSend(v14, "productID"), objc_msgSend(v14, "productVersion")}];
     v16 = [UARPAccessory alloc];
-    v17 = [v8 identifier];
-    v18 = [v16 initWithHardwareID:v15 uuid:v17];
+    identifier = [peripheralCopy identifier];
+    v18 = [v16 initWithHardwareID:v15 uuid:identifier];
     [(UARPService *)self setUarpAccessory:v18];
 
-    v19 = [(UARPService *)self uarpAccessory];
-    [v19 setAutoDownloadAllowed:1];
+    uarpAccessory = [(UARPService *)self uarpAccessory];
+    [uarpAccessory setAutoDownloadAllowed:1];
 
-    v20 = [(UARPService *)self uarpAccessory];
+    uarpAccessory2 = [(UARPService *)self uarpAccessory];
 
-    if (v20)
+    if (uarpAccessory2)
     {
       v21 = [[UARPAssetID alloc] initWithLocationType:3 remoteURL:0];
       [(UARPService *)self setUarpAssetID:v21];
@@ -472,30 +472,30 @@ LABEL_10:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [(UARPService *)self uarpAccessory];
-        v25 = [(UARPService *)self uarpAssetID];
+        uarpAccessory3 = [(UARPService *)self uarpAccessory];
+        uarpAssetID = [(UARPService *)self uarpAssetID];
         *buf = 138412546;
-        v42 = v24;
+        v42 = uarpAccessory3;
         v43 = 2112;
-        v44 = v25;
+        v44 = uarpAssetID;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Created uarpAccessory:%@ uarpAssetID:%@", buf, 0x16u);
       }
 
       v26 = +[UARPServiceUARPControllerManager instance];
-      v27 = [(UARPService *)self uarpAccessory];
-      v28 = [(UARPService *)self uarpAssetID];
-      v29 = [v26 registerUARPService:self withUARPAccessory:v27 withUARPAssetID:v28];
+      uarpAccessory4 = [(UARPService *)self uarpAccessory];
+      uarpAssetID2 = [(UARPService *)self uarpAssetID];
+      v29 = [v26 registerUARPService:self withUARPAccessory:uarpAccessory4 withUARPAssetID:uarpAssetID2];
 
       if (v29)
       {
-        v30 = [(ClientService *)self peripheral];
-        v31 = [v30 identifier];
-        v32 = [v31 UUIDString];
-        v33 = [NSString stringWithFormat:@"log_%@.uarp", v32];
+        peripheral = [(ClientService *)self peripheral];
+        identifier2 = [peripheral identifier];
+        uUIDString = [identifier2 UUIDString];
+        v33 = [NSString stringWithFormat:@"log_%@.uarp", uUIDString];
 
         v34 = +[UARPServiceUARPControllerManager instance];
-        v35 = [v34 uarpLogPath];
-        v36 = [NSURL fileURLWithPath:v35 isDirectory:1];
+        uarpLogPath = [v34 uarpLogPath];
+        v36 = [NSURL fileURLWithPath:uarpLogPath isDirectory:1];
         v37 = [v36 URLByAppendingPathComponent:v33 isDirectory:0];
         loggingSuperbinaryURL = self->_loggingSuperbinaryURL;
         self->_loggingSuperbinaryURL = v37;
@@ -524,8 +524,8 @@ LABEL_10:
   if (![(UARPService *)self opportunisticRefCount])
   {
     v3 = +[CattManager instance];
-    v4 = [(ClientService *)self peripheral];
-    [v3 removeOpportunisticConnection:v4];
+    peripheral = [(ClientService *)self peripheral];
+    [v3 removeOpportunisticConnection:peripheral];
   }
 
   [(UARPService *)self setOpportunisticRefCount:[(UARPService *)self opportunisticRefCount]+ 1];
@@ -533,12 +533,12 @@ LABEL_10:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(UARPService *)self opportunisticRefCount];
-    v8 = [(UARPService *)self uarpAccessory];
+    opportunisticRefCount = [(UARPService *)self opportunisticRefCount];
+    uarpAccessory = [(UARPService *)self uarpAccessory];
     v9 = 134218242;
-    v10 = v7;
+    v10 = opportunisticRefCount;
     v11 = 2112;
-    v12 = v8;
+    v12 = uarpAccessory;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "incOpportunisticConnection refCount:%ld %@", &v9, 0x16u);
   }
 }
@@ -550,20 +550,20 @@ LABEL_10:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(UARPService *)self opportunisticRefCount];
-    v6 = [(UARPService *)self uarpAccessory];
+    opportunisticRefCount = [(UARPService *)self opportunisticRefCount];
+    uarpAccessory = [(UARPService *)self uarpAccessory];
     v9 = 134218242;
-    v10 = v5;
+    v10 = opportunisticRefCount;
     v11 = 2112;
-    v12 = v6;
+    v12 = uarpAccessory;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "decOpportunisticConnection refCount:%ld %@", &v9, 0x16u);
   }
 
   if ([(UARPService *)self opportunisticRefCount]<= 0)
   {
     v7 = +[CattManager instance];
-    v8 = [(ClientService *)self peripheral];
-    [v7 setOpportunisticConnection:v8];
+    peripheral = [(ClientService *)self peripheral];
+    [v7 setOpportunisticConnection:peripheral];
 
     [(UARPService *)self setOpportunisticRefCount:0];
   }
@@ -574,8 +574,8 @@ LABEL_10:
   v2 = +[NSFileManager defaultManager];
   v39 = objc_opt_new();
   v3 = +[UARPServiceUARPControllerManager instance];
-  v4 = [v3 uarpLogPath];
-  v5 = [NSURL fileURLWithPath:v4 isDirectory:1];
+  uarpLogPath = [v3 uarpLogPath];
+  v5 = [NSURL fileURLWithPath:uarpLogPath isDirectory:1];
 
   v43 = [v5 URLByAppendingPathComponent:@"temp" isDirectory:1];
   v38 = v5;
@@ -606,8 +606,8 @@ LABEL_10:
     }
   }
 
-  v16 = [v43 path];
-  v17 = [v2 contentsOfDirectoryAtPath:v16 error:0];
+  path = [v43 path];
+  v17 = [v2 contentsOfDirectoryAtPath:path error:0];
 
   v18 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -640,10 +640,10 @@ LABEL_10:
         memset(&buf, 0, sizeof(buf));
         v45 = time(0);
         localtime_r(&v45, &buf);
-        v24 = [(ClientService *)self peripheral];
-        v25 = [v24 identifier];
-        v26 = [v25 UUIDString];
-        v27 = [NSString stringWithFormat:@"AccessoryUARP_%@_%04d-%02d-%02d-%02d-%02d-%02d_%@", v26, (buf.tm_year + 1900), (buf.tm_mon + 1), buf.tm_mday, buf.tm_hour, buf.tm_min, buf.tm_sec, v23];
+        peripheral = [(ClientService *)self peripheral];
+        identifier = [peripheral identifier];
+        uUIDString = [identifier UUIDString];
+        v27 = [NSString stringWithFormat:@"AccessoryUARP_%@_%04d-%02d-%02d-%02d-%02d-%02d_%@", uUIDString, (buf.tm_year + 1900), (buf.tm_mon + 1), buf.tm_mday, buf.tm_hour, buf.tm_min, buf.tm_sec, v23];
 
         v28 = [v43 URLByAppendingPathComponent:v23 isDirectory:0];
         v29 = [v41 URLByAppendingPathComponent:v27 isDirectory:0];
@@ -663,20 +663,20 @@ LABEL_10:
         v31 = v44;
         if (v31)
         {
-          v32 = v31;
+          path2 = v31;
           v33 = qword_1000DDBC8;
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
           {
             *v51 = 138412290;
-            v52 = v32;
+            v52 = path2;
             _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "assetSolicitationComplete: moveItemAtURL error %@", v51, 0xCu);
           }
         }
 
         else
         {
-          v32 = [v29 path];
-          [v39 addObject:v32];
+          path2 = [v29 path];
+          [v39 addObject:path2];
         }
       }
 
@@ -695,8 +695,8 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "assetSolicitationComplete: Adding superbinary LOGS asset %@", &buf, 0xCu);
   }
 
-  v36 = [(NSURL *)self->_loggingSuperbinaryURL path];
-  [v39 addObject:v36];
+  path3 = [(NSURL *)self->_loggingSuperbinaryURL path];
+  [v39 addObject:path3];
 
   [(UARPService *)self decOpportunisticConnection];
 }

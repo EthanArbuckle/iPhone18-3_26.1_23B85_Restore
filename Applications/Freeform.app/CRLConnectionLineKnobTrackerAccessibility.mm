@@ -1,30 +1,30 @@
 @interface CRLConnectionLineKnobTrackerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
++ (id)crlaxCastFrom:(id)from;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
 @end
 
 @implementation CRLConnectionLineKnobTrackerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v51 = 0;
-  v6 = [(CRLConnectionLineKnobTrackerAccessibility *)self crlaxTarget];
-  v7 = [v6 rep];
-  v8 = [v7 layout];
+  crlaxTarget = [(CRLConnectionLineKnobTrackerAccessibility *)self crlaxTarget];
+  v7 = [crlaxTarget rep];
+  layout = [v7 layout];
 
   v9 = objc_opt_class();
-  v10 = __CRLAccessibilityCastAsClass(v9, v8, 1, &v51);
+  v10 = __CRLAccessibilityCastAsClass(v9, layout, 1, &v51);
   if (v51 == 1)
   {
     goto LABEL_42;
@@ -32,49 +32,49 @@
 
   v11 = v10;
 
-  v12 = [v11 connectedFrom];
-  v13 = [v11 connectedTo];
+  connectedFrom = [v11 connectedFrom];
+  connectedTo = [v11 connectedTo];
   v50.receiver = self;
   v50.super_class = CRLConnectionLineKnobTrackerAccessibility;
   [(CRLConnectionLineKnobTrackerAccessibility *)&v50 moveKnobToCanvasPosition:x, y];
   if (v11)
   {
-    v14 = [v11 connectedFrom];
-    v15 = [v11 connectedTo];
-    v16 = v15;
-    if (v12)
+    connectedFrom2 = [v11 connectedFrom];
+    connectedTo2 = [v11 connectedTo];
+    v16 = connectedTo2;
+    if (connectedFrom)
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = v14 == 0;
+      v17 = connectedFrom2 == 0;
     }
 
     v18 = !v17;
-    if (v13)
+    if (connectedTo)
     {
       v19 = 1;
     }
 
     else
     {
-      v19 = v15 == 0;
+      v19 = connectedTo2 == 0;
     }
 
     v20 = !v19;
-    if ((!v12 || (v21 = v12, v14)) && (!v13 || (v21 = v13, v15)))
+    if ((!connectedFrom || (v21 = connectedFrom, connectedFrom2)) && (!connectedTo || (v21 = connectedTo, connectedTo2)))
     {
       if (((v18 | v20) & 1) == 0)
       {
-        v42 = v15;
-        v43 = v13;
-        if (v13 == v15)
+        v42 = connectedTo2;
+        v43 = connectedTo;
+        if (connectedTo == connectedTo2)
         {
-          v42 = v14;
-          v43 = v12;
-          if (v12 == v14)
+          v42 = connectedFrom2;
+          v43 = connectedFrom;
+          if (connectedFrom == connectedFrom2)
           {
             v25 = 0;
             v26 = 0;
@@ -98,14 +98,14 @@ LABEL_21:
         {
           v49 = v27;
           v46 = v16;
-          v28 = [(CRLConnectionLineKnobTrackerAccessibility *)self crlaxTarget];
-          v29 = [v28 rep];
-          v30 = [v29 interactiveCanvasController];
+          crlaxTarget2 = [(CRLConnectionLineKnobTrackerAccessibility *)self crlaxTarget];
+          v29 = [crlaxTarget2 rep];
+          interactiveCanvasController = [v29 interactiveCanvasController];
 
           v51 = 0;
-          v31 = [v26 info];
-          v47 = v30;
-          v32 = [v30 repForInfo:v31];
+          info = [v26 info];
+          v47 = interactiveCanvasController;
+          v32 = [interactiveCanvasController repForInfo:info];
 
           v33 = objc_opt_class();
           v48 = __CRLAccessibilityCastAsSafeCategory(v33, v32, 1, &v51);
@@ -114,27 +114,27 @@ LABEL_21:
 
             if (!v49)
             {
-              v38 = [v48 crlaxDescriptionForConnections];
-              v41 = [NSString localizedStringWithFormat:v25, v38];
+              crlaxDescriptionForConnections = [v48 crlaxDescriptionForConnections];
+              v41 = [NSString localizedStringWithFormat:v25, crlaxDescriptionForConnections];
               goto LABEL_32;
             }
 
-            v45 = v14;
+            v45 = connectedFrom2;
             v51 = 0;
-            v34 = [v49 info];
-            v35 = [v30 repForInfo:v34];
+            info2 = [v49 info];
+            v35 = [interactiveCanvasController repForInfo:info2];
 
             v36 = objc_opt_class();
             v37 = __CRLAccessibilityCastAsSafeCategory(v36, v35, 1, &v51);
             if (v51 != 1)
             {
-              v38 = v37;
+              crlaxDescriptionForConnections = v37;
 
-              v39 = [v48 crlaxDescriptionForConnections];
-              v40 = [v38 crlaxDescriptionForConnections];
-              v41 = [NSString localizedStringWithFormat:v25, v39, v40];
+              crlaxDescriptionForConnections2 = [v48 crlaxDescriptionForConnections];
+              v38CrlaxDescriptionForConnections = [crlaxDescriptionForConnections crlaxDescriptionForConnections];
+              v41 = [NSString localizedStringWithFormat:v25, crlaxDescriptionForConnections2, v38CrlaxDescriptionForConnections];
 
-              v14 = v45;
+              connectedFrom2 = v45;
 LABEL_32:
 
               if ([v41 length])
@@ -159,12 +159,12 @@ LABEL_35:
 
       if (v18)
       {
-        v21 = v14;
+        v21 = connectedFrom2;
       }
 
       else
       {
-        v21 = v15;
+        v21 = connectedTo2;
       }
 
       v22 = +[NSBundle mainBundle];

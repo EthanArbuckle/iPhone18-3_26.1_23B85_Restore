@@ -1,26 +1,26 @@
 @interface THDrawablesZOrder
-- (THDrawablesZOrder)initWithContext:(id)a3;
-- (id)drawableAtZOrder:(unint64_t)a3;
-- (id)orderedDrawables:(id)a3;
-- (unint64_t)insertDrawable:(id)a3 atZOrder:(unint64_t)a4;
-- (unint64_t)zOrderOfDrawable:(id)a3;
+- (THDrawablesZOrder)initWithContext:(id)context;
+- (id)drawableAtZOrder:(unint64_t)order;
+- (id)orderedDrawables:(id)drawables;
+- (unint64_t)insertDrawable:(id)drawable atZOrder:(unint64_t)order;
+- (unint64_t)zOrderOfDrawable:(id)drawable;
 - (void)dealloc;
-- (void)moveDrawable:(id)a3 toZOrder:(unint64_t)a4;
-- (void)moveDrawableAtZOrder:(unint64_t)a3 toZOrder:(unint64_t)a4;
-- (void)moveDrawables:(id)a3 toZOrder:(unint64_t)a4;
+- (void)moveDrawable:(id)drawable toZOrder:(unint64_t)order;
+- (void)moveDrawableAtZOrder:(unint64_t)order toZOrder:(unint64_t)zOrder;
+- (void)moveDrawables:(id)drawables toZOrder:(unint64_t)order;
 - (void)removeAllDrawables;
-- (void)removeDrawable:(id)a3;
-- (void)removeDrawableAtZOrder:(unint64_t)a3;
-- (void)swapDrawableAtZOrder:(unint64_t)a3 withDrawableAtZOrder:(unint64_t)a4;
+- (void)removeDrawable:(id)drawable;
+- (void)removeDrawableAtZOrder:(unint64_t)order;
+- (void)swapDrawableAtZOrder:(unint64_t)order withDrawableAtZOrder:(unint64_t)zOrder;
 @end
 
 @implementation THDrawablesZOrder
 
-- (THDrawablesZOrder)initWithContext:(id)a3
+- (THDrawablesZOrder)initWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = THDrawablesZOrder;
-  v3 = [(THDrawablesZOrder *)&v5 initWithContext:a3];
+  v3 = [(THDrawablesZOrder *)&v5 initWithContext:context];
   if (v3)
   {
     v3->mDrawables = objc_alloc_init(NSMutableArray);
@@ -36,21 +36,21 @@
   [(THDrawablesZOrder *)&v3 dealloc];
 }
 
-- (id)drawableAtZOrder:(unint64_t)a3
+- (id)drawableAtZOrder:(unint64_t)order
 {
-  if ([(NSMutableArray *)self->mDrawables count]<= a3)
+  if ([(NSMutableArray *)self->mDrawables count]<= order)
   {
     return 0;
   }
 
   mDrawables = self->mDrawables;
 
-  return [(NSMutableArray *)mDrawables objectAtIndex:a3];
+  return [(NSMutableArray *)mDrawables objectAtIndex:order];
 }
 
-- (unint64_t)zOrderOfDrawable:(id)a3
+- (unint64_t)zOrderOfDrawable:(id)drawable
 {
-  if (a3)
+  if (drawable)
   {
     return [(NSMutableArray *)self->mDrawables indexOfObjectIdenticalTo:?];
   }
@@ -61,63 +61,63 @@
   }
 }
 
-- (unint64_t)insertDrawable:(id)a3 atZOrder:(unint64_t)a4
+- (unint64_t)insertDrawable:(id)drawable atZOrder:(unint64_t)order
 {
-  v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 && [(NSMutableArray *)self->mDrawables indexOfObjectIdenticalTo:?]== 0x7FFFFFFFFFFFFFFFLL)
+  orderCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (drawable && [(NSMutableArray *)self->mDrawables indexOfObjectIdenticalTo:?]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [(NSMutableArray *)self->mDrawables count];
-    if (v8 >= a4)
+    if (v8 >= order)
     {
-      v4 = a4;
+      orderCopy = order;
     }
 
     else
     {
-      v4 = v8;
+      orderCopy = v8;
     }
 
-    [(NSMutableArray *)self->mDrawables insertObject:a3 atIndex:v4];
+    [(NSMutableArray *)self->mDrawables insertObject:drawable atIndex:orderCopy];
   }
 
-  return v4;
+  return orderCopy;
 }
 
-- (void)removeDrawableAtZOrder:(unint64_t)a3
+- (void)removeDrawableAtZOrder:(unint64_t)order
 {
-  if ([(NSMutableArray *)self->mDrawables count]> a3)
+  if ([(NSMutableArray *)self->mDrawables count]> order)
   {
     mDrawables = self->mDrawables;
 
-    [(NSMutableArray *)mDrawables removeObjectAtIndex:a3];
+    [(NSMutableArray *)mDrawables removeObjectAtIndex:order];
   }
 }
 
-- (void)removeDrawable:(id)a3
+- (void)removeDrawable:(id)drawable
 {
-  v4 = [(THDrawablesZOrder *)self zOrderOfDrawable:a3];
+  v4 = [(THDrawablesZOrder *)self zOrderOfDrawable:drawable];
 
   [(THDrawablesZOrder *)self removeDrawableAtZOrder:v4];
 }
 
-- (void)moveDrawableAtZOrder:(unint64_t)a3 toZOrder:(unint64_t)a4
+- (void)moveDrawableAtZOrder:(unint64_t)order toZOrder:(unint64_t)zOrder
 {
-  if (a3 != a4 && a3 + 1 != a4)
+  if (order != zOrder && order + 1 != zOrder)
   {
     v7 = [(NSMutableArray *)self->mDrawables count];
-    if (a4 != 0xFFFFFFFF || v7 - 1 != a3)
+    if (zOrder != 0xFFFFFFFF || v7 - 1 != order)
     {
-      v10 = [(NSMutableArray *)self->mDrawables objectAtIndex:a3];
+      v10 = [(NSMutableArray *)self->mDrawables objectAtIndex:order];
       v8 = v10;
-      [(NSMutableArray *)self->mDrawables removeObjectAtIndex:a3];
-      if (a4 == 0xFFFFFFFF)
+      [(NSMutableArray *)self->mDrawables removeObjectAtIndex:order];
+      if (zOrder == 0xFFFFFFFF)
       {
         v9 = [(NSMutableArray *)self->mDrawables count];
       }
 
       else
       {
-        v9 = ((__PAIR128__(a4, a3) - a4) >> 64);
+        v9 = ((__PAIR128__(zOrder, order) - zOrder) >> 64);
       }
 
       [(NSMutableArray *)self->mDrawables insertObject:v10 atIndex:v9];
@@ -125,20 +125,20 @@
   }
 }
 
-- (void)moveDrawable:(id)a3 toZOrder:(unint64_t)a4
+- (void)moveDrawable:(id)drawable toZOrder:(unint64_t)order
 {
-  v6 = [(THDrawablesZOrder *)self zOrderOfDrawable:a3];
+  v6 = [(THDrawablesZOrder *)self zOrderOfDrawable:drawable];
 
-  [(THDrawablesZOrder *)self moveDrawableAtZOrder:v6 toZOrder:a4];
+  [(THDrawablesZOrder *)self moveDrawableAtZOrder:v6 toZOrder:order];
 }
 
-- (void)moveDrawables:(id)a3 toZOrder:(unint64_t)a4
+- (void)moveDrawables:(id)drawables toZOrder:(unint64_t)order
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [drawables countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -150,55 +150,55 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(drawables);
         }
 
-        [(THDrawablesZOrder *)self moveDrawable:*(*(&v11 + 1) + 8 * v10) toZOrder:a4];
-        if (a4 != 0xFFFFFFFF)
+        [(THDrawablesZOrder *)self moveDrawable:*(*(&v11 + 1) + 8 * v10) toZOrder:order];
+        if (order != 0xFFFFFFFF)
         {
-          ++a4;
+          ++order;
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [drawables countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)swapDrawableAtZOrder:(unint64_t)a3 withDrawableAtZOrder:(unint64_t)a4
+- (void)swapDrawableAtZOrder:(unint64_t)order withDrawableAtZOrder:(unint64_t)zOrder
 {
   v7 = [(NSMutableArray *)self->mDrawables count];
-  if (a3 != a4 && v7 > a3 && v7 > a4)
+  if (order != zOrder && v7 > order && v7 > zOrder)
   {
     mDrawables = self->mDrawables;
 
-    [(NSMutableArray *)mDrawables exchangeObjectAtIndex:a3 withObjectAtIndex:a4];
+    [(NSMutableArray *)mDrawables exchangeObjectAtIndex:order withObjectAtIndex:zOrder];
   }
 }
 
-- (id)orderedDrawables:(id)a3
+- (id)orderedDrawables:(id)drawables
 {
-  v3 = a3;
-  if (a3)
+  drawablesCopy = drawables;
+  if (drawables)
   {
     v26 = 0;
     v27 = 0;
     v28 = 0;
     if (objc_opt_respondsToSelector())
     {
-      sub_3A260(&v26, [(NSMutableArray *)v3 count]);
+      sub_3A260(&v26, [(NSMutableArray *)drawablesCopy count]);
     }
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v22 objects:v29 count:16];
+    v5 = [(NSMutableArray *)drawablesCopy countByEnumeratingWithState:&v22 objects:v29 count:16];
     if (v5)
     {
       v6 = *v23;
@@ -208,7 +208,7 @@
         {
           if (*v23 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(drawablesCopy);
           }
 
           v8 = *(*(&v22 + 1) + 8 * i);
@@ -248,7 +248,7 @@
           }
         }
 
-        v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v22 objects:v29 count:16];
+        v5 = [(NSMutableArray *)drawablesCopy countByEnumeratingWithState:&v22 objects:v29 count:16];
       }
 
       while (v5);
@@ -257,23 +257,23 @@
     v17 = v26;
     if (v27 == v26)
     {
-      v3 = 0;
+      drawablesCopy = 0;
       if (!v26)
       {
-        return v3;
+        return drawablesCopy;
       }
 
       goto LABEL_25;
     }
 
-    v3 = [NSMutableArray arrayWithCapacity:(v27 - v26) >> 4];
+    drawablesCopy = [NSMutableArray arrayWithCapacity:(v27 - v26) >> 4];
     v17 = v26;
     v18 = v27;
     if (v26 != v27)
     {
       do
       {
-        [(NSMutableArray *)v3 addObject:*v17, v20, v21];
+        [(NSMutableArray *)drawablesCopy addObject:*v17, v20, v21];
         v17 += 2;
       }
 
@@ -289,7 +289,7 @@ LABEL_25:
     }
   }
 
-  return v3;
+  return drawablesCopy;
 }
 
 - (void)removeAllDrawables

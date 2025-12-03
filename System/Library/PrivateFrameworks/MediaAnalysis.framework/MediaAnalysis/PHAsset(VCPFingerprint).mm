@@ -8,9 +8,9 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectID];
+  objectID = [self objectID];
 
-  if (v5)
+  if (objectID)
   {
     if (!v4)
     {
@@ -29,10 +29,10 @@
     v10[2] = __43__PHAsset_VCPFingerprint__vcp_fingerprint___block_invoke;
     v10[3] = &unk_1E8350F78;
     p_buf = &buf;
-    v10[4] = a1;
+    v10[4] = self;
     v4 = v4;
     v11 = v4;
-    [v6 _computeFingerPrintsOfAsset:a1 completionHandler:v10];
+    [v6 _computeFingerPrintsOfAsset:self completionHandler:v10];
     dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
     v7 = *(*(&buf + 1) + 40);
 
@@ -43,9 +43,9 @@
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "  [%@] Fingerprint requested for asset with no objectID", &buf, 0xCu);
     }
 

@@ -1,22 +1,22 @@
 @interface PXCuratedLibraryCardSectionConfigurator
-- (PXCuratedLibraryCardSectionConfigurator)initWithExtendedTraitCollection:(id)a3 assetsSectionLayoutSpec:(id)a4;
+- (PXCuratedLibraryCardSectionConfigurator)initWithExtendedTraitCollection:(id)collection assetsSectionLayoutSpec:(id)spec;
 - (UIEdgeInsets)containerInsets;
-- (id)createCardSpecWithExtendedTraitCollection:(id)a3;
-- (void)configureAssetSectionLayout:(id)a3;
+- (id)createCardSpecWithExtendedTraitCollection:(id)collection;
+- (void)configureAssetSectionLayout:(id)layout;
 @end
 
 @implementation PXCuratedLibraryCardSectionConfigurator
 
-- (void)configureAssetSectionLayout:(id)a3
+- (void)configureAssetSectionLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = +[PXCuratedLibrarySettings sharedInstance];
-  v6 = [v4 headerLayout];
-  v7 = [(PXCuratedLibraryAssetsSectionConfigurator *)self updatedHeaderLayout:v6 withHeaderStyle:2 forAssetSectionLayout:v4];
+  headerLayout = [layoutCopy headerLayout];
+  v7 = [(PXCuratedLibraryAssetsSectionConfigurator *)self updatedHeaderLayout:headerLayout withHeaderStyle:2 forAssetSectionLayout:layoutCopy];
 
-  v8 = [v4 bodyContentLayout];
+  bodyContentLayout = [layoutCopy bodyContentLayout];
   objc_opt_class();
-  v9 = v8;
+  v9 = bodyContentLayout;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = objc_alloc_init(PXCuratedLibraryCardSectionBodyLayout);
@@ -24,27 +24,27 @@
     [(PXCuratedLibraryCardSectionBodyLayout *)v9 setContentSource:v9];
   }
 
-  v36 = [v4 section];
-  v10 = [v4 selectionSnapshot];
-  v11 = [v10 selectedIndexPaths];
-  v12 = [v10 dataSource];
-  v39 = [v12 identifier];
-  v40 = [v4 section];
+  section = [layoutCopy section];
+  selectionSnapshot = [layoutCopy selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  dataSource = [selectionSnapshot dataSource];
+  identifier = [dataSource identifier];
+  section2 = [layoutCopy section];
   v13.f64[0] = NAN;
   v13.f64[1] = NAN;
   v41 = vnegq_f64(v13);
-  -[PXCuratedLibraryCardSectionBodyLayout setIsSelected:](v9, "setIsSelected:", [v11 containsIndexPath:&v39]);
+  -[PXCuratedLibraryCardSectionBodyLayout setIsSelected:](v9, "setIsSelected:", [selectedIndexPaths containsIndexPath:&identifier]);
 
-  v14 = [(PXCuratedLibraryCardSectionConfigurator *)self cardSpec];
-  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setSpec:v14];
+  cardSpec = [(PXCuratedLibraryCardSectionConfigurator *)self cardSpec];
+  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setSpec:cardSpec];
 
-  -[PXCuratedLibraryCardSectionBodyLayout setIsSkimming:](v9, "setIsSkimming:", [v4 isSkimming]);
-  v15 = [v4 skimmingIndexPaths];
-  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setSkimmingIndexPaths:v15];
+  -[PXCuratedLibraryCardSectionBodyLayout setIsSkimming:](v9, "setIsSkimming:", [layoutCopy isSkimming]);
+  skimmingIndexPaths = [layoutCopy skimmingIndexPaths];
+  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setSkimmingIndexPaths:skimmingIndexPaths];
 
-  -[PXCuratedLibraryCardSectionBodyLayout setMaxSkimmingIndex:](v9, "setMaxSkimmingIndex:", [v4 maxSkimmingIndex]);
-  -[PXCuratedLibraryCardSectionBodyLayout setCurrentSkimmingIndex:](v9, "setCurrentSkimmingIndex:", [v4 currentSkimmingIndex]);
-  if ([v4 showsSkimmingInteraction])
+  -[PXCuratedLibraryCardSectionBodyLayout setMaxSkimmingIndex:](v9, "setMaxSkimmingIndex:", [layoutCopy maxSkimmingIndex]);
+  -[PXCuratedLibraryCardSectionBodyLayout setCurrentSkimmingIndex:](v9, "setCurrentSkimmingIndex:", [layoutCopy currentSkimmingIndex]);
+  if ([layoutCopy showsSkimmingInteraction])
   {
     [(PXCuratedLibraryCardSectionBodyLayout *)v9 assetFrame];
     v17 = v16;
@@ -61,49 +61,49 @@
     v22 = *(off_1E7721FA8 + 1);
   }
 
-  [v4 setPadding:{v23, v22}];
-  if ([v4 showsSkimmingSlideshow] && (objc_msgSend(v4, "showsSkimmingInteraction") & 1) == 0)
+  [layoutCopy setPadding:{v23, v22}];
+  if ([layoutCopy showsSkimmingSlideshow] && (objc_msgSend(layoutCopy, "showsSkimmingInteraction") & 1) == 0)
   {
-    v35 = [(PXCuratedLibraryCardSectionBodyLayout *)v9 dataSource];
-    v24 = [v35 identifier];
-    v25 = [(PXCuratedLibraryCardSectionBodyLayout *)v9 section];
-    v39 = v24;
-    v40 = v25;
+    dataSource2 = [(PXCuratedLibraryCardSectionBodyLayout *)v9 dataSource];
+    identifier2 = [dataSource2 identifier];
+    section3 = [(PXCuratedLibraryCardSectionBodyLayout *)v9 section];
+    identifier = identifier2;
+    section2 = section3;
     v26.f64[0] = NAN;
     v26.f64[1] = NAN;
     v34 = vnegq_f64(v26);
     v41 = v34;
-    v27 = [v4 dataSource];
-    v37[0] = [v27 identifier];
-    v37[1] = [v4 section];
+    dataSource3 = [layoutCopy dataSource];
+    v37[0] = [dataSource3 identifier];
+    v37[1] = [layoutCopy section];
     v38 = v34;
-    v28 = [v4 createCuratedLibraryLayoutSkimmingSlideshowAnimationFromSectionIndexPath:&v39 toSectionIndexPath:v37];
+    v28 = [layoutCopy createCuratedLibraryLayoutSkimmingSlideshowAnimationFromSectionIndexPath:&identifier toSectionIndexPath:v37];
   }
 
-  v29 = [v4 dataSource];
-  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setDataSource:v29 section:v36];
+  dataSource4 = [layoutCopy dataSource];
+  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setDataSource:dataSource4 section:section];
 
-  -[PXCuratedLibraryCardSectionBodyLayout setZoomLevel:](v9, "setZoomLevel:", [v4 zoomLevel]);
-  v30 = [v4 inlinePlaybackController];
-  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setInlinePlaybackController:v30];
+  -[PXCuratedLibraryCardSectionBodyLayout setZoomLevel:](v9, "setZoomLevel:", [layoutCopy zoomLevel]);
+  inlinePlaybackController = [layoutCopy inlinePlaybackController];
+  [(PXCuratedLibraryCardSectionBodyLayout *)v9 setInlinePlaybackController:inlinePlaybackController];
 
   v31 = v9;
-  [v4 setMode:4];
-  [v4 setWantsShadow:1];
-  v32 = [(PXCuratedLibraryCardSectionBodyLayout *)v31 assetLayoutGuide];
-  [v4 setHeaderLayoutGuide:v32];
+  [layoutCopy setMode:4];
+  [layoutCopy setWantsShadow:1];
+  assetLayoutGuide = [(PXCuratedLibraryCardSectionBodyLayout *)v31 assetLayoutGuide];
+  [layoutCopy setHeaderLayoutGuide:assetLayoutGuide];
 
-  v33 = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
-  [v4 setSpec:v33];
+  assetsSectionLayoutSpec = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
+  [layoutCopy setSpec:assetsSectionLayoutSpec];
 
-  [v4 setHeaderLayout:v7];
-  [v4 setBodyContentLayout:v31 wantsDecoration:1];
+  [layoutCopy setHeaderLayout:v7];
+  [layoutCopy setBodyContentLayout:v31 wantsDecoration:1];
 }
 
 - (UIEdgeInsets)containerInsets
 {
-  v2 = [(PXCuratedLibraryCardSectionConfigurator *)self cardSpec];
-  [v2 padding];
+  cardSpec = [(PXCuratedLibraryCardSectionConfigurator *)self cardSpec];
+  [cardSpec padding];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -120,27 +120,27 @@
   return result;
 }
 
-- (id)createCardSpecWithExtendedTraitCollection:(id)a3
+- (id)createCardSpecWithExtendedTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  collectionCopy = collection;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryCardSectionConfigurator.m" lineNumber:33 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryCardSectionConfigurator createCardSpecWithExtendedTraitCollection:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryCardSectionConfigurator.m" lineNumber:33 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryCardSectionConfigurator createCardSpecWithExtendedTraitCollection:]", v8}];
 
   abort();
 }
 
-- (PXCuratedLibraryCardSectionConfigurator)initWithExtendedTraitCollection:(id)a3 assetsSectionLayoutSpec:(id)a4
+- (PXCuratedLibraryCardSectionConfigurator)initWithExtendedTraitCollection:(id)collection assetsSectionLayoutSpec:(id)spec
 {
-  v6 = a3;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = PXCuratedLibraryCardSectionConfigurator;
-  v7 = [(PXAssetsSectionConfigurator *)&v12 initWithExtendedTraitCollection:v6 assetsSectionLayoutSpec:a4];
+  v7 = [(PXAssetsSectionConfigurator *)&v12 initWithExtendedTraitCollection:collectionCopy assetsSectionLayoutSpec:spec];
   v8 = v7;
   if (v7)
   {
-    v9 = [(PXCuratedLibraryCardSectionConfigurator *)v7 createCardSpecWithExtendedTraitCollection:v6];
+    v9 = [(PXCuratedLibraryCardSectionConfigurator *)v7 createCardSpecWithExtendedTraitCollection:collectionCopy];
     cardSpec = v8->_cardSpec;
     v8->_cardSpec = v9;
   }

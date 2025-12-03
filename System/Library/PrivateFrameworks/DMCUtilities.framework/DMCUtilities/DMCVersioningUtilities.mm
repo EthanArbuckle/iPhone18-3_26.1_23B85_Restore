@@ -1,14 +1,14 @@
 @interface DMCVersioningUtilities
-+ (BOOL)_allZerosArray:(id)a3 startingAtIndex:(unint64_t)a4;
-+ (BOOL)versionString:(id)a3 isOlderThanVersionString:(id)a4;
++ (BOOL)_allZerosArray:(id)array startingAtIndex:(unint64_t)index;
++ (BOOL)versionString:(id)string isOlderThanVersionString:(id)versionString;
 @end
 
 @implementation DMCVersioningUtilities
 
-+ (BOOL)_allZerosArray:(id)a3 startingAtIndex:(unint64_t)a4
++ (BOOL)_allZerosArray:(id)array startingAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  if ([v5 count] <= a4)
+  arrayCopy = array;
+  if ([arrayCopy count] <= index)
   {
     v8 = 1;
   }
@@ -17,40 +17,40 @@
   {
     do
     {
-      v6 = [v5 objectAtIndex:a4];
-      v7 = [v6 intValue];
-      v8 = v7 == 0;
+      v6 = [arrayCopy objectAtIndex:index];
+      intValue = [v6 intValue];
+      v8 = intValue == 0;
 
-      if (v7)
+      if (intValue)
       {
         break;
       }
 
-      ++a4;
+      ++index;
     }
 
-    while (a4 < [v5 count]);
+    while (index < [arrayCopy count]);
   }
 
   return v8;
 }
 
-+ (BOOL)versionString:(id)a3 isOlderThanVersionString:(id)a4
++ (BOOL)versionString:(id)string isOlderThanVersionString:(id)versionString
 {
-  v5 = a4;
-  v6 = [a3 componentsSeparatedByString:@"."];
-  v7 = [v5 componentsSeparatedByString:@"."];
+  versionStringCopy = versionString;
+  v6 = [string componentsSeparatedByString:@"."];
+  v7 = [versionStringCopy componentsSeparatedByString:@"."];
   v8 = 0;
   if ([v6 count])
   {
     while (v8 < [v7 count])
     {
       v9 = [v6 objectAtIndex:v8];
-      v10 = [v9 intValue];
+      intValue = [v9 intValue];
       v11 = [v7 objectAtIndex:v8];
-      v12 = [v11 intValue];
+      intValue2 = [v11 intValue];
 
-      if (v10 < v12)
+      if (intValue < intValue2)
       {
         LOBYTE(v16) = 1;
         goto LABEL_10;

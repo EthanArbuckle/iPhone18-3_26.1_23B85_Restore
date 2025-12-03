@@ -1,53 +1,53 @@
 @interface MLViewerGraphSPI
-+ (id)newGraphWithMLIRByteCode:(id)a3 signature:(id)a4;
-- (MLViewerGraphSPI)initWithCoder:(id)a3;
-- (MLViewerGraphSPI)initWithJSONDictionary:(id)a3;
-- (MLViewerGraphSPI)initWithName:(id)a3 nodes:(id)a4;
++ (id)newGraphWithMLIRByteCode:(id)code signature:(id)signature;
+- (MLViewerGraphSPI)initWithCoder:(id)coder;
+- (MLViewerGraphSPI)initWithJSONDictionary:(id)dictionary;
+- (MLViewerGraphSPI)initWithName:(id)name nodes:(id)nodes;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLViewerGraphSPI
 
-+ (id)newGraphWithMLIRByteCode:(id)a3 signature:(id)a4
++ (id)newGraphWithMLIRByteCode:(id)code signature:(id)signature
 {
-  v5 = a3;
-  v6 = a4;
+  codeCopy = code;
+  signatureCopy = signature;
   mlir::MLIRContext::MLIRContext();
 }
 
-- (MLViewerGraphSPI)initWithName:(id)a3 nodes:(id)a4
+- (MLViewerGraphSPI)initWithName:(id)name nodes:(id)nodes
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  nodesCopy = nodes;
   v12.receiver = self;
   v12.super_class = MLViewerGraphSPI;
   v9 = [(MLViewerGraphSPI *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_nodes, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_nodes, nodes);
   }
 
   return v10;
 }
 
-- (MLViewerGraphSPI)initWithJSONDictionary:(id)a3
+- (MLViewerGraphSPI)initWithJSONDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = MLViewerGraphSPI;
   v5 = [(MLViewerGraphSPI *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v4 objectForKey:@"nodes"];
+    [dictionaryCopy objectForKey:@"nodes"];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -97,8 +97,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MLViewerGraphSPI *)self nodes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  nodes = [(MLViewerGraphSPI *)self nodes];
+  v5 = [nodes countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -108,38 +108,38 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodes);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v8];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [nodes countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v5);
   }
 
   v16[0] = @"name";
-  v9 = [(MLViewerGraphSPI *)self name];
+  name = [(MLViewerGraphSPI *)self name];
   v16[1] = @"nodes";
-  v17[0] = v9;
+  v17[0] = name;
   v17[1] = v3;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   return v10;
 }
 
-- (MLViewerGraphSPI)initWithCoder:(id)a3
+- (MLViewerGraphSPI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MLViewerGraphSPI;
   v5 = [(MLViewerGraphSPI *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
@@ -149,7 +149,7 @@
     }
 
     v8 = allowedClasses(void)::allowedClasses;
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"nodes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"nodes"];
     nodes = v5->_nodes;
     v5->_nodes = v9;
 
@@ -159,14 +159,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MLViewerGraphSPI *)self name];
-  [v6 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(MLViewerGraphSPI *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(MLViewerGraphSPI *)self nodes];
-  [v6 encodeObject:v5 forKey:@"nodes"];
+  nodes = [(MLViewerGraphSPI *)self nodes];
+  [coderCopy encodeObject:nodes forKey:@"nodes"];
 }
 
 @end

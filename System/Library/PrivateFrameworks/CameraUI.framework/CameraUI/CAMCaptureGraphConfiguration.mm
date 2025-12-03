@@ -1,14 +1,14 @@
 @interface CAMCaptureGraphConfiguration
 - (BOOL)isSecondaryDeviceVideoBinned;
 - (BOOL)secondaryDeviceUsesPrimaryVideoConfigurationForFrameRate;
-- (CAMCaptureGraphConfiguration)initWithCaptureMode:(int64_t)a3 captureDevice:(int64_t)a4 macroMode:(int64_t)a5 videoConfiguration:(int64_t)a6 audioConfiguration:(unint64_t)a7 mixAudioWithOthers:(BOOL)a8 windNoiseRemovalEnabled:(BOOL)a9 previewConfiguration:(unint64_t)a10 previewSampleBufferVideoFormat:(int64_t)a11 previewFilters:(id)a12 videoThumbnailOutputConfiguration:(id)a13 photoEncodingBehavior:(int64_t)a14 videoEncodingBehavior:(int64_t)a15 enableAutoFPSVideo:(BOOL)a16 videoHDRSuspended:(BOOL)a17 aspectRatioCrop:(int64_t)a18 photoQualityPrioritization:(int64_t)a19 captureMirrored:(BOOL)a20 enableRAWCaptureIfSupported:(BOOL)a21 semanticStyleSupport:(unint64_t)a22 previewSemanticStyle:(id)a23 smartStyles:(id)a24 enableContentAwareDistortionCorrection:(BOOL)a25 enableResponsiveShutter:(BOOL)a26 suspendLivePhotoCapture:(BOOL)a27 videoStabilizationStrength:(int64_t)a28 maximumPhotoResolution:(int64_t)a29 colorSpace:(int64_t)a30 videoBinned:(BOOL)a31 enableDepthSuggestion:(BOOL)a32 enableZoomPIP:(BOOL)a33 customLensGroup:(id)a34 trueVideoEnabled:(BOOL)a35 prefersHDR10BitVideo:(BOOL)a36 frontRearSimultaneousVideoEnabled:(BOOL)a37 videoDynamicAspectRatio:(int64_t)a38 smartFramingFieldOfView:(int64_t)a39;
+- (CAMCaptureGraphConfiguration)initWithCaptureMode:(int64_t)mode captureDevice:(int64_t)device macroMode:(int64_t)macroMode videoConfiguration:(int64_t)configuration audioConfiguration:(unint64_t)audioConfiguration mixAudioWithOthers:(BOOL)others windNoiseRemovalEnabled:(BOOL)enabled previewConfiguration:(unint64_t)self0 previewSampleBufferVideoFormat:(int64_t)self1 previewFilters:(id)self2 videoThumbnailOutputConfiguration:(id)self3 photoEncodingBehavior:(int64_t)self4 videoEncodingBehavior:(int64_t)self5 enableAutoFPSVideo:(BOOL)self6 videoHDRSuspended:(BOOL)self7 aspectRatioCrop:(int64_t)self8 photoQualityPrioritization:(int64_t)self9 captureMirrored:(BOOL)mirrored enableRAWCaptureIfSupported:(BOOL)supported semanticStyleSupport:(unint64_t)support previewSemanticStyle:(id)style smartStyles:(id)styles enableContentAwareDistortionCorrection:(BOOL)correction enableResponsiveShutter:(BOOL)shutter suspendLivePhotoCapture:(BOOL)capture videoStabilizationStrength:(int64_t)strength maximumPhotoResolution:(int64_t)resolution colorSpace:(int64_t)mode0 videoBinned:(BOOL)mode1 enableDepthSuggestion:(BOOL)mode2 enableZoomPIP:(BOOL)mode3 customLensGroup:(id)mode4 trueVideoEnabled:(BOOL)mode5 prefersHDR10BitVideo:(BOOL)mode6 frontRearSimultaneousVideoEnabled:(BOOL)mode7 videoDynamicAspectRatio:(int64_t)mode8 smartFramingFieldOfView:(int64_t)mode9;
 - (id)completeDescription;
 - (id)deviceDescription;
 - (id)devicePositionDescription;
 - (id)modeDescription;
 - (id)shortDescription;
 - (int64_t)devicePosition;
-- (int64_t)secondaryDevice:(BOOL *)a3;
+- (int64_t)secondaryDevice:(BOOL *)device;
 - (int64_t)secondaryDeviceColorSpace;
 - (int64_t)secondaryDeviceVideoConfiguration;
 - (int64_t)secondaryDeviceVideoDynamicAspectRatio;
@@ -19,35 +19,35 @@
 
 - (id)completeDescription
 {
-  v3 = [(CAMCaptureGraphConfiguration *)self mode];
-  if (v3 > 9)
+  mode = [(CAMCaptureGraphConfiguration *)self mode];
+  if (mode > 9)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E76FDA00[v3];
+    v4 = off_1E76FDA00[mode];
   }
 
-  v5 = [(CAMCaptureGraphConfiguration *)self device];
-  if (v5 > 0xB)
+  device = [(CAMCaptureGraphConfiguration *)self device];
+  if (device > 0xB)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E76FDAD8[v5];
+    v6 = off_1E76FDAD8[device];
   }
 
-  v7 = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
+  videoConfiguration = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
   v8 = 0;
-  if (v7 > 9999)
+  if (videoConfiguration > 9999)
   {
-    if (v7 > 10002)
+    if (videoConfiguration > 10002)
     {
-      switch(v7)
+      switch(videoConfiguration)
       {
         case 10003:
           v8 = @"ImagePickerVGA";
@@ -61,12 +61,12 @@
       }
     }
 
-    else if (v7 == 10000)
+    else if (videoConfiguration == 10000)
     {
       v8 = @"ImagePickerHigh";
     }
 
-    else if (v7 == 10001)
+    else if (videoConfiguration == 10001)
     {
       v8 = @"ImagePickerMedium";
     }
@@ -79,7 +79,7 @@
 
   else
   {
-    switch(v7)
+    switch(videoConfiguration)
     {
       case 0:
         v8 = @"Auto";
@@ -131,27 +131,27 @@
     }
   }
 
-  v9 = [(CAMCaptureGraphConfiguration *)self audioConfiguration];
-  if (v9 > 3)
+  audioConfiguration = [(CAMCaptureGraphConfiguration *)self audioConfiguration];
+  if (audioConfiguration > 3)
   {
     v69 = 0;
   }
 
   else
   {
-    v69 = off_1E76FDA50[v9];
+    v69 = off_1E76FDA50[audioConfiguration];
   }
 
-  v10 = [(CAMCaptureGraphConfiguration *)self previewConfiguration];
+  previewConfiguration = [(CAMCaptureGraphConfiguration *)self previewConfiguration];
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
   v12 = v11;
-  if (v10)
+  if (previewConfiguration)
   {
     [v11 addObject:@"Layer"];
-    if ((v10 & 2) == 0)
+    if ((previewConfiguration & 2) == 0)
     {
 LABEL_41:
-      if ((v10 & 4) == 0)
+      if ((previewConfiguration & 4) == 0)
       {
         goto LABEL_43;
       }
@@ -160,13 +160,13 @@ LABEL_41:
     }
   }
 
-  else if ((v10 & 2) == 0)
+  else if ((previewConfiguration & 2) == 0)
   {
     goto LABEL_41;
   }
 
   [v12 addObject:@"VideoDataOutput"];
-  if ((v10 & 4) != 0)
+  if ((previewConfiguration & 4) != 0)
   {
 LABEL_42:
     [v12 addObject:@"ThumbnailOutput"];
@@ -207,17 +207,17 @@ LABEL_43:
   }
 
   v15 = +[CAMCaptureCapabilities capabilities];
-  v16 = [(CAMCaptureGraphConfiguration *)self colorSpace];
-  if (v16)
+  colorSpace = [(CAMCaptureGraphConfiguration *)self colorSpace];
+  if (colorSpace)
   {
-    if (v16 == 3)
+    if (colorSpace == 3)
     {
       v17 = @"Log";
     }
 
     else
     {
-      if (v16 != 2)
+      if (colorSpace != 2)
       {
         goto LABEL_58;
       }
@@ -263,24 +263,24 @@ LABEL_58:
   v75 = __Block_byref_object_copy__27;
   v76 = __Block_byref_object_dispose__27;
   v77 = 0;
-  v21 = [(CAMCaptureGraphConfiguration *)self previewFilters];
+  previewFilters = [(CAMCaptureGraphConfiguration *)self previewFilters];
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
   v70[2] = __51__CAMCaptureGraphConfiguration_completeDescription__block_invoke;
   v70[3] = &unk_1E76FD9E0;
   v70[4] = &v72;
-  [v21 enumerateObjectsUsingBlock:v70];
-  v66 = v21;
+  [previewFilters enumerateObjectsUsingBlock:v70];
+  v66 = previewFilters;
   v22 = MEMORY[0x1E696AD60];
-  v23 = [(CAMCaptureGraphConfiguration *)self photoQualityPrioritization];
-  if (v23 > 2)
+  photoQualityPrioritization = [(CAMCaptureGraphConfiguration *)self photoQualityPrioritization];
+  if (photoQualityPrioritization > 2)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = off_1E76FDA70[v23];
+    v24 = off_1E76FDA70[photoQualityPrioritization];
   }
 
   v25 = objc_msgSend(v22, "stringWithFormat:", @"%@/%@(%@,%@,%@,%@"), v4, v6, v8, v69, v67, v24;
@@ -328,19 +328,19 @@ LABEL_58:
 
   [v25 appendFormat:v26];
 LABEL_82:
-  v27 = [(CAMCaptureGraphConfiguration *)self previewSemanticStyle];
+  previewSemanticStyle = [(CAMCaptureGraphConfiguration *)self previewSemanticStyle];
 
-  if (v27)
+  if (previewSemanticStyle)
   {
-    v28 = [(CAMCaptureGraphConfiguration *)self previewSemanticStyle];
-    [v25 appendFormat:@", PreviewSemanticStyle: %@", v28];
+    previewSemanticStyle2 = [(CAMCaptureGraphConfiguration *)self previewSemanticStyle];
+    [v25 appendFormat:@", PreviewSemanticStyle: %@", previewSemanticStyle2];
   }
 
   v29 = [v15 isContentAwareDistortionCorrectionSupportedForMode:{-[CAMCaptureGraphConfiguration mode](self, "mode")}];
-  v30 = [(CAMCaptureGraphConfiguration *)self enableContentAwareDistortionCorrection];
-  if ((v30 | v29))
+  enableContentAwareDistortionCorrection = [(CAMCaptureGraphConfiguration *)self enableContentAwareDistortionCorrection];
+  if ((enableContentAwareDistortionCorrection | v29))
   {
-    if (v30)
+    if (enableContentAwareDistortionCorrection)
     {
       v31 = @",ContentAwareDistortion";
     }
@@ -355,15 +355,15 @@ LABEL_82:
 
   if ([(CAMCaptureGraphConfiguration *)self aspectRatioCrop])
   {
-    v32 = [(CAMCaptureGraphConfiguration *)self aspectRatioCrop];
-    if (v32 > 6)
+    aspectRatioCrop = [(CAMCaptureGraphConfiguration *)self aspectRatioCrop];
+    if (aspectRatioCrop > 6)
     {
       v33 = 0;
     }
 
     else
     {
-      v33 = off_1E76FDA88[v32];
+      v33 = off_1E76FDA88[aspectRatioCrop];
     }
 
     [v25 appendFormat:@", %@", v33];
@@ -395,27 +395,27 @@ LABEL_101:
   }
 
   v68 = v15;
-  v35 = [(CAMCaptureGraphConfiguration *)self videoStabilizationStrength];
-  v36 = [(CAMCaptureGraphConfiguration *)self mode];
-  v37 = [(CAMCaptureGraphConfiguration *)self device];
-  v38 = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
-  v39 = [(CAMCaptureGraphConfiguration *)self videoEncodingBehavior];
-  v40 = [(CAMCaptureGraphConfiguration *)self trueVideoEnabled];
-  v41 = [(CAMCaptureGraphConfiguration *)self prefersHDR10BitVideo];
+  videoStabilizationStrength = [(CAMCaptureGraphConfiguration *)self videoStabilizationStrength];
+  mode2 = [(CAMCaptureGraphConfiguration *)self mode];
+  device2 = [(CAMCaptureGraphConfiguration *)self device];
+  videoConfiguration2 = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
+  videoEncodingBehavior = [(CAMCaptureGraphConfiguration *)self videoEncodingBehavior];
+  trueVideoEnabled = [(CAMCaptureGraphConfiguration *)self trueVideoEnabled];
+  prefersHDR10BitVideo = [(CAMCaptureGraphConfiguration *)self prefersHDR10BitVideo];
   BYTE2(v64) = [(CAMCaptureGraphConfiguration *)self frontRearSimultaneousVideoEnabled];
-  BYTE1(v64) = v41;
-  LOBYTE(v64) = v40;
-  if ([v68 isVideoStabilizationStrength:v35 supportedForMode:v36 device:v37 videoConfiguration:v38 videoEncodingBehavior:v39 outputToExternalStorage:0 trueVideoEnabled:v64 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?])
+  BYTE1(v64) = prefersHDR10BitVideo;
+  LOBYTE(v64) = trueVideoEnabled;
+  if ([v68 isVideoStabilizationStrength:videoStabilizationStrength supportedForMode:mode2 device:device2 videoConfiguration:videoConfiguration2 videoEncodingBehavior:videoEncodingBehavior outputToExternalStorage:0 trueVideoEnabled:v64 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?])
   {
-    v42 = [(CAMCaptureGraphConfiguration *)self videoStabilizationStrength];
-    if (v42 > 3)
+    videoStabilizationStrength2 = [(CAMCaptureGraphConfiguration *)self videoStabilizationStrength];
+    if (videoStabilizationStrength2 > 3)
     {
       v43 = 0;
     }
 
     else
     {
-      v43 = off_1E76FDB38[v42];
+      v43 = off_1E76FDB38[videoStabilizationStrength2];
     }
 
     [v25 appendFormat:@", %@", v43];
@@ -443,13 +443,13 @@ LABEL_101:
       v47 = off_1E76FDAD8[v45];
     }
 
-    v48 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
+    secondaryDeviceVideoConfiguration = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
     v49 = 0;
-    if (v48 > 9999)
+    if (secondaryDeviceVideoConfiguration > 9999)
     {
-      if (v48 > 10002)
+      if (secondaryDeviceVideoConfiguration > 10002)
       {
-        switch(v48)
+        switch(secondaryDeviceVideoConfiguration)
         {
           case 10003:
             v49 = @"ImagePickerVGA";
@@ -463,12 +463,12 @@ LABEL_101:
         }
       }
 
-      else if (v48 == 10000)
+      else if (secondaryDeviceVideoConfiguration == 10000)
       {
         v49 = @"ImagePickerHigh";
       }
 
-      else if (v48 == 10001)
+      else if (secondaryDeviceVideoConfiguration == 10001)
       {
         v49 = @"ImagePickerMedium";
       }
@@ -481,7 +481,7 @@ LABEL_101:
 
     else
     {
-      switch(v48)
+      switch(secondaryDeviceVideoConfiguration)
       {
         case 0:
           v49 = @"Auto";
@@ -537,17 +537,17 @@ LABEL_101:
     if (![(CAMCaptureGraphConfiguration *)self secondaryDeviceUsesPrimaryVideoConfigurationForFrameRate])
     {
 LABEL_169:
-      v52 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceColorSpace];
-      if (v52)
+      secondaryDeviceColorSpace = [(CAMCaptureGraphConfiguration *)self secondaryDeviceColorSpace];
+      if (secondaryDeviceColorSpace)
       {
-        if (v52 == 3)
+        if (secondaryDeviceColorSpace == 3)
         {
           v53 = @"Log";
         }
 
         else
         {
-          if (v52 != 2)
+          if (secondaryDeviceColorSpace != 2)
           {
 LABEL_176:
             if ([(CAMCaptureGraphConfiguration *)self isSecondaryDeviceVideoBinned])
@@ -555,26 +555,26 @@ LABEL_176:
               [v25 appendFormat:@"_Binned"];
             }
 
-            v54 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoStabilizationStrength];
-            v55 = [(CAMCaptureGraphConfiguration *)self mode];
-            v56 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
-            v57 = [(CAMCaptureGraphConfiguration *)self videoEncodingBehavior];
-            v58 = [(CAMCaptureGraphConfiguration *)self trueVideoEnabled];
-            v59 = [(CAMCaptureGraphConfiguration *)self prefersHDR10BitVideo];
+            secondaryDeviceVideoStabilizationStrength = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoStabilizationStrength];
+            mode3 = [(CAMCaptureGraphConfiguration *)self mode];
+            secondaryDeviceVideoConfiguration2 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
+            videoEncodingBehavior2 = [(CAMCaptureGraphConfiguration *)self videoEncodingBehavior];
+            trueVideoEnabled2 = [(CAMCaptureGraphConfiguration *)self trueVideoEnabled];
+            prefersHDR10BitVideo2 = [(CAMCaptureGraphConfiguration *)self prefersHDR10BitVideo];
             BYTE2(v65) = [(CAMCaptureGraphConfiguration *)self frontRearSimultaneousVideoEnabled];
-            BYTE1(v65) = v59;
-            LOBYTE(v65) = v58;
-            if ([v68 isVideoStabilizationStrength:v54 supportedForMode:v55 device:v46 videoConfiguration:v56 videoEncodingBehavior:v57 outputToExternalStorage:0 trueVideoEnabled:v65 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?])
+            BYTE1(v65) = prefersHDR10BitVideo2;
+            LOBYTE(v65) = trueVideoEnabled2;
+            if ([v68 isVideoStabilizationStrength:secondaryDeviceVideoStabilizationStrength supportedForMode:mode3 device:v46 videoConfiguration:secondaryDeviceVideoConfiguration2 videoEncodingBehavior:videoEncodingBehavior2 outputToExternalStorage:0 trueVideoEnabled:v65 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?])
             {
-              v60 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoStabilizationStrength];
-              if (v60 > 3)
+              secondaryDeviceVideoStabilizationStrength2 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoStabilizationStrength];
+              if (secondaryDeviceVideoStabilizationStrength2 > 3)
               {
                 v61 = 0;
               }
 
               else
               {
-                v61 = off_1E76FDB38[v60];
+                v61 = off_1E76FDB38[secondaryDeviceVideoStabilizationStrength2];
               }
 
               [v25 appendFormat:@", %@", v61];
@@ -597,21 +597,21 @@ LABEL_176:
       goto LABEL_176;
     }
 
-    v50 = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
+    videoConfiguration3 = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
     v51 = 0;
-    if (v50 > 8)
+    if (videoConfiguration3 > 8)
     {
-      if (v50 <= 12)
+      if (videoConfiguration3 <= 12)
       {
-        if ((v50 - 11) < 2)
+        if ((videoConfiguration3 - 11) < 2)
         {
           v51 = 25;
           goto LABEL_168;
         }
 
-        if (v50 != 9)
+        if (videoConfiguration3 != 9)
         {
-          if (v50 == 10)
+          if (videoConfiguration3 == 10)
           {
             v51 = 24;
           }
@@ -622,18 +622,18 @@ LABEL_176:
         goto LABEL_165;
       }
 
-      if (v50 == 13)
+      if (videoConfiguration3 == 13)
       {
         goto LABEL_164;
       }
 
-      if (v50 == 14)
+      if (videoConfiguration3 == 14)
       {
         v51 = 100;
         goto LABEL_168;
       }
 
-      if (v50 != 10003)
+      if (videoConfiguration3 != 10003)
       {
 LABEL_168:
         [v25 appendFormat:@"_%dfpsOverride", v51];
@@ -643,13 +643,13 @@ LABEL_168:
 
     else
     {
-      if (v50 <= 3)
+      if (videoConfiguration3 <= 3)
       {
-        if (v50 != 1)
+        if (videoConfiguration3 != 1)
         {
-          if (v50 != 2)
+          if (videoConfiguration3 != 2)
           {
-            if (v50 != 3)
+            if (videoConfiguration3 != 3)
             {
               goto LABEL_168;
             }
@@ -667,14 +667,14 @@ LABEL_165:
         goto LABEL_168;
       }
 
-      if ((v50 - 5) >= 3)
+      if ((videoConfiguration3 - 5) >= 3)
       {
-        if (v50 == 4)
+        if (videoConfiguration3 == 4)
         {
           goto LABEL_164;
         }
 
-        if (v50 == 8)
+        if (videoConfiguration3 == 8)
         {
 LABEL_159:
           v51 = 240;
@@ -697,56 +697,56 @@ LABEL_184:
   return v62;
 }
 
-- (CAMCaptureGraphConfiguration)initWithCaptureMode:(int64_t)a3 captureDevice:(int64_t)a4 macroMode:(int64_t)a5 videoConfiguration:(int64_t)a6 audioConfiguration:(unint64_t)a7 mixAudioWithOthers:(BOOL)a8 windNoiseRemovalEnabled:(BOOL)a9 previewConfiguration:(unint64_t)a10 previewSampleBufferVideoFormat:(int64_t)a11 previewFilters:(id)a12 videoThumbnailOutputConfiguration:(id)a13 photoEncodingBehavior:(int64_t)a14 videoEncodingBehavior:(int64_t)a15 enableAutoFPSVideo:(BOOL)a16 videoHDRSuspended:(BOOL)a17 aspectRatioCrop:(int64_t)a18 photoQualityPrioritization:(int64_t)a19 captureMirrored:(BOOL)a20 enableRAWCaptureIfSupported:(BOOL)a21 semanticStyleSupport:(unint64_t)a22 previewSemanticStyle:(id)a23 smartStyles:(id)a24 enableContentAwareDistortionCorrection:(BOOL)a25 enableResponsiveShutter:(BOOL)a26 suspendLivePhotoCapture:(BOOL)a27 videoStabilizationStrength:(int64_t)a28 maximumPhotoResolution:(int64_t)a29 colorSpace:(int64_t)a30 videoBinned:(BOOL)a31 enableDepthSuggestion:(BOOL)a32 enableZoomPIP:(BOOL)a33 customLensGroup:(id)a34 trueVideoEnabled:(BOOL)a35 prefersHDR10BitVideo:(BOOL)a36 frontRearSimultaneousVideoEnabled:(BOOL)a37 videoDynamicAspectRatio:(int64_t)a38 smartFramingFieldOfView:(int64_t)a39
+- (CAMCaptureGraphConfiguration)initWithCaptureMode:(int64_t)mode captureDevice:(int64_t)device macroMode:(int64_t)macroMode videoConfiguration:(int64_t)configuration audioConfiguration:(unint64_t)audioConfiguration mixAudioWithOthers:(BOOL)others windNoiseRemovalEnabled:(BOOL)enabled previewConfiguration:(unint64_t)self0 previewSampleBufferVideoFormat:(int64_t)self1 previewFilters:(id)self2 videoThumbnailOutputConfiguration:(id)self3 photoEncodingBehavior:(int64_t)self4 videoEncodingBehavior:(int64_t)self5 enableAutoFPSVideo:(BOOL)self6 videoHDRSuspended:(BOOL)self7 aspectRatioCrop:(int64_t)self8 photoQualityPrioritization:(int64_t)self9 captureMirrored:(BOOL)mirrored enableRAWCaptureIfSupported:(BOOL)supported semanticStyleSupport:(unint64_t)support previewSemanticStyle:(id)style smartStyles:(id)styles enableContentAwareDistortionCorrection:(BOOL)correction enableResponsiveShutter:(BOOL)shutter suspendLivePhotoCapture:(BOOL)capture videoStabilizationStrength:(int64_t)strength maximumPhotoResolution:(int64_t)resolution colorSpace:(int64_t)mode0 videoBinned:(BOOL)mode1 enableDepthSuggestion:(BOOL)mode2 enableZoomPIP:(BOOL)mode3 customLensGroup:(id)mode4 trueVideoEnabled:(BOOL)mode5 prefersHDR10BitVideo:(BOOL)mode6 frontRearSimultaneousVideoEnabled:(BOOL)mode7 videoDynamicAspectRatio:(int64_t)mode8 smartFramingFieldOfView:(int64_t)mode9
 {
-  v41 = a12;
-  v42 = a13;
-  v43 = a23;
-  v44 = a24;
-  v45 = a34;
+  filtersCopy = filters;
+  outputConfigurationCopy = outputConfiguration;
+  styleCopy = style;
+  stylesCopy = styles;
+  groupCopy = group;
   v55.receiver = self;
   v55.super_class = CAMCaptureGraphConfiguration;
   v46 = [(CAMCaptureGraphConfiguration *)&v55 init];
   v47 = v46;
   if (v46)
   {
-    v46->_mode = a3;
-    v46->_device = a4;
-    v46->_macroMode = a5;
-    v46->_videoConfiguration = a6;
-    v46->_mixAudioWithOthers = a8;
-    v46->_audioConfiguration = a7;
-    v46->_previewConfiguration = a10;
-    v46->_previewSampleBufferVideoFormat = a11;
-    objc_storeStrong(&v46->_previewFilters, a12);
-    objc_storeStrong(&v47->_videoThumbnailOutputConfiguration, a13);
-    v47->_photoEncodingBehavior = a14;
-    v47->_videoEncodingBehavior = a15;
-    v47->_enableAutoFPSVideo = a16;
-    v47->_videoHDRSuspended = a17;
-    v47->_aspectRatioCrop = a18;
-    v47->_photoQualityPrioritization = a19;
-    v47->_captureMirrored = a20;
-    v47->_enableRAWCaptureIfSupported = a21;
-    v47->_semanticStyleSupport = a22;
-    objc_storeStrong(&v47->_previewSemanticStyle, a23);
-    objc_storeStrong(&v47->_smartStyles, a24);
-    v47->_enableContentAwareDistortionCorrection = a25;
-    v47->_enableResponsiveShutter = a26;
-    v47->_suspendLivePhotoCapture = a27;
-    v47->_videoStabilizationStrength = a28;
-    v47->_maximumPhotoResolution = a29;
-    v47->_colorSpace = a30;
-    v47->_videoBinned = a31;
-    v47->_enableDepthSuggestion = a32;
-    v47->_enableZoomPIP = a33;
-    objc_storeStrong(&v47->_customLensGroup, a34);
-    v47->_windNoiseRemovalEnabled = a9;
-    v47->_trueVideoEnabled = a35;
-    v47->_prefersHDR10BitVideo = a36;
-    v47->_frontRearSimultaneousVideoEnabled = a37;
-    v47->_videoDynamicAspectRatio = a38;
-    v47->_smartFramingFieldOfView = a39;
+    v46->_mode = mode;
+    v46->_device = device;
+    v46->_macroMode = macroMode;
+    v46->_videoConfiguration = configuration;
+    v46->_mixAudioWithOthers = others;
+    v46->_audioConfiguration = audioConfiguration;
+    v46->_previewConfiguration = previewConfiguration;
+    v46->_previewSampleBufferVideoFormat = format;
+    objc_storeStrong(&v46->_previewFilters, filters);
+    objc_storeStrong(&v47->_videoThumbnailOutputConfiguration, outputConfiguration);
+    v47->_photoEncodingBehavior = behavior;
+    v47->_videoEncodingBehavior = encodingBehavior;
+    v47->_enableAutoFPSVideo = video;
+    v47->_videoHDRSuspended = suspended;
+    v47->_aspectRatioCrop = crop;
+    v47->_photoQualityPrioritization = prioritization;
+    v47->_captureMirrored = mirrored;
+    v47->_enableRAWCaptureIfSupported = supported;
+    v47->_semanticStyleSupport = support;
+    objc_storeStrong(&v47->_previewSemanticStyle, style);
+    objc_storeStrong(&v47->_smartStyles, styles);
+    v47->_enableContentAwareDistortionCorrection = correction;
+    v47->_enableResponsiveShutter = shutter;
+    v47->_suspendLivePhotoCapture = capture;
+    v47->_videoStabilizationStrength = strength;
+    v47->_maximumPhotoResolution = resolution;
+    v47->_colorSpace = space;
+    v47->_videoBinned = binned;
+    v47->_enableDepthSuggestion = suggestion;
+    v47->_enableZoomPIP = p;
+    objc_storeStrong(&v47->_customLensGroup, group);
+    v47->_windNoiseRemovalEnabled = enabled;
+    v47->_trueVideoEnabled = videoEnabled;
+    v47->_prefersHDR10BitVideo = bitVideo;
+    v47->_frontRearSimultaneousVideoEnabled = simultaneousVideoEnabled;
+    v47->_videoDynamicAspectRatio = ratio;
+    v47->_smartFramingFieldOfView = view;
     v48 = v47;
   }
 
@@ -755,23 +755,23 @@ LABEL_184:
 
 - (int64_t)devicePosition
 {
-  v2 = [(CAMCaptureGraphConfiguration *)self device];
-  if ((v2 - 1) > 0xA)
+  device = [(CAMCaptureGraphConfiguration *)self device];
+  if ((device - 1) > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A3A6A800[v2 - 1];
+    return qword_1A3A6A800[device - 1];
   }
 }
 
-- (int64_t)secondaryDevice:(BOOL *)a3
+- (int64_t)secondaryDevice:(BOOL *)device
 {
-  v4 = [(CAMCaptureGraphConfiguration *)self frontRearSimultaneousVideoEnabled];
-  v5 = v4;
-  if (v4)
+  frontRearSimultaneousVideoEnabled = [(CAMCaptureGraphConfiguration *)self frontRearSimultaneousVideoEnabled];
+  v5 = frontRearSimultaneousVideoEnabled;
+  if (frontRearSimultaneousVideoEnabled)
   {
     v6 = +[CAMCaptureCapabilities capabilities];
     if ([v6 isFrontSuperWideSupported])
@@ -790,7 +790,7 @@ LABEL_184:
     v7 = 1;
   }
 
-  *a3 = v5;
+  *device = v5;
   return v7;
 }
 
@@ -816,41 +816,41 @@ LABEL_184:
   result = 0;
   if (v10 == 1)
   {
-    v4 = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
+    videoConfiguration = [(CAMCaptureGraphConfiguration *)self videoConfiguration];
     v5 = 0.0;
-    if (v4 > 8)
+    if (videoConfiguration > 8)
     {
-      if (v4 <= 12)
+      if (videoConfiguration <= 12)
       {
-        if ((v4 - 11) < 2)
+        if ((videoConfiguration - 11) < 2)
         {
           v5 = 25.0;
           goto LABEL_27;
         }
 
-        if (v4 != 9)
+        if (videoConfiguration != 9)
         {
-          if (v4 == 10)
+          if (videoConfiguration == 10)
           {
             v5 = 24.0;
           }
 
 LABEL_27:
-          v7 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
+          secondaryDeviceVideoConfiguration = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
           v8 = 0.0;
-          if (v7 > 8)
+          if (secondaryDeviceVideoConfiguration > 8)
           {
-            if (v7 <= 12)
+            if (secondaryDeviceVideoConfiguration <= 12)
             {
-              if ((v7 - 11) < 2)
+              if ((secondaryDeviceVideoConfiguration - 11) < 2)
               {
                 v8 = 25.0;
                 return v5 != v8 && v5 != 0.0;
               }
 
-              if (v7 != 9)
+              if (secondaryDeviceVideoConfiguration != 9)
               {
-                if (v7 == 10)
+                if (secondaryDeviceVideoConfiguration == 10)
                 {
                   v8 = 24.0;
                 }
@@ -861,18 +861,18 @@ LABEL_27:
               goto LABEL_48;
             }
 
-            if (v7 == 13)
+            if (secondaryDeviceVideoConfiguration == 13)
             {
               goto LABEL_47;
             }
 
-            if (v7 == 14)
+            if (secondaryDeviceVideoConfiguration == 14)
             {
               v9 = 0x4059000000000000;
               goto LABEL_51;
             }
 
-            if (v7 != 10003)
+            if (secondaryDeviceVideoConfiguration != 10003)
             {
               return v5 != v8 && v5 != 0.0;
             }
@@ -880,13 +880,13 @@ LABEL_27:
 
           else
           {
-            if (v7 <= 3)
+            if (secondaryDeviceVideoConfiguration <= 3)
             {
-              if (v7 != 1)
+              if (secondaryDeviceVideoConfiguration != 1)
               {
-                if (v7 != 2)
+                if (secondaryDeviceVideoConfiguration != 2)
                 {
-                  if (v7 != 3)
+                  if (secondaryDeviceVideoConfiguration != 3)
                   {
                     return v5 != v8 && v5 != 0.0;
                   }
@@ -902,11 +902,11 @@ LABEL_48:
               goto LABEL_51;
             }
 
-            if ((v7 - 5) >= 3)
+            if ((secondaryDeviceVideoConfiguration - 5) >= 3)
             {
-              if (v7 != 4)
+              if (secondaryDeviceVideoConfiguration != 4)
               {
-                if (v7 != 8)
+                if (secondaryDeviceVideoConfiguration != 8)
                 {
                   return v5 != v8 && v5 != 0.0;
                 }
@@ -931,18 +931,18 @@ LABEL_47:
         goto LABEL_23;
       }
 
-      if (v4 == 13)
+      if (videoConfiguration == 13)
       {
         goto LABEL_22;
       }
 
-      if (v4 == 14)
+      if (videoConfiguration == 14)
       {
         v6 = 0x4059000000000000;
         goto LABEL_26;
       }
 
-      if (v4 != 10003)
+      if (videoConfiguration != 10003)
       {
         goto LABEL_27;
       }
@@ -950,13 +950,13 @@ LABEL_47:
 
     else
     {
-      if (v4 <= 3)
+      if (videoConfiguration <= 3)
       {
-        if (v4 != 1)
+        if (videoConfiguration != 1)
         {
-          if (v4 != 2)
+          if (videoConfiguration != 2)
           {
-            if (v4 != 3)
+            if (videoConfiguration != 3)
             {
               goto LABEL_27;
             }
@@ -972,11 +972,11 @@ LABEL_23:
         goto LABEL_26;
       }
 
-      if ((v4 - 5) >= 3)
+      if ((videoConfiguration - 5) >= 3)
       {
-        if (v4 != 4)
+        if (videoConfiguration != 4)
         {
-          if (v4 != 8)
+          if (videoConfiguration != 8)
           {
             goto LABEL_27;
           }
@@ -1011,11 +1011,11 @@ LABEL_22:
 - (int64_t)secondaryDeviceColorSpace
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isFrontRearSimultaneousVideoFrontCameraHDR10Supported];
-  v5 = [(CAMCaptureGraphConfiguration *)self colorSpace];
-  if (v4)
+  isFrontRearSimultaneousVideoFrontCameraHDR10Supported = [v3 isFrontRearSimultaneousVideoFrontCameraHDR10Supported];
+  colorSpace = [(CAMCaptureGraphConfiguration *)self colorSpace];
+  if (isFrontRearSimultaneousVideoFrontCameraHDR10Supported)
   {
-    v6 = v5 == 2;
+    v6 = colorSpace == 2;
   }
 
   else
@@ -1025,24 +1025,24 @@ LABEL_22:
 
   if (v6)
   {
-    v7 = [(CAMCaptureGraphConfiguration *)self colorSpace];
+    colorSpace2 = [(CAMCaptureGraphConfiguration *)self colorSpace];
   }
 
   else
   {
-    v7 = 0;
+    colorSpace2 = 0;
   }
 
-  return v7;
+  return colorSpace2;
 }
 
 - (int64_t)secondaryDeviceVideoStabilizationStrength
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isFrontRearSimultaneousVideoFrontVideoStabilizationSupported];
+  isFrontRearSimultaneousVideoFrontVideoStabilizationSupported = [v3 isFrontRearSimultaneousVideoFrontVideoStabilizationSupported];
   v6 = 0;
   [(CAMCaptureGraphConfiguration *)self secondaryDevice:&v6];
-  LOBYTE(self) = v6 & v4;
+  LOBYTE(self) = v6 & isFrontRearSimultaneousVideoFrontVideoStabilizationSupported;
 
   return self & 1;
 }
@@ -1058,8 +1058,8 @@ LABEL_22:
 
   v4 = v3;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [(CAMCaptureGraphConfiguration *)self mode];
-  v7 = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
+  mode = [(CAMCaptureGraphConfiguration *)self mode];
+  secondaryDeviceVideoConfiguration = [(CAMCaptureGraphConfiguration *)self secondaryDeviceVideoConfiguration];
   if ((v4 - 1) > 0xA)
   {
     v8 = 0;
@@ -1070,7 +1070,7 @@ LABEL_22:
     v8 = qword_1A3A6A800[v4 - 1];
   }
 
-  if ([v5 isDynamicAspectRatioSupportedForMode:v6 videoConfiguration:v7 devicePosition:v8])
+  if ([v5 isDynamicAspectRatioSupportedForMode:mode videoConfiguration:secondaryDeviceVideoConfiguration devicePosition:v8])
   {
     v9 = 2;
   }
@@ -1086,38 +1086,38 @@ LABEL_22:
 - (id)shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CAMCaptureGraphConfiguration *)self modeDescription];
-  v5 = [(CAMCaptureGraphConfiguration *)self deviceDescription];
-  v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+  modeDescription = [(CAMCaptureGraphConfiguration *)self modeDescription];
+  deviceDescription = [(CAMCaptureGraphConfiguration *)self deviceDescription];
+  v6 = [v3 stringWithFormat:@"%@/%@", modeDescription, deviceDescription];
 
   return v6;
 }
 
 - (id)modeDescription
 {
-  v2 = [(CAMCaptureGraphConfiguration *)self mode];
-  if (v2 > 9)
+  mode = [(CAMCaptureGraphConfiguration *)self mode];
+  if (mode > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_1E76FDA00[v2];
+    return off_1E76FDA00[mode];
   }
 }
 
 - (id)deviceDescription
 {
-  v3 = [(CAMCaptureGraphConfiguration *)self device];
-  if (v3 > 0xB)
+  device = [(CAMCaptureGraphConfiguration *)self device];
+  if (device > 0xB)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E76FDAD8[v3];
+    v4 = off_1E76FDAD8[device];
   }
 
   v8 = 0;
@@ -1142,14 +1142,14 @@ LABEL_22:
 
 - (id)devicePositionDescription
 {
-  v2 = [(CAMCaptureGraphConfiguration *)self devicePosition];
+  devicePosition = [(CAMCaptureGraphConfiguration *)self devicePosition];
   v3 = @"Back";
-  if (v2)
+  if (devicePosition)
   {
     v3 = 0;
   }
 
-  if (v2 == 1)
+  if (devicePosition == 1)
   {
     v4 = @"Front";
   }

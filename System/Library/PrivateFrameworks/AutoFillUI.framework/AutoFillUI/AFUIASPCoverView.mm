@@ -1,6 +1,6 @@
 @interface AFUIASPCoverView
 + (double)screenScale;
-- (id)initCoverViewWithFrame:(CGRect)a3 isRightToLeft:(BOOL)a4 withTextWidth:(double)a5;
+- (id)initCoverViewWithFrame:(CGRect)frame isRightToLeft:(BOOL)left withTextWidth:(double)width;
 - (void)layoutSubviews;
 @end
 
@@ -8,20 +8,20 @@
 
 + (double)screenScale
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;
 }
 
-- (id)initCoverViewWithFrame:(CGRect)a3 isRightToLeft:(BOOL)a4 withTextWidth:(double)a5
+- (id)initCoverViewWithFrame:(CGRect)frame isRightToLeft:(BOOL)left withTextWidth:(double)width
 {
-  v6 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  leftCopy = left;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v55[2] = *MEMORY[0x1E69E9840];
   v52.receiver = self;
   v52.super_class = AFUIASPCoverView;
@@ -30,14 +30,14 @@
   if (v11)
   {
     [(AFUIASPCoverView *)v11 setUserInteractionEnabled:0];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    v14 = [v13 CGColor];
-    v15 = [p_isa layer];
-    [v15 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    cGColor = [clearColor CGColor];
+    layer = [p_isa layer];
+    [layer setBackgroundColor:cGColor];
 
-    v16 = [MEMORY[0x1E6979380] layer];
+    layer2 = [MEMORY[0x1E6979380] layer];
     v17 = p_isa[51];
-    p_isa[51] = v16;
+    p_isa[51] = layer2;
 
     [objc_opt_class() screenScale];
     if (v18 == 3.0)
@@ -65,25 +65,25 @@
     [p_isa[51] frame];
     v25 = CGRectGetWidth(v56);
     v26 = 0.45;
-    if (v25 * 0.45 <= a5)
+    if (v25 * 0.45 <= width)
     {
       v27 = 0.1;
     }
 
     else
     {
-      v27 = a5 * 0.1 / v25;
-      v26 = a5 * 0.65 / v25;
+      v27 = width * 0.1 / v25;
+      v26 = width * 0.65 / v25;
     }
 
     v28 = 1.0 - v27;
-    if (!v6)
+    if (!leftCopy)
     {
       v28 = v27;
     }
 
     v29 = 1.0 - v26;
-    if (v6)
+    if (leftCopy)
     {
       v30 = 1.0 - v26;
     }
@@ -95,8 +95,8 @@
 
     [p_isa[51] setStartPoint:{v28, 0.0}];
     [p_isa[51] setEndPoint:{v30, 0.0}];
-    v31 = [p_isa layer];
-    [v31 addSublayer:p_isa[51]];
+    layer3 = [p_isa layer];
+    [layer3 addSublayer:p_isa[51]];
 
     v32 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v33 = [v32 localizedStringForKey:@"Strong Password" value:@"Automatic Strong Password cover view text" table:0];
@@ -127,8 +127,8 @@
       [v43 setAttributedText:v42];
       [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
       [p_isa addSubview:v43];
-      v44 = [MEMORY[0x1E695DF70] array];
-      if (v6)
+      array = [MEMORY[0x1E695DF70] array];
+      if (leftCopy)
       {
         v45 = 1;
       }
@@ -139,18 +139,18 @@
       }
 
       v46 = -v51;
-      if (v6)
+      if (leftCopy)
       {
-        v46 = v6;
+        v46 = leftCopy;
       }
 
       v47 = [MEMORY[0x1E696ACD8] constraintWithItem:v43 attribute:v45 relatedBy:0 toItem:p_isa attribute:v45 multiplier:1.0 constant:v46];
-      [v44 addObject:v47];
+      [array addObject:v47];
 
       v48 = [MEMORY[0x1E696ACD8] constraintWithItem:v43 attribute:10 relatedBy:0 toItem:p_isa attribute:10 multiplier:1.0 constant:0.0];
-      [v44 addObject:v48];
+      [array addObject:v48];
 
-      [MEMORY[0x1E696ACD8] activateConstraints:v44];
+      [MEMORY[0x1E696ACD8] activateConstraints:array];
     }
   }
 
@@ -178,8 +178,8 @@
   v6 = v5 - v4;
   [(AFUIASPCoverView *)self bounds];
   v8 = v7;
-  v9 = [(AFUIASPCoverView *)self gradientLayer];
-  [v9 setFrame:{0.0, 0.0, v6, v8}];
+  gradientLayer = [(AFUIASPCoverView *)self gradientLayer];
+  [gradientLayer setFrame:{0.0, 0.0, v6, v8}];
 }
 
 @end

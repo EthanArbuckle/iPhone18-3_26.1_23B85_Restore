@@ -8,25 +8,25 @@
 - (HMDNaturalLightingActiveTransitionContext)activeTransitionContext
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [a1 identifier];
-  if (v2)
+  identifier = [self identifier];
+  if (identifier)
   {
-    v3 = [MEMORY[0x277CCAD78] hmf_UUIDWithBytesAsData:v2];
+    v3 = [MEMORY[0x277CCAD78] hmf_UUIDWithBytesAsData:identifier];
     v4 = v3;
     if (v3 && ([v3 UUIDString], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"C4F33DA9-63C9-4C0F-8B89-6C36A33EEF9E"), v5, v6))
     {
-      v7 = [a1 startTime];
-      v8 = [v7 value];
+      startTime = [self startTime];
+      value = [startTime value];
 
-      if (v8)
+      if (value)
       {
         v9 = MEMORY[0x277CBEAA8];
-        [v8 doubleValue];
+        [value doubleValue];
         v11 = [v9 dateWithTimeIntervalSinceReferenceDate:v10 / 1000.0];
-        v12 = [a1 transitionChecksum];
-        v13 = [v12 value];
+        transitionChecksum = [self transitionChecksum];
+        value2 = [transitionChecksum value];
 
-        v14 = [[HMDNaturalLightingActiveTransitionContext alloc] initWithStartDate:v11 millisecondsElapsedSinceStartDate:0 transitionChecksum:v13];
+        v14 = [[HMDNaturalLightingActiveTransitionContext alloc] initWithStartDate:v11 millisecondsElapsedSinceStartDate:0 transitionChecksum:value2];
       }
 
       else
@@ -39,7 +39,7 @@
           v20 = 138543618;
           v21 = v17;
           v22 = 2112;
-          v23 = a1;
+          selfCopy = self;
           _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@Start time missing in the controller context %@", &v20, 0x16u);
         }
 
@@ -66,8 +66,8 @@
 
 - (BOOL)isNaturalLightingEnabled
 {
-  v1 = [a1 activeTransitionContext];
-  v2 = v1 != 0;
+  activeTransitionContext = [self activeTransitionContext];
+  v2 = activeTransitionContext != 0;
 
   return v2;
 }

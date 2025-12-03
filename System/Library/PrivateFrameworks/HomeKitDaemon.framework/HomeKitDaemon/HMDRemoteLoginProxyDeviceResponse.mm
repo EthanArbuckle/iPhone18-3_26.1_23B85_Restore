@@ -1,23 +1,23 @@
 @interface HMDRemoteLoginProxyDeviceResponse
-+ (id)objWithDict:(id)a3;
-+ (id)objWithMessage:(id)a3;
-- (HMDRemoteLoginProxyDeviceResponse)initWithCoder:(id)a3;
++ (id)objWithDict:(id)dict;
++ (id)objWithMessage:(id)message;
+- (HMDRemoteLoginProxyDeviceResponse)initWithCoder:(id)coder;
 - (NSDictionary)messagePayload;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDRemoteLoginProxyDeviceResponse
 
-- (HMDRemoteLoginProxyDeviceResponse)initWithCoder:(id)a3
+- (HMDRemoteLoginProxyDeviceResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDRemoteLoginProxyDeviceResponse;
-  v5 = [(HMRemoteLoginMessage *)&v9 initWithCoder:v4];
+  v5 = [(HMRemoteLoginMessage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyDevice"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyDevice"];
     proxyDevice = v5->_proxyDevice;
     v5->_proxyDevice = v6;
   }
@@ -25,14 +25,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMDRemoteLoginProxyDeviceResponse;
-  v4 = a3;
-  [(HMRemoteLoginMessage *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMRemoteLoginMessage *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HMDRemoteLoginProxyDeviceResponse *)self proxyDevice:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"proxyDevice"];
+  [coderCopy encodeObject:v5 forKey:@"proxyDevice"];
 }
 
 - (NSString)description
@@ -41,8 +41,8 @@
   v8.receiver = self;
   v8.super_class = HMDRemoteLoginProxyDeviceResponse;
   v4 = [(HMRemoteLoginMessage *)&v8 description];
-  v5 = [(HMDRemoteLoginProxyDeviceResponse *)self proxyDevice];
-  v6 = [v3 stringWithFormat:@"HMDRemoteLoginProxyDeviceResponse: %@, Proxy-Device %@", v4, v5];
+  proxyDevice = [(HMDRemoteLoginProxyDeviceResponse *)self proxyDevice];
+  v6 = [v3 stringWithFormat:@"HMDRemoteLoginProxyDeviceResponse: %@, Proxy-Device %@", v4, proxyDevice];
 
   return v6;
 }
@@ -51,8 +51,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = encodeRootObject();
-  v4 = [(HMDRemoteLoginProxyDeviceResponse *)self messageName];
-  v8 = v4;
+  messageName = [(HMDRemoteLoginProxyDeviceResponse *)self messageName];
+  v8 = messageName;
   v9[0] = v3;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
@@ -61,12 +61,12 @@
   return v5;
 }
 
-+ (id)objWithMessage:(id)a3
++ (id)objWithMessage:(id)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_dataForKey:@"kHMDRemoteLoginProxyDeviceResponse"];
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v6 = [messagePayload hmf_dataForKey:@"kHMDRemoteLoginProxyDeviceResponse"];
 
   v15 = 0;
   v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v15];
@@ -74,7 +74,7 @@
   if (!v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -94,18 +94,18 @@
   return v7;
 }
 
-+ (id)objWithDict:(id)a3
++ (id)objWithDict:(id)dict
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmf_dataForKey:@"kHMDRemoteLoginProxyDeviceResponse"];
+  dictCopy = dict;
+  v5 = [dictCopy hmf_dataForKey:@"kHMDRemoteLoginProxyDeviceResponse"];
   v14 = 0;
   v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v14];
   v7 = v14;
   if (!v6)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {

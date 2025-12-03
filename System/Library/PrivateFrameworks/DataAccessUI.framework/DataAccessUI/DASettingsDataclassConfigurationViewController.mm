@@ -6,9 +6,9 @@
 - (id)accountFromSpecifier;
 - (id)otherSpecifiers;
 - (id)specifiers;
-- (void)_accountsChanged:(id)a3;
+- (void)_accountsChanged:(id)changed;
 - (void)_listenForAccountsChangedNotifications;
-- (void)cancelButtonClicked:(id)a3;
+- (void)cancelButtonClicked:(id)clicked;
 - (void)dealloc;
 - (void)loadView;
 - (void)reloadAccount;
@@ -19,8 +19,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8B78] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8B78] object:0];
 
   v4.receiver = self;
   v4.super_class = DASettingsDataclassConfigurationViewController;
@@ -29,33 +29,33 @@
 
 - (id)accountDescriptionForFirstTimeSetup
 {
-  v2 = [(DASettingsDataclassConfigurationViewController *)self daAccount];
-  v3 = [v2 accountDescription];
+  daAccount = [(DASettingsDataclassConfigurationViewController *)self daAccount];
+  accountDescription = [daAccount accountDescription];
 
-  return v3;
+  return accountDescription;
 }
 
 - (id)_navTitle
 {
   if ([(ACUIDataclassConfigurationViewController *)self isFirstTimeSetup])
   {
-    v3 = [(DASettingsDataclassConfigurationViewController *)self accountDescriptionForFirstTimeSetup];
+    accountDescriptionForFirstTimeSetup = [(DASettingsDataclassConfigurationViewController *)self accountDescriptionForFirstTimeSetup];
   }
 
   else
   {
-    v4 = [(DASettingsDataclassConfigurationViewController *)self daAccount];
-    v3 = [v4 accountDescription];
+    daAccount = [(DASettingsDataclassConfigurationViewController *)self daAccount];
+    accountDescriptionForFirstTimeSetup = [daAccount accountDescription];
   }
 
-  return v3;
+  return accountDescriptionForFirstTimeSetup;
 }
 
 - (void)loadView
 {
-  v3 = [(DASettingsDataclassConfigurationViewController *)self navigationItem];
-  v4 = [(DASettingsDataclassConfigurationViewController *)self _navTitle];
-  [v3 setTitle:v4];
+  navigationItem = [(DASettingsDataclassConfigurationViewController *)self navigationItem];
+  _navTitle = [(DASettingsDataclassConfigurationViewController *)self _navTitle];
+  [navigationItem setTitle:_navTitle];
 
   v5.receiver = self;
   v5.super_class = DASettingsDataclassConfigurationViewController;
@@ -67,9 +67,9 @@
   v5.receiver = self;
   v5.super_class = DASettingsDataclassConfigurationViewController;
   [(ACUIDataclassConfigurationViewController *)&v5 viewDidLoad];
-  v3 = [(DASettingsDataclassConfigurationViewController *)self navigationItem];
-  v4 = [(DASettingsDataclassConfigurationViewController *)self _navTitle];
-  [v3 setTitle:v4];
+  navigationItem = [(DASettingsDataclassConfigurationViewController *)self navigationItem];
+  _navTitle = [(DASettingsDataclassConfigurationViewController *)self _navTitle];
+  [navigationItem setTitle:_navTitle];
 }
 
 - (void)_listenForAccountsChangedNotifications
@@ -77,8 +77,8 @@
   if (!self->_haveRegisteredForAccountsChanged)
   {
     self->_haveRegisteredForAccountsChanged = 1;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__accountsChanged_ name:*MEMORY[0x277CB8B78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__accountsChanged_ name:*MEMORY[0x277CB8B78] object:0];
   }
 }
 
@@ -87,9 +87,9 @@
   daAccount = self->_daAccount;
   if (!daAccount)
   {
-    v4 = [(DASettingsDataclassConfigurationViewController *)self accountFromSpecifier];
+    accountFromSpecifier = [(DASettingsDataclassConfigurationViewController *)self accountFromSpecifier];
     v5 = self->_daAccount;
-    self->_daAccount = v4;
+    self->_daAccount = accountFromSpecifier;
 
     daAccount = self->_daAccount;
   }
@@ -99,19 +99,19 @@
 
 - (void)reloadAccount
 {
-  v3 = [(DASettingsDataclassConfigurationViewController *)self daAccount];
-  [v3 reload];
+  daAccount = [(DASettingsDataclassConfigurationViewController *)self daAccount];
+  [daAccount reload];
 
-  v5 = [(DASettingsDataclassConfigurationViewController *)self daAccount];
-  v4 = [v5 backingAccountInfo];
-  [v4 setAuthenticated:1];
+  daAccount2 = [(DASettingsDataclassConfigurationViewController *)self daAccount];
+  backingAccountInfo = [daAccount2 backingAccountInfo];
+  [backingAccountInfo setAuthenticated:1];
 }
 
 - (id)accountFromSpecifier
 {
-  v2 = [(DASettingsDataclassConfigurationViewController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE8550]];
+  specifier = [(DASettingsDataclassConfigurationViewController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE8550]];
 
   if (v4)
   {
@@ -124,8 +124,8 @@
       [v4 setObject:v5 forKeyedSubscript:v6];
     }
 
-    v9 = [MEMORY[0x277D03738] sharedInstance];
-    v10 = [v9 daemonAppropriateAccountClassForACAccount:v4];
+    mEMORY[0x277D03738] = [MEMORY[0x277D03738] sharedInstance];
+    v10 = [mEMORY[0x277D03738] daemonAppropriateAccountClassForACAccount:v4];
 
     v11 = [[v10 alloc] initWithBackingAccountInfo:v4];
   }
@@ -138,7 +138,7 @@
   return v11;
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
   [(DASettingsDataclassConfigurationViewController *)self reloadAccount];
 
@@ -150,50 +150,50 @@
   [(DASettingsDataclassConfigurationViewController *)self _listenForAccountsChangedNotifications];
   v5.receiver = self;
   v5.super_class = DASettingsDataclassConfigurationViewController;
-  v3 = [(ACUIDataclassConfigurationViewController *)&v5 specifiers];
+  specifiers = [(ACUIDataclassConfigurationViewController *)&v5 specifiers];
 
-  return v3;
+  return specifiers;
 }
 
 - (id)otherSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ACUIDataclassConfigurationViewController *)self account];
-  v5 = [v4 mcBackingProfile];
+  array = [MEMORY[0x277CBEB18] array];
+  account = [(ACUIDataclassConfigurationViewController *)self account];
+  mcBackingProfile = [account mcBackingProfile];
 
-  if (v5)
+  if (mcBackingProfile)
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"PROFILE_ACCOUNT_DESCRIPTION" value:&stru_285ACAC78 table:@"Localizable"];
-    v9 = [v5 friendlyName];
-    v10 = [v6 stringWithFormat:v8, v9];
+    friendlyName = [mcBackingProfile friendlyName];
+    v10 = [v6 stringWithFormat:v8, friendlyName];
 
     [(ACUIDataclassConfigurationViewController *)self setShouldShowDeleteAccountButton:0];
-    v11 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v11 setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
-    [v3 addObject:v11];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [emptyGroupSpecifier setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
+    [array addObject:emptyGroupSpecifier];
   }
 
-  return v3;
+  return array;
 }
 
 - (Class)accountInfoControllerClass
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"DASettingsDataclassConfigurationViewController.m" lineNumber:158 description:{@"You need to subclass %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DASettingsDataclassConfigurationViewController.m" lineNumber:158 description:{@"You need to subclass %@", v6}];
 
   return 0;
 }
 
-- (void)cancelButtonClicked:(id)a3
+- (void)cancelButtonClicked:(id)clicked
 {
-  v3 = [(DASettingsDataclassConfigurationViewController *)self rootController];
+  rootController = [(DASettingsDataclassConfigurationViewController *)self rootController];
   if (objc_opt_respondsToSelector())
   {
-    [v3 dismiss];
+    [rootController dismiss];
   }
 }
 

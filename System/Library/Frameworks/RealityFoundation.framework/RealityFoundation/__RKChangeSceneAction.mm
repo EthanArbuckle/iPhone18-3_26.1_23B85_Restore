@@ -1,10 +1,10 @@
 @interface __RKChangeSceneAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKChangeSceneAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);

@@ -13,13 +13,13 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaCollection *)self addedToDate];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"addedToDate", v6];
+  addedToDate = [(VUIMediaCollection *)self addedToDate];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"addedToDate", addedToDate];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaCollection *)self mediaItemCount];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaItemCount", v9];
+  mediaItemCount = [(VUIMediaCollection *)self mediaItemCount];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaItemCount", mediaItemCount];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];

@@ -2,15 +2,15 @@
 + (id)cacheFileURL;
 + (id)readFromDisk;
 - (MCPOIBusynessCounters)init;
-- (MCPOIBusynessCounters)initWithCoder:(id)a3;
+- (MCPOIBusynessCounters)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)_description;
-- (id)_flushToPowerLog:(BOOL)a3;
-- (id)captureStatePlistWithHints:(os_state_hints_s *)a3;
-- (void)_setIsDirty:(BOOL)a3;
+- (id)_flushToPowerLog:(BOOL)log;
+- (id)captureStatePlistWithHints:(os_state_hints_s *)hints;
+- (void)_setIsDirty:(BOOL)dirty;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementCounterForAnalytic:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementCounterForAnalytic:(unint64_t)analytic;
 - (void)writeToDiskIfNecessary;
 @end
 
@@ -19,8 +19,8 @@
 + (id)cacheFileURL
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.geocorrectiond"];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject stringByAppendingPathComponent:@"com.apple.geocorrectiond"];
 
   v14 = 0;
   v5 = +[NSFileManager defaultManager];
@@ -103,14 +103,14 @@ LABEL_8:
   return v2;
 }
 
-- (MCPOIBusynessCounters)initWithCoder:(id)a3
+- (MCPOIBusynessCounters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MCPOIBusynessCounters *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"counters"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"counters"];
     v8 = [v7 objectForKeyedSubscript:&off_10001F680];
     [v8 doubleValue];
     v10 = v9;
@@ -126,12 +126,12 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  coderCopy = coder;
   dispatch_assert_queue_V2(isolationQueue);
-  [v5 encodeObject:self->_counters forKey:@"counters"];
+  [coderCopy encodeObject:self->_counters forKey:@"counters"];
 }
 
 - (void)dealloc
@@ -149,15 +149,15 @@ LABEL_8:
 
   if (v4)
   {
-    v5 = [objc_opt_class() cacheFileURL];
+    cacheFileURL = [objc_opt_class() cacheFileURL];
     v6 = +[NSFileManager defaultManager];
-    v7 = [v5 path];
-    v8 = [v6 fileExistsAtPath:v7];
+    path = [cacheFileURL path];
+    v8 = [v6 fileExistsAtPath:path];
 
     if (v8)
     {
       v21 = 0;
-      v9 = [[NSData alloc] initWithContentsOfURL:v5 options:0 error:&v21];
+      v9 = [[NSData alloc] initWithContentsOfURL:cacheFileURL options:0 error:&v21];
       v10 = v21;
       v11 = v10;
       if (!v9 || v10)
@@ -166,13 +166,13 @@ LABEL_8:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v23 = v5;
+          v23 = cacheFileURL;
           v24 = 2112;
           v25 = v11;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed read %@: %@", buf, 0x16u);
         }
 
-        v16 = objc_alloc_init(a1);
+        v16 = objc_alloc_init(self);
       }
 
       else
@@ -187,13 +187,13 @@ LABEL_8:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v23 = v5;
+            v23 = cacheFileURL;
             v24 = 2112;
             v25 = v11;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed unarchive %@: %@", buf, 0x16u);
           }
 
-          v15 = objc_alloc_init(a1);
+          v15 = objc_alloc_init(self);
         }
 
         else
@@ -218,21 +218,21 @@ LABEL_8:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v23 = v5;
+        v23 = cacheFileURL;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Counters do not exist at %@", buf, 0xCu);
       }
 
-      v16 = objc_alloc_init(a1);
+      v16 = objc_alloc_init(self);
     }
   }
 
   else
   {
-    v5 = GEOGetPOIBusynessLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    cacheFileURL = GEOGetPOIBusynessLog();
+    if (os_log_type_enabled(cacheFileURL, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Refusing to read counters, device is not unlocked", buf, 2u);
+      _os_log_impl(&_mh_execute_header, cacheFileURL, OS_LOG_TYPE_INFO, "Refusing to read counters, device is not unlocked", buf, 2u);
     }
 
     v16 = 0;
@@ -252,7 +252,7 @@ LABEL_8:
   dispatch_async(isolationQueue, block);
 }
 
-- (id)captureStatePlistWithHints:(os_state_hints_s *)a3
+- (id)captureStatePlistWithHints:(os_state_hints_s *)hints
 {
   if (PLShouldLogRegisteredEvent())
   {
@@ -276,12 +276,12 @@ LABEL_8:
   return v6;
 }
 
-- (void)_setIsDirty:(BOOL)a3
+- (void)_setIsDirty:(BOOL)dirty
 {
-  v3 = a3;
+  dirtyCopy = dirty;
   dispatch_assert_queue_V2(self->_isolationQueue);
   isDirtyTransaction = self->_isDirtyTransaction;
-  if (v3)
+  if (dirtyCopy)
   {
     if (!isDirtyTransaction)
     {
@@ -313,10 +313,10 @@ LABEL_8:
   dispatch_source_set_timer(v10, v9, 0xFFFFFFFFFFFFFFFFLL, v11);
 }
 
-- (id)_flushToPowerLog:(BOOL)a3
+- (id)_flushToPowerLog:(BOOL)log
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (a3 || (+[NSDate timeIntervalSinceReferenceDate](NSDate, "timeIntervalSinceReferenceDate"), v6 = v5, -[NSMutableDictionary objectForKeyedSubscript:](self->_counters, "objectForKeyedSubscript:", &off_10001F680), v7 = objc_claimAutoreleasedReturnValue(), [v7 doubleValue], v9 = v6 - v8, v7, v9 >= 86400.0))
+  if (log || (+[NSDate timeIntervalSinceReferenceDate](NSDate, "timeIntervalSinceReferenceDate"), v6 = v5, -[NSMutableDictionary objectForKeyedSubscript:](self->_counters, "objectForKeyedSubscript:", &off_10001F680), v7 = objc_claimAutoreleasedReturnValue(), [v7 doubleValue], v9 = v6 - v8, v7, v9 >= 86400.0))
   {
     v10 = [(NSMutableDictionary *)self->_counters copy];
     v11 = [NSMutableDictionary dictionaryWithCapacity:10];
@@ -370,8 +370,8 @@ LABEL_8:
 
   [v5 appendString:@"start: "];
   v6 = [(NSMutableDictionary *)self->_counters objectForKeyedSubscript:&off_10001F680];
-  v7 = [v6 stringValue];
-  [v5 appendString:v7];
+  stringValue = [v6 stringValue];
+  [v5 appendString:stringValue];
 
   counters = self->_counters;
   v11[0] = _NSConcreteStackBlock;
@@ -386,9 +386,9 @@ LABEL_8:
   return v9;
 }
 
-- (void)incrementCounterForAnalytic:(unint64_t)a3
+- (void)incrementCounterForAnalytic:(unint64_t)analytic
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:analytic];
   isolationQueue = self->_isolationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;

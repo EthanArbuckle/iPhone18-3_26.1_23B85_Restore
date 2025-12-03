@@ -1,26 +1,26 @@
 @interface PedestrianARFeatureIntroTeachableMomentContaineeViewController
 + (BOOL)hasShownTeachableMoment;
 + (BOOL)shouldShowTeachableMoment;
-+ (void)setShownTeachableMoment:(BOOL)a3;
++ (void)setShownTeachableMoment:(BOOL)moment;
 - (BOOL)_isDarkMode;
 - (PedestrianARCoordination)coordinator;
 - (PedestrianARFeatureIntroTeachableMomentContaineeViewController)init;
-- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoder:(id)a3;
-- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoordinator:(id)a3;
-- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)heightForLayout:(unint64_t)a3;
+- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoder:(id)coder;
+- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoordinator:(id)coordinator;
+- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)_videoNameForCurrentState;
 - (void)_configureFloatingButtonHighlightIfNecessary;
 - (void)_updateForCurrentState;
 - (void)dealloc;
 - (void)didResignCurrent;
-- (void)dismiss:(id)a3;
-- (void)enterPedestrianAR:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)dismiss:(id)dismiss;
+- (void)enterPedestrianAR:(id)r;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)willChangeContainerStyle:(unint64_t)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)willChangeContainerStyle:(unint64_t)style;
 @end
 
 @implementation PedestrianARFeatureIntroTeachableMomentContaineeViewController
@@ -32,9 +32,9 @@
   return WeakRetained;
 }
 
-- (void)enterPedestrianAR:(id)a3
+- (void)enterPedestrianAR:(id)r
 {
-  v4 = a3;
+  rCopy = r;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -47,35 +47,35 @@
   v6[3] = &unk_1016619A8;
   objc_copyWeak(&v7, &location);
   [UIView animateWithDuration:v8 animations:v6 completion:0.35];
-  v5 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self coordinator];
-  [v5 enterPedestrianAR];
+  coordinator = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self coordinator];
+  [coordinator enterPedestrianAR];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v3 = -1.0;
-  if (a3 == 5)
+  if (layout == 5)
   {
-    v5 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
-    v6 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
-    [v6 frame];
+    view = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
+    view2 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
+    [view2 frame];
     v8 = v7;
     LODWORD(v7) = 1148846080;
     LODWORD(v9) = 1112014848;
-    [v5 systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:{v7, v9}];
+    [view systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:{v7, v9}];
     v3 = v10;
 
-    v11 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
-    [v11 safeAreaInsets];
+    view3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
+    [view3 safeAreaInsets];
     v13 = v12;
 
     if (v13 == 0.0)
     {
-      v14 = [(ContaineeViewController *)self cardPresentationController];
-      [v14 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v3 = v15 + v3;
     }
   }
@@ -83,15 +83,15 @@
   return v3;
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
-  if (a3 > 7 || ((1 << a3) & 0xA3) == 0)
+  if (style > 7 || ((1 << style) & 0xA3) == 0)
   {
     v4 = sub_10100CA18();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = 134349056;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Layout changed to landscape; dismissing", &v5, 0xCu);
     }
 
@@ -101,69 +101,69 @@
 
 - (void)_configureFloatingButtonHighlightIfNecessary
 {
-  v3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self coordinator];
+  coordinator = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self coordinator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v5 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
-    v6 = [v5 window];
-    v7 = [v6 viewWithTag:&off_101661968];
+    view = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
+    window = [view window];
+    v7 = [window viewWithTag:&off_101661968];
 
     if (v7)
     {
       v8 = [MapsThemeButton buttonWithType:0];
       [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self setButtonReplica:v8];
 
-      v9 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      buttonReplica = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      [buttonReplica setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v10 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      [v10 setClipsToBounds:1];
+      buttonReplica2 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      [buttonReplica2 setClipsToBounds:1];
 
-      v11 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      v12 = [v11 layer];
-      [v12 setMasksToBounds:1];
+      buttonReplica3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      layer = [buttonReplica3 layer];
+      [layer setMasksToBounds:1];
 
-      v13 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      v14 = [v13 layer];
-      [v14 setCornerRadius:8.0];
+      buttonReplica4 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      layer2 = [buttonReplica4 layer];
+      [layer2 setCornerRadius:8.0];
 
-      v15 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      buttonReplica5 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
       v16 = +[NSBundle mainBundle];
       v17 = [v16 localizedStringForKey:@"Pedestrian AR [Accessibility]" value:@"localized string not found" table:0];
-      [v15 setAccessibilityLabel:v17];
+      [buttonReplica5 setAccessibilityLabel:v17];
 
-      v18 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      [v18 addTarget:self action:"enterPedestrianAR:" forControlEvents:64];
+      buttonReplica6 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      [buttonReplica6 addTarget:self action:"enterPedestrianAR:" forControlEvents:64];
 
       v19 = [UIImage systemImageNamed:@"arkit"];
-      v20 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      [v20 setImage:v19 forState:0];
+      buttonReplica7 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      [buttonReplica7 setImage:v19 forState:0];
 
-      v21 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      buttonReplica8 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
       v22 = +[MapsTheme floatingControlsTintColor];
-      [v21 setTintColor:v22];
+      [buttonReplica8 setTintColor:v22];
 
       v23 = +[UIColor systemBackgroundColor];
-      v24 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      [v24 setBackgroundColor:v23];
+      buttonReplica9 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      [buttonReplica9 setBackgroundColor:v23];
 
-      v25 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      buttonReplica10 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
       v26 = [v7 preferredSymbolConfigurationForImageInState:0];
-      [v25 setPreferredSymbolConfiguration:v26 forImageInState:0];
+      [buttonReplica10 setPreferredSymbolConfiguration:v26 forImageInState:0];
 
-      v27 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self presentationController];
-      v28 = [v27 containerView];
-      v29 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-      [v28 addSubview:v29];
+      presentationController = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self presentationController];
+      containerView = [presentationController containerView];
+      buttonReplica11 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      [containerView addSubview:buttonReplica11];
 
-      v30 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+      buttonReplica12 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
       LODWORD(v31) = 1148846080;
-      v32 = [v30 _maps_constraintsEqualToEdgesOfView:v7 priority:v31];
-      v33 = [v32 allConstraints];
-      [NSLayoutConstraint activateConstraints:v33];
+      v32 = [buttonReplica12 _maps_constraintsEqualToEdgesOfView:v7 priority:v31];
+      allConstraints = [v32 allConstraints];
+      [NSLayoutConstraint activateConstraints:allConstraints];
 
       if (GEOConfigGetBOOL())
       {
@@ -174,46 +174,46 @@
         v38 = [v34 initWithFrame:{CGRectZero.origin.x, y, width, height}];
         [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self setArrowContainerView:v38];
 
-        v39 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+        arrowContainerView = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        [arrowContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v40 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self presentationController];
-        v41 = [v40 containerView];
-        v42 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        [v41 addSubview:v42];
+        presentationController2 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self presentationController];
+        containerView2 = [presentationController2 containerView];
+        arrowContainerView2 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        [containerView2 addSubview:arrowContainerView2];
 
-        v107 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v103 = [v107 trailingAnchor];
-        v105 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-        v101 = [v105 leadingAnchor];
-        v99 = [v103 constraintLessThanOrEqualToAnchor:v101 constant:-10.0];
+        arrowContainerView3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        trailingAnchor = [arrowContainerView3 trailingAnchor];
+        buttonReplica13 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+        leadingAnchor = [buttonReplica13 leadingAnchor];
+        v99 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor constant:-10.0];
         v112[0] = v99;
-        v97 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v93 = [v97 centerYAnchor];
-        v95 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-        v91 = [v95 centerYAnchor];
-        v88 = [v93 constraintEqualToAnchor:v91];
+        arrowContainerView4 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        centerYAnchor = [arrowContainerView4 centerYAnchor];
+        buttonReplica14 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+        centerYAnchor2 = [buttonReplica14 centerYAnchor];
+        v88 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v112[1] = v88;
-        v87 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v85 = [v87 widthAnchor];
+        arrowContainerView5 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        widthAnchor = [arrowContainerView5 widthAnchor];
         [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
         v43 = v109 = v19;
-        v44 = [v43 widthAnchor];
-        v45 = [v85 constraintEqualToAnchor:v44];
+        widthAnchor2 = [v43 widthAnchor];
+        v45 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         v112[2] = v45;
-        v46 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v47 = [v46 heightAnchor];
-        v48 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-        v49 = [v48 heightAnchor];
-        v50 = [v47 constraintEqualToAnchor:v49];
+        arrowContainerView6 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        heightAnchor = [arrowContainerView6 heightAnchor];
+        buttonReplica15 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+        heightAnchor2 = [buttonReplica15 heightAnchor];
+        v50 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v112[3] = v50;
         [NSArray arrayWithObjects:v112 count:4];
         v51 = v110 = v7;
         [NSLayoutConstraint activateConstraints:v51];
 
-        v52 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self presentationController];
-        v53 = [v52 containerView];
-        v54 = [v53 effectiveUserInterfaceLayoutDirection];
+        presentationController3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self presentationController];
+        containerView3 = [presentationController3 containerView];
+        effectiveUserInterfaceLayoutDirection = [containerView3 effectiveUserInterfaceLayoutDirection];
 
         v55 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
         [v55 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -225,7 +225,7 @@
         v57 = [UIImageSymbolConfiguration configurationWithFont:v108];
         [v55 setPreferredSymbolConfiguration:v57];
 
-        if (v54 == 1)
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
           v58 = @"arrow.left";
         }
@@ -236,14 +236,14 @@
         }
 
         v59 = &off_1016EAE68;
-        if (v54 == 1)
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
           v59 = &off_1016EAE50;
         }
 
         v102 = v59;
         v60 = &off_1016EAE80;
-        if (v54 != 1)
+        if (effectiveUserInterfaceLayoutDirection != 1)
         {
           v60 = &off_1016EAE98;
         }
@@ -252,29 +252,29 @@
         v61 = [UIImage systemImageNamed:v58];
         [v55 setImage:v61];
 
-        v62 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        [v62 addSubview:v55];
+        arrowContainerView7 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        [arrowContainerView7 addSubview:v55];
 
-        v98 = [v55 leadingAnchor];
-        v100 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v96 = [v100 leadingAnchor];
-        v94 = [v98 constraintEqualToAnchor:v96];
+        leadingAnchor2 = [v55 leadingAnchor];
+        arrowContainerView8 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        leadingAnchor3 = [arrowContainerView8 leadingAnchor];
+        v94 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
         v111[0] = v94;
-        v90 = [v55 trailingAnchor];
-        v92 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v89 = [v92 trailingAnchor];
-        v86 = [v90 constraintEqualToAnchor:v89];
+        trailingAnchor2 = [v55 trailingAnchor];
+        arrowContainerView9 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        trailingAnchor3 = [arrowContainerView9 trailingAnchor];
+        v86 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
         v111[1] = v86;
         v104 = v55;
-        v63 = [v55 topAnchor];
-        v64 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v65 = [v64 topAnchor];
-        v66 = [v63 constraintEqualToAnchor:v65];
+        topAnchor = [v55 topAnchor];
+        arrowContainerView10 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        topAnchor2 = [arrowContainerView10 topAnchor];
+        v66 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v111[2] = v66;
-        v67 = [v55 bottomAnchor];
-        v68 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        v69 = [v68 bottomAnchor];
-        v70 = [v67 constraintEqualToAnchor:v69];
+        bottomAnchor = [v55 bottomAnchor];
+        arrowContainerView11 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        bottomAnchor2 = [arrowContainerView11 bottomAnchor];
+        v70 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v111[3] = v70;
         v71 = [NSArray arrayWithObjects:v111 count:4];
         [NSLayoutConstraint activateConstraints:v71];
@@ -290,8 +290,8 @@
         v73 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
         [v72 setTimingFunction:v73];
 
-        v74 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        [v74 addAnimation:v72 forKey:@"fadeIn"];
+        arrowContainerView12 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        [arrowContainerView12 addAnimation:v72 forKey:@"fadeIn"];
 
         v75 = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
         [v75 setFromValue:v102];
@@ -303,8 +303,8 @@
         v76 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
         [v75 setTimingFunction:v76];
 
-        v77 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        [v77 addAnimation:v75 forKey:@"slideIn"];
+        arrowContainerView13 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        [arrowContainerView13 addAnimation:v75 forKey:@"slideIn"];
 
         v78 = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
         [v75 beginTime];
@@ -321,8 +321,8 @@
         v83 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         [v78 setTimingFunction:v83];
 
-        v84 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-        [v84 addAnimation:v78 forKey:@"backAndForth"];
+        arrowContainerView14 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+        [arrowContainerView14 addAnimation:v78 forKey:@"backAndForth"];
 
         v7 = v110;
       }
@@ -332,45 +332,45 @@
 
 - (void)_updateForCurrentState
 {
-  v3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self _videoNameForCurrentState];
+  _videoNameForCurrentState = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self _videoNameForCurrentState];
   v4 = sub_10100CA18();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349314;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v3;
+    v26 = _videoNameForCurrentState;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Updating video: %@", buf, 0x16u);
   }
 
-  v5 = [[NSDataAsset alloc] initWithName:v3];
-  v6 = [v5 data];
+  v5 = [[NSDataAsset alloc] initWithName:_videoNameForCurrentState];
+  data = [v5 data];
   v21[0] = AVAssetPreferPreciseDurationAndTimingKey;
   v21[1] = AVAssetReferenceRestrictionsKey;
   v22[0] = &__kCFBooleanFalse;
   v22[1] = &off_1016EAE08;
   v7 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
-  v8 = [AVAsset assetWithData:v6 contentType:AVFileTypeAppleM4V options:v7];
+  v8 = [AVAsset assetWithData:data contentType:AVFileTypeAppleM4V options:v7];
 
   v9 = [AVPlayerItem playerItemWithAsset:v8];
-  v10 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self playerView];
-  [v10 replaceCurrentItemWithPlayerItem:v9 preserveCurrentTimestamp:1];
+  playerView = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self playerView];
+  [playerView replaceCurrentItemWithPlayerItem:v9 preserveCurrentTimestamp:1];
 
-  v11 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
-  v12 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle1 weight:v11 compatibleWithTraitCollection:UIFontWeightBold];
-  v13 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self titleLabel];
-  [v13 setFont:v12];
+  traitCollection = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
+  v12 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle1 weight:traitCollection compatibleWithTraitCollection:UIFontWeightBold];
+  titleLabel = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self titleLabel];
+  [titleLabel setFont:v12];
 
-  v14 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
-  v15 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:v14 compatibleWithTraitCollection:UIFontWeightSemibold];
-  v16 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self closeButton];
-  v17 = [v16 titleLabel];
-  [v17 setFont:v15];
+  traitCollection2 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
+  v15 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:traitCollection2 compatibleWithTraitCollection:UIFontWeightSemibold];
+  closeButton = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self closeButton];
+  titleLabel2 = [closeButton titleLabel];
+  [titleLabel2 setFont:v15];
 
-  v18 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
-  v19 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleFootnote weight:v18 compatibleWithTraitCollection:UIFontWeightRegular];
-  v20 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self privacyLabel];
-  [v20 setFont:v19];
+  traitCollection3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
+  v19 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleFootnote weight:traitCollection3 compatibleWithTraitCollection:UIFontWeightRegular];
+  privacyLabel = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self privacyLabel];
+  [privacyLabel setFont:v19];
 }
 
 - (id)_videoNameForCurrentState
@@ -390,29 +390,29 @@
 
 - (BOOL)_isDarkMode
 {
-  v2 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == 2;
+  traitCollection = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == 2;
 
   return v3;
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   v5 = sub_10100CA18();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Close button tapped; dismissing", &v8, 0xCu);
   }
 
-  [(ContaineeViewController *)self handleDismissAction:v4];
-  v6 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-  [v6 removeFromSuperview];
+  [(ContaineeViewController *)self handleDismissAction:dismissCopy];
+  buttonReplica = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+  [buttonReplica removeFromSuperview];
 
-  v7 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-  [v7 removeFromSuperview];
+  arrowContainerView = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+  [arrowContainerView removeFromSuperview];
 
   [GEOAPPortal captureUserAction:127 target:14 value:0];
 }
@@ -422,47 +422,47 @@
   v5.receiver = self;
   v5.super_class = PedestrianARFeatureIntroTeachableMomentContaineeViewController;
   [(ContaineeViewController *)&v5 didResignCurrent];
-  v3 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
-  [v3 removeFromSuperview];
+  buttonReplica = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self buttonReplica];
+  [buttonReplica removeFromSuperview];
 
-  v4 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
-  [v4 removeFromSuperview];
+  arrowContainerView = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self arrowContainerView];
+  [arrowContainerView removeFromSuperview];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PedestrianARFeatureIntroTeachableMomentContaineeViewController;
-  [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)&v3 viewDidAppear:a3];
+  [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)&v3 viewDidAppear:appear];
   [objc_opt_class() setShownTeachableMoment:1];
   [GEOAPPortal captureUserAction:21 target:14 value:0];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = PedestrianARFeatureIntroTeachableMomentContaineeViewController;
-  [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:?];
-  if (v4)
+  [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:?];
+  if (disappearCopy)
   {
     [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self _configureFloatingButtonHighlightIfNecessary];
     [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self _updateForCurrentState];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PedestrianARFeatureIntroTeachableMomentContaineeViewController;
-  v4 = a3;
-  [(MapsThemeViewController *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(MapsThemeViewController *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self _updateForCurrentState];
   }
@@ -473,21 +473,21 @@
   v138.receiver = self;
   v138.super_class = PedestrianARFeatureIntroTeachableMomentContaineeViewController;
   [(ContaineeViewController *)&v138 viewDidLoad];
-  v3 = [(ContaineeViewController *)self headerView];
-  [v3 removeFromSuperview];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView removeFromSuperview];
 
-  v4 = [(ContaineeViewController *)self contentView];
-  v5 = [v4 topAnchor];
-  v6 = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor = [contentView topAnchor];
+  view = [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v145 = v8;
   v9 = [NSArray arrayWithObjects:&v145 count:1];
   [NSLayoutConstraint activateConstraints:v9];
 
   v10 = [UIColor colorNamed:@"TeachableMomentCardBackgoundColor"];
-  v11 = [(ContaineeViewController *)self contentView];
-  [v11 setBackgroundColor:v10];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  [contentView2 setBackgroundColor:v10];
 
   v12 = [UILabel alloc];
   y = CGRectZero.origin.y;
@@ -509,8 +509,8 @@
   v21 = [v20 localizedStringForKey:@"Pedestrian_AR_feature_intro_teachable_moment_card_title_text" value:@"localized string not found" table:0];
   [(UILabel *)self->_titleLabel setText:v21];
 
-  v22 = [(ContaineeViewController *)self contentView];
-  [v22 addSubview:self->_titleLabel];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  [contentView3 addSubview:self->_titleLabel];
 
   if (+[VLFDeviceInfo isNotchDevice])
   {
@@ -522,20 +522,20 @@
     v23 = 50.0;
   }
 
-  v131 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v136 = [(ContaineeViewController *)self contentView];
-  v127 = [v136 leadingAnchor];
-  v122 = [v131 constraintEqualToAnchor:v127 constant:30.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v122 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
   v144[0] = v122;
-  v114 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v24 = [(ContaineeViewController *)self contentView];
-  v25 = [v24 trailingAnchor];
-  v26 = [v114 constraintEqualToAnchor:v25 constant:-27.0];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-27.0];
   v144[1] = v26;
-  v27 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v28 = [(ContaineeViewController *)self contentView];
-  v29 = [v28 topAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:v23];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  contentView6 = [(ContaineeViewController *)self contentView];
+  topAnchor3 = [contentView6 topAnchor];
+  v30 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:v23];
   v144[2] = v30;
   v31 = [NSArray arrayWithObjects:v144 count:3];
   [NSLayoutConstraint activateConstraints:v31];
@@ -545,59 +545,59 @@
   self->_animationContainer = v32;
 
   [(UIView *)self->_animationContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-  v34 = [(ContaineeViewController *)self contentView];
-  [v34 addSubview:self->_animationContainer];
+  contentView7 = [(ContaineeViewController *)self contentView];
+  [contentView7 addSubview:self->_animationContainer];
 
-  v128 = [(UIView *)self->_animationContainer leadingAnchor];
-  v132 = [(ContaineeViewController *)self contentView];
-  v123 = [v132 leadingAnchor];
-  v118 = [v128 constraintEqualToAnchor:v123];
+  leadingAnchor3 = [(UIView *)self->_animationContainer leadingAnchor];
+  contentView8 = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView8 leadingAnchor];
+  v118 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v143[0] = v118;
-  v110 = [(UIView *)self->_animationContainer trailingAnchor];
-  v115 = [(ContaineeViewController *)self contentView];
-  v105 = [v115 trailingAnchor];
-  v35 = [v110 constraintEqualToAnchor:v105];
+  trailingAnchor3 = [(UIView *)self->_animationContainer trailingAnchor];
+  contentView9 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView9 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v143[1] = v35;
-  v36 = [(UIView *)self->_animationContainer topAnchor];
-  v37 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  topAnchor4 = [(UIView *)self->_animationContainer topAnchor];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  v38 = [topAnchor4 constraintEqualToAnchor:bottomAnchor];
   v143[2] = v38;
-  v39 = [(UIView *)self->_animationContainer heightAnchor];
-  v40 = [(UIView *)self->_animationContainer widthAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40 multiplier:0.597333312 constant:0.0];
+  heightAnchor = [(UIView *)self->_animationContainer heightAnchor];
+  widthAnchor = [(UIView *)self->_animationContainer widthAnchor];
+  v41 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:0.597333312 constant:0.0];
   v143[3] = v41;
   v42 = [NSArray arrayWithObjects:v143 count:4];
   [NSLayoutConstraint activateConstraints:v42];
 
-  v43 = [[MapsLoopingVideoPlayerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[MapsLoopingVideoPlayerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   playerView = self->_playerView;
-  self->_playerView = v43;
+  self->_playerView = height;
 
   [(MapsLoopingVideoPlayerView *)self->_playerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_animationContainer addSubview:self->_playerView];
-  v133 = [(MapsLoopingVideoPlayerView *)self->_playerView leadingAnchor];
-  v129 = [(UIView *)self->_animationContainer leadingAnchor];
-  v124 = [v133 constraintEqualToAnchor:v129];
+  leadingAnchor5 = [(MapsLoopingVideoPlayerView *)self->_playerView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_animationContainer leadingAnchor];
+  v124 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v142[0] = v124;
-  v119 = [(MapsLoopingVideoPlayerView *)self->_playerView trailingAnchor];
-  v116 = [(UIView *)self->_animationContainer trailingAnchor];
-  v111 = [v119 constraintEqualToAnchor:v116];
+  trailingAnchor5 = [(MapsLoopingVideoPlayerView *)self->_playerView trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_animationContainer trailingAnchor];
+  v111 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v142[1] = v111;
-  v107 = [(MapsLoopingVideoPlayerView *)self->_playerView topAnchor];
-  v103 = [(UIView *)self->_animationContainer topAnchor];
-  v101 = [v107 constraintGreaterThanOrEqualToAnchor:v103];
+  topAnchor5 = [(MapsLoopingVideoPlayerView *)self->_playerView topAnchor];
+  topAnchor6 = [(UIView *)self->_animationContainer topAnchor];
+  v101 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
   v142[2] = v101;
-  v99 = [(MapsLoopingVideoPlayerView *)self->_playerView bottomAnchor];
-  v45 = [(UIView *)self->_animationContainer bottomAnchor];
-  v46 = [v99 constraintLessThanOrEqualToAnchor:v45];
+  bottomAnchor2 = [(MapsLoopingVideoPlayerView *)self->_playerView bottomAnchor];
+  bottomAnchor3 = [(UIView *)self->_animationContainer bottomAnchor];
+  v46 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
   v142[3] = v46;
-  v47 = [(MapsLoopingVideoPlayerView *)self->_playerView centerYAnchor];
-  v48 = [(UIView *)self->_animationContainer centerYAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  centerYAnchor = [(MapsLoopingVideoPlayerView *)self->_playerView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_animationContainer centerYAnchor];
+  v49 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v142[4] = v49;
-  v50 = [(MapsLoopingVideoPlayerView *)self->_playerView heightAnchor];
-  v51 = [(MapsLoopingVideoPlayerView *)self->_playerView widthAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51 multiplier:0.580817044 constant:0.0];
+  heightAnchor2 = [(MapsLoopingVideoPlayerView *)self->_playerView heightAnchor];
+  widthAnchor2 = [(MapsLoopingVideoPlayerView *)self->_playerView widthAnchor];
+  v52 = [heightAnchor2 constraintEqualToAnchor:widthAnchor2 multiplier:0.580817044 constant:0.0];
   v142[5] = v52;
   v53 = [NSArray arrayWithObjects:v142 count:6];
   [NSLayoutConstraint activateConstraints:v53];
@@ -615,42 +615,42 @@
   v59 = [v58 localizedStringForKey:@"Pedestrian_AR_feature_intro_teachable_moment_card_ok_button_text" value:@"localized string not found" table:0];
   [(UIButton *)v57 setTitle:v59 forState:0];
 
-  v60 = [(ContaineeViewController *)self contentView];
-  [v60 addSubview:self->_closeButton];
+  contentView10 = [(ContaineeViewController *)self contentView];
+  [contentView10 addSubview:self->_closeButton];
 
-  v130 = [(UIButton *)self->_closeButton leadingAnchor];
-  v134 = [(ContaineeViewController *)self contentView];
-  v125 = [v134 leadingAnchor];
-  v120 = [v130 constraintEqualToAnchor:v125 constant:24.0];
+  leadingAnchor7 = [(UIButton *)self->_closeButton leadingAnchor];
+  contentView11 = [(ContaineeViewController *)self contentView];
+  leadingAnchor8 = [contentView11 leadingAnchor];
+  v120 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:24.0];
   v141[0] = v120;
-  v108 = [(UIButton *)self->_closeButton trailingAnchor];
-  v112 = [(ContaineeViewController *)self contentView];
-  v61 = [v112 trailingAnchor];
-  v62 = [v108 constraintEqualToAnchor:v61 constant:-24.0];
+  trailingAnchor7 = [(UIButton *)self->_closeButton trailingAnchor];
+  contentView12 = [(ContaineeViewController *)self contentView];
+  trailingAnchor8 = [contentView12 trailingAnchor];
+  v62 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-24.0];
   v141[1] = v62;
-  v63 = [(UIButton *)self->_closeButton topAnchor];
-  v64 = [(UIView *)self->_animationContainer bottomAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
+  topAnchor7 = [(UIButton *)self->_closeButton topAnchor];
+  bottomAnchor4 = [(UIView *)self->_animationContainer bottomAnchor];
+  v65 = [topAnchor7 constraintEqualToAnchor:bottomAnchor4];
   v141[2] = v65;
-  v66 = [(UIButton *)self->_closeButton heightAnchor];
-  v67 = [v66 constraintEqualToConstant:50.0];
+  heightAnchor3 = [(UIButton *)self->_closeButton heightAnchor];
+  v67 = [heightAnchor3 constraintEqualToConstant:50.0];
   v141[3] = v67;
   v68 = [NSArray arrayWithObjects:v141 count:4];
   [NSLayoutConstraint activateConstraints:v68];
 
   if (GEOVisualLocalizationCrowdsourcingIsSupported() && GEOVisualLocalizationCrowdsourcingIsAllowed() && (GEOVisualLocalizationCrowdsourcingIsEnabled() & 1) != 0)
   {
-    v69 = [(UIButton *)self->_closeButton bottomAnchor];
-    v70 = [(ContaineeViewController *)self contentView];
-    v71 = [v70 safeAreaLayoutGuide];
-    v72 = [v71 bottomAnchor];
+    bottomAnchor5 = [(UIButton *)self->_closeButton bottomAnchor];
+    contentView13 = [(ContaineeViewController *)self contentView];
+    safeAreaLayoutGuide = [contentView13 safeAreaLayoutGuide];
+    bottomAnchor6 = [safeAreaLayoutGuide bottomAnchor];
     LODWORD(v73) = 1148829696;
-    v74 = [v69 constraintEqualToAnchor:v72 constant:0.0 priority:v73];
+    v74 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:0.0 priority:v73];
     v139[0] = v74;
-    v75 = [(UIButton *)self->_closeButton bottomAnchor];
-    v76 = [(ContaineeViewController *)self contentView];
-    v77 = [v76 bottomAnchor];
-    v137 = [v75 constraintLessThanOrEqualToAnchor:v77 constant:-16.0];
+    bottomAnchor7 = [(UIButton *)self->_closeButton bottomAnchor];
+    contentView14 = [(ContaineeViewController *)self contentView];
+    bottomAnchor8 = [contentView14 bottomAnchor];
+    v137 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8 constant:-16.0];
     v139[1] = v137;
     v78 = [NSArray arrayWithObjects:v139 count:2];
     [NSLayoutConstraint activateConstraints:v78];
@@ -674,8 +674,8 @@
     v84 = +[UIColor systemGrayColor];
     [(UILabel *)self->_privacyLabel setTextColor:v84];
 
-    v85 = [(ContaineeViewController *)self contentView];
-    [v85 addSubview:self->_privacyLabel];
+    contentView15 = [(ContaineeViewController *)self contentView];
+    [contentView15 addSubview:self->_privacyLabel];
 
     if (+[VLFDeviceInfo isNotchDevice])
     {
@@ -687,49 +687,49 @@
       v86 = 18.0;
     }
 
-    v121 = [(UILabel *)self->_privacyLabel leadingAnchor];
-    v126 = [(ContaineeViewController *)self contentView];
-    v113 = [v126 leadingAnchor];
-    v135 = [v121 constraintEqualToAnchor:v113 constant:24.0];
+    leadingAnchor9 = [(UILabel *)self->_privacyLabel leadingAnchor];
+    contentView16 = [(ContaineeViewController *)self contentView];
+    leadingAnchor10 = [contentView16 leadingAnchor];
+    v135 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:24.0];
     v140[0] = v135;
-    v109 = [(UILabel *)self->_privacyLabel trailingAnchor];
-    v117 = [(ContaineeViewController *)self contentView];
-    v106 = [v117 trailingAnchor];
-    v100 = [v109 constraintEqualToAnchor:v106 constant:-24.0];
+    trailingAnchor9 = [(UILabel *)self->_privacyLabel trailingAnchor];
+    contentView17 = [(ContaineeViewController *)self contentView];
+    trailingAnchor10 = [contentView17 trailingAnchor];
+    v100 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-24.0];
     v140[1] = v100;
-    v87 = [(UILabel *)self->_privacyLabel topAnchor];
-    v102 = [(UIButton *)self->_closeButton bottomAnchor];
-    v137 = v87;
-    v104 = [v87 constraintEqualToAnchor:v102 constant:v86];
+    topAnchor8 = [(UILabel *)self->_privacyLabel topAnchor];
+    bottomAnchor9 = [(UIButton *)self->_closeButton bottomAnchor];
+    v137 = topAnchor8;
+    v104 = [topAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:v86];
     v140[2] = v104;
-    v98 = [(UILabel *)self->_privacyLabel bottomAnchor];
-    v88 = [(ContaineeViewController *)self contentView];
-    v89 = [v88 safeAreaLayoutGuide];
-    v90 = [v89 bottomAnchor];
+    bottomAnchor10 = [(UILabel *)self->_privacyLabel bottomAnchor];
+    contentView18 = [(ContaineeViewController *)self contentView];
+    safeAreaLayoutGuide2 = [contentView18 safeAreaLayoutGuide];
+    bottomAnchor11 = [safeAreaLayoutGuide2 bottomAnchor];
     LODWORD(v91) = 1148829696;
-    v92 = [v98 constraintEqualToAnchor:v90 constant:0.0 priority:v91];
+    v92 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11 constant:0.0 priority:v91];
     v140[3] = v92;
-    v93 = [(UILabel *)self->_privacyLabel bottomAnchor];
-    v94 = [(ContaineeViewController *)self contentView];
-    v95 = [v94 bottomAnchor];
-    v96 = [v93 constraintLessThanOrEqualToAnchor:v95 constant:-16.0];
+    bottomAnchor12 = [(UILabel *)self->_privacyLabel bottomAnchor];
+    contentView19 = [(ContaineeViewController *)self contentView];
+    bottomAnchor13 = [contentView19 bottomAnchor];
+    v96 = [bottomAnchor12 constraintLessThanOrEqualToAnchor:bottomAnchor13 constant:-16.0];
     v140[4] = v96;
     v97 = [NSArray arrayWithObjects:v140 count:5];
     [NSLayoutConstraint activateConstraints:v97];
 
-    v71 = v113;
-    v70 = v126;
+    safeAreaLayoutGuide = leadingAnchor10;
+    contentView13 = contentView16;
 
-    v69 = v121;
-    v77 = v100;
+    bottomAnchor5 = leadingAnchor9;
+    bottomAnchor8 = v100;
 
-    v76 = v106;
-    v74 = v109;
+    contentView14 = trailingAnchor10;
+    v74 = trailingAnchor9;
 
-    v75 = v117;
-    v72 = v135;
+    bottomAnchor7 = contentView17;
+    bottomAnchor6 = v135;
 
-    v78 = v102;
+    v78 = bottomAnchor9;
   }
 
   [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)self _updateForCurrentState];
@@ -741,7 +741,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -750,10 +750,10 @@
   [(PedestrianARFeatureIntroTeachableMomentContaineeViewController *)&v4 dealloc];
 }
 
-- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoordinator:(id)a3
+- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoordinator:(id)coordinator
 {
-  v4 = a3;
-  if (!v4)
+  coordinatorCopy = coordinator;
+  if (!coordinatorCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -795,35 +795,35 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_coordinator, v4);
-    v7 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v7 setHideGrabber:1];
+    objc_storeWeak(&v5->_coordinator, coordinatorCopy);
+    cardPresentationController = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController setHideGrabber:1];
 
-    v8 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v8 setAllowsSwipeToDismiss:0];
+    cardPresentationController2 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController2 setAllowsSwipeToDismiss:0];
 
-    v9 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v9 setPresentedModally:1];
+    cardPresentationController3 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController3 setPresentedModally:1];
 
-    v10 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v10 setEdgeAttachedRegularHeightDimmingBehavior:2];
+    cardPresentationController4 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController4 setEdgeAttachedRegularHeightDimmingBehavior:2];
   }
 
   return v5;
 }
 
-- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoder:(id)a3
+- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   result = [NSException raise:@"MethodNotAvailableException" format:@"This method is unavailable."];
   __break(1u);
   return result;
 }
 
-- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PedestrianARFeatureIntroTeachableMomentContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   result = [NSException raise:@"MethodNotAvailableException" format:@"This method is unavailable."];
   __break(1u);
   return result;
@@ -839,15 +839,15 @@
 + (BOOL)shouldShowTeachableMoment
 {
   v3 = +[PedestrianARSessionUsageTracker sharedInstance];
-  v4 = [v3 hasUserEnteredAR];
+  hasUserEnteredAR = [v3 hasUserEnteredAR];
 
-  if (v4)
+  if (hasUserEnteredAR)
   {
     v5 = sub_10100CA18();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v11 = 134349056;
-      v12 = a1;
+      selfCopy3 = self;
       v6 = "[%{public}p] User has entered AR; should NOT show feaure intro teachable moment card";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, v6, &v11, 0xCu);
@@ -857,15 +857,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [a1 hasShownTeachableMoment];
+  hasShownTeachableMoment = [self hasShownTeachableMoment];
   v5 = sub_10100CA18();
   v8 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  if (hasShownTeachableMoment)
   {
     if (v8)
     {
       v11 = 134349056;
-      v12 = a1;
+      selfCopy3 = self;
       v6 = "[%{public}p] User has seen the TM card within time threshold; should NOT show feaure intro teachable moment card";
       goto LABEL_7;
     }
@@ -878,7 +878,7 @@ LABEL_8:
   if (v8)
   {
     v11 = 134349056;
-    v12 = a1;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Feature intro teachable moment card is eligible to be shown", &v11, 0xCu);
   }
 
@@ -888,27 +888,27 @@ LABEL_12:
   return v9;
 }
 
-+ (void)setShownTeachableMoment:(BOOL)a3
++ (void)setShownTeachableMoment:(BOOL)moment
 {
-  v3 = a3;
+  momentCopy = moment;
   v5 = sub_10100CA18();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = @"NO";
-    if (v3)
+    if (momentCopy)
     {
       v6 = @"YES";
     }
 
     v7 = v6;
     v15 = 134349314;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2112;
     v18 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Setting hasShownTeachableMoment flag: %@", &v15, 0x16u);
   }
 
-  if (v3)
+  if (momentCopy)
   {
     v8 = +[NSDate date];
     v9 = +[NSUserDefaults standardUserDefaults];
@@ -948,7 +948,7 @@ LABEL_12:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v19 = 134349312;
-        v20 = a1;
+        selfCopy3 = self;
         v21 = 2048;
         v22 = *&v6;
         v14 = "[%{public}p] User has been shown the feature intro teachable moment card too many times (%ld)";
@@ -973,7 +973,7 @@ LABEL_12:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v19 = 134349824;
-          v20 = a1;
+          selfCopy3 = self;
           v21 = 2048;
           v22 = v11;
           v23 = 2048;
@@ -990,7 +990,7 @@ LABEL_12:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v19 = 134349824;
-        v20 = a1;
+        selfCopy3 = self;
         v21 = 2048;
         v22 = v11;
         v23 = 2048;

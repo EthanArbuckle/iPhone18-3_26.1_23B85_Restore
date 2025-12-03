@@ -9,37 +9,37 @@
   v165[47] = *MEMORY[0x277D85DE8];
   v164[0] = @"FocusMode";
   [(ATXFocusModeSignalsMetric *)self focusMode];
-  v3 = ATXModeToString();
-  v4 = v3;
-  if (!v3)
+  null = ATXModeToString();
+  v4 = null;
+  if (!null)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v122 = v3;
-  v165[0] = v3;
+  v122 = null;
+  v165[0] = null;
   v164[1] = @"AppBundleId";
-  v5 = [(ATXFocusModeSignalsMetric *)self appBundleId];
-  v6 = v5;
-  if (!v5)
+  appBundleId = [(ATXFocusModeSignalsMetric *)self appBundleId];
+  v6 = appBundleId;
+  if (!appBundleId)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    appBundleId = [MEMORY[0x277CBEB68] null];
   }
 
   v139 = v6;
   v140 = v4;
-  v121 = v5;
-  v165[1] = v5;
+  v121 = appBundleId;
+  v165[1] = appBundleId;
   v164[2] = @"ActiveConfigurationType";
-  v7 = [(ATXFocusModeSignalsMetric *)self activeConfigurationType];
-  v8 = v7;
-  if (!v7)
+  activeConfigurationType = [(ATXFocusModeSignalsMetric *)self activeConfigurationType];
+  v8 = activeConfigurationType;
+  if (!activeConfigurationType)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    activeConfigurationType = [MEMORY[0x277CBEB68] null];
   }
 
-  v120 = v7;
-  v165[2] = v7;
+  v120 = activeConfigurationType;
+  v165[2] = activeConfigurationType;
   v164[3] = @"wasAppSuggestedDuringModeSetup";
   v137 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeSignalsMetric wasAppSuggestedDuringModeSetup](self, "wasAppSuggestedDuringModeSetup")}];
   v165[3] = v137;
@@ -47,105 +47,105 @@
   v136 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeSignalsMetric wasAppSuggestionDuringModeSetupAccepted](self, "wasAppSuggestionDuringModeSetupAccepted")}];
   v165[4] = v136;
   v164[5] = @"CategoryScore";
-  v9 = [(ATXFocusModeSignalsMetric *)self categoryScore];
-  v10 = v9;
-  if (!v9)
+  categoryScore = [(ATXFocusModeSignalsMetric *)self categoryScore];
+  v10 = categoryScore;
+  if (!categoryScore)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    categoryScore = [MEMORY[0x277CBEB68] null];
   }
 
-  v119 = v9;
-  v165[5] = v9;
+  v119 = categoryScore;
+  v165[5] = categoryScore;
   v164[6] = @"ClassConditionalProbabilityOfModeGivenEntity";
-  v11 = [(ATXFocusModeSignalsMetric *)self classConditionalProbabilityOfModeGivenEntity];
-  v12 = v11;
-  if (!v11)
+  classConditionalProbabilityOfModeGivenEntity = [(ATXFocusModeSignalsMetric *)self classConditionalProbabilityOfModeGivenEntity];
+  v12 = classConditionalProbabilityOfModeGivenEntity;
+  if (!classConditionalProbabilityOfModeGivenEntity)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    classConditionalProbabilityOfModeGivenEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v118 = v11;
-  v165[6] = v11;
+  v118 = classConditionalProbabilityOfModeGivenEntity;
+  v165[6] = classConditionalProbabilityOfModeGivenEntity;
   v164[7] = @"EntityModeEntityScore";
-  v13 = [(ATXFocusModeSignalsMetric *)self entityModeEntityScore];
-  v14 = v13;
-  if (!v13)
+  entityModeEntityScore = [(ATXFocusModeSignalsMetric *)self entityModeEntityScore];
+  v14 = entityModeEntityScore;
+  if (!entityModeEntityScore)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    entityModeEntityScore = [MEMORY[0x277CBEB68] null];
   }
 
-  v117 = v13;
-  v165[7] = v13;
+  v117 = entityModeEntityScore;
+  v165[7] = entityModeEntityScore;
   v164[8] = @"GlobalPopularityForEntity";
-  v15 = [(ATXFocusModeSignalsMetric *)self globalPopularityForEntity];
-  v16 = v15;
-  if (!v15)
+  globalPopularityForEntity = [(ATXFocusModeSignalsMetric *)self globalPopularityForEntity];
+  v16 = globalPopularityForEntity;
+  if (!globalPopularityForEntity)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    globalPopularityForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v116 = v15;
-  v165[8] = v15;
+  v116 = globalPopularityForEntity;
+  v165[8] = globalPopularityForEntity;
   v164[9] = @"ModePopularityForEntity";
-  v17 = [(ATXFocusModeSignalsMetric *)self modePopularityForEntity];
-  v18 = v17;
-  if (!v17)
+  modePopularityForEntity = [(ATXFocusModeSignalsMetric *)self modePopularityForEntity];
+  v18 = modePopularityForEntity;
+  if (!modePopularityForEntity)
   {
-    v17 = [MEMORY[0x277CBEB68] null];
+    modePopularityForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v115 = v17;
-  v165[9] = v17;
+  v115 = modePopularityForEntity;
+  v165[9] = modePopularityForEntity;
   v164[10] = @"RatioOfModePopularityToGlobalPopularityOfEntity";
-  v19 = [(ATXFocusModeSignalsMetric *)self ratioOfModePopularityToGlobalPopularityOfEntity];
-  v130 = v19;
-  if (!v19)
+  ratioOfModePopularityToGlobalPopularityOfEntity = [(ATXFocusModeSignalsMetric *)self ratioOfModePopularityToGlobalPopularityOfEntity];
+  v130 = ratioOfModePopularityToGlobalPopularityOfEntity;
+  if (!ratioOfModePopularityToGlobalPopularityOfEntity)
   {
-    v19 = [MEMORY[0x277CBEB68] null];
+    ratioOfModePopularityToGlobalPopularityOfEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v114 = v19;
-  v165[10] = v19;
+  v114 = ratioOfModePopularityToGlobalPopularityOfEntity;
+  v165[10] = ratioOfModePopularityToGlobalPopularityOfEntity;
   v164[11] = @"PosteriorProbabilityOfEntityGivenMode";
-  v20 = [(ATXFocusModeSignalsMetric *)self posteriorProbabilityOfEntityGivenMode];
-  v21 = v20;
-  if (!v20)
+  posteriorProbabilityOfEntityGivenMode = [(ATXFocusModeSignalsMetric *)self posteriorProbabilityOfEntityGivenMode];
+  v21 = posteriorProbabilityOfEntityGivenMode;
+  if (!posteriorProbabilityOfEntityGivenMode)
   {
-    v20 = [MEMORY[0x277CBEB68] null];
+    posteriorProbabilityOfEntityGivenMode = [MEMORY[0x277CBEB68] null];
   }
 
-  v113 = v20;
-  v165[11] = v20;
+  v113 = posteriorProbabilityOfEntityGivenMode;
+  v165[11] = posteriorProbabilityOfEntityGivenMode;
   v164[12] = @"GlobalOccurrencesOfEntity";
-  v22 = [(ATXFocusModeSignalsMetric *)self globalOccurrencesOfEntity];
-  v163 = v22;
-  if (!v22)
+  globalOccurrencesOfEntity = [(ATXFocusModeSignalsMetric *)self globalOccurrencesOfEntity];
+  v163 = globalOccurrencesOfEntity;
+  if (!globalOccurrencesOfEntity)
   {
-    v22 = [MEMORY[0x277CBEB68] null];
+    globalOccurrencesOfEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v112 = v22;
-  v165[12] = v22;
+  v112 = globalOccurrencesOfEntity;
+  v165[12] = globalOccurrencesOfEntity;
   v164[13] = @"LocalOccurrencesOfEntityInMode";
-  v23 = [(ATXFocusModeSignalsMetric *)self localOccurrencesOfEntityInMode];
-  v162 = v23;
-  if (!v23)
+  localOccurrencesOfEntityInMode = [(ATXFocusModeSignalsMetric *)self localOccurrencesOfEntityInMode];
+  v162 = localOccurrencesOfEntityInMode;
+  if (!localOccurrencesOfEntityInMode)
   {
-    v23 = [MEMORY[0x277CBEB68] null];
+    localOccurrencesOfEntityInMode = [MEMORY[0x277CBEB68] null];
   }
 
-  v111 = v23;
-  v165[13] = v23;
+  v111 = localOccurrencesOfEntityInMode;
+  v165[13] = localOccurrencesOfEntityInMode;
   v164[14] = @"UniqueOccurrencesOfEntityInMode";
-  v24 = [(ATXFocusModeSignalsMetric *)self uniqueOccurrencesOfEntityInMode];
-  v161 = v24;
-  if (!v24)
+  uniqueOccurrencesOfEntityInMode = [(ATXFocusModeSignalsMetric *)self uniqueOccurrencesOfEntityInMode];
+  v161 = uniqueOccurrencesOfEntityInMode;
+  if (!uniqueOccurrencesOfEntityInMode)
   {
-    v24 = [MEMORY[0x277CBEB68] null];
+    uniqueOccurrencesOfEntityInMode = [MEMORY[0x277CBEB68] null];
   }
 
-  v110 = v24;
-  v165[14] = v24;
+  v110 = uniqueOccurrencesOfEntityInMode;
+  v165[14] = uniqueOccurrencesOfEntityInMode;
   v164[15] = @"EntityOccurredGloballyOverTheLastNDays";
   v128 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeSignalsMetric entityOccurredGloballyOverLastNDays](self, "entityOccurredGloballyOverLastNDays")}];
   v165[15] = v128;
@@ -153,175 +153,175 @@
   v127 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeSignalsMetric entityOccurredInModeOverLastNDays](self, "entityOccurredInModeOverLastNDays")}];
   v165[16] = v127;
   v164[17] = @"WidgetBundleIdAndKind";
-  v25 = [(ATXFocusModeSignalsMetric *)self widgetBundleIdAndKind];
-  v160 = v25;
-  if (!v25)
+  widgetBundleIdAndKind = [(ATXFocusModeSignalsMetric *)self widgetBundleIdAndKind];
+  v160 = widgetBundleIdAndKind;
+  if (!widgetBundleIdAndKind)
   {
-    v25 = [MEMORY[0x277CBEB68] null];
+    widgetBundleIdAndKind = [MEMORY[0x277CBEB68] null];
   }
 
-  v109 = v25;
-  v165[17] = v25;
+  v109 = widgetBundleIdAndKind;
+  v165[17] = widgetBundleIdAndKind;
   v164[18] = @"WidgetSize";
-  v26 = [(ATXFocusModeSignalsMetric *)self widgetSize];
-  v159 = v26;
-  if (!v26)
+  widgetSize = [(ATXFocusModeSignalsMetric *)self widgetSize];
+  v159 = widgetSize;
+  if (!widgetSize)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
+    widgetSize = [MEMORY[0x277CBEB68] null];
   }
 
-  v108 = v26;
-  v165[18] = v26;
+  v108 = widgetSize;
+  v165[18] = widgetSize;
   v164[19] = @"IntentHash";
-  v27 = [(ATXFocusModeSignalsMetric *)self intentHash];
-  v158 = v27;
-  if (!v27)
+  intentHash = [(ATXFocusModeSignalsMetric *)self intentHash];
+  v158 = intentHash;
+  if (!intentHash)
   {
-    v27 = [MEMORY[0x277CBEB68] null];
+    intentHash = [MEMORY[0x277CBEB68] null];
   }
 
-  v107 = v27;
-  v165[19] = v27;
+  v107 = intentHash;
+  v165[19] = intentHash;
   v164[20] = @"ABGroup";
-  v28 = [(ATXFocusModeSignalsMetric *)self abGroup];
-  v157 = v28;
-  if (!v28)
+  abGroup = [(ATXFocusModeSignalsMetric *)self abGroup];
+  v157 = abGroup;
+  if (!abGroup)
   {
-    v28 = [MEMORY[0x277CBEB68] null];
+    abGroup = [MEMORY[0x277CBEB68] null];
   }
 
-  v106 = v28;
-  v165[20] = v28;
+  v106 = abGroup;
+  v165[20] = abGroup;
   v164[21] = @"GlobalClearanceRateForEntity";
-  v29 = [(ATXFocusModeSignalsMetric *)self globalClearanceRateForEntity];
-  v156 = v29;
-  if (!v29)
+  globalClearanceRateForEntity = [(ATXFocusModeSignalsMetric *)self globalClearanceRateForEntity];
+  v156 = globalClearanceRateForEntity;
+  if (!globalClearanceRateForEntity)
   {
-    v29 = [MEMORY[0x277CBEB68] null];
+    globalClearanceRateForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v105 = v29;
-  v165[21] = v29;
+  v105 = globalClearanceRateForEntity;
+  v165[21] = globalClearanceRateForEntity;
   v164[22] = @"LocalClearanceRateForEntity";
-  v30 = [(ATXFocusModeSignalsMetric *)self localClearanceRateForEntity];
-  v155 = v30;
-  if (!v30)
+  localClearanceRateForEntity = [(ATXFocusModeSignalsMetric *)self localClearanceRateForEntity];
+  v155 = localClearanceRateForEntity;
+  if (!localClearanceRateForEntity)
   {
-    v30 = [MEMORY[0x277CBEB68] null];
+    localClearanceRateForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v104 = v30;
-  v165[22] = v30;
+  v104 = localClearanceRateForEntity;
+  v165[22] = localClearanceRateForEntity;
   v164[23] = @"NotificationsClearedInMode";
-  v31 = [(ATXFocusModeSignalsMetric *)self notificationsClearedInMode];
-  v154 = v31;
-  if (!v31)
+  notificationsClearedInMode = [(ATXFocusModeSignalsMetric *)self notificationsClearedInMode];
+  v154 = notificationsClearedInMode;
+  if (!notificationsClearedInMode)
   {
-    v31 = [MEMORY[0x277CBEB68] null];
+    notificationsClearedInMode = [MEMORY[0x277CBEB68] null];
   }
 
-  v103 = v31;
-  v165[23] = v31;
+  v103 = notificationsClearedInMode;
+  v165[23] = notificationsClearedInMode;
   v164[24] = @"NotificationsClearedGlobally";
-  v32 = [(ATXFocusModeSignalsMetric *)self notificationsClearedGlobally];
-  v153 = v32;
-  if (!v32)
+  notificationsClearedGlobally = [(ATXFocusModeSignalsMetric *)self notificationsClearedGlobally];
+  v153 = notificationsClearedGlobally;
+  if (!notificationsClearedGlobally)
   {
-    v32 = [MEMORY[0x277CBEB68] null];
+    notificationsClearedGlobally = [MEMORY[0x277CBEB68] null];
   }
 
-  v102 = v32;
-  v165[24] = v32;
+  v102 = notificationsClearedGlobally;
+  v165[24] = notificationsClearedGlobally;
   v164[25] = @"NotificationsMuted";
-  v33 = [(ATXFocusModeSignalsMetric *)self notificationsMuted];
-  v152 = v33;
-  if (!v33)
+  notificationsMuted = [(ATXFocusModeSignalsMetric *)self notificationsMuted];
+  v152 = notificationsMuted;
+  if (!notificationsMuted)
   {
-    v33 = [MEMORY[0x277CBEB68] null];
+    notificationsMuted = [MEMORY[0x277CBEB68] null];
   }
 
-  v101 = v33;
-  v165[25] = v33;
+  v101 = notificationsMuted;
+  v165[25] = notificationsMuted;
   v164[26] = @"RatioOfLocalToGlobalNotificationsClearedRateForEntity";
-  v34 = [(ATXFocusModeSignalsMetric *)self ratioOfLocalToGlobalNotificationsClearedRateForEntity];
-  v151 = v34;
-  if (!v34)
+  ratioOfLocalToGlobalNotificationsClearedRateForEntity = [(ATXFocusModeSignalsMetric *)self ratioOfLocalToGlobalNotificationsClearedRateForEntity];
+  v151 = ratioOfLocalToGlobalNotificationsClearedRateForEntity;
+  if (!ratioOfLocalToGlobalNotificationsClearedRateForEntity)
   {
-    v34 = [MEMORY[0x277CBEB68] null];
+    ratioOfLocalToGlobalNotificationsClearedRateForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v100 = v34;
-  v165[26] = v34;
+  v100 = ratioOfLocalToGlobalNotificationsClearedRateForEntity;
+  v165[26] = ratioOfLocalToGlobalNotificationsClearedRateForEntity;
   v164[27] = @"ClassConditionalOfNotificationsClearedForEntity";
-  v35 = [(ATXFocusModeSignalsMetric *)self classConditionalOfNotificationsClearedForEntity];
-  v150 = v35;
-  if (!v35)
+  classConditionalOfNotificationsClearedForEntity = [(ATXFocusModeSignalsMetric *)self classConditionalOfNotificationsClearedForEntity];
+  v150 = classConditionalOfNotificationsClearedForEntity;
+  if (!classConditionalOfNotificationsClearedForEntity)
   {
-    v35 = [MEMORY[0x277CBEB68] null];
+    classConditionalOfNotificationsClearedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v99 = v35;
-  v165[27] = v35;
+  v99 = classConditionalOfNotificationsClearedForEntity;
+  v165[27] = classConditionalOfNotificationsClearedForEntity;
   v164[28] = @"NotificationsReceivedGlobally";
-  v36 = [(ATXFocusModeSignalsMetric *)self notificationsReceivedGlobally];
-  v149 = v36;
-  if (!v36)
+  notificationsReceivedGlobally = [(ATXFocusModeSignalsMetric *)self notificationsReceivedGlobally];
+  v149 = notificationsReceivedGlobally;
+  if (!notificationsReceivedGlobally)
   {
-    v36 = [MEMORY[0x277CBEB68] null];
+    notificationsReceivedGlobally = [MEMORY[0x277CBEB68] null];
   }
 
-  v98 = v36;
-  v165[28] = v36;
+  v98 = notificationsReceivedGlobally;
+  v165[28] = notificationsReceivedGlobally;
   v164[29] = @"NotificationsReceivedInMode";
-  v37 = [(ATXFocusModeSignalsMetric *)self notificationsReceivedInMode];
-  v148 = v37;
-  if (!v37)
+  notificationsReceivedInMode = [(ATXFocusModeSignalsMetric *)self notificationsReceivedInMode];
+  v148 = notificationsReceivedInMode;
+  if (!notificationsReceivedInMode)
   {
-    v37 = [MEMORY[0x277CBEB68] null];
+    notificationsReceivedInMode = [MEMORY[0x277CBEB68] null];
   }
 
-  v97 = v37;
-  v165[29] = v37;
+  v97 = notificationsReceivedInMode;
+  v165[29] = notificationsReceivedInMode;
   v164[30] = @"LocalPopularityOfNotificationsReceivedForEntity";
-  v38 = [(ATXFocusModeSignalsMetric *)self localPopularityOfNotificationsReceivedForEntity];
-  v147 = v38;
-  if (!v38)
+  localPopularityOfNotificationsReceivedForEntity = [(ATXFocusModeSignalsMetric *)self localPopularityOfNotificationsReceivedForEntity];
+  v147 = localPopularityOfNotificationsReceivedForEntity;
+  if (!localPopularityOfNotificationsReceivedForEntity)
   {
-    v38 = [MEMORY[0x277CBEB68] null];
+    localPopularityOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v96 = v38;
-  v165[30] = v38;
+  v96 = localPopularityOfNotificationsReceivedForEntity;
+  v165[30] = localPopularityOfNotificationsReceivedForEntity;
   v164[31] = @"GlobalPopularityOfNotificationsReceivedForEntity";
-  v39 = [(ATXFocusModeSignalsMetric *)self globalPopularityOfNotificationsReceivedForEntity];
-  v146 = v39;
-  if (!v39)
+  globalPopularityOfNotificationsReceivedForEntity = [(ATXFocusModeSignalsMetric *)self globalPopularityOfNotificationsReceivedForEntity];
+  v146 = globalPopularityOfNotificationsReceivedForEntity;
+  if (!globalPopularityOfNotificationsReceivedForEntity)
   {
-    v39 = [MEMORY[0x277CBEB68] null];
+    globalPopularityOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v95 = v39;
-  v165[31] = v39;
+  v95 = globalPopularityOfNotificationsReceivedForEntity;
+  v165[31] = globalPopularityOfNotificationsReceivedForEntity;
   v164[32] = @"RatioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity";
-  v40 = [(ATXFocusModeSignalsMetric *)self ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity];
-  v145 = v40;
-  if (!v40)
+  ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity = [(ATXFocusModeSignalsMetric *)self ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity];
+  v145 = ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity;
+  if (!ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity)
   {
-    v40 = [MEMORY[0x277CBEB68] null];
+    ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v94 = v40;
-  v165[32] = v40;
+  v94 = ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity;
+  v165[32] = ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity;
   v164[33] = @"ClassConditionalOfNotificationsReceivedForEntity";
-  v41 = [(ATXFocusModeSignalsMetric *)self classConditionalOfNotificationsReceivedForEntity];
-  v144 = v41;
-  if (!v41)
+  classConditionalOfNotificationsReceivedForEntity = [(ATXFocusModeSignalsMetric *)self classConditionalOfNotificationsReceivedForEntity];
+  v144 = classConditionalOfNotificationsReceivedForEntity;
+  if (!classConditionalOfNotificationsReceivedForEntity)
   {
-    v41 = [MEMORY[0x277CBEB68] null];
+    classConditionalOfNotificationsReceivedForEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v93 = v41;
-  v165[33] = v41;
+  v93 = classConditionalOfNotificationsReceivedForEntity;
+  v165[33] = classConditionalOfNotificationsReceivedForEntity;
   v164[34] = @"IsAppCandidateSuggestion";
   v126 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeSignalsMetric isAppCandidateSuggestion](self, "isAppCandidateSuggestion")}];
   v165[34] = v126;
@@ -329,129 +329,129 @@
   v125 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXFocusModeSignalsMetric isAppRecommendedSuggestion](self, "isAppRecommendedSuggestion")}];
   v165[35] = v125;
   v164[36] = @"TreatmentId";
-  v42 = [(ATXFocusModeSignalsMetric *)self treatmentId];
-  v143 = v42;
-  if (!v42)
+  treatmentId = [(ATXFocusModeSignalsMetric *)self treatmentId];
+  v143 = treatmentId;
+  if (!treatmentId)
   {
-    v42 = [MEMORY[0x277CBEB68] null];
+    treatmentId = [MEMORY[0x277CBEB68] null];
   }
 
-  v92 = v42;
-  v165[36] = v42;
+  v92 = treatmentId;
+  v165[36] = treatmentId;
   v164[37] = @"ExperimentId";
-  v43 = [(ATXFocusModeSignalsMetric *)self experimentId];
-  v142 = v43;
-  if (!v43)
+  experimentId = [(ATXFocusModeSignalsMetric *)self experimentId];
+  v142 = experimentId;
+  if (!experimentId)
   {
-    v43 = [MEMORY[0x277CBEB68] null];
+    experimentId = [MEMORY[0x277CBEB68] null];
   }
 
-  v91 = v43;
-  v165[37] = v43;
+  v91 = experimentId;
+  v165[37] = experimentId;
   v164[38] = @"DeploymentId";
-  v44 = [(ATXFocusModeSignalsMetric *)self deploymentId];
-  v141 = v44;
-  if (!v44)
+  deploymentId = [(ATXFocusModeSignalsMetric *)self deploymentId];
+  v141 = deploymentId;
+  if (!deploymentId)
   {
-    v44 = [MEMORY[0x277CBEB68] null];
+    deploymentId = [MEMORY[0x277CBEB68] null];
   }
 
   v129 = v21;
-  v90 = v44;
-  v165[38] = v44;
+  v90 = deploymentId;
+  v165[38] = deploymentId;
   v164[39] = @"GlobalModeAffinityPrior";
-  v45 = [(ATXFocusModeSignalsMetric *)self globalModeAffinityPrior];
-  v124 = v45;
-  if (!v45)
+  globalModeAffinityPrior = [(ATXFocusModeSignalsMetric *)self globalModeAffinityPrior];
+  v124 = globalModeAffinityPrior;
+  if (!globalModeAffinityPrior)
   {
-    v45 = [MEMORY[0x277CBEB68] null];
+    globalModeAffinityPrior = [MEMORY[0x277CBEB68] null];
   }
 
   v135 = v10;
-  v89 = v45;
-  v165[39] = v45;
+  v89 = globalModeAffinityPrior;
+  v165[39] = globalModeAffinityPrior;
   v164[40] = @"GlobalInterruptingPrior";
-  v46 = [(ATXFocusModeSignalsMetric *)self globalInterruptingPrior];
-  v47 = v46;
-  if (!v46)
+  globalInterruptingPrior = [(ATXFocusModeSignalsMetric *)self globalInterruptingPrior];
+  v47 = globalInterruptingPrior;
+  if (!globalInterruptingPrior)
   {
-    v46 = [MEMORY[0x277CBEB68] null];
+    globalInterruptingPrior = [MEMORY[0x277CBEB68] null];
   }
 
   v138 = v8;
-  v88 = v46;
-  v165[40] = v46;
+  v88 = globalInterruptingPrior;
+  v165[40] = globalInterruptingPrior;
   v164[41] = @"ModeAppInterruptionsCountByEntity";
-  v48 = [(ATXFocusModeSignalsMetric *)self modeAppInterruptionsCountByEntity];
-  v49 = v48;
-  if (!v48)
+  modeAppInterruptionsCountByEntity = [(ATXFocusModeSignalsMetric *)self modeAppInterruptionsCountByEntity];
+  v49 = modeAppInterruptionsCountByEntity;
+  if (!modeAppInterruptionsCountByEntity)
   {
-    v48 = [MEMORY[0x277CBEB68] null];
+    modeAppInterruptionsCountByEntity = [MEMORY[0x277CBEB68] null];
   }
 
-  v87 = v48;
-  v165[41] = v48;
+  v87 = modeAppInterruptionsCountByEntity;
+  v165[41] = modeAppInterruptionsCountByEntity;
   v164[42] = @"ModeAppInterruptionsClassConditionalProbabilityByEntity";
-  v50 = [(ATXFocusModeSignalsMetric *)self modeAppInterruptionsClassConditionalProbabilityByEntity];
-  v51 = v50;
-  if (!v50)
+  modeAppInterruptionsClassConditionalProbabilityByEntity = [(ATXFocusModeSignalsMetric *)self modeAppInterruptionsClassConditionalProbabilityByEntity];
+  v51 = modeAppInterruptionsClassConditionalProbabilityByEntity;
+  if (!modeAppInterruptionsClassConditionalProbabilityByEntity)
   {
-    v50 = [MEMORY[0x277CBEB68] null];
+    modeAppInterruptionsClassConditionalProbabilityByEntity = [MEMORY[0x277CBEB68] null];
   }
 
   v131 = v18;
   v134 = v12;
-  v86 = v50;
-  v165[42] = v50;
+  v86 = modeAppInterruptionsClassConditionalProbabilityByEntity;
+  v165[42] = modeAppInterruptionsClassConditionalProbabilityByEntity;
   v164[43] = @"GlobalAppInterruptionsCountByEntity";
-  v52 = [(ATXFocusModeSignalsMetric *)self globalAppInterruptionsCountByEntity];
-  v53 = v52;
-  if (!v52)
+  globalAppInterruptionsCountByEntity = [(ATXFocusModeSignalsMetric *)self globalAppInterruptionsCountByEntity];
+  v53 = globalAppInterruptionsCountByEntity;
+  if (!globalAppInterruptionsCountByEntity)
   {
-    v52 = [MEMORY[0x277CBEB68] null];
+    globalAppInterruptionsCountByEntity = [MEMORY[0x277CBEB68] null];
   }
 
   v132 = v16;
   v133 = v14;
-  v85 = v52;
-  v165[43] = v52;
+  v85 = globalAppInterruptionsCountByEntity;
+  v165[43] = globalAppInterruptionsCountByEntity;
   v164[44] = @"GlobalPopularityOfInterruptingEntity";
-  v54 = [(ATXFocusModeSignalsMetric *)self globalPopularityOfInterruptingEntity];
-  v55 = v54;
-  if (!v54)
+  globalPopularityOfInterruptingEntity = [(ATXFocusModeSignalsMetric *)self globalPopularityOfInterruptingEntity];
+  null2 = globalPopularityOfInterruptingEntity;
+  if (!globalPopularityOfInterruptingEntity)
   {
-    v55 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v165[44] = v55;
+  v165[44] = null2;
   v164[45] = @"ModePopularityOfInterruptingEntity";
-  v56 = [(ATXFocusModeSignalsMetric *)self modePopularityOfInterruptingEntity];
-  v57 = v56;
-  if (!v56)
+  modePopularityOfInterruptingEntity = [(ATXFocusModeSignalsMetric *)self modePopularityOfInterruptingEntity];
+  null3 = modePopularityOfInterruptingEntity;
+  if (!modePopularityOfInterruptingEntity)
   {
-    v57 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v165[45] = v57;
+  v165[45] = null3;
   v164[46] = @"RatioOfModePopularityToGlobalPopularityOfInterruptingEntity";
-  v58 = [(ATXFocusModeSignalsMetric *)self ratioOfModePopularityToGlobalPopularityOfInterruptingEntity];
-  v59 = v58;
-  if (!v58)
+  ratioOfModePopularityToGlobalPopularityOfInterruptingEntity = [(ATXFocusModeSignalsMetric *)self ratioOfModePopularityToGlobalPopularityOfInterruptingEntity];
+  null4 = ratioOfModePopularityToGlobalPopularityOfInterruptingEntity;
+  if (!ratioOfModePopularityToGlobalPopularityOfInterruptingEntity)
   {
-    v59 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v165[46] = v59;
+  v165[46] = null4;
   v123 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v165 forKeys:v164 count:47];
-  if (!v58)
+  if (!ratioOfModePopularityToGlobalPopularityOfInterruptingEntity)
   {
   }
 
-  if (!v56)
+  if (!modePopularityOfInterruptingEntity)
   {
   }
 
-  if (!v54)
+  if (!globalPopularityOfInterruptingEntity)
   {
   }
 

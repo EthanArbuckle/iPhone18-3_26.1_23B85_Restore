@@ -1,23 +1,23 @@
 @interface ProcessStateTracker
 - (BOOL)isProcessTerminated;
-- (id)initForClientPID:(int)a3 withOperator:(id)a4;
+- (id)initForClientPID:(int)d withOperator:(id)operator;
 - (int)startMonitoringClientPID;
 - (void)dealloc;
-- (void)monitor:(id)a3 notifiedUpdate:(id)a4 forPID:(int)a5;
+- (void)monitor:(id)monitor notifiedUpdate:(id)update forPID:(int)d;
 @end
 
 @implementation ProcessStateTracker
 
-- (id)initForClientPID:(int)a3 withOperator:(id)a4
+- (id)initForClientPID:(int)d withOperator:(id)operator
 {
   v8.receiver = self;
   v8.super_class = ProcessStateTracker;
   v6 = [(ProcessStateTracker *)&v8 init];
   if (v6)
   {
-    v6->_operator = a4;
+    v6->_operator = operator;
     v6->_monitor = 0;
-    v6->_clientPID = a3;
+    v6->_clientPID = d;
     if ([(ProcessStateTracker *)v6 startMonitoringClientPID])
     {
 
@@ -117,13 +117,13 @@ uint64_t __47__ProcessStateTracker_startMonitoringClientPID__block_invoke_2(uint
   return [a2 setEvents:1];
 }
 
-- (void)monitor:(id)a3 notifiedUpdate:(id)a4 forPID:(int)a5
+- (void)monitor:(id)monitor notifiedUpdate:(id)update forPID:(int)d
 {
-  if (self->_monitor == a3 && self->_clientPID == a5)
+  if (self->_monitor == monitor && self->_clientPID == d)
   {
-    v7 = [a4 exitEvent];
-    v8 = [objc_msgSend(a4 "state")];
-    if (v7)
+    exitEvent = [update exitEvent];
+    v8 = [objc_msgSend(update "state")];
+    if (exitEvent)
     {
       operator = self->_operator;
 

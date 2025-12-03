@@ -1,60 +1,60 @@
 @interface UICollectionViewTableLayoutAttributes
-+ (int64_t)automaticValueOptionsForRepresentedElementCategory:(unint64_t)a3;
-+ (void)applyValuesFromAttributes:(id)a3 toAttributes:(id)a4 valueOptions:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (int64_t)automaticValueOptionsForRepresentedElementCategory:(unint64_t)category;
++ (void)applyValuesFromAttributes:(id)attributes toAttributes:(id)toAttributes valueOptions:(int64_t)options;
+- (BOOL)isEqual:(id)equal;
 - (UIEdgeInsets)backgroundInset;
 - (UIEdgeInsets)margins;
 - (UIEdgeInsets)separatorInset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UICollectionViewTableLayoutAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = UICollectionViewTableLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [UICollectionViewTableLayoutAttributes applyValuesFromAttributes:self toAttributes:v4 valueOptions:31];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10.receiver = self;
   v10.super_class = UICollectionViewTableLayoutAttributes;
   v5 = [(UICollectionViewLayoutAttributes *)&v10 isEqual:?];
   if (v5)
   {
-    if (a3 == self)
+    if (equal == self)
     {
       LOBYTE(v5) = 1;
       return v5;
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || self->_isHeader != *(a3 + 360) || self->_maxTitleWidth != *(a3 + 56) || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_margins.top, *(a3 + 33)), vceqq_f64(*&self->_margins.bottom, *(a3 + 34))))) & 1) == 0 || self->_textAlignment != *(a3 + 57) || self->_floating != *(a3 + 361) || self->_accessoryType != *(a3 + 50) || self->_editingStyle != *(a3 + 51) || self->_shouldIndentWhileEditing != *(a3 + 353) || self->_showsReorderControl != *(a3 + 354) || self->_layoutMarginsFollowReadableWidth != *(a3 + 355) || self->_insetsContentViewsToSafeArea != *(a3 + 356) || self->_defaultLeadingCellMarginWidth != *(a3 + 52) || self->_defaultTrailingCellMarginWidth != *(a3 + 53) || self->_indexBarExtentFromEdge != *(a3 + 54) || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_backgroundInset.top, *(a3 + 31)), vceqq_f64(*&self->_backgroundInset.bottom, *(a3 + 32))))) & 1) == 0 || self->_indentationLevel != *(a3 + 55) || self->_drawsSeparatorAtTopOfSection != *(a3 + 357) || self->_drawsSeparatorAtBottomOfSection != *(a3 + 358))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || self->_isHeader != *(equal + 360) || self->_maxTitleWidth != *(equal + 56) || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_margins.top, *(equal + 33)), vceqq_f64(*&self->_margins.bottom, *(equal + 34))))) & 1) == 0 || self->_textAlignment != *(equal + 57) || self->_floating != *(equal + 361) || self->_accessoryType != *(equal + 50) || self->_editingStyle != *(equal + 51) || self->_shouldIndentWhileEditing != *(equal + 353) || self->_showsReorderControl != *(equal + 354) || self->_layoutMarginsFollowReadableWidth != *(equal + 355) || self->_insetsContentViewsToSafeArea != *(equal + 356) || self->_defaultLeadingCellMarginWidth != *(equal + 52) || self->_defaultTrailingCellMarginWidth != *(equal + 53) || self->_indexBarExtentFromEdge != *(equal + 54) || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_backgroundInset.top, *(equal + 31)), vceqq_f64(*&self->_backgroundInset.bottom, *(equal + 32))))) & 1) == 0 || self->_indentationLevel != *(equal + 55) || self->_drawsSeparatorAtTopOfSection != *(equal + 357) || self->_drawsSeparatorAtBottomOfSection != *(equal + 358))
     {
       goto LABEL_33;
     }
 
     backgroundColor = self->_backgroundColor;
-    if (backgroundColor == *(a3 + 49) || (v5 = [(UIColor *)backgroundColor isEqual:?]) != 0)
+    if (backgroundColor == *(equal + 49) || (v5 = [(UIColor *)backgroundColor isEqual:?]) != 0)
     {
-      if (self->_separatorStyle != *(a3 + 46) || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_separatorInset.top, *(a3 + 29)), vceqq_f64(*&self->_separatorInset.bottom, *(a3 + 30))))) & 1) == 0 || self->_separatorInsetIsRelativeToCellEdges != *(a3 + 352))
+      if (self->_separatorStyle != *(equal + 46) || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_separatorInset.top, *(equal + 29)), vceqq_f64(*&self->_separatorInset.bottom, *(equal + 30))))) & 1) == 0 || self->_separatorInsetIsRelativeToCellEdges != *(equal + 352))
       {
         goto LABEL_33;
       }
 
       separatorColor = self->_separatorColor;
-      if (separatorColor == *(a3 + 47) || (v5 = [(UIColor *)separatorColor isEqual:?]) != 0)
+      if (separatorColor == *(equal + 47) || (v5 = [(UIColor *)separatorColor isEqual:?]) != 0)
       {
         separatorEffect = self->_separatorEffect;
-        if (separatorEffect == *(a3 + 48) || (v5 = [(UIVisualEffect *)separatorEffect isEqual:?]) != 0)
+        if (separatorEffect == *(equal + 48) || (v5 = [(UIVisualEffect *)separatorEffect isEqual:?]) != 0)
         {
-          if (self->_sectionLocation == *(a3 + 91))
+          if (self->_sectionLocation == *(equal + 91))
           {
-            LOBYTE(v5) = self->_preferredAttributesCached == *(a3 + 359);
+            LOBYTE(v5) = self->_preferredAttributesCached == *(equal + 359);
             return v5;
           }
 
@@ -68,18 +68,18 @@ LABEL_33:
   return v5;
 }
 
-+ (void)applyValuesFromAttributes:(id)a3 toAttributes:(id)a4 valueOptions:(int64_t)a5
++ (void)applyValuesFromAttributes:(id)attributes toAttributes:(id)toAttributes valueOptions:(int64_t)options
 {
-  v5 = a5;
-  v10 = a3;
-  v7 = a4;
-  if (v5)
+  optionsCopy = options;
+  attributesCopy = attributes;
+  toAttributesCopy = toAttributes;
+  if (optionsCopy)
   {
-    [v7 setBackgroundColor:{objc_msgSend(v10, "backgroundColor")}];
-    if ((v5 & 4) == 0)
+    [toAttributesCopy setBackgroundColor:{objc_msgSend(attributesCopy, "backgroundColor")}];
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v5 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -88,45 +88,45 @@ LABEL_3:
     }
   }
 
-  else if ((v5 & 4) == 0)
+  else if ((optionsCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  [v7 setSectionLocation:{objc_msgSend(v10, "sectionLocation")}];
-  [v7 setLayoutMarginsFollowReadableWidth:{objc_msgSend(v10, "layoutMarginsFollowReadableWidth")}];
-  [v7 setInsetsContentViewsToSafeArea:{objc_msgSend(v10, "insetsContentViewsToSafeArea")}];
-  [v10 defaultLeadingCellMarginWidth];
-  [v7 setDefaultLeadingCellMarginWidth:?];
-  [v10 defaultTrailingCellMarginWidth];
-  [v7 setDefaultTrailingCellMarginWidth:?];
-  [v10 indexBarExtentFromEdge];
-  [v7 setIndexBarExtentFromEdge:?];
-  [v10 backgroundInset];
-  [v7 setBackgroundInset:?];
-  [v7 setIndentationLevel:{objc_msgSend(v10, "indentationLevel")}];
-  [v7 setDrawsSeparatorAtTopOfSection:{objc_msgSend(v10, "drawsSeparatorAtTopOfSection")}];
-  [v7 setDrawsSeparatorAtBottomOfSection:{objc_msgSend(v10, "drawsSeparatorAtBottomOfSection")}];
-  if ((v5 & 8) == 0)
+  [toAttributesCopy setSectionLocation:{objc_msgSend(attributesCopy, "sectionLocation")}];
+  [toAttributesCopy setLayoutMarginsFollowReadableWidth:{objc_msgSend(attributesCopy, "layoutMarginsFollowReadableWidth")}];
+  [toAttributesCopy setInsetsContentViewsToSafeArea:{objc_msgSend(attributesCopy, "insetsContentViewsToSafeArea")}];
+  [attributesCopy defaultLeadingCellMarginWidth];
+  [toAttributesCopy setDefaultLeadingCellMarginWidth:?];
+  [attributesCopy defaultTrailingCellMarginWidth];
+  [toAttributesCopy setDefaultTrailingCellMarginWidth:?];
+  [attributesCopy indexBarExtentFromEdge];
+  [toAttributesCopy setIndexBarExtentFromEdge:?];
+  [attributesCopy backgroundInset];
+  [toAttributesCopy setBackgroundInset:?];
+  [toAttributesCopy setIndentationLevel:{objc_msgSend(attributesCopy, "indentationLevel")}];
+  [toAttributesCopy setDrawsSeparatorAtTopOfSection:{objc_msgSend(attributesCopy, "drawsSeparatorAtTopOfSection")}];
+  [toAttributesCopy setDrawsSeparatorAtBottomOfSection:{objc_msgSend(attributesCopy, "drawsSeparatorAtBottomOfSection")}];
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_4:
-    if ((v5 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_5;
     }
 
 LABEL_16:
-    [v7 setSeparatorStyle:{objc_msgSend(v10, "separatorStyle")}];
-    [v10 separatorInset];
-    [v7 setSeparatorInset:?];
-    [v7 setSeparatorInsetIsRelativeToCellEdges:{objc_msgSend(v10, "separatorInsetIsRelativeToCellEdges")}];
-    v8 = [v10 separatorColor];
-    [v7 setSeparatorColor:v8];
+    [toAttributesCopy setSeparatorStyle:{objc_msgSend(attributesCopy, "separatorStyle")}];
+    [attributesCopy separatorInset];
+    [toAttributesCopy setSeparatorInset:?];
+    [toAttributesCopy setSeparatorInsetIsRelativeToCellEdges:{objc_msgSend(attributesCopy, "separatorInsetIsRelativeToCellEdges")}];
+    separatorColor = [attributesCopy separatorColor];
+    [toAttributesCopy setSeparatorColor:separatorColor];
 
-    v9 = [v10 separatorEffect];
-    [v7 setSeparatorEffect:v9];
+    separatorEffect = [attributesCopy separatorEffect];
+    [toAttributesCopy setSeparatorEffect:separatorEffect];
 
-    if ((v5 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -135,26 +135,26 @@ LABEL_16:
   }
 
 LABEL_15:
-  [v7 setAccessoryType:{objc_msgSend(v10, "accessoryType")}];
-  [v7 setEditingStyle:{objc_msgSend(v10, "editingStyle")}];
-  [v7 setShouldIndentWhileEditing:{objc_msgSend(v10, "shouldIndentWhileEditing")}];
-  [v7 setShowsReorderControl:{objc_msgSend(v10, "showsReorderControl")}];
-  if ((v5 & 2) != 0)
+  [toAttributesCopy setAccessoryType:{objc_msgSend(attributesCopy, "accessoryType")}];
+  [toAttributesCopy setEditingStyle:{objc_msgSend(attributesCopy, "editingStyle")}];
+  [toAttributesCopy setShouldIndentWhileEditing:{objc_msgSend(attributesCopy, "shouldIndentWhileEditing")}];
+  [toAttributesCopy setShowsReorderControl:{objc_msgSend(attributesCopy, "showsReorderControl")}];
+  if ((optionsCopy & 2) != 0)
   {
     goto LABEL_16;
   }
 
 LABEL_5:
-  if ((v5 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
 LABEL_6:
-    [v7 setIsHeader:{objc_msgSend(v10, "isHeader")}];
-    [v10 maxTitleWidth];
-    [v7 setMaxTitleWidth:?];
-    [v10 margins];
-    [v7 setMargins:?];
-    [v7 setTextAlignment:{objc_msgSend(v10, "textAlignment")}];
-    [v7 setFloating:{objc_msgSend(v10, "floating")}];
+    [toAttributesCopy setIsHeader:{objc_msgSend(attributesCopy, "isHeader")}];
+    [attributesCopy maxTitleWidth];
+    [toAttributesCopy setMaxTitleWidth:?];
+    [attributesCopy margins];
+    [toAttributesCopy setMargins:?];
+    [toAttributesCopy setTextAlignment:{objc_msgSend(attributesCopy, "textAlignment")}];
+    [toAttributesCopy setFloating:{objc_msgSend(attributesCopy, "floating")}];
   }
 
 LABEL_7:
@@ -164,21 +164,21 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 setPreferredAttributesCached:{objc_msgSend(v10, "preferredAttributesCached")}];
+      [toAttributesCopy setPreferredAttributesCached:{objc_msgSend(attributesCopy, "preferredAttributesCached")}];
     }
   }
 }
 
-+ (int64_t)automaticValueOptionsForRepresentedElementCategory:(unint64_t)a3
++ (int64_t)automaticValueOptionsForRepresentedElementCategory:(unint64_t)category
 {
-  if (a3 > 2)
+  if (category > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_18A678F48[a3];
+    return qword_18A678F48[category];
   }
 }
 

@@ -1,22 +1,22 @@
 @interface PKAccountWebServiceTermsDataResponse
-- (PKAccountWebServiceTermsDataResponse)initWithData:(id)a3;
+- (PKAccountWebServiceTermsDataResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceTermsDataResponse
 
-- (PKAccountWebServiceTermsDataResponse)initWithData:(id)a3
+- (PKAccountWebServiceTermsDataResponse)initWithData:(id)data
 {
   v37 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = PKAccountWebServiceTermsDataResponse;
-  v3 = [(PKWebServiceResponse *)&v32 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v32 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_19;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -43,7 +43,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v6 = [v5 PKStringForKey:@"dataHash"];
+  v6 = [jSONObject PKStringForKey:@"dataHash"];
   if (!v6)
   {
     v17 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -61,7 +61,7 @@ LABEL_25:
   }
 
   v7 = v6;
-  v8 = [v5 PKStringForKey:@"data"];
+  v8 = [jSONObject PKStringForKey:@"data"];
   v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v8 options:0];
   termsData = v4->_termsData;
   v4->_termsData = v9;
@@ -86,23 +86,23 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v12 = [(NSData *)v11 SHA256Hash];
-  v13 = [v12 hexEncoding];
+  sHA256Hash = [(NSData *)v11 SHA256Hash];
+  hexEncoding = [sHA256Hash hexEncoding];
   v14 = v7;
   v15 = v14;
-  if (v13 == v14)
+  if (hexEncoding == v14)
   {
   }
 
   else
   {
-    if (!v13)
+    if (!hexEncoding)
     {
 
       goto LABEL_21;
     }
 
-    v16 = [v13 isEqualToString:v14];
+    v16 = [hexEncoding isEqualToString:v14];
 
     if ((v16 & 1) == 0)
     {
@@ -122,7 +122,7 @@ LABEL_21:
     }
   }
 
-  v27 = [v5 PKStringForKey:@"dataFilename"];
+  v27 = [jSONObject PKStringForKey:@"dataFilename"];
   termsDataFileName = v4->_termsDataFileName;
   v4->_termsDataFileName = v27;
 

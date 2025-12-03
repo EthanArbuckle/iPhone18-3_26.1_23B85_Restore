@@ -1,23 +1,23 @@
 @interface MAPaths
 + (id)paths;
-+ (id)pathsWithPaths:(id)a3;
++ (id)pathsWithPaths:(id)paths;
 - (MAPaths)init;
 - (id)description;
-- (id)pathAtIndex:(unint64_t)a3;
-- (id)uniqueEdgesForLabel:(id)a3;
-- (id)uniqueNodesForLabel:(id)a3;
-- (void)addPath:(id)a3;
-- (void)enumerateWithBlock:(id)a3;
+- (id)pathAtIndex:(unint64_t)index;
+- (id)uniqueEdgesForLabel:(id)label;
+- (id)uniqueNodesForLabel:(id)label;
+- (void)addPath:(id)path;
+- (void)enumerateWithBlock:(id)block;
 - (void)removeAllPaths;
-- (void)setPaths:(id)a3;
+- (void)setPaths:(id)paths;
 @end
 
 @implementation MAPaths
 
-- (id)uniqueEdgesForLabel:(id)a3
+- (id)uniqueEdgesForLabel:(id)label
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v5 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
@@ -38,7 +38,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) edgesForLabel:{v4, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) edgesForLabel:{labelCopy, v14}];
         [v5 addObject:v11];
       }
 
@@ -53,10 +53,10 @@
   return v5;
 }
 
-- (id)uniqueNodesForLabel:(id)a3
+- (id)uniqueNodesForLabel:(id)label
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v5 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
@@ -77,7 +77,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) nodesForLabel:{v4, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) nodesForLabel:{labelCopy, v14}];
         [v5 addObject:v11];
       }
 
@@ -92,10 +92,10 @@
   return v5;
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
@@ -116,7 +116,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+      blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9), &v15);
       if (v15)
       {
         break;
@@ -146,18 +146,18 @@ LABEL_3:
   objc_sync_exit(obj);
 }
 
-- (void)setPaths:(id)a3
+- (void)setPaths:(id)paths
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableArray *)v5->_paths removeAllObjects];
+  pathsCopy = paths;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_paths removeAllObjects];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -172,7 +172,7 @@ LABEL_3:
           objc_enumerationMutation(v6);
         }
 
-        [(MAPaths *)v5 addPath:*(*(&v11 + 1) + 8 * v9++), v11];
+        [(MAPaths *)selfCopy addPath:*(*(&v11 + 1) + 8 * v9++), v11];
       }
 
       while (v7 != v9);
@@ -182,30 +182,30 @@ LABEL_3:
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPath:(id)a3
+- (void)addPath:(id)path
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_paths addObject:v5];
-  objc_sync_exit(v4);
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_paths addObject:pathCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)pathAtIndex:(unint64_t)a3
+- (id)pathAtIndex:(unint64_t)index
 {
-  if ([(MAPaths *)self count]<= a3)
+  if ([(MAPaths *)self count]<= index)
   {
-    [MEMORY[0x277CBEAD8] raise:@"MAPathsInvalidIndex" format:{@"Out of bounds result path index %ld", a3}];
+    [MEMORY[0x277CBEAD8] raise:@"MAPathsInvalidIndex" format:{@"Out of bounds result path index %ld", index}];
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_paths objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_paths objectAtIndex:index];
   }
 
   return v5;
@@ -213,13 +213,13 @@ LABEL_3:
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendString:@"["];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"["];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __22__MAPaths_description__block_invoke;
   v6[3] = &unk_2797FF928;
-  v4 = v3;
+  v4 = string;
   v7 = v4;
   [(MAPaths *)self enumerateWithBlock:v6];
   if ([v4 length] >= 2)
@@ -254,11 +254,11 @@ void __22__MAPaths_description__block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-+ (id)pathsWithPaths:(id)a3
++ (id)pathsWithPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setPaths:v3];
+  [v4 setPaths:pathsCopy];
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface HNDUIServer
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)hideContentViewController;
 - (void)showContentViewController;
@@ -18,23 +18,23 @@
 
 - (void)hideContentViewController
 {
-  v3 = [(HNDUIServer *)self scannerInputViewController];
-  if (v3)
+  scannerInputViewController = [(HNDUIServer *)self scannerInputViewController];
+  if (scannerInputViewController)
   {
-    v5 = v3;
+    v5 = scannerInputViewController;
     v4 = +[AXUIDisplayManager sharedDisplayManager];
     [v4 removeContentViewController:v5 withUserInteractionEnabled:0 forService:self];
 
     [v5 hideAlerts];
     [(HNDUIServer *)self setScannerInputViewController:0];
-    v3 = v5;
+    scannerInputViewController = v5;
   }
 }
 
 - (void)showContentViewController
 {
-  v3 = [(HNDUIServer *)self scannerInputViewController];
-  if (!v3)
+  scannerInputViewController = [(HNDUIServer *)self scannerInputViewController];
+  if (!scannerInputViewController)
   {
     v5 = objc_opt_new();
     [v5 setUserInterfaceServer:self];
@@ -42,11 +42,11 @@
     v4 = +[AXUIDisplayManager sharedDisplayManager];
     [v4 addContentViewController:v5 withUserInteractionEnabled:0 forService:self];
 
-    v3 = v5;
+    scannerInputViewController = v5;
   }
 }
 
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -56,20 +56,20 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4 <= 4)
+  messageCopy = message;
+  withIdentifierCopy = withIdentifier;
+  if (identifier <= 4)
   {
-    if (a4 <= 2)
+    if (identifier <= 2)
     {
-      if (a4 == 1)
+      if (identifier == 1)
       {
         [(HNDUIServer *)self hideContentViewController];
       }
 
-      else if (a4 == 2)
+      else if (identifier == 2)
       {
         [(HNDUIServer *)self showContentViewController];
       }
@@ -77,49 +77,49 @@
       goto LABEL_28;
     }
 
-    if (a4 == 3)
+    if (identifier == 3)
     {
-      v11 = [(HNDUIServer *)self scannerInputViewController];
-      v17 = [v9 objectForKeyedSubscript:@"input source"];
-      v18 = [v17 unsignedIntegerValue];
+      scannerInputViewController = [(HNDUIServer *)self scannerInputViewController];
+      v17 = [messageCopy objectForKeyedSubscript:@"input source"];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-      [v11 hideAlertForSource:v18];
+      [scannerInputViewController hideAlertForSource:unsignedIntegerValue];
       goto LABEL_21;
     }
 
-    v11 = [(HNDUIServer *)self scannerInputViewController];
-    v12 = [v9 objectForKeyedSubscript:@"input alert"];
-    v13 = [v9 objectForKeyedSubscript:@"input source"];
-    v14 = [v13 unsignedIntegerValue];
+    scannerInputViewController = [(HNDUIServer *)self scannerInputViewController];
+    v12 = [messageCopy objectForKeyedSubscript:@"input alert"];
+    v13 = [messageCopy objectForKeyedSubscript:@"input source"];
+    unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-    [v11 showAlert:v12 forSource:v14];
+    [scannerInputViewController showAlert:v12 forSource:unsignedIntegerValue2];
 LABEL_15:
 
     goto LABEL_21;
   }
 
-  if (a4 <= 6)
+  if (identifier <= 6)
   {
-    if (a4 == 5)
+    if (identifier == 5)
     {
-      v11 = [(HNDUIServer *)self scannerInputViewController];
-      v22 = [v9 objectForKeyedSubscript:@"input source"];
-      v23 = [v22 unsignedIntegerValue];
+      scannerInputViewController = [(HNDUIServer *)self scannerInputViewController];
+      v22 = [messageCopy objectForKeyedSubscript:@"input source"];
+      unsignedIntegerValue3 = [v22 unsignedIntegerValue];
 
-      [v11 hideStateForSource:v23];
+      [scannerInputViewController hideStateForSource:unsignedIntegerValue3];
       goto LABEL_21;
     }
 
-    v11 = [(HNDUIServer *)self scannerInputViewController];
-    v12 = [v9 objectForKeyedSubscript:@"input state"];
-    v15 = [v9 objectForKeyedSubscript:@"input source"];
-    v16 = [v15 unsignedIntegerValue];
+    scannerInputViewController = [(HNDUIServer *)self scannerInputViewController];
+    v12 = [messageCopy objectForKeyedSubscript:@"input state"];
+    v15 = [messageCopy objectForKeyedSubscript:@"input source"];
+    unsignedIntegerValue4 = [v15 unsignedIntegerValue];
 
-    [v11 showState:v12 forSource:v16];
+    [scannerInputViewController showState:v12 forSource:unsignedIntegerValue4];
     goto LABEL_15;
   }
 
-  switch(a4)
+  switch(identifier)
   {
     case 7uLL:
       +[AXUIDisplayManager sharedDisplayManager];
@@ -129,11 +129,11 @@ LABEL_15:
       v31[3] = &unk_81A8;
       v19 = v31[4] = self;
       v32 = v19;
-      v33 = v9;
+      v33 = messageCopy;
       v20 = objc_retainBlock(v31);
-      v21 = [(HNDUIServer *)self lastShownAlertIdentifier];
+      lastShownAlertIdentifier = [(HNDUIServer *)self lastShownAlertIdentifier];
 
-      if (v21)
+      if (lastShownAlertIdentifier)
       {
         v30 = v20;
         AXPerformBlockOnMainThreadAfterDelay();
@@ -148,23 +148,23 @@ LABEL_27:
       break;
     case 8uLL:
       v19 = +[AXUIDisplayManager sharedDisplayManager];
-      v24 = [(HNDUIServer *)self lastShownBannerIdentifier];
+      lastShownBannerIdentifier = [(HNDUIServer *)self lastShownBannerIdentifier];
 
-      if (v24)
+      if (lastShownBannerIdentifier)
       {
-        v25 = [(HNDUIServer *)self lastShownBannerIdentifier];
-        [v19 hideAlertWithIdentifier:v25 forService:self];
+        lastShownBannerIdentifier2 = [(HNDUIServer *)self lastShownBannerIdentifier];
+        [v19 hideAlertWithIdentifier:lastShownBannerIdentifier2 forService:self];
       }
 
-      v26 = [v9 objectForKeyedSubscript:@"simple banner title"];
-      v27 = [v9 objectForKeyedSubscript:@"simple banner text"];
+      v26 = [messageCopy objectForKeyedSubscript:@"simple banner title"];
+      v27 = [messageCopy objectForKeyedSubscript:@"simple banner text"];
       v28 = [v19 showAlertWithText:v26 subtitleText:v27 iconImage:0 type:2 forService:self];
       [(HNDUIServer *)self setLastShownBannerIdentifier:v28];
 
       goto LABEL_27;
     case 9uLL:
-      v11 = [(HNDUIServer *)self scannerInputViewController];
-      [v11 hideAlerts];
+      scannerInputViewController = [(HNDUIServer *)self scannerInputViewController];
+      [scannerInputViewController hideAlerts];
 LABEL_21:
 
       break;

@@ -1,8 +1,8 @@
 @interface _NSJSONWriter
-- (BOOL)appendString:(id)a3 range:(_NSRange)a4;
+- (BOOL)appendString:(id)string range:(_NSRange)range;
 - (_NSJSONWriter)init;
-- (id)dataWithRootObject:(id)a3 options:(unint64_t)a4;
-- (int64_t)writeRootObject:(id)a3 toStream:(id)a4 options:(unint64_t)a5;
+- (id)dataWithRootObject:(id)object options:(unint64_t)options;
+- (int64_t)writeRootObject:(id)object toStream:(id)stream options:(unint64_t)options;
 - (void)dealloc;
 - (void)resizeTemporaryBuffer:(void *)result;
 @end
@@ -46,13 +46,13 @@
   [(_NSJSONWriter *)&v5 dealloc];
 }
 
-- (id)dataWithRootObject:(id)a3 options:(unint64_t)a4
+- (id)dataWithRootObject:(id)object options:(unint64_t)options
 {
   self->dataBuffer = malloc_type_malloc(0x1000uLL, 0x100004077774924uLL);
   *&self->dataBufferLen = xmmword_1814463A0;
   self->freeDataBuffer = 1;
   self->kind = 1;
-  if (!_writeJSONValue(self, a3, 0, a4))
+  if (!_writeJSONValue(self, object, 0, options))
   {
     return 0;
   }
@@ -65,14 +65,14 @@
   return [v7 dataWithBytesNoCopy:dataBuffer length:dataLen freeWhenDone:1];
 }
 
-- (int64_t)writeRootObject:(id)a3 toStream:(id)a4 options:(unint64_t)a5
+- (int64_t)writeRootObject:(id)object toStream:(id)stream options:(unint64_t)options
 {
-  self->outputStream = a4;
+  self->outputStream = stream;
   self->kind = 2;
   self->dataBuffer = malloc_type_malloc(0x100uLL, 0x100004077774924uLL);
   self->dataBufferLen = 256;
   self->freeDataBuffer = 1;
-  if (_writeJSONValue(self, a3, 0, a5))
+  if (_writeJSONValue(self, object, 0, options))
   {
     return self->totalDataWritten;
   }
@@ -124,16 +124,16 @@
   return result;
 }
 
-- (BOOL)appendString:(id)a3 range:(_NSRange)a4
+- (BOOL)appendString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v16 = *MEMORY[0x1E69E9840];
   [(_NSJSONWriter *)self resizeTemporaryBuffer:?];
   v14 = 0;
   v15 = 0;
   __n = 0;
-  [a3 getBytes:self->tempBuffer maxLength:self->tempBufferLen usedLength:&__n encoding:4 options:0 range:location remainingRange:{length, &v14}];
+  [string getBytes:self->tempBuffer maxLength:self->tempBufferLen usedLength:&__n encoding:4 options:0 range:location remainingRange:{length, &v14}];
   appended = _appendBytes(self->tempBuffer, __n, self, v8);
   if (appended)
   {
@@ -142,7 +142,7 @@
     {
       do
       {
-        [a3 getBytes:self->tempBuffer maxLength:self->tempBufferLen usedLength:&__n encoding:4 options:0 range:v14 remainingRange:{v10, &v14}];
+        [string getBytes:self->tempBuffer maxLength:self->tempBufferLen usedLength:&__n encoding:4 options:0 range:v14 remainingRange:{v10, &v14}];
         LOBYTE(appended) = _appendBytes(self->tempBuffer, __n, self, v11);
         v10 = v15;
       }

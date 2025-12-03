@@ -1,6 +1,6 @@
 @interface EKUIRecurrenceRuleBuilder
 - (EKUIRecurrenceRuleBuilder)init;
-- (id)daysOfTheWeekWithWeek:(int64_t)a3;
+- (id)daysOfTheWeekWithWeek:(int64_t)week;
 - (id)description;
 - (id)recurrenceRule;
 - (id)setPositions;
@@ -25,23 +25,23 @@
 
 - (id)recurrenceRule
 {
-  v3 = [(EKUIRecurrenceRuleBuilder *)self _frequencyToUse];
-  v4 = [MEMORY[0x1E6966AD0] recurrenceRuleWithType:v3 interval:-[EKUIRecurrenceRuleBuilder interval](self end:{"interval"), 0}];
+  _frequencyToUse = [(EKUIRecurrenceRuleBuilder *)self _frequencyToUse];
+  v4 = [MEMORY[0x1E6966AD0] recurrenceRuleWithType:_frequencyToUse interval:-[EKUIRecurrenceRuleBuilder interval](self end:{"interval"), 0}];
   if ([(EKUIRecurrenceRuleBuilder *)self count])
   {
     v5 = [MEMORY[0x1E6966AB8] recurrenceEndWithOccurrenceCount:{-[EKUIRecurrenceRuleBuilder count](self, "count")}];
     [v4 setRecurrenceEnd:v5];
   }
 
-  v6 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
-  if ([v6 count] || -[EKUIRecurrenceRuleBuilder days](self, "days") || -[EKUIRecurrenceRuleBuilder ordinalValue](self, "ordinalValue"))
+  dayNumbers = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
+  if ([dayNumbers count] || -[EKUIRecurrenceRuleBuilder days](self, "days") || -[EKUIRecurrenceRuleBuilder ordinalValue](self, "ordinalValue"))
   {
   }
 
   else
   {
-    v21 = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
-    v22 = [v21 count];
+    monthNumbers = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
+    v22 = [monthNumbers count];
 
     v20 = v4;
     if (!v22)
@@ -50,21 +50,21 @@
     }
   }
 
-  if (v3 == 3)
+  if (_frequencyToUse == 3)
   {
-    v15 = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
-    [v4 setMonthsOfTheYear:v15];
+    monthNumbers2 = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
+    [v4 setMonthsOfTheYear:monthNumbers2];
 
-    v16 = [(EKUIRecurrenceRuleBuilder *)self setPositions];
-    v17 = [v16 lastObject];
-    v18 = [v17 integerValue];
+    setPositions = [(EKUIRecurrenceRuleBuilder *)self setPositions];
+    lastObject = [setPositions lastObject];
+    integerValue = [lastObject integerValue];
 
-    if (v18 && [(EKUIRecurrenceRuleBuilder *)self days])
+    if (integerValue && [(EKUIRecurrenceRuleBuilder *)self days])
     {
-      v19 = [(EKUIRecurrenceRuleBuilder *)self daysOfTheWeekWithWeek:v18];
+      daysOfTheWeek = [(EKUIRecurrenceRuleBuilder *)self daysOfTheWeekWithWeek:integerValue];
 LABEL_31:
-      v14 = v19;
-      [v4 setDaysOfTheWeek:v19];
+      dayNumbers4 = daysOfTheWeek;
+      [v4 setDaysOfTheWeek:daysOfTheWeek];
       goto LABEL_32;
     }
 
@@ -81,39 +81,39 @@ LABEL_31:
 
   else
   {
-    if (v3 == 2)
+    if (_frequencyToUse == 2)
     {
-      v9 = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
-      [v4 setMonthsOfTheYear:v9];
+      monthNumbers3 = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
+      [v4 setMonthsOfTheYear:monthNumbers3];
 
       if ([(EKUIRecurrenceRuleBuilder *)self ordinalValue])
       {
         if ([(EKUIRecurrenceRuleBuilder *)self days])
         {
-          v10 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
-          v11 = [v10 count];
+          dayNumbers2 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
+          v11 = [dayNumbers2 count];
 
           if (!v11)
           {
-            v23 = [(EKUIRecurrenceRuleBuilder *)self setPositions];
-            [v4 setSetPositions:v23];
+            setPositions2 = [(EKUIRecurrenceRuleBuilder *)self setPositions];
+            [v4 setSetPositions:setPositions2];
 
 LABEL_30:
-            v19 = [(EKUIRecurrenceRuleBuilder *)self daysOfTheWeek];
+            daysOfTheWeek = [(EKUIRecurrenceRuleBuilder *)self daysOfTheWeek];
             goto LABEL_31;
           }
         }
       }
 
-      v12 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
-      if ([v12 count])
+      dayNumbers3 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
+      if ([dayNumbers3 count])
       {
-        v13 = [(EKUIRecurrenceRuleBuilder *)self days];
+        days = [(EKUIRecurrenceRuleBuilder *)self days];
 
-        if (!v13)
+        if (!days)
         {
-          v14 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
-          [v4 setDaysOfTheMonth:v14];
+          dayNumbers4 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
+          [v4 setDaysOfTheMonth:dayNumbers4];
 LABEL_32:
 
           v20 = v4;
@@ -126,12 +126,12 @@ LABEL_32:
       }
     }
 
-    else if (v3 == 1)
+    else if (_frequencyToUse == 1)
     {
       if ([(EKUIRecurrenceRuleBuilder *)self days])
       {
-        v7 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
-        v8 = [v7 count];
+        dayNumbers5 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
+        v8 = [dayNumbers5 count];
 
         if (!v8)
         {
@@ -168,48 +168,48 @@ LABEL_33:
   return result;
 }
 
-- (id)daysOfTheWeekWithWeek:(int64_t)a3
+- (id)daysOfTheWeekWithWeek:(int64_t)week
 {
   v5 = objc_opt_new();
   if (([(EKUIRecurrenceRuleBuilder *)self days]& 1) != 0)
   {
-    v6 = [MEMORY[0x1E6966AB0] dayOfWeek:1 weekNumber:a3];
+    v6 = [MEMORY[0x1E6966AB0] dayOfWeek:1 weekNumber:week];
     [v5 addObject:v6];
   }
 
   if (([(EKUIRecurrenceRuleBuilder *)self days]& 2) != 0)
   {
-    v7 = [MEMORY[0x1E6966AB0] dayOfWeek:2 weekNumber:a3];
+    v7 = [MEMORY[0x1E6966AB0] dayOfWeek:2 weekNumber:week];
     [v5 addObject:v7];
   }
 
   if (([(EKUIRecurrenceRuleBuilder *)self days]& 4) != 0)
   {
-    v8 = [MEMORY[0x1E6966AB0] dayOfWeek:3 weekNumber:a3];
+    v8 = [MEMORY[0x1E6966AB0] dayOfWeek:3 weekNumber:week];
     [v5 addObject:v8];
   }
 
   if (([(EKUIRecurrenceRuleBuilder *)self days]& 8) != 0)
   {
-    v9 = [MEMORY[0x1E6966AB0] dayOfWeek:4 weekNumber:a3];
+    v9 = [MEMORY[0x1E6966AB0] dayOfWeek:4 weekNumber:week];
     [v5 addObject:v9];
   }
 
   if (([(EKUIRecurrenceRuleBuilder *)self days]& 0x10) != 0)
   {
-    v10 = [MEMORY[0x1E6966AB0] dayOfWeek:5 weekNumber:a3];
+    v10 = [MEMORY[0x1E6966AB0] dayOfWeek:5 weekNumber:week];
     [v5 addObject:v10];
   }
 
   if (([(EKUIRecurrenceRuleBuilder *)self days]& 0x20) != 0)
   {
-    v11 = [MEMORY[0x1E6966AB0] dayOfWeek:6 weekNumber:a3];
+    v11 = [MEMORY[0x1E6966AB0] dayOfWeek:6 weekNumber:week];
     [v5 addObject:v11];
   }
 
   if (([(EKUIRecurrenceRuleBuilder *)self days]& 0x40) != 0)
   {
-    v12 = [MEMORY[0x1E6966AB0] dayOfWeek:7 weekNumber:a3];
+    v12 = [MEMORY[0x1E6966AB0] dayOfWeek:7 weekNumber:week];
     [v5 addObject:v12];
   }
 
@@ -244,24 +244,24 @@ LABEL_33:
 
 - (id)description
 {
-  v3 = [(EKUIRecurrenceRuleBuilder *)self recurrenceRule];
+  recurrenceRule = [(EKUIRecurrenceRuleBuilder *)self recurrenceRule];
   v16 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKUIRecurrenceRuleBuilder *)self frequency];
-  v6 = [(EKUIRecurrenceRuleBuilder *)self interval];
+  frequency = [(EKUIRecurrenceRuleBuilder *)self frequency];
+  interval = [(EKUIRecurrenceRuleBuilder *)self interval];
   v7 = [(EKUIRecurrenceRuleBuilder *)self count];
-  v8 = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
-  v9 = [(EKUIRecurrenceRuleBuilder *)self days];
-  v10 = [(EKUIRecurrenceRuleBuilder *)self ordinalValue];
-  v11 = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
-  v12 = v11;
+  dayNumbers = [(EKUIRecurrenceRuleBuilder *)self dayNumbers];
+  days = [(EKUIRecurrenceRuleBuilder *)self days];
+  ordinalValue = [(EKUIRecurrenceRuleBuilder *)self ordinalValue];
+  monthNumbers = [(EKUIRecurrenceRuleBuilder *)self monthNumbers];
+  v12 = monthNumbers;
   v13 = @"NO VALID RULE";
-  if (v3)
+  if (recurrenceRule)
   {
-    v13 = v3;
+    v13 = recurrenceRule;
   }
 
-  v14 = [v16 stringWithFormat:@"<%@: %p> {\n\tFrequency: %ld\n\tInterval: %ld\n\tCount: %tu\n\tDay Number: %@\n\tDays: %d\n\tOrdinal: %d\n\tMonth Numbers: %@\n\tCurrent Rule: %@\n}", v4, self, v5, v6, v7, v8, v9, v10, v11, v13];
+  v14 = [v16 stringWithFormat:@"<%@: %p> {\n\tFrequency: %ld\n\tInterval: %ld\n\tCount: %tu\n\tDay Number: %@\n\tDays: %d\n\tOrdinal: %d\n\tMonth Numbers: %@\n\tCurrent Rule: %@\n}", v4, self, frequency, interval, v7, dayNumbers, days, ordinalValue, monthNumbers, v13];
 
   return v14;
 }

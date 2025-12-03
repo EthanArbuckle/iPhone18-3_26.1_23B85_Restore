@@ -1,14 +1,14 @@
 @interface MCSChangeUtilities
-+ (id)allMessagesInChanges:(id)a3;
-+ (id)flagChangesForKey:(id)a3;
-+ (id)mergeMessageChanges:(id)a3 withChanges:(id)a4;
++ (id)allMessagesInChanges:(id)changes;
++ (id)flagChangesForKey:(id)key;
++ (id)mergeMessageChanges:(id)changes withChanges:(id)withChanges;
 @end
 
 @implementation MCSChangeUtilities
 
-+ (id)flagChangesForKey:(id)a3
++ (id)flagChangesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (!qword_100185640)
   {
     v4 = [NSDictionary alloc];
@@ -44,7 +44,7 @@
     qword_100185660 = v24;
   }
 
-  if ([v3 isEqualToString:@"MCSChangeSetDeletedMessages"])
+  if ([keyCopy isEqualToString:@"MCSChangeSetDeletedMessages"])
   {
     v26 = &qword_100185640;
 LABEL_13:
@@ -52,25 +52,25 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"MCSChangeSetReadMessages"])
+  if ([keyCopy isEqualToString:@"MCSChangeSetReadMessages"])
   {
     v26 = &qword_100185648;
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"MCSChangeSetUnreadMessages"])
+  if ([keyCopy isEqualToString:@"MCSChangeSetUnreadMessages"])
   {
     v26 = &qword_100185650;
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"MCSChangeSetFlaggedMessages"])
+  if ([keyCopy isEqualToString:@"MCSChangeSetFlaggedMessages"])
   {
     v26 = &qword_100185658;
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"MCSChangeSetUnflaggedMessages"])
+  if ([keyCopy isEqualToString:@"MCSChangeSetUnflaggedMessages"])
   {
     v26 = &qword_100185660;
     goto LABEL_13;
@@ -82,38 +82,38 @@ LABEL_14:
   return v27;
 }
 
-+ (id)allMessagesInChanges:(id)a3
++ (id)allMessagesInChanges:(id)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = [[NSMutableSet alloc] initWithCapacity:0];
-  v5 = [v3 objectForKey:@"MCSChangeSetDeletedMessages"];
+  v5 = [changesCopy objectForKey:@"MCSChangeSetDeletedMessages"];
   [v4 unionSet:v5];
 
-  v6 = [v3 objectForKey:@"MCSChangeSetReadMessages"];
+  v6 = [changesCopy objectForKey:@"MCSChangeSetReadMessages"];
   [v4 unionSet:v6];
 
-  v7 = [v3 objectForKey:@"MCSChangeSetUnreadMessages"];
+  v7 = [changesCopy objectForKey:@"MCSChangeSetUnreadMessages"];
   [v4 unionSet:v7];
 
-  v8 = [v3 objectForKey:@"MCSChangeSetFlaggedMessages"];
+  v8 = [changesCopy objectForKey:@"MCSChangeSetFlaggedMessages"];
   [v4 unionSet:v8];
 
-  v9 = [v3 objectForKey:@"MCSChangeSetUnflaggedMessages"];
+  v9 = [changesCopy objectForKey:@"MCSChangeSetUnflaggedMessages"];
   [v4 unionSet:v9];
 
   return v4;
 }
 
-+ (id)mergeMessageChanges:(id)a3 withChanges:(id)a4
++ (id)mergeMessageChanges:(id)changes withChanges:(id)withChanges
 {
-  v5 = a3;
-  v6 = a4;
+  changesCopy = changes;
+  withChangesCopy = withChanges;
   v7 = [[NSMutableDictionary alloc] initWithCapacity:5];
   v8 = [[NSMutableSet alloc] initWithCapacity:0];
-  v9 = [v5 objectForKey:@"MCSChangeSetDeletedMessages"];
+  v9 = [changesCopy objectForKey:@"MCSChangeSetDeletedMessages"];
   [v8 unionSet:v9];
 
-  v10 = [v6 objectForKey:@"MCSChangeSetDeletedMessages"];
+  v10 = [withChangesCopy objectForKey:@"MCSChangeSetDeletedMessages"];
   [v8 unionSet:v10];
 
   if ([v8 count])
@@ -122,10 +122,10 @@ LABEL_14:
   }
 
   v11 = [[NSMutableSet alloc] initWithCapacity:0];
-  v12 = [v5 objectForKey:@"MCSChangeSetReadMessages"];
+  v12 = [changesCopy objectForKey:@"MCSChangeSetReadMessages"];
   [v11 unionSet:v12];
 
-  v13 = [v6 objectForKey:@"MCSChangeSetReadMessages"];
+  v13 = [withChangesCopy objectForKey:@"MCSChangeSetReadMessages"];
   [v11 unionSet:v13];
 
   if ([v11 count])
@@ -134,10 +134,10 @@ LABEL_14:
   }
 
   v14 = [[NSMutableSet alloc] initWithCapacity:0];
-  v15 = [v5 objectForKey:@"MCSChangeSetUnreadMessages"];
+  v15 = [changesCopy objectForKey:@"MCSChangeSetUnreadMessages"];
   [v14 unionSet:v15];
 
-  v16 = [v6 objectForKey:@"MCSChangeSetUnreadMessages"];
+  v16 = [withChangesCopy objectForKey:@"MCSChangeSetUnreadMessages"];
   [v14 unionSet:v16];
 
   if ([v14 count])
@@ -146,10 +146,10 @@ LABEL_14:
   }
 
   v17 = [[NSMutableSet alloc] initWithCapacity:0];
-  v18 = [v5 objectForKey:@"MCSChangeSetFlaggedMessages"];
+  v18 = [changesCopy objectForKey:@"MCSChangeSetFlaggedMessages"];
   [v17 unionSet:v18];
 
-  v19 = [v6 objectForKey:@"MCSChangeSetFlaggedMessages"];
+  v19 = [withChangesCopy objectForKey:@"MCSChangeSetFlaggedMessages"];
   [v17 unionSet:v19];
 
   if ([v17 count])
@@ -158,10 +158,10 @@ LABEL_14:
   }
 
   v20 = [[NSMutableSet alloc] initWithCapacity:0];
-  v21 = [v5 objectForKey:@"MCSChangeSetUnflaggedMessages"];
+  v21 = [changesCopy objectForKey:@"MCSChangeSetUnflaggedMessages"];
   [v20 unionSet:v21];
 
-  v22 = [v6 objectForKey:@"MCSChangeSetUnflaggedMessages"];
+  v22 = [withChangesCopy objectForKey:@"MCSChangeSetUnflaggedMessages"];
   [v20 unionSet:v22];
 
   if ([v20 count])

@@ -1,9 +1,9 @@
 @interface PXGScrollViewContainer
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer;
 - (CGRect)clippingRect;
-- (PXGScrollViewContainer)initWithFrame:(CGRect)a3;
-- (id)focusItemsForScrollViewController:(id)a3 inRect:(CGRect)a4;
+- (PXGScrollViewContainer)initWithFrame:(CGRect)frame;
+- (id)focusItemsForScrollViewController:(id)controller inRect:(CGRect)rect;
 - (void)_invalidateScrollViewController;
 - (void)_invalidateScrollViewDecelerationRate;
 - (void)_invalidateScrollViewModel;
@@ -12,15 +12,15 @@
 - (void)_updateScrollViewModel;
 - (void)_willLayout;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)scrollViewControllerDidEndScrolling:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)scrollViewControllerWillBeginScrolling:(id)a3;
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
-- (void)setAlpha:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setScrollViewModel:(id)a3;
-- (void)setUserData:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling;
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
+- (void)setAlpha:(double)alpha;
+- (void)setDelegate:(id)delegate;
+- (void)setScrollViewModel:(id)model;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGScrollViewContainer
@@ -38,16 +38,16 @@
   return result;
 }
 
-- (id)focusItemsForScrollViewController:(id)a3 inRect:(CGRect)a4
+- (id)focusItemsForScrollViewController:(id)controller inRect:(CGRect)rect
 {
   if (self->_delegateRespondsTo.focusItemsInRect)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v9 = [(PXGScrollViewContainer *)self delegate];
-    v10 = [v9 focusItemsForScrollViewContainer:self inRect:{x, y, width, height}];
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    delegate = [(PXGScrollViewContainer *)self delegate];
+    v10 = [delegate focusItemsForScrollViewContainer:self inRect:{x, y, width, height}];
   }
 
   else
@@ -58,95 +58,95 @@
   return v10;
 }
 
-- (void)scrollViewControllerDidEndScrolling:(id)a3
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling
 {
   if (self->_delegateRespondsTo.didEndScrolling)
   {
-    v5 = [(PXGScrollViewContainer *)self delegate];
-    [v5 scrollViewContainerDidEndScrolling:self];
+    delegate = [(PXGScrollViewContainer *)self delegate];
+    [delegate scrollViewContainerDidEndScrolling:self];
   }
 }
 
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
   if (self->_delegateRespondsTo.willEndScrollingWithVelocityTargetContentOffsetCurrentContentOffset)
   {
-    y = a6.y;
-    x = a6.x;
-    v9 = a4.y;
-    v10 = a4.x;
-    v12 = a3;
-    v13 = [(PXGScrollViewContainer *)self shouldFlipContentOffset];
-    [v12 contentBounds];
+    y = contentOffset.y;
+    x = contentOffset.x;
+    v9 = velocity.y;
+    v10 = velocity.x;
+    scrollingCopy = scrolling;
+    shouldFlipContentOffset = [(PXGScrollViewContainer *)self shouldFlipContentOffset];
+    [scrollingCopy contentBounds];
 
     [(PXGScrollViewContainer *)self bounds];
-    if (v13)
+    if (shouldFlipContentOffset)
     {
       PXContentOffsetFlippedHorizontally();
-      a5->x = v14;
-      a5->y = v15;
+      offset->x = v14;
+      offset->y = v15;
       PXVelocityFlippedHorizontally();
       v17 = v16;
       v19 = v18;
-      v20 = [(PXGScrollViewContainer *)self delegate];
-      [v20 scrollViewContainerWillEndScrolling:self withVelocity:a5 targetContentOffset:v17 currentContentOffset:{v19, x, y}];
+      delegate = [(PXGScrollViewContainer *)self delegate];
+      [delegate scrollViewContainerWillEndScrolling:self withVelocity:offset targetContentOffset:v17 currentContentOffset:{v19, x, y}];
 
       PXContentOffsetFlippedHorizontally();
-      a5->x = v21;
-      a5->y = v22;
+      offset->x = v21;
+      offset->y = v22;
     }
 
     else
     {
-      v23 = [(PXGScrollViewContainer *)self delegate];
-      [v23 scrollViewContainerWillEndScrolling:self withVelocity:a5 targetContentOffset:v10 currentContentOffset:{v9, x, y}];
+      delegate2 = [(PXGScrollViewContainer *)self delegate];
+      [delegate2 scrollViewContainerWillEndScrolling:self withVelocity:offset targetContentOffset:v10 currentContentOffset:{v9, x, y}];
     }
   }
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
   if (self->_delegateRespondsTo.didScroll)
   {
-    v4 = [(PXGScrollViewContainer *)self delegate];
-    [v4 scrollViewContainerDidScroll:self];
+    delegate = [(PXGScrollViewContainer *)self delegate];
+    [delegate scrollViewContainerDidScroll:self];
   }
 
   [(PXGScrollViewContainer *)self _invalidateScrollViewModel];
 }
 
-- (void)scrollViewControllerWillBeginScrolling:(id)a3
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling
 {
   if (self->_delegateRespondsTo.willBeginScrolling)
   {
-    v5 = [(PXGScrollViewContainer *)self delegate];
-    [v5 scrollViewContainerWillBeginScrolling:self];
+    delegate = [(PXGScrollViewContainer *)self delegate];
+    [delegate scrollViewContainerWillBeginScrolling:self];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ScrollViewModelObservationContext_1474 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ScrollViewModelObservationContext_1474 == context)
   {
-    v13 = v9;
-    v10 = [v9 changesOptions];
-    if ((v6 & 0xFFE3) != 0 && (v10 & 2) == 0)
+    v13 = observableCopy;
+    changesOptions = [observableCopy changesOptions];
+    if ((changeCopy & 0xFFE3) != 0 && (changesOptions & 2) == 0)
     {
       [(PXGScrollViewContainer *)self _invalidateScrollViewController];
     }
 
-    if ((v6 & 8) != 0)
+    if ((changeCopy & 8) != 0)
     {
       [(PXGScrollViewContainer *)self _invalidateScrollViewDecelerationRate];
     }
 
-    v9 = v13;
-    if ((v6 & 0x10) != 0)
+    observableCopy = v13;
+    if ((changeCopy & 0x10) != 0)
     {
-      v11 = [(PXGScrollViewContainer *)self scrollViewController];
-      [v11 stopScrollingAndZoomingAnimations];
+      scrollViewController = [(PXGScrollViewContainer *)self scrollViewController];
+      [scrollViewController stopScrollingAndZoomingAnimations];
 
       goto LABEL_12;
     }
@@ -154,34 +154,34 @@
 
   else
   {
-    if (SpeedometerObservationContext != a5)
+    if (SpeedometerObservationContext != context)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXGScrollViewContainer.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGScrollViewContainer.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 2) != 0)
+    if ((changeCopy & 2) != 0)
     {
-      v13 = v9;
+      v13 = observableCopy;
       [(PXGScrollViewContainer *)self _invalidateScrollViewModel];
 LABEL_12:
-      v9 = v13;
+      observableCopy = v13;
     }
   }
 }
 
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   scrollViewController = self->_scrollViewController;
-  v7 = a4;
-  v8 = [(PXScrollViewController *)scrollViewController scrollView];
-  v9 = [v8 layer];
+  layerCopy = layer;
+  scrollView = [(PXScrollViewController *)scrollViewController scrollView];
+  layer = [scrollView layer];
 
-  [v9 convertPoint:v7 fromLayer:{x, y}];
+  [layer convertPoint:layerCopy fromLayer:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -192,14 +192,14 @@ LABEL_12:
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_userData != v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (self->_userData != dataCopy)
   {
-    v11 = v4;
-    v6 = [(PXGScrollViewContainerConfiguration *)v4 isEqual:?];
+    v11 = dataCopy;
+    v6 = [(PXGScrollViewContainerConfiguration *)dataCopy isEqual:?];
     v5 = v11;
     if (!v6)
     {
@@ -207,11 +207,11 @@ LABEL_12:
       userData = self->_userData;
       self->_userData = v7;
 
-      v9 = [(PXGScrollViewContainerConfiguration *)self->_userData scrollViewModel];
-      [(PXGScrollViewContainer *)self setScrollViewModel:v9];
+      scrollViewModel = [(PXGScrollViewContainerConfiguration *)self->_userData scrollViewModel];
+      [(PXGScrollViewContainer *)self setScrollViewModel:scrollViewModel];
 
-      v10 = [(PXGScrollViewContainerConfiguration *)self->_userData delegate];
-      [(PXGScrollViewContainer *)self setDelegate:v10];
+      delegate = [(PXGScrollViewContainerConfiguration *)self->_userData delegate];
+      [(PXGScrollViewContainer *)self setDelegate:delegate];
 
       v5 = v11;
     }
@@ -220,13 +220,13 @@ LABEL_12:
 
 - (void)_updateScrollViewModel
 {
-  v3 = [(PXGScrollViewContainer *)self scrollViewModel];
+  scrollViewModel = [(PXGScrollViewContainer *)self scrollViewModel];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__PXGScrollViewContainer__updateScrollViewModel__block_invoke;
   v4[3] = &unk_2782A7E80;
   v4[4] = self;
-  [v3 performChanges:v4 options:2];
+  [scrollViewModel performChanges:v4 options:2];
 }
 
 void __48__PXGScrollViewContainer__updateScrollViewModel__block_invoke(uint64_t a1, void *a2)
@@ -262,98 +262,98 @@ void __48__PXGScrollViewContainer__updateScrollViewModel__block_invoke(uint64_t 
 
 - (void)_updateScrollViewDecelerationRate
 {
-  v8 = [(PXGScrollViewContainer *)self scrollViewModel];
-  v3 = [v8 scrollDecelerationRate];
-  if (v3 >= 2)
+  scrollViewModel = [(PXGScrollViewContainer *)self scrollViewModel];
+  scrollDecelerationRate = [scrollViewModel scrollDecelerationRate];
+  if (scrollDecelerationRate >= 2)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"PXScrollViewDecelerationRate PXScrollViewDecelerationRateFromPXGScrollDecelerationRate(PXGScrollDecelerationRate)"];
-    [v6 handleFailureInFunction:v7 file:@"PXGScrollViewContainer.m" lineNumber:29 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInFunction:v7 file:@"PXGScrollViewContainer.m" lineNumber:29 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v4 = v3;
-  v5 = [(PXGScrollViewContainer *)self scrollViewController];
-  [v5 setDecelerationRate:v4];
+  v4 = scrollDecelerationRate;
+  scrollViewController = [(PXGScrollViewContainer *)self scrollViewController];
+  [scrollViewController setDecelerationRate:v4];
 }
 
 - (void)_invalidateScrollViewDecelerationRate
 {
-  v2 = [(PXGScrollViewContainer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateScrollViewDecelerationRate];
+  updater = [(PXGScrollViewContainer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateScrollViewDecelerationRate];
 }
 
 - (void)_updateScrollViewController
 {
-  v27 = [(PXGScrollViewContainer *)self scrollViewController];
-  v3 = [(PXGScrollViewContainer *)self scrollViewModel];
+  scrollViewController = [(PXGScrollViewContainer *)self scrollViewController];
+  scrollViewModel = [(PXGScrollViewContainer *)self scrollViewModel];
   self->_isUpdatingScrollViewController = 1;
-  [v3 contentSize];
+  [scrollViewModel contentSize];
   PXRectWithOriginAndSize();
-  [v27 setContentBounds:?];
-  [v3 contentOffset];
+  [scrollViewController setContentBounds:?];
+  [scrollViewModel contentOffset];
   v5 = v4;
   v7 = v6;
   if ([(PXGScrollViewContainer *)self shouldFlipContentOffset])
   {
-    [v3 contentOffset];
-    [v27 contentBounds];
+    [scrollViewModel contentOffset];
+    [scrollViewController contentBounds];
     [(PXGScrollViewContainer *)self bounds];
     PXContentOffsetFlippedHorizontally();
     v5 = v8;
     v7 = v9;
   }
 
-  [v27 setVisibleOrigin:{v5, v7}];
-  if (v3)
+  [scrollViewController setVisibleOrigin:{v5, v7}];
+  if (scrollViewModel)
   {
-    v10 = [v3 clipsToBounds];
+    clipsToBounds = [scrollViewModel clipsToBounds];
   }
 
   else
   {
-    v10 = 1;
+    clipsToBounds = 1;
   }
 
-  [v27 setClipsToBounds:v10];
-  [v27 setShowsHorizontalScrollIndicator:{objc_msgSend(v3, "showsHorizontalScrollIndicator")}];
-  [v27 setShowsVerticalScrollIndicator:{objc_msgSend(v3, "showsVerticalScrollIndicator")}];
-  [v27 setDraggingPerformsScroll:{objc_msgSend(v3, "draggingPerformsScroll")}];
-  [v3 horizontalInterPageSpacing];
-  [v27 setHorizontalInterPageSpacing:?];
-  [v27 setAlwaysBounceHorizontal:{objc_msgSend(v3, "alwaysBounceHorizontal")}];
-  [v27 setAlwaysBounceVertical:{objc_msgSend(v3, "alwaysBounceVertical")}];
-  [v27 setTransfersScrollToContainer:{objc_msgSend(v3, "transfersScrollToContainer")}];
-  [v3 horizontalScrollIndicatorInsets];
+  [scrollViewController setClipsToBounds:clipsToBounds];
+  [scrollViewController setShowsHorizontalScrollIndicator:{objc_msgSend(scrollViewModel, "showsHorizontalScrollIndicator")}];
+  [scrollViewController setShowsVerticalScrollIndicator:{objc_msgSend(scrollViewModel, "showsVerticalScrollIndicator")}];
+  [scrollViewController setDraggingPerformsScroll:{objc_msgSend(scrollViewModel, "draggingPerformsScroll")}];
+  [scrollViewModel horizontalInterPageSpacing];
+  [scrollViewController setHorizontalInterPageSpacing:?];
+  [scrollViewController setAlwaysBounceHorizontal:{objc_msgSend(scrollViewModel, "alwaysBounceHorizontal")}];
+  [scrollViewController setAlwaysBounceVertical:{objc_msgSend(scrollViewModel, "alwaysBounceVertical")}];
+  [scrollViewController setTransfersScrollToContainer:{objc_msgSend(scrollViewModel, "transfersScrollToContainer")}];
+  [scrollViewModel horizontalScrollIndicatorInsets];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v3 verticalScrollIndicatorInsets];
+  [scrollViewModel verticalScrollIndicatorInsets];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  [v27 setHorizontalScrollIndicatorInsets:{v12, v14, v16, v18}];
-  [v27 setVerticalScrollIndicatorInsets:{v20, v22, v24, v26}];
-  [v3 hitTestContentInsets];
-  [v27 setHitTestContentInsets:?];
+  [scrollViewController setHorizontalScrollIndicatorInsets:{v12, v14, v16, v18}];
+  [scrollViewController setVerticalScrollIndicatorInsets:{v20, v22, v24, v26}];
+  [scrollViewModel hitTestContentInsets];
+  [scrollViewController setHitTestContentInsets:?];
   self->_isUpdatingScrollViewController = 0;
 }
 
 - (void)_invalidateScrollViewController
 {
-  v2 = [(PXGScrollViewContainer *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateScrollViewController];
+  updater = [(PXGScrollViewContainer *)self updater];
+  [updater setNeedsUpdateOf:sel__updateScrollViewController];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = PXGScrollViewContainer;
   [(PXGScrollViewContainer *)&v5 setAlpha:?];
-  [(PXGScrollViewContainer *)self setHidden:a3 == 0.0];
+  [(PXGScrollViewContainer *)self setHidden:alpha == 0.0];
 }
 
 - (void)layoutSubviews
@@ -366,50 +366,50 @@ void __48__PXGScrollViewContainer__updateScrollViewModel__block_invoke(uint64_t 
 
 - (void)_willLayout
 {
-  v2 = [(PXGScrollViewContainer *)self updater];
-  [v2 updateIfNeeded];
+  updater = [(PXGScrollViewContainer *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  if (self->_delegate != v5)
+  delegateCopy = delegate;
+  if (self->_delegate != delegateCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_delegate, a3);
+    v7 = delegateCopy;
+    objc_storeStrong(&self->_delegate, delegate);
     self->_delegateRespondsTo.willBeginScrolling = objc_opt_respondsToSelector() & 1;
     self->_delegateRespondsTo.didScroll = objc_opt_respondsToSelector() & 1;
     self->_delegateRespondsTo.willEndScrollingWithVelocityTargetContentOffsetCurrentContentOffset = objc_opt_respondsToSelector() & 1;
     self->_delegateRespondsTo.didEndScrolling = objc_opt_respondsToSelector() & 1;
     v6 = objc_opt_respondsToSelector() & 1;
-    v5 = v7;
+    delegateCopy = v7;
     self->_delegateRespondsTo.focusItemsInRect = v6;
   }
 }
 
-- (void)setScrollViewModel:(id)a3
+- (void)setScrollViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   scrollViewModel = self->_scrollViewModel;
-  if (scrollViewModel != v5)
+  if (scrollViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXGScrollViewModel *)scrollViewModel unregisterChangeObserver:self context:ScrollViewModelObservationContext_1474];
-    objc_storeStrong(&self->_scrollViewModel, a3);
+    objc_storeStrong(&self->_scrollViewModel, model);
     [(PXGScrollViewModel *)self->_scrollViewModel registerChangeObserver:self context:ScrollViewModelObservationContext_1474];
     [(PXGScrollViewContainer *)self _invalidateScrollViewController];
     [(PXGScrollViewContainer *)self _invalidateScrollViewDecelerationRate];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(PXGScrollViewContainer *)self bounds];
-  v7 = [(PXGScrollViewContainer *)self scrollViewModel];
-  [v7 hitTestContentInsets];
+  scrollViewModel = [(PXGScrollViewContainer *)self scrollViewModel];
+  [scrollViewModel hitTestContentInsets];
   PXEdgeInsetsInsetRect();
   v10.x = x;
   v10.y = y;
@@ -418,11 +418,11 @@ void __48__PXGScrollViewContainer__updateScrollViewModel__block_invoke(uint64_t 
   return v8;
 }
 
-- (PXGScrollViewContainer)initWithFrame:(CGRect)a3
+- (PXGScrollViewContainer)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PXGScrollViewContainer;
-  v3 = [(PXGScrollViewContainer *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGScrollViewContainer *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D3CE28]) initWithTarget:v3 needsUpdateSelector:sel__setNeedsUpdate];
@@ -435,14 +435,14 @@ void __48__PXGScrollViewContainer__updateScrollViewModel__block_invoke(uint64_t 
     [(PXGScrollViewContainer *)v3 bounds];
     v7 = [v6 initWithFrame:?];
     [v7 setFocusItemProvider:v3];
-    v8 = [v7 scrollView];
-    [v8 setAutoresizingMask:18];
+    scrollView = [v7 scrollView];
+    [scrollView setAutoresizingMask:18];
     scrollViewController = v3->_scrollViewController;
     v3->_scrollViewController = v7;
     v10 = v7;
 
     [(PXScrollViewController *)v3->_scrollViewController registerObserver:v3];
-    [(PXGScrollViewContainer *)v3 addSubview:v8];
+    [(PXGScrollViewContainer *)v3 addSubview:scrollView];
     v11 = [objc_alloc(MEMORY[0x277D3CDC0]) initWithScrollController:v3->_scrollViewController];
     speedometer = v3->_speedometer;
     v3->_speedometer = v11;

@@ -1,43 +1,43 @@
 @interface CalABCReporter
 - (BOOL)rateLimitingAllowsABCReport;
-- (CalABCReporter)initWithType:(id)a3 subtype:(id)a4 context:(id)a5;
-- (void)report:(BOOL)a3;
+- (CalABCReporter)initWithType:(id)type subtype:(id)subtype context:(id)context;
+- (void)report:(BOOL)report;
 @end
 
 @implementation CalABCReporter
 
-- (CalABCReporter)initWithType:(id)a3 subtype:(id)a4 context:(id)a5
+- (CalABCReporter)initWithType:(id)type subtype:(id)subtype context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = CalABCReporter;
   v11 = [(CalABCReporter *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(CalABCReporter *)v11 setType:v8];
-    [(CalABCReporter *)v12 setSubtype:v9];
-    [(CalABCReporter *)v12 setSubtypeContext:v10];
+    [(CalABCReporter *)v11 setType:typeCopy];
+    [(CalABCReporter *)v12 setSubtype:subtypeCopy];
+    [(CalABCReporter *)v12 setSubtypeContext:contextCopy];
   }
 
   return v12;
 }
 
-- (void)report:(BOOL)a3
+- (void)report:(BOOL)report
 {
-  v3 = a3;
+  reportCopy = report;
   if ([(CalABCReporter *)self rateLimitingAllowsABCReport])
   {
     v5 = objc_alloc_init(MEMORY[0x1E69D4F80]);
-    v6 = [(CalABCReporter *)self domain];
-    v7 = [(CalABCReporter *)self type];
-    v8 = [(CalABCReporter *)self subtype];
-    v9 = [(CalABCReporter *)self subtypeContext];
-    v10 = [MEMORY[0x1E696AE30] processInfo];
-    v11 = [v10 processName];
-    v12 = [v5 signatureWithDomain:v6 type:v7 subType:v8 subtypeContext:v9 detectedProcess:v11 triggerThresholdValues:0];
+    domain = [(CalABCReporter *)self domain];
+    type = [(CalABCReporter *)self type];
+    subtype = [(CalABCReporter *)self subtype];
+    subtypeContext = [(CalABCReporter *)self subtypeContext];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    v12 = [v5 signatureWithDomain:domain type:type subType:subtype subtypeContext:subtypeContext detectedProcess:processName triggerThresholdValues:0];
 
     v13 = +[CalFoundationLogSubsystem defaultCategory];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -46,7 +46,7 @@
     }
 
     v14 = 0;
-    if (v3)
+    if (reportCopy)
     {
       v14 = dispatch_semaphore_create(0);
     }
@@ -56,11 +56,11 @@
     v18[1] = 3221225472;
     v18[2] = __25__CalABCReporter_report___block_invoke;
     v18[3] = &unk_1E7EC6648;
-    v20 = v3;
+    v20 = reportCopy;
     v16 = v14;
     v19 = v16;
     [v5 snapshotWithSignature:v12 delay:events events:0 payload:0 actions:v18 reply:0.0];
-    if (v3)
+    if (reportCopy)
     {
       v17 = dispatch_time(0, 900000000000);
       dispatch_semaphore_wait(v16, v17);

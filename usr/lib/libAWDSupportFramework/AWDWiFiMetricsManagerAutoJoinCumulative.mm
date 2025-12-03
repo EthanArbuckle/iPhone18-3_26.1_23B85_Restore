@@ -1,23 +1,23 @@
 @interface AWDWiFiMetricsManagerAutoJoinCumulative
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)excludedDueToAJBlacklistCountAtIndex:(unint64_t)a3;
-- (unsigned)scanTypesCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)excludedDueToAJBlacklistCountAtIndex:(unint64_t)index;
+- (unsigned)scanTypesCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAjScansPerformedWithLocation:(BOOL)a3;
-- (void)setHasAjScansPerformedWithoutLocation:(BOOL)a3;
-- (void)setHasBandScanCount24:(BOOL)a3;
-- (void)setHasBandScanCount5:(BOOL)a3;
-- (void)setHasCcaBitmap:(BOOL)a3;
-- (void)setHasDidAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount:(BOOL)a3;
-- (void)setHasRssiBitmap:(BOOL)a3;
-- (void)setHasUserChoseToAssociateToAJBlacklistedCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAjScansPerformedWithLocation:(BOOL)location;
+- (void)setHasAjScansPerformedWithoutLocation:(BOOL)location;
+- (void)setHasBandScanCount24:(BOOL)count24;
+- (void)setHasBandScanCount5:(BOOL)count5;
+- (void)setHasCcaBitmap:(BOOL)bitmap;
+- (void)setHasDidAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount:(BOOL)count;
+- (void)setHasRssiBitmap:(BOOL)bitmap;
+- (void)setHasUserChoseToAssociateToAJBlacklistedCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerAutoJoinCumulative
@@ -31,33 +31,33 @@
   [(AWDWiFiMetricsManagerAutoJoinCumulative *)&v3 dealloc];
 }
 
-- (unsigned)scanTypesCountAtIndex:(unint64_t)a3
+- (unsigned)scanTypesCountAtIndex:(unint64_t)index
 {
   p_scanTypesCounts = &self->_scanTypesCounts;
   count = self->_scanTypesCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_scanTypesCounts->list[a3];
+  return p_scanTypesCounts->list[index];
 }
 
-- (unsigned)excludedDueToAJBlacklistCountAtIndex:(unint64_t)a3
+- (unsigned)excludedDueToAJBlacklistCountAtIndex:(unint64_t)index
 {
   p_excludedDueToAJBlacklistCounts = &self->_excludedDueToAJBlacklistCounts;
   count = self->_excludedDueToAJBlacklistCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_excludedDueToAJBlacklistCounts->list[a3];
+  return p_excludedDueToAJBlacklistCounts->list[index];
 }
 
-- (void)setHasUserChoseToAssociateToAJBlacklistedCount:(BOOL)a3
+- (void)setHasUserChoseToAssociateToAJBlacklistedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasAjScansPerformedWithLocation:(BOOL)a3
+- (void)setHasAjScansPerformedWithLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 2;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasAjScansPerformedWithoutLocation:(BOOL)a3
+- (void)setHasAjScansPerformedWithoutLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 4;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDidAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount:(BOOL)a3
+- (void)setHasDidAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRssiBitmap:(BOOL)a3
+- (void)setHasRssiBitmap:(BOOL)bitmap
 {
-  if (a3)
+  if (bitmap)
   {
     v3 = 128;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasCcaBitmap:(BOOL)a3
+- (void)setHasCcaBitmap:(BOOL)bitmap
 {
-  if (a3)
+  if (bitmap)
   {
     v3 = 32;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasBandScanCount24:(BOOL)a3
+- (void)setHasBandScanCount24:(BOOL)count24
 {
-  if (a3)
+  if (count24)
   {
     v3 = 8;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasBandScanCount5:(BOOL)a3
+- (void)setHasBandScanCount5:(BOOL)count5
 {
-  if (a3)
+  if (count5)
   {
     v3 = 16;
   }
@@ -184,18 +184,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"scanTypesCount"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"excludedDueToAJBlacklistCount"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"scanTypesCount"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"excludedDueToAJBlacklistCount"];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_userChoseToAssociateToAJBlacklistedCount), @"userChoseToAssociateToAJBlacklistedCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_userChoseToAssociateToAJBlacklistedCount), @"userChoseToAssociateToAJBlacklistedCount"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -214,7 +214,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ajScansPerformedWithLocation), @"ajScansPerformedWithLocation"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ajScansPerformedWithLocation), @"ajScansPerformedWithLocation"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -228,7 +228,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ajScansPerformedWithoutLocation), @"ajScansPerformedWithoutLocation"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ajScansPerformedWithoutLocation), @"ajScansPerformedWithoutLocation"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -242,7 +242,7 @@ LABEL_7:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount), @"didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount), @"didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -256,7 +256,7 @@ LABEL_8:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rssiBitmap), @"rssiBitmap"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rssiBitmap), @"rssiBitmap"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -267,17 +267,17 @@ LABEL_9:
     }
 
 LABEL_19:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bandScanCount24), @"bandScanCount24"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bandScanCount24), @"bandScanCount24"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ccaBitmap), @"ccaBitmap"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ccaBitmap), @"ccaBitmap"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -288,13 +288,13 @@ LABEL_10:
   if ((has & 0x10) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bandScanCount5), @"bandScanCount5"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bandScanCount5), @"bandScanCount5"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -439,38 +439,38 @@ LABEL_25:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 7) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 7) = self->_timestamp;
+    *(to + 48) |= 1u;
   }
 
   if ([(AWDWiFiMetricsManagerAutoJoinCumulative *)self scanTypesCountsCount])
   {
-    [a3 clearScanTypesCounts];
-    v5 = [(AWDWiFiMetricsManagerAutoJoinCumulative *)self scanTypesCountsCount];
-    if (v5)
+    [to clearScanTypesCounts];
+    scanTypesCountsCount = [(AWDWiFiMetricsManagerAutoJoinCumulative *)self scanTypesCountsCount];
+    if (scanTypesCountsCount)
     {
-      v6 = v5;
+      v6 = scanTypesCountsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addScanTypesCount:{-[AWDWiFiMetricsManagerAutoJoinCumulative scanTypesCountAtIndex:](self, "scanTypesCountAtIndex:", i)}];
+        [to addScanTypesCount:{-[AWDWiFiMetricsManagerAutoJoinCumulative scanTypesCountAtIndex:](self, "scanTypesCountAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricsManagerAutoJoinCumulative *)self excludedDueToAJBlacklistCountsCount])
   {
-    [a3 clearExcludedDueToAJBlacklistCounts];
-    v8 = [(AWDWiFiMetricsManagerAutoJoinCumulative *)self excludedDueToAJBlacklistCountsCount];
-    if (v8)
+    [to clearExcludedDueToAJBlacklistCounts];
+    excludedDueToAJBlacklistCountsCount = [(AWDWiFiMetricsManagerAutoJoinCumulative *)self excludedDueToAJBlacklistCountsCount];
+    if (excludedDueToAJBlacklistCountsCount)
     {
-      v9 = v8;
+      v9 = excludedDueToAJBlacklistCountsCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addExcludedDueToAJBlacklistCount:{-[AWDWiFiMetricsManagerAutoJoinCumulative excludedDueToAJBlacklistCountAtIndex:](self, "excludedDueToAJBlacklistCountAtIndex:", j)}];
+        [to addExcludedDueToAJBlacklistCount:{-[AWDWiFiMetricsManagerAutoJoinCumulative excludedDueToAJBlacklistCountAtIndex:](self, "excludedDueToAJBlacklistCountAtIndex:", j)}];
       }
     }
   }
@@ -478,8 +478,8 @@ LABEL_25:
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(a3 + 23) = self->_userChoseToAssociateToAJBlacklistedCount;
-    *(a3 + 48) |= 0x100u;
+    *(to + 23) = self->_userChoseToAssociateToAJBlacklistedCount;
+    *(to + 48) |= 0x100u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -498,8 +498,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(a3 + 16) = self->_ajScansPerformedWithLocation;
-  *(a3 + 48) |= 2u;
+  *(to + 16) = self->_ajScansPerformedWithLocation;
+  *(to + 48) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -513,8 +513,8 @@ LABEL_14:
   }
 
 LABEL_23:
-  *(a3 + 17) = self->_ajScansPerformedWithoutLocation;
-  *(a3 + 48) |= 4u;
+  *(to + 17) = self->_ajScansPerformedWithoutLocation;
+  *(to + 48) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -528,8 +528,8 @@ LABEL_15:
   }
 
 LABEL_24:
-  *(a3 + 21) = self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount;
-  *(a3 + 48) |= 0x40u;
+  *(to + 21) = self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount;
+  *(to + 48) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -543,8 +543,8 @@ LABEL_16:
   }
 
 LABEL_25:
-  *(a3 + 22) = self->_rssiBitmap;
-  *(a3 + 48) |= 0x80u;
+  *(to + 22) = self->_rssiBitmap;
+  *(to + 48) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -558,8 +558,8 @@ LABEL_17:
   }
 
 LABEL_26:
-  *(a3 + 20) = self->_ccaBitmap;
-  *(a3 + 48) |= 0x20u;
+  *(to + 20) = self->_ccaBitmap;
+  *(to + 48) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -573,21 +573,21 @@ LABEL_18:
   }
 
 LABEL_27:
-  *(a3 + 18) = self->_bandScanCount24;
-  *(a3 + 48) |= 8u;
+  *(to + 18) = self->_bandScanCount24;
+  *(to + 48) |= 8u;
   if ((*&self->_has & 0x10) == 0)
   {
     return;
   }
 
 LABEL_19:
-  *(a3 + 19) = self->_bandScanCount5;
-  *(a3 + 48) |= 0x10u;
+  *(to + 19) = self->_bandScanCount5;
+  *(to + 48) |= 0x10u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -707,15 +707,15 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if (*&self->_has)
     {
-      if ((v6 & 1) == 0 || self->_timestamp != *(a3 + 7))
+      if ((v6 & 1) == 0 || self->_timestamp != *(equal + 7))
       {
         goto LABEL_48;
       }
@@ -735,23 +735,23 @@ LABEL_48:
       if (IsEqual)
       {
         has = self->_has;
-        v8 = *(a3 + 48);
+        v8 = *(equal + 48);
         if ((has & 0x100) != 0)
         {
-          if ((*(a3 + 48) & 0x100) == 0 || self->_userChoseToAssociateToAJBlacklistedCount != *(a3 + 23))
+          if ((*(equal + 48) & 0x100) == 0 || self->_userChoseToAssociateToAJBlacklistedCount != *(equal + 23))
           {
             goto LABEL_48;
           }
         }
 
-        else if ((*(a3 + 48) & 0x100) != 0)
+        else if ((*(equal + 48) & 0x100) != 0)
         {
           goto LABEL_48;
         }
 
         if ((has & 2) != 0)
         {
-          if ((v8 & 2) == 0 || self->_ajScansPerformedWithLocation != *(a3 + 16))
+          if ((v8 & 2) == 0 || self->_ajScansPerformedWithLocation != *(equal + 16))
           {
             goto LABEL_48;
           }
@@ -764,7 +764,7 @@ LABEL_48:
 
         if ((has & 4) != 0)
         {
-          if ((v8 & 4) == 0 || self->_ajScansPerformedWithoutLocation != *(a3 + 17))
+          if ((v8 & 4) == 0 || self->_ajScansPerformedWithoutLocation != *(equal + 17))
           {
             goto LABEL_48;
           }
@@ -777,7 +777,7 @@ LABEL_48:
 
         if ((has & 0x40) != 0)
         {
-          if ((v8 & 0x40) == 0 || self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount != *(a3 + 21))
+          if ((v8 & 0x40) == 0 || self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount != *(equal + 21))
           {
             goto LABEL_48;
           }
@@ -790,7 +790,7 @@ LABEL_48:
 
         if ((has & 0x80) != 0)
         {
-          if ((v8 & 0x80) == 0 || self->_rssiBitmap != *(a3 + 22))
+          if ((v8 & 0x80) == 0 || self->_rssiBitmap != *(equal + 22))
           {
             goto LABEL_48;
           }
@@ -803,7 +803,7 @@ LABEL_48:
 
         if ((has & 0x20) != 0)
         {
-          if ((v8 & 0x20) == 0 || self->_ccaBitmap != *(a3 + 20))
+          if ((v8 & 0x20) == 0 || self->_ccaBitmap != *(equal + 20))
           {
             goto LABEL_48;
           }
@@ -816,7 +816,7 @@ LABEL_48:
 
         if ((has & 8) != 0)
         {
-          if ((v8 & 8) == 0 || self->_bandScanCount24 != *(a3 + 18))
+          if ((v8 & 8) == 0 || self->_bandScanCount24 != *(equal + 18))
           {
             goto LABEL_48;
           }
@@ -830,7 +830,7 @@ LABEL_48:
         LOBYTE(IsEqual) = (v8 & 0x10) == 0;
         if ((has & 0x10) != 0)
         {
-          if ((v8 & 0x10) == 0 || self->_bandScanCount5 != *(a3 + 19))
+          if ((v8 & 0x10) == 0 || self->_bandScanCount5 != *(equal + 19))
           {
             goto LABEL_48;
           }
@@ -967,40 +967,40 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_timestamp = *(a3 + 7);
+    self->_timestamp = *(from + 7);
     *&self->_has |= 1u;
   }
 
-  v5 = [a3 scanTypesCountsCount];
-  if (v5)
+  scanTypesCountsCount = [from scanTypesCountsCount];
+  if (scanTypesCountsCount)
   {
-    v6 = v5;
+    v6 = scanTypesCountsCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWiFiMetricsManagerAutoJoinCumulative addScanTypesCount:](self, "addScanTypesCount:", [a3 scanTypesCountAtIndex:i]);
+      -[AWDWiFiMetricsManagerAutoJoinCumulative addScanTypesCount:](self, "addScanTypesCount:", [from scanTypesCountAtIndex:i]);
     }
   }
 
-  v8 = [a3 excludedDueToAJBlacklistCountsCount];
-  if (v8)
+  excludedDueToAJBlacklistCountsCount = [from excludedDueToAJBlacklistCountsCount];
+  if (excludedDueToAJBlacklistCountsCount)
   {
-    v9 = v8;
+    v9 = excludedDueToAJBlacklistCountsCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDWiFiMetricsManagerAutoJoinCumulative addExcludedDueToAJBlacklistCount:](self, "addExcludedDueToAJBlacklistCount:", [a3 excludedDueToAJBlacklistCountAtIndex:j]);
+      -[AWDWiFiMetricsManagerAutoJoinCumulative addExcludedDueToAJBlacklistCount:](self, "addExcludedDueToAJBlacklistCount:", [from excludedDueToAJBlacklistCountAtIndex:j]);
     }
   }
 
-  v11 = *(a3 + 48);
+  v11 = *(from + 48);
   if ((v11 & 0x100) != 0)
   {
-    self->_userChoseToAssociateToAJBlacklistedCount = *(a3 + 23);
+    self->_userChoseToAssociateToAJBlacklistedCount = *(from + 23);
     *&self->_has |= 0x100u;
-    v11 = *(a3 + 48);
+    v11 = *(from + 48);
     if ((v11 & 2) == 0)
     {
 LABEL_11:
@@ -1018,9 +1018,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  self->_ajScansPerformedWithLocation = *(a3 + 16);
+  self->_ajScansPerformedWithLocation = *(from + 16);
   *&self->_has |= 2u;
-  v11 = *(a3 + 48);
+  v11 = *(from + 48);
   if ((v11 & 4) == 0)
   {
 LABEL_12:
@@ -1033,9 +1033,9 @@ LABEL_12:
   }
 
 LABEL_21:
-  self->_ajScansPerformedWithoutLocation = *(a3 + 17);
+  self->_ajScansPerformedWithoutLocation = *(from + 17);
   *&self->_has |= 4u;
-  v11 = *(a3 + 48);
+  v11 = *(from + 48);
   if ((v11 & 0x40) == 0)
   {
 LABEL_13:
@@ -1048,9 +1048,9 @@ LABEL_13:
   }
 
 LABEL_22:
-  self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount = *(a3 + 21);
+  self->_didAssocTo5GHzAfterBroadcastPeriodicAllBandScanCount = *(from + 21);
   *&self->_has |= 0x40u;
-  v11 = *(a3 + 48);
+  v11 = *(from + 48);
   if ((v11 & 0x80) == 0)
   {
 LABEL_14:
@@ -1063,9 +1063,9 @@ LABEL_14:
   }
 
 LABEL_23:
-  self->_rssiBitmap = *(a3 + 22);
+  self->_rssiBitmap = *(from + 22);
   *&self->_has |= 0x80u;
-  v11 = *(a3 + 48);
+  v11 = *(from + 48);
   if ((v11 & 0x20) == 0)
   {
 LABEL_15:
@@ -1078,9 +1078,9 @@ LABEL_15:
   }
 
 LABEL_24:
-  self->_ccaBitmap = *(a3 + 20);
+  self->_ccaBitmap = *(from + 20);
   *&self->_has |= 0x20u;
-  v11 = *(a3 + 48);
+  v11 = *(from + 48);
   if ((v11 & 8) == 0)
   {
 LABEL_16:
@@ -1093,15 +1093,15 @@ LABEL_16:
   }
 
 LABEL_25:
-  self->_bandScanCount24 = *(a3 + 18);
+  self->_bandScanCount24 = *(from + 18);
   *&self->_has |= 8u;
-  if ((*(a3 + 48) & 0x10) == 0)
+  if ((*(from + 48) & 0x10) == 0)
   {
     return;
   }
 
 LABEL_17:
-  self->_bandScanCount5 = *(a3 + 19);
+  self->_bandScanCount5 = *(from + 19);
   *&self->_has |= 0x10u;
 }
 

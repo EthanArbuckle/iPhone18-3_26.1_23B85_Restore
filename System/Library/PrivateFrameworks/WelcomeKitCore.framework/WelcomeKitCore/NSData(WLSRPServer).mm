@@ -9,13 +9,13 @@
   v15 = *MEMORY[0x277D85DE8];
   v5 = a4;
   v6 = a3;
-  v7 = [v5 bytes];
+  bytes = [v5 bytes];
   v8 = [v5 length];
 
-  v9 = [v6 bytes];
+  bytes2 = [v6 bytes];
   v10 = [v6 length];
 
-  CCHmac(2u, v7, v8, v9, v10, macOut);
+  CCHmac(2u, bytes, v8, bytes2, v10, macOut);
   v11 = [MEMORY[0x277CBEA90] dataWithBytes:macOut length:32];
   v12 = *MEMORY[0x277D85DE8];
 

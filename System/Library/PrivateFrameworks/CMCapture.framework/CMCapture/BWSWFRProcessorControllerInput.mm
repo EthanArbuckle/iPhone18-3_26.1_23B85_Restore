@@ -1,5 +1,5 @@
 @interface BWSWFRProcessorControllerInput
-- (void)addFrame:(opaqueCMSampleBuffer *)a3;
+- (void)addFrame:(opaqueCMSampleBuffer *)frame;
 - (void)dealloc;
 @end
 
@@ -24,7 +24,7 @@
   [(BWStillImageProcessorControllerInput *)&v5 dealloc];
 }
 
-- (void)addFrame:(opaqueCMSampleBuffer *)a3
+- (void)addFrame:(opaqueCMSampleBuffer *)frame
 {
   [(BWStillImageProcessorControllerInput *)self delegate];
   if (self->_addFrameFailed)
@@ -32,7 +32,7 @@
     goto LABEL_11;
   }
 
-  if (a3 && (v6 = CMGetAttachment(a3, *off_1E798A3C8, 0)) != 0)
+  if (frame && (v6 = CMGetAttachment(frame, *off_1E798A3C8, 0)) != 0)
   {
     v7 = v6;
     v8 = [objc_msgSend(v6 objectForKeyedSubscript:{*off_1E798B150), "BOOLValue"}];
@@ -41,8 +41,8 @@
     {
       if (!self->_ambientFrame)
       {
-        self->_ambientFrame = a3;
-        CFRetain(a3);
+        self->_ambientFrame = frame;
+        CFRetain(frame);
         [OUTLINED_FUNCTION_64_0() input:? addAmbientFrame:?];
         goto LABEL_11;
       }
@@ -54,13 +54,13 @@
       OUTLINED_FUNCTION_6_34();
       if (v3)
       {
-        BWStillImageSampleBufferToDisplayString(a3);
+        BWStillImageSampleBufferToDisplayString(frame);
         OUTLINED_FUNCTION_1_17();
         OUTLINED_FUNCTION_4_37();
       }
 
       OUTLINED_FUNCTION_3_40();
-      BWStillImageSampleBufferToDisplayString(a3);
+      BWStillImageSampleBufferToDisplayString(frame);
       OUTLINED_FUNCTION_5_39();
       v21 = OUTLINED_FUNCTION_6_0();
       OUTLINED_FUNCTION_11();
@@ -90,8 +90,8 @@
 
       if (!self->_flashFrame)
       {
-        self->_flashFrame = a3;
-        CFRetain(a3);
+        self->_flashFrame = frame;
+        CFRetain(frame);
         [OUTLINED_FUNCTION_64_0() input:? addFlashFrame:?];
         goto LABEL_11;
       }
@@ -103,13 +103,13 @@
       OUTLINED_FUNCTION_6_34();
       if (v3)
       {
-        BWStillImageSampleBufferToDisplayString(a3);
+        BWStillImageSampleBufferToDisplayString(frame);
         OUTLINED_FUNCTION_1_17();
         OUTLINED_FUNCTION_4_37();
       }
 
       OUTLINED_FUNCTION_3_40();
-      BWStillImageSampleBufferToDisplayString(a3);
+      BWStillImageSampleBufferToDisplayString(frame);
       OUTLINED_FUNCTION_5_39();
       v21 = OUTLINED_FUNCTION_6_0();
       OUTLINED_FUNCTION_11();

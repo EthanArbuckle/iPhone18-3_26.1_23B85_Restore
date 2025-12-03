@@ -1,5 +1,5 @@
 @interface CertInfoTrustDetailsView
-- (CertInfoTrustDetailsView)initWithFrame:(CGRect)a3 trustProperties:(id)a4;
+- (CertInfoTrustDetailsView)initWithFrame:(CGRect)frame trustProperties:(id)properties;
 - (void)_appendRemainingCertificates;
 - (void)layoutSubviews;
 @end
@@ -44,25 +44,25 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (CertInfoTrustDetailsView)initWithFrame:(CGRect)a3 trustProperties:(id)a4
+- (CertInfoTrustDetailsView)initWithFrame:(CGRect)frame trustProperties:(id)properties
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  propertiesCopy = properties;
   v29.receiver = self;
   v29.super_class = CertInfoTrustDetailsView;
-  v10 = [(CertInfoTrustDetailsView *)&v29 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(CertInfoTrustDetailsView *)&v29 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = v9;
+    v12 = propertiesCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v13)
     {
@@ -95,21 +95,21 @@
 
     if ([v11 count])
     {
-      objc_storeStrong(&v10->_certificateViews, v11);
+      objc_storeStrong(&height->_certificateViews, v11);
     }
 
-    v20 = [(NSArray *)v10->_certificateViews objectAtIndex:0, v25];
-    currentCertView = v10->_currentCertView;
-    v10->_currentCertView = v20;
+    v20 = [(NSArray *)height->_certificateViews objectAtIndex:0, v25];
+    currentCertView = height->_currentCertView;
+    height->_currentCertView = v20;
 
-    [(CertInfoTrustDetailsView *)v10 addSubview:v10->_currentCertView];
-    [(CertInfoTrustDetailsView *)v10 _appendRemainingCertificates];
-    v22 = [MEMORY[0x277D75348] whiteColor];
-    [(CertInfoTrustDetailsView *)v10 setBackgroundColor:v22];
+    [(CertInfoTrustDetailsView *)height addSubview:height->_currentCertView];
+    [(CertInfoTrustDetailsView *)height _appendRemainingCertificates];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CertInfoTrustDetailsView *)height setBackgroundColor:whiteColor];
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews

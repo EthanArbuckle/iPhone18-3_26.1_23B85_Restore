@@ -3,21 +3,21 @@
 - (id)getMax;
 - (id)getMin;
 - (id)getStats;
-- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)automaton withOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneIndexTerms
 
-- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)automaton withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  v6 = [(OrgApacheLuceneIndexTerms *)self iterator];
-  if (!a3)
+  iterator = [(OrgApacheLuceneIndexTerms *)self iterator];
+  if (!automaton)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = v6;
-  v8 = *(a3 + 1);
+  v7 = iterator;
+  v8 = *(automaton + 1);
   if ((atomic_load_explicit(OrgApacheLuceneUtilAutomatonCompiledAutomaton_AUTOMATON_TYPEEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000918AC();
@@ -29,16 +29,16 @@
     objc_exception_throw(v11);
   }
 
-  if (a4)
+  if (ref)
   {
     v9 = [OrgApacheLuceneIndexTerms__1 alloc];
-    JreStrongAssign((&v9->super.savedStates_ + 1), a4);
-    OrgApacheLuceneIndexAutomatonTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withOrgApacheLuceneUtilAutomatonCompiledAutomaton_(v9, v7, a3);
+    JreStrongAssign((&v9->super.savedStates_ + 1), ref);
+    OrgApacheLuceneIndexAutomatonTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withOrgApacheLuceneUtilAutomatonCompiledAutomaton_(v9, v7, automaton);
   }
 
   else
   {
-    v9 = new_OrgApacheLuceneIndexAutomatonTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withOrgApacheLuceneUtilAutomatonCompiledAutomaton_(v7, a3);
+    v9 = new_OrgApacheLuceneIndexAutomatonTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withOrgApacheLuceneUtilAutomatonCompiledAutomaton_(v7, automaton);
   }
 
   return v9;
@@ -46,13 +46,13 @@
 
 - (id)getMin
 {
-  v2 = [(OrgApacheLuceneIndexTerms *)self iterator];
-  if (!v2)
+  iterator = [(OrgApacheLuceneIndexTerms *)self iterator];
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 next];
+  return [iterator next];
 }
 
 - (id)getMax
@@ -66,25 +66,25 @@
   v4 = result;
   if ((result & 0x8000000000000000) == 0)
   {
-    v5 = [(OrgApacheLuceneIndexTerms *)self iterator];
-    v6 = v5;
-    if (!v5)
+    iterator = [(OrgApacheLuceneIndexTerms *)self iterator];
+    v6 = iterator;
+    if (!iterator)
     {
       JreThrowNullPointerException();
     }
 
-    [v5 seekExactWithLong:v4 - 1];
+    [iterator seekExactWithLong:v4 - 1];
     return [v6 term];
   }
 
-  v7 = [(OrgApacheLuceneIndexTerms *)self iterator];
-  if (!v7)
+  iterator2 = [(OrgApacheLuceneIndexTerms *)self iterator];
+  if (!iterator2)
   {
     JreThrowNullPointerException();
   }
 
-  v8 = v7;
-  result = [v7 next];
+  v8 = iterator2;
+  result = [iterator2 next];
   if (result)
   {
     v9 = new_OrgApacheLuceneUtilBytesRefBuilder_init();
@@ -162,7 +162,7 @@ LABEL_17:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray newArrayWithLength:0 type:OrgApacheLuceneIndexTerms_class_()];
     JreStrongAssignAndConsume(&OrgApacheLuceneIndexTerms_EMPTY_ARRAY_, v2);

@@ -1,6 +1,6 @@
 @interface MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent
 - (MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent);
-  v5 = [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)self softwareVersion];
-  [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)v4 setSoftwareVersion:v5];
+  softwareVersion = [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)self softwareVersion];
+  [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)v4 setSoftwareVersion:softwareVersion];
 
-  v6 = [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)self productID];
-  [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)v4 setProductID:v6];
+  productID = [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)self productID];
+  [(MTROTASoftwareUpdateRequestorClusterVersionAppliedEvent *)v4 setProductID:productID];
 
   return v4;
 }

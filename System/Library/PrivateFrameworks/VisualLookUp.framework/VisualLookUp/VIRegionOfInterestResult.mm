@@ -1,21 +1,21 @@
 @interface VIRegionOfInterestResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)normalizedBoundingBox;
-- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)a3 glyphName:(id)a4 resultItems:(id)a5 searchSections:(id)a6;
-- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)a3 resultItems:(id)a4 searchSections:(id)a5;
+- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)box glyphName:(id)name resultItems:(id)items searchSections:(id)sections;
+- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)box resultItems:(id)items searchSections:(id)sections;
 - (unint64_t)hash;
 @end
 
 @implementation VIRegionOfInterestResult
 
-- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)a3 resultItems:(id)a4 searchSections:(id)a5
+- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)box resultItems:(id)items searchSections:(id)sections
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  itemsCopy = items;
+  sectionsCopy = sections;
   v29.receiver = self;
   v29.super_class = VIRegionOfInterestResult;
   v13 = [(VIRegionOfInterestResult *)&v29 init];
@@ -39,11 +39,11 @@
     glyphName = v14->_glyphName;
     v14->_glyphName = &stru_1F553A170;
 
-    v24 = [v11 copy];
+    v24 = [itemsCopy copy];
     resultItems = v14->_resultItems;
     v14->_resultItems = v24;
 
-    v26 = [v12 copy];
+    v26 = [sectionsCopy copy];
     searchSections = v14->_searchSections;
     v14->_searchSections = v26;
   }
@@ -51,15 +51,15 @@
   return v14;
 }
 
-- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)a3 glyphName:(id)a4 resultItems:(id)a5 searchSections:(id)a6
+- (VIRegionOfInterestResult)initWithNormalizedBoundingBox:(CGRect)box glyphName:(id)name resultItems:(id)items searchSections:(id)sections
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  nameCopy = name;
+  itemsCopy = items;
+  sectionsCopy = sections;
   v32.receiver = self;
   v32.super_class = VIRegionOfInterestResult;
   v17 = [(VIRegionOfInterestResult *)&v32 init];
@@ -80,12 +80,12 @@
     regionID = v18->_regionID;
     v18->_regionID = v25;
 
-    objc_storeStrong(&v18->_glyphName, a4);
-    v27 = [v15 copy];
+    objc_storeStrong(&v18->_glyphName, name);
+    v27 = [itemsCopy copy];
     resultItems = v18->_resultItems;
     v18->_resultItems = v27;
 
-    v29 = [v16 copy];
+    v29 = [sectionsCopy copy];
     searchSections = v18->_searchSections;
     v18->_searchSections = v29;
   }
@@ -93,10 +93,10 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -106,7 +106,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -116,12 +116,12 @@
 
     v6 = v5;
     resultItems = self->_resultItems;
-    v8 = [(VIRegionOfInterestResult *)v6 resultItems];
-    if (VIObjectIsEqual(resultItems, v8))
+    resultItems = [(VIRegionOfInterestResult *)v6 resultItems];
+    if (VIObjectIsEqual(resultItems, resultItems))
     {
       searchSections = self->_searchSections;
-      v10 = [(VIRegionOfInterestResult *)v6 searchSections];
-      if (VIObjectIsEqual(searchSections, v10))
+      searchSections = [(VIRegionOfInterestResult *)v6 searchSections];
+      if (VIObjectIsEqual(searchSections, searchSections))
       {
         [(VIRegionOfInterestResult *)v6 normalizedBoundingBox];
         v17.origin.x = v11;

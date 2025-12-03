@@ -7,7 +7,7 @@
 
 - (SUTouchCaptureView)addTouchCaptureViewWithTag:()SUTouchCapture
 {
-  v5 = [a1 viewWithTag:?];
+  v5 = [self viewWithTag:?];
   if (v5)
   {
     v6 = v5;
@@ -20,10 +20,10 @@
 
   else
   {
-    [a1 bounds];
+    [self bounds];
     v6 = [[SUTouchCaptureView alloc] initWithFrame:v7, v8, v9, v10];
     [(SUTouchCaptureView *)v6 setTag:a3];
-    [a1 addSubview:v6];
+    [self addSubview:v6];
   }
 
   return v6;
@@ -32,13 +32,13 @@
 - (void)removeTouchCaptureViewWithTag:()SUTouchCapture
 {
   v14 = *MEMORY[0x1E69E9840];
-  v1 = [a1 viewWithTag:?];
-  v2 = [v1 allTargets];
+  v1 = [self viewWithTag:?];
+  allTargets = [v1 allTargets];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [allTargets countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -50,14 +50,14 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allTargets);
         }
 
         [v1 removeTarget:*(*(&v9 + 1) + 8 * v6++) action:0 forControlEvents:0xFFFFFFFFLL];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allTargets countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);

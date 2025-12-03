@@ -1,18 +1,18 @@
 @interface TrafficIncidentsDateFormatter
 - (TrafficIncidentsDateFormatter)init;
-- (id)lastUpdatedUIStringForDate:(id)a3;
+- (id)lastUpdatedUIStringForDate:(id)date;
 @end
 
 @implementation TrafficIncidentsDateFormatter
 
-- (id)lastUpdatedUIStringForDate:(id)a3
+- (id)lastUpdatedUIStringForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"TrafficIncidentLastUpdateDate" value:@"localized string not found" table:0];
 
-  v7 = [(TrafficIncidentsDateFormatter *)self dateStringForDate:v4];
-  v8 = [(TrafficIncidentsDateFormatter *)self timeStringForDate:v4];
+  v7 = [(TrafficIncidentsDateFormatter *)self dateStringForDate:dateCopy];
+  v8 = [(TrafficIncidentsDateFormatter *)self timeStringForDate:dateCopy];
 
   v9 = [NSString localizedStringWithFormat:v6, v7, v8];
 

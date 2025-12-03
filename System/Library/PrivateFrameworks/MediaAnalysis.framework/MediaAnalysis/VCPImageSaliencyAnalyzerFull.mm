@@ -1,18 +1,18 @@
 @interface VCPImageSaliencyAnalyzerFull
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6;
-- (int)getSalientRegions:(id)a3;
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4;
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth;
+- (int)getSalientRegions:(id)regions;
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height;
 @end
 
 @implementation VCPImageSaliencyAnalyzerFull
 
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height
 {
-  v5 = [VCPCNNMetalContext supportGPU:*&a3];
-  v6 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v7 = [v6 resourceURL];
+  v5 = [VCPCNNMetalContext supportGPU:*&width];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v8 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_saliency.dat" relativeToURL:v7];
+  v8 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_saliency.dat" relativeToURL:resourceURL];
   modelURL = self->_modelURL;
   self->_modelURL = v8;
 
@@ -99,14 +99,14 @@
   return v13;
 }
 
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth
 {
-  v6 = *&a4;
-  *a5 = a3;
-  *a6 = a4;
-  v8 = *a5;
-  v9 = [(VCPCNNModel *)self->_model getGPUContext];
-  v10 = [VCPCNNData cnnDataWithPlane:4 height:v8 width:v6 context:v9];
+  v6 = *&width;
+  *height = buffer;
+  *inputWidth = width;
+  v8 = *height;
+  getGPUContext = [(VCPCNNModel *)self->_model getGPUContext];
+  v10 = [VCPCNNData cnnDataWithPlane:4 height:v8 width:v6 context:getGPUContext];
   input = self->_input;
   self->_input = v10;
 
@@ -116,23 +116,23 @@
   return [(VCPCNNData *)v12 data];
 }
 
-- (int)getSalientRegions:(id)a3
+- (int)getSalientRegions:(id)regions
 {
-  v4 = [(VCPCNNModel *)self->_model dynamicForward:self->_input paramFileUrl:self->_modelURL cancel:a3];
+  v4 = [(VCPCNNModel *)self->_model dynamicForward:self->_input paramFileUrl:self->_modelURL cancel:regions];
   if (!v4)
   {
-    v5 = [(VCPCNNModel *)self->_model output];
-    v6 = [v5 size];
+    output = [(VCPCNNModel *)self->_model output];
+    v6 = [output size];
     v7 = [v6 objectAtIndexedSubscript:1];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
 
-    v9 = [(VCPCNNModel *)self->_model output];
-    v10 = [v9 size];
+    output2 = [(VCPCNNModel *)self->_model output];
+    v10 = [output2 size];
     v11 = [v10 objectAtIndexedSubscript:2];
-    v12 = [v11 intValue];
+    intValue2 = [v11 intValue];
 
-    v13 = [(VCPCNNModel *)self->_model output];
-    v4 = -[VCPImageSaliencyAnalyzer generateSalientRegion:outHeight:outWidth:](self, "generateSalientRegion:outHeight:outWidth:", [v13 data], v8, v12);
+    output3 = [(VCPCNNModel *)self->_model output];
+    v4 = -[VCPImageSaliencyAnalyzer generateSalientRegion:outHeight:outWidth:](self, "generateSalientRegion:outHeight:outWidth:", [output3 data], intValue, intValue2);
   }
 
   return v4;

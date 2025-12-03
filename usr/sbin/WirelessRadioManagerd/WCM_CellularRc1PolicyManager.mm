@@ -1,13 +1,13 @@
 @interface WCM_CellularRc1PolicyManager
-- (BOOL)isNBDynamicPolicyUpdateRequired:(id)a3;
+- (BOOL)isNBDynamicPolicyUpdateRequired:(id)required;
 - (WCM_CellularRc1PolicyManager)init;
 - (id)calculateNBDynamicPolicy;
 - (void)handleCellularNetworkUpdate;
-- (void)handleCellularPowerState:(BOOL)a3;
-- (void)sendRc1Message:(id)a3;
+- (void)handleCellularPowerState:(BOOL)state;
+- (void)sendRc1Message:(id)message;
 - (void)updateCellularR1CoexBandStatus;
-- (void)updateControllerSession:(id)a3 ofId:(int)a4;
-- (void)updateRc1ChannelNumber:(unsigned int)a3 NbChannelBitmask:(unsigned int)a4;
+- (void)updateControllerSession:(id)session ofId:(int)id;
+- (void)updateRc1ChannelNumber:(unsigned int)number NbChannelBitmask:(unsigned int)bitmask;
 - (void)updateRc1OverallConfig;
 @end
 
@@ -15,59 +15,59 @@
 
 - (void)handleCellularNetworkUpdate
 {
-  v31 = [(WCM_CellularRc1PolicyManager *)self cellularController];
-  v3 = [(WCM_CellularRc1PolicyManager *)self platformManager];
+  cellularController = [(WCM_CellularRc1PolicyManager *)self cellularController];
+  platformManager = [(WCM_CellularRc1PolicyManager *)self platformManager];
   v4 = +[WCM_PolicyManager singleton];
   [WCM_Logging logLevel:2 message:@"WCM_CellularRc1PolicyManager handleCellularNetworkUpdate"];
-  if (!v31 && v4)
+  if (!cellularController && v4)
   {
-    v31 = [v4 cellularController];
-    v5 = [v4 cellularController];
+    cellularController = [v4 cellularController];
+    cellularController2 = [v4 cellularController];
     cellularController = self->_cellularController;
-    self->_cellularController = v5;
+    self->_cellularController = cellularController2;
   }
 
-  v7 = [v3 wcmCellRc1CoexIssueTable];
+  wcmCellRc1CoexIssueTable = [platformManager wcmCellRc1CoexIssueTable];
 
-  if (v7)
+  if (wcmCellRc1CoexIssueTable)
   {
-    v8 = [v31 bandInfoType];
-    v9 = [v4 activeCoexFeatures];
-    v10 = [v9 containsObject:@"WatchReportRC1IssueChannel"];
+    bandInfoType = [cellularController bandInfoType];
+    activeCoexFeatures = [v4 activeCoexFeatures];
+    v10 = [activeCoexFeatures containsObject:@"WatchReportRC1IssueChannel"];
 
     if (v10)
     {
-      [v31 dlCenterFreq];
+      [cellularController dlCenterFreq];
       v12 = v11;
-      [v31 dlBandwidth];
+      [cellularController dlBandwidth];
       v14 = (v12 - v13 * 0.5) * 1000000.0;
-      [v31 dlCenterFreq];
+      [cellularController dlCenterFreq];
       v16 = v15;
-      [v31 dlBandwidth];
+      [cellularController dlBandwidth];
       v18 = (v16 + v17 * 0.5) * 1000000.0;
-      [v31 ulCenterFreq];
+      [cellularController ulCenterFreq];
       v20 = v19;
-      [v31 ulBandwidth];
+      [cellularController ulBandwidth];
       v22 = (v20 - v21 * 0.5) * 1000000.0;
-      [v31 ulCenterFreq];
+      [cellularController ulCenterFreq];
       v24 = v23;
-      [v31 ulBandwidth];
-      [(WCM_CellularRc1PolicyManager *)self WatchReportRc1ChannelsForGpioBlankingByCellBandInfoType:v8 CellDlLowFreq:v14 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:(v24 + v25 * 0.5) * 1000000.0];
+      [cellularController ulBandwidth];
+      [(WCM_CellularRc1PolicyManager *)self WatchReportRc1ChannelsForGpioBlankingByCellBandInfoType:bandInfoType CellDlLowFreq:v14 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:(v24 + v25 * 0.5) * 1000000.0];
     }
 
-    v26 = [v4 activeCoexFeatures];
-    v27 = [v26 containsObject:@"UseWCMAriDriver"];
+    activeCoexFeatures2 = [v4 activeCoexFeatures];
+    v27 = [activeCoexFeatures2 containsObject:@"UseWCMAriDriver"];
 
     if (v27)
     {
-      v28 = [(WCM_CellularRc1PolicyManager *)self calculateNBDynamicPolicy];
-      if (v28 && [(WCM_CellularRc1PolicyManager *)self isNBDynamicPolicyUpdateRequired:v28])
+      calculateNBDynamicPolicy = [(WCM_CellularRc1PolicyManager *)self calculateNBDynamicPolicy];
+      if (calculateNBDynamicPolicy && [(WCM_CellularRc1PolicyManager *)self isNBDynamicPolicyUpdateRequired:calculateNBDynamicPolicy])
       {
         v29 = +[WCM_AriCoexCommandDriver singleton];
         v30 = v29;
         if (v29)
         {
-          [v29 handleRc1DynamicPolicy:v28 SubId:0];
+          [v29 handleRc1DynamicPolicy:calculateNBDynamicPolicy SubId:0];
         }
       }
     }
@@ -78,28 +78,28 @@
 
 - (void)updateCellularR1CoexBandStatus
 {
-  v36 = [(WCM_CellularRc1PolicyManager *)self cellularController];
-  v3 = [(WCM_CellularRc1PolicyManager *)self platformManager];
-  v4 = [v36 getActiveULCAConfig];
-  v5 = [v36 bandInfoType];
-  [v36 dlCenterFreq];
+  cellularController = [(WCM_CellularRc1PolicyManager *)self cellularController];
+  platformManager = [(WCM_CellularRc1PolicyManager *)self platformManager];
+  getActiveULCAConfig = [cellularController getActiveULCAConfig];
+  bandInfoType = [cellularController bandInfoType];
+  [cellularController dlCenterFreq];
   v7 = v6;
-  [v36 dlBandwidth];
+  [cellularController dlBandwidth];
   v9 = v8;
-  [v36 dlCenterFreq];
+  [cellularController dlCenterFreq];
   v11 = v10;
-  [v36 dlBandwidth];
+  [cellularController dlBandwidth];
   v13 = v12;
-  [v36 ulCenterFreq];
+  [cellularController ulCenterFreq];
   v15 = v14;
-  [v36 ulBandwidth];
+  [cellularController ulBandwidth];
   v17 = v16;
-  [v36 ulCenterFreq];
+  [cellularController ulCenterFreq];
   v19 = v18;
-  [v36 ulBandwidth];
-  if (v4)
+  [cellularController ulBandwidth];
+  if (getActiveULCAConfig)
   {
-    v21 = (v4 + 16);
+    v21 = (getActiveULCAConfig + 16);
     v22 = 31;
     do
     {
@@ -111,8 +111,8 @@
       v28 = *(v21 - 1) * 0.5;
       v29 = (v27 - v28) * 1000000.0;
       v30 = (v27 + v28) * 1000000.0;
-      v31 = [v3 wcmCellRc1CoexIssueTable];
-      v32 = [v31 isCellularInRc1CoexBand:v5 CellDlLowFreq:self->Rc1Channel cellDlHighFreq:v25 cellUlLowFreq:v26 cellUlHighFreq:v29 RC1ChannelBitmask:v30];
+      wcmCellRc1CoexIssueTable = [platformManager wcmCellRc1CoexIssueTable];
+      v32 = [wcmCellRc1CoexIssueTable isCellularInRc1CoexBand:bandInfoType CellDlLowFreq:self->Rc1Channel cellDlHighFreq:v25 cellUlLowFreq:v26 cellUlHighFreq:v29 RC1ChannelBitmask:v30];
 
       if (v32)
       {
@@ -129,8 +129,8 @@
   else
   {
     v33 = (v19 + v20 * 0.5) * 1000000.0;
-    v34 = [v3 wcmCellRc1CoexIssueTable];
-    v32 = [v34 isCellularInRc1CoexBand:v5 CellDlLowFreq:self->Rc1Channel cellDlHighFreq:(v7 - v9 * 0.5) * 1000000.0 cellUlLowFreq:(v11 + v13 * 0.5) * 1000000.0 cellUlHighFreq:(v15 - v17 * 0.5) * 1000000.0 RC1ChannelBitmask:v33];
+    wcmCellRc1CoexIssueTable2 = [platformManager wcmCellRc1CoexIssueTable];
+    v32 = [wcmCellRc1CoexIssueTable2 isCellularInRc1CoexBand:bandInfoType CellDlLowFreq:self->Rc1Channel cellDlHighFreq:(v7 - v9 * 0.5) * 1000000.0 cellUlLowFreq:(v11 + v13 * 0.5) * 1000000.0 cellUlHighFreq:(v15 - v17 * 0.5) * 1000000.0 RC1ChannelBitmask:v33];
   }
 
   if (self->isCellInRc1CoexBand != v32)
@@ -162,38 +162,38 @@
   return v3;
 }
 
-- (void)updateControllerSession:(id)a3 ofId:(int)a4
+- (void)updateControllerSession:(id)session ofId:(int)id
 {
-  v7 = a3;
-  if (a4 == 29)
+  sessionCopy = session;
+  if (id == 29)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_rcu1Controller, a3);
+    v8 = sessionCopy;
+    objc_storeStrong(&self->_rcu1Controller, session);
   }
 
   else
   {
-    if (a4 != 3)
+    if (id != 3)
     {
       goto LABEL_6;
     }
 
-    v8 = v7;
-    objc_storeStrong(&self->_cellularController, a3);
+    v8 = sessionCopy;
+    objc_storeStrong(&self->_cellularController, session);
     [WCM_Logging logLevel:2 message:@"RC1 Policy manager update Cellular Controller = %p", self->_cellularController];
   }
 
-  v7 = v8;
+  sessionCopy = v8;
 LABEL_6:
 }
 
-- (BOOL)isNBDynamicPolicyUpdateRequired:(id)a3
+- (BOOL)isNBDynamicPolicyUpdateRequired:(id)required
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  requiredCopy = required;
+  v5 = requiredCopy;
+  if (requiredCopy)
   {
-    v6 = [v4 count];
+    v6 = [requiredCopy count];
   }
 
   else
@@ -218,7 +218,7 @@ LABEL_25:
   }
 
   v8 = [[NSSet alloc] initWithArray:v5];
-  v25 = self;
+  selfCopy = self;
   v9 = [[NSSet alloc] initWithArray:self->cachedNBDynamicPolicy];
   v30 = 0u;
   v31 = 0u;
@@ -296,7 +296,7 @@ LABEL_14:
 LABEL_24:
 
     v5 = v24;
-    self = v25;
+    self = selfCopy;
     goto LABEL_25;
   }
 
@@ -310,21 +310,21 @@ LABEL_26:
 
 - (id)calculateNBDynamicPolicy
 {
-  v3 = [(WCM_CellularRc1PolicyManager *)self cellularController];
-  v4 = [(WCM_CellularRc1PolicyManager *)self platformManager];
+  cellularController = [(WCM_CellularRc1PolicyManager *)self cellularController];
+  platformManager = [(WCM_CellularRc1PolicyManager *)self platformManager];
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v3 getActiveULCAConfig];
-  if (v6)
+  getActiveULCAConfig = [cellularController getActiveULCAConfig];
+  if (getActiveULCAConfig)
   {
-    [WCM_Logging logLevel:2 message:@"calculateNBDynamicPolicy lte_nr_scell.totalvalidCarriers = %d", v6[576]];
-    v7 = v6[576];
+    [WCM_Logging logLevel:2 message:@"calculateNBDynamicPolicy lte_nr_scell.totalvalidCarriers = %d", getActiveULCAConfig[576]];
+    v7 = getActiveULCAConfig[576];
     if (v7 <= 0x20)
     {
-      v23 = v3;
+      v23 = cellularController;
       if (v7)
       {
         v8 = 0;
-        v9 = v6 + 16;
+        v9 = getActiveULCAConfig + 16;
         do
         {
           v10 = *(v9 - 6);
@@ -336,11 +336,11 @@ LABEL_26:
           v16 = (v14 - v15 * 0.5) * 1000000.0;
           v17 = (v14 + v15 * 0.5) * 1000000.0;
           [WCM_Logging logLevel:2 message:@"calculateNBDynamicPolicy carrier[%d]: ulCenterFreq_MHz = %f, ulBandwidth=%f", v8, *&v14, *&v15];
-          v18 = [v4 wcmCellRc1CoexIssueTable];
-          v19 = [v18 createDynamicRc1NbCoexPolicyByCellBandInfoType:*v9 CellDlLowFreq:4 cellDlHighFreq:v12 cellUlLowFreq:v13 cellUlHighFreq:v16 RC1Channel:v17];
+          wcmCellRc1CoexIssueTable = [platformManager wcmCellRc1CoexIssueTable];
+          v19 = [wcmCellRc1CoexIssueTable createDynamicRc1NbCoexPolicyByCellBandInfoType:*v9 CellDlLowFreq:4 cellDlHighFreq:v12 cellUlLowFreq:v13 cellUlHighFreq:v16 RC1Channel:v17];
 
-          v20 = [v4 wcmCellRc1CoexIssueTable];
-          v21 = [v20 createDynamicRc1NbCoexPolicyByCellBandInfoType:*v9 CellDlLowFreq:8 cellDlHighFreq:v12 cellUlLowFreq:v13 cellUlHighFreq:v16 RC1Channel:v17];
+          wcmCellRc1CoexIssueTable2 = [platformManager wcmCellRc1CoexIssueTable];
+          v21 = [wcmCellRc1CoexIssueTable2 createDynamicRc1NbCoexPolicyByCellBandInfoType:*v9 CellDlLowFreq:8 cellDlHighFreq:v12 cellUlLowFreq:v13 cellUlHighFreq:v16 RC1Channel:v17];
 
           if (v19 && [v19 count])
           {
@@ -357,17 +357,17 @@ LABEL_26:
           ++v8;
         }
 
-        while (v8 < v6[576]);
+        while (v8 < getActiveULCAConfig[576]);
       }
 
-      v6 = v5;
-      v3 = v23;
+      getActiveULCAConfig = v5;
+      cellularController = v23;
     }
 
     else
     {
       [WCM_Logging logLevel:2 message:@"calculateNBDynamicPolicy lte_nr_scell has invalid total carriers"];
-      v6 = 0;
+      getActiveULCAConfig = 0;
     }
   }
 
@@ -376,13 +376,13 @@ LABEL_26:
     [WCM_Logging logLevel:2 message:@"calculateNBDynamicPolicy lte_nr_scell is NULL"];
   }
 
-  return v6;
+  return getActiveULCAConfig;
 }
 
-- (void)updateRc1ChannelNumber:(unsigned int)a3 NbChannelBitmask:(unsigned int)a4
+- (void)updateRc1ChannelNumber:(unsigned int)number NbChannelBitmask:(unsigned int)bitmask
 {
   self->Rc1Channel = 0;
-  if (a3 == 5)
+  if (number == 5)
   {
     v4 = 1;
   }
@@ -390,7 +390,7 @@ LABEL_26:
   else
   {
     v4 = 0;
-    if (a3 != 9)
+    if (number != 9)
     {
       goto LABEL_6;
     }
@@ -400,25 +400,25 @@ LABEL_26:
 
   self->Rc1Channel = v4;
 LABEL_6:
-  if ((a4 & 0x1F) != 0)
+  if ((bitmask & 0x1F) != 0)
   {
-    v5 = v4 & 0xFFFFFFFB | (4 * (a4 & 1));
-    if ((a4 & 2) != 0)
+    v5 = v4 & 0xFFFFFFFB | (4 * (bitmask & 1));
+    if ((bitmask & 2) != 0)
     {
       v5 |= 0x18u;
     }
 
-    if ((a4 & 4) != 0)
+    if ((bitmask & 4) != 0)
     {
       v5 |= 0x28u;
     }
 
-    if ((a4 & 8) != 0)
+    if ((bitmask & 8) != 0)
     {
       v5 |= 0x48u;
     }
 
-    if ((a4 & 0x10) != 0)
+    if ((bitmask & 0x10) != 0)
     {
       v5 |= 0x88u;
     }
@@ -429,16 +429,16 @@ LABEL_6:
   [(WCM_CellularRc1PolicyManager *)self updateCellularR1CoexBandStatus];
 }
 
-- (void)sendRc1Message:(id)a3
+- (void)sendRc1Message:(id)message
 {
   rcu1Controller = self->_rcu1Controller;
   if (rcu1Controller)
   {
-    [(WCM_Controller *)rcu1Controller sendMessage:1500 withArgs:a3];
+    [(WCM_Controller *)rcu1Controller sendMessage:1500 withArgs:message];
   }
 }
 
-- (void)handleCellularPowerState:(BOOL)a3
+- (void)handleCellularPowerState:(BOOL)state
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v4, "kWCMHToRCU1CellularStatus", 1);

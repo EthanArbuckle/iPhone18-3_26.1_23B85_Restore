@@ -1,17 +1,17 @@
 @interface AMSUIDynamicImpressionItem
-- (AMSUIDynamicImpressionItem)initWithFrame:(CGRect)a3 impressionMetrics:(id)a4;
+- (AMSUIDynamicImpressionItem)initWithFrame:(CGRect)frame impressionMetrics:(id)metrics;
 - (CGRect)frame;
 @end
 
 @implementation AMSUIDynamicImpressionItem
 
-- (AMSUIDynamicImpressionItem)initWithFrame:(CGRect)a3 impressionMetrics:(id)a4
+- (AMSUIDynamicImpressionItem)initWithFrame:(CGRect)frame impressionMetrics:(id)metrics
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  metricsCopy = metrics;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -30,7 +30,7 @@
 
   v11 = v10;
   _Block_object_dispose(&v15, 8);
-  v12 = [[v10 alloc] initWithFrame:v9 impressionMetrics:{x, y, width, height}];
+  v12 = [[v10 alloc] initWithFrame:metricsCopy impressionMetrics:{x, y, width, height}];
 
   return v12;
 }

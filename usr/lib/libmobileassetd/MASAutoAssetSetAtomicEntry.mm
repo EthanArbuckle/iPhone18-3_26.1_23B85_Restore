@@ -1,22 +1,22 @@
 @interface MASAutoAssetSetAtomicEntry
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedArrayFromFramework:(id)a3;
-+ (id)newShimmedArrayToFramework:(id)a3;
-+ (id)newShimmedDictionaryFromFramework:(id)a3;
-+ (id)newShimmedDictionaryToFramework:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedArrayFromFramework:(id)framework;
++ (id)newShimmedArrayToFramework:(id)framework;
++ (id)newShimmedDictionaryFromFramework:(id)framework;
++ (id)newShimmedDictionaryToFramework:(id)framework;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetSetAtomicEntry
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = [v3 setByAddingObject:objc_opt_class()];
+    v4 = [classesCopy setByAddingObject:objc_opt_class()];
 
     if (__isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class())
     {
@@ -34,17 +34,17 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MASAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MASAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
     v6 = [MAAutoAssetSetAtomicEntry alloc];
-    v7 = [v3 fullAssetSelector];
-    v8 = [v3 assetID];
-    v9 = [v3 localContentURL];
-    v10 = [v3 assetAttributes];
-    v11 = [v6 initWithFullAssetSelector:v7 withAssetID:v8 withLocalContentURL:v9 withAssetAttributes:v10 inhibitedFromEmergencyRemoval:{objc_msgSend(v3, "inhibitedFromEmergencyRemoval")}];
+    fullAssetSelector = [frameworkCopy fullAssetSelector];
+    assetID = [frameworkCopy assetID];
+    localContentURL = [frameworkCopy localContentURL];
+    assetAttributes = [frameworkCopy assetAttributes];
+    v11 = [v6 initWithFullAssetSelector:fullAssetSelector withAssetID:assetID withLocalContentURL:localContentURL withAssetAttributes:assetAttributes inhibitedFromEmergencyRemoval:{objc_msgSend(frameworkCopy, "inhibitedFromEmergencyRemoval")}];
   }
 
   else
@@ -55,20 +55,20 @@
   return v11;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v7 = [MANAutoAssetSetAtomicEntry alloc];
-    v8 = [v6 fullAssetSelector];
-    v9 = [v6 assetID];
-    v10 = [v6 localContentURL];
-    v11 = [v6 assetAttributes];
-    v12 = [v6 inhibitedFromEmergencyRemoval];
+    fullAssetSelector = [v6 fullAssetSelector];
+    assetID = [v6 assetID];
+    localContentURL = [v6 localContentURL];
+    assetAttributes = [v6 assetAttributes];
+    inhibitedFromEmergencyRemoval = [v6 inhibitedFromEmergencyRemoval];
 
-    v13 = [(MANAutoAssetSetAtomicEntry *)v7 initWithFullAssetSelector:v8 withAssetID:v9 withLocalContentURL:v10 withAssetAttributes:v11 inhibitedFromEmergencyRemoval:v12];
+    v13 = [(MANAutoAssetSetAtomicEntry *)v7 initWithFullAssetSelector:fullAssetSelector withAssetID:assetID withLocalContentURL:localContentURL withAssetAttributes:assetAttributes inhibitedFromEmergencyRemoval:inhibitedFromEmergencyRemoval];
   }
 
   else
@@ -79,17 +79,17 @@
   return v13;
 }
 
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  messageCopy = message;
+  keyCopy = key;
+  v7 = keyCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (messageCopy && keyCopy)
   {
     if (__isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v9 = [MAAutoAssetSetAtomicEntry alloc], v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v5 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      v11 = [messageCopy safeObjectForKey:v7 ofClass:objc_opt_class()];
       v8 = [MASAutoAssetSetAtomicEntry newShimmedFromFramework:v11];
     }
 
@@ -102,29 +102,29 @@
   return v8;
 }
 
-+ (id)newShimmedArrayToFramework:(id)a3
++ (id)newShimmedArrayToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && (p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt, objc_opt_class()) && (v5 = [MAAutoAssetSetAtomicEntry alloc], v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && (p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt, objc_opt_class()) && (v5 = [MAAutoAssetSetAtomicEntry alloc], v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
   {
     v7 = objc_alloc_init(NSMutableArray);
-    v8 = [v3 count];
+    v8 = [frameworkCopy count];
     if (v8 >= 1)
     {
       v9 = v8;
       v20 = v7;
       for (i = 0; i != v9; ++i)
       {
-        v11 = [v3 objectAtIndex:i];
+        v11 = [frameworkCopy objectAtIndex:i];
         if (v11)
         {
           v12 = p_weak_ivar_lyt;
           v13 = objc_alloc(p_weak_ivar_lyt[281]);
-          v14 = [v11 fullAssetSelector];
-          v15 = [v11 assetID];
-          v16 = [v11 localContentURL];
-          v17 = [v11 assetAttributes];
-          v18 = [v13 initWithFullAssetSelector:v14 withAssetID:v15 withLocalContentURL:v16 withAssetAttributes:v17 inhibitedFromEmergencyRemoval:{objc_msgSend(v11, "inhibitedFromEmergencyRemoval")}];
+          fullAssetSelector = [v11 fullAssetSelector];
+          assetID = [v11 assetID];
+          localContentURL = [v11 localContentURL];
+          assetAttributes = [v11 assetAttributes];
+          v18 = [v13 initWithFullAssetSelector:fullAssetSelector withAssetID:assetID withLocalContentURL:localContentURL withAssetAttributes:assetAttributes inhibitedFromEmergencyRemoval:{objc_msgSend(v11, "inhibitedFromEmergencyRemoval")}];
 
           if (v18)
           {
@@ -147,12 +147,12 @@
   return v7;
 }
 
-+ (id)newShimmedArrayFromFramework:(id)a3
++ (id)newShimmedArrayFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,11 +172,11 @@
             if (objc_opt_isKindOfClass())
             {
               v12 = [MANAutoAssetSetAtomicEntry alloc];
-              v13 = [v11 fullAssetSelector];
-              v14 = [v11 assetID];
-              v15 = [v11 localContentURL];
-              v16 = [v11 assetAttributes];
-              v17 = -[MANAutoAssetSetAtomicEntry initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:](v12, "initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:", v13, v14, v15, v16, [v11 inhibitedFromEmergencyRemoval]);
+              fullAssetSelector = [v11 fullAssetSelector];
+              assetID = [v11 assetID];
+              localContentURL = [v11 localContentURL];
+              assetAttributes = [v11 assetAttributes];
+              v17 = -[MANAutoAssetSetAtomicEntry initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:](v12, "initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:", fullAssetSelector, assetID, localContentURL, assetAttributes, [v11 inhibitedFromEmergencyRemoval]);
 
               if (v17)
               {
@@ -208,18 +208,18 @@
   return v7;
 }
 
-+ (id)newShimmedDictionaryToFramework:(id)a3
++ (id)newShimmedDictionaryToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v17 = v3;
+    v17 = frameworkCopy;
     v18 = objc_alloc_init(NSMutableDictionary);
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v3;
+    v6 = frameworkCopy;
     v20 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v20)
     {
@@ -239,11 +239,11 @@
           if (v9)
           {
             v10 = [MAAutoAssetSetAtomicEntry alloc];
-            v11 = [v9 fullAssetSelector];
-            v12 = [v9 assetID];
-            v13 = [v9 localContentURL];
-            v14 = [v9 assetAttributes];
-            v15 = [v10 initWithFullAssetSelector:v11 withAssetID:v12 withLocalContentURL:v13 withAssetAttributes:v14 inhibitedFromEmergencyRemoval:{objc_msgSend(v9, "inhibitedFromEmergencyRemoval")}];
+            fullAssetSelector = [v9 fullAssetSelector];
+            assetID = [v9 assetID];
+            localContentURL = [v9 localContentURL];
+            assetAttributes = [v9 assetAttributes];
+            v15 = [v10 initWithFullAssetSelector:fullAssetSelector withAssetID:assetID withLocalContentURL:localContentURL withAssetAttributes:assetAttributes inhibitedFromEmergencyRemoval:{objc_msgSend(v9, "inhibitedFromEmergencyRemoval")}];
 
             [v18 setSafeObject:v15 forKey:v8];
           }
@@ -258,7 +258,7 @@
       while (v20);
     }
 
-    v3 = v17;
+    frameworkCopy = v17;
   }
 
   else
@@ -269,16 +269,16 @@
   return v18;
 }
 
-+ (id)newShimmedDictionaryFromFramework:(id)a3
++ (id)newShimmedDictionaryFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetAtomicEntry alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = v3;
+      v24 = frameworkCopy;
       v26 = objc_alloc_init(NSMutableDictionary);
       v27 = 0u;
       v28 = 0u;
@@ -310,13 +310,13 @@
               if (objc_opt_isKindOfClass())
               {
                 v14 = [MANAutoAssetSetAtomicEntry alloc];
-                v15 = [v13 fullAssetSelector];
-                v16 = [v13 assetID];
+                fullAssetSelector = [v13 fullAssetSelector];
+                assetID = [v13 assetID];
                 [v13 localContentURL];
                 v18 = v17 = v9;
                 [v13 assetAttributes];
                 v20 = v19 = v10;
-                v21 = -[MANAutoAssetSetAtomicEntry initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:](v14, "initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:", v15, v16, v18, v20, [v13 inhibitedFromEmergencyRemoval]);
+                v21 = -[MANAutoAssetSetAtomicEntry initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:](v14, "initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:", fullAssetSelector, assetID, v18, v20, [v13 inhibitedFromEmergencyRemoval]);
 
                 v10 = v19;
                 v9 = v17;
@@ -337,7 +337,7 @@
       }
 
       v6 = v23;
-      v3 = v24;
+      frameworkCopy = v24;
     }
 
     else

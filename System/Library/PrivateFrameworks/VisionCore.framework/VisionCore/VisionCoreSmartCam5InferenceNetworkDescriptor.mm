@@ -1,5 +1,5 @@
 @interface VisionCoreSmartCam5InferenceNetworkDescriptor
-+ (id)descriptorAndReturnError:(id *)a3;
++ (id)descriptorAndReturnError:(id *)error;
 - (VisionCoreLabeledConfidencesDescriptor)sceneLabelConfidencesOutput;
 - (VisionCoreTensorDescriptor)segmentationLabelConfidencesOutput;
 - (id)sceneLabelsFileURL;
@@ -8,17 +8,17 @@
 
 @implementation VisionCoreSmartCam5InferenceNetworkDescriptor
 
-+ (id)descriptorAndReturnError:(id *)a3
++ (id)descriptorAndReturnError:(id *)error
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__VisionCoreSmartCam5InferenceNetworkDescriptor_descriptorAndReturnError___block_invoke;
   v9[3] = &__block_descriptor_40_e9__16__0__8l;
-  v9[4] = a1;
+  v9[4] = self;
   v4 = MEMORY[0x1E12C8870](v9, a2);
   v5 = +[VisionCoreFrameworkManager sharedManager];
-  v6 = [v5 inferenceNetworkDescriptorsCache];
-  v7 = [v6 objectForIdentifier:@"SmartCam5" creationBlock:v4 error:a3];
+  inferenceNetworkDescriptorsCache = [v5 inferenceNetworkDescriptorsCache];
+  v7 = [inferenceNetworkDescriptorsCache objectForIdentifier:@"SmartCam5" creationBlock:v4 error:error];
 
   return v7;
 }
@@ -56,44 +56,44 @@ id __74__VisionCoreSmartCam5InferenceNetworkDescriptor_descriptorAndReturnError_
 
 - (id)segmentationLabelsFileURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lazySegmentationLabelsFileURL = v2->_lazySegmentationLabelsFileURL;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lazySegmentationLabelsFileURL = selfCopy->_lazySegmentationLabelsFileURL;
   if (!lazySegmentationLabelsFileURL)
   {
     v4 = [objc_opt_class() URLForResourceNamed:@"smartcam_assembly-segmentation-labels.txt" error:0];
-    v5 = v2->_lazySegmentationLabelsFileURL;
-    v2->_lazySegmentationLabelsFileURL = v4;
+    v5 = selfCopy->_lazySegmentationLabelsFileURL;
+    selfCopy->_lazySegmentationLabelsFileURL = v4;
 
-    lazySegmentationLabelsFileURL = v2->_lazySegmentationLabelsFileURL;
+    lazySegmentationLabelsFileURL = selfCopy->_lazySegmentationLabelsFileURL;
   }
 
   v6 = lazySegmentationLabelsFileURL;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)sceneLabelsFileURL
 {
-  v2 = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self sceneLabelConfidencesOutput];
-  v3 = [v2 labelsFileURL];
+  sceneLabelConfidencesOutput = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self sceneLabelConfidencesOutput];
+  labelsFileURL = [sceneLabelConfidencesOutput labelsFileURL];
 
-  return v3;
+  return labelsFileURL;
 }
 
 - (VisionCoreTensorDescriptor)segmentationLabelConfidencesOutput
 {
-  v3 = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self sceneSegmentationOutputBlobName];
-  v4 = [(VisionCoreInferenceNetworkDescriptor *)self outputNamed:v3 error:0];
+  sceneSegmentationOutputBlobName = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self sceneSegmentationOutputBlobName];
+  v4 = [(VisionCoreInferenceNetworkDescriptor *)self outputNamed:sceneSegmentationOutputBlobName error:0];
 
   return v4;
 }
 
 - (VisionCoreLabeledConfidencesDescriptor)sceneLabelConfidencesOutput
 {
-  v3 = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self sceneLabelsOutputBlobName];
-  v4 = [(VisionCoreInferenceNetworkDescriptor *)self outputNamed:v3 error:0];
+  sceneLabelsOutputBlobName = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self sceneLabelsOutputBlobName];
+  v4 = [(VisionCoreInferenceNetworkDescriptor *)self outputNamed:sceneLabelsOutputBlobName error:0];
 
   return v4;
 }

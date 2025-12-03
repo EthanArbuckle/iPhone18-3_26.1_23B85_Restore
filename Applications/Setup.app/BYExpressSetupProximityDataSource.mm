@@ -1,6 +1,6 @@
 @interface BYExpressSetupProximityDataSource
 - (BOOL)dataAvailable;
-- (BYExpressSetupProximityDataSource)initWithInformation:(id)a3;
+- (BYExpressSetupProximityDataSource)initWithInformation:(id)information;
 - (id)actionButtonData;
 - (id)appAnalyticsOptIn;
 - (id)deviceAnalyticsOptIn;
@@ -24,30 +24,30 @@
 
 @implementation BYExpressSetupProximityDataSource
 
-- (BYExpressSetupProximityDataSource)initWithInformation:(id)a3
+- (BYExpressSetupProximityDataSource)initWithInformation:(id)information
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, information);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = BYExpressSetupProximityDataSource;
-  v11 = [(BYExpressSetupProximityDataSource *)&v9 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(BYExpressSetupProximityDataSource *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v11 + 1, location[0]);
-    v4 = [location[0] backupMetadata];
+    objc_storeStrong(selfCopy + 1, location[0]);
+    backupMetadata = [location[0] backupMetadata];
     v5 = BYMetadataFromDataArchive();
-    v6 = *(v11 + 2);
-    *(v11 + 2) = v5;
+    v6 = *(selfCopy + 2);
+    *(selfCopy + 2) = v5;
   }
 
-  v7 = v11;
+  v7 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -62,9 +62,9 @@
 - (id)sourceDeviceClass
 {
   v2 = [(BYExpressSetupProximityDataSource *)self information:a2];
-  v3 = [(SASProximityInformation *)v2 deviceClass];
+  deviceClass = [(SASProximityInformation *)v2 deviceClass];
 
-  return v3;
+  return deviceClass;
 }
 
 - (id)locationServicesOptIn
@@ -78,49 +78,49 @@
 - (id)locationServicesSettings
 {
   v2 = [(BYExpressSetupProximityDataSource *)self information:a2];
-  v3 = [(SASProximityInformation *)v2 locationServicesData];
+  locationServicesData = [(SASProximityInformation *)v2 locationServicesData];
 
-  return v3;
+  return locationServicesData;
 }
 
 - (id)appAnalyticsOptIn
 {
   v2 = [(BYExpressSetupProximityDataSource *)self information:a2];
-  v3 = [(SASProximityInformation *)v2 appAnalyticsOptIn];
+  appAnalyticsOptIn = [(SASProximityInformation *)v2 appAnalyticsOptIn];
 
-  return v3;
+  return appAnalyticsOptIn;
 }
 
 - (id)deviceAnalyticsOptIn
 {
   v2 = [(BYExpressSetupProximityDataSource *)self information:a2];
-  v3 = [(SASProximityInformation *)v2 deviceAnalyticsOptIn];
+  deviceAnalyticsOptIn = [(SASProximityInformation *)v2 deviceAnalyticsOptIn];
 
-  return v3;
+  return deviceAnalyticsOptIn;
 }
 
 - (id)siriOptIn
 {
   v2 = [(BYExpressSetupProximityDataSource *)self information:a2];
-  v3 = [(SASProximityInformation *)v2 siriOptIn];
+  siriOptIn = [(SASProximityInformation *)v2 siriOptIn];
 
-  return v3;
+  return siriOptIn;
 }
 
 - (id)siriVoiceProfileAvailabilityMetadata
 {
   v2 = [(BYExpressSetupProximityDataSource *)self information:a2];
-  v3 = [(SASProximityInformation *)v2 siriVoiceProfileAvailabilityMetadata];
+  siriVoiceProfileAvailabilityMetadata = [(SASProximityInformation *)v2 siriVoiceProfileAvailabilityMetadata];
 
-  return v3;
+  return siriVoiceProfileAvailabilityMetadata;
 }
 
 - (id)siriDataSharingOptIn
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  location[0] = [(BYBackupMetadata *)v2 expressSettings];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  location[0] = [(BYBackupMetadata *)backupMetadata expressSettings];
 
   if (location[0] && ([location[0] hasSiriDataSharingOptIn] & 1) != 0)
   {
@@ -129,13 +129,13 @@
 
   else
   {
-    v3 = [(BYExpressSetupProximityDataSource *)v9 backupMetadata];
-    v4 = [(BYBackupMetadata *)v3 hasSiriDataSharingOptIn];
+    backupMetadata2 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+    hasSiriDataSharingOptIn = [(BYBackupMetadata *)backupMetadata2 hasSiriDataSharingOptIn];
 
-    if (v4)
+    if (hasSiriDataSharingOptIn)
     {
-      v5 = [(BYExpressSetupProximityDataSource *)v9 backupMetadata];
-      v10 = [NSNumber numberWithBool:[(BYBackupMetadata *)v5 siriDataSharingOptIn]& 1];
+      backupMetadata3 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+      v10 = [NSNumber numberWithBool:[(BYBackupMetadata *)backupMetadata3 siriDataSharingOptIn]& 1];
     }
 
     else
@@ -154,8 +154,8 @@
 {
   location[2] = self;
   location[1] = a2;
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  location[0] = [(BYBackupMetadata *)v2 expressSettings];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  location[0] = [(BYBackupMetadata *)backupMetadata expressSettings];
 
   if ([location[0] hasSiriVoiceTriggerEnabled])
   {
@@ -175,19 +175,19 @@
 
 - (id)screenTimeEnabled
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  location[0] = [(BYBackupMetadata *)v2 expressSettings];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  location[0] = [(BYBackupMetadata *)backupMetadata expressSettings];
 
   if (location[0] && ([location[0] hasScreenTimeEnabled] & 1) != 0)
   {
     v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [location[0] screenTimeEnabled] & 1);
   }
 
-  else if (([(BYBackupMetadata *)v6->_backupMetadata hasScreenTimeEnabled]& 1) != 0)
+  else if (([(BYBackupMetadata *)selfCopy->_backupMetadata hasScreenTimeEnabled]& 1) != 0)
   {
-    v7 = [NSNumber numberWithBool:[(BYBackupMetadata *)v6->_backupMetadata screenTimeEnabled]& 1];
+    v7 = [NSNumber numberWithBool:[(BYBackupMetadata *)selfCopy->_backupMetadata screenTimeEnabled]& 1];
   }
 
   else
@@ -203,10 +203,10 @@
 
 - (id)softwareUpdateAutoUpdateEnabled
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  location[0] = [(BYBackupMetadata *)v2 expressSettings];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  location[0] = [(BYBackupMetadata *)backupMetadata expressSettings];
 
   if ([location[0] hasSoftwareUpdateAutoUpdateEnabled])
   {
@@ -215,13 +215,13 @@
 
   else
   {
-    v3 = [(BYExpressSetupProximityDataSource *)v9 backupMetadata];
-    v4 = [(BYBackupMetadata *)v3 hasAutoUpdateEnabled];
+    backupMetadata2 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+    hasAutoUpdateEnabled = [(BYBackupMetadata *)backupMetadata2 hasAutoUpdateEnabled];
 
-    if (v4)
+    if (hasAutoUpdateEnabled)
     {
-      v5 = [(BYExpressSetupProximityDataSource *)v9 backupMetadata];
-      v10 = [NSNumber numberWithBool:[(BYBackupMetadata *)v5 autoUpdateEnabled]& 1];
+      backupMetadata3 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+      v10 = [NSNumber numberWithBool:[(BYBackupMetadata *)backupMetadata3 autoUpdateEnabled]& 1];
     }
 
     else
@@ -238,10 +238,10 @@
 
 - (id)softwareUpdateAutoDownloadEnabled
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  location[0] = [(BYBackupMetadata *)v2 expressSettings];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  location[0] = [(BYBackupMetadata *)backupMetadata expressSettings];
 
   if ([location[0] hasSoftwareUpdateAutoDownloadEnabled])
   {
@@ -250,13 +250,13 @@
 
   else
   {
-    v3 = [(BYExpressSetupProximityDataSource *)v9 backupMetadata];
-    v4 = [(BYBackupMetadata *)v3 hasAutoDownloadEnabled];
+    backupMetadata2 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+    hasAutoDownloadEnabled = [(BYBackupMetadata *)backupMetadata2 hasAutoDownloadEnabled];
 
-    if (v4)
+    if (hasAutoDownloadEnabled)
     {
-      v5 = [(BYExpressSetupProximityDataSource *)v9 backupMetadata];
-      v10 = [NSNumber numberWithBool:[(BYBackupMetadata *)v5 autoDownloadEnabled]& 1];
+      backupMetadata3 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+      v10 = [NSNumber numberWithBool:[(BYBackupMetadata *)backupMetadata3 autoDownloadEnabled]& 1];
     }
 
     else
@@ -273,124 +273,124 @@
 
 - (int64_t)userInterfaceStyleModeValue
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  location[0] = [(BYBackupMetadata *)v2 expressSettings];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  location[0] = [(BYBackupMetadata *)backupMetadata expressSettings];
 
   if (location[0] && ([location[0] hasAppearanceMode] & 1) != 0)
   {
-    v9 = [location[0] buddy_userInterfaceStyleModeValue];
+    buddy_userInterfaceStyleModeValue = [location[0] buddy_userInterfaceStyleModeValue];
   }
 
   else
   {
-    v3 = [(BYExpressSetupProximityDataSource *)v8 backupMetadata];
-    v4 = [(BYBackupMetadata *)v3 hasUserInterfaceStyleMode];
+    backupMetadata2 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+    hasUserInterfaceStyleMode = [(BYBackupMetadata *)backupMetadata2 hasUserInterfaceStyleMode];
 
-    if (v4)
+    if (hasUserInterfaceStyleMode)
     {
-      v5 = [(BYExpressSetupProximityDataSource *)v8 backupMetadata];
-      v9 = [(BYBackupMetadata *)v5 userInterfaceStyleMode];
+      backupMetadata3 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+      buddy_userInterfaceStyleModeValue = [(BYBackupMetadata *)backupMetadata3 userInterfaceStyleMode];
     }
 
     else
     {
-      v9 = 0;
+      buddy_userInterfaceStyleModeValue = 0;
     }
   }
 
   objc_storeStrong(location, 0);
-  return v9;
+  return buddy_userInterfaceStyleModeValue;
 }
 
 - (id)watchMigrationData
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  location[0] = [(BYBackupMetadata *)v2 expressSettings];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  location[0] = [(BYBackupMetadata *)backupMetadata expressSettings];
 
   if ([location[0] hasWatchMigrationData])
   {
-    v8 = [location[0] watchMigrationData];
+    watchMigrationData = [location[0] watchMigrationData];
   }
 
   else
   {
-    v3 = [(BYExpressSetupProximityDataSource *)v7 backupMetadata];
-    v8 = [(BYBackupMetadata *)v3 nanoRegistryData];
+    backupMetadata2 = [(BYExpressSetupProximityDataSource *)selfCopy backupMetadata];
+    watchMigrationData = [(BYBackupMetadata *)backupMetadata2 nanoRegistryData];
   }
 
   objc_storeStrong(location, 0);
-  v4 = v8;
+  v4 = watchMigrationData;
 
   return v4;
 }
 
 - (id)walletMetadata
 {
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  v3 = [(BYBackupMetadata *)v2 expressSettings];
-  v4 = [v3 hasWalletData];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  expressSettings = [(BYBackupMetadata *)backupMetadata expressSettings];
+  hasWalletData = [expressSettings hasWalletData];
 
-  if (v4)
+  if (hasWalletData)
   {
-    v5 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-    v6 = [(BYBackupMetadata *)v5 expressSettings];
-    v12 = [v6 walletData];
+    backupMetadata2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+    expressSettings2 = [(BYBackupMetadata *)backupMetadata2 expressSettings];
+    walletData = [expressSettings2 walletData];
   }
 
   else
   {
-    v7 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-    v8 = [(BYBackupMetadata *)v7 hasWalletData];
+    backupMetadata3 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+    hasWalletData2 = [(BYBackupMetadata *)backupMetadata3 hasWalletData];
 
-    if (v8)
+    if (hasWalletData2)
     {
-      v9 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-      v12 = [(BYBackupMetadata *)v9 walletData];
+      backupMetadata4 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+      walletData = [(BYBackupMetadata *)backupMetadata4 walletData];
     }
 
     else
     {
-      v12 = 0;
+      walletData = 0;
     }
   }
 
-  return v12;
+  return walletData;
 }
 
 - (id)actionButtonData
 {
-  v2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-  v3 = [(BYBackupMetadata *)v2 hasActionButtonData];
+  backupMetadata = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+  hasActionButtonData = [(BYBackupMetadata *)backupMetadata hasActionButtonData];
 
-  if (v3)
+  if (hasActionButtonData)
   {
-    v4 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
-    v7 = [(BYBackupMetadata *)v4 actionButtonData];
+    backupMetadata2 = [(BYExpressSetupProximityDataSource *)self backupMetadata];
+    actionButtonData = [(BYBackupMetadata *)backupMetadata2 actionButtonData];
   }
 
   else
   {
-    v7 = 0;
+    actionButtonData = 0;
   }
 
-  return v7;
+  return actionButtonData;
 }
 
 - (id)stolenDeviceProtectionEnabled
 {
-  v2 = [(BYExpressSetupProximityDataSource *)self information];
-  v3 = [(SASProximityInformation *)v2 expressSettings];
-  v4 = [v3 hasStolenDeviceProtectionEnabled];
+  information = [(BYExpressSetupProximityDataSource *)self information];
+  expressSettings = [(SASProximityInformation *)information expressSettings];
+  hasStolenDeviceProtectionEnabled = [expressSettings hasStolenDeviceProtectionEnabled];
 
-  if (v4)
+  if (hasStolenDeviceProtectionEnabled)
   {
-    v5 = [(BYExpressSetupProximityDataSource *)self information];
-    v6 = [(SASProximityInformation *)v5 expressSettings];
-    v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 stolenDeviceProtectionEnabled] & 1);
+    information2 = [(BYExpressSetupProximityDataSource *)self information];
+    expressSettings2 = [(SASProximityInformation *)information2 expressSettings];
+    v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [expressSettings2 stolenDeviceProtectionEnabled] & 1);
   }
 
   else
@@ -403,15 +403,15 @@
 
 - (id)stolenDeviceProtectionStrictModeEnabled
 {
-  v2 = [(BYExpressSetupProximityDataSource *)self information];
-  v3 = [(SASProximityInformation *)v2 expressSettings];
-  v4 = [v3 hasStolenDeviceProtectionStrictModeEnabled];
+  information = [(BYExpressSetupProximityDataSource *)self information];
+  expressSettings = [(SASProximityInformation *)information expressSettings];
+  hasStolenDeviceProtectionStrictModeEnabled = [expressSettings hasStolenDeviceProtectionStrictModeEnabled];
 
-  if (v4)
+  if (hasStolenDeviceProtectionStrictModeEnabled)
   {
-    v5 = [(BYExpressSetupProximityDataSource *)self information];
-    v6 = [(SASProximityInformation *)v5 expressSettings];
-    v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 stolenDeviceProtectionStrictModeEnabled] & 1);
+    information2 = [(BYExpressSetupProximityDataSource *)self information];
+    expressSettings2 = [(SASProximityInformation *)information2 expressSettings];
+    v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [expressSettings2 stolenDeviceProtectionStrictModeEnabled] & 1);
   }
 
   else
@@ -425,10 +425,10 @@
 - (id)iPadMultitaskingMode
 {
   v2 = [(BYExpressSetupProximityDataSource *)self information:a2];
-  v3 = [(SASProximityInformation *)v2 expressSettings];
-  v4 = [v3 buddy_iPadMultitaskingMode];
+  expressSettings = [(SASProximityInformation *)v2 expressSettings];
+  buddy_iPadMultitaskingMode = [expressSettings buddy_iPadMultitaskingMode];
 
-  return v4;
+  return buddy_iPadMultitaskingMode;
 }
 
 @end

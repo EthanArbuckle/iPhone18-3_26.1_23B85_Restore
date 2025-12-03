@@ -1,60 +1,60 @@
 @interface HUIncomingInvitationResponseController
 - (HUIncomingInvitationResponseController)init;
-- (HUIncomingInvitationResponseController)initWithDelegate:(id)a3 invitation:(id)a4;
+- (HUIncomingInvitationResponseController)initWithDelegate:(id)delegate invitation:(id)invitation;
 - (HUIncomingInvitationResponseControllerDelegate)delegate;
 - (id)_acceptInvitation;
 - (id)_declineInvitation;
 - (id)_ignoreInvitation;
 - (id)_reportJunk;
-- (void)respondToInvitationWithResponse:(unint64_t)a3;
-- (void)setState:(unint64_t)a3;
+- (void)respondToInvitationWithResponse:(unint64_t)response;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation HUIncomingInvitationResponseController
 
 - (HUIncomingInvitationResponseController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithDelegate_invitation_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUIncomingInvitationResponseController.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HUIncomingInvitationResponseController init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUIncomingInvitationResponseController.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HUIncomingInvitationResponseController init]", v5}];
 
   return 0;
 }
 
-- (HUIncomingInvitationResponseController)initWithDelegate:(id)a3 invitation:(id)a4
+- (HUIncomingInvitationResponseController)initWithDelegate:(id)delegate invitation:(id)invitation
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  invitationCopy = invitation;
   v11.receiver = self;
   v11.super_class = HUIncomingInvitationResponseController;
   v8 = [(HUIncomingInvitationResponseController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_invitation, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_invitation, invitation);
   }
 
   return v9;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = [(HUIncomingInvitationResponseController *)self delegate];
+    self->_state = state;
+    delegate = [(HUIncomingInvitationResponseController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(HUIncomingInvitationResponseController *)self delegate];
-      [v7 invitationResponseController:self stateDidChange:a3];
+      delegate2 = [(HUIncomingInvitationResponseController *)self delegate];
+      [delegate2 invitationResponseController:self stateDidChange:state];
     }
   }
 }
 
-- (void)respondToInvitationWithResponse:(unint64_t)a3
+- (void)respondToInvitationWithResponse:(unint64_t)response
 {
   v14 = *MEMORY[0x277D85DE8];
   if ([(HUIncomingInvitationResponseController *)self state])
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v13 = a3;
+      responseCopy = response;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "[HUIncomingInvitationResponseController respondToInvitationWithResponse]: %ld", buf, 0xCu);
     }
 
@@ -77,7 +77,7 @@
     v11[2] = __74__HUIncomingInvitationResponseController_respondToInvitationWithResponse___block_invoke;
     v11[3] = &unk_277DBDDF0;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = response;
     v6 = __74__HUIncomingInvitationResponseController_respondToInvitationWithResponse___block_invoke(v11);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -90,7 +90,7 @@
     v9[2] = __74__HUIncomingInvitationResponseController_respondToInvitationWithResponse___block_invoke_3;
     v9[3] = &unk_277DB8E70;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = response;
     v8 = [v7 addFailureBlock:v9];
   }
 }

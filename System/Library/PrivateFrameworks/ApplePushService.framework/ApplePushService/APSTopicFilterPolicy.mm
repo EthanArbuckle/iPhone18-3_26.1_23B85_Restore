@@ -1,37 +1,37 @@
 @interface APSTopicFilterPolicy
-- (APSTopicFilterPolicy)initWithDelegate:(id)a3;
+- (APSTopicFilterPolicy)initWithDelegate:(id)delegate;
 - (APSTopicFilterPolicyDelegate)delegate;
-- (id)topicChosenByPolicyFromTopics:(id)a3;
-- (int64_t)filterChosenByPolicyForTopic:(id)a3;
-- (void)filtersWillPotentiallyBeChangedBy:(id)a3;
+- (id)topicChosenByPolicyFromTopics:(id)topics;
+- (int64_t)filterChosenByPolicyForTopic:(id)topic;
+- (void)filtersWillPotentiallyBeChangedBy:(id)by;
 - (void)logFilterPolicyInformation;
 @end
 
 @implementation APSTopicFilterPolicy
 
-- (APSTopicFilterPolicy)initWithDelegate:(id)a3
+- (APSTopicFilterPolicy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = APSTopicFilterPolicy;
   v5 = [(APSTopicFilterPolicy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)filtersWillPotentiallyBeChangedBy:(id)a3
+- (void)filtersWillPotentiallyBeChangedBy:(id)by
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = a3;
+    byCopy = by;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Filter will potentially be changed by %@", &v6, 0x16u);
   }
 
@@ -39,9 +39,9 @@
   [WeakRetained filtersWillPotentiallyBeChangedByPolicy:self];
 }
 
-- (int64_t)filterChosenByPolicyForTopic:(id)a3
+- (int64_t)filterChosenByPolicyForTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];
@@ -50,9 +50,9 @@
   objc_exception_throw(v7);
 }
 
-- (id)topicChosenByPolicyFromTopics:(id)a3
+- (id)topicChosenByPolicyFromTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];

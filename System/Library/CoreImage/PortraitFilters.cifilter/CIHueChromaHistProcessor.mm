@@ -1,23 +1,23 @@
 @interface CIHueChromaHistProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (int)formatForInputAtIndex:(int)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation CIHueChromaHistProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v9 = [a3 objectAtIndex:{0, a4, a5, a6}];
+  v9 = [inputs objectAtIndex:{0, arguments, output, error}];
   if (v9)
   {
-    [objc_msgSend(a4 objectForKeyedSubscript:{@"chromaMin", "floatValue"}];
+    [objc_msgSend(arguments objectForKeyedSubscript:{@"chromaMin", "floatValue"}];
     v11 = v10;
-    [objc_msgSend(a4 objectForKeyedSubscript:{@"hueRange", "floatValue"}];
+    [objc_msgSend(arguments objectForKeyedSubscript:{@"hueRange", "floatValue"}];
     v13 = v12;
-    v14 = *([objc_msgSend(a3 objectAtIndex:{1), "baseAddress"}] + 2);
-    v15 = [v9 baseAddress];
-    v16 = [v9 bytesPerRow];
+    v14 = *([objc_msgSend(inputs objectAtIndex:{1), "baseAddress"}] + 2);
+    baseAddress = [v9 baseAddress];
+    bytesPerRow = [v9 bytesPerRow];
     [v9 region];
     v88 = CGRectIntegral(v87);
     height = v88.size.height;
@@ -51,7 +51,7 @@
     }
 
     v21 = 0;
-    v22 = (v15 + 1);
+    v22 = (baseAddress + 1);
     v23 = 1;
     do
     {
@@ -84,7 +84,7 @@
       }
 
       ++v21;
-      v22 = &v16[v22];
+      v22 = &bytesPerRow[v22];
     }
 
     while (v21 != (v88.size.height & 0x7FFFFFFF));
@@ -148,7 +148,7 @@ LABEL_14:
       v43 = (v40 * 0.5);
       v44 = v43 + -3.14159265;
       v45 = 3.14159265 - v43;
-      v46 = (v15 + 2);
+      v46 = (baseAddress + 2);
       v47 = vdup_n_s32(0x3B808081u);
       do
       {
@@ -202,15 +202,15 @@ LABEL_14:
         }
 
         ++v38;
-        v46 = &v16[v46];
+        v46 = &bytesPerRow[v46];
       }
 
       while (v38 != (height & 0x7FFFFFFF));
       *&v35 = v39;
     }
 
-    v59 = [a5 baseAddress];
-    [a5 bytesPerRow];
+    baseAddress2 = [output baseAddress];
+    [output bytesPerRow];
     v60 = 0;
     v61 = vdupq_lane_s32(v69, 0);
     do
@@ -226,8 +226,8 @@ LABEL_14:
       v67 = vrev64q_s32(*&v70[v60 + 16]);
       v67.i32[0] = HIDWORD(*&v70[v60]);
       v67.i32[3] = *&v70[v60 + 40];
-      vst4q_f32(v59, *(&v61 - 3));
-      v59 += 16;
+      vst4q_f32(baseAddress2, *(&v61 - 3));
+      baseAddress2 += 16;
       v60 += 48;
     }
 
@@ -237,11 +237,11 @@ LABEL_14:
   return v9 != 0;
 }
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
       sub_4A2B0();
     }
@@ -257,19 +257,19 @@ LABEL_14:
   return *v3;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  if (![a4 objectForKeyedSubscript:{@"imageExtents", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}])
+  if (![arguments objectForKeyedSubscript:{@"imageExtents", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}])
   {
     sub_4A308();
   }
 
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{@"imageExtents", "count"}] <= a3)
+  if ([objc_msgSend(arguments objectForKeyedSubscript:{@"imageExtents", "count"}] <= input)
   {
     sub_4A2DC();
   }
 
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{@"imageExtents", "objectAtIndexedSubscript:", a3}];
+  v7 = [objc_msgSend(arguments objectForKeyedSubscript:{@"imageExtents", "objectAtIndexedSubscript:", input}];
 
   [v7 CGRectValue];
   result.size.height = v11;

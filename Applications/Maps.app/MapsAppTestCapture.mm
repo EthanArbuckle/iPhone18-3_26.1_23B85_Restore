@@ -18,31 +18,31 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testName];
-  NSLog(@"capture is %@", v3);
+  testName = [(MapsAppTest *)self testName];
+  NSLog(@"capture is %@", testName);
 
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 _mapstest_hasLatitudeAndLongitude];
+  options = [(MapsAppTest *)self options];
+  _mapstest_hasLatitudeAndLongitude = [options _mapstest_hasLatitudeAndLongitude];
 
-  if (v5)
+  if (_mapstest_hasLatitudeAndLongitude)
   {
     [(MapsAppTest *)self setupForVKTest];
-    v6 = [(MapsAppTest *)self options];
-    [v6 _mapstest_jumpPoint];
+    options2 = [(MapsAppTest *)self options];
+    [options2 _mapstest_jumpPoint];
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    v13 = [(MapsAppTest *)self options];
-    [v13 _mapstest_pitch];
+    options3 = [(MapsAppTest *)self options];
+    [options3 _mapstest_pitch];
     v15 = v14;
 
-    v16 = [(MapsAppTest *)self options];
-    [v16 _mapstest_yaw];
+    options4 = [(MapsAppTest *)self options];
+    [options4 _mapstest_yaw];
     v18 = v17;
 
-    v19 = [(MapsAppTest *)self mainVKMapView];
-    [v19 _mapstest_jumpToCoords:1 pitch:v8 yaw:v10 altitudeIsRegionSize:{v12, v15, v18}];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    [mainVKMapView _mapstest_jumpToCoords:1 pitch:v8 yaw:v10 altitudeIsRegionSize:{v12, v15, v18}];
 
     objc_initWeak(&location, self);
     v21[0] = _NSConcreteStackBlock;
@@ -55,7 +55,7 @@
     objc_destroyWeak(&location);
   }
 
-  return v5;
+  return _mapstest_hasLatitudeAndLongitude;
 }
 
 @end

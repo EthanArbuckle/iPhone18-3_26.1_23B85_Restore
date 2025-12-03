@@ -1,15 +1,15 @@
 @interface ItemExposureRegistry
 - (NSArray)allExposedItemIDs;
 - (_TtC8NewsCore20ItemExposureRegistry)init;
-- (id)exposuresForItemIDs:(id)a3;
-- (id)subsetOfItemIDs:(id)a3 accessedSinceDate:(id)a4;
+- (id)exposuresForItemIDs:(id)ds;
+- (id)subsetOfItemIDs:(id)ds accessedSinceDate:(id)date;
 - (id)toJSON;
 - (void)dealloc;
 - (void)eraseAll;
-- (void)pruneToMaxCount:(int64_t)a3;
-- (void)registerExposures:(id)a3;
-- (void)removeExposureForItemID:(id)a3;
-- (void)willAccessItemIDs:(id)a3;
+- (void)pruneToMaxCount:(int64_t)count;
+- (void)registerExposures:(id)exposures;
+- (void)removeExposureForItemID:(id)d;
+- (void)willAccessItemIDs:(id)ds;
 @end
 
 @implementation ItemExposureRegistry
@@ -17,25 +17,25 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_1B644FB98();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(ItemExposureRegistry *)&v5 dealloc];
 }
 
-- (void)registerExposures:(id)a3
+- (void)registerExposures:(id)exposures
 {
   type metadata accessor for ItemExposure();
   v4 = sub_1B67D97BC();
-  v5 = self;
+  selfCopy = self;
   sub_1B6452114(v4, &unk_1F2DBCEE0, sub_1B6456524);
 }
 
-- (id)exposuresForItemIDs:(id)a3
+- (id)exposuresForItemIDs:(id)ds
 {
   sub_1B67D97BC();
-  v4 = self;
+  selfCopy = self;
   sub_1B6451280();
 
   type metadata accessor for ItemExposure();
@@ -44,17 +44,17 @@
   return v5;
 }
 
-- (void)removeExposureForItemID:(id)a3
+- (void)removeExposureForItemID:(id)d
 {
   v4 = sub_1B67D964C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1B6451BC8(v4, v6);
 }
 
 - (NSArray)allExposedItemIDs
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B6451D10();
 
   v3 = sub_1B67D97AC();
@@ -62,14 +62,14 @@
   return v3;
 }
 
-- (void)willAccessItemIDs:(id)a3
+- (void)willAccessItemIDs:(id)ds
 {
   v4 = sub_1B67D97BC();
-  v5 = self;
+  selfCopy = self;
   sub_1B6452114(v4, &unk_1F2DBCF30, sub_1B64571C0);
 }
 
-- (id)subsetOfItemIDs:(id)a3 accessedSinceDate:(id)a4
+- (id)subsetOfItemIDs:(id)ds accessedSinceDate:(id)date
 {
   v5 = sub_1B67D877C();
   v6 = *(v5 - 8);
@@ -78,7 +78,7 @@
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B67D97BC();
   sub_1B67D874C();
-  v10 = self;
+  selfCopy = self;
   sub_1B64524AC();
 
   (*(v6 + 8))(v9, v5);
@@ -87,21 +87,21 @@
   return v11;
 }
 
-- (void)pruneToMaxCount:(int64_t)a3
+- (void)pruneToMaxCount:(int64_t)count
 {
-  v4 = self;
-  sub_1B6452B98(a3);
+  selfCopy = self;
+  sub_1B6452B98(count);
 }
 
 - (void)eraseAll
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B6452B98(0);
 }
 
 - (id)toJSON
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B64531D0();
   v5 = v4;
 

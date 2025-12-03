@@ -1,27 +1,27 @@
 @interface PXMemoriesFeedDataSourceManager
-- (PXMemoriesFeedDataSourceManager)initWithPhotoLibrary:(id)a3;
-- (id)objectReferenceForMemory:(id)a3;
-- (unint64_t)_indexOfEntry:(id)a3 inSortedEntries:(id)a4 options:(unint64_t)a5;
-- (unint64_t)_indexOfEntryForMemory:(id)a3 inSortedEntries:(id)a4 options:(unint64_t)a5;
-- (void)_generateAdditionalEntriesWithOldDataSource:(id)a3 startingIndex:(unint64_t)a4 sync:(BOOL)a5;
-- (void)_handleFinishedGeneratingAdditionalEntriesWithNewDataSource:(id)a3 changeDetails:(id)a4 firstUngroupedMemoryIndex:(unint64_t)a5;
+- (PXMemoriesFeedDataSourceManager)initWithPhotoLibrary:(id)library;
+- (id)objectReferenceForMemory:(id)memory;
+- (unint64_t)_indexOfEntry:(id)entry inSortedEntries:(id)entries options:(unint64_t)options;
+- (unint64_t)_indexOfEntryForMemory:(id)memory inSortedEntries:(id)entries options:(unint64_t)options;
+- (void)_generateAdditionalEntriesWithOldDataSource:(id)source startingIndex:(unint64_t)index sync:(BOOL)sync;
+- (void)_handleFinishedGeneratingAdditionalEntriesWithNewDataSource:(id)source changeDetails:(id)details firstUngroupedMemoryIndex:(unint64_t)index;
 - (void)generateAdditionalEntriesIfPossible;
-- (void)generateAdditionalEntriesWithOldDataSource:(id)a3 startingIndex:(unint64_t)a4 sync:(BOOL)a5;
-- (void)handleChangedKeyAssetsForMemories:(id)a3;
-- (void)handleIncrementalFetchResultChange:(id)a3 updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)a4;
-- (void)handleNonIncrementalFetchResultChange:(id)a3;
-- (void)reloadMemories:(BOOL)a3;
+- (void)generateAdditionalEntriesWithOldDataSource:(id)source startingIndex:(unint64_t)index sync:(BOOL)sync;
+- (void)handleChangedKeyAssetsForMemories:(id)memories;
+- (void)handleIncrementalFetchResultChange:(id)change updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)assets;
+- (void)handleNonIncrementalFetchResultChange:(id)change;
+- (void)reloadMemories:(BOOL)memories;
 - (void)startGeneratingMemories;
 @end
 
 @implementation PXMemoriesFeedDataSourceManager
 
-- (id)objectReferenceForMemory:(id)a3
+- (id)objectReferenceForMemory:(id)memory
 {
-  v4 = a3;
-  v5 = [(PXSectionedDataSourceManager *)self dataSource];
-  v6 = [v5 entries];
-  v7 = [(PXMemoriesFeedDataSourceManager *)self _indexOfEntryForMemory:v4 inSortedEntries:v6 options:256];
+  memoryCopy = memory;
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  entries = [dataSource entries];
+  v7 = [(PXMemoriesFeedDataSourceManager *)self _indexOfEntryForMemory:memoryCopy inSortedEntries:entries options:256];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -30,8 +30,8 @@
   else
   {
     v9 = v7;
-    v10 = [v6 objectAtIndex:v7];
-    v11 = [v10 indexOfMemory:v4];
+    v10 = [entries objectAtIndex:v7];
+    v11 = [v10 indexOfMemory:memoryCopy];
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
@@ -40,31 +40,31 @@
     else
     {
       v12 = v11;
-      v14[0] = [v5 identifier];
+      v14[0] = [dataSource identifier];
       v14[1] = v9;
       v14[2] = v12;
       v14[3] = 0x7FFFFFFFFFFFFFFFLL;
-      v8 = [v5 objectReferenceAtIndexPath:v14];
+      v8 = [dataSource objectReferenceAtIndexPath:v14];
     }
   }
 
   return v8;
 }
 
-- (unint64_t)_indexOfEntry:(id)a3 inSortedEntries:(id)a4 options:(unint64_t)a5
+- (unint64_t)_indexOfEntry:(id)entry inSortedEntries:(id)entries options:(unint64_t)options
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(v7 usingComparator:{"count"), a5, &__block_literal_global_250}];
+  entriesCopy = entries;
+  entryCopy = entry;
+  v9 = [entriesCopy indexOfObject:entryCopy inSortedRange:0 options:objc_msgSend(entriesCopy usingComparator:{"count"), options, &__block_literal_global_250}];
 
   return v9;
 }
 
-- (unint64_t)_indexOfEntryForMemory:(id)a3 inSortedEntries:(id)a4 options:(unint64_t)a5
+- (unint64_t)_indexOfEntryForMemory:(id)memory inSortedEntries:(id)entries options:(unint64_t)options
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 count];
+  entriesCopy = entries;
+  memoryCopy = memory;
+  v11 = [entriesCopy count];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__PXMemoriesFeedDataSourceManager__indexOfEntryForMemory_inSortedEntries_options___block_invoke_2;
@@ -72,7 +72,7 @@
   v15 = &__block_literal_global_32436;
   v16 = a2;
   v14[4] = self;
-  v12 = [v9 indexOfObject:v10 inSortedRange:0 options:v11 usingComparator:{a5, v14}];
+  v12 = [entriesCopy indexOfObject:memoryCopy inSortedRange:0 options:v11 usingComparator:{options, v14}];
 
   return v12;
 }
@@ -166,13 +166,13 @@ LABEL_5:
   return v9;
 }
 
-- (void)handleChangedKeyAssetsForMemories:(id)a3
+- (void)handleChangedKeyAssetsForMemories:(id)memories
 {
-  v4 = a3;
-  v5 = [(PXSectionedDataSourceManager *)self dataSource];
-  v19 = [v5 entries];
+  memoriesCopy = memories;
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  entries = [dataSource entries];
 
-  v6 = [v19 mutableCopy];
+  v6 = [entries mutableCopy];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -183,7 +183,7 @@ LABEL_5:
   v24 = v7;
   v8 = v7;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v22];
+  [memoriesCopy enumerateKeysAndObjectsUsingBlock:v22];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v20[0] = MEMORY[0x1E69E9820];
@@ -195,11 +195,11 @@ LABEL_5:
   [v8 enumerateKeysAndObjectsUsingBlock:v20];
   v12 = [[PXMemoriesFeedDataSource alloc] initWithEntries:v9];
   v13 = [off_1E77218B0 alloc];
-  v14 = [(PXSectionedDataSourceManager *)self dataSource];
-  v15 = [v14 identifier];
-  v16 = [(PXMemoriesFeedDataSource *)v12 identifier];
-  v17 = [off_1E7721450 changeDetailsWithNoChanges];
-  v18 = [v13 initWithFromDataSourceIdentifier:v15 toDataSourceIdentifier:v16 sectionChanges:v17 itemChangeDetailsBySection:v11 subitemChangeDetailsByItemBySection:0];
+  dataSource2 = [(PXSectionedDataSourceManager *)self dataSource];
+  identifier = [dataSource2 identifier];
+  identifier2 = [(PXMemoriesFeedDataSource *)v12 identifier];
+  changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
+  v18 = [v13 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v11 subitemChangeDetailsByItemBySection:0];
 
   [(PXSectionedDataSourceManager *)self setDataSource:v12 changeDetails:v18];
 }
@@ -249,12 +249,12 @@ void __69__PXMemoriesFeedDataSourceManager_handleChangedKeyAssetsForMemories___b
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (void)handleNonIncrementalFetchResultChange:(id)a3
+- (void)handleNonIncrementalFetchResultChange:(id)change
 {
-  v4 = [a3 fetchResultAfterChanges];
-  v5 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  fetchResultAfterChanges = [change fetchResultAfterChanges];
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
 
-  if (v4 != v5)
+  if (fetchResultAfterChanges != memoriesFetchResult)
   {
     v6 = PLMemoriesGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -263,27 +263,27 @@ void __69__PXMemoriesFeedDataSourceManager_handleChangedKeyAssetsForMemories___b
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "Handling non-incremental memories feed update", v8, 2u);
     }
 
-    [(PXMemoriesFeedDataSourceManagerBase *)self setMemoriesFetchResult:v4];
+    [(PXMemoriesFeedDataSourceManagerBase *)self setMemoriesFetchResult:fetchResultAfterChanges];
     v7 = +[(PXSectionedDataSource *)PXMemoriesFeedDataSource];
     [(PXMemoriesFeedDataSourceManager *)self generateAdditionalEntriesWithOldDataSource:v7 startingIndex:0 sync:0];
   }
 }
 
-- (void)handleIncrementalFetchResultChange:(id)a3 updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)a4
+- (void)handleIncrementalFetchResultChange:(id)change updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)assets
 {
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  assetsCopy = assets;
   privateWorkQueue = self->_privateWorkQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __121__PXMemoriesFeedDataSourceManager_handleIncrementalFetchResultChange_updatedFetchResultsForMemoriesWithChangedKeyAssets___block_invoke;
   v12[3] = &unk_1E774A768;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = changeCopy;
+  v14 = assetsCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = assetsCopy;
+  v11 = changeCopy;
   dispatch_async(privateWorkQueue, v12);
 }
 
@@ -999,31 +999,31 @@ uint64_t __121__PXMemoriesFeedDataSourceManager_handleIncrementalFetchResultChan
   return v7;
 }
 
-- (void)_handleFinishedGeneratingAdditionalEntriesWithNewDataSource:(id)a3 changeDetails:(id)a4 firstUngroupedMemoryIndex:(unint64_t)a5
+- (void)_handleFinishedGeneratingAdditionalEntriesWithNewDataSource:(id)source changeDetails:(id)details firstUngroupedMemoryIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = a3;
-  [(PXMemoriesFeedDataSourceManagerBase *)self setFirstUngroupedMemoryIndex:a5];
+  detailsCopy = details;
+  sourceCopy = source;
+  [(PXMemoriesFeedDataSourceManagerBase *)self setFirstUngroupedMemoryIndex:index];
   [(PXMemoriesFeedDataSourceManager *)self _setGeneratingAdditionalEntries:0];
-  [(PXSectionedDataSourceManager *)self setDataSource:v9 changeDetails:v8];
+  [(PXSectionedDataSourceManager *)self setDataSource:sourceCopy changeDetails:detailsCopy];
 }
 
-- (void)_generateAdditionalEntriesWithOldDataSource:(id)a3 startingIndex:(unint64_t)a4 sync:(BOOL)a5
+- (void)_generateAdditionalEntriesWithOldDataSource:(id)source startingIndex:(unint64_t)index sync:(BOOL)sync
 {
-  v5 = a5;
-  v8 = a3;
+  syncCopy = sync;
+  sourceCopy = source;
   v36 = 0x7FFFFFFFFFFFFFFFLL;
   v9 = +[PXMemoriesFeedSettings sharedInstance];
-  v10 = [v9 groupsPerBatch];
+  groupsPerBatch = [v9 groupsPerBatch];
 
-  v26 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
-  v11 = [objc_opt_class() generateEntriesFromMemories:v26 startingFromIndex:a4 maximumNumberOfEntries:v10 finalMemoryIndex:&v36];
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  v11 = [objc_opt_class() generateEntriesFromMemories:memoriesFetchResult startingFromIndex:index maximumNumberOfEntries:groupsPerBatch finalMemoryIndex:&v36];
   if (![v11 count])
   {
-    v25 = a4;
-    v14 = v8;
+    indexCopy = index;
+    v14 = sourceCopy;
     v23 = 0;
-    if (v5)
+    if (syncCopy)
     {
       goto LABEL_3;
     }
@@ -1037,7 +1037,7 @@ LABEL_5:
     objc_copyWeak(v30, &location);
     v28 = v14;
     v29 = v23;
-    v30[1] = v25;
+    v30[1] = indexCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(v30);
@@ -1045,28 +1045,28 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v25 = (v36 + 1);
-  v12 = [v8 entries];
-  v13 = [v12 arrayByAddingObjectsFromArray:v11];
+  indexCopy = (v36 + 1);
+  entries = [sourceCopy entries];
+  v13 = [entries arrayByAddingObjectsFromArray:v11];
   v14 = [[PXMemoriesFeedDataSource alloc] initWithEntries:v13];
-  v15 = [v12 count];
+  v15 = [entries count];
   v16 = [v11 count];
   [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v15, v16}];
-  v17 = v24 = v5;
+  v17 = v24 = syncCopy;
   v18 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:v17 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __98__PXMemoriesFeedDataSourceManager__generateAdditionalEntriesWithOldDataSource_startingIndex_sync___block_invoke;
   v32[3] = &unk_1E774BF90;
-  v33 = v12;
+  v33 = entries;
   v34 = v13;
   v35 = v19;
   v20 = v19;
   v21 = v13;
-  v22 = v12;
+  v22 = entries;
   [v11 enumerateObjectsUsingBlock:v32];
-  v23 = [[off_1E77218B0 alloc] initWithFromDataSourceIdentifier:objc_msgSend(v8 toDataSourceIdentifier:"identifier") sectionChanges:-[PXMemoriesFeedDataSource identifier](v14 itemChangeDetailsBySection:"identifier") subitemChangeDetailsByItemBySection:{v18, v20, 0}];
+  v23 = [[off_1E77218B0 alloc] initWithFromDataSourceIdentifier:objc_msgSend(sourceCopy toDataSourceIdentifier:"identifier") sectionChanges:-[PXMemoriesFeedDataSource identifier](v14 itemChangeDetailsBySection:"identifier") subitemChangeDetailsByItemBySection:{v18, v20, 0}];
 
   if (!v24)
   {
@@ -1074,7 +1074,7 @@ LABEL_5:
   }
 
 LABEL_3:
-  [(PXMemoriesFeedDataSourceManager *)self _handleFinishedGeneratingAdditionalEntriesWithNewDataSource:v14 changeDetails:v23 firstUngroupedMemoryIndex:v25];
+  [(PXMemoriesFeedDataSourceManager *)self _handleFinishedGeneratingAdditionalEntriesWithNewDataSource:v14 changeDetails:v23 firstUngroupedMemoryIndex:indexCopy];
 LABEL_6:
 }
 
@@ -1098,30 +1098,30 @@ void __98__PXMemoriesFeedDataSourceManager__generateAdditionalEntriesWithOldData
   [WeakRetained _handleFinishedGeneratingAdditionalEntriesWithNewDataSource:*(a1 + 32) changeDetails:*(a1 + 40) firstUngroupedMemoryIndex:*(a1 + 56)];
 }
 
-- (void)reloadMemories:(BOOL)a3
+- (void)reloadMemories:(BOOL)memories
 {
-  v3 = a3;
+  memoriesCopy = memories;
   [(PXMemoriesFeedDataSourceManager *)self startGeneratingMemories];
   v5 = +[(PXSectionedDataSource *)PXMemoriesFeedDataSource];
-  [(PXMemoriesFeedDataSourceManager *)self generateAdditionalEntriesWithOldDataSource:v5 startingIndex:0 sync:v3];
+  [(PXMemoriesFeedDataSourceManager *)self generateAdditionalEntriesWithOldDataSource:v5 startingIndex:0 sync:memoriesCopy];
 }
 
 - (void)generateAdditionalEntriesIfPossible
 {
-  v3 = [(PXMemoriesFeedDataSourceManagerBase *)self firstUngroupedMemoryIndex];
-  v6 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
-  v4 = [v6 count];
-  if (v4 && v3 < v4)
+  firstUngroupedMemoryIndex = [(PXMemoriesFeedDataSourceManagerBase *)self firstUngroupedMemoryIndex];
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  v4 = [memoriesFetchResult count];
+  if (v4 && firstUngroupedMemoryIndex < v4)
   {
-    v5 = [(PXSectionedDataSourceManager *)self dataSource];
-    [(PXMemoriesFeedDataSourceManager *)self generateAdditionalEntriesWithOldDataSource:v5 startingIndex:v3 sync:0];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+    [(PXMemoriesFeedDataSourceManager *)self generateAdditionalEntriesWithOldDataSource:dataSource startingIndex:firstUngroupedMemoryIndex sync:0];
   }
 }
 
-- (void)generateAdditionalEntriesWithOldDataSource:(id)a3 startingIndex:(unint64_t)a4 sync:(BOOL)a5
+- (void)generateAdditionalEntriesWithOldDataSource:(id)source startingIndex:(unint64_t)index sync:(BOOL)sync
 {
-  v5 = a5;
-  v8 = a3;
+  syncCopy = sync;
+  sourceCopy = source;
   if ([(PXMemoriesFeedDataSourceManager *)self _isGeneratingAdditionalEntries])
   {
     v9 = PLMemoriesGetLog();
@@ -1135,9 +1135,9 @@ void __98__PXMemoriesFeedDataSourceManager__generateAdditionalEntriesWithOldData
   else
   {
     [(PXMemoriesFeedDataSourceManager *)self _setGeneratingAdditionalEntries:1];
-    if (v5)
+    if (syncCopy)
     {
-      [(PXMemoriesFeedDataSourceManager *)self _generateAdditionalEntriesWithOldDataSource:v8 startingIndex:a4 sync:1];
+      [(PXMemoriesFeedDataSourceManager *)self _generateAdditionalEntriesWithOldDataSource:sourceCopy startingIndex:index sync:1];
     }
 
     else
@@ -1149,8 +1149,8 @@ void __98__PXMemoriesFeedDataSourceManager__generateAdditionalEntriesWithOldData
       block[2] = __97__PXMemoriesFeedDataSourceManager_generateAdditionalEntriesWithOldDataSource_startingIndex_sync___block_invoke;
       block[3] = &unk_1E7746600;
       objc_copyWeak(v13, buf);
-      v12 = v8;
-      v13[1] = a4;
+      v12 = sourceCopy;
+      v13[1] = index;
       dispatch_async(privateWorkQueue, block);
 
       objc_destroyWeak(v13);
@@ -1170,21 +1170,21 @@ void __97__PXMemoriesFeedDataSourceManager_generateAdditionalEntriesWithOldDataS
   v6.receiver = self;
   v6.super_class = PXMemoriesFeedDataSourceManager;
   [(PXMemoriesFeedDataSourceManagerBase *)&v6 startGeneratingMemories];
-  v3 = [(PXSectionedDataSourceManager *)self dataSource];
-  v4 = [v3 containsAnyItems];
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  containsAnyItems = [dataSource containsAnyItems];
 
-  if ((v4 & 1) == 0)
+  if ((containsAnyItems & 1) == 0)
   {
-    v5 = [(PXSectionedDataSourceManager *)self dataSource];
-    [(PXMemoriesFeedDataSourceManager *)self generateAdditionalEntriesWithOldDataSource:v5 startingIndex:0 sync:1];
+    dataSource2 = [(PXSectionedDataSourceManager *)self dataSource];
+    [(PXMemoriesFeedDataSourceManager *)self generateAdditionalEntriesWithOldDataSource:dataSource2 startingIndex:0 sync:1];
   }
 }
 
-- (PXMemoriesFeedDataSourceManager)initWithPhotoLibrary:(id)a3
+- (PXMemoriesFeedDataSourceManager)initWithPhotoLibrary:(id)library
 {
   v7.receiver = self;
   v7.super_class = PXMemoriesFeedDataSourceManager;
-  v3 = [(PXMemoriesFeedDataSourceManagerBase *)&v7 initWithPhotoLibrary:a3];
+  v3 = [(PXMemoriesFeedDataSourceManagerBase *)&v7 initWithPhotoLibrary:library];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.PXMemoriesFeedDataSourceManager", 0);

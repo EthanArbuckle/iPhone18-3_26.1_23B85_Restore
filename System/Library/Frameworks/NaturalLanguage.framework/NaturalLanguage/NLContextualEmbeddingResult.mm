@@ -1,41 +1,41 @@
 @interface NLContextualEmbeddingResult
-- (NLContextualEmbeddingResult)initWithString:(id)a3 tokenDictionaries:(id)a4 data:(id)a5 language:(id)a6 tokenVectorDimension:(unint64_t)a7;
+- (NLContextualEmbeddingResult)initWithString:(id)string tokenDictionaries:(id)dictionaries data:(id)data language:(id)language tokenVectorDimension:(unint64_t)dimension;
 - (NSArray)tokenVectorAtIndex:(NSUInteger)characterIndex tokenRange:(NSRangePointer)tokenRange;
 - (NSUInteger)sequenceLength;
-- (id)_tokenVectorAtIndex:(unint64_t)a3;
+- (id)_tokenVectorAtIndex:(unint64_t)index;
 - (void)enumerateTokenVectorsInRange:(NSRange)range usingBlock:(void *)block;
 @end
 
 @implementation NLContextualEmbeddingResult
 
-- (NLContextualEmbeddingResult)initWithString:(id)a3 tokenDictionaries:(id)a4 data:(id)a5 language:(id)a6 tokenVectorDimension:(unint64_t)a7
+- (NLContextualEmbeddingResult)initWithString:(id)string tokenDictionaries:(id)dictionaries data:(id)data language:(id)language tokenVectorDimension:(unint64_t)dimension
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  stringCopy = string;
+  dictionariesCopy = dictionaries;
+  dataCopy = data;
+  languageCopy = language;
   v26.receiver = self;
   v26.super_class = NLContextualEmbeddingResult;
   v16 = [(NLContextualEmbeddingResult *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [stringCopy copy];
     string = v16->_string;
     v16->_string = v17;
 
-    v19 = [v13 copy];
+    v19 = [dictionariesCopy copy];
     tokenDictionaries = v16->_tokenDictionaries;
     v16->_tokenDictionaries = v19;
 
-    v21 = [v14 copy];
+    v21 = [dataCopy copy];
     data = v16->_data;
     v16->_data = v21;
 
-    v23 = [v15 copy];
+    v23 = [languageCopy copy];
     language = v16->_language;
     v16->_language = v23;
 
-    v16->_tokenVectorDimension = a7;
+    v16->_tokenVectorDimension = dimension;
   }
 
   return v16;
@@ -87,21 +87,21 @@
   return v5;
 }
 
-- (id)_tokenVectorAtIndex:(unint64_t)a3
+- (id)_tokenVectorAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(NSData *)self->_data bytes];
+  array = [MEMORY[0x1E695DF70] array];
+  bytes = [(NSData *)self->_data bytes];
   tokenVectorDimension = self->_tokenVectorDimension;
   if (tokenVectorDimension)
   {
-    v9 = v6;
+    v9 = bytes;
     v10 = 0;
-    v11 = 4 * a3;
+    v11 = 4 * index;
     do
     {
       LODWORD(v7) = *&v9[4 * v10 + v11 * tokenVectorDimension];
       v12 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
-      [v5 addObject:v12];
+      [array addObject:v12];
 
       ++v10;
       tokenVectorDimension = self->_tokenVectorDimension;
@@ -110,7 +110,7 @@
     while (v10 < tokenVectorDimension);
   }
 
-  return v5;
+  return array;
 }
 
 - (NSArray)tokenVectorAtIndex:(NSUInteger)characterIndex tokenRange:(NSRangePointer)tokenRange
@@ -161,8 +161,8 @@ LABEL_8:
               objc_enumerationMutation(v9);
             }
 
-            v15 = [*(*(&v31 + 1) + 8 * v13) rangeValue];
-            if (v15 <= characterIndex && v15 + v16 > characterIndex)
+            rangeValue = [*(*(&v31 + 1) + 8 * v13) rangeValue];
+            if (rangeValue <= characterIndex && rangeValue + v16 > characterIndex)
             {
               break;
             }
@@ -180,7 +180,7 @@ LABEL_8:
             }
           }
 
-          v18 = v15;
+          v18 = rangeValue;
           v19 = v16;
           v20 = [(NLContextualEmbeddingResult *)self _tokenVectorAtIndex:v14];
 
@@ -260,7 +260,7 @@ LABEL_3:
 
       v7 = *(*(&v36 + 1) + 8 * v6);
       v8 = [v7 objectForKey:@"TokenRange"];
-      v9 = [v8 rangeValue];
+      rangeValue = [v8 rangeValue];
       v11 = v10;
 
       v12 = [v7 objectForKey:@"SubtokenRanges"];
@@ -285,12 +285,12 @@ LABEL_8:
             objc_enumerationMutation(v30);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * v16) rangeValue];
+          rangeValue2 = [*(*(&v32 + 1) + 8 * v16) rangeValue];
           v20 = v19;
-          if (rangesMatch(location, length, v9, v11) && rangesMatch(location, length, v18, v20))
+          if (rangesMatch(location, length, rangeValue, v11) && rangesMatch(location, length, rangeValue2, v20))
           {
             v21 = [(NLContextualEmbeddingResult *)self _tokenVectorAtIndex:v5];
-            v29[2](v29, v21, v18, v20, &v40);
+            v29[2](v29, v21, rangeValue2, v20, &v40);
           }
 
           if (v40)

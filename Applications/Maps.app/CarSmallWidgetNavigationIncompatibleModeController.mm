@@ -19,15 +19,15 @@
   v7 = +[MNNavigationService sharedService];
   if ([v7 desiredTransportType])
   {
-    v3 = [v7 desiredTransportType];
-    if (v3 > 5)
+    desiredTransportType = [v7 desiredTransportType];
+    if (desiredTransportType > 5)
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = qword_1012160D0[v3];
+      v4 = qword_1012160D0[desiredTransportType];
     }
 
     v5 = sub_100FB2100(v4);
@@ -47,8 +47,8 @@
   v13.receiver = self;
   v13.super_class = CarSmallWidgetNavigationIncompatibleModeController;
   [(CarSmallWidgetNavigationIncompatibleModeController *)&v13 viewDidLoad];
-  v3 = [(CarSmallWidgetNavigationIncompatibleModeController *)self view];
-  [v3 setAccessibilityIdentifier:@"CarSmallWidgetNavigationIncompatibleView"];
+  view = [(CarSmallWidgetNavigationIncompatibleModeController *)self view];
+  [view setAccessibilityIdentifier:@"CarSmallWidgetNavigationIncompatibleView"];
 
   [(UILabel *)self->_incompatibleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = [UIFont systemFontOfSize:17.0];
@@ -62,16 +62,16 @@
   [(UILabel *)self->_incompatibleLabel setTextColor:v5];
 
   [(UILabel *)self->_incompatibleLabel setAccessibilityIdentifier:@"IncompatibleLabel"];
-  v6 = [(CarSmallWidgetNavigationIncompatibleModeController *)self view];
-  [v6 addSubview:self->_incompatibleLabel];
+  view2 = [(CarSmallWidgetNavigationIncompatibleModeController *)self view];
+  [view2 addSubview:self->_incompatibleLabel];
 
   incompatibleLabel = self->_incompatibleLabel;
-  v8 = [(CarSmallWidgetNavigationIncompatibleModeController *)self view];
-  v9 = [v8 safeAreaLayoutGuide];
+  view3 = [(CarSmallWidgetNavigationIncompatibleModeController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
   LODWORD(v10) = 1148846080;
-  v11 = [(UILabel *)incompatibleLabel _maps_constraintsEqualToEdgesOfLayoutGuide:v9 insets:6.0 priority:6.0, 6.0, 6.0, v10];
-  v12 = [v11 allConstraints];
-  [NSLayoutConstraint activateConstraints:v12];
+  v11 = [(UILabel *)incompatibleLabel _maps_constraintsEqualToEdgesOfLayoutGuide:safeAreaLayoutGuide insets:6.0 priority:6.0, 6.0, 6.0, v10];
+  allConstraints = [v11 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 
   [(CarSmallWidgetNavigationIncompatibleModeController *)self _displayIncompatibilityMessage];
 }

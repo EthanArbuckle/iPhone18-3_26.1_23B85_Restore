@@ -1,15 +1,15 @@
 @interface WGWidgetPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation WGWidgetPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGWidgetPlatterView" hasInstanceVariable:@"_headerContentView" withType:"WGPlatterHeaderContentView"];
-  [v3 validateClass:@"WGWidgetPlatterView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGWidgetPlatterView" hasInstanceVariable:@"_headerContentView" withType:"WGPlatterHeaderContentView"];
+  [validationsCopy validateClass:@"WGWidgetPlatterView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements

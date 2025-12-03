@@ -1,19 +1,19 @@
 @interface UIPrintInteractionController
 + (BOOL)canPrintData:(NSData *)data;
 + (BOOL)canPrintURL:(NSURL *)url;
-+ (BOOL)hasValidPDFHeader:(id)a3;
-+ (BOOL)isPrintablePDFData:(id)a3 requireUnlocked:(BOOL)a4 password:(id)a5;
-+ (BOOL)isPrintablePDFURL:(id)a3 requireUnlocked:(BOOL)a4 password:(id)a5;
++ (BOOL)hasValidPDFHeader:(id)header;
++ (BOOL)isPrintablePDFData:(id)data requireUnlocked:(BOOL)unlocked password:(id)password;
++ (BOOL)isPrintablePDFURL:(id)l requireUnlocked:(BOOL)unlocked password:(id)password;
 + (BOOL)isPrintingAvailable;
-+ (CGPDFDocument)createCGPDFDocumentRefWithNSData:(id)a3;
-+ (CGPDFDocument)createCGPDFDocumentRefWithNSURL:(id)a3;
++ (CGPDFDocument)createCGPDFDocumentRefWithNSData:(id)data;
++ (CGPDFDocument)createCGPDFDocumentRefWithNSURL:(id)l;
 + (NSSet)printableUTIs;
 + (UIPrintInteractionController)sharedPrintController;
-+ (id)utiForNSData:(id)a3;
-+ (id)utiForNSURL:(id)a3;
++ (id)utiForNSData:(id)data;
++ (id)utiForNSURL:(id)l;
 - (BOOL)_canPreviewContent;
-- (BOOL)_canPrintPDFData:(id)a3;
-- (BOOL)_canPrintURL:(id)a3;
+- (BOOL)_canPrintPDFData:(id)data;
+- (BOOL)_canPrintURL:(id)l;
 - (BOOL)_canShowAnnotations;
 - (BOOL)_canShowColor;
 - (BOOL)_canShowDuplex;
@@ -25,25 +25,25 @@
 - (BOOL)_canShowPunch;
 - (BOOL)_canShowScaling;
 - (BOOL)_canShowStaple;
-- (BOOL)_isPageCancelled:(id)a3;
+- (BOOL)_isPageCancelled:(id)cancelled;
 - (BOOL)_pageRendererAvailable;
-- (BOOL)_presentAnimated:(BOOL)a3 hostingScene:(id)a4 completionHandler:(id)a5;
-- (BOOL)_printingItemIsReallyTallPDF:(id)a3;
-- (BOOL)_setupPrintPanel:(id)a3 forPDFGenerationOnly:(BOOL)a4;
+- (BOOL)_presentAnimated:(BOOL)animated hostingScene:(id)scene completionHandler:(id)handler;
+- (BOOL)_printingItemIsReallyTallPDF:(id)f;
+- (BOOL)_setupPrintPanel:(id)panel forPDFGenerationOnly:(BOOL)only;
 - (BOOL)isPhone;
 - (BOOL)needRedrawWithNUp;
 - (BOOL)presentFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated completionHandler:(UIPrintInteractionCompletionHandler)completion;
 - (BOOL)presentFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(UIPrintInteractionCompletionHandler)completion;
 - (BOOL)printToPrinter:(UIPrinter *)printer completionHandler:(UIPrintInteractionCompletionHandler)completion;
-- (BOOL)savePDFToURL:(id)a3 showProgress:(BOOL)a4 hostingScene:(id)a5 completionHandler:(id)a6;
-- (BOOL)updatePrintingItems:(id)a3;
-- (CGContext)_newSaveContext:(id)a3 withMediaRect:(CGRect)a4;
+- (BOOL)savePDFToURL:(id)l showProgress:(BOOL)progress hostingScene:(id)scene completionHandler:(id)handler;
+- (BOOL)updatePrintingItems:(id)items;
+- (CGContext)_newSaveContext:(id)context withMediaRect:(CGRect)rect;
 - (CGRect)_mediaRect;
 - (CGSize)_printItemContentSize;
-- (CGSize)_printItemContentSize:(id)a3;
-- (CGSize)_printablePDFDataSize:(id)a3;
-- (CGSize)_printablePDFURLSize:(id)a3;
-- (CGSize)paperSizeForPageNum:(int64_t)a3;
+- (CGSize)_printItemContentSize:(id)size;
+- (CGSize)_printablePDFDataSize:(id)size;
+- (CGSize)_printablePDFURLSize:(id)size;
+- (CGSize)paperSizeForPageNum:(int64_t)num;
 - (NSArray)pageRanges;
 - (NSURL)tempPreviewFileURL;
 - (PKPrinter)printer;
@@ -52,64 +52,64 @@
 - (UIPrintPaper)paper;
 - (_NSRange)_fullPagesRange;
 - (_NSRange)currentRange;
-- (double)_getCutLengthFromDelegateForPaper:(id)a3;
-- (double)printInteractionController:(id)a3 cutLengthForPaper:(id)a4;
-- (id)_convertItemToPrintableItem:(id)a3;
+- (double)_getCutLengthFromDelegateForPaper:(id)paper;
+- (double)printInteractionController:(id)controller cutLengthForPaper:(id)paper;
+- (id)_convertItemToPrintableItem:(id)item;
 - (id)_createDocInfoDict;
 - (id)_currentPrintInfo;
-- (id)_getChosenPaperFromDelegateForPaperList:(id)a3;
-- (id)_newPDFURLWithPath:(id)a3 isContentManaged:(BOOL)a4;
-- (id)_paperForContentType:(int64_t)a3;
-- (id)_paperForPDFItem:(id)a3 withDuplexMode:(int64_t)a4;
-- (id)_printPageWithRenderer:(id)a3;
+- (id)_getChosenPaperFromDelegateForPaperList:(id)list;
+- (id)_newPDFURLWithPath:(id)path isContentManaged:(BOOL)managed;
+- (id)_paperForContentType:(int64_t)type;
+- (id)_paperForPDFItem:(id)item withDuplexMode:(int64_t)mode;
+- (id)_printPageWithRenderer:(id)renderer;
 - (id)_printingItemPrintablePDFURL;
 - (id)_tempFilePath;
 - (id)_updatePrintPaper;
 - (id)appOptionsViewController;
-- (id)convertedPrintableItem:(id)a3;
+- (id)convertedPrintableItem:(id)item;
 - (id)createWebKitPDFForAllPages;
 - (id)delegate;
-- (id)drawPagesWithPreviewState:(id)a3;
-- (id)getPrintingItemForPageNum:(int64_t)a3 pdfItemPageNum:(int64_t *)a4;
-- (id)printInteractionController:(id)a3 choosePaper:(id)a4;
-- (id)redrawPDFwithPageRange:(id)a3;
+- (id)drawPagesWithPreviewState:(id)state;
+- (id)getPrintingItemForPageNum:(int64_t)num pdfItemPageNum:(int64_t *)pageNum;
+- (id)printInteractionController:(id)controller choosePaper:(id)paper;
+- (id)redrawPDFwithPageRange:(id)range;
 - (id)rendererToUse;
 - (int64_t)numberOfPages;
-- (void)_addPDFWithCGPDFDocumentRef:(CGPDFDocument *)a3 toContext:(CGContext *)a4 addAllPages:(BOOL)a5;
+- (void)_addPDFWithCGPDFDocumentRef:(CGPDFDocument *)ref toContext:(CGContext *)context addAllPages:(BOOL)pages;
 - (void)_cancelAllPreviewGeneration;
-- (void)_cancelPreviewQueue:(BOOL)a3 completionHandler:(id)a4;
+- (void)_cancelPreviewQueue:(BOOL)queue completionHandler:(id)handler;
 - (void)_cleanPrintState;
-- (void)_completePrintPageWithError:(id)a3;
-- (void)_drawPrintItem:(id)a3 toContext:(CGContext *)a4 printAllPages:(BOOL)a5;
-- (void)_endPrintJobWithAction:(int64_t)a3 error:(id)a4;
-- (void)_ensurePDFIsUnlockedFirstAttempt:(BOOL)a3 completionHandler:(id)a4;
-- (void)_generatePDFWithCompletionHandler:(id)a3;
-- (void)_generatePDFWithNupForPrintingCompletion:(id)a3;
-- (void)_generatePrintPreview:(id)a3;
+- (void)_completePrintPageWithError:(id)error;
+- (void)_drawPrintItem:(id)item toContext:(CGContext *)context printAllPages:(BOOL)pages;
+- (void)_endPrintJobWithAction:(int64_t)action error:(id)error;
+- (void)_ensurePDFIsUnlockedFirstAttempt:(BOOL)attempt completionHandler:(id)handler;
+- (void)_generatePDFWithCompletionHandler:(id)handler;
+- (void)_generatePDFWithNupForPrintingCompletion:(id)completion;
+- (void)_generatePrintPreview:(id)preview;
 - (void)_preparePrintInfo;
-- (void)_printItemAsync:(id)a3 completionHandler:(id)a4;
+- (void)_printItemAsync:(id)async completionHandler:(id)handler;
 - (void)_printPage;
-- (void)_printPageWithDelay:(double)a3;
-- (void)_printPanelDidDismissWithAction:(int64_t)a3;
+- (void)_printPageWithDelay:(double)delay;
+- (void)_printPanelDidDismissWithAction:(int64_t)action;
 - (void)_printPanelDidPresent;
-- (void)_printPanelWillDismissWithAction:(int64_t)a3;
-- (void)_setPrinterInfoState:(int)a3;
+- (void)_printPanelWillDismissWithAction:(int64_t)action;
+- (void)_setPrinterInfoState:(int)state;
 - (void)_startPrinting;
 - (void)_updateCutterBehavior;
 - (void)_updatePageCount;
 - (void)_updatePrintInfoWithAnnotations;
-- (void)_updateRendererWithQuality:(int64_t)a3;
+- (void)_updateRendererWithQuality:(int64_t)quality;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)drawImage:(id)a3 toContext:(CGContext *)a4 sheetSize:(CGSize)a5;
-- (void)drawImageForPageNum:(int64_t)a3 toContext:(CGContext *)a4 sheetSize:(CGSize)a5;
+- (void)dismissAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)drawImage:(id)image toContext:(CGContext *)context sheetSize:(CGSize)size;
+- (void)drawImageForPageNum:(int64_t)num toContext:(CGContext *)context sheetSize:(CGSize)size;
 - (void)recalculateWebKitPageCount;
-- (void)removeFileAtURL:(id)a3;
-- (void)setPageRanges:(id)a3;
-- (void)setPaper:(id)a3;
-- (void)setPrinter:(id)a3;
+- (void)removeFileAtURL:(id)l;
+- (void)setPageRanges:(id)ranges;
+- (void)setPaper:(id)paper;
+- (void)setPrinter:(id)printer;
 - (void)setPrintingItem:(id)printingItem;
-- (void)setTempPreviewFileURL:(id)a3;
+- (void)setTempPreviewFileURL:(id)l;
 @end
 
 @implementation UIPrintInteractionController
@@ -149,8 +149,8 @@
   v3 = *MEMORY[0x277D767B0];
   if (self->_backgroundTaskIdentifier != *MEMORY[0x277D767B0])
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    [v4 _endBackgroundTask:self->_backgroundTaskIdentifier];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] _endBackgroundTask:self->_backgroundTaskIdentifier];
 
     self->_backgroundTaskIdentifier = v3;
   }
@@ -243,10 +243,10 @@
 
 + (BOOL)isPrintingAvailable
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isAirPrintAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isAirPrintAllowed = [mEMORY[0x277D262A0] isAirPrintAllowed];
 
-  return v3;
+  return isAirPrintAllowed;
 }
 
 + (NSSet)printableUTIs
@@ -255,9 +255,9 @@
   if (!printableUTIs___printableUTIs)
   {
     v3 = MEMORY[0x277CBEB98];
-    v4 = [*MEMORY[0x277CE1DC0] identifier];
-    v5 = [*MEMORY[0x277CE1E08] identifier];
-    v6 = [v3 setWithObjects:{v4, v5, 0}];
+    identifier = [*MEMORY[0x277CE1DC0] identifier];
+    identifier2 = [*MEMORY[0x277CE1E08] identifier];
+    v6 = [v3 setWithObjects:{identifier, identifier2, 0}];
     v7 = printableUTIs___printableUTIs;
     printableUTIs___printableUTIs = v6;
 
@@ -276,20 +276,20 @@
   return v2;
 }
 
-+ (BOOL)isPrintablePDFURL:(id)a3 requireUnlocked:(BOOL)a4 password:(id)a5
++ (BOOL)isPrintablePDFURL:(id)l requireUnlocked:(BOOL)unlocked password:(id)password
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [UIPrintInteractionController createCGPDFDocumentRefWithNSURL:a3];
+  unlockedCopy = unlocked;
+  passwordCopy = password;
+  v8 = [UIPrintInteractionController createCGPDFDocumentRefWithNSURL:l];
   if (v8)
   {
     v9 = v8;
-    if (v5)
+    if (unlockedCopy)
     {
       IsEncrypted = CGPDFDocumentIsEncrypted(v8);
-      if (v7 && IsEncrypted)
+      if (passwordCopy && IsEncrypted)
       {
-        CGPDFDocumentUnlockWithPassword(v9, [v7 cStringUsingEncoding:4]);
+        CGPDFDocumentUnlockWithPassword(v9, [passwordCopy cStringUsingEncoding:4]);
       }
 
       v11 = CGPDFDocumentAllowsPrinting(v9);
@@ -311,20 +311,20 @@
   return v11;
 }
 
-+ (BOOL)isPrintablePDFData:(id)a3 requireUnlocked:(BOOL)a4 password:(id)a5
++ (BOOL)isPrintablePDFData:(id)data requireUnlocked:(BOOL)unlocked password:(id)password
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [UIPrintInteractionController createCGPDFDocumentRefWithNSData:a3];
+  unlockedCopy = unlocked;
+  passwordCopy = password;
+  v8 = [UIPrintInteractionController createCGPDFDocumentRefWithNSData:data];
   if (v8)
   {
     v9 = v8;
-    if (v5)
+    if (unlockedCopy)
     {
       IsEncrypted = CGPDFDocumentIsEncrypted(v8);
-      if (v7 && IsEncrypted)
+      if (passwordCopy && IsEncrypted)
       {
-        CGPDFDocumentUnlockWithPassword(v9, [v7 cStringUsingEncoding:4]);
+        CGPDFDocumentUnlockWithPassword(v9, [passwordCopy cStringUsingEncoding:4]);
       }
 
       v11 = CGPDFDocumentAllowsPrinting(v9);
@@ -362,16 +362,16 @@
   return v4;
 }
 
-+ (id)utiForNSURL:(id)a3
++ (id)utiForNSURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (!lCopy)
   {
     goto LABEL_9;
   }
 
-  if (IsAssetURL(v3))
+  if (IsAssetURL(lCopy))
   {
     v5 = GetPHAssetForAssetURLSync(v4);
     v19 = 0;
@@ -405,7 +405,7 @@
       v10 = 0;
     }
 
-    v11 = v10;
+    identifier = v10;
     _Block_object_dispose(&v19, 8);
 
     goto LABEL_12;
@@ -413,7 +413,7 @@
 
   if ([UIPrintInteractionController isPrintablePDFURL:v4 requireUnlocked:0 password:0])
   {
-    v11 = [*MEMORY[0x277CE1E08] identifier];
+    identifier = [*MEMORY[0x277CE1E08] identifier];
     goto LABEL_12;
   }
 
@@ -421,61 +421,61 @@
   if (v12)
   {
     v13 = v12;
-    v11 = CGImageSourceGetType(v12);
+    identifier = CGImageSourceGetType(v12);
     CFRelease(v13);
   }
 
   else
   {
 LABEL_9:
-    v11 = 0;
+    identifier = 0;
   }
 
 LABEL_12:
 
-  return v11;
+  return identifier;
 }
 
-+ (id)utiForNSData:(id)a3
++ (id)utiForNSData:(id)data
 {
-  v3 = a3;
-  if (!v3)
+  dataCopy = data;
+  if (!dataCopy)
   {
     goto LABEL_6;
   }
 
-  if ([UIPrintInteractionController isPrintablePDFData:v3 requireUnlocked:0 password:0])
+  if ([UIPrintInteractionController isPrintablePDFData:dataCopy requireUnlocked:0 password:0])
   {
-    v4 = [*MEMORY[0x277CE1E08] identifier];
+    identifier = [*MEMORY[0x277CE1E08] identifier];
     goto LABEL_7;
   }
 
-  v5 = CGImageSourceCreateWithData(v3, 0);
+  v5 = CGImageSourceCreateWithData(dataCopy, 0);
   if (v5)
   {
     v6 = v5;
-    v4 = CGImageSourceGetType(v5);
+    identifier = CGImageSourceGetType(v5);
     CFRelease(v6);
   }
 
   else
   {
 LABEL_6:
-    v4 = 0;
+    identifier = 0;
   }
 
 LABEL_7:
 
-  return v4;
+  return identifier;
 }
 
-+ (BOOL)hasValidPDFHeader:(id)a3
++ (BOOL)hasValidPDFHeader:(id)header
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length] >= 0xB)
+  headerCopy = header;
+  v4 = headerCopy;
+  if (headerCopy && [headerCopy length] >= 0xB)
   {
-    v5 = [v4 bytes];
+    bytes = [v4 bytes];
     v6 = [v4 length];
     v7 = 4085;
     if ((v6 - 11) < 0xFF5)
@@ -485,10 +485,10 @@ LABEL_7:
 
     if (v6 != 11)
     {
-      v8 = &v5[v7];
+      v8 = &bytes[v7];
       do
       {
-        v9 = memchr(v5, 37, v8 - v5);
+        v9 = memchr(bytes, 37, v8 - bytes);
         if (!v9)
         {
           break;
@@ -501,10 +501,10 @@ LABEL_7:
           goto LABEL_12;
         }
 
-        v5 = (v10 + 1);
+        bytes = (v10 + 1);
       }
 
-      while (v5 < v8);
+      while (bytes < v8);
     }
   }
 
@@ -514,10 +514,10 @@ LABEL_12:
   return v11;
 }
 
-+ (CGPDFDocument)createCGPDFDocumentRefWithNSData:(id)a3
++ (CGPDFDocument)createCGPDFDocumentRefWithNSData:(id)data
 {
-  v3 = a3;
-  if ([UIPrintInteractionController hasValidPDFHeader:v3]&& (v4 = CGDataProviderCreateWithCFData(v3)) != 0)
+  dataCopy = data;
+  if ([UIPrintInteractionController hasValidPDFHeader:dataCopy]&& (v4 = CGDataProviderCreateWithCFData(dataCopy)) != 0)
   {
     v5 = v4;
     v6 = CGPDFDocumentCreateWithProvider(v4);
@@ -532,18 +532,18 @@ LABEL_12:
   return v6;
 }
 
-+ (CGPDFDocument)createCGPDFDocumentRefWithNSURL:(id)a3
++ (CGPDFDocument)createCGPDFDocumentRefWithNSURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v13 = 0;
-  v4 = [v3 getResourceValue:&v13 forKey:*MEMORY[0x277CBE7B8] error:0];
+  v4 = [lCopy getResourceValue:&v13 forKey:*MEMORY[0x277CBE7B8] error:0];
   v5 = v13;
   v6 = 0;
-  if ([v3 isFileURL] && v4)
+  if ([lCopy isFileURL] && v4)
   {
     if ([v5 isEqual:*MEMORY[0x277CE1E08]])
     {
-      v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:v3 error:0];
+      v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:lCopy error:0];
       v8 = v7;
       if (v7)
       {
@@ -555,7 +555,7 @@ LABEL_12:
         v9 = 0;
       }
 
-      if ([UIPrintInteractionController hasValidPDFHeader:v9]&& (v10 = CGDataProviderCreateWithURL(v3)) != 0)
+      if ([UIPrintInteractionController hasValidPDFHeader:v9]&& (v10 = CGDataProviderCreateWithURL(lCopy)) != 0)
       {
         v11 = v10;
         v6 = CGPDFDocumentCreateWithProvider(v10);
@@ -592,33 +592,33 @@ LABEL_12:
   return v2;
 }
 
-- (void)_cancelPreviewQueue:(BOOL)a3 completionHandler:(id)a4
+- (void)_cancelPreviewQueue:(BOOL)queue completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   previewQueue = self->_previewQueue;
   if (previewQueue)
   {
-    if (v4)
+    if (queueCopy)
     {
       [(NSOperationQueue *)previewQueue cancelAllOperations];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v8 = self->_previewQueue;
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __70__UIPrintInteractionController__cancelPreviewQueue_completionHandler___block_invoke;
       v9[3] = &unk_279A9BFC8;
-      v10 = v6;
+      v10 = handlerCopy;
       [(NSOperationQueue *)v8 addBarrierBlock:v9];
     }
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -646,22 +646,22 @@ LABEL_12:
   }
 }
 
-- (BOOL)updatePrintingItems:(id)a3
+- (BOOL)updatePrintingItems:(id)items
 {
   v110 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self rendererToUse];
+  itemsCopy = items;
+  rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
 
-  if (!v5)
+  if (!rendererToUse)
   {
-    v78 = v4;
-    v6 = [MEMORY[0x277CBEB18] array];
+    v78 = itemsCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v100 = 0u;
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
-    v7 = [(UIPrintInteractionController *)self printingItems];
-    v8 = [v7 countByEnumeratingWithState:&v100 objects:v109 count:16];
+    printingItems = [(UIPrintInteractionController *)self printingItems];
+    v8 = [printingItems countByEnumeratingWithState:&v100 objects:v109 count:16];
     if (v8)
     {
       v9 = v8;
@@ -672,7 +672,7 @@ LABEL_12:
         {
           if (*v101 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(printingItems);
           }
 
           v12 = *(*(&v100 + 1) + 8 * i);
@@ -680,38 +680,38 @@ LABEL_12:
 
           if (!v13)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v100 objects:v109 count:16];
+        v9 = [printingItems countByEnumeratingWithState:&v100 objects:v109 count:16];
       }
 
       while (v9);
     }
 
-    if ([v6 count])
+    if ([array count])
     {
       v14 = MEMORY[0x277CBEB18];
-      v15 = [(UIPrintInteractionController *)self printingItems];
-      v16 = [v14 arrayWithArray:v15];
+      printingItems2 = [(UIPrintInteractionController *)self printingItems];
+      v16 = [v14 arrayWithArray:printingItems2];
 
-      [v16 removeObjectsInArray:v6];
+      [v16 removeObjectsInArray:array];
       [(UIPrintInteractionController *)self setPrintingItems:v16];
     }
 
-    v17 = [(UIPrintInteractionController *)self printingItems];
-    v18 = [v17 count];
+    printingItems3 = [(UIPrintInteractionController *)self printingItems];
+    v18 = [printingItems3 count];
 
     if (v18 >= 2)
     {
-      v19 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v96 = 0u;
       v97 = 0u;
       v98 = 0u;
       v99 = 0u;
-      v20 = [(UIPrintInteractionController *)self printingItems];
-      v21 = [v20 countByEnumeratingWithState:&v96 objects:v108 count:16];
+      printingItems4 = [(UIPrintInteractionController *)self printingItems];
+      v21 = [printingItems4 countByEnumeratingWithState:&v96 objects:v108 count:16];
       if (v21)
       {
         v22 = v21;
@@ -722,7 +722,7 @@ LABEL_12:
           {
             if (*v97 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(printingItems4);
             }
 
             v25 = *(*(&v96 + 1) + 8 * j);
@@ -733,40 +733,40 @@ LABEL_12:
               v28 = CFGetTypeID(v26);
               if (v28 == CGPDFDocumentGetTypeID() && CGPDFDocumentIsEncrypted(v27))
               {
-                [v19 addObject:v25];
+                [array2 addObject:v25];
               }
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v96 objects:v108 count:16];
+          v22 = [printingItems4 countByEnumeratingWithState:&v96 objects:v108 count:16];
         }
 
         while (v22);
       }
 
-      if ([v19 count])
+      if ([array2 count])
       {
         v29 = MEMORY[0x277CBEB18];
-        v30 = [(UIPrintInteractionController *)self printingItems];
-        v31 = [v29 arrayWithArray:v30];
+        printingItems5 = [(UIPrintInteractionController *)self printingItems];
+        v31 = [v29 arrayWithArray:printingItems5];
 
-        [v31 removeObjectsInArray:v19];
+        [v31 removeObjectsInArray:array2];
         [(UIPrintInteractionController *)self setPrintingItems:v31];
       }
     }
 
     [(UIPrintInteractionController *)self resetConvertedPrintableItems];
 
-    v4 = v78;
+    itemsCopy = v78;
   }
 
-  v32 = [(UIPrintInteractionController *)self printingItems];
-  v33 = [v32 count];
+  printingItems6 = [(UIPrintInteractionController *)self printingItems];
+  v33 = [printingItems6 count];
 
   if (v33)
   {
-    v34 = [MEMORY[0x277CCAA00] defaultManager];
-    v35 = [MEMORY[0x277CBEB18] array];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    array3 = [MEMORY[0x277CBEB18] array];
     memset(out, 0, sizeof(out));
     uuid_generate_random(out);
     uuid_unparse(out, v106);
@@ -777,36 +777,36 @@ LABEL_12:
     v40 = [v37 stringWithFormat:@"%@%@", v38, v39];
     [(UIPrintInteractionController *)self setPrintingItemsTempFolderPath:v40];
 
-    v41 = [(UIPrintInteractionController *)self printingItemsTempFolderPath];
+    printingItemsTempFolderPath = [(UIPrintInteractionController *)self printingItemsTempFolderPath];
     v92 = 0;
-    [v34 createDirectoryAtPath:v41 withIntermediateDirectories:1 attributes:0 error:&v92];
+    [defaultManager createDirectoryAtPath:printingItemsTempFolderPath withIntermediateDirectories:1 attributes:0 error:&v92];
     v42 = v92;
 
     if (!v42)
     {
       v77 = v33;
-      v79 = v4;
+      v79 = itemsCopy;
       v90 = 0u;
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v43 = [(UIPrintInteractionController *)self printingItems];
-      v44 = [v43 countByEnumeratingWithState:&v88 objects:v105 count:16];
-      v82 = v34;
+      printingItems7 = [(UIPrintInteractionController *)self printingItems];
+      v44 = [printingItems7 countByEnumeratingWithState:&v88 objects:v105 count:16];
+      v82 = defaultManager;
       if (v44)
       {
         v45 = v44;
         v46 = *v89;
         v47 = 0x277CBE000uLL;
         v80 = *v89;
-        v81 = v43;
+        v81 = printingItems7;
         do
         {
           for (k = 0; k != v45; ++k)
           {
             if (*v89 != v46)
             {
-              objc_enumerationMutation(v43);
+              objc_enumerationMutation(printingItems7);
             }
 
             v49 = *(*(&v88 + 1) + 8 * k);
@@ -816,12 +816,12 @@ LABEL_12:
               v50 = v49;
               if ([v50 isFileURL])
               {
-                v51 = v35;
+                v51 = array3;
                 v52 = *(v36 + 3240);
                 [(UIPrintInteractionController *)self printingItemsTempFolderPath];
                 v54 = v53 = v47;
-                v55 = [v50 lastPathComponent];
-                v56 = [v52 stringWithFormat:@"%@/%@", v54, v55];
+                lastPathComponent = [v50 lastPathComponent];
+                v56 = [v52 stringWithFormat:@"%@/%@", v54, lastPathComponent];
 
                 v47 = v53;
                 v57 = [*(v53 + 3008) fileURLWithPath:v56];
@@ -831,47 +831,47 @@ LABEL_12:
                 if (v58)
                 {
 
-                  v35 = v51;
+                  array3 = v51;
                 }
 
                 else
                 {
-                  v35 = v51;
+                  array3 = v51;
                   [(UIWindow *)v51 addObject:v57];
                 }
 
                 v36 = 0x277CCA000;
                 v46 = v80;
-                v43 = v81;
+                printingItems7 = v81;
               }
 
               else
               {
-                [(UIWindow *)v35 addObject:v50];
+                [(UIWindow *)array3 addObject:v50];
               }
             }
 
             else
             {
-              [(UIWindow *)v35 addObject:v49];
+              [(UIWindow *)array3 addObject:v49];
             }
           }
 
-          v45 = [v43 countByEnumeratingWithState:&v88 objects:v105 count:16];
+          v45 = [printingItems7 countByEnumeratingWithState:&v88 objects:v105 count:16];
         }
 
         while (v45);
       }
 
-      [(UIPrintInteractionController *)self setPrintingItems:v35];
+      [(UIPrintInteractionController *)self setPrintingItems:array3];
       v85 = 0u;
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v59 = [(UIPrintInteractionController *)self printingItems];
-      v60 = [v59 countByEnumeratingWithState:&v83 objects:v104 count:16];
+      printingItems8 = [(UIPrintInteractionController *)self printingItems];
+      v60 = [printingItems8 countByEnumeratingWithState:&v83 objects:v104 count:16];
       v33 = v77;
-      v4 = v79;
+      itemsCopy = v79;
       if (v60)
       {
         v61 = v60;
@@ -882,38 +882,38 @@ LABEL_12:
           {
             if (*v84 != v62)
             {
-              objc_enumerationMutation(v59);
+              objc_enumerationMutation(printingItems8);
             }
 
             v64 = [(UIPrintInteractionController *)self _convertItemToPrintableItem:*(*(&v83 + 1) + 8 * m)];
           }
 
-          v61 = [v59 countByEnumeratingWithState:&v83 objects:v104 count:16];
+          v61 = [printingItems8 countByEnumeratingWithState:&v83 objects:v104 count:16];
         }
 
         while (v61);
       }
 
       v42 = 0;
-      v34 = v82;
+      defaultManager = v82;
     }
   }
 
   else
   {
-    v65 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:v4];
+    v65 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:itemsCopy];
     alertWindow = self->_alertWindow;
     self->_alertWindow = v65;
-    v35 = v65;
+    array3 = v65;
 
-    [(UIWindow *)v35 setOpaque:0];
-    v67 = [MEMORY[0x277D75348] clearColor];
-    [(UIWindow *)v35 setBackgroundColor:v67];
+    [(UIWindow *)array3 setOpaque:0];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIWindow *)array3 setBackgroundColor:clearColor];
 
-    [(UIWindow *)v35 setWindowLevel:*MEMORY[0x277D772B8]];
-    v34 = objc_alloc_init(MEMORY[0x277D75D28]);
-    [(UIWindow *)v35 setRootViewController:v34];
-    [(UIWindow *)v35 makeKeyAndVisible];
+    [(UIWindow *)array3 setWindowLevel:*MEMORY[0x277D772B8]];
+    defaultManager = objc_alloc_init(MEMORY[0x277D75D28]);
+    [(UIWindow *)array3 setRootViewController:defaultManager];
+    [(UIWindow *)array3 makeKeyAndVisible];
     v68 = MEMORY[0x277D75110];
     v69 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v70 = [v69 localizedStringForKey:@"Protected PDF files can only be printed separately." value:@"Protected PDF files can only be printed separately." table:@"Localizable"];
@@ -927,13 +927,13 @@ LABEL_12:
     v93[2] = __52__UIPrintInteractionController_updatePrintingItems___block_invoke;
     v93[3] = &unk_279A9BFF0;
     v94 = v71;
-    v95 = self;
+    selfCopy = self;
     v42 = v71;
     v75 = [v72 actionWithTitle:v74 style:0 handler:v93];
     [v42 addAction:v75];
 
     v33 = 0;
-    [v34 presentViewController:v42 animated:0 completion:0];
+    [defaultManager presentViewController:v42 animated:0 completion:0];
   }
 
   return v33 != 0;
@@ -948,22 +948,22 @@ void __52__UIPrintInteractionController_updatePrintingItems___block_invoke(uint6
   *(v2 + 40) = 0;
 }
 
-- (BOOL)_presentAnimated:(BOOL)a3 hostingScene:(id)a4 completionHandler:(id)a5
+- (BOOL)_presentAnimated:(BOOL)animated hostingScene:(id)scene completionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  sceneCopy = scene;
+  handlerCopy = handler;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 0;
-  if (v7 || ([MEMORY[0x277D75128] sharedApplication], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "_findUISceneForLegacyInterfaceOrientation"), v7 = objc_claimAutoreleasedReturnValue(), v9, v7) || (objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "_preferredFocusedWindowScene"), v7 = objc_claimAutoreleasedReturnValue(), v10, v7))
+  if (sceneCopy || ([MEMORY[0x277D75128] sharedApplication], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "_findUISceneForLegacyInterfaceOrientation"), sceneCopy = objc_claimAutoreleasedReturnValue(), v9, sceneCopy) || (objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "_preferredFocusedWindowScene"), sceneCopy = objc_claimAutoreleasedReturnValue(), v10, sceneCopy))
   {
-    [(UIPrintInteractionController *)self setHostingWindowScene:v7];
-    v11 = [(UIPrintInteractionController *)self printingItems];
-    v12 = [v11 count] == 0;
+    [(UIPrintInteractionController *)self setHostingWindowScene:sceneCopy];
+    printingItems = [(UIPrintInteractionController *)self printingItems];
+    v12 = [printingItems count] == 0;
 
-    if (!v12 && ![(UIPrintInteractionController *)self updatePrintingItems:v7])
+    if (!v12 && ![(UIPrintInteractionController *)self updatePrintingItems:sceneCopy])
     {
       v20 = 0;
       goto LABEL_19;
@@ -974,10 +974,10 @@ void __52__UIPrintInteractionController_updatePrintingItems___block_invoke(uint6
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = [(UIPrintInteractionController *)self printPageRenderer];
-    v14 = [v13 printFormatters];
+    printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
+    printFormatters = [printPageRenderer printFormatters];
 
-    v15 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v15 = [printFormatters countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v15)
     {
       v16 = *v31;
@@ -987,7 +987,7 @@ void __52__UIPrintInteractionController_updatePrintingItems___block_invoke(uint6
         {
           if (*v31 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(printFormatters);
           }
 
           v18 = [objc_opt_class() description];
@@ -1000,7 +1000,7 @@ void __52__UIPrintInteractionController_updatePrintingItems___block_invoke(uint6
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v15 = [printFormatters countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v15)
         {
           continue;
@@ -1019,10 +1019,10 @@ LABEL_16:
     v23[3] = &unk_279A9C018;
     objc_copyWeak(&v27, &location);
     v26 = &v34;
-    v25 = v8;
-    v28 = a3;
-    v7 = v7;
-    v24 = v7;
+    v25 = handlerCopy;
+    animatedCopy = animated;
+    sceneCopy = sceneCopy;
+    v24 = sceneCopy;
     [(UIPrintInteractionController *)self _ensurePDFIsUnlockedFirstAttempt:1 completionHandler:v23];
 
     objc_destroyWeak(&v27);
@@ -1032,7 +1032,7 @@ LABEL_16:
   else
   {
     NSLog(&cfstr_ErrorAttemptin.isa);
-    v7 = 0;
+    sceneCopy = 0;
   }
 
   v20 = *(v35 + 24);
@@ -1095,27 +1095,27 @@ void __80__UIPrintInteractionController__presentAnimated_hostingScene_completion
   x = rect.origin.x;
   v13 = view;
   v14 = completion;
-  v15 = [(UIPrintInteractionController *)self hostingWindowScene];
+  hostingWindowScene = [(UIPrintInteractionController *)self hostingWindowScene];
 
-  if (!v15)
+  if (!hostingWindowScene)
   {
-    v16 = [(UIView *)v13 window];
-    v17 = [v16 windowScene];
-    [(UIPrintInteractionController *)self setHostingWindowScene:v17];
+    window = [(UIView *)v13 window];
+    windowScene = [window windowScene];
+    [(UIPrintInteractionController *)self setHostingWindowScene:windowScene];
 
-    v18 = [(UIPrintInteractionController *)self hostingWindowScene];
+    hostingWindowScene2 = [(UIPrintInteractionController *)self hostingWindowScene];
 
-    if (!v18)
+    if (!hostingWindowScene2)
     {
-      v19 = [MEMORY[0x277D75128] sharedApplication];
-      v20 = [v19 _findUISceneForLegacyInterfaceOrientation];
-      [(UIPrintInteractionController *)self setHostingWindowScene:v20];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      _findUISceneForLegacyInterfaceOrientation = [mEMORY[0x277D75128] _findUISceneForLegacyInterfaceOrientation];
+      [(UIPrintInteractionController *)self setHostingWindowScene:_findUISceneForLegacyInterfaceOrientation];
     }
   }
 
-  v21 = [(UIPrintInteractionController *)self hostingWindowScene];
+  hostingWindowScene3 = [(UIPrintInteractionController *)self hostingWindowScene];
 
-  if (!v21)
+  if (!hostingWindowScene3)
   {
     NSLog(&cfstr_ErrorAttemptin.isa);
 LABEL_10:
@@ -1123,13 +1123,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v22 = [(UIPrintInteractionController *)self printingItems];
-  v23 = [v22 count];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v23 = [printingItems count];
 
   if (v23)
   {
-    v24 = [(UIPrintInteractionController *)self hostingWindowScene];
-    v25 = [(UIPrintInteractionController *)self updatePrintingItems:v24];
+    hostingWindowScene4 = [(UIPrintInteractionController *)self hostingWindowScene];
+    v25 = [(UIPrintInteractionController *)self updatePrintingItems:hostingWindowScene4];
 
     if (!v25)
     {
@@ -1137,10 +1137,10 @@ LABEL_10:
     }
   }
 
-  v26 = [MEMORY[0x277D75418] currentDevice];
-  v27 = [v26 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v27)
+  if (!userInterfaceIdiom)
   {
     if ([(UIPrintInteractionController *)self _setupPrintPanel:v14 forPDFGenerationOnly:0])
     {
@@ -1169,8 +1169,8 @@ LABEL_10:
   }
 
   NSLog(&cfstr_WarningUiprint.isa);
-  v28 = [(UIPrintInteractionController *)self hostingWindowScene];
-  v29 = [(UIPrintInteractionController *)self _presentAnimated:v7 hostingScene:v28 completionHandler:v14];
+  hostingWindowScene5 = [(UIPrintInteractionController *)self hostingWindowScene];
+  v29 = [(UIPrintInteractionController *)self _presentAnimated:v7 hostingScene:hostingWindowScene5 completionHandler:v14];
 
 LABEL_11:
   return v29;
@@ -1216,28 +1216,28 @@ void __82__UIPrintInteractionController_presentFromRect_inView_animated_completi
   v6 = animated;
   v8 = item;
   v9 = completion;
-  v10 = [(UIPrintInteractionController *)self hostingWindowScene];
+  hostingWindowScene = [(UIPrintInteractionController *)self hostingWindowScene];
 
-  if (!v10)
+  if (!hostingWindowScene)
   {
-    v11 = [(UIBarButtonItem *)v8 _viewForPresenting];
-    v12 = [v11 window];
-    v13 = [v12 windowScene];
-    [(UIPrintInteractionController *)self setHostingWindowScene:v13];
+    _viewForPresenting = [(UIBarButtonItem *)v8 _viewForPresenting];
+    window = [_viewForPresenting window];
+    windowScene = [window windowScene];
+    [(UIPrintInteractionController *)self setHostingWindowScene:windowScene];
 
-    v14 = [(UIPrintInteractionController *)self hostingWindowScene];
+    hostingWindowScene2 = [(UIPrintInteractionController *)self hostingWindowScene];
 
-    if (!v14)
+    if (!hostingWindowScene2)
     {
-      v15 = [MEMORY[0x277D75128] sharedApplication];
-      v16 = [v15 _findUISceneForLegacyInterfaceOrientation];
-      [(UIPrintInteractionController *)self setHostingWindowScene:v16];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      _findUISceneForLegacyInterfaceOrientation = [mEMORY[0x277D75128] _findUISceneForLegacyInterfaceOrientation];
+      [(UIPrintInteractionController *)self setHostingWindowScene:_findUISceneForLegacyInterfaceOrientation];
     }
   }
 
-  v17 = [(UIPrintInteractionController *)self hostingWindowScene];
+  hostingWindowScene3 = [(UIPrintInteractionController *)self hostingWindowScene];
 
-  if (!v17)
+  if (!hostingWindowScene3)
   {
     NSLog(&cfstr_ErrorAttemptin_0.isa);
 LABEL_11:
@@ -1245,13 +1245,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v18 = [(UIPrintInteractionController *)self printingItems];
-  v19 = [v18 count];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v19 = [printingItems count];
 
   if (v19)
   {
-    v20 = [(UIPrintInteractionController *)self hostingWindowScene];
-    v21 = [(UIPrintInteractionController *)self updatePrintingItems:v20];
+    hostingWindowScene4 = [(UIPrintInteractionController *)self hostingWindowScene];
+    v21 = [(UIPrintInteractionController *)self updatePrintingItems:hostingWindowScene4];
 
     if (!v21)
     {
@@ -1259,14 +1259,14 @@ LABEL_11:
     }
   }
 
-  v22 = [MEMORY[0x277D75418] currentDevice];
-  v23 = [v22 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v23)
+  if (!userInterfaceIdiom)
   {
     NSLog(&cfstr_WarningUiprint_0.isa);
-    v26 = [(UIPrintInteractionController *)self hostingWindowScene];
-    v24 = [(UIPrintInteractionController *)self _presentAnimated:v6 hostingScene:v26 completionHandler:v9];
+    hostingWindowScene5 = [(UIPrintInteractionController *)self hostingWindowScene];
+    v24 = [(UIPrintInteractionController *)self _presentAnimated:v6 hostingScene:hostingWindowScene5 completionHandler:v9];
 
     goto LABEL_12;
   }
@@ -1339,24 +1339,24 @@ void __84__UIPrintInteractionController_presentFromBarButtonItem_animated_comple
     goto LABEL_9;
   }
 
-  v8 = [(UIPrintInteractionController *)self printingItems];
-  if ([v8 count])
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  if ([printingItems count])
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v9 = [(UIPrintInteractionController *)self printFormatter];
-  if (v9)
+  printFormatter = [(UIPrintInteractionController *)self printFormatter];
+  if (printFormatter)
   {
 
     goto LABEL_5;
   }
 
-  v40 = [(UIPrintInteractionController *)self printPageRenderer];
+  printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
 
-  if (!v40)
+  if (!printPageRenderer)
   {
     NSLog(&cfstr_ErrorAttemptin_1.isa);
 LABEL_9:
@@ -1367,12 +1367,12 @@ LABEL_9:
 LABEL_6:
   if ([(UIPrintInteractionController *)self printStateActive])
   {
-    v10 = [(UIPrintInteractionController *)self printPanelViewController];
+    printPanelViewController = [(UIPrintInteractionController *)self printPanelViewController];
 
-    if (v10)
+    if (printPanelViewController)
     {
-      v11 = [(UIPrintInteractionController *)self printPanelViewController];
-      [v11 dismissAnimated:1 completionHandler:0];
+      printPanelViewController2 = [(UIPrintInteractionController *)self printPanelViewController];
+      [printPanelViewController2 dismissAnimated:1 completionHandler:0];
 
       [(UIPrintInteractionController *)self setPrintPanelViewController:0];
     }
@@ -1382,30 +1382,30 @@ LABEL_6:
 
   [(UIPrintInteractionController *)self setPrintStateActive:1];
   [(UIPrintInteractionController *)self setCompletionHandler:v7];
-  v13 = [(UIPrintInteractionController *)self printInfo];
-  if (v13)
+  printInfo = [(UIPrintInteractionController *)self printInfo];
+  if (printInfo)
   {
-    v14 = [(UIPrintInteractionController *)self printInfo];
-    v15 = [v14 copy];
+    printInfo2 = [(UIPrintInteractionController *)self printInfo];
+    v15 = [printInfo2 copy];
     [(UIPrintInteractionController *)self setActivePrintInfo:v15];
   }
 
   else
   {
-    v14 = +[UIPrintInfo printInfo];
-    [(UIPrintInteractionController *)self setActivePrintInfo:v14];
+    printInfo2 = +[UIPrintInfo printInfo];
+    [(UIPrintInteractionController *)self setActivePrintInfo:printInfo2];
   }
 
-  v16 = [(UIPrintInteractionController *)self activePrintInfo];
-  [v16 setDuplex:0];
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  [activePrintInfo setDuplex:0];
 
-  v17 = [(UIPrintInteractionController *)self printingItems];
-  v18 = [v17 count];
+  printingItems2 = [(UIPrintInteractionController *)self printingItems];
+  v18 = [printingItems2 count];
 
   if (v18 == 1)
   {
-    v19 = [(UIPrintInteractionController *)self printingItems];
-    v20 = [v19 objectAtIndexedSubscript:0];
+    printingItems3 = [(UIPrintInteractionController *)self printingItems];
+    v20 = [printingItems3 objectAtIndexedSubscript:0];
 
     [(UIPrintInteractionController *)self _updatePrintInfoWithAnnotations];
     if (!v20 || ![(UIPrintInteractionController *)self _printingItemIsReallyTallPDF:v20])
@@ -1417,15 +1417,15 @@ LABEL_6:
     if (objc_opt_isKindOfClass())
     {
       v21 = [UITallPDFPrintFormatter alloc];
-      v22 = [(UIPrintInteractionController *)self activePrintInfo];
-      v23 = [v22 pdfPassword];
-      v24 = [(UITallPDFPrintFormatter *)v21 initWithPDFURL:v20 pdfPassword:v23];
+      activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+      pdfPassword = [activePrintInfo2 pdfPassword];
+      v24 = [(UITallPDFPrintFormatter *)v21 initWithPDFURL:v20 pdfPassword:pdfPassword];
 LABEL_33:
       v42 = v24;
       [(UIPrintInteractionController *)self setPrintFormatter:v24];
 
-      v43 = [(UIPrintInteractionController *)self printFormatter];
-      [v43 setPerPageContentInsets:{36.0, 36.0, 36.0, 36.0}];
+      printFormatter2 = [(UIPrintInteractionController *)self printFormatter];
+      [printFormatter2 setPerPageContentInsets:{36.0, 36.0, 36.0, 36.0}];
 
       goto LABEL_19;
     }
@@ -1434,9 +1434,9 @@ LABEL_33:
     if (objc_opt_isKindOfClass())
     {
       v41 = [UITallPDFPrintFormatter alloc];
-      v22 = [(UIPrintInteractionController *)self activePrintInfo];
-      v23 = [v22 pdfPassword];
-      v24 = [(UITallPDFPrintFormatter *)v41 initWithPDFData:v20 pdfPassword:v23];
+      activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+      pdfPassword = [activePrintInfo2 pdfPassword];
+      v24 = [(UITallPDFPrintFormatter *)v41 initWithPDFData:v20 pdfPassword:pdfPassword];
       goto LABEL_33;
     }
   }
@@ -1448,62 +1448,62 @@ LABEL_33:
   }
 
 LABEL_19:
-  v25 = [(UIPrinter *)v6 pkPrinter];
-  [(UIPrintInteractionController *)self setPrinter:v25];
+  pkPrinter = [(UIPrinter *)v6 pkPrinter];
+  [(UIPrintInteractionController *)self setPrinter:pkPrinter];
 
-  v26 = [(UIPrintInteractionController *)self printer];
-  v27 = [v26 printInfoSupported];
+  printer = [(UIPrintInteractionController *)self printer];
+  printInfoSupported = [printer printInfoSupported];
 
-  v28 = [(UIPrintInteractionController *)self printer];
+  printer2 = [(UIPrintInteractionController *)self printer];
 
-  if (v28)
+  if (printer2)
   {
-    v29 = [(UIPrintInteractionController *)self printer];
+    printer3 = [(UIPrintInteractionController *)self printer];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __65__UIPrintInteractionController_printToPrinter_completionHandler___block_invoke;
     v48[3] = &unk_279A9C090;
     v48[4] = self;
-    [(UIPrintInteractionController *)self _setPrinterInfoState:_UIPrinterInfoGetState(v29, v48)];
+    [(UIPrintInteractionController *)self _setPrinterInfoState:_UIPrinterInfoGetState(printer3, v48)];
   }
 
   else
   {
-    v30 = [(UIPrintInteractionController *)self printingProgress];
+    printingProgress = [(UIPrintInteractionController *)self printingProgress];
 
-    if (!v30)
+    if (!printingProgress)
     {
-      v31 = [(UIPrintInteractionController *)self printer];
-      v32 = [v31 displayName];
+      printer4 = [(UIPrintInteractionController *)self printer];
+      displayName = [printer4 displayName];
 
-      if (!v32 || ![v32 length])
+      if (!displayName || ![displayName length])
       {
         v33 = [(UIPrinter *)v6 URL];
-        v34 = [v33 host];
+        host = [v33 host];
 
-        v32 = v34;
+        displayName = host;
       }
 
       v35 = [UIPrintingProgress alloc];
-      v36 = [(UIPrintInteractionController *)self hostingWindowScene];
+      hostingWindowScene = [(UIPrintInteractionController *)self hostingWindowScene];
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
       v47[2] = __65__UIPrintInteractionController_printToPrinter_completionHandler___block_invoke_2;
       v47[3] = &unk_279A9BEE0;
       v47[4] = self;
-      v37 = [(UIPrintingProgress *)v35 initWithPrinterName:v32 forceDisplayAsAlert:1 hostingWindowScene:v36 cancelHandler:v47];
+      v37 = [(UIPrintingProgress *)v35 initWithPrinterName:displayName forceDisplayAsAlert:1 hostingWindowScene:hostingWindowScene cancelHandler:v47];
       [(UIPrintInteractionController *)self setPrintingProgress:v37];
     }
 
-    v38 = [(UIPrintInteractionController *)self printingProgress];
-    [v38 setPrinterInfoState:0];
+    printingProgress2 = [(UIPrintInteractionController *)self printingProgress];
+    [printingProgress2 setPrinterInfoState:0];
 
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __65__UIPrintInteractionController_printToPrinter_completionHandler___block_invoke_3;
     v44[3] = &unk_279A9C0B8;
     v45 = v6;
-    v46 = self;
+    selfCopy = self;
     [(UIPrinter *)v45 contactPrinter:v44];
   }
 
@@ -1543,25 +1543,25 @@ void __65__UIPrintInteractionController_printToPrinter_completionHandler___block
 {
   if ([(UIPrintInteractionController *)self printStateActive])
   {
-    v3 = [(UIPrintInteractionController *)self activePrintInfo];
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
   }
 
   else
   {
-    v3 = 0;
+    activePrintInfo = 0;
   }
 
-  return v3;
+  return activePrintInfo;
 }
 
-- (CGSize)_printItemContentSize:(id)a3
+- (CGSize)_printItemContentSize:(id)size
 {
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self activePrintInfo];
-  if (v5)
+  sizeCopy = size;
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  if (activePrintInfo)
   {
-    v6 = [(UIPrintInteractionController *)self activePrintInfo];
-    v7 = ([v6 outputType] & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+    v7 = ([activePrintInfo2 outputType] & 0xFFFFFFFFFFFFFFFDLL) == 1;
   }
 
   else
@@ -1569,15 +1569,15 @@ void __65__UIPrintInteractionController_printToPrinter_completionHandler___block
     v7 = 0;
   }
 
-  v8 = [(UIPrintInteractionController *)self printer];
-  v9 = [v8 availableRollPapersPreferBorderless:v7];
+  printer = [(UIPrintInteractionController *)self printer];
+  v9 = [printer availableRollPapersPreferBorderless:v7];
   v10 = [v9 count];
 
   width = *MEMORY[0x277CBF3A8];
   height = *(MEMORY[0x277CBF3A8] + 8);
-  if (v10 && v4)
+  if (v10 && sizeCopy)
   {
-    v13 = [(UIPrintInteractionController *)self convertedPrintableItem:v4];
+    v13 = [(UIPrintInteractionController *)self convertedPrintableItem:sizeCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1613,13 +1613,13 @@ void __65__UIPrintInteractionController_printToPrinter_completionHandler___block
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  v5 = [(UIPrintInteractionController *)self printingItems];
-  v6 = [v5 count];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v6 = [printingItems count];
 
   if (v6)
   {
-    v7 = [(UIPrintInteractionController *)self printingItems];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    printingItems2 = [(UIPrintInteractionController *)self printingItems];
+    v8 = [printingItems2 objectAtIndexedSubscript:0];
 
     if (v8)
     {
@@ -1643,8 +1643,8 @@ void __65__UIPrintInteractionController_printToPrinter_completionHandler___block
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(UIPrintInteractionController *)self printingItems];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v4 = [printingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1655,7 +1655,7 @@ void __65__UIPrintInteractionController_printToPrinter_completionHandler___block
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(printingItems);
         }
 
         v8 = [(UIPrintInteractionController *)self convertedPrintableItem:*(*(&v12 + 1) + 8 * i)];
@@ -1669,7 +1669,7 @@ void __65__UIPrintInteractionController_printToPrinter_completionHandler___block
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [printingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -1679,8 +1679,8 @@ void __65__UIPrintInteractionController_printToPrinter_completionHandler___block
     }
   }
 
-  v3 = [(UIPrintInteractionController *)self activePrintInfo];
-  v10 = ([v3 outputType] & 0xFFFFFFFFFFFFFFFDLL) != 1;
+  printingItems = [(UIPrintInteractionController *)self activePrintInfo];
+  v10 = ([printingItems outputType] & 0xFFFFFFFFFFFFFFFDLL) != 1;
 LABEL_11:
 
   return v10;
@@ -1688,42 +1688,42 @@ LABEL_11:
 
 - (BOOL)_canShowPageRange
 {
-  if ([(UIPrintInteractionController *)self showsPageRange]|| (v3 = [(UIPrintInteractionController *)self _canPreviewContent]))
+  if ([(UIPrintInteractionController *)self showsPageRange]|| (printStateActive = [(UIPrintInteractionController *)self _canPreviewContent]))
   {
-    v3 = [(UIPrintInteractionController *)self printStateActive];
-    if (v3)
+    printStateActive = [(UIPrintInteractionController *)self printStateActive];
+    if (printStateActive)
     {
-      v4 = [(UIPrintInteractionController *)self printPageRenderer];
-      if (v4 || ([(UIPrintInteractionController *)self formatterRenderer], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+      printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
+      if (printPageRenderer || ([(UIPrintInteractionController *)self formatterRenderer], (printPageRenderer = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v5 = [(UIPrintInteractionController *)self printingItems];
-        v6 = [v5 count];
+        printingItems = [(UIPrintInteractionController *)self printingItems];
+        v6 = [printingItems count];
 
         if (v6 != 1)
         {
-          LOBYTE(v3) = 0;
-          return v3;
+          LOBYTE(printStateActive) = 0;
+          return printStateActive;
         }
       }
 
       if ([(UIPrintInteractionController *)self pageCount]<= 1)
       {
 
-        LOBYTE(v3) = [(UIPrintInteractionController *)self _canShowScaling];
+        LOBYTE(printStateActive) = [(UIPrintInteractionController *)self _canShowScaling];
       }
 
       else
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(printStateActive) = 1;
       }
     }
   }
 
-  return v3;
+  return printStateActive;
 }
 
 - (BOOL)_canShowPaperList
@@ -1733,8 +1733,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(UIPrintInteractionController *)self activePrintInfo];
-  v4 = ([v3 outputType] & 0xFFFFFFFFFFFFFFFDLL) == 1 || -[UIPrintInteractionController showsPaperSelectionForLoadedPapers](self, "showsPaperSelectionForLoadedPapers");
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  v4 = ([activePrintInfo outputType] & 0xFFFFFFFFFFFFFFFDLL) == 1 || -[UIPrintInteractionController showsPaperSelectionForLoadedPapers](self, "showsPaperSelectionForLoadedPapers");
 
   return v4;
 }
@@ -1746,16 +1746,16 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(UIPrintInteractionController *)self activePrintInfo];
-  if ([v3 outputType] == 2)
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  if ([activePrintInfo outputType] == 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(UIPrintInteractionController *)self activePrintInfo];
-    v4 = [v5 outputType] != 3;
+    activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+    v4 = [activePrintInfo2 outputType] != 3;
   }
 
   return v4;
@@ -1768,8 +1768,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(UIPrintInteractionController *)self activePrintInfo];
-  v4 = ([v3 outputType] & 0xFFFFFFFFFFFFFFFDLL) == 0;
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  v4 = ([activePrintInfo outputType] & 0xFFFFFFFFFFFFFFFDLL) == 0;
 
   return v4;
 }
@@ -1781,8 +1781,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(UIPrintInteractionController *)self activePrintInfo];
-  v4 = ([v3 outputType] & 0xFFFFFFFFFFFFFFFDLL) == 0;
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  v4 = ([activePrintInfo outputType] & 0xFFFFFFFFFFFFFFFDLL) == 0;
 
   return v4;
 }
@@ -1794,8 +1794,8 @@ LABEL_11:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(UIPrintInteractionController *)self printingItems];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v4 = [printingItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1806,7 +1806,7 @@ LABEL_11:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(printingItems);
         }
 
         v8 = [(UIPrintInteractionController *)self convertedPrintableItem:*(*(&v19 + 1) + 8 * i)];
@@ -1847,7 +1847,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [printingItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v5)
       {
         continue;
@@ -1870,8 +1870,8 @@ LABEL_21:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(UIPrintInteractionController *)self printingItems];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v4 = [printingItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1882,15 +1882,15 @@ LABEL_21:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(printingItems);
         }
 
         v8 = [(UIPrintInteractionController *)self convertedPrintableItem:*(*(&v13 + 1) + 8 * i)];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [(UIPrintInteractionController *)self printInfo];
-          v10 = [v9 outputType] & 0xFFFFFFFFFFFFFFFDLL;
+          printInfo = [(UIPrintInteractionController *)self printInfo];
+          v10 = [printInfo outputType] & 0xFFFFFFFFFFFFFFFDLL;
 
           if (v10 == 1)
           {
@@ -1901,7 +1901,7 @@ LABEL_21:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [printingItems countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -1929,8 +1929,8 @@ LABEL_12:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UIPrintInteractionController *)self printingItems];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v4 = [printingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1941,7 +1941,7 @@ LABEL_12:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(printingItems);
         }
 
         v8 = [(UIPrintInteractionController *)self convertedPrintableItem:*(*(&v12 + 1) + 8 * i)];
@@ -1954,7 +1954,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [printingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       v10 = 1;
       if (v5)
       {
@@ -1987,8 +1987,8 @@ LABEL_16:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UIPrintInteractionController *)self printingItems];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v4 = [printingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1999,7 +1999,7 @@ LABEL_16:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(printingItems);
         }
 
         v8 = [(UIPrintInteractionController *)self convertedPrintableItem:*(*(&v12 + 1) + 8 * i)];
@@ -2012,7 +2012,7 @@ LABEL_16:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [printingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       v10 = 1;
       if (v5)
       {
@@ -2043,17 +2043,17 @@ LABEL_16:
   return v4;
 }
 
-- (void)setPageRanges:(id)a3
+- (void)setPageRanges:(id)ranges
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  rangesCopy = ranges;
   if ([(UIPrintInteractionController *)self printStateActive])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = rangesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2087,7 +2087,7 @@ LABEL_16:
     [(UIPrintInteractionController *)self setPageCountWithRanges:v9];
     v13 = self->_pageRanges;
     objc_sync_enter(v13);
-    objc_storeStrong(&self->_pageRanges, a3);
+    objc_storeStrong(&self->_pageRanges, ranges);
     objc_sync_exit(v13);
   }
 }
@@ -2112,37 +2112,37 @@ LABEL_16:
   return v5;
 }
 
-- (void)setPrinter:(id)a3
+- (void)setPrinter:(id)printer
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  printerCopy = printer;
   if (![(UIPrintInteractionController *)self printStateActive])
   {
     goto LABEL_31;
   }
 
   printer = self->_printer;
-  if (printer == v5)
+  if (printer == printerCopy)
   {
     goto LABEL_31;
   }
 
-  v7 = printer;
-  objc_sync_enter(v7);
-  objc_storeStrong(&self->_printer, a3);
-  objc_sync_exit(v7);
+  printerCopy2 = printer;
+  objc_sync_enter(printerCopy2);
+  objc_storeStrong(&self->_printer, printer);
+  objc_sync_exit(printerCopy2);
 
   [(UIPrintInteractionController *)self setPaper:0];
-  v30 = self;
-  v8 = [(UIPrintInteractionController *)self activePrintInfo];
-  [v8 _updateWithPrinter:v5];
+  selfCopy = self;
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  [activePrintInfo _updateWithPrinter:printerCopy];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [MEMORY[0x277D41090] lastUsedPrinters];
-  v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  lastUsedPrinters = [MEMORY[0x277D41090] lastUsedPrinters];
+  v10 = [lastUsedPrinters countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v10)
   {
 
@@ -2163,26 +2163,26 @@ LABEL_16:
     {
       if (*v33 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(lastUsedPrinters);
       }
 
-      if (v5)
+      if (printerCopy)
       {
         v15 = *(*(&v32 + 1) + 8 * i);
         v16 = [v15 objectForKey:v31];
-        v17 = [(PKPrinter *)v5 name];
-        v18 = [v16 isEqualToString:v17];
+        name = [(PKPrinter *)printerCopy name];
+        v18 = [v16 isEqualToString:name];
 
         if (v18)
         {
           v19 = [v15 objectForKey:v29];
 
-          if ((([v19 isEqualToString:v28] & 1) != 0 || objc_msgSend(v19, "isEqualToString:", v26)) && (-[UIPrintInteractionController activePrintInfo](v30, "activePrintInfo", v26), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "duplex"), v20, !v21))
+          if ((([v19 isEqualToString:v28] & 1) != 0 || objc_msgSend(v19, "isEqualToString:", v26)) && (-[UIPrintInteractionController activePrintInfo](selfCopy, "activePrintInfo", v26), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "duplex"), v20, !v21))
           {
             v22 = 1;
 LABEL_16:
-            v23 = [(UIPrintInteractionController *)v30 activePrintInfo];
-            [v23 setDuplex:v22];
+            activePrintInfo2 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+            [activePrintInfo2 setDuplex:v22];
           }
 
           else if ([v19 isEqualToString:{v27, v26}])
@@ -2197,7 +2197,7 @@ LABEL_16:
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v11 = [lastUsedPrinters countByEnumeratingWithState:&v32 objects:v36 count:16];
   }
 
   while (v11);
@@ -2205,25 +2205,25 @@ LABEL_16:
   if (!v12)
   {
 LABEL_23:
-    v24 = [(UIPrintInteractionController *)v30 activePrintInfo];
-    if ([v24 duplex])
+    activePrintInfo3 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+    if ([activePrintInfo3 duplex])
     {
       goto LABEL_28;
     }
 
-    if ([(PKPrinter *)v5 type]== 3)
+    if ([(PKPrinter *)printerCopy type]== 3)
     {
 
       goto LABEL_27;
     }
 
-    v25 = [(PKPrinter *)v5 type];
+    type = [(PKPrinter *)printerCopy type];
 
-    if (v25 == 2)
+    if (type == 2)
     {
 LABEL_27:
-      v24 = [(UIPrintInteractionController *)v30 activePrintInfo];
-      [v24 setDuplex:1];
+      activePrintInfo3 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+      [activePrintInfo3 setDuplex:1];
 LABEL_28:
     }
 
@@ -2235,7 +2235,7 @@ LABEL_31:
 
 - (UIPrintPaper)paper
 {
-  v2 = self;
+  selfCopy = self;
   v96 = *MEMORY[0x277D85DE8];
   p_paper = &self->_paper;
   v4 = self->_paper;
@@ -2243,37 +2243,37 @@ LABEL_31:
   v5 = *p_paper;
   objc_sync_exit(v4);
 
-  if ([(UIPrintInteractionController *)v2 printStateActive]&& !v5)
+  if ([(UIPrintInteractionController *)selfCopy printStateActive]&& !v5)
   {
     v73 = p_paper;
-    v6 = [(UIPrintInteractionController *)v2 printer];
+    printer = [(UIPrintInteractionController *)selfCopy printer];
 
-    if (v6)
+    if (printer)
     {
-      v7 = [(UIPrintInteractionController *)v2 printer];
-      v8 = [(UIPrintInteractionController *)v2 activePrintInfo];
-      v9 = [v8 duplex];
-      v10 = [(UIPrintInteractionController *)v2 activePrintInfo];
-      v11 = [v10 outputType];
-      [(UIPrintInteractionController *)v2 _printItemContentSize];
-      v12 = [UIPrintPaper _readyPaperListForPrinter:v7 withDuplexMode:v9 forContentType:v11 contentSize:?];
+      printer2 = [(UIPrintInteractionController *)selfCopy printer];
+      activePrintInfo = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+      duplex = [activePrintInfo duplex];
+      activePrintInfo2 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+      outputType = [activePrintInfo2 outputType];
+      [(UIPrintInteractionController *)selfCopy _printItemContentSize];
+      v12 = [UIPrintPaper _readyPaperListForPrinter:printer2 withDuplexMode:duplex forContentType:outputType contentSize:?];
     }
 
     else
     {
-      v7 = [(UIPrintInteractionController *)v2 activePrintInfo];
-      v12 = +[UIPrintPaper _genericPaperListForOutputType:](UIPrintPaper, "_genericPaperListForOutputType:", [v7 outputType]);
+      printer2 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+      v12 = +[UIPrintPaper _genericPaperListForOutputType:](UIPrintPaper, "_genericPaperListForOutputType:", [printer2 outputType]);
     }
 
-    v13 = [(UIPrintInteractionController *)v2 activePrintInfo];
-    v14 = [v13 outputType];
+    activePrintInfo3 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+    outputType2 = [activePrintInfo3 outputType];
 
-    v15 = [(UIPrintInteractionController *)v2 printPageRenderer];
+    printPageRenderer = [(UIPrintInteractionController *)selfCopy printPageRenderer];
 
-    if (v15)
+    if (printPageRenderer)
     {
-      v16 = [(UIPrintInteractionController *)v2 printPageRenderer];
-      [v16 paperRect];
+      printPageRenderer2 = [(UIPrintInteractionController *)selfCopy printPageRenderer];
+      [printPageRenderer2 paperRect];
       v18 = v17;
       v20 = v19;
     }
@@ -2285,12 +2285,12 @@ LABEL_31:
     }
 
     p_paper = v73;
-    v21 = v14 & 0xFFFFFFFFFFFFFFFDLL;
+    v21 = outputType2 & 0xFFFFFFFFFFFFFFFDLL;
     if (v18 == 0.0)
     {
-      v22 = [(UIPrintInteractionController *)v2 printer];
+      printer3 = [(UIPrintInteractionController *)selfCopy printer];
 
-      if (v22)
+      if (printer3)
       {
         v90 = 0u;
         v91 = 0u;
@@ -2317,10 +2317,10 @@ LABEL_31:
 
               v28 = *(*(&v88 + 1) + 8 * i);
               v29 = [v28 objectForKey:v26];
-              v30 = v2;
-              v31 = [(UIPrintInteractionController *)v2 printer];
-              v32 = [v31 name];
-              v33 = [v29 isEqualToString:v32];
+              v30 = selfCopy;
+              printer4 = [(UIPrintInteractionController *)selfCopy printer];
+              name = [printer4 name];
+              v33 = [v29 isEqualToString:name];
 
               if (v33)
               {
@@ -2332,12 +2332,12 @@ LABEL_31:
                   v18 = v36;
                   v20 = v37;
 
-                  v2 = v30;
+                  selfCopy = v30;
                   goto LABEL_22;
                 }
               }
 
-              v2 = v30;
+              selfCopy = v30;
             }
 
             v24 = [obj countByEnumeratingWithState:&v88 objects:v95 count:16];
@@ -2359,8 +2359,8 @@ LABEL_22:
 
     if (v18 == 0.0)
     {
-      v38 = [(UIPrintInteractionController *)v2 activePrintInfo];
-      v39 = +[UIPrintPaper _defaultPaperForOutputType:](UIPrintPaper, "_defaultPaperForOutputType:", [v38 outputType]);
+      activePrintInfo4 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+      v39 = +[UIPrintPaper _defaultPaperForOutputType:](UIPrintPaper, "_defaultPaperForOutputType:", [activePrintInfo4 outputType]);
       [v39 paperSize];
       v18 = v40;
       v20 = v41;
@@ -2519,9 +2519,9 @@ LABEL_72:
       goto LABEL_78;
     }
 
-    v65 = [(UIPrintInteractionController *)v2 _updatePrintPaper];
-    v66 = [(UIPrintInteractionController *)v2 printPaper];
-    if (!v66)
+    _updatePrintPaper = [(UIPrintInteractionController *)selfCopy _updatePrintPaper];
+    printPaper = [(UIPrintInteractionController *)selfCopy printPaper];
+    if (!printPaper)
     {
       if (![v12 count])
       {
@@ -2529,10 +2529,10 @@ LABEL_72:
         goto LABEL_78;
       }
 
-      v66 = [v12 objectAtIndex:0];
+      printPaper = [v12 objectAtIndex:0];
     }
 
-    v5 = v66;
+    v5 = printPaper;
 LABEL_78:
   }
 
@@ -2545,7 +2545,7 @@ LABEL_78:
 
   objc_sync_exit(v67);
 
-  if ([(UIPrintInteractionController *)v2 printStateActive])
+  if ([(UIPrintInteractionController *)selfCopy printStateActive])
   {
     v68 = v5;
   }
@@ -2560,14 +2560,14 @@ LABEL_78:
   return v68;
 }
 
-- (void)setPaper:(id)a3
+- (void)setPaper:(id)paper
 {
-  v6 = a3;
+  paperCopy = paper;
   v5 = self->_paper;
   objc_sync_enter(v5);
-  if ([(UIPrintInteractionController *)self printStateActive]&& self->_paper != v6)
+  if ([(UIPrintInteractionController *)self printStateActive]&& self->_paper != paperCopy)
   {
-    objc_storeStrong(&self->_paper, a3);
+    objc_storeStrong(&self->_paper, paper);
   }
 
   objc_sync_exit(v5);
@@ -2575,43 +2575,43 @@ LABEL_78:
 
 - (NSURL)tempPreviewFileURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_tempPreviewFileURL;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_tempPreviewFileURL;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setTempPreviewFileURL:(id)a3
+- (void)setTempPreviewFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_tempPreviewFileURL && ([(NSURL *)v4 isEqual:?]& 1) == 0)
+  if (obj->_tempPreviewFileURL && ([(NSURL *)lCopy isEqual:?]& 1) == 0)
   {
     [(UIPrintInteractionController *)obj removeFileAtURL:obj->_tempPreviewFileURL];
   }
 
   tempPreviewFileURL = obj->_tempPreviewFileURL;
-  obj->_tempPreviewFileURL = v4;
+  obj->_tempPreviewFileURL = lCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)removeFileAtURL:(id)a3
+- (void)removeFileAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  if (v3)
+  if (lCopy)
   {
-    v5 = [v3 path];
-    v6 = [v4 fileExistsAtPath:v5];
+    path = [lCopy path];
+    v6 = [v4 fileExistsAtPath:path];
 
     if (v6)
     {
       v10 = 0;
-      v7 = [v4 removeItemAtURL:v3 error:&v10];
+      v7 = [v4 removeItemAtURL:lCopy error:&v10];
       v8 = v10;
       v9 = v8;
       if ((v7 & 1) == 0)
@@ -2626,68 +2626,68 @@ LABEL_78:
 {
   if ([(UIPrintInteractionController *)self _canShowAnnotations])
   {
-    v3 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v3 setImagePDFAnnotations:1];
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    [activePrintInfo setImagePDFAnnotations:1];
   }
 }
 
 - (id)rendererToUse
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(UIPrintInteractionController *)v2 printPageRenderer];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  printPageRenderer = [(UIPrintInteractionController *)selfCopy printPageRenderer];
+  if (printPageRenderer)
   {
   }
 
   else
   {
-    v4 = [(UIPrintInteractionController *)v2 printFormatter];
+    printFormatter = [(UIPrintInteractionController *)selfCopy printFormatter];
 
-    if (!v4)
+    if (!printFormatter)
     {
       goto LABEL_22;
     }
   }
 
-  v5 = [(UIPrintInteractionController *)v2 printPageRenderer];
-  if (!v5)
+  printPageRenderer2 = [(UIPrintInteractionController *)selfCopy printPageRenderer];
+  if (!printPageRenderer2)
   {
-    v15 = [(UIPrintInteractionController *)v2 printFormatter];
-    if (!v15)
+    printFormatter2 = [(UIPrintInteractionController *)selfCopy printFormatter];
+    if (!printFormatter2)
     {
       goto LABEL_6;
     }
 
-    v16 = [(UIPrintInteractionController *)v2 formatterRenderer];
+    formatterRenderer = [(UIPrintInteractionController *)selfCopy formatterRenderer];
 
-    if (v16)
+    if (formatterRenderer)
     {
       goto LABEL_6;
     }
 
     v17 = objc_alloc_init(UIPrintPageRenderer);
-    [(UIPrintInteractionController *)v2 setFormatterRenderer:v17];
+    [(UIPrintInteractionController *)selfCopy setFormatterRenderer:v17];
 
-    v5 = [(UIPrintInteractionController *)v2 formatterRenderer];
-    v18 = [(UIPrintInteractionController *)v2 printFormatter];
-    [v5 addPrintFormatter:v18 startingAtPageAtIndex:0];
+    printPageRenderer2 = [(UIPrintInteractionController *)selfCopy formatterRenderer];
+    printFormatter3 = [(UIPrintInteractionController *)selfCopy printFormatter];
+    [printPageRenderer2 addPrintFormatter:printFormatter3 startingAtPageAtIndex:0];
   }
 
 LABEL_6:
-  v6 = [(UIPrintInteractionController *)v2 formatterRenderer];
+  formatterRenderer2 = [(UIPrintInteractionController *)selfCopy formatterRenderer];
 
-  if (v6)
+  if (formatterRenderer2)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(UIPrintInteractionController *)v2 formatterRenderer];
-    v8 = [v7 printFormatters];
+    formatterRenderer3 = [(UIPrintInteractionController *)selfCopy formatterRenderer];
+    printFormatters = [formatterRenderer3 printFormatters];
 
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [printFormatters countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = *v21;
@@ -2697,87 +2697,87 @@ LABEL_6:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(printFormatters);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [(UIPrintInteractionController *)v2 activePrintInfo];
-          [v12 setImagePDFAnnotations:{objc_msgSend(v13, "imagePDFAnnotations")}];
+          activePrintInfo = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+          [v12 setImagePDFAnnotations:{objc_msgSend(activePrintInfo, "imagePDFAnnotations")}];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [printFormatters countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v9);
     }
   }
 
-  v14 = [(UIPrintInteractionController *)v2 printPageRenderer];
-  if (v14)
+  printPageRenderer3 = [(UIPrintInteractionController *)selfCopy printPageRenderer];
+  if (printPageRenderer3)
   {
-    [(UIPrintInteractionController *)v2 printPageRenderer];
+    [(UIPrintInteractionController *)selfCopy printPageRenderer];
   }
 
   else
   {
-    [(UIPrintInteractionController *)v2 formatterRenderer];
+    [(UIPrintInteractionController *)selfCopy formatterRenderer];
   }
-  v4 = ;
+  printFormatter = ;
 
 LABEL_22:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return printFormatter;
 }
 
 - (void)_updatePageCount
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintInteractionController *)self pageCount];
-  v4 = [(UIPrintInteractionController *)self _updatePrintPaper];
-  v5 = [(UIPrintInteractionController *)self rendererToUse];
-  if (v5)
+  pageCount = [(UIPrintInteractionController *)self pageCount];
+  _updatePrintPaper = [(UIPrintInteractionController *)self _updatePrintPaper];
+  rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+  if (rendererToUse)
   {
-    v6 = [(UIPrintInteractionController *)self printPaper];
-    [v6 paperSize];
+    printPaper = [(UIPrintInteractionController *)self printPaper];
+    [printPaper paperSize];
     v8 = v7;
-    v9 = [(UIPrintInteractionController *)self printPaper];
-    [v9 paperSize];
-    [v5 setPaperRect:{0.0, 0.0, v8, v10}];
+    printPaper2 = [(UIPrintInteractionController *)self printPaper];
+    [printPaper2 paperSize];
+    [rendererToUse setPaperRect:{0.0, 0.0, v8, v10}];
 
-    v11 = [(UIPrintInteractionController *)self printPaper];
-    v12 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v11 _printableRectForDuplex:{objc_msgSend(v12, "duplex") != 0}];
-    [v5 setPrintableRect:?];
+    printPaper3 = [(UIPrintInteractionController *)self printPaper];
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    [printPaper3 _printableRectForDuplex:{objc_msgSend(activePrintInfo, "duplex") != 0}];
+    [rendererToUse setPrintableRect:?];
 
-    [v5 paperRect];
+    [rendererToUse paperRect];
     if (CGRectIsEmpty(v75))
     {
       goto LABEL_15;
     }
 
-    v13 = [v5 _numberOfPages];
-    v14 = self;
+    _numberOfPages = [rendererToUse _numberOfPages];
+    selfCopy2 = self;
     goto LABEL_14;
   }
 
-  v15 = [(UIPrintInteractionController *)self printingItems];
-  v16 = [v15 count];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v16 = [printingItems count];
 
-  v17 = [(UIPrintInteractionController *)self printingItems];
-  v18 = v17;
+  printingItems2 = [(UIPrintInteractionController *)self printingItems];
+  v18 = printingItems2;
   if (v16 == 1)
   {
-    v19 = [v17 objectAtIndexedSubscript:0];
-    v20 = [(UIPrintInteractionController *)self convertedPrintableItem:v19];
+    v19 = [printingItems2 objectAtIndexedSubscript:0];
+    printingItems3 = [(UIPrintInteractionController *)self convertedPrintableItem:v19];
 
-    if (!v20 || (v21 = CFGetTypeID(v20), v21 != CGPDFDocumentGetTypeID()))
+    if (!printingItems3 || (v21 = CFGetTypeID(printingItems3), v21 != CGPDFDocumentGetTypeID()))
     {
       v24 = 1;
       goto LABEL_12;
     }
 
-    NumberOfPages = CGPDFDocumentGetNumberOfPages(v20);
+    NumberOfPages = CGPDFDocumentGetNumberOfPages(printingItems3);
 LABEL_10:
     v24 = NumberOfPages;
 LABEL_12:
@@ -2786,28 +2786,28 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v23 = [v17 count];
+  v23 = [printingItems2 count];
 
-  v14 = self;
+  selfCopy2 = self;
   if (v23 >= 2)
   {
-    v20 = [(UIPrintInteractionController *)self printingItems];
-    NumberOfPages = [v20 count];
+    printingItems3 = [(UIPrintInteractionController *)self printingItems];
+    NumberOfPages = [printingItems3 count];
     goto LABEL_10;
   }
 
-  v13 = 0;
+  _numberOfPages = 0;
 LABEL_14:
-  [(UIPrintInteractionController *)v14 setPageCount:v13];
+  [(UIPrintInteractionController *)selfCopy2 setPageCount:_numberOfPages];
 LABEL_15:
   if ([(UIPrintInteractionController *)self pageCount]== 0x7FFFFFFFFFFFFFFFLL)
   {
     [(UIPrintInteractionController *)self setPageCount:1];
   }
 
-  v25 = [(UIPrintInteractionController *)self pageCount];
-  v26 = [(UIPrintInteractionController *)self printingItems];
-  v27 = [v26 count];
+  pageCount2 = [(UIPrintInteractionController *)self pageCount];
+  printingItems4 = [(UIPrintInteractionController *)self printingItems];
+  v27 = [printingItems4 count];
 
   if (v27 >= 2)
   {
@@ -2815,8 +2815,8 @@ LABEL_15:
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v28 = [(UIPrintInteractionController *)self printingItems];
-    v29 = [v28 countByEnumeratingWithState:&v66 objects:v73 count:16];
+    printingItems5 = [(UIPrintInteractionController *)self printingItems];
+    v29 = [printingItems5 countByEnumeratingWithState:&v66 objects:v73 count:16];
     if (v29)
     {
       v30 = v29;
@@ -2827,7 +2827,7 @@ LABEL_15:
         {
           if (*v67 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(printingItems5);
           }
 
           v33 = [(UIPrintInteractionController *)self convertedPrintableItem:*(*(&v66 + 1) + 8 * i)];
@@ -2837,42 +2837,42 @@ LABEL_15:
             v35 = CFGetTypeID(v33);
             if (v35 == CGPDFDocumentGetTypeID())
             {
-              v25 = v25 + CGPDFDocumentGetNumberOfPages(v34) - 1;
+              pageCount2 = pageCount2 + CGPDFDocumentGetNumberOfPages(v34) - 1;
             }
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v66 objects:v73 count:16];
+        v30 = [printingItems5 countByEnumeratingWithState:&v66 objects:v73 count:16];
       }
 
       while (v30);
     }
   }
 
-  v36 = [MEMORY[0x277CCACC8] currentThread];
-  v37 = [v36 isCancelled];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  isCancelled = [currentThread isCancelled];
 
-  if ((v37 & 1) == 0)
+  if ((isCancelled & 1) == 0)
   {
-    v38 = [(UIPrintInteractionController *)self activePrintInfo];
-    v39 = [v38 pageCount];
+    activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+    pageCount3 = [activePrintInfo2 pageCount];
 
-    if (v39 != v25)
+    if (pageCount3 != pageCount2)
     {
-      v40 = [(UIPrintInteractionController *)self activePrintInfo];
-      [v40 setPageCount:v25];
+      activePrintInfo3 = [(UIPrintInteractionController *)self activePrintInfo];
+      [activePrintInfo3 setPageCount:pageCount2];
     }
 
-    v41 = [(UIPrintInteractionController *)self pageRanges];
-    if (v41)
+    pageRanges = [(UIPrintInteractionController *)self pageRanges];
+    if (pageRanges)
     {
-      v42 = v41;
-      v43 = [(UIPrintInteractionController *)self pageRanges];
-      if ([v43 count])
+      v42 = pageRanges;
+      pageRanges2 = [(UIPrintInteractionController *)self pageRanges];
+      if ([pageRanges2 count])
       {
-        v44 = [(UIPrintInteractionController *)self pageCount];
+        pageCount4 = [(UIPrintInteractionController *)self pageCount];
 
-        if (v44 == v3)
+        if (pageCount4 == pageCount)
         {
           goto LABEL_38;
         }
@@ -2888,10 +2888,10 @@ LABEL_15:
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
     [(UIPrintInteractionController *)self setPageRanges:v46];
 
-    v47 = [(UIPrintInteractionController *)self pageRanges];
-    v48 = [v47 copy];
-    v49 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v49 setPageRanges:v48];
+    pageRanges3 = [(UIPrintInteractionController *)self pageRanges];
+    v48 = [pageRanges3 copy];
+    activePrintInfo4 = [(UIPrintInteractionController *)self activePrintInfo];
+    [activePrintInfo4 setPageRanges:v48];
 
 LABEL_38:
     [(UIPrintInteractionController *)self setPageCountWithRanges:0];
@@ -2899,8 +2899,8 @@ LABEL_38:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v50 = [(UIPrintInteractionController *)self pageRanges];
-    v51 = [v50 countByEnumeratingWithState:&v62 objects:v71 count:16];
+    pageRanges4 = [(UIPrintInteractionController *)self pageRanges];
+    v51 = [pageRanges4 countByEnumeratingWithState:&v62 objects:v71 count:16];
     if (v51)
     {
       v52 = v51;
@@ -2911,31 +2911,31 @@ LABEL_38:
         {
           if (*v63 != v53)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(pageRanges4);
           }
 
           [*(*(&v62 + 1) + 8 * j) rangeValue];
           [(UIPrintInteractionController *)self setPageCountWithRanges:[(UIPrintInteractionController *)self pageCountWithRanges]+ v55];
         }
 
-        v52 = [v50 countByEnumeratingWithState:&v62 objects:v71 count:16];
+        v52 = [pageRanges4 countByEnumeratingWithState:&v62 objects:v71 count:16];
       }
 
       while (v52);
     }
 
-    v56 = [(UIPrintInteractionController *)self pageCountWithRanges];
-    if (v56 > [(UIPrintInteractionController *)self pageCount])
+    pageCountWithRanges = [(UIPrintInteractionController *)self pageCountWithRanges];
+    if (pageCountWithRanges > [(UIPrintInteractionController *)self pageCount])
     {
       v57 = [MEMORY[0x277CCAE60] valueWithRange:{0, -[UIPrintInteractionController pageCount](self, "pageCount")}];
       v70 = v57;
       v58 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
       [(UIPrintInteractionController *)self setPageRanges:v58];
 
-      v59 = [(UIPrintInteractionController *)self pageRanges];
-      v60 = [v59 copy];
-      v61 = [(UIPrintInteractionController *)self activePrintInfo];
-      [v61 setPageRanges:v60];
+      pageRanges5 = [(UIPrintInteractionController *)self pageRanges];
+      v60 = [pageRanges5 copy];
+      activePrintInfo5 = [(UIPrintInteractionController *)self activePrintInfo];
+      [activePrintInfo5 setPageRanges:v60];
 
       [(UIPrintInteractionController *)self setPageCountWithRanges:[(UIPrintInteractionController *)self pageCount]];
     }
@@ -2944,40 +2944,40 @@ LABEL_38:
 
 - (BOOL)isPhone
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 rangeOfString:@"iPhone"];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice model];
+  v4 = [model rangeOfString:@"iPhone"];
 
   return v4 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)_setupPrintPanel:(id)a3 forPDFGenerationOnly:(BOOL)a4
+- (BOOL)_setupPrintPanel:(id)panel forPDFGenerationOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  if (!+[UIPrintInteractionController isPrintingAvailable]&& !v4)
+  onlyCopy = only;
+  panelCopy = panel;
+  if (!+[UIPrintInteractionController isPrintingAvailable]&& !onlyCopy)
   {
     goto LABEL_10;
   }
 
-  v7 = [(UIPrintInteractionController *)self printingItems];
-  if ([v7 count])
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  if ([printingItems count])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v8 = [(UIPrintInteractionController *)self printFormatter];
-  if (v8)
+  printFormatter = [(UIPrintInteractionController *)self printFormatter];
+  if (printFormatter)
   {
 
     goto LABEL_6;
   }
 
-  v48 = [(UIPrintInteractionController *)self printPageRenderer];
+  printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
 
-  if (!v48)
+  if (!printPageRenderer)
   {
     NSLog(&cfstr_ErrorAttemptin_1.isa);
 LABEL_10:
@@ -2988,79 +2988,79 @@ LABEL_10:
 LABEL_7:
   if ([(UIPrintInteractionController *)self printStateActive])
   {
-    v9 = [(UIPrintInteractionController *)self printPanelViewController];
+    printPanelViewController = [(UIPrintInteractionController *)self printPanelViewController];
 
-    if (v9)
+    if (printPanelViewController)
     {
-      v10 = [(UIPrintInteractionController *)self printPanelViewController];
-      [v10 dismissAnimated:1 completionHandler:0];
+      printPanelViewController2 = [(UIPrintInteractionController *)self printPanelViewController];
+      [printPanelViewController2 dismissAnimated:1 completionHandler:0];
     }
 
     goto LABEL_10;
   }
 
   [(UIPrintInteractionController *)self setPrintStateActive:1];
-  [(UIPrintInteractionController *)self setCompletionHandler:v6];
-  v12 = [(UIPrintInteractionController *)self printInfo];
-  if (v12)
+  [(UIPrintInteractionController *)self setCompletionHandler:panelCopy];
+  printInfo = [(UIPrintInteractionController *)self printInfo];
+  if (printInfo)
   {
-    v13 = [(UIPrintInteractionController *)self printInfo];
-    v14 = [v13 copy];
+    printInfo2 = [(UIPrintInteractionController *)self printInfo];
+    v14 = [printInfo2 copy];
     [(UIPrintInteractionController *)self setActivePrintInfo:v14];
   }
 
   else
   {
-    v13 = +[UIPrintInfo printInfo];
-    [(UIPrintInteractionController *)self setActivePrintInfo:v13];
+    printInfo2 = +[UIPrintInfo printInfo];
+    [(UIPrintInteractionController *)self setActivePrintInfo:printInfo2];
   }
 
-  v15 = [(UIPrintInteractionController *)self pdfPassword];
-  v16 = [(UIPrintInteractionController *)self activePrintInfo];
-  [v16 setPdfPassword:v15];
+  pdfPassword = [(UIPrintInteractionController *)self pdfPassword];
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  [activePrintInfo setPdfPassword:pdfPassword];
 
-  v17 = [(UIPrintInteractionController *)self printInfo];
-  if (v17)
+  printInfo3 = [(UIPrintInteractionController *)self printInfo];
+  if (printInfo3)
   {
     goto LABEL_15;
   }
 
-  v31 = [(UIPrintInteractionController *)self printingItems];
-  v32 = [v31 count];
+  printingItems2 = [(UIPrintInteractionController *)self printingItems];
+  v32 = [printingItems2 count];
 
   if (v32 == 1)
   {
-    v33 = [(UIPrintInteractionController *)self printingItems];
-    v17 = [v33 objectAtIndexedSubscript:0];
+    printingItems3 = [(UIPrintInteractionController *)self printingItems];
+    printInfo3 = [printingItems3 objectAtIndexedSubscript:0];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34 = [v17 path];
-      v35 = [v34 lastPathComponent];
-      v36 = [v35 stringByDeletingPathExtension];
-      v37 = [(UIPrintInteractionController *)self activePrintInfo];
-      [v37 setJobName:v36];
+      path = [printInfo3 path];
+      lastPathComponent = [path lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+      activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+      [activePrintInfo2 setJobName:stringByDeletingPathExtension];
     }
 
 LABEL_15:
   }
 
-  v18 = [(UIPrintInteractionController *)self activePrintInfo];
-  v19 = [v18 outputType] & 0xFFFFFFFFFFFFFFFDLL;
+  activePrintInfo3 = [(UIPrintInteractionController *)self activePrintInfo];
+  v19 = [activePrintInfo3 outputType] & 0xFFFFFFFFFFFFFFFDLL;
 
   if (v19 == 1)
   {
-    v20 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v20 setDuplex:0];
+    activePrintInfo4 = [(UIPrintInteractionController *)self activePrintInfo];
+    [activePrintInfo4 setDuplex:0];
   }
 
   [(UIPrintInteractionController *)self _updatePrintInfoWithAnnotations];
-  v21 = [(UIPrintInteractionController *)self printingItems];
-  if ([v21 count] == 1)
+  printingItems4 = [(UIPrintInteractionController *)self printingItems];
+  if ([printingItems4 count] == 1)
   {
-    v22 = [(UIPrintInteractionController *)self printingItems];
-    v23 = [v22 objectAtIndexedSubscript:0];
+    printingItems5 = [(UIPrintInteractionController *)self printingItems];
+    v23 = [printingItems5 objectAtIndexedSubscript:0];
 
     if (!v23 || ![(UIPrintInteractionController *)self _printingItemIsReallyTallPDF:v23])
     {
@@ -3071,9 +3071,9 @@ LABEL_15:
     if (objc_opt_isKindOfClass())
     {
       v24 = [UITallPDFPrintFormatter alloc];
-      v25 = [(UIPrintInteractionController *)self activePrintInfo];
-      v26 = [v25 pdfPassword];
-      v27 = [(UITallPDFPrintFormatter *)v24 initWithPDFURL:v23 pdfPassword:v26];
+      activePrintInfo5 = [(UIPrintInteractionController *)self activePrintInfo];
+      pdfPassword2 = [activePrintInfo5 pdfPassword];
+      v27 = [(UITallPDFPrintFormatter *)v24 initWithPDFURL:v23 pdfPassword:pdfPassword2];
     }
 
     else
@@ -3085,16 +3085,16 @@ LABEL_15:
       }
 
       v49 = [UITallPDFPrintFormatter alloc];
-      v25 = [(UIPrintInteractionController *)self activePrintInfo];
-      v26 = [v25 pdfPassword];
-      v27 = [(UITallPDFPrintFormatter *)v49 initWithPDFData:v23 pdfPassword:v26];
+      activePrintInfo5 = [(UIPrintInteractionController *)self activePrintInfo];
+      pdfPassword2 = [activePrintInfo5 pdfPassword];
+      v27 = [(UITallPDFPrintFormatter *)v49 initWithPDFData:v23 pdfPassword:pdfPassword2];
     }
 
     v50 = v27;
     [(UIPrintInteractionController *)self setPrintFormatter:v27];
 
-    v21 = [(UIPrintInteractionController *)self printFormatter];
-    [v21 setPerPageContentInsets:{36.0, 36.0, 36.0, 36.0}];
+    printingItems4 = [(UIPrintInteractionController *)self printFormatter];
+    [printingItems4 setPerPageContentInsets:{36.0, 36.0, 36.0, 36.0}];
   }
 
   else
@@ -3103,60 +3103,60 @@ LABEL_15:
   }
 
 LABEL_25:
-  if (!v4)
+  if (!onlyCopy)
   {
-    v28 = [(UIPrintInteractionController *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v28 printInteractionControllerParentViewController:self], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+    delegate = [(UIPrintInteractionController *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([delegate printInteractionControllerParentViewController:self], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v30 = v29;
+      presentedViewController2 = v29;
     }
 
     else
     {
-      v38 = [(UIPrintInteractionController *)self printActivityDelegate];
+      printActivityDelegate = [(UIPrintInteractionController *)self printActivityDelegate];
       v39 = objc_opt_respondsToSelector();
 
-      if ((v39 & 1) == 0 || (-[UIPrintInteractionController printActivityDelegate](self, "printActivityDelegate"), v40 = objc_claimAutoreleasedReturnValue(), [v40 printInteractionControllerParentViewController:self], v30 = objc_claimAutoreleasedReturnValue(), v40, !v30))
+      if ((v39 & 1) == 0 || (-[UIPrintInteractionController printActivityDelegate](self, "printActivityDelegate"), v40 = objc_claimAutoreleasedReturnValue(), [v40 printInteractionControllerParentViewController:self], presentedViewController2 = objc_claimAutoreleasedReturnValue(), v40, !presentedViewController2))
       {
-        v41 = [(UIPrintInteractionController *)self printActivityDelegate];
+        printActivityDelegate2 = [(UIPrintInteractionController *)self printActivityDelegate];
         v42 = objc_opt_respondsToSelector();
 
         if (v42)
         {
-          v43 = [(UIPrintInteractionController *)self printActivityDelegate];
-          v44 = [v43 printInteractionControllerWindowForPresentation:self];
-          v45 = [v44 rootViewController];
+          printActivityDelegate3 = [(UIPrintInteractionController *)self printActivityDelegate];
+          v44 = [printActivityDelegate3 printInteractionControllerWindowForPresentation:self];
+          rootViewController = [v44 rootViewController];
 
-          v46 = [v45 presentedViewController];
+          presentedViewController = [rootViewController presentedViewController];
 
-          if (v46)
+          if (presentedViewController)
           {
             do
             {
-              v30 = [v45 presentedViewController];
+              presentedViewController2 = [rootViewController presentedViewController];
 
-              v47 = [v30 presentedViewController];
+              v30PresentedViewController = [presentedViewController2 presentedViewController];
 
-              v45 = v30;
+              rootViewController = presentedViewController2;
             }
 
-            while (v47);
+            while (v30PresentedViewController);
           }
 
           else
           {
-            v30 = v45;
+            presentedViewController2 = rootViewController;
           }
         }
 
         else
         {
-          v30 = 0;
+          presentedViewController2 = 0;
         }
       }
     }
 
-    v51 = [[UIPrintPanelViewController alloc] initWithPrintInterationController:self inParentController:v30 usingSplitView:[(UIPrintInteractionController *)self isPhone]^ 1];
+    v51 = [[UIPrintPanelViewController alloc] initWithPrintInterationController:self inParentController:presentedViewController2 usingSplitView:[(UIPrintInteractionController *)self isPhone]^ 1];
     [(UIPrintInteractionController *)self setPrintPanelViewController:v51];
   }
 
@@ -3166,55 +3166,55 @@ LABEL_47:
   return v11;
 }
 
-- (void)_generatePDFWithNupForPrintingCompletion:(id)a3
+- (void)_generatePDFWithNupForPrintingCompletion:(id)completion
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self rendererToUse];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+  v6 = rendererToUse;
+  if (rendererToUse)
   {
-    v7 = [v5 numberOfPages];
+    numberOfPages = [rendererToUse numberOfPages];
   }
 
   else
   {
-    v8 = [(UIPrintInteractionController *)self printingItems];
-    v7 = [v8 count];
+    printingItems = [(UIPrintInteractionController *)self printingItems];
+    numberOfPages = [printingItems count];
   }
 
-  v9 = [(UIPrintInteractionController *)self _tempFilePath];
-  v10 = [(UIPrintInteractionController *)self _newPDFURLWithPath:v9 isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
+  _tempFilePath = [(UIPrintInteractionController *)self _tempFilePath];
+  v10 = [(UIPrintInteractionController *)self _newPDFURLWithPath:_tempFilePath isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
 
   [(UIPrintInteractionController *)self _mediaRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIPrintInteractionController *)self activePrintInfo];
-  [v19 scalingFactor];
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  [activePrintInfo scalingFactor];
   v21 = v16 * v20;
 
-  v22 = [(UIPrintInteractionController *)self activePrintInfo];
-  [v22 scalingFactor];
+  activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+  [activePrintInfo2 scalingFactor];
   v24 = v18 * v23;
 
   v25 = [(UIPrintInteractionController *)self _newSaveContext:v10 withMediaRect:v12, v14, v21, v24];
   if (v6)
   {
     v56 = v10;
-    v57 = v4;
-    v26 = [(UIPrintInteractionController *)self _fullPagesRange];
-    [v6 prepareForDrawingPages:{v26, v27}];
+    v57 = completionCopy;
+    _fullPagesRange = [(UIPrintInteractionController *)self _fullPagesRange];
+    [v6 prepareForDrawingPages:{_fullPagesRange, v27}];
     [v6 _startSaveContext:v25];
-    v28 = [(UIPrintInteractionController *)self activePrintInfo];
-    v29 = [v28 pageRanges];
+    activePrintInfo3 = [(UIPrintInteractionController *)self activePrintInfo];
+    pageRanges = [activePrintInfo3 pageRanges];
 
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v30 = v29;
+    v30 = pageRanges;
     v31 = [v30 countByEnumeratingWithState:&v58 objects:v62 count:16];
     if (v31)
     {
@@ -3232,15 +3232,15 @@ LABEL_47:
           v35 = *(*(&v58 + 1) + 8 * i);
           for (j = [v35 rangeValue]; ; ++j)
           {
-            v37 = [v35 rangeValue];
+            rangeValue = [v35 rangeValue];
             [v35 rangeValue];
-            if (j >= v38 + v37)
+            if (j >= v38 + rangeValue)
             {
               break;
             }
 
-            v39 = [(UIPrintInteractionController *)self activePrintInfo];
-            [v39 scalingFactor];
+            activePrintInfo4 = [(UIPrintInteractionController *)self activePrintInfo];
+            [activePrintInfo4 scalingFactor];
             [v6 _drawPage:j withScale:1 drawingToPDF:?];
           }
         }
@@ -3253,18 +3253,18 @@ LABEL_47:
 
     [v6 _endSaveContext];
     v10 = v56;
-    v4 = v57;
+    completionCopy = v57;
     goto LABEL_25;
   }
 
-  v40 = [(UIPrintInteractionController *)self printingItems];
-  v41 = [v40 count];
+  printingItems2 = [(UIPrintInteractionController *)self printingItems];
+  v41 = [printingItems2 count];
 
-  v42 = [(UIPrintInteractionController *)self printingItems];
-  v43 = v42;
+  printingItems3 = [(UIPrintInteractionController *)self printingItems];
+  v43 = printingItems3;
   if (v41 == 1)
   {
-    v44 = [v42 objectAtIndex:0];
+    v44 = [printingItems3 objectAtIndex:0];
 
     if (v44)
     {
@@ -3280,8 +3280,8 @@ LABEL_47:
       }
     }
 
-    v46 = [(UIPrintInteractionController *)self _tempFilePath];
-    v45 = [(UIPrintInteractionController *)self _newPDFURLWithPath:v46 isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
+    _tempFilePath2 = [(UIPrintInteractionController *)self _tempFilePath];
+    v45 = [(UIPrintInteractionController *)self _newPDFURLWithPath:_tempFilePath2 isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
 
     v47 = [(UIPrintInteractionController *)self _newSaveContext:v45 withMediaRect:v12, v14, v21, v24];
     [(UIPrintInteractionController *)self _drawPrintItem:v44 toContext:v47 printAllPages:0];
@@ -3295,19 +3295,19 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v52 = [v42 count];
+  v52 = [printingItems3 count];
 
-  if (v52 >= 2 && v7)
+  if (v52 >= 2 && numberOfPages)
   {
-    for (k = 0; k != v7; ++k)
+    for (k = 0; k != numberOfPages; ++k)
     {
       if (![(UIPrintInteractionController *)self printStateActive])
       {
         break;
       }
 
-      v54 = [(UIPrintInteractionController *)self printingItems];
-      v55 = [v54 objectAtIndex:k];
+      printingItems4 = [(UIPrintInteractionController *)self printingItems];
+      v55 = [printingItems4 objectAtIndex:k];
 
       [(UIPrintInteractionController *)self _drawPrintItem:v55 toContext:v25 printAllPages:1];
     }
@@ -3322,24 +3322,24 @@ LABEL_25:
 
   if ([(UIPrintInteractionController *)self needRedrawWithNUp])
   {
-    v49 = [(UIPrintInteractionController *)self activePrintInfo];
-    v50 = [(UIPrintInteractionController *)self printPaper];
-    v51 = redrawPDFWithNUp(v10, v49, v50);
+    activePrintInfo5 = [(UIPrintInteractionController *)self activePrintInfo];
+    printPaper = [(UIPrintInteractionController *)self printPaper];
+    v51 = redrawPDFWithNUp(v10, activePrintInfo5, printPaper);
 
     v10 = v51;
   }
 
-  v4[2](v4, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (id)redrawPDFwithPageRange:(id)a3
+- (id)redrawPDFwithPageRange:(id)range
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = CGPDFDocumentCreateWithURL(a3);
-  v39 = self;
-  v5 = [(UIPrintInteractionController *)self activePrintInfo];
-  v6 = [v5 pageRanges];
-  v7 = [v6 copy];
+  v4 = CGPDFDocumentCreateWithURL(range);
+  selfCopy = self;
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  pageRanges = [activePrintInfo pageRanges];
+  v7 = [pageRanges copy];
 
   v8 = 0;
   if (!v7 || !v4)
@@ -3347,21 +3347,21 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  v9 = [(UIPrintInteractionController *)v39 activePrintInfo];
-  v10 = [v9 pdfPassword];
-  if (!v10)
+  activePrintInfo2 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+  pdfPassword = [activePrintInfo2 pdfPassword];
+  if (!pdfPassword)
   {
     goto LABEL_6;
   }
 
-  v11 = v10;
+  v11 = pdfPassword;
   IsEncrypted = CGPDFDocumentIsEncrypted(v4);
 
   if (IsEncrypted)
   {
-    v9 = [(UIPrintInteractionController *)v39 activePrintInfo];
-    v13 = [v9 pdfPassword];
-    CGPDFDocumentUnlockWithPassword(v4, [v13 cStringUsingEncoding:4]);
+    activePrintInfo2 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+    pdfPassword2 = [activePrintInfo2 pdfPassword];
+    CGPDFDocumentUnlockWithPassword(v4, [pdfPassword2 cStringUsingEncoding:4]);
 
 LABEL_6:
   }
@@ -3372,8 +3372,8 @@ LABEL_6:
     goto LABEL_27;
   }
 
-  v14 = [(UIPrintInteractionController *)v39 _tempFilePath];
-  v8 = [(UIPrintInteractionController *)v39 _newPDFURLWithPath:v14 isContentManaged:[(UIPrintInteractionController *)v39 isContentManaged]];
+  _tempFilePath = [(UIPrintInteractionController *)selfCopy _tempFilePath];
+  v8 = [(UIPrintInteractionController *)selfCopy _newPDFURLWithPath:_tempFilePath isContentManaged:[(UIPrintInteractionController *)selfCopy isContentManaged]];
 
   Page = CGPDFDocumentGetPage(v4, 1uLL);
   memset(&mediaBox, 0, sizeof(mediaBox));
@@ -3410,23 +3410,23 @@ LABEL_6:
           }
 
           v22 = *(*(&v40 + 1) + 8 * i);
-          v23 = [v22 rangeValue];
-          v24 = [v22 rangeValue];
+          rangeValue = [v22 rangeValue];
+          rangeValue2 = [v22 rangeValue];
           [v22 rangeValue];
-          if (v23 < v25 + v24)
+          if (rangeValue < v25 + rangeValue2)
           {
             do
             {
-              ++v23;
+              ++rangeValue;
               v26 = v4;
-              v27 = CGPDFDocumentGetPage(v4, v23);
-              v28 = [MEMORY[0x277CBEB38] dictionary];
-              getPDFPageProperties(v28, v27);
-              CGPDFContextBeginPage(v20, v28);
-              v29 = [(UIPrintInteractionController *)v39 activePrintInfo];
-              v30 = [v29 imagePDFAnnotations];
+              v27 = CGPDFDocumentGetPage(v4, rangeValue);
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
+              getPDFPageProperties(dictionary, v27);
+              CGPDFContextBeginPage(v20, dictionary);
+              activePrintInfo3 = [(UIPrintInteractionController *)selfCopy activePrintInfo];
+              imagePDFAnnotations = [activePrintInfo3 imagePDFAnnotations];
 
-              if (v30)
+              if (imagePDFAnnotations)
               {
                 CGContextDrawPDFPageWithAnnotations();
               }
@@ -3438,12 +3438,12 @@ LABEL_6:
 
               CGContextEndPage(v20);
 
-              v31 = [v22 rangeValue];
+              rangeValue3 = [v22 rangeValue];
               [v22 rangeValue];
               v4 = v26;
             }
 
-            while (v23 < v32 + v31);
+            while (rangeValue < v32 + rangeValue3);
           }
         }
 
@@ -3469,11 +3469,11 @@ LABEL_27:
   return v8;
 }
 
-- (id)_newPDFURLWithPath:(id)a3 isContentManaged:(BOOL)a4
+- (id)_newPDFURLWithPath:(id)path isContentManaged:(BOOL)managed
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3 isDirectory:0];
-  [v5 ui_setIsContentManaged:v4];
+  managedCopy = managed;
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:path isDirectory:0];
+  [v5 ui_setIsContentManaged:managedCopy];
   return v5;
 }
 
@@ -3491,12 +3491,12 @@ LABEL_27:
   return v5;
 }
 
-- (void)_updateRendererWithQuality:(int64_t)a3
+- (void)_updateRendererWithQuality:(int64_t)quality
 {
   obj = [(UIPrintInteractionController *)self rendererToUse];
   objc_sync_enter(obj);
-  self->_currentRenderingQuality = [obj currentRenderingQualityForRequestedRenderingQuality:a3];
-  [obj setRequestedRenderingQuality:a3];
+  self->_currentRenderingQuality = [obj currentRenderingQualityForRequestedRenderingQuality:quality];
+  [obj setRequestedRenderingQuality:quality];
   objc_sync_exit(obj);
 }
 
@@ -3504,80 +3504,80 @@ LABEL_27:
 {
   if ([(UIPrintInteractionController *)self _pageRendererAvailable])
   {
-    v3 = [(UIPrintInteractionController *)self pageCount];
+    pageCount = [(UIPrintInteractionController *)self pageCount];
   }
 
   else
   {
-    v4 = [(UIPrintInteractionController *)self printingItems];
-    v5 = [v4 count];
+    printingItems = [(UIPrintInteractionController *)self printingItems];
+    v5 = [printingItems count];
 
     if (!v5)
     {
-      v3 = 0;
+      pageCount = 0;
       v7 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_6;
     }
 
-    v6 = [(UIPrintInteractionController *)self printingItems];
-    v3 = [v6 count];
+    printingItems2 = [(UIPrintInteractionController *)self printingItems];
+    pageCount = [printingItems2 count];
   }
 
   v7 = 0;
 LABEL_6:
-  v8 = v3;
+  v8 = pageCount;
   result.length = v8;
   result.location = v7;
   return result;
 }
 
-- (BOOL)_isPageCancelled:(id)a3
+- (BOOL)_isPageCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self previewStates];
-  objc_sync_enter(v5);
-  v6 = [(UIPrintInteractionController *)self previewStates];
-  if ([v6 containsObject:v4])
+  cancelledCopy = cancelled;
+  previewStates = [(UIPrintInteractionController *)self previewStates];
+  objc_sync_enter(previewStates);
+  previewStates2 = [(UIPrintInteractionController *)self previewStates];
+  if ([previewStates2 containsObject:cancelledCopy])
   {
-    v7 = [v4 cancelled];
+    cancelled = [cancelledCopy cancelled];
   }
 
   else
   {
-    v7 = 1;
+    cancelled = 1;
   }
 
-  objc_sync_exit(v5);
-  return v7;
+  objc_sync_exit(previewStates);
+  return cancelled;
 }
 
 - (BOOL)_pageRendererAvailable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(UIPrintInteractionController *)v2 printPageRenderer];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  printPageRenderer = [(UIPrintInteractionController *)selfCopy printPageRenderer];
+  if (printPageRenderer)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UIPrintInteractionController *)v2 printFormatter];
-    v4 = v5 != 0;
+    printFormatter = [(UIPrintInteractionController *)selfCopy printFormatter];
+    v4 = printFormatter != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (CGRect)_mediaRect
 {
-  v3 = [(UIPrintInteractionController *)self rendererToUse];
-  v4 = v3;
-  if (v3)
+  rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+  v4 = rendererToUse;
+  if (rendererToUse)
   {
-    [v3 paperRect];
+    [rendererToUse paperRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -3586,27 +3586,27 @@ LABEL_6:
 
   else
   {
-    v13 = [(UIPrintInteractionController *)self printInfo];
-    if (v13)
+    printInfo = [(UIPrintInteractionController *)self printInfo];
+    if (printInfo)
     {
-      v14 = [(UIPrintInteractionController *)self printInfo];
-      v15 = [v14 outputType];
+      printInfo2 = [(UIPrintInteractionController *)self printInfo];
+      outputType = [printInfo2 outputType];
     }
 
     else
     {
-      v15 = 1;
+      outputType = 1;
     }
 
-    v16 = [(UIPrintInteractionController *)self printPaper];
-    if (v16)
+    printPaper = [(UIPrintInteractionController *)self printPaper];
+    if (printPaper)
     {
       [(UIPrintInteractionController *)self printPaper];
     }
 
     else
     {
-      [UIPrintPaper _defaultPaperForOutputType:v15];
+      [UIPrintPaper _defaultPaperForOutputType:outputType];
     }
     v17 = ;
 
@@ -3638,8 +3638,8 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  v4 = [(UIPrintInteractionController *)self printingItems];
-  if (![v4 count])
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  if (![printingItems count])
   {
     v6 = 0;
     v3 = 0;
@@ -3648,19 +3648,19 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v5 = [(UIPrintInteractionController *)self printingItems];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  printingItems2 = [(UIPrintInteractionController *)self printingItems];
+  v6 = [printingItems2 objectAtIndexedSubscript:0];
 
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v6;
-      [v4 ui_setIsContentManaged:{-[UIPrintInteractionController isContentManaged](self, "isContentManaged")}];
-      if (!IsAssetURL(v4) && IsPDFURL(v4) && [(UIPrintInteractionController *)self _canPrintURL:v4])
+      printingItems = v6;
+      [printingItems ui_setIsContentManaged:{-[UIPrintInteractionController isContentManaged](self, "isContentManaged")}];
+      if (!IsAssetURL(printingItems) && IsPDFURL(printingItems) && [(UIPrintInteractionController *)self _canPrintURL:printingItems])
       {
-        v3 = v4;
+        v3 = printingItems;
       }
 
       else
@@ -3668,7 +3668,7 @@ LABEL_14:
         v3 = 0;
       }
 
-      v6 = v4;
+      v6 = printingItems;
       goto LABEL_14;
     }
   }
@@ -3681,38 +3681,38 @@ LABEL_16:
   return v3;
 }
 
-- (void)_generatePDFWithCompletionHandler:(id)a3
+- (void)_generatePDFWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 copy];
-  v7 = [(UIPrintInteractionController *)self delegate];
+  handlerCopy = handler;
+  v6 = [handlerCopy copy];
+  delegate = [(UIPrintInteractionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 printInteractionControllerWillStartJob:self];
+    [delegate printInteractionControllerWillStartJob:self];
   }
 
-  v8 = [(UIPrintInteractionController *)self _printingItemPrintablePDFURL];
-  v9 = v8;
-  if (!v5 || !v8)
+  _printingItemPrintablePDFURL = [(UIPrintInteractionController *)self _printingItemPrintablePDFURL];
+  v9 = _printingItemPrintablePDFURL;
+  if (!handlerCopy || !_printingItemPrintablePDFURL)
   {
     goto LABEL_15;
   }
 
-  [(UIPrintInteractionController *)self _printablePDFURLSize:v8];
+  [(UIPrintInteractionController *)self _printablePDFURLSize:_printingItemPrintablePDFURL];
   v11 = v10;
   v13 = v12;
-  v14 = [(UIPrintInteractionController *)self paper];
-  [v14 paperSize];
+  paper = [(UIPrintInteractionController *)self paper];
+  [paper paperSize];
   if (v11 != v16 || v13 != v15)
   {
     goto LABEL_14;
   }
 
-  v17 = [(UIPrintInteractionController *)self _canShowAnnotations];
-  if (v17)
+  _canShowAnnotations = [(UIPrintInteractionController *)self _canShowAnnotations];
+  if (_canShowAnnotations)
   {
-    v3 = [(UIPrintInteractionController *)self activePrintInfo];
-    if (([v3 imagePDFAnnotations] & 1) == 0)
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    if (([activePrintInfo imagePDFAnnotations] & 1) == 0)
     {
 
 LABEL_14:
@@ -3720,16 +3720,16 @@ LABEL_14:
     }
   }
 
-  v18 = [(UIPrintInteractionController *)self pageCount];
-  v19 = [(UIPrintInteractionController *)self pageCountWithRanges];
-  if (v17)
+  pageCount = [(UIPrintInteractionController *)self pageCount];
+  pageCountWithRanges = [(UIPrintInteractionController *)self pageCountWithRanges];
+  if (_canShowAnnotations)
   {
   }
 
-  if (v18 == v19)
+  if (pageCount == pageCountWithRanges)
   {
     [(UIPrintInteractionController *)self _updatePageCount];
-    (*(v5 + 2))(v5, v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, v9, 0);
     goto LABEL_18;
   }
 
@@ -3741,20 +3741,20 @@ LABEL_15:
   v32 = __Block_byref_object_copy_;
   v33 = __Block_byref_object_dispose_;
   v34 = objc_alloc_init(UIPrintPreviewState);
-  v20 = [(UIPrintInteractionController *)self previewStates];
+  previewStates = [(UIPrintInteractionController *)self previewStates];
 
-  if (!v20)
+  if (!previewStates)
   {
     v21 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:2];
     [(UIPrintInteractionController *)self setPreviewStates:v21];
   }
 
-  v22 = [(UIPrintInteractionController *)self previewStates];
-  objc_sync_enter(v22);
-  v23 = [(UIPrintInteractionController *)self previewStates];
-  [v23 addObject:v30[5]];
+  previewStates2 = [(UIPrintInteractionController *)self previewStates];
+  objc_sync_enter(previewStates2);
+  previewStates3 = [(UIPrintInteractionController *)self previewStates];
+  [previewStates3 addObject:v30[5]];
 
-  objc_sync_exit(v22);
+  objc_sync_exit(previewStates2);
   objc_initWeak(&location, self);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -3849,25 +3849,25 @@ void __66__UIPrintInteractionController__generatePDFWithCompletionHandler___bloc
 
 - (int64_t)numberOfPages
 {
-  v2 = [(UIPrintInteractionController *)self activePrintInfo];
-  v3 = [v2 pageCount];
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  pageCount = [activePrintInfo pageCount];
 
-  return v3;
+  return pageCount;
 }
 
-- (id)getPrintingItemForPageNum:(int64_t)a3 pdfItemPageNum:(int64_t *)a4
+- (id)getPrintingItemForPageNum:(int64_t)num pdfItemPageNum:(int64_t *)pageNum
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(UIPrintInteractionController *)self printingItems];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v8 = [printingItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
-    v20 = a4;
+    pageNumCopy = pageNum;
     v10 = 0;
     v11 = 0;
     v12 = *v22;
@@ -3880,7 +3880,7 @@ void __66__UIPrintInteractionController__generatePDFWithCompletionHandler___bloc
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(printingItems);
         }
 
         v10 = *(*(&v21 + 1) + 8 * v13);
@@ -3890,9 +3890,9 @@ void __66__UIPrintInteractionController__generatePDFWithCompletionHandler___bloc
         if (v16 && (v18 = CFGetTypeID(v16), v18 == CGPDFDocumentGetTypeID()))
         {
           v11 = CGPDFDocumentGetNumberOfPages(v17) + v15;
-          if (v11 >= a3)
+          if (v11 >= num)
           {
-            *v20 = a3 - v15;
+            *pageNumCopy = num - v15;
             goto LABEL_15;
           }
         }
@@ -3900,7 +3900,7 @@ void __66__UIPrintInteractionController__generatePDFWithCompletionHandler___bloc
         else
         {
           v11 = v15 + 1;
-          if (v15 + 1 == a3)
+          if (v15 + 1 == num)
           {
             goto LABEL_15;
           }
@@ -3912,7 +3912,7 @@ void __66__UIPrintInteractionController__generatePDFWithCompletionHandler___bloc
       }
 
       while (v9 != v13);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [printingItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -3929,16 +3929,16 @@ LABEL_15:
   return v10;
 }
 
-- (CGSize)paperSizeForPageNum:(int64_t)a3
+- (CGSize)paperSizeForPageNum:(int64_t)num
 {
-  v5 = [(UIPrintInteractionController *)self rendererToUse];
-  v6 = v5;
-  if (!v5)
+  rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+  v6 = rendererToUse;
+  if (!rendererToUse)
   {
     width = *MEMORY[0x277CBF3A8];
     v10 = *(MEMORY[0x277CBF3A8] + 8);
-    pageNumber = a3;
-    v11 = [(UIPrintInteractionController *)self getPrintingItemForPageNum:a3 pdfItemPageNum:&pageNumber];
+    pageNumber = num;
+    v11 = [(UIPrintInteractionController *)self getPrintingItemForPageNum:num pdfItemPageNum:&pageNumber];
     v12 = [(UIPrintInteractionController *)self convertedPrintableItem:v11];
 
     if (!v12)
@@ -3948,27 +3948,27 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v13 = [(UIPrintInteractionController *)self printInfo];
-    if (v13)
+    printInfo = [(UIPrintInteractionController *)self printInfo];
+    if (printInfo)
     {
-      v14 = [(UIPrintInteractionController *)self printInfo];
-      v15 = [v14 outputType];
+      printInfo2 = [(UIPrintInteractionController *)self printInfo];
+      outputType = [printInfo2 outputType];
     }
 
     else
     {
-      v15 = 1;
+      outputType = 1;
     }
 
-    v16 = [(UIPrintInteractionController *)self printPaper];
-    if (v16)
+    printPaper = [(UIPrintInteractionController *)self printPaper];
+    if (printPaper)
     {
       [(UIPrintInteractionController *)self printPaper];
     }
 
     else
     {
-      [UIPrintPaper _defaultPaperForOutputType:v15];
+      [UIPrintPaper _defaultPaperForOutputType:outputType];
     }
     v17 = ;
 
@@ -4003,11 +4003,11 @@ LABEL_38:
       v10 = v20;
     }
 
-    v21 = [v17 pkPaper];
-    if ([v21 isRoll])
+    pkPaper = [v17 pkPaper];
+    if ([pkPaper isRoll])
     {
-      v22 = [(UIPrintInteractionController *)self printingItems];
-      v23 = [v22 count];
+      printingItems = [(UIPrintInteractionController *)self printingItems];
+      v23 = [printingItems count];
 
       if (v23 < 2)
       {
@@ -4036,13 +4036,13 @@ LABEL_31:
         goto LABEL_38;
       }
 
-      v24 = [(UIPrintInteractionController *)self printer];
-      v25 = [(UIPrintInteractionController *)self printInfo];
-      v21 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", v24, [v25 duplex], v15, width, v10);
+      printer = [(UIPrintInteractionController *)self printer];
+      printInfo3 = [(UIPrintInteractionController *)self printInfo];
+      pkPaper = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", printer, [printInfo3 duplex], outputType, width, v10);
 
-      if (v21)
+      if (pkPaper)
       {
-        v26 = [UIPrintPaper bestPaperForPageSize:v21 withPapersFromArray:width, v10];
+        v26 = [UIPrintPaper bestPaperForPageSize:pkPaper withPapersFromArray:width, v10];
 
         v17 = v26;
       }
@@ -4051,7 +4051,7 @@ LABEL_31:
     goto LABEL_18;
   }
 
-  [v5 paperRect];
+  [rendererToUse paperRect];
   width = v7;
   v10 = v9;
 LABEL_39:
@@ -4063,58 +4063,58 @@ LABEL_39:
   return result;
 }
 
-- (void)drawImageForPageNum:(int64_t)a3 toContext:(CGContext *)a4 sheetSize:(CGSize)a5
+- (void)drawImageForPageNum:(int64_t)num toContext:(CGContext *)context sheetSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = [(UIPrintInteractionController *)self delegate];
+  height = size.height;
+  width = size.width;
+  delegate = [(UIPrintInteractionController *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(UIPrintInteractionController *)self delegate];
-    [v12 printInteractionControllerWillStartJob:self];
+    delegate2 = [(UIPrintInteractionController *)self delegate];
+    [delegate2 printInteractionControllerWillStartJob:self];
   }
 
-  v13 = [(UIPrintInteractionController *)self rendererToUse];
-  if (v13)
+  rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+  if (rendererToUse)
   {
-    v14 = [(UIPrintInteractionController *)self renderThumbnailMutex];
+    renderThumbnailMutex = [(UIPrintInteractionController *)self renderThumbnailMutex];
 
-    if (!v14)
+    if (!renderThumbnailMutex)
     {
       v15 = objc_alloc_init(MEMORY[0x277D82BB8]);
       [(UIPrintInteractionController *)self setRenderThumbnailMutex:v15];
     }
 
-    v16 = [(UIPrintInteractionController *)self renderThumbnailMutex];
-    objc_sync_enter(v16);
-    CGContextSaveGState(a4);
-    [(UIPrintInteractionController *)self paperSizeForPageNum:a3];
+    renderThumbnailMutex2 = [(UIPrintInteractionController *)self renderThumbnailMutex];
+    objc_sync_enter(renderThumbnailMutex2);
+    CGContextSaveGState(context);
+    [(UIPrintInteractionController *)self paperSizeForPageNum:num];
     memset(&v26, 0, sizeof(v26));
     CGAffineTransformMakeScale(&v26, height / v17, height / v17);
     transform = v26;
-    CGContextConcatCTM(a4, &transform);
+    CGContextConcatCTM(context, &transform);
     [(UIPrintInteractionController *)self _updateRendererWithQuality:1];
-    [v13 prepareForDrawingPages:{a3 - 1, 1}];
-    [v13 _startSaveContext:a4];
-    [v13 _drawPage:a3 - 1 withScale:0 drawingToPDF:1.0];
-    [v13 _endSaveContext];
-    CGContextRestoreGState(a4);
-    objc_sync_exit(v16);
+    [rendererToUse prepareForDrawingPages:{num - 1, 1}];
+    [rendererToUse _startSaveContext:context];
+    [rendererToUse _drawPage:num - 1 withScale:0 drawingToPDF:1.0];
+    [rendererToUse _endSaveContext];
+    CGContextRestoreGState(context);
+    objc_sync_exit(renderThumbnailMutex2);
   }
 
   else
   {
-    pageNumber = a3;
-    v16 = [(UIPrintInteractionController *)self getPrintingItemForPageNum:a3 pdfItemPageNum:&pageNumber];
-    v18 = [(UIPrintInteractionController *)self convertedPrintableItem:v16];
+    pageNumber = num;
+    renderThumbnailMutex2 = [(UIPrintInteractionController *)self getPrintingItemForPageNum:num pdfItemPageNum:&pageNumber];
+    v18 = [(UIPrintInteractionController *)self convertedPrintableItem:renderThumbnailMutex2];
     if (v18)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(UIPrintInteractionController *)self drawImage:v18 toContext:a4 sheetSize:width, height];
+        [(UIPrintInteractionController *)self drawImage:v18 toContext:context sheetSize:width, height];
       }
 
       else
@@ -4122,23 +4122,23 @@ LABEL_39:
         v19 = CFGetTypeID(v18);
         if (v19 == CGPDFDocumentGetTypeID())
         {
-          CGContextSaveGState(a4);
+          CGContextSaveGState(context);
           memset(&v26, 0, sizeof(v26));
           CGContextGetBaseCTM();
-          CGContextGetCTM(&transform, a4);
+          CGContextGetCTM(&transform, context);
           CGContextSetBaseCTM();
           Page = CGPDFDocumentGetPage(v18, pageNumber);
           if (Page)
           {
             v21 = Page;
-            v22 = [(UIPrintInteractionController *)self printPaper];
-            v23 = [(UIPrintInteractionController *)self activePrintInfo];
-            drawPDFPageToCGContext(v21, a4, v22, [v23 imagePDFAnnotations], width, height);
+            printPaper = [(UIPrintInteractionController *)self printPaper];
+            activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+            drawPDFPageToCGContext(v21, context, printPaper, [activePrintInfo imagePDFAnnotations], width, height);
           }
 
           transform = v26;
           CGContextSetBaseCTM();
-          CGContextRestoreGState(a4);
+          CGContextRestoreGState(context);
         }
       }
     }
@@ -4147,16 +4147,16 @@ LABEL_39:
 
 - (id)createWebKitPDFForAllPages
 {
-  v3 = [(UIPrintInteractionController *)self webKitFormatterMutex];
-  objc_sync_enter(v3);
+  webKitFormatterMutex = [(UIPrintInteractionController *)self webKitFormatterMutex];
+  objc_sync_enter(webKitFormatterMutex);
   [(UIPrintInteractionController *)self _updateRendererWithQuality:0];
-  v4 = [(UIPrintInteractionController *)self delegate];
+  delegate = [(UIPrintInteractionController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIPrintInteractionController *)self delegate];
-    [v6 printInteractionControllerWillStartJob:self];
+    delegate2 = [(UIPrintInteractionController *)self delegate];
+    [delegate2 printInteractionControllerWillStartJob:self];
   }
 
   [(UIPrintInteractionController *)self _updatePageCount];
@@ -4167,45 +4167,45 @@ LABEL_39:
 
   else
   {
-    v7 = [(UIPrintInteractionController *)self rendererToUse];
-    [v7 paperRect];
+    rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+    [rendererToUse paperRect];
     v9 = v8;
     v11 = v10;
-    v12 = [(UIPrintInteractionController *)self _tempFilePath];
-    v13 = [(UIPrintInteractionController *)self _newPDFURLWithPath:v12 isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
+    _tempFilePath = [(UIPrintInteractionController *)self _tempFilePath];
+    v13 = [(UIPrintInteractionController *)self _newPDFURLWithPath:_tempFilePath isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
 
     if (v13)
     {
       v14 = [(UIPrintInteractionController *)self _newSaveContext:v13 withMediaRect:0.0, 0.0, v9, v11];
-      [v7 _startSaveContext:v14];
-      v15 = [(UIPrintInteractionController *)self _fullPagesRange];
+      [rendererToUse _startSaveContext:v14];
+      _fullPagesRange = [(UIPrintInteractionController *)self _fullPagesRange];
       v17 = v16;
-      if (v15 < v15 + v16)
+      if (_fullPagesRange < _fullPagesRange + v16)
       {
         do
         {
-          v18 = [MEMORY[0x277CCACC8] currentThread];
-          v19 = [v18 isCancelled];
+          currentThread = [MEMORY[0x277CCACC8] currentThread];
+          isCancelled = [currentThread isCancelled];
 
-          if (v19)
+          if (isCancelled)
           {
             break;
           }
 
-          [v7 _drawPage:v15++ withScale:1 drawingToPDF:1.0];
+          [rendererToUse _drawPage:_fullPagesRange++ withScale:1 drawingToPDF:1.0];
           --v17;
         }
 
         while (v17);
       }
 
-      [v7 _endSaveContext];
+      [rendererToUse _endSaveContext];
       CGPDFContextClose(v14);
       CGContextRelease(v14);
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(webKitFormatterMutex);
 
   return v13;
 }
@@ -4218,35 +4218,35 @@ LABEL_39:
   objc_sync_exit(obj);
 }
 
-- (id)drawPagesWithPreviewState:(id)a3
+- (id)drawPagesWithPreviewState:(id)state
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self rendererToUse];
-  v6 = v5;
-  if (v5)
+  stateCopy = state;
+  rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+  v6 = rendererToUse;
+  if (rendererToUse)
   {
-    v7 = [v5 numberOfPages];
+    numberOfPages = [rendererToUse numberOfPages];
   }
 
   else
   {
-    v8 = [(UIPrintInteractionController *)self printingItems];
-    v7 = [v8 count];
+    printingItems = [(UIPrintInteractionController *)self printingItems];
+    numberOfPages = [printingItems count];
   }
 
-  v9 = [(UIPrintInteractionController *)self _tempFilePath];
-  v10 = [(UIPrintInteractionController *)self _newPDFURLWithPath:v9 isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
+  _tempFilePath = [(UIPrintInteractionController *)self _tempFilePath];
+  v10 = [(UIPrintInteractionController *)self _newPDFURLWithPath:_tempFilePath isContentManaged:[(UIPrintInteractionController *)self isContentManaged]];
 
   v44 = v10;
   if (v6)
   {
-    v11 = [(UIPrintInteractionController *)self printPaper];
-    [v11 scalingFactor];
+    printPaper = [(UIPrintInteractionController *)self printPaper];
+    [printPaper scalingFactor];
     v13 = v12;
 
-    v14 = [(UIPrintInteractionController *)self printPaper];
-    [v14 paperSize];
+    printPaper2 = [(UIPrintInteractionController *)self printPaper];
+    [printPaper2 paperSize];
     v16 = v15;
     v18 = v17;
 
@@ -4263,17 +4263,17 @@ LABEL_39:
     obj = [(UIPrintInteractionController *)self webKitFormatterMutex];
     objc_sync_enter(obj);
     [v6 _startSaveContext:context];
-    v23 = [(UIPrintInteractionController *)self activePrintInfo];
-    v24 = [v23 pageRanges];
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    pageRanges = [activePrintInfo pageRanges];
 
-    v41 = v24;
-    if ([v24 count])
+    v41 = pageRanges;
+    if ([pageRanges count])
     {
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v25 = v24;
+      v25 = pageRanges;
       v26 = [v25 countByEnumeratingWithState:&v46 objects:v50 count:16];
       if (v26)
       {
@@ -4288,27 +4288,27 @@ LABEL_10:
           }
 
           v29 = *(*(&v46 + 1) + 8 * v28);
-          v30 = [v29 rangeValue];
+          rangeValue = [v29 rangeValue];
           do
           {
-            v31 = [v29 rangeValue];
+            rangeValue2 = [v29 rangeValue];
             [v29 rangeValue];
-            if (v30 >= v32 + v31)
+            if (rangeValue >= v32 + rangeValue2)
             {
               break;
             }
 
-            [v6 _drawPage:v30 withScale:1 drawingToPDF:v13];
+            [v6 _drawPage:rangeValue withScale:1 drawingToPDF:v13];
             if (![(UIPrintInteractionController *)self printStateActive])
             {
               break;
             }
 
-            ++v30;
+            ++rangeValue;
           }
 
-          while (![(UIPrintInteractionController *)self _isPageCancelled:v4]);
-          if (![(UIPrintInteractionController *)self printStateActive]|| [(UIPrintInteractionController *)self _isPageCancelled:v4])
+          while (![(UIPrintInteractionController *)self _isPageCancelled:stateCopy]);
+          if (![(UIPrintInteractionController *)self printStateActive]|| [(UIPrintInteractionController *)self _isPageCancelled:stateCopy])
           {
             break;
           }
@@ -4327,16 +4327,16 @@ LABEL_10:
       }
     }
 
-    else if (v7)
+    else if (numberOfPages)
     {
-      for (i = 0; i != v7; ++i)
+      for (i = 0; i != numberOfPages; ++i)
       {
         if (![(UIPrintInteractionController *)self printStateActive])
         {
           break;
         }
 
-        if ([(UIPrintInteractionController *)self _isPageCancelled:v4])
+        if ([(UIPrintInteractionController *)self _isPageCancelled:stateCopy])
         {
           break;
         }
@@ -4354,30 +4354,30 @@ LABEL_10:
   {
     [(UIPrintInteractionController *)self _mediaRect];
     context = [(UIPrintInteractionController *)self _newSaveContext:v10 withMediaRect:?];
-    if (v7)
+    if (numberOfPages)
     {
       v34 = 0;
-      while ([(UIPrintInteractionController *)self printStateActive]&& ![(UIPrintInteractionController *)self _isPageCancelled:v4])
+      while ([(UIPrintInteractionController *)self printStateActive]&& ![(UIPrintInteractionController *)self _isPageCancelled:stateCopy])
       {
-        v35 = [(UIPrintInteractionController *)self printingItems];
-        v36 = [v35 count];
+        printingItems2 = [(UIPrintInteractionController *)self printingItems];
+        v36 = [printingItems2 count];
 
         if (v34 < v36)
         {
-          v37 = [(UIPrintInteractionController *)self printingItems];
-          v38 = [v37 objectAtIndex:v34];
+          printingItems3 = [(UIPrintInteractionController *)self printingItems];
+          v38 = [printingItems3 objectAtIndex:v34];
 
-          v39 = [(UIPrintInteractionController *)self printingItems];
-          -[UIPrintInteractionController _drawPrintItem:toContext:printAllPages:](self, "_drawPrintItem:toContext:printAllPages:", v38, context, [v39 count] > 1);
+          printingItems4 = [(UIPrintInteractionController *)self printingItems];
+          -[UIPrintInteractionController _drawPrintItem:toContext:printAllPages:](self, "_drawPrintItem:toContext:printAllPages:", v38, context, [printingItems4 count] > 1);
 
-          if (![(UIPrintInteractionController *)self printStateActive]|| [(UIPrintInteractionController *)self _isPageCancelled:v4])
+          if (![(UIPrintInteractionController *)self printStateActive]|| [(UIPrintInteractionController *)self _isPageCancelled:stateCopy])
           {
 
             break;
           }
         }
 
-        if (v7 == ++v34)
+        if (numberOfPages == ++v34)
         {
           break;
         }
@@ -4394,49 +4394,49 @@ LABEL_10:
   return v44;
 }
 
-- (void)drawImage:(id)a3 toContext:(CGContext *)a4 sheetSize:(CGSize)a5
+- (void)drawImage:(id)image toContext:(CGContext *)context sheetSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v46 = a3;
-  v8 = [v46 CIImage];
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  cIImage = [imageCopy CIImage];
 
-  if (v8)
+  if (cIImage)
   {
-    v9 = ConvertCIBasedImage(v46);
+    v9 = ConvertCIBasedImage(imageCopy);
 
     v10 = v9;
   }
 
   else
   {
-    v10 = v46;
+    v10 = imageCopy;
   }
 
   v47 = v10;
   v11 = v10;
-  v12 = [v47 CGImage];
+  cGImage = [v47 CGImage];
   v13 = v47;
-  if (v12)
+  if (cGImage)
   {
-    v14 = [v47 imageOrientation];
-    if (v14 > 7)
+    imageOrientation = [v47 imageOrientation];
+    if (imageOrientation > 7)
     {
       v15 = 1;
     }
 
     else
     {
-      v15 = drawImage_toContext_sheetSize___UIImageOrientationToEXIFOrientationMapping[v14];
+      v15 = drawImage_toContext_sheetSize___UIImageOrientationToEXIFOrientationMapping[imageOrientation];
     }
 
-    v16 = [(UIPrintInteractionController *)self printPaper];
-    [v16 paperSize];
+    printPaper = [(UIPrintInteractionController *)self printPaper];
+    [printPaper paperSize];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(UIPrintInteractionController *)self printPaper];
-    [v21 printableRect];
+    printPaper2 = [(UIPrintInteractionController *)self printPaper];
+    [printPaper2 printableRect];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -4499,20 +4499,20 @@ LABEL_10:
       v43 = v45 / v34;
     }
 
-    drawCGImageToCGContext(v12, a4, v15, v42 && v41, 0, width, v45, v25 * v43, v32 * v43, width - v31 * v43 - v25 * v43, v45 - v32 * v43 - v33 * v43);
+    drawCGImageToCGContext(cGImage, context, v15, v42 && v41, 0, width, v45, v25 * v43, v32 * v43, width - v31 * v43 - v25 * v43, v45 - v32 * v43 - v33 * v43);
     v13 = v47;
   }
 }
 
-- (void)_generatePrintPreview:(id)a3
+- (void)_generatePrintPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__UIPrintInteractionController__generatePrintPreview___block_invoke;
   v6[3] = &unk_279A9C108;
-  v7 = v4;
-  v5 = v4;
+  v7 = previewCopy;
+  v5 = previewCopy;
   [(UIPrintInteractionController *)self _generatePDFWithCompletionHandler:v6];
 }
 
@@ -4530,19 +4530,19 @@ uint64_t __54__UIPrintInteractionController__generatePrintPreview___block_invoke
   return result;
 }
 
-- (id)convertedPrintableItem:(id)a3
+- (id)convertedPrintableItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self convertedPrintableItems];
-  v6 = [v5 objectForKey:v4];
+  itemCopy = item;
+  convertedPrintableItems = [(UIPrintInteractionController *)self convertedPrintableItems];
+  v6 = [convertedPrintableItems objectForKey:itemCopy];
 
   return v6;
 }
 
-- (id)_convertItemToPrintableItem:(id)a3
+- (id)_convertItemToPrintableItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     goto LABEL_11;
   }
@@ -4565,9 +4565,9 @@ uint64_t __54__UIPrintInteractionController__generatePrintPreview___block_invoke
     goto LABEL_11;
   }
 
-  v6 = [(UIPrintInteractionController *)self convertedPrintableItems];
+  convertedPrintableItems = [(UIPrintInteractionController *)self convertedPrintableItems];
 
-  if (!v6)
+  if (!convertedPrintableItems)
   {
     v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
     [(UIPrintInteractionController *)self setConvertedPrintableItems:v10];
@@ -4576,7 +4576,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v4;
+      v11 = itemCopy;
       if (IsAssetURL(v11))
       {
         v12 = GetPHAssetForAssetURLSync(v11);
@@ -4607,12 +4607,12 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = v4;
+        v13 = itemCopy;
         v12 = 0;
 LABEL_31:
-        v19 = [v13 CIImage];
+        cIImage = [v13 CIImage];
 
-        if (v19)
+        if (cIImage)
         {
           v20 = ConvertCIBasedImage(v13);
 
@@ -4628,17 +4628,17 @@ LABEL_31:
         v14 = 0;
         v8 = v13;
 LABEL_41:
-        v21 = [(UIPrintInteractionController *)self convertedPrintableItems];
-        v22 = v21;
+        convertedPrintableItems2 = [(UIPrintInteractionController *)self convertedPrintableItems];
+        v22 = convertedPrintableItems2;
         if (v8)
         {
-          [v21 setObject:v8 forKey:v4];
+          [convertedPrintableItems2 setObject:v8 forKey:itemCopy];
         }
 
         else
         {
-          v23 = [MEMORY[0x277CBEB68] null];
-          [v22 setObject:v23 forKey:v4];
+          null = [MEMORY[0x277CBEB68] null];
+          [v22 setObject:null forKey:itemCopy];
         }
 
         goto LABEL_45;
@@ -4656,7 +4656,7 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v12 = v4;
+        v12 = itemCopy;
 LABEL_27:
         v13 = GetImageForPHAssetSync(v12);
         if (!v13)
@@ -4667,7 +4667,7 @@ LABEL_27:
         goto LABEL_31;
       }
 
-      v14 = v4;
+      v14 = itemCopy;
     }
 
     v17 = [UIPrintInteractionController createCGPDFDocumentRefWithNSData:v14];
@@ -4704,17 +4704,17 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v7 = [(UIPrintInteractionController *)self convertedPrintableItems];
-  v8 = [v7 objectForKey:v4];
+  convertedPrintableItems3 = [(UIPrintInteractionController *)self convertedPrintableItems];
+  v8 = [convertedPrintableItems3 objectForKey:itemCopy];
 
   if (!v8)
   {
     goto LABEL_13;
   }
 
-  v9 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (v8 != v9)
+  if (v8 != null2)
   {
     goto LABEL_45;
   }
@@ -4726,17 +4726,17 @@ LABEL_45:
   return v8;
 }
 
-- (void)_drawPrintItem:(id)a3 toContext:(CGContext *)a4 printAllPages:(BOOL)a5
+- (void)_drawPrintItem:(id)item toContext:(CGContext *)context printAllPages:(BOOL)pages
 {
-  v5 = a5;
-  v8 = [(UIPrintInteractionController *)self convertedPrintableItem:a3];
+  pagesCopy = pages;
+  v8 = [(UIPrintInteractionController *)self convertedPrintableItem:item];
   v9 = v8;
   if (v8)
   {
     v10 = CFGetTypeID(v8);
     if (v10 == CGPDFDocumentGetTypeID())
     {
-      [(UIPrintInteractionController *)self _addPDFWithCGPDFDocumentRef:v9 toContext:a4 addAllPages:v5];
+      [(UIPrintInteractionController *)self _addPDFWithCGPDFDocumentRef:v9 toContext:context addAllPages:pagesCopy];
       goto LABEL_27;
     }
 
@@ -4747,9 +4747,9 @@ LABEL_45:
     }
 
     v11 = v9;
-    v12 = [v11 CIImage];
+    cIImage = [v11 CIImage];
 
-    if (v12)
+    if (cIImage)
     {
       v13 = ConvertCIBasedImage(v11);
 
@@ -4766,35 +4766,35 @@ LABEL_26:
     [v11 size];
     v15 = v14;
     v17 = v16;
-    v18 = [(UIPrintInteractionController *)self printInfo];
-    if (v18)
+    printInfo = [(UIPrintInteractionController *)self printInfo];
+    if (printInfo)
     {
-      v19 = [(UIPrintInteractionController *)self printInfo];
-      v20 = [v19 outputType];
+      printInfo2 = [(UIPrintInteractionController *)self printInfo];
+      outputType = [printInfo2 outputType];
     }
 
     else
     {
-      v20 = 1;
+      outputType = 1;
     }
 
-    v21 = [(UIPrintInteractionController *)self printPaper];
-    if (v21)
+    printPaper = [(UIPrintInteractionController *)self printPaper];
+    if (printPaper)
     {
       [(UIPrintInteractionController *)self printPaper];
     }
 
     else
     {
-      [UIPrintPaper _defaultPaperForOutputType:v20];
+      [UIPrintPaper _defaultPaperForOutputType:outputType];
     }
     v22 = ;
 
-    v23 = [v22 pkPaper];
-    if ([v23 isRoll])
+    pkPaper = [v22 pkPaper];
+    if ([pkPaper isRoll])
     {
-      v24 = [(UIPrintInteractionController *)self printingItems];
-      v25 = [v24 count];
+      printingItems = [(UIPrintInteractionController *)self printingItems];
+      v25 = [printingItems count];
 
       if (v25 < 2)
       {
@@ -4822,24 +4822,24 @@ LABEL_19:
           v35 = 0;
         }
 
-        CGPDFContextBeginPage(a4, v35);
-        CGContextSaveGState(a4);
+        CGPDFContextBeginPage(context, v35);
+        CGContextSaveGState(context);
         [v11 imageOrientation];
         [v22 printableRect];
         PKDrawImageToSheet();
-        CGContextRestoreGState(a4);
-        CGPDFContextEndPage(a4);
+        CGContextRestoreGState(context);
+        CGPDFContextEndPage(context);
 
         goto LABEL_26;
       }
 
-      v26 = [(UIPrintInteractionController *)self printer];
-      v27 = [(UIPrintInteractionController *)self printInfo];
-      v23 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", v26, [v27 duplex], v20, v15, v17);
+      printer = [(UIPrintInteractionController *)self printer];
+      printInfo3 = [(UIPrintInteractionController *)self printInfo];
+      pkPaper = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", printer, [printInfo3 duplex], outputType, v15, v17);
 
-      if (v23)
+      if (pkPaper)
       {
-        v28 = [UIPrintPaper bestPaperForPageSize:v23 withPapersFromArray:v15, v17];
+        v28 = [UIPrintPaper bestPaperForPageSize:pkPaper withPapersFromArray:v15, v17];
 
         v22 = v28;
       }
@@ -4851,24 +4851,24 @@ LABEL_19:
 LABEL_27:
 }
 
-- (void)_addPDFWithCGPDFDocumentRef:(CGPDFDocument *)a3 toContext:(CGContext *)a4 addAllPages:(BOOL)a5
+- (void)_addPDFWithCGPDFDocumentRef:(CGPDFDocument *)ref toContext:(CGContext *)context addAllPages:(BOOL)pages
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  if (!a3 || !a4)
+  if (!ref || !context)
   {
     return;
   }
 
-  NumberOfPages = CGPDFDocumentGetNumberOfPages(a3);
-  if (!a5)
+  NumberOfPages = CGPDFDocumentGetNumberOfPages(ref);
+  if (!pages)
   {
-    v5 = [(UIPrintInteractionController *)self activePrintInfo];
-    v11 = [v5 pageRanges];
-    if (v11)
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    pageRanges = [activePrintInfo pageRanges];
+    if (pageRanges)
     {
-      v12 = v11;
-      v13 = [(UIPrintInteractionController *)self activePrintInfo];
-      v14 = [v13 pageRanges];
+      v12 = pageRanges;
+      activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+      pageRanges2 = [activePrintInfo2 pageRanges];
 
 LABEL_7:
       goto LABEL_8;
@@ -4877,9 +4877,9 @@ LABEL_7:
 
   v15 = [MEMORY[0x277CCAE60] valueWithRange:{0, NumberOfPages}];
   v56[0] = v15;
-  v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:1];
+  pageRanges2 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:1];
 
-  if (!a5)
+  if (!pages)
   {
     goto LABEL_7;
   }
@@ -4889,7 +4889,7 @@ LABEL_8:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v14;
+  obj = pageRanges2;
   v46 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v46)
   {
@@ -4910,44 +4910,44 @@ LABEL_8:
 
         v47 = v19;
         v20 = *(*(&v51 + 1) + 8 * v19);
-        v21 = [v20 rangeValue];
+        rangeValue = [v20 rangeValue];
         while (1)
         {
-          v22 = [v20 rangeValue];
+          rangeValue2 = [v20 rangeValue];
           [v20 rangeValue];
-          if (v21 >= v23 + v22)
+          if (rangeValue >= v23 + rangeValue2)
           {
             break;
           }
 
-          Page = CGPDFDocumentGetPage(a3, ++v21);
+          Page = CGPDFDocumentGetPage(ref, ++rangeValue);
           if (Page)
           {
             v25 = Page;
             BoxRect = CGPDFPageGetBoxRect(Page, kCGPDFCropBox);
             v26 = BoxRect.size.width / BoxRect.size.height;
             v27 = [(UIPrintInteractionController *)self activePrintInfo:BoxRect.origin.x];
-            v28 = [v27 printPaper];
+            printPaper = [v27 printPaper];
 
-            [v28 paperSize];
+            [printPaper paperSize];
             v30 = v29;
-            [v28 paperSize];
+            [printPaper paperSize];
             v32 = v30 / v31;
             *bytes = 0u;
             v50 = 0u;
             v33 = v26 >= 1.0 || v32 <= 1.0;
             if (!v33 || (v26 > 1.0 ? (v34 = v32 < 1.0) : (v34 = 0), v34))
             {
-              [v28 paperSize];
+              [printPaper paperSize];
               v36 = v39;
-              [v28 paperSize];
+              [printPaper paperSize];
             }
 
             else
             {
-              [v28 paperSize];
+              [printPaper paperSize];
               v36 = v35;
-              [v28 paperSize];
+              [printPaper paperSize];
               v38 = v37;
             }
 
@@ -4958,29 +4958,29 @@ LABEL_8:
             v41 = CFDataCreate(v16, bytes, 32);
             CFDictionaryAddValue(Mutable, key, v41);
             CFRelease(v41);
-            CGPDFContextBeginPage(a4, Mutable);
+            CGPDFContextBeginPage(context, Mutable);
             CFRelease(Mutable);
-            CGContextSaveGState(a4);
-            CGContextSetAllowsAntialiasing(a4, 1);
-            CGContextSetShouldAntialias(a4, 1);
-            CGContextSetAllowsFontSmoothing(a4, 0);
-            CGContextSetShouldSmoothFonts(a4, 0);
-            v42 = [MEMORY[0x277D75348] whiteColor];
-            [v42 CGColor];
+            CGContextSaveGState(context);
+            CGContextSetAllowsAntialiasing(context, 1);
+            CGContextSetShouldAntialias(context, 1);
+            CGContextSetAllowsFontSmoothing(context, 0);
+            CGContextSetShouldSmoothFonts(context, 0);
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
+            [whiteColor CGColor];
             CGContextSetFontSmoothingBackgroundColor();
 
-            CGContextSetAllowsFontSubpixelPositioning(a4, 0);
-            CGContextSetShouldSubpixelPositionFonts(a4, 0);
-            CGContextSetAllowsFontSubpixelQuantization(a4, 0);
-            CGContextSetShouldSubpixelQuantizeFonts(a4, 0);
+            CGContextSetAllowsFontSubpixelPositioning(context, 0);
+            CGContextSetShouldSubpixelPositionFonts(context, 0);
+            CGContextSetAllowsFontSubpixelQuantization(context, 0);
+            CGContextSetShouldSubpixelQuantizeFonts(context, 0);
             CGContextSetTextGreekingThreshold();
             CGContextSetLineWidthThreshold();
-            CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-            v43 = [(UIPrintInteractionController *)self activePrintInfo];
-            drawPDFPageToCGContext(v25, a4, v28, [v43 imagePDFAnnotations], v17, v18);
+            CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+            activePrintInfo3 = [(UIPrintInteractionController *)self activePrintInfo];
+            drawPDFPageToCGContext(v25, context, printPaper, [activePrintInfo3 imagePDFAnnotations], v17, v18);
 
-            CGContextRestoreGState(a4);
-            CGPDFContextEndPage(a4);
+            CGContextRestoreGState(context);
+            CGPDFContextEndPage(context);
           }
         }
 
@@ -5002,8 +5002,8 @@ LABEL_8:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UIPrintInteractionController *)self previewStates];
-  v3 = [v2 copy];
+  previewStates = [(UIPrintInteractionController *)self previewStates];
+  v3 = [previewStates copy];
 
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
@@ -5033,25 +5033,25 @@ LABEL_8:
 
 - (void)_printPanelDidPresent
 {
-  v3 = [(UIPrintInteractionController *)self delegate];
+  delegate = [(UIPrintInteractionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 printInteractionControllerDidPresentPrinterOptions:self];
+    [delegate printInteractionControllerDidPresentPrinterOptions:self];
   }
 }
 
-- (void)_printPanelWillDismissWithAction:(int64_t)a3
+- (void)_printPanelWillDismissWithAction:(int64_t)action
 {
   if ([(UIPrintInteractionController *)self printStateActive])
   {
     [(UIPrintInteractionController *)self _cancelAllPreviewGeneration];
-    v5 = [(UIPrintInteractionController *)self delegate];
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+    delegate = [(UIPrintInteractionController *)self delegate];
+    if ((action & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
       [(UIPrintInteractionController *)self setPrinter:0];
       if ([(UIPrintInteractionController *)self _canPreviewContent]&& (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v5 printInteractionControllerDidFinishJob:self];
+        [delegate printInteractionControllerDidFinishJob:self];
       }
 
       [(UIPrintInteractionController *)self resetConvertedPrintableItems];
@@ -5059,26 +5059,26 @@ LABEL_8:
 
     if (![(UIPrintInteractionController *)self supressNotifyDismissed]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v5 printInteractionControllerWillDismissPrinterOptions:self];
+      [delegate printInteractionControllerWillDismissPrinterOptions:self];
     }
 
     MEMORY[0x2821F9730]();
   }
 }
 
-- (void)_setPrinterInfoState:(int)a3
+- (void)_setPrinterInfoState:(int)state
 {
-  v3 = *&a3;
-  v5 = [(UIPrintInteractionController *)self printingProgress];
+  v3 = *&state;
+  printingProgress = [(UIPrintInteractionController *)self printingProgress];
 
-  if (v5)
+  if (printingProgress)
   {
     goto LABEL_7;
   }
 
-  v6 = [(UIPrintInteractionController *)self saveFileURL];
+  saveFileURL = [(UIPrintInteractionController *)self saveFileURL];
 
-  if (v6)
+  if (saveFileURL)
   {
     if (![(UIPrintInteractionController *)self showPrintingProgress])
     {
@@ -5086,29 +5086,29 @@ LABEL_8:
     }
 
     v7 = [UIPrintingProgress alloc];
-    v8 = [(UIPrintInteractionController *)self hostingWindowScene];
+    hostingWindowScene = [(UIPrintInteractionController *)self hostingWindowScene];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __53__UIPrintInteractionController__setPrinterInfoState___block_invoke_2;
     v15[3] = &unk_279A9BEE0;
     v15[4] = self;
-    v9 = [(UIPrintingProgress *)v7 initPDFCreationWithHostingWindowScene:v8 cancelHandler:v15];
-    [(UIPrintInteractionController *)self setPrintingProgress:v9];
+    displayName = [(UIPrintingProgress *)v7 initPDFCreationWithHostingWindowScene:hostingWindowScene cancelHandler:v15];
+    [(UIPrintInteractionController *)self setPrintingProgress:displayName];
   }
 
   else
   {
     v10 = [UIPrintingProgress alloc];
-    v8 = [(UIPrintInteractionController *)self printer];
-    v9 = [v8 displayName];
-    v11 = [(UIPrintInteractionController *)self printPanelViewController];
-    v12 = [(UIPrintInteractionController *)self hostingWindowScene];
+    hostingWindowScene = [(UIPrintInteractionController *)self printer];
+    displayName = [hostingWindowScene displayName];
+    printPanelViewController = [(UIPrintInteractionController *)self printPanelViewController];
+    hostingWindowScene2 = [(UIPrintInteractionController *)self hostingWindowScene];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __53__UIPrintInteractionController__setPrinterInfoState___block_invoke;
     v16[3] = &unk_279A9BEE0;
     v16[4] = self;
-    v13 = [(UIPrintingProgress *)v10 initWithPrinterName:v9 forceDisplayAsAlert:v11 == 0 hostingWindowScene:v12 cancelHandler:v16];
+    v13 = [(UIPrintingProgress *)v10 initWithPrinterName:displayName forceDisplayAsAlert:printPanelViewController == 0 hostingWindowScene:hostingWindowScene2 cancelHandler:v16];
     [(UIPrintInteractionController *)self setPrintingProgress:v13];
   }
 
@@ -5120,66 +5120,66 @@ LABEL_7:
 
   else
   {
-    v14 = [(UIPrintInteractionController *)self printingProgress];
-    [v14 setPrinterInfoState:v3];
+    printingProgress2 = [(UIPrintInteractionController *)self printingProgress];
+    [printingProgress2 setPrinterInfoState:v3];
   }
 }
 
-- (void)_printPanelDidDismissWithAction:(int64_t)a3
+- (void)_printPanelDidDismissWithAction:(int64_t)action
 {
   if ([(UIPrintInteractionController *)self printStateActive])
   {
     [(UIPrintInteractionController *)self setPrintPanelViewController:0];
     [(UIPrintInteractionController *)self setTempPreviewFileURL:0];
-    v5 = [(UIPrintInteractionController *)self delegate];
+    delegate = [(UIPrintInteractionController *)self delegate];
     if (![(UIPrintInteractionController *)self supressNotifyDismissed]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v5 printInteractionControllerDidDismissPrinterOptions:self];
+      [delegate printInteractionControllerDidDismissPrinterOptions:self];
     }
 
-    v6 = [(UIPrintInteractionController *)self printer];
+    printer = [(UIPrintInteractionController *)self printer];
 
-    if (a3 == 1 && v6)
+    if (action == 1 && printer)
     {
-      v7 = [(UIPrintInteractionController *)self printer];
+      printer2 = [(UIPrintInteractionController *)self printer];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __64__UIPrintInteractionController__printPanelDidDismissWithAction___block_invoke;
       v8[3] = &unk_279A9C090;
       v8[4] = self;
-      [(UIPrintInteractionController *)self _setPrinterInfoState:_UIPrinterInfoGetState(v7, v8)];
+      [(UIPrintInteractionController *)self _setPrinterInfoState:_UIPrinterInfoGetState(printer2, v8)];
     }
 
     else
     {
-      [(UIPrintInteractionController *)self _endPrintJobWithAction:a3 error:0];
+      [(UIPrintInteractionController *)self _endPrintJobWithAction:action error:0];
     }
   }
 }
 
-- (double)printInteractionController:(id)a3 cutLengthForPaper:(id)a4
+- (double)printInteractionController:(id)controller cutLengthForPaper:(id)paper
 {
-  v5 = a4;
+  paperCopy = paper;
   NSLog(&cfstr_S.isa, "[UIPrintInteractionController printInteractionController:cutLengthForPaper:]");
-  v6 = [v5 description];
-  [v5 paperSize];
+  v6 = [paperCopy description];
+  [paperCopy paperSize];
   v8 = v7;
-  [v5 printableRect];
+  [paperCopy printableRect];
   NSLog(&cfstr_PageheightFPri.isa, v6, v8, v9);
 
-  v10 = [(UIPrintInteractionController *)self paper];
-  [v10 paperSize];
+  paper = [(UIPrintInteractionController *)self paper];
+  [paper paperSize];
   v38 = v11;
   v39 = v12;
   v14 = *MEMORY[0x277CBF348];
   v13 = *(MEMORY[0x277CBF348] + 8);
 
-  [v5 printableRect];
+  [paperCopy printableRect];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [v5 paperSize];
+  [paperCopy paperSize];
   v24 = v23;
   v26 = v25;
   v40.origin.x = v16;
@@ -5200,7 +5200,7 @@ LABEL_7:
   v42.size.width = v30;
   v42.size.height = v31;
   MinY = CGRectGetMinY(v42);
-  [v5 paperSize];
+  [paperCopy paperSize];
   v34 = v33;
 
   v43.origin.x = v28;
@@ -5217,15 +5217,15 @@ LABEL_7:
   return v36;
 }
 
-- (id)printInteractionController:(id)a3 choosePaper:(id)a4
+- (id)printInteractionController:(id)controller choosePaper:(id)paper
 {
-  v5 = a4;
-  v6 = [(UIPrintInteractionController *)self paper];
-  v7 = [v6 pkPaper];
+  paperCopy = paper;
+  paper = [(UIPrintInteractionController *)self paper];
+  pkPaper = [paper pkPaper];
 
-  if (v7)
+  if (pkPaper)
   {
-    [v7 paperSize];
+    [pkPaper paperSize];
   }
 
   else
@@ -5234,7 +5234,7 @@ LABEL_7:
     v8 = 612.0;
   }
 
-  v10 = [UIPrintPaper bestPaperForPageSize:v5 withPapersFromArray:v8, v9];
+  v10 = [UIPrintPaper bestPaperForPageSize:paperCopy withPapersFromArray:v8, v9];
 
   return v10;
 }
@@ -5242,8 +5242,8 @@ LABEL_7:
 - (void)_updateCutterBehavior
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintInteractionController *)self delegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(UIPrintInteractionController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v4 = [&unk_2871BC1E8 count];
     if (v4 != [&unk_2871BC200 count])
@@ -5252,17 +5252,17 @@ LABEL_7:
     }
 
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&unk_2871BC200 forKeys:&unk_2871BC1E8];
-    v6 = [(UIPrintInteractionController *)self printer];
-    if ([v6 hasPrintInfoSupported])
+    printer = [(UIPrintInteractionController *)self printer];
+    if ([printer hasPrintInfoSupported])
     {
-      v7 = [(UIPrintInteractionController *)self printer];
-      v8 = [v7 printInfoSupported];
+      printer2 = [(UIPrintInteractionController *)self printer];
+      printInfoSupported = [printer2 printInfoSupported];
       v9 = *MEMORY[0x277D41128];
-      v10 = [v8 objectForKey:*MEMORY[0x277D41128]];
+      v10 = [printInfoSupported objectForKey:*MEMORY[0x277D41128]];
 
       if (v10 && [v10 count])
       {
-        v11 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -5286,7 +5286,7 @@ LABEL_7:
               v16 = [v5 objectForKeyedSubscript:*(*(&v31 + 1) + 8 * v15)];
               if ([v16 BOOLValue])
               {
-                [v11 addObject:v16];
+                [array addObject:v16];
               }
 
               ++v15;
@@ -5299,18 +5299,18 @@ LABEL_7:
           while (v13);
         }
 
-        v17 = [(UIPrintInteractionController *)self printSettings];
-        v18 = [v17 objectForKey:v9];
+        printSettings = [(UIPrintInteractionController *)self printSettings];
+        v18 = [printSettings objectForKey:v9];
 
         if ([v18 count])
         {
-          [v11 removeObject:&unk_2871BC188];
+          [array removeObject:&unk_2871BC188];
         }
 
-        v19 = [MEMORY[0x277CBEA60] arrayWithArray:v11];
+        v19 = [MEMORY[0x277CBEA60] arrayWithArray:array];
         if ([v19 count])
         {
-          v30 = [v3 printInteractionController:self chooseCutterBehavior:v19];
+          v30 = [delegate printInteractionController:self chooseCutterBehavior:v19];
           [MEMORY[0x277CCABB0] numberWithInteger:?];
           v20 = v9;
           v22 = v21 = v18;
@@ -5325,8 +5325,8 @@ LABEL_7:
 
             v27 = [&unk_2871BC1E8 objectAtIndexedSubscript:v26];
             v28 = [v18 arrayByAddingObject:v27];
-            v29 = [(UIPrintInteractionController *)self printSettings];
-            [v29 setObject:v28 forKey:v24];
+            printSettings2 = [(UIPrintInteractionController *)self printSettings];
+            [printSettings2 setObject:v28 forKey:v24];
           }
         }
       }
@@ -5342,31 +5342,31 @@ LABEL_7:
 
 - (void)_preparePrintInfo
 {
-  v3 = [(UIPrintInteractionController *)self activePrintInfo];
-  v4 = [(UIPrintInteractionController *)self printer];
-  [v3 _updateWithPrinter:v4];
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  printer = [(UIPrintInteractionController *)self printer];
+  [activePrintInfo _updateWithPrinter:printer];
 
-  v5 = [(UIPrintInteractionController *)self activePrintInfo];
-  if ([v5 staple])
+  activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+  if ([activePrintInfo2 staple])
   {
   }
 
   else
   {
-    v6 = [(UIPrintInteractionController *)self activePrintInfo];
-    v7 = [v6 punch];
+    activePrintInfo3 = [(UIPrintInteractionController *)self activePrintInfo];
+    punch = [activePrintInfo3 punch];
 
-    if (!v7)
+    if (!punch)
     {
       goto LABEL_14;
     }
   }
 
-  v8 = [(UIPrintInteractionController *)self printingItems];
-  if ([v8 count] == 1)
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  if ([printingItems count] == 1)
   {
-    v9 = [(UIPrintInteractionController *)self printingItems];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    printingItems2 = [(UIPrintInteractionController *)self printingItems];
+    v10 = [printingItems2 objectAtIndexedSubscript:0];
 
     width = *MEMORY[0x277CBF3A8];
     height = *(MEMORY[0x277CBF3A8] + 8);
@@ -5400,82 +5400,82 @@ LABEL_7:
 
   if (height < width)
   {
-    v17 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v17 setOrientation:1];
+    activePrintInfo4 = [(UIPrintInteractionController *)self activePrintInfo];
+    [activePrintInfo4 setOrientation:1];
   }
 
 LABEL_14:
-  v18 = [(UIPrintInteractionController *)self activePrintInfo];
-  v19 = [v18 printerID];
-  v20 = [(UIPrintInteractionController *)self printInfo];
-  [v20 setPrinterID:v19];
+  activePrintInfo5 = [(UIPrintInteractionController *)self activePrintInfo];
+  printerID = [activePrintInfo5 printerID];
+  printInfo = [(UIPrintInteractionController *)self printInfo];
+  [printInfo setPrinterID:printerID];
 
-  v21 = [(UIPrintInteractionController *)self activePrintInfo];
-  v22 = [v21 duplex];
-  v23 = [(UIPrintInteractionController *)self printInfo];
-  [v23 setDuplex:v22];
+  activePrintInfo6 = [(UIPrintInteractionController *)self activePrintInfo];
+  duplex = [activePrintInfo6 duplex];
+  printInfo2 = [(UIPrintInteractionController *)self printInfo];
+  [printInfo2 setDuplex:duplex];
 
-  v24 = [(UIPrintInteractionController *)self activePrintInfo];
-  v25 = [(UIPrintInteractionController *)self printer];
-  v26 = [v24 _createPrintSettingsForPrinter:v25];
+  activePrintInfo7 = [(UIPrintInteractionController *)self activePrintInfo];
+  printer2 = [(UIPrintInteractionController *)self printer];
+  v26 = [activePrintInfo7 _createPrintSettingsForPrinter:printer2];
   [(UIPrintInteractionController *)self setPrintSettings:v26];
 
-  v27 = [(UIPrintInteractionController *)self _updatePrintPaper];
-  v28 = [(UIPrintInteractionController *)self paper];
-  v29 = [v28 pkPaper];
-  LODWORD(v26) = [v29 isRoll];
+  _updatePrintPaper = [(UIPrintInteractionController *)self _updatePrintPaper];
+  paper = [(UIPrintInteractionController *)self paper];
+  pkPaper = [paper pkPaper];
+  LODWORD(v26) = [pkPaper isRoll];
 
   if (v26)
   {
     [(UIPrintInteractionController *)self _updateCutterBehavior];
   }
 
-  v30 = [(UIPrintInteractionController *)self printPaper];
-  v31 = [v30 pkPaper];
-  v32 = [(UIPrintInteractionController *)self printSettings];
-  [v32 setPaper:v31];
+  printPaper = [(UIPrintInteractionController *)self printPaper];
+  pkPaper2 = [printPaper pkPaper];
+  printSettings = [(UIPrintInteractionController *)self printSettings];
+  [printSettings setPaper:pkPaper2];
 
-  v33 = [(UIPrintInteractionController *)self activePrintInfo];
-  v34 = [v33 duplex];
+  activePrintInfo8 = [(UIPrintInteractionController *)self activePrintInfo];
+  duplex2 = [activePrintInfo8 duplex];
 
   v35 = MEMORY[0x277D410E8];
   v36 = MEMORY[0x277D410D8];
-  if (v34 != 2)
+  if (duplex2 != 2)
   {
     v36 = MEMORY[0x277D410E0];
   }
 
-  if (v34 != 1)
+  if (duplex2 != 1)
   {
     v35 = v36;
   }
 
   v52 = *v35;
   v37 = MEMORY[0x277D41090];
-  v38 = [(UIPrintInteractionController *)self printer];
-  v39 = [(UIPrintInteractionController *)self printSettings];
-  v40 = [v39 paper];
-  [v40 paperSize];
+  printer3 = [(UIPrintInteractionController *)self printer];
+  printSettings2 = [(UIPrintInteractionController *)self printSettings];
+  paper2 = [printSettings2 paper];
+  [paper2 paperSize];
   v42 = v41;
   v44 = v43;
-  v45 = [(UIPrintInteractionController *)self activePrintInfo];
-  [v37 addLastUsedPrinter:v38 duplexMode:v52 lastUsedSize:(objc_msgSend(v45 forPhoto:{"outputType") & 0xFFFFFFFFFFFFFFFDLL) == 1, v42, v44}];
+  activePrintInfo9 = [(UIPrintInteractionController *)self activePrintInfo];
+  [v37 addLastUsedPrinter:printer3 duplexMode:v52 lastUsedSize:(objc_msgSend(activePrintInfo9 forPhoto:{"outputType") & 0xFFFFFFFFFFFFFFFDLL) == 1, v42, v44}];
 
   v46 = MEMORY[0x277D41090];
-  v47 = [(UIPrintInteractionController *)self printer];
-  v48 = [(UIPrintInteractionController *)self printer];
-  v49 = [v48 displayName];
-  v50 = [(UIPrintInteractionController *)self printer];
-  v51 = [v50 location];
-  [v46 addPrinterToiCloud:v47 displayName:v49 location:v51];
+  printer4 = [(UIPrintInteractionController *)self printer];
+  printer5 = [(UIPrintInteractionController *)self printer];
+  displayName = [printer5 displayName];
+  printer6 = [(UIPrintInteractionController *)self printer];
+  location = [printer6 location];
+  [v46 addPrinterToiCloud:printer4 displayName:displayName location:location];
 }
 
-- (id)_paperForPDFItem:(id)a3 withDuplexMode:(int64_t)a4
+- (id)_paperForPDFItem:(id)item withDuplexMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(UIPrintInteractionController *)self printer];
+  itemCopy = item;
+  printer = [(UIPrintInteractionController *)self printer];
 
-  if (!v7)
+  if (!printer)
   {
     goto LABEL_14;
   }
@@ -5483,7 +5483,7 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIPrintInteractionController *)self _printablePDFURLSize:v6];
+    [(UIPrintInteractionController *)self _printablePDFURLSize:itemCopy];
   }
 
   else
@@ -5496,43 +5496,43 @@ LABEL_14:
       goto LABEL_8;
     }
 
-    [(UIPrintInteractionController *)self _printablePDFDataSize:v6];
+    [(UIPrintInteractionController *)self _printablePDFDataSize:itemCopy];
   }
 
   v10 = v8;
   v11 = v9;
 LABEL_8:
-  v7 = 0;
+  printer = 0;
   if (v10 > 0.0 && v11 > 0.0)
   {
-    v12 = [(UIPrintInteractionController *)self printer];
-    v13 = [(UIPrintInteractionController *)self activePrintInfo];
-    v14 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", v12, a4, [v13 outputType], v10, v11);
+    printer2 = [(UIPrintInteractionController *)self printer];
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    v14 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", printer2, mode, [activePrintInfo outputType], v10, v11);
 
     if (v14)
     {
-      v7 = [UIPrintPaper bestPaperForPageSize:v14 withPapersFromArray:v10, v11];
+      printer = [UIPrintPaper bestPaperForPageSize:v14 withPapersFromArray:v10, v11];
     }
 
     else
     {
-      v7 = 0;
+      printer = 0;
     }
   }
 
 LABEL_14:
 
-  return v7;
+  return printer;
 }
 
-- (id)_paperForContentType:(int64_t)a3
+- (id)_paperForContentType:(int64_t)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [UIPrintPaper _defaultPaperListForOutputType:a3];
-  v5 = [(UIPrintInteractionController *)self printer];
-  v6 = [v5 knowsReadyPaperList];
+  v4 = [UIPrintPaper _defaultPaperListForOutputType:type];
+  printer = [(UIPrintInteractionController *)self printer];
+  knowsReadyPaperList = [printer knowsReadyPaperList];
 
-  if (v6)
+  if (knowsReadyPaperList)
   {
     v20 = 0u;
     v21 = 0u;
@@ -5554,9 +5554,9 @@ LABEL_4:
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        v13 = [(UIPrintInteractionController *)self printer];
-        v14 = [v12 pkPaper];
-        v15 = [v13 isPaperReady:v14];
+        printer2 = [(UIPrintInteractionController *)self printer];
+        pkPaper = [v12 pkPaper];
+        v15 = [printer2 isPaperReady:pkPaper];
 
         if (v15)
         {
@@ -5595,17 +5595,17 @@ LABEL_13:
   return v16;
 }
 
-- (double)_getCutLengthFromDelegateForPaper:(id)a3
+- (double)_getCutLengthFromDelegateForPaper:(id)paper
 {
-  v4 = a3;
+  paperCopy = paper;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   if (pthread_main_np() == 1)
   {
-    v5 = [(UIPrintInteractionController *)self delegate];
-    [v5 printInteractionController:self cutLengthForPaper:v4];
+    delegate = [(UIPrintInteractionController *)self delegate];
+    [delegate printInteractionController:self cutLengthForPaper:paperCopy];
     *(v13 + 3) = v6;
   }
 
@@ -5617,7 +5617,7 @@ LABEL_13:
     block[3] = &unk_279A9C130;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = paperCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 
@@ -5634,9 +5634,9 @@ void __66__UIPrintInteractionController__getCutLengthFromDelegateForPaper___bloc
   *(*(*(a1 + 48) + 8) + 24) = v2;
 }
 
-- (id)_getChosenPaperFromDelegateForPaperList:(id)a3
+- (id)_getChosenPaperFromDelegateForPaperList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5645,8 +5645,8 @@ void __66__UIPrintInteractionController__getCutLengthFromDelegateForPaper___bloc
   v18 = 0;
   if (pthread_main_np() == 1)
   {
-    v5 = [(UIPrintInteractionController *)self delegate];
-    v6 = [v5 printInteractionController:self choosePaper:v4];
+    delegate = [(UIPrintInteractionController *)self delegate];
+    v6 = [delegate printInteractionController:self choosePaper:listCopy];
     v7 = v14[5];
     v14[5] = v6;
   }
@@ -5659,7 +5659,7 @@ void __66__UIPrintInteractionController__getCutLengthFromDelegateForPaper___bloc
     block[3] = &unk_279A9C130;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = listCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 
@@ -5692,25 +5692,25 @@ void __72__UIPrintInteractionController__getChosenPaperFromDelegateForPaperList_
   v7 = self->_paper;
   objc_sync_exit(v6);
 
-  v8 = [(UIPrintInteractionController *)self delegate];
-  v9 = [(UIPrintInteractionController *)self printer];
+  delegate = [(UIPrintInteractionController *)self delegate];
+  printer = [(UIPrintInteractionController *)self printer];
   v109 = v7;
-  v110 = v8;
-  if (v9)
+  v110 = delegate;
+  if (printer)
   {
-    v10 = v9;
+    v10 = printer;
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
       v107 = p_printPaper;
-      v12 = [(UIPrintInteractionController *)self printer];
-      v13 = [(UIPrintInteractionController *)self activePrintInfo];
-      v14 = [v13 duplex];
-      v15 = [(UIPrintInteractionController *)self activePrintInfo];
-      v16 = [v15 outputType];
+      printer2 = [(UIPrintInteractionController *)self printer];
+      activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+      duplex = [activePrintInfo duplex];
+      activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+      outputType = [activePrintInfo2 outputType];
       [(UIPrintInteractionController *)self _printItemContentSize];
-      v17 = [UIPrintPaper _readyPaperListForPrinter:v12 withDuplexMode:v14 forContentType:v16 contentSize:?];
+      v17 = [UIPrintPaper _readyPaperListForPrinter:printer2 withDuplexMode:duplex forContentType:outputType contentSize:?];
 
       v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_0];
       v19 = [v17 filteredArrayUsingPredicate:v18];
@@ -5740,9 +5740,9 @@ void __72__UIPrintInteractionController__getChosenPaperFromDelegateForPaperList_
                 }
 
                 v26 = *(*(&v116 + 1) + 8 * i);
-                v27 = [v26 pkPaper];
+                pkPaper = [v26 pkPaper];
                 [(UIPrintInteractionController *)self _getCutLengthFromDelegateForPaper:v26];
-                v28 = [v27 cutToLength:?];
+                v28 = [pkPaper cutToLength:?];
                 [v26 _updatePKPaper:v28];
               }
 
@@ -5775,9 +5775,9 @@ void __72__UIPrintInteractionController__getChosenPaperFromDelegateForPaperList_
                 }
 
                 v48 = *(*(&v112 + 1) + 8 * j);
-                v49 = [v48 pkPaper];
+                pkPaper2 = [v48 pkPaper];
                 [v48 paperSize];
-                v50 = [v49 cutToLength:?];
+                v50 = [pkPaper2 cutToLength:?];
                 [v48 _updatePKPaper:v50];
               }
 
@@ -5791,12 +5791,12 @@ void __72__UIPrintInteractionController__getChosenPaperFromDelegateForPaperList_
         v18 = v106;
       }
 
-      v29 = [(UIPrintInteractionController *)self _getChosenPaperFromDelegateForPaperList:v17];
+      printer3 = [(UIPrintInteractionController *)self _getChosenPaperFromDelegateForPaperList:v17];
 
       p_printPaper = v107;
       v7 = v109;
-      v8 = v110;
-      if (v29)
+      delegate = v110;
+      if (printer3)
       {
         goto LABEL_38;
       }
@@ -5805,11 +5805,11 @@ void __72__UIPrintInteractionController__getChosenPaperFromDelegateForPaperList_
     }
   }
 
-  v29 = [(UIPrintInteractionController *)self printer];
-  if (!v29)
+  printer3 = [(UIPrintInteractionController *)self printer];
+  if (!printer3)
   {
 LABEL_25:
-    if (v29)
+    if (printer3)
     {
       goto LABEL_38;
     }
@@ -5821,7 +5821,7 @@ LABEL_25:
 
   if (v30)
   {
-    v31 = v8;
+    v31 = delegate;
     if (v7)
     {
       v32 = [MEMORY[0x277CBEA60] arrayWithObject:v7];
@@ -5829,13 +5829,13 @@ LABEL_25:
 
     else
     {
-      v33 = [(UIPrintInteractionController *)self printer];
-      v34 = [(UIPrintInteractionController *)self activePrintInfo];
-      v35 = [v34 duplex];
-      v36 = [(UIPrintInteractionController *)self activePrintInfo];
-      v37 = [v36 outputType];
+      printer4 = [(UIPrintInteractionController *)self printer];
+      activePrintInfo3 = [(UIPrintInteractionController *)self activePrintInfo];
+      duplex2 = [activePrintInfo3 duplex];
+      activePrintInfo4 = [(UIPrintInteractionController *)self activePrintInfo];
+      outputType2 = [activePrintInfo4 outputType];
       [(UIPrintInteractionController *)self _printItemContentSize];
-      v32 = [UIPrintPaper _readyPaperListForPrinter:v33 withDuplexMode:v35 forContentType:v37 contentSize:?];
+      v32 = [UIPrintPaper _readyPaperListForPrinter:printer4 withDuplexMode:duplex2 forContentType:outputType2 contentSize:?];
     }
 
     v38 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_160];
@@ -5843,69 +5843,69 @@ LABEL_25:
     v40 = v39;
     if (v39 && [v39 count])
     {
-      v29 = [v40 objectAtIndex:0];
-      v41 = [(UIPrintPaper *)v29 pkPaper];
-      [(UIPrintInteractionController *)self _getCutLengthFromDelegateForPaper:v29];
-      v42 = [v41 cutToLength:?];
-      [(UIPrintPaper *)v29 _updatePKPaper:v42];
+      printer3 = [v40 objectAtIndex:0];
+      pkPaper3 = [(UIPrintPaper *)printer3 pkPaper];
+      [(UIPrintInteractionController *)self _getCutLengthFromDelegateForPaper:printer3];
+      v42 = [pkPaper3 cutToLength:?];
+      [(UIPrintPaper *)printer3 _updatePKPaper:v42];
     }
 
     else
     {
-      v29 = 0;
+      printer3 = 0;
     }
 
-    v8 = v31;
+    delegate = v31;
     goto LABEL_25;
   }
 
-  v29 = 0;
+  printer3 = 0;
 LABEL_36:
   if (v7)
   {
-    v29 = v7;
+    printer3 = v7;
     goto LABEL_42;
   }
 
 LABEL_38:
-  if (!v29)
+  if (!printer3)
   {
-    v51 = [(UIPrintInteractionController *)self printingItems];
-    v52 = [v51 count];
+    printingItems = [(UIPrintInteractionController *)self printingItems];
+    v52 = [printingItems count];
 
-    if (v52 != 1 || (-[UIPrintInteractionController printingItems](self, "printingItems"), v53 = objc_claimAutoreleasedReturnValue(), [v53 objectAtIndexedSubscript:0], v54 = objc_claimAutoreleasedReturnValue(), -[UIPrintInteractionController activePrintInfo](self, "activePrintInfo"), v55 = objc_claimAutoreleasedReturnValue(), -[UIPrintInteractionController _paperForPDFItem:withDuplexMode:](self, "_paperForPDFItem:withDuplexMode:", v54, objc_msgSend(v55, "duplex")), v29 = objc_claimAutoreleasedReturnValue(), v55, v54, v53, !v29))
+    if (v52 != 1 || (-[UIPrintInteractionController printingItems](self, "printingItems"), v53 = objc_claimAutoreleasedReturnValue(), [v53 objectAtIndexedSubscript:0], v54 = objc_claimAutoreleasedReturnValue(), -[UIPrintInteractionController activePrintInfo](self, "activePrintInfo"), v55 = objc_claimAutoreleasedReturnValue(), -[UIPrintInteractionController _paperForPDFItem:withDuplexMode:](self, "_paperForPDFItem:withDuplexMode:", v54, objc_msgSend(v55, "duplex")), printer3 = objc_claimAutoreleasedReturnValue(), v55, v54, v53, !printer3))
     {
-      v56 = [(UIPrintInteractionController *)self activePrintInfo];
-      v29 = -[UIPrintInteractionController _paperForContentType:](self, "_paperForContentType:", [v56 outputType]);
+      activePrintInfo5 = [(UIPrintInteractionController *)self activePrintInfo];
+      printer3 = -[UIPrintInteractionController _paperForContentType:](self, "_paperForContentType:", [activePrintInfo5 outputType]);
     }
   }
 
 LABEL_42:
-  v57 = [(UIPrintInteractionController *)self printer];
+  printer5 = [(UIPrintInteractionController *)self printer];
 
-  if (!v57)
+  if (!printer5)
   {
     goto LABEL_68;
   }
 
   v111 = 0;
-  v58 = [(UIPrintPaper *)v29 pkPaper];
-  [v58 imageableAreaRect];
-  if (v62 == 0.0 && v59 == 0.0 && (v63 = v60, v64 = v61, [v58 paperSize], v65 == v63) && (objc_msgSend(v58, "paperSize"), v66 == v64))
+  pkPaper4 = [(UIPrintPaper *)printer3 pkPaper];
+  [pkPaper4 imageableAreaRect];
+  if (v62 == 0.0 && v59 == 0.0 && (v63 = v60, v64 = v61, [pkPaper4 paperSize], v65 == v63) && (objc_msgSend(pkPaper4, "paperSize"), v66 == v64))
   {
     v67 = 1;
   }
 
   else
   {
-    v68 = [(UIPrintInteractionController *)self activePrintInfo];
-    v67 = ([v68 outputType] & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    activePrintInfo6 = [(UIPrintInteractionController *)self activePrintInfo];
+    v67 = ([activePrintInfo6 outputType] & 0xFFFFFFFFFFFFFFFDLL) == 1;
   }
 
-  v69 = [(UIPrintInteractionController *)self printer];
-  v70 = [(UIPrintInteractionController *)self activePrintInfo];
-  v71 = [v70 duplex];
-  if (v71 == 1)
+  printer6 = [(UIPrintInteractionController *)self printer];
+  activePrintInfo7 = [(UIPrintInteractionController *)self activePrintInfo];
+  duplex3 = [activePrintInfo7 duplex];
+  if (duplex3 == 1)
   {
     v72 = MEMORY[0x277D410E8];
   }
@@ -5913,49 +5913,49 @@ LABEL_42:
   else
   {
     v72 = MEMORY[0x277D410D8];
-    if (v71 != 2)
+    if (duplex3 != 2)
     {
       v72 = MEMORY[0x277D410E0];
     }
   }
 
-  v73 = [v69 matchedPaper:v58 preferBorderless:v67 withDuplexMode:*v72 didMatch:&v111];
+  v73 = [printer6 matchedPaper:pkPaper4 preferBorderless:v67 withDuplexMode:*v72 didMatch:&v111];
 
   if (v111 != 1)
   {
 LABEL_56:
     v108 = p_printPaper;
-    v77 = [(UIPrintInteractionController *)self printer];
-    v78 = [(UIPrintInteractionController *)self activePrintInfo];
-    v79 = [v78 duplex];
-    v80 = [(UIPrintInteractionController *)self activePrintInfo];
-    v81 = [v80 outputType];
+    printer7 = [(UIPrintInteractionController *)self printer];
+    activePrintInfo8 = [(UIPrintInteractionController *)self activePrintInfo];
+    duplex4 = [activePrintInfo8 duplex];
+    activePrintInfo9 = [(UIPrintInteractionController *)self activePrintInfo];
+    outputType3 = [activePrintInfo9 outputType];
     [(UIPrintInteractionController *)self _printItemContentSize];
-    v74 = [UIPrintPaper _readyPaperListForPrinter:v77 withDuplexMode:v79 forContentType:v81 contentSize:?];
+    printer8 = [UIPrintPaper _readyPaperListForPrinter:printer7 withDuplexMode:duplex4 forContentType:outputType3 contentSize:?];
 
-    [v58 paperSize];
+    [pkPaper4 paperSize];
     v83 = v82;
-    [v58 paperSize];
+    [pkPaper4 paperSize];
     v85 = v84;
-    v86 = [(UIPrintInteractionController *)self activePrintInfo];
-    v87 = +[UIPrintPaper bestPaperForPageSize:andContentType:withPapersFromArray:](UIPrintPaper, "bestPaperForPageSize:andContentType:withPapersFromArray:", [v86 outputType], v74, v83, v85);
+    activePrintInfo10 = [(UIPrintInteractionController *)self activePrintInfo];
+    v87 = +[UIPrintPaper bestPaperForPageSize:andContentType:withPapersFromArray:](UIPrintPaper, "bestPaperForPageSize:andContentType:withPapersFromArray:", [activePrintInfo10 outputType], printer8, v83, v85);
 
     if (v87)
     {
-      v88 = [v87 pkPaper];
+      pkPaper5 = [v87 pkPaper];
 
-      v73 = v88;
+      v73 = pkPaper5;
     }
 
     p_printPaper = v108;
     goto LABEL_59;
   }
 
-  v74 = [(UIPrintInteractionController *)self printer];
-  if ([v74 knowsReadyPaperList])
+  printer8 = [(UIPrintInteractionController *)self printer];
+  if ([printer8 knowsReadyPaperList])
   {
-    v75 = [(UIPrintInteractionController *)self printer];
-    v76 = [v75 isPaperReady:v73];
+    printer9 = [(UIPrintInteractionController *)self printer];
+    v76 = [printer9 isPaperReady:v73];
 
     if (v76)
     {
@@ -5969,48 +5969,48 @@ LABEL_59:
 
 LABEL_60:
   v7 = v109;
-  v8 = v110;
+  delegate = v110;
   if ([v73 isRoll] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(UIPrintInteractionController *)self _getCutLengthFromDelegateForPaper:v29];
+    [(UIPrintInteractionController *)self _getCutLengthFromDelegateForPaper:printer3];
     v90 = v89;
-    v91 = [v73 minCutLength];
-    if (v90 < v91)
+    minCutLength = [v73 minCutLength];
+    if (v90 < minCutLength)
     {
-      v90 = v91;
+      v90 = minCutLength;
     }
 
-    v92 = [v73 maxCutLength];
-    if (v90 < v92)
+    maxCutLength = [v73 maxCutLength];
+    if (v90 < maxCutLength)
     {
-      v92 = v90;
+      maxCutLength = v90;
     }
 
-    v93 = [v73 cutToLength:v92];
+    v93 = [v73 cutToLength:maxCutLength];
 
     v73 = v93;
   }
 
-  [(UIPrintPaper *)v29 _updatePKPaper:v73];
+  [(UIPrintPaper *)printer3 _updatePKPaper:v73];
 
 LABEL_68:
-  v94 = [(UIPrintInteractionController *)self activePrintInfo];
-  v95 = [v94 orientation];
+  activePrintInfo11 = [(UIPrintInteractionController *)self activePrintInfo];
+  orientation = [activePrintInfo11 orientation];
 
-  if (v95 == 1)
+  if (orientation == 1)
   {
-    v96 = [(UIPrintInteractionController *)self printer];
-    v97 = [v96 hasPrintInfoSupported];
+    printer10 = [(UIPrintInteractionController *)self printer];
+    hasPrintInfoSupported = [printer10 hasPrintInfoSupported];
 
     v98 = 1;
-    if (v97)
+    if (hasPrintInfoSupported)
     {
-      v99 = [(UIPrintInteractionController *)self printer];
-      v100 = [v99 printInfoSupported];
-      v101 = [v100 objectForKey:*MEMORY[0x277D411A0]];
+      printer11 = [(UIPrintInteractionController *)self printer];
+      printInfoSupported = [printer11 printInfoSupported];
+      v101 = [printInfoSupported objectForKey:*MEMORY[0x277D411A0]];
 
-      LODWORD(v99) = [v101 containsObject:*MEMORY[0x277D411B8]];
-      if (v99)
+      LODWORD(printer11) = [v101 containsObject:*MEMORY[0x277D411B8]];
+      if (printer11)
       {
         v98 = 2;
       }
@@ -6027,22 +6027,22 @@ LABEL_68:
     v98 = 0;
   }
 
-  [(UIPrintPaper *)v29 setPaperOrientation:v98];
-  v102 = [(UIPrintInteractionController *)self activePrintInfo];
-  [v102 scalingFactor];
-  [(UIPrintPaper *)v29 setScalingFactor:?];
+  [(UIPrintPaper *)printer3 setPaperOrientation:v98];
+  activePrintInfo12 = [(UIPrintInteractionController *)self activePrintInfo];
+  [activePrintInfo12 scalingFactor];
+  [(UIPrintPaper *)printer3 setScalingFactor:?];
 
   v103 = self->_printPaper;
   objc_sync_enter(v103);
-  if (v29 != self->_printPaper)
+  if (printer3 != self->_printPaper)
   {
-    objc_storeStrong(p_printPaper, v29);
+    objc_storeStrong(p_printPaper, printer3);
   }
 
   objc_sync_exit(v103);
 
-  v104 = v29;
-  return v29;
+  v104 = printer3;
+  return printer3;
 }
 
 uint64_t __49__UIPrintInteractionController__updatePrintPaper__block_invoke(uint64_t a1, void *a2)
@@ -6065,13 +6065,13 @@ uint64_t __49__UIPrintInteractionController__updatePrintPaper__block_invoke_2(ui
 {
   if (self->_backgroundTaskIdentifier == *MEMORY[0x277D767B0])
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __46__UIPrintInteractionController__startPrinting__block_invoke;
     v5[3] = &unk_279A9BEE0;
     v5[4] = self;
-    self->_backgroundTaskIdentifier = [v3 _beginBackgroundTaskWithExpirationHandler:v5];
+    self->_backgroundTaskIdentifier = [mEMORY[0x277D75128] _beginBackgroundTaskWithExpirationHandler:v5];
   }
 
   [(UIPrintInteractionController *)self _cancelAllPreviewGeneration];
@@ -6263,19 +6263,19 @@ uint64_t __46__UIPrintInteractionController__startPrinting__block_invoke_3(uint6
   return result;
 }
 
-- (BOOL)_canPrintPDFData:(id)a3
+- (BOOL)_canPrintPDFData:(id)data
 {
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self activePrintInfo];
-  v6 = [v5 pdfPassword];
-  v7 = [UIPrintInteractionController isPrintablePDFData:v4 requireUnlocked:1 password:v6];
+  dataCopy = data;
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  pdfPassword = [activePrintInfo pdfPassword];
+  v7 = [UIPrintInteractionController isPrintablePDFData:dataCopy requireUnlocked:1 password:pdfPassword];
 
   return v7;
 }
 
-- (CGSize)_printablePDFDataSize:(id)a3
+- (CGSize)_printablePDFDataSize:(id)size
 {
-  v4 = [UIPrintInteractionController createCGPDFDocumentRefWithNSData:a3];
+  v4 = [UIPrintInteractionController createCGPDFDocumentRefWithNSData:size];
   if (!v4)
   {
     MaxCropSize = *MEMORY[0x277CBF3A8];
@@ -6284,21 +6284,21 @@ uint64_t __46__UIPrintInteractionController__startPrinting__block_invoke_3(uint6
   }
 
   v5 = v4;
-  v6 = [(UIPrintInteractionController *)self activePrintInfo];
-  v7 = [v6 pdfPassword];
-  if (!v7)
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  pdfPassword = [activePrintInfo pdfPassword];
+  if (!pdfPassword)
   {
     goto LABEL_5;
   }
 
-  v8 = v7;
+  v8 = pdfPassword;
   IsEncrypted = CGPDFDocumentIsEncrypted(v5);
 
   if (IsEncrypted)
   {
-    v6 = [(UIPrintInteractionController *)self activePrintInfo];
-    v10 = [v6 pdfPassword];
-    CGPDFDocumentUnlockWithPassword(v5, [v10 cStringUsingEncoding:4]);
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    pdfPassword2 = [activePrintInfo pdfPassword];
+    CGPDFDocumentUnlockWithPassword(v5, [pdfPassword2 cStringUsingEncoding:4]);
 
 LABEL_5:
   }
@@ -6314,18 +6314,18 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)_canPrintURL:(id)a3
+- (BOOL)_canPrintURL:(id)l
 {
-  v4 = a3;
-  v5 = [(UIPrintInteractionController *)self printPageRenderer];
-  if (v5)
+  lCopy = l;
+  printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
+  if (printPageRenderer)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(UIPrintInteractionController *)self convertedPrintableItem:v4];
+    v7 = [(UIPrintInteractionController *)self convertedPrintableItem:lCopy];
     v6 = v7 != 0;
   }
 
@@ -6335,8 +6335,8 @@ LABEL_8:
 - (BOOL)_canShowPreview
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintInteractionController *)self printingItems];
-  v4 = [v3 count];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v4 = [printingItems count];
 
   if (v4)
   {
@@ -6344,8 +6344,8 @@ LABEL_8:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(UIPrintInteractionController *)self printingItems];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    printingItems2 = [(UIPrintInteractionController *)self printingItems];
+    v6 = [printingItems2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v6)
     {
       v7 = v6;
@@ -6356,7 +6356,7 @@ LABEL_4:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(printingItems2);
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
@@ -6390,7 +6390,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v7 = [printingItems2 countByEnumeratingWithState:&v20 objects:v24 count:16];
           v12 = 0;
           if (v7)
           {
@@ -6407,62 +6407,62 @@ LABEL_4:
 
   if (dyld_program_sdk_at_least())
   {
-    v5 = [(UIPrintInteractionController *)self printPageRenderer];
-    if (v5)
+    printingItems2 = [(UIPrintInteractionController *)self printPageRenderer];
+    if (printingItems2)
     {
 LABEL_27:
       v12 = 1;
       goto LABEL_28;
     }
 
-    v13 = [(UIPrintInteractionController *)self printFormatter];
-    v12 = v13 != 0;
+    printFormatter = [(UIPrintInteractionController *)self printFormatter];
+    v12 = printFormatter != 0;
   }
 
   else
   {
-    v5 = [(UIPrintInteractionController *)self printFormatter];
-    if (!v5)
+    printingItems2 = [(UIPrintInteractionController *)self printFormatter];
+    if (!printingItems2)
     {
 LABEL_23:
       v12 = 0;
       goto LABEL_28;
     }
 
-    v14 = [(UIPrintInteractionController *)self printFormatter];
-    if ([v14 isMemberOfClass:objc_opt_class()])
+    printFormatter2 = [(UIPrintInteractionController *)self printFormatter];
+    if ([printFormatter2 isMemberOfClass:objc_opt_class()])
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(UIPrintInteractionController *)self printFormatter];
-      if ([v15 isMemberOfClass:objc_opt_class()])
+      printFormatter3 = [(UIPrintInteractionController *)self printFormatter];
+      if ([printFormatter3 isMemberOfClass:objc_opt_class()])
       {
         v12 = 1;
       }
 
       else
       {
-        v17 = [(UIPrintInteractionController *)self printFormatter];
-        if ([v17 isMemberOfClass:objc_opt_class()])
+        printFormatter4 = [(UIPrintInteractionController *)self printFormatter];
+        if ([printFormatter4 isMemberOfClass:objc_opt_class()])
         {
           v12 = 1;
         }
 
         else
         {
-          v18 = [(UIPrintInteractionController *)self printFormatter];
-          if ([v18 isMemberOfClass:objc_opt_class()])
+          printFormatter5 = [(UIPrintInteractionController *)self printFormatter];
+          if ([printFormatter5 isMemberOfClass:objc_opt_class()])
           {
             v12 = 1;
           }
 
           else
           {
-            v19 = [(UIPrintInteractionController *)self printFormatter];
-            v12 = [v19 isMemberOfClass:objc_opt_class()];
+            printFormatter6 = [(UIPrintInteractionController *)self printFormatter];
+            v12 = [printFormatter6 isMemberOfClass:objc_opt_class()];
           }
         }
       }
@@ -6479,60 +6479,60 @@ LABEL_28:
   v24 = *MEMORY[0x277D85DE8];
   if (dyld_program_sdk_at_least())
   {
-    v3 = [(UIPrintInteractionController *)self printPageRenderer];
-    if (v3)
+    printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
+    if (printPageRenderer)
     {
       v4 = 1;
       goto LABEL_20;
     }
 
-    v5 = [(UIPrintInteractionController *)self printFormatter];
-    v4 = v5 != 0;
+    printFormatter = [(UIPrintInteractionController *)self printFormatter];
+    v4 = printFormatter != 0;
   }
 
   else
   {
-    v3 = [(UIPrintInteractionController *)self printFormatter];
-    if (!v3)
+    printPageRenderer = [(UIPrintInteractionController *)self printFormatter];
+    if (!printPageRenderer)
     {
       v4 = 0;
       goto LABEL_20;
     }
 
-    v5 = [(UIPrintInteractionController *)self printFormatter];
-    if ([v5 isMemberOfClass:objc_opt_class()])
+    printFormatter = [(UIPrintInteractionController *)self printFormatter];
+    if ([printFormatter isMemberOfClass:objc_opt_class()])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(UIPrintInteractionController *)self printFormatter];
-      if ([v6 isMemberOfClass:objc_opt_class()])
+      printFormatter2 = [(UIPrintInteractionController *)self printFormatter];
+      if ([printFormatter2 isMemberOfClass:objc_opt_class()])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(UIPrintInteractionController *)self printFormatter];
-        if ([v7 isMemberOfClass:objc_opt_class()])
+        printFormatter3 = [(UIPrintInteractionController *)self printFormatter];
+        if ([printFormatter3 isMemberOfClass:objc_opt_class()])
         {
           v4 = 1;
         }
 
         else
         {
-          v8 = [(UIPrintInteractionController *)self printFormatter];
-          if ([v8 isMemberOfClass:objc_opt_class()])
+          printFormatter4 = [(UIPrintInteractionController *)self printFormatter];
+          if ([printFormatter4 isMemberOfClass:objc_opt_class()])
           {
             v4 = 1;
           }
 
           else
           {
-            v9 = [(UIPrintInteractionController *)self printFormatter];
-            v4 = [v9 isMemberOfClass:objc_opt_class()];
+            printFormatter5 = [(UIPrintInteractionController *)self printFormatter];
+            v4 = [printFormatter5 isMemberOfClass:objc_opt_class()];
           }
         }
       }
@@ -6544,8 +6544,8 @@ LABEL_20:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(UIPrintInteractionController *)self printingItems];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  v11 = [printingItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -6556,7 +6556,7 @@ LABEL_20:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(printingItems);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
@@ -6577,7 +6577,7 @@ LABEL_34:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [printingItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
         continue;
@@ -6592,24 +6592,24 @@ LABEL_35:
   return v4;
 }
 
-- (CGSize)_printablePDFURLSize:(id)a3
+- (CGSize)_printablePDFURLSize:(id)size
 {
-  v4 = [UIPrintInteractionController createCGPDFDocumentRefWithNSURL:a3];
+  v4 = [UIPrintInteractionController createCGPDFDocumentRefWithNSURL:size];
   if (v4)
   {
     v5 = v4;
-    v6 = [(UIPrintInteractionController *)self activePrintInfo];
-    v7 = [v6 pdfPassword];
-    if (v7)
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    pdfPassword = [activePrintInfo pdfPassword];
+    if (pdfPassword)
     {
-      v8 = v7;
+      v8 = pdfPassword;
       IsEncrypted = CGPDFDocumentIsEncrypted(v5);
 
       if (IsEncrypted)
       {
-        v10 = [(UIPrintInteractionController *)self activePrintInfo];
-        v11 = [v10 pdfPassword];
-        CGPDFDocumentUnlockWithPassword(v5, [v11 cStringUsingEncoding:4]);
+        activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+        pdfPassword2 = [activePrintInfo2 pdfPassword];
+        CGPDFDocumentUnlockWithPassword(v5, [pdfPassword2 cStringUsingEncoding:4]);
 
         [(UIPrintInteractionController *)self setPdfAllowsPrinting:CGPDFDocumentAllowsPrinting(v5)];
         [(UIPrintInteractionController *)self setPdfAllowsCopying:CGPDFDocumentAllowsCopying(v5)];
@@ -6638,25 +6638,25 @@ LABEL_35:
   return result;
 }
 
-- (void)_ensurePDFIsUnlockedFirstAttempt:(BOOL)a3 completionHandler:(id)a4
+- (void)_ensurePDFIsUnlockedFirstAttempt:(BOOL)attempt completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIPrintInteractionController *)self printingItems];
-  if ([v7 count] != 1)
+  attemptCopy = attempt;
+  handlerCopy = handler;
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  if ([printingItems count] != 1)
   {
 
     v9 = 0;
     goto LABEL_9;
   }
 
-  v8 = [(UIPrintInteractionController *)self printingItems];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  printingItems2 = [(UIPrintInteractionController *)self printingItems];
+  v9 = [printingItems2 objectAtIndexedSubscript:0];
 
   if (!v9)
   {
 LABEL_9:
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_10;
   }
 
@@ -6679,18 +6679,18 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v13 = [(UIPrintInteractionController *)self hostingWindowScene];
-  if (!v13)
+  hostingWindowScene = [(UIPrintInteractionController *)self hostingWindowScene];
+  if (!hostingWindowScene)
   {
-    v14 = [MEMORY[0x277D75128] sharedApplication];
-    v13 = [v14 _findUISceneForLegacyInterfaceOrientation];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    hostingWindowScene = [mEMORY[0x277D75128] _findUISceneForLegacyInterfaceOrientation];
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:v13];
+  v15 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:hostingWindowScene];
   objc_storeStrong(&self->_alertWindow, v15);
   [v15 setOpaque:0];
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [v15 setBackgroundColor:v16];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v15 setBackgroundColor:clearColor];
 
   [v15 setWindowLevel:*MEMORY[0x277D772B8]];
   v17 = objc_alloc_init(MEMORY[0x277D75D28]);
@@ -6698,8 +6698,8 @@ LABEL_7:
   [(UIWindow *)self->_alertWindow makeKeyAndVisible];
   v40 = v17;
   v18 = MEMORY[0x277D75110];
-  v19 = [MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class(), v15, v13}];
-  if (v4)
+  v19 = [MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class(), v15, hostingWindowScene}];
+  if (attemptCopy)
   {
     [v19 localizedStringForKey:@"Without the proper password value:you do not have permission to print this document." table:{@"Without the proper password, you do not have permission to print this document.", @"Localizable"}];
   }
@@ -6731,7 +6731,7 @@ LABEL_7:
   v48 = v28;
   v29 = v24;
   v49 = v29;
-  v30 = v6;
+  v30 = handlerCopy;
   v50 = v30;
   v31 = [v25 actionWithTitle:v27 style:1 handler:v47];
   [v28 addAction:v31];
@@ -6746,7 +6746,7 @@ LABEL_7:
   v35 = v28;
   v42 = v35;
   v36 = v29;
-  v43 = self;
+  selfCopy = self;
   v44 = v36;
   v46 = v53;
   v45 = v30;
@@ -6816,13 +6816,13 @@ void __83__UIPrintInteractionController__ensurePDFIsUnlockedFirstAttempt_complet
   [v5 setSecureTextEntry:1];
 }
 
-- (BOOL)_printingItemIsReallyTallPDF:(id)a3
+- (BOOL)_printingItemIsReallyTallPDF:(id)f
 {
-  v4 = a3;
+  fCopy = f;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIPrintInteractionController *)self _printablePDFURLSize:v4];
+    [(UIPrintInteractionController *)self _printablePDFURLSize:fCopy];
     v7 = 0;
     if (v6 <= 0.0)
     {
@@ -6836,7 +6836,7 @@ void __83__UIPrintInteractionController__ensurePDFIsUnlockedFirstAttempt_complet
     }
 
     v9 = v6;
-    v10 = [UIPrintInteractionController createCGPDFDocumentRefWithNSURL:v4];
+    v10 = [UIPrintInteractionController createCGPDFDocumentRefWithNSURL:fCopy];
   }
 
   else
@@ -6849,7 +6849,7 @@ LABEL_18:
       goto LABEL_21;
     }
 
-    [(UIPrintInteractionController *)self _printablePDFDataSize:v4];
+    [(UIPrintInteractionController *)self _printablePDFDataSize:fCopy];
     v7 = 0;
     if (v12 <= 0.0)
     {
@@ -6863,7 +6863,7 @@ LABEL_18:
     }
 
     v9 = v12;
-    v10 = [UIPrintInteractionController createCGPDFDocumentRefWithNSData:v4];
+    v10 = [UIPrintInteractionController createCGPDFDocumentRefWithNSData:fCopy];
   }
 
   v13 = v10;
@@ -6872,11 +6872,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v14 = [(UIPrintInteractionController *)self activePrintInfo];
-  v15 = [v14 pdfPassword];
-  if (v15)
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  pdfPassword = [activePrintInfo pdfPassword];
+  if (pdfPassword)
   {
-    v16 = v15;
+    v16 = pdfPassword;
     IsEncrypted = CGPDFDocumentIsEncrypted(v13);
 
     if (!IsEncrypted)
@@ -6884,9 +6884,9 @@ LABEL_18:
       goto LABEL_14;
     }
 
-    v14 = [(UIPrintInteractionController *)self activePrintInfo];
-    v18 = [v14 pdfPassword];
-    CGPDFDocumentUnlockWithPassword(v13, [v18 cStringUsingEncoding:4]);
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    pdfPassword2 = [activePrintInfo pdfPassword];
+    CGPDFDocumentUnlockWithPassword(v13, [pdfPassword2 cStringUsingEncoding:4]);
   }
 
 LABEL_14:
@@ -6914,12 +6914,12 @@ LABEL_21:
   return v7;
 }
 
-- (void)_printPageWithDelay:(double)a3
+- (void)_printPageWithDelay:(double)delay
 {
   if ([(UIPrintInteractionController *)self printStateActive])
   {
     objc_initWeak(&location, self);
-    v5 = dispatch_time(0, a3);
+    v5 = dispatch_time(0, delay);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__UIPrintInteractionController__printPageWithDelay___block_invoke;
@@ -6961,41 +6961,41 @@ void __52__UIPrintInteractionController__printPageWithDelay___block_invoke_2(uin
 {
   if ([(UIPrintInteractionController *)self printStateActive])
   {
-    v3 = [(UIPrintInteractionController *)self rendererToUse];
-    if (v3 && ([(UIPrintInteractionController *)self nupFileURL], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+    rendererToUse = [(UIPrintInteractionController *)self rendererToUse];
+    if (rendererToUse && ([(UIPrintInteractionController *)self nupFileURL], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
     {
-      v6 = [(UIPrintInteractionController *)self _printPageWithRenderer:v3];
-      [(UIPrintInteractionController *)self _completePrintPageWithError:v6];
+      nupFileURL2 = [(UIPrintInteractionController *)self _printPageWithRenderer:rendererToUse];
+      [(UIPrintInteractionController *)self _completePrintPageWithError:nupFileURL2];
     }
 
     else
     {
-      v5 = [(UIPrintInteractionController *)self nupFileURL];
+      nupFileURL = [(UIPrintInteractionController *)self nupFileURL];
 
-      if (v5)
+      if (nupFileURL)
       {
-        v6 = [(UIPrintInteractionController *)self nupFileURL];
+        nupFileURL2 = [(UIPrintInteractionController *)self nupFileURL];
       }
 
       else
       {
-        v7 = [(UIPrintInteractionController *)self printingItems];
-        v8 = [v7 count];
+        printingItems = [(UIPrintInteractionController *)self printingItems];
+        v8 = [printingItems count];
 
-        v9 = [(UIPrintInteractionController *)self printingItems];
-        v10 = v9;
+        printingItems2 = [(UIPrintInteractionController *)self printingItems];
+        v10 = printingItems2;
         if (v8 == 1)
         {
-          v11 = 0;
+          currentPage = 0;
         }
 
         else
         {
-          v11 = [(UIPrintInteractionController *)self currentPage];
-          v9 = v10;
+          currentPage = [(UIPrintInteractionController *)self currentPage];
+          printingItems2 = v10;
         }
 
-        v6 = [v9 objectAtIndex:v11];
+        nupFileURL2 = [printingItems2 objectAtIndex:currentPage];
       }
 
       objc_initWeak(&location, self);
@@ -7004,7 +7004,7 @@ void __52__UIPrintInteractionController__printPageWithDelay___block_invoke_2(uin
       v12[2] = __42__UIPrintInteractionController__printPage__block_invoke;
       v12[3] = &unk_279A9C260;
       objc_copyWeak(&v13, &location);
-      [(UIPrintInteractionController *)self _printItemAsync:v6 completionHandler:v12];
+      [(UIPrintInteractionController *)self _printItemAsync:nupFileURL2 completionHandler:v12];
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
     }
@@ -7018,48 +7018,48 @@ void __42__UIPrintInteractionController__printPage__block_invoke(uint64_t a1, vo
   [WeakRetained _completePrintPageWithError:v3];
 }
 
-- (void)_completePrintPageWithError:(id)a3
+- (void)_completePrintPageWithError:(id)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(UIPrintInteractionController *)self printStateActive])
   {
     goto LABEL_35;
   }
 
-  v5 = [(UIPrintInteractionController *)self printingItems];
-  if ([v5 count])
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  if ([printingItems count])
   {
 
 LABEL_5:
-    v7 = -1;
+    pagesDrawn = -1;
     goto LABEL_6;
   }
 
-  v6 = [(UIPrintInteractionController *)self nupFileURL];
+  nupFileURL = [(UIPrintInteractionController *)self nupFileURL];
 
-  if (v6)
+  if (nupFileURL)
   {
     goto LABEL_5;
   }
 
-  v7 = [(UIPrintInteractionController *)self pagesDrawn];
+  pagesDrawn = [(UIPrintInteractionController *)self pagesDrawn];
 LABEL_6:
   if ([(UIPrintInteractionController *)self currentPage]!= -1)
   {
-    v8 = [(UIPrintInteractionController *)self currentPage];
-    v9 = [(UIPrintInteractionController *)self currentRange];
+    currentPage = [(UIPrintInteractionController *)self currentPage];
+    currentRange = [(UIPrintInteractionController *)self currentRange];
     [(UIPrintInteractionController *)self currentRange];
-    if (v8 == v9 + v10 - 1)
+    if (currentPage == currentRange + v10 - 1)
     {
-      v43 = v7;
-      v44 = v4;
+      v43 = pagesDrawn;
+      v44 = errorCopy;
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v11 = [(UIPrintInteractionController *)self pageRanges];
-      v12 = [v11 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      pageRanges = [(UIPrintInteractionController *)self pageRanges];
+      v12 = [pageRanges countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v12)
       {
         v13 = v12;
@@ -7070,35 +7070,35 @@ LABEL_6:
           {
             if (*v46 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(pageRanges);
             }
 
             v16 = *(*(&v45 + 1) + 8 * i);
-            v17 = [v16 rangeValue];
+            rangeValue = [v16 rangeValue];
             v19 = v18;
-            if (v17 == [(UIPrintInteractionController *)self currentRange]&& v19 == v20)
+            if (rangeValue == [(UIPrintInteractionController *)self currentRange]&& v19 == v20)
             {
-              v22 = [(UIPrintInteractionController *)self pageRanges];
-              v23 = [v22 count];
-              v24 = [(UIPrintInteractionController *)self pageRanges];
-              v25 = [v24 indexOfObject:v16] + 1;
+              pageRanges2 = [(UIPrintInteractionController *)self pageRanges];
+              v23 = [pageRanges2 count];
+              pageRanges3 = [(UIPrintInteractionController *)self pageRanges];
+              v25 = [pageRanges3 indexOfObject:v16] + 1;
 
               if (v23 > v25)
               {
-                v26 = [(UIPrintInteractionController *)self pageRanges];
-                v27 = [(UIPrintInteractionController *)self pageRanges];
-                v28 = [v26 objectAtIndexedSubscript:{objc_msgSend(v27, "indexOfObject:", v16) + 1}];
-                v29 = [v28 rangeValue];
-                [(UIPrintInteractionController *)self setCurrentRange:v29, v30];
+                pageRanges4 = [(UIPrintInteractionController *)self pageRanges];
+                pageRanges5 = [(UIPrintInteractionController *)self pageRanges];
+                v28 = [pageRanges4 objectAtIndexedSubscript:{objc_msgSend(pageRanges5, "indexOfObject:", v16) + 1}];
+                rangeValue2 = [v28 rangeValue];
+                [(UIPrintInteractionController *)self setCurrentRange:rangeValue2, v30];
 
                 [(UIPrintInteractionController *)self setCurrentPage:([(UIPrintInteractionController *)self currentRange]- 1)];
-                v31 = [(UIPrintInteractionController *)self printPageRenderer];
+                printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
 
-                if (v31)
+                if (printPageRenderer)
                 {
-                  v32 = [(UIPrintInteractionController *)self printPageRenderer];
-                  v33 = [(UIPrintInteractionController *)self currentRange];
-                  [v32 prepareForDrawingPages:{v33, v34}];
+                  printPageRenderer2 = [(UIPrintInteractionController *)self printPageRenderer];
+                  currentRange2 = [(UIPrintInteractionController *)self currentRange];
+                  [printPageRenderer2 prepareForDrawingPages:{currentRange2, v34}];
                 }
 
                 goto LABEL_24;
@@ -7106,7 +7106,7 @@ LABEL_6:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v45 objects:v49 count:16];
+          v13 = [pageRanges countByEnumeratingWithState:&v45 objects:v49 count:16];
           if (v13)
           {
             continue;
@@ -7118,15 +7118,15 @@ LABEL_6:
 
 LABEL_24:
 
-      v7 = v43;
-      v4 = v44;
+      pagesDrawn = v43;
+      errorCopy = v44;
     }
 
     [(UIPrintInteractionController *)self setCurrentPage:[(UIPrintInteractionController *)self currentPage]+ 1];
   }
 
-  v35 = [(UIPrintInteractionController *)self nupFileURL];
-  if (v4 | v35 || ([(UIPrintInteractionController *)self pageCount]& 0x8000000000000000) == 0 && ((v36 = [(UIPrintInteractionController *)self currentPage], v37 = [(UIPrintInteractionController *)self currentRange], v36 < v37) || v36 - v37 >= v38))
+  nupFileURL2 = [(UIPrintInteractionController *)self nupFileURL];
+  if (errorCopy | nupFileURL2 || ([(UIPrintInteractionController *)self pageCount]& 0x8000000000000000) == 0 && ((v36 = [(UIPrintInteractionController *)self currentPage], v37 = [(UIPrintInteractionController *)self currentRange], v36 < v37) || v36 - v37 >= v38))
   {
 
     goto LABEL_34;
@@ -7135,41 +7135,41 @@ LABEL_24:
   if ([(UIPrintInteractionController *)self currentPage]== -1)
   {
 LABEL_34:
-    v41 = [(UIPrintInteractionController *)self printingProgress];
-    [v41 setPage:-1 ofPage:0];
+    printingProgress = [(UIPrintInteractionController *)self printingProgress];
+    [printingProgress setPage:-1 ofPage:0];
 
-    [(UIPrintInteractionController *)self _endPrintJobWithAction:1 error:v4];
+    [(UIPrintInteractionController *)self _endPrintJobWithAction:1 error:errorCopy];
     goto LABEL_35;
   }
 
-  v39 = [(UIPrintInteractionController *)self printingProgress];
+  printingProgress2 = [(UIPrintInteractionController *)self printingProgress];
   if ([(UIPrintInteractionController *)self pageCountWithRanges]< 1)
   {
-    v40 = [(UIPrintInteractionController *)self pageCount];
+    pageCount = [(UIPrintInteractionController *)self pageCount];
   }
 
   else
   {
-    v40 = [(UIPrintInteractionController *)self pageCountWithRanges];
+    pageCount = [(UIPrintInteractionController *)self pageCountWithRanges];
   }
 
-  [v39 setPage:v7 ofPage:v40];
+  [printingProgress2 setPage:pagesDrawn ofPage:pageCount];
 
   if (![(UIPrintInteractionController *)self manualPrintPageEnabled])
   {
-    v42 = [(UIPrintInteractionController *)self printingProgress];
-    [v42 nextPrintDelay];
+    printingProgress3 = [(UIPrintInteractionController *)self printingProgress];
+    [printingProgress3 nextPrintDelay];
     [(UIPrintInteractionController *)self _printPageWithDelay:?];
   }
 
 LABEL_35:
 }
 
-- (void)_printItemAsync:(id)a3 completionHandler:(id)a4
+- (void)_printItemAsync:(id)async completionHandler:(id)handler
 {
   keys[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  asyncCopy = async;
+  handlerCopy = handler;
   if ([(UIPrintInteractionController *)self printStateActive])
   {
     v109 = 0;
@@ -7181,7 +7181,7 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = asyncCopy;
       v9 = 0;
       v97 = 0;
       data = 0;
@@ -7192,28 +7192,28 @@ LABEL_35:
       }
 
 LABEL_45:
-      v33 = [(UIPrintInteractionController *)self printer];
-      v34 = [(UIPrintInteractionController *)self printSettings];
-      v35 = [v33 startJob:v34 ofType:v10] == 0;
+      printer = [(UIPrintInteractionController *)self printer];
+      printSettings = [(UIPrintInteractionController *)self printSettings];
+      v35 = [printer startJob:printSettings ofType:v10] == 0;
 
       if (v35)
       {
-        v36 = [(UIPrintInteractionController *)self printPaper];
-        v37 = [v36 pkPaper];
-        if ([v37 isRoll])
+        printPaper = [(UIPrintInteractionController *)self printPaper];
+        pkPaper = [printPaper pkPaper];
+        if ([pkPaper isRoll])
         {
-          v38 = [(UIPrintInteractionController *)self printingItems];
-          v39 = [v38 count] > 1;
+          printingItems = [(UIPrintInteractionController *)self printingItems];
+          v39 = [printingItems count] > 1;
 
           if (!v39)
           {
 LABEL_51:
-            v43 = [(UIPrintInteractionController *)self printer];
+            printer2 = [(UIPrintInteractionController *)self printer];
             v8 = v8;
-            v96 = v43;
-            v44 = v36;
-            v45 = [v8 CIImage];
-            v46 = v45 == 0;
+            v96 = printer2;
+            v44 = printPaper;
+            cIImage = [v8 CIImage];
+            v46 = cIImage == 0;
 
             v47 = v8;
             if (!v46)
@@ -7286,15 +7286,15 @@ LABEL_51:
 
               if (v91)
               {
-                v92 = [(UIPrintInteractionController *)self printer];
+                printer3 = [(UIPrintInteractionController *)self printer];
                 v105[0] = MEMORY[0x277D85DD0];
                 v105[1] = 3221225472;
                 v105[2] = __66__UIPrintInteractionController__printItemAsync_completionHandler___block_invoke;
                 v105[3] = &unk_279A9C288;
                 v105[4] = self;
                 v107 = &v109;
-                v106 = v7;
-                [v92 finishJobCompletionHandler:v105];
+                v106 = handlerCopy;
+                [printer3 finishJobCompletionHandler:v105];
               }
             }
 
@@ -7305,20 +7305,20 @@ LABEL_51:
             goto LABEL_84;
           }
 
-          v94 = [(UIPrintInteractionController *)self printer];
-          v95 = [(UIPrintInteractionController *)self printInfo];
-          v93 = [v95 duplex];
-          v40 = [(UIPrintInteractionController *)self printInfo];
-          v41 = [v40 outputType];
+          printer4 = [(UIPrintInteractionController *)self printer];
+          printInfo = [(UIPrintInteractionController *)self printInfo];
+          duplex = [printInfo duplex];
+          printInfo2 = [(UIPrintInteractionController *)self printInfo];
+          outputType = [printInfo2 outputType];
           [v8 size];
-          v37 = [UIPrintPaper _readyPaperListForPrinter:v94 withDuplexMode:v93 forContentType:v41 contentSize:?];
+          pkPaper = [UIPrintPaper _readyPaperListForPrinter:printer4 withDuplexMode:duplex forContentType:outputType contentSize:?];
 
-          if (v37)
+          if (pkPaper)
           {
             [v8 size];
-            v42 = [UIPrintPaper bestPaperForPageSize:v37 withPapersFromArray:?];
+            v42 = [UIPrintPaper bestPaperForPageSize:pkPaper withPapersFromArray:?];
 
-            v36 = v42;
+            printPaper = v42;
           }
         }
 
@@ -7334,7 +7334,7 @@ LABEL_84:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v6;
+      v12 = asyncCopy;
       if (v12)
       {
         v9 = v12;
@@ -7407,7 +7407,7 @@ LABEL_29:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v6;
+        v16 = asyncCopy;
         v97 = 0;
         v9 = 0;
         v10 = 0;
@@ -7474,27 +7474,27 @@ LABEL_42:
             {
               if (data)
               {
-                v79 = [(UIPrintInteractionController *)self printer];
-                v80 = [(UIPrintInteractionController *)self printSettings];
-                v81 = [v79 startJob:v80 ofType:v10] == 0;
+                printer5 = [(UIPrintInteractionController *)self printer];
+                printSettings2 = [(UIPrintInteractionController *)self printSettings];
+                v81 = [printer5 startJob:printSettings2 ofType:v10] == 0;
 
                 if (v81)
                 {
-                  v82 = [(UIPrintInteractionController *)self printer];
+                  printer6 = [(UIPrintInteractionController *)self printer];
                   v83 = data;
-                  v84 = [v82 sendData:-[__CFData bytes](data ofLength:{"bytes"), -[__CFData length](data, "length")}] == 0;
+                  v84 = [printer6 sendData:-[__CFData bytes](data ofLength:{"bytes"), -[__CFData length](data, "length")}] == 0;
 
                   if (v84)
                   {
-                    v85 = [(UIPrintInteractionController *)self printer];
+                    printer7 = [(UIPrintInteractionController *)self printer];
                     v99[0] = MEMORY[0x277D85DD0];
                     v99[1] = 3221225472;
                     v99[2] = __66__UIPrintInteractionController__printItemAsync_completionHandler___block_invoke_3;
                     v99[3] = &unk_279A9C288;
                     v99[4] = self;
                     v101 = &v109;
-                    v100 = v7;
-                    [v85 finishJobCompletionHandler:v99];
+                    v100 = handlerCopy;
+                    [printer7 finishJobCompletionHandler:v99];
                   }
                 }
 
@@ -7506,52 +7506,52 @@ LABEL_42:
               goto LABEL_18;
             }
 
-            v63 = [(UIPrintInteractionController *)self printPaper];
-            v64 = [v63 pkPaper];
-            if ([v64 isRoll])
+            printPaper2 = [(UIPrintInteractionController *)self printPaper];
+            pkPaper2 = [printPaper2 pkPaper];
+            if ([pkPaper2 isRoll])
             {
-              v65 = [(UIPrintInteractionController *)self printingItems];
-              v66 = [v65 count] > 1;
+              printingItems2 = [(UIPrintInteractionController *)self printingItems];
+              v66 = [printingItems2 count] > 1;
 
               if (!v66)
               {
 LABEL_68:
-                v77 = [(UIPrintInteractionController *)self printer];
-                v78 = [(UIPrintInteractionController *)self printSettings];
+                printer8 = [(UIPrintInteractionController *)self printer];
+                printSettings3 = [(UIPrintInteractionController *)self printSettings];
                 v102[0] = MEMORY[0x277D85DD0];
                 v102[1] = 3221225472;
                 v102[2] = __66__UIPrintInteractionController__printItemAsync_completionHandler___block_invoke_2;
                 v102[3] = &unk_279A9C2B0;
                 v104 = &v109;
-                v103 = v7;
-                [v77 printURL:v9 ofType:v10 printSettings:v78 completionHandler:v102];
+                v103 = handlerCopy;
+                [printer8 printURL:v9 ofType:v10 printSettings:printSettings3 completionHandler:v102];
 
                 v8 = 0;
                 goto LABEL_84;
               }
 
-              [(UIPrintInteractionController *)self _printItemContentSize:v6];
+              [(UIPrintInteractionController *)self _printItemContentSize:asyncCopy];
               v68 = v67;
               v70 = v69;
-              v71 = [(UIPrintInteractionController *)self printer];
-              v72 = [(UIPrintInteractionController *)self printInfo];
-              v73 = [v72 duplex];
-              v74 = [(UIPrintInteractionController *)self printInfo];
-              v63 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", v71, v73, [v74 outputType], v68, v70);
+              printer9 = [(UIPrintInteractionController *)self printer];
+              printInfo3 = [(UIPrintInteractionController *)self printInfo];
+              duplex2 = [printInfo3 duplex];
+              printInfo4 = [(UIPrintInteractionController *)self printInfo];
+              printPaper2 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", printer9, duplex2, [printInfo4 outputType], v68, v70);
 
-              if (!v63)
+              if (!printPaper2)
               {
 LABEL_67:
 
                 goto LABEL_68;
               }
 
-              v64 = [UIPrintPaper bestPaperForPageSize:v63 withPapersFromArray:v68, v70];
-              if (v64)
+              pkPaper2 = [UIPrintPaper bestPaperForPageSize:printPaper2 withPapersFromArray:v68, v70];
+              if (pkPaper2)
               {
-                v75 = [(UIPrintInteractionController *)self printSettings];
-                v76 = [v64 pkPaper];
-                [v75 setPaper:v76];
+                printSettings4 = [(UIPrintInteractionController *)self printSettings];
+                v64PkPaper = [pkPaper2 pkPaper];
+                [printSettings4 setPaper:v64PkPaper];
               }
             }
 
@@ -7577,7 +7577,7 @@ LABEL_14:
       getPHAssetClass();
       if (objc_opt_isKindOfClass())
       {
-        v97 = v6;
+        v97 = asyncCopy;
         v9 = 0;
         v8 = 0;
         goto LABEL_41;
@@ -7591,9 +7591,9 @@ LABEL_18:
     v18 = v110[5];
     v110[5] = v17;
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, v110[5]);
+      (*(handlerCopy + 2))(handlerCopy, v110[5]);
     }
 
     v8 = 0;
@@ -7602,10 +7602,10 @@ LABEL_18:
     goto LABEL_84;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"UIPrintErrorDomain" code:1 userInfo:0];
-    (*(v7 + 2))(v7, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 
 LABEL_85:
@@ -7687,77 +7687,77 @@ uint64_t __66__UIPrintInteractionController__printItemAsync_completionHandler___
     return 0;
   }
 
-  v3 = [(UIPrintInteractionController *)self activePrintInfo];
-  if ([v3 nUpActive])
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  if ([activePrintInfo nUpActive])
   {
-    v4 = 1;
+    flipHorizontal = 1;
   }
 
   else
   {
-    v5 = [(UIPrintInteractionController *)self activePrintInfo];
-    if ([v5 borderType])
+    activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+    if ([activePrintInfo2 borderType])
     {
-      v4 = 1;
+      flipHorizontal = 1;
     }
 
     else
     {
-      v6 = [(UIPrintInteractionController *)self activePrintInfo];
-      if ([v6 bookletStyle] <= 0)
+      activePrintInfo3 = [(UIPrintInteractionController *)self activePrintInfo];
+      if ([activePrintInfo3 bookletStyle] <= 0)
       {
-        v7 = [(UIPrintInteractionController *)self activePrintInfo];
-        v4 = [v7 flipHorizontal];
+        activePrintInfo4 = [(UIPrintInteractionController *)self activePrintInfo];
+        flipHorizontal = [activePrintInfo4 flipHorizontal];
       }
 
       else
       {
-        v4 = 1;
+        flipHorizontal = 1;
       }
     }
   }
 
-  return v4;
+  return flipHorizontal;
 }
 
 - (id)_createDocInfoDict
 {
   v3 = GetAppName();
-  v4 = [(UIPrintInteractionController *)self activePrintInfo];
-  v5 = [v4 jobName];
+  activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+  jobName = [activePrintInfo jobName];
 
-  if (!v5)
+  if (!jobName)
   {
-    v5 = GetDefaultJobName();
+    jobName = GetDefaultJobName();
   }
 
   v6 = *MEMORY[0x277CBF5E0];
   v7 = *MEMORY[0x277CBF578];
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, *MEMORY[0x277CBF5E0], v3, *MEMORY[0x277CBF578], 0}];
-  v9 = [(UIPrintInteractionController *)self paper];
-  if (v9)
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{jobName, *MEMORY[0x277CBF5E0], v3, *MEMORY[0x277CBF578], 0}];
+  paper = [(UIPrintInteractionController *)self paper];
+  if (paper)
   {
-    v10 = v9;
-    v11 = [(UIPrintInteractionController *)self paper];
-    v12 = [v11 _keywordForPDFMetadata];
+    v10 = paper;
+    paper2 = [(UIPrintInteractionController *)self paper];
+    _keywordForPDFMetadata = [paper2 _keywordForPDFMetadata];
 
-    if (v12)
+    if (_keywordForPDFMetadata)
     {
-      v13 = [(UIPrintInteractionController *)self paper];
-      v14 = [v13 _keywordForPDFMetadata];
-      [v8 setObject:v14 forKey:*MEMORY[0x277CBF5A0]];
+      paper3 = [(UIPrintInteractionController *)self paper];
+      _keywordForPDFMetadata2 = [paper3 _keywordForPDFMetadata];
+      [v8 setObject:_keywordForPDFMetadata2 forKey:*MEMORY[0x277CBF5A0]];
     }
   }
 
-  v15 = [(UIPrintInteractionController *)self printingItems];
-  if ([v15 count] != 1)
+  printingItems = [(UIPrintInteractionController *)self printingItems];
+  if ([printingItems count] != 1)
   {
 
     goto LABEL_36;
   }
 
-  v16 = [(UIPrintInteractionController *)self printingItems];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  printingItems2 = [(UIPrintInteractionController *)self printingItems];
+  v17 = [printingItems2 objectAtIndexedSubscript:0];
 
   if (!v17)
   {
@@ -7778,10 +7778,10 @@ uint64_t __66__UIPrintInteractionController__printItemAsync_completionHandler___
         [v8 setObject:v21 forKey:*MEMORY[0x277CBF5B0]];
       }
 
-      v23 = [(UIPrintInteractionController *)self pdfPassword];
-      if (v23)
+      pdfPassword = [(UIPrintInteractionController *)self pdfPassword];
+      if (pdfPassword)
       {
-        v24 = v23;
+        v24 = pdfPassword;
         [(UIPrintInteractionController *)self pdfPassword];
         v25 = v45 = v19;
         v26 = [v25 length];
@@ -7789,11 +7789,11 @@ uint64_t __66__UIPrintInteractionController__printItemAsync_completionHandler___
         v19 = v45;
         if (v26)
         {
-          v27 = [(UIPrintInteractionController *)self pdfPassword];
-          [v8 setObject:v27 forKey:*MEMORY[0x277CBF5B8]];
+          pdfPassword2 = [(UIPrintInteractionController *)self pdfPassword];
+          [v8 setObject:pdfPassword2 forKey:*MEMORY[0x277CBF5B8]];
 
-          v28 = [(UIPrintInteractionController *)self pdfPassword];
-          [v8 setObject:v28 forKey:*MEMORY[0x277CBF5F0]];
+          pdfPassword3 = [(UIPrintInteractionController *)self pdfPassword];
+          [v8 setObject:pdfPassword3 forKey:*MEMORY[0x277CBF5F0]];
         }
       }
 
@@ -7804,16 +7804,16 @@ uint64_t __66__UIPrintInteractionController__printItemAsync_completionHandler___
       [v8 setObject:v30 forKey:*MEMORY[0x277CBF550]];
 
       [v8 setObject:@"pdftopdf filter" forKey:v7];
-      v31 = [(UIPrintInteractionController *)self pdfPassword];
-      if (v31)
+      pdfPassword4 = [(UIPrintInteractionController *)self pdfPassword];
+      if (pdfPassword4)
       {
-        v32 = v31;
+        v32 = pdfPassword4;
         IsEncrypted = CGPDFDocumentIsEncrypted(v19);
 
         if (IsEncrypted)
         {
-          v34 = [(UIPrintInteractionController *)self pdfPassword];
-          CGPDFDocumentUnlockWithPassword(v19, [v34 cStringUsingEncoding:4]);
+          pdfPassword5 = [(UIPrintInteractionController *)self pdfPassword];
+          CGPDFDocumentUnlockWithPassword(v19, [pdfPassword5 cStringUsingEncoding:4]);
         }
       }
 
@@ -7888,60 +7888,60 @@ LABEL_36:
   return v8;
 }
 
-- (CGContext)_newSaveContext:(id)a3 withMediaRect:(CGRect)a4
+- (CGContext)_newSaveContext:(id)context withMediaRect:(CGRect)rect
 {
-  v9 = a4;
-  if (!a3)
+  rectCopy = rect;
+  if (!context)
   {
     return 0;
   }
 
-  v5 = a3;
-  v6 = [(UIPrintInteractionController *)self _createDocInfoDict:*&v9.origin.x];
-  v7 = CGPDFContextCreateWithURL(v5, &v9, v6);
+  contextCopy = context;
+  v6 = [(UIPrintInteractionController *)self _createDocInfoDict:*&rectCopy.origin.x];
+  v7 = CGPDFContextCreateWithURL(contextCopy, &rectCopy, v6);
 
   return v7;
 }
 
-- (id)_printPageWithRenderer:(id)a3
+- (id)_printPageWithRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   if (![(UIPrintInteractionController *)self printStateActive])
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"UIPrintErrorDomain" code:4 userInfo:0];
     goto LABEL_18;
   }
 
-  v5 = [(UIPrintInteractionController *)self currentPage];
-  if (v5 != [(UIPrintInteractionController *)self currentRange])
+  currentPage = [(UIPrintInteractionController *)self currentPage];
+  if (currentPage != [(UIPrintInteractionController *)self currentRange])
   {
     goto LABEL_10;
   }
 
-  v6 = [(UIPrintInteractionController *)self currentRange];
+  currentRange = [(UIPrintInteractionController *)self currentRange];
   v8 = v7;
-  v9 = [(UIPrintInteractionController *)self pageRanges];
-  v10 = [v9 firstObject];
-  v11 = [v10 rangeValue];
+  pageRanges = [(UIPrintInteractionController *)self pageRanges];
+  firstObject = [pageRanges firstObject];
+  rangeValue = [firstObject rangeValue];
   v13 = v12;
 
   v14 = 0;
-  if (v6 != v11 || v8 != v13)
+  if (currentRange != rangeValue || v8 != v13)
   {
     goto LABEL_11;
   }
 
-  v15 = [(UIPrintInteractionController *)self saveFileURL];
+  saveFileURL = [(UIPrintInteractionController *)self saveFileURL];
 
-  if (v15)
+  if (saveFileURL)
   {
-    v16 = [(UIPrintInteractionController *)self saveFileURL];
-    [v4 paperRect];
-    v17 = [(UIPrintInteractionController *)self _newSaveContext:v16 withMediaRect:?];
+    saveFileURL2 = [(UIPrintInteractionController *)self saveFileURL];
+    [rendererCopy paperRect];
+    v17 = [(UIPrintInteractionController *)self _newSaveContext:saveFileURL2 withMediaRect:?];
 
     if (v17)
     {
-      [v4 _startPrintJobContext:v17];
+      [rendererCopy _startPrintJobContext:v17];
       CGContextRelease(v17);
 LABEL_10:
       v14 = 0;
@@ -7951,10 +7951,10 @@ LABEL_10:
 
   else
   {
-    v18 = [(UIPrintInteractionController *)self printer];
-    v19 = [(UIPrintInteractionController *)self activePrintInfo];
-    v20 = [(UIPrintInteractionController *)self printSettings];
-    v21 = [v4 _startPrintJobContext:v18 printInfo:v19 printSettings:v20];
+    printer = [(UIPrintInteractionController *)self printer];
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    printSettings = [(UIPrintInteractionController *)self printSettings];
+    v21 = [rendererCopy _startPrintJobContext:printer printInfo:activePrintInfo printSettings:printSettings];
 
     if (v21)
     {
@@ -7966,10 +7966,10 @@ LABEL_10:
 LABEL_11:
   if ([(UIPrintInteractionController *)self printStateActive]&& !v14)
   {
-    v22 = [(UIPrintInteractionController *)self currentPage];
-    v23 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v23 scalingFactor];
-    [v4 _drawPage:v22 withScale:1 drawingToPDF:?];
+    currentPage2 = [(UIPrintInteractionController *)self currentPage];
+    activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+    [activePrintInfo2 scalingFactor];
+    [rendererCopy _drawPage:currentPage2 withScale:1 drawingToPDF:?];
   }
 
   if ([(UIPrintInteractionController *)self printStateActive])
@@ -7979,7 +7979,7 @@ LABEL_11:
       [(UIPrintInteractionController *)self setPagesDrawn:[(UIPrintInteractionController *)self pagesDrawn]+ 1];
       if ([(UIPrintInteractionController *)self pageCount]< 0)
       {
-        -[UIPrintInteractionController setPageCount:](self, "setPageCount:", [v4 numberOfPages]);
+        -[UIPrintInteractionController setPageCount:](self, "setPageCount:", [rendererCopy numberOfPages]);
       }
     }
   }
@@ -7989,17 +7989,17 @@ LABEL_18:
   return v14;
 }
 
-- (void)_endPrintJobWithAction:(int64_t)a3 error:(id)a4
+- (void)_endPrintJobWithAction:(int64_t)action error:(id)error
 {
-  v6 = a4;
-  v7 = self;
+  errorCopy = error;
+  selfCopy = self;
   temporaryRetainCycle = self->_temporaryRetainCycle;
   self->_temporaryRetainCycle = 0;
 
   if ([(UIPrintInteractionController *)self printStateActive])
   {
-    v9 = a3 == 0;
-    v10 = a3 == 0;
+    v9 = action == 0;
+    v10 = action == 0;
     v11 = !v9;
     [(UIPrintInteractionController *)self _cancelAllPreviewGeneration];
     v12[0] = MEMORY[0x277D85DD0];
@@ -8008,7 +8008,7 @@ LABEL_18:
     v12[3] = &unk_279A9BF50;
     v12[4] = self;
     v14 = v11;
-    v13 = v6;
+    v13 = errorCopy;
     [(UIPrintInteractionController *)self _cancelPreviewQueue:v10 completionHandler:v12];
   }
 }
@@ -8117,13 +8117,13 @@ LABEL_12:
 
 - (id)appOptionsViewController
 {
-  v3 = [(UIPrintInteractionController *)self delegate];
+  delegate = [(UIPrintInteractionController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIPrintInteractionController *)self delegate];
-    v6 = [v5 performSelector:sel_appOptionsViewController];
+    delegate2 = [(UIPrintInteractionController *)self delegate];
+    v6 = [delegate2 performSelector:sel_appOptionsViewController];
   }
 
   else
@@ -8158,42 +8158,42 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (void)dismissAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   if ([(UIPrintInteractionController *)self printStateActive])
   {
     [(UIPrintInteractionController *)self setSupressNotifyDismissed:1];
-    v6 = [(UIPrintInteractionController *)self printPanelViewController];
-    [v6 dismissAnimated:v4 completionHandler:v7];
+    printPanelViewController = [(UIPrintInteractionController *)self printPanelViewController];
+    [printPanelViewController dismissAnimated:animatedCopy completionHandler:handlerCopy];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    v7[2]();
+    handlerCopy[2]();
   }
 }
 
-- (BOOL)savePDFToURL:(id)a3 showProgress:(BOOL)a4 hostingScene:(id)a5 completionHandler:(id)a6
+- (BOOL)savePDFToURL:(id)l showProgress:(BOOL)progress hostingScene:(id)scene completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(UIPrintInteractionController *)self printFormatter];
-  if (v13)
+  progressCopy = progress;
+  lCopy = l;
+  sceneCopy = scene;
+  handlerCopy = handler;
+  printFormatter = [(UIPrintInteractionController *)self printFormatter];
+  if (printFormatter)
   {
   }
 
   else
   {
-    v14 = [(UIPrintInteractionController *)self printPageRenderer];
+    printPageRenderer = [(UIPrintInteractionController *)self printPageRenderer];
 
-    if (!v14)
+    if (!printPageRenderer)
     {
       NSLog(&cfstr_ErrorAttemptin_2.isa);
-      if (v12)
+      if (handlerCopy)
       {
         goto LABEL_6;
       }
@@ -8207,50 +8207,50 @@ LABEL_23:
   if (![(UIPrintInteractionController *)self printStateActive])
   {
     [(UIPrintInteractionController *)self setPrintStateActive:1];
-    [(UIPrintInteractionController *)self setCompletionHandler:v12];
-    v17 = [(UIPrintInteractionController *)self printInfo];
-    if (v17)
+    [(UIPrintInteractionController *)self setCompletionHandler:handlerCopy];
+    printInfo = [(UIPrintInteractionController *)self printInfo];
+    if (printInfo)
     {
-      v18 = [(UIPrintInteractionController *)self printInfo];
-      v19 = [v18 copy];
+      printInfo2 = [(UIPrintInteractionController *)self printInfo];
+      v19 = [printInfo2 copy];
       [(UIPrintInteractionController *)self setActivePrintInfo:v19];
     }
 
     else
     {
-      v18 = +[UIPrintInfo printInfo];
-      [(UIPrintInteractionController *)self setActivePrintInfo:v18];
+      printInfo2 = +[UIPrintInfo printInfo];
+      [(UIPrintInteractionController *)self setActivePrintInfo:printInfo2];
     }
 
     [(UIPrintInteractionController *)self setPrinter:0];
-    v20 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v20 setPrinterID:0];
+    activePrintInfo = [(UIPrintInteractionController *)self activePrintInfo];
+    [activePrintInfo setPrinterID:0];
 
-    v21 = [(UIPrintInteractionController *)self activePrintInfo];
-    [v21 setDuplex:0];
+    activePrintInfo2 = [(UIPrintInteractionController *)self activePrintInfo];
+    [activePrintInfo2 setDuplex:0];
 
-    [(UIPrintInteractionController *)self setSaveFileURL:v10];
-    [(UIPrintInteractionController *)self setShowPrintingProgress:v8];
-    [(UIPrintInteractionController *)self setHostingWindowScene:v11];
-    v15 = [(UIPrintInteractionController *)self delegate];
+    [(UIPrintInteractionController *)self setSaveFileURL:lCopy];
+    [(UIPrintInteractionController *)self setShowPrintingProgress:progressCopy];
+    [(UIPrintInteractionController *)self setHostingWindowScene:sceneCopy];
+    delegate = [(UIPrintInteractionController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v15 printInteractionControllerWillPresentPrinterOptions:self];
+      [delegate printInteractionControllerWillPresentPrinterOptions:self];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v15 printInteractionControllerDidPresentPrinterOptions:self];
+      [delegate printInteractionControllerDidPresentPrinterOptions:self];
     }
 
     if (![(UIPrintInteractionController *)self supressNotifyDismissed]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v15 printInteractionControllerWillDismissPrinterOptions:self];
+      [delegate printInteractionControllerWillDismissPrinterOptions:self];
     }
 
     if (![(UIPrintInteractionController *)self supressNotifyDismissed]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v15 printInteractionControllerDidDismissPrinterOptions:self];
+      [delegate printInteractionControllerDidDismissPrinterOptions:self];
     }
 
     v16 = 1;
@@ -8258,14 +8258,14 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  if (!v12)
+  if (!handlerCopy)
   {
     goto LABEL_23;
   }
 
 LABEL_6:
-  v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"UIPrintErrorDomain" code:4 userInfo:0];
-  v12[2](v12, self, 0, v15);
+  delegate = [MEMORY[0x277CCA9B8] errorWithDomain:@"UIPrintErrorDomain" code:4 userInfo:0];
+  handlerCopy[2](handlerCopy, self, 0, delegate);
   v16 = 0;
 LABEL_21:
 

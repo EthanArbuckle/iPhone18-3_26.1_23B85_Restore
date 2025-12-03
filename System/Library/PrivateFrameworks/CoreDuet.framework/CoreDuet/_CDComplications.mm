@@ -1,10 +1,10 @@
 @interface _CDComplications
 + (id)sharedComplication;
-- (BOOL)admissionCheckOnComplication:(id)a3 forRemote:(BOOL)a4 error:(id *)a5;
-- (BOOL)isBundleActiveComplication:(id)a3;
+- (BOOL)admissionCheckOnComplication:(id)complication forRemote:(BOOL)remote error:(id *)error;
+- (BOOL)isBundleActiveComplication:(id)complication;
 - (BOOL)watchIsCharging;
 - (id)initForComplications;
-- (int)remainingPushesOnComplication:(id)a3 andReduceBy:(id)a4;
+- (int)remainingPushesOnComplication:(id)complication andReduceBy:(id)by;
 - (void)readOutActiveComplications;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __38___CDComplications_sharedComplication__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedComplication_init_once_token != -1)
   {
     dispatch_once(&sharedComplication_init_once_token, block);
@@ -84,28 +84,28 @@
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 UTF8String];
+      uTF8String = [v13 UTF8String];
       v16 = v2->complicationQueue;
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __40___CDComplications_initForComplications__block_invoke;
       handler[3] = &unk_1E73687B8;
       v27 = v2;
-      notify_register_dispatch(v15, &v2->deviceChangeToken, v16, handler);
+      notify_register_dispatch(uTF8String, &v2->deviceChangeToken, v16, handler);
     }
 
     v17 = _CDDComplicationChangeOverCloudNotificationString();
 
     if (v17)
     {
-      v18 = [v17 UTF8String];
+      uTF8String2 = [v17 UTF8String];
       v19 = v2->complicationQueue;
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __40___CDComplications_initForComplications__block_invoke_2;
       v24[3] = &unk_1E73687B8;
       v25 = v2;
-      notify_register_dispatch(v18, &v2->deviceChangeToken, v19, v24);
+      notify_register_dispatch(uTF8String2, &v2->deviceChangeToken, v19, v24);
     }
 
     v20 = v2->complicationQueue;
@@ -120,10 +120,10 @@
   return v2;
 }
 
-- (int)remainingPushesOnComplication:(id)a3 andReduceBy:(id)a4
+- (int)remainingPushesOnComplication:(id)complication andReduceBy:(id)by
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  byCopy = by;
   v8 = [(NSUserDefaults *)self->pushLimits objectForKey:@"complicationPushLimits"];
   v9 = v8;
   if (v8)
@@ -137,28 +137,28 @@
   }
 
   v11 = v10;
-  v12 = [v10 objectForKey:v6];
+  v12 = [v10 objectForKey:complicationCopy];
   if (v12)
   {
-    if ([v7 intValue] >= 1 && objc_msgSend(v12, "integerValue") >= 1)
+    if ([byCopy intValue] >= 1 && objc_msgSend(v12, "integerValue") >= 1)
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "intValue") - objc_msgSend(v7, "intValue")}];
-      [v11 setValue:v13 forKey:v6];
+      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "intValue") - objc_msgSend(byCopy, "intValue")}];
+      [v11 setValue:v13 forKey:complicationCopy];
 
       [(NSUserDefaults *)self->pushLimits setObject:v11 forKey:@"complicationPushLimits"];
     }
 
-    v14 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    [v11 setValue:&unk_1F05EE748 forKey:v6];
+    [v11 setValue:&unk_1F05EE748 forKey:complicationCopy];
     [(NSUserDefaults *)self->pushLimits setObject:v11 forKey:@"complicationPushLimits"];
-    v14 = 50;
+    intValue = 50;
   }
 
-  return v14;
+  return intValue;
 }
 
 - (BOOL)watchIsCharging
@@ -240,11 +240,11 @@ LABEL_21:
   return v2;
 }
 
-- (BOOL)admissionCheckOnComplication:(id)a3 forRemote:(BOOL)a4 error:(id *)a5
+- (BOOL)admissionCheckOnComplication:(id)complication forRemote:(BOOL)remote error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  complicationCopy = complication;
+  v9 = complicationCopy;
+  if (complicationCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -256,13 +256,13 @@ LABEL_21:
     v13[2] = __65___CDComplications_admissionCheckOnComplication_forRemote_error___block_invoke;
     v13[3] = &unk_1E73687E0;
     v13[4] = self;
-    v14 = v8;
+    v14 = complicationCopy;
     v15 = &v17;
-    v16 = a4;
+    remoteCopy = remote;
     dispatch_sync(complicationQueue, v13);
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     v11 = *(v18 + 24);
@@ -278,9 +278,9 @@ LABEL_21:
   return v11 & 1;
 }
 
-- (BOOL)isBundleActiveComplication:(id)a3
+- (BOOL)isBundleActiveComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -291,9 +291,9 @@ LABEL_21:
   block[2] = __47___CDComplications_isBundleActiveComplication___block_invoke;
   block[3] = &unk_1E7368808;
   block[4] = self;
-  v9 = v4;
+  v9 = complicationCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = complicationCopy;
   dispatch_sync(complicationQueue, block);
   LOBYTE(complicationQueue) = *(v12 + 24);
 

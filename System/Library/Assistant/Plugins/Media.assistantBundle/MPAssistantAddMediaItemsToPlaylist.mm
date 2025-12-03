@@ -1,27 +1,27 @@
 @interface MPAssistantAddMediaItemsToPlaylist
-+ (void)_notifyAssistantWithError:(id)a3 requestHash:(id)a4 completion:(id)a5;
-+ (void)_notifyAssistantWithString:(id)a3 requestHash:(id)a4 completion:(id)a5;
-- (void)_addItemsToCloudLibrary:(id)a3;
-- (void)_addItemsToLocalLibrary:(id)a3;
-- (void)_appendItemToCloudPlaylist:(id)a3 completion:(id)a4;
-- (void)_appendItemsToCloudPlaylist:(id)a3 completion:(id)a4;
-- (void)_appendToPlaylistWithCompletion:(id)a3;
-- (void)_prependItemsToCloudPlaylist:(id)a3 completion:(id)a4;
++ (void)_notifyAssistantWithError:(id)error requestHash:(id)hash completion:(id)completion;
++ (void)_notifyAssistantWithString:(id)string requestHash:(id)hash completion:(id)completion;
+- (void)_addItemsToCloudLibrary:(id)library;
+- (void)_addItemsToLocalLibrary:(id)library;
+- (void)_appendItemToCloudPlaylist:(id)playlist completion:(id)completion;
+- (void)_appendItemsToCloudPlaylist:(id)playlist completion:(id)completion;
+- (void)_appendToPlaylistWithCompletion:(id)completion;
+- (void)_prependItemsToCloudPlaylist:(id)playlist completion:(id)completion;
 - (void)dealloc;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantAddMediaItemsToPlaylist
 
-- (void)_prependItemsToCloudPlaylist:(id)a3 completion:(id)a4
+- (void)_prependItemsToCloudPlaylist:(id)playlist completion:(id)completion
 {
   v102 = *MEMORY[0x277D85DE8];
-  v70 = a3;
-  v69 = a4;
+  playlistCopy = playlist;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v6 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v7 = sub_233505670(@"Add Media Items To Playlist", v6);
+    aceId = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v7 = sub_233505670(@"Add Media Items To Playlist", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v7;
   }
@@ -40,7 +40,7 @@
   v68 = 72;
   self->_cloudController = v11;
 
-  v79 = [MEMORY[0x277CD5D80] cloudItemIDListForPlaylist:v70];
+  v79 = [MEMORY[0x277CD5D80] cloudItemIDListForPlaylist:playlistCopy];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
@@ -63,8 +63,8 @@
         }
 
         v15 = *(*(&v91 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        v17 = sub_23350261C(v16);
+        identifier = [v15 identifier];
+        v17 = sub_23350261C(identifier);
 
         if (v17 == 3)
         {
@@ -72,8 +72,8 @@
           v90 = 0u;
           v87 = 0u;
           v88 = 0u;
-          v76 = [v15 items];
-          v18 = [v76 countByEnumeratingWithState:&v87 objects:v100 count:16];
+          items = [v15 items];
+          v18 = [items countByEnumeratingWithState:&v87 objects:v100 count:16];
           if (v18)
           {
             v19 = v18;
@@ -86,17 +86,17 @@
               {
                 if (*v88 != v20)
                 {
-                  objc_enumerationMutation(v76);
+                  objc_enumerationMutation(items);
                 }
 
-                v23 = [*(*(&v87 + 1) + 8 * v21) identifier];
-                v24 = [v23 lastPathComponent];
-                v25 = [v24 longLongValue];
+                identifier2 = [*(*(&v87 + 1) + 8 * v21) identifier];
+                lastPathComponent = [identifier2 lastPathComponent];
+                longLongValue = [lastPathComponent longLongValue];
 
                 if (![(NSString *)self->_requestAceHash length])
                 {
-                  v26 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                  v27 = sub_233505670(@"Add Media Items To Playlist", v26);
+                  aceId2 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                  v27 = sub_233505670(@"Add Media Items To Playlist", aceId2);
                   v28 = self->_requestAceHash;
                   self->_requestAceHash = v27;
                 }
@@ -108,18 +108,18 @@
                   *buf = 138543618;
                   v97 = v30;
                   v98 = 2048;
-                  v99 = v25;
+                  v99 = longLongValue;
                   _os_log_impl(&dword_2334D9000, v29, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud items) <%{public}@>: prepend store: %lld", buf, 0x16u);
                 }
 
                 v13 = v22 + 1;
-                [v79 insertCloudItemID:v25 idType:1 atIndex:v22];
+                [v79 insertCloudItemID:longLongValue idType:1 atIndex:v22];
                 ++v21;
                 ++v22;
               }
 
               while (v19 != v21);
-              v19 = [v76 countByEnumeratingWithState:&v87 objects:v100 count:16];
+              v19 = [items countByEnumeratingWithState:&v87 objects:v100 count:16];
             }
 
             while (v19);
@@ -134,9 +134,9 @@
           v84 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v76 = v31;
-          v75 = [v31 items];
-          v32 = [v75 countByEnumeratingWithState:&v83 objects:v95 count:16];
+          items = v31;
+          items2 = [v31 items];
+          v32 = [items2 countByEnumeratingWithState:&v83 objects:v95 count:16];
           if (v32)
           {
             v33 = v32;
@@ -147,22 +147,22 @@
               {
                 if (*v84 != v34)
                 {
-                  objc_enumerationMutation(v75);
+                  objc_enumerationMutation(items2);
                 }
 
                 v36 = *(*(&v83 + 1) + 8 * j);
                 v37 = [v36 valueForProperty:v78];
-                v38 = [v37 longLongValue];
+                longLongValue2 = [v37 longLongValue];
 
                 v39 = [v36 valueForProperty:v77];
-                v40 = [v39 unsignedLongLongValue];
+                unsignedLongLongValue = [v39 unsignedLongLongValue];
 
-                if (v40)
+                if (unsignedLongLongValue)
                 {
                   if (![(NSString *)self->_requestAceHash length])
                   {
-                    v41 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                    v42 = sub_233505670(@"Add Media Items To Playlist", v41);
+                    aceId3 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                    v42 = sub_233505670(@"Add Media Items To Playlist", aceId3);
                     v43 = self->_requestAceHash;
                     self->_requestAceHash = v42;
                   }
@@ -174,22 +174,22 @@
                     *buf = 138543618;
                     v97 = v45;
                     v98 = 2048;
-                    v99 = v40;
+                    v99 = unsignedLongLongValue;
                     _os_log_impl(&dword_2334D9000, v44, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud items) <%{public}@>: prepend saga: %lld", buf, 0x16u);
                   }
 
-                  [v79 insertCloudItemID:v40 idType:0 atIndex:v13++];
+                  [v79 insertCloudItemID:unsignedLongLongValue idType:0 atIndex:v13++];
                 }
 
                 else
                 {
                   v46 = [(NSString *)self->_requestAceHash length];
-                  if (v38)
+                  if (longLongValue2)
                   {
                     if (!v46)
                     {
-                      v47 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                      v48 = sub_233505670(@"Add Media Items To Playlist", v47);
+                      aceId4 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                      v48 = sub_233505670(@"Add Media Items To Playlist", aceId4);
                       v49 = self->_requestAceHash;
                       self->_requestAceHash = v48;
                     }
@@ -201,19 +201,19 @@
                       *buf = 138543618;
                       v97 = v51;
                       v98 = 2048;
-                      v99 = v38;
+                      v99 = longLongValue2;
                       _os_log_impl(&dword_2334D9000, v50, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud items) <%{public}@>: prepend adam: %lld", buf, 0x16u);
                     }
 
-                    [v79 insertCloudItemID:v38 idType:1 atIndex:v13++];
+                    [v79 insertCloudItemID:longLongValue2 idType:1 atIndex:v13++];
                   }
 
                   else
                   {
                     if (!v46)
                     {
-                      v52 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                      v53 = sub_233505670(@"Add Media Items To Playlist", v52);
+                      aceId5 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                      v53 = sub_233505670(@"Add Media Items To Playlist", aceId5);
                       v54 = self->_requestAceHash;
                       self->_requestAceHash = v53;
                     }
@@ -232,7 +232,7 @@
                 }
               }
 
-              v33 = [v75 countByEnumeratingWithState:&v83 objects:v95 count:16];
+              v33 = [items2 countByEnumeratingWithState:&v83 objects:v95 count:16];
             }
 
             while (v33);
@@ -250,8 +250,8 @@
 
   if (![(NSString *)self->_requestAceHash length])
   {
-    v57 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v58 = sub_233505670(@"Add Media Items To Playlist", v57);
+    aceId6 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v58 = sub_233505670(@"Add Media Items To Playlist", aceId6);
     v59 = self->_requestAceHash;
     self->_requestAceHash = v58;
   }
@@ -267,29 +267,29 @@
 
   v62 = [(NSString *)self->_requestAceHash copy];
   v63 = *(&self->super.super.super.super.super.isa + v68);
-  v64 = [v70 persistentID];
+  persistentID = [playlistCopy persistentID];
   v80[0] = MEMORY[0x277D85DD0];
   v80[1] = 3221225472;
   v80[2] = sub_2334DFF3C;
   v80[3] = &unk_2789DAC48;
   v81 = v62;
-  v82 = v69;
-  v65 = v69;
+  v82 = completionCopy;
+  v65 = completionCopy;
   v66 = v62;
-  [v63 setPlaylistProperties:0 trackList:v79 forPlaylistWithPersistentID:v64 completionHandler:v80];
+  [v63 setPlaylistProperties:0 trackList:v79 forPlaylistWithPersistentID:persistentID completionHandler:v80];
 
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendItemsToCloudPlaylist:(id)a3 completion:(id)a4
+- (void)_appendItemsToCloudPlaylist:(id)playlist completion:(id)completion
 {
   v105 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v73 = a4;
+  playlistCopy = playlist;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v7 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v8 = sub_233505670(@"Add Media Items To Playlist", v7);
+    aceId = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v8 = sub_233505670(@"Add Media Items To Playlist", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v8;
   }
@@ -308,8 +308,8 @@
   v72 = 72;
   self->_cloudController = v12;
 
-  v74 = v6;
-  v14 = [MEMORY[0x277CD5D80] cloudItemIDListForPlaylist:v6];
+  v74 = playlistCopy;
+  v14 = [MEMORY[0x277CD5D80] cloudItemIDListForPlaylist:playlistCopy];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
@@ -331,8 +331,8 @@
         }
 
         v16 = *(*(&v94 + 1) + 8 * i);
-        v17 = [v16 identifier];
-        v18 = sub_23350261C(v17);
+        identifier = [v16 identifier];
+        v18 = sub_23350261C(identifier);
 
         if (v18 != 3)
         {
@@ -342,9 +342,9 @@
           v87 = 0u;
           v88 = 0u;
           v89 = 0u;
-          v80 = v31;
-          v79 = [v31 items];
-          v32 = [v79 countByEnumeratingWithState:&v86 objects:v98 count:16];
+          items2 = v31;
+          items = [v31 items];
+          v32 = [items countByEnumeratingWithState:&v86 objects:v98 count:16];
           if (!v32)
           {
             goto LABEL_49;
@@ -359,22 +359,22 @@
             {
               if (*v87 != v34)
               {
-                objc_enumerationMutation(v79);
+                objc_enumerationMutation(items);
               }
 
               v36 = *(*(&v86 + 1) + 8 * v35);
               v37 = [v36 valueForProperty:v82];
-              v38 = [v37 longLongValue];
+              longLongValue = [v37 longLongValue];
 
               v39 = [v36 valueForProperty:v81];
-              v40 = [v39 unsignedLongLongValue];
+              unsignedLongLongValue = [v39 unsignedLongLongValue];
 
-              if (v40)
+              if (unsignedLongLongValue)
               {
                 if (![(NSString *)self->_requestAceHash length])
                 {
-                  v41 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                  v42 = sub_233505670(@"Add Media Items To Playlist", v41);
+                  aceId2 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                  v42 = sub_233505670(@"Add Media Items To Playlist", aceId2);
                   v43 = self->_requestAceHash;
                   self->_requestAceHash = v42;
                 }
@@ -386,12 +386,12 @@
                   *buf = 138543618;
                   v100 = v45;
                   v101 = 2048;
-                  v102 = v40;
+                  v102 = unsignedLongLongValue;
                   _os_log_impl(&dword_2334D9000, v44, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud items) <%{public}@>: append saga: %lld", buf, 0x16u);
                 }
 
                 v46 = v14;
-                v47 = v40;
+                v47 = unsignedLongLongValue;
                 v48 = 0;
 LABEL_40:
                 [v46 addCloudItemID:v47 idType:v48];
@@ -399,12 +399,12 @@ LABEL_40:
               }
 
               v49 = [(NSString *)self->_requestAceHash length];
-              if (v38)
+              if (longLongValue)
               {
                 if (!v49)
                 {
-                  v50 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                  v51 = sub_233505670(@"Add Media Items To Playlist", v50);
+                  aceId3 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                  v51 = sub_233505670(@"Add Media Items To Playlist", aceId3);
                   v52 = self->_requestAceHash;
                   self->_requestAceHash = v51;
                 }
@@ -416,20 +416,20 @@ LABEL_40:
                   *buf = 138543618;
                   v100 = v54;
                   v101 = 2048;
-                  v102 = v38;
+                  v102 = longLongValue;
                   _os_log_impl(&dword_2334D9000, v53, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud items) <%{public}@>: append adam: %lld", buf, 0x16u);
                 }
 
                 v46 = v14;
-                v47 = v38;
+                v47 = longLongValue;
                 v48 = 1;
                 goto LABEL_40;
               }
 
               if (!v49)
               {
-                v55 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                v56 = sub_233505670(@"Add Media Items To Playlist", v55);
+                aceId4 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                v56 = sub_233505670(@"Add Media Items To Playlist", aceId4);
                 v57 = self->_requestAceHash;
                 self->_requestAceHash = v56;
               }
@@ -450,7 +450,7 @@ LABEL_41:
             }
 
             while (v33 != v35);
-            v60 = [v79 countByEnumeratingWithState:&v86 objects:v98 count:16];
+            v60 = [items countByEnumeratingWithState:&v86 objects:v98 count:16];
             v33 = v60;
             if (!v60)
             {
@@ -466,8 +466,8 @@ LABEL_49:
         v93 = 0u;
         v90 = 0u;
         v91 = 0u;
-        v80 = [v16 items];
-        v19 = [v80 countByEnumeratingWithState:&v90 objects:v103 count:16];
+        items2 = [v16 items];
+        v19 = [items2 countByEnumeratingWithState:&v90 objects:v103 count:16];
         if (v19)
         {
           v20 = v19;
@@ -478,17 +478,17 @@ LABEL_49:
             {
               if (*v91 != v21)
               {
-                objc_enumerationMutation(v80);
+                objc_enumerationMutation(items2);
               }
 
-              v23 = [*(*(&v90 + 1) + 8 * j) identifier];
-              v24 = [v23 lastPathComponent];
-              v25 = [v24 longLongValue];
+              identifier2 = [*(*(&v90 + 1) + 8 * j) identifier];
+              lastPathComponent = [identifier2 lastPathComponent];
+              longLongValue2 = [lastPathComponent longLongValue];
 
               if (![(NSString *)self->_requestAceHash length])
               {
-                v26 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                v27 = sub_233505670(@"Add Media Items To Playlist", v26);
+                aceId5 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                v27 = sub_233505670(@"Add Media Items To Playlist", aceId5);
                 v28 = self->_requestAceHash;
                 self->_requestAceHash = v27;
               }
@@ -500,14 +500,14 @@ LABEL_49:
                 *buf = 138543618;
                 v100 = v30;
                 v101 = 2048;
-                v102 = v25;
+                v102 = longLongValue2;
                 _os_log_impl(&dword_2334D9000, v29, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud items) <%{public}@>: append store: %lld", buf, 0x16u);
               }
 
-              [v14 addCloudItemID:v25 idType:1];
+              [v14 addCloudItemID:longLongValue2 idType:1];
             }
 
-            v20 = [v80 countByEnumeratingWithState:&v90 objects:v103 count:16];
+            v20 = [items2 countByEnumeratingWithState:&v90 objects:v103 count:16];
           }
 
           while (v20);
@@ -524,8 +524,8 @@ LABEL_50:
 
   if (![(NSString *)self->_requestAceHash length])
   {
-    v61 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v62 = sub_233505670(@"Add Media Items To Playlist", v61);
+    aceId6 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v62 = sub_233505670(@"Add Media Items To Playlist", aceId6);
     v63 = self->_requestAceHash;
     self->_requestAceHash = v62;
   }
@@ -541,29 +541,29 @@ LABEL_50:
 
   v66 = [(NSString *)self->_requestAceHash copy];
   v67 = *(&self->super.super.super.super.super.isa + v72);
-  v68 = [v74 persistentID];
+  persistentID = [v74 persistentID];
   v83[0] = MEMORY[0x277D85DD0];
   v83[1] = 3221225472;
   v83[2] = sub_2334E0840;
   v83[3] = &unk_2789DAC48;
   v84 = v66;
-  v85 = v73;
-  v69 = v73;
+  v85 = completionCopy;
+  v69 = completionCopy;
   v70 = v66;
-  [v67 setPlaylistProperties:0 trackList:v14 forPlaylistWithPersistentID:v68 completionHandler:v83];
+  [v67 setPlaylistProperties:0 trackList:v14 forPlaylistWithPersistentID:persistentID completionHandler:v83];
 
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendItemToCloudPlaylist:(id)a3 completion:(id)a4
+- (void)_appendItemToCloudPlaylist:(id)playlist completion:(id)completion
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  playlistCopy = playlist;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v8 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v9 = sub_233505670(@"Add Media Items To Playlist", v8);
+    aceId = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v9 = sub_233505670(@"Add Media Items To Playlist", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v9;
   }
@@ -577,26 +577,26 @@ LABEL_50:
     _os_log_impl(&dword_2334D9000, v11, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud item) <%{public}@>: tail insertion", buf, 0xCu);
   }
 
-  v13 = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
-  v14 = [v13 objectAtIndex:0];
+  mediaItems = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
+  v14 = [mediaItems objectAtIndex:0];
 
   v15 = [MEMORY[0x277CD5D78] controllerWithUserIdentity:self->_userIdentity];
   cloudController = self->_cloudController;
   self->_cloudController = v15;
 
-  v17 = [v14 identifier];
-  v18 = sub_23350261C(v17);
+  identifier = [v14 identifier];
+  v18 = sub_23350261C(identifier);
 
   if (v18 == 3)
   {
-    v19 = [v14 items];
-    v20 = [v19 objectAtIndex:0];
-    v21 = [v20 identifier];
+    items = [v14 items];
+    v20 = [items objectAtIndex:0];
+    identifier2 = [v20 identifier];
 
     if (![(NSString *)self->_requestAceHash length])
     {
-      v22 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-      v23 = sub_233505670(@"Add Media Items To Playlist", v22);
+      aceId2 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+      v23 = sub_233505670(@"Add Media Items To Playlist", aceId2);
       v24 = self->_requestAceHash;
       self->_requestAceHash = v23;
     }
@@ -608,12 +608,12 @@ LABEL_50:
       *buf = 138543618;
       v64 = v26;
       v65 = 2114;
-      v66 = v21;
+      v66 = identifier2;
       _os_log_impl(&dword_2334D9000, v25, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud item) <%{public}@>: append store: %{public}@", buf, 0x16u);
     }
 
-    v27 = [v21 lastPathComponent];
-    v28 = [v27 longLongValue];
+    lastPathComponent = [identifier2 lastPathComponent];
+    longLongValue = [lastPathComponent longLongValue];
 
     v29 = [(NSString *)self->_requestAceHash copy];
   }
@@ -621,13 +621,13 @@ LABEL_50:
   else
   {
     v30 = [v14 MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
-    v31 = [v30 items];
-    v32 = [v31 objectAtIndex:0];
+    items2 = [v30 items];
+    v32 = [items2 objectAtIndex:0];
 
     if (![(NSString *)self->_requestAceHash length])
     {
-      v33 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-      v34 = sub_233505670(@"Add Media Items To Playlist", v33);
+      aceId3 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+      v34 = sub_233505670(@"Add Media Items To Playlist", aceId3);
       v35 = self->_requestAceHash;
       self->_requestAceHash = v34;
     }
@@ -644,18 +644,18 @@ LABEL_50:
     }
 
     v38 = [v32 valueForProperty:*MEMORY[0x277CD58A0]];
-    v28 = [v38 longLongValue];
+    longLongValue = [v38 longLongValue];
 
     v39 = [v32 valueForProperty:*MEMORY[0x277CD5898]];
-    v40 = [v39 unsignedLongLongValue];
+    unsignedLongLongValue = [v39 unsignedLongLongValue];
 
     v29 = [(NSString *)self->_requestAceHash copy];
-    if (v40)
+    if (unsignedLongLongValue)
     {
       if (![(NSString *)self->_requestAceHash length])
       {
-        v41 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-        v42 = sub_233505670(@"Add Media Items To Playlist", v41);
+        aceId4 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+        v42 = sub_233505670(@"Add Media Items To Playlist", aceId4);
         v43 = self->_requestAceHash;
         self->_requestAceHash = v42;
       }
@@ -667,36 +667,36 @@ LABEL_50:
         *buf = 138543618;
         v64 = v45;
         v65 = 2048;
-        v66 = v40;
+        v66 = unsignedLongLongValue;
         _os_log_impl(&dword_2334D9000, v44, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (cloud item) <%{public}@>: append saga: %llu", buf, 0x16u);
       }
 
       v46 = self->_cloudController;
-      v47 = [v6 persistentID];
+      persistentID = [playlistCopy persistentID];
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
       v60[2] = sub_2334E0F98;
       v60[3] = &unk_2789DAC48;
       v29 = v29;
       v61 = v29;
-      v62 = v7;
-      [(MPCloudController *)v46 addItemWithSagaID:v40 toPlaylistWithPersistentID:v47 completionHandler:v60];
+      v62 = completionCopy;
+      [(MPCloudController *)v46 addItemWithSagaID:unsignedLongLongValue toPlaylistWithPersistentID:persistentID completionHandler:v60];
 
       v48 = v61;
       goto LABEL_27;
     }
   }
 
-  if (!v28)
+  if (!longLongValue)
   {
-    [MPAssistantAddMediaItemsToPlaylist _notifyAssistantWithString:@"Unknown item type" requestHash:self->_requestAceHash completion:v7];
+    [MPAssistantAddMediaItemsToPlaylist _notifyAssistantWithString:@"Unknown item type" requestHash:self->_requestAceHash completion:completionCopy];
     goto LABEL_29;
   }
 
   if (![(NSString *)self->_requestAceHash length])
   {
-    v49 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v50 = sub_233505670(@"Add Media Items To Playlist", v49);
+    aceId5 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v50 = sub_233505670(@"Add Media Items To Playlist", aceId5);
     v51 = self->_requestAceHash;
     self->_requestAceHash = v50;
   }
@@ -713,15 +713,15 @@ LABEL_50:
   }
 
   v54 = self->_cloudController;
-  v55 = [v6 persistentID];
+  persistentID2 = [playlistCopy persistentID];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = sub_2334E0FB0;
   v57[3] = &unk_2789DAC48;
   v29 = v29;
   v58 = v29;
-  v59 = v7;
-  [(MPCloudController *)v54 addStoreItemWithAdamID:v28 toPlaylistWithPersistentID:v55 completionHandler:v57];
+  v59 = completionCopy;
+  [(MPCloudController *)v54 addStoreItemWithAdamID:longLongValue toPlaylistWithPersistentID:persistentID2 completionHandler:v57];
 
   v48 = v58;
 LABEL_27:
@@ -730,46 +730,46 @@ LABEL_29:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addItemsToCloudLibrary:(id)a3
+- (void)_addItemsToCloudLibrary:(id)library
 {
-  v15 = a3;
-  v4 = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
-  v5 = [v4 count];
+  libraryCopy = library;
+  mediaItems = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
+  v5 = [mediaItems count];
 
-  v6 = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
-  v7 = [v6 objectAtIndex:0];
-  v8 = [v7 items];
-  v9 = [v8 count];
+  mediaItems2 = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
+  v7 = [mediaItems2 objectAtIndex:0];
+  items = [v7 items];
+  v9 = [items count];
 
-  v10 = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D48570]];
+  insertLocation = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
+  v11 = [insertLocation isEqualToString:*MEMORY[0x277D48570]];
 
-  v12 = [(SAMPAddMediaItemsToPlaylist *)self playlist];
-  v13 = [v12 MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
+  playlist = [(SAMPAddMediaItemsToPlaylist *)self playlist];
+  v13 = [playlist MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
 
   v14 = v13;
   if (v5 == 1 && v9 == 1 && v11)
   {
-    [(MPAssistantAddMediaItemsToPlaylist *)self _appendItemToCloudPlaylist:v14 completion:v15];
+    [(MPAssistantAddMediaItemsToPlaylist *)self _appendItemToCloudPlaylist:v14 completion:libraryCopy];
   }
 
   else if (v11)
   {
-    [(MPAssistantAddMediaItemsToPlaylist *)self _appendItemsToCloudPlaylist:v14 completion:v15];
+    [(MPAssistantAddMediaItemsToPlaylist *)self _appendItemsToCloudPlaylist:v14 completion:libraryCopy];
   }
 
   else
   {
-    [(MPAssistantAddMediaItemsToPlaylist *)self _prependItemsToCloudPlaylist:v14 completion:v15];
+    [(MPAssistantAddMediaItemsToPlaylist *)self _prependItemsToCloudPlaylist:v14 completion:libraryCopy];
   }
 }
 
-- (void)_addItemsToLocalLibrary:(id)a3
+- (void)_addItemsToLocalLibrary:(id)library
 {
   v88 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v4 = [(SAMPAddMediaItemsToPlaylist *)self playlist];
-  v5 = [v4 MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
+  libraryCopy = library;
+  playlist = [(SAMPAddMediaItemsToPlaylist *)self playlist];
+  v5 = [playlist MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
 
   v6 = v5;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -799,8 +799,8 @@ LABEL_29:
         }
 
         v12 = *(*(&v76 + 1) + 8 * v11);
-        v13 = [v12 identifier];
-        v14 = sub_23350261C(v13);
+        identifier = [v12 identifier];
+        v14 = sub_23350261C(identifier);
 
         if (v14 == 3)
         {
@@ -808,30 +808,30 @@ LABEL_29:
           v75 = 0u;
           v72 = 0u;
           v73 = 0u;
-          v15 = [v12 items];
-          v63 = [v15 countByEnumeratingWithState:&v72 objects:v86 count:16];
+          items = [v12 items];
+          v63 = [items countByEnumeratingWithState:&v72 objects:v86 count:16];
           if (v63)
           {
             v58 = v11;
             v61 = *v73;
-            v62 = v15;
+            v62 = items;
             do
             {
               for (i = 0; i != v63; ++i)
               {
                 if (*v73 != v61)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(items);
                 }
 
-                v17 = [*(*(&v72 + 1) + 8 * i) identifier];
-                v18 = [v17 lastPathComponent];
-                v19 = [v18 longLongValue];
+                identifier2 = [*(*(&v72 + 1) + 8 * i) identifier];
+                lastPathComponent = [identifier2 lastPathComponent];
+                longLongValue = [lastPathComponent longLongValue];
 
                 if (![(NSString *)self->_requestAceHash length])
                 {
-                  v20 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-                  v21 = sub_233505670(@"Add Media Items To Playlist", v20);
+                  aceId = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+                  v21 = sub_233505670(@"Add Media Items To Playlist", aceId);
                   requestAceHash = self->_requestAceHash;
                   self->_requestAceHash = v21;
                 }
@@ -843,13 +843,13 @@ LABEL_29:
                   *buf = 138543618;
                   v83 = v24;
                   v84 = 2048;
-                  v85 = v19;
+                  v85 = longLongValue;
                   _os_log_impl(&dword_2334D9000, v23, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (local) <%{public}@>: add adam ID: %lld", buf, 0x16u);
                 }
 
-                v25 = self;
+                selfCopy = self;
 
-                v26 = [MEMORY[0x277CCABB0] numberWithLongLong:v19];
+                v26 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
                 v27 = MEMORY[0x277CD5DC0];
                 v28 = [MEMORY[0x277CD5E30] predicateWithValue:v26 forProperty:v60];
                 v81[0] = v28;
@@ -858,15 +858,15 @@ LABEL_29:
                 v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:2];
                 v31 = [v27 predicateMatchingPredicates:v30];
 
-                v32 = [MEMORY[0x277CD5E38] songsQuery];
-                [v32 addFilterPredicate:v31];
-                [v32 setEntityLimit:1];
+                songsQuery = [MEMORY[0x277CD5E38] songsQuery];
+                [songsQuery addFilterPredicate:v31];
+                [songsQuery setEntityLimit:1];
                 v70 = 0u;
                 v71 = 0u;
                 v68 = 0u;
                 v69 = 0u;
-                v33 = [v32 items];
-                v34 = [v33 countByEnumeratingWithState:&v68 objects:v80 count:16];
+                items2 = [songsQuery items];
+                v34 = [items2 countByEnumeratingWithState:&v68 objects:v80 count:16];
                 if (v34)
                 {
                   v35 = v34;
@@ -877,20 +877,20 @@ LABEL_29:
                     {
                       if (*v69 != v36)
                       {
-                        objc_enumerationMutation(v33);
+                        objc_enumerationMutation(items2);
                       }
 
                       [v7 addObject:*(*(&v68 + 1) + 8 * j)];
                     }
 
-                    v35 = [v33 countByEnumeratingWithState:&v68 objects:v80 count:16];
+                    v35 = [items2 countByEnumeratingWithState:&v68 objects:v80 count:16];
                   }
 
                   while (v35);
                 }
 
-                v15 = v62;
-                self = v25;
+                items = v62;
+                self = selfCopy;
               }
 
               v63 = [v62 countByEnumeratingWithState:&v72 objects:v86 count:16];
@@ -906,9 +906,9 @@ LABEL_29:
 
         else
         {
-          v15 = [v12 MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
-          v38 = [v15 items];
-          [v7 addObjectsFromArray:v38];
+          items = [v12 MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
+          v15Items = [items items];
+          [v7 addObjectsFromArray:v15Items];
         }
 
         ++v11;
@@ -923,8 +923,8 @@ LABEL_29:
 
   if (![(NSString *)self->_requestAceHash length])
   {
-    v39 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v40 = sub_233505670(@"Add Media Items To Playlist", v39);
+    aceId2 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v40 = sub_233505670(@"Add Media Items To Playlist", aceId2);
     v41 = self->_requestAceHash;
     self->_requestAceHash = v40;
   }
@@ -941,30 +941,30 @@ LABEL_29:
     _os_log_impl(&dword_2334D9000, v42, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (local) <%{public}@>: items to add: %lu", buf, 0x16u);
   }
 
-  v45 = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
-  v46 = [v45 isEqualToString:*MEMORY[0x277D48568]];
+  insertLocation = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
+  v46 = [insertLocation isEqualToString:*MEMORY[0x277D48568]];
 
   if (v46)
   {
     v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v47 addObjectsFromArray:v7];
-    v48 = [v6 items];
-    [v47 addObjectsFromArray:v48];
+    items3 = [v6 items];
+    [v47 addObjectsFromArray:items3];
 
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = sub_2334E1888;
     v66[3] = &unk_2789DB918;
     v66[4] = self;
-    v49 = v53;
-    v67 = v53;
+    v49 = libraryCopy;
+    v67 = libraryCopy;
     [v6 replaceItems:v47 completion:v66];
   }
 
   else
   {
-    v50 = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
-    v51 = [v50 isEqualToString:*MEMORY[0x277D48570]];
+    insertLocation2 = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
+    v51 = [insertLocation2 isEqualToString:*MEMORY[0x277D48570]];
 
     if (v51)
     {
@@ -973,27 +973,27 @@ LABEL_29:
       v64[2] = sub_2334E1A28;
       v64[3] = &unk_2789DB918;
       v64[4] = self;
-      v49 = v53;
-      v65 = v53;
+      v49 = libraryCopy;
+      v65 = libraryCopy;
       [v6 appendItems:v7 completion:v64];
     }
 
     else
     {
-      v49 = v53;
-      [MPAssistantAddMediaItemsToPlaylist _notifyAssistantWithString:@"Uexpected insertion order requested." requestHash:self->_requestAceHash completion:v53];
+      v49 = libraryCopy;
+      [MPAssistantAddMediaItemsToPlaylist _notifyAssistantWithString:@"Uexpected insertion order requested." requestHash:self->_requestAceHash completion:libraryCopy];
     }
   }
 
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendToPlaylistWithCompletion:(id)a3
+- (void)_appendToPlaylistWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMPAddMediaItemsToPlaylist *)self playlist];
-  v6 = [v5 MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
+  completionCopy = completion;
+  playlist = [(SAMPAddMediaItemsToPlaylist *)self playlist];
+  v6 = [playlist MPMediaItemCollectionRepresentationWithUserIdentity:self->_userIdentity plugin:@"Add Media Items To Playlist" hash:self->_requestAceHash];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1001,8 +1001,8 @@ LABEL_29:
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Collection object was not a playlist. Unable to add tracks to something that is not a playlist."];
     if (![(NSString *)self->_requestAceHash length])
     {
-      v15 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-      v16 = sub_233505670(@"Add Media Items To Playlist", v15);
+      aceId = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+      v16 = sub_233505670(@"Add Media Items To Playlist", aceId);
       requestAceHash = self->_requestAceHash;
       self->_requestAceHash = v16;
     }
@@ -1029,20 +1029,20 @@ LABEL_29:
     v20 = [v21 initWithErrorCode:*MEMORY[0x277D485F0]];
 LABEL_15:
     v22 = v20;
-    v23 = [v20 dictionary];
-    v4[2](v4, v23);
+    dictionary = [v20 dictionary];
+    completionCopy[2](completionCopy, dictionary);
 
     goto LABEL_16;
   }
 
-  v8 = [(MPAssistantAddMediaItemsToPlaylist *)self _isSagaAuthenticated];
+  _isSagaAuthenticated = [(MPAssistantAddMediaItemsToPlaylist *)self _isSagaAuthenticated];
   v9 = [(NSString *)self->_requestAceHash length];
-  if (v8)
+  if (_isSagaAuthenticated)
   {
     if (!v9)
     {
-      v10 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-      v11 = sub_233505670(@"Add Media Items To Playlist", v10);
+      aceId2 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+      v11 = sub_233505670(@"Add Media Items To Playlist", aceId2);
       v12 = self->_requestAceHash;
       self->_requestAceHash = v11;
     }
@@ -1056,15 +1056,15 @@ LABEL_15:
       _os_log_impl(&dword_2334D9000, v13, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (append) <%{public}@>: iCML available", &v30, 0xCu);
     }
 
-    [(MPAssistantAddMediaItemsToPlaylist *)self _addItemsToCloudLibrary:v4];
+    [(MPAssistantAddMediaItemsToPlaylist *)self _addItemsToCloudLibrary:completionCopy];
   }
 
   else
   {
     if (!v9)
     {
-      v25 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-      v26 = sub_233505670(@"Add Media Items To Playlist", v25);
+      aceId3 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+      v26 = sub_233505670(@"Add Media Items To Playlist", aceId3);
       v27 = self->_requestAceHash;
       self->_requestAceHash = v26;
     }
@@ -1078,7 +1078,7 @@ LABEL_15:
       _os_log_impl(&dword_2334D9000, v28, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (append) <%{public}@>: local library", &v30, 0xCu);
     }
 
-    [(MPAssistantAddMediaItemsToPlaylist *)self _addItemsToLocalLibrary:v4];
+    [(MPAssistantAddMediaItemsToPlaylist *)self _addItemsToLocalLibrary:completionCopy];
   }
 
 LABEL_16:
@@ -1086,14 +1086,14 @@ LABEL_16:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v6 = sub_233505670(@"Add Media Items To Playlist", v5);
+    aceId = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v6 = sub_233505670(@"Add Media Items To Playlist", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -1102,32 +1102,32 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = self->_requestAceHash;
-    v10 = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
-    v11 = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
-    v12 = [(SAMPAddMediaItemsToPlaylist *)self playlist];
-    v13 = [v12 dictionary];
+    insertLocation = [(SAMPAddMediaItemsToPlaylist *)self insertLocation];
+    mediaItems = [(SAMPAddMediaItemsToPlaylist *)self mediaItems];
+    playlist = [(SAMPAddMediaItemsToPlaylist *)self playlist];
+    dictionary = [playlist dictionary];
     *buf = 138544130;
     v22 = v9;
     v23 = 2114;
-    v24 = v10;
+    v24 = insertLocation;
     v25 = 2114;
-    v26 = v11;
+    v26 = mediaItems;
     v27 = 2114;
-    v28 = v13;
+    v28 = dictionary;
     _os_log_impl(&dword_2334D9000, v8, OS_LOG_TYPE_DEFAULT, "Add Media Items To Playlist (invoke) <%{public}@>: insert location %{public}@, media item %{public}@, playlist %{public}@", buf, 0x2Au);
   }
 
   v14 = self->_requestAceHash;
-  v15 = [(SAMPAddMediaItemsToPlaylist *)self influencedUserSharedUserId];
-  v16 = [(SAMPAddMediaItemsToPlaylist *)self influencedUserSharedUserId];
+  influencedUserSharedUserId = [(SAMPAddMediaItemsToPlaylist *)self influencedUserSharedUserId];
+  influencedUserSharedUserId2 = [(SAMPAddMediaItemsToPlaylist *)self influencedUserSharedUserId];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_2334E2150;
   v19[3] = &unk_2789DB648;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
-  sub_233506A24(@"Add Media Items To Playlist", v14, v15, v16, v19);
+  v20 = completionCopy;
+  v17 = completionCopy;
+  sub_233506A24(@"Add Media Items To Playlist", v14, influencedUserSharedUserId, influencedUserSharedUserId2, v19);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1137,8 +1137,8 @@ LABEL_16:
   v12 = *MEMORY[0x277D85DE8];
   if (![(NSString *)self->_requestAceHash length])
   {
-    v3 = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
-    v4 = sub_233505670(@"Add Media Items To Playlist", v3);
+    aceId = [(MPAssistantAddMediaItemsToPlaylist *)self aceId];
+    v4 = sub_233505670(@"Add Media Items To Playlist", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v4;
   }
@@ -1158,75 +1158,75 @@ LABEL_16:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_notifyAssistantWithError:(id)a3 requestHash:(id)a4 completion:(id)a5
++ (void)_notifyAssistantWithError:(id)error requestHash:(id)hash completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (a3)
+  hashCopy = hash;
+  if (error)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = a5;
-    v10 = [v8 stringWithFormat:@"%@", a3];
-    v11 = [objc_alloc(MEMORY[0x277D47208]) initWithReason:v10];
-    v12 = _MPLogCategoryAssistant();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    completionCopy = completion;
+    error = [v8 stringWithFormat:@"%@", error];
+    v11 = [objc_alloc(MEMORY[0x277D47208]) initWithReason:error];
+    dictionary2 = _MPLogCategoryAssistant();
+    if (os_log_type_enabled(dictionary2, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 dictionary];
+      dictionary = [v11 dictionary];
       *buf = 138543874;
       v19 = @"Add Media Items To Playlist";
       v20 = 2114;
-      v21 = v7;
+      v21 = hashCopy;
       v22 = 2114;
-      v23 = v13;
-      _os_log_impl(&dword_2334D9000, v12, OS_LOG_TYPE_ERROR, "%{public}@ (completion) <%{public}@>: notifying assistant %{public}@", buf, 0x20u);
+      v23 = dictionary;
+      _os_log_impl(&dword_2334D9000, dictionary2, OS_LOG_TYPE_ERROR, "%{public}@ (completion) <%{public}@>: notifying assistant %{public}@", buf, 0x20u);
     }
 
     goto LABEL_6;
   }
 
   v14 = MEMORY[0x277D47218];
-  v15 = a5;
+  completionCopy2 = completion;
   v11 = objc_alloc_init(v14);
-  v10 = _MPLogCategoryAssistant();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  error = _MPLogCategoryAssistant();
+  if (os_log_type_enabled(error, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v11 dictionary];
+    dictionary2 = [v11 dictionary];
     *buf = 138543874;
     v19 = @"Add Media Items To Playlist";
     v20 = 2114;
-    v21 = v7;
+    v21 = hashCopy;
     v22 = 2114;
-    v23 = v12;
-    _os_log_impl(&dword_2334D9000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ (completion) <%{public}@>: notifying assistant %{public}@", buf, 0x20u);
+    v23 = dictionary2;
+    _os_log_impl(&dword_2334D9000, error, OS_LOG_TYPE_DEFAULT, "%{public}@ (completion) <%{public}@>: notifying assistant %{public}@", buf, 0x20u);
 LABEL_6:
   }
 
-  v16 = [v11 dictionary];
-  (*(a5 + 2))(a5, v16);
+  dictionary3 = [v11 dictionary];
+  (*(completion + 2))(completion, dictionary3);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_notifyAssistantWithString:(id)a3 requestHash:(id)a4 completion:(id)a5
++ (void)_notifyAssistantWithString:(id)string requestHash:(id)hash completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  stringCopy = string;
+  hashCopy = hash;
+  if (stringCopy)
   {
     v9 = MEMORY[0x277D47208];
-    v10 = a5;
-    v11 = [[v9 alloc] initWithReason:v7];
+    completionCopy = completion;
+    v11 = [[v9 alloc] initWithReason:stringCopy];
     v12 = _MPLogCategoryAssistant();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 dictionary];
+      dictionary = [v11 dictionary];
       v20 = 138543874;
       v21 = @"Add Media Items To Playlist";
       v22 = 2114;
-      v23 = v8;
+      v23 = hashCopy;
       v24 = 2114;
-      v25 = v13;
+      v25 = dictionary;
       v14 = v12;
       v15 = OS_LOG_TYPE_ERROR;
 LABEL_6:
@@ -1237,26 +1237,26 @@ LABEL_6:
   else
   {
     v16 = MEMORY[0x277D47218];
-    v17 = a5;
+    completionCopy2 = completion;
     v11 = objc_alloc_init(v16);
     v12 = _MPLogCategoryAssistant();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v11 dictionary];
+      dictionary = [v11 dictionary];
       v20 = 138543874;
       v21 = @"Add Media Items To Playlist";
       v22 = 2114;
-      v23 = v8;
+      v23 = hashCopy;
       v24 = 2114;
-      v25 = v13;
+      v25 = dictionary;
       v14 = v12;
       v15 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_6;
     }
   }
 
-  v18 = [v11 dictionary];
-  (*(a5 + 2))(a5, v18);
+  dictionary2 = [v11 dictionary];
+  (*(completion + 2))(completion, dictionary2);
 
   v19 = *MEMORY[0x277D85DE8];
 }

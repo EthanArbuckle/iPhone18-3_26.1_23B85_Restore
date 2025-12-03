@@ -1,16 +1,16 @@
 @interface ITIdleTimerAssertion
 - (NSString)_uniqueReason;
-- (id)_initWithConfiguration:(id)a3 forReason:(id)a4 invalidationBlock:(id)a5;
+- (id)_initWithConfiguration:(id)configuration forReason:(id)reason invalidationBlock:(id)block;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation ITIdleTimerAssertion
 
-- (id)_initWithConfiguration:(id)a3 forReason:(id)a4 invalidationBlock:(id)a5
+- (id)_initWithConfiguration:(id)configuration forReason:(id)reason invalidationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  reasonCopy = reason;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3042000000;
@@ -22,15 +22,15 @@
   v17[2] = __75__ITIdleTimerAssertion__initWithConfiguration_forReason_invalidationBlock___block_invoke;
   v17[3] = &unk_2797A5478;
   v19 = &v20;
-  v11 = v10;
+  v11 = blockCopy;
   v18 = v11;
   v16.receiver = self;
   v16.super_class = ITIdleTimerAssertion;
-  v12 = [(BSSimpleAssertion *)&v16 initWithIdentifier:@"IdleTimerConfiguration" forReason:v9 invalidationBlock:v17];
+  v12 = [(BSSimpleAssertion *)&v16 initWithIdentifier:@"IdleTimerConfiguration" forReason:reasonCopy invalidationBlock:v17];
   if (v12)
   {
     objc_storeWeak(v21 + 5, v12);
-    v13 = [v8 copy];
+    v13 = [configurationCopy copy];
     configuration = v12->_configuration;
     v12->_configuration = v13;
   }
@@ -55,20 +55,20 @@ uint64_t __75__ITIdleTimerAssertion__initWithConfiguration_forReason_invalidatio
 {
   v8.receiver = self;
   v8.super_class = ITIdleTimerAssertion;
-  v3 = [(BSSimpleAssertion *)&v8 succinctDescriptionBuilder];
-  v4 = [(ITIdleTimerAssertion *)self _uniqueReason];
-  v5 = [v3 appendObject:v4 withName:@"uniqueReason"];
+  succinctDescriptionBuilder = [(BSSimpleAssertion *)&v8 succinctDescriptionBuilder];
+  _uniqueReason = [(ITIdleTimerAssertion *)self _uniqueReason];
+  v5 = [succinctDescriptionBuilder appendObject:_uniqueReason withName:@"uniqueReason"];
 
-  v6 = [v3 appendObject:self->_configuration withName:@"configuration"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_configuration withName:@"configuration"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (NSString)_uniqueReason
 {
   configuration = self->_configuration;
-  v3 = [(BSSimpleAssertion *)self reason];
-  v4 = [(ITIdleTimerConfiguration *)configuration _uniquedReason:v3];
+  reason = [(BSSimpleAssertion *)self reason];
+  v4 = [(ITIdleTimerConfiguration *)configuration _uniquedReason:reason];
 
   return v4;
 }

@@ -1,17 +1,17 @@
 @interface EKPredicateSearch
-+ (id)searchWithEntityClass:(Class)a3 predicate:(id)a4 store:(id)a5;
++ (id)searchWithEntityClass:(Class)class predicate:(id)predicate store:(id)store;
 + (id)signpostHandle;
-- (EKPredicateSearch)initWithEntityClass:(Class)a3 predicate:(id)a4 store:(id)a5;
+- (EKPredicateSearch)initWithEntityClass:(Class)class predicate:(id)predicate store:(id)store;
 - (id)_createOSActivity;
 - (id)fetchObjectIDs;
 - (id)runSynchronously;
-- (id)startWithCompletion:(id)a3 queue:(id)a4;
+- (id)startWithCompletion:(id)completion queue:(id)queue;
 - (void)_createOSActivity;
-- (void)_startActivityWithCompletion:(id)a3 synchronous:(BOOL)a4 queue:(id)a5;
-- (void)_startFetchObjectIDsActivityWithCompletion:(id)a3 synchronous:(BOOL)a4 queue:(id)a5;
+- (void)_startActivityWithCompletion:(id)completion synchronous:(BOOL)synchronous queue:(id)queue;
+- (void)_startFetchObjectIDsActivityWithCompletion:(id)completion synchronous:(BOOL)synchronous queue:(id)queue;
 - (void)cancel;
-- (void)filterSkippedReminders:(id)a3;
-- (void)signpostEndWithError:(int)a3 count:(unint64_t)a4;
+- (void)filterSkippedReminders:(id)reminders;
+- (void)signpostEndWithError:(int)error count:(unint64_t)count;
 - (void)signpostStart;
 @end
 
@@ -261,7 +261,7 @@
 
   else
   {
-    v9 = [(NSPredicate *)self->_predicate predicateFormat];
+    predicateFormat = [(NSPredicate *)self->_predicate predicateFormat];
     v10 = +[EKPredicateSearch signpostHandle];
     v11 = v10;
     if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -270,7 +270,7 @@
       *buf = 138412546;
       v17 = objc_opt_class();
       v18 = 2112;
-      v19 = v9;
+      v19 = predicateFormat;
       v13 = v17;
       _os_signpost_emit_with_name_impl(&dword_1A805E000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v4, "EKPredicateSearch", "predicateClass=%@; predicateFormat=%@", buf, 0x16u);
     }
@@ -311,11 +311,11 @@
   return v2;
 }
 
-+ (id)searchWithEntityClass:(Class)a3 predicate:(id)a4 store:(id)a5
++ (id)searchWithEntityClass:(Class)class predicate:(id)predicate store:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithEntityClass:a3 predicate:v9 store:v8];
+  storeCopy = store;
+  predicateCopy = predicate;
+  v10 = [[self alloc] initWithEntityClass:class predicate:predicateCopy store:storeCopy];
 
   return v10;
 }
@@ -327,25 +327,25 @@ uint64_t __35__EKPredicateSearch_signpostHandle__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (EKPredicateSearch)initWithEntityClass:(Class)a3 predicate:(id)a4 store:(id)a5
+- (EKPredicateSearch)initWithEntityClass:(Class)class predicate:(id)predicate store:(id)store
 {
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = EKPredicateSearch;
   v11 = [(EKPredicateSearch *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_entityClass = a3;
-    objc_storeStrong(&v11->_predicate, a4);
-    objc_storeStrong(&v12->_store, a5);
+    v11->_entityClass = class;
+    objc_storeStrong(&v11->_predicate, predicate);
+    objc_storeStrong(&v12->_store, store);
   }
 
   return v12;
 }
 
-- (void)signpostEndWithError:(int)a3 count:(unint64_t)a4
+- (void)signpostEndWithError:(int)error count:(unint64_t)count
 {
   v15 = *MEMORY[0x1E69E9840];
   v7 = +[EKPredicateSearch signpostHandle];
@@ -356,31 +356,31 @@ uint64_t __35__EKPredicateSearch_signpostHandle__block_invoke()
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     v12[0] = 67109376;
-    v12[1] = a3;
+    v12[1] = error;
     v13 = 2048;
-    v14 = a4;
+    countCopy = count;
     _os_signpost_emit_with_name_impl(&dword_1A805E000, v10, OS_SIGNPOST_INTERVAL_END, v8, "EKPredicateSearch", "error=%i; foundItems=%lu", v12, 0x12u);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startActivityWithCompletion:(id)a3 synchronous:(BOOL)a4 queue:(id)a5
+- (void)_startActivityWithCompletion:(id)completion synchronous:(BOOL)synchronous queue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(EKPredicateSearch *)self _createOSActivity];
+  completionCopy = completion;
+  queueCopy = queue;
+  _createOSActivity = [(EKPredicateSearch *)self _createOSActivity];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__EKPredicateSearch__startActivityWithCompletion_synchronous_queue___block_invoke;
   v13[3] = &unk_1E77FE6C0;
-  v14 = v9;
-  v15 = v8;
-  v16 = a4;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  synchronousCopy = synchronous;
   v13[4] = self;
-  v11 = v9;
-  v12 = v8;
-  os_activity_apply(v10, v13);
+  v11 = queueCopy;
+  v12 = completionCopy;
+  os_activity_apply(_createOSActivity, v13);
 }
 
 uint64_t __68__EKPredicateSearch__startActivityWithCompletion_synchronous_queue___block_invoke(uint64_t a1)
@@ -394,22 +394,22 @@ uint64_t __68__EKPredicateSearch__startActivityWithCompletion_synchronous_queue_
   return [v5 _startActualWithCompletion:v2 synchronous:v4 queue:v3];
 }
 
-- (void)_startFetchObjectIDsActivityWithCompletion:(id)a3 synchronous:(BOOL)a4 queue:(id)a5
+- (void)_startFetchObjectIDsActivityWithCompletion:(id)completion synchronous:(BOOL)synchronous queue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(EKPredicateSearch *)self _createOSActivity];
+  completionCopy = completion;
+  queueCopy = queue;
+  _createOSActivity = [(EKPredicateSearch *)self _createOSActivity];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__EKPredicateSearch__startFetchObjectIDsActivityWithCompletion_synchronous_queue___block_invoke;
   v13[3] = &unk_1E77FE6C0;
-  v14 = v9;
-  v15 = v8;
-  v16 = a4;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  synchronousCopy = synchronous;
   v13[4] = self;
-  v11 = v9;
-  v12 = v8;
-  os_activity_apply(v10, v13);
+  v11 = queueCopy;
+  v12 = completionCopy;
+  os_activity_apply(_createOSActivity, v13);
 }
 
 uint64_t __82__EKPredicateSearch__startFetchObjectIDsActivityWithCompletion_synchronous_queue___block_invoke(uint64_t a1)
@@ -556,14 +556,14 @@ LABEL_3:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)filterSkippedReminders:(id)a3
+- (void)filterSkippedReminders:(id)reminders
 {
-  v6 = a3;
+  remindersCopy = reminders;
   predicate = self->_predicate;
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(NSPredicate *)self->_predicate excludeSkippedReminders]&& [(EKEventStore *)self->_store showsIntegrations])
   {
     v5 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_72];
-    [v6 filterUsingPredicate:v5];
+    [remindersCopy filterUsingPredicate:v5];
   }
 }
 
@@ -642,7 +642,7 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)startWithCompletion:(id)a3 queue:(id)a4
+- (id)startWithCompletion:(id)completion queue:(id)queue
 {
   if (self->_isCancelled)
   {
@@ -652,17 +652,17 @@ LABEL_14:
   else
   {
     store = self->_store;
-    v10 = a4;
-    v11 = a3;
-    v12 = [(EKEventStore *)store connection];
-    v13 = [v12 addCancellableRemoteOperation:self];
+    queueCopy = queue;
+    completionCopy = completion;
+    connection = [(EKEventStore *)store connection];
+    v13 = [connection addCancellableRemoteOperation:self];
 
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v13];
     cancellationToken = self->_cancellationToken;
     self->_cancellationToken = v14;
 
     self->_retryCount = 0;
-    [(EKPredicateSearch *)self _startActivityWithCompletion:v11 synchronous:0 queue:v10];
+    [(EKPredicateSearch *)self _startActivityWithCompletion:completionCopy synchronous:0 queue:queueCopy];
 
     v5 = [[EKEventFetchRequestToken alloc] initWithEventStore:self->_store token:v13];
   }
@@ -673,9 +673,9 @@ LABEL_14:
 - (void)cancel
 {
   self->_isCancelled = 1;
-  v3 = [(EKEventStore *)self->_store connection];
-  v4 = [v3 CADOperationProxy];
-  [v4 CADDatabaseCancelFetchRequestWithIdentifier:{objc_msgSend(self->_cancellationToken, "unsignedIntValue")}];
+  connection = [(EKEventStore *)self->_store connection];
+  cADOperationProxy = [connection CADOperationProxy];
+  [cADOperationProxy CADDatabaseCancelFetchRequestWithIdentifier:{objc_msgSend(self->_cancellationToken, "unsignedIntValue")}];
 
   cancellationToken = self->_cancellationToken;
   self->_cancellationToken = 0;
@@ -684,7 +684,7 @@ LABEL_14:
 - (void)_createOSActivity
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = a2;
   v6 = 138412290;
   v7 = objc_opt_class();

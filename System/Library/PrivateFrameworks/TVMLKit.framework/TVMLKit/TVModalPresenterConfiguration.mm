@@ -2,31 +2,31 @@
 - (CGRect)sourceRect;
 - (CGSize)formSheetSize;
 - (CGSize)popoverSize;
-- (TVModalPresenterConfiguration)initWithDictionary:(id)a3;
-- (void)_configureWithDictionary:(id)a3;
+- (TVModalPresenterConfiguration)initWithDictionary:(id)dictionary;
+- (void)_configureWithDictionary:(id)dictionary;
 @end
 
 @implementation TVModalPresenterConfiguration
 
-- (TVModalPresenterConfiguration)initWithDictionary:(id)a3
+- (TVModalPresenterConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = TVModalPresenterConfiguration;
   v5 = [(TVModalPresenterConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TVModalPresenterConfiguration *)v5 _configureWithDictionary:v4];
+    [(TVModalPresenterConfiguration *)v5 _configureWithDictionary:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (void)_configureWithDictionary:(id)a3
+- (void)_configureWithDictionary:(id)dictionary
 {
-  v66 = a3;
-  v4 = [v66 objectForKey:@"popover"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"popover"];
   objc_opt_class();
   v5 = 0.0;
   v63 = v4;
@@ -76,7 +76,7 @@
     v11 = 0.0;
   }
 
-  v16 = [v66 objectForKey:@"playback"];
+  v16 = [dictionaryCopy objectForKey:@"playback"];
   v17 = v16;
   if (v16)
   {
@@ -85,7 +85,7 @@
     v9 = 2;
   }
 
-  v19 = [v66 objectForKey:@"formSheet"];
+  v19 = [dictionaryCopy objectForKey:@"formSheet"];
   objc_opt_class();
   v20 = 0.0;
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v21 = v19) != 0)
@@ -118,21 +118,21 @@
     v23 = 0.0;
   }
 
-  v27 = [v66 objectForKey:@"navigationBarHidden"];
+  v27 = [dictionaryCopy objectForKey:@"navigationBarHidden"];
   objc_opt_class();
   v59 = v27;
   if (objc_opt_isKindOfClass())
   {
-    v57 = [v27 BOOLValue];
+    bOOLValue = [v27 BOOLValue];
   }
 
   else
   {
-    v57 = 1;
+    bOOLValue = 1;
   }
 
   v28 = MEMORY[0x277CBF3A0];
-  v29 = [v66 objectForKey:@"useCustomPresenter"];
+  v29 = [dictionaryCopy objectForKey:@"useCustomPresenter"];
   objc_opt_class();
   v61 = v17;
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v29 BOOLValue])
@@ -144,7 +144,7 @@
   v31 = v28[1];
   v32 = v28[2];
   v33 = v28[3];
-  v34 = [v66 objectForKey:@"sourceview"];
+  v34 = [dictionaryCopy objectForKey:@"sourceview"];
   objc_opt_class();
   v60 = v19;
   v58 = v29;
@@ -189,7 +189,7 @@ LABEL_33:
 
   v10 = v37;
 LABEL_38:
-  v45 = [v66 objectForKey:@"overridePresentationStyle"];
+  v45 = [dictionaryCopy objectForKey:@"overridePresentationStyle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -232,16 +232,16 @@ LABEL_38:
     v47 = v10;
   }
 
-  v48 = [v66 objectForKey:@"allowsModalOverModal"];
+  v48 = [dictionaryCopy objectForKey:@"allowsModalOverModal"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v49 = [v48 BOOLValue];
+    bOOLValue2 = [v48 BOOLValue];
   }
 
   else
   {
-    v49 = 0;
+    bOOLValue2 = 0;
   }
 
   v50 = [v65 copy];
@@ -267,10 +267,10 @@ LABEL_38:
 
   self->_formSheetSize.width = v20;
   self->_formSheetSize.height = v23;
-  self->_navigationBarHidden = v57;
+  self->_navigationBarHidden = bOOLValue;
   self->_popoverSize.width = v5;
   self->_popoverSize.height = v11;
-  self->_allowsModalOverModal = v49;
+  self->_allowsModalOverModal = bOOLValue2;
   self->_allowsMenuDismissal = 1;
   sourceView = self->_sourceView;
   self->_presentationStyle = v47;

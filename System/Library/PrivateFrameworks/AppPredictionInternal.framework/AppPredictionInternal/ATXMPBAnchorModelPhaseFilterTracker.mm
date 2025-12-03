@@ -1,16 +1,16 @@
 @interface ATXMPBAnchorModelPhaseFilterTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPhaseDescription:(id)a3;
+- (int)StringAsPhaseDescription:(id)description;
 - (int)phaseDescription;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumStartingCandidates:(BOOL)a3;
-- (void)setHasPhaseDescription:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumStartingCandidates:(BOOL)candidates;
+- (void)setHasPhaseDescription:(BOOL)description;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBAnchorModelPhaseFilterTracker
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasPhaseDescription:(BOOL)a3
+- (void)setHasPhaseDescription:(BOOL)description
 {
-  if (a3)
+  if (description)
   {
     v3 = 4;
   }
@@ -43,13 +43,13 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPhaseDescription:(id)a3
+- (int)StringAsPhaseDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = 1;
-  if (([v3 isEqualToString:@"First"] & 1) == 0)
+  if (([descriptionCopy isEqualToString:@"First"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Second"])
+    if ([descriptionCopy isEqualToString:@"Second"])
     {
       v4 = 2;
     }
@@ -63,9 +63,9 @@
   return v4;
 }
 
-- (void)setHasNumStartingCandidates:(BOOL)a3
+- (void)setHasNumStartingCandidates:(BOOL)candidates
 {
-  if (a3)
+  if (candidates)
   {
     v3 = 2;
   }
@@ -84,15 +84,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBAnchorModelPhaseFilterTracker;
   v4 = [(ATXMPBAnchorModelPhaseFilterTracker *)&v8 description];
-  v5 = [(ATXMPBAnchorModelPhaseFilterTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBAnchorModelPhaseFilterTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     phaseDescription = self->_phaseDescription;
@@ -111,20 +111,20 @@
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_phaseDescription];
     }
 
-    [v3 setObject:v5 forKey:@"phaseDescription"];
+    [dictionary setObject:v5 forKey:@"phaseDescription"];
   }
 
   phaseType = self->_phaseType;
   if (phaseType)
   {
-    [v3 setObject:phaseType forKey:@"phaseType"];
+    [dictionary setObject:phaseType forKey:@"phaseType"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_numStartingCandidates];
-    [v3 setObject:v8 forKey:@"numStartingCandidates"];
+    [dictionary setObject:v8 forKey:@"numStartingCandidates"];
 
     has = self->_has;
   }
@@ -132,39 +132,39 @@
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_numEndingCandidates];
-    [v3 setObject:v9 forKey:@"numEndingCandidates"];
+    [dictionary setObject:v9 forKey:@"numEndingCandidates"];
   }
 
   anchorType = self->_anchorType;
   if (anchorType)
   {
-    [v3 setObject:anchorType forKey:@"anchorType"];
+    [dictionary setObject:anchorType forKey:@"anchorType"];
   }
 
   abGroup = self->_abGroup;
   if (abGroup)
   {
-    [v3 setObject:abGroup forKey:@"abGroup"];
+    [dictionary setObject:abGroup forKey:@"abGroup"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
     phaseDescription = self->_phaseDescription;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_phaseType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -172,7 +172,7 @@
   {
     numStartingCandidates = self->_numStartingCandidates;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -180,68 +180,68 @@
   {
     numEndingCandidates = self->_numEndingCandidates;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_anchorType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[8] = self->_phaseDescription;
-    *(v4 + 48) |= 4u;
+    toCopy[8] = self->_phaseDescription;
+    *(toCopy + 48) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_phaseType)
   {
-    [v4 setPhaseType:?];
-    v4 = v6;
+    [toCopy setPhaseType:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[7] = self->_numStartingCandidates;
-    *(v4 + 48) |= 2u;
+    toCopy[7] = self->_numStartingCandidates;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[6] = self->_numEndingCandidates;
-    *(v4 + 48) |= 1u;
+    toCopy[6] = self->_numEndingCandidates;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_anchorType)
   {
     [v6 setAnchorType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_abGroup)
   {
     [v6 setAbGroup:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -249,7 +249,7 @@
     *(v5 + 48) |= 4u;
   }
 
-  v7 = [(NSString *)self->_phaseType copyWithZone:a3];
+  v7 = [(NSString *)self->_phaseType copyWithZone:zone];
   v8 = *(v6 + 40);
   *(v6 + 40) = v7;
 
@@ -267,42 +267,42 @@
     *(v6 + 48) |= 1u;
   }
 
-  v10 = [(NSString *)self->_anchorType copyWithZone:a3];
+  v10 = [(NSString *)self->_anchorType copyWithZone:zone];
   v11 = *(v6 + 16);
   *(v6 + 16) = v10;
 
-  v12 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v12 = [(NSString *)self->_abGroup copyWithZone:zone];
   v13 = *(v6 + 8);
   *(v6 + 8) = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_phaseDescription != *(v4 + 8))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_phaseDescription != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   phaseType = self->_phaseType;
-  if (phaseType | *(v4 + 5))
+  if (phaseType | *(equalCopy + 5))
   {
     if (![(NSString *)phaseType isEqual:?])
     {
@@ -314,41 +314,41 @@ LABEL_24:
     has = self->_has;
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_numStartingCandidates != *(v4 + 7))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_numStartingCandidates != *(equalCopy + 7))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if (has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_numEndingCandidates != *(v4 + 6))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_numEndingCandidates != *(equalCopy + 6))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_24;
   }
 
   anchorType = self->_anchorType;
-  if (anchorType | *(v4 + 2) && ![(NSString *)anchorType isEqual:?])
+  if (anchorType | *(equalCopy + 2) && ![(NSString *)anchorType isEqual:?])
   {
     goto LABEL_24;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1))
+  if (abGroup | *(equalCopy + 1))
   {
     v11 = [(NSString *)abGroup isEqual:?];
   }
@@ -402,46 +402,46 @@ LABEL_9:
   return v7 ^ [(NSString *)self->_abGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[12] & 4) != 0)
+  fromCopy = from;
+  if ((fromCopy[12] & 4) != 0)
   {
-    self->_phaseDescription = v4[8];
+    self->_phaseDescription = fromCopy[8];
     *&self->_has |= 4u;
   }
 
-  v6 = v4;
-  if (*(v4 + 5))
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(ATXMPBAnchorModelPhaseFilterTracker *)self setPhaseType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_numStartingCandidates = v4[7];
+    self->_numStartingCandidates = fromCopy[7];
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if (v5)
   {
-    self->_numEndingCandidates = v4[6];
+    self->_numEndingCandidates = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXMPBAnchorModelPhaseFilterTracker *)self setAnchorType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXMPBAnchorModelPhaseFilterTracker *)self setAbGroup:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

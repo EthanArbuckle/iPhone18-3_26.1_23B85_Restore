@@ -2,11 +2,11 @@
 - (id)specifiers;
 - (void)_changeStoragePlan;
 - (void)_storageUpgrade;
-- (void)_storageUpgradeOfferNotification:(id)a3;
+- (void)_storageUpgradeOfferNotification:(id)notification;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)handleURL:(id)l;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICQCloudStorageController
@@ -15,8 +15,8 @@
 {
   [(ICQCloudStorageGroupController *)self->_cloudGroup groupRemovedFromListController];
   [(NSTimer *)self->_storageUpgradeOfferTimer invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7F2A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7F2A0] object:0];
 
   v4.receiver = self;
   v4.super_class = ICQCloudStorageController;
@@ -51,17 +51,17 @@
 
 - (void)_changeStoragePlan
 {
-  v3 = [(ICQCloudStorageController *)self specifiers];
+  specifiers = [(ICQCloudStorageController *)self specifiers];
   [(ICQCloudStorageGroupController *)self->_cloudGroup addGroupToListController:self];
   cloudGroup = self->_cloudGroup;
 
   [(ICQCloudStorageGroupController *)cloudGroup enterBuyStorage];
 }
 
-- (void)_storageUpgradeOfferNotification:(id)a3
+- (void)_storageUpgradeOfferNotification:(id)notification
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D7F2A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7F2A0] object:0];
 
   [(NSTimer *)self->_storageUpgradeOfferTimer invalidate];
   storageUpgradeOfferTimer = self->_storageUpgradeOfferTimer;
@@ -109,13 +109,13 @@ void __62__ICQCloudStorageController__storageUpgradeOfferNotification___block_in
 
 - (void)_storageUpgrade
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__storageUpgradeOfferNotification_ name:*MEMORY[0x277D7F2A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__storageUpgradeOfferNotification_ name:*MEMORY[0x277D7F2A0] object:0];
 
-  v4 = [MEMORY[0x277D7F390] sharedOfferManager];
-  v5 = [v4 fetchOfferIfNeeded];
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+  fetchOfferIfNeeded = [mEMORY[0x277D7F390] fetchOfferIfNeeded];
 
-  if (v5)
+  if (fetchOfferIfNeeded)
   {
     v6 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__storageUpgradeOfferTimeout_ selector:0 userInfo:0 repeats:10.0];
     storageUpgradeOfferTimer = self->_storageUpgradeOfferTimer;
@@ -129,13 +129,13 @@ void __62__ICQCloudStorageController__storageUpgradeOfferNotification___block_in
   }
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"path"];
+  lCopy = l;
+  v5 = [lCopy objectForKey:@"path"];
   if ([v5 isEqualToString:@"MANAGE_STORAGE"])
   {
-    v6 = [(ICQCloudStorageController *)self specifiers];
+    specifiers = [(ICQCloudStorageController *)self specifiers];
     [(ICQCloudStorageGroupController *)self->_cloudGroup addGroupToListController:self];
     [(ICQCloudStorageGroupController *)self->_cloudGroup enterManageStorageWhenPossible];
   }
@@ -154,26 +154,26 @@ void __62__ICQCloudStorageController__storageUpgradeOfferNotification___block_in
   {
     v7.receiver = self;
     v7.super_class = ICQCloudStorageController;
-    [(ICQCloudStorageController *)&v7 handleURL:v4];
+    [(ICQCloudStorageController *)&v7 handleURL:lCopy];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ICQCloudStorageController;
-  [(ICQCloudStorageController *)&v4 viewWillAppear:a3];
+  [(ICQCloudStorageController *)&v4 viewWillAppear:appear];
   if ([(ICQCloudStorageController *)self isMovingToParentViewController])
   {
     [(ICQCloudStorageGroupController *)self->_cloudGroup addGroupToListController:self];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ICQCloudStorageController;
-  [(ICQCloudStorageController *)&v4 viewWillDisappear:a3];
+  [(ICQCloudStorageController *)&v4 viewWillDisappear:disappear];
   if ([(ICQCloudStorageController *)self isMovingFromParentViewController])
   {
     [(ICQCloudStorageGroupController *)self->_cloudGroup groupRemovedFromListController];

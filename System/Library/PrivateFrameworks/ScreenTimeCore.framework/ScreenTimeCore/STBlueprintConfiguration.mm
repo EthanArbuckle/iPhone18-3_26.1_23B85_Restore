@@ -1,37 +1,37 @@
 @interface STBlueprintConfiguration
-+ (Class)cemDeclarationClassForConfigurationType:(id)a3;
-+ (id)blueprintConfigurationTypeForDeclaration:(id)a3;
-+ (id)blueprintConfigurationTypeForDeclarationType:(id)a3;
-+ (id)cemConfigurationIdentifierWithType:(id)a3 forUser:(id)a4;
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)fetchRequestMatchingBlueprintsConfigurationForBlueprint:(id)a3 ofType:(id)a4 includeTombstones:(BOOL)a5;
-+ (id)fetchRequestMatchingBlueprintsForUserWithDSID:(id)a3 ofType:(id)a4;
-- (BOOL)_validateBlueprint:(id)a3;
-- (BOOL)_validateIdentifier:(id)a3;
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
-- (id)_createIdentifierSubstringForBlueprintType:(id)a3 organization:(id)a4 configType:(id)a5 identifier:(id)a6 error:(id)a7;
-- (id)_organizationStr:(id)a3;
++ (Class)cemDeclarationClassForConfigurationType:(id)type;
++ (id)blueprintConfigurationTypeForDeclaration:(id)declaration;
++ (id)blueprintConfigurationTypeForDeclarationType:(id)type;
++ (id)cemConfigurationIdentifierWithType:(id)type forUser:(id)user;
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error;
++ (id)fetchRequestMatchingBlueprintsConfigurationForBlueprint:(id)blueprint ofType:(id)type includeTombstones:(BOOL)tombstones;
++ (id)fetchRequestMatchingBlueprintsForUserWithDSID:(id)d ofType:(id)type;
+- (BOOL)_validateBlueprint:(id)blueprint;
+- (BOOL)_validateIdentifier:(id)identifier;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
+- (id)_createIdentifierSubstringForBlueprintType:(id)type organization:(id)organization configType:(id)configType identifier:(id)identifier error:(id)error;
+- (id)_organizationStr:(id)str;
 - (id)cemConfiguration;
 - (id)dictionaryRepresentation;
 - (void)cemConfiguration;
-- (void)setCemConfiguration:(id)a3;
+- (void)setCemConfiguration:(id)configuration;
 @end
 
 @implementation STBlueprintConfiguration
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"identifier"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"identifier"];
   [(STBlueprintConfiguration *)self setIdentifier:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"type"];
+  v6 = [representationCopy objectForKeyedSubscript:@"type"];
   [(STBlueprintConfiguration *)self setType:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"payloadPlist"];
+  v7 = [representationCopy objectForKeyedSubscript:@"payloadPlist"];
 
   [(STBlueprintConfiguration *)self setPayloadPlist:v7];
   return 1;
@@ -40,115 +40,115 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(STBlueprintConfiguration *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"identifier"];
+  identifier = [(STBlueprintConfiguration *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v5 = [(STBlueprintConfiguration *)self type];
-  [v3 setObject:v5 forKeyedSubscript:@"type"];
+  type = [(STBlueprintConfiguration *)self type];
+  [v3 setObject:type forKeyedSubscript:@"type"];
 
-  v6 = [(STBlueprintConfiguration *)self payloadPlist];
-  [v3 setObject:v6 forKeyedSubscript:@"payloadPlist"];
+  payloadPlist = [(STBlueprintConfiguration *)self payloadPlist];
+  [v3 setObject:payloadPlist forKeyedSubscript:@"payloadPlist"];
 
   v7 = [v3 copy];
 
   return v7;
 }
 
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 objectForKeyedSubscript:@"identifier"];
-  v11 = [a1 fetchRequest];
+  representationCopy = representation;
+  contextCopy = context;
+  v10 = [representationCopy objectForKeyedSubscript:@"identifier"];
+  fetchRequest = [self fetchRequest];
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"identifier", v10];
-  [v11 setPredicate:v12];
+  [fetchRequest setPredicate:v12];
 
-  v13 = [v11 execute:a5];
+  v13 = [fetchRequest execute:error];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 firstObject];
-    if (!v15)
+    firstObject = [v13 firstObject];
+    if (!firstObject)
     {
-      v15 = [[STBlueprintConfiguration alloc] initWithContext:v9];
-      v16 = [v8 objectForKeyedSubscript:@"identifier"];
-      [(STBlueprintConfiguration *)v15 setIdentifier:v16];
+      firstObject = [[STBlueprintConfiguration alloc] initWithContext:contextCopy];
+      v16 = [representationCopy objectForKeyedSubscript:@"identifier"];
+      [(STBlueprintConfiguration *)firstObject setIdentifier:v16];
     }
   }
 
   else
   {
-    v15 = 0;
+    firstObject = 0;
   }
 
-  return v15;
+  return firstObject;
 }
 
-+ (id)fetchRequestMatchingBlueprintsForUserWithDSID:(id)a3 ofType:(id)a4
++ (id)fetchRequestMatchingBlueprintsForUserWithDSID:(id)d ofType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 fetchRequest];
+  typeCopy = type;
+  dCopy = d;
+  fetchRequest = [self fetchRequest];
   v9 = &unk_1F3059AF8;
-  if (v7)
+  if (dCopy)
   {
-    v9 = v7;
+    v9 = dCopy;
   }
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ IN %K AND %K == %@ AND %K == NO", v9, @"blueprint.users.dsid", @"blueprint.type", v6, @"blueprint.isTombstoned"];
+  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ IN %K AND %K == %@ AND %K == NO", v9, @"blueprint.users.dsid", @"blueprint.type", typeCopy, @"blueprint.isTombstoned"];
 
-  [v8 setPredicate:v10];
+  [fetchRequest setPredicate:v10];
 
-  return v8;
+  return fetchRequest;
 }
 
-+ (id)fetchRequestMatchingBlueprintsConfigurationForBlueprint:(id)a3 ofType:(id)a4 includeTombstones:(BOOL)a5
++ (id)fetchRequestMatchingBlueprintsConfigurationForBlueprint:(id)blueprint ofType:(id)type includeTombstones:(BOOL)tombstones
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 fetchRequest];
-  if (v5)
+  tombstonesCopy = tombstones;
+  typeCopy = type;
+  blueprintCopy = blueprint;
+  fetchRequest = [self fetchRequest];
+  if (tombstonesCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K == %@", @"type", v8, @"blueprint", v9, v13];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K == %@", @"type", typeCopy, @"blueprint", blueprintCopy, v13];
   }
 
   else
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K == %@ AND %K == NO", @"type", v8, @"blueprint", v9, @"blueprint.isTombstoned"];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K == %@ AND %K == NO", @"type", typeCopy, @"blueprint", blueprintCopy, @"blueprint.isTombstoned"];
   }
   v11 = ;
 
-  [v10 setPredicate:v11];
+  [fetchRequest setPredicate:v11];
 
-  return v10;
+  return fetchRequest;
 }
 
-+ (id)cemConfigurationIdentifierWithType:(id)a3 forUser:(id)a4
++ (id)cemConfigurationIdentifierWithType:(id)type forUser:(id)user
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 localUserDeviceState];
+  typeCopy = type;
+  userCopy = user;
+  localUserDeviceState = [userCopy localUserDeviceState];
 
-  v8 = [v6 familySettings];
-  v9 = [v8 isManaged];
+  familySettings = [userCopy familySettings];
+  isManaged = [familySettings isManaged];
 
   v10 = [@"digital_health_restrictions" mutableCopy];
-  if (!v7 && v9)
+  if (!localUserDeviceState && isManaged)
   {
-    v11 = [v6 dsid];
-    [v10 appendFormat:@".%@", v11];
+    dsid = [userCopy dsid];
+    [v10 appendFormat:@".%@", dsid];
   }
 
-  [v10 appendFormat:@".%@", v5];
+  [v10 appendFormat:@".%@", typeCopy];
 
   return v10;
 }
 
-+ (Class)cemDeclarationClassForConfigurationType:(id)a3
++ (Class)cemDeclarationClassForConfigurationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"legacy.restrictions.apps"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"legacy.restrictions.apps"])
   {
     v4 = 0x1E6996218;
 LABEL_35:
@@ -157,97 +157,97 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if ([v3 isEqualToString:@"system.camera"])
+  if ([typeCopy isEqualToString:@"system.camera"])
   {
     v4 = 0x1E69962D8;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.siri"])
+  if ([typeCopy isEqualToString:@"system.siri"])
   {
     v4 = 0x1E6996310;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.airdrop"])
+  if ([typeCopy isEqualToString:@"system.airdrop"])
   {
     v4 = 0x1E69962B8;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.carplay"])
+  if ([typeCopy isEqualToString:@"system.carplay"])
   {
     v4 = 0x1E69962E0;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"media.settings"])
+  if ([typeCopy isEqualToString:@"media.settings"])
   {
     v4 = 0x1E6996220;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"application.store"])
+  if ([typeCopy isEqualToString:@"application.store"])
   {
     v4 = 0x1E6996200;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.ratings"])
+  if ([typeCopy isEqualToString:@"system.ratings"])
   {
     v4 = 0x1E6996308;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.music"])
+  if ([typeCopy isEqualToString:@"system.music"])
   {
     v4 = 0x1E6996300;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.webcontentfilter.basic"])
+  if ([typeCopy isEqualToString:@"system.webcontentfilter.basic"])
   {
     v4 = 0x1E69962C8;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.gamecenter"])
+  if ([typeCopy isEqualToString:@"system.gamecenter"])
   {
     v4 = 0x1E69962F8;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"passcode.settings"])
+  if ([typeCopy isEqualToString:@"passcode.settings"])
   {
     v4 = 0x1E6996230;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"account.settings"])
+  if ([typeCopy isEqualToString:@"account.settings"])
   {
     v4 = 0x1E69961E8;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"network.cellular.settings"])
+  if ([typeCopy isEqualToString:@"network.cellular.settings"])
   {
     v4 = 0x1E6996228;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.donotdisturb"])
+  if ([typeCopy isEqualToString:@"system.donotdisturb"])
   {
     v4 = 0x1E69962F0;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"system.tvprovider"])
+  if ([typeCopy isEqualToString:@"system.tvprovider"])
   {
     v4 = 0x1E6996318;
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:@"application.settings"])
+  if ([typeCopy isEqualToString:@"application.settings"])
   {
     v4 = 0x1E69961F8;
     goto LABEL_35;
@@ -259,9 +259,9 @@ LABEL_36:
   return v6;
 }
 
-+ (id)blueprintConfigurationTypeForDeclaration:(id)a3
++ (id)blueprintConfigurationTypeForDeclaration:(id)declaration
 {
-  v3 = a3;
+  declarationCopy = declaration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -429,11 +429,11 @@ LABEL_36:
   return v4;
 }
 
-+ (id)blueprintConfigurationTypeForDeclarationType:(id)a3
++ (id)blueprintConfigurationTypeForDeclarationType:(id)type
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6996238] registeredIdentifier];
-  v5 = [v3 isEqualToString:v4];
+  typeCopy = type;
+  registeredIdentifier = [MEMORY[0x1E6996238] registeredIdentifier];
+  v5 = [typeCopy isEqualToString:registeredIdentifier];
 
   if (v5)
   {
@@ -443,8 +443,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E6996240] registeredIdentifier];
-  v8 = [v3 isEqualToString:v7];
+  registeredIdentifier2 = [MEMORY[0x1E6996240] registeredIdentifier];
+  v8 = [typeCopy isEqualToString:registeredIdentifier2];
 
   if (v8)
   {
@@ -452,8 +452,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x1E6996218] registeredIdentifier];
-  v12 = [v3 isEqualToString:v11];
+  registeredIdentifier3 = [MEMORY[0x1E6996218] registeredIdentifier];
+  v12 = [typeCopy isEqualToString:registeredIdentifier3];
 
   if (v12)
   {
@@ -462,8 +462,8 @@ LABEL_5:
 
   else
   {
-    v13 = [MEMORY[0x1E69962D8] registeredIdentifier];
-    v14 = [v3 isEqualToString:v13];
+    registeredIdentifier4 = [MEMORY[0x1E69962D8] registeredIdentifier];
+    v14 = [typeCopy isEqualToString:registeredIdentifier4];
 
     if (v14)
     {
@@ -472,8 +472,8 @@ LABEL_5:
 
     else
     {
-      v15 = [MEMORY[0x1E6996310] registeredIdentifier];
-      v16 = [v3 isEqualToString:v15];
+      registeredIdentifier5 = [MEMORY[0x1E6996310] registeredIdentifier];
+      v16 = [typeCopy isEqualToString:registeredIdentifier5];
 
       if (v16)
       {
@@ -482,8 +482,8 @@ LABEL_5:
 
       else
       {
-        v17 = [MEMORY[0x1E69962B8] registeredIdentifier];
-        v18 = [v3 isEqualToString:v17];
+        registeredIdentifier6 = [MEMORY[0x1E69962B8] registeredIdentifier];
+        v18 = [typeCopy isEqualToString:registeredIdentifier6];
 
         if (v18)
         {
@@ -492,8 +492,8 @@ LABEL_5:
 
         else
         {
-          v19 = [MEMORY[0x1E69962E0] registeredIdentifier];
-          v20 = [v3 isEqualToString:v19];
+          registeredIdentifier7 = [MEMORY[0x1E69962E0] registeredIdentifier];
+          v20 = [typeCopy isEqualToString:registeredIdentifier7];
 
           if (v20)
           {
@@ -502,8 +502,8 @@ LABEL_5:
 
           else
           {
-            v21 = [MEMORY[0x1E6996220] registeredIdentifier];
-            v22 = [v3 isEqualToString:v21];
+            registeredIdentifier8 = [MEMORY[0x1E6996220] registeredIdentifier];
+            v22 = [typeCopy isEqualToString:registeredIdentifier8];
 
             if (v22)
             {
@@ -512,8 +512,8 @@ LABEL_5:
 
             else
             {
-              v23 = [MEMORY[0x1E6996200] registeredIdentifier];
-              v24 = [v3 isEqualToString:v23];
+              registeredIdentifier9 = [MEMORY[0x1E6996200] registeredIdentifier];
+              v24 = [typeCopy isEqualToString:registeredIdentifier9];
 
               if (v24)
               {
@@ -522,8 +522,8 @@ LABEL_5:
 
               else
               {
-                v25 = [MEMORY[0x1E6996308] registeredIdentifier];
-                v26 = [v3 isEqualToString:v25];
+                registeredIdentifier10 = [MEMORY[0x1E6996308] registeredIdentifier];
+                v26 = [typeCopy isEqualToString:registeredIdentifier10];
 
                 if (v26)
                 {
@@ -532,8 +532,8 @@ LABEL_5:
 
                 else
                 {
-                  v27 = [MEMORY[0x1E6996300] registeredIdentifier];
-                  v28 = [v3 isEqualToString:v27];
+                  registeredIdentifier11 = [MEMORY[0x1E6996300] registeredIdentifier];
+                  v28 = [typeCopy isEqualToString:registeredIdentifier11];
 
                   if (v28)
                   {
@@ -542,8 +542,8 @@ LABEL_5:
 
                   else
                   {
-                    v29 = [MEMORY[0x1E69962C8] registeredIdentifier];
-                    v30 = [v3 isEqualToString:v29];
+                    registeredIdentifier12 = [MEMORY[0x1E69962C8] registeredIdentifier];
+                    v30 = [typeCopy isEqualToString:registeredIdentifier12];
 
                     if (v30)
                     {
@@ -552,8 +552,8 @@ LABEL_5:
 
                     else
                     {
-                      v31 = [MEMORY[0x1E69962F8] registeredIdentifier];
-                      v32 = [v3 isEqualToString:v31];
+                      registeredIdentifier13 = [MEMORY[0x1E69962F8] registeredIdentifier];
+                      v32 = [typeCopy isEqualToString:registeredIdentifier13];
 
                       if (v32)
                       {
@@ -562,8 +562,8 @@ LABEL_5:
 
                       else
                       {
-                        v33 = [MEMORY[0x1E6996230] registeredIdentifier];
-                        v34 = [v3 isEqualToString:v33];
+                        registeredIdentifier14 = [MEMORY[0x1E6996230] registeredIdentifier];
+                        v34 = [typeCopy isEqualToString:registeredIdentifier14];
 
                         if (v34)
                         {
@@ -572,8 +572,8 @@ LABEL_5:
 
                         else
                         {
-                          v35 = [MEMORY[0x1E69961E8] registeredIdentifier];
-                          v36 = [v3 isEqualToString:v35];
+                          registeredIdentifier15 = [MEMORY[0x1E69961E8] registeredIdentifier];
+                          v36 = [typeCopy isEqualToString:registeredIdentifier15];
 
                           if (v36)
                           {
@@ -582,8 +582,8 @@ LABEL_5:
 
                           else
                           {
-                            v37 = [MEMORY[0x1E6996228] registeredIdentifier];
-                            v38 = [v3 isEqualToString:v37];
+                            registeredIdentifier16 = [MEMORY[0x1E6996228] registeredIdentifier];
+                            v38 = [typeCopy isEqualToString:registeredIdentifier16];
 
                             if (v38)
                             {
@@ -592,8 +592,8 @@ LABEL_5:
 
                             else
                             {
-                              v39 = [MEMORY[0x1E69962F0] registeredIdentifier];
-                              v40 = [v3 isEqualToString:v39];
+                              registeredIdentifier17 = [MEMORY[0x1E69962F0] registeredIdentifier];
+                              v40 = [typeCopy isEqualToString:registeredIdentifier17];
 
                               if (v40)
                               {
@@ -602,8 +602,8 @@ LABEL_5:
 
                               else
                               {
-                                v41 = [MEMORY[0x1E6996318] registeredIdentifier];
-                                v42 = [v3 isEqualToString:v41];
+                                registeredIdentifier18 = [MEMORY[0x1E6996318] registeredIdentifier];
+                                v42 = [typeCopy isEqualToString:registeredIdentifier18];
 
                                 if (v42)
                                 {
@@ -612,8 +612,8 @@ LABEL_5:
 
                                 else
                                 {
-                                  v43 = [MEMORY[0x1E69961F8] registeredIdentifier];
-                                  v44 = [v3 isEqualToString:v43];
+                                  registeredIdentifier19 = [MEMORY[0x1E69961F8] registeredIdentifier];
+                                  v44 = [typeCopy isEqualToString:registeredIdentifier19];
 
                                   if (v44)
                                   {
@@ -622,8 +622,8 @@ LABEL_5:
 
                                   else
                                   {
-                                    v45 = [MEMORY[0x1E6996328] registeredIdentifier];
-                                    v46 = [v3 isEqualToString:v45];
+                                    registeredIdentifier20 = [MEMORY[0x1E6996328] registeredIdentifier];
+                                    v46 = [typeCopy isEqualToString:registeredIdentifier20];
 
                                     if (v46)
                                     {
@@ -659,20 +659,20 @@ LABEL_6:
 
 - (id)cemConfiguration
 {
-  v3 = [(STBlueprintConfiguration *)self payloadPlist];
-  if (v3)
+  payloadPlist = [(STBlueprintConfiguration *)self payloadPlist];
+  if (payloadPlist)
   {
-    v4 = [(STBlueprintConfiguration *)self type];
+    type = [(STBlueprintConfiguration *)self type];
 
-    if (v4)
+    if (type)
     {
       v5 = MEMORY[0x1E6996208];
-      v6 = [(STBlueprintConfiguration *)self payloadPlist];
+      payloadPlist2 = [(STBlueprintConfiguration *)self payloadPlist];
       v10 = 0;
-      v3 = [v5 declarationForData:v6 error:&v10];
+      payloadPlist = [v5 declarationForData:payloadPlist2 error:&v10];
       v7 = v10;
 
-      if (!v3)
+      if (!payloadPlist)
       {
         v8 = +[STLog blueprint];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -684,18 +684,18 @@ LABEL_6:
 
     else
     {
-      v3 = 0;
+      payloadPlist = 0;
     }
   }
 
-  return v3;
+  return payloadPlist;
 }
 
-- (void)setCemConfiguration:(id)a3
+- (void)setCemConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8 = 0;
-  v5 = [v4 serializeAsDataWithError:&v8];
+  v5 = [configurationCopy serializeAsDataWithError:&v8];
   v6 = v8;
   if (v5)
   {
@@ -707,12 +707,12 @@ LABEL_6:
     v7 = +[STLog blueprint];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [STBlueprintConfiguration setCemConfiguration:v4];
+      [STBlueprintConfiguration setCemConfiguration:configurationCopy];
     }
   }
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v10.receiver = self;
   v10.super_class = STBlueprintConfiguration;
@@ -737,7 +737,7 @@ LABEL_6:
 
     v9.receiver = self;
     v9.super_class = STBlueprintConfiguration;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:update otherErrors:v5];
   }
 
   else
@@ -745,7 +745,7 @@ LABEL_6:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STBlueprintConfiguration validateForUpdate:a3];
+      [STBlueprintConfiguration validateForUpdate:update];
     }
 
     v7 = 0;
@@ -754,7 +754,7 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v10.receiver = self;
   v10.super_class = STBlueprintConfiguration;
@@ -779,7 +779,7 @@ LABEL_6:
 
     v9.receiver = self;
     v9.super_class = STBlueprintConfiguration;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:insert otherErrors:v5];
   }
 
   else
@@ -787,7 +787,7 @@ LABEL_6:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STBlueprintConfiguration validateForInsert:a3];
+      [STBlueprintConfiguration validateForInsert:insert];
     }
 
     v7 = 0;
@@ -796,17 +796,17 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v4.receiver = self;
   v4.super_class = STBlueprintConfiguration;
-  return [(STBlueprintConfiguration *)&v4 validateForDelete:a3];
+  return [(STBlueprintConfiguration *)&v4 validateForDelete:delete];
 }
 
-- (BOOL)_validateBlueprint:(id)a3
+- (BOOL)_validateBlueprint:(id)blueprint
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blueprintCopy = blueprint;
   v4 = +[STBlueprintConfiguration fetchRequest];
   v33 = 0;
   v5 = [v4 execute:&v33];
@@ -816,7 +816,7 @@ LABEL_6:
   {
     v26 = v6;
     v27 = v4;
-    v28 = v3;
+    v28 = blueprintCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -839,15 +839,15 @@ LABEL_6:
           }
 
           v14 = *(*(&v29 + 1) + 8 * i);
-          v15 = [v14 blueprint];
+          blueprint = [v14 blueprint];
 
-          if (!v15)
+          if (!blueprint)
           {
             v16 = MEMORY[0x1E696ABC0];
             v34 = v12;
             v17 = MEMORY[0x1E696AEC0];
-            v18 = [v14 identifier];
-            v19 = [v17 stringWithFormat:@"Blueprint is missing for BlueprintConfigruation identifier: %@", v18];
+            identifier = [v14 identifier];
+            v19 = [v17 stringWithFormat:@"Blueprint is missing for BlueprintConfigruation identifier: %@", identifier];
             v35 = v19;
             v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
             v21 = [v16 errorWithDomain:@"STErrorDomain" code:550 userInfo:v20];
@@ -861,7 +861,7 @@ LABEL_6:
       while (v10);
     }
 
-    v3 = v28;
+    blueprintCopy = v28;
     v22 = [v28 count] == 0;
     v7 = v26;
     v4 = v27;
@@ -870,7 +870,7 @@ LABEL_6:
 
   else
   {
-    [v3 addObject:v6];
+    [blueprintCopy addObject:v6];
     v22 = 0;
   }
 
@@ -878,9 +878,9 @@ LABEL_6:
   return v22;
 }
 
-- (id)_organizationStr:(id)a3
+- (id)_organizationStr:(id)str
 {
-  v3 = a3;
+  strCopy = str;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -895,10 +895,10 @@ LABEL_6:
   }
 }
 
-- (BOOL)_validateIdentifier:(id)a3
+- (BOOL)_validateIdentifier:(id)identifier
 {
   v50 = *MEMORY[0x1E69E9840];
-  v40 = a3;
+  identifierCopy = identifier;
   v4 = +[STBlueprintConfiguration fetchRequest];
   v46 = 0;
   v5 = [v4 execute:&v46];
@@ -920,7 +920,7 @@ LABEL_6:
       v10 = v9;
       v11 = *v43;
       v35 = *MEMORY[0x1E696A578];
-      v36 = self;
+      selfCopy = self;
       v38 = *v43;
       do
       {
@@ -936,35 +936,35 @@ LABEL_6:
           v13 = *(*(&v42 + 1) + 8 * v12);
           if (v13)
           {
-            v14 = [*(*(&v42 + 1) + 8 * v12) blueprint];
+            blueprint = [*(*(&v42 + 1) + 8 * v12) blueprint];
 
-            if (v14)
+            if (blueprint)
             {
-              v15 = [v13 blueprint];
-              v16 = [v15 type];
+              blueprint2 = [v13 blueprint];
+              type = [blueprint2 type];
 
-              v17 = [v13 blueprint];
-              v18 = [v17 organization];
+              blueprint3 = [v13 blueprint];
+              organization = [blueprint3 organization];
 
-              v19 = [(STBlueprintConfiguration *)self _organizationStr:v18];
-              v20 = [v13 identifier];
-              v21 = [v13 type];
-              v41 = v16;
-              v22 = [(STBlueprintConfiguration *)self _createIdentifierSubstringForBlueprintType:v16 organization:v19 configType:v21 identifier:v20 error:v40];
-              if (v22 && ([v20 containsString:v22] & 1) == 0)
+              v19 = [(STBlueprintConfiguration *)self _organizationStr:organization];
+              identifier = [v13 identifier];
+              type2 = [v13 type];
+              v41 = type;
+              v22 = [(STBlueprintConfiguration *)self _createIdentifierSubstringForBlueprintType:type organization:v19 configType:type2 identifier:identifier error:identifierCopy];
+              if (v22 && ([identifier containsString:v22] & 1) == 0)
               {
                 v23 = MEMORY[0x1E696ABC0];
                 v47 = v35;
                 v24 = MEMORY[0x1E696AEC0];
-                v37 = [v13 identifier];
-                v25 = [v24 stringWithFormat:@"BlueprintConfiguration identifier is not valid. Identifier: %@", v37];
+                identifier2 = [v13 identifier];
+                v25 = [v24 stringWithFormat:@"BlueprintConfiguration identifier is not valid. Identifier: %@", identifier2];
                 v48 = v25;
                 [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
                 v27 = v26 = v8;
                 v28 = [v23 errorWithDomain:@"STErrorDomain" code:551 userInfo:v27];
-                [v40 addObject:v28];
+                [identifierCopy addObject:v28];
 
-                self = v36;
+                self = selfCopy;
                 v8 = v26;
               }
 
@@ -983,7 +983,7 @@ LABEL_6:
       while (v10);
     }
 
-    v29 = [v40 count] == 0;
+    v29 = [identifierCopy count] == 0;
     v7 = v33;
     v4 = v34;
     v5 = v32;
@@ -991,7 +991,7 @@ LABEL_6:
 
   else
   {
-    [v40 addObject:v6];
+    [identifierCopy addObject:v6];
     v29 = 0;
   }
 
@@ -999,31 +999,31 @@ LABEL_6:
   return v29;
 }
 
-- (id)_createIdentifierSubstringForBlueprintType:(id)a3 organization:(id)a4 configType:(id)a5 identifier:(id)a6 error:(id)a7
+- (id)_createIdentifierSubstringForBlueprintType:(id)type organization:(id)organization configType:(id)configType identifier:(id)identifier error:(id)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v11)
+  typeCopy = type;
+  organizationCopy = organization;
+  configTypeCopy = configType;
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!typeCopy)
   {
     v18 = MEMORY[0x1E696ABC0];
     v36 = *MEMORY[0x1E696A578];
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Blueprint type is nil for BlueprintConfigruation identifier: %@, Org: %@", v14, v12];
-    v37[0] = v19;
+    organizationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Blueprint type is nil for BlueprintConfigruation identifier: %@, Org: %@", identifierCopy, organizationCopy];
+    v37[0] = organizationCopy;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v21 = v18;
     v22 = 555;
     goto LABEL_6;
   }
 
-  if (![v11 isEqualToString:@"always-allowed-apps"])
+  if (![typeCopy isEqualToString:@"always-allowed-apps"])
   {
-    if ([v11 isEqualToString:@"restrictions"])
+    if ([typeCopy isEqualToString:@"restrictions"])
     {
-      if (v13)
+      if (configTypeCopy)
       {
         v25 = MEMORY[0x1E696AEC0];
         v26 = STRestrictionsBaseIdentifier;
@@ -1037,30 +1037,30 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    if ([v11 isEqualToString:@"downtime"])
+    if ([typeCopy isEqualToString:@"downtime"])
     {
       v16 = MEMORY[0x1E696AEC0];
       v17 = &STConfigurationIdentifierDowntime;
       goto LABEL_4;
     }
 
-    if ([v11 isEqualToString:@"usage-limit"])
+    if ([typeCopy isEqualToString:@"usage-limit"])
     {
       v16 = MEMORY[0x1E696AEC0];
       v17 = &STConfigurationIdentifierUsageLimit;
       goto LABEL_4;
     }
 
-    if ([v11 isEqualToString:@"managed-user"])
+    if ([typeCopy isEqualToString:@"managed-user"])
     {
-      if ([v13 isEqualToString:@"com.apple.configuration.system.dateandtime"])
+      if ([configTypeCopy isEqualToString:@"com.apple.configuration.system.dateandtime"])
       {
         v25 = MEMORY[0x1E696AEC0];
         v26 = STForceDateTimeConfigurationIdentifier;
         goto LABEL_11;
       }
 
-      if ([v13 isEqualToString:@"com.apple.configuration.policy.icloud.account"])
+      if ([configTypeCopy isEqualToString:@"com.apple.configuration.policy.icloud.account"])
       {
         v25 = MEMORY[0x1E696AEC0];
         v26 = STICloudLogoutConfigurationIdentifier;
@@ -1069,8 +1069,8 @@ LABEL_7:
 
       v30 = MEMORY[0x1E696ABC0];
       v34 = *MEMORY[0x1E696A578];
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported configuration type for managed user configuration. BlueprintConfigruation identifier: %@, Configuration Type: %@, Blueprint Type: %@, Org: %@", v14, v13, v11, v12];
-      v35 = v19;
+      organizationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported configuration type for managed user configuration. BlueprintConfigruation identifier: %@, Configuration Type: %@, Blueprint Type: %@, Org: %@", identifierCopy, configTypeCopy, typeCopy, organizationCopy];
+      v35 = organizationCopy;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v21 = v30;
       v22 = 553;
@@ -1080,8 +1080,8 @@ LABEL_7:
     {
       v29 = MEMORY[0x1E696ABC0];
       v32 = *MEMORY[0x1E696A578];
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown Blueprint type used to create BlueprintConfigruation identifier: %@, Blueprint Type: %@, Org: %@", v14, v11, v12];
-      v33 = v19;
+      organizationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown Blueprint type used to create BlueprintConfigruation identifier: %@, Blueprint Type: %@, Org: %@", identifierCopy, typeCopy, organizationCopy];
+      v33 = organizationCopy;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v21 = v29;
       v22 = 554;
@@ -1089,7 +1089,7 @@ LABEL_7:
 
 LABEL_6:
     v23 = [v21 errorWithDomain:@"STErrorDomain" code:v22 userInfo:v20];
-    [v15 addObject:v23];
+    [errorCopy addObject:v23];
 
     goto LABEL_7;
   }
@@ -1097,7 +1097,7 @@ LABEL_6:
   v16 = MEMORY[0x1E696AEC0];
   v17 = STAlwaysAllowConfigurationIdentifier;
 LABEL_4:
-  [v16 stringWithFormat:@"%@_%@", *v17, v12];
+  [v16 stringWithFormat:@"%@_%@", *v17, organizationCopy];
   v24 = LABEL_12:;
 LABEL_13:
 
@@ -1109,7 +1109,7 @@ LABEL_13:
 - (void)cemConfiguration
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 type];
+  type = [self type];
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_3_3(&dword_1B831F000, v2, v3, "Error creating configuration for type %{public}@: %{public}@", v4, v5, v6, v7, v9);
 

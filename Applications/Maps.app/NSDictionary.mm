@@ -1,12 +1,12 @@
 @interface NSDictionary
-+ (BOOL)dictionary:(id)a3 isEqualToDictionary:(id)a4;
++ (BOOL)dictionary:(id)dictionary isEqualToDictionary:(id)toDictionary;
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_endPoint;
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpPoint;
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_midPoint;
-- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_pointWithKeys:(id)a3;
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_pointWithKeys:(id)keys;
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_startPoint;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_mapstest_VKLocationCoordinate2D;
-- (BOOL)_maps_writeBinaryPlist:(id)a3 error:(id *)a4;
+- (BOOL)_maps_writeBinaryPlist:(id)plist error:(id *)error;
 - (BOOL)_mapstest_hasAltitude;
 - (BOOL)_mapstest_hasEndPoint;
 - (BOOL)_mapstest_hasLatitudeAndLongitude;
@@ -23,10 +23,10 @@
 - (NSArray)_mapstest_readSubTestsFromTestSerial;
 - (NSArray)_mapstest_serialSubTests;
 - (NSDate)_mapstest_customDepartureDate;
-- (double)_mapstest_doubleValueForKey:(id)a3 defaultValue:(double)a4;
-- (id)_mapstest_addressDictionaryForKey:(id)a3;
-- (id)_mapstest_arrayWithJSONForKey:(id)a3;
-- (id)_mapstest_directionsPlanWithResolvedDestination:(id)a3;
+- (double)_mapstest_doubleValueForKey:(id)key defaultValue:(double)value;
+- (id)_mapstest_addressDictionaryForKey:(id)key;
+- (id)_mapstest_arrayWithJSONForKey:(id)key;
+- (id)_mapstest_directionsPlanWithResolvedDestination:(id)destination;
 - (int)_mapstest_transportType;
 - (int)_maptest_lookAroundNavigationAmountToTurnInDegrees;
 - (int)_maptest_lookAroundNavigationTaps;
@@ -34,13 +34,13 @@
 - (int)_maptest_lookAroundOffsetTapPositionY;
 - (int64_t)_mapstest_directionIntentType;
 - (int64_t)_mapstest_guidanceStepSwipeCount;
-- (int64_t)_mapstest_integerValueForKey:(id)a3 defaultValue:(int64_t)a4;
+- (int64_t)_mapstest_integerValueForKey:(id)key defaultValue:(int64_t)value;
 - (int64_t)_mapstest_orientation;
-- (int64_t)_mapstest_viewModeWithDefaultType:(int64_t)a3;
+- (int64_t)_mapstest_viewModeWithDefaultType:(int64_t)type;
 - (unint64_t)_mapstest_flyoverTourId;
-- (unint64_t)_mapstest_mapTypeWithDefaultType:(unint64_t)a3;
+- (unint64_t)_mapstest_mapTypeWithDefaultType:(unint64_t)type;
 - (unsigned)_mapstest_searchTestACMode;
-- (void)_mapstest_getSelectedFeatures:(unint64_t *)a3 disabled:(unint64_t *)a4;
+- (void)_mapstest_getSelectedFeatures:(unint64_t *)features disabled:(unint64_t *)disabled;
 @end
 
 @implementation NSDictionary
@@ -68,15 +68,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 1;
+    integerValue = 1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)_mapstest_orientation
@@ -95,9 +95,9 @@
   return v3;
 }
 
-- (id)_mapstest_directionsPlanWithResolvedDestination:(id)a3
+- (id)_mapstest_directionsPlanWithResolvedDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_alloc_init(DirectionsPlan);
   v6 = [GEOComposedWaypoint alloc];
   v7 = [[GEOLocation alloc] initWithLatitude:0.0 longitude:0.0];
@@ -107,22 +107,22 @@
   v9 = objc_alloc_init(GEOStorageRouteRequestStorage);
   [(DirectionsPlan *)v5 setRouteRequestStorage:v9];
 
-  v10 = [(NSDictionary *)self _mapstest_transportType];
-  v11 = [(DirectionsPlan *)v5 routeRequestStorage];
-  [v11 setTransportType:v10];
+  _mapstest_transportType = [(NSDictionary *)self _mapstest_transportType];
+  routeRequestStorage = [(DirectionsPlan *)v5 routeRequestStorage];
+  [routeRequestStorage setTransportType:_mapstest_transportType];
 
-  v12 = [(NSDictionary *)self _mapstest_waypointStrings];
-  v13 = v12;
-  if (v12)
+  _mapstest_waypointStrings = [(NSDictionary *)self _mapstest_waypointStrings];
+  v13 = _mapstest_waypointStrings;
+  if (_mapstest_waypointStrings)
   {
-    v14 = [v12 count] - 1;
+    v14 = [_mapstest_waypointStrings count] - 1;
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100792F80;
     v33[3] = &unk_101629090;
     v34 = v8;
     v37 = v14;
-    v35 = v4;
+    v35 = destinationCopy;
     v36 = v5;
     [v13 enumerateObjectsUsingBlock:v33];
 
@@ -132,18 +132,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [(NSDictionary *)self _mapstest_originString];
-  [(DirectionsPlan *)v5 setOriginString:v16];
+  _mapstest_originString = [(NSDictionary *)self _mapstest_originString];
+  [(DirectionsPlan *)v5 setOriginString:_mapstest_originString];
 
-  v17 = [(NSDictionary *)self _mapstest_destinationString];
-  [(DirectionsPlan *)v5 setDestinationString:v17];
+  _mapstest_destinationString = [(NSDictionary *)self _mapstest_destinationString];
+  [(DirectionsPlan *)v5 setDestinationString:_mapstest_destinationString];
 
-  v18 = [(DirectionsPlan *)v5 originString];
-  v19 = [v18 _mapstest_isCurrentLocationString];
+  originString = [(DirectionsPlan *)v5 originString];
+  _mapstest_isCurrentLocationString = [originString _mapstest_isCurrentLocationString];
 
-  if (v4)
+  if (destinationCopy)
   {
-    if ((v19 & 1) == 0)
+    if ((_mapstest_isCurrentLocationString & 1) == 0)
     {
       v32 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"Invalid waypoint pairs" userInfo:0];
       objc_exception_throw(v32);
@@ -152,26 +152,26 @@ LABEL_11:
     [(DirectionsPlan *)v5 setOriginString:0];
     [(DirectionsPlan *)v5 setDestinationString:0];
     v40[0] = v8;
-    v40[1] = v4;
+    v40[1] = destinationCopy;
     v20 = v40;
     v21 = 2;
     goto LABEL_10;
   }
 
-  if (v19)
+  if (_mapstest_isCurrentLocationString)
   {
     [(DirectionsPlan *)v5 setOriginString:0];
     v39 = v8;
     v22 = [NSArray arrayWithObjects:&v39 count:1];
     v23 = [v22 mutableCopy];
-    v24 = [(DirectionsPlan *)v5 routeRequestStorage];
-    [v24 setWaypoints:v23];
+    routeRequestStorage2 = [(DirectionsPlan *)v5 routeRequestStorage];
+    [routeRequestStorage2 setWaypoints:v23];
   }
 
-  v25 = [(DirectionsPlan *)v5 destinationString];
-  v26 = [v25 _mapstest_isCurrentLocationString];
+  destinationString = [(DirectionsPlan *)v5 destinationString];
+  _mapstest_isCurrentLocationString2 = [destinationString _mapstest_isCurrentLocationString];
 
-  if (v26)
+  if (_mapstest_isCurrentLocationString2)
   {
     [(DirectionsPlan *)v5 setDestinationString:0];
     v38 = v8;
@@ -180,18 +180,18 @@ LABEL_11:
 LABEL_10:
     v15 = [NSArray arrayWithObjects:v20 count:v21];
     v27 = [v15 mutableCopy];
-    v28 = [(DirectionsPlan *)v5 routeRequestStorage];
-    [v28 setWaypoints:v27];
+    routeRequestStorage3 = [(DirectionsPlan *)v5 routeRequestStorage];
+    [routeRequestStorage3 setWaypoints:v27];
 
     goto LABEL_11;
   }
 
 LABEL_12:
-  v29 = [(NSDictionary *)self _mapstest_customDepartureDate];
-  v30 = v29;
-  if (v29)
+  _mapstest_customDepartureDate = [(NSDictionary *)self _mapstest_customDepartureDate];
+  v30 = _mapstest_customDepartureDate;
+  if (_mapstest_customDepartureDate)
   {
-    [v29 timeIntervalSinceReferenceDate];
+    [_mapstest_customDepartureDate timeIntervalSinceReferenceDate];
     [(DirectionsPlan *)v5 setDepartureTime:?];
   }
 
@@ -205,29 +205,29 @@ LABEL_12:
   v5 = v4;
   if (v3)
   {
-    v6 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     if (v5)
     {
-      v7 = [v5 integerValue];
+      integerValue2 = [v5 integerValue];
     }
 
     else
     {
-      v7 = 9;
+      integerValue2 = 9;
     }
 
     v8 = +[NSDate date];
     v10 = +[NSTimeZone localTimeZone];
-    v11 = [v8 _maps_nextWeekday:v6 atHour:v7 timeZone:v10];
+    v11 = [v8 _maps_nextWeekday:integerValue atHour:integerValue2 timeZone:v10];
     goto LABEL_8;
   }
 
   if (v4)
   {
     v8 = +[NSDate date];
-    v9 = [v5 integerValue];
+    integerValue3 = [v5 integerValue];
     v10 = +[NSTimeZone localTimeZone];
-    v11 = [v8 _maps_nextDayAtHour:v9 timeZone:v10];
+    v11 = [v8 _maps_nextDayAtHour:integerValue3 timeZone:v10];
 LABEL_8:
     v12 = v11;
 
@@ -243,9 +243,9 @@ LABEL_9:
 - (int)_mapstest_transportType
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"transportType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (MKMapItemIdentifier)_mapstest_mapItemIdentifier
@@ -259,10 +259,10 @@ LABEL_9:
   }
 
   v5 = [(NSDictionary *)self objectForKeyedSubscript:@"resultProviderID"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
   v7 = [MKMapItemIdentifier alloc];
-  v8 = [v7 initWithMUID:v10 resultProviderID:v6 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
+  v8 = [v7 initWithMUID:v10 resultProviderID:intValue coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
 
   return v8;
 }
@@ -270,9 +270,9 @@ LABEL_9:
 - (unint64_t)_mapstest_flyoverTourId
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"tourId"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (BOOL)_mapstest_hasAltitude
@@ -283,18 +283,18 @@ LABEL_9:
   return v3;
 }
 
-- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_pointWithKeys:(id)a3
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_pointWithKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count] > 2)
+  keysCopy = keys;
+  if ([keysCopy count] > 2)
   {
-    v11 = [v4 objectAtIndexedSubscript:0];
+    v11 = [keysCopy objectAtIndexedSubscript:0];
     v12 = [(NSDictionary *)self objectForKeyedSubscript:v11];
     [v12 doubleValue];
-    v13 = [v4 objectAtIndexedSubscript:1];
+    v13 = [keysCopy objectAtIndexedSubscript:1];
     v14 = [(NSDictionary *)self objectForKeyedSubscript:v13];
     [v14 doubleValue];
-    v15 = [v4 objectAtIndexedSubscript:2];
+    v15 = [keysCopy objectAtIndexedSubscript:2];
     v16 = [(NSDictionary *)self objectForKeyedSubscript:v15];
     [v16 doubleValue];
     VKLocationCoordinate3DMake();
@@ -401,33 +401,33 @@ LABEL_9:
 - (int)_maptest_lookAroundNavigationAmountToTurnInDegrees
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"amountToTurnInDegrees"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)_maptest_lookAroundNavigationTaps
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"totalTaps"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)_maptest_lookAroundOffsetTapPositionY
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"offsetTapPointY"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)_maptest_lookAroundOffsetTapPositionX
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"offsetTapPointX"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpPoint
@@ -671,7 +671,7 @@ LABEL_9:
   return isKindOfClass & 1;
 }
 
-- (unint64_t)_mapstest_mapTypeWithDefaultType:(unint64_t)a3
+- (unint64_t)_mapstest_mapTypeWithDefaultType:(unint64_t)type
 {
   v4 = [(NSDictionary *)self objectForKeyedSubscript:@"mapType"];
   objc_opt_class();
@@ -679,34 +679,34 @@ LABEL_9:
   {
     if ([v4 isEqualToString:@"standard"])
     {
-      a3 = 0;
+      type = 0;
     }
 
     else if ([v4 isEqualToString:@"transit"])
     {
-      a3 = 104;
+      type = 104;
     }
 
     else if ([v4 isEqualToString:@"satellite"])
     {
-      a3 = 1;
+      type = 1;
     }
 
     else if ([v4 isEqualToString:@"satelliteFlyover"])
     {
-      a3 = 3;
+      type = 3;
     }
 
     else if ([v4 isEqualToString:@"hybrid"])
     {
-      a3 = 2;
+      type = 2;
     }
   }
 
-  return a3;
+  return type;
 }
 
-- (int64_t)_mapstest_viewModeWithDefaultType:(int64_t)a3
+- (int64_t)_mapstest_viewModeWithDefaultType:(int64_t)type
 {
   v4 = [(NSDictionary *)self objectForKeyedSubscript:@"viewMode"];
   objc_opt_class();
@@ -714,84 +714,84 @@ LABEL_9:
   {
     if ([v4 isEqualToString:@"standard"])
     {
-      a3 = 0;
+      type = 0;
     }
 
     else if ([v4 isEqualToString:@"driving"])
     {
-      a3 = 7;
+      type = 7;
     }
 
     else if ([v4 isEqualToString:@"transit"])
     {
-      a3 = 3;
+      type = 3;
     }
 
     else if ([v4 isEqualToString:@"satelliteFlyover"])
     {
-      a3 = 6;
+      type = 6;
     }
 
     else if ([v4 isEqualToString:@"satellite"])
     {
-      a3 = 2;
+      type = 2;
     }
 
     else if ([v4 isEqualToString:@"hybrid"])
     {
-      a3 = 1;
+      type = 1;
     }
   }
 
-  return a3;
+  return type;
 }
 
-- (void)_mapstest_getSelectedFeatures:(unint64_t *)a3 disabled:(unint64_t *)a4
+- (void)_mapstest_getSelectedFeatures:(unint64_t *)features disabled:(unint64_t *)disabled
 {
   v8 = [(NSDictionary *)self objectForKeyedSubscript:@"enable"];
   v7 = [(NSDictionary *)self objectForKeyedSubscript:@"disable"];
   if (v7 | v8)
   {
-    if (a3)
+    if (features)
     {
-      *a3 = sub_10079403C(v8);
+      *features = sub_10079403C(v8);
     }
 
-    if (a4)
+    if (disabled)
     {
-      *a4 = sub_10079403C(v7);
+      *disabled = sub_10079403C(v7);
     }
   }
 }
 
-- (double)_mapstest_doubleValueForKey:(id)a3 defaultValue:(double)a4
+- (double)_mapstest_doubleValueForKey:(id)key defaultValue:(double)value
 {
-  v5 = [(NSDictionary *)self objectForKeyedSubscript:a3];
+  v5 = [(NSDictionary *)self objectForKeyedSubscript:key];
   v6 = v5;
   if (v5)
   {
     [v5 doubleValue];
-    a4 = v7;
+    value = v7;
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)_mapstest_integerValueForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)_mapstest_integerValueForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(NSDictionary *)self objectForKeyedSubscript:a3];
+  v5 = [(NSDictionary *)self objectForKeyedSubscript:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)_mapstest_addressDictionaryForKey:(id)a3
+- (id)_mapstest_addressDictionaryForKey:(id)key
 {
-  v3 = [(NSDictionary *)self objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self objectForKeyedSubscript:key];
   v4 = [v3 dataUsingEncoding:4];
   v5 = [NSJSONSerialization JSONObjectWithData:v4 options:0 error:0];
 
@@ -1006,9 +1006,9 @@ LABEL_30:
   return v3;
 }
 
-- (id)_mapstest_arrayWithJSONForKey:(id)a3
+- (id)_mapstest_arrayWithJSONForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v3 = [(NSDictionary *)self objectForKeyedSubscript:?];
     v4 = v3;
@@ -1039,17 +1039,17 @@ LABEL_30:
   return v7;
 }
 
-+ (BOOL)dictionary:(id)a3 isEqualToDictionary:(id)a4
++ (BOOL)dictionary:(id)dictionary isEqualToDictionary:(id)toDictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  dictionaryCopy = dictionary;
+  toDictionaryCopy = toDictionary;
+  v7 = toDictionaryCopy;
+  if (dictionaryCopy | toDictionaryCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (dictionaryCopy && toDictionaryCopy)
     {
-      v8 = [v5 isEqualToDictionary:v6];
+      v8 = [dictionaryCopy isEqualToDictionary:toDictionaryCopy];
     }
   }
 
@@ -1061,20 +1061,20 @@ LABEL_30:
   return v8;
 }
 
-- (BOOL)_maps_writeBinaryPlist:(id)a3 error:(id *)a4
+- (BOOL)_maps_writeBinaryPlist:(id)plist error:(id *)error
 {
-  v6 = a3;
+  plistCopy = plist;
   v19 = 0;
   v7 = [NSPropertyListSerialization dataWithPropertyList:self format:200 options:0 error:&v19];
   v8 = v19;
   v9 = v8;
   if (v8)
   {
-    if (*a4)
+    if (*error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1085,24 +1085,24 @@ LABEL_30:
 
   else
   {
-    v12 = [v6 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [plistCopy stringByDeletingLastPathComponent];
     v13 = +[NSFileManager defaultManager];
-    if (([v13 fileExistsAtPath:v12 isDirectory:0] & 1) == 0)
+    if (([v13 fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:0] & 1) == 0)
     {
-      [v13 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:0];
+      [v13 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     v18 = 0;
-    v11 = [v7 writeToFile:v6 options:1 error:&v18];
+    v11 = [v7 writeToFile:plistCopy options:1 error:&v18];
     v14 = v18;
     v15 = v14;
     if (v14)
     {
-      if (*a4)
+      if (*error)
       {
         v16 = v14;
         v11 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       else

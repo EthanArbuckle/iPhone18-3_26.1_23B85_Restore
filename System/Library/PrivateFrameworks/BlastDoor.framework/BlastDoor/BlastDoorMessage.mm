@@ -41,7 +41,7 @@
 
 - (NSAttributedString)content
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21457BADC();
 
   return v3;

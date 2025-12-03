@@ -1,25 +1,25 @@
 @interface PKPeerPaymentRegistrationViewController
-- (PKPeerPaymentRegistrationViewController)initWithUserInfo:(id)a3;
+- (PKPeerPaymentRegistrationViewController)initWithUserInfo:(id)info;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismiss;
-- (void)setDismissHandler:(id)a3;
-- (void)startRegistrationFlowWithCompletion:(id)a3;
+- (void)setDismissHandler:(id)handler;
+- (void)startRegistrationFlowWithCompletion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentRegistrationViewController
 
-- (PKPeerPaymentRegistrationViewController)initWithUserInfo:(id)a3
+- (PKPeerPaymentRegistrationViewController)initWithUserInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentRegistrationViewController;
   v6 = [(PKPeerPaymentRegistrationViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userInfo, a3);
+    objc_storeStrong(&v6->_userInfo, info);
   }
 
   return v7;
@@ -32,11 +32,11 @@
   [(PKPeerPaymentRegistrationViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentRegistrationViewController;
-  [(PKPeerPaymentRegistrationViewController *)&v4 viewWillDisappear:a3];
+  [(PKPeerPaymentRegistrationViewController *)&v4 viewWillDisappear:disappear];
   [(PKPeerPaymentRegistrationViewController *)self _dismiss];
 }
 
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)startRegistrationFlowWithCompletion:(id)a3
+- (void)startRegistrationFlowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[PKPeerPaymentRegistrationFlowController alloc] initWithUserInfo:self->_userInfo setupDelegate:self];
   flowController = self->_flowController;
   self->_flowController = v5;
@@ -67,7 +67,7 @@
   v9[2] = __79__PKPeerPaymentRegistrationViewController_startRegistrationFlowWithCompletion___block_invoke;
   v9[3] = &unk_1E8018450;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
   [(PKPeerPaymentRegistrationFlowController *)v7 preflightWithCompletion:v9];
 
@@ -125,11 +125,11 @@ uint64_t __79__PKPeerPaymentRegistrationViewController_startRegistrationFlowWith
   return result;
 }
 
-- (void)setDismissHandler:(id)a3
+- (void)setDismissHandler:(id)handler
 {
   if (!self->_dismissed)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(handler);
     dismissHandler = self->_dismissHandler;
     self->_dismissHandler = v5;
   }

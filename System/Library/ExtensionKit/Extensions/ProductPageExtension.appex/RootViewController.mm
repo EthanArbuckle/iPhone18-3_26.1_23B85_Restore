@@ -1,17 +1,17 @@
 @interface RootViewController
 + (NSString)disableSwipeDownToDismissNotification;
-- (BOOL)lookupItemDidLoad:(id)a3 parameters:(id)a4;
-- (RootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)disableSwipeDownToDismiss:(id)a3;
-- (void)setPreview:(id)a3;
-- (void)setVisibleInClientWindow:(id)a3;
-- (void)setupWithCancelButtonTitle:(id)a3 rightBarButtonTitle:(id)a4 showsStoreButton:(BOOL)a5 promptString:(id)a6 askToBuy:(BOOL)a7;
-- (void)setupWithClientBundleID:(id)a3 bagType:(int64_t)a4;
-- (void)storeButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (BOOL)lookupItemDidLoad:(id)load parameters:(id)parameters;
+- (RootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)disableSwipeDownToDismiss:(id)dismiss;
+- (void)setPreview:(id)preview;
+- (void)setVisibleInClientWindow:(id)window;
+- (void)setupWithCancelButtonTitle:(id)title rightBarButtonTitle:(id)buttonTitle showsStoreButton:(BOOL)button promptString:(id)string askToBuy:(BOOL)buy;
+- (void)setupWithClientBundleID:(id)d bagType:(int64_t)type;
+- (void)storeButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RootViewController
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (RootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (RootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10076FF9C();
     v7 = v6;
@@ -42,27 +42,27 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100743D90(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100743D90(v5, v7, bundle);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(RootViewController *)&v5 viewWillAppear:v3];
+  [(RootViewController *)&v5 viewWillAppear:appearCopy];
   sub_1007466CC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(RootViewController *)&v5 viewDidAppear:v3];
+  [(RootViewController *)&v5 viewDidAppear:appearCopy];
   v4[OBJC_IVAR___RootViewController_isViewAppeared] = 1;
   if (v4[OBJC_IVAR___RootViewController_isVisibleInClientWindow] == 1)
   {
@@ -72,13 +72,13 @@
   sub_1007466CC();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(RootViewController *)&v5 viewWillDisappear:v3];
+  [(RootViewController *)&v5 viewWillDisappear:disappearCopy];
   if (*&v4[OBJC_IVAR___RootViewController_adAttributionManager])
   {
 
@@ -88,43 +88,43 @@
   v4[OBJC_IVAR___RootViewController_startedDisappearTransition] = 1;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100746414(a3);
+  selfCopy = self;
+  sub_100746414(disappear);
 }
 
-- (void)disableSwipeDownToDismiss:(id)a3
+- (void)disableSwipeDownToDismiss:(id)dismiss
 {
   v4 = sub_10075D7BC();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10075D79C();
-  v8 = self;
+  selfCopy = self;
   sub_1007469E4();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)setupWithClientBundleID:(id)a3 bagType:(int64_t)a4
+- (void)setupWithClientBundleID:(id)d bagType:(int64_t)type
 {
   v5 = sub_10076FF9C();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_10074E2D8(v5, v7);
 }
 
-- (BOOL)lookupItemDidLoad:(id)a3 parameters:(id)a4
+- (BOOL)lookupItemDidLoad:(id)load parameters:(id)parameters
 {
   v6 = sub_10076FE4C();
-  v7 = a3;
-  v8 = self;
-  v9 = sub_100744A50(v7, v6);
+  loadCopy = load;
+  selfCopy = self;
+  v9 = sub_100744A50(loadCopy, v6);
 
   sub_10074DAF4();
-  v10 = *&v8->SKProductPageExtension_opaque[OBJC_IVAR___RootViewController_rootViewController];
-  *&v8->SKProductPageExtension_opaque[OBJC_IVAR___RootViewController_rootViewController] = v9;
+  v10 = *&selfCopy->SKProductPageExtension_opaque[OBJC_IVAR___RootViewController_rootViewController];
+  *&selfCopy->SKProductPageExtension_opaque[OBJC_IVAR___RootViewController_rootViewController] = v9;
   v11 = v9;
 
   sub_10074650C();
@@ -139,21 +139,21 @@
   return 0;
 }
 
-- (void)setupWithCancelButtonTitle:(id)a3 rightBarButtonTitle:(id)a4 showsStoreButton:(BOOL)a5 promptString:(id)a6 askToBuy:(BOOL)a7
+- (void)setupWithCancelButtonTitle:(id)title rightBarButtonTitle:(id)buttonTitle showsStoreButton:(BOOL)button promptString:(id)string askToBuy:(BOOL)buy
 {
-  v10 = a4;
-  if (a3)
+  buttonTitleCopy = buttonTitle;
+  if (title)
   {
     v12 = sub_10076FF9C();
     v14 = v13;
-    if (v10)
+    if (buttonTitleCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v15 = 0;
-    if (a6)
+    if (string)
     {
       goto LABEL_4;
     }
@@ -163,50 +163,50 @@ LABEL_6:
 
   v12 = 0;
   v14 = 0;
-  if (!a4)
+  if (!buttonTitle)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v15 = sub_10076FF9C();
-  v10 = v16;
-  if (a6)
+  buttonTitleCopy = v16;
+  if (string)
   {
 LABEL_4:
     v17 = sub_10076FF9C();
-    a6 = v18;
+    string = v18;
     goto LABEL_8;
   }
 
 LABEL_7:
   v17 = 0;
 LABEL_8:
-  v19 = self;
-  sub_100749680(v12, v14, v15, v10, a5, v17, a6, a7);
+  selfCopy = self;
+  sub_100749680(v12, v14, v15, buttonTitleCopy, button, v17, string, buy);
 }
 
-- (void)storeButtonPressed:(id)a3
+- (void)storeButtonPressed:(id)pressed
 {
-  v3 = self;
+  selfCopy = self;
   sub_100749B84();
 }
 
-- (void)setVisibleInClientWindow:(id)a3
+- (void)setVisibleInClientWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for RootViewController();
-  v4 = a3;
+  windowCopy = window;
   v5 = v6.receiver;
-  [(RootViewController *)&v6 setVisibleInClientWindow:v4];
-  sub_100743B64([v4 BOOLValue]);
+  [(RootViewController *)&v6 setVisibleInClientWindow:windowCopy];
+  sub_100743B64([windowCopy BOOLValue]);
 }
 
-- (void)setPreview:(id)a3
+- (void)setPreview:(id)preview
 {
-  v4 = a3;
-  v5 = self;
-  sub_10074A22C(v4);
+  previewCopy = preview;
+  selfCopy = self;
+  sub_10074A22C(previewCopy);
 }
 
 @end

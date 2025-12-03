@@ -1,21 +1,21 @@
 @interface E5RunnerImageDataObjC
-- (E5RunnerImageDataObjC)initWithShape:(id)a3 data:;
+- (E5RunnerImageDataObjC)initWithShape:(id)shape data:;
 - (id).cxx_construct;
 @end
 
 @implementation E5RunnerImageDataObjC
 
-- (E5RunnerImageDataObjC)initWithShape:(id)a3 data:
+- (E5RunnerImageDataObjC)initWithShape:(id)shape data:
 {
   v4 = v3;
   v38 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  shapeCopy = shape;
   v36.receiver = self;
   v36.super_class = E5RunnerImageDataObjC;
   v6 = [(E5RunnerImageDataObjC *)&v36 init];
   if (v6)
   {
-    v7 = [v27 copy];
+    v7 = [shapeCopy copy];
     shape = v6->_shape;
     v6->_shape = v7;
 
@@ -28,7 +28,7 @@
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = v27;
+    v9 = shapeCopy;
     v10 = [v9 countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v10)
     {
@@ -43,7 +43,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v28 + 1) + 8 * i) integerValue];
+          integerValue = [*(*(&v28 + 1) + 8 * i) integerValue];
           v15 = v33;
           if (v33 >= v34)
           {
@@ -77,7 +77,7 @@
               std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned long>>(&__src, v22);
             }
 
-            *(8 * v19) = v14;
+            *(8 * v19) = integerValue;
             v16 = (8 * v19 + 8);
             memcpy(0, v17, v18);
             v23 = __src;
@@ -94,7 +94,7 @@
 
           else
           {
-            *v33 = v14;
+            *v33 = integerValue;
             v16 = v15 + 8;
           }
 

@@ -1,28 +1,28 @@
 @interface PhoneIntegrationService
-- (PhoneIntegrationService)initWithEnvironmentProvider:(id)a3 sessionMonitor:(id)a4 workQueue:(id)a5;
+- (PhoneIntegrationService)initWithEnvironmentProvider:(id)provider sessionMonitor:(id)monitor workQueue:(id)queue;
 - (void)startServices;
 @end
 
 @implementation PhoneIntegrationService
 
-- (PhoneIntegrationService)initWithEnvironmentProvider:(id)a3 sessionMonitor:(id)a4 workQueue:(id)a5
+- (PhoneIntegrationService)initWithEnvironmentProvider:(id)provider sessionMonitor:(id)monitor workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  monitorCopy = monitor;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = PhoneIntegrationService;
   v11 = [(PhoneIntegrationService *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_workQueue, a5);
-    objc_storeStrong(&v12->_sessionMonitor, a4);
+    objc_storeStrong(&v11->_workQueue, queue);
+    objc_storeStrong(&v12->_sessionMonitor, monitor);
     v13 = [LACCompanionAuthenticationCoordinator alloc];
     v14 = [v13 initWithCompanion:LACCompanionTypeVision replyQueue:v12->_workQueue];
     v15 = [LACPhoneIntegrationController alloc];
     v16 = +[LACClientInfoProvider sharedInstance];
-    v17 = [v15 initWithAuthenticator:v14 clientInfoProvider:v16 environmentProvider:v8 sessionMonitor:v9 replyQueue:v12->_workQueue];
+    v17 = [v15 initWithAuthenticator:v14 clientInfoProvider:v16 environmentProvider:providerCopy sessionMonitor:monitorCopy replyQueue:v12->_workQueue];
     controller = v12->_controller;
     v12->_controller = v17;
   }

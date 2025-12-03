@@ -1,32 +1,32 @@
 @interface FASettingsPreset
-- (BOOL)isEqual:(id)a3;
-- (FASettingsPreset)initWithCoder:(id)a3;
-- (FASettingsPreset)initWithDictionary:(id)a3;
-- (FASettingsPreset)initWithIdentifier:(id)a3 minAge:(int64_t)a4 maxAge:(int64_t)a5 sources:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (FASettingsPreset)initWithCoder:(id)coder;
+- (FASettingsPreset)initWithDictionary:(id)dictionary;
+- (FASettingsPreset)initWithIdentifier:(id)identifier minAge:(int64_t)age maxAge:(int64_t)maxAge sources:(id)sources;
 - (NSString)displayName;
 - (id)description;
-- (id)sourceWithIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)sourceWithIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FASettingsPreset
 
-- (FASettingsPreset)initWithIdentifier:(id)a3 minAge:(int64_t)a4 maxAge:(int64_t)a5 sources:(id)a6
+- (FASettingsPreset)initWithIdentifier:(id)identifier minAge:(int64_t)age maxAge:(int64_t)maxAge sources:(id)sources
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  sourcesCopy = sources;
   v19.receiver = self;
   v19.super_class = FASettingsPreset;
   v12 = [(FASettingsPreset *)&v19 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v12->_minAge = a4;
-    v12->_maxAge = a5;
-    v15 = [v11 copy];
+    v12->_minAge = age;
+    v12->_maxAge = maxAge;
+    v15 = [sourcesCopy copy];
     v16 = v15;
     if (v15)
     {
@@ -54,20 +54,20 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifier = self->_identifier;
-    v7 = [v5 identifier];
-    if (-[NSString isEqualToString:](identifier, "isEqualToString:", v7) && (minAge = self->_minAge, minAge == [v5 minAge]) && (maxAge = self->_maxAge, maxAge == objc_msgSend(v5, "maxAge")))
+    identifier = [v5 identifier];
+    if (-[NSString isEqualToString:](identifier, "isEqualToString:", identifier) && (minAge = self->_minAge, minAge == [v5 minAge]) && (maxAge = self->_maxAge, maxAge == objc_msgSend(v5, "maxAge")))
     {
       sources = self->_sources;
-      v11 = [v5 sources];
-      v12 = [(NSArray *)sources isEqualToArray:v11];
+      sources = [v5 sources];
+      v12 = [(NSArray *)sources isEqualToArray:sources];
     }
 
     else
@@ -84,34 +84,34 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_minAge forKey:@"minAge"];
-  [v5 encodeInteger:self->_maxAge forKey:@"maxAge"];
-  [v5 encodeObject:self->_sources forKey:@"sources"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_minAge forKey:@"minAge"];
+  [coderCopy encodeInteger:self->_maxAge forKey:@"maxAge"];
+  [coderCopy encodeObject:self->_sources forKey:@"sources"];
 }
 
-- (FASettingsPreset)initWithCoder:(id)a3
+- (FASettingsPreset)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeIntegerForKey:@"minAge"];
-  v7 = [v4 decodeIntegerForKey:@"maxAge"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"minAge"];
+  v7 = [coderCopy decodeIntegerForKey:@"maxAge"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"sources"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"sources"];
 
   v12 = [(FASettingsPreset *)self initWithIdentifier:v5 minAge:v6 maxAge:v7 sources:v11];
   return v12;
 }
 
-- (FASettingsPreset)initWithDictionary:(id)a3
+- (FASettingsPreset)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -122,23 +122,23 @@
     }
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"identifier"];
-  v7 = [v4 objectForKeyedSubscript:@"sources"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"sources"];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    array = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v10 = v9;
+  v10 = array;
 
-  v11 = [v4 objectForKeyedSubscript:@"minAge"];
-  v12 = [v4 objectForKeyedSubscript:@"maxAge"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"minAge"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"maxAge"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -191,7 +191,7 @@ LABEL_29:
       }
 
 LABEL_30:
-      v18 = 0;
+      selfCopy = 0;
       goto LABEL_31;
     }
   }
@@ -209,11 +209,11 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v15 = [v11 integerValue];
-  v16 = [v12 integerValue];
-  if (v16)
+  integerValue = [v11 integerValue];
+  integerValue2 = [v12 integerValue];
+  if (integerValue2)
   {
-    v17 = v16;
+    v17 = integerValue2;
   }
 
   else
@@ -221,11 +221,11 @@ LABEL_30:
     v17 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  self = [(FASettingsPreset *)self initWithIdentifier:v6 minAge:v15 maxAge:v17 sources:v13];
-  v18 = self;
+  self = [(FASettingsPreset *)self initWithIdentifier:v6 minAge:integerValue maxAge:v17 sources:v13];
+  selfCopy = self;
 LABEL_31:
 
-  return v18;
+  return selfCopy;
 }
 
 FASettingsPresetSource *__39__FASettingsPreset_initWithDictionary___block_invoke(uint64_t a1, void *a2)
@@ -236,10 +236,10 @@ FASettingsPresetSource *__39__FASettingsPreset_initWithDictionary___block_invoke
   return v3;
 }
 
-- (id)sourceWithIdentifier:(id)a3
+- (id)sourceWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -259,8 +259,8 @@ FASettingsPresetSource *__39__FASettingsPreset_initWithDictionary___block_invoke
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -290,12 +290,12 @@ LABEL_11:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FASettingsPreset *)self identifier];
-  v6 = [(FASettingsPreset *)self displayName];
-  v7 = [(FASettingsPreset *)self minAge];
-  v8 = [(FASettingsPreset *)self maxAge];
-  v9 = [(FASettingsPreset *)self sources];
-  v10 = [v3 stringWithFormat:@"<%@: %p> ({\n identifier: %@\n displayName: %@\n age: %ld - %ld\n sources: %@\n)}", v4, self, v5, v6, v7, v8, v9];
+  identifier = [(FASettingsPreset *)self identifier];
+  displayName = [(FASettingsPreset *)self displayName];
+  minAge = [(FASettingsPreset *)self minAge];
+  maxAge = [(FASettingsPreset *)self maxAge];
+  sources = [(FASettingsPreset *)self sources];
+  v10 = [v3 stringWithFormat:@"<%@: %p> ({\n identifier: %@\n displayName: %@\n age: %ld - %ld\n sources: %@\n)}", v4, self, identifier, displayName, minAge, maxAge, sources];
 
   return v10;
 }

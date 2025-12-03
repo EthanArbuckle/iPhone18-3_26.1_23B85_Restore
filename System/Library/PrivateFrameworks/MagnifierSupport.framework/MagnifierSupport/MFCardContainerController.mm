@@ -1,42 +1,42 @@
 @interface MFCardContainerController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (_TtC16MagnifierSupport25MFCardContainerController)init;
 - (void)dealloc;
-- (void)handleLongPress:(id)a3;
-- (void)handlePanGestureWithSender:(id)a3;
+- (void)handleLongPress:(id)press;
+- (void)handlePanGestureWithSender:(id)sender;
 @end
 
 @implementation MFCardContainerController
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_257E7A744(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_257E7A744(beginCopy);
 
   return self & 1;
 }
 
-- (void)handlePanGestureWithSender:(id)a3
+- (void)handlePanGestureWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E7A908(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_257E7A908(senderCopy);
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E7B59C(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_257E7B59C(pressCopy);
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_257E7C1CC();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(MFCardContainerController *)&v5 dealloc];
 }

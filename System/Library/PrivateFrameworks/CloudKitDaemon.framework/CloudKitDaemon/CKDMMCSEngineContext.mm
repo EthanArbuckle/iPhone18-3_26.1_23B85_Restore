@@ -1,26 +1,26 @@
 @interface CKDMMCSEngineContext
-+ (BOOL)hasCachedCKDMMCSEngineContextForPath:(id)a3;
-+ (BOOL)tearDownMMCSEngineWithContext:(id)a3;
++ (BOOL)hasCachedCKDMMCSEngineContextForPath:(id)path;
++ (BOOL)tearDownMMCSEngineWithContext:(id)context;
 + (id)_appID;
-+ (id)setupMMCSEngineWithApplicationBundleID:(id)a3 path:(id)a4 wasCached:(BOOL *)a5 error:(id *)a6;
++ (id)setupMMCSEngineWithApplicationBundleID:(id)d path:(id)path wasCached:(BOOL *)cached error:(id *)error;
 + (id)sharedContextsByPath;
 + (id)sharedContextsQueue;
-- (BOOL)_setupMMCSEngineWithError:(id *)a3;
-- (BOOL)_setupMMCSEngineWithRetryCount:(unint64_t)a3 error:(id *)a4;
+- (BOOL)_setupMMCSEngineWithError:(id *)error;
+- (BOOL)_setupMMCSEngineWithRetryCount:(unint64_t)count error:(id *)error;
 - (CKDMMCS)MMCS;
-- (CKDMMCSEngineContext)initWithApplicationBundleID:(id)a3 path:(id)a4;
+- (CKDMMCSEngineContext)initWithApplicationBundleID:(id)d path:(id)path;
 - (id)CKPropertiesDescription;
 - (int64_t)decRefCount;
 - (int64_t)incRefCount;
 - (unint64_t)nextAvailableItemID;
-- (void)MMCSRunSerialized:(id)a3;
-- (void)MMCSSerializeAsyncRecursive:(id)a3;
-- (void)MMCSSerializeSyncRecursive:(id)a3;
+- (void)MMCSRunSerialized:(id)serialized;
+- (void)MMCSSerializeAsyncRecursive:(id)recursive;
+- (void)MMCSSerializeSyncRecursive:(id)recursive;
 - (void)_tearDownMMCSEngine;
 - (void)assertMMCSSerialized;
-- (void)cancelRequestWithContext:(void *)a3;
+- (void)cancelRequestWithContext:(void *)context;
 - (void)dealloc;
-- (void)stopTrackingItemID:(unint64_t)a3;
+- (void)stopTrackingItemID:(unint64_t)d;
 @end
 
 @implementation CKDMMCSEngineContext
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_225132410;
   block[3] = &unk_278545AD0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D580E0 != -1)
   {
     dispatch_once(&qword_280D580E0, block);
@@ -99,11 +99,11 @@
 
 - (int64_t)incRefCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_refCount + 1;
-  v2->_refCount = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_refCount + 1;
+  selfCopy->_refCount = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -120,11 +120,11 @@
 
 - (int64_t)decRefCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_refCount - 1;
-  v2->_refCount = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_refCount - 1;
+  selfCopy->_refCount = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -146,7 +146,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22506F000, v7, OS_LOG_TYPE_DEBUG, "Tearing down MMCS engine: %@", buf, 0xCu);
   }
 
@@ -161,7 +161,7 @@
     if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_22506F000, v10, OS_LOG_TYPE_DEBUG, "Destroying MMCS engine %@", buf, 0xCu);
     }
 
@@ -190,7 +190,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_22506F000, v4, OS_LOG_TYPE_DEBUG, "Deallocating MMCS engine context: %@", buf, 0xCu);
   }
 
@@ -207,14 +207,14 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (CKDMMCSEngineContext)initWithApplicationBundleID:(id)a3 path:(id)a4
+- (CKDMMCSEngineContext)initWithApplicationBundleID:(id)d path:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v11 = a4;
-  if (v11)
+  dCopy = d;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (v8)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -225,7 +225,7 @@
     v22 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, self, @"CKDMMCSEngineContext.m", 76, @"Expected non-nil path");
 
-    if (v8)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -242,8 +242,8 @@ LABEL_3:
   if (v12)
   {
     *&v12->_refCount = xmmword_225447C80;
-    objc_storeStrong(&v12->_applicationBundleID, a3);
-    objc_storeStrong(&v13->_path, a4);
+    objc_storeStrong(&v12->_applicationBundleID, d);
+    objc_storeStrong(&v13->_path, path);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create("CKDMMCSEngineContext queue", v14);
     mmcsQueue = v13->_mmcsQueue;
@@ -271,10 +271,10 @@ LABEL_3:
   return v13;
 }
 
-- (BOOL)_setupMMCSEngineWithError:(id *)a3
+- (BOOL)_setupMMCSEngineWithError:(id *)error
 {
   v96[3] = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_sharedContextsQueue(CKDMMCSEngineContext, a2, a3);
+  v6 = objc_msgSend_sharedContextsQueue(CKDMMCSEngineContext, a2, error);
   dispatch_assert_queue_V2(v6);
 
   if (objc_msgSend_state(self, v7, v8) != 3)
@@ -393,11 +393,11 @@ LABEL_3:
     v22 = v52;
   }
 
-  if (a3)
+  if (error)
   {
     v63 = v60;
     v38 = 0;
-    *a3 = v60;
+    *error = v60;
   }
 
   else
@@ -412,12 +412,12 @@ LABEL_26:
   return v38;
 }
 
-- (BOOL)_setupMMCSEngineWithRetryCount:(unint64_t)a3 error:(id *)a4
+- (BOOL)_setupMMCSEngineWithRetryCount:(unint64_t)count error:(id *)error
 {
-  v7 = objc_msgSend_sharedContextsQueue(CKDMMCSEngineContext, a2, a3);
+  v7 = objc_msgSend_sharedContextsQueue(CKDMMCSEngineContext, a2, count);
   dispatch_assert_queue_V2(v7);
 
-  if (a3)
+  if (count)
   {
     v24 = 0;
     v9 = objc_msgSend__setupMMCSEngineWithError_(self, v8, &v24);
@@ -438,7 +438,7 @@ LABEL_26:
         objc_msgSend_removeItemAtPath_error_(v16, v20, v19, 0);
       }
 
-      if (a3 - 1 == v15)
+      if (count - 1 == v15)
       {
         break;
       }
@@ -449,7 +449,7 @@ LABEL_26:
       ++v15;
       if (v22)
       {
-        v13 = v15 < a3;
+        v13 = v15 < count;
         goto LABEL_14;
       }
     }
@@ -460,11 +460,11 @@ LABEL_26:
     v12 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v12;
     v13 = 0;
-    *a4 = v12;
+    *error = v12;
   }
 
   else
@@ -477,34 +477,34 @@ LABEL_14:
   return v13;
 }
 
-+ (BOOL)hasCachedCKDMMCSEngineContextForPath:(id)a3
++ (BOOL)hasCachedCKDMMCSEngineContextForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v6 = objc_msgSend_sharedContextsQueue(CKDMMCSEngineContext, v4, v5);
   dispatch_assert_queue_V2(v6);
 
   v9 = objc_msgSend_sharedContextsByPath(CKDMMCSEngineContext, v7, v8);
-  v11 = objc_msgSend_objectForKey_(v9, v10, v3);
+  v11 = objc_msgSend_objectForKey_(v9, v10, pathCopy);
 
   return v11 != 0;
 }
 
-+ (id)setupMMCSEngineWithApplicationBundleID:(id)a3 path:(id)a4 wasCached:(BOOL *)a5 error:(id *)a6
++ (id)setupMMCSEngineWithApplicationBundleID:(id)d path:(id)path wasCached:(BOOL *)cached error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  pathCopy = path;
   v15 = objc_msgSend_sharedContextsQueue(CKDMMCSEngineContext, v13, v14);
   dispatch_assert_queue_V2(v15);
 
-  if (a5)
+  if (cached)
   {
-    *a5 = 0;
+    *cached = 0;
   }
 
-  if (v12)
+  if (pathCopy)
   {
-    if (v11)
+    if (dCopy)
     {
       goto LABEL_5;
     }
@@ -513,20 +513,20 @@ LABEL_14:
   else
   {
     v41 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v16, v17);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v41, v42, a2, a1, @"CKDMMCSEngineContext.m", 391, @"Expected non-nil path");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v41, v42, a2, self, @"CKDMMCSEngineContext.m", 391, @"Expected non-nil path");
 
-    if (v11)
+    if (dCopy)
     {
       goto LABEL_5;
     }
   }
 
   v43 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v16, v17);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v43, v44, a2, a1, @"CKDMMCSEngineContext.m", 392, @"Expected non-nil applicationBundleID");
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v43, v44, a2, self, @"CKDMMCSEngineContext.m", 392, @"Expected non-nil applicationBundleID");
 
 LABEL_5:
   v18 = objc_msgSend_sharedContextsByPath(CKDMMCSEngineContext, v16, v17);
-  v20 = objc_msgSend_objectForKey_(v18, v19, v12);
+  v20 = objc_msgSend_objectForKey_(v18, v19, pathCopy);
 
   if (v20)
   {
@@ -545,16 +545,16 @@ LABEL_5:
     }
 
     v24 = 0;
-    if (a5)
+    if (cached)
     {
-      *a5 = 1;
+      *cached = 1;
     }
   }
 
   else
   {
     v25 = [CKDMMCSEngineContext alloc];
-    v20 = objc_msgSend_initWithApplicationBundleID_path_(v25, v26, v11, v12);
+    v20 = objc_msgSend_initWithApplicationBundleID_path_(v25, v26, dCopy, pathCopy);
     v45 = 0;
     v28 = objc_msgSend__setupMMCSEngineWithRetryCount_error_(v20, v27, 2, &v45);
     v24 = v45;
@@ -569,11 +569,11 @@ LABEL_5:
     else
     {
 
-      if (a6)
+      if (error)
       {
         v38 = v24;
         v20 = 0;
-        *a6 = v24;
+        *error = v24;
       }
 
       else
@@ -588,23 +588,23 @@ LABEL_5:
   return v20;
 }
 
-+ (BOOL)tearDownMMCSEngineWithContext:(id)a3
++ (BOOL)tearDownMMCSEngineWithContext:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v6 = objc_msgSend_sharedContextsQueue(CKDMMCSEngineContext, v4, v5);
   dispatch_assert_queue_V2(v6);
 
-  if (v3 && !objc_msgSend_decRefCount(v3, v7, v8))
+  if (contextCopy && !objc_msgSend_decRefCount(contextCopy, v7, v8))
   {
-    objc_msgSend__tearDownMMCSEngine(v3, v9, v10);
+    objc_msgSend__tearDownMMCSEngine(contextCopy, v9, v10);
     v14 = objc_msgSend_sharedContextsByPath(CKDMMCSEngineContext, v12, v13);
-    v17 = objc_msgSend_path(v3, v15, v16);
+    v17 = objc_msgSend_path(contextCopy, v15, v16);
     v19 = objc_msgSend_objectForKey_(v14, v18, v17);
 
     v20 = *MEMORY[0x277CBC878];
     v21 = *MEMORY[0x277CBC880];
-    if (v19 == v3)
+    if (v19 == contextCopy)
     {
       if (v21 != -1)
       {
@@ -615,16 +615,16 @@ LABEL_5:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         v38 = v30;
-        v41 = objc_msgSend_path(v3, v39, v40);
+        v41 = objc_msgSend_path(contextCopy, v39, v40);
         v42 = 138412546;
-        v43 = v3;
+        v43 = contextCopy;
         v44 = 2114;
         v45 = v41;
         _os_log_debug_impl(&dword_22506F000, v38, OS_LOG_TYPE_DEBUG, "Removing context %@ for path %{public}@ from sharedContextsByPath", &v42, 0x16u);
       }
 
       v23 = objc_msgSend_sharedContextsByPath(CKDMMCSEngineContext, v31, v32);
-      v26 = objc_msgSend_path(v3, v33, v34);
+      v26 = objc_msgSend_path(contextCopy, v33, v34);
       objc_msgSend_removeObjectForKey_(v23, v35, v26);
     }
 
@@ -643,9 +643,9 @@ LABEL_5:
 
       v23 = v22;
       v26 = objc_msgSend_sharedContextsByPath(CKDMMCSEngineContext, v24, v25);
-      v29 = objc_msgSend_path(v3, v27, v28);
+      v29 = objc_msgSend_path(contextCopy, v27, v28);
       v42 = 138412802;
-      v43 = v3;
+      v43 = contextCopy;
       v44 = 2112;
       v45 = v26;
       v46 = 2114;
@@ -665,10 +665,10 @@ LABEL_16:
   return v11;
 }
 
-- (void)cancelRequestWithContext:(void *)a3
+- (void)cancelRequestWithContext:(void *)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_MMCSEngine(self, a2, a3);
+  v8 = objc_msgSend_MMCSEngine(self, a2, context);
   if (!v8)
   {
     v15 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v6, v7);
@@ -686,9 +686,9 @@ LABEL_16:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
-    v21 = a3;
+    contextCopy2 = context;
     _os_log_debug_impl(&dword_22506F000, v11, OS_LOG_TYPE_DEBUG, "Cancelling requests for MMCS engine wrapper %@ and context %@", buf, 0x16u);
   }
 
@@ -698,7 +698,7 @@ LABEL_16:
   v17[2] = sub_225133CF4;
   v17[3] = &unk_278546528;
   v17[5] = v8;
-  v17[6] = a3;
+  v17[6] = context;
   v17[4] = self;
   objc_msgSend_MMCSSerializeSyncRecursive_(self, v12, v17);
   if (*v9 != -1)
@@ -710,9 +710,9 @@ LABEL_16:
   if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
-    v21 = a3;
+    contextCopy2 = context;
     _os_log_debug_impl(&dword_22506F000, v13, OS_LOG_TYPE_DEBUG, "Waiting for MMCS engine wrapper %@ to cancel the requests for %@", buf, 0x16u);
   }
 
@@ -720,13 +720,13 @@ LABEL_16:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)MMCSSerializeSyncRecursive:(id)a3
+- (void)MMCSSerializeSyncRecursive:(id)recursive
 {
-  v4 = a3;
+  recursiveCopy = recursive;
   serializedThread = self->_serializedThread;
   if (serializedThread == pthread_self())
   {
-    v4[2](v4);
+    recursiveCopy[2](recursiveCopy);
   }
 
   else
@@ -737,14 +737,14 @@ LABEL_16:
     v7[2] = sub_225133EB4;
     v7[3] = &unk_278546550;
     v7[4] = self;
-    v8 = v4;
+    v8 = recursiveCopy;
     dispatch_sync(mmcsQueue, v7);
   }
 }
 
-- (void)MMCSSerializeAsyncRecursive:(id)a3
+- (void)MMCSSerializeAsyncRecursive:(id)recursive
 {
-  v5 = a3;
+  recursiveCopy = recursive;
   if (!objc_msgSend_MMCSEngine(self, v6, v7))
   {
     v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v8, v9);
@@ -757,17 +757,17 @@ LABEL_16:
   v14[2] = sub_225133FB0;
   v14[3] = &unk_278546550;
   v14[4] = self;
-  v15 = v5;
-  v11 = v5;
+  v15 = recursiveCopy;
+  v11 = recursiveCopy;
   dispatch_async(mmcsQueue, v14);
 }
 
-- (void)MMCSRunSerialized:(id)a3
+- (void)MMCSRunSerialized:(id)serialized
 {
-  v5 = a3;
+  serializedCopy = serialized;
   v4 = objc_autoreleasePoolPush();
   dispatch_assert_queue_V2(self->_mmcsQueue);
-  sub_2250961E0(&self->_serializedThread, v5);
+  sub_2250961E0(&self->_serializedThread, serializedCopy);
   objc_autoreleasePoolPop(v4);
 }
 
@@ -795,14 +795,14 @@ LABEL_16:
   return v7 - 0x331272800;
 }
 
-- (void)stopTrackingItemID:(unint64_t)a3
+- (void)stopTrackingItemID:(unint64_t)d
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = self->_inMemoryItemsIDs;
   objc_sync_enter(v5);
-  if (objc_msgSend_containsIndex_(self->_inMemoryItemsIDs, v6, a3 + 0x331272800))
+  if (objc_msgSend_containsIndex_(self->_inMemoryItemsIDs, v6, d + 0x331272800))
   {
-    objc_msgSend_removeIndex_(self->_inMemoryItemsIDs, v7, a3 + 0x331272800);
+    objc_msgSend_removeIndex_(self->_inMemoryItemsIDs, v7, d + 0x331272800);
   }
 
   else
@@ -816,7 +816,7 @@ LABEL_16:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v10 = 134217984;
-      v11 = a3;
+      dCopy = d;
       _os_log_error_impl(&dword_22506F000, v8, OS_LOG_TYPE_ERROR, "Attempted to stop tracking untracked itemID %llu", &v10, 0xCu);
     }
   }

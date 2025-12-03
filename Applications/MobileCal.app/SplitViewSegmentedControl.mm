@@ -7,8 +7,8 @@
 
 - (void)didMoveToWindow
 {
-  v2 = [(SplitViewSegmentedControl *)self splitViewController];
-  [v2 segmentedControlAddedToWindow];
+  splitViewController = [(SplitViewSegmentedControl *)self splitViewController];
+  [splitViewController segmentedControlAddedToWindow];
 }
 
 - (SplitViewWindowRootViewControllerDelegate)splitViewController

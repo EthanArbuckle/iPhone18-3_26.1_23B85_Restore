@@ -1,27 +1,27 @@
 @interface HMDLocationEvent
 + (id)logCategory;
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4;
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler;
 - (BOOL)doesThisTargetCurrentUser;
-- (BOOL)isCompatibleWithEvent:(id)a3;
+- (BOOL)isCompatibleWithEvent:(id)event;
 - (CLRegion)uniqueRegion;
-- (HMDLocationEvent)initWithCoder:(id)a3;
-- (HMDLocationEvent)initWithModel:(id)a3 home:(id)a4;
+- (HMDLocationEvent)initWithCoder:(id)coder;
+- (HMDLocationEvent)initWithModel:(id)model home:(id)home;
 - (NSString)description;
 - (id)analyticsTriggerEventData;
 - (id)createPayload;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)emptyModelObject;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
-- (void)_handleLocationEventOccurred:(id)a3;
-- (void)_handleRetrieveLocationEventForEventTrigger:(id)a3;
-- (void)_handleUpdateRequest:(id)a3;
+- (id)modelObjectWithChangeType:(unint64_t)type;
+- (void)_handleLocationEventOccurred:(id)occurred;
+- (void)_handleRetrieveLocationEventForEventTrigger:(id)trigger;
+- (void)_handleUpdateRequest:(id)request;
 - (void)_registerForMessages;
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)checkFMFStatus:(id)a3;
-- (void)didEnterRegion:(id)a3;
-- (void)didExitRegion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fmfStatusUpdateNotification:(id)a3;
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)checkFMFStatus:(id)status;
+- (void)didEnterRegion:(id)region;
+- (void)didExitRegion:(id)region;
+- (void)encodeWithCoder:(id)coder;
+- (void)fmfStatusUpdateNotification:(id)notification;
 - (void)informLocationEventOccurrenceToResident;
 - (void)locationEventOccurred;
 @end
@@ -33,29 +33,29 @@
   v3 = objc_alloc_init(HMDAnalyticsTriggerEventData);
   [(HMDAnalyticsTriggerEventData *)v3 setEndEvent:[(HMDEvent *)self isEndEvent]];
   v4 = objc_alloc_init(HMDAnalyticsLocationEventData);
-  v5 = [(HMDLocationEvent *)self region];
-  -[HMDAnalyticsLocationEventData setNotifyOnEntry:](v4, "setNotifyOnEntry:", [v5 notifyOnEntry]);
+  region = [(HMDLocationEvent *)self region];
+  -[HMDAnalyticsLocationEventData setNotifyOnEntry:](v4, "setNotifyOnEntry:", [region notifyOnEntry]);
 
-  v6 = [(HMDLocationEvent *)self region];
-  -[HMDAnalyticsLocationEventData setNotifyOnExit:](v4, "setNotifyOnExit:", [v6 notifyOnExit]);
+  region2 = [(HMDLocationEvent *)self region];
+  -[HMDAnalyticsLocationEventData setNotifyOnExit:](v4, "setNotifyOnExit:", [region2 notifyOnExit]);
 
   [(HMDAnalyticsTriggerEventData *)v3 setLocationEvent:v4];
 
   return v3;
 }
 
-- (void)didExitRegion:(id)a3
+- (void)didExitRegion:(id)region
 {
-  v4 = a3;
-  v5 = [(HMDEvent *)self workQueue];
+  regionCopy = region;
+  workQueue = [(HMDEvent *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__HMDLocationEvent_didExitRegion___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = regionCopy;
+  v6 = regionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __34__HMDLocationEvent_didExitRegion___block_invoke(uint64_t a1)
@@ -81,18 +81,18 @@ uint64_t __34__HMDLocationEvent_didExitRegion___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didEnterRegion:(id)a3
+- (void)didEnterRegion:(id)region
 {
-  v4 = a3;
-  v5 = [(HMDEvent *)self workQueue];
+  regionCopy = region;
+  workQueue = [(HMDEvent *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__HMDLocationEvent_didEnterRegion___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = regionCopy;
+  v6 = regionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __35__HMDLocationEvent_didEnterRegion___block_invoke(uint64_t a1)
@@ -121,30 +121,30 @@ uint64_t __35__HMDLocationEvent_didEnterRegion___block_invoke(uint64_t a1)
 - (void)informLocationEventOccurrenceToResident
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDEvent *)self eventTrigger];
-  v4 = [v3 home];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  home = [eventTrigger home];
 
-  v5 = [v4 homeManager];
-  v6 = [v5 messageDispatcher];
+  homeManager = [home homeManager];
+  messageDispatcher = [homeManager messageDispatcher];
 
   v7 = [HMDRemoteHomeMessageDestination alloc];
-  v8 = [(HMDEvent *)self uuid];
-  v9 = [v4 uuid];
-  v10 = [(HMDRemoteHomeMessageDestination *)v7 initWithTarget:v8 homeUUID:v9];
+  uuid = [(HMDEvent *)self uuid];
+  uuid2 = [home uuid];
+  v10 = [(HMDRemoteHomeMessageDestination *)v7 initWithTarget:uuid homeUUID:uuid2];
 
   v11 = [HMDRemoteMessage secureMessageWithName:*MEMORY[0x277CD23F8] qualityOfService:17 destination:v10 messagePayload:MEMORY[0x277CBEC10]];
-  v12 = [v11 identifier];
+  identifier = [v11 identifier];
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invoke;
   v19[3] = &unk_278687F40;
   objc_copyWeak(&v21, &location);
-  v13 = v12;
+  v13 = identifier;
   v20 = v13;
   [v11 setResponseHandler:v19];
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -157,7 +157,7 @@ uint64_t __35__HMDLocationEvent_didEnterRegion___block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v14);
-  [v6 sendMessage:v11 completionHandler:0];
+  [messageDispatcher sendMessage:v11 completionHandler:0];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -189,17 +189,17 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleLocationEventOccurred:(id)a3
+- (void)_handleLocationEventOccurred:(id)occurred
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  occurredCopy = occurred;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)v6 activationType]);
+    v9 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)selfCopy activationType]);
     v18 = 138543618;
     v19 = v8;
     v20 = 2112;
@@ -208,19 +208,19 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([(HMDEvent *)v6 activationType]== 2)
+  if ([(HMDEvent *)selfCopy activationType]== 2)
   {
     v10 = [HMDEventTriggerDevice alloc];
-    v11 = [v4 remoteSourceDevice];
-    v12 = [(HMDEvent *)v6 eventTrigger];
-    v13 = [v12 home];
-    v14 = [(HMDEventTriggerDevice *)v10 initWithDevice:v11 forHome:v13];
+    remoteSourceDevice = [occurredCopy remoteSourceDevice];
+    eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+    home = [eventTrigger home];
+    v14 = [(HMDEventTriggerDevice *)v10 initWithDevice:remoteSourceDevice forHome:home];
 
-    v15 = [(HMDEvent *)v6 delegate];
-    v16 = [v15 didOccurEvent:v6 causingDevice:v14];
+    delegate = [(HMDEvent *)selfCopy delegate];
+    v16 = [delegate didOccurEvent:selfCopy causingDevice:v14];
   }
 
-  [v4 respondWithPayload:0];
+  [occurredCopy respondWithPayload:0];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -229,12 +229,12 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)v4 activationType]);
+    v7 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)selfCopy activationType]);
     v22 = 138543618;
     v23 = v6;
     v24 = 2112;
@@ -244,12 +244,12 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
 
   objc_autoreleasePoolPop(v3);
   v8 = +[HMDLostModeManager sharedManager];
-  v9 = [v8 isLost];
+  isLost = [v8 isLost];
 
-  if (v9)
+  if (isLost)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v4;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -264,39 +264,39 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
 
   else
   {
-    v14 = [(HMDEvent *)v4 activationType];
-    if (v14 == 3)
+    activationType = [(HMDEvent *)selfCopy activationType];
+    if (activationType == 3)
     {
       v15 = [HMDEventTriggerDevice alloc];
-      v16 = [(HMDEvent *)v4 eventTrigger];
-      v17 = [v16 home];
-      v18 = [(HMDEventTriggerDevice *)v15 initWithCurrentDeviceForHome:v17];
+      eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+      home = [eventTrigger home];
+      v18 = [(HMDEventTriggerDevice *)v15 initWithCurrentDeviceForHome:home];
 
-      v19 = [(HMDEvent *)v4 delegate];
-      v20 = [v19 didOccurEvent:v4 causingDevice:v18];
+      delegate = [(HMDEvent *)selfCopy delegate];
+      v20 = [delegate didOccurEvent:selfCopy causingDevice:v18];
     }
 
-    else if (v14 == 1)
+    else if (activationType == 1)
     {
-      [(HMDLocationEvent *)v4 informLocationEventOccurrenceToResident];
+      [(HMDLocationEvent *)selfCopy informLocationEventOccurrenceToResident];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = HMDLocationEvent;
-  v7 = [(HMDEvent *)&v16 _activate:a3 completionHandler:0];
-  v8 = [(HMDLocationEvent *)self uniqueRegion];
-  v9 = v8;
-  if (v8)
+  v7 = [(HMDEvent *)&v16 _activate:_activate completionHandler:0];
+  uniqueRegion = [(HMDLocationEvent *)self uniqueRegion];
+  v9 = uniqueRegion;
+  if (uniqueRegion)
   {
-    v17[0] = v8;
+    v17[0] = uniqueRegion;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   }
 
@@ -305,31 +305,31 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
     v10 = MEMORY[0x277CBEBF8];
   }
 
-  v11 = [(HMDLocationEvent *)self isActive];
+  isActive = [(HMDLocationEvent *)self isActive];
   v12 = +[HMDLocation sharedManager];
   v13 = v12;
-  if (v11)
+  if (isActive)
   {
-    [v12 registerForRegionUpdate:v10 withDelegate:self completionHandler:v6];
+    [v12 registerForRegionUpdate:v10 withDelegate:self completionHandler:handlerCopy];
   }
 
   else
   {
-    [v12 deregisterForRegionUpdate:v10 completionHandler:v6];
+    [v12 deregisterForRegionUpdate:v10 completionHandler:handlerCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
@@ -340,7 +340,7 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = v9;
+  v15 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -356,13 +356,13 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
 
   if (v17)
   {
-    v18 = [(HMDEvent *)v12 eventTrigger];
-    v19 = [v10 name];
-    v20 = [v19 isEqualToString:@"kMigratedEventsToRecordsRequest"];
+    eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+    name = [messageCopy name];
+    v20 = [name isEqualToString:@"kMigratedEventsToRecordsRequest"];
 
     if (v20)
     {
-      [v18 processEventRecords:v17 message:v10];
+      [eventTrigger processEventRecords:v17 message:messageCopy];
     }
 
     else
@@ -371,15 +371,15 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
       {
         v21 = MEMORY[0x277CCAAC8];
         v22 = objc_opt_class();
-        v23 = [v17 region];
+        region = [v17 region];
         v42 = 0;
-        v24 = [v21 unarchivedObjectOfClass:v22 fromData:v23 error:&v42];
+        v24 = [v21 unarchivedObjectOfClass:v22 fromData:region error:&v42];
         v25 = v42;
 
         if (!v24)
         {
           v34 = objc_autoreleasePoolPush();
-          v35 = v12;
+          v35 = selfCopy;
           v36 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
@@ -392,24 +392,24 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
           }
 
           objc_autoreleasePoolPop(v34);
-          [v10 respondWithError:v25];
+          [messageCopy respondWithError:v25];
 
           goto LABEL_17;
         }
 
-        v26 = [(HMDLocationEvent *)v12 region];
-        v27 = [v26 isEqual:v24];
+        region2 = [(HMDLocationEvent *)selfCopy region];
+        v27 = [region2 isEqual:v24];
 
         if ((v27 & 1) == 0)
         {
           v28 = objc_autoreleasePoolPush();
-          v29 = v12;
+          v29 = selfCopy;
           v30 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
             v41 = HMFGetLogIdentifier();
-            v38 = [(HMDLocationEvent *)v29 region];
-            regionAsString(v38);
+            region3 = [(HMDLocationEvent *)v29 region];
+            regionAsString(region3);
             v31 = v39 = v25;
             regionAsString(v24);
             v32 = v40 = v28;
@@ -427,11 +427,11 @@ void __59__HMDLocationEvent_informLocationEventOccurrenceToResident__block_invok
 
           objc_autoreleasePoolPop(v28);
           [(HMDLocationEvent *)v29 setRegion:v24];
-          [v18 markChangedForMessage:v10];
+          [eventTrigger markChangedForMessage:messageCopy];
         }
       }
 
-      [v10 respondWithSuccess];
+      [messageCopy respondWithSuccess];
     }
 
 LABEL_17:
@@ -440,46 +440,46 @@ LABEL_17:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
   v5 = [HMDLocationEventModel alloc];
-  v6 = [(HMDEvent *)self uuid];
-  v7 = [(HMDEvent *)self eventTrigger];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:uuid parentUUID:uuid2];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDEvent isEndEvent](self, "isEndEvent")}];
   [(HMDLocationEventModel *)v9 setEndEvent:v10];
 
-  v11 = [(HMDLocationEvent *)self region];
+  region = [(HMDLocationEvent *)self region];
   v12 = encodeRootObject();
   [(HMDLocationEventModel *)v9 setRegion:v12];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = HMDLocationEvent;
-  [(HMDEvent *)&v6 encodeWithCoder:v4];
-  if ([v4 hmd_isForXPCTransport] && (objc_msgSend(v4, "hmd_isForXPCTransportAuthorizedForLocationAccess") & 1) != 0 || (objc_msgSend(v4, "hmd_isForLocalStore") & 1) != 0 || objc_msgSend(v4, "hmd_isForRemoteTransport") && !objc_msgSend(v4, "hmd_isForRemoteTransportOnSameAccount") || objc_msgSend(v4, "hmd_isForRemoteTransportOnSameAccount") && (objc_msgSend(v4, "hmd_isForRemoteGatewayCoder") & 1) == 0)
+  [(HMDEvent *)&v6 encodeWithCoder:coderCopy];
+  if ([coderCopy hmd_isForXPCTransport] && (objc_msgSend(coderCopy, "hmd_isForXPCTransportAuthorizedForLocationAccess") & 1) != 0 || (objc_msgSend(coderCopy, "hmd_isForLocalStore") & 1) != 0 || objc_msgSend(coderCopy, "hmd_isForRemoteTransport") && !objc_msgSend(coderCopy, "hmd_isForRemoteTransportOnSameAccount") || objc_msgSend(coderCopy, "hmd_isForRemoteTransportOnSameAccount") && (objc_msgSend(coderCopy, "hmd_isForRemoteGatewayCoder") & 1) == 0)
   {
-    v5 = [(HMDLocationEvent *)self region];
-    [v4 encodeObject:v5 forKey:@"HM.locationEventRegion"];
+    region = [(HMDLocationEvent *)self region];
+    [coderCopy encodeObject:region forKey:@"HM.locationEventRegion"];
   }
 }
 
-- (HMDLocationEvent)initWithCoder:(id)a3
+- (HMDLocationEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDLocationEvent;
-  v5 = [(HMDEvent *)&v9 initWithCoder:v4];
+  v5 = [(HMDEvent *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.locationEventRegion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.locationEventRegion"];
     region = v5->_region;
     v5->_region = v6;
   }
@@ -487,11 +487,11 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)isCompatibleWithEvent:(id)a3
+- (BOOL)isCompatibleWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = HMDLocationEvent;
-  return [(HMDEvent *)&v4 isCompatibleWithEvent:a3];
+  return [(HMDEvent *)&v4 isCompatibleWithEvent:event];
 }
 
 - (id)createPayload
@@ -499,10 +499,10 @@ LABEL_17:
   v3 = MEMORY[0x277CBEB38];
   v10.receiver = self;
   v10.super_class = HMDLocationEvent;
-  v4 = [(HMDEvent *)&v10 createPayload];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  createPayload = [(HMDEvent *)&v10 createPayload];
+  v5 = [v3 dictionaryWithDictionary:createPayload];
 
-  v6 = [(HMDLocationEvent *)self region];
+  region = [(HMDLocationEvent *)self region];
   v7 = encodeRootObject();
   [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x277CD2400]];
 
@@ -515,47 +515,47 @@ LABEL_17:
 {
   v53 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDLocationEvent *)v4 region];
+    region = [(HMDLocationEvent *)selfCopy region];
     *buf = 138543618;
     v48 = v6;
     v49 = 2112;
-    v50 = v7;
+    v50 = region;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@unique region %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(HMDLocationEvent *)v4 region];
-  v10 = [v9 identifier];
-  v11 = [(HMDEvent *)v4 uuid];
-  v12 = [v11 UUIDString];
-  v13 = [v8 stringWithFormat:@"%@-%@", v10, v12];
+  region2 = [(HMDLocationEvent *)selfCopy region];
+  identifier = [region2 identifier];
+  uuid = [(HMDEvent *)selfCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v13 = [v8 stringWithFormat:@"%@-%@", identifier, uUIDString];
 
-  v14 = [(HMDLocationEvent *)v4 region];
+  region3 = [(HMDLocationEvent *)selfCopy region];
   objc_opt_class();
-  LOBYTE(v11) = objc_opt_isKindOfClass();
+  LOBYTE(uuid) = objc_opt_isKindOfClass();
 
-  v15 = [(HMDLocationEvent *)v4 region];
-  if (v11)
+  region4 = [(HMDLocationEvent *)selfCopy region];
+  if (uuid)
   {
     v16 = objc_alloc(MEMORY[0x277CBFBC8]);
-    [v15 center];
+    [region4 center];
     v18 = v17;
     v20 = v19;
-    [v15 radius];
+    [region4 radius];
     v22 = [v16 initWithCenter:v13 radius:1 identifier:v18 nearbyAllowed:{v20, v21}];
-    [v22 setNotifyOnExit:{objc_msgSend(v15, "notifyOnExit")}];
-    [v22 setNotifyOnEntry:{objc_msgSend(v15, "notifyOnEntry")}];
-    [v22 setReferenceFrame:{objc_msgSend(v15, "referenceFrame")}];
+    [v22 setNotifyOnExit:{objc_msgSend(region4, "notifyOnExit")}];
+    [v22 setNotifyOnEntry:{objc_msgSend(region4, "notifyOnEntry")}];
+    [v22 setReferenceFrame:{objc_msgSend(region4, "referenceFrame")}];
     if (!v22)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v4;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -563,7 +563,7 @@ LABEL_17:
         *buf = 138543618;
         v48 = v26;
         v49 = 2112;
-        v50 = v15;
+        v50 = region4;
         v27 = "%{public}@Error getting circle region for unique region, %@";
 LABEL_21:
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, v27, buf, 0x16u);
@@ -582,35 +582,35 @@ LABEL_21:
 
   if (isKindOfClass)
   {
-    v15 = [(HMDLocationEvent *)v4 region];
-    v29 = [v15 major];
-    if (v29 && (v30 = v29, [v15 minor], v31 = objc_claimAutoreleasedReturnValue(), v31, v30, v31))
+    region4 = [(HMDLocationEvent *)selfCopy region];
+    major = [region4 major];
+    if (major && (v30 = major, [region4 minor], v31 = objc_claimAutoreleasedReturnValue(), v31, v30, v31))
     {
       v32 = objc_alloc(MEMORY[0x277CBFBB8]);
-      v33 = [v15 proximityUUID];
-      v34 = [v15 major];
-      v35 = [v34 unsignedShortValue];
-      v36 = [v15 minor];
-      v22 = [v32 initWithProximityUUID:v33 major:v35 minor:objc_msgSend(v36 identifier:{"unsignedShortValue"), v13}];
+      proximityUUID = [region4 proximityUUID];
+      major2 = [region4 major];
+      unsignedShortValue = [major2 unsignedShortValue];
+      minor = [region4 minor];
+      v22 = [v32 initWithProximityUUID:proximityUUID major:unsignedShortValue minor:objc_msgSend(minor identifier:{"unsignedShortValue"), v13}];
     }
 
     else
     {
-      v43 = [v15 major];
+      major3 = [region4 major];
 
       v44 = objc_alloc(MEMORY[0x277CBFBB8]);
-      v33 = [v15 proximityUUID];
-      if (!v43)
+      proximityUUID = [region4 proximityUUID];
+      if (!major3)
       {
-        v22 = [v44 initWithProximityUUID:v33 identifier:v13];
+        v22 = [v44 initWithProximityUUID:proximityUUID identifier:v13];
 LABEL_18:
 
-        [v22 setNotifyOnExit:{objc_msgSend(v15, "notifyOnExit")}];
-        [v22 setNotifyOnEntry:{objc_msgSend(v15, "notifyOnEntry")}];
+        [v22 setNotifyOnExit:{objc_msgSend(region4, "notifyOnExit")}];
+        [v22 setNotifyOnEntry:{objc_msgSend(region4, "notifyOnEntry")}];
         if (!v22)
         {
           v23 = objc_autoreleasePoolPush();
-          v24 = v4;
+          v24 = selfCopy;
           v25 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
@@ -618,7 +618,7 @@ LABEL_18:
             *buf = 138543618;
             v48 = v26;
             v49 = 2112;
-            v50 = v15;
+            v50 = region4;
             v27 = "%{public}@Error getting beacon region for unique region, %@";
             goto LABEL_21;
           }
@@ -633,8 +633,8 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v34 = [v15 major];
-      v22 = [v44 initWithProximityUUID:v33 major:objc_msgSend(v34 identifier:{"unsignedShortValue"), v13}];
+      major2 = [region4 major];
+      v22 = [v44 initWithProximityUUID:proximityUUID major:objc_msgSend(major2 identifier:{"unsignedShortValue"), v13}];
     }
 
     goto LABEL_18;
@@ -645,15 +645,15 @@ LABEL_23:
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
     v39 = HMFGetLogIdentifier();
-    v40 = [(HMDLocationEvent *)v4 region];
+    region5 = [(HMDLocationEvent *)selfCopy region];
     v41 = objc_opt_class();
-    v42 = [(HMDLocationEvent *)v4 region];
+    region6 = [(HMDLocationEvent *)selfCopy region];
     *buf = 138543874;
     v48 = v39;
     v49 = 2112;
     v50 = v41;
     v51 = 2112;
-    v52 = v42;
+    v52 = region6;
     _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_ERROR, "%{public}@Cannot create unique region for region of unsupported class %@: %@", buf, 0x20u);
   }
 
@@ -666,54 +666,54 @@ LABEL_24:
   return v22;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v14.receiver = self;
   v14.super_class = HMDLocationEvent;
-  v4 = [(HMDEvent *)&v14 dumpStateWithPrivacyLevel:a3];
+  v4 = [(HMDEvent *)&v14 dumpStateWithPrivacyLevel:level];
   v5 = [v4 mutableCopy];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(HMDLocationEvent *)self region];
-  v8 = [(HMDLocationEvent *)self region];
-  [v8 notifyOnEntry];
+  region = [(HMDLocationEvent *)self region];
+  region2 = [(HMDLocationEvent *)self region];
+  [region2 notifyOnEntry];
   v9 = HMFBooleanToString();
-  v10 = [(HMDLocationEvent *)self region];
-  [v10 notifyOnExit];
+  region3 = [(HMDLocationEvent *)self region];
+  [region3 notifyOnExit];
   v11 = HMFBooleanToString();
-  v12 = [v6 stringWithFormat:@"Region: %@, Entry: %@, Exit: %@", v7, v9, v11];
+  v12 = [v6 stringWithFormat:@"Region: %@, Entry: %@, Exit: %@", region, v9, v11];
 
   [v5 setObject:v12 forKeyedSubscript:*MEMORY[0x277D0F0F8]];
 
   return v5;
 }
 
-- (void)_handleRetrieveLocationEventForEventTrigger:(id)a3
+- (void)_handleRetrieveLocationEventForEventTrigger:(id)trigger
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isAuthorizedForLocationAccess])
+  triggerCopy = trigger;
+  if ([triggerCopy isAuthorizedForLocationAccess])
   {
-    v5 = [v4 proxyConnection];
-    v6 = [v5 processInfo];
-    v7 = [v6 locationAuthorization];
-    [v7 mark];
+    proxyConnection = [triggerCopy proxyConnection];
+    processInfo = [proxyConnection processInfo];
+    locationAuthorization = [processInfo locationAuthorization];
+    [locationAuthorization mark];
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    v9 = [(HMDLocationEvent *)self region];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    region = [(HMDLocationEvent *)self region];
     v10 = encodeRootObject();
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277CD2400]];
+    [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x277CD2400]];
 
-    v11 = [(HMDEvent *)self eventTrigger];
-    v12 = [v11 mostRecentFireDate];
+    eventTrigger = [(HMDEvent *)self eventTrigger];
+    mostRecentFireDate = [eventTrigger mostRecentFireDate];
 
-    if (v12)
+    if (mostRecentFireDate)
     {
-      v13 = [v11 mostRecentFireDate];
-      [v8 setObject:v13 forKeyedSubscript:*MEMORY[0x277CD2750]];
+      mostRecentFireDate2 = [eventTrigger mostRecentFireDate];
+      [dictionary setObject:mostRecentFireDate2 forKeyedSubscript:*MEMORY[0x277CD2750]];
     }
 
-    [v4 respondWithPayload:v8];
+    [triggerCopy respondWithPayload:dictionary];
   }
 
   else
@@ -729,19 +729,19 @@ LABEL_24:
     }
 
     objc_autoreleasePoolPop(v14);
-    [v4 respondWithPayload:0];
+    [triggerCopy respondWithPayload:0];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdateRequest:(id)a3
+- (void)_handleUpdateRequest:(id)request
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isAuthorizedForLocationAccess])
+  requestCopy = request;
+  if ([requestCopy isAuthorizedForLocationAccess])
   {
-    v5 = [v4 dataForKey:*MEMORY[0x277CD2400]];
+    v5 = [requestCopy dataForKey:*MEMORY[0x277CD2400]];
     v36 = 0;
     v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v36];
     v7 = v36;
@@ -749,26 +749,26 @@ LABEL_24:
     {
       if (HMIsValidRegion())
       {
-        v8 = [(HMDLocationEvent *)self emptyModelObject];
+        emptyModelObject = [(HMDLocationEvent *)self emptyModelObject];
         v9 = encodeRootObject();
-        [v8 setRegion:v9];
+        [emptyModelObject setRegion:v9];
 
-        v10 = [(HMDEvent *)self eventTrigger];
-        v11 = [v10 home];
-        v12 = [v11 backingStore];
-        v13 = [v4 name];
+        eventTrigger = [(HMDEvent *)self eventTrigger];
+        home = [eventTrigger home];
+        backingStore = [home backingStore];
+        name = [requestCopy name];
         +[HMDBackingStoreTransactionOptions defaultXPCOptions];
         v14 = v32 = v7;
-        v15 = [v12 transaction:v13 options:v14];
+        v15 = [backingStore transaction:name options:v14];
 
-        [v15 add:v8];
+        [v15 add:emptyModelObject];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __41__HMDLocationEvent__handleUpdateRequest___block_invoke;
         v33[3] = &unk_27868A1D8;
-        v34 = v4;
-        v35 = v8;
-        v16 = v8;
+        v34 = requestCopy;
+        v35 = emptyModelObject;
+        v16 = emptyModelObject;
         [v15 run:v33];
 
         v7 = v32;
@@ -778,7 +778,7 @@ LABEL_15:
       }
 
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -796,7 +796,7 @@ LABEL_15:
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -814,12 +814,12 @@ LABEL_15:
     }
 
     v15 = [v25 hmErrorWithCode:v26];
-    [v4 respondWithError:v15];
+    [requestCopy respondWithError:v15];
     goto LABEL_15;
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -831,7 +831,7 @@ LABEL_15:
 
   objc_autoreleasePoolPop(v17);
   v5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:85];
-  [v4 respondWithError:v5];
+  [requestCopy respondWithError:v5];
 LABEL_16:
 
   v31 = *MEMORY[0x277D85DE8];
@@ -861,12 +861,12 @@ void __41__HMDLocationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
   }
 }
 
-- (void)checkFMFStatus:(id)a3
+- (void)checkFMFStatus:(id)status
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -874,15 +874,15 @@ void __41__HMDLocationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = statusCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Checking the ownership with fmfStatus %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (-[HMDLocationEvent doesThisTargetCurrentUser](v6, "doesThisTargetCurrentUser") && [v4 value] == 2)
+  if (-[HMDLocationEvent doesThisTargetCurrentUser](selfCopy, "doesThisTargetCurrentUser") && [statusCopy value] == 2)
   {
-    v9 = [(HMDEvent *)v6 eventTrigger];
-    [v9 takeOverOwnershipOfTrigger];
+    eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+    [eventTrigger takeOverOwnershipOfTrigger];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -891,17 +891,17 @@ void __41__HMDLocationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
 - (BOOL)doesThisTargetCurrentUser
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDEvent *)self eventTrigger];
-  v4 = [v3 home];
-  v5 = [(HMDLocationEvent *)self userUUID];
-  v6 = [v4 userWithUUID:v5];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  home = [eventTrigger home];
+  userUUID = [(HMDLocationEvent *)self userUUID];
+  v6 = [home userWithUUID:userUUID];
 
-  v7 = [v4 currentUser];
-  v8 = [v6 isEqual:v7];
+  currentUser = [home currentUser];
+  v8 = [v6 isEqual:currentUser];
   if ((v8 & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -911,7 +911,7 @@ void __41__HMDLocationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
       v17 = 2112;
       v18 = v6;
       v19 = 2112;
-      v20 = v7;
+      v20 = currentUser;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Not taking the ownership since this trigger belongs to user %@, this device's user %@", &v15, 0x20u);
     }
 
@@ -922,18 +922,18 @@ void __41__HMDLocationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
   return v8;
 }
 
-- (void)fmfStatusUpdateNotification:(id)a3
+- (void)fmfStatusUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDEvent *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDEvent *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HMDLocationEvent_fmfStatusUpdateNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __48__HMDLocationEvent_fmfStatusUpdateNotification___block_invoke(uint64_t a1)
@@ -966,16 +966,16 @@ void __48__HMDLocationEvent_fmfStatusUpdateNotification___block_invoke(uint64_t 
   v18.receiver = self;
   v18.super_class = HMDLocationEvent;
   [(HMDEvent *)&v18 _registerForMessages];
-  v3 = [(HMDEvent *)self home];
-  v4 = [HMDUserMessagePolicy userMessagePolicyWithHome:v3 userPrivilege:0 remoteAccessRequired:0];
-  v5 = [(HMDEvent *)self msgDispatcher];
+  home = [(HMDEvent *)self home];
+  v4 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:0];
+  msgDispatcher = [(HMDEvent *)self msgDispatcher];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:1];
   v20[0] = v6;
   v20[1] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-  [v5 registerForMessage:@"kRetrieveLocationEventRequestKey" receiver:self policies:v7 selector:sel__handleRetrieveLocationEventForEventTrigger_];
+  [msgDispatcher registerForMessage:@"kRetrieveLocationEventRequestKey" receiver:self policies:v7 selector:sel__handleRetrieveLocationEventForEventTrigger_];
 
-  v8 = [(HMDEvent *)self msgDispatcher];
+  msgDispatcher2 = [(HMDEvent *)self msgDispatcher];
   v9 = *MEMORY[0x277CD23F8];
   v10 = [HMDXPCMessagePolicy policyWithEntitlements:1];
   v19[0] = v10;
@@ -983,19 +983,19 @@ void __48__HMDLocationEvent_fmfStatusUpdateNotification___block_invoke(uint64_t 
   v11 = +[HMDRemoteMessagePolicy defaultSecurePrimaryResidentPolicy];
   v19[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
-  [v8 registerForMessage:v9 receiver:self policies:v12 selector:sel__handleLocationEventOccurred_];
+  [msgDispatcher2 registerForMessage:v9 receiver:self policies:v12 selector:sel__handleLocationEventOccurred_];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel_fmfStatusUpdateNotification_ name:@"HMDFMFStatusUpdateNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_fmfStatusUpdateNotification_ name:@"HMDFMFStatusUpdateNotification" object:0];
 
-  v14 = [v3 homeManager];
-  v15 = [v14 fmfHandler];
+  homeManager = [home homeManager];
+  fmfHandler = [homeManager fmfHandler];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __40__HMDLocationEvent__registerForMessages__block_invoke;
   v17[3] = &unk_278683EF8;
   v17[4] = self;
-  [v15 queryFMFStatusWithCompletion:v17];
+  [fmfHandler queryFMFStatusWithCompletion:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -1040,10 +1040,10 @@ uint64_t __40__HMDLocationEvent__registerForMessages__block_invoke_2(uint64_t a1
 - (id)emptyModelObject
 {
   v3 = [HMDLocationEventModel alloc];
-  v4 = [(HMDEvent *)self uuid];
-  v5 = [(HMDEvent *)self eventTrigger];
-  v6 = [v5 uuid];
-  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:v4 parentUUID:v6];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
   return v7;
 }
@@ -1054,28 +1054,28 @@ uint64_t __40__HMDLocationEvent__registerForMessages__block_invoke_2(uint64_t a1
   v9.receiver = self;
   v9.super_class = HMDLocationEvent;
   v4 = [(HMDEvent *)&v9 description];
-  v5 = [(HMDLocationEvent *)self region];
-  v6 = regionAsString(v5);
+  region = [(HMDLocationEvent *)self region];
+  v6 = regionAsString(region);
   v7 = [v3 stringWithFormat:@"%@, %@", v4, v6];
 
   return v7;
 }
 
-- (HMDLocationEvent)initWithModel:(id)a3 home:(id)a4
+- (HMDLocationEvent)initWithModel:(id)model home:(id)home
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  homeCopy = home;
   v24.receiver = self;
   v24.super_class = HMDLocationEvent;
-  v8 = [(HMDEvent *)&v24 initWithModel:v6 home:v7];
+  v8 = [(HMDEvent *)&v24 initWithModel:modelCopy home:homeCopy];
   if (v8)
   {
     v9 = MEMORY[0x277CCAAC8];
     v10 = objc_opt_class();
-    v11 = [v6 region];
+    region = [modelCopy region];
     v23 = 0;
-    v12 = [v9 unarchivedObjectOfClass:v10 fromData:v11 error:&v23];
+    v12 = [v9 unarchivedObjectOfClass:v10 fromData:region error:&v23];
     v13 = v23;
     region = v8->_region;
     v8->_region = v12;
@@ -1098,9 +1098,9 @@ uint64_t __40__HMDLocationEvent__registerForMessages__block_invoke_2(uint64_t a1
       objc_autoreleasePoolPop(v15);
     }
 
-    v19 = [v6 userUUID];
+    userUUID = [modelCopy userUUID];
     userUUID = v8->_userUUID;
-    v8->_userUUID = v19;
+    v8->_userUUID = userUUID;
   }
 
   v21 = *MEMORY[0x277D85DE8];

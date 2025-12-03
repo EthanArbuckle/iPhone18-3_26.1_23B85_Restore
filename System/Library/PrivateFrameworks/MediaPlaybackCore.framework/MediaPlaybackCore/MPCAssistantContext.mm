@@ -1,34 +1,34 @@
 @interface MPCAssistantContext
 - (MPCAssistantContext)init;
-- (void)modifySystemMusicContextForDestination:(id)a3 completion:(id)a4;
+- (void)modifySystemMusicContextForDestination:(id)destination completion:(id)completion;
 @end
 
 @implementation MPCAssistantContext
 
-- (void)modifySystemMusicContextForDestination:(id)a3 completion:(id)a4
+- (void)modifySystemMusicContextForDestination:(id)destination completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__MPCAssistantContext_modifySystemMusicContextForDestination_completion___block_invoke;
   aBlock[3] = &unk_1E8238C08;
-  v8 = v7;
+  v8 = completionCopy;
   v17 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v6 outputGroupID];
+  outputGroupID = [destinationCopy outputGroupID];
 
-  if (v10)
+  if (outputGroupID)
   {
     discovery = self->_discovery;
-    v12 = [v6 outputGroupID];
-    [(MPCAssistantDiscovery *)discovery discoverAirplayDevicesMatchingGroupID:v12 completion:v9];
+    outputGroupID2 = [destinationCopy outputGroupID];
+    [(MPCAssistantDiscovery *)discovery discoverAirplayDevicesMatchingGroupID:outputGroupID2 completion:v9];
   }
 
   else
   {
-    v13 = [v6 outputDeviceUIDs];
-    v14 = [v13 count];
+    outputDeviceUIDs = [destinationCopy outputDeviceUIDs];
+    v14 = [outputDeviceUIDs count];
 
     if (!v14)
     {
@@ -37,8 +37,8 @@
     }
 
     v15 = self->_discovery;
-    v12 = [v6 outputDeviceUIDs];
-    [(MPCAssistantDiscovery *)v15 discoverAirplayDevicesMatchingUIDs:v12 completion:v9];
+    outputGroupID2 = [destinationCopy outputDeviceUIDs];
+    [(MPCAssistantDiscovery *)v15 discoverAirplayDevicesMatchingUIDs:outputGroupID2 completion:v9];
   }
 
 LABEL_6:

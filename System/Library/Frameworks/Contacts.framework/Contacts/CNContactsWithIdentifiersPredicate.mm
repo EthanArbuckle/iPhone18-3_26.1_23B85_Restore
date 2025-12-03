@@ -1,15 +1,15 @@
 @interface CNContactsWithIdentifiersPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNContactsWithIdentifiersPredicate)initWithCoder:(id)a3;
-- (CNContactsWithIdentifiersPredicate)initWithIdentifiers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNContactsWithIdentifiersPredicate)initWithCoder:(id)coder;
+- (CNContactsWithIdentifiersPredicate)initWithIdentifiers:(id)identifiers;
 - (NSString)description;
-- (id)contactsFromDonationStore:(id)a3;
-- (id)contactsFromRecentsLibrary:(id)a3;
-- (id)internalIdentifiersForStoreWithIdentifier:(id)a3;
-- (id)suggestionsWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6;
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3;
+- (id)contactsFromDonationStore:(id)store;
+- (id)contactsFromRecentsLibrary:(id)library;
+- (id)internalIdentifiersForStoreWithIdentifier:(id)identifier;
+- (id)suggestionsWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error;
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContactsWithIdentifiersPredicate
@@ -18,21 +18,21 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsWithIdentifiers:]"];
-  v5 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
-  v6 = [v3 appendName:@"identifiers (count)" unsignedInteger:{objc_msgSend(v5, "count")}];
+  identifiers = [(CNContactsWithIdentifiersPredicate *)self identifiers];
+  v6 = [v3 appendName:@"identifiers (count)" unsignedInteger:{objc_msgSend(identifiers, "count")}];
 
-  v7 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
-  v8 = [v3 appendName:@"identifiers" object:v7];
+  identifiers2 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
+  v8 = [v3 appendName:@"identifiers" object:identifiers2];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (id)suggestionsWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6
+- (id)suggestionsWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  serviceCopy = service;
   v9 = +[CNSuggestedContactStore storeIdentifier];
   v10 = [(CNContactsWithIdentifiersPredicate *)self internalIdentifiersForStoreWithIdentifier:v9];
 
@@ -62,7 +62,7 @@
 
         if (v18)
         {
-          v19 = [v8 contactFromRecordID:v18 error:a6];
+          v19 = [serviceCopy contactFromRecordID:v18 error:error];
           if (v19)
           {
             v20 = objc_alloc(MEMORY[0x1E69991F8]);
@@ -79,35 +79,35 @@
     while (v13);
   }
 
-  [CNContactSuggestionMatch fetchLinkedIdentifiersForContactSuggestionMatches:v24 fromSuggestionService:v8];
+  [CNContactSuggestionMatch fetchLinkedIdentifiersForContactSuggestionMatches:v24 fromSuggestionService:serviceCopy];
 
   return v24;
 }
 
-- (id)contactsFromDonationStore:(id)a3
+- (id)contactsFromDonationStore:(id)store
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
-  v6 = [v5 containsObject:@"2D0447ED-BB88-45F9-909B-EB36C6920675"];
+  storeCopy = store;
+  identifiers = [(CNContactsWithIdentifiersPredicate *)self identifiers];
+  v6 = [identifiers containsObject:@"2D0447ED-BB88-45F9-909B-EB36C6920675"];
 
   if (v6)
   {
-    v7 = [v4 donatedMeCardEither];
-    v8 = [v7 isLeft];
+    donatedMeCardEither = [storeCopy donatedMeCardEither];
+    isLeft = [donatedMeCardEither isLeft];
     v9 = MEMORY[0x1E69966C0];
-    if (v8)
+    if (isLeft)
     {
-      v10 = [v7 left];
-      v14[0] = v10;
+      left = [donatedMeCardEither left];
+      v14[0] = left;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
       v12 = [v9 eitherWithLeft:v11];
     }
 
     else
     {
-      v10 = [v7 right];
-      v12 = [v9 eitherWithRight:v10];
+      left = [donatedMeCardEither right];
+      v12 = [v9 eitherWithRight:left];
     }
   }
 
@@ -119,16 +119,16 @@
   return v12;
 }
 
-- (CNContactsWithIdentifiersPredicate)initWithIdentifiers:(id)a3
+- (CNContactsWithIdentifiersPredicate)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"identifier IN %@", v4];
+  identifiersCopy = identifiers;
+  identifiersCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"identifier IN %@", identifiersCopy];
   v11.receiver = self;
   v11.super_class = CNContactsWithIdentifiersPredicate;
-  v6 = [(CNPredicate *)&v11 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v11 initWithPredicate:identifiersCopy];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifiersCopy copy];
     identifiers = v6->_identifiers;
     v6->_identifiers = v7;
 
@@ -138,9 +138,9 @@
   return v6;
 }
 
-- (CNContactsWithIdentifiersPredicate)initWithCoder:(id)a3
+- (CNContactsWithIdentifiersPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CNContactsWithIdentifiersPredicate;
   v5 = [(CNPredicate *)&v13 init];
@@ -149,7 +149,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_identifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_identifiers"];
     identifiers = v5->_identifiers;
     v5->_identifiers = v9;
 
@@ -159,34 +159,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNContactsWithIdentifiersPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifiers forKey:{@"_identifiers", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifiers forKey:{@"_identifiers", v5.receiver, v5.super_class}];
 }
 
-- (id)internalIdentifiersForStoreWithIdentifier:(id)a3
+- (id)internalIdentifiersForStoreWithIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   if (self->_identifiers)
   {
-    if (v4)
+    if (identifierCopy)
     {
-      v6 = v4;
+      null = identifierCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v7 = v6;
-    v24 = [(NSMutableDictionary *)self->_internalIdentifiers objectForKeyedSubscript:v6];
+    v7 = null;
+    v24 = [(NSMutableDictionary *)self->_internalIdentifiers objectForKeyedSubscript:null];
     if (!v24)
     {
       v23 = v7;
@@ -195,8 +195,8 @@
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v8 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
-      v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      identifiers = [(CNContactsWithIdentifiersPredicate *)self identifiers];
+      v9 = [identifiers countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v9)
       {
         v10 = v9;
@@ -207,7 +207,7 @@
           {
             if (*v26 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(identifiers);
             }
 
             v13 = *(*(&v25 + 1) + 8 * i);
@@ -228,7 +228,7 @@
             [v24 addObject:v18];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v10 = [identifiers countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v10);
@@ -257,17 +257,17 @@
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__CNContactsWithIdentifiersPredicate_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v8, 0}];
 
   return self;
@@ -302,12 +302,12 @@ uint64_t __42__CNContactsWithIdentifiersPredicate_hash__block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)contactsFromRecentsLibrary:(id)a3
+- (id)contactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996530];
-  v6 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
-  v7 = (*(v5 + 16))(v5, v6);
+  identifiers = [(CNContactsWithIdentifiersPredicate *)self identifiers];
+  v7 = (*(v5 + 16))(v5, identifiers);
 
   if (v7)
   {
@@ -319,8 +319,8 @@ uint64_t __42__CNContactsWithIdentifiersPredicate_hash__block_invoke(uint64_t a1
     v9 = +[CNCoreRecentsContactStore storeIdentifier];
     v10 = [(CNContactsWithIdentifiersPredicate *)self internalIdentifiersForStoreWithIdentifier:v9];
 
-    v11 = [v10 allObjects];
-    v12 = (*(v5 + 16))(v5, v11);
+    allObjects = [v10 allObjects];
+    v12 = (*(v5 + 16))(v5, allObjects);
 
     if (v12)
     {
@@ -329,9 +329,9 @@ uint64_t __42__CNContactsWithIdentifiersPredicate_hash__block_invoke(uint64_t a1
 
     else
     {
-      v13 = [v10 allObjects];
+      allObjects2 = [v10 allObjects];
       v19 = 0;
-      v14 = [v4 contactsWithInternalIdentifiers:v13 error:&v19];
+      v14 = [libraryCopy contactsWithInternalIdentifiers:allObjects2 error:&v19];
       v15 = v19;
 
       v16 = MEMORY[0x1E6996810];
@@ -343,12 +343,12 @@ uint64_t __42__CNContactsWithIdentifiersPredicate_hash__block_invoke(uint64_t a1
   return v8;
 }
 
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996530];
-  v6 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
-  v7 = (*(v5 + 16))(v5, v6);
+  identifiers = [(CNContactsWithIdentifiersPredicate *)self identifiers];
+  v7 = (*(v5 + 16))(v5, identifiers);
 
   if (v7)
   {
@@ -360,8 +360,8 @@ uint64_t __42__CNContactsWithIdentifiersPredicate_hash__block_invoke(uint64_t a1
     v9 = +[CNCoreRecentsContactStore storeIdentifier];
     v10 = [(CNContactsWithIdentifiersPredicate *)self internalIdentifiersForStoreWithIdentifier:v9];
 
-    v11 = [v10 allObjects];
-    v12 = (*(v5 + 16))(v5, v11);
+    allObjects = [v10 allObjects];
+    v12 = (*(v5 + 16))(v5, allObjects);
 
     if (v12)
     {
@@ -370,8 +370,8 @@ uint64_t __42__CNContactsWithIdentifiersPredicate_hash__block_invoke(uint64_t a1
 
     else
     {
-      v13 = [v10 allObjects];
-      v14 = [v4 contactsWithInternalIdentifiers:v13 error:0];
+      allObjects2 = [v10 allObjects];
+      v14 = [libraryCopy contactsWithInternalIdentifiers:allObjects2 error:0];
 
       v8 = [v14 count];
     }

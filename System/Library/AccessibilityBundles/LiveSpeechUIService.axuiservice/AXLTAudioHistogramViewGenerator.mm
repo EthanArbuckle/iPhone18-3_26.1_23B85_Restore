@@ -3,8 +3,8 @@
 - (_TtC19LiveSpeechUIService31AXLTAudioHistogramViewGenerator)init;
 - (double)height;
 - (id)viewController;
-- (void)setHeight:(double)a3;
-- (void)setHistogram:(id)a3;
+- (void)setHeight:(double)height;
+- (void)setHistogram:(id)histogram;
 @end
 
 @implementation AXLTAudioHistogramViewGenerator
@@ -13,14 +13,14 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
 
   sub_B9B10();
 
   return v5;
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
   swift_getKeyPath();
   swift_getKeyPath();
@@ -32,7 +32,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
 
   sub_B9B10();
 
@@ -41,7 +41,7 @@
   return v4.super.isa;
 }
 
-- (void)setHistogram:(id)a3
+- (void)setHistogram:(id)histogram
 {
   sub_BB0F0();
   swift_getKeyPath();

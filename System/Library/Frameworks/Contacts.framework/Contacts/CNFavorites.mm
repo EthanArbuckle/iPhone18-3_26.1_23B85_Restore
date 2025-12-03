@@ -3,30 +3,30 @@
 + (id)favoritesPath;
 + (id)sharedInstance;
 + (void)flushSingleton;
-- (BOOL)_isValueForEntry:(id)a3 equalToValue:(id)a4;
+- (BOOL)_isValueForEntry:(id)entry equalToValue:(id)value;
 - (BOOL)isFull;
 - (BOOL)saveAllFavorites;
 - (CNFavorites)init;
-- (CNFavorites)initWithContactStore:(id)a3 favoritesStore:(id)a4;
-- (CNFavorites)initWithContactStore:(id)a3 favoritesStore:(id)a4 logger:(id)a5;
+- (CNFavorites)initWithContactStore:(id)store favoritesStore:(id)favoritesStore;
+- (CNFavorites)initWithContactStore:(id)store favoritesStore:(id)favoritesStore logger:(id)logger;
 - (NSArray)entries;
 - (NSMutableDictionary)entriesByContactIdentifier;
-- (id)_uniqueRematchedEntries:(id)a3;
-- (id)defaultFavoritesStoreWithContactStore:(id)a3;
-- (id)entriesForContact:(id)a3;
-- (id)entriesForContact:(id)a3 propertyKey:(id)a4 labeledValueIdentifier:(id)a5 actionType:(id)a6 bundleIdentifier:(id)a7;
-- (void)_addEntryToMap:(id)a3;
+- (id)_uniqueRematchedEntries:(id)entries;
+- (id)defaultFavoritesStoreWithContactStore:(id)store;
+- (id)entriesForContact:(id)contact;
+- (id)entriesForContact:(id)contact propertyKey:(id)key labeledValueIdentifier:(id)identifier actionType:(id)type bundleIdentifier:(id)bundleIdentifier;
+- (void)_addEntryToMap:(id)map;
 - (void)_entriesChangedExternally;
 - (void)_postChangeNotification;
-- (void)_removeEntryFromMap:(id)a3;
-- (void)addEntry:(id)a3;
+- (void)_removeEntryFromMap:(id)map;
+- (void)addEntry:(id)entry;
 - (void)dealloc;
 - (void)loadAllFavoritesIfNecessary;
-- (void)moveEntryAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (void)moveEntryAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
 - (void)registerForDistributedNotifications;
-- (void)rematchEntriesWithOptions:(unint64_t)a3;
+- (void)rematchEntriesWithOptions:(unint64_t)options;
 - (void)removeAllEntries;
-- (void)removeEntryAtIndex:(int64_t)a3;
+- (void)removeEntryAtIndex:(int64_t)index;
 - (void)save;
 - (void)unregisterForDistributedNotifications;
 @end
@@ -43,10 +43,10 @@
 - (NSArray)entries
 {
   [(CNFavorites *)self loadAllFavoritesIfNecessary];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = v3->_entries;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = selfCopy->_entries;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -61,31 +61,31 @@
 
 - (void)loadAllFavoritesIfNecessary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  p_entries = &v2->_entries;
-  if (!v2->_entries)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_entries = &selfCopy->_entries;
+  if (!selfCopy->_entries)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:50];
     v5 = *p_entries;
     *p_entries = v4;
   }
 
-  if (!v2->_entriesByContactIdentifier)
+  if (!selfCopy->_entriesByContactIdentifier)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:50];
-    entriesByContactIdentifier = v2->_entriesByContactIdentifier;
-    v2->_entriesByContactIdentifier = v6;
+    entriesByContactIdentifier = selfCopy->_entriesByContactIdentifier;
+    selfCopy->_entriesByContactIdentifier = v6;
   }
 
-  if ([(CNFavorites *)v2 needsReload]&& [CNContactStore authorizationStatusForEntityType:0]== CNAuthorizationStatusAuthorized)
+  if ([(CNFavorites *)selfCopy needsReload]&& [CNContactStore authorizationStatusForEntityType:0]== CNAuthorizationStatusAuthorized)
   {
-    [(NSMutableDictionary *)v2->_entriesByContactIdentifier removeAllObjects];
-    [(CNFavorites *)v2 setNeedsReload:0];
-    v8 = [MEMORY[0x1E69966B8] sharedInstance];
-    v9 = [v8 isUnlockedSinceBoot];
+    [(NSMutableDictionary *)selfCopy->_entriesByContactIdentifier removeAllObjects];
+    [(CNFavorites *)selfCopy setNeedsReload:0];
+    mEMORY[0x1E69966B8] = [MEMORY[0x1E69966B8] sharedInstance];
+    isUnlockedSinceBoot = [mEMORY[0x1E69966B8] isUnlockedSinceBoot];
 
-    if (v9)
+    if (isUnlockedSinceBoot)
     {
       location = 0;
       p_location = &location;
@@ -93,14 +93,14 @@
       v21 = __Block_byref_object_copy__39;
       v22 = __Block_byref_object_dispose__39;
       v23 = 0;
-      v10 = [(CNFavorites *)v2 logger];
+      logger = [(CNFavorites *)selfCopy logger];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __42__CNFavorites_loadAllFavoritesIfNecessary__block_invoke_32;
       v17[3] = &unk_1E74157A8;
-      v17[4] = v2;
+      v17[4] = selfCopy;
       v17[5] = &location;
-      [v10 readingFavorites:v17];
+      [logger readingFavorites:v17];
 
       v11 = [p_location[5] copy];
       v12 = v11;
@@ -114,24 +114,24 @@
         v13 = MEMORY[0x1E695E0F0];
       }
 
-      objc_storeStrong(&v2->_entries, v13);
+      objc_storeStrong(&selfCopy->_entries, v13);
 
       _Block_object_dispose(&location, 8);
     }
 
     else
     {
-      v14 = [(CNFavorites *)v2 logger];
-      [v14 reportFavoritesAccessedBeforeFirstUnlock];
+      logger2 = [(CNFavorites *)selfCopy logger];
+      [logger2 reportFavoritesAccessedBeforeFirstUnlock];
 
-      objc_initWeak(&location, v2);
-      v15 = [MEMORY[0x1E69966B8] sharedInstance];
+      objc_initWeak(&location, selfCopy);
+      mEMORY[0x1E69966B8]2 = [MEMORY[0x1E69966B8] sharedInstance];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __42__CNFavorites_loadAllFavoritesIfNecessary__block_invoke;
       v24[3] = &unk_1E7416E38;
       objc_copyWeak(&v25, &location);
-      [v15 addUnlockHandlerWithIdentifier:@"CNFavorites" block:v24];
+      [mEMORY[0x1E69966B8]2 addUnlockHandlerWithIdentifier:@"CNFavorites" block:v24];
 
       v16 = *p_entries;
       *p_entries = MEMORY[0x1E695E0F0];
@@ -141,14 +141,14 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc
 {
   [(CNFavorites *)self unregisterForDistributedNotifications];
-  v3 = [MEMORY[0x1E69966B8] sharedInstance];
-  [v3 removeUnlockHandlerWithIdentifier:@"CNFavorites"];
+  mEMORY[0x1E69966B8] = [MEMORY[0x1E69966B8] sharedInstance];
+  [mEMORY[0x1E69966B8] removeUnlockHandlerWithIdentifier:@"CNFavorites"];
 
   v4.receiver = self;
   v4.super_class = CNFavorites;
@@ -192,58 +192,58 @@ void __29__CNFavorites_sharedInstance__block_invoke()
 
 + (id)favoritesPath
 {
-  v2 = [a1 defaultFavoritesLocation];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.mobilephone.speeddial.plist" isDirectory:0];
+  defaultFavoritesLocation = [self defaultFavoritesLocation];
+  v3 = [defaultFavoritesLocation URLByAppendingPathComponent:@"com.apple.mobilephone.speeddial.plist" isDirectory:0];
 
-  v4 = [v3 relativePath];
+  relativePath = [v3 relativePath];
 
-  return v4;
+  return relativePath;
 }
 
 + (id)defaultFavoritesLocation
 {
-  v2 = [MEMORY[0x1E6996700] sharedInstance];
-  v3 = [v2 libraryFolderURL];
+  mEMORY[0x1E6996700] = [MEMORY[0x1E6996700] sharedInstance];
+  libraryFolderURL = [mEMORY[0x1E6996700] libraryFolderURL];
 
-  v4 = [v3 URLByAppendingPathComponent:@"Preferences" isDirectory:1];
+  v4 = [libraryFolderURL URLByAppendingPathComponent:@"Preferences" isDirectory:1];
 
   return v4;
 }
 
-- (CNFavorites)initWithContactStore:(id)a3 favoritesStore:(id)a4
+- (CNFavorites)initWithContactStore:(id)store favoritesStore:(id)favoritesStore
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  favoritesStoreCopy = favoritesStore;
   v8 = +[CNContactsEnvironment currentEnvironment];
-  v9 = [v8 loggerProvider];
-  v10 = [v9 favoritesLogger];
+  loggerProvider = [v8 loggerProvider];
+  favoritesLogger = [loggerProvider favoritesLogger];
 
-  if (!v7)
+  if (!favoritesStoreCopy)
   {
-    v7 = [(CNFavorites *)self defaultFavoritesStoreWithContactStore:v6];
+    favoritesStoreCopy = [(CNFavorites *)self defaultFavoritesStoreWithContactStore:storeCopy];
   }
 
-  v11 = [(CNFavorites *)self initWithContactStore:v6 favoritesStore:v7 logger:v10];
+  v11 = [(CNFavorites *)self initWithContactStore:storeCopy favoritesStore:favoritesStoreCopy logger:favoritesLogger];
 
   return v11;
 }
 
-- (CNFavorites)initWithContactStore:(id)a3 favoritesStore:(id)a4 logger:(id)a5
+- (CNFavorites)initWithContactStore:(id)store favoritesStore:(id)favoritesStore logger:(id)logger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  favoritesStoreCopy = favoritesStore;
+  loggerCopy = logger;
   v16.receiver = self;
   v16.super_class = CNFavorites;
   v12 = [(CNFavorites *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contactStore, a3);
-    objc_storeStrong(&v13->_favoritesStore, a4);
-    objc_storeStrong(&v13->_logger, a5);
+    objc_storeStrong(&v12->_contactStore, store);
+    objc_storeStrong(&v13->_favoritesStore, favoritesStore);
+    objc_storeStrong(&v13->_logger, logger);
     v13->_needsReload = 1;
-    [(CNFavoritesStore *)v13->_favoritesStore setLogger:v11];
+    [(CNFavoritesStore *)v13->_favoritesStore setLogger:loggerCopy];
     [(CNFavorites *)v13 registerForDistributedNotifications];
     v14 = v13;
   }
@@ -253,17 +253,17 @@ void __29__CNFavorites_sharedInstance__block_invoke()
 
 - (CNFavorites)init
 {
-  v3 = [objc_opt_class() sharedInstance];
+  sharedInstance = [objc_opt_class() sharedInstance];
 
-  return v3;
+  return sharedInstance;
 }
 
-- (id)defaultFavoritesStoreWithContactStore:(id)a3
+- (id)defaultFavoritesStoreWithContactStore:(id)store
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  v5 = [v4 environment];
-  v6 = [v5 objectForKeyedSubscript:@"CN_UNIT_TESTING"];
+  storeCopy = store;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  environment = [processInfo environment];
+  v6 = [environment objectForKeyedSubscript:@"CN_UNIT_TESTING"];
   if ([v6 _cn_caseInsensitiveIsEqual:@"YES"] & 1) != 0 || (objc_msgSend(v6, "_cn_caseInsensitiveIsEqual:", @"Y") & 1) != 0 || (objc_msgSend(v6, "_cn_caseInsensitiveIsEqual:", @"TRUE") & 1) != 0 || (objc_msgSend(v6, "_cn_caseInsensitiveIsEqual:", @"T"))
   {
 
@@ -272,16 +272,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  if (v10)
+  if (integerValue)
   {
     goto LABEL_6;
   }
 
-  v11 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v12 = [v11 featureFlags];
-  v13 = [v12 isFeatureEnabled:18];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v13 = [featureFlags isFeatureEnabled:18];
 
   if ((v13 & 1) == 0)
   {
@@ -290,7 +290,7 @@ LABEL_6:
 
   v7 = off_1E7410768;
 LABEL_7:
-  v8 = [objc_alloc(*v7) initWithContactStore:v3];
+  v8 = [objc_alloc(*v7) initWithContactStore:storeCopy];
 
   return v8;
 }
@@ -320,22 +320,22 @@ uint64_t __42__CNFavorites_loadAllFavoritesIfNecessary__block_invoke_32(uint64_t
 
 - (BOOL)isFull
 {
-  v2 = [(CNFavorites *)self entries];
-  v3 = [v2 count] > 0x31;
+  entries = [(CNFavorites *)self entries];
+  v3 = [entries count] > 0x31;
 
   return v3;
 }
 
-- (id)entriesForContact:(id)a3
+- (id)entriesForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNFavorites *)self entriesByContactIdentifier];
+  contactCopy = contact;
+  entriesByContactIdentifier = [(CNFavorites *)self entriesByContactIdentifier];
 
-  if (v5)
+  if (entriesByContactIdentifier)
   {
-    v6 = [(CNFavorites *)self entriesByContactIdentifier];
-    v7 = [v4 identifier];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    entriesByContactIdentifier2 = [(CNFavorites *)self entriesByContactIdentifier];
+    identifier = [contactCopy identifier];
+    v8 = [entriesByContactIdentifier2 objectForKeyedSubscript:identifier];
 
     if (v8)
     {
@@ -349,25 +349,25 @@ uint64_t __42__CNFavorites_loadAllFavoritesIfNecessary__block_invoke_32(uint64_t
       {
         [MEMORY[0x1E695DEC8] arrayWithObject:v8];
       }
-      v5 = ;
+      entriesByContactIdentifier = ;
     }
 
     else
     {
-      v5 = 0;
+      entriesByContactIdentifier = 0;
     }
   }
 
-  return v5;
+  return entriesByContactIdentifier;
 }
 
-- (BOOL)_isValueForEntry:(id)a3 equalToValue:(id)a4
+- (BOOL)_isValueForEntry:(id)entry equalToValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 contactProperty];
-  v8 = [v7 value];
-  v9 = [v6 isEqualToString:v8];
+  entryCopy = entry;
+  valueCopy = value;
+  contactProperty = [entryCopy contactProperty];
+  value = [contactProperty value];
+  v9 = [valueCopy isEqualToString:value];
 
   if (v9)
   {
@@ -376,15 +376,15 @@ uint64_t __42__CNFavorites_loadAllFavoritesIfNecessary__block_invoke_32(uint64_t
 
   else
   {
-    v11 = [v5 contactProperty];
-    v12 = [v11 key];
+    contactProperty2 = [entryCopy contactProperty];
+    v12 = [contactProperty2 key];
     v13 = [v12 isEqualToString:@"phoneNumbers"];
 
     if (v13)
     {
-      v14 = [v5 contactProperty];
-      v15 = [v14 value];
-      v10 = [CNFavoritesEntry arePhoneNumbersEqual:v6 other:v15];
+      contactProperty3 = [entryCopy contactProperty];
+      value2 = [contactProperty3 value];
+      v10 = [CNFavoritesEntry arePhoneNumbersEqual:valueCopy other:value2];
     }
 
     else
@@ -396,19 +396,19 @@ uint64_t __42__CNFavorites_loadAllFavoritesIfNecessary__block_invoke_32(uint64_t
   return v10;
 }
 
-- (id)entriesForContact:(id)a3 propertyKey:(id)a4 labeledValueIdentifier:(id)a5 actionType:(id)a6 bundleIdentifier:(id)a7
+- (id)entriesForContact:(id)contact propertyKey:(id)key labeledValueIdentifier:(id)identifier actionType:(id)type bundleIdentifier:(id)bundleIdentifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(CNFavorites *)self entriesForContact:v12];
+  contactCopy = contact;
+  keyCopy = key;
+  identifierCopy = identifier;
+  typeCopy = type;
+  bundleIdentifierCopy = bundleIdentifier;
+  v17 = [(CNFavorites *)self entriesForContact:contactCopy];
   v18 = 0;
-  if (v13 && v14)
+  if (keyCopy && identifierCopy)
   {
-    v19 = [v12 valueForKey:v13];
-    v20 = [CNLabeledValue labeledValueWithIdentifier:v14 inArray:v19];
+    v19 = [contactCopy valueForKey:keyCopy];
+    v20 = [CNLabeledValue labeledValueWithIdentifier:identifierCopy inArray:v19];
     v18 = v20 != 0;
   }
 
@@ -416,15 +416,15 @@ uint64_t __42__CNFavorites_loadAllFavoritesIfNecessary__block_invoke_32(uint64_t
   v27[1] = 3221225472;
   v27[2] = __96__CNFavorites_entriesForContact_propertyKey_labeledValueIdentifier_actionType_bundleIdentifier___block_invoke;
   v27[3] = &unk_1E7417B40;
-  v28 = v15;
-  v29 = v13;
-  v30 = v16;
-  v31 = v14;
+  v28 = typeCopy;
+  v29 = keyCopy;
+  v30 = bundleIdentifierCopy;
+  v31 = identifierCopy;
   v32 = v18;
-  v21 = v14;
-  v22 = v16;
-  v23 = v13;
-  v24 = v15;
+  v21 = identifierCopy;
+  v22 = bundleIdentifierCopy;
+  v23 = keyCopy;
+  v24 = typeCopy;
   v25 = [v17 _cn_filter:v27];
 
   return v25;
@@ -499,62 +499,62 @@ LABEL_20:
   return v9;
 }
 
-- (void)_addEntryToMap:(id)a3
+- (void)_addEntryToMap:(id)map
 {
-  v12 = a3;
-  v4 = [v12 contactIdentifier];
-  if (v4)
+  mapCopy = map;
+  contactIdentifier = [mapCopy contactIdentifier];
+  if (contactIdentifier)
   {
-    v5 = [(CNFavorites *)self entriesByContactIdentifier];
+    entriesByContactIdentifier = [(CNFavorites *)self entriesByContactIdentifier];
 
-    if (v5)
+    if (entriesByContactIdentifier)
     {
-      v6 = [(CNFavorites *)self entriesByContactIdentifier];
-      v7 = [v6 objectForKeyedSubscript:v4];
+      entriesByContactIdentifier2 = [(CNFavorites *)self entriesByContactIdentifier];
+      entriesByContactIdentifier5 = [entriesByContactIdentifier2 objectForKeyedSubscript:contactIdentifier];
 
-      if (v7)
+      if (entriesByContactIdentifier5)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 mutableCopy];
-          [v8 addObject:v12];
-          v9 = [(CNFavorites *)self entriesByContactIdentifier];
-          [v9 setObject:v8 forKeyedSubscript:v4];
+          v8 = [entriesByContactIdentifier5 mutableCopy];
+          [v8 addObject:mapCopy];
+          entriesByContactIdentifier3 = [(CNFavorites *)self entriesByContactIdentifier];
+          [entriesByContactIdentifier3 setObject:v8 forKeyedSubscript:contactIdentifier];
         }
 
         else
         {
-          v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v7, v12, 0}];
+          v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{entriesByContactIdentifier5, mapCopy, 0}];
 
-          v11 = [(CNFavorites *)self entriesByContactIdentifier];
-          [v11 setObject:v10 forKeyedSubscript:v4];
+          entriesByContactIdentifier4 = [(CNFavorites *)self entriesByContactIdentifier];
+          [entriesByContactIdentifier4 setObject:v10 forKeyedSubscript:contactIdentifier];
 
-          v7 = v10;
+          entriesByContactIdentifier5 = v10;
         }
       }
 
       else
       {
-        v7 = [(CNFavorites *)self entriesByContactIdentifier];
-        [v7 setObject:v12 forKeyedSubscript:v4];
+        entriesByContactIdentifier5 = [(CNFavorites *)self entriesByContactIdentifier];
+        [entriesByContactIdentifier5 setObject:mapCopy forKeyedSubscript:contactIdentifier];
       }
     }
   }
 }
 
-- (void)_removeEntryFromMap:(id)a3
+- (void)_removeEntryFromMap:(id)map
 {
-  v12 = a3;
-  v4 = [v12 contactIdentifier];
-  if (v4)
+  mapCopy = map;
+  contactIdentifier = [mapCopy contactIdentifier];
+  if (contactIdentifier)
   {
-    v5 = [(CNFavorites *)self entriesByContactIdentifier];
+    entriesByContactIdentifier = [(CNFavorites *)self entriesByContactIdentifier];
 
-    if (v5)
+    if (entriesByContactIdentifier)
     {
-      v6 = [(CNFavorites *)self entriesByContactIdentifier];
-      v7 = [v6 objectForKeyedSubscript:v4];
+      entriesByContactIdentifier2 = [(CNFavorites *)self entriesByContactIdentifier];
+      v7 = [entriesByContactIdentifier2 objectForKeyedSubscript:contactIdentifier];
 
       if (v7)
       {
@@ -571,7 +571,7 @@ LABEL_20:
           {
             v9 = [v7 objectAtIndex:v8];
 
-            if (v9 == v12)
+            if (v9 == mapCopy)
             {
               break;
             }
@@ -586,24 +586,24 @@ LABEL_20:
           {
             if ([v7 count] == 2)
             {
-              v10 = [v7 objectAtIndex:v8 == 0];
+              entriesByContactIdentifier4 = [v7 objectAtIndex:v8 == 0];
             }
 
             else
             {
-              v10 = [v7 mutableCopy];
-              [v10 removeObjectAtIndex:v8];
+              entriesByContactIdentifier4 = [v7 mutableCopy];
+              [entriesByContactIdentifier4 removeObjectAtIndex:v8];
             }
 
-            v11 = [(CNFavorites *)self entriesByContactIdentifier];
-            [v11 setObject:v10 forKeyedSubscript:v4];
+            entriesByContactIdentifier3 = [(CNFavorites *)self entriesByContactIdentifier];
+            [entriesByContactIdentifier3 setObject:entriesByContactIdentifier4 forKeyedSubscript:contactIdentifier];
 
             goto LABEL_12;
           }
 
 LABEL_11:
-          v10 = [(CNFavorites *)self entriesByContactIdentifier];
-          [v10 removeObjectForKey:v4];
+          entriesByContactIdentifier4 = [(CNFavorites *)self entriesByContactIdentifier];
+          [entriesByContactIdentifier4 removeObjectForKey:contactIdentifier];
 LABEL_12:
         }
       }
@@ -613,37 +613,37 @@ LABEL_13:
   }
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNFavorites *)v4 entries];
-  v6 = [v5 count];
+  entryCopy = entry;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  entries = [(CNFavorites *)selfCopy entries];
+  v6 = [entries count];
 
-  if (v9 && v6 <= 0x31)
+  if (entryCopy && v6 <= 0x31)
   {
-    v7 = [(NSArray *)v4->_entries arrayByAddingObject:v9];
-    entries = v4->_entries;
-    v4->_entries = v7;
+    v7 = [(NSArray *)selfCopy->_entries arrayByAddingObject:entryCopy];
+    entries = selfCopy->_entries;
+    selfCopy->_entries = v7;
 
-    [(CNFavorites *)v4 _addEntryToMap:v9];
-    [(CNFavorites *)v4 setDirty:1];
+    [(CNFavorites *)selfCopy _addEntryToMap:entryCopy];
+    [(CNFavorites *)selfCopy setDirty:1];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeEntryAtIndex:(int64_t)a3
+- (void)removeEntryAtIndex:(int64_t)index
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(CNFavorites *)obj entries];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  entries = [(CNFavorites *)obj entries];
+  v5 = [entries objectAtIndexedSubscript:index];
 
   [(CNFavorites *)obj _removeEntryFromMap:v5];
   v6 = [(NSArray *)obj->_entries mutableCopy];
-  [v6 removeObjectAtIndex:a3];
+  [v6 removeObjectAtIndex:index];
   v7 = [v6 copy];
   entries = obj->_entries;
   obj->_entries = v7;
@@ -652,19 +652,19 @@ LABEL_13:
   objc_sync_exit(obj);
 }
 
-- (void)moveEntryAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)moveEntryAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   obj = self;
   objc_sync_enter(obj);
-  if (a4 <= a3)
+  if (toIndex <= index)
   {
-    if (a4 >= a3)
+    if (toIndex >= index)
     {
       goto LABEL_6;
     }
 
     v6 = [(NSArray *)obj->_entries mutableCopy];
-    [v6 _cn_rotateRange:a4 by:{a3 - a4 + 1, 1}];
+    [v6 _cn_rotateRange:toIndex by:{index - toIndex + 1, 1}];
     v9 = [v6 mutableCopy];
     entries = obj->_entries;
     obj->_entries = v9;
@@ -675,7 +675,7 @@ LABEL_13:
   else
   {
     v6 = [(NSArray *)obj->_entries mutableCopy];
-    [v6 _cn_rotateRange:a3 by:{a4 - a3 + 1, -1}];
+    [v6 _cn_rotateRange:index by:{toIndex - index + 1, -1}];
     v7 = [v6 mutableCopy];
     v8 = obj->_entries;
     obj->_entries = v7;
@@ -702,17 +702,17 @@ LABEL_6:
 
 - (BOOL)saveAllFavorites
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CNFavorites *)v2 logger];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  logger = [(CNFavorites *)selfCopy logger];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __31__CNFavorites_saveAllFavorites__block_invoke;
   v5[3] = &unk_1E7411EE8;
-  v5[4] = v2;
-  [v3 writingFavorites:v5];
+  v5[4] = selfCopy;
+  [logger writingFavorites:v5];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return 0;
 }
 
@@ -748,10 +748,10 @@ void __31__CNFavorites_saveAllFavorites__block_invoke(uint64_t a1)
 
   if (![(CNFavorites *)self dirty])
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    [(CNFavorites *)v3 setDirty:[(NSArray *)v3->_entries _cn_any:&__block_literal_global_40_2]];
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(CNFavorites *)selfCopy setDirty:[(NSArray *)selfCopy->_entries _cn_any:&__block_literal_global_40_2]];
+    objc_sync_exit(selfCopy);
   }
 
   if (![(CNFavorites *)self dirty])
@@ -767,8 +767,8 @@ LABEL_6:
   }
 
   [(CNFavorites *)self setDirty:0];
-  v5 = [(CNFavorites *)self needsReload];
-  if ((v4 & 1) == 0 && !v5)
+  needsReload = [(CNFavorites *)self needsReload];
+  if ((v4 & 1) == 0 && !needsReload)
   {
     [(CNFavorites *)self setPostCount:[(CNFavorites *)self postCount]+ 1];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -777,16 +777,16 @@ LABEL_6:
   }
 }
 
-- (void)rematchEntriesWithOptions:(unint64_t)a3
+- (void)rematchEntriesWithOptions:(unint64_t)options
 {
-  v5 = [(CNFavorites *)self logger];
+  logger = [(CNFavorites *)self logger];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__CNFavorites_rematchEntriesWithOptions___block_invoke;
   v6[3] = &unk_1E7417BD8;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 rematchingFavorites:v6];
+  v6[5] = options;
+  [logger rematchingFavorites:v6];
 }
 
 void __41__CNFavorites_rematchEntriesWithOptions___block_invoke(uint64_t a1, void *a2)
@@ -867,26 +867,26 @@ uint64_t __41__CNFavorites_rematchEntriesWithOptions___block_invoke_3(uint64_t a
   return result;
 }
 
-- (id)_uniqueRematchedEntries:(id)a3
+- (id)_uniqueRematchedEntries:(id)entries
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(v3, "count")}];
-  if ([v3 count])
+  entriesCopy = entries;
+  v4 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(entriesCopy, "count")}];
+  if ([entriesCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
-      v7 = [v6 oldContactIdentifier];
+      v6 = [entriesCopy objectAtIndexedSubscript:v5];
+      oldContactIdentifier = [v6 oldContactIdentifier];
 
-      if (v7)
+      if (oldContactIdentifier)
       {
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __39__CNFavorites__uniqueRematchedEntries___block_invoke;
         v12[3] = &unk_1E7417C00;
         v15 = v5;
-        v13 = v3;
+        v13 = entriesCopy;
         v14 = v4;
         [v14 enumerateIndexesUsingBlock:v12];
       }
@@ -894,18 +894,18 @@ uint64_t __41__CNFavorites_rematchEntriesWithOptions___block_invoke_3(uint64_t a
       ++v5;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [entriesCopy count]);
   }
 
   v8 = [v4 count];
-  if (v8 == [v3 count])
+  if (v8 == [entriesCopy count])
   {
-    v9 = v3;
+    v9 = entriesCopy;
   }
 
   else
   {
-    v9 = [v3 objectsAtIndexes:v4];
+    v9 = [entriesCopy objectsAtIndexes:v4];
   }
 
   v10 = v9;
@@ -940,23 +940,23 @@ void __39__CNFavorites__uniqueRematchedEntries___block_invoke(uint64_t a1, uint6
 
   else if (![(CNFavorites *)self needsReload]&& ![(CNFavorites *)self dirty])
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    entries = v4->_entries;
-    v4->_entries = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    entries = selfCopy->_entries;
+    selfCopy->_entries = 0;
 
-    [(CNFavorites *)v4 setEntriesByContactIdentifier:0];
-    [(CNFavorites *)v4 setNeedsReload:1];
-    objc_sync_exit(v4);
+    [(CNFavorites *)selfCopy setEntriesByContactIdentifier:0];
+    [(CNFavorites *)selfCopy setNeedsReload:1];
+    objc_sync_exit(selfCopy);
 
-    [(CNFavorites *)v4 _postChangeNotification];
+    [(CNFavorites *)selfCopy _postChangeNotification];
   }
 }
 
 - (void)_postChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"CNFavoritesChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CNFavoritesChangedNotification" object:self];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface UADispatchWatchdog
-- (UADispatchWatchdog)initWithName:(id)a3 timeout:(double)a4 block:(id)a5;
+- (UADispatchWatchdog)initWithName:(id)name timeout:(double)timeout block:(id)block;
 - (void)_triggerWatchdog;
 - (void)cancel;
 - (void)dealloc;
@@ -9,19 +9,19 @@
 
 @implementation UADispatchWatchdog
 
-- (UADispatchWatchdog)initWithName:(id)a3 timeout:(double)a4 block:(id)a5
+- (UADispatchWatchdog)initWithName:(id)name timeout:(double)timeout block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = UADispatchWatchdog;
   v10 = [(UADispatchWatchdog *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(UADispatchWatchdog *)v10 setName:v8];
-    [(UADispatchWatchdog *)v11 setTimeout:a4];
-    [(UADispatchWatchdog *)v11 setHandler:v9];
+    [(UADispatchWatchdog *)v10 setName:nameCopy];
+    [(UADispatchWatchdog *)v11 setTimeout:timeout];
+    [(UADispatchWatchdog *)v11 setHandler:blockCopy];
     [(UADispatchWatchdog *)v11 setHasFired:0];
   }
 
@@ -30,11 +30,11 @@
 
 - (void)dealloc
 {
-  v3 = [(UADispatchWatchdog *)self source];
-  v4 = v3;
-  if (v3)
+  source = [(UADispatchWatchdog *)self source];
+  v4 = source;
+  if (source)
   {
-    dispatch_source_cancel(v3);
+    dispatch_source_cancel(source);
   }
 
   v5.receiver = self;
@@ -44,21 +44,21 @@
 
 - (void)start
 {
-  v3 = [(UADispatchWatchdog *)self source];
+  source = [(UADispatchWatchdog *)self source];
 
-  if (v3)
+  if (source)
   {
-    v4 = [(UADispatchWatchdog *)self source];
-    dispatch_source_cancel(v4);
+    source2 = [(UADispatchWatchdog *)self source];
+    dispatch_source_cancel(source2);
   }
 
   v5 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(UADispatchWatchdog *)self name];
+    name = [(UADispatchWatchdog *)self name];
     [(UADispatchWatchdog *)self timeout];
     *buf = 138412546;
-    v13 = v6;
+    v13 = name;
     v14 = 2048;
     v15 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Starting watchdog: %@ - %fs", buf, 0x16u);
@@ -95,17 +95,17 @@
   v3 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(UADispatchWatchdog *)self name];
+    name = [(UADispatchWatchdog *)self name];
     v7 = 138412290;
-    v8 = v4;
+    v8 = name;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Canceling watchdog: %@", &v7, 0xCu);
   }
 
-  v5 = [(UADispatchWatchdog *)self source];
-  v6 = v5;
-  if (v5)
+  source = [(UADispatchWatchdog *)self source];
+  v6 = source;
+  if (source)
   {
-    dispatch_source_cancel(v5);
+    dispatch_source_cancel(source);
   }
 }
 
@@ -114,12 +114,12 @@
   v3 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(UADispatchWatchdog *)self name];
+    name = [(UADispatchWatchdog *)self name];
     [(UADispatchWatchdog *)self timeout];
     v6 = v5;
     v7 = [NSNumber numberWithBool:[(UADispatchWatchdog *)self hasFired]];
     v9 = 138412802;
-    v10 = v4;
+    v10 = name;
     v11 = 2048;
     v12 = v6;
     v13 = 2112;
@@ -130,8 +130,8 @@
   if (![(UADispatchWatchdog *)self hasFired])
   {
     [(UADispatchWatchdog *)self setHasFired:1];
-    v8 = [(UADispatchWatchdog *)self handler];
-    v8[2]();
+    handler = [(UADispatchWatchdog *)self handler];
+    handler[2]();
   }
 }
 

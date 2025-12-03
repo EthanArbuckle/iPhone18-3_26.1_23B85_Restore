@@ -1,33 +1,33 @@
 @interface EFPathComponent
-+ (EFPathComponent)pathComponentWithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (EFPathComponent)initWithString:(id)a3;
++ (EFPathComponent)pathComponentWithString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (EFPathComponent)initWithString:(id)string;
 - (EFPathComponent)pathComponentByDeletingPathExtension;
 - (id)debugDescription;
-- (id)subpathToIndex:(unint64_t)a3;
-- (uint64_t)_setSanitizedString:(uint64_t)a1;
-- (void)_initWithSanitizedString:(void *)a1;
+- (id)subpathToIndex:(unint64_t)index;
+- (uint64_t)_setSanitizedString:(uint64_t)string;
+- (void)_initWithSanitizedString:(void *)string;
 @end
 
 @implementation EFPathComponent
 
-+ (EFPathComponent)pathComponentWithString:(id)a3
++ (EFPathComponent)pathComponentWithString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithString:v3];
+  stringCopy = string;
+  v4 = [objc_alloc(objc_opt_class()) initWithString:stringCopy];
 
   return v4;
 }
 
-- (EFPathComponent)initWithString:(id)a3
+- (EFPathComponent)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = EFPathComponent;
   v5 = [(EFPathComponent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    v6 = [stringCopy stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
     v7 = [(EFPathComponent *)v5 _setSanitizedString:v6];
 
     if ((v7 & 1) == 0)
@@ -40,61 +40,61 @@
   return v5;
 }
 
-- (uint64_t)_setSanitizedString:(uint64_t)a1
+- (uint64_t)_setSanitizedString:(uint64_t)string
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (string)
   {
     if ([v3 length])
     {
       v5 = [v4 copy];
-      v6 = *(a1 + 8);
-      *(a1 + 8) = v5;
+      v6 = *(string + 8);
+      *(string + 8) = v5;
 
-      a1 = 1;
+      string = 1;
     }
 
     else
     {
-      a1 = 0;
+      string = 0;
     }
   }
 
-  return a1;
+  return string;
 }
 
-- (void)_initWithSanitizedString:(void *)a1
+- (void)_initWithSanitizedString:(void *)string
 {
   v3 = a2;
-  if (a1)
+  if (string)
   {
-    v6.receiver = a1;
+    v6.receiver = string;
     v6.super_class = EFPathComponent;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    string = v4;
     if (v4)
     {
       if (([(EFPathComponent *)v4 _setSanitizedString:v3]& 1) == 0)
       {
 
-        a1 = 0;
+        string = 0;
       }
     }
   }
 
-  return a1;
+  return string;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     sanitizedString = self->_sanitizedString;
-    v6 = [v4 sanitizedString];
-    v7 = [(NSString *)sanitizedString isEqual:v6];
+    sanitizedString = [equalCopy sanitizedString];
+    v7 = [(NSString *)sanitizedString isEqual:sanitizedString];
   }
 
   else
@@ -114,10 +114,10 @@
   return v5;
 }
 
-- (id)subpathToIndex:(unint64_t)a3
+- (id)subpathToIndex:(unint64_t)index
 {
   v5 = [EFPathComponent alloc];
-  v6 = [(NSString *)self->_sanitizedString substringToIndex:a3];
+  v6 = [(NSString *)self->_sanitizedString substringToIndex:index];
   v7 = [(EFPathComponent *)v5 _initWithSanitizedString:v6];
 
   return v7;
@@ -126,8 +126,8 @@
 - (EFPathComponent)pathComponentByDeletingPathExtension
 {
   v3 = [EFPathComponent alloc];
-  v4 = [(NSString *)self->_sanitizedString stringByDeletingPathExtension];
-  v5 = [(EFPathComponent *)v3 _initWithSanitizedString:v4];
+  stringByDeletingPathExtension = [(NSString *)self->_sanitizedString stringByDeletingPathExtension];
+  v5 = [(EFPathComponent *)v3 _initWithSanitizedString:stringByDeletingPathExtension];
 
   return v5;
 }

@@ -1,42 +1,42 @@
 @interface CCSerializedSet
-+ (id)_serializeSet:(id)a3 useCase:(id)a4 error:(id *)a5;
-+ (id)setEnumeratorWithSerializedSets:(id)a3;
-- (BOOL)writeToStream:(id)a3 format:(unsigned __int8)a4 error:(id *)a5;
-- (CCSerializedSet)initWithCoder:(id)a3;
-- (CCSerializedSet)initWithData:(id)a3 error:(id *)a4;
-- (CCSerializedSet)initWithSet:(id)a3 useCase:(id)a4 error:(id *)a5;
-- (CCSerializedSet)initWithSetMessage:(id)a3 error:(id *)a4;
-- (id)_deduplicateItemsOfType:(unsigned __int16)a3 localInstances:(id)a4 error:(id *)a5;
-- (id)_placeholderLocalDevice:(id *)a3;
-- (id)changePublisherWithUseCase:(id)a3;
++ (id)_serializeSet:(id)set useCase:(id)case error:(id *)error;
++ (id)setEnumeratorWithSerializedSets:(id)sets;
+- (BOOL)writeToStream:(id)stream format:(unsigned __int8)format error:(id *)error;
+- (CCSerializedSet)initWithCoder:(id)coder;
+- (CCSerializedSet)initWithData:(id)data error:(id *)error;
+- (CCSerializedSet)initWithSet:(id)set useCase:(id)case error:(id *)error;
+- (CCSerializedSet)initWithSetMessage:(id)message error:(id *)error;
+- (id)_deduplicateItemsOfType:(unsigned __int16)type localInstances:(id)instances error:(id *)error;
+- (id)_placeholderLocalDevice:(id *)device;
+- (id)changePublisherWithUseCase:(id)case;
 @end
 
 @implementation CCSerializedSet
 
-+ (id)setEnumeratorWithSerializedSets:(id)a3
++ (id)setEnumeratorWithSerializedSets:(id)sets
 {
-  v3 = a3;
-  v4 = [[CCSerializedSetEnumerator alloc] initWithSerializedSets:v3];
+  setsCopy = sets;
+  v4 = [[CCSerializedSetEnumerator alloc] initWithSerializedSets:setsCopy];
 
   return v4;
 }
 
-- (CCSerializedSet)initWithSetMessage:(id)a3 error:(id *)a4
+- (CCSerializedSet)initWithSetMessage:(id)message error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = CCTypeIdentifierRegistryBridge();
-  v6 = [v4 setIdentifier];
-  v30 = [v5 itemTypeForSetIdentifier:v6];
+  setIdentifier = [messageCopy setIdentifier];
+  v30 = [v5 itemTypeForSetIdentifier:setIdentifier];
 
-  v32 = v4;
-  v7 = [v4 descriptors];
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v32 = messageCopy;
+  descriptors = [messageCopy descriptors];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(descriptors, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v7;
+  v9 = descriptors;
   v10 = [v9 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v10)
   {
@@ -54,8 +54,8 @@
         v14 = *(*(&v35 + 1) + 8 * i);
         v15 = [CCSetDescriptor alloc];
         v16 = [v14 key];
-        v17 = [v14 value];
-        v18 = [(BMResourceDescriptor *)v15 initWithKey:v16 value:v17 error:a4];
+        value = [v14 value];
+        v18 = [(BMResourceDescriptor *)v15 initWithKey:v16 value:value error:error];
 
         if (!v18)
         {
@@ -80,25 +80,25 @@
   v19 = [v8 copy];
 LABEL_11:
 
-  v20 = self;
+  selfCopy = self;
   if (v19)
   {
-    v21 = [v32 personaIdentifier];
+    personaIdentifier = [v32 personaIdentifier];
     v34.receiver = self;
     v34.super_class = CCSerializedSet;
-    v22 = -[CCSet initWithItemType:personaIdentifier:descriptors:options:error:](&v34, sel_initWithItemType_personaIdentifier_descriptors_options_error_, v30, v21, v19, [v32 options], a4);
+    v22 = -[CCSet initWithItemType:personaIdentifier:descriptors:options:error:](&v34, sel_initWithItemType_personaIdentifier_descriptors_options_error_, v30, personaIdentifier, v19, [v32 options], error);
     v23 = v22;
     if (v22)
     {
-      objc_storeStrong(&v22->_setMessage, a3);
-      v24 = [(CCSerializedSetMessage *)v23->_setMessage data];
+      objc_storeStrong(&v22->_setMessage, message);
+      data = [(CCSerializedSetMessage *)v23->_setMessage data];
       data = v23->_data;
-      v23->_data = v24;
+      v23->_data = data;
     }
 
-    v20 = v23;
+    selfCopy = v23;
 
-    v26 = v20;
+    v26 = selfCopy;
   }
 
   else
@@ -110,21 +110,21 @@ LABEL_11:
   return v26;
 }
 
-- (CCSerializedSet)initWithData:(id)a3 error:(id *)a4
+- (CCSerializedSet)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 subdataWithRange:{0, 1}];
+  dataCopy = data;
+  v7 = [dataCopy subdataWithRange:{0, 1}];
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
   if ([v8 isEqual:@"{"])
   {
-    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:a4];
+    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:error];
     if (!v9)
     {
       goto LABEL_4;
     }
 
     v10 = v9;
-    v11 = [objc_alloc(getCCSerializedSetMessageClass()) initWithJSONDictionary:v9 error:a4];
+    v11 = [objc_alloc(getCCSerializedSetMessageClass()) initWithJSONDictionary:v9 error:error];
 
     if (!v11)
     {
@@ -132,41 +132,41 @@ LABEL_11:
     }
 
 LABEL_6:
-    self = [(CCSerializedSet *)self initWithSetMessage:v11 error:a4];
+    self = [(CCSerializedSet *)self initWithSetMessage:v11 error:error];
 
-    v12 = self;
+    selfCopy = self;
     goto LABEL_7;
   }
 
-  v11 = [objc_alloc(getCCSerializedSetMessageClass()) initWithData:v6 error:a4];
+  v11 = [objc_alloc(getCCSerializedSetMessageClass()) initWithData:dataCopy error:error];
   if (v11)
   {
     goto LABEL_6;
   }
 
 LABEL_4:
-  v12 = 0;
+  selfCopy = 0;
 LABEL_7:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)_placeholderLocalDevice:(id *)a3
+- (id)_placeholderLocalDevice:(id *)device
 {
   v4 = objc_alloc(getCCSerializedSetDeviceClass());
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   [MEMORY[0x1E698E9A0] platform];
   v6 = BMDevicePlatformToString();
-  v7 = [v4 initWithDeviceUUID:v5 idsDeviceIdentifier:0 platformString:v6 options:&unk_1F2EC9288 error:a3];
+  v7 = [v4 initWithDeviceUUID:uUID idsDeviceIdentifier:0 platformString:v6 options:&unk_1F2EC9288 error:device];
 
   return v7;
 }
 
-- (id)_deduplicateItemsOfType:(unsigned __int16)a3 localInstances:(id)a4 error:(id *)a5
+- (id)_deduplicateItemsOfType:(unsigned __int16)type localInstances:(id)instances error:(id *)error
 {
-  v61 = a3;
+  typeCopy = type;
   v69 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  instancesCopy = instances;
   v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -176,7 +176,7 @@ LABEL_7:
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v8 = v5;
+  v8 = instancesCopy;
   v9 = [v8 countByEnumeratingWithState:&v62 objects:v68 count:16];
   v57 = v8;
   v58 = v6;
@@ -194,23 +194,23 @@ LABEL_7:
         }
 
         v13 = *(*(&v62 + 1) + 8 * i);
-        v14 = [v13 content];
-        v15 = [objc_opt_class() itemType];
+        content = [v13 content];
+        itemType = [objc_opt_class() itemType];
 
-        if (v15 != v61)
+        if (itemType != typeCopy)
         {
           v43 = MEMORY[0x1E696ABC0];
           v66 = *MEMORY[0x1E696A278];
           v44 = MEMORY[0x1E696AEC0];
           v45 = CCTypeIdentifierRegistryBridge();
-          v46 = [v45 descriptionForTypeIdentifier:v15];
+          v46 = [v45 descriptionForTypeIdentifier:itemType];
           v47 = CCTypeIdentifierRegistryBridge();
-          v48 = [v47 descriptionForTypeIdentifier:v61];
+          v48 = [v47 descriptionForTypeIdentifier:typeCopy];
           v49 = [v44 stringWithFormat:@"Inconsistent item type (%@) of instance: %@ expected itemType: %@", v46, v13, v48];
           v67 = v49;
           v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
           v51 = [v43 errorWithDomain:@"com.apple.CascadeSets.Item" code:2 userInfo:v50];
-          CCSetError(a5, v51);
+          CCSetError(error, v51);
 
           v6 = v58;
           v52 = v57;
@@ -220,31 +220,31 @@ LABEL_7:
           goto LABEL_22;
         }
 
-        v16 = [v13 metaContent];
-        v17 = [v16 sourceItemIdentifier];
+        metaContent = [v13 metaContent];
+        sourceItemIdentifier = [metaContent sourceItemIdentifier];
 
-        if (([v7 containsObject:v17] & 1) == 0)
+        if (([v7 containsObject:sourceItemIdentifier] & 1) == 0)
         {
-          [v7 addObject:v17];
-          v18 = [v13 sharedIdentifier];
-          v19 = [v13 instanceIdentifier];
-          v20 = [v19 longLongValue];
+          [v7 addObject:sourceItemIdentifier];
+          sharedIdentifier = [v13 sharedIdentifier];
+          instanceIdentifier = [v13 instanceIdentifier];
+          longLongValue = [instanceIdentifier longLongValue];
 
-          v21 = [v6 indexOfObject:v18];
+          v21 = [v6 indexOfObject:sharedIdentifier];
           if (v21 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v6 addObject:v18];
-            v22 = [v13 content];
-            v23 = [v22 data];
-            [v56 addObject:v23];
+            [v6 addObject:sharedIdentifier];
+            content2 = [v13 content];
+            data = [content2 data];
+            [v56 addObject:data];
 
             v24 = objc_alloc_init(CCMutableRepeatedInt64);
-            [(CCMutableRepeatedInt64 *)v24 appendInt64Value:v20];
+            [(CCMutableRepeatedInt64 *)v24 appendInt64Value:longLongValue];
             [v60 addObject:v24];
             v25 = objc_alloc(MEMORY[0x1E695DF70]);
-            v26 = [v13 metaContent];
-            v27 = [v26 data];
-            v28 = [v25 initWithObjects:{v27, 0}];
+            metaContent2 = [v13 metaContent];
+            data2 = [metaContent2 data];
+            v28 = [v25 initWithObjects:{data2, 0}];
             [v59 addObject:v28];
           }
 
@@ -252,12 +252,12 @@ LABEL_7:
           {
             v29 = v21;
             v30 = [v60 objectAtIndex:v21];
-            [v30 appendInt64Value:v20];
+            [v30 appendInt64Value:longLongValue];
 
             v24 = [v59 objectAtIndex:v29];
-            v26 = [v13 metaContent];
-            v27 = [v26 data];
-            [(CCMutableRepeatedInt64 *)v24 addObject:v27];
+            metaContent2 = [v13 metaContent];
+            data2 = [metaContent2 data];
+            [(CCMutableRepeatedInt64 *)v24 addObject:data2];
           }
 
           v8 = v57;
@@ -284,12 +284,12 @@ LABEL_7:
     while (1)
     {
       v35 = objc_alloc(getCCSerializedSetItemClass());
-      v36 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v61];
+      v36 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
       v37 = [v6 objectAtIndex:v34];
       v38 = [v60 objectAtIndex:v34];
       v39 = [v56 objectAtIndex:v34];
       v40 = [v59 objectAtIndex:v34];
-      v41 = [v35 initWithItemType:v36 sharedIdentifier:v37 localInstanceIdentifiers:v38 content:v39 localMetaContent:v40 remoteDeviceIndices:0 error:a5];
+      v41 = [v35 initWithItemType:v36 sharedIdentifier:v37 localInstanceIdentifiers:v38 content:v39 localMetaContent:v40 remoteDeviceIndices:0 error:error];
 
       if (!v41)
       {
@@ -325,39 +325,39 @@ LABEL_22:
   return v42;
 }
 
-- (CCSerializedSet)initWithSet:(id)a3 useCase:(id)a4 error:(id *)a5
+- (CCSerializedSet)initWithSet:(id)set useCase:(id)case error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() _serializeSet:v9 useCase:v8 error:a5];
+  caseCopy = case;
+  setCopy = set;
+  v10 = [objc_opt_class() _serializeSet:setCopy useCase:caseCopy error:error];
 
   if (v10)
   {
-    self = [(CCSerializedSet *)self initWithSetMessage:v10 error:a5];
-    v11 = self;
+    self = [(CCSerializedSet *)self initWithSetMessage:v10 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)writeToStream:(id)a3 format:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)writeToStream:(id)stream format:(unsigned __int8)format error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6 == 2)
+  formatCopy = format;
+  streamCopy = stream;
+  if (formatCopy == 2)
   {
-    v10 = [(CCSerializedSetMessage *)self->_setMessage jsonDictionary];
-    v9 = [MEMORY[0x1E696ACB0] writeJSONObject:v10 toStream:v8 options:9 error:a5];
+    jsonDictionary = [(CCSerializedSetMessage *)self->_setMessage jsonDictionary];
+    v9 = [MEMORY[0x1E696ACB0] writeJSONObject:jsonDictionary toStream:streamCopy options:9 error:error];
   }
 
-  else if (v6 == 1)
+  else if (formatCopy == 1)
   {
-    v9 = [v8 write:-[NSData bytes](self->_data maxLength:{"bytes"), -[NSData length](self->_data, "length")}];
+    v9 = [streamCopy write:-[NSData bytes](self->_data maxLength:{"bytes"), -[NSData length](self->_data, "length")}];
   }
 
   else
@@ -368,10 +368,10 @@ LABEL_22:
   return v9 > 0;
 }
 
-+ (id)_serializeSet:(id)a3 useCase:(id)a4 error:(id *)a5
++ (id)_serializeSet:(id)set useCase:(id)case error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  caseCopy = case;
   v72 = 0;
   v73 = &v72;
   v74 = 0x2020000000;
@@ -380,7 +380,7 @@ LABEL_22:
   v69 = &v68;
   v70 = 0x2020000000;
   v71 = 0;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v7, "itemType")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(setCopy, "itemType")}];
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
@@ -411,8 +411,8 @@ LABEL_22:
   v45 = __Block_byref_object_copy__0;
   v46 = __Block_byref_object_dispose__0;
   v47 = 0;
-  v30 = v8;
-  v10 = [v7 changePublisherWithUseCase:v8];
+  v30 = caseCopy;
+  v10 = [setCopy changePublisherWithUseCase:caseCopy];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __47__CCSerializedSet__serializeSet_useCase_error___block_invoke;
@@ -437,30 +437,30 @@ LABEL_22:
   v14 = v63[5];
   if (v14)
   {
-    CCSetError(a5, v14);
+    CCSetError(error, v14);
     v15 = 0;
   }
 
   else
   {
-    v29 = a5;
+    errorCopy = error;
     v16 = CCTypeIdentifierRegistryBridge();
-    v28 = [v16 setIdentifierForItemType:{objc_msgSend(v7, "itemType")}];
+    v28 = [v16 setIdentifierForItemType:{objc_msgSend(setCopy, "itemType")}];
 
-    v17 = [v7 descriptors];
-    v18 = _encodeDescriptors(v17, a5);
+    descriptors = [setCopy descriptors];
+    v18 = _encodeDescriptors(descriptors, error);
 
     if (v18)
     {
       v26 = objc_alloc(getCCSerializedSetMessageClass());
-      v27 = [v7 personaIdentifier];
+      personaIdentifier = [setCopy personaIdentifier];
       v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v73[3]];
       v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v69[3]];
       v21 = v57[5];
       v22 = v51[5];
       v23 = v43[5];
-      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v7, "options")}];
-      v15 = [v26 initWithItemType:v11 setIdentifier:v28 personaIdentifier:v27 descriptors:v18 sharedItemCount:v19 localItemInstanceCount:v20 localDevice:v21 remoteDevices:v22 items:v23 options:v24 error:v29];
+      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(setCopy, "options")}];
+      v15 = [v26 initWithItemType:v11 setIdentifier:v28 personaIdentifier:personaIdentifier descriptors:v18 sharedItemCount:v19 localItemInstanceCount:v20 localDevice:v21 remoteDevices:v22 items:v23 options:v24 error:errorCopy];
     }
 
     else
@@ -727,7 +727,7 @@ LABEL_39:
   return v55;
 }
 
-- (id)changePublisherWithUseCase:(id)a3
+- (id)changePublisherWithUseCase:(id)case
 {
   v4 = [CCSetChangePublisher alloc];
   v5 = [[CCSerializedSetChangeEnumerator alloc] initWithSetMessage:self->_setMessage];
@@ -736,10 +736,10 @@ LABEL_39:
   return v6;
 }
 
-- (CCSerializedSet)initWithCoder:(id)a3
+- (CCSerializedSet)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
 
   v13 = 0;
   v6 = [(CCSerializedSet *)self initWithData:v5 error:&v13];

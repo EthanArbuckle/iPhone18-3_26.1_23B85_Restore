@@ -2,65 +2,65 @@
 + (id)landmarksIn3D;
 + (id)multiStopRouting;
 + (id)transitCards;
-- (WelcomeScreenBullet)initWithTitle:(id)a3 body:(id)a4 imageName:(id)a5 tintColor:(id)a6;
-- (WelcomeScreenBullet)initWithTitle:(id)a3 body:(id)a4 systemImageName:(id)a5 tintColor:(id)a6;
+- (WelcomeScreenBullet)initWithTitle:(id)title body:(id)body imageName:(id)name tintColor:(id)color;
+- (WelcomeScreenBullet)initWithTitle:(id)title body:(id)body systemImageName:(id)name tintColor:(id)color;
 @end
 
 @implementation WelcomeScreenBullet
 
-- (WelcomeScreenBullet)initWithTitle:(id)a3 body:(id)a4 systemImageName:(id)a5 tintColor:(id)a6
+- (WelcomeScreenBullet)initWithTitle:(id)title body:(id)body systemImageName:(id)name tintColor:(id)color
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  bodyCopy = body;
+  nameCopy = name;
+  colorCopy = color;
   v22.receiver = self;
   v22.super_class = WelcomeScreenBullet;
   v14 = [(WelcomeScreenBullet *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v15;
 
-    v17 = [v11 copy];
+    v17 = [bodyCopy copy];
     body = v14->_body;
     v14->_body = v17;
 
-    v19 = [UIImage systemImageNamed:v12];
+    v19 = [UIImage systemImageNamed:nameCopy];
     image = v14->_image;
     v14->_image = v19;
 
-    objc_storeStrong(&v14->_tintColor, a6);
+    objc_storeStrong(&v14->_tintColor, color);
   }
 
   return v14;
 }
 
-- (WelcomeScreenBullet)initWithTitle:(id)a3 body:(id)a4 imageName:(id)a5 tintColor:(id)a6
+- (WelcomeScreenBullet)initWithTitle:(id)title body:(id)body imageName:(id)name tintColor:(id)color
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  bodyCopy = body;
+  nameCopy = name;
+  colorCopy = color;
   v22.receiver = self;
   v22.super_class = WelcomeScreenBullet;
   v14 = [(WelcomeScreenBullet *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v15;
 
-    v17 = [v11 copy];
+    v17 = [bodyCopy copy];
     body = v14->_body;
     v14->_body = v17;
 
-    v19 = [UIImage imageNamed:v12];
+    v19 = [UIImage imageNamed:nameCopy];
     image = v14->_image;
     v14->_image = v19;
 
-    objc_storeStrong(&v14->_tintColor, a6);
+    objc_storeStrong(&v14->_tintColor, color);
   }
 
   return v14;

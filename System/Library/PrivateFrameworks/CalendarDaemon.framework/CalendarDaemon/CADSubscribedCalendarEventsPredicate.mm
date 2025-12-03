@@ -1,15 +1,15 @@
 @interface CADSubscribedCalendarEventsPredicate
-- (CADSubscribedCalendarEventsPredicate)initWithCalendar:(id)a3;
+- (CADSubscribedCalendarEventsPredicate)initWithCalendar:(id)calendar;
 - (id)defaultPropertiesToLoad;
 @end
 
 @implementation CADSubscribedCalendarEventsPredicate
 
-- (CADSubscribedCalendarEventsPredicate)initWithCalendar:(id)a3
+- (CADSubscribedCalendarEventsPredicate)initWithCalendar:(id)calendar
 {
   v4.receiver = self;
   v4.super_class = CADSubscribedCalendarEventsPredicate;
-  return [(CADPropertySearchPredicate *)&v4 initWithEntityType:2 filters:MEMORY[0x277CBEBF8] calendar:a3];
+  return [(CADPropertySearchPredicate *)&v4 initWithEntityType:2 filters:MEMORY[0x277CBEBF8] calendar:calendar];
 }
 
 - (id)defaultPropertiesToLoad

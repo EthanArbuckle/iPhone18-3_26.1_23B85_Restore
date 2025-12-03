@@ -1,12 +1,12 @@
 @interface PXUISlowMotionEditor
-+ (id)createSnappingControllerWithSnappingTarget:(double)a3;
++ (id)createSnappingControllerWithSnappingTarget:(double)target;
 + (id)handleImage;
 - (PXUISlowMotionEditor)init;
 - (void)_PXUISlowMotionEditor_commonInit;
-- (void)_handleBeginPanGesture:(id)a3;
-- (void)_handleChangePanGesture:(id)a3;
-- (void)_handleEndPanGesture:(id)a3;
-- (void)_handlePan:(id)a3;
+- (void)_handleBeginPanGesture:(id)gesture;
+- (void)_handleChangePanGesture:(id)gesture;
+- (void)_handleEndPanGesture:(id)gesture;
+- (void)_handlePan:(id)pan;
 - (void)impactOccured;
 - (void)prepareForImpact;
 @end
@@ -15,72 +15,72 @@
 
 - (void)impactOccured
 {
-  v2 = [(PXUISlowMotionEditor *)self impactGenerator];
-  [v2 impactOccurred];
+  impactGenerator = [(PXUISlowMotionEditor *)self impactGenerator];
+  [impactGenerator impactOccurred];
 }
 
 - (void)prepareForImpact
 {
-  v2 = [(PXUISlowMotionEditor *)self impactGenerator];
-  [v2 prepare];
+  impactGenerator = [(PXUISlowMotionEditor *)self impactGenerator];
+  [impactGenerator prepare];
 }
 
-- (void)_handleEndPanGesture:(id)a3
+- (void)_handleEndPanGesture:(id)gesture
 {
-  [a3 locationInView:self];
+  [gesture locationInView:self];
 
   [(PXSlowMotionEditor *)self handleEndTrackingAtLocation:?];
 }
 
-- (void)_handleChangePanGesture:(id)a3
+- (void)_handleChangePanGesture:(id)gesture
 {
-  v6 = a3;
-  if ([v6 state] != 2)
+  gestureCopy = gesture;
+  if ([gestureCopy state] != 2)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXUISlowMotionEditor.m" lineNumber:94 description:@"_handleChangePanGesture: called with a recognizer whose state is not .Changed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUISlowMotionEditor.m" lineNumber:94 description:@"_handleChangePanGesture: called with a recognizer whose state is not .Changed"];
   }
 
-  [v6 locationInView:self];
+  [gestureCopy locationInView:self];
   [(PXSlowMotionEditor *)self handleChangeTrackingAtLocation:?];
 }
 
-- (void)_handleBeginPanGesture:(id)a3
+- (void)_handleBeginPanGesture:(id)gesture
 {
-  v6 = a3;
-  if ([v6 state] != 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] != 1)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXUISlowMotionEditor.m" lineNumber:85 description:@"_handleBeginPanGesture: called with a recognizer whose state is not .Began"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUISlowMotionEditor.m" lineNumber:85 description:@"_handleBeginPanGesture: called with a recognizer whose state is not .Began"];
   }
 
-  [v6 locationInView:self];
+  [gestureCopy locationInView:self];
   [(PXSlowMotionEditor *)self handleBeginTrackingAtLocation:?];
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 3)
+  panCopy = pan;
+  state = [panCopy state];
+  if ((state - 3) < 3)
   {
-    [(PXUISlowMotionEditor *)self _handleEndPanGesture:v7];
+    [(PXUISlowMotionEditor *)self _handleEndPanGesture:panCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = panCopy;
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [(PXUISlowMotionEditor *)self _handleChangePanGesture:v7];
+    [(PXUISlowMotionEditor *)self _handleChangePanGesture:panCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = panCopy;
   if (v5)
   {
-    [(PXUISlowMotionEditor *)self _handleBeginPanGesture:v7];
+    [(PXUISlowMotionEditor *)self _handleBeginPanGesture:panCopy];
     goto LABEL_8;
   }
 
@@ -123,9 +123,9 @@ LABEL_9:
   return v3;
 }
 
-+ (id)createSnappingControllerWithSnappingTarget:(double)a3
++ (id)createSnappingControllerWithSnappingTarget:(double)target
 {
-  v3 = [[PXUISnappingController alloc] initWithSnappingTarget:a3];
+  v3 = [[PXUISnappingController alloc] initWithSnappingTarget:target];
 
   return v3;
 }

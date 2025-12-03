@@ -20,19 +20,19 @@
 
 - (int64_t)lockButtonSOSTriggerCount
 {
-  v2 = [getSOSUtilitiesClass() SOSTriggerClickCount];
-  if (v2 > 5 || ((1 << v2) & 0x29) == 0)
+  sOSTriggerClickCount = [getSOSUtilitiesClass() SOSTriggerClickCount];
+  if (sOSTriggerClickCount > 5 || ((1 << sOSTriggerClickCount) & 0x29) == 0)
   {
     v4 = SBLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(SBSOSDefaults *)v2 lockButtonSOSTriggerCount];
+      [(SBSOSDefaults *)sOSTriggerClickCount lockButtonSOSTriggerCount];
     }
 
     return -1;
   }
 
-  return v2;
+  return sOSTriggerClickCount;
 }
 
 - (BOOL)clawCanTriggerSOS
@@ -53,7 +53,7 @@
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_1BEA11000, a2, OS_LOG_TYPE_ERROR, "SBSOSDefaults - Unsupported Lock Button Trigger Click Count: %d.", v2, 8u);
 }
 

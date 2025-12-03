@@ -1,51 +1,51 @@
 @interface AMSAccountDeviceInfoTask
-- (AMSAccountDeviceInfoTask)initWithAccount:(id)a3 accountStore:(id)a4 bag:(id)a5;
-- (AMSAccountDeviceInfoTask)initWithAccount:(id)a3 accountStore:(id)a4 bag:(id)a5 requestEncoder:(id)a6 session:(id)a7 serialNumber:(id)a8;
+- (AMSAccountDeviceInfoTask)initWithAccount:(id)account accountStore:(id)store bag:(id)bag;
+- (AMSAccountDeviceInfoTask)initWithAccount:(id)account accountStore:(id)store bag:(id)bag requestEncoder:(id)encoder session:(id)session serialNumber:(id)number;
 - (id)_deviceInfoRequest;
-- (id)_requestWithURL:(id)a3;
-- (id)_updateAccountWithInfo:(id)a3;
+- (id)_requestWithURL:(id)l;
+- (id)_updateAccountWithInfo:(id)info;
 - (id)perform;
 @end
 
 @implementation AMSAccountDeviceInfoTask
 
-- (AMSAccountDeviceInfoTask)initWithAccount:(id)a3 accountStore:(id)a4 bag:(id)a5
+- (AMSAccountDeviceInfoTask)initWithAccount:(id)account accountStore:(id)store bag:(id)bag
 {
   v8 = MEMORY[0x1E695AC80];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  bagCopy = bag;
+  storeCopy = store;
+  accountCopy = account;
   v12 = +[AMSProcessInfo currentProcess];
   v13 = [v8 ams_configurationWithProcessInfo:v12 bag:0];
 
   v14 = [[AMSURLSession alloc] initWithConfiguration:v13 delegate:0 delegateQueue:0];
-  v15 = [[AMSURLRequestEncoder alloc] initWithBag:v9];
+  v15 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
   v16 = +[AMSDevice serialNumber];
-  v17 = [(AMSAccountDeviceInfoTask *)self initWithAccount:v11 accountStore:v10 bag:v9 requestEncoder:v15 session:v14 serialNumber:v16];
+  v17 = [(AMSAccountDeviceInfoTask *)self initWithAccount:accountCopy accountStore:storeCopy bag:bagCopy requestEncoder:v15 session:v14 serialNumber:v16];
 
   return v17;
 }
 
-- (AMSAccountDeviceInfoTask)initWithAccount:(id)a3 accountStore:(id)a4 bag:(id)a5 requestEncoder:(id)a6 session:(id)a7 serialNumber:(id)a8
+- (AMSAccountDeviceInfoTask)initWithAccount:(id)account accountStore:(id)store bag:(id)bag requestEncoder:(id)encoder session:(id)session serialNumber:(id)number
 {
-  v15 = a3;
-  v16 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v17 = a8;
+  accountCopy = account;
+  storeCopy = store;
+  bagCopy = bag;
+  encoderCopy = encoder;
+  sessionCopy = session;
+  numberCopy = number;
   v24.receiver = self;
   v24.super_class = AMSAccountDeviceInfoTask;
   v18 = [(AMSTask *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_account, a3);
-    objc_storeStrong(&v19->_accountStore, a4);
-    objc_storeStrong(&v19->_bag, a5);
-    objc_storeStrong(&v19->_requestEncoder, a6);
-    objc_storeStrong(&v19->_session, a7);
-    objc_storeStrong(&v19->_serialNumber, a8);
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v19->_accountStore, store);
+    objc_storeStrong(&v19->_bag, bag);
+    objc_storeStrong(&v19->_requestEncoder, encoder);
+    objc_storeStrong(&v19->_session, session);
+    objc_storeStrong(&v19->_serialNumber, number);
   }
 
   return v19;
@@ -364,13 +364,13 @@ void __35__AMSAccountDeviceInfoTask_perform__block_invoke_20(id *a1, char a2, vo
   v4 = [v3 URLForKey:@"hardwareAssetInfo"];
 
   objc_initWeak(&location, self);
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__AMSAccountDeviceInfoTask__deviceInfoRequest__block_invoke;
   v8[3] = &unk_1E73B35B0;
   objc_copyWeak(&v9, &location);
-  v6 = [v5 thenWithBlock:v8];
+  v6 = [valuePromise thenWithBlock:v8];
   objc_destroyWeak(&v9);
 
   objc_destroyWeak(&location);
@@ -389,16 +389,16 @@ id __46__AMSAccountDeviceInfoTask__deviceInfoRequest__block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (id)_requestWithURL:(id)a3
+- (id)_requestWithURL:(id)l
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AF20];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURL:v5 resolvingAgainstBaseURL:0];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
 
   v7 = objc_alloc(MEMORY[0x1E696AF60]);
-  v8 = [(AMSAccountDeviceInfoTask *)self serialNumber];
-  v9 = [v7 initWithName:@"sn" value:v8];
+  serialNumber = [(AMSAccountDeviceInfoTask *)self serialNumber];
+  v9 = [v7 initWithName:@"sn" value:serialNumber];
   v16[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   [v6 setQueryItems:v10];
@@ -413,16 +413,16 @@ id __46__AMSAccountDeviceInfoTask__deviceInfoRequest__block_invoke(uint64_t a1, 
   return v14;
 }
 
-- (id)_updateAccountWithInfo:(id)a3
+- (id)_updateAccountWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSAccountDeviceInfoTask *)self account];
-  v6 = [v4 isBundleOwner];
+  infoCopy = info;
+  account = [(AMSAccountDeviceInfoTask *)self account];
+  isBundleOwner = [infoCopy isBundleOwner];
 
-  [v5 ams_setIsBundleOwner:v6];
-  v7 = [(AMSAccountDeviceInfoTask *)self accountStore];
-  v8 = [(AMSAccountDeviceInfoTask *)self account];
-  v9 = [v7 ams_saveAccount:v8 withOptions:1];
+  [account ams_setIsBundleOwner:isBundleOwner];
+  accountStore = [(AMSAccountDeviceInfoTask *)self accountStore];
+  account2 = [(AMSAccountDeviceInfoTask *)self account];
+  v9 = [accountStore ams_saveAccount:account2 withOptions:1];
 
   return v9;
 }

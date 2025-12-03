@@ -1,5 +1,5 @@
 @interface HMDRemoteMessageDestination
-+ (HMDRemoteMessageDestination)allocWithZone:(_NSZone *)a3;
++ (HMDRemoteMessageDestination)allocWithZone:(_NSZone *)zone;
 + (id)allMessageDestinations;
 - (NSArray)allRemoteDestinationStrings;
 - (NSString)remoteDestinationString;
@@ -10,16 +10,16 @@
 - (NSArray)allRemoteDestinationStrings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRemoteMessageDestination *)self remoteDestinationString];
-  if (v3)
+  remoteDestinationString = [(HMDRemoteMessageDestination *)self remoteDestinationString];
+  if (remoteDestinationString)
   {
-    v4 = [MEMORY[0x277CBEA60] arrayWithObject:v3];
+    v4 = [MEMORY[0x277CBEA60] arrayWithObject:remoteDestinationString];
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -27,7 +27,7 @@
       v11 = 138543618;
       v12 = v8;
       v13 = 2112;
-      v14 = v6;
+      v14 = selfCopy;
       _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_ERROR, "%{public}@This destination is not addressable: %@", &v11, 0x16u);
     }
 
@@ -53,17 +53,17 @@
   objc_exception_throw(v7);
 }
 
-+ (HMDRemoteMessageDestination)allocWithZone:(_NSZone *)a3
++ (HMDRemoteMessageDestination)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = _HMFPreconditionFailure();
     +[(HMDRemoteMessageDestination *)v6];
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___HMDRemoteMessageDestination;
-  return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
 }
 
 + (id)allMessageDestinations

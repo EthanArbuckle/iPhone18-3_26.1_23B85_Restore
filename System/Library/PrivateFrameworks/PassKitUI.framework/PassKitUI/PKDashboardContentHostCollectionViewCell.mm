@@ -1,20 +1,20 @@
 @interface PKDashboardContentHostCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardContentHostCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardContentHostCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)hostedContentInset;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHostedContentInset:(UIEdgeInsets)a3;
-- (void)setHostedContentView:(id)a3;
+- (void)setHostedContentInset:(UIEdgeInsets)inset;
+- (void)setHostedContentView:(id)view;
 @end
 
 @implementation PKDashboardContentHostCollectionViewCell
 
-- (PKDashboardContentHostCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKDashboardContentHostCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKDashboardContentHostCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,22 +24,22 @@
   return v4;
 }
 
-- (void)setHostedContentInset:(UIEdgeInsets)a3
+- (void)setHostedContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_hostedContentInset.top, v3), vceqq_f64(*&self->_hostedContentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_hostedContentInset = a3;
+    self->_hostedContentInset = inset;
     [(PKDashboardContentHostCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setHostedContentView:(id)a3
+- (void)setHostedContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   hostedContentView = self->_hostedContentView;
   if (hostedContentView)
   {
@@ -52,11 +52,11 @@
     v6 = 0;
   }
 
-  self->_hostedContentView = v4;
-  v7 = v4;
+  self->_hostedContentView = viewCopy;
+  v7 = viewCopy;
 
-  v8 = [(PKDashboardContentHostCollectionViewCell *)self contentView];
-  [v8 addSubview:v7];
+  contentView = [(PKDashboardContentHostCollectionViewCell *)self contentView];
+  [contentView addSubview:v7];
 
   [(PKDashboardContentHostCollectionViewCell *)self setNeedsLayout];
 }
@@ -73,9 +73,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_hostedContentView sizeThatFits:a3.width, a3.height];
+  [(UIView *)self->_hostedContentView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

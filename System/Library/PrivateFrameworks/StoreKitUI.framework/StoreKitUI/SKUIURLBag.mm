@@ -2,13 +2,13 @@
 + (ISOperationQueue)bagQueue;
 - (id)existingBagDictionary;
 - (id)storeFrontIdentifier;
-- (id)valueForKey:(id)a3 error:(id *)a4;
-- (void)_enqueueOperationWithContext:(id)a3 completionBlock:(id)a4;
-- (void)_finishOperationWithURLBag:(id)a3 error:(id)a4;
-- (void)getTrustForURL:(id)a3 completionBlock:(id)a4;
+- (id)valueForKey:(id)key error:(id *)error;
+- (void)_enqueueOperationWithContext:(id)context completionBlock:(id)block;
+- (void)_finishOperationWithURLBag:(id)bag error:(id)error;
+- (void)getTrustForURL:(id)l completionBlock:(id)block;
 - (void)invalidate;
-- (void)loadValueForKey:(id)a3 completionBlock:(id)a4;
-- (void)loadWithCompletionBlock:(id)a3;
+- (void)loadValueForKey:(id)key completionBlock:(id)block;
+- (void)loadWithCompletionBlock:(id)block;
 @end
 
 @implementation SKUIURLBag
@@ -36,19 +36,19 @@ uint64_t __22__SKUIURLBag_bagQueue__block_invoke()
   return [v2 setName:@"com.apple.storekit.bag-queue"];
 }
 
-- (void)getTrustForURL:(id)a3 completionBlock:(id)a4
+- (void)getTrustForURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__SKUIURLBag_getTrustForURL_completionBlock___block_invoke;
   v10[3] = &unk_2781FC650;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = lCopy;
   [(SSURLBag *)self dispatchAsync:v10];
 }
 
@@ -116,19 +116,19 @@ void __24__SKUIURLBag_invalidate__block_invoke(uint64_t a1)
   *(v4 + 96) = 0;
 }
 
-- (void)loadValueForKey:(id)a3 completionBlock:(id)a4
+- (void)loadValueForKey:(id)key completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__SKUIURLBag_loadValueForKey_completionBlock___block_invoke;
   v10[3] = &unk_2781FC650;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = keyCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = keyCopy;
   [(SSURLBag *)self dispatchAsync:v10];
 }
 
@@ -174,9 +174,9 @@ void __46__SKUIURLBag_loadValueForKey_completionBlock___block_invoke_3(uint64_t 
   (*(v4 + 16))(v4, v7, v6);
 }
 
-- (id)valueForKey:(id)a3 error:(id *)a4
+- (id)valueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -198,12 +198,12 @@ void __46__SKUIURLBag_loadValueForKey_completionBlock___block_invoke_3(uint64_t 
   v15 = &v22;
   v8 = v7;
   v13 = v8;
-  [(SKUIURLBag *)self loadValueForKey:v6 completionBlock:v12];
+  [(SKUIURLBag *)self loadValueForKey:keyCopy completionBlock:v12];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v23[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v9 = v23[5];
   }
 
@@ -259,16 +259,16 @@ uint64_t __35__SKUIURLBag_existingBagDictionary__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)loadWithCompletionBlock:(id)a3
+- (void)loadWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__SKUIURLBag_loadWithCompletionBlock___block_invoke;
   v6[3] = &unk_2781FC718;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSURLBag *)self dispatchAsync:v6];
 }
 
@@ -342,11 +342,11 @@ uint64_t __34__SKUIURLBag_storeFrontIdentifier__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)_enqueueOperationWithContext:(id)a3 completionBlock:(id)a4
+- (void)_enqueueOperationWithContext:(id)context completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 copy];
+  contextCopy = context;
+  blockCopy = block;
+  v8 = [blockCopy copy];
   completionBlocks = self->_completionBlocks;
   if (!completionBlocks)
   {
@@ -364,14 +364,14 @@ uint64_t __34__SKUIURLBag_storeFrontIdentifier__block_invoke(uint64_t a1)
   {
     if (self->_forceInvalidationForNextLoad)
     {
-      v13 = [v6 copy];
+      v13 = [contextCopy copy];
       [v13 setIgnoresCaches:1];
 
       self->_forceInvalidationForNextLoad = 0;
-      v6 = v13;
+      contextCopy = v13;
     }
 
-    v14 = [objc_alloc(MEMORY[0x277D7FCF8]) initWithBagContext:v6];
+    v14 = [objc_alloc(MEMORY[0x277D7FCF8]) initWithBagContext:contextCopy];
     operation = self->_operation;
     self->_operation = v14;
 
@@ -385,8 +385,8 @@ uint64_t __34__SKUIURLBag_storeFrontIdentifier__block_invoke(uint64_t a1)
     objc_copyWeak(&v22, &from);
     objc_copyWeak(&v23, &location);
     [(ISLoadURLBagOperation *)v16 setCompletionBlock:&v18];
-    v17 = [objc_opt_class() bagQueue];
-    [v17 addOperation:self->_operation];
+    bagQueue = [objc_opt_class() bagQueue];
+    [bagQueue addOperation:self->_operation];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v22);
@@ -408,19 +408,19 @@ void __59__SKUIURLBag__enqueueOperationWithContext_completionBlock___block_invok
   [v7 setCompletionBlock:0];
 }
 
-- (void)_finishOperationWithURLBag:(id)a3 error:(id)a4
+- (void)_finishOperationWithURLBag:(id)bag error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  bagCopy = bag;
+  errorCopy = error;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__SKUIURLBag__finishOperationWithURLBag_error___block_invoke;
   v10[3] = &unk_2781FC740;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = bagCopy;
+  selfCopy = self;
+  v13 = errorCopy;
+  v8 = errorCopy;
+  v9 = bagCopy;
   [(SSURLBag *)self dispatchAsync:v10];
 }
 

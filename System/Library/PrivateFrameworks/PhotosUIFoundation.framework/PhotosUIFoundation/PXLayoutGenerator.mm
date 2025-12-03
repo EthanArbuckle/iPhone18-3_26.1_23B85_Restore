@@ -4,36 +4,36 @@
 - (NSIndexSet)geometryKinds;
 - (NSString)diagnosticDescription;
 - (PXLayoutGenerator)init;
-- (PXLayoutGenerator)initWithMetrics:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)numberOfGeometriesWithKind:(int64_t)a3;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
-- (void)setItemCount:(unint64_t)a3;
-- (void)setItemLayoutInfoBlock:(id)a3;
-- (void)setKeyItemIndex:(unint64_t)a3;
-- (void)setMetrics:(id)a3;
+- (PXLayoutGenerator)initWithMetrics:(id)metrics;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)numberOfGeometriesWithKind:(int64_t)kind;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
+- (void)setItemCount:(unint64_t)count;
+- (void)setItemLayoutInfoBlock:(id)block;
+- (void)setKeyItemIndex:(unint64_t)index;
+- (void)setMetrics:(id)metrics;
 @end
 
 @implementation PXLayoutGenerator
 
 - (NSString)diagnosticDescription
 {
-  v3 = [(PXLayoutGenerator *)self itemCount];
+  itemCount = [(PXLayoutGenerator *)self itemCount];
   v4 = objc_alloc(MEMORY[0x1E696AD60]);
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 initWithFormat:@"<%@: %p; count=%lu, key=%lu\n", v6, self, v3, -[PXLayoutGenerator keyItemIndex](self, "keyItemIndex")];
+  v7 = [v4 initWithFormat:@"<%@: %p; count=%lu, key=%lu\n", v6, self, itemCount, -[PXLayoutGenerator keyItemIndex](self, "keyItemIndex")];
 
-  v8 = [(PXLayoutGenerator *)self metrics];
-  v9 = [v8 diagnosticDescription];
-  [v7 appendFormat:@"\tmetrics={%@}\n", v9];
+  metrics = [(PXLayoutGenerator *)self metrics];
+  diagnosticDescription = [metrics diagnosticDescription];
+  [v7 appendFormat:@"\tmetrics={%@}\n", diagnosticDescription];
 
-  v10 = [(PXLayoutGenerator *)self itemLayoutInfoBlock];
-  if (v3)
+  itemLayoutInfoBlock = [(PXLayoutGenerator *)self itemLayoutInfoBlock];
+  if (itemCount)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != itemCount; ++i)
     {
-      v12 = v10[2](v10, i);
+      v12 = itemLayoutInfoBlock[2](itemLayoutInfoBlock, i);
       [v12 size];
       v13 = NSStringFromCGSize(v17);
       [v12 weight];
@@ -46,19 +46,19 @@
   return v7;
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:132 description:{@"Method %s is a responsibility of subclass %@", "-[PXLayoutGenerator getGeometries:inRange:withKind:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:132 description:{@"Method %s is a responsibility of subclass %@", "-[PXLayoutGenerator getGeometries:inRange:withKind:]", v9}];
 
   abort();
 }
 
-- (unint64_t)numberOfGeometriesWithKind:(int64_t)a3
+- (unint64_t)numberOfGeometriesWithKind:(int64_t)kind
 {
-  if (a3)
+  if (kind)
   {
     return 0;
   }
@@ -90,29 +90,29 @@ uint64_t __34__PXLayoutGenerator_geometryKinds__block_invoke()
 
 - (CGSize)size
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:111 description:{@"Method %s is a responsibility of subclass %@", "-[PXLayoutGenerator size]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:111 description:{@"Method %s is a responsibility of subclass %@", "-[PXLayoutGenerator size]", v6}];
 
   abort();
 }
 
 - (CGSize)estimatedSize
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:107 description:{@"Method %s is a responsibility of subclass %@", "-[PXLayoutGenerator estimatedSize]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:107 description:{@"Method %s is a responsibility of subclass %@", "-[PXLayoutGenerator estimatedSize]", v6}];
 
   abort();
 }
 
-- (void)setItemLayoutInfoBlock:(id)a3
+- (void)setItemLayoutInfoBlock:(id)block
 {
-  if (self->_itemLayoutInfoBlock != a3)
+  if (self->_itemLayoutInfoBlock != block)
   {
-    v5 = [a3 copy];
+    v5 = [block copy];
     itemLayoutInfoBlock = self->_itemLayoutInfoBlock;
     self->_itemLayoutInfoBlock = v5;
 
@@ -120,31 +120,31 @@ uint64_t __34__PXLayoutGenerator_geometryKinds__block_invoke()
   }
 }
 
-- (void)setKeyItemIndex:(unint64_t)a3
+- (void)setKeyItemIndex:(unint64_t)index
 {
-  if (self->_keyItemIndex != a3)
+  if (self->_keyItemIndex != index)
   {
-    self->_keyItemIndex = a3;
+    self->_keyItemIndex = index;
     [(PXLayoutGenerator *)self invalidate];
   }
 }
 
-- (void)setItemCount:(unint64_t)a3
+- (void)setItemCount:(unint64_t)count
 {
-  if (self->_itemCount != a3)
+  if (self->_itemCount != count)
   {
-    self->_itemCount = a3;
+    self->_itemCount = count;
     [(PXLayoutGenerator *)self invalidate];
   }
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v4 = a3;
-  if (self->_metrics != v4)
+  metricsCopy = metrics;
+  if (self->_metrics != metricsCopy)
   {
-    v7 = v4;
-    if (![(PXLayoutMetrics *)v4 isEqual:?])
+    v7 = metricsCopy;
+    if (![(PXLayoutMetrics *)metricsCopy isEqual:?])
     {
       v5 = [(PXLayoutMetrics *)v7 copy];
       metrics = self->_metrics;
@@ -157,7 +157,7 @@ uint64_t __34__PXLayoutGenerator_geometryKinds__block_invoke()
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithMetrics:self->_metrics];
   v4[2] = self->_itemCount;
@@ -169,15 +169,15 @@ uint64_t __34__PXLayoutGenerator_geometryKinds__block_invoke()
   return v4;
 }
 
-- (PXLayoutGenerator)initWithMetrics:(id)a3
+- (PXLayoutGenerator)initWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v9.receiver = self;
   v9.super_class = PXLayoutGenerator;
   v5 = [(PXLayoutGenerator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [metricsCopy copy];
     metrics = v5->_metrics;
     v5->_metrics = v6;
 
@@ -189,8 +189,8 @@ uint64_t __34__PXLayoutGenerator_geometryKinds__block_invoke()
 
 - (PXLayoutGenerator)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:50 description:{@"%s is not available as initializer", "-[PXLayoutGenerator init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutGenerator.m" lineNumber:50 description:{@"%s is not available as initializer", "-[PXLayoutGenerator init]"}];
 
   abort();
 }

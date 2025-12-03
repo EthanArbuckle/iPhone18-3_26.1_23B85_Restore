@@ -1,7 +1,7 @@
 @interface FCIssueAccessChecker
 - (FCIssueAccessChecker)init;
-- (FCIssueAccessChecker)initWithAccessCheckers:(id)a3;
-- (FCIssueAccessChecker)initWithPaidAccessChecker:(id)a3 privateChannelMembershipController:(id)a4;
+- (FCIssueAccessChecker)initWithAccessCheckers:(id)checkers;
+- (FCIssueAccessChecker)initWithPaidAccessChecker:(id)checker privateChannelMembershipController:(id)controller;
 @end
 
 @implementation FCIssueAccessChecker
@@ -32,10 +32,10 @@
   objc_exception_throw(v6);
 }
 
-- (FCIssueAccessChecker)initWithAccessCheckers:(id)a3
+- (FCIssueAccessChecker)initWithAccessCheckers:(id)checkers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  checkersCopy = checkers;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Do not call method"];
@@ -59,12 +59,12 @@
   objc_exception_throw(v8);
 }
 
-- (FCIssueAccessChecker)initWithPaidAccessChecker:(id)a3 privateChannelMembershipController:(id)a4
+- (FCIssueAccessChecker)initWithPaidAccessChecker:(id)checker privateChannelMembershipController:(id)controller
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  checkerCopy = checker;
+  controllerCopy = controller;
+  if (!checkerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "paidAccessChecker != nil"];
     *buf = 136315906;
@@ -77,13 +77,13 @@
     v28 = v15;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (controllerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (controllerCopy)
   {
     goto LABEL_6;
   }
@@ -108,10 +108,10 @@ LABEL_6:
   v18[1] = 3221225472;
   v18[2] = __85__FCIssueAccessChecker_initWithPaidAccessChecker_privateChannelMembershipController___block_invoke;
   v18[3] = &unk_1E7C3B110;
-  v19 = v7;
-  v20 = v6;
-  v9 = v6;
-  v10 = v7;
+  v19 = controllerCopy;
+  v20 = checkerCopy;
+  v9 = checkerCopy;
+  v10 = controllerCopy;
   v11 = [v8 fc_array:v18];
   v17.receiver = self;
   v17.super_class = FCIssueAccessChecker;

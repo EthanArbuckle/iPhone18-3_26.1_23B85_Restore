@@ -4,8 +4,8 @@
 - (id)debugDescription;
 - (int)title_maxlines;
 - (void)setBuddyScore:(SPCoreSpotlightResult *)self;
-- (void)setCompatibilityDescriptions:(id)a3;
-- (void)setTitle_maxlines:(int)a3;
+- (void)setCompatibilityDescriptions:(id)descriptions;
+- (void)setTitle_maxlines:(int)title_maxlines;
 @end
 
 @implementation SPCoreSpotlightResult
@@ -17,17 +17,17 @@
   return [(SFSearchResult_SpotlightExtras *)&v3 init];
 }
 
-- (void)setCompatibilityDescriptions:(id)a3
+- (void)setCompatibilityDescriptions:(id)descriptions
 {
-  v16 = self;
+  selfCopy = self;
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  descriptionsCopy = descriptions;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = descriptionsCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -43,14 +43,14 @@
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 objectForKeyedSubscript:{@"formatted_text", v16}];
+        v10 = [v9 objectForKeyedSubscript:{@"formatted_text", selfCopy}];
         v11 = [v10 objectAtIndexedSubscript:0];
         v12 = [v11 objectForKey:@"text"];
         v13 = [v9 objectForKey:@"text_maxlines"];
         v14 = objc_alloc_init(MEMORY[0x1E69CA4F0]);
         [v14 setText:v12];
         [v14 setMaxLines:{objc_msgSend(v13, "intValue")}];
-        [v4 addObject:v14];
+        [array addObject:v14];
       }
 
       v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -59,47 +59,47 @@
     while (v6);
   }
 
-  [(SPCoreSpotlightResult *)v16 setDescriptions:v4];
+  [(SPCoreSpotlightResult *)selfCopy setDescriptions:array];
   v15 = *MEMORY[0x1E69E9840];
 }
 
 - (BOOL)hasDetail
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SPCoreSpotlightResult *)self secondaryTitle];
-  if (v4)
+  secondaryTitle = [(SPCoreSpotlightResult *)self secondaryTitle];
+  if (secondaryTitle)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(SPCoreSpotlightResult *)self descriptions];
-    if ([v6 count])
+    descriptions = [(SPCoreSpotlightResult *)self descriptions];
+    if ([descriptions count])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [(SPCoreSpotlightResult *)self auxiliaryTopText];
-      if (v7)
+      auxiliaryTopText = [(SPCoreSpotlightResult *)self auxiliaryTopText];
+      if (auxiliaryTopText)
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [(SPCoreSpotlightResult *)self auxiliaryMiddleText];
-        if (v8)
+        auxiliaryMiddleText = [(SPCoreSpotlightResult *)self auxiliaryMiddleText];
+        if (auxiliaryMiddleText)
         {
           v5 = 1;
         }
 
         else
         {
-          v9 = [(SPCoreSpotlightResult *)self auxiliaryBottomText];
-          v5 = v9 != 0;
+          auxiliaryBottomText = [(SPCoreSpotlightResult *)self auxiliaryBottomText];
+          v5 = auxiliaryBottomText != 0;
         }
       }
     }
@@ -109,26 +109,26 @@
   return v5;
 }
 
-- (void)setTitle_maxlines:(int)a3
+- (void)setTitle_maxlines:(int)title_maxlines
 {
-  v5 = [(SPCoreSpotlightResult *)self title];
+  title = [(SPCoreSpotlightResult *)self title];
 
-  if (!v5)
+  if (!title)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69CA4F0]);
     [(SPCoreSpotlightResult *)self setTitle:v6];
   }
 
-  v7 = [(SPCoreSpotlightResult *)self title];
-  [v7 setMaxLines:a3];
+  title2 = [(SPCoreSpotlightResult *)self title];
+  [title2 setMaxLines:title_maxlines];
 }
 
 - (int)title_maxlines
 {
-  v2 = [(SPCoreSpotlightResult *)self title];
-  v3 = [v2 maxLines];
+  title = [(SPCoreSpotlightResult *)self title];
+  maxLines = [title maxLines];
 
-  return v3;
+  return maxLines;
 }
 
 - (id)debugDescription
@@ -137,9 +137,9 @@
   v9.receiver = self;
   v9.super_class = SPCoreSpotlightResult;
   v4 = [(SFSearchResult_Compatibility *)&v9 debugDescription];
-  v5 = [(SPCoreSpotlightResult *)self identifier];
-  v6 = [(SPCoreSpotlightResult *)self interestingDate];
-  v7 = [v3 stringWithFormat:@"%@ %@ %@", v4, v5, v6];
+  identifier = [(SPCoreSpotlightResult *)self identifier];
+  interestingDate = [(SPCoreSpotlightResult *)self interestingDate];
+  v7 = [v3 stringWithFormat:@"%@ %@ %@", v4, identifier, interestingDate];
 
   return v7;
 }

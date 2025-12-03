@@ -1,35 +1,35 @@
 @interface MLDDiagnostic
-- (BOOL)writeToFile:(id)a3 error:(id *)a4;
-- (MLDDiagnostic)initWithReason:(id)a3;
+- (BOOL)writeToFile:(id)file error:(id *)error;
+- (MLDDiagnostic)initWithReason:(id)reason;
 - (NSDictionary)dictionaryRepresentation;
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_appendDescribableArray:(id)a3 toString:(id)a4 withTitle:(id)a5 indentLevel:(unsigned int)a6;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_appendDescribableArray:(id)array toString:(id)string withTitle:(id)title indentLevel:(unsigned int)level;
 @end
 
 @implementation MLDDiagnostic
 
-- (void)_appendDescribableArray:(id)a3 toString:(id)a4 withTitle:(id)a5 indentLevel:(unsigned int)a6
+- (void)_appendDescribableArray:(id)array toString:(id)string withTitle:(id)title indentLevel:(unsigned int)level
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  for (i = objc_alloc_init(NSMutableString); a6; --a6)
+  arrayCopy = array;
+  stringCopy = string;
+  titleCopy = title;
+  for (i = objc_alloc_init(NSMutableString); level; --level)
   {
     [i appendString:@"    "];
   }
 
-  [v10 appendFormat:@"%@%@:", i, v11];
-  if ([v9 count])
+  [stringCopy appendFormat:@"%@%@:", i, titleCopy];
+  if ([arrayCopy count])
   {
-    v20 = v11;
+    v20 = titleCopy;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = v9;
+    v13 = arrayCopy;
     v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v14)
     {
@@ -57,7 +57,7 @@
             [v18 description];
           }
           v19 = ;
-          [v10 appendFormat:@"\n%@%@", i, v19];
+          [stringCopy appendFormat:@"\n%@%@", i, v19];
 
           v17 = v17 + 1;
         }
@@ -69,20 +69,20 @@
       while (v15);
     }
 
-    v11 = v20;
+    titleCopy = v20;
   }
 
   else
   {
-    [v10 appendFormat:@"\n%@(None)", i];
+    [stringCopy appendFormat:@"\n%@(None)", i];
   }
 
-  [v10 appendString:@"\n"];
+  [stringCopy appendString:@"\n"];
 }
 
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   objc_storeStrong(v5 + 1, self->_date);
   *(v5 + 16) = self->_locked;
   v6 = [(NSArray *)self->_activeClients copy];
@@ -130,27 +130,27 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MLDDiagnostic *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MLDDiagnostic *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MLDDiagnostic *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MLDDiagnostic *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (BOOL)writeToFile:(id)a3 error:(id *)a4
+- (BOOL)writeToFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   v7 = [(MLDDiagnostic *)self description];
-  LOBYTE(a4) = [v7 writeToFile:v6 atomically:1 encoding:4 error:a4];
+  LOBYTE(error) = [v7 writeToFile:fileCopy atomically:1 encoding:4 error:error];
 
-  return a4;
+  return error;
 }
 
 - (id)description
@@ -213,7 +213,7 @@
   v10[3] = &unk_1000310C0;
   v7 = v3;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   [(NSDictionary *)libraryConnectionDiagnostics enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v7;
 
@@ -281,9 +281,9 @@
   return v15;
 }
 
-- (MLDDiagnostic)initWithReason:(id)a3
+- (MLDDiagnostic)initWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v11.receiver = self;
   v11.super_class = MLDDiagnostic;
   v5 = [(MLDDiagnostic *)&v11 init];
@@ -293,7 +293,7 @@
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 copy];
+    v8 = [reasonCopy copy];
     reason = v5->_reason;
     v5->_reason = v8;
   }

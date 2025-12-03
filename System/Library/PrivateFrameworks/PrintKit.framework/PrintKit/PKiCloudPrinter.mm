@@ -1,6 +1,6 @@
 @interface PKiCloudPrinter
-+ (id)PKiCloudPrinterWithInfo:(id)a3;
-+ (id)PKiCloudPrinterWithPKPrinter:(id)a3 displayName:(id)a4 location:(id)a5;
++ (id)PKiCloudPrinterWithInfo:(id)info;
++ (id)PKiCloudPrinterWithPKPrinter:(id)printer displayName:(id)name location:(id)location;
 - (BOOL)isFromMCProfile;
 - (NSArray)endPoints;
 - (NSArray)printerURLs;
@@ -18,77 +18,77 @@
 
 @implementation PKiCloudPrinter
 
-+ (id)PKiCloudPrinterWithInfo:(id)a3
++ (id)PKiCloudPrinterWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(PKiCloudPrinter);
-  [(PKiCloudPrinter *)v4 setICloudInfo:v3];
+  [(PKiCloudPrinter *)v4 setICloudInfo:infoCopy];
 
   return v4;
 }
 
-+ (id)PKiCloudPrinterWithPKPrinter:(id)a3 displayName:(id)a4 location:(id)a5
++ (id)PKiCloudPrinterWithPKPrinter:(id)printer displayName:(id)name location:(id)location
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  printerCopy = printer;
+  nameCopy = name;
+  locationCopy = location;
   v10 = objc_opt_new();
-  v11 = [v7 uuid];
+  uuid = [printerCopy uuid];
 
-  if (v11)
+  if (uuid)
   {
-    v12 = [v7 uuid];
-    [v10 setObject:v12 forKeyedSubscript:@"printer-uuid"];
+    uuid2 = [printerCopy uuid];
+    [v10 setObject:uuid2 forKeyedSubscript:@"printer-uuid"];
   }
 
-  v13 = [v7 name];
-  if (v13)
+  name = [printerCopy name];
+  if (name)
   {
-    [v10 setObject:v13 forKeyedSubscript:@"printer-dns-sd-name"];
+    [v10 setObject:name forKeyedSubscript:@"printer-dns-sd-name"];
   }
 
-  v14 = [v7 browseInfo];
-  v15 = [v14 bonjourName];
-  v16 = [v15 dataRepresentation];
+  browseInfo = [printerCopy browseInfo];
+  bonjourName = [browseInfo bonjourName];
+  dataRepresentation = [bonjourName dataRepresentation];
 
-  if (v16)
+  if (dataRepresentation)
   {
-    [v10 setObject:v16 forKeyedSubscript:@"com.apple.printer-endpoint-data"];
+    [v10 setObject:dataRepresentation forKeyedSubscript:@"com.apple.printer-endpoint-data"];
   }
 
-  if (!v8)
+  if (!nameCopy)
   {
-    v8 = [v7 displayName];
+    nameCopy = [printerCopy displayName];
   }
 
-  [v10 setObject:v8 forKeyedSubscript:@"com.apple.printkit.printer-display-name"];
-  if (v9 || ([v7 location], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  [v10 setObject:nameCopy forKeyedSubscript:@"com.apple.printkit.printer-display-name"];
+  if (locationCopy || ([printerCopy location], (locationCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    [v10 setObject:v9 forKeyedSubscript:@"com.apple.printkit.printer-location"];
+    [v10 setObject:locationCopy forKeyedSubscript:@"com.apple.printkit.printer-location"];
   }
 
-  v17 = [v7 printerURL];
-  v18 = v17;
-  if (v17)
+  printerURL = [printerCopy printerURL];
+  v18 = printerURL;
+  if (printerURL)
   {
-    v19 = [v17 absoluteString];
-    [v10 setObject:v19 forKeyedSubscript:@"com.apple.printer-url"];
+    absoluteString = [printerURL absoluteString];
+    [v10 setObject:absoluteString forKeyedSubscript:@"com.apple.printer-url"];
   }
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "type")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(printerCopy, "type")}];
   [v10 setObject:v20 forKeyedSubscript:@"com.apple.printer-type"];
 
-  if ([v7 isFromMCProfile])
+  if ([printerCopy isFromMCProfile])
   {
     [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"com.apple.mcprofile-added"];
   }
 
-  v21 = [v7 printerImageData];
+  printerImageData = [printerCopy printerImageData];
 
-  if (v21)
+  if (printerImageData)
   {
-    v22 = [v7 printerImageData];
-    [v10 setObject:v22 forKeyedSubscript:@"com.apple.printkit.printer-image-data"];
+    printerImageData2 = [printerCopy printerImageData];
+    [v10 setObject:printerImageData2 forKeyedSubscript:@"com.apple.printkit.printer-image-data"];
   }
 
   v23 = [PKiCloudPrinter PKiCloudPrinterWithInfo:v10];
@@ -98,98 +98,98 @@
 
 - (NSString)uuid
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"printer-uuid"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"printer-uuid"];
 
   return v3;
 }
 
 - (NSString)dnssdName
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"printer-dns-sd-name"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"printer-dns-sd-name"];
 
   return v3;
 }
 
 - (NSString)displayName
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.printer-display-name"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.printer-display-name"];
 
   return v3;
 }
 
 - (NSString)customName
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.printer-custom-name"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.printer-custom-name"];
 
   return v3;
 }
 
 - (NSString)location
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.printer-location"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.printer-location"];
 
   return v3;
 }
 
 - (NSString)customLocation
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.printer-custom-location"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.printer-custom-location"];
 
   return v3;
 }
 
 - (NSArray)printerURLs
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.printer-urls"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.printer-urls"];
 
   return v3;
 }
 
 - (NSArray)endPoints
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.printer-endpoints"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.printer-endpoints"];
 
   return v3;
 }
 
 - (NSDate)lastUsedDate
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.last-used-date"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.last-used-date"];
 
   return v3;
 }
 
 - (int64_t)printerType
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printer-type"];
-  v4 = [v3 integerValue];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printer-type"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)isFromMCProfile
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.mcprofile-added"];
-  v4 = [v3 BOOLValue];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.mcprofile-added"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSData)printerImageData
 {
-  v2 = [(PKiCloudPrinter *)self iCloudInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.printkit.printer-image-data"];
+  iCloudInfo = [(PKiCloudPrinter *)self iCloudInfo];
+  v3 = [iCloudInfo objectForKeyedSubscript:@"com.apple.printkit.printer-image-data"];
 
   return v3;
 }
@@ -198,12 +198,12 @@
 {
   v57 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PKiCloudPrinter *)self uuid];
-  v5 = v4;
+  uuid = [(PKiCloudPrinter *)self uuid];
+  v5 = uuid;
   v6 = @"UUID-MISSING";
-  if (v4)
+  if (uuid)
   {
-    v6 = v4;
+    v6 = uuid;
   }
 
   v7 = [v3 stringWithFormat:@"PKiCloudPrinter{%@}", v6];
@@ -211,12 +211,12 @@
   v52 = v7;
   v50[0] = @"displayName";
   v38 = v7;
-  v8 = [(PKiCloudPrinter *)self displayName];
+  displayName = [(PKiCloudPrinter *)self displayName];
   v9 = @"none";
-  v39 = v8;
-  if (v8)
+  v39 = displayName;
+  if (displayName)
   {
-    v10 = v8;
+    v10 = displayName;
   }
 
   else
@@ -226,11 +226,11 @@
 
   v51[0] = v10;
   v50[1] = @"dnssdName";
-  v11 = [(PKiCloudPrinter *)self dnssdName];
-  v40 = v11;
-  if (v11)
+  dnssdName = [(PKiCloudPrinter *)self dnssdName];
+  v40 = dnssdName;
+  if (dnssdName)
   {
-    v12 = v11;
+    v12 = dnssdName;
   }
 
   else
@@ -240,11 +240,11 @@
 
   v51[1] = v12;
   v50[2] = @"lastUsedDate";
-  v44 = [(PKiCloudPrinter *)self lastUsedDate];
-  if (v44)
+  lastUsedDate = [(PKiCloudPrinter *)self lastUsedDate];
+  if (lastUsedDate)
   {
-    v35 = [(PKiCloudPrinter *)self lastUsedDate];
-    v13 = [v35 description];
+    lastUsedDate2 = [(PKiCloudPrinter *)self lastUsedDate];
+    v13 = [lastUsedDate2 description];
   }
 
   else
@@ -255,11 +255,11 @@
   v37 = v13;
   v51[2] = v13;
   v50[3] = @"location";
-  v14 = [(PKiCloudPrinter *)self location];
-  v41 = v14;
-  if (v14)
+  location = [(PKiCloudPrinter *)self location];
+  v41 = location;
+  if (location)
   {
-    v15 = v14;
+    v15 = location;
   }
 
   else
@@ -269,49 +269,49 @@
 
   v51[3] = v15;
   v50[4] = @"printerType";
-  v16 = [(PKiCloudPrinter *)self printerType];
-  if ((v16 + 1) >= 5)
+  printerType = [(PKiCloudPrinter *)self printerType];
+  if ((printerType + 1) >= 5)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown(%ld)", v16];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown(%ld)", printerType];
   }
 
   else
   {
-    v17 = off_279A92410[v16 + 1];
+    v17 = off_279A92410[printerType + 1];
   }
 
   v42 = v17;
   v51[4] = v17;
   v50[5] = @"isFromMDM";
-  v18 = [(PKiCloudPrinter *)self isFromMCProfile];
+  isFromMCProfile = [(PKiCloudPrinter *)self isFromMCProfile];
   v19 = @"NO";
-  if (v18)
+  if (isFromMCProfile)
   {
     v19 = @"YES";
   }
 
   v51[5] = v19;
   v50[6] = @"imageData";
-  v45 = [(PKiCloudPrinter *)self printerImageData];
-  if (v45)
+  printerImageData = [(PKiCloudPrinter *)self printerImageData];
+  if (printerImageData)
   {
     v20 = MEMORY[0x277CCACA8];
-    v36 = [(PKiCloudPrinter *)self printerImageData];
-    v9 = [v20 stringWithFormat:@"%d bytes", objc_msgSend(v36, "length")];
+    printerImageData2 = [(PKiCloudPrinter *)self printerImageData];
+    v9 = [v20 stringWithFormat:@"%d bytes", objc_msgSend(printerImageData2, "length")];
   }
 
   v51[6] = v9;
   v50[7] = @"printerURLs";
-  v43 = [(PKiCloudPrinter *)self printerURLs];
-  v51[7] = v43;
+  printerURLs = [(PKiCloudPrinter *)self printerURLs];
+  v51[7] = printerURLs;
   v50[8] = @"endPoints";
-  v34 = [(PKiCloudPrinter *)self endPoints];
+  endPoints = [(PKiCloudPrinter *)self endPoints];
   v21 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v22 = v34;
+  v22 = endPoints;
   v23 = [v22 countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v23)
   {
@@ -330,15 +330,15 @@
         v28 = v27;
         if (v27)
         {
-          v29 = [v27 userCodableDictionary];
-          [v21 addObject:v29];
+          userCodableDictionary = [v27 userCodableDictionary];
+          [v21 addObject:userCodableDictionary];
         }
 
         else
         {
           v54 = @"ERROR: ";
-          v29 = [v26 description];
-          v55 = v29;
+          userCodableDictionary = [v26 description];
+          v55 = userCodableDictionary;
           v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
           [v21 addObject:v30];
         }
@@ -355,11 +355,11 @@
   v53 = v31;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
 
-  if (v45)
+  if (printerImageData)
   {
   }
 
-  if (v44)
+  if (lastUsedDate)
   {
   }
 

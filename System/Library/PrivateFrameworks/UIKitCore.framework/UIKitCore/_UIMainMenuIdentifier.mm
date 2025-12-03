@@ -1,37 +1,37 @@
 @interface _UIMainMenuIdentifier
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToUIMenuIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToUIMenuIdentifier:(id)identifier;
 - (NSString)description;
-- (_UIMainMenuIdentifier)initWithCoder:(id)a3;
-- (id)_initWithUIMenuIdentifier:(id)a3 identifierNumber:(unint64_t)a4 isBaseMenuIdentifier:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIMainMenuIdentifier)initWithCoder:(id)coder;
+- (id)_initWithUIMenuIdentifier:(id)identifier identifierNumber:(unint64_t)number isBaseMenuIdentifier:(BOOL)menuIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuIdentifier
 
-- (id)_initWithUIMenuIdentifier:(id)a3 identifierNumber:(unint64_t)a4 isBaseMenuIdentifier:(BOOL)a5
+- (id)_initWithUIMenuIdentifier:(id)identifier identifierNumber:(unint64_t)number isBaseMenuIdentifier:(BOOL)menuIdentifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(_UIMainMenuIdentifier *)self init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_uiMenuIdentifier, a3);
-    v11->_identifierNumber = a4;
-    v11->_isBaseMenuIdentifier = a5;
+    objc_storeStrong(&v10->_uiMenuIdentifier, identifier);
+    v11->_identifierNumber = number;
+    v11->_isBaseMenuIdentifier = menuIdentifier;
   }
 
   return v11;
 }
 
-- (BOOL)isEquivalentToUIMenuIdentifier:(id)a3
+- (BOOL)isEquivalentToUIMenuIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self->_isBaseMenuIdentifier)
   {
     v5 = self->_uiMenuIdentifier;
-    v6 = v4;
+    v6 = identifierCopy;
     v7 = v6;
     if (v5 == v6)
     {
@@ -56,37 +56,37 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uiMenuIdentifier = self->_uiMenuIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uiMenuIdentifier forKey:@"UIMenuIdentifier"];
-  [v5 encodeInteger:self->_identifierNumber forKey:@"MenuIdentifierNumber"];
-  [v5 encodeBool:self->_isBaseMenuIdentifier forKey:@"IsBaseMenuIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uiMenuIdentifier forKey:@"UIMenuIdentifier"];
+  [coderCopy encodeInteger:self->_identifierNumber forKey:@"MenuIdentifierNumber"];
+  [coderCopy encodeBool:self->_isBaseMenuIdentifier forKey:@"IsBaseMenuIdentifier"];
 }
 
-- (_UIMainMenuIdentifier)initWithCoder:(id)a3
+- (_UIMainMenuIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuIdentifier *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"UIMenuIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"UIMenuIdentifier"];
     uiMenuIdentifier = v5->_uiMenuIdentifier;
     v5->_uiMenuIdentifier = v7;
 
-    v5->_identifierNumber = [v4 decodeIntegerForKey:@"MenuIdentifierNumber"];
-    v5->_isBaseMenuIdentifier = [v4 decodeBoolForKey:@"IsBaseMenuIdentifier"];
+    v5->_identifierNumber = [coderCopy decodeIntegerForKey:@"MenuIdentifierNumber"];
+    v5->_isBaseMenuIdentifier = [coderCopy decodeBoolForKey:@"IsBaseMenuIdentifier"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -98,7 +98,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       uiMenuIdentifier = v7->_uiMenuIdentifier;
       v9 = self->_uiMenuIdentifier;
       v10 = uiMenuIdentifier;
@@ -144,7 +144,7 @@ LABEL_16:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIMainMenuIdentifier alloc];
   uiMenuIdentifier = self->_uiMenuIdentifier;
@@ -160,9 +160,9 @@ LABEL_16:
   [v3 appendString:self->_uiMenuIdentifier withName:@"_uiMenuIdentifier"];
   v4 = [v3 appendUnsignedInteger:self->_identifierNumber withName:@"_identifierNumber"];
   v5 = [v3 appendBool:self->_isBaseMenuIdentifier withName:@"_isBaseMenuIdentifier"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

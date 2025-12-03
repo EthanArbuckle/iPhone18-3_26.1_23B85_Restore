@@ -1,23 +1,23 @@
 @interface PLProgressFollower
-- (PLProgressFollower)initWithSourceProgress:(id)a3 progressHandler:(id)a4;
+- (PLProgressFollower)initWithSourceProgress:(id)progress progressHandler:(id)handler;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PLProgressFollower
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v11;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = objectCopy;
   os_unfair_lock_lock(&self->_lock);
   v14 = self->_outputProgress;
   v15 = _Block_copy(self->_progressHandler);
   invalidated = self->_invalidated;
   os_unfair_lock_unlock(&self->_lock);
-  if (a6 == @"PLProgressFollowerFractionCompletedContext")
+  if (context == @"PLProgressFollowerFractionCompletedContext")
   {
     if (!invalidated)
     {
@@ -28,8 +28,8 @@
 
       else
       {
-        v17 = [v13 totalUnitCount];
-        if (v17 != [(NSProgress *)v14 totalUnitCount])
+        totalUnitCount = [v13 totalUnitCount];
+        if (totalUnitCount != [(NSProgress *)v14 totalUnitCount])
         {
           -[NSProgress setTotalUnitCount:](v14, "setTotalUnitCount:", [v13 totalUnitCount]);
         }
@@ -44,7 +44,7 @@
   {
     v19.receiver = self;
     v19.super_class = PLProgressFollower;
-    [(PLProgressFollower *)&v19 observeValueForKeyPath:v10 ofObject:v13 change:v12 context:a6];
+    [(PLProgressFollower *)&v19 observeValueForKeyPath:pathCopy ofObject:v13 change:changeCopy context:context];
   }
 }
 
@@ -52,8 +52,8 @@
 {
   if (!self->_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLProgressFollower.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"_invalidated"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLProgressFollower.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"_invalidated"}];
   }
 
   v5.receiver = self;
@@ -68,10 +68,10 @@ uint64_t __32__PLProgressFollower_invalidate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (PLProgressFollower)initWithSourceProgress:(id)a3 progressHandler:(id)a4
+- (PLProgressFollower)initWithSourceProgress:(id)progress progressHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  progressCopy = progress;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = PLProgressFollower;
   v9 = [(PLProgressFollower *)&v16 init];
@@ -79,18 +79,18 @@ uint64_t __32__PLProgressFollower_invalidate__block_invoke(uint64_t a1)
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_sourceProgress, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_sourceProgress, progress);
+    v11 = _Block_copy(handlerCopy);
     progressHandler = v10->_progressHandler;
     v10->_progressHandler = v11;
 
-    if (!v8)
+    if (!handlerCopy)
     {
-      v13 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(v7, "totalUnitCount")}];
+      v13 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
       outputProgress = v10->_outputProgress;
       v10->_outputProgress = v13;
 
-      -[NSProgress setCompletedUnitCount:](v10->_outputProgress, "setCompletedUnitCount:", [v7 completedUnitCount]);
+      -[NSProgress setCompletedUnitCount:](v10->_outputProgress, "setCompletedUnitCount:", [progressCopy completedUnitCount]);
     }
 
     [(NSProgress *)v10->_sourceProgress addObserver:v10 forKeyPath:@"fractionCompleted" options:1 context:@"PLProgressFollowerFractionCompletedContext"];

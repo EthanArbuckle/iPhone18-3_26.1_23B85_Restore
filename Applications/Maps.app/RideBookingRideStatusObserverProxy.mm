@@ -1,13 +1,13 @@
 @interface RideBookingRideStatusObserverProxy
-- (RideBookingRideStatusObserverProxy)initWithDelegate:(id)a3;
+- (RideBookingRideStatusObserverProxy)initWithDelegate:(id)delegate;
 - (RideBookingRideStatusObserverProxyDelegate)delegate;
-- (void)_updateAnalyticsWithRideStatus:(id)a3;
-- (void)_updateAnalyticsWithRideStatus:(id)a3 cancelError:(id)a4 handling:(BOOL)a5;
-- (void)_updateAnalyticsWithRideStatus:(id)a3 feedbackError:(id)a4;
-- (void)cancelRideWithRideStatus:(id)a3 completion:(id)a4;
-- (void)checkIfCanCancelRideWithRideStatus:(id)a3 completion:(id)a4;
-- (void)rideStatusMapDidChange:(id)a3;
-- (void)sendFeedbackForRideStatus:(id)a3 feedbackRating:(id)a4 feedbackTip:(id)a5 completion:(id)a6;
+- (void)_updateAnalyticsWithRideStatus:(id)status;
+- (void)_updateAnalyticsWithRideStatus:(id)status cancelError:(id)error handling:(BOOL)handling;
+- (void)_updateAnalyticsWithRideStatus:(id)status feedbackError:(id)error;
+- (void)cancelRideWithRideStatus:(id)status completion:(id)completion;
+- (void)checkIfCanCancelRideWithRideStatus:(id)status completion:(id)completion;
+- (void)rideStatusMapDidChange:(id)change;
+- (void)sendFeedbackForRideStatus:(id)status feedbackRating:(id)rating feedbackTip:(id)tip completion:(id)completion;
 @end
 
 @implementation RideBookingRideStatusObserverProxy
@@ -19,24 +19,24 @@
   return WeakRetained;
 }
 
-- (void)_updateAnalyticsWithRideStatus:(id)a3 feedbackError:(id)a4
+- (void)_updateAnalyticsWithRideStatus:(id)status feedbackError:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [v6 application];
-    v8 = [v7 identifier];
-    v9 = [v6 identifier];
+    errorCopy = error;
+    statusCopy = status;
+    application = [statusCopy application];
+    identifier = [application identifier];
+    identifier2 = [statusCopy identifier];
 
-    v12 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:v8 rideIdentifier:v9];
+    v12 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:identifier rideIdentifier:identifier2];
 
     v10 = objc_opt_new();
     [v10 setIntent:7];
     [v10 setFailure:1];
-    v11 = [v5 code];
+    code = [errorCopy code];
 
-    if (v11 == -11)
+    if (code == -11)
     {
       [v10 setFailure:4];
     }
@@ -46,23 +46,23 @@
   }
 }
 
-- (void)_updateAnalyticsWithRideStatus:(id)a3 cancelError:(id)a4 handling:(BOOL)a5
+- (void)_updateAnalyticsWithRideStatus:(id)status cancelError:(id)error handling:(BOOL)handling
 {
-  v5 = a5;
-  v7 = a4;
-  if (v7)
+  handlingCopy = handling;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v16 = v7;
-    v8 = a3;
-    v9 = [v8 application];
-    v10 = [v9 identifier];
-    v11 = [v8 identifier];
+    v16 = errorCopy;
+    statusCopy = status;
+    application = [statusCopy application];
+    identifier = [application identifier];
+    identifier2 = [statusCopy identifier];
 
-    v12 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:v10 rideIdentifier:v11];
+    v12 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:identifier rideIdentifier:identifier2];
 
     v13 = objc_opt_new();
     v14 = v13;
-    if (v5)
+    if (handlingCopy)
     {
       v15 = 6;
     }
@@ -87,24 +87,24 @@
     [v12 captureIntent:objc_msgSend(v14 withFailure:{"intent"), objc_msgSend(v14, "failure")}];
     [v12 endSession];
 
-    v7 = v16;
+    errorCopy = v16;
   }
 }
 
-- (void)_updateAnalyticsWithRideStatus:(id)a3
+- (void)_updateAnalyticsWithRideStatus:(id)status
 {
-  v3 = a3;
-  v4 = [v3 application];
-  v5 = [v4 identifier];
-  v6 = [v3 identifier];
-  v7 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:v5 rideIdentifier:v6];
+  statusCopy = status;
+  application = [statusCopy application];
+  identifier = [application identifier];
+  identifier2 = [statusCopy identifier];
+  v7 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:identifier rideIdentifier:identifier2];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v3 intentResponseFailures];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  intentResponseFailures = [statusCopy intentResponseFailures];
+  v9 = [intentResponseFailures countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -116,7 +116,7 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(intentResponseFailures);
         }
 
         [v7 captureIntent:objc_msgSend(*(*(&v13 + 1) + 8 * v12) withFailure:{"intent"), objc_msgSend(*(*(&v13 + 1) + 8 * v12), "failure")}];
@@ -124,40 +124,40 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [intentResponseFailures countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  if (([v3 isValidRide] & 1) == 0)
+  if (([statusCopy isValidRide] & 1) == 0)
   {
     [v7 endSession];
   }
 }
 
-- (void)rideStatusMapDidChange:(id)a3
+- (void)rideStatusMapDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1008B6580;
   block[3] = &unk_101661340;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)cancelRideWithRideStatus:(id)a3 completion:(id)a4
+- (void)cancelRideWithRideStatus:(id)status completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  statusCopy = status;
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(location, self);
     v8 = +[RideBookingAccessProxy coordinator];
@@ -166,8 +166,8 @@
     v10[2] = sub_1008B6954;
     v10[3] = &unk_101660FD8;
     objc_copyWeak(&v13, location);
-    v11 = v6;
-    v12 = v7;
+    v11 = statusCopy;
+    v12 = completionCopy;
     [v8 cancelRideWithRideStatus:v11 completion:v10];
 
     objc_destroyWeak(&v13);
@@ -192,11 +192,11 @@
   }
 }
 
-- (void)checkIfCanCancelRideWithRideStatus:(id)a3 completion:(id)a4
+- (void)checkIfCanCancelRideWithRideStatus:(id)status completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  statusCopy = status;
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(location, self);
     v8 = +[RideBookingAccessProxy coordinator];
@@ -205,8 +205,8 @@
     v10[2] = sub_1008B6D60;
     v10[3] = &unk_10162D318;
     objc_copyWeak(&v13, location);
-    v11 = v6;
-    v12 = v7;
+    v11 = statusCopy;
+    v12 = completionCopy;
     [v8 checkIfCanCancelRideWithRideStatus:v11 completion:v10];
 
     objc_destroyWeak(&v13);
@@ -231,13 +231,13 @@
   }
 }
 
-- (void)sendFeedbackForRideStatus:(id)a3 feedbackRating:(id)a4 feedbackTip:(id)a5 completion:(id)a6
+- (void)sendFeedbackForRideStatus:(id)status feedbackRating:(id)rating feedbackTip:(id)tip completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  statusCopy = status;
+  ratingCopy = rating;
+  tipCopy = tip;
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(location, self);
     v14 = +[RideBookingAccessProxy coordinator];
@@ -246,9 +246,9 @@
     v16[2] = sub_1008B71EC;
     v16[3] = &unk_101660FD8;
     objc_copyWeak(&v19, location);
-    v17 = v10;
-    v18 = v13;
-    [v14 sendFeedbackForRideStatus:v17 feedbackRating:v11 feedbackTip:v12 completion:v16];
+    v17 = statusCopy;
+    v18 = completionCopy;
+    [v14 sendFeedbackForRideStatus:v17 feedbackRating:ratingCopy feedbackTip:tipCopy completion:v16];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(location);
@@ -272,16 +272,16 @@
   }
 }
 
-- (RideBookingRideStatusObserverProxy)initWithDelegate:(id)a3
+- (RideBookingRideStatusObserverProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = RideBookingRideStatusObserverProxy;
   v5 = [(RideBookingRideStatusObserverProxy *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[RideBookingAccessProxy coordinator];
     [v7 addRideBookingDataCoordinatorRideStatusObserver:v6];
   }

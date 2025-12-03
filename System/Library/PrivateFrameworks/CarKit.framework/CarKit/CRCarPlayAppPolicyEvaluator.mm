@@ -1,46 +1,46 @@
 @interface CRCarPlayAppPolicyEvaluator
 + (id)_carIntentIdentifiers;
 + (id)allIntentIdentifiers;
-- (BOOL)_automakerAppServiceContainsAppDeclaration:(id)a3;
-- (BOOL)_checkIfDeclaration:(id)a3 supportsIntents:(id)a4 requireAllIntents:(BOOL)a5;
-- (BOOL)_vehicleProtocolsIntersectAppProtocols:(id)a3 certificateSerial:(id)a4;
+- (BOOL)_automakerAppServiceContainsAppDeclaration:(id)declaration;
+- (BOOL)_checkIfDeclaration:(id)declaration supportsIntents:(id)intents requireAllIntents:(BOOL)allIntents;
+- (BOOL)_vehicleProtocolsIntersectAppProtocols:(id)protocols certificateSerial:(id)serial;
 - (BOOL)isGeoSupported;
-- (CRCarPlayAppPolicyEvaluator)initWithSession:(id)a3;
+- (CRCarPlayAppPolicyEvaluator)initWithSession:(id)session;
 - (id)_retrievePunchThroughIdentifiersFromInfoResponse;
 - (id)_vehicleForCurrentSession;
-- (id)_vehicleProtocolsForCertificateSerial:(id)a3;
+- (id)_vehicleProtocolsForCertificateSerial:(id)serial;
 - (id)currentSession;
-- (id)effectivePolicyForAppDeclaration:(id)a3 inVehicleWithCertificateSerial:(id)a4;
-- (id)effectivePolicyForAppDeclaration:(id)a3 withVerifiedPunchThroughs:(id)a4;
-- (unint64_t)_applicationCategoryForAppDeclaration:(id)a3 policy:(id)a4;
-- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)a3 withPunchThroughsAppData:(id)a4 andAppPolicy:(id)a5;
-- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)a3 withVerifiedPunchThroughs:(id)a4 andAppPolicy:(id)a5;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)fetchApplicationBundleIdentifiersForCarIntents:(id)a3;
+- (id)effectivePolicyForAppDeclaration:(id)declaration inVehicleWithCertificateSerial:(id)serial;
+- (id)effectivePolicyForAppDeclaration:(id)declaration withVerifiedPunchThroughs:(id)throughs;
+- (unint64_t)_applicationCategoryForAppDeclaration:(id)declaration policy:(id)policy;
+- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)identifier withPunchThroughsAppData:(id)data andAppPolicy:(id)policy;
+- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)identifier withVerifiedPunchThroughs:(id)throughs andAppPolicy:(id)policy;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)fetchApplicationBundleIdentifiersForCarIntents:(id)intents;
 - (void)setWantsGeoSupported;
-- (void)updateGeoSupportedWithCompletion:(id)a3;
+- (void)updateGeoSupportedWithCompletion:(id)completion;
 @end
 
 @implementation CRCarPlayAppPolicyEvaluator
 
 - (id)_vehicleForCurrentSession
 {
-  v3 = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
-  v4 = [v3 MFiCertificateSerialNumber];
+  currentSession = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
+  mFiCertificateSerialNumber = [currentSession MFiCertificateSerialNumber];
 
-  v5 = [(CRCarPlayAppPolicyEvaluator *)self pairedVehicleManager];
-  v6 = [v5 vehicleForCertificateSerial:v4];
+  pairedVehicleManager = [(CRCarPlayAppPolicyEvaluator *)self pairedVehicleManager];
+  v6 = [pairedVehicleManager vehicleForCertificateSerial:mFiCertificateSerialNumber];
 
   return v6;
 }
 
 - (id)currentSession
 {
-  v3 = [(CRCarPlayAppPolicyEvaluator *)self session];
-  v4 = v3;
-  if (v3)
+  session = [(CRCarPlayAppPolicyEvaluator *)self session];
+  v4 = session;
+  if (session)
   {
-    v5 = v3;
+    currentSession = session;
   }
 
   else
@@ -56,10 +56,10 @@
     }
 
     [(CARSessionStatus *)sessionStatus waitForSessionInitialization];
-    v5 = [(CARSessionStatus *)self->_sessionStatus currentSession];
+    currentSession = [(CARSessionStatus *)self->_sessionStatus currentSession];
   }
 
-  v9 = v5;
+  v9 = currentSession;
 
   return v9;
 }
@@ -92,22 +92,22 @@
   v9[2] = *MEMORY[0x1E696E698];
   v9[3] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
-  v6 = [a1 _carIntentIdentifiers];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  _carIntentIdentifiers = [self _carIntentIdentifiers];
+  v7 = [v5 arrayByAddingObjectsFromArray:_carIntentIdentifiers];
 
   return v7;
 }
 
-- (CRCarPlayAppPolicyEvaluator)initWithSession:(id)a3
+- (CRCarPlayAppPolicyEvaluator)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v23.receiver = self;
   v23.super_class = CRCarPlayAppPolicyEvaluator;
   v6 = [(CRCarPlayAppPolicyEvaluator *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = objc_alloc_init(CRCarPlayAppDenylist);
     [(CRCarPlayAppPolicyEvaluator *)v7 setDenylist:v8];
 
@@ -127,18 +127,18 @@
     v9->_pairedVehicleManager = v10;
 
     v12 = MEMORY[0x1E695DFA8];
-    v13 = [MEMORY[0x1E698B0D0] lockedAppBundleIdentifiers];
-    v14 = [v12 setWithSet:v13];
+    lockedAppBundleIdentifiers = [MEMORY[0x1E698B0D0] lockedAppBundleIdentifiers];
+    v14 = [v12 setWithSet:lockedAppBundleIdentifiers];
 
-    v15 = [MEMORY[0x1E698B0D0] hiddenAppBundleIdentifiers];
-    [v14 unionSet:v15];
+    hiddenAppBundleIdentifiers = [MEMORY[0x1E698B0D0] hiddenAppBundleIdentifiers];
+    [v14 unionSet:hiddenAppBundleIdentifiers];
 
     v16 = [MEMORY[0x1E695DFD8] setWithSet:v14];
     lockedOrHiddenApps = v9->_lockedOrHiddenApps;
     v9->_lockedOrHiddenApps = v16;
 
-    v18 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-    v19 = [v18 addMonitor:v9 subjectMask:1 subscriptionOptions:1];
+    subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+    v19 = [subjectMonitorRegistry addMonitor:v9 subjectMask:1 subscriptionOptions:1];
   }
 
   return v7;
@@ -166,9 +166,9 @@ void __47__CRCarPlayAppPolicyEvaluator_initWithSession___block_invoke()
   }
 }
 
-- (void)updateGeoSupportedWithCompletion:(id)a3
+- (void)updateGeoSupportedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CRCarPlayAppPolicyEvaluator *)self evaluatorWantsGeoManagement])
   {
     geoQueue = self->_geoQueue;
@@ -177,7 +177,7 @@ void __47__CRCarPlayAppPolicyEvaluator_initWithSession___block_invoke()
     v6[2] = __64__CRCarPlayAppPolicyEvaluator_updateGeoSupportedWithCompletion___block_invoke;
     v6[3] = &unk_1E82FC270;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(geoQueue, v6);
   }
 }
@@ -222,55 +222,55 @@ void __64__CRCarPlayAppPolicyEvaluator_updateGeoSupportedWithCompletion___block_
   return geoSupported & 1;
 }
 
-- (id)_vehicleProtocolsForCertificateSerial:(id)a3
+- (id)_vehicleProtocolsForCertificateSerial:(id)serial
 {
-  v4 = a3;
-  if (v4)
+  serialCopy = serial;
+  if (serialCopy)
   {
-    v5 = v4;
+    mFiCertificateSerialNumber = serialCopy;
     goto LABEL_4;
   }
 
-  v6 = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
-  v5 = [v6 MFiCertificateSerialNumber];
+  currentSession = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
+  mFiCertificateSerialNumber = [currentSession MFiCertificateSerialNumber];
 
-  if (v5)
+  if (mFiCertificateSerialNumber)
   {
 LABEL_4:
     v7 = +[CRVehicleAccessoryManager sharedInstance];
-    v8 = [v7 vehicleAccessoryForCertificateSerial:v5];
+    v8 = [v7 vehicleAccessoryForCertificateSerial:mFiCertificateSerialNumber];
     v9 = v8;
     if (v8)
     {
       v10 = MEMORY[0x1E695DFD8];
-      v11 = [v8 accessoryProtocols];
-      v12 = [v10 setWithArray:v11];
+      accessoryProtocols = [v8 accessoryProtocols];
+      accessoryProtocols2 = [v10 setWithArray:accessoryProtocols];
     }
 
     else
     {
-      v13 = [(CRCarPlayAppPolicyEvaluator *)self _vehicleForCurrentSession];
-      v11 = v13;
-      if (!v13)
+      _vehicleForCurrentSession = [(CRCarPlayAppPolicyEvaluator *)self _vehicleForCurrentSession];
+      accessoryProtocols = _vehicleForCurrentSession;
+      if (!_vehicleForCurrentSession)
       {
         v14 = 0;
         goto LABEL_9;
       }
 
-      v12 = [v13 accessoryProtocols];
+      accessoryProtocols2 = [_vehicleForCurrentSession accessoryProtocols];
     }
 
-    v14 = v12;
+    v14 = accessoryProtocols2;
 LABEL_9:
 
     v15 = v14;
     goto LABEL_10;
   }
 
-  v5 = CarGeneralLogging();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  mFiCertificateSerialNumber = CarGeneralLogging();
+  if (os_log_type_enabled(mFiCertificateSerialNumber, OS_LOG_TYPE_ERROR))
   {
-    [CRCarPlayAppPolicyEvaluator _vehicleProtocolsForCertificateSerial:v5];
+    [CRCarPlayAppPolicyEvaluator _vehicleProtocolsForCertificateSerial:mFiCertificateSerialNumber];
   }
 
   v15 = 0;
@@ -279,20 +279,20 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)_vehicleProtocolsIntersectAppProtocols:(id)a3 certificateSerial:(id)a4
+- (BOOL)_vehicleProtocolsIntersectAppProtocols:(id)protocols certificateSerial:(id)serial
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  protocolsCopy = protocols;
+  serialCopy = serial;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = protocolsCopy;
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_DEFAULT, "Received app automaker protocols %{public}@", &v13, 0xCu);
   }
 
-  v9 = [(CRCarPlayAppPolicyEvaluator *)self _vehicleProtocolsForCertificateSerial:v7];
+  v9 = [(CRCarPlayAppPolicyEvaluator *)self _vehicleProtocolsForCertificateSerial:serialCopy];
 
   v10 = CarGeneralLogging();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -304,7 +304,7 @@ LABEL_10:
 
   if (v9)
   {
-    v11 = [v6 intersectsSet:v9];
+    v11 = [protocolsCopy intersectsSet:v9];
   }
 
   else
@@ -315,12 +315,12 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_automakerAppServiceContainsAppDeclaration:(id)a3
+- (BOOL)_automakerAppServiceContainsAppDeclaration:(id)declaration
 {
-  v3 = a3;
+  declarationCopy = declaration;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 bundleIdentifier];
+    bundleIdentifier = [declarationCopy bundleIdentifier];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -328,7 +328,7 @@ LABEL_10:
     v21 = __Block_byref_object_dispose__3;
     v22 = 0;
     v5 = dispatch_semaphore_create(0);
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __74__CRCarPlayAppPolicyEvaluator__automakerAppServiceContainsAppDeclaration___block_invoke;
@@ -336,10 +336,10 @@ LABEL_10:
     v16 = &v17;
     v7 = v5;
     v15 = v7;
-    [CRAppClipsDeclarationClient fetchSupportedAppClipsForPairedVehicleIdentifier:v6 completion:&v11];
+    [CRAppClipsDeclarationClient fetchSupportedAppClipsForPairedVehicleIdentifier:uUID completion:&v11];
     v8 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v7, v8);
-    v9 = [v18[5] containsObject:{v4, v11, v12, v13, v14}];
+    v9 = [v18[5] containsObject:{bundleIdentifier, v11, v12, v13, v14}];
 
     _Block_object_dispose(&v17, 8);
   }
@@ -375,17 +375,17 @@ void __74__CRCarPlayAppPolicyEvaluator__automakerAppServiceContainsAppDeclaratio
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_checkIfDeclaration:(id)a3 supportsIntents:(id)a4 requireAllIntents:(BOOL)a5
+- (BOOL)_checkIfDeclaration:(id)declaration supportsIntents:(id)intents requireAllIntents:(BOOL)allIntents
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  allIntentsCopy = allIntents;
+  declarationCopy = declaration;
+  intentsCopy = intents;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v9 = [MEMORY[0x1E695DFD8] setWithArray:v8];
-  v10 = [v7 bundleIdentifier];
+  v9 = [MEMORY[0x1E695DFD8] setWithArray:intentsCopy];
+  bundleIdentifier = [declarationCopy bundleIdentifier];
   v32 = 0;
   v33 = &v32;
   v34 = 0x2050000000;
@@ -405,7 +405,7 @@ void __74__CRCarPlayAppPolicyEvaluator__automakerAppServiceContainsAppDeclaratio
   v12 = v11;
   _Block_object_dispose(&v32, 8);
   v26 = 0;
-  v13 = [[v11 alloc] initWithBundleIdentifier:v10 allowPlaceholder:0 error:&v26];
+  v13 = [[v11 alloc] initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v26];
   v14 = v26;
   if (!v13)
   {
@@ -419,22 +419,22 @@ void __74__CRCarPlayAppPolicyEvaluator__automakerAppServiceContainsAppDeclaratio
   }
 
   v15 = MEMORY[0x1E695DFD8];
-  v16 = [v13 supportedIntents];
-  v17 = [v15 setWithArray:v16];
+  supportedIntents = [v13 supportedIntents];
+  v17 = [v15 setWithArray:supportedIntents];
 
-  if (!-[NSObject count](v17, "count") || (!v5 ? (v18 = [v9 intersectsSet:v17]) : (v18 = objc_msgSend(v9, "isSubsetOfSet:", v17)), (v18 & 1) == 0))
+  if (!-[NSObject count](v17, "count") || (!allIntentsCopy ? (v18 = [v9 intersectsSet:v17]) : (v18 = objc_msgSend(v9, "isSubsetOfSet:", v17)), (v18 & 1) == 0))
   {
-    v20 = [v13 applicationExtensionRecords];
-    if ([v20 count])
+    applicationExtensionRecords = [v13 applicationExtensionRecords];
+    if ([applicationExtensionRecords count])
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __85__CRCarPlayAppPolicyEvaluator__checkIfDeclaration_supportsIntents_requireAllIntents___block_invoke;
       v22[3] = &unk_1E82FD188;
-      v25 = v5;
+      v25 = allIntentsCopy;
       v24 = &v27;
       v23 = v9;
-      [v20 enumerateObjectsUsingBlock:v22];
+      [applicationExtensionRecords enumerateObjectsUsingBlock:v22];
     }
 
 LABEL_15:
@@ -470,146 +470,146 @@ void __85__CRCarPlayAppPolicyEvaluator__checkIfDeclaration_supportsIntents_requi
   *a3 = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (unint64_t)_applicationCategoryForAppDeclaration:(id)a3 policy:(id)a4
+- (unint64_t)_applicationCategoryForAppDeclaration:(id)declaration policy:(id)policy
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _applicationCategory];
-  if (!v7)
+  declarationCopy = declaration;
+  policyCopy = policy;
+  _applicationCategory = [declarationCopy _applicationCategory];
+  if (!_applicationCategory)
   {
     v8 = CarGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CRCarPlayAppPolicyEvaluator _applicationCategoryForAppDeclaration:v5 policy:v8];
+      [CRCarPlayAppPolicyEvaluator _applicationCategoryForAppDeclaration:declarationCopy policy:v8];
     }
 
-    if ([v6 launchUsingTemplateUI])
+    if ([policyCopy launchUsingTemplateUI])
     {
-      if ([v5 supportsAudio])
+      if ([declarationCopy supportsAudio])
       {
         goto LABEL_27;
       }
 
-      if ([v5 supportsMaps])
+      if ([declarationCopy supportsMaps])
       {
-        v7 = 8;
+        _applicationCategory = 8;
         goto LABEL_28;
       }
 
-      if ([v5 supportsCalling])
+      if ([declarationCopy supportsCalling])
       {
-        v7 = 4;
+        _applicationCategory = 4;
         goto LABEL_28;
       }
 
-      if ([v5 supportsMessaging])
+      if ([declarationCopy supportsMessaging])
       {
-        v7 = 2;
+        _applicationCategory = 2;
         goto LABEL_28;
       }
 
-      if ([v5 supportsCharging])
+      if ([declarationCopy supportsCharging])
       {
-        v7 = 256;
+        _applicationCategory = 256;
         goto LABEL_28;
       }
 
-      if ([v5 supportsParking])
+      if ([declarationCopy supportsParking])
       {
-        v7 = 512;
+        _applicationCategory = 512;
         goto LABEL_28;
       }
 
-      if ([v5 supportsQuickOrdering])
+      if ([declarationCopy supportsQuickOrdering])
       {
-        v7 = 128;
+        _applicationCategory = 128;
         goto LABEL_28;
       }
 
-      if ([v5 supportsFueling])
+      if ([declarationCopy supportsFueling])
       {
-        v7 = 2048;
+        _applicationCategory = 2048;
         goto LABEL_28;
       }
 
-      if ([v5 supportsDrivingTask])
+      if ([declarationCopy supportsDrivingTask])
       {
-        v7 = 4096;
+        _applicationCategory = 4096;
         goto LABEL_28;
       }
 
-      if ([v5 supportsPublicSafety])
+      if ([declarationCopy supportsPublicSafety])
       {
-        v7 = 0x2000;
+        _applicationCategory = 0x2000;
         goto LABEL_28;
       }
 
-      if ([v5 supportsVideo])
+      if ([declarationCopy supportsVideo])
       {
-        v7 = 0x4000;
+        _applicationCategory = 0x4000;
         goto LABEL_28;
       }
     }
 
-    if (([v6 launchUsingMusicUIService] & 1) == 0)
+    if (([policyCopy launchUsingMusicUIService] & 1) == 0)
     {
       goto LABEL_28;
     }
 
 LABEL_27:
-    v7 = 16;
+    _applicationCategory = 16;
   }
 
 LABEL_28:
 
-  return v7;
+  return _applicationCategory;
 }
 
-- (id)effectivePolicyForAppDeclaration:(id)a3 inVehicleWithCertificateSerial:(id)a4
+- (id)effectivePolicyForAppDeclaration:(id)declaration inVehicleWithCertificateSerial:(id)serial
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v68 = a4;
+  declarationCopy = declaration;
+  serialCopy = serial;
   v7 = objc_alloc_init(CRCarPlayAppPolicy);
-  if (v6)
+  if (declarationCopy)
   {
-    v8 = [(CRCarPlayAppPolicyEvaluator *)self denylist];
-    v9 = [v6 bundleIdentifier];
-    v10 = [v8 containsBundleIdentifier:v9];
+    denylist = [(CRCarPlayAppPolicyEvaluator *)self denylist];
+    bundleIdentifier = [declarationCopy bundleIdentifier];
+    v10 = [denylist containsBundleIdentifier:bundleIdentifier];
 
     if ((v10 & 1) == 0)
     {
-      v65 = [v6 launchUsingSiri];
-      v11 = [v6 launchNotificationsUsingSiri];
-      v12 = [v6 supportsTemplates];
-      if ([v6 isSystemApp])
+      launchUsingSiri = [declarationCopy launchUsingSiri];
+      launchNotificationsUsingSiri = [declarationCopy launchNotificationsUsingSiri];
+      supportsTemplates = [declarationCopy supportsTemplates];
+      if ([declarationCopy isSystemApp])
       {
-        if ([v6 requiresGeoSupport])
+        if ([declarationCopy requiresGeoSupport])
         {
-          v63 = v12;
-          v13 = [(CRCarPlayAppPolicyEvaluator *)self isGeoSupported];
+          v63 = supportsTemplates;
+          isGeoSupported = [(CRCarPlayAppPolicyEvaluator *)self isGeoSupported];
           v14 = 1;
         }
 
         else
         {
-          v13 = [v6 supportsVideo] ^ 1;
-          v63 = v13 & v12;
-          v14 = v13;
+          isGeoSupported = [declarationCopy supportsVideo] ^ 1;
+          v63 = isGeoSupported & supportsTemplates;
+          v14 = isGeoSupported;
         }
       }
 
       else
       {
-        v63 = v12;
-        v13 = 0;
+        v63 = supportsTemplates;
+        isGeoSupported = 0;
         v14 = 0;
       }
 
-      v15 = [v6 supportsPlayableContent];
-      if ([v6 supportsAutomakerAppService])
+      supportsPlayableContent = [declarationCopy supportsPlayableContent];
+      if ([declarationCopy supportsAutomakerAppService])
       {
-        v16 = [(CRCarPlayAppPolicyEvaluator *)self _automakerAppServiceContainsAppDeclaration:v6];
+        v16 = [(CRCarPlayAppPolicyEvaluator *)self _automakerAppServiceContainsAppDeclaration:declarationCopy];
       }
 
       else
@@ -617,25 +617,25 @@ LABEL_28:
         v16 = 0;
       }
 
-      *&v64[4] = [v6 autoMakerProtocols];
+      *&v64[4] = [declarationCopy autoMakerProtocols];
       if (*&v64[4])
       {
-        v17 = [(CRCarPlayAppPolicyEvaluator *)self _vehicleProtocolsIntersectAppProtocols:*&v64[4] certificateSerial:v68];
+        v17 = [(CRCarPlayAppPolicyEvaluator *)self _vehicleProtocolsIntersectAppProtocols:*&v64[4] certificateSerial:serialCopy];
         *v64 = 1;
       }
 
       else
       {
-        *v64 = [v6 supportsAutomakerAppService];
+        *v64 = [declarationCopy supportsAutomakerAppService];
         v17 = 0;
       }
 
       if (v16 || v17)
       {
         v18 = +[CRCarPlayAppPolicyEvaluator _carIntentIdentifiers];
-        v62 = [(CRCarPlayAppPolicyEvaluator *)self _appWithDeclaration:v6 supportsAnyIntents:v18];
+        v62 = [(CRCarPlayAppPolicyEvaluator *)self _appWithDeclaration:declarationCopy supportsAnyIntents:v18];
 
-        v13 = 1;
+        isGeoSupported = 1;
         v19 = 1;
         v20 = 1;
       }
@@ -643,28 +643,28 @@ LABEL_28:
       else
       {
         v62 = 0;
-        v19 = v15 | v13;
-        v20 = v15 | v14;
+        v19 = supportsPlayableContent | isGeoSupported;
+        v20 = supportsPlayableContent | v14;
       }
 
-      v21 = [v6 supportsPublicSafety];
-      v67 = v21 | v13;
-      v22 = v21 | v19;
-      v23 = v21 | v20;
-      if (([v6 supportsMessaging] & 1) != 0 || objc_msgSend(v6, "supportsCommunication"))
+      supportsPublicSafety = [declarationCopy supportsPublicSafety];
+      v67 = supportsPublicSafety | isGeoSupported;
+      v22 = supportsPublicSafety | v19;
+      v23 = supportsPublicSafety | v20;
+      if (([declarationCopy supportsMessaging] & 1) != 0 || objc_msgSend(declarationCopy, "supportsCommunication"))
       {
         v24 = *MEMORY[0x1E696E6A0];
         v78[0] = *MEMORY[0x1E696E698];
         v78[1] = v24;
         v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:2];
-        v26 = [(CRCarPlayAppPolicyEvaluator *)self _appWithDeclaration:v6 supportsAllIntents:v25];
+        v26 = [(CRCarPlayAppPolicyEvaluator *)self _appWithDeclaration:declarationCopy supportsAllIntents:v25];
 
-        v27 = v67;
+        supportsTemplates2 = v67;
         if (v26)
         {
-          v27 = [v6 supportsTemplates];
-          v11 = 1;
-          v65 = [v6 supportsTemplates] ^ 1;
+          supportsTemplates2 = [declarationCopy supportsTemplates];
+          launchNotificationsUsingSiri = 1;
+          launchUsingSiri = [declarationCopy supportsTemplates] ^ 1;
           LOBYTE(v67) = 1;
           v22 = 1;
           v23 = 1;
@@ -673,63 +673,63 @@ LABEL_28:
 
       else
       {
-        v27 = v67;
+        supportsTemplates2 = v67;
       }
 
-      if (([v6 supportsCalling] & 1) != 0 || objc_msgSend(v6, "supportsCommunication"))
+      if (([declarationCopy supportsCalling] & 1) != 0 || objc_msgSend(declarationCopy, "supportsCommunication"))
       {
         v28 = *MEMORY[0x1E696E6E0];
         v77[0] = *MEMORY[0x1E696E6E8];
         v77[1] = v28;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:2];
-        v30 = [(CRCarPlayAppPolicyEvaluator *)self _appWithDeclaration:v6 supportsAnyIntents:v29];
+        v30 = [(CRCarPlayAppPolicyEvaluator *)self _appWithDeclaration:declarationCopy supportsAnyIntents:v29];
 
         if (v30)
         {
-          v27 = [v6 supportsTemplates];
-          v11 = 1;
-          v65 = [v6 supportsTemplates] ^ 1;
+          supportsTemplates2 = [declarationCopy supportsTemplates];
+          launchNotificationsUsingSiri = 1;
+          launchUsingSiri = [declarationCopy supportsTemplates] ^ 1;
           LOBYTE(v67) = 1;
           v22 = 1;
           v23 = 1;
         }
       }
 
-      if (([v6 supportsMaps] & 1) != 0 || (objc_msgSend(v6, "supportsAudio") & 1) != 0 || (objc_msgSend(v6, "supportsCharging") & 1) != 0 || (objc_msgSend(v6, "supportsParking") & 1) != 0 || (objc_msgSend(v6, "supportsQuickOrdering") & 1) != 0 || (objc_msgSend(v6, "supportsFueling") & 1) != 0 || objc_msgSend(v6, "supportsDrivingTask"))
+      if (([declarationCopy supportsMaps] & 1) != 0 || (objc_msgSend(declarationCopy, "supportsAudio") & 1) != 0 || (objc_msgSend(declarationCopy, "supportsCharging") & 1) != 0 || (objc_msgSend(declarationCopy, "supportsParking") & 1) != 0 || (objc_msgSend(declarationCopy, "supportsQuickOrdering") & 1) != 0 || (objc_msgSend(declarationCopy, "supportsFueling") & 1) != 0 || objc_msgSend(declarationCopy, "supportsDrivingTask"))
       {
-        v27 = 1;
+        supportsTemplates2 = 1;
         v22 = 1;
         v23 = 1;
       }
 
-      if (([v6 supportsParking] & 1) != 0 || (objc_msgSend(v6, "supportsCharging") & 1) != 0 || (v31 = objc_msgSend(v6, "supportsDrivingTask"), v32 = v67, v31))
+      if (([declarationCopy supportsParking] & 1) != 0 || (objc_msgSend(declarationCopy, "supportsCharging") & 1) != 0 || (v31 = objc_msgSend(declarationCopy, "supportsDrivingTask"), v32 = v67, v31))
       {
-        v11 = 0;
+        launchNotificationsUsingSiri = 0;
         v32 = 1;
       }
 
       v61 = v32;
-      if ([v6 supportsVideo])
+      if ([declarationCopy supportsVideo])
       {
-        v33 = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
-        v34 = [v33 configuration];
-        v35 = [v34 videoPlaybackSupported];
+        currentSession = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
+        configuration = [currentSession configuration];
+        videoPlaybackSupported = [configuration videoPlaybackSupported];
 
-        v22 |= v35;
-        v27 |= v35;
+        v22 |= videoPlaybackSupported;
+        supportsTemplates2 |= videoPlaybackSupported;
         *v64 = 1;
         v23 = 1;
       }
 
-      v36 = [v6 bundleIdentifier];
-      if ([v36 isEqualToString:@"com.apple.Home"])
+      bundleIdentifier2 = [declarationCopy bundleIdentifier];
+      if ([bundleIdentifier2 isEqualToString:@"com.apple.Home"])
       {
       }
 
       else
       {
-        v37 = [v6 bundleIdentifier];
-        v38 = [v37 isEqualToString:@"com.apple.shortcuts"];
+        bundleIdentifier3 = [declarationCopy bundleIdentifier];
+        v38 = [bundleIdentifier3 isEqualToString:@"com.apple.shortcuts"];
 
         if ((v38 & 1) == 0)
         {
@@ -737,20 +737,20 @@ LABEL_28:
         }
       }
 
-      v65 = 0;
-      v11 = 1;
+      launchUsingSiri = 0;
+      launchNotificationsUsingSiri = 1;
 LABEL_44:
-      v39 = [v6 bundleIdentifier];
-      v40 = [v39 isEqualToString:@"com.apple.mobilephone"];
+      bundleIdentifier4 = [declarationCopy bundleIdentifier];
+      v40 = [bundleIdentifier4 isEqualToString:@"com.apple.mobilephone"];
 
-      v41 = [v6 bundleIdentifier];
-      v42 = [v41 isEqualToString:@"com.apple.MobileSMS"];
+      bundleIdentifier5 = [declarationCopy bundleIdentifier];
+      v42 = [bundleIdentifier5 isEqualToString:@"com.apple.MobileSMS"];
 
       if (v42)
       {
         v23 = 1;
         LOBYTE(v22) = 1;
-        LOBYTE(v27) = 1;
+        LOBYTE(supportsTemplates2) = 1;
         v63 = 1;
         v66 = 0;
         LOBYTE(v67) = 1;
@@ -759,32 +759,32 @@ LABEL_44:
 
       else
       {
-        v66 = (v40 ^ 1) & v65;
-        v60 = (v40 ^ 1) & v11;
-        if (((v22 | v27) & 1) == 0)
+        v66 = (v40 ^ 1) & launchUsingSiri;
+        v60 = (v40 ^ 1) & launchNotificationsUsingSiri;
+        if (((v22 | supportsTemplates2) & 1) == 0)
         {
           v55 = 0;
-          LOBYTE(v27) = 0;
+          LOBYTE(supportsTemplates2) = 0;
           goto LABEL_62;
         }
       }
 
       lockedOrHiddenApps = self->_lockedOrHiddenApps;
-      v44 = [v6 bundleIdentifier];
-      v45 = [(NSSet *)lockedOrHiddenApps containsObject:v44];
+      bundleIdentifier6 = [declarationCopy bundleIdentifier];
+      v45 = [(NSSet *)lockedOrHiddenApps containsObject:bundleIdentifier6];
 
       if (v45)
       {
-        v46 = CarGeneralLogging();
-        if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+        bundleIdentifier8 = CarGeneralLogging();
+        if (os_log_type_enabled(bundleIdentifier8, OS_LOG_TYPE_DEFAULT))
         {
-          v47 = [v6 bundleIdentifier];
+          bundleIdentifier7 = [declarationCopy bundleIdentifier];
           LODWORD(buf) = 138543362;
-          *(&buf + 4) = v47;
-          _os_log_impl(&dword_1C81FC000, v46, OS_LOG_TYPE_DEFAULT, "Application locked by policy: %{public}@", &buf, 0xCu);
+          *(&buf + 4) = bundleIdentifier7;
+          _os_log_impl(&dword_1C81FC000, bundleIdentifier8, OS_LOG_TYPE_DEFAULT, "Application locked by policy: %{public}@", &buf, 0xCu);
         }
 
-        LOBYTE(v27) = 0;
+        LOBYTE(supportsTemplates2) = 0;
         v48 = 0;
 LABEL_65:
 
@@ -794,7 +794,7 @@ LABEL_65:
 
       if (v22)
       {
-        v46 = [v6 bundleIdentifier];
+        bundleIdentifier8 = [declarationCopy bundleIdentifier];
         v69 = 0;
         v70 = &v69;
         v71 = 0x2020000000;
@@ -831,12 +831,12 @@ LABEL_65:
 
         if (v51 == 1)
         {
-          v76[0] = v46;
+          v76[0] = bundleIdentifier8;
           v75[0] = @"__bundleId";
           v75[1] = @"__supportsCarFullScreen";
           v52 = MEMORY[0x1E696AD98];
           v53 = v50;
-          v54 = [v52 numberWithBool:v27 & 1];
+          v54 = [v52 numberWithBool:supportsTemplates2 & 1];
           v76[1] = v54;
           v75[2] = v53;
           v76[2] = &unk_1F47F26B8;
@@ -846,11 +846,11 @@ LABEL_65:
         else
         {
           v73[1] = @"__supportsCarFullScreen";
-          v74[0] = v46;
+          v74[0] = bundleIdentifier8;
           v73[0] = @"__bundleId";
           v56 = MEMORY[0x1E696AD98];
           v57 = v50;
-          v54 = [v56 numberWithBool:v27 & 1];
+          v54 = [v56 numberWithBool:supportsTemplates2 & 1];
           v74[1] = v54;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
         }
@@ -865,65 +865,65 @@ LABEL_62:
 LABEL_66:
       [(CRCarPlayAppPolicy *)v7 setCarPlayCapable:v23 & 1];
       [(CRCarPlayAppPolicy *)v7 setCarPlaySupported:v55];
-      [(CRCarPlayAppPolicy *)v7 setCanDisplayOnCarScreen:v27 & 1];
+      [(CRCarPlayAppPolicy *)v7 setCanDisplayOnCarScreen:supportsTemplates2 & 1];
       [(CRCarPlayAppPolicy *)v7 setLaunchUsingSiri:v66];
       [(CRCarPlayAppPolicy *)v7 setLaunchNotificationsUsingSiri:v60];
       [(CRCarPlayAppPolicy *)v7 setSiriActivationOptions:v48];
-      if (v27)
+      if (supportsTemplates2)
       {
-        v58 = 0;
+        supportsPlayableContent2 = 0;
       }
 
       else
       {
-        v58 = [v6 supportsPlayableContent];
+        supportsPlayableContent2 = [declarationCopy supportsPlayableContent];
       }
 
-      [(CRCarPlayAppPolicy *)v7 setLaunchUsingMusicUIService:v58];
+      [(CRCarPlayAppPolicy *)v7 setLaunchUsingMusicUIService:supportsPlayableContent2];
       [(CRCarPlayAppPolicy *)v7 setBadgesAppIcon:v67 & 1];
       [(CRCarPlayAppPolicy *)v7 setShowsNotifications:v61 & 1];
       [(CRCarPlayAppPolicy *)v7 setHandlesCarIntents:v62];
       [(CRCarPlayAppPolicy *)v7 setLaunchUsingTemplateUI:v63];
       [(CRCarPlayAppPolicy *)v7 setSessionDependentPolicy:*v64];
-      [(CRCarPlayAppPolicy *)v7 setApplicationCategory:[(CRCarPlayAppPolicyEvaluator *)self _applicationCategoryForAppDeclaration:v6 policy:v7]];
+      [(CRCarPlayAppPolicy *)v7 setApplicationCategory:[(CRCarPlayAppPolicyEvaluator *)self _applicationCategoryForAppDeclaration:declarationCopy policy:v7]];
     }
   }
 
   return v7;
 }
 
-- (id)effectivePolicyForAppDeclaration:(id)a3 withVerifiedPunchThroughs:(id)a4
+- (id)effectivePolicyForAppDeclaration:(id)declaration withVerifiedPunchThroughs:(id)throughs
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRCarPlayAppPolicyEvaluator *)self effectivePolicyForAppDeclaration:v6 inVehicleWithCertificateSerial:0];
-  v9 = [v6 bundleIdentifier];
-  if (v7)
+  declarationCopy = declaration;
+  throughsCopy = throughs;
+  v8 = [(CRCarPlayAppPolicyEvaluator *)self effectivePolicyForAppDeclaration:declarationCopy inVehicleWithCertificateSerial:0];
+  bundleIdentifier = [declarationCopy bundleIdentifier];
+  if (throughsCopy)
   {
-    [(CRCarPlayAppPolicyEvaluator *)self _hideAppIfPunchThroughExistsForBundleIdentifier:v9 withVerifiedPunchThroughs:v7 andAppPolicy:v8];
+    [(CRCarPlayAppPolicyEvaluator *)self _hideAppIfPunchThroughExistsForBundleIdentifier:bundleIdentifier withVerifiedPunchThroughs:throughsCopy andAppPolicy:v8];
   }
 
   else
   {
-    v10 = [(CRCarPlayAppPolicyEvaluator *)self _vehicleForCurrentSession];
-    v11 = [v10 oemPunchThroughsAsApp];
-    v12 = [v11 mutableCopy];
+    _vehicleForCurrentSession = [(CRCarPlayAppPolicyEvaluator *)self _vehicleForCurrentSession];
+    oemPunchThroughsAsApp = [_vehicleForCurrentSession oemPunchThroughsAsApp];
+    v12 = [oemPunchThroughsAsApp mutableCopy];
 
-    v13 = [v6 bundleIdentifier];
-    v14 = [v12 valueForKey:v13];
+    bundleIdentifier2 = [declarationCopy bundleIdentifier];
+    v14 = [v12 valueForKey:bundleIdentifier2];
 
     if (v14)
     {
-      [(CRCarPlayAppPolicyEvaluator *)self _hideAppIfPunchThroughExistsForBundleIdentifier:v9 withPunchThroughsAppData:v14 andAppPolicy:v8];
+      [(CRCarPlayAppPolicyEvaluator *)self _hideAppIfPunchThroughExistsForBundleIdentifier:bundleIdentifier withPunchThroughsAppData:v14 andAppPolicy:v8];
     }
   }
 
   return v8;
 }
 
-- (void)fetchApplicationBundleIdentifiersForCarIntents:(id)a3
+- (void)fetchApplicationBundleIdentifiersForCarIntents:(id)intents
 {
-  v4 = a3;
+  intentsCopy = intents;
   v5 = MEMORY[0x1E696ABD0];
   v6 = +[CRCarPlayAppPolicyEvaluator _carIntentIdentifiers];
   v7 = [v5 _intents_extensionMatchingAttributesForIntents:v6];
@@ -934,8 +934,8 @@ LABEL_66:
   v10[2] = __78__CRCarPlayAppPolicyEvaluator_fetchApplicationBundleIdentifiersForCarIntents___block_invoke;
   v10[3] = &unk_1E82FD1B0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = intentsCopy;
+  v9 = intentsCopy;
   [v8 extensionsWithMatchingAttributes:v7 completion:v10];
 }
 
@@ -1033,26 +1033,26 @@ void __78__CRCarPlayAppPolicyEvaluator_fetchApplicationBundleIdentifiersForCarIn
   }
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [MEMORY[0x1E698B0D0] lockedAppBundleIdentifiers];
-  v10 = [v5 setWithSet:v6];
+  lockedAppBundleIdentifiers = [MEMORY[0x1E698B0D0] lockedAppBundleIdentifiers];
+  v10 = [v5 setWithSet:lockedAppBundleIdentifiers];
 
-  v7 = [MEMORY[0x1E698B0D0] hiddenAppBundleIdentifiers];
-  [v10 unionSet:v7];
+  hiddenAppBundleIdentifiers = [MEMORY[0x1E698B0D0] hiddenAppBundleIdentifiers];
+  [v10 unionSet:hiddenAppBundleIdentifiers];
 
   v8 = [MEMORY[0x1E695DFD8] setWithSet:v10];
   lockedOrHiddenApps = self->_lockedOrHiddenApps;
   self->_lockedOrHiddenApps = v8;
 }
 
-- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)a3 withPunchThroughsAppData:(id)a4 andAppPolicy:(id)a5
+- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)identifier withPunchThroughsAppData:(id)data andAppPolicy:(id)policy
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
+  policyCopy = policy;
   v11 = CarGeneralLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1060,16 +1060,16 @@ void __78__CRCarPlayAppPolicyEvaluator_fetchApplicationBundleIdentifiersForCarIn
     _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_DEFAULT, "AppPolicy infoResponse punchThroughs check", buf, 2u);
   }
 
-  v12 = [v9 punchThroughs];
-  v13 = v12;
-  if (v12 && [v12 count])
+  punchThroughs = [dataCopy punchThroughs];
+  v13 = punchThroughs;
+  if (punchThroughs && [punchThroughs count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [(CRCarPlayAppPolicyEvaluator *)self _retrievePunchThroughIdentifiersFromInfoResponse];
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    _retrievePunchThroughIdentifiersFromInfoResponse = [(CRCarPlayAppPolicyEvaluator *)self _retrievePunchThroughIdentifiersFromInfoResponse];
+    v15 = [_retrievePunchThroughIdentifiersFromInfoResponse countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1080,7 +1080,7 @@ void __78__CRCarPlayAppPolicyEvaluator_fetchApplicationBundleIdentifiersForCarIn
         {
           if (*v21 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(_retrievePunchThroughIdentifiersFromInfoResponse);
           }
 
           if ([v13 containsObject:*(*(&v20 + 1) + 8 * i)])
@@ -1089,16 +1089,16 @@ void __78__CRCarPlayAppPolicyEvaluator_fetchApplicationBundleIdentifiersForCarIn
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v26 = v8;
+              v26 = identifierCopy;
               _os_log_impl(&dword_1C81FC000, v19, OS_LOG_TYPE_DEFAULT, "AppPolicy hiding app: %@", buf, 0xCu);
             }
 
-            [v10 setCarPlaySupported:0];
+            [policyCopy setCarPlaySupported:0];
             goto LABEL_19;
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v16 = [_retrievePunchThroughIdentifiersFromInfoResponse countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v16)
         {
           continue;
@@ -1111,24 +1111,24 @@ void __78__CRCarPlayAppPolicyEvaluator_fetchApplicationBundleIdentifiersForCarIn
 
   else
   {
-    v14 = CarGeneralLogging();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    _retrievePunchThroughIdentifiersFromInfoResponse = CarGeneralLogging();
+    if (os_log_type_enabled(_retrievePunchThroughIdentifiersFromInfoResponse, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v8;
-      _os_log_impl(&dword_1C81FC000, v14, OS_LOG_TYPE_DEFAULT, "AppPolicy No punchThrough identifier in CRVehicle for app: %@", buf, 0xCu);
+      v26 = identifierCopy;
+      _os_log_impl(&dword_1C81FC000, _retrievePunchThroughIdentifiersFromInfoResponse, OS_LOG_TYPE_DEFAULT, "AppPolicy No punchThrough identifier in CRVehicle for app: %@", buf, 0xCu);
     }
   }
 
 LABEL_19:
 }
 
-- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)a3 withVerifiedPunchThroughs:(id)a4 andAppPolicy:(id)a5
+- (void)_hideAppIfPunchThroughExistsForBundleIdentifier:(id)identifier withVerifiedPunchThroughs:(id)throughs andAppPolicy:(id)policy
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  throughsCopy = throughs;
+  policyCopy = policy;
   v11 = CarGeneralLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1136,11 +1136,11 @@ LABEL_19:
     _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_DEFAULT, "AppPolicy asset punchThroughs check", &v21, 2u);
   }
 
-  v12 = [(CRCarPlayAppPolicyEvaluator *)self _vehicleForCurrentSession];
-  v13 = [v12 oemPunchThroughsAsApp];
-  v14 = [v13 mutableCopy];
+  _vehicleForCurrentSession = [(CRCarPlayAppPolicyEvaluator *)self _vehicleForCurrentSession];
+  oemPunchThroughsAsApp = [_vehicleForCurrentSession oemPunchThroughsAsApp];
+  v14 = [oemPunchThroughsAsApp mutableCopy];
 
-  v15 = v9;
+  v15 = throughsCopy;
   v16 = v15;
   if (v15 && [v15 count])
   {
@@ -1148,13 +1148,13 @@ LABEL_19:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v8;
+      v22 = identifierCopy;
       _os_log_impl(&dword_1C81FC000, v17, OS_LOG_TYPE_DEFAULT, "AppPolicy hiding app: %@", &v21, 0xCu);
     }
 
-    [v10 setCarPlaySupported:0];
+    [policyCopy setCarPlaySupported:0];
     v18 = [[CROEMPunchThroughsAppData alloc] initWithPunchThroughIDs:v16];
-    [v14 setValue:v18 forKey:v8];
+    [v14 setValue:v18 forKey:identifierCopy];
   }
 
   else
@@ -1166,12 +1166,12 @@ LABEL_19:
       _os_log_impl(&dword_1C81FC000, v19, OS_LOG_TYPE_DEFAULT, "AppPolicy no punchThroughs match between asset and infoResponse", &v21, 2u);
     }
 
-    [v14 removeObjectForKey:v8];
+    [v14 removeObjectForKey:identifierCopy];
   }
 
-  [v12 setOemPunchThroughsAsApp:v14];
-  v20 = [(CRCarPlayAppPolicyEvaluator *)self pairedVehicleManager];
-  [v20 saveVehicle:v12 completion:&__block_literal_global_22];
+  [_vehicleForCurrentSession setOemPunchThroughsAsApp:v14];
+  pairedVehicleManager = [(CRCarPlayAppPolicyEvaluator *)self pairedVehicleManager];
+  [pairedVehicleManager saveVehicle:_vehicleForCurrentSession completion:&__block_literal_global_22];
 }
 
 void __118__CRCarPlayAppPolicyEvaluator__hideAppIfPunchThroughExistsForBundleIdentifier_withVerifiedPunchThroughs_andAppPolicy___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1195,11 +1195,11 @@ void __118__CRCarPlayAppPolicyEvaluator__hideAppIfPunchThroughExistsForBundleIde
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
-  v5 = [v4 configuration];
-  v6 = [v5 displays];
+  currentSession = [(CRCarPlayAppPolicyEvaluator *)self currentSession];
+  configuration = [currentSession configuration];
+  displays = [configuration displays];
 
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v7 = [displays countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1210,7 +1210,7 @@ void __118__CRCarPlayAppPolicyEvaluator__hideAppIfPunchThroughExistsForBundleIde
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(displays);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
@@ -1218,8 +1218,8 @@ void __118__CRCarPlayAppPolicyEvaluator__hideAppIfPunchThroughExistsForBundleIde
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v12 = [v11 oemPunchThroughs];
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        oemPunchThroughs = [v11 oemPunchThroughs];
+        v13 = [oemPunchThroughs countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1230,21 +1230,21 @@ void __118__CRCarPlayAppPolicyEvaluator__hideAppIfPunchThroughExistsForBundleIde
             {
               if (*v20 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(oemPunchThroughs);
               }
 
-              v17 = [*(*(&v19 + 1) + 8 * j) identifier];
-              [v3 addObject:v17];
+              identifier = [*(*(&v19 + 1) + 8 * j) identifier];
+              [v3 addObject:identifier];
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v14 = [oemPunchThroughs countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v14);
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v8 = [displays countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v8);

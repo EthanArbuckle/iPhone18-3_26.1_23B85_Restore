@@ -1,30 +1,30 @@
 @interface PSTransitionManager3rdPartyReader
-- (BOOL)commitAddedGraphs:(id)a3 removedGraphs:(id)a4 error:(id *)a5;
-- (BOOL)validateTransitionBlock:(id)a3 error:(id *)a4;
+- (BOOL)commitAddedGraphs:(id)graphs removedGraphs:(id)removedGraphs error:(id *)error;
+- (BOOL)validateTransitionBlock:(id)block error:(id *)error;
 - (PSExecutionSession3rdPartyReader)executionSession;
-- (PSTransitionManager3rdPartyReader)initWithExecutionSession:(id)a3 withContext:(id)a4;
+- (PSTransitionManager3rdPartyReader)initWithExecutionSession:(id)session withContext:(id)context;
 - (uint64_t)dealloc;
 - (void)dealloc;
-- (void)deliverDynamicResourcesAvailableNotification:(id)a3;
-- (void)deliverDynamicResourcesNoLongerAvailableNotification:(id)a3;
-- (void)setExecutionSessionDelegate:(id)a3 withQueue:(id)a4;
-- (void)transitionExecutorForBlock:(id)a3;
+- (void)deliverDynamicResourcesAvailableNotification:(id)notification;
+- (void)deliverDynamicResourcesNoLongerAvailableNotification:(id)notification;
+- (void)setExecutionSessionDelegate:(id)delegate withQueue:(id)queue;
+- (void)transitionExecutorForBlock:(id)block;
 @end
 
 @implementation PSTransitionManager3rdPartyReader
 
-- (PSTransitionManager3rdPartyReader)initWithExecutionSession:(id)a3 withContext:(id)a4
+- (PSTransitionManager3rdPartyReader)initWithExecutionSession:(id)session withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = PSTransitionManager3rdPartyReader;
   v8 = [(PSTransitionManager3rdPartyReader *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a4);
-    objc_storeWeak(&v9->_executionSession, v6);
+    objc_storeStrong(&v8->_context, context);
+    objc_storeWeak(&v9->_executionSession, sessionCopy);
     v9->_transitionLock._os_unfair_lock_opaque = 0;
     v10 = objc_alloc_init(PSExecutionDashboard);
     dashboard = v9->_dashboard;
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [(PSExecutionDashboard *)self->_dashboard getRunningGraphs];
-  v4 = [v3 count];
+  getRunningGraphs = [(PSExecutionDashboard *)self->_dashboard getRunningGraphs];
+  v4 = [getRunningGraphs count];
 
   if (v4)
   {
@@ -57,48 +57,48 @@
   }
 }
 
-- (BOOL)commitAddedGraphs:(id)a3 removedGraphs:(id)a4 error:(id *)a5
+- (BOOL)commitAddedGraphs:(id)graphs removedGraphs:(id)removedGraphs error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  graphsCopy = graphs;
+  removedGraphsCopy = removedGraphs;
   os_unfair_lock_lock(&self->_transitionLock);
-  v10 = [PSTransitionBlock generateTransitionBlockWithAddedGraphs:v8 withRemovedGraphs:v9 withDashboard:self->_dashboard withStopOption:0];
-  v11 = [(PSTransitionManager3rdPartyReader *)self validateTransitionBlock:v10 error:a5];
+  v10 = [PSTransitionBlock generateTransitionBlockWithAddedGraphs:graphsCopy withRemovedGraphs:removedGraphsCopy withDashboard:self->_dashboard withStopOption:0];
+  v11 = [(PSTransitionManager3rdPartyReader *)self validateTransitionBlock:v10 error:error];
   if (v11)
   {
     [(PSTransitionManager3rdPartyReader *)self transitionExecutorForBlock:v10];
     dashboard = self->_dashboard;
-    v13 = [v10 postTransitionGraphs];
-    [(PSExecutionDashboard *)dashboard setRunningGraphs:v13];
+    postTransitionGraphs = [v10 postTransitionGraphs];
+    [(PSExecutionDashboard *)dashboard setRunningGraphs:postTransitionGraphs];
   }
 
   os_unfair_lock_unlock(&self->_transitionLock);
   return v11;
 }
 
-- (BOOL)validateTransitionBlock:(id)a3 error:(id *)a4
+- (BOOL)validateTransitionBlock:(id)block error:(id *)error
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 addedGraphs];
-  if ([v6 count])
+  blockCopy = block;
+  addedGraphs = [blockCopy addedGraphs];
+  if ([addedGraphs count])
   {
   }
 
   else
   {
-    v7 = [v5 removedGraphs];
-    v8 = [v7 count];
+    removedGraphs = [blockCopy removedGraphs];
+    v8 = [removedGraphs count];
 
     if (!v8)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-5 description:@"No graphs were requested for addition or removal"];
+        *error = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-5 description:@"No graphs were requested for addition or removal"];
       }
 
       v45 = __PLSLogSharedInstance();
-      v18 = @"No graphs were requested for addition or removal";
+      addedGraphs4 = @"No graphs were requested for addition or removal";
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -110,14 +110,14 @@
     }
   }
 
-  v56 = a4;
-  v9 = [v5 removedGraphs];
-  v57 = v5;
-  if ([v9 count])
+  errorCopy = error;
+  removedGraphs2 = [blockCopy removedGraphs];
+  v57 = blockCopy;
+  if ([removedGraphs2 count])
   {
-    v10 = [v5 removedGraphs];
-    v11 = [v5 preTransitionGraphs];
-    v12 = [v10 isSubsetOfSet:v11];
+    removedGraphs3 = [blockCopy removedGraphs];
+    preTransitionGraphs = [blockCopy preTransitionGraphs];
+    v12 = [removedGraphs3 isSubsetOfSet:preTransitionGraphs];
 
     if (!v12)
     {
@@ -129,16 +129,16 @@
   {
   }
 
-  v13 = [v5 addedGraphs];
-  if (![v13 count])
+  addedGraphs2 = [blockCopy addedGraphs];
+  if (![addedGraphs2 count])
   {
 
     goto LABEL_12;
   }
 
-  v14 = [v5 addedGraphs];
-  v15 = [v5 preTransitionGraphs];
-  v16 = [v14 isSubsetOfSet:v15];
+  addedGraphs3 = [blockCopy addedGraphs];
+  preTransitionGraphs2 = [blockCopy preTransitionGraphs];
+  v16 = [addedGraphs3 isSubsetOfSet:preTransitionGraphs2];
 
   if ((v16 & 1) == 0)
   {
@@ -147,8 +147,8 @@ LABEL_12:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v18 = [v5 addedGraphs];
-    v19 = [(__CFString *)v18 countByEnumeratingWithState:&v65 objects:v70 count:16];
+    addedGraphs4 = [blockCopy addedGraphs];
+    v19 = [(__CFString *)addedGraphs4 countByEnumeratingWithState:&v65 objects:v70 count:16];
     if (!v19)
     {
       v17 = 1;
@@ -158,7 +158,7 @@ LABEL_12:
     v20 = v19;
     v21 = *v66;
     v22 = PLSResourceKeyGCIMURight;
-    v55 = v18;
+    v55 = addedGraphs4;
     v52 = *v66;
     while (1)
     {
@@ -168,25 +168,25 @@ LABEL_12:
       {
         if (*v66 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(addedGraphs4);
         }
 
         v54 = v23;
         v24 = *(*(&v65 + 1) + 8 * v23);
-        v25 = [v24 tasks];
-        v26 = [v25 count];
+        tasks = [v24 tasks];
+        v26 = [tasks count];
 
         if (v26)
         {
-          if (v56)
+          if (errorCopy)
           {
-            *v56 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-105 description:@"No tasks allowed for 3rd Party Graphs"];
+            *errorCopy = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-105 description:@"No tasks allowed for 3rd Party Graphs"];
           }
 
           v51 = __PLSLogSharedInstance();
           v45 = @"No tasks allowed for 3rd Party Graphs";
-          v5 = v57;
-          v18 = v55;
+          blockCopy = v57;
+          addedGraphs4 = v55;
           v58 = v51;
           if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
           {
@@ -202,20 +202,20 @@ LABEL_53:
           goto LABEL_54;
         }
 
-        v27 = [v24 writers];
-        v28 = [v27 count];
+        writers = [v24 writers];
+        v28 = [writers count];
 
         if (v28)
         {
-          if (v56)
+          if (errorCopy)
           {
-            *v56 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-106 description:@"No writers allowed for 3rd Party Graphs"];
+            *errorCopy = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-106 description:@"No writers allowed for 3rd Party Graphs"];
           }
 
           v51 = __PLSLogSharedInstance();
           v45 = @"No writers allowed for 3rd Party Graphs";
-          v5 = v57;
-          v18 = v55;
+          blockCopy = v57;
+          addedGraphs4 = v55;
           v58 = v51;
           if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
           {
@@ -232,37 +232,37 @@ LABEL_64:
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v29 = [v24 readers];
-        v60 = [v29 countByEnumeratingWithState:&v61 objects:v69 count:16];
+        readers = [v24 readers];
+        v60 = [readers countByEnumeratingWithState:&v61 objects:v69 count:16];
         if (!v60)
         {
           goto LABEL_34;
         }
 
         v30 = *v62;
-        v58 = v29;
+        v58 = readers;
         while (2)
         {
           for (i = 0; i != v60; ++i)
           {
             if (*v62 != v30)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(readers);
             }
 
             v32 = *(*(&v61 + 1) + 8 * i);
-            v33 = [v32 input];
-            v34 = [v33 resourceKey];
-            if ([v34 isEqualToString:*v22])
+            input = [v32 input];
+            resourceKey = [input resourceKey];
+            if ([resourceKey isEqualToString:*v22])
             {
               goto LABEL_27;
             }
 
             v35 = v30;
             v36 = v22;
-            v37 = [v32 input];
-            v38 = [v37 resourceKey];
-            if ([v38 isEqualToString:PLSResourceKeyGCIMULeft[0]])
+            input2 = [v32 input];
+            resourceKey2 = [input2 resourceKey];
+            if ([resourceKey2 isEqualToString:PLSResourceKeyGCIMULeft[0]])
             {
 
               v22 = v36;
@@ -272,28 +272,28 @@ LABEL_27:
               goto LABEL_29;
             }
 
-            v39 = [v32 input];
-            v40 = [v39 resourceKey];
-            v59 = [v40 containsString:PLSResourceKeyAccessoryTrackingPrefix[0]];
+            input3 = [v32 input];
+            resourceKey3 = [input3 resourceKey];
+            v59 = [resourceKey3 containsString:PLSResourceKeyAccessoryTrackingPrefix[0]];
 
-            v29 = v58;
+            readers = v58;
             v22 = v36;
             v30 = v35;
             if ((v59 & 1) == 0)
             {
               v46 = MEMORY[0x277CCACA8];
-              v47 = [v32 input];
-              v48 = [v47 resourceKey];
-              v45 = [v46 stringWithFormat:@"Unsupported input for 3rd party reader session: %@", v48];
+              input4 = [v32 input];
+              resourceKey4 = [input4 resourceKey];
+              v45 = [v46 stringWithFormat:@"Unsupported input for 3rd party reader session: %@", resourceKey4];
 
-              if (v56)
+              if (errorCopy)
               {
-                *v56 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-107 description:v45];
+                *errorCopy = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-107 description:v45];
               }
 
               v44 = __PLSLogSharedInstance();
-              v5 = v57;
-              v18 = v55;
+              blockCopy = v57;
+              addedGraphs4 = v55;
               if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
@@ -308,27 +308,27 @@ LABEL_51:
             }
 
 LABEL_29:
-            v41 = [v32 input];
-            if ([v41 type] == 2)
+            input5 = [v32 input];
+            if ([input5 type] == 2)
             {
             }
 
             else
             {
-              v42 = [v32 input];
-              v43 = [v42 type];
+              input6 = [v32 input];
+              type = [input6 type];
 
-              if (v43 != 1)
+              if (type != 1)
               {
-                if (v56)
+                if (errorCopy)
                 {
-                  *v56 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-107 description:@"Readers can only have PSInputTypePullOptional or PSInputTypePull input type"];
+                  *errorCopy = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-107 description:@"Readers can only have PSInputTypePullOptional or PSInputTypePull input type"];
                 }
 
                 v44 = __PLSLogSharedInstance();
                 v45 = @"Readers can only have PSInputTypePullOptional or PSInputTypePull input type";
-                v5 = v57;
-                v18 = v55;
+                blockCopy = v57;
+                addedGraphs4 = v55;
                 if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
@@ -341,7 +341,7 @@ LABEL_29:
             }
           }
 
-          v60 = [v29 countByEnumeratingWithState:&v61 objects:v69 count:16];
+          v60 = [readers countByEnumeratingWithState:&v61 objects:v69 count:16];
           if (v60)
           {
             continue;
@@ -353,8 +353,8 @@ LABEL_29:
 LABEL_34:
 
         v23 = v54 + 1;
-        v5 = v57;
-        v18 = v55;
+        blockCopy = v57;
+        addedGraphs4 = v55;
         v21 = v52;
       }
 
@@ -378,20 +378,20 @@ LABEL_55:
   return v17;
 }
 
-- (void)transitionExecutorForBlock:(id)a3
+- (void)transitionExecutorForBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PSTransitionManager3rdPartyReader *)self compiler];
-  [v5 createReadersForTransitionBlock:v4];
+  blockCopy = block;
+  compiler = [(PSTransitionManager3rdPartyReader *)self compiler];
+  [compiler createReadersForTransitionBlock:blockCopy];
 
-  v6 = [(PSTransitionManager3rdPartyReader *)self compiler];
-  [v6 destroyReadersForTransitionBlock:v4];
+  compiler2 = [(PSTransitionManager3rdPartyReader *)self compiler];
+  [compiler2 destroyReadersForTransitionBlock:blockCopy];
 }
 
-- (void)setExecutionSessionDelegate:(id)a3 withQueue:(id)a4
+- (void)setExecutionSessionDelegate:(id)delegate withQueue:(id)queue
 {
-  v6 = a3;
-  transitionCallbackQueue = a4;
+  delegateCopy = delegate;
+  transitionCallbackQueue = queue;
   v11 = transitionCallbackQueue;
   if (!transitionCallbackQueue)
   {
@@ -403,14 +403,14 @@ LABEL_55:
   self->_executionSessionDelegateQueue = v8;
 
   executionSessionDelegate = self->_executionSessionDelegate;
-  self->_executionSessionDelegate = v6;
+  self->_executionSessionDelegate = delegateCopy;
 }
 
-- (void)deliverDynamicResourcesAvailableNotification:(id)a3
+- (void)deliverDynamicResourcesAvailableNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
-  if (!v5 || (v6 = v5, [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  notificationCopy = notification;
+  executionSessionDelegate = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
+  if (!executionSessionDelegate || (v6 = executionSessionDelegate, [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v11 = __PLSLogSharedInstance();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -426,8 +426,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
-  v9 = [v8 conformsToProtocol:&unk_2870DB620];
+  executionSessionDelegate2 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
+  v9 = [executionSessionDelegate2 conformsToProtocol:&unk_2870DB620];
 
   if ((v9 & 1) == 0)
   {
@@ -443,14 +443,14 @@ LABEL_10:
   }
 
   objc_initWeak(location, self);
-  v10 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue];
+  executionSessionDelegateQueue = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__PSTransitionManager3rdPartyReader_deliverDynamicResourcesAvailableNotification___block_invoke;
   v13[3] = &unk_279A48120;
   objc_copyWeak(&v15, location);
-  v14 = v4;
-  dispatch_async(v10, v13);
+  v14 = notificationCopy;
+  dispatch_async(executionSessionDelegateQueue, v13);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(location);
@@ -470,11 +470,11 @@ void __82__PSTransitionManager3rdPartyReader_deliverDynamicResourcesAvailableNot
   }
 }
 
-- (void)deliverDynamicResourcesNoLongerAvailableNotification:(id)a3
+- (void)deliverDynamicResourcesNoLongerAvailableNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
-  if (!v5 || (v6 = v5, [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  notificationCopy = notification;
+  executionSessionDelegate = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
+  if (!executionSessionDelegate || (v6 = executionSessionDelegate, [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v11 = __PLSLogSharedInstance();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -490,8 +490,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
-  v9 = [v8 conformsToProtocol:&unk_2870DB620];
+  executionSessionDelegate2 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegate];
+  v9 = [executionSessionDelegate2 conformsToProtocol:&unk_2870DB620];
 
   if ((v9 & 1) == 0)
   {
@@ -507,14 +507,14 @@ LABEL_10:
   }
 
   objc_initWeak(location, self);
-  v10 = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue];
+  executionSessionDelegateQueue = [(PSTransitionManager3rdPartyReader *)self executionSessionDelegateQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__PSTransitionManager3rdPartyReader_deliverDynamicResourcesNoLongerAvailableNotification___block_invoke;
   v13[3] = &unk_279A48120;
   objc_copyWeak(&v15, location);
-  v14 = v4;
-  dispatch_async(v10, v13);
+  v14 = notificationCopy;
+  dispatch_async(executionSessionDelegateQueue, v13);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(location);
@@ -544,8 +544,8 @@ void __90__PSTransitionManager3rdPartyReader_deliverDynamicResourcesNoLongerAvai
 - (uint64_t)dealloc
 {
   v13 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
-  asprintf(a1, "Transition Manager was deallocated while graphs were still running.");
+  *self = 0;
+  asprintf(self, "Transition Manager was deallocated while graphs were still running.");
   v2 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_FAULT))
   {
@@ -576,7 +576,7 @@ void __90__PSTransitionManager3rdPartyReader_deliverDynamicResourcesNoLongerAvai
     usleep(0x1E8480u);
   }
 
-  v6 = *a1;
+  v6 = *self;
   v7 = abort_with_reason();
   return [PSDaemonCommsStream initWithKey:v7];
 }

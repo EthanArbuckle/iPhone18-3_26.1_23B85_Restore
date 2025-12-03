@@ -1,19 +1,19 @@
 @interface LCSCaptureApplication
-- (BOOL)isEqual:(id)a3;
-- (LCSCaptureApplication)initWithExtensionInfo:(id)a3 attributes:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LCSCaptureApplication)initWithExtensionInfo:(id)info attributes:(id)attributes;
 - (NSData)captureIntentContext;
-- (id)_bundleRecordForBundleIdentifier:(id)a3;
-- (id)_captureIntentContextDirectoryURLForBundleIdentifier:(id)a3;
-- (id)_captureIntentContextFileURLForBundleIdentifier:(id)a3;
-- (id)_launchActionsForTarget:(unint64_t)a3 launchType:(unint64_t)a4;
-- (id)_queue_launchActionsForType:(unint64_t)a3;
+- (id)_bundleRecordForBundleIdentifier:(id)identifier;
+- (id)_captureIntentContextDirectoryURLForBundleIdentifier:(id)identifier;
+- (id)_captureIntentContextFileURLForBundleIdentifier:(id)identifier;
+- (id)_launchActionsForTarget:(unint64_t)target launchType:(unint64_t)type;
+- (id)_queue_launchActionsForType:(unint64_t)type;
 - (id)_queue_resolvedLinkActions;
-- (id)_queue_systemProtocolForLaunchType:(unint64_t)a3;
-- (id)_resolvedLinkActionForLaunchTarget:(unint64_t)a3 launchType:(unint64_t)a4;
-- (id)acquireLaunchPrewarmAssertionForReason:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)launchActionsForTarget:(unint64_t)a3 launchType:(unint64_t)a4;
+- (id)_queue_systemProtocolForLaunchType:(unint64_t)type;
+- (id)_resolvedLinkActionForLaunchTarget:(unint64_t)target launchType:(unint64_t)type;
+- (id)acquireLaunchPrewarmAssertionForReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)launchActionsForTarget:(unint64_t)target launchType:(unint64_t)type;
 - (id)succinctDescription;
 - (unint64_t)hash;
 - (void)_beginObservingMetadataChanges;
@@ -22,31 +22,31 @@
 - (void)_evaluateLaunchPrewarmAssertions;
 - (void)_generateCachedLinkActions;
 - (void)dealloc;
-- (void)setCaptureIntentContext:(id)a3;
+- (void)setCaptureIntentContext:(id)context;
 @end
 
 @implementation LCSCaptureApplication
 
-- (LCSCaptureApplication)initWithExtensionInfo:(id)a3 attributes:(id)a4
+- (LCSCaptureApplication)initWithExtensionInfo:(id)info attributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  attributesCopy = attributes;
   v27.receiver = self;
   v27.super_class = LCSCaptureApplication;
   v9 = [(LCSCaptureApplication *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extension, a3);
-    v11 = [v7 containerBundleIdentifier];
+    objc_storeStrong(&v9->_extension, info);
+    containerBundleIdentifier = [infoCopy containerBundleIdentifier];
     bundleIdentifier = v10->_bundleIdentifier;
-    v10->_bundleIdentifier = v11;
+    v10->_bundleIdentifier = containerBundleIdentifier;
 
     Serial = BSDispatchQueueCreateSerial();
     linkActionQueue = v10->_linkActionQueue;
     v10->_linkActionQueue = Serial;
 
-    objc_storeStrong(&v10->_attributes, a4);
+    objc_storeStrong(&v10->_attributes, attributes);
     objc_initWeak(&location, v10);
     v15 = MEMORY[0x277CF0BD0];
     v21 = MEMORY[0x277D85DD0];
@@ -92,34 +92,34 @@ void __58__LCSCaptureApplication_initWithExtensionInfo_attributes___block_invoke
   [(LCSCaptureApplication *)&v4 dealloc];
 }
 
-- (id)_bundleRecordForBundleIdentifier:(id)a3
+- (id)_bundleRecordForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v8 = 0;
-  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v8];
+  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v8];
   v5 = v8;
   if (!v4)
   {
     v6 = LCSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(LCSCaptureApplication *)v3 _bundleRecordForBundleIdentifier:v5];
+      [(LCSCaptureApplication *)identifierCopy _bundleRecordForBundleIdentifier:v5];
     }
   }
 
   return v4;
 }
 
-- (id)_captureIntentContextDirectoryURLForBundleIdentifier:(id)a3
+- (id)_captureIntentContextDirectoryURLForBundleIdentifier:(id)identifier
 {
-  v3 = [(LCSCaptureApplication *)self _bundleRecordForBundleIdentifier:a3];
-  v4 = [v3 dataContainerURL];
-  v5 = [v4 URLByAppendingPathComponent:@"Library/com.apple.SecureCapture" isDirectory:1];
+  v3 = [(LCSCaptureApplication *)self _bundleRecordForBundleIdentifier:identifier];
+  dataContainerURL = [v3 dataContainerURL];
+  v5 = [dataContainerURL URLByAppendingPathComponent:@"Library/com.apple.SecureCapture" isDirectory:1];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v5 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v5 path];
   v13 = 0;
-  v8 = [v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v13];
+  v8 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v13];
   v9 = v13;
 
   if (v8)
@@ -141,9 +141,9 @@ void __58__LCSCaptureApplication_initWithExtensionInfo_attributes___block_invoke
   return v10;
 }
 
-- (id)_captureIntentContextFileURLForBundleIdentifier:(id)a3
+- (id)_captureIntentContextFileURLForBundleIdentifier:(id)identifier
 {
-  v3 = [(LCSCaptureApplication *)self _captureIntentContextDirectoryURLForBundleIdentifier:a3];
+  v3 = [(LCSCaptureApplication *)self _captureIntentContextDirectoryURLForBundleIdentifier:identifier];
   v4 = [v3 URLByAppendingPathComponent:@"AppIntentContext.data"];
 
   return v4;
@@ -181,9 +181,9 @@ LABEL_11:
 
   if (v4)
   {
-    v5 = [v2 absoluteString];
+    absoluteString = [v2 absoluteString];
     v16 = 138543362;
-    v17 = v5;
+    v17 = absoluteString;
     _os_log_impl(&dword_256175000, v3, OS_LOG_TYPE_DEFAULT, "Retrieving capture intent context from: %{public}@", &v16, 0xCu);
   }
 
@@ -195,10 +195,10 @@ LABEL_12:
   return v6;
 }
 
-- (void)setCaptureIntentContext:(id)a3
+- (void)setCaptureIntentContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (self->_bundleIdentifier)
   {
     v5 = [(LCSCaptureApplication *)self _captureIntentContextFileURLForBundleIdentifier:?];
@@ -206,31 +206,31 @@ LABEL_12:
     {
       v6 = LCSLogCommon();
       v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-      if (v4)
+      if (contextCopy)
       {
         if (v7)
         {
-          v8 = [v5 absoluteString];
+          absoluteString = [v5 absoluteString];
           *buf = 138543362;
-          v31 = v8;
+          v31 = absoluteString;
           _os_log_impl(&dword_256175000, v6, OS_LOG_TYPE_DEFAULT, "Writing capture intent context to: %{public}@", buf, 0xCu);
         }
 
-        [v4 writeToURL:v5 atomically:1];
+        [contextCopy writeToURL:v5 atomically:1];
         goto LABEL_18;
       }
 
       if (v7)
       {
-        v24 = [v5 absoluteString];
+        absoluteString2 = [v5 absoluteString];
         *buf = 138543362;
-        v31 = v24;
+        v31 = absoluteString2;
         _os_log_impl(&dword_256175000, v6, OS_LOG_TYPE_DEFAULT, "Received nil context, removing capture intent context from: %{public}@", buf, 0xCu);
       }
 
-      v25 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v29 = 0;
-      v26 = [v25 removeItemAtURL:v5 error:&v29];
+      v26 = [defaultManager removeItemAtURL:v5 error:&v29];
       v16 = v29;
 
       if ((v26 & 1) == 0)
@@ -266,9 +266,9 @@ LABEL_18:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)acquireLaunchPrewarmAssertionForReason:(id)a3
+- (id)acquireLaunchPrewarmAssertionForReason:(id)reason
 {
-  if (a3)
+  if (reason)
   {
     v4 = [(BSCompoundAssertion *)self->_launchPrewarmCompoundAssertion acquireForReason:?];
   }
@@ -283,9 +283,9 @@ LABEL_18:
 
 - (void)_evaluateLaunchPrewarmAssertions
 {
-  v3 = [(BSCompoundAssertion *)self->_launchPrewarmCompoundAssertion isActive];
+  isActive = [(BSCompoundAssertion *)self->_launchPrewarmCompoundAssertion isActive];
   cachedLinkActionByLaunchIdentifier = self->_cachedLinkActionByLaunchIdentifier;
-  if (v3)
+  if (isActive)
   {
     if (!cachedLinkActionByLaunchIdentifier)
     {
@@ -303,26 +303,26 @@ LABEL_18:
   }
 }
 
-- (id)_queue_systemProtocolForLaunchType:(unint64_t)a3
+- (id)_queue_systemProtocolForLaunchType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    v5 = 0;
+    cameraCaptureProtocol = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D23938] cameraCaptureProtocol];
+    cameraCaptureProtocol = [MEMORY[0x277D23938] cameraCaptureProtocol];
   }
 
-  return v5;
+  return cameraCaptureProtocol;
 }
 
-- (id)_resolvedLinkActionForLaunchTarget:(unint64_t)a3 launchType:(unint64_t)a4
+- (id)_resolvedLinkActionForLaunchTarget:(unint64_t)target launchType:(unint64_t)type
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = [objc_alloc(MEMORY[0x277D23C38]) initWithOptions:0];
-  v8 = [(LCSCaptureApplication *)self _queue_systemProtocolForLaunchType:a4];
+  v8 = [(LCSCaptureApplication *)self _queue_systemProtocolForLaunchType:type];
   if (!v8)
   {
     v16 = 0;
@@ -333,29 +333,29 @@ LABEL_18:
   v10 = [v7 actionsConformingToSystemProtocols:v9 logicalType:1 bundleIdentifier:self->_bundleIdentifier error:0];
 
   v11 = [v10 objectForKeyedSubscript:self->_bundleIdentifier];
-  v12 = [v11 allValues];
+  allValues = [v11 allValues];
 
-  v13 = [v12 firstObject];
-  if (v13)
+  firstObject = [allValues firstObject];
+  if (firstObject)
   {
     v14 = objc_alloc_init(MEMORY[0x277D23BC8]);
-    if (a3 == 1)
+    if (target == 1)
     {
-      v15 = [(LCSExtensionDescribing *)self->_extension bundleIdentifier];
+      bundleIdentifier = [(LCSExtensionDescribing *)self->_extension bundleIdentifier];
     }
 
     else
     {
-      if (a3)
+      if (target)
       {
         v17 = 0;
         goto LABEL_11;
       }
 
-      v15 = self->_bundleIdentifier;
+      bundleIdentifier = self->_bundleIdentifier;
     }
 
-    v17 = v15;
+    v17 = bundleIdentifier;
 LABEL_11:
     v18 = LCSLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -369,7 +369,7 @@ LABEL_11:
     }
 
     [v14 setPreferredBundleIdentifier:v17];
-    v20 = [MEMORY[0x277D23BB0] policyWithActionMetadata:v13 signals:v14];
+    v20 = [MEMORY[0x277D23BB0] policyWithActionMetadata:firstObject signals:v14];
     v21 = [v20 actionWithParameters:MEMORY[0x277CBEBF8]];
     v16 = [v21 actionWithOpenWhenRun:0];
 
@@ -388,8 +388,8 @@ LABEL_15:
 - (id)_queue_resolvedLinkActions
 {
   v3 = objc_opt_new();
-  v4 = [(LCSCaptureApplication *)self attributes];
-  v5 = [v4 supportsLaunchType:0];
+  attributes = [(LCSCaptureApplication *)self attributes];
+  v5 = [attributes supportsLaunchType:0];
 
   if (v5)
   {
@@ -414,10 +414,10 @@ LABEL_15:
   return v8;
 }
 
-- (id)_queue_launchActionsForType:(unint64_t)a3
+- (id)_queue_launchActionsForType:(unint64_t)type
 {
-  v5 = [(LCSCaptureApplication *)self _resolvedLinkActionForLaunchTarget:0 launchType:a3];
-  v6 = [(LCSCaptureApplication *)self _resolvedLinkActionForLaunchTarget:1 launchType:a3];
+  v5 = [(LCSCaptureApplication *)self _resolvedLinkActionForLaunchTarget:0 launchType:type];
+  v6 = [(LCSCaptureApplication *)self _resolvedLinkActionForLaunchTarget:1 launchType:type];
   if (v5)
   {
     v7 = [[LCSCaptureApplicationLaunchActions alloc] initWithApplicationLaunchAction:v5 extensionLaunchAction:v6];
@@ -510,14 +510,14 @@ void __48__LCSCaptureApplication__clearCachedLinkActions__block_invoke(uint64_t 
   if (!self->_metadataChangedObserverToken)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277D23A70];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __55__LCSCaptureApplication__beginObservingMetadataChanges__block_invoke;
     v7[3] = &unk_279824E38;
     objc_copyWeak(&v8, &location);
-    v5 = [v3 addObserverForName:v4 object:0 queue:0 usingBlock:v7];
+    v5 = [defaultCenter addObserverForName:v4 object:0 queue:0 usingBlock:v7];
 
     metadataChangedObserverToken = self->_metadataChangedObserverToken;
     self->_metadataChangedObserverToken = v5;
@@ -571,14 +571,14 @@ void __55__LCSCaptureApplication__beginObservingMetadataChanges__block_invoke_2(
 
 - (void)_endObservingMetadataChanges
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_metadataChangedObserverToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_metadataChangedObserverToken];
 
   metadataChangedObserverToken = self->_metadataChangedObserverToken;
   self->_metadataChangedObserverToken = 0;
 }
 
-- (id)_launchActionsForTarget:(unint64_t)a3 launchType:(unint64_t)a4
+- (id)_launchActionsForTarget:(unint64_t)target launchType:(unint64_t)type
 {
   v32 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
@@ -593,22 +593,22 @@ void __55__LCSCaptureApplication__beginObservingMetadataChanges__block_invoke_2(
   v23[1] = 3221225472;
   v23[2] = __60__LCSCaptureApplication__launchActionsForTarget_launchType___block_invoke;
   v23[3] = &unk_2798251B0;
-  v23[6] = a4;
-  v23[7] = a3;
+  v23[6] = type;
+  v23[7] = target;
   v23[4] = self;
   v23[5] = &v24;
   dispatch_sync(linkActionQueue, v23);
-  if (v25[5] || ([(LCSCaptureApplication *)self _resolvedLinkActionForLaunchTarget:a3 launchType:a4], v9 = objc_claimAutoreleasedReturnValue(), v10 = v25[5], v25[5] = v9, v10, v25[5]))
+  if (v25[5] || ([(LCSCaptureApplication *)self _resolvedLinkActionForLaunchTarget:target launchType:type], v9 = objc_claimAutoreleasedReturnValue(), v10 = v25[5], v25[5] = v9, v10, v25[5]))
   {
     v11 = objc_opt_new();
     [v11 setOneShotForSpringBoardOnly:1];
-    if (!a4)
+    if (!type)
     {
       v12 = objc_opt_new();
-      v13 = [(LCSCaptureApplication *)self captureIntentContext];
-      if (v13)
+      captureIntentContext = [(LCSCaptureApplication *)self captureIntentContext];
+      if (captureIntentContext)
       {
-        [v12 setEncodedCaptureAppContext:v13];
+        [v12 setEncodedCaptureAppContext:captureIntentContext];
       }
 
       [v11 setSystemContext:v12];
@@ -683,11 +683,11 @@ LABEL_8:
   }
 }
 
-- (id)launchActionsForTarget:(unint64_t)a3 launchType:(unint64_t)a4
+- (id)launchActionsForTarget:(unint64_t)target launchType:(unint64_t)type
 {
-  if ([(LCSCaptureApplicationAttributes *)self->_attributes supportsLaunchType:a4])
+  if ([(LCSCaptureApplicationAttributes *)self->_attributes supportsLaunchType:type])
   {
-    v7 = [(LCSCaptureApplication *)self _launchActionsForTarget:a3 launchType:a4];
+    v7 = [(LCSCaptureApplication *)self _launchActionsForTarget:target launchType:type];
   }
 
   else
@@ -698,17 +698,17 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = (objc_opt_isKindOfClass() & 1) != 0 && -[NSString isEqual:](self->_bundleIdentifier, "isEqual:", v4->_bundleIdentifier) && -[LCSExtensionDescribing isEqual:](self->_extension, "isEqual:", v4->_extension) && (-[LCSCaptureApplication captureIntentContext](self, "captureIntentContext"), v5 = objc_opt_class();
+    v8 = (objc_opt_isKindOfClass() & 1) != 0 && -[NSString isEqual:](self->_bundleIdentifier, "isEqual:", equalCopy->_bundleIdentifier) && -[LCSExtensionDescribing isEqual:](self->_extension, "isEqual:", equalCopy->_extension) && (-[LCSCaptureApplication captureIntentContext](self, "captureIntentContext"), v5 = objc_opt_class();
   }
 
   return v8;
@@ -718,8 +718,8 @@ LABEL_8:
 {
   v3 = [(NSString *)self->_bundleIdentifier hash];
   v4 = [(LCSExtensionDescribing *)self->_extension hash]^ v3;
-  v5 = [(LCSCaptureApplication *)self captureIntentContext];
-  v6 = [v5 hash];
+  captureIntentContext = [(LCSCaptureApplication *)self captureIntentContext];
+  v6 = [captureIntentContext hash];
   v7 = v4 ^ v6 ^ [(NSSet *)self->_launchActions hash];
   v8 = [(LCSCaptureApplicationAttributes *)self->_attributes hash];
 
@@ -728,32 +728,32 @@ LABEL_8:
 
 - (id)succinctDescription
 {
-  v2 = [(LCSCaptureApplication *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(LCSCaptureApplication *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(LCSCaptureApplication *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(LCSCaptureApplication *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(LCSCaptureApplication *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(LCSCaptureApplication *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__LCSCaptureApplication_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279824C98;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

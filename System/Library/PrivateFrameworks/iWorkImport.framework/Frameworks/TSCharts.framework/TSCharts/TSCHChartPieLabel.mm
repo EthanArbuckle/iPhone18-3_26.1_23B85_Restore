@@ -5,8 +5,8 @@
 - (CGRect)rect;
 - (CGRect)rectInCombinedLabelSpace;
 - (CGSize)size;
-- (TSCHChartPieLabel)initWithRect:(CGRect)a3 erasableFrame:(CGRect)a4 size:(CGSize)a5 transform:(CGAffineTransform *)a6 title:(id)a7;
-- (void)concatenateTransformWithCGAffineTransform:(CGAffineTransform *)a3;
+- (TSCHChartPieLabel)initWithRect:(CGRect)rect erasableFrame:(CGRect)frame size:(CGSize)size transform:(CGAffineTransform *)transform title:(id)title;
+- (void)concatenateTransformWithCGAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSCHChartPieLabel
@@ -31,18 +31,18 @@
   return CGRectApplyAffineTransform(erasableFrame, &v3);
 }
 
-- (TSCHChartPieLabel)initWithRect:(CGRect)a3 erasableFrame:(CGRect)a4 size:(CGSize)a5 transform:(CGAffineTransform *)a6 title:(id)a7
+- (TSCHChartPieLabel)initWithRect:(CGRect)rect erasableFrame:(CGRect)frame size:(CGSize)size transform:(CGAffineTransform *)transform title:(id)title
 {
-  width = a5.width;
-  height = a4.size.height;
-  v9 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.size.height;
-  v13 = a3.size.width;
-  v14 = a3.origin.y;
-  v15 = a3.origin.x;
-  v17 = *&a5.height;
+  width = size.width;
+  height = frame.size.height;
+  v9 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = rect.size.height;
+  v13 = rect.size.width;
+  v14 = rect.origin.y;
+  v15 = rect.origin.x;
+  v17 = *&size.height;
   v27.receiver = self;
   v27.super_class = TSCHChartPieLabel;
   v18 = [(TSCHChartPieLabel *)&v27 init];
@@ -73,16 +73,16 @@
   return v20;
 }
 
-- (void)concatenateTransformWithCGAffineTransform:(CGAffineTransform *)a3
+- (void)concatenateTransformWithCGAffineTransform:(CGAffineTransform *)transform
 {
   v4 = *&self->_transform.c;
   *&t1.a = *&self->_transform.a;
   *&t1.c = v4;
   *&t1.tx = *&self->_transform.tx;
-  v5 = *&a3->c;
-  *&v7.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v7.a = *&transform->a;
   *&v7.c = v5;
-  *&v7.tx = *&a3->tx;
+  *&v7.tx = *&transform->tx;
   CGAffineTransformConcat(&v9, &t1, &v7);
   v6 = *&v9.c;
   *&self->_transform.a = *&v9.a;

@@ -1,7 +1,7 @@
 @interface PXContentPrivacyController
-+ (id)privacyControllerForCollection:(id)a3;
++ (id)privacyControllerForCollection:(id)collection;
 + (unint64_t)automaticAuthenticationBehaviorFromInternalSettings;
-+ (unint64_t)lockStateForCollection:(id)a3;
++ (unint64_t)lockStateForCollection:(id)collection;
 + (void)tearDownPrivacyControllersIfNeeded;
 - (BOOL)_isContentPrivacyPrefEnabled;
 - (BOOL)isDelayedLockScheduled;
@@ -9,24 +9,24 @@
 - (BOOL)shouldLockAfterDelayWhenLeavingViewHierarchy;
 - (BOOL)shouldOnlyPerformAutomaticAuthenticationOnceInStack;
 - (BOOL)shouldPerformAuthenticationUponAppearing;
-- (PXContentPrivacyController)initWithAssetCollectionToObserve:(id)a3 logIdentifier:(id)a4;
-- (PXContentPrivacyController)initWithContentPrivacyEnabledForTesting:(id)a3 availableAuthenticationTypeForTesting:(id)a4 assetCollectionToObserveForTesting:(id)a5 automaticAuthenticationBehaviorForTesting:(unint64_t)a6;
-- (PXContentPrivacyController)initWithLogIdentifier:(id)a3;
+- (PXContentPrivacyController)initWithAssetCollectionToObserve:(id)observe logIdentifier:(id)identifier;
+- (PXContentPrivacyController)initWithContentPrivacyEnabledForTesting:(id)testing availableAuthenticationTypeForTesting:(id)forTesting assetCollectionToObserveForTesting:(id)observeForTesting automaticAuthenticationBehaviorForTesting:(unint64_t)behaviorForTesting;
+- (PXContentPrivacyController)initWithLogIdentifier:(id)identifier;
 - (double)autolockTimeout;
-- (int64_t)_calculateAuthenticationTypeWithForcedUpdate:(BOOL)a3;
+- (int64_t)_calculateAuthenticationTypeWithForcedUpdate:(BOOL)update;
 - (void)_beginObservingApplicationStateChangesAndSystemEvents;
 - (void)_beginObservingAssetCollectionChanges;
 - (void)_beginObservingContentPrivacyPrefs;
 - (void)_cancelAuthentication;
-- (void)_cancelDelayedLockIfNeededWithReason:(id)a3;
-- (void)_finishAuthenticationChallengeWithCompletionHandler:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)_cancelDelayedLockIfNeededWithReason:(id)reason;
+- (void)_finishAuthenticationChallengeWithCompletionHandler:(id)handler success:(BOOL)success error:(id)error;
 - (void)_lockOrCancelAuthenticationIfNeeded;
-- (void)_lockWithReasonForLogging:(id)a3;
+- (void)_lockWithReasonForLogging:(id)logging;
 - (void)_logCurrentAuthenticationStack;
 - (void)_performDelayedAuthenticationTypeUpdate;
 - (void)_performUserAuthenticationIfNeededAfterForegrounding;
-- (void)_performUserAuthenticationWithTitle:(id)a3 passcodeTitle:(id)a4 passcodeSubtitle:(id)a5 reason:(id)a6 completion:(id)a7;
-- (void)_startAutolockTimerForReason:(unint64_t)a3 resetIfActive:(BOOL)a4;
+- (void)_performUserAuthenticationWithTitle:(id)title passcodeTitle:(id)passcodeTitle passcodeSubtitle:(id)subtitle reason:(id)reason completion:(id)completion;
+- (void)_startAutolockTimerForReason:(unint64_t)reason resetIfActive:(BOOL)active;
 - (void)_stopAutolockTimer;
 - (void)_stopObservingApplicationStateChanges;
 - (void)_stopObservingAssetCollectionChanges;
@@ -34,51 +34,51 @@
 - (void)_updateAuthenticationType;
 - (void)_updateCachedAuthenticationStackCount;
 - (void)_updateWillPerformAuthenticationAutomatically;
-- (void)addContextToStack:(id)a3;
+- (void)addContextToStack:(id)stack;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
 - (void)clearAuthenticationStack;
-- (void)commonInitWithLogIdentifier:(id)a3 automaticAuthenticationBehavior:(unint64_t)a4;
+- (void)commonInitWithLogIdentifier:(id)identifier automaticAuthenticationBehavior:(unint64_t)behavior;
 - (void)dealloc;
-- (void)hostApplicationDidBecomeActiveFromNotification:(id)a3;
-- (void)hostApplicationWillResignActiveFromNotification:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performUserAuthenticationIfNeededFromContext:(id)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)removeContextFromStack:(id)a3;
+- (void)hostApplicationDidBecomeActiveFromNotification:(id)notification;
+- (void)hostApplicationWillResignActiveFromNotification:(id)notification;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performUserAuthenticationIfNeededFromContext:(id)context;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)removeContextFromStack:(id)stack;
 - (void)resetHasPerformedAuthenticationInStack;
 - (void)scheduleAuthenticationStackCountUpdate;
 - (void)scheduleDelayedLock;
-- (void)setAssetCollectionToObserve:(id)a3;
-- (void)setAssetCollectionToObserveForTesting:(id)a3;
-- (void)setAuthenticationAttemptDidFailOrWasCancelled:(BOOL)a3;
-- (void)setAuthenticationType:(int64_t)a3;
-- (void)setAutomaticAuthenticationBehavior:(unint64_t)a3;
-- (void)setContentPrivacyEnabled:(BOOL)a3;
-- (void)setLocked:(BOOL)a3;
-- (void)setTestingOverride_authenticationType:(id)a3;
-- (void)setWillPerformAuthenticationAutomatically:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setAssetCollectionToObserve:(id)observe;
+- (void)setAssetCollectionToObserveForTesting:(id)testing;
+- (void)setAuthenticationAttemptDidFailOrWasCancelled:(BOOL)cancelled;
+- (void)setAuthenticationType:(int64_t)type;
+- (void)setAutomaticAuthenticationBehavior:(unint64_t)behavior;
+- (void)setContentPrivacyEnabled:(BOOL)enabled;
+- (void)setLocked:(BOOL)locked;
+- (void)setTestingOverride_authenticationType:(id)type;
+- (void)setWillPerformAuthenticationAutomatically:(BOOL)automatically;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)updateAuthenticationTypeImmediately;
-- (void)viewDidAppearForAuthenticationContext:(id)a3;
-- (void)viewDidDisappearForAuthenticationContext:(id)a3 withNavigationState:(unint64_t)a4;
+- (void)viewDidAppearForAuthenticationContext:(id)context;
+- (void)viewDidDisappearForAuthenticationContext:(id)context withNavigationState:(unint64_t)state;
 @end
 
 @implementation PXContentPrivacyController
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  keyCopy = key;
   v6 = NSStringFromSelector(sel_simulationMode);
-  if ([v5 isEqualToString:v6])
+  if ([keyCopy isEqualToString:v6])
   {
   }
 
   else
   {
     v7 = NSStringFromSelector(sel_simulatedAuthenticationType);
-    v8 = [v5 isEqualToString:v7];
+    v8 = [keyCopy isEqualToString:v7];
 
     if (!v8)
     {
@@ -89,11 +89,11 @@
   v9 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
     v11 = 138543618;
-    v12 = v10;
+    v12 = logIdentifier;
     v13 = 2112;
-    v14 = v5;
+    v14 = keyCopy;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Internal settings key '%@' changed. Updating content privacy enabled state.", &v11, 0x16u);
   }
 
@@ -103,25 +103,25 @@
 LABEL_7:
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXContentPrivacyController *)self assetCollectionToObserve];
-  v7 = [v6 px_isUserSmartAlbum];
+  queueCopy = queue;
+  assetCollectionToObserve = [(PXContentPrivacyController *)self assetCollectionToObserve];
+  px_isUserSmartAlbum = [assetCollectionToObserve px_isUserSmartAlbum];
 
-  if (!v7)
+  if (!px_isUserSmartAlbum)
   {
     goto LABEL_13;
   }
 
-  v8 = [(PXContentPrivacyController *)self assetCollectionToObserve];
-  if (!v8)
+  assetCollectionToObserve2 = [(PXContentPrivacyController *)self assetCollectionToObserve];
+  if (!assetCollectionToObserve2)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    [v20 handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:1433 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollectionToObserve", v22}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:1433 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollectionToObserve", v22}];
 LABEL_16:
 
     goto LABEL_4;
@@ -130,31 +130,31 @@ LABEL_16:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v22 = NSStringFromClass(v23);
-    v24 = [v8 px_descriptionForAssertionMessage];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:1433 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollectionToObserve", v22, v24}];
+    px_descriptionForAssertionMessage = [assetCollectionToObserve2 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:1433 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollectionToObserve", v22, px_descriptionForAssertionMessage}];
 
     goto LABEL_16;
   }
 
 LABEL_4:
-  v9 = [v5 changeDetailsForObject:v8];
+  v9 = [queueCopy changeDetailsForObject:assetCollectionToObserve2];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 objectAfterChanges];
-    v12 = [v8 px_isPrivacySensitiveAlbum];
-    v13 = [v11 px_isPrivacySensitiveAlbum];
-    if (v12 != v13)
+    objectAfterChanges = [v9 objectAfterChanges];
+    px_isPrivacySensitiveAlbum = [assetCollectionToObserve2 px_isPrivacySensitiveAlbum];
+    px_isPrivacySensitiveAlbum2 = [objectAfterChanges px_isPrivacySensitiveAlbum];
+    if (px_isPrivacySensitiveAlbum != px_isPrivacySensitiveAlbum2)
     {
-      v14 = v13;
+      v14 = px_isPrivacySensitiveAlbum2;
       v15 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(PXContentPrivacyController *)self logIdentifier];
-        v17 = [v11 title];
+        logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+        title = [objectAfterChanges title];
         v18 = @"NO";
         if (v14)
         {
@@ -163,16 +163,16 @@ LABEL_4:
 
         v19 = v18;
         *buf = 138543874;
-        v26 = v16;
+        v26 = logIdentifier;
         v27 = 2112;
-        v28 = v17;
+        v28 = title;
         v29 = 2114;
         v30 = v19;
         _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Smart album '%@' just changed privacy sensitivity to %{public}@", buf, 0x20u);
       }
     }
 
-    [(PXContentPrivacyController *)self setAssetCollectionToObserve:v11];
+    [(PXContentPrivacyController *)self setAssetCollectionToObserve:objectAfterChanges];
   }
 
 LABEL_13:
@@ -180,10 +180,10 @@ LABEL_13:
 
 - (void)_stopObservingAssetCollectionChanges
 {
-  v3 = [(PXContentPrivacyController *)self assetCollectionToObserve];
+  assetCollectionToObserve = [(PXContentPrivacyController *)self assetCollectionToObserve];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v3;
+    v5 = assetCollectionToObserve;
 
     v4 = v5;
     if (!v5)
@@ -191,8 +191,8 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    v3 = [v5 photoLibrary];
-    [v3 px_unregisterChangeObserver:self];
+    assetCollectionToObserve = [v5 photoLibrary];
+    [assetCollectionToObserve px_unregisterChangeObserver:self];
   }
 
   else
@@ -206,10 +206,10 @@ LABEL_7:
 
 - (void)_beginObservingAssetCollectionChanges
 {
-  v3 = [(PXContentPrivacyController *)self assetCollectionToObserve];
+  assetCollectionToObserve = [(PXContentPrivacyController *)self assetCollectionToObserve];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v3;
+    v5 = assetCollectionToObserve;
 
     v4 = v5;
     if (!v5)
@@ -217,8 +217,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v3 = [v5 photoLibrary];
-    [v3 px_registerChangeObserver:self];
+    assetCollectionToObserve = [v5 photoLibrary];
+    [assetCollectionToObserve px_registerChangeObserver:self];
   }
 
   else
@@ -338,11 +338,11 @@ void __58__PXContentPrivacyController__updateContentPrivacyEnabled__block_invoke
 LABEL_18:
 }
 
-- (void)setContentPrivacyEnabled:(BOOL)a3
+- (void)setContentPrivacyEnabled:(BOOL)enabled
 {
-  if (self->_contentPrivacyEnabled != a3)
+  if (self->_contentPrivacyEnabled != enabled)
   {
-    self->_contentPrivacyEnabled = a3;
+    self->_contentPrivacyEnabled = enabled;
     [(PXContentPrivacyController *)self signalChange:2];
   }
 }
@@ -352,31 +352,31 @@ LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
   if (PFProcessIsLaunchedToExecuteTests())
   {
-    v3 = [(PXContentPrivacyController *)self contentPrivacyEnabledNumberForTesting];
+    contentPrivacyEnabledNumberForTesting = [(PXContentPrivacyController *)self contentPrivacyEnabledNumberForTesting];
 
-    if (v3)
+    if (contentPrivacyEnabledNumberForTesting)
     {
-      v4 = [(PXContentPrivacyController *)self contentPrivacyEnabledNumberForTesting];
-      v5 = [v4 BOOLValue];
+      contentPrivacyEnabledNumberForTesting2 = [(PXContentPrivacyController *)self contentPrivacyEnabledNumberForTesting];
+      bOOLValue = [contentPrivacyEnabledNumberForTesting2 BOOLValue];
 
-      return v5;
+      return bOOLValue;
     }
   }
 
   v7 = +[PXContentPrivacySettings sharedInstance];
-  v8 = [v7 simulationMode];
-  if (v8 == 1)
+  simulationMode = [v7 simulationMode];
+  if (simulationMode == 1)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    if (!v8)
+    if (!simulationMode)
     {
       v9 = PLIsContentPrivacyEnabled();
-      v10 = [(PXContentPrivacyController *)self authenticationType];
-      if (!v9 || v10 != 1)
+      authenticationType = [(PXContentPrivacyController *)self authenticationType];
+      if (!v9 || authenticationType != 1)
       {
         goto LABEL_13;
       }
@@ -384,9 +384,9 @@ LABEL_18:
       v11 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(PXContentPrivacyController *)self logIdentifier];
+        logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
         v13 = 138543362;
-        v14 = v12;
+        v14 = logIdentifier;
         _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Even though the content privacy pref is enabled, there is no configured authentication method. Treating content privacy as if it were DISABLED.", &v13, 0xCu);
       }
     }
@@ -399,33 +399,33 @@ LABEL_13:
   return v9;
 }
 
-- (void)setAssetCollectionToObserveForTesting:(id)a3
+- (void)setAssetCollectionToObserveForTesting:(id)testing
 {
-  v4 = a3;
+  testingCopy = testing;
   if (PFProcessIsLaunchedToExecuteTests())
   {
-    [(PXContentPrivacyController *)self setAssetCollectionToObserve:v4];
+    [(PXContentPrivacyController *)self setAssetCollectionToObserve:testingCopy];
   }
 }
 
-- (void)setAssetCollectionToObserve:(id)a3
+- (void)setAssetCollectionToObserve:(id)observe
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  observeCopy = observe;
   assetCollectionToObserve = self->_assetCollectionToObserve;
-  if (assetCollectionToObserve != v5)
+  if (assetCollectionToObserve != observeCopy)
   {
-    v7 = [(PXDisplayCollection *)assetCollectionToObserve px_isPrivacySensitiveAlbum];
-    objc_storeStrong(&self->_assetCollectionToObserve, a3);
-    v8 = [(PXDisplayCollection *)self->_assetCollectionToObserve px_isPrivacySensitiveAlbum];
-    if (v7 != v8)
+    px_isPrivacySensitiveAlbum = [(PXDisplayCollection *)assetCollectionToObserve px_isPrivacySensitiveAlbum];
+    objc_storeStrong(&self->_assetCollectionToObserve, observe);
+    px_isPrivacySensitiveAlbum2 = [(PXDisplayCollection *)self->_assetCollectionToObserve px_isPrivacySensitiveAlbum];
+    if (px_isPrivacySensitiveAlbum != px_isPrivacySensitiveAlbum2)
     {
-      v9 = v8;
+      v9 = px_isPrivacySensitiveAlbum2;
       v10 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(PXContentPrivacyController *)self logIdentifier];
-        v12 = [(PXDisplayCollection *)self->_assetCollectionToObserve localizedTitle];
+        logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+        localizedTitle = [(PXDisplayCollection *)self->_assetCollectionToObserve localizedTitle];
         v13 = @"NO";
         if (v9)
         {
@@ -434,9 +434,9 @@ LABEL_13:
 
         v14 = v13;
         v15 = 138543874;
-        v16 = v11;
+        v16 = logIdentifier;
         v17 = 2112;
-        v18 = v12;
+        v18 = localizedTitle;
         v19 = 2114;
         v20 = v14;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Smart album '%@' just changed privacy sensitivity to %{public}@", &v15, 0x20u);
@@ -454,15 +454,15 @@ LABEL_13:
     return 0.0;
   }
 
-  v3 = [(PXContentPrivacyController *)self testingOverride_autolockTimeout];
+  testingOverride_autolockTimeout = [(PXContentPrivacyController *)self testingOverride_autolockTimeout];
 
-  if (!v3)
+  if (!testingOverride_autolockTimeout)
   {
     return 0.0;
   }
 
-  v4 = [(PXContentPrivacyController *)self testingOverride_autolockTimeout];
-  [v4 doubleValue];
+  testingOverride_autolockTimeout2 = [(PXContentPrivacyController *)self testingOverride_autolockTimeout];
+  [testingOverride_autolockTimeout2 doubleValue];
   v6 = v5;
 
   return v6;
@@ -475,27 +475,27 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [(PXContentPrivacyController *)self testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy];
+  testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy = [(PXContentPrivacyController *)self testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy];
 
-  if (!v3)
+  if (!testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy)
   {
     return 0;
   }
 
-  v4 = [(PXContentPrivacyController *)self testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy];
-  v5 = [v4 BOOLValue];
+  testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy2 = [(PXContentPrivacyController *)self testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy];
+  bOOLValue = [testingOverride_shouldLockAfterDelayWhenLeavingViewHierarchy2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)shouldOnlyPerformAutomaticAuthenticationOnceInStack
 {
   if (PFProcessIsLaunchedToExecuteTests() && ([(PXContentPrivacyController *)self testingOverride_shouldOnlyPerformAutomaticAuthenticationOnce], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(PXContentPrivacyController *)self testingOverride_shouldOnlyPerformAutomaticAuthenticationOnce];
-    v5 = [v4 BOOLValue];
+    testingOverride_shouldOnlyPerformAutomaticAuthenticationOnce = [(PXContentPrivacyController *)self testingOverride_shouldOnlyPerformAutomaticAuthenticationOnce];
+    bOOLValue = [testingOverride_shouldOnlyPerformAutomaticAuthenticationOnce BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else
@@ -510,11 +510,11 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
   if (PFProcessIsLaunchedToExecuteTests() && ([(PXContentPrivacyController *)self testingOverride_shouldPerformAuthenticationOnAppearing], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(PXContentPrivacyController *)self testingOverride_shouldPerformAuthenticationOnAppearing];
-    v5 = [v4 BOOLValue];
+    testingOverride_shouldPerformAuthenticationOnAppearing = [(PXContentPrivacyController *)self testingOverride_shouldPerformAuthenticationOnAppearing];
+    bOOLValue = [testingOverride_shouldPerformAuthenticationOnAppearing BOOLValue];
 
-    v6 = [(PXContentPrivacyController *)self shouldOnlyPerformAutomaticAuthenticationOnceInStack];
-    if ((v5 & 1) == 0)
+    shouldOnlyPerformAutomaticAuthenticationOnceInStack = [(PXContentPrivacyController *)self shouldOnlyPerformAutomaticAuthenticationOnceInStack];
+    if ((bOOLValue & 1) == 0)
     {
       return 0;
     }
@@ -522,33 +522,33 @@ LABEL_13:
 
   else
   {
-    v7 = [(PXContentPrivacyController *)self automaticAuthenticationBehavior];
-    if (!v7)
+    automaticAuthenticationBehavior = [(PXContentPrivacyController *)self automaticAuthenticationBehavior];
+    if (!automaticAuthenticationBehavior)
     {
       [(PXContentPrivacyController *)self shouldOnlyPerformAutomaticAuthenticationOnceInStack];
       return 0;
     }
 
-    if (v7 == 1)
+    if (automaticAuthenticationBehavior == 1)
     {
       [(PXContentPrivacyController *)self authenticationType];
       PXSystemAuthenticationTypeIsBiometric();
     }
 
-    v6 = [(PXContentPrivacyController *)self shouldOnlyPerformAutomaticAuthenticationOnceInStack];
+    shouldOnlyPerformAutomaticAuthenticationOnceInStack = [(PXContentPrivacyController *)self shouldOnlyPerformAutomaticAuthenticationOnceInStack];
   }
 
-  v8 = v6;
-  v9 = [(PXContentPrivacyController *)self hasPerformedAuthenticationInStack];
+  v8 = shouldOnlyPerformAutomaticAuthenticationOnceInStack;
+  hasPerformedAuthenticationInStack = [(PXContentPrivacyController *)self hasPerformedAuthenticationInStack];
   result = 1;
-  if (v9 && v8)
+  if (hasPerformedAuthenticationInStack && v8)
   {
     v11 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       v13 = 138543362;
-      v14 = v12;
+      v14 = logIdentifier;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Skipping automatic authentication because we've already perform authentication once while in this stack", &v13, 0xCu);
     }
 
@@ -558,20 +558,20 @@ LABEL_13:
   return result;
 }
 
-- (void)_performUserAuthenticationWithTitle:(id)a3 passcodeTitle:(id)a4 passcodeSubtitle:(id)a5 reason:(id)a6 completion:(id)a7
+- (void)_performUserAuthenticationWithTitle:(id)title passcodeTitle:(id)passcodeTitle passcodeSubtitle:(id)subtitle reason:(id)reason completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  passcodeTitleCopy = passcodeTitle;
+  subtitleCopy = subtitle;
+  reasonCopy = reason;
+  completionCopy = completion;
   v17 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
     *buf = 138543362;
-    v33 = v18;
+    v33 = logIdentifier;
     _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Got a request to perform authentication.", buf, 0xCu);
   }
 
@@ -581,19 +581,19 @@ LABEL_13:
     objc_initWeak(&location, self);
     if (PFProcessIsLaunchedToExecuteTests())
     {
-      v19 = [(PXContentPrivacyController *)self authChallengeHandlerForTesting];
-      v20 = v19 == 0;
+      authChallengeHandlerForTesting = [(PXContentPrivacyController *)self authChallengeHandlerForTesting];
+      v20 = authChallengeHandlerForTesting == 0;
 
       if (!v20)
       {
-        v21 = [(PXContentPrivacyController *)self authChallengeHandlerForTesting];
+        authChallengeHandlerForTesting2 = [(PXContentPrivacyController *)self authChallengeHandlerForTesting];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __115__PXContentPrivacyController__performUserAuthenticationWithTitle_passcodeTitle_passcodeSubtitle_reason_completion___block_invoke;
         v28[3] = &unk_1E77472D0;
         objc_copyWeak(&v30, &location);
-        v29 = v16;
-        (v21)[2](v21, v28);
+        v29 = completionCopy;
+        (authChallengeHandlerForTesting2)[2](authChallengeHandlerForTesting2, v28);
 
         objc_destroyWeak(&v30);
 LABEL_14:
@@ -607,9 +607,9 @@ LABEL_14:
       v24 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [(PXContentPrivacyController *)self logIdentifier];
+        logIdentifier2 = [(PXContentPrivacyController *)self logIdentifier];
         *buf = 138543362;
-        v33 = v25;
+        v33 = logIdentifier2;
         _os_log_impl(&dword_1A3C1C000, v24, OS_LOG_TYPE_ERROR, "PrivacyController [%{public}@]: Got a request to perform authentication while already performing authentication. Ignoring.", buf, 0xCu);
       }
 
@@ -625,13 +625,13 @@ LABEL_14:
     v26 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier3 = [(PXContentPrivacyController *)self logIdentifier];
       *buf = 138543362;
-      v33 = v27;
+      v33 = logIdentifier3;
       _os_log_impl(&dword_1A3C1C000, v26, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: LocalAuthentication not possible because the device has no biometrics or passcode/password set at all.", buf, 0xCu);
     }
 
-    [(PXContentPrivacyController *)self _finishAuthenticationChallengeWithCompletionHandler:v16 success:1 error:0];
+    [(PXContentPrivacyController *)self _finishAuthenticationChallengeWithCompletionHandler:completionCopy success:1 error:0];
     objc_destroyWeak(&location);
   }
 
@@ -640,13 +640,13 @@ LABEL_14:
     v22 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier4 = [(PXContentPrivacyController *)self logIdentifier];
       *buf = 138543362;
-      v33 = v23;
+      v33 = logIdentifier4;
       _os_log_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Tried to perform a user authentication, but was already unlocked.", buf, 0xCu);
     }
 
-    [(PXContentPrivacyController *)self _finishAuthenticationChallengeWithCompletionHandler:v16 success:1 error:0];
+    [(PXContentPrivacyController *)self _finishAuthenticationChallengeWithCompletionHandler:completionCopy success:1 error:0];
   }
 
 LABEL_20:
@@ -731,11 +731,11 @@ LABEL_16:
   [WeakRetained _finishAuthenticationChallengeWithCompletionHandler:*(a1 + 40) success:v4 == 0 error:v4];
 }
 
-- (void)_finishAuthenticationChallengeWithCompletionHandler:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_finishAuthenticationChallengeWithCompletionHandler:(id)handler success:(BOOL)success error:(id)error
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = v6;
+  handlerCopy = handler;
+  errorCopy = error;
+  v8 = handlerCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -782,28 +782,28 @@ uint64_t __36__PXContentPrivacyController_unlock__block_invoke(uint64_t a1)
 
 - (BOOL)isDelayedLockScheduled
 {
-  v2 = [(PXContentPrivacyController *)self autolockTimer];
-  v3 = v2 != 0;
+  autolockTimer = [(PXContentPrivacyController *)self autolockTimer];
+  v3 = autolockTimer != 0;
 
   return v3;
 }
 
-- (void)_cancelDelayedLockIfNeededWithReason:(id)a3
+- (void)_cancelDelayedLockIfNeededWithReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXContentPrivacyController *)self autolockTimer];
+  reasonCopy = reason;
+  autolockTimer = [(PXContentPrivacyController *)self autolockTimer];
 
-  if (v5)
+  if (autolockTimer)
   {
     v6 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       v8 = 138543618;
-      v9 = v7;
+      v9 = logIdentifier;
       v10 = 2114;
-      v11 = v4;
+      v11 = reasonCopy;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Cancelling scheduled auto-lock with reason: %{public}@", &v8, 0x16u);
     }
 
@@ -819,9 +819,9 @@ uint64_t __36__PXContentPrivacyController_unlock__block_invoke(uint64_t a1)
     v3 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       v7 = 138543362;
-      v8 = v4;
+      v8 = logIdentifier;
       _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Scheduled lock requested. But we are locked and in the middle of authentication. Cancelling active user authentication.", &v7, 0xCu);
     }
 
@@ -833,9 +833,9 @@ uint64_t __36__PXContentPrivacyController_unlock__block_invoke(uint64_t a1)
     v5 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier2 = [(PXContentPrivacyController *)self logIdentifier];
       v7 = 138543362;
-      v8 = v6;
+      v8 = logIdentifier2;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Scheduled lock requested. Resetting any ongoing auto-lock timer.", &v7, 0xCu);
     }
 
@@ -887,26 +887,26 @@ void __45__PXContentPrivacyController_lockImmediately__block_invoke(uint64_t a1)
 - (void)_lockOrCancelAuthenticationIfNeeded
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PXContentPrivacyController *)self shouldLockAfterDelayWhenLeavingViewHierarchy];
+  shouldLockAfterDelayWhenLeavingViewHierarchy = [(PXContentPrivacyController *)self shouldLockAfterDelayWhenLeavingViewHierarchy];
   v4 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PXContentPrivacyController *)self logIdentifier];
-    v6 = v5;
+    logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+    v6 = logIdentifier;
     v7 = @"immediately";
-    if (v3)
+    if (shouldLockAfterDelayWhenLeavingViewHierarchy)
     {
       v7 = @"after delay";
     }
 
     v8 = 138543618;
-    v9 = v5;
+    v9 = logIdentifier;
     v10 = 2114;
     v11 = v7;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: View Controller leaving view hierarchy, locking privacy controller %{public}@, if unlocked, or cancelling authentication.", &v8, 0x16u);
   }
 
-  if (v3)
+  if (shouldLockAfterDelayWhenLeavingViewHierarchy)
   {
     [(PXContentPrivacyController *)self scheduleDelayedLock];
   }
@@ -917,11 +917,11 @@ void __45__PXContentPrivacyController_lockImmediately__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  if (self->_locked != a3)
+  if (self->_locked != locked)
   {
-    self->_locked = a3;
+    self->_locked = locked;
     [(PXContentPrivacyController *)self signalChange:1];
   }
 }
@@ -929,95 +929,95 @@ void __45__PXContentPrivacyController_lockImmediately__block_invoke(uint64_t a1)
 - (void)_cancelAuthentication
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PXContentPrivacyController *)self currentAuthenticationContext];
+  currentAuthenticationContext = [(PXContentPrivacyController *)self currentAuthenticationContext];
 
-  v4 = PLContentPrivacyUIGetLog();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  currentAuthenticationContext3 = PLContentPrivacyUIGetLog();
+  v5 = os_log_type_enabled(currentAuthenticationContext3, OS_LOG_TYPE_DEFAULT);
+  if (currentAuthenticationContext)
   {
     if (v5)
     {
-      v6 = [(PXContentPrivacyController *)self logIdentifier];
-      v7 = [(PXContentPrivacyController *)self currentAuthenticationContext];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+      currentAuthenticationContext2 = [(PXContentPrivacyController *)self currentAuthenticationContext];
       v9 = 138543618;
-      v10 = v6;
+      v10 = logIdentifier;
       v11 = 2112;
-      v12 = v7;
-      _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Cancelling current authentication request: %@", &v9, 0x16u);
+      v12 = currentAuthenticationContext2;
+      _os_log_impl(&dword_1A3C1C000, currentAuthenticationContext3, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Cancelling current authentication request: %@", &v9, 0x16u);
     }
 
-    v4 = [(PXContentPrivacyController *)self currentAuthenticationContext];
-    [v4 invalidate];
+    currentAuthenticationContext3 = [(PXContentPrivacyController *)self currentAuthenticationContext];
+    [currentAuthenticationContext3 invalidate];
   }
 
   else if (v5)
   {
-    v8 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier2 = [(PXContentPrivacyController *)self logIdentifier];
     v9 = 138543362;
-    v10 = v8;
-    _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Received request to cancel authentication, but there wasn't an active authentication request.", &v9, 0xCu);
+    v10 = logIdentifier2;
+    _os_log_impl(&dword_1A3C1C000, currentAuthenticationContext3, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Received request to cancel authentication, but there wasn't an active authentication request.", &v9, 0xCu);
   }
 }
 
 - (BOOL)isPerformingAuthentication
 {
-  v2 = [(PXContentPrivacyController *)self currentAuthenticationContext];
-  v3 = v2 != 0;
+  currentAuthenticationContext = [(PXContentPrivacyController *)self currentAuthenticationContext];
+  v3 = currentAuthenticationContext != 0;
 
   return v3;
 }
 
-- (void)setAuthenticationAttemptDidFailOrWasCancelled:(BOOL)a3
+- (void)setAuthenticationAttemptDidFailOrWasCancelled:(BOOL)cancelled
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_authenticationAttemptDidFailOrWasCancelled != a3)
+  if (self->_authenticationAttemptDidFailOrWasCancelled != cancelled)
   {
-    v3 = a3;
+    cancelledCopy = cancelled;
     v5 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       v7 = @"NO";
-      if (v3)
+      if (cancelledCopy)
       {
         v7 = @"YES";
       }
 
       v8 = v7;
       v9 = 138543618;
-      v10 = v6;
+      v10 = logIdentifier;
       v11 = 2112;
       v12 = v8;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Setting 'authentication did fail or cancelled' flag to %@", &v9, 0x16u);
     }
 
-    self->_authenticationAttemptDidFailOrWasCancelled = v3;
+    self->_authenticationAttemptDidFailOrWasCancelled = cancelledCopy;
     [(PXContentPrivacyController *)self _updateWillPerformAuthenticationAutomatically];
   }
 }
 
-- (void)setWillPerformAuthenticationAutomatically:(BOOL)a3
+- (void)setWillPerformAuthenticationAutomatically:(BOOL)automatically
 {
   v12 = *MEMORY[0x1E69E9840];
   willPerformAuthenticationAutomatically = self->_willPerformAuthenticationAutomatically;
-  if (willPerformAuthenticationAutomatically != a3)
+  if (willPerformAuthenticationAutomatically != automatically)
   {
-    v4 = a3;
-    self->_willPerformAuthenticationAutomatically = a3;
+    automaticallyCopy = automatically;
+    self->_willPerformAuthenticationAutomatically = automatically;
     [(PXContentPrivacyController *)self signalChange:8];
-    v6 = [(PXContentPrivacyController *)self authenticationStack];
-    v7 = [v6 count];
+    authenticationStack = [(PXContentPrivacyController *)self authenticationStack];
+    v7 = [authenticationStack count];
 
     if (v7)
     {
-      if (![(PXContentPrivacyController *)self hasPerformedAuthenticationInStack]&& !willPerformAuthenticationAutomatically && v4)
+      if (![(PXContentPrivacyController *)self hasPerformedAuthenticationInStack]&& !willPerformAuthenticationAutomatically && automaticallyCopy)
       {
         v8 = PLContentPrivacyUIGetLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(PXContentPrivacyController *)self logIdentifier];
+          logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
           v10 = 138543362;
-          v11 = v9;
+          v11 = logIdentifier;
           _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: While in privacy sensitive area, we changed authentication type to one that should automatically attempt authentication. Authenticating...", &v10, 0xCu);
         }
 
@@ -1027,39 +1027,39 @@ void __45__PXContentPrivacyController_lockImmediately__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAutomaticAuthenticationBehavior:(unint64_t)a3
+- (void)setAutomaticAuthenticationBehavior:(unint64_t)behavior
 {
-  if (self->_automaticAuthenticationBehavior != a3)
+  if (self->_automaticAuthenticationBehavior != behavior)
   {
-    self->_automaticAuthenticationBehavior = a3;
+    self->_automaticAuthenticationBehavior = behavior;
     [(PXContentPrivacyController *)self _updateWillPerformAuthenticationAutomatically];
   }
 }
 
 - (void)_updateWillPerformAuthenticationAutomatically
 {
-  v3 = [(PXContentPrivacyController *)self shouldPerformAuthenticationUponAppearing];
-  v4 = [(PXContentPrivacyController *)self authenticationAttemptDidFailOrWasCancelled];
-  v5 = [(PXContentPrivacyController *)self shouldOnlyPerformAutomaticAuthenticationOnceInStack];
-  if (v5)
+  shouldPerformAuthenticationUponAppearing = [(PXContentPrivacyController *)self shouldPerformAuthenticationUponAppearing];
+  authenticationAttemptDidFailOrWasCancelled = [(PXContentPrivacyController *)self authenticationAttemptDidFailOrWasCancelled];
+  shouldOnlyPerformAutomaticAuthenticationOnceInStack = [(PXContentPrivacyController *)self shouldOnlyPerformAutomaticAuthenticationOnceInStack];
+  if (shouldOnlyPerformAutomaticAuthenticationOnceInStack)
   {
-    LOBYTE(v5) = [(PXContentPrivacyController *)self hasPerformedAuthenticationInStack];
+    LOBYTE(shouldOnlyPerformAutomaticAuthenticationOnceInStack) = [(PXContentPrivacyController *)self hasPerformedAuthenticationInStack];
   }
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__PXContentPrivacyController__updateWillPerformAuthenticationAutomatically__block_invoke;
   v6[3] = &__block_descriptor_33_e71_v16__0__PXContentPrivacyController_PXMutableContentPrivacyController__8l;
-  v7 = v3 ^ (v3 && (v4 || v5));
+  v7 = shouldPerformAuthenticationUponAppearing ^ (shouldPerformAuthenticationUponAppearing && (authenticationAttemptDidFailOrWasCancelled || shouldOnlyPerformAutomaticAuthenticationOnceInStack));
   [(PXContentPrivacyController *)self performChanges:v6];
 }
 
-- (void)setTestingOverride_authenticationType:(id)a3
+- (void)setTestingOverride_authenticationType:(id)type
 {
-  v8 = a3;
+  typeCopy = type;
   v5 = self->_testingOverride_authenticationType;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == typeCopy)
   {
   }
 
@@ -1069,7 +1069,7 @@ void __45__PXContentPrivacyController_lockImmediately__block_invoke(uint64_t a1)
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_testingOverride_authenticationType, a3);
+      objc_storeStrong(&self->_testingOverride_authenticationType, type);
       [(PXContentPrivacyController *)self _updateAuthenticationType];
       [(PXContentPrivacyController *)self _updateContentPrivacyEnabled];
       [(PXContentPrivacyController *)self _updateWillPerformAuthenticationAutomatically];
@@ -1085,11 +1085,11 @@ void __45__PXContentPrivacyController_lockImmediately__block_invoke(uint64_t a1)
   [(PXContentPrivacyController *)self _updateWillPerformAuthenticationAutomatically];
 }
 
-- (void)setAuthenticationType:(int64_t)a3
+- (void)setAuthenticationType:(int64_t)type
 {
-  if (self->_authenticationType != a3)
+  if (self->_authenticationType != type)
   {
-    self->_authenticationType = a3;
+    self->_authenticationType = type;
     [(PXContentPrivacyController *)self signalChange:4];
   }
 }
@@ -1116,81 +1116,81 @@ void __45__PXContentPrivacyController_lockImmediately__block_invoke(uint64_t a1)
   [(PXContentPrivacyController *)self performChanges:v4];
 }
 
-- (int64_t)_calculateAuthenticationTypeWithForcedUpdate:(BOOL)a3
+- (int64_t)_calculateAuthenticationTypeWithForcedUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v19 = *MEMORY[0x1E69E9840];
   if (PFProcessIsLaunchedToExecuteTests())
   {
-    v5 = [(PXContentPrivacyController *)self testingOverride_authenticationType];
+    testingOverride_authenticationType = [(PXContentPrivacyController *)self testingOverride_authenticationType];
 
-    if (v5)
+    if (testingOverride_authenticationType)
     {
-      v6 = [(PXContentPrivacyController *)self testingOverride_authenticationType];
-      v7 = [v6 unsignedLongValue];
+      testingOverride_authenticationType2 = [(PXContentPrivacyController *)self testingOverride_authenticationType];
+      unsignedLongValue = [testingOverride_authenticationType2 unsignedLongValue];
 LABEL_10:
-      v11 = v7;
+      v11 = unsignedLongValue;
 
       return v11;
     }
   }
 
   v8 = +[PXContentPrivacySettings sharedInstance];
-  v9 = [v8 simulatedAuthenticationType];
+  simulatedAuthenticationType = [v8 simulatedAuthenticationType];
 
-  if (v9 > 4)
+  if (simulatedAuthenticationType > 4)
   {
-    if (v9 == 5)
+    if (simulatedAuthenticationType == 5)
     {
-      v9 = 6;
+      simulatedAuthenticationType = 6;
       goto LABEL_16;
     }
 
-    if (v9 != 6)
+    if (simulatedAuthenticationType != 6)
     {
       goto LABEL_14;
     }
 
-    v9 = 7;
+    simulatedAuthenticationType = 7;
   }
 
-  else if ((v9 - 2) >= 3)
+  else if ((simulatedAuthenticationType - 2) >= 3)
   {
-    if (!v9)
+    if (!simulatedAuthenticationType)
     {
-      if (v3)
+      if (updateCopy)
       {
-        v10 = [(PXContentPrivacyController *)self authenticationTypeObserver];
-        [v10 updateAuthenticationTypeImmediately];
+        authenticationTypeObserver = [(PXContentPrivacyController *)self authenticationTypeObserver];
+        [authenticationTypeObserver updateAuthenticationTypeImmediately];
       }
 
-      v6 = [(PXContentPrivacyController *)self authenticationTypeObserver];
-      v7 = [v6 authenticationType];
+      testingOverride_authenticationType2 = [(PXContentPrivacyController *)self authenticationTypeObserver];
+      unsignedLongValue = [testingOverride_authenticationType2 authenticationType];
       goto LABEL_10;
     }
 
 LABEL_14:
-    v9 = 1;
+    simulatedAuthenticationType = 1;
   }
 
 LABEL_16:
   v13 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
     v15 = 138543618;
-    v16 = v14;
+    v16 = logIdentifier;
     v17 = 2048;
-    v18 = v9;
+    v18 = simulatedAuthenticationType;
     _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Return SIMULATED authentication type: %ti", &v15, 0x16u);
   }
 
-  return v9;
+  return simulatedAuthenticationType;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXSystemAuthenticationTypeObserverContext == a5)
+  if ((change & 1) != 0 && PXSystemAuthenticationTypeObserverContext == context)
   {
     [(PXContentPrivacyController *)self _updateAuthenticationType];
     [(PXContentPrivacyController *)self _updateContentPrivacyEnabled];
@@ -1199,77 +1199,77 @@ LABEL_16:
   }
 }
 
-- (void)performUserAuthenticationIfNeededFromContext:(id)a3
+- (void)performUserAuthenticationIfNeededFromContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:801 description:@"Provided context for user authentication must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:801 description:@"Provided context for user authentication must not be nil"];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v5 canPerformAuthentication])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![contextCopy canPerformAuthentication])
   {
-    v6 = PLContentPrivacyUIGetLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    authenticationTitle = PLContentPrivacyUIGetLog();
+    if (os_log_type_enabled(authenticationTitle, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       v11 = 138543362;
-      v12 = v9;
-      _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context reported that it cannot perform authentication. Skipping.", &v11, 0xCu);
+      v12 = logIdentifier;
+      _os_log_impl(&dword_1A3C1C000, authenticationTitle, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context reported that it cannot perform authentication. Skipping.", &v11, 0xCu);
     }
   }
 
   else
   {
-    v6 = [v5 authenticationTitle];
+    authenticationTitle = [contextCopy authenticationTitle];
     v7 = PXLocalizedStringFromTable(@"PXContentPrivacyAuthenticationPasscodeTitle", @"PhotosUICore");
-    v8 = [v5 passcodeAuthenticationReason];
-    [(PXContentPrivacyController *)self performUserAuthenticationIfNeededWithTitle:v6 passcodeTitle:v7 passcodeSubtitle:v8 completion:0];
+    passcodeAuthenticationReason = [contextCopy passcodeAuthenticationReason];
+    [(PXContentPrivacyController *)self performUserAuthenticationIfNeededWithTitle:authenticationTitle passcodeTitle:v7 passcodeSubtitle:passcodeAuthenticationReason completion:0];
   }
 }
 
 - (void)_performUserAuthenticationIfNeededAfterForegrounding
 {
-  v3 = [(PXContentPrivacyController *)self authenticationStack];
-  v4 = [v3 count];
+  authenticationStack = [(PXContentPrivacyController *)self authenticationStack];
+  v4 = [authenticationStack count];
 
   if (v4)
   {
-    v5 = [(PXContentPrivacyController *)self shouldPerformAuthenticationUponAppearing];
+    shouldPerformAuthenticationUponAppearing = [(PXContentPrivacyController *)self shouldPerformAuthenticationUponAppearing];
     if ([(PXContentPrivacyController *)self shouldLockAfterDelayWhenLeavingViewHierarchy])
     {
       [(PXContentPrivacyController *)self cancelDelayedLockIfNeeded];
     }
 
-    if (v5)
+    if (shouldPerformAuthenticationUponAppearing)
     {
       [(PXContentPrivacyController *)self setAuthenticationAttemptDidFailOrWasCancelled:0];
-      v6 = [(PXContentPrivacyController *)self authenticationStack];
-      v7 = [v6 lastObject];
+      authenticationStack2 = [(PXContentPrivacyController *)self authenticationStack];
+      lastObject = [authenticationStack2 lastObject];
 
-      [(PXContentPrivacyController *)self performUserAuthenticationIfNeededFromContext:v7];
+      [(PXContentPrivacyController *)self performUserAuthenticationIfNeededFromContext:lastObject];
     }
   }
 }
 
-- (void)viewDidDisappearForAuthenticationContext:(id)a3 withNavigationState:(unint64_t)a4
+- (void)viewDidDisappearForAuthenticationContext:(id)context withNavigationState:(unint64_t)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   [(PXContentPrivacyController *)self _updateCachedAuthenticationStackCount];
-  v7 = PXContentPrivacyDescriptionFromAuthenticationContext(v6);
-  v8 = [(PXContentPrivacyController *)self cachedAuthenticationStackCount];
+  v7 = PXContentPrivacyDescriptionFromAuthenticationContext(contextCopy);
+  cachedAuthenticationStackCount = [(PXContentPrivacyController *)self cachedAuthenticationStackCount];
   v9 = PLContentPrivacyUIGetLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (a4 == 2)
+  if (state == 2)
   {
     if (v10)
     {
-      v11 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       *v20 = 138543618;
-      *&v20[4] = v11;
+      *&v20[4] = logIdentifier;
       *&v20[12] = 2114;
       *&v20[14] = v7;
       v12 = "PrivacyController [%{public}@]: Context %{public}@ did disappear, but is still top of navigation hierarchy. Likely a tab switch of app hide. Removing context from top anyway.";
@@ -1282,13 +1282,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
     if (v10)
     {
-      v11 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       *v20 = 138543618;
-      *&v20[4] = v11;
+      *&v20[4] = logIdentifier;
       *&v20[12] = 2114;
       *&v20[14] = v7;
       v12 = "PrivacyController [%{public}@]: Context %{public}@ did disappear, but is still within navigation hierarchy. Likely pushing into navigation hierarchy.";
@@ -1302,31 +1302,31 @@ LABEL_8:
 
   if (v10)
   {
-    v13 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier2 = [(PXContentPrivacyController *)self logIdentifier];
     *v20 = 138543618;
-    *&v20[4] = v13;
+    *&v20[4] = logIdentifier2;
     *&v20[12] = 2112;
     *&v20[14] = v7;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context did disappear from navigation hierarchy: %@", v20, 0x16u);
   }
 
-  [(PXContentPrivacyController *)self removeContextFromStack:v6];
+  [(PXContentPrivacyController *)self removeContextFromStack:contextCopy];
 LABEL_12:
   v14 = [(PXContentPrivacyController *)self authenticationStack:*v20];
   v15 = [v14 count];
 
-  if (a4 != 1)
+  if (state != 1)
   {
-    v16 = v15 || v8 == 0;
+    v16 = v15 || cachedAuthenticationStackCount == 0;
     v17 = !v16;
-    if (a4 == 2 || v17)
+    if (state == 2 || v17)
     {
       v18 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(PXContentPrivacyController *)self logIdentifier];
+        logIdentifier3 = [(PXContentPrivacyController *)self logIdentifier];
         *v20 = 138543362;
-        *&v20[4] = v19;
+        *&v20[4] = logIdentifier3;
         _os_log_impl(&dword_1A3C1C000, v18, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: View Controller leaving view hierarchy, locking privacy controller, if unlocked, or cancelling authentication.", v20, 0xCu);
       }
 
@@ -1337,36 +1337,36 @@ LABEL_12:
   [(PXContentPrivacyController *)self scheduleAuthenticationStackCountUpdate];
 }
 
-- (void)viewDidAppearForAuthenticationContext:(id)a3
+- (void)viewDidAppearForAuthenticationContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXContentPrivacyController *)self cachedAuthenticationStackCount];
-  v6 = PXContentPrivacyDescriptionFromAuthenticationContext(v4);
+  contextCopy = context;
+  cachedAuthenticationStackCount = [(PXContentPrivacyController *)self cachedAuthenticationStackCount];
+  v6 = PXContentPrivacyDescriptionFromAuthenticationContext(contextCopy);
   v7 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
     v13 = 138543618;
-    v14 = v8;
+    v14 = logIdentifier;
     v15 = 2112;
     v16 = v6;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context did appear: %@", &v13, 0x16u);
   }
 
-  [(PXContentPrivacyController *)self addContextToStack:v4];
-  v9 = [(PXContentPrivacyController *)self authenticationStack];
-  v10 = [v9 count];
+  [(PXContentPrivacyController *)self addContextToStack:contextCopy];
+  authenticationStack = [(PXContentPrivacyController *)self authenticationStack];
+  v10 = [authenticationStack count];
 
-  v11 = [(PXContentPrivacyController *)self shouldPerformAuthenticationUponAppearing];
+  shouldPerformAuthenticationUponAppearing = [(PXContentPrivacyController *)self shouldPerformAuthenticationUponAppearing];
   if ([(PXContentPrivacyController *)self shouldLockAfterDelayWhenLeavingViewHierarchy])
   {
     [(PXContentPrivacyController *)self cancelDelayedLockIfNeeded];
   }
 
-  if (v10 >= v5 && v11)
+  if (v10 >= cachedAuthenticationStackCount && shouldPerformAuthenticationUponAppearing)
   {
-    [(PXContentPrivacyController *)self performUserAuthenticationIfNeededFromContext:v4];
+    [(PXContentPrivacyController *)self performUserAuthenticationIfNeededFromContext:contextCopy];
   }
 
   [(PXContentPrivacyController *)self scheduleAuthenticationStackCountUpdate];
@@ -1384,8 +1384,8 @@ LABEL_12:
 
 - (void)_updateCachedAuthenticationStackCount
 {
-  v3 = [(PXContentPrivacyController *)self authenticationStack];
-  -[PXContentPrivacyController setCachedAuthenticationStackCount:](self, "setCachedAuthenticationStackCount:", [v3 count]);
+  authenticationStack = [(PXContentPrivacyController *)self authenticationStack];
+  -[PXContentPrivacyController setCachedAuthenticationStackCount:](self, "setCachedAuthenticationStackCount:", [authenticationStack count]);
 }
 
 - (void)resetHasPerformedAuthenticationInStack
@@ -1394,9 +1394,9 @@ LABEL_12:
   v3 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
     v5 = 138543362;
-    v6 = v4;
+    v6 = logIdentifier;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Resetting 'has performed authentication in stack' flag", &v5, 0xCu);
   }
 
@@ -1412,89 +1412,89 @@ LABEL_12:
   PXContentPrivacyDescriptionFromAuthenticationContextStack();
 }
 
-- (void)removeContextFromStack:(id)a3
+- (void)removeContextFromStack:(id)stack
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = PXContentPrivacyDescriptionFromAuthenticationContext(v4);
-  v6 = [(PXContentPrivacyController *)self authenticationStack];
-  v7 = [v6 indexOfObject:v4];
+  stackCopy = stack;
+  v5 = PXContentPrivacyDescriptionFromAuthenticationContext(stackCopy);
+  authenticationStack = [(PXContentPrivacyController *)self authenticationStack];
+  v7 = [authenticationStack indexOfObject:stackCopy];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PXContentPrivacyController *)self logIdentifier];
-      v10 = [(PXContentPrivacyController *)self authenticationStack];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+      authenticationStack2 = [(PXContentPrivacyController *)self authenticationStack];
       v27 = 138543874;
-      v28 = v9;
+      v28 = logIdentifier;
       v29 = 2112;
       v30 = v5;
       v31 = 2048;
-      v32 = [v10 count];
+      v32 = [authenticationStack2 count];
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Tried to remove context %@ that doesn't exist in stack. Total: %tu", &v27, 0x20u);
     }
   }
 
   else
   {
-    v11 = [(PXContentPrivacyController *)self authenticationStack];
-    v12 = [v11 lastObject];
+    authenticationStack3 = [(PXContentPrivacyController *)self authenticationStack];
+    lastObject = [authenticationStack3 lastObject];
 
-    v13 = [(PXContentPrivacyController *)self authenticationStack];
-    v14 = v13;
-    if (v12 == v4)
+    authenticationStack4 = [(PXContentPrivacyController *)self authenticationStack];
+    v14 = authenticationStack4;
+    if (lastObject == stackCopy)
     {
-      [v13 removeLastObject];
+      [authenticationStack4 removeLastObject];
 
-      v20 = [(PXContentPrivacyController *)self authenticationStack];
-      v17 = [v20 lastObject];
+      authenticationStack5 = [(PXContentPrivacyController *)self authenticationStack];
+      lastObject2 = [authenticationStack5 lastObject];
 
-      v21 = PXContentPrivacyDescriptionFromAuthenticationContext(v17);
+      v21 = PXContentPrivacyDescriptionFromAuthenticationContext(lastObject2);
       v22 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(PXContentPrivacyController *)self logIdentifier];
-        v24 = [(PXContentPrivacyController *)self authenticationStack];
+        logIdentifier2 = [(PXContentPrivacyController *)self logIdentifier];
+        authenticationStack6 = [(PXContentPrivacyController *)self authenticationStack];
         v27 = 138544130;
-        v28 = v23;
+        v28 = logIdentifier2;
         v29 = 2114;
         v30 = v5;
         v31 = 2114;
         v32 = v21;
         v33 = 2048;
-        v34 = [v24 count];
+        v34 = [authenticationStack6 count];
         _os_log_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context was popped: %{public}@. Context became current: %{public}@. Total: %tu", &v27, 0x2Au);
       }
     }
 
     else
     {
-      v15 = [v13 count] - v7;
+      v15 = [authenticationStack4 count] - v7;
 
-      v16 = [(PXContentPrivacyController *)self authenticationStack];
-      [v16 removeObjectsInRange:{v7, v15}];
+      authenticationStack7 = [(PXContentPrivacyController *)self authenticationStack];
+      [authenticationStack7 removeObjectsInRange:{v7, v15}];
 
-      v17 = PLContentPrivacyUIGetLog();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      lastObject2 = PLContentPrivacyUIGetLog();
+      if (os_log_type_enabled(lastObject2, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(PXContentPrivacyController *)self logIdentifier];
-        v19 = [(PXContentPrivacyController *)self authenticationStack];
+        logIdentifier3 = [(PXContentPrivacyController *)self logIdentifier];
+        authenticationStack8 = [(PXContentPrivacyController *)self authenticationStack];
         v27 = 138544130;
-        v28 = v18;
+        v28 = logIdentifier3;
         v29 = 2114;
         v30 = v5;
         v31 = 2048;
         v32 = v15;
         v33 = 2048;
-        v34 = [v19 count];
-        _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context disappeared but was not at the top: %{public}@, popped %tu contexts until it was removed. Total: %tu", &v27, 0x2Au);
+        v34 = [authenticationStack8 count];
+        _os_log_impl(&dword_1A3C1C000, lastObject2, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context disappeared but was not at the top: %{public}@, popped %tu contexts until it was removed. Total: %tu", &v27, 0x2Au);
       }
     }
 
-    v25 = [(PXContentPrivacyController *)self authenticationStack];
-    v26 = [v25 count];
+    authenticationStack9 = [(PXContentPrivacyController *)self authenticationStack];
+    v26 = [authenticationStack9 count];
 
     if (!v26)
     {
@@ -1506,31 +1506,31 @@ LABEL_12:
   }
 }
 
-- (void)addContextToStack:(id)a3
+- (void)addContextToStack:(id)stack
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = PXContentPrivacyDescriptionFromAuthenticationContext(v4);
-  v6 = [(PXContentPrivacyController *)self authenticationStack];
-  v7 = [v6 indexOfObject:v4];
+  stackCopy = stack;
+  v5 = PXContentPrivacyDescriptionFromAuthenticationContext(stackCopy);
+  authenticationStack = [(PXContentPrivacyController *)self authenticationStack];
+  v7 = [authenticationStack indexOfObject:stackCopy];
 
-  v8 = [(PXContentPrivacyController *)self authenticationStack];
-  v9 = v8;
+  authenticationStack2 = [(PXContentPrivacyController *)self authenticationStack];
+  v9 = authenticationStack2;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v8 addObject:v4];
+    [authenticationStack2 addObject:stackCopy];
 
     v10 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PXContentPrivacyController *)self logIdentifier];
-      v12 = [(PXContentPrivacyController *)self authenticationStack];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+      authenticationStack3 = [(PXContentPrivacyController *)self authenticationStack];
       v21 = 138543874;
-      v22 = v11;
+      v22 = logIdentifier;
       v23 = 2112;
       v24 = v5;
       v25 = 2048;
-      v26 = [v12 count];
+      v26 = [authenticationStack3 count];
       v13 = "PrivacyController [%{public}@]: Adding new context: %@. Total: %tu";
 LABEL_7:
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, v13, &v21, 0x20u);
@@ -1539,21 +1539,21 @@ LABEL_7:
 
   else
   {
-    v14 = [v8 count] - 1;
+    v14 = [authenticationStack2 count] - 1;
 
     if (v7 == v14)
     {
       v10 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(PXContentPrivacyController *)self logIdentifier];
-        v12 = [(PXContentPrivacyController *)self authenticationStack];
+        logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+        authenticationStack3 = [(PXContentPrivacyController *)self authenticationStack];
         v21 = 138543874;
-        v22 = v11;
+        v22 = logIdentifier;
         v23 = 2112;
         v24 = v5;
         v25 = 2048;
-        v26 = [v12 count];
+        v26 = [authenticationStack3 count];
         v13 = "PrivacyController [%{public}@]: Context is already at top of stock: %@. Total: %tu";
         goto LABEL_7;
       }
@@ -1561,26 +1561,26 @@ LABEL_7:
 
     else
     {
-      v15 = [(PXContentPrivacyController *)self authenticationStack];
+      authenticationStack4 = [(PXContentPrivacyController *)self authenticationStack];
       v16 = v7 + 1;
-      v17 = [v15 count] - v16;
+      v17 = [authenticationStack4 count] - v16;
 
-      v18 = [(PXContentPrivacyController *)self authenticationStack];
-      [v18 removeObjectsInRange:{v16, v17}];
+      authenticationStack5 = [(PXContentPrivacyController *)self authenticationStack];
+      [authenticationStack5 removeObjectsInRange:{v16, v17}];
 
       v10 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(PXContentPrivacyController *)self logIdentifier];
-        v20 = [(PXContentPrivacyController *)self authenticationStack];
+        logIdentifier2 = [(PXContentPrivacyController *)self logIdentifier];
+        authenticationStack6 = [(PXContentPrivacyController *)self authenticationStack];
         v21 = 138544130;
-        v22 = v19;
+        v22 = logIdentifier2;
         v23 = 2112;
         v24 = v5;
         v25 = 2048;
         v26 = v17;
         v27 = 2048;
-        v28 = [v20 count];
+        v28 = [authenticationStack6 count];
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Context became current: %@, popped %tu contexts. Total: %tu", &v21, 0x2Au);
       }
     }
@@ -1599,33 +1599,33 @@ LABEL_7:
 
 - (void)_stopAutolockTimer
 {
-  v3 = [(PXContentPrivacyController *)self autolockTimer];
+  autolockTimer = [(PXContentPrivacyController *)self autolockTimer];
 
-  if (v3)
+  if (autolockTimer)
   {
-    v4 = [(PXContentPrivacyController *)self autolockTimer];
-    [v4 invalidate];
+    autolockTimer2 = [(PXContentPrivacyController *)self autolockTimer];
+    [autolockTimer2 invalidate];
 
     [(PXContentPrivacyController *)self setAutolockTimer:0];
   }
 }
 
-- (void)_startAutolockTimerForReason:(unint64_t)a3 resetIfActive:(BOOL)a4
+- (void)_startAutolockTimerForReason:(unint64_t)reason resetIfActive:(BOOL)active
 {
-  v4 = a4;
+  activeCopy = active;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = [(PXContentPrivacyController *)self autolockTimer];
+  autolockTimer = [(PXContentPrivacyController *)self autolockTimer];
 
-  if (!v7)
+  if (!autolockTimer)
   {
 LABEL_6:
     v11 = @"Explicit";
-    if (a3 == 1)
+    if (reason == 1)
     {
       v11 = @"Window Backgrounding";
     }
 
-    if (a3 == 2)
+    if (reason == 2)
     {
       v11 = @"Window Minimizing";
     }
@@ -1636,9 +1636,9 @@ LABEL_6:
     v14 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       *buf = 138543874;
-      v23 = v15;
+      v23 = logIdentifier;
       v24 = 2048;
       v25 = v13;
       v26 = 2114;
@@ -1646,7 +1646,7 @@ LABEL_6:
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Starting auto-lock timer for %.1fs (reason = %{public}@)", buf, 0x20u);
     }
 
-    [(PXContentPrivacyController *)self setAutolockReason:a3];
+    [(PXContentPrivacyController *)self setAutolockReason:reason];
     objc_initWeak(buf, self);
     v16 = MEMORY[0x1E695DFF0];
     v20[0] = MEMORY[0x1E69E9820];
@@ -1657,8 +1657,8 @@ LABEL_6:
     v17 = [v16 scheduledTimerWithTimeInterval:0 repeats:v20 block:v13];
     [(PXContentPrivacyController *)self setAutolockTimer:v17];
 
-    v18 = [(PXContentPrivacyController *)self autolockTimer];
-    [v18 setTolerance:1.0];
+    autolockTimer2 = [(PXContentPrivacyController *)self autolockTimer];
+    [autolockTimer2 setTolerance:1.0];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(buf);
@@ -1667,13 +1667,13 @@ LABEL_6:
 
   v8 = PLContentPrivacyUIGetLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (activeCopy)
   {
     if (v9)
     {
-      v10 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier2 = [(PXContentPrivacyController *)self logIdentifier];
       *buf = 138543362;
-      v23 = v10;
+      v23 = logIdentifier2;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Resetting auto-lock timer", buf, 0xCu);
     }
 
@@ -1683,9 +1683,9 @@ LABEL_6:
 
   if (v9)
   {
-    v19 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier3 = [(PXContentPrivacyController *)self logIdentifier];
     *buf = 138543362;
-    v23 = v19;
+    v23 = logIdentifier3;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Auto-lock timer already running, so not resetting it.", buf, 0xCu);
   }
 
@@ -1708,8 +1708,8 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PXContentPrivacyController *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(PXContentPrivacyController *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1721,41 +1721,41 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v9 removeObserver:v8];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(PXContentPrivacyController *)self observers];
-  [v10 removeAllObjects];
+  observers2 = [(PXContentPrivacyController *)self observers];
+  [observers2 removeAllObjects];
 }
 
-- (void)_lockWithReasonForLogging:(id)a3
+- (void)_lockWithReasonForLogging:(id)logging
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  loggingCopy = logging;
   if ([(PXContentPrivacyController *)self isContentPrivacyEnabled])
   {
     v5 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PXContentPrivacyController *)self logIdentifier];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
       v7 = 138543618;
-      v8 = v6;
+      v8 = logIdentifier;
       v9 = 2114;
-      v10 = v4;
+      v10 = loggingCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Setting privacy controller to LOCKED, because: %{public}@", &v7, 0x16u);
     }
   }
@@ -1763,21 +1763,21 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
   [(PXContentPrivacyController *)self lockImmediately];
 }
 
-- (void)hostApplicationDidBecomeActiveFromNotification:(id)a3
+- (void)hostApplicationDidBecomeActiveFromNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if ([(PXContentPrivacyController *)self isContentPrivacyEnabled])
   {
     v5 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PXContentPrivacyController *)self logIdentifier];
-      v7 = [v4 name];
+      logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
+      name = [notificationCopy name];
       v8 = 138543618;
-      v9 = v6;
+      v9 = logIdentifier;
       v10 = 2114;
-      v11 = v7;
+      v11 = name;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: Host application did become active from notification: %{public}@", &v8, 0x16u);
     }
 
@@ -1785,21 +1785,21 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
   }
 }
 
-- (void)hostApplicationWillResignActiveFromNotification:(id)a3
+- (void)hostApplicationWillResignActiveFromNotification:(id)notification
 {
-  v10 = a3;
+  notificationCopy = notification;
   if ([(PXContentPrivacyController *)self isContentPrivacyEnabled]&& ![(PXContentPrivacyController *)self isPerformingAuthentication])
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 beginActivityWithOptions:0xFFFFFFLL reason:@"Photos Lock Privacy-Sensitive Album"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v5 = [processInfo beginActivityWithOptions:0xFFFFFFLL reason:@"Photos Lock Privacy-Sensitive Album"];
 
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [v10 name];
-    v8 = [v6 stringWithFormat:@"Host application resigned active from notification: %@", v7];
+    name = [notificationCopy name];
+    v8 = [v6 stringWithFormat:@"Host application resigned active from notification: %@", name];
 
     [(PXContentPrivacyController *)self _lockWithReasonForLogging:v8];
-    v9 = [MEMORY[0x1E696AE30] processInfo];
-    [v9 endActivity:v5];
+    processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo2 endActivity:v5];
   }
 }
 
@@ -1826,82 +1826,82 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
   objc_initWeak(location, self);
   if ([(PXContentPrivacyController *)self isRunningInExtension])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v4 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v5 = *MEMORY[0x1E69DDBC8];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndSystemEvents__block_invoke_3;
     v53[3] = &unk_1E7747200;
     objc_copyWeak(&v54, location);
-    v6 = [v3 addObserverForName:v5 object:0 queue:v4 usingBlock:v53];
+    v6 = [defaultCenter addObserverForName:v5 object:0 queue:mainQueue usingBlock:v53];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    v8 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
     v9 = *MEMORY[0x1E69DDAB0];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndSystemEvents__block_invoke_4;
     v51[3] = &unk_1E7747200;
     objc_copyWeak(&v52, location);
-    v10 = [v7 addObserverForName:v9 object:0 queue:v8 usingBlock:v51];
+    v10 = [defaultCenter2 addObserverForName:v9 object:0 queue:mainQueue2 usingBlock:v51];
 
-    v11 = [(PXContentPrivacyController *)self observers];
-    [v11 addObject:v6];
+    observers = [(PXContentPrivacyController *)self observers];
+    [observers addObject:v6];
 
-    v12 = [(PXContentPrivacyController *)self observers];
-    [v12 addObject:v10];
+    observers2 = [(PXContentPrivacyController *)self observers];
+    [observers2 addObject:v10];
     v42 = v6;
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    v14 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue3 = [MEMORY[0x1E696ADC8] mainQueue];
     v15 = *MEMORY[0x1E696A2D8];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndSystemEvents__block_invoke_5;
     v49[3] = &unk_1E7747200;
     objc_copyWeak(&v50, location);
-    v16 = [v13 addObserverForName:v15 object:0 queue:v14 usingBlock:v49];
+    v16 = [defaultCenter3 addObserverForName:v15 object:0 queue:mainQueue3 usingBlock:v49];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    v18 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue4 = [MEMORY[0x1E696ADC8] mainQueue];
     v19 = *MEMORY[0x1E696A2C0];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndSystemEvents__block_invoke_6;
     v47[3] = &unk_1E7747200;
     objc_copyWeak(&v48, location);
-    v20 = [v17 addObserverForName:v19 object:0 queue:v18 usingBlock:v47];
+    v20 = [defaultCenter4 addObserverForName:v19 object:0 queue:mainQueue4 usingBlock:v47];
 
-    v21 = [(PXContentPrivacyController *)self observers];
-    [v21 addObject:v16];
+    observers3 = [(PXContentPrivacyController *)self observers];
+    [observers3 addObject:v16];
 
-    v22 = [(PXContentPrivacyController *)self observers];
-    [v22 addObject:v20];
+    observers4 = [(PXContentPrivacyController *)self observers];
+    [observers4 addObject:v20];
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    v24 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue5 = [MEMORY[0x1E696ADC8] mainQueue];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndSystemEvents__block_invoke_7;
     v45[3] = &unk_1E7747200;
     objc_copyWeak(&v46, location);
-    v25 = [v23 addObserverForName:@"_UIViewServiceHostWillResignActiveNotification" object:0 queue:v24 usingBlock:v45];
+    v25 = [defaultCenter5 addObserverForName:@"_UIViewServiceHostWillResignActiveNotification" object:0 queue:mainQueue5 usingBlock:v45];
 
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    v27 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue6 = [MEMORY[0x1E696ADC8] mainQueue];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndSystemEvents__block_invoke_8;
     v43[3] = &unk_1E7747200;
     objc_copyWeak(&v44, location);
-    v28 = [v26 addObserverForName:@"_UIViewServiceHostDidBecomeActiveNotification" object:0 queue:v27 usingBlock:v43];
+    v28 = [defaultCenter6 addObserverForName:@"_UIViewServiceHostDidBecomeActiveNotification" object:0 queue:mainQueue6 usingBlock:v43];
 
-    v29 = [(PXContentPrivacyController *)self observers];
-    [v29 addObject:v25];
+    observers5 = [(PXContentPrivacyController *)self observers];
+    [observers5 addObject:v25];
 
-    v30 = [(PXContentPrivacyController *)self observers];
-    [v30 addObject:v28];
+    observers6 = [(PXContentPrivacyController *)self observers];
+    [observers6 addObject:v28];
 
     objc_destroyWeak(&v44);
     objc_destroyWeak(&v46);
@@ -1915,8 +1915,8 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
 
   else
   {
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    v35 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue7 = [MEMORY[0x1E696ADC8] mainQueue];
     v36 = *MEMORY[0x1E69DDAC8];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
@@ -1924,10 +1924,10 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
     v57[3] = &unk_1E7747200;
     v32 = &v58;
     objc_copyWeak(&v58, location);
-    v33 = [v34 addObserverForName:v36 object:0 queue:v35 usingBlock:v57];
+    v33 = [defaultCenter7 addObserverForName:v36 object:0 queue:mainQueue7 usingBlock:v57];
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    v38 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue8 = [MEMORY[0x1E696ADC8] mainQueue];
     v39 = *MEMORY[0x1E69DE360];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
@@ -1935,13 +1935,13 @@ void __73__PXContentPrivacyController__startAutolockTimerForReason_resetIfActive
     v55[3] = &unk_1E7747200;
     v31 = &v56;
     objc_copyWeak(&v56, location);
-    v10 = [v37 addObserverForName:v39 object:0 queue:v38 usingBlock:v55];
+    v10 = [defaultCenter8 addObserverForName:v39 object:0 queue:mainQueue8 usingBlock:v55];
 
-    v40 = [(PXContentPrivacyController *)self observers];
-    [v40 addObject:v33];
+    observers7 = [(PXContentPrivacyController *)self observers];
+    [observers7 addObject:v33];
 
-    v41 = [(PXContentPrivacyController *)self observers];
-    [v41 addObject:v10];
+    observers8 = [(PXContentPrivacyController *)self observers];
+    [observers8 addObject:v10];
   }
 
   objc_destroyWeak(v31);
@@ -2009,9 +2009,9 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
   v3 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PXContentPrivacyController *)self logIdentifier];
+    logIdentifier = [(PXContentPrivacyController *)self logIdentifier];
     *buf = 138543362;
-    v8 = v4;
+    v8 = logIdentifier;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "PrivacyController [%{public}@]: dealloc", buf, 0xCu);
   }
 
@@ -2030,11 +2030,11 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
   [(PXContentPrivacyController *)&v6 dealloc];
 }
 
-- (PXContentPrivacyController)initWithContentPrivacyEnabledForTesting:(id)a3 availableAuthenticationTypeForTesting:(id)a4 assetCollectionToObserveForTesting:(id)a5 automaticAuthenticationBehaviorForTesting:(unint64_t)a6
+- (PXContentPrivacyController)initWithContentPrivacyEnabledForTesting:(id)testing availableAuthenticationTypeForTesting:(id)forTesting assetCollectionToObserveForTesting:(id)observeForTesting automaticAuthenticationBehaviorForTesting:(unint64_t)behaviorForTesting
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  testingCopy = testing;
+  forTestingCopy = forTesting;
+  observeForTestingCopy = observeForTesting;
   if (PFProcessIsLaunchedToExecuteTests())
   {
     v18.receiver = self;
@@ -2043,51 +2043,51 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_contentPrivacyEnabledNumberForTesting, a3);
-      objc_storeStrong(&v15->_testingOverride_authenticationType, a4);
-      [(PXContentPrivacyController *)v15 commonInitWithLogIdentifier:@"test" automaticAuthenticationBehavior:a6];
-      objc_storeStrong(&v15->_assetCollectionToObserve, a5);
-      v15->_automaticAuthenticationBehavior = a6;
+      objc_storeStrong(&v14->_contentPrivacyEnabledNumberForTesting, testing);
+      objc_storeStrong(&v15->_testingOverride_authenticationType, forTesting);
+      [(PXContentPrivacyController *)v15 commonInitWithLogIdentifier:@"test" automaticAuthenticationBehavior:behaviorForTesting];
+      objc_storeStrong(&v15->_assetCollectionToObserve, observeForTesting);
+      v15->_automaticAuthenticationBehavior = behaviorForTesting;
       [(PXContentPrivacyController *)v15 _updateAuthenticationType];
       [(PXContentPrivacyController *)v15 _updateContentPrivacyEnabled];
       [(PXContentPrivacyController *)v15 _updateWillPerformAuthenticationAutomatically];
     }
 
     self = v15;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (PXContentPrivacyController)initWithAssetCollectionToObserve:(id)a3 logIdentifier:(id)a4
+- (PXContentPrivacyController)initWithAssetCollectionToObserve:(id)observe logIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PXContentPrivacyController *)self initWithLogIdentifier:a4];
+  observeCopy = observe;
+  v7 = [(PXContentPrivacyController *)self initWithLogIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
-    [(PXContentPrivacyController *)v7 setAssetCollectionToObserve:v6];
-    v9 = [v6 px_isUserSmartAlbum];
+    [(PXContentPrivacyController *)v7 setAssetCollectionToObserve:observeCopy];
+    px_isUserSmartAlbum = [observeCopy px_isUserSmartAlbum];
     if ([(PXDisplayCollection *)v8->_assetCollectionToObserve px_isUserSmartAlbum])
     {
       [(PXContentPrivacyController *)v8 _beginObservingAssetCollectionChanges];
     }
 
-    if ((v8->_contentPrivacyEnabled & v9 & 1) != 0 && ([v6 px_isPrivacySensitiveAlbum] & 1) == 0)
+    if ((v8->_contentPrivacyEnabled & px_isUserSmartAlbum & 1) != 0 && ([observeCopy px_isPrivacySensitiveAlbum] & 1) == 0)
     {
       v10 = PLContentPrivacyUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(PXContentPrivacyController *)v8 logIdentifier];
+        logIdentifier = [(PXContentPrivacyController *)v8 logIdentifier];
         v13 = 138543362;
-        v14 = v11;
+        v14 = logIdentifier;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_INFO, "PrivacyController [%{public}@]: Initializing with contentPrivacyEnabled/locked = NO, since this smart album is not currently privacy sensitive", &v13, 0xCu);
       }
 
@@ -2099,32 +2099,32 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
   return v8;
 }
 
-- (PXContentPrivacyController)initWithLogIdentifier:(id)a3
+- (PXContentPrivacyController)initWithLogIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7.receiver = self;
   v7.super_class = PXContentPrivacyController;
   v5 = [(PXContentPrivacyController *)&v7 init];
   if (v5)
   {
-    -[PXContentPrivacyController commonInitWithLogIdentifier:automaticAuthenticationBehavior:](v5, "commonInitWithLogIdentifier:automaticAuthenticationBehavior:", v4, [objc_opt_class() automaticAuthenticationBehaviorFromInternalSettings]);
+    -[PXContentPrivacyController commonInitWithLogIdentifier:automaticAuthenticationBehavior:](v5, "commonInitWithLogIdentifier:automaticAuthenticationBehavior:", identifierCopy, [objc_opt_class() automaticAuthenticationBehaviorFromInternalSettings]);
   }
 
   return v5;
 }
 
-- (void)commonInitWithLogIdentifier:(id)a3 automaticAuthenticationBehavior:(unint64_t)a4
+- (void)commonInitWithLogIdentifier:(id)identifier automaticAuthenticationBehavior:(unint64_t)behavior
 {
-  v6 = [a3 copy];
+  v6 = [identifier copy];
   logIdentifier = self->_logIdentifier;
   self->_logIdentifier = v6;
 
   if (![(NSString *)self->_logIdentifier length])
   {
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v10 = self->_logIdentifier;
-    self->_logIdentifier = v9;
+    self->_logIdentifier = uUIDString;
   }
 
   v11 = +[PXSystemAuthenticationTypeObserver sharedObserver];
@@ -2133,10 +2133,10 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
 
   self->_authenticationType = [(PXSystemAuthenticationTypeObserver *)self->_authenticationTypeObserver authenticationType];
   [(PXSystemAuthenticationTypeObserver *)self->_authenticationTypeObserver registerChangeObserver:self context:PXSystemAuthenticationTypeObserverContext];
-  v13 = [(PXContentPrivacyController *)self _isContentPrivacyPrefEnabled];
-  self->_contentPrivacyEnabled = v13;
-  self->_locked = v13;
-  switch(a4)
+  _isContentPrivacyPrefEnabled = [(PXContentPrivacyController *)self _isContentPrivacyPrefEnabled];
+  self->_contentPrivacyEnabled = _isContentPrivacyPrefEnabled;
+  self->_locked = _isContentPrivacyPrefEnabled;
+  switch(behavior)
   {
     case 2uLL:
       self->_willPerformAuthenticationAutomatically = 1;
@@ -2165,16 +2165,16 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
 + (unint64_t)automaticAuthenticationBehaviorFromInternalSettings
 {
   v2 = +[PXContentPrivacySettings sharedInstance];
-  v3 = [v2 authenticationBehaviorUponAppearing];
+  authenticationBehaviorUponAppearing = [v2 authenticationBehaviorUponAppearing];
 
-  if (v3 == 1)
+  if (authenticationBehaviorUponAppearing == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (authenticationBehaviorUponAppearing == 2);
   }
 }
 
@@ -2193,9 +2193,9 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
   _privacyControllersByKey = 0;
 }
 
-+ (unint64_t)lockStateForCollection:(id)a3
++ (unint64_t)lockStateForCollection:(id)collection
 {
-  v3 = [a1 privacyControllerForCollection:a3];
+  v3 = [self privacyControllerForCollection:collection];
   if ([v3 isContentPrivacyEnabled])
   {
     if ([v3 isLocked])
@@ -2217,12 +2217,12 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
   return v4;
 }
 
-+ (id)privacyControllerForCollection:(id)a3
++ (id)privacyControllerForCollection:(id)collection
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectionCopy = collection;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 px_isPrivacySensitiveAlbum] & 1) == 0 && !objc_msgSend(v5, "px_isUserSmartAlbum"))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([collectionCopy px_isPrivacySensitiveAlbum] & 1) == 0 && !objc_msgSend(collectionCopy, "px_isUserSmartAlbum"))
   {
     v12 = 0;
     goto LABEL_19;
@@ -2235,13 +2235,13 @@ void __83__PXContentPrivacyController__beginObservingApplicationStateChangesAndS
     _privacyControllersByKey = v6;
   }
 
-  v8 = v5;
+  v8 = collectionCopy;
   if (!v8)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PXContentPrivacyController.m" lineNumber:159 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v26}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:159 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v26}];
 LABEL_24:
 
     goto LABEL_8;
@@ -2250,19 +2250,19 @@ LABEL_24:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = objc_opt_class();
     v26 = NSStringFromClass(v27);
-    v28 = [v8 px_descriptionForAssertionMessage];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PXContentPrivacyController.m" lineNumber:159 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v26, v28}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentPrivacyController.m" lineNumber:159 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v26, px_descriptionForAssertionMessage}];
 
     goto LABEL_24;
   }
 
 LABEL_8:
-  v9 = [v8 assetCollectionSubtype];
-  v10 = [v8 localIdentifier];
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld_%@", v9, v10];
+  assetCollectionSubtype = [v8 assetCollectionSubtype];
+  localIdentifier = [v8 localIdentifier];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld_%@", assetCollectionSubtype, localIdentifier];
   v12 = [_privacyControllersByKey objectForKeyedSubscript:v11];
   if (!v12)
   {
@@ -2276,23 +2276,23 @@ LABEL_8:
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_INFO, "PrivacyController: Creating instance of privacy controller, tracked by key: %@ for asset collection: %@", buf, 0x16u);
     }
 
-    v14 = [v8 localizedTitle];
-    v15 = v14;
-    if (v14)
+    localizedTitle = [v8 localizedTitle];
+    v15 = localizedTitle;
+    if (localizedTitle)
     {
-      v16 = v14;
+      title = localizedTitle;
     }
 
     else
     {
-      v16 = [v8 title];
+      title = [v8 title];
     }
 
-    v17 = v16;
+    v17 = title;
 
-    v18 = [v17 lowercaseString];
-    v19 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v20 = [v18 stringByTrimmingCharactersInSet:v19];
+    lowercaseString = [v17 lowercaseString];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v20 = [lowercaseString stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v21 = [v20 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F1741150];
 
     if (![v21 length])

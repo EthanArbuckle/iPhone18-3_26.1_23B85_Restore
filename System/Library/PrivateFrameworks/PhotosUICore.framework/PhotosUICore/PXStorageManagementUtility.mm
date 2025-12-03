@@ -1,21 +1,21 @@
 @interface PXStorageManagementUtility
-+ (id)storageTipAssetCollectionForType:(unint64_t)a3 photoLibrary:(id)a4;
-+ (id)storageTipAssetFetchOptionsForType:(unint64_t)a3 photoLibrary:(id)a4;
-+ (id)storageViewForTipType:(unint64_t)a3 customAssetSelectionHandler:(id)a4;
-+ (unint64_t)_totalBytesSizeFromQuotaDictionary:(id)a3;
++ (id)storageTipAssetCollectionForType:(unint64_t)type photoLibrary:(id)library;
++ (id)storageTipAssetFetchOptionsForType:(unint64_t)type photoLibrary:(id)library;
++ (id)storageViewForTipType:(unint64_t)type customAssetSelectionHandler:(id)handler;
++ (unint64_t)_totalBytesSizeFromQuotaDictionary:(id)dictionary;
 - (BOOL)isCPLEnabled;
 - (BOOL)isCPLInExitMode;
 - (BOOL)isDeletableItemsInTrash;
 - (BOOL)shouldHideCPL;
 - (BOOL)shouldShowCloudStorageTip;
 - (NSNumber)sizeForRecentlyDeletedItems;
-- (PXStorageManagementUtility)initWithPhotoLibrary:(id)a3;
+- (PXStorageManagementUtility)initWithPhotoLibrary:(id)library;
 - (id)_assetsInTrash;
 - (unint64_t)cloudStorageTotalBytesSize;
 - (unint64_t)localStorageTotalBytesSize;
-- (void)enableCPLWithCompletionBlock:(id)a3;
-- (void)expungeRecentlyDeletedItemsWithCompletionBlock:(id)a3;
-- (void)purgeableSizeAndOriginalsInLibrary:(id)a3;
+- (void)enableCPLWithCompletionBlock:(id)block;
+- (void)expungeRecentlyDeletedItemsWithCompletionBlock:(id)block;
+- (void)purgeableSizeAndOriginalsInLibrary:(id)library;
 @end
 
 @implementation PXStorageManagementUtility
@@ -23,14 +23,14 @@
 - (unint64_t)localStorageTotalBytesSize
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStorageManagementUtility *)self localStorageTotalBytes];
+  localStorageTotalBytes = [(PXStorageManagementUtility *)self localStorageTotalBytes];
 
-  if (!v3)
+  if (!localStorageTotalBytes)
   {
-    v4 = [(PXStorageManagementUtility *)self photoLibrary];
+    photoLibrary = [(PXStorageManagementUtility *)self photoLibrary];
     v16 = 0;
     v17 = 0;
-    v5 = [v4 localResourceBytesUsed:&v17 error:&v16];
+    v5 = [photoLibrary localResourceBytesUsed:&v17 error:&v16];
     v6 = v17;
     v7 = v16;
 
@@ -47,30 +47,30 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = MEMORY[0x1E696AAF0];
-    v11 = [(PXStorageManagementUtility *)self localStorageTotalBytes];
-    v12 = [v10 stringFromByteCount:objc_msgSend(v11 countStyle:{"unsignedLongValue"), 0}];
+    localStorageTotalBytes2 = [(PXStorageManagementUtility *)self localStorageTotalBytes];
+    v12 = [v10 stringFromByteCount:objc_msgSend(localStorageTotalBytes2 countStyle:{"unsignedLongValue"), 0}];
     *buf = 138412290;
     v19 = v12;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_INFO, "Local Storage Recoverable: %@", buf, 0xCu);
   }
 
-  v13 = [(PXStorageManagementUtility *)self localStorageTotalBytes];
-  v14 = [v13 unsignedLongValue];
+  localStorageTotalBytes3 = [(PXStorageManagementUtility *)self localStorageTotalBytes];
+  unsignedLongValue = [localStorageTotalBytes3 unsignedLongValue];
 
-  return v14;
+  return unsignedLongValue;
 }
 
 - (unint64_t)cloudStorageTotalBytesSize
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStorageManagementUtility *)self cloudStorageTotalBytes];
+  cloudStorageTotalBytes = [(PXStorageManagementUtility *)self cloudStorageTotalBytes];
 
-  if (!v3)
+  if (!cloudStorageTotalBytes)
   {
-    v4 = [(PXStorageManagementUtility *)self photoLibrary];
+    photoLibrary = [(PXStorageManagementUtility *)self photoLibrary];
     v16 = 0;
     v17 = 0;
-    v5 = [v4 cloudQuotaResourceBytesUsed:&v17 error:&v16];
+    v5 = [photoLibrary cloudQuotaResourceBytesUsed:&v17 error:&v16];
     v6 = v17;
     v7 = v16;
 
@@ -87,37 +87,37 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = MEMORY[0x1E696AAF0];
-    v11 = [(PXStorageManagementUtility *)self cloudStorageTotalBytes];
-    v12 = [v10 stringFromByteCount:objc_msgSend(v11 countStyle:{"unsignedLongValue"), 0}];
+    cloudStorageTotalBytes2 = [(PXStorageManagementUtility *)self cloudStorageTotalBytes];
+    v12 = [v10 stringFromByteCount:objc_msgSend(cloudStorageTotalBytes2 countStyle:{"unsignedLongValue"), 0}];
     *buf = 138412290;
     v19 = v12;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_INFO, "Cloud Storage Recoverable: %@", buf, 0xCu);
   }
 
-  v13 = [(PXStorageManagementUtility *)self cloudStorageTotalBytes];
-  v14 = [v13 unsignedLongValue];
+  cloudStorageTotalBytes3 = [(PXStorageManagementUtility *)self cloudStorageTotalBytes];
+  unsignedLongValue = [cloudStorageTotalBytes3 unsignedLongValue];
 
-  return v14;
+  return unsignedLongValue;
 }
 
 - (BOOL)shouldShowCloudStorageTip
 {
-  v3 = [(PXStorageManagementUtility *)self isCPLEnabled];
-  if (v3)
-    LOBYTE(v3) = !-[PXStorageManagementUtility isCPLInExitMode](self, "isCPLInExitMode") && (-[PXStorageManagementUtility photoLibrary](self, "photoLibrary"), v4 = {;
+  isCPLEnabled = [(PXStorageManagementUtility *)self isCPLEnabled];
+  if (isCPLEnabled)
+    LOBYTE(isCPLEnabled) = !-[PXStorageManagementUtility isCPLInExitMode](self, "isCPLInExitMode") && (-[PXStorageManagementUtility photoLibrary](self, "photoLibrary"), v4 = {;
   }
 
-  return v3;
+  return isCPLEnabled;
 }
 
-- (void)expungeRecentlyDeletedItemsWithCompletionBlock:(id)a3
+- (void)expungeRecentlyDeletedItemsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXStorageManagementUtility *)self _assetsInTrash];
-  if ([v5 count])
+  blockCopy = block;
+  _assetsInTrash = [(PXStorageManagementUtility *)self _assetsInTrash];
+  if ([_assetsInTrash count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 photoLibrary];
+    firstObject = [_assetsInTrash firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
     v8 = objc_alloc_init(MEMORY[0x1E69786A0]);
     [v8 setExpungeSource:5];
@@ -126,9 +126,9 @@
     v10[1] = 3221225472;
     v10[2] = __77__PXStorageManagementUtility_expungeRecentlyDeletedItemsWithCompletionBlock___block_invoke;
     v10[3] = &unk_1E774BD88;
-    v11 = v5;
-    v12 = v4;
-    [v9 performBatchExpungeWithAssets:v11 deleteOptions:v8 photoLibrary:v7 completionHandler:v10];
+    v11 = _assetsInTrash;
+    v12 = blockCopy;
+    [v9 performBatchExpungeWithAssets:v11 deleteOptions:v8 photoLibrary:photoLibrary completionHandler:v10];
   }
 }
 
@@ -153,10 +153,10 @@ void __77__PXStorageManagementUtility_expungeRecentlyDeletedItemsWithCompletionB
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enableCPLWithCompletionBlock:(id)a3
+- (void)enableCPLWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v3 = v4;
+  blockCopy = block;
+  v3 = blockCopy;
   PLCanEnableCloudPhotoLibrary();
 }
 
@@ -217,8 +217,8 @@ uint64_t __59__PXStorageManagementUtility_enableCPLWithCompletionBlock___block_i
 
 - (BOOL)isDeletableItemsInTrash
 {
-  v2 = [(PXStorageManagementUtility *)self _assetsInTrash];
-  v3 = [v2 count] != 0;
+  _assetsInTrash = [(PXStorageManagementUtility *)self _assetsInTrash];
+  v3 = [_assetsInTrash count] != 0;
 
   return v3;
 }
@@ -226,12 +226,12 @@ uint64_t __59__PXStorageManagementUtility_enableCPLWithCompletionBlock___block_i
 - (NSNumber)sizeForRecentlyDeletedItems
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(PXStorageManagementUtility *)self _assetsInTrash];
+  _assetsInTrash = [(PXStorageManagementUtility *)self _assetsInTrash];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [_assetsInTrash countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -243,14 +243,14 @@ uint64_t __59__PXStorageManagementUtility_enableCPLWithCompletionBlock___block_i
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_assetsInTrash);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) originalMetadataProperties];
-        v5 += [v8 originalFilesize];
+        originalMetadataProperties = [*(*(&v11 + 1) + 8 * i) originalMetadataProperties];
+        v5 += [originalMetadataProperties originalFilesize];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [_assetsInTrash countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -270,8 +270,8 @@ uint64_t __59__PXStorageManagementUtility_enableCPLWithCompletionBlock___block_i
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E6978830];
-  v3 = [(PXStorageManagementUtility *)self photoLibrary];
-  v4 = [v2 fetchOptionsWithInclusiveDefaultsForPhotoLibrary:v3];
+  photoLibrary = [(PXStorageManagementUtility *)self photoLibrary];
+  v4 = [v2 fetchOptionsWithInclusiveDefaultsForPhotoLibrary:photoLibrary];
 
   v10[0] = *MEMORY[0x1E6978CA8];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -282,20 +282,20 @@ uint64_t __59__PXStorageManagementUtility_enableCPLWithCompletionBlock___block_i
   [v4 setInternalPredicate:v6];
 
   v7 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v4];
-  v8 = [v7 fetchedObjects];
+  fetchedObjects = [v7 fetchedObjects];
 
-  return v8;
+  return fetchedObjects;
 }
 
 - (BOOL)shouldHideCPL
 {
-  v2 = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
-  v3 = [v2 cachedPrimaryAppleAccount];
+  pl_sharedAccountStore = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
+  cachedPrimaryAppleAccount = [pl_sharedAccountStore cachedPrimaryAppleAccount];
 
-  if (v3)
+  if (cachedPrimaryAppleAccount)
   {
-    v4 = [v3 provisionedDataclasses];
-    v5 = [v4 containsObject:*MEMORY[0x1E6959AE8]] ^ 1;
+    provisionedDataclasses = [cachedPrimaryAppleAccount provisionedDataclasses];
+    v5 = [provisionedDataclasses containsObject:*MEMORY[0x1E6959AE8]] ^ 1;
   }
 
   else
@@ -303,8 +303,8 @@ uint64_t __59__PXStorageManagementUtility_enableCPLWithCompletionBlock___block_i
     LOBYTE(v5) = 1;
   }
 
-  v6 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v7 = [v6 BOOLRestrictionForFeature:*MEMORY[0x1E69ADE38]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v7 = [mEMORY[0x1E69ADFB8] BOOLRestrictionForFeature:*MEMORY[0x1E69ADE38]];
 
   if (v7 == 2)
   {
@@ -321,37 +321,37 @@ uint64_t __59__PXStorageManagementUtility_enableCPLWithCompletionBlock___block_i
 
 - (BOOL)isCPLInExitMode
 {
-  v2 = [(PXStorageManagementUtility *)self photoLibrary];
-  v3 = [v2 cplStatus];
-  v4 = [v3 exitDeleteTime];
-  v5 = v4 != 0;
+  photoLibrary = [(PXStorageManagementUtility *)self photoLibrary];
+  cplStatus = [photoLibrary cplStatus];
+  exitDeleteTime = [cplStatus exitDeleteTime];
+  v5 = exitDeleteTime != 0;
 
   return v5;
 }
 
 - (BOOL)isCPLEnabled
 {
-  v2 = [(PXStorageManagementUtility *)self photoLibrary];
-  v3 = [v2 isCloudPhotoLibraryEnabled];
+  photoLibrary = [(PXStorageManagementUtility *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  return v3;
+  return isCloudPhotoLibraryEnabled;
 }
 
-- (void)purgeableSizeAndOriginalsInLibrary:(id)a3
+- (void)purgeableSizeAndOriginalsInLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(PXStorageManagementUtility *)self photoLibrary];
-  v6 = [v5 photoLibraryURL];
+  libraryCopy = library;
+  photoLibrary = [(PXStorageManagementUtility *)self photoLibrary];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
 
-  v7 = [MEMORY[0x1E69BE688] sharedAssetsdClientForPhotoLibraryURL:v6];
-  v8 = [v7 libraryInternalClient];
+  v7 = [MEMORY[0x1E69BE688] sharedAssetsdClientForPhotoLibraryURL:photoLibraryURL];
+  libraryInternalClient = [v7 libraryInternalClient];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__PXStorageManagementUtility_purgeableSizeAndOriginalsInLibrary___block_invoke;
   v10[3] = &unk_1E773EA08;
-  v11 = v4;
-  v9 = v4;
-  [v8 getLibrarySizesFromDB:1 completionHandler:v10];
+  v11 = libraryCopy;
+  v9 = libraryCopy;
+  [libraryInternalClient getLibrarySizesFromDB:1 completionHandler:v10];
 }
 
 void __65__PXStorageManagementUtility_purgeableSizeAndOriginalsInLibrary___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -405,16 +405,16 @@ void __65__PXStorageManagementUtility_purgeableSizeAndOriginalsInLibrary___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (PXStorageManagementUtility)initWithPhotoLibrary:(id)a3
+- (PXStorageManagementUtility)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = PXStorageManagementUtility;
   v6 = [(PXStorageManagementUtility *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     cloudStorageTotalBytes = v7->_cloudStorageTotalBytes;
     v7->_cloudStorageTotalBytes = 0;
 
@@ -425,9 +425,9 @@ void __65__PXStorageManagementUtility_purgeableSizeAndOriginalsInLibrary___block
   return v7;
 }
 
-+ (unint64_t)_totalBytesSizeFromQuotaDictionary:(id)a3
++ (unint64_t)_totalBytesSizeFromQuotaDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -437,7 +437,7 @@ void __65__PXStorageManagementUtility_purgeableSizeAndOriginalsInLibrary___block
   v6[2] = __65__PXStorageManagementUtility__totalBytesSizeFromQuotaDictionary___block_invoke;
   v6[3] = &unk_1E773EA30;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 
@@ -462,14 +462,14 @@ void __65__PXStorageManagementUtility__totalBytesSizeFromQuotaDictionary___block
   }
 }
 
-+ (id)storageViewForTipType:(unint64_t)a3 customAssetSelectionHandler:(id)a4
++ (id)storageViewForTipType:(unint64_t)type customAssetSelectionHandler:(id)handler
 {
-  v8 = a4;
-  if (a3 <= 1)
+  handlerCopy = handler;
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_9;
       }
@@ -485,18 +485,18 @@ void __65__PXStorageManagementUtility__totalBytesSizeFromQuotaDictionary___block
     goto LABEL_8;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v9 = off_1E771E308;
 LABEL_8:
-    v4 = [objc_alloc(*v9) initWithCustomAssetSelectionHandler:v8];
+    v4 = [objc_alloc(*v9) initWithCustomAssetSelectionHandler:handlerCopy];
     goto LABEL_9;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXStorageManagementUtility.m" lineNumber:231 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStorageManagementUtility.m" lineNumber:231 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -506,75 +506,75 @@ LABEL_9:
   return v4;
 }
 
-+ (id)storageTipAssetFetchOptionsForType:(unint64_t)a3 photoLibrary:(id)a4
++ (id)storageTipAssetFetchOptionsForType:(unint64_t)type photoLibrary:(id)library
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 librarySpecificFetchOptions];
-  if ([v5 isCloudPhotoLibraryEnabled])
+  libraryCopy = library;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  if ([libraryCopy isCloudPhotoLibraryEnabled])
   {
     v7 = +[PXStorageManagementUtility predicateForUploadedAssetFetch];
-    [v6 setInternalPredicate:v7];
+    [librarySpecificFetchOptions setInternalPredicate:v7];
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v8 = [v6 internalPredicate];
-    if (v8)
+    internalPredicate = [librarySpecificFetchOptions internalPredicate];
+    if (internalPredicate)
     {
       v9 = MEMORY[0x1E696AB28];
-      v10 = [v6 internalPredicate];
-      v26[0] = v10;
+      internalPredicate2 = [librarySpecificFetchOptions internalPredicate];
+      v26[0] = internalPredicate2;
       v11 = +[PXStorageManagementUtility predicateForMinimumVideoSize];
       v26[1] = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
       v13 = [v9 andPredicateWithSubpredicates:v12];
-      [v6 setInternalPredicate:v13];
+      [librarySpecificFetchOptions setInternalPredicate:v13];
     }
 
     else
     {
       v14 = +[PXStorageManagementUtility predicateForMinimumVideoSize];
-      [v6 setInternalPredicate:v14];
+      [librarySpecificFetchOptions setInternalPredicate:v14];
     }
   }
 
-  v15 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v5];
-  v16 = [v15 sharedLibrary];
-  v17 = [v16 isOwned];
+  v15 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:libraryCopy];
+  sharedLibrary = [v15 sharedLibrary];
+  isOwned = [sharedLibrary isOwned];
 
-  if ((v17 & 1) == 0)
+  if ((isOwned & 1) == 0)
   {
-    v18 = [v6 internalPredicate];
-    if (v18)
+    internalPredicate3 = [librarySpecificFetchOptions internalPredicate];
+    if (internalPredicate3)
     {
       v19 = MEMORY[0x1E696AB28];
-      v20 = [v6 internalPredicate];
-      v25[0] = v20;
+      internalPredicate4 = [librarySpecificFetchOptions internalPredicate];
+      v25[0] = internalPredicate4;
       v21 = +[PXStorageManagementUtility _predicateForPersonalLibraryAssets];
       v25[1] = v21;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
       v23 = [v19 andPredicateWithSubpredicates:v22];
-      [v6 setInternalPredicate:v23];
+      [librarySpecificFetchOptions setInternalPredicate:v23];
     }
 
     else
     {
-      v20 = +[PXStorageManagementUtility _predicateForPersonalLibraryAssets];
-      [v6 setInternalPredicate:v20];
+      internalPredicate4 = +[PXStorageManagementUtility _predicateForPersonalLibraryAssets];
+      [librarySpecificFetchOptions setInternalPredicate:internalPredicate4];
     }
   }
 
-  return v6;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)storageTipAssetCollectionForType:(unint64_t)a3 photoLibrary:(id)a4
++ (id)storageTipAssetCollectionForType:(unint64_t)type photoLibrary:(id)library
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 > 1)
+  libraryCopy = library;
+  v8 = libraryCopy;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v10 = 202;
     }
@@ -582,10 +582,10 @@ LABEL_9:
     else
     {
       v10 = 0;
-      if (a3 == 3)
+      if (type == 3)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:a1 file:@"PXStorageManagementUtility.m" lineNumber:195 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStorageManagementUtility.m" lineNumber:195 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -595,12 +595,12 @@ LABEL_9:
   else
   {
     v9 = 211;
-    if (a3 != 1)
+    if (type != 1)
     {
       v9 = 0;
     }
 
-    if (a3)
+    if (type)
     {
       v10 = v9;
     }
@@ -611,7 +611,7 @@ LABEL_9:
     }
   }
 
-  v11 = [v7 px_assetCollectionForSmartAlbumWithSubtype:v10];
+  v11 = [libraryCopy px_assetCollectionForSmartAlbumWithSubtype:v10];
 
   return v11;
 }

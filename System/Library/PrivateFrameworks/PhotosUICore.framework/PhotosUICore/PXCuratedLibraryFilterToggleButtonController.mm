@@ -1,9 +1,9 @@
 @interface PXCuratedLibraryFilterToggleButtonController
-+ (id)foregroundColorOverLegibilityGradient:(BOOL)a3;
++ (id)foregroundColorOverLegibilityGradient:(BOOL)gradient;
 - (BOOL)isUsingCustomSortOrder;
 - (BOOL)shouldHideButton;
-- (PXCuratedLibraryFilterToggleButtonController)initWithButtonConfiguration:(id)a3 roundedButton:(BOOL)a4;
-- (PXCuratedLibraryFilterToggleButtonController)initWithViewModel:(id)a3 buttonConfiguration:(id)a4;
+- (PXCuratedLibraryFilterToggleButtonController)initWithButtonConfiguration:(id)configuration roundedButton:(BOOL)button;
+- (PXCuratedLibraryFilterToggleButtonController)initWithViewModel:(id)model buttonConfiguration:(id)configuration;
 - (id)allMenuItems;
 - (id)filterInlineMenuItems;
 - (id)filterMenuItems;
@@ -13,17 +13,17 @@
 - (void)_updateContentFilterState;
 - (void)_updateLibraryState;
 - (void)_updateStyling;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCuratedLibraryFilterToggleButtonController
 
 - (BOOL)isUsingCustomSortOrder
 {
-  v2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v3 = [v2 viewOptionsModel];
-  v4 = [v3 sortOrderState];
-  v5 = [v4 sortOrder] != 1;
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  viewOptionsModel = [viewModel viewOptionsModel];
+  sortOrderState = [viewOptionsModel sortOrderState];
+  v5 = [sortOrderState sortOrder] != 1;
 
   return v5;
 }
@@ -39,14 +39,14 @@
 
   else
   {
-    v4 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-    if ([v4 zoomLevel] == 4)
+    viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+    if ([viewModel zoomLevel] == 4)
     {
-      v5 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-      if ([v5 shouldShowEmptyPlaceholder])
+      viewModel2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+      if ([viewModel2 shouldShowEmptyPlaceholder])
       {
-        v6 = [(PXContentFilterToggleButtonController *)self libraryFilterState];
-        v3 = [v6 isFiltering] ^ 1;
+        libraryFilterState = [(PXContentFilterToggleButtonController *)self libraryFilterState];
+        v3 = [libraryFilterState isFiltering] ^ 1;
       }
 
       else
@@ -66,24 +66,24 @@
 
 - (void)_updateLibraryState
 {
-  v5 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v3 = [v5 libraryFilterState];
-  v4 = [v3 copy];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
+  v4 = [libraryFilterState copy];
   [(PXContentFilterToggleButtonController *)self setLibraryFilterState:v4];
 }
 
 - (void)_updateContentFilterState
 {
-  v3 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v7 = [v3 currentContentFilterState];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  currentContentFilterState = [viewModel currentContentFilterState];
 
-  v4 = [(PXContentFilterToggleButtonController *)self contentFilterState];
-  if ([v4 showOnlyScreenshots] && (objc_msgSend(v7, "showOnlyScreenshots") & 1) == 0)
+  contentFilterState = [(PXContentFilterToggleButtonController *)self contentFilterState];
+  if ([contentFilterState showOnlyScreenshots] && (objc_msgSend(currentContentFilterState, "showOnlyScreenshots") & 1) == 0)
   {
-    v5 = [v7 shouldExcludeScreenshots];
+    shouldExcludeScreenshots = [currentContentFilterState shouldExcludeScreenshots];
 
-    [(PXContentFilterToggleButtonController *)self setContentFilterState:v7];
-    if (v5)
+    [(PXContentFilterToggleButtonController *)self setContentFilterState:currentContentFilterState];
+    if (shouldExcludeScreenshots)
     {
       v6 = +[PXGridTipsHelper filterScreenshotsHiddenTipID];
       [PXGridTipsHelper setTip:v6 isPresentable:1];
@@ -93,23 +93,23 @@
   else
   {
 
-    [(PXContentFilterToggleButtonController *)self setContentFilterState:v7];
+    [(PXContentFilterToggleButtonController *)self setContentFilterState:currentContentFilterState];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v10 = a3;
-  if (PXCuratedLibraryViewModelObserverContext_152064 == a5)
+  observableCopy = observable;
+  if (PXCuratedLibraryViewModelObserverContext_152064 == context)
   {
-    if ((a4 & 0x10) != 0)
+    if ((change & 0x10) != 0)
     {
       [(PXCuratedLibraryFilterToggleButtonController *)self _updateLibraryState];
       [(PXContentFilterToggleButtonController *)self invalidateButton];
-      if ((a4 & 0x2000000) == 0)
+      if ((change & 0x2000000) == 0)
       {
 LABEL_9:
-        if ((a4 & 0x400000000) == 0)
+        if ((change & 0x400000000) == 0)
         {
           goto LABEL_11;
         }
@@ -118,16 +118,16 @@ LABEL_9:
       }
     }
 
-    else if ((a4 & 0x2000000) == 0)
+    else if ((change & 0x2000000) == 0)
     {
       goto LABEL_9;
     }
 
     [(PXCuratedLibraryFilterToggleButtonController *)self _updateContentFilterState];
-    if ((a4 & 0x400000000) == 0)
+    if ((change & 0x400000000) == 0)
     {
 LABEL_11:
-      if ((a4 & 0x10004) == 0)
+      if ((change & 0x10004) == 0)
       {
         goto LABEL_13;
       }
@@ -140,23 +140,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (PXCuratedLibraryZoomablePhotosViewModelObserverContext == a5)
+  if (PXCuratedLibraryZoomablePhotosViewModelObserverContext == context)
   {
     goto LABEL_5;
   }
 
-  if (PXSharedLibraryStatusProviderObservationContext_152065 != a5)
+  if (PXSharedLibraryStatusProviderObservationContext_152065 != context)
   {
-    if (PXLibraryFilterStateObservationContext_152066 != a5)
+    if (PXLibraryFilterStateObservationContext_152066 != context)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:184 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:184 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
 LABEL_5:
-    if ((a4 & 2) == 0)
+    if ((change & 2) == 0)
     {
       goto LABEL_13;
     }
@@ -166,7 +166,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((a4 & 3) != 0)
+  if ((change & 3) != 0)
   {
     [(PXCuratedLibraryFilterToggleButtonController *)self _updateLibraryState];
   }
@@ -176,17 +176,17 @@ LABEL_13:
 
 - (id)allMenuItems
 {
-  v4 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
 
-  if (!v4)
+  if (!viewModel)
   {
     v11 = MEMORY[0x1E695E0F0];
     goto LABEL_9;
   }
 
-  v5 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v6 = [v5 actionManager];
-  v7 = [v6 actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
+  viewModel2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  actionManager = [viewModel2 actionManager];
+  v7 = [actionManager actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
 
   if (!v7)
   {
@@ -194,16 +194,16 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  v8 = [(PXContentFilterToggleButtonController *)self button];
-  [v7 setSender:v8];
+  button = [(PXContentFilterToggleButtonController *)self button];
+  [v7 setSender:button];
 
-  v9 = [v7 menuElement];
-  if (!v9)
+  menuElement = [v7 menuElement];
+  if (!menuElement)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:130 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"filterMenuElement", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:130 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"filterMenuElement", v15}];
 LABEL_14:
 
     goto LABEL_5;
@@ -212,18 +212,18 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [v9 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:130 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"filterMenuElement", v15, v17}];
+    px_descriptionForAssertionMessage = [menuElement px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:130 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"filterMenuElement", v15, px_descriptionForAssertionMessage}];
 
     goto LABEL_14;
   }
 
 LABEL_5:
-  v10 = [v9 children];
-  v11 = [v10 copy];
+  children = [menuElement children];
+  v11 = [children copy];
 
 LABEL_8:
 LABEL_9:
@@ -233,57 +233,57 @@ LABEL_9:
 
 - (id)viewOptionsMenuSubtitle
 {
-  v2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v3 = [v2 actionManager];
-  v4 = [v3 actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  actionManager = [viewModel actionManager];
+  v4 = [actionManager actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
 
-  v5 = [v4 viewOptionsMenuSubtitle];
+  viewOptionsMenuSubtitle = [v4 viewOptionsMenuSubtitle];
 
-  return v5;
+  return viewOptionsMenuSubtitle;
 }
 
 - (id)viewOptionsMenuItems
 {
-  v2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v3 = [v2 actionManager];
-  v4 = [v3 actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  actionManager = [viewModel actionManager];
+  v4 = [actionManager actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
 
-  v5 = [v4 viewOptionsMenuItems];
+  viewOptionsMenuItems = [v4 viewOptionsMenuItems];
 
-  return v5;
+  return viewOptionsMenuItems;
 }
 
 - (id)filterMenuSubtitle
 {
-  v2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v3 = [v2 actionManager];
-  v4 = [v3 actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  actionManager = [viewModel actionManager];
+  v4 = [actionManager actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
 
-  v5 = [v4 filterMenuSubtitle];
+  filterMenuSubtitle = [v4 filterMenuSubtitle];
 
-  return v5;
+  return filterMenuSubtitle;
 }
 
 - (id)filterMenuItems
 {
-  v2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v3 = [v2 actionManager];
-  v4 = [v3 actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  actionManager = [viewModel actionManager];
+  v4 = [actionManager actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
 
-  v5 = [v4 filterMenuItems];
+  filterMenuItems = [v4 filterMenuItems];
 
-  return v5;
+  return filterMenuItems;
 }
 
 - (id)filterInlineMenuItems
 {
-  v2 = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
-  v3 = [v2 actionManager];
-  v4 = [v3 actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
+  viewModel = [(PXCuratedLibraryFilterToggleButtonController *)self viewModel];
+  actionManager = [viewModel actionManager];
+  v4 = [actionManager actionPerformerForActionType:@"PXCuratedLibraryActionShowFiltersMenu"];
 
-  v5 = [v4 filterInlineMenuItems];
+  filterInlineMenuItems = [v4 filterInlineMenuItems];
 
-  return v5;
+  return filterInlineMenuItems;
 }
 
 - (void)_updateStyling
@@ -316,37 +316,37 @@ void __62__PXCuratedLibraryFilterToggleButtonController__updateStyling__block_in
   [v3 setSecondaryTintColor:v4];
 }
 
-- (PXCuratedLibraryFilterToggleButtonController)initWithButtonConfiguration:(id)a3 roundedButton:(BOOL)a4
+- (PXCuratedLibraryFilterToggleButtonController)initWithButtonConfiguration:(id)configuration roundedButton:(BOOL)button
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXCuratedLibraryFilterToggleButtonController initWithButtonConfiguration:roundedButton:]"}];
+  configurationCopy = configuration;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterToggleButtonController.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXCuratedLibraryFilterToggleButtonController initWithButtonConfiguration:roundedButton:]"}];
 
   abort();
 }
 
-- (PXCuratedLibraryFilterToggleButtonController)initWithViewModel:(id)a3 buttonConfiguration:(id)a4
+- (PXCuratedLibraryFilterToggleButtonController)initWithViewModel:(id)model buttonConfiguration:(id)configuration
 {
-  v7 = a3;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = PXCuratedLibraryFilterToggleButtonController;
-  v8 = [(PXContentFilterToggleButtonController *)&v18 initWithButtonConfiguration:a4 roundedButton:1];
+  v8 = [(PXContentFilterToggleButtonController *)&v18 initWithButtonConfiguration:configuration roundedButton:1];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_viewModel, a3);
+    objc_storeStrong(&v8->_viewModel, model);
     [(PXCuratedLibraryViewModel *)v9->_viewModel registerChangeObserver:v9 context:PXCuratedLibraryViewModelObserverContext_152064];
-    v10 = [(PXCuratedLibraryViewModel *)v9->_viewModel zoomablePhotosViewModel];
-    [v10 registerChangeObserver:v9 context:PXCuratedLibraryZoomablePhotosViewModelObserverContext];
+    zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)v9->_viewModel zoomablePhotosViewModel];
+    [zoomablePhotosViewModel registerChangeObserver:v9 context:PXCuratedLibraryZoomablePhotosViewModelObserverContext];
 
-    v11 = [(PXCuratedLibraryViewModel *)v9->_viewModel photoLibrary];
-    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v11];
+    photoLibrary = [(PXCuratedLibraryViewModel *)v9->_viewModel photoLibrary];
+    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
     sharedLibraryStatusProvider = v9->_sharedLibraryStatusProvider;
     v9->_sharedLibraryStatusProvider = v12;
 
     [(PXSharedLibraryStatusProvider *)v9->_sharedLibraryStatusProvider registerChangeObserver:v9 context:PXSharedLibraryStatusProviderObservationContext_152065];
-    v14 = [(PXCuratedLibraryViewModel *)v9->_viewModel libraryFilterState];
-    [v14 registerChangeObserver:v9 context:PXLibraryFilterStateObservationContext_152066];
+    libraryFilterState = [(PXCuratedLibraryViewModel *)v9->_viewModel libraryFilterState];
+    [libraryFilterState registerChangeObserver:v9 context:PXLibraryFilterStateObservationContext_152066];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -367,9 +367,9 @@ uint64_t __86__PXCuratedLibraryFilterToggleButtonController_initWithViewModel_bu
   return [v2 _updateContentFilterState];
 }
 
-+ (id)foregroundColorOverLegibilityGradient:(BOOL)a3
++ (id)foregroundColorOverLegibilityGradient:(BOOL)gradient
 {
-  if (a3)
+  if (gradient)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }

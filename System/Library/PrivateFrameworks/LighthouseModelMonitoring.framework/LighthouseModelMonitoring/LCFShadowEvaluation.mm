@@ -1,42 +1,42 @@
 @interface LCFShadowEvaluation
-- (id)evaluateModels:(id)a3;
-- (id)init:(id)a3 modelStore:(id)a4;
+- (id)evaluateModels:(id)models;
+- (id)init:(id)init modelStore:(id)store;
 @end
 
 @implementation LCFShadowEvaluation
 
-- (id)init:(id)a3 modelStore:(id)a4
+- (id)init:(id)init modelStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = LCFShadowEvaluation;
   v9 = [(LCFShadowEvaluation *)&v11 init];
   if (v9)
   {
     LCFModelMonitoringLoggingUtilsInit();
-    objc_storeStrong(&v9->_featureStore, a3);
-    objc_storeStrong(&v9->_modelStore, a4);
+    objc_storeStrong(&v9->_featureStore, init);
+    objc_storeStrong(&v9->_modelStore, store);
   }
 
   return v9;
 }
 
-- (id)evaluateModels:(id)a3
+- (id)evaluateModels:(id)models
 {
   v152[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelsCopy = models;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 featureNames];
-  v7 = [v4 srcLabelName];
-  v8 = [v6 containsObject:v7];
+  featureNames = [modelsCopy featureNames];
+  srcLabelName = [modelsCopy srcLabelName];
+  v8 = [featureNames containsObject:srcLabelName];
 
   if (v8)
   {
     v9 = LCFMMLogShadowEvaluation;
     if (os_log_type_enabled(LCFMMLogShadowEvaluation, OS_LOG_TYPE_ERROR))
     {
-      [(LCFShadowEvaluation *)v9 evaluateModels:v4];
+      [(LCFShadowEvaluation *)v9 evaluateModels:modelsCopy];
     }
 
     v10 = 0;
@@ -44,23 +44,23 @@
   }
 
   v116 = v5;
-  v11 = [v4 featureNames];
-  v12 = [v4 srcLabelName];
-  v152[0] = v12;
+  featureNames2 = [modelsCopy featureNames];
+  srcLabelName2 = [modelsCopy srcLabelName];
+  v152[0] = srcLabelName2;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v152 count:1];
-  v14 = [v11 arrayByAddingObjectsFromArray:v13];
+  v14 = [featureNames2 arrayByAddingObjectsFromArray:v13];
 
-  v112 = self;
+  selfCopy = self;
   v110 = v14;
   v115 = [(LCFFeatureStore *)self->_featureStore getFeatureVectors:v14 startDate:0 endDate:0 option:4];
   v15 = [MEMORY[0x277D23450] fromMLProvider:?];
   v16 = MEMORY[0x277D23458];
-  v17 = [v4 featureNames];
-  v18 = [v4 srcLabelName];
-  v19 = [v4 vectorFeatureName];
-  v20 = [v4 destLabelName];
+  featureNames3 = [modelsCopy featureNames];
+  srcLabelName3 = [modelsCopy srcLabelName];
+  vectorFeatureName = [modelsCopy vectorFeatureName];
+  destLabelName = [modelsCopy destLabelName];
   v109 = v15;
-  v21 = [v16 toMultiArrayTypeBatchProvider:v15 srcFeatureNames:v17 srcLabelName:v18 destFeatureName:v19 destLabelName:v20];
+  v21 = [v16 toMultiArrayTypeBatchProvider:v15 srcFeatureNames:featureNames3 srcLabelName:srcLabelName3 destFeatureName:vectorFeatureName destLabelName:destLabelName];
 
   v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v21, "count")}];
   if ([v21 count] >= 1)
@@ -69,8 +69,8 @@
     do
     {
       v24 = [v21 featuresAtIndex:v23];
-      v25 = [v4 groundTruthLabelFeatureName];
-      v26 = [v24 featureValueForName:v25];
+      groundTruthLabelFeatureName = [modelsCopy groundTruthLabelFeatureName];
+      v26 = [v24 featureValueForName:groundTruthLabelFeatureName];
       [v22 addObject:v26];
 
       ++v23;
@@ -83,7 +83,7 @@
   v143 = 0u;
   v140 = 0u;
   v141 = 0u;
-  obj = [v4 modelNames];
+  obj = [modelsCopy modelNames];
   v111 = v22;
   v124 = [obj countByEnumeratingWithState:&v140 objects:v151 count:16];
   if (v124)
@@ -93,7 +93,7 @@
     v108 = v27;
     v28 = 0x277D23000;
     v129 = v21;
-    v125 = v4;
+    v125 = modelsCopy;
 LABEL_10:
     v29 = 0;
     while (1)
@@ -104,12 +104,12 @@ LABEL_10:
       }
 
       v30 = *(*(&v140 + 1) + 8 * v29);
-      v31 = [v4 preprocessHandler];
+      preprocessHandler = [modelsCopy preprocessHandler];
 
-      if (v31)
+      if (preprocessHandler)
       {
-        v32 = [v4 preprocessHandler];
-        v33 = (v32)[2](v32, v30, v21);
+        preprocessHandler2 = [modelsCopy preprocessHandler];
+        v33 = (preprocessHandler2)[2](preprocessHandler2, v30, v21);
       }
 
       else
@@ -117,16 +117,16 @@ LABEL_10:
         v33 = v21;
       }
 
-      v34 = [v4 inferenceHandler];
+      inferenceHandler = [modelsCopy inferenceHandler];
 
       v126 = v29;
       v127 = v33;
       v128 = v30;
-      if (v34)
+      if (inferenceHandler)
       {
-        v35 = [v4 inferenceHandler];
+        inferenceHandler2 = [modelsCopy inferenceHandler];
         v139 = 0;
-        v36 = (v35)[2](v35, v30, v33, &v139);
+        v36 = (inferenceHandler2)[2](inferenceHandler2, v30, v33, &v139);
         v37 = v139;
 
         v38 = &unk_286805F80;
@@ -134,7 +134,7 @@ LABEL_10:
 
       else
       {
-        v39 = [(LCFModelStore *)v112->_modelStore getModelURL:v30];
+        v39 = [(LCFModelStore *)selfCopy->_modelStore getModelURL:v30];
         if (!v39)
         {
           v102 = LCFMMLogShadowEvaluation;
@@ -151,7 +151,7 @@ LABEL_10:
         }
 
         v40 = v39;
-        v41 = [(LCFModelStore *)v112->_modelStore getModelConfig:v30];
+        v41 = [(LCFModelStore *)selfCopy->_modelStore getModelConfig:v30];
         if (v41)
         {
           v137 = 0;
@@ -202,7 +202,7 @@ LABEL_75:
 
         v120 = v41;
         v121 = v45;
-        v46 = [v45 modelDescription];
+        modelDescription = [v45 modelDescription];
         if ([v33 count])
         {
           v114 = v40;
@@ -213,8 +213,8 @@ LABEL_75:
           v133 = 0u;
           v134 = 0u;
           v113 = v47;
-          v48 = [v47 featureNames];
-          v49 = [v48 countByEnumeratingWithState:&v131 objects:v150 count:16];
+          featureNames4 = [v47 featureNames];
+          v49 = [featureNames4 countByEnumeratingWithState:&v131 objects:v150 count:16];
           if (v49)
           {
             v50 = v49;
@@ -225,19 +225,19 @@ LABEL_75:
               {
                 if (*v132 != v51)
                 {
-                  objc_enumerationMutation(v48);
+                  objc_enumerationMutation(featureNames4);
                 }
 
                 v53 = *(*(&v131 + 1) + 8 * i);
-                v54 = [v46 inputFeatureNames];
-                if ([v54 containsObject:v53])
+                inputFeatureNames = [modelDescription inputFeatureNames];
+                if ([inputFeatureNames containsObject:v53])
                 {
                 }
 
                 else
                 {
-                  v55 = [v46 outputFeatureNames];
-                  v56 = [v55 containsObject:v53];
+                  outputFeatureNames = [modelDescription outputFeatureNames];
+                  v56 = [outputFeatureNames containsObject:v53];
 
                   if ((v56 & 1) == 0)
                   {
@@ -245,14 +245,14 @@ LABEL_75:
                     if (os_log_type_enabled(LCFMMLogShadowEvaluation, OS_LOG_TYPE_ERROR))
                     {
                       v99 = v70;
-                      v100 = [v46 inputFeatureNames];
-                      v101 = [v46 outputFeatureNames];
+                      inputFeatureNames2 = [modelDescription inputFeatureNames];
+                      outputFeatureNames2 = [modelDescription outputFeatureNames];
                       *buf = v108;
                       v145 = v53;
                       v146 = 2112;
-                      v147 = v100;
+                      v147 = inputFeatureNames2;
                       v148 = 2112;
-                      v149[0] = v101;
+                      v149[0] = outputFeatureNames2;
                       _os_log_error_impl(&dword_255F3F000, v99, OS_LOG_TYPE_ERROR, "featureName %@ is not in modelDescription %@ %@", buf, 0x20u);
                     }
 
@@ -266,7 +266,7 @@ LABEL_75:
                 }
               }
 
-              v50 = [v48 countByEnumeratingWithState:&v131 objects:v150 count:16];
+              v50 = [featureNames4 countByEnumeratingWithState:&v131 objects:v150 count:16];
               if (v50)
               {
                 continue;
@@ -288,8 +288,8 @@ LABEL_75:
               v59 = [v111 objectAtIndexedSubscript:v58];
               [v36 featuresAtIndex:v58];
               v61 = v60 = v36;
-              v62 = [v125 predictedLabelFeatureName];
-              v63 = [v61 featureValueForName:v62];
+              predictedLabelFeatureName = [v125 predictedLabelFeatureName];
+              v63 = [v61 featureValueForName:predictedLabelFeatureName];
               v64 = [v59 isEqualToFeatureValue:v63];
 
               v57 += v64;
@@ -321,7 +321,7 @@ LABEL_75:
 
           v21 = v129;
           v37 = v118;
-          v4 = v125;
+          modelsCopy = v125;
 LABEL_48:
 
           v28 = 0x277D23000uLL;
@@ -361,8 +361,8 @@ LABEL_48:
         v73 = objc_alloc(MEMORY[0x277D23498]);
         v74 = objc_alloc(*(v28 + 1120));
         v75 = [MEMORY[0x277D23450] fromMLProvider:v21];
-        v76 = [v4 srcLabelName];
-        v77 = [v74 init:v75 labelFeatureName:v76];
+        srcLabelName4 = [modelsCopy srcLabelName];
+        v77 = [v74 init:v75 labelFeatureName:srcLabelName4];
         v78 = [v73 init:v128 inputBachProviderInfo:v77 evaluatedPredictions:0 accuracy:v38 succeeded:&unk_286805F68 evaluationError:v37];
 
         [MEMORY[0x277D23478] emitShadowEvaluationEvent:v78];
@@ -370,13 +370,13 @@ LABEL_48:
         goto LABEL_65;
       }
 
-      v79 = [v4 metricsHandler];
+      metricsHandler = [modelsCopy metricsHandler];
 
-      if (v79)
+      if (metricsHandler)
       {
-        v80 = [v4 metricsHandler];
+        metricsHandler2 = [modelsCopy metricsHandler];
         v81 = v128;
-        v78 = (v80)[2](v80, v128, v127, v36);
+        v78 = (metricsHandler2)[2](metricsHandler2, v128, v127, v36);
       }
 
       else
@@ -402,13 +402,13 @@ LABEL_48:
           do
           {
             v85 = [*(v84 + 1104) fromMLProvider:v21];
-            v86 = [v85 featureProviders];
-            v87 = [v86 objectAtIndexedSubscript:v83];
+            featureProviders = [v85 featureProviders];
+            v87 = [featureProviders objectAtIndexedSubscript:v83];
 
             v88 = [v78 featuresAtIndex:v83];
             v89 = objc_alloc(MEMORY[0x277D234A0]);
-            v90 = [v4 destLabelName];
-            v91 = [v89 init:v87 predictedFeatureSet:v88 outputLabelFeatureName:v90];
+            destLabelName2 = [modelsCopy destLabelName];
+            v91 = [v89 init:v87 predictedFeatureSet:v88 outputLabelFeatureName:destLabelName2];
 
             [v82 addObject:v91];
             v21 = v129;
@@ -429,8 +429,8 @@ LABEL_48:
 LABEL_64:
       v94 = [*(v84 + 1104) fromMLProvider:v115];
       v95 = objc_alloc(*(v93 + 1120));
-      v96 = [v4 srcLabelName];
-      v97 = [v95 init:v94 labelFeatureName:v96];
+      srcLabelName5 = [modelsCopy srcLabelName];
+      v97 = [v95 init:v94 labelFeatureName:srcLabelName5];
 
       v98 = [objc_alloc(MEMORY[0x277D23498]) init:v128 inputBachProviderInfo:v97 evaluatedPredictions:v82 accuracy:v38 succeeded:&unk_286805F68 evaluationError:0];
       [MEMORY[0x277D23478] emitShadowEvaluationEvent:v98];

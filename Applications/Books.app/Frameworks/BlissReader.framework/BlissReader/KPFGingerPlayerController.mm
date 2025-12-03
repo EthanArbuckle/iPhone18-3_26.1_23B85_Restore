@@ -1,7 +1,7 @@
 @interface KPFGingerPlayerController
-- (BOOL)handleTouchAtLocation:(CGPoint)a3;
+- (BOOL)handleTouchAtLocation:(CGPoint)location;
 - (BOOL)isTransitioningToStop;
-- (KPFGingerPlayerController)initWithKPFDocument:(id)a3 showLayer:(id)a4;
+- (KPFGingerPlayerController)initWithKPFDocument:(id)document showLayer:(id)layer;
 - (id)accessibilityLabelForCurrentEvent;
 - (id)accessibilityRegionsForCurrentEvent;
 - (id)hyperlinksRectArray;
@@ -12,15 +12,15 @@
 - (void)gotoNextSlide;
 - (void)gotoPreviousEvent;
 - (void)gotoPreviousSlide;
-- (void)gotoSlideAtIndex:(unint64_t)a3 shouldAutoPlay:(BOOL)a4;
+- (void)gotoSlideAtIndex:(unint64_t)index shouldAutoPlay:(BOOL)play;
 - (void)p_animationEnded;
 - (void)p_announceStateUpdate;
-- (void)p_goToSlideWithSlideTag:(id)a3;
-- (void)p_handleURL:(id)a3;
-- (void)p_resetToFirstSlideAndShouldAutoPlay:(BOOL)a3;
+- (void)p_goToSlideWithSlideTag:(id)tag;
+- (void)p_handleURL:(id)l;
+- (void)p_resetToFirstSlideAndShouldAutoPlay:(BOOL)play;
 - (void)p_triggerEvent;
 - (void)playPreparedShow;
-- (void)prepareWithEndShowHandler:(id)a3;
+- (void)prepareWithEndShowHandler:(id)handler;
 - (void)retreatToPreviousSlide;
 - (void)tearDownShow;
 - (void)transportControlCloneGotoFirst;
@@ -31,14 +31,14 @@
 
 @implementation KPFGingerPlayerController
 
-- (KPFGingerPlayerController)initWithKPFDocument:(id)a3 showLayer:(id)a4
+- (KPFGingerPlayerController)initWithKPFDocument:(id)document showLayer:(id)layer
 {
   v8.receiver = self;
   v8.super_class = KPFGingerPlayerController;
   v6 = [(KPFGingerPlayerController *)&v8 init];
   if (v6)
   {
-    v6->mSession = [[KPFSession alloc] initWithKPFDocument:a3 showLayer:a4];
+    v6->mSession = [[KPFSession alloc] initWithKPFDocument:document showLayer:layer];
   }
 
   return v6;
@@ -67,7 +67,7 @@
   }
 }
 
-- (void)prepareWithEndShowHandler:(id)a3
+- (void)prepareWithEndShowHandler:(id)handler
 {
   if ([(KPFSession *)self->mSession showLayer]&& [(KPFSession *)self->mSession playbackState]== 1)
   {
@@ -92,42 +92,42 @@
 {
   if ([(KPFSession *)self->mSession playbackState]== 1)
   {
-    v3 = [(KPFSession *)self->mSession showLayer];
+    showLayer = [(KPFSession *)self->mSession showLayer];
 
-    [(CALayer *)v3 setSublayers:0];
+    [(CALayer *)showLayer setSublayers:0];
   }
 }
 
 - (BOOL)isTransitioningToStop
 {
-  v3 = [(KPFSession *)self->mSession playbackState];
-  if (v3 != 1)
+  playbackState = [(KPFSession *)self->mSession playbackState];
+  if (playbackState != 1)
   {
-    LOBYTE(v3) = [(KPFSession *)self->mSession playbackState]== 6;
+    LOBYTE(playbackState) = [(KPFSession *)self->mSession playbackState]== 6;
   }
 
-  return v3;
+  return playbackState;
 }
 
-- (void)p_handleURL:(id)a3
+- (void)p_handleURL:(id)l
 {
-  v4 = [NSURL URLWithString:a3];
-  v5 = [(KPFGingerPlayerController *)self kpfPlayerControllerDelegate];
+  v4 = [NSURL URLWithString:l];
+  kpfPlayerControllerDelegate = [(KPFGingerPlayerController *)self kpfPlayerControllerDelegate];
 
-  [(KPFPlayerControllerDelegateProtocol *)v5 kpfPlayer:self handleURL:v4];
+  [(KPFPlayerControllerDelegateProtocol *)kpfPlayerControllerDelegate kpfPlayer:self handleURL:v4];
 }
 
 - (void)retreatToPreviousSlide
 {
-  v3 = [(KPFSession *)self->mSession previousSlideIndex];
+  previousSlideIndex = [(KPFSession *)self->mSession previousSlideIndex];
 
-  [(KPFGingerPlayerController *)self gotoSlideAtIndex:v3 shouldAutoPlay:1];
+  [(KPFGingerPlayerController *)self gotoSlideAtIndex:previousSlideIndex shouldAutoPlay:1];
 }
 
-- (BOOL)handleTouchAtLocation:(CGPoint)a3
+- (BOOL)handleTouchAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if ([(KPFSession *)self->mSession playbackState]== 3 || [(KPFSession *)self->mSession playbackState]== 2)
   {
     v6 = [(KPFGingerEvent *)[(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] currentEvent] hyperlinkAtLocation:x, y];
@@ -139,13 +139,13 @@
         v8 = [v7 substringFromIndex:9];
         self->mHyperlinkSlideTag = v8;
         [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] renderHyperLinkedSlideWithSlideTag:v8 withSession:self->mSession];
-        v9 = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] hyperLinkedEvent];
+        hyperLinkedEvent = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] hyperLinkedEvent];
         v11[0] = _NSConcreteStackBlock;
         v11[1] = 3221225472;
         v11[2] = sub_9D794;
         v11[3] = &unk_45AE00;
         v11[4] = self;
-        [(KPFGingerEvent *)v9 setAnimationEndHandler:v11];
+        [(KPFGingerEvent *)hyperLinkedEvent setAnimationEndHandler:v11];
         [(KPFGingerEvent *)[(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] hyperLinkedEvent] animateWithSession:self->mSession];
         goto LABEL_19;
       }
@@ -212,9 +212,9 @@ LABEL_19:
 
 - (id)accessibilityRegionsForCurrentEvent
 {
-  v2 = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] currentEvent];
+  currentEvent = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] currentEvent];
 
-  return [(KPFGingerEvent *)v2 accessibilityArray];
+  return [(KPFGingerEvent *)currentEvent accessibilityArray];
 }
 
 - (void)gotoPreviousEvent
@@ -238,16 +238,16 @@ LABEL_19:
   }
 }
 
-- (void)gotoSlideAtIndex:(unint64_t)a3 shouldAutoPlay:(BOOL)a4
+- (void)gotoSlideAtIndex:(unint64_t)index shouldAutoPlay:(BOOL)play
 {
-  v4 = a4;
-  [(KPFSession *)self->mSession setSlideIndex:a3];
+  playCopy = play;
+  [(KPFSession *)self->mSession setSlideIndex:index];
   [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] renderSlideWithSession:self->mSession];
   [(KPFSession *)self->mSession setPlaybackState:3];
   self->mQueuedTrigger = 0;
   if ([(KPFGingerEvent *)[(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] currentEvent] isAutomatic])
   {
-    v6 = !v4;
+    v6 = !playCopy;
   }
 
   else
@@ -262,9 +262,9 @@ LABEL_19:
   }
 }
 
-- (void)p_goToSlideWithSlideTag:(id)a3
+- (void)p_goToSlideWithSlideTag:(id)tag
 {
-  [(KPFSession *)self->mSession setSlideWithSlideTag:a3];
+  [(KPFSession *)self->mSession setSlideWithSlideTag:tag];
   [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] renderSlideWithSession:self->mSession];
   [(KPFSession *)self->mSession setPlaybackState:3];
   self->mQueuedTrigger = 0;
@@ -292,18 +292,18 @@ LABEL_19:
 
 - (void)gotoPreviousSlide
 {
-  v3 = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] curentEventIndex];
-  v4 = [(KPFSession *)self->mSession currentSlide];
-  if (v3)
+  curentEventIndex = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] curentEventIndex];
+  currentSlide = [(KPFSession *)self->mSession currentSlide];
+  if (curentEventIndex)
   {
     goto LABEL_2;
   }
 
-  if (![(KPFGingerSlide *)v4 curentEventIndex]&& [(KPFSession *)self->mSession decrementCurrentSlideIndex])
+  if (![(KPFGingerSlide *)currentSlide curentEventIndex]&& [(KPFSession *)self->mSession decrementCurrentSlideIndex])
   {
-    v4 = [(KPFSession *)self->mSession currentSlide];
+    currentSlide = [(KPFSession *)self->mSession currentSlide];
 LABEL_2:
-    [(KPFGingerSlide *)v4 renderSlideWithSession:self->mSession];
+    [(KPFGingerSlide *)currentSlide renderSlideWithSession:self->mSession];
     [(KPFSession *)self->mSession setPlaybackState:3];
     self->mQueuedTrigger = 0;
   }
@@ -316,12 +316,12 @@ LABEL_2:
   [(KPFGingerPlayerController *)self gotoSlideAtIndex:v3 shouldAutoPlay:1];
 }
 
-- (void)p_resetToFirstSlideAndShouldAutoPlay:(BOOL)a3
+- (void)p_resetToFirstSlideAndShouldAutoPlay:(BOOL)play
 {
-  v3 = a3;
+  playCopy = play;
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   [(KPFSession *)self->mSession stopAllAnimations];
-  [(KPFGingerPlayerController *)self gotoSlideAtIndex:0 shouldAutoPlay:v3];
+  [(KPFGingerPlayerController *)self gotoSlideAtIndex:0 shouldAutoPlay:playCopy];
   [(KPFSession *)self->mSession setupAndPlaySoundtrackAfterDelay:0.0];
   mSession = self->mSession;
 
@@ -377,9 +377,9 @@ LABEL_2:
 
 - (unint64_t)transportControlCloneCount
 {
-  v2 = [(KPFSession *)self->mSession KPFSlideList];
+  kPFSlideList = [(KPFSession *)self->mSession KPFSlideList];
 
-  return [(NSMutableArray *)v2 count];
+  return [(NSMutableArray *)kPFSlideList count];
 }
 
 - (id)hyperlinksRectArray
@@ -396,22 +396,22 @@ LABEL_2:
 
 - (void)p_animationEnded
 {
-  v3 = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] nextEvent];
-  if (!v3)
+  nextEvent = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] nextEvent];
+  if (!nextEvent)
   {
     if (![(KPFSession *)self->mSession nextSlide])
     {
-      v4 = 0;
+      isAutomatic = 0;
       goto LABEL_5;
     }
 
-    v3 = [(KPFGingerSlide *)[(KPFSession *)self->mSession nextSlide] currentEvent];
+    nextEvent = [(KPFGingerSlide *)[(KPFSession *)self->mSession nextSlide] currentEvent];
   }
 
-  v4 = [(KPFGingerEvent *)v3 isAutomatic];
+  isAutomatic = [(KPFGingerEvent *)nextEvent isAutomatic];
 LABEL_5:
   [(KPFSession *)self->mSession setPlaybackState:5];
-  if (self->mQueuedTrigger || v4)
+  if (self->mQueuedTrigger || isAutomatic)
   {
     [(KPFGingerPlayerController *)self performSelector:"p_triggerEvent" withObject:0 afterDelay:0.0];
     self->mQueuedTrigger = 0;
@@ -420,9 +420,9 @@ LABEL_5:
 
   if (![(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] containsMovie]&& [(KPFSession *)self->mSession playbackState]== 5)
   {
-    v5 = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] incrementCurrentEventIndex];
+    incrementCurrentEventIndex = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] incrementCurrentEventIndex];
     mSession = self->mSession;
-    if (v5)
+    if (incrementCurrentEventIndex)
     {
       [(KPFGingerSlide *)[(KPFSession *)mSession currentSlide] renderCurrentEventWithSession:self->mSession];
 LABEL_18:
@@ -453,17 +453,17 @@ LABEL_12:
 
   if ([(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] containsMovie]&& [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] mediaPlaybackIsPaused])
   {
-    v3 = [(KPFSession *)self->mSession currentSlide];
+    currentSlide = [(KPFSession *)self->mSession currentSlide];
 
-    [(KPFGingerSlide *)v3 resumeMediaPlayback];
+    [(KPFGingerSlide *)currentSlide resumeMediaPlayback];
     return;
   }
 
   if ([(KPFSession *)self->mSession playbackState]== 5)
   {
-    v4 = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] incrementCurrentEventIndex];
+    incrementCurrentEventIndex = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] incrementCurrentEventIndex];
     mSession = self->mSession;
-    if (v4)
+    if (incrementCurrentEventIndex)
     {
       [(KPFGingerSlide *)[(KPFSession *)mSession currentSlide] renderCurrentEventWithSession:self->mSession];
 LABEL_13:
@@ -490,13 +490,13 @@ LABEL_15:
 
     else if ([(KPFSession *)self->mSession playbackState]== 3)
     {
-      v6 = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] currentEvent];
+      currentEvent = [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] currentEvent];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_9E218;
       v7[3] = &unk_45AE00;
       v7[4] = self;
-      [(KPFGingerEvent *)v6 setAnimationEndHandler:v7];
+      [(KPFGingerEvent *)currentEvent setAnimationEndHandler:v7];
       [(KPFSession *)self->mSession setPlaybackState:4];
       [(KPFGingerSlide *)[(KPFSession *)self->mSession currentSlide] animateSlideWithSession:self->mSession];
     }

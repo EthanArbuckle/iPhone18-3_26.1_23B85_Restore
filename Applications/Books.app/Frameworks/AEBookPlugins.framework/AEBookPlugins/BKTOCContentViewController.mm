@@ -2,81 +2,81 @@
 - (AEAssetSharingConnectionClient)assetSharingConnectionClient;
 - (AEMinimalTemplate)template;
 - (BKActivityIndicatorOverlayView)activityIndicatorOverlayView;
-- (BKTOCContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKTOCContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BKTOCImageCache2)imageCache;
 - (BKTOCWebViewCellLoadQueue)requestQueue;
-- (BOOL)p_willUseWebViewForCellWithChapter:(id)a3;
-- (BOOL)shareItemAtIndexPath:(id)a3;
+- (BOOL)p_willUseWebViewForCellWithChapter:(id)chapter;
+- (BOOL)shareItemAtIndexPath:(id)path;
 - (BOOL)showRowForCurrentLocation;
 - (UIToolbar)editingToolbar;
 - (double)calculateFontSize;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_bkTableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)_indexPathForRowNearestPageNumber:(int64_t)a3 pageNumberForObjectSelector:(SEL)a4 isExactPageMatch:(BOOL *)a5;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_bkTableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)_indexPathForRowNearestPageNumber:(int64_t)number pageNumberForObjectSelector:(SEL)selector isExactPageMatch:(BOOL *)match;
 - (id)author;
-- (id)bookSharingRequestClient:(id)a3 annotationAtIndex:(unint64_t)a4;
-- (id)bookSharingRequestClient:(id)a3 selectedAnnotationAtIndex:(unint64_t)a4;
+- (id)bookSharingRequestClient:(id)client annotationAtIndex:(unint64_t)index;
+- (id)bookSharingRequestClient:(id)client selectedAnnotationAtIndex:(unint64_t)index;
 - (id)bookTitle;
 - (id)bookmarksFetchedResultsController;
 - (id)currentLocation;
 - (id)dateFormatter;
-- (id)deleteSwipeAction:(id)a3;
-- (id)editToolbarFooterTextWithCount:(unint64_t)a3;
+- (id)deleteSwipeAction:(id)action;
+- (id)editToolbarFooterTextWithCount:(unint64_t)count;
 - (id)fetchedResultsController;
 - (id)fontFamily;
-- (id)fontForChapter:(id)a3;
+- (id)fontForChapter:(id)chapter;
 - (id)highlightedTextLabelFont;
 - (id)indexPathOfLastRow;
-- (id)p_annotationForIndexPath:(id)a3;
-- (id)p_annotationsForRowItems:(id)a3;
+- (id)p_annotationForIndexPath:(id)path;
+- (id)p_annotationsForRowItems:(id)items;
 - (id)p_selectedAnnotations;
-- (id)pageTitleForAnnotation:(id)a3;
-- (id)pageTitleForChapter:(id)a3;
+- (id)pageTitleForAnnotation:(id)annotation;
+- (id)pageTitleForChapter:(id)chapter;
 - (id)reuseIdentifier;
-- (id)reuseIdentifierForCellType:(unint64_t)a3;
-- (id)shareSwipeAction:(id)a3;
+- (id)reuseIdentifierForCellType:(unint64_t)type;
+- (id)shareSwipeAction:(id)action;
 - (id)storeURL;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tocIndexPathForRowNearestPageNumber:(int64_t)a3;
-- (int)assetSharingConnectionTypeForClient:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tocIndexPathForRowNearestPageNumber:(int64_t)number;
+- (int)assetSharingConnectionTypeForClient:(id)client;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (int64_t)pageNumberForCurrentLocation;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (int64_t)tableViewSeparatorStyle;
-- (unint64_t)bookSharingRequestNumberOfAnnotations:(id)a3;
-- (unint64_t)bookSharingRequestNumberOfSelectedAnnotations:(id)a3;
-- (void)_configureAnnotationCell:(id)a3 forAnnotation:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)_configurePointAnnotationCell:(id)a3 forRowAtIndexPath:(id)a4;
-- (void)_configureRangeAnnotationCell:(id)a3 forRowAtIndexPath:(id)a4;
-- (void)_configureTOCCell:(id)a3 forRowAtIndexPath:(id)a4;
-- (void)_configureWebTOCCell:(id)a3 forRowAtIndexPath:(id)a4;
+- (unint64_t)bookSharingRequestNumberOfAnnotations:(id)annotations;
+- (unint64_t)bookSharingRequestNumberOfSelectedAnnotations:(id)annotations;
+- (void)_configureAnnotationCell:(id)cell forAnnotation:(id)annotation forRowAtIndexPath:(id)path;
+- (void)_configurePointAnnotationCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)_configureRangeAnnotationCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)_configureTOCCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)_configureWebTOCCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)_dumpCachedWebContentAndReload;
 - (void)_hideActivityIndicator;
 - (void)_notifyDelegateContentDidChange;
 - (void)_showActivityIndicator;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateColors;
 - (void)_updateContentInsets;
-- (void)assetSharingConnectionClient:(id)a3 performRequest:(int)a4;
-- (void)beginAssetSharingConnectionWithClient:(id)a3;
+- (void)assetSharingConnectionClient:(id)client performRequest:(int)request;
+- (void)beginAssetSharingConnectionWithClient:(id)client;
 - (void)beginEditingIfNeeded;
 - (void)beginEditingMode;
-- (void)beginSelectionStartingWithIndexPath:(id)a3;
-- (void)configureCell:(id)a3 atIndexPath:(id)a4;
-- (void)contentBeganLoadingForRequest:(id)a3;
-- (void)contentFinishedLoadingForRequest:(id)a3 preferredHeight:(double)a4 error:(id)a5;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controller:(id)a3 didChangeSection:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)controllerWillChangeContent:(id)a3;
+- (void)beginSelectionStartingWithIndexPath:(id)path;
+- (void)configureCell:(id)cell atIndexPath:(id)path;
+- (void)contentBeganLoadingForRequest:(id)request;
+- (void)contentFinishedLoadingForRequest:(id)request preferredHeight:(double)height error:(id)error;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controller:(id)controller didChangeSection:(id)section atIndex:(unint64_t)index forChangeType:(unint64_t)type;
+- (void)controllerDidChangeContent:(id)content;
+- (void)controllerWillChangeContent:(id)content;
 - (void)dealloc;
-- (void)deleteAnnotationAtIndexPath:(id)a3;
+- (void)deleteAnnotationAtIndexPath:(id)path;
 - (void)deleteFromToolbar;
 - (void)deleteSelectedAnnotations;
-- (void)endAssetSharingConnectionWithClient:(id)a3;
+- (void)endAssetSharingConnectionWithClient:(id)client;
 - (void)endEditingIfNeeded;
 - (void)endEditingMode;
 - (void)installEditModeToolbar;
@@ -85,36 +85,36 @@
 - (void)reload;
 - (void)removeEditModeToolbar;
 - (void)removeHighlightFromCurrentLocation;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)selectNone:(id)a3;
-- (void)setBook:(id)a3;
-- (void)setCellLoadingOperationCount:(int64_t)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)selectAll:(id)all;
+- (void)selectNone:(id)none;
+- (void)setBook:(id)book;
+- (void)setCellLoadingOperationCount:(int64_t)count;
 - (void)setNeedsRestyle;
-- (void)setSharedWebView:(id)a3;
-- (void)setTheme:(id)a3;
+- (void)setSharedWebView:(id)view;
+- (void)setTheme:(id)theme;
 - (void)shareFromToolbar;
-- (void)shareSelectedAnnotationsFromSourceView:(id)a3;
-- (void)tableView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 performPrimaryActionForRowAtIndexPath:(id)a4;
+- (void)shareSelectedAnnotationsFromSourceView:(id)view;
+- (void)tableView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view performPrimaryActionForRowAtIndexPath:(id)path;
 - (void)updateToolbarContent;
 - (void)updateView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKTOCContentViewController
 
-- (BKTOCContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKTOCContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = BKTOCContentViewController;
-  v4 = [(BKTOCViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(BKTOCViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[UITraitCollection bc_allAPITraits];
@@ -174,9 +174,9 @@
 
   if ([(BKTOCViewController *)self usesPopoverStyle])
   {
-    v9 = [(BKTOCContentViewController *)self traitCollection];
-    v10 = [v9 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+    traitCollection = [(BKTOCContentViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -210,8 +210,8 @@
   v32.receiver = self;
   v32.super_class = BKTOCContentViewController;
   [(BKContentViewController *)&v32 viewDidLoad];
-  v3 = [(BKTOCContentViewController *)self view];
-  [v3 bounds];
+  view = [(BKTOCContentViewController *)self view];
+  [view bounds];
   v8 = [[UITableView alloc] initWithFrame:0 style:{v4, v5, v6, v7}];
   v9 = *(&self->super._verticalCenteringInsets.right + 4);
   *(&self->super._verticalCenteringInsets.right + 4) = v8;
@@ -224,7 +224,7 @@
   [*(&self->super._verticalCenteringInsets.right + 4) setDragDelegate:self];
   [*(&self->super._verticalCenteringInsets.right + 4) setAllowsMultipleSelectionDuringEditing:1];
   [*(&self->super._verticalCenteringInsets.right + 4) setAutomaticallyAdjustsScrollIndicatorInsets:0];
-  [v3 addSubview:*(&self->super._verticalCenteringInsets.right + 4)];
+  [view addSubview:*(&self->super._verticalCenteringInsets.right + 4)];
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 addObserver:self selector:"preferredContentSizeChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
@@ -265,17 +265,17 @@
   [(BKTOCContentViewController *)self _updateColors];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  [(BKTOCContentViewController *)self _updateColors:a3];
+  [(BKTOCContentViewController *)self _updateColors:change];
   [*(&self->super._verticalCenteringInsets.right + 4) reloadData];
 
   [(BKTOCContentViewController *)self _notifyDelegateContentDidChange];
 }
 
-- (void)setSharedWebView:(id)a3
+- (void)setSharedWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = *(&self->_requestQueue + 4);
   if (v5)
   {
@@ -283,65 +283,65 @@
   }
 
   v6 = *(&self->_requestQueue + 4);
-  *(&self->_requestQueue + 4) = v4;
-  v7 = v4;
+  *(&self->_requestQueue + 4) = viewCopy;
+  v7 = viewCopy;
 
   v8 = +[UIColor clearColor];
   [*(&self->_requestQueue + 4) setBackgroundColor:v8];
 
   v9 = +[UIColor clearColor];
-  v10 = [*(&self->_requestQueue + 4) scrollView];
-  [v10 setBackgroundColor:v9];
+  scrollView = [*(&self->_requestQueue + 4) scrollView];
+  [scrollView setBackgroundColor:v9];
 
   [*(&self->_requestQueue + 4) setOpaque:0];
   [*(&self->_requestQueue + 4) setAutoresizingMask:0];
   [*(&self->_requestQueue + 4) setTranslatesAutoresizingMaskIntoConstraints:0];
   [*(&self->_requestQueue + 4) setUserInteractionEnabled:0];
-  v11 = [(BKTOCContentViewController *)self view];
-  [v11 addSubview:*(&self->_requestQueue + 4)];
+  view = [(BKTOCContentViewController *)self view];
+  [view addSubview:*(&self->_requestQueue + 4)];
 
-  v12 = [(BKTOCContentViewController *)self view];
-  [v12 sendSubviewToBack:*(&self->_requestQueue + 4)];
+  view2 = [(BKTOCContentViewController *)self view];
+  [view2 sendSubviewToBack:*(&self->_requestQueue + 4)];
 
   [*(&self->_requestQueue + 4) frame];
   [*(&self->_requestQueue + 4) setFrame:{-CGRectGetWidth(v16), v16.origin.y, v16.size.width, v16.size.height}];
   v13 = *(&self->_requestQueue + 4);
-  v14 = [(BKTOCContentViewController *)self requestQueue];
-  [v14 setWebView:v13];
+  requestQueue = [(BKTOCContentViewController *)self requestQueue];
+  [requestQueue setWebView:v13];
 }
 
 - (void)_updateColors
 {
-  v13 = [(BKTOCContentViewController *)self themePage];
+  themePage = [(BKTOCContentViewController *)self themePage];
   v3 = +[UIColor clearColor];
-  v4 = [(BKTOCContentViewController *)self viewIfLoaded];
-  [v4 setBackgroundColor:v3];
+  viewIfLoaded = [(BKTOCContentViewController *)self viewIfLoaded];
+  [viewIfLoaded setBackgroundColor:v3];
 
   [*(&self->super._verticalCenteringInsets.right + 4) setBackgroundColor:v3];
-  v5 = [v13 tableViewSeparatorColor];
-  [*(&self->super._verticalCenteringInsets.right + 4) setSeparatorColor:v5];
+  tableViewSeparatorColor = [themePage tableViewSeparatorColor];
+  [*(&self->super._verticalCenteringInsets.right + 4) setSeparatorColor:tableViewSeparatorColor];
 
-  v6 = [v13 primaryTextColor];
-  v7 = [*(&self->_sharedWebView + 4) titleLabel];
-  [v7 setTextColor:v6];
+  primaryTextColor = [themePage primaryTextColor];
+  titleLabel = [*(&self->_sharedWebView + 4) titleLabel];
+  [titleLabel setTextColor:primaryTextColor];
 
-  v8 = [v13 secondaryTextColor];
-  v9 = [*(&self->_sharedWebView + 4) descriptionLabel];
-  [v9 setTextColor:v8];
+  secondaryTextColor = [themePage secondaryTextColor];
+  descriptionLabel = [*(&self->_sharedWebView + 4) descriptionLabel];
+  [descriptionLabel setTextColor:secondaryTextColor];
 
-  v10 = [v13 primaryTextColor];
-  v11 = [(BKTOCContentViewController *)self view];
-  [v11 setTintColor:v10];
+  primaryTextColor2 = [themePage primaryTextColor];
+  view = [(BKTOCContentViewController *)self view];
+  [view setTintColor:primaryTextColor2];
 
-  v12 = [v13 secondaryTextColor];
-  [*(&self->super._verticalCenteringInsets.right + 4) setTintColor:v12];
+  secondaryTextColor2 = [themePage secondaryTextColor];
+  [*(&self->super._verticalCenteringInsets.right + 4) setTintColor:secondaryTextColor2];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v4.receiver = self;
   v4.super_class = BKTOCContentViewController;
-  [(BKTOCViewController *)&v4 setTheme:a3];
+  [(BKTOCViewController *)&v4 setTheme:theme];
   [(BKTOCContentViewController *)self _updateColors];
   [(BKTOCContentViewController *)self _dumpCachedWebContentAndReload];
   [*(&self->super._verticalCenteringInsets.right + 4) reloadData];
@@ -357,8 +357,8 @@
     v5 = *(&self->_template + 4);
     *(&self->_template + 4) = v4;
 
-    v6 = [(BKTOCContentViewController *)self imageCache];
-    [*(&self->_template + 4) setImageCache:v6];
+    imageCache = [(BKTOCContentViewController *)self imageCache];
+    [*(&self->_template + 4) setImageCache:imageCache];
 
     v3 = *(&self->_template + 4);
   }
@@ -401,20 +401,20 @@
   return v3;
 }
 
-- (id)_bkTableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)_bkTableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(BKContentViewController *)self book];
-  v8 = [v7 sampleContent];
-  v9 = [v8 BOOLValue];
+  pathCopy = path;
+  book = [(BKContentViewController *)self book];
+  sampleContent = [book sampleContent];
+  bOOLValue = [sampleContent BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     goto LABEL_6;
   }
 
-  v10 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v11 = [v10 objectAtIndexPath:v6];
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  v11 = [fetchedResultsController objectAtIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -451,16 +451,16 @@ LABEL_7:
 
 - (void)_updateContentInsets
 {
-  v3 = [(BKContentViewController *)self layoutDelegate];
+  layoutDelegate = [(BKContentViewController *)self layoutDelegate];
 
-  if (v3)
+  if (layoutDelegate)
   {
-    v4 = [(BKContentViewController *)self layoutDelegate];
-    [v4 edgeInsetsForContentViewController:self];
+    layoutDelegate2 = [(BKContentViewController *)self layoutDelegate];
+    [layoutDelegate2 edgeInsetsForContentViewController:self];
     [(BKContentViewController *)self setContentInsets:?];
 
-    v5 = [(BKContentViewController *)self layoutDelegate];
-    [v5 separatorInsetsForContentViewController:self];
+    layoutDelegate3 = [(BKContentViewController *)self layoutDelegate];
+    [layoutDelegate3 separatorInsetsForContentViewController:self];
     [(BKContentViewController *)self setSeparatorInsets:?];
   }
 
@@ -479,33 +479,33 @@ LABEL_7:
   }
 
   [(BKTOCContentViewController *)self _updateContentInsets];
-  v3 = [(BKTOCContentViewController *)self view];
-  [v3 bounds];
+  view = [(BKTOCContentViewController *)self view];
+  [view bounds];
   [*(&self->super._verticalCenteringInsets.right + 4) setFrame:?];
 
   [(BKContentViewController *)self separatorInsets];
   [*(&self->super._verticalCenteringInsets.right + 4) setSeparatorInset:?];
-  v4 = [(BKTOCContentViewController *)self editingToolbar];
-  [v4 frame];
+  editingToolbar = [(BKTOCContentViewController *)self editingToolbar];
+  [editingToolbar frame];
   [*(&self->super._verticalCenteringInsets.right + 4) setContentInset:{0.0, 0.0, v5, 0.0}];
 
-  v6 = [(BKTOCContentViewController *)self editingToolbar];
-  [v6 frame];
+  editingToolbar2 = [(BKTOCContentViewController *)self editingToolbar];
+  [editingToolbar2 frame];
   v8 = v7;
-  v9 = [(BKTOCContentViewController *)self view];
-  [v9 safeAreaInsets];
+  view2 = [(BKTOCContentViewController *)self view];
+  [view2 safeAreaInsets];
   [*(&self->super._verticalCenteringInsets.right + 4) setScrollIndicatorInsets:{0.0, 0.0, v8 + v10, 0.0}];
 
-  v11 = [(BKTOCContentViewController *)self view];
-  v51 = [v11 viewWithTag:9999];
+  view3 = [(BKTOCContentViewController *)self view];
+  v51 = [view3 viewWithTag:9999];
 
   [v51 removeFromSuperview];
   [*(&self->super._verticalCenteringInsets.right + 4) setAlpha:1.0];
   if ([(BKTOCViewController *)self tocContentType])
   {
-    v12 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v13 = [v12 fetchedObjects];
-    v14 = [v13 count];
+    fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+    fetchedObjects = [fetchedResultsController fetchedObjects];
+    v14 = [fetchedObjects count];
 
     if (!v14)
     {
@@ -518,11 +518,11 @@ LABEL_7:
       v49 = [v50 fontDescriptorWithDesign:UIFontDescriptorSystemDesignSerif];
       v17 = [UIFont fontWithDescriptor:0.0 size:?];
       v18 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-      v19 = [(BKTOCBookmarksDescription *)v15 titleLabel];
-      [v19 setFont:v17];
+      titleLabel = [(BKTOCBookmarksDescription *)v15 titleLabel];
+      [titleLabel setFont:v17];
 
-      v20 = [(BKTOCBookmarksDescription *)v15 descriptionLabel];
-      [v20 setFont:v18];
+      descriptionLabel = [(BKTOCBookmarksDescription *)v15 descriptionLabel];
+      [descriptionLabel setFont:v18];
 
       if ([(BKTOCViewController *)self tocContentType]== &dword_0 + 1)
       {
@@ -550,23 +550,23 @@ LABEL_7:
       v26 = [v25 localizedStringForKey:v21 value:&stru_1E7188 table:0];
 
 LABEL_12:
-      v27 = [(BKTOCBookmarksDescription *)v15 titleLabel];
-      [v27 setText:v24];
+      titleLabel2 = [(BKTOCBookmarksDescription *)v15 titleLabel];
+      [titleLabel2 setText:v24];
 
-      v28 = [(BKTOCBookmarksDescription *)v15 descriptionLabel];
-      [v28 setText:v26];
+      descriptionLabel2 = [(BKTOCBookmarksDescription *)v15 descriptionLabel];
+      [descriptionLabel2 setText:v26];
 
-      v29 = [(BKTOCContentViewController *)self themePage];
-      v30 = [v29 secondaryTextColor];
+      themePage = [(BKTOCContentViewController *)self themePage];
+      secondaryTextColor = [themePage secondaryTextColor];
 
-      v31 = [(BKTOCBookmarksDescription *)v15 titleLabel];
-      [v31 setTextColor:v30];
+      titleLabel3 = [(BKTOCBookmarksDescription *)v15 titleLabel];
+      [titleLabel3 setTextColor:secondaryTextColor];
 
-      v32 = [(BKTOCBookmarksDescription *)v15 descriptionLabel];
-      [v32 setTextColor:v30];
+      descriptionLabel3 = [(BKTOCBookmarksDescription *)v15 descriptionLabel];
+      [descriptionLabel3 setTextColor:secondaryTextColor];
 
-      v33 = [(BKTOCContentViewController *)self view];
-      [v33 bounds];
+      view4 = [(BKTOCContentViewController *)self view];
+      [view4 bounds];
       v35 = v34;
       v37 = v36;
       v39 = v38;
@@ -579,8 +579,8 @@ LABEL_12:
       *(&self->_sharedWebView + 4) = v15;
       v47 = v15;
 
-      v48 = [(BKTOCContentViewController *)self view];
-      [v48 addSubview:v47];
+      view5 = [(BKTOCContentViewController *)self view];
+      [view5 addSubview:v47];
 
       [*(&self->super._verticalCenteringInsets.right + 4) setAlpha:0.0];
     }
@@ -589,25 +589,25 @@ LABEL_12:
   [(BKTOCContentViewController *)self showRowForCurrentLocation];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = BKTOCContentViewController;
-  [(BKTOCViewController *)&v5 viewWillAppear:a3];
+  [(BKTOCViewController *)&v5 viewWillAppear:appear];
   [(BKTOCContentViewController *)self updateView];
   [(BKTOCContentViewController *)self reload];
   if (([*(&self->super._verticalCenteringInsets.right + 4) isEditing] & 1) == 0)
   {
-    v4 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathForSelectedRow];
-    [*(&self->super._verticalCenteringInsets.right + 4) deselectRowAtIndexPath:v4 animated:0];
+    indexPathForSelectedRow = [*(&self->super._verticalCenteringInsets.right + 4) indexPathForSelectedRow];
+    [*(&self->super._verticalCenteringInsets.right + 4) deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = BKTOCContentViewController;
-  [(BKTOCViewController *)&v6 viewDidAppear:a3];
+  [(BKTOCViewController *)&v6 viewDidAppear:appear];
   v4 = [NSDate dateWithTimeIntervalSinceNow:0.5];
   v5 = *(&self->_isProgrammaticScrolling + 4);
   *(&self->_isProgrammaticScrolling + 4) = v4;
@@ -615,17 +615,17 @@ LABEL_12:
   [*(&self->super._verticalCenteringInsets.right + 4) flashScrollIndicators];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = v4;
+  scrollCopy = scroll;
+  v5 = scrollCopy;
   if ((BYTE4(self->_recenteredIndexPath) & 1) == 0)
   {
-    v4 = *(&self->_isProgrammaticScrolling + 4);
-    if (v4)
+    scrollCopy = *(&self->_isProgrammaticScrolling + 4);
+    if (scrollCopy)
     {
       v7 = v5;
-      v4 = [v4 timeIntervalSinceNow];
+      scrollCopy = [scrollCopy timeIntervalSinceNow];
       v5 = v7;
       if (v6 <= 0.0)
       {
@@ -634,17 +634,17 @@ LABEL_12:
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(scrollCopy, v5);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = BKTOCContentViewController;
-  v7 = a4;
-  [(BKTOCViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BKTOCViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(BKTOCContentViewController *)self _dumpCachedWebContentAndReload];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
@@ -656,19 +656,19 @@ LABEL_12:
   v8[1] = 3221225472;
   v8[2] = sub_79148;
   v8[3] = &unk_1E2A60;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
 - (void)_dumpCachedWebContentAndReload
 {
-  v3 = [(BKTOCContentViewController *)self requestToIndexPath];
-  [v3 removeAllObjects];
+  requestToIndexPath = [(BKTOCContentViewController *)self requestToIndexPath];
+  [requestToIndexPath removeAllObjects];
 
-  v4 = [(BKTOCContentViewController *)self cachedRowContents];
-  [v4 removeAllObjects];
+  cachedRowContents = [(BKTOCContentViewController *)self cachedRowContents];
+  [cachedRowContents removeAllObjects];
 
-  v5 = [(BKTOCContentViewController *)self imageCache];
-  [v5 removeAllObjects];
+  imageCache = [(BKTOCContentViewController *)self imageCache];
+  [imageCache removeAllObjects];
 }
 
 - (void)viewDidLayoutSubviews
@@ -681,13 +681,13 @@ LABEL_12:
 
 - (int64_t)pageNumberForCurrentLocation
 {
-  v3 = [(BKDirectoryContent *)self directoryDelegate];
-  v4 = [v3 tocViewControllerCurrentLocation:self];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  v4 = [directoryDelegate tocViewControllerCurrentLocation:self];
 
   if (v4)
   {
-    v5 = [(BKDirectoryContent *)self directoryDelegate];
-    v6 = [v5 directoryContent:self pageNumberForLocation:v4];
+    directoryDelegate2 = [(BKDirectoryContent *)self directoryDelegate];
+    v6 = [directoryDelegate2 directoryContent:self pageNumberForLocation:v4];
   }
 
   else
@@ -704,11 +704,11 @@ LABEL_12:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [*(&self->super._paginationController + 4) sections];
-  v4 = [v3 reverseObjectEnumerator];
+  sections = [*(&self->super._paginationController + 4) sections];
+  reverseObjectEnumerator = [sections reverseObjectEnumerator];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  obj = reverseObjectEnumerator;
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -724,13 +724,13 @@ LABEL_12:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 objects];
-        v12 = [v11 count];
+        objects = [v10 objects];
+        v12 = [objects count];
 
         if (v12)
         {
-          v13 = [*(&self->super._paginationController + 4) sections];
-          v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v12 - 1, [v13 indexOfObject:v10]);
+          sections2 = [*(&self->super._paginationController + 4) sections];
+          v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v12 - 1, [sections2 indexOfObject:v10]);
 
           v7 = v14;
         }
@@ -750,15 +750,15 @@ LABEL_12:
   return v7;
 }
 
-- (id)tocIndexPathForRowNearestPageNumber:(int64_t)a3
+- (id)tocIndexPathForRowNearestPageNumber:(int64_t)number
 {
   v5 = 0;
-  v3 = [(BKTOCContentViewController *)self _indexPathForRowNearestPageNumber:a3 pageNumberForObjectSelector:"tocViewController:pageNumberForChapter:" isExactPageMatch:&v5];
+  v3 = [(BKTOCContentViewController *)self _indexPathForRowNearestPageNumber:number pageNumberForObjectSelector:"tocViewController:pageNumberForChapter:" isExactPageMatch:&v5];
 
   return v3;
 }
 
-- (id)_indexPathForRowNearestPageNumber:(int64_t)a3 pageNumberForObjectSelector:(SEL)a4 isExactPageMatch:(BOOL *)a5
+- (id)_indexPathForRowNearestPageNumber:(int64_t)number pageNumberForObjectSelector:(SEL)selector isExactPageMatch:(BOOL *)match
 {
   v32 = 0u;
   v33 = 0u;
@@ -785,8 +785,8 @@ LABEL_12:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v9 = [v8 objects];
-        v10 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        objects = [v8 objects];
+        v10 = [objects countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v10)
         {
           v11 = v10;
@@ -797,25 +797,25 @@ LABEL_8:
           {
             if (*v29 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(objects);
             }
 
             v14 = *(*(&v28 + 1) + 8 * v13);
-            v15 = [(BKDirectoryContent *)self directoryDelegate];
-            v16 = [v15 a4];
+            directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+            selector = [directoryDelegate selector];
 
-            if (v16 >= a3)
+            if (selector >= number)
             {
-              v17 = [v8 objects];
-              v18 = [v17 indexOfObject:v14];
+              objects2 = [v8 objects];
+              v18 = [objects2 indexOfObject:v14];
 
-              if (v16 == a3)
+              if (selector == number)
               {
-                *a5 = 1;
+                *match = 1;
                 goto LABEL_21;
               }
 
-              if (v16 > a3)
+              if (selector > number)
               {
                 break;
               }
@@ -823,7 +823,7 @@ LABEL_8:
 
             if (v11 == ++v13)
             {
-              v11 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+              v11 = [objects countByEnumeratingWithState:&v28 objects:v36 count:16];
               if (v11)
               {
                 goto LABEL_8;
@@ -844,10 +844,10 @@ LABEL_8:
           }
 
 LABEL_21:
-          v19 = [*(&self->super._paginationController + 4) sections];
-          v20 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v18, [v19 indexOfObject:v8]);
+          sections = [*(&self->super._paginationController + 4) sections];
+          indexPathOfLastRow = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v18, [sections indexOfObject:v8]);
 
-          if (!v20)
+          if (!indexPathOfLastRow)
           {
             goto LABEL_22;
           }
@@ -872,17 +872,17 @@ LABEL_22:
     }
   }
 
-  v20 = [(BKTOCContentViewController *)self indexPathOfLastRow];
+  indexPathOfLastRow = [(BKTOCContentViewController *)self indexPathOfLastRow];
 LABEL_26:
 
-  return v20;
+  return indexPathOfLastRow;
 }
 
 - (BOOL)showRowForCurrentLocation
 {
   v11 = 0;
-  v3 = [*(&self->super._paginationController + 4) fetchedObjects];
-  if (![v3 count])
+  fetchedObjects = [*(&self->super._paginationController + 4) fetchedObjects];
+  if (![fetchedObjects count])
   {
 
 LABEL_8:
@@ -890,20 +890,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v4 = [*(&self->super._verticalCenteringInsets.right + 4) numberOfSections];
+  numberOfSections = [*(&self->super._verticalCenteringInsets.right + 4) numberOfSections];
 
-  if (v4 < 1)
+  if (numberOfSections < 1)
   {
     goto LABEL_8;
   }
 
-  v5 = [(BKTOCContentViewController *)self pageNumberForCurrentLocation];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  pageNumberForCurrentLocation = [(BKTOCContentViewController *)self pageNumberForCurrentLocation];
+  if (pageNumberForCurrentLocation == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_8;
   }
 
-  v6 = v5;
+  v6 = pageNumberForCurrentLocation;
   if ([(BKTOCViewController *)self tocContentType])
   {
     v7 = [(BKTOCContentViewController *)self annotationIndexPathForRowNearestPageNumber:v6 isExactPageMatch:&v11];
@@ -961,12 +961,12 @@ LABEL_12:
 
 - (void)removeHighlightFromCurrentLocation
 {
-  v3 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+  indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  v4 = [indexPathsForSelectedRows countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v4)
   {
     v6 = v4;
@@ -979,7 +979,7 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -995,7 +995,7 @@ LABEL_12:
         [v10 setSelected:0 animated:1];
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v6);
@@ -1008,11 +1008,11 @@ LABEL_12:
   if (!v3)
   {
     v4 = [BKActivityIndicatorOverlayView alloc];
-    v5 = [(BKTOCContentViewController *)self theme];
-    v6 = [v5 contentTextColor];
-    v7 = [v6 colorWithAlphaComponent:0.7];
-    v8 = [(BKTOCContentViewController *)self theme];
-    v9 = [v8 backgroundColorForTraitEnvironment:self];
+    theme = [(BKTOCContentViewController *)self theme];
+    contentTextColor = [theme contentTextColor];
+    v7 = [contentTextColor colorWithAlphaComponent:0.7];
+    theme2 = [(BKTOCContentViewController *)self theme];
+    v9 = [theme2 backgroundColorForTraitEnvironment:self];
     v10 = [(BKActivityIndicatorOverlayView *)v4 initWithBackgroundColor:v7 foregroundColor:v9];
     v11 = *(&self->_cellLoadingOperationCount + 4);
     *(&self->_cellLoadingOperationCount + 4) = v10;
@@ -1023,10 +1023,10 @@ LABEL_12:
   return v3;
 }
 
-- (void)setCellLoadingOperationCount:(int64_t)a3
+- (void)setCellLoadingOperationCount:(int64_t)count
 {
-  *(&self->_preferredFontSize + 4) = a3 & ~(a3 >> 63);
-  if (a3 < 1)
+  *(&self->_preferredFontSize + 4) = count & ~(count >> 63);
+  if (count < 1)
   {
     [(BKTOCContentViewController *)self _hideActivityIndicator];
   }
@@ -1039,9 +1039,9 @@ LABEL_12:
 
 - (void)_showActivityIndicator
 {
-  v4 = [(BKTOCContentViewController *)self activityIndicatorOverlayView];
-  v3 = [*(&self->super._verticalCenteringInsets.right + 4) superview];
-  [v4 showIndicatorCenteredInView:v3 animated:1 animationDelay:0.0];
+  activityIndicatorOverlayView = [(BKTOCContentViewController *)self activityIndicatorOverlayView];
+  superview = [*(&self->super._verticalCenteringInsets.right + 4) superview];
+  [activityIndicatorOverlayView showIndicatorCenteredInView:superview animated:1 animationDelay:0.0];
 }
 
 - (void)_hideActivityIndicator
@@ -1061,18 +1061,18 @@ LABEL_12:
 - (id)fontFamily
 {
   v2 = [UIFont systemFontOfSize:17.0];
-  v3 = [v2 familyName];
+  familyName = [v2 familyName];
 
-  return v3;
+  return familyName;
 }
 
-- (id)pageTitleForChapter:(id)a3
+- (id)pageTitleForChapter:(id)chapter
 {
-  v4 = a3;
-  if (v4 && (BYTE4(self->super._fetchedResultsController) & 2) != 0)
+  chapterCopy = chapter;
+  if (chapterCopy && (BYTE4(self->super._fetchedResultsController) & 2) != 0)
   {
-    v6 = [(BKDirectoryContent *)self directoryDelegate];
-    v5 = [v6 tocViewController:self pageTitleForChapter:v4];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    v5 = [directoryDelegate tocViewController:self pageTitleForChapter:chapterCopy];
   }
 
   else
@@ -1083,13 +1083,13 @@ LABEL_12:
   return v5;
 }
 
-- (id)pageTitleForAnnotation:(id)a3
+- (id)pageTitleForAnnotation:(id)annotation
 {
   if ((BYTE4(self->super._fetchedResultsController) & 4) != 0)
   {
-    v5 = a3;
-    v6 = [(BKDirectoryContent *)self directoryDelegate];
-    v3 = [v6 tocViewController:self pageTitleForAnnotation:v5];
+    annotationCopy = annotation;
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    v3 = [directoryDelegate tocViewController:self pageTitleForAnnotation:annotationCopy];
   }
 
   else
@@ -1119,14 +1119,14 @@ LABEL_12:
   return result;
 }
 
-- (id)fontForChapter:(id)a3
+- (id)fontForChapter:(id)chapter
 {
-  v4 = a3;
+  chapterCopy = chapter;
   [(BKTOCViewController *)self establishChapterFonts];
-  v5 = [v4 indentationLevel];
+  indentationLevel = [chapterCopy indentationLevel];
 
-  v6 = [v5 integerValue];
-  if (v6)
+  integerValue = [indentationLevel integerValue];
+  if (integerValue)
   {
     [(BKTOCViewController *)self chapterSubLevelFont];
   }
@@ -1140,13 +1140,13 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)p_willUseWebViewForCellWithChapter:(id)a3
+- (BOOL)p_willUseWebViewForCellWithChapter:(id)chapter
 {
-  v3 = [a3 htmlName];
-  if ([v3 length])
+  htmlName = [chapter htmlName];
+  if ([htmlName length])
   {
     v4 = [NSRegularExpression regularExpressionWithPattern:@"<[^/s]" options:0 error:0];
-    v5 = [v4 numberOfMatchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}] != 0;
+    v5 = [v4 numberOfMatchesInString:htmlName options:0 range:{0, objc_msgSend(htmlName, "length")}] != 0;
   }
 
   else
@@ -1157,17 +1157,17 @@ LABEL_12:
   return v5;
 }
 
-- (void)_configureTOCCell:(id)a3 forRowAtIndexPath:(id)a4
+- (void)_configureTOCCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v62 = a3;
-  v6 = a4;
-  v7 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v8 = [v7 fetchedObjects];
+  cellCopy = cell;
+  pathCopy = path;
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
 
-  if (v8)
+  if (fetchedObjects)
   {
-    v9 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v10 = [v9 objectAtIndexPath:v6];
+    fetchedResultsController2 = [(BKTOCContentViewController *)self fetchedResultsController];
+    v10 = [fetchedResultsController2 objectAtIndexPath:pathCopy];
   }
 
   else
@@ -1188,32 +1188,32 @@ LABEL_12:
   [(BKContentViewController *)self contentInsets];
   v13 = v12;
   [(BKContentViewController *)self contentInsets];
-  [v62 setContentInsets:{0.0, v13, 0.0}];
-  v14 = [v10 name];
-  v15 = [v14 length];
+  [cellCopy setContentInsets:{0.0, v13, 0.0}];
+  name = [v10 name];
+  v15 = [name length];
   if (v15)
   {
-    v16 = [v10 name];
+    name2 = [v10 name];
   }
 
   else
   {
-    v16 = @" ";
+    name2 = @" ";
   }
 
-  v17 = [v62 textLabel];
-  [v17 setText:v16];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:name2];
 
   if (v15)
   {
   }
 
   v18 = [(BKTOCContentViewController *)self fontForChapter:v10];
-  v19 = [v62 textLabel];
-  [v19 setFont:v18];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setFont:v18];
 
-  v20 = [v62 textLabel];
-  [v20 setLineBreakMode:0];
+  textLabel3 = [cellCopy textLabel];
+  [textLabel3 setLineBreakMode:0];
 
   if ([v10 isExcludedFromSample])
   {
@@ -1225,25 +1225,25 @@ LABEL_12:
     v21 = 1.0;
   }
 
-  v22 = [v62 textLabel];
-  [v22 setAlpha:v21];
+  textLabel4 = [cellCopy textLabel];
+  [textLabel4 setAlpha:v21];
 
-  [v62 setBkaxIsExcludedFromSample:{objc_msgSend(v10, "isExcludedFromSample")}];
-  v23 = [v62 textLabel];
-  [v23 setNumberOfLines:0];
+  [cellCopy setBkaxIsExcludedFromSample:{objc_msgSend(v10, "isExcludedFromSample")}];
+  textLabel5 = [cellCopy textLabel];
+  [textLabel5 setNumberOfLines:0];
 
-  v24 = [v10 indentationLevel];
-  [v62 setIndentationLevel:{objc_msgSend(v24, "integerValue")}];
+  indentationLevel = [v10 indentationLevel];
+  [cellCopy setIndentationLevel:{objc_msgSend(indentationLevel, "integerValue")}];
 
-  [v62 setIndentationWidth:16.0];
-  v25 = [v62 effectiveUserInterfaceLayoutDirection];
+  [cellCopy setIndentationWidth:16.0];
+  effectiveUserInterfaceLayoutDirection = [cellCopy effectiveUserInterfaceLayoutDirection];
   [(BKContentViewController *)self separatorInsets];
   v27 = v26;
-  v28 = [v62 indentationLevel];
-  [v62 indentationWidth];
-  v30 = v27 + v28 * v29;
+  indentationLevel2 = [cellCopy indentationLevel];
+  [cellCopy indentationWidth];
+  v30 = v27 + indentationLevel2 * v29;
   [(BKContentViewController *)self separatorInsets];
-  if (v25 == &dword_0 + 1)
+  if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
   {
     v32 = v30;
   }
@@ -1253,7 +1253,7 @@ LABEL_12:
     v32 = v31;
   }
 
-  if (v25 == &dword_0 + 1)
+  if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
   {
     v33 = v31;
   }
@@ -1263,82 +1263,82 @@ LABEL_12:
     v33 = v30;
   }
 
-  [v62 setSeparatorInset:{0.0, v33, 0.0, v32}];
+  [cellCopy setSeparatorInset:{0.0, v33, 0.0, v32}];
   if ([(BKTOCContentViewController *)self p_willUseWebViewForCellWithChapter:v10])
   {
     [*(&self->super._verticalCenteringInsets.right + 4) bounds];
     Width = CGRectGetWidth(v64);
     [(BKContentViewController *)self contentInsets];
     v37 = Width - (v35 + v36);
-    v38 = [v10 indentationLevel];
-    v39 = [v38 intValue];
-    v40 = [v62 textLabel];
-    [v40 font];
+    indentationLevel3 = [v10 indentationLevel];
+    intValue = [indentationLevel3 intValue];
+    textLabel6 = [cellCopy textLabel];
+    [textLabel6 font];
     v61 = v11;
-    v41 = v8;
-    v43 = v42 = v6;
-    [BKTOCTableViewCell maxSpanForTextWithIndentation:v39 font:v43 width:v37];
+    v41 = fetchedObjects;
+    v43 = v42 = pathCopy;
+    [BKTOCTableViewCell maxSpanForTextWithIndentation:intValue font:v43 width:v37];
 
-    v44 = [(BKContentViewController *)self book];
-    v45 = [v44 tocPageHref];
-    v46 = [v44 urlForHref:v45];
+    book = [(BKContentViewController *)self book];
+    tocPageHref = [book tocPageHref];
+    v46 = [book urlForHref:tocPageHref];
 
     v47 = BEURLHandleriBooksImgUrlFromiBooksURL();
 
-    v48 = [v10 htmlName];
-    v49 = [v62 textLabel];
-    v50 = [v49 font];
-    v51 = [v50 fontName];
+    htmlName = [v10 htmlName];
+    textLabel7 = [cellCopy textLabel];
+    font = [textLabel7 font];
+    fontName = [font fontName];
     [(BKTOCContentViewController *)self calculateFontSize];
-    [v62 displayHTMLWithContents:v48 fontFamily:v51 fontSize:v47 maxSpan:? baseURL:?];
+    [cellCopy displayHTMLWithContents:htmlName fontFamily:fontName fontSize:v47 maxSpan:? baseURL:?];
 
-    v6 = v42;
-    v8 = v41;
+    pathCopy = v42;
+    fetchedObjects = v41;
     v11 = v61;
   }
 
-  v52 = [v62 pageLabel];
-  v53 = v52;
+  pageLabel = [cellCopy pageLabel];
+  v53 = pageLabel;
   if (v11)
   {
-    [v52 setText:v11];
-    v54 = [(BKTOCViewController *)self pageLabelFont];
-    [v53 setFont:v54];
+    [pageLabel setText:v11];
+    pageLabelFont = [(BKTOCViewController *)self pageLabelFont];
+    [v53 setFont:pageLabelFont];
   }
 
   [v53 setHidden:v11 == 0];
-  v55 = [(BKTOCContentViewController *)self themePage];
-  [v62 configureSelectedBackgroundView];
-  v56 = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
-  [v62 setBackgroundColor:v56];
+  themePage = [(BKTOCContentViewController *)self themePage];
+  [cellCopy configureSelectedBackgroundView];
+  backgroundColor = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 
-  v57 = [v55 primaryTextColor];
-  v58 = [v62 textLabel];
-  [v58 setTextColor:v57];
+  primaryTextColor = [themePage primaryTextColor];
+  textLabel8 = [cellCopy textLabel];
+  [textLabel8 setTextColor:primaryTextColor];
 
-  v59 = [v55 tocPageNumberTextColor];
-  v60 = [v62 pageLabel];
-  [v60 setTextColor:v59];
+  tocPageNumberTextColor = [themePage tocPageNumberTextColor];
+  pageLabel2 = [cellCopy pageLabel];
+  [pageLabel2 setTextColor:tocPageNumberTextColor];
 }
 
-- (void)_configureWebTOCCell:(id)a3 forRowAtIndexPath:(id)a4
+- (void)_configureWebTOCCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v85 = a3;
-  v6 = a4;
-  v7 = [(BKTOCContentViewController *)self imageCache];
-  [v85 setImageCache:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  imageCache = [(BKTOCContentViewController *)self imageCache];
+  [cellCopy setImageCache:imageCache];
 
-  v8 = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
-  [v85 setBackgroundColor:v8];
+  backgroundColor = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 
-  v9 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v10 = [v9 fetchedObjects];
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
 
-  v82 = v10;
-  if (v10)
+  v82 = fetchedObjects;
+  if (fetchedObjects)
   {
-    v11 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v12 = [v11 objectAtIndexPath:v6];
+    fetchedResultsController2 = [(BKTOCContentViewController *)self fetchedResultsController];
+    v12 = [fetchedResultsController2 objectAtIndexPath:pathCopy];
   }
 
   else
@@ -1356,16 +1356,16 @@ LABEL_12:
     v13 = [(BKTOCContentViewController *)self pageTitleForChapter:v12];
   }
 
-  v83 = v6;
+  v83 = pathCopy;
   [(BKContentViewController *)self separatorInsets];
   v15 = v14;
-  v16 = [v85 indentationLevel];
-  [v85 indentationWidth];
-  v18 = v15 + v16 * v17;
+  indentationLevel = [cellCopy indentationLevel];
+  [cellCopy indentationWidth];
+  v18 = v15 + indentationLevel * v17;
   [(BKContentViewController *)self separatorInsets];
   v20 = v19;
-  v21 = [v85 effectiveUserInterfaceLayoutDirection];
-  if (v21 == &dword_0 + 1)
+  effectiveUserInterfaceLayoutDirection = [cellCopy effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
   {
     v22 = v18;
   }
@@ -1375,7 +1375,7 @@ LABEL_12:
     v22 = v20;
   }
 
-  if (v21 == &dword_0 + 1)
+  if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
   {
     v23 = v20;
   }
@@ -1385,28 +1385,28 @@ LABEL_12:
     v23 = v18;
   }
 
-  [v85 setSeparatorInset:{0.0, v23, 0.0, v22}];
-  v24 = [v85 pageLabel];
+  [cellCopy setSeparatorInset:{0.0, v23, 0.0, v22}];
+  pageLabel = [cellCopy pageLabel];
   v25 = [v13 length];
   if (v25)
   {
-    [v24 setText:v13];
-    v26 = [(BKTOCViewController *)self pageLabelFont];
-    [v24 setFont:v26];
+    [pageLabel setText:v13];
+    pageLabelFont = [(BKTOCViewController *)self pageLabelFont];
+    [pageLabel setFont:pageLabelFont];
   }
 
   v80 = v13;
-  [v24 setHidden:v25 == 0];
-  v27 = [(BKTOCContentViewController *)self themePage];
-  v28 = [v27 tocPageNumberTextColor];
-  v79 = v24;
-  [v24 setTextColor:v28];
+  [pageLabel setHidden:v25 == 0];
+  themePage = [(BKTOCContentViewController *)self themePage];
+  tocPageNumberTextColor = [themePage tocPageNumberTextColor];
+  v79 = pageLabel;
+  [pageLabel setTextColor:tocPageNumberTextColor];
 
-  v78 = v27;
-  v84 = [v27 primaryTextColor];
+  v78 = themePage;
+  primaryTextColor = [themePage primaryTextColor];
   v29 = [(BKTOCContentViewController *)self fontForChapter:v12];
-  v30 = [v85 textLabel];
-  [v30 setFont:v29];
+  textLabel = [cellCopy textLabel];
+  [textLabel setFont:v29];
 
   [*(&self->super._verticalCenteringInsets.right + 4) bounds];
   v32 = v31;
@@ -1423,36 +1423,36 @@ LABEL_12:
   Width = CGRectGetWidth(v87);
   [(BKContentViewController *)self contentInsets];
   v48 = Width - (v46 + v47);
-  v49 = [v12 indentationLevel];
-  v50 = [v49 intValue];
-  v51 = [v85 textLabel];
-  v52 = [v51 font];
-  [BKTOCTableViewCell maxSpanForTextWithIndentation:v50 font:v52 width:v48];
+  indentationLevel2 = [v12 indentationLevel];
+  intValue = [indentationLevel2 intValue];
+  textLabel2 = [cellCopy textLabel];
+  font = [textLabel2 font];
+  [BKTOCTableViewCell maxSpanForTextWithIndentation:intValue font:font width:v48];
 
-  v53 = [v85 pageLabel];
-  [v53 sizeToFit];
+  pageLabel2 = [cellCopy pageLabel];
+  [pageLabel2 sizeToFit];
 
-  v54 = [v85 pageLabel];
-  [v54 frame];
+  pageLabel3 = [cellCopy pageLabel];
+  [pageLabel3 frame];
   CGRectGetWidth(v88);
 
-  v55 = [(BKContentViewController *)self book];
-  v56 = [v55 tocPageHref];
-  v77 = v55;
-  v57 = [v55 urlForHref:v56];
+  book = [(BKContentViewController *)self book];
+  tocPageHref = [book tocPageHref];
+  v77 = book;
+  v57 = [book urlForHref:tocPageHref];
 
   v58 = BEURLHandleriBooksImgUrlFromiBooksURL();
 
   v59 = +[UIColor clearColor];
-  v60 = [v85 contentView];
-  [v60 setBackgroundColor:v59];
+  contentView = [cellCopy contentView];
+  [contentView setBackgroundColor:v59];
 
   v81 = v12;
-  v61 = [v12 htmlName];
-  v62 = v61;
-  if (v61)
+  htmlName = [v12 htmlName];
+  v62 = htmlName;
+  if (htmlName)
   {
-    v63 = v61;
+    v63 = htmlName;
   }
 
   else
@@ -1460,28 +1460,28 @@ LABEL_12:
     v63 = &stru_1E7188;
   }
 
-  v64 = [(BKTOCContentViewController *)self template];
-  v65 = [v85 textLabel];
-  v66 = [v65 font];
-  v67 = [v66 fontName];
+  template = [(BKTOCContentViewController *)self template];
+  textLabel3 = [cellCopy textLabel];
+  font2 = [textLabel3 font];
+  fontName = [font2 fontName];
   [(BKTOCContentViewController *)self calculateFontSize];
-  v68 = [BKTOCWebViewCellLoadRequest loadRequestWithContents:"loadRequestWithContents:template:fontFamily:fontSize:maxSpan:textColor:selectedColor:backgroundColor:baseURL:forObject:" template:v63 fontFamily:v64 fontSize:v67 maxSpan:v84 textColor:v84 selectedColor:v59 backgroundColor:v58 baseURL:self forObject:?];
+  v68 = [BKTOCWebViewCellLoadRequest loadRequestWithContents:"loadRequestWithContents:template:fontFamily:fontSize:maxSpan:textColor:selectedColor:backgroundColor:baseURL:forObject:" template:v63 fontFamily:template fontSize:fontName maxSpan:primaryTextColor textColor:primaryTextColor selectedColor:v59 backgroundColor:v58 baseURL:self forObject:?];
 
-  v69 = [(BKTOCContentViewController *)self cachedRowContents];
-  v70 = [v69 objectForKeyedSubscript:v83];
+  cachedRowContents = [(BKTOCContentViewController *)self cachedRowContents];
+  v70 = [cachedRowContents objectForKeyedSubscript:v83];
 
   if (!v70 || (-[BKTOCContentViewController imageCache](self, "imageCache"), v71 = objc_claimAutoreleasedReturnValue(), v72 = [v71 entryForRequest:v68], v71, (v72 & 1) == 0))
   {
-    v73 = [(BKTOCContentViewController *)self requestToIndexPath];
-    v74 = [v68 cacheKey];
-    [v73 setObject:v83 forKeyedSubscript:v74];
+    requestToIndexPath = [(BKTOCContentViewController *)self requestToIndexPath];
+    cacheKey = [v68 cacheKey];
+    [requestToIndexPath setObject:v83 forKeyedSubscript:cacheKey];
 
-    v75 = [(BKTOCContentViewController *)self requestQueue];
-    [v75 enqueueRequest:v68];
+    requestQueue = [(BKTOCContentViewController *)self requestQueue];
+    [requestQueue enqueueRequest:v68];
   }
 
-  v76 = [v70 cacheKey];
-  [v85 setCacheKey:v76];
+  cacheKey2 = [v70 cacheKey];
+  [cellCopy setCacheKey:cacheKey2];
 }
 
 - (id)highlightedTextLabelFont
@@ -1497,115 +1497,115 @@ LABEL_12:
   }
 
   v4 = v3;
-  v5 = [(BKTOCContentViewController *)self fontFamily];
-  v6 = [UIFont fontWithName:v5 size:v4];
+  fontFamily = [(BKTOCContentViewController *)self fontFamily];
+  v6 = [UIFont fontWithName:fontFamily size:v4];
 
   return v6;
 }
 
-- (void)_configureRangeAnnotationCell:(id)a3 forRowAtIndexPath:(id)a4
+- (void)_configureRangeAnnotationCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v9 = [v8 fetchedObjects];
-  v10 = [v9 count];
+  cellCopy = cell;
+  pathCopy = path;
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v10 = [fetchedObjects count];
 
-  if ([v7 row] >= v10)
+  if ([pathCopy row] >= v10)
   {
     v17 = BKTOCCVCLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_138108(v7, v10, v17);
+      sub_138108(pathCopy, v10, v17);
     }
   }
 
   else
   {
-    v11 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v12 = [v11 objectAtIndexPath:v7];
+    fetchedResultsController2 = [(BKTOCContentViewController *)self fetchedResultsController];
+    v12 = [fetchedResultsController2 objectAtIndexPath:pathCopy];
 
-    [(BKTOCContentViewController *)self _configureAnnotationCell:v6 forAnnotation:v12 forRowAtIndexPath:v7];
-    v13 = [v12 annotationNote];
-    v14 = [v6 noteLabel];
-    [v14 setText:v13];
+    [(BKTOCContentViewController *)self _configureAnnotationCell:cellCopy forAnnotation:v12 forRowAtIndexPath:pathCopy];
+    annotationNote = [v12 annotationNote];
+    noteLabel = [cellCopy noteLabel];
+    [noteLabel setText:annotationNote];
 
     if ([(BKTOCViewController *)self usesPopoverStyle])
     {
-      v15 = [objc_opt_class() noteFontForPopover];
-      v16 = [v6 noteLabel];
-      [v16 setFont:v15];
+      noteFontForPopover = [objc_opt_class() noteFontForPopover];
+      noteLabel2 = [cellCopy noteLabel];
+      [noteLabel2 setFont:noteFontForPopover];
     }
 
     else
     {
-      v15 = objc_alloc_init(AEAnnotationTheme);
-      v16 = [v15 noteTextFontInTable];
-      v18 = [v6 noteLabel];
-      [v18 setFont:v16];
+      noteFontForPopover = objc_alloc_init(AEAnnotationTheme);
+      noteLabel2 = [noteFontForPopover noteTextFontInTable];
+      noteLabel3 = [cellCopy noteLabel];
+      [noteLabel3 setFont:noteLabel2];
     }
 
-    v19 = [v6 noteLabel];
-    [v19 setLineBreakMode:4];
+    noteLabel4 = [cellCopy noteLabel];
+    [noteLabel4 setLineBreakMode:4];
 
-    v20 = [v6 highlightedTextLabel];
-    [v20 setAnnotation:v12];
-    v21 = [(BKTOCContentViewController *)self highlightedTextLabelFont];
-    [v20 setFont:v21];
+    highlightedTextLabel = [cellCopy highlightedTextLabel];
+    [highlightedTextLabel setAnnotation:v12];
+    highlightedTextLabelFont = [(BKTOCContentViewController *)self highlightedTextLabelFont];
+    [highlightedTextLabel setFont:highlightedTextLabelFont];
 
-    [v20 setNeedsLayout];
-    v22 = [(BKTOCContentViewController *)self themePage];
-    v23 = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
-    [v6 configureSelectedBackgroundView];
-    [v6 setBackgroundColor:v23];
-    v24 = [v22 primaryTextColor];
-    v25 = [v6 textLabel];
-    [v25 setTextColor:v24];
+    [highlightedTextLabel setNeedsLayout];
+    themePage = [(BKTOCContentViewController *)self themePage];
+    backgroundColor = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
+    [cellCopy configureSelectedBackgroundView];
+    [cellCopy setBackgroundColor:backgroundColor];
+    primaryTextColor = [themePage primaryTextColor];
+    textLabel = [cellCopy textLabel];
+    [textLabel setTextColor:primaryTextColor];
 
-    v26 = [v6 noteLabel];
-    [v26 setTextColor:v24];
+    noteLabel5 = [cellCopy noteLabel];
+    [noteLabel5 setTextColor:primaryTextColor];
 
-    [v20 setTextColor:v24];
-    [v20 setHighlightedTextColor:v24];
-    [v20 setBackgroundColor:v23];
-    [v20 setShouldInvertContent:{objc_msgSend(v22, "shouldInvertContent")}];
-    [v20 setAnnotationBlendMode:{objc_msgSend(v22, "annotationBlendMode")}];
-    [v20 setHighlightedAnnotationBlendMode:{objc_msgSend(v22, "highlightedAnnotationBlendMode")}];
-    [v20 setPageTheme:{objc_msgSend(v22, "annotationPageTheme")}];
+    [highlightedTextLabel setTextColor:primaryTextColor];
+    [highlightedTextLabel setHighlightedTextColor:primaryTextColor];
+    [highlightedTextLabel setBackgroundColor:backgroundColor];
+    [highlightedTextLabel setShouldInvertContent:{objc_msgSend(themePage, "shouldInvertContent")}];
+    [highlightedTextLabel setAnnotationBlendMode:{objc_msgSend(themePage, "annotationBlendMode")}];
+    [highlightedTextLabel setHighlightedAnnotationBlendMode:{objc_msgSend(themePage, "highlightedAnnotationBlendMode")}];
+    [highlightedTextLabel setPageTheme:{objc_msgSend(themePage, "annotationPageTheme")}];
     if ([(BKTOCViewController *)self usesPopoverStyle])
     {
-      [v22 secondaryTextColor];
+      [themePage secondaryTextColor];
     }
 
     else
     {
-      [v22 tocPageNumberTextColor];
+      [themePage tocPageNumberTextColor];
     }
     v27 = ;
-    v28 = [v6 pageLabel];
-    [v28 setTextColor:v27];
+    pageLabel = [cellCopy pageLabel];
+    [pageLabel setTextColor:v27];
 
-    v29 = [v6 dateLabel];
-    [v29 setTextColor:v27];
+    dateLabel = [cellCopy dateLabel];
+    [dateLabel setTextColor:v27];
   }
 }
 
-- (void)_configurePointAnnotationCell:(id)a3 forRowAtIndexPath:(id)a4
+- (void)_configurePointAnnotationCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v27 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   [(BKContentViewController *)self contentInsets];
   v8 = v7;
   [(BKContentViewController *)self contentInsets];
-  [v27 setContentInsets:{0.0, v8, 0.0}];
-  v9 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v10 = [v9 objectAtIndexPath:v6];
+  [cellCopy setContentInsets:{0.0, v8, 0.0}];
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  v10 = [fetchedResultsController objectAtIndexPath:pathCopy];
 
-  [(BKTOCContentViewController *)self _configureAnnotationCell:v27 forAnnotation:v10 forRowAtIndexPath:v6];
+  [(BKTOCContentViewController *)self _configureAnnotationCell:cellCopy forAnnotation:v10 forRowAtIndexPath:pathCopy];
   if ((BYTE4(self->super._fetchedResultsController) & 8) != 0)
   {
-    v12 = [(BKDirectoryContent *)self directoryDelegate];
-    v11 = [v12 tocViewController:self chapterTitleForAnnotation:v10];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    v11 = [directoryDelegate tocViewController:self chapterTitleForAnnotation:v10];
   }
 
   else
@@ -1623,72 +1623,72 @@ LABEL_12:
 
   if ([(BKTOCViewController *)self usesPopoverStyle])
   {
-    v15 = [objc_opt_class() chapterFontForPopover];
-    v16 = [v27 noteLabel];
-    [v16 bkSetText:v11 font:v15 lineBreakMode:0];
+    chapterFontForPopover = [objc_opt_class() chapterFontForPopover];
+    noteLabel = [cellCopy noteLabel];
+    [noteLabel bkSetText:v11 font:chapterFontForPopover lineBreakMode:0];
 
-    v17 = [v27 noteLabel];
-    [v17 setNumberOfLines:2];
+    noteLabel2 = [cellCopy noteLabel];
+    [noteLabel2 setNumberOfLines:2];
   }
 
   else
   {
     [objc_opt_class() titleFontSize];
-    v15 = [UIFont systemFontOfSize:?];
-    v18 = [v27 noteLabel];
-    [v18 bkSetText:v11 font:v15 lineBreakMode:5];
+    chapterFontForPopover = [UIFont systemFontOfSize:?];
+    noteLabel3 = [cellCopy noteLabel];
+    [noteLabel3 bkSetText:v11 font:chapterFontForPopover lineBreakMode:5];
 
-    v19 = [v27 noteLabel];
-    [v19 setNumberOfLines:1];
+    noteLabel4 = [cellCopy noteLabel];
+    [noteLabel4 setNumberOfLines:1];
 
-    v17 = [v27 noteLabel];
-    [v17 setLineBreakMode:5];
+    noteLabel2 = [cellCopy noteLabel];
+    [noteLabel2 setLineBreakMode:5];
   }
 
-  v20 = [(BKTOCContentViewController *)self themePage];
-  [v27 configureSelectedBackgroundView];
-  v21 = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
-  [v27 setBackgroundColor:v21];
+  themePage = [(BKTOCContentViewController *)self themePage];
+  [cellCopy configureSelectedBackgroundView];
+  backgroundColor = [*(&self->super._verticalCenteringInsets.right + 4) backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 
-  v22 = [v20 primaryTextColor];
-  v23 = [v27 noteLabel];
-  [v23 setTextColor:v22];
+  primaryTextColor = [themePage primaryTextColor];
+  noteLabel5 = [cellCopy noteLabel];
+  [noteLabel5 setTextColor:primaryTextColor];
 
-  v24 = [v20 secondaryTextColor];
-  v25 = [v27 pageLabel];
-  [v25 setTextColor:v24];
+  secondaryTextColor = [themePage secondaryTextColor];
+  pageLabel = [cellCopy pageLabel];
+  [pageLabel setTextColor:secondaryTextColor];
 
-  v26 = [v27 dateLabel];
-  [v26 setTextColor:v24];
+  dateLabel = [cellCopy dateLabel];
+  [dateLabel setTextColor:secondaryTextColor];
 }
 
-- (void)_configureAnnotationCell:(id)a3 forAnnotation:(id)a4 forRowAtIndexPath:(id)a5
+- (void)_configureAnnotationCell:(id)cell forAnnotation:(id)annotation forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a3;
-  v14 = [(BKTOCContentViewController *)self pageTitleForAnnotation:v7];
-  v9 = [(BKTOCContentViewController *)self dateFormatter];
-  v10 = [v7 annotationCreationDate];
+  annotationCopy = annotation;
+  cellCopy = cell;
+  v14 = [(BKTOCContentViewController *)self pageTitleForAnnotation:annotationCopy];
+  dateFormatter = [(BKTOCContentViewController *)self dateFormatter];
+  annotationCreationDate = [annotationCopy annotationCreationDate];
 
-  v11 = [v9 stringFromDate:v10];
+  v11 = [dateFormatter stringFromDate:annotationCreationDate];
 
   [(BKContentViewController *)self contentInsets];
   v13 = v12;
   [(BKContentViewController *)self contentInsets];
-  [v8 configureWithPageString:v14 dateString:v11 insets:{0.0, v13, 0.0}];
+  [cellCopy configureWithPageString:v14 dateString:v11 insets:{0.0, v13, 0.0}];
 }
 
-- (void)configureCell:(id)a3 atIndexPath:(id)a4
+- (void)configureCell:(id)cell atIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  cellCopy = cell;
+  pathCopy = path;
+  if (cellCopy)
   {
-    [v7 setVertical:0];
+    [cellCopy setVertical:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(BKTOCContentViewController *)self _configurePointAnnotationCell:v7 forRowAtIndexPath:v6];
+      [(BKTOCContentViewController *)self _configurePointAnnotationCell:cellCopy forRowAtIndexPath:pathCopy];
     }
 
     else
@@ -1696,7 +1696,7 @@ LABEL_12:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(BKTOCContentViewController *)self _configureRangeAnnotationCell:v7 forRowAtIndexPath:v6];
+        [(BKTOCContentViewController *)self _configureRangeAnnotationCell:cellCopy forRowAtIndexPath:pathCopy];
       }
 
       else
@@ -1704,28 +1704,28 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(BKTOCContentViewController *)self _configureWebTOCCell:v7 forRowAtIndexPath:v6];
+          [(BKTOCContentViewController *)self _configureWebTOCCell:cellCopy forRowAtIndexPath:pathCopy];
         }
 
         else
         {
-          [(BKTOCContentViewController *)self _configureTOCCell:v7 forRowAtIndexPath:v6];
+          [(BKTOCContentViewController *)self _configureTOCCell:cellCopy forRowAtIndexPath:pathCopy];
         }
       }
     }
 
-    [v7 setNeedsLayout];
+    [cellCopy setNeedsLayout];
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(BKTOCViewController *)self tocContentType]== &dword_0 + 2)
   {
-    v6 = [(BKTOCContentViewController *)self deleteSwipeAction:v5];
+    v6 = [(BKTOCContentViewController *)self deleteSwipeAction:pathCopy];
     v13[0] = v6;
-    v7 = [(BKTOCContentViewController *)self shareSwipeAction:v5];
+    v7 = [(BKTOCContentViewController *)self shareSwipeAction:pathCopy];
     v13[1] = v7;
     v8 = [NSArray arrayWithObjects:v13 count:2];
   }
@@ -1744,7 +1744,7 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    v6 = [(BKTOCContentViewController *)self deleteSwipeAction:v5];
+    v6 = [(BKTOCContentViewController *)self deleteSwipeAction:pathCopy];
     v12 = v6;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
   }
@@ -1763,16 +1763,16 @@ LABEL_11:
   return v9;
 }
 
-- (id)shareSwipeAction:(id)a3
+- (id)shareSwipeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_7B760;
   v10[3] = &unk_1E4948;
   objc_copyWeak(&v12, &location);
-  v5 = v4;
+  v5 = actionCopy;
   v11 = v5;
   v6 = [UIContextualAction contextualActionWithStyle:0 title:0 handler:v10];
   v7 = [UIImage systemImageNamed:@"square.and.arrow.up"];
@@ -1787,16 +1787,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)deleteSwipeAction:(id)a3
+- (id)deleteSwipeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_7B918;
   v9[3] = &unk_1E4948;
   objc_copyWeak(&v11, &location);
-  v5 = v4;
+  v5 = actionCopy;
   v10 = v5;
   v6 = [UIContextualAction contextualActionWithStyle:1 title:0 handler:v9];
   v7 = [UIImage systemImageNamed:@"trash.fill"];
@@ -1808,74 +1808,74 @@ LABEL_11:
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v4 = [v3 sections];
-  v5 = [v4 count];
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  sections = [fetchedResultsController sections];
+  v5 = [sections count];
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v6 = [v5 sections];
-  v7 = [v6 objectAtIndex:a4];
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  sections = [fetchedResultsController sections];
+  v7 = [sections objectAtIndex:section];
 
-  v8 = [v7 numberOfObjects];
-  return v8;
+  numberOfObjects = [v7 numberOfObjects];
+  return numberOfObjects;
 }
 
 - (id)reuseIdentifier
 {
-  v3 = [(BKTOCViewController *)self tocContentType];
+  tocContentType = [(BKTOCViewController *)self tocContentType];
 
-  return [(BKTOCContentViewController *)self reuseIdentifierForCellType:v3];
+  return [(BKTOCContentViewController *)self reuseIdentifierForCellType:tocContentType];
 }
 
-- (id)reuseIdentifierForCellType:(unint64_t)a3
+- (id)reuseIdentifierForCellType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E4A08[a3];
+    return off_1E4A08[type];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKTOCViewController *)self tocContentType];
-  v9 = v8 == 2;
-  if (!v8)
+  pathCopy = path;
+  viewCopy = view;
+  tocContentType = [(BKTOCViewController *)self tocContentType];
+  v9 = tocContentType == 2;
+  if (!tocContentType)
   {
-    v10 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v11 = v10;
-    if (v10)
+    fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+    v11 = fetchedResultsController;
+    if (fetchedResultsController)
     {
-      v12 = [v10 fetchedObjects];
+      fetchedObjects = [fetchedResultsController fetchedObjects];
 
-      if (v12)
+      if (fetchedObjects)
       {
         objc_opt_class();
-        v13 = [(BKTOCContentViewController *)self fetchedResultsController];
-        v14 = [v13 objectAtIndexPath:v6];
-        v12 = BUDynamicCast();
+        fetchedResultsController2 = [(BKTOCContentViewController *)self fetchedResultsController];
+        v14 = [fetchedResultsController2 objectAtIndexPath:pathCopy];
+        fetchedObjects = BUDynamicCast();
       }
     }
 
     else
     {
-      v12 = 0;
+      fetchedObjects = 0;
     }
 
-    if ([(BKTOCContentViewController *)self p_willUseWebViewForCellWithChapter:v12])
+    if ([(BKTOCContentViewController *)self p_willUseWebViewForCellWithChapter:fetchedObjects])
     {
       v9 = 3;
     }
@@ -1887,17 +1887,17 @@ LABEL_11:
   }
 
   v15 = [(BKTOCContentViewController *)self reuseIdentifierForCellType:v9];
-  v16 = [v7 dequeueReusableCellWithIdentifier:v15];
+  v16 = [viewCopy dequeueReusableCellWithIdentifier:v15];
 
   [v16 setUsesPopoverStyle:{-[BKTOCViewController usesPopoverStyle](self, "usesPopoverStyle")}];
-  [(BKTOCContentViewController *)self configureCell:v16 atIndexPath:v6];
+  [(BKTOCContentViewController *)self configureCell:v16 atIndexPath:pathCopy];
 
   return v16;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v4 = [(BKTOCViewController *)self tocContentType:a3];
+  v4 = [(BKTOCViewController *)self tocContentType:view];
   result = 67.0;
   if (!v4)
   {
@@ -1907,10 +1907,10 @@ LABEL_11:
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(BKTOCViewController *)self usesPopoverStyle])
   {
     v8 = 0.0;
@@ -1935,8 +1935,8 @@ LABEL_11:
   v128.origin.y = v19;
   v128.size.width = v22;
   Width = CGRectGetWidth(v128);
-  v25 = [*(&self->super._verticalCenteringInsets.right + 4) readableContentGuide];
-  [v25 layoutFrame];
+  readableContentGuide = [*(&self->super._verticalCenteringInsets.right + 4) readableContentGuide];
+  [readableContentGuide layoutFrame];
   v26 = CGRectGetWidth(v129);
 
   if (Width >= v26)
@@ -1944,8 +1944,8 @@ LABEL_11:
     Width = v26;
   }
 
-  v27 = [(BKTOCViewController *)self tocContentType];
-  if (v27 == 1)
+  tocContentType = [(BKTOCViewController *)self tocContentType];
+  if (tocContentType == 1)
   {
     v8 = 73.0;
     if (![(BKTOCViewController *)self usesPopoverStyle])
@@ -1958,34 +1958,34 @@ LABEL_11:
       goto LABEL_37;
     }
 
-    v34 = [v7 row];
-    v35 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v36 = [v35 fetchedObjects];
-    v37 = [v36 count];
+    v34 = [pathCopy row];
+    fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+    fetchedObjects = [fetchedResultsController fetchedObjects];
+    v37 = [fetchedObjects count];
 
     if (v34 >= v37)
     {
       goto LABEL_37;
     }
 
-    v38 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v33 = [v38 objectAtIndexPath:v7];
+    fetchedResultsController2 = [(BKTOCContentViewController *)self fetchedResultsController];
+    v33 = [fetchedResultsController2 objectAtIndexPath:pathCopy];
 
-    v39 = [(BKDirectoryContent *)self directoryDelegate];
-    v40 = [v39 tocViewController:self chapterTitleForAnnotation:v33];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    v40 = [directoryDelegate tocViewController:self chapterTitleForAnnotation:v33];
 
-    v41 = [(BKTOCContentViewController *)self dateFormatter];
-    v42 = [v33 annotationCreationDate];
-    v43 = [v41 stringFromDate:v42];
+    dateFormatter = [(BKTOCContentViewController *)self dateFormatter];
+    annotationCreationDate = [v33 annotationCreationDate];
+    v43 = [dateFormatter stringFromDate:annotationCreationDate];
 
     v44 = [(BKTOCContentViewController *)self pageTitleForAnnotation:v33];
     [BKTOCPointAnnotationTableCell cellHeightForCellWidth:v40 chapterString:v43 dateString:v44 pageString:[(BKViewController *)self layoutDirection] layoutDirection:Width];
     v8 = v45;
   }
 
-  else if (v27)
+  else if (tocContentType)
   {
-    if ([v6 isEditing])
+    if ([viewCopy isEditing])
     {
       v46 = 38.0;
     }
@@ -1995,10 +1995,10 @@ LABEL_11:
       v46 = 0.0;
     }
 
-    v47 = [v7 row];
-    v48 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v49 = [v48 fetchedObjects];
-    v50 = [v49 count];
+    v47 = [pathCopy row];
+    fetchedResultsController3 = [(BKTOCContentViewController *)self fetchedResultsController];
+    fetchedObjects2 = [fetchedResultsController3 fetchedObjects];
+    v50 = [fetchedObjects2 count];
 
     if (v47 >= v50)
     {
@@ -2008,19 +2008,19 @@ LABEL_11:
 
     v125 = Width - v46;
     y = CGRectZero.origin.y;
-    v51 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v33 = [v51 objectAtIndexPath:v7];
+    fetchedResultsController4 = [(BKTOCContentViewController *)self fetchedResultsController];
+    v33 = [fetchedResultsController4 objectAtIndexPath:pathCopy];
 
     v52 = objc_alloc_init(AEAnnotationTheme);
     v53 = [(BKTOCContentViewController *)self pageTitleForAnnotation:v33];
-    v54 = [(BKTOCContentViewController *)self dateFormatter];
-    v55 = [v33 annotationCreationDate];
-    v56 = [v54 stringFromDate:v55];
+    dateFormatter2 = [(BKTOCContentViewController *)self dateFormatter];
+    annotationCreationDate2 = [v33 annotationCreationDate];
+    v56 = [dateFormatter2 stringFromDate:annotationCreationDate2];
 
     if ([(BKTOCViewController *)self usesPopoverStyle])
     {
-      v57 = [(BKTOCContentViewController *)self highlightedTextLabelFont];
-      [BKTOCRangeAnnotationTableCell cellHeightInPopoverForBounds:v57 highlightFont:v33 annotation:v56 dateString:v53 pageString:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, y, v125, 67.0];
+      highlightedTextLabelFont = [(BKTOCContentViewController *)self highlightedTextLabelFont];
+      [BKTOCRangeAnnotationTableCell cellHeightInPopoverForBounds:highlightedTextLabelFont highlightFont:v33 annotation:v56 dateString:v53 pageString:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, y, v125, 67.0];
       height = v58;
     }
 
@@ -2028,34 +2028,34 @@ LABEL_11:
     {
       +[BKTOCRangeAnnotationTableCell pageNumberAndHighlightedTextFontSize];
       v69 = v68;
-      v70 = [(BKTOCContentViewController *)self fontFamily];
-      v71 = [UIFont fontWithName:v70 size:v69];
+      fontFamily = [(BKTOCContentViewController *)self fontFamily];
+      v71 = [UIFont fontWithName:fontFamily size:v69];
 
       if (!v71)
       {
         v71 = [UIFont systemFontOfSize:v69];
       }
 
-      v57 = v71;
-      [(BKTOCTableViewCell *)BKTOCRangeAnnotationTableCell pageLabelFrameForString:v53 font:v57 bounds:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, y, v125, 67.0];
+      highlightedTextLabelFont = v71;
+      [(BKTOCTableViewCell *)BKTOCRangeAnnotationTableCell pageLabelFrameForString:v53 font:highlightedTextLabelFont bounds:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, y, v125, 67.0];
       v114 = v72;
       v74 = v73;
       v76 = v75;
       v78 = v77;
-      [BKTOCRangeAnnotationTableCell highlightedTextFrameForAnnotation:v33 font:v57 bounds:[(BKViewController *)self layoutDirection] pageLabelFrame:CGRectZero.origin.x layoutDirection:y, v125, 67.0, v72, v73, v75, v77];
+      [BKTOCRangeAnnotationTableCell highlightedTextFrameForAnnotation:v33 font:highlightedTextLabelFont bounds:[(BKViewController *)self layoutDirection] pageLabelFrame:CGRectZero.origin.x layoutDirection:y, v125, 67.0, v72, v73, v75, v77];
       v80 = v79;
       v82 = v81;
       v84 = v83;
       v86 = v85;
       v124 = v52;
-      v87 = [v52 noteTextFontInTable];
-      v88 = [v33 annotationNote];
+      noteTextFontInTable = [v52 noteTextFontInTable];
+      annotationNote = [v33 annotationNote];
       v121 = v82;
       v122 = v80;
       r2 = v86;
       v120 = v84;
-      v123 = v87;
-      [BKTOCRangeAnnotationTableCell noteTextFrameForString:v88 font:v87 bounds:CGRectZero.origin.x highlightedTextFrame:y pageLabelFrame:v125, 67.0, v80, v82, v84, v86, *&v114, *&v74, *&v76, *&v78];
+      v123 = noteTextFontInTable;
+      [BKTOCRangeAnnotationTableCell noteTextFrameForString:annotationNote font:noteTextFontInTable bounds:CGRectZero.origin.x highlightedTextFrame:y pageLabelFrame:v125, 67.0, v80, v82, v84, v86, *&v114, *&v74, *&v76, *&v78];
       v90 = v89;
       v92 = v91;
       v94 = v93;
@@ -2063,8 +2063,8 @@ LABEL_11:
 
       +[(BKTOCAnnotationTableCell *)BKTOCRangeAnnotationTableCell];
       v98 = v97;
-      v99 = [(BKTOCContentViewController *)self fontFamily];
-      v100 = [UIFont fontWithName:v99 size:v98];
+      fontFamily2 = [(BKTOCContentViewController *)self fontFamily];
+      v100 = [UIFont fontWithName:fontFamily2 size:v98];
 
       if (!v100)
       {
@@ -2134,10 +2134,10 @@ LABEL_11:
       goto LABEL_37;
     }
 
-    v28 = [v7 row];
-    v29 = [(BKTOCContentViewController *)self fetchedResultsController];
-    v30 = [v29 fetchedObjects];
-    v31 = [v30 count];
+    v28 = [pathCopy row];
+    fetchedResultsController5 = [(BKTOCContentViewController *)self fetchedResultsController];
+    fetchedObjects3 = [fetchedResultsController5 fetchedObjects];
+    v31 = [fetchedObjects3 count];
 
     if (v28 >= v31)
     {
@@ -2146,14 +2146,14 @@ LABEL_11:
 
     else
     {
-      v32 = [(BKTOCContentViewController *)self fetchedResultsController];
-      v33 = [v32 objectAtIndexPath:v7];
+      fetchedResultsController6 = [(BKTOCContentViewController *)self fetchedResultsController];
+      v33 = [fetchedResultsController6 objectAtIndexPath:pathCopy];
     }
 
     if ([(BKTOCContentViewController *)self p_willUseWebViewForCellWithChapter:v33])
     {
-      v59 = [(BKTOCContentViewController *)self cachedRowContents];
-      v60 = [v59 objectForKeyedSubscript:v7];
+      cachedRowContents = [(BKTOCContentViewController *)self cachedRowContents];
+      v60 = [cachedRowContents objectForKeyedSubscript:pathCopy];
       [v60 height];
       v8 = v61;
 
@@ -2166,13 +2166,13 @@ LABEL_11:
     else
     {
       v127 = [(BKTOCContentViewController *)self fontForChapter:v33];
-      v62 = [(BKTOCViewController *)self pageLabelFont];
+      pageLabelFont = [(BKTOCViewController *)self pageLabelFont];
       v63 = [(BKTOCContentViewController *)self pageTitleForChapter:v33];
-      [(BKTOCTableViewCell *)BKTOCRangeAnnotationTableCell pageLabelFrameForString:v63 font:v62 bounds:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, CGRectZero.origin.y, Width, v8];
+      [(BKTOCTableViewCell *)BKTOCRangeAnnotationTableCell pageLabelFrameForString:v63 font:pageLabelFont bounds:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, CGRectZero.origin.y, Width, v8];
       v64 = CGRectGetWidth(v130);
-      v65 = [v33 name];
-      v66 = [v33 indentationLevel];
-      +[BKTOCTableViewCell cellHeightForCellWidth:pageLabelWidth:text:indentationLevel:indentationWidth:font:usesPopoverStyle:](BKTOCTableViewCell, "cellHeightForCellWidth:pageLabelWidth:text:indentationLevel:indentationWidth:font:usesPopoverStyle:", v65, [v66 integerValue], v127, -[BKTOCViewController usesPopoverStyle](self, "usesPopoverStyle"), Width, v64, 16.0);
+      name = [v33 name];
+      indentationLevel = [v33 indentationLevel];
+      +[BKTOCTableViewCell cellHeightForCellWidth:pageLabelWidth:text:indentationLevel:indentationWidth:font:usesPopoverStyle:](BKTOCTableViewCell, "cellHeightForCellWidth:pageLabelWidth:text:indentationLevel:indentationWidth:font:usesPopoverStyle:", name, [indentationLevel integerValue], v127, -[BKTOCViewController usesPopoverStyle](self, "usesPopoverStyle"), Width, v64, 16.0);
       height = v67;
     }
   }
@@ -2192,60 +2192,60 @@ LABEL_37:
   return v112;
 }
 
-- (void)tableView:(id)a3 performPrimaryActionForRowAtIndexPath:(id)a4
+- (void)tableView:(id)view performPrimaryActionForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = BKTOCCVCLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v18 = 134217984;
-    v19 = [v5 row];
+    v19 = [pathCopy row];
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Performing primary action for row %ld", &v18, 0xCu);
   }
 
-  v7 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v8 = [v7 objectAtIndexPath:v5];
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  v8 = [fetchedResultsController objectAtIndexPath:pathCopy];
 
-  v9 = [(BKTOCViewController *)self tocContentType];
-  if (v9 == 2)
+  tocContentType = [(BKTOCViewController *)self tocContentType];
+  if (tocContentType == 2)
   {
     v17 = v8;
-    v10 = [v17 location];
-    v15 = [v17 annotationUuid];
+    location = [v17 location];
+    annotationUuid = [v17 annotationUuid];
 
-    [(BKDirectoryContent *)self didSelectHighlightForLocation:v10 annotationUUID:v15];
+    [(BKDirectoryContent *)self didSelectHighlightForLocation:location annotationUUID:annotationUuid];
     goto LABEL_11;
   }
 
-  if (v9 == 1)
+  if (tocContentType == 1)
   {
     v16 = v8;
-    v10 = [v16 location];
-    v15 = [v16 annotationUuid];
+    location = [v16 location];
+    annotationUuid = [v16 annotationUuid];
 
-    [(BKDirectoryContent *)self didSelectBookmarkForLocation:v10 annotationUUID:v15];
+    [(BKDirectoryContent *)self didSelectBookmarkForLocation:location annotationUUID:annotationUuid];
     goto LABEL_11;
   }
 
-  if (!v9 && (BYTE4(self->super._fetchedResultsController) & 1) != 0)
+  if (!tocContentType && (BYTE4(self->super._fetchedResultsController) & 1) != 0)
   {
-    v10 = v8;
-    v11 = [v10 href];
-    v12 = [(BKContentViewController *)self book];
-    v13 = [v12 tocPageHref];
+    location = v8;
+    href = [location href];
+    book = [(BKContentViewController *)self book];
+    tocPageHref = [book tocPageHref];
 
-    if (v11 == v13)
+    if (href == tocPageHref)
     {
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v14 = [(BKTOCViewController *)self eventEngagement];
-    [v14 sendReaderEventNewSectionViaToC];
+    eventEngagement = [(BKTOCViewController *)self eventEngagement];
+    [eventEngagement sendReaderEventNewSectionViaToC];
 
-    v15 = [(BKDirectoryContent *)self directoryDelegate];
-    [v15 tocViewController:self didSelectChapter:v10];
+    annotationUuid = [(BKDirectoryContent *)self directoryDelegate];
+    [annotationUuid tocViewController:self didSelectChapter:location];
 LABEL_11:
 
     goto LABEL_12;
@@ -2254,9 +2254,9 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  [(BKTOCContentViewController *)self notifyBookSharingClientSelectionChanged:a3];
+  [(BKTOCContentViewController *)self notifyBookSharingClientSelectionChanged:view];
   if ([*(&self->super._verticalCenteringInsets.right + 4) isEditing])
   {
 
@@ -2264,9 +2264,9 @@ LABEL_13:
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  [(BKTOCContentViewController *)self notifyBookSharingClientSelectionChanged:a3];
+  [(BKTOCContentViewController *)self notifyBookSharingClientSelectionChanged:view];
   if ([*(&self->super._verticalCenteringInsets.right + 4) isEditing])
   {
 
@@ -2274,41 +2274,41 @@ LABEL_13:
   }
 }
 
-- (void)tableView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (void)tableView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = BKTOCCVCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_1381E4();
   }
 
-  v9 = [v7 isEditing];
-  if ((v9 & 1) == 0)
+  isEditing = [viewCopy isEditing];
+  if ((isEditing & 1) == 0)
   {
     [(BKTOCContentViewController *)self removeHighlightFromCurrentLocation];
     [*(&self->super._verticalCenteringInsets.right + 4) setEditing:1 animated:1];
   }
 
-  v10 = [(BKDirectoryContent *)self directoryDelegate];
-  [v10 tocViewControllerDidChangeEditing:1];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  [directoryDelegate tocViewControllerDidChangeEditing:1];
 
   [(BKTOCContentViewController *)self installEditModeToolbar];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isEditing])
+  viewCopy = view;
+  pathCopy = path;
+  if ([viewCopy isEditing])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v7 cellForRowAtIndexPath:v8];
+    v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
     if (v10)
     {
       v28 = v10;
@@ -2320,7 +2320,7 @@ LABEL_13:
       v40[2] = sub_7CD48;
       v40[3] = &unk_1E4970;
       v40[4] = self;
-      v14 = v8;
+      v14 = pathCopy;
       v41 = v14;
       v26 = [UIAction actionWithTitle:v12 image:v13 identifier:@"context.menu.select" handler:v40];
 
@@ -2392,12 +2392,12 @@ LABEL_13:
   return v9;
 }
 
-- (void)beginSelectionStartingWithIndexPath:(id)a3
+- (void)beginSelectionStartingWithIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(BKTOCContentViewController *)self removeHighlightFromCurrentLocation];
   [(BKTOCContentViewController *)self beginEditingMode];
-  [*(&self->super._verticalCenteringInsets.right + 4) selectRowAtIndexPath:v4 animated:1 scrollPosition:0];
+  [*(&self->super._verticalCenteringInsets.right + 4) selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
 
   [(BKTOCContentViewController *)self updateToolbarContent];
 }
@@ -2407,11 +2407,11 @@ LABEL_13:
   v3 = *(&self->super._paginationController + 4);
   if (!v3)
   {
-    v4 = [(BKContentViewController *)self book];
-    v5 = [v4 annotationProvider];
-    v6 = [v5 uiManagedObjectContext];
+    book = [(BKContentViewController *)self book];
+    annotationProvider = [book annotationProvider];
+    uiManagedObjectContext = [annotationProvider uiManagedObjectContext];
 
-    if (!v6)
+    if (!uiManagedObjectContext)
     {
 LABEL_13:
 
@@ -2422,8 +2422,8 @@ LABEL_13:
     v7 = objc_alloc_init(NSFetchRequest);
     if ([(BKTOCViewController *)self tocContentType]== &dword_0 + 1)
     {
-      v8 = [v4 assetID];
-      v9 = [AEAnnotation pageBookmarksPredicate:v8];
+      assetID = [book assetID];
+      v9 = [AEAnnotation pageBookmarksPredicate:assetID];
     }
 
     else
@@ -2431,14 +2431,14 @@ LABEL_13:
       if ([(BKTOCViewController *)self tocContentType]!= &dword_0 + 2)
       {
 LABEL_8:
-        v11 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v6];
+        v11 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:uiManagedObjectContext];
         [v7 setEntity:v11];
 
         v12 = [[NSSortDescriptor alloc] initWithKey:@"annotationLocation" ascending:1 selector:"localizedStandardCompare:"];
         v13 = [[NSSortDescriptor alloc] initWithKey:@"annotationCreationDate" ascending:1];
         v14 = [[NSArray alloc] initWithObjects:{v12, v13, 0}];
         [v7 setSortDescriptors:v14];
-        v15 = [[IMUbiquitousFetchedResultsController alloc] initWithFetchRequest:v7 managedObjectContext:v6 sectionNameKeyPath:0 cacheName:0];
+        v15 = [[IMUbiquitousFetchedResultsController alloc] initWithFetchRequest:v7 managedObjectContext:uiManagedObjectContext sectionNameKeyPath:0 cacheName:0];
         v16 = *(&self->super._paginationController + 4);
         *(&self->super._paginationController + 4) = v15;
 
@@ -2459,8 +2459,8 @@ LABEL_8:
         goto LABEL_13;
       }
 
-      v8 = [v4 assetID];
-      v9 = [AEAnnotation highlightsPredicate:v8];
+      assetID = [book assetID];
+      v9 = [AEAnnotation highlightsPredicate:assetID];
     }
 
     v10 = v9;
@@ -2476,46 +2476,46 @@ LABEL_14:
 
 - (id)fetchedResultsController
 {
-  v3 = [(BKTOCViewController *)self tocContentType];
-  if ((v3 - 1) >= 2)
+  tocContentType = [(BKTOCViewController *)self tocContentType];
+  if ((tocContentType - 1) >= 2)
   {
-    if (v3)
+    if (tocContentType)
     {
-      v4 = 0;
+      fetchedResultsController = 0;
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = BKTOCContentViewController;
-      v4 = [(BKTOCViewController *)&v6 fetchedResultsController];
+      fetchedResultsController = [(BKTOCViewController *)&v6 fetchedResultsController];
     }
   }
 
   else
   {
-    v4 = [(BKTOCContentViewController *)self bookmarksFetchedResultsController];
+    fetchedResultsController = [(BKTOCContentViewController *)self bookmarksFetchedResultsController];
   }
 
-  return v4;
+  return fetchedResultsController;
 }
 
-- (int)assetSharingConnectionTypeForClient:(id)a3
+- (int)assetSharingConnectionTypeForClient:(id)client
 {
-  v4 = [(BKTOCViewController *)self tocContentType];
-  if (v4 < 2)
+  tocContentType = [(BKTOCViewController *)self tocContentType];
+  if (tocContentType < 2)
   {
     return 1;
   }
 
-  if (v4 != 2)
+  if (tocContentType != 2)
   {
     return 0;
   }
 
-  v6 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v7 = [v6 fetchedObjects];
-  v8 = [v7 count];
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v8 = [fetchedObjects count];
 
   if (v8)
   {
@@ -2528,19 +2528,19 @@ LABEL_14:
   }
 }
 
-- (void)beginAssetSharingConnectionWithClient:(id)a3
+- (void)beginAssetSharingConnectionWithClient:(id)client
 {
   v4 = *(&self->super._verticalCenteringInsets.right + 4);
-  v5 = a3;
+  clientCopy = client;
   [v4 setEditing:0 animated:0];
   [*(&self->super._verticalCenteringInsets.right + 4) setAllowsMultipleSelectionDuringEditing:1];
   [*(&self->super._verticalCenteringInsets.right + 4) setEditing:1 animated:1];
   [*(&self->super._verticalCenteringInsets.right + 4) beginUpdates];
   [*(&self->super._verticalCenteringInsets.right + 4) endUpdates];
-  [(BKTOCContentViewController *)self setAssetSharingConnectionClient:v5];
+  [(BKTOCContentViewController *)self setAssetSharingConnectionClient:clientCopy];
 }
 
-- (void)endAssetSharingConnectionWithClient:(id)a3
+- (void)endAssetSharingConnectionWithClient:(id)client
 {
   [*(&self->super._verticalCenteringInsets.right + 4) setEditing:0 animated:1];
   [*(&self->super._verticalCenteringInsets.right + 4) setAllowsMultipleSelectionDuringEditing:0];
@@ -2550,23 +2550,23 @@ LABEL_14:
   [(BKTOCContentViewController *)self setAssetSharingConnectionClient:0];
 }
 
-- (void)assetSharingConnectionClient:(id)a3 performRequest:(int)a4
+- (void)assetSharingConnectionClient:(id)client performRequest:(int)request
 {
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  clientCopy = client;
+  v7 = clientCopy;
+  switch(request)
   {
     case 3:
-      v8 = v6;
-      v6 = [(BKTOCContentViewController *)self deleteSelected:v6];
+      v8 = clientCopy;
+      clientCopy = [(BKTOCContentViewController *)self deleteSelected:clientCopy];
       break;
     case 2:
-      v8 = v6;
-      v6 = [(BKTOCContentViewController *)self selectNone:v6];
+      v8 = clientCopy;
+      clientCopy = [(BKTOCContentViewController *)self selectNone:clientCopy];
       break;
     case 1:
-      v8 = v6;
-      v6 = [(BKTOCContentViewController *)self selectAll:v6];
+      v8 = clientCopy;
+      clientCopy = [(BKTOCContentViewController *)self selectAll:clientCopy];
       break;
     default:
       goto LABEL_8;
@@ -2575,43 +2575,43 @@ LABEL_14:
   v7 = v8;
 LABEL_8:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(clientCopy, v7);
 }
 
-- (unint64_t)bookSharingRequestNumberOfSelectedAnnotations:(id)a3
+- (unint64_t)bookSharingRequestNumberOfSelectedAnnotations:(id)annotations
 {
-  v3 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
-  v4 = [v3 count];
+  indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+  v4 = [indexPathsForSelectedRows count];
 
   return v4;
 }
 
-- (id)bookSharingRequestClient:(id)a3 selectedAnnotationAtIndex:(unint64_t)a4
+- (id)bookSharingRequestClient:(id)client selectedAnnotationAtIndex:(unint64_t)index
 {
-  v6 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
-  v7 = [v6 objectAtIndex:a4];
+  indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+  v7 = [indexPathsForSelectedRows objectAtIndex:index];
   v8 = [*(&self->super._paginationController + 4) objectAtIndexPath:v7];
 
   return v8;
 }
 
-- (unint64_t)bookSharingRequestNumberOfAnnotations:(id)a3
+- (unint64_t)bookSharingRequestNumberOfAnnotations:(id)annotations
 {
-  v3 = [*(&self->super._paginationController + 4) fetchedObjects];
-  v4 = [v3 count];
+  fetchedObjects = [*(&self->super._paginationController + 4) fetchedObjects];
+  v4 = [fetchedObjects count];
 
   return v4;
 }
 
-- (id)bookSharingRequestClient:(id)a3 annotationAtIndex:(unint64_t)a4
+- (id)bookSharingRequestClient:(id)client annotationAtIndex:(unint64_t)index
 {
-  v5 = [*(&self->super._paginationController + 4) fetchedObjects];
-  v6 = [v5 objectAtIndex:a4];
+  fetchedObjects = [*(&self->super._paginationController + 4) fetchedObjects];
+  v6 = [fetchedObjects objectAtIndex:index];
 
   return v6;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   if ([*(&self->super._verticalCenteringInsets.right + 4) numberOfSections])
   {
@@ -2642,7 +2642,7 @@ LABEL_8:
   [(BKTOCContentViewController *)self notifyBookSharingClientSelectionChanged];
 }
 
-- (void)selectNone:(id)a3
+- (void)selectNone:(id)none
 {
   if ([*(&self->super._verticalCenteringInsets.right + 4) numberOfSections])
   {
@@ -2675,14 +2675,14 @@ LABEL_8:
 
 - (void)notifyBookSharingClientSelectionChanged
 {
-  v3 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
-  v4 = [v3 count];
+  indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+  v4 = [indexPathsForSelectedRows count];
 
-  v5 = [(BKTOCContentViewController *)self assetSharingConnectionClient];
-  [v5 assetSharingConnectionServer:self didChangeSelectedAnnotationsCount:v4];
+  assetSharingConnectionClient = [(BKTOCContentViewController *)self assetSharingConnectionClient];
+  [assetSharingConnectionClient assetSharingConnectionServer:self didChangeSelectedAnnotationsCount:v4];
 }
 
-- (void)controllerWillChangeContent:(id)a3
+- (void)controllerWillChangeContent:(id)content
 {
   if ((BYTE4(self->_macLargeTextDateFormatter) & 1) == 0)
   {
@@ -2690,26 +2690,26 @@ LABEL_8:
   }
 }
 
-- (void)controller:(id)a3 didChangeSection:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6
+- (void)controller:(id)controller didChangeSection:(id)section atIndex:(unint64_t)index forChangeType:(unint64_t)type
 {
-  v14 = a3;
-  v10 = a4;
-  if (a6 == 2)
+  controllerCopy = controller;
+  sectionCopy = section;
+  if (type == 2)
   {
     v13 = *(&self->super._verticalCenteringInsets.right + 4);
-    v12 = [NSIndexSet indexSetWithIndex:a5];
+    v12 = [NSIndexSet indexSetWithIndex:index];
     [v13 deleteSections:v12 withRowAnimation:0];
   }
 
   else
   {
-    if (a6 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
     v11 = *(&self->super._verticalCenteringInsets.right + 4);
-    v12 = [NSIndexSet indexSetWithIndex:a5];
+    v12 = [NSIndexSet indexSetWithIndex:index];
     [v11 insertSections:v12 withRowAnimation:0];
   }
 
@@ -2717,32 +2717,32 @@ LABEL_8:
 LABEL_6:
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v21 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  controllerCopy = controller;
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   if ((BYTE4(self->_macLargeTextDateFormatter) & 1) == 0)
   {
-    if (a6 <= 2)
+    if (type <= 2)
     {
-      if (a6 != 1)
+      if (type != 1)
       {
-        if (a6 != 2)
+        if (type != 2)
         {
           goto LABEL_13;
         }
 
         v15 = *(&self->super._verticalCenteringInsets.right + 4);
-        v16 = [NSArray arrayWithObject:v13];
+        v16 = [NSArray arrayWithObject:pathCopy];
         [v15 deleteRowsAtIndexPaths:v16 withRowAnimation:0];
         goto LABEL_12;
       }
 
       v18 = *(&self->super._verticalCenteringInsets.right + 4);
 LABEL_11:
-      v16 = [NSArray arrayWithObject:v14];
+      v16 = [NSArray arrayWithObject:indexPathCopy];
       [v18 insertRowsAtIndexPaths:v16 withRowAnimation:0];
 LABEL_12:
 
@@ -2750,27 +2750,27 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (a6 == 3)
+    if (type == 3)
     {
       v19 = *(&self->super._verticalCenteringInsets.right + 4);
-      v20 = [NSArray arrayWithObject:v13];
+      v20 = [NSArray arrayWithObject:pathCopy];
       [v19 deleteRowsAtIndexPaths:v20 withRowAnimation:0];
 
       v18 = *(&self->super._verticalCenteringInsets.right + 4);
       goto LABEL_11;
     }
 
-    if (a6 == 4)
+    if (type == 4)
     {
-      v17 = [*(&self->super._verticalCenteringInsets.right + 4) cellForRowAtIndexPath:v13];
-      [(BKTOCContentViewController *)self configureCell:v17 atIndexPath:v13];
+      v17 = [*(&self->super._verticalCenteringInsets.right + 4) cellForRowAtIndexPath:pathCopy];
+      [(BKTOCContentViewController *)self configureCell:v17 atIndexPath:pathCopy];
     }
   }
 
 LABEL_13:
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   if ((BYTE4(self->_macLargeTextDateFormatter) & 1) == 0)
   {
@@ -2799,8 +2799,8 @@ LABEL_13:
 {
   if ((BYTE4(self->super._fetchedResultsController) & 0x10) != 0)
   {
-    v4 = [(BKDirectoryContent *)self directoryDelegate];
-    [v4 tocViewControllerContentDidChange:self];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    [directoryDelegate tocViewControllerContentDidChange:self];
   }
 }
 
@@ -2811,23 +2811,23 @@ LABEL_13:
   [(BKTOCViewController *)&v13 reload];
   if ([*(&self->super._verticalCenteringInsets.right + 4) isEditing])
   {
-    v3 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+    indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
   }
 
   else
   {
-    v3 = 0;
+    indexPathsForSelectedRows = 0;
   }
 
   [*(&self->super._verticalCenteringInsets.right + 4) reloadData];
   [(BKTOCContentViewController *)self _notifyDelegateContentDidChange];
-  if (v3 && [v3 count])
+  if (indexPathsForSelectedRows && [indexPathsForSelectedRows count])
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = v3;
+    v4 = indexPathsForSelectedRows;
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
     if (v5)
     {
@@ -2856,38 +2856,38 @@ LABEL_13:
   }
 }
 
-- (void)setBook:(id)a3
+- (void)setBook:(id)book
 {
   v3.receiver = self;
   v3.super_class = BKTOCContentViewController;
-  [(BKContentViewController *)&v3 setBook:a3];
+  [(BKContentViewController *)&v3 setBook:book];
 }
 
 - (id)bookTitle
 {
-  v2 = [(BKContentViewController *)self book];
-  v3 = [v2 bookTitle];
+  book = [(BKContentViewController *)self book];
+  bookTitle = [book bookTitle];
 
-  return v3;
+  return bookTitle;
 }
 
 - (id)author
 {
-  v2 = [(BKContentViewController *)self book];
-  v3 = [v2 bookAuthor];
+  book = [(BKContentViewController *)self book];
+  bookAuthor = [book bookAuthor];
 
-  return v3;
+  return bookAuthor;
 }
 
 - (id)storeURL
 {
-  v2 = [(BKContentViewController *)self book];
-  v3 = [v2 storeId];
+  book = [(BKContentViewController *)self book];
+  storeId = [book storeId];
 
-  if ([v3 length])
+  if ([storeId length])
   {
     v4 = +[AEUserPublishing sharedInstance];
-    v5 = [v4 storeShortURLForStoreId:v3 dataSource:0];
+    v5 = [v4 storeShortURLForStoreId:storeId dataSource:0];
   }
 
   else
@@ -2898,41 +2898,41 @@ LABEL_13:
   return v5;
 }
 
-- (void)contentBeganLoadingForRequest:(id)a3
+- (void)contentBeganLoadingForRequest:(id)request
 {
   v4 = [(BKTOCContentViewController *)self cellLoadingOperationCount]+ 1;
 
   [(BKTOCContentViewController *)self setCellLoadingOperationCount:v4];
 }
 
-- (void)contentFinishedLoadingForRequest:(id)a3 preferredHeight:(double)a4 error:(id)a5
+- (void)contentFinishedLoadingForRequest:(id)request preferredHeight:(double)height error:(id)error
 {
-  v8 = a3;
+  requestCopy = request;
   [(BKTOCContentViewController *)self setCellLoadingOperationCount:[(BKTOCContentViewController *)self cellLoadingOperationCount]- 1];
-  v9 = [(BKTOCContentViewController *)self requestToIndexPath];
-  v10 = [v8 cacheKey];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  requestToIndexPath = [(BKTOCContentViewController *)self requestToIndexPath];
+  cacheKey = [requestCopy cacheKey];
+  v11 = [requestToIndexPath objectForKeyedSubscript:cacheKey];
 
   if (v11)
   {
-    v12 = [(BKTOCContentViewController *)self cachedRowContents];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    cachedRowContents = [(BKTOCContentViewController *)self cachedRowContents];
+    v13 = [cachedRowContents objectForKeyedSubscript:v11];
 
     if (!v13)
     {
-      if (a5)
+      if (error)
       {
-        v14 = [(BKTOCContentViewController *)self cachedRowContents];
-        [v14 removeObjectForKey:v11];
+        cachedRowContents2 = [(BKTOCContentViewController *)self cachedRowContents];
+        [cachedRowContents2 removeObjectForKey:v11];
       }
 
       else
       {
-        v15 = [v8 cacheKey];
-        v16 = [BKTOCWebViewCellContent cellContentWithHeight:v15 cacheKey:a4];
+        cacheKey2 = [requestCopy cacheKey];
+        v16 = [BKTOCWebViewCellContent cellContentWithHeight:cacheKey2 cacheKey:height];
 
-        v17 = [(BKTOCContentViewController *)self cachedRowContents];
-        [v17 setObject:v16 forKeyedSubscript:v11];
+        cachedRowContents3 = [(BKTOCContentViewController *)self cachedRowContents];
+        [cachedRowContents3 setObject:v16 forKeyedSubscript:v11];
 
         v18 = *(&self->super._verticalCenteringInsets.right + 4);
         v20 = v11;
@@ -2945,17 +2945,17 @@ LABEL_13:
 
 - (id)p_selectedAnnotations
 {
-  v3 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
-  v4 = [(BKTOCContentViewController *)self p_annotationsForRowItems:v3];
+  indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+  v4 = [(BKTOCContentViewController *)self p_annotationsForRowItems:indexPathsForSelectedRows];
 
   return v4;
 }
 
-- (id)p_annotationForIndexPath:(id)a3
+- (id)p_annotationForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(BKTOCContentViewController *)self fetchedResultsController];
-  v6 = [v5 objectAtIndexPath:v4];
+  pathCopy = path;
+  fetchedResultsController = [(BKTOCContentViewController *)self fetchedResultsController];
+  v6 = [fetchedResultsController objectAtIndexPath:pathCopy];
 
   objc_opt_class();
   v7 = BUDynamicCast();
@@ -2963,15 +2963,15 @@ LABEL_13:
   return v7;
 }
 
-- (id)p_annotationsForRowItems:(id)a3
+- (id)p_annotationsForRowItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -3002,14 +3002,14 @@ LABEL_13:
   return v5;
 }
 
-- (void)deleteAnnotationAtIndexPath:(id)a3
+- (void)deleteAnnotationAtIndexPath:(id)path
 {
-  v4 = [(BKTOCContentViewController *)self p_annotationForIndexPath:a3];
+  v4 = [(BKTOCContentViewController *)self p_annotationForIndexPath:path];
   if (v4)
   {
     v6 = v4;
-    v5 = [(BKContentViewController *)self book];
-    [v5 deleteAnnotation:v6];
+    book = [(BKContentViewController *)self book];
+    [book deleteAnnotation:v6];
 
     v4 = v6;
   }
@@ -3017,15 +3017,15 @@ LABEL_13:
 
 - (void)deleteSelectedAnnotations
 {
-  v3 = [(BKTOCContentViewController *)self p_selectedAnnotations];
-  v4 = [(BKContentViewController *)self book];
-  v5 = [v4 annotationProvider];
+  p_selectedAnnotations = [(BKTOCContentViewController *)self p_selectedAnnotations];
+  book = [(BKContentViewController *)self book];
+  annotationProvider = [book annotationProvider];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v3;
+  v6 = p_selectedAnnotations;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -3041,7 +3041,7 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        [v5 deleteAnnotation:{*(*(&v12 + 1) + 8 * v10), v12}];
+        [annotationProvider deleteAnnotation:{*(*(&v12 + 1) + 8 * v10), v12}];
         v10 = v10 + 1;
       }
 
@@ -3052,32 +3052,32 @@ LABEL_13:
     while (v8);
   }
 
-  v11 = [*(&self->super._paginationController + 4) managedObjectContext];
-  [v5 saveManagedObjectContext:v11];
+  managedObjectContext = [*(&self->super._paginationController + 4) managedObjectContext];
+  [annotationProvider saveManagedObjectContext:managedObjectContext];
 }
 
-- (void)shareSelectedAnnotationsFromSourceView:(id)a3
+- (void)shareSelectedAnnotationsFromSourceView:(id)view
 {
-  v6 = a3;
-  v4 = [(BKTOCContentViewController *)self p_selectedAnnotations];
-  if ([v4 count])
+  viewCopy = view;
+  p_selectedAnnotations = [(BKTOCContentViewController *)self p_selectedAnnotations];
+  if ([p_selectedAnnotations count])
   {
-    v5 = [(BKDirectoryContent *)self directoryDelegate];
-    [v5 tocViewController:self shareAnnotations:v4 sourceView:v6];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    [directoryDelegate tocViewController:self shareAnnotations:p_selectedAnnotations sourceView:viewCopy];
   }
 }
 
-- (BOOL)shareItemAtIndexPath:(id)a3
+- (BOOL)shareItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(BKTOCContentViewController *)self p_annotationForIndexPath:v4];
+  pathCopy = path;
+  v5 = [(BKTOCContentViewController *)self p_annotationForIndexPath:pathCopy];
   if (v5)
   {
-    v6 = [*(&self->super._verticalCenteringInsets.right + 4) cellForRowAtIndexPath:v4];
-    v7 = [(BKDirectoryContent *)self directoryDelegate];
+    v6 = [*(&self->super._verticalCenteringInsets.right + 4) cellForRowAtIndexPath:pathCopy];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
     v10 = v5;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
-    [v7 tocViewController:self shareAnnotations:v8 sourceView:v6];
+    [directoryDelegate tocViewController:self shareAnnotations:v8 sourceView:v6];
   }
 
   return v5 != 0;
@@ -3103,8 +3103,8 @@ LABEL_13:
 
 - (void)beginEditingMode
 {
-  v3 = [(BKDirectoryContent *)self directoryDelegate];
-  [v3 tocViewControllerDidChangeEditing:1];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  [directoryDelegate tocViewControllerDidChangeEditing:1];
 
   [*(&self->super._verticalCenteringInsets.right + 4) setEditing:1 animated:1];
 
@@ -3113,8 +3113,8 @@ LABEL_13:
 
 - (void)endEditingMode
 {
-  v3 = [(BKDirectoryContent *)self directoryDelegate];
-  [v3 tocViewControllerDidChangeEditing:0];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  [directoryDelegate tocViewControllerDidChangeEditing:0];
 
   [*(&self->super._verticalCenteringInsets.right + 4) setEditing:0 animated:1];
   [(BKTOCContentViewController *)self removeEditModeToolbar];
@@ -3124,70 +3124,70 @@ LABEL_13:
 
 - (void)installEditModeToolbar
 {
-  v3 = [(BKTOCContentViewController *)self editingToolbar];
-  v4 = [v3 superview];
+  editingToolbar = [(BKTOCContentViewController *)self editingToolbar];
+  superview = [editingToolbar superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = BKTOCCVCLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    editingToolbar9 = BKTOCCVCLog();
+    if (os_log_type_enabled(editingToolbar9, OS_LOG_TYPE_DEBUG))
     {
-      sub_138258(self, v5);
+      sub_138258(self, editingToolbar9);
     }
   }
 
   else
   {
-    v6 = [(BKTOCContentViewController *)self view];
-    v7 = [(BKTOCContentViewController *)self editingToolbar];
-    [v6 addSubview:v7];
+    view = [(BKTOCContentViewController *)self view];
+    editingToolbar2 = [(BKTOCContentViewController *)self editingToolbar];
+    [view addSubview:editingToolbar2];
 
-    v8 = [(BKTOCContentViewController *)self editingToolbar];
-    [v8 addInteraction:*(&self->_scrollPocketCollector + 4)];
+    editingToolbar3 = [(BKTOCContentViewController *)self editingToolbar];
+    [editingToolbar3 addInteraction:*(&self->_scrollPocketCollector + 4)];
 
-    v9 = [(BKTOCContentViewController *)self view];
-    [v9 addInteraction:*(&self->_descriptionView + 4)];
+    view2 = [(BKTOCContentViewController *)self view];
+    [view2 addInteraction:*(&self->_descriptionView + 4)];
 
-    v10 = [(BKTOCContentViewController *)self editingToolbar];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    editingToolbar4 = [(BKTOCContentViewController *)self editingToolbar];
+    [editingToolbar4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v35 = [(BKTOCContentViewController *)self editingToolbar];
-    v33 = [v35 leadingAnchor];
-    v34 = [(BKTOCContentViewController *)self view];
-    v32 = [v34 leadingAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    editingToolbar5 = [(BKTOCContentViewController *)self editingToolbar];
+    leadingAnchor = [editingToolbar5 leadingAnchor];
+    view3 = [(BKTOCContentViewController *)self view];
+    leadingAnchor2 = [view3 leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v36[0] = v31;
-    v30 = [(BKTOCContentViewController *)self editingToolbar];
-    v28 = [v30 trailingAnchor];
-    v29 = [(BKTOCContentViewController *)self view];
-    v11 = [v29 trailingAnchor];
-    v12 = [v28 constraintEqualToAnchor:v11];
+    editingToolbar6 = [(BKTOCContentViewController *)self editingToolbar];
+    trailingAnchor = [editingToolbar6 trailingAnchor];
+    view4 = [(BKTOCContentViewController *)self view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v36[1] = v12;
-    v13 = [(BKTOCContentViewController *)self editingToolbar];
-    v14 = [v13 bottomAnchor];
-    v15 = [(BKTOCContentViewController *)self view];
-    v16 = [v15 safeAreaLayoutGuide];
-    v17 = [v16 bottomAnchor];
-    v18 = [v14 constraintEqualToAnchor:v17];
+    editingToolbar7 = [(BKTOCContentViewController *)self editingToolbar];
+    bottomAnchor = [editingToolbar7 bottomAnchor];
+    view5 = [(BKTOCContentViewController *)self view];
+    safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v36[2] = v18;
     v19 = [NSArray arrayWithObjects:v36 count:3];
     [NSLayoutConstraint activateConstraints:v19];
 
-    v20 = [(BKTOCContentViewController *)self view];
-    [v20 setNeedsLayout];
+    view6 = [(BKTOCContentViewController *)self view];
+    [view6 setNeedsLayout];
 
-    v21 = [(BKTOCContentViewController *)self view];
-    [v21 layoutIfNeeded];
+    view7 = [(BKTOCContentViewController *)self view];
+    [view7 layoutIfNeeded];
 
-    v22 = [(BKTOCContentViewController *)self editingToolbar];
-    [v22 frame];
+    editingToolbar8 = [(BKTOCContentViewController *)self editingToolbar];
+    [editingToolbar8 frame];
     [*(&self->super._verticalCenteringInsets.right + 4) setContentInset:{0.0, 0.0, v23, 0.0}];
 
-    v5 = [(BKTOCContentViewController *)self editingToolbar];
-    [v5 frame];
+    editingToolbar9 = [(BKTOCContentViewController *)self editingToolbar];
+    [editingToolbar9 frame];
     v25 = v24;
-    v26 = [(BKTOCContentViewController *)self view];
-    [v26 safeAreaInsets];
+    view8 = [(BKTOCContentViewController *)self view];
+    [view8 safeAreaInsets];
     [*(&self->super._verticalCenteringInsets.right + 4) setScrollIndicatorInsets:{0.0, 0.0, v25 + v27, 0.0}];
   }
 }
@@ -3200,14 +3200,14 @@ LABEL_13:
     sub_138304(v3);
   }
 
-  v4 = [(BKTOCContentViewController *)self editingToolbar];
-  [v4 removeFromSuperview];
+  editingToolbar = [(BKTOCContentViewController *)self editingToolbar];
+  [editingToolbar removeFromSuperview];
 
-  v5 = [(BKTOCContentViewController *)self editingToolbar];
-  [v5 removeInteraction:*(&self->_scrollPocketCollector + 4)];
+  editingToolbar2 = [(BKTOCContentViewController *)self editingToolbar];
+  [editingToolbar2 removeInteraction:*(&self->_scrollPocketCollector + 4)];
 
-  v6 = [(BKTOCContentViewController *)self view];
-  [v6 removeInteraction:*(&self->_descriptionView + 4)];
+  view = [(BKTOCContentViewController *)self view];
+  [view removeInteraction:*(&self->_descriptionView + 4)];
 
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
@@ -3250,8 +3250,8 @@ LABEL_13:
     [v12 setAttributes:{objc_msgSend(v12, "attributes") | 2}];
     v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:16 primaryAction:v12];
     v14 = +[UIBarButtonItem flexibleSpaceItem];
-    v15 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
-    v16 = -[BKTOCContentViewController editToolbarFooterTextWithCount:](self, "editToolbarFooterTextWithCount:", [v15 count]);
+    indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+    v16 = -[BKTOCContentViewController editToolbarFooterTextWithCount:](self, "editToolbarFooterTextWithCount:", [indexPathsForSelectedRows count]);
 
     v28 = v16;
     v17 = [[UIBarButtonItem alloc] initWithTitle:v16 menu:0];
@@ -3313,8 +3313,8 @@ LABEL_8:
 - (void)updateToolbarContent
 {
   [(BKTOCContentViewController *)self installEditModeToolbar];
-  v3 = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
-  v4 = [v3 count];
+  indexPathsForSelectedRows = [*(&self->super._verticalCenteringInsets.right + 4) indexPathsForSelectedRows];
+  v4 = [indexPathsForSelectedRows count];
 
   v5 = BKTOCCVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3327,7 +3327,7 @@ LABEL_8:
   [WeakRetained setTitle:v6];
 }
 
-- (id)editToolbarFooterTextWithCount:(unint64_t)a3
+- (id)editToolbarFooterTextWithCount:(unint64_t)count
 {
   v4 = *(&self->super._centeringInsets.right + 4);
   if (v4 == 1)
@@ -3342,7 +3342,7 @@ LABEL_8:
 LABEL_5:
     v6 = AEBundle();
     v7 = [v6 localizedStringForKey:v5 value:&stru_1E7188 table:0];
-    v8 = [NSString localizedStringWithFormat:v7, a3];
+    v8 = [NSString localizedStringWithFormat:v7, count];
 
     goto LABEL_7;
   }

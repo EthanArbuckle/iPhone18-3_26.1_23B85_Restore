@@ -1,6 +1,6 @@
 @interface NWURLSessionTask
-+ (BOOL)isSubclassOfClass:(Class)a3;
-- (BOOL)isKindOfClass:(Class)a3;
++ (BOOL)isSubclassOfClass:(Class)class;
+- (BOOL)isKindOfClass:(Class)class;
 - (BOOL)isUpload;
 - (NSProgress)progress;
 - (NSString)description;
@@ -10,43 +10,43 @@
 - (NSURLSessionTaskMetrics)_incompleteTaskMetrics;
 - (NSURLSessionTaskTransactionMetrics)_incompleteCurrentTaskTransactionMetrics;
 - (NWURLError)error;
-- (NWURLError)errorForErrorCode:(id *)a1;
+- (NWURLError)errorForErrorCode:(id *)code;
 - (OS_nw_context)networkContext;
 - (OS_nw_protocol_metadata)clientMetadata;
-- (id)initWithRequest:(int)a3 identifier:(void *)a4 session:;
-- (id)initWithResumeInfo:(int)a3 identifier:(void *)a4 session:;
-- (id)loaderNeedsEarlyData:(BOOL *)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)initWithRequest:(int)request identifier:(void *)identifier session:;
+- (id)initWithResumeInfo:(int)info identifier:(void *)identifier session:;
+- (id)loaderNeedsEarlyData:(BOOL *)data;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (int64_t)_countOfBytesReceivedEncoded;
 - (int64_t)backgroundSchedulingPriority;
 - (int64_t)state;
-- (uint64_t)createTimerWithTimeout:(double)a3 retryable:;
+- (uint64_t)createTimerWithTimeout:(double)timeout retryable:;
 - (unint64_t)_expectedProgressTarget;
 - (unint64_t)taskIdentifier;
-- (void)_adoptEffectiveConfiguration:(id)a3;
-- (void)_setExplicitCookieStorage:(OpaqueCFHTTPCookieStorage *)a3;
+- (void)_adoptEffectiveConfiguration:(id)configuration;
+- (void)_setExplicitCookieStorage:(OpaqueCFHTTPCookieStorage *)storage;
 - (void)cancel;
-- (void)complete:(uint64_t)a1;
-- (void)completeTaskWithError:(id)a3 retryable:(BOOL)a4;
+- (void)complete:(uint64_t)complete;
+- (void)completeTaskWithError:(id)error retryable:(BOOL)retryable;
 - (void)dealloc;
 - (void)delegateWrapper;
-- (void)forwardInvocation:(id)a3;
-- (void)getUnderlyingHTTPConnectionInfoWithCompletionHandler:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)getUnderlyingHTTPConnectionInfoWithCompletionHandler:(id)handler;
 - (void)joiningContext;
-- (void)loaderCallCustomURLProtocol:(id)a3;
-- (void)loaderConnectedWithHTTPConnectionMetadata:(id)a3 CNAMEChain:(id)a4 unlistedTracker:(id)a5;
-- (void)loaderDidReceiveChallenge:(id)a3 completionHandler:(id)a4;
-- (void)loaderDidReceiveClientCertificateChallenge:(id)a3 completionHandler:(id)a4;
-- (void)loaderDidReceiveInformationalResponse:(id)a3;
-- (void)loaderDidReceiveServerTrustChallenge:(id)a3 secProtocolMetadata:(id)a4 completionHandler:(id)a5;
-- (void)loaderDidSendBodyData:(int64_t)a3 totalBytesSent:(int64_t)a4 totalBytesExpectedToSend:(int64_t)a5 completionHandler:(id)a6;
-- (void)loaderFailedToConnect:(id)a3;
-- (void)loaderNeedsBodyProviderFromOffset:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loaderRunDelegateBlock:(id)a3;
-- (void)loaderToggleRequestTimeoutTimer:(BOOL)a3;
+- (void)loaderCallCustomURLProtocol:(id)protocol;
+- (void)loaderConnectedWithHTTPConnectionMetadata:(id)metadata CNAMEChain:(id)chain unlistedTracker:(id)tracker;
+- (void)loaderDidReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)loaderDidReceiveClientCertificateChallenge:(id)challenge completionHandler:(id)handler;
+- (void)loaderDidReceiveInformationalResponse:(id)response;
+- (void)loaderDidReceiveServerTrustChallenge:(id)challenge secProtocolMetadata:(id)metadata completionHandler:(id)handler;
+- (void)loaderDidSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send completionHandler:(id)handler;
+- (void)loaderFailedToConnect:(id)connect;
+- (void)loaderNeedsBodyProviderFromOffset:(unint64_t)offset completionHandler:(id)handler;
+- (void)loaderRunDelegateBlock:(id)block;
+- (void)loaderToggleRequestTimeoutTimer:(BOOL)timer;
 - (void)loaderWaitingForConnectivity;
-- (void)loaderWillPerformHSTSUpgradeToURL:(id)a3 preload:(BOOL)a4 completionHandler:(id)a5;
-- (void)loaderWillPerformHTTPRedirection:(id)a3 newRequest:(id)a4 completionHandler:(id)a5;
+- (void)loaderWillPerformHSTSUpgradeToURL:(id)l preload:(BOOL)preload completionHandler:(id)handler;
+- (void)loaderWillPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)pauseTaskForRetry;
 - (void)performNextServerTrustChallenge;
 - (void)readResponseBody;
@@ -54,22 +54,22 @@
 - (void)resume;
 - (void)resumeTaskAndRetry;
 - (void)retryImmediately;
-- (void)setBackgroundSchedulingPriority:(int64_t)a3;
-- (void)setClientMetadataForMetrics:(uint64_t)a1;
-- (void)setConfiguration:(uint64_t)a1;
-- (void)setCountOfBytesExpectedToReceive:(uint64_t)a1;
-- (void)setCountOfBytesExpectedToSend:(uint64_t)a1;
-- (void)setCountOfBytesReceived:(uint64_t)a1;
-- (void)setDelegate:(id)a3;
-- (void)setPendingError:(uint64_t)a1;
-- (void)setPrefersIncrementalDelivery:(BOOL)a3;
-- (void)setPriority:(float)a3;
-- (void)set_expectedProgressTarget:(unint64_t)a3;
-- (void)set_internalDelegate:(id)a3;
+- (void)setBackgroundSchedulingPriority:(int64_t)priority;
+- (void)setClientMetadataForMetrics:(uint64_t)metrics;
+- (void)setConfiguration:(uint64_t)configuration;
+- (void)setCountOfBytesExpectedToReceive:(uint64_t)receive;
+- (void)setCountOfBytesExpectedToSend:(uint64_t)send;
+- (void)setCountOfBytesReceived:(uint64_t)received;
+- (void)setDelegate:(id)delegate;
+- (void)setPendingError:(uint64_t)error;
+- (void)setPrefersIncrementalDelivery:(BOOL)delivery;
+- (void)setPriority:(float)priority;
+- (void)set_expectedProgressTarget:(unint64_t)target;
+- (void)set_internalDelegate:(id)delegate;
 - (void)startNextLoad;
-- (void)stopAndRetryWithError:(id)a3;
+- (void)stopAndRetryWithError:(id)error;
 - (void)suspend;
-- (void)updateResponse:(uint64_t)a1;
+- (void)updateResponse:(uint64_t)response;
 @end
 
 @implementation NWURLSessionTask
@@ -78,11 +78,11 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   v28 = 0uLL;
-  v3 = [(NWURLSessionTask *)self _nw_activity];
-  v4 = v3;
-  if (v3)
+  _nw_activity = [(NWURLSessionTask *)self _nw_activity];
+  v4 = _nw_activity;
+  if (_nw_activity)
   {
-    nw_activity_activate(v3);
+    nw_activity_activate(_nw_activity);
     nw_activity_get_token(v4, &v28);
   }
 
@@ -187,15 +187,15 @@
 
 - (void)restartRequestTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 424);
+    v2 = *(self + 424);
     v3 = v2 ? *(v2 + 48) : 0.0;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__NWURLSessionTask_restartRequestTimer__block_invoke;
     v6[3] = &unk_1E6A3ACD0;
-    v6[4] = a1;
+    v6[4] = self;
     *&v6[5] = v3;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 0x40000000;
@@ -209,7 +209,7 @@
     os_unfair_lock_unlock(&lock);
     if (v3 > 0.0)
     {
-      v4 = *(a1 + 344);
+      v4 = *(self + 344);
       if (v4)
       {
         v5 = dispatch_time(0x8000000000000000, (v3 * 1000000000.0));
@@ -231,7 +231,7 @@
 
       else
       {
-        *(a1 + 344) = [(NWURLSessionTask *)a1 createTimerWithTimeout:v3 retryable:?];
+        *(self + 344) = [(NWURLSessionTask *)self createTimerWithTimeout:v3 retryable:?];
       }
     }
   }
@@ -253,17 +253,17 @@
   }
 
   v4 = configuration;
-  v5 = [(NWURLSessionTask *)self currentRequest];
-  [(NWURLSessionTaskConfiguration *)v4 updateRequest:v5];
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  [(NWURLSessionTaskConfiguration *)v4 updateRequest:currentRequest];
 
   if (self && (v6 = self->_configuration) != 0)
   {
-    v7 = [(NSURLSessionConfiguration *)v6->_configuration protocolClasses];
+    protocolClasses = [(NSURLSessionConfiguration *)v6->_configuration protocolClasses];
   }
 
   else
   {
-    v7 = 0;
+    protocolClasses = 0;
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -271,7 +271,7 @@
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v9 = v7;
+  v9 = protocolClasses;
   v10 = [v9 countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (v10)
   {
@@ -321,7 +321,7 @@
     v16 = 0;
   }
 
-  v18 = [(NWURLSessionTask *)self currentRequest];
+  currentRequest2 = [(NWURLSessionTask *)self currentRequest];
   if (self)
   {
     v19 = self->_requestBody;
@@ -352,19 +352,19 @@
   v67[1] = 3221225472;
   v68 = __33__NWURLSessionTask_startNextLoad__block_invoke;
   v69 = &unk_1E6A33BA8;
-  v70 = self;
-  v23 = v18;
+  selfCopy = self;
+  v23 = currentRequest2;
   v66 = v21;
   v65 = queue;
-  v24 = self;
+  selfCopy2 = self;
   v25 = v8;
   v26 = v67;
   objc_opt_self();
   v27 = [v23 URL];
-  v28 = [v27 scheme];
+  scheme = [v27 scheme];
 
-  v62 = v28;
-  if (!v28)
+  v62 = scheme;
+  if (!scheme)
   {
     v68(v26, 0);
     v36 = v65;
@@ -383,7 +383,7 @@
     {
       v36 = v65;
       v42 = v66;
-      v34 = [[NWURLLoaderHTTP alloc] initWithRequest:v23 bodyKnownSize:v20 configuration:v66 queue:v65 client:v24];
+      v34 = [[NWURLLoaderHTTP alloc] initWithRequest:v23 bodyKnownSize:v20 configuration:v66 queue:v65 client:selfCopy2];
       v25 = v64;
       goto LABEL_42;
     }
@@ -394,14 +394,14 @@
   }
 
   v32 = [v23 URL];
-  v33 = [v32 isFileURL];
+  isFileURL = [v32 isFileURL];
 
-  if (!v33)
+  if (!isFileURL)
   {
     v36 = v65;
-    if ([v28 caseInsensitiveCompare:@"data"])
+    if ([scheme caseInsensitiveCompare:@"data"])
     {
-      v43 = [v28 caseInsensitiveCompare:@"about"];
+      v43 = [scheme caseInsensitiveCompare:@"about"];
       v42 = v66;
       if (v43)
       {
@@ -512,15 +512,15 @@ LABEL_42:
           }
 
           v53 = *(*(&v75 + 1) + 8 * j);
-          v54 = [(NWURLSessionTask *)v24 loaderTask];
-          v55 = [v53 canInitWithTask:v54];
+          loaderTask = [(NWURLSessionTask *)selfCopy2 loaderTask];
+          v55 = [v53 canInitWithTask:loaderTask];
 
           if (v55)
           {
             v23 = v61;
             v36 = v65;
             v42 = v66;
-            v59 = [[NWURLLoader alloc] initWithRequest:v61 configuration:v66 queue:v65 client:v24 protocolClass:v53];
+            v59 = [[NWURLLoader alloc] initWithRequest:v61 configuration:v66 queue:v65 client:selfCopy2 protocolClass:v53];
 
             v34 = v59;
             goto LABEL_57;
@@ -561,7 +561,7 @@ LABEL_59:
   v82 = &unk_1E6A3B580;
   v83 = v34;
   v84 = v25;
-  v56 = v24;
+  v56 = selfCopy2;
   v85 = v56;
   v86 = v23;
   v87 = v42;
@@ -970,9 +970,9 @@ void __33__NWURLSessionTask_startNextLoad__block_invoke_2(uint64_t a1)
 - (void)performNextServerTrustChallenge
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24) == 1)
+    if (*(self + 24) == 1)
     {
       if (__nwlog_url_log::onceToken != -1)
       {
@@ -983,7 +983,7 @@ void __33__NWURLSessionTask_startNextLoad__block_invoke_2(uint64_t a1)
       *buf = 136446466;
       v17 = "[NWURLSessionTask performNextServerTrustChallenge]";
       v18 = 2112;
-      v19 = a1;
+      selfCopy5 = self;
       v3 = _os_log_send_and_compose_impl();
 
       type = OS_LOG_TYPE_ERROR;
@@ -1004,7 +1004,7 @@ void __33__NWURLSessionTask_startNextLoad__block_invoke_2(uint64_t a1)
             *buf = 136446466;
             v17 = "[NWURLSessionTask performNextServerTrustChallenge]";
             v18 = 2112;
-            v19 = a1;
+            selfCopy5 = self;
             v6 = "%{public}s Already performing server trust challenge %@";
 LABEL_30:
             v11 = v4;
@@ -1031,7 +1031,7 @@ LABEL_31:
             *buf = 136446466;
             v17 = "[NWURLSessionTask performNextServerTrustChallenge]";
             v18 = 2112;
-            v19 = a1;
+            selfCopy5 = self;
             v6 = "%{public}s Already performing server trust challenge %@, backtrace limit exceeded";
             goto LABEL_30;
           }
@@ -1064,7 +1064,7 @@ LABEL_24:
             *buf = 136446466;
             v17 = "[NWURLSessionTask performNextServerTrustChallenge]";
             v18 = 2112;
-            v19 = a1;
+            selfCopy5 = self;
             v6 = "%{public}s Already performing server trust challenge %@, no backtrace";
             v11 = v4;
             v12 = v9;
@@ -1079,7 +1079,7 @@ LABEL_24:
           *buf = 136446722;
           v17 = "[NWURLSessionTask performNextServerTrustChallenge]";
           v18 = 2112;
-          v19 = a1;
+          selfCopy5 = self;
           v20 = 2082;
           v21 = backtrace_string;
           _os_log_impl(&dword_181A37000, v4, v9, "%{public}s Already performing server trust challenge %@, dumping backtrace:%{public}s", buf, 0x20u);
@@ -1096,13 +1096,13 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    v7 = [*(a1 + 400) firstObject];
-    if (v7)
+    firstObject = [*(self + 400) firstObject];
+    if (firstObject)
     {
-      v13 = v7;
-      [*(a1 + 400) removeObjectAtIndex:0];
+      v13 = firstObject;
+      [*(self + 400) removeObjectAtIndex:0];
       v13[2](v13);
-      v7 = v13;
+      firstObject = v13;
     }
   }
 }
@@ -1165,7 +1165,7 @@ uint64_t __43__NWURLSessionTask_finishProgressReporting__block_invoke(uint64_t a
   [(NWURLSessionTask *)&v3 dealloc];
 }
 
-- (void)set_expectedProgressTarget:(unint64_t)a3
+- (void)set_expectedProgressTarget:(unint64_t)target
 {
   v13 = *MEMORY[0x1E69E9840];
   if (__nwlog_url_log::onceToken != -1)
@@ -1215,23 +1215,23 @@ uint64_t __43__NWURLSessionTask_finishProgressReporting__block_invoke(uint64_t a
 
 - (int64_t)_countOfBytesReceivedEncoded
 {
-  v2 = [(NWURLSessionTask *)self clientMetadata];
-  v3 = nw_http_client_metadata_copy_current_transaction_metadata(v2);
+  clientMetadata = [(NWURLSessionTask *)self clientMetadata];
+  v3 = nw_http_client_metadata_copy_current_transaction_metadata(clientMetadata);
 
   inbound_body_transfer_size = nw_http_transaction_metadata_get_inbound_body_transfer_size(v3);
   return inbound_body_transfer_size;
 }
 
-- (void)_adoptEffectiveConfiguration:(id)a3
+- (void)_adoptEffectiveConfiguration:(id)configuration
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  configurationCopy = configuration;
+  v6 = configurationCopy;
   if (!self || !self->_internalState)
   {
-    v8 = [v5 URLCredentialStorage];
+    uRLCredentialStorage = [configurationCopy URLCredentialStorage];
 
-    if (v8)
+    if (uRLCredentialStorage)
     {
       if (!self)
       {
@@ -1257,7 +1257,7 @@ LABEL_18:
     v10 = v6;
     if (configuration)
     {
-      objc_storeStrong(&configuration->_configuration, a3);
+      objc_storeStrong(&configuration->_configuration, configuration);
       if ([(NSURLRequest *)configuration->_request _explicitlySetTimeoutInterval])
       {
         [(NSURLRequest *)configuration->_request timeoutInterval];
@@ -1296,11 +1296,11 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_setExplicitCookieStorage:(OpaqueCFHTTPCookieStorage *)a3
+- (void)_setExplicitCookieStorage:(OpaqueCFHTTPCookieStorage *)storage
 {
   if (!self)
   {
-    if (!a3)
+    if (!storage)
     {
       return;
     }
@@ -1309,10 +1309,10 @@ LABEL_19:
   }
 
   self->_explicitlySetCookieStorage = 1;
-  if (a3)
+  if (storage)
   {
 LABEL_3:
-    v7 = [objc_alloc(MEMORY[0x1E695AC00]) _initWithCFHTTPCookieStorage:a3];
+    v7 = [objc_alloc(MEMORY[0x1E695AC00]) _initWithCFHTTPCookieStorage:storage];
     v4 = objc_alloc_init(NWConcrete_nw_http_cookie_storage);
     cookieStorage = v4->cookieStorage;
     v4->cookieStorage = v7;
@@ -1363,29 +1363,29 @@ LABEL_7:
   return self;
 }
 
-- (void)getUnderlyingHTTPConnectionInfoWithCompletionHandler:(id)a3
+- (void)getUnderlyingHTTPConnectionInfoWithCompletionHandler:(id)handler
 {
   if (self)
   {
-    objc_setProperty_atomic_copy(self, a2, a3, 312);
+    objc_setProperty_atomic_copy(self, a2, handler, 312);
   }
 }
 
-- (void)setBackgroundSchedulingPriority:(int64_t)a3
+- (void)setBackgroundSchedulingPriority:(int64_t)priority
 {
   if (self)
   {
-    if (self->_backgroundSchedulingPriorityInternal == a3)
+    if (self->_backgroundSchedulingPriorityInternal == priority)
     {
       return;
     }
 
-    self->_backgroundSchedulingPriorityInternal = a3;
+    self->_backgroundSchedulingPriorityInternal = priority;
     queue = self->_queue;
     goto LABEL_4;
   }
 
-  if (a3)
+  if (priority)
   {
     queue = 0;
 LABEL_4:
@@ -1426,25 +1426,25 @@ void __52__NWURLSessionTask_setBackgroundSchedulingPriority___block_invoke(uint6
 
 - (void)pauseTaskForRetry
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = a1[53];
+  v2 = self[53];
   if (v2)
   {
     if (*(v2 + 48) > 0.0)
     {
-      v3 = a1[43];
+      v3 = self[43];
       if (v3)
       {
         if (*v3)
         {
-          v4 = a1;
+          selfCopy2 = self;
           dispatch_source_set_timer(*v3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 LABEL_7:
-          a1 = v4;
+          self = selfCopy2;
           goto LABEL_11;
         }
 
@@ -1452,7 +1452,7 @@ LABEL_7:
         *(v3 + 40) = -1;
         if (*(v3 + 48) == 1 && *(v3 + 49) == 1)
         {
-          v4 = a1;
+          selfCopy2 = self;
           nw_queue_source_run_timer(v3, a2);
           goto LABEL_7;
         }
@@ -1461,8 +1461,8 @@ LABEL_7:
   }
 
 LABEL_11:
-  v5 = a1[33];
-  a1[33] = 0;
+  v5 = self[33];
+  self[33] = 0;
   v6 = v5;
 
   [v6 stop];
@@ -1470,27 +1470,27 @@ LABEL_11:
 
 - (void)resumeTaskAndRetry
 {
-  if (a1)
+  if (self)
   {
     v7 = 0;
-    v2 = *(a1 + 440);
-    v3 = [a1 currentRequest];
-    v4 = [v2 prepareNextRequest:v3 forTask:a1 error:&v7];
+    v2 = *(self + 440);
+    currentRequest = [self currentRequest];
+    v4 = [v2 prepareNextRequest:currentRequest forTask:self error:&v7];
 
     if (v4)
     {
-      objc_setProperty_nonatomic_copy(a1, v5, v4, 56);
-      v6 = *(a1 + 280);
-      *(a1 + 280) = 0;
+      objc_setProperty_nonatomic_copy(self, v5, v4, 56);
+      v6 = *(self + 280);
+      *(self + 280) = 0;
 
-      nw_http_client_metadata_create_next_transaction(*(a1 + 256), 3);
-      [(NWURLSessionTask *)a1 restartRequestTimer];
-      [a1 startNextLoad];
+      nw_http_client_metadata_create_next_transaction(*(self + 256), 3);
+      [(NWURLSessionTask *)self restartRequestTimer];
+      [self startNextLoad];
     }
 
     else
     {
-      [a1 completeTaskWithError:v7 retryable:0];
+      [self completeTaskWithError:v7 retryable:0];
     }
   }
 }
@@ -1544,22 +1544,22 @@ LABEL_9:
 LABEL_10:
 }
 
-- (uint64_t)createTimerWithTimeout:(double)a3 retryable:
+- (uint64_t)createTimerWithTimeout:(double)timeout retryable:
 {
-  if (a3 > 31536000.0)
+  if (timeout > 31536000.0)
   {
     return 0;
   }
 
-  v5 = *(a1 + 320);
+  v5 = *(self + 320);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__NWURLSessionTask_createTimerWithTimeout_retryable___block_invoke;
   v9[3] = &unk_1E6A3A258;
-  v9[4] = a1;
+  v9[4] = self;
   v10 = a2;
   source = nw_queue_context_create_source(v5, 2, 3, 0, v9, 0);
-  v7 = dispatch_time(0x8000000000000000, (a3 * 1000000000.0));
+  v7 = dispatch_time(0x8000000000000000, (timeout * 1000000000.0));
   nw_queue_set_timer_values(source, v7, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   nw_queue_activate_source(source, v8);
   return source;
@@ -1594,9 +1594,9 @@ void __53__NWURLSessionTask_createTimerWithTimeout_retryable___block_invoke(uint
   }
 }
 
-- (void)stopAndRetryWithError:(id)a3
+- (void)stopAndRetryWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     queue = self->_queue;
@@ -1612,8 +1612,8 @@ void __53__NWURLSessionTask_createTimerWithTimeout_retryable___block_invoke(uint
   v7[2] = __42__NWURLSessionTask_stopAndRetryWithError___block_invoke;
   v7[3] = &unk_1E6A3D760;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1980,31 +1980,31 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
 
 - (BOOL)isUpload
 {
-  v2 = [(NWURLSessionTask *)self currentRequest];
-  v3 = [v2 HTTPBody];
-  if (v3)
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  hTTPBody = [currentRequest HTTPBody];
+  if (hTTPBody)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v2 HTTPBodyStream];
-    if (v5)
+    hTTPBodyStream = [currentRequest HTTPBodyStream];
+    if (hTTPBodyStream)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [v2 HTTPMethod];
-      if ([v6 caseInsensitiveCompare:@"POST"])
+      hTTPMethod = [currentRequest HTTPMethod];
+      if ([hTTPMethod caseInsensitiveCompare:@"POST"])
       {
-        v7 = [v2 HTTPMethod];
-        if ([v7 caseInsensitiveCompare:@"PUT"])
+        hTTPMethod2 = [currentRequest HTTPMethod];
+        if ([hTTPMethod2 caseInsensitiveCompare:@"PUT"])
         {
-          v8 = [v2 HTTPMethod];
-          v4 = [v8 caseInsensitiveCompare:@"PATCH"] == 0;
+          hTTPMethod3 = [currentRequest HTTPMethod];
+          v4 = [hTTPMethod3 caseInsensitiveCompare:@"PATCH"] == 0;
         }
 
         else
@@ -2023,32 +2023,32 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
   return v4;
 }
 
-- (void)setPrefersIncrementalDelivery:(BOOL)a3
+- (void)setPrefersIncrementalDelivery:(BOOL)delivery
 {
-  if (self->_prefersIncrementalDelivery != a3)
+  if (self->_prefersIncrementalDelivery != delivery)
   {
-    self->_prefersIncrementalDelivery = a3;
+    self->_prefersIncrementalDelivery = delivery;
   }
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
-  if (a3 >= 0.0 && a3 <= 1.0 && self->_priority != a3)
+  if (priority >= 0.0 && priority <= 1.0 && self->_priority != priority)
   {
-    self->_priority = a3;
+    self->_priority = priority;
   }
 }
 
-- (void)loaderDidSendBodyData:(int64_t)a3 totalBytesSent:(int64_t)a4 totalBytesExpectedToSend:(int64_t)a5 completionHandler:(id)a6
+- (void)loaderDidSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __100__NWURLSessionTask_loaderDidSendBodyData_totalBytesSent_totalBytesExpectedToSend_completionHandler___block_invoke;
   v38[3] = &unk_1E6A33E70;
   v38[4] = self;
-  v38[5] = a4;
-  v38[6] = a5;
+  v38[5] = sent;
+  v38[6] = send;
   v39 = MEMORY[0x1E69E9820];
   v40 = 0x40000000;
   v41 = __nw_http_diag_log_for_level_block_invoke;
@@ -2062,7 +2062,7 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
   if (self)
   {
     [(NWURLSessionTask *)self willChangeValueForKey:@"countOfBytesSent"];
-    self->_countOfBytesSent = a4;
+    self->_countOfBytesSent = sent;
     [(NWURLSessionTask *)self didChangeValueForKey:@"countOfBytesSent"];
     v11 = self->_internalProgress;
     if (v11)
@@ -2071,18 +2071,18 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
 
       if (internalState != 2)
       {
-        v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
-        v14 = [(NWURLSessionTask *)self progress];
-        [v14 setByteCompletedCount:v13];
+        v13 = [MEMORY[0x1E696AD98] numberWithLongLong:sent];
+        progress = [(NWURLSessionTask *)self progress];
+        [progress setByteCompletedCount:v13];
 
         uploadProgress = self->_uploadProgress;
         if (self->_defaultUploadProgressState)
         {
           v16 = uploadProgress;
-          v17 = [(NSProgress *)v16 completedUnitCount];
+          completedUnitCount = [(NSProgress *)v16 completedUnitCount];
           v18 = [(NSProgress *)self->_uploadProgress totalUnitCount]- 1;
 
-          if (v17 < v18)
+          if (completedUnitCount < v18)
           {
             v19 = self->_uploadProgress;
             [(NSProgress *)v19 setCompletedUnitCount:[(NSProgress *)v19 completedUnitCount]+ 1];
@@ -2091,12 +2091,12 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
 
         else
         {
-          [(NSProgress *)uploadProgress setCompletedUnitCount:a4];
+          [(NSProgress *)uploadProgress setCompletedUnitCount:sent];
         }
       }
     }
 
-    [(NWURLSessionTask *)self setCountOfBytesExpectedToSend:a5];
+    [(NWURLSessionTask *)self setCountOfBytesExpectedToSend:send];
     [(NWURLSessionTask *)self restartRequestTimer];
     v20 = 248;
     if (!self->_internalDelegateWrapper)
@@ -2109,7 +2109,7 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
 
   else
   {
-    [(NWURLSessionTask *)0 setCountOfBytesExpectedToSend:a5];
+    [(NWURLSessionTask *)0 setCountOfBytesExpectedToSend:send];
     [(NWURLSessionTask *)0 restartRequestTimer];
     v21 = 0;
   }
@@ -2118,15 +2118,15 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
   v33[1] = 3221225472;
   v34 = __100__NWURLSessionTask_loaderDidSendBodyData_totalBytesSent_totalBytesExpectedToSend_completionHandler___block_invoke_91;
   v35 = &unk_1E6A3D710;
-  v36 = self;
-  v37 = v10;
-  v22 = v10;
-  v23 = self;
+  selfCopy = self;
+  v37 = handlerCopy;
+  v22 = handlerCopy;
+  selfCopy2 = self;
   v25 = v33;
   if (v21)
   {
-    v26 = [(NWURLSessionDelegateWrapper *)v21 delegateFor_didSendBodyData];
-    if (v26)
+    delegateFor_didSendBodyData = [(NWURLSessionDelegateWrapper *)v21 delegateFor_didSendBodyData];
+    if (delegateFor_didSendBodyData)
     {
       v27 = v21[5];
       v28 = v21[6];
@@ -2134,12 +2134,12 @@ void __28__NWURLSessionTask_progress__block_invoke_3(uint64_t a1)
       v40 = 3221225472;
       v41 = __110__NWURLSessionDelegateWrapper_task_didSendBodyData_totalBytesSent_totalBytesExpectedToSend_completionHandler___block_invoke;
       v42 = &unk_1E6A3B698;
-      v43 = v26;
+      v43 = delegateFor_didSendBodyData;
       v44 = v27;
-      v29 = v23;
-      v48 = a3;
-      v49 = a4;
-      v50 = a5;
+      v29 = selfCopy2;
+      dataCopy = data;
+      sentCopy = sent;
+      sendCopy = send;
       v45 = v29;
       v46 = v28;
       v47 = v25;
@@ -2208,23 +2208,23 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setCountOfBytesExpectedToSend:(uint64_t)a1
+- (void)setCountOfBytesExpectedToSend:(uint64_t)send
 {
-  if (a1)
+  if (send)
   {
-    [a1 willChangeValueForKey:@"countOfBytesExpectedToSend"];
-    *(a1 + 104) = a2;
-    [a1 didChangeValueForKey:@"countOfBytesExpectedToSend"];
-    v4 = *(a1 + 368);
+    [send willChangeValueForKey:@"countOfBytesExpectedToSend"];
+    *(send + 104) = a2;
+    [send didChangeValueForKey:@"countOfBytesExpectedToSend"];
+    v4 = *(send + 368);
     if (v4)
     {
-      v5 = *(a1 + 296);
+      v5 = *(send + 296);
 
       if (v5 != 2)
       {
         v6 = [MEMORY[0x1E696AD98] numberWithLongLong:a2];
-        v7 = [a1 progress];
-        [v7 setByteTotalCount:v6];
+        progress = [send progress];
+        [progress setByteTotalCount:v6];
 
         if (a2 >= 1)
         {
@@ -2236,8 +2236,8 @@ LABEL_10:
           v8 = 100;
         }
 
-        *(a1 + 22) = a2 < 1;
-        v9 = *(a1 + 376);
+        *(send + 22) = a2 < 1;
+        v9 = *(send + 376);
 
         [v9 setTotalUnitCount:v8];
       }
@@ -2259,11 +2259,11 @@ void __100__NWURLSessionTask_loaderDidSendBodyData_totalBytesSent_totalBytesExpe
   }
 }
 
-- (void)loaderDidReceiveChallenge:(id)a3 completionHandler:(id)a4
+- (void)loaderDidReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (__nwlog_url_log::onceToken != -1)
   {
     dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
@@ -2275,9 +2275,9 @@ void __100__NWURLSessionTask_loaderDidSendBodyData_totalBytesSent_totalBytesExpe
     [(NWURLSessionTask *)self logDescription];
     [(NWURLSessionTask *)self logDescription];
     v9 = v30;
-    v10 = [v6 protectionSpace];
-    v11 = [v10 authenticationMethod];
-    v12 = [v6 proposedCredential];
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
+    proposedCredential = [challengeCopy proposedCredential];
     *buf = 68289794;
     v33 = 16;
     v34 = 2098;
@@ -2285,32 +2285,32 @@ void __100__NWURLSessionTask_loaderDidSendBodyData_totalBytesSent_totalBytesExpe
     v36 = 1024;
     v37 = v9;
     v38 = 2114;
-    v39 = v11;
+    v39 = authenticationMethod;
     v40 = 1024;
-    v41 = v12 != 0;
+    v41 = proposedCredential != 0;
     _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_DEFAULT, "Task <%{public,uuid_t}.16P>.<%u> received auth challenge {method=%{public}@, proposed=%{BOOL}d}", buf, 0x28u);
   }
 
-  v13 = [v6 protectionSpace];
-  if ([v13 isProxy])
+  protectionSpace2 = [challengeCopy protectionSpace];
+  if ([protectionSpace2 isProxy])
   {
     goto LABEL_6;
   }
 
-  v15 = [v6 previousFailureCount];
+  previousFailureCount = [challengeCopy previousFailureCount];
 
-  if (v15)
+  if (previousFailureCount)
   {
     goto LABEL_8;
   }
 
-  v18 = [(NWURLSessionTask *)self currentRequest];
-  v13 = [v18 URL];
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  protectionSpace2 = [currentRequest URL];
 
-  v19 = [v13 user];
-  v20 = [v13 password];
-  v21 = v20;
-  if (!v19 || !v20)
+  user = [protectionSpace2 user];
+  password = [protectionSpace2 password];
+  v21 = password;
+  if (!user || !password)
   {
 
 LABEL_6:
@@ -2362,8 +2362,8 @@ LABEL_8:
     v26[2] = __64__NWURLSessionTask_loaderDidReceiveChallenge_completionHandler___block_invoke;
     v26[3] = &unk_1E6A33E48;
     v26[4] = self;
-    v27 = v7;
-    [(NWURLSessionDelegateWrapper *)v25 task:v6 didReceiveChallenge:v26 completionHandler:?];
+    v27 = handlerCopy;
+    [(NWURLSessionDelegateWrapper *)v25 task:challengeCopy didReceiveChallenge:v26 completionHandler:?];
 
     goto LABEL_28;
   }
@@ -2387,8 +2387,8 @@ LABEL_8:
     _os_log_impl(&dword_181A37000, v22, OS_LOG_TYPE_DEFAULT, "Task <%{public,uuid_t}.16P>.<%u> responding to auth challenge using URL credential", buf, 0x18u);
   }
 
-  v23 = [MEMORY[0x1E695AC48] credentialWithUser:v19 password:v21 persistence:1];
-  (*(v7 + 2))(v7, 0, v23);
+  v23 = [MEMORY[0x1E695AC48] credentialWithUser:user password:v21 persistence:1];
+  (*(handlerCopy + 2))(handlerCopy, 0, v23);
 
 LABEL_28:
 }
@@ -2447,11 +2447,11 @@ LABEL_10:
   (*(*(a1 + 40) + 16))(*(a1 + 40), a2, v5, v10, v11, v12);
 }
 
-- (void)loaderDidReceiveClientCertificateChallenge:(id)a3 completionHandler:(id)a4
+- (void)loaderDidReceiveClientCertificateChallenge:(id)challenge completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  challengeCopy = challenge;
   if (__nwlog_url_log::onceToken != -1)
   {
     dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
@@ -2471,29 +2471,29 @@ LABEL_10:
     _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_DEFAULT, "Task <%{public,uuid_t}.16P>.<%u> received client cert challenge", buf, 0x18u);
   }
 
-  v9 = [(NWURLSessionTask *)self currentRequest];
-  v10 = [v9 URL];
-  v11 = [v10 host];
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  v10 = [currentRequest URL];
+  host = [v10 host];
 
-  v12 = [(NWURLSessionTask *)self currentRequest];
-  v13 = [v12 URL];
-  v14 = [v13 port];
+  currentRequest2 = [(NWURLSessionTask *)self currentRequest];
+  v13 = [currentRequest2 URL];
+  port = [v13 port];
 
   v15 = objc_alloc(MEMORY[0x1E695AC58]);
-  if (v14)
+  if (port)
   {
     v16 = v15;
-    v17 = [v14 integerValue];
+    integerValue = [port integerValue];
     v15 = v16;
   }
 
   else
   {
-    v17 = 443;
+    integerValue = 443;
   }
 
-  v18 = [v15 initWithHost:v11 port:v17 protocol:*MEMORY[0x1E695ABA0] realm:0 authenticationMethod:*MEMORY[0x1E695AB40]];
-  [v18 _setDistinguishedNames:v7];
+  v18 = [v15 initWithHost:host port:integerValue protocol:*MEMORY[0x1E695ABA0] realm:0 authenticationMethod:*MEMORY[0x1E695AB40]];
+  [v18 _setDistinguishedNames:challengeCopy];
 
   v20 = [objc_alloc(MEMORY[0x1E695AC30]) initWithProtectionSpace:v18 proposedCredential:0 previousFailureCount:0 failureResponse:0 error:0 sender:0];
   if (self)
@@ -2543,8 +2543,8 @@ LABEL_10:
   v26[2] = __81__NWURLSessionTask_loaderDidReceiveClientCertificateChallenge_completionHandler___block_invoke;
   v26[3] = &unk_1E6A33E48;
   v26[4] = self;
-  v27 = v6;
-  v25 = v6;
+  v27 = handlerCopy;
+  v25 = handlerCopy;
   [(NWURLSessionDelegateWrapper *)v24 task:v20 didReceiveChallenge:v26 completionHandler:?];
 }
 
@@ -2680,16 +2680,16 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)loaderDidReceiveServerTrustChallenge:(id)a3 secProtocolMetadata:(id)a4 completionHandler:(id)a5
+- (void)loaderDidReceiveServerTrustChallenge:(id)challenge secProtocolMetadata:(id)metadata completionHandler:(id)handler
 {
   v92 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sec_trust_copy_ref(v8);
-  v12 = [(NWURLSessionTask *)self currentRequest];
-  v13 = [v12 URL];
-  v14 = [v13 host];
+  challengeCopy = challenge;
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  v11 = sec_trust_copy_ref(challengeCopy);
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  v13 = [currentRequest URL];
+  host = [v13 host];
 
   if (self && (configuration = self->_configuration) != 0 && (v16 = configuration->_atsState) != 0)
   {
@@ -2835,7 +2835,7 @@ LABEL_50:
 
 LABEL_131:
         [0 setSecTrust:{v41, v72, v73}];
-        v43 = 0;
+        _tlsTrustPinningPolicyName = 0;
         goto LABEL_132;
       }
     }
@@ -2983,7 +2983,7 @@ LABEL_76:
 
   [(__CFArray *)v24 firstObject];
 
-  if (!v14 || (SecPolicySetSSLHostname() & 1) != 0)
+  if (!host || (SecPolicySetSSLHostname() & 1) != 0)
   {
     goto LABEL_99;
   }
@@ -3227,8 +3227,8 @@ LABEL_51:
   v42 = self->_configuration;
   if (v42)
   {
-    v43 = [(NSURLSessionConfiguration *)v42->_configuration _tlsTrustPinningPolicyName];
-    if (v43)
+    _tlsTrustPinningPolicyName = [(NSURLSessionConfiguration *)v42->_configuration _tlsTrustPinningPolicyName];
+    if (_tlsTrustPinningPolicyName)
     {
       SecTrustSetPinningPolicyName();
     }
@@ -3236,7 +3236,7 @@ LABEL_51:
 
   else
   {
-    v43 = 0;
+    _tlsTrustPinningPolicyName = 0;
   }
 
   [(NWURLSessionTask *)self setSecTrust:v41, v72, v73];
@@ -3248,7 +3248,7 @@ LABEL_51:
     result[1] = 3221225472;
     result[2] = __95__NWURLSessionTask_loaderDidReceiveServerTrustChallenge_secProtocolMetadata_completionHandler___block_invoke;
     result[3] = &unk_1E6A33DD0;
-    v46 = v10;
+    v46 = handlerCopy;
     v84 = v46;
     if (SecTrustEvaluateAsyncWithError(v41, queue, result))
     {
@@ -3265,10 +3265,10 @@ LABEL_132:
   aBlock[2] = __95__NWURLSessionTask_loaderDidReceiveServerTrustChallenge_secProtocolMetadata_completionHandler___block_invoke_2;
   aBlock[3] = &unk_1E6A356D0;
   aBlock[4] = self;
-  v82 = v10;
-  v79 = v9;
-  v80 = v8;
-  v81 = v14;
+  v82 = handlerCopy;
+  v79 = metadataCopy;
+  v80 = challengeCopy;
+  v81 = host;
   v65 = _Block_copy(aBlock);
   v66 = v65;
   if (self && self->_performingServerTrustCallback)
@@ -3854,7 +3854,7 @@ LABEL_31:
 LABEL_39:
 }
 
-- (void)loaderDidReceiveInformationalResponse:(id)a3
+- (void)loaderDidReceiveInformationalResponse:(id)response
 {
   if (self)
   {
@@ -3865,22 +3865,22 @@ LABEL_39:
     }
 
     v6 = *(&self->super.isa + v5);
-    [(NWURLSessionDelegateWrapper *)v6 task:a3 didReceiveInformationalResponse:?];
+    [(NWURLSessionDelegateWrapper *)v6 task:response didReceiveInformationalResponse:?];
   }
 
   else
   {
-    [(NWURLSessionDelegateWrapper *)0 task:a3 didReceiveInformationalResponse:?];
+    [(NWURLSessionDelegateWrapper *)0 task:response didReceiveInformationalResponse:?];
     v6 = 0;
   }
 }
 
-- (void)loaderWillPerformHTTPRedirection:(id)a3 newRequest:(id)a4 completionHandler:(id)a5
+- (void)loaderWillPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
   if (__nwlog_url_log::onceToken != -1)
   {
     dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
@@ -3891,7 +3891,7 @@ LABEL_39:
   {
     [(NWURLSessionTask *)self logDescription];
     [(NWURLSessionTask *)self logDescription];
-    v12 = [v8 statusCode];
+    statusCode = [redirectionCopy statusCode];
     if (self)
     {
       redirectCount = self->_redirectCount;
@@ -3909,7 +3909,7 @@ LABEL_39:
     WORD5(v58) = 1024;
     HIDWORD(v58) = v55;
     LOWORD(v59) = 1024;
-    *(&v59 + 2) = v12;
+    *(&v59 + 2) = statusCode;
     HIWORD(v59) = 2048;
     v60 = redirectCount;
     _os_log_impl(&dword_181A37000, v11, OS_LOG_TYPE_INFO, "Task <%{public,uuid_t}.16P>.<%u> will perform redirect {status=%hu, previous_redirects=%zu}", buf, 0x28u);
@@ -3923,14 +3923,14 @@ LABEL_39:
     {
       v16 = [NWURLError alloc];
       v17 = self->_loader;
-      v18 = self;
+      selfCopy = self;
       if (v16)
       {
         v19 = [(NWURLError *)v16 initWithErrorCode:-1007];
         v20 = v19;
         if (v19)
         {
-          [(NWURLError *)v19 fillErrorForLoader:v17 andTask:v18];
+          [(NWURLError *)v19 fillErrorForLoader:v17 andTask:selfCopy];
         }
       }
 
@@ -3939,8 +3939,8 @@ LABEL_39:
         v20 = 0;
       }
 
-      [(NWURLSessionTask *)v18 completeTaskWithError:v20 retryable:0];
-      v10[2](v10, 0);
+      [(NWURLSessionTask *)selfCopy completeTaskWithError:v20 retryable:0];
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_37;
     }
 
@@ -3988,30 +3988,30 @@ LABEL_39:
   v50[1] = 3221225472;
   v51 = __82__NWURLSessionTask_loaderWillPerformHTTPRedirection_newRequest_completionHandler___block_invoke;
   v52 = &unk_1E6A33DA8;
-  v53 = self;
-  v54 = v10;
-  v25 = self;
-  v26 = v8;
-  v49 = v9;
+  selfCopy2 = self;
+  v54 = handlerCopy;
+  selfCopy3 = self;
+  v26 = redirectionCopy;
+  v49 = requestCopy;
   v28 = v50;
   if (v24)
   {
-    v29 = [(NWURLSessionDelegateWrapper *)v24 delegateFor_willPerformHTTPRedirection];
-    if (v29)
+    delegateFor_willPerformHTTPRedirection = [(NWURLSessionDelegateWrapper *)v24 delegateFor_willPerformHTTPRedirection];
+    if (delegateFor_willPerformHTTPRedirection)
     {
       v45 = v26;
-      v46 = v25;
-      v47 = v9;
-      v48 = v8;
+      v46 = selfCopy3;
+      v47 = requestCopy;
+      v48 = redirectionCopy;
       v30 = v24[5];
       v31 = v24[6];
       v32 = [NWURLSessionDelegateDeallocBomb alloc];
       v33 = *(v24 + 16);
-      v34 = v29;
-      v44 = v10;
+      v34 = delegateFor_willPerformHTTPRedirection;
+      v44 = handlerCopy;
       if (v32 && (*buf = v32, *&v58 = NWURLSessionDelegateDeallocBomb, v35 = [(uint8_t *)buf init], (v32 = v35) != 0))
       {
-        objc_storeStrong(&v35->__object, v29);
+        objc_storeStrong(&v35->__object, delegateFor_willPerformHTTPRedirection);
         if (sel_task_willPerformHTTPRedirection_newRequest_completionHandler_)
         {
           v36 = sel_task_willPerformHTTPRedirection_newRequest_completionHandler_;
@@ -4054,10 +4054,10 @@ LABEL_39:
       v43 = v42;
       [(NWURLSessionDelegateQueue *)v39 runDelegateBlock:buf];
 
-      v25 = v46;
-      v9 = v47;
-      v8 = v48;
-      v10 = v44;
+      selfCopy3 = v46;
+      requestCopy = v47;
+      redirectionCopy = v48;
+      handlerCopy = v44;
     }
 
     else
@@ -4232,12 +4232,12 @@ LABEL_37:
 LABEL_39:
 }
 
-- (void)loaderWillPerformHSTSUpgradeToURL:(id)a3 preload:(BOOL)a4 completionHandler:(id)a5
+- (void)loaderWillPerformHSTSUpgradeToURL:(id)l preload:(BOOL)preload completionHandler:(id)handler
 {
-  v5 = a4;
+  preloadCopy = preload;
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   if (__nwlog_url_log::onceToken != -1)
   {
     dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
@@ -4255,15 +4255,15 @@ LABEL_39:
     WORD5(v45) = 1024;
     HIDWORD(v45) = v42;
     LOWORD(v46) = 1024;
-    *(&v46 + 2) = v5;
+    *(&v46 + 2) = preloadCopy;
     _os_log_impl(&dword_181A37000, v10, OS_LOG_TYPE_DEFAULT, "Task <%{public,uuid_t}.16P>.<%u> scheme upgraded to https by HSTS {preload=%{BOOL}d}", buf, 0x1Eu);
   }
 
-  v11 = [(NWURLSessionTask *)self currentRequest];
-  v12 = [v11 mutableCopy];
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  v12 = [currentRequest mutableCopy];
 
-  [v12 setURL:v9];
-  [v12 _setSchemeWasUpgradedDueToDynamicHSTS:!v5];
+  [v12 setURL:lCopy];
+  [v12 _setSchemeWasUpgradedDueToDynamicHSTS:!preloadCopy];
   if (self)
   {
     configuration = self->_configuration;
@@ -4310,23 +4310,23 @@ LABEL_39:
   v37[1] = 3221225472;
   v38 = __80__NWURLSessionTask_loaderWillPerformHSTSUpgradeToURL_preload_completionHandler___block_invoke;
   v39 = &unk_1E6A33DA8;
-  v40 = self;
-  v41 = v8;
-  v18 = v8;
-  v19 = self;
+  selfCopy = self;
+  v41 = handlerCopy;
+  v18 = handlerCopy;
+  selfCopy2 = self;
   v20 = v12;
   v22 = v37;
   if (v17)
   {
-    v23 = [(NWURLSessionDelegateWrapper *)v17 delegateFor__schemeUpgraded];
-    if (v23)
+    delegateFor__schemeUpgraded = [(NWURLSessionDelegateWrapper *)v17 delegateFor__schemeUpgraded];
+    if (delegateFor__schemeUpgraded)
     {
-      v35 = v19;
+      v35 = selfCopy2;
       v24 = v17[5];
       v25 = v17[6];
       v26 = [NWURLSessionDelegateDeallocBomb alloc];
       v27 = *(v17 + 16);
-      v28 = v23;
+      v28 = delegateFor__schemeUpgraded;
       v36 = v18;
       if (v26)
       {
@@ -4336,7 +4336,7 @@ LABEL_39:
         v26 = v29;
         if (v29)
         {
-          objc_storeStrong(v29 + 2, v23);
+          objc_storeStrong(v29 + 2, delegateFor__schemeUpgraded);
           if (sel_task__schemeUpgraded_completionHandler_)
           {
             v30 = sel_task__schemeUpgraded_completionHandler_;
@@ -4358,7 +4358,7 @@ LABEL_39:
       v46 = &unk_1E6A3B580;
       v47 = v28;
       v48 = v24;
-      v19 = v35;
+      selfCopy2 = v35;
       v49 = v35;
       v50 = v20;
       v51 = v26;
@@ -4422,9 +4422,9 @@ LABEL_9:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)loaderFailedToConnect:(id)a3
+- (void)loaderFailedToConnect:(id)connect
 {
-  v5 = a3;
+  connectCopy = connect;
   if (self)
   {
     configuration = self->_configuration;
@@ -4432,17 +4432,17 @@ LABEL_9:
     {
       if ([(NWURLSessionTask *)configuration->_task _preconnect])
       {
-        [(NWURLSessionTask *)self completeTaskWithError:v5 retryable:0];
+        [(NWURLSessionTask *)self completeTaskWithError:connectCopy retryable:0];
       }
     }
   }
 }
 
-- (void)loaderConnectedWithHTTPConnectionMetadata:(id)a3 CNAMEChain:(id)a4 unlistedTracker:(id)a5
+- (void)loaderConnectedWithHTTPConnectionMetadata:(id)metadata CNAMEChain:(id)chain unlistedTracker:(id)tracker
 {
-  v38 = a3;
-  v9 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  chainCopy = chain;
+  trackerCopy = tracker;
   if (self)
   {
     startTimeoutTimer = self->_startTimeoutTimer;
@@ -4462,7 +4462,7 @@ LABEL_9:
         v42.super_class = 3221225472;
         v43 = __37__NWURLSessionTask_startPayloadTimer__block_invoke;
         v44 = &unk_1E6A3ACD0;
-        v45 = self;
+        selfCopy = self;
         v46 = v14;
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 0x40000000;
@@ -4490,7 +4490,7 @@ LABEL_9:
 
       v19 = *(&self->super.isa + v18);
       v20 = v19;
-      v21 = v38;
+      v21 = metadataCopy;
       v22 = v20;
       if (v17)
       {
@@ -4500,7 +4500,7 @@ LABEL_9:
         v17 = v23;
         if (v23)
         {
-          objc_storeStrong(v23 + 1, a3);
+          objc_storeStrong(v23 + 1, metadata);
           objc_storeStrong(&v17->_delegateWrapper, v19);
         }
       }
@@ -4509,14 +4509,14 @@ LABEL_9:
       Property[2](Property, v17);
     }
 
-    objc_setProperty_atomic(self, v16, v9, 184);
-    if (v11)
+    objc_setProperty_atomic(self, v16, chainCopy, 184);
+    if (trackerCopy)
     {
       backtrace = self->_backtrace;
       if (backtrace)
       {
         v27 = backtrace;
-        v28 = v11;
+        v28 = trackerCopy;
         [v28 UTF8String];
         [(NSData *)v27 bytes];
         [(NSData *)v27 length];
@@ -4538,20 +4538,20 @@ LABEL_9:
     }
 
     v31 = *(&self->super.isa + v30);
-    v33 = self;
+    selfCopy2 = self;
     if (v31)
     {
-      v34 = [(NWURLSessionDelegateWrapper *)v31 delegateFor__didConnect];
-      if (v34)
+      delegateFor__didConnect = [(NWURLSessionDelegateWrapper *)v31 delegateFor__didConnect];
+      if (delegateFor__didConnect)
       {
         v35 = v31[5];
         v42.receiver = MEMORY[0x1E69E9820];
         v42.super_class = 3221225472;
         v43 = __43__NWURLSessionDelegateWrapper__didConnect___block_invoke;
         v44 = &unk_1E6A3B4E0;
-        v45 = v34;
+        selfCopy = delegateFor__didConnect;
         v46 = v35;
-        v47 = v33;
+        v47 = selfCopy2;
         v36 = v31[7];
         v37 = v35;
         [(NWURLSessionDelegateQueue *)v36 runDelegateBlock:?];
@@ -4673,20 +4673,20 @@ LABEL_10:
         }
 
         v8 = *(&self->super.isa + v7);
-        v10 = self;
+        selfCopy = self;
         if (v8)
         {
-          v11 = [(NWURLSessionDelegateWrapper *)v8 delegateFor_isWaitingForConnectivity];
-          if (v11)
+          delegateFor_isWaitingForConnectivity = [(NWURLSessionDelegateWrapper *)v8 delegateFor_isWaitingForConnectivity];
+          if (delegateFor_isWaitingForConnectivity)
           {
             v12 = v8[5];
             v16 = MEMORY[0x1E69E9820];
             v17 = 3221225472;
             v18 = __60__NWURLSessionDelegateWrapper_taskIsWaitingForConnectivity___block_invoke;
             v19 = &unk_1E6A3B4E0;
-            v20 = v11;
+            v20 = delegateFor_isWaitingForConnectivity;
             v21 = v12;
-            v22 = v10;
+            v22 = selfCopy;
             v13 = v8[7];
             v14 = v12;
             [(NWURLSessionDelegateQueue *)v13 runDelegateBlock:?];
@@ -4743,9 +4743,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)loaderToggleRequestTimeoutTimer:(BOOL)a3
+- (void)loaderToggleRequestTimeoutTimer:(BOOL)timer
 {
-  if (a3)
+  if (timer)
   {
     [(NWURLSessionTask *)self restartRequestTimer];
   }
@@ -4780,9 +4780,9 @@ LABEL_10:
   }
 }
 
-- (void)loaderNeedsBodyProviderFromOffset:(unint64_t)a3 completionHandler:(id)a4
+- (void)loaderNeedsBodyProviderFromOffset:(unint64_t)offset completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (!self || (requestBody = self->_requestBody) == 0)
   {
     v10 = 0;
@@ -4797,13 +4797,13 @@ LABEL_6:
     v10 = self->_requestBody;
 LABEL_7:
     v11 = v10;
-    v12 = [(NWURLSessionRequestBodyInfo *)v11 bodyProviderFromOffset:a3];
-    v6[2](v6, v12);
+    v12 = [(NWURLSessionRequestBodyInfo *)v11 bodyProviderFromOffset:offset];
+    handlerCopy[2](handlerCopy, v12);
 
     goto LABEL_8;
   }
 
-  if (requestBody->_stream && requestBody->_streamOffset == a3)
+  if (requestBody->_stream && requestBody->_streamOffset == offset)
   {
     goto LABEL_6;
   }
@@ -4845,22 +4845,22 @@ LABEL_7:
   v47[1] = 3221225472;
   v48 = __72__NWURLSessionTask_loaderNeedsBodyProviderFromOffset_completionHandler___block_invoke;
   v49 = &unk_1E6A33D80;
-  v50 = self;
-  v52 = a3;
-  v51 = v6;
-  v46 = self;
+  selfCopy = self;
+  offsetCopy = offset;
+  v51 = handlerCopy;
+  selfCopy2 = self;
   v18 = v47;
   if (v16)
   {
-    v20 = [(NWURLSessionDelegateWrapper *)v16 delegateFor_needNewBodyStreamFromOffset];
-    if (v20)
+    delegateFor_needNewBodyStreamFromOffset = [(NWURLSessionDelegateWrapper *)v16 delegateFor_needNewBodyStreamFromOffset];
+    if (delegateFor_needNewBodyStreamFromOffset)
     {
       v44 = v18;
       v21 = v16[5];
       v22 = v16[6];
       v23 = [NWURLSessionDelegateDeallocBomb alloc];
       v24 = *(v16 + 16);
-      v25 = v20;
+      v25 = delegateFor_needNewBodyStreamFromOffset;
       if (v23)
       {
         v53.receiver = v23;
@@ -4869,7 +4869,7 @@ LABEL_7:
         v23 = v26;
         if (v26)
         {
-          objc_storeStrong(v26 + 2, v20);
+          objc_storeStrong(v26 + 2, delegateFor_needNewBodyStreamFromOffset);
           if (sel_task_needNewBodyStreamFromOffset_completionHandler_)
           {
             v27 = sel_task_needNewBodyStreamFromOffset_completionHandler_;
@@ -4891,9 +4891,9 @@ LABEL_7:
       v55 = &unk_1E6A3B670;
       v56 = v25;
       v57 = v21;
-      v58 = v46;
+      v58 = selfCopy2;
       v59 = v23;
-      v62 = a3;
+      offsetCopy2 = offset;
       v60 = v22;
       v18 = v44;
       v61 = v44;
@@ -4904,22 +4904,22 @@ LABEL_7:
       [(NWURLSessionDelegateQueue *)v28 runDelegateBlock:?];
     }
 
-    else if (a3)
+    else if (offset)
     {
       v48(v18, 0);
     }
 
     else
     {
-      v32 = [(NWURLSessionDelegateWrapper *)v16 delegateFor_needNewBodyStream];
-      if (v32)
+      delegateFor_needNewBodyStream = [(NWURLSessionDelegateWrapper *)v16 delegateFor_needNewBodyStream];
+      if (delegateFor_needNewBodyStream)
       {
         v45 = v18;
         v33 = v16[5];
         v34 = v16[6];
         v35 = [NWURLSessionDelegateDeallocBomb alloc];
         v36 = *(v16 + 16);
-        v37 = v32;
+        v37 = delegateFor_needNewBodyStream;
         if (v35)
         {
           v53.receiver = v35;
@@ -4928,7 +4928,7 @@ LABEL_7:
           v35 = v38;
           if (v38)
           {
-            objc_storeStrong(v38 + 2, v32);
+            objc_storeStrong(v38 + 2, delegateFor_needNewBodyStream);
             if (sel_task_needNewBodyStreamFromOffset_completionHandler_)
             {
               v39 = sel_task_needNewBodyStreamFromOffset_completionHandler_;
@@ -4950,7 +4950,7 @@ LABEL_7:
         v55 = &unk_1E6A3B620;
         v56 = v37;
         v57 = v33;
-        v58 = v46;
+        v58 = selfCopy2;
         v59 = v35;
         v60 = v34;
         v18 = v45;
@@ -5017,7 +5017,7 @@ void __72__NWURLSessionTask_loaderNeedsBodyProviderFromOffset_completionHandler_
   }
 }
 
-- (id)loaderNeedsEarlyData:(BOOL *)a3
+- (id)loaderNeedsEarlyData:(BOOL *)data
 {
   if (self)
   {
@@ -5028,13 +5028,13 @@ void __72__NWURLSessionTask_loaderNeedsBodyProviderFromOffset_completionHandler_
       {
         if (requestBody->_knownSize <= 0x4000)
         {
-          *a3 = 1;
+          *data = 1;
           self = requestBody->_data;
         }
 
         else
         {
-          *a3 = 0;
+          *data = 0;
           self = dispatch_data_create_subrange(requestBody->_data, 0, 0x4000uLL);
         }
       }
@@ -5053,21 +5053,21 @@ void __72__NWURLSessionTask_loaderNeedsBodyProviderFromOffset_completionHandler_
   return self;
 }
 
-- (void)loaderCallCustomURLProtocol:(id)a3
+- (void)loaderCallCustomURLProtocol:(id)protocol
 {
-  block = a3;
+  block = protocol;
   if (self)
   {
     session = self->_session;
     if (session && [(NSURLSessionConfiguration *)session->_internalConfiguration usesClassicLoadingMode])
     {
-      v5 = [MEMORY[0x1E696AAE8] mainBundle];
-      v6 = [v5 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      if (([v6 isEqualToString:@"pinterest"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"com.ubercab.UberClient") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"com.ubercab.UberEats") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.alibaba.iAliexpress"))
+      if (([bundleIdentifier isEqualToString:@"pinterest"] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.ubercab.UberClient") & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.ubercab.UberEats") & 1) != 0 || objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.alibaba.iAliexpress"))
       {
-        v7 = [MEMORY[0x1E695AC40] resourceLoaderRunLoop];
-        CFRunLoopPerformBlock(v7, *MEMORY[0x1E695E8D0], block);
+        resourceLoaderRunLoop = [MEMORY[0x1E695AC40] resourceLoaderRunLoop];
+        CFRunLoopPerformBlock(resourceLoaderRunLoop, *MEMORY[0x1E695E8D0], block);
         CFRunLoopWakeUp([MEMORY[0x1E695AC40] resourceLoaderRunLoop]);
         goto LABEL_14;
       }
@@ -5080,7 +5080,7 @@ void __72__NWURLSessionTask_loaderNeedsBodyProviderFromOffset_completionHandler_
     }
 
     v9 = *(&self->super.isa + v8);
-    v6 = v9;
+    bundleIdentifier = v9;
     if (v9)
     {
       [(NWURLSessionDelegateQueue *)*(v9 + 7) runDelegateBlock:?];
@@ -5089,13 +5089,13 @@ void __72__NWURLSessionTask_loaderNeedsBodyProviderFromOffset_completionHandler_
 
   else
   {
-    v6 = 0;
+    bundleIdentifier = 0;
   }
 
 LABEL_14:
 }
 
-- (void)loaderRunDelegateBlock:(id)a3
+- (void)loaderRunDelegateBlock:(id)block
 {
   if (!self)
   {
@@ -5112,7 +5112,7 @@ LABEL_14:
   if (v5)
   {
     v6 = v5;
-    [(NWURLSessionDelegateQueue *)*(v5 + 7) runDelegateBlock:a3];
+    [(NWURLSessionDelegateQueue *)*(v5 + 7) runDelegateBlock:block];
   }
 
   else
@@ -5188,11 +5188,11 @@ LABEL_9:
   return v10;
 }
 
-- (void)completeTaskWithError:(id)a3 retryable:(BOOL)a4
+- (void)completeTaskWithError:(id)error retryable:(BOOL)retryable
 {
-  v4 = a4;
+  retryableCopy = retryable;
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   if (self)
   {
     nw_context_assert_queue(self->_sessionContext);
@@ -5201,7 +5201,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if (!v4)
+    if (!retryableCopy)
     {
       goto LABEL_5;
     }
@@ -5210,7 +5210,7 @@ LABEL_9:
   else
   {
     nw_context_assert_queue(0);
-    if (!v4)
+    if (!retryableCopy)
     {
       goto LABEL_5;
     }
@@ -5219,7 +5219,7 @@ LABEL_9:
   if (![(NWURLSessionTask *)self automaticRetry])
   {
 LABEL_5:
-    v7 = [(NWURLSessionTask *)self errorWithResumeData:v6];
+    v7 = [(NWURLSessionTask *)self errorWithResumeData:errorCopy];
 
     if (self)
     {
@@ -5237,13 +5237,13 @@ LABEL_5:
     }
 
     [(NWURLSessionResponseConsumer *)responseConsumer task:self deliverData:0 complete:1 error:v7 completionHandler:&__block_literal_global_61_48120];
-    v6 = v7;
+    errorCopy = v7;
     goto LABEL_10;
   }
 
   if (!self)
   {
-    [(NWURLSessionTask *)0 setPendingError:v6];
+    [(NWURLSessionTask *)0 setPendingError:errorCopy];
 LABEL_15:
     if (__nwlog_url_log::onceToken != -1)
     {
@@ -5265,7 +5265,7 @@ LABEL_15:
         retryCount = 0;
       }
 
-      v11 = [v6 code];
+      code = [errorCopy code];
       *buf = 68290050;
       v25 = 16;
       v26 = 2098;
@@ -5275,9 +5275,9 @@ LABEL_15:
       v30 = 1024;
       v31 = retryCount;
       v32 = 2048;
-      v33 = v11;
+      v33 = code;
       v34 = 2112;
-      v35 = v6;
+      v35 = errorCopy;
       _os_log_impl(&dword_181A37000, v9, OS_LOG_TYPE_ERROR, "Task <%{public,uuid_t}.16P>.<%u> auto-retries enabled (%d retries attempted) and encountered retryable error [%ld] %@.", buf, 0x32u);
     }
 
@@ -5338,7 +5338,7 @@ LABEL_15:
 
   if (!self->_pendingError)
   {
-    [(NWURLSessionTask *)self setPendingError:v6];
+    [(NWURLSessionTask *)self setPendingError:errorCopy];
   }
 
   if (!self->_backoffInProgress)
@@ -5349,11 +5349,11 @@ LABEL_15:
 LABEL_10:
 }
 
-- (void)setPendingError:(uint64_t)a1
+- (void)setPendingError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 280), a2);
+    objc_storeStrong((error + 280), a2);
   }
 }
 
@@ -5370,20 +5370,20 @@ void __52__NWURLSessionTask_completeTaskWithError_retryable___block_invoke(uint6
   }
 }
 
-- (NWURLError)errorForErrorCode:(id *)a1
+- (NWURLError)errorForErrorCode:(id *)code
 {
-  if (a1)
+  if (code)
   {
     v4 = [NWURLError alloc];
-    v5 = a1[33];
-    v6 = a1;
+    v5 = code[33];
+    codeCopy = code;
     if (v4)
     {
       v7 = [(NWURLError *)v4 initWithErrorCode:a2];
       v8 = v7;
       if (v7)
       {
-        [(NWURLError *)v7 fillErrorForLoader:v5 andTask:v6];
+        [(NWURLError *)v7 fillErrorForLoader:v5 andTask:codeCopy];
       }
     }
 
@@ -5476,18 +5476,18 @@ void __32__NWURLSessionTask_readResponse__block_invoke(uint64_t a1, void *a2, vo
 LABEL_11:
 }
 
-- (void)updateResponse:(uint64_t)a1
+- (void)updateResponse:(uint64_t)response
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (response)
   {
-    v4 = [*(a1 + 264) peerTrust];
-    v5 = v4;
-    if (v4)
+    peerTrust = [*(response + 264) peerTrust];
+    v5 = peerTrust;
+    if (peerTrust)
     {
       v8 = *MEMORY[0x1E695AE78];
-      v6 = sec_trust_copy_ref(v4);
+      v6 = sec_trust_copy_ref(peerTrust);
       v9[0] = v6;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
       [v3 _setSSLCertificateContext:v7];
@@ -5925,24 +5925,24 @@ LABEL_54:
 
 - (void)readResponseBody
 {
-  if (a1)
+  if (self)
   {
-    nw_context_assert_queue(*(a1 + 320));
-    if (*(a1 + 296) != 2)
+    nw_context_assert_queue(*(self + 320));
+    if (*(self + 296) != 2)
     {
-      if (*(a1 + 18))
+      if (*(self + 18))
       {
-        *(a1 + 19) = 1;
+        *(self + 19) = 1;
       }
 
       else
       {
-        v2 = *(a1 + 264);
+        v2 = *(self + 264);
         v4[0] = MEMORY[0x1E69E9820];
         v4[1] = 3221225472;
         v4[2] = __36__NWURLSessionTask_readResponseBody__block_invoke;
         v4[3] = &unk_1E6A3A620;
-        v4[4] = a1;
+        v4[4] = self;
         v5 = v2;
         v3 = v2;
         [v3 readDataOfMinimumIncompleteLength:1 maximumLength:0x100000 completionHandler:v4];
@@ -5951,37 +5951,37 @@ LABEL_54:
   }
 }
 
-- (void)setConfiguration:(uint64_t)a1
+- (void)setConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_storeStrong((a1 + 424), a2);
+    objc_storeStrong((configuration + 424), a2);
   }
 }
 
-- (void)setClientMetadataForMetrics:(uint64_t)a1
+- (void)setClientMetadataForMetrics:(uint64_t)metrics
 {
-  if (a1)
+  if (metrics)
   {
-    objc_storeStrong((a1 + 256), a2);
+    objc_storeStrong((metrics + 256), a2);
   }
 }
 
 - (void)delegateWrapper
 {
-  if (a1)
+  if (self)
   {
     v2 = 31;
-    if (!a1[31])
+    if (!self[31])
     {
       v2 = 30;
     }
 
-    a1 = a1[v2];
+    self = self[v2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __55__NWURLSessionTask_handleResponseDisposition_response___block_invoke_2(uint64_t a1)
@@ -6052,66 +6052,66 @@ void __55__NWURLSessionTask_handleResponseDisposition_response___block_invoke_3(
   [(NWURLSession *)v6 taskCompleted:v5];
 }
 
-- (id)initWithRequest:(int)a3 identifier:(void *)a4 session:
+- (id)initWithRequest:(int)request identifier:(void *)identifier session:
 {
   v83 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a4;
-  if (!a1)
+  identifierCopy = identifier;
+  if (!self)
   {
     goto LABEL_40;
   }
 
-  v77.receiver = a1;
+  v77.receiver = self;
   v77.super_class = NWURLSessionTask;
   v10 = objc_msgSendSuper2(&v77, sel_init);
-  a1 = v10;
+  self = v10;
   if (!v10)
   {
     goto LABEL_40;
   }
 
-  v11 = v9 + 8;
-  if (!v9)
+  v11 = identifierCopy + 8;
+  if (!identifierCopy)
   {
     v11 = 0;
   }
 
   *(v10 + 472) = *v11;
-  *(v10 + 122) = a3;
+  *(v10 + 122) = request;
   objc_storeStrong(v10 + 6, a2);
-  objc_storeStrong(a1 + 7, a2);
+  objc_storeStrong(self + 7, a2);
   v12 = *MEMORY[0x1E695ABD8];
-  a1[9] = *MEMORY[0x1E695ABD8];
-  a1[10] = v12;
-  a1[13] = v12;
-  a1[14] = v12;
-  objc_storeStrong(a1 + 52, a4);
+  self[9] = *MEMORY[0x1E695ABD8];
+  self[10] = v12;
+  self[13] = v12;
+  self[14] = v12;
+  objc_storeStrong(self + 52, identifier);
   v13 = [NWURLSessionTaskConfiguration alloc];
   p_isa = &v13->super.isa;
-  if (v9)
+  if (identifierCopy)
   {
-    v15 = *(v9 + 12);
-    v16 = [(NWURLSessionTaskConfiguration *)p_isa initWithConfiguration:v15 task:a1 request:v8];
-    v17 = a1[53];
-    a1[53] = v16;
+    v15 = *(identifierCopy + 12);
+    v16 = [(NWURLSessionTaskConfiguration *)p_isa initWithConfiguration:v15 task:self request:v8];
+    v17 = self[53];
+    self[53] = v16;
 
-    v18 = *(v9 + 18);
+    v18 = *(identifierCopy + 18);
   }
 
   else
   {
-    v70 = [(NWURLSessionTaskConfiguration *)&v13->super.isa initWithConfiguration:a1 task:v8 request:?];
-    v71 = a1[53];
-    a1[53] = v70;
+    v70 = [(NWURLSessionTaskConfiguration *)&v13->super.isa initWithConfiguration:self task:v8 request:?];
+    v71 = self[53];
+    self[53] = v70;
 
     v18 = 0;
   }
 
-  objc_storeStrong(a1 + 29, v18);
-  if (v9)
+  objc_storeStrong(self + 29, v18);
+  if (identifierCopy)
   {
-    v19 = *(v9 + 20);
+    v19 = *(identifierCopy + 20);
   }
 
   else
@@ -6119,15 +6119,15 @@ void __55__NWURLSessionTask_handleResponseDisposition_response___block_invoke_3(
     v19 = 0;
   }
 
-  objc_storeStrong(a1 + 40, v19);
-  *(a1 + 7) = *MEMORY[0x1E695ABC0];
-  *(a1 + 12) = 1;
+  objc_storeStrong(self + 40, v19);
+  *(self + 7) = *MEMORY[0x1E695ABC0];
+  *(self + 12) = 1;
   if (v8)
   {
     v20 = [NWURLSessionDelegateWrapper alloc];
-    if (v9)
+    if (identifierCopy)
     {
-      v21 = *(v9 + 19);
+      v21 = *(identifierCopy + 19);
     }
 
     else
@@ -6137,8 +6137,8 @@ void __55__NWURLSessionTask_handleResponseDisposition_response___block_invoke_3(
 
     v22 = v21;
     v23 = [(NWURLSessionDelegateWrapper *)&v20->super.isa initWithFallbackDelegateWrapper:v22];
-    v24 = a1[30];
-    a1[30] = v23;
+    v24 = self[30];
+    self[30] = v23;
 
     if (nw_protocol_copy_http_client_definition_onceToken != -1)
     {
@@ -6146,11 +6146,11 @@ void __55__NWURLSessionTask_handleResponseDisposition_response___block_invoke_3(
     }
 
     singleton = _nw_protocol_metadata_create_singleton();
-    v26 = a1[32];
-    a1[32] = singleton;
+    v26 = self[32];
+    self[32] = singleton;
 
-    nw_http_client_metadata_create_next_transaction(a1[32], 0);
-    v27 = a1[32];
+    nw_http_client_metadata_create_next_transaction(self[32], 0);
+    v27 = self[32];
     if (v27)
     {
       if (nw_protocol_copy_http_client_definition_onceToken != -1)
@@ -6222,15 +6222,15 @@ void __55__NWURLSessionTask_handleResponseDisposition_response___block_invoke_3(
 LABEL_20:
 
             v28 = [v8 URL];
-            v29 = [(NSURL *)v28 _NW_isHTTPish];
+            _NW_isHTTPish = [(NSURL *)v28 _NW_isHTTPish];
 
-            if (!v29)
+            if (!_NW_isHTTPish)
             {
               goto LABEL_29;
             }
 
-            objc_initWeak(&location, a1);
-            v30 = a1[32];
+            objc_initWeak(&location, self);
+            v30 = self[32];
             v74[0] = MEMORY[0x1E69E9820];
             v74[1] = 3221225472;
             v74[2] = __55__NWURLSessionTask_initWithRequest_identifier_session___block_invoke;
@@ -6341,7 +6341,7 @@ LABEL_28:
                 objc_destroyWeak(&location);
 LABEL_29:
                 v33 = [NWURLSessionTaskMetrics alloc];
-                v34 = a1[32];
+                v34 = self[32];
                 v35 = v34;
                 if (v33)
                 {
@@ -6355,8 +6355,8 @@ LABEL_29:
                   }
                 }
 
-                v37 = a1[57];
-                a1[57] = v33;
+                v37 = self[57];
+                self[57] = v33;
 
                 goto LABEL_33;
               }
@@ -6546,9 +6546,9 @@ LABEL_101:
 LABEL_33:
   if (ne_tracker_should_save_stacktrace())
   {
-    if (v9)
+    if (identifierCopy)
     {
-      v38 = *(v9 + 12);
+      v38 = *(identifierCopy + 12);
     }
 
     else
@@ -6556,26 +6556,26 @@ LABEL_33:
       v38 = 0;
     }
 
-    v39 = [v38 _skipsStackTraceCapture];
+    _skipsStackTraceCapture = [v38 _skipsStackTraceCapture];
 
-    if ((v39 & 1) == 0)
+    if ((_skipsStackTraceCapture & 1) == 0)
     {
       *v80 = 0;
       v40 = ne_tracker_copy_current_stacktrace();
       if (v40)
       {
         v41 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v40 length:*v80];
-        v42 = a1[49];
-        a1[49] = v41;
+        v42 = self[49];
+        self[49] = v41;
       }
     }
   }
 
-  *(a1 + 18) = 1;
-  a1[37] = 0;
+  *(self + 18) = 1;
+  self[37] = 0;
 LABEL_40:
 
-  return a1;
+  return self;
 }
 
 void __55__NWURLSessionTask_initWithRequest_identifier_session___block_invoke(uint64_t a1)
@@ -6584,55 +6584,55 @@ void __55__NWURLSessionTask_initWithRequest_identifier_session___block_invoke(ui
   [(NWURLSessionTask *)WeakRetained restartRequestTimer];
 }
 
-- (void)complete:(uint64_t)a1
+- (void)complete:(uint64_t)complete
 {
   v128 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (complete)
   {
-    v3 = *(a1 + 320);
+    v3 = *(complete + 320);
     v4 = a2;
     nw_context_assert_queue(v3);
-    v6 = *(a1 + 344);
+    v6 = *(complete + 344);
     if (v6)
     {
-      *(a1 + 344) = 0;
+      *(complete + 344) = 0;
       nw_queue_cancel_source(v6, v5);
     }
 
-    v7 = *(a1 + 336);
+    v7 = *(complete + 336);
     if (v7)
     {
-      *(a1 + 336) = 0;
+      *(complete + 336) = 0;
       nw_queue_cancel_source(v7, v5);
     }
 
-    v8 = *(a1 + 360);
+    v8 = *(complete + 360);
     if (v8)
     {
-      *(a1 + 360) = 0;
+      *(complete + 360) = 0;
       nw_queue_cancel_source(v8, v5);
     }
 
-    v9 = *(a1 + 352);
+    v9 = *(complete + 352);
     if (v9)
     {
-      *(a1 + 352) = 0;
+      *(complete + 352) = 0;
       nw_queue_cancel_source(v9, v5);
     }
 
-    v10 = *(a1 + 368);
+    v10 = *(complete + 368);
     if (v10)
     {
       v11 = v10;
-      v12 = [a1 error];
+      error = [complete error];
 
-      if (!v12)
+      if (!error)
       {
-        v13 = *(a1 + 376);
-        [*(a1 + 376) setCompletedUnitCount:{objc_msgSend(v13, "totalUnitCount")}];
+        v13 = *(complete + 376);
+        [*(complete + 376) setCompletedUnitCount:{objc_msgSend(v13, "totalUnitCount")}];
 
-        v14 = *(a1 + 384);
-        [*(a1 + 384) setCompletedUnitCount:{objc_msgSend(v14, "totalUnitCount")}];
+        v14 = *(complete + 384);
+        [*(complete + 384) setCompletedUnitCount:{objc_msgSend(v14, "totalUnitCount")}];
       }
     }
 
@@ -6640,23 +6640,23 @@ void __55__NWURLSessionTask_initWithRequest_identifier_session___block_invoke(ui
     *&buf[8] = 3221225472;
     *&buf[16] = __43__NWURLSessionTask_finishProgressReporting__block_invoke;
     *v122 = &unk_1E6A3D868;
-    *&v122[8] = a1;
-    os_unfair_lock_lock((a1 + 8));
+    *&v122[8] = complete;
+    os_unfair_lock_lock((complete + 8));
     __43__NWURLSessionTask_finishProgressReporting__block_invoke(buf);
-    os_unfair_lock_unlock((a1 + 8));
-    *(a1 + 296) = 2;
+    os_unfair_lock_unlock((complete + 8));
+    *(complete + 296) = 2;
     v4[2](v4);
 
-    [*(a1 + 264) stop];
-    v15 = *(a1 + 264);
-    *(a1 + 264) = 0;
+    [*(complete + 264) stop];
+    v15 = *(complete + 264);
+    *(complete + 264) = 0;
 
-    v16 = [a1 error];
-    v17 = v16;
-    if (v16)
+    error2 = [complete error];
+    v17 = error2;
+    if (error2)
     {
-      v18 = 16 * ([v16 code] != -999);
-      v19 = *(a1 + 424);
+      v18 = 16 * ([error2 code] != -999);
+      v19 = *(complete + 424);
       if (v19)
       {
         v20 = [*(v19 + 16) _loggingPrivacyLevel] < 3;
@@ -6678,9 +6678,9 @@ void __55__NWURLSessionTask_initWithRequest_identifier_session___block_invoke(ui
       {
         if (v22)
         {
-          [a1 logDescription];
-          [a1 logDescription];
-          v23 = [v17 code];
+          [complete logDescription];
+          [complete logDescription];
+          code = [v17 code];
           *buf = 68289794;
           *&buf[4] = 16;
           *&buf[8] = 2098;
@@ -6688,7 +6688,7 @@ void __55__NWURLSessionTask_initWithRequest_identifier_session___block_invoke(ui
           *&buf[18] = 1024;
           *&buf[20] = v115;
           *v122 = 2048;
-          *&v122[2] = v23;
+          *&v122[2] = code;
           *&v122[10] = 2112;
           *&v122[12] = v17;
           v24 = "Task <%{public,uuid_t}.16P>.<%u> finished with error [%ld] %@";
@@ -6702,9 +6702,9 @@ LABEL_27:
 
       else if (v22)
       {
-        [a1 logDescription];
-        [a1 logDescription];
-        v28 = [v17 code];
+        [complete logDescription];
+        [complete logDescription];
+        code2 = [v17 code];
         *buf = 68289795;
         *&buf[4] = 16;
         *&buf[8] = 2098;
@@ -6712,7 +6712,7 @@ LABEL_27:
         *&buf[18] = 1024;
         *&buf[20] = v113;
         *v122 = 2048;
-        *&v122[2] = v28;
+        *&v122[2] = code2;
         *&v122[10] = 2117;
         *&v122[12] = v17;
         v24 = "Task <%{public,uuid_t}.16P>.<%u> finished with error [%ld] %{sensitive}@";
@@ -6730,8 +6730,8 @@ LABEL_27:
       v21 = gurlLogObj;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        [a1 logDescription];
-        [a1 logDescription];
+        [complete logDescription];
+        [complete logDescription];
         *buf = 68289282;
         *&buf[4] = 16;
         *&buf[8] = 2098;
@@ -6747,13 +6747,13 @@ LABEL_28:
       }
     }
 
-    v30 = [(NWURLSessionTaskConfiguration *)*(a1 + 424) activity];
-    v31 = *(a1 + 424);
+    activity = [(NWURLSessionTaskConfiguration *)*(complete + 424) activity];
+    v31 = *(complete + 424);
     if (v31)
     {
-      v32 = [(NWURLSessionTaskConfiguration *)*(a1 + 424) activity];
-      v33 = [*(v31 + 24) _nw_activity];
-      v34 = v32 == v33;
+      activity2 = [(NWURLSessionTaskConfiguration *)*(complete + 424) activity];
+      _nw_activity = [*(v31 + 24) _nw_activity];
+      v34 = activity2 == _nw_activity;
 
       if (!v34)
       {
@@ -6775,13 +6775,13 @@ LABEL_28:
           v35 = 2;
         }
 
-        nw_activity_complete_with_reason_and_underlying_error(v30, v35, 1, [v17 code]);
+        nw_activity_complete_with_reason_and_underlying_error(activity, v35, 1, [v17 code]);
       }
     }
 
-    Property = objc_getProperty(a1, v29, 456, 1);
-    v37 = a1;
-    v38 = v30;
+    Property = objc_getProperty(complete, v29, 456, 1);
+    completeCopy = complete;
+    v38 = activity;
     v39 = v38;
     if (!Property || !nw_activity_is_selected_for_reporting(v38))
     {
@@ -6925,7 +6925,7 @@ LABEL_46:
 
       v126 = 0uLL;
       v127 = 0;
-      [v37 logDescription];
+      [completeCopy logDescription];
       v45[1] = v126;
       *(v45 + 18) = v127;
       start_time = nw_http_client_metadata_get_start_time(Property[2]);
@@ -6962,10 +6962,10 @@ LABEL_46:
         {
 LABEL_53:
           *(v45 + 5) = end_time * time_base / v52 / 0xF4240;
-          v53 = [v37 error];
-          *(v45 + 6) = [v53 code];
-          v54 = [v53 userInfo];
-          v99 = [v54 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+          error3 = [completeCopy error];
+          *(v45 + 6) = [error3 code];
+          userInfo = [error3 userInfo];
+          v99 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
           *(v45 + 7) = [v99 code];
           nw_activity_get_token(v101, v45);
@@ -7020,7 +7020,7 @@ LABEL_53:
 
           *(v45 + 82) = v55;
           *(v45 + 82) = v55 & 0xCF | 0x20;
-          v59 = *(a1 + 424);
+          v59 = *(complete + 424);
           v60 = v59;
           if (v59)
           {
@@ -7064,7 +7064,7 @@ LABEL_53:
           v123 = type;
           v124 = &v105;
           v125 = v45;
-          *&v122[8] = v37;
+          *&v122[8] = completeCopy;
           nw_http_client_metadata_enumerate_transactions(v62, buf);
 
           *(v45 + 38) = *(v106 + 12);
@@ -7091,12 +7091,12 @@ LABEL_88:
             v39 = v101;
 LABEL_89:
 
-            v81 = *(a1 + 424);
-            *(a1 + 424) = 0;
+            v81 = *(complete + 424);
+            *(complete + 424) = 0;
 
-            [v37 setSecTrust:0];
-            objc_setProperty_atomic_copy(v37, v82, 0, 312);
-            [(NWURLSession *)v37[52] taskCompleted:v37];
+            [completeCopy setSecTrust:0];
+            objc_setProperty_atomic_copy(completeCopy, v82, 0, 312);
+            [(NWURLSession *)completeCopy[52] taskCompleted:completeCopy];
 
             return;
           }
@@ -7134,11 +7134,11 @@ LABEL_89:
             }
 
             v75 = [v72 length];
-            v76 = [v72 bytes];
+            bytes = [v72 bytes];
             *v119 = 68157954;
             *v120 = v75;
             *&v120[4] = 2082;
-            *&v120[6] = v76;
+            *&v120[6] = bytes;
             v77 = "%{public}.*s";
             v78 = v74;
             v79 = OS_LOG_TYPE_DEFAULT;
@@ -7263,9 +7263,9 @@ LABEL_125:
   }
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NWURLSessionTask;
   if (objc_msgSendSuper2(&v5, sel_isSubclassOfClass_))
   {
@@ -7274,7 +7274,7 @@ LABEL_125:
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
@@ -7830,9 +7830,9 @@ void __32__NWURLSessionTask_readResponse__block_invoke_35(uint64_t a1, void *a2)
   return 3;
 }
 
-- (void)set_internalDelegate:(id)a3
+- (void)set_internalDelegate:(id)delegate
 {
-  newValue = a3;
+  newValue = delegate;
   if (newValue)
   {
     if (self)
@@ -7903,14 +7903,14 @@ LABEL_11:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   if (self)
   {
     publicDelegateWrapper = self->_publicDelegateWrapper;
     if (publicDelegateWrapper)
     {
-      objc_setProperty_atomic(publicDelegateWrapper, a2, a3, 24);
+      objc_setProperty_atomic(publicDelegateWrapper, a2, delegate, 24);
     }
   }
 }
@@ -8723,7 +8723,7 @@ LABEL_20:
 LABEL_21:
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v16.receiver = self;
   v16.super_class = NWURLSessionTask;
@@ -8744,14 +8744,14 @@ LABEL_3:
     {
       if ([(NSURLSessionConfiguration *)session->_internalConfiguration usesClassicLoadingMode])
       {
-        v10 = [MEMORY[0x1E696AAE8] mainBundle];
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:@"com.plexapp.plex"];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:@"com.plexapp.plex"];
 
         if (v12)
         {
           v13 = objc_opt_class();
-          InstanceMethod = class_getInstanceMethod(v13, a3);
+          InstanceMethod = class_getInstanceMethod(v13, selector);
           if (InstanceMethod)
           {
             v7 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:method_getTypeEncoding(InstanceMethod)];
@@ -8768,9 +8768,9 @@ LABEL_11:
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   if (self && (session = self->_session) != 0 && -[NSURLSessionConfiguration usesClassicLoadingMode](session->_internalConfiguration, "usesClassicLoadingMode") && ([MEMORY[0x1E696AAE8] mainBundle], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "bundleIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.plexapp.plex"), v7, v6, (v8 & 1) != 0))
   {
     if (forwardInvocation__onceToken != -1)
@@ -8778,14 +8778,14 @@ LABEL_11:
       dispatch_once(&forwardInvocation__onceToken, &__block_literal_global_48199);
     }
 
-    [v4 invoke];
+    [invocationCopy invoke];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NWURLSessionTask;
-    [(NWURLSessionTask *)&v9 forwardInvocation:v4];
+    [(NWURLSessionTask *)&v9 forwardInvocation:invocationCopy];
   }
 }
 
@@ -8797,7 +8797,7 @@ void __38__NWURLSessionTask_forwardInvocation___block_invoke()
   addCategories(v0, v1);
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = NWURLSessionTask;
@@ -8808,33 +8808,33 @@ void __38__NWURLSessionTask_forwardInvocation___block_invoke()
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-- (id)initWithResumeInfo:(int)a3 identifier:(void *)a4 session:
+- (id)initWithResumeInfo:(int)info identifier:(void *)identifier session:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = a4;
-    v9 = [v7 originalRequest];
-    v10 = [(NWURLSessionTask *)a1 initWithRequest:v9 identifier:a3 session:v8];
+    identifierCopy = identifier;
+    originalRequest = [v7 originalRequest];
+    v10 = [(NWURLSessionTask *)self initWithRequest:originalRequest identifier:info session:identifierCopy];
 
     if (v10)
     {
       [v7 startTime];
       v10[58] = v11;
-      v12 = [v7 currentRequest];
-      objc_setProperty_nonatomic_copy(v10, v13, v12, 56);
+      currentRequest = [v7 currentRequest];
+      objc_setProperty_nonatomic_copy(v10, v13, currentRequest, 56);
 
-      v14 = [v7 earliestBeginDate];
-      [v10 setEarliestBeginDate:v14];
+      earliestBeginDate = [v7 earliestBeginDate];
+      [v10 setEarliestBeginDate:earliestBeginDate];
 
       [v10 setCountOfBytesClientExpectsToSend:{objc_msgSend(v7, "countOfBytesClientExpectsToSend")}];
       [v10 setCountOfBytesClientExpectsToReceive:{objc_msgSend(v7, "countOfBytesClientExpectsToReceive")}];
-      v15 = [v7 taskDescription];
-      [v10 setTaskDescription:v15];
+      taskDescription = [v7 taskDescription];
+      [v10 setTaskDescription:taskDescription];
 
       [v7 priority];
       [v10 setPriority:?];
@@ -8854,34 +8854,34 @@ void __38__NWURLSessionTask_forwardInvocation___block_invoke()
   return v10;
 }
 
-- (void)setCountOfBytesExpectedToReceive:(uint64_t)a1
+- (void)setCountOfBytesExpectedToReceive:(uint64_t)receive
 {
-  if (a1)
+  if (receive)
   {
-    [a1 willChangeValueForKey:@"countOfBytesExpectedToReceive"];
-    *(a1 + 112) = a2;
-    [a1 didChangeValueForKey:@"countOfBytesExpectedToReceive"];
-    v4 = *(a1 + 368);
+    [receive willChangeValueForKey:@"countOfBytesExpectedToReceive"];
+    *(receive + 112) = a2;
+    [receive didChangeValueForKey:@"countOfBytesExpectedToReceive"];
+    v4 = *(receive + 368);
     if (v4)
     {
-      v5 = *(a1 + 296);
+      v5 = *(receive + 296);
 
       if (v5 != 2)
       {
-        v6 = *(a1 + 376);
-        [*(a1 + 376) setCompletedUnitCount:{objc_msgSend(v6, "totalUnitCount")}];
+        v6 = *(receive + 376);
+        [*(receive + 376) setCompletedUnitCount:{objc_msgSend(v6, "totalUnitCount")}];
 
         v7 = *MEMORY[0x1E696A848];
-        v8 = [a1 progress];
-        [v8 setFileOperationKind:v7];
+        progress = [receive progress];
+        [progress setFileOperationKind:v7];
 
-        v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(a1, "countOfBytesReceived")}];
-        v10 = [a1 progress];
-        [v10 setByteCompletedCount:v9];
+        v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(receive, "countOfBytesReceived")}];
+        progress2 = [receive progress];
+        [progress2 setByteCompletedCount:v9];
 
         v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a2];
-        v12 = [a1 progress];
-        [v12 setByteTotalCount:v11];
+        progress3 = [receive progress];
+        [progress3 setByteTotalCount:v11];
 
         if (a2 >= 1)
         {
@@ -8893,8 +8893,8 @@ void __38__NWURLSessionTask_forwardInvocation___block_invoke()
           v13 = 100;
         }
 
-        *(a1 + 23) = a2 < 1;
-        v14 = *(a1 + 384);
+        *(receive + 23) = a2 < 1;
+        v14 = *(receive + 384);
 
         [v14 setTotalUnitCount:v13];
       }
@@ -8902,34 +8902,34 @@ void __38__NWURLSessionTask_forwardInvocation___block_invoke()
   }
 }
 
-- (void)setCountOfBytesReceived:(uint64_t)a1
+- (void)setCountOfBytesReceived:(uint64_t)received
 {
-  if (a1)
+  if (received)
   {
-    [a1 willChangeValueForKey:@"countOfBytesReceived"];
-    *(a1 + 96) = a2;
-    [a1 didChangeValueForKey:@"countOfBytesReceived"];
-    v4 = *(a1 + 368);
+    [received willChangeValueForKey:@"countOfBytesReceived"];
+    *(received + 96) = a2;
+    [received didChangeValueForKey:@"countOfBytesReceived"];
+    v4 = *(received + 368);
     if (v4)
     {
-      v5 = *(a1 + 296);
+      v5 = *(received + 296);
 
       if (v5 != 2)
       {
         v6 = [MEMORY[0x1E696AD98] numberWithLongLong:a2];
-        v7 = [a1 progress];
-        [v7 setByteCompletedCount:v6];
+        progress = [received progress];
+        [progress setByteCompletedCount:v6];
 
-        v8 = *(a1 + 384);
-        if (*(a1 + 23) == 1)
+        v8 = *(received + 384);
+        if (*(received + 23) == 1)
         {
           v9 = v8;
-          v10 = [v9 completedUnitCount];
-          v11 = [*(a1 + 384) totalUnitCount] - 1;
+          completedUnitCount = [v9 completedUnitCount];
+          v11 = [*(received + 384) totalUnitCount] - 1;
 
-          if (v10 < v11)
+          if (completedUnitCount < v11)
           {
-            v12 = *(a1 + 384);
+            v12 = *(received + 384);
             [v12 setCompletedUnitCount:{objc_msgSend(v12, "completedUnitCount") + 1}];
           }
         }

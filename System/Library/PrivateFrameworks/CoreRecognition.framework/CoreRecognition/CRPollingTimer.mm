@@ -1,27 +1,27 @@
 @interface CRPollingTimer
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)fireTime;
-- (CRPollingTimer)initWithTarget:(id)a3 selector:(SEL)a4;
+- (CRPollingTimer)initWithTarget:(id)target selector:(SEL)selector;
 - (SEL)selector;
 - (id)target;
-- (void)evalAtTime:(id *)a3;
+- (void)evalAtTime:(id *)time;
 - (void)invalidate;
-- (void)setFireTime:(id *)a3;
-- (void)setSelector:(SEL)a3;
+- (void)setFireTime:(id *)time;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation CRPollingTimer
 
-- (CRPollingTimer)initWithTarget:(id)a3 selector:(SEL)a4
+- (CRPollingTimer)initWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
+  targetCopy = target;
   v12.receiver = self;
   v12.super_class = CRPollingTimer;
   v7 = [(CRPollingTimer *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    [(CRPollingTimer *)v7 setTarget:v6];
-    [(CRPollingTimer *)v8 setSelector:a4];
+    [(CRPollingTimer *)v7 setTarget:targetCopy];
+    [(CRPollingTimer *)v8 setSelector:selector];
     v10 = *MEMORY[0x277CC08B0];
     v11 = *(MEMORY[0x277CC08B0] + 16);
     [(CRPollingTimer *)v8 setFireTime:&v10];
@@ -32,12 +32,12 @@
   return v8;
 }
 
-- (void)setFireTime:(id *)a3
+- (void)setFireTime:(id *)time
 {
   obj = self;
   objc_sync_enter(obj);
-  var3 = a3->var3;
-  *&obj->_fireTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&obj->_fireTime.value = *&time->var0;
   obj->_fireTime.epoch = var3;
   objc_sync_exit(obj);
 }
@@ -52,29 +52,29 @@
   return result;
 }
 
-- (void)evalAtTime:(id *)a3
+- (void)evalAtTime:(id *)time
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(CRPollingTimer *)v4 valid])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CRPollingTimer *)selfCopy valid])
   {
-    if (![(CRPollingTimer *)v4 fired])
+    if (![(CRPollingTimer *)selfCopy fired])
     {
-      [(CRPollingTimer *)v4 fireTime];
-      v8 = *a3;
+      [(CRPollingTimer *)selfCopy fireTime];
+      v8 = *time;
       if (CMTimeCompare(&v8, &time2) >= 1)
       {
-        v5 = [(CRPollingTimer *)v4 target];
-        v6 = [v5 methodForSelector:{-[CRPollingTimer selector](v4, "selector")}];
-        v7 = [(CRPollingTimer *)v4 target];
-        v6(v7, [(CRPollingTimer *)v4 selector]);
+        target = [(CRPollingTimer *)selfCopy target];
+        v6 = [target methodForSelector:{-[CRPollingTimer selector](selfCopy, "selector")}];
+        target2 = [(CRPollingTimer *)selfCopy target];
+        v6(target2, [(CRPollingTimer *)selfCopy selector]);
 
-        [(CRPollingTimer *)v4 setFired:1];
+        [(CRPollingTimer *)selfCopy setFired:1];
       }
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate
@@ -105,19 +105,19 @@
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface NSArray
-- (BOOL)arrayOfCallGroupsContainsCall:(id)a3;
+- (BOOL)arrayOfCallGroupsContainsCall:(id)call;
 @end
 
 @implementation NSArray
 
-- (BOOL)arrayOfCallGroupsContainsCall:(id)a3
+- (BOOL)arrayOfCallGroupsContainsCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = self;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [(NSArray *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -22,11 +22,11 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) calls];
-        v10 = [v9 containsObject:v4];
+        calls = [*(*(&v12 + 1) + 8 * i) calls];
+        v10 = [calls containsObject:callCopy];
 
         if (v10)
         {
@@ -35,7 +35,7 @@
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(NSArray *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

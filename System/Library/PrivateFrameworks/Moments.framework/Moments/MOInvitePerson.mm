@@ -1,51 +1,51 @@
 @interface MOInvitePerson
-- (MOInvitePerson)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOInvitePerson)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOInvitePerson
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayName = self->_displayName;
-  v5 = a3;
-  [v5 encodeObject:displayName forKey:@"invitePersonDisplayName"];
-  [v5 encodeObject:self->_rsvpStatus forKey:@"invitePersonRSVPStatus"];
-  [v5 encodeBool:self->_isMe forKey:@"invitePersonIsMe"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayName forKey:@"invitePersonDisplayName"];
+  [coderCopy encodeObject:self->_rsvpStatus forKey:@"invitePersonRSVPStatus"];
+  [coderCopy encodeBool:self->_isMe forKey:@"invitePersonIsMe"];
 }
 
-- (MOInvitePerson)initWithCoder:(id)a3
+- (MOInvitePerson)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MOInvitePerson;
   v5 = [(MOInvitePerson *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitePersonDisplayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitePersonDisplayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitePersonRSVPStatus"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitePersonRSVPStatus"];
     rsvpStatus = v5->_rsvpStatus;
     v5->_rsvpStatus = v8;
 
-    v5->_isMe = [v4 decodeBoolForKey:@"invitePersonIsMe"];
+    v5->_isMe = [coderCopy decodeBoolForKey:@"invitePersonIsMe"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOInvitePerson);
-  v5 = [(MOInvitePerson *)self displayName];
-  [(MOInvitePerson *)v4 setDisplayName:v5];
+  displayName = [(MOInvitePerson *)self displayName];
+  [(MOInvitePerson *)v4 setDisplayName:displayName];
 
-  v6 = [(MOInvitePerson *)self rsvpStatus];
-  [(MOInvitePerson *)v4 setRsvpStatus:v6];
+  rsvpStatus = [(MOInvitePerson *)self rsvpStatus];
+  [(MOInvitePerson *)v4 setRsvpStatus:rsvpStatus];
 
   [(MOInvitePerson *)v4 setIsMe:[(MOInvitePerson *)self isMe]];
   return v4;
@@ -54,8 +54,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(NSString *)self->_displayName mask];
-  v4 = [v2 stringWithFormat:@"displayName, %@", v3];
+  mask = [(NSString *)self->_displayName mask];
+  v4 = [v2 stringWithFormat:@"displayName, %@", mask];
 
   return v4;
 }

@@ -1,15 +1,15 @@
 @interface CIFaceCoreDetector
-- (CGAffineTransform)ctmForImageWithBounds:(SEL)a3 orientation:(CGRect)a4;
-- (CIFaceCoreDetector)initWithContext:(id)a3 options:(id)a4;
-- (id)adjustedImageFromImage:(id)a3 orientation:(int)a4 inverseCTM:(CGAffineTransform *)a5;
-- (id)createFaceCoreDataFromCIImage:(id)a3 width:(unint64_t *)a4 height:(unint64_t *)a5;
-- (id)featuresInImage:(id)a3 options:(id)a4;
+- (CGAffineTransform)ctmForImageWithBounds:(SEL)bounds orientation:(CGRect)orientation;
+- (CIFaceCoreDetector)initWithContext:(id)context options:(id)options;
+- (id)adjustedImageFromImage:(id)image orientation:(int)orientation inverseCTM:(CGAffineTransform *)m;
+- (id)createFaceCoreDataFromCIImage:(id)image width:(unint64_t *)width height:(unint64_t *)height;
+- (id)featuresInImage:(id)image options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation CIFaceCoreDetector
 
-- (CIFaceCoreDetector)initWithContext:(id)a3 options:(id)a4
+- (CIFaceCoreDetector)initWithContext:(id)context options:(id)options
 {
   v38.receiver = self;
   v38.super_class = CIFaceCoreDetector;
@@ -19,13 +19,13 @@
     return v6;
   }
 
-  if (!a3)
+  if (!context)
   {
-    a3 = +[CIContext _singletonContext];
+    context = +[CIContext _singletonContext];
   }
 
-  [(CIFaceCoreDetector *)v6 setContext:a3];
-  v7 = [a4 objectForKey:@"CIDetectorAccuracy"];
+  [(CIFaceCoreDetector *)v6 setContext:context];
+  v7 = [options objectForKey:@"CIDetectorAccuracy"];
   v8 = [v7 isEqual:@"CIDetectorAccuracyLow"];
   v9 = v8;
   if (v7 && (v8 & 1) == 0 && ([v7 isEqual:@"CIDetectorAccuracyHigh"] & 1) == 0)
@@ -33,7 +33,7 @@
     NSLog(&cfstr_UnknownCidetec.isa);
   }
 
-  v10 = [a4 objectForKey:@"CIDetectorTracking"];
+  v10 = [options objectForKey:@"CIDetectorTracking"];
   v6->_tracking = 0;
   v11 = *MEMORY[0x1E695E4D0];
   v12 = MEMORY[0x1E695E4C0];
@@ -60,11 +60,11 @@
     }
   }
 
-  v14 = [a4 objectForKey:@"CIDetectorBetterEyeLocs"];
+  v14 = [options objectForKey:@"CIDetectorBetterEyeLocs"];
   v15 = (v9 & 1) == 0 && !v6->_tracking;
   v16 = v14 == v11;
   v17 = v14 != *v12;
-  v18 = [a4 objectForKey:@"CIDetectorMinFeatureSize"];
+  v18 = [options objectForKey:@"CIDetectorMinFeatureSize"];
   v19 = v18;
   if (v18)
   {
@@ -83,7 +83,7 @@
     v19 = 0;
   }
 
-  v22 = [a4 objectForKey:@"CIDetectorNumberOfAngles"];
+  v22 = [options objectForKey:@"CIDetectorNumberOfAngles"];
   v24 = v22;
   if (v22)
   {
@@ -224,7 +224,7 @@ LABEL_47:
   [(CIFaceCoreDetector *)&v5 dealloc];
 }
 
-- (id)featuresInImage:(id)a3 options:(id)a4
+- (id)featuresInImage:(id)image options:(id)options
 {
   v114 = *MEMORY[0x1E69E9840];
   v101 = 0;
@@ -249,17 +249,17 @@ LABEL_47:
   v97 = __46__CIFaceCoreDetector_featuresInImage_options___block_invoke;
   v98 = &unk_1E75C25C0;
   v99 = &v101;
-  v100 = self;
+  selfCopy = self;
   p_visionRequest = &self->visionRequest;
   if (!self->visionRequest && !self->visionTrackingRequest)
   {
-    v69 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     goto LABEL_47;
   }
 
   v95 = 0;
-  v9 = -[CIFaceCoreDetector adjustedImageFromImage:orientation:inverseCTM:](self, "adjustedImageFromImage:orientation:inverseCTM:", a3, [objc_msgSend(a4 valueForKey:{@"CIDetectorImageOrientation", "intValue"}], &v94);
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  v9 = -[CIFaceCoreDetector adjustedImageFromImage:orientation:inverseCTM:](self, "adjustedImageFromImage:orientation:inverseCTM:", image, [objc_msgSend(options valueForKey:{@"CIDetectorImageOrientation", "intValue"}], &v94);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   context = self->context;
   if (context)
   {
@@ -288,11 +288,11 @@ LABEL_47:
       goto LABEL_52;
     }
 
-    [v10 setObject:context forKey:*v12];
+    [dictionary setObject:context forKey:*v12];
   }
 
-  v15 = [objc_msgSend(a4 valueForKey:{@"CIDetectorEyeBlink", "BOOLValue"}];
-  v16 = [objc_msgSend(a4 valueForKey:{@"CIDetectorSmile", "BOOLValue"}];
+  v15 = [objc_msgSend(options valueForKey:{@"CIDetectorEyeBlink", "BOOLValue"}];
+  v16 = [objc_msgSend(options valueForKey:{@"CIDetectorSmile", "BOOLValue"}];
   buf.a = 0.0;
   *&buf.b = &buf;
   *&buf.c = 0x3052000000;
@@ -312,7 +312,7 @@ LABEL_47:
   }
 
   _Block_object_dispose(&buf, 8);
-  v18 = [[v17 alloc] initWithCIImage:v9 options:v10];
+  v18 = [[v17 alloc] initWithCIImage:v9 options:dictionary];
   if (*p_visionRequest)
   {
     [*p_visionRequest setFaceCoreExtractBlink:v15];
@@ -346,8 +346,8 @@ LABEL_18:
   obj = 0;
 LABEL_20:
   v67 = v18;
-  v69 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v89 = self;
+  array = objc_alloc_init(MEMORY[0x1E695DF70]);
+  selfCopy2 = self;
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
@@ -366,8 +366,8 @@ LABEL_20:
           objc_enumerationMutation(obj);
         }
 
-        v24 = [*(*(&v90 + 1) + 8 * i) legacyFaceCore];
-        v25 = [v24 features];
+        legacyFaceCore = [*(*(&v90 + 1) + 8 * i) legacyFaceCore];
+        features = [legacyFaceCore features];
         v105 = 0;
         v106 = &v105;
         v107 = 0x2020000000;
@@ -394,8 +394,8 @@ LABEL_20:
           goto LABEL_51;
         }
 
-        v29 = [v25 valueForKey:*v26];
-        v30 = [v24 features];
+        v29 = [features valueForKey:*v26];
+        features2 = [legacyFaceCore features];
         v105 = 0;
         v106 = &v105;
         v107 = 0x2020000000;
@@ -422,8 +422,8 @@ LABEL_20:
           goto LABEL_51;
         }
 
-        v34 = [v30 valueForKey:*v31];
-        v35 = [v24 features];
+        v34 = [features2 valueForKey:*v31];
+        features3 = [legacyFaceCore features];
         v105 = 0;
         v106 = &v105;
         v107 = 0x2020000000;
@@ -456,16 +456,16 @@ LABEL_52:
           }
         }
 
-        v39 = [v35 valueForKey:*v36];
+        v39 = [features3 valueForKey:*v36];
         v40 = [CIFaceFeature alloc];
-        [v24 faceBoundingBox];
+        [legacyFaceCore faceBoundingBox];
         buf = v94;
         v116 = CGRectApplyAffineTransform(v115, &buf);
         y = v116.origin.y;
         x = v116.origin.x;
         height = v116.size.height;
         width = v116.size.width;
-        [v24 leftEye];
+        [legacyFaceCore leftEye];
         v42 = v41;
         v44 = v43;
         v84 = *&v94.a;
@@ -473,7 +473,7 @@ LABEL_52:
         c = v94.c;
         ty = v94.ty;
         d = v94.d;
-        [v24 rightEye];
+        [legacyFaceCore rightEye];
         v46 = v45;
         v48 = v47;
         v79 = *&v94.a;
@@ -481,19 +481,19 @@ LABEL_52:
         v76 = v94.c;
         v77 = v94.ty;
         v78 = v94.d;
-        [v24 mouth];
+        [legacyFaceCore mouth];
         v50 = v49;
         v52 = v51;
         v74 = *&v94.a;
         v53 = *&v94.c;
         v72 = *&v94.tx;
         v73 = v94.d;
-        [v24 faceAngle];
+        [legacyFaceCore faceAngle];
         v55 = v54;
-        v56 = v89->visionTrackingRequest;
-        v57 = [v24 trackID];
-        v58 = v89->visionTrackingRequest;
-        v59 = [v24 trackDuration];
+        v56 = selfCopy2->visionTrackingRequest;
+        trackID = [legacyFaceCore trackID];
+        v58 = selfCopy2->visionTrackingRequest;
+        trackDuration = [legacyFaceCore trackDuration];
         if (v29)
         {
           LOBYTE(v29) = [v29 BOOLValue];
@@ -506,25 +506,25 @@ LABEL_52:
 
         if (v39)
         {
-          v60 = [v39 BOOLValue];
+          bOOLValue = [v39 BOOLValue];
         }
 
         else
         {
-          v60 = 0;
+          bOOLValue = 0;
         }
 
-        BYTE6(v66) = v60;
+        BYTE6(v66) = bOOLValue;
         BYTE5(v66) = v34;
         BYTE4(v66) = v29;
-        LODWORD(v66) = v59;
+        LODWORD(v66) = trackDuration;
         BYTE4(v65) = v58 != 0;
         v61 = v55;
         *&v65 = v61;
-        v62 = [(CIFaceFeature *)v40 initWithBounds:1 hasLeftEyePosition:1 leftEyePosition:1 hasRightEyePosition:1 rightEyePosition:v56 != 0 hasMouthPosition:v57 mouthPosition:x hasFaceAngle:y faceAngle:width hasTrackingID:height trackingID:tx + v44 * c + *&v84 * v42 hasTrackingFrameCount:ty + v44 * d + *(&v84 + 1) * v42 trackingFrameCount:v75 + v48 * v76 + *&v79 * v46 hasSmile:v77 + v48 * v78 + *(&v79 + 1) * v46 leftEyeClosed:*&v72 + v52 * *&v53 + *&v74 * v50 rightEyeClosed:*(&v72 + 1) + v52 * v73 + *(&v74 + 1) * v50 landmarks:v65, v66, 0, v67];
+        v62 = [(CIFaceFeature *)v40 initWithBounds:1 hasLeftEyePosition:1 leftEyePosition:1 hasRightEyePosition:1 rightEyePosition:v56 != 0 hasMouthPosition:trackID mouthPosition:x hasFaceAngle:y faceAngle:width hasTrackingID:height trackingID:tx + v44 * c + *&v84 * v42 hasTrackingFrameCount:ty + v44 * d + *(&v84 + 1) * v42 trackingFrameCount:v75 + v48 * v76 + *&v79 * v46 hasSmile:v77 + v48 * v78 + *(&v79 + 1) * v46 leftEyeClosed:*&v72 + v52 * *&v53 + *&v74 * v50 rightEyeClosed:*(&v72 + 1) + v52 * v73 + *(&v74 + 1) * v50 landmarks:v65, v66, 0, v67];
         if (v62)
         {
-          [v69 addObject:v62];
+          [array addObject:v62];
         }
       }
 
@@ -534,12 +534,12 @@ LABEL_52:
     while (v22);
   }
 
-  v63 = [v69 count];
+  v63 = [array count];
   *(v102 + 6) = v63;
 LABEL_47:
   v97(v96);
   _Block_object_dispose(&v101, 8);
-  return v69;
+  return array;
 }
 
 void __46__CIFaceCoreDetector_featuresInImage_options___block_invoke(uint64_t a1)
@@ -560,10 +560,10 @@ void __46__CIFaceCoreDetector_featuresInImage_options___block_invoke(uint64_t a1
   }
 }
 
-- (CGAffineTransform)ctmForImageWithBounds:(SEL)a3 orientation:(CGRect)a4
+- (CGAffineTransform)ctmForImageWithBounds:(SEL)bounds orientation:(CGRect)orientation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = fmax(a4.size.width, a4.size.height);
+  v5 = fmax(orientation.size.width, orientation.size.height);
   t1.b = 0.0;
   t1.c = 0.0;
   v16[0] = 0x3FF0000000000000;
@@ -584,39 +584,39 @@ void __46__CIFaceCoreDetector_featuresInImage_options___block_invoke(uint64_t a1
     v8 = v6;
   }
 
-  *&v16[10] = a4.size.width * v8;
+  *&v16[10] = orientation.size.width * v8;
   v17 = xmmword_19CF26640;
   v18 = 0;
   v19 = 0;
   v20 = 0xBFF0000000000000;
-  v21 = a4.size.width * v8;
-  v22 = a4.size.height * v8;
+  v21 = orientation.size.width * v8;
+  v22 = orientation.size.height * v8;
   v24 = 0;
   v25 = 0;
   v23 = 0x3FF0000000000000;
   v26 = xmmword_19CF25100;
   v28 = xmmword_19CF26640;
   v29 = xmmword_19CF25100;
-  v27 = a4.size.height * v8;
-  v30 = a4.size.height * v8;
-  v31 = a4.size.width * v8;
+  v27 = orientation.size.height * v8;
+  v30 = orientation.size.height * v8;
+  v31 = orientation.size.width * v8;
   v32 = xmmword_19CF26640;
   v34 = 0;
   v35 = 0;
   v33 = 0x3FF0000000000000;
-  v36 = a4.size.width * v8;
+  v36 = orientation.size.width * v8;
   v37 = xmmword_19CF26650;
   v39 = 0u;
   v40 = 0u;
   v38 = 0x3FF0000000000000;
   v41 = 0x3FF0000000000000;
   v42 = xmmword_19CF25100;
-  v43 = a4.size.height * v8;
+  v43 = orientation.size.height * v8;
   v44 = 0;
   t1.a = v8;
   t1.d = v8;
-  y = a4.origin.y;
-  *&t1.tx = vandq_s8(vmulq_n_f64(vnegq_f64(a4.origin), v8), vcgtq_f64(vabsq_f64(a4.origin), vdupq_n_s64(0x3F847AE147AE147BuLL)));
+  y = orientation.origin.y;
+  *&t1.tx = vandq_s8(vmulq_n_f64(vnegq_f64(orientation.origin), v8), vcgtq_f64(vabsq_f64(orientation.origin), vdupq_n_s64(0x3F847AE147AE147BuLL)));
   if ((a5 - 9) >= 0xFFFFFFF8)
   {
     v10 = a5 - 1;
@@ -635,12 +635,12 @@ void __46__CIFaceCoreDetector_featuresInImage_options___block_invoke(uint64_t a1
   return CGAffineTransformConcat(retstr, &t1, &v14);
 }
 
-- (id)adjustedImageFromImage:(id)a3 orientation:(int)a4 inverseCTM:(CGAffineTransform *)a5
+- (id)adjustedImageFromImage:(id)image orientation:(int)orientation inverseCTM:(CGAffineTransform *)m
 {
-  v6 = *&a4;
-  v7 = a3;
+  v6 = *&orientation;
+  imageCopy = image;
   memset(&v13, 0, sizeof(v13));
-  [a3 extent];
+  [image extent];
   if (self)
   {
     [(CIFaceCoreDetector *)self ctmForImageWithBounds:v6 orientation:?];
@@ -654,29 +654,29 @@ void __46__CIFaceCoreDetector_featuresInImage_options___block_invoke(uint64_t a1
   v11 = v13;
   CGAffineTransformInvert(&v12, &v11);
   v9 = *&v12.c;
-  *&a5->a = *&v12.a;
-  *&a5->c = v9;
-  *&a5->tx = *&v12.tx;
+  *&m->a = *&v12.a;
+  *&m->c = v9;
+  *&m->tx = *&v12.tx;
   v12 = v13;
   if (!CGAffineTransformIsIdentity(&v12))
   {
     v12 = v13;
-    return [v7 imageByApplyingTransform:&v12];
+    return [imageCopy imageByApplyingTransform:&v12];
   }
 
-  return v7;
+  return imageCopy;
 }
 
-- (id)createFaceCoreDataFromCIImage:(id)a3 width:(unint64_t *)a4 height:(unint64_t *)a5
+- (id)createFaceCoreDataFromCIImage:(id)image width:(unint64_t *)width height:(unint64_t *)height
 {
   result = [(CIFaceCoreDetector *)self context];
   if (result)
   {
-    [a3 extent];
+    [image extent];
     LODWORD(v5) = vcvtmd_s64_f64(CGRectGetWidth(v25));
-    [a3 extent];
+    [image extent];
     LODWORD(v6) = vcvtmd_s64_f64(CGRectGetHeight(v26));
-    [a3 extent];
+    [image extent];
     v13 = v12;
     v15 = v14;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -684,7 +684,7 @@ void __46__CIFaceCoreDetector_featuresInImage_options___block_invoke(uint64_t a1
     if (v17)
     {
       v18 = v17;
-      [(CIContext *)[(CIFaceCoreDetector *)self context] render:a3 toBitmap:v17 rowBytes:4 * v5 bounds:264 format:DeviceRGB colorSpace:v13, v15, v5, v6];
+      [(CIContext *)[(CIFaceCoreDetector *)self context] render:image toBitmap:v17 rowBytes:4 * v5 bounds:264 format:DeviceRGB colorSpace:v13, v15, v5, v6];
       if (v6 >= 1)
       {
         v19 = 0;
@@ -716,14 +716,14 @@ void __46__CIFaceCoreDetector_featuresInImage_options___block_invoke(uint64_t a1
       v24 = malloc_type_realloc(v18, v6 * v5, 0x100004077774924uLL);
       CGColorSpaceRelease(DeviceRGB);
       result = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v24 length:v6 * v5 freeWhenDone:1];
-      if (a4)
+      if (width)
       {
-        *a4 = v5;
+        *width = v5;
       }
 
-      if (a5)
+      if (height)
       {
-        *a5 = v6;
+        *height = v6;
       }
     }
 

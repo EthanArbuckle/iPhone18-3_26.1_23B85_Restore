@@ -1,7 +1,7 @@
 @interface WBSURLCompletionSessionProxy
 - (WBSURLCompletionSessionProxy)init;
-- (void)_completionSessionWithCompletionHandler:(id)a3;
-- (void)getBestMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 limit:(unint64_t)a5 forQueryID:(int64_t)a6 withSearchParameters:(id)a7 completionHandler:(id)a8;
+- (void)_completionSessionWithCompletionHandler:(id)handler;
+- (void)getBestMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier limit:(unint64_t)limit forQueryID:(int64_t)d withSearchParameters:(id)parameters completionHandler:(id)handler;
 @end
 
 @implementation WBSURLCompletionSessionProxy
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (void)_completionSessionWithCompletionHandler:(id)a3
+- (void)_completionSessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   completionSessionAccessQueue = self->_completionSessionAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__WBSURLCompletionSessionProxy__completionSessionWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(completionSessionAccessQueue, v7);
 }
 
@@ -107,35 +107,35 @@ void __72__WBSURLCompletionSessionProxy__completionSessionWithCompletionHandler_
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)getBestMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 limit:(unint64_t)a5 forQueryID:(int64_t)a6 withSearchParameters:(id)a7 completionHandler:(id)a8
+- (void)getBestMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier limit:(unint64_t)limit forQueryID:(int64_t)d withSearchParameters:(id)parameters completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  stringCopy = string;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
   v31[3] = __Block_byref_object_copy__36;
   v31[4] = __Block_byref_object_dispose__36;
-  v18 = self;
-  v32 = v18;
+  selfCopy = self;
+  v32 = selfCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __153__WBSURLCompletionSessionProxy_getBestMatchesForTypedString_filterResultsUsingProfileIdentifier_limit_forQueryID_withSearchParameters_completionHandler___block_invoke;
   v23[3] = &unk_1E7FCB2D0;
-  v19 = v17;
+  v19 = handlerCopy;
   v27 = v19;
-  v20 = v14;
+  v20 = stringCopy;
   v24 = v20;
-  v21 = v15;
+  v21 = identifierCopy;
   v25 = v21;
-  v29 = a5;
-  v30 = a6;
-  v22 = v16;
+  limitCopy = limit;
+  dCopy = d;
+  v22 = parametersCopy;
   v26 = v22;
   v28 = v31;
-  [(WBSURLCompletionSessionProxy *)v18 _completionSessionWithCompletionHandler:v23];
+  [(WBSURLCompletionSessionProxy *)selfCopy _completionSessionWithCompletionHandler:v23];
 
   _Block_object_dispose(v31, 8);
 }

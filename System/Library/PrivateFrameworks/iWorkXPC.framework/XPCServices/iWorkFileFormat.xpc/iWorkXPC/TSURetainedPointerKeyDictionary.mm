@@ -1,10 +1,10 @@
 @interface TSURetainedPointerKeyDictionary
-- (TSURetainedPointerKeyDictionary)initWithCapacity:(unint64_t)a3;
+- (TSURetainedPointerKeyDictionary)initWithCapacity:(unint64_t)capacity;
 @end
 
 @implementation TSURetainedPointerKeyDictionary
 
-- (TSURetainedPointerKeyDictionary)initWithCapacity:(unint64_t)a3
+- (TSURetainedPointerKeyDictionary)initWithCapacity:(unint64_t)capacity
 {
   *&keyCallBacks.retain = *&kCFTypeDictionaryKeyCallBacks.retain;
   copyDescription = kCFTypeDictionaryKeyCallBacks.copyDescription;
@@ -24,7 +24,7 @@
       CFRelease(mDictionary);
     }
 
-    v6->super.mDictionary = CFDictionaryCreateMutable(0, a3, &keyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    v6->super.mDictionary = CFDictionaryCreateMutable(0, capacity, &keyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
   return v6;

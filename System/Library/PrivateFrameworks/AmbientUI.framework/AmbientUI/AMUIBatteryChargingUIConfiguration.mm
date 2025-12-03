@@ -1,6 +1,6 @@
 @interface AMUIBatteryChargingUIConfiguration
 + (id)defaultConfiguration;
-- (AMUIBatteryChargingUIConfiguration)initWithRingDiameter:(double)a3 lineWidth:(double)a4 boltSize:(CGSize)a5 chargingTextFontSize:(double)a6;
+- (AMUIBatteryChargingUIConfiguration)initWithRingDiameter:(double)diameter lineWidth:(double)width boltSize:(CGSize)size chargingTextFontSize:(double)fontSize;
 - (CGSize)boltSize;
 @end
 
@@ -27,20 +27,20 @@ uint64_t __58__AMUIBatteryChargingUIConfiguration_defaultConfiguration__block_in
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (AMUIBatteryChargingUIConfiguration)initWithRingDiameter:(double)a3 lineWidth:(double)a4 boltSize:(CGSize)a5 chargingTextFontSize:(double)a6
+- (AMUIBatteryChargingUIConfiguration)initWithRingDiameter:(double)diameter lineWidth:(double)width boltSize:(CGSize)size chargingTextFontSize:(double)fontSize
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = AMUIBatteryChargingUIConfiguration;
   result = [(AMUIBatteryChargingUIConfiguration *)&v12 init];
   if (result)
   {
-    result->_ringDiameter = a3;
-    result->_lineWidth = a4;
+    result->_ringDiameter = diameter;
+    result->_lineWidth = width;
     result->_boltSize.width = width;
     result->_boltSize.height = height;
-    result->_chargingTextFontSize = a6;
+    result->_chargingTextFontSize = fontSize;
   }
 
   return result;

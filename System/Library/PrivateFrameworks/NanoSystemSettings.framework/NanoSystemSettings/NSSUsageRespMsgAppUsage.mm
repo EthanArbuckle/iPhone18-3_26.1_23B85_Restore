@@ -1,12 +1,12 @@
 @interface NSSUsageRespMsgAppUsage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSUsageRespMsgAppUsage
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NSSUsageRespMsgAppUsage;
   v4 = [(NSSUsageRespMsgAppUsage *)&v8 description];
-  v5 = [(NSSUsageRespMsgAppUsage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSUsageRespMsgAppUsage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   bundleIdentifier = self->_bundleIdentifier;
@@ -57,10 +57,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   name = self->_name;
-  v10 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   bundleIdentifier = self->_bundleIdentifier;
   PBDataWriterWriteStringField();
@@ -74,30 +74,30 @@
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   name = self->_name;
-  v5 = a3;
-  [v5 setName:name];
-  [v5 setBundleIdentifier:self->_bundleIdentifier];
-  [v5 setBundleVersion:self->_bundleVersion];
-  v5[3] = self->_staticSizeInBytes;
-  v5[1] = self->_dynamicSizeInBytes;
-  v5[2] = self->_sharedSizeInBytes;
+  toCopy = to;
+  [toCopy setName:name];
+  [toCopy setBundleIdentifier:self->_bundleIdentifier];
+  [toCopy setBundleVersion:self->_bundleVersion];
+  toCopy[3] = self->_staticSizeInBytes;
+  toCopy[1] = self->_dynamicSizeInBytes;
+  toCopy[2] = self->_sharedSizeInBytes;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_bundleVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_bundleVersion copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
@@ -107,10 +107,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v8 = [v4 isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | v4[6])) || -[NSString isEqual:](name, "isEqual:")) && ((bundleIdentifier = self->_bundleIdentifier, !(bundleIdentifier | v4[4])) || -[NSString isEqual:](bundleIdentifier, "isEqual:")) && ((bundleVersion = self->_bundleVersion, !(bundleVersion | v4[5])) || -[NSString isEqual:](bundleVersion, "isEqual:")) && self->_staticSizeInBytes == v4[3] && self->_dynamicSizeInBytes == v4[1] && self->_sharedSizeInBytes == v4[2];
+  equalCopy = equal;
+  v8 = [equalCopy isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | equalCopy[6])) || -[NSString isEqual:](name, "isEqual:")) && ((bundleIdentifier = self->_bundleIdentifier, !(bundleIdentifier | equalCopy[4])) || -[NSString isEqual:](bundleIdentifier, "isEqual:")) && ((bundleVersion = self->_bundleVersion, !(bundleVersion | equalCopy[5])) || -[NSString isEqual:](bundleVersion, "isEqual:")) && self->_staticSizeInBytes == equalCopy[3] && self->_dynamicSizeInBytes == equalCopy[1] && self->_sharedSizeInBytes == equalCopy[2];
 
   return v8;
 }
@@ -122,31 +122,31 @@
   return v4 ^ [(NSString *)self->_bundleVersion hash]^ (2654435761u * self->_staticSizeInBytes) ^ (2654435761u * self->_dynamicSizeInBytes) ^ (2654435761u * self->_sharedSizeInBytes);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
     [(NSSUsageRespMsgAppUsage *)self setName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NSSUsageRespMsgAppUsage *)self setBundleIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(NSSUsageRespMsgAppUsage *)self setBundleVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_staticSizeInBytes = v4[3];
-  self->_dynamicSizeInBytes = v4[1];
-  self->_sharedSizeInBytes = v4[2];
+  self->_staticSizeInBytes = fromCopy[3];
+  self->_dynamicSizeInBytes = fromCopy[1];
+  self->_sharedSizeInBytes = fromCopy[2];
 }
 
 @end

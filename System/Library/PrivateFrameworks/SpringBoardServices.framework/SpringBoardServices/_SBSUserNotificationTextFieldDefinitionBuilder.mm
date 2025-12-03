@@ -1,7 +1,7 @@
 @interface _SBSUserNotificationTextFieldDefinitionBuilder
 - (_SBSUserNotificationTextFieldDefinitionBuilder)init;
 - (id)build;
-- (void)addTextFieldDefinitionWithConfiguration:(id)a3;
+- (void)addTextFieldDefinitionWithConfiguration:(id)configuration;
 @end
 
 @implementation _SBSUserNotificationTextFieldDefinitionBuilder
@@ -21,13 +21,13 @@
   return v2;
 }
 
-- (void)addTextFieldDefinitionWithConfiguration:(id)a3
+- (void)addTextFieldDefinitionWithConfiguration:(id)configuration
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(SBSMutableUserNotificationTextFieldDefinition);
-  if (v7)
+  if (configurationCopy)
   {
-    v7[2](v7, v4);
+    configurationCopy[2](configurationCopy, v4);
   }
 
   definitions = self->_definitions;
@@ -58,10 +58,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) build];
-        if (v9)
+        build = [*(*(&v11 + 1) + 8 * i) build];
+        if (build)
         {
-          [v3 addObject:v9];
+          [v3 addObject:build];
         }
       }
 

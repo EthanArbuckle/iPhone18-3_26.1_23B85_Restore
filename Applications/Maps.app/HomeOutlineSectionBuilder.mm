@@ -1,26 +1,26 @@
 @interface HomeOutlineSectionBuilder
-+ (id)_itemSnapshotsWithStack:(id)a3 items:(id)a4 hidden:(BOOL)a5 itemIdentifierBlock:(id)a6 viewModelBlock:(id)a7 childItemsBlock:(id)a8 expandedBlock:(id)a9;
-+ (id)itemSnapshotsWithItems:(id)a3 sectionIdentifier:(id)a4 sectionExpanded:(BOOL)a5 itemIdentifierBlock:(id)a6 viewModelBlock:(id)a7 childItemsBlock:(id)a8 expandedBlock:(id)a9;
++ (id)_itemSnapshotsWithStack:(id)stack items:(id)items hidden:(BOOL)hidden itemIdentifierBlock:(id)block viewModelBlock:(id)modelBlock childItemsBlock:(id)itemsBlock expandedBlock:(id)expandedBlock;
++ (id)itemSnapshotsWithItems:(id)items sectionIdentifier:(id)identifier sectionExpanded:(BOOL)expanded itemIdentifierBlock:(id)block viewModelBlock:(id)modelBlock childItemsBlock:(id)itemsBlock expandedBlock:(id)expandedBlock;
 @end
 
 @implementation HomeOutlineSectionBuilder
 
-+ (id)_itemSnapshotsWithStack:(id)a3 items:(id)a4 hidden:(BOOL)a5 itemIdentifierBlock:(id)a6 viewModelBlock:(id)a7 childItemsBlock:(id)a8 expandedBlock:(id)a9
++ (id)_itemSnapshotsWithStack:(id)stack items:(id)items hidden:(BOOL)hidden itemIdentifierBlock:(id)block viewModelBlock:(id)modelBlock childItemsBlock:(id)itemsBlock expandedBlock:(id)expandedBlock
 {
-  v41 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v40 = a7;
-  v37 = a8;
-  v36 = a9;
+  hiddenCopy = hidden;
+  stackCopy = stack;
+  itemsCopy = items;
+  blockCopy = block;
+  modelBlockCopy = modelBlock;
+  itemsBlockCopy = itemsBlock;
+  expandedBlockCopy = expandedBlock;
   v33 = +[NSMutableArray array];
   v16 = +[NSMutableSet set];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v17 = v14;
+  v17 = itemsCopy;
   v18 = v16;
   v19 = v17;
   v20 = [v17 countByEnumeratingWithState:&v44 objects:v48 count:16];
@@ -43,29 +43,29 @@
         }
 
         v24 = *(*(&v44 + 1) + 8 * v23);
-        [v13 _pushItem:v24 index:v22];
-        v25 = v15[2](v15, v24, v13);
+        [stackCopy _pushItem:v24 index:v22];
+        v25 = blockCopy[2](blockCopy, v24, stackCopy);
         if (v25 && ![v18 containsObject:v25])
         {
-          [v13 _setTopIdentifier:v25];
-          v26 = [v13 identifiers];
-          v42 = [IdentifierPath identifierPathWithIdentifiers:v26];
+          [stackCopy _setTopIdentifier:v25];
+          identifiers = [stackCopy identifiers];
+          v42 = [IdentifierPath identifierPathWithIdentifiers:identifiers];
 
-          if (v41)
+          if (hiddenCopy)
           {
             +[HomeOutlineHiddenViewModel sharedViewModel];
           }
 
           else
           {
-            v40[2](v40, v24, v13);
+            modelBlockCopy[2](modelBlockCopy, v24, stackCopy);
           }
           v27 = ;
           if (v27)
           {
-            v28 = v36[2](v36, v24, v13);
-            v29 = v37[2](v37, v24, v13);
-            v30 = [a1 _itemSnapshotsWithStack:v13 items:v29 hidden:v41 | ((v28 & 1) == 0) itemIdentifierBlock:v15 viewModelBlock:v40 childItemsBlock:v37 expandedBlock:v36];
+            v28 = expandedBlockCopy[2](expandedBlockCopy, v24, stackCopy);
+            v29 = itemsBlockCopy[2](itemsBlockCopy, v24, stackCopy);
+            v30 = [self _itemSnapshotsWithStack:stackCopy items:v29 hidden:hiddenCopy | ((v28 & 1) == 0) itemIdentifierBlock:blockCopy viewModelBlock:modelBlockCopy childItemsBlock:itemsBlockCopy expandedBlock:expandedBlockCopy];
             v31 = [[MapsUIDiffableDataSourceOutlineNodeSnapshot alloc] initWithIdentifierPath:v42 viewModel:v27 childSnapshots:v30 expanded:v28];
             v18 = v38;
             if (v31)
@@ -74,14 +74,14 @@
               [v38 addObject:v25];
             }
 
-            [v13 _pop];
+            [stackCopy _pop];
 
             v19 = v34;
           }
 
           else
           {
-            [v13 _pop];
+            [stackCopy _pop];
             v18 = v38;
           }
 
@@ -90,7 +90,7 @@
 
         else
         {
-          [v13 _pop];
+          [stackCopy _pop];
         }
 
         v23 = v23 + 1;
@@ -107,19 +107,19 @@
   return v33;
 }
 
-+ (id)itemSnapshotsWithItems:(id)a3 sectionIdentifier:(id)a4 sectionExpanded:(BOOL)a5 itemIdentifierBlock:(id)a6 viewModelBlock:(id)a7 childItemsBlock:(id)a8 expandedBlock:(id)a9
++ (id)itemSnapshotsWithItems:(id)items sectionIdentifier:(id)identifier sectionExpanded:(BOOL)expanded itemIdentifierBlock:(id)block viewModelBlock:(id)modelBlock childItemsBlock:(id)itemsBlock expandedBlock:(id)expandedBlock
 {
-  v12 = a5;
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if ([v15 count])
+  expandedCopy = expanded;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  blockCopy = block;
+  modelBlockCopy = modelBlock;
+  itemsBlockCopy = itemsBlock;
+  expandedBlockCopy = expandedBlock;
+  if ([itemsCopy count])
   {
-    v21 = [[HomeOutlineSectionBuilderStack alloc] initWithSectionIdentifier:v16 sectionIndex:0];
-    v22 = [a1 _itemSnapshotsWithStack:v21 items:v15 hidden:!v12 itemIdentifierBlock:v17 viewModelBlock:v18 childItemsBlock:v19 expandedBlock:v20];
+    v21 = [[HomeOutlineSectionBuilderStack alloc] initWithSectionIdentifier:identifierCopy sectionIndex:0];
+    v22 = [self _itemSnapshotsWithStack:v21 items:itemsCopy hidden:!expandedCopy itemIdentifierBlock:blockCopy viewModelBlock:modelBlockCopy childItemsBlock:itemsBlockCopy expandedBlock:expandedBlockCopy];
   }
 
   else

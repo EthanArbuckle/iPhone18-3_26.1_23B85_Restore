@@ -2,23 +2,23 @@
 - (CGAffineTransform)freeTransform;
 - (CGAffineTransform)rulerTransform;
 - (CGAffineTransform)unscaledFreeTransform;
-- (PKRulerGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (PKRulerGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
 - (void)resetAndAccumulateTransform;
 - (void)start;
 - (void)stopTimer;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PKRulerGestureRecognizer
 
-- (PKRulerGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PKRulerGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = PKRulerGestureRecognizer;
-  v4 = [(PKFreeTransformGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(PKFreeTransformGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -77,24 +77,24 @@
 
 - (CGAffineTransform)rulerTransform
 {
-  v5 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v6 = [v5 count];
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v6 = [touches count];
 
   if (v6 == 2)
   {
-    v8 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v9 = [v8 objectAtIndexedSubscript:0];
-    v10 = [(PKRulerGestureRecognizer *)self view];
-    v11 = [v10 superview];
-    [v9 locationInView:v11];
+    touches2 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v9 = [touches2 objectAtIndexedSubscript:0];
+    view = [(PKRulerGestureRecognizer *)self view];
+    superview = [view superview];
+    [v9 locationInView:superview];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v17 = [v16 objectAtIndexedSubscript:1];
-    v18 = [(PKRulerGestureRecognizer *)self view];
-    v19 = [v18 superview];
-    [v17 locationInView:v19];
+    touches3 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v17 = [touches3 objectAtIndexedSubscript:1];
+    view2 = [(PKRulerGestureRecognizer *)self view];
+    superview2 = [view2 superview];
+    [v17 locationInView:superview2];
     v21 = v20;
     v23 = v22;
 
@@ -122,8 +122,8 @@
 - (void)resetAndAccumulateTransform
 {
   v3 = objc_opt_class();
-  v4 = [(PKRulerGestureRecognizer *)self delegate];
-  v5 = PKDynamicCast(v3, v4);
+  delegate = [(PKRulerGestureRecognizer *)self delegate];
+  v5 = PKDynamicCast(v3, delegate);
 
   if (v5)
   {
@@ -165,13 +165,13 @@
   self->_startTimer = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = PKRulerGestureRecognizer;
-  [(PKFreeTransformGestureRecognizer *)&v11 touchesBegan:a3 withEvent:a4 rejectExcessTouches:0];
-  v5 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v6 = [v5 count];
+  [(PKFreeTransformGestureRecognizer *)&v11 touchesBegan:began withEvent:event rejectExcessTouches:0];
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v6 = [touches count];
 
   if (v6 == 2)
   {
@@ -192,11 +192,11 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = PKRulerGestureRecognizer;
-  [(PKFreeTransformGestureRecognizer *)&v5 touchesMoved:a3 withEvent:a4];
+  [(PKFreeTransformGestureRecognizer *)&v5 touchesMoved:moved withEvent:event];
   if (self->_initialSnap)
   {
     [(PKRulerGestureRecognizer *)self startSnapThreshold];
@@ -213,11 +213,11 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = PKRulerGestureRecognizer;
-  [(PKFreeTransformGestureRecognizer *)&v5 touchesEnded:a3 withEvent:a4];
+  [(PKFreeTransformGestureRecognizer *)&v5 touchesEnded:ended withEvent:event];
   [(PKRulerGestureRecognizer *)self stopTimer];
 }
 

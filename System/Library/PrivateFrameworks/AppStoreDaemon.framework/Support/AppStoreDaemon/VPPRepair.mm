@@ -1,11 +1,11 @@
 @interface VPPRepair
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5;
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key;
 - (ApplicationRepairDelegate)delegate;
 - (NSArray)repairedBundleIDs;
 - (VPPRepair)init;
 - (_TtC9appstored6LogKey)logKey;
-- (void)repairApplication:(id)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)repairApplication:(id)application completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VPPRepair
@@ -32,11 +32,11 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -59,25 +59,25 @@
   return v3;
 }
 
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key
 {
-  v6 = a3;
-  v7 = a5;
-  if (sub_1003D3128(v6, v8))
+  applicationCopy = application;
+  keyCopy = key;
+  if (sub_1003D3128(applicationCopy, v8))
   {
-    if (v6 && [v6[15] applicationHasMIDBasedSINF] && !objc_msgSend(v6[15], "applicationMissingRequiredSINF"))
+    if (applicationCopy && [applicationCopy[15] applicationHasMIDBasedSINF] && !objc_msgSend(applicationCopy[15], "applicationMissingRequiredSINF"))
     {
       v9 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v6[15] applicationHasMIDBasedSINF];
-        v12 = [v6[15] applicationMissingRequiredSINF];
+        applicationHasMIDBasedSINF = [applicationCopy[15] applicationHasMIDBasedSINF];
+        applicationMissingRequiredSINF = [applicationCopy[15] applicationMissingRequiredSINF];
         v14 = 138543874;
-        v15 = v7;
+        v15 = keyCopy;
         v16 = 1024;
-        v17 = v11;
+        v17 = applicationHasMIDBasedSINF;
         v18 = 1024;
-        v19 = v12;
+        v19 = applicationMissingRequiredSINF;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[VPP/%{public}@] Will not attempt vpp SINF recovery with hasMIDBasedSINF: %{BOOL}d missingRequireSINF: %d", &v14, 0x18u);
       }
 
@@ -90,7 +90,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = v7;
+        v15 = keyCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[VPP/%{public}@] Will attempt vpp SINF recovery", &v14, 0xCu);
       }
 
@@ -106,9 +106,9 @@
   return v10;
 }
 
-- (void)repairApplication:(id)a3 completionHandler:(id)a4
+- (void)repairApplication:(id)application completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -143,11 +143,11 @@
   v17[1] = 3221225472;
   v17[2] = sub_10022A4EC;
   v17[3] = &unk_10051DE90;
-  v19 = v5;
-  v20 = self;
+  v19 = handlerCopy;
+  selfCopy = self;
   v18 = v12;
   v15 = v12;
-  v16 = v5;
+  v16 = handlerCopy;
   sub_100284D9C(v14, v17);
 }
 

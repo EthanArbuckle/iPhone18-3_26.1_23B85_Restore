@@ -1,13 +1,13 @@
 @interface RBTransitionEffect
-- (BOOL)isEqual:(id)a3;
-- (float)argumentValueAtIndex:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)argumentValueAtIndex:(unint64_t)index;
 - (float)beginTime;
 - (float)duration;
 - (unint64_t)animationIndex;
-- (unsigned)integerArgumentValueAtIndex:(unint64_t)a3;
-- (void)setAnimationIndex:(unint64_t)a3;
-- (void)setArgumentValue:(float)a3 atIndex:(unint64_t)a4;
-- (void)setIntegerArgumentValue:(unsigned int)a3 atIndex:(unint64_t)a4;
+- (unsigned)integerArgumentValueAtIndex:(unint64_t)index;
+- (void)setAnimationIndex:(unint64_t)index;
+- (void)setArgumentValue:(float)value atIndex:(unint64_t)index;
+- (void)setIntegerArgumentValue:(unsigned int)value atIndex:(unint64_t)index;
 @end
 
 @implementation RBTransitionEffect
@@ -50,57 +50,57 @@
   }
 }
 
-- (void)setAnimationIndex:(unint64_t)a3
+- (void)setAnimationIndex:(unint64_t)index
 {
-  v3 = a3;
-  RB::Transition::Effect::set_insert_animation(&self->_effect, a3);
+  indexCopy = index;
+  RB::Transition::Effect::set_insert_animation(&self->_effect, index);
 
-  RB::Transition::Effect::set_remove_animation(&self->_effect, v3);
+  RB::Transition::Effect::set_remove_animation(&self->_effect, indexCopy);
 }
 
-- (float)argumentValueAtIndex:(unint64_t)a3
+- (float)argumentValueAtIndex:(unint64_t)index
 {
   result = 0.0;
-  if (a3 <= 1)
+  if (index <= 1)
   {
-    return self->_args[a3].arg;
+    return self->_args[index].arg;
   }
 
   return result;
 }
 
-- (void)setArgumentValue:(float)a3 atIndex:(unint64_t)a4
+- (void)setArgumentValue:(float)value atIndex:(unint64_t)index
 {
-  if (a4 <= 1)
+  if (index <= 1)
   {
-    self->_args[a4].arg = a3;
+    self->_args[index].arg = value;
   }
 }
 
-- (unsigned)integerArgumentValueAtIndex:(unint64_t)a3
+- (unsigned)integerArgumentValueAtIndex:(unint64_t)index
 {
-  if (a3 > 1)
+  if (index > 1)
   {
     return 0;
   }
 
   else
   {
-    return self->_args[a3].int_arg;
+    return self->_args[index].int_arg;
   }
 }
 
-- (void)setIntegerArgumentValue:(unsigned int)a3 atIndex:(unint64_t)a4
+- (void)setIntegerArgumentValue:(unsigned int)value atIndex:(unint64_t)index
 {
-  if (a4 <= 1)
+  if (index <= 1)
   {
-    self->_args[a4].int_arg = a3;
+    self->_args[index].int_arg = value;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3 || *&self->_effect != *(a3 + 2))
+  if (!equal || *&self->_effect != *(equal + 2))
   {
     return 0;
   }
@@ -110,7 +110,7 @@
   do
   {
     v5.effect = args[v3];
-    v6 = *(a3 + v3 * 4 + 12);
+    v6 = *(equal + v3 * 4 + 12);
     result = v5.int_arg == v6;
   }
 

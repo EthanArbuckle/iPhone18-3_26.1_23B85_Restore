@@ -1,20 +1,20 @@
 @interface PXPhotosGridToggleVideoFilterActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuActionState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridToggleVideoFilterActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v6 = a4;
-  v9.receiver = a1;
+  modelCopy = model;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___PXPhotosGridToggleVideoFilterActionPerformer;
-  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, a3, v6))
+  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, type, modelCopy))
   {
-    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:9 viewModel:v6];
+    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:9 viewModel:modelCopy];
   }
 
   else
@@ -27,26 +27,26 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  [v3 setVideo:{objc_msgSend(v3, "video") ^ 1}];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setVideo:{objc_msgSend(currentContentFilterState, "video") ^ 1}];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
 - (int64_t)menuActionState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:9];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:9];
 
   return v3;
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-    v4 = [v3 contentFilterState];
-    if ([v4 video])
+    viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+    contentFilterState = [viewModel contentFilterState];
+    if ([contentFilterState video])
     {
       v5 = @"DISABLE_VIDEOS_FILTER_SHORTCUT";
     }

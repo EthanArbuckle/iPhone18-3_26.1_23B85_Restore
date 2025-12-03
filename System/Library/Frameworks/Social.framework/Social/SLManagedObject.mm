@@ -1,24 +1,24 @@
 @interface SLManagedObject
-- (id)objectOfClass:(Class)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValuesWithObject:(id)a3;
+- (id)objectOfClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValuesWithObject:(id)object;
 @end
 
 @implementation SLManagedObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SLManagedObject *)self entity];
-  v6 = [v5 attributesByName];
-  v7 = [v6 allKeys];
+  coderCopy = coder;
+  entity = [(SLManagedObject *)self entity];
+  attributesByName = [entity attributesByName];
+  allKeys = [attributesByName allKeys];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v7;
+  v8 = allKeys;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -35,7 +35,7 @@
 
         v13 = *(*(&v15 + 1) + 8 * i);
         v14 = [(SLManagedObject *)self valueForKey:v13, v15];
-        [v4 encodeObject:v14 forKey:v13];
+        [coderCopy encodeObject:v14 forKey:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -45,30 +45,30 @@
   }
 }
 
-- (id)objectOfClass:(Class)a3
+- (id)objectOfClass:(Class)class
 {
-  v5 = [(SLManagedObject *)self entity];
-  v6 = [v5 attributesByName];
-  v7 = [v6 allKeys];
+  entity = [(SLManagedObject *)self entity];
+  attributesByName = [entity attributesByName];
+  allKeys = [attributesByName allKeys];
 
-  v8 = [(SLManagedObject *)self dictionaryWithValuesForKeys:v7];
-  v9 = objc_alloc_init(a3);
+  v8 = [(SLManagedObject *)self dictionaryWithValuesForKeys:allKeys];
+  v9 = objc_alloc_init(class);
   [v9 setValuesForKeysWithDictionary:v8];
-  v10 = [(SLManagedObject *)self objectID];
-  v11 = [v10 URIRepresentation];
-  [v9 setValue:v11 forKey:@"objectID"];
+  objectID = [(SLManagedObject *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  [v9 setValue:uRIRepresentation forKey:@"objectID"];
 
   return v9;
 }
 
-- (void)setValuesWithObject:(id)a3
+- (void)setValuesWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [(SLManagedObject *)self entity];
-  v6 = [v5 attributesByName];
-  v8 = [v6 allKeys];
+  objectCopy = object;
+  entity = [(SLManagedObject *)self entity];
+  attributesByName = [entity attributesByName];
+  allKeys = [attributesByName allKeys];
 
-  v7 = [v4 dictionaryWithValuesForKeys:v8];
+  v7 = [objectCopy dictionaryWithValuesForKeys:allKeys];
 
   [(SLManagedObject *)self setValuesForKeysWithDictionary:v7];
 }

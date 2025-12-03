@@ -1,8 +1,8 @@
 @interface MCAPNPayload
-- (BOOL)_checkForValidContents:(id)a3 outError:(id *)a4;
-- (MCAPNPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (BOOL)_checkForValidContents:(id)contents outError:(id *)error;
+- (MCAPNPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)_strippedAPNDefaults;
-- (id)_validationErrorType:(int64_t)a3 forInvalidKey:(id)a4;
+- (id)_validationErrorType:(int64_t)type forInvalidKey:(id)key;
 - (id)apnDefaults;
 - (id)installationWarnings;
 - (id)payloadDescriptionKeyValueSections;
@@ -10,35 +10,35 @@
 - (id)subtitle1Description;
 - (id)subtitle2Description;
 - (id)verboseDescription;
-- (void)_finishInitializationWithContents:(id)a3;
+- (void)_finishInitializationWithContents:(id)contents;
 @end
 
 @implementation MCAPNPayload
 
-- (id)_validationErrorType:(int64_t)a3 forInvalidKey:(id)a4
+- (id)_validationErrorType:(int64_t)type forInvalidKey:(id)key
 {
   v9 = MEMORY[0x1E696ABC0];
-  v10 = MCErrorArray(@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD", a2, a3, a4, v4, v5, v6, v7, a4);
-  v11 = [v9 MCErrorWithDomain:@"MCPayloadErrorDomain" code:a3 descriptionArray:v10 errorType:@"MCFatalError"];
+  v10 = MCErrorArray(@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD", a2, type, key, v4, v5, v6, v7, key);
+  v11 = [v9 MCErrorWithDomain:@"MCPayloadErrorDomain" code:type descriptionArray:v10 errorType:@"MCFatalError"];
 
   return v11;
 }
 
-- (BOOL)_checkForValidContents:(id)a3 outError:(id *)a4
+- (BOOL)_checkForValidContents:(id)contents outError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  contentsCopy = contents;
+  if (!error)
   {
     [MCAPNPayload _checkForValidContents:a2 outError:self];
   }
 
-  v27 = a4;
+  errorCopy = error;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = contentsCopy;
   v7 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (!v7)
   {
@@ -62,10 +62,10 @@
       if (([v12 isEqualToString:@"com.apple.managedCarrier"] & 1) == 0)
       {
         v21 = @"DefaultsDomainName";
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2004;
 LABEL_28:
-        v17 = [(MCAPNPayload *)v22 _validationErrorType:v23 forInvalidKey:v21];
+        v17 = [(MCAPNPayload *)selfCopy2 _validationErrorType:v23 forInvalidKey:v21];
 LABEL_30:
 
         goto LABEL_31;
@@ -75,7 +75,7 @@ LABEL_30:
       if (!v13)
       {
         v21 = @"DefaultsData";
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2002;
         goto LABEL_28;
       }
@@ -145,26 +145,26 @@ LABEL_21:
 
 LABEL_31:
 
-  if (v27)
+  if (errorCopy)
   {
     v24 = v17;
-    *v27 = v17;
+    *errorCopy = v17;
   }
 
   v25 = *MEMORY[0x1E69E9840];
   return v17 == 0;
 }
 
-- (void)_finishInitializationWithContents:(id)a3
+- (void)_finishInitializationWithContents:(id)contents
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  contentsCopy = contents;
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = contentsCopy;
   v25 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v25)
   {
@@ -230,7 +230,7 @@ LABEL_31:
               v20 = [v13 objectForKey:@"proxyPort"];
               [(MCAPNInfo *)v14 setProxyPort:v20];
 
-              [v4 addObject:v14];
+              [array addObject:v14];
               ++v12;
             }
 
@@ -251,25 +251,25 @@ LABEL_31:
     while (v25);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    objc_storeStrong(&self->_apnInfos, v4);
+    objc_storeStrong(&self->_apnInfos, array);
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (MCAPNPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCAPNPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = MCAPNPayload;
-  v9 = [(MCPayload *)&v31 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v31 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (v9)
   {
     v30 = 0;
-    v10 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v30];
+    v10 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v30];
     v11 = v30;
     if (!v11 && v10)
     {
@@ -278,12 +278,12 @@ LABEL_31:
       v11 = v29;
     }
 
-    v12 = [(MCPayload *)v9 profile];
-    v13 = [v12 isStub];
+    profile = [(MCPayload *)v9 profile];
+    isStub = [profile isStub];
 
-    if (v13)
+    if (isStub)
     {
-      if (v11 || (v28 = 0, [MCProfile removeOptionalObjectInDictionary:v8 key:@"WasInstalled" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v28], v27 = objc_claimAutoreleasedReturnValue(), v11 = v28, !v27))
+      if (v11 || (v28 = 0, [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"WasInstalled" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v28], v27 = objc_claimAutoreleasedReturnValue(), v11 = v28, !v27))
       {
         v9->_wasInstalled = 1;
       }
@@ -303,10 +303,10 @@ LABEL_31:
     {
       v14 = [(MCPayload *)v9 malformedPayloadErrorWithError:v11];
       v15 = v14;
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       v17 = _MCLogObjects;
@@ -315,28 +315,28 @@ LABEL_31:
         v18 = v17;
         v19 = objc_opt_class();
         v20 = v19;
-        v21 = [v15 MCVerboseDescription];
+        mCVerboseDescription = [v15 MCVerboseDescription];
         *buf = 138543618;
         v33 = v19;
         v34 = 2114;
-        v35 = v21;
+        v35 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
       v9 = 0;
     }
 
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v22 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v23 = v22;
-        v24 = [(MCPayload *)v9 friendlyName];
+        friendlyName = [(MCPayload *)v9 friendlyName];
         *buf = 138543618;
-        v33 = v24;
+        v33 = friendlyName;
         v34 = 2114;
-        v35 = v8;
+        v35 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v23, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
       }
     }
@@ -374,8 +374,8 @@ LABEL_31:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) defaultsRepresentation];
-        [v3 addObject:v9];
+        defaultsRepresentation = [*(*(&v13 + 1) + 8 * i) defaultsRepresentation];
+        [v3 addObject:defaultsRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -414,10 +414,10 @@ LABEL_31:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) strippedDefaultsRepresentation];
-        if (v9)
+        strippedDefaultsRepresentation = [*(*(&v13 + 1) + 8 * i) strippedDefaultsRepresentation];
+        if (strippedDefaultsRepresentation)
         {
-          [v3 addObject:v9];
+          [v3 addObject:strippedDefaultsRepresentation];
         }
       }
 
@@ -438,28 +438,28 @@ LABEL_31:
 {
   v10.receiver = self;
   v10.super_class = MCAPNPayload;
-  v3 = [(MCPayload *)&v10 stubDictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  stubDictionary = [(MCPayload *)&v10 stubDictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = +[MCAPNPayload apnDomainName];
-  [v4 setObject:v5 forKey:@"DefaultsDomainName"];
+  [dictionary setObject:v5 forKey:@"DefaultsDomainName"];
 
-  v6 = [(MCAPNPayload *)self _strippedAPNDefaults];
-  [v4 setObject:v6 forKey:@"DefaultsData"];
+  _strippedAPNDefaults = [(MCAPNPayload *)self _strippedAPNDefaults];
+  [dictionary setObject:_strippedAPNDefaults forKey:@"DefaultsData"];
 
-  v7 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
-  [v3 setObject:v7 forKey:@"PayloadContent"];
+  v7 = [MEMORY[0x1E695DF70] arrayWithObject:dictionary];
+  [stubDictionary setObject:v7 forKey:@"PayloadContent"];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_wasInstalled];
-  [v3 setObject:v8 forKey:@"WasInstalled"];
+  [stubDictionary setObject:v8 forKey:@"WasInstalled"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
 {
   v6.receiver = self;
   v6.super_class = MCAPNPayload;
-  v3 = [(MCPayload *)&v6 verboseDescription];
-  v4 = [v3 stringByAppendingFormat:@"\napns: %@", self->_apnInfos];
+  verboseDescription = [(MCPayload *)&v6 verboseDescription];
+  v4 = [verboseDescription stringByAppendingFormat:@"\napns: %@", self->_apnInfos];
 
   return v4;
 }
@@ -468,32 +468,32 @@ LABEL_31:
 {
   if ([(NSArray *)self->_apnInfos count])
   {
-    v3 = [(NSArray *)self->_apnInfos firstObject];
-    v4 = [v3 apnName];
+    firstObject = [(NSArray *)self->_apnInfos firstObject];
+    apnName = [firstObject apnName];
   }
 
   else
   {
-    v4 = MCLocalizedString(@"NAME_MISSING");
+    apnName = MCLocalizedString(@"NAME_MISSING");
   }
 
-  return v4;
+  return apnName;
 }
 
 - (id)subtitle2Description
 {
   if ([(NSArray *)self->_apnInfos count])
   {
-    v3 = [(NSArray *)self->_apnInfos firstObject];
-    v4 = [v3 username];
+    firstObject = [(NSArray *)self->_apnInfos firstObject];
+    username = [firstObject username];
   }
 
   else
   {
-    v4 = MCLocalizedString(@"USERNAME_MISSING");
+    username = MCLocalizedString(@"USERNAME_MISSING");
   }
 
-  return v4;
+  return username;
 }
 
 - (id)payloadDescriptionKeyValueSections
@@ -521,33 +521,33 @@ LABEL_31:
 
         v8 = *(*(&v41 + 1) + 8 * i);
         v9 = objc_opt_new();
-        v10 = [v8 apnName];
+        apnName = [v8 apnName];
 
-        if (v10)
+        if (apnName)
         {
           v11 = [MCKeyValue alloc];
-          v12 = [v8 apnName];
+          apnName2 = [v8 apnName];
           v13 = MCLocalizedString(@"APN_NAME");
-          v14 = [(MCKeyValue *)v11 initWithLocalizedString:v12 localizedKey:v13];
+          v14 = [(MCKeyValue *)v11 initWithLocalizedString:apnName2 localizedKey:v13];
 
           [v9 addObject:v14];
         }
 
-        v15 = [v8 username];
+        username = [v8 username];
 
-        if (v15)
+        if (username)
         {
           v16 = [MCKeyValue alloc];
-          v17 = [v8 username];
+          username2 = [v8 username];
           v18 = MCLocalizedString(@"USERNAME");
-          v19 = [(MCKeyValue *)v16 initWithLocalizedString:v17 localizedKey:v18];
+          v19 = [(MCKeyValue *)v16 initWithLocalizedString:username2 localizedKey:v18];
 
           [v9 addObject:v19];
         }
 
-        v20 = [v8 password];
+        password = [v8 password];
 
-        if (v20)
+        if (password)
         {
           v21 = [MCKeyValue alloc];
           v22 = MCLocalizedString(@"PRESENT");
@@ -557,25 +557,25 @@ LABEL_31:
           [v9 addObject:v24];
         }
 
-        v25 = [v8 proxy];
+        proxy = [v8 proxy];
 
-        if (v25)
+        if (proxy)
         {
           v26 = [MCKeyValue alloc];
-          v27 = [v8 proxy];
+          proxy2 = [v8 proxy];
           v28 = MCLocalizedString(@"PROXY");
-          v29 = [(MCKeyValue *)v26 initWithLocalizedString:v27 localizedKey:v28];
+          v29 = [(MCKeyValue *)v26 initWithLocalizedString:proxy2 localizedKey:v28];
 
           [v9 addObject:v29];
         }
 
-        v30 = [v8 proxyPort];
+        proxyPort = [v8 proxyPort];
 
-        if (v30)
+        if (proxyPort)
         {
           v31 = MEMORY[0x1E696AEC0];
-          v32 = [v8 proxyPort];
-          v33 = [v31 stringWithFormat:@"%d", objc_msgSend(v32, "intValue")];
+          proxyPort2 = [v8 proxyPort];
+          v33 = [v31 stringWithFormat:@"%d", objc_msgSend(proxyPort2, "intValue")];
 
           v34 = [MCKeyValue alloc];
           v35 = MCLocalizedString(@"PORT");

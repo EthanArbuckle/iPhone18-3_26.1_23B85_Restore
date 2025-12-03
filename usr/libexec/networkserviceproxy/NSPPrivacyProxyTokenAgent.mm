@@ -6,14 +6,14 @@
 
 - (void)tokenLowWaterMarkReached
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
   }
 
-  v3 = self;
-  [(NSPPrivacyProxyTokenAgent *)self tokenLowWaterMarkReachedForAgent:v2];
+  selfCopy2 = self;
+  [(NSPPrivacyProxyTokenAgent *)self tokenLowWaterMarkReachedForAgent:selfCopy];
 }
 
 @end

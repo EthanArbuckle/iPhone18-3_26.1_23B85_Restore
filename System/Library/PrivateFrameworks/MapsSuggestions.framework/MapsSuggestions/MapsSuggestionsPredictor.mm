@@ -1,22 +1,22 @@
 @interface MapsSuggestionsPredictor
 + (id)sharedPredictor;
 - (BOOL)_openConnectionIfNecessary;
-- (BOOL)predictedTransportModeForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
-- (BOOL)predictedTransportModeForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
+- (BOOL)predictedTransportModeForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler;
+- (BOOL)predictedTransportModeForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler;
 - (MapsSuggestionsPredictor)init;
 - (NSString)uniqueName;
-- (__CFString)_modelVersionFromModelInformation:(__CFString *)a1;
-- (uint64_t)_modelNameFromModelInformation:(uint64_t)a1;
+- (__CFString)_modelVersionFromModelInformation:(__CFString *)information;
+- (uint64_t)_modelNameFromModelInformation:(uint64_t)information;
 - (void)_closeConnection;
 - (void)_initCloseTimerIfNecessary;
-- (void)_overrideTempPredictedTransportModeForCarPlay:(void *)a1;
+- (void)_overrideTempPredictedTransportModeForCarPlay:(void *)play;
 - (void)_scheduleCloseConnection;
 - (void)_unscheduleCloseConnection;
 - (void)cancelCapturingAnalytics;
-- (void)captureActualTransportationMode:(int)a3 originMapItem:(id)a4 destinationMapItem:(id)a5;
-- (void)capturePredictedTransportationMode:(int)a3;
+- (void)captureActualTransportationMode:(int)mode originMapItem:(id)item destinationMapItem:(id)mapItem;
+- (void)capturePredictedTransportationMode:(int)mode;
 - (void)dealloc;
-- (void)storeSignalPack:(id)a3 forMapItem:(id)a4 andEntry:(id)a5;
+- (void)storeSignalPack:(id)pack forMapItem:(id)item andEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsPredictor
@@ -94,14 +94,14 @@ void __43__MapsSuggestionsPredictor_sharedPredictor__block_invoke()
   [(MapsSuggestionsPredictor *)&v4 dealloc];
 }
 
-- (BOOL)predictedTransportModeForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (BOOL)predictedTransportModeForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  entryCopy = entry;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -122,7 +122,7 @@ void __43__MapsSuggestionsPredictor_sharedPredictor__block_invoke()
 
   v11 = GEOFindOrCreateLog();
   v12 = v11;
-  if (!v9)
+  if (!entryCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -144,9 +144,9 @@ LABEL_16:
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(MapsSuggestionsPredictor *)self uniqueName];
+    uniqueName = [(MapsSuggestionsPredictor *)self uniqueName];
     *buf = 138412546;
-    v26 = v13;
+    v26 = uniqueName;
     v27 = 2080;
     *v28 = "predictedTransportModeForDestinationEntry";
     _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -162,9 +162,9 @@ LABEL_16:
   v15 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v9 uniqueIdentifier];
+    uniqueIdentifier = [entryCopy uniqueIdentifier];
     *buf = 138412290;
-    v26 = v16;
+    v26 = uniqueIdentifier;
     _os_log_impl(&dword_1C5126000, v15, OS_LOG_TYPE_DEBUG, "Predicting transport type for Entry %@", buf, 0xCu);
   }
 
@@ -175,10 +175,10 @@ LABEL_16:
   block[2] = __95__MapsSuggestionsPredictor_predictedTransportModeForDestinationEntry_originCoordinate_handler___block_invoke;
   block[3] = &unk_1E81F6E98;
   objc_copyWeak(v24, buf);
-  v22 = v9;
+  v22 = entryCopy;
   v24[1] = *&latitude;
   v24[2] = *&longitude;
-  v23 = v10;
+  v23 = handlerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v24);
@@ -231,10 +231,10 @@ void __95__MapsSuggestionsPredictor_predictedTransportModeForDestinationEntry_or
 
 - (BOOL)_openConnectionIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (!*(a1 + 16))
+    dispatch_assert_queue_V2(*(self + 8));
+    if (!*(self + 16))
     {
       v2 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F448E5B8];
       v3 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
@@ -275,7 +275,7 @@ void __95__MapsSuggestionsPredictor_predictedTransportModeForDestinationEntry_or
 
       v15 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.maps.destinationd.predictions" options:0];
       [v15 setRemoteObjectInterface:v2];
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __54__MapsSuggestionsPredictor__openConnectionIfNecessary__block_invoke;
@@ -294,7 +294,7 @@ void __95__MapsSuggestionsPredictor_predictedTransportModeForDestinationEntry_or
       v18[3] = &unk_1E81F5438;
       objc_copyWeak(&v19, &location);
       v16 = [v15 remoteObjectProxyWithErrorHandler:v18];
-      objc_storeStrong((a1 + 16), v15);
+      objc_storeStrong((self + 16), v15);
       [v15 resume];
       objc_destroyWeak(&v19);
       objc_destroyWeak(&v21);
@@ -303,7 +303,7 @@ void __95__MapsSuggestionsPredictor_predictedTransportModeForDestinationEntry_or
     }
   }
 
-  return a1 != 0;
+  return self != 0;
 }
 
 void __95__MapsSuggestionsPredictor_predictedTransportModeForDestinationEntry_originCoordinate_handler___block_invoke_50(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -423,11 +423,11 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)storeSignalPack:(id)a3 forMapItem:(id)a4 andEntry:(id)a5
+- (void)storeSignalPack:(id)pack forMapItem:(id)item andEntry:(id)entry
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  packCopy = pack;
+  itemCopy = item;
+  entryCopy = entry;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -435,12 +435,12 @@ LABEL_24:
   block[2] = __64__MapsSuggestionsPredictor_storeSignalPack_forMapItem_andEntry___block_invoke;
   block[3] = &unk_1E81F6EC0;
   objc_copyWeak(&v19, &location);
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = itemCopy;
+  v17 = packCopy;
+  v18 = entryCopy;
+  v12 = entryCopy;
+  v13 = packCopy;
+  v14 = itemCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
@@ -477,14 +477,14 @@ void __64__MapsSuggestionsPredictor_storeSignalPack_forMapItem_andEntry___block_
   }
 }
 
-- (BOOL)predictedTransportModeForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (BOOL)predictedTransportModeForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -505,7 +505,7 @@ void __64__MapsSuggestionsPredictor_storeSignalPack_forMapItem_andEntry___block_
 
   v11 = GEOFindOrCreateLog();
   v12 = v11;
-  if (!v9)
+  if (!itemCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -527,9 +527,9 @@ LABEL_16:
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(MapsSuggestionsPredictor *)self uniqueName];
+    uniqueName = [(MapsSuggestionsPredictor *)self uniqueName];
     *buf = 138412546;
-    v29 = v13;
+    v29 = uniqueName;
     v30 = 2080;
     *v31 = "predictedTransportModeForDestinationMapItem";
     _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -545,13 +545,13 @@ LABEL_16:
   v15 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [v9 coordinate];
+    [itemCopy coordinate];
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+.8f, %+.8f", v16, v17];
-    v19 = [v9 addressDictionary];
+    addressDictionary = [itemCopy addressDictionary];
     *buf = 138412546;
     v29 = v18;
     v30 = 2112;
-    *v31 = v19;
+    *v31 = addressDictionary;
     _os_log_impl(&dword_1C5126000, v15, OS_LOG_TYPE_DEBUG, "Predicting transport type for mapItem %@, %@", buf, 0x16u);
   }
 
@@ -562,10 +562,10 @@ LABEL_16:
   block[2] = __97__MapsSuggestionsPredictor_predictedTransportModeForDestinationMapItem_originCoordinate_handler___block_invoke;
   block[3] = &unk_1E81F6E98;
   objc_copyWeak(v27, buf);
-  v25 = v9;
+  v25 = itemCopy;
   v27[1] = *&latitude;
   v27[2] = *&longitude;
-  v26 = v10;
+  v26 = handlerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v27);
@@ -783,12 +783,12 @@ LABEL_13:
   }
 }
 
-- (void)captureActualTransportationMode:(int)a3 originMapItem:(id)a4 destinationMapItem:(id)a5
+- (void)captureActualTransportationMode:(int)mode originMapItem:(id)item destinationMapItem:(id)mapItem
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  if (!mapItemCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -811,7 +811,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!itemCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -838,11 +838,11 @@ LABEL_9:
   block[2] = __93__MapsSuggestionsPredictor_captureActualTransportationMode_originMapItem_destinationMapItem___block_invoke;
   block[3] = &unk_1E81F6F38;
   objc_copyWeak(&v18, location);
-  v15 = v9;
-  v11 = v8;
-  v19 = a3;
+  v15 = mapItemCopy;
+  v11 = itemCopy;
+  modeCopy = mode;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v18);
@@ -1488,12 +1488,12 @@ void __93__MapsSuggestionsPredictor_captureActualTransportationMode_originMapIte
   }
 }
 
-- (uint64_t)_modelNameFromModelInformation:(uint64_t)a1
+- (uint64_t)_modelNameFromModelInformation:(uint64_t)information
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (information && v3)
   {
     v6 = [v3 objectForKeyedSubscript:@"version"];
     if (v6 && (v7 = v6, [v4 objectForKeyedSubscript:@"version"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"0"), v8, v7, (v9 & 1) != 0))
@@ -1554,7 +1554,7 @@ void __93__MapsSuggestionsPredictor_captureActualTransportationMode_originMapIte
   return v5;
 }
 
-- (void)capturePredictedTransportationMode:(int)a3
+- (void)capturePredictedTransportationMode:(int)mode
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -1563,7 +1563,7 @@ void __93__MapsSuggestionsPredictor_captureActualTransportationMode_originMapIte
   block[2] = __63__MapsSuggestionsPredictor_capturePredictedTransportationMode___block_invoke;
   block[3] = &unk_1E81F6F60;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  modeCopy = mode;
   dispatch_async(queue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1866,7 +1866,7 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
 
 - (void)_unscheduleCloseConnection
 {
-  if (a1)
+  if (self)
   {
     v3 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_17(v3))
@@ -1875,13 +1875,13 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
       _os_log_impl(v4, v5, v6, v7, v8, 2u);
     }
 
-    v9 = *(a1 + 24);
+    v9 = *(self + 24);
     if (v9)
     {
       dispatch_source_set_timer(v9, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      dispatch_source_cancel(*(a1 + 24));
-      v10 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      dispatch_source_cancel(*(self + 24));
+      v10 = *(self + 24);
+      *(self + 24) = 0;
     }
   }
 }
@@ -1889,12 +1889,12 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
 - (void)_closeConnection
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v3 = [a1 uniqueName];
+      uniqueName = [self uniqueName];
       OUTLINED_FUNCTION_1();
       OUTLINED_FUNCTION_2_0(&dword_1C5126000, v4, v5, "{MSgDebug} OBJECT{%@} %s BEGIN", v6, v7, v8, v9, v22[0]);
     }
@@ -1906,10 +1906,10 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
       _os_signpost_emit_with_name_impl(&dword_1C5126000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_closeConnection", "", v22, 2u);
     }
 
-    v11 = a1[2];
+    v11 = self[2];
     if (v11)
     {
-      a1[2] = 0;
+      self[2] = 0;
       v12 = v11;
 
       [v12 setInterruptionHandler:0];
@@ -1917,11 +1917,11 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
       [v12 invalidate];
     }
 
-    [(MapsSuggestionsPredictor *)a1 _unscheduleCloseConnection];
+    [(MapsSuggestionsPredictor *)self _unscheduleCloseConnection];
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [a1 uniqueName];
+      uniqueName2 = [self uniqueName];
       OUTLINED_FUNCTION_1();
       OUTLINED_FUNCTION_2_0(&dword_1C5126000, v15, v16, "{MSgDebug} OBJECT{%@} %s END", v17, v18, v19, v20, v22[0]);
     }
@@ -1937,9 +1937,9 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
 
 - (void)_scheduleCloseConnection
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[1]);
+    dispatch_assert_queue_V2(self[1]);
     v3 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_17(v3))
     {
@@ -1947,24 +1947,24 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
       _os_log_impl(v4, v5, v6, v7, v8, 2u);
     }
 
-    [(MapsSuggestionsPredictor *)a1 _initCloseTimerIfNecessary];
+    [(MapsSuggestionsPredictor *)self _initCloseTimerIfNecessary];
     GEOConfigGetDouble();
     v10 = v9;
     GEOConfigGetDouble();
     v12 = v11;
-    v13 = a1[3];
+    v13 = self[3];
     v14 = dispatch_time(0, (v10 * 1000000000.0));
     dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, (v12 * 1000000000.0));
   }
 }
 
-- (void)_overrideTempPredictedTransportModeForCarPlay:(void *)a1
+- (void)_overrideTempPredictedTransportModeForCarPlay:(void *)play
 {
   v4 = a2;
-  if (a1)
+  if (play)
   {
-    objc_initWeak(&location, a1);
-    v5 = a1[1];
+    objc_initWeak(&location, play);
+    v5 = play[1];
     OUTLINED_FUNCTION_1_3();
     v7 = 3221225472;
     v8 = __74__MapsSuggestionsPredictor__overrideTempPredictedTransportModeForCarPlay___block_invoke;
@@ -1978,35 +1978,35 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
   }
 }
 
-- (__CFString)_modelVersionFromModelInformation:(__CFString *)a1
+- (__CFString)_modelVersionFromModelInformation:(__CFString *)information
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (information)
   {
     v5 = @"version";
     v6 = [v3 objectForKeyedSubscript:@"version"];
 
     if (v6 || (v5 = @"MLModelVersionStringKey", [v4 objectForKeyedSubscript:@"MLModelVersionStringKey"], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
-      a1 = [v4 objectForKeyedSubscript:v5];
+      information = [v4 objectForKeyedSubscript:v5];
     }
 
     else
     {
-      a1 = @"No version";
+      information = @"No version";
     }
   }
 
-  return a1;
+  return information;
 }
 
 - (void)_initCloseTimerIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[1]);
-    if (!a1[3])
+    dispatch_assert_queue_V2(self[1]);
+    if (!self[3])
     {
       v4 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_17(v4))
@@ -2015,20 +2015,20 @@ void __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke(uin
         _os_log_impl(&dword_1C5126000, v1, OS_LOG_TYPE_DEBUG, "Re-initializing the _closeTimer", buf, 2u);
       }
 
-      objc_initWeak(buf, a1);
-      v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, a1[1]);
-      v6 = a1[3];
-      a1[3] = v5;
+      objc_initWeak(buf, self);
+      v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self[1]);
+      v6 = self[3];
+      self[3] = v5;
 
-      dispatch_source_set_timer(a1[3], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      v7 = a1[3];
+      dispatch_source_set_timer(self[3], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+      v7 = self[3];
       OUTLINED_FUNCTION_1_3();
       v9 = 3221225472;
       v10 = __54__MapsSuggestionsPredictor__initCloseTimerIfNecessary__block_invoke;
       v11 = &unk_1E81F53E8;
       objc_copyWeak((v2 + 32), buf);
       dispatch_source_set_event_handler(v7, handler);
-      dispatch_resume(a1[3]);
+      dispatch_resume(self[3]);
       objc_destroyWeak((v2 + 32));
       objc_destroyWeak(buf);
     }

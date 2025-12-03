@@ -1,43 +1,43 @@
 @interface VNTorsoprintUpgradeDetector
-+ (BOOL)isSupportedUpgradeFromPreviousEspressoprint:(id)a3 toNewLowResolutionEspressoprint:(id)a4;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (BOOL)isSupportedUpgradeFromPreviousEspressoprint:(id)espressoprint toNewLowResolutionEspressoprint:(id)resolutionEspressoprint;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNTorsoprintUpgradeDetector
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v12 = *&a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v12 = *&class;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v37[2] = *MEMORY[0x1E69E9840];
-  v19 = a5;
+  optionsCopy = options;
   v36.receiver = self;
   v36.super_class = VNTorsoprintUpgradeDetector;
-  v20 = [(VNEspressoprintUpgradeDetector *)&v36 processRegionOfInterest:a4 croppedPixelBuffer:v19 options:v12 qosClass:a7 warningRecorder:a8 error:a9 progressHandler:x, y, width, height];
-  LOBYTE(a9) = v20 == 0;
+  height = [(VNEspressoprintUpgradeDetector *)&v36 processRegionOfInterest:buffer croppedPixelBuffer:optionsCopy options:v12 qosClass:recorder warningRecorder:error error:handler progressHandler:x, y, width, height];
+  LOBYTE(handler) = height == 0;
 
-  if (a9)
+  if (handler)
   {
     v33 = 0;
   }
 
   else
   {
-    v21 = +[VNValidationUtilities requiredObjectOfClass:forKey:inOptions:error:](VNValidationUtilities, "requiredObjectOfClass:forKey:inOptions:error:", [objc_opt_class() espressoprintClass], @"VNEspressoprintUpgradeDetectorProcessOption_ToEspressoprint", v19, a8);
+    v21 = +[VNValidationUtilities requiredObjectOfClass:forKey:inOptions:error:](VNValidationUtilities, "requiredObjectOfClass:forKey:inOptions:error:", [objc_opt_class() espressoprintClass], @"VNEspressoprintUpgradeDetectorProcessOption_ToEspressoprint", optionsCopy, error);
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 elementCount];
+      elementCount = [v21 elementCount];
       v24 = [VNTorsoprint alloc];
       [(VNEspressoprintUpgradeDetector *)self highResolutionNewEspressoprint];
       [v22 confidence];
       v26 = v25;
-      v27 = [v22 requestRevision];
+      requestRevision = [v22 requestRevision];
       LODWORD(v28) = v26;
-      v29 = [(VNTorsoprint *)v24 initWithData:v35 elementCount:v23 elementType:1 lengthInBytes:4 * v23 confidence:v27 requestRevision:v28];
+      v29 = [(VNTorsoprint *)v24 initWithData:v35 elementCount:elementCount elementType:1 lengthInBytes:4 * elementCount confidence:requestRevision requestRevision:v28];
       if (v29)
       {
         v30 = MEMORY[0x1E696AD98];
@@ -49,10 +49,10 @@
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
       }
 
-      else if (a8)
+      else if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot allocate torsoprint"];
-        *a8 = v33 = 0;
+        *error = v33 = 0;
       }
 
       else
@@ -70,21 +70,21 @@
   return v33;
 }
 
-+ (BOOL)isSupportedUpgradeFromPreviousEspressoprint:(id)a3 toNewLowResolutionEspressoprint:(id)a4
++ (BOOL)isSupportedUpgradeFromPreviousEspressoprint:(id)espressoprint toNewLowResolutionEspressoprint:(id)resolutionEspressoprint
 {
-  v5 = a3;
-  v6 = a4;
+  espressoprintCopy = espressoprint;
+  resolutionEspressoprintCopy = resolutionEspressoprint;
   if (+[VNTorsoprintUpgradeDetector isSupportedUpgradeFromPreviousEspressoprint:toNewLowResolutionEspressoprint:]::onceToken != -1)
   {
     dispatch_once(&+[VNTorsoprintUpgradeDetector isSupportedUpgradeFromPreviousEspressoprint:toNewLowResolutionEspressoprint:]::onceToken, &__block_literal_global_25608);
   }
 
   v7 = +[VNTorsoprintUpgradeDetector isSupportedUpgradeFromPreviousEspressoprint:toNewLowResolutionEspressoprint:]::versionsUpgradeTable;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "requestRevision")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(espressoprintCopy, "requestRevision")}];
   v9 = [v7 objectForKey:v8];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  LOBYTE(v8) = [v6 requestRevision] == v10;
+  LOBYTE(v8) = [resolutionEspressoprintCopy requestRevision] == unsignedIntegerValue;
   return v8;
 }
 

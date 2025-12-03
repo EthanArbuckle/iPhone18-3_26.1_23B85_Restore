@@ -1,54 +1,54 @@
 @interface CALNCalendarResourceChangedNotificationInfo
-- (CALNCalendarResourceChangedNotificationInfo)initWithSourceClientIdentifier:(id)a3 calendarNotification:(id)a4 changeType:(unsigned int)a5 date:(id)a6 allDay:(BOOL)a7 timeZone:(id)a8 expirationDate:(id)a9 launchURL:(id)a10 isDelegate:(BOOL)a11 sourceTitle:(id)a12 sourceIdentifier:(id)a13;
+- (CALNCalendarResourceChangedNotificationInfo)initWithSourceClientIdentifier:(id)identifier calendarNotification:(id)notification changeType:(unsigned int)type date:(id)date allDay:(BOOL)day timeZone:(id)zone expirationDate:(id)expirationDate launchURL:(id)self0 isDelegate:(BOOL)self1 sourceTitle:(id)self2 sourceIdentifier:(id)self3;
 - (id)description;
 @end
 
 @implementation CALNCalendarResourceChangedNotificationInfo
 
-- (CALNCalendarResourceChangedNotificationInfo)initWithSourceClientIdentifier:(id)a3 calendarNotification:(id)a4 changeType:(unsigned int)a5 date:(id)a6 allDay:(BOOL)a7 timeZone:(id)a8 expirationDate:(id)a9 launchURL:(id)a10 isDelegate:(BOOL)a11 sourceTitle:(id)a12 sourceIdentifier:(id)a13
+- (CALNCalendarResourceChangedNotificationInfo)initWithSourceClientIdentifier:(id)identifier calendarNotification:(id)notification changeType:(unsigned int)type date:(id)date allDay:(BOOL)day timeZone:(id)zone expirationDate:(id)expirationDate launchURL:(id)self0 isDelegate:(BOOL)self1 sourceTitle:(id)self2 sourceIdentifier:(id)self3
 {
-  v42 = a3;
-  v41 = a4;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a12;
-  v23 = a13;
+  identifierCopy = identifier;
+  notificationCopy = notification;
+  dateCopy = date;
+  zoneCopy = zone;
+  expirationDateCopy = expirationDate;
+  lCopy = l;
+  titleCopy = title;
+  sourceIdentifierCopy = sourceIdentifier;
   v43.receiver = self;
   v43.super_class = CALNCalendarResourceChangedNotificationInfo;
   v24 = [(CALNCalendarResourceChangedNotificationInfo *)&v43 init];
   if (v24)
   {
-    v25 = [v42 copy];
+    v25 = [identifierCopy copy];
     sourceClientIdentifier = v24->_sourceClientIdentifier;
     v24->_sourceClientIdentifier = v25;
 
-    objc_storeStrong(&v24->_calendarNotification, a4);
-    v24->_changeType = a5;
-    v27 = [v18 copy];
+    objc_storeStrong(&v24->_calendarNotification, notification);
+    v24->_changeType = type;
+    v27 = [dateCopy copy];
     date = v24->_date;
     v24->_date = v27;
 
-    v24->_allDay = a7;
-    v29 = [v19 copy];
+    v24->_allDay = day;
+    v29 = [zoneCopy copy];
     timeZone = v24->_timeZone;
     v24->_timeZone = v29;
 
-    v31 = [v20 copy];
+    v31 = [expirationDateCopy copy];
     expirationDate = v24->_expirationDate;
     v24->_expirationDate = v31;
 
-    v33 = [v21 copy];
+    v33 = [lCopy copy];
     launchURL = v24->_launchURL;
     v24->_launchURL = v33;
 
-    v24->_isDelegate = a11;
-    v35 = [v22 copy];
+    v24->_isDelegate = delegate;
+    v35 = [titleCopy copy];
     sourceTitle = v24->_sourceTitle;
     v24->_sourceTitle = v35;
 
-    v37 = [v23 copy];
+    v37 = [sourceIdentifierCopy copy];
     sourceIdentifier = v24->_sourceIdentifier;
     v24->_sourceIdentifier = v37;
   }
@@ -60,18 +60,18 @@
 {
   v17 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
-  v15 = [(CALNCalendarResourceChangedNotificationInfo *)self sourceClientIdentifier];
-  v14 = [(CALNCalendarResourceChangedNotificationInfo *)self calendarNotification];
+  sourceClientIdentifier = [(CALNCalendarResourceChangedNotificationInfo *)self sourceClientIdentifier];
+  calendarNotification = [(CALNCalendarResourceChangedNotificationInfo *)self calendarNotification];
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[CALNCalendarResourceChangedNotificationInfo changeType](self, "changeType")}];
-  v12 = [(CALNCalendarResourceChangedNotificationInfo *)self date];
+  date = [(CALNCalendarResourceChangedNotificationInfo *)self date];
   v3 = [MEMORY[0x277CCABB0] numberWithBool:{-[CALNCalendarResourceChangedNotificationInfo allDay](self, "allDay")}];
-  v4 = [(CALNCalendarResourceChangedNotificationInfo *)self timeZone];
-  v5 = [(CALNCalendarResourceChangedNotificationInfo *)self expirationDate];
-  v6 = [(CALNCalendarResourceChangedNotificationInfo *)self launchURL];
+  timeZone = [(CALNCalendarResourceChangedNotificationInfo *)self timeZone];
+  expirationDate = [(CALNCalendarResourceChangedNotificationInfo *)self expirationDate];
+  launchURL = [(CALNCalendarResourceChangedNotificationInfo *)self launchURL];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[CALNCalendarResourceChangedNotificationInfo isDelegate](self, "isDelegate")}];
-  v8 = [(CALNCalendarResourceChangedNotificationInfo *)self sourceTitle];
-  v9 = [(CALNCalendarResourceChangedNotificationInfo *)self sourceIdentifier];
-  v10 = [v17 stringWithFormat:@"<%@: %p>(sourceClientIdentifier = %@, calendarNotification = %@, changeType = %@, date = %@, allDay = %@, timeZone = %@, expirationDate = %@, launchURL = %@, isDelegate = %@, sourceTitle = %@, sourceIdentifier = %@)", v16, self, v15, v14, v13, v12, v3, v4, v5, v6, v7, v8, v9];
+  sourceTitle = [(CALNCalendarResourceChangedNotificationInfo *)self sourceTitle];
+  sourceIdentifier = [(CALNCalendarResourceChangedNotificationInfo *)self sourceIdentifier];
+  v10 = [v17 stringWithFormat:@"<%@: %p>(sourceClientIdentifier = %@, calendarNotification = %@, changeType = %@, date = %@, allDay = %@, timeZone = %@, expirationDate = %@, launchURL = %@, isDelegate = %@, sourceTitle = %@, sourceIdentifier = %@)", v16, self, sourceClientIdentifier, calendarNotification, v13, date, v3, timeZone, expirationDate, launchURL, v7, sourceTitle, sourceIdentifier];
 
   return v10;
 }

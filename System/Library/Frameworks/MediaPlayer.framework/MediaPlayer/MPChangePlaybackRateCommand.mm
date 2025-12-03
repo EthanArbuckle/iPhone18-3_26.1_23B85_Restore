@@ -1,8 +1,8 @@
 @interface MPChangePlaybackRateCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (id)newCommandEventWithPlaybackRate:(float)a3;
-- (void)setExtendedSupportedPlaybackRates:(id)a3;
-- (void)setPreferredRate:(float)a3;
+- (id)newCommandEventWithPlaybackRate:(float)rate;
+- (void)setExtendedSupportedPlaybackRates:(id)rates;
+- (void)setPreferredRate:(float)rate;
 - (void)setSupportedPlaybackRates:(NSArray *)supportedPlaybackRates;
 @end
 
@@ -35,35 +35,35 @@
   return v3;
 }
 
-- (id)newCommandEventWithPlaybackRate:(float)a3
+- (id)newCommandEventWithPlaybackRate:(float)rate
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MPRemoteCommand *)self mediaRemoteCommandType];
+  mediaRemoteCommandType = [(MPRemoteCommand *)self mediaRemoteCommandType];
   v11 = *MEMORY[0x1E69B1188];
-  *&v6 = a3;
+  *&v6 = rate;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v9 = [(MPRemoteCommand *)self newCommandEventWithCommandType:v5 options:v8];
+  v9 = [(MPRemoteCommand *)self newCommandEventWithCommandType:mediaRemoteCommandType options:v8];
 
   return v9;
 }
 
-- (void)setPreferredRate:(float)a3
+- (void)setPreferredRate:(float)rate
 {
-  if (vabds_f32(self->_preferredRate, a3) > 0.00000011921)
+  if (vabds_f32(self->_preferredRate, rate) > 0.00000011921)
   {
-    self->_preferredRate = a3;
+    self->_preferredRate = rate;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setExtendedSupportedPlaybackRates:(id)a3
+- (void)setExtendedSupportedPlaybackRates:(id)rates
 {
-  v6 = a3;
+  ratesCopy = rates;
   if (![(NSArray *)self->_extendedSupportedPlaybackRates isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [ratesCopy copy];
     extendedSupportedPlaybackRates = self->_extendedSupportedPlaybackRates;
     self->_extendedSupportedPlaybackRates = v4;
 

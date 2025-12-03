@@ -1,23 +1,23 @@
 @interface GuidedFilterShared
-+ (id)getSharedInstanceOrRelease:(BOOL)a3;
-- (id)getShaders:(id)a3;
++ (id)getSharedInstanceOrRelease:(BOOL)release;
+- (id)getShaders:(id)shaders;
 @end
 
 @implementation GuidedFilterShared
 
-- (id)getShaders:(id)a3
+- (id)getShaders:(id)shaders
 {
-  v4 = a3;
+  shadersCopy = shaders;
   shaders = self->_shaders;
   p_shaders = &self->_shaders;
-  v7 = shaders;
-  if (!v7)
+  shadersCopy2 = shaders;
+  if (!shadersCopy2)
   {
     v8 = [GuidedFilterShaders alloc];
-    v7 = objc_msgSend_initWithMetalContext_(v8, v9, v4, v10);
-    if (v7)
+    shadersCopy2 = objc_msgSend_initWithMetalContext_(v8, v9, shadersCopy, v10);
+    if (shadersCopy2)
     {
-      objc_storeStrong(p_shaders, v7);
+      objc_storeStrong(p_shaders, shadersCopy2);
     }
 
     else
@@ -26,16 +26,16 @@
     }
   }
 
-  return v7;
+  return shadersCopy2;
 }
 
-+ (id)getSharedInstanceOrRelease:(BOOL)a3
++ (id)getSharedInstanceOrRelease:(BOOL)release
 {
-  v3 = a3;
+  releaseCopy = release;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   v5 = qword_2A18C2318;
-  if (v3)
+  if (releaseCopy)
   {
     qword_2A18C2318 = 0;
 

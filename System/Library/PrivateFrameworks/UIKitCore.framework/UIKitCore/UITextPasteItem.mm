@@ -1,54 +1,54 @@
 @interface UITextPasteItem
-- (UITextPasteItem)initWithTextPasteCoordinator:(id)a3;
-- (id)attributedStringFromAttributedString:(id)a3 preservingAttributes:(id)a4 addingAttributes:(id)a5;
-- (id)attributesWithContentAwareWritingDirectionForString:(id)a3 defaultAttributes:(id)a4;
-- (void)setAttachmentResult:(id)a3;
+- (UITextPasteItem)initWithTextPasteCoordinator:(id)coordinator;
+- (id)attributedStringFromAttributedString:(id)string preservingAttributes:(id)attributes addingAttributes:(id)addingAttributes;
+- (id)attributesWithContentAwareWritingDirectionForString:(id)string defaultAttributes:(id)attributes;
+- (void)setAttachmentResult:(id)result;
 - (void)setDefaultResult;
-- (void)setStringResult:(id)a3;
+- (void)setStringResult:(id)result;
 @end
 
 @implementation UITextPasteItem
 
-- (UITextPasteItem)initWithTextPasteCoordinator:(id)a3
+- (UITextPasteItem)initWithTextPasteCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = UITextPasteItem;
   v6 = [(UITextPasteItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coordinator, a3);
+    objc_storeStrong(&v6->_coordinator, coordinator);
   }
 
   return v7;
 }
 
-- (void)setStringResult:(id)a3
+- (void)setStringResult:(id)result
 {
-  v8 = a3;
-  v4 = [(UITextPasteItem *)self defaultAttributes];
+  resultCopy = result;
+  defaultAttributes = [(UITextPasteItem *)self defaultAttributes];
   if (_os_feature_enabled_impl())
   {
-    v5 = [(UITextPasteItem *)self attributesWithContentAwareWritingDirectionForString:v8 defaultAttributes:v4];
+    v5 = [(UITextPasteItem *)self attributesWithContentAwareWritingDirectionForString:resultCopy defaultAttributes:defaultAttributes];
 
-    v4 = v5;
+    defaultAttributes = v5;
   }
 
   coordinator = self->_coordinator;
-  v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8 attributes:v4];
+  v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:resultCopy attributes:defaultAttributes];
   [(UITextPasteCoordinator *)coordinator setResult:v7 forItem:self];
 }
 
-- (id)attributesWithContentAwareWritingDirectionForString:(id)a3 defaultAttributes:(id)a4
+- (id)attributesWithContentAwareWritingDirectionForString:(id)string defaultAttributes:(id)attributes
 {
-  v4 = a4;
-  v5 = [v4 mutableCopy];
+  attributesCopy = attributes;
+  v5 = [attributesCopy mutableCopy];
   v6 = *off_1E70EC988;
-  v7 = [v4 objectForKeyedSubscript:*off_1E70EC988];
+  v7 = [attributesCopy objectForKeyedSubscript:*off_1E70EC988];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:v6];
+    v8 = [attributesCopy objectForKeyedSubscript:v6];
     v9 = [v8 mutableCopy];
   }
 
@@ -64,10 +64,10 @@
   return v10;
 }
 
-- (void)setAttachmentResult:(id)a3
+- (void)setAttachmentResult:(id)result
 {
   coordinator = self->_coordinator;
-  v5 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:a3];
+  v5 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:result];
   [(UITextPasteCoordinator *)coordinator setResult:v5 forItem:self];
 }
 
@@ -79,21 +79,21 @@
   aBlock[3] = &unk_1E7125C38;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(UITextPasteItem *)self localObject];
-  if (!v4 || ((*(v3 + 2))(v3, self, v4) & 1) == 0)
+  localObject = [(UITextPasteItem *)self localObject];
+  if (!localObject || ((*(v3 + 2))(v3, self, localObject) & 1) == 0)
   {
-    v5 = [(UITextPasteItem *)self supportedPasteConfigurationClasses];
-    if (v5 && (-[UITextPasteItem itemProvider](self, "itemProvider"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 _highestFidelityClassForLoading:v5], v6, v7))
+    supportedPasteConfigurationClasses = [(UITextPasteItem *)self supportedPasteConfigurationClasses];
+    if (supportedPasteConfigurationClasses && (-[UITextPasteItem itemProvider](self, "itemProvider"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 _highestFidelityClassForLoading:supportedPasteConfigurationClasses], v6, v7))
     {
-      v8 = [(UITextPasteItem *)self itemProvider];
-      v9 = [(UITextPasteItem *)self documentOptions];
+      itemProvider = [(UITextPasteItem *)self itemProvider];
+      documentOptions = [(UITextPasteItem *)self documentOptions];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __35__UITextPasteItem_setDefaultResult__block_invoke_2;
       v11[3] = &unk_1E7125C60;
       v11[4] = self;
       v12 = v3;
-      v10 = [v8 _loadObjectOfClass:v7 userInfo:v9 completionHandler:v11];
+      v10 = [itemProvider _loadObjectOfClass:v7 userInfo:documentOptions completionHandler:v11];
     }
 
     else
@@ -171,22 +171,22 @@ void __35__UITextPasteItem_setDefaultResult__block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (id)attributedStringFromAttributedString:(id)a3 preservingAttributes:(id)a4 addingAttributes:(id)a5
+- (id)attributedStringFromAttributedString:(id)string preservingAttributes:(id)attributes addingAttributes:(id)addingAttributes
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v20 = a5;
+  stringCopy = string;
+  attributesCopy = attributes;
+  addingAttributesCopy = addingAttributes;
   v9 = objc_alloc(MEMORY[0x1E696AD40]);
-  v10 = [v7 string];
-  v11 = [v9 initWithString:v10];
+  string = [stringCopy string];
+  v11 = [v9 initWithString:string];
 
   v12 = [v11 length];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v8;
+  obj = attributesCopy;
   v13 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
@@ -208,7 +208,7 @@ void __35__UITextPasteItem_setDefaultResult__block_invoke_2(uint64_t a1, void *a
         v22[3] = &unk_1E7125C88;
         v23 = v11;
         v24 = v17;
-        [v7 enumerateAttribute:v17 inRange:0 options:v12 usingBlock:{0, v22}];
+        [stringCopy enumerateAttribute:v17 inRange:0 options:v12 usingBlock:{0, v22}];
       }
 
       v14 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -217,7 +217,7 @@ void __35__UITextPasteItem_setDefaultResult__block_invoke_2(uint64_t a1, void *a
     while (v14);
   }
 
-  [v11 addAttributes:v20 range:{0, v12}];
+  [v11 addAttributes:addingAttributesCopy range:{0, v12}];
   v18 = [v11 copy];
 
   return v18;

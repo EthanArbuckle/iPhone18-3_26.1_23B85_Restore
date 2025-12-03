@@ -1,27 +1,27 @@
 @interface TSCEFunction_SUM
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)getResultWithVector:(id)a3 context:(id)a4 functionSpec:(id)a5 index:(int)a6;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)getResultWithVector:(id)vector context:(id)context functionSpec:(id)spec index:(int)index;
 @end
 
 @implementation TSCEFunction_SUM
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v23 = 0;
-  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, a3, a4, 0, 1, &v23);
+  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, context, spec, 0, 1, &v23);
   v12 = v23;
   if (v12)
   {
-    v13 = objc_msgSend_raiseErrorOrConvert_(a3, v9, v12, v10, v11);
+    v13 = objc_msgSend_raiseErrorOrConvert_(context, v9, v12, v10, v11);
   }
 
   else
   {
-    v13 = objc_msgSend_getResultWithVector_context_functionSpec_index_(TSCEFunction_SUM, v9, v8, a3, a4, 0);
+    v13 = objc_msgSend_getResultWithVector_context_functionSpec_index_(TSCEFunction_SUM, v9, v8, context, spec, 0);
     if (v8)
     {
-      objc_msgSend_formatWithContext_(v8, v14, a3, v15, v16);
+      objc_msgSend_formatWithContext_(v8, v14, context, v15, v16);
     }
 
     else
@@ -36,18 +36,18 @@
   return v13;
 }
 
-+ (id)getResultWithVector:(id)a3 context:(id)a4 functionSpec:(id)a5 index:(int)a6
++ (id)getResultWithVector:(id)vector context:(id)context functionSpec:(id)spec index:(int)index
 {
-  v9 = a3;
-  v81 = a4;
+  vectorCopy = vector;
+  contextCopy = context;
   v10 = objc_alloc_init(TSCESumAccumulator);
-  v15 = objc_msgSend_count(v9, v11, v12, v13, v14);
-  v16 = v81;
+  v15 = objc_msgSend_count(vectorCopy, v11, v12, v13, v14);
+  v16 = contextCopy;
   v93[0] = v16;
-  v93[1] = a5;
+  v93[1] = spec;
   v94 = 0;
-  v82 = a6;
-  v95 = a6;
+  indexCopy = index;
+  indexCopy2 = index;
   *v96 = 0;
   v97 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v98 = 0;
@@ -60,7 +60,7 @@
   if (!v15)
   {
 LABEL_29:
-    v78 = objc_msgSend_resultForFunction_(v10, v21, a5, v22, v23);
+    v78 = objc_msgSend_resultForFunction_(v10, v21, spec, v22, v23);
     v79 = 0;
     goto LABEL_30;
   }
@@ -68,7 +68,7 @@ LABEL_29:
   v25 = 0;
   while (1)
   {
-    v26 = objc_msgSend_valueAtIndex_accessContext_(v9, v21, v25, v93, v23);
+    v26 = objc_msgSend_valueAtIndex_accessContext_(vectorCopy, v21, v25, v93, v23);
     v31 = v26;
     if (!v24)
     {
@@ -103,12 +103,12 @@ LABEL_26:
   if (!objc_msgSend_isReferenceValue(v31, v35, v36, v37, v38))
   {
 LABEL_25:
-    objc_msgSend_addValue_evaluationContext_functionSpec_(v10, v27, v31, v16, a5);
+    objc_msgSend_addValue_evaluationContext_functionSpec_(v10, v27, v31, v16, spec);
     goto LABEL_26;
   }
 
   v90 = 0;
-  v40 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v31, v27, v16, a5, v82, &v90);
+  v40 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v31, v27, v16, spec, indexCopy, &v90);
   v41 = v90;
   if (!v41)
   {

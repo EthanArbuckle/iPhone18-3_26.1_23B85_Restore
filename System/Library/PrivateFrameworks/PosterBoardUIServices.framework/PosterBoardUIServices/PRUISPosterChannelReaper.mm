@@ -1,28 +1,28 @@
 @interface PRUISPosterChannelReaper
 - (_TtC21PosterBoardUIServices24PRUISPosterChannelReaper)init;
-- (_TtC21PosterBoardUIServices24PRUISPosterChannelReaper)initWithModelCoordinator:(id)a3 currentState:(id)a4 currentPosterConfiguration:(id)a5 currentGallery:(id)a6 snapshotCache:(id)a7;
+- (_TtC21PosterBoardUIServices24PRUISPosterChannelReaper)initWithModelCoordinator:(id)coordinator currentState:(id)state currentPosterConfiguration:(id)configuration currentGallery:(id)gallery snapshotCache:(id)cache;
 - (id)reapStaleSnapshots;
-- (id)reapStaleStateOmittingLast:(unint64_t)a3;
+- (id)reapStaleStateOmittingLast:(unint64_t)last;
 @end
 
 @implementation PRUISPosterChannelReaper
 
-- (_TtC21PosterBoardUIServices24PRUISPosterChannelReaper)initWithModelCoordinator:(id)a3 currentState:(id)a4 currentPosterConfiguration:(id)a5 currentGallery:(id)a6 snapshotCache:(id)a7
+- (_TtC21PosterBoardUIServices24PRUISPosterChannelReaper)initWithModelCoordinator:(id)coordinator currentState:(id)state currentPosterConfiguration:(id)configuration currentGallery:(id)gallery snapshotCache:(id)cache
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = sub_1CAED0D08(v11, v12, a5, a6, a7);
+  coordinatorCopy = coordinator;
+  stateCopy = state;
+  configurationCopy = configuration;
+  galleryCopy = gallery;
+  cacheCopy = cache;
+  v16 = sub_1CAED0D08(coordinatorCopy, stateCopy, configuration, gallery, cache);
 
   return v16;
 }
 
-- (id)reapStaleStateOmittingLast:(unint64_t)a3
+- (id)reapStaleStateOmittingLast:(unint64_t)last
 {
-  v4 = self;
-  PRUISPosterChannelReaper.reapStaleState(omittingLast:)(v5, a3);
+  selfCopy = self;
+  PRUISPosterChannelReaper.reapStaleState(omittingLast:)(v5, last);
   v7 = v6;
 
   return v7;
@@ -30,7 +30,7 @@
 
 - (id)reapStaleSnapshots
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PRUISPosterChannelReaper.reapStaleSnapshots()();
 
   return v3;

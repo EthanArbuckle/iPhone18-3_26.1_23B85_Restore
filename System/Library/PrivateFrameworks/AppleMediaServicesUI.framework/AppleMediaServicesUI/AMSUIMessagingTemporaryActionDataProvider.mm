@@ -1,10 +1,10 @@
 @interface AMSUIMessagingTemporaryActionDataProvider
-+ (id)parametersForAppStoreOptInNotificationWithDeeplink:(id)a3;
++ (id)parametersForAppStoreOptInNotificationWithDeeplink:(id)deeplink;
 @end
 
 @implementation AMSUIMessagingTemporaryActionDataProvider
 
-+ (id)parametersForAppStoreOptInNotificationWithDeeplink:(id)a3
++ (id)parametersForAppStoreOptInNotificationWithDeeplink:(id)deeplink
 {
   v3 = sub_1BB1DB398();
   v4 = *(v3 - 8);

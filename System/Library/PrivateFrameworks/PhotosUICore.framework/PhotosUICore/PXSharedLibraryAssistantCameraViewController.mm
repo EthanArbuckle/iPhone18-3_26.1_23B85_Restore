@@ -1,8 +1,8 @@
 @interface PXSharedLibraryAssistantCameraViewController
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
 - (PXSharedLibraryAssistantCameraViewController)init;
-- (void)_completeWithAutoSharedEnabled:(BOOL)a3;
-- (void)learnMoreButtonTapped:(id)a3;
+- (void)_completeWithAutoSharedEnabled:(BOOL)enabled;
+- (void)learnMoreButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -15,30 +15,30 @@
   return WeakRetained;
 }
 
-- (void)_completeWithAutoSharedEnabled:(BOOL)a3
+- (void)_completeWithAutoSharedEnabled:(BOOL)enabled
 {
-  PXPreferencesSetCameraAutoShareEnabled(a3);
+  PXPreferencesSetCameraAutoShareEnabled(enabled);
   PXPreferencesSetCameraSharingPreferencesState(1);
-  v4 = [(PXSharedLibraryAssistantCameraViewController *)self completionHandler];
-  v5 = v4;
-  if (v4)
+  completionHandler = [(PXSharedLibraryAssistantCameraViewController *)self completionHandler];
+  v5 = completionHandler;
+  if (completionHandler)
   {
-    (*(v4 + 16))(v4);
+    (*(completionHandler + 16))(completionHandler);
   }
 
   else
   {
-    v6 = [(PXSharedLibraryAssistantCameraViewController *)self assistantViewControllerDelegate];
-    if (!v6)
+    assistantViewControllerDelegate = [(PXSharedLibraryAssistantCameraViewController *)self assistantViewControllerDelegate];
+    if (!assistantViewControllerDelegate)
     {
       PXAssertGetLog();
     }
 
-    [v6 stepForwardInAssistantForAssistantViewController:self];
+    [assistantViewControllerDelegate stepForwardInAssistantForAssistantViewController:self];
   }
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
   v3 = MEMORY[0x1E695DFF8];
   IsIPad = PLPhysicalDeviceIsIPad();
@@ -51,8 +51,8 @@
   v6 = v5;
   v8 = [v3 URLWithString:v6];
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v7 openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
 - (void)viewDidLoad
@@ -64,62 +64,62 @@
   v3 = objc_alloc_init(PXSharedLibraryAssistantCameraHeaderView);
   [(PXSharedLibraryAssistantCameraHeaderView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PXSharedLibraryAssistantCameraHeaderView *)v3 setClipsToBounds:1];
-  v4 = [(PXSharedLibraryAssistantCameraViewController *)self contentView];
-  v5 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  v6 = [(PXSharedLibraryAssistantCameraViewController *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView = [(PXSharedLibraryAssistantCameraViewController *)self contentView];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  contentView2 = [(PXSharedLibraryAssistantCameraViewController *)self contentView];
+  [contentView2 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v7 = [(PXSharedLibraryAssistantCameraViewController *)self contentView];
-  [v7 addSubview:v3];
+  contentView3 = [(PXSharedLibraryAssistantCameraViewController *)self contentView];
+  [contentView3 addSubview:v3];
 
   v27 = MEMORY[0x1E696ACD8];
-  v31 = [(PXSharedLibraryAssistantCameraHeaderView *)v3 topAnchor];
-  v30 = [v4 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  topAnchor = [(PXSharedLibraryAssistantCameraHeaderView *)v3 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v35[0] = v29;
-  v28 = [(PXSharedLibraryAssistantCameraHeaderView *)v3 leadingAnchor];
-  v8 = [v4 leadingAnchor];
-  v9 = [v28 constraintEqualToAnchor:v8];
+  leadingAnchor = [(PXSharedLibraryAssistantCameraHeaderView *)v3 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v35[1] = v9;
   v33 = v3;
-  v10 = [(PXSharedLibraryAssistantCameraHeaderView *)v3 trailingAnchor];
-  v32 = v4;
-  v11 = [v4 trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [(PXSharedLibraryAssistantCameraHeaderView *)v3 trailingAnchor];
+  v32 = contentView;
+  trailingAnchor2 = [contentView trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v35[2] = v12;
-  v13 = [(PXSharedLibraryAssistantCameraHeaderView *)v3 bottomAnchor];
-  v14 = [v4 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [(PXSharedLibraryAssistantCameraHeaderView *)v3 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v35[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:4];
   [v27 activateConstraints:v16];
 
-  v17 = [MEMORY[0x1E69B7D20] accessoryButton];
+  accessoryButton = [MEMORY[0x1E69B7D20] accessoryButton];
   v18 = PXLocalizedSharedLibraryString(@"PXSharedLibraryPreferences_Description_LearnMore_ButtonTitle");
-  [v17 setTitle:v18 forState:0];
+  [accessoryButton setTitle:v18 forState:0];
 
-  [v17 addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:0x2000];
-  v19 = [(PXSharedLibraryAssistantCameraViewController *)self headerView];
-  [v19 addAccessoryButton:v17];
+  [accessoryButton addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:0x2000];
+  headerView = [(PXSharedLibraryAssistantCameraViewController *)self headerView];
+  [headerView addAccessoryButton:accessoryButton];
 
-  v20 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   v21 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_CameraRules_ButtonTitle_ShareAutomatically");
-  [v20 setTitle:v21 forState:0];
+  [boldButton setTitle:v21 forState:0];
 
-  [v20 addTarget:self action:sel_primaryButtonTapped_ forControlEvents:0x2000];
-  v22 = [(PXSharedLibraryAssistantCameraViewController *)self buttonTray];
-  [v22 addButton:v20];
+  [boldButton addTarget:self action:sel_primaryButtonTapped_ forControlEvents:0x2000];
+  buttonTray = [(PXSharedLibraryAssistantCameraViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   v23 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_primaryButtonTapped_];
   [(PXSharedLibraryAssistantCameraViewController *)self addKeyCommand:v23];
 
-  v24 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v25 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_CameraRules_ButtonTitle_ShareManually");
-  [v24 setTitle:v25 forState:0];
+  [linkButton setTitle:v25 forState:0];
 
-  [v24 addTarget:self action:sel_secondaryButtonTapped_ forControlEvents:0x2000];
-  v26 = [(PXSharedLibraryAssistantCameraViewController *)self buttonTray];
-  [v26 addButton:v24];
+  [linkButton addTarget:self action:sel_secondaryButtonTapped_ forControlEvents:0x2000];
+  buttonTray2 = [(PXSharedLibraryAssistantCameraViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 }
 
 - (PXSharedLibraryAssistantCameraViewController)init

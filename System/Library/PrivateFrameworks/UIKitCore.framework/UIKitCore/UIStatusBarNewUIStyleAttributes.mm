@@ -1,49 +1,49 @@
 @interface UIStatusBarNewUIStyleAttributes
 - (BOOL)isTranslucent;
-- (UIStatusBarNewUIStyleAttributes)initWithRequest:(id)a3 backgroundColor:(id)a4 foregroundColor:(id)a5 hasBusyBackground:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newForegroundStyleWithHeight:(double)a3;
+- (UIStatusBarNewUIStyleAttributes)initWithRequest:(id)request backgroundColor:(id)color foregroundColor:(id)foregroundColor hasBusyBackground:(BOOL)background;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newForegroundStyleWithHeight:(double)height;
 - (int64_t)legibilityStyle;
 @end
 
 @implementation UIStatusBarNewUIStyleAttributes
 
-- (UIStatusBarNewUIStyleAttributes)initWithRequest:(id)a3 backgroundColor:(id)a4 foregroundColor:(id)a5 hasBusyBackground:(BOOL)a6
+- (UIStatusBarNewUIStyleAttributes)initWithRequest:(id)request backgroundColor:(id)color foregroundColor:(id)foregroundColor hasBusyBackground:(BOOL)background
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  requestCopy = request;
+  colorCopy = color;
+  foregroundColorCopy = foregroundColor;
   v19.receiver = self;
   v19.super_class = UIStatusBarNewUIStyleAttributes;
-  v13 = [(UIStatusBarStyleAttributes *)&v19 initWithRequest:v10];
+  v13 = [(UIStatusBarStyleAttributes *)&v19 initWithRequest:requestCopy];
   if (v13)
   {
-    if (v11 || ([v10 foregroundColor], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+    if (colorCopy || ([requestCopy foregroundColor], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
     {
-      v14 = v12;
+      foregroundColor = foregroundColorCopy;
     }
 
     else
     {
-      v14 = [v10 foregroundColor];
+      foregroundColor = [requestCopy foregroundColor];
     }
 
     foregroundColor = v13->_foregroundColor;
-    v13->_foregroundColor = v14;
-    v17 = v14;
+    v13->_foregroundColor = foregroundColor;
+    v17 = foregroundColor;
 
-    objc_storeStrong(&v13->_backgroundColor, a4);
-    v13->_hasBusyBackground = a6;
+    objc_storeStrong(&v13->_backgroundColor, color);
+    v13->_hasBusyBackground = background;
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = UIStatusBarNewUIStyleAttributes;
-  v4 = [(UIStatusBarStyleAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UIStatusBarStyleAttributes *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_backgroundColor);
   objc_storeStrong(v4 + 5, self->_foregroundColor);
   *(v4 + 48) = self->_hasBusyBackground;
@@ -76,15 +76,15 @@
   return v3 < 1.0;
 }
 
-- (id)newForegroundStyleWithHeight:(double)a3
+- (id)newForegroundStyleWithHeight:(double)height
 {
   v5 = objc_alloc([(UIStatusBarNewUIStyleAttributes *)self foregroundStyleClass]);
-  v6 = [(UIStatusBarNewUIStyleAttributes *)self legibilityStyle];
+  legibilityStyle = [(UIStatusBarNewUIStyleAttributes *)self legibilityStyle];
   foregroundColor = self->_foregroundColor;
   hasBusyBackground = self->_hasBusyBackground;
-  v9 = [(UIStatusBarStyleAttributes *)self idiom];
+  idiom = [(UIStatusBarStyleAttributes *)self idiom];
 
-  return [v5 initWithHeight:v6 legibilityStyle:foregroundColor tintColor:hasBusyBackground hasBusyBackground:v9 idiom:a3];
+  return [v5 initWithHeight:legibilityStyle legibilityStyle:foregroundColor tintColor:hasBusyBackground hasBusyBackground:idiom idiom:height];
 }
 
 @end

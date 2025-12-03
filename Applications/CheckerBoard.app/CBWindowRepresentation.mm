@@ -1,35 +1,35 @@
 @interface CBWindowRepresentation
-+ (id)windowRepresentationForIdentifier:(id)a3;
++ (id)windowRepresentationForIdentifier:(id)identifier;
 - (CBWindowDelegate)windowManager;
-- (CBWindowRepresentation)initWithIdentifier:(id)a3;
+- (CBWindowRepresentation)initWithIdentifier:(id)identifier;
 - (NSString)description;
 - (void)didLaunchApp;
-- (void)dismissViewControllerAnimated:(BOOL)a3;
-- (void)setBackgroundTunnel:(BOOL)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated;
+- (void)setBackgroundTunnel:(BOOL)tunnel;
 - (void)viewControllerDidDismiss;
 - (void)willLaunchApp;
 @end
 
 @implementation CBWindowRepresentation
 
-+ (id)windowRepresentationForIdentifier:(id)a3
++ (id)windowRepresentationForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (CBWindowRepresentation)initWithIdentifier:(id)a3
+- (CBWindowRepresentation)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CBWindowRepresentation;
   v6 = [(CBWindowRepresentation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
@@ -38,48 +38,48 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(CBWindowRepresentation *)self identifier];
-  v5 = [NSString stringWithFormat:@"<%@:%p -> %@>", v3, self, v4];
+  identifier = [(CBWindowRepresentation *)self identifier];
+  v5 = [NSString stringWithFormat:@"<%@:%p -> %@>", v3, self, identifier];
 
   return v5;
 }
 
-- (void)setBackgroundTunnel:(BOOL)a3
+- (void)setBackgroundTunnel:(BOOL)tunnel
 {
-  v3 = a3;
-  self->_backgroundTunnel = a3;
-  v5 = [(CBWindowRepresentation *)self windowManager];
-  [v5 window:self changedBackgroundTunnel:v3];
+  tunnelCopy = tunnel;
+  self->_backgroundTunnel = tunnel;
+  windowManager = [(CBWindowRepresentation *)self windowManager];
+  [windowManager window:self changedBackgroundTunnel:tunnelCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3
+- (void)dismissViewControllerAnimated:(BOOL)animated
 {
-  v4 = [(CBWindowRepresentation *)self windowManager];
-  [v4 windowWillDismiss:self];
+  windowManager = [(CBWindowRepresentation *)self windowManager];
+  [windowManager windowWillDismiss:self];
 
-  v5 = [(CBWindowRepresentation *)self windowManager];
-  [v5 windowDidDismiss:self];
+  windowManager2 = [(CBWindowRepresentation *)self windowManager];
+  [windowManager2 windowDidDismiss:self];
 }
 
 - (void)viewControllerDidDismiss
 {
-  v3 = [(CBWindowRepresentation *)self windowManager];
-  [v3 windowWillDismiss:self];
+  windowManager = [(CBWindowRepresentation *)self windowManager];
+  [windowManager windowWillDismiss:self];
 
-  v4 = [(CBWindowRepresentation *)self windowManager];
-  [v4 windowDidDismiss:self];
+  windowManager2 = [(CBWindowRepresentation *)self windowManager];
+  [windowManager2 windowDidDismiss:self];
 }
 
 - (void)willLaunchApp
 {
-  v3 = [(CBWindowRepresentation *)self windowManager];
-  [v3 windowWillAppear:self];
+  windowManager = [(CBWindowRepresentation *)self windowManager];
+  [windowManager windowWillAppear:self];
 }
 
 - (void)didLaunchApp
 {
-  v3 = [(CBWindowRepresentation *)self windowManager];
-  [v3 windowDidAppear:self];
+  windowManager = [(CBWindowRepresentation *)self windowManager];
+  [windowManager windowDidAppear:self];
 }
 
 - (CBWindowDelegate)windowManager

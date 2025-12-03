@@ -1,45 +1,45 @@
 @interface BCSBusinessCallerItem
-+ (id)itemFromStatement:(sqlite3_stmt *)a3;
-- (BCSBusinessCallerItem)initWithCoder:(id)a3;
-- (BCSBusinessCallerItem)initWithParquetMessage:(id)a3;
-- (BCSBusinessCallerItem)initWithPhoneNumber:(id)a3 name:(id)a4 department:(id)a5 logoURL:(id)a6 logo:(id)a7 logoFormat:(id)a8 verified:(BOOL)a9;
-- (BCSBusinessCallerItem)initWithPhoneNumber:(id)a3 phoneHash:(int64_t)a4 localizedNames:(id)a5 localizedDepartments:(id)a6 logoURL:(id)a7 logo:(id)a8 logoFormat:(id)a9 verified:(BOOL)a10;
-- (BOOL)matchesItemIdentifying:(id)a3;
++ (id)itemFromStatement:(sqlite3_stmt *)statement;
+- (BCSBusinessCallerItem)initWithCoder:(id)coder;
+- (BCSBusinessCallerItem)initWithParquetMessage:(id)message;
+- (BCSBusinessCallerItem)initWithPhoneNumber:(id)number name:(id)name department:(id)department logoURL:(id)l logo:(id)logo logoFormat:(id)format verified:(BOOL)verified;
+- (BCSBusinessCallerItem)initWithPhoneNumber:(id)number phoneHash:(int64_t)hash localizedNames:(id)names localizedDepartments:(id)departments logoURL:(id)l logo:(id)logo logoFormat:(id)format verified:(BOOL)self0;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSDictionary)localizedDepartments;
 - (NSDictionary)localizedNames;
 - (NSString)department;
 - (NSString)name;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)itemIdentifier;
 - (int64_t)truncatedHash;
 - (int64_t)type;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPhoneNumber:(id)number;
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSBusinessCallerItem
 
-- (BCSBusinessCallerItem)initWithParquetMessage:(id)a3
+- (BCSBusinessCallerItem)initWithParquetMessage:(id)message
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc(MEMORY[0x277CBEB38]);
-  v5 = [v3 names];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  names = [messageCopy names];
+  v6 = [v4 initWithCapacity:{objc_msgSend(names, "count")}];
 
-  v7 = v3;
+  v7 = messageCopy;
   v8 = objc_alloc(MEMORY[0x277CBEB38]);
-  v9 = [v3 intents];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  intents = [messageCopy intents];
+  v10 = [v8 initWithCapacity:{objc_msgSend(intents, "count")}];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v11 = [v3 names];
-  v12 = [v11 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  names2 = [messageCopy names];
+  v12 = [names2 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v12)
   {
     v13 = v12;
@@ -51,23 +51,23 @@
       {
         if (*v46 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(names2);
         }
 
         v17 = *(*(&v45 + 1) + 8 * i);
         if ([v17 isDefault])
         {
-          v18 = [v17 text];
+          text = [v17 text];
 
-          v14 = v18;
+          v14 = text;
         }
 
-        v19 = [v17 text];
-        v20 = [v17 locale];
-        [v6 setObject:v19 forKeyedSubscript:v20];
+        text2 = [v17 text];
+        locale = [v17 locale];
+        [v6 setObject:text2 forKeyedSubscript:locale];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v13 = [names2 countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v13);
@@ -82,12 +82,12 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v21 = [v7 names];
-  v22 = [v21 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  names3 = [v7 names];
+  v22 = [names3 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (!v22)
   {
     v23 = 0;
-    v33 = self;
+    selfCopy2 = self;
     goto LABEL_25;
   }
 
@@ -100,23 +100,23 @@
     {
       if (*v42 != v24)
       {
-        objc_enumerationMutation(v21);
+        objc_enumerationMutation(names3);
       }
 
       v26 = *(*(&v41 + 1) + 8 * j);
       if ([v26 isDefault])
       {
-        v27 = [v26 text];
+        text3 = [v26 text];
 
-        v23 = v27;
+        v23 = text3;
       }
 
-      v28 = [v26 text];
-      v29 = [v26 locale];
-      [v10 setObject:v28 forKeyedSubscript:v29];
+      text4 = [v26 text];
+      locale2 = [v26 locale];
+      [v10 setObject:text4 forKeyedSubscript:locale2];
     }
 
-    v22 = [v21 countByEnumeratingWithState:&v41 objects:v49 count:16];
+    v22 = [names3 countByEnumeratingWithState:&v41 objects:v49 count:16];
   }
 
   while (v22);
@@ -131,20 +131,20 @@
   if (!v23)
   {
 LABEL_27:
-    v33 = self;
+    selfCopy2 = self;
     goto LABEL_28;
   }
 
-  v21 = [v39 phoneNumber];
-  v38 = [v39 phoneHash];
-  v37 = [v39 names];
-  v30 = [v39 intents];
-  v31 = [v39 logo];
-  v32 = [v39 logoFormat];
+  names3 = [v39 phoneNumber];
+  phoneHash = [v39 phoneHash];
+  names4 = [v39 names];
+  intents2 = [v39 intents];
+  logo = [v39 logo];
+  logoFormat = [v39 logoFormat];
   LOBYTE(v36) = [v39 isVerified];
-  v22 = [(BCSBusinessCallerItem *)self initWithPhoneNumber:v21 phoneHash:v38 localizedNames:v37 localizedDepartments:v30 logoURL:0 logo:v31 logoFormat:v32 verified:v36];
+  v22 = [(BCSBusinessCallerItem *)self initWithPhoneNumber:names3 phoneHash:phoneHash localizedNames:names4 localizedDepartments:intents2 logoURL:0 logo:logo logoFormat:logoFormat verified:v36];
 
-  v33 = v22;
+  selfCopy2 = v22;
 LABEL_25:
 
 LABEL_28:
@@ -152,10 +152,10 @@ LABEL_28:
   return v22;
 }
 
-+ (id)itemFromStatement:(sqlite3_stmt *)a3
++ (id)itemFromStatement:(sqlite3_stmt *)statement
 {
-  sqlite3_column_int64(a3, 0);
-  v4 = sqlite3_column_text(a3, 1);
+  sqlite3_column_int64(statement, 0);
+  v4 = sqlite3_column_text(statement, 1);
   if (v4)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:v4];
@@ -166,14 +166,14 @@ LABEL_28:
     v5 = 0;
   }
 
-  v6 = sqlite3_column_blob(a3, 2);
-  v7 = sqlite3_column_bytes(a3, 2);
+  v6 = sqlite3_column_blob(statement, 2);
+  v7 = sqlite3_column_bytes(statement, 2);
   if (v6)
   {
     v6 = [MEMORY[0x277CBEA90] dataWithBytes:v6 length:v7];
   }
 
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(a3, 3)}];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(statement, 3)}];
   if (v6)
   {
     v9 = [[BCSCallerIdParquetMessage alloc] initWithData:v6];
@@ -202,66 +202,66 @@ LABEL_28:
   return v11;
 }
 
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier
 {
-  sqlite3_bind_int64(a3, 1, [a4 truncatedHash]);
-  v6 = [(BCSBusinessCallerItem *)self message];
-  v7 = [v6 phoneNumber];
-  sqlite3_bind_text(a3, 2, [v7 UTF8String], -1, 0);
+  sqlite3_bind_int64(values, 1, [identifier truncatedHash]);
+  message = [(BCSBusinessCallerItem *)self message];
+  phoneNumber = [message phoneNumber];
+  sqlite3_bind_text(values, 2, [phoneNumber UTF8String], -1, 0);
 
-  v8 = [(BCSBusinessCallerItem *)self message];
-  v12 = [v8 data];
+  message2 = [(BCSBusinessCallerItem *)self message];
+  data = [message2 data];
 
-  v9 = v12;
-  sqlite3_bind_blob(a3, 3, [v12 bytes], objc_msgSend(v12, "length"), 0);
-  v10 = [(BCSItem *)self expirationDate];
-  [v10 timeIntervalSince1970];
-  sqlite3_bind_double(a3, 4, v11);
+  v9 = data;
+  sqlite3_bind_blob(values, 3, [data bytes], objc_msgSend(data, "length"), 0);
+  expirationDate = [(BCSItem *)self expirationDate];
+  [expirationDate timeIntervalSince1970];
+  sqlite3_bind_double(values, 4, v11);
 }
 
-- (BCSBusinessCallerItem)initWithPhoneNumber:(id)a3 name:(id)a4 department:(id)a5 logoURL:(id)a6 logo:(id)a7 logoFormat:(id)a8 verified:(BOOL)a9
+- (BCSBusinessCallerItem)initWithPhoneNumber:(id)number name:(id)name department:(id)department logoURL:(id)l logo:(id)logo logoFormat:(id)format verified:(BOOL)verified
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v29 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[BCSBusinessCallerItemIdentifier alloc] initWithPhoneNumber:v16];
-  v18 = [MEMORY[0x277CBEAF8] currentLocale];
-  v19 = [v18 languageCode];
+  logoCopy = logo;
+  lCopy = l;
+  departmentCopy = department;
+  nameCopy = name;
+  numberCopy = number;
+  v17 = [[BCSBusinessCallerItemIdentifier alloc] initWithPhoneNumber:numberCopy];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
 
   v20 = objc_alloc_init(BCSCallerIdLocalizedString);
-  [(BCSCallerIdLocalizedString *)v20 setLocale:v19];
-  [(BCSCallerIdLocalizedString *)v20 setText:v15];
+  [(BCSCallerIdLocalizedString *)v20 setLocale:languageCode];
+  [(BCSCallerIdLocalizedString *)v20 setText:nameCopy];
 
   [(BCSCallerIdLocalizedString *)v20 setIsDefault:1];
   v21 = objc_alloc_init(BCSCallerIdLocalizedString);
-  [(BCSCallerIdLocalizedString *)v21 setLocale:v19];
-  [(BCSCallerIdLocalizedString *)v21 setText:v14];
+  [(BCSCallerIdLocalizedString *)v21 setLocale:languageCode];
+  [(BCSCallerIdLocalizedString *)v21 setText:departmentCopy];
 
   [(BCSCallerIdLocalizedString *)v21 setIsDefault:1];
-  v22 = [(BCSBusinessCallerItemIdentifier *)v17 truncatedHash];
+  truncatedHash = [(BCSBusinessCallerItemIdentifier *)v17 truncatedHash];
   v32[0] = v20;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
   v31 = v21;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-  LOBYTE(v28) = a9;
-  v25 = [(BCSBusinessCallerItem *)self initWithPhoneNumber:v16 phoneHash:v22 localizedNames:v23 localizedDepartments:v24 logoURL:v13 logo:v29 logoFormat:@"heic" verified:v28];
+  LOBYTE(v28) = verified;
+  v25 = [(BCSBusinessCallerItem *)self initWithPhoneNumber:numberCopy phoneHash:truncatedHash localizedNames:v23 localizedDepartments:v24 logoURL:lCopy logo:logoCopy logoFormat:@"heic" verified:v28];
 
   v26 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (BCSBusinessCallerItem)initWithPhoneNumber:(id)a3 phoneHash:(int64_t)a4 localizedNames:(id)a5 localizedDepartments:(id)a6 logoURL:(id)a7 logo:(id)a8 logoFormat:(id)a9 verified:(BOOL)a10
+- (BCSBusinessCallerItem)initWithPhoneNumber:(id)number phoneHash:(int64_t)hash localizedNames:(id)names localizedDepartments:(id)departments logoURL:(id)l logo:(id)logo logoFormat:(id)format verified:(BOOL)self0
 {
   v55 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  numberCopy = number;
+  namesCopy = names;
+  departmentsCopy = departments;
+  lCopy = l;
+  logoCopy = logo;
+  formatCopy = format;
   v52.receiver = self;
   v52.super_class = BCSBusinessCallerItem;
   v22 = [(BCSItem *)&v52 init];
@@ -271,15 +271,15 @@ LABEL_28:
     message = v22->_message;
     v22->_message = v23;
 
-    [(BCSCallerIdParquetMessage *)v22->_message setPhoneHash:a4];
-    v43 = v16;
-    [(BCSCallerIdParquetMessage *)v22->_message setPhoneNumber:v16];
+    [(BCSCallerIdParquetMessage *)v22->_message setPhoneHash:hash];
+    v43 = numberCopy;
+    [(BCSCallerIdParquetMessage *)v22->_message setPhoneNumber:numberCopy];
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v42 = v17;
-    v25 = v17;
+    v42 = namesCopy;
+    v25 = namesCopy;
     v26 = [v25 countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v26)
     {
@@ -307,7 +307,7 @@ LABEL_28:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v30 = v18;
+    v30 = departmentsCopy;
     v31 = [v30 countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v31)
     {
@@ -331,18 +331,18 @@ LABEL_28:
       while (v32);
     }
 
-    [(BCSCallerIdParquetMessage *)v22->_message setLogo:v20];
-    [(BCSCallerIdParquetMessage *)v22->_message setIsVerified:a10];
-    if (v19)
+    [(BCSCallerIdParquetMessage *)v22->_message setLogo:logoCopy];
+    [(BCSCallerIdParquetMessage *)v22->_message setIsVerified:verified];
+    if (lCopy)
     {
-      v35 = [v19 copy];
+      v35 = [lCopy copy];
       logoURL = v22->_logoURL;
       v22->_logoURL = v35;
     }
 
-    if (v21)
+    if (formatCopy)
     {
-      v37 = v21;
+      v37 = formatCopy;
     }
 
     else
@@ -351,54 +351,54 @@ LABEL_28:
     }
 
     [(BCSCallerIdParquetMessage *)v22->_message setLogoFormat:v37];
-    v38 = [[BCSBusinessCallerItemIdentifier alloc] initWithTruncatedHash:a4];
+    v38 = [[BCSBusinessCallerItemIdentifier alloc] initWithTruncatedHash:hash];
     identifier = v22->_identifier;
     v22->_identifier = v38;
 
-    v17 = v42;
-    v16 = v43;
+    namesCopy = v42;
+    numberCopy = v43;
   }
 
   v40 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   [(BCSCallerIdParquetMessage *)self->_message setPhoneNumber:v4];
 }
 
 - (NSString)name
 {
-  v2 = [(BCSCallerIdParquetMessage *)self->_message names];
-  v3 = [v2 defaultLocalizedStringsValue];
+  names = [(BCSCallerIdParquetMessage *)self->_message names];
+  defaultLocalizedStringsValue = [names defaultLocalizedStringsValue];
 
-  return v3;
+  return defaultLocalizedStringsValue;
 }
 
 - (NSString)department
 {
-  v2 = [(BCSCallerIdParquetMessage *)self->_message intents];
-  v3 = [v2 defaultLocalizedStringsValue];
+  intents = [(BCSCallerIdParquetMessage *)self->_message intents];
+  defaultLocalizedStringsValue = [intents defaultLocalizedStringsValue];
 
-  return v3;
+  return defaultLocalizedStringsValue;
 }
 
 - (NSDictionary)localizedNames
 {
-  v2 = [(BCSCallerIdParquetMessage *)self->_message names];
-  v3 = [v2 localizedStringsToDictionary];
+  names = [(BCSCallerIdParquetMessage *)self->_message names];
+  localizedStringsToDictionary = [names localizedStringsToDictionary];
 
-  return v3;
+  return localizedStringsToDictionary;
 }
 
 - (NSDictionary)localizedDepartments
 {
-  v2 = [(BCSCallerIdParquetMessage *)self->_message intents];
-  v3 = [v2 localizedStringsToDictionary];
+  intents = [(BCSCallerIdParquetMessage *)self->_message intents];
+  localizedStringsToDictionary = [intents localizedStringsToDictionary];
 
-  return v3;
+  return localizedStringsToDictionary;
 }
 
 - (id)description
@@ -407,67 +407,67 @@ LABEL_28:
   v13.receiver = self;
   v13.super_class = BCSBusinessCallerItem;
   v4 = [(BCSBusinessCallerItem *)&v13 description];
-  v5 = [(BCSBusinessCallerItem *)self phoneNumber];
-  v6 = [(BCSBusinessCallerItem *)self name];
-  v7 = [(BCSBusinessCallerItem *)self department];
-  v8 = [(BCSBusinessCallerItem *)self logoURL];
-  v9 = [v8 absoluteString];
-  v10 = [(BCSBusinessCallerItem *)self identifier];
-  v11 = [v3 stringWithFormat:@"%@ - phone:%@ name:%@ department:%@ logoURL:%@ (%@)", v4, v5, v6, v7, v9, v10];
+  phoneNumber = [(BCSBusinessCallerItem *)self phoneNumber];
+  name = [(BCSBusinessCallerItem *)self name];
+  department = [(BCSBusinessCallerItem *)self department];
+  logoURL = [(BCSBusinessCallerItem *)self logoURL];
+  absoluteString = [logoURL absoluteString];
+  identifier = [(BCSBusinessCallerItem *)self identifier];
+  v11 = [v3 stringWithFormat:@"%@ - phone:%@ name:%@ department:%@ logoURL:%@ (%@)", v4, phoneNumber, name, department, absoluteString, identifier];
 
   return v11;
 }
 
 - (id)itemIdentifier
 {
-  v2 = [(BCSBusinessCallerItem *)self identifier];
-  v3 = [v2 itemIdentifier];
+  identifier = [(BCSBusinessCallerItem *)self identifier];
+  itemIdentifier = [identifier itemIdentifier];
 
-  return v3;
+  return itemIdentifier;
 }
 
 - (int64_t)truncatedHash
 {
-  v2 = [(BCSBusinessCallerItem *)self identifier];
-  v3 = [v2 truncatedHash];
+  identifier = [(BCSBusinessCallerItem *)self identifier];
+  truncatedHash = [identifier truncatedHash];
 
-  return v3;
+  return truncatedHash;
 }
 
 - (int64_t)type
 {
-  v2 = [(BCSBusinessCallerItem *)self identifier];
-  v3 = [v2 type];
+  identifier = [(BCSBusinessCallerItem *)self identifier];
+  type = [identifier type];
 
-  return v3;
+  return type;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [(BCSBusinessCallerItem *)self identifier];
-  v6 = [v5 matchesItemIdentifying:v4];
+  identifyingCopy = identifying;
+  identifier = [(BCSBusinessCallerItem *)self identifier];
+  v6 = [identifier matchesItemIdentifying:identifyingCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(BCSBusinessCallerItem *)self message];
-    v7 = [v6 copyWithZone:a3];
+    message = [(BCSBusinessCallerItem *)self message];
+    v7 = [message copyWithZone:zone];
     v8 = v5[4];
     v5[4] = v7;
 
-    v9 = [(BCSBusinessCallerItem *)self logoURL];
-    v10 = [v9 copyWithZone:a3];
+    logoURL = [(BCSBusinessCallerItem *)self logoURL];
+    v10 = [logoURL copyWithZone:zone];
     v11 = v5[2];
     v5[2] = v10;
 
-    v12 = [(BCSBusinessCallerItem *)self identifier];
-    v13 = [v12 copyWithZone:a3];
+    identifier = [(BCSBusinessCallerItem *)self identifier];
+    v13 = [identifier copyWithZone:zone];
     v14 = v5[3];
     v5[3] = v13;
   }
@@ -475,26 +475,26 @@ LABEL_28:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BCSBusinessCallerItem *)self message];
-  v6 = [v5 data];
-  [v4 encodeObject:v6 forKey:@"Message"];
+  coderCopy = coder;
+  message = [(BCSBusinessCallerItem *)self message];
+  data = [message data];
+  [coderCopy encodeObject:data forKey:@"Message"];
 
-  v7 = [(BCSBusinessCallerItem *)self logoURL];
-  [v4 encodeObject:v7 forKey:@"LogoURL"];
+  logoURL = [(BCSBusinessCallerItem *)self logoURL];
+  [coderCopy encodeObject:logoURL forKey:@"LogoURL"];
 }
 
-- (BCSBusinessCallerItem)initWithCoder:(id)a3
+- (BCSBusinessCallerItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BCSBusinessCallerItem;
   v5 = [(BCSItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Message"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Message"];
     v7 = [[BCSCallerIdParquetMessage alloc] initWithData:v6];
     if (!v7)
     {
@@ -505,7 +505,7 @@ LABEL_28:
 
     v8 = v7;
     v5 = [(BCSBusinessCallerItem *)v5 initWithParquetMessage:v7];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LogoURL"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LogoURL"];
     logoURL = v5->_logoURL;
     v5->_logoURL = v9;
   }

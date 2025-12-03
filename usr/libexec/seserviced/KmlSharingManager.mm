@@ -1,7 +1,7 @@
 @interface KmlSharingManager
 - (KmlSharingManager)init;
-- (void)onAlarm:(id)a3;
-- (void)setAppletLockState:(BOOL)a3;
+- (void)onAlarm:(id)alarm;
+- (void)setAppletLockState:(BOOL)state;
 @end
 
 @implementation KmlSharingManager
@@ -28,7 +28,7 @@
   return v2;
 }
 
-- (void)setAppletLockState:(BOOL)a3
+- (void)setAppletLockState:(BOOL)state
 {
   ksmQueue = self->_ksmQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -36,21 +36,21 @@
   v4[2] = sub_1003892D8;
   v4[3] = &unk_1004C2ED0;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(ksmQueue, v4);
 }
 
-- (void)onAlarm:(id)a3
+- (void)onAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   ksmQueue = self->_ksmQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100389510;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = alarmCopy;
+  selfCopy = self;
+  v6 = alarmCopy;
   dispatch_async(ksmQueue, v7);
 }
 

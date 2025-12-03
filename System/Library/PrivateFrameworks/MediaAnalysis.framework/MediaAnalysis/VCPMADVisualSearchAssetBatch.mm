@@ -1,25 +1,25 @@
 @interface VCPMADVisualSearchAssetBatch
-+ (id)batchWithServicePool:(id)a3 visionSession:(id)a4 analysisDatabase:(id)a5 cancelBlock:(id)a6;
-- (CGRect)_computeRegionOfInterest:(__CVBuffer *)a3 orientation:(unsigned int)a4;
-- (VCPMADVisualSearchAssetBatch)initWithServicePool:(id)a3 visionSession:(id)a4 analysisDatabase:(id)a5 cancelBlock:(id)a6;
-- (int)_calculateStickerScore:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5 stickerScore:(float *)a6;
++ (id)batchWithServicePool:(id)pool visionSession:(id)session analysisDatabase:(id)database cancelBlock:(id)block;
+- (CGRect)_computeRegionOfInterest:(__CVBuffer *)interest orientation:(unsigned int)orientation;
+- (VCPMADVisualSearchAssetBatch)initWithServicePool:(id)pool visionSession:(id)session analysisDatabase:(id)database cancelBlock:(id)block;
+- (int)_calculateStickerScore:(__CVBuffer *)score orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest stickerScore:(float *)stickerScore;
 - (int)_propagateAssetProcessingStatus;
-- (int)_publishProcessingStatusForPhotoLibrary:(id)a3;
+- (int)_publishProcessingStatusForPhotoLibrary:(id)library;
 - (int)_publishProcessingStatusToLegacyDatabase;
 - (int)prepare;
 - (int)process;
 - (int)publish;
-- (void)addPhotosAsset:(id)a3 withPreviousStatus:(unint64_t)a4 attempts:(unint64_t)a5 andAttemptDate:(id)a6;
+- (void)addPhotosAsset:(id)asset withPreviousStatus:(unint64_t)status attempts:(unint64_t)attempts andAttemptDate:(id)date;
 @end
 
 @implementation VCPMADVisualSearchAssetBatch
 
-- (VCPMADVisualSearchAssetBatch)initWithServicePool:(id)a3 visionSession:(id)a4 analysisDatabase:(id)a5 cancelBlock:(id)a6
+- (VCPMADVisualSearchAssetBatch)initWithServicePool:(id)pool visionSession:(id)session analysisDatabase:(id)database cancelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  poolCopy = pool;
+  sessionCopy = session;
+  databaseCopy = database;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = VCPMADVisualSearchAssetBatch;
   v15 = [(VCPMADVisualSearchAssetBatch *)&v24 init];
@@ -29,10 +29,10 @@
     assetEntries = v15->_assetEntries;
     v15->_assetEntries = v16;
 
-    objc_storeStrong(&v15->_servicePool, a3);
-    objc_storeStrong(&v15->_visionSession, a4);
-    objc_storeStrong(&v15->_analysisDatabase, a5);
-    v18 = objc_retainBlock(v14);
+    objc_storeStrong(&v15->_servicePool, pool);
+    objc_storeStrong(&v15->_visionSession, session);
+    objc_storeStrong(&v15->_analysisDatabase, database);
+    v18 = objc_retainBlock(blockCopy);
     cancelBlock = v15->_cancelBlock;
     v15->_cancelBlock = v18;
 
@@ -45,21 +45,21 @@
   return v15;
 }
 
-+ (id)batchWithServicePool:(id)a3 visionSession:(id)a4 analysisDatabase:(id)a5 cancelBlock:(id)a6
++ (id)batchWithServicePool:(id)pool visionSession:(id)session analysisDatabase:(id)database cancelBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[a1 alloc] initWithServicePool:v10 visionSession:v11 analysisDatabase:v12 cancelBlock:v13];
+  poolCopy = pool;
+  sessionCopy = session;
+  databaseCopy = database;
+  blockCopy = block;
+  v14 = [[self alloc] initWithServicePool:poolCopy visionSession:sessionCopy analysisDatabase:databaseCopy cancelBlock:blockCopy];
 
   return v14;
 }
 
-- (void)addPhotosAsset:(id)a3 withPreviousStatus:(unint64_t)a4 attempts:(unint64_t)a5 andAttemptDate:(id)a6
+- (void)addPhotosAsset:(id)asset withPreviousStatus:(unint64_t)status attempts:(unint64_t)attempts andAttemptDate:(id)date
 {
-  v8 = a3;
-  v29 = a6;
+  assetCopy = asset;
+  dateCopy = date;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -78,10 +78,10 @@
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v30 + 1) + 8 * i) asset];
-        v14 = [v13 localIdentifier];
-        v15 = [v8 localIdentifier];
-        v16 = [v14 isEqualToString:v15];
+        asset = [*(*(&v30 + 1) + 8 * i) asset];
+        localIdentifier = [asset localIdentifier];
+        localIdentifier2 = [assetCopy localIdentifier];
+        v16 = [localIdentifier isEqualToString:localIdentifier2];
 
         if (v16)
         {
@@ -90,9 +90,9 @@
             v23 = VCPLogToOSLogType[4];
             if (os_log_type_enabled(&_os_log_default, v23))
             {
-              v24 = [v8 localIdentifier];
+              localIdentifier3 = [assetCopy localIdentifier];
               *buf = 138412290;
-              v35 = v24;
+              v35 = localIdentifier3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[VisualSearch][%@] Batch already contains asset; ignoring", buf, 0xCu);
             }
           }
@@ -111,15 +111,15 @@
     }
   }
 
-  v17 = [v8 vcp_needsVisualSearchProcessing];
-  v18 = [v8 vcp_needsStickerGatingProcessing];
+  vcp_needsVisualSearchProcessing = [assetCopy vcp_needsVisualSearchProcessing];
+  vcp_needsStickerGatingProcessing = [assetCopy vcp_needsStickerGatingProcessing];
   v19 = 2;
-  if (!v17)
+  if (!vcp_needsVisualSearchProcessing)
   {
     v19 = 0;
   }
 
-  if (v18)
+  if (vcp_needsStickerGatingProcessing)
   {
     v20 = v19 | 4;
   }
@@ -132,7 +132,7 @@
   if (v20)
   {
     assetEntries = self->_assetEntries;
-    v22 = [VCPMADVisualSearchAssetEntry entryWithAsset:v8 previousStatus:a4 previousAttempts:a5 andLastAttemptDate:v29 analysisTypes:?];
+    v22 = [VCPMADVisualSearchAssetEntry entryWithAsset:assetCopy previousStatus:status previousAttempts:attempts andLastAttemptDate:dateCopy analysisTypes:?];
     [(NSMutableArray *)assetEntries addObject:v22];
   }
 
@@ -141,9 +141,9 @@
     v25 = VCPLogToOSLogType[4];
     if (os_log_type_enabled(&_os_log_default, v25))
     {
-      v26 = [v8 localIdentifier];
+      localIdentifier4 = [assetCopy localIdentifier];
       *buf = 138412290;
-      v35 = v26;
+      v35 = localIdentifier4;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v25, "[VisualSearch][%@] Asset is with up-to-date results, ignoring", buf, 0xCu);
     }
   }
@@ -151,14 +151,14 @@
 LABEL_20:
 }
 
-- (CGRect)_computeRegionOfInterest:(__CVBuffer *)a3 orientation:(unsigned int)a4
+- (CGRect)_computeRegionOfInterest:(__CVBuffer *)interest orientation:(unsigned int)orientation
 {
-  v5 = [VIImage imageWithPixelBuffer:a3 orientation:*&a4];
+  v5 = [VIImage imageWithPixelBuffer:interest orientation:*&orientation];
   v6 = [[VIRefineRegionRequest alloc] initWithImage:v5 regionOfInterest:1 imageType:0 preferredMetalDevice:{0.0, 0.0, 1.0, 1.0}];
-  v7 = [(VCPObjectPool *)self->_servicePool getObject];
-  v8 = [v7 object];
+  getObject = [(VCPObjectPool *)self->_servicePool getObject];
+  object = [getObject object];
   v30 = 0;
-  v9 = [v8 refineRegionsWithRequest:v6 error:&v30];
+  v9 = [object refineRegionsWithRequest:v6 error:&v30];
   v10 = v30;
 
   if (v10)
@@ -182,8 +182,8 @@ LABEL_20:
 
   else
   {
-    v16 = [v9 refinedRegions];
-    v17 = [v16 count] == 0;
+    refinedRegions = [v9 refinedRegions];
+    v17 = [refinedRegions count] == 0;
 
     if (v17)
     {
@@ -206,10 +206,10 @@ LABEL_20:
 
     else
     {
-      v18 = [v9 refinedRegions];
-      v19 = [v18 firstObject];
+      refinedRegions2 = [v9 refinedRegions];
+      firstObject = [refinedRegions2 firstObject];
 
-      [v19 regionOfInterest];
+      [firstObject regionOfInterest];
       v46.origin.x = 0.0;
       v46.origin.y = 0.0;
       v46.size.width = 1.0;
@@ -224,10 +224,10 @@ LABEL_20:
         v20 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v20))
         {
-          [v19 confidence];
+          [firstObject confidence];
           v22 = v21;
-          v23 = [v9 refinedRegions];
-          v24 = [v23 count];
+          refinedRegions3 = [v9 refinedRegions];
+          v24 = [refinedRegions3 count];
           *buf = 134219264;
           v32 = x;
           v33 = 2048;
@@ -257,10 +257,10 @@ LABEL_20:
   return result;
 }
 
-- (int)_calculateStickerScore:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5 stickerScore:(float *)a6
+- (int)_calculateStickerScore:(__CVBuffer *)score orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest stickerScore:(float *)stickerScore
 {
-  *a6 = 0.0;
-  v7 = [[VNImageRequestHandler alloc] initWithCVPixelBuffer:a3 orientation:*&a4 options:&__NSDictionary0__struct session:self->_visionSession];
+  *stickerScore = 0.0;
+  v7 = [[VNImageRequestHandler alloc] initWithCVPixelBuffer:score orientation:*&orientation options:&__NSDictionary0__struct session:self->_visionSession];
   v8 = objc_alloc_init(VNGenerateInstanceMaskGatingRequest);
   if (DeviceHasANE())
   {
@@ -291,8 +291,8 @@ LABEL_20:
     goto LABEL_12;
   }
 
-  v13 = [v8 results];
-  v14 = [v13 count] == 0;
+  results = [v8 results];
+  v14 = [results count] == 0;
 
   if (v14)
   {
@@ -311,10 +311,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v15 = [v8 results];
-  v16 = [v15 firstObject];
-  [v16 confidence];
-  *a6 = v17;
+  results2 = [v8 results];
+  firstObject = [results2 firstObject];
+  [firstObject confidence];
+  *stickerScore = v17;
 
   v18 = 0;
 LABEL_13:
@@ -343,11 +343,11 @@ LABEL_13:
   v7 = +[NSDate now];
   if (+[MADManagedProcessingStatus isMACDPersistEnabled])
   {
-    v8 = [(NSMutableArray *)self->_assetEntries firstObject];
-    v9 = [v8 asset];
-    v10 = [v9 photoLibrary];
+    firstObject = [(NSMutableArray *)self->_assetEntries firstObject];
+    asset = [firstObject asset];
+    photoLibrary = [asset photoLibrary];
 
-    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v10])
+    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:photoLibrary])
     {
       if (!self->_allowBeforeMigration)
       {
@@ -396,7 +396,7 @@ LABEL_13:
       v48[4] = self;
       v49 = v7;
       v47 = 0;
-      v29 = [(NSMutableArray *)v10 mad_performAnalysisDataStoreChanges:v48 error:&v47];
+      v29 = [(NSMutableArray *)photoLibrary mad_performAnalysisDataStoreChanges:v48 error:&v47];
       v30 = v47;
       v31 = v30;
       if (v29)
@@ -458,8 +458,8 @@ LABEL_54:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = self->_assetEntries;
-  v15 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v43 objects:v50 count:16];
+  photoLibrary = self->_assetEntries;
+  v15 = [(NSMutableArray *)photoLibrary countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v15)
   {
     v16 = *v44;
@@ -470,14 +470,14 @@ LABEL_15:
     {
       if (*v44 != v16)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(photoLibrary);
       }
 
       v19 = *(*(&v43 + 1) + 8 * v17);
       analysisDatabase = self->_analysisDatabase;
-      v21 = [v19 previousAttempts];
-      v22 = [v19 asset];
-      v23 = [(VCPDatabaseWriter *)analysisDatabase setAttempts:v21 + 1 asset:v22 taskID:12 status:1 lastAttemptDate:v7];
+      previousAttempts = [v19 previousAttempts];
+      asset2 = [v19 asset];
+      v23 = [(VCPDatabaseWriter *)analysisDatabase setAttempts:previousAttempts + 1 asset:asset2 taskID:12 status:1 lastAttemptDate:v7];
 
       if (v23 == -108)
       {
@@ -508,7 +508,7 @@ LABEL_15:
       v18 = v2;
       if (v15 == v17)
       {
-        v15 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v43 objects:v50 count:16];
+        v15 = [(NSMutableArray *)photoLibrary countByEnumeratingWithState:&v43 objects:v50 count:16];
         if (v15)
         {
           goto LABEL_15;
@@ -519,29 +519,29 @@ LABEL_15:
     }
   }
 
-  v34 = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
-  if (v34 == -108 || v34 == -36)
+  commit = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
+  if (commit == -108 || commit == -36)
   {
-    v35 = v34;
+    v35 = commit;
   }
 
   else
   {
-    v35 = v34;
-    if (v34 != -23)
+    v35 = commit;
+    if (commit != -23)
     {
       v35 = v2;
     }
   }
 
-  if (v34 != -108 && v34 != -36 && v34 != -23)
+  if (commit != -108 && commit != -36 && commit != -23)
   {
     v40 = VCPSignPostLog();
-    v10 = v40;
+    photoLibrary = v40;
     if (v41 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, &v10->super.super, OS_SIGNPOST_INTERVAL_END, spid, "VCPMADVisualSearchAssetBatch_LegacyPrepare", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, &photoLibrary->super.super, OS_SIGNPOST_INTERVAL_END, spid, "VCPMADVisualSearchAssetBatch_LegacyPrepare", "", buf, 2u);
     }
 
     goto LABEL_53;
@@ -554,11 +554,11 @@ LABEL_55:
 
 - (int)process
 {
-  v3 = [objc_opt_class() concurrentAssetCount];
-  dsema = dispatch_semaphore_create(v3);
+  concurrentAssetCount = [objc_opt_class() concurrentAssetCount];
+  dsema = dispatch_semaphore_create(concurrentAssetCount);
   v81 = dispatch_group_create();
   group = dispatch_group_create();
-  v78 = [(VCPObjectPool *)self->_servicePool getObject];
+  getObject = [(VCPObjectPool *)self->_servicePool getObject];
   v4 = VCPSignPostLog();
   v5 = os_signpost_id_generate(v4);
 
@@ -624,27 +624,27 @@ LABEL_55:
       v17 = [(NSMutableArray *)self->_assetEntries objectAtIndexedSubscript:v12];
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v85))
       {
-        v18 = [v17 asset];
-        v19 = [v18 localIdentifier];
+        asset = [v17 asset];
+        localIdentifier = [asset localIdentifier];
         *v112 = 138412290;
-        v113 = v19;
+        v113 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v85, "[VisualSearch][%@] Processing asset", v112, 0xCu);
       }
 
-      v20 = [v17 asset];
-      v21 = [v20 adjustmentVersion];
-      v22 = v21 == 0;
+      asset2 = [v17 asset];
+      adjustmentVersion = [asset2 adjustmentVersion];
+      v22 = adjustmentVersion == 0;
 
       if (!v22)
       {
-        v23 = [v17 asset];
-        v86 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v23];
+        asset3 = [v17 asset];
+        v86 = [PHAssetResource vcp_allAcceptableResourcesForAsset:asset3];
 
-        v24 = [v86 vcp_thumbnailResource];
-        v25 = v24;
-        if (v24)
+        vcp_thumbnailResource = [v86 vcp_thumbnailResource];
+        v25 = vcp_thumbnailResource;
+        if (vcp_thumbnailResource)
         {
-          if ([v24 isLocallyAvailable])
+          if ([vcp_thumbnailResource isLocallyAvailable])
           {
             v26 = VCPSignPostLog();
             v27 = os_signpost_id_generate(v26);
@@ -659,8 +659,8 @@ LABEL_55:
 
             v103 = 0;
             v30 = +[VCPImageManager sharedImageManager];
-            v31 = [v25 privateFileURL];
-            cf = [v30 pixelBufferWithFormat:875704438 fromImageURL:v31 flushCache:0 orientation:&v103];
+            privateFileURL = [v25 privateFileURL];
+            cf = [v30 pixelBufferWithFormat:875704438 fromImageURL:privateFileURL flushCache:0 orientation:&v103];
 
             v32 = VCPSignPostLog();
             v33 = v32;
@@ -680,7 +680,7 @@ LABEL_55:
                 block[2] = sub_100127A5C;
                 block[3] = &unk_100286DE0;
                 v98 = v17;
-                v99 = self;
+                selfCopy = self;
                 v100 = cf;
                 if (cf)
                 {
@@ -696,34 +696,34 @@ LABEL_55:
               {
                 if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v85))
                 {
-                  v35 = [v17 asset];
-                  v36 = [v35 localIdentifier];
-                  v37 = [v25 type];
-                  v38 = [v25 pixelWidth];
-                  v39 = [v25 pixelHeight];
+                  asset4 = [v17 asset];
+                  localIdentifier2 = [asset4 localIdentifier];
+                  type = [v25 type];
+                  pixelWidth = [v25 pixelWidth];
+                  pixelHeight = [v25 pixelHeight];
                   *v112 = 138413058;
-                  v113 = v36;
+                  v113 = localIdentifier2;
                   v114 = 2048;
-                  v115 = v37;
+                  v115 = type;
                   v116 = 1024;
-                  v117 = v38;
+                  v117 = pixelWidth;
                   v118 = 1024;
-                  v119 = v39;
+                  v119 = pixelHeight;
                   _os_log_impl(&_mh_execute_header, &_os_log_default, v85, "[VisualSearch][%@] Processing resource type %ld (%dx%d)", v112, 0x22u);
                 }
 
-                v40 = [v17 asset];
-                v41 = [VCPMADServiceImageAsset assetWithPhotosAsset:v40 clientBundleID:0 clientTeamID:0];
+                asset5 = [v17 asset];
+                v41 = [VCPMADServiceImageAsset assetWithPhotosAsset:asset5 clientBundleID:0 clientTeamID:0];
 
                 v76 = [v41 vcp_annotationWithTypes:7];
                 v42 = +[NSMutableDictionary dictionary];
-                v43 = [v41 location];
-                v44 = v43 == 0;
+                location = [v41 location];
+                v44 = location == 0;
 
                 if (!v44)
                 {
-                  v45 = [v41 location];
-                  [v42 setObject:v45 forKeyedSubscript:v73];
+                  location2 = [v41 location];
+                  [v42 setObject:location2 forKeyedSubscript:v73];
                 }
 
                 if ([v41 isScreenshot])
@@ -738,10 +738,10 @@ LABEL_55:
                 {
                   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v84))
                   {
-                    v46 = [v17 asset];
-                    v47 = [v46 localIdentifier];
+                    asset6 = [v17 asset];
+                    localIdentifier3 = [asset6 localIdentifier];
                     *v112 = 138412290;
-                    v113 = v47;
+                    v113 = localIdentifier3;
                     _os_log_impl(&_mh_execute_header, &_os_log_default, v84, "[VisualSearch][%@] Failed to create query context", v112, 0xCu);
                   }
 
@@ -764,7 +764,7 @@ LABEL_55:
                   }
 
                   dispatch_group_enter(v81);
-                  v60 = [v78 object];
+                  object = [getObject object];
                   v87[0] = _NSConcreteStackBlock;
                   v87[1] = 3221225472;
                   v87[2] = sub_100127D40;
@@ -777,7 +777,7 @@ LABEL_55:
                   v93 = &v104;
                   v89 = dsema;
                   v90 = v81;
-                  v61 = [v60 parseWithVisualQuery:v70 cachedResults:0 completion:v87];
+                  v61 = [object parseWithVisualQuery:v70 cachedResults:0 completion:v87];
                 }
               }
             }
@@ -786,10 +786,10 @@ LABEL_55:
             {
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v84))
               {
-                v54 = [v17 asset];
-                v55 = [v54 localIdentifier];
+                asset7 = [v17 asset];
+                localIdentifier4 = [asset7 localIdentifier];
                 *v112 = 138412290;
-                v113 = v55;
+                v113 = localIdentifier4;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v84, "[VisualSearch][%@] Failed to decode thumbnail", v112, 0xCu);
               }
 
@@ -806,20 +806,20 @@ LABEL_67:
 
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v84))
           {
-            v52 = [v17 asset];
-            v53 = [v52 localIdentifier];
+            asset8 = [v17 asset];
+            localIdentifier5 = [asset8 localIdentifier];
             *v112 = 138412290;
-            v113 = v53;
+            v113 = localIdentifier5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v84, "[VisualSearch][%@] Thumbnail resource not locally available", v112, 0xCu);
           }
         }
 
         else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v84))
         {
-          v50 = [v17 asset];
-          v51 = [v50 localIdentifier];
+          asset9 = [v17 asset];
+          localIdentifier6 = [asset9 localIdentifier];
           *v112 = 138412290;
-          v113 = v51;
+          v113 = localIdentifier6;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v84, "[VisualSearch][%@] No thumbnail resource", v112, 0xCu);
         }
 
@@ -829,10 +829,10 @@ LABEL_67:
 
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v84))
       {
-        v48 = [v17 asset];
-        v49 = [v48 localIdentifier];
+        asset10 = [v17 asset];
+        localIdentifier7 = [asset10 localIdentifier];
         *v112 = 138412290;
-        v113 = v49;
+        v113 = localIdentifier7;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v84, "[VisualSearch][%@] Asset has no adjustment version", v112, 0xCu);
       }
 
@@ -865,10 +865,10 @@ LABEL_68:
     v64 = [(NSMutableArray *)self->_assetEntries objectAtIndexedSubscript:v12];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v62))
     {
-      v65 = [v64 asset];
-      v66 = [v65 localIdentifier];
+      asset11 = [v64 asset];
+      localIdentifier8 = [asset11 localIdentifier];
       *v112 = 138412290;
-      v113 = v66;
+      v113 = localIdentifier8;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v62, "[VisualSearch][%@] Marking asset as canceled", v112, 0xCu);
     }
 
@@ -919,8 +919,8 @@ LABEL_3:
 
       v7 = *(*(&v11 + 1) + 8 * v6);
       v8 = objc_autoreleasePoolPush();
-      v9 = [v7 status];
-      if (v9 == -128)
+      status = [v7 status];
+      if (status == -128)
       {
         v3 = -128;
       }
@@ -931,7 +931,7 @@ LABEL_3:
       }
 
       objc_autoreleasePoolPop(v8);
-      if (v9 == -128)
+      if (status == -128)
       {
         break;
       }
@@ -952,7 +952,7 @@ LABEL_3:
   return v3;
 }
 
-- (int)_publishProcessingStatusForPhotoLibrary:(id)a3
+- (int)_publishProcessingStatusForPhotoLibrary:(id)library
 {
   v8 = 0;
   v9[0] = _NSConcreteStackBlock;
@@ -960,20 +960,20 @@ LABEL_3:
   v9[2] = sub_10012860C;
   v9[3] = &unk_100283AD0;
   v9[4] = self;
-  v3 = [a3 mad_performAnalysisDataStoreChanges:v9 error:&v8];
+  v3 = [library mad_performAnalysisDataStoreChanges:v9 error:&v8];
   v4 = v8;
   v5 = v4;
   if (v3)
   {
-    v6 = 0;
+    code = 0;
   }
 
   else
   {
-    v6 = [v4 code];
+    code = [v4 code];
   }
 
-  return v6;
+  return code;
 }
 
 - (int)_publishProcessingStatusToLegacyDatabase
@@ -1005,23 +1005,23 @@ LABEL_3:
 
       v6 = *(*(&v36 + 1) + 8 * v4);
       v7 = objc_autoreleasePoolPush();
-      v8 = [v6 asset];
-      v9 = [v8 localIdentifier];
-      v10 = [NSString stringWithFormat:@"[VisualSearch][%@][Legacy]", v9];
+      asset = [v6 asset];
+      localIdentifier = [asset localIdentifier];
+      v10 = [NSString stringWithFormat:@"[VisualSearch][%@][Legacy]", localIdentifier];
 
       if (![v6 status])
       {
         if ([v6 visualSearchStatus])
         {
-          v11 = [v6 visualSearchStatus];
+          visualSearchStatus = [v6 visualSearchStatus];
         }
 
         else
         {
-          v11 = [v6 stickerStatus];
+          visualSearchStatus = [v6 stickerStatus];
         }
 
-        [v6 setStatus:v11];
+        [v6 setStatus:visualSearchStatus];
       }
 
       if (![v6 status])
@@ -1035,9 +1035,9 @@ LABEL_3:
 
 LABEL_37:
         analysisDatabase = self->_analysisDatabase;
-        v27 = [v6 asset];
-        v28 = [v27 localIdentifier];
-        v25 = [(VCPDatabaseWriter *)analysisDatabase removeProcessingStatusForLocalIdentifier:v28 andTaskID:12];
+        asset2 = [v6 asset];
+        localIdentifier2 = [asset2 localIdentifier];
+        v25 = [(VCPDatabaseWriter *)analysisDatabase removeProcessingStatusForLocalIdentifier:localIdentifier2 andTaskID:12];
 
         if (v25 == -108 || v25 == -36)
         {
@@ -1074,14 +1074,14 @@ LABEL_42:
 
         [v6 status];
         v18 = MADProcessingStatusForOSStatus();
-        v19 = [v6 asset];
-        v20 = [v6 currentAttemptDate];
-        v21 = [v19 mad_nextAttemptDateForStatus:v18 currentAttemptDate:v20 attemptCount:{objc_msgSend(v6, "previousAttempts") + 1}];
+        asset3 = [v6 asset];
+        currentAttemptDate = [v6 currentAttemptDate];
+        v21 = [asset3 mad_nextAttemptDateForStatus:v18 currentAttemptDate:currentAttemptDate attemptCount:{objc_msgSend(v6, "previousAttempts") + 1}];
 
         v22 = self->_analysisDatabase;
-        v23 = [v6 asset];
-        v24 = [v23 localIdentifier];
-        v25 = [(VCPDatabaseWriter *)v22 updateProcessingStatus:v18 andNextAttemptDate:v21 forLocalIdentifier:v24 andTaskID:12];
+        asset4 = [v6 asset];
+        localIdentifier3 = [asset4 localIdentifier];
+        v25 = [(VCPDatabaseWriter *)v22 updateProcessingStatus:v18 andNextAttemptDate:v21 forLocalIdentifier:localIdentifier3 andTaskID:12];
 
         if (v25 == -108 || v25 == -36)
         {
@@ -1120,11 +1120,11 @@ LABEL_42:
       }
 
       v12 = self->_analysisDatabase;
-      v13 = [v6 previousAttempts];
-      v14 = [v6 asset];
-      v15 = [v6 previousStatus];
-      v16 = [v6 lastAttemptDate];
-      v17 = [(VCPDatabaseWriter *)v12 setAttempts:v13 asset:v14 taskID:12 status:v15 lastAttemptDate:v16];
+      previousAttempts = [v6 previousAttempts];
+      asset5 = [v6 asset];
+      previousStatus = [v6 previousStatus];
+      lastAttemptDate = [v6 lastAttemptDate];
+      v17 = [(VCPDatabaseWriter *)v12 setAttempts:previousAttempts asset:asset5 taskID:12 status:previousStatus lastAttemptDate:lastAttemptDate];
 
       if (v17 == -108 || v17 == -36)
       {
@@ -1194,11 +1194,11 @@ LABEL_56:
     return 0;
   }
 
-  v6 = [(NSMutableArray *)self->_assetEntries firstObject];
-  v7 = [v6 asset];
-  v45 = [v7 photoLibrary];
+  firstObject = [(NSMutableArray *)self->_assetEntries firstObject];
+  asset = [firstObject asset];
+  photoLibrary = [asset photoLibrary];
 
-  v42 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v45];
+  v42 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:photoLibrary];
   if (v42 && !self->_allowBeforeMigration)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -1211,7 +1211,7 @@ LABEL_56:
       }
     }
 
-    v11 = -18;
+    _propagateAssetProcessingStatus = -18;
   }
 
   else
@@ -1227,7 +1227,7 @@ LABEL_56:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPMADVisualSearchAssetBatch_Publish", "", buf, 2u);
     }
 
-    v11 = [(VCPMADVisualSearchAssetBatch *)self _propagateAssetProcessingStatus];
+    _propagateAssetProcessingStatus = [(VCPMADVisualSearchAssetBatch *)self _propagateAssetProcessingStatus];
     v12 = +[MADStateHandler sharedStateHandler];
     [v12 addBreadcrumb:{@"[VisualSearch] Persisting %d assets to Photos", -[NSMutableArray count](self->_assetEntries, "count")}];
 
@@ -1245,7 +1245,7 @@ LABEL_56:
     v44 = objc_retainBlock(v51);
     cancelBlock = self->_cancelBlock;
     v50 = 0;
-    v16 = [v45 mad_performChangesAndWait:v44 activity:12 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100286E38 error:&v50];
+    v16 = [photoLibrary mad_performChangesAndWait:v44 activity:12 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100286E38 error:&v50];
     v17 = v50;
     v18 = +[MADStateHandler sharedStateHandler];
     [v18 exitKnownTimeoutRisk];
@@ -1310,20 +1310,20 @@ LABEL_56:
         while (v23);
       }
 
-      v28 = [v17 code];
-      if (v11)
+      code = [v17 code];
+      if (_propagateAssetProcessingStatus)
       {
         v29 = 1;
       }
 
       else
       {
-        v29 = v28 == 0;
+        v29 = code == 0;
       }
 
       if (!v29)
       {
-        v11 = v28;
+        _propagateAssetProcessingStatus = code;
       }
     }
 
@@ -1344,35 +1344,35 @@ LABEL_56:
     {
       if (+[MADManagedProcessingStatus isMACDPersistEnabled])
       {
-        v31 = [(VCPMADVisualSearchAssetBatch *)self _publishProcessingStatusForPhotoLibrary:v45];
-        if (!v11 && v31 != 0)
+        v31 = [(VCPMADVisualSearchAssetBatch *)self _publishProcessingStatusForPhotoLibrary:photoLibrary];
+        if (!_propagateAssetProcessingStatus && v31 != 0)
         {
-          v11 = v31;
+          _propagateAssetProcessingStatus = v31;
         }
       }
 
       if (+[VCPDatabaseWriter isLegacyPersistEnabled])
       {
-        v33 = [(VCPMADVisualSearchAssetBatch *)self _publishProcessingStatusToLegacyDatabase];
-        v34 = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
-        if (v11)
+        _publishProcessingStatusToLegacyDatabase = [(VCPMADVisualSearchAssetBatch *)self _publishProcessingStatusToLegacyDatabase];
+        commit = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
+        if (_propagateAssetProcessingStatus)
         {
           v35 = 1;
         }
 
         else
         {
-          v35 = v33 == 0;
+          v35 = _publishProcessingStatusToLegacyDatabase == 0;
         }
 
         if (v35)
         {
-          v36 = v11;
+          v36 = _propagateAssetProcessingStatus;
         }
 
         else
         {
-          v36 = v33;
+          v36 = _publishProcessingStatusToLegacyDatabase;
         }
 
         if (v36)
@@ -1382,17 +1382,17 @@ LABEL_56:
 
         else
         {
-          v37 = v34 == 0;
+          v37 = commit == 0;
         }
 
         if (v37)
         {
-          v11 = v36;
+          _propagateAssetProcessingStatus = v36;
         }
 
         else
         {
-          v11 = v34;
+          _propagateAssetProcessingStatus = commit;
         }
       }
     }
@@ -1406,7 +1406,7 @@ LABEL_56:
     }
   }
 
-  return v11;
+  return _propagateAssetProcessingStatus;
 }
 
 @end

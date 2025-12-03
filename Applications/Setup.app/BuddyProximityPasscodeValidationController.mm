@@ -3,17 +3,17 @@
 - (BOOL)_shouldSetPasscode;
 - (BOOL)_sourceHasAppleID;
 - (BuddyProximityPasscodeValidationController)init;
-- (void)_footerButtonTapped:(id)a3;
+- (void)_footerButtonTapped:(id)tapped;
 - (void)_nextButtonTapped;
 - (void)_updateActions;
-- (void)_validatePasscode:(id)a3;
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4;
-- (void)passcodeInput:(id)a3 willChangeContents:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)_validatePasscode:(id)passcode;
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode;
+- (void)passcodeInput:(id)input willChangeContents:(id)contents;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BuddyProximityPasscodeValidationController
@@ -41,26 +41,26 @@
 
 - (void)viewDidLoad
 {
-  v104 = self;
+  selfCopy = self;
   v103 = a2;
   v102.receiver = self;
   v102.super_class = BuddyProximityPasscodeValidationController;
   [(BuddyProximityPasscodeValidationController *)&v102 viewDidLoad];
-  v2 = [(BuddyProximityPasscodeValidationController *)v104 headerView];
+  headerView = [(BuddyProximityPasscodeValidationController *)selfCopy headerView];
   LODWORD(v3) = 1045220557;
-  [v2 setTitleHyphenationFactor:v3];
+  [headerView setTitleHyphenationFactor:v3];
 
-  v4 = [(BuddyProximityPasscodeValidationController *)v104 proximitySetupController];
-  v101 = [(ProximitySetupController *)v4 deviceClass];
+  proximitySetupController = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  deviceClass = [(ProximitySetupController *)proximitySetupController deviceClass];
 
-  v5 = [(BuddyProximityPasscodeValidationController *)v104 headerView];
+  headerView2 = [(BuddyProximityPasscodeValidationController *)selfCopy headerView];
   v6 = +[NSBundle mainBundle];
-  v7 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_TITLE" deviceClass:v101];
+  v7 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_TITLE" deviceClass:deviceClass];
   v8 = [(NSBundle *)v6 localizedStringForKey:v7 value:&stru_10032F900 table:@"Localizable"];
-  [v5 setTitle:v8];
+  [headerView2 setTitle:v8];
 
   location = 0;
-  if ([(BuddyProximityPasscodeValidationController *)v104 _sourceHasAppleID])
+  if ([(BuddyProximityPasscodeValidationController *)selfCopy _sourceHasAppleID])
   {
     objc_storeStrong(&location, @"PROXIMITY_PASSCODE_VALIDATION_DESCRIPTION_START_APPLEID");
   }
@@ -71,12 +71,12 @@
   }
 
   v9 = +[NSBundle mainBundle];
-  v10 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:location deviceClass:v101];
+  v10 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:location deviceClass:deviceClass];
   v99 = [(NSBundle *)v9 localizedStringForKey:v10 value:&stru_10032F900 table:@"Localizable"];
 
   v97 = 0;
   v11 = 0;
-  if ([(BuddyProximityPasscodeValidationController *)v104 _shouldSetPasscode])
+  if ([(BuddyProximityPasscodeValidationController *)selfCopy _shouldSetPasscode])
   {
     v98 = +[UIScreen mainScreen];
     v97 = 1;
@@ -102,34 +102,34 @@
     v99 = v19;
   }
 
-  v21 = [(BuddyProximityPasscodeValidationController *)v104 headerView];
-  [v21 setDetailText:v99];
+  headerView3 = [(BuddyProximityPasscodeValidationController *)selfCopy headerView];
+  [headerView3 setDetailText:v99];
 
   v22 = +[NSBundle mainBundle];
   v23 = [(NSBundle *)v22 localizedStringForKey:@"PROXIMITY_PASSCODE_VALIDATION_FOOTER_BUTTON" value:&stru_10032F900 table:@"Localizable"];
-  v24 = [(BuddyProximityPasscodeValidationController *)v104 proximitySetupController];
-  v25 = [(ProximitySetupController *)v24 deviceName];
-  v96[0] = [NSString localizedStringWithFormat:v23, v25];
+  proximitySetupController2 = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  deviceName = [(ProximitySetupController *)proximitySetupController2 deviceName];
+  v96[0] = [NSString localizedStringWithFormat:v23, deviceName];
 
   v95 = [BuddyMultilineButton buttonWithType:1];
   [v95 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v26 = [v95 titleLabel];
+  titleLabel = [v95 titleLabel];
   v27 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v26 setFont:v27];
+  [titleLabel setFont:v27];
 
-  v28 = [v95 titleLabel];
-  [v28 setNumberOfLines:0];
+  titleLabel2 = [v95 titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  if (([(BuddyFeatureFlags *)v104->_featureFlags isSolariumEnabled]& 1) != 0)
+  if (([(BuddyFeatureFlags *)selfCopy->_featureFlags isSolariumEnabled]& 1) != 0)
   {
-    v29 = [v95 titleLabel];
-    [v29 setTextAlignment:4];
+    titleLabel3 = [v95 titleLabel];
+    [titleLabel3 setTextAlignment:4];
   }
 
   else
   {
-    v29 = [v95 titleLabel];
-    [v29 setTextAlignment:1];
+    titleLabel3 = [v95 titleLabel];
+    [titleLabel3 setTextAlignment:1];
   }
 
   *&v93 = sub_100226EA4();
@@ -140,40 +140,40 @@
   v91 = v93;
   [v95 setContentEdgeInsets:{*&v93, v30, v31, v32}];
   [v95 setTitle:v96[0] forState:0];
-  [v95 addTarget:v104 action:"_footerButtonTapped:" forEvents:64];
-  v33 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-  [v33 addSubview:v95];
+  [v95 addTarget:selfCopy action:"_footerButtonTapped:" forEvents:64];
+  contentView = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+  [contentView addSubview:v95];
 
   v90 = 0;
-  if (([(BuddyFeatureFlags *)v104->_featureFlags isSolariumEnabled]& 1) != 0)
+  if (([(BuddyFeatureFlags *)selfCopy->_featureFlags isSolariumEnabled]& 1) != 0)
   {
-    v34 = [v95 trailingAnchor];
-    v35 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-    v36 = [v35 trailingAnchor];
-    v37 = [v34 constraintLessThanOrEqualToAnchor:v36];
+    trailingAnchor = [v95 trailingAnchor];
+    contentView2 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+    trailingAnchor2 = [contentView2 trailingAnchor];
+    v37 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   }
 
   else
   {
-    v34 = [v95 widthAnchor];
-    v35 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-    v36 = [v35 widthAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 multiplier:1.0];
+    trailingAnchor = [v95 widthAnchor];
+    contentView2 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+    trailingAnchor2 = [contentView2 widthAnchor];
+    v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 multiplier:1.0];
   }
 
   v38 = v90;
   v90 = v37;
 
-  v39 = [v95 leadingAnchor];
-  v40 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-  v41 = [v40 leadingAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  leadingAnchor = [v95 leadingAnchor];
+  contentView3 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v106[0] = v42;
   v106[1] = v90;
-  v43 = [v95 bottomAnchor];
-  v44 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-  v45 = [v44 bottomAnchor];
-  v46 = [v43 constraintEqualToAnchor:v45];
+  bottomAnchor = [v95 bottomAnchor];
+  contentView4 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v106[2] = v46;
   v47 = [NSArray arrayWithObjects:v106 count:3];
   [NSLayoutConstraint activateConstraints:v47];
@@ -182,27 +182,27 @@
   [v89 setModalPresentationStyle:2];
   [v89 setDisplayCaptionText:0];
   [v89 setDisplayLargeIcon:0];
-  v48 = [(BuddyProximityPasscodeValidationController *)v104 buttonTray];
-  [v48 setPrivacyLinkController:v89];
+  buttonTray = [(BuddyProximityPasscodeValidationController *)selfCopy buttonTray];
+  [buttonTray setPrivacyLinkController:v89];
 
-  v49 = [(BuddyProximityPasscodeValidationController *)v104 proximitySetupController];
-  v50 = [(ProximitySetupController *)v49 handshake];
-  v51 = [(SASProximityHandshake *)v50 unlockType];
+  proximitySetupController3 = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  handshake = [(ProximitySetupController *)proximitySetupController3 handshake];
+  unlockType = [(SASProximityHandshake *)handshake unlockType];
 
-  v88 = v51;
-  v52 = [(BuddyProximityPasscodeValidationController *)v104 proximitySetupController];
-  v53 = [(ProximitySetupController *)v52 handshake];
-  v54 = [(SASProximityHandshake *)v53 simplePasscodeType];
+  v88 = unlockType;
+  proximitySetupController4 = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  handshake2 = [(ProximitySetupController *)proximitySetupController4 handshake];
+  simplePasscodeType = [(SASProximityHandshake *)handshake2 simplePasscodeType];
 
   if (v88)
   {
     v57 = [[BuddyComplexPasscodeInputView alloc] initWithFrame:v88 == 1 numericOnly:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    [(BuddyProximityPasscodeValidationController *)v104 setPasscodeInputView:v57];
+    [(BuddyProximityPasscodeValidationController *)selfCopy setPasscodeInputView:v57];
   }
 
   else
   {
-    if (v54)
+    if (simplePasscodeType)
     {
       v55 = 6;
     }
@@ -213,55 +213,55 @@
     }
 
     v56 = [[BuddySimplePasscodeInputView alloc] initWithFrame:v55 numberOfEntryFields:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    [(BuddyProximityPasscodeValidationController *)v104 setPasscodeInputView:v56];
+    [(BuddyProximityPasscodeValidationController *)selfCopy setPasscodeInputView:v56];
   }
 
-  v58 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputView];
-  [(BuddyPasscodeInputView *)v58 setTranslatesAutoresizingMaskIntoConstraints:0];
+  passcodeInputView = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  [(BuddyPasscodeInputView *)passcodeInputView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v59 = v104;
-  v60 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputView];
-  [(BuddyPasscodeInputView *)v60 setDelegate:v59];
+  v59 = selfCopy;
+  passcodeInputView2 = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  [(BuddyPasscodeInputView *)passcodeInputView2 setDelegate:v59];
 
-  v61 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-  v62 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputView];
-  [v61 addSubview:v62];
+  contentView5 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+  passcodeInputView3 = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  [contentView5 addSubview:passcodeInputView3];
 
-  v63 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputView];
-  v64 = [(BuddyPasscodeInputView *)v63 leadingAnchor];
-  v65 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-  v66 = [v65 leadingAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66];
+  passcodeInputView4 = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  leadingAnchor3 = [(BuddyPasscodeInputView *)passcodeInputView4 leadingAnchor];
+  contentView6 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+  leadingAnchor4 = [contentView6 leadingAnchor];
+  v67 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v67 setActive:1];
 
-  v68 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputView];
-  v69 = [(BuddyPasscodeInputView *)v68 trailingAnchor];
-  v70 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-  v71 = [v70 trailingAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71];
+  passcodeInputView5 = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  trailingAnchor3 = [(BuddyPasscodeInputView *)passcodeInputView5 trailingAnchor];
+  contentView7 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+  trailingAnchor4 = [contentView7 trailingAnchor];
+  v72 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v72 setActive:1];
 
   v73 = +[UIApplication sharedApplication];
   [BuddyPasscodeBaseViewController _passcodeInputVerticalPaddingForOrientation:[(UIApplication *)v73 activeInterfaceOrientation]];
   v75 = v74;
 
-  v76 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputView];
-  v77 = [(BuddyPasscodeInputView *)v76 topAnchor];
-  v78 = [(BuddyProximityPasscodeValidationController *)v104 contentView];
-  v79 = [v78 topAnchor];
-  v80 = [v77 constraintEqualToAnchor:v79 constant:v75];
-  [(BuddyProximityPasscodeValidationController *)v104 setContentViewTopConstraint:v80];
+  passcodeInputView6 = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  topAnchor = [(BuddyPasscodeInputView *)passcodeInputView6 topAnchor];
+  contentView8 = [(BuddyProximityPasscodeValidationController *)selfCopy contentView];
+  topAnchor2 = [contentView8 topAnchor];
+  v80 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v75];
+  [(BuddyProximityPasscodeValidationController *)selfCopy setContentViewTopConstraint:v80];
 
-  v81 = [v95 topAnchor];
-  v82 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputView];
-  v83 = [(BuddyPasscodeInputView *)v82 bottomAnchor];
-  v84 = [v81 constraintEqualToAnchor:v83 constant:v75];
-  [(BuddyProximityPasscodeValidationController *)v104 setPasscodeInputViewBottomConstraint:v84];
+  topAnchor3 = [v95 topAnchor];
+  passcodeInputView7 = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  bottomAnchor3 = [(BuddyPasscodeInputView *)passcodeInputView7 bottomAnchor];
+  v84 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:v75];
+  [(BuddyProximityPasscodeValidationController *)selfCopy setPasscodeInputViewBottomConstraint:v84];
 
-  v85 = [(BuddyProximityPasscodeValidationController *)v104 contentViewTopConstraint];
-  v105[0] = v85;
-  v86 = [(BuddyProximityPasscodeValidationController *)v104 passcodeInputViewBottomConstraint];
-  v105[1] = v86;
+  contentViewTopConstraint = [(BuddyProximityPasscodeValidationController *)selfCopy contentViewTopConstraint];
+  v105[0] = contentViewTopConstraint;
+  passcodeInputViewBottomConstraint = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputViewBottomConstraint];
+  v105[1] = passcodeInputViewBottomConstraint;
   v87 = [NSArray arrayWithObjects:v105 count:2];
   [NSLayoutConstraint activateConstraints:v87];
 
@@ -271,73 +271,73 @@
   objc_storeStrong(v96, 0);
   objc_storeStrong(&v99, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v101, 0);
+  objc_storeStrong(&deviceClass, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  appearCopy = appear;
   v13.receiver = self;
   v13.super_class = BuddyProximityPasscodeValidationController;
-  [(BuddyProximityPasscodeValidationController *)&v13 viewWillAppear:a3];
-  v3 = [(BuddyProximityPasscodeValidationController *)v16 passcodeInputView];
-  [(BuddyPasscodeInputView *)v3 becomeFirstResponder];
+  [(BuddyProximityPasscodeValidationController *)&v13 viewWillAppear:appear];
+  passcodeInputView = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  [(BuddyPasscodeInputView *)passcodeInputView becomeFirstResponder];
 
-  v4 = [(BuddyProximityPasscodeValidationController *)v16 proximitySetupController];
-  v5 = [(ProximitySetupController *)v4 handshake];
-  v6 = [(SASProximityHandshake *)v5 unlockType];
+  proximitySetupController = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  handshake = [(ProximitySetupController *)proximitySetupController handshake];
+  unlockType = [(SASProximityHandshake *)handshake unlockType];
 
-  if (v6)
+  if (unlockType)
   {
     v8 = [UIBarButtonItem alloc];
     v9 = +[NSBundle mainBundle];
     v10 = [(NSBundle *)v9 localizedStringForKey:@"NEXT" value:&stru_10032F900 table:@"Localizable"];
-    v12 = [v8 initWithTitle:v10 style:2 target:v16 action:"_nextButtonTapped"];
+    v12 = [v8 initWithTitle:v10 style:2 target:selfCopy action:"_nextButtonTapped"];
 
-    v11 = [(BuddyProximityPasscodeValidationController *)v16 navigationItem];
-    [v11 setRightBarButtonItem:v12 animated:v14];
+    navigationItem = [(BuddyProximityPasscodeValidationController *)selfCopy navigationItem];
+    [navigationItem setRightBarButtonItem:v12 animated:appearCopy];
 
     objc_storeStrong(&v12, 0);
   }
 
   else
   {
-    v7 = [(BuddyProximityPasscodeValidationController *)v16 navigationItem];
-    [v7 setRightBarButtonItem:0 animated:v14];
+    navigationItem2 = [(BuddyProximityPasscodeValidationController *)selfCopy navigationItem];
+    [navigationItem2 setRightBarButtonItem:0 animated:appearCopy];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = BuddyProximityPasscodeValidationController;
-  [(BuddyProximityPasscodeValidationController *)&v4 viewWillDisappear:a3];
-  v3 = [(BuddyProximityPasscodeValidationController *)v7 passcodeInputView];
-  [(BuddyPasscodeInputView *)v3 resignFirstResponder];
+  [(BuddyProximityPasscodeValidationController *)&v4 viewWillDisappear:disappear];
+  passcodeInputView = [(BuddyProximityPasscodeValidationController *)selfCopy passcodeInputView];
+  [(BuddyPasscodeInputView *)passcodeInputView resignFirstResponder];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v14 = a3;
-  v13 = self;
+  sizeCopy = size;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v11.receiver = v13;
+  objc_storeStrong(location, coordinator);
+  v11.receiver = selfCopy;
   v11.super_class = BuddyProximityPasscodeValidationController;
-  [(BuddyProximityPasscodeValidationController *)&v11 viewWillTransitionToSize:location[0] withTransitionCoordinator:v14.width, v14.height];
+  [(BuddyProximityPasscodeValidationController *)&v11 viewWillTransitionToSize:location[0] withTransitionCoordinator:sizeCopy.width, sizeCopy.height];
   v4 = location[0];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_100227274;
   v9 = &unk_10032D9E8;
-  v10 = v13;
+  v10 = selfCopy;
   [v4 animateAlongsideTransition:&v5 completion:0];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
@@ -345,13 +345,13 @@
 
 - (void)_updateActions
 {
-  v2 = [(BuddyProximityPasscodeValidationController *)self passcodeInputView];
-  v3 = [(BuddyPasscodeInputView *)v2 passcode];
-  v4 = [v3 length] != 0;
+  passcodeInputView = [(BuddyProximityPasscodeValidationController *)self passcodeInputView];
+  passcode = [(BuddyPasscodeInputView *)passcodeInputView passcode];
+  v4 = [passcode length] != 0;
 
-  v5 = [(BuddyProximityPasscodeValidationController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:v4];
+  navigationItem = [(BuddyProximityPasscodeValidationController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 
   v7 = +[UIKeyboard activeKeyboard];
   [v7 setReturnKeyEnabled:v4];
@@ -360,28 +360,28 @@
 - (void)_nextButtonTapped
 {
   v3 = [(BuddyProximityPasscodeValidationController *)self passcodeInputView:a2];
-  v4 = [(BuddyPasscodeInputView *)v3 passcode];
-  [(BuddyProximityPasscodeValidationController *)self _validatePasscode:v4];
+  passcode = [(BuddyPasscodeInputView *)v3 passcode];
+  [(BuddyProximityPasscodeValidationController *)self _validatePasscode:passcode];
 }
 
-- (void)_validatePasscode:(id)a3
+- (void)_validatePasscode:(id)passcode
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityPasscodeValidationController *)v42 proximitySetupController];
-  v4 = [(ProximitySetupController *)v3 hasConnection];
+  objc_storeStrong(location, passcode);
+  proximitySetupController = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  hasConnection = [(ProximitySetupController *)proximitySetupController hasConnection];
 
-  if (v4)
+  if (hasConnection)
   {
-    v18 = [(BuddyProximityPasscodeValidationController *)v42 view];
-    v19 = [v18 window];
-    [v19 setUserInteractionEnabled:0];
+    view = [(BuddyProximityPasscodeValidationController *)selfCopy view];
+    window = [view window];
+    [window setUserInteractionEnabled:0];
 
-    v20 = [(BuddyProximityPasscodeValidationController *)v42 navigationController];
-    v21 = [v20 topViewController];
-    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v21 identifier:@"BUDDY_PROXIMITY_PASSCODE_VALIDATION_CONTROLLER"];
+    navigationController = [(BuddyProximityPasscodeValidationController *)selfCopy navigationController];
+    topViewController = [navigationController topViewController];
+    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:topViewController identifier:@"BUDDY_PROXIMITY_PASSCODE_VALIDATION_CONTROLLER"];
 
     v22 = dispatch_get_global_queue(0, 0);
     block = _NSConcreteStackBlock;
@@ -389,7 +389,7 @@
     v25 = 0;
     v26 = sub_100227AA4;
     v27 = &unk_10032B838;
-    v28 = v42;
+    v28 = selfCopy;
     v29 = location[0];
     dispatch_async(v22, &block);
 
@@ -400,15 +400,15 @@
 
   else
   {
-    v5 = [(BuddyProximityPasscodeValidationController *)v42 proximitySetupController];
-    v40 = [(ProximitySetupController *)v5 deviceClass];
+    proximitySetupController2 = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+    deviceClass = [(ProximitySetupController *)proximitySetupController2 deviceClass];
 
     v6 = +[NSBundle mainBundle];
-    v7 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_LOST_CONNECT_ALERT_TITLE" deviceClass:v40];
+    v7 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_LOST_CONNECT_ALERT_TITLE" deviceClass:deviceClass];
     v39 = [(NSBundle *)v6 localizedStringForKey:v7 value:&stru_10032F900 table:@"Localizable"];
 
     v38 = 0;
-    if ([(BuddyProximityPasscodeValidationController *)v42 _sourceHasAppleID])
+    if ([(BuddyProximityPasscodeValidationController *)selfCopy _sourceHasAppleID])
     {
       v8 = +[NSBundle mainBundle];
       v9 = [(NSBundle *)v8 localizedStringForKey:@"PROXIMITY_PASSCODE_VALIDATION_LOST_CONNECT_ALERT_DESCRIPTION_APPLEID" value:&stru_10032F900 table:@"Localizable"];
@@ -434,17 +434,17 @@
     v33 = 0;
     v34 = sub_100227A34;
     v35 = &unk_10032B598;
-    v36 = v42;
+    v36 = selfCopy;
     v17 = [UIAlertAction actionWithTitle:v16 style:0 handler:&v31];
     [v14 addAction:v17];
 
-    [(BuddyProximityPasscodeValidationController *)v42 presentViewController:v37 animated:1 completion:0];
+    [(BuddyProximityPasscodeValidationController *)selfCopy presentViewController:v37 animated:1 completion:0];
     v30 = 1;
     objc_storeStrong(&v36, 0);
     objc_storeStrong(&v37, 0);
     objc_storeStrong(&v38, 0);
     objc_storeStrong(&v39, 0);
-    objc_storeStrong(&v40, 0);
+    objc_storeStrong(&deviceClass, 0);
   }
 
   objc_storeStrong(location, 0);
@@ -452,17 +452,17 @@
 
 - (BOOL)_shouldSetPasscode
 {
-  v2 = [(BuddyProximityPasscodeValidationController *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 isPasscodeSet];
+  managedConfiguration = [(BuddyProximityPasscodeValidationController *)self managedConfiguration];
+  isPasscodeSet = [(MCProfileConnection *)managedConfiguration isPasscodeSet];
 
-  v8 = v3 & 1;
+  v8 = isPasscodeSet & 1;
   v4 = +[BuddyCloudConfigManager sharedManager];
-  v5 = [v4 hasCloudConfiguration];
+  hasCloudConfiguration = [v4 hasCloudConfiguration];
 
   v6 = 0;
   if ((v8 & 1) == 0)
   {
-    return !(v5 & 1);
+    return !(hasCloudConfiguration & 1);
   }
 
   return v6;
@@ -471,32 +471,32 @@
 - (BOOL)_sourceHasAppleID
 {
   v2 = [(BuddyProximityPasscodeValidationController *)self proximitySetupController:a2];
-  v3 = [(ProximitySetupController *)v2 information];
-  v4 = [(SASProximityInformation *)v3 appleID];
-  v5 = v4 != 0;
+  information = [(ProximitySetupController *)v2 information];
+  appleID = [(SASProximityInformation *)information appleID];
+  v5 = appleID != 0;
 
   return v5;
 }
 
-- (void)_footerButtonTapped:(id)a3
+- (void)_footerButtonTapped:(id)tapped
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityPasscodeValidationController *)v40 proximitySetupController];
-  v38 = [(ProximitySetupController *)v3 deviceClass];
+  objc_storeStrong(location, tapped);
+  proximitySetupController = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  deviceClass = [(ProximitySetupController *)proximitySetupController deviceClass];
 
   v4 = +[NSBundle mainBundle];
-  v5 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_FORGOT_ALERT_TITLE" deviceClass:v38];
+  v5 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_FORGOT_ALERT_TITLE" deviceClass:deviceClass];
   v37 = [(NSBundle *)v4 localizedStringForKey:v5 value:&stru_10032F900 table:@"Localizable"];
 
   v36 = 0;
   v35 = 0;
-  if ([(BuddyProximityPasscodeValidationController *)v40 _sourceHasAppleID])
+  if ([(BuddyProximityPasscodeValidationController *)selfCopy _sourceHasAppleID])
   {
     v6 = +[NSBundle mainBundle];
-    v7 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_FORGOT_ALERT_DESCRIPTION_APPLEID" deviceClass:v38];
+    v7 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:@"PROXIMITY_PASSCODE_VALIDATION_FORGOT_ALERT_DESCRIPTION_APPLEID" deviceClass:deviceClass];
     v8 = [(NSBundle *)v6 localizedStringForKey:v7 value:&stru_10032F900 table:@"Localizable"];
     v9 = v36;
     v36 = v8;
@@ -509,7 +509,7 @@
   {
     v13 = +[NSBundle mainBundle];
     v14 = SFLocalizableWAPIStringKeyForKey();
-    v15 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:v14 deviceClass:v38];
+    v15 = [BuddyLocalizationUtilities siblingDeviceSpecificLocalizedStringKeyForKey:v14 deviceClass:deviceClass];
     v16 = [(NSBundle *)v13 localizedStringForKey:v15 value:&stru_10032F900 table:@"Localizable"];
     v17 = v36;
     v36 = v16;
@@ -540,28 +540,28 @@
   v30 = 0;
   v31 = sub_100228750;
   v32 = &unk_10032B598;
-  v33 = v40;
+  v33 = selfCopy;
   v27 = [UIAlertAction actionWithTitle:v35 style:0 handler:&v28];
   [v26 addAction:v27];
 
-  [(BuddyProximityPasscodeValidationController *)v40 presentViewController:v34 animated:1 completion:0];
+  [(BuddyProximityPasscodeValidationController *)selfCopy presentViewController:v34 animated:1 completion:0];
   objc_storeStrong(&v33, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v36, 0);
   objc_storeStrong(&v37, 0);
-  objc_storeStrong(&v38, 0);
+  objc_storeStrong(&deviceClass, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityPasscodeValidationController *)v15 proximitySetupController];
-  v4 = ![(ProximitySetupController *)v3 hasConnection];
+  objc_storeStrong(location, completion);
+  proximitySetupController = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
+  v4 = ![(ProximitySetupController *)proximitySetupController hasConnection];
 
   if (v4)
   {
@@ -575,15 +575,15 @@
 
   else
   {
-    v5 = [(BuddyProximityPasscodeValidationController *)v15 proximitySetupController];
+    proximitySetupController2 = [(BuddyProximityPasscodeValidationController *)selfCopy proximitySetupController];
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_100228A68;
     v10 = &unk_10032BB88;
-    v11 = v15;
+    v11 = selfCopy;
     v12 = location[0];
-    [(ProximitySetupController *)v5 waitForIntent:&v6];
+    [(ProximitySetupController *)proximitySetupController2 waitForIntent:&v6];
 
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v11, 0);
@@ -593,31 +593,31 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)passcodeInput:(id)a3 willChangeContents:(id)a4
+- (void)passcodeInput:(id)input willChangeContents:(id)contents
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyProximityPasscodeValidationController *)v7 _updateActions];
+  objc_storeStrong(&v5, contents);
+  [(BuddyProximityPasscodeValidationController *)selfCopy _updateActions];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [location[0] passcodeField];
-  [v5 forceDisplayIfNeeded];
+  objc_storeStrong(&v6, passcode);
+  passcodeField = [location[0] passcodeField];
+  [passcodeField forceDisplayIfNeeded];
 
-  [(BuddyProximityPasscodeValidationController *)v8 _validatePasscode:v6];
+  [(BuddyProximityPasscodeValidationController *)selfCopy _validatePasscode:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }

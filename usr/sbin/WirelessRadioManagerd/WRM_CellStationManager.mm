@@ -1,14 +1,14 @@
 @interface WRM_CellStationManager
-- (void)isFR2:(id)a3 completionHandler:(id)a4;
+- (void)isFR2:(id)r2 completionHandler:(id)handler;
 @end
 
 @implementation WRM_CellStationManager
 
-- (void)isFR2:(id)a3 completionHandler:(id)a4
+- (void)isFR2:(id)r2 completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 

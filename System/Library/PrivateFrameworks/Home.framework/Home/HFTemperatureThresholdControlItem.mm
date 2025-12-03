@@ -1,20 +1,20 @@
 @interface HFTemperatureThresholdControlItem
 + (id)readOnlyCharacteristicTypes;
-- (HFTemperatureThresholdControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
+- (HFTemperatureThresholdControlItem)initWithValueSource:(id)source displayResults:(id)results;
 - (id)numberValueFormatter;
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3;
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3;
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type;
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type;
 @end
 
 @implementation HFTemperatureThresholdControlItem
 
-- (HFTemperatureThresholdControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFTemperatureThresholdControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  resultsCopy = results;
   v8 = objc_opt_class();
   v9 = *MEMORY[0x277CCFB68];
-  if ([v8 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCFB68] valueSource:v6])
+  if ([v8 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCFB68] valueSource:sourceCopy])
   {
     v10 = v9;
   }
@@ -37,7 +37,7 @@
 
   v13 = objc_opt_class();
   v14 = *MEMORY[0x277CCF8C8];
-  if ([v13 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF8C8] valueSource:v6])
+  if ([v13 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF8C8] valueSource:sourceCopy])
   {
     v15 = v14;
   }
@@ -50,7 +50,7 @@
   v16 = v15;
   v17 = objc_opt_class();
   v18 = *MEMORY[0x277CCF7F0];
-  if ([v17 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF7F0] valueSource:v6])
+  if ([v17 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF7F0] valueSource:sourceCopy])
   {
     v19 = v18;
   }
@@ -65,7 +65,7 @@
   v22 = [v20 na_setWithSafeObject:v11];
   v25.receiver = self;
   v25.super_class = HFTemperatureThresholdControlItem;
-  v23 = [(HFRangeControlItem *)&v25 initWithValueSource:v6 targetCharacteristicTypes:v22 minimumCharacteristicType:v16 maximumCharacteristicType:v21 displayResults:v7];
+  v23 = [(HFRangeControlItem *)&v25 initWithValueSource:sourceCopy targetCharacteristicTypes:v22 minimumCharacteristicType:v16 maximumCharacteristicType:v21 displayResults:resultsCopy];
 
   return v23;
 }
@@ -98,11 +98,11 @@ void __64__HFTemperatureThresholdControlItem_readOnlyCharacteristicTypes__block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCFB20]];
+  v5 = [typeCopy objectForKeyedSubscript:*MEMORY[0x277CCFB20]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -120,9 +120,9 @@ void __64__HFTemperatureThresholdControlItem_readOnlyCharacteristicTypes__block_
     if ([v7 integerValue] == 3 && (-[HFRangeControlItem minimumCharacteristicType](self, "minimumCharacteristicType"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
-      v10 = [(HFRangeControlItem *)self maximumCharacteristicType];
+      maximumCharacteristicType = [(HFRangeControlItem *)self maximumCharacteristicType];
 
-      if (v10)
+      if (maximumCharacteristicType)
       {
         v11 = 2;
       }
@@ -147,22 +147,22 @@ void __64__HFTemperatureThresholdControlItem_readOnlyCharacteristicTypes__block_
   return v11;
 }
 
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v3 = [(HFRangeControlItem *)self targetCharacteristicTypes];
-  v4 = [v3 anyObject];
+  targetCharacteristicTypes = [(HFRangeControlItem *)self targetCharacteristicTypes];
+  anyObject = [targetCharacteristicTypes anyObject];
 
-  return v4;
+  return anyObject;
 }
 
 - (id)numberValueFormatter
 {
   v2 = +[HFFormatterManager sharedInstance];
-  v3 = [v2 temperatureFormatter];
+  temperatureFormatter = [v2 temperatureFormatter];
 
-  [v3 setInputIsCelsius:1];
+  [temperatureFormatter setInputIsCelsius:1];
 
-  return v3;
+  return temperatureFormatter;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface NTKExtragalacticGlyphAnimation
-+ (CGPoint)_randomTranslationForCorner:(unint64_t)a3;
-+ (id)randomAnimationForCorner:(unint64_t)a3 device:(id)a4;
++ (CGPoint)_randomTranslationForCorner:(unint64_t)corner;
++ (id)randomAnimationForCorner:(unint64_t)corner device:(id)device;
 - (CGPoint)translate;
-- (NTKExtragalacticGlyphAnimation)initWithRotation:(double)a3 translate:(CGPoint)a4;
+- (NTKExtragalacticGlyphAnimation)initWithRotation:(double)rotation translate:(CGPoint)translate;
 - (id)debugDescription;
 @end
 
 @implementation NTKExtragalacticGlyphAnimation
 
-- (NTKExtragalacticGlyphAnimation)initWithRotation:(double)a3 translate:(CGPoint)a4
+- (NTKExtragalacticGlyphAnimation)initWithRotation:(double)rotation translate:(CGPoint)translate
 {
-  y = a4.y;
-  x = a4.x;
+  y = translate.y;
+  x = translate.x;
   v8.receiver = self;
   v8.super_class = NTKExtragalacticGlyphAnimation;
   result = [(NTKExtragalacticGlyphAnimation *)&v8 init];
   if (result)
   {
     result->_scale = 0.97;
-    result->_rotation = a3;
+    result->_rotation = rotation;
     result->_translate.x = x;
     result->_translate.y = y;
   }
@@ -26,15 +26,15 @@
   return result;
 }
 
-+ (id)randomAnimationForCorner:(unint64_t)a3 device:(id)a4
++ (id)randomAnimationForCorner:(unint64_t)corner device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   arc4random();
   arc4random_uniform(3u);
   CLKRoundForDevice();
   CLKDegreesToRadians();
   v8 = v7;
-  [a1 _randomTranslationForCorner:a3];
+  [self _randomTranslationForCorner:corner];
   CLKPointRoundForDevice();
   v10 = v9;
   v12 = v11;
@@ -44,9 +44,9 @@
   return v13;
 }
 
-+ (CGPoint)_randomTranslationForCorner:(unint64_t)a3
++ (CGPoint)_randomTranslationForCorner:(unint64_t)corner
 {
-  if (a3 > 3)
+  if (corner > 3)
   {
     v5 = *MEMORY[0x277CBF348];
     v6 = *(MEMORY[0x277CBF348] + 8);
@@ -54,8 +54,8 @@
 
   else
   {
-    v3 = dbl_23BE560A8[a3];
-    v4 = dbl_23BE560C8[a3];
+    v3 = dbl_23BE560A8[corner];
+    v4 = dbl_23BE560C8[corner];
     v5 = arc4random() * 8.0 / 4294967300.0 + v3;
     v6 = arc4random() * 8.0 / 4294967300.0 + v4;
   }

@@ -2,10 +2,10 @@
 - (CSLAppSwitcherModeSetting)init;
 - (CSLAppSwitcherModeSettingDelegate)delegate;
 - (int64_t)mode;
-- (void)_withLock:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setMode:(int64_t)a3;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)setDelegate:(id)delegate;
+- (void)setMode:(int64_t)mode;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation CSLAppSwitcherModeSetting
@@ -17,17 +17,17 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  [v4 appSwitcherModeDidUpdate:self->_mode];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  [delegateCopy appSwitcherModeDidUpdate:self->_mode];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   setting = self->_setting;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   [(CSLPRFTwoWaySyncSetting *)setting setValue:v4];
 }
 
@@ -61,19 +61,19 @@ void __33__CSLAppSwitcherModeSetting_mode__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
-  v4 = [(CSLAppSwitcherModeSetting *)self delegate];
-  [v4 appSwitcherModeDidUpdate:{-[CSLAppSwitcherModeSetting mode](self, "mode")}];
+  delegate = [(CSLAppSwitcherModeSetting *)self delegate];
+  [delegate appSwitcherModeDidUpdate:{-[CSLAppSwitcherModeSetting mode](self, "mode")}];
 }
 
 - (CSLAppSwitcherModeSetting)init

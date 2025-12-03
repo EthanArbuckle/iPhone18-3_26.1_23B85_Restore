@@ -1,7 +1,7 @@
 @interface _MKFEvent
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFEventDatabaseID)databaseID;
 - (MKFHome)home;
 @end
@@ -20,9 +20,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -36,10 +36,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFEvent *)self trigger];
-  v3 = [v2 home];
+  trigger = [(_MKFEvent *)self trigger];
+  home = [trigger home];
 
-  return v3;
+  return home;
 }
 
 - (MKFEventDatabaseID)databaseID
@@ -49,16 +49,16 @@
   return v2;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
-  v4 = [(_MKFEvent *)self trigger];
+  trigger = [(_MKFEvent *)self trigger];
 
-  if (a3 && !v4)
+  if (update && !trigger)
   {
-    *a3 = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"Trigger is required"];
+    *update = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"Trigger is required"];
   }
 
-  return v4 != 0;
+  return trigger != 0;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface _ATXAppHistoricalAverageDose
-- (_ATXAppHistoricalAverageDose)initWith:(id)a3 endDate:(id)a4 timeZone:(id)a5 alpha:(double)a6;
+- (_ATXAppHistoricalAverageDose)initWith:(id)with endDate:(id)date timeZone:(id)zone alpha:(double)alpha;
 - (void)_finishCurrentDay;
-- (void)addDuration:(id)a3 endDate:(id)a4;
-- (void)skipTo:(id)a3;
+- (void)addDuration:(id)duration endDate:(id)date;
+- (void)skipTo:(id)to;
 @end
 
 @implementation _ATXAppHistoricalAverageDose
 
-- (_ATXAppHistoricalAverageDose)initWith:(id)a3 endDate:(id)a4 timeZone:(id)a5 alpha:(double)a6
+- (_ATXAppHistoricalAverageDose)initWith:(id)with endDate:(id)date timeZone:(id)zone alpha:(double)alpha
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  withCopy = with;
+  dateCopy = date;
+  zoneCopy = zone;
   v21.receiver = self;
   v21.super_class = _ATXAppHistoricalAverageDose;
   v13 = [(_ATXAppHistoricalAverageDose *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_timeZone, a5);
-    v15 = [ATXTimeUtil getDayFromTime:v10 timeZone:v14->_timeZone];
+    objc_storeStrong(&v13->_timeZone, zone);
+    v15 = [ATXTimeUtil getDayFromTime:withCopy timeZone:v14->_timeZone];
     currentDay = v14->_currentDay;
     v14->_currentDay = v15;
 
-    [v11 timeIntervalSinceDate:v10];
+    [dateCopy timeIntervalSinceDate:withCopy];
     v14->_currentDuration = v17;
-    v18 = [[_ATXMovingAverage alloc] initWithAlpha:a6];
+    v18 = [[_ATXMovingAverage alloc] initWithAlpha:alpha];
     movingAverage = v14->_movingAverage;
     v14->_movingAverage = v18;
 
@@ -35,12 +35,12 @@
   return v14;
 }
 
-- (void)addDuration:(id)a3 endDate:(id)a4
+- (void)addDuration:(id)duration endDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [ATXTimeUtil getDayFromTime:v6 timeZone:self->_timeZone];
-  [v7 timeIntervalSinceDate:v6];
+  durationCopy = duration;
+  dateCopy = date;
+  v8 = [ATXTimeUtil getDayFromTime:durationCopy timeZone:self->_timeZone];
+  [dateCopy timeIntervalSinceDate:durationCopy];
   v10 = v9;
   p_currentDay = &self->_currentDay;
   if ([v8 isEqual:self->_currentDay])
@@ -68,15 +68,15 @@
   }
 }
 
-- (void)skipTo:(id)a3
+- (void)skipTo:(id)to
 {
-  v4 = a3;
-  if ([v4 compare:self->_currentDay] == -1)
+  toCopy = to;
+  if ([toCopy compare:self->_currentDay] == -1)
   {
     [_ATXAppHistoricalAverageDose skipTo:];
   }
 
-  while ([v4 compare:self->_currentDay] == 1)
+  while ([toCopy compare:self->_currentDay] == 1)
   {
     [(_ATXAppHistoricalAverageDose *)self _finishCurrentDay];
   }

@@ -2,7 +2,7 @@
 - (BOOL)empty;
 - (NSArray)deletions;
 - (_TtC26DocumentManagerExecutables32DOCTagsCollectionViewDataChanges)init;
-- (void)setDeletions:(id)a3;
+- (void)setDeletions:(id)deletions;
 @end
 
 @implementation DOCTagsCollectionViewDataChanges
@@ -17,7 +17,7 @@
   return v2.super.isa;
 }
 
-- (void)setDeletions:(id)a3
+- (void)setDeletions:(id)deletions
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for DOCTag);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -29,7 +29,7 @@
 - (BOOL)empty
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x58);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4 >> 62)
   {

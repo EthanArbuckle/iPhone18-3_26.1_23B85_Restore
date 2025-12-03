@@ -1,10 +1,10 @@
 @interface MPVocalsControlCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setContinuous:(BOOL)a3;
-- (void)setMaxVocalsLevel:(float)a3;
-- (void)setMinVocalsLevel:(float)a3;
-- (void)setVocalsControlActive:(BOOL)a3;
-- (void)setVocalsLevel:(float)a3;
+- (void)setContinuous:(BOOL)continuous;
+- (void)setMaxVocalsLevel:(float)level;
+- (void)setMinVocalsLevel:(float)level;
+- (void)setVocalsControlActive:(BOOL)active;
+- (void)setVocalsLevel:(float)level;
 @end
 
 @implementation MPVocalsControlCommand
@@ -35,47 +35,47 @@
   return v12;
 }
 
-- (void)setContinuous:(BOOL)a3
+- (void)setContinuous:(BOOL)continuous
 {
-  if (self->_continuous != a3)
+  if (self->_continuous != continuous)
   {
-    self->_continuous = a3;
+    self->_continuous = continuous;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setMaxVocalsLevel:(float)a3
+- (void)setMaxVocalsLevel:(float)level
 {
-  if (self->_maxVocalsLevel != a3)
+  if (self->_maxVocalsLevel != level)
   {
-    self->_maxVocalsLevel = a3;
+    self->_maxVocalsLevel = level;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setMinVocalsLevel:(float)a3
+- (void)setMinVocalsLevel:(float)level
 {
-  if (self->_minVocalsLevel != a3)
+  if (self->_minVocalsLevel != level)
   {
-    self->_minVocalsLevel = a3;
+    self->_minVocalsLevel = level;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setVocalsLevel:(float)a3
+- (void)setVocalsLevel:(float)level
 {
-  if (self->_vocalsLevel != a3)
+  if (self->_vocalsLevel != level)
   {
-    self->_vocalsLevel = a3;
+    self->_vocalsLevel = level;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setVocalsControlActive:(BOOL)a3
+- (void)setVocalsControlActive:(BOOL)active
 {
-  if (self->_vocalsControlActive != a3)
+  if (self->_vocalsControlActive != active)
   {
-    self->_vocalsControlActive = a3;
+    self->_vocalsControlActive = active;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }

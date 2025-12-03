@@ -1,81 +1,81 @@
 @interface KNAnimatedSlideModel
-- (BOOL)info:(id)a3 isVisibleDuringEvent:(int64_t)a4;
+- (BOOL)info:(id)info isVisibleDuringEvent:(int64_t)event;
 - (BOOL)isFirstBuildEventAutomatic;
-- (BOOL)p_isEmphasisBuild:(id)a3;
-- (BOOL)p_isInfoInvalidWithImplicitAmbientAnimations:(id)a3;
-- (BOOL)p_shouldAnimateImplicitAmbientAnimatingDrawableAtFirstEvent:(id)a3;
-- (Class)p_effectClassForEffect:(id)a3 animationType:(int64_t)a4 hasParentBuild:(BOOL)a5;
-- (Class)p_rendererClassForBuildChunk:(id)a3 parentBuild:(id)a4 effectClass:(Class *)a5;
-- (Class)p_rendererClassForEffect:(id)a3 animationType:(int64_t)a4 drawable:(id)a5 parentBuild:(id)a6 effectClass:(Class *)a7;
-- (KNAnimatedSlideModel)initWithBuildChunks:(id)a3 infos:(id)a4 session:(id)a5 animatedSlideView:(id)a6;
+- (BOOL)p_isEmphasisBuild:(id)build;
+- (BOOL)p_isInfoInvalidWithImplicitAmbientAnimations:(id)animations;
+- (BOOL)p_shouldAnimateImplicitAmbientAnimatingDrawableAtFirstEvent:(id)event;
+- (Class)p_effectClassForEffect:(id)effect animationType:(int64_t)type hasParentBuild:(BOOL)build;
+- (Class)p_rendererClassForBuildChunk:(id)chunk parentBuild:(id)build effectClass:(Class *)class;
+- (Class)p_rendererClassForEffect:(id)effect animationType:(int64_t)type drawable:(id)drawable parentBuild:(id)build effectClass:(Class *)class;
+- (KNAnimatedSlideModel)initWithBuildChunks:(id)chunks infos:(id)infos session:(id)session animatedSlideView:(id)view;
 - (KNPlaybackSession)session;
-- (double)durationForEventIndexes:(id)a3;
-- (double)initialDelayForEventIndex:(unint64_t)a3;
-- (double)maxScaleFactorForDrawable:(id)a3;
-- (id)actionEffectForDrawable:(id)a3 atBeginningOfEvent:(int64_t)a4;
-- (id)animatedBuildForInfo:(id)a3 aroundEvent:(int64_t)a4 isAtEndOfBuild:(BOOL *)a5;
-- (id)animatedBuildForInfo:(id)a3 atEvent:(int64_t)a4;
-- (id)buildChunksForEventRange:(_NSRange)a3;
-- (id)eventsAtIndex:(unint64_t)a3;
-- (id)finalActionEffectForDrawable:(id)a3;
-- (id)firstAnimatedBuildForInfo:(id)a3;
-- (id)lastAnimatedBuildForInfo:(id)a3;
-- (id)nextAnimatedBuildForInfo:(id)a3 afterBuild:(id)a4;
-- (id)nextRendererAfterRenderer:(id)a3;
-- (id)p_animatedBuildForInfo:(id)a3 event:(int64_t)a4 buildIn:(BOOL)a5;
-- (id)p_animatedBuildsForInfo:(id)a3 animationType:(int64_t)a4 duringEvent:(int64_t)a5 time:(double)a6;
-- (id)p_applyThemeCurvesToBuildAttributes:(id)a3;
-- (id)p_createBuildAnimationRecords:(id)a3 info:(id)a4 event:(int64_t)a5 start:(double)a6 eventStart:(double)a7 animateAtEndOfPreviousBuild:(BOOL)a8 previousAnimatedBuild:(id)a9 parentBuild:(id)a10;
+- (double)durationForEventIndexes:(id)indexes;
+- (double)initialDelayForEventIndex:(unint64_t)index;
+- (double)maxScaleFactorForDrawable:(id)drawable;
+- (id)actionEffectForDrawable:(id)drawable atBeginningOfEvent:(int64_t)event;
+- (id)animatedBuildForInfo:(id)info aroundEvent:(int64_t)event isAtEndOfBuild:(BOOL *)build;
+- (id)animatedBuildForInfo:(id)info atEvent:(int64_t)event;
+- (id)buildChunksForEventRange:(_NSRange)range;
+- (id)eventsAtIndex:(unint64_t)index;
+- (id)finalActionEffectForDrawable:(id)drawable;
+- (id)firstAnimatedBuildForInfo:(id)info;
+- (id)lastAnimatedBuildForInfo:(id)info;
+- (id)nextAnimatedBuildForInfo:(id)info afterBuild:(id)build;
+- (id)nextRendererAfterRenderer:(id)renderer;
+- (id)p_animatedBuildForInfo:(id)info event:(int64_t)event buildIn:(BOOL)in;
+- (id)p_animatedBuildsForInfo:(id)info animationType:(int64_t)type duringEvent:(int64_t)event time:(double)time;
+- (id)p_applyThemeCurvesToBuildAttributes:(id)attributes;
+- (id)p_createBuildAnimationRecords:(id)records info:(id)info event:(int64_t)event start:(double)start eventStart:(double)eventStart animateAtEndOfPreviousBuild:(BOOL)build previousAnimatedBuild:(id)animatedBuild parentBuild:(id)self0;
 - (id)p_getCurrentDocumentRoot;
-- (id)p_newImplicitAmbientBuildRendererWithDrawable:(id)a3 stageIndex:(int64_t)a4 buildChunk:(id)a5 startTime:(double)a6 eventStartTime:(double)a7 event:(int64_t)a8 animateAtEndOfPreviousBuild:(BOOL)a9;
+- (id)p_newImplicitAmbientBuildRendererWithDrawable:(id)drawable stageIndex:(int64_t)index buildChunk:(id)chunk startTime:(double)time eventStartTime:(double)startTime event:(int64_t)event animateAtEndOfPreviousBuild:(BOOL)build;
 - (id)p_newTransition;
-- (id)p_previousAnimatedBuildOfType:(int64_t)a3 forInfo:(id)a4 priorToBuild:(id)a5;
-- (id)previousAnimatedBuildForInfo:(id)a3 priorToBuild:(id)a4;
-- (id)previousRendererBeforeRenderer:(id)a3;
-- (id)rendererForAnimatedBuild:(id)a3;
-- (id)sortRenderers:(id)a3;
-- (id)visibleInfosDuringEvent:(int64_t)a3;
-- (int64_t)p_lastEventNumberForInfo:(id)a3 animationType:(int64_t)a4 defaultResult:(int64_t)a5;
+- (id)p_previousAnimatedBuildOfType:(int64_t)type forInfo:(id)info priorToBuild:(id)build;
+- (id)previousAnimatedBuildForInfo:(id)info priorToBuild:(id)build;
+- (id)previousRendererBeforeRenderer:(id)renderer;
+- (id)rendererForAnimatedBuild:(id)build;
+- (id)sortRenderers:(id)renderers;
+- (id)visibleInfosDuringEvent:(int64_t)event;
+- (int64_t)p_lastEventNumberForInfo:(id)info animationType:(int64_t)type defaultResult:(int64_t)result;
 - (void)dealloc;
-- (void)enumerateAnimatedBuildsAndTimeRangesAtIndex:(unint64_t)a3 ignoreInitialDelay:(BOOL)a4 usingBlock:(id)a5;
-- (void)p_addAmbientBuildRenderer:(id)a3;
-- (void)p_convertToBuildEvents:(id)a3;
+- (void)enumerateAnimatedBuildsAndTimeRangesAtIndex:(unint64_t)index ignoreInitialDelay:(BOOL)delay usingBlock:(id)block;
+- (void)p_addAmbientBuildRenderer:(id)renderer;
+- (void)p_convertToBuildEvents:(id)events;
 - (void)p_insertInitialAmbientAnimations;
-- (void)p_setRenderer:(id)a3 forAnimatedBuild:(id)a4;
+- (void)p_setRenderer:(id)renderer forAnimatedBuild:(id)build;
 - (void)p_sortAnimatedBuilds;
 - (void)p_updatePreviousAndFinalAttributes;
-- (void)p_updateVisibilityOnAnimatedBuild:(id)a3;
+- (void)p_updateVisibilityOnAnimatedBuild:(id)build;
 @end
 
 @implementation KNAnimatedSlideModel
 
-- (KNAnimatedSlideModel)initWithBuildChunks:(id)a3 infos:(id)a4 session:(id)a5 animatedSlideView:(id)a6
+- (KNAnimatedSlideModel)initWithBuildChunks:(id)chunks infos:(id)infos session:(id)session animatedSlideView:(id)view
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  chunksCopy = chunks;
+  infosCopy = infos;
+  sessionCopy = session;
+  viewCopy = view;
   v35.receiver = self;
   v35.super_class = KNAnimatedSlideModel;
   v16 = [(KNAnimatedSlideModel *)&v35 init];
   if (v16)
   {
-    v17 = objc_msgSend_copy(v11, v14, v15);
+    v17 = objc_msgSend_copy(infosCopy, v14, v15);
     infos = v16->_infos;
     v16->_infos = v17;
 
-    objc_storeWeak(&v16->_ASV, v13);
-    objc_storeWeak(&v16->_session, v12);
+    objc_storeWeak(&v16->_ASV, viewCopy);
+    objc_storeWeak(&v16->_session, sessionCopy);
     v19 = objc_alloc(MEMORY[0x277CBEB18]);
-    v22 = objc_msgSend_count(v10, v20, v21);
+    v22 = objc_msgSend_count(chunksCopy, v20, v21);
     v24 = objc_msgSend_initWithCapacity_(v19, v23, v22);
     animatedBuilds = v16->_animatedBuilds;
     v16->_animatedBuilds = v24;
 
-    objc_msgSend_p_checkIfSlideIsMetalCapableWithBuildChunks_(v16, v26, v10);
-    objc_msgSend_p_convertToBuildEvents_(v16, v27, v10);
+    objc_msgSend_p_checkIfSlideIsMetalCapableWithBuildChunks_(v16, v26, chunksCopy);
+    objc_msgSend_p_convertToBuildEvents_(v16, v27, chunksCopy);
     objc_msgSend_p_insertInitialAmbientAnimations(v16, v28, v29);
-    if (v12 && v13)
+    if (sessionCopy && viewCopy)
     {
       v32 = objc_msgSend_p_newTransition(v16, v30, v31);
       transitionRenderer = v16->_transitionRenderer;
@@ -98,11 +98,11 @@
   [(KNAnimatedSlideModel *)&v2 dealloc];
 }
 
-- (id)eventsAtIndex:(unint64_t)a3
+- (id)eventsAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_buildEventCount(self, a2, a3) && objc_msgSend_buildEventCount(self, v5, v6) > a3)
+  if (objc_msgSend_buildEventCount(self, a2, index) && objc_msgSend_buildEventCount(self, v5, v6) > index)
   {
-    v8 = objc_msgSend_objectAtIndexedSubscript_(self->_buildEvents, v7, a3);
+    v8 = objc_msgSend_objectAtIndexedSubscript_(self->_buildEvents, v7, index);
   }
 
   else
@@ -113,17 +113,17 @@
   return v8;
 }
 
-- (void)enumerateAnimatedBuildsAndTimeRangesAtIndex:(unint64_t)a3 ignoreInitialDelay:(BOOL)a4 usingBlock:(id)a5
+- (void)enumerateAnimatedBuildsAndTimeRangesAtIndex:(unint64_t)index ignoreInitialDelay:(BOOL)delay usingBlock:(id)block
 {
-  v5 = a4;
+  delayCopy = delay;
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (v9)
+  blockCopy = block;
+  if (blockCopy)
   {
     v10 = 0.0;
-    if (v5)
+    if (delayCopy)
     {
-      objc_msgSend_initialDelayForEventIndex_(self, v8, a3);
+      objc_msgSend_initialDelayForEventIndex_(self, v8, index);
       v10 = -v11;
     }
 
@@ -131,7 +131,7 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = objc_msgSend_eventsAtIndex_(self, v8, a3);
+    obj = objc_msgSend_eventsAtIndex_(self, v8, index);
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v39, v43, 16);
     if (v15)
     {
@@ -163,9 +163,9 @@ LABEL_6:
         v22[1] = 3221225472;
         v23 = sub_275D9C2F0;
         v24 = &unk_27A698920;
-        v25 = self;
+        selfCopy = self;
         v26 = v18;
-        v19 = v9;
+        v19 = blockCopy;
         v30 = v10;
         v27 = v19;
         v28 = &v35;
@@ -196,10 +196,10 @@ LABEL_6:
   }
 }
 
-- (BOOL)info:(id)a3 isVisibleDuringEvent:(int64_t)a4
+- (BOOL)info:(id)info isVisibleDuringEvent:(int64_t)event
 {
   v61 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  infoCopy = info;
   objc_opt_class();
   v8 = TSUDynamicCast();
   if (v8)
@@ -310,9 +310,9 @@ LABEL_25:
             }
 
             v52 = *(*(&v56 + 1) + 8 * i);
-            if (objc_msgSend_eventIndex(v52, v47, v48, v56) >= a4)
+            if (objc_msgSend_eventIndex(v52, v47, v48, v56) >= event)
             {
-              if (objc_msgSend_eventIndex(v52, v53, v54) >= a4)
+              if (objc_msgSend_eventIndex(v52, v53, v54) >= event)
               {
                 isVisibleAtBeginning = objc_msgSend_isVisibleAtBeginning(v52, v47, v48);
                 goto LABEL_38;
@@ -369,10 +369,10 @@ LABEL_43:
   return isVisibleAtBeginning & 1;
 }
 
-- (id)visibleInfosDuringEvent:(int64_t)a3
+- (id)visibleInfosDuringEvent:(int64_t)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_set(MEMORY[0x277CBEB58], a2, a3);
+  v5 = objc_msgSend_set(MEMORY[0x277CBEB58], a2, event);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -393,7 +393,7 @@ LABEL_43:
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        if (objc_msgSend_info_isVisibleDuringEvent_(self, v11, v15, a3))
+        if (objc_msgSend_info_isVisibleDuringEvent_(self, v11, v15, event))
         {
           objc_msgSend_addObject_(v5, v11, v15);
         }
@@ -408,10 +408,10 @@ LABEL_43:
   return v5;
 }
 
-- (int64_t)p_lastEventNumberForInfo:(id)a3 animationType:(int64_t)a4 defaultResult:(int64_t)a5
+- (int64_t)p_lastEventNumberForInfo:(id)info animationType:(int64_t)type defaultResult:(int64_t)result
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, a3);
+  v7 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, info);
   v10 = v7;
   if (v7)
   {
@@ -435,9 +435,9 @@ LABEL_43:
           }
 
           v19 = *(*(&v21 + 1) + 8 * i);
-          if (objc_msgSend_buildType(v19, v14, v15) == a4)
+          if (objc_msgSend_buildType(v19, v14, v15) == type)
           {
-            a5 = objc_msgSend_eventIndex(v19, v14, v15);
+            result = objc_msgSend_eventIndex(v19, v14, v15);
             goto LABEL_12;
           }
         }
@@ -455,16 +455,16 @@ LABEL_43:
 LABEL_12:
   }
 
-  return a5;
+  return result;
 }
 
-- (id)buildChunksForEventRange:(_NSRange)a3
+- (id)buildChunksForEventRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v35 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB58];
-  v7 = objc_msgSend_count(self->_animatedBuilds, a2, a3.location);
+  v7 = objc_msgSend_count(self->_animatedBuilds, a2, range.location);
   v29 = objc_msgSend_setWithCapacity_(v6, v8, v7);
   v30 = 0u;
   v31 = 0u;
@@ -509,10 +509,10 @@ LABEL_12:
   return v29;
 }
 
-- (double)durationForEventIndexes:(id)a3
+- (double)durationForEventIndexes:(id)indexes
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  indexesCopy = indexes;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -537,7 +537,7 @@ LABEL_12:
 
         v18 = *(*(&v29 + 1) + 8 * i);
         v19 = objc_msgSend_eventIndex(v18, v10, v11);
-        if (objc_msgSend_containsIndex_(v4, v20, v19))
+        if (objc_msgSend_containsIndex_(indexesCopy, v20, v19))
         {
           objc_msgSend_eventStartTime(v18, v10, v11);
           v24 = v23;
@@ -592,14 +592,14 @@ LABEL_12:
   return v27;
 }
 
-- (double)initialDelayForEventIndex:(unint64_t)a3
+- (double)initialDelayForEventIndex:(unint64_t)index
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = objc_msgSend_eventsAtIndex_(self, a2, a3, 0);
+  v3 = objc_msgSend_eventsAtIndex_(self, a2, index, 0);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v17, v21, 16);
   if (v5)
   {
@@ -650,41 +650,41 @@ LABEL_3:
   return result;
 }
 
-- (id)firstAnimatedBuildForInfo:(id)a3
+- (id)firstAnimatedBuildForInfo:(id)info
 {
-  v3 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, info);
   v6 = objc_msgSend_firstObject(v3, v4, v5);
   v9 = objc_msgSend_parentBuild(v6, v7, v8);
 
   return v9;
 }
 
-- (id)lastAnimatedBuildForInfo:(id)a3
+- (id)lastAnimatedBuildForInfo:(id)info
 {
-  v3 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, info);
   v6 = objc_msgSend_lastObject(v3, v4, v5);
   v9 = objc_msgSend_parentBuild(v6, v7, v8);
 
   return v9;
 }
 
-- (id)animatedBuildForInfo:(id)a3 aroundEvent:(int64_t)a4 isAtEndOfBuild:(BOOL *)a5
+- (id)animatedBuildForInfo:(id)info aroundEvent:(int64_t)event isAtEndOfBuild:(BOOL *)build
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (a5)
+  infoCopy = info;
+  if (build)
   {
-    *a5 = 0;
+    *build = 0;
   }
 
-  v12 = objc_msgSend_animatedBuildForInfo_atEvent_(self, v8, v9, a4);
+  v12 = objc_msgSend_animatedBuildForInfo_atEvent_(self, v8, infoCopy, event);
   if (!v12)
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v13 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v10, v9, 0);
+    v13 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v10, infoCopy, 0);
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v41, v45, 16);
     v17 = 0;
     if (v12)
@@ -700,9 +700,9 @@ LABEL_3:
           }
 
           v20 = *(*(&v41 + 1) + 8 * i);
-          if (objc_msgSend_eventIndex(v20, v15, v16) >= a4)
+          if (objc_msgSend_eventIndex(v20, v15, v16) >= event)
           {
-            if (objc_msgSend_eventIndex(v20, v21, v22) > a4)
+            if (objc_msgSend_eventIndex(v20, v21, v22) > event)
             {
               v12 = v20;
               goto LABEL_22;
@@ -760,11 +760,11 @@ LABEL_22:
     {
       v38 = v17;
       v12 = v38;
-      if (a5)
+      if (build)
       {
         if (v38)
         {
-          *a5 = 1;
+          *build = 1;
         }
       }
     }
@@ -775,13 +775,13 @@ LABEL_22:
   return v39;
 }
 
-- (id)animatedBuildForInfo:(id)a3 atEvent:(int64_t)a4
+- (id)animatedBuildForInfo:(id)info atEvent:(int64_t)event
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (objc_msgSend_buildEventCount(self, v7, v8) && objc_msgSend_buildEventCount(self, v9, v10) > a4)
+  infoCopy = info;
+  if (objc_msgSend_buildEventCount(self, v7, v8) && objc_msgSend_buildEventCount(self, v9, v10) > event)
   {
-    objc_msgSend_objectAtIndexedSubscript_(self->_buildEvents, v11, a4);
+    objc_msgSend_objectAtIndexedSubscript_(self->_buildEvents, v11, event);
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -804,7 +804,7 @@ LABEL_22:
           v20 = objc_msgSend_rendererForAnimatedBuild_(self, v15, v19, v28);
           v23 = objc_msgSend_info(v20, v21, v22);
 
-          if (v23 == v6)
+          if (v23 == infoCopy)
           {
             v26 = objc_msgSend_parentBuild(v19, v24, v25);
 
@@ -834,19 +834,19 @@ LABEL_14:
   return v26;
 }
 
-- (id)previousAnimatedBuildForInfo:(id)a3 priorToBuild:(id)a4
+- (id)previousAnimatedBuildForInfo:(id)info priorToBuild:(id)build
 {
-  v6 = a4;
-  v8 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v7, a3);
+  buildCopy = build;
+  v8 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v7, info);
   v11 = v8;
-  if (v8 && (v12 = objc_msgSend_indexOfObject_(v8, v9, v6)) != 0)
+  if (v8 && (v12 = objc_msgSend_indexOfObject_(v8, v9, buildCopy)) != 0)
   {
     v13 = v12;
     v14 = objc_msgSend_objectAtIndexedSubscript_(v11, v9, v12 - 1);
     if (v14)
     {
       v15 = v13 - 2;
-      while (objc_msgSend_isRelatedTo_(v6, v9, v14))
+      while (objc_msgSend_isRelatedTo_(buildCopy, v9, v14))
       {
         if (v15 == -1)
         {
@@ -877,18 +877,18 @@ LABEL_10:
   return v17;
 }
 
-- (id)p_previousAnimatedBuildOfType:(int64_t)a3 forInfo:(id)a4 priorToBuild:(id)a5
+- (id)p_previousAnimatedBuildOfType:(int64_t)type forInfo:(id)info priorToBuild:(id)build
 {
-  v8 = a5;
-  v10 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v9, a4);
+  buildCopy = build;
+  v10 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v9, info);
   v12 = v10;
-  if (v10 && (v13 = objc_msgSend_indexOfObject_(v10, v11, v8), v13 <= 0x7FFFFFFFFFFFFFFELL))
+  if (v10 && (v13 = objc_msgSend_indexOfObject_(v10, v11, buildCopy), v13 <= 0x7FFFFFFFFFFFFFFELL))
   {
     v15 = v13;
     while (1)
     {
       v16 = objc_msgSend_objectAtIndexedSubscript_(v12, v14, v15);
-      if (objc_msgSend_buildType(v16, v17, v18) == a3)
+      if (objc_msgSend_buildType(v16, v17, v18) == type)
       {
         break;
       }
@@ -909,11 +909,11 @@ LABEL_7:
   return v16;
 }
 
-- (id)previousRendererBeforeRenderer:(id)a3
+- (id)previousRendererBeforeRenderer:(id)renderer
 {
-  v4 = a3;
-  v7 = objc_msgSend_info(v4, v5, v6);
-  v10 = objc_msgSend_animatedBuild(v4, v8, v9);
+  rendererCopy = renderer;
+  v7 = objc_msgSend_info(rendererCopy, v5, v6);
+  v10 = objc_msgSend_animatedBuild(rendererCopy, v8, v9);
 
   v12 = objc_msgSend_previousAnimatedBuildForInfo_priorToBuild_(self, v11, v7, v10);
 
@@ -930,22 +930,22 @@ LABEL_7:
   return v14;
 }
 
-- (id)nextAnimatedBuildForInfo:(id)a3 afterBuild:(id)a4
+- (id)nextAnimatedBuildForInfo:(id)info afterBuild:(id)build
 {
-  v6 = a4;
-  v8 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v7, a3);
+  buildCopy = build;
+  v8 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v7, info);
   v11 = v8;
   if (v8)
   {
     v12 = 0;
-    v15 = objc_msgSend_indexOfObject_(v8, v9, v6) + 1;
+    v15 = objc_msgSend_indexOfObject_(v8, v9, buildCopy) + 1;
     while (v15 < objc_msgSend_count(v11, v13, v14))
     {
       v16 = objc_msgSend_objectAtIndexedSubscript_(v11, v13, v15);
 
       ++v15;
       v12 = v16;
-      if ((objc_msgSend_isRelatedTo_(v6, v17, v16) & 1) == 0)
+      if ((objc_msgSend_isRelatedTo_(buildCopy, v17, v16) & 1) == 0)
       {
         goto LABEL_8;
       }
@@ -966,12 +966,12 @@ LABEL_8:
   return v18;
 }
 
-- (id)nextRendererAfterRenderer:(id)a3
+- (id)nextRendererAfterRenderer:(id)renderer
 {
-  v4 = a3;
-  v7 = objc_msgSend_info(v4, v5, v6);
+  rendererCopy = renderer;
+  v7 = objc_msgSend_info(rendererCopy, v5, v6);
   v11 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v8, v7);
-  if (v11 && (objc_msgSend_animatedBuild(v4, v9, v10), v12 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_indexOfObject_(v11, v13, v12), v12, v14 + 1 < objc_msgSend_count(v11, v15, v16)))
+  if (v11 && (objc_msgSend_animatedBuild(rendererCopy, v9, v10), v12 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_indexOfObject_(v11, v13, v12), v12, v14 + 1 < objc_msgSend_count(v11, v15, v16)))
   {
     v18 = objc_msgSend_objectAtIndexedSubscript_(v11, v17, v14 + 1);
     v21 = objc_msgSend_parentBuild(v18, v19, v20);
@@ -986,12 +986,12 @@ LABEL_8:
   return v23;
 }
 
-- (id)sortRenderers:(id)a3
+- (id)sortRenderers:(id)renderers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  renderersCopy = renderers;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = objc_msgSend_count(v4, v6, v7);
+  v8 = objc_msgSend_count(renderersCopy, v6, v7);
   v10 = objc_msgSend_initWithCapacity_(v5, v9, v8);
   v24 = 0u;
   v25 = 0u;
@@ -1016,7 +1016,7 @@ LABEL_8:
         if ((objc_msgSend_isChildBuild(v19, v14, v15, v24) & 1) == 0)
         {
           v20 = objc_msgSend_rendererForAnimatedBuild_(self, v14, v19);
-          if (objc_msgSend_containsObject_(v4, v21, v20))
+          if (objc_msgSend_containsObject_(renderersCopy, v21, v20))
           {
             objc_msgSend_addObject_(v10, v22, v20);
           }
@@ -1032,13 +1032,13 @@ LABEL_8:
   return v10;
 }
 
-- (id)actionEffectForDrawable:(id)a3 atBeginningOfEvent:(int64_t)a4
+- (id)actionEffectForDrawable:(id)drawable atBeginningOfEvent:(int64_t)event
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  objc_msgSend_objectForKey_(v7->_infoToArrayOfAnimatedBuildsMap, v8, v6);
+  drawableCopy = drawable;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_objectForKey_(selfCopy->_infoToArrayOfAnimatedBuildsMap, v8, drawableCopy);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -1060,13 +1060,13 @@ LABEL_8:
         v17 = *(*(&v26 + 1) + 8 * i);
         if (objc_msgSend_isActionBuild(v17, v11, v12, v26))
         {
-          if (objc_msgSend_eventIndex(v17, v11, v12) == a4)
+          if (objc_msgSend_eventIndex(v17, v11, v12) == event)
           {
             v21 = objc_msgSend_previousAttributes(v17, v18, v19);
             goto LABEL_14;
           }
 
-          if (objc_msgSend_eventIndex(v17, v18, v19) < a4)
+          if (objc_msgSend_eventIndex(v17, v18, v19) < event)
           {
             v20 = v17;
 
@@ -1110,19 +1110,19 @@ LABEL_14:
     v21 = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v21;
 }
 
-- (id)finalActionEffectForDrawable:(id)a3
+- (id)finalActionEffectForDrawable:(id)drawable
 {
-  if (a3)
+  if (drawable)
   {
     buildEvents = self->_buildEvents;
-    v5 = a3;
+    drawableCopy = drawable;
     v8 = objc_msgSend_count(buildEvents, v6, v7);
-    v10 = objc_msgSend_actionEffectForDrawable_atBeginningOfEvent_(self, v9, v5, v8);
+    v10 = objc_msgSend_actionEffectForDrawable_atBeginningOfEvent_(self, v9, drawableCopy, v8);
   }
 
   else
@@ -1133,10 +1133,10 @@ LABEL_14:
   return v10;
 }
 
-- (double)maxScaleFactorForDrawable:(id)a3
+- (double)maxScaleFactorForDrawable:(id)drawable
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, a2, drawable);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1203,13 +1203,13 @@ LABEL_14:
   return v4;
 }
 
-- (id)p_animatedBuildForInfo:(id)a3 event:(int64_t)a4 buildIn:(BOOL)a5
+- (id)p_animatedBuildForInfo:(id)info event:(int64_t)event buildIn:(BOOL)in
 {
-  v5 = a5;
+  inCopy = in;
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  infoCopy = info;
   v10 = 1;
-  if (!v5)
+  if (!inCopy)
   {
     v10 = 2;
   }
@@ -1219,7 +1219,7 @@ LABEL_14:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = objc_msgSend_objectAtIndexedSubscript_(self->_buildEvents, v8, a4);
+  v11 = objc_msgSend_objectAtIndexedSubscript_(self->_buildEvents, v8, event);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v30, v34, 16);
   if (v13)
   {
@@ -1238,7 +1238,7 @@ LABEL_14:
         v19 = objc_msgSend_rendererForAnimatedBuild_(self, v14, v18);
         v22 = objc_msgSend_info(v19, v20, v21);
         v25 = v22;
-        if (v22 == v9)
+        if (v22 == infoCopy)
         {
           v26 = objc_msgSend_buildType(v18, v23, v24);
 
@@ -1502,11 +1502,11 @@ LABEL_40:
   }
 }
 
-- (void)p_updateVisibilityOnAnimatedBuild:(id)a3
+- (void)p_updateVisibilityOnAnimatedBuild:(id)build
 {
   v133 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v7 = objc_msgSend_rendererForAnimatedBuild_(self, v6, v5);
+  buildCopy = build;
+  v7 = objc_msgSend_rendererForAnimatedBuild_(self, v6, buildCopy);
   v10 = objc_msgSend_info(v7, v8, v9);
   v13 = objc_msgSend_buildStage(v7, v11, v12);
   v16 = objc_msgSend_build(v13, v14, v15);
@@ -1572,8 +1572,8 @@ LABEL_9:
     if (isNullStroke)
     {
 LABEL_17:
-      objc_msgSend_setIsVisibleAtEnd_(v5, v24, 0);
-      objc_msgSend_setIsVisibleAtBeginning_(v5, v42, 0);
+      objc_msgSend_setIsVisibleAtEnd_(buildCopy, v24, 0);
+      objc_msgSend_setIsVisibleAtBeginning_(buildCopy, v42, 0);
 LABEL_20:
       objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v43, v10);
       goto LABEL_21;
@@ -1585,68 +1585,68 @@ LABEL_20:
   }
 
 LABEL_16:
-  if (objc_msgSend_isDriftBuild(v5, v24, v25))
+  if (objc_msgSend_isDriftBuild(buildCopy, v24, v25))
   {
     goto LABEL_17;
   }
 
-  if (objc_msgSend_isImplicitlyVisibleAtBeginning(v5, v24, v41))
+  if (objc_msgSend_isImplicitlyVisibleAtBeginning(buildCopy, v24, v41))
   {
 LABEL_19:
-    objc_msgSend_setIsVisibleAtEnd_(v5, v44, 1);
-    objc_msgSend_setIsVisibleAtBeginning_(v5, v46, 1);
+    objc_msgSend_setIsVisibleAtEnd_(buildCopy, v44, 1);
+    objc_msgSend_setIsVisibleAtBeginning_(buildCopy, v46, 1);
     goto LABEL_20;
   }
 
-  if (!objc_msgSend_isMagicChartBuild(v5, v44, v45))
+  if (!objc_msgSend_isMagicChartBuild(buildCopy, v44, v45))
   {
-    if (objc_msgSend_isBuildIn(v5, v64, v65))
+    if (objc_msgSend_isBuildIn(buildCopy, v64, v65))
     {
-      v93 = objc_msgSend_stageIndex(v5, v91, v92) > 0;
-      objc_msgSend_setIsVisibleAtBeginning_(v5, v94, v93);
-      objc_msgSend_setIsVisibleAtEnd_(v5, v95, 1);
+      v93 = objc_msgSend_stageIndex(buildCopy, v91, v92) > 0;
+      objc_msgSend_setIsVisibleAtBeginning_(buildCopy, v94, v93);
+      objc_msgSend_setIsVisibleAtEnd_(buildCopy, v95, 1);
       v98 = v16;
-      v99 = objc_msgSend_stageIndex(v5, v96, v97);
+      v99 = objc_msgSend_stageIndex(buildCopy, v96, v97);
       v102 = v99 == objc_msgSend_chunkCount(v98, v100, v101) - 1;
       v16 = v98;
     }
 
     else
     {
-      if (!objc_msgSend_isBuildOut(v5, v91, v92))
+      if (!objc_msgSend_isBuildOut(buildCopy, v91, v92))
       {
         goto LABEL_19;
       }
 
       v104 = v16;
-      objc_msgSend_setIsVisibleAtBeginning_(v5, v44, 1);
-      objc_msgSend_setIsLastStage_(v5, v105, 0);
+      objc_msgSend_setIsVisibleAtBeginning_(buildCopy, v44, 1);
+      objc_msgSend_setIsLastStage_(buildCopy, v105, 0);
       v108 = objc_msgSend_requiresStagesBuildingInReverse(v10, v106, v107);
-      v111 = objc_msgSend_stageIndex(v5, v109, v110);
+      v111 = objc_msgSend_stageIndex(buildCopy, v109, v110);
       if (!v108)
       {
-        objc_msgSend_setIsVisibleAtEnd_(v5, v112, v111 > 0);
-        v123 = objc_msgSend_stageIndex(v5, v121, v122) == 0;
-        objc_msgSend_setIsLastStage_(v5, v124, v123);
+        objc_msgSend_setIsVisibleAtEnd_(buildCopy, v112, v111 > 0);
+        v123 = objc_msgSend_stageIndex(buildCopy, v121, v122) == 0;
+        objc_msgSend_setIsLastStage_(buildCopy, v124, v123);
         v16 = v104;
         goto LABEL_20;
       }
 
       v114 = v111 < objc_msgSend_chunkCount(v104, v112, v113) - 1;
-      objc_msgSend_setIsVisibleAtEnd_(v5, v115, v114);
-      v118 = objc_msgSend_stageIndex(v5, v116, v117);
+      objc_msgSend_setIsVisibleAtEnd_(buildCopy, v115, v114);
+      v118 = objc_msgSend_stageIndex(buildCopy, v116, v117);
       v102 = v118 == objc_msgSend_chunkCount(v104, v119, v120) - 1;
       v16 = v104;
     }
 
     if (v102)
     {
-      objc_msgSend_setIsLastStage_(v5, v103, 1);
+      objc_msgSend_setIsLastStage_(buildCopy, v103, 1);
     }
 
     else
     {
-      objc_msgSend_setIsLastStage_(v5, v103, 0);
+      objc_msgSend_setIsLastStage_(buildCopy, v103, 0);
     }
 
     goto LABEL_20;
@@ -1656,10 +1656,10 @@ LABEL_19:
   TSUCheckedDynamicCast();
   v66 = v10;
   v68 = v67 = v16;
-  v71 = objc_msgSend_deliveryStyle(v5, v69, v70);
+  v71 = objc_msgSend_deliveryStyle(buildCopy, v69, v70);
   isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle = objc_msgSend_isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle_(v68, v72, v71);
-  objc_msgSend_setIsVisibleAtBeginning_(v5, v74, isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle);
-  objc_msgSend_setIsVisibleAtEnd_(v5, v75, 1);
+  objc_msgSend_setIsVisibleAtBeginning_(buildCopy, v74, isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle);
+  objc_msgSend_setIsVisibleAtEnd_(buildCopy, v75, 1);
 
   v16 = v67;
   v10 = v66;
@@ -1667,7 +1667,7 @@ LABEL_19:
   v49 = LABEL_21:;
   if (v49)
   {
-    if (((objc_msgSend_isBuildIn(v5, v47, v48) & 1) != 0 || objc_msgSend_isBuildOut(v5, v50, v51)) && !objc_msgSend_stageIndex(v5, v50, v51))
+    if (((objc_msgSend_isBuildIn(buildCopy, v47, v48) & 1) != 0 || objc_msgSend_isBuildOut(buildCopy, v50, v51)) && !objc_msgSend_stageIndex(buildCopy, v50, v51))
     {
       v125 = v7;
       v127 = v16;
@@ -1693,7 +1693,7 @@ LABEL_19:
             v85 = *(*(&v128 + 1) + 8 * i);
             if ((objc_msgSend_isActionBuild(v85, v80, v81) & 1) != 0 || objc_msgSend_isContentBuild(v85, v80, v81))
             {
-              if (objc_msgSend_isImplicitlyVisibleAtBeginning(v5, v80, v81))
+              if (objc_msgSend_isImplicitlyVisibleAtBeginning(buildCopy, v80, v81))
               {
                 v88 = 1;
                 objc_msgSend_setIsVisibleAtEnd_(v85, v86, 1);
@@ -1701,14 +1701,14 @@ LABEL_19:
 
               else
               {
-                v88 = objc_msgSend_isBuildIn(v5, v86, v87) ^ 1;
+                v88 = objc_msgSend_isBuildIn(buildCopy, v86, v87) ^ 1;
                 objc_msgSend_setIsVisibleAtEnd_(v85, v90, v88);
               }
 
               objc_msgSend_setIsVisibleAtBeginning_(v85, v89, v88);
             }
 
-            else if (v85 != v5)
+            else if (v85 != buildCopy)
             {
               goto LABEL_45;
             }
@@ -1726,17 +1726,17 @@ LABEL_45:
       v16 = v127;
     }
 
-    else if ((objc_msgSend_isActionBuild(v5, v50, v51) & 1) != 0 || objc_msgSend_isContentBuild(v5, v52, v53))
+    else if ((objc_msgSend_isActionBuild(buildCopy, v50, v51) & 1) != 0 || objc_msgSend_isContentBuild(buildCopy, v52, v53))
     {
-      v54 = objc_msgSend_indexOfObject_(v49, v52, v5);
+      v54 = objc_msgSend_indexOfObject_(v49, v52, buildCopy);
       if (v54)
       {
         objc_msgSend_objectAtIndexedSubscript_(v49, v55, v54 - 1);
         v56 = v10;
         v58 = v57 = v16;
         isVisibleAtEnd = objc_msgSend_isVisibleAtEnd(v58, v59, v60);
-        objc_msgSend_setIsVisibleAtEnd_(v5, v62, isVisibleAtEnd);
-        objc_msgSend_setIsVisibleAtBeginning_(v5, v63, isVisibleAtEnd);
+        objc_msgSend_setIsVisibleAtEnd_(buildCopy, v62, isVisibleAtEnd);
+        objc_msgSend_setIsVisibleAtBeginning_(buildCopy, v63, isVisibleAtEnd);
 
         v16 = v57;
         v10 = v56;
@@ -1745,9 +1745,9 @@ LABEL_45:
   }
 }
 
-- (BOOL)p_isInfoInvalidWithImplicitAmbientAnimations:(id)a3
+- (BOOL)p_isInfoInvalidWithImplicitAmbientAnimations:(id)animations
 {
-  v3 = a3;
+  animationsCopy = animations;
   objc_opt_class();
   v4 = TSUClassAndProtocolCast();
 
@@ -1764,11 +1764,11 @@ LABEL_45:
   return v7;
 }
 
-- (id)p_animatedBuildsForInfo:(id)a3 animationType:(int64_t)a4 duringEvent:(int64_t)a5 time:(double)a6
+- (id)p_animatedBuildsForInfo:(id)info animationType:(int64_t)type duringEvent:(int64_t)event time:(double)time
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v12 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v11, v10);
+  infoCopy = info;
+  v12 = objc_msgSend_objectForKey_(self->_infoToArrayOfAnimatedBuildsMap, v11, infoCopy);
   v14 = v12;
   if (v12 && (v28 = 0u, v29 = 0u, v26 = 0u, v27 = 0u, (v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v26, v30, 16)) != 0))
   {
@@ -1785,13 +1785,13 @@ LABEL_45:
         }
 
         v22 = *(*(&v26 + 1) + 8 * i);
-        if (objc_msgSend_buildType(v22, v16, v17) == a4 && objc_msgSend_eventIndex(v22, v16, v17) == a5)
+        if (objc_msgSend_buildType(v22, v16, v17) == type && objc_msgSend_eventIndex(v22, v16, v17) == event)
         {
           objc_msgSend_eventStartTime(v22, v16, v17);
-          if (v23 <= a6)
+          if (v23 <= time)
           {
             objc_msgSend_eventEndTime(v22, v16, v17);
-            if (v24 > a6)
+            if (v24 > time)
             {
               if (!v19)
               {
@@ -1818,15 +1818,15 @@ LABEL_45:
   return v19;
 }
 
-- (BOOL)p_isEmphasisBuild:(id)a3
+- (BOOL)p_isEmphasisBuild:(id)build
 {
-  v4 = a3;
-  v7 = objc_msgSend_build(v4, v5, v6);
+  buildCopy = build;
+  v7 = objc_msgSend_build(buildCopy, v5, v6);
   v10 = objc_msgSend_effect(v7, v8, v9);
 
   WeakRetained = objc_loadWeakRetained(&self->_session);
   v14 = objc_msgSend_registry(WeakRetained, v12, v13);
-  v17 = objc_msgSend_build(v4, v15, v16);
+  v17 = objc_msgSend_build(buildCopy, v15, v16);
 
   v20 = objc_msgSend_animationType(v17, v18, v19);
   v22 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(v14, v21, v10, v20);
@@ -1845,10 +1845,10 @@ LABEL_45:
   return isEmphasisBuildAnimation;
 }
 
-- (void)p_convertToBuildEvents:(id)a3
+- (void)p_convertToBuildEvents:(id)events
 {
   v298 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  eventsCopy = events;
   if (self->_buildEvents)
   {
     v6 = MEMORY[0x277D81150];
@@ -1860,7 +1860,7 @@ LABEL_45:
   }
 
   v13 = objc_alloc(MEMORY[0x277CBEB18]);
-  v16 = objc_msgSend_count(v5, v14, v15);
+  v16 = objc_msgSend_count(eventsCopy, v14, v15);
   v18 = objc_msgSend_initWithCapacity_(v13, v17, v16);
   buildEvents = self->_buildEvents;
   self->_buildEvents = v18;
@@ -1876,7 +1876,7 @@ LABEL_45:
   v294 = 0u;
   v291 = 0u;
   v292 = 0u;
-  obj = v5;
+  obj = eventsCopy;
   v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v27, &v291, v297, 16);
   if (!v28)
   {
@@ -2114,7 +2114,7 @@ LABEL_42:
       v154 = 0;
       while (1)
       {
-        v155 = self;
+        selfCopy = self;
         if (*v288 != v278)
         {
           objc_enumerationMutation(v275);
@@ -2133,7 +2133,7 @@ LABEL_42:
         v168 = objc_msgSend_effectIdentifier(v165, v166, v167);
         isEqualToString = objc_msgSend_isEqualToString_(v159, v169, v168);
 
-        self = v155;
+        self = selfCopy;
         if (objc_msgSend_isActionBuild(v156, v171, v172))
         {
           if (!objc_msgSend_isActionBuild(v156, v151, v152))
@@ -2390,21 +2390,21 @@ LABEL_113:
   }
 }
 
-- (id)p_newImplicitAmbientBuildRendererWithDrawable:(id)a3 stageIndex:(int64_t)a4 buildChunk:(id)a5 startTime:(double)a6 eventStartTime:(double)a7 event:(int64_t)a8 animateAtEndOfPreviousBuild:(BOOL)a9
+- (id)p_newImplicitAmbientBuildRendererWithDrawable:(id)drawable stageIndex:(int64_t)index buildChunk:(id)chunk startTime:(double)time eventStartTime:(double)startTime event:(int64_t)event animateAtEndOfPreviousBuild:(BOOL)build
 {
-  v16 = a5;
-  v17 = a3;
+  chunkCopy = chunk;
+  drawableCopy = drawable;
   v18 = [KNAnimatedBuild alloc];
-  v21 = objc_msgSend_build(v16, v19, v20);
+  v21 = objc_msgSend_build(chunkCopy, v19, v20);
   v24 = objc_msgSend_animationInfo(v21, v22, v23);
   v27 = objc_msgSend_effectIdentifier(v24, v25, v26);
-  HIBYTE(v37) = a9;
+  HIBYTE(v37) = build;
   LOBYTE(v37) = 1;
-  started = objc_msgSend_initWithBuildType_effectIdentifier_attributes_pluginClass_deliveryStyle_deliveryOption_eventIndex_stageIndex_startTime_eventStartTime_duration_direction_automatic_animateAtEndOfPreviousBuild_parentBuild_(v18, v28, 1, v27, 0, 0, 0, 1, a6, a7, 0.0, a8, a4, 0, v37, 0);
+  started = objc_msgSend_initWithBuildType_effectIdentifier_attributes_pluginClass_deliveryStyle_deliveryOption_eventIndex_stageIndex_startTime_eventStartTime_duration_direction_automatic_animateAtEndOfPreviousBuild_parentBuild_(v18, v28, 1, v27, 0, 0, 0, 1, time, startTime, 0.0, event, index, 0, v37, 0);
 
   WeakRetained = objc_loadWeakRetained(&self->_session);
   v31 = objc_loadWeakRetained(&self->_ASV);
-  v33 = objc_msgSend_newImplicitAmbientBuildRendererWithAnimatedBuild_buildChunk_session_animatedSlideView_(v17, v32, started, v16, WeakRetained, v31);
+  v33 = objc_msgSend_newImplicitAmbientBuildRendererWithAnimatedBuild_buildChunk_session_animatedSlideView_(drawableCopy, v32, started, chunkCopy, WeakRetained, v31);
 
   objc_msgSend_p_setRenderer_forAnimatedBuild_(self, v34, v33, started);
   objc_msgSend_p_addAmbientBuildRenderer_(self, v35, v33);
@@ -2412,11 +2412,11 @@ LABEL_113:
   return v33;
 }
 
-- (id)rendererForAnimatedBuild:(id)a3
+- (id)rendererForAnimatedBuild:(id)build
 {
-  if (a3)
+  if (build)
   {
-    v4 = objc_msgSend_objectForKey_(self->_animatedBuildToRendererMap, a2, a3);
+    v4 = objc_msgSend_objectForKey_(self->_animatedBuildToRendererMap, a2, build);
   }
 
   else
@@ -2427,10 +2427,10 @@ LABEL_113:
   return v4;
 }
 
-- (void)p_setRenderer:(id)a3 forAnimatedBuild:(id)a4
+- (void)p_setRenderer:(id)renderer forAnimatedBuild:(id)build
 {
-  v12 = a3;
-  v8 = a4;
+  rendererCopy = renderer;
+  buildCopy = build;
   animatedBuildToRendererMap = self->_animatedBuildToRendererMap;
   if (!animatedBuildToRendererMap)
   {
@@ -2441,40 +2441,40 @@ LABEL_113:
     animatedBuildToRendererMap = self->_animatedBuildToRendererMap;
   }
 
-  objc_msgSend_setObject_forKey_(animatedBuildToRendererMap, v6, v12, v8);
+  objc_msgSend_setObject_forKey_(animatedBuildToRendererMap, v6, rendererCopy, buildCopy);
 }
 
-- (Class)p_effectClassForEffect:(id)a3 animationType:(int64_t)a4 hasParentBuild:(BOOL)a5
+- (Class)p_effectClassForEffect:(id)effect animationType:(int64_t)type hasParentBuild:(BOOL)build
 {
-  v7 = a3;
+  effectCopy = effect;
   WeakRetained = objc_loadWeakRetained(&self->_session);
   v11 = objc_msgSend_registry(WeakRetained, v9, v10);
-  v13 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(v11, v12, v7, a4);
+  v13 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(v11, v12, effectCopy, type);
 
   v16 = objc_msgSend_animationClass(v13, v14, v15);
 
   return v16;
 }
 
-- (Class)p_rendererClassForBuildChunk:(id)a3 parentBuild:(id)a4 effectClass:(Class *)a5
+- (Class)p_rendererClassForBuildChunk:(id)chunk parentBuild:(id)build effectClass:(Class *)class
 {
-  v8 = a4;
-  v11 = objc_msgSend_build(a3, v9, v10);
+  buildCopy = build;
+  v11 = objc_msgSend_build(chunk, v9, v10);
   v14 = objc_msgSend_effect(v11, v12, v13);
   v17 = objc_msgSend_animationType(v11, v15, v16);
   v20 = objc_msgSend_drawable(v11, v18, v19);
-  v22 = objc_msgSend_p_rendererClassForEffect_animationType_drawable_parentBuild_effectClass_(self, v21, v14, v17, v20, v8, a5);
+  v22 = objc_msgSend_p_rendererClassForEffect_animationType_drawable_parentBuild_effectClass_(self, v21, v14, v17, v20, buildCopy, class);
 
   return v22;
 }
 
-- (Class)p_rendererClassForEffect:(id)a3 animationType:(int64_t)a4 drawable:(id)a5 parentBuild:(id)a6 effectClass:(Class *)a7
+- (Class)p_rendererClassForEffect:(id)effect animationType:(int64_t)type drawable:(id)drawable parentBuild:(id)build effectClass:(Class *)class
 {
-  v11 = a3;
+  effectCopy = effect;
   v12 = objc_opt_class();
-  hasParentBuild = objc_msgSend_p_effectClassForEffect_animationType_hasParentBuild_(self, v13, v11, a4, a6 != 0);
+  hasParentBuild = objc_msgSend_p_effectClassForEffect_animationType_hasParentBuild_(self, v13, effectCopy, type, build != 0);
 
-  *a7 = hasParentBuild;
+  *class = hasParentBuild;
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_session);
@@ -2546,45 +2546,45 @@ LABEL_17:
   return v12;
 }
 
-- (id)p_createBuildAnimationRecords:(id)a3 info:(id)a4 event:(int64_t)a5 start:(double)a6 eventStart:(double)a7 animateAtEndOfPreviousBuild:(BOOL)a8 previousAnimatedBuild:(id)a9 parentBuild:(id)a10
+- (id)p_createBuildAnimationRecords:(id)records info:(id)info event:(int64_t)event start:(double)start eventStart:(double)eventStart animateAtEndOfPreviousBuild:(BOOL)build previousAnimatedBuild:(id)animatedBuild parentBuild:(id)self0
 {
-  v155 = a8;
-  v17 = a3;
-  v18 = a4;
-  v19 = a9;
-  v20 = a10;
-  v23 = objc_msgSend_build(v17, v21, v22);
+  buildCopy = build;
+  recordsCopy = records;
+  infoCopy = info;
+  animatedBuildCopy = animatedBuild;
+  parentBuildCopy = parentBuild;
+  v23 = objc_msgSend_build(recordsCopy, v21, v22);
   v26 = objc_msgSend_animationType(v23, v24, v25);
 
-  v29 = objc_msgSend_indexInBuild(v17, v27, v28);
-  if ((objc_msgSend_requiresStagesBuildingInReverse(v18, v30, v31) & 1) == 0 && v26 == 2)
+  v29 = objc_msgSend_indexInBuild(recordsCopy, v27, v28);
+  if ((objc_msgSend_requiresStagesBuildingInReverse(infoCopy, v30, v31) & 1) == 0 && v26 == 2)
   {
-    v34 = objc_msgSend_build(v17, v32, v33);
+    v34 = objc_msgSend_build(recordsCopy, v32, v33);
     v37 = objc_msgSend_chunkCount(v34, v35, v36);
-    v29 = v37 + ~objc_msgSend_indexInBuild(v17, v38, v39);
+    v29 = v37 + ~objc_msgSend_indexInBuild(recordsCopy, v38, v39);
   }
 
   v157 = v29;
-  if ((objc_msgSend_isAutomatic(v17, v32, v33) & 1) == 0)
+  if ((objc_msgSend_isAutomatic(recordsCopy, v32, v33) & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_session);
     v45 = objc_msgSend_playMode(WeakRetained, v43, v44) != 1;
 
     if (v45 && v29 != 0)
     {
-      a7 = 0.0;
-      a6 = 0.0;
+      eventStart = 0.0;
+      start = 0.0;
     }
   }
 
   hasParentBuild = 0;
-  v152 = v20;
-  if (v20)
+  v152 = parentBuildCopy;
+  if (parentBuildCopy)
   {
-    v46 = objc_msgSend_build(v17, v40, v41);
+    v46 = objc_msgSend_build(recordsCopy, v40, v41);
     v49 = objc_msgSend_effect(v46, v47, v48);
 
-    v52 = objc_msgSend_build(v17, v50, v51);
+    v52 = objc_msgSend_build(recordsCopy, v50, v51);
     v55 = objc_msgSend_animationType(v52, v53, v54);
     hasParentBuild = objc_msgSend_p_effectClassForEffect_animationType_hasParentBuild_(self, v56, v49, v55, 1);
 
@@ -2593,15 +2593,15 @@ LABEL_17:
 
   else
   {
-    v147 = objc_msgSend_p_rendererClassForBuildChunk_parentBuild_effectClass_(self, v40, v17, 0, &hasParentBuild);
+    v147 = objc_msgSend_p_rendererClassForBuildChunk_parentBuild_effectClass_(self, v40, recordsCopy, 0, &hasParentBuild);
   }
 
-  v59 = objc_msgSend_build(v17, v57, v58);
+  v59 = objc_msgSend_build(recordsCopy, v57, v58);
   v62 = objc_msgSend_attributes(v59, v60, v61);
   v64 = objc_msgSend_p_applyThemeCurvesToBuildAttributes_(self, v63, v62);
   v67 = objc_msgSend_copy(v64, v65, v66);
 
-  objc_msgSend_duration(v17, v68, v69);
+  objc_msgSend_duration(recordsCopy, v68, v69);
   v71 = v70;
   v72 = hasParentBuild;
   v73 = objc_opt_class();
@@ -2615,9 +2615,9 @@ LABEL_17:
     v79 = 0;
   }
 
-  v158 = a5;
+  eventCopy = event;
   v159 = v67;
-  v156 = v18;
+  v156 = infoCopy;
   v146 = v26;
   if (self->_isMetalSlide)
   {
@@ -2638,15 +2638,15 @@ LABEL_17:
     }
   }
 
-  v148 = self;
+  selfCopy = self;
   v151 = [KNAnimatedBuild alloc];
   v150 = objc_msgSend_animationType(v59, v89, v90);
-  v93 = objc_msgSend_build(v17, v91, v92);
+  v93 = objc_msgSend_build(recordsCopy, v91, v92);
   v96 = objc_msgSend_animationInfo(v93, v94, v95);
   v99 = objc_msgSend_effectIdentifier(v96, v97, v98);
   v149 = hasParentBuild;
   v102 = objc_msgSend_deliveryStyle(v59, v100, v101);
-  v154 = v19;
+  v154 = animatedBuildCopy;
   if (objc_msgSend_supportsCustomTextDelivery(v59, v103, v104))
   {
     v107 = objc_msgSend_customTextDelivery(v59, v105, v106);
@@ -2658,30 +2658,30 @@ LABEL_17:
   }
 
   v108 = objc_msgSend_direction(v59, v105, v106);
-  HIBYTE(v145) = v155;
-  LOBYTE(v145) = objc_msgSend_isAutomatic(v17, v109, v110);
+  HIBYTE(v145) = buildCopy;
+  LOBYTE(v145) = objc_msgSend_isAutomatic(recordsCopy, v109, v110);
   v144 = v108;
   v111 = v67;
-  started = objc_msgSend_initWithBuildType_effectIdentifier_attributes_pluginClass_deliveryStyle_deliveryOption_eventIndex_stageIndex_startTime_eventStartTime_duration_direction_automatic_animateAtEndOfPreviousBuild_parentBuild_(v151, v112, v150, v99, v67, v149, v102, v107, a6, a7, v71, a5, v157, v144, v145, v152);
+  started = objc_msgSend_initWithBuildType_effectIdentifier_attributes_pluginClass_deliveryStyle_deliveryOption_eventIndex_stageIndex_startTime_eventStartTime_duration_direction_automatic_animateAtEndOfPreviousBuild_parentBuild_(v151, v112, v150, v99, v67, v149, v102, v107, start, eventStart, v71, event, v157, v144, v145, v152);
 
   if (!v152)
   {
     v153 = v59;
     v114 = [v147 alloc];
-    v115 = objc_loadWeakRetained(&v148->_ASV);
-    v117 = objc_msgSend_initWithAnimatedBuild_info_buildStage_animatedSlideView_(v114, v116, started, v156, v17, v115);
+    v115 = objc_loadWeakRetained(&selfCopy->_ASV);
+    v117 = objc_msgSend_initWithAnimatedBuild_info_buildStage_animatedSlideView_(v114, v116, started, v156, recordsCopy, v115);
 
-    objc_msgSend_p_setRenderer_forAnimatedBuild_(v148, v118, v117, started);
-    if (v155)
+    objc_msgSend_p_setRenderer_forAnimatedBuild_(selfCopy, v118, v117, started);
+    if (buildCopy)
     {
       v121 = objc_msgSend_parentBuild(v154, v119, v120);
-      v123 = objc_msgSend_rendererForAnimatedBuild_(v148, v122, v121);
+      v123 = objc_msgSend_rendererForAnimatedBuild_(selfCopy, v122, v121);
 
       objc_msgSend_addBuildToStartAtEnd_(v123, v124, started);
     }
 
-    objc_msgSend_addObject_(v148->_animatedBuilds, v119, started);
-    v125 = objc_loadWeakRetained(&v148->_session);
+    objc_msgSend_addObject_(selfCopy->_animatedBuilds, v119, started);
+    v125 = objc_loadWeakRetained(&selfCopy->_session);
     isMetalEnabled = objc_msgSend_isMetalEnabled(v125, v126, v127);
 
     if (isMetalEnabled)
@@ -2693,7 +2693,7 @@ LABEL_17:
     v129 = TSUClassAndProtocolCast();
     if (v129 && v146 == 1)
     {
-      v130 = objc_loadWeakRetained(&v148->_session);
+      v130 = objc_loadWeakRetained(&selfCopy->_session);
       if (objc_msgSend_playMode(v130, v131, v132, &unk_288532838) == 2)
       {
 LABEL_35:
@@ -2701,12 +2701,12 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v133 = objc_loadWeakRetained(&v148->_session);
+      v133 = objc_loadWeakRetained(&selfCopy->_session);
       v136 = objc_msgSend_playMode(v133, v134, v135);
 
       if (v136 != 5)
       {
-        v130 = objc_msgSend_p_newImplicitAmbientBuildRendererWithDrawable_stageIndex_buildChunk_startTime_eventStartTime_event_animateAtEndOfPreviousBuild_(v148, v137, v129, v157, v17, v158, 1, 0.0, 0.0);
+        v130 = objc_msgSend_p_newImplicitAmbientBuildRendererWithDrawable_stageIndex_buildChunk_startTime_eventStartTime_event_animateAtEndOfPreviousBuild_(selfCopy, v137, v129, v157, recordsCopy, eventCopy, 1, 0.0, 0.0);
         objc_msgSend_setBuildInRenderer_(v130, v138, v117);
         v141 = objc_msgSend_animatedBuild(v130, v139, v140);
         objc_msgSend_addBuildToStartAtEnd_(v117, v142, v141);
@@ -2725,11 +2725,11 @@ LABEL_37:
   return started;
 }
 
-- (void)p_addAmbientBuildRenderer:(id)a3
+- (void)p_addAmbientBuildRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   ambientBuildRenderers = self->_ambientBuildRenderers;
-  v10 = v4;
+  v10 = rendererCopy;
   if (!ambientBuildRenderers)
   {
     v6 = objc_alloc(MEMORY[0x277CBEB58]);
@@ -2737,11 +2737,11 @@ LABEL_37:
     v9 = self->_ambientBuildRenderers;
     self->_ambientBuildRenderers = v8;
 
-    v4 = v10;
+    rendererCopy = v10;
     ambientBuildRenderers = self->_ambientBuildRenderers;
   }
 
-  objc_msgSend_addObject_(ambientBuildRenderers, v4, v4);
+  objc_msgSend_addObject_(ambientBuildRenderers, rendererCopy, rendererCopy);
 }
 
 - (void)p_insertInitialAmbientAnimations
@@ -2992,11 +2992,11 @@ LABEL_29:
   }
 }
 
-- (BOOL)p_shouldAnimateImplicitAmbientAnimatingDrawableAtFirstEvent:(id)a3
+- (BOOL)p_shouldAnimateImplicitAmbientAnimatingDrawableAtFirstEvent:(id)event
 {
-  v4 = a3;
-  v6 = objc_msgSend_inEventForInfo_(self, v5, v4);
-  v8 = objc_msgSend_outEventForInfo_(self, v7, v4);
+  eventCopy = event;
+  v6 = objc_msgSend_inEventForInfo_(self, v5, eventCopy);
+  v8 = objc_msgSend_outEventForInfo_(self, v7, eventCopy);
   v9 = v6 != -3;
   if (v8 == -2)
   {
@@ -3055,15 +3055,15 @@ LABEL_29:
   return v13;
 }
 
-- (id)p_applyThemeCurvesToBuildAttributes:(id)a3
+- (id)p_applyThemeCurvesToBuildAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v7 = objc_msgSend_p_getCurrentDocumentRoot(self, v5, v6);
   objc_opt_class();
   v10 = objc_msgSend_theme(v7, v8, v9);
   v11 = TSUCheckedDynamicCast();
 
-  v13 = objc_msgSend_attributesAdjustedForTheme_(v4, v12, v11);
+  v13 = objc_msgSend_attributesAdjustedForTheme_(attributesCopy, v12, v11);
 
   return v13;
 }

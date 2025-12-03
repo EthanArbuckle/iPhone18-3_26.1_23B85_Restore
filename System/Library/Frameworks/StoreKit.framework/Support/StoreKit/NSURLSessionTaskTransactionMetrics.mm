@@ -1,5 +1,5 @@
 @interface NSURLSessionTaskTransactionMetrics
-+ (id)_dateIntervalFrom:(id)a3 to:(id)a4;
++ (id)_dateIntervalFrom:(id)from to:(id)to;
 - (NSDateInterval)lib_connectInterval;
 - (NSDateInterval)lib_domainLookupInterval;
 - (NSDateInterval)lib_requestInterval;
@@ -11,61 +11,61 @@
 
 - (NSDateInterval)lib_connectInterval
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self connectStartDate];
-  v4 = [(NSURLSessionTaskTransactionMetrics *)self connectEndDate];
-  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:v3 to:v4];
+  connectStartDate = [(NSURLSessionTaskTransactionMetrics *)self connectStartDate];
+  connectEndDate = [(NSURLSessionTaskTransactionMetrics *)self connectEndDate];
+  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:connectStartDate to:connectEndDate];
 
   return v5;
 }
 
 - (NSDateInterval)lib_domainLookupInterval
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self domainLookupStartDate];
-  v4 = [(NSURLSessionTaskTransactionMetrics *)self domainLookupEndDate];
-  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:v3 to:v4];
+  domainLookupStartDate = [(NSURLSessionTaskTransactionMetrics *)self domainLookupStartDate];
+  domainLookupEndDate = [(NSURLSessionTaskTransactionMetrics *)self domainLookupEndDate];
+  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:domainLookupStartDate to:domainLookupEndDate];
 
   return v5;
 }
 
 - (NSDateInterval)lib_requestInterval
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self requestStartDate];
-  v4 = [(NSURLSessionTaskTransactionMetrics *)self requestEndDate];
-  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:v3 to:v4];
+  requestStartDate = [(NSURLSessionTaskTransactionMetrics *)self requestStartDate];
+  requestEndDate = [(NSURLSessionTaskTransactionMetrics *)self requestEndDate];
+  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:requestStartDate to:requestEndDate];
 
   return v5;
 }
 
 - (NSDateInterval)lib_responseInterval
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self responseStartDate];
-  v4 = [(NSURLSessionTaskTransactionMetrics *)self responseEndDate];
-  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:v3 to:v4];
+  responseStartDate = [(NSURLSessionTaskTransactionMetrics *)self responseStartDate];
+  responseEndDate = [(NSURLSessionTaskTransactionMetrics *)self responseEndDate];
+  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:responseStartDate to:responseEndDate];
 
   return v5;
 }
 
 - (NSDateInterval)lib_secureConnectionInterval
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self secureConnectionStartDate];
-  v4 = [(NSURLSessionTaskTransactionMetrics *)self secureConnectionEndDate];
-  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:v3 to:v4];
+  secureConnectionStartDate = [(NSURLSessionTaskTransactionMetrics *)self secureConnectionStartDate];
+  secureConnectionEndDate = [(NSURLSessionTaskTransactionMetrics *)self secureConnectionEndDate];
+  v5 = [NSURLSessionTaskTransactionMetrics _dateIntervalFrom:secureConnectionStartDate to:secureConnectionEndDate];
 
   return v5;
 }
 
-+ (id)_dateIntervalFrom:(id)a3 to:(id)a4
++ (id)_dateIntervalFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  fromCopy = from;
+  toCopy = to;
+  v7 = toCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (fromCopy && toCopy)
   {
-    [v6 timeIntervalSinceDate:v5];
+    [toCopy timeIntervalSinceDate:fromCopy];
     if (v9 >= 2.22044605e-16)
     {
-      v8 = [[NSDateInterval alloc] initWithStartDate:v5 duration:v9];
+      v8 = [[NSDateInterval alloc] initWithStartDate:fromCopy duration:v9];
     }
 
     else

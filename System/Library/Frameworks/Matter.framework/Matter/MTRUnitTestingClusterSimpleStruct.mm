@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterSimpleStruct
 - (MTRUnitTestingClusterSimpleStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,9 +23,9 @@
     c = v3->_c;
     v3->_c = &unk_284C3E588;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     d = v3->_d;
-    v3->_d = v7;
+    v3->_d = data;
 
     e = v3->_e;
     v3->_e = &stru_284BD0DD8;
@@ -46,7 +46,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterSimpleStruct);
   v5 = [(MTRUnitTestingClusterSimpleStruct *)self a];

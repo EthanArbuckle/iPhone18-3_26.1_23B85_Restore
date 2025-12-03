@@ -2,16 +2,16 @@
 + (id)appSizerScan;
 - (SAAppSizerScan)init;
 - (SAVolumesInfo)relevantVolumesInfo;
-- (unsigned)scanDataPathsWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5;
-- (unsigned)shouldDefer:(unint64_t)a3 BGTask:(id)a4;
-- (unsigned)shouldInitiatePathsScan:(unint64_t)a3 withBGTask:(id)a4;
-- (unsigned)waitForScan:(id)a3 mode:(unint64_t)a4 BGTask:(id)a5;
+- (unsigned)scanDataPathsWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options;
+- (unsigned)shouldDefer:(unint64_t)defer BGTask:(id)task;
+- (unsigned)shouldInitiatePathsScan:(unint64_t)scan withBGTask:(id)task;
+- (unsigned)waitForScan:(id)scan mode:(unint64_t)mode BGTask:(id)task;
 - (void)collectAppsList;
-- (void)initiatePathsScanWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5 replyBlock:(id)a6;
-- (void)resetState:(unint64_t)a3;
-- (void)resolvePathAndGetSize:(id)a3 forBundleIDs:(id)a4 reply:(id)a5;
+- (void)initiatePathsScanWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options replyBlock:(id)block;
+- (void)resetState:(unint64_t)state;
+- (void)resolvePathAndGetSize:(id)size forBundleIDs:(id)ds reply:(id)reply;
 - (void)scanCachePaths;
-- (void)scanPathsWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5 reply:(id)a6;
+- (void)scanPathsWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options reply:(id)reply;
 @end
 
 @implementation SAAppSizerScan
@@ -49,11 +49,11 @@
   return v3;
 }
 
-- (void)resetState:(unint64_t)a3
+- (void)resetState:(unint64_t)state
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_runMode == a3)
+  if (obj->_runMode == state)
   {
     appSizerResults = obj->_appSizerResults;
     obj->_runMode = 0;
@@ -107,14 +107,14 @@
   return v3;
 }
 
-- (unsigned)shouldInitiatePathsScan:(unint64_t)a3 withBGTask:(id)a4
+- (unsigned)shouldInitiatePathsScan:(unint64_t)scan withBGTask:(id)task
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v7->_scanInProgress)
+  taskCopy = task;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_scanInProgress)
   {
-    if (a3 == 2 && v7->_runMode == 1)
+    if (scan == 2 && selfCopy->_runMode == 1)
     {
       v8 = SALog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -127,7 +127,7 @@
       }
 
       v9 = 0;
-      v7->_runMode = 2;
+      selfCopy->_runMode = 2;
     }
 
     else
@@ -149,42 +149,42 @@
     v10 = SALog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      scanInProgress = v7->_scanInProgress;
-      runMode = v7->_runMode;
+      scanInProgress = selfCopy->_scanInProgress;
+      runMode = selfCopy->_runMode;
       v15 = 136315906;
       v16 = "[SAAppSizerScan shouldInitiatePathsScan:withBGTask:]";
       v17 = 1024;
       *v18 = scanInProgress;
       *&v18[4] = 2048;
-      *&v18[6] = a3;
+      *&v18[6] = scan;
       v19 = 2048;
       v20 = runMode;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Initiating paths scan. scanInProgress: %d mode: %lu runMode: %lu", &v15, 0x26u);
     }
 
     v9 = 0;
-    v7->_runMode = a3;
-    v7->_scanInProgress = 1;
+    selfCopy->_runMode = scan;
+    selfCopy->_scanInProgress = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (unsigned)shouldDefer:(unint64_t)a3 BGTask:(id)a4
+- (unsigned)shouldDefer:(unint64_t)defer BGTask:(id)task
 {
-  if (a3 != 1)
+  if (defer != 1)
   {
     return 0;
   }
 
-  if (![a4 shouldDefer])
+  if (![task shouldDefer])
   {
     v6 = +[SAAppSizerScan appSizerScan];
-    v7 = [v6 runMode];
+    runMode = [v6 runMode];
 
-    if (v7 == 2)
+    if (runMode == 2)
     {
       v4 = SALog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -215,14 +215,14 @@ LABEL_10:
   return v5;
 }
 
-- (void)resolvePathAndGetSize:(id)a3 forBundleIDs:(id)a4 reply:(id)a5
+- (void)resolvePathAndGetSize:(id)size forBundleIDs:(id)ds reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 length])
+  sizeCopy = size;
+  dsCopy = ds;
+  replyCopy = reply;
+  if (sizeCopy && [sizeCopy length])
   {
-    v11 = open([v8 fileSystemRepresentation], 0);
+    v11 = open([sizeCopy fileSystemRepresentation], 0);
     if (v11 >= 1)
     {
       v12 = v11;
@@ -236,16 +236,16 @@ LABEL_10:
           [(SATrie *)self->_pathsTrie insertPath:v13];
           objc_sync_exit(v14);
 
-          v14 = [SAUtilities breakCommaSeparatedStringToComponents:v9];
-          if ([(SATrie *)v14 count]== 1 && [SASpeculativeDownloadAnalytics isBundleIdInHierarchy:v9])
+          v14 = [SAUtilities breakCommaSeparatedStringToComponents:dsCopy];
+          if ([(SATrie *)v14 count]== 1 && [SASpeculativeDownloadAnalytics isBundleIdInHierarchy:dsCopy])
           {
             v19 = SALog();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               v22 = 138412546;
-              v23 = v8;
+              v23 = sizeCopy;
               v24 = 2112;
-              v25 = v9;
+              v25 = dsCopy;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Enabling hierarchy on path %@ for bundleId %@", &v22, 0x16u);
             }
 
@@ -257,8 +257,8 @@ LABEL_10:
             v20 = 6;
           }
 
-          v21 = [(SAAppSizerScan *)self traverser];
-          v18 = [v21 getFolderSizeForFD:v12 options:v20];
+          traverser = [(SAAppSizerScan *)self traverser];
+          v18 = [traverser getFolderSizeForFD:v12 options:v20];
 
           goto LABEL_23;
         }
@@ -292,36 +292,36 @@ LABEL_23:
     v17 = SALog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_10003DE0C(v8, v16);
+      sub_10003DE0C(sizeCopy, v16);
     }
   }
 
   v18 = 0;
   v13 = 0;
 LABEL_24:
-  v10[2](v10, v13, v18);
+  replyCopy[2](replyCopy, v13, v18);
 }
 
 - (void)collectAppsList
 {
-  v3 = [(SAAppPathList *)self->_appPathList appPathList];
+  appPathList = [(SAAppPathList *)self->_appPathList appPathList];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100016AC8;
   v4[3] = &unk_100064BD8;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [appPathList enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (unsigned)scanDataPathsWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5
+- (unsigned)scanDataPathsWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options
 {
-  v8 = a4;
+  taskCopy = task;
   v9 = dispatch_group_create();
   v10 = dispatch_get_global_queue(2, 0);
-  v11 = [(SAPathList *)self->_pathList pathToBundleIDs];
-  v12 = [v11 allKeys];
+  pathToBundleIDs = [(SAPathList *)self->_pathList pathToBundleIDs];
+  allKeys = [pathToBundleIDs allKeys];
 
-  v13 = [v12 count] / 1000;
+  v13 = [allKeys count] / 1000;
   if (v13 <= 4)
   {
     v14 = 4;
@@ -332,11 +332,11 @@ LABEL_24:
     v14 = v13;
   }
 
-  v15 = [(SAAppSizerScan *)self shouldDefer:a3 BGTask:v8];
+  v15 = [(SAAppSizerScan *)self shouldDefer:mode BGTask:taskCopy];
   if (v15)
   {
     v16 = v15;
-    [(SAAppSizerScan *)self resetState:a3];
+    [(SAAppSizerScan *)self resetState:mode];
     [(NSLock *)self->_pathScanLock unlock];
   }
 
@@ -347,7 +347,7 @@ LABEL_24:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v22 = [v12 count];
+      v22 = [allKeys count];
       v23 = 1024;
       v24 = v14;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "START: App Sizer Scanning Paths. Number Of Paths: (%d) , Number of threads: (%d)", buf, 0xEu);
@@ -360,9 +360,9 @@ LABEL_24:
     v20[3] = &unk_100064F18;
     v20[4] = self;
     v20[5] = v17;
-    v20[6] = a5;
-    [SAUtilities processArrayConcurrently:v12 number:v14 queue:v10 group:v9 block:v20];
-    v16 = [(SAAppSizerScan *)self waitForScan:v9 mode:a3 BGTask:v8];
+    v20[6] = options;
+    [SAUtilities processArrayConcurrently:allKeys number:v14 queue:v10 group:v9 block:v20];
+    v16 = [(SAAppSizerScan *)self waitForScan:v9 mode:mode BGTask:taskCopy];
   }
 
   return v16;
@@ -370,10 +370,10 @@ LABEL_24:
 
 - (void)scanCachePaths
 {
-  v3 = [(SAAppPathList *)self->_appPathList appPathList];
-  v4 = [v3 allValues];
+  appPathList = [(SAAppPathList *)self->_appPathList appPathList];
+  allValues = [appPathList allValues];
 
-  v5 = [v4 count] / 1000;
+  v5 = [allValues count] / 1000;
   if (v5 <= 4)
   {
     v6 = 4;
@@ -391,19 +391,19 @@ LABEL_24:
   v9[2] = sub_100017424;
   v9[3] = &unk_100064F68;
   v9[4] = self;
-  [SAUtilities processArrayConcurrently:v4 number:v6 queue:v8 group:v7 block:v9];
+  [SAUtilities processArrayConcurrently:allValues number:v6 queue:v8 group:v7 block:v9];
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)scanPathsWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5 reply:(id)a6
+- (void)scanPathsWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options reply:(id)reply
 {
-  v10 = a4;
-  v11 = a6;
+  taskCopy = task;
+  replyCopy = reply;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 1;
-  if ((os_variant_has_internal_ui() & 1) != 0 || [SATelemetryManager shouldSendTelemetry:v10 != 0])
+  if ((os_variant_has_internal_ui() & 1) != 0 || [SATelemetryManager shouldSendTelemetry:taskCopy != 0])
   {
     v12 = [SATelemetryManager newWithSAFOptions:1];
     telemetryManager = self->_telemetryManager;
@@ -425,19 +425,19 @@ LABEL_24:
   self->_appPathList = v15;
 
   v17 = self->_appPathList;
-  v18 = [(SAAppSizerScan *)self relevantVolumesInfo];
+  relevantVolumesInfo = [(SAAppSizerScan *)self relevantVolumesInfo];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100017A38;
   v28[3] = &unk_100064C00;
   v28[4] = &v29;
-  [(SAAppPathList *)v17 importDefaultListWithBGTask:v10 volumesInfo:v18 reply:v28];
+  [(SAAppPathList *)v17 importDefaultListWithBGTask:taskCopy volumesInfo:relevantVolumesInfo reply:v28];
 
   [(SATelemetryManager *)self->_telemetryManager stopTimeForTimeInfoEntry:7];
   if (*(v30 + 24) == 1)
   {
     [(NSLock *)self->_pathScanLock unlock];
-    (*(v11 + 2))(v11, 2, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 2, 0, 0);
   }
 
   else
@@ -450,15 +450,15 @@ LABEL_24:
     appSizerResults = self->_appSizerResults;
     self->_appSizerResults = v21;
 
-    if ((a5 & 0x2000) != 0)
+    if ((options & 0x2000) != 0)
     {
       [(SAAppSizerResults *)self->_appSizerResults enableAppSizeBreakdown];
     }
 
-    v23 = [(SAAppSizerScan *)self shouldDefer:a3 BGTask:v10];
+    v23 = [(SAAppSizerScan *)self shouldDefer:mode BGTask:taskCopy];
     if (v23)
     {
-      [(SAAppSizerScan *)self resetState:a3];
+      [(SAAppSizerScan *)self resetState:mode];
       [(NSLock *)self->_pathScanLock unlock];
       v24 = 0;
       v25 = 0;
@@ -466,7 +466,7 @@ LABEL_24:
 
     else
     {
-      if ((a5 & 0x400) != 0)
+      if ((options & 0x400) != 0)
       {
         [(SAAppSizerScan *)self collectAppsList];
       }
@@ -480,7 +480,7 @@ LABEL_24:
 
       [(SAPathList *)self->_pathList updateWithAppPathList:self->_appPathList];
       [(SAAppSizerScan *)self scanCachePaths];
-      v23 = [(SAAppSizerScan *)self scanDataPathsWithRunMode:a3 BGTask:v10 scanOptions:a5];
+      v23 = [(SAAppSizerScan *)self scanDataPathsWithRunMode:mode BGTask:taskCopy scanOptions:options];
       [(NSLock *)self->_pathScanLock unlock];
       [(SATrie *)self->_pathsTrie clearPaths];
       if (v23)
@@ -503,16 +503,16 @@ LABEL_24:
       v25 = self->_telemetryManager;
     }
 
-    (*(v11 + 2))(v11, v23, v24, v25);
+    (*(replyCopy + 2))(replyCopy, v23, v24, v25);
   }
 
   _Block_object_dispose(&v29, 8);
 }
 
-- (unsigned)waitForScan:(id)a3 mode:(unint64_t)a4 BGTask:(id)a5
+- (unsigned)waitForScan:(id)scan mode:(unint64_t)mode BGTask:(id)task
 {
-  v8 = a3;
-  v9 = a5;
+  scanCopy = scan;
+  taskCopy = task;
   v10 = SALog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -521,20 +521,20 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Waiting for scan to complete", &v26, 0xCu);
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
-    dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_group_wait(scanCopy, 0xFFFFFFFFFFFFFFFFLL);
 LABEL_10:
     v14 = 0;
   }
 
-  else if (a4 == 1)
+  else if (mode == 1)
   {
     while (1)
     {
       v11 = dispatch_time(0, 2000000000);
-      v12 = dispatch_group_wait(v8, v11);
-      v13 = [(SAAppSizerScan *)self shouldDefer:1 BGTask:v9];
+      v12 = dispatch_group_wait(scanCopy, v11);
+      v13 = [(SAAppSizerScan *)self shouldDefer:1 BGTask:taskCopy];
       if (v13)
       {
         break;
@@ -571,15 +571,15 @@ LABEL_10:
 
 LABEL_19:
 
-    v23 = self;
-    objc_sync_enter(v23);
-    v23->_shouldContinueScanning = 0;
-    objc_sync_exit(v23);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_shouldContinueScanning = 0;
+    objc_sync_exit(selfCopy);
 
-    dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-    v24 = v23;
+    dispatch_group_wait(scanCopy, 0xFFFFFFFFFFFFFFFFLL);
+    v24 = selfCopy;
     objc_sync_enter(v24);
-    v23->_shouldContinueScanning = 1;
+    selfCopy->_shouldContinueScanning = 1;
     objc_sync_exit(v24);
   }
 
@@ -597,20 +597,20 @@ LABEL_19:
   return v14;
 }
 
-- (void)initiatePathsScanWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5 replyBlock:(id)a6
+- (void)initiatePathsScanWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options replyBlock:(id)block
 {
-  v10 = a4;
-  v11 = a6;
-  if (a3 != 1 || v10)
+  taskCopy = task;
+  blockCopy = block;
+  if (mode != 1 || taskCopy)
   {
-    if ([(SAAppSizerScan *)self shouldInitiatePathsScan:a3 withBGTask:v10])
+    if ([(SAAppSizerScan *)self shouldInitiatePathsScan:mode withBGTask:taskCopy])
     {
-      (*(v11 + 2))(v11, 1, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 1, 0, 0);
     }
 
     else
     {
-      [(SAAppSizerScan *)self scanPathsWithRunMode:a3 BGTask:v10 scanOptions:a5 reply:v11];
+      [(SAAppSizerScan *)self scanPathsWithRunMode:mode BGTask:taskCopy scanOptions:options reply:blockCopy];
     }
   }
 
@@ -622,7 +622,7 @@ LABEL_19:
       sub_10003E04C(v12, v13, v14, v15, v16, v17, v18, v19);
     }
 
-    (*(v11 + 2))(v11, 3, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 3, 0, 0);
   }
 }
 

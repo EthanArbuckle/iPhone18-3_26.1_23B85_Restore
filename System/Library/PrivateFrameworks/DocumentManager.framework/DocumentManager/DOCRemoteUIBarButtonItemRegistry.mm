@@ -1,8 +1,8 @@
 @interface DOCRemoteUIBarButtonItemRegistry
 + (id)shared;
 - (DOCRemoteUIBarButtonItemRegistry)init;
-- (id)barButtonItemPresentedInNavigationBar:(id)a3 uuid:(id)a4;
-- (void)registerInstance:(id)a3;
+- (id)barButtonItemPresentedInNavigationBar:(id)bar uuid:(id)uuid;
+- (void)registerInstance:(id)instance;
 @end
 
 @implementation DOCRemoteUIBarButtonItemRegistry
@@ -35,41 +35,41 @@ uint64_t __42__DOCRemoteUIBarButtonItemRegistry_shared__block_invoke()
   v2 = [(DOCRemoteUIBarButtonItemRegistry *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     instancesByUUID = v2->_instancesByUUID;
-    v2->_instancesByUUID = v3;
+    v2->_instancesByUUID = dictionary;
   }
 
   return v2;
 }
 
-- (void)registerInstance:(id)a3
+- (void)registerInstance:(id)instance
 {
-  v4 = a3;
-  v9 = [v4 uuid];
+  instanceCopy = instance;
+  uuid = [instanceCopy uuid];
   v5 = [(NSMutableDictionary *)self->_instancesByUUID objectForKeyedSubscript:?];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    weakObjectsPointerArray = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   }
 
-  v8 = v7;
+  v8 = weakObjectsPointerArray;
 
-  [v8 addPointer:v4];
-  [(NSMutableDictionary *)self->_instancesByUUID setObject:v8 forKeyedSubscript:v9];
+  [v8 addPointer:instanceCopy];
+  [(NSMutableDictionary *)self->_instancesByUUID setObject:v8 forKeyedSubscript:uuid];
 }
 
-- (id)barButtonItemPresentedInNavigationBar:(id)a3 uuid:(id)a4
+- (id)barButtonItemPresentedInNavigationBar:(id)bar uuid:(id)uuid
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_instancesByUUID objectForKeyedSubscript:a4];
+  barCopy = bar;
+  v7 = [(NSMutableDictionary *)self->_instancesByUUID objectForKeyedSubscript:uuid];
   if ([v7 count])
   {
     v17 = 0u;
@@ -91,8 +91,8 @@ uint64_t __42__DOCRemoteUIBarButtonItemRegistry_shared__block_invoke()
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 _doc_ipi_view];
-          if ([v13 isDescendantOfView:v6])
+          _doc_ipi_view = [v12 _doc_ipi_view];
+          if ([_doc_ipi_view isDescendantOfView:barCopy])
           {
             v9 = v12;
 

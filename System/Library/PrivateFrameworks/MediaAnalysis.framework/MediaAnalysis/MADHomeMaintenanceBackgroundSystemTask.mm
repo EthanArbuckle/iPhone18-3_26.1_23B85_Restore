@@ -1,7 +1,7 @@
 @interface MADHomeMaintenanceBackgroundSystemTask
 + (id)sharedTask;
 + (int64_t)activityDelayInSeconds;
-- (void)executeWith:(id)a3 completionHandler:(id)a4;
+- (void)executeWith:(id)with completionHandler:(id)handler;
 @end
 
 @implementation MADHomeMaintenanceBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000633C;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8098 != -1)
   {
     dispatch_once(&qword_1002B8098, block);
@@ -30,19 +30,19 @@
     return 79200;
   }
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MADHomeMaintenanceBackgroundSystemTask;
   return objc_msgSendSuper2(&v4, "activityDelayInSeconds");
 }
 
-- (void)executeWith:(id)a3 completionHandler:(id)a4
+- (void)executeWith:(id)with completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  withCopy = with;
+  handlerCopy = handler;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [objc_opt_class() identifier];
-  v10 = [NSString stringWithFormat:@"[%@][%@]", v8, v9];
+  identifier = [objc_opt_class() identifier];
+  v10 = [NSString stringWithFormat:@"[%@][%@]", v8, identifier];
 
   v31 = 0;
   v32 = &v31;
@@ -56,8 +56,8 @@
   v29[2] = 0x3032000000;
   v29[3] = sub_100006828;
   v29[4] = sub_100006838;
-  v11 = [objc_opt_class() identifier];
-  v30 = VCPTransactionWithName(v11);
+  identifier2 = [objc_opt_class() identifier];
+  v30 = VCPTransactionWithName(identifier2);
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -67,7 +67,7 @@
   v12 = v10;
   v25 = v12;
   v28 = v29;
-  v13 = v6;
+  v13 = handlerCopy;
   v26 = v13;
   v14 = objc_retainBlock(v24);
   v15 = objc_autoreleasePoolPush();
@@ -76,7 +76,7 @@
   v22[1] = 3221225472;
   v22[2] = sub_100006A60;
   v22[3] = &unk_100282A08;
-  v17 = v5;
+  v17 = withCopy;
   v23 = v17;
   [v16 setCancelBlock:v22];
   v18 = +[VCPMADTaskScheduler sharedInstance];

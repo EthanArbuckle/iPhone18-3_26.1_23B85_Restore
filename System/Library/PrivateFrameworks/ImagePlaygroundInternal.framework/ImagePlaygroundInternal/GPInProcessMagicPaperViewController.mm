@@ -1,19 +1,19 @@
 @interface GPInProcessMagicPaperViewController
-+ (void)prewarmEffectAndKeepItInMemory:(BOOL)a3 withCompletion:(id)a4;
++ (void)prewarmEffectAndKeepItInMemory:(BOOL)memory withCompletion:(id)completion;
 - (BOOL)isAnimating;
 - (CGRect)magicViewFullFrame;
-- (GPInProcessMagicPaperViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GPInProcessMagicPaperViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (GPInProcessMagicPaperViewControllerDelegate)delegate;
 - (GPRecipe)recipe;
 - (double)magicViewFullHeightForKeyboardScrolling;
-- (void)finishSelectionWithPath:(const CGPath *)a3 atPencilLocation:(CGPoint)a4;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setRecipe:(id)a3;
-- (void)setState:(id)a3;
-- (void)startSelectionWithPath:(const CGPath *)a3 atPencilLocation:(CGPoint)a4;
-- (void)updateSelectionWithPath:(const CGPath *)a3 atPencilLocation:(CGPoint)a4;
+- (void)finishSelectionWithPath:(const CGPath *)path atPencilLocation:(CGPoint)location;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setRecipe:(id)recipe;
+- (void)setState:(id)state;
+- (void)startSelectionWithPath:(const CGPath *)path atPencilLocation:(CGPoint)location;
+- (void)updateSelectionWithPath:(const CGPath *)path atPencilLocation:(CGPoint)location;
 - (void)upscaleIfPossible;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GPInProcessMagicPaperViewController
@@ -25,12 +25,12 @@
   return Strong;
 }
 
-+ (void)prewarmEffectAndKeepItInMemory:(BOOL)a3 withCompletion:(id)a4
++ (void)prewarmEffectAndKeepItInMemory:(BOOL)memory withCompletion:(id)completion
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC6D8E60);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = sub_1D28785F8();
@@ -42,7 +42,7 @@
   v14 = MEMORY[0x1E69E85E0];
   *(v13 + 16) = v12;
   *(v13 + 24) = v14;
-  *(v13 + 32) = a3;
+  *(v13 + 32) = memory;
   *(v13 + 40) = sub_1D279D834;
   *(v13 + 48) = v10;
   sub_1D22AE01C(0, 0, v8, &unk_1D28A58B0, v13);
@@ -50,61 +50,61 @@
 
 - (BOOL)isAnimating
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GPInProcessMagicPaperViewController.isAnimating.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  v4 = self;
-  GPInProcessMagicPaperViewController.isAnimating.setter(a3);
+  selfCopy = self;
+  GPInProcessMagicPaperViewController.isAnimating.setter(animating);
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  GPInProcessMagicPaperViewController.setState(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  GPInProcessMagicPaperViewController.setState(_:)(stateCopy);
 }
 
-- (void)startSelectionWithPath:(const CGPath *)a3 atPencilLocation:(CGPoint)a4
+- (void)startSelectionWithPath:(const CGPath *)path atPencilLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D279A7FC(v5);
+  pathCopy = path;
+  selfCopy = self;
+  sub_1D279A7FC(pathCopy);
 }
 
-- (void)updateSelectionWithPath:(const CGPath *)a3 atPencilLocation:(CGPoint)a4
+- (void)updateSelectionWithPath:(const CGPath *)path atPencilLocation:(CGPoint)location
 {
   v6 = OBJC_IVAR___GPInProcessMagicPaperViewController_magicViewController;
   swift_beginAccess();
   v7 = *(self + v6);
   if (v7)
   {
-    v8 = a3;
-    v9 = self;
+    pathCopy = path;
+    selfCopy = self;
     v10 = v7;
-    sub_1D26F4668(v8);
+    sub_1D26F4668(pathCopy);
   }
 }
 
-- (void)finishSelectionWithPath:(const CGPath *)a3 atPencilLocation:(CGPoint)a4
+- (void)finishSelectionWithPath:(const CGPath *)path atPencilLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D279AC58(v5);
+  pathCopy = path;
+  selfCopy = self;
+  sub_1D279AC58(pathCopy);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = GPInProcessMagicPaperViewController;
-  v4 = self;
-  [(GPInProcessMagicPaperViewController *)&v5 viewWillDisappear:v3];
-  [(GPInProcessMagicPaperViewController *)v4 upscaleIfPossible:v5.receiver];
+  selfCopy = self;
+  [(GPInProcessMagicPaperViewController *)&v5 viewWillDisappear:disappearCopy];
+  [(GPInProcessMagicPaperViewController *)selfCopy upscaleIfPossible:v5.receiver];
 }
 
 - (GPRecipe)recipe
@@ -125,16 +125,16 @@
   return v5;
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D279B1E0(a3);
+  recipeCopy = recipe;
+  selfCopy = self;
+  sub_1D279B1E0(recipe);
 }
 
 - (CGRect)magicViewFullFrame
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D279B368();
   v4 = v3;
   v6 = v5;
@@ -172,11 +172,11 @@
 
 - (void)upscaleIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   GPInProcessMagicPaperViewController.upscaleIfPossible()();
 }
 
-- (GPInProcessMagicPaperViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GPInProcessMagicPaperViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

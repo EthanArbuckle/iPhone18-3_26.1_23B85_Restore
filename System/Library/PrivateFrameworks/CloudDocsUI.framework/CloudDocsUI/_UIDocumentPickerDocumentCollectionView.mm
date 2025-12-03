@@ -1,29 +1,29 @@
 @interface _UIDocumentPickerDocumentCollectionView
-- (CGPoint)_updatedContentOffsetForOffset:(CGPoint)a3 avoidNegativeContentOffset:(BOOL)a4;
-- (void)_performWhileAvoidingNegativeContentOffset:(id)a3;
-- (void)setAdjustedContentSize:(CGSize)a3 withFrameSize:(CGSize)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setFrame:(CGRect)a3;
+- (CGPoint)_updatedContentOffsetForOffset:(CGPoint)offset avoidNegativeContentOffset:(BOOL)contentOffset;
+- (void)_performWhileAvoidingNegativeContentOffset:(id)offset;
+- (void)setAdjustedContentSize:(CGSize)size withFrameSize:(CGSize)frameSize;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentSize:(CGSize)size;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _UIDocumentPickerDocumentCollectionView
 
-- (void)_performWhileAvoidingNegativeContentOffset:(id)a3
+- (void)_performWhileAvoidingNegativeContentOffset:(id)offset
 {
   avoidNegativeContentOffset = self->_avoidNegativeContentOffset;
   self->_avoidNegativeContentOffset = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(offset + 2))(offset, a2);
   self->_avoidNegativeContentOffset = avoidNegativeContentOffset;
 }
 
-- (void)setAdjustedContentSize:(CGSize)a3 withFrameSize:(CGSize)a4
+- (void)setAdjustedContentSize:(CGSize)size withFrameSize:(CGSize)frameSize
 {
-  height = a4.height;
-  v5 = a3.height;
-  width = a3.width;
-  [(_UIDocumentPickerDocumentCollectionView *)self contentSizeAdjustment:a3.width];
+  height = frameSize.height;
+  v5 = size.height;
+  width = size.width;
+  [(_UIDocumentPickerDocumentCollectionView *)self contentSizeAdjustment:size.width];
   v9 = height + v8;
   if (v5 >= v9)
   {
@@ -40,42 +40,42 @@
   [(_UIDocumentPickerDocumentCollectionView *)&v11 setContentSize:width, v10];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52___UIDocumentPickerDocumentCollectionView_setFrame___block_invoke;
   v3[3] = &unk_278DD6990;
   v3[4] = self;
-  v4 = a3;
+  frameCopy = frame;
   [(_UIDocumentPickerDocumentCollectionView *)self _performWhileAvoidingNegativeContentOffset:v3];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __53___UIDocumentPickerDocumentCollectionView_setBounds___block_invoke;
   v3[3] = &unk_278DD6990;
   v3[4] = self;
-  v4 = a3;
+  boundsCopy = bounds;
   [(_UIDocumentPickerDocumentCollectionView *)self _performWhileAvoidingNegativeContentOffset:v3];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_UIDocumentPickerDocumentCollectionView *)self frame];
 
   [(_UIDocumentPickerDocumentCollectionView *)self setAdjustedContentSize:width withFrameSize:height];
 }
 
-- (CGPoint)_updatedContentOffsetForOffset:(CGPoint)a3 avoidNegativeContentOffset:(BOOL)a4
+- (CGPoint)_updatedContentOffsetForOffset:(CGPoint)offset avoidNegativeContentOffset:(BOOL)contentOffset
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = offset.y;
+  x = offset.x;
+  if (contentOffset)
   {
     [(_UIDocumentPickerDocumentCollectionView *)self contentOffset];
     v7 = fmin(v6, 0.0);
@@ -92,9 +92,9 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  [(_UIDocumentPickerDocumentCollectionView *)self _updatedContentOffsetForOffset:self->_avoidNegativeContentOffset avoidNegativeContentOffset:a3.x, a3.y];
+  [(_UIDocumentPickerDocumentCollectionView *)self _updatedContentOffsetForOffset:self->_avoidNegativeContentOffset avoidNegativeContentOffset:offset.x, offset.y];
   v4.receiver = self;
   v4.super_class = _UIDocumentPickerDocumentCollectionView;
   [(_UIDocumentPickerDocumentCollectionView *)&v4 setContentOffset:?];

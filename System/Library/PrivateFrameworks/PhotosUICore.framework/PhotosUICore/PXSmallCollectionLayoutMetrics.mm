@@ -1,7 +1,7 @@
 @interface PXSmallCollectionLayoutMetrics
 - (UIEdgeInsets)padding;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXSmallCollectionLayoutMetrics
@@ -32,11 +32,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PXSmallCollectionLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v7 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v7 copyWithZone:zone];
   if (result)
   {
     *(result + 3) = self->_style;

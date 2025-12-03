@@ -1,21 +1,21 @@
 @interface _EFSQLDistinctExpression
 - (NSString)ef_SQLExpression;
-- (_EFSQLDistinctExpression)initWithExpression:(id)a3;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (_EFSQLDistinctExpression)initWithExpression:(id)expression;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation _EFSQLDistinctExpression
 
-- (_EFSQLDistinctExpression)initWithExpression:(id)a3
+- (_EFSQLDistinctExpression)initWithExpression:(id)expression
 {
-  v5 = a3;
+  expressionCopy = expression;
   v9.receiver = self;
   v9.super_class = _EFSQLDistinctExpression;
   v6 = [(_EFSQLDistinctExpression *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_expression, a3);
+    objc_storeStrong(&v6->_expression, expression);
   }
 
   return v7;
@@ -23,17 +23,17 @@
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(_EFSQLDistinctExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(_EFSQLDistinctExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v4 = a3;
-  [v4 appendString:@"DISTINCT "];
-  [(EFSQLExpressable *)self->_expression ef_renderSQLExpressionInto:v4];
+  intoCopy = into;
+  [intoCopy appendString:@"DISTINCT "];
+  [(EFSQLExpressable *)self->_expression ef_renderSQLExpressionInto:intoCopy];
 }
 
 @end

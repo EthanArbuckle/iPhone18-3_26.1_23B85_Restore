@@ -1,71 +1,71 @@
 @interface SMSServiceSession
-- (BOOL)_messageDowngradesWhenSentFromCurrentService:(id)a3;
-- (BOOL)_sendMessageOverAlternatePath:(id)a3 toChat:(id)a4;
-- (BOOL)_shouldFailSMSMessageForTesting:(id)a3 chatIdentifier:(id)a4 chatStyle:(unsigned __int8)a5;
-- (BOOL)allowedToSendMessage:(id)a3 toChat:(id)a4;
-- (BOOL)isValidMMS:(id)a3;
-- (BOOL)replicationRequiredForFeaturesUsedByMessageItem:(id)a3;
-- (BOOL)replicationRequirementsSatisfiedForPhoneNumber:(id)a3 simID:(id)a4;
+- (BOOL)_messageDowngradesWhenSentFromCurrentService:(id)service;
+- (BOOL)_sendMessageOverAlternatePath:(id)path toChat:(id)chat;
+- (BOOL)_shouldFailSMSMessageForTesting:(id)testing chatIdentifier:(id)identifier chatStyle:(unsigned __int8)style;
+- (BOOL)allowedToSendMessage:(id)message toChat:(id)chat;
+- (BOOL)isValidMMS:(id)s;
+- (BOOL)replicationRequiredForFeaturesUsedByMessageItem:(id)item;
+- (BOOL)replicationRequirementsSatisfiedForPhoneNumber:(id)number simID:(id)d;
 - (BOOL)shouldFixIncomingDate;
-- (SMSServiceSession)initWithAccount:(id)a3 service:(id)a4 replicatingForSession:(id)a5;
-- (id)_convertCTMessagePartToDictionary:(id)a3;
-- (id)_convertCTMessageToDictionary:(id)a3 requiresUpload:(BOOL *)a4;
-- (id)_fixIncomingDate:(id)a3;
-- (id)lastAddressedHandleForJunkReportMessageItem:(id)a3;
-- (id)lastAddressedSIMIDForJunkReportMessageItem:(id)a3;
-- (id)newTelephonyMessagesForHandles:(id)a3 shouldBroadcastMessage:(BOOL)a4;
+- (SMSServiceSession)initWithAccount:(id)account service:(id)service replicatingForSession:(id)session;
+- (id)_convertCTMessagePartToDictionary:(id)dictionary;
+- (id)_convertCTMessageToDictionary:(id)dictionary requiresUpload:(BOOL *)upload;
+- (id)_fixIncomingDate:(id)date;
+- (id)lastAddressedHandleForJunkReportMessageItem:(id)item;
+- (id)lastAddressedSIMIDForJunkReportMessageItem:(id)item;
+- (id)newTelephonyMessagesForHandles:(id)handles shouldBroadcastMessage:(BOOL)message;
 - (id)replicationPhoneNumbers;
-- (unint64_t)_sendingDecisionForMessageItem:(id)a3 callerID:(id)a4 lastAddressedLocalHandle:(id)a5 lastAddressedSIMID:(id)a6;
-- (unsigned)_generateMessageIDForMessageGUID:(id)a3;
-- (void)_buildCTPhoneNumberWithParticipantInfo:(id)a3 ctMessage:(id)a4;
-- (void)_clearMapForMessageGUID:(id)a3;
+- (unint64_t)_sendingDecisionForMessageItem:(id)item callerID:(id)d lastAddressedLocalHandle:(id)handle lastAddressedSIMID:(id)iD;
+- (unsigned)_generateMessageIDForMessageGUID:(id)d;
+- (void)_buildCTPhoneNumberWithParticipantInfo:(id)info ctMessage:(id)message;
+- (void)_clearMapForMessageGUID:(id)d;
 - (void)_clearPendingIncomingMessageQueue;
-- (void)_doDeleteChat:(id)a3;
-- (void)_joinOneToOneChatWithChatIdentifier:(id)a3;
-- (void)_processMessagesForRelayIfNeededMarkingAsRelayedUponSuccess:(BOOL)a3;
-- (void)_processSMSOrSMSMessageSentWithContext:(id)a3 success:(BOOL)a4 messageID:(unsigned int)a5 err1:(int64_t)a6 err2:(int64_t)a7 isSMS:(BOOL)a8;
-- (void)_processSMSorMMSMessageReceivedWithContext:(id)a3 messageID:(int64_t)a4;
-- (void)_receivedSMSDictionary:(id)a3 requiresUpload:(BOOL)a4 isBeingReplayed:(BOOL)a5;
-- (void)_registerForIncomingMessages:(id)a3;
-- (void)_registerMessageGUID:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5;
-- (void)_reportTelephonyJunkForMessageItem:(id)a3 chat:(id)a4;
-- (void)_setContentIDAndLocationForSMILPart:(id)a3 messageGUID:(id)a4 isGroupChat:(BOOL)a5 phoneNumber:(id)a6 simID:(id)a7;
-- (void)addMessagePlainTextToTelephonyMessages:(id)a3 messageItem:(id)a4 processedMessageItem:(id)a5;
-- (void)buildTelephonyPhoneNumbersForTelephonyMessages:(id)a3 shouldBroadcastMessage:(BOOL)a4 handles:(id)a5;
-- (void)calculateReachabilityWithRequest:(id)a3 responseHandler:(id)a4;
+- (void)_doDeleteChat:(id)chat;
+- (void)_joinOneToOneChatWithChatIdentifier:(id)identifier;
+- (void)_processMessagesForRelayIfNeededMarkingAsRelayedUponSuccess:(BOOL)success;
+- (void)_processSMSOrSMSMessageSentWithContext:(id)context success:(BOOL)success messageID:(unsigned int)d err1:(int64_t)err1 err2:(int64_t)err2 isSMS:(BOOL)s;
+- (void)_processSMSorMMSMessageReceivedWithContext:(id)context messageID:(int64_t)d;
+- (void)_receivedSMSDictionary:(id)dictionary requiresUpload:(BOOL)upload isBeingReplayed:(BOOL)replayed;
+- (void)_registerForIncomingMessages:(id)messages;
+- (void)_registerMessageGUID:(id)d completionBlock:(id)block failureBlock:(id)failureBlock;
+- (void)_reportTelephonyJunkForMessageItem:(id)item chat:(id)chat;
+- (void)_setContentIDAndLocationForSMILPart:(id)part messageGUID:(id)d isGroupChat:(BOOL)chat phoneNumber:(id)number simID:(id)iD;
+- (void)addMessagePlainTextToTelephonyMessages:(id)messages messageItem:(id)item processedMessageItem:(id)messageItem;
+- (void)buildTelephonyPhoneNumbersForTelephonyMessages:(id)messages shouldBroadcastMessage:(BOOL)message handles:(id)handles;
+- (void)calculateReachabilityWithRequest:(id)request responseHandler:(id)handler;
 - (void)dealloc;
-- (void)enqueReplayMessageCallback:(id)a3;
-- (void)invitePersonInfo:(id)a3 withMessage:(id)a4 toChat:(id)a5 style:(unsigned __int8)a6;
-- (void)mmsMessageReceived:(id)a3 msgID:(int64_t)a4;
-- (void)networkMonitorDidUpdate:(id)a3;
-- (void)processPartsOfTelephonyMessages:(id)a3 parts:(id)a4 messageItem:(id)a5 isGroupChat:(BOOL)a6 phoneNumber:(id)a7 simID:(id)a8;
+- (void)enqueReplayMessageCallback:(id)callback;
+- (void)invitePersonInfo:(id)info withMessage:(id)message toChat:(id)chat style:(unsigned __int8)style;
+- (void)mmsMessageReceived:(id)received msgID:(int64_t)d;
+- (void)networkMonitorDidUpdate:(id)update;
+- (void)processPartsOfTelephonyMessages:(id)messages parts:(id)parts messageItem:(id)item isGroupChat:(BOOL)chat phoneNumber:(id)number simID:(id)d;
 - (void)refreshServiceCapabilities;
-- (void)replayMessage:(id)a3;
-- (void)sendDeliveredQuietlyReceiptForMessage:(id)a3 forIncomingMessageFromIDSID:(id)a4 toChatGuid:(id)a5 identifier:(id)a6 style:(unsigned __int8)a7 withWillSendToDestinationsHandler:(id)a8;
-- (void)sendDeliveryReceiptForMessageID:(id)a3 toID:(id)a4 deliveryContext:(id)a5 needsDeliveryReceipt:(id)a6 callerID:(id)a7 account:(id)a8;
-- (void)sendNotifyRecipientCommandForMessage:(id)a3 toChatGuid:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6;
-- (void)sendPlayedReceiptForMessage:(id)a3 toChatID:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6;
-- (void)sendSavedReceiptForMessage:(id)a3 toChatID:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6;
-- (void)sendSyndicationAction:(id)a3 toChatsWithIdentifiers:(id)a4;
-- (void)sendUpdatedCollaborationMetadata:(id)a3 toChatsWithIdentifiers:(id)a4 forMessageGUID:(id)a5;
+- (void)replayMessage:(id)message;
+- (void)sendDeliveredQuietlyReceiptForMessage:(id)message forIncomingMessageFromIDSID:(id)d toChatGuid:(id)guid identifier:(id)identifier style:(unsigned __int8)style withWillSendToDestinationsHandler:(id)handler;
+- (void)sendDeliveryReceiptForMessageID:(id)d toID:(id)iD deliveryContext:(id)context needsDeliveryReceipt:(id)receipt callerID:(id)callerID account:(id)account;
+- (void)sendNotifyRecipientCommandForMessage:(id)message toChatGuid:(id)guid identifier:(id)identifier style:(unsigned __int8)style;
+- (void)sendPlayedReceiptForMessage:(id)message toChatID:(id)d identifier:(id)identifier style:(unsigned __int8)style;
+- (void)sendSavedReceiptForMessage:(id)message toChatID:(id)d identifier:(id)identifier style:(unsigned __int8)style;
+- (void)sendSyndicationAction:(id)action toChatsWithIdentifiers:(id)identifiers;
+- (void)sendUpdatedCollaborationMetadata:(id)metadata toChatsWithIdentifiers:(id)identifiers forMessageGUID:(id)d;
 - (void)sessionDidBecomeActive;
-- (void)sessionWillBecomeInactiveWithAccount:(id)a3;
-- (void)setMessageTypeForTelephonyMessage:(id)a3 shouldSendMMS:(BOOL)a4;
-- (void)setSubjectForTelephonyMessages:(id)a3 messageItem:(id)a4;
-- (void)setTranscriptBackgroundAndSendToChat:(id)a3 toChatID:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6 transferID:(id)a7 account:(id)a8 completion:(id)a9;
-- (void)smsMessageReceived:(id)a3 msgID:(int64_t)a4;
+- (void)sessionWillBecomeInactiveWithAccount:(id)account;
+- (void)setMessageTypeForTelephonyMessage:(id)message shouldSendMMS:(BOOL)s;
+- (void)setSubjectForTelephonyMessages:(id)messages messageItem:(id)item;
+- (void)setTranscriptBackgroundAndSendToChat:(id)chat toChatID:(id)d identifier:(id)identifier style:(unsigned __int8)style transferID:(id)iD account:(id)account completion:(id)completion;
+- (void)smsMessageReceived:(id)received msgID:(int64_t)d;
 @end
 
 @implementation SMSServiceSession
 
-- (SMSServiceSession)initWithAccount:(id)a3 service:(id)a4 replicatingForSession:(id)a5
+- (SMSServiceSession)initWithAccount:(id)account service:(id)service replicatingForSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  serviceCopy = service;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = SMSServiceSession;
-  v11 = [(SMSServiceSession *)&v22 initWithAccount:v8 service:v9 replicatingForSession:v10];
+  v11 = [(SMSServiceSession *)&v22 initWithAccount:accountCopy service:serviceCopy replicatingForSession:sessionCopy];
   if (v11)
   {
     if (IMOSLoggingEnabled())
@@ -137,8 +137,8 @@
     }
   }
 
-  v4 = [(NSMutableDictionary *)self->_outgoingRelayMessageTimerMap allValues];
-  [v4 makeObjectsPerformSelector:"invalidate"];
+  allValues = [(NSMutableDictionary *)self->_outgoingRelayMessageTimerMap allValues];
+  [allValues makeObjectsPerformSelector:"invalidate"];
 
   [(IMDRelayPushHandler *)self->_smsRelayPushHandler removeListener:self];
   v5 = +[NSNotificationCenter defaultCenter];
@@ -149,9 +149,9 @@
   [(SMSServiceSession *)&v6 dealloc];
 }
 
-- (void)_registerForIncomingMessages:(id)a3
+- (void)_registerForIncomingMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -178,14 +178,14 @@
     }
   }
 
-  v4 = [(SMSServiceSession *)self relayController];
-  [v4 updateMMSCapability];
+  relayController = [(SMSServiceSession *)self relayController];
+  [relayController updateMMSCapability];
 
   v5 = +[IMDLocalDaemon sharedDaemon];
-  LODWORD(v4) = [v5 isSetupComplete];
+  LODWORD(relayController) = [v5 isSetupComplete];
 
   v6 = IMOSLoggingEnabled();
-  if (v4)
+  if (relayController)
   {
     if (v6)
     {
@@ -221,9 +221,9 @@
   [(SMSServiceSession *)&v10 sessionDidBecomeActive];
 }
 
-- (void)sessionWillBecomeInactiveWithAccount:(id)a3
+- (void)sessionWillBecomeInactiveWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -235,45 +235,45 @@
     }
   }
 
-  v6 = [(NSMutableDictionary *)self->_outgoingRelayMessageTimerMap allValues];
-  [v6 makeObjectsPerformSelector:"invalidate"];
+  allValues = [(NSMutableDictionary *)self->_outgoingRelayMessageTimerMap allValues];
+  [allValues makeObjectsPerformSelector:"invalidate"];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 removeObserver:self name:kFZDaemonFinishedLaunchingNotification object:0];
 
   v8.receiver = self;
   v8.super_class = SMSServiceSession;
-  [(SMSServiceSession *)&v8 sessionWillBecomeInactiveWithAccount:v4];
+  [(SMSServiceSession *)&v8 sessionWillBecomeInactiveWithAccount:accountCopy];
 }
 
-- (BOOL)replicationRequirementsSatisfiedForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)replicationRequirementsSatisfiedForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   v8 = +[IMCTSMSUtilities isMessagesTheDefaultTextApp];
-  v9 = [IMCTSMSUtilities IMMMSGroupTextReplicationSupportedForPhoneNumber:v6 simID:v7];
-  v10 = [(SMSServiceSession *)self relayController];
-  v11 = [v10 _checkMMSEnablementForPhoneNumber:v6 simID:v7];
+  v9 = [IMCTSMSUtilities IMMMSGroupTextReplicationSupportedForPhoneNumber:numberCopy simID:dCopy];
+  relayController = [(SMSServiceSession *)self relayController];
+  v11 = [relayController _checkMMSEnablementForPhoneNumber:numberCopy simID:dCopy];
 
-  v12 = [IMCTSMSUtilities IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:v6 simID:v7];
-  v13 = [(SMSServiceSession *)self relayController];
-  v14 = [v13 _localDeviceSupportsSMS];
+  v12 = [IMCTSMSUtilities IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:numberCopy simID:dCopy];
+  relayController2 = [(SMSServiceSession *)self relayController];
+  _localDeviceSupportsSMS = [relayController2 _localDeviceSupportsSMS];
 
-  v15 = [(SMSServiceSession *)self relayController];
-  if ([v15 hasRelayDevice])
+  relayController3 = [(SMSServiceSession *)self relayController];
+  if ([relayController3 hasRelayDevice])
   {
-    v16 = [(SMSServiceSession *)self relayController];
-    v17 = [v16 _canRelayMMS];
+    relayController4 = [(SMSServiceSession *)self relayController];
+    _canRelayMMS = [relayController4 _canRelayMMS];
   }
 
   else
   {
-    v17 = 0;
+    _canRelayMMS = 0;
   }
 
   if ((v11 & v12) == 1)
   {
-    v18 = v9 & (v14 & v8 | v17);
+    v18 = v9 & (_localDeviceSupportsSMS & v8 | _canRelayMMS);
   }
 
   else
@@ -288,7 +288,7 @@
     {
       v20 = @"NO";
       v28 = 138414338;
-      v29 = v6;
+      v29 = numberCopy;
       if (v18)
       {
         v21 = @"YES";
@@ -320,7 +320,7 @@
       }
 
       v30 = 2112;
-      v31 = v7;
+      v31 = dCopy;
       v32 = 2112;
       v33 = v21;
       if (v12)
@@ -345,7 +345,7 @@
       }
 
       v35 = v22;
-      if (v14)
+      if (_localDeviceSupportsSMS)
       {
         v26 = @"YES";
       }
@@ -356,7 +356,7 @@
       }
 
       v36 = 2112;
-      if (v17)
+      if (_canRelayMMS)
       {
         v20 = @"YES";
       }
@@ -381,17 +381,17 @@
 {
   v20.receiver = self;
   v20.super_class = SMSServiceSession;
-  v2 = [(SMSServiceSession *)&v20 replicationPhoneNumbers];
-  v3 = [v2 mutableCopy];
+  replicationPhoneNumbers = [(SMSServiceSession *)&v20 replicationPhoneNumbers];
+  v3 = [replicationPhoneNumbers mutableCopy];
 
   v4 = +[IMCTSubscriptionUtilities sharedInstance];
-  v5 = [v4 registeredPhoneNumbers];
+  registeredPhoneNumbers = [v4 registeredPhoneNumbers];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5;
+  v6 = registeredPhoneNumbers;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
@@ -408,9 +408,9 @@
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = IMChatCanonicalIDSIDsForAddress();
-        v13 = [v12 _stripFZIDPrefix];
+        _stripFZIDPrefix = [v12 _stripFZIDPrefix];
 
-        [v3 addObject:v13];
+        [v3 addObject:_stripFZIDPrefix];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -424,18 +424,18 @@
   return v14;
 }
 
-- (BOOL)replicationRequiredForFeaturesUsedByMessageItem:(id)a3
+- (BOOL)replicationRequiredForFeaturesUsedByMessageItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = SMSServiceSession;
-  if ([(SMSServiceSession *)&v20 replicationRequiredForFeaturesUsedByMessageItem:v4])
+  if ([(SMSServiceSession *)&v20 replicationRequiredForFeaturesUsedByMessageItem:itemCopy])
   {
     goto LABEL_17;
   }
 
-  v5 = [v4 threadIdentifier];
-  v6 = [v5 length] == 0;
+  threadIdentifier = [itemCopy threadIdentifier];
+  v6 = [threadIdentifier length] == 0;
 
   if (!v6)
   {
@@ -444,9 +444,9 @@
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v4 guid];
+        guid = [itemCopy guid];
         *buf = 138412290;
-        v22 = v8;
+        v22 = guid;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Allowing replication for %@, has thread identifier", buf, 0xCu);
       }
 
@@ -458,8 +458,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v9 = [v4 fileTransferGUIDs];
-  v10 = [v9 count] == 0;
+  fileTransferGUIDs = [itemCopy fileTransferGUIDs];
+  v10 = [fileTransferGUIDs count] == 0;
 
   if (!v10)
   {
@@ -468,9 +468,9 @@ LABEL_16:
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v11 = [v4 guid];
+        guid2 = [itemCopy guid];
         *buf = 138412290;
-        v22 = v11;
+        v22 = guid2;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Allowing replication for %@, has file transfer GUIDs", buf, 0xCu);
       }
 
@@ -482,8 +482,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [v4 balloonBundleID];
-  v13 = [v12 length] == 0;
+  balloonBundleID = [itemCopy balloonBundleID];
+  v13 = [balloonBundleID length] == 0;
 
   v14 = IMOSLoggingEnabled();
   if (!v13)
@@ -493,9 +493,9 @@ LABEL_17:
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v15 = [v4 guid];
+        guid3 = [itemCopy guid];
         *buf = 138412290;
-        v22 = v15;
+        v22 = guid3;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Allowing replication for %@, has balloon bundle ID", buf, 0xCu);
       }
 
@@ -510,9 +510,9 @@ LABEL_17:
     v18 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v4 guid];
+      guid4 = [itemCopy guid];
       *buf = 138412290;
-      v22 = v19;
+      v22 = guid4;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "No replication needed for %@", buf, 0xCu);
     }
   }
@@ -523,9 +523,9 @@ LABEL_18:
   return v16;
 }
 
-- (BOOL)isValidMMS:(id)a3
+- (BOOL)isValidMMS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -536,15 +536,15 @@ LABEL_18:
     }
   }
 
-  v5 = [v3 fileTransferGUIDs];
-  if (![v5 count])
+  fileTransferGUIDs = [sCopy fileTransferGUIDs];
+  if (![fileTransferGUIDs count])
   {
 
     goto LABEL_28;
   }
 
-  v6 = [v3 balloonBundleID];
-  v7 = [v6 isEqualToString:IMBalloonPluginIdentifierRichLinks];
+  balloonBundleID = [sCopy balloonBundleID];
+  v7 = [balloonBundleID isEqualToString:IMBalloonPluginIdentifierRichLinks];
 
   if (v7)
   {
@@ -559,7 +559,7 @@ LABEL_28:
       }
     }
 
-    LOBYTE(v10) = 1;
+    LOBYTE(fileTransferGUIDs2) = 1;
     goto LABEL_37;
   }
 
@@ -569,8 +569,8 @@ LABEL_28:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [v3 fileTransferGUIDs];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  fileTransferGUIDs2 = [sCopy fileTransferGUIDs];
+  v11 = [fileTransferGUIDs2 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v11)
   {
     v12 = *v24;
@@ -580,15 +580,15 @@ LABEL_28:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(fileTransferGUIDs2);
         }
 
         v14 = [v8 transferForGUID:*(*(&v23 + 1) + 8 * i)];
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 type];
-          if (![v16 length])
+          type = [v14 type];
+          if (![type length])
           {
             v21 = IMLogHandleForCategory();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -596,15 +596,15 @@ LABEL_28:
               sub_12000();
             }
 
-            LOBYTE(v10) = 0;
+            LOBYTE(fileTransferGUIDs2) = 0;
             goto LABEL_36;
           }
 
-          [(__CFString *)v9 addObject:v16];
+          [(__CFString *)v9 addObject:type];
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v11 = [fileTransferGUIDs2 countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v11)
       {
         continue;
@@ -614,7 +614,7 @@ LABEL_28:
     }
   }
 
-  LODWORD(v10) = IMMMSPartCombinationCanBeSent();
+  LODWORD(fileTransferGUIDs2) = IMMMSPartCombinationCanBeSent();
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
@@ -632,7 +632,7 @@ LABEL_28:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = @"NO";
-      if (v10)
+      if (fileTransferGUIDs2)
       {
         v19 = @"YES";
       }
@@ -648,16 +648,16 @@ LABEL_28:
 LABEL_36:
 
 LABEL_37:
-  return v10;
+  return fileTransferGUIDs2;
 }
 
-- (void)_buildCTPhoneNumberWithParticipantInfo:(id)a3 ctMessage:(id)a4
+- (void)_buildCTPhoneNumberWithParticipantInfo:(id)info ctMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:IMDMessageStoreHandleCanonicalIDKey];
-  v8 = [v5 objectForKey:IMDMessageStoreHandleCountryCodeKey];
-  v9 = [v5 objectForKey:IMDMessageStoreHandleUnformattedIDKey];
+  infoCopy = info;
+  messageCopy = message;
+  v7 = [infoCopy objectForKey:IMDMessageStoreHandleCanonicalIDKey];
+  v8 = [infoCopy objectForKey:IMDMessageStoreHandleCountryCodeKey];
+  v9 = [infoCopy objectForKey:IMDMessageStoreHandleUnformattedIDKey];
   v10 = +[IMDMessageStore sharedInstance];
   v11 = [v10 cleanUnformattedPhoneNumber:v9 countryCode:v8];
 
@@ -674,7 +674,7 @@ LABEL_37:
       }
     }
 
-    [v6 addEmailRecipient:v7];
+    [messageCopy addEmailRecipient:v7];
   }
 
   else
@@ -714,7 +714,7 @@ LABEL_37:
     v16 = [CTPhoneNumber phoneNumberWithDigits:1 digits:v15 countryCode:v8];
     if (v16)
     {
-      [v6 addPhoneRecipient:v16];
+      [messageCopy addPhoneRecipient:v16];
     }
 
     else if (IMOSLoggingEnabled())
@@ -734,43 +734,43 @@ LABEL_37:
   }
 }
 
-- (id)lastAddressedHandleForJunkReportMessageItem:(id)a3
+- (id)lastAddressedHandleForJunkReportMessageItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[IMCTSubscriptionUtilities sharedInstance];
-  v5 = [v4 ctSubscriptionInfo];
-  v6 = [v3 destinationCallerID];
-  v7 = [v3 destinationCallerID];
+  ctSubscriptionInfo = [v4 ctSubscriptionInfo];
+  destinationCallerID = [itemCopy destinationCallerID];
+  destinationCallerID2 = [itemCopy destinationCallerID];
 
-  v8 = [v5 __im_subscriptionContextForForSimID:v6 phoneNumber:v7];
+  v8 = [ctSubscriptionInfo __im_subscriptionContextForForSimID:destinationCallerID phoneNumber:destinationCallerID2];
 
-  v9 = [v8 phoneNumber];
+  phoneNumber = [v8 phoneNumber];
 
-  return v9;
+  return phoneNumber;
 }
 
-- (id)lastAddressedSIMIDForJunkReportMessageItem:(id)a3
+- (id)lastAddressedSIMIDForJunkReportMessageItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[IMCTSubscriptionUtilities sharedInstance];
-  v5 = [v4 ctSubscriptionInfo];
-  v6 = [v3 destinationCallerID];
-  v7 = [v3 destinationCallerID];
+  ctSubscriptionInfo = [v4 ctSubscriptionInfo];
+  destinationCallerID = [itemCopy destinationCallerID];
+  destinationCallerID2 = [itemCopy destinationCallerID];
 
-  v8 = [v5 __im_subscriptionContextForForSimID:v6 phoneNumber:v7];
+  v8 = [ctSubscriptionInfo __im_subscriptionContextForForSimID:destinationCallerID phoneNumber:destinationCallerID2];
 
-  v9 = [v8 labelID];
+  labelID = [v8 labelID];
 
-  return v9;
+  return labelID;
 }
 
-- (id)newTelephonyMessagesForHandles:(id)a3 shouldBroadcastMessage:(BOOL)a4
+- (id)newTelephonyMessagesForHandles:(id)handles shouldBroadcastMessage:(BOOL)message
 {
-  v4 = a4;
-  v5 = a3;
+  messageCopy = message;
+  handlesCopy = handles;
   v6 = objc_alloc_init(NSMutableArray);
   v7 = IMOSLoggingEnabled();
-  if (v4)
+  if (messageCopy)
   {
     if (v7)
     {
@@ -778,12 +778,12 @@ LABEL_37:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v14[0] = 67109120;
-        v14[1] = [v5 count];
+        v14[1] = [handlesCopy count];
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, " => This is a broadcast, generating %d CTMessage objects", v14, 8u);
       }
     }
 
-    if ([v5 count])
+    if ([handlesCopy count])
     {
       v9 = 0;
       do
@@ -794,7 +794,7 @@ LABEL_37:
         ++v9;
       }
 
-      while (v9 < [v5 count]);
+      while (v9 < [handlesCopy count]);
     }
   }
 
@@ -817,12 +817,12 @@ LABEL_37:
   return v6;
 }
 
-- (void)setSubjectForTelephonyMessages:(id)a3 messageItem:(id)a4
+- (void)setSubjectForTelephonyMessages:(id)messages messageItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 subject];
-  v8 = [v7 length];
+  messagesCopy = messages;
+  itemCopy = item;
+  subject = [itemCopy subject];
+  v8 = [subject length];
 
   if (v8)
   {
@@ -830,7 +830,7 @@ LABEL_37:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v5;
+    v9 = messagesCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -847,8 +847,8 @@ LABEL_37:
           }
 
           v14 = *(*(&v16 + 1) + 8 * v13);
-          v15 = [v6 subject];
-          [v14 setSubject:v15];
+          subject2 = [itemCopy subject];
+          [v14 setSubject:subject2];
 
           v13 = v13 + 1;
         }
@@ -862,18 +862,18 @@ LABEL_37:
   }
 }
 
-- (void)processPartsOfTelephonyMessages:(id)a3 parts:(id)a4 messageItem:(id)a5 isGroupChat:(BOOL)a6 phoneNumber:(id)a7 simID:(id)a8
+- (void)processPartsOfTelephonyMessages:(id)messages parts:(id)parts messageItem:(id)item isGroupChat:(BOOL)chat phoneNumber:(id)number simID:(id)d
 {
-  v73 = a6;
-  v13 = a3;
-  v14 = a4;
-  v69 = a5;
-  v67 = a7;
-  v66 = a8;
-  v63 = v14;
-  if ([v14 count])
+  chatCopy = chat;
+  messagesCopy = messages;
+  partsCopy = parts;
+  itemCopy = item;
+  numberCopy = number;
+  dCopy = d;
+  v63 = partsCopy;
+  if ([partsCopy count])
   {
-    v15 = sub_D19C(v14);
+    v15 = sub_D19C(partsCopy);
     if (IMOSLoggingEnabled())
     {
       v16 = OSLogHandleForIMFoundationCategory();
@@ -889,7 +889,7 @@ LABEL_37:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v17 = v13;
+    v17 = messagesCopy;
     v18 = [v17 countByEnumeratingWithState:&v86 objects:v99 count:16];
     if (v18)
     {
@@ -904,8 +904,8 @@ LABEL_37:
           }
 
           v21 = [*(*(&v86 + 1) + 8 * i) addText:v15];
-          v22 = [v69 guid];
-          [(SMSServiceSession *)self _setContentIDAndLocationForSMILPart:v21 messageGUID:v22 isGroupChat:v73 phoneNumber:v67 simID:v66];
+          guid = [itemCopy guid];
+          [(SMSServiceSession *)self _setContentIDAndLocationForSMILPart:v21 messageGUID:guid isGroupChat:chatCopy phoneNumber:numberCopy simID:dCopy];
 
           [v21 setContentType:IMDCTPartDictionaryContentTypeSMILKey];
         }
@@ -922,7 +922,7 @@ LABEL_37:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v13;
+  obj = messagesCopy;
   v64 = [obj countByEnumeratingWithState:&v82 objects:v98 count:16];
   if (v64)
   {
@@ -973,14 +973,14 @@ LABEL_37:
                 v34 = [NSData dataWithContentsOfURL:v33 options:1 error:0];
 
                 v35 = IMSafeTemporaryDirectory();
-                v36 = [v35 path];
+                path = [v35 path];
 
-                if (!v36)
+                if (!path)
                 {
-                  v36 = @"/tmp";
+                  path = @"/tmp";
                 }
 
-                if ([v32 hasPrefix:v36])
+                if ([v32 hasPrefix:path])
                 {
                   [v68 addObject:v32];
                   if (IMOSLoggingEnabled())
@@ -1002,15 +1002,15 @@ LABEL_37:
               }
 
               v38 = [v29 objectForKey:@"Path"];
-              if (v73)
+              if (chatCopy)
               {
-                v39 = [v69 guid];
-                v40 = [NSString stringWithFormat:@"%d.%@%@", v27, v39, off_26418];
+                guid2 = [itemCopy guid];
+                off_26418 = [NSString stringWithFormat:@"%d.%@%@", v27, guid2, off_26418];
               }
 
               else
               {
-                v40 = [NSString stringWithFormat:@"%d", v27];
+                off_26418 = [NSString stringWithFormat:@"%d", v27];
               }
 
               if (IMOSLoggingEnabled())
@@ -1024,7 +1024,7 @@ LABEL_37:
                   *&v92[4] = 2112;
                   *&v92[6] = v38;
                   v93 = 2112;
-                  v94 = v40;
+                  v94 = off_26418;
                   v95 = 2112;
                   v96 = v31;
                   _os_log_impl(&dword_0, v41, OS_LOG_TYPE_INFO, "  => adding data: %d bytes (location: %@, id: %@, type: %@)", buf, 0x26u);
@@ -1032,7 +1032,7 @@ LABEL_37:
               }
 
               v43 = [[CTMessagePart alloc] initWithData:v34 contentType:v31];
-              [v43 setContentId:v40];
+              [v43 setContentId:off_26418];
               [v43 setContentLocation:v38];
               if (IMOSLoggingEnabled())
               {
@@ -1056,8 +1056,8 @@ LABEL_37:
           while (v26);
         }
 
-        v46 = [v69 criticalMessagingAppName];
-        v47 = [v46 length] == 0;
+        criticalMessagingAppName = [itemCopy criticalMessagingAppName];
+        v47 = [criticalMessagingAppName length] == 0;
 
         if (!v47)
         {
@@ -1070,9 +1070,9 @@ LABEL_37:
               v50 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
               {
-                v51 = [v69 criticalMessagingAppName];
+                criticalMessagingAppName2 = [itemCopy criticalMessagingAppName];
                 *buf = 138412290;
-                *v92 = v51;
+                *v92 = criticalMessagingAppName2;
                 _os_log_impl(&dword_0, v50, OS_LOG_TYPE_INFO, "  => Setting appCheckBypassForCriticalMessaging in CTMessage %@", buf, 0xCu);
               }
             }
@@ -1143,20 +1143,20 @@ LABEL_37:
   }
 }
 
-- (void)_setContentIDAndLocationForSMILPart:(id)a3 messageGUID:(id)a4 isGroupChat:(BOOL)a5 phoneNumber:(id)a6 simID:(id)a7
+- (void)_setContentIDAndLocationForSMILPart:(id)part messageGUID:(id)d isGroupChat:(BOOL)chat phoneNumber:(id)number simID:(id)iD
 {
-  v9 = a5;
-  v16 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  if (v9)
+  chatCopy = chat;
+  partCopy = part;
+  dCopy = d;
+  numberCopy = number;
+  iDCopy = iD;
+  if (chatCopy)
   {
-    v14 = [NSString stringWithFormat:@"0.%@%@.smil", v11, off_26418];
-    if ([IMCTSMSUtilities IMMMSGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:v12 simID:v13])
+    off_26418 = [NSString stringWithFormat:@"0.%@%@.smil", dCopy, off_26418];
+    if ([IMCTSMSUtilities IMMMSGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:numberCopy simID:iDCopy])
     {
-      v14 = v14;
-      v15 = v14;
+      off_26418 = off_26418;
+      v15 = off_26418;
     }
 
     else
@@ -1168,40 +1168,40 @@ LABEL_37:
   else
   {
     v15 = 0;
-    v14 = @"0.smil";
+    off_26418 = @"0.smil";
   }
 
-  if ([(__CFString *)v14 length])
+  if ([(__CFString *)off_26418 length])
   {
-    [v16 setContentId:v14];
+    [partCopy setContentId:off_26418];
   }
 
   if ([(__CFString *)v15 length])
   {
-    [v16 setContentLocation:v14];
+    [partCopy setContentLocation:off_26418];
   }
 }
 
-- (void)buildTelephonyPhoneNumbersForTelephonyMessages:(id)a3 shouldBroadcastMessage:(BOOL)a4 handles:(id)a5
+- (void)buildTelephonyPhoneNumbersForTelephonyMessages:(id)messages shouldBroadcastMessage:(BOOL)message handles:(id)handles
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  messageCopy = message;
+  messagesCopy = messages;
+  handlesCopy = handles;
+  if (messageCopy)
   {
-    if ([v8 count])
+    if ([messagesCopy count])
     {
       v10 = 0;
       do
       {
-        v11 = [v9 objectAtIndex:v10];
-        v12 = [v8 objectAtIndex:v10];
+        v11 = [handlesCopy objectAtIndex:v10];
+        v12 = [messagesCopy objectAtIndex:v10];
         [(SMSServiceSession *)self _buildCTPhoneNumberWithParticipantInfo:v11 ctMessage:v12];
 
         ++v10;
       }
 
-      while (v10 < [v8 count]);
+      while (v10 < [messagesCopy count]);
     }
   }
 
@@ -1211,12 +1211,12 @@ LABEL_37:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v13 = [messagesCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v13)
     {
       v14 = v13;
       v15 = *v29;
-      obj = v8;
+      obj = messagesCopy;
       do
       {
         v16 = 0;
@@ -1232,7 +1232,7 @@ LABEL_37:
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v18 = v9;
+          v18 = handlesCopy;
           v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v19)
           {
@@ -1263,7 +1263,7 @@ LABEL_37:
         }
 
         while (v16 != v14);
-        v8 = obj;
+        messagesCopy = obj;
         v14 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
@@ -1272,30 +1272,30 @@ LABEL_37:
   }
 }
 
-- (void)setMessageTypeForTelephonyMessage:(id)a3 shouldSendMMS:(BOOL)a4
+- (void)setMessageTypeForTelephonyMessage:(id)message shouldSendMMS:(BOOL)s
 {
-  if (a4)
+  if (s)
   {
-    [a3 setMessageType:2];
+    [message setMessageType:2];
   }
 
   else
   {
-    [a3 setMessageType:1];
+    [message setMessageType:1];
   }
 }
 
-- (void)addMessagePlainTextToTelephonyMessages:(id)a3 messageItem:(id)a4 processedMessageItem:(id)a5
+- (void)addMessagePlainTextToTelephonyMessages:(id)messages messageItem:(id)item processedMessageItem:(id)messageItem
 {
-  v7 = a3;
-  v8 = [IMDTelephonyServiceSession getPlainTextForMessage:a4 processedMessageItem:a5];
+  messagesCopy = messages;
+  v8 = [IMDTelephonyServiceSession getPlainTextForMessage:item processedMessageItem:messageItem];
   if ([v8 length])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = v7;
+    v9 = messagesCopy;
     v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
@@ -1324,10 +1324,10 @@ LABEL_37:
   }
 }
 
-- (void)_reportTelephonyJunkForMessageItem:(id)a3 chat:(id)a4
+- (void)_reportTelephonyJunkForMessageItem:(id)item chat:(id)chat
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  chatCopy = chat;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -1338,23 +1338,23 @@ LABEL_37:
     }
   }
 
-  v9 = [(SMSServiceSession *)self account];
-  v10 = [v7 style];
-  v11 = [(SMSServiceSession *)self account];
-  v12 = [v11 service];
-  v13 = [v12 internalName];
-  v14 = [IMDCarrierReportJunkHelper junkReportMessageItemForMessageItem:v6 account:v9 junkChatStyle:v10 serviceName:v13];
+  account = [(SMSServiceSession *)self account];
+  style = [chatCopy style];
+  account2 = [(SMSServiceSession *)self account];
+  service = [account2 service];
+  internalName = [service internalName];
+  v14 = [IMDCarrierReportJunkHelper junkReportMessageItemForMessageItem:itemCopy account:account junkChatStyle:style serviceName:internalName];
 
   v15 = [IMDHandle alloc];
-  v16 = [v14 handle];
-  v17 = [v14 unformattedID];
-  v18 = [v14 countryCode];
-  v19 = [v15 initWithID:v16 unformattedID:v17 countryCode:v18];
+  handle = [v14 handle];
+  unformattedID = [v14 unformattedID];
+  countryCode = [v14 countryCode];
+  v19 = [v15 initWithID:handle unformattedID:unformattedID countryCode:countryCode];
 
   v20 = +[IMDMessageStore sharedInstance];
   v27 = v19;
   v21 = [NSArray arrayWithObjects:&v27 count:1];
-  v22 = [(SMSServiceSession *)self service];
+  service2 = [(SMSServiceSession *)self service];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_4AB8;
@@ -1362,39 +1362,39 @@ LABEL_37:
   v24[4] = self;
   v25 = v14;
   v23 = v14;
-  [v20 resolveUnformattedRepresentationsForHandles:v21 onService:v22 message:v23 completionBlock:v24];
+  [v20 resolveUnformattedRepresentationsForHandles:v21 onService:service2 message:v23 completionBlock:v24];
 }
 
 - (void)refreshServiceCapabilities
 {
-  v4 = [(SMSServiceSession *)self broadcaster];
-  v3 = [(SMSServiceSession *)self accountID];
-  [v4 account:v3 capabilitiesChanged:{-[SMSServiceSession capabilities](self, "capabilities")}];
+  broadcaster = [(SMSServiceSession *)self broadcaster];
+  accountID = [(SMSServiceSession *)self accountID];
+  [broadcaster account:accountID capabilitiesChanged:{-[SMSServiceSession capabilities](self, "capabilities")}];
 }
 
-- (void)invitePersonInfo:(id)a3 withMessage:(id)a4 toChat:(id)a5 style:(unsigned __int8)a6
+- (void)invitePersonInfo:(id)info withMessage:(id)message toChat:(id)chat style:(unsigned __int8)style
 {
-  v6 = a6;
-  v24 = a3;
-  v29 = a4;
-  v10 = a5;
-  v36 = v6;
+  styleCopy = style;
+  infoCopy = info;
+  messageCopy = message;
+  chatCopy = chat;
+  v36 = styleCopy;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v39 = v24;
+      v39 = infoCopy;
       v40 = 2112;
-      v41 = v10;
+      v41 = chatCopy;
       v42 = 1024;
-      v43 = v6;
+      v43 = styleCopy;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Request to invite person: %@   chat: %@  style: %c", buf, 0x1Cu);
     }
   }
 
-  v35 = v10;
+  v35 = chatCopy;
   [(SMSServiceSession *)self canonicalizeChatIdentifier:&v35 style:&v36];
   v30 = v35;
 
@@ -1404,7 +1404,7 @@ LABEL_37:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = v24;
+    obj = infoCopy;
     v12 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v12)
     {
@@ -1426,10 +1426,10 @@ LABEL_37:
           v17 = [v15 objectForKey:v26];
           v18 = [v15 objectForKey:v13];
           v19 = v36;
-          v20 = [(SMSServiceSession *)self account];
-          v21 = [v29 destinationCallerID];
+          account = [(SMSServiceSession *)self account];
+          destinationCallerID = [messageCopy destinationCallerID];
           LOBYTE(v23) = v19;
-          v22 = [(SMSServiceSession *)self didChangeMemberStatus:2 forHandle:v16 fromHandle:0 unformattedNumber:v17 countryCode:v18 forChat:v30 style:v23 account:v20 destinationCallerID:v21];
+          v22 = [(SMSServiceSession *)self didChangeMemberStatus:2 forHandle:v16 fromHandle:0 unformattedNumber:v17 countryCode:v18 forChat:v30 style:v23 account:account destinationCallerID:destinationCallerID];
         }
 
         v12 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
@@ -1440,20 +1440,20 @@ LABEL_37:
   }
 }
 
-- (void)_joinOneToOneChatWithChatIdentifier:(id)a3
+- (void)_joinOneToOneChatWithChatIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v9[0] = kFZChatParticipantStatusKey;
     v9[1] = kFZPersonID;
     v10[0] = &off_217E8;
-    v10[1] = v4;
+    v10[1] = identifierCopy;
     v5 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
     v11 = v5;
     v6 = [NSArray arrayWithObjects:&v11 count:1];
 
-    [(SMSServiceSession *)self didJoinChat:v4 style:45 displayName:0 groupID:0 handleInfo:v6];
+    [(SMSServiceSession *)self didJoinChat:identifierCopy style:45 displayName:0 groupID:0 handleInfo:v6];
   }
 
   else if (IMOSLoggingEnabled())
@@ -1467,96 +1467,96 @@ LABEL_37:
   }
 }
 
-- (void)sendDeliveredQuietlyReceiptForMessage:(id)a3 forIncomingMessageFromIDSID:(id)a4 toChatGuid:(id)a5 identifier:(id)a6 style:(unsigned __int8)a7 withWillSendToDestinationsHandler:(id)a8
+- (void)sendDeliveredQuietlyReceiptForMessage:(id)message forIncomingMessageFromIDSID:(id)d toChatGuid:(id)guid identifier:(id)identifier style:(unsigned __int8)style withWillSendToDestinationsHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  messageCopy = message;
+  dCopy = d;
+  guidCopy = guid;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v18 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v20 = 138412290;
-      v21 = v13;
+      v21 = messageCopy;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "Not sending delivered quietly receipt for item: %@", &v20, 0xCu);
     }
   }
 
-  v19 = [v13 guid];
-  [(SMSServiceSession *)self didSendDeliveredQuietlyReceiptForMessageID:v19];
+  guid = [messageCopy guid];
+  [(SMSServiceSession *)self didSendDeliveredQuietlyReceiptForMessageID:guid];
 }
 
-- (void)sendNotifyRecipientCommandForMessage:(id)a3 toChatGuid:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6
+- (void)sendNotifyRecipientCommandForMessage:(id)message toChatGuid:(id)guid identifier:(id)identifier style:(unsigned __int8)style
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  guidCopy = guid;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = messageCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Not sending notify recipient command for item: %@", &v14, 0xCu);
     }
   }
 
-  v13 = [v9 guid];
-  [(SMSServiceSession *)self didSendNotifyRecipientCommandForMessageID:v13];
+  guid = [messageCopy guid];
+  [(SMSServiceSession *)self didSendNotifyRecipientCommandForMessageID:guid];
 }
 
-- (void)sendPlayedReceiptForMessage:(id)a3 toChatID:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6
+- (void)sendPlayedReceiptForMessage:(id)message toChatID:(id)d identifier:(id)identifier style:(unsigned __int8)style
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  dCopy = d;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = messageCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Marking message as played: %@", &v14, 0xCu);
     }
   }
 
-  v13 = [v9 guid];
-  [(SMSServiceSession *)self didSendMessagePlayedReceiptForMessageID:v13];
+  guid = [messageCopy guid];
+  [(SMSServiceSession *)self didSendMessagePlayedReceiptForMessageID:guid];
 }
 
-- (void)sendSavedReceiptForMessage:(id)a3 toChatID:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6
+- (void)sendSavedReceiptForMessage:(id)message toChatID:(id)d identifier:(id)identifier style:(unsigned __int8)style
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  dCopy = d;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = messageCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Marking message as saved: %@", &v14, 0xCu);
     }
   }
 
-  v13 = [v9 guid];
-  [(SMSServiceSession *)self didSendMessageSavedReceiptForMessageID:v13];
+  guid = [messageCopy guid];
+  [(SMSServiceSession *)self didSendMessageSavedReceiptForMessageID:guid];
 }
 
-- (void)sendDeliveryReceiptForMessageID:(id)a3 toID:(id)a4 deliveryContext:(id)a5 needsDeliveryReceipt:(id)a6 callerID:(id)a7 account:(id)a8
+- (void)sendDeliveryReceiptForMessageID:(id)d toID:(id)iD deliveryContext:(id)context needsDeliveryReceipt:(id)receipt callerID:(id)callerID account:(id)account
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
+  receiptCopy = receipt;
+  callerIDCopy = callerID;
+  accountCopy = account;
   if (IMOSLoggingEnabled())
   {
     v19 = OSLogHandleForIMFoundationCategory();
@@ -1568,10 +1568,10 @@ LABEL_37:
   }
 }
 
-- (void)sendSyndicationAction:(id)a3 toChatsWithIdentifiers:(id)a4
+- (void)sendSyndicationAction:(id)action toChatsWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  identifiersCopy = identifiers;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -1583,11 +1583,11 @@ LABEL_37:
   }
 }
 
-- (void)sendUpdatedCollaborationMetadata:(id)a3 toChatsWithIdentifiers:(id)a4 forMessageGUID:(id)a5
+- (void)sendUpdatedCollaborationMetadata:(id)metadata toChatsWithIdentifiers:(id)identifiers forMessageGUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  metadataCopy = metadata;
+  identifiersCopy = identifiers;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -1599,14 +1599,14 @@ LABEL_37:
   }
 }
 
-- (void)setTranscriptBackgroundAndSendToChat:(id)a3 toChatID:(id)a4 identifier:(id)a5 style:(unsigned __int8)a6 transferID:(id)a7 account:(id)a8 completion:(id)a9
+- (void)setTranscriptBackgroundAndSendToChat:(id)chat toChatID:(id)d identifier:(id)identifier style:(unsigned __int8)style transferID:(id)iD account:(id)account completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  chatCopy = chat;
+  dCopy = d;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  accountCopy = account;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v19 = OSLogHandleForIMFoundationCategory();
@@ -1618,14 +1618,14 @@ LABEL_37:
   }
 }
 
-- (BOOL)_sendMessageOverAlternatePath:(id)a3 toChat:(id)a4
+- (BOOL)_sendMessageOverAlternatePath:(id)path toChat:(id)chat
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  chatCopy = chat;
   v7 = +[IMFeatureFlags sharedFeatureFlags];
-  v8 = [v7 stewieEnabled];
+  stewieEnabled = [v7 stewieEnabled];
 
-  if (v8 && [v6 isStewieChat])
+  if (stewieEnabled && [chatCopy isStewieChat])
   {
     if (IMOSLoggingEnabled())
     {
@@ -1638,7 +1638,7 @@ LABEL_37:
     }
 
     v10 = +[IMDChorosController sharedController];
-    [v10 sendStewieMessage:v5 forChat:v6];
+    [v10 sendStewieMessage:pathCopy forChat:chatCopy];
 
     v11 = 1;
   }
@@ -1651,21 +1651,21 @@ LABEL_37:
   return v11;
 }
 
-- (unint64_t)_sendingDecisionForMessageItem:(id)a3 callerID:(id)a4 lastAddressedLocalHandle:(id)a5 lastAddressedSIMID:(id)a6
+- (unint64_t)_sendingDecisionForMessageItem:(id)item callerID:(id)d lastAddressedLocalHandle:(id)handle lastAddressedSIMID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  dCopy = d;
+  handleCopy = handle;
+  iDCopy = iD;
   v14 = +[IMCTSMSUtilities isMessagesTheDefaultTextApp];
-  v15 = [(SMSServiceSession *)self relayController];
-  v16 = [v15 _localDeviceSupportsEmergencySMS];
+  relayController = [(SMSServiceSession *)self relayController];
+  _localDeviceSupportsEmergencySMS = [relayController _localDeviceSupportsEmergencySMS];
 
-  if (v10)
+  if (itemCopy)
   {
     v17 = +[IDSCTAdapter sharedInstance];
-    v18 = [v10 handle];
-    v19 = [v17 isPhoneNumberEmergencyNumber:v18];
+    handle = [itemCopy handle];
+    v19 = [v17 isPhoneNumberEmergencyNumber:handle];
   }
 
   else
@@ -1673,10 +1673,10 @@ LABEL_37:
     v19 = 0;
   }
 
-  v20 = [v10 criticalMessagingAppName];
-  v21 = [v20 length];
+  criticalMessagingAppName = [itemCopy criticalMessagingAppName];
+  v21 = [criticalMessagingAppName length];
 
-  if (v16 && (([v10 useStandalone] | v19) & v14 & 1) != 0)
+  if (_localDeviceSupportsEmergencySMS && (([itemCopy useStandalone] | v19) & v14 & 1) != 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1698,9 +1698,9 @@ LABEL_37:
       v24 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = [v10 useStandalone];
+        useStandalone = [itemCopy useStandalone];
         v26 = @"NO";
-        if (v16)
+        if (_localDeviceSupportsEmergencySMS)
         {
           v27 = @"YES";
         }
@@ -1710,7 +1710,7 @@ LABEL_37:
           v27 = @"NO";
         }
 
-        if (v25)
+        if (useStandalone)
         {
           v28 = @"YES";
         }
@@ -1749,26 +1749,26 @@ LABEL_37:
 
     v31.receiver = self;
     v31.super_class = SMSServiceSession;
-    v23 = [(SMSServiceSession *)&v31 _sendingDecisionForMessageItem:v10 callerID:v11 lastAddressedLocalHandle:v12 lastAddressedSIMID:v13];
+    v23 = [(SMSServiceSession *)&v31 _sendingDecisionForMessageItem:itemCopy callerID:dCopy lastAddressedLocalHandle:handleCopy lastAddressedSIMID:iDCopy];
   }
 
   return v23;
 }
 
-- (BOOL)allowedToSendMessage:(id)a3 toChat:(id)a4
+- (BOOL)allowedToSendMessage:(id)message toChat:(id)chat
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isFinished] & 1) == 0)
+  messageCopy = message;
+  chatCopy = chat;
+  if (([messageCopy isFinished] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v6 guid];
+        guid = [messageCopy guid];
         *buf = 138412290;
-        v16 = v10;
+        v16 = guid;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Not sending unfinished message %@", buf, 0xCu);
       }
     }
@@ -1778,28 +1778,28 @@ LABEL_37:
 
   v14.receiver = self;
   v14.super_class = SMSServiceSession;
-  if (![(SMSServiceSession *)&v14 allowedToSendMessage:v6 toChat:v7])
+  if (![(SMSServiceSession *)&v14 allowedToSendMessage:messageCopy toChat:chatCopy])
   {
 LABEL_14:
     v8 = 0;
     goto LABEL_15;
   }
 
-  if (![(SMSServiceSession *)self isValidMMS:v6])
+  if (![(SMSServiceSession *)self isValidMMS:messageCopy])
   {
     if (IMOSLoggingEnabled())
     {
       v11 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [v6 guid];
+        guid2 = [messageCopy guid];
         *buf = 138412290;
-        v16 = v12;
+        v16 = guid2;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Message with guid: %@ is an invalid MMS message, marking as failed and not forwarding to clients", buf, 0xCu);
       }
     }
 
-    [v6 setErrorCode:4];
+    [messageCopy setErrorCode:4];
     goto LABEL_14;
   }
 
@@ -1809,10 +1809,10 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)_shouldFailSMSMessageForTesting:(id)a3 chatIdentifier:(id)a4 chatStyle:(unsigned __int8)a5
+- (BOOL)_shouldFailSMSMessageForTesting:(id)testing chatIdentifier:(id)identifier chatStyle:(unsigned __int8)style
 {
-  v6 = a3;
-  v7 = a4;
+  testingCopy = testing;
+  identifierCopy = identifier;
   v8 = IMGetCachedDomainBoolForKey();
   if (v8)
   {
@@ -1838,8 +1838,8 @@ LABEL_15:
       }
     }
 
-    v12 = v6;
-    v13 = v7;
+    v12 = testingCopy;
+    v13 = identifierCopy;
     im_dispatch_after();
   }
 
@@ -1853,14 +1853,14 @@ LABEL_15:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
     if (IMOSLoggingEnabled())
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v7 = @"NO";
-        if (v5)
+        if (bOOLValue)
         {
           v7 = @"YES";
         }
@@ -1874,15 +1874,15 @@ LABEL_15:
 
   else
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)_fixIncomingDate:(id)a3
+- (id)_fixIncomingDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(SMSServiceSession *)self shouldFixIncomingDate])
   {
     v5 = +[NSDate date];
@@ -1893,7 +1893,7 @@ LABEL_15:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v9 = 138412546;
-        v10 = v4;
+        v10 = dateCopy;
         v11 = 2112;
         v12 = v5;
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Fixing the CT Message date (%@) with the current server time (%@)", &v9, 0x16u);
@@ -1903,7 +1903,7 @@ LABEL_15:
 
   else
   {
-    v5 = v4;
+    v5 = dateCopy;
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
@@ -1913,16 +1913,16 @@ LABEL_15:
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "We are taking the CT Message date", &v9, 2u);
       }
 
-      v5 = v4;
+      v5 = dateCopy;
     }
   }
 
   return v5;
 }
 
-- (id)_convertCTMessageToDictionary:(id)a3 requiresUpload:(BOOL *)a4
+- (id)_convertCTMessageToDictionary:(id)dictionary requiresUpload:(BOOL *)upload
 {
-  v97 = a3;
+  dictionaryCopy = dictionary;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -1933,14 +1933,14 @@ LABEL_15:
     }
   }
 
-  if (a4)
+  if (upload)
   {
-    *a4 = 0;
+    *upload = 0;
   }
 
   theDict = objc_alloc_init(NSMutableDictionary);
   [(__CFDictionary *)theDict setObject:@"1" forKey:IMDCTMessageDictionaryVersionKey];
-  if ([v97 messageType] == 1)
+  if ([dictionaryCopy messageType] == 1)
   {
     v5 = IMDCTMessageDictionaryTypeSMS;
     if (v5)
@@ -1955,7 +1955,7 @@ LABEL_15:
     }
   }
 
-  else if ([v97 messageType] == 2)
+  else if ([dictionaryCopy messageType] == 2)
   {
     v5 = IMDCTMessageDictionaryTypeMMS;
     if (v5)
@@ -1988,8 +1988,8 @@ LABEL_14:
   }
 
 LABEL_24:
-  v9 = [v97 sender];
-  v10 = [v9 canonicalFormat];
+  sender = [dictionaryCopy sender];
+  canonicalFormat = [sender canonicalFormat];
 
   v96 = IMGetDomainValueForKey();
 
@@ -1997,10 +1997,10 @@ LABEL_24:
   {
     v11 = v96;
 
-    v10 = v11;
+    canonicalFormat = v11;
   }
 
-  v12 = v10;
+  v12 = canonicalFormat;
   if (v12)
   {
     v13 = v12;
@@ -2015,8 +2015,8 @@ LABEL_24:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v15 = [v97 recipients];
-  v16 = [v15 countByEnumeratingWithState:&v105 objects:v118 count:16];
+  recipients = [dictionaryCopy recipients];
+  v16 = [recipients countByEnumeratingWithState:&v105 objects:v118 count:16];
   if (v16)
   {
     v17 = *v106;
@@ -2026,36 +2026,36 @@ LABEL_24:
       {
         if (*v106 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(recipients);
         }
 
-        v19 = [*(*(&v105 + 1) + 8 * i) canonicalFormat];
-        if (v19)
+        canonicalFormat2 = [*(*(&v105 + 1) + 8 * i) canonicalFormat];
+        if (canonicalFormat2)
         {
-          [v14 addObject:v19];
+          [v14 addObject:canonicalFormat2];
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v105 objects:v118 count:16];
+      v16 = [recipients countByEnumeratingWithState:&v105 objects:v118 count:16];
     }
 
     while (v16);
   }
 
-  v20 = [v97 date];
-  v21 = [(SMSServiceSession *)self _fixIncomingDate:v20];
+  date = [dictionaryCopy date];
+  v21 = [(SMSServiceSession *)self _fixIncomingDate:date];
 
   v22 = +[IMCTSMSUtilities myCTPhoneNumber];
   if (IMSharedHelperDeviceHasMultipleSubscriptions())
   {
-    v23 = [v97 context];
+    context = [dictionaryCopy context];
     v24 = +[IMCTSubscriptionUtilities sharedInstance];
-    v25 = [v24 ctSubscriptionInfo];
+    ctSubscriptionInfo = [v24 ctSubscriptionInfo];
 
-    v26 = 0;
-    if (v23 && v25)
+    labelID2 = 0;
+    if (context && ctSubscriptionInfo)
     {
-      v27 = [v25 __im_subscriptionContextOrDefaultForForSlotID:{objc_msgSend(v23, "slotID")}];
+      v27 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSlotID:{objc_msgSend(context, "slotID")}];
       if (v27)
       {
         if (IMOSLoggingEnabled())
@@ -2063,45 +2063,45 @@ LABEL_24:
           v28 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
-            v99 = [(__CFString *)v27 phoneNumber];
-            v29 = [(__CFString *)v27 labelID];
-            v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v23 slotID]);
+            phoneNumber = [(__CFString *)v27 phoneNumber];
+            labelID = [(__CFString *)v27 labelID];
+            v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [context slotID]);
             *buf = 138413058;
             v111 = v27;
             v112 = 2112;
-            v113 = v99;
+            v113 = phoneNumber;
             v114 = 2112;
-            v115 = v29;
+            v115 = labelID;
             v116 = 2112;
             v117 = v30;
             _os_log_impl(&dword_0, v28, OS_LOG_TYPE_INFO, "Setting receiving context = %@, phoneNumber = %@, simID = %@ for given slotID %@", buf, 0x2Au);
           }
         }
 
-        v31 = [(__CFString *)v27 phoneNumber];
+        phoneNumber2 = [(__CFString *)v27 phoneNumber];
 
-        v26 = [(__CFString *)v27 labelID];
-        v22 = v31;
+        labelID2 = [(__CFString *)v27 labelID];
+        v22 = phoneNumber2;
       }
 
       else
       {
-        v26 = 0;
+        labelID2 = 0;
       }
     }
   }
 
   else
   {
-    v26 = 0;
+    labelID2 = 0;
   }
 
-  v32 = [(SMSServiceSession *)self relayController];
-  v33 = [v32 isSMSRelayEnabled];
+  relayController = [(SMSServiceSession *)self relayController];
+  isSMSRelayEnabled = [relayController isSMSRelayEnabled];
 
-  if (v33)
+  if (isSMSRelayEnabled)
   {
-    v34 = [IMCTSMSUtilities IMCountryCodeForPhoneNumber:v22 simID:v26];
+    v34 = [IMCTSMSUtilities IMCountryCodeForPhoneNumber:v22 simID:labelID2];
   }
 
   else
@@ -2129,12 +2129,12 @@ LABEL_24:
 
   v87 = v37;
 
-  v39 = [v97 serviceCenter];
-  v40 = [v39 canonicalFormat];
+  serviceCenter = [dictionaryCopy serviceCenter];
+  canonicalFormat3 = [serviceCenter canonicalFormat];
 
-  if (v40)
+  if (canonicalFormat3)
   {
-    CFDictionarySetValue(theDict, IMDCTMessageDictionaryServiceCenterKey, v40);
+    CFDictionarySetValue(theDict, IMDCTMessageDictionaryServiceCenterKey, canonicalFormat3);
   }
 
   v41 = v22;
@@ -2147,7 +2147,7 @@ LABEL_24:
 
   v93 = v41;
 
-  v43 = v26;
+  v43 = labelID2;
   if (v43)
   {
     v44 = v43;
@@ -2157,19 +2157,19 @@ LABEL_24:
 
   v92 = v43;
 
-  v45 = [v97 subject];
-  if (v45)
+  subject = [dictionaryCopy subject];
+  if (subject)
   {
-    CFDictionarySetValue(theDict, IMDCTMessageDictionarySubjectKey, v45);
+    CFDictionarySetValue(theDict, IMDCTMessageDictionarySubjectKey, subject);
   }
 
-  v46 = [v97 contentType];
-  if (v46)
+  contentType = [dictionaryCopy contentType];
+  if (contentType)
   {
-    CFDictionarySetValue(theDict, IMDCTMessageDictionaryContentTypeKey, v46);
+    CFDictionarySetValue(theDict, IMDCTMessageDictionaryContentTypeKey, contentType);
   }
 
-  v47 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v97 replaceMessage]);
+  v47 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [dictionaryCopy replaceMessage]);
   if (v47)
   {
     CFDictionarySetValue(theDict, IMDCTMessageDictionaryReplaceMessageKey, v47);
@@ -2185,7 +2185,7 @@ LABEL_24:
 
   v86 = v48;
 
-  v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v97 replyEnabled]);
+  v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [dictionaryCopy replyEnabled]);
   if (v50)
   {
     CFDictionarySetValue(theDict, IMDCTMessageDictionarySendEnabledKey, v50);
@@ -2196,9 +2196,9 @@ LABEL_24:
     v51 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
-      v52 = [v97 replyEnabled];
+      replyEnabled = [dictionaryCopy replyEnabled];
       v53 = @"NO";
-      if (v52)
+      if (replyEnabled)
       {
         v53 = @"YES";
       }
@@ -2211,9 +2211,9 @@ LABEL_24:
 
   if (objc_opt_respondsToSelector())
   {
-    v54 = [v97 uniqueIdentifier];
+    uniqueIdentifier = [dictionaryCopy uniqueIdentifier];
 
-    v55 = v54;
+    v55 = uniqueIdentifier;
   }
 
   else
@@ -2224,12 +2224,12 @@ LABEL_24:
   v89 = v55;
   if (objc_opt_respondsToSelector())
   {
-    v56 = [v89 UUIDString];
+    uUIDString = [v89 UUIDString];
   }
 
   else
   {
-    v56 = 0;
+    uUIDString = 0;
   }
 
   v95 = [IMCTSMSUtilities IMMMSEmailAddressToMatchForPhoneNumber:v93 simID:v92];
@@ -2242,9 +2242,9 @@ LABEL_24:
     }
   }
 
-  if (v56)
+  if (uUIDString)
   {
-    v58 = v56;
+    v58 = uUIDString;
 LABEL_92:
     v91 = v58;
     CFDictionarySetValue(theDict, IMDCTMessageDictionaryGUIDKey, v58);
@@ -2261,16 +2261,16 @@ LABEL_92:
   v91 = 0;
 LABEL_93:
   v59 = IMChatCanonicalIDSIDsForAddress();
-  v60 = [v59 lowercaseString];
-  v61 = [NSMutableString stringWithFormat:@"s:%@", v60];
+  lowercaseString = [v59 lowercaseString];
+  v61 = [NSMutableString stringWithFormat:@"s:%@", lowercaseString];
 
   v62 = objc_alloc_init(NSMutableArray);
   v103 = 0u;
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v63 = [v97 items];
-  v64 = [v63 countByEnumeratingWithState:&v101 objects:v109 count:16];
+  items = [dictionaryCopy items];
+  v64 = [items countByEnumeratingWithState:&v101 objects:v109 count:16];
   if (v64)
   {
     v65 = *v102;
@@ -2280,7 +2280,7 @@ LABEL_93:
       {
         if (*v102 != v65)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(items);
         }
 
         v67 = *(*(&v101 + 1) + 8 * j);
@@ -2304,7 +2304,7 @@ LABEL_93:
         }
       }
 
-      v64 = [v63 countByEnumeratingWithState:&v101 objects:v109 count:16];
+      v64 = [items countByEnumeratingWithState:&v101 objects:v109 count:16];
     }
 
     while (v64);
@@ -2335,16 +2335,16 @@ LABEL_93:
   }
 
   CFDictionarySetValue(theDict, IMDRelaySpamSubCategoryKey, &off_21800);
-  v75 = [(SMSServiceSession *)self filteringController];
-  v76 = [v75 _isSpamFilteringEnabled];
+  filteringController = [(SMSServiceSession *)self filteringController];
+  _isSpamFilteringEnabled = [filteringController _isSpamFilteringEnabled];
 
-  v77 = [(SMSServiceSession *)self filteringController];
-  v78 = [v77 _newSMSFilteringSettingsDictForFilterState:v76];
+  filteringController2 = [(SMSServiceSession *)self filteringController];
+  v78 = [filteringController2 _newSMSFilteringSettingsDictForFilterState:_isSpamFilteringEnabled];
   [(__CFDictionary *)theDict addEntriesFromDictionary:v78];
 
-  LODWORD(v77) = [IMCTSMSUtilities shouldUploadToMMCS:theDict];
+  LODWORD(filteringController2) = [IMCTSMSUtilities shouldUploadToMMCS:theDict];
   v79 = IMOSLoggingEnabled();
-  if (v77)
+  if (filteringController2)
   {
     if (v79)
     {
@@ -2356,9 +2356,9 @@ LABEL_93:
       }
     }
 
-    if (a4)
+    if (upload)
     {
-      *a4 = 1;
+      *upload = 1;
     }
   }
 
@@ -2375,7 +2375,7 @@ LABEL_93:
   if ((IMGetCachedDomainBoolForKey() & 1) == 0)
   {
     v82 = +[CTMessageCenter sharedMessageCenter];
-    [v82 acknowledgeIncomingMessageWithId:{objc_msgSend(v97, "messageId")}];
+    [v82 acknowledgeIncomingMessageWithId:{objc_msgSend(dictionaryCopy, "messageId")}];
   }
 
   if (IMOSLoggingEnabled())
@@ -2393,54 +2393,54 @@ LABEL_93:
   return theDict;
 }
 
-- (id)_convertCTMessagePartToDictionary:(id)a3
+- (id)_convertCTMessagePartToDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = dictionaryCopy;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Parsing message part: %@", &v11, 0xCu);
     }
   }
 
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [v3 contentType];
-  if (v6)
+  contentType = [dictionaryCopy contentType];
+  if (contentType)
   {
-    CFDictionarySetValue(v5, IMDCTPartDictionaryContentTypeKey, v6);
+    CFDictionarySetValue(v5, IMDCTPartDictionaryContentTypeKey, contentType);
   }
 
-  v7 = [v3 contentId];
-  if (v7)
+  contentId = [dictionaryCopy contentId];
+  if (contentId)
   {
-    CFDictionarySetValue(v5, IMDCTPartDictionaryContentIDKey, v7);
+    CFDictionarySetValue(v5, IMDCTPartDictionaryContentIDKey, contentId);
   }
 
-  v8 = [v3 contentLocation];
-  if (v8)
+  contentLocation = [dictionaryCopy contentLocation];
+  if (contentLocation)
   {
-    CFDictionarySetValue(v5, IMDCTPartDictionaryContentLocationKey, v8);
+    CFDictionarySetValue(v5, IMDCTPartDictionaryContentLocationKey, contentLocation);
   }
 
-  v9 = [v3 data];
-  if (v9)
+  data = [dictionaryCopy data];
+  if (data)
   {
-    CFDictionarySetValue(v5, IMDCTPartDictionaryContentDataKey, v9);
+    CFDictionarySetValue(v5, IMDCTPartDictionaryContentDataKey, data);
   }
 
   return v5;
 }
 
-- (unsigned)_generateMessageIDForMessageGUID:(id)a3
+- (unsigned)_generateMessageIDForMessageGUID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_outgoingMessageMap objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_outgoingMessageMap objectForKey:dCopy];
     if (v5)
     {
       if (IMOSLoggingEnabled())
@@ -2449,19 +2449,19 @@ LABEL_93:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v14 = 138412546;
-          v15 = v4;
+          v15 = dCopy;
           v16 = 2112;
           v17 = v5;
           _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Using existing mapping mapping from %@ to %@", &v14, 0x16u);
         }
       }
 
-      v7 = [v5 unsignedIntValue];
+      unsignedIntValue = [v5 unsignedIntValue];
     }
 
     else
     {
-      v8 = [NSNumber numberWithUnsignedInt:FastRandomUInt() % 0x186A0];
+      0x186A0 = [NSNumber numberWithUnsignedInt:FastRandomUInt() % 0x186A0];
       outgoingMessageMap = self->_outgoingMessageMap;
       if (!outgoingMessageMap)
       {
@@ -2472,37 +2472,37 @@ LABEL_93:
         outgoingMessageMap = self->_outgoingMessageMap;
       }
 
-      [(NSMutableDictionary *)outgoingMessageMap setObject:v8 forKey:v4];
+      [(NSMutableDictionary *)outgoingMessageMap setObject:0x186A0 forKey:dCopy];
       if (IMOSLoggingEnabled())
       {
         v12 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v14 = 138412546;
-          v15 = v4;
+          v15 = dCopy;
           v16 = 2112;
-          v17 = v8;
+          v17 = 0x186A0;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Generated mapping from %@ to %@", &v14, 0x16u);
         }
       }
 
-      v7 = [v8 unsignedIntValue];
+      unsignedIntValue = [0x186A0 unsignedIntValue];
     }
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v7;
+  return unsignedIntValue;
 }
 
-- (void)_registerMessageGUID:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5
+- (void)_registerMessageGUID:(id)d completionBlock:(id)block failureBlock:(id)failureBlock
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
   if (!self->_outgoingMessageBlockMap)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -2517,42 +2517,42 @@ LABEL_93:
     self->_outgoingMessageFailureMap = v12;
   }
 
-  if (v8)
+  if (blockCopy)
   {
     v14 = self->_outgoingMessageBlockMap;
-    v15 = [v8 copy];
+    v15 = [blockCopy copy];
     v16 = objc_retainBlock(v15);
-    [(NSMutableDictionary *)v14 setObject:v16 forKey:v20];
+    [(NSMutableDictionary *)v14 setObject:v16 forKey:dCopy];
   }
 
-  if (v9)
+  if (failureBlockCopy)
   {
     v17 = self->_outgoingMessageFailureMap;
-    v18 = [v9 copy];
+    v18 = [failureBlockCopy copy];
     v19 = objc_retainBlock(v18);
-    [(NSMutableDictionary *)v17 setObject:v19 forKey:v20];
+    [(NSMutableDictionary *)v17 setObject:v19 forKey:dCopy];
   }
 }
 
-- (void)_clearMapForMessageGUID:(id)a3
+- (void)_clearMapForMessageGUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Clearing mapping for %@", &v9, 0xCu);
     }
   }
 
-  if (v4)
+  if (dCopy)
   {
-    [(NSMutableDictionary *)self->_outgoingMessageMap removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_outgoingMessageFailureMap removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_outgoingMessageBlockMap removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_outgoingMessageMap removeObjectForKey:dCopy];
+    [(NSMutableDictionary *)self->_outgoingMessageFailureMap removeObjectForKey:dCopy];
+    [(NSMutableDictionary *)self->_outgoingMessageBlockMap removeObjectForKey:dCopy];
     if (![(NSMutableDictionary *)self->_outgoingMessageMap count])
     {
       outgoingMessageMap = self->_outgoingMessageMap;
@@ -2589,13 +2589,13 @@ LABEL_93:
 
     self->_hasClearedMessageQueue = 1;
     v4 = +[CTMessageCenter sharedMessageCenter];
-    v5 = [v4 allIncomingMessages];
+    allIncomingMessages = [v4 allIncomingMessages];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v5;
+    v6 = allIncomingMessages;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
@@ -2636,49 +2636,49 @@ LABEL_93:
   }
 }
 
-- (void)_doDeleteChat:(id)a3
+- (void)_doDeleteChat:(id)chat
 {
-  v4 = a3;
-  v5 = [(SMSServiceSession *)self broadcasterForChatListeners];
-  v6 = [v4 guid];
-  [v5 leftChat:v6];
+  chatCopy = chat;
+  broadcasterForChatListeners = [(SMSServiceSession *)self broadcasterForChatListeners];
+  guid = [chatCopy guid];
+  [broadcasterForChatListeners leftChat:guid];
 
-  v7 = [(SMSServiceSession *)self chatRegistry];
-  [v7 removeChat:v4];
+  chatRegistry = [(SMSServiceSession *)self chatRegistry];
+  [chatRegistry removeChat:chatCopy];
 }
 
-- (void)_receivedSMSDictionary:(id)a3 requiresUpload:(BOOL)a4 isBeingReplayed:(BOOL)a5
+- (void)_receivedSMSDictionary:(id)dictionary requiresUpload:(BOOL)upload isBeingReplayed:(BOOL)replayed
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_9904;
   v5[3] = &unk_20878;
-  v6 = a5;
+  replayedCopy = replayed;
   v5[4] = self;
-  [(SMSServiceSession *)self _processReceivedDictionary:a3 storageContext:0 receivedViaRelay:0 withCompletionBlock:v5];
+  [(SMSServiceSession *)self _processReceivedDictionary:dictionary storageContext:0 receivedViaRelay:0 withCompletionBlock:v5];
 }
 
-- (void)replayMessage:(id)a3
+- (void)replayMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 objectForKey:off_26420], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([messageCopy objectForKey:off_26420], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     if (IMOSLoggingEnabled())
     {
       v6 = OSLogHandleForIMEventCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v4 __im_copySMSDictionaryWithRedactedMessageContent];
+        __im_copySMSDictionaryWithRedactedMessageContent = [messageCopy __im_copySMSDictionaryWithRedactedMessageContent];
         *buf = 138412290;
-        v18 = v7;
+        v18 = __im_copySMSDictionaryWithRedactedMessageContent;
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Replaying stored CT SMS message %@", buf, 0xCu);
       }
     }
 
-    v8 = [v4 objectForKey:off_26420];
-    v9 = [v4 objectForKey:off_26428];
-    v10 = [v9 BOOLValue];
+    v8 = [messageCopy objectForKey:off_26420];
+    v9 = [messageCopy objectForKey:off_26428];
+    bOOLValue = [v9 BOOLValue];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -2686,7 +2686,7 @@ LABEL_93:
     v14[3] = &unk_208A0;
     v14[4] = self;
     v15 = v8;
-    v16 = v10;
+    v16 = bOOLValue;
     v11 = v8;
     [(SMSServiceSession *)self _enqueueBlock:v14 withTimeout:240.0];
   }
@@ -2698,39 +2698,39 @@ LABEL_93:
       v12 = OSLogHandleForIMEventCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v4 __im_copySMSDictionaryWithRedactedMessageContent];
+        __im_copySMSDictionaryWithRedactedMessageContent2 = [messageCopy __im_copySMSDictionaryWithRedactedMessageContent];
         *buf = 138412290;
-        v18 = v13;
+        v18 = __im_copySMSDictionaryWithRedactedMessageContent2;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Replaying stored SMS replay message %@", buf, 0xCu);
       }
     }
 
-    [(IMDRelayPushHandler *)self->_smsRelayPushHandler replayMessage:v4];
+    [(IMDRelayPushHandler *)self->_smsRelayPushHandler replayMessage:messageCopy];
   }
 }
 
-- (void)enqueReplayMessageCallback:(id)a3
+- (void)enqueReplayMessageCallback:(id)callback
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  callbackCopy = callback;
+  v5 = callbackCopy;
+  if (callbackCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_9DE4;
     v6[3] = &unk_208C8;
-    v7 = v4;
+    v7 = callbackCopy;
     [(SMSServiceSession *)self _enqueueBlock:v6 withTimeout:10.0];
   }
 }
 
-- (void)networkMonitorDidUpdate:(id)a3
+- (void)networkMonitorDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v8.receiver = self;
   v8.super_class = SMSServiceSession;
-  [(SMSServiceSession *)&v8 networkMonitorDidUpdate:v4];
-  if ([v4 immediatelyReachable])
+  [(SMSServiceSession *)&v8 networkMonitorDidUpdate:updateCopy];
+  if ([updateCopy immediatelyReachable])
   {
     v5 = +[IMTransferServicesController sharedInstance];
     v6 = objc_opt_respondsToSelector();
@@ -2738,14 +2738,14 @@ LABEL_93:
     if (v6)
     {
       v7 = +[IMTransferServicesController sharedInstance];
-      [v7 updateUltraConstrainedAttachments:{objc_msgSend(v4, "attachmentPolicy") == &dword_0 + 2}];
+      [v7 updateUltraConstrainedAttachments:{objc_msgSend(updateCopy, "attachmentPolicy") == &dword_0 + 2}];
     }
 
     [(SMSServiceSession *)self _processMessagesForRelayIfNeededMarkingAsRelayedUponSuccess:1];
   }
 }
 
-- (void)_processMessagesForRelayIfNeededMarkingAsRelayedUponSuccess:(BOOL)a3
+- (void)_processMessagesForRelayIfNeededMarkingAsRelayedUponSuccess:(BOOL)success
 {
   if (IMGetCachedDomainBoolForKey())
   {
@@ -2774,7 +2774,7 @@ LABEL_93:
     v8 = v6;
     v12 = v8;
     v13 = buf;
-    v14 = a3;
+    successCopy = success;
     [v7 enumerateMessagesToRelayOnService:v8 usingBlock:v11];
 
     if (v16[24] == 1)
@@ -2796,20 +2796,20 @@ LABEL_93:
   }
 }
 
-- (void)_processSMSOrSMSMessageSentWithContext:(id)a3 success:(BOOL)a4 messageID:(unsigned int)a5 err1:(int64_t)a6 err2:(int64_t)a7 isSMS:(BOOL)a8
+- (void)_processSMSOrSMSMessageSentWithContext:(id)context success:(BOOL)success messageID:(unsigned int)d err1:(int64_t)err1 err2:(int64_t)err2 isSMS:(BOOL)s
 {
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_A5A0;
   v17[3] = &unk_20918;
-  v23 = a8;
-  v13 = a3;
-  v24 = a4;
-  v22 = a5;
-  v20 = a6;
-  v21 = a7;
-  v18 = v13;
-  v19 = self;
+  sCopy = s;
+  contextCopy = context;
+  successCopy = success;
+  dCopy = d;
+  err1Copy = err1;
+  err2Copy = err2;
+  v18 = contextCopy;
+  selfCopy = self;
   v14 = objc_retainBlock(v17);
   if (+[NSThread isMainThread])
   {
@@ -2827,16 +2827,16 @@ LABEL_93:
   }
 }
 
-- (void)_processSMSorMMSMessageReceivedWithContext:(id)a3 messageID:(int64_t)a4
+- (void)_processSMSorMMSMessageReceivedWithContext:(id)context messageID:(int64_t)d
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_A898;
   v8[3] = &unk_20990;
   v8[4] = self;
-  v10 = a4;
-  v4 = a3;
-  v9 = v4;
+  dCopy = d;
+  contextCopy = context;
+  v9 = contextCopy;
   v5 = objc_retainBlock(v8);
   if (+[NSThread isMainThread])
   {
@@ -2854,57 +2854,57 @@ LABEL_93:
   }
 }
 
-- (void)smsMessageReceived:(id)a3 msgID:(int64_t)a4
+- (void)smsMessageReceived:(id)received msgID:(int64_t)d
 {
-  v6 = a3;
+  receivedCopy = received;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [NSNumber numberWithInteger:a4];
+      v8 = [NSNumber numberWithInteger:d];
       v9 = 138412290;
       v10 = v8;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "SMS Message received %@", &v9, 0xCu);
     }
   }
 
-  [(SMSServiceSession *)self _processSMSorMMSMessageReceivedWithContext:v6 messageID:a4];
+  [(SMSServiceSession *)self _processSMSorMMSMessageReceivedWithContext:receivedCopy messageID:d];
 }
 
-- (void)mmsMessageReceived:(id)a3 msgID:(int64_t)a4
+- (void)mmsMessageReceived:(id)received msgID:(int64_t)d
 {
-  v6 = a3;
+  receivedCopy = received;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [NSNumber numberWithInteger:a4];
+      v8 = [NSNumber numberWithInteger:d];
       v9 = 138412290;
       v10 = v8;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "SMS Message received %@", &v9, 0xCu);
     }
   }
 
-  [(SMSServiceSession *)self _processSMSorMMSMessageReceivedWithContext:v6 messageID:a4];
+  [(SMSServiceSession *)self _processSMSorMMSMessageReceivedWithContext:receivedCopy messageID:d];
 }
 
-- (BOOL)_messageDowngradesWhenSentFromCurrentService:(id)a3
+- (BOOL)_messageDowngradesWhenSentFromCurrentService:(id)service
 {
-  v3 = [a3 service];
-  v4 = [v3 isEqualToString:IMServiceNameRCS];
+  service = [service service];
+  v4 = [service isEqualToString:IMServiceNameRCS];
 
   return v4;
 }
 
-- (void)calculateReachabilityWithRequest:(id)a3 responseHandler:(id)a4
+- (void)calculateReachabilityWithRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   v7 = sub_1013C();
-  (*(*v7 + 96))(v6, a4);
+  (*(*v7 + 96))(requestCopy, handler);
 
   swift_unknownObjectRelease();
 }

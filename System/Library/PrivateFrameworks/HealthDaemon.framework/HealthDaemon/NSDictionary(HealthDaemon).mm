@@ -7,14 +7,14 @@
 - (uint64_t)hd_validateMetadataKeysAndValuesWithClient:()HealthDaemon error:
 {
   v6 = a3;
-  v7 = [v6 entitlements];
-  v8 = [v7 hasPrivateMetadataAccess];
+  entitlements = [v6 entitlements];
+  hasPrivateMetadataAccess = [entitlements hasPrivateMetadataAccess];
 
-  v9 = [v6 configuration];
+  configuration = [v6 configuration];
 
-  v10 = [v9 applicationSDKVersionToken];
+  applicationSDKVersionToken = [configuration applicationSDKVersionToken];
 
-  return [a1 hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:v8 applicationSDKVersionToken:v10 error:a4];
+  return [self hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:hasPrivateMetadataAccess applicationSDKVersionToken:applicationSDKVersionToken error:a4];
 }
 
 @end

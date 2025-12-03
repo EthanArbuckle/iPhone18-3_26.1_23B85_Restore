@@ -1,20 +1,20 @@
 @interface SUUIStandardInteractiveDividerView
-- (SUUIStandardInteractiveDividerView)initWithFrame:(CGRect)a3;
+- (SUUIStandardInteractiveDividerView)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUIStandardInteractiveDividerView
 
-- (SUUIStandardInteractiveDividerView)initWithFrame:(CGRect)a3
+- (SUUIStandardInteractiveDividerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUIStandardInteractiveDividerView;
-  v3 = [(SUUIStandardInteractiveDividerView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIStandardInteractiveDividerView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SUUIStandardInteractiveDividerView *)v3 tintColor];
-    [(SUUIStandardInteractiveDividerView *)v4 setBackgroundColor:v5];
+    tintColor = [(SUUIStandardInteractiveDividerView *)v3 tintColor];
+    [(SUUIStandardInteractiveDividerView *)v4 setBackgroundColor:tintColor];
   }
 
   return v4;
@@ -25,8 +25,8 @@
   v4.receiver = self;
   v4.super_class = SUUIStandardInteractiveDividerView;
   [(SUUIStandardInteractiveDividerView *)&v4 tintColorDidChange];
-  v3 = [(SUUIStandardInteractiveDividerView *)self tintColor];
-  [(SUUIStandardInteractiveDividerView *)self setBackgroundColor:v3];
+  tintColor = [(SUUIStandardInteractiveDividerView *)self tintColor];
+  [(SUUIStandardInteractiveDividerView *)self setBackgroundColor:tintColor];
 }
 
 @end

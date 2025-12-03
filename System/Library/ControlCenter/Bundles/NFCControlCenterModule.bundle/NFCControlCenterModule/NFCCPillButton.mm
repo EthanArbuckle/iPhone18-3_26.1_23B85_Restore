@@ -1,21 +1,21 @@
 @interface NFCCPillButton
-- (NFCCPillButton)initWithFrame:(CGRect)a3;
+- (NFCCPillButton)initWithFrame:(CGRect)frame;
 - (void)_contentSizeCategoryDidChange;
 - (void)_setUp;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateOrientationIfNeeded;
 @end
 
 @implementation NFCCPillButton
 
-- (NFCCPillButton)initWithFrame:(CGRect)a3
+- (NFCCPillButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NFCCPillButton;
-  v3 = [(NFCCPillButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NFCCPillButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -44,31 +44,31 @@
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(NFCCPillButton *)self addSubview:self->_titleLabel];
   [(NFCCPillButton *)self _contentSizeCategoryDidChange];
-  v7 = [(NFCCPillButton *)self heightAnchor];
-  v25 = [v7 constraintEqualToConstant:44.0];
+  heightAnchor = [(NFCCPillButton *)self heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:44.0];
 
   LODWORD(v8) = 1132068864;
   [v25 setPriority:v8];
   v26[0] = v25;
-  v24 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v23 = [(NFCCPillButton *)self leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:20.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(NFCCPillButton *)self leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v26[1] = v22;
-  v21 = [(UILabel *)self->_titleLabel topAnchor];
-  v20 = [(NFCCPillButton *)self topAnchor];
-  v19 = [v21 constraintGreaterThanOrEqualToAnchor:v20 constant:11.0];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [(NFCCPillButton *)self topAnchor];
+  v19 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:11.0];
   v26[2] = v19;
-  v9 = [(UILabel *)self->_titleLabel centerYAnchor];
-  v10 = [(NFCCPillButton *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  centerYAnchor = [(UILabel *)self->_titleLabel centerYAnchor];
+  centerYAnchor2 = [(NFCCPillButton *)self centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v26[3] = v11;
-  v12 = [(NFCCPillButton *)self trailingAnchor];
-  v13 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:20.0];
+  trailingAnchor = [(NFCCPillButton *)self trailingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:20.0];
   v26[4] = v14;
-  v15 = [(NFCCPillButton *)self bottomAnchor];
-  v16 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v17 = [v15 constraintGreaterThanOrEqualToAnchor:v16 constant:11.0];
+  bottomAnchor = [(NFCCPillButton *)self bottomAnchor];
+  bottomAnchor2 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v17 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:11.0];
   v26[5] = v17;
   v18 = [NSArray arrayWithObjects:v26 count:6];
   [NSLayoutConstraint activateConstraints:v18];
@@ -79,9 +79,9 @@
   v6.receiver = self;
   v6.super_class = NFCCPillButton;
   [(NFCCPillButton *)&v6 didMoveToWindow];
-  v3 = [(NFCCPillButton *)self window];
+  window = [(NFCCPillButton *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = [(NFCCPillButton *)self visualStylingProviderForCategory:1];
     visualStylingProvider = self->_visualStylingProvider;
@@ -94,17 +94,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = NFCCPillButton;
-  v4 = a3;
-  [(NFCCPillButton *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(NFCCPillButton *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(NFCCPillButton *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 isEqualToString:v7];
+  traitCollection = [(NFCCPillButton *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {
@@ -124,12 +124,12 @@
 
 - (void)_contentSizeCategoryDidChange
 {
-  v3 = [(NFCCPillButton *)self traitCollection];
-  v8 = [v3 preferredContentSizeCategory];
+  traitCollection = [(NFCCPillButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = [UIApp activeInterfaceOrientation];
-  self->_interfaceOrientation = v4;
-  if (sub_5758(v8, v4))
+  activeInterfaceOrientation = [UIApp activeInterfaceOrientation];
+  self->_interfaceOrientation = activeInterfaceOrientation;
+  if (sub_5758(preferredContentSizeCategory, activeInterfaceOrientation))
   {
     v5 = UIContentSizeCategoryAccessibilityLarge;
 
@@ -138,7 +138,7 @@
 
   else
   {
-    v6 = v8;
+    v6 = preferredContentSizeCategory;
   }
 
   v9 = v6;
@@ -164,7 +164,7 @@
   [(NFCCPillButton *)self _setContinuousCornerRadius:fmin(v7, CGRectGetWidth(v10)) * 0.5];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = NFCCPillButton;
@@ -174,7 +174,7 @@
   v5[2] = sub_61AC;
   v5[3] = &unk_C500;
   v5[4] = self;
-  v6 = a3;
+  highlightedCopy = highlighted;
   [UIView _animateUsingSpringInteractive:1 animations:v5 completion:0];
 }
 

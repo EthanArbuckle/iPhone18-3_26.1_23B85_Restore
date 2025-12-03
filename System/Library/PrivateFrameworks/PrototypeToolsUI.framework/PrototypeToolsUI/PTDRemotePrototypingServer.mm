@@ -1,42 +1,42 @@
 @interface PTDRemotePrototypingServer
-- (PTDRemotePrototypingServer)initWithDomainServer:(id)a3 queue:(id)a4;
+- (PTDRemotePrototypingServer)initWithDomainServer:(id)server queue:(id)queue;
 - (id)getAllDomainInfoByID;
-- (id)getRootProxyDefinitionForDomainID:(id)a3;
+- (id)getRootProxyDefinitionForDomainID:(id)d;
 - (id)localPeerDisplayName;
-- (void)_broadCastState:(id)a3 withStateInfo:(id)a4;
+- (void)_broadCastState:(id)state withStateInfo:(id)info;
 - (void)_disableRemoteEditingServer;
-- (void)applyArchiveValue:(id)a3;
-- (void)didReceiveState:(id)a3 withInfo:(id)a4 fromPeer:(id)a5;
-- (void)invokeOutletAtKeyPath:(id)a3;
-- (void)restoreDefaultValuesForDomainID:(id)a3;
-- (void)sendEventForTestRecipeID:(id)a3;
-- (void)setActiveTestRecipeID:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)applyArchiveValue:(id)value;
+- (void)didReceiveState:(id)state withInfo:(id)info fromPeer:(id)peer;
+- (void)invokeOutletAtKeyPath:(id)path;
+- (void)restoreDefaultValuesForDomainID:(id)d;
+- (void)sendEventForTestRecipeID:(id)d;
+- (void)setActiveTestRecipeID:(id)d;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PTDRemotePrototypingServer
 
-- (PTDRemotePrototypingServer)initWithDomainServer:(id)a3 queue:(id)a4
+- (PTDRemotePrototypingServer)initWithDomainServer:(id)server queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  serverCopy = server;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = PTDRemotePrototypingServer;
   v9 = [(PTDRemotePrototypingServer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_domainServer, a3);
-    objc_storeStrong(&v10->_mainQueue, a4);
+    objc_storeStrong(&v9->_domainServer, server);
+    objc_storeStrong(&v10->_mainQueue, queue);
   }
 
   return v10;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   remoteEditingServerController = self->_remoteEditingServerController;
-  if (a3)
+  if (enabled)
   {
     if (!remoteEditingServerController)
     {
@@ -106,43 +106,43 @@
 - (id)localPeerDisplayName
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 name];
-  v4 = [NSString stringWithFormat:@"Prototype on %@", v3];
+  name = [v2 name];
+  v4 = [NSString stringWithFormat:@"Prototype on %@", name];
 
   return v4;
 }
 
-- (void)didReceiveState:(id)a3 withInfo:(id)a4 fromPeer:(id)a5
+- (void)didReceiveState:(id)state withInfo:(id)info fromPeer:(id)peer
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  infoCopy = info;
   mainQueue = self->_mainQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000538C;
   block[3] = &unk_100018878;
-  v13 = v8;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
-  v11 = v8;
+  v13 = infoCopy;
+  v14 = stateCopy;
+  selfCopy = self;
+  v10 = stateCopy;
+  v11 = infoCopy;
   dispatch_async(mainQueue, block);
 }
 
-- (void)_broadCastState:(id)a3 withStateInfo:(id)a4
+- (void)_broadCastState:(id)state withStateInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  infoCopy = info;
   mainQueue = self->_mainQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005690;
   block[3] = &unk_100018878;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = stateCopy;
   dispatch_async(mainQueue, block);
 }
 
@@ -158,17 +158,17 @@
     domainServer = self->_domainServer;
   }
 
-  v6 = [(PTDomainServer *)domainServer domainInfoByID];
+  domainInfoByID = [(PTDomainServer *)domainServer domainInfoByID];
   v10 = 0;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:0 error:&v10];
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:domainInfoByID requiringSecureCoding:0 error:&v10];
   v8 = [v7 base64EncodedStringWithOptions:0];
 
   return v8;
 }
 
-- (id)getRootProxyDefinitionForDomainID:(id)a3
+- (id)getRootProxyDefinitionForDomainID:(id)d
 {
-  v4 = [a3 objectForKey:@"domainID"];
+  v4 = [d objectForKey:@"domainID"];
   domainServer = self->_domainServer;
   if (!domainServer)
   {
@@ -187,12 +187,12 @@
   return v10;
 }
 
-- (void)applyArchiveValue:(id)a3
+- (void)applyArchiveValue:(id)value
 {
-  v4 = a3;
-  v7 = [v4 objectForKey:@"value"];
-  v5 = [v4 objectForKey:@"keyPath"];
-  v6 = [v4 objectForKey:@"domainID"];
+  valueCopy = value;
+  v7 = [valueCopy objectForKey:@"value"];
+  v5 = [valueCopy objectForKey:@"keyPath"];
+  v6 = [valueCopy objectForKey:@"domainID"];
 
   if (v7 && v5 && v6)
   {
@@ -200,9 +200,9 @@
   }
 }
 
-- (void)restoreDefaultValuesForDomainID:(id)a3
+- (void)restoreDefaultValuesForDomainID:(id)d
 {
-  v4 = [a3 objectForKey:@"domainID"];
+  v4 = [d objectForKey:@"domainID"];
   if (v4)
   {
     [(PTDomainServer *)self->_domainServer restoreDefaultValuesForDomainID:v4];
@@ -211,11 +211,11 @@
   _objc_release_x1();
 }
 
-- (void)invokeOutletAtKeyPath:(id)a3
+- (void)invokeOutletAtKeyPath:(id)path
 {
-  v4 = a3;
-  v6 = [v4 objectForKey:@"keyPath"];
-  v5 = [v4 objectForKey:@"domainID"];
+  pathCopy = path;
+  v6 = [pathCopy objectForKey:@"keyPath"];
+  v5 = [pathCopy objectForKey:@"domainID"];
 
   if (v6 && v5)
   {
@@ -223,11 +223,11 @@
   }
 }
 
-- (void)sendEventForTestRecipeID:(id)a3
+- (void)sendEventForTestRecipeID:(id)d
 {
-  v4 = a3;
-  v6 = [v4 objectForKey:@"event"];
-  v5 = [v4 objectForKey:@"recipeID"];
+  dCopy = d;
+  v6 = [dCopy objectForKey:@"event"];
+  v5 = [dCopy objectForKey:@"recipeID"];
 
   if (v6 && v5)
   {
@@ -235,9 +235,9 @@
   }
 }
 
-- (void)setActiveTestRecipeID:(id)a3
+- (void)setActiveTestRecipeID:(id)d
 {
-  v4 = [a3 objectForKey:@"recipeID"];
+  v4 = [d objectForKey:@"recipeID"];
   if (v4)
   {
     [(PTDomainServer *)self->_domainServer setActiveTestRecipeID:v4];

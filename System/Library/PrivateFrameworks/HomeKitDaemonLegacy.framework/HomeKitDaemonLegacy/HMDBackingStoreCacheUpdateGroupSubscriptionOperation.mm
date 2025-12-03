@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheUpdateGroupSubscriptionOperation
-- (HMDBackingStoreCacheUpdateGroupSubscriptionOperation)initWithGroup:(id)a3 subscription:(id)a4 resultBlock:(id)a5;
+- (HMDBackingStoreCacheUpdateGroupSubscriptionOperation)initWithGroup:(id)group subscription:(id)subscription resultBlock:(id)block;
 - (id)mainReturningError;
 @end
 
@@ -7,68 +7,68 @@
 
 - (id)mainReturningError
 {
-  v3 = [(HMDBackingStoreOperation *)self store];
-  v4 = [v3 local];
-  v5 = [v4 _begin];
+  store = [(HMDBackingStoreOperation *)self store];
+  local = [store local];
+  _begin = [local _begin];
 
-  if (v5)
+  if (_begin)
   {
     goto LABEL_2;
   }
 
-  v10 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self subscription];
+  subscription = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self subscription];
 
-  if (v10)
+  if (subscription)
   {
-    v11 = [(HMDBackingStoreOperation *)self store];
-    v12 = [v11 local];
-    v13 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self record];
-    v14 = [v13 groupID];
-    v15 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self subscription];
-    v5 = [v12 _updateGroupWithID:v14 subscription:v15];
+    store2 = [(HMDBackingStoreOperation *)self store];
+    local2 = [store2 local];
+    record = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self record];
+    groupID = [record groupID];
+    subscription2 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self subscription];
+    _begin = [local2 _updateGroupWithID:groupID subscription:subscription2];
 
-    if (v5)
+    if (_begin)
     {
 LABEL_2:
-      v6 = [(HMDBackingStoreOperation *)self store];
-      v7 = [v6 local];
-      [v7 _rollback];
+      store3 = [(HMDBackingStoreOperation *)self store];
+      local3 = [store3 local];
+      [local3 _rollback];
 
       goto LABEL_3;
     }
 
-    v16 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self subscription];
-    v17 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self record];
-    [v17 setSubscription:v16];
+    subscription3 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self subscription];
+    record2 = [(HMDBackingStoreCacheUpdateGroupSubscriptionOperation *)self record];
+    [record2 setSubscription:subscription3];
   }
 
-  v18 = [(HMDBackingStoreOperation *)self store];
-  v19 = [v18 local];
-  v5 = [v19 _commit];
+  store4 = [(HMDBackingStoreOperation *)self store];
+  local4 = [store4 local];
+  _begin = [local4 _commit];
 
-  if (v5)
+  if (_begin)
   {
     goto LABEL_2;
   }
 
 LABEL_3:
-  v8 = v5;
+  v8 = _begin;
 
   return v8;
 }
 
-- (HMDBackingStoreCacheUpdateGroupSubscriptionOperation)initWithGroup:(id)a3 subscription:(id)a4 resultBlock:(id)a5
+- (HMDBackingStoreCacheUpdateGroupSubscriptionOperation)initWithGroup:(id)group subscription:(id)subscription resultBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
+  groupCopy = group;
+  subscriptionCopy = subscription;
   v15.receiver = self;
   v15.super_class = HMDBackingStoreCacheUpdateGroupSubscriptionOperation;
-  v11 = [(HMDBackingStoreOperation *)&v15 initWithResultBlock:a5];
+  v11 = [(HMDBackingStoreOperation *)&v15 initWithResultBlock:block];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_record, a3);
-    objc_storeStrong(&v12->_subscription, a4);
+    objc_storeStrong(&v11->_record, group);
+    objc_storeStrong(&v12->_subscription, subscription);
     v13 = v12;
   }
 

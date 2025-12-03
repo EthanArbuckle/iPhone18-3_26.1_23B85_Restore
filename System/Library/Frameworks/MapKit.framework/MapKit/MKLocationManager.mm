@@ -1,6 +1,6 @@
 @interface MKLocationManager
 + (id)sharedLocationManager;
-- (BOOL)_shouldAllowLocationUpdateInterval:(double)a3;
+- (BOOL)_shouldAllowLocationUpdateInterval:(double)interval;
 - (BOOL)fusionInfoEnabled;
 - (BOOL)hasLocation;
 - (BOOL)isAuthorizedForPreciseLocation;
@@ -8,11 +8,11 @@
 - (BOOL)isLocationServicesAuthorizationNeeded;
 - (BOOL)isLocationServicesDenied;
 - (BOOL)isLocationServicesPossiblyAvailable;
-- (BOOL)isLocationServicesPossiblyAvailable:(id *)a3;
+- (BOOL)isLocationServicesPossiblyAvailable:(id *)available;
 - (BOOL)isLocationServicesRestricted;
 - (BOOL)isLocationSimulated;
 - (BOOL)isTemporaryPreciseLocationAuthorizationPromptShown;
-- (BOOL)locationProviderShouldPauseLocationUpdates:(id)a3;
+- (BOOL)locationProviderShouldPauseLocationUpdates:(id)updates;
 - (BOOL)matchInfoEnabled;
 - (CLHeading)throttledHeading;
 - (CLLocation)lastGoodLocation;
@@ -21,7 +21,7 @@
 - (GEOLocation)courseCorrectedLocation;
 - (GEOLocation)currentLocation;
 - (GEOLocation)gridSnappedCurrentLocation;
-- (MKLocationManager)initWithCLLocationManager:(id)a3;
+- (MKLocationManager)initWithCLLocationManager:(id)manager;
 - (MKLocationProvider)locationProvider;
 - (NSString)description;
 - (double)currentVehicleHeading;
@@ -32,73 +32,73 @@
 - (double)timeScale;
 - (double)vehicleHeadingOrCourse;
 - (id)observersDescription;
-- (id)singleLocationUpdateWithDesiredAccuracy:(double)a3 handler:(id)a4;
-- (id)singleLocationUpdateWithDesiredAccuracy:(double)a3 handler:(id)a4 timeout:(double)a5;
-- (id)singleLocationUpdateWithDesiredAccuracy:(double)a3 handler:(id)a4 timeout:(double)a5 maxLocationAge:(double)a6;
-- (id)singleLocationUpdateWithHandler:(id)a3;
+- (id)singleLocationUpdateWithDesiredAccuracy:(double)accuracy handler:(id)handler;
+- (id)singleLocationUpdateWithDesiredAccuracy:(double)accuracy handler:(id)handler timeout:(double)timeout;
+- (id)singleLocationUpdateWithDesiredAccuracy:(double)accuracy handler:(id)handler timeout:(double)timeout maxLocationAge:(double)age;
+- (id)singleLocationUpdateWithHandler:(id)handler;
 - (int64_t)activityType;
-- (void)_locationProvider:(id)a3 didUpdateLocation:(id)a4 lastKnownNavCourse:(double)a5;
-- (void)_reportHeadingFailureWithError:(id)a3;
+- (void)_locationProvider:(id)provider didUpdateLocation:(id)location lastKnownNavCourse:(double)course;
+- (void)_reportHeadingFailureWithError:(id)error;
 - (void)_reportHeadingSuccess;
-- (void)_reportLocationFailureWithError:(id)a3;
-- (void)_reportLocationStatus:(SEL)a3;
+- (void)_reportLocationFailureWithError:(id)error;
+- (void)_reportLocationStatus:(SEL)status;
 - (void)_reportLocationSuccess;
-- (void)_setIsReceivingAccurateLocations:(BOOL)a3;
-- (void)_setTrackingHeading:(BOOL)a3;
-- (void)_setTrackingLocation:(BOOL)a3;
-- (void)_startLocationUpdateWithObserver:(id)a3 desiredAccuracy:(double)a4;
+- (void)_setIsReceivingAccurateLocations:(BOOL)locations;
+- (void)_setTrackingHeading:(BOOL)heading;
+- (void)_setTrackingLocation:(BOOL)location;
+- (void)_startLocationUpdateWithObserver:(id)observer desiredAccuracy:(double)accuracy;
 - (void)_suspend;
 - (void)_syncLocationProviderWithTracking;
 - (void)_useDefaultCoreLocationProvider;
-- (void)_waitForAccurateLocationsTimerFired:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)dampenGPSLocationAccuracy:(id *)a3;
+- (void)_waitForAccurateLocationsTimerFired:(id)fired;
+- (void)applicationWillResignActive:(id)active;
+- (void)dampenGPSLocationAccuracy:(id *)accuracy;
 - (void)dealloc;
 - (void)dismissHeadingCalibrationDisplay;
-- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4;
-- (void)listenForLocationUpdates:(id)a3;
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4;
-- (void)locationProvider:(id)a3 didUpdateHeading:(id)a4;
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4 lastKnownNavCourse:(double)a5;
-- (void)locationProvider:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5;
-- (void)locationProvider:(id)a3 didUpdateVehicleSpeed:(double)a4 timestamp:(id)a5;
-- (void)locationProvider:(id)a3 didVisit:(id)a4;
-- (void)locationProviderDidChangeAuthorizationStatus:(id)a3;
-- (void)locationProviderDidPauseLocationUpdates:(id)a3;
-- (void)locationProviderDidResumeLocationUpdates:(id)a3;
-- (void)pushLocation:(id)a3;
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3 completion:(id)a4;
+- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler;
+- (void)listenForLocationUpdates:(id)updates;
+- (void)locationProvider:(id)provider didReceiveError:(id)error;
+- (void)locationProvider:(id)provider didUpdateHeading:(id)heading;
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location lastKnownNavCourse:(double)course;
+- (void)locationProvider:(id)provider didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp;
+- (void)locationProvider:(id)provider didUpdateVehicleSpeed:(double)speed timestamp:(id)timestamp;
+- (void)locationProvider:(id)provider didVisit:(id)visit;
+- (void)locationProviderDidChangeAuthorizationStatus:(id)status;
+- (void)locationProviderDidPauseLocationUpdates:(id)updates;
+- (void)locationProviderDidResumeLocationUpdates:(id)updates;
+- (void)pushLocation:(id)location;
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key completion:(id)completion;
 - (void)requestWhenInUseAuthorization;
 - (void)reset;
 - (void)resetAfterResumeIfNecessary;
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5;
-- (void)setActivityType:(int64_t)a3;
-- (void)setContinuesWhileInactive:(BOOL)a3;
-- (void)setDesiredAccuracy:(double)a3;
-- (void)setDistanceFilter:(double)a3;
-- (void)setEffectiveBundle:(id)a3;
-- (void)setEffectiveBundleIdentifier:(id)a3;
-- (void)setFusionInfoEnabled:(BOOL)a3;
-- (void)setHeading:(id)a3;
-- (void)setHeadingOrientation:(int64_t)a3;
-- (void)setLastLocation:(id)a3;
-- (void)setLocationCorrector:(id)a3;
-- (void)setLocationProvider:(id)a3;
-- (void)setLocationRecorder:(id)a3;
-- (void)setMatchInfoEnabled:(BOOL)a3;
-- (void)startHeadingUpdateWithObserver:(id)a3;
-- (void)startLocationUpdateWithObserver:(id)a3;
-- (void)startMonitoringVisitsWithObserver:(id)a3;
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup;
+- (void)setActivityType:(int64_t)type;
+- (void)setContinuesWhileInactive:(BOOL)inactive;
+- (void)setDesiredAccuracy:(double)accuracy;
+- (void)setDistanceFilter:(double)filter;
+- (void)setEffectiveBundle:(id)bundle;
+- (void)setEffectiveBundleIdentifier:(id)identifier;
+- (void)setFusionInfoEnabled:(BOOL)enabled;
+- (void)setHeading:(id)heading;
+- (void)setHeadingOrientation:(int64_t)orientation;
+- (void)setLastLocation:(id)location;
+- (void)setLocationCorrector:(id)corrector;
+- (void)setLocationProvider:(id)provider;
+- (void)setLocationRecorder:(id)recorder;
+- (void)setMatchInfoEnabled:(BOOL)enabled;
+- (void)startHeadingUpdateWithObserver:(id)observer;
+- (void)startLocationUpdateWithObserver:(id)observer;
+- (void)startMonitoringVisitsWithObserver:(id)observer;
 - (void)startVehicleHeadingUpdate;
 - (void)startVehicleSpeedUpdate;
-- (void)stopHeadingUpdateWithObserver:(id)a3;
-- (void)stopListeningForLocationUpdates:(id)a3;
-- (void)stopLocationUpdateWithObserver:(id)a3;
-- (void)stopMonitoringVisitsWithObserver:(id)a3;
+- (void)stopHeadingUpdateWithObserver:(id)observer;
+- (void)stopListeningForLocationUpdates:(id)updates;
+- (void)stopLocationUpdateWithObserver:(id)observer;
+- (void)stopMonitoringVisitsWithObserver:(id)observer;
 - (void)stopVehicleHeadingUpdate;
 - (void)stopVehicleSpeedUpdate;
 - (void)stopWaitingForAuthCallback;
-- (void)waitForAccurateLocationWithTimeout:(double)a3 handler:(id)a4;
+- (void)waitForAccurateLocationWithTimeout:(double)timeout handler:(id)handler;
 @end
 
 @implementation MKLocationManager
@@ -148,18 +148,18 @@ void __42__MKLocationManager_sharedLocationManager__block_invoke()
       if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A2EA0000, v3, OS_LOG_TYPE_INFO, "Sync with tracking: Start updating location for %@", &v8, 0xCu);
       }
 
-      v4 = [(MKLocationManager *)self locationProvider];
-      [v4 startUpdatingLocation];
+      locationProvider = [(MKLocationManager *)self locationProvider];
+      [locationProvider startUpdatingLocation];
 
       self->_locationUpdateStartTime = CFAbsoluteTimeGetCurrent();
-      v5 = [MEMORY[0x1E69DC668] sharedApplication];
-      v6 = [v5 isRunningTest];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      isRunningTest = [mEMORY[0x1E69DC668] isRunningTest];
 
-      if ((v6 & 1) == 0)
+      if ((isRunningTest & 1) == 0)
       {
         [(MKLocationManager *)self _setIsReceivingAccurateLocations:0];
       }
@@ -167,8 +167,8 @@ void __42__MKLocationManager_sharedLocationManager__block_invoke()
 
     if (self->_trackingHeading && !self->_useCourseForHeading)
     {
-      v7 = [(MKLocationManager *)self locationProvider];
-      [v7 startUpdatingHeading];
+      locationProvider2 = [(MKLocationManager *)self locationProvider];
+      [locationProvider2 startUpdatingHeading];
     }
   }
 }
@@ -194,7 +194,7 @@ void __42__MKLocationManager_sharedLocationManager__block_invoke()
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MKLocationManager *)self locationProvider];
+  locationProvider = [(MKLocationManager *)self locationProvider];
   geo_isolate_sync();
   v4 = *(v7 + 24) == 1 && [(MKLocationManager *)self isLocationServicesApproved];
 
@@ -229,10 +229,10 @@ uint64_t __51__MKLocationManager_isAuthorizedForPreciseLocation__block_invoke(ui
 
 - (BOOL)isLocationServicesApproved
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  v3 = [v2 authorizationStatus];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  authorizationStatus = [locationProvider authorizationStatus];
 
-  return (v3 - 3) < 2;
+  return (authorizationStatus - 3) < 2;
 }
 
 void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke(uint64_t a1)
@@ -258,8 +258,8 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke(uint
 
 - (BOOL)isLocationServicesRestricted
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  v3 = [v2 authorizationStatus] == 1;
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  v3 = [locationProvider authorizationStatus] == 1;
 
   return v3;
 }
@@ -284,8 +284,8 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke(uint
 
 - (double)expectedGpsUpdateInterval
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 expectedGpsUpdateInterval];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider expectedGpsUpdateInterval];
   v4 = v3;
 
   return v4;
@@ -293,8 +293,8 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke(uint
 
 - (BOOL)isLocationServicesAuthorizationNeeded
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  v3 = [v2 authorizationStatus] == 0;
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  v3 = [locationProvider authorizationStatus] == 0;
 
   return v3;
 }
@@ -306,7 +306,7 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke(uint
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2EA0000, v3, OS_LOG_TYPE_DEBUG, "DebugMKLocationManager isLocationServicesPossiblyAvailable %@", &v5, 0xCu);
   }
 
@@ -323,8 +323,8 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke(uint
 
 - (BOOL)isLocationServicesDenied
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  v3 = [v2 authorizationStatus] == 2;
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  v3 = [locationProvider authorizationStatus] == 2;
 
   return v3;
 }
@@ -391,9 +391,9 @@ LABEL_10:
 
     if (heading != throttledHeading)
     {
-      v5 = [(CLHeading *)throttledHeading timestamp];
-      v6 = [(CLHeading *)self->_heading timestamp];
-      v7 = [v5 compare:v6];
+      timestamp = [(CLHeading *)throttledHeading timestamp];
+      timestamp2 = [(CLHeading *)self->_heading timestamp];
+      v7 = [timestamp compare:timestamp2];
 
       if (v7 != -1)
       {
@@ -434,8 +434,8 @@ LABEL_12:
   if ([(MKLocationManager *)self isLocationServicesApproved]&& [(MKLocationManager *)self hasLocation])
   {
     v3 = objc_alloc(MEMORY[0x1E69A1E70]);
-    v4 = [(MKLocationManager *)self lastLocation];
-    v5 = [v3 initWithCLLocation:v4];
+    lastLocation = [(MKLocationManager *)self lastLocation];
+    v5 = [v3 initWithCLLocation:lastLocation];
   }
 
   else
@@ -448,8 +448,8 @@ LABEL_12:
 
 - (void)_reportHeadingSuccess
 {
-  v3 = [(NSHashTable *)self->_headingObservers allObjects];
-  [v3 makeObjectsPerformSelector:sel_locationManagerUpdatedHeading_ withObject:self];
+  allObjects = [(NSHashTable *)self->_headingObservers allObjects];
+  [allObjects makeObjectsPerformSelector:sel_locationManagerUpdatedHeading_ withObject:self];
 }
 
 - (void)_suspend
@@ -463,7 +463,7 @@ LABEL_12:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A2EA0000, v3, OS_LOG_TYPE_INFO, "Suspend: Stop updating location for %@", &v5, 0xCu);
     }
 
@@ -497,10 +497,10 @@ LABEL_12:
   v4 = v3;
   if (v3 < 0.0)
   {
-    v5 = [(MKLocationManager *)self lastLocation];
-    if (v5 && !-[MKLocationManager isLastLocationStale](self, "isLastLocationStale") && [v5 _navigation_hasValidCourse])
+    lastLocation = [(MKLocationManager *)self lastLocation];
+    if (lastLocation && !-[MKLocationManager isLastLocationStale](self, "isLastLocationStale") && [lastLocation _navigation_hasValidCourse])
     {
-      [v5 course];
+      [lastLocation course];
       v4 = v6;
     }
   }
@@ -508,36 +508,36 @@ LABEL_12:
   return v4;
 }
 
-- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4
+- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MKLocationManager *)self locationProvider];
-  [v7 fetchPlaceInferencesWithFidelityPolicy:a3 handler:v6];
+  handlerCopy = handler;
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider fetchPlaceInferencesWithFidelityPolicy:policy handler:handlerCopy];
 }
 
-- (void)stopMonitoringVisitsWithObserver:(id)a3
+- (void)stopMonitoringVisitsWithObserver:(id)observer
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   if (self->_monitoringVisits)
   {
     [(NSLock *)self->_visitObserversLock lock];
-    if ([(NSHashTable *)self->_visitObservers containsObject:v4])
+    if ([(NSHashTable *)self->_visitObservers containsObject:observerCopy])
     {
-      [(NSHashTable *)self->_visitObservers removeObject:v4];
+      [(NSHashTable *)self->_visitObservers removeObject:observerCopy];
       v5 = MKGetMKLocationManagerLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Stopping visit monitoring for %@", &v7, 0xCu);
       }
 
       if (![(NSHashTable *)self->_visitObservers count])
       {
         self->_monitoringVisits = 0;
-        v6 = [(MKLocationManager *)self locationProvider];
-        [v6 stopMonitoringVisits];
+        locationProvider = [(MKLocationManager *)self locationProvider];
+        [locationProvider stopMonitoringVisits];
       }
     }
 
@@ -545,10 +545,10 @@ LABEL_12:
   }
 }
 
-- (void)startMonitoringVisitsWithObserver:(id)a3
+- (void)startMonitoringVisitsWithObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [(NSLock *)self->_visitObserversLock lock];
   visitObservers = self->_visitObservers;
   if (!visitObservers)
@@ -560,14 +560,14 @@ LABEL_12:
     visitObservers = self->_visitObservers;
   }
 
-  if (![(NSHashTable *)visitObservers containsObject:v4])
+  if (![(NSHashTable *)visitObservers containsObject:observerCopy])
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NSHashTable *)self->_visitObservers addObject:v4];
+      [(NSHashTable *)self->_visitObservers addObject:observerCopy];
       self->_monitoringVisits = 1;
-      v8 = [(MKLocationManager *)self locationProvider];
-      [v8 startMonitoringVisits];
+      locationProvider = [(MKLocationManager *)self locationProvider];
+      [locationProvider startMonitoringVisits];
 
       v9 = MKGetMKLocationManagerLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -603,34 +603,34 @@ LABEL_9:
 
 - (void)stopVehicleHeadingUpdate
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 stopUpdatingVehicleHeading];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider stopUpdatingVehicleHeading];
 }
 
 - (void)startVehicleHeadingUpdate
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 startUpdatingVehicleHeading];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider startUpdatingVehicleHeading];
 }
 
 - (void)stopVehicleSpeedUpdate
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 stopUpdatingVehicleSpeed];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider stopUpdatingVehicleSpeed];
 }
 
 - (void)startVehicleSpeedUpdate
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 startUpdatingVehicleSpeed];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider startUpdatingVehicleSpeed];
 }
 
-- (void)stopHeadingUpdateWithObserver:(id)a3
+- (void)stopHeadingUpdateWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(NSHashTable *)self->_headingObservers containsObject:?])
   {
-    [(NSHashTable *)self->_headingObservers removeObject:v4];
+    [(NSHashTable *)self->_headingObservers removeObject:observerCopy];
     if (![(NSHashTable *)self->_headingObservers count])
     {
       [(MKLocationManager *)self _setTrackingHeading:0];
@@ -638,38 +638,38 @@ LABEL_9:
   }
 }
 
-- (void)startHeadingUpdateWithObserver:(id)a3
+- (void)startHeadingUpdateWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   headingObservers = self->_headingObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!headingObservers)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:5];
     v7 = self->_headingObservers;
     self->_headingObservers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     headingObservers = self->_headingObservers;
   }
 
-  if (![(NSHashTable *)headingObservers containsObject:v4])
+  if (![(NSHashTable *)headingObservers containsObject:observerCopy])
   {
     [(NSHashTable *)self->_headingObservers addObject:v8];
     [(MKLocationManager *)self _setTrackingHeading:1];
   }
 }
 
-- (void)_setTrackingHeading:(BOOL)a3
+- (void)_setTrackingHeading:(BOOL)heading
 {
-  if (self->_trackingHeading != a3)
+  if (self->_trackingHeading != heading)
   {
-    if (a3)
+    if (heading)
     {
       if (!self->_useCourseForHeading)
       {
-        v4 = [(MKLocationManager *)self locationProvider];
-        [v4 startUpdatingHeading];
+        locationProvider = [(MKLocationManager *)self locationProvider];
+        [locationProvider startUpdatingHeading];
       }
 
       v5 = 1;
@@ -677,8 +677,8 @@ LABEL_9:
 
     else
     {
-      v6 = [(MKLocationManager *)self locationProvider];
-      [v6 stopUpdatingHeading];
+      locationProvider2 = [(MKLocationManager *)self locationProvider];
+      [locationProvider2 stopUpdatingHeading];
 
       heading = self->_heading;
       self->_heading = 0;
@@ -691,46 +691,46 @@ LABEL_9:
   }
 }
 
-- (id)singleLocationUpdateWithDesiredAccuracy:(double)a3 handler:(id)a4 timeout:(double)a5 maxLocationAge:(double)a6
+- (id)singleLocationUpdateWithDesiredAccuracy:(double)accuracy handler:(id)handler timeout:(double)timeout maxLocationAge:(double)age
 {
-  v10 = a4;
-  v11 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self desiredAccuracy:v10 handler:a3 timeout:a5 maxLocationAge:a6];
+  handlerCopy = handler;
+  v11 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self desiredAccuracy:handlerCopy handler:accuracy timeout:timeout maxLocationAge:age];
 
   return v11;
 }
 
-- (id)singleLocationUpdateWithDesiredAccuracy:(double)a3 handler:(id)a4 timeout:(double)a5
+- (id)singleLocationUpdateWithDesiredAccuracy:(double)accuracy handler:(id)handler timeout:(double)timeout
 {
-  v8 = a4;
-  v9 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self desiredAccuracy:v8 handler:a3 timeout:a5];
+  handlerCopy = handler;
+  v9 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self desiredAccuracy:handlerCopy handler:accuracy timeout:timeout];
 
   return v9;
 }
 
-- (id)singleLocationUpdateWithDesiredAccuracy:(double)a3 handler:(id)a4
+- (id)singleLocationUpdateWithDesiredAccuracy:(double)accuracy handler:(id)handler
 {
-  v6 = a4;
-  v7 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self desiredAccuracy:v6 handler:a3];
+  handlerCopy = handler;
+  v7 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self desiredAccuracy:handlerCopy handler:accuracy];
 
   return v7;
 }
 
-- (id)singleLocationUpdateWithHandler:(id)a3
+- (id)singleLocationUpdateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self handler:v4];
+  handlerCopy = handler;
+  v5 = [[MKLocationManagerSingleUpdater alloc] initWithLocationManager:self handler:handlerCopy];
 
   return v5;
 }
 
-- (void)_waitForAccurateLocationsTimerFired:(id)a3
+- (void)_waitForAccurateLocationsTimerFired:(id)fired
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 134218240;
-    v6 = self;
+    selfCopy = self;
     v7 = 2048;
     v8 = 0x4024000000000000;
     _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "No accurate locations received for %p after %f seconds", &v5, 0x16u);
@@ -739,16 +739,16 @@ LABEL_9:
   [(MKLocationManager *)self _setIsReceivingAccurateLocations:1];
 }
 
-- (void)waitForAccurateLocationWithTimeout:(double)a3 handler:(id)a4
+- (void)waitForAccurateLocationWithTimeout:(double)timeout handler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_trackingLocation)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy && self->_trackingLocation)
   {
     if (self->_isReceivingAccurateLocations)
     {
-      (*(v6 + 2))(v6);
+      (*(handlerCopy + 2))(handlerCopy);
     }
 
     else
@@ -757,7 +757,7 @@ LABEL_9:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v23 = 134217984;
-        v24 = a3;
+        timeoutCopy = timeout;
         _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_DEBUG, "waitForAccurateLocationWithTimeout:handler: waiting %#.2fs for an accurate location", &v23, 0xCu);
       }
 
@@ -778,12 +778,12 @@ LABEL_9:
       v14 = [v7 copy];
       [(NSMutableArray *)waitForAccurateLocationsHandlers addObject:v14];
 
-      v15 = [(MKLocationManager *)self lastGoodLocation];
-      v16 = v15;
-      if (v15)
+      lastGoodLocation = [(MKLocationManager *)self lastGoodLocation];
+      v16 = lastGoodLocation;
+      if (lastGoodLocation)
       {
-        v17 = [v15 timestamp];
-        [v17 timeIntervalSinceNow];
+        timestamp = [lastGoodLocation timestamp];
+        [timestamp timeIntervalSinceNow];
         v19 = v18;
 
         if (v19 <= 0.0 && v19 >= -10.0)
@@ -796,7 +796,7 @@ LABEL_9:
             {
               [v16 horizontalAccuracy];
               v23 = 134218240;
-              v24 = -v19;
+              timeoutCopy = -v19;
               v25 = 2048;
               v26 = v22;
               _os_log_impl(&dword_1A2EA0000, v21, OS_LOG_TYPE_DEBUG, "waitForAccurateLocationWithTimeout:handler: lastGoodLocation is good enough to consider accurate, short-circuiting wait for new location (%#.1lfs old, %#.1lfm accuracy)", &v23, 0x16u);
@@ -813,7 +813,7 @@ LABEL_9:
 - (id)observersDescription
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -838,7 +838,7 @@ LABEL_9:
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
         v13 = [v10 stringWithFormat:@"%@: %p \n", v12, v9, v16];
-        [v3 appendString:v13];
+        [string appendString:v13];
       }
 
       v6 = [(NSHashTable *)v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -847,17 +847,17 @@ LABEL_9:
     while (v6);
   }
 
-  v14 = [v3 copy];
+  v14 = [string copy];
 
   return v14;
 }
 
-- (void)stopLocationUpdateWithObserver:(id)a3
+- (void)stopLocationUpdateWithObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [(NSLock *)self->_observersLock lock];
-  if ([(NSHashTable *)self->_locationObservers containsObject:v4])
+  if ([(NSHashTable *)self->_locationObservers containsObject:observerCopy])
   {
     v5 = MKGetMKLocationManagerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -865,21 +865,21 @@ LABEL_9:
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
       v11 = 138478083;
-      v12 = v7;
+      selfCopy2 = v7;
       v13 = 2112;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Removing location observer %{private}@ for %@", &v11, 0x16u);
     }
 
-    [(NSHashTable *)self->_locationObservers removeObject:v4];
+    [(NSHashTable *)self->_locationObservers removeObject:observerCopy];
     v8 = MKGetMKLocationManagerLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(MKLocationManager *)self observersDescription];
+      observersDescription = [(MKLocationManager *)self observersDescription];
       v11 = 138412547;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2113;
-      v14 = v9;
+      selfCopy = observersDescription;
       _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_DEBUG, "Remaining location observers for %@: \n%{private}@", &v11, 0x16u);
     }
 
@@ -897,30 +897,30 @@ LABEL_9:
   }
 }
 
-- (void)startLocationUpdateWithObserver:(id)a3
+- (void)startLocationUpdateWithObserver:(id)observer
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_DEBUG, "DebugMKLocationManager %@ startLocationUpdateWithObserver", &v6, 0xCu);
   }
 
-  [(MKLocationManager *)self _startLocationUpdateWithObserver:v4 desiredAccuracy:*MEMORY[0x1E6985C78]];
+  [(MKLocationManager *)self _startLocationUpdateWithObserver:observerCopy desiredAccuracy:*MEMORY[0x1E6985C78]];
 }
 
-- (void)_startLocationUpdateWithObserver:(id)a3 desiredAccuracy:(double)a4
+- (void)_startLocationUpdateWithObserver:(id)observer desiredAccuracy:(double)accuracy
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  observerCopy = observer;
   [(NSLock *)self->_observersLock lock];
   locationObservers = self->_locationObservers;
   if (locationObservers)
   {
-    v8 = [(NSHashTable *)locationObservers containsObject:v6];
+    v8 = [(NSHashTable *)locationObservers containsObject:observerCopy];
     v9 = self->_locationObservers;
     if (v9)
     {
@@ -939,8 +939,8 @@ LABEL_9:
 
   v9 = self->_locationObservers;
 LABEL_6:
-  v12 = [(NSHashTable *)v9 count];
-  if (![(NSHashTable *)self->_locationObservers containsObject:v6])
+  locationProvider2 = [(NSHashTable *)v9 count];
+  if (![(NSHashTable *)self->_locationObservers containsObject:observerCopy])
   {
     v13 = MKGetMKLocationManagerLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -948,21 +948,21 @@ LABEL_6:
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       *buf = 138478083;
-      v28 = v15;
+      selfCopy2 = v15;
       v29 = 2112;
-      v30 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A2EA0000, v13, OS_LOG_TYPE_INFO, "Adding location observer %{private}@ for %@", buf, 0x16u);
     }
 
-    [(NSHashTable *)self->_locationObservers addObject:v6];
+    [(NSHashTable *)self->_locationObservers addObject:observerCopy];
     v16 = MKGetMKLocationManagerLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(MKLocationManager *)self observersDescription];
+      observersDescription = [(MKLocationManager *)self observersDescription];
       *buf = 138412547;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2113;
-      v30 = v17;
+      selfCopy = observersDescription;
       _os_log_impl(&dword_1A2EA0000, v16, OS_LOG_TYPE_DEBUG, "All location observers for %@: \n%{private}@", buf, 0x16u);
     }
   }
@@ -970,31 +970,31 @@ LABEL_6:
   [(NSLock *)self->_observersLock unlock];
   if (!self->_hasCustomDesiredAccuracy)
   {
-    v18 = [(MKLocationManager *)self locationProvider];
-    v19 = v18;
-    if (v12)
+    locationProvider = [(MKLocationManager *)self locationProvider];
+    v19 = locationProvider;
+    if (locationProvider2)
     {
-      [v18 desiredAccuracy];
+      [locationProvider desiredAccuracy];
       v21 = v20;
-      v22 = a4;
-      if (v20 < a4)
+      accuracyCopy = accuracy;
+      if (v20 < accuracy)
       {
-        v12 = [(MKLocationManager *)self locationProvider];
-        [v12 desiredAccuracy];
-        v22 = v23;
+        locationProvider2 = [(MKLocationManager *)self locationProvider];
+        [locationProvider2 desiredAccuracy];
+        accuracyCopy = v23;
       }
 
-      v24 = [(MKLocationManager *)self locationProvider];
-      [v24 setDesiredAccuracy:v22];
+      locationProvider3 = [(MKLocationManager *)self locationProvider];
+      [locationProvider3 setDesiredAccuracy:accuracyCopy];
 
-      if (v21 < a4)
+      if (v21 < accuracy)
       {
       }
     }
 
     else
     {
-      [v18 setDesiredAccuracy:a4];
+      [locationProvider setDesiredAccuracy:accuracy];
     }
   }
 
@@ -1004,7 +1004,7 @@ LABEL_6:
     {
       if ([(MKLocationManager *)self hasLocation]&& !self->_isLastLocationStale)
       {
-        [v6 locationManagerUpdatedLocation:self];
+        [observerCopy locationManagerUpdatedLocation:self];
       }
     }
 
@@ -1056,22 +1056,22 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
   *(v2 + 40) = 0;
 }
 
-- (void)stopListeningForLocationUpdates:(id)a3
+- (void)stopListeningForLocationUpdates:(id)updates
 {
-  v5 = a3;
+  updatesCopy = updates;
   [(NSLock *)self->_observersLock lock];
   locationListeners = self->_locationListeners;
-  if (locationListeners && [(NSHashTable *)locationListeners containsObject:v5])
+  if (locationListeners && [(NSHashTable *)locationListeners containsObject:updatesCopy])
   {
-    [(NSHashTable *)self->_locationListeners removeObject:v5];
+    [(NSHashTable *)self->_locationListeners removeObject:updatesCopy];
   }
 
   [(NSLock *)self->_observersLock unlock];
 }
 
-- (void)listenForLocationUpdates:(id)a3
+- (void)listenForLocationUpdates:(id)updates
 {
-  v7 = a3;
+  updatesCopy = updates;
   [(NSLock *)self->_observersLock lock];
   locationListeners = self->_locationListeners;
   if (!locationListeners)
@@ -1083,67 +1083,67 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
     locationListeners = self->_locationListeners;
   }
 
-  if (![(NSHashTable *)locationListeners containsObject:v7])
+  if (![(NSHashTable *)locationListeners containsObject:updatesCopy])
   {
-    [(NSHashTable *)self->_locationListeners addObject:v7];
+    [(NSHashTable *)self->_locationListeners addObject:updatesCopy];
   }
 
   [(NSLock *)self->_observersLock unlock];
 }
 
-- (void)locationProvider:(id)a3 didVisit:(id)a4
+- (void)locationProvider:(id)provider didVisit:(id)visit
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  visitCopy = visit;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v5 hasArrivalDate];
-    if (v7)
+    hasArrivalDate = [visitCopy hasArrivalDate];
+    if (hasArrivalDate)
     {
-      v8 = [v5 arrivalDate];
+      arrivalDate = [visitCopy arrivalDate];
     }
 
     else
     {
-      v8 = @"No Arrival Date";
+      arrivalDate = @"No Arrival Date";
     }
 
-    v9 = [v5 hasDepartureDate];
-    if (v9)
+    hasDepartureDate = [visitCopy hasDepartureDate];
+    if (hasDepartureDate)
     {
-      v10 = [v5 departureDate];
+      departureDate = [visitCopy departureDate];
     }
 
     else
     {
-      v10 = @"No Departure Date";
+      departureDate = @"No Departure Date";
     }
 
-    [v5 coordinate];
+    [visitCopy coordinate];
     v12 = v11;
-    [v5 coordinate];
+    [visitCopy coordinate];
     *buf = 138478595;
-    v27 = v8;
+    v27 = arrivalDate;
     v28 = 2113;
-    v29 = v10;
+    v29 = departureDate;
     v30 = 2049;
     v31 = v12;
     v32 = 2049;
     v33 = v13;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "Got a visit: %{private}@ | %{private}@ | Lat: %{private}f Long: %{private}f", buf, 0x2Au);
-    if (v9)
+    if (hasDepartureDate)
     {
     }
 
-    if (v7)
+    if (hasArrivalDate)
     {
     }
   }
 
   [(NSLock *)self->_visitObserversLock lock];
-  v14 = [(NSHashTable *)self->_visitObservers allObjects];
-  v15 = [v14 copy];
+  allObjects = [(NSHashTable *)self->_visitObservers allObjects];
+  v15 = [allObjects copy];
 
   [(NSLock *)self->_visitObserversLock unlock];
   v23 = 0u;
@@ -1165,7 +1165,7 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
           objc_enumerationMutation(v16);
         }
 
-        [*(*(&v21 + 1) + 8 * i) locationManager:self didVisit:{v5, v21}];
+        [*(*(&v21 + 1) + 8 * i) locationManager:self didVisit:{visitCopy, v21}];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1175,28 +1175,28 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
   }
 }
 
-- (void)locationProvider:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5
+- (void)locationProvider:(id)provider didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  self->_lastVehicleHeading = a4;
+  timestampCopy = timestamp;
+  self->_lastVehicleHeading = heading;
   self->_lastVehicleHeadingUpdateTime = MEMORY[0x1A58E85D0]();
   v8 = MKGetVehicleSensorLog_3489();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218243;
-    v23 = a4;
+    headingCopy = heading;
     v24 = 2113;
-    v25 = v7;
+    v25 = timestampCopy;
     _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_DEBUG, "Vehicle heading: %g | Timestamp: %{private}@\n", buf, 0x16u);
   }
 
-  v9 = [(MKLocationManager *)self locationRecorder];
-  [v9 recordVehicleHeading:v7 timestamp:a4];
+  locationRecorder = [(MKLocationManager *)self locationRecorder];
+  [locationRecorder recordVehicleHeading:timestampCopy timestamp:heading];
 
   [(NSLock *)self->_observersLock lock];
-  v10 = [(NSHashTable *)self->_locationObservers allObjects];
-  v11 = [v10 copy];
+  allObjects = [(NSHashTable *)self->_locationObservers allObjects];
+  v11 = [allObjects copy];
 
   [(NSLock *)self->_observersLock unlock];
   v19 = 0u;
@@ -1219,7 +1219,7 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
           objc_enumerationMutation(v12);
         }
 
-        [*(*(&v17 + 1) + 8 * v16++) locationManager:self didUpdateVehicleHeading:v7 timestamp:{a4, v17}];
+        [*(*(&v17 + 1) + 8 * v16++) locationManager:self didUpdateVehicleHeading:timestampCopy timestamp:{heading, v17}];
       }
 
       while (v14 != v16);
@@ -1230,28 +1230,28 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
   }
 }
 
-- (void)locationProvider:(id)a3 didUpdateVehicleSpeed:(double)a4 timestamp:(id)a5
+- (void)locationProvider:(id)provider didUpdateVehicleSpeed:(double)speed timestamp:(id)timestamp
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  self->_lastVehicleSpeed = a4;
+  timestampCopy = timestamp;
+  self->_lastVehicleSpeed = speed;
   self->_lastVehicleSpeedUpdateTime = MEMORY[0x1A58E85D0]();
   v8 = MKGetVehicleSensorLog_3489();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218243;
-    v23 = a4;
+    speedCopy = speed;
     v24 = 2113;
-    v25 = v7;
+    v25 = timestampCopy;
     _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_DEBUG, "Vehicle speed: %g | Timestamp: %{private}@\n", buf, 0x16u);
   }
 
-  v9 = [(MKLocationManager *)self locationRecorder];
-  [v9 recordVehicleSpeed:v7 timestamp:a4];
+  locationRecorder = [(MKLocationManager *)self locationRecorder];
+  [locationRecorder recordVehicleSpeed:timestampCopy timestamp:speed];
 
   [(NSLock *)self->_observersLock lock];
-  v10 = [(NSHashTable *)self->_locationObservers allObjects];
-  v11 = [v10 copy];
+  allObjects = [(NSHashTable *)self->_locationObservers allObjects];
+  v11 = [allObjects copy];
 
   [(NSLock *)self->_observersLock unlock];
   v19 = 0u;
@@ -1274,7 +1274,7 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
           objc_enumerationMutation(v12);
         }
 
-        [*(*(&v17 + 1) + 8 * v16++) locationManager:self didUpdateVehicleSpeed:v7 timestamp:{a4, v17}];
+        [*(*(&v17 + 1) + 8 * v16++) locationManager:self didUpdateVehicleSpeed:timestampCopy timestamp:{speed, v17}];
       }
 
       while (v14 != v16);
@@ -1285,93 +1285,93 @@ void __53__MKLocationManager__initializeAuthStatusIfNecessary__block_invoke_103(
   }
 }
 
-- (void)locationProviderDidResumeLocationUpdates:(id)a3
+- (void)locationProviderDidResumeLocationUpdates:(id)updates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v12 = 138412802;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = v4;
+    v15 = updatesCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v6 = v13;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Location provider [%@](%p) for %@ did resume location updates", &v12, 0x20u);
   }
 
-  v7 = [(MKLocationManager *)self locationRecorder];
-  [v7 recordLocationUpdateResume];
+  locationRecorder = [(MKLocationManager *)self locationRecorder];
+  [locationRecorder recordLocationUpdateResume];
 
   [(NSLock *)self->_observersLock lock];
-  v8 = [(NSHashTable *)self->_locationObservers allObjects];
-  v9 = [v8 copy];
+  allObjects = [(NSHashTable *)self->_locationObservers allObjects];
+  v9 = [allObjects copy];
 
-  v10 = [(NSHashTable *)self->_locationListeners allObjects];
-  v11 = [v10 copy];
+  allObjects2 = [(NSHashTable *)self->_locationListeners allObjects];
+  v11 = [allObjects2 copy];
 
   [(NSLock *)self->_observersLock unlock];
   [v9 makeObjectsPerformSelector:sel_locationManagerDidResumeLocationUpdates_ withObject:self];
   [v11 makeObjectsPerformSelector:sel_locationManagerDidResumeLocationUpdates_ withObject:self];
 }
 
-- (void)locationProviderDidPauseLocationUpdates:(id)a3
+- (void)locationProviderDidPauseLocationUpdates:(id)updates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v12 = 138412802;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = v4;
+    v15 = updatesCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v6 = v13;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Location provider [%@](%p) for %@ did pause location updates", &v12, 0x20u);
   }
 
-  v7 = [(MKLocationManager *)self locationRecorder];
-  [v7 recordLocationUpdatePause];
+  locationRecorder = [(MKLocationManager *)self locationRecorder];
+  [locationRecorder recordLocationUpdatePause];
 
   [(NSLock *)self->_observersLock lock];
-  v8 = [(NSHashTable *)self->_locationObservers allObjects];
-  v9 = [v8 copy];
+  allObjects = [(NSHashTable *)self->_locationObservers allObjects];
+  v9 = [allObjects copy];
 
-  v10 = [(NSHashTable *)self->_locationListeners allObjects];
-  v11 = [v10 copy];
+  allObjects2 = [(NSHashTable *)self->_locationListeners allObjects];
+  v11 = [allObjects2 copy];
 
   [(NSLock *)self->_observersLock unlock];
   [v9 makeObjectsPerformSelector:sel_locationManagerDidPauseLocationUpdates_ withObject:self];
   [v11 makeObjectsPerformSelector:sel_locationManagerDidPauseLocationUpdates_ withObject:self];
 }
 
-- (BOOL)locationProviderShouldPauseLocationUpdates:(id)a3
+- (BOOL)locationProviderShouldPauseLocationUpdates:(id)updates
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
     v34 = objc_opt_class();
     v35 = 2048;
-    v36 = v4;
+    v36 = updatesCopy;
     v37 = 2112;
-    v38 = self;
+    selfCopy = self;
     v6 = v34;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Location provider [%@](%p) for %@ should pause location updates", buf, 0x20u);
   }
 
   [(NSLock *)self->_observersLock lock];
-  v7 = [(NSHashTable *)self->_locationObservers allObjects];
-  v8 = [v7 copy];
+  allObjects = [(NSHashTable *)self->_locationObservers allObjects];
+  v8 = [allObjects copy];
 
-  v9 = [(NSHashTable *)self->_locationListeners allObjects];
-  v10 = [v9 copy];
+  allObjects2 = [(NSHashTable *)self->_locationListeners allObjects];
+  v10 = [allObjects2 copy];
 
   [(NSLock *)self->_observersLock unlock];
   v29 = 0u;
@@ -1458,19 +1458,19 @@ LABEL_23:
   return v21;
 }
 
-- (void)locationProviderDidChangeAuthorizationStatus:(id)a3
+- (void)locationProviderDidChangeAuthorizationStatus:(id)status
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statusCopy = status;
   v5 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2048;
-    *&buf[14] = v4;
+    *&buf[14] = statusCopy;
     *&buf[22] = 2112;
-    v13 = self;
+    selfCopy = self;
     v6 = *&buf[4];
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Location provider [%@](%p) for %@ did change auth status", buf, 0x20u);
   }
@@ -1479,8 +1479,8 @@ LABEL_23:
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  LOBYTE(v13) = 0;
-  v7 = v4;
+  LOBYTE(selfCopy) = 0;
+  v7 = statusCopy;
   geo_isolate_sync();
   if (*(*&buf[8] + 24) == 1)
   {
@@ -1504,9 +1504,9 @@ LABEL_23:
     [(MKLocationManager *)self reset];
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = [MEMORY[0x1E696AD80] notificationWithName:MKLocationManagerApprovalDidChangeNotification object:0];
-  [v10 postNotification:v11];
+  [defaultCenter postNotification:v11];
 
   _Block_object_dispose(buf, 8);
 }
@@ -1534,52 +1534,52 @@ uint64_t __66__MKLocationManager_locationProviderDidChangeAuthorizationStatus___
   return result;
 }
 
-- (void)locationProvider:(id)a3 didUpdateHeading:(id)a4
+- (void)locationProvider:(id)provider didUpdateHeading:(id)heading
 {
-  v13 = a4;
-  v5 = [(MKLocationManager *)self locationRecorder];
-  [v13 trueHeading];
+  headingCopy = heading;
+  locationRecorder = [(MKLocationManager *)self locationRecorder];
+  [headingCopy trueHeading];
   v7 = v6;
-  [v13 magneticHeading];
+  [headingCopy magneticHeading];
   v9 = v8;
-  [v13 headingAccuracy];
+  [headingCopy headingAccuracy];
   v11 = v10;
-  v12 = [v13 timestamp];
-  [v5 recordCompassHeading:v12 magneticHeading:v7 accuracy:v9 timestamp:v11];
+  timestamp = [headingCopy timestamp];
+  [locationRecorder recordCompassHeading:timestamp magneticHeading:v7 accuracy:v9 timestamp:v11];
 
-  [(MKLocationManager *)self setHeading:v13];
+  [(MKLocationManager *)self setHeading:headingCopy];
 }
 
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4
+- (void)locationProvider:(id)provider didReceiveError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  errorCopy = error;
   v8 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138413058;
     v12 = objc_opt_class();
     v13 = 2048;
-    v14 = v6;
+    v14 = providerCopy;
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v7;
+    v18 = errorCopy;
     v9 = v12;
     _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_DEBUG, "Location provider [%@](%p) for %@ did receive error: %@", &v11, 0x2Au);
   }
 
   self->_isLastLocationStale = 1;
-  v10 = [(MKLocationManager *)self locationRecorder];
-  [v10 recordError:v7];
+  locationRecorder = [(MKLocationManager *)self locationRecorder];
+  [locationRecorder recordError:errorCopy];
 
-  [(MKLocationManager *)self _reportLocationFailureWithError:v7];
+  [(MKLocationManager *)self _reportLocationFailureWithError:errorCopy];
 }
 
-- (void)_setIsReceivingAccurateLocations:(BOOL)a3
+- (void)_setIsReceivingAccurateLocations:(BOOL)locations
 {
-  v3 = a3;
+  locationsCopy = locations;
   v20 = *MEMORY[0x1E69E9840];
   if (GEOConfigGetBOOL())
   {
@@ -1593,17 +1593,17 @@ uint64_t __66__MKLocationManager_locationProviderDidChangeAuthorizationStatus___
       }
     }
 
-    v3 = 1;
+    locationsCopy = 1;
   }
 
-  if (self->_isReceivingAccurateLocations != v3)
+  if (self->_isReceivingAccurateLocations != locationsCopy)
   {
-    self->_isReceivingAccurateLocations = v3;
+    self->_isReceivingAccurateLocations = locationsCopy;
     [(NSTimer *)self->_waitForAccurateLocationsTimer invalidate];
     waitForAccurateLocationsTimer = self->_waitForAccurateLocationsTimer;
     self->_waitForAccurateLocationsTimer = 0;
 
-    if (v3)
+    if (locationsCopy)
     {
       v7 = self->_waitForAccurateLocationsHandlers;
       waitForAccurateLocationsHandlers = self->_waitForAccurateLocationsHandlers;
@@ -1643,27 +1643,27 @@ uint64_t __66__MKLocationManager_locationProviderDidChangeAuthorizationStatus___
   }
 }
 
-- (void)_locationProvider:(id)a3 didUpdateLocation:(id)a4 lastKnownNavCourse:(double)a5
+- (void)_locationProvider:(id)provider didUpdateLocation:(id)location lastKnownNavCourse:(double)course
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [v7 timestamp];
+  locationCopy = location;
+  timestamp = [locationCopy timestamp];
   v9 = MEMORY[0x1A58E85D0]();
 
   if (![(MKLocationManager *)self _shouldAllowLocationUpdateInterval:v9])
   {
-    v15 = [(MKLocationManager *)self locationRecorder];
-    [v15 recordLocation:v7 correctedLocation:0];
+    locationRecorder = [(MKLocationManager *)self locationRecorder];
+    [locationRecorder recordLocation:locationCopy correctedLocation:0];
 
-    v16 = v7;
+    v16 = locationCopy;
     goto LABEL_48;
   }
 
-  if (v7)
+  if (locationCopy)
   {
-    [v7 clientLocation];
+    [locationCopy clientLocation];
     v10 = *(&v50 + 4);
-    [v7 clientLocation];
+    [locationCopy clientLocation];
     v11 = *(&v45 + 4);
     if (*(&v45 + 4) > 0.0 && *(&v45 + 4) < 20.0)
     {
@@ -1691,23 +1691,23 @@ uint64_t __66__MKLocationManager_locationProviderDidChangeAuthorizationStatus___
     v10 = 0.0;
   }
 
-  [v7 speed];
+  [locationCopy speed];
   if (v17 > 3.0)
   {
     goto LABEL_12;
   }
 
-  v29 = [v7 _navigation_hasMatch];
+  _navigation_hasMatch = [locationCopy _navigation_hasMatch];
   v14 = 0;
   v13 = 1;
-  if (v29 && v10 >= 0.0)
+  if (_navigation_hasMatch && v10 >= 0.0)
   {
-    if (a5 < 0.0)
+    if (course < 0.0)
     {
       goto LABEL_12;
     }
 
-    [v7 course];
+    [locationCopy course];
     v31 = v30;
     v32 = fmod(v10, 360.0);
     v33 = fmod(v31, 360.0);
@@ -1730,10 +1730,10 @@ uint64_t __66__MKLocationManager_locationProviderDidChangeAuthorizationStatus___
     }
 
     v34 = vabdd_f64(v33, v32);
-    [v7 course];
+    [locationCopy course];
     v36 = v35;
-    v37 = fmod(a5, 360.0);
-    if (a5 >= 0.0)
+    v37 = fmod(course, 360.0);
+    if (course >= 0.0)
     {
       v38 = v37;
     }
@@ -1775,7 +1775,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (self->_navCourse != a5)
+  if (self->_navCourse != course)
   {
     self->_consecutiveOutOfCourseCount = 0;
   }
@@ -1787,27 +1787,27 @@ LABEL_13:
 
   if (v13)
   {
-    v18 = a5;
+    courseCopy = course;
   }
 
   else
   {
-    v18 = v10;
+    courseCopy = v10;
   }
 
-  self->_navCourse = v18;
+  self->_navCourse = courseCopy;
   if (v10 == -1.0)
   {
     self->_consecutiveOutOfCourseCount = 1;
 LABEL_22:
-    self->_navCourse = a5;
+    self->_navCourse = course;
     goto LABEL_28;
   }
 
   consecutiveOutOfCourseCount = self->_consecutiveOutOfCourseCount;
   if (consecutiveOutOfCourseCount >= 1)
   {
-    if (vabdd_f64(a5, v10) >= 45.0)
+    if (vabdd_f64(course, v10) >= 45.0)
     {
       self->_consecutiveOutOfCourseCount = consecutiveOutOfCourseCount + 1;
       if (((consecutiveOutOfCourseCount < 3) & ~v14) != 0)
@@ -1819,26 +1819,26 @@ LABEL_22:
     self->_consecutiveOutOfCourseCount = 0;
   }
 
-  a5 = v18;
+  course = courseCopy;
 LABEL_28:
   locationCorrector = self->_locationCorrector;
   if (locationCorrector)
   {
-    v21 = locationCorrector[2](locationCorrector, v7, a5);
+    v21 = locationCorrector[2](locationCorrector, locationCopy, course);
 LABEL_33:
     v16 = v21;
 
     goto LABEL_34;
   }
 
-  v22 = [v7 type];
-  v16 = v7;
-  if (v22 <= 0xA)
+  type = [locationCopy type];
+  v16 = locationCopy;
+  if (type <= 0xA)
   {
-    v16 = v7;
-    if (((1 << v22) & 0x40E) != 0)
+    v16 = locationCopy;
+    if (((1 << type) & 0x40E) != 0)
     {
-      v40 = v7;
+      v40 = locationCopy;
       [(MKLocationManager *)self dampenGPSLocationAccuracy:&v40];
       v21 = v40;
       goto LABEL_33;
@@ -1846,8 +1846,8 @@ LABEL_33:
   }
 
 LABEL_34:
-  v23 = [(MKLocationManager *)self locationRecorder];
-  [v23 recordLocation:v7 correctedLocation:v16];
+  locationRecorder2 = [(MKLocationManager *)self locationRecorder];
+  [locationRecorder2 recordLocation:locationCopy correctedLocation:v16];
 
   if (v16)
   {
@@ -1858,14 +1858,14 @@ LABEL_34:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [v16 uuid];
-      if (v24)
+      uuid = [v16 uuid];
+      if (uuid)
       {
         v25 = MKGetPuckTrackingLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v53 = v24;
+          v53 = uuid;
           v54 = 2080;
           v55 = "[MKLocationManager _locationProvider:didUpdateLocation:lastKnownNavCourse:]";
           _os_log_impl(&dword_1A2EA0000, v25, OS_LOG_TYPE_INFO, "[MK] %@ Processed - in %s", buf, 0x16u);
@@ -1893,33 +1893,33 @@ LABEL_34:
 LABEL_48:
 }
 
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4 lastKnownNavCourse:(double)a5
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location lastKnownNavCourse:(double)course
 {
   v79 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  providerCopy = provider;
+  locationCopy = location;
   v10 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    [v9 coordinate];
+    [locationCopy coordinate];
     v12 = v11;
-    [v9 coordinate];
+    [locationCopy coordinate];
     v14 = v13;
-    [v9 rawCoordinate];
+    [locationCopy rawCoordinate];
     v16 = v15;
-    [v9 rawCoordinate];
+    [locationCopy rawCoordinate];
     v18 = v17;
-    [v9 course];
+    [locationCopy course];
     v20 = v19;
-    [v9 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v22 = v21;
-    v23 = [MEMORY[0x1E6985C40] _navigation_stringWithType:{objc_msgSend(v9, "type")}];
-    v24 = [v9 referenceFrame];
+    v23 = [MEMORY[0x1E6985C40] _navigation_stringWithType:{objc_msgSend(locationCopy, "type")}];
+    referenceFrame = [locationCopy referenceFrame];
     v25 = @"Not shifted";
     *buf = 138414339;
     *&buf[4] = self;
     *&buf[12] = 2049;
-    if (v24 == 2)
+    if (referenceFrame == 2)
     {
       v25 = @"Shifted";
     }
@@ -1945,14 +1945,14 @@ LABEL_48:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v9 uuid];
-    if (v26)
+    uuid = [locationCopy uuid];
+    if (uuid)
     {
       v27 = MKGetPuckTrackingLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *&buf[4] = v26;
+        *&buf[4] = uuid;
         *&buf[12] = 2080;
         *&buf[14] = "[MKLocationManager locationProvider:didUpdateLocation:lastKnownNavCourse:]";
         _os_log_impl(&dword_1A2EA0000, v27, OS_LOG_TYPE_INFO, "[MK] %@ Received - in %s", buf, 0x16u);
@@ -1962,15 +1962,15 @@ LABEL_48:
 
   else
   {
-    v26 = 0;
+    uuid = 0;
   }
 
   if ([(MKLocationManager *)self isLocationServicesAvailable])
   {
-    if (!v9)
+    if (!locationCopy)
     {
       v33 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695FC60] code:0 userInfo:0];
-      [(MKLocationManager *)self locationProvider:v8 didReceiveError:v33];
+      [(MKLocationManager *)self locationProvider:providerCopy didReceiveError:v33];
 
       goto LABEL_42;
     }
@@ -1985,60 +1985,60 @@ LABEL_48:
         _os_log_impl(&dword_1A2EA0000, v28, OS_LOG_TYPE_INFO, "didUpdateLocation while not tracking location: Stop updating location for %@", buf, 0xCu);
       }
 
-      v29 = [(MKLocationManager *)self locationProvider];
-      [v29 stopUpdatingLocation];
+      locationProvider = [(MKLocationManager *)self locationProvider];
+      [locationProvider stopUpdatingLocation];
     }
 
-    v30 = [v9 matchInfo];
-    if (v30)
+    matchInfo = [locationCopy matchInfo];
+    if (matchInfo)
     {
-      v31 = [v9 matchInfo];
-      if ([v31 matchQuality] == 1)
+      matchInfo2 = [locationCopy matchInfo];
+      if ([matchInfo2 matchQuality] == 1)
       {
-        v32 = 0;
+        isMatchShifted = 0;
       }
 
       else
       {
-        v34 = [v9 matchInfo];
-        v32 = [v34 isMatchShifted];
+        matchInfo3 = [locationCopy matchInfo];
+        isMatchShifted = [matchInfo3 isMatchShifted];
       }
     }
 
     else
     {
-      v32 = 0;
+      isMatchShifted = 0;
     }
 
-    if ([v9 referenceFrame] == 2)
+    if ([locationCopy referenceFrame] == 2)
     {
       v35 = 1;
     }
 
     else
     {
-      v35 = v32;
+      v35 = isMatchShifted;
     }
 
-    v36 = [(MKLocationManager *)self locationProvider];
-    if (([v36 isTracePlayer] & 1) == 0)
+    locationProvider2 = [(MKLocationManager *)self locationProvider];
+    if (([locationProvider2 isTracePlayer] & 1) == 0)
     {
-      v37 = [(MKLocationManager *)self locationProvider];
-      if ([v37 shouldShiftIfNecessary])
+      locationProvider3 = [(MKLocationManager *)self locationProvider];
+      if ([locationProvider3 shouldShiftIfNecessary])
       {
         v38 = MEMORY[0x1E69A1E80];
-        [v9 coordinate];
+        [locationCopy coordinate];
         LODWORD(v38) = [v38 isLocationShiftRequiredForCoordinate:?];
 
         if (v38)
         {
-          if (v26)
+          if (uuid)
           {
             v39 = MKGetPuckTrackingLog();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              *&buf[4] = v26;
+              *&buf[4] = uuid;
               _os_log_impl(&dword_1A2EA0000, v39, OS_LOG_TYPE_INFO, "[MK] %@ Processing - Needs shifting", buf, 0xCu);
             }
           }
@@ -2049,25 +2049,25 @@ LABEL_48:
             memset(v78, 0, 28);
             v76 = 0u;
             memset(buf, 0, sizeof(buf));
-            [v9 clientLocation];
-            if (v32)
+            [locationCopy clientLocation];
+            if (isMatchShifted)
             {
-              v40 = [v9 matchInfo];
-              [v40 matchCoordinate];
+              matchInfo4 = [locationCopy matchInfo];
+              [matchInfo4 matchCoordinate];
               v42 = v41;
-              v43 = [v9 matchInfo];
-              [v43 matchCoordinate];
+              matchInfo5 = [locationCopy matchInfo];
+              [matchInfo5 matchCoordinate];
               *&buf[4] = v42;
               *&buf[12] = v44;
             }
 
             DWORD1(v78[0]) = 2;
-            v45 = [v9 matchInfo];
+            matchInfo6 = [locationCopy matchInfo];
 
             v46 = objc_alloc(MEMORY[0x1E6985C40]);
-            if (v45)
+            if (matchInfo6)
             {
-              v47 = [v9 matchInfo];
+              matchInfo7 = [locationCopy matchInfo];
               v72 = v76;
               v73 = v77;
               v74[0] = v78[0];
@@ -2078,12 +2078,12 @@ LABEL_48:
               v71 = *&buf[80];
               v66 = *buf;
               v67 = *&buf[16];
-              v48 = [v46 initWithClientLocation:&v66 matchInfo:v47];
+              v48 = [v46 initWithClientLocation:&v66 matchInfo:matchInfo7];
             }
 
             else
             {
-              v47 = [v9 coarseMetaData];
+              matchInfo7 = [locationCopy coarseMetaData];
               v72 = v76;
               v73 = v77;
               v74[0] = v78[0];
@@ -2094,12 +2094,12 @@ LABEL_48:
               v71 = *&buf[80];
               v66 = *buf;
               v67 = *&buf[16];
-              v48 = [v46 initWithClientLocation:&v66 coarseMetaData:v47];
+              v48 = [v46 initWithClientLocation:&v66 coarseMetaData:matchInfo7];
             }
 
             v57 = v48;
 
-            [(MKLocationManager *)self _locationProvider:v8 didUpdateLocation:v57 lastKnownNavCourse:a5];
+            [(MKLocationManager *)self _locationProvider:providerCopy didUpdateLocation:v57 lastKnownNavCourse:course];
           }
 
           else
@@ -2108,11 +2108,11 @@ LABEL_48:
             v59 = 3221225472;
             v60 = __75__MKLocationManager_locationProvider_didUpdateLocation_lastKnownNavCourse___block_invoke;
             v61 = &unk_1E76C6D20;
-            v49 = v9;
+            v49 = locationCopy;
             v62 = v49;
-            v63 = self;
-            v64 = v8;
-            v65 = a5;
+            selfCopy = self;
+            v64 = providerCopy;
+            courseCopy = course;
             v50 = MEMORY[0x1A58E9F30](&v58);
             v51 = objc_alloc(MEMORY[0x1E69A1E70]);
             v52 = [v51 initWithCLLocation:{v49, v58, v59, v60, v61}];
@@ -2126,16 +2126,16 @@ LABEL_48:
               locationShifter = self->_locationShifter;
             }
 
-            v56 = [v52 latLng];
+            latLng = [v52 latLng];
             [v49 horizontalAccuracy];
-            [(GEOLocationShifter *)locationShifter shiftLatLng:v56 accuracy:v50 withCompletionHandler:0 mustGoToNetworkCallback:0 errorHandler:MEMORY[0x1E69E96A0] callbackQueue:?];
+            [(GEOLocationShifter *)locationShifter shiftLatLng:latLng accuracy:v50 withCompletionHandler:0 mustGoToNetworkCallback:0 errorHandler:MEMORY[0x1E69E96A0] callbackQueue:?];
           }
 
           goto LABEL_42;
         }
 
 LABEL_41:
-        [(MKLocationManager *)self _locationProvider:v8 didUpdateLocation:v9 lastKnownNavCourse:a5];
+        [(MKLocationManager *)self _locationProvider:providerCopy didUpdateLocation:locationCopy lastKnownNavCourse:course];
         goto LABEL_42;
       }
     }
@@ -2195,9 +2195,9 @@ void __75__MKLocationManager_locationProvider_didUpdateLocation_lastKnownNavCour
   [*(a1 + 40) _locationProvider:*(a1 + 48) didUpdateLocation:v13 lastKnownNavCourse:*(a1 + 56)];
 }
 
-- (void)pushLocation:(id)a3
+- (void)pushLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
     [(MKLocationManager *)self setLastLocation:?];
     self->_lastLocationUpdateTime = CFAbsoluteTimeGetCurrent();
@@ -2205,20 +2205,20 @@ void __75__MKLocationManager_locationProvider_didUpdateLocation_lastKnownNavCour
   }
 }
 
-- (BOOL)_shouldAllowLocationUpdateInterval:(double)a3
+- (BOOL)_shouldAllowLocationUpdateInterval:(double)interval
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [(MKLocationManager *)self lastLocation];
-  v6 = v5;
-  if (!v5 || fabs(self->_minimumLocationUpdateInterval) < 0.000001)
+  lastLocation = [(MKLocationManager *)self lastLocation];
+  v6 = lastLocation;
+  if (!lastLocation || fabs(self->_minimumLocationUpdateInterval) < 0.000001)
   {
     goto LABEL_23;
   }
 
-  v7 = [v5 timestamp];
+  timestamp = [lastLocation timestamp];
   v8 = MEMORY[0x1A58E85D0]();
 
-  v9 = a3 - v8;
+  v9 = interval - v8;
   recentLocationUpdateIntervals = self->_recentLocationUpdateIntervals;
   if (v9 < 0.0)
   {
@@ -2314,23 +2314,23 @@ LABEL_24:
 
 - (void)dismissHeadingCalibrationDisplay
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 dismissHeadingCalibrationDisplay];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider dismissHeadingCalibrationDisplay];
 }
 
-- (void)dampenGPSLocationAccuracy:(id *)a3
+- (void)dampenGPSLocationAccuracy:(id *)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
-    v5 = *a3;
+    v5 = *accuracy;
     Current = CFAbsoluteTimeGetCurrent();
-    v7 = [(MKLocationManager *)self lastLocation];
-    v8 = [v7 type];
-    if (v8 <= 0xA && ((1 << v8) & 0x40E) != 0)
+    lastLocation = [(MKLocationManager *)self lastLocation];
+    type = [lastLocation type];
+    if (type <= 0xA && ((1 << type) & 0x40E) != 0)
     {
       [v5 horizontalAccuracy];
       v10 = v9;
-      [v7 horizontalAccuracy];
+      [lastLocation horizontalAccuracy];
       if (vabdd_f64(v10, v11) >= 0.000001 && v10 > v11)
       {
         if (Current - self->_locationAccuracyUpdateTime >= 3.0)
@@ -2354,10 +2354,10 @@ LABEL_24:
             [v5 clientLocation];
           }
 
-          [v7 horizontalAccuracy];
+          [lastLocation horizontalAccuracy];
           *(&v21 + 4) = v13;
           v14 = objc_alloc(MEMORY[0x1E6985C40]);
-          v15 = [v5 coarseMetaData];
+          coarseMetaData = [v5 coarseMetaData];
           v18[6] = v26;
           v18[7] = v27;
           v19[0] = v28[0];
@@ -2368,7 +2368,7 @@ LABEL_24:
           v18[5] = v25;
           v18[0] = v20;
           v18[1] = v21;
-          v16 = [v14 initWithClientLocation:v18 coarseMetaData:v15];
+          v16 = [v14 initWithClientLocation:v18 coarseMetaData:coarseMetaData];
 
           v5 = v16;
         }
@@ -2376,108 +2376,108 @@ LABEL_24:
     }
 
     v17 = v5;
-    *a3 = v5;
+    *accuracy = v5;
   }
 }
 
 - (double)timeScale
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 timeScale];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider timeScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setActivityType:(int64_t)a3
+- (void)setActivityType:(int64_t)type
 {
-  v4 = [(MKLocationManager *)self locationProvider];
-  [v4 setActivityType:a3];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider setActivityType:type];
 }
 
 - (int64_t)activityType
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  v3 = [v2 activityType];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  activityType = [locationProvider activityType];
 
-  return v3;
+  return activityType;
 }
 
-- (void)setFusionInfoEnabled:(BOOL)a3
+- (void)setFusionInfoEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(MKLocationManager *)self locationProvider];
-  [v4 setFusionInfoEnabled:v3];
+  enabledCopy = enabled;
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider setFusionInfoEnabled:enabledCopy];
 }
 
 - (BOOL)fusionInfoEnabled
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  v3 = [v2 fusionInfoEnabled];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  fusionInfoEnabled = [locationProvider fusionInfoEnabled];
 
-  return v3;
+  return fusionInfoEnabled;
 }
 
-- (void)setMatchInfoEnabled:(BOOL)a3
+- (void)setMatchInfoEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(MKLocationManager *)self locationProvider];
-  [v4 setMatchInfoEnabled:v3];
+  enabledCopy = enabled;
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider setMatchInfoEnabled:enabledCopy];
 }
 
 - (BOOL)matchInfoEnabled
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  v3 = [v2 matchInfoEnabled];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  matchInfoEnabled = [locationProvider matchInfoEnabled];
 
-  return v3;
+  return matchInfoEnabled;
 }
 
-- (void)setDistanceFilter:(double)a3
+- (void)setDistanceFilter:(double)filter
 {
-  v4 = [(MKLocationManager *)self locationProvider];
-  [v4 setDistanceFilter:a3];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider setDistanceFilter:filter];
 }
 
 - (double)distanceFilter
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 distanceFilter];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider distanceFilter];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDesiredAccuracy:(double)a3
+- (void)setDesiredAccuracy:(double)accuracy
 {
   self->_hasCustomDesiredAccuracy = 1;
-  v4 = [(MKLocationManager *)self locationProvider];
-  [v4 setDesiredAccuracy:a3];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider setDesiredAccuracy:accuracy];
 }
 
 - (double)desiredAccuracy
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 desiredAccuracy];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider desiredAccuracy];
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)isLocationServicesPossiblyAvailable:(id *)a3
+- (BOOL)isLocationServicesPossiblyAvailable:(id *)available
 {
   if (![(MKLocationManager *)self isLocationServicesPossiblyAvailable])
   {
     v5 = MKLocationErrorDomain;
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v8 = [v7 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v8 = [mainBundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke;
     v17 = &unk_1E76CD810;
-    v9 = v6;
+    v9 = dictionary;
     v18 = v9;
     v10 = v8;
     v19 = v10;
@@ -2494,7 +2494,7 @@ LABEL_24:
         if (![(MKLocationManager *)self isLocationServicesDenied])
         {
           v12 = -1;
-          if (!a3)
+          if (!available)
           {
             goto LABEL_8;
           }
@@ -2512,7 +2512,7 @@ LABEL_24:
     }
 
     v11[2](v11);
-    if (!a3)
+    if (!available)
     {
 LABEL_8:
 
@@ -2520,7 +2520,7 @@ LABEL_8:
     }
 
 LABEL_7:
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:v5 code:v12 userInfo:v9];
+    *available = [MEMORY[0x1E696ABC0] errorWithDomain:v5 code:v12 userInfo:v9];
     goto LABEL_8;
   }
 
@@ -2538,24 +2538,24 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
   [*(a1 + 32) setObject:v4 forKeyedSubscript:*MEMORY[0x1E696A598]];
 }
 
-- (void)_setTrackingLocation:(BOOL)a3
+- (void)_setTrackingLocation:(BOOL)location
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_trackingLocation != a3)
+  if (self->_trackingLocation != location)
   {
-    if (a3)
+    if (location)
     {
       self->_trackingLocation = 1;
       v4 = +[MKApplicationStateMonitor sharedInstance];
-      v5 = [v4 isActive];
+      isActive = [v4 isActive];
 
-      if ((v5 & 1) != 0 || self->_continuesWhileInactive)
+      if ((isActive & 1) != 0 || self->_continuesWhileInactive)
       {
         v6 = MKGetMKLocationManagerLog();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v11 = 138412290;
-          v12 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_INFO, "Set tracking location to YES: Start updating location for %@", &v11, 0xCu);
         }
 
@@ -2566,8 +2566,8 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
           _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_DEBUG, "DebugMKLocationManager startUpdatingLocation", &v11, 2u);
         }
 
-        v8 = [(MKLocationManager *)self locationProvider];
-        [v8 startUpdatingLocation];
+        locationProvider = [(MKLocationManager *)self locationProvider];
+        [locationProvider startUpdatingLocation];
 
         self->_locationUpdateStartTime = CFAbsoluteTimeGetCurrent();
         [(MKLocationManager *)self _setIsReceivingAccurateLocations:0];
@@ -2579,7 +2579,7 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v11 = 138412290;
-          v12 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1A2EA0000, v10, OS_LOG_TYPE_INFO, "Set tracking location to YES: %@ is inactive", &v11, 0xCu);
         }
       }
@@ -2591,7 +2591,7 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1A2EA0000, v9, OS_LOG_TYPE_INFO, "Set tracking location to NO: Stop updating location for %@", &v11, 0xCu);
       }
 
@@ -2612,16 +2612,16 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
   }
 }
 
-- (void)_reportHeadingFailureWithError:(id)a3
+- (void)_reportHeadingFailureWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSHashTable *)self->_headingObservers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_headingObservers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2633,33 +2633,33 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) locationManagerFailedToUpdateHeading:self withError:v4];
+        [*(*(&v10 + 1) + 8 * v9++) locationManagerFailedToUpdateHeading:self withError:errorCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_reportLocationFailureWithError:(id)a3
+- (void)_reportLocationFailureWithError:(id)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   v6 = MKGetMKLocationManagerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = NSStringFromBOOL();
     v8 = NSStringFromBOOL();
     *buf = 138413058;
-    v34 = v5;
+    v34 = errorCopy;
     v35 = 2112;
-    v36 = self;
+    selfCopy = self;
     v37 = 2112;
     v38 = v7;
     v39 = 2112;
@@ -2667,13 +2667,13 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_INFO, "Location error: %@ for %@ while suspended: %@ while tracking location: %@", buf, 0x2Au);
   }
 
-  objc_storeStrong(&self->_locationError, a3);
+  objc_storeStrong(&self->_locationError, error);
   [(NSLock *)self->_observersLock lock];
-  v9 = [(NSHashTable *)self->_locationObservers allObjects];
-  v10 = [v9 copy];
+  allObjects = [(NSHashTable *)self->_locationObservers allObjects];
+  v10 = [allObjects copy];
 
-  v11 = [(NSHashTable *)self->_locationListeners allObjects];
-  v12 = [v11 copy];
+  allObjects2 = [(NSHashTable *)self->_locationListeners allObjects];
+  v12 = [allObjects2 copy];
 
   [(NSLock *)self->_observersLock unlock];
   v29 = 0u;
@@ -2696,7 +2696,7 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
           objc_enumerationMutation(v13);
         }
 
-        [*(*(&v27 + 1) + 8 * v17++) locationManagerFailedToUpdateLocation:self withError:v5];
+        [*(*(&v27 + 1) + 8 * v17++) locationManagerFailedToUpdateLocation:self withError:errorCopy];
       }
 
       while (v15 != v17);
@@ -2726,7 +2726,7 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
           objc_enumerationMutation(v18);
         }
 
-        [*(*(&v23 + 1) + 8 * v22++) locationManagerFailedToUpdateLocation:self withError:{v5, v23}];
+        [*(*(&v23 + 1) + 8 * v22++) locationManagerFailedToUpdateLocation:self withError:{errorCopy, v23}];
       }
 
       while (v20 != v22);
@@ -2737,25 +2737,25 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
   }
 }
 
-- (void)_reportLocationStatus:(SEL)a3
+- (void)_reportLocationStatus:(SEL)status
 {
   [(NSLock *)self->_observersLock lock];
-  v5 = [(NSHashTable *)self->_locationObservers allObjects];
-  v8 = [v5 copy];
+  allObjects = [(NSHashTable *)self->_locationObservers allObjects];
+  v8 = [allObjects copy];
 
-  v6 = [(NSHashTable *)self->_locationListeners allObjects];
-  v7 = [v6 copy];
+  allObjects2 = [(NSHashTable *)self->_locationListeners allObjects];
+  v7 = [allObjects2 copy];
 
   [(NSLock *)self->_observersLock unlock];
-  [v8 makeObjectsPerformSelector:a3 withObject:self];
-  [v7 makeObjectsPerformSelector:a3 withObject:self];
+  [v8 makeObjectsPerformSelector:status withObject:self];
+  [v7 makeObjectsPerformSelector:status withObject:self];
   if (![v8 count])
   {
     [(MKLocationManager *)self _setTrackingLocation:0];
   }
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   if ([(MKLocationManager *)self continuesWhileInactive])
   {
@@ -2770,18 +2770,18 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
   }
 }
 
-- (void)setContinuesWhileInactive:(BOOL)a3
+- (void)setContinuesWhileInactive:(BOOL)inactive
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_continuesWhileInactive != a3)
+  if (self->_continuesWhileInactive != inactive)
   {
-    v3 = a3;
-    self->_continuesWhileInactive = a3;
+    inactiveCopy = inactive;
+    self->_continuesWhileInactive = inactive;
     v5 = MKGetMKLocationManagerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = "no";
-      if (v3)
+      if (inactiveCopy)
       {
         v6 = "yes";
       }
@@ -2792,13 +2792,13 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
     }
 
     v7 = +[MKApplicationStateMonitor sharedInstance];
-    v8 = [v7 isActive];
+    isActive = [v7 isActive];
 
-    if ((v8 & 1) == 0)
+    if ((isActive & 1) == 0)
     {
       v9 = MKGetMKLocationManagerLog();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-      if (v3)
+      if (inactiveCopy)
       {
         if (v10)
         {
@@ -2824,16 +2824,16 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
   }
 }
 
-- (void)setHeading:(id)a3
+- (void)setHeading:(id)heading
 {
-  v5 = a3;
-  if (self->_heading != v5)
+  headingCopy = heading;
+  if (self->_heading != headingCopy)
   {
     v6 = CACurrentMediaTime();
     v7 = v6 - self->_headingUpdateTime;
     if (v7 < 0.2)
     {
-      [(MKLocationManager *)self setThrottledHeading:v5];
+      [(MKLocationManager *)self setThrottledHeading:headingCopy];
       if (!self->_headingThrottlingTimer)
       {
         objc_initWeak(&location, self);
@@ -2859,7 +2859,7 @@ void __57__MKLocationManager_isLocationServicesPossiblyAvailable___block_invoke(
       self->_headingThrottlingTimer = 0;
 
       [(MKLocationManager *)self setThrottledHeading:0];
-      objc_storeStrong(&self->_heading, a3);
+      objc_storeStrong(&self->_heading, heading);
       if (self->_heading)
       {
         [(MKLocationManager *)self _reportHeadingSuccess];
@@ -2876,15 +2876,15 @@ void __32__MKLocationManager_setHeading___block_invoke(uint64_t a1)
   [v2 setHeading:v1];
 }
 
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3 completion:(id)a4
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(MKLocationManager *)self isAuthorizedForPreciseLocation]|| ![(MKLocationManager *)self isLocationServicesApproved])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -2897,15 +2897,15 @@ void __32__MKLocationManager_setHeading___block_invoke(uint64_t a1)
     location[5] = self;
     geo_isolate_sync();
     objc_initWeak(location, self);
-    v8 = [(MKLocationManager *)self locationProvider];
+    locationProvider = [(MKLocationManager *)self locationProvider];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPurposeKey_completion___block_invoke_2;
     v9[3] = &unk_1E76C6CF8;
     objc_copyWeak(&v11, location);
     v9[4] = self;
-    v10 = v7;
-    [v8 requestTemporaryPreciseLocationAuthorizationWithPurposeKey:v6 completion:v9];
+    v10 = completionCopy;
+    [locationProvider requestTemporaryPreciseLocationAuthorizationWithPurposeKey:keyCopy completion:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(location);
@@ -2991,21 +2991,21 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
 
 - (void)requestWhenInUseAuthorization
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 requestWhenInUseAuthorization];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider requestWhenInUseAuthorization];
 }
 
-- (void)setHeadingOrientation:(int64_t)a3
+- (void)setHeadingOrientation:(int64_t)orientation
 {
-  v4 = [(MKLocationManager *)self locationProvider];
-  [v4 setHeadingOrientation:a3];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider setHeadingOrientation:orientation];
 }
 
 - (GEOLocation)courseCorrectedLocation
 {
   v3 = MEMORY[0x1E69A1E70];
-  v4 = [(MKLocationManager *)self lastLocation];
-  v5 = [v3 locationWithCLLocation:v4 course:self->_navCourse];
+  lastLocation = [(MKLocationManager *)self lastLocation];
+  v5 = [v3 locationWithCLLocation:lastLocation course:self->_navCourse];
 
   return v5;
 }
@@ -3014,8 +3014,8 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
 {
   if ([(MKLocationManager *)self isLocationServicesApproved]&& [(MKLocationManager *)self hasLocation])
   {
-    v3 = [(MKLocationManager *)self lastLocation];
-    v4 = [v3 snapToResolution:3000.0];
+    lastLocation = [(MKLocationManager *)self lastLocation];
+    v4 = [lastLocation snapToResolution:3000.0];
     [v4 coordinate];
     v6 = v5;
     v8 = v7;
@@ -3031,20 +3031,20 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
   return v9;
 }
 
-- (void)setLastLocation:(id)a3
+- (void)setLastLocation:(id)location
 {
-  v6 = a3;
+  locationCopy = location;
   [(NSLock *)self->_lastLocationLock lock];
-  if (self->_lastLocation != v6)
+  if (self->_lastLocation != locationCopy)
   {
-    objc_storeStrong(&self->_lastLocation, a3);
+    objc_storeStrong(&self->_lastLocation, location);
     [(CLLocation *)self->_lastLocation _navigation_setGtLog:1];
   }
 
-  [(CLLocation *)v6 horizontalAccuracy];
+  [(CLLocation *)locationCopy horizontalAccuracy];
   if (v5 <= 200.0)
   {
-    objc_storeStrong(&self->_lastGoodLocation, a3);
+    objc_storeStrong(&self->_lastGoodLocation, location);
   }
 
   [(NSLock *)self->_lastLocationLock unlock];
@@ -3054,15 +3054,15 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MKLocationProvider *)self->_locationProvider lastLocation];
+    lastLocation = [(MKLocationProvider *)self->_locationProvider lastLocation];
   }
 
   else
   {
-    v3 = 0;
+    lastLocation = 0;
   }
 
-  return v3;
+  return lastLocation;
 }
 
 - (CLLocation)lastGoodLocation
@@ -3074,26 +3074,26 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
   return v3;
 }
 
-- (void)setLocationProvider:(id)a3
+- (void)setLocationProvider:(id)provider
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  providerCopy = provider;
+  v6 = providerCopy;
   p_locationProvider = &self->_locationProvider;
-  if (self->_locationProvider != v5)
+  if (self->_locationProvider != providerCopy)
   {
-    if (v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (providerCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v8 = MKGetMKLocationManagerLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v16 = objc_opt_class();
+        selfCopy2 = objc_opt_class();
         v17 = 2048;
         v18 = v6;
         v19 = 2112;
-        v20 = self;
-        v9 = v16;
+        selfCopy = self;
+        v9 = selfCopy2;
         _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_INFO, "Setting location provider [%@](%p) for %@", buf, 0x20u);
       }
 
@@ -3104,7 +3104,7 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v16 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1A2EA0000, v11, OS_LOG_TYPE_INFO, "Replacing location provider: Stop updating location for %@", buf, 0xCu);
         }
 
@@ -3132,7 +3132,7 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
       [(NSLock *)self->_lastLocationLock unlock];
       if (v6)
       {
-        objc_storeStrong(&self->_locationProvider, a3);
+        objc_storeStrong(&self->_locationProvider, provider);
       }
 
       else
@@ -3147,69 +3147,69 @@ void *__91__MKLocationManager_requestTemporaryPreciseLocationAuthorizationWithPu
   }
 }
 
-- (void)setEffectiveBundleIdentifier:(id)a3
+- (void)setEffectiveBundleIdentifier:(id)identifier
 {
-  [(MKLocationProvider *)self->_locationProvider setEffectiveBundleIdentifier:a3];
+  [(MKLocationProvider *)self->_locationProvider setEffectiveBundleIdentifier:identifier];
 
   [(MKLocationManager *)self _syncLocationProviderWithTracking];
 }
 
-- (void)setEffectiveBundle:(id)a3
+- (void)setEffectiveBundle:(id)bundle
 {
-  [(MKLocationProvider *)self->_locationProvider setEffectiveBundle:a3];
+  [(MKLocationProvider *)self->_locationProvider setEffectiveBundle:bundle];
 
   [(MKLocationManager *)self _syncLocationProviderWithTracking];
 }
 
 - (void)stopWaitingForAuthCallback
 {
-  v2 = [(MKLocationManager *)self locationProvider];
-  [v2 stopWaitingForAuthCallback];
+  locationProvider = [(MKLocationManager *)self locationProvider];
+  [locationProvider stopWaitingForAuthCallback];
 }
 
 - (BOOL)isLocationSimulated
 {
-  v2 = [(MKLocationManager *)self lastLocation];
-  v3 = [v2 sourceInformation];
-  v4 = [v3 isSimulatedBySoftware];
+  lastLocation = [(MKLocationManager *)self lastLocation];
+  sourceInformation = [lastLocation sourceInformation];
+  isSimulatedBySoftware = [sourceInformation isSimulatedBySoftware];
 
-  return v4;
+  return isSimulatedBySoftware;
 }
 
-- (void)setLocationRecorder:(id)a3
+- (void)setLocationRecorder:(id)recorder
 {
-  v5 = a3;
-  if (self->_locationRecorder != v5)
+  recorderCopy = recorder;
+  if (self->_locationRecorder != recorderCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_locationRecorder, a3);
+    v6 = recorderCopy;
+    objc_storeStrong(&self->_locationRecorder, recorder);
     [(MNLocationRecorder *)self->_locationRecorder recordInitialCourse:self->_navCourse];
-    v5 = v6;
+    recorderCopy = v6;
   }
 }
 
-- (void)setLocationCorrector:(id)a3
+- (void)setLocationCorrector:(id)corrector
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_locationCorrector != v4)
+  correctorCopy = corrector;
+  v5 = correctorCopy;
+  if (self->_locationCorrector != correctorCopy)
   {
-    v6 = [v4 copy];
+    v6 = [correctorCopy copy];
     locationCorrector = self->_locationCorrector;
     self->_locationCorrector = v6;
 
     if ([(MKLocationManager *)self hasLocation])
     {
-      v8 = [(MKLocationManager *)self lastLocation];
+      lastLocation = [(MKLocationManager *)self lastLocation];
       v9 = self->_locationCorrector;
       if (v9)
       {
-        v10 = v9[2](v9, v8, self->_navCourse);
+        v10 = v9[2](v9, lastLocation, self->_navCourse);
       }
 
       else
       {
-        if ([v8 isMemberOfClass:objc_opt_class()])
+        if ([lastLocation isMemberOfClass:objc_opt_class()])
         {
 LABEL_11:
 
@@ -3217,9 +3217,9 @@ LABEL_11:
         }
 
         v11 = objc_alloc(MEMORY[0x1E6985C40]);
-        if (v8)
+        if (lastLocation)
         {
-          [v8 clientLocation];
+          [lastLocation clientLocation];
         }
 
         else
@@ -3235,8 +3235,8 @@ LABEL_11:
           v13 = 0u;
         }
 
-        v12 = [v8 coarseMetaData];
-        v10 = [v11 initWithClientLocation:&v13 coarseMetaData:v12];
+        coarseMetaData = [lastLocation coarseMetaData];
+        v10 = [v11 initWithClientLocation:&v13 coarseMetaData:coarseMetaData];
       }
 
       [(MKLocationManager *)self setLastLocation:v10];
@@ -3248,37 +3248,37 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = [MKApplicationStateMonitor sharedInstance:a3];
-  v7 = [v6 isActive];
+  v6 = [MKApplicationStateMonitor sharedInstance:manager];
+  isActive = [v6 isActive];
 
-  if (self->_trackingLocation && ((v7 & 1) != 0 || self->_continuesWhileInactive))
+  if (self->_trackingLocation && ((isActive & 1) != 0 || self->_continuesWhileInactive))
   {
     v8 = MKGetMKLocationManagerLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_INFO, "didChangeActiveTileGroup: Stop then Start updating location for %@", &v11, 0xCu);
     }
 
-    v9 = [(MKLocationManager *)self locationProvider];
-    [v9 stopUpdatingLocation];
+    locationProvider = [(MKLocationManager *)self locationProvider];
+    [locationProvider stopUpdatingLocation];
 
-    v10 = [(MKLocationManager *)self locationProvider];
-    [v10 startUpdatingLocation];
+    locationProvider2 = [(MKLocationManager *)self locationProvider];
+    [locationProvider2 startUpdatingLocation];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69A2478] modernManager];
-  [v3 removeTileGroupObserver:self];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  [modernManager removeTileGroupObserver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5 = +[MKApplicationStateMonitor sharedInstance];
   [v5 stopObserving];
@@ -3290,9 +3290,9 @@ LABEL_12:
   [(MKLocationManager *)&v6 dealloc];
 }
 
-- (MKLocationManager)initWithCLLocationManager:(id)a3
+- (MKLocationManager)initWithCLLocationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = MKGetMKLocationManagerLog();
   if (os_signpost_enabled(v5))
   {
@@ -3305,12 +3305,12 @@ LABEL_12:
   v6 = [(MKLocationManager *)&v29 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = +[MKApplicationStateMonitor sharedInstance];
     [v8 startObserving];
 
-    [v7 addObserver:v6 selector:sel_applicationDidBecomeActive_ name:@"MKApplicationStateDidBecomeActiveNotification" object:0];
-    [v7 addObserver:v6 selector:sel_applicationWillResignActive_ name:@"MKApplicationStateWillResignActiveNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel_applicationDidBecomeActive_ name:@"MKApplicationStateDidBecomeActiveNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel_applicationWillResignActive_ name:@"MKApplicationStateWillResignActiveNotification" object:0];
     v6->_enabled = 1;
     v6->_initializedAuthorizationStatus.lock._os_unfair_lock_opaque = 0;
     v6->_initializedAuthorizationStatus.didRun = 0;
@@ -3334,13 +3334,13 @@ LABEL_12:
     accuracyAuthorizationIsolater = v6->_accuracyAuthorizationIsolater;
     v6->_accuracyAuthorizationIsolater = v17;
 
-    v19 = [MEMORY[0x1E696AAE8] mainBundle];
-    v20 = [v19 bundleIdentifier];
-    if ([v20 length])
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    if ([bundleIdentifier length])
     {
-      v21 = [MEMORY[0x1E696AAE8] mainBundle];
-      v22 = [v21 bundleIdentifier];
-      v6->_continuesWhileInactive = [&unk_1F1611F58 containsObject:v22];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+      v6->_continuesWhileInactive = [&unk_1F1611F58 containsObject:bundleIdentifier2];
     }
 
     else
@@ -3354,9 +3354,9 @@ LABEL_12:
     recentLocationUpdateIntervals = v6->_recentLocationUpdateIntervals;
     v6->_recentLocationUpdateIntervals = v23;
 
-    if (v4)
+    if (managerCopy)
     {
-      v25 = [[MKCoreLocationProvider alloc] initWithCLLocationManager:v4];
+      v25 = [[MKCoreLocationProvider alloc] initWithCLLocationManager:managerCopy];
       [(MKLocationManager *)v6 setLocationProvider:v25];
     }
 
@@ -3365,8 +3365,8 @@ LABEL_12:
       [(MKLocationManager *)v6 _useDefaultCoreLocationProvider];
     }
 
-    v26 = [MEMORY[0x1E69A2478] modernManager];
-    [v26 addTileGroupObserver:v6 queue:MEMORY[0x1E69E96A0]];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    [modernManager addTileGroupObserver:v6 queue:MEMORY[0x1E69E96A0]];
   }
 
   v27 = MKGetMKLocationManagerLog();

@@ -1,13 +1,13 @@
 @interface ICSystemPaperChromeLayerGenerator
 - (_TtC11MobileNotes33ICSystemPaperChromeLayerGenerator)init;
-- (id)generateChromeThumbnailsWithError:(id *)a3;
+- (id)generateChromeThumbnailsWithError:(id *)error;
 @end
 
 @implementation ICSystemPaperChromeLayerGenerator
 
-- (id)generateChromeThumbnailsWithError:(id *)a3
+- (id)generateChromeThumbnailsWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_10023764C();
 
   type metadata accessor for URL();

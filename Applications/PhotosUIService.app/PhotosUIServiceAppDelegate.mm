@@ -1,16 +1,16 @@
 @interface PhotosUIServiceAppDelegate
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation PhotosUIServiceAppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 role];
+  role = [sessionCopy role];
 
-  v8 = [v6 initWithName:0 sessionRole:v7];
+  v8 = [v6 initWithName:0 sessionRole:role];
 
   return v8;
 }

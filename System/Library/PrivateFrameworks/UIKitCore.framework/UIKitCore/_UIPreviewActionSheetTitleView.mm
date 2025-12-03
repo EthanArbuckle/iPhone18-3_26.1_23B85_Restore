@@ -1,33 +1,33 @@
 @interface _UIPreviewActionSheetTitleView
 - (UILabel)label;
-- (_UIPreviewActionSheetTitleView)initWithCoder:(id)a3;
-- (_UIPreviewActionSheetTitleView)initWithFrame:(CGRect)a3 title:(id)a4;
+- (_UIPreviewActionSheetTitleView)initWithCoder:(id)coder;
+- (_UIPreviewActionSheetTitleView)initWithFrame:(CGRect)frame title:(id)title;
 - (void)_updateLabelFont;
 - (void)dealloc;
 @end
 
 @implementation _UIPreviewActionSheetTitleView
 
-- (_UIPreviewActionSheetTitleView)initWithFrame:(CGRect)a3 title:(id)a4
+- (_UIPreviewActionSheetTitleView)initWithFrame:(CGRect)frame title:(id)title
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  titleCopy = title;
   v25.receiver = self;
   v25.super_class = _UIPreviewActionSheetTitleView;
-  v11 = [(UIView *)&v25 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(UIView *)&v25 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_title, a4);
+    objc_storeStrong(&height->_title, title);
     v13 = v12;
     v14 = [UILabel alloc];
     v15 = [(UILabel *)v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(UIView *)v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [(_UIPreviewActionSheetTitleView *)v13 title];
-    [(UILabel *)v15 setText:v16];
+    title = [(_UIPreviewActionSheetTitleView *)v13 title];
+    [(UILabel *)v15 setText:title];
 
     [(UILabel *)v15 setNumberOfLines:0];
     [(UILabel *)v15 setTextAlignment:1];
@@ -46,36 +46,36 @@
     [(UIView *)v13 addSubview:v15];
     [(_UIPreviewActionSheetTitleView *)v13 setLabel:v15];
     v18 = _NSDictionaryOfVariableBindings(&cfstr_Label.isa, v15, 0);
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:|-[label]-|" options:0 metrics:0 views:v18];
-    [v19 addObjectsFromArray:v20];
+    [array addObjectsFromArray:v20];
 
     v21 = [MEMORY[0x1E69977A0] constraintWithItem:v15 attribute:12 relatedBy:0 toItem:v13 attribute:3 multiplier:1.0 constant:25.0];
-    [v19 addObject:v21];
+    [array addObject:v21];
 
     v22 = [MEMORY[0x1E69977A0] constraintWithItem:v15 attribute:11 relatedBy:0 toItem:v13 attribute:11 multiplier:1.0 constant:-15.0];
-    [v19 addObject:v22];
+    [array addObject:v22];
 
-    [MEMORY[0x1E69977A0] activateConstraints:v19];
+    [MEMORY[0x1E69977A0] activateConstraints:array];
     [(_UIPreviewActionSheetTitleView *)v13 _updateLabelFont];
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v13 selector:sel__contentSizeChanged_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__contentSizeChanged_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
   }
 
   return v12;
 }
 
-- (_UIPreviewActionSheetTitleView)initWithCoder:(id)a3
+- (_UIPreviewActionSheetTitleView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIPreviewActionSheetTitleView;
-  return [(UIView *)&v4 initWithCoder:a3];
+  return [(UIView *)&v4 initWithCoder:coder];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIContentSizeCategoryDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIPreviewActionSheetTitleView;
@@ -85,8 +85,8 @@
 - (void)_updateLabelFont
 {
   v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleFootnote"];
-  v4 = [(_UIPreviewActionSheetTitleView *)self label];
-  [v4 setFont:v3];
+  label = [(_UIPreviewActionSheetTitleView *)self label];
+  [label setFont:v3];
 
   [(UIView *)self invalidateIntrinsicContentSize];
 }

@@ -1,39 +1,39 @@
 @interface ATLegacySyncSessionTask
-- (ATLegacySyncSessionTask)initWithDataClass:(id)a3;
-- (void)_finishWithError:(id)a3 shouldAddAssetTask:(BOOL)a4;
+- (ATLegacySyncSessionTask)initWithDataClass:(id)class;
+- (void)_finishWithError:(id)error shouldAddAssetTask:(BOOL)task;
 - (void)cancel;
-- (void)prepareWithHostAnchor:(id)a3 version:(id)a4;
-- (void)reconcileWithAnchor:(id)a3 syncType:(unsigned int)a4;
+- (void)prepareWithHostAnchor:(id)anchor version:(id)version;
+- (void)reconcileWithAnchor:(id)anchor syncType:(unsigned int)type;
 @end
 
 @implementation ATLegacySyncSessionTask
 
-- (void)_finishWithError:(id)a3 shouldAddAssetTask:(BOOL)a4
+- (void)_finishWithError:(id)error shouldAddAssetTask:(BOOL)task
 {
-  v4 = a4;
+  taskCopy = task;
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  errorCopy = error;
+  if (taskCopy)
   {
     v7 = [ATAssetSessionTask alloc];
-    v8 = [(ATSessionTask *)self dataClass];
-    v9 = [(ATAssetSessionTask *)v7 initWithDataClass:v8];
+    dataClass = [(ATSessionTask *)self dataClass];
+    v9 = [(ATAssetSessionTask *)v7 initWithDataClass:dataClass];
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(ATSessionTask *)self dataClass];
-    v12 = [v10 stringWithFormat:@"%@ sync", v11];
+    dataClass2 = [(ATSessionTask *)self dataClass];
+    v12 = [v10 stringWithFormat:@"%@ sync", dataClass2];
     [(ATSessionTask *)v9 setLocalizedDescription:v12];
 
     v13 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_29];
     [(ATAssetSessionTask *)v9 setFilterPredicate:v13];
 
-    v14 = [(ATSessionTask *)self session];
+    session = [(ATSessionTask *)self session];
     v16[0] = v9;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    [v14 addSessionTasks:v15];
+    [session addSessionTasks:v15];
   }
 
-  [(ATSessionTask *)self setError:v6];
+  [(ATSessionTask *)self setError:errorCopy];
   [(ATSessionTask *)self setFinished:1];
 }
 
@@ -62,11 +62,11 @@ LABEL_6:
   return v5;
 }
 
-- (void)reconcileWithAnchor:(id)a3 syncType:(unsigned int)a4
+- (void)reconcileWithAnchor:(id)anchor syncType:(unsigned int)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 == 3)
+  anchorCopy = anchor;
+  if (type == 3)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -81,9 +81,9 @@ LABEL_6:
     v7 = _ATLogCategoryiTunesSync();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ATSessionTask *)self dataClass];
+      dataClass = [(ATSessionTask *)self dataClass];
       *buf = 138543362;
-      v16 = v8;
+      v16 = dataClass;
       _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_DEFAULT, "Running reconcile phase for %{public}@", buf, 0xCu);
     }
 
@@ -94,8 +94,8 @@ LABEL_6:
     v11[2] = __56__ATLegacySyncSessionTask_reconcileWithAnchor_syncType___block_invoke;
     v11[3] = &unk_2784E4B30;
     v11[4] = self;
-    v14 = a4;
-    v12 = v6;
+    typeCopy = type;
+    v12 = anchorCopy;
     v13 = Current;
     dispatch_client_async(client, v11);
   }
@@ -207,18 +207,18 @@ uint64_t __56__ATLegacySyncSessionTask_reconcileWithAnchor_syncType___block_invo
   return result;
 }
 
-- (void)prepareWithHostAnchor:(id)a3 version:(id)a4
+- (void)prepareWithHostAnchor:(id)anchor version:(id)version
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  versionCopy = version;
   Current = CFAbsoluteTimeGetCurrent();
   v9 = objc_opt_respondsToSelector();
   client = self->_client;
   if (v9)
   {
     v21 = 0;
-    v11 = [(ATClient *)client prepareForSyncWithHostAnchor:v6 progressCallback:&__block_literal_global_1648 error:&v21];
+    v11 = [(ATClient *)client prepareForSyncWithHostAnchor:anchorCopy progressCallback:&__block_literal_global_1648 error:&v21];
     v12 = v21;
     if (v11)
     {
@@ -231,9 +231,9 @@ uint64_t __56__ATLegacySyncSessionTask_reconcileWithAnchor_syncType___block_invo
       goto LABEL_10;
     }
 
-    v14 = [(ATSessionTask *)self dataClass];
+    dataClass = [(ATSessionTask *)self dataClass];
     *buf = 138543618;
-    v23 = v14;
+    v23 = dataClass;
     v24 = 2114;
     v25 = *&v12;
 LABEL_9:
@@ -249,7 +249,7 @@ LABEL_10:
   {
     v15 = self->_client;
     v20 = 0;
-    v16 = [(ATClient *)v15 prepareForSyncWithHostAnchor:v6 progressCallback:&__block_literal_global_13 grappaID:[(ATLegacySyncSessionTask *)self grappaSessionID] hostVersion:v7 error:&v20];
+    v16 = [(ATClient *)v15 prepareForSyncWithHostAnchor:anchorCopy progressCallback:&__block_literal_global_13 grappaID:[(ATLegacySyncSessionTask *)self grappaSessionID] hostVersion:versionCopy error:&v20];
     v12 = v20;
     if (v16)
     {
@@ -262,9 +262,9 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v14 = [(ATSessionTask *)self dataClass];
+    dataClass = [(ATSessionTask *)self dataClass];
     *buf = 138543618;
-    v23 = v14;
+    v23 = dataClass;
     v24 = 2114;
     v25 = *&v12;
     goto LABEL_9;
@@ -276,9 +276,9 @@ LABEL_12:
   v18 = _ATLogCategoryiTunesSync();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(ATSessionTask *)self dataClass];
+    dataClass2 = [(ATSessionTask *)self dataClass];
     *buf = 138543618;
-    v23 = v19;
+    v23 = dataClass2;
     v24 = 2048;
     v25 = v17 - Current;
     _os_log_impl(&dword_223819000, v18, OS_LOG_TYPE_DEFAULT, "---%{public}@ Prep Time: %.1fs---", buf, 0x16u);
@@ -335,16 +335,16 @@ uint64_t __33__ATLegacySyncSessionTask_cancel__block_invoke_2(uint64_t a1)
   return [v2 setFinished:1];
 }
 
-- (ATLegacySyncSessionTask)initWithDataClass:(id)a3
+- (ATLegacySyncSessionTask)initWithDataClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   v14.receiver = self;
   v14.super_class = ATLegacySyncSessionTask;
-  v5 = [(ATSessionTask *)&v14 initWithDataClass:v4];
+  v5 = [(ATSessionTask *)&v14 initWithDataClass:classCopy];
   if (v5)
   {
     v6 = +[ATClientController sharedInstance];
-    v7 = [v6 clientForDataclass:v4];
+    v7 = [v6 clientForDataclass:classCopy];
     client = v5->_client;
     v5->_client = v7;
 
@@ -354,7 +354,7 @@ uint64_t __33__ATLegacySyncSessionTask_cancel__block_invoke_2(uint64_t a1)
     queue = v5->_queue;
     v5->_queue = v11;
 
-    [(ATSessionTask *)v5 setLocalizedDescription:v4];
+    [(ATSessionTask *)v5 setLocalizedDescription:classCopy];
   }
 
   return v5;

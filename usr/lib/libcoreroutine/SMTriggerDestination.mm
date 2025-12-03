@@ -1,91 +1,91 @@
 @interface SMTriggerDestination
-+ (BOOL)validLocation:(id)a3;
-+ (double)crowFliesExpectedTravelTimeForTransportType:(unint64_t)a3 defaultsManager:(id)a4 distance:(double)a5;
-+ (double)distanceFromLocation:(id)a3 toLocation:(id)a4 withCalculator:(id)a5;
-+ (id)convertSMDirectionTransportTypeToString:(unint64_t)a3;
++ (BOOL)validLocation:(id)location;
++ (double)crowFliesExpectedTravelTimeForTransportType:(unint64_t)type defaultsManager:(id)manager distance:(double)distance;
++ (double)distanceFromLocation:(id)location toLocation:(id)toLocation withCalculator:(id)calculator;
++ (id)convertSMDirectionTransportTypeToString:(unint64_t)string;
 + (id)locationRequestOptions;
-+ (id)statusToString:(unint64_t)a3;
-+ (id)upperBoundEtaForDepartureDate:(id)a3 defaultsManager:(id)a4 mapsExpectedTravelTime:(double)a5 crowFliesExpectedTravelTime:(double)a6 etaScaleFactor:(double)a7;
-+ (unint64_t)convertSMDirectionTransportTypeToMKDirectionTransportType:(unint64_t)a3;
-+ (void)calculateDistanceToDestination:(id)a3 locationManager:(id)a4 distanceCalculator:(id)a5 queue:(id)a6 handler:(id)a7;
-+ (void)checkEligibilityOfDestination:(id)a3 locationManager:(id)a4 distanceCalculator:(id)a5 queue:(id)a6 completionHandler:(id)a7;
-+ (void)currentLocationWithLocationManager:(id)a3 queue:(id)a4 handler:(id)a5;
-+ (void)estimateEtaToDestination:(id)a3 transportType:(unint64_t)a4 locationManager:(id)a5 defaultsManager:(id)a6 distanceCalculator:(id)a7 queue:(id)a8 handler:(id)a9;
-+ (void)expectedTravelTimeforTransportType:(unint64_t)a3 source:(id)a4 defaultsManager:(id)a5 destination:(id)a6 departureDate:(id)a7 distanceCalculator:(id)a8 queue:(id)a9 completionHandler:(id)a10;
-+ (void)mapsExpectedTravelTimeforTransportType:(unint64_t)a3 source:(id)a4 destination:(id)a5 departureDate:(id)a6 queue:(id)a7 handler:(id)a8;
-+ (void)updateSMTriggerDestinationTransportTypeToAvgSpeedWithDefaultsManager:(id)a3;
-- (BOOL)_isExceedingUpperBoundEta:(id)a3 mapsExpectedTravelTime:(double)a4 crowFliesExpectedTravelTime:(double)a5;
++ (id)statusToString:(unint64_t)string;
++ (id)upperBoundEtaForDepartureDate:(id)date defaultsManager:(id)manager mapsExpectedTravelTime:(double)time crowFliesExpectedTravelTime:(double)travelTime etaScaleFactor:(double)factor;
++ (unint64_t)convertSMDirectionTransportTypeToMKDirectionTransportType:(unint64_t)type;
++ (void)calculateDistanceToDestination:(id)destination locationManager:(id)manager distanceCalculator:(id)calculator queue:(id)queue handler:(id)handler;
++ (void)checkEligibilityOfDestination:(id)destination locationManager:(id)manager distanceCalculator:(id)calculator queue:(id)queue completionHandler:(id)handler;
++ (void)currentLocationWithLocationManager:(id)manager queue:(id)queue handler:(id)handler;
++ (void)estimateEtaToDestination:(id)destination transportType:(unint64_t)type locationManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator queue:(id)queue handler:(id)handler;
++ (void)expectedTravelTimeforTransportType:(unint64_t)type source:(id)source defaultsManager:(id)manager destination:(id)destination departureDate:(id)date distanceCalculator:(id)calculator queue:(id)queue completionHandler:(id)self0;
++ (void)mapsExpectedTravelTimeforTransportType:(unint64_t)type source:(id)source destination:(id)destination departureDate:(id)date queue:(id)queue handler:(id)handler;
++ (void)updateSMTriggerDestinationTransportTypeToAvgSpeedWithDefaultsManager:(id)manager;
+- (BOOL)_isExceedingUpperBoundEta:(id)eta mapsExpectedTravelTime:(double)time crowFliesExpectedTravelTime:(double)travelTime;
 - (BOOL)_isNoProgressStatus;
-- (BOOL)_shouldChangeModeOfTransportStartDate:(id)a3 endDate:(id)a4;
-- (BOOL)_shouldUpdateCoarseEta:(id)a3;
-- (BOOL)_shouldUpdateUpperBoundEtaWithRemainingDistance:(double)a3 mapsExpectedTravelTime:(double)a4;
-- (SMTriggerDestination)initWithQueue:(id)a3 defaultsManager:(id)a4 dataProtectionManager:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 distanceCalculator:(id)a8 platform:(id)a9 sessionStore:(id)a10 timerManager:(id)a11 sessionMetricManager:(id)a12;
+- (BOOL)_shouldChangeModeOfTransportStartDate:(id)date endDate:(id)endDate;
+- (BOOL)_shouldUpdateCoarseEta:(id)eta;
+- (BOOL)_shouldUpdateUpperBoundEtaWithRemainingDistance:(double)distance mapsExpectedTravelTime:(double)time;
+- (SMTriggerDestination)initWithQueue:(id)queue defaultsManager:(id)manager dataProtectionManager:(id)protectionManager locationManager:(id)locationManager motionActivityManager:(id)activityManager distanceCalculator:(id)calculator platform:(id)platform sessionStore:(id)self0 timerManager:(id)self1 sessionMetricManager:(id)self2;
 - (SMTriggerManagerProtocol)sessionMonitorDelegate;
 - (id)_cachedLocationsDateInterval;
-- (id)_locationAtDate:(id)a3 error:(id *)a4;
-- (id)_locationsInDateInterval:(id)a3 horizontalAccuracy:(double)a4 error:(id *)a5;
+- (id)_locationAtDate:(id)date error:(id *)error;
+- (id)_locationsInDateInterval:(id)interval horizontalAccuracy:(double)accuracy error:(id *)error;
 - (id)lastUserResponseSafeDate;
-- (unint64_t)_motionActivityTypeToTransportType:(unint64_t)a3 distance:(double)a4;
-- (unint64_t)_predominantMotionActicityTypeFromStartDate:(id)a3 toEndDate:(id)a4 outError:(id *)a5;
+- (unint64_t)_motionActivityTypeToTransportType:(unint64_t)type distance:(double)distance;
+- (unint64_t)_predominantMotionActicityTypeFromStartDate:(id)date toEndDate:(id)endDate outError:(id *)error;
 - (void)_addObservers;
 - (void)_bootstrap;
-- (void)_cacheLocations:(id)a3;
-- (void)_declareAnomalyForTriggerCategory:(unint64_t)a3;
-- (void)_evaluateStatusUsingCurrentLocation:(id)a3;
+- (void)_cacheLocations:(id)locations;
+- (void)_declareAnomalyForTriggerCategory:(unint64_t)category;
+- (void)_evaluateStatusUsingCurrentLocation:(id)location;
 - (void)_initializeETATimer;
-- (void)_initializeTimerWithIdentifier:(id)a3 fireAfterDelay:(double)a4;
-- (void)_modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)_onTimerExpiryForTimerIdentifier:(id)a3;
-- (void)_onUserTriggerResponse:(int64_t)a3;
+- (void)_initializeTimerWithIdentifier:(id)identifier fireAfterDelay:(double)delay;
+- (void)_modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)_onTimerExpiryForTimerIdentifier:(id)identifier;
+- (void)_onUserTriggerResponse:(int64_t)response;
 - (void)_persistState;
 - (void)_postStateChange;
-- (void)_processDataProtectionNotification:(id)a3;
-- (void)_processLocationNotification:(id)a3;
+- (void)_processDataProtectionNotification:(id)notification;
+- (void)_processLocationNotification:(id)notification;
 - (void)_removeObservers;
 - (void)_removeTimers;
 - (void)_reviseCachedLocations;
 - (void)_setup;
-- (void)_startMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)_stopMonitoringWithHandler:(id)a3;
-- (void)_tearDownTimerWithIdentifier:(id)a3;
-- (void)_updateCoarseEtaWithMapsExpectedTravelTime:(double)a3 crowFliesExpectedTravelTime:(double)a4;
+- (void)_startMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)_stopMonitoringWithHandler:(id)handler;
+- (void)_tearDownTimerWithIdentifier:(id)identifier;
+- (void)_updateCoarseEtaWithMapsExpectedTravelTime:(double)time crowFliesExpectedTravelTime:(double)travelTime;
 - (void)_updateInitiatorStatus;
-- (void)_updateInitiatorStatusDestinationBoundWithCompletion:(id)a3;
+- (void)_updateInitiatorStatusDestinationBoundWithCompletion:(id)completion;
 - (void)_updateInitiatorStatusRoundTrip;
-- (void)_updateTimerWithIdentifier:(id)a3 fireAfterDelay:(double)a4;
-- (void)modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)onLocationNotification:(id)a3;
-- (void)onUserTriggerResponse:(int64_t)a3;
+- (void)_updateTimerWithIdentifier:(id)identifier fireAfterDelay:(double)delay;
+- (void)modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)onLocationNotification:(id)notification;
+- (void)onUserTriggerResponse:(int64_t)response;
 - (void)postStateChange;
 - (void)setup;
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)stopMonitoringWithHandler:(id)a3;
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)stopMonitoringWithHandler:(id)handler;
 @end
 
 @implementation SMTriggerDestination
 
-- (SMTriggerDestination)initWithQueue:(id)a3 defaultsManager:(id)a4 dataProtectionManager:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 distanceCalculator:(id)a8 platform:(id)a9 sessionStore:(id)a10 timerManager:(id)a11 sessionMetricManager:(id)a12
+- (SMTriggerDestination)initWithQueue:(id)queue defaultsManager:(id)manager dataProtectionManager:(id)protectionManager locationManager:(id)locationManager motionActivityManager:(id)activityManager distanceCalculator:(id)calculator platform:(id)platform sessionStore:(id)self0 timerManager:(id)self1 sessionMetricManager:(id)self2
 {
   v50 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v38 = a4;
-  v18 = a4;
-  v39 = a5;
-  v43 = a5;
-  v40 = a6;
-  v19 = a6;
-  v41 = a7;
-  v20 = a7;
-  v42 = a8;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v46 = v17;
-  v44 = v25;
-  if (!v17)
+  queueCopy = queue;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  protectionManagerCopy = protectionManager;
+  protectionManagerCopy2 = protectionManager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  activityManagerCopy = activityManager;
+  activityManagerCopy2 = activityManager;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  platformCopy = platform;
+  storeCopy = store;
+  timerManagerCopy = timerManager;
+  metricManagerCopy = metricManager;
+  v46 = queueCopy;
+  v44 = metricManagerCopy;
+  if (!queueCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -95,14 +95,14 @@
     }
 
     v31 = 0;
-    v26 = v43;
+    v26 = protectionManagerCopy2;
     goto LABEL_41;
   }
 
-  if (!v18)
+  if (!managerCopy2)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v26 = v43;
+    v26 = protectionManagerCopy2;
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_40;
@@ -115,8 +115,8 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v26 = v43;
-  if (!v43)
+  v26 = protectionManagerCopy2;
+  if (!protectionManagerCopy2)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -129,7 +129,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (!v19)
+  if (!locationManagerCopy2)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -142,7 +142,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (!v20)
+  if (!activityManagerCopy2)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -155,7 +155,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (!v21)
+  if (!calculatorCopy2)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -168,7 +168,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (!v22)
+  if (!platformCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -181,7 +181,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (!v23)
+  if (!storeCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -194,7 +194,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (!v24)
+  if (!timerManagerCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -207,7 +207,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (!v25)
+  if (!metricManagerCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -221,7 +221,7 @@ LABEL_40:
 
     v31 = 0;
 LABEL_41:
-    v30 = self;
+    selfCopy = self;
     goto LABEL_42;
   }
 
@@ -243,30 +243,30 @@ LABEL_41:
   if (v28)
   {
     objc_storeStrong(&v28->_queue, obja);
-    objc_storeStrong(p_isa + 3, v38);
-    objc_storeStrong(p_isa + 4, v39);
-    objc_storeStrong(p_isa + 5, v40);
-    objc_storeStrong(p_isa + 6, v41);
-    objc_storeStrong(p_isa + 7, v42);
-    objc_storeStrong(p_isa + 8, a9);
-    objc_storeStrong(p_isa + 9, a10);
-    objc_storeStrong(p_isa + 12, a11);
-    objc_storeStrong(p_isa + 13, a12);
+    objc_storeStrong(p_isa + 3, managerCopy);
+    objc_storeStrong(p_isa + 4, protectionManagerCopy);
+    objc_storeStrong(p_isa + 5, locationManagerCopy);
+    objc_storeStrong(p_isa + 6, activityManagerCopy);
+    objc_storeStrong(p_isa + 7, calculatorCopy);
+    objc_storeStrong(p_isa + 8, platform);
+    objc_storeStrong(p_isa + 9, store);
+    objc_storeStrong(p_isa + 12, timerManager);
+    objc_storeStrong(p_isa + 13, metricManager);
     [p_isa setup];
   }
 
-  v30 = p_isa;
-  v31 = v30;
+  selfCopy = p_isa;
+  v31 = selfCopy;
 LABEL_42:
 
   return v31;
 }
 
-+ (void)updateSMTriggerDestinationTransportTypeToAvgSpeedWithDefaultsManager:(id)a3
++ (void)updateSMTriggerDestinationTransportTypeToAvgSpeedWithDefaultsManager:(id)manager
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"RTDefaultsSMTriggerDestinationAverageSpeedAnyKey" value:&unk_2845A21A8];
+  managerCopy = manager;
+  v4 = [managerCopy objectForKey:@"RTDefaultsSMTriggerDestinationAverageSpeedAnyKey" value:&unk_2845A21A8];
   [v4 doubleValue];
   v6 = v5;
 
@@ -289,7 +289,7 @@ LABEL_42:
     }
   }
 
-  v8 = [v3 objectForKey:@"RTDefaultsSMTriggerDestinationAverageDrivingSpeedKey" value:&unk_2845A21B8];
+  v8 = [managerCopy objectForKey:@"RTDefaultsSMTriggerDestinationAverageDrivingSpeedKey" value:&unk_2845A21B8];
   [v8 doubleValue];
   v10 = v9;
 
@@ -312,7 +312,7 @@ LABEL_42:
     }
   }
 
-  v12 = [v3 objectForKey:@"RTDefaultsSMTriggerDestinationAverageWalkingSpeedKey" value:&unk_2845A21C8];
+  v12 = [managerCopy objectForKey:@"RTDefaultsSMTriggerDestinationAverageWalkingSpeedKey" value:&unk_2845A21C8];
   [v12 doubleValue];
   v14 = v13;
 
@@ -335,7 +335,7 @@ LABEL_42:
     }
   }
 
-  v16 = [v3 objectForKey:@"RTDefaultsSMTriggerDestinationAverageTransitSpeedKey" value:&unk_2845A21D8];
+  v16 = [managerCopy objectForKey:@"RTDefaultsSMTriggerDestinationAverageTransitSpeedKey" value:&unk_2845A21D8];
   [v16 doubleValue];
   v18 = v17;
 
@@ -379,13 +379,13 @@ LABEL_42:
 
 - (void)setup
 {
-  v3 = [(SMTriggerDestination *)self queue];
+  queue = [(SMTriggerDestination *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__SMTriggerDestination_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
@@ -410,14 +410,14 @@ LABEL_42:
   [(SMTriggerDestination *)self setCachedLocationEvents:v5];
 
   [(SMTriggerDestination *)self setCoarseEta:0];
-  v6 = [(SMTriggerDestination *)self platform];
-  v7 = [v6 internalInstall];
+  platform = [(SMTriggerDestination *)self platform];
+  internalInstall = [platform internalInstall];
 
-  v8 = [(SMTriggerDestination *)self defaultsManager];
-  v9 = v8;
-  if (v7)
+  defaultsManager = [(SMTriggerDestination *)self defaultsManager];
+  v9 = defaultsManager;
+  if (internalInstall)
   {
-    v10 = [v8 objectForKey:@"RTDefaultsSMTriggerDestinationScaleFactorInternalKey" value:&unk_2845A21E8];
+    v10 = [defaultsManager objectForKey:@"RTDefaultsSMTriggerDestinationScaleFactorInternalKey" value:&unk_2845A21E8];
     [v10 doubleValue];
     [(SMTriggerDestination *)self setEtaScaleFactor:?];
 
@@ -449,7 +449,7 @@ LABEL_14:
 
   else
   {
-    v14 = [v8 objectForKey:@"RTDefaultsSMTriggerDestinationScaleFactorExternalKey" value:&unk_2845A21E8];
+    v14 = [defaultsManager objectForKey:@"RTDefaultsSMTriggerDestinationScaleFactorExternalKey" value:&unk_2845A21E8];
     [v14 doubleValue];
     [(SMTriggerDestination *)self setEtaScaleFactor:?];
 
@@ -477,8 +477,8 @@ LABEL_15:
     }
   }
 
-  v17 = [(SMTriggerDestination *)self defaultsManager];
-  v18 = [v17 objectForKey:@"RTDefaultsSMTriggerDestinationSignificantMoveThresholdKey" value:&unk_2845A21F8];
+  defaultsManager2 = [(SMTriggerDestination *)self defaultsManager];
+  v18 = [defaultsManager2 objectForKey:@"RTDefaultsSMTriggerDestinationSignificantMoveThresholdKey" value:&unk_2845A21F8];
   [v18 doubleValue];
   [(SMTriggerDestination *)self setSignificantMoveThreshold:?];
 
@@ -503,8 +503,8 @@ LABEL_15:
     }
   }
 
-  v22 = [(SMTriggerDestination *)self defaultsManager];
-  v23 = [v22 objectForKey:@"RTDefaultsSMTriggerDestinationIdleMaxDistanceThresholdKey" value:&unk_2845A2208];
+  defaultsManager3 = [(SMTriggerDestination *)self defaultsManager];
+  v23 = [defaultsManager3 objectForKey:@"RTDefaultsSMTriggerDestinationIdleMaxDistanceThresholdKey" value:&unk_2845A2208];
   [v23 doubleValue];
   [(SMTriggerDestination *)self setIdleMaxDistanceThreshold:?];
 
@@ -529,8 +529,8 @@ LABEL_15:
     }
   }
 
-  v27 = [(SMTriggerDestination *)self defaultsManager];
-  v28 = [v27 objectForKey:@"RTDefaultsSMTriggerDestinationStatusUpdateTimeIntervalKey" value:&unk_2845A2218];
+  defaultsManager4 = [(SMTriggerDestination *)self defaultsManager];
+  v28 = [defaultsManager4 objectForKey:@"RTDefaultsSMTriggerDestinationStatusUpdateTimeIntervalKey" value:&unk_2845A2218];
   [v28 doubleValue];
   [(SMTriggerDestination *)self setDestinationStatusUpdateTimeInterval:?];
 
@@ -555,8 +555,8 @@ LABEL_15:
     }
   }
 
-  v32 = [(SMTriggerDestination *)self defaultsManager];
-  v33 = [v32 objectForKey:@"RTDefaultsSMTriggerDestinationIdleTimeoutThresholdKey" value:&unk_2845A2228];
+  defaultsManager5 = [(SMTriggerDestination *)self defaultsManager];
+  v33 = [defaultsManager5 objectForKey:@"RTDefaultsSMTriggerDestinationIdleTimeoutThresholdKey" value:&unk_2845A2228];
   [v33 doubleValue];
   [(SMTriggerDestination *)self setIdleTimeoutThreshold:?];
 
@@ -581,8 +581,8 @@ LABEL_15:
     }
   }
 
-  v37 = [(SMTriggerDestination *)self defaultsManager];
-  v38 = [v37 objectForKey:@"RTDefaultsSMTriggerDestinationNoProgressTimeoutThresholdKey" value:&unk_2845A2228];
+  defaultsManager6 = [(SMTriggerDestination *)self defaultsManager];
+  v38 = [defaultsManager6 objectForKey:@"RTDefaultsSMTriggerDestinationNoProgressTimeoutThresholdKey" value:&unk_2845A2228];
   [v38 doubleValue];
   [(SMTriggerDestination *)self setNoProgressTimeoutThreshold:?];
 
@@ -607,8 +607,8 @@ LABEL_15:
     }
   }
 
-  v42 = [(SMTriggerDestination *)self defaultsManager];
-  v43 = [v42 objectForKey:@"RTDefaultsSMTriggerDestinationMinDistanceThresholdToUpdateEtaKey" value:&unk_2845A2238];
+  defaultsManager7 = [(SMTriggerDestination *)self defaultsManager];
+  v43 = [defaultsManager7 objectForKey:@"RTDefaultsSMTriggerDestinationMinDistanceThresholdToUpdateEtaKey" value:&unk_2845A2238];
   [v43 doubleValue];
   [(SMTriggerDestination *)self setMinDistanceUpdateThreshold:?];
 
@@ -633,8 +633,8 @@ LABEL_15:
     }
   }
 
-  v47 = [(SMTriggerDestination *)self defaultsManager];
-  v48 = [v47 objectForKey:@"RTDefaultsSMTriggerDestinationAverageSpeedAnyKey" value:&unk_2845A21A8];
+  defaultsManager8 = [(SMTriggerDestination *)self defaultsManager];
+  v48 = [defaultsManager8 objectForKey:@"RTDefaultsSMTriggerDestinationAverageSpeedAnyKey" value:&unk_2845A21A8];
   [v48 doubleValue];
   v50 = v49;
 
@@ -657,8 +657,8 @@ LABEL_15:
     }
   }
 
-  v52 = [(SMTriggerDestination *)self defaultsManager];
-  v53 = [v52 objectForKey:@"RTDefaultsSMTriggerDestinationAverageWalkingSpeedKey" value:&unk_2845A21C8];
+  defaultsManager9 = [(SMTriggerDestination *)self defaultsManager];
+  v53 = [defaultsManager9 objectForKey:@"RTDefaultsSMTriggerDestinationAverageWalkingSpeedKey" value:&unk_2845A21C8];
   [v53 doubleValue];
   v55 = v54;
 
@@ -681,8 +681,8 @@ LABEL_15:
     }
   }
 
-  v57 = [(SMTriggerDestination *)self defaultsManager];
-  v58 = [v57 objectForKey:@"RTDefaultsSMTriggerDestinationAverageDrivingSpeedKey" value:&unk_2845A21B8];
+  defaultsManager10 = [(SMTriggerDestination *)self defaultsManager];
+  v58 = [defaultsManager10 objectForKey:@"RTDefaultsSMTriggerDestinationAverageDrivingSpeedKey" value:&unk_2845A21B8];
   [v58 doubleValue];
   v60 = v59;
 
@@ -705,8 +705,8 @@ LABEL_15:
     }
   }
 
-  v62 = [(SMTriggerDestination *)self defaultsManager];
-  v63 = [v62 objectForKey:@"RTDefaultsSMTriggerDestinationAverageTransitSpeedKey" value:&unk_2845A21D8];
+  defaultsManager11 = [(SMTriggerDestination *)self defaultsManager];
+  v63 = [defaultsManager11 objectForKey:@"RTDefaultsSMTriggerDestinationAverageTransitSpeedKey" value:&unk_2845A21D8];
   [v63 doubleValue];
   v65 = v64;
 
@@ -766,11 +766,11 @@ LABEL_15:
     v3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(SMTriggerDestination *)self sessionConfiguration];
+      sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
       *buf = 136315395;
       *&buf[4] = "[SMTriggerDestination _bootstrap]";
       *&buf[12] = 2117;
-      *&buf[14] = v4;
+      *&buf[14] = sessionConfiguration;
       _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%s, configuration, %{sensitive}@", buf, 0x16u);
     }
   }
@@ -788,9 +788,9 @@ LABEL_15:
   v52 = __Block_byref_object_dispose__159;
   v53 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(SMTriggerDestination *)self sessionStore];
-  v7 = [(SMTriggerDestination *)self sessionConfiguration];
-  v8 = [v7 sessionID];
+  sessionStore = [(SMTriggerDestination *)self sessionStore];
+  sessionConfiguration2 = [(SMTriggerDestination *)self sessionConfiguration];
+  sessionID = [sessionConfiguration2 sessionID];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __34__SMTriggerDestination__bootstrap__block_invoke;
@@ -799,7 +799,7 @@ LABEL_15:
   v47 = &v48;
   v9 = v5;
   v45 = v9;
-  [v6 fetchTriggerDestinationStateWithSessionID:v8 handler:v44];
+  [sessionStore fetchTriggerDestinationStateWithSessionID:sessionID handler:v44];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -811,11 +811,11 @@ LABEL_15:
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_578];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -861,14 +861,14 @@ LABEL_12:
       v30 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v31 = [(SMTriggerDestination *)self sessionConfiguration];
-        v32 = [v31 sessionID];
-        v33 = [v32 UUIDString];
+        sessionConfiguration3 = [(SMTriggerDestination *)self sessionConfiguration];
+        sessionID2 = [sessionConfiguration3 sessionID];
+        uUIDString = [sessionID2 UUIDString];
         v34 = v49[5];
         *v54 = 136315650;
         *&v54[4] = "[SMTriggerDestination _bootstrap]";
         v55 = 2112;
-        v56 = v33;
+        v56 = uUIDString;
         v57 = 2112;
         v58 = v34;
         _os_log_impl(&dword_2304B3000, v30, OS_LOG_TYPE_INFO, "%s, Error while fetching triggerDestination state, session ID, %@, error, %@", v54, 0x20u);
@@ -884,15 +884,15 @@ LABEL_12:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         v36 = *(*&buf[8] + 40);
-        v37 = [(SMTriggerDestination *)self sessionConfiguration];
-        v38 = [v37 sessionID];
-        v39 = [v38 UUIDString];
+        sessionConfiguration4 = [(SMTriggerDestination *)self sessionConfiguration];
+        sessionID3 = [sessionConfiguration4 sessionID];
+        uUIDString2 = [sessionID3 UUIDString];
         *v54 = 136315650;
         *&v54[4] = "[SMTriggerDestination _bootstrap]";
         v55 = 2112;
         v56 = v36;
         v57 = 2112;
-        v58 = v39;
+        v58 = uUIDString2;
         _os_log_impl(&dword_2304B3000, v35, OS_LOG_TYPE_INFO, "%s, most recent triggerDestination state, %@, sessionID, %@", v54, 0x20u);
       }
     }
@@ -905,9 +905,9 @@ LABEL_12:
     else
     {
       v40 = objc_alloc(MEMORY[0x277D4AC30]);
-      v41 = [(SMTriggerDestination *)self sessionConfiguration];
-      v42 = [v41 sessionID];
-      v43 = [v40 initWithSessionIdentifier:v42];
+      sessionConfiguration5 = [(SMTriggerDestination *)self sessionConfiguration];
+      sessionID4 = [sessionConfiguration5 sessionID];
+      v43 = [v40 initWithSessionIdentifier:sessionID4];
       [(SMTriggerDestination *)self setTriggerState:v43];
 
       [(SMTriggerDestination *)self _persistState];
@@ -942,29 +942,29 @@ void __34__SMTriggerDestination__bootstrap__block_invoke(uint64_t a1, void *a2, 
   return v3;
 }
 
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMTriggerDestination *)self queue];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  queue = [(SMTriggerDestination *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__SMTriggerDestination_startMonitoringWithConfiguration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_startMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)_startMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
   v113[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 sessionType] != 2 && objc_msgSend(v6, "sessionType") != 3)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if ([configurationCopy sessionType] != 2 && objc_msgSend(configurationCopy, "sessionType") != 3)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -985,17 +985,17 @@ void __34__SMTriggerDestination__bootstrap__block_invoke(uint64_t a1, void *a2, 
       *buf = 136315395;
       v105 = "[SMTriggerDestination _startMonitoringWithConfiguration:handler:]";
       v106 = 2117;
-      v107 = v6;
+      v107 = configurationCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, configuration, %{sensitive}@", buf, 0x16u);
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v10 = +[SMDateUtility date];
-    v11 = [(SMTriggerDestination *)self sessionConfiguration];
-    v12 = [v11 sessionStartDate];
-    [v10 timeIntervalSinceDate:v12];
+    sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+    sessionStartDate = [sessionConfiguration sessionStartDate];
+    [v10 timeIntervalSinceDate:sessionStartDate];
     v14 = v13;
 
     if (v14 < 0.0)
@@ -1003,16 +1003,16 @@ void __34__SMTriggerDestination__bootstrap__block_invoke(uint64_t a1, void *a2, 
       v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v89 = [(SMTriggerDestination *)self sessionConfiguration];
-        v90 = [v89 sessionStartDate];
-        v91 = [v90 stringFromDate];
-        v92 = [v10 stringFromDate];
+        sessionConfiguration2 = [(SMTriggerDestination *)self sessionConfiguration];
+        sessionStartDate2 = [sessionConfiguration2 sessionStartDate];
+        stringFromDate = [sessionStartDate2 stringFromDate];
+        stringFromDate2 = [v10 stringFromDate];
         *buf = 136315650;
         v105 = "[SMTriggerDestination _startMonitoringWithConfiguration:handler:]";
         v106 = 2112;
-        v107 = v91;
+        v107 = stringFromDate;
         v108 = 2112;
-        v109 = v92;
+        v109 = stringFromDate2;
         _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%s, sessionStartDate, %@, larger than currentDate, %@", buf, 0x20u);
       }
 
@@ -1021,36 +1021,36 @@ void __34__SMTriggerDestination__bootstrap__block_invoke(uint64_t a1, void *a2, 
       v112 = *MEMORY[0x277CCA450];
       v113[0] = @"sessionStartDate is larger than currentDate";
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v113 forKeys:&v112 count:1];
-      v19 = [v16 errorWithDomain:v17 code:7 userInfo:v18];
+      _cachedLocationsDateInterval = [v16 errorWithDomain:v17 code:7 userInfo:v18];
 
-      v7[2](v7, v19);
+      handlerCopy[2](handlerCopy, _cachedLocationsDateInterval);
 LABEL_50:
 
       goto LABEL_51;
     }
 
     [(SMTriggerDestination *)self _setup];
-    [(SMTriggerDestination *)self setSessionConfiguration:v6];
+    [(SMTriggerDestination *)self setSessionConfiguration:configurationCopy];
     [(SMTriggerDestination *)self setOriginLocation:0];
     [(SMTriggerDestination *)self _bootstrap];
-    v20 = [(SMTriggerDestination *)self triggerState];
-    v21 = [v20 upperBoundEta];
+    triggerState = [(SMTriggerDestination *)self triggerState];
+    upperBoundEta = [triggerState upperBoundEta];
     v100 = v10;
-    if (v21)
+    if (upperBoundEta)
     {
-      v22 = v21;
+      sessionConfiguration3 = upperBoundEta;
       goto LABEL_25;
     }
 
-    v22 = [(SMTriggerDestination *)self sessionConfiguration];
-    v23 = [v22 destination];
-    v24 = [v23 eta];
+    sessionConfiguration3 = [(SMTriggerDestination *)self sessionConfiguration];
+    destination = [sessionConfiguration3 destination];
+    v24 = [destination eta];
     if (v24)
     {
       v25 = v24;
-      v26 = [(SMTriggerDestination *)self sessionConfiguration];
-      v27 = [v26 destination];
-      v28 = [v27 eta];
+      sessionConfiguration4 = [(SMTriggerDestination *)self sessionConfiguration];
+      destination2 = [sessionConfiguration4 destination];
+      v28 = [destination2 eta];
       [v28 additionalTravelTime];
       v30 = v29;
 
@@ -1060,30 +1060,30 @@ LABEL_50:
         goto LABEL_26;
       }
 
-      v31 = [(SMTriggerDestination *)self sessionConfiguration];
-      v32 = [v31 destination];
-      v33 = [v32 eta];
+      sessionConfiguration5 = [(SMTriggerDestination *)self sessionConfiguration];
+      destination3 = [sessionConfiguration5 destination];
+      v33 = [destination3 eta];
       [v33 expectedTravelTime];
       v35 = v34;
-      v36 = [(SMTriggerDestination *)self sessionConfiguration];
-      v37 = [v36 destination];
-      v38 = [v37 eta];
+      sessionConfiguration6 = [(SMTriggerDestination *)self sessionConfiguration];
+      destination4 = [sessionConfiguration6 destination];
+      v38 = [destination4 eta];
       [v38 additionalTravelTime];
       v40 = v35 + v39;
 
       v10 = v100;
       v41 = objc_opt_class();
-      v42 = [(SMTriggerDestination *)self defaultsManager];
+      defaultsManager = [(SMTriggerDestination *)self defaultsManager];
       [(SMTriggerDestination *)self etaScaleFactor];
-      v20 = [v41 upperBoundEtaForDepartureDate:v100 defaultsManager:v42 mapsExpectedTravelTime:v40 crowFliesExpectedTravelTime:v40 etaScaleFactor:v43];
+      triggerState = [v41 upperBoundEtaForDepartureDate:v100 defaultsManager:defaultsManager mapsExpectedTravelTime:v40 crowFliesExpectedTravelTime:v40 etaScaleFactor:v43];
 
-      v44 = [(SMTriggerDestination *)self triggerState];
-      [v44 setUpperBoundEta:v20];
+      triggerState2 = [(SMTriggerDestination *)self triggerState];
+      [triggerState2 setUpperBoundEta:triggerState];
 
       [(SMTriggerDestination *)self destinationStatusUpdateTimeInterval];
-      v22 = [v100 dateByAddingTimeInterval:?];
-      v45 = [(SMTriggerDestination *)self triggerState];
-      [v45 setTimeToUpdateStatus:v22];
+      sessionConfiguration3 = [v100 dateByAddingTimeInterval:?];
+      triggerState3 = [(SMTriggerDestination *)self triggerState];
+      [triggerState3 setTimeToUpdateStatus:sessionConfiguration3];
 
       [(SMTriggerDestination *)self _updateCoarseEtaWithMapsExpectedTravelTime:v40 crowFliesExpectedTravelTime:v40];
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1092,37 +1092,37 @@ LABEL_25:
 
 LABEL_26:
         [(SMTriggerDestination *)self _persistState];
-        v50 = [(SMTriggerDestination *)self sessionConfiguration];
-        v51 = [v50 destination];
-        v52 = [v51 eta];
+        sessionConfiguration7 = [(SMTriggerDestination *)self sessionConfiguration];
+        destination5 = [sessionConfiguration7 destination];
+        v52 = [destination5 eta];
         if (v52)
         {
           v53 = v52;
-          v54 = [(SMTriggerDestination *)self sessionConfiguration];
-          v55 = [v54 destination];
-          v56 = [v55 eta];
-          v57 = [v56 transportType];
+          sessionConfiguration8 = [(SMTriggerDestination *)self sessionConfiguration];
+          destination6 = [sessionConfiguration8 destination];
+          v56 = [destination6 eta];
+          transportType = [v56 transportType];
 
           v10 = v100;
-          if (v57 != 4)
+          if (transportType != 4)
           {
             goto LABEL_33;
           }
 
-          v58 = [(SMTriggerDestination *)self triggerState];
-          [v58 setPredominantModeOfTransport:4];
+          triggerState4 = [(SMTriggerDestination *)self triggerState];
+          [triggerState4 setPredominantModeOfTransport:4];
 
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             goto LABEL_33;
           }
 
-          v50 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-          if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
+          sessionConfiguration7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+          if (os_log_type_enabled(sessionConfiguration7, OS_LOG_TYPE_INFO))
           {
             *buf = 136315138;
             v105 = "[SMTriggerDestination _startMonitoringWithConfiguration:handler:]";
-            _os_log_impl(&dword_2304B3000, v50, OS_LOG_TYPE_INFO, "%s, user specified transport mode is transit", buf, 0xCu);
+            _os_log_impl(&dword_2304B3000, sessionConfiguration7, OS_LOG_TYPE_INFO, "%s, user specified transport mode is transit", buf, 0xCu);
           }
         }
 
@@ -1143,29 +1143,29 @@ LABEL_33:
         }
 
         v60 = objc_opt_class();
-        v61 = [(SMTriggerDestination *)self locationManager];
-        v62 = [(SMTriggerDestination *)self queue];
-        [v60 currentLocationWithLocationManager:v61 queue:v62 handler:&__block_literal_global_133];
+        locationManager = [(SMTriggerDestination *)self locationManager];
+        queue = [(SMTriggerDestination *)self queue];
+        [v60 currentLocationWithLocationManager:locationManager queue:queue handler:&__block_literal_global_133];
 
-        v19 = [(SMTriggerDestination *)self _cachedLocationsDateInterval];
+        _cachedLocationsDateInterval = [(SMTriggerDestination *)self _cachedLocationsDateInterval];
         v101 = 0;
-        v63 = [(SMTriggerDestination *)self _locationsInDateInterval:v19 horizontalAccuracy:&v101 error:200.0];
+        v63 = [(SMTriggerDestination *)self _locationsInDateInterval:_cachedLocationsDateInterval horizontalAccuracy:&v101 error:200.0];
         v64 = v101;
         if (v64)
         {
           v65 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
           {
-            v93 = [v19 startDate];
-            v94 = [v93 stringFromDate];
-            v95 = [v19 endDate];
-            v96 = [v95 stringFromDate];
+            startDate = [_cachedLocationsDateInterval startDate];
+            stringFromDate3 = [startDate stringFromDate];
+            endDate = [_cachedLocationsDateInterval endDate];
+            stringFromDate4 = [endDate stringFromDate];
             *buf = 136315650;
             v105 = "[SMTriggerDestination _startMonitoringWithConfiguration:handler:]";
             v106 = 2112;
-            v107 = v94;
+            v107 = stringFromDate3;
             v108 = 2112;
-            v109 = v96;
+            v109 = stringFromDate4;
             _os_log_error_impl(&dword_2304B3000, v65, OS_LOG_TYPE_ERROR, "%s, unable to fetch locations for startDate, %@, endDate, %@", buf, 0x20u);
 
             v10 = v100;
@@ -1178,35 +1178,35 @@ LABEL_33:
           v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
           v69 = [v66 errorWithDomain:v67 code:6 userInfo:v68];
 
-          v7[2](v7, v69);
+          handlerCopy[2](handlerCopy, v69);
         }
 
         else
         {
           [(SMTriggerDestination *)self _cacheLocations:v63];
           [(SMTriggerDestination *)self _addObservers];
-          v70 = [(SMTriggerDestination *)self triggerState];
-          v71 = [v70 timeToUpdateStatus];
+          triggerState5 = [(SMTriggerDestination *)self triggerState];
+          timeToUpdateStatus = [triggerState5 timeToUpdateStatus];
 
-          if (!v71)
+          if (!timeToUpdateStatus)
           {
             v72 = [v10 dateByAddingTimeInterval:1.0];
-            v73 = [(SMTriggerDestination *)self triggerState];
-            [v73 setTimeToUpdateStatus:v72];
+            triggerState6 = [(SMTriggerDestination *)self triggerState];
+            [triggerState6 setTimeToUpdateStatus:v72];
           }
 
-          v74 = [(SMTriggerDestination *)self triggerState];
-          v75 = [v74 timeToUpdateStatus];
-          [v75 timeIntervalSinceDate:v10];
+          triggerState7 = [(SMTriggerDestination *)self triggerState];
+          timeToUpdateStatus2 = [triggerState7 timeToUpdateStatus];
+          [timeToUpdateStatus2 timeIntervalSinceDate:v10];
           v77 = v76;
 
           [(SMTriggerDestination *)self _initializeTimerWithIdentifier:@"com.apple.routined.SMTriggerDestination.statusUpdateTimerIdentifier" fireAfterDelay:v77];
-          if ([v6 sessionType] == 3)
+          if ([configurationCopy sessionType] == 3)
           {
-            v78 = [(SMTriggerDestination *)self triggerState];
-            v79 = [v78 roundTripReminderDate];
-            v80 = [MEMORY[0x277CBEAA8] distantPast];
-            v81 = [v79 isEqualToDate:v80];
+            triggerState8 = [(SMTriggerDestination *)self triggerState];
+            roundTripReminderDate = [triggerState8 roundTripReminderDate];
+            distantPast = [MEMORY[0x277CBEAA8] distantPast];
+            v81 = [roundTripReminderDate isEqualToDate:distantPast];
 
             if (v81)
             {
@@ -1216,48 +1216,48 @@ LABEL_33:
 
             else
             {
-              v83 = [(SMTriggerDestination *)self triggerState];
-              v84 = [v83 roundTripReminderDate];
+              triggerState9 = [(SMTriggerDestination *)self triggerState];
+              roundTripReminderDate2 = [triggerState9 roundTripReminderDate];
               v10 = v100;
-              [v84 timeIntervalSinceDate:v100];
+              [roundTripReminderDate2 timeIntervalSinceDate:v100];
               v86 = v85;
 
               v82 = fmax(v86, 1.0);
             }
 
             v87 = [v10 dateByAddingTimeInterval:v82];
-            v88 = [(SMTriggerDestination *)self triggerState];
-            [v88 setRoundTripReminderDate:v87];
+            triggerState10 = [(SMTriggerDestination *)self triggerState];
+            [triggerState10 setRoundTripReminderDate:v87];
 
             [(SMTriggerDestination *)self _initializeTimerWithIdentifier:@"com.apple.routined.SMTriggerDestination.roundTripReminderTimerIdentifier" fireAfterDelay:v82];
           }
 
           [(SMTriggerDestination *)self _persistState];
-          v7[2](v7, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_50;
       }
 
-      v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+      destination = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+      if (os_log_type_enabled(destination, OS_LOG_TYPE_INFO))
       {
-        v99 = [(SMTriggerDestination *)self sessionConfiguration];
-        v46 = [v99 destination];
-        v98 = [(SMTriggerDestination *)self triggerState];
-        v47 = [v98 upperBoundEta];
-        v48 = [(SMTriggerDestination *)self triggerState];
-        v49 = [v48 timeToUpdateStatus];
-        v97 = [v49 stringFromDate];
+        sessionConfiguration9 = [(SMTriggerDestination *)self sessionConfiguration];
+        destination7 = [sessionConfiguration9 destination];
+        triggerState11 = [(SMTriggerDestination *)self triggerState];
+        upperBoundEta2 = [triggerState11 upperBoundEta];
+        triggerState12 = [(SMTriggerDestination *)self triggerState];
+        timeToUpdateStatus3 = [triggerState12 timeToUpdateStatus];
+        stringFromDate5 = [timeToUpdateStatus3 stringFromDate];
         *buf = 136315906;
         v105 = "[SMTriggerDestination _startMonitoringWithConfiguration:handler:]";
         v106 = 2112;
-        v107 = v46;
+        v107 = destination7;
         v108 = 2112;
-        v109 = v47;
+        v109 = upperBoundEta2;
         v110 = 2112;
-        v111 = v97;
-        _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_INFO, "%s, user-specified eta, %@, upperBoundETA, %@, timeToUpdateStatus, %@", buf, 0x2Au);
+        v111 = stringFromDate5;
+        _os_log_impl(&dword_2304B3000, destination, OS_LOG_TYPE_INFO, "%s, user-specified eta, %@, upperBoundETA, %@, timeToUpdateStatus, %@", buf, 0x2Au);
 
         v10 = v100;
       }
@@ -1298,29 +1298,29 @@ void __66__SMTriggerDestination__startMonitoringWithConfiguration_handler___bloc
   }
 }
 
-- (void)modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMTriggerDestination *)self queue];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  queue = [(SMTriggerDestination *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__SMTriggerDestination_modifyMonitoringWithConfiguration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)_modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 sessionType] != 2 && objc_msgSend(v6, "sessionType") != 3)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if ([configurationCopy sessionType] != 2 && objc_msgSend(configurationCopy, "sessionType") != 3)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1341,45 +1341,45 @@ void __66__SMTriggerDestination__startMonitoringWithConfiguration_handler___bloc
       v29 = 136315395;
       v30 = "[SMTriggerDestination _modifyMonitoringWithConfiguration:handler:]";
       v31 = 2117;
-      v32 = v6;
+      v32 = configurationCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, configuration, %{sensitive}@", &v29, 0x16u);
     }
   }
 
-  v10 = [(SMTriggerDestination *)self sessionConfiguration];
-  v11 = [v10 isEqual:v6];
+  sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+  v11 = [sessionConfiguration isEqual:configurationCopy];
 
   if (!v11)
   {
-    v13 = [(SMTriggerDestination *)self sessionConfiguration];
-    v14 = [v13 sessionID];
-    v15 = [v6 sessionID];
-    v16 = [v14 isEqual:v15];
+    sessionConfiguration2 = [(SMTriggerDestination *)self sessionConfiguration];
+    sessionID = [sessionConfiguration2 sessionID];
+    sessionID2 = [configurationCopy sessionID];
+    v16 = [sessionID isEqual:sessionID2];
 
     if (v16)
     {
-      v12 = [(SMTriggerDestination *)self triggerState];
-      [(SMTriggerDestination *)self _stopMonitoringWithHandler:v7];
+      triggerState = [(SMTriggerDestination *)self triggerState];
+      [(SMTriggerDestination *)self _stopMonitoringWithHandler:handlerCopy];
       v17 = objc_alloc(MEMORY[0x277D4AC30]);
-      v18 = [v6 sessionID];
-      v19 = [v17 initWithSessionIdentifier:v18];
+      sessionID3 = [configurationCopy sessionID];
+      v19 = [v17 initWithSessionIdentifier:sessionID3];
       [(SMTriggerDestination *)self setTriggerState:v19];
 
-      v20 = [v12 lastLockDate];
-      v21 = [(SMTriggerDestination *)self triggerState];
-      [v21 setLastLockDate:v20];
+      lastLockDate = [triggerState lastLockDate];
+      triggerState2 = [(SMTriggerDestination *)self triggerState];
+      [triggerState2 setLastLockDate:lastLockDate];
 
-      v22 = [v12 lastUnlockDate];
-      v23 = [(SMTriggerDestination *)self triggerState];
-      [v23 setLastUnlockDate:v22];
+      lastUnlockDate = [triggerState lastUnlockDate];
+      triggerState3 = [(SMTriggerDestination *)self triggerState];
+      [triggerState3 setLastUnlockDate:lastUnlockDate];
 
-      v24 = [v12 predominantModeOfTransport];
-      v25 = [(SMTriggerDestination *)self triggerState];
-      [v25 setPredominantModeOfTransport:v24];
+      predominantModeOfTransport = [triggerState predominantModeOfTransport];
+      triggerState4 = [(SMTriggerDestination *)self triggerState];
+      [triggerState4 setPredominantModeOfTransport:predominantModeOfTransport];
 
       [(SMTriggerDestination *)self _persistState];
       [(SMTriggerDestination *)self setOriginLocation:0];
-      [(SMTriggerDestination *)self _startMonitoringWithConfiguration:v6 handler:v7];
+      [(SMTriggerDestination *)self _startMonitoringWithConfiguration:configurationCopy handler:handlerCopy];
     }
 
     else
@@ -1389,19 +1389,19 @@ void __66__SMTriggerDestination__startMonitoringWithConfiguration_handler___bloc
         goto LABEL_17;
       }
 
-      v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+      triggerState = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+      if (os_log_type_enabled(triggerState, OS_LOG_TYPE_INFO))
       {
-        v26 = [(SMTriggerDestination *)self sessionConfiguration];
-        v27 = [v26 sessionID];
-        v28 = [v6 sessionID];
+        sessionConfiguration3 = [(SMTriggerDestination *)self sessionConfiguration];
+        sessionID4 = [sessionConfiguration3 sessionID];
+        sessionID5 = [configurationCopy sessionID];
         v29 = 136315650;
         v30 = "[SMTriggerDestination _modifyMonitoringWithConfiguration:handler:]";
         v31 = 2112;
-        v32 = v27;
+        v32 = sessionID4;
         v33 = 2112;
-        v34 = v28;
-        _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%s, Configuration modified for wrong session, current config sessionID, %@, modified config sessionID, %@", &v29, 0x20u);
+        v34 = sessionID5;
+        _os_log_impl(&dword_2304B3000, triggerState, OS_LOG_TYPE_INFO, "%s, Configuration modified for wrong session, current config sessionID, %@, modified config sessionID, %@", &v29, 0x20u);
       }
     }
 
@@ -1410,12 +1410,12 @@ void __66__SMTriggerDestination__startMonitoringWithConfiguration_handler___bloc
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    triggerState = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(triggerState, OS_LOG_TYPE_INFO))
     {
       v29 = 136315138;
       v30 = "[SMTriggerDestination _modifyMonitoringWithConfiguration:handler:]";
-      _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%s, Configuration did not change", &v29, 0xCu);
+      _os_log_impl(&dword_2304B3000, triggerState, OS_LOG_TYPE_INFO, "%s, Configuration did not change", &v29, 0xCu);
     }
 
 LABEL_16:
@@ -1424,24 +1424,24 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)stopMonitoringWithHandler:(id)a3
+- (void)stopMonitoringWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SMTriggerDestination *)self queue];
+  handlerCopy = handler;
+  queue = [(SMTriggerDestination *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SMTriggerDestination_stopMonitoringWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_stopMonitoringWithHandler:(id)a3
+- (void)_stopMonitoringWithHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1455,30 +1455,30 @@ LABEL_17:
 
   [(SMTriggerDestination *)self _removeObservers];
   [(SMTriggerDestination *)self _removeTimers];
-  v6 = [(SMTriggerDestination *)self cachedLocationEvents];
-  [v6 removeAllObjects];
+  cachedLocationEvents = [(SMTriggerDestination *)self cachedLocationEvents];
+  [cachedLocationEvents removeAllObjects];
 
   [(SMTriggerDestination *)self setTriggerState:0];
   [(SMTriggerDestination *)self setOriginLocation:0];
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)onUserTriggerResponse:(int64_t)a3
+- (void)onUserTriggerResponse:(int64_t)response
 {
-  v5 = [(SMTriggerDestination *)self queue];
+  queue = [(SMTriggerDestination *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__SMTriggerDestination_onUserTriggerResponse___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = response;
+  dispatch_async(queue, v6);
 }
 
-- (void)_onUserTriggerResponse:(int64_t)a3
+- (void)_onUserTriggerResponse:(int64_t)response
 {
   v10 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1486,7 +1486,7 @@ LABEL_17:
     v4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [MEMORY[0x277D4ABC8] userTriggerResponseToString:a3];
+      v5 = [MEMORY[0x277D4ABC8] userTriggerResponseToString:response];
       v6 = 136315394;
       v7 = "[SMTriggerDestination _onUserTriggerResponse:]";
       v8 = 2112;
@@ -1498,13 +1498,13 @@ LABEL_17:
 
 - (void)postStateChange
 {
-  v3 = [(SMTriggerDestination *)self queue];
+  queue = [(SMTriggerDestination *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__SMTriggerDestination_postStateChange__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_postStateChange
@@ -1525,33 +1525,33 @@ LABEL_17:
   }
 
   v5 = [SMTriggerNotification alloc];
-  v6 = [(SMTriggerDestination *)self triggerCategory];
+  triggerCategory = [(SMTriggerDestination *)self triggerCategory];
   v7 = +[SMDateUtility date];
-  v8 = [(SMTriggerNotification *)v5 initWithTriggerCategory:v6 SOSState:1 triggerName:@"SMTriggerDestination" date:v7 details:MEMORY[0x277CBEC10]];
+  v8 = [(SMTriggerNotification *)v5 initWithTriggerCategory:triggerCategory SOSState:1 triggerName:@"SMTriggerDestination" date:v7 details:MEMORY[0x277CBEC10]];
 
-  v9 = [(SMTriggerDestination *)self sessionMonitorDelegate];
-  [v9 onTriggerNotification:v8];
+  sessionMonitorDelegate = [(SMTriggerDestination *)self sessionMonitorDelegate];
+  [sessionMonitorDelegate onTriggerNotification:v8];
 }
 
-- (void)onLocationNotification:(id)a3
+- (void)onLocationNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __47__SMTriggerDestination_onLocationNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = notificationCopy;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(SMTriggerDestination *)self queue:v8];
   dispatch_async(v7, v6);
 }
 
-- (void)_processLocationNotification:(id)a3
+- (void)_processLocationNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1566,50 +1566,50 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 leechedLocations];
-    [(SMTriggerDestination *)self _cacheLocations:v6];
+    leechedLocations = [notificationCopy leechedLocations];
+    [(SMTriggerDestination *)self _cacheLocations:leechedLocations];
   }
 
   else
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    leechedLocations = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(leechedLocations, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v7) = 0;
-      _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: [notification isKindOfClass:[RTLocationManagerNotificationLocationsLeeched class]]", &v7, 2u);
+      _os_log_error_impl(&dword_2304B3000, leechedLocations, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: [notification isKindOfClass:[RTLocationManagerNotificationLocationsLeeched class]]", &v7, 2u);
     }
   }
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __53__SMTriggerDestination_onDataProtectionNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = notificationCopy;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(SMTriggerDestination *)self queue:v8];
   dispatch_async(v7, v6);
 }
 
-- (void)_processDataProtectionNotification:(id)a3
+- (void)_processDataProtectionNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 availability];
+    availability = [notificationCopy availability];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [RTDataProtectionManager encryptedDataAvailabilityToString:v5];
+        v7 = [RTDataProtectionManager encryptedDataAvailabilityToString:availability];
         v12 = 136315394;
         v13 = "[SMTriggerDestination _processDataProtectionNotification:]";
         v14 = 2112;
@@ -1618,16 +1618,16 @@ LABEL_17:
       }
     }
 
-    if (v5 == 1)
+    if (availability == 1)
     {
       v8 = +[SMDateUtility date];
-      v9 = [(SMTriggerDestination *)self triggerState];
-      [v9 setLastLockDate:v8];
+      triggerState = [(SMTriggerDestination *)self triggerState];
+      [triggerState setLastLockDate:v8];
     }
 
     else
     {
-      if ((v5 & 0xFFFFFFFFFFFFFFFELL) != 2)
+      if ((availability & 0xFFFFFFFFFFFFFFFELL) != 2)
       {
 LABEL_14:
         [(SMTriggerDestination *)self _persistState];
@@ -1635,8 +1635,8 @@ LABEL_14:
       }
 
       v8 = +[SMDateUtility date];
-      v9 = [(SMTriggerDestination *)self triggerState];
-      [v9 setLastUnlockDate:v8];
+      triggerState = [(SMTriggerDestination *)self triggerState];
+      [triggerState setLastUnlockDate:v8];
     }
 
     goto LABEL_14;
@@ -1645,21 +1645,21 @@ LABEL_14:
   v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [v4 name];
+    name = [notificationCopy name];
     v12 = 136315394;
     v13 = "[SMTriggerDestination _processDataProtectionNotification:]";
     v14 = 2112;
-    v15 = v11;
+    v15 = name;
     _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "%s, unknown notification name, %@", &v12, 0x16u);
   }
 
 LABEL_15:
 }
 
-- (void)_initializeTimerWithIdentifier:(id)a3 fireAfterDelay:(double)a4
+- (void)_initializeTimerWithIdentifier:(id)identifier fireAfterDelay:(double)delay
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1668,9 +1668,9 @@ LABEL_15:
       *buf = 136315650;
       v25 = "[SMTriggerDestination _initializeTimerWithIdentifier:fireAfterDelay:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = identifierCopy;
       v28 = 2048;
-      v29 = a4;
+      delayCopy = delay;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, timerIdentifier, %@, delay, %.1f", buf, 0x20u);
     }
   }
@@ -1678,22 +1678,22 @@ LABEL_15:
   objc_initWeak(&location, self);
   v8 = +[SMDateUtility date];
   timerManager = self->_timerManager;
-  v10 = [(SMTriggerDestination *)self queue];
+  queue = [(SMTriggerDestination *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___block_invoke;
   v19[3] = &unk_2788CF4E8;
-  v11 = v6;
+  v11 = identifierCopy;
   v20 = v11;
   v12 = v8;
   v21 = v12;
   objc_copyWeak(&v22, &location);
-  v13 = [(RTTimerManager *)timerManager xpcTimerAlarmWithIdentifier:v11 queue:v10 handler:v19];
+  v13 = [(RTTimerManager *)timerManager xpcTimerAlarmWithIdentifier:v11 queue:queue handler:v19];
 
-  v14 = [(SMTriggerDestination *)self timerIdentifierToTimers];
-  [v14 setObject:v13 forKey:v11];
+  timerIdentifierToTimers = [(SMTriggerDestination *)self timerIdentifierToTimers];
+  [timerIdentifierToTimers setObject:v13 forKey:v11];
 
-  v15 = [v12 dateByAddingTimeInterval:a4];
+  v15 = [v12 dateByAddingTimeInterval:delay];
   v18 = 0;
   [v13 fireWithDate:v15 error:&v18];
   v16 = v18;
@@ -1740,10 +1740,10 @@ void __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___
   [WeakRetained _onTimerExpiryForTimerIdentifier:*(a1 + 32)];
 }
 
-- (void)_updateTimerWithIdentifier:(id)a3 fireAfterDelay:(double)a4
+- (void)_updateTimerWithIdentifier:(id)identifier fireAfterDelay:(double)delay
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1752,21 +1752,21 @@ void __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___
       v8 = 136315650;
       v9 = "[SMTriggerDestination _updateTimerWithIdentifier:fireAfterDelay:]";
       v10 = 2112;
-      v11 = v6;
+      v11 = identifierCopy;
       v12 = 2048;
-      v13 = a4;
+      delayCopy = delay;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, timerIdentifier, %@, delay, %.2f", &v8, 0x20u);
     }
   }
 
-  [(SMTriggerDestination *)self _tearDownTimerWithIdentifier:v6];
-  [(SMTriggerDestination *)self _initializeTimerWithIdentifier:v6 fireAfterDelay:a4];
+  [(SMTriggerDestination *)self _tearDownTimerWithIdentifier:identifierCopy];
+  [(SMTriggerDestination *)self _initializeTimerWithIdentifier:identifierCopy fireAfterDelay:delay];
 }
 
-- (void)_onTimerExpiryForTimerIdentifier:(id)a3
+- (void)_onTimerExpiryForTimerIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1775,12 +1775,12 @@ void __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___
       v24 = 136315394;
       v25 = "[SMTriggerDestination _onTimerExpiryForTimerIdentifier:]";
       v26 = 2112;
-      v27 = v4;
+      v27 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, %@", &v24, 0x16u);
     }
   }
 
-  if (v4 == @"com.apple.routined.SMTriggerDestination.statusUpdateTimerIdentifier" || v4 == @"com.apple.routined.SMTriggerDestination.upperBoundETATimerIdentifier")
+  if (identifierCopy == @"com.apple.routined.SMTriggerDestination.statusUpdateTimerIdentifier" || identifierCopy == @"com.apple.routined.SMTriggerDestination.upperBoundETATimerIdentifier")
   {
     [(SMTriggerDestination *)self destinationStatusUpdateTimeInterval];
     [(SMTriggerDestination *)self _updateTimerWithIdentifier:@"com.apple.routined.SMTriggerDestination.statusUpdateTimerIdentifier" fireAfterDelay:?];
@@ -1788,8 +1788,8 @@ void __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___
     [(SMTriggerDestination *)self destinationStatusUpdateTimeInterval];
     v18 = [v17 dateByAddingTimeInterval:?];
 
-    v19 = [(SMTriggerDestination *)self triggerState];
-    [v19 setTimeToUpdateStatus:v18];
+    triggerState = [(SMTriggerDestination *)self triggerState];
+    [triggerState setTimeToUpdateStatus:v18];
 
     [(SMTriggerDestination *)self _persistState];
     [(SMTriggerDestination *)self _updateInitiatorStatus];
@@ -1797,19 +1797,19 @@ void __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___
 
   else
   {
-    if (v4 == @"com.apple.routined.SMTriggerDestination.roundTripReminderTimerIdentifier")
+    if (identifierCopy == @"com.apple.routined.SMTriggerDestination.roundTripReminderTimerIdentifier")
     {
-      v6 = [(SMTriggerDestination *)self triggerState];
-      v7 = [v6 lastUnlockDate];
-      v8 = [(SMTriggerDestination *)self triggerState];
-      v9 = [v8 roundTripReminderDate];
-      v10 = [v9 dateByAddingTimeInterval:-5400.0];
-      v11 = [v7 laterDate:v10];
+      triggerState2 = [(SMTriggerDestination *)self triggerState];
+      lastUnlockDate = [triggerState2 lastUnlockDate];
+      triggerState3 = [(SMTriggerDestination *)self triggerState];
+      roundTripReminderDate = [triggerState3 roundTripReminderDate];
+      v10 = [roundTripReminderDate dateByAddingTimeInterval:-5400.0];
+      v11 = [lastUnlockDate laterDate:v10];
 
       v12 = [v11 dateByAddingTimeInterval:5400.0];
-      v13 = [(SMTriggerDestination *)self triggerState];
-      v14 = [v13 roundTripReminderDate];
-      [v14 timeIntervalSinceDate:v12];
+      triggerState4 = [(SMTriggerDestination *)self triggerState];
+      roundTripReminderDate2 = [triggerState4 roundTripReminderDate];
+      [roundTripReminderDate2 timeIntervalSinceDate:v12];
       v16 = v15;
 
       if (v16 < 0.0)
@@ -1817,8 +1817,8 @@ void __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___
         v20 = +[SMDateUtility date];
         [v12 timeIntervalSinceDate:v20];
         v22 = v21;
-        v23 = [(SMTriggerDestination *)self triggerState];
-        [v23 setRoundTripReminderDate:v12];
+        triggerState5 = [(SMTriggerDestination *)self triggerState];
+        [triggerState5 setRoundTripReminderDate:v12];
 
         [(SMTriggerDestination *)self _persistState];
         [(SMTriggerDestination *)self _updateTimerWithIdentifier:@"com.apple.routined.SMTriggerDestination.roundTripReminderTimerIdentifier" fireAfterDelay:v22];
@@ -1831,16 +1831,16 @@ void __70__SMTriggerDestination__initializeTimerWithIdentifier_fireAfterDelay___
       [(SMTriggerDestination *)self _tearDownTimerWithIdentifier:@"com.apple.routined.SMTriggerDestination.statusUpdateTimerIdentifier"];
     }
 
-    [(SMTriggerDestination *)self _tearDownTimerWithIdentifier:v4];
+    [(SMTriggerDestination *)self _tearDownTimerWithIdentifier:identifierCopy];
   }
 
 LABEL_12:
 }
 
-- (void)_tearDownTimerWithIdentifier:(id)a3
+- (void)_tearDownTimerWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1849,22 +1849,22 @@ LABEL_12:
       v11 = 136315394;
       v12 = "[SMTriggerDestination _tearDownTimerWithIdentifier:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, %@", &v11, 0x16u);
     }
   }
 
-  v6 = [(SMTriggerDestination *)self timerIdentifierToTimers];
-  v7 = [v6 objectForKey:v4];
+  timerIdentifierToTimers = [(SMTriggerDestination *)self timerIdentifierToTimers];
+  v7 = [timerIdentifierToTimers objectForKey:identifierCopy];
 
   if (v7)
   {
-    v8 = [(SMTriggerDestination *)self timerIdentifierToTimers];
-    v9 = [v8 objectForKey:v4];
+    timerIdentifierToTimers2 = [(SMTriggerDestination *)self timerIdentifierToTimers];
+    v9 = [timerIdentifierToTimers2 objectForKey:identifierCopy];
     [v9 invalidate];
 
-    v10 = [(SMTriggerDestination *)self timerIdentifierToTimers];
-    [v10 removeObjectForKey:v4];
+    timerIdentifierToTimers3 = [(SMTriggerDestination *)self timerIdentifierToTimers];
+    [timerIdentifierToTimers3 removeObjectForKey:identifierCopy];
   }
 }
 
@@ -1886,10 +1886,10 @@ LABEL_12:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SMTriggerDestination *)self timerIdentifierToTimers];
-  v5 = [v4 allKeys];
+  timerIdentifierToTimers = [(SMTriggerDestination *)self timerIdentifierToTimers];
+  allKeys = [timerIdentifierToTimers allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1901,26 +1901,26 @@ LABEL_12:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(SMTriggerDestination *)self timerIdentifierToTimers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        timerIdentifierToTimers2 = [(SMTriggerDestination *)self timerIdentifierToTimers];
+        v12 = [timerIdentifierToTimers2 objectForKeyedSubscript:v10];
         [v12 invalidate];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v13 = [(SMTriggerDestination *)self timerIdentifierToTimers];
-  [v13 removeAllObjects];
+  timerIdentifierToTimers3 = [(SMTriggerDestination *)self timerIdentifierToTimers];
+  [timerIdentifierToTimers3 removeAllObjects];
 
   [(SMTriggerDestination *)self setTimerIdentifierToTimers:0];
 }
@@ -1939,13 +1939,13 @@ LABEL_12:
     }
   }
 
-  v4 = [(SMTriggerDestination *)self locationManager];
+  locationManager = [(SMTriggerDestination *)self locationManager];
   v5 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-  [v4 addObserver:self selector:sel_onLocationNotification_ name:v5];
+  [locationManager addObserver:self selector:sel_onLocationNotification_ name:v5];
 
-  v6 = [(SMTriggerDestination *)self dataProtectionManager];
+  dataProtectionManager = [(SMTriggerDestination *)self dataProtectionManager];
   v7 = +[(RTNotification *)RTDataProtectionManagerNotificationEncryptedDataAvailability];
-  [v6 addObserver:self selector:sel_onDataProtectionNotification_ name:v7];
+  [dataProtectionManager addObserver:self selector:sel_onDataProtectionNotification_ name:v7];
 }
 
 - (void)_removeObservers
@@ -1962,35 +1962,35 @@ LABEL_12:
     }
   }
 
-  v4 = [(SMTriggerDestination *)self locationManager];
-  [v4 removeObserver:self];
+  locationManager = [(SMTriggerDestination *)self locationManager];
+  [locationManager removeObserver:self];
 
-  v5 = [(SMTriggerDestination *)self dataProtectionManager];
-  [v5 removeObserver:self];
+  dataProtectionManager = [(SMTriggerDestination *)self dataProtectionManager];
+  [dataProtectionManager removeObserver:self];
 }
 
-+ (void)mapsExpectedTravelTimeforTransportType:(unint64_t)a3 source:(id)a4 destination:(id)a5 departureDate:(id)a6 queue:(id)a7 handler:(id)a8
++ (void)mapsExpectedTravelTimeforTransportType:(unint64_t)type source:(id)source destination:(id)destination departureDate:(id)date queue:(id)queue handler:(id)handler
 {
   v62 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v40 = a6;
-  v15 = a7;
-  v16 = a8;
+  sourceCopy = source;
+  destinationCopy = destination;
+  dateCopy = date;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v13 coordinateToString];
-      v19 = [v14 coordinateToString];
-      v20 = [objc_opt_class() convertSMDirectionTransportTypeToString:a3];
+      coordinateToString = [sourceCopy coordinateToString];
+      coordinateToString2 = [destinationCopy coordinateToString];
+      v20 = [objc_opt_class() convertSMDirectionTransportTypeToString:type];
       *buf = 136315907;
       v55 = "+[SMTriggerDestination mapsExpectedTravelTimeforTransportType:source:destination:departureDate:queue:handler:]";
       v56 = 2117;
-      v57 = v18;
+      v57 = coordinateToString;
       v58 = 2117;
-      v59 = v19;
+      v59 = coordinateToString2;
       v60 = 2112;
       v61 = v20;
       _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%s, source, %{sensitive}@, destination, %{sensitive}@, transportType, %@.", buf, 0x2Au);
@@ -1999,9 +1999,9 @@ LABEL_12:
 
   v39 = objc_alloc_init(RTDefaultsManager);
   v21 = [(RTDefaultsManager *)v39 objectForKey:@"RTDefaultsSMTriggerDestinationForceCrowFliesKey"];
-  v22 = [v21 BOOLValue];
+  bOOLValue = [v21 BOOLValue];
 
-  if (v22)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2025,37 +2025,37 @@ LABEL_12:
     block[2] = __110__SMTriggerDestination_mapsExpectedTravelTimeforTransportType_source_destination_departureDate_queue_handler___block_invoke;
     block[3] = &unk_2788C4D38;
     v50 = v27;
-    v51 = v16;
+    v51 = handlerCopy;
     v28 = v27;
-    dispatch_async(v15, block);
+    dispatch_async(queueCopy, block);
   }
 
   v29 = objc_opt_new();
-  v30 = [objc_alloc(MEMORY[0x277CD4F00]) initWithLocation:v13 addressDictionary:0 region:0 areasOfInterest:0];
-  v31 = [objc_alloc(MEMORY[0x277CD4F00]) initWithLocation:v14 addressDictionary:0 region:0 areasOfInterest:0];
+  v30 = [objc_alloc(MEMORY[0x277CD4F00]) initWithLocation:sourceCopy addressDictionary:0 region:0 areasOfInterest:0];
+  v31 = [objc_alloc(MEMORY[0x277CD4F00]) initWithLocation:destinationCopy addressDictionary:0 region:0 areasOfInterest:0];
   v32 = [objc_alloc(MEMORY[0x277CD4E80]) initWithPlacemark:v30];
   [v29 setSource:v32];
 
   v33 = [objc_alloc(MEMORY[0x277CD4E80]) initWithPlacemark:v31];
   [v29 setDestination:v33];
 
-  [v29 setTransportType:{+[SMTriggerDestination convertSMDirectionTransportTypeToMKDirectionTransportType:](SMTriggerDestination, "convertSMDirectionTransportTypeToMKDirectionTransportType:", a3)}];
-  [v29 setDepartureDate:v40];
+  [v29 setTransportType:{+[SMTriggerDestination convertSMDirectionTransportTypeToMKDirectionTransportType:](SMTriggerDestination, "convertSMDirectionTransportTypeToMKDirectionTransportType:", type)}];
+  [v29 setDepartureDate:dateCopy];
   v34 = [objc_alloc(MEMORY[0x277CD4DC0]) initWithRequest:v29];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __110__SMTriggerDestination_mapsExpectedTravelTimeforTransportType_source_destination_departureDate_queue_handler___block_invoke_2;
   v42[3] = &unk_2788D0A48;
-  v43 = v15;
-  v44 = v13;
-  v47 = a1;
-  v48 = a3;
-  v45 = v14;
-  v46 = v16;
-  v35 = v16;
-  v36 = v14;
-  v37 = v13;
-  v38 = v15;
+  v43 = queueCopy;
+  v44 = sourceCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v45 = destinationCopy;
+  v46 = handlerCopy;
+  v35 = handlerCopy;
+  v36 = destinationCopy;
+  v37 = sourceCopy;
+  v38 = queueCopy;
   [v34 calculateETAWithCompletionHandler:v42];
 }
 
@@ -2147,11 +2147,11 @@ uint64_t __110__SMTriggerDestination_mapsExpectedTravelTimeforTransportType_sour
   return (*(*(a1 + 64) + 16))(v4);
 }
 
-- (id)_locationsInDateInterval:(id)a3 horizontalAccuracy:(double)a4 error:(id *)a5
+- (id)_locationsInDateInterval:(id)interval horizontalAccuracy:(double)accuracy error:(id *)error
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
     *v46 = 0;
     v47 = v46;
@@ -2166,8 +2166,8 @@ uint64_t __110__SMTriggerDestination_mapsExpectedTravelTimeforTransportType_sour
     v44 = __Block_byref_object_dispose__159;
     v45 = 0;
     v9 = dispatch_semaphore_create(0);
-    v35 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:v8 horizontalAccuracy:1800 batchSize:0 boundingBoxLocation:a4];
-    v10 = [(SMTriggerDestination *)self locationManager];
+    v35 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:intervalCopy horizontalAccuracy:1800 batchSize:0 boundingBoxLocation:accuracy];
+    locationManager = [(SMTriggerDestination *)self locationManager];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __74__SMTriggerDestination__locationsInDateInterval_horizontalAccuracy_error___block_invoke;
@@ -2176,7 +2176,7 @@ uint64_t __110__SMTriggerDestination_mapsExpectedTravelTimeforTransportType_sour
     v39 = &v40;
     v11 = v9;
     v37 = v11;
-    [v10 fetchStoredLocationsWithOptions:v35 handler:v36];
+    [locationManager fetchStoredLocationsWithOptions:v35 handler:v36];
 
     v12 = v11;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -2188,11 +2188,11 @@ uint64_t __110__SMTriggerDestination_mapsExpectedTravelTimeforTransportType_sour
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_578];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -2228,18 +2228,18 @@ LABEL_13:
             *buf = 136315906;
             *&buf[4] = "[SMTriggerDestination _locationsInDateInterval:horizontalAccuracy:error:]";
             v53 = 2112;
-            v54 = v8;
+            v54 = intervalCopy;
             v55 = 2048;
-            v56 = a4;
+            accuracyCopy = accuracy;
             v57 = 2048;
             v58 = v33;
             _os_log_impl(&dword_2304B3000, v32, OS_LOG_TYPE_INFO, "%s, dateInterval, %@, horizontalAccuracy, %f, locations, %lu", buf, 0x2Au);
           }
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = *(v47 + 5);
+          *error = *(v47 + 5);
         }
 
         v30 = v41[5];
@@ -2267,10 +2267,10 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dateInterval", v46, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"dateInterval");
-    *a5 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else
@@ -2296,22 +2296,22 @@ void __74__SMTriggerDestination__locationsInDateInterval_horizontalAccuracy_erro
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_locationAtDate:(id)a3 error:(id *)a4
+- (id)_locationAtDate:(id)date error:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  dateCopy = date;
+  if (dateCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v6 stringFromDate];
+        stringFromDate = [dateCopy stringFromDate];
         *buf = 136315394;
         *&buf[4] = "[SMTriggerDestination _locationAtDate:error:]";
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = stringFromDate;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, date, %@", buf, 0x16u);
       }
     }
@@ -2329,7 +2329,7 @@ void __74__SMTriggerDestination__locationsInDateInterval_horizontalAccuracy_erro
     v44 = __Block_byref_object_dispose__159;
     v45 = 0;
     v9 = dispatch_semaphore_create(0);
-    v10 = [(SMTriggerDestination *)self locationManager];
+    locationManager = [(SMTriggerDestination *)self locationManager];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __46__SMTriggerDestination__locationAtDate_error___block_invoke;
@@ -2338,7 +2338,7 @@ void __74__SMTriggerDestination__locationsInDateInterval_horizontalAccuracy_erro
     v39 = &v40;
     v11 = v9;
     v37 = v11;
-    [v10 fetchEstimatedLocationAtDate:v6 options:0 handler:v36];
+    [locationManager fetchEstimatedLocationAtDate:dateCopy options:0 handler:v36];
 
     v12 = v11;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -2350,11 +2350,11 @@ void __74__SMTriggerDestination__locationsInDateInterval_horizontalAccuracy_erro
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_578];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -2386,19 +2386,19 @@ LABEL_17:
           v32 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v34 = [v6 stringFromDate];
+            stringFromDate2 = [dateCopy stringFromDate];
             v35 = *(*&buf[8] + 40);
             *v46 = 138412546;
-            *&v46[4] = v34;
+            *&v46[4] = stringFromDate2;
             v47 = 2112;
             v48 = v35;
             _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Unable to fetch location at date, %@, error, %@", v46, 0x16u);
           }
         }
 
-        if (a4)
+        if (error)
         {
-          *a4 = *(*&buf[8] + 40);
+          *error = *(*&buf[8] + 40);
         }
 
         v30 = v41[5];
@@ -2426,10 +2426,10 @@ LABEL_17:
     _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: date", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"date");
-    *a4 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else
@@ -2455,14 +2455,14 @@ void __46__SMTriggerDestination__locationAtDate_error___block_invoke(uint64_t a1
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_cacheLocations:(id)a3
+- (void)_cacheLocations:(id)locations
 {
   v28 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = locations;
   v4 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
@@ -2481,25 +2481,25 @@ void __46__SMTriggerDestination__locationAtDate_error___block_invoke(uint64_t a1
         v8 = *(*(&v23 + 1) + 8 * v7);
         if ([objc_opt_class() validLocation:v8])
         {
-          v9 = [(SMTriggerDestination *)self originLocation];
+          originLocation = [(SMTriggerDestination *)self originLocation];
 
-          if (!v9)
+          if (!originLocation)
           {
             [(SMTriggerDestination *)self setOriginLocation:v8];
           }
 
           [(SMTriggerDestination *)self _evaluateStatusUsingCurrentLocation:v8];
           v10 = objc_opt_class();
-          v11 = [(SMTriggerDestination *)self sessionConfiguration];
-          v12 = [v11 destination];
-          v13 = [v12 clLocation];
-          v14 = [(SMTriggerDestination *)self distanceCalculator];
-          [v10 distanceFromLocation:v8 toLocation:v13 withCalculator:v14];
+          sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+          destination = [sessionConfiguration destination];
+          clLocation = [destination clLocation];
+          distanceCalculator = [(SMTriggerDestination *)self distanceCalculator];
+          [v10 distanceFromLocation:v8 toLocation:clLocation withCalculator:distanceCalculator];
           v16 = v15;
 
           v17 = [[SMLocationEvent alloc] initWithLocation:v8 distance:v16];
-          v18 = [(SMTriggerDestination *)self cachedLocationEvents];
-          [v18 addObject:v17];
+          cachedLocationEvents = [(SMTriggerDestination *)self cachedLocationEvents];
+          [cachedLocationEvents addObject:v17];
         }
 
         ++v7;
@@ -2512,35 +2512,35 @@ void __46__SMTriggerDestination__locationAtDate_error___block_invoke(uint64_t a1
     while (v5);
   }
 
-  v19 = [(SMTriggerDestination *)self sessionMetricManager];
-  v20 = [(SMTriggerDestination *)self cachedLocationEvents];
-  v21 = [v20 lastObject];
-  [v21 distance];
-  [v19 cacheMostRecentLocationDistance:?];
+  sessionMetricManager = [(SMTriggerDestination *)self sessionMetricManager];
+  cachedLocationEvents2 = [(SMTriggerDestination *)self cachedLocationEvents];
+  lastObject = [cachedLocationEvents2 lastObject];
+  [lastObject distance];
+  [sessionMetricManager cacheMostRecentLocationDistance:?];
 }
 
 - (void)_reviseCachedLocations
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = [(SMTriggerDestination *)self cachedLocationEvents];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_185_0];
+  cachedLocationEvents = [(SMTriggerDestination *)self cachedLocationEvents];
+  v4 = [cachedLocationEvents sortedArrayUsingComparator:&__block_literal_global_185_0];
   v5 = [v4 mutableCopy];
   [(SMTriggerDestination *)self setCachedLocationEvents:v5];
 
-  v6 = [(SMTriggerDestination *)self _cachedLocationsDateInterval];
-  v7 = [(SMTriggerDestination *)self cachedLocationEvents];
-  if ([v7 count])
+  _cachedLocationsDateInterval = [(SMTriggerDestination *)self _cachedLocationsDateInterval];
+  cachedLocationEvents2 = [(SMTriggerDestination *)self cachedLocationEvents];
+  if ([cachedLocationEvents2 count])
   {
     v47 = objc_alloc(MEMORY[0x277CCA970]);
-    v45 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v8 = [v45 firstObject];
-    v9 = [v8 location];
-    v10 = [v9 timestamp];
-    v11 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v12 = [v11 lastObject];
-    v13 = [v12 location];
-    v14 = [v13 timestamp];
-    v48 = [v47 initWithStartDate:v10 endDate:v14];
+    cachedLocationEvents3 = [(SMTriggerDestination *)self cachedLocationEvents];
+    firstObject = [cachedLocationEvents3 firstObject];
+    location = [firstObject location];
+    timestamp = [location timestamp];
+    cachedLocationEvents4 = [(SMTriggerDestination *)self cachedLocationEvents];
+    lastObject = [cachedLocationEvents4 lastObject];
+    location2 = [lastObject location];
+    timestamp2 = [location2 timestamp];
+    v48 = [v47 initWithStartDate:timestamp endDate:timestamp2];
   }
 
   else
@@ -2550,18 +2550,18 @@ void __46__SMTriggerDestination__locationAtDate_error___block_invoke(uint64_t a1
 
   while (1)
   {
-    v15 = [(SMTriggerDestination *)self cachedLocationEvents];
-    if (![v15 count])
+    cachedLocationEvents5 = [(SMTriggerDestination *)self cachedLocationEvents];
+    if (![cachedLocationEvents5 count])
     {
       break;
     }
 
-    v16 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v17 = [v16 firstObject];
-    v18 = [v17 location];
-    v19 = [v18 timestamp];
-    v20 = [v6 startDate];
-    [v19 timeIntervalSinceDate:v20];
+    cachedLocationEvents6 = [(SMTriggerDestination *)self cachedLocationEvents];
+    firstObject2 = [cachedLocationEvents6 firstObject];
+    location3 = [firstObject2 location];
+    timestamp3 = [location3 timestamp];
+    startDate = [_cachedLocationsDateInterval startDate];
+    [timestamp3 timeIntervalSinceDate:startDate];
     v22 = v21;
 
     if (v22 >= 0.0)
@@ -2569,25 +2569,25 @@ void __46__SMTriggerDestination__locationAtDate_error___block_invoke(uint64_t a1
       goto LABEL_9;
     }
 
-    v23 = [(SMTriggerDestination *)self cachedLocationEvents];
-    [v23 removeObjectAtIndex:0];
+    cachedLocationEvents7 = [(SMTriggerDestination *)self cachedLocationEvents];
+    [cachedLocationEvents7 removeObjectAtIndex:0];
   }
 
 LABEL_9:
   while (1)
   {
-    v24 = [(SMTriggerDestination *)self cachedLocationEvents];
-    if (![v24 count])
+    cachedLocationEvents8 = [(SMTriggerDestination *)self cachedLocationEvents];
+    if (![cachedLocationEvents8 count])
     {
       break;
     }
 
-    v25 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v26 = [v25 lastObject];
-    v27 = [v26 location];
-    v28 = [v27 timestamp];
-    v29 = [v6 endDate];
-    [v28 timeIntervalSinceDate:v29];
+    cachedLocationEvents9 = [(SMTriggerDestination *)self cachedLocationEvents];
+    lastObject2 = [cachedLocationEvents9 lastObject];
+    location4 = [lastObject2 location];
+    timestamp4 = [location4 timestamp];
+    endDate = [_cachedLocationsDateInterval endDate];
+    [timestamp4 timeIntervalSinceDate:endDate];
     v31 = v30;
 
     if (v31 <= 0.0)
@@ -2595,25 +2595,25 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    v32 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v33 = [(SMTriggerDestination *)self cachedLocationEvents];
-    [v32 removeObjectAtIndex:{objc_msgSend(v33, "count") - 1}];
+    cachedLocationEvents10 = [(SMTriggerDestination *)self cachedLocationEvents];
+    cachedLocationEvents11 = [(SMTriggerDestination *)self cachedLocationEvents];
+    [cachedLocationEvents10 removeObjectAtIndex:{objc_msgSend(cachedLocationEvents11, "count") - 1}];
   }
 
 LABEL_13:
-  v34 = [(SMTriggerDestination *)self cachedLocationEvents];
-  if ([v34 count])
+  cachedLocationEvents12 = [(SMTriggerDestination *)self cachedLocationEvents];
+  if ([cachedLocationEvents12 count])
   {
     v35 = objc_alloc(MEMORY[0x277CCA970]);
-    v46 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v36 = [v46 firstObject];
-    v37 = [v36 location];
-    v38 = [v37 timestamp];
-    v39 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v40 = [v39 lastObject];
-    v41 = [v40 location];
-    v42 = [v41 timestamp];
-    v43 = [v35 initWithStartDate:v38 endDate:v42];
+    cachedLocationEvents13 = [(SMTriggerDestination *)self cachedLocationEvents];
+    firstObject3 = [cachedLocationEvents13 firstObject];
+    location5 = [firstObject3 location];
+    timestamp5 = [location5 timestamp];
+    cachedLocationEvents14 = [(SMTriggerDestination *)self cachedLocationEvents];
+    lastObject3 = [cachedLocationEvents14 lastObject];
+    location6 = [lastObject3 location];
+    timestamp6 = [location6 timestamp];
+    v43 = [v35 initWithStartDate:timestamp5 endDate:timestamp6];
   }
 
   else
@@ -2631,7 +2631,7 @@ LABEL_13:
       v51 = 2112;
       v52 = v48;
       v53 = 2112;
-      v54 = v6;
+      v54 = _cachedLocationsDateInterval;
       v55 = 2112;
       v56 = v43;
       _os_log_impl(&dword_2304B3000, v44, OS_LOG_TYPE_INFO, "%s, cachedLocations dateInterval pre-filter, %@, dateInterval of interest, %@, cachedLocations dateInterval post-filter, %@", buf, 0x2Au);
@@ -2652,29 +2652,29 @@ uint64_t __46__SMTriggerDestination__reviseCachedLocations__block_invoke(uint64_
   return v9;
 }
 
-- (void)_evaluateStatusUsingCurrentLocation:(id)a3
+- (void)_evaluateStatusUsingCurrentLocation:(id)location
 {
-  v18 = a3;
-  v4 = [(SMTriggerDestination *)self triggerState];
-  v5 = [v4 currentStatus];
+  locationCopy = location;
+  triggerState = [(SMTriggerDestination *)self triggerState];
+  currentStatus = [triggerState currentStatus];
 
-  if (v5 == 1)
+  if (currentStatus == 1)
   {
     v6 = objc_opt_class();
-    v7 = [(SMTriggerDestination *)self originLocation];
-    v8 = [(SMTriggerDestination *)self distanceCalculator];
-    [v6 distanceFromLocation:v7 toLocation:v18 withCalculator:v8];
+    originLocation = [(SMTriggerDestination *)self originLocation];
+    distanceCalculator = [(SMTriggerDestination *)self distanceCalculator];
+    [v6 distanceFromLocation:originLocation toLocation:locationCopy withCalculator:distanceCalculator];
     v10 = v9;
 
     if (v10 != 1.79769313e308)
     {
       [(SMTriggerDestination *)self idleMaxDistanceThreshold];
       v12 = v11;
-      v13 = [(SMTriggerDestination *)self originLocation];
-      [v13 horizontalAccuracy];
+      originLocation2 = [(SMTriggerDestination *)self originLocation];
+      [originLocation2 horizontalAccuracy];
       v15 = v14;
 
-      [v18 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       if (v15 >= v16)
       {
         v16 = v15;
@@ -2682,8 +2682,8 @@ uint64_t __46__SMTriggerDestination__reviseCachedLocations__block_invoke(uint64_
 
       if (v10 > v12 + v16)
       {
-        v17 = [(SMTriggerDestination *)self triggerState];
-        [v17 setCurrentStatus:2];
+        triggerState2 = [(SMTriggerDestination *)self triggerState];
+        [triggerState2 setCurrentStatus:2];
 
         [(SMTriggerDestination *)self _persistState];
       }
@@ -2691,11 +2691,11 @@ uint64_t __46__SMTriggerDestination__reviseCachedLocations__block_invoke(uint64_
   }
 }
 
-+ (BOOL)validLocation:(id)a3
++ (BOOL)validLocation:(id)location
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 horizontalAccuracy], v5 >= 0.0))
+  locationCopy = location;
+  v4 = locationCopy;
+  if (locationCopy && ([locationCopy horizontalAccuracy], v5 >= 0.0))
   {
     [v4 horizontalAccuracy];
     v6 = v7 <= 200.0;
@@ -2713,10 +2713,10 @@ uint64_t __46__SMTriggerDestination__reviseCachedLocations__block_invoke(uint64_
 {
   v124 = *MEMORY[0x277D85DE8];
   v3 = +[SMDateUtility date];
-  v4 = [(SMTriggerDestination *)self triggerState];
-  v5 = [v4 currentStatus];
+  triggerState = [(SMTriggerDestination *)self triggerState];
+  currentStatus = [triggerState currentStatus];
 
-  if (v5 == 1)
+  if (currentStatus == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2730,15 +2730,15 @@ LABEL_6:
 
       [(SMTriggerDestination *)self originLocation];
       v7 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v8 = [(SMTriggerDestination *)self cachedLocationEvents];
-      v9 = [v8 lastObject];
-      v10 = [v9 location];
+      cachedLocationEvents = [(SMTriggerDestination *)self cachedLocationEvents];
+      lastObject = [cachedLocationEvents lastObject];
+      location = [lastObject location];
       *buf = 136315651;
       v113 = "[SMTriggerDestination _isNoProgressStatus]";
       v114 = 2117;
       v115 = v7;
       v116 = 2117;
-      v117 = v10;
+      v117 = location;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, NO, has not transitioned from idle status yet, origin location, %{sensitive}@, last location, %{sensitive}@", buf, 0x20u);
 
 LABEL_5:
@@ -2748,13 +2748,13 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  v12 = [(SMTriggerDestination *)self cachedLocationEvents];
-  v13 = [v12 count];
+  cachedLocationEvents2 = [(SMTriggerDestination *)self cachedLocationEvents];
+  v13 = [cachedLocationEvents2 count];
 
   if (!v13)
   {
-    v30 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
-    [v3 timeIntervalSinceDate:v30];
+    lastUserResponseSafeDate = [(SMTriggerDestination *)self lastUserResponseSafeDate];
+    [v3 timeIntervalSinceDate:lastUserResponseSafeDate];
     v32 = v31;
     [(SMTriggerDestination *)self idleTimeoutThreshold];
     v34 = v33;
@@ -2774,18 +2774,18 @@ LABEL_5:
       v11 = 1;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v56 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
-        [v56 stringFromDate];
+        lastUserResponseSafeDate2 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
+        [lastUserResponseSafeDate2 stringFromDate];
         v57 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v58 = [v3 stringFromDate];
-        v59 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
-        [v3 timeIntervalSinceDate:v59];
+        stringFromDate = [v3 stringFromDate];
+        lastUserResponseSafeDate3 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
+        [v3 timeIntervalSinceDate:lastUserResponseSafeDate3];
         *buf = 136315906;
         v113 = "[SMTriggerDestination _isNoProgressStatus]";
         v114 = 2112;
         v115 = v57;
         v116 = 2112;
-        v117 = v58;
+        v117 = stringFromDate;
         v118 = 2048;
         v119 = v60;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, YES, empty cached locations, lastUserResponseSafeDate, %@, now, %@, timeInterval, %f", buf, 0x2Au);
@@ -2802,18 +2802,18 @@ LABEL_5:
         goto LABEL_6;
       }
 
-      v38 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
-      [v38 stringFromDate];
+      lastUserResponseSafeDate4 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
+      [lastUserResponseSafeDate4 stringFromDate];
       v7 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v39 = [v3 stringFromDate];
-      v40 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
-      [v3 timeIntervalSinceDate:v40];
+      stringFromDate2 = [v3 stringFromDate];
+      lastUserResponseSafeDate5 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
+      [v3 timeIntervalSinceDate:lastUserResponseSafeDate5];
       *buf = 136315906;
       v113 = "[SMTriggerDestination _isNoProgressStatus]";
       v114 = 2112;
       v115 = v7;
       v116 = 2112;
-      v117 = v39;
+      v117 = stringFromDate2;
       v118 = 2048;
       v119 = v41;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, NO, empty cached locations, lastUserResponseSafeDate, %@, now, %@, timeInterval, %f", buf, 0x2Au);
@@ -2826,48 +2826,48 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v14 = [(SMTriggerDestination *)self cachedLocationEvents];
-  v15 = [v14 lastObject];
-  v16 = [v15 location];
-  v17 = [v16 timestamp];
-  [v3 timeIntervalSinceDate:v17];
+  cachedLocationEvents3 = [(SMTriggerDestination *)self cachedLocationEvents];
+  lastObject2 = [cachedLocationEvents3 lastObject];
+  location2 = [lastObject2 location];
+  timestamp = [location2 timestamp];
+  [v3 timeIntervalSinceDate:timestamp];
   v19 = v18;
   [(SMTriggerDestination *)self noProgressTimeoutThreshold];
   v21 = v20;
 
   if (v19 <= v21)
   {
-    v42 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v43 = [v42 firstObject];
-    v44 = [v43 location];
-    v45 = [v44 timestamp];
-    [v3 timeIntervalSinceDate:v45];
+    cachedLocationEvents4 = [(SMTriggerDestination *)self cachedLocationEvents];
+    firstObject = [cachedLocationEvents4 firstObject];
+    location3 = [firstObject location];
+    timestamp2 = [location3 timestamp];
+    [v3 timeIntervalSinceDate:timestamp2];
     v47 = v46;
 
     [(SMTriggerDestination *)self noProgressTimeoutThreshold];
     if (v47 >= v48)
     {
-      v61 = [(SMTriggerDestination *)self cachedLocationEvents];
-      v62 = [v61 lastObject];
-      v63 = [v62 location];
-      v64 = [v63 timestamp];
+      cachedLocationEvents5 = [(SMTriggerDestination *)self cachedLocationEvents];
+      lastObject3 = [cachedLocationEvents5 lastObject];
+      location4 = [lastObject3 location];
+      timestamp3 = [location4 timestamp];
       [(SMTriggerDestination *)self noProgressTimeoutThreshold];
-      v6 = [v64 dateByAddingTimeInterval:-v65];
+      v6 = [timestamp3 dateByAddingTimeInterval:-v65];
 
       v66 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K >= %@", @"location", @"timestamp", v6];
-      v67 = [(SMTriggerDestination *)self cachedLocationEvents];
-      v68 = [v67 filteredArrayUsingPredicate:v66];
+      cachedLocationEvents6 = [(SMTriggerDestination *)self cachedLocationEvents];
+      v68 = [cachedLocationEvents6 filteredArrayUsingPredicate:v66];
 
       v110 = 0u;
       v111 = 0u;
       v108 = 0u;
       v109 = 0u;
       v103 = v68;
-      v69 = [v68 reverseObjectEnumerator];
-      v97 = [v69 countByEnumeratingWithState:&v108 objects:v123 count:16];
+      reverseObjectEnumerator = [v68 reverseObjectEnumerator];
+      v97 = [reverseObjectEnumerator countByEnumeratingWithState:&v108 objects:v123 count:16];
       if (v97)
       {
-        v99 = v69;
+        v99 = reverseObjectEnumerator;
         v101 = *v109;
         v95 = v66;
         v96 = v6;
@@ -2877,7 +2877,7 @@ LABEL_21:
           {
             if (*v109 != v101)
             {
-              objc_enumerationMutation(v69);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v71 = *(*(&v108 + 1) + 8 * i);
@@ -2906,13 +2906,13 @@ LABEL_33:
                   break;
                 }
 
-                v78 = [v71 location];
-                v79 = [v77 location];
-                [v78 distanceFromLocation:v79];
+                location5 = [v71 location];
+                location6 = [v77 location];
+                [location5 distanceFromLocation:location6];
                 v81 = v80;
-                [v78 horizontalAccuracy];
+                [location5 horizontalAccuracy];
                 v83 = v82;
-                [v79 horizontalAccuracy];
+                [location6 horizontalAccuracy];
                 v85 = v84;
                 [(SMTriggerDestination *)self significantMoveThreshold];
                 if (v83 >= v85)
@@ -2934,8 +2934,8 @@ LABEL_33:
                     v91 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
                     if (os_log_type_enabled(v91, OS_LOG_TYPE_INFO))
                     {
-                      v92 = [v78 toString];
-                      [v79 toString];
+                      toString = [location5 toString];
+                      [location6 toString];
                       v93 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
                       [(SMTriggerDestination *)self significantMoveThreshold];
                       *buf = 136316162;
@@ -2943,7 +2943,7 @@ LABEL_33:
                       v114 = 2048;
                       v115 = v81;
                       v116 = 2112;
-                      v117 = v92;
+                      v117 = toString;
                       v118 = 2112;
                       v119 = v93;
                       v120 = 2048;
@@ -2970,7 +2970,7 @@ LABEL_33:
               }
             }
 
-            v69 = v99;
+            reverseObjectEnumerator = v99;
           }
 
           v66 = v95;
@@ -2987,8 +2987,8 @@ LABEL_33:
         v88 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v88, OS_LOG_TYPE_INFO))
         {
-          v89 = [(SMTriggerDestination *)self cachedLocationEvents];
-          *&v90 = COERCE_DOUBLE([v89 count]);
+          cachedLocationEvents7 = [(SMTriggerDestination *)self cachedLocationEvents];
+          *&v90 = COERCE_DOUBLE([cachedLocationEvents7 count]);
           *buf = 136315650;
           v113 = "[SMTriggerDestination _isNoProgressStatus]";
           v114 = 2048;
@@ -3009,19 +3009,19 @@ LABEL_53:
       v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v49 = [(SMTriggerDestination *)self cachedLocationEvents];
-        v50 = [v49 firstObject];
-        v51 = [v50 location];
-        v52 = [v51 timestamp];
-        [v52 stringFromDate];
+        cachedLocationEvents8 = [(SMTriggerDestination *)self cachedLocationEvents];
+        firstObject2 = [cachedLocationEvents8 firstObject];
+        location7 = [firstObject2 location];
+        timestamp4 = [location7 timestamp];
+        [timestamp4 stringFromDate];
         v53 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v54 = [v3 stringFromDate];
+        stringFromDate3 = [v3 stringFromDate];
         *buf = 136315906;
         v113 = "[SMTriggerDestination _isNoProgressStatus]";
         v114 = 2112;
         v115 = v53;
         v116 = 2112;
-        v117 = v54;
+        v117 = stringFromDate3;
         v118 = 2048;
         v119 = v47;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, NO, short length cached locations from, %@, now, %@, timeInterval, %f", buf, 0x2Au);
@@ -3042,24 +3042,24 @@ LABEL_53:
   v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v102 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v100 = [v102 lastObject];
-    v98 = [v100 location];
-    v22 = [v98 timestamp];
-    [v22 stringFromDate];
+    cachedLocationEvents9 = [(SMTriggerDestination *)self cachedLocationEvents];
+    lastObject4 = [cachedLocationEvents9 lastObject];
+    location8 = [lastObject4 location];
+    timestamp5 = [location8 timestamp];
+    [timestamp5 stringFromDate];
     v23 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v24 = [v3 stringFromDate];
-    v25 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v26 = [v25 lastObject];
-    v27 = [v26 location];
-    v28 = [v27 timestamp];
-    [v3 timeIntervalSinceDate:v28];
+    stringFromDate4 = [v3 stringFromDate];
+    cachedLocationEvents10 = [(SMTriggerDestination *)self cachedLocationEvents];
+    lastObject5 = [cachedLocationEvents10 lastObject];
+    location9 = [lastObject5 location];
+    timestamp6 = [location9 timestamp];
+    [v3 timeIntervalSinceDate:timestamp6];
     *buf = 136315906;
     v113 = "[SMTriggerDestination _isNoProgressStatus]";
     v114 = 2112;
     v115 = v23;
     v116 = 2112;
-    v117 = v24;
+    v117 = stringFromDate4;
     v118 = 2048;
     v119 = v29;
     v11 = 1;
@@ -3072,14 +3072,14 @@ LABEL_22:
   return v11;
 }
 
-- (BOOL)_shouldChangeModeOfTransportStartDate:(id)a3 endDate:(id)a4
+- (BOOL)_shouldChangeModeOfTransportStartDate:(id)date endDate:(id)endDate
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v29 = a4;
-  v30 = v6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v30 = dateCopy;
   v36 = 0;
-  v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v6 endDate:v29];
+  v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:endDateCopy];
   v7 = [SMTriggerDestination _locationsInDateInterval:"_locationsInDateInterval:horizontalAccuracy:error:" horizontalAccuracy:200.0 error:?];
   v26 = v36;
   v27 = v7;
@@ -3107,11 +3107,11 @@ LABEL_22:
 
         v15 = *(*(&v32 + 1) + 8 * i);
         v16 = objc_opt_class();
-        v17 = [(SMTriggerDestination *)self sessionConfiguration];
-        v18 = [v17 destination];
-        v19 = [v18 clLocation];
-        v20 = [(SMTriggerDestination *)self distanceCalculator];
-        [v16 distanceFromLocation:v15 toLocation:v19 withCalculator:v20];
+        sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+        destination = [sessionConfiguration destination];
+        clLocation = [destination clLocation];
+        distanceCalculator = [(SMTriggerDestination *)self distanceCalculator];
+        [v16 distanceFromLocation:v15 toLocation:clLocation withCalculator:distanceCalculator];
         v22 = v21;
 
         if (v13 < v22)
@@ -3164,23 +3164,23 @@ LABEL_22:
   return v13 - v11 > v12 + 750.0;
 }
 
-+ (void)currentLocationWithLocationManager:(id)a3 queue:(id)a4 handler:(id)a5
++ (void)currentLocationWithLocationManager:(id)manager queue:(id)queue handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [objc_opt_class() locationRequestOptions];
+  queueCopy = queue;
+  handlerCopy = handler;
+  managerCopy = manager;
+  locationRequestOptions = [objc_opt_class() locationRequestOptions];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__SMTriggerDestination_currentLocationWithLocationManager_queue_handler___block_invoke;
   v14[3] = &unk_2788CC120;
-  v15 = v7;
-  v16 = v10;
-  v17 = v8;
-  v11 = v8;
-  v12 = v10;
-  v13 = v7;
-  [v9 fetchCurrentLocationWithOptions:v12 handler:v14];
+  v15 = queueCopy;
+  v16 = locationRequestOptions;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = locationRequestOptions;
+  v13 = queueCopy;
+  [managerCopy fetchCurrentLocationWithOptions:v12 handler:v14];
 }
 
 void __73__SMTriggerDestination_currentLocationWithLocationManager_queue_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3227,26 +3227,26 @@ uint64_t __73__SMTriggerDestination_currentLocationWithLocationManager_queue_han
   return (*(*(a1 + 56) + 16))();
 }
 
-+ (void)calculateDistanceToDestination:(id)a3 locationManager:(id)a4 distanceCalculator:(id)a5 queue:(id)a6 handler:(id)a7
++ (void)calculateDistanceToDestination:(id)destination locationManager:(id)manager distanceCalculator:(id)calculator queue:(id)queue handler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
+  destinationCopy = destination;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
+  queueCopy = queue;
+  managerCopy = manager;
   v17 = objc_opt_class();
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __104__SMTriggerDestination_calculateDistanceToDestination_locationManager_distanceCalculator_queue_handler___block_invoke;
   v21[3] = &unk_2788D0A90;
-  v24 = v14;
-  v25 = a1;
-  v22 = v12;
-  v23 = v13;
-  v18 = v13;
-  v19 = v12;
-  v20 = v14;
-  [v17 currentLocationWithLocationManager:v16 queue:v15 handler:v21];
+  v24 = handlerCopy;
+  selfCopy = self;
+  v22 = destinationCopy;
+  v23 = calculatorCopy;
+  v18 = calculatorCopy;
+  v19 = destinationCopy;
+  v20 = handlerCopy;
+  [v17 currentLocationWithLocationManager:managerCopy queue:queueCopy handler:v21];
 }
 
 void __104__SMTriggerDestination_calculateDistanceToDestination_locationManager_distanceCalculator_queue_handler___block_invoke(void *a1, void *a2, uint64_t a3)
@@ -3314,20 +3314,20 @@ void __104__SMTriggerDestination_calculateDistanceToDestination_locationManager_
     }
   }
 
-  v4 = [(SMTriggerDestination *)self sessionConfiguration];
-  v5 = [v4 sessionType];
+  sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+  sessionType = [sessionConfiguration sessionType];
 
-  if (v5 == 2)
+  if (sessionType == 2)
   {
     [(SMTriggerDestination *)self _updateInitiatorStatusDestinationBoundWithCompletion:&__block_literal_global_208_0];
   }
 
   else
   {
-    v6 = [(SMTriggerDestination *)self sessionConfiguration];
-    v7 = [v6 sessionType];
+    sessionConfiguration2 = [(SMTriggerDestination *)self sessionConfiguration];
+    sessionType2 = [sessionConfiguration2 sessionType];
 
-    if (v7 == 3)
+    if (sessionType2 == 3)
     {
       [(SMTriggerDestination *)self _updateInitiatorStatusRoundTrip];
     }
@@ -3366,10 +3366,10 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
 - (void)_updateInitiatorStatusRoundTrip
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(SMTriggerDestination *)self sessionConfiguration];
-  v4 = [v3 sessionType];
+  sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+  sessionType = [sessionConfiguration sessionType];
 
-  if (v4 != 3)
+  if (sessionType != 3)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -3388,8 +3388,8 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = MEMORY[0x277D4AC30];
-      v8 = [(SMTriggerDestination *)self triggerState];
-      v9 = [v7 statusToString:{objc_msgSend(v8, "currentStatus")}];
+      triggerState = [(SMTriggerDestination *)self triggerState];
+      v9 = [v7 statusToString:{objc_msgSend(triggerState, "currentStatus")}];
       v20 = 136315394;
       v21 = "[SMTriggerDestination _updateInitiatorStatusRoundTrip]";
       v22 = 2112;
@@ -3398,17 +3398,17 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
     }
   }
 
-  v10 = [(SMTriggerDestination *)self triggerState];
-  v11 = [v10 currentStatus];
+  triggerState2 = [(SMTriggerDestination *)self triggerState];
+  currentStatus = [triggerState2 currentStatus];
 
-  if (v11 != 3)
+  if (currentStatus != 3)
   {
-    if (v11 == 2)
+    if (currentStatus == 2)
     {
       v12 = +[SMDateUtility date];
-      v13 = [(SMTriggerDestination *)self triggerState];
-      v14 = [v13 roundTripReminderDate];
-      [v12 timeIntervalSinceDate:v14];
+      triggerState3 = [(SMTriggerDestination *)self triggerState];
+      roundTripReminderDate = [triggerState3 roundTripReminderDate];
+      [v12 timeIntervalSinceDate:roundTripReminderDate];
       v16 = v15;
 
       if (v16 > 0.0)
@@ -3423,8 +3423,8 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v17 = MEMORY[0x277D4AC30];
-        v18 = [(SMTriggerDestination *)self triggerState];
-        v19 = [v17 statusToString:{objc_msgSend(v18, "currentStatus")}];
+        triggerState4 = [(SMTriggerDestination *)self triggerState];
+        v19 = [v17 statusToString:{objc_msgSend(triggerState4, "currentStatus")}];
         v20 = 136315394;
         v21 = "[SMTriggerDestination _updateInitiatorStatusRoundTrip]";
         v22 = 2112;
@@ -3435,14 +3435,14 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
   }
 }
 
-- (void)_updateInitiatorStatusDestinationBoundWithCompletion:(id)a3
+- (void)_updateInitiatorStatusDestinationBoundWithCompletion:(id)completion
 {
   v99[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMTriggerDestination *)self sessionConfiguration];
-  v6 = [v5 sessionType];
+  completionCopy = completion;
+  sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+  sessionType = [sessionConfiguration sessionType];
 
-  if (v6 != 2)
+  if (sessionType != 2)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -3455,10 +3455,10 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
     }
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [(SMTriggerDestination *)self triggerState];
-  v10 = [v9 currentStatusDate];
-  [v8 timeIntervalSinceDate:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  triggerState = [(SMTriggerDestination *)self triggerState];
+  currentStatusDate = [triggerState currentStatusDate];
+  [date timeIntervalSinceDate:currentStatusDate];
   v12 = v11;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3467,10 +3467,10 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = MEMORY[0x277D4AC30];
-      v15 = [(SMTriggerDestination *)self triggerState];
-      v16 = [v14 statusToString:{objc_msgSend(v15, "currentStatus")}];
-      v17 = [(SMTriggerDestination *)self sessionConfiguration];
-      v18 = [v17 description];
+      triggerState2 = [(SMTriggerDestination *)self triggerState];
+      v16 = [v14 statusToString:{objc_msgSend(triggerState2, "currentStatus")}];
+      sessionConfiguration2 = [(SMTriggerDestination *)self sessionConfiguration];
+      v18 = [sessionConfiguration2 description];
       *buf = 136315907;
       *&buf[4] = "[SMTriggerDestination _updateInitiatorStatusDestinationBoundWithCompletion:]";
       *&buf[12] = 2112;
@@ -3483,16 +3483,16 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
     }
   }
 
-  v19 = [(SMTriggerDestination *)self triggerState];
-  if ([v19 currentStatus] == 1)
+  triggerState3 = [(SMTriggerDestination *)self triggerState];
+  if ([triggerState3 currentStatus] == 1)
   {
     [(SMTriggerDestination *)self idleTimeoutThreshold];
     v21 = v12 > v20;
 
     if (v21)
     {
-      v22 = [(SMTriggerDestination *)self triggerState];
-      [v22 setCurrentStatus:2];
+      triggerState4 = [(SMTriggerDestination *)self triggerState];
+      [triggerState4 setCurrentStatus:2];
 
       [(SMTriggerDestination *)self _persistState];
     }
@@ -3503,8 +3503,8 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
   }
 
   [(SMTriggerDestination *)self _reviseCachedLocations];
-  v23 = [(SMTriggerDestination *)self triggerState];
-  v24 = [v23 currentStatus] == 1;
+  triggerState5 = [(SMTriggerDestination *)self triggerState];
+  v24 = [triggerState5 currentStatus] == 1;
 
   if (v24)
   {
@@ -3519,22 +3519,22 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
       }
     }
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v26 = [(SMTriggerDestination *)self _isNoProgressStatus];
-    v27 = [(SMTriggerDestination *)self triggerState];
-    v28 = [v27 currentStatus] != 3;
+    _isNoProgressStatus = [(SMTriggerDestination *)self _isNoProgressStatus];
+    triggerState6 = [(SMTriggerDestination *)self triggerState];
+    v28 = [triggerState6 currentStatus] != 3;
 
-    if (v28 && v26)
+    if (v28 && _isNoProgressStatus)
     {
       [(SMTriggerDestination *)self _declareAnomalyForTriggerCategory:3];
     }
 
-    v29 = [(SMTriggerDestination *)self cachedLocationEvents];
-    v30 = [v29 count] == 0;
+    cachedLocationEvents = [(SMTriggerDestination *)self cachedLocationEvents];
+    v30 = [cachedLocationEvents count] == 0;
 
     if (v30)
     {
@@ -3545,20 +3545,20 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v99 forKeys:&v98 count:1];
       v43 = [v40 initWithDomain:*MEMORY[0x277D4ACD0] code:6 userInfo:v42];
 
-      (v4)[2](v4, v43);
+      (completionCopy)[2](completionCopy, v43);
     }
 
     else
     {
       v31 = +[SMDateUtility date];
       v32 = [v31 dateByAddingTimeInterval:-300.0];
-      v33 = [(SMTriggerDestination *)self cachedLocationEvents];
-      v34 = [v33 lastObject];
-      v69 = [v34 location];
+      cachedLocationEvents2 = [(SMTriggerDestination *)self cachedLocationEvents];
+      lastObject = [cachedLocationEvents2 lastObject];
+      location = [lastObject location];
 
-      v35 = [(SMTriggerDestination *)self cachedLocationEvents];
-      v36 = [v35 lastObject];
-      [v36 distance];
+      cachedLocationEvents3 = [(SMTriggerDestination *)self cachedLocationEvents];
+      lastObject2 = [cachedLocationEvents3 lastObject];
+      [lastObject2 distance];
       v38 = v37;
 
       *buf = 0;
@@ -3581,10 +3581,10 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
       v87[1] = v87;
       v87[2] = 0x2020000000;
       v87[3] = 0xBFF0000000000000;
-      v39 = [(SMTriggerDestination *)self triggerState];
-      LOBYTE(v36) = [v39 predominantModeOfTransport] == 4;
+      triggerState7 = [(SMTriggerDestination *)self triggerState];
+      LOBYTE(lastObject2) = [triggerState7 predominantModeOfTransport] == 4;
 
-      if (v36)
+      if (lastObject2)
       {
         v62 = 0;
         v66 = 4;
@@ -3598,13 +3598,13 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
         v66 = [(SMTriggerDestination *)self _motionActivityTypeToTransportType:v44 distance:v38];
       }
 
-      v45 = [(SMTriggerDestination *)self triggerState];
-      v46 = [v45 predominantModeOfTransport] == 0xFFFFFFF;
+      triggerState8 = [(SMTriggerDestination *)self triggerState];
+      v46 = [triggerState8 predominantModeOfTransport] == 0xFFFFFFF;
 
       if (v46)
       {
-        v47 = [(SMTriggerDestination *)self triggerState];
-        [v47 setPredominantModeOfTransport:v66];
+        triggerState9 = [(SMTriggerDestination *)self triggerState];
+        [triggerState9 setPredominantModeOfTransport:v66];
 
         [(SMTriggerDestination *)self _persistState];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3613,8 +3613,8 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
           if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
           {
             v49 = objc_opt_class();
-            v50 = [(SMTriggerDestination *)self triggerState];
-            v51 = [v49 convertSMDirectionTransportTypeToString:{objc_msgSend(v50, "predominantModeOfTransport")}];
+            triggerState10 = [(SMTriggerDestination *)self triggerState];
+            v51 = [v49 convertSMDirectionTransportTypeToString:{objc_msgSend(triggerState10, "predominantModeOfTransport")}];
             *v91 = 136315394;
             v92 = "[SMTriggerDestination _updateInitiatorStatusDestinationBoundWithCompletion:]";
             v93 = 2112;
@@ -3627,14 +3627,14 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
       v65 = dispatch_group_create();
       dispatch_group_enter(v65);
       v64 = objc_opt_class();
-      v52 = [(SMTriggerDestination *)self triggerState];
-      v63 = [v52 predominantModeOfTransport];
-      v67 = [(SMTriggerDestination *)self defaultsManager];
-      v68 = [(SMTriggerDestination *)self sessionConfiguration];
-      v53 = [v68 destination];
-      v54 = [v53 clLocation];
-      v55 = [(SMTriggerDestination *)self distanceCalculator];
-      v56 = [(SMTriggerDestination *)self queue];
+      triggerState11 = [(SMTriggerDestination *)self triggerState];
+      predominantModeOfTransport = [triggerState11 predominantModeOfTransport];
+      defaultsManager = [(SMTriggerDestination *)self defaultsManager];
+      sessionConfiguration3 = [(SMTriggerDestination *)self sessionConfiguration];
+      destination = [sessionConfiguration3 destination];
+      clLocation = [destination clLocation];
+      distanceCalculator = [(SMTriggerDestination *)self distanceCalculator];
+      queue = [(SMTriggerDestination *)self queue];
       v80[0] = MEMORY[0x277D85DD0];
       v80[1] = 3221225472;
       v80[2] = __77__SMTriggerDestination__updateInitiatorStatusDestinationBoundWithCompletion___block_invoke;
@@ -3645,11 +3645,11 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
       v84 = buf;
       v85 = v89;
       v81 = v65;
-      v57 = v52;
+      v57 = triggerState11;
       v58 = v81;
-      [v64 expectedTravelTimeforTransportType:v63 source:v69 defaultsManager:v67 destination:v54 departureDate:v31 distanceCalculator:v55 queue:v56 completionHandler:v80];
+      [v64 expectedTravelTimeforTransportType:predominantModeOfTransport source:location defaultsManager:defaultsManager destination:clLocation departureDate:v31 distanceCalculator:distanceCalculator queue:queue completionHandler:v80];
 
-      v59 = [(SMTriggerDestination *)self queue];
+      queue2 = [(SMTriggerDestination *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __77__SMTriggerDestination__updateInitiatorStatusDestinationBoundWithCompletion___block_invoke_216;
@@ -3658,15 +3658,15 @@ void __46__SMTriggerDestination__updateInitiatorStatus__block_invoke(uint64_t a1
       block[4] = self;
       v78 = v38;
       v72 = v31;
-      v73 = v4;
+      v73 = completionCopy;
       v75 = v88;
       v79 = v66;
-      v71 = v69;
+      v71 = location;
       v76 = v87;
       v77 = buf;
       v60 = v31;
-      v61 = v69;
-      dispatch_group_notify(v58, v59, block);
+      v61 = location;
+      dispatch_group_notify(v58, queue2, block);
 
       _Block_object_dispose(v87, 8);
       _Block_object_dispose(v88, 8);
@@ -3897,10 +3897,10 @@ uint64_t __77__SMTriggerDestination__updateInitiatorStatusDestinationBoundWithCo
 - (void)_persistState
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SMTriggerDestination *)self triggerState];
-  v4 = [v3 dirty];
+  triggerState = [(SMTriggerDestination *)self triggerState];
+  dirty = [triggerState dirty];
 
-  if (v4)
+  if (dirty)
   {
     v35 = 0;
     v36 = &v35;
@@ -3909,9 +3909,9 @@ uint64_t __77__SMTriggerDestination__updateInitiatorStatusDestinationBoundWithCo
     v39 = __Block_byref_object_dispose__159;
     v40 = 0;
     v5 = dispatch_semaphore_create(0);
-    v6 = [(SMTriggerDestination *)self sessionStore];
-    v7 = [(SMTriggerDestination *)self triggerState];
-    v46 = v7;
+    sessionStore = [(SMTriggerDestination *)self sessionStore];
+    triggerState2 = [(SMTriggerDestination *)self triggerState];
+    v46 = triggerState2;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -3920,7 +3920,7 @@ uint64_t __77__SMTriggerDestination__updateInitiatorStatusDestinationBoundWithCo
     v34 = &v35;
     v9 = v5;
     v33 = v9;
-    [v6 storeTriggerDestinationStates:v8 handler:v32];
+    [sessionStore storeTriggerDestinationStates:v8 handler:v32];
 
     v10 = (v36 + 5);
     obj = v36[5];
@@ -3934,11 +3934,11 @@ uint64_t __77__SMTriggerDestination__updateInitiatorStatusDestinationBoundWithCo
       v16 = v15;
       v17 = objc_opt_new();
       v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_578];
-      v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v20 = [v19 filteredArrayUsingPredicate:v18];
-      v21 = [v20 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+      firstObject = [v20 firstObject];
 
-      [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+      [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
@@ -3966,20 +3966,20 @@ uint64_t __77__SMTriggerDestination__updateInitiatorStatusDestinationBoundWithCo
       v27 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [(SMTriggerDestination *)self triggerState];
+        triggerState3 = [(SMTriggerDestination *)self triggerState];
         v29 = v36[5];
         *buf = 136315650;
         *&buf[4] = "[SMTriggerDestination _persistState]";
         v42 = 2112;
-        v43 = v28;
+        v43 = triggerState3;
         v44 = 2112;
         v45 = v29;
         _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%s, persisted state, %@, error, %@", buf, 0x20u);
       }
     }
 
-    v30 = [(SMTriggerDestination *)self triggerState];
-    [v30 setDirty:0];
+    triggerState4 = [(SMTriggerDestination *)self triggerState];
+    [triggerState4 setDirty:0];
 
     _Block_object_dispose(&v35, 8);
   }
@@ -3992,10 +3992,10 @@ void __37__SMTriggerDestination__persistState__block_invoke(uint64_t a1, void *a
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_shouldUpdateUpperBoundEtaWithRemainingDistance:(double)a3 mapsExpectedTravelTime:(double)a4
+- (BOOL)_shouldUpdateUpperBoundEtaWithRemainingDistance:(double)distance mapsExpectedTravelTime:(double)time
 {
   v53 = *MEMORY[0x277D85DE8];
-  if (a3 == 1.79769313e308)
+  if (distance == 1.79769313e308)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_ERROR))
@@ -4010,7 +4010,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3 < 0.0)
+  if (distance < 0.0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_ERROR))
@@ -4030,39 +4030,39 @@ LABEL_8:
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(SMTriggerDestination *)self triggerState];
-      [v12 remainingDistance];
+      triggerState = [(SMTriggerDestination *)self triggerState];
+      [triggerState remainingDistance];
       v14 = v13;
-      v15 = [(SMTriggerDestination *)self triggerState];
-      [v15 mapsExpectedTravelTime];
+      triggerState2 = [(SMTriggerDestination *)self triggerState];
+      [triggerState2 mapsExpectedTravelTime];
       v43 = 136316162;
       v44 = "[SMTriggerDestination _shouldUpdateUpperBoundEtaWithRemainingDistance:mapsExpectedTravelTime:]";
       v45 = 2048;
       v46 = v14;
       v47 = 2048;
-      v48 = a3;
+      distanceCopy = distance;
       v49 = 2048;
       v50 = v16;
       v51 = 2048;
-      v52 = a4;
+      distanceCopy2 = time;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%s, previous remainingDistance, %.1f, current remainingDistance, %.1f, previous mapsTravelTime, %.1f, current mapsTravelTime, %.1f", &v43, 0x34u);
     }
   }
 
-  v17 = [(SMTriggerDestination *)self triggerState];
-  v18 = [v17 upperBoundEta];
+  triggerState3 = [(SMTriggerDestination *)self triggerState];
+  upperBoundEta = [triggerState3 upperBoundEta];
 
-  if (v18)
+  if (upperBoundEta)
   {
-    v19 = [(SMTriggerDestination *)self sessionConfiguration];
-    v20 = [v19 destination];
-    v21 = [v20 eta];
+    sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+    destination = [sessionConfiguration destination];
+    v21 = [destination eta];
     if (v21)
     {
       v22 = v21;
-      v23 = [(SMTriggerDestination *)self sessionConfiguration];
-      v24 = [v23 destination];
-      v25 = [v24 eta];
+      sessionConfiguration2 = [(SMTriggerDestination *)self sessionConfiguration];
+      destination2 = [sessionConfiguration2 destination];
+      v25 = [destination2 eta];
       [v25 additionalTravelTime];
       v27 = v26;
 
@@ -4090,28 +4090,28 @@ LABEL_8:
     {
     }
 
-    v28 = [(SMTriggerDestination *)self triggerState];
-    [v28 remainingDistance];
-    v30 = v29 - a3;
+    triggerState4 = [(SMTriggerDestination *)self triggerState];
+    [triggerState4 remainingDistance];
+    v30 = v29 - distance;
 
-    v31 = [(SMTriggerDestination *)self triggerState];
-    [v31 mapsExpectedTravelTime];
-    v33 = v32 - a4;
+    triggerState5 = [(SMTriggerDestination *)self triggerState];
+    [triggerState5 mapsExpectedTravelTime];
+    v33 = v32 - time;
 
-    if (a4 <= 0.0)
+    if (time <= 0.0)
     {
       v36 = 0;
     }
 
     else
     {
-      v34 = [(SMTriggerDestination *)self triggerState];
-      [v34 mapsExpectedTravelTime];
+      triggerState6 = [(SMTriggerDestination *)self triggerState];
+      [triggerState6 mapsExpectedTravelTime];
       v36 = v33 > 300.0 && v35 > 0.0;
     }
 
     [(SMTriggerDestination *)self minDistanceUpdateThreshold];
-    v7 = v37 >= a3 || v30 > 200.0 || v36;
+    v7 = v37 >= distance || v30 > 200.0 || v36;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v38 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -4143,7 +4143,7 @@ LABEL_8:
         }
 
         v47 = 2112;
-        v48 = *&v41;
+        distanceCopy = *&v41;
         if (v36)
         {
           v39 = @"YES";
@@ -4152,14 +4152,14 @@ LABEL_8:
         v49 = 2112;
         v50 = v39;
         v51 = 2048;
-        v52 = a3;
+        distanceCopy2 = distance;
         _os_log_impl(&dword_2304B3000, v38, OS_LOG_TYPE_INFO, "%s, shouldUpdateETA, %@, distance shorter, %@, ETA shorter, %@, remainingDistance, %.2f.", &v43, 0x34u);
       }
     }
 
-    v5 = [[SMSessionTriggerDestinationETAUpdateState alloc] initWithDistanceRemaining:v36 distanceDifference:v30 > 200.0 nominalTravelTimeRemaining:v7 & 1 nominalTravelTimeDifference:a3 nominalTravelTimeShorter:v30 remainingDistanceShorter:a4 shouldUpdateETAUpperBound:v33];
-    v42 = [(SMTriggerDestination *)self sessionMetricManager];
-    [v42 onShouldUpdateETAUpperBoundWithETAUpdateState:v5];
+    v5 = [[SMSessionTriggerDestinationETAUpdateState alloc] initWithDistanceRemaining:v36 distanceDifference:v30 > 200.0 nominalTravelTimeRemaining:v7 & 1 nominalTravelTimeDifference:distance nominalTravelTimeShorter:v30 remainingDistanceShorter:time shouldUpdateETAUpperBound:v33];
+    sessionMetricManager = [(SMTriggerDestination *)self sessionMetricManager];
+    [sessionMetricManager onShouldUpdateETAUpperBoundWithETAUpdateState:v5];
 
     goto LABEL_9;
   }
@@ -4183,22 +4183,22 @@ LABEL_9:
   return v7 & 1;
 }
 
-- (BOOL)_isExceedingUpperBoundEta:(id)a3 mapsExpectedTravelTime:(double)a4 crowFliesExpectedTravelTime:(double)a5
+- (BOOL)_isExceedingUpperBoundEta:(id)eta mapsExpectedTravelTime:(double)time crowFliesExpectedTravelTime:(double)travelTime
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 crowFliesUpperBoundEta];
+  etaCopy = eta;
+  crowFliesUpperBoundEta = [etaCopy crowFliesUpperBoundEta];
 
-  if (v9)
+  if (crowFliesUpperBoundEta)
   {
     v10 = +[SMDateUtility date];
-    v11 = [v8 mapsUpperBoundEta];
+    mapsUpperBoundEta = [etaCopy mapsUpperBoundEta];
 
-    if (a4 > 0.0 && v11)
+    if (time > 0.0 && mapsUpperBoundEta)
     {
-      v12 = [v10 dateByAddingTimeInterval:a4];
-      v13 = [v8 mapsUpperBoundEta];
-      [v12 timeIntervalSinceDate:v13];
+      v12 = [v10 dateByAddingTimeInterval:time];
+      mapsUpperBoundEta2 = [etaCopy mapsUpperBoundEta];
+      [v12 timeIntervalSinceDate:mapsUpperBoundEta2];
       v15 = v14;
       v16 = v14 > 0.0;
 
@@ -4207,24 +4207,24 @@ LABEL_9:
         v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [v8 mapsUpperBoundEta];
-          v19 = [v18 stringFromDate];
-          v20 = [v12 stringFromDate];
-          v21 = v20;
+          mapsUpperBoundEta3 = [etaCopy mapsUpperBoundEta];
+          stringFromDate = [mapsUpperBoundEta3 stringFromDate];
+          stringFromDate2 = [v12 stringFromDate];
+          v21 = stringFromDate2;
           v22 = @"NO";
           *v32 = 136316162;
           *&v32[4] = "[SMTriggerDestination _isExceedingUpperBoundEta:mapsExpectedTravelTime:crowFliesExpectedTravelTime:]";
           *&v32[22] = 2048;
           *&v32[12] = 2112;
-          *&v32[14] = v19;
+          *&v32[14] = stringFromDate;
           if (v15 > 0.0)
           {
             v22 = @"YES";
           }
 
-          v33 = a4;
+          travelTimeCopy = time;
           *v34 = 2112;
-          *&v34[2] = v20;
+          *&v34[2] = stringFromDate2;
           *&v34[10] = 2112;
           *&v34[12] = v22;
           v23 = "%s, maps upper bound ETA, %@, mapsExpectedTravelTime, %f, newETA, %@, isExceedingUpperBoundEta, %@";
@@ -4240,9 +4240,9 @@ LABEL_17:
 
     else
     {
-      v12 = [v10 dateByAddingTimeInterval:a5];
-      v24 = [v8 crowFliesUpperBoundEta];
-      [v12 timeIntervalSinceDate:v24];
+      v12 = [v10 dateByAddingTimeInterval:travelTime];
+      crowFliesUpperBoundEta2 = [etaCopy crowFliesUpperBoundEta];
+      [v12 timeIntervalSinceDate:crowFliesUpperBoundEta2];
       v26 = v25;
       v16 = v25 > 0.0;
 
@@ -4251,24 +4251,24 @@ LABEL_17:
         v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [v8 crowFliesUpperBoundEta];
-          v19 = [v18 stringFromDate];
-          v27 = [v12 stringFromDate];
-          v21 = v27;
+          mapsUpperBoundEta3 = [etaCopy crowFliesUpperBoundEta];
+          stringFromDate = [mapsUpperBoundEta3 stringFromDate];
+          stringFromDate3 = [v12 stringFromDate];
+          v21 = stringFromDate3;
           v28 = @"NO";
           *v32 = 136316162;
           *&v32[4] = "[SMTriggerDestination _isExceedingUpperBoundEta:mapsExpectedTravelTime:crowFliesExpectedTravelTime:]";
           *&v32[22] = 2048;
           *&v32[12] = 2112;
-          *&v32[14] = v19;
+          *&v32[14] = stringFromDate;
           if (v26 > 0.0)
           {
             v28 = @"YES";
           }
 
-          v33 = a5;
+          travelTimeCopy = travelTime;
           *v34 = 2112;
-          *&v34[2] = v27;
+          *&v34[2] = stringFromDate3;
           *&v34[10] = 2112;
           *&v34[12] = v28;
           v23 = "%s, crow flies upper bound ETA, %@, crowFliesExpectedTravelTime, %f, newETA, %@, isExceedingUpperBoundEta, %@";
@@ -4280,8 +4280,8 @@ LABEL_18:
     }
 
     v29 = [(SMTriggerDestination *)self sessionMetricManager:*v32];
-    v30 = [v8 mapsUpperBoundEta];
-    [v12 timeIntervalSinceDate:v30];
+    mapsUpperBoundEta4 = [etaCopy mapsUpperBoundEta];
+    [v12 timeIntervalSinceDate:mapsUpperBoundEta4];
     [v29 updateClosestTimeIntervalToExceedingETAWithTimeInterval:?];
 
     goto LABEL_20;
@@ -4301,12 +4301,12 @@ LABEL_20:
   return v16;
 }
 
-+ (id)upperBoundEtaForDepartureDate:(id)a3 defaultsManager:(id)a4 mapsExpectedTravelTime:(double)a5 crowFliesExpectedTravelTime:(double)a6 etaScaleFactor:(double)a7
++ (id)upperBoundEtaForDepartureDate:(id)date defaultsManager:(id)manager mapsExpectedTravelTime:(double)time crowFliesExpectedTravelTime:(double)travelTime etaScaleFactor:(double)factor
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = [v12 objectForKey:@"RTDefaultsSMTriggerDestinationMinExpectedTravelDurationThresholdKey" value:&unk_2845A2228];
+  dateCopy = date;
+  managerCopy = manager;
+  v13 = [managerCopy objectForKey:@"RTDefaultsSMTriggerDestinationMinExpectedTravelDurationThresholdKey" value:&unk_2845A2228];
   [v13 doubleValue];
   v15 = v14;
 
@@ -4320,16 +4320,16 @@ LABEL_20:
       v31 = 2080;
       v32 = "overriding min expected travel duration threshold";
       v33 = 2048;
-      v34 = 900.0;
+      timeCopy = 900.0;
       v35 = 2048;
-      v36 = v15;
+      travelTimeCopy = v15;
       v37 = 2112;
       v38 = @"RTDefaultsSMTriggerDestinationMinExpectedTravelDurationThresholdKey";
       _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%s, %s, original value, %.2f, overridden value, %.2f, by defaultsKey, %@", &v29, 0x34u);
     }
   }
 
-  v17 = [v12 objectForKey:@"RTDefaultsSMTriggerDestinationMaxExceedTravelDurationThresholdKey" value:&unk_2845A2248];
+  v17 = [managerCopy objectForKey:@"RTDefaultsSMTriggerDestinationMaxExceedTravelDurationThresholdKey" value:&unk_2845A2248];
   [v17 doubleValue];
   v19 = v18;
 
@@ -4343,65 +4343,65 @@ LABEL_20:
       v31 = 2080;
       v32 = "overriding max exceed travel duration threshold";
       v33 = 2048;
-      v34 = 7200.0;
+      timeCopy = 7200.0;
       v35 = 2048;
-      v36 = v19;
+      travelTimeCopy = v19;
       v37 = 2112;
       v38 = @"RTDefaultsSMTriggerDestinationMaxExceedTravelDurationThresholdKey";
       _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%s, %s, original value, %.2f, overridden value, %.2f, by defaultsKey, %@", &v29, 0x34u);
     }
   }
 
-  if (a5 <= 0.0)
+  if (time <= 0.0)
   {
     v22 = 0;
   }
 
   else
   {
-    v21 = a5 * a7;
-    if (a5 * a7 < v15)
+    v21 = time * factor;
+    if (time * factor < v15)
     {
       v21 = v15;
     }
 
-    if (v21 >= v19 + a5)
+    if (v21 >= v19 + time)
     {
-      v21 = v19 + a5;
+      v21 = v19 + time;
     }
 
-    v22 = [v11 dateByAddingTimeInterval:v21];
+    v22 = [dateCopy dateByAddingTimeInterval:v21];
   }
 
-  v23 = a6 * a7;
-  if (a6 * a7 < v15)
+  v23 = travelTime * factor;
+  if (travelTime * factor < v15)
   {
     v23 = v15;
   }
 
-  if (v23 >= v19 + a6)
+  if (v23 >= v19 + travelTime)
   {
-    v23 = v19 + a6;
+    v23 = v19 + travelTime;
   }
 
-  v24 = [v11 dateByAddingTimeInterval:v23];
+  v24 = [dateCopy dateByAddingTimeInterval:v23];
   v25 = [objc_alloc(MEMORY[0x277D4AC38]) initWithMapsUpperBoundEta:v22 crowFliesUpperBoundEta:v24];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [v11 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
       v29 = 136316418;
       v30 = "+[SMTriggerDestination upperBoundEtaForDepartureDate:defaultsManager:mapsExpectedTravelTime:crowFliesExpectedTravelTime:etaScaleFactor:]";
       v31 = 2112;
-      v32 = v27;
+      v32 = stringFromDate;
       v33 = 2048;
-      v34 = a5;
+      timeCopy = time;
       v35 = 2048;
-      v36 = a6;
+      travelTimeCopy = travelTime;
       v37 = 2048;
-      v38 = *&a7;
+      v38 = *&factor;
       v39 = 2112;
       v40 = v25;
       _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "%s, departureDate, %@, mapsExpectedTravelTime, %.2f, crowFliesExpectedTravelTime, %.2f, etaScaleFactor, %.2f, upperBoundETA, %@", &v29, 0x3Eu);
@@ -4411,18 +4411,18 @@ LABEL_20:
   return v25;
 }
 
-+ (double)crowFliesExpectedTravelTimeForTransportType:(unint64_t)a3 defaultsManager:(id)a4 distance:(double)a5
++ (double)crowFliesExpectedTravelTimeForTransportType:(unint64_t)type defaultsManager:(id)manager distance:(double)distance
 {
   v27 = *MEMORY[0x277D85DE8];
-  [SMTriggerDestination updateSMTriggerDestinationTransportTypeToAvgSpeedWithDefaultsManager:a4];
+  [SMTriggerDestination updateSMTriggerDestinationTransportTypeToAvgSpeedWithDefaultsManager:manager];
   v7 = SMTriggerDestinationTransportTypeToAvgSpeed;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v9 = [v7 objectForKey:v8];
   if (v9)
   {
     v10 = v9;
     v11 = SMTriggerDestinationTransportTypeToAvgSpeed;
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     v13 = [v11 objectForKeyedSubscript:v12];
     [v13 doubleValue];
     v15 = v14;
@@ -4430,10 +4430,10 @@ LABEL_20:
     if (v15 != 0.0)
     {
       v16 = SMTriggerDestinationTransportTypeToAvgSpeed;
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       v18 = [v16 objectForKeyedSubscript:v17];
       [v18 doubleValue];
-      v20 = a5 / v19;
+      v20 = distance / v19;
 
       return v20;
     }
@@ -4460,21 +4460,21 @@ LABEL_20:
 {
   v51 = *MEMORY[0x277D85DE8];
   v3 = +[SMDateUtility date];
-  v4 = [(SMTriggerDestination *)self triggerState];
-  v5 = [v4 lastUnlockDate];
-  v6 = [(SMTriggerDestination *)self triggerState];
-  v7 = [v6 lastLockDate];
-  [v5 timeIntervalSinceDate:v7];
+  triggerState = [(SMTriggerDestination *)self triggerState];
+  lastUnlockDate = [triggerState lastUnlockDate];
+  triggerState2 = [(SMTriggerDestination *)self triggerState];
+  lastLockDate = [triggerState2 lastLockDate];
+  [lastUnlockDate timeIntervalSinceDate:lastLockDate];
   if (v8 > 0.0)
   {
 
     goto LABEL_8;
   }
 
-  v9 = [(SMTriggerDestination *)self triggerState];
-  v10 = [v9 currentStatus];
+  triggerState3 = [(SMTriggerDestination *)self triggerState];
+  currentStatus = [triggerState3 currentStatus];
 
-  if (v10 == 1)
+  if (currentStatus == 1)
   {
 LABEL_8:
     [(SMTriggerDestination *)self destinationStatusUpdateTimeInterval];
@@ -4486,34 +4486,34 @@ LABEL_8:
   v12 = v11;
   [(SMTriggerDestination *)self destinationStatusUpdateTimeInterval];
   v14 = [v3 dateByAddingTimeInterval:-(v12 + v13)];
-  v15 = [(SMTriggerDestination *)self triggerState];
-  v16 = [v15 currentStatusDate];
+  triggerState4 = [(SMTriggerDestination *)self triggerState];
+  currentStatusDate = [triggerState4 currentStatusDate];
 
-  if (v16)
+  if (currentStatusDate)
   {
-    v17 = [(SMTriggerDestination *)self triggerState];
-    v18 = [v17 currentStatusDate];
-    v19 = [v18 laterDate:v14];
+    triggerState5 = [(SMTriggerDestination *)self triggerState];
+    currentStatusDate2 = [triggerState5 currentStatusDate];
+    v19 = [currentStatusDate2 laterDate:v14];
 
     v14 = v19;
   }
 
-  v20 = [(SMTriggerDestination *)self triggerState];
-  v21 = [v20 lastUnlockDate];
+  triggerState6 = [(SMTriggerDestination *)self triggerState];
+  lastUnlockDate2 = [triggerState6 lastUnlockDate];
 
-  if (v21)
+  if (lastUnlockDate2)
   {
-    v22 = [(SMTriggerDestination *)self triggerState];
-    v23 = [v22 lastUnlockDate];
-    v24 = [v23 dateByAddingTimeInterval:-6.0];
+    triggerState7 = [(SMTriggerDestination *)self triggerState];
+    lastUnlockDate3 = [triggerState7 lastUnlockDate];
+    v24 = [lastUnlockDate3 dateByAddingTimeInterval:-6.0];
     v25 = [v24 laterDate:v14];
 
     v14 = v25;
   }
 
 LABEL_9:
-  v27 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
-  v28 = [v27 dateByAddingTimeInterval:-6.0];
+  lastUserResponseSafeDate = [(SMTriggerDestination *)self lastUserResponseSafeDate];
+  v28 = [lastUserResponseSafeDate dateByAddingTimeInterval:-6.0];
   v29 = [v28 laterDate:v14];
 
   v30 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v29 endDate:v3];
@@ -4522,22 +4522,22 @@ LABEL_9:
     v31 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v40 = [(SMTriggerDestination *)self triggerState];
-      v39 = [v40 lastLockDate];
-      v32 = [v39 stringFromDate];
-      v33 = [(SMTriggerDestination *)self triggerState];
-      v34 = [v33 lastUnlockDate];
-      v35 = [v34 stringFromDate];
-      v36 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
-      v37 = [v36 stringFromDate];
+      triggerState8 = [(SMTriggerDestination *)self triggerState];
+      lastLockDate2 = [triggerState8 lastLockDate];
+      stringFromDate = [lastLockDate2 stringFromDate];
+      triggerState9 = [(SMTriggerDestination *)self triggerState];
+      lastUnlockDate4 = [triggerState9 lastUnlockDate];
+      stringFromDate2 = [lastUnlockDate4 stringFromDate];
+      lastUserResponseSafeDate2 = [(SMTriggerDestination *)self lastUserResponseSafeDate];
+      stringFromDate3 = [lastUserResponseSafeDate2 stringFromDate];
       *buf = 136316162;
       v42 = "[SMTriggerDestination _cachedLocationsDateInterval]";
       v43 = 2112;
-      v44 = v32;
+      v44 = stringFromDate;
       v45 = 2112;
-      v46 = v35;
+      v46 = stringFromDate2;
       v47 = 2112;
-      v48 = v37;
+      v48 = stringFromDate3;
       v49 = 2112;
       v50 = v30;
       _os_log_impl(&dword_2304B3000, v31, OS_LOG_TYPE_INFO, "%s, lastLockDate, %@, lastUnlockDate, %@, lastUserResponseDate, %@, dateInterval of interest, %@", buf, 0x34u);
@@ -4547,7 +4547,7 @@ LABEL_9:
   return v30;
 }
 
-- (void)_declareAnomalyForTriggerCategory:(unint64_t)a3
+- (void)_declareAnomalyForTriggerCategory:(unint64_t)category
 {
   v19 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4556,9 +4556,9 @@ LABEL_9:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = MEMORY[0x277D4AC30];
-      v7 = [(SMTriggerDestination *)self triggerState];
-      v8 = [v6 statusToString:{objc_msgSend(v7, "currentStatus")}];
-      v9 = [MEMORY[0x277D4ABC8] triggerCategoryToString:a3];
+      triggerState = [(SMTriggerDestination *)self triggerState];
+      v8 = [v6 statusToString:{objc_msgSend(triggerState, "currentStatus")}];
+      v9 = [MEMORY[0x277D4ABC8] triggerCategoryToString:category];
       v13 = 136315650;
       v14 = "[SMTriggerDestination _declareAnomalyForTriggerCategory:]";
       v15 = 2112;
@@ -4569,16 +4569,16 @@ LABEL_9:
     }
   }
 
-  v10 = [(SMTriggerDestination *)self triggerState];
-  v11 = [v10 currentStatus];
+  triggerState2 = [(SMTriggerDestination *)self triggerState];
+  currentStatus = [triggerState2 currentStatus];
 
-  if (v11 != 3)
+  if (currentStatus != 3)
   {
-    v12 = [(SMTriggerDestination *)self triggerState];
-    [v12 setCurrentStatus:3];
+    triggerState3 = [(SMTriggerDestination *)self triggerState];
+    [triggerState3 setCurrentStatus:3];
 
     [(SMTriggerDestination *)self _persistState];
-    [(SMTriggerDestination *)self setTriggerCategory:a3];
+    [(SMTriggerDestination *)self setTriggerCategory:category];
     [(SMTriggerDestination *)self postStateChange];
   }
 }
@@ -4586,30 +4586,30 @@ LABEL_9:
 - (void)_initializeETATimer
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(SMTriggerDestination *)self triggerState];
-  v4 = [v3 upperBoundEta];
+  triggerState = [(SMTriggerDestination *)self triggerState];
+  upperBoundEta = [triggerState upperBoundEta];
 
-  if (v4)
+  if (upperBoundEta)
   {
     [(SMTriggerDestination *)self _tearDownTimerWithIdentifier:@"com.apple.routined.SMTriggerDestination.upperBoundETATimerIdentifier"];
     v29 = +[SMDateUtility date];
-    v5 = [(SMTriggerDestination *)self triggerState];
-    v6 = [v5 upperBoundEta];
-    v7 = [v6 mapsUpperBoundEta];
-    if (v7)
+    triggerState2 = [(SMTriggerDestination *)self triggerState];
+    upperBoundEta2 = [triggerState2 upperBoundEta];
+    mapsUpperBoundEta = [upperBoundEta2 mapsUpperBoundEta];
+    if (mapsUpperBoundEta)
     {
-      v8 = v7;
-      v9 = [(SMTriggerDestination *)self triggerState];
-      v10 = [v9 upperBoundEta];
-      v11 = [v10 mapsUpperBoundEta];
-      v12 = [MEMORY[0x277CBEAA8] distantPast];
-      v13 = [v11 isEqualToDate:v12];
+      v8 = mapsUpperBoundEta;
+      triggerState3 = [(SMTriggerDestination *)self triggerState];
+      upperBoundEta3 = [triggerState3 upperBoundEta];
+      mapsUpperBoundEta2 = [upperBoundEta3 mapsUpperBoundEta];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      v13 = [mapsUpperBoundEta2 isEqualToDate:distantPast];
 
       if ((v13 & 1) == 0)
       {
-        v14 = [(SMTriggerDestination *)self triggerState];
-        v15 = [v14 upperBoundEta];
-        v16 = [v15 mapsUpperBoundEta];
+        triggerState4 = [(SMTriggerDestination *)self triggerState];
+        upperBoundEta4 = [triggerState4 upperBoundEta];
+        mapsUpperBoundEta3 = [upperBoundEta4 mapsUpperBoundEta];
         v17 = v29;
         goto LABEL_11;
       }
@@ -4619,22 +4619,22 @@ LABEL_9:
     {
     }
 
-    v18 = [(SMTriggerDestination *)self triggerState];
-    v19 = [v18 upperBoundEta];
-    v20 = [v19 crowFliesUpperBoundEta];
-    if (!v20)
+    triggerState5 = [(SMTriggerDestination *)self triggerState];
+    upperBoundEta5 = [triggerState5 upperBoundEta];
+    crowFliesUpperBoundEta = [upperBoundEta5 crowFliesUpperBoundEta];
+    if (!crowFliesUpperBoundEta)
     {
 
       v17 = v29;
       goto LABEL_16;
     }
 
-    v21 = v20;
-    v22 = [(SMTriggerDestination *)self triggerState];
-    v23 = [v22 upperBoundEta];
-    v24 = [v23 crowFliesUpperBoundEta];
-    v25 = [MEMORY[0x277CBEAA8] distantPast];
-    v26 = [v24 isEqualToDate:v25];
+    v21 = crowFliesUpperBoundEta;
+    triggerState6 = [(SMTriggerDestination *)self triggerState];
+    upperBoundEta6 = [triggerState6 upperBoundEta];
+    crowFliesUpperBoundEta2 = [upperBoundEta6 crowFliesUpperBoundEta];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+    v26 = [crowFliesUpperBoundEta2 isEqualToDate:distantPast2];
 
     v17 = v29;
     if (v26)
@@ -4648,18 +4648,18 @@ LABEL_16:
         _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "%s, Invalid upper bound ETA", buf, 0xCu);
       }
 
-      v16 = 0;
+      mapsUpperBoundEta3 = 0;
       goto LABEL_19;
     }
 
-    v14 = [(SMTriggerDestination *)self triggerState];
-    v15 = [v14 upperBoundEta];
-    v16 = [v15 crowFliesUpperBoundEta];
+    triggerState4 = [(SMTriggerDestination *)self triggerState];
+    upperBoundEta4 = [triggerState4 upperBoundEta];
+    mapsUpperBoundEta3 = [upperBoundEta4 crowFliesUpperBoundEta];
 LABEL_11:
 
-    if (v16)
+    if (mapsUpperBoundEta3)
     {
-      [v16 timeIntervalSinceDate:v17];
+      [mapsUpperBoundEta3 timeIntervalSinceDate:v17];
       [(SMTriggerDestination *)self _initializeTimerWithIdentifier:@"com.apple.routined.SMTriggerDestination.upperBoundETATimerIdentifier" fireAfterDelay:?];
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -4671,11 +4671,11 @@ LABEL_20:
       v27 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [v16 stringFromDate];
+        stringFromDate = [mapsUpperBoundEta3 stringFromDate];
         *buf = 136315394;
         v31 = "[SMTriggerDestination _initializeETATimer]";
         v32 = 2112;
-        v33 = v28;
+        v33 = stringFromDate;
         _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%s, fireDate, %@", buf, 0x16u);
       }
 
@@ -4698,13 +4698,13 @@ LABEL_19:
 LABEL_21:
 }
 
-- (unint64_t)_predominantMotionActicityTypeFromStartDate:(id)a3 toEndDate:(id)a4 outError:(id *)a5
+- (unint64_t)_predominantMotionActicityTypeFromStartDate:(id)date toEndDate:(id)endDate outError:(id *)error
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = endDateCopy;
+  if (!dateCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -4713,12 +4713,12 @@ LABEL_21:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", v45, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v31 = _RTErrorInvalidParameterCreate(@"startDate");
 LABEL_16:
       v33 = 0;
-      *a5 = v31;
+      *error = v31;
       goto LABEL_29;
     }
 
@@ -4727,7 +4727,7 @@ LABEL_17:
     goto LABEL_29;
   }
 
-  if (!v9)
+  if (!endDateCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -4736,7 +4736,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", v45, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v31 = _RTErrorInvalidParameterCreate(@"endDate");
       goto LABEL_16;
@@ -4756,7 +4756,7 @@ LABEL_17:
   v48 = __Block_byref_object_copy__159;
   v49 = __Block_byref_object_dispose__159;
   v50 = 0;
-  v12 = [(SMTriggerDestination *)self motionActivityManager];
+  motionActivityManager = [(SMTriggerDestination *)self motionActivityManager];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __87__SMTriggerDestination__predominantMotionActicityTypeFromStartDate_toEndDate_outError___block_invoke;
@@ -4765,7 +4765,7 @@ LABEL_17:
   v44 = v45;
   v13 = v11;
   v42 = v13;
-  [v12 fetchPredominantMotionActivityTypeFromStartDate:v8 toEndDate:v10 withHandler:v41];
+  [motionActivityManager fetchPredominantMotionActivityTypeFromStartDate:dateCopy toEndDate:v10 withHandler:v41];
 
   v14 = v13;
   v15 = [MEMORY[0x277CBEAA8] now];
@@ -4783,11 +4783,11 @@ LABEL_19:
   v18 = v17;
   v19 = objc_opt_new();
   v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_578];
-  v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v22 = [v21 filteredArrayUsingPredicate:v20];
-  v23 = [v22 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+  firstObject = [v22 firstObject];
 
-  [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+  [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
   v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
   {
@@ -4822,24 +4822,24 @@ LABEL_20:
     v35 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
-      v36 = [v8 stringFromDate];
-      v37 = [v10 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
+      stringFromDate2 = [v10 stringFromDate];
       v38 = [MEMORY[0x277D011B8] motionActivityTypeToString:v52[3]];
       *buf = 136315906;
       *&buf[4] = "[SMTriggerDestination _predominantMotionActicityTypeFromStartDate:toEndDate:outError:]";
       v56 = 2112;
-      v57 = v36;
+      v57 = stringFromDate;
       v58 = 2112;
-      v59 = v37;
+      v59 = stringFromDate2;
       v60 = 2112;
       v61 = v38;
       _os_log_impl(&dword_2304B3000, v35, OS_LOG_TYPE_INFO, "%s, start Date, %@, endDate, %@, motionActivityType, %@", buf, 0x2Au);
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = *(v46 + 5);
+    *error = *(v46 + 5);
   }
 
   v33 = v52[3];
@@ -4859,20 +4859,20 @@ void __87__SMTriggerDestination__predominantMotionActicityTypeFromStartDate_toEn
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (unint64_t)_motionActivityTypeToTransportType:(unint64_t)a3 distance:(double)a4
+- (unint64_t)_motionActivityTypeToTransportType:(unint64_t)type distance:(double)distance
 {
   v24 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2 && (a4 <= 2000.0 || (-[SMTriggerDestination sessionConfiguration](self, "sessionConfiguration"), v6 = objc_claimAutoreleasedReturnValue(), [v6 destination], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "eta"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "transportType"), v8, v7, v6, v9 == 2)))
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 2 && (distance <= 2000.0 || (-[SMTriggerDestination sessionConfiguration](self, "sessionConfiguration"), v6 = objc_claimAutoreleasedReturnValue(), [v6 destination], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "eta"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "transportType"), v8, v7, v6, v9 == 2)))
   {
-    v10 = 2;
+    transportType = 2;
   }
 
   else
   {
-    v11 = [(SMTriggerDestination *)self sessionConfiguration];
-    v12 = [v11 destination];
-    v13 = [v12 eta];
-    v10 = [v13 transportType];
+    sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+    destination = [sessionConfiguration destination];
+    v13 = [destination eta];
+    transportType = [v13 transportType];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4880,8 +4880,8 @@ void __87__SMTriggerDestination__predominantMotionActicityTypeFromStartDate_toEn
     v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [MEMORY[0x277D011B8] motionActivityTypeToString:a3];
-      v16 = [objc_opt_class() convertSMDirectionTransportTypeToString:v10];
+      v15 = [MEMORY[0x277D011B8] motionActivityTypeToString:type];
+      v16 = [objc_opt_class() convertSMDirectionTransportTypeToString:transportType];
       v18 = 136315650;
       v19 = "[SMTriggerDestination _motionActivityTypeToTransportType:distance:]";
       v20 = 2112;
@@ -4892,22 +4892,22 @@ void __87__SMTriggerDestination__predominantMotionActicityTypeFromStartDate_toEn
     }
   }
 
-  return v10;
+  return transportType;
 }
 
-+ (void)checkEligibilityOfDestination:(id)a3 locationManager:(id)a4 distanceCalculator:(id)a5 queue:(id)a6 completionHandler:(id)a7
++ (void)checkEligibilityOfDestination:(id)destination locationManager:(id)manager distanceCalculator:(id)calculator queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
+  destinationCopy = destination;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __113__SMTriggerDestination_checkEligibilityOfDestination_locationManager_distanceCalculator_queue_completionHandler___block_invoke;
   v15[3] = &unk_2788D0B58;
-  v16 = v11;
-  v17 = v12;
-  v13 = v11;
-  v14 = v12;
-  [SMTriggerDestination calculateDistanceToDestination:v13 locationManager:a4 distanceCalculator:a5 queue:a6 handler:v15];
+  v16 = destinationCopy;
+  v17 = handlerCopy;
+  v13 = destinationCopy;
+  v14 = handlerCopy;
+  [SMTriggerDestination calculateDistanceToDestination:v13 locationManager:manager distanceCalculator:calculator queue:queue handler:v15];
 }
 
 void __113__SMTriggerDestination_checkEligibilityOfDestination_locationManager_distanceCalculator_queue_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, double a4)
@@ -4969,35 +4969,35 @@ void __113__SMTriggerDestination_checkEligibilityOfDestination_locationManager_d
 LABEL_11:
 }
 
-+ (void)estimateEtaToDestination:(id)a3 transportType:(unint64_t)a4 locationManager:(id)a5 defaultsManager:(id)a6 distanceCalculator:(id)a7 queue:(id)a8 handler:(id)a9
++ (void)estimateEtaToDestination:(id)destination transportType:(unint64_t)type locationManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator queue:(id)queue handler:(id)handler
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a5;
+  destinationCopy = destination;
+  defaultsManagerCopy = defaultsManager;
+  calculatorCopy = calculator;
+  queueCopy = queue;
+  handlerCopy = handler;
+  managerCopy = manager;
   v21 = +[SMDateUtility date];
   v22 = objc_opt_class();
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __128__SMTriggerDestination_estimateEtaToDestination_transportType_locationManager_defaultsManager_distanceCalculator_queue_handler___block_invoke;
   v29[3] = &unk_2788D0BA8;
-  v30 = v15;
-  v31 = v16;
+  v30 = destinationCopy;
+  v31 = defaultsManagerCopy;
   v32 = v21;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v36 = a4;
-  v37 = a1;
-  v23 = v18;
-  v24 = v17;
+  v33 = calculatorCopy;
+  v34 = queueCopy;
+  v35 = handlerCopy;
+  typeCopy = type;
+  selfCopy = self;
+  v23 = queueCopy;
+  v24 = calculatorCopy;
   v25 = v21;
-  v26 = v16;
-  v27 = v15;
-  v28 = v19;
-  [v22 currentLocationWithLocationManager:v20 queue:v23 handler:v29];
+  v26 = defaultsManagerCopy;
+  v27 = destinationCopy;
+  v28 = handlerCopy;
+  [v22 currentLocationWithLocationManager:managerCopy queue:v23 handler:v29];
 }
 
 void __128__SMTriggerDestination_estimateEtaToDestination_transportType_locationManager_defaultsManager_distanceCalculator_queue_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5113,17 +5113,17 @@ void __128__SMTriggerDestination_estimateEtaToDestination_transportType_location
   }
 }
 
-+ (void)expectedTravelTimeforTransportType:(unint64_t)a3 source:(id)a4 defaultsManager:(id)a5 destination:(id)a6 departureDate:(id)a7 distanceCalculator:(id)a8 queue:(id)a9 completionHandler:(id)a10
++ (void)expectedTravelTimeforTransportType:(unint64_t)type source:(id)source defaultsManager:(id)manager destination:(id)destination departureDate:(id)date distanceCalculator:(id)calculator queue:(id)queue completionHandler:(id)self0
 {
   v46 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a10;
-  v21 = a8;
-  [objc_opt_class() distanceFromLocation:v15 toLocation:v17 withCalculator:v21];
+  sourceCopy = source;
+  managerCopy = manager;
+  destinationCopy = destination;
+  dateCopy = date;
+  queueCopy = queue;
+  handlerCopy = handler;
+  calculatorCopy = calculator;
+  [objc_opt_class() distanceFromLocation:sourceCopy toLocation:destinationCopy withCalculator:calculatorCopy];
   v23 = v22;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -5131,18 +5131,18 @@ void __128__SMTriggerDestination_estimateEtaToDestination_transportType_location
     v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [SMTriggerDestination convertSMDirectionTransportTypeToString:a3];
-      v26 = [v18 stringFromDate];
+      v25 = [SMTriggerDestination convertSMDirectionTransportTypeToString:type];
+      stringFromDate = [dateCopy stringFromDate];
       *buf = 136316419;
       v35 = "+[SMTriggerDestination expectedTravelTimeforTransportType:source:defaultsManager:destination:departureDate:distanceCalculator:queue:completionHandler:]";
       v36 = 2112;
       v37 = v25;
       v38 = 2117;
-      v39 = v15;
+      v39 = sourceCopy;
       v40 = 2117;
-      v41 = v17;
+      v41 = destinationCopy;
       v42 = 2112;
-      v43 = v26;
+      v43 = stringFromDate;
       v44 = 2048;
       v45 = v23;
       _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_INFO, "%s, transportType, %@, source, %{sensitive}@, destination, %{sensitive}@, departureDate, %@, distance, %.3f", buf, 0x3Eu);
@@ -5154,12 +5154,12 @@ void __128__SMTriggerDestination_estimateEtaToDestination_transportType_location
   v29[2] = __151__SMTriggerDestination_expectedTravelTimeforTransportType_source_defaultsManager_destination_departureDate_distanceCalculator_queue_completionHandler___block_invoke;
   v29[3] = &unk_2788D0BD0;
   v32 = v23;
-  v33 = a3;
-  v30 = v16;
-  v31 = v20;
-  v27 = v16;
-  v28 = v20;
-  [SMTriggerDestination mapsExpectedTravelTimeforTransportType:a3 source:v15 destination:v17 departureDate:v18 queue:v19 handler:v29];
+  typeCopy = type;
+  v30 = managerCopy;
+  v31 = handlerCopy;
+  v27 = managerCopy;
+  v28 = handlerCopy;
+  [SMTriggerDestination mapsExpectedTravelTimeforTransportType:type source:sourceCopy destination:destinationCopy departureDate:dateCopy queue:queueCopy handler:v29];
 }
 
 void __151__SMTriggerDestination_expectedTravelTimeforTransportType_source_defaultsManager_destination_departureDate_distanceCalculator_queue_completionHandler___block_invoke(uint64_t a1, void *a2, double a3)
@@ -5243,29 +5243,29 @@ void __151__SMTriggerDestination_expectedTravelTimeforTransportType_source_defau
 LABEL_18:
 }
 
-+ (id)statusToString:(unint64_t)a3
++ (id)statusToString:(unint64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"InvalidStatus";
   }
 
   else
   {
-    return off_2788D0BF0[a3];
+    return off_2788D0BF0[string];
   }
 }
 
-+ (id)convertSMDirectionTransportTypeToString:(unint64_t)a3
++ (id)convertSMDirectionTransportTypeToString:(unint64_t)string
 {
-  if (a3 <= 3)
+  if (string <= 3)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       return @"SMDirectionsTransportTypeAutomobile";
     }
 
-    if (a3 == 2)
+    if (string == 2)
     {
       return @"SMDirectionsTransportTypeWalking";
     }
@@ -5273,7 +5273,7 @@ LABEL_18:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 4uLL:
         return @"SMDirectionsTransportTypeTransit";
@@ -5287,10 +5287,10 @@ LABEL_18:
   return @"UKNOWN";
 }
 
-+ (unint64_t)convertSMDirectionTransportTypeToMKDirectionTransportType:(unint64_t)a3
++ (unint64_t)convertSMDirectionTransportTypeToMKDirectionTransportType:(unint64_t)type
 {
-  result = a3;
-  if ((a3 > 8 || ((1 << a3) & 0x116) == 0) && a3 != 0xFFFFFFF)
+  result = type;
+  if ((type > 8 || ((1 << type) & 0x116) == 0) && type != 0xFFFFFFF)
   {
     return 0;
   }
@@ -5298,18 +5298,18 @@ LABEL_18:
   return result;
 }
 
-+ (double)distanceFromLocation:(id)a3 toLocation:(id)a4 withCalculator:(id)a5
++ (double)distanceFromLocation:(id)location toLocation:(id)toLocation withCalculator:(id)calculator
 {
   v21 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277D01160];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithCLLocation:v10];
+  calculatorCopy = calculator;
+  toLocationCopy = toLocation;
+  locationCopy = location;
+  v11 = [[v7 alloc] initWithCLLocation:locationCopy];
 
-  v12 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v9];
+  v12 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:toLocationCopy];
   v18 = 0;
-  [v8 distanceFromLocation:v11 toLocation:v12 error:&v18];
+  [calculatorCopy distanceFromLocation:v11 toLocation:v12 error:&v18];
   v14 = v13;
 
   v15 = v18;
@@ -5327,21 +5327,21 @@ LABEL_18:
   return v14;
 }
 
-- (void)_updateCoarseEtaWithMapsExpectedTravelTime:(double)a3 crowFliesExpectedTravelTime:(double)a4
+- (void)_updateCoarseEtaWithMapsExpectedTravelTime:(double)time crowFliesExpectedTravelTime:(double)travelTime
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = +[SMDateUtility date];
   v8 = v7;
   v9 = MEMORY[0x277CBEAA8];
-  if (a3 > 0.0)
+  if (time > 0.0)
   {
-    a4 = a3;
+    travelTime = time;
   }
 
-  v10 = [v7 dateByAddingTimeInterval:a4];
+  v10 = [v7 dateByAddingTimeInterval:travelTime];
   v11 = [v9 roundingUpDate:v10 bucketDurationMinute:*MEMORY[0x277D4AC98]];
 
-  v12 = [v8 dateByAddingTimeInterval:a4];
+  v12 = [v8 dateByAddingTimeInterval:travelTime];
   if ([(SMTriggerDestination *)self _shouldUpdateCoarseEta:v11])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -5349,15 +5349,15 @@ LABEL_18:
       v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [(SMTriggerDestination *)self coarseEta];
-        v15 = [v14 stringFromDate];
-        v16 = [v11 stringFromDate];
+        coarseEta = [(SMTriggerDestination *)self coarseEta];
+        stringFromDate = [coarseEta stringFromDate];
+        stringFromDate2 = [v11 stringFromDate];
         *buf = 136315650;
         v22 = "[SMTriggerDestination _updateCoarseEtaWithMapsExpectedTravelTime:crowFliesExpectedTravelTime:]";
         v23 = 2112;
-        v24 = v15;
+        v24 = stringFromDate;
         v25 = 2112;
-        v26 = v16;
+        v26 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%s, update coarseETA from, %@, to, %@", buf, 0x20u);
       }
     }
@@ -5367,43 +5367,43 @@ LABEL_18:
     v18 = +[SMDateUtility date];
     v19 = [(SMTriggerEstimatedEndDateUpdateNotification *)v17 initWithTriggerCategory:16 SOSState:1 estimatedEndDate:v12 coarseEstimatedEndDate:v11 triggerName:@"SMTriggerDestination" date:v18 details:MEMORY[0x277CBEC10]];
 
-    v20 = [(SMTriggerDestination *)self sessionMonitorDelegate];
-    [v20 onTriggerNotification:v19];
+    sessionMonitorDelegate = [(SMTriggerDestination *)self sessionMonitorDelegate];
+    [sessionMonitorDelegate onTriggerNotification:v19];
   }
 }
 
-- (BOOL)_shouldUpdateCoarseEta:(id)a3
+- (BOOL)_shouldUpdateCoarseEta:(id)eta
 {
-  v4 = a3;
-  if (!v4)
+  etaCopy = eta;
+  if (!etaCopy)
   {
     goto LABEL_4;
   }
 
-  v5 = [(SMTriggerDestination *)self coarseEta];
+  coarseEta = [(SMTriggerDestination *)self coarseEta];
 
-  if (!v5)
+  if (!coarseEta)
   {
 LABEL_7:
     v8 = 1;
     goto LABEL_8;
   }
 
-  v6 = [(SMTriggerDestination *)self coarseEta];
-  v7 = [v4 isEqualToDate:v6];
+  coarseEta2 = [(SMTriggerDestination *)self coarseEta];
+  v7 = [etaCopy isEqualToDate:coarseEta2];
 
   if ((v7 & 1) == 0)
   {
-    v9 = [(SMTriggerDestination *)self sessionConfiguration];
-    v10 = [v9 destination];
-    v11 = [v10 eta];
+    sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+    destination = [sessionConfiguration destination];
+    v11 = [destination eta];
     [v11 additionalTravelTime];
     v13 = v12;
 
     if (v13 > 0.0)
     {
-      v14 = [(SMTriggerDestination *)self coarseEta];
-      v8 = [v14 compare:v4] == -1;
+      coarseEta3 = [(SMTriggerDestination *)self coarseEta];
+      v8 = [coarseEta3 compare:etaCopy] == -1;
 
       goto LABEL_8;
     }
@@ -5420,21 +5420,21 @@ LABEL_8:
 
 - (id)lastUserResponseSafeDate
 {
-  v3 = [(SMTriggerDestination *)self sessionConfiguration];
-  v4 = [v3 userResponseSafeDate];
-  v5 = v4;
-  if (v4)
+  sessionConfiguration = [(SMTriggerDestination *)self sessionConfiguration];
+  userResponseSafeDate = [sessionConfiguration userResponseSafeDate];
+  v5 = userResponseSafeDate;
+  if (userResponseSafeDate)
   {
-    v6 = v4;
+    sessionStartDate = userResponseSafeDate;
   }
 
   else
   {
-    v7 = [(SMTriggerDestination *)self sessionConfiguration];
-    v6 = [v7 sessionStartDate];
+    sessionConfiguration2 = [(SMTriggerDestination *)self sessionConfiguration];
+    sessionStartDate = [sessionConfiguration2 sessionStartDate];
   }
 
-  return v6;
+  return sessionStartDate;
 }
 
 - (SMTriggerManagerProtocol)sessionMonitorDelegate

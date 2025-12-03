@@ -1,12 +1,12 @@
 @interface HAP2TLVRemovePairingRequest
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAP2TLVRemovePairingRequest)init;
-- (HAP2TLVRemovePairingRequest)initWithState:(id)a3 method:(id)a4 identifier:(id)a5;
+- (HAP2TLVRemovePairingRequest)initWithState:(id)state method:(id)method identifier:(id)identifier;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAP2TLVRemovePairingRequest
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAP2TLVRemovePairingRequest *)self state];
-  v5 = [(HAP2TLVRemovePairingRequest *)self method];
-  v6 = [(HAP2TLVRemovePairingRequest *)self identifier];
-  v7 = [v3 stringWithFormat:@"<HAP2TLVRemovePairingRequest state=%@, method=%@, identifier=%@>", v4, v5, v6];
+  state = [(HAP2TLVRemovePairingRequest *)self state];
+  method = [(HAP2TLVRemovePairingRequest *)self method];
+  identifier = [(HAP2TLVRemovePairingRequest *)self identifier];
+  v7 = [v3 stringWithFormat:@"<HAP2TLVRemovePairingRequest state=%@, method=%@, identifier=%@>", state, method, identifier];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAP2TLVRemovePairingRequest *)self state];
-      v9 = [(HAP2TLVRemovePairingRequest *)v7 state];
-      if (v8 != v9)
+      v7 = equalCopy;
+      state = [(HAP2TLVRemovePairingRequest *)self state];
+      state2 = [(HAP2TLVRemovePairingRequest *)v7 state];
+      if (state != state2)
       {
-        v3 = [(HAP2TLVRemovePairingRequest *)self state];
-        v4 = [(HAP2TLVRemovePairingRequest *)v7 state];
-        if (![v3 isEqual:v4])
+        state3 = [(HAP2TLVRemovePairingRequest *)self state];
+        state4 = [(HAP2TLVRemovePairingRequest *)v7 state];
+        if (![state3 isEqual:state4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAP2TLVRemovePairingRequest *)self method];
-      v12 = [(HAP2TLVRemovePairingRequest *)v7 method];
-      v13 = v12;
-      if (v11 == v12)
+      method = [(HAP2TLVRemovePairingRequest *)self method];
+      method2 = [(HAP2TLVRemovePairingRequest *)v7 method];
+      v13 = method2;
+      if (method == method2)
       {
-        v28 = v12;
+        v28 = method2;
       }
 
       else
       {
-        v14 = [(HAP2TLVRemovePairingRequest *)self method];
-        v27 = [(HAP2TLVRemovePairingRequest *)v7 method];
-        if (![v14 isEqual:?])
+        method3 = [(HAP2TLVRemovePairingRequest *)self method];
+        method4 = [(HAP2TLVRemovePairingRequest *)v7 method];
+        if (![method3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = method3;
         v28 = v13;
       }
 
-      v15 = [(HAP2TLVRemovePairingRequest *)self identifier];
-      v16 = [(HAP2TLVRemovePairingRequest *)v7 identifier];
-      v17 = v16;
-      if (v15 == v16)
+      identifier = [(HAP2TLVRemovePairingRequest *)self identifier];
+      identifier2 = [(HAP2TLVRemovePairingRequest *)v7 identifier];
+      v17 = identifier2;
+      if (identifier == identifier2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HAP2TLVRemovePairingRequest *)self identifier];
-        v18 = v25 = v3;
+        v18 = v25 = state3;
         [(HAP2TLVRemovePairingRequest *)v7 identifier];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = method;
+        v19 = state4;
+        v20 = state2;
+        v22 = v21 = state;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        state = v21;
+        state2 = v20;
+        state4 = v19;
+        method = v24;
 
-        v3 = v25;
+        state3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      method3 = v26;
+      if (method == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (state == state2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAP2TLVRemovePairingRequest allocWithZone:a3];
-  v5 = [(HAP2TLVRemovePairingRequest *)self state];
-  v6 = [(HAP2TLVRemovePairingRequest *)self method];
-  v7 = [(HAP2TLVRemovePairingRequest *)self identifier];
-  v8 = [(HAP2TLVRemovePairingRequest *)v4 initWithState:v5 method:v6 identifier:v7];
+  v4 = [HAP2TLVRemovePairingRequest allocWithZone:zone];
+  state = [(HAP2TLVRemovePairingRequest *)self state];
+  method = [(HAP2TLVRemovePairingRequest *)self method];
+  identifier = [(HAP2TLVRemovePairingRequest *)self identifier];
+  v8 = [(HAP2TLVRemovePairingRequest *)v4 initWithState:state method:method identifier:identifier];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
   v47 = 0u;
@@ -166,13 +166,13 @@ LABEL_21:
   v30 = 0u;
   v28 = 0u;
   TLV8BufferInit();
-  v5 = [(HAP2TLVRemovePairingRequest *)self state];
+  state = [(HAP2TLVRemovePairingRequest *)self state];
 
-  if (v5)
+  if (state)
   {
-    v6 = [(HAP2TLVRemovePairingRequest *)self state];
+    state2 = [(HAP2TLVRemovePairingRequest *)self state];
     v27 = 0;
-    v7 = [v6 serializeWithError:&v27];
+    v7 = [state2 serializeWithError:&v27];
     v8 = v27;
 
     if (v8)
@@ -189,11 +189,11 @@ LABEL_8:
       v12 = v9;
 
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v12);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_32;
       }
 
@@ -204,13 +204,13 @@ LABEL_17:
     }
   }
 
-  v10 = [(HAP2TLVRemovePairingRequest *)self method];
+  method = [(HAP2TLVRemovePairingRequest *)self method];
 
-  if (v10)
+  if (method)
   {
-    v11 = [(HAP2TLVRemovePairingRequest *)self method];
+    method2 = [(HAP2TLVRemovePairingRequest *)self method];
     v26 = 0;
-    v7 = [v11 serializeWithError:&v26];
+    v7 = [method2 serializeWithError:&v26];
     v8 = v26;
 
     if (v8)
@@ -227,42 +227,42 @@ LABEL_17:
     }
   }
 
-  v14 = [(HAP2TLVRemovePairingRequest *)self identifier];
+  identifier = [(HAP2TLVRemovePairingRequest *)self identifier];
 
-  if (v14)
+  if (identifier)
   {
-    v15 = [(HAP2TLVRemovePairingRequest *)self identifier];
+    identifier2 = [(HAP2TLVRemovePairingRequest *)self identifier];
     v25 = 0;
-    v7 = [v15 serializeWithError:&v25];
+    v7 = [identifier2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
     {
 LABEL_15:
 
-      if (a3)
+      if (error)
       {
         v16 = v8;
         v13 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_32;
       }
 
       goto LABEL_17;
     }
 
-    v17 = [v7 bytes];
-    v18 = v17 + [v7 length];
+    bytes = [v7 bytes];
+    v18 = bytes + [v7 length];
     do
     {
-      if ((v18 - v17) >= 255)
+      if ((v18 - bytes) >= 255)
       {
         v19 = 255;
       }
 
       else
       {
-        v19 = v18 - v17;
+        v19 = v18 - bytes;
       }
 
       v20 = TLV8BufferAppend();
@@ -276,7 +276,7 @@ LABEL_15:
         v21 = v19;
       }
 
-      v17 += v21;
+      bytes += v21;
       if (v20)
       {
         v22 = 1;
@@ -284,7 +284,7 @@ LABEL_15:
 
       else
       {
-        v22 = v17 >= v18;
+        v22 = bytes >= v18;
       }
     }
 
@@ -307,11 +307,11 @@ LABEL_32:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
@@ -326,12 +326,12 @@ LABEL_18:
     goto LABEL_25;
   }
 
-  v25 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v32 = 0;
@@ -341,10 +341,10 @@ LABEL_18:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v25)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v25 = v21 = 0;
+        *errorCopy = v21 = 0;
         goto LABEL_25;
       }
 
@@ -373,7 +373,7 @@ LABEL_13:
         break;
       case 1:
         v27 = v9;
-        v15 = HAPTLVParseContiguousTlvs(1, v7, v13, v30, &v27);
+        v15 = HAPTLVParseContiguousTlvs(1, bytes, v13, v30, &v27);
         v17 = v27;
 
         if (!v17)
@@ -398,7 +398,7 @@ LABEL_13:
         goto LABEL_12;
     }
 
-    v7 = v30[0];
+    bytes = v30[0];
     if (v30[0] >= v13)
     {
       if (!v9)
@@ -419,11 +419,11 @@ LABEL_13:
   }
 
 LABEL_22:
-  if (v25)
+  if (errorCopy)
   {
     v23 = v9;
     v21 = 0;
-    *v25 = v9;
+    *errorCopy = v9;
     goto LABEL_25;
   }
 
@@ -434,20 +434,20 @@ LABEL_25:
   return v21;
 }
 
-- (HAP2TLVRemovePairingRequest)initWithState:(id)a3 method:(id)a4 identifier:(id)a5
+- (HAP2TLVRemovePairingRequest)initWithState:(id)state method:(id)method identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  methodCopy = method;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = HAP2TLVRemovePairingRequest;
   v12 = [(HAP2TLVRemovePairingRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_state, a3);
-    objc_storeStrong(&v13->_method, a4);
-    objc_storeStrong(&v13->_identifier, a5);
+    objc_storeStrong(&v12->_state, state);
+    objc_storeStrong(&v13->_method, method);
+    objc_storeStrong(&v13->_identifier, identifier);
   }
 
   return v13;
@@ -460,24 +460,24 @@ LABEL_25:
   return [(HAP2TLVRemovePairingRequest *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAP2TLVRemovePairingRequest);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAP2TLVRemovePairingRequest *)v6 parseFromData:v5 error:&v11];
+    [(HAP2TLVRemovePairingRequest *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

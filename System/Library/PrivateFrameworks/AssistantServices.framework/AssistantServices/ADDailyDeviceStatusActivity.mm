@@ -1,23 +1,23 @@
 @interface ADDailyDeviceStatusActivity
-+ (id)taskFromActivity:(id)a3;
++ (id)taskFromActivity:(id)activity;
 + (id)xpcCriteria;
 - (ADDailyDeviceStatusActivity)init;
 - (BOOL)_isSiriCapableDigitalCarKeyAvailable;
 - (BOOL)_preciseLocationEnabled;
 - (id)_buildDailySelfTriggerSuppressionMetrics;
-- (id)_buildDailyVoiceTriggerMetrics:(id)a3;
-- (id)_truncatedGradingOptInStateChanges:(id)a3;
+- (id)_buildDailyVoiceTriggerMetrics:(id)metrics;
+- (id)_truncatedGradingOptInStateChanges:(id)changes;
 - (id)fetchVoiceTriggerSettings;
 - (id)getVolumeCapacity;
 - (int)_locationAccessPermission;
-- (int)getAdaptiveVolumeUserIntent:(int)a3;
+- (int)getAdaptiveVolumeUserIntent:(int)intent;
 - (int)getSiriDataSharingOptInStatus;
 - (void)_triggerABCForNullAssistantIdentifier;
-- (void)buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:(BOOL)a3 onLockscreen:(BOOL)a4 dictationEnabled:(BOOL)a5 voiceTriggerEnabled:(BOOL)a6 starkHasBeenActiveWithin24Hours:(BOOL)a7 raiseToSpeakEnabled:(BOOL)a8 activeAppleAudioDevices:(id)a9 spokenNotificationsEnabled:(BOOL)a10 announceNotificationsEnabledOnHeadphones:(BOOL)a11 carplayAnnounceEnablementType:(int64_t)a12 isAnnounceNotificationsMutedForCarPlay:(BOOL)a13 shouldSkipTriggerlessReplyConfirmation:(BOOL)a14 spokenNotificationsProxCardSeen:(BOOL)a15 spokenNotificationsControlCenterModuleEnabled:(BOOL)a16 spokenNotificationsAllowSettings:(unint64_t)a17 announceCallsEnabled:(BOOL)a18 preciseLocationEnabled:(BOOL)a19 locationAccessPermission:(int)a20 adaptiveSiriVolumeEnabled:(BOOL)a21 adaptiveSiriVolumePermanentOffsetEnabled:(BOOL)a22 adaptiveSiriVolumePermanentOffsetFactor:(id)a23 adaptiveSiriVolumeMostRecentIntent:(id)a24 isRemoteDarwinVoiceTriggerEnabled:(BOOL)a25 autoSendSettings:(id)a26 siriInCallEnablementState:(int)a27 hangUpEnablementState:(int)a28 heartbeatQueuedTime:(unint64_t)a29 siriVoiceTriggerSettings:(id)a30 isShowAppsBehindSiriEnabledOnCarPlay:(BOOL)a31 isSiriCapableDigitalCarKeyAvailable:(BOOL)a32 connectedBTCarHeadunits:(id)a33 withCompletion:(id)a34;
-- (void)fetchAppleMusicSubscriptionForSharedUser:(id)a3 completion:(id)a4;
-- (void)fetchEnrolledUsersWithCompletion:(id)a3;
-- (void)fetchICUserIdentityForSharedUser:(id)a3 completion:(id)a4;
-- (void)runWithCompletion:(id)a3;
+- (void)buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:(BOOL)enabled onLockscreen:(BOOL)lockscreen dictationEnabled:(BOOL)dictationEnabled voiceTriggerEnabled:(BOOL)triggerEnabled starkHasBeenActiveWithin24Hours:(BOOL)hours raiseToSpeakEnabled:(BOOL)speakEnabled activeAppleAudioDevices:(id)devices spokenNotificationsEnabled:(BOOL)self0 announceNotificationsEnabledOnHeadphones:(BOOL)self1 carplayAnnounceEnablementType:(int64_t)self2 isAnnounceNotificationsMutedForCarPlay:(BOOL)self3 shouldSkipTriggerlessReplyConfirmation:(BOOL)self4 spokenNotificationsProxCardSeen:(BOOL)self5 spokenNotificationsControlCenterModuleEnabled:(BOOL)self6 spokenNotificationsAllowSettings:(unint64_t)self7 announceCallsEnabled:(BOOL)self8 preciseLocationEnabled:(BOOL)self9 locationAccessPermission:(int)permission adaptiveSiriVolumeEnabled:(BOOL)volumeEnabled adaptiveSiriVolumePermanentOffsetEnabled:(BOOL)offsetEnabled adaptiveSiriVolumePermanentOffsetFactor:(id)factor adaptiveSiriVolumeMostRecentIntent:(id)intent isRemoteDarwinVoiceTriggerEnabled:(BOOL)voiceTriggerEnabled autoSendSettings:(id)sendSettings siriInCallEnablementState:(int)state hangUpEnablementState:(int)enablementState heartbeatQueuedTime:(unint64_t)time siriVoiceTriggerSettings:(id)enabled0 isShowAppsBehindSiriEnabledOnCarPlay:(BOOL)enabled1 isSiriCapableDigitalCarKeyAvailable:(BOOL)enabled2 connectedBTCarHeadunits:(id)enabled3 withCompletion:(id)enabled4;
+- (void)fetchAppleMusicSubscriptionForSharedUser:(id)user completion:(id)completion;
+- (void)fetchEnrolledUsersWithCompletion:(id)completion;
+- (void)fetchICUserIdentityForSharedUser:(id)user completion:(id)completion;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation ADDailyDeviceStatusActivity
@@ -29,9 +29,9 @@
   [v2 setIsJustSiriTriggerPhraseEnabled:0];
   [v2 setIsEnrollmentReprompted:0];
   v3 = +[VTPreferences sharedPreferences];
-  v4 = [v3 voiceTriggerEnabled];
+  voiceTriggerEnabled = [v3 voiceTriggerEnabled];
 
-  if (v4)
+  if (voiceTriggerEnabled)
   {
     v5 = +[VTPreferences sharedPreferences];
     v10 = 0;
@@ -45,9 +45,9 @@
   }
 
   v7 = +[CSPreferences sharedPreferences];
-  v8 = [v7 dateWhenVoiceTriggerRePrompted];
+  dateWhenVoiceTriggerRePrompted = [v7 dateWhenVoiceTriggerRePrompted];
 
-  if (v8)
+  if (dateWhenVoiceTriggerRePrompted)
   {
     [v2 setIsEnrollmentReprompted:1];
   }
@@ -55,10 +55,10 @@
   return v2;
 }
 
-- (void)fetchICUserIdentityForSharedUser:(id)a3 completion:(id)a4
+- (void)fetchICUserIdentityForSharedUser:(id)user completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  userCopy = user;
+  completionCopy = completion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -67,11 +67,11 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v5 && ([v5 homeUserUUID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (userCopy && ([userCopy homeUserUUID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v9 = [NSUUID alloc];
-    v10 = [v5 homeUserUUID];
-    v11 = [v9 initWithUUIDString:v10];
+    homeUserUUID = [userCopy homeUserUUID];
+    v11 = [v9 initWithUUIDString:homeUserUUID];
 
     if (qword_10058FE18 != -1)
     {
@@ -84,7 +84,7 @@
     v15[2] = sub_1000862E4;
     v15[3] = &unk_10050FB50;
     v16 = v11;
-    v17 = v6;
+    v17 = completionCopy;
     v13 = v11;
     [v12 ic_storeAccountForHomeUserIdentifier:v13 completion:v15];
   }
@@ -99,21 +99,21 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Non home shared user, Bailing.", buf, 0xCu);
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)fetchAppleMusicSubscriptionForSharedUser:(id)a3 completion:(id)a4
+- (void)fetchAppleMusicSubscriptionForSharedUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v15 = "[ADDailyDeviceStatusActivity fetchAppleMusicSubscriptionForSharedUser:completion:]";
     v16 = 2113;
-    v17 = v6;
+    v17 = userCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Fetching ICUserIdentity for sharedUser: %{private}@", buf, 0x16u);
   }
 
@@ -121,10 +121,10 @@
   v11[1] = 3221225472;
   v11[2] = sub_100086958;
   v11[3] = &unk_10050FB08;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = userCopy;
+  v13 = completionCopy;
+  v9 = userCopy;
+  v10 = completionCopy;
   [(ADDailyDeviceStatusActivity *)self fetchICUserIdentityForSharedUser:v9 completion:v11];
 }
 
@@ -174,15 +174,15 @@
 
   v3 = +[SiriCoreSymptomsReporter sharedInstance];
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 processIdentifier];
-  [v3 reportIssueForType:@"SISchemaDailyDeviceStatus" subType:@"null_siriDeviceID" context:&__NSDictionary0__struct processIdentifier:v5 walkboutStatus:byte_100590548];
+  processIdentifier = [v4 processIdentifier];
+  [v3 reportIssueForType:@"SISchemaDailyDeviceStatus" subType:@"null_siriDeviceID" context:&__NSDictionary0__struct processIdentifier:processIdentifier walkboutStatus:byte_100590548];
 }
 
-- (id)_truncatedGradingOptInStateChanges:(id)a3
+- (id)_truncatedGradingOptInStateChanges:(id)changes
 {
-  v3 = a3;
-  v4 = [v3 siriDataSharingOptInStatusHistory];
-  v5 = [v4 count];
+  changesCopy = changes;
+  siriDataSharingOptInStatusHistory = [changesCopy siriDataSharingOptInStatusHistory];
+  v5 = [siriDataSharingOptInStatusHistory count];
   if (v5 >= 5)
   {
     v6 = 5;
@@ -201,11 +201,11 @@
     *&buf[12] = 2048;
     *&buf[14] = v6;
     *&buf[22] = 2112;
-    v13 = v3;
+    v13 = changesCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Fetching %lu most recent siri data sharing opt-in status change entries from preferences %@", buf, 0x20u);
   }
 
-  v8 = [v4 subarrayWithRange:{0, v6}];
+  v8 = [siriDataSharingOptInStatusHistory subarrayWithRange:{0, v6}];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -225,11 +225,11 @@
   return v9;
 }
 
-- (int)getAdaptiveVolumeUserIntent:(int)a3
+- (int)getAdaptiveVolumeUserIntent:(int)intent
 {
-  if ((a3 - 1) < 3)
+  if ((intent - 1) < 3)
   {
-    return a3 + 1;
+    return intent + 1;
   }
 
   else
@@ -249,40 +249,40 @@
   return v2;
 }
 
-- (void)fetchEnrolledUsersWithCompletion:(id)a3
+- (void)fetchEnrolledUsersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v31 = +[ADMultiUserService sharedService];
-  v5 = [v31 sharedUsersBySharedUserID];
-  v6 = [v5 count];
+  sharedUsersBySharedUserID = [v31 sharedUsersBySharedUserID];
+  v6 = [sharedUsersBySharedUserID count];
 
   v7 = AFSiriLogContextDaemon;
   v8 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
   if (v6)
   {
-    v29 = v4;
+    v29 = completionCopy;
     if (v8)
     {
       v9 = v7;
-      v10 = [v31 sharedUsersBySharedUserID];
+      sharedUsersBySharedUserID2 = [v31 sharedUsersBySharedUserID];
       *buf = 136315395;
       v47 = "[ADDailyDeviceStatusActivity fetchEnrolledUsersWithCompletion:]";
       v48 = 2113;
-      v49 = v10;
+      v49 = sharedUsersBySharedUserID2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Fetching enrolledUsers info: %{private}@", buf, 0x16u);
     }
 
     v11 = dispatch_group_create();
     v12 = [NSMutableArray alloc];
-    v13 = [v31 sharedUsersBySharedUserID];
-    v30 = [v12 initWithCapacity:{objc_msgSend(v13, "count")}];
+    sharedUsersBySharedUserID3 = [v31 sharedUsersBySharedUserID];
+    v30 = [v12 initWithCapacity:{objc_msgSend(sharedUsersBySharedUserID3, "count")}];
 
     v43 = 0u;
     v44 = 0u;
     v42 = 0u;
     v41 = 0u;
-    v14 = [v31 sharedUsersBySharedUserID];
-    v15 = [v14 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    sharedUsersBySharedUserID4 = [v31 sharedUsersBySharedUserID];
+    v15 = [sharedUsersBySharedUserID4 countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v15)
     {
       v16 = v15;
@@ -294,18 +294,18 @@
         {
           if (*v42 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(sharedUsersBySharedUserID4);
           }
 
           v19 = *(*(&v41 + 1) + 8 * v18);
-          v20 = [v31 sharedUsersBySharedUserID];
-          v21 = [v20 objectForKey:v19];
+          sharedUsersBySharedUserID5 = [v31 sharedUsersBySharedUserID];
+          v21 = [sharedUsersBySharedUserID5 objectForKey:v19];
 
           if (v21)
           {
             v22 = objc_alloc_init(SISchemaEnrolledUserState);
-            v23 = [v21 speechID];
-            [v22 setSiriLinkedSpeechID:v23];
+            speechID = [v21 speechID];
+            [v22 setSiriLinkedSpeechID:speechID];
 
             v24 = objc_alloc_init(SISchemaPersonalization);
             [v24 setPersonalDomainsSetup:{objc_msgSend(v21, "personalDomainsIsEnabled")}];
@@ -316,7 +316,7 @@
             v35[3] = &unk_10050FAB8;
             v36 = v24;
             v37 = v22;
-            v38 = self;
+            selfCopy = self;
             v39 = v30;
             v40 = v11;
             v25 = v22;
@@ -328,7 +328,7 @@
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v16 = [sharedUsersBySharedUserID4 countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v16);
@@ -339,7 +339,7 @@
     block[1] = 3221225472;
     block[2] = sub_100087854;
     block[3] = &unk_10051E038;
-    v4 = v29;
+    completionCopy = v29;
     v33 = v30;
     v34 = v29;
     v28 = v30;
@@ -355,7 +355,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s No enrolledUsers in sharedService", buf, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -383,9 +383,9 @@
 - (BOOL)_preciseLocationEnabled
 {
   v2 = objc_alloc_init(PreciseLocationManager);
-  v3 = [(PreciseLocationManager *)v2 isPreciseLocationEnabled];
+  isPreciseLocationEnabled = [(PreciseLocationManager *)v2 isPreciseLocationEnabled];
 
-  return v3;
+  return isPreciseLocationEnabled;
 }
 
 - (BOOL)_isSiriCapableDigitalCarKeyAvailable
@@ -560,18 +560,18 @@ LABEL_11:
   return v32;
 }
 
-- (id)_buildDailyVoiceTriggerMetrics:(id)a3
+- (id)_buildDailyVoiceTriggerMetrics:(id)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v4 = objc_alloc_init(SISchemaVoiceTriggerMetrics);
-  v5 = [v3 objectForKey:kCSVoiceTriggerNumImplicitUtt];
+  v5 = [metricsCopy objectForKey:kCSVoiceTriggerNumImplicitUtt];
   v6 = v5;
   if (v5)
   {
     [v4 setImplicitUtterances:{objc_msgSend(v5, "intValue")}];
   }
 
-  v7 = [v3 objectForKey:kCSVoiceTriggerNumExplicitUtt];
+  v7 = [metricsCopy objectForKey:kCSVoiceTriggerNumExplicitUtt];
   v8 = v7;
   if (v7)
   {
@@ -580,7 +580,7 @@ LABEL_11:
 
   v71 = v8;
   v72 = v6;
-  v9 = [v3 objectForKey:kCSVoiceTriggerFirstPassTriggersPerDay];
+  v9 = [metricsCopy objectForKey:kCSVoiceTriggerFirstPassTriggersPerDay];
   v10 = v9;
   if (v9)
   {
@@ -588,11 +588,11 @@ LABEL_11:
   }
 
   v70 = v10;
-  v73 = v3;
-  v11 = [v3 objectForKey:kCSVoiceTriggerIsJSEnabled];
-  v12 = [v11 BOOLValue];
+  v73 = metricsCopy;
+  v11 = [metricsCopy objectForKey:kCSVoiceTriggerIsJSEnabled];
+  bOOLValue = [v11 BOOLValue];
 
-  [v4 setIsJSEnabled:v12];
+  [v4 setIsJSEnabled:bOOLValue];
   v13 = sub_100087E5C(@"Siri.VoiceTriggerStatistics");
   v14 = +[NSDate date];
   [v14 timeIntervalSince1970];
@@ -821,21 +821,21 @@ LABEL_11:
   return v4;
 }
 
-- (void)buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:(BOOL)a3 onLockscreen:(BOOL)a4 dictationEnabled:(BOOL)a5 voiceTriggerEnabled:(BOOL)a6 starkHasBeenActiveWithin24Hours:(BOOL)a7 raiseToSpeakEnabled:(BOOL)a8 activeAppleAudioDevices:(id)a9 spokenNotificationsEnabled:(BOOL)a10 announceNotificationsEnabledOnHeadphones:(BOOL)a11 carplayAnnounceEnablementType:(int64_t)a12 isAnnounceNotificationsMutedForCarPlay:(BOOL)a13 shouldSkipTriggerlessReplyConfirmation:(BOOL)a14 spokenNotificationsProxCardSeen:(BOOL)a15 spokenNotificationsControlCenterModuleEnabled:(BOOL)a16 spokenNotificationsAllowSettings:(unint64_t)a17 announceCallsEnabled:(BOOL)a18 preciseLocationEnabled:(BOOL)a19 locationAccessPermission:(int)a20 adaptiveSiriVolumeEnabled:(BOOL)a21 adaptiveSiriVolumePermanentOffsetEnabled:(BOOL)a22 adaptiveSiriVolumePermanentOffsetFactor:(id)a23 adaptiveSiriVolumeMostRecentIntent:(id)a24 isRemoteDarwinVoiceTriggerEnabled:(BOOL)a25 autoSendSettings:(id)a26 siriInCallEnablementState:(int)a27 hangUpEnablementState:(int)a28 heartbeatQueuedTime:(unint64_t)a29 siriVoiceTriggerSettings:(id)a30 isShowAppsBehindSiriEnabledOnCarPlay:(BOOL)a31 isSiriCapableDigitalCarKeyAvailable:(BOOL)a32 connectedBTCarHeadunits:(id)a33 withCompletion:(id)a34
+- (void)buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:(BOOL)enabled onLockscreen:(BOOL)lockscreen dictationEnabled:(BOOL)dictationEnabled voiceTriggerEnabled:(BOOL)triggerEnabled starkHasBeenActiveWithin24Hours:(BOOL)hours raiseToSpeakEnabled:(BOOL)speakEnabled activeAppleAudioDevices:(id)devices spokenNotificationsEnabled:(BOOL)self0 announceNotificationsEnabledOnHeadphones:(BOOL)self1 carplayAnnounceEnablementType:(int64_t)self2 isAnnounceNotificationsMutedForCarPlay:(BOOL)self3 shouldSkipTriggerlessReplyConfirmation:(BOOL)self4 spokenNotificationsProxCardSeen:(BOOL)self5 spokenNotificationsControlCenterModuleEnabled:(BOOL)self6 spokenNotificationsAllowSettings:(unint64_t)self7 announceCallsEnabled:(BOOL)self8 preciseLocationEnabled:(BOOL)self9 locationAccessPermission:(int)permission adaptiveSiriVolumeEnabled:(BOOL)volumeEnabled adaptiveSiriVolumePermanentOffsetEnabled:(BOOL)offsetEnabled adaptiveSiriVolumePermanentOffsetFactor:(id)factor adaptiveSiriVolumeMostRecentIntent:(id)intent isRemoteDarwinVoiceTriggerEnabled:(BOOL)voiceTriggerEnabled autoSendSettings:(id)sendSettings siriInCallEnablementState:(int)state hangUpEnablementState:(int)enablementState heartbeatQueuedTime:(unint64_t)time siriVoiceTriggerSettings:(id)enabled0 isShowAppsBehindSiriEnabledOnCarPlay:(BOOL)enabled1 isSiriCapableDigitalCarKeyAvailable:(BOOL)enabled2 connectedBTCarHeadunits:(id)enabled3 withCompletion:(id)enabled4
 {
-  v154 = a8;
-  v34 = a7;
-  v35 = a6;
-  v146 = a5;
-  v36 = a4;
-  v162 = a3;
-  v37 = a9;
-  v141 = a23;
-  v140 = a24;
-  v142 = a26;
-  v143 = a30;
-  v144 = a33;
-  v137 = a34;
+  speakEnabledCopy = speakEnabled;
+  hoursCopy = hours;
+  triggerEnabledCopy = triggerEnabled;
+  dictationEnabledCopy = dictationEnabled;
+  lockscreenCopy = lockscreen;
+  enabledCopy = enabled;
+  devicesCopy = devices;
+  factorCopy = factor;
+  intentCopy = intent;
+  sendSettingsCopy = sendSettings;
+  triggerSettingsCopy = triggerSettings;
+  headunitsCopy = headunits;
+  completionCopy = completion;
   v38 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -870,27 +870,27 @@ LABEL_11:
 
   v46 = objc_alloc_init(SISchemaPersonalization);
   v47 = +[ADMultiUserService sharedService];
-  v48 = [v47 primaryUser];
-  [v46 setPersonalDomainsSetup:{objc_msgSend(v48, "personalDomainsIsEnabled")}];
+  primaryUser = [v47 primaryUser];
+  [v46 setPersonalDomainsSetup:{objc_msgSend(primaryUser, "personalDomainsIsEnabled")}];
 
   v49 = +[ADPreferences sharedPreferences];
-  v152 = [v49 outputVoice];
+  outputVoice = [v49 outputVoice];
 
   v157 = objc_alloc_init(SISchemaVoiceSettings);
   [v157 setVoiceGender:0];
-  if ([v152 gender] == 2)
+  if ([outputVoice gender] == 2)
   {
     v50 = 1;
   }
 
-  else if ([v152 gender] == 1)
+  else if ([outputVoice gender] == 1)
   {
     v50 = 2;
   }
 
   else
   {
-    if ([v152 gender] != 3)
+    if ([outputVoice gender] != 3)
     {
       goto LABEL_10;
     }
@@ -900,11 +900,11 @@ LABEL_11:
 
   [v157 setVoiceGender:v50];
 LABEL_10:
-  v51 = [v152 languageCode];
-  [v157 setVoiceAccent:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", v51)}];
+  languageCode = [outputVoice languageCode];
+  [v157 setVoiceAccent:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", languageCode)}];
 
-  v52 = [v152 name];
-  [v157 setVoiceName:v52];
+  name = [outputVoice name];
+  [v157 setVoiceName:name];
 
   [v46 setVoiceSettings:v157];
   v53 = AFSiriLogContextDaemon;
@@ -916,7 +916,7 @@ LABEL_10:
   }
 
   dispatch_group_enter(v45);
-  v145 = [sub_100086B0C() sharedStatusController];
+  sharedStatusController = [sub_100086B0C() sharedStatusController];
   v186[0] = _NSConcreteStackBlock;
   v186[1] = 3221225472;
   v186[2] = sub_100089C50;
@@ -927,13 +927,13 @@ LABEL_10:
   v188 = v160;
   group = v45;
   v189 = group;
-  [v145 getSubscriptionStatusWithCompletionHandler:v186];
-  v165 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v37, "count")}];
+  [sharedStatusController getSubscriptionStatusWithCompletionHandler:v186];
+  v165 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(devicesCopy, "count")}];
   v184 = 0u;
   v185 = 0u;
   v182 = 0u;
   v183 = 0u;
-  obj = v37;
+  obj = devicesCopy;
   v54 = [obj countByEnumeratingWithState:&v182 objects:v201 count:16];
   if (v54)
   {
@@ -950,8 +950,8 @@ LABEL_10:
         v57 = *(*(&v182 + 1) + 8 * i);
         v58 = objc_alloc_init(SISchemaActiveAudioDevice);
         [v58 setProductIdentifier:v57];
-        v59 = [&off_1005337A0 stringValue];
-        [v58 setVendorIdentifier:v59];
+        stringValue = [&off_1005337A0 stringValue];
+        [v58 setVendorIdentifier:stringValue];
 
         [v165 addObject:v58];
       }
@@ -963,37 +963,37 @@ LABEL_10:
   }
 
   v153 = objc_alloc_init(SISchemaActiveStatus);
-  [v153 setCarPlayActiveWithin24Hours:v34];
+  [v153 setCarPlayActiveWithin24Hours:hoursCopy];
   [v153 setAudioDevicesActiveWithin24Hours:v165];
-  [v153 setCarBluetoothHeadUnitsActiveWithinLast24Hours:v144];
+  [v153 setCarBluetoothHeadUnitsActiveWithinLast24Hours:headunitsCopy];
   v156 = objc_alloc_init(SISchemaAnnounceEnabledStatus);
-  [v156 setAnnounceMessagesEnabled:a10];
-  [v156 setAnnounceCallsEnabled:a18];
+  [v156 setAnnounceMessagesEnabled:notificationsEnabled];
+  [v156 setAnnounceCallsEnabled:callsEnabled];
   v158 = objc_alloc_init(SISchemaAnnounceNotifications);
-  [v158 setIsEnabled:a10];
+  [v158 setIsEnabled:notificationsEnabled];
   [v158 setProxCardSeen:?];
-  [v158 setReplyWithoutConfirmation:a14];
-  [v158 setIsEnabledForHeadphones:a11];
-  [v158 setIsCarPlayMuted:a13];
-  if ((a12 - 1) > 3)
+  [v158 setReplyWithoutConfirmation:confirmation];
+  [v158 setIsEnabledForHeadphones:headphones];
+  [v158 setIsCarPlayMuted:play];
+  if ((type - 1) > 3)
   {
     v60 = 0;
   }
 
   else
   {
-    v60 = dword_1003F0340[a12 - 1];
+    v60 = dword_1003F0340[type - 1];
   }
 
   [v158 setCarPlayStatus:v60];
   [v156 setAnnounceNotifications:v158];
   v161 = objc_alloc_init(SISchemaEnabledStatus);
-  [v161 setAssistantEnabled:v162];
-  [v161 setDictationEnabled:v146];
-  [v161 setHardwareButtonEnabled:v162];
-  [v161 setHeySiriEnabled:v35];
-  [v161 setAssistantOnLockscreen:v36];
-  [v161 setRaiseToSpeakEnabled:v154];
+  [v161 setAssistantEnabled:enabledCopy];
+  [v161 setDictationEnabled:dictationEnabledCopy];
+  [v161 setHardwareButtonEnabled:enabledCopy];
+  [v161 setHeySiriEnabled:triggerEnabledCopy];
+  [v161 setAssistantOnLockscreen:lockscreenCopy];
+  [v161 setRaiseToSpeakEnabled:speakEnabledCopy];
   v61 = +[AFPreferences sharedPreferences];
   [v161 setIsAlwaysShowSiriCaptionsEnabled:{objc_msgSend(v61, "siriResponseShouldAlwaysPrintWithoutOverride")}];
 
@@ -1003,68 +1003,68 @@ LABEL_10:
   v63 = +[AFPreferences sharedPreferences];
   [v161 setIsShowAppsBehindSiriEnabled:{objc_msgSend(v63, "alwaysObscureBackgroundContentWhenActive") ^ 1}];
 
-  [v161 setSpokenNotificationsEnabled:a10];
+  [v161 setSpokenNotificationsEnabled:notificationsEnabled];
   [v161 setHasHomekitHome:{objc_msgSend(obj, "count") != 0}];
   [v161 setDataSharingOptInStatus:{-[ADDailyDeviceStatusActivity getSiriDataSharingOptInStatus](self, "getSiriDataSharingOptInStatus")}];
   [v161 setTypeToSiriEnabled:AFPreferencesTypeToSiriEnabled()];
-  [v161 setIsPreciseLocationEnabled:a19];
-  [v161 setLocationAccessPermission:a20];
-  [v161 setIsAdaptiveVolumeEnabled:a21];
+  [v161 setIsPreciseLocationEnabled:locationEnabled];
+  [v161 setLocationAccessPermission:permission];
+  [v161 setIsAdaptiveVolumeEnabled:volumeEnabled];
   [v161 setAnnounceEnabledStatus:v156];
-  [v161 setSiriVoiceTriggerSettings:v143];
+  [v161 setSiriVoiceTriggerSettings:triggerSettingsCopy];
   v64 = +[AFSiriDataSharingSensitivityManager shared];
   [v161 setIsMteUploadEnabled:{objc_msgSend(v64, "isOptedOutOfMTE") ^ 1}];
 
   [v161 setIsServerUserDataSyncEnabled:-[ADAssistantProperties _getIsServerUserDataSyncEnabled]_0()];
   if (+[AFFeatureFlags isBlushingPhantomEnabled])
   {
-    [v161 setSiriInCallEnablementState:a27];
+    [v161 setSiriInCallEnablementState:state];
   }
 
   else
   {
-    [v161 setHsHangupEnablementState:a28];
+    [v161 setHsHangupEnablementState:enablementState];
   }
 
-  [v161 setSendWithoutConfirmation:v142];
-  [v161 setIsRemoteDarwinHeySiriEnabled:a25];
+  [v161 setSendWithoutConfirmation:sendSettingsCopy];
+  [v161 setIsRemoteDarwinHeySiriEnabled:voiceTriggerEnabled];
   v65 = +[AFPreferences sharedPreferences];
   [v161 setIsAutoPunctuationEnabled:{objc_msgSend(v65, "dictationAutoPunctuationEnabled")}];
 
   v66 = +[AFPreferences sharedPreferences];
-  v67 = [v66 siriSpeechRate];
-  [v67 doubleValue];
+  siriSpeechRate = [v66 siriSpeechRate];
+  [siriSpeechRate doubleValue];
   v69 = v68;
 
   v70 = _AXSVoiceOverTouchEnabled() != 0;
   [v161 setSiriSpeechRate:v69];
   [v161 setIsVoiceOverEnabled:v70];
   v155 = objc_alloc_init(SISchemaAdaptiveVolumeUserPreferences);
-  [v155 setIsPermanentOffsetEnabled:a22];
-  [v141 floatValue];
+  [v155 setIsPermanentOffsetEnabled:offsetEnabled];
+  [factorCopy floatValue];
   [v155 setPermanentOffsetFactor:?];
-  [v155 setMostRecentIntent:{-[ADDailyDeviceStatusActivity getAdaptiveVolumeUserIntent:](self, "getAdaptiveVolumeUserIntent:", objc_msgSend(v140, "intValue"))}];
+  [v155 setMostRecentIntent:{-[ADDailyDeviceStatusActivity getAdaptiveVolumeUserIntent:](self, "getAdaptiveVolumeUserIntent:", objc_msgSend(intentCopy, "intValue"))}];
   [v161 setAdaptiveVolumeUserPreferences:v155];
   v71 = +[AFPreferences sharedPreferences];
   v139 = [(ADDailyDeviceStatusActivity *)self _truncatedGradingOptInStateChanges:v71];
 
   [v161 setGradingOptInStateChanges:v139];
   v72 = +[AFPreferences sharedPreferences];
-  v73 = [v72 useDeviceSpeakerForTTS];
+  useDeviceSpeakerForTTS = [v72 useDeviceSpeakerForTTS];
 
-  if (v73 > 3)
+  if (useDeviceSpeakerForTTS > 3)
   {
     v74 = 0;
   }
 
   else
   {
-    v74 = dword_1003F0330[v73];
+    v74 = dword_1003F0330[useDeviceSpeakerForTTS];
   }
 
   [v161 setVoiceFeedback:v74];
-  [v161 setIsShowAppsBehindSiriEnabledOnCarPlay:a31];
-  [v161 setIsSiriCapableDigitalCarKeyAvailable:a32];
+  [v161 setIsShowAppsBehindSiriEnabledOnCarPlay:carPlay];
+  [v161 setIsSiriCapableDigitalCarKeyAvailable:available];
   v151 = objc_alloc_init(SISchemaAggregatedMetrics);
   v149 = +[CSVoiceTriggerHeartBeatMetricsProvider fetchVoiceTriggerHeartBeatMetrics];
   if (v149)
@@ -1073,15 +1073,15 @@ LABEL_10:
     [v151 setVoiceTrigger:v75];
   }
 
-  v148 = [(ADDailyDeviceStatusActivity *)self _buildDailySelfTriggerSuppressionMetrics];
-  if (v148)
+  _buildDailySelfTriggerSuppressionMetrics = [(ADDailyDeviceStatusActivity *)self _buildDailySelfTriggerSuppressionMetrics];
+  if (_buildDailySelfTriggerSuppressionMetrics)
   {
-    [v151 setSelfTriggerSuppression:v148];
+    [v151 setSelfTriggerSuppression:_buildDailySelfTriggerSuppressionMetrics];
   }
 
   v76 = +[ADCommandCenter sharedCommandCenter];
-  v77 = [v76 _account];
-  v150 = [v77 assistantIdentifier];
+  _account = [v76 _account];
+  assistantIdentifier = [_account assistantIdentifier];
 
   v78 = AFSiriLogContextAnalytics;
   if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
@@ -1089,33 +1089,33 @@ LABEL_10:
     *buf = 136315395;
     *&buf[4] = "[ADDailyDeviceStatusActivity buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:onLockscreen:dictationEnabled:voiceTriggerEnabled:starkHasBeenActiveWithin24Hours:raiseToSpeakEnabled:activeAppleAudioDevices:spokenNotificationsEnabled:announceNotificationsEnabledOnHeadphones:carplayAnnounceEnablementType:isAnnounceNotificationsMutedForCarPlay:shouldSkipTriggerlessReplyConfirmation:spokenNotificationsProxCardSeen:spokenNotificationsControlCenterModuleEnabled:spokenNotificationsAllowSettings:announceCallsEnabled:preciseLocationEnabled:locationAccessPermission:adaptiveSiriVolumeEnabled:adaptiveSiriVolumePermanentOffsetEnabled:adaptiveSiriVolumePermanentOffsetFactor:adaptiveSiriVolumeMostRecentIntent:isRemoteDarwinVoiceTriggerEnabled:autoSendSettings:siriInCallEnablementState:hangUpEnablementState:heartbeatQueuedTime:siriVoiceTriggerSettings:isShowAppsBehindSiriEnabledOnCarPlay:isSiriCapableDigitalCarKeyAvailable:connectedBTCarHeadunits:withCompletion:]";
     *&buf[12] = 2113;
-    *&buf[14] = v150;
+    *&buf[14] = assistantIdentifier;
     _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_INFO, "%s assistantIdentifier: %{private}@", buf, 0x16u);
   }
 
-  if ((v162 || v146) && !v150)
+  if ((enabledCopy || dictationEnabledCopy) && !assistantIdentifier)
   {
     [(ADDailyDeviceStatusActivity *)self _triggerABCForNullAssistantIdentifier];
   }
 
   v79 = +[ADPreferences sharedPreferences];
-  v147 = [v79 languageCode];
+  languageCode2 = [v79 languageCode];
 
-  if (v147)
+  if (languageCode2)
   {
-    [v160 setSiriInputLocale:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", v147)}];
+    [v160 setSiriInputLocale:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", languageCode2)}];
   }
 
   v80 = +[AFPreferences sharedPreferences];
-  v81 = [v80 enabledDictationLocales];
+  enabledDictationLocales = [v80 enabledDictationLocales];
 
   v163 = objc_alloc_init(NSMutableArray);
   v180 = 0u;
   v181 = 0u;
   v178 = 0u;
   v179 = 0u;
-  v82 = [v81 allKeys];
-  v83 = [v82 countByEnumeratingWithState:&v178 objects:v200 count:16];
+  allKeys = [enabledDictationLocales allKeys];
+  v83 = [allKeys countByEnumeratingWithState:&v178 objects:v200 count:16];
   if (v83)
   {
     v84 = *v179;
@@ -1125,31 +1125,31 @@ LABEL_10:
       {
         if (*v179 != v84)
         {
-          objc_enumerationMutation(v82);
+          objc_enumerationMutation(allKeys);
         }
 
         v86 = *(*(&v178 + 1) + 8 * j);
-        v87 = [v81 objectForKey:v86];
-        v88 = [v87 BOOLValue];
+        v87 = [enabledDictationLocales objectForKey:v86];
+        bOOLValue = [v87 BOOLValue];
 
-        if (v88)
+        if (bOOLValue)
         {
           v89 = objc_alloc_init(SISchemaLocaleIdentifier);
           v90 = [v86 componentsSeparatedByString:@"_"];
           if ([v90 count] == 2)
           {
-            v91 = [v90 firstObject];
-            [v89 setLanguageCode:v91];
+            firstObject = [v90 firstObject];
+            [v89 setLanguageCode:firstObject];
 
-            v92 = [v90 lastObject];
-            [v89 setCountryCode:v92];
+            lastObject = [v90 lastObject];
+            [v89 setCountryCode:lastObject];
           }
 
           [v163 addObject:v89];
         }
       }
 
-      v83 = [v82 countByEnumeratingWithState:&v178 objects:v200 count:16];
+      v83 = [allKeys countByEnumeratingWithState:&v178 objects:v200 count:16];
     }
 
     while (v83);
@@ -1157,20 +1157,20 @@ LABEL_10:
 
   [v160 setEnabledDictationLocales:v163];
   v93 = +[AFPreferences sharedPreferences];
-  v94 = [v93 longLivedIdentifierUploadingEnabled];
+  longLivedIdentifierUploadingEnabled = [v93 longLivedIdentifierUploadingEnabled];
 
-  if (v94)
+  if (longLivedIdentifierUploadingEnabled)
   {
-    [v160 setSiriDeviceID:v150];
+    [v160 setSiriDeviceID:assistantIdentifier];
     v95 = +[ADCommandCenter sharedCommandCenter];
-    v96 = [v95 _account];
-    v97 = [v96 speechIdentifier];
-    [v160 setSiriSpeechID:v97];
+    _account2 = [v95 _account];
+    speechIdentifier = [_account2 speechIdentifier];
+    [v160 setSiriSpeechID:speechIdentifier];
 
     v98 = +[ADMultiUserService sharedService];
-    v99 = [v98 primaryUser];
-    v100 = [v99 sharedUserID];
-    [v160 setSharedUserId:v100];
+    primaryUser2 = [v98 primaryUser];
+    sharedUserID = [primaryUser2 sharedUserID];
+    [v160 setSharedUserId:sharedUserID];
   }
 
   else
@@ -1206,11 +1206,11 @@ LABEL_10:
 
   [v160 setEnabledStatus:v161];
   [v160 setActiveStatus:v153];
-  [v160 setSpokenNotificationsproxCardSeen:a15];
-  [v160 setSpokenNotificationsControlCenterModuleEnabled:a16];
-  [v160 setSpokenNotificationsWhitelistSettings:a17];
+  [v160 setSpokenNotificationsproxCardSeen:seen];
+  [v160 setSpokenNotificationsControlCenterModuleEnabled:moduleEnabled];
+  [v160 setSpokenNotificationsWhitelistSettings:settings];
   [v160 setAggregatedMetrics:v151];
-  [v160 setQueuedAtTimestampHourInMs:a29];
+  [v160 setQueuedAtTimestampHourInMs:time];
   dispatch_group_enter(group);
   v109 = +[ADAssistantDataManager sharedDataManager];
   v175[0] = _NSConcreteStackBlock;
@@ -1223,11 +1223,11 @@ LABEL_10:
   v177 = v111;
   [v109 getiTunesStoreFrontIdentifierWithCompletion:v175];
 
-  v112 = [(ADDailyDeviceStatusActivity *)self getVolumeCapacity];
-  v113 = v112;
-  if (v112)
+  getVolumeCapacity = [(ADDailyDeviceStatusActivity *)self getVolumeCapacity];
+  v113 = getVolumeCapacity;
+  if (getVolumeCapacity)
   {
-    v114 = [v112 objectForKeyedSubscript:NSURLVolumeTotalCapacityKey];
+    v114 = [getVolumeCapacity objectForKeyedSubscript:NSURLVolumeTotalCapacityKey];
     [v114 doubleValue];
     v116 = v115;
 
@@ -1249,7 +1249,7 @@ LABEL_10:
   v172[1] = 3221225472;
   v172[2] = sub_100089EF4;
   v172[3] = &unk_100519BD8;
-  v125 = v137;
+  v125 = completionCopy;
   v174 = v125;
   v126 = v110;
   v173 = v126;
@@ -1288,15 +1288,15 @@ LABEL_10:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 longLivedIdentifierUploadingEnabled];
+  longLivedIdentifierUploadingEnabled = [v4 longLivedIdentifierUploadingEnabled];
 
   v6 = AFSiriLogContextDaemon;
   v7 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (longLivedIdentifierUploadingEnabled)
   {
     if (v7)
     {
@@ -1306,18 +1306,18 @@ LABEL_10:
     }
 
     v8 = +[AFPreferences sharedPreferences];
-    v9 = [v8 assistantIsEnabled];
+    assistantIsEnabled = [v8 assistantIsEnabled];
 
     v10 = +[AFPreferences sharedPreferences];
-    v86 = [v10 dictationIsEnabled];
+    dictationIsEnabled = [v10 dictationIsEnabled];
 
     v11 = 2;
-    if (!v9)
+    if (!assistantIsEnabled)
     {
       v11 = 0;
     }
 
-    if (v86)
+    if (dictationIsEnabled)
     {
       v12 = v11 | 4;
     }
@@ -1328,7 +1328,7 @@ LABEL_10:
     }
 
     [AFAggregator logEnabledState:v12];
-    if ((v9 | v86) & 1) != 0 && (AFHasUnlockedSinceBoot())
+    if ((assistantIsEnabled | dictationIsEnabled) & 1) != 0 && (AFHasUnlockedSinceBoot())
     {
       if (AFDeviceSupportsCarPlay())
       {
@@ -1336,10 +1336,10 @@ LABEL_10:
         v14 = +[NSDate date];
         v15 = [v13 dateByAddingUnit:32 value:-24 toDate:v14 options:0];
 
-        v16 = [v15 timeIntervalSinceReferenceDate];
+        timeIntervalSinceReferenceDate = [v15 timeIntervalSinceReferenceDate];
         v18 = v17;
-        v19 = [off_10058CB28(v16) carPlayStream];
-        v20 = [v19 publisherFromStartTime:v18];
+        carPlayStream = [off_10058CB28(timeIntervalSinceReferenceDate) carPlayStream];
+        v20 = [carPlayStream publisherFromStartTime:v18];
         v90 = 0;
         v91 = &v90;
         v92 = 0x2020000000;
@@ -1364,7 +1364,7 @@ LABEL_10:
         v78 = *(v91 + 24);
         _Block_object_dispose(&v90, 8);
 
-        if (v9)
+        if (assistantIsEnabled)
         {
           goto LABEL_15;
         }
@@ -1373,16 +1373,16 @@ LABEL_10:
       else
       {
         v78 = 0;
-        if (v9)
+        if (assistantIsEnabled)
         {
 LABEL_15:
           v24 = +[AFPreferences sharedPreferences];
-          v25 = [v24 disableAssistantWhilePasscodeLocked];
+          disableAssistantWhilePasscodeLocked = [v24 disableAssistantWhilePasscodeLocked];
 
-          v77 = v25 ^ 1;
+          v77 = disableAssistantWhilePasscodeLocked ^ 1;
 LABEL_25:
           v27 = +[VTPreferences sharedPreferences];
-          v76 = [v27 voiceTriggerEnabled];
+          voiceTriggerEnabled = [v27 voiceTriggerEnabled];
 
           v83 = AFAppleAudioDeviceConnectedInLast24Hours();
           v82 = AFBTCarHeadunitsConnectedInLast24Hours();
@@ -1412,20 +1412,20 @@ LABEL_25:
 
             v29 = v28;
             _Block_object_dispose(&v90, 8);
-            v30 = [v28 currentNotificationSettingsCenter];
-            v31 = [v30 notificationSystemSettings];
+            currentNotificationSettingsCenter = [v28 currentNotificationSettingsCenter];
+            notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
             v32 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
             {
               *buf = 136315394;
               *&buf[4] = "[ADDailyDeviceStatusActivity runWithCompletion:]";
               *&buf[12] = 2112;
-              *&buf[14] = v31;
+              *&buf[14] = notificationSystemSettings;
               _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
             }
 
-            v75 = [v31 announcementSetting] == 2;
-            v74 = [v31 announcementHeadphonesSetting] == 2;
+            v75 = [notificationSystemSettings announcementSetting] == 2;
+            v74 = [notificationSystemSettings announcementHeadphonesSetting] == 2;
           }
 
           v73 = _AFPreferencesAnnounceNotificationsInCarPlayType();
@@ -1456,7 +1456,7 @@ LABEL_25:
 
           v35 = v34;
           _Block_object_dispose(&v90, 8);
-          v36 = [v34 sharedInstance];
+          sharedInstance = [v34 sharedInstance];
           v87[0] = _NSConcreteStackBlock;
           v87[1] = 3221225472;
           v87[2] = sub_10008ADD8;
@@ -1464,14 +1464,14 @@ LABEL_25:
           v89 = v94;
           group = v33;
           v88 = group;
-          [v36 getEnabledStateOfModuleWithIdentifier:@"com.apple.siri.SpokenNotificationsModule" completionHandler:v87];
+          [sharedInstance getEnabledStateOfModuleWithIdentifier:@"com.apple.siri.SpokenNotificationsModule" completionHandler:v87];
 
           v37 = dispatch_time(0, 1000000000);
           dispatch_group_wait(group, v37);
           CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
           AppIntegerValue = CFPreferencesGetAppIntegerValue(@"kSpokenMessageAllowLevel", @"com.apple.MobileSMS", 0);
           v38 = objc_alloc_init(TUUserConfiguration);
-          v79 = [v38 announceCalls];
+          announceCalls = [v38 announceCalls];
           v65 = v38;
           v39 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -1479,17 +1479,17 @@ LABEL_25:
             *buf = 136315394;
             *&buf[4] = "[ADDailyDeviceStatusActivity runWithCompletion:]";
             *&buf[12] = 1024;
-            *&buf[14] = v79 != 0;
+            *&buf[14] = announceCalls != 0;
             _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "%s Announce calls enabled: %d", buf, 0x12u);
           }
 
-          v68 = [(ADDailyDeviceStatusActivity *)self _preciseLocationEnabled];
-          v67 = [(ADDailyDeviceStatusActivity *)self _locationAccessPermission];
+          _preciseLocationEnabled = [(ADDailyDeviceStatusActivity *)self _preciseLocationEnabled];
+          _locationAccessPermission = [(ADDailyDeviceStatusActivity *)self _locationAccessPermission];
           v40 = +[CSPreferences sharedPreferences];
-          v66 = [v40 smartSiriVolumeContextAwareEnabled];
+          smartSiriVolumeContextAwareEnabled = [v40 smartSiriVolumeContextAwareEnabled];
 
           v41 = +[CSPreferences sharedPreferences];
-          v64 = [v41 isAdaptiveSiriVolumePermanentOffsetEnabled];
+          isAdaptiveSiriVolumePermanentOffsetEnabled = [v41 isAdaptiveSiriVolumePermanentOffsetEnabled];
 
           v42 = +[CSPreferences sharedPreferences];
           [v42 adaptiveSiriVolumePermanentOffset];
@@ -1506,9 +1506,9 @@ LABEL_25:
           v63 = [v45 voiceTriggerEnabledWithDeviceType:3 endpointId:0];
 
           v62 = AFGetTimeSinceEpochRoundedToHourInMilliseconds();
-          v46 = [(ADDailyDeviceStatusActivity *)self fetchVoiceTriggerSettings];
+          fetchVoiceTriggerSettings = [(ADDailyDeviceStatusActivity *)self fetchVoiceTriggerSettings];
           ShowAppsBehindSiriInCarPlayEnabled = _AFPreferencesGetShowAppsBehindSiriInCarPlayEnabled();
-          v48 = [(ADDailyDeviceStatusActivity *)self _isSiriCapableDigitalCarKeyAvailable];
+          _isSiriCapableDigitalCarKeyAvailable = [(ADDailyDeviceStatusActivity *)self _isSiriCapableDigitalCarKeyAvailable];
           v49 = *(*&v94[8] + 24);
           if (AFDeviceSupportsFullSiriUOD() && (+[AFPreferences sharedPreferences](AFPreferences, "sharedPreferences"), v50 = objc_claimAutoreleasedReturnValue(), v51 = [v50 siriInCallEnablementState], v50, v51 <= 2))
           {
@@ -1530,24 +1530,24 @@ LABEL_25:
             v55 = 0;
           }
 
-          BYTE1(v61) = v48;
+          BYTE1(v61) = _isSiriCapableDigitalCarKeyAvailable;
           LOBYTE(v61) = ShowAppsBehindSiriInCarPlayEnabled;
           LOBYTE(v60) = v63;
-          BYTE1(v59) = v64;
-          LOBYTE(v59) = v66;
-          HIDWORD(v58) = v67;
-          BYTE1(v58) = v68;
-          LOBYTE(v58) = v79 != 0;
+          BYTE1(v59) = isAdaptiveSiriVolumePermanentOffsetEnabled;
+          LOBYTE(v59) = smartSiriVolumeContextAwareEnabled;
+          HIDWORD(v58) = _locationAccessPermission;
+          BYTE1(v58) = _preciseLocationEnabled;
+          LOBYTE(v58) = announceCalls != 0;
           BYTE3(v57) = v49;
           BYTE2(v57) = v70;
           BYTE1(v57) = v71;
           LOBYTE(v57) = v72;
           BYTE1(v56) = v74;
           LOBYTE(v56) = v75;
-          [ADDailyDeviceStatusActivity buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:"buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:onLockscreen:dictationEnabled:voiceTriggerEnabled:starkHasBeenActiveWithin24Hours:raiseToSpeakEnabled:activeAppleAudioDevices:spokenNotificationsEnabled:announceNotificationsEnabledOnHeadphones:carplayAnnounceEnablementType:isAnnounceNotificationsMutedForCarPlay:shouldSkipTriggerlessReplyConfirmation:spokenNotificationsProxCardSeen:spokenNotificationsControlCenterModuleEnabled:spokenNotificationsAllowSettings:announceCallsEnabled:preciseLocationEnabled:locationAccessPermission:adaptiveSiriVolumeEnabled:adaptiveSiriVolumePermanentOffsetEnabled:adaptiveSiriVolumePermanentOffsetFactor:adaptiveSiriVolumeMostRecentIntent:isRemoteDarwinVoiceTriggerEnabled:autoSendSettings:siriInCallEnablementState:hangUpEnablementState:heartbeatQueuedTime:siriVoiceTriggerSettings:isShowAppsBehindSiriEnabledOnCarPlay:isSiriCapableDigitalCarKeyAvailable:connectedBTCarHeadunits:withCompletion:" onLockscreen:v9 dictationEnabled:v77 voiceTriggerEnabled:v86 starkHasBeenActiveWithin24Hours:v76 raiseToSpeakEnabled:v78 & 1 activeAppleAudioDevices:0 spokenNotificationsEnabled:v83 announceNotificationsEnabledOnHeadphones:v56 carplayAnnounceEnablementType:v73 isAnnounceNotificationsMutedForCarPlay:v57 shouldSkipTriggerlessReplyConfirmation:AppIntegerValue spokenNotificationsProxCardSeen:v58 spokenNotificationsControlCenterModuleEnabled:v59 spokenNotificationsAllowSettings:v81 announceCallsEnabled:v80 preciseLocationEnabled:v60 locationAccessPermission:v44 adaptiveSiriVolumeEnabled:__PAIR64__(v55 adaptiveSiriVolumePermanentOffsetEnabled:v52) adaptiveSiriVolumePermanentOffsetFactor:v62 adaptiveSiriVolumeMostRecentIntent:v46 isRemoteDarwinVoiceTriggerEnabled:v61 autoSendSettings:v82 siriInCallEnablementState:&stru_10050FA28 hangUpEnablementState:? heartbeatQueuedTime:? siriVoiceTriggerSettings:? isShowAppsBehindSiriEnabledOnCarPlay:? isSiriCapableDigitalCarKeyAvailable:? connectedBTCarHeadunits:? withCompletion:?];
-          if (v3)
+          [ADDailyDeviceStatusActivity buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:"buildDailyDeviceStatusHeartbeatMetricsWithSiriEnabled:onLockscreen:dictationEnabled:voiceTriggerEnabled:starkHasBeenActiveWithin24Hours:raiseToSpeakEnabled:activeAppleAudioDevices:spokenNotificationsEnabled:announceNotificationsEnabledOnHeadphones:carplayAnnounceEnablementType:isAnnounceNotificationsMutedForCarPlay:shouldSkipTriggerlessReplyConfirmation:spokenNotificationsProxCardSeen:spokenNotificationsControlCenterModuleEnabled:spokenNotificationsAllowSettings:announceCallsEnabled:preciseLocationEnabled:locationAccessPermission:adaptiveSiriVolumeEnabled:adaptiveSiriVolumePermanentOffsetEnabled:adaptiveSiriVolumePermanentOffsetFactor:adaptiveSiriVolumeMostRecentIntent:isRemoteDarwinVoiceTriggerEnabled:autoSendSettings:siriInCallEnablementState:hangUpEnablementState:heartbeatQueuedTime:siriVoiceTriggerSettings:isShowAppsBehindSiriEnabledOnCarPlay:isSiriCapableDigitalCarKeyAvailable:connectedBTCarHeadunits:withCompletion:" onLockscreen:assistantIsEnabled dictationEnabled:v77 voiceTriggerEnabled:dictationIsEnabled starkHasBeenActiveWithin24Hours:voiceTriggerEnabled raiseToSpeakEnabled:v78 & 1 activeAppleAudioDevices:0 spokenNotificationsEnabled:v83 announceNotificationsEnabledOnHeadphones:v56 carplayAnnounceEnablementType:v73 isAnnounceNotificationsMutedForCarPlay:v57 shouldSkipTriggerlessReplyConfirmation:AppIntegerValue spokenNotificationsProxCardSeen:v58 spokenNotificationsControlCenterModuleEnabled:v59 spokenNotificationsAllowSettings:v81 announceCallsEnabled:v80 preciseLocationEnabled:v60 locationAccessPermission:v44 adaptiveSiriVolumeEnabled:__PAIR64__(v55 adaptiveSiriVolumePermanentOffsetEnabled:v52) adaptiveSiriVolumePermanentOffsetFactor:v62 adaptiveSiriVolumeMostRecentIntent:fetchVoiceTriggerSettings isRemoteDarwinVoiceTriggerEnabled:v61 autoSendSettings:v82 siriInCallEnablementState:&stru_10050FA28 hangUpEnablementState:? heartbeatQueuedTime:? siriVoiceTriggerSettings:? isShowAppsBehindSiriEnabledOnCarPlay:? isSiriCapableDigitalCarKeyAvailable:? connectedBTCarHeadunits:? withCompletion:?];
+          if (completionCopy)
           {
-            v3[2](v3);
+            completionCopy[2](completionCopy);
           }
 
           _Block_object_dispose(v94, 8);
@@ -1565,19 +1565,19 @@ LABEL_25:
       *buf = 136315138;
       *&buf[4] = "[ADDailyDeviceStatusActivity runWithCompletion:]";
       _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "%s Skipping Heartbeat due to (both Siri & Dictation disabled) OR (device was locked)", buf, 0xCu);
-      if (!v3)
+      if (!completionCopy)
       {
         goto LABEL_47;
       }
     }
 
-    else if (!v3)
+    else if (!completionCopy)
     {
       goto LABEL_47;
     }
 
 LABEL_19:
-    v3[2](v3);
+    completionCopy[2](completionCopy);
     goto LABEL_47;
   }
 
@@ -1588,7 +1588,7 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s no-op ADDailyDeviceStatusActivity since longLivedIdentifierUploadingEnabled is False and RPI is Enabled.", buf, 0xCu);
   }
 
-  if (v3)
+  if (completionCopy)
   {
     goto LABEL_19;
   }
@@ -1614,7 +1614,7 @@ LABEL_47:
   return v2;
 }
 
-+ (id)taskFromActivity:(id)a3
++ (id)taskFromActivity:(id)activity
 {
   v3 = objc_alloc_init(ADDailyDeviceStatusActivity);
 

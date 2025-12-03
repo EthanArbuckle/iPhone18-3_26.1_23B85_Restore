@@ -1,6 +1,6 @@
 @interface CCUIMainViewControllerFactory
 - (CCUIMainViewControllerFactory)init;
-- (id)mainViewControllerWithSystemAgent:(id)a3 sensorActivityDataProvider:(id)a4 displayLayoutMonitorConfiguration:(id)a5;
+- (id)mainViewControllerWithSystemAgent:(id)agent sensorActivityDataProvider:(id)provider displayLayoutMonitorConfiguration:(id)configuration;
 @end
 
 @implementation CCUIMainViewControllerFactory
@@ -12,9 +12,9 @@
   v2 = [(CCUIMainViewControllerFactory *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CFC860] sharedInstance];
+    mEMORY[0x277CFC860] = [MEMORY[0x277CFC860] sharedInstance];
     repository = v2->_repository;
-    v2->_repository = v3;
+    v2->_repository = mEMORY[0x277CFC860];
 
     v5 = objc_alloc_init(_TtC15ControlCenterUI32CCUIGameModeActivityDataProvider);
     gameModeActivityDataProvider = v2->_gameModeActivityDataProvider;
@@ -24,19 +24,19 @@
   return v2;
 }
 
-- (id)mainViewControllerWithSystemAgent:(id)a3 sensorActivityDataProvider:(id)a4 displayLayoutMonitorConfiguration:(id)a5
+- (id)mainViewControllerWithSystemAgent:(id)agent sensorActivityDataProvider:(id)provider displayLayoutMonitorConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CCUIDisplayLayoutContextProvider alloc] initWithDisplayLayoutMonitorConfiguration:v8];
+  configurationCopy = configuration;
+  providerCopy = provider;
+  agentCopy = agent;
+  v11 = [[CCUIDisplayLayoutContextProvider alloc] initWithDisplayLayoutMonitorConfiguration:configurationCopy];
 
-  v12 = [[CCUIModuleInstanceManager alloc] initWithModuleRepository:self->_repository systemAgent:v10 displayLayoutContextProvider:v11];
+  v12 = [[CCUIModuleInstanceManager alloc] initWithModuleRepository:self->_repository systemAgent:agentCopy displayLayoutContextProvider:v11];
   v13 = [CCUIMainViewController alloc];
   v14 = objc_alloc_init(CCUIModuleSettingsManager);
   v15 = objc_alloc_init(_TtC15ControlCenterUI32CCUIGameModeActivityDataProvider);
   v16 = +[CCUIMainViewController _presentationProviderForDevice];
-  v17 = [(CCUIMainViewController *)v13 initWithSystemAgent:v10 moduleInstanceManager:v12 moduleSettingsManager:v14 sensorActivityDataProvider:v9 gameModeActivityDataProvider:v15 presentationProvider:v16];
+  v17 = [(CCUIMainViewController *)v13 initWithSystemAgent:agentCopy moduleInstanceManager:v12 moduleSettingsManager:v14 sensorActivityDataProvider:providerCopy gameModeActivityDataProvider:v15 presentationProvider:v16];
 
   return v17;
 }

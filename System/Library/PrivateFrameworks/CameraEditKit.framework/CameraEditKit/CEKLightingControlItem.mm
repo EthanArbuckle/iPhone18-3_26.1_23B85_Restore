@@ -1,6 +1,6 @@
 @interface CEKLightingControlItem
 + (id)_defaultOutlineImage;
-- (CEKLightingControlItem)initWithType:(int64_t)a3;
+- (CEKLightingControlItem)initWithType:(int64_t)type;
 @end
 
 @implementation CEKLightingControlItem
@@ -47,7 +47,7 @@ void __46__CEKLightingControlItem__defaultOutlineImage__block_invoke()
   UIGraphicsEndImageContext();
 }
 
-- (CEKLightingControlItem)initWithType:(int64_t)a3
+- (CEKLightingControlItem)initWithType:(int64_t)type
 {
   v17.receiver = self;
   v17.super_class = CEKLightingControlItem;
@@ -55,12 +55,12 @@ void __46__CEKLightingControlItem__defaultOutlineImage__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_lightingType = a3;
-    v6 = [CEKLightingEffectManager displayNameForLightingType:a3];
+    v4->_lightingType = type;
+    v6 = [CEKLightingEffectManager displayNameForLightingType:type];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [CEKLightingEffectManager displayImageForLightingType:a3];
+    v8 = [CEKLightingEffectManager displayImageForLightingType:type];
     displayImage = v5->_displayImage;
     v5->_displayImage = v8;
 
@@ -70,11 +70,11 @@ void __46__CEKLightingControlItem__defaultOutlineImage__block_invoke()
     displayShadowImage = v5->_displayShadowImage;
     v5->_displayShadowImage = v12;
 
-    if ((a3 - 2) <= 4)
+    if ((type - 2) <= 4)
     {
-      v14 = [objc_opt_class() _defaultOutlineImage];
+      _defaultOutlineImage = [objc_opt_class() _defaultOutlineImage];
       displayOutlineImage = v5->_displayOutlineImage;
-      v5->_displayOutlineImage = v14;
+      v5->_displayOutlineImage = _defaultOutlineImage;
     }
   }
 

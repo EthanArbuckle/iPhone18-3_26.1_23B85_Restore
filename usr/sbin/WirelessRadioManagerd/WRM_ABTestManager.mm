@@ -77,10 +77,10 @@
     v2->mRLHandoverPolicyExId = v11;
 
     mRLHandoverPolicyEnabled = v2->mRLHandoverPolicyEnabled;
-    v14 = [(TRIExperimentIdentifiers *)v2->mRLHandoverPolicyExId experimentId];
-    v15 = [(TRIExperimentIdentifiers *)v2->mRLHandoverPolicyExId deploymentId];
-    v16 = [(TRIExperimentIdentifiers *)v2->mRLHandoverPolicyExId treatmentId];
-    [WCM_Logging logLevel:25 message:@"trial initial mRLHandoverPolicyEnabled=%d, exId=%@, deployId=%d, treatmentId=%@", mRLHandoverPolicyEnabled, v14, v15, v16];
+    experimentId = [(TRIExperimentIdentifiers *)v2->mRLHandoverPolicyExId experimentId];
+    deploymentId = [(TRIExperimentIdentifiers *)v2->mRLHandoverPolicyExId deploymentId];
+    treatmentId = [(TRIExperimentIdentifiers *)v2->mRLHandoverPolicyExId treatmentId];
+    [WCM_Logging logLevel:25 message:@"trial initial mRLHandoverPolicyEnabled=%d, exId=%@, deployId=%d, treatmentId=%@", mRLHandoverPolicyEnabled, experimentId, deploymentId, treatmentId];
   }
 
   else

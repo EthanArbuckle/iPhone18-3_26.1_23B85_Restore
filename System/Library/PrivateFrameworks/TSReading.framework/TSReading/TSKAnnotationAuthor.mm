@@ -1,13 +1,13 @@
 @interface TSKAnnotationAuthor
-+ (id)authorChangeAdornmentsColorForIndex:(unint64_t)a3;
-+ (id)authorColorAppearanceNameForIndex:(unint64_t)a3;
-+ (id)authorColorNameForIndex:(unint64_t)a3;
-+ (id)authorPopoverColorForIndex:(unint64_t)a3;
-+ (id)authorStorageColorForIndex:(unint64_t)a3;
-+ (id)authorTextMarkupColorForIndex:(unint64_t)a3;
++ (id)authorChangeAdornmentsColorForIndex:(unint64_t)index;
++ (id)authorColorAppearanceNameForIndex:(unint64_t)index;
++ (id)authorColorNameForIndex:(unint64_t)index;
++ (id)authorPopoverColorForIndex:(unint64_t)index;
++ (id)authorStorageColorForIndex:(unint64_t)index;
++ (id)authorTextMarkupColorForIndex:(unint64_t)index;
 + (id)defaultAuthorName;
-- (BOOL)isEqual:(id)a3;
-- (TSKAnnotationAuthor)initWithContext:(id)a3 name:(id)a4 color:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (TSKAnnotationAuthor)initWithContext:(id)context name:(id)name color:(id)color;
 - (TSUColor)cellViolatorColor;
 - (TSUColor)changeAdornmentsColor;
 - (TSUColor)flagFillColor;
@@ -20,33 +20,33 @@
 - (unint64_t)hash;
 - (unint64_t)p_authorColorIndex;
 - (void)dealloc;
-- (void)setName:(id)a3;
-- (void)setStorageColor:(id)a3;
+- (void)setName:(id)name;
+- (void)setStorageColor:(id)color;
 @end
 
 @implementation TSKAnnotationAuthor
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   [(TSPObject *)self willModify];
-  v5 = [a3 copy];
+  v5 = [name copy];
 
   self->mName = v5;
 }
 
-- (void)setStorageColor:(id)a3
+- (void)setStorageColor:(id)color
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  colorCopy = color;
 
-  self->mColor = a3;
+  self->mColor = color;
 }
 
-- (TSKAnnotationAuthor)initWithContext:(id)a3 name:(id)a4 color:(id)a5
+- (TSKAnnotationAuthor)initWithContext:(id)context name:(id)name color:(id)color
 {
-  if (a4)
+  if (name)
   {
-    if (a5)
+    if (color)
     {
       goto LABEL_3;
     }
@@ -54,26 +54,26 @@
 
   else
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAnnotationAuthor initWithContext:name:color:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 39, @"Invalid parameter not satisfying: %s", "name != nil"}];
-    if (a5)
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 39, @"Invalid parameter not satisfying: %s", "name != nil"}];
+    if (color)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAnnotationAuthor initWithContext:name:color:]"];
-  [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 40, @"Invalid parameter not satisfying: %s", "color != nil"}];
+  [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 40, @"Invalid parameter not satisfying: %s", "color != nil"}];
 LABEL_3:
   v15.receiver = self;
   v15.super_class = TSKAnnotationAuthor;
-  v9 = [(TSPObject *)&v15 initWithContext:a3];
+  v9 = [(TSPObject *)&v15 initWithContext:context];
   if (v9)
   {
-    v9->mName = [a4 copy];
-    v9->mColor = a5;
+    v9->mName = [name copy];
+    v9->mColor = color;
   }
 
   return v9;
@@ -86,9 +86,9 @@ LABEL_3:
   [(TSKAnnotationAuthor *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -104,9 +104,9 @@ LABEL_3:
       if (v5)
       {
         mName = self->mName;
-        v7 = [v4 name];
+        name = [v4 name];
 
-        LOBYTE(v5) = [(NSString *)mName isEqualToString:v7];
+        LOBYTE(v5) = [(NSString *)mName isEqualToString:name];
       }
     }
 
@@ -130,14 +130,14 @@ LABEL_3:
 
 - (unint64_t)p_authorColorIndex
 {
-  v2 = [(TSKAnnotationAuthor *)self storageColor];
+  storageColor = [(TSKAnnotationAuthor *)self storageColor];
   if (!+[TSKAnnotationAuthor presetColorCount])
   {
     goto LABEL_7;
   }
 
   v3 = 0;
-  while (([+[TSKAnnotationAuthor authorStorageColorForIndex:](TSKAnnotationAuthor authorStorageColorForIndex:{v3), "isEqual:", v2}] & 1) == 0)
+  while (([+[TSKAnnotationAuthor authorStorageColorForIndex:](TSKAnnotationAuthor authorStorageColorForIndex:{v3), "isEqual:", storageColor}] & 1) == 0)
   {
     if (++v3 >= +[TSKAnnotationAuthor presetColorCount])
     {
@@ -148,18 +148,18 @@ LABEL_3:
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_7:
-    [(TSUColor *)v2 redComponent];
+    [(TSUColor *)storageColor redComponent];
     v5 = v4;
-    [(TSUColor *)v2 greenComponent];
+    [(TSUColor *)storageColor greenComponent];
     v7 = v6;
-    [(TSUColor *)v2 blueComponent];
+    [(TSUColor *)storageColor blueComponent];
     v9 = v8;
     if (!+[TSKAnnotationAuthor presetColorCount])
     {
 LABEL_14:
-      v20 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAnnotationAuthor p_authorColorIndex]"];
-      [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 133, @"Should have found a color"}];
+      [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 133, @"Should have found a color"}];
       return 0;
     }
 
@@ -201,81 +201,81 @@ LABEL_14:
 
 - (TSUColor)textMarkupColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorTextMarkupColorForIndex:v2];
+  return [TSKAnnotationAuthor authorTextMarkupColorForIndex:p_authorColorIndex];
 }
 
 - (TSUColor)textHighlightColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorTextHighlightColorForIndex:v2];
+  return [TSKAnnotationAuthor authorTextHighlightColorForIndex:p_authorColorIndex];
 }
 
 - (TSUColor)cellViolatorColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorCellViolatorColorForIndex:v2];
+  return [TSKAnnotationAuthor authorCellViolatorColorForIndex:p_authorColorIndex];
 }
 
 - (TSUColor)flagStrokeColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorFlagStrokeColorForIndex:v2];
+  return [TSKAnnotationAuthor authorFlagStrokeColorForIndex:p_authorColorIndex];
 }
 
 - (TSUColor)flagPressedColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorFlagPressedColorForIndex:v2];
+  return [TSKAnnotationAuthor authorFlagPressedColorForIndex:p_authorColorIndex];
 }
 
 - (TSUColor)changeAdornmentsColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorChangeAdornmentsColorForIndex:v2];
+  return [TSKAnnotationAuthor authorChangeAdornmentsColorForIndex:p_authorColorIndex];
 }
 
 - (TSUColor)flagFillColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorFlagFillColorForIndex:v2];
+  return [TSKAnnotationAuthor authorFlagFillColorForIndex:p_authorColorIndex];
 }
 
 - (TSUColor)popoverColor
 {
-  v2 = [(TSKAnnotationAuthor *)self p_authorColorIndex];
+  p_authorColorIndex = [(TSKAnnotationAuthor *)self p_authorColorIndex];
 
-  return [TSKAnnotationAuthor authorPopoverColorForIndex:v2];
+  return [TSKAnnotationAuthor authorPopoverColorForIndex:p_authorColorIndex];
 }
 
-+ (id)authorStorageColorForIndex:(unint64_t)a3
++ (id)authorStorageColorForIndex:(unint64_t)index
 {
   if (+[TSKAnnotationAuthor authorStorageColorForIndex:]::onceToken != -1)
   {
     +[TSKAnnotationAuthor authorStorageColorForIndex:];
   }
 
-  if (a3 >= 8)
+  if (index >= 8)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKAnnotationAuthor authorStorageColorForIndex:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 227, @"author color id not defined"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 227, @"author color id not defined"}];
   }
 
-  v6 = 8;
-  if (a3 < 8)
+  indexCopy = 8;
+  if (index < 8)
   {
-    v6 = a3;
+    indexCopy = index;
   }
 
-  return +[TSKAnnotationAuthor authorStorageColorForIndex:]::sAuthorColors[v6];
+  return +[TSKAnnotationAuthor authorStorageColorForIndex:]::sAuthorColors[indexCopy];
 }
 
 id __50__TSKAnnotationAuthor_authorStorageColorForIndex___block_invoke()
@@ -380,32 +380,32 @@ LABEL_21:
   return result;
 }
 
-+ (id)authorTextMarkupColorForIndex:(unint64_t)a3
++ (id)authorTextMarkupColorForIndex:(unint64_t)index
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__TSKAnnotationAuthor_authorTextMarkupColorForIndex___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = index;
   if (+[TSKAnnotationAuthor authorTextMarkupColorForIndex:]::onceToken != -1)
   {
     dispatch_once(&+[TSKAnnotationAuthor authorTextMarkupColorForIndex:]::onceToken, block);
   }
 
-  if (a3 >= 8)
+  if (index >= 8)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKAnnotationAuthor authorTextMarkupColorForIndex:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 275, @"author color id not defined"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 275, @"author color id not defined"}];
   }
 
-  v6 = 8;
-  if (a3 < 8)
+  indexCopy = 8;
+  if (index < 8)
   {
-    v6 = a3;
+    indexCopy = index;
   }
 
-  return +[TSKAnnotationAuthor authorTextMarkupColorForIndex:]::sAuthorColors[v6];
+  return +[TSKAnnotationAuthor authorTextMarkupColorForIndex:]::sAuthorColors[indexCopy];
 }
 
 id __53__TSKAnnotationAuthor_authorTextMarkupColorForIndex___block_invoke(uint64_t a1)
@@ -509,14 +509,14 @@ LABEL_20:
   return result;
 }
 
-+ (id)authorChangeAdornmentsColorForIndex:(unint64_t)a3
++ (id)authorChangeAdornmentsColorForIndex:(unint64_t)index
 {
   v9 = MEMORY[0x277D6C2A8];
-  if (a3 > 3)
+  if (index > 3)
   {
-    if (a3 <= 5)
+    if (index <= 5)
     {
-      if (a3 == 4)
+      if (index == 4)
       {
         v10 = 0.729411781;
         v11 = 0.509803951;
@@ -533,9 +533,9 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    if (a3 != 6)
+    if (index != 6)
     {
-      if (a3 == 7)
+      if (index == 7)
       {
         v10 = 0.87843138;
         v13 = 1.0;
@@ -557,9 +557,9 @@ LABEL_20:
     return [v9 colorWithRed:v10 green:v11 blue:v12 alpha:v13];
   }
 
-  if (a3 > 1)
+  if (index > 1)
   {
-    if (a3 == 2)
+    if (index == 2)
     {
       v10 = 0.627451003;
       v11 = 0.749019623;
@@ -576,7 +576,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!index)
   {
     v10 = 0.992156863;
     v11 = 0.815686285;
@@ -584,7 +584,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v10 = 0.674509823;
     v11 = 0.858823538;
@@ -593,21 +593,21 @@ LABEL_20:
   }
 
 LABEL_23:
-  v15 = [MEMORY[0x277D6C2A8] blackColor];
-  v16 = [MEMORY[0x277D6C290] currentHandler];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKAnnotationAuthor authorChangeAdornmentsColorForIndex:]"];
-  [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 333, @"author color id not defined"}];
-  return v15;
+  [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 333, @"author color id not defined"}];
+  return blackColor;
 }
 
-+ (id)authorPopoverColorForIndex:(unint64_t)a3
++ (id)authorPopoverColorForIndex:(unint64_t)index
 {
   v9 = MEMORY[0x277D6C2A8];
-  if (a3 > 3)
+  if (index > 3)
   {
-    if (a3 <= 5)
+    if (index <= 5)
     {
-      if (a3 == 4)
+      if (index == 4)
       {
         v10 = 0.850980401;
         v11 = 0.670588255;
@@ -624,9 +624,9 @@ LABEL_23:
       goto LABEL_20;
     }
 
-    if (a3 != 6)
+    if (index != 6)
     {
-      if (a3 == 7)
+      if (index == 7)
       {
         v10 = 0.956862748;
         v13 = 1.0;
@@ -648,9 +648,9 @@ LABEL_20:
     return [v9 colorWithRed:v10 green:v11 blue:v12 alpha:v13];
   }
 
-  if (a3 > 1)
+  if (index > 1)
   {
-    if (a3 == 2)
+    if (index == 2)
     {
       v10 = 0.733333349;
       v11 = 0.839215696;
@@ -667,7 +667,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!index)
   {
     v10 = 0.984313726;
     v11 = 0.945098042;
@@ -675,7 +675,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v10 = 0.749019623;
     v11 = 0.941176474;
@@ -684,40 +684,40 @@ LABEL_20:
   }
 
 LABEL_23:
-  v15 = [MEMORY[0x277D6C2A8] blackColor];
-  v16 = [MEMORY[0x277D6C290] currentHandler];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKAnnotationAuthor authorPopoverColorForIndex:]"];
-  [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 376, @"author color id not defined"}];
-  return v15;
+  [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 376, @"author color id not defined"}];
+  return blackColor;
 }
 
-+ (id)authorColorAppearanceNameForIndex:(unint64_t)a3
++ (id)authorColorAppearanceNameForIndex:(unint64_t)index
 {
-  if (a3 < 8)
+  if (index < 8)
   {
-    return off_279D47C60[a3];
+    return off_279D47C60[index];
   }
 
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKAnnotationAuthor authorColorAppearanceNameForIndex:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 416, @"author color id not defined"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 416, @"author color id not defined"}];
   return @"Unknown";
 }
 
-+ (id)authorColorNameForIndex:(unint64_t)a3
++ (id)authorColorNameForIndex:(unint64_t)index
 {
-  if (a3 > 3)
+  if (index > 3)
   {
-    if (a3 > 5)
+    if (index > 5)
     {
-      if (a3 == 6)
+      if (index == 6)
       {
         v3 = TSKBundle();
         v4 = @"Orange";
         goto LABEL_18;
       }
 
-      if (a3 == 7)
+      if (index == 7)
       {
         v3 = TSKBundle();
         v4 = @"Gray";
@@ -727,7 +727,7 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    if (a3 == 4)
+    if (index == 4)
     {
       v3 = TSKBundle();
       v4 = @"Purple";
@@ -742,16 +742,16 @@ LABEL_23:
 
   else
   {
-    if (a3 <= 1)
+    if (index <= 1)
     {
-      if (!a3)
+      if (!index)
       {
         v3 = TSKBundle();
         v4 = @"Yellow";
         goto LABEL_18;
       }
 
-      if (a3 == 1)
+      if (index == 1)
       {
         v3 = TSKBundle();
         v4 = @"Green";
@@ -759,13 +759,13 @@ LABEL_23:
       }
 
 LABEL_21:
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKAnnotationAuthor authorColorNameForIndex:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 454, @"author color id not defined"}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthor.mm"), 454, @"author color id not defined"}];
       return @"Unknown";
     }
 
-    if (a3 == 2)
+    if (index == 2)
     {
       v3 = TSKBundle();
       v4 = @"Blue";
@@ -785,16 +785,16 @@ LABEL_18:
 
 + (id)defaultAuthorName
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
 
-  return [v2 localizedModel];
+  return [currentDevice localizedModel];
 }
 
 - (id)componentRootObject
 {
-  v2 = [(TSPObject *)self documentRoot];
+  documentRoot = [(TSPObject *)self documentRoot];
 
-  return [v2 annotationAuthorStorage];
+  return [documentRoot annotationAuthorStorage];
 }
 
 @end

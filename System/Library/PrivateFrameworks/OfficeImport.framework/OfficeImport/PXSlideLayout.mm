@@ -1,6 +1,6 @@
 @interface PXSlideLayout
 + (void)initialize;
-+ (void)readFromPackagePart:(id)a3 toSlideLayout:(id)a4 presentationState:(id)a5;
++ (void)readFromPackagePart:(id)part toSlideLayout:(id)layout presentationState:(id)state;
 @end
 
 @implementation PXSlideLayout
@@ -12,18 +12,18 @@
   }
 }
 
-+ (void)readFromPackagePart:(id)a3 toSlideLayout:(id)a4 presentationState:(id)a5
++ (void)readFromPackagePart:(id)part toSlideLayout:(id)layout presentationState:(id)state
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v15 xmlDocument];
-  if (!v9)
+  partCopy = part;
+  layoutCopy = layout;
+  stateCopy = state;
+  xmlDocument = [partCopy xmlDocument];
+  if (!xmlDocument)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v10 = OCXGetRootElement(v9);
+  v10 = OCXGetRootElement(xmlDocument);
   if (!v10)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
@@ -43,14 +43,14 @@
       v13 = v12;
     }
 
-    [v7 setSlideLayoutType:v13];
+    [layoutCopy setSlideLayoutType:v13];
   }
 
-  [v7 setShowMasterPlaceholderAnimations:{CXDefaultBoolAttribute(v10, CXNoNamespace, "showMasterPhAnim", 1)}];
-  [v7 setShowMasterShapes:{CXDefaultBoolAttribute(v10, CXNoNamespace, "showMasterSp", 1)}];
-  [PXSlideChild readFromPackagePart:v15 toSlideChild:v7 presentationState:v8];
-  v14 = [v15 location];
-  [v8 setModelObject:v7 forLocation:v14];
+  [layoutCopy setShowMasterPlaceholderAnimations:{CXDefaultBoolAttribute(v10, CXNoNamespace, "showMasterPhAnim", 1)}];
+  [layoutCopy setShowMasterShapes:{CXDefaultBoolAttribute(v10, CXNoNamespace, "showMasterSp", 1)}];
+  [PXSlideChild readFromPackagePart:partCopy toSlideChild:layoutCopy presentationState:stateCopy];
+  location = [partCopy location];
+  [stateCopy setModelObject:layoutCopy forLocation:location];
 }
 
 @end

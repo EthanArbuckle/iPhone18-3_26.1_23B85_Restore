@@ -2,7 +2,7 @@
 - (BOOL)accept;
 - (CGSize)referenceSize;
 - (PXGHostingController)hostingController;
-- (PXGHostingControllerProposedSize)initWithReferenceSize:(CGSize)a3 shouldPreferAcceptingReferenceSize:(BOOL)a4 hostingController:(id)a5;
+- (PXGHostingControllerProposedSize)initWithReferenceSize:(CGSize)size shouldPreferAcceptingReferenceSize:(BOOL)referenceSize hostingController:(id)controller;
 - (id)description;
 - (void)willAccept;
 @end
@@ -32,33 +32,33 @@
   v5 = NSStringFromClass(v4);
   [(PXGHostingControllerProposedSize *)self referenceSize];
   v6 = NSStringFromCGSize(v11);
-  v7 = [(PXGHostingControllerProposedSize *)self hostingController];
-  v8 = [v3 stringWithFormat:@"<%@: %p referenceSize: %@ hostingController: %@>", v5, self, v6, v7];
+  hostingController = [(PXGHostingControllerProposedSize *)self hostingController];
+  v8 = [v3 stringWithFormat:@"<%@: %p referenceSize: %@ hostingController: %@>", v5, self, v6, hostingController];
 
   return v8;
 }
 
 - (BOOL)accept
 {
-  v2 = self;
-  v3 = [(PXGHostingControllerProposedSize *)self hostingController];
-  [(PXGHostingControllerProposedSize *)v2 setHostingController:0];
-  LOBYTE(v2) = [v3 layoutQueue_acceptSize:v2];
+  selfCopy = self;
+  hostingController = [(PXGHostingControllerProposedSize *)self hostingController];
+  [(PXGHostingControllerProposedSize *)selfCopy setHostingController:0];
+  LOBYTE(selfCopy) = [hostingController layoutQueue_acceptSize:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)willAccept
 {
-  v3 = [(PXGHostingControllerProposedSize *)self hostingController];
-  [v3 layoutQueue_skipFrameCount:1 forProposedSize:self];
+  hostingController = [(PXGHostingControllerProposedSize *)self hostingController];
+  [hostingController layoutQueue_skipFrameCount:1 forProposedSize:self];
 }
 
-- (PXGHostingControllerProposedSize)initWithReferenceSize:(CGSize)a3 shouldPreferAcceptingReferenceSize:(BOOL)a4 hostingController:(id)a5
+- (PXGHostingControllerProposedSize)initWithReferenceSize:(CGSize)size shouldPreferAcceptingReferenceSize:(BOOL)referenceSize hostingController:(id)controller
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PXGHostingControllerProposedSize;
   v10 = [(PXGHostingControllerProposedSize *)&v13 init];
@@ -67,8 +67,8 @@
   {
     v10->_referenceSize.width = width;
     v10->_referenceSize.height = height;
-    v10->_shouldPreferAcceptingReferenceSize = a4;
-    objc_storeWeak(&v10->_hostingController, v9);
+    v10->_shouldPreferAcceptingReferenceSize = referenceSize;
+    objc_storeWeak(&v10->_hostingController, controllerCopy);
   }
 
   return v11;

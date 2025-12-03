@@ -1,86 +1,86 @@
 @interface SharedContentViewController
 - (CGRect)frameForRestoreAnimation;
 - (CGSize)preferredPiPContentAspectRatio;
-- (_TtC15ConversationKit27SharedContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit27SharedContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)sharedContentSourceName;
 - (id)viewControllerForPiP;
-- (id)viewForZoomingInScrollView:(id)a3;
-- (void)getSharedContentSourceAvatarWithImageHandler:(id)a3;
-- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)a3;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)setIsPipped:(BOOL)a3;
+- (id)viewForZoomingInScrollView:(id)view;
+- (void)getSharedContentSourceAvatarWithImageHandler:(id)handler;
+- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)participant;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)setIsPipped:(BOOL)pipped;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SharedContentViewController
 
-- (void)setIsPipped:(BOOL)a3
+- (void)setIsPipped:(BOOL)pipped
 {
-  v4 = self;
-  SharedContentViewController.isPipped.setter(a3);
+  selfCopy = self;
+  SharedContentViewController.isPipped.setter(pipped);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SharedContentViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SharedContentViewController.viewDidLayoutSubviews()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  SharedContentViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  SharedContentViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC15ConversationKit27SharedContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit27SharedContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   SharedContentViewController.init(nibName:bundle:)();
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
   SharedContentViewController.viewForZooming(in:)(v3, self);
 
   return v4;
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = self;
-  SharedContentViewController.scrollViewDidZoom(_:)(v4);
+  zoomCopy = zoom;
+  selfCopy = self;
+  SharedContentViewController.scrollViewDidZoom(_:)(zoomCopy);
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  SharedContentViewController.scrollViewDidEndZooming(_:with:atScale:)(v7);
+  zoomingCopy = zooming;
+  viewCopy = view;
+  selfCopy = self;
+  SharedContentViewController.scrollViewDidEndZooming(_:with:atScale:)(zoomingCopy);
 }
 
 - (CGSize)preferredPiPContentAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SharedContentViewController.preferredPiPContentAspectRatio()();
 
   width = v3.width;
@@ -92,7 +92,7 @@
 
 - (CGRect)frameForRestoreAnimation
 {
-  v2 = self;
+  selfCopy = self;
   v11 = SharedContentViewController.frameForRestoreAnimation()();
   x = v11.origin.x;
   y = v11.origin.y;
@@ -119,7 +119,7 @@
 
 - (id)sharedContentSourceName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SharedContentViewController.sharedContentSourceName()();
 
   if (v3.value._object)
@@ -135,19 +135,19 @@
   return v4;
 }
 
-- (void)getSharedContentSourceAvatarWithImageHandler:(id)a3
+- (void)getSharedContentSourceAvatarWithImageHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  specialized SharedContentViewController.getSharedContentSourceAvatarWithImageHandler(_:)(v5, v4);
+  selfCopy = self;
+  specialized SharedContentViewController.getSharedContentSourceAvatarWithImageHandler(_:)(selfCopy, v4);
   _Block_release(v4);
 }
 
-- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)a3
+- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)participant
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   SharedContentViewController.screenSharingStateMonitorDidUpdateScreenInfoForParticipant(_:)();
   swift_unknownObjectRelease();
 }

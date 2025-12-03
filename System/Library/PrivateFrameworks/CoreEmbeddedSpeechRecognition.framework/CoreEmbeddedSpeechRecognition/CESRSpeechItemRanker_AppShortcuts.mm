@@ -1,24 +1,24 @@
 @interface CESRSpeechItemRanker_AppShortcuts
-- (BOOL)addSet:(id)a3;
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (CESRSpeechItemRanker_AppShortcuts)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5;
+- (BOOL)addSet:(id)set;
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block;
+- (CESRSpeechItemRanker_AppShortcuts)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group;
 @end
 
 @implementation CESRSpeechItemRanker_AppShortcuts
 
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block
 {
   v58 = *MEMORY[0x277D85DE8];
-  v38 = a4;
+  blockCopy = block;
   v4 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [(CESRSpeechItemRanker_AppShortcuts *)self sets];
+    sets = [(CESRSpeechItemRanker_AppShortcuts *)self sets];
     *buf = 136315394;
     *&buf[4] = "[CESRSpeechItemRanker_AppShortcuts enumerateRankedItemsWithError:usingBlock:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [sets count];
     _os_log_impl(&dword_225EEB000, v5, OS_LOG_TYPE_INFO, "%s Ranking %lu AppShortcuts items", buf, 0x16u);
   }
 
@@ -44,9 +44,9 @@
         v11 = *(*(&v50 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_setDict objectForKey:v11];
         v13 = [v12 changePublisherWithUseCase:@"SpeechProfile"];
-        v14 = [v13 sharedItemCount];
+        sharedItemCount = [v13 sharedItemCount];
 
-        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
+        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sharedItemCount];
         [v39 setObject:v15 forKey:v11];
       }
 
@@ -67,7 +67,7 @@
   }
 
   v17 = [v39 keysSortedByValueUsingComparator:&__block_literal_global];
-  v18 = [(CESRSpeechItemRanker *)self calculateItemLimit];
+  calculateItemLimit = [(CESRSpeechItemRanker *)self calculateItemLimit];
   v19 = [v17 count];
   v48 = 0u;
   v49 = 0u;
@@ -77,7 +77,7 @@
   v20 = [obj countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v20)
   {
-    v22 = v18;
+    v22 = calculateItemLimit;
     v36 = *v47;
     *&v21 = 136315906;
     v34 = v21;
@@ -92,16 +92,16 @@
 
         v24 = *(*(&v46 + 1) + 8 * j);
         v25 = [v39 objectForKey:{v24, v34}];
-        v26 = [v25 unsignedIntegerValue];
+        unsignedIntegerValue = [v25 unsignedIntegerValue];
 
-        if (v26 >= v22 / v19)
+        if (unsignedIntegerValue >= v22 / v19)
         {
           v27 = v22 / v19;
         }
 
         else
         {
-          v27 = v26;
+          v27 = unsignedIntegerValue;
         }
 
         v28 = *MEMORY[0x277CEF0E8];
@@ -129,10 +129,10 @@
         v42[3] = &unk_27857F020;
         v44 = buf;
         v45 = v27;
-        v43 = v38;
+        v43 = blockCopy;
         v41.receiver = self;
         v41.super_class = CESRSpeechItemRanker_AppShortcuts;
-        v30 = [(CESRSpeechItemRanker *)&v41 enumerateAllItemsOfSet:v29 error:a3 usingBlock:v42];
+        v30 = [(CESRSpeechItemRanker *)&v41 enumerateAllItemsOfSet:v29 error:error usingBlock:v42];
 
         _Block_object_dispose(buf, 8);
         if ((v30 & 1) == 0)
@@ -162,26 +162,26 @@ LABEL_27:
   return v31;
 }
 
-- (BOOL)addSet:(id)a3
+- (BOOL)addSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 itemType];
-  if (v5 == 12010)
+  setCopy = set;
+  itemType = [setCopy itemType];
+  if (itemType == 12010)
   {
     setDict = self->_setDict;
-    v7 = [v4 descriptorWithKey:*MEMORY[0x277CF9498]];
-    v8 = [v7 value];
-    [(NSMutableDictionary *)setDict setObject:v4 forKey:v8];
+    v7 = [setCopy descriptorWithKey:*MEMORY[0x277CF9498]];
+    value = [v7 value];
+    [(NSMutableDictionary *)setDict setObject:setCopy forKey:value];
   }
 
-  return v5 == 12010;
+  return itemType == 12010;
 }
 
-- (CESRSpeechItemRanker_AppShortcuts)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5
+- (CESRSpeechItemRanker_AppShortcuts)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group
 {
   v9.receiver = self;
   v9.super_class = CESRSpeechItemRanker_AppShortcuts;
-  v5 = [(CESRSpeechItemRanker *)&v9 initWithInstance:a3 speechProfileSite:a4 categoryGroup:a5];
+  v5 = [(CESRSpeechItemRanker *)&v9 initWithInstance:instance speechProfileSite:site categoryGroup:group];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);

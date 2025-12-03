@@ -1,6 +1,6 @@
 @interface _CDLastInFirstOutLock
 - (_CDLastInFirstOutLock)init;
-- (void)runWithLockAcquired:(id)a3;
+- (void)runWithLockAcquired:(id)acquired;
 @end
 
 @implementation _CDLastInFirstOutLock
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (void)runWithLockAcquired:(id)a3
+- (void)runWithLockAcquired:(id)acquired
 {
-  v11 = a3;
+  acquiredCopy = acquired;
   [(NSLock *)self->_stateLock lock];
   requestStack = self->_requestStack;
   nextRequestId = self->_nextRequestId;
@@ -54,12 +54,12 @@
     [(NSLock *)self->_stateLock unlock];
   }
 
-  v9 = [(NSIndexPath *)self->_requestStack indexPathByRemovingLastIndex];
+  indexPathByRemovingLastIndex = [(NSIndexPath *)self->_requestStack indexPathByRemovingLastIndex];
   v10 = self->_requestStack;
-  self->_requestStack = v9;
+  self->_requestStack = indexPathByRemovingLastIndex;
 
   [(NSLock *)self->_stateLock unlock];
-  v11[2]();
+  acquiredCopy[2]();
   [(NSLock *)self->_workLock unlock];
 }
 

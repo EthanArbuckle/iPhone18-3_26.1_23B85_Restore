@@ -1,47 +1,47 @@
 @interface NTKUtilityFlatComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-+ (void)circleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 interior:(BOOL *)a6 forPlacement:(unint64_t)a7 forDevice:(id)a8;
++ (BOOL)handlesComplicationTemplate:(id)template;
++ (void)circleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width interior:(BOOL *)interior forPlacement:(unint64_t)placement forDevice:(id)device;
 - (BOOL)_shouldLayoutWithImageView;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)boundingSizeOfCurrentComplicationTemplate;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKUtilityFlatComplicationView)initWithFrame:(CGRect)a3;
+- (NTKUtilityFlatComplicationView)initWithFrame:(CGRect)frame;
 - (NTKUtilityFlatComplicationViewDelegate)delegate;
 - (double)_widthThatFits;
 - (double)circleRadius;
 - (double)maxAngularWidth;
 - (id)_backgroundPlatterImage;
-- (id)backgroundColorForView:(id)a3;
-- (id)colorForView:(id)a3 accented:(BOOL)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
+- (id)backgroundColorForView:(id)view;
+- (id)colorForView:(id)view accented:(BOOL)accented;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
 - (unint64_t)imagePlacement;
-- (void)_enumerateColoringStackedImagesViewsWithBlock:(id)a3;
-- (void)_enumerateColoringViewsWithBlock:(id)a3;
+- (void)_enumerateColoringStackedImagesViewsWithBlock:(id)block;
+- (void)_enumerateColoringViewsWithBlock:(id)block;
 - (void)_updateForTemplateChange;
 - (void)_updateHighlightViewCornerRadius;
 - (void)_updateLabelMaxWidth;
 - (void)layoutSubviews;
-- (void)setCircleRadius:(double)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setMaxAngularWidth:(double)a3;
-- (void)setPath:(id)a3;
-- (void)setPlacement:(unint64_t)a3;
-- (void)setShouldUseBackgroundPlatter:(BOOL)a3;
-- (void)setTextLayoutStyle:(unint64_t)a3;
-- (void)setTextWidthInRadians:(double)a3;
-- (void)setUseBlockyHighlightCorners:(BOOL)a3;
+- (void)setCircleRadius:(double)radius;
+- (void)setForegroundColor:(id)color;
+- (void)setMaxAngularWidth:(double)width;
+- (void)setPath:(id)path;
+- (void)setPlacement:(unint64_t)placement;
+- (void)setShouldUseBackgroundPlatter:(BOOL)platter;
+- (void)setTextLayoutStyle:(unint64_t)style;
+- (void)setTextWidthInRadians:(double)radians;
+- (void)setUseBlockyHighlightCorners:(BOOL)corners;
 - (void)updateTextWidthIfNeeded;
 @end
 
 @implementation NTKUtilityFlatComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -57,17 +57,17 @@
   return isKindOfClass & 1;
 }
 
-- (NTKUtilityFlatComplicationView)initWithFrame:(CGRect)a3
+- (NTKUtilityFlatComplicationView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = NTKUtilityFlatComplicationView;
-  v3 = [(NTKUtilityComplicationView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUtilityComplicationView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKUtilityComplicationView *)v3 _newStandardLabelSubview];
+    _newStandardLabelSubview = [(NTKUtilityComplicationView *)v3 _newStandardLabelSubview];
     label = v4->_label;
-    v4->_label = v5;
+    v4->_label = _newStandardLabelSubview;
 
     objc_storeStrong(&v4->_activeLabel, v4->_label);
     [(NTKUtilityFlatComplicationView *)v4 _updateHighlightViewCornerRadius];
@@ -76,9 +76,9 @@
   return v4;
 }
 
-+ (void)circleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 interior:(BOOL *)a6 forPlacement:(unint64_t)a7 forDevice:(id)a8
++ (void)circleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width interior:(BOOL *)interior forPlacement:(unint64_t)placement forDevice:(id)device
 {
-  v8 = a7;
+  placementCopy = placement;
   v35 = 0;
   v33 = 0u;
   v34 = 0u;
@@ -89,25 +89,25 @@
   v27 = 0u;
   v28 = 0u;
   memset(v26, 0, sizeof(v26));
-  v21 = a8;
-  ___LayoutConstants_block_invoke_70(v21, v26);
-  if (a6)
+  deviceCopy = device;
+  ___LayoutConstants_block_invoke_70(deviceCopy, v26);
+  if (interior)
   {
-    *a6 = 0;
+    *interior = 0;
   }
 
   v13 = *&v28;
   v14 = *(&v27 + 1);
   v15 = *&v29;
   v16 = *(&v28 + 1);
-  if (v8)
+  if (placementCopy)
   {
-    ___LayoutConstants_block_invoke_70(v21, v24);
+    ___LayoutConstants_block_invoke_70(deviceCopy, v24);
     v18 = v25;
     v17 = 0;
-    if ((v8 & 2) == 0)
+    if ((placementCopy & 2) == 0)
     {
-      if ((v8 & 8) != 0)
+      if ((placementCopy & 8) != 0)
       {
         v14 = -v14;
       }
@@ -119,7 +119,7 @@
       }
     }
 
-    if (a3)
+    if (radius)
     {
       goto LABEL_12;
     }
@@ -127,25 +127,25 @@
 
   else
   {
-    if ((v8 & 4) == 0)
+    if ((placementCopy & 4) == 0)
     {
       v17 = 0;
       v16 = 0.0;
       v14 = 0.0;
       v18 = 0;
-      if (!a3)
+      if (!radius)
       {
         goto LABEL_13;
       }
 
 LABEL_12:
-      *a3 = v18;
+      *radius = v18;
       goto LABEL_13;
     }
 
-    ___LayoutConstants_block_invoke_70(v21, v22);
+    ___LayoutConstants_block_invoke_70(deviceCopy, v22);
     v18 = v23;
-    if ((v8 & 8) != 0)
+    if ((placementCopy & 8) != 0)
     {
       v19 = v16;
     }
@@ -155,7 +155,7 @@ LABEL_12:
       v19 = v15;
     }
 
-    if ((v8 & 8) != 0)
+    if ((placementCopy & 8) != 0)
     {
       v20 = v14;
     }
@@ -166,7 +166,7 @@ LABEL_12:
     }
 
     v17 = 1;
-    if ((v8 & 2) != 0)
+    if ((placementCopy & 2) != 0)
     {
       v14 = -v14;
     }
@@ -177,34 +177,34 @@ LABEL_12:
       v14 = v20;
     }
 
-    if (a3)
+    if (radius)
     {
       goto LABEL_12;
     }
   }
 
 LABEL_13:
-  if (a4)
+  if (angle)
   {
-    *a4 = v14;
+    *angle = v14;
   }
 
-  if (a5)
+  if (width)
   {
-    *a5 = v16;
+    *width = v16;
   }
 
-  if (a6)
+  if (interior)
   {
-    *a6 = v17;
+    *interior = v17;
   }
 }
 
 - (void)updateTextWidthIfNeeded
 {
-  v3 = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
+  path = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
 
-  if (!v3)
+  if (!path)
   {
     v11 = 0.0;
     v12 = 0.0;
@@ -230,44 +230,44 @@ LABEL_13:
     }
 
     v7 = v6 - v4;
-    v8 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v8, v9);
+    device = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device, v9);
     [(NTKUtilityFlatComplicationView *)self setTextWidthInRadians:v7 + v10];
   }
 }
 
-- (void)setTextWidthInRadians:(double)a3
+- (void)setTextWidthInRadians:(double)radians
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_textWidthInRadians = a3;
-    v5 = [(NTKUtilityFlatComplicationView *)self delegate];
-    if (v5)
+    self->_textWidthInRadians = radians;
+    delegate = [(NTKUtilityFlatComplicationView *)self delegate];
+    if (delegate)
     {
-      v6 = v5;
-      v7 = [(NTKUtilityFlatComplicationView *)self delegate];
+      v6 = delegate;
+      delegate2 = [(NTKUtilityFlatComplicationView *)self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v9 = [(NTKUtilityFlatComplicationView *)self delegate];
-        [v9 utilityComplicationView:self didChangeTextWidth:self->_textWidthInRadians];
+        delegate3 = [(NTKUtilityFlatComplicationView *)self delegate];
+        [delegate3 utilityComplicationView:self didChangeTextWidth:self->_textWidthInRadians];
       }
     }
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   curvedLabel = self->_curvedLabel;
   if (curvedLabel)
   {
-    v9 = [(CLKUICurvedColoringLabel *)curvedLabel path];
+    path = [(CLKUICurvedColoringLabel *)curvedLabel path];
 
-    if (v9)
+    if (path)
     {
       v10 = 0;
     }
@@ -284,18 +284,18 @@ LABEL_13:
       v17 = v16;
       [(CLKUICurvedColoringLabel *)self->_curvedLabel circleRadius];
       v19 = v18;
-      v20 = [(CLKUICurvedColoringLabel *)self->_curvedLabel interior];
+      interior = [(CLKUICurvedColoringLabel *)self->_curvedLabel interior];
       v22 = v26;
       v21 = v27;
-      v23 = [(NTKUtilityComplicationView *)self device];
-      ___LayoutConstants_block_invoke_70(v23, v31);
-      v10 = NTKUtilityComplicationCurvedPointInside(v20, v15, v17, v19, v28, v29, v21, v22, v24, v32, v33, v34, v35);
+      device = [(NTKUtilityComplicationView *)self device];
+      ___LayoutConstants_block_invoke_70(device, v31);
+      v10 = NTKUtilityComplicationCurvedPointInside(interior, v15, v17, v19, v28, v29, v21, v22, v24, v32, v33, v34, v35);
     }
   }
 
   else
   {
-    v11 = [(NTKUtilityComplicationView *)self complicationTemplate];
+    complicationTemplate = [(NTKUtilityComplicationView *)self complicationTemplate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -312,7 +312,7 @@ LABEL_13:
     {
       v30.receiver = self;
       v30.super_class = NTKUtilityFlatComplicationView;
-      v13 = [(NTKUtilityComplicationView *)&v30 pointInside:v7 withEvent:x, y];
+      v13 = [(NTKUtilityComplicationView *)&v30 pointInside:eventCopy withEvent:x, y];
     }
 
     v10 = v13;
@@ -321,23 +321,23 @@ LABEL_13:
   return v10;
 }
 
-- (void)setTextLayoutStyle:(unint64_t)a3
+- (void)setTextLayoutStyle:(unint64_t)style
 {
-  v5 = [(NTKUtilityComplicationView *)self device];
-  v6 = [v5 deviceCategory];
+  device = [(NTKUtilityComplicationView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v6 == 1)
+  if (deviceCategory == 1)
   {
-    a3 = 0;
+    style = 0;
   }
 
-  v7 = [(NTKUtilityComplicationView *)self textLayoutStyle];
+  textLayoutStyle = [(NTKUtilityComplicationView *)self textLayoutStyle];
   v27.receiver = self;
   v27.super_class = NTKUtilityFlatComplicationView;
-  [(NTKUtilityComplicationView *)&v27 setTextLayoutStyle:a3];
-  if ([(NTKUtilityComplicationView *)self textLayoutStyle]!= v7)
+  [(NTKUtilityComplicationView *)&v27 setTextLayoutStyle:style];
+  if ([(NTKUtilityComplicationView *)self textLayoutStyle]!= textLayoutStyle)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       label = self->_label;
       if (label)
@@ -346,21 +346,21 @@ LABEL_13:
         v15 = self->_label;
         self->_label = 0;
 
-        v16 = [(NTKUtilityComplicationView *)self highlightView];
-        [v16 removeFromSuperview];
+        highlightView = [(NTKUtilityComplicationView *)self highlightView];
+        [highlightView removeFromSuperview];
       }
 
-      v17 = [(NTKUtilityComplicationView *)self _newStandardCurvedLabelSubview];
+      _newStandardCurvedLabelSubview = [(NTKUtilityComplicationView *)self _newStandardCurvedLabelSubview];
       curvedLabel = self->_curvedLabel;
-      self->_curvedLabel = v17;
+      self->_curvedLabel = _newStandardCurvedLabelSubview;
 
       [(CLKUICurvedColoringLabel *)self->_curvedLabel setFilterProvider:self];
       objc_storeStrong(&self->_activeLabel, self->_curvedLabel);
-      v13 = [(NTKUtilityComplicationView *)self _newCurvedPathHighlightView];
+      _newCurvedPathHighlightView = [(NTKUtilityComplicationView *)self _newCurvedPathHighlightView];
       goto LABEL_12;
     }
 
-    if (a3 == 1)
+    if (style == 1)
     {
       v8 = self->_label;
       if (v8)
@@ -369,20 +369,20 @@ LABEL_13:
         v9 = self->_label;
         self->_label = 0;
 
-        v10 = [(NTKUtilityComplicationView *)self highlightView];
-        [v10 removeFromSuperview];
+        highlightView2 = [(NTKUtilityComplicationView *)self highlightView];
+        [highlightView2 removeFromSuperview];
       }
 
-      v11 = [(NTKUtilityComplicationView *)self _newStandardCurvedLabelSubview];
+      _newStandardCurvedLabelSubview2 = [(NTKUtilityComplicationView *)self _newStandardCurvedLabelSubview];
       v12 = self->_curvedLabel;
-      self->_curvedLabel = v11;
+      self->_curvedLabel = _newStandardCurvedLabelSubview2;
 
       [(CLKUICurvedColoringLabel *)self->_curvedLabel setFilterProvider:self];
       objc_storeStrong(&self->_activeLabel, self->_curvedLabel);
-      v13 = [(NTKUtilityComplicationView *)self _newCurvedCircularHighlightView];
+      _newCurvedPathHighlightView = [(NTKUtilityComplicationView *)self _newCurvedCircularHighlightView];
 LABEL_12:
       curvedHighlightView = self->_curvedHighlightView;
-      self->_curvedHighlightView = v13;
+      self->_curvedHighlightView = _newCurvedPathHighlightView;
 
       [(NTKUtilityComplicationView *)self setHighlightView:self->_curvedHighlightView];
       return;
@@ -395,38 +395,38 @@ LABEL_12:
       v21 = self->_curvedLabel;
       self->_curvedLabel = 0;
 
-      v22 = [(NTKUtilityComplicationView *)self highlightView];
-      [v22 removeFromSuperview];
+      highlightView3 = [(NTKUtilityComplicationView *)self highlightView];
+      [highlightView3 removeFromSuperview];
 
       v23 = self->_curvedHighlightView;
       self->_curvedHighlightView = 0;
     }
 
-    v24 = [(NTKUtilityComplicationView *)self _newStandardLabelSubview];
+    _newStandardLabelSubview = [(NTKUtilityComplicationView *)self _newStandardLabelSubview];
     v25 = self->_label;
-    self->_label = v24;
+    self->_label = _newStandardLabelSubview;
 
     objc_storeStrong(&self->_activeLabel, self->_label);
-    v26 = [(NTKUtilityComplicationView *)self _newHighlightView];
-    [(NTKUtilityComplicationView *)self setHighlightView:v26];
+    _newHighlightView = [(NTKUtilityComplicationView *)self _newHighlightView];
+    [(NTKUtilityComplicationView *)self setHighlightView:_newHighlightView];
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(NTKUtilityComplicationView *)self foregroundColor];
-  v6 = [v4 isEqual:v5];
+  colorCopy = color;
+  foregroundColor = [(NTKUtilityComplicationView *)self foregroundColor];
+  v6 = [colorCopy isEqual:foregroundColor];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = NTKUtilityFlatComplicationView;
-    [(NTKUtilityComplicationView *)&v7 setForegroundColor:v4];
+    [(NTKUtilityComplicationView *)&v7 setForegroundColor:colorCopy];
   }
 }
 
-- (void)setPlacement:(unint64_t)a3
+- (void)setPlacement:(unint64_t)placement
 {
   v21.receiver = self;
   v21.super_class = NTKUtilityFlatComplicationView;
@@ -438,8 +438,8 @@ LABEL_12:
     v18 = 0.0;
     v17 = 0;
     v5 = objc_opt_class();
-    v6 = [(NTKUtilityComplicationView *)self device];
-    [v5 circleRadius:&v20 centerAngle:&v19 maxAngularWidth:&v18 interior:&v17 forPlacement:a3 forDevice:v6];
+    device = [(NTKUtilityComplicationView *)self device];
+    [v5 circleRadius:&v20 centerAngle:&v19 maxAngularWidth:&v18 interior:&v17 forPlacement:placement forDevice:device];
 
     [(CLKUICurvedColoringLabel *)self->_curvedLabel setCircleRadius:v20];
     [(CLKUICurvedColoringLabel *)self->_curvedLabel setInterior:v17];
@@ -448,24 +448,24 @@ LABEL_12:
     if (![(NTKUtilityComplicationView *)self isPlacementForTopBezelComplication])
     {
       v7 = v17;
-      v8 = [(NTKUtilityComplicationView *)self device];
-      v9 = v8;
+      device2 = [(NTKUtilityComplicationView *)self device];
+      v9 = device2;
       if (v7)
       {
-        ___LayoutConstants_block_invoke_70(v8, v15);
+        ___LayoutConstants_block_invoke_70(device2, v15);
         v10 = &v16;
       }
 
       else
       {
-        ___LayoutConstants_block_invoke_70(v8, &v13);
+        ___LayoutConstants_block_invoke_70(device2, &v13);
         v10 = &v14;
       }
 
       [(CLKUICurvedColoringLabel *)self->_curvedLabel setTracking:*v10];
     }
 
-    v11 = [(NTKUtilityFlatComplicationView *)self imagePlacement];
+    imagePlacement = [(NTKUtilityFlatComplicationView *)self imagePlacement];
     curvedLabel = self->_curvedLabel;
   }
 
@@ -477,30 +477,30 @@ LABEL_12:
     }
 
     [(CLKUICurvedColoringLabel *)self->_curvedLabel setPath:self->_path];
-    v11 = [(NTKUtilityFlatComplicationView *)self imagePlacement];
+    imagePlacement = [(NTKUtilityFlatComplicationView *)self imagePlacement];
     curvedLabel = self->_curvedLabel;
   }
 
-  [(CLKUICurvedColoringLabel *)curvedLabel setImagePlacement:v11];
+  [(CLKUICurvedColoringLabel *)curvedLabel setImagePlacement:imagePlacement];
 }
 
-- (void)setMaxAngularWidth:(double)a3
+- (void)setMaxAngularWidth:(double)width
 {
-  v5 = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
+  path = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
 
-  if (!v5)
+  if (!path)
   {
     curvedLabel = self->_curvedLabel;
 
-    [(CLKUICurvedColoringLabel *)curvedLabel setMaxAngularWidth:a3];
+    [(CLKUICurvedColoringLabel *)curvedLabel setMaxAngularWidth:width];
   }
 }
 
 - (double)maxAngularWidth
 {
-  v3 = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
+  path = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
 
-  if (v3)
+  if (path)
   {
     return 0.0;
   }
@@ -511,23 +511,23 @@ LABEL_12:
   return result;
 }
 
-- (void)setCircleRadius:(double)a3
+- (void)setCircleRadius:(double)radius
 {
-  v5 = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
+  path = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
 
-  if (!v5)
+  if (!path)
   {
     curvedLabel = self->_curvedLabel;
 
-    [(CLKUICurvedColoringLabel *)curvedLabel setCircleRadius:a3];
+    [(CLKUICurvedColoringLabel *)curvedLabel setCircleRadius:radius];
   }
 }
 
 - (double)circleRadius
 {
-  v3 = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
+  path = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
 
-  if (v3)
+  if (path)
   {
     return 0.0;
   }
@@ -538,18 +538,18 @@ LABEL_12:
   return result;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  objc_storeStrong(&self->_path, a3);
-  v5 = a3;
-  [(CLKUICurvedColoringLabel *)self->_curvedLabel setPath:v5];
+  objc_storeStrong(&self->_path, path);
+  pathCopy = path;
+  [(CLKUICurvedColoringLabel *)self->_curvedLabel setPath:pathCopy];
 }
 
-- (void)setUseBlockyHighlightCorners:(BOOL)a3
+- (void)setUseBlockyHighlightCorners:(BOOL)corners
 {
   v4.receiver = self;
   v4.super_class = NTKUtilityFlatComplicationView;
-  [(NTKUtilityComplicationView *)&v4 setUseBlockyHighlightCorners:a3];
+  [(NTKUtilityComplicationView *)&v4 setUseBlockyHighlightCorners:corners];
   [(NTKUtilityFlatComplicationView *)self _updateHighlightViewCornerRadius];
 }
 
@@ -573,45 +573,45 @@ LABEL_12:
   return 1;
 }
 
-- (void)setShouldUseBackgroundPlatter:(BOOL)a3
+- (void)setShouldUseBackgroundPlatter:(BOOL)platter
 {
   v4.receiver = self;
   v4.super_class = NTKUtilityFlatComplicationView;
-  [(NTKUtilityComplicationView *)&v4 setShouldUseBackgroundPlatter:a3];
+  [(NTKUtilityComplicationView *)&v4 setShouldUseBackgroundPlatter:platter];
   [(NTKUtilityFlatComplicationView *)self _updateHighlightViewCornerRadius];
 }
 
 - (void)_updateHighlightViewCornerRadius
 {
-  v3 = [(NTKUtilityComplicationView *)self useBlockyHighlightCorners];
-  v4 = [(NTKUtilityComplicationView *)self device];
-  v9 = v4;
-  if (v3)
+  useBlockyHighlightCorners = [(NTKUtilityComplicationView *)self useBlockyHighlightCorners];
+  device = [(NTKUtilityComplicationView *)self device];
+  highlightView = device;
+  if (useBlockyHighlightCorners)
   {
-    ___LayoutConstants_block_invoke_70(v4, v12);
+    ___LayoutConstants_block_invoke_70(device, v12);
     v5 = v13;
   }
 
   else
   {
-    v6 = [v4 deviceCategory];
+    deviceCategory = [device deviceCategory];
 
-    if (v6 == 1)
+    if (deviceCategory == 1)
     {
-      v9 = [(NTKUtilityComplicationView *)self highlightView];
-      v7 = [v9 layer];
-      [v7 setCornerRadius:0.0];
+      highlightView = [(NTKUtilityComplicationView *)self highlightView];
+      layer = [highlightView layer];
+      [layer setCornerRadius:0.0];
       goto LABEL_7;
     }
 
-    v9 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v9, v10);
+    highlightView = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(highlightView, v10);
     v5 = v11;
   }
 
-  v7 = [(NTKUtilityComplicationView *)self highlightView];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:v5];
+  layer = [(NTKUtilityComplicationView *)self highlightView];
+  v7Layer = [layer layer];
+  [v7Layer setCornerRadius:v5];
 
 LABEL_7:
 }
@@ -654,15 +654,15 @@ LABEL_7:
   {
     [(CDComplicationImageView *)self->_imageView sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
     v6 = v5;
-    v7 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v7, v11);
+    device = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device, v11);
     v4 = v4 - (v6 + v12);
   }
 
   if ([(NTKUtilityComplicationView *)self shouldUsePlatterInset])
   {
-    v8 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v8, v10);
+    device2 = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device2, v10);
     v4 = v4 + v10[22] * -2.0;
   }
 
@@ -679,17 +679,17 @@ LABEL_7:
   if ([(NTKUtilityFlatComplicationView *)self _shouldLayoutWithImageView])
   {
     [(CDComplicationImageView *)self->_imageView sizeThatFits:v3, v4];
-    v5 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v5, v12);
+    device = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device, v12);
   }
 
   if ([(NTKUtilityComplicationView *)self shouldUsePlatterInset])
   {
-    v6 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v6, &v11);
+    device2 = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device2, &v11);
   }
 
-  v7 = [(NTKUtilityComplicationView *)self device];
+  device3 = [(NTKUtilityComplicationView *)self device];
   CLKCeilForDevice();
   v9 = v8;
 
@@ -701,8 +701,8 @@ LABEL_7:
   v21.receiver = self;
   v21.super_class = NTKUtilityFlatComplicationView;
   [(NTKUtilityComplicationView *)&v21 _updateForTemplateChange];
-  v3 = [(NTKUtilityComplicationView *)self complicationTemplate];
-  v4 = [v3 imageProvider];
+  complicationTemplate = [(NTKUtilityComplicationView *)self complicationTemplate];
+  imageProvider = [complicationTemplate imageProvider];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -710,7 +710,7 @@ LABEL_7:
   }
 
   v5 = [(NTKUtilityComplicationView *)self textLayoutStyle]== 1 || [(NTKUtilityComplicationView *)self textLayoutStyle]== 2;
-  if (([off_27877BE78 existingImageView:self->_imageView supportsImageProvider:v4] & 1) == 0)
+  if (([off_27877BE78 existingImageView:self->_imageView supportsImageProvider:imageProvider] & 1) == 0)
   {
     if (v5)
     {
@@ -722,7 +722,7 @@ LABEL_7:
       [(CDComplicationImageView *)self->_imageView removeFromSuperview];
     }
 
-    v6 = [off_27877BE78 viewForImageProvider:v4];
+    v6 = [off_27877BE78 viewForImageProvider:imageProvider];
     imageView = self->_imageView;
     self->_imageView = v6;
 
@@ -730,7 +730,7 @@ LABEL_7:
     [(NTKUtilityComplicationView *)self _updateImageViewColor:self->_imageView];
   }
 
-  [(CDComplicationImageView *)self->_imageView setImageProvider:v4];
+  [(CDComplicationImageView *)self->_imageView setImageProvider:imageProvider];
   v8 = self->_imageView;
   if (v5)
   {
@@ -743,10 +743,10 @@ LABEL_7:
     {
       curvedLabel = self->_curvedLabel;
       v10 = self->_imageView;
-      v11 = [(NTKUtilityFlatComplicationView *)self imagePlacement];
-      v12 = [(NTKUtilityComplicationView *)self device];
-      ___LayoutConstants_block_invoke_70(v12, v19);
-      [(CLKUICurvedColoringLabel *)curvedLabel setImageView:v10 placement:v11 padding:v20];
+      imagePlacement = [(NTKUtilityFlatComplicationView *)self imagePlacement];
+      device = [(NTKUtilityComplicationView *)self device];
+      ___LayoutConstants_block_invoke_70(device, v19);
+      [(CLKUICurvedColoringLabel *)curvedLabel setImageView:v10 placement:imagePlacement padding:v20];
     }
   }
 
@@ -756,8 +756,8 @@ LABEL_7:
   }
 
   activeLabel = self->_activeLabel;
-  v14 = [v3 textProvider];
-  [(CLKUIColoringLabel *)activeLabel setTextProvider:v14];
+  textProvider = [complicationTemplate textProvider];
+  [(CLKUIColoringLabel *)activeLabel setTextProvider:textProvider];
 
   if (self->_curvedLabel)
   {
@@ -766,24 +766,24 @@ LABEL_7:
   }
 
   [(NTKUtilityFlatComplicationView *)self _updateLabelMaxWidth];
-  v15 = [(NTKUtilityComplicationView *)self colorScheme];
-  v16 = [v15 containsOverrideFaceColor];
+  colorScheme = [(NTKUtilityComplicationView *)self colorScheme];
+  containsOverrideFaceColor = [colorScheme containsOverrideFaceColor];
 
-  if (v16)
+  if (containsOverrideFaceColor)
   {
-    v17 = [(NTKUtilityComplicationView *)self colorScheme];
-    [(NTKUtilityComplicationView *)self _applyColorScheme:v17];
+    colorScheme2 = [(NTKUtilityComplicationView *)self colorScheme];
+    [(NTKUtilityComplicationView *)self _applyColorScheme:colorScheme2];
   }
 
   [(NTKUtilityFlatComplicationView *)self setNeedsLayout];
-  v18 = [(NTKUtilityComplicationView *)self displayObserver];
-  [v18 complicationDisplayNeedsResize:self];
+  displayObserver = [(NTKUtilityComplicationView *)self displayObserver];
+  [displayObserver complicationDisplayNeedsResize:self];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   curvedLabel = self->_curvedLabel;
   if (curvedLabel)
   {
@@ -794,17 +794,17 @@ LABEL_7:
       height = v8;
       if ([(NTKUtilityComplicationView *)self shouldUsePlatterInset])
       {
-        v9 = [(NTKUtilityComplicationView *)self device];
-        ___LayoutConstants_block_invoke_70(v9, v15);
+        device = [(NTKUtilityComplicationView *)self device];
+        ___LayoutConstants_block_invoke_70(device, v15);
         width = width + v16 * 2.0;
       }
     }
 
     else
     {
-      v12 = [(CLKUICurvedColoringLabel *)curvedLabel path];
+      path = [(CLKUICurvedColoringLabel *)curvedLabel path];
 
-      if (!v12)
+      if (!path)
       {
         [(CLKUICurvedColoringLabel *)self->_curvedLabel centerAngle];
         v13 = CLKFloatEqualsFloat();
@@ -830,7 +830,7 @@ LABEL_7:
   {
     v17.receiver = self;
     v17.super_class = NTKUtilityFlatComplicationView;
-    [(NTKUtilityComplicationView *)&v17 sizeThatFits:a3.width, a3.height];
+    [(NTKUtilityComplicationView *)&v17 sizeThatFits:fits.width, fits.height];
     height = v11;
   }
 
@@ -856,7 +856,7 @@ LABEL_7:
   v96.receiver = self;
   v96.super_class = NTKUtilityFlatComplicationView;
   [(NTKUtilityComplicationView *)&v96 layoutSubviews];
-  v3 = [(NTKUtilityComplicationView *)self device];
+  device = [(NTKUtilityComplicationView *)self device];
   v95 = 0;
   v93 = 0u;
   v94 = 0u;
@@ -874,7 +874,7 @@ LABEL_7:
   v82 = 0u;
   v80 = 0u;
   memset(v79, 0, sizeof(v79));
-  ___LayoutConstants_block_invoke_70(v3, v79);
+  ___LayoutConstants_block_invoke_70(device, v79);
   [(NTKUtilityFlatComplicationView *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -914,8 +914,8 @@ LABEL_7:
       v17 = v9 - v21 - *&v80;
     }
 
-    v27 = [(NTKUtilityComplicationView *)self placement];
-    if ((v27 & 2) != 0)
+    placement = [(NTKUtilityComplicationView *)self placement];
+    if ((placement & 2) != 0)
     {
       v99.origin.x = v5;
       v99.origin.y = v74;
@@ -928,7 +928,7 @@ LABEL_7:
       MaxX = CGRectGetMaxX(v100);
     }
 
-    else if ((v27 & 8) != 0)
+    else if ((placement & 8) != 0)
     {
       v101.origin.x = v5;
       v101.origin.y = v74;
@@ -994,7 +994,7 @@ LABEL_7:
       MaxX = v73;
     }
 
-    v42 = [(NTKUtilityComplicationView *)self device];
+    device2 = [(NTKUtilityComplicationView *)self device];
     CLKPixelAlignRectForDevice();
     v44 = v43;
     v46 = v45;
@@ -1002,20 +1002,20 @@ LABEL_7:
     v50 = v49;
 
     imageView = self->_imageView;
-    v52 = [(NTKUtilityComplicationView *)self device];
+    device3 = [(NTKUtilityComplicationView *)self device];
     CLKPixelAlignRectForDevice();
     [(CDComplicationImageView *)imageView setFrame:?];
   }
 
   else
   {
-    v35 = [(NTKUtilityComplicationView *)self placement];
+    placement2 = [(NTKUtilityComplicationView *)self placement];
     curvedLabel = self->_curvedLabel;
     if (curvedLabel)
     {
-      v37 = [(CLKUICurvedColoringLabel *)curvedLabel path];
+      path = [(CLKUICurvedColoringLabel *)curvedLabel path];
 
-      if (v37)
+      if (path)
       {
         [(NTKUtilityFlatComplicationView *)self bounds];
       }
@@ -1034,26 +1034,26 @@ LABEL_7:
         CGRectGetWidth(v104);
         [(CLKUICurvedColoringLabel *)self->_curvedLabel bounds];
         CGRectGetMidX(v105);
-        v53 = [(NTKUtilityComplicationView *)self device];
+        device4 = [(NTKUtilityComplicationView *)self device];
         CLKPointRoundForDevice();
       }
 
       else
       {
-        [v3 screenBounds];
+        [device screenBounds];
         v60 = v56;
-        if (v35)
+        if (placement2)
         {
-          if ((v35 & 8) != 0)
+          if ((placement2 & 8) != 0)
           {
             CGRectGetWidth(*&v56);
             CLKUICurvedColoringLabelCornerSize();
           }
         }
 
-        else if ((v35 & 4) != 0)
+        else if ((placement2 & 4) != 0)
         {
-          if ((v35 & 0xA) != 0)
+          if ((placement2 & 0xA) != 0)
           {
             CLKUICurvedColoringLabelCornerSize();
           }
@@ -1086,7 +1086,7 @@ LABEL_7:
     {
       v38 = v5;
       v39 = v7;
-      if ((v35 & 2) != 0)
+      if ((placement2 & 2) != 0)
       {
         v54 = v9;
         v55 = v11;
@@ -1097,7 +1097,7 @@ LABEL_7:
       {
         v40 = v9;
         v41 = v11;
-        if ((v35 & 8) != 0)
+        if ((placement2 & 8) != 0)
         {
           CGRectGetMaxX(*&v38);
         }
@@ -1110,7 +1110,7 @@ LABEL_7:
       }
     }
 
-    v52 = [(NTKUtilityComplicationView *)self device];
+    device3 = [(NTKUtilityComplicationView *)self device];
     CLKPixelAlignRectForDevice();
     v44 = v64;
     v46 = v65;
@@ -1121,17 +1121,17 @@ LABEL_7:
   [(CLKUIColoringLabel *)self->_activeLabel setFrame:v44, v46, v48, v50];
   if (self->_curvedLabel)
   {
-    v68 = [(UIImageView *)self->_curvedHighlightView image];
+    image = [(UIImageView *)self->_curvedHighlightView image];
 
-    if (!v68)
+    if (!image)
     {
-      v69 = [(NTKUtilityFlatComplicationView *)self _backgroundPlatterImage];
-      [(UIImageView *)self->_curvedHighlightView setImage:v69];
+      _backgroundPlatterImage = [(NTKUtilityFlatComplicationView *)self _backgroundPlatterImage];
+      [(UIImageView *)self->_curvedHighlightView setImage:_backgroundPlatterImage];
     }
 
     [(UIImageView *)self->_curvedHighlightView sizeToFit];
     [(UIImageView *)self->_curvedHighlightView frame];
-    v70 = [(NTKUtilityComplicationView *)self device];
+    device5 = [(NTKUtilityComplicationView *)self device];
     CLKRectCenteredIntegralRectForDevice();
     [(UIImageView *)self->_curvedHighlightView setFrame:?];
   }
@@ -1146,7 +1146,7 @@ LABEL_7:
     [(NTKUtilityFlatComplicationView *)self bounds];
     if (CGRectIsEmpty(v32) || ([(CLKUICurvedColoringLabel *)self->_curvedLabel bounds], CGRectIsEmpty(v33)))
     {
-      v3 = 0;
+      _backgroundPlatterImage = 0;
     }
 
     else
@@ -1156,15 +1156,15 @@ LABEL_7:
       v28 = 0u;
       v26 = 0u;
       memset(v25, 0, sizeof(v25));
-      v4 = [(NTKUtilityComplicationView *)self device];
-      ___LayoutConstants_block_invoke_70(v4, v25);
+      device = [(NTKUtilityComplicationView *)self device];
+      ___LayoutConstants_block_invoke_70(device, v25);
 
-      v5 = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
+      path = [(CLKUICurvedColoringLabel *)self->_curvedLabel path];
 
-      v3 = 0;
-      if (!v5)
+      _backgroundPlatterImage = 0;
+      if (!path)
       {
-        v6 = [(CLKUICurvedColoringLabel *)self->_curvedLabel interior];
+        interior = [(CLKUICurvedColoringLabel *)self->_curvedLabel interior];
         [(CLKUICurvedColoringLabel *)self->_curvedLabel circleRadius];
         v23 = 0.0;
         v24 = 0.0;
@@ -1188,7 +1188,7 @@ LABEL_7:
         v13 = CGRectGetHeight(v37);
         [(CLKUICurvedColoringLabel *)self->_curvedLabel bounds];
         v24 = v24 + (v13 - CGRectGetHeight(v38)) * 0.5;
-        v14 = [MEMORY[0x277D75208] bezierPathWithArcCenter:v6 ^ 1u radius:v23 startAngle:? endAngle:? clockwise:?];
+        v14 = [MEMORY[0x277D75208] bezierPathWithArcCenter:interior ^ 1u radius:v23 startAngle:? endAngle:? clockwise:?];
         [v14 setLineWidth:v7];
         [v14 setLineCapStyle:1];
         v15 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{width, height}];
@@ -1199,7 +1199,7 @@ LABEL_7:
         v20 = v14;
         v16 = v14;
         v17 = [v15 imageWithActions:v19];
-        v3 = [v17 imageWithRenderingMode:2];
+        _backgroundPlatterImage = [v17 imageWithRenderingMode:2];
       }
     }
   }
@@ -1208,10 +1208,10 @@ LABEL_7:
   {
     v30.receiver = self;
     v30.super_class = NTKUtilityFlatComplicationView;
-    v3 = [(NTKUtilityComplicationView *)&v30 _backgroundPlatterImage];
+    _backgroundPlatterImage = [(NTKUtilityComplicationView *)&v30 _backgroundPlatterImage];
   }
 
-  return v3;
+  return _backgroundPlatterImage;
 }
 
 uint64_t __57__NTKUtilityFlatComplicationView__backgroundPlatterImage__block_invoke(uint64_t a1)
@@ -1224,72 +1224,72 @@ uint64_t __57__NTKUtilityFlatComplicationView__backgroundPlatterImage__block_inv
   return [v3 stroke];
 }
 
-- (void)_enumerateColoringViewsWithBlock:(id)a3
+- (void)_enumerateColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_imageView);
+  (*v4)(blockCopy, self->_imageView);
 }
 
-- (void)_enumerateColoringStackedImagesViewsWithBlock:(id)a3
+- (void)_enumerateColoringStackedImagesViewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4[2](v4, self->_imageView);
+    blockCopy[2](blockCopy, self->_imageView);
   }
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(NTKUtilityFlatComplicationView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:a4 fraction:a5];
+  filterProvider = [(NTKUtilityFlatComplicationView *)self filterProvider];
+  v9 = [filterProvider filtersForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v6 = [(NTKUtilityFlatComplicationView *)self filterProvider];
-  v7 = [v6 filtersForView:self style:a4];
+  filterProvider = [(NTKUtilityFlatComplicationView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:style];
 
   return v7;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(NTKUtilityFlatComplicationView *)self filterProvider];
-  v9 = [v8 filterForView:self style:a4 fraction:a5];
+  filterProvider = [(NTKUtilityFlatComplicationView *)self filterProvider];
+  v9 = [filterProvider filterForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v6 = [(NTKUtilityFlatComplicationView *)self filterProvider];
-  v7 = [v6 filterForView:self style:a4];
+  filterProvider = [(NTKUtilityFlatComplicationView *)self filterProvider];
+  v7 = [filterProvider filterForView:self style:style];
 
   return v7;
 }
 
-- (id)colorForView:(id)a3 accented:(BOOL)a4
+- (id)colorForView:(id)view accented:(BOOL)accented
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NTKUtilityFlatComplicationView *)self filterProvider];
-  v8 = [v7 colorForView:v6 accented:v4];
+  accentedCopy = accented;
+  viewCopy = view;
+  filterProvider = [(NTKUtilityFlatComplicationView *)self filterProvider];
+  v8 = [filterProvider colorForView:viewCopy accented:accentedCopy];
 
   return v8;
 }
 
-- (id)backgroundColorForView:(id)a3
+- (id)backgroundColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(NTKUtilityFlatComplicationView *)self filterProvider];
-  v6 = [v5 backgroundColorForView:v4];
+  viewCopy = view;
+  filterProvider = [(NTKUtilityFlatComplicationView *)self filterProvider];
+  v6 = [filterProvider backgroundColorForView:viewCopy];
 
   return v6;
 }

@@ -1,17 +1,17 @@
 @interface STUIStatusBarIndicatorRingerSilenceItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation STUIStatusBarIndicatorRingerSilenceItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarIndicatorRingerSilenceItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorItem" hasInstanceVariable:@"_imageView" withType:"STUIStatusBarImageView"];
-  [v3 validateClass:@"STUIStatusBarImageView" isKindOfClass:@"UIImageView"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorRingerSilenceItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorItem" hasInstanceVariable:@"_imageView" withType:"STUIStatusBarImageView"];
+  [validationsCopy validateClass:@"STUIStatusBarImageView" isKindOfClass:@"UIImageView"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -21,18 +21,18 @@
   v3 = [(STUIStatusBarIndicatorRingerSilenceItemAccessibility *)self safeValueForKey:@"imageView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 image];
+  image = [v4 image];
 
-  if ([v5 isSymbolImage])
+  if ([image isSymbolImage])
   {
-    v6 = [v5 imageAsset];
-    v7 = [v6 safeStringForKey:@"assetName"];
+    imageAsset = [image imageAsset];
+    v7 = [imageAsset safeStringForKey:@"assetName"];
 
     if ([v7 isEqualToString:@"bell.slash.fill"])
     {
       v8 = @"status.bar.item.ringer.silent.mode.label";
 LABEL_6:
-      v9 = accessibilityLocalizedString(v8);
+      accessibilityLabel = accessibilityLocalizedString(v8);
 
       goto LABEL_9;
     }
@@ -46,10 +46,10 @@ LABEL_6:
 
   v11.receiver = self;
   v11.super_class = STUIStatusBarIndicatorRingerSilenceItemAccessibility;
-  v9 = [(STUIStatusBarIndicatorRingerSilenceItemAccessibility *)&v11 accessibilityLabel];
+  accessibilityLabel = [(STUIStatusBarIndicatorRingerSilenceItemAccessibility *)&v11 accessibilityLabel];
 LABEL_9:
 
-  return v9;
+  return accessibilityLabel;
 }
 
 @end

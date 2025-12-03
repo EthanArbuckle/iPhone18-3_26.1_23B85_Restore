@@ -1,9 +1,9 @@
 @interface AUKnobControl
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)tintColorDidChange;
 @end
 
@@ -11,25 +11,25 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_237140658();
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_2371406EC();
 }
 
 - (void)tintColorDidChange
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit13AUKnobControl_valueLayer);
-  v3 = self;
-  v4 = [(AUKnobControl *)v3 tintColor];
-  if (v4)
+  selfCopy = self;
+  tintColor = [(AUKnobControl *)selfCopy tintColor];
+  if (tintColor)
   {
-    v5 = v4;
-    v6 = [v4 CGColor];
+    v5 = tintColor;
+    cGColor = [tintColor CGColor];
 
     [v2 setStrokeColor_];
   }
@@ -40,31 +40,31 @@
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_237141A10(v6);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  v9 = sub_237141A10(touchCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_237141BEC(v6);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  v9 = sub_237141BEC(touchCopy);
 
   return v9 & 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
   sub_237141E84();
 }
 

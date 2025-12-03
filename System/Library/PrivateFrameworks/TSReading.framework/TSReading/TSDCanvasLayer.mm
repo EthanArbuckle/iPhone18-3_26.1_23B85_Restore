@@ -1,45 +1,45 @@
 @interface TSDCanvasLayer
 - (BOOL)centeredInScrollView;
-- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)a3;
-- (CGPoint)p_contentOffsetForUnscaledContentCenter:(CGPoint)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5;
+- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)center;
+- (CGPoint)p_contentOffsetForUnscaledContentCenter:(CGPoint)center viewScale:(double)scale contentInset:(UIEdgeInsets)inset;
 - (CGPoint)unscaledContentCenter;
 - (CGRect)p_boundsRect;
-- (CGRect)p_fixedBoundsForScrollViewSize:(CGSize)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5;
+- (CGRect)p_fixedBoundsForScrollViewSize:(CGSize)size viewScale:(double)scale contentInset:(UIEdgeInsets)inset;
 - (CGSize)unscaledSize;
 - (TSDCanvasLayer)init;
-- (TSDCanvasLayer)initWithCoder:(id)a3;
-- (TSDCanvasLayer)initWithLayer:(id)a3;
+- (TSDCanvasLayer)initWithCoder:(id)coder;
+- (TSDCanvasLayer)initWithLayer:(id)layer;
 - (TSDCanvasView)canvasView;
 - (UIEdgeInsets)contentInset;
 - (void)_adjustContentInsetsForKeyboard;
 - (void)adjustContentInsets;
-- (void)animateToViewScale:(double)a3 contentCenter:(CGPoint)a4 contentInset:(UIEdgeInsets)a5 duration:(double)a6 animation:(id)a7 completionBlock:(id)a8;
+- (void)animateToViewScale:(double)scale contentCenter:(CGPoint)center contentInset:(UIEdgeInsets)inset duration:(double)duration animation:(id)animation completionBlock:(id)block;
 - (void)dealloc;
 - (void)fixFrameAndScrollView;
-- (void)keyboardWillChangeFrame:(id)a3;
+- (void)keyboardWillChangeFrame:(id)frame;
 - (void)layoutIfNeededIgnoringDisabledLayout;
 - (void)layoutSublayers;
 - (void)p_commonInit;
 - (void)p_fixFrameAndScrollView;
 - (void)p_reenableDrawingAfterResumingFromBackground;
 - (void)p_setEnclosingScrollViewZoomParameters;
-- (void)p_setViewScale:(double)a3;
-- (void)p_setViewScale:(double)a3 preservingScrollOffset:(BOOL)a4;
+- (void)p_setViewScale:(double)scale;
+- (void)p_setViewScale:(double)scale preservingScrollOffset:(BOOL)offset;
 - (void)popLayoutDisabled;
-- (void)setAllowsPinchZoom:(BOOL)a3;
-- (void)setAvoidKeyboardWhenVerticallyCenteredInScrollView:(BOOL)a3;
-- (void)setCenteredInScrollView:(BOOL)a3;
-- (void)setController:(id)a3;
-- (void)setHorizontallyCenteredInScrollView:(BOOL)a3;
-- (void)setMaximumPinchViewScale:(double)a3;
-- (void)setMinimumPinchViewScale:(double)a3;
+- (void)setAllowsPinchZoom:(BOOL)zoom;
+- (void)setAvoidKeyboardWhenVerticallyCenteredInScrollView:(BOOL)view;
+- (void)setCenteredInScrollView:(BOOL)view;
+- (void)setController:(id)controller;
+- (void)setHorizontallyCenteredInScrollView:(BOOL)view;
+- (void)setMaximumPinchViewScale:(double)scale;
+- (void)setMinimumPinchViewScale:(double)scale;
 - (void)setNeedsLayout;
 - (void)setNeedsLayoutForTilingLayers;
-- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)a3 animated:(BOOL)a4;
-- (void)setUnscaledSize:(CGSize)a3;
-- (void)setUnscaledSizeOnLayer:(CGSize)a3;
-- (void)setVerticallyCenteredInScrollView:(BOOL)a3;
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 maintainPosition:(BOOL)a5 animated:(BOOL)a6;
+- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)position animated:(BOOL)animated;
+- (void)setUnscaledSize:(CGSize)size;
+- (void)setUnscaledSizeOnLayer:(CGSize)layer;
+- (void)setVerticallyCenteredInScrollView:(BOOL)view;
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame maintainPosition:(BOOL)position animated:(BOOL)animated;
 - (void)teardown;
 @end
 
@@ -81,11 +81,11 @@
   return v3;
 }
 
-- (TSDCanvasLayer)initWithLayer:(id)a3
+- (TSDCanvasLayer)initWithLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = TSDCanvasLayer;
-  v3 = [(TSDCanvasLayer *)&v6 initWithLayer:a3];
+  v3 = [(TSDCanvasLayer *)&v6 initWithLayer:layer];
   v4 = v3;
   if (v3)
   {
@@ -96,11 +96,11 @@
   return v4;
 }
 
-- (TSDCanvasLayer)initWithCoder:(id)a3
+- (TSDCanvasLayer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TSDCanvasLayer;
-  v3 = [(TSDCanvasLayer *)&v6 initWithCoder:a3];
+  v3 = [(TSDCanvasLayer *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -123,25 +123,25 @@
   [(TSDCanvasLayer *)&v3 dealloc];
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
   mController = self->mController;
-  if (a3 && mController)
+  if (controller && mController)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasLayer setController:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasLayer.m"), 220, @"shouldn't try to set canvasLayer's controller more than once"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasLayer.m"), 220, @"shouldn't try to set canvasLayer's controller more than once"}];
     mController = self->mController;
   }
 
-  if (!a3 || !mController)
+  if (!controller || !mController)
   {
-    self->mController = a3;
-    [objc_msgSend(a3 "canvas")];
+    self->mController = controller;
+    [objc_msgSend(controller "canvas")];
     mViewScale = self->mViewScale;
-    v9 = [(TSDInteractiveCanvasController *)self->mController canvas];
+    canvas = [(TSDInteractiveCanvasController *)self->mController canvas];
 
-    [(TSDCanvas *)v9 setViewScale:mViewScale];
+    [(TSDCanvas *)canvas setViewScale:mViewScale];
   }
 }
 
@@ -151,17 +151,17 @@
   self->mController = 0;
   [(CALayer *)self p_clearAllLayerDelegates];
   self->mViewScale = 1.0;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v3 removeObserver:self];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)setUnscaledSize:(CGSize)a3
+- (void)setUnscaledSize:(CGSize)size
 {
-  if (a3.width > 0.0 && a3.height > 0.0 && (a3.width != self->mUnscaledSize.width || a3.height != self->mUnscaledSize.height))
+  if (size.width > 0.0 && size.height > 0.0 && (size.width != self->mUnscaledSize.width || size.height != self->mUnscaledSize.height))
   {
-    self->mUnscaledSize = a3;
-    [(TSDCanvas *)[(TSDInteractiveCanvasController *)self->mController canvas] setUnscaledSize:a3.width, a3.height];
+    self->mUnscaledSize = size;
+    [(TSDCanvas *)[(TSDInteractiveCanvasController *)self->mController canvas] setUnscaledSize:size.width, size.height];
     [(TSDCanvasLayer *)self fixFrameAndScrollView];
     mController = self->mController;
 
@@ -171,22 +171,22 @@
 
 - (BOOL)centeredInScrollView
 {
-  v3 = [(TSDCanvasLayer *)self horizontallyCenteredInScrollView];
-  if (v3)
+  horizontallyCenteredInScrollView = [(TSDCanvasLayer *)self horizontallyCenteredInScrollView];
+  if (horizontallyCenteredInScrollView)
   {
 
-    LOBYTE(v3) = [(TSDCanvasLayer *)self verticallyCenteredInScrollView];
+    LOBYTE(horizontallyCenteredInScrollView) = [(TSDCanvasLayer *)self verticallyCenteredInScrollView];
   }
 
-  return v3;
+  return horizontallyCenteredInScrollView;
 }
 
-- (void)setUnscaledSizeOnLayer:(CGSize)a3
+- (void)setUnscaledSizeOnLayer:(CGSize)layer
 {
-  if (a3.width > 0.0 && a3.height > 0.0 && (a3.width != self->mUnscaledSize.width || a3.height != self->mUnscaledSize.height))
+  if (layer.width > 0.0 && layer.height > 0.0 && (layer.width != self->mUnscaledSize.width || layer.height != self->mUnscaledSize.height))
   {
-    self->mUnscaledSize = a3;
-    [(TSDCanvas *)[(TSDInteractiveCanvasController *)self->mController canvas] setUnscaledSize:a3.width, a3.height];
+    self->mUnscaledSize = layer;
+    [(TSDCanvas *)[(TSDInteractiveCanvasController *)self->mController canvas] setUnscaledSize:layer.width, layer.height];
     [(TSDCanvasLayer *)self p_boundsRect];
     [(TSDCanvasLayer *)self setBounds:?];
     v5 = TSDRectWithSize();
@@ -196,13 +196,13 @@
   }
 }
 
-- (void)setCenteredInScrollView:(BOOL)a3
+- (void)setCenteredInScrollView:(BOOL)view
 {
-  if (self->mHorizontallyCenteredInScrollView != a3)
+  if (self->mHorizontallyCenteredInScrollView != view)
   {
-    self->mHorizontallyCenteredInScrollView = a3;
+    self->mHorizontallyCenteredInScrollView = view;
     p_mVerticallyCenteredInScrollView = &self->mVerticallyCenteredInScrollView;
-    if (self->mVerticallyCenteredInScrollView == a3)
+    if (self->mVerticallyCenteredInScrollView == view)
     {
 LABEL_6:
       [(TSDCanvasLayer *)self fixFrameAndScrollView];
@@ -210,40 +210,40 @@ LABEL_6:
     }
 
 LABEL_5:
-    *p_mVerticallyCenteredInScrollView = a3;
+    *p_mVerticallyCenteredInScrollView = view;
     goto LABEL_6;
   }
 
   p_mVerticallyCenteredInScrollView = &self->mVerticallyCenteredInScrollView;
-  if (self->mVerticallyCenteredInScrollView != a3)
+  if (self->mVerticallyCenteredInScrollView != view)
   {
     goto LABEL_5;
   }
 }
 
-- (void)setHorizontallyCenteredInScrollView:(BOOL)a3
+- (void)setHorizontallyCenteredInScrollView:(BOOL)view
 {
-  if (self->mHorizontallyCenteredInScrollView != a3)
+  if (self->mHorizontallyCenteredInScrollView != view)
   {
-    self->mHorizontallyCenteredInScrollView = a3;
+    self->mHorizontallyCenteredInScrollView = view;
     [(TSDCanvasLayer *)self fixFrameAndScrollView];
   }
 }
 
-- (void)setVerticallyCenteredInScrollView:(BOOL)a3
+- (void)setVerticallyCenteredInScrollView:(BOOL)view
 {
-  if (self->mVerticallyCenteredInScrollView != a3)
+  if (self->mVerticallyCenteredInScrollView != view)
   {
-    self->mVerticallyCenteredInScrollView = a3;
+    self->mVerticallyCenteredInScrollView = view;
     [(TSDCanvasLayer *)self fixFrameAndScrollView];
   }
 }
 
-- (void)setAvoidKeyboardWhenVerticallyCenteredInScrollView:(BOOL)a3
+- (void)setAvoidKeyboardWhenVerticallyCenteredInScrollView:(BOOL)view
 {
-  if (self->mAvoidKeyboardWhenVerticallyCenteredInScrollView != a3)
+  if (self->mAvoidKeyboardWhenVerticallyCenteredInScrollView != view)
   {
-    self->mAvoidKeyboardWhenVerticallyCenteredInScrollView = a3;
+    self->mAvoidKeyboardWhenVerticallyCenteredInScrollView = view;
     [(TSDCanvasLayer *)self fixFrameAndScrollView];
   }
 }
@@ -264,11 +264,11 @@ LABEL_5:
 {
   if (!-[TSDInteractiveCanvasController currentlyWaitingOnThreadedLayoutAndRender](self->mController, "currentlyWaitingOnThreadedLayoutAndRender") || ([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v3 = [(TSDCanvasLayer *)self needsLayout];
+    needsLayout = [(TSDCanvasLayer *)self needsLayout];
     v4.receiver = self;
     v4.super_class = TSDCanvasLayer;
     [(TSDCanvasLayer *)&v4 setNeedsLayout];
-    if ((v3 & 1) == 0)
+    if ((needsLayout & 1) == 0)
     {
       [(TSDCanvasLayer *)self setNeedsLayoutForTilingLayers];
     }
@@ -277,9 +277,9 @@ LABEL_5:
 
 - (void)setNeedsLayoutForTilingLayers
 {
-  v3 = [(TSDInteractiveCanvasController *)self->mController i_topLevelLayersForTiling];
+  i_topLevelLayersForTiling = [(TSDInteractiveCanvasController *)self->mController i_topLevelLayersForTiling];
 
-  [v3 makeObjectsPerformSelector:a2];
+  [i_topLevelLayersForTiling makeObjectsPerformSelector:a2];
 }
 
 - (void)layoutIfNeededIgnoringDisabledLayout
@@ -345,9 +345,9 @@ LABEL_5:
 
 - (TSDCanvasView)canvasView
 {
-  v2 = [(TSDInteractiveCanvasController *)self->mController layerHost];
+  layerHost = [(TSDInteractiveCanvasController *)self->mController layerHost];
 
-  return [(TSDCanvasLayerHosting *)v2 canvasView];
+  return [(TSDCanvasLayerHosting *)layerHost canvasView];
 }
 
 - (void)popLayoutDisabled
@@ -364,44 +364,44 @@ LABEL_5:
   }
 }
 
-- (void)setAllowsPinchZoom:(BOOL)a3
+- (void)setAllowsPinchZoom:(BOOL)zoom
 {
-  if (self->mAllowsPinchZoom != a3)
+  if (self->mAllowsPinchZoom != zoom)
   {
-    self->mAllowsPinchZoom = a3;
+    self->mAllowsPinchZoom = zoom;
     [-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->mController "layerHost")];
 
     [(TSDCanvasLayer *)self p_setEnclosingScrollViewZoomParameters];
   }
 }
 
-- (void)setMinimumPinchViewScale:(double)a3
+- (void)setMinimumPinchViewScale:(double)scale
 {
-  if (self->mMinimumPinchViewScale != a3)
+  if (self->mMinimumPinchViewScale != scale)
   {
-    self->mMinimumPinchViewScale = a3;
+    self->mMinimumPinchViewScale = scale;
     [(TSDCanvasLayer *)self p_setEnclosingScrollViewZoomParameters];
   }
 }
 
-- (void)setMaximumPinchViewScale:(double)a3
+- (void)setMaximumPinchViewScale:(double)scale
 {
-  if (self->mMaximumPinchViewScale != a3)
+  if (self->mMaximumPinchViewScale != scale)
   {
-    self->mMaximumPinchViewScale = a3;
+    self->mMaximumPinchViewScale = scale;
     [(TSDCanvasLayer *)self p_setEnclosingScrollViewZoomParameters];
   }
 }
 
 - (CGPoint)unscaledContentCenter
 {
-  v3 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  if (v3)
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  if (enclosingScrollView)
   {
-    v4 = v3;
-    v5 = [(TSDCanvasLayer *)self canvasView];
+    v4 = enclosingScrollView;
+    canvasView = [(TSDCanvasLayer *)self canvasView];
     [(TSKScrollView *)v4 bounds];
-    [(TSDCanvasView *)v5 convertPoint:v4 fromView:TSDCenterOfRect(v6, v7, v8, v9)];
+    [(TSDCanvasView *)canvasView convertPoint:v4 fromView:TSDCenterOfRect(v6, v7, v8, v9)];
     v12 = TSDMultiplyPointScalar(v10, v11, 1.0 / self->mViewScale);
   }
 
@@ -416,10 +416,10 @@ LABEL_5:
   return result;
 }
 
-- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)a3
+- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   mViewScale = self->mViewScale;
   [(TSDCanvasLayer *)self contentInset];
 
@@ -429,26 +429,26 @@ LABEL_5:
   return result;
 }
 
-- (CGPoint)p_contentOffsetForUnscaledContentCenter:(CGPoint)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5
+- (CGPoint)p_contentOffsetForUnscaledContentCenter:(CGPoint)center viewScale:(double)scale contentInset:(UIEdgeInsets)inset
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  y = a3.y;
-  x = a3.x;
-  v13 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  if (v13)
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  y = center.y;
+  x = center.x;
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  if (enclosingScrollView)
   {
-    [(TSKScrollView *)v13 bounds];
+    [(TSKScrollView *)enclosingScrollView bounds];
     v15 = v14;
     v29 = y;
     v17 = v16;
-    v30 = TSDMultiplySizeScalar(self->mUnscaledSize.width, self->mUnscaledSize.height, a4);
+    v30 = TSDMultiplySizeScalar(self->mUnscaledSize.width, self->mUnscaledSize.height, scale);
     v31 = v18;
-    [(TSDCanvasLayer *)self p_fixedBoundsForScrollViewSize:v15 viewScale:v17 contentInset:a4, top, left, bottom, right];
+    [(TSDCanvasLayer *)self p_fixedBoundsForScrollViewSize:v15 viewScale:v17 contentInset:scale, top, left, bottom, right];
     v20 = v19;
-    v21 = TSDMultiplyPointScalar(x, v29, a4);
+    v21 = TSDMultiplyPointScalar(x, v29, scale);
     TSDAddPoints(v21, v22, v20);
     v23 = 0.0;
     v24 = 0.0;
@@ -478,21 +478,21 @@ LABEL_5:
   return result;
 }
 
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 maintainPosition:(BOOL)a5 animated:(BOOL)a6
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame maintainPosition:(BOOL)position animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  v15 = v14;
-  if (v6)
+  animatedCopy = animated;
+  positionCopy = position;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  v15 = enclosingScrollView;
+  if (animatedCopy)
   {
-    if (v14)
+    if (enclosingScrollView)
     {
-      [(TSKScrollView *)v14 frame];
+      [(TSKScrollView *)enclosingScrollView frame];
       v34.origin.x = x;
       v34.origin.y = y;
       v34.size.width = width;
@@ -503,7 +503,7 @@ LABEL_5:
       }
     }
 
-    if (v7)
+    if (positionCopy)
     {
       [(TSDCanvasLayer *)self unscaledContentCenter];
       v17 = v16;
@@ -518,12 +518,12 @@ LABEL_5:
 
     [(TSDCanvasLayer *)self contentInset];
 
-    [(TSDCanvasLayer *)self animateToViewScale:0 contentCenter:a3 contentInset:v17 duration:v19 completionBlock:v21, v22, v23, v24, 0.2];
+    [(TSDCanvasLayer *)self animateToViewScale:0 contentCenter:scale contentInset:v17 duration:v19 completionBlock:v21, v22, v23, v24, 0.2];
   }
 
   else
   {
-    if (v14 && ([(TSKScrollView *)v14 frame], v35.origin.x = x, v35.origin.y = y, v35.size.width = width, v35.size.height = height, !CGRectEqualToRect(v33, v35)))
+    if (enclosingScrollView && ([(TSKScrollView *)enclosingScrollView frame], v35.origin.x = x, v35.origin.y = y, v35.size.width = width, v35.size.height = height, !CGRectEqualToRect(v33, v35)))
     {
       [(TSKScrollView *)v15 setFrame:x, y, width, height];
       v20 = 1;
@@ -538,19 +538,19 @@ LABEL_5:
     v26 = v25;
     v28 = v27;
     mViewScale = self->mViewScale;
-    if (mViewScale != a3)
+    if (mViewScale != scale)
     {
-      [(TSDCanvasLayer *)self p_setViewScale:a3];
+      [(TSDCanvasLayer *)self p_setViewScale:scale];
     }
 
     [(TSDCanvasLayer *)self fixFrameAndScrollView];
-    if (v7)
+    if (positionCopy)
     {
       [(TSDCanvasLayer *)self contentOffsetForUnscaledContentCenter:v26, v28];
       [(TSKScrollView *)v15 setContentOffset:0 animated:?];
     }
 
-    if (mViewScale != a3)
+    if (mViewScale != scale)
     {
       [(TSDInteractiveCanvasController *)self->mController i_viewScaleDidChange];
     }
@@ -564,23 +564,23 @@ LABEL_5:
   }
 }
 
-- (void)animateToViewScale:(double)a3 contentCenter:(CGPoint)a4 contentInset:(UIEdgeInsets)a5 duration:(double)a6 animation:(id)a7 completionBlock:(id)a8
+- (void)animateToViewScale:(double)scale contentCenter:(CGPoint)center contentInset:(UIEdgeInsets)inset duration:(double)duration animation:(id)animation completionBlock:(id)block
 {
-  bottom = a5.bottom;
-  right = a5.right;
-  left = a5.left;
-  top = a5.top;
-  y = a4.y;
-  x = a4.x;
-  v17 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  if (a3 <= 0.0 || (v19 = v17, self->mViewScale == a3) && ([(TSDCanvasLayer *)self contentInset], left == v47) && top == v18.n128_f64[0] && right == v46 && (v18.n128_f64[0] = bottom, bottom == v45) && !self->mViewScaleAnimationCount)
+  bottom = inset.bottom;
+  right = inset.right;
+  left = inset.left;
+  top = inset.top;
+  y = center.y;
+  x = center.x;
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  if (scale <= 0.0 || (v19 = enclosingScrollView, self->mViewScale == scale) && ([(TSDCanvasLayer *)self contentInset], left == v47) && top == v18.n128_f64[0] && right == v46 && (v18.n128_f64[0] = bottom, bottom == v45) && !self->mViewScaleAnimationCount)
   {
-    if (a8)
+    if (block)
     {
       v48 = self->mViewScaleAnimationCount == 0;
-      v49 = *(a8 + 2);
+      v49 = *(block + 2);
 
-      v49(a8, v48, v18);
+      v49(block, v48, v18);
     }
   }
 
@@ -603,7 +603,7 @@ LABEL_5:
 
     v72 = x;
     self->mViewScaleAnimationCount = mViewScaleAnimationCount + 1;
-    [(TSDInteractiveCanvasController *)self->mController i_viewDidZoomToViewScale:a3];
+    [(TSDInteractiveCanvasController *)self->mController i_viewDidZoomToViewScale:scale];
     [(TSDCanvasLayer *)self pushLayoutDisabled];
     v63 = *(MEMORY[0x277CBF2C0] + 16);
     v64 = *MEMORY[0x277CBF2C0];
@@ -616,7 +616,7 @@ LABEL_5:
     v69 = v23;
     v65 = v25;
     v66 = v24;
-    v26 = a3;
+    scaleCopy = scale;
     v28 = *MEMORY[0x277CBF348];
     v27 = *(MEMORY[0x277CBF348] + 8);
     v67 = right;
@@ -630,9 +630,9 @@ LABEL_5:
       v60 = v34;
       v61 = v33;
       [(TSKScrollView *)v19 frame];
-      [(TSDCanvasLayer *)self p_fixedBoundsForScrollViewSize:v35 viewScale:v36 contentInset:v26, v70, v71, bottom, right];
+      [(TSDCanvasLayer *)self p_fixedBoundsForScrollViewSize:v35 viewScale:v36 contentInset:scaleCopy, v70, v71, bottom, right];
       v59 = v37;
-      [(TSDCanvasLayer *)self p_contentOffsetForUnscaledContentCenter:v72 viewScale:y contentInset:v26, v70, v71, bottom, right];
+      [(TSDCanvasLayer *)self p_contentOffsetForUnscaledContentCenter:v72 viewScale:y contentInset:scaleCopy, v70, v71, bottom, right];
       v39 = v38;
       v40 = TSDSubtractPoints(v28, v27, v59);
       v28 = TSDSubtractPoints(v40, v41, v39);
@@ -653,7 +653,7 @@ LABEL_5:
     CGAffineTransformTranslate(&v97, &v96, v28 - v42, v27 - v43);
     mViewScale = self->mViewScale;
     memset(&v96, 0, sizeof(v96));
-    CGAffineTransformMakeScale(&v96, v26 / mViewScale, v26 / mViewScale);
+    CGAffineTransformMakeScale(&v96, scaleCopy / mViewScale, scaleCopy / mViewScale);
     [(TSDCanvasLayer *)self anchorPoint];
     v52 = v51;
     v54 = v53;
@@ -688,21 +688,21 @@ LABEL_5:
     v88[1] = 3221225472;
     v89 = __99__TSDCanvasLayer_animateToViewScale_contentCenter_contentInset_duration_animation_completionBlock___block_invoke;
     v90 = &unk_279D48FC8;
-    v91 = self;
+    selfCopy = self;
     v92 = v95;
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
     v77 = __99__TSDCanvasLayer_animateToViewScale_contentCenter_contentInset_duration_animation_completionBlock___block_invoke_2;
     v78 = &unk_279D48FF0;
-    v81 = v26;
+    v81 = scaleCopy;
     v82 = v70;
     v83 = v71;
     v84 = bottom;
     v85 = v67;
     v86 = v72;
     v87 = v68;
-    v79 = self;
-    v80 = a8;
+    selfCopy2 = self;
+    blockCopy = block;
     [(TSDCanvasLayer *)self affineTransform];
     t1 = v97;
     if (CGAffineTransformEqualToTransform(&v95, &t1))
@@ -711,11 +711,11 @@ LABEL_5:
       v77(v76);
     }
 
-    else if (a7)
+    else if (animation)
     {
       [(TSDInteractiveCanvasController *)self->mController beginAnimations:&stru_287D36338 context:0];
-      [(TSDInteractiveCanvasController *)self->mController setAnimationDuration:a6];
-      [(TSDInteractiveCanvasController *)self->mController setAnimation:a7 forLayer:self forKey:@"transform"];
+      [(TSDInteractiveCanvasController *)self->mController setAnimationDuration:duration];
+      [(TSDInteractiveCanvasController *)self->mController setAnimation:animation forLayer:self forKey:@"transform"];
       [(TSDInteractiveCanvasController *)self->mController setAnimationCompletionBlock:v76];
       v89(v88);
       [(TSDInteractiveCanvasController *)self->mController commitAnimations];
@@ -728,7 +728,7 @@ LABEL_5:
       v75[2] = __99__TSDCanvasLayer_animateToViewScale_contentCenter_contentInset_duration_animation_completionBlock___block_invoke_3;
       v75[3] = &unk_279D49018;
       v75[4] = v76;
-      [MEMORY[0x277D75D18] animateWithDuration:4 delay:v88 options:v75 animations:a6 completion:0.0];
+      [MEMORY[0x277D75D18] animateWithDuration:4 delay:v88 options:v75 animations:duration completion:0.0];
     }
   }
 }
@@ -777,77 +777,77 @@ uint64_t __99__TSDCanvasLayer_animateToViewScale_contentCenter_contentInset_dura
   return result;
 }
 
-- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)a3 animated:(BOOL)a4
+- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)position animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  if (v10)
+  animatedCopy = animated;
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  if (enclosingScrollView)
   {
-    v11 = v10;
-    [(TSKScrollView *)v10 frame];
+    v11 = enclosingScrollView;
+    [(TSKScrollView *)enclosingScrollView frame];
     v24.origin.x = x;
     v24.origin.y = y;
     v24.size.width = width;
     v24.size.height = height;
     if (!CGRectEqualToRect(v23, v24))
     {
-      v12 = [(TSDCanvasLayer *)self canvasView];
+      canvasView = [(TSDCanvasLayer *)self canvasView];
       [(TSKScrollView *)v11 bounds];
-      [(TSDCanvasView *)v12 convertPoint:v11 fromView:TSDCenterOfRect(v13, v14, v15, v16)];
+      [(TSDCanvasView *)canvasView convertPoint:v11 fromView:TSDCenterOfRect(v13, v14, v15, v16)];
       v19 = TSDMultiplyPointScalar(v17, v18, 1.0 / self->mViewScale);
       v21 = v20;
       [(TSKScrollView *)v11 setFrame:x, y, width, height];
       [(TSDCanvasLayer *)self fixFrameAndScrollView];
       [(TSDCanvasLayer *)self contentOffsetForUnscaledContentCenter:v19, v21];
 
-      [(TSKScrollView *)v11 setContentOffset:v4 animated:?];
+      [(TSKScrollView *)v11 setContentOffset:animatedCopy animated:?];
     }
   }
 }
 
-- (void)p_setViewScale:(double)a3
+- (void)p_setViewScale:(double)scale
 {
   [(TSDCanvasLayer *)self willChangeValueForKey:@"viewScale"];
-  self->mViewScale = a3;
+  self->mViewScale = scale;
   [(TSDCanvasLayer *)self didChangeValueForKey:@"viewScale"];
   mViewScale = self->mViewScale;
-  v6 = [(TSDInteractiveCanvasController *)self->mController canvas];
+  canvas = [(TSDInteractiveCanvasController *)self->mController canvas];
 
-  [(TSDCanvas *)v6 setViewScale:mViewScale];
+  [(TSDCanvas *)canvas setViewScale:mViewScale];
 }
 
-- (void)p_setViewScale:(double)a3 preservingScrollOffset:(BOOL)a4
+- (void)p_setViewScale:(double)scale preservingScrollOffset:(BOOL)offset
 {
   mViewScale = self->mViewScale;
-  if (a3 <= 0.0 || mViewScale == a3)
+  if (scale <= 0.0 || mViewScale == scale)
   {
     return;
   }
 
-  if (!a4)
+  if (!offset)
   {
     v9 = 0;
     goto LABEL_11;
   }
 
-  v8 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  v9 = v8;
-  if (!v8)
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  v9 = enclosingScrollView;
+  if (!enclosingScrollView)
   {
 LABEL_11:
     v10 = 1;
     goto LABEL_12;
   }
 
-  [(TSKScrollView *)v8 contentOffset];
+  [(TSKScrollView *)enclosingScrollView contentOffset];
   [(TSKScrollView *)v9 contentSize];
   v10 = 0;
 LABEL_12:
-  [(TSDCanvasLayer *)self p_setViewScale:a3];
+  [(TSDCanvasLayer *)self p_setViewScale:scale];
   [(TSDCanvasLayer *)self p_setEnclosingScrollViewZoomParameters];
   [(TSDCanvasLayer *)self fixFrameAndScrollView];
   if ((v10 & 1) == 0)
@@ -863,22 +863,22 @@ LABEL_12:
 
 - (void)p_setEnclosingScrollViewZoomParameters
 {
-  v2 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  if (v2)
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  if (enclosingScrollView)
   {
-    v3 = v2;
-    [(TSKScrollView *)v2 setMinimumZoomScale:1.0];
+    v3 = enclosingScrollView;
+    [(TSKScrollView *)enclosingScrollView setMinimumZoomScale:1.0];
     [(TSKScrollView *)v3 setMaximumZoomScale:1.0];
 
     [(TSKScrollView *)v3 setZoomScale:1.0];
   }
 }
 
-- (CGRect)p_fixedBoundsForScrollViewSize:(CGSize)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5
+- (CGRect)p_fixedBoundsForScrollViewSize:(CGSize)size viewScale:(double)scale contentInset:(UIEdgeInsets)inset
 {
-  top = a5.top;
-  height = a3.height;
-  width = a3.width;
+  top = inset.top;
+  height = size.height;
+  width = size.width;
   p_mUnscaledSize = &self->mUnscaledSize;
   if (self->mUnscaledSize.width == *MEMORY[0x277CBF3A8] && self->mUnscaledSize.height == *(MEMORY[0x277CBF3A8] + 8))
   {
@@ -890,29 +890,29 @@ LABEL_12:
 
   else
   {
-    right = a5.right;
-    bottom = a5.bottom;
-    left = a5.left;
+    right = inset.right;
+    bottom = inset.bottom;
+    left = inset.left;
     [(TSDInteractiveCanvasController *)self->mController growUnscaledCanvasLayerSize:?];
     v15 = v14;
     v17 = v16;
     if (v14 < p_mUnscaledSize->width)
     {
-      v18 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasLayer p_fixedBoundsForScrollViewSize:viewScale:contentInset:]"];
-      [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasLayer.m"), 958, @"expected canvas layer not to shrink in -growUnscaledCanvasLayerSize:, ignoring width"}];
+      [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasLayer.m"), 958, @"expected canvas layer not to shrink in -growUnscaledCanvasLayerSize:, ignoring width"}];
       v15 = p_mUnscaledSize->width;
     }
 
     if (v17 < p_mUnscaledSize->height)
     {
-      v20 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasLayer p_fixedBoundsForScrollViewSize:viewScale:contentInset:]"];
-      [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasLayer.m"), 962, @"expected canvas layer not to shrink in -growUnscaledCanvasLayerSize:, ignoring height"}];
+      [currentHandler2 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasLayer.m"), 962, @"expected canvas layer not to shrink in -growUnscaledCanvasLayerSize:, ignoring height"}];
       v17 = p_mUnscaledSize->height;
     }
 
-    TSDMultiplySizeScalar(v15, v17, a4);
+    TSDMultiplySizeScalar(v15, v17, scale);
     v22 = left + TSDRectWithSize();
     v24 = top + v23;
     v26 = v25 - (left + right);
@@ -959,7 +959,7 @@ LABEL_12:
 
   mController = self->mController;
 
-  [(TSDInteractiveCanvasController *)mController canvasViewBoundsWithBounds:v37, v38, v35, v36, a5.left, a5.bottom, a5.right];
+  [(TSDInteractiveCanvasController *)mController canvasViewBoundsWithBounds:v37, v38, v35, v36, inset.left, inset.bottom, inset.right];
   result.size.height = v44;
   result.size.width = v43;
   result.origin.y = v42;
@@ -971,10 +971,10 @@ LABEL_12:
 {
   if ([(TSDCanvasLayer *)self verticallyCenteredInScrollView])
   {
-    v3 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-    if (v3)
+    enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+    if (enclosingScrollView)
     {
-      v4 = v3;
+      v4 = enclosingScrollView;
       [(TSDInteractiveCanvasController *)self->mController sizeOfScrollViewEnclosingCanvas];
       v6 = v5;
       v8 = v7;
@@ -1041,22 +1041,22 @@ LABEL_12:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
-  if (v20)
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self canvasView] enclosingScrollView];
+  if (enclosingScrollView)
   {
-    v21 = v20;
-    [(TSKScrollView *)v20 setZoomScale:1.0];
+    v21 = enclosingScrollView;
+    [(TSKScrollView *)enclosingScrollView setZoomScale:1.0];
     [(TSKScrollView *)v21 setContentSize:v17, v19];
     [(TSDCanvasLayer *)self adjustContentInsets];
   }
 
-  v22 = [(TSDCanvasLayer *)self canvasView];
-  if (!v22)
+  selfCopy = [(TSDCanvasLayer *)self canvasView];
+  if (!selfCopy)
   {
-    v22 = self;
+    selfCopy = self;
   }
 
-  [(TSDCanvasView *)v22 setBounds:v13, v15, v17, v19];
+  [(TSDCanvasView *)selfCopy setBounds:v13, v15, v17, v19];
   v23 = TSDRectWithSize();
   v27 = TSDCenterOfRect(v23, v24, v25, v26);
 
@@ -1072,13 +1072,13 @@ LABEL_12:
   }
 }
 
-- (void)keyboardWillChangeFrame:(id)a3
+- (void)keyboardWillChangeFrame:(id)frame
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v6 = __42__TSDCanvasLayer_keyboardWillChangeFrame___block_invoke;
   v7 = &unk_279D46770;
-  v8 = self;
+  selfCopy = self;
   v3 = +[TSKKeyboardMonitor sharedKeyboardMonitor];
   if ([v3 keyboardIsAnimating])
   {

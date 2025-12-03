@@ -1,9 +1,9 @@
 @interface HDIntermediateSyncAssociation
 + (id)new;
 - (HDIntermediateSyncAssociation)init;
-- (HDIntermediateSyncAssociation)initWithAssociationUUID:(id)a3 type:(unint64_t)a4 behavior:(unint64_t)a5 creationDate:(id)a6 deleted:(BOOL)a7 destinationSubObjectUUID:(id)a8;
-- (HDIntermediateSyncAssociation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HDIntermediateSyncAssociation)initWithAssociationUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior creationDate:(id)date deleted:(BOOL)deleted destinationSubObjectUUID:(id)iD;
+- (HDIntermediateSyncAssociation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDIntermediateSyncAssociation
@@ -28,28 +28,28 @@
   return 0;
 }
 
-- (HDIntermediateSyncAssociation)initWithAssociationUUID:(id)a3 type:(unint64_t)a4 behavior:(unint64_t)a5 creationDate:(id)a6 deleted:(BOOL)a7 destinationSubObjectUUID:(id)a8
+- (HDIntermediateSyncAssociation)initWithAssociationUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior creationDate:(id)date deleted:(BOOL)deleted destinationSubObjectUUID:(id)iD
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
+  dCopy = d;
+  dateCopy = date;
+  iDCopy = iD;
   v25.receiver = self;
   v25.super_class = HDIntermediateSyncAssociation;
   v17 = [(HDIntermediateSyncAssociation *)&v25 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [dCopy copy];
     associationUUID = v17->_associationUUID;
     v17->_associationUUID = v18;
 
-    v17->_type = a4;
-    v17->_behavior = a5;
-    v17->_deleted = a7;
-    v20 = [v15 copy];
+    v17->_type = type;
+    v17->_behavior = behavior;
+    v17->_deleted = deleted;
+    v20 = [dateCopy copy];
     creationDate = v17->_creationDate;
     v17->_creationDate = v20;
 
-    v22 = [v16 copy];
+    v22 = [iDCopy copy];
     destinationSubObjectUUID = v17->_destinationSubObjectUUID;
     v17->_destinationSubObjectUUID = v22;
   }
@@ -57,27 +57,27 @@
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   associationUUID = self->_associationUUID;
-  v5 = a3;
-  [v5 encodeObject:associationUUID forKey:@"UUID"];
-  [v5 encodeObject:self->_creationDate forKey:@"CreationDate"];
-  [v5 encodeInteger:self->_type forKey:@"Type"];
-  [v5 encodeInteger:self->_behavior forKey:@"Behavior"];
-  [v5 encodeBool:self->_deleted forKey:@"Deleted"];
-  [v5 encodeObject:self->_destinationSubObjectUUID forKey:@"SubObjectUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:associationUUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"CreationDate"];
+  [coderCopy encodeInteger:self->_type forKey:@"Type"];
+  [coderCopy encodeInteger:self->_behavior forKey:@"Behavior"];
+  [coderCopy encodeBool:self->_deleted forKey:@"Deleted"];
+  [coderCopy encodeObject:self->_destinationSubObjectUUID forKey:@"SubObjectUUID"];
 }
 
-- (HDIntermediateSyncAssociation)initWithCoder:(id)a3
+- (HDIntermediateSyncAssociation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
-  v7 = [v4 decodeIntegerForKey:@"Type"];
-  v8 = [v4 decodeIntegerForKey:@"Behavior"];
-  v9 = [v4 decodeBoolForKey:@"Deleted"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SubObjectUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+  v7 = [coderCopy decodeIntegerForKey:@"Type"];
+  v8 = [coderCopy decodeIntegerForKey:@"Behavior"];
+  v9 = [coderCopy decodeBoolForKey:@"Deleted"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SubObjectUUID"];
 
   v11 = [(HDIntermediateSyncAssociation *)self initWithAssociationUUID:v5 type:v7 behavior:v8 creationDate:v6 deleted:v9 destinationSubObjectUUID:v10];
   return v11;

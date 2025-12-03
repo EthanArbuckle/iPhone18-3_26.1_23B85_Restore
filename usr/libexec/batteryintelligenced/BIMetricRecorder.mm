@@ -1,7 +1,7 @@
 @interface BIMetricRecorder
 + (id)logger;
-+ (void)sendToCoreAnalytics:(id)a3 forEvent:(id)a4 withTrialManager:(id)a5;
-+ (void)sendToPPS:(id)a3 forIdentifier:(id)a4;
++ (void)sendToCoreAnalytics:(id)analytics forEvent:(id)event withTrialManager:(id)manager;
++ (void)sendToPPS:(id)s forIdentifier:(id)identifier;
 @end
 
 @implementation BIMetricRecorder
@@ -13,13 +13,13 @@
   return v2;
 }
 
-+ (void)sendToPPS:(id)a3 forIdentifier:(id)a4
++ (void)sendToPPS:(id)s forIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  sCopy = s;
+  identifierCopy = identifier;
   v7 = +[BIMetricRecorder logger];
   v8 = v7;
-  if (v5)
+  if (sCopy)
   {
     v9 = PPSCreateTelemetryIdentifier();
     if (v9)
@@ -39,7 +39,7 @@
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        sub_100032460(v6, v8);
+        sub_100032460(identifierCopy, v8);
       }
 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -55,44 +55,44 @@
   }
 }
 
-+ (void)sendToCoreAnalytics:(id)a3 forEvent:(id)a4 withTrialManager:(id)a5
++ (void)sendToCoreAnalytics:(id)analytics forEvent:(id)event withTrialManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  analyticsCopy = analytics;
+  eventCopy = event;
+  managerCopy = manager;
   v10 = +[BIMetricRecorder logger];
   v11 = v10;
-  if (v7)
+  if (analyticsCopy)
   {
-    if (v9)
+    if (managerCopy)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         sub_100032540();
       }
 
-      v12 = [v7 mutableCopy];
-      v13 = [v9 experimentIdentifiers];
-      v14 = [v13 experimentId];
-      [v12 setObject:v14 forKeyedSubscript:@"trialExperimentId"];
+      v12 = [analyticsCopy mutableCopy];
+      experimentIdentifiers = [managerCopy experimentIdentifiers];
+      experimentId = [experimentIdentifiers experimentId];
+      [v12 setObject:experimentId forKeyedSubscript:@"trialExperimentId"];
 
-      v15 = [v9 experimentIdentifiers];
-      v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v15 deploymentId]);
-      v17 = [v16 stringValue];
-      [v12 setObject:v17 forKeyedSubscript:@"trialDeploymentId"];
+      experimentIdentifiers2 = [managerCopy experimentIdentifiers];
+      v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [experimentIdentifiers2 deploymentId]);
+      stringValue = [v16 stringValue];
+      [v12 setObject:stringValue forKeyedSubscript:@"trialDeploymentId"];
 
-      v18 = [v9 experimentIdentifiers];
-      v19 = [v18 treatmentId];
-      [v12 setObject:v19 forKeyedSubscript:@"trialTreatmentId"];
+      experimentIdentifiers3 = [managerCopy experimentIdentifiers];
+      treatmentId = [experimentIdentifiers3 treatmentId];
+      [v12 setObject:treatmentId forKeyedSubscript:@"trialTreatmentId"];
 
       v20 = [v12 copy];
-      v7 = v20;
+      analyticsCopy = v20;
     }
 
-    v21 = v7;
+    v21 = analyticsCopy;
     if ((AnalyticsSendEventLazy() & 1) == 0 && os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_100032580(v8, v11);
+      sub_100032580(eventCopy, v11);
     }
   }
 

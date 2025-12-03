@@ -1,18 +1,18 @@
 @interface AAFCertificateTrustValidator
-- (BOOL)_checkPinningPolicy:(id)a3 type:(unint64_t)a4;
-- (BOOL)_trySSLPinning:(id)a3;
-- (__SecPolicy)_policyForType:(unint64_t)a3 host:(id)a4;
-- (int64_t)validateCertificateTrustWithChallenge:(id)a3 type:(unint64_t)a4;
+- (BOOL)_checkPinningPolicy:(id)policy type:(unint64_t)type;
+- (BOOL)_trySSLPinning:(id)pinning;
+- (__SecPolicy)_policyForType:(unint64_t)type host:(id)host;
+- (int64_t)validateCertificateTrustWithChallenge:(id)challenge type:(unint64_t)type;
 @end
 
 @implementation AAFCertificateTrustValidator
 
-- (int64_t)validateCertificateTrustWithChallenge:(id)a3 type:(unint64_t)a4
+- (int64_t)validateCertificateTrustWithChallenge:(id)challenge type:(unint64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [a3 protectionSpace];
-  v7 = [v6 authenticationMethod];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E696A968]];
+  protectionSpace = [challenge protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v8 = [authenticationMethod isEqualToString:*MEMORY[0x1E696A968]];
 
   v9 = _AAFLogSystem();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -34,17 +34,17 @@ LABEL_9:
   if (v10)
   {
     v17 = 134217984;
-    v18 = a4;
+    typeCopy2 = type;
     _os_log_impl(&dword_1C8644000, v9, OS_LOG_TYPE_DEFAULT, "Validating certificate trust for type %lu.", &v17, 0xCu);
   }
 
-  if ([(AAFCertificateTrustValidator *)self _checkPinningPolicy:v6 type:a4])
+  if ([(AAFCertificateTrustValidator *)self _checkPinningPolicy:protectionSpace type:type])
   {
     v9 = _AAFLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134217984;
-      v18 = a4;
+      typeCopy2 = type;
       v11 = "Certificate type %lu is trusted.";
       v12 = v9;
       v13 = 12;
@@ -57,7 +57,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 && [(AAFCertificateTrustValidator *)self _trySSLPinning:v6])
+  if (type && [(AAFCertificateTrustValidator *)self _trySSLPinning:protectionSpace])
   {
     v9 = _AAFLogSystem();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -89,13 +89,13 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)_checkPinningPolicy:(id)a3 type:(unint64_t)a4
+- (BOOL)_checkPinningPolicy:(id)policy type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 serverTrust];
-  v8 = [v6 host];
+  policyCopy = policy;
+  serverTrust = [policyCopy serverTrust];
+  host = [policyCopy host];
 
-  v9 = [(AAFCertificateTrustValidator *)self _policyForType:a4 host:v8];
+  v9 = [(AAFCertificateTrustValidator *)self _policyForType:type host:host];
   if (!v9)
   {
     v14 = _AAFLogSystem();
@@ -108,7 +108,7 @@ LABEL_12:
   }
 
   v10 = v9;
-  v11 = SecTrustSetPolicies(v7, v9);
+  v11 = SecTrustSetPolicies(serverTrust, v9);
   if (v11)
   {
     v12 = SecCopyErrorMessageString(v11, 0);
@@ -125,7 +125,7 @@ LABEL_9:
   }
 
   error = 0;
-  v15 = SecTrustEvaluateWithError(v7, &error);
+  v15 = SecTrustEvaluateWithError(serverTrust, &error);
   if (error)
   {
     v16 = _AAFLogSystem();
@@ -144,13 +144,13 @@ LABEL_15:
   return v15;
 }
 
-- (__SecPolicy)_policyForType:(unint64_t)a3 host:(id)a4
+- (__SecPolicy)_policyForType:(unint64_t)type host:(id)host
 {
-  v6 = a4;
-  switch(a3)
+  hostCopy = host;
+  switch(type)
   {
     case 0uLL:
-      SSL = SecPolicyCreateSSL(1u, v6);
+      SSL = SecPolicyCreateSSL(1u, hostCopy);
       goto LABEL_7;
     case 2uLL:
       SSL = SecPolicyCreateAppleiCloudSetupService();
@@ -165,9 +165,9 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)_trySSLPinning:(id)a3
+- (BOOL)_trySSLPinning:(id)pinning
 {
-  v4 = a3;
+  pinningCopy = pinning;
   if (+[AFUtilities isInternalBuild]&& CFPreferencesGetAppBooleanValue(@"AAFDisableCertPinning", @"com.apple.AAAFoundation", 0))
   {
     v5 = _AAFLogSystem();
@@ -177,7 +177,7 @@ LABEL_7:
       _os_log_impl(&dword_1C8644000, v5, OS_LOG_TYPE_DEFAULT, "Standard pinning is diabled, falling back to SSL pinning.", v8, 2u);
     }
 
-    v6 = [(AAFCertificateTrustValidator *)self _checkPinningPolicy:v4 type:0];
+    v6 = [(AAFCertificateTrustValidator *)self _checkPinningPolicy:pinningCopy type:0];
   }
 
   else

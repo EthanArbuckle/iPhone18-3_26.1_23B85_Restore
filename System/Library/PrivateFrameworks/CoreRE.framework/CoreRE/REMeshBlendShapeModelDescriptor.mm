@@ -1,38 +1,38 @@
 @interface REMeshBlendShapeModelDescriptor
-- (BOOL)validateWithPayloadSize:(const void *)a3 partCountOnModel:(unint64_t)a4 error:(id *)a5;
-- (REMeshBlendShapeModelDescriptor)initWithBlendShapeData:(const void *)a3 meshPartCount:(unint64_t)a4 payloadBuilder:(void *)a5 deformationModelData:(void *)a6;
-- (REMeshBlendShapeModelDescriptor)initWithBlendShapeIndexType:(unint64_t)a3 blendShapeBuffers:(id)a4 perMeshPartBlendShapeBufferIndex:(id)a5 blendGroupNames:(id)a6;
-- (REMeshBlendShapeModelDescriptor)initWithCoder:(id)a3;
-- (REMeshBlendShapeModelDescriptor)initWithMeshBlendShapeData:(const void *)a3 meshPartCount:(unint64_t)a4 payloadBuilder:(void *)a5 deformationModelData:(void *)a6;
+- (BOOL)validateWithPayloadSize:(const void *)size partCountOnModel:(unint64_t)model error:(id *)error;
+- (REMeshBlendShapeModelDescriptor)initWithBlendShapeData:(const void *)data meshPartCount:(unint64_t)count payloadBuilder:(void *)builder deformationModelData:(void *)modelData;
+- (REMeshBlendShapeModelDescriptor)initWithBlendShapeIndexType:(unint64_t)type blendShapeBuffers:(id)buffers perMeshPartBlendShapeBufferIndex:(id)index blendGroupNames:(id)names;
+- (REMeshBlendShapeModelDescriptor)initWithCoder:(id)coder;
+- (REMeshBlendShapeModelDescriptor)initWithMeshBlendShapeData:(const void *)data meshPartCount:(unint64_t)count payloadBuilder:(void *)builder deformationModelData:(void *)modelData;
 - (unint64_t)estimateContainerSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshBlendShapeModelDescriptor
 
-- (REMeshBlendShapeModelDescriptor)initWithMeshBlendShapeData:(const void *)a3 meshPartCount:(unint64_t)a4 payloadBuilder:(void *)a5 deformationModelData:(void *)a6
+- (REMeshBlendShapeModelDescriptor)initWithMeshBlendShapeData:(const void *)data meshPartCount:(unint64_t)count payloadBuilder:(void *)builder deformationModelData:(void *)modelData
 {
   v41 = *MEMORY[0x1E69E9840];
   *&v40[0] = 0;
-  v27 = a4;
+  countCopy = count;
 
-  if (*(a3 + 2))
+  if (*(data + 2))
   {
     v10 = 0;
     v11 = 0;
     do
     {
-      re::BlendShapeModelBuilder::addBlendShapeGroup(v31, *(a3 + 4) + v10, *(*(a3 + 4) + v10 + 48), v11++, 0);
+      re::BlendShapeModelBuilder::addBlendShapeGroup(v31, *(data + 4) + v10, *(*(data + 4) + v10 + 48), v11++, 0);
       v10 += 56;
     }
 
-    while (v11 < *(a3 + 2));
+    while (v11 < *(data + 2));
   }
 
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = *a6;
-  v13 = **a6;
+  v12 = *modelData;
+  v13 = **modelData;
   if (v12[2])
   {
     v14 = 0;
@@ -40,7 +40,7 @@
     v16 = 8;
     do
     {
-      v17 = [[REMeshBlendShapeBufferDescriptor alloc] initWithBlendShapeBufferPayload:v12[3] + v14 indexType:v13 payloadBuilder:a5];
+      v17 = [[REMeshBlendShapeBufferDescriptor alloc] initWithBlendShapeBufferPayload:v12[3] + v14 indexType:v13 payloadBuilder:builder];
       [v30 addObject:v17];
       v18 = v12[8];
       if (v18 <= v15)
@@ -72,7 +72,7 @@
     while (v15 < v12[2]);
   }
 
-  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v27];
+  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:countCopy];
   v21 = v12[5];
   if (v21)
   {
@@ -95,29 +95,29 @@
   return v25;
 }
 
-- (REMeshBlendShapeModelDescriptor)initWithBlendShapeData:(const void *)a3 meshPartCount:(unint64_t)a4 payloadBuilder:(void *)a5 deformationModelData:(void *)a6
+- (REMeshBlendShapeModelDescriptor)initWithBlendShapeData:(const void *)data meshPartCount:(unint64_t)count payloadBuilder:(void *)builder deformationModelData:(void *)modelData
 {
   v41 = *MEMORY[0x1E69E9840];
   *&v40[0] = 0;
-  v27 = a4;
+  countCopy = count;
 
-  if (*(a3 + 2))
+  if (*(data + 2))
   {
     v10 = 0;
     v11 = 0;
     do
     {
-      re::BlendShapeModelBuilder::addBlendShapeGroup(v31, *(a3 + 4) + v10, *(*(a3 + 4) + v10 + 48), v11++, 0);
+      re::BlendShapeModelBuilder::addBlendShapeGroup(v31, *(data + 4) + v10, *(*(data + 4) + v10 + 48), v11++, 0);
       v10 += 56;
     }
 
-    while (v11 < *(a3 + 2));
+    while (v11 < *(data + 2));
   }
 
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = *a6;
-  v13 = **a6;
+  v12 = *modelData;
+  v13 = **modelData;
   if (v12[2])
   {
     v14 = 0;
@@ -125,7 +125,7 @@
     v16 = 8;
     do
     {
-      v17 = [[REMeshBlendShapeBufferDescriptor alloc] initWithBlendShapeBufferPayload:v12[3] + v14 indexType:v13 payloadBuilder:a5];
+      v17 = [[REMeshBlendShapeBufferDescriptor alloc] initWithBlendShapeBufferPayload:v12[3] + v14 indexType:v13 payloadBuilder:builder];
       [v30 addObject:v17];
       v18 = v12[8];
       if (v18 <= v15)
@@ -157,7 +157,7 @@
     while (v15 < v12[2]);
   }
 
-  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v27];
+  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:countCopy];
   v21 = v12[5];
   if (v21)
   {
@@ -180,27 +180,27 @@
   return v25;
 }
 
-- (REMeshBlendShapeModelDescriptor)initWithBlendShapeIndexType:(unint64_t)a3 blendShapeBuffers:(id)a4 perMeshPartBlendShapeBufferIndex:(id)a5 blendGroupNames:(id)a6
+- (REMeshBlendShapeModelDescriptor)initWithBlendShapeIndexType:(unint64_t)type blendShapeBuffers:(id)buffers perMeshPartBlendShapeBufferIndex:(id)index blendGroupNames:(id)names
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  buffersCopy = buffers;
+  indexCopy = index;
+  namesCopy = names;
   v22.receiver = self;
   v22.super_class = REMeshBlendShapeModelDescriptor;
   v13 = [(REMeshBlendShapeModelDescriptor *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_blendShapeIndexType = a3;
-    v15 = [v10 copy];
+    v13->_blendShapeIndexType = type;
+    v15 = [buffersCopy copy];
     blendShapeBuffers = v14->_blendShapeBuffers;
     v14->_blendShapeBuffers = v15;
 
-    v17 = [v11 copy];
+    v17 = [indexCopy copy];
     perMeshPartBlendShapeBufferIndex = v14->_perMeshPartBlendShapeBufferIndex;
     v14->_perMeshPartBlendShapeBufferIndex = v17;
 
-    v19 = [v12 copy];
+    v19 = [namesCopy copy];
     blendShapeGroupNames = v14->_blendShapeGroupNames;
     v14->_blendShapeGroupNames = v19;
   }
@@ -208,60 +208,60 @@
   return v14;
 }
 
-- (REMeshBlendShapeModelDescriptor)initWithCoder:(id)a3
+- (REMeshBlendShapeModelDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"blendShapeBuffers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"blendShapeBuffers"];
   blendShapeBuffers = self->_blendShapeBuffers;
   self->_blendShapeBuffers = v8;
 
-  v10 = validateMTLIndexType([v4 decodeIntegerForKey:@"blendShapeIndexType"], &self->_blendShapeIndexType);
+  v10 = validateMTLIndexType([coderCopy decodeIntegerForKey:@"blendShapeIndexType"], &self->_blendShapeIndexType);
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"perMeshPartBlendShapeBufferIndex"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"perMeshPartBlendShapeBufferIndex"];
   perMeshPartBlendShapeBufferIndex = self->_perMeshPartBlendShapeBufferIndex;
   self->_perMeshPartBlendShapeBufferIndex = v14;
 
   v16 = MEMORY[0x1E695DFD8];
   v17 = objc_opt_class();
   v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-  v19 = [v4 decodeObjectOfClasses:v18 forKey:@"blendShapeGroupNames"];
+  v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"blendShapeGroupNames"];
   blendShapeGroupNames = self->_blendShapeGroupNames;
   self->_blendShapeGroupNames = v19;
 
   v21 = [(NSArray *)self->_blendShapeGroupNames count];
   if (v21 == [(NSArray *)self->_blendShapeBuffers count]&& v10)
   {
-    v24 = self;
+    selfCopy = self;
   }
 
   else
     v25 = {;
-    [v4 failWithError:v25];
+    [coderCopy failWithError:v25];
 
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_blendShapeBuffers forKey:@"blendShapeBuffers"];
-  [v4 encodeInteger:self->_blendShapeIndexType forKey:@"blendShapeIndexType"];
-  [v4 encodeObject:self->_perMeshPartBlendShapeBufferIndex forKey:@"perMeshPartBlendShapeBufferIndex"];
-  [v4 encodeObject:self->_blendShapeGroupNames forKey:@"blendShapeGroupNames"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_blendShapeBuffers forKey:@"blendShapeBuffers"];
+  [coderCopy encodeInteger:self->_blendShapeIndexType forKey:@"blendShapeIndexType"];
+  [coderCopy encodeObject:self->_perMeshPartBlendShapeBufferIndex forKey:@"perMeshPartBlendShapeBufferIndex"];
+  [coderCopy encodeObject:self->_blendShapeGroupNames forKey:@"blendShapeGroupNames"];
 }
 
-- (BOOL)validateWithPayloadSize:(const void *)a3 partCountOnModel:(unint64_t)a4 error:(id *)a5
+- (BOOL)validateWithPayloadSize:(const void *)size partCountOnModel:(unint64_t)model error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  if ([(NSArray *)self->_perMeshPartBlendShapeBufferIndex count]> a4)
+  if ([(NSArray *)self->_perMeshPartBlendShapeBufferIndex count]> model)
   {
     v8 = @"REMeshBlendShapeModelDescriptor: blend shape index per mesh part out of range";
     goto LABEL_26;
@@ -293,8 +293,8 @@ LABEL_26:
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v28 + 1) + 8 * i) unsignedIntValue];
-        if (v14 != -1 && v9 < v14)
+        unsignedIntValue = [*(*(&v28 + 1) + 8 * i) unsignedIntValue];
+        if (unsignedIntValue != -1 && v9 < unsignedIntValue)
         {
 
           return 0;
@@ -326,7 +326,7 @@ LABEL_26:
         }
 
         v20 = *(*(&v24 + 1) + 8 * j);
-        v21 = [v20 validateWithPayloadSize:a3 error:{a5, v24}];
+        v21 = [v20 validateWithPayloadSize:size error:{error, v24}];
 
         if (!v21)
         {

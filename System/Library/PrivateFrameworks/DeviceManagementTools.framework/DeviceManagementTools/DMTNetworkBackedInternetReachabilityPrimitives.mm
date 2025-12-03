@@ -1,15 +1,15 @@
 @interface DMTNetworkBackedInternetReachabilityPrimitives
 - (DMTNetworkBackedInternetReachabilityPrimitives)init;
 - (void)dealloc;
-- (void)pathDidChange:(id)a3;
+- (void)pathDidChange:(id)change;
 @end
 
 @implementation DMTNetworkBackedInternetReachabilityPrimitives
 
 - (void)dealloc
 {
-  v3 = [(DMTNetworkBackedInternetReachabilityPrimitives *)self pathMonitor];
-  nw_path_monitor_cancel(v3);
+  pathMonitor = [(DMTNetworkBackedInternetReachabilityPrimitives *)self pathMonitor];
+  nw_path_monitor_cancel(pathMonitor);
 
   v4.receiver = self;
   v4.super_class = DMTNetworkBackedInternetReachabilityPrimitives;
@@ -61,21 +61,21 @@ void __54__DMTNetworkBackedInternetReachabilityPrimitives_init__block_invoke(uin
   [WeakRetained performSelectorOnMainThread:sel_pathDidChange_ withObject:v3 waitUntilDone:0];
 }
 
-- (void)pathDidChange:(id)a3
+- (void)pathDidChange:(id)change
 {
-  v4 = [(DMTNetworkBackedInternetReachabilityPrimitives *)self pathEvaluator];
-  v5 = [v4 path];
-  v6 = [v5 status];
+  pathEvaluator = [(DMTNetworkBackedInternetReachabilityPrimitives *)self pathEvaluator];
+  path = [pathEvaluator path];
+  status = [path status];
 
-  if ((v6 == 1) != [(DMTNetworkBackedInternetReachabilityPrimitives *)self reachable])
+  if ((status == 1) != [(DMTNetworkBackedInternetReachabilityPrimitives *)self reachable])
   {
-    [(DMTNetworkBackedInternetReachabilityPrimitives *)self setReachable:v6 == 1];
-    v7 = [(DMTNetworkBackedInternetReachabilityPrimitives *)self statusChangedBlock];
-    if (v7)
+    [(DMTNetworkBackedInternetReachabilityPrimitives *)self setReachable:status == 1];
+    statusChangedBlock = [(DMTNetworkBackedInternetReachabilityPrimitives *)self statusChangedBlock];
+    if (statusChangedBlock)
     {
-      v8 = v7;
-      (v7)[2](v7, v6 == 1);
-      v7 = v8;
+      v8 = statusChangedBlock;
+      (statusChangedBlock)[2](statusChangedBlock, status == 1);
+      statusChangedBlock = v8;
     }
   }
 }

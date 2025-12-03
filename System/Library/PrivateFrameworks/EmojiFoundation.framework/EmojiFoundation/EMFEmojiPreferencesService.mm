@@ -1,23 +1,23 @@
 @interface EMFEmojiPreferencesService
-+ (id)sharedServiceWithMachName:(id)a3;
-- (BOOL)allowsConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)sharedServiceWithMachName:(id)name;
+- (BOOL)allowsConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (EMFEmojiPreferences)preferences;
-- (EMFEmojiPreferencesService)initWithMachName:(id)a3;
-- (id)obtainApplicationIdentifierFromConnection:(id)a3;
-- (id)obtainBundleIdentifierFromConnection:(id)a3;
+- (EMFEmojiPreferencesService)initWithMachName:(id)name;
+- (id)obtainApplicationIdentifierFromConnection:(id)connection;
+- (id)obtainBundleIdentifierFromConnection:(id)connection;
 - (void)_createPreferencesIfNecessary;
 - (void)dealloc;
 @end
 
 @implementation EMFEmojiPreferencesService
 
-+ (id)sharedServiceWithMachName:(id)a3
++ (id)sharedServiceWithMachName:(id)name
 {
-  v3 = a3;
-  if (v3)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v4 = v3;
+    v4 = nameCopy;
   }
 
   else
@@ -47,9 +47,9 @@ uint64_t __56__EMFEmojiPreferencesService_sharedServiceWithMachName___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (EMFEmojiPreferencesService)initWithMachName:(id)a3
+- (EMFEmojiPreferencesService)initWithMachName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = EMFEmojiPreferencesService;
   v5 = [(EMFEmojiPreferencesService *)&v13 init];
@@ -63,7 +63,7 @@ uint64_t __56__EMFEmojiPreferencesService_sharedServiceWithMachName___block_invo
     v9 = dispatch_get_global_queue(2, 0);
     dispatch_set_target_queue(v8, v9);
 
-    v10 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v4];
+    v10 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:nameCopy];
     listener = v5->_listener;
     v5->_listener = v10;
 
@@ -112,13 +112,13 @@ uint64_t __56__EMFEmojiPreferencesService_sharedServiceWithMachName___block_invo
   return preferences;
 }
 
-- (id)obtainApplicationIdentifierFromConnection:(id)a3
+- (id)obtainApplicationIdentifierFromConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
     v5 = SecTaskCreateWithAuditToken(0, &token);
     v6 = v5;
     v11 = v5;
@@ -149,11 +149,11 @@ uint64_t __56__EMFEmojiPreferencesService_sharedServiceWithMachName___block_invo
   return v8;
 }
 
-- (id)obtainBundleIdentifierFromConnection:(id)a3
+- (id)obtainBundleIdentifierFromConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 _xpcConnection], v5 = objc_claimAutoreleasedReturnValue(), v6 = xpc_connection_copy_bundle_id(), v5, v6))
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy && ([connectionCopy _xpcConnection], v5 = objc_claimAutoreleasedReturnValue(), v6 = xpc_connection_copy_bundle_id(), v5, v6))
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v6];
     free(v6);
@@ -167,16 +167,16 @@ uint64_t __56__EMFEmojiPreferencesService_sharedServiceWithMachName___block_invo
   return v7;
 }
 
-- (BOOL)allowsConnection:(id)a3
+- (BOOL)allowsConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   if (!_os_feature_enabled_impl() || !_os_feature_enabled_impl())
   {
     goto LABEL_6;
   }
 
-  v5 = [(EMFEmojiPreferencesService *)self obtainApplicationIdentifierFromConnection:v4];
-  v6 = [(EMFEmojiPreferencesService *)self obtainBundleIdentifierFromConnection:v4];
+  v5 = [(EMFEmojiPreferencesService *)self obtainApplicationIdentifierFromConnection:connectionCopy];
+  v6 = [(EMFEmojiPreferencesService *)self obtainBundleIdentifierFromConnection:connectionCopy];
   if ([v5 hasPrefix:@"com.apple."] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"com.apple."))
   {
 
@@ -197,35 +197,35 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(EMFEmojiPreferencesService *)self allowsConnection:v5];
+  connectionCopy = connection;
+  v6 = [(EMFEmojiPreferencesService *)self allowsConnection:connectionCopy];
   if (v6)
   {
     [(EMFEmojiPreferencesService *)self _createPreferencesIfNecessary];
-    v7 = [(EMFEmojiPreferencesService *)self preferences];
-    [v5 setExportedObject:v7];
+    preferences = [(EMFEmojiPreferencesService *)self preferences];
+    [connectionCopy setExportedObject:preferences];
 
     v8 = +[EMFEmojiPreferencesClient serviceInterface];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    v9 = [(EMFEmojiPreferencesService *)self dispatchQueue];
-    [v5 _setQueue:v9];
+    dispatchQueue = [(EMFEmojiPreferencesService *)self dispatchQueue];
+    [connectionCopy _setQueue:dispatchQueue];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __65__EMFEmojiPreferencesService_listener_shouldAcceptNewConnection___block_invoke;
     v12[3] = &unk_1E7A5F990;
     v12[4] = self;
-    [v5 setInterruptionHandler:v12];
+    [connectionCopy setInterruptionHandler:v12];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __65__EMFEmojiPreferencesService_listener_shouldAcceptNewConnection___block_invoke_2;
     v11[3] = &unk_1E7A5F990;
     v11[4] = self;
-    [v5 setInvalidationHandler:v11];
-    [v5 resume];
+    [connectionCopy setInvalidationHandler:v11];
+    [connectionCopy resume];
   }
 
   return v6;

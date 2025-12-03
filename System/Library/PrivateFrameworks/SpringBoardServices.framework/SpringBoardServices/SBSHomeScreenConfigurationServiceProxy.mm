@@ -1,31 +1,31 @@
 @interface SBSHomeScreenConfigurationServiceProxy
-- (id)_makeErrorWithCode:(void *)a1;
+- (id)_makeErrorWithCode:(void *)code;
 - (id)_makeSessionNotActiveError;
-- (id)initWithInvalidationHandler:(id *)a1;
+- (id)initWithInvalidationHandler:(id *)handler;
 - (id)makeConnection;
-- (void)applyConfiguration:(id)a3 completion:(id)a4;
-- (void)beginConfigurationSessionWithCompletion:(id)a3;
+- (void)applyConfiguration:(id)configuration completion:(id)completion;
+- (void)beginConfigurationSessionWithCompletion:(id)completion;
 - (void)connectionDidInvalidate;
-- (void)endConfigurationSessionWithCompletion:(id)a3;
-- (void)setInvalidationHandler:(void *)a1;
+- (void)endConfigurationSessionWithCompletion:(id)completion;
+- (void)setInvalidationHandler:(void *)handler;
 @end
 
 @implementation SBSHomeScreenConfigurationServiceProxy
 
 - (id)makeConnection
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v3 = +[SBSHomeScreenConfigurationServiceInterfaceSpecification identifier];
-    v4 = [MEMORY[0x1E698F498] endpointForMachName:v2 service:v3 instance:0];
+    v4 = [MEMORY[0x1E698F498] endpointForMachName:defaultShellMachName service:v3 instance:0];
     v5 = [MEMORY[0x1E698F490] connectionWithEndpoint:v4];
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __56__SBSHomeScreenConfigurationServiceProxy_makeConnection__block_invoke;
     v7[3] = &unk_1E735F0A8;
-    v7[4] = a1;
+    v7[4] = self;
     objc_copyWeak(&v8, &location);
     [v5 configureConnection:v7];
     objc_destroyWeak(&v8);
@@ -93,39 +93,39 @@ void __56__SBSHomeScreenConfigurationServiceProxy_makeConnection__block_invoke_2
   }
 }
 
-- (id)initWithInvalidationHandler:(id *)a1
+- (id)initWithInvalidationHandler:(id *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v12.receiver = a1;
+    v12.receiver = handler;
     v12.super_class = SBSHomeScreenConfigurationServiceProxy;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    handler = objc_msgSendSuper2(&v12, sel_init);
+    if (handler)
     {
       v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v5 = dispatch_queue_create("com.apple.springboard.home-screen-configuration.connectionQueue", v4);
-      v6 = a1[1];
-      a1[1] = v5;
+      v6 = handler[1];
+      handler[1] = v5;
 
       v7 = MEMORY[0x193AFFB30](v3);
-      v8 = a1[2];
-      a1[2] = v7;
+      v8 = handler[2];
+      handler[2] = v7;
 
-      v9 = [(SBSHomeScreenConfigurationServiceProxy *)a1 makeConnection];
-      v10 = a1[3];
-      a1[3] = v9;
+      makeConnection = [(SBSHomeScreenConfigurationServiceProxy *)handler makeConnection];
+      v10 = handler[3];
+      handler[3] = makeConnection;
 
-      [a1[3] activate];
+      [handler[3] activate];
     }
   }
 
-  return a1;
+  return handler;
 }
 
-- (void)beginConfigurationSessionWithCompletion:(id)a3
+- (void)beginConfigurationSessionWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   if (self)
   {
     connection = self->_connection;
@@ -136,35 +136,35 @@ void __56__SBSHomeScreenConfigurationServiceProxy_makeConnection__block_invoke_2
     connection = 0;
   }
 
-  v5 = [(BSServiceConnection *)connection remoteTarget];
-  v6 = v5;
-  if (v5)
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v6 = remoteTarget;
+  if (remoteTarget)
   {
-    [v5 beginConfigurationSessionWithCompletion:v8];
+    [remoteTarget beginConfigurationSessionWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(SBSHomeScreenConfigurationServiceProxy *)self _makeSessionNotActiveError];
-    v8[2](v8, v7);
+    _makeSessionNotActiveError = [(SBSHomeScreenConfigurationServiceProxy *)self _makeSessionNotActiveError];
+    completionCopy[2](completionCopy, _makeSessionNotActiveError);
   }
 }
 
 - (id)_makeSessionNotActiveError
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x1E696ABC0] errorWithDomain:SBSHomeScreenConfigurationErrorDomain code:1 userInfo:0];
+    self = [MEMORY[0x1E696ABC0] errorWithDomain:SBSHomeScreenConfigurationErrorDomain code:1 userInfo:0];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)applyConfiguration:(id)a3 completion:(id)a4
+- (void)applyConfiguration:(id)configuration completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (self)
   {
     connection = self->_connection;
@@ -175,23 +175,23 @@ void __56__SBSHomeScreenConfigurationServiceProxy_makeConnection__block_invoke_2
     connection = 0;
   }
 
-  v8 = [(BSServiceConnection *)connection remoteTarget];
-  v9 = v8;
-  if (v8)
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v9 = remoteTarget;
+  if (remoteTarget)
   {
-    [v8 applyConfiguration:v11 completion:v6];
+    [remoteTarget applyConfiguration:configurationCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [(SBSHomeScreenConfigurationServiceProxy *)self _makeSessionNotActiveError];
-    v6[2](v6, v10);
+    _makeSessionNotActiveError = [(SBSHomeScreenConfigurationServiceProxy *)self _makeSessionNotActiveError];
+    completionCopy[2](completionCopy, _makeSessionNotActiveError);
   }
 }
 
-- (void)endConfigurationSessionWithCompletion:(id)a3
+- (void)endConfigurationSessionWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v4, 0, 16);
@@ -203,40 +203,40 @@ void __56__SBSHomeScreenConfigurationServiceProxy_makeConnection__block_invoke_2
     connection = 0;
   }
 
-  v7 = [(BSServiceConnection *)connection remoteTarget];
-  if (v7)
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (remoteTarget)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __80__SBSHomeScreenConfigurationServiceProxy_endConfigurationSessionWithCompletion___block_invoke;
     v9[3] = &unk_1E735F5A8;
     v9[4] = self;
-    v10 = v5;
-    [v7 endConfigurationSessionWithCompletion:v9];
+    v10 = completionCopy;
+    [remoteTarget endConfigurationSessionWithCompletion:v9];
   }
 
   else
   {
     [(BSServiceConnection *)self->_connection invalidate];
-    v8 = [(SBSHomeScreenConfigurationServiceProxy *)self _makeSessionNotActiveError];
-    (*(v5 + 2))(v5, v8);
+    _makeSessionNotActiveError = [(SBSHomeScreenConfigurationServiceProxy *)self _makeSessionNotActiveError];
+    (*(completionCopy + 2))(completionCopy, _makeSessionNotActiveError);
   }
 }
 
-- (void)setInvalidationHandler:(void *)a1
+- (void)setInvalidationHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic_copy(handler, newValue, newValue, 16);
   }
 }
 
 - (void)connectionDidInvalidate
 {
-  if (a1)
+  if (self)
   {
-    v4 = a1[2];
-    objc_setProperty_nonatomic_copy(a1, v2, 0, 16);
+    v4 = self[2];
+    objc_setProperty_nonatomic_copy(self, v2, 0, 16);
     v3 = v4;
     if (v4)
     {
@@ -262,15 +262,15 @@ void __56__SBSHomeScreenConfigurationServiceProxy_makeConnection__block_invoke_5
   [(SBSHomeScreenConfigurationServiceProxy *)WeakRetained connectionDidInvalidate];
 }
 
-- (id)_makeErrorWithCode:(void *)a1
+- (id)_makeErrorWithCode:(void *)code
 {
-  if (a1)
+  if (code)
   {
-    a1 = [MEMORY[0x1E696ABC0] errorWithDomain:SBSHomeScreenConfigurationErrorDomain code:a2 userInfo:0];
+    code = [MEMORY[0x1E696ABC0] errorWithDomain:SBSHomeScreenConfigurationErrorDomain code:a2 userInfo:0];
     v2 = vars8;
   }
 
-  return a1;
+  return code;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$12
-- (BOOL)getWithInt:(int)a3;
-- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$12)initWithOrgApacheLuceneStoreRandomAccessInput:(id)a3 withInt:(int)a4;
+- (BOOL)getWithInt:(int)int;
+- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$12)initWithOrgApacheLuceneStoreRandomAccessInput:(id)input withInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$12
 
-- (BOOL)getWithInt:(int)a3
+- (BOOL)getWithInt:(int)int
 {
   v3 = self->val$in_;
   if (!v3)
@@ -14,13 +14,13 @@
     JreThrowNullPointerException();
   }
 
-  return ([(OrgApacheLuceneStoreRandomAccessInput *)v3 readByteWithLong:a3 >> 3]>> (a3 & 7)) & 1;
+  return ([(OrgApacheLuceneStoreRandomAccessInput *)v3 readByteWithLong:int >> 3]>> (int & 7)) & 1;
 }
 
-- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$12)initWithOrgApacheLuceneStoreRandomAccessInput:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$12)initWithOrgApacheLuceneStoreRandomAccessInput:(id)input withInt:(int)int
 {
-  JreStrongAssign(&self->val$in_, a3);
-  self->val$count_ = a4;
+  JreStrongAssign(&self->val$in_, input);
+  self->val$count_ = int;
   return self;
 }
 

@@ -1,43 +1,43 @@
 @interface GQHChartLegend
-+ (char)pdfId:(id)a3;
-+ (id)geometry:(id)a3;
-+ (int)handleFloatingLegend:(id)a3 state:(id)a4;
-+ (int)handleInlineLegend:(id)a3 state:(id)a4;
++ (char)pdfId:(id)id;
++ (id)geometry:(id)geometry;
++ (int)handleFloatingLegend:(id)legend state:(id)state;
++ (int)handleInlineLegend:(id)legend state:(id)state;
 @end
 
 @implementation GQHChartLegend
 
-+ (char)pdfId:(id)a3
++ (char)pdfId:(id)id
 {
-  v3 = [a3 legend];
+  legend = [id legend];
 
-  return [v3 uid];
+  return [legend uid];
 }
 
-+ (id)geometry:(id)a3
++ (id)geometry:(id)geometry
 {
-  v3 = [a3 legend];
+  legend = [geometry legend];
 
-  return [v3 geometry];
+  return [legend geometry];
 }
 
-+ (int)handleFloatingLegend:(id)a3 state:(id)a4
++ (int)handleFloatingLegend:(id)legend state:(id)state
 {
-  v6 = [a3 chart];
+  chart = [legend chart];
 
-  return [a1 handleFloatingChart:v6 state:a4];
+  return [self handleFloatingChart:chart state:state];
 }
 
-+ (int)handleInlineLegend:(id)a3 state:(id)a4
++ (int)handleInlineLegend:(id)legend state:(id)state
 {
-  if (![objc_msgSend(a3 "chart")])
+  if (![objc_msgSend(legend "chart")])
   {
-    [objc_msgSend(a3 "chart")];
+    [objc_msgSend(legend "chart")];
   }
 
-  v7 = [a3 chart];
+  chart = [legend chart];
 
-  return [a1 handleInlineChart:v7 state:a4];
+  return [self handleInlineChart:chart state:state];
 }
 
 @end

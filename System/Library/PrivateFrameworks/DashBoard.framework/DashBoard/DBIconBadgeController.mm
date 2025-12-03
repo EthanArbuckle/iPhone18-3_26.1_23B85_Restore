@@ -1,13 +1,13 @@
 @interface DBIconBadgeController
 + (id)_alwaysAllowedBadgeSources;
-- (BOOL)notificationsEnabledForIdentifier:(id)a3;
+- (BOOL)notificationsEnabledForIdentifier:(id)identifier;
 - (DBIconBadgeController)init;
-- (void)_badge_queue_removeBadgeSettingsForIdentifiers:(id)a3;
-- (void)_badge_queue_updateNotificationSourcesWithIdentifiers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6;
-- (void)removeObserver:(id)a3;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4;
+- (void)_badge_queue_removeBadgeSettingsForIdentifiers:(id)identifiers;
+- (void)_badge_queue_updateNotificationSourcesWithIdentifiers:(id)identifiers;
+- (void)addObserver:(id)observer;
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications;
+- (void)removeObserver:(id)observer;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers;
 @end
 
 @implementation DBIconBadgeController
@@ -70,9 +70,9 @@
     [v17 addObserver:v2];
 
     v18 = +[DBApplicationController sharedInstance];
-    v19 = [v18 allApplications];
+    allApplications = [v18 allApplications];
 
-    v20 = [v19 bs_map:&__block_literal_global_33];
+    v20 = [allApplications bs_map:&__block_literal_global_33];
     v21 = v2->_badgeSettingsUpdateQueue;
     v26 = MEMORY[0x277D85DD0];
     v27 = 3221225472;
@@ -97,53 +97,53 @@ void __29__DBIconBadgeController_init__block_invoke_2(uint64_t a1)
   [v1 _badge_queue_updateNotificationSourcesWithIdentifiers:v2];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBIconBadgeController *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBIconBadgeController *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBIconBadgeController *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBIconBadgeController *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
-- (BOOL)notificationsEnabledForIdentifier:(id)a3
+- (BOOL)notificationsEnabledForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
-  v5 = [(DBIconBadgeController *)self lock_badgesAllowedByIdentifier];
-  v17 = [v5 copy];
+  lock_badgesAllowedByIdentifier = [(DBIconBadgeController *)self lock_badgesAllowedByIdentifier];
+  v17 = [lock_badgesAllowedByIdentifier copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v6 = v13[5];
   if (!v6)
   {
-    v7 = [(DBIconBadgeController *)self badgeSettingsUpdateQueue];
+    badgeSettingsUpdateQueue = [(DBIconBadgeController *)self badgeSettingsUpdateQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__DBIconBadgeController_notificationsEnabledForIdentifier___block_invoke;
     v11[3] = &unk_278F016B8;
     v11[4] = self;
     v11[5] = &v12;
-    dispatch_sync(v7, v11);
+    dispatch_sync(badgeSettingsUpdateQueue, v11);
 
     v6 = v13[5];
   }
 
-  v8 = [v6 objectForKey:v4];
-  v9 = [v8 BOOLValue];
+  v8 = [v6 objectForKey:identifierCopy];
+  bOOLValue = [v8 BOOLValue];
 
   _Block_object_dispose(&v12, 8);
-  return v9;
+  return bOOLValue;
 }
 
 void __59__DBIconBadgeController_notificationsEnabledForIdentifier___block_invoke(uint64_t a1)
@@ -181,15 +181,15 @@ void __51__DBIconBadgeController__alwaysAllowedBadgeSources__block_invoke()
   _alwaysAllowedBadgeSources___alwaysBadgeIdentifiers = v0;
 }
 
-- (void)_badge_queue_updateNotificationSourcesWithIdentifiers:(id)a3
+- (void)_badge_queue_updateNotificationSourcesWithIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x277D85DE8];
   badgeSettingsUpdateQueue = self->_badgeSettingsUpdateQueue;
-  v5 = a3;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(badgeSettingsUpdateQueue);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
-  v8 = [v7 notificationSourcesWithIdentifiers:v5];
+  currentNotificationSettingsCenter = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
+  v8 = [currentNotificationSettingsCenter notificationSourcesWithIdentifiers:identifiersCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -230,17 +230,17 @@ void __79__DBIconBadgeController__badge_queue_updateNotificationSourcesWithIdent
   [v6 setObject:v7 forKey:v8];
 }
 
-- (void)_badge_queue_removeBadgeSettingsForIdentifiers:(id)a3
+- (void)_badge_queue_removeBadgeSettingsForIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSDictionary *)self->_lock_badgesAllowedByIdentifier mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -273,24 +273,24 @@ void __79__DBIconBadgeController__badge_queue_updateNotificationSourcesWithIdent
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(DBIconBadgeController *)self badgeSettingsUpdateQueue];
+  applicationsCopy = applications;
+  updatedApplicationsCopy = updatedApplications;
+  removedApplicationsCopy = removedApplications;
+  badgeSettingsUpdateQueue = [(DBIconBadgeController *)self badgeSettingsUpdateQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __105__DBIconBadgeController_applicationController_addedApplications_updatedApplications_removedApplications___block_invoke;
   v16[3] = &unk_278F02180;
-  v17 = v11;
-  v18 = self;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, v16);
+  v17 = removedApplicationsCopy;
+  selfCopy = self;
+  v19 = applicationsCopy;
+  v20 = updatedApplicationsCopy;
+  v13 = updatedApplicationsCopy;
+  v14 = applicationsCopy;
+  v15 = removedApplicationsCopy;
+  dispatch_async(badgeSettingsUpdateQueue, v16);
 }
 
 void __105__DBIconBadgeController_applicationController_addedApplications_updatedApplications_removedApplications___block_invoke(uint64_t a1)
@@ -314,18 +314,18 @@ void __105__DBIconBadgeController_applicationController_addedApplications_update
   [v6 iconBadgeController:*(a1 + 40) didUpdateForIdentifiers:v4];
 }
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = [(DBIconBadgeController *)self badgeSettingsUpdateQueue];
+  identifiersCopy = identifiers;
+  badgeSettingsUpdateQueue = [(DBIconBadgeController *)self badgeSettingsUpdateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __95__DBIconBadgeController_userNotificationSettingsCenter_didUpdateNotificationSourceIdentifiers___block_invoke;
   v8[3] = &unk_278F014B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = identifiersCopy;
+  selfCopy = self;
+  v7 = identifiersCopy;
+  dispatch_async(badgeSettingsUpdateQueue, v8);
 }
 
 void __95__DBIconBadgeController_userNotificationSettingsCenter_didUpdateNotificationSourceIdentifiers___block_invoke(uint64_t a1)

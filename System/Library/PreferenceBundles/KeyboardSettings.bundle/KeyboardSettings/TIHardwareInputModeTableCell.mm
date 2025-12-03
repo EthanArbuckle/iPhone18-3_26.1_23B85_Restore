@@ -15,7 +15,7 @@
 
   else
   {
-    v4 = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] identifier];
+    identifier = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] identifier];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -37,7 +37,7 @@ LABEL_5:
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
-        if ([v4 isEqualToString:UIKeyboardInputModeGetNormalizedIdentifier()])
+        if ([identifier isEqualToString:UIKeyboardInputModeGetNormalizedIdentifier()])
         {
           v8 = [UIKeyboardInputModeGetComponentsFromIdentifier() objectForKey:@"hw"];
           if ([v8 length])

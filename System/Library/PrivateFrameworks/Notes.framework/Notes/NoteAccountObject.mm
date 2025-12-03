@@ -1,9 +1,9 @@
 @interface NoteAccountObject
-+ (BOOL)shouldDataAccessCreateAccountForACAccount:(id)a3;
++ (BOOL)shouldDataAccessCreateAccountForACAccount:(id)account;
 - (BOOL)isICloudIMAPAccount;
 - (BOOL)preventMovingNotesToOtherAccounts;
 - (BOOL)shouldMarkNotesAsDeleted;
-- (BOOL)validateDefaultStore:(id *)a3 error:(id *)a4;
+- (BOOL)validateDefaultStore:(id *)store error:(id *)error;
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet;
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet;
 - (NSDictionary)constraints;
@@ -11,12 +11,12 @@
 - (NSString)searchIndexingIdentifier;
 - (id)collectionInfo;
 - (id)predicateForNotes;
-- (id)storeForExternalId:(id)a3;
+- (id)storeForExternalId:(id)id;
 - (id)titleForTableViewCell;
 - (int64_t)accountType;
 - (void)didTurnIntoFault;
-- (void)setAccountType:(int64_t)a3;
-- (void)setPathToConstraintsPlist:(id)a3;
+- (void)setAccountType:(int64_t)type;
+- (void)setPathToConstraintsPlist:(id)plist;
 - (void)willSave;
 @end
 
@@ -30,19 +30,19 @@
   [(NoteAccountObject *)&v3 didTurnIntoFault];
 }
 
-+ (BOOL)shouldDataAccessCreateAccountForACAccount:(id)a3
++ (BOOL)shouldDataAccessCreateAccountForACAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 parentAccount];
-  v5 = v4;
-  if (v4)
+  accountCopy = account;
+  parentAccount = [accountCopy parentAccount];
+  v5 = parentAccount;
+  if (parentAccount)
   {
-    v6 = v4;
+    v6 = parentAccount;
   }
 
   else
   {
-    v6 = v3;
+    v6 = accountCopy;
   }
 
   v7 = v6;
@@ -65,8 +65,8 @@
 - (id)predicateForNotes
 {
   v2 = MEMORY[0x277CCAC30];
-  v3 = [(NoteAccountObject *)self stores];
-  v4 = [v2 predicateWithFormat:@"(store IN %@)", v3];
+  stores = [(NoteAccountObject *)self stores];
+  v4 = [v2 predicateWithFormat:@"(store IN %@)", stores];
 
   return v4;
 }
@@ -75,8 +75,8 @@
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   [v3 setValue:@"Account" forKey:@"NoteCollectionType"];
-  v4 = [(NoteAccountObject *)self accountIdentifier];
-  [v3 setValue:v4 forKey:@"NoteCollectionPrimaryIdentifier"];
+  accountIdentifier = [(NoteAccountObject *)self accountIdentifier];
+  [v3 setValue:accountIdentifier forKey:@"NoteCollectionPrimaryIdentifier"];
 
   return v3;
 }
@@ -88,64 +88,64 @@
   [(NoteAccountObject *)&v9 willSave];
   if ([(NoteAccountObject *)self isInserted])
   {
-    v3 = [MEMORY[0x277CB8F48] defaultStore];
-    v4 = [(NoteAccountObject *)self accountIdentifier];
-    v5 = [v3 accountWithIdentifier:v4];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    accountIdentifier = [(NoteAccountObject *)self accountIdentifier];
+    v5 = [defaultStore accountWithIdentifier:accountIdentifier];
 
     if (v5)
     {
-      v6 = [v5 displayAccount];
-      v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D36098]];
-      v8 = [v7 BOOLValue];
+      displayAccount = [v5 displayAccount];
+      v7 = [displayAccount objectForKeyedSubscript:*MEMORY[0x277D36098]];
+      bOOLValue = [v7 BOOLValue];
 
-      if (v8 != [(NoteAccountObject *)self didChooseToMigrate])
+      if (bOOLValue != [(NoteAccountObject *)self didChooseToMigrate])
       {
-        [(NoteAccountObject *)self setDidChooseToMigrate:v8];
+        [(NoteAccountObject *)self setDidChooseToMigrate:bOOLValue];
       }
     }
   }
 }
 
-- (id)storeForExternalId:(id)a3
+- (id)storeForExternalId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc_init(MEMORY[0x277CBE428]);
   v6 = MEMORY[0x277CBE408];
-  v7 = [(NoteAccountObject *)self managedObjectContext];
-  v8 = [v6 entityForName:@"Store" inManagedObjectContext:v7];
+  managedObjectContext = [(NoteAccountObject *)self managedObjectContext];
+  v8 = [v6 entityForName:@"Store" inManagedObjectContext:managedObjectContext];
   [v5 setEntity:v8];
 
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(account == %@) AND (externalIdentifier == %@)", self, v4];
-  [v5 setPredicate:v9];
+  idCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(account == %@) AND (externalIdentifier == %@)", self, idCopy];
+  [v5 setPredicate:idCopy];
 
-  v10 = [(NoteAccountObject *)self managedObjectContext];
+  managedObjectContext2 = [(NoteAccountObject *)self managedObjectContext];
   v16 = 0;
-  v11 = [v10 executeFetchRequest:v5 error:&v16];
+  v11 = [managedObjectContext2 executeFetchRequest:v5 error:&v16];
   v12 = v16;
 
   if (v12)
   {
-    v13 = [v12 userInfo];
-    NSLog(&cfstr_ErrorGettingSt.isa, v4, v12, v13);
+    userInfo = [v12 userInfo];
+    NSLog(&cfstr_ErrorGettingSt.isa, idCopy, v12, userInfo);
   }
 
-  v14 = [v11 lastObject];
+  lastObject = [v11 lastObject];
 
-  return v14;
+  return lastObject;
 }
 
-- (void)setAccountType:(int64_t)a3
+- (void)setAccountType:(int64_t)type
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [(NoteAccountObject *)self setType:v4];
 }
 
 - (int64_t)accountType
 {
-  v2 = [(NoteAccountObject *)self type];
-  v3 = [v2 intValue];
+  type = [(NoteAccountObject *)self type];
+  intValue = [type intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (BOOL)preventMovingNotesToOtherAccounts
@@ -153,39 +153,39 @@
   preventMovingNotesToOtherAccounts = self->_preventMovingNotesToOtherAccounts;
   if (!preventMovingNotesToOtherAccounts)
   {
-    v4 = [MEMORY[0x277CB8F48] defaultStore];
-    v5 = [(NoteAccountObject *)self accountIdentifier];
-    v6 = [v4 accountWithIdentifier:v5];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    accountIdentifier = [(NoteAccountObject *)self accountIdentifier];
+    v6 = [defaultStore accountWithIdentifier:accountIdentifier];
 
-    v7 = [v6 displayAccount];
-    v8 = [v7 objectForKeyedSubscript:@"MFRestrictMessageTransfersToOtherAccounts"];
-    v9 = [v8 BOOLValue];
+    displayAccount = [v6 displayAccount];
+    v8 = [displayAccount objectForKeyedSubscript:@"MFRestrictMessageTransfersToOtherAccounts"];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
-      v10 = 1;
+      isOpenInRestrictionInEffect = 1;
     }
 
     else
     {
-      v11 = [v6 displayAccount];
-      v12 = [v11 objectForKeyedSubscript:@"MCAccountIsManaged"];
-      v13 = [v12 BOOLValue];
+      displayAccount2 = [v6 displayAccount];
+      v12 = [displayAccount2 objectForKeyedSubscript:@"MCAccountIsManaged"];
+      bOOLValue2 = [v12 BOOLValue];
 
-      if (v13)
+      if (bOOLValue2)
       {
         Helper_x8__OBJC_CLASS___MCProfileConnection = gotLoadHelper_x8__OBJC_CLASS___MCProfileConnection(v14);
-        v17 = [*(v16 + 672) sharedConnection];
-        v10 = [v17 isOpenInRestrictionInEffect];
+        sharedConnection = [*(v16 + 672) sharedConnection];
+        isOpenInRestrictionInEffect = [sharedConnection isOpenInRestrictionInEffect];
       }
 
       else
       {
-        v10 = 0;
+        isOpenInRestrictionInEffect = 0;
       }
     }
 
-    v18 = [MEMORY[0x277CCABB0] numberWithBool:v10];
+    v18 = [MEMORY[0x277CCABB0] numberWithBool:isOpenInRestrictionInEffect];
     v19 = self->_preventMovingNotesToOtherAccounts;
     self->_preventMovingNotesToOtherAccounts = v18;
 
@@ -195,24 +195,24 @@
   return [(NSNumber *)preventMovingNotesToOtherAccounts BOOLValue];
 }
 
-- (void)setPathToConstraintsPlist:(id)a3
+- (void)setPathToConstraintsPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   [(NoteAccountObject *)self setConstraints:0];
-  [(NoteAccountObject *)self setConstraintsPath:v4];
+  [(NoteAccountObject *)self setConstraintsPath:plistCopy];
 }
 
 - (NSDictionary)constraints
 {
   if (!self->_constraints)
   {
-    v3 = [(NoteAccountObject *)self constraintsPath];
+    constraintsPath = [(NoteAccountObject *)self constraintsPath];
 
-    if (v3)
+    if (constraintsPath)
     {
       v4 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v5 = [(NoteAccountObject *)self constraintsPath];
-      v6 = [v4 initWithContentsOfFile:v5];
+      constraintsPath2 = [(NoteAccountObject *)self constraintsPath];
+      v6 = [v4 initWithContentsOfFile:constraintsPath2];
       constraints = self->_constraints;
       self->_constraints = v6;
     }
@@ -220,7 +220,7 @@
     else
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-      v5 = self->_constraints;
+      constraintsPath2 = self->_constraints;
       self->_constraints = v8;
     }
   }
@@ -232,30 +232,30 @@
 
 - (BOOL)shouldMarkNotesAsDeleted
 {
-  v2 = [(NoteAccountObject *)self constraints];
-  v3 = [v2 objectForKey:0x286E2FB60];
+  constraints = [(NoteAccountObject *)self constraints];
+  v3 = [constraints objectForKey:0x286E2FB60];
   v4 = [v3 objectForKey:0x286E2FB80];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)validateDefaultStore:(id *)a3 error:(id *)a4
+- (BOOL)validateDefaultStore:(id *)store error:(id *)error
 {
-  if (!*a3)
+  if (!*store)
   {
     return 1;
   }
 
-  v6 = [(NoteAccountObject *)self stores];
-  v7 = [v6 containsObject:*a3];
+  stores = [(NoteAccountObject *)self stores];
+  v7 = [stores containsObject:*store];
 
-  if (a4 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277CCA050];
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Tried to use default store not from within account's stores." forKey:@"reason"];
-    *a4 = [v8 errorWithDomain:v9 code:1550 userInfo:v10];
+    *error = [v8 errorWithDomain:v9 code:1550 userInfo:v10];
 
     return 0;
   }
@@ -265,55 +265,55 @@
 
 - (BOOL)isICloudIMAPAccount
 {
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [(NoteAccountObject *)self accountIdentifier];
-  v5 = [v3 accountWithIdentifier:v4];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  accountIdentifier = [(NoteAccountObject *)self accountIdentifier];
+  v5 = [defaultStore accountWithIdentifier:accountIdentifier];
 
-  v6 = [v5 parentAccount];
-  v7 = [v6 accountType];
-  v8 = [v7 identifier];
+  parentAccount = [v5 parentAccount];
+  accountType = [parentAccount accountType];
+  identifier = [accountType identifier];
 
-  LOBYTE(v6) = [v8 isEqualToString:*MEMORY[0x277CB8BA0]];
-  return v6;
+  LOBYTE(parentAccount) = [identifier isEqualToString:*MEMORY[0x277CB8BA0]];
+  return parentAccount;
 }
 
 - (NSString)searchDomainIdentifier
 {
   v3 = +[AccountUtilities sharedAccountUtilities];
-  v4 = [v3 accountStore];
+  accountStore = [v3 accountStore];
 
-  v5 = [(NoteAccountObject *)self accountIdentifier];
-  v6 = [v4 accountWithIdentifier:v5];
+  accountIdentifier = [(NoteAccountObject *)self accountIdentifier];
+  v6 = [accountStore accountWithIdentifier:accountIdentifier];
 
-  v7 = [v6 parentAccount];
-  v8 = v7;
-  if (!v7)
+  parentAccount = [v6 parentAccount];
+  v8 = parentAccount;
+  if (!parentAccount)
   {
-    v7 = v6;
+    parentAccount = v6;
   }
 
-  v9 = [v7 identifier];
+  identifier = [parentAccount identifier];
 
-  return v9;
+  return identifier;
 }
 
 - (id)titleForTableViewCell
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = __ICLocalizedFrameworkString_impl(@"All %@", @"All %@", 0);
-  v5 = [(NoteAccountObject *)self name];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  name = [(NoteAccountObject *)self name];
+  v6 = [v3 localizedStringWithFormat:v4, name];
 
   return v6;
 }
 
 - (NSString)searchIndexingIdentifier
 {
-  v2 = [(NoteAccountObject *)self objectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  objectID = [(NoteAccountObject *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet
@@ -325,14 +325,14 @@
 
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet
 {
-  v3 = [(NoteAccountObject *)self userActivityContentAttributeSet];
-  v4 = [(NoteAccountObject *)self name];
-  [v3 setDisplayName:v4];
+  userActivityContentAttributeSet = [(NoteAccountObject *)self userActivityContentAttributeSet];
+  name = [(NoteAccountObject *)self name];
+  [userActivityContentAttributeSet setDisplayName:name];
 
-  v5 = [(NoteAccountObject *)self name];
-  [v3 setTextContent:v5];
+  name2 = [(NoteAccountObject *)self name];
+  [userActivityContentAttributeSet setTextContent:name2];
 
-  [v3 setIc_searchResultType:3];
+  [userActivityContentAttributeSet setIc_searchResultType:3];
   if ([(NoteAccountObject *)self preventMovingNotesToOtherAccounts])
   {
     v6 = &unk_286E32A98;
@@ -343,14 +343,14 @@
     v6 = &unk_286E32AB0;
   }
 
-  [v3 setDataOwnerType:v6];
-  [v3 ic_populateValuesForSpecializedFields];
+  [userActivityContentAttributeSet setDataOwnerType:v6];
+  [userActivityContentAttributeSet ic_populateValuesForSpecializedFields];
   if (objc_opt_respondsToSelector())
   {
-    [(NoteAccountObject *)self associateAppEntityWithSearchableItemAttributeSet:v3];
+    [(NoteAccountObject *)self associateAppEntityWithSearchableItemAttributeSet:userActivityContentAttributeSet];
   }
 
-  return v3;
+  return userActivityContentAttributeSet;
 }
 
 @end

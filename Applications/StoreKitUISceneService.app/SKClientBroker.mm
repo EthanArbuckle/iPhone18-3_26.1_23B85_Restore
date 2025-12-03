@@ -3,31 +3,31 @@
 - (BOOL)hasTransactionListener;
 - (SKClientBroker)init;
 - (id)_unfinishedTransactionsNotificationName;
-- (void)_cancelNotifyTokenIfValid:(int)a3;
+- (void)_cancelNotifyTokenIfValid:(int)valid;
 - (void)_handleUnfinishedTransactionsNotification;
-- (void)askToShowMessageWithReplyBlock:(id)a3;
+- (void)askToShowMessageWithReplyBlock:(id)block;
 - (void)dealloc;
-- (void)downloadAdded:(id)a3;
-- (void)downloadRemoved:(id)a3;
-- (void)downloadStatusChanged:(id)a3;
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4;
-- (void)hasAnyMessageListenersWithReply:(id)a3;
-- (void)pendingMessages:(id)a3;
-- (void)receivedStatuses:(id)a3;
-- (void)receivedTransactions:(id)a3;
-- (void)registerClient:(id)a3 withIdentifier:(id)a4;
-- (void)registerMessageListener:(id)a3;
-- (void)registerSubscriptionStatusListener:(id)a3;
-- (void)registerTransactionListener:(id)a3;
-- (void)removedEntitlementsForProductIdentifiers:(id)a3;
-- (void)removedTransactions:(id)a3;
-- (void)unregisterClientWithIdentifier:(id)a3;
-- (void)unregisterMessageListener:(id)a3;
-- (void)unregisterSubscriptionStatusListener:(id)a3;
-- (void)unregisterTransactionListener:(id)a3;
-- (void)updatedTransactions:(id)a3;
+- (void)downloadAdded:(id)added;
+- (void)downloadRemoved:(id)removed;
+- (void)downloadStatusChanged:(id)changed;
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler;
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler;
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler;
+- (void)hasAnyMessageListenersWithReply:(id)reply;
+- (void)pendingMessages:(id)messages;
+- (void)receivedStatuses:(id)statuses;
+- (void)receivedTransactions:(id)transactions;
+- (void)registerClient:(id)client withIdentifier:(id)identifier;
+- (void)registerMessageListener:(id)listener;
+- (void)registerSubscriptionStatusListener:(id)listener;
+- (void)registerTransactionListener:(id)listener;
+- (void)removedEntitlementsForProductIdentifiers:(id)identifiers;
+- (void)removedTransactions:(id)transactions;
+- (void)unregisterClientWithIdentifier:(id)identifier;
+- (void)unregisterMessageListener:(id)listener;
+- (void)unregisterSubscriptionStatusListener:(id)listener;
+- (void)unregisterTransactionListener:(id)listener;
+- (void)updatedTransactions:(id)transactions;
 @end
 
 @implementation SKClientBroker
@@ -83,36 +83,36 @@
 
 - (BOOL)hasTransactionListener
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_transactionListeners;
   objc_sync_enter(v3);
-  LOBYTE(v2) = [(NSHashTable *)v2->_transactionListeners count]!= 0;
+  LOBYTE(selfCopy) = [(NSHashTable *)selfCopy->_transactionListeners count]!= 0;
   objc_sync_exit(v3);
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)registerClient:(id)a3 withIdentifier:(id)a4
+- (void)registerClient:(id)client withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   v8 = self->_clients;
   objc_sync_enter(v8);
-  [(NSMapTable *)self->_clients setObject:v6 forKey:v7];
+  [(NSMapTable *)self->_clients setObject:clientCopy forKey:identifierCopy];
   if (!notify_is_valid_token(self->_unfinishedTransactionsToken))
   {
-    v9 = [(SKClientBroker *)self _unfinishedTransactionsNotificationName];
-    v10 = v9;
-    if (v9)
+    _unfinishedTransactionsNotificationName = [(SKClientBroker *)self _unfinishedTransactionsNotificationName];
+    v10 = _unfinishedTransactionsNotificationName;
+    if (_unfinishedTransactionsNotificationName)
     {
-      v11 = [v9 UTF8String];
+      uTF8String = [_unfinishedTransactionsNotificationName UTF8String];
       v12 = &_dispatch_main_q;
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_100006DE8;
       handler[3] = &unk_1000BE458;
       handler[4] = self;
-      notify_register_dispatch(v11, &self->_unfinishedTransactionsToken, &_dispatch_main_q, handler);
+      notify_register_dispatch(uTF8String, &self->_unfinishedTransactionsToken, &_dispatch_main_q, handler);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -124,12 +124,12 @@
   objc_sync_exit(v8);
 }
 
-- (void)unregisterClientWithIdentifier:(id)a3
+- (void)unregisterClientWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v4 = self->_clients;
   objc_sync_enter(v4);
-  [(NSMapTable *)self->_clients removeObjectForKey:v5];
+  [(NSMapTable *)self->_clients removeObjectForKey:identifierCopy];
   if (![(NSMapTable *)self->_clients count]&& notify_is_valid_token(self->_unfinishedTransactionsToken))
   {
     notify_cancel(self->_unfinishedTransactionsToken);
@@ -139,71 +139,71 @@
   objc_sync_exit(v4);
 }
 
-- (void)registerSubscriptionStatusListener:(id)a3
+- (void)registerSubscriptionStatusListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_subscriptionStatusListeners;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_subscriptionStatusListeners addObject:v5];
+  [(NSHashTable *)self->_subscriptionStatusListeners addObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)unregisterSubscriptionStatusListener:(id)a3
+- (void)unregisterSubscriptionStatusListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_subscriptionStatusListeners;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_subscriptionStatusListeners removeObject:v5];
+  [(NSHashTable *)self->_subscriptionStatusListeners removeObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)registerTransactionListener:(id)a3
+- (void)registerTransactionListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_transactionListeners;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_transactionListeners addObject:v5];
+  [(NSHashTable *)self->_transactionListeners addObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)unregisterTransactionListener:(id)a3
+- (void)unregisterTransactionListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_transactionListeners;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_transactionListeners removeObject:v5];
+  [(NSHashTable *)self->_transactionListeners removeObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)registerMessageListener:(id)a3
+- (void)registerMessageListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_messageListeners;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_messageListeners addObject:v5];
+  [(NSHashTable *)self->_messageListeners addObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)unregisterMessageListener:(id)a3
+- (void)unregisterMessageListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_messageListeners;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_messageListeners removeObject:v5];
+  [(NSHashTable *)self->_messageListeners removeObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)pendingMessages:(id)a3
+- (void)pendingMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v5 = self->_messageListeners;
   objc_sync_enter(v5);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSHashTable *)self->_messageListeners objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSHashTable *)self->_messageListeners objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -214,15 +214,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) pendingMessages:v4];
+        [*(*(&v10 + 1) + 8 * v9) pendingMessages:messagesCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -231,17 +231,17 @@
   objc_sync_exit(v5);
 }
 
-- (void)askToShowMessageWithReplyBlock:(id)a3
+- (void)askToShowMessageWithReplyBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = self->_clients;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_clients objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -252,13 +252,13 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 askToShowMessageWithReplyBlock:v4];
+          [v10 askToShowMessageWithReplyBlock:blockCopy];
 
           goto LABEL_11;
         }
@@ -267,7 +267,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -277,33 +277,33 @@
     }
   }
 
-  v4[2](v4, 0, 1);
+  blockCopy[2](blockCopy, 0, 1);
 LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)hasAnyMessageListenersWithReply:(id)a3
+- (void)hasAnyMessageListenersWithReply:(id)reply
 {
-  v6 = a3;
+  replyCopy = reply;
   v4 = self->_messageListeners;
   objc_sync_enter(v4);
   v5 = [(NSHashTable *)self->_messageListeners count]!= 0;
   objc_sync_exit(v4);
 
-  v6[2](v6, v5);
+  replyCopy[2](replyCopy, v5);
 }
 
-- (void)removedEntitlementsForProductIdentifiers:(id)a3
+- (void)removedEntitlementsForProductIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = self->_clients;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_clients objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -314,20 +314,20 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 removedEntitlementsForProductIdentifiers:v4];
+          [v10 removedEntitlementsForProductIdentifiers:identifiersCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -336,17 +336,17 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)updatedTransactions:(id)a3
+- (void)updatedTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   v5 = self->_clients;
   objc_sync_enter(v5);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [(NSMapTable *)self->_clients objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
     v8 = *v31;
@@ -357,20 +357,20 @@ LABEL_11:
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v30 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 updatedTransactions:v4];
+          [v10 updatedTransactions:transactionsCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v7);
@@ -382,7 +382,7 @@ LABEL_11:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v4;
+  v12 = transactionsCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v13)
   {
@@ -421,8 +421,8 @@ LABEL_11:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v18 = [(NSHashTable *)self->_transactionListeners objectEnumerator];
-    v19 = [v18 countByEnumeratingWithState:&v22 objects:v34 count:16];
+    objectEnumerator2 = [(NSHashTable *)self->_transactionListeners objectEnumerator];
+    v19 = [objectEnumerator2 countByEnumeratingWithState:&v22 objects:v34 count:16];
     if (v19)
     {
       v20 = *v23;
@@ -433,7 +433,7 @@ LABEL_11:
         {
           if (*v23 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
           [*(*(&v22 + 1) + 8 * v21) receivedTransactions:v11];
@@ -441,7 +441,7 @@ LABEL_11:
         }
 
         while (v19 != v21);
-        v19 = [v18 countByEnumeratingWithState:&v22 objects:v34 count:16];
+        v19 = [objectEnumerator2 countByEnumeratingWithState:&v22 objects:v34 count:16];
       }
 
       while (v19);
@@ -451,17 +451,17 @@ LABEL_11:
   }
 }
 
-- (void)removedTransactions:(id)a3
+- (void)removedTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   v5 = self->_clients;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_clients objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -472,20 +472,20 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 removedTransactions:v4];
+          [v10 removedTransactions:transactionsCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -494,17 +494,17 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)downloadAdded:(id)a3
+- (void)downloadAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = self->_clients;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_clients objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -515,20 +515,20 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 downloadAdded:v4];
+          [v10 downloadAdded:addedCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -537,17 +537,17 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)downloadStatusChanged:(id)a3
+- (void)downloadStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = self->_clients;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_clients objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -558,20 +558,20 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 downloadStatusChanged:v4];
+          [v10 downloadStatusChanged:changedCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -580,17 +580,17 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)downloadRemoved:(id)a3
+- (void)downloadRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v5 = self->_clients;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_clients objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -601,20 +601,20 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 downloadRemoved:v4];
+          [v10 downloadRemoved:removedCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -623,17 +623,17 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)receivedStatuses:(id)a3
+- (void)receivedStatuses:(id)statuses
 {
-  v4 = a3;
+  statusesCopy = statuses;
   v5 = self->_subscriptionStatusListeners;
   objc_sync_enter(v5);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSHashTable *)self->_subscriptionStatusListeners objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSHashTable *)self->_subscriptionStatusListeners objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -644,15 +644,15 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) receivedStatuses:v4];
+        [*(*(&v10 + 1) + 8 * v9) receivedStatuses:statusesCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -661,17 +661,17 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)receivedTransactions:(id)a3
+- (void)receivedTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   v5 = self->_transactionListeners;
   objc_sync_enter(v5);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSHashTable *)self->_transactionListeners objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSHashTable *)self->_transactionListeners objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -682,15 +682,15 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) receivedTransactions:v4];
+        [*(*(&v10 + 1) + 8 * v9) receivedTransactions:transactionsCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -699,16 +699,16 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMapTable *)self->_clients objectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -719,18 +719,18 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handleAuthenticateRequest:v6 resultHandler:v7];
+          [v13 handleAuthenticateRequest:requestCopy resultHandler:handlerCopy];
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v10)
       {
         continue;
@@ -743,16 +743,16 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMapTable *)self->_clients objectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -763,18 +763,18 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handleDialogRequest:v6 resultHandler:v7];
+          [v13 handleDialogRequest:requestCopy resultHandler:handlerCopy];
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v10)
       {
         continue;
@@ -787,16 +787,16 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMapTable *)self->_clients objectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -807,18 +807,18 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handleEngagementRequest:v6 resultHandler:v7];
+          [v13 handleEngagementRequest:requestCopy resultHandler:handlerCopy];
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v10)
       {
         continue;
@@ -834,11 +834,11 @@ LABEL_11:
 - (id)_unfinishedTransactionsNotificationName
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
-    v4 = sub_100005F74(v3);
+    v4 = sub_100005F74(bundleIdentifier);
   }
 
   else
@@ -849,12 +849,12 @@ LABEL_11:
   return v4;
 }
 
-- (void)_cancelNotifyTokenIfValid:(int)a3
+- (void)_cancelNotifyTokenIfValid:(int)valid
 {
-  if (notify_is_valid_token(a3))
+  if (notify_is_valid_token(valid))
   {
 
-    notify_cancel(a3);
+    notify_cancel(valid);
   }
 }
 

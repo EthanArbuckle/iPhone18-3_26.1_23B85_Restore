@@ -2,38 +2,38 @@
 - (CGPoint)offsetOrigin;
 - (CGRect)_accessoryViewFrame;
 - (UIScreen)hostingScreen;
-- (UITrackingWindowView)initWithFrame:(CGRect)a3;
+- (UITrackingWindowView)initWithFrame:(CGRect)frame;
 - (id)_inputWindowController;
-- (void)_didRemoveSubview:(id)a3;
-- (void)_setAccessoryViewFrame:(CGRect)a3;
-- (void)_setRenderConfig:(id)a3;
-- (void)addHostedView:(id)a3 withViewRemovalHandler:(id)a4;
-- (void)addSubview:(id)a3;
+- (void)_didRemoveSubview:(id)subview;
+- (void)_setAccessoryViewFrame:(CGRect)frame;
+- (void)_setRenderConfig:(id)config;
+- (void)addHostedView:(id)view withViewRemovalHandler:(id)handler;
+- (void)addSubview:(id)subview;
 - (void)dealloc;
-- (void)didAddSubview:(id)a3;
-- (void)performWithoutGeometryObserverNotifications:(id)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setOffsetOrigin:(CGPoint)a3;
+- (void)didAddSubview:(id)subview;
+- (void)performWithoutGeometryObserverNotifications:(id)notifications;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setOffsetOrigin:(CGPoint)origin;
 @end
 
 @implementation UITrackingWindowView
 
-- (UITrackingWindowView)initWithFrame:(CGRect)a3
+- (UITrackingWindowView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = UITrackingWindowView;
-  v3 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v10.receiver = v3;
     v10.super_class = UITrackingWindowView;
-    v5 = [(UIView *)&v10 _inheritedRenderConfig];
-    v6 = v5;
-    if (v5)
+    _inheritedRenderConfig = [(UIView *)&v10 _inheritedRenderConfig];
+    v6 = _inheritedRenderConfig;
+    if (_inheritedRenderConfig)
     {
-      v7 = v5;
+      v7 = _inheritedRenderConfig;
     }
 
     else
@@ -59,10 +59,10 @@
   [(UIView *)&v4 dealloc];
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
-  v4 = a3;
-  if ([(UIKBRenderConfig *)v4 lightKeyboard])
+  configCopy = config;
+  if ([(UIKBRenderConfig *)configCopy lightKeyboard])
   {
     v5 = 1;
   }
@@ -75,11 +75,11 @@
   if (+[UIKeyboard usesInputSystemUI])
   {
     v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v7 = [v6 remoteInputViewHost];
+    remoteInputViewHost = [v6 remoteInputViewHost];
 
-    v8 = [v7 inputViewWindow];
-    v9 = [v8 rootViewController];
-    [v9 setOverrideUserInterfaceStyle:v5];
+    inputViewWindow = [remoteInputViewHost inputViewWindow];
+    rootViewController = [inputViewWindow rootViewController];
+    [rootViewController setOverrideUserInterfaceStyle:v5];
   }
 
   else
@@ -88,11 +88,11 @@
   }
 
   renderConfig = self->_renderConfig;
-  self->_renderConfig = v4;
-  v11 = v4;
+  self->_renderConfig = configCopy;
+  v11 = configCopy;
 
-  v12 = [(UIView *)self _rootInputWindowController];
-  [v12 updateGuideBackdropRenderConfig:v11 animated:0];
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  [_rootInputWindowController updateGuideBackdropRenderConfig:v11 animated:0];
 
   v13.receiver = self;
   v13.super_class = UITrackingWindowView;
@@ -101,11 +101,11 @@
 
 - (id)_inputWindowController
 {
-  v2 = [(UIView *)self nextResponder];
+  nextResponder = [(UIView *)self nextResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = nextResponder;
   }
 
   else
@@ -120,9 +120,9 @@
 
 - (CGRect)_accessoryViewFrame
 {
-  v2 = [(UITrackingWindowView *)self _inputWindowController];
-  v3 = [v2 inputAccessoryView];
-  [v3 frame];
+  _inputWindowController = [(UITrackingWindowView *)self _inputWindowController];
+  inputAccessoryView = [_inputWindowController inputAccessoryView];
+  [inputAccessoryView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -139,35 +139,35 @@
   return result;
 }
 
-- (void)_setAccessoryViewFrame:(CGRect)a3
+- (void)_setAccessoryViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UITrackingWindowView *)self _inputWindowController];
-  v9 = [v8 inputAccessoryView];
-  [v9 setFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _inputWindowController = [(UITrackingWindowView *)self _inputWindowController];
+  inputAccessoryView = [_inputWindowController inputAccessoryView];
+  [inputAccessoryView setFrame:{x, y, width, height}];
 
-  v10 = [(UITrackingWindowView *)self _inputWindowController];
-  [v10 setHostingNeedsLayout];
+  _inputWindowController2 = [(UITrackingWindowView *)self _inputWindowController];
+  [_inputWindowController2 setHostingNeedsLayout];
 }
 
 - (UIScreen)hostingScreen
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 screen];
+  window = [(UIView *)self window];
+  screen = [window screen];
 
-  return v3;
+  return screen;
 }
 
-- (void)addHostedView:(id)a3 withViewRemovalHandler:(id)a4
+- (void)addHostedView:(id)view withViewRemovalHandler:(id)handler
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14)
+  viewCopy = view;
+  handlerCopy = handler;
+  if (viewCopy)
   {
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -176,7 +176,7 @@
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"subview must not be nil"];
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -184,7 +184,7 @@
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"removalHandler must not be nil"];
 LABEL_3:
-  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v14];
+  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:viewCopy];
   v8 = [(NSMutableDictionary *)self->_hostedViews objectForKey:v7];
   v9 = v8;
   if (v8)
@@ -195,53 +195,53 @@ LABEL_3:
   hostedViews = self->_hostedViews;
   if (!hostedViews)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = self->_hostedViews;
-    self->_hostedViews = v11;
+    self->_hostedViews = dictionary;
 
     hostedViews = self->_hostedViews;
   }
 
-  v13 = [v6 copy];
+  v13 = [handlerCopy copy];
   [(NSMutableDictionary *)hostedViews setObject:v13 forKey:v7];
 
-  [(UITrackingWindowView *)self addSubview:v14];
+  [(UITrackingWindowView *)self addSubview:viewCopy];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v3.receiver = self;
   v3.super_class = UITrackingWindowView;
-  [(UIView *)&v3 addSubview:a3];
+  [(UIView *)&v3 addSubview:subview];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = UITrackingWindowView;
-  [(UIView *)&v6 didAddSubview:a3];
-  v4 = [(UIView *)self superview];
+  [(UIView *)&v6 didAddSubview:subview];
+  superview = [(UIView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIView *)self superview];
+    superview2 = [(UIView *)self superview];
   }
 
   else
   {
-    v5 = 0;
+    superview2 = 0;
   }
 
-  [v5 _sortSubviewsOfView:self];
+  [superview2 _sortSubviewsOfView:self];
 }
 
-- (void)_didRemoveSubview:(id)a3
+- (void)_didRemoveSubview:(id)subview
 {
   v8.receiver = self;
   v8.super_class = UITrackingWindowView;
-  v4 = a3;
-  [(UIView *)&v8 _didRemoveSubview:v4];
-  v5 = [MEMORY[0x1E696B098] valueWithNonretainedObject:{v4, v8.receiver, v8.super_class}];
+  subviewCopy = subview;
+  [(UIView *)&v8 _didRemoveSubview:subviewCopy];
+  v5 = [MEMORY[0x1E696B098] valueWithNonretainedObject:{subviewCopy, v8.receiver, v8.super_class}];
 
   v6 = [(NSMutableDictionary *)self->_hostedViews objectForKey:v5];
   if (v6)
@@ -257,17 +257,17 @@ LABEL_3:
   }
 }
 
-- (void)performWithoutGeometryObserverNotifications:(id)a3
+- (void)performWithoutGeometryObserverNotifications:(id)notifications
 {
   self->_disableGeometryObserverNotifications = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(notifications + 2))(notifications, a2);
   self->_disableGeometryObserverNotifications = 0;
 }
 
-- (void)setOffsetOrigin:(CGPoint)a3
+- (void)setOffsetOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   [(UIView *)self frame];
   v7 = v6 - self->_offsetOrigin.x;
   v9 = v8 - self->_offsetOrigin.y;
@@ -278,19 +278,19 @@ LABEL_3:
   [(UITrackingWindowView *)self setFrame:v7, v9];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = a3.origin.x + self->_offsetOrigin.x;
-  v4 = a3.origin.y + self->_offsetOrigin.y;
+  v3 = frame.origin.x + self->_offsetOrigin.x;
+  v4 = frame.origin.y + self->_offsetOrigin.y;
   v5.receiver = self;
   v5.super_class = UITrackingWindowView;
-  [(UIView *)&v5 setFrame:v3, v4, a3.size.width, a3.size.height];
+  [(UIView *)&v5 setFrame:v3, v4, frame.size.width, frame.size.height];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  v3 = a3.x + self->_offsetOrigin.x;
-  v4 = a3.y + self->_offsetOrigin.y;
+  v3 = center.x + self->_offsetOrigin.x;
+  v4 = center.y + self->_offsetOrigin.y;
   v5.receiver = self;
   v5.super_class = UITrackingWindowView;
   [(UIView *)&v5 setCenter:v3, v4];

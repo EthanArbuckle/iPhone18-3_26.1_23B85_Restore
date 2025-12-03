@@ -1,33 +1,33 @@
 @interface HUAudioAnalysisDetectionSettingsItem
-- (HUAudioAnalysisDetectionSettingsItem)initWithDetectionType:(unint64_t)a3 accessory:(id)a4;
-- (id)_localizedStringFromDetectionType:(unint64_t)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUAudioAnalysisDetectionSettingsItem)initWithDetectionType:(unint64_t)type accessory:(id)accessory;
+- (id)_localizedStringFromDetectionType:(unint64_t)type;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUAudioAnalysisDetectionSettingsItem
 
-- (HUAudioAnalysisDetectionSettingsItem)initWithDetectionType:(unint64_t)a3 accessory:(id)a4
+- (HUAudioAnalysisDetectionSettingsItem)initWithDetectionType:(unint64_t)type accessory:(id)accessory
 {
-  v7 = a4;
+  accessoryCopy = accessory;
   v11.receiver = self;
   v11.super_class = HUAudioAnalysisDetectionSettingsItem;
   v8 = [(HUAudioAnalysisDetectionSettingsItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_audioDetectionType = a3;
-    objc_storeStrong(&v8->_accessory, a4);
+    v8->_audioDetectionType = type;
+    objc_storeStrong(&v8->_accessory, accessory);
   }
 
   return v9;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v25[5] = *MEMORY[0x277D85DE8];
-  v4 = [(HUAudioAnalysisDetectionSettingsItem *)self accessory];
-  v5 = [v4 audioAnalysisEventBulletinBoardNotification];
-  [v5 options];
+  accessory = [(HUAudioAnalysisDetectionSettingsItem *)self accessory];
+  audioAnalysisEventBulletinBoardNotification = [accessory audioAnalysisEventBulletinBoardNotification];
+  [audioAnalysisEventBulletinBoardNotification options];
 
   v24[0] = *MEMORY[0x277D13F60];
   v6 = [(HUAudioAnalysisDetectionSettingsItem *)self _localizedStringFromDetectionType:[(HUAudioAnalysisDetectionSettingsItem *)self audioDetectionType]];
@@ -44,15 +44,15 @@
   v24[2] = v9;
   v24[3] = v11;
   v12 = MEMORY[0x277CBEB98];
-  v13 = [(HUAudioAnalysisDetectionSettingsItem *)self accessory];
-  v14 = [v12 setWithObject:v13];
+  accessory2 = [(HUAudioAnalysisDetectionSettingsItem *)self accessory];
+  v14 = [v12 setWithObject:accessory2];
   v25[3] = v14;
   v24[4] = *MEMORY[0x277D13EA8];
-  v15 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v16 = [v15 home];
-  v17 = [v16 hf_currentUserIsAdministrator];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
   v18 = MEMORY[0x277CBEC38];
-  if (v17)
+  if (hf_currentUserIsAdministrator)
   {
     v18 = v10;
   }
@@ -67,9 +67,9 @@
   return v22;
 }
 
-- (id)_localizedStringFromDetectionType:(unint64_t)a3
+- (id)_localizedStringFromDetectionType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"HUAudioAnalysisEventSmokeAlarm";
 LABEL_5:
@@ -78,7 +78,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = @"HUAudioAnalysisEventCarbonMonoxideAlarm";
     goto LABEL_5;

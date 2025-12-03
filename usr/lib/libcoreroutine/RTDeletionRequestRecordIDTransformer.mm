@@ -1,19 +1,19 @@
 @interface RTDeletionRequestRecordIDTransformer
-- (BOOL)dataCompressedWithOriginalSize:(unint64_t)a3 compressedSize:(unint64_t)a4;
-- (id)compressData:(id)a3 algorithm:(int)a4;
-- (id)decompressData:(id)a3 algorithm:(int)a4;
-- (id)deprecatedDecompressData:(id)a3 algorithm:(int)a4;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (BOOL)dataCompressedWithOriginalSize:(unint64_t)size compressedSize:(unint64_t)compressedSize;
+- (id)compressData:(id)data algorithm:(int)algorithm;
+- (id)decompressData:(id)data algorithm:(int)algorithm;
+- (id)deprecatedDecompressData:(id)data algorithm:(int)algorithm;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation RTDeletionRequestRecordIDTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_12;
   }
@@ -35,10 +35,10 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = valueCopy;
     v7 = objc_alloc(MEMORY[0x277CBEB38]);
-    v8 = [v6 allKeys];
-    v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+    allKeys = [v6 allKeys];
+    v9 = [v7 initWithCapacity:{objc_msgSend(allKeys, "count")}];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -115,11 +115,11 @@ void __57__RTDeletionRequestRecordIDTransformer_transformedValue___block_invoke(
   [*(a1 + 32) setObject:v7 forKey:v5];
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_12;
   }
@@ -141,7 +141,7 @@ void __57__RTDeletionRequestRecordIDTransformer_transformedValue___block_invoke(
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(RTDeletionRequestRecordIDTransformer *)self decompressData:v4 algorithm:2049];
+    v6 = [(RTDeletionRequestRecordIDTransformer *)self decompressData:valueCopy algorithm:2049];
     v21 = 0;
     v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:&v21];
     v8 = v21;
@@ -157,8 +157,8 @@ void __57__RTDeletionRequestRecordIDTransformer_transformedValue___block_invoke(
     }
 
     v10 = objc_alloc(MEMORY[0x277CBEB38]);
-    v11 = [v7 allKeys];
-    v12 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+    allKeys = [v7 allKeys];
+    v12 = [v10 initWithCapacity:{objc_msgSend(allKeys, "count")}];
 
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
@@ -225,18 +225,18 @@ void __64__RTDeletionRequestRecordIDTransformer_reverseTransformedValue___block_
   [v16 setObject:v17 forKey:v5];
 }
 
-- (id)compressData:(id)a3 algorithm:(int)a4
+- (id)compressData:(id)data algorithm:(int)algorithm
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy)
   {
-    v8 = [v6 length];
+    v8 = [dataCopy length];
     v9 = malloc_type_malloc(v8, 0x1B6B2FEDuLL);
-    v10 = compression_encode_scratch_buffer_size(a4);
+    v10 = compression_encode_scratch_buffer_size(algorithm);
     v11 = malloc_type_realloc(0, v10, 0x26E3655FuLL);
-    v12 = compression_encode_buffer(v9, v8, [v7 bytes], objc_msgSend(v7, "length"), v11, a4);
+    v12 = compression_encode_buffer(v9, v8, [v7 bytes], objc_msgSend(v7, "length"), v11, algorithm);
     v13 = -[RTDeletionRequestRecordIDTransformer dataCompressedWithOriginalSize:compressedSize:](self, "dataCompressedWithOriginalSize:compressedSize:", [v7 length], v12);
     v14 = [v7 length];
     v15 = v14;
@@ -265,15 +265,15 @@ void __64__RTDeletionRequestRecordIDTransformer_reverseTransformedValue___block_
     *(v18 + 4) = v15;
     *(v18 + 12) = v16;
     v18[20] = v13;
-    v19 = v9;
+    bytes = v9;
     v20 = v12;
     if (!v13)
     {
-      v19 = [v7 bytes];
+      bytes = [v7 bytes];
       v20 = [v7 length];
     }
 
-    memcpy(v18 + 21, v19, v20);
+    memcpy(v18 + 21, bytes, v20);
     v21 = [MEMORY[0x277CBEA90] dataWithBytes:v18 length:v17 + 21];
     free(v18);
     v22 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
@@ -343,11 +343,11 @@ LABEL_26:
   return v21;
 }
 
-- (BOOL)dataCompressedWithOriginalSize:(unint64_t)a3 compressedSize:(unint64_t)a4
+- (BOOL)dataCompressedWithOriginalSize:(unint64_t)size compressedSize:(unint64_t)compressedSize
 {
-  if (a4)
+  if (compressedSize)
   {
-    v4 = a4 >= a3;
+    v4 = compressedSize >= size;
   }
 
   else
@@ -358,13 +358,13 @@ LABEL_26:
   return !v4;
 }
 
-- (id)decompressData:(id)a3 algorithm:(int)a4
+- (id)decompressData:(id)data algorithm:(int)algorithm
 {
-  v4 = *&a4;
+  v4 = *&algorithm;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!dataCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -377,7 +377,7 @@ LABEL_26:
   }
 
   v23 = 0;
-  [v6 getBytes:&v23 length:4];
+  [dataCopy getBytes:&v23 length:4];
   if (v23 == -559038737)
   {
     v8 = [(RTDeletionRequestRecordIDTransformer *)self deprecatedDecompressData:v7 algorithm:v4];
@@ -424,8 +424,8 @@ LABEL_7:
   v14 = malloc_type_realloc(0, v13, 0x3E72ADBBuLL);
   v15 = [v7 subdataWithRange:{21, *&v22[12]}];
   v16 = *&v22[4];
-  v17 = [v15 bytes];
-  if (compression_decode_buffer(v12, v16, v17, *&v22[12], v14, v4))
+  bytes = [v15 bytes];
+  if (compression_decode_buffer(v12, v16, bytes, *&v22[12], v14, v4))
   {
     v10 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v12 length:*&v22[4] freeWhenDone:1];
   }
@@ -460,14 +460,14 @@ LABEL_11:
   return v10;
 }
 
-- (id)deprecatedDecompressData:(id)a3 algorithm:(int)a4
+- (id)deprecatedDecompressData:(id)data algorithm:(int)algorithm
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy)
   {
     size = 0;
-    [v5 getBytes:&size range:{4, 8}];
+    [dataCopy getBytes:&size range:{4, 8}];
     v7 = HIDWORD(size);
     if (HIDWORD(size))
     {
@@ -483,7 +483,7 @@ LABEL_11:
     }
 
     v11 = malloc_type_malloc(v8, 0xDCE7B0B3uLL);
-    v12 = compression_encode_scratch_buffer_size(a4);
+    v12 = compression_encode_scratch_buffer_size(algorithm);
     if (v12)
     {
       v13 = malloc_type_malloc(v12, 0x858CBCD3uLL);
@@ -505,7 +505,7 @@ LABEL_11:
     }
 
     v15 = [v6 subdataWithRange:{v14, objc_msgSend(v6, "length") - v14}];
-    if (compression_decode_buffer(v11, *buf, [v15 bytes], objc_msgSend(v15, "length"), v13, a4))
+    if (compression_decode_buffer(v11, *buf, [v15 bytes], objc_msgSend(v15, "length"), v13, algorithm))
     {
       v10 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v11 length:*buf freeWhenDone:1];
       if (!v13)

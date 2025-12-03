@@ -1,12 +1,12 @@
 @interface MNSignInstructionContents
-+ (id)contentsWithStep:(id)a3 destination:(id)a4;
++ (id)contentsWithStep:(id)step destination:(id)destination;
 - (BOOL)hasServerContent;
-- (id)_evaluatedStringsForInstructionStrings:(id)a3;
-- (id)_instructionsForFormats:(id)a3;
+- (id)_evaluatedStringsForInstructionStrings:(id)strings;
+- (id)_instructionsForFormats:(id)formats;
 - (id)description;
 - (id)instructionWithShorterAlternatives;
 - (unint64_t)_distanceFormatOptions;
-- (void)_populateFromStep:(id)a3;
+- (void)_populateFromStep:(id)step;
 @end
 
 @implementation MNSignInstructionContents
@@ -18,8 +18,8 @@
     return 1;
   }
 
-  v4 = [(MNSignInstructionContents *)self maneuverFormats];
-  v3 = [v4 count] != 0;
+  maneuverFormats = [(MNSignInstructionContents *)self maneuverFormats];
+  v3 = [maneuverFormats count] != 0;
 
   return v3;
 }
@@ -33,8 +33,8 @@
 
   else
   {
-    v4 = [(MNSignInstructionContents *)self maneuverFormats];
-    v3 = [(MNSignInstructionContents *)self _instructionsForFormats:v4];
+    maneuverFormats = [(MNSignInstructionContents *)self maneuverFormats];
+    v3 = [(MNSignInstructionContents *)self _instructionsForFormats:maneuverFormats];
   }
 
   v5 = [MEMORY[0x1E696AEC0] _navigation_selectInstructionWithServerStringArray:v3 isSpoken:0 clientBlock:0];
@@ -42,45 +42,45 @@
   return v5;
 }
 
-- (id)_instructionsForFormats:(id)a3
+- (id)_instructionsForFormats:(id)formats
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  formatsCopy = formats;
+  if ([formatsCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(formatsCopy, "count")}];
     v6 = [(MNListInstructionContents *)self transportType]== 2;
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v8 = [(MNListInstructionContents *)self destination];
-    v9 = [v8 navDisplayAddress];
+    destination = [(MNListInstructionContents *)self destination];
+    navDisplayAddress = [destination navDisplayAddress];
 
-    if ([v9 length])
+    if ([navDisplayAddress length])
     {
-      [v7 setObject:v9 forKey:@"{Address}"];
+      [v7 setObject:navDisplayAddress forKey:@"{Address}"];
     }
 
-    v10 = [(MNListInstructionContents *)self destination];
-    v11 = [v10 navDisplayNameWithSpecialContacts:0];
+    destination2 = [(MNListInstructionContents *)self destination];
+    v11 = [destination2 navDisplayNameWithSpecialContacts:0];
 
     if ([v11 length])
     {
       [v7 setObject:v11 forKey:@"{Name}"];
     }
 
-    v12 = [(MNListInstructionContents *)self roadName];
-    v13 = [v12 length];
+    roadName = [(MNListInstructionContents *)self roadName];
+    v13 = [roadName length];
 
     if (v13)
     {
-      v14 = [(MNListInstructionContents *)self roadName];
-      [v7 setObject:v14 forKey:@"{Road}"];
+      roadName2 = [(MNListInstructionContents *)self roadName];
+      [v7 setObject:roadName2 forKey:@"{Road}"];
     }
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = v4;
+    v15 = formatsCopy;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v16)
     {
@@ -133,7 +133,7 @@
   }
 }
 
-- (id)_evaluatedStringsForInstructionStrings:(id)a3
+- (id)_evaluatedStringsForInstructionStrings:(id)strings
 {
   normalInstructionStrings = self->_normalInstructionStrings;
   v6[0] = MEMORY[0x1E69E9820];
@@ -233,22 +233,22 @@ LABEL_10:
   if ([(NSArray *)self->_normalInstructionStrings count])
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(NSArray *)self->_normalInstructionStrings firstObject];
-    v5 = [v3 stringWithFormat:@"MNSignInstructionContents: %@", v4];
+    firstObject = [(NSArray *)self->_normalInstructionStrings firstObject];
+    v5 = [v3 stringWithFormat:@"MNSignInstructionContents: %@", firstObject];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v6 = [(MNSignInstructionContents *)self maneuverFormats];
-  v7 = [v6 count];
+  maneuverFormats = [(MNSignInstructionContents *)self maneuverFormats];
+  v7 = [maneuverFormats count];
 
   if (v7)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v4 = [(MNSignInstructionContents *)self maneuverFormats];
-    v9 = [v4 firstObject];
-    v5 = [v8 _navigation_stringForServerFormattedString:v9];
+    firstObject = [(MNSignInstructionContents *)self maneuverFormats];
+    v4FirstObject = [firstObject firstObject];
+    v5 = [v8 _navigation_stringForServerFormattedString:v4FirstObject];
 
     goto LABEL_5;
   }
@@ -261,42 +261,42 @@ LABEL_6:
   return v5;
 }
 
-- (void)_populateFromStep:(id)a3
+- (void)_populateFromStep:(id)step
 {
   v12.receiver = self;
   v12.super_class = MNSignInstructionContents;
-  v4 = a3;
-  [(MNListInstructionContents *)&v12 _populateFromStep:v4];
-  v5 = [v4 distanceStringForSignView];
-  [(MNListInstructionContents *)self setDistanceString:v5];
+  stepCopy = step;
+  [(MNListInstructionContents *)&v12 _populateFromStep:stepCopy];
+  distanceStringForSignView = [stepCopy distanceStringForSignView];
+  [(MNListInstructionContents *)self setDistanceString:distanceStringForSignView];
 
-  v6 = [v4 normalInstructionStringsForSignView];
+  normalInstructionStringsForSignView = [stepCopy normalInstructionStringsForSignView];
   normalInstructionStrings = self->_normalInstructionStrings;
-  self->_normalInstructionStrings = v6;
+  self->_normalInstructionStrings = normalInstructionStringsForSignView;
 
-  v8 = [v4 geoStep];
-  v9 = [v8 distanceForSignView];
-  [(MNListInstructionContents *)self setDistanceFormat:v9];
+  geoStep = [stepCopy geoStep];
+  distanceForSignView = [geoStep distanceForSignView];
+  [(MNListInstructionContents *)self setDistanceFormat:distanceForSignView];
 
-  v10 = [v4 geoStep];
+  geoStep2 = [stepCopy geoStep];
 
-  v11 = [v10 normalInstructionsForSignView];
-  [(MNSignInstructionContents *)self setManeuverFormats:v11];
+  normalInstructionsForSignView = [geoStep2 normalInstructionsForSignView];
+  [(MNSignInstructionContents *)self setManeuverFormats:normalInstructionsForSignView];
 }
 
-+ (id)contentsWithStep:(id)a3 destination:(id)a4
++ (id)contentsWithStep:(id)step destination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  stepCopy = step;
+  destinationCopy = destination;
+  v8 = objc_alloc_init(self);
   if (v8)
   {
-    [v8 setTransportType:{objc_msgSend(v6, "transportType")}];
-    [v8 setDestination:v7];
-    v9 = [v7 navDisplayAddress];
-    [v8 setDestinationName:v9];
+    [v8 setTransportType:{objc_msgSend(stepCopy, "transportType")}];
+    [v8 setDestination:destinationCopy];
+    navDisplayAddress = [destinationCopy navDisplayAddress];
+    [v8 setDestinationName:navDisplayAddress];
 
-    [v8 _populateFromStep:v6];
+    [v8 _populateFromStep:stepCopy];
     v10 = v8;
   }
 

@@ -1,26 +1,26 @@
 @interface CLSPublicEventGeoServiceQuery
-- (CLSPublicEventGeoServiceQuery)initWithTimeLocationTuples:(id)a3 radius:(double)a4;
-- (id)_parametersByTimeLocationTupleIdentifierForTimeLocationTuples:(id)a3;
-- (id)_publicEventsForGeoEvent:(id)a3 matchingParameters:(id)a4;
+- (CLSPublicEventGeoServiceQuery)initWithTimeLocationTuples:(id)tuples radius:(double)radius;
+- (id)_parametersByTimeLocationTupleIdentifierForTimeLocationTuples:(id)tuples;
+- (id)_publicEventsForGeoEvent:(id)event matchingParameters:(id)parameters;
 - (void)prepareForRetry;
-- (void)submitWithHandler:(id)a3;
+- (void)submitWithHandler:(id)handler;
 @end
 
 @implementation CLSPublicEventGeoServiceQuery
 
-- (id)_parametersByTimeLocationTupleIdentifierForTimeLocationTuples:(id)a3
+- (id)_parametersByTimeLocationTupleIdentifierForTimeLocationTuples:(id)tuples
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  tuplesCopy = tuples;
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(tuplesCopy, "count")}];
   v6 = +[CLSPublicEvent supportedCategories];
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = tuplesCopy;
   v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -40,13 +40,13 @@
         v14 = v13;
         v16 = v15;
         v17 = objc_alloc(MEMORY[0x277CCA970]);
-        v18 = [v12 expandedStartDate];
-        v19 = [v12 expandedEndDate];
-        v20 = [v17 initWithStartDate:v18 endDate:v19];
+        expandedStartDate = [v12 expandedStartDate];
+        expandedEndDate = [v12 expandedEndDate];
+        v20 = [v17 initWithStartDate:expandedStartDate endDate:expandedEndDate];
 
-        v21 = [objc_alloc(MEMORY[0x277D0ED58]) initWithCoordinate:v7 radius:v20 categories:v14 dateInterval:{v16, self->_radius}];
-        v22 = [v12 timeLocationIdentifier];
-        [v5 setObject:v21 forKeyedSubscript:v22];
+        v21 = [objc_alloc(MEMORY[0x277D0ED58]) initWithCoordinate:allObjects radius:v20 categories:v14 dateInterval:{v16, self->_radius}];
+        timeLocationIdentifier = [v12 timeLocationIdentifier];
+        [v5 setObject:v21 forKeyedSubscript:timeLocationIdentifier];
       }
 
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -58,23 +58,23 @@
   return v5;
 }
 
-- (id)_publicEventsForGeoEvent:(id)a3 matchingParameters:(id)a4
+- (id)_publicEventsForGeoEvent:(id)event matchingParameters:(id)parameters
 {
   v138 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v88 = a4;
-  v6 = [v5 categories];
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  v92 = [v5 localizedName];
-  v94 = v5;
-  v8 = [v5 identifier];
-  v90 = [v8 muid];
+  eventCopy = event;
+  parametersCopy = parameters;
+  categories = [eventCopy categories];
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(categories, "count")}];
+  localizedName = [eventCopy localizedName];
+  v94 = eventCopy;
+  identifier = [eventCopy identifier];
+  muid = [identifier muid];
 
   v124 = 0u;
   v125 = 0u;
   v122 = 0u;
   v123 = 0u;
-  obj = v6;
+  obj = categories;
   v9 = [obj countByEnumeratingWithState:&v122 objects:v137 count:16];
   v97 = v7;
   if (v9)
@@ -92,12 +92,12 @@
         }
 
         v13 = *(*(&v122 + 1) + 8 * i);
-        v14 = [v13 category];
-        v15 = [[CLSPublicEventCategory alloc] initWithCategory:v14];
-        v16 = [v13 localizedNames];
-        v17 = [v16 count];
-        v18 = [v16 firstObject];
-        [(CLSPublicEventCategory *)v15 setLocalizedName:v18];
+        category = [v13 category];
+        v15 = [[CLSPublicEventCategory alloc] initWithCategory:category];
+        localizedNames = [v13 localizedNames];
+        v17 = [localizedNames count];
+        firstObject = [localizedNames firstObject];
+        [(CLSPublicEventCategory *)v15 setLocalizedName:firstObject];
 
         v19 = v17 - 1;
         if (v17 <= 1)
@@ -107,13 +107,13 @@
 
         else
         {
-          v20 = [v16 subarrayWithRange:{1, v19}];
+          v20 = [localizedNames subarrayWithRange:{1, v19}];
           [(CLSPublicEventCategory *)v15 setLocalizedSubcategories:v20];
         }
 
         [v7 addObject:v15];
         v21 = +[CLSPublicEventCategory festivalsAndFairs];
-        if ([v14 isEqualToString:v21])
+        if ([category isEqualToString:v21])
         {
           v11 = 1;
         }
@@ -121,7 +121,7 @@
         else
         {
           v22 = +[CLSPublicEventCategory appleEvents];
-          v23 = [v14 isEqualToString:v22];
+          v23 = [category isEqualToString:v22];
 
           v11 |= v23;
           v7 = v97;
@@ -141,13 +141,13 @@
 
   v96 = v11;
 
-  v24 = [v94 performers];
-  v25 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v24, "count")}];
+  performers = [v94 performers];
+  v25 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(performers, "count")}];
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v26 = v24;
+  v26 = performers;
   v27 = [v26 countByEnumeratingWithState:&v118 objects:v136 count:16];
   if (v27)
   {
@@ -164,9 +164,9 @@
 
         v31 = *(*(&v118 + 1) + 8 * j);
         v32 = [CLSPublicEventPerformer alloc];
-        v33 = [v31 localizedName];
-        v34 = [v31 iTunesIdentifier];
-        v35 = [(CLSPublicEventPerformer *)v32 initWithLocalizedName:v33 iTunesIdentifier:v34];
+        localizedName2 = [v31 localizedName];
+        iTunesIdentifier = [v31 iTunesIdentifier];
+        v35 = [(CLSPublicEventPerformer *)v32 initWithLocalizedName:localizedName2 iTunesIdentifier:iTunesIdentifier];
 
         [v25 addObject:v35];
       }
@@ -179,31 +179,31 @@
 
   [v94 centerCoordinate];
   v38 = CLLocationCoordinate2DMake(v36, v37);
-  v39 = [v94 hours];
-  v40 = [v94 timeZone];
-  if (!v40)
+  hours = [v94 hours];
+  timeZone = [v94 timeZone];
+  if (!timeZone)
   {
     v41 = +[CLSLogging sharedLogging];
-    v42 = [v41 loggingConnection];
+    loggingConnection = [v41 loggingConnection];
 
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F907000, v42, OS_LOG_TYPE_ERROR, "[EventsFetch] Time Zone is nil on GeoEvent. Using GMT as fallback", buf, 2u);
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "[EventsFetch] Time Zone is nil on GeoEvent. Using GMT as fallback", buf, 2u);
     }
 
-    v40 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"GMT"];
+    timeZone = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"GMT"];
   }
 
-  v87 = v39;
+  v87 = hours;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__CLSPublicEventGeoServiceQuery__publicEventsForGeoEvent_matchingParameters___block_invoke;
   aBlock[3] = &unk_2788A7CF8;
-  v116 = v90;
-  v89 = v92;
+  v116 = muid;
+  v89 = localizedName;
   v111 = v89;
-  v43 = v40;
+  v43 = timeZone;
   v112 = v43;
   v86 = v97;
   v113 = v86;
@@ -213,22 +213,22 @@
   v44 = v94;
   v115 = v44;
   v45 = _Block_copy(aBlock);
-  v46 = [v88 dateInterval];
-  v47 = [v46 startDate];
-  v48 = [CLSCalendar localDateFromUniversalDate:v47 inTimeZone:v43];
+  dateInterval = [parametersCopy dateInterval];
+  startDate = [dateInterval startDate];
+  v48 = [CLSCalendar localDateFromUniversalDate:startDate inTimeZone:v43];
   v49 = [CLSCalendar startOfDayForDate:v48];
 
-  v83 = v46;
-  v50 = [v46 endDate];
+  v83 = dateInterval;
+  endDate = [dateInterval endDate];
   v85 = v43;
-  v51 = [CLSCalendar localDateFromUniversalDate:v50 inTimeZone:v43];
+  v51 = [CLSCalendar localDateFromUniversalDate:endDate inTimeZone:v43];
   v52 = [CLSCalendar endOfDayForDate:v51];
 
   v53 = [v52 laterDate:v49];
-  LODWORD(v50) = [v53 isEqualToDate:v49];
+  LODWORD(endDate) = [v53 isEqualToDate:v49];
 
   v82 = v49;
-  if (v50)
+  if (endDate)
   {
     v54 = v86;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -236,7 +236,7 @@
       *buf = 138544130;
       v129 = v89;
       v130 = 2048;
-      v131 = v90;
+      v131 = muid;
       v132 = 2112;
       v133 = v49;
       v134 = 2112;
@@ -281,18 +281,18 @@
       }
 
       v64 = *(*(&v106 + 1) + 8 * k);
-      v65 = [v64 dateInterval];
-      if ([v65 intersectsDateInterval:v59])
+      dateInterval2 = [v64 dateInterval];
+      if ([dateInterval2 intersectsDateInterval:v59])
       {
-        v66 = [v64 hours];
-        if ([v66 count])
+        hours2 = [v64 hours];
+        if ([hours2 count])
         {
           v104 = 0u;
           v105 = 0u;
           v102 = 0u;
           v103 = 0u;
-          v98 = v66;
-          v67 = v66;
+          v98 = hours2;
+          v67 = hours2;
           v68 = [v67 countByEnumeratingWithState:&v102 objects:v126 count:16];
           if (v68)
           {
@@ -311,7 +311,7 @@
                 [v72 startTime];
                 v74 = v73;
                 [v72 endTime];
-                v76 = v45[2](v45, v65, v74, v75);
+                v76 = v45[2](v45, dateInterval2, v74, v75);
                 [v55 addObject:v76];
               }
 
@@ -323,7 +323,7 @@
             v59 = v93;
           }
 
-          v66 = v98;
+          hours2 = v98;
           goto LABEL_51;
         }
 
@@ -334,11 +334,11 @@
             *buf = 138543618;
             v129 = v89;
             v130 = 2048;
-            v131 = v90;
+            v131 = muid;
             _os_log_debug_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "[EventsFetch] Event %{public}@ with muid %lu contains no hours. Will use full day as hours.", buf, 0x16u);
           }
 
-          v67 = v45[2](v45, v65, 0.0, 86400.0);
+          v67 = v45[2](v45, dateInterval2, 0.0, 86400.0);
           [v55 addObject:v67];
 LABEL_51:
 
@@ -359,13 +359,13 @@ LABEL_55:
   if ([v55 count] >= 2)
   {
     v77 = +[CLSLogging sharedLogging];
-    v78 = [v77 loggingConnection];
+    loggingConnection2 = [v77 loggingConnection];
 
-    if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v129 = v55;
-      _os_log_impl(&dword_22F907000, v78, OS_LOG_TYPE_INFO, "Created more than one public event for Geo event. %@", buf, 0xCu);
+      _os_log_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_INFO, "Created more than one public event for Geo event. %@", buf, 0xCu);
     }
   }
 
@@ -405,20 +405,20 @@ CLSPublicEvent *__77__CLSPublicEventGeoServiceQuery__publicEventsForGeoEvent_mat
 - (void)prepareForRetry
 {
   self->_isCancelled = 0;
-  v6 = [(NSDictionary *)self->_parametersByTimeLocationTupleIdentifier allValues];
-  v3 = [MEMORY[0x277D0EBD0] sharedService];
-  v4 = [v3 ticketForSpatialEventLookupParameters:v6 traits:0];
+  allValues = [(NSDictionary *)self->_parametersByTimeLocationTupleIdentifier allValues];
+  mEMORY[0x277D0EBD0] = [MEMORY[0x277D0EBD0] sharedService];
+  v4 = [mEMORY[0x277D0EBD0] ticketForSpatialEventLookupParameters:allValues traits:0];
   ticket = self->_ticket;
   self->_ticket = v4;
 }
 
-- (void)submitWithHandler:(id)a3
+- (void)submitWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   ticket = self->_ticket;
   v8 = MEMORY[0x277D85DD0];
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [CLSGeoMapQueryHelper auditToken:v8];
   [(GEOMapServiceSpatialEventLookupTicket *)ticket submitWithHandler:&v8 auditToken:v7 queue:self->_geoQueue];
 }
@@ -533,10 +533,10 @@ void __51__CLSPublicEventGeoServiceQuery_submitWithHandler___block_invoke_7(id *
   }
 }
 
-- (CLSPublicEventGeoServiceQuery)initWithTimeLocationTuples:(id)a3 radius:(double)a4
+- (CLSPublicEventGeoServiceQuery)initWithTimeLocationTuples:(id)tuples radius:(double)radius
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  tuplesCopy = tuples;
   v24.receiver = self;
   v24.super_class = CLSPublicEventGeoServiceQuery;
   v8 = [(CLSPublicEventGeoServiceQuery *)&v24 init];
@@ -548,42 +548,42 @@ void __51__CLSPublicEventGeoServiceQuery_submitWithHandler___block_invoke_7(id *
     v8->_geoQueue = v10;
 
     v8->_isCancelled = 0;
-    objc_storeStrong(&v8->_timeLocationTuples, a3);
-    v8->_radius = a4;
-    v12 = [(CLSPublicEventGeoServiceQuery *)v8 _parametersByTimeLocationTupleIdentifierForTimeLocationTuples:v7];
+    objc_storeStrong(&v8->_timeLocationTuples, tuples);
+    v8->_radius = radius;
+    v12 = [(CLSPublicEventGeoServiceQuery *)v8 _parametersByTimeLocationTupleIdentifierForTimeLocationTuples:tuplesCopy];
     objc_storeStrong(&v8->_parametersByTimeLocationTupleIdentifier, v12);
-    v13 = [v12 allValues];
+    allValues = [v12 allValues];
     v14 = +[CLSLogging sharedLogging];
-    v15 = [v14 loggingConnection];
+    loggingConnection = [v14 loggingConnection];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
-      v16 = [v13 count];
-      v17 = [v7 count];
+      v16 = [allValues count];
+      v17 = [tuplesCopy count];
       *buf = 134218240;
       v26 = v16;
       v27 = 2048;
       v28 = v17;
-      _os_log_impl(&dword_22F907000, v15, OS_LOG_TYPE_INFO, "[EventsFetch] creating GEOMapService ticket with %llu event lookup parameters from %llu time location tuples", buf, 0x16u);
+      _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "[EventsFetch] creating GEOMapService ticket with %llu event lookup parameters from %llu time location tuples", buf, 0x16u);
     }
 
-    v18 = [MEMORY[0x277D0EBD0] sharedService];
-    v19 = [v18 ticketForSpatialEventLookupParameters:v13 traits:0];
+    mEMORY[0x277D0EBD0] = [MEMORY[0x277D0EBD0] sharedService];
+    v19 = [mEMORY[0x277D0EBD0] ticketForSpatialEventLookupParameters:allValues traits:0];
     ticket = v8->_ticket;
     v8->_ticket = v19;
 
     if (!v8->_ticket)
     {
       v21 = +[CLSLogging sharedLogging];
-      v22 = [v21 loggingConnection];
+      loggingConnection2 = [v21 loggingConnection];
 
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v26 = v13;
+        v26 = allValues;
         v27 = 2112;
-        v28 = v7;
-        _os_log_error_impl(&dword_22F907000, v22, OS_LOG_TYPE_ERROR, "[EventsFetch] Cannot create ticket for parameters %@, tuples %@", buf, 0x16u);
+        v28 = tuplesCopy;
+        _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "[EventsFetch] Cannot create ticket for parameters %@, tuples %@", buf, 0x16u);
       }
 
       v8 = 0;

@@ -1,23 +1,23 @@
 @interface PKLabelViewController
-- (PKLabelViewController)initWithAttributedText:(id)a3;
+- (PKLabelViewController)initWithAttributedText:(id)text;
 - (UIEdgeInsets)contentInsets;
 - (void)loadView;
-- (void)setAttributedText:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
+- (void)setAttributedText:(id)text;
+- (void)setContentInsets:(UIEdgeInsets)insets;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKLabelViewController
 
-- (PKLabelViewController)initWithAttributedText:(id)a3
+- (PKLabelViewController)initWithAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v10.receiver = self;
   v10.super_class = PKLabelViewController;
   v5 = [(PKLabelViewController *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [textCopy copy];
     attributedText = v5->_attributedText;
     v5->_attributedText = v6;
 
@@ -41,12 +41,12 @@
   [(UITextView *)self->_textView setAttributedText:self->_attributedText];
   [(UITextView *)self->_textView setTextAlignment:1];
   v5 = self->_textView;
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITextView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UITextView *)v5 setBackgroundColor:clearColor];
 
   [(UITextView *)self->_textView setEditable:0];
-  v7 = [(PKLabelViewController *)self view];
-  [v7 addSubview:self->_textView];
+  view = [(PKLabelViewController *)self view];
+  [view addSubview:self->_textView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -55,36 +55,36 @@
   v9.super_class = PKLabelViewController;
   [(PKLabelViewController *)&v9 viewWillLayoutSubviews];
   textView = self->_textView;
-  v4 = [(PKLabelViewController *)self view];
-  [v4 bounds];
+  view = [(PKLabelViewController *)self view];
+  [view bounds];
   [(UITextView *)textView setFrame:v5 + self->_contentInsets.left, v6 + self->_contentInsets.top, v7 - (self->_contentInsets.left + self->_contentInsets.right), v8 - (self->_contentInsets.top + self->_contentInsets.bottom)];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v7 = a3;
-  if (([v7 isEqualToAttributedString:self->_attributedText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToAttributedString:self->_attributedText] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [textCopy copy];
     attributedText = self->_attributedText;
     self->_attributedText = v4;
 
-    v6 = [(PKLabelViewController *)self viewIfLoaded];
-    [v6 setNeedsLayout];
+    viewIfLoaded = [(PKLabelViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
-    v5 = [(PKLabelViewController *)self viewIfLoaded];
-    [v5 setNeedsLayout];
+    self->_contentInsets = insets;
+    viewIfLoaded = [(PKLabelViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 

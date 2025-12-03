@@ -1,7 +1,7 @@
 @interface SBFolderViewAssertion
-- (SBFolderViewAssertion)initWithAssertionType:(int64_t)a3 folderView:(id)a4 extraInfo:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBFolderViewAssertion)initWithAssertionType:(int64_t)type folderView:(id)view extraInfo:(id)info;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -9,19 +9,19 @@
 
 @implementation SBFolderViewAssertion
 
-- (SBFolderViewAssertion)initWithAssertionType:(int64_t)a3 folderView:(id)a4 extraInfo:(id)a5
+- (SBFolderViewAssertion)initWithAssertionType:(int64_t)type folderView:(id)view extraInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = SBFolderViewAssertion;
   v11 = [(SBFolderViewAssertion *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_assertionType = a3;
-    objc_storeStrong(&v11->_folderView, a4);
-    v13 = [v10 copy];
+    v11->_assertionType = type;
+    objc_storeStrong(&v11->_folderView, view);
+    v13 = [infoCopy copy];
     extraInfo = v12->_extraInfo;
     v12->_extraInfo = v13;
   }
@@ -52,8 +52,8 @@
 {
   if (![(SBFolderViewAssertion *)self isInvalidated])
   {
-    v3 = [(SBFolderViewAssertion *)self folderView];
-    [v3 removeAssertion:self];
+    folderView = [(SBFolderViewAssertion *)self folderView];
+    [folderView removeAssertion:self];
 
     [(SBFolderViewAssertion *)self setInvalidated:1];
   }
@@ -61,31 +61,31 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBFolderViewAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFolderViewAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFolderViewAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFolderViewAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBFolderViewAssertion *)self succinctDescriptionBuilder];
-  v5 = [v4 appendInteger:-[SBFolderViewAssertion assertionType](self withName:{"assertionType"), @"assertionType"}];
-  v6 = [(SBFolderViewAssertion *)self extraInfo];
-  v7 = [v4 appendObject:v6 withName:@"extraInfo"];
+  succinctDescriptionBuilder = [(SBFolderViewAssertion *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendInteger:-[SBFolderViewAssertion assertionType](self withName:{"assertionType"), @"assertionType"}];
+  extraInfo = [(SBFolderViewAssertion *)self extraInfo];
+  v7 = [succinctDescriptionBuilder appendObject:extraInfo withName:@"extraInfo"];
 
-  v8 = [(SBFolderViewAssertion *)self folderView];
-  v9 = [v4 appendPointer:v8 withName:@"folderView"];
+  folderView = [(SBFolderViewAssertion *)self folderView];
+  v9 = [succinctDescriptionBuilder appendPointer:folderView withName:@"folderView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

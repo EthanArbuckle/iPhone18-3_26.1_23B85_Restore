@@ -1,29 +1,29 @@
 @interface PeerPaymentUpdateUserInfoViewController
-- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (void)cancel;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)loadView;
 - (void)nextButtonTapped;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PeerPaymentUpdateUserInfoViewController
 
-- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithCoder:(id)coder
 {
   result = sub_1BE053994();
   __break(1u);
   return result;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = type metadata accessor for PeerPaymentUpdateUserInfoViewController();
   v4 = v9.receiver;
-  [(PeerPaymentUpdateUserInfoViewController *)&v9 viewDidDisappear:v3];
+  [(PeerPaymentUpdateUserInfoViewController *)&v9 viewDidDisappear:disappearCopy];
   if (([v4 isBeingDismissed] & 1) == 0 && !objc_msgSend(v4, sel_isMovingFromParentViewController))
   {
     goto LABEL_5;
@@ -55,33 +55,33 @@ LABEL_5:
 
 - (void)cancel
 {
-  v4 = self;
-  v2 = [(PeerPaymentUpdateUserInfoViewController *)v4 presentingViewController];
-  if (v2)
+  selfCopy = self;
+  presentingViewController = [(PeerPaymentUpdateUserInfoViewController *)selfCopy presentingViewController];
+  if (presentingViewController)
   {
-    v3 = v2;
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = presentingViewController;
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)nextButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD6E15FC();
 }
 
-- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (_TtC9PassKitUI39PeerPaymentUpdateUserInfoViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BE053624();
     swift_unknownObjectRelease();
@@ -90,7 +90,7 @@ LABEL_5:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1BD6E15FC();

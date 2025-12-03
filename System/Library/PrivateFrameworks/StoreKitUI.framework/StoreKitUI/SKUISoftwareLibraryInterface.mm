@@ -1,17 +1,17 @@
 @interface SKUISoftwareLibraryInterface
-- (BOOL)performActionForLibraryItem:(id)a3;
+- (BOOL)performActionForLibraryItem:(id)item;
 - (id)exposedPlatformItemKinds;
-- (id)stateForLibraryItem:(id)a3;
-- (void)enumerateStatesForLibraryItems:(id)a3 usingBlock:(id)a4;
+- (id)stateForLibraryItem:(id)item;
+- (void)enumerateStatesForLibraryItems:(id)items usingBlock:(id)block;
 @end
 
 @implementation SKUISoftwareLibraryInterface
 
-- (void)enumerateStatesForLibraryItems:(id)a3 usingBlock:(id)a4
+- (void)enumerateStatesForLibraryItems:(id)items usingBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -29,7 +29,7 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = v5;
+  v16 = itemsCopy;
   v17 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v17)
   {
@@ -45,8 +45,8 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v35 + 1) + 8 * v20) storeItemIdentifier];
-        [v15 addObject:v21];
+        storeItemIdentifier = [*(*(&v35 + 1) + 8 * v20) storeItemIdentifier];
+        [v15 addObject:storeItemIdentifier];
 
         ++v20;
       }
@@ -76,8 +76,8 @@
   v29[2] = __74__SKUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBlock___block_invoke_2;
   v29[3] = &unk_2782001F0;
   v30 = v25;
-  v31 = v6;
-  v27 = v6;
+  v31 = blockCopy;
+  v27 = blockCopy;
   v28 = v25;
   [v16 enumerateObjectsUsingBlock:v29];
 }
@@ -168,9 +168,9 @@ void __74__SKUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBloc
   return v10;
 }
 
-- (BOOL)performActionForLibraryItem:(id)a3
+- (BOOL)performActionForLibraryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -183,12 +183,12 @@ void __74__SKUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBloc
     }
   }
 
-  v13 = [(SKUISoftwareLibraryInterface *)self stateForLibraryItem:v4];
-  v14 = [v13 bundleIdentifier];
-  v15 = v14;
-  if (v14)
+  v13 = [(SKUISoftwareLibraryInterface *)self stateForLibraryItem:itemCopy];
+  bundleIdentifier = [v13 bundleIdentifier];
+  v15 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v16 = v14;
+    v16 = bundleIdentifier;
     SKUIMetricsLaunchApplicationWithIdentifier(v16, 0);
     CFRelease(v16);
   }
@@ -196,10 +196,10 @@ void __74__SKUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBloc
   return v15 != 0;
 }
 
-- (id)stateForLibraryItem:(id)a3
+- (id)stateForLibraryItem:(id)item
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -220,8 +220,8 @@ void __74__SKUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBloc
   v27 = 0;
   v12 = objc_alloc_init(MEMORY[0x277D69C68]);
   v13 = dispatch_semaphore_create(0);
-  v14 = [v3 storeItemIdentifier];
-  v28[0] = v14;
+  storeItemIdentifier = [itemCopy storeItemIdentifier];
+  v28[0] = storeItemIdentifier;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;

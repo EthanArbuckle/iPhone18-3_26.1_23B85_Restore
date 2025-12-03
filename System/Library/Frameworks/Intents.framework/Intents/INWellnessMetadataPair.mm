@@ -1,11 +1,11 @@
 @interface INWellnessMetadataPair
-- (BOOL)isEqual:(id)a3;
-- (INWellnessMetadataPair)initWithCoder:(id)a3;
-- (INWellnessMetadataPair)initWithNumber:(id)a3 key:(id)a4;
-- (INWellnessMetadataPair)initWithString:(id)a3 key:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (INWellnessMetadataPair)initWithCoder:(id)coder;
+- (INWellnessMetadataPair)initWithNumber:(id)number key:(id)key;
+- (INWellnessMetadataPair)initWithString:(id)string key:(id)key;
 - (id)_dictionaryRepresentation;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INWellnessMetadataPair
@@ -44,34 +44,34 @@
   return v8;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INWellnessMetadataPair;
   v6 = [(INWellnessMetadataPair *)&v11 description];
-  v7 = [(INWellnessMetadataPair *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INWellnessMetadataPair *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"key"];
-  [v5 encodeObject:self->_stringValue forKey:@"stringValue"];
-  [v5 encodeObject:self->_numberValue forKey:@"numberValue"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"key"];
+  [coderCopy encodeObject:self->_stringValue forKey:@"stringValue"];
+  [coderCopy encodeObject:self->_numberValue forKey:@"numberValue"];
 }
 
-- (INWellnessMetadataPair)initWithCoder:(id)a3
+- (INWellnessMetadataPair)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberValue"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberValue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
 
   v8 = objc_alloc(objc_opt_class());
   if (v7)
@@ -89,13 +89,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = 0;
     if ([(NSString *)self->_key isEqualToString:v5[1]])
     {
@@ -119,35 +119,35 @@
   return v8;
 }
 
-- (INWellnessMetadataPair)initWithString:(id)a3 key:(id)a4
+- (INWellnessMetadataPair)initWithString:(id)string key:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = INWellnessMetadataPair;
   v9 = [(INWellnessMetadataPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a4);
-    objc_storeStrong(&v10->_stringValue, a3);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_stringValue, string);
   }
 
   return v10;
 }
 
-- (INWellnessMetadataPair)initWithNumber:(id)a3 key:(id)a4
+- (INWellnessMetadataPair)initWithNumber:(id)number key:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  numberCopy = number;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = INWellnessMetadataPair;
   v9 = [(INWellnessMetadataPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a4);
-    objc_storeStrong(&v10->_numberValue, a3);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_numberValue, number);
   }
 
   return v10;

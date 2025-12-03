@@ -1,36 +1,36 @@
 @interface SSRSpeakerProfileEmbeddingExtractor
-+ (void)_extractWithModelContext:(id)a3 completion:(id)a4;
-+ (void)extractPSRVoiceProfileWithContext:(id)a3 completion:(id)a4;
-+ (void)extractProfileData:(id)a3 completion:(id)a4;
-+ (void)extractSATVoiceProfileWithContext:(id)a3 completion:(id)a4;
++ (void)_extractWithModelContext:(id)context completion:(id)completion;
++ (void)extractPSRVoiceProfileWithContext:(id)context completion:(id)completion;
++ (void)extractProfileData:(id)data completion:(id)completion;
++ (void)extractSATVoiceProfileWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation SSRSpeakerProfileEmbeddingExtractor
 
-+ (void)extractProfileData:(id)a3 completion:(id)a4
++ (void)extractProfileData:(id)data completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v7 = MEMORY[0x277D01970];
   v8 = *MEMORY[0x277D01970];
   v9 = *MEMORY[0x277D01970];
-  if (v5)
+  if (dataCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v8;
-      v11 = [v5 path];
+      path = [dataCopy path];
       *buf = 136315394;
       v53 = "+[SSRSpeakerProfileEmbeddingExtractor extractProfileData:completion:]";
       v54 = 2112;
-      *v55 = v11;
+      *v55 = path;
       _os_log_impl(&dword_225E12000, v10, OS_LOG_TYPE_DEFAULT, "%s Extracting profile from : %@", buf, 0x16u);
     }
 
     v12 = MEMORY[0x277CBEAE0];
-    v13 = [v5 path];
-    v14 = [v12 inputStreamWithFileAtPath:v13];
+    path2 = [dataCopy path];
+    v14 = [v12 inputStreamWithFileAtPath:path2];
 
     if (v14)
     {
@@ -217,13 +217,13 @@
       v25 = [MEMORY[0x277CBEB28] dataWithLength:v49];
       v34 = [v14 read:objc_msgSend(v25 maxLength:{"mutableBytes"), v18}];
       [v14 close];
-      v35 = [v25 mutableBytes];
+      mutableBytes = [v25 mutableBytes];
       v36 = v45 * v44;
       if (v36)
       {
-        while ((*v35 & 0x7FFFFFFFu) < 0x7F800000)
+        while ((*mutableBytes & 0x7FFFFFFFu) < 0x7F800000)
         {
-          ++v35;
+          ++mutableBytes;
           if (!--v36)
           {
             goto LABEL_52;
@@ -239,7 +239,7 @@
 LABEL_52:
         if (v34 == v49)
         {
-          (*(v6 + 2))(v6, v25, v47, v48, 0);
+          (*(completionCopy + 2))(completionCopy, v25, v47, v48, 0);
           goto LABEL_26;
         }
 
@@ -256,7 +256,7 @@ LABEL_52:
       }
 
       v41 = [v39 errorWithDomain:@"com.apple.speakerrecognition" code:759 userInfo:v40];
-      (*(v6 + 2))(v6, 0, 0, 0, v41);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, v41);
     }
 
     else
@@ -265,11 +265,11 @@ LABEL_52:
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
       {
         v29 = v22;
-        v30 = [v5 path];
+        path3 = [dataCopy path];
         *buf = 136315394;
         v53 = "+[SSRSpeakerProfileEmbeddingExtractor extractProfileData:completion:]";
         v54 = 2112;
-        *v55 = v30;
+        *v55 = path3;
         _os_log_error_impl(&dword_225E12000, v29, OS_LOG_TYPE_ERROR, "%s cannot extract profile embedding : inputStream = nil, %@", buf, 0x16u);
       }
 
@@ -277,7 +277,7 @@ LABEL_52:
       v21 = &unk_283933018;
 LABEL_25:
       v25 = [v20 errorWithDomain:@"com.apple.speakerrecognition" code:759 userInfo:v21];
-      (*(v6 + 2))(v6, 0, 0, 0, v25);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, v25);
     }
 
 LABEL_26:
@@ -292,24 +292,24 @@ LABEL_26:
       _os_log_error_impl(&dword_225E12000, v8, OS_LOG_TYPE_ERROR, "%s cannot extract profile embedding : profileURL = nil", buf, 0xCu);
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_extractWithModelContext:(id)a3 completion:(id)a4
++ (void)_extractWithModelContext:(id)context completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = v6;
-  v25 = a4;
-  if (v6)
+  contextCopy = context;
+  v24 = contextCopy;
+  completionCopy = completion;
+  if (contextCopy)
   {
-    v7 = [v6 voiceProfilesModelFilePathsExclave];
-    v23 = v7;
-    v8 = v7;
-    if (v7 && [v7 count])
+    voiceProfilesModelFilePathsExclave = [contextCopy voiceProfilesModelFilePathsExclave];
+    v23 = voiceProfilesModelFilePathsExclave;
+    v8 = voiceProfilesModelFilePathsExclave;
+    if (voiceProfilesModelFilePathsExclave && [voiceProfilesModelFilePathsExclave count])
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -335,8 +335,8 @@ LABEL_26:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v9 = [v8 allValues];
-      v10 = [v9 countByEnumeratingWithState:&v27 objects:v45 count:16];
+      allValues = [v8 allValues];
+      v10 = [allValues countByEnumeratingWithState:&v27 objects:v45 count:16];
       if (v10)
       {
         v11 = *v28;
@@ -346,12 +346,12 @@ LABEL_6:
         {
           if (*v28 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           v13 = MEMORY[0x277CBEBC0];
-          v14 = [*(*(&v27 + 1) + 8 * v12) path];
-          v15 = [v13 fileURLWithPath:v14];
+          path = [*(*(&v27 + 1) + 8 * v12) path];
+          v15 = [v13 fileURLWithPath:path];
 
           v26[0] = MEMORY[0x277D85DD0];
           v26[1] = 3221225472;
@@ -361,17 +361,17 @@ LABEL_6:
           v26[5] = &v41;
           v26[6] = &v37;
           v26[7] = &v31;
-          [a1 extractProfileData:v15 completion:v26];
-          LOBYTE(v14) = v32[5] == 0;
+          [self extractProfileData:v15 completion:v26];
+          LOBYTE(path) = v32[5] == 0;
 
-          if (v14)
+          if (path)
           {
             break;
           }
 
           if (v10 == ++v12)
           {
-            v10 = [v9 countByEnumeratingWithState:&v27 objects:v45 count:16];
+            v10 = [allValues countByEnumeratingWithState:&v27 objects:v45 count:16];
             if (v10)
             {
               goto LABEL_6;
@@ -382,13 +382,13 @@ LABEL_6:
         }
       }
 
-      if (v25)
+      if (completionCopy)
       {
         v16 = *(*(&buf + 1) + 40);
         v17 = *(v42 + 6);
         v18 = *(v38 + 6);
         v19 = v32[5];
-        v25[2]();
+        completionCopy[2]();
       }
 
       _Block_object_dispose(&v31, 8);
@@ -408,7 +408,7 @@ LABEL_6:
         _os_log_error_impl(&dword_225E12000, v20, OS_LOG_TYPE_ERROR, "%s cannot extract profile embedding : modelContext = nil", &buf, 0xCu);
       }
 
-      (v25[2])(v25, 0, 0, 0, 0);
+      (completionCopy[2])(completionCopy, 0, 0, 0, 0);
     }
   }
 
@@ -422,7 +422,7 @@ LABEL_6:
       _os_log_error_impl(&dword_225E12000, v21, OS_LOG_TYPE_ERROR, "%s cannot extract profile embedding : model context is nil", &buf, 0xCu);
     }
 
-    (v25[2])(v25, 0, 0, 0, 0);
+    (completionCopy[2])(completionCopy, 0, 0, 0, 0);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -444,25 +444,25 @@ void __75__SSRSpeakerProfileEmbeddingExtractor__extractWithModelContext_completi
   *(v13 + 40) = v10;
 }
 
-+ (void)extractSATVoiceProfileWithContext:(id)a3 completion:(id)a4
++ (void)extractSATVoiceProfileWithContext:(id)context completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (contextCopy)
     {
-      v8 = [v6 modelsContext];
+      modelsContext = [contextCopy modelsContext];
       v9 = [SSRUtils stringForSpeakerRecognizerType:2];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      v10 = [modelsContext objectForKeyedSubscript:v9];
 
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __84__SSRSpeakerProfileEmbeddingExtractor_extractSATVoiceProfileWithContext_completion___block_invoke;
       v13[3] = &unk_278577E28;
-      v14 = v7;
-      [a1 _extractWithModelContext:v10 completion:v13];
+      v14 = completionCopy;
+      [self _extractWithModelContext:v10 completion:v13];
     }
 
     else
@@ -475,32 +475,32 @@ void __75__SSRSpeakerProfileEmbeddingExtractor__extractWithModelContext_completi
         _os_log_error_impl(&dword_225E12000, v11, OS_LOG_TYPE_ERROR, "%s cannot extract profile embedding : context is nil", buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, 0, 0, 0, 2, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, 2, 0);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)extractPSRVoiceProfileWithContext:(id)a3 completion:(id)a4
++ (void)extractPSRVoiceProfileWithContext:(id)context completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (contextCopy)
     {
-      v8 = [v6 modelsContext];
+      modelsContext = [contextCopy modelsContext];
       v9 = [SSRUtils stringForSpeakerRecognizerType:1];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      v10 = [modelsContext objectForKeyedSubscript:v9];
 
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __84__SSRSpeakerProfileEmbeddingExtractor_extractPSRVoiceProfileWithContext_completion___block_invoke;
       v13[3] = &unk_278577E28;
-      v14 = v7;
-      [a1 _extractWithModelContext:v10 completion:v13];
+      v14 = completionCopy;
+      [self _extractWithModelContext:v10 completion:v13];
     }
 
     else
@@ -513,7 +513,7 @@ void __75__SSRSpeakerProfileEmbeddingExtractor__extractWithModelContext_completi
         _os_log_error_impl(&dword_225E12000, v11, OS_LOG_TYPE_ERROR, "%s cannot extract profile embedding : context is nil", buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, 0, 0, 0, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, 1, 0);
     }
   }
 

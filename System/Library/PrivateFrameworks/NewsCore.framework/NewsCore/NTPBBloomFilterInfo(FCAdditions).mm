@@ -36,25 +36,25 @@
   v4 = MEMORY[0x1E69B70F8];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [a1 bloomFilterData];
-  v8 = [v6 initWithData:v7 hashFunctionCount:{objc_msgSend(a1, "hashFunctionCount")}];
+  bloomFilterData = [self bloomFilterData];
+  v8 = [v6 initWithData:bloomFilterData hashFunctionCount:{objc_msgSend(self, "hashFunctionCount")}];
 
-  v9 = [v5 nb_domain];
+  nb_domain = [v5 nb_domain];
 
-  v10 = [v9 lowercaseString];
+  lowercaseString = [nb_domain lowercaseString];
 
-  if (v10)
+  if (lowercaseString)
   {
-    v11 = v10;
+    v11 = lowercaseString;
     v12 = FCWebURLResolutionLog;
     if (os_log_type_enabled(FCWebURLResolutionLog, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [a1 bloomFilterData];
+      bloomFilterData2 = [self bloomFilterData];
       *buf = 134218499;
-      v20 = [v14 length];
+      v20 = [bloomFilterData2 length];
       v21 = 1024;
-      v22 = [a1 hashFunctionCount];
+      hashFunctionCount = [self hashFunctionCount];
       v23 = 2117;
       v24 = v11;
       _os_log_impl(&dword_1B63EF000, v13, OS_LOG_TYPE_DEFAULT, "using bloom filter of length %zd, hash function count %d to query %{sensitive}@", buf, 0x1Cu);
@@ -69,7 +69,7 @@
     v18[1] = 3221225472;
     v18[2] = __56__NTPBBloomFilterInfo_FCAdditions__fc_maybeContainsURL___block_invoke;
     v18[3] = &unk_1E7C36F40;
-    v18[4] = a1;
+    v18[4] = self;
     __56__NTPBBloomFilterInfo_FCAdditions__fc_maybeContainsURL___block_invoke(v18);
     v15 = 0;
   }

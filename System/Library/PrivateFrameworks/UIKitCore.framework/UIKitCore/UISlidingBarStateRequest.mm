@@ -1,10 +1,10 @@
 @interface UISlidingBarStateRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UISlidingBarStateRequest)init;
-- (id)_closestEqualOrLargerState:(id)a3 returningDistance:(double *)a4;
-- (id)_closestState:(id)a3 returningDistance:(double *)a4;
-- (id)_matchingState:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_closestEqualOrLargerState:(id)state returningDistance:(double *)distance;
+- (id)_closestState:(id)state returningDistance:(double *)distance;
+- (id)_matchingState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(UISlidingBarStateRequest *)self leadingWidth];
@@ -93,12 +93,12 @@ uint64_t __39__UISlidingBarStateRequest_description__block_invoke(uint64_t resul
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(UISlidingBarStateRequest *)self leadingWidth];
     v7 = v6;
     [v5 leadingWidth];
@@ -134,10 +134,10 @@ uint64_t __39__UISlidingBarStateRequest_description__block_invoke(uint64_t resul
   return v6 ^ v7;
 }
 
-- (id)_matchingState:(id)a3
+- (id)_matchingState:(id)state
 {
   v8 = 0.0;
-  v3 = [(UISlidingBarStateRequest *)self _closestState:a3 returningDistance:&v8];
+  v3 = [(UISlidingBarStateRequest *)self _closestState:state returningDistance:&v8];
   v4 = v3;
   if (v8 == 0.0)
   {
@@ -154,15 +154,15 @@ uint64_t __39__UISlidingBarStateRequest_description__block_invoke(uint64_t resul
   return v6;
 }
 
-- (id)_closestState:(id)a3 returningDistance:(double *)a4
+- (id)_closestState:(id)state returningDistance:(double *)distance
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  stateCopy = state;
+  v7 = [stateCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -175,7 +175,7 @@ LABEL_3:
     {
       if (*v19 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(stateCopy);
       }
 
       v13 = *(*(&v18 + 1) + 8 * v12);
@@ -195,7 +195,7 @@ LABEL_3:
 
       if (v8 == ++v12)
       {
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [stateCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
         v15 = v11;
         v16 = v9;
         if (v8)
@@ -214,23 +214,23 @@ LABEL_3:
     v15 = 1.79769313e308;
   }
 
-  if (a4)
+  if (distance)
   {
-    *a4 = v15;
+    *distance = v15;
   }
 
   return v16;
 }
 
-- (id)_closestEqualOrLargerState:(id)a3 returningDistance:(double *)a4
+- (id)_closestEqualOrLargerState:(id)state returningDistance:(double *)distance
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  stateCopy = state;
+  v7 = [stateCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -243,7 +243,7 @@ LABEL_3:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(stateCopy);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
@@ -271,7 +271,7 @@ LABEL_3:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [stateCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       v15 = *&v11;
       v16 = v9;
     }
@@ -287,9 +287,9 @@ LABEL_3:
 
 LABEL_19:
 
-  if (a4)
+  if (distance)
   {
-    *a4 = v15;
+    *distance = v15;
   }
 
   return v16;

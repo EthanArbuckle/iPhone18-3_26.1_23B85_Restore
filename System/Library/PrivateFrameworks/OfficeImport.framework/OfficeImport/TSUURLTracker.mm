@@ -1,7 +1,7 @@
 @interface TSUURLTracker
 - (NSString)description;
 - (TSUURLTracker)init;
-- (TSUURLTracker)initWithURL:(id)a3 bookmarkData:(id)a4 delegate:(id)a5;
+- (TSUURLTracker)initWithURL:(id)l bookmarkData:(id)data delegate:(id)delegate;
 - (void)dealloc;
 @end
 
@@ -23,17 +23,17 @@
   objc_exception_throw(v7);
 }
 
-- (TSUURLTracker)initWithURL:(id)a3 bookmarkData:(id)a4 delegate:(id)a5
+- (TSUURLTracker)initWithURL:(id)l bookmarkData:(id)data delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dataCopy = data;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = TSUURLTracker;
   v11 = [(TSUURLTracker *)&v15 init];
   if (v11)
   {
-    v12 = [[TSUURLTrackerFilePresenter alloc] initWithURL:v8 bookmarkData:v9 delegate:v10];
+    v12 = [[TSUURLTrackerFilePresenter alloc] initWithURL:lCopy bookmarkData:dataCopy delegate:delegateCopy];
     filePresenter = v11->_filePresenter;
     v11->_filePresenter = v12;
 
@@ -65,8 +65,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [MEMORY[0x277CCA9E8] filePresenters];
-  v7 = [v6 containsObject:self->_filePresenter];
+  filePresenters = [MEMORY[0x277CCA9E8] filePresenters];
+  v7 = [filePresenters containsObject:self->_filePresenter];
   v8 = @"NO";
   if (v7)
   {

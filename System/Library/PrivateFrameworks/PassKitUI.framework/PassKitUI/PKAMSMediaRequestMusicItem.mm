@@ -1,34 +1,34 @@
 @interface PKAMSMediaRequestMusicItem
-- (PKAMSMediaRequestMusicItem)initWithType:(unint64_t)a3 musicIDs:(id)a4 artworkConfiguration:(id)a5;
+- (PKAMSMediaRequestMusicItem)initWithType:(unint64_t)type musicIDs:(id)ds artworkConfiguration:(id)configuration;
 @end
 
 @implementation PKAMSMediaRequestMusicItem
 
-- (PKAMSMediaRequestMusicItem)initWithType:(unint64_t)a3 musicIDs:(id)a4 artworkConfiguration:(id)a5
+- (PKAMSMediaRequestMusicItem)initWithType:(unint64_t)type musicIDs:(id)ds artworkConfiguration:(id)configuration
 {
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [v9 count])
+  dsCopy = ds;
+  configurationCopy = configuration;
+  if (dsCopy && [dsCopy count])
   {
     v15.receiver = self;
     v15.super_class = PKAMSMediaRequestMusicItem;
-    v11 = [(PKAMSMediaRequest *)&v15 _initWithType:a3 artworkConfiguration:v10];
+    v11 = [(PKAMSMediaRequest *)&v15 _initWithType:type artworkConfiguration:configurationCopy];
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(v11 + 3, a4);
+      objc_storeStrong(v11 + 3, ds);
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

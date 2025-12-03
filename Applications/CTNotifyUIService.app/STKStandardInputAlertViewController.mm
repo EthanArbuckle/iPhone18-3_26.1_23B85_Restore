@@ -1,5 +1,5 @@
 @interface STKStandardInputAlertViewController
-- (BOOL)validateAction:(id)a3;
+- (BOOL)validateAction:(id)action;
 - (void)leftNavigationButtonPressed;
 - (void)rightNavigationButtonPressed;
 - (void)sendButtonPressed;
@@ -7,9 +7,9 @@
 
 @implementation STKStandardInputAlertViewController
 
-- (BOOL)validateAction:(id)a3
+- (BOOL)validateAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -18,26 +18,26 @@
 
 - (void)leftNavigationButtonPressed
 {
-  v3 = [(STKBaseAlertViewController *)self sessionAction];
-  [v3 sendResponse:4];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendResponse:4];
 
   [(STKBaseAlertViewController *)self dismiss];
 }
 
 - (void)rightNavigationButtonPressed
 {
-  v3 = [(STKBaseAlertViewController *)self sessionAction];
-  [v3 sendResponse:1];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendResponse:1];
 
   [(STKBaseAlertViewController *)self dismiss];
 }
 
 - (void)sendButtonPressed
 {
-  v3 = [(STKBaseAlertViewController *)self sessionAction];
-  v4 = [(STKBaseInputAlertViewController *)self inputTextField];
-  v5 = [v4 text];
-  [v3 sendSuccessWithResponse:v5];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  inputTextField = [(STKBaseInputAlertViewController *)self inputTextField];
+  text = [inputTextField text];
+  [sessionAction sendSuccessWithResponse:text];
 
   [(STKBaseAlertViewController *)self dismiss];
 }

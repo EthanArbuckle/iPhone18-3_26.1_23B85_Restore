@@ -1,12 +1,12 @@
 @interface NSString
-- (id)_bsui_rangesOfEmojiTokens:(void *)a1;
+- (id)_bsui_rangesOfEmojiTokens:(void *)tokens;
 @end
 
 @implementation NSString
 
-- (id)_bsui_rangesOfEmojiTokens:(void *)a1
+- (id)_bsui_rangesOfEmojiTokens:(void *)tokens
 {
-  if (a1)
+  if (tokens)
   {
     v26 = 0;
     v27 = &v26;
@@ -36,17 +36,17 @@
     v18 = 0;
     v19 = 0;
     v17 = &unk_1A2D58392;
-    [a1 length];
+    [tokens length];
     CEMEnumerateEmojiTokensInStringWithBlock();
     if (v21[5])
     {
       v5 = v15[4];
       v6 = v15[5];
-      if (v6 + v5 < [a1 length])
+      if (v6 + v5 < [tokens length])
       {
         v7 = v15[4];
         v8 = v15[5];
-        v9 = [a1 length];
+        v9 = [tokens length];
         v10 = v21[5];
         v11 = [MEMORY[0x1E696B098] valueWithRange:{v8 + v7, v9 - (v15[4] + v15[5])}];
         [v10 addObject:v11];

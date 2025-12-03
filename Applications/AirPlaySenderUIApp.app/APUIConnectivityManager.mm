@@ -1,19 +1,19 @@
 @interface APUIConnectivityManager
-+ (BOOL)nwPathHasWiFiConnectivity:(id)a3;
++ (BOOL)nwPathHasWiFiConnectivity:(id)connectivity;
 + (BOOL)shouldUpdateNetworkProfile;
 + (id)sharedInstance;
 - (APUIConnectivityManager)init;
 - (int64_t)connectivityState;
-- (void)_associateWithNetworkWithPassPhrase:(id)a3 captivePortalAuthToken:(id)a4 scanResults:(id)a5 completion:(id)a6;
+- (void)_associateWithNetworkWithPassPhrase:(id)phrase captivePortalAuthToken:(id)token scanResults:(id)results completion:(id)completion;
 - (void)_initWifiInterface;
-- (void)_monitorWiFiIPAddressConfigurationWithCompletion:(id)a3;
+- (void)_monitorWiFiIPAddressConfigurationWithCompletion:(id)completion;
 - (void)_startMonitoringWiFiEvents;
-- (void)_startWiFiNetworkScanWithScanParameters:(id)a3 passPhrase:(id)a4 captivePortalAuthToken:(id)a5 completion:(id)a6;
+- (void)_startWiFiNetworkScanWithScanParameters:(id)parameters passPhrase:(id)phrase captivePortalAuthToken:(id)token completion:(id)completion;
 - (void)_stopMonitoringWiFiEvents;
 - (void)dealloc;
-- (void)enableCaptiveWebsheet:(unsigned __int8)a3;
-- (void)handleUSBInterfaceChangedWithEventInfo:(id)a3;
-- (void)handleWiFiInterfaceChangedWithEventInfo:(id)a3;
+- (void)enableCaptiveWebsheet:(unsigned __int8)websheet;
+- (void)handleUSBInterfaceChangedWithEventInfo:(id)info;
+- (void)handleWiFiInterfaceChangedWithEventInfo:(id)info;
 - (void)startMonitoringUSBInterfaceChange;
 - (void)startMonitoringWiFiInterfaceChange;
 - (void)stopMonitoringUSBInterfaceChange;
@@ -25,10 +25,10 @@
 
 - (int64_t)connectivityState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  connectivityState = v2->_connectivityState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectivityState = selfCopy->_connectivityState;
+  objc_sync_exit(selfCopy);
 
   return connectivityState;
 }
@@ -84,21 +84,21 @@
   [(CWFInterface *)cwInterface stopMonitoringEventType:20];
 }
 
-- (void)_monitorWiFiIPAddressConfigurationWithCompletion:(id)a3
+- (void)_monitorWiFiIPAddressConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   monitorQueue = self->_monitorQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005288;
   v7[3] = &unk_10001C820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(monitorQueue, v7);
 }
 
-- (void)enableCaptiveWebsheet:(unsigned __int8)a3
+- (void)enableCaptiveWebsheet:(unsigned __int8)websheet
 {
   CNEnableWebSheetLaunch();
   if (dword_100022610 <= 50 && (dword_100022610 != -1 || _LogCategory_Initialize()))
@@ -111,14 +111,14 @@
 {
   if ([objc_opt_class() shouldUpdateNetworkProfile])
   {
-    v3 = [(CWFInterface *)self->_cwInterface currentKnownNetworkProfile];
+    currentKnownNetworkProfile = [(CWFInterface *)self->_cwInterface currentKnownNetworkProfile];
     if (objc_opt_respondsToSelector())
     {
-      [v3 performSelector:"setPublicAirPlayNetwork:" withObject:&__kCFBooleanTrue];
+      [currentKnownNetworkProfile performSelector:"setPublicAirPlayNetwork:" withObject:&__kCFBooleanTrue];
       cwInterface = self->_cwInterface;
       v5 = [NSSet setWithObject:&off_10001D7F0];
       v7 = 0;
-      [(CWFInterface *)cwInterface updateKnownNetworkProfile:v3 properties:v5 error:&v7];
+      [(CWFInterface *)cwInterface updateKnownNetworkProfile:currentKnownNetworkProfile properties:v5 error:&v7];
       v6 = v7;
 
       if (v6)
@@ -137,12 +137,12 @@
   }
 }
 
-- (void)_startWiFiNetworkScanWithScanParameters:(id)a3 passPhrase:(id)a4 captivePortalAuthToken:(id)a5 completion:(id)a6
+- (void)_startWiFiNetworkScanWithScanParameters:(id)parameters passPhrase:(id)phrase captivePortalAuthToken:(id)token completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  parametersCopy = parameters;
+  phraseCopy = phrase;
+  tokenCopy = token;
+  completionCopy = completion;
   if (dword_100022610 <= 50 && (dword_100022610 != -1 || _LogCategory_Initialize()))
   {
     sub_10000C400();
@@ -154,24 +154,24 @@
   v18[2] = sub_100005C3C;
   v18[3] = &unk_10001C848;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  [(CWFInterface *)cwInterface performScanWithParameters:v10 reply:v18];
+  v19 = phraseCopy;
+  v20 = tokenCopy;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = tokenCopy;
+  v17 = phraseCopy;
+  [(CWFInterface *)cwInterface performScanWithParameters:parametersCopy reply:v18];
 }
 
-- (void)_associateWithNetworkWithPassPhrase:(id)a3 captivePortalAuthToken:(id)a4 scanResults:(id)a5 completion:(id)a6
+- (void)_associateWithNetworkWithPassPhrase:(id)phrase captivePortalAuthToken:(id)token scanResults:(id)results completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  completionCopy = completion;
+  resultsCopy = results;
+  phraseCopy = phrase;
   v12 = objc_alloc_init(CWFAssocParameters);
-  [v12 setScanResult:v10];
+  [v12 setScanResult:resultsCopy];
 
-  [v12 setPassword:v11];
+  [v12 setPassword:phraseCopy];
   [v12 setRememberUponSuccessfulAssociation:1];
   if (dword_100022610 <= 50 && (dword_100022610 != -1 || _LogCategory_Initialize()))
   {
@@ -184,46 +184,46 @@
   v15[2] = sub_100005F68;
   v15[3] = &unk_10001C870;
   v15[4] = self;
-  v16 = v9;
-  v14 = v9;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [(CWFInterface *)cwInterface associateWithParameters:v12 reply:v15];
 }
 
-- (void)handleUSBInterfaceChangedWithEventInfo:(id)a3
+- (void)handleUSBInterfaceChangedWithEventInfo:(id)info
 {
-  v17 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v17;
-  connectivityState = v4->_connectivityState;
-  if (!v4->_activeUSBInterfaces)
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = infoCopy;
+  connectivityState = selfCopy->_connectivityState;
+  if (!selfCopy->_activeUSBInterfaces)
   {
     v7 = objc_alloc_init(NSMutableSet);
-    activeUSBInterfaces = v4->_activeUSBInterfaces;
-    v4->_activeUSBInterfaces = v7;
+    activeUSBInterfaces = selfCopy->_activeUSBInterfaces;
+    selfCopy->_activeUSBInterfaces = v7;
 
-    v5 = v17;
+    v5 = infoCopy;
   }
 
   v9 = [v5 objectForKey:kAPConnectivityHelperEventInfoKey_IsAddEvent];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = v4->_activeUSBInterfaces;
-  if (v10)
+  v11 = selfCopy->_activeUSBInterfaces;
+  if (bOOLValue)
   {
-    v12 = [v17 objectForKey:kAPConnectivityHelperEventInfoKey_NetworkInterfaceName];
+    v12 = [infoCopy objectForKey:kAPConnectivityHelperEventInfoKey_NetworkInterfaceName];
     [(NSMutableSet *)v11 addObject:v12];
 
-    v13 = v4->_connectivityState | 2;
+    v13 = selfCopy->_connectivityState | 2;
   }
 
   else
   {
-    v14 = [v17 objectForKey:kAPConnectivityHelperEventInfoKey_NetworkInterfaceName];
+    v14 = [infoCopy objectForKey:kAPConnectivityHelperEventInfoKey_NetworkInterfaceName];
     [(NSMutableSet *)v11 removeObject:v14];
 
-    v15 = [(NSMutableSet *)v4->_activeUSBInterfaces count];
-    v13 = v4->_connectivityState;
+    v15 = [(NSMutableSet *)selfCopy->_activeUSBInterfaces count];
+    v13 = selfCopy->_connectivityState;
     if (v15)
     {
       goto LABEL_8;
@@ -232,45 +232,45 @@
     v13 &= ~2uLL;
   }
 
-  v4->_connectivityState = v13;
+  selfCopy->_connectivityState = v13;
 LABEL_8:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   if (v13 != connectivityState)
   {
     v16 = +[NSNotificationCenter defaultCenter];
-    [v16 postNotificationName:@"kAPUIConnectivityManagerNotification_ConnectivityStateChanged" object:v4];
+    [v16 postNotificationName:@"kAPUIConnectivityManagerNotification_ConnectivityStateChanged" object:selfCopy];
   }
 }
 
-- (void)handleWiFiInterfaceChangedWithEventInfo:(id)a3
+- (void)handleWiFiInterfaceChangedWithEventInfo:(id)info
 {
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  connectivityState = v4->_connectivityState;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectivityState = selfCopy->_connectivityState;
   v6 = kAPConnectivityHelperEventInfoKey_WiFiNetworkSSID;
-  v7 = [v13 objectForKeyedSubscript:kAPConnectivityHelperEventInfoKey_WiFiNetworkSSID];
+  v7 = [infoCopy objectForKeyedSubscript:kAPConnectivityHelperEventInfoKey_WiFiNetworkSSID];
 
-  v8 = v4->_connectivityState;
+  v8 = selfCopy->_connectivityState;
   if (v7)
   {
-    v4->_connectivityState = v8 | 1;
-    v9 = [v13 objectForKeyedSubscript:v6];
+    selfCopy->_connectivityState = v8 | 1;
+    v9 = [infoCopy objectForKeyedSubscript:v6];
   }
 
   else
   {
     v9 = 0;
-    v4->_connectivityState = v8 & 0xFFFFFFFFFFFFFFFELL;
+    selfCopy->_connectivityState = v8 & 0xFFFFFFFFFFFFFFFELL;
   }
 
-  currentNetworkSSID = v4->_currentNetworkSSID;
-  v4->_currentNetworkSSID = v9;
+  currentNetworkSSID = selfCopy->_currentNetworkSSID;
+  selfCopy->_currentNetworkSSID = v9;
 
-  if (v4->_connectivityState == connectivityState)
+  if (selfCopy->_connectivityState == connectivityState)
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     goto LABEL_11;
   }
 
@@ -283,18 +283,18 @@ LABEL_8:
         goto LABEL_10;
       }
 
-      v12 = v4->_connectivityState;
+      v12 = selfCopy->_connectivityState;
     }
 
     LogPrintF();
   }
 
 LABEL_10:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v11 = +[NSNotificationCenter defaultCenter];
-  [(APUIConnectivityManager *)v11 postNotificationName:@"kAPUIConnectivityManagerNotification_ConnectivityStateChanged" object:v4];
-  v4 = v11;
+  [(APUIConnectivityManager *)v11 postNotificationName:@"kAPUIConnectivityManagerNotification_ConnectivityStateChanged" object:selfCopy];
+  selfCopy = v11;
 LABEL_11:
 }
 
@@ -460,7 +460,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_1000069AC;
   block[3] = &unk_10001C740;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100022960 != -1)
   {
     dispatch_once(&qword_100022960, block);
@@ -471,11 +471,11 @@ LABEL_9:
   return v2;
 }
 
-+ (BOOL)nwPathHasWiFiConnectivity:(id)a3
++ (BOOL)nwPathHasWiFiConnectivity:(id)connectivity
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && nw_path_uses_interface_type(v3, nw_interface_type_wifi) && ((nw_path_get_status(v4) - 1) & 0xFFFFFFFD) == 0;
+  connectivityCopy = connectivity;
+  v4 = connectivityCopy;
+  v5 = connectivityCopy && nw_path_uses_interface_type(connectivityCopy, nw_interface_type_wifi) && ((nw_path_get_status(v4) - 1) & 0xFFFFFFFD) == 0;
 
   return v5;
 }

@@ -1,10 +1,10 @@
 @interface HUBlurButton
-- (_TtC6HomeUI12HUBlurButton)initWithCoder:(id)a3;
+- (_TtC6HomeUI12HUBlurButton)initWithCoder:(id)coder;
 @end
 
 @implementation HUBlurButton
 
-- (_TtC6HomeUI12HUBlurButton)initWithCoder:(id)a3
+- (_TtC6HomeUI12HUBlurButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI12HUBlurButton_horizontalPadding) = 0x4034000000000000;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI12HUBlurButton_verticalPadding) = 0x4014000000000000;

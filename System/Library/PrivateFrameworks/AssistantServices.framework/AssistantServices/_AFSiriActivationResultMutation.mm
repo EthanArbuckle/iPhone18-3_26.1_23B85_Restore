@@ -1,5 +1,5 @@
 @interface _AFSiriActivationResultMutation
-- (_AFSiriActivationResultMutation)initWithBase:(id)a3;
+- (_AFSiriActivationResultMutation)initWithBase:(id)base;
 - (id)getError;
 - (int64_t)getActionType;
 @end
@@ -10,15 +10,15 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_error;
+    error = self->_error;
   }
 
   else
   {
-    v2 = [(AFSiriActivationResult *)self->_base error];
+    error = [(AFSiriActivationResult *)self->_base error];
   }
 
-  return v2;
+  return error;
 }
 
 - (int64_t)getActionType
@@ -34,16 +34,16 @@
   }
 }
 
-- (_AFSiriActivationResultMutation)initWithBase:(id)a3
+- (_AFSiriActivationResultMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSiriActivationResultMutation;
   v6 = [(_AFSiriActivationResultMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

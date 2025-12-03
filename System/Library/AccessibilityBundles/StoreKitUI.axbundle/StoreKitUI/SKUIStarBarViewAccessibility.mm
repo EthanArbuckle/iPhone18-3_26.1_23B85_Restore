@@ -1,16 +1,16 @@
 @interface SKUIStarBarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation SKUIStarBarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIStarBarView" hasInstanceVariable:@"_numberOfStars" withType:"q"];
-  [v3 validateClass:@"SKUIStarBarView" hasInstanceVariable:@"_value" withType:"d"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIStarBarView" hasInstanceVariable:@"_numberOfStars" withType:"q"];
+  [validationsCopy validateClass:@"SKUIStarBarView" hasInstanceVariable:@"_value" withType:"d"];
 }
 
 - (id)accessibilityLabel

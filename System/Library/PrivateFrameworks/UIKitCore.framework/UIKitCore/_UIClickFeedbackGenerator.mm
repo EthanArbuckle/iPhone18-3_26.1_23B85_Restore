@@ -1,79 +1,79 @@
 @interface _UIClickFeedbackGenerator
-- (_UIClickFeedbackGenerator)initWithView:(id)a3;
-- (void)pressedDownAtLocation:(CGPoint)a3;
-- (void)pressedUpAtLocation:(CGPoint)a3;
-- (void)userInteractionCancelledAtLocation:(CGPoint)a3;
-- (void)userInteractionEndedAtLocation:(CGPoint)a3;
-- (void)userInteractionStartedAtLocation:(CGPoint)a3;
+- (_UIClickFeedbackGenerator)initWithView:(id)view;
+- (void)pressedDownAtLocation:(CGPoint)location;
+- (void)pressedUpAtLocation:(CGPoint)location;
+- (void)userInteractionCancelledAtLocation:(CGPoint)location;
+- (void)userInteractionEndedAtLocation:(CGPoint)location;
+- (void)userInteractionStartedAtLocation:(CGPoint)location;
 @end
 
 @implementation _UIClickFeedbackGenerator
 
-- (_UIClickFeedbackGenerator)initWithView:(id)a3
+- (_UIClickFeedbackGenerator)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[_UIClickFeedbackGeneratorConfiguration defaultConfiguration];
   v8.receiver = self;
   v8.super_class = _UIClickFeedbackGenerator;
-  v6 = [(UIFeedbackGenerator *)&v8 initWithConfiguration:v5 view:v4];
+  v6 = [(UIFeedbackGenerator *)&v8 initWithConfiguration:v5 view:viewCopy];
 
   return v6;
 }
 
-- (void)pressedDownAtLocation:(CGPoint)a3
+- (void)pressedDownAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
-  v7 = [(_UIClickFeedbackGenerator *)self _clickConfiguration];
-  v6 = [v7 clickDownPattern];
-  [(UIFeedbackGenerator *)self _playFeedback:v6 atLocation:x, y];
+  _clickConfiguration = [(_UIClickFeedbackGenerator *)self _clickConfiguration];
+  clickDownPattern = [_clickConfiguration clickDownPattern];
+  [(UIFeedbackGenerator *)self _playFeedback:clickDownPattern atLocation:x, y];
 }
 
-- (void)pressedUpAtLocation:(CGPoint)a3
+- (void)pressedUpAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
-  v7 = [(_UIClickFeedbackGenerator *)self _clickConfiguration];
-  v6 = [v7 clickUpPattern];
-  [(UIFeedbackGenerator *)self _playFeedback:v6 atLocation:x, y];
+  _clickConfiguration = [(_UIClickFeedbackGenerator *)self _clickConfiguration];
+  clickUpPattern = [_clickConfiguration clickUpPattern];
+  [(UIFeedbackGenerator *)self _playFeedback:clickUpPattern atLocation:x, y];
 }
 
-- (void)userInteractionStartedAtLocation:(CGPoint)a3
+- (void)userInteractionStartedAtLocation:(CGPoint)location
 {
-  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, a3.x, a3.y];
+  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, location.x, location.y];
 
   [(UIFeedbackGenerator *)self activateWithCompletionBlock:0];
 }
 
-- (void)userInteractionEndedAtLocation:(CGPoint)a3
+- (void)userInteractionEndedAtLocation:(CGPoint)location
 {
   v10 = *MEMORY[0x1E69E9840];
-  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, a3.x, a3.y];
+  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, location.x, location.y];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v5 = [(UIFeedbackGenerator *)self isActive];
+  isActive = [(UIFeedbackGenerator *)self isActive];
   if (has_internal_diagnostics)
   {
-    if (!v5)
+    if (!isActive)
     {
       v6 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v6, OS_LOG_TYPE_FAULT, "Attempted to end user interaction on %@ when it was not active.", &v8, 0xCu);
       }
     }
   }
 
-  else if (!v5)
+  else if (!isActive)
   {
     v7 = *(__UILogGetCategoryCachedImpl("Assert", &userInteractionEndedAtLocation____s_category) + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Attempted to end user interaction on %@ when it was not active.", &v8, 0xCu);
     }
   }
@@ -84,33 +84,33 @@
   }
 }
 
-- (void)userInteractionCancelledAtLocation:(CGPoint)a3
+- (void)userInteractionCancelledAtLocation:(CGPoint)location
 {
   v10 = *MEMORY[0x1E69E9840];
-  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, a3.x, a3.y];
+  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, location.x, location.y];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v5 = [(UIFeedbackGenerator *)self isActive];
+  isActive = [(UIFeedbackGenerator *)self isActive];
   if (has_internal_diagnostics)
   {
-    if (!v5)
+    if (!isActive)
     {
       v6 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v6, OS_LOG_TYPE_FAULT, "Attempted to cancel user interaction on %@ when it was not active.", &v8, 0xCu);
       }
     }
   }
 
-  else if (!v5)
+  else if (!isActive)
   {
     v7 = *(__UILogGetCategoryCachedImpl("Assert", &userInteractionCancelledAtLocation____s_category) + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Attempted to cancel user interaction on %@ when it was not active.", &v8, 0xCu);
     }
   }

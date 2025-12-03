@@ -1,65 +1,65 @@
 @interface CAFPairedDeviceList
-+ (id)pairedDeviceListWithArray:(id)a3;
-+ (id)pairedDeviceListWithPairedDevices:(id)a3;
-- (CAFPairedDeviceList)initWithArray:(id)a3;
-- (CAFPairedDeviceList)initWithPairedDevices:(id)a3;
++ (id)pairedDeviceListWithArray:(id)array;
++ (id)pairedDeviceListWithPairedDevices:(id)devices;
+- (CAFPairedDeviceList)initWithArray:(id)array;
+- (CAFPairedDeviceList)initWithPairedDevices:(id)devices;
 - (NSArray)arrayRepresentation;
 - (NSString)formattedValue;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation CAFPairedDeviceList
 
-+ (id)pairedDeviceListWithArray:(id)a3
++ (id)pairedDeviceListWithArray:(id)array
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithArray:v4];
+  arrayCopy = array;
+  v5 = [[self alloc] initWithArray:arrayCopy];
 
   return v5;
 }
 
-+ (id)pairedDeviceListWithPairedDevices:(id)a3
++ (id)pairedDeviceListWithPairedDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPairedDevices:v4];
+  devicesCopy = devices;
+  v5 = [[self alloc] initWithPairedDevices:devicesCopy];
 
   return v5;
 }
 
-- (CAFPairedDeviceList)initWithPairedDevices:(id)a3
+- (CAFPairedDeviceList)initWithPairedDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   v9.receiver = self;
   v9.super_class = CAFPairedDeviceList;
   v6 = [(CAFPairedDeviceList *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pairedDevices, a3);
+    objc_storeStrong(&v6->_pairedDevices, devices);
   }
 
   return v7;
 }
 
-- (CAFPairedDeviceList)initWithArray:(id)a3
+- (CAFPairedDeviceList)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v18.receiver = self;
   v18.super_class = CAFPairedDeviceList;
   v5 = [(CAFPairedDeviceList *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __37__CAFPairedDeviceList_initWithArray___block_invoke;
     v15 = &unk_27890DA70;
-    v16 = v6;
+    v16 = array;
     v7 = v5;
     v17 = v7;
-    v8 = v6;
-    [v4 enumerateObjectsUsingBlock:&v12];
+    v8 = array;
+    [arrayCopy enumerateObjectsUsingBlock:&v12];
     v9 = [v8 copy];
     pairedDevices = v7->_pairedDevices;
     v7->_pairedDevices = v9;
@@ -96,12 +96,12 @@ void __37__CAFPairedDeviceList_initWithArray___block_invoke(uint64_t a1, void *a
 
 - (NSString)formattedValue
 {
-  v3 = [(CAFPairedDeviceList *)self pairedDevices];
-  if ([v3 count])
+  pairedDevices = [(CAFPairedDeviceList *)self pairedDevices];
+  if ([pairedDevices count])
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFPairedDeviceList *)self pairedDevices];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    pairedDevices2 = [(CAFPairedDeviceList *)self pairedDevices];
+    v6 = [pairedDevices2 componentsJoinedByString:{@", "}];
     v7 = [v4 stringWithFormat:@"[ %@ ]", v6];
   }
 
@@ -121,8 +121,8 @@ void __37__CAFPairedDeviceList_initWithArray___block_invoke(uint64_t a1, void *a
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CAFPairedDeviceList *)self pairedDevices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pairedDevices = [(CAFPairedDeviceList *)self pairedDevices];
+  v5 = [pairedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,14 +133,14 @@ void __37__CAFPairedDeviceList_initWithArray___block_invoke(uint64_t a1, void *a
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pairedDevices);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [pairedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -151,18 +151,18 @@ void __37__CAFPairedDeviceList_initWithArray___block_invoke(uint64_t a1, void *a
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(CAFPairedDeviceList *)self pairedDevices];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  pairedDevices = [(CAFPairedDeviceList *)self pairedDevices];
+  v5 = [pairedDevices objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(CAFPairedDeviceList *)self pairedDevices];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  pairedDevices = [(CAFPairedDeviceList *)self pairedDevices];
+  v9 = [pairedDevices countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }

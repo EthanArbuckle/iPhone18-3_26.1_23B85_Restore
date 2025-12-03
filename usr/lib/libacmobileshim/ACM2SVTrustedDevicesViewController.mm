@@ -1,37 +1,37 @@
 @interface ACM2SVTrustedDevicesViewController
-- (ACM2SVTrustedDevicesViewController)initWithDelegate:(id)a3;
-- (CGSize)sizeOfString:(id)a3 withFont:(id)a4 widthConstraints:(double)a5;
+- (ACM2SVTrustedDevicesViewController)initWithDelegate:(id)delegate;
+- (CGSize)sizeOfString:(id)string withFont:(id)font widthConstraints:(double)constraints;
 - (double)navigationBarHeight;
 - (double)tableHeight;
-- (id)footerButtonWithText:(id)a3;
-- (id)labelWithText:(id)a3 font:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)footerButtonWithText:(id)text;
+- (id)labelWithText:(id)text font:(id)font;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)buildConstraints;
 - (void)buildHorizontalConstraints;
 - (void)buildVerticalConstraints;
-- (void)cancelAction:(id)a3;
+- (void)cancelAction:(id)action;
 - (void)dealloc;
-- (void)disableControls:(BOOL)a3;
-- (void)hideAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)disableControls:(BOOL)controls;
+- (void)hideAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)loadView;
-- (void)presentWithParentViewController:(id)a3 deviceList:(id)a4 completion:(id)a5;
+- (void)presentWithParentViewController:(id)controller deviceList:(id)list completion:(id)completion;
 - (void)reset;
-- (void)resetWithDeviceList:(id)a3;
-- (void)sendAction:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)startIconDownloadForDevice:(id)a3 forIndexPath:(id)a4;
+- (void)resetWithDeviceList:(id)list;
+- (void)sendAction:(id)action;
+- (void)setDelegate:(id)delegate;
+- (void)startIconDownloadForDevice:(id)device forIndexPath:(id)path;
 - (void)stopImageDownloads;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)unableReceiveMessagesTextDidTap:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)unableReceiveMessagesTextDidTap:(id)tap;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ACM2SVTrustedDevicesViewController
 
-- (ACM2SVTrustedDevicesViewController)initWithDelegate:(id)a3
+- (ACM2SVTrustedDevicesViewController)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = ACM2SVTrustedDevicesViewController;
@@ -39,7 +39,7 @@
   v5 = v4;
   if (v4)
   {
-    [(ACM2SVTrustedDevicesViewController *)v4 setDelegate:a3];
+    [(ACM2SVTrustedDevicesViewController *)v4 setDelegate:delegate];
     -[ACM2SVTrustedDevicesViewController setImageDownloadsInProgress:](v5, "setImageDownloadsInProgress:", [MEMORY[0x29EDB8DE8] array]);
   }
 
@@ -105,15 +105,15 @@ LABEL_6:
   [v5 setFont:{objc_msgSend(v6, "boldSystemFontOfSize:", v7 + 1.0)}];
   if ([(ACM2SVTrustedDevicesViewController *)self isLegacyStyle])
   {
-    v8 = [MEMORY[0x29EDC7A00] whiteColor];
+    whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
   }
 
   else
   {
-    v8 = [(ACM2SVTrustedDevicesViewController *)self textColor];
+    whiteColor = [(ACM2SVTrustedDevicesViewController *)self textColor];
   }
 
-  [v5 setTextColor:v8];
+  [v5 setTextColor:whiteColor];
   [v5 setLineBreakMode:0];
   [v5 setNumberOfLines:2];
   [v5 setBackgroundColor:{objc_msgSend(MEMORY[0x29EDC7A00], "clearColor")}];
@@ -128,8 +128,8 @@ LABEL_11:
   [-[ACM2SVTrustedDevicesViewController navigationItem](self "navigationItem")];
   [objc_msgSend(-[ACM2SVTrustedDevicesViewController navigationItem](self "navigationItem")];
   v11 = objc_alloc(MEMORY[0x29EDC7D08]);
-  v12 = [(ACM2SVTrustedDevicesViewController *)self isLegacyStyle];
-  v13 = [v11 initWithFrame:!v12 style:{*MEMORY[0x29EDB90E0], *(MEMORY[0x29EDB90E0] + 8), *(MEMORY[0x29EDB90E0] + 16), *(MEMORY[0x29EDB90E0] + 24)}];
+  isLegacyStyle = [(ACM2SVTrustedDevicesViewController *)self isLegacyStyle];
+  v13 = [v11 initWithFrame:!isLegacyStyle style:{*MEMORY[0x29EDB90E0], *(MEMORY[0x29EDB90E0] + 8), *(MEMORY[0x29EDB90E0] + 16), *(MEMORY[0x29EDB90E0] + 24)}];
   [v13 setDataSource:self];
   [v13 setDelegate:self];
   [v13 setBackgroundColor:{-[ACM2SVTrustedDevicesViewController backgroundColor](self, "backgroundColor")}];
@@ -182,9 +182,9 @@ LABEL_11:
 {
   [objc_msgSend(MEMORY[0x29EDC7938] "sharedApplication")];
   v4 = v3 + 64.0;
-  v5 = [(ACM2SVTrustedDevicesViewController *)self isLegacyStyle];
+  isLegacyStyle = [(ACM2SVTrustedDevicesViewController *)self isLegacyStyle];
   result = 44.0;
-  if (!v5)
+  if (!isLegacyStyle)
   {
     return v4;
   }
@@ -196,8 +196,8 @@ LABEL_11:
 {
   if ([(NSArray *)[(ACM2SVTrustedDevicesViewController *)self trustedDevicesArray] count])
   {
-    v3 = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView];
-    v4 = -[UITableView cellForRowAtIndexPath:](v3, "cellForRowAtIndexPath:", [MEMORY[0x29EDB9FE0] indexPathForRow:0 inSection:0]);
+    trustedDevicesListView = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView];
+    v4 = -[UITableView cellForRowAtIndexPath:](trustedDevicesListView, "cellForRowAtIndexPath:", [MEMORY[0x29EDB9FE0] indexPathForRow:0 inSection:0]);
     if (v4)
     {
       [(UITableViewCell *)v4 frame];
@@ -245,9 +245,9 @@ LABEL_11:
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   v3 = [MEMORY[0x29EDBA008] constraintWithItem:-[ACM2SVTrustedDevicesViewController footerTextLabel](self attribute:"footerTextLabel") relatedBy:2 toItem:0 attribute:-[ACM2SVTrustedDevicesViewController view](self multiplier:"view") constant:{2, 1.0, -12.0}];
-  v4 = [(ACM2SVTrustedDevicesViewController *)self view];
+  view = [(ACM2SVTrustedDevicesViewController *)self view];
 
-  [v4 addConstraint:v3];
+  [view addConstraint:v3];
 }
 
 - (void)buildVerticalConstraints
@@ -256,17 +256,17 @@ LABEL_11:
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   v3 = MEMORY[0x29EDBA008];
-  v4 = [(ACM2SVTrustedDevicesViewController *)self headerTitleLabel];
+  headerTitleLabel = [(ACM2SVTrustedDevicesViewController *)self headerTitleLabel];
   [(UILabel *)[(ACM2SVTrustedDevicesViewController *)self headerTitleLabel] frame];
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   v6 = MEMORY[0x29EDBA008];
-  v7 = [(ACM2SVTrustedDevicesViewController *)self headerTextLabel];
+  headerTextLabel = [(ACM2SVTrustedDevicesViewController *)self headerTextLabel];
   [(UILabel *)[(ACM2SVTrustedDevicesViewController *)self headerTextLabel] frame];
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   v9 = MEMORY[0x29EDBA008];
-  v10 = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView];
-  v11 = [(ACM2SVTrustedDevicesViewController *)self headerTextLabel];
+  trustedDevicesListView = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView];
+  headerTextLabel2 = [(ACM2SVTrustedDevicesViewController *)self headerTextLabel];
   if ([(ACM2SVTrustedDevicesViewController *)self isLegacyStyle])
   {
     v12 = 10.0;
@@ -279,9 +279,9 @@ LABEL_11:
 
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   v13 = MEMORY[0x29EDBA008];
-  v14 = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView];
+  trustedDevicesListView2 = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView];
   [(ACM2SVTrustedDevicesViewController *)self tableHeight];
-  v16 = [v13 constraintWithItem:v14 attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:v15];
+  v16 = [v13 constraintWithItem:trustedDevicesListView2 attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:v15];
   LODWORD(v17) = 1112014848;
   [v16 setPriority:v17];
   [(ACM2SVTrustedDevicesViewController *)self setTableConstraint:v16];
@@ -293,42 +293,42 @@ LABEL_11:
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
   v20 = MEMORY[0x29EDBA008];
-  v21 = [(ACM2SVTrustedDevicesViewController *)self footerTextLabel];
+  footerTextLabel = [(ACM2SVTrustedDevicesViewController *)self footerTextLabel];
   [(UILabel *)[(ACM2SVTrustedDevicesViewController *)self footerTextLabel] frame];
-  v23 = [v20 constraintWithItem:v21 attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:v22];
-  v24 = [(ACM2SVTrustedDevicesViewController *)self view];
+  v23 = [v20 constraintWithItem:footerTextLabel attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:v22];
+  view = [(ACM2SVTrustedDevicesViewController *)self view];
 
-  [v24 addConstraint:v23];
+  [view addConstraint:v23];
 }
 
-- (void)presentWithParentViewController:(id)a3 deviceList:(id)a4 completion:(id)a5
+- (void)presentWithParentViewController:(id)controller deviceList:(id)list completion:(id)completion
 {
   if ([(ACM2SVTrustedDevicesViewController *)self completionBlock])
   {
-    v9 = *(a5 + 2);
+    v9 = *(completion + 2);
 
-    v9(a5, 0);
+    v9(completion, 0);
   }
 
   else
   {
-    if (a4)
+    if (list)
     {
-      [(ACM2SVTrustedDevicesViewController *)self resetWithDeviceList:a4];
+      [(ACM2SVTrustedDevicesViewController *)self resetWithDeviceList:list];
     }
 
-    [(ACM2SVTrustedDevicesViewController *)self setCompletionBlock:a5];
+    [(ACM2SVTrustedDevicesViewController *)self setCompletionBlock:completion];
     -[ACM2SVTrustedDevicesViewController setNavigationController:](self, "setNavigationController:", [objc_alloc(MEMORY[0x29EDC7B80]) initWithRootViewController:self]);
     [(UINavigationController *)[(ACM2SVTrustedDevicesViewController *)self navigationController] setDelegate:self];
     [(UINavigationBar *)[(UINavigationController *)[(ACM2SVTrustedDevicesViewController *)self navigationController] navigationBar] setTranslucent:0];
-    v10 = [(ACM2SVTrustedDevicesViewController *)self navigationController];
+    navigationController = [(ACM2SVTrustedDevicesViewController *)self navigationController];
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
     v11[2] = __92__ACM2SVTrustedDevicesViewController_presentWithParentViewController_deviceList_completion___block_invoke;
     v11[3] = &unk_29EE918B0;
-    v11[4] = a4;
+    v11[4] = list;
     v11[5] = self;
-    [a3 presentViewController:v10 animated:1 completion:v11];
+    [controller presentViewController:navigationController animated:1 completion:v11];
   }
 }
 
@@ -346,38 +346,38 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
   return result;
 }
 
-- (void)hideAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)hideAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(ACM2SVTrustedDevicesViewController *)self setCompletionBlock:0];
-  v7 = [(ACM2SVTrustedDevicesViewController *)self presentingViewController];
+  presentingViewController = [(ACM2SVTrustedDevicesViewController *)self presentingViewController];
 
-  [v7 dismissViewControllerAnimated:v5 completion:a4];
+  [presentingViewController dismissViewControllerAnimated:animatedCopy completion:completion];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ACM2SVTrustedDevicesViewController;
-  [(ACM2SVTrustedDevicesViewController *)&v4 viewDidAppear:a3];
+  [(ACM2SVTrustedDevicesViewController *)&v4 viewDidAppear:appear];
   [(ACM2SVTrustedDevicesViewController *)self reset];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(ACM2SVTrustedDevicesViewController *)self stopImageDownloads];
   v5.receiver = self;
   v5.super_class = ACM2SVTrustedDevicesViewController;
-  [(ACM2SVTrustedDevicesViewController *)&v5 viewWillDisappear:v3];
+  [(ACM2SVTrustedDevicesViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
     [(ACM2SVTrustedDevicesViewController *)self stopImageDownloads];
-    self->_delegate = a3;
+    self->_delegate = delegate;
   }
 }
 
@@ -395,12 +395,12 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
   }
 }
 
-- (CGSize)sizeOfString:(id)a3 withFont:(id)a4 widthConstraints:(double)a5
+- (CGSize)sizeOfString:(id)string withFont:(id)font widthConstraints:(double)constraints
 {
   v25 = *MEMORY[0x29EDCA608];
   v8 = *MEMORY[0x29EDB90E8];
   v7 = *(MEMORY[0x29EDB90E8] + 8);
-  v9 = [a3 componentsSeparatedByString:@"\n"];
+  v9 = [string componentsSeparatedByString:@"\n"];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -430,7 +430,7 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
           v15 = @"A";
         }
 
-        [(__CFString *)v15 sizeWithFont:a4 constrainedToSize:0 lineBreakMode:a5, 300.0];
+        [(__CFString *)v15 sizeWithFont:font constrainedToSize:0 lineBreakMode:constraints, 300.0];
         if (v8 < v16)
         {
           v8 = v16;
@@ -452,13 +452,13 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
   return result;
 }
 
-- (id)labelWithText:(id)a3 font:(id)a4
+- (id)labelWithText:(id)text font:(id)font
 {
   [-[ACM2SVTrustedDevicesViewController view](self "view")];
-  [(ACM2SVTrustedDevicesViewController *)self sizeOfString:a3 withFont:a4 widthConstraints:v7];
+  [(ACM2SVTrustedDevicesViewController *)self sizeOfString:text withFont:font widthConstraints:v7];
   v10 = [objc_alloc(MEMORY[0x29EDC7B38]) initWithFrame:{0.0, 0.0, v9, v8 + 18.0}];
-  [v10 setText:a3];
-  [v10 setFont:a4];
+  [v10 setText:text];
+  [v10 setFont:font];
   if ([(ACM2SVTrustedDevicesViewController *)self isLegacyStyle])
   {
     v11 = 3;
@@ -476,17 +476,17 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
   return v10;
 }
 
-- (id)footerButtonWithText:(id)a3
+- (id)footerButtonWithText:(id)text
 {
-  v5 = [(ACM2SVTrustedDevicesViewController *)self isLegacyStyle];
-  v6 = [MEMORY[0x29EDC7958] buttonWithType:!v5];
+  isLegacyStyle = [(ACM2SVTrustedDevicesViewController *)self isLegacyStyle];
+  v6 = [MEMORY[0x29EDC7958] buttonWithType:!isLegacyStyle];
   if ([(ACM2SVTrustedDevicesViewController *)self isLegacyStyle])
   {
     [v6 setTitleColor:objc_msgSend(MEMORY[0x29EDC7A00] forState:{"colorWithRed:green:blue:alpha:", 0.09, 0.52, 1.0, 1.0), 0}];
     [v6 setTitleColor:objc_msgSend(MEMORY[0x29EDC7A00] forState:{"colorWithRed:green:blue:alpha:", 0.5, 0.5, 0.5, 1.0), 1}];
   }
 
-  [v6 setTitle:a3 forState:0];
+  [v6 setTitle:text forState:0];
   [v6 addTarget:self action:sel_unableReceiveMessagesTextDidTap_ forControlEvents:64];
   [objc_msgSend(v6 "titleLabel")];
   [objc_msgSend(v6 "titleLabel")];
@@ -527,19 +527,19 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
     [(UITableView *)[(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView] setScrollEnabled:v6 > v12];
     [(UITableView *)[(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView] frame];
     [(NSLayoutConstraint *)[(ACM2SVTrustedDevicesViewController *)self tableConstraint] setConstant:v14 + v13];
-    v15 = [(ACM2SVTrustedDevicesViewController *)self view];
+    view = [(ACM2SVTrustedDevicesViewController *)self view];
 
-    [v15 setNeedsUpdateConstraints];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (void)disableControls:(BOOL)a3
+- (void)disableControls:(BOOL)controls
 {
-  v3 = a3;
-  [(UITableView *)[(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView] setAllowsSelection:!a3];
+  controlsCopy = controls;
+  [(UITableView *)[(ACM2SVTrustedDevicesViewController *)self trustedDevicesListView] setAllowsSelection:!controls];
   [objc_msgSend(-[ACM2SVTrustedDevicesViewController navigationItem](self "navigationItem")];
   [objc_msgSend(-[ACM2SVTrustedDevicesViewController navigationItem](self "navigationItem")];
-  if (!v3)
+  if (!controlsCopy)
   {
     v5 = [(ACM2SVTrustedDevicesViewController *)self selectedDeviceIndex]!= -1;
     v6 = [-[ACM2SVTrustedDevicesViewController navigationItem](self "navigationItem")];
@@ -548,9 +548,9 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
   }
 }
 
-- (void)resetWithDeviceList:(id)a3
+- (void)resetWithDeviceList:(id)list
 {
-  if (a3)
+  if (list)
   {
     [(ACM2SVTrustedDevicesViewController *)self setTrustedDevicesArray:?];
   }
@@ -558,24 +558,24 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
   [(ACM2SVTrustedDevicesViewController *)self reset];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesArray:a3];
+  v4 = [(ACM2SVTrustedDevicesViewController *)self trustedDevicesArray:view];
 
   return [(NSArray *)v4 count];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"ACM2SVTrustedDeviceCellIdentifier"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"ACM2SVTrustedDeviceCellIdentifier"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x29EDC7D10]) initWithStyle:3 reuseIdentifier:@"ACM2SVTrustedDeviceCellIdentifier"];
   }
 
-  v7 = -[NSArray objectAtIndex:](-[ACM2SVTrustedDevicesViewController trustedDevicesArray](self, "trustedDevicesArray"), "objectAtIndex:", [a4 row]);
+  v7 = -[NSArray objectAtIndex:](-[ACM2SVTrustedDevicesViewController trustedDevicesArray](self, "trustedDevicesArray"), "objectAtIndex:", [path row]);
   [objc_msgSend(v6 "textLabel")];
-  v8 = [a4 row];
+  v8 = [path row];
   if (v8 == [(ACM2SVTrustedDevicesViewController *)self selectedDeviceIndex])
   {
     v9 = 3;
@@ -592,7 +592,7 @@ uint64_t __92__ACM2SVTrustedDevicesViewController_presentWithParentViewControlle
   {
     v10 = @"SMS to Phone Number";
 LABEL_10:
-    v11 = [ACMBaseLocale localizedString:v10];
+    deviceModelName = [ACMBaseLocale localizedString:v10];
     goto LABEL_12;
   }
 
@@ -602,7 +602,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [v7 deviceModelName];
+  deviceModelName = [v7 deviceModelName];
 LABEL_12:
   [objc_msgSend(v6 "detailTextLabel")];
   if (![(ACM2SVTrustedDevicesViewController *)self isLegacyStyle])
@@ -630,7 +630,7 @@ LABEL_12:
       if (![v7 isTOTPDevice])
       {
         [objc_msgSend(v6 "imageView")];
-        [(ACM2SVTrustedDevicesViewController *)self startIconDownloadForDevice:v7 forIndexPath:a4];
+        [(ACM2SVTrustedDevicesViewController *)self startIconDownloadForDevice:v7 forIndexPath:path];
         return v6;
       }
 
@@ -644,46 +644,46 @@ LABEL_12:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  -[ACM2SVTrustedDevicesViewController setSelectedDeviceIndex:](self, "setSelectedDeviceIndex:", [a4 row]);
+  -[ACM2SVTrustedDevicesViewController setSelectedDeviceIndex:](self, "setSelectedDeviceIndex:", [path row]);
   [objc_msgSend(-[ACM2SVTrustedDevicesViewController navigationItem](self "navigationItem")];
-  [a3 deselectRowAtIndexPath:a4 animated:1];
+  [view deselectRowAtIndexPath:path animated:1];
 
-  [a3 reloadData];
+  [view reloadData];
 }
 
-- (void)startIconDownloadForDevice:(id)a3 forIndexPath:(id)a4
+- (void)startIconDownloadForDevice:(id)device forIndexPath:(id)path
 {
-  if ((-[NSMutableArray containsObject:](-[ACM2SVTrustedDevicesViewController imageDownloadsInProgress](self, "imageDownloadsInProgress"), "containsObject:", [a3 deviceID]) & 1) == 0)
+  if ((-[NSMutableArray containsObject:](-[ACM2SVTrustedDevicesViewController imageDownloadsInProgress](self, "imageDownloadsInProgress"), "containsObject:", [device deviceID]) & 1) == 0)
   {
-    -[NSMutableArray addObject:](-[ACM2SVTrustedDevicesViewController imageDownloadsInProgress](self, "imageDownloadsInProgress"), "addObject:", [a3 deviceID]);
-    v7 = [a3 imageURL];
-    if (v7)
+    -[NSMutableArray addObject:](-[ACM2SVTrustedDevicesViewController imageDownloadsInProgress](self, "imageDownloadsInProgress"), "addObject:", [device deviceID]);
+    imageURL = [device imageURL];
+    if (imageURL)
     {
-      v8 = v7;
+      v8 = imageURL;
       if (qword_2A1EB8FF8)
       {
         if ((ACFLogSettingsGetLevelMask() & 0x80) != 0)
         {
-          ACFLog(7, "[ACM2SVTrustedDevicesViewController startIconDownloadForDevice:forIndexPath:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVTrustedDevicesViewController.m", 589, 0, "Download image from URL %@ for device: %@", v8, a3);
+          ACFLog(7, "[ACM2SVTrustedDevicesViewController startIconDownloadForDevice:forIndexPath:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVTrustedDevicesViewController.m", 589, 0, "Download image from URL %@ for device: %@", v8, device);
         }
       }
 
-      v9 = [(ACM2SVTrustedDevicesViewController *)self delegate];
+      delegate = [(ACM2SVTrustedDevicesViewController *)self delegate];
       v10[0] = MEMORY[0x29EDCA5F8];
       v10[1] = 3221225472;
       v10[2] = __78__ACM2SVTrustedDevicesViewController_startIconDownloadForDevice_forIndexPath___block_invoke;
       v10[3] = &unk_29EE91E08;
       v10[4] = self;
-      v10[5] = a4;
-      v10[6] = a3;
-      [(ACM2SVTrustedDevicesViewControllerDelegate *)v9 downloadImageWithURL:v8 completionBlock:v10];
+      v10[5] = path;
+      v10[6] = device;
+      [(ACM2SVTrustedDevicesViewControllerDelegate *)delegate downloadImageWithURL:v8 completionBlock:v10];
     }
 
     else if (qword_2A1EB8FF8 && (ACFLogSettingsGetLevelMask() & 8) != 0)
     {
-      ACFLog(3, "[ACM2SVTrustedDevicesViewController startIconDownloadForDevice:forIndexPath:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVTrustedDevicesViewController.m", 620, 0, "Couldn't create URL for device %@", a3);
+      ACFLog(3, "[ACM2SVTrustedDevicesViewController startIconDownloadForDevice:forIndexPath:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVTrustedDevicesViewController.m", 620, 0, "Couldn't create URL for device %@", device);
     }
   }
 }
@@ -721,34 +721,34 @@ uint64_t __78__ACM2SVTrustedDevicesViewController_startIconDownloadForDevice_for
 - (void)stopImageDownloads
 {
   [(ACM2SVTrustedDevicesViewControllerDelegate *)[(ACM2SVTrustedDevicesViewController *)self delegate] cancelInProgressImageDownloads];
-  v3 = [(ACM2SVTrustedDevicesViewController *)self imageDownloadsInProgress];
+  imageDownloadsInProgress = [(ACM2SVTrustedDevicesViewController *)self imageDownloadsInProgress];
 
-  [(NSMutableArray *)v3 removeAllObjects];
+  [(NSMutableArray *)imageDownloadsInProgress removeAllObjects];
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
   [(ACM2SVTrustedDevicesViewController *)self disableControls:1];
-  v4 = [(ACM2SVTrustedDevicesViewController *)self completionBlock];
+  completionBlock = [(ACM2SVTrustedDevicesViewController *)self completionBlock];
   v5 = [(NSArray *)[(ACM2SVTrustedDevicesViewController *)self trustedDevicesArray] objectAtIndexedSubscript:[(ACM2SVTrustedDevicesViewController *)self selectedDeviceIndex]];
-  v6 = v4[2];
+  v6 = completionBlock[2];
 
-  v6(v4, v5);
+  v6(completionBlock, v5);
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
-  v4 = [(ACM2SVTrustedDevicesViewController *)self completionBlock];
-  v4[2](v4, 0);
+  completionBlock = [(ACM2SVTrustedDevicesViewController *)self completionBlock];
+  completionBlock[2](completionBlock, 0);
 
   [(ACM2SVTrustedDevicesViewController *)self setCompletionBlock:0];
 }
 
-- (void)unableReceiveMessagesTextDidTap:(id)a3
+- (void)unableReceiveMessagesTextDidTap:(id)tap
 {
-  v4 = [(ACM2SVTrustedDevicesViewController *)self delegate];
+  delegate = [(ACM2SVTrustedDevicesViewController *)self delegate];
 
-  [(ACM2SVTrustedDevicesViewControllerDelegate *)v4 trustedDevicesViewControllerDidSelectUnableReceiveMessages:self];
+  [(ACM2SVTrustedDevicesViewControllerDelegate *)delegate trustedDevicesViewControllerDidSelectUnableReceiveMessages:self];
 }
 
 @end

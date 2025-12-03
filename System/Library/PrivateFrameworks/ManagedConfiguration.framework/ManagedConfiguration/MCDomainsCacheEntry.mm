@@ -1,19 +1,19 @@
 @interface MCDomainsCacheEntry
-+ (id)normalizedPatternString:(id)a3;
-- (BOOL)matchesURL:(id)a3;
-- (MCDomainsCacheEntry)initWithPattern:(id)a3;
++ (id)normalizedPatternString:(id)string;
+- (BOOL)matchesURL:(id)l;
+- (MCDomainsCacheEntry)initWithPattern:(id)pattern;
 - (id)description;
 @end
 
 @implementation MCDomainsCacheEntry
 
-+ (id)normalizedPatternString:(id)a3
++ (id)normalizedPatternString:(id)string
 {
-  v3 = a3;
-  if ([v3 rangeOfString:@"http://" options:8])
+  stringCopy = string;
+  if ([stringCopy rangeOfString:@"http://" options:8])
   {
     v4 = 8;
-    if ([v3 rangeOfString:@"https://" options:8])
+    if ([stringCopy rangeOfString:@"https://" options:8])
     {
       goto LABEL_6;
     }
@@ -24,32 +24,32 @@
     v4 = 7;
   }
 
-  v5 = [v3 substringFromIndex:v4];
+  v5 = [stringCopy substringFromIndex:v4];
 
-  v3 = v5;
+  stringCopy = v5;
 LABEL_6:
-  if (![v3 rangeOfString:@"www." options:8])
+  if (![stringCopy rangeOfString:@"www." options:8])
   {
-    v6 = [v3 substringFromIndex:4];
+    v6 = [stringCopy substringFromIndex:4];
 
-    v3 = v6;
+    stringCopy = v6;
   }
 
-  return v3;
+  return stringCopy;
 }
 
-- (MCDomainsCacheEntry)initWithPattern:(id)a3
+- (MCDomainsCacheEntry)initWithPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   v21.receiver = self;
   v21.super_class = MCDomainsCacheEntry;
   v5 = [(MCDomainsCacheEntry *)&v21 init];
   if (v5)
   {
-    v6 = [MCDomainsCacheEntry normalizedPatternString:v4];
+    v6 = [MCDomainsCacheEntry normalizedPatternString:patternCopy];
 
-    v7 = [v6 pathComponents];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    pathComponents = [v6 pathComponents];
+    v8 = [pathComponents objectAtIndexedSubscript:0];
     if (![v8 rangeOfString:@"*." options:8])
     {
       v5->_subdomainsMatch = 1;
@@ -73,30 +73,30 @@ LABEL_6:
     }
 
     objc_storeStrong(&v5->_domain, v8);
-    if ([v7 count] >= 2)
+    if ([pathComponents count] >= 2)
     {
       v16 = MEMORY[0x1E696AEC0];
-      v17 = [v7 subarrayWithRange:{1, objc_msgSend(v7, "count") - 1}];
+      v17 = [pathComponents subarrayWithRange:{1, objc_msgSend(pathComponents, "count") - 1}];
       v18 = [v16 pathWithComponents:v17];
       path = v5->_path;
       v5->_path = v18;
     }
 
-    v4 = v6;
+    patternCopy = v6;
   }
 
   return v5;
 }
 
-- (BOOL)matchesURL:(id)a3
+- (BOOL)matchesURL:(id)l
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [MEMORY[0x1E696AF20] componentsWithURL:v4 resolvingAgainstBaseURL:1];
-    v6 = [v5 host];
-    if (!v6)
+    v5 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    host = [v5 host];
+    if (!host)
     {
       v29 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
@@ -108,22 +108,22 @@ LABEL_6:
       goto LABEL_41;
     }
 
-    v7 = v6;
-    if (![v6 rangeOfString:@"www." options:8])
+    v7 = host;
+    if (![host rangeOfString:@"www." options:8])
     {
       v8 = [v7 substringFromIndex:4];
 
       v7 = v8;
     }
 
-    v9 = [(MCDomainsCacheEntry *)self domain];
-    v10 = [v7 isEqualToString:v9];
+    domain = [(MCDomainsCacheEntry *)self domain];
+    v10 = [v7 isEqualToString:domain];
 
     if ([(MCDomainsCacheEntry *)self subdomainsMatch])
     {
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [(MCDomainsCacheEntry *)self domain];
-      v13 = [v11 stringWithFormat:@".%@", v12];
+      domain2 = [(MCDomainsCacheEntry *)self domain];
+      v13 = [v11 stringWithFormat:@".%@", domain2];
       v14 = [v7 rangeOfString:v13 options:12];
 
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -135,22 +135,22 @@ LABEL_6:
     else if (v10)
     {
 LABEL_7:
-      v15 = [(MCDomainsCacheEntry *)self path];
+      path = [(MCDomainsCacheEntry *)self path];
 
-      if (v15)
+      if (path)
       {
-        v16 = [v5 path];
-        v17 = v16;
-        if (!v16 || ![v16 length])
+        path2 = [v5 path];
+        port2 = path2;
+        if (!path2 || ![path2 length])
         {
 LABEL_13:
           v25 = _MCLogObjects;
           if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543618;
-            v42 = self;
+            selfCopy4 = self;
             v43 = 2114;
-            v44 = v4;
+            v44 = lCopy;
             v26 = "%{public}@: Rejecting URL %{public}@ because path doesn't match.";
 LABEL_38:
             _os_log_impl(&dword_1A795B000, v25, OS_LOG_TYPE_DEBUG, v26, buf, 0x16u);
@@ -160,60 +160,60 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v18 = [v17 substringFromIndex:1];
+        v18 = [port2 substringFromIndex:1];
 
-        v19 = [(MCDomainsCacheEntry *)self path];
-        v20 = [v18 isEqualToString:v19];
+        path3 = [(MCDomainsCacheEntry *)self path];
+        v20 = [v18 isEqualToString:path3];
 
         if ((v20 & 1) == 0)
         {
           v21 = MEMORY[0x1E696AEC0];
-          v22 = [(MCDomainsCacheEntry *)self path];
-          v23 = [v21 stringWithFormat:@"%@/", v22];
+          path4 = [(MCDomainsCacheEntry *)self path];
+          v23 = [v21 stringWithFormat:@"%@/", path4];
           v24 = [v18 rangeOfString:v23 options:8];
 
           if (v24 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v17 = v18;
+            port2 = v18;
             goto LABEL_13;
           }
         }
       }
 
-      v31 = [(MCDomainsCacheEntry *)self port];
+      port = [(MCDomainsCacheEntry *)self port];
 
-      if (v31)
+      if (port)
       {
-        v17 = [v5 port];
-        if (!v17)
+        port2 = [v5 port];
+        if (!port2)
         {
-          v32 = [v5 scheme];
-          v33 = [v32 isEqualToString:@"http"];
+          scheme = [v5 scheme];
+          v33 = [scheme isEqualToString:@"http"];
 
           if (v33)
           {
-            v17 = &unk_1F1AA5938;
+            port2 = &unk_1F1AA5938;
           }
 
           else
           {
-            v34 = [v5 scheme];
-            v35 = [v34 isEqualToString:@"https"];
+            scheme2 = [v5 scheme];
+            v35 = [scheme2 isEqualToString:@"https"];
 
             if (v35)
             {
-              v17 = &unk_1F1AA5950;
+              port2 = &unk_1F1AA5950;
             }
 
             else
             {
-              v17 = 0;
+              port2 = 0;
             }
           }
         }
 
-        v36 = [(MCDomainsCacheEntry *)self port];
-        v37 = [v17 isEqualToNumber:v36];
+        port3 = [(MCDomainsCacheEntry *)self port];
+        v37 = [port2 isEqualToNumber:port3];
 
         if ((v37 & 1) == 0)
         {
@@ -221,9 +221,9 @@ LABEL_38:
           if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543618;
-            v42 = self;
+            selfCopy4 = self;
             v43 = 2114;
-            v44 = v4;
+            v44 = lCopy;
             v26 = "%{public}@: Rejecting URL %{public}@ because ports don't match.";
             goto LABEL_38;
           }
@@ -243,9 +243,9 @@ LABEL_42:
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543618;
-        v42 = self;
+        selfCopy4 = self;
         v43 = 2114;
-        v44 = v4;
+        v44 = lCopy;
         _os_log_impl(&dword_1A795B000, v38, OS_LOG_TYPE_DEBUG, "%{public}@: Matched URL %{public}@", buf, 0x16u);
       }
 
@@ -257,9 +257,9 @@ LABEL_42:
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543618;
-      v42 = self;
+      selfCopy4 = self;
       v43 = 2114;
-      v44 = v4;
+      v44 = lCopy;
       _os_log_impl(&dword_1A795B000, v30, OS_LOG_TYPE_DEBUG, "%{public}@: Rejecting URL %{public}@ because host doesn't match.", buf, 0x16u);
     }
 
@@ -288,12 +288,12 @@ LABEL_43:
   v4 = [(MCDomainsCacheEntry *)&v13 description];
   v5 = [v3 stringWithFormat:@"%@\n", v4];
 
-  v6 = [(MCDomainsCacheEntry *)self domain];
+  domain = [(MCDomainsCacheEntry *)self domain];
 
-  if (v6)
+  if (domain)
   {
-    v7 = [(MCDomainsCacheEntry *)self domain];
-    [v5 appendFormat:@"Domain: %@\n", v7];
+    domain2 = [(MCDomainsCacheEntry *)self domain];
+    [v5 appendFormat:@"Domain: %@\n", domain2];
   }
 
   if ([(MCDomainsCacheEntry *)self subdomainsMatch])
@@ -301,20 +301,20 @@ LABEL_43:
     [v5 appendFormat:@"Subdomain match: yes"];
   }
 
-  v8 = [(MCDomainsCacheEntry *)self path];
+  path = [(MCDomainsCacheEntry *)self path];
 
-  if (v8)
+  if (path)
   {
-    v9 = [(MCDomainsCacheEntry *)self path];
-    [v5 appendFormat:@"Path: %@\n", v9];
+    path2 = [(MCDomainsCacheEntry *)self path];
+    [v5 appendFormat:@"Path: %@\n", path2];
   }
 
-  v10 = [(MCDomainsCacheEntry *)self port];
+  port = [(MCDomainsCacheEntry *)self port];
 
-  if (v10)
+  if (port)
   {
-    v11 = [(MCDomainsCacheEntry *)self port];
-    [v5 appendFormat:@"Port: %@\n", v11];
+    port2 = [(MCDomainsCacheEntry *)self port];
+    [v5 appendFormat:@"Port: %@\n", port2];
   }
 
   return v5;

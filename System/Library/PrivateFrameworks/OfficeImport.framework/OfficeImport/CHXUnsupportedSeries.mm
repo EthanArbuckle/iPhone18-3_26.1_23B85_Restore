@@ -1,13 +1,13 @@
 @interface CHXUnsupportedSeries
-+ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXUnsupportedSeries
 
-+ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)element state:(id)state
 {
-  v4 = [a4 chart];
-  v5 = [(CHDSeries *)CHDUnsupportedSeries seriesWithChart:v4];
+  chart = [state chart];
+  v5 = [(CHDSeries *)CHDUnsupportedSeries seriesWithChart:chart];
 
   return v5;
 }

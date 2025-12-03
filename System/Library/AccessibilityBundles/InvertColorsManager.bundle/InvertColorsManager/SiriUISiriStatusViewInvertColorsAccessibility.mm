@@ -20,12 +20,12 @@
     return;
   }
 
-  v3 = [(SiriUISiriStatusViewInvertColorsAccessibility *)self superview];
-  v29 = [v3 superview];
+  superview = [(SiriUISiriStatusViewInvertColorsAccessibility *)self superview];
+  v3Superview = [superview superview];
 
   if (UIAccessibilityIsInvertColorsEnabled() && (+[AXSpringBoardServer server](AXSpringBoardServer, "server"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isDarkModeActive], v4, (v5 & 1) == 0))
   {
-    v9 = [v29 viewWithTag:429375493];
+    v9 = [v3Superview viewWithTag:429375493];
 
     if (v9)
     {
@@ -40,7 +40,7 @@
     v18 = v17;
 
     v19 = [(SiriUISiriStatusViewInvertColorsAccessibility *)self safeUIViewForKey:@"_touchInputView"];
-    [v29 convertRect:v19 fromView:{v12, v14, v16, v18}];
+    [v3Superview convertRect:v19 fromView:{v12, v14, v16, v18}];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -52,12 +52,12 @@
     [v6 setBackgroundColor:v28];
 
     [v6 setAutoresizingMask:18];
-    [v29 insertSubview:v6 atIndex:0];
+    [v3Superview insertSubview:v6 atIndex:0];
   }
 
   else
   {
-    v6 = [v29 viewWithTag:429375493];
+    v6 = [v3Superview viewWithTag:429375493];
     [v6 removeFromSuperview];
   }
 

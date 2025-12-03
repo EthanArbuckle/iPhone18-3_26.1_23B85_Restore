@@ -1,8 +1,8 @@
 @interface CKGroupPhotoCell
-- (CKGroupPhotoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKGroupPhotoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setGroupView:(id)a3;
+- (void)setGroupView:(id)view;
 @end
 
 @implementation CKGroupPhotoCell
@@ -12,61 +12,61 @@
   v15.receiver = self;
   v15.super_class = CKGroupPhotoCell;
   [(CKDetailsCell *)&v15 layoutSubviews];
-  v3 = [(CKDetailsCell *)self topSeperator];
-  [v3 setHidden:1];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator setHidden:1];
 
-  v4 = [(CKDetailsCell *)self bottomSeperator];
-  [v4 setHidden:1];
+  bottomSeperator = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator setHidden:1];
 
-  v5 = [(CKGroupPhotoCell *)self contentView];
-  [v5 bounds];
+  contentView = [(CKGroupPhotoCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CKGroupPhotoCell *)self groupView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  groupView = [(CKGroupPhotoCell *)self groupView];
+  [groupView setFrame:{v7, v9, v11, v13}];
 }
 
-- (CKGroupPhotoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKGroupPhotoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = CKGroupPhotoCell;
-  v4 = [(CKDetailsCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [v6 detailsGroupPhotoBackgroundColor];
-    [(CKGroupPhotoCell *)v4 setBackgroundColor:v7];
+    theme = [v5 theme];
+    detailsGroupPhotoBackgroundColor = [theme detailsGroupPhotoBackgroundColor];
+    [(CKGroupPhotoCell *)v4 setBackgroundColor:detailsGroupPhotoBackgroundColor];
 
-    v8 = [(CKDetailsCell *)v4 topSeperator];
-    [v8 setHidden:1];
+    topSeperator = [(CKDetailsCell *)v4 topSeperator];
+    [topSeperator setHidden:1];
 
-    v9 = [(CKDetailsCell *)v4 bottomSeperator];
-    [v9 setHidden:1];
+    bottomSeperator = [(CKDetailsCell *)v4 bottomSeperator];
+    [bottomSeperator setHidden:1];
   }
 
   return v4;
 }
 
-- (void)setGroupView:(id)a3
+- (void)setGroupView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   groupView = self->_groupView;
-  if (groupView != v5)
+  if (groupView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     if (groupView)
     {
       [(UIView *)groupView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_groupView, a3);
-    v7 = [(CKGroupPhotoCell *)self contentView];
-    [v7 addSubview:self->_groupView];
+    objc_storeStrong(&self->_groupView, view);
+    contentView = [(CKGroupPhotoCell *)self contentView];
+    [contentView addSubview:self->_groupView];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 

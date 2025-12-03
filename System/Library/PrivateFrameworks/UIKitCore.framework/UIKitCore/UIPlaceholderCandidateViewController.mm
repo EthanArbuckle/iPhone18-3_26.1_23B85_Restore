@@ -1,29 +1,29 @@
 @interface UIPlaceholderCandidateViewController
-- (BOOL)isVisibleForInputDelegate:(id)a3 inputViews:(id)a4;
+- (BOOL)isVisibleForInputDelegate:(id)delegate inputViews:(id)views;
 @end
 
 @implementation UIPlaceholderCandidateViewController
 
-- (BOOL)isVisibleForInputDelegate:(id)a3 inputViews:(id)a4
+- (BOOL)isVisibleForInputDelegate:(id)delegate inputViews:(id)views
 {
-  v5 = a3;
+  delegateCopy = delegate;
   if ([(UIPlaceholderPredictiveViewController *)self showsRemoteInputDashViewController])
   {
     goto LABEL_2;
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 _showsScribbleIconsInAssistantView];
+  _showsScribbleIconsInAssistantView = [v7 _showsScribbleIconsInAssistantView];
 
-  if (v8)
+  if (_showsScribbleIconsInAssistantView)
   {
     goto LABEL_4;
   }
 
   v10 = +[UIKeyboardImpl activeInstance];
-  v11 = [v10 showsCandidateBar];
+  showsCandidateBar = [v10 showsCandidateBar];
 
-  if (v11)
+  if (showsCandidateBar)
   {
 LABEL_2:
     LOBYTE(v6) = 1;
@@ -38,40 +38,40 @@ LABEL_4:
   }
 
   v12 = +[UIKeyboardImpl activeInstance];
-  v13 = [v12 textInputTraits];
+  textInputTraits = [v12 textInputTraits];
 
-  if ([v5 conformsToProtocolCached:&unk_1EFE8E9A0])
+  if ([delegateCopy conformsToProtocolCached:&unk_1EFE8E9A0])
   {
-    v14 = [v5 textInputTraits];
-    v15 = [UITextInputTraits traitsByAdoptingTraits:v14];
+    textInputTraits2 = [delegateCopy textInputTraits];
+    v15 = [UITextInputTraits traitsByAdoptingTraits:textInputTraits2];
 
-    v13 = v15;
+    textInputTraits = v15;
   }
 
-  if (!v13)
+  if (!textInputTraits)
   {
-    if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || ![v5 conformsToProtocolCached:&unk_1F016C7B0] || (+[UITextInputTraits traitsByAdoptingTraits:](UITextInputTraits, "traitsByAdoptingTraits:", v5), (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || ![delegateCopy conformsToProtocolCached:&unk_1F016C7B0] || (+[UITextInputTraits traitsByAdoptingTraits:](UITextInputTraits, "traitsByAdoptingTraits:", delegateCopy), (textInputTraits = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if ([v5 conformsToProtocolCached:&unk_1EFE8B2D0])
+      if ([delegateCopy conformsToProtocolCached:&unk_1EFE8B2D0])
       {
-        v13 = [UITextInputTraits traitsByAdoptingTraits:v5];
+        textInputTraits = [UITextInputTraits traitsByAdoptingTraits:delegateCopy];
       }
 
       else
       {
-        v13 = 0;
+        textInputTraits = 0;
       }
     }
   }
 
-  if ([v13 disableInputBars])
+  if ([textInputTraits disableInputBars])
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = [v13 hidePrediction] ^ 1;
+    v6 = [textInputTraits hidePrediction] ^ 1;
   }
 
 LABEL_5:

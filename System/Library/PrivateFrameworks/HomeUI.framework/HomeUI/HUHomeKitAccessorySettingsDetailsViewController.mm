@@ -1,28 +1,28 @@
 @interface HUHomeKitAccessorySettingsDetailsViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HUHomeKitAccessorySettingsDetailsViewController)initWithCollapsedAccessorySettingItemModule:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HUHomeKitAccessorySettingsDetailsViewController)initWithCollapsedAccessorySettingItemModule:(id)module;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings;
 @end
 
 @implementation HUHomeKitAccessorySettingsDetailsViewController
 
-- (HUHomeKitAccessorySettingsDetailsViewController)initWithCollapsedAccessorySettingItemModule:(id)a3
+- (HUHomeKitAccessorySettingsDetailsViewController)initWithCollapsedAccessorySettingItemModule:(id)module
 {
-  v5 = a3;
-  if (!v5)
+  moduleCopy = module;
+  if (!moduleCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HUHomeKitAccessorySettingsDetailsViewController.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"itemModule != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeKitAccessorySettingsDetailsViewController.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"itemModule != nil"}];
   }
 
   v6 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
-  v7 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v8 = [v7 accessorySettingsDataSource];
-  [v8 addObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  accessorySettingsDataSource = [mEMORY[0x277D146E8] accessorySettingsDataSource];
+  [accessorySettingsDataSource addObserver:self];
 
   objc_opt_class();
-  v9 = v5;
+  v9 = moduleCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -56,10 +56,10 @@
   if (v14)
   {
     objc_storeStrong(&v14->_collapsedModule, v10);
-    v16 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v17 = [v16 accessorySettingsDataSource];
-    v18 = [v13 settingGroupKeyPath];
-    v19 = [v17 hf_localizedTitleForKeyPath:v18];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    accessorySettingsDataSource2 = [mEMORY[0x277D146E8]2 accessorySettingsDataSource];
+    settingGroupKeyPath = [v13 settingGroupKeyPath];
+    v19 = [accessorySettingsDataSource2 hf_localizedTitleForKeyPath:settingGroupKeyPath];
     [(HUHomeKitAccessorySettingsDetailsViewController *)v15 setTitle:v19];
   }
 
@@ -91,28 +91,28 @@ id __95__HUHomeKitAccessorySettingsDetailsViewController_initWithCollapsedAccess
   return v7;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v4);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v5 = [[HUHomeKitAccessorySettingsItemModuleController alloc] initWithModule:v4 delegate:0];
+  v5 = [[HUHomeKitAccessorySettingsItemModuleController alloc] initWithModule:moduleCopy delegate:0];
   [(HUHomeKitAccessorySettingsDetailsViewController *)self setModuleController:v5];
 
-  v6 = [(HUHomeKitAccessorySettingsDetailsViewController *)self moduleController];
+  moduleController = [(HUHomeKitAccessorySettingsDetailsViewController *)self moduleController];
 
-  return v6;
+  return moduleController;
 }
 
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,22 +120,22 @@ id __95__HUHomeKitAccessorySettingsDetailsViewController_initWithCollapsedAccess
     *buf = 138412802;
     v31 = v10;
     v32 = 2112;
-    v33 = v7;
+    v33 = identifierCopy;
     v34 = 2112;
-    v35 = v8;
+    v35 = settingsCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@ didRecieveSettingsUpdatesForAccessoryWithIdentifier = [%@] settings = [%@]. Now reloading all Items.", buf, 0x20u);
   }
 
-  v24 = v7;
+  v24 = identifierCopy;
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = [(HUItemTableViewController *)self itemManager];
-  v12 = [v11 itemModules];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  itemModules = [itemManager itemModules];
 
-  v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v13 = [itemModules countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
     v14 = v13;
@@ -147,7 +147,7 @@ id __95__HUHomeKitAccessorySettingsDetailsViewController_initWithCollapsedAccess
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(itemModules);
         }
 
         v17 = *(*(&v25 + 1) + 8 * v16);
@@ -167,55 +167,55 @@ id __95__HUHomeKitAccessorySettingsDetailsViewController_initWithCollapsedAccess
 
         if (v20)
         {
-          v21 = [v20 accessorySettingsItemProvider];
-          [v21 updateSettings:v8];
+          accessorySettingsItemProvider = [v20 accessorySettingsItemProvider];
+          [accessorySettingsItemProvider updateSettings:settingsCopy];
         }
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v14 = [itemModules countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v14);
   }
 
-  v22 = [(HUItemTableViewController *)self itemManager];
-  v23 = [v22 reloadAndUpdateAllItemsFromSenderSelector:a2];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  v23 = [itemManager2 reloadAndUpdateAllItemsFromSenderSelector:a2];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v7;
+    v19 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v16, 0x16u);
   }
 
-  v9 = [(HUHomeKitAccessorySettingsDetailsViewController *)self navigationController];
-  v10 = v9;
-  if (v9)
+  navigationController = [(HUHomeKitAccessorySettingsDetailsViewController *)self navigationController];
+  v10 = navigationController;
+  if (navigationController)
   {
-    v11 = v9;
+    selfCopy2 = navigationController;
   }
 
   else
   {
-    v11 = self;
+    selfCopy2 = self;
   }
 
-  v12 = v11;
+  v12 = selfCopy2;
 
   v13 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376B0]];
-  v14 = [v13 splashController];
-  [v14 setDisplayDeviceType:6];
+  splashController = [v13 splashController];
+  [splashController setDisplayDeviceType:6];
 
   [v13 setPresentingViewController:v12];
   [v13 present];

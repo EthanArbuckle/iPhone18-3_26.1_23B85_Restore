@@ -29,7 +29,7 @@
       v32 = v10;
       v33 = v11;
       v34 = v12;
-      v35 = [(CIShadedMaterial *)self _CIShadedmaterial];
+      _CIShadedmaterial = [(CIShadedMaterial *)self _CIShadedmaterial];
       [(CIImage *)self->inputImage extent];
       v37 = v36;
       v39 = v38;
@@ -50,7 +50,7 @@
       v46[3] = v7;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
       v26 = v45;
-      v27 = v35;
+      v27 = _CIShadedmaterial;
       v28 = v37;
       v29 = v39;
       v30 = v41;
@@ -59,7 +59,7 @@
 
     else
     {
-      v15 = [(CIShadedMaterial *)self _CIShadedmaterial];
+      _CIShadedmaterial2 = [(CIShadedMaterial *)self _CIShadedmaterial];
       [(CIImage *)self->inputImage extent];
       v17 = v16;
       v19 = v18;
@@ -71,7 +71,7 @@
       v47[2] = v7;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:3];
       v26 = &__block_literal_global_63;
-      v27 = v15;
+      v27 = _CIShadedmaterial2;
       v28 = v17;
       v29 = v19;
       v30 = v21;

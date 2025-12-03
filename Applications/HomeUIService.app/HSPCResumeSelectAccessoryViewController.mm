@@ -1,20 +1,20 @@
 @interface HSPCResumeSelectAccessoryViewController
-- (HSPCResumeSelectAccessoryViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCResumeSelectAccessoryViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (UITableView)tableView;
 - (id)commitConfiguration;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCResumeSelectAccessoryViewController
 
-- (HSPCResumeSelectAccessoryViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCResumeSelectAccessoryViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v10 = [[PRXScrollableContentView alloc] initWithCardStyle:0 scrollView:v9];
   v39.receiver = self;
@@ -23,8 +23,8 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_config, a4);
-    objc_storeStrong(&v12->_coordinator, a3);
+    objc_storeStrong(&v11->_config, config);
+    objc_storeStrong(&v12->_coordinator, coordinator);
     v13 = HULocalizedString();
     [(HSPCResumeSelectAccessoryViewController *)v12 setTitle:v13];
 
@@ -62,16 +62,16 @@
     continueAction = v12->_continueAction;
     v12->_continueAction = v26;
 
-    v28 = [v7 topAccessoryTuple];
-    v29 = [NSMutableArray arrayWithObject:v28];
+    topAccessoryTuple = [coordinatorCopy topAccessoryTuple];
+    v29 = [NSMutableArray arrayWithObject:topAccessoryTuple];
 
-    v30 = [v7 bridgedAccessories];
+    bridgedAccessories = [coordinatorCopy bridgedAccessories];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_1000466A8;
     v37[3] = &unk_1000C7628;
-    v38 = v7;
-    v31 = [v30 na_filter:v37];
+    v38 = coordinatorCopy;
+    v31 = [bridgedAccessories na_filter:v37];
     [v29 addObjectsFromArray:v31];
 
     v32 = [v29 copy];
@@ -88,18 +88,18 @@
 
 - (id)commitConfiguration
 {
-  v3 = [(HSPCResumeSelectAccessoryViewController *)self coordinator];
-  v4 = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
-  v5 = [v4 na_map:&stru_1000C7668];
+  coordinator = [(HSPCResumeSelectAccessoryViewController *)self coordinator];
+  selectedAccessories = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
+  v5 = [selectedAccessories na_map:&stru_1000C7668];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100046860;
   v10[3] = &unk_1000C5F38;
-  v11 = v3;
+  v11 = coordinator;
   v12 = v5;
   v6 = v5;
-  v7 = v3;
+  v7 = coordinator;
   v8 = [NAFuture futureWithBlock:v10];
 
   return v8;
@@ -112,62 +112,62 @@
   [(HSPCResumeSelectAccessoryViewController *)&v2 viewDidLoad];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForRowAtIndexPath:v6];
-  v8 = [v7 accessoryView];
-  [v8 setHidden:0];
+  pathCopy = path;
+  v7 = [view cellForRowAtIndexPath:pathCopy];
+  accessoryView = [v7 accessoryView];
+  [accessoryView setHidden:0];
 
-  v9 = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
-  v10 = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v9 addObject:v11];
+  selectedAccessories = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
+  accessoriesPendingConfiguration = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration];
+  v11 = [accessoriesPendingConfiguration objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [selectedAccessories addObject:v11];
 
-  v12 = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
-  v13 = [v12 count] != 0;
-  v14 = [(HSPCResumeSelectAccessoryViewController *)self continueAction];
-  [v14 setEnabled:v13];
+  selectedAccessories2 = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
+  v13 = [selectedAccessories2 count] != 0;
+  continueAction = [(HSPCResumeSelectAccessoryViewController *)self continueAction];
+  [continueAction setEnabled:v13];
 
-  return v6;
+  return pathCopy;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForRowAtIndexPath:v6];
-  v8 = [v7 accessoryView];
-  [v8 setHidden:1];
+  pathCopy = path;
+  v7 = [view cellForRowAtIndexPath:pathCopy];
+  accessoryView = [v7 accessoryView];
+  [accessoryView setHidden:1];
 
-  v9 = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
-  v10 = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v9 removeObject:v11];
+  selectedAccessories = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
+  accessoriesPendingConfiguration = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration];
+  v11 = [accessoriesPendingConfiguration objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [selectedAccessories removeObject:v11];
 
-  v12 = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
-  v13 = [v12 count] != 0;
-  v14 = [(HSPCResumeSelectAccessoryViewController *)self continueAction];
-  [v14 setEnabled:v13];
+  selectedAccessories2 = [(HSPCResumeSelectAccessoryViewController *)self selectedAccessories];
+  v13 = [selectedAccessories2 count] != 0;
+  continueAction = [(HSPCResumeSelectAccessoryViewController *)self continueAction];
+  [continueAction setEnabled:v13];
 
-  return v6;
+  return pathCopy;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration:a3];
+  v4 = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
-  v8 = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
+  accessoriesPendingConfiguration = [(HSPCResumeSelectAccessoryViewController *)self accessoriesPendingConfiguration];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [accessoriesPendingConfiguration objectAtIndexedSubscript:v9];
   [v7 updateUIWithTuple:v10];
 
   v11 = [UIImageView alloc];

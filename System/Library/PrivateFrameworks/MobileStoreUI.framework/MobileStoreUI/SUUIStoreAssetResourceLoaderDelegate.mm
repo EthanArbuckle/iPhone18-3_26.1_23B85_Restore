@@ -1,15 +1,15 @@
 @interface SUUIStoreAssetResourceLoaderDelegate
-+ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)a3 clientContext:(id)a4;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
++ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)asset clientContext:(id)context;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
 @end
 
 @implementation SUUIStoreAssetResourceLoaderDelegate
 
-+ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)a3 clientContext:(id)a4
++ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)asset clientContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 shouldUseITunesStoreSecureKeyDelivery])
+  assetCopy = asset;
+  contextCopy = context;
+  if ([assetCopy shouldUseITunesStoreSecureKeyDelivery])
   {
     v7 = objc_alloc_init(SUUIStoreAssetResourceLoaderDelegate);
     v8 = v7;
@@ -23,10 +23,10 @@
 
   else
   {
-    clientContext = [v5 keyCertificateURL];
-    v10 = [v5 keyServerURL];
-    v11 = v10;
-    if (!clientContext || !v10 || (v12 = objc_alloc_init(SUUIStoreAssetResourceLoaderDelegate)) == 0)
+    clientContext = [assetCopy keyCertificateURL];
+    keyServerURL = [assetCopy keyServerURL];
+    v11 = keyServerURL;
+    if (!clientContext || !keyServerURL || (v12 = objc_alloc_init(SUUIStoreAssetResourceLoaderDelegate)) == 0)
     {
 
       v8 = 0;
@@ -41,10 +41,10 @@
     keyServerURL = v8->_keyServerURL;
     v8->_keyServerURL = v11;
 
-    v8->_isITunesStream = [v5 isITunesStream];
+    v8->_isITunesStream = [assetCopy isITunesStream];
   }
 
-  v16 = v6;
+  v16 = contextCopy;
   clientContext = v8->_clientContext;
   v8->_clientContext = v16;
 LABEL_10:
@@ -54,10 +54,10 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  resourceCopy = resource;
   v8 = SSVAssetResourceLoadingRequestContainsSecureKeyDeliveryRequest();
   if (v8)
   {
@@ -94,17 +94,17 @@ LABEL_11:
     v25 = &v38;
     v26 = &v32;
     v27 = &v28;
-    v23 = v7;
-    v24 = self;
+    v23 = resourceCopy;
+    selfCopy = self;
     v11 = _Block_copy(aBlock);
     if (self->_shouldUseITunesStoreSecureKeyDelivery)
     {
       *(v29 + 24) = 1;
-      v12 = [(SUUIClientContext *)self->_clientContext URLBag];
-      v13 = v12;
-      if (v12)
+      uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
+      v13 = uRLBag;
+      if (uRLBag)
       {
-        v14 = v12;
+        v14 = uRLBag;
       }
 
       else

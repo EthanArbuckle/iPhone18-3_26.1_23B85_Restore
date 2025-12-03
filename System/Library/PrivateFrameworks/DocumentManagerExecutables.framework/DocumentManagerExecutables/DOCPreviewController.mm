@@ -1,38 +1,38 @@
 @interface DOCPreviewController
-+ (id)sharedControllerFor:(id)a3;
-+ (void)clearSharedControllerFor:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
++ (id)sharedControllerFor:(id)for;
++ (void)clearSharedControllerFor:(id)for;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSArray)keyCommands;
 - (QLPreviewControllerDelegate)delegate;
-- (_TtC26DocumentManagerExecutables20DOCPreviewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)dismissActionsForPreviewController:(id)a3;
-- (id)excludedActivityTypesForPreviewController:(id)a3;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4;
-- (void)documentPicker:(id)a3 didConfirmDocumentsAtURLs:(id)a4;
-- (void)duplicate:(id)a3;
-- (void)move:(id)a3;
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5;
-- (void)previewController:(id)a3 willSaveEditedItem:(id)a4;
-- (void)previewControllerWillDismiss:(id)a3;
-- (void)reallyBecomeCurrent:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC26DocumentManagerExecutables20DOCPreviewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)dismissActionsForPreviewController:(id)controller;
+- (id)excludedActivityTypesForPreviewController:(id)controller;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item;
+- (void)documentPicker:(id)picker didConfirmDocumentsAtURLs:(id)ls;
+- (void)duplicate:(id)duplicate;
+- (void)move:(id)move;
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l;
+- (void)previewController:(id)controller willSaveEditedItem:(id)item;
+- (void)previewControllerWillDismiss:(id)dismiss;
+- (void)reallyBecomeCurrent:(id)current;
+- (void)setDelegate:(id)delegate;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation DOCPreviewController
 
-- (void)documentPicker:(id)a3 didConfirmDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didConfirmDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   specialized DOCPreviewController.documentPicker(_:didConfirmDocumentsAt:)(v6);
 }
 
@@ -40,31 +40,31 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCPreviewController();
-  v2 = [(QLPreviewController *)&v4 delegate];
+  delegate = [(QLPreviewController *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!a3)
+  selfCopy = delegate;
+  if (!delegate)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCPreviewController();
-  v5 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
-  [(QLPreviewController *)&v6 setDelegate:v4];
+  [(QLPreviewController *)&v6 setDelegate:selfCopy];
 
   swift_unknownObjectRelease();
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCPreviewController.keyCommands.getter();
 
   if (v3)
@@ -81,11 +81,11 @@
   return v4.super.isa;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -94,20 +94,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = DOCPreviewController.canPerformAction(_:withSender:)(a3, v10);
+  v8 = DOCPreviewController.canPerformAction(_:withSender:)(action, v10);
 
   outlined destroy of CharacterSet?(v10, &_sypSgMd);
   return v8;
 }
 
-- (void)duplicate:(id)a3
+- (void)duplicate:(id)duplicate
 {
-  if (a3)
+  if (duplicate)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -116,7 +116,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   DOCPreviewController.duplicate(_:)();
@@ -124,11 +124,11 @@
   outlined destroy of CharacterSet?(v6, &_sypSgMd);
 }
 
-- (void)move:(id)a3
+- (void)move:(id)move
 {
-  if (a3)
+  if (move)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -137,7 +137,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   DOCPreviewController.moveCurrentItem()();
@@ -145,20 +145,20 @@
   outlined destroy of CharacterSet?(v6, &_sypSgMd);
 }
 
-+ (id)sharedControllerFor:(id)a3
++ (id)sharedControllerFor:(id)for
 {
-  v4 = a3;
-  v5 = specialized static DOCPreviewController.sharedController(for:)(a3);
+  forCopy = for;
+  v5 = specialized static DOCPreviewController.sharedController(for:)(for);
 
   return v5;
 }
 
-+ (void)clearSharedControllerFor:(id)a3
++ (void)clearSharedControllerFor:(id)for
 {
-  if (a3)
+  if (for)
   {
     v3 = one-time initialization token for mapTable;
-    v4 = a3;
+    forCopy = for;
     if (v3 != -1)
     {
       swift_once();
@@ -180,13 +180,13 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCPreviewController();
   v4 = v6.receiver;
-  [(QLPreviewController *)&v6 viewWillAppear:v3];
+  [(QLPreviewController *)&v6 viewWillAppear:appearCopy];
   swift_getKeyPath();
   swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -196,55 +196,55 @@
   DOCPreviewController.loadLinkNavigateInteraction()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v14 - v7;
   v9 = type metadata accessor for DOCPreviewController();
   v15.receiver = self;
   v15.super_class = v9;
-  v10 = self;
-  v11 = [(QLPreviewController *)&v15 viewDidAppear:v3];
-  (*((*MEMORY[0x277D85000] & v10->super.super.super.super.super.isa) + 0x288))(v11);
+  selfCopy = self;
+  v11 = [(QLPreviewController *)&v15 viewDidAppear:appearCopy];
+  (*((*MEMORY[0x277D85000] & selfCopy->super.super.super.super.super.isa) + 0x288))(v11);
   v12 = type metadata accessor for URL();
   (*(*(v12 - 8) + 56))(v8, 1, 1, v12);
   v13 = OBJC_IVAR____TtC26DocumentManagerExecutables20DOCPreviewController_importedURL;
   swift_beginAccess();
-  outlined assign with take of URL?(v8, v10 + v13);
+  outlined assign with take of URL?(v8, selfCopy + v13);
   swift_endAccess();
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCPreviewController();
-  [(DOCPreviewController *)&v4 setModalPresentationStyle:a3];
+  [(DOCPreviewController *)&v4 setModalPresentationStyle:style];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  DOCPreviewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  DOCPreviewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)reallyBecomeCurrent:(id)a3
+- (void)reallyBecomeCurrent:(id)current
 {
   v3 = MEMORY[0x277D85000];
   v4 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x258);
-  v6 = self;
+  selfCopy = self;
   v5 = v4();
   [v5 becomeCurrent];
 
-  if ([(QLPreviewController *)v6 currentPreviewItem])
+  if ([(QLPreviewController *)selfCopy currentPreviewItem])
   {
-    (*((*v3 & v6->super.super.super.super.super.isa) + 0x208))();
+    (*((*v3 & selfCopy->super.super.super.super.super.isa) + 0x208))();
     swift_unknownObjectRelease();
   }
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
   v3 = *(&self->super.super.super._overrideTransitioningDelegate + OBJC_IVAR____TtC26DocumentManagerExecutables20DOCPreviewController_source);
   if (v3 == 255)
@@ -266,27 +266,27 @@
   return *((v4 & 0xFFFFFFFFFFFFFF8) + 0x10);
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  v8 = specialized DOCPreviewController.previewController(_:previewItemAt:)(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = specialized DOCPreviewController.previewController(_:previewItemAt:)(index);
 
   return v8;
 }
 
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = specialized DOCPreviewController.previewController(_:editingModeFor:)();
 
   swift_unknownObjectRelease();
   return v7;
 }
 
-- (id)dismissActionsForPreviewController:(id)a3
+- (id)dismissActionsForPreviewController:(id)controller
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for QLDismissAction);
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -294,55 +294,55 @@
   return v3.super.isa;
 }
 
-- (void)previewController:(id)a3 willSaveEditedItem:(id)a4
+- (void)previewController:(id)controller willSaveEditedItem:(id)item
 {
   v6 = MEMORY[0x277D85000];
   v7 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x2A0);
-  v9 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v8 = self;
-  if (v7(v9, a4) == 1)
+  selfCopy = self;
+  if (v7(controllerCopy, item) == 1)
   {
-    (*((*v6 & v8->super.super.super.super.super.isa) + 0x208))(a4);
+    (*((*v6 & selfCopy->super.super.super.super.super.isa) + 0x208))(item);
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8, v10);
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v14 = self;
-  specialized DOCPreviewController.previewController(_:didSaveEditedCopyOf:at:)(a4, v12);
+  selfCopy = self;
+  specialized DOCPreviewController.previewController(_:didSaveEditedCopyOf:at:)(item, v12);
 
   swift_unknownObjectRelease();
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)previewControllerWillDismiss:(id)a3
+- (void)previewControllerWillDismiss:(id)dismiss
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x108);
-  v7 = self;
+  selfCopy = self;
   if (v3())
   {
     v5 = v4;
     ObjectType = swift_getObjectType();
-    (*(v5 + 8))(v7, ObjectType, v5);
+    (*(v5 + 8))(selfCopy, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = specialized DOCPreviewController.previewController(_:transitionViewFor:)();
 
   swift_unknownObjectRelease();
@@ -350,10 +350,10 @@
   return v7;
 }
 
-- (id)excludedActivityTypesForPreviewController:(id)a3
+- (id)excludedActivityTypesForPreviewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized DOCPreviewController.excludedActivityTypes(for:)();
 
   v6.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -361,7 +361,7 @@
   return v6.super.isa;
 }
 
-- (_TtC26DocumentManagerExecutables20DOCPreviewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables20DOCPreviewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

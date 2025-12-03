@@ -1,26 +1,26 @@
 @interface CKSafetyCheckHelper
 - (CKSafetyCheckHelper)init;
-- (CKSafetyCheckHelper)initWithContacts:(id)a3;
-- (void)presentSafetyCheckFromController:(UIViewController *)a3 completion:(id)a4;
+- (CKSafetyCheckHelper)initWithContacts:(id)contacts;
+- (void)presentSafetyCheckFromController:(UIViewController *)controller completion:(id)completion;
 @end
 
 @implementation CKSafetyCheckHelper
 
-- (CKSafetyCheckHelper)initWithContacts:(id)a3
+- (CKSafetyCheckHelper)initWithContacts:(id)contacts
 {
   sub_1902188FC(0, &qword_1EAD44E40);
   v3 = sub_190D57180();
   return SafetyCheckHelper.init(contacts:)(v3);
 }
 
-- (void)presentSafetyCheckFromController:(UIViewController *)a3 completion:(id)a4
+- (void)presentSafetyCheckFromController:(UIViewController *)controller completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAD5BAF0);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = controller;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_190D572E0();
@@ -35,8 +35,8 @@
   v14[3] = 0;
   v14[4] = &unk_190DD75C0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_190C798DC(0, 0, v9, &unk_190DD75C8, v14);
 }
 

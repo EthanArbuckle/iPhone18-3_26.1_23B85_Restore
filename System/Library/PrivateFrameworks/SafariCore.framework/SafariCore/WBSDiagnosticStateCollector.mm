@@ -1,29 +1,29 @@
 @interface WBSDiagnosticStateCollector
-+ (id)registeredStateCollectorWithLogLabel:(id)a3 payloadProvider:(id)a4;
-- (WBSDiagnosticStateCollector)initWithLogLabel:(id)a3 queue:(id)a4 payloadProvider:(id)a5;
-- (os_state_data_s)_createOSStateDataWithHints:(os_state_hints_s *)a3;
++ (id)registeredStateCollectorWithLogLabel:(id)label payloadProvider:(id)provider;
+- (WBSDiagnosticStateCollector)initWithLogLabel:(id)label queue:(id)queue payloadProvider:(id)provider;
+- (os_state_data_s)_createOSStateDataWithHints:(os_state_hints_s *)hints;
 - (void)dealloc;
 - (void)unregister;
 @end
 
 @implementation WBSDiagnosticStateCollector
 
-- (WBSDiagnosticStateCollector)initWithLogLabel:(id)a3 queue:(id)a4 payloadProvider:(id)a5
+- (WBSDiagnosticStateCollector)initWithLogLabel:(id)label queue:(id)queue payloadProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelCopy = label;
+  queueCopy = queue;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = WBSDiagnosticStateCollector;
   v11 = [(WBSDiagnosticStateCollector *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [labelCopy copy];
     logLabel = v11->_logLabel;
     v11->_logLabel = v12;
 
-    objc_storeStrong(&v11->_queue, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_queue, queue);
+    v14 = [providerCopy copy];
     payloadProvider = v11->_payloadProvider;
     v11->_payloadProvider = v14;
 
@@ -33,11 +33,11 @@
   return v11;
 }
 
-+ (id)registeredStateCollectorWithLogLabel:(id)a3 payloadProvider:(id)a4
++ (id)registeredStateCollectorWithLogLabel:(id)label payloadProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithLogLabel:v7 payloadProvider:v6];
+  providerCopy = provider;
+  labelCopy = label;
+  v8 = [[self alloc] initWithLogLabel:labelCopy payloadProvider:providerCopy];
 
   [v8 registerWithSysdiagnose];
 
@@ -61,9 +61,9 @@
   }
 }
 
-- (os_state_data_s)_createOSStateDataWithHints:(os_state_hints_s *)a3
+- (os_state_data_s)_createOSStateDataWithHints:(os_state_hints_s *)hints
 {
-  if (a3->var2 - 1 < 2)
+  if (hints->var2 - 1 < 2)
   {
     return 0;
   }

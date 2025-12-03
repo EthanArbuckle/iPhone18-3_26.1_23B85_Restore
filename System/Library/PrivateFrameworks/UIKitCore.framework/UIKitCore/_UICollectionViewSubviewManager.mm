@@ -1,49 +1,49 @@
 @interface _UICollectionViewSubviewManager
-- (BOOL)enqueueViewForReuse:(uint64_t)a1;
+- (BOOL)enqueueViewForReuse:(uint64_t)reuse;
 - (_UICollectionViewSubviewCollection)allVisibleViewsSubviewCollection;
 - (id)allVisibleViews;
 - (id)allVisibleViewsHashTable;
-- (id)dequeueReusableViewWithReuseIdentifier:(void *)a3 elementKind:(uint64_t)a4 elementCategory:;
-- (id)visibleCellAtIndexPath:(id *)a1;
-- (id)visibleViewOfKind:(uint64_t)a3 inCategory:(uint64_t)a4 atIndexPath:;
-- (id)visibleViewWithLayoutAttributes:(id *)a1;
+- (id)dequeueReusableViewWithReuseIdentifier:(void *)identifier elementKind:(uint64_t)kind elementCategory:;
+- (id)visibleCellAtIndexPath:(id *)path;
+- (id)visibleViewOfKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:;
+- (id)visibleViewWithLayoutAttributes:(id *)attributes;
 - (uint64_t)enumerateAllViewsInReuseQueueWithEnumerator:(uint64_t)result;
 - (uint64_t)hasVisibleCells;
 - (uint64_t)indexPathsForVisibleCells;
-- (uint64_t)indexPathsForVisibleDecorationsOfKind:(uint64_t *)a1;
-- (uint64_t)indexPathsForVisibleSupplementariesOfKind:(uint64_t *)a1;
-- (uint64_t)isViewInReuseQueue:(uint64_t)a1;
+- (uint64_t)indexPathsForVisibleDecorationsOfKind:(uint64_t *)kind;
+- (uint64_t)indexPathsForVisibleSupplementariesOfKind:(uint64_t *)kind;
+- (uint64_t)isViewInReuseQueue:(uint64_t)queue;
 - (uint64_t)removeAllVisibleViews;
 - (uint64_t)replaceVisibleViewsWithoutCopyingWithContentsOfSubviewCollection:(uint64_t)result;
-- (uint64_t)setVisibleCell:(uint64_t)a3 atIndexPath:;
+- (uint64_t)setVisibleCell:(uint64_t)cell atIndexPath:;
 - (uint64_t)updateVisibleCellsUsingFilter:(uint64_t)result;
 - (uint64_t)visibleCells;
-- (uint64_t)visibleDecorationOfKind:(uint64_t)a3 atIndexPath:;
-- (uint64_t)visibleDecorationsOfKind:(uint64_t *)a1;
-- (uint64_t)visibleSupplementariesOfKind:(uint64_t *)a1;
-- (uint64_t)visibleSupplementaryOfKind:(uint64_t)a3 atIndexPath:;
-- (void)_getElementKindReuseQueues:(void *)a3 reuseQueue:(uint64_t)a4 forReuseIdentifier:(void *)a5 elementKind:(int)a6 creatingIfNecessary:;
-- (void)ensureViewIsRemovedFromReuseQueue:(uint64_t)a1;
-- (void)initWithCollectionView:(void *)a1;
-- (void)removeAllDequeuedViewsWithEnumerator:(uint64_t)a1;
+- (uint64_t)visibleDecorationOfKind:(uint64_t)kind atIndexPath:;
+- (uint64_t)visibleDecorationsOfKind:(uint64_t *)kind;
+- (uint64_t)visibleSupplementariesOfKind:(uint64_t *)kind;
+- (uint64_t)visibleSupplementaryOfKind:(uint64_t)kind atIndexPath:;
+- (void)_getElementKindReuseQueues:(void *)queues reuseQueue:(uint64_t)queue forReuseIdentifier:(void *)identifier elementKind:(int)kind creatingIfNecessary:;
+- (void)ensureViewIsRemovedFromReuseQueue:(uint64_t)queue;
+- (void)initWithCollectionView:(void *)view;
+- (void)removeAllDequeuedViewsWithEnumerator:(uint64_t)enumerator;
 @end
 
 @implementation _UICollectionViewSubviewManager
 
 - (uint64_t)indexPathsForVisibleCells
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] indexPathsForCells];
+    self = [(_UICollectionViewSubviewCollection *)self[1] indexPathsForCells];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (_UICollectionViewSubviewCollection)allVisibleViewsSubviewCollection
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(_UICollectionViewSubviewCollection);
     v5[0] = MEMORY[0x1E69E9820];
@@ -52,7 +52,7 @@
     v5[3] = &unk_1E70FFC98;
     v3 = v2;
     v6 = v3;
-    [(_UICollectionViewSubviewCollection *)*(a1 + 8) enumerateAllViewsWithEnumerator:v5];
+    [(_UICollectionViewSubviewCollection *)*(self + 8) enumerateAllViewsWithEnumerator:v5];
   }
 
   else
@@ -65,35 +65,35 @@
 
 - (id)allVisibleViews
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] allViews];
+    self = [(_UICollectionViewSubviewCollection *)self[1] allViews];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)visibleCells
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] cells];
+    self = [(_UICollectionViewSubviewCollection *)self[1] cells];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)hasVisibleCells
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
     v7 = 0x2020000000;
     v8 = 0;
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __50___UICollectionViewSubviewManager_hasVisibleCells__block_invoke;
@@ -114,13 +114,13 @@
 
 - (id)allVisibleViewsHashTable
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] allViewsHashTable];
+    self = [(_UICollectionViewSubviewCollection *)self[1] allViewsHashTable];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)removeAllVisibleViews
@@ -144,14 +144,14 @@
   return result;
 }
 
-- (void)initWithCollectionView:(void *)a1
+- (void)initWithCollectionView:(void *)view
 {
-  if (!a1)
+  if (!view)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = view;
   v14.super_class = _UICollectionViewSubviewManager;
   v3 = objc_msgSendSuper2(&v14, sel_init);
   v4 = v3;
@@ -178,12 +178,12 @@
   return v4;
 }
 
-- (uint64_t)setVisibleCell:(uint64_t)a3 atIndexPath:
+- (uint64_t)setVisibleCell:(uint64_t)cell atIndexPath:
 {
   if (result)
   {
     v3 = result;
-    [(_UICollectionViewSubviewCollection *)*(result + 8) setCell:a2 atIndexPath:a3];
+    [(_UICollectionViewSubviewCollection *)*(result + 8) setCell:a2 atIndexPath:cell];
     v4 = *(v3 + 40);
 
     return [v4 _subviewManagerDidUpdateVisibleCells];
@@ -206,106 +206,106 @@
   return result;
 }
 
-- (id)visibleCellAtIndexPath:(id *)a1
+- (id)visibleCellAtIndexPath:(id *)path
 {
-  if (a1)
+  if (path)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] cellAtIndexPath:a2];
+    path = [(_UICollectionViewSubviewCollection *)path[1] cellAtIndexPath:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return path;
 }
 
-- (uint64_t)visibleSupplementaryOfKind:(uint64_t)a3 atIndexPath:
+- (uint64_t)visibleSupplementaryOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] supplementaryOfKind:a2 atIndexPath:a3];
+    self = [(_UICollectionViewSubviewCollection *)self[1] supplementaryOfKind:a2 atIndexPath:kind];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)visibleSupplementariesOfKind:(uint64_t *)a1
+- (uint64_t)visibleSupplementariesOfKind:(uint64_t *)kind
 {
-  if (a1)
+  if (kind)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] supplementariesOfKind:a2];
+    kind = [(_UICollectionViewSubviewCollection *)kind[1] supplementariesOfKind:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return kind;
 }
 
-- (uint64_t)visibleDecorationOfKind:(uint64_t)a3 atIndexPath:
+- (uint64_t)visibleDecorationOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] decorationOfKind:a2 atIndexPath:a3];
+    self = [(_UICollectionViewSubviewCollection *)self[1] decorationOfKind:a2 atIndexPath:kind];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)visibleDecorationsOfKind:(uint64_t *)a1
+- (uint64_t)visibleDecorationsOfKind:(uint64_t *)kind
 {
-  if (a1)
+  if (kind)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] decorationsOfKind:a2];
+    kind = [(_UICollectionViewSubviewCollection *)kind[1] decorationsOfKind:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return kind;
 }
 
-- (id)visibleViewOfKind:(uint64_t)a3 inCategory:(uint64_t)a4 atIndexPath:
+- (id)visibleViewOfKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] viewOfKind:a2 inCategory:a3 atIndexPath:a4];
+    self = [(_UICollectionViewSubviewCollection *)self[1] viewOfKind:a2 inCategory:kind atIndexPath:category];
     v4 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)visibleViewWithLayoutAttributes:(id *)a1
+- (id)visibleViewWithLayoutAttributes:(id *)attributes
 {
-  v2 = a1;
-  if (a1)
+  attributesCopy = attributes;
+  if (attributes)
   {
-    v4 = [a2 representedElementKind];
-    v5 = [a2 representedElementCategory];
-    v6 = [a2 indexPath];
-    v2 = [(_UICollectionViewSubviewManager *)v2 visibleViewOfKind:v4 inCategory:v5 atIndexPath:v6];
+    representedElementKind = [a2 representedElementKind];
+    representedElementCategory = [a2 representedElementCategory];
+    indexPath = [a2 indexPath];
+    attributesCopy = [(_UICollectionViewSubviewManager *)attributesCopy visibleViewOfKind:representedElementKind inCategory:representedElementCategory atIndexPath:indexPath];
   }
 
-  return v2;
+  return attributesCopy;
 }
 
-- (uint64_t)indexPathsForVisibleSupplementariesOfKind:(uint64_t *)a1
+- (uint64_t)indexPathsForVisibleSupplementariesOfKind:(uint64_t *)kind
 {
-  if (a1)
+  if (kind)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] indexPathsForSupplementariesOfKind:a2];
+    kind = [(_UICollectionViewSubviewCollection *)kind[1] indexPathsForSupplementariesOfKind:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return kind;
 }
 
-- (uint64_t)indexPathsForVisibleDecorationsOfKind:(uint64_t *)a1
+- (uint64_t)indexPathsForVisibleDecorationsOfKind:(uint64_t *)kind
 {
-  if (a1)
+  if (kind)
   {
-    a1 = [(_UICollectionViewSubviewCollection *)a1[1] indexPathsForDecorationsOfKind:a2];
+    kind = [(_UICollectionViewSubviewCollection *)kind[1] indexPathsForDecorationsOfKind:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return kind;
 }
 
 - (uint64_t)updateVisibleCellsUsingFilter:(uint64_t)result
@@ -322,17 +322,17 @@
   return result;
 }
 
-- (id)dequeueReusableViewWithReuseIdentifier:(void *)a3 elementKind:(uint64_t)a4 elementCategory:
+- (id)dequeueReusableViewWithReuseIdentifier:(void *)identifier elementKind:(uint64_t)kind elementCategory:
 {
-  v4 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     goto LABEL_11;
   }
 
   if (a2)
   {
-    if (!a3)
+    if (!identifier)
     {
       goto LABEL_4;
     }
@@ -340,27 +340,27 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:sel_dequeueReusableViewWithReuseIdentifier_elementKind_elementCategory_ object:v4 file:@"_UICollectionViewSubviewManager.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_dequeueReusableViewWithReuseIdentifier_elementKind_elementCategory_ object:selfCopy file:@"_UICollectionViewSubviewManager.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
 
-    if (!a3)
+    if (!identifier)
     {
 LABEL_4:
-      if (a4)
+      if (kind)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:sel_dequeueReusableViewWithReuseIdentifier_elementKind_elementCategory_ object:v4 file:@"_UICollectionViewSubviewManager.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"elementKind != nil || elementCategory == UICollectionElementCategoryCell"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel_dequeueReusableViewWithReuseIdentifier_elementKind_elementCategory_ object:selfCopy file:@"_UICollectionViewSubviewManager.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"elementKind != nil || elementCategory == UICollectionElementCategoryCell"}];
       }
     }
   }
 
   v14 = 0;
   v15 = 0;
-  [(_UICollectionViewSubviewManager *)v4 _getElementKindReuseQueues:&v14 reuseQueue:a2 forReuseIdentifier:a3 elementKind:0 creatingIfNecessary:?];
+  [(_UICollectionViewSubviewManager *)selfCopy _getElementKindReuseQueues:&v14 reuseQueue:a2 forReuseIdentifier:identifier elementKind:0 creatingIfNecessary:?];
   v8 = v15;
   v9 = v14;
-  v4 = [v9 lastObject];
-  if (v4)
+  selfCopy = [v9 lastObject];
+  if (selfCopy)
   {
     [v9 removeObjectAtIndex:{objc_msgSend(v9, "count") - 1}];
     if (![v9 count])
@@ -368,33 +368,33 @@ LABEL_4:
       [v8 removeObjectForKey:a2];
     }
 
-    v10 = v4;
+    v10 = selfCopy;
   }
 
 LABEL_11:
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)_getElementKindReuseQueues:(void *)a3 reuseQueue:(uint64_t)a4 forReuseIdentifier:(void *)a5 elementKind:(int)a6 creatingIfNecessary:
+- (void)_getElementKindReuseQueues:(void *)queues reuseQueue:(uint64_t)queue forReuseIdentifier:(void *)identifier elementKind:(int)kind creatingIfNecessary:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   if (a2)
   {
-    if (a3)
+    if (queues)
     {
       goto LABEL_4;
     }
 
 LABEL_20:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:sel__getElementKindReuseQueues_reuseQueue_forReuseIdentifier_elementKind_creatingIfNecessary_ object:a1 file:@"_UICollectionViewSubviewManager.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"reuseQueueForIdentifier != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__getElementKindReuseQueues_reuseQueue_forReuseIdentifier_elementKind_creatingIfNecessary_ object:self file:@"_UICollectionViewSubviewManager.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"reuseQueueForIdentifier != nil"}];
 
-    if (a4)
+    if (queue)
     {
       goto LABEL_5;
     }
@@ -402,44 +402,44 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:sel__getElementKindReuseQueues_reuseQueue_forReuseIdentifier_elementKind_creatingIfNecessary_ object:a1 file:@"_UICollectionViewSubviewManager.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"reuseQueuesForElementKind != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel__getElementKindReuseQueues_reuseQueue_forReuseIdentifier_elementKind_creatingIfNecessary_ object:self file:@"_UICollectionViewSubviewManager.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"reuseQueuesForElementKind != nil"}];
 
-  if (!a3)
+  if (!queues)
   {
     goto LABEL_20;
   }
 
 LABEL_4:
-  if (a4)
+  if (queue)
   {
     goto LABEL_5;
   }
 
 LABEL_21:
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:sel__getElementKindReuseQueues_reuseQueue_forReuseIdentifier_elementKind_creatingIfNecessary_ object:a1 file:@"_UICollectionViewSubviewManager.m" lineNumber:343 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:sel__getElementKindReuseQueues_reuseQueue_forReuseIdentifier_elementKind_creatingIfNecessary_ object:self file:@"_UICollectionViewSubviewManager.m" lineNumber:343 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
 
 LABEL_5:
-  v12 = @"UICollectionElementKindCell";
-  if (a5)
+  identifierCopy = @"UICollectionElementKindCell";
+  if (identifier)
   {
-    v12 = a5;
+    identifierCopy = identifier;
   }
 
-  v21 = v12;
-  v13 = [*(a1 + 16) objectForKeyedSubscript:?];
+  v21 = identifierCopy;
+  v13 = [*(self + 16) objectForKeyedSubscript:?];
   if (v13)
   {
     goto LABEL_10;
   }
 
-  if (a6)
+  if (kind)
   {
     v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:5];
-    [*(a1 + 16) setObject:v13 forKeyedSubscript:v21];
+    [*(self + 16) setObject:v13 forKeyedSubscript:v21];
 LABEL_10:
-    v14 = [v13 objectForKeyedSubscript:a4];
+    v14 = [v13 objectForKeyedSubscript:queue];
     if (v14)
     {
       v15 = 1;
@@ -447,43 +447,43 @@ LABEL_10:
 
     else
     {
-      v15 = a6 == 0;
+      v15 = kind == 0;
     }
 
     if (!v15)
     {
       v14 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:5];
-      [v13 setObject:v14 forKeyedSubscript:a4];
+      [v13 setObject:v14 forKeyedSubscript:queue];
     }
 
     v16 = v13;
     *a2 = v13;
     v17 = v14;
-    *a3 = v14;
+    *queues = v14;
   }
 }
 
-- (BOOL)enqueueViewForReuse:(uint64_t)a1
+- (BOOL)enqueueViewForReuse:(uint64_t)reuse
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!reuse)
   {
     return 0;
   }
 
-  v4 = [a2 reuseIdentifier];
-  v5 = [a2 _layoutAttributes];
-  v6 = [(_UILabelConfiguration *)v5 _content];
+  reuseIdentifier = [a2 reuseIdentifier];
+  _layoutAttributes = [a2 _layoutAttributes];
+  _content = [(_UILabelConfiguration *)_layoutAttributes _content];
 
   v7 = 0;
-  if (v4 && v6)
+  if (reuseIdentifier && _content)
   {
     v26 = 0;
     v27 = 0;
-    [(_UICollectionViewSubviewManager *)a1 _getElementKindReuseQueues:&v26 reuseQueue:v4 forReuseIdentifier:v6 elementKind:1 creatingIfNecessary:?];
+    [(_UICollectionViewSubviewManager *)reuse _getElementKindReuseQueues:&v26 reuseQueue:reuseIdentifier forReuseIdentifier:_content elementKind:1 creatingIfNecessary:?];
     v8 = v27;
     v9 = v26;
-    v10 = *(a1 + 40);
+    v10 = *(reuse + 40);
     if (os_variant_has_internal_diagnostics())
     {
       if (!v10)
@@ -509,9 +509,9 @@ LABEL_10:
 
     if (!v9)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      v24 = [a2 _layoutAttributes];
-      [v23 handleFailureInMethod:sel_enqueueViewForReuse_ object:a1 file:@"_UICollectionViewSubviewManager.m" lineNumber:264 description:{@"UICollectionView internal inconsistency: expected reuse queue for view. Collection view: %@; view: %@; layout attributes: %@", v10, a2, v24}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      _layoutAttributes2 = [a2 _layoutAttributes];
+      [currentHandler handleFailureInMethod:sel_enqueueViewForReuse_ object:reuse file:@"_UICollectionViewSubviewManager.m" lineNumber:264 description:{@"UICollectionView internal inconsistency: expected reuse queue for view. Collection view: %@; view: %@; layout attributes: %@", v10, a2, _layoutAttributes2}];
     }
 
     [v10 bounds];
@@ -550,13 +550,13 @@ LABEL_10:
         goto LABEL_16;
       }
 
-      v20 = [a2 _layoutAttributes];
+      _layoutAttributes3 = [a2 _layoutAttributes];
       *buf = 138412802;
       v29 = v10;
       v30 = 2112;
       v31 = a2;
       v32 = 2112;
-      v33 = v20;
+      v33 = _layoutAttributes3;
       _os_log_fault_impl(&dword_188A29000, v19, OS_LOG_TYPE_FAULT, "UICollectionView internal inconsistency: attempted to queue view that is already in the reuse queue. Collection view: %@; view: %@; layout attributes: %@", buf, 0x20u);
     }
 
@@ -571,13 +571,13 @@ LABEL_18:
       }
 
       v19 = v18;
-      v20 = [a2 _layoutAttributes];
+      _layoutAttributes3 = [a2 _layoutAttributes];
       *buf = 138412802;
       v29 = v10;
       v30 = 2112;
       v31 = a2;
       v32 = 2112;
-      v33 = v20;
+      v33 = _layoutAttributes3;
       _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "UICollectionView internal inconsistency: attempted to queue view that is already in the reuse queue. Collection view: %@; view: %@; layout attributes: %@", buf, 0x20u);
     }
 
@@ -590,23 +590,23 @@ LABEL_19:
   return v7;
 }
 
-- (uint64_t)isViewInReuseQueue:(uint64_t)a1
+- (uint64_t)isViewInReuseQueue:(uint64_t)queue
 {
-  if (!a1)
+  if (!queue)
   {
     return 0;
   }
 
-  v4 = [a2 reuseIdentifier];
-  v5 = [a2 _layoutAttributes];
-  v6 = [(_UILabelConfiguration *)v5 _content];
+  reuseIdentifier = [a2 reuseIdentifier];
+  _layoutAttributes = [a2 _layoutAttributes];
+  _content = [(_UILabelConfiguration *)_layoutAttributes _content];
 
   v7 = 0;
-  if (v4 && v6)
+  if (reuseIdentifier && _content)
   {
     v11 = 0;
     v12 = 0;
-    [(_UICollectionViewSubviewManager *)a1 _getElementKindReuseQueues:&v11 reuseQueue:v4 forReuseIdentifier:v6 elementKind:0 creatingIfNecessary:?];
+    [(_UICollectionViewSubviewManager *)queue _getElementKindReuseQueues:&v11 reuseQueue:reuseIdentifier forReuseIdentifier:_content elementKind:0 creatingIfNecessary:?];
     v8 = v12;
     v9 = v11;
     v7 = [v9 containsObject:a2];
@@ -622,8 +622,8 @@ LABEL_19:
     v3 = result;
     if (!a2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel_enumerateAllViewsInReuseQueueWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewManager.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateAllViewsInReuseQueueWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewManager.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
     }
 
     v4 = *(v3 + 16);
@@ -638,19 +638,19 @@ LABEL_19:
   return result;
 }
 
-- (void)ensureViewIsRemovedFromReuseQueue:(uint64_t)a1
+- (void)ensureViewIsRemovedFromReuseQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    v4 = [a2 reuseIdentifier];
-    v5 = [a2 _layoutAttributes];
-    v6 = [(_UILabelConfiguration *)v5 _content];
+    reuseIdentifier = [a2 reuseIdentifier];
+    _layoutAttributes = [a2 _layoutAttributes];
+    _content = [(_UILabelConfiguration *)_layoutAttributes _content];
 
-    if (v4 && v6)
+    if (reuseIdentifier && _content)
     {
       v10 = 0;
       v11 = 0;
-      [(_UICollectionViewSubviewManager *)a1 _getElementKindReuseQueues:&v10 reuseQueue:v4 forReuseIdentifier:v6 elementKind:0 creatingIfNecessary:?];
+      [(_UICollectionViewSubviewManager *)queue _getElementKindReuseQueues:&v10 reuseQueue:reuseIdentifier forReuseIdentifier:_content elementKind:0 creatingIfNecessary:?];
       v7 = v11;
       v8 = v10;
       v9 = v8;
@@ -659,25 +659,25 @@ LABEL_19:
         [v8 removeObject:a2];
         if (![v9 count])
         {
-          [v7 removeObjectForKey:v4];
+          [v7 removeObjectForKey:reuseIdentifier];
         }
       }
     }
   }
 }
 
-- (void)removeAllDequeuedViewsWithEnumerator:(uint64_t)a1
+- (void)removeAllDequeuedViewsWithEnumerator:(uint64_t)enumerator
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (enumerator)
   {
     if (!a2)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel_removeAllDequeuedViewsWithEnumerator_ object:a1 file:@"_UICollectionViewSubviewManager.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_removeAllDequeuedViewsWithEnumerator_ object:enumerator file:@"_UICollectionViewSubviewManager.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
     }
 
-    v4 = *(a1 + 24);
+    v4 = *(enumerator + 24);
     if ([v4 count])
     {
       v15 = 0;

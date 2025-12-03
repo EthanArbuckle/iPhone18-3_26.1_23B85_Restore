@@ -3,22 +3,22 @@
 - (BOOL)_shouldCheckForWeakness;
 - (BOOL)_shouldShowOptionsButton;
 - (BOOL)_useSEPLockInfo;
-- (BOOL)attemptValidationWithPIN:(id)a3;
+- (BOOL)attemptValidationWithPIN:(id)n;
 - (BOOL)isCreatingPasscode;
 - (BOOL)isNumericPIN;
-- (BOOL)pinIsAcceptable:(id)a3 outError:(id *)a4;
+- (BOOL)pinIsAcceptable:(id)acceptable outError:(id *)error;
 - (BOOL)requiresKeyboard;
 - (BOOL)simplePIN;
-- (BOOL)validatePIN:(id)a3;
+- (BOOL)validatePIN:(id)n;
 - (CGSize)overallContentSizeForViewInPopover;
 - (DevicePINController)init;
 - (DevicePINControllerDelegate)pinDelegate;
-- (double)_secondsToBlockForFailedAttempts:(int64_t)a3;
+- (double)_secondsToBlockForFailedAttempts:(int64_t)attempts;
 - (double)blockedTimeRemaining;
 - (double)unblockTime;
 - (id)_createAndShowAnimatedNavBarSpinner;
 - (id)_sepLockInfo;
-- (id)localizedPINStringForKey:(id)a3;
+- (id)localizedPINStringForKey:(id)key;
 - (id)passcodeOptionsAlertController;
 - (id)pinInstructionsPrompt;
 - (id)stringsBundle;
@@ -32,40 +32,40 @@
 - (void)_clearBlockedState;
 - (void)_dismiss;
 - (void)_invalidateSEPLockInfo;
-- (void)_preflightPasswordForWeakness:(id)a3 withCompletion:(id)a4;
-- (void)_removePinWithOldPassword:(id)a3;
+- (void)_preflightPasswordForWeakness:(id)weakness withCompletion:(id)completion;
+- (void)_removePinWithOldPassword:(id)password;
 - (void)_rereadBlockedState;
-- (void)_setNumberOfFailedAttempts:(int64_t)a3;
-- (void)_setPINPaneToSimple:(BOOL)a3 simpleLength:(int)a4 numeric:(BOOL)a5 requiresKeyboard:(int)a6;
-- (void)_setUnblockTime:(double)a3;
+- (void)_setNumberOfFailedAttempts:(int64_t)attempts;
+- (void)_setPINPaneToSimple:(BOOL)simple simpleLength:(int)length numeric:(BOOL)numeric requiresKeyboard:(int)keyboard;
+- (void)_setUnblockTime:(double)time;
 - (void)_showFailedAttempts;
 - (void)_showPINConfirmationError;
-- (void)_showUnacceptablePINError:(id)a3 password:(id)a4;
-- (void)_slidePasscodeFieldLeft:(BOOL)a3;
-- (void)_updateErrorTextAndFailureCount:(BOOL)a3;
+- (void)_showUnacceptablePINError:(id)error password:(id)password;
+- (void)_slidePasscodeFieldLeft:(BOOL)left;
+- (void)_updateErrorTextAndFailureCount:(BOOL)count;
 - (void)_updatePINButtons;
 - (void)_updateUI;
-- (void)adjustButtonsForPasswordLength:(unint64_t)a3;
+- (void)adjustButtonsForPasswordLength:(unint64_t)length;
 - (void)cancelButtonTapped;
 - (void)deactivateKeypad;
 - (void)dealloc;
 - (void)loadView;
 - (void)optionsTapped;
-- (void)pinEntered:(id)a3;
-- (void)setMode:(int)a3;
-- (void)setNumericPIN:(BOOL)a3;
-- (void)setPIN:(id)a3 completion:(id)a4;
-- (void)setPane:(id)a3;
-- (void)setPinBlocked:(BOOL)a3;
-- (void)setPinLength:(int)a3;
-- (void)setRequiresKeyboard:(BOOL)a3;
-- (void)setSimplePIN:(BOOL)a3;
-- (void)setSpecifier:(id)a3;
-- (void)showPasscodeOptions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)pinEntered:(id)entered;
+- (void)setMode:(int)mode;
+- (void)setNumericPIN:(BOOL)n;
+- (void)setPIN:(id)n completion:(id)completion;
+- (void)setPane:(id)pane;
+- (void)setPinBlocked:(BOOL)blocked;
+- (void)setPinLength:(int)length;
+- (void)setRequiresKeyboard:(BOOL)keyboard;
+- (void)setSimplePIN:(BOOL)n;
+- (void)setSpecifier:(id)specifier;
+- (void)showPasscodeOptions:(id)options;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 - (void)willUnlock;
 @end
@@ -74,10 +74,10 @@
 
 + (BOOL)settingEnabled
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isPasscodeSet = [mEMORY[0x1E69ADFB8] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (void)willUnlock
@@ -110,31 +110,31 @@
   return v3;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v7.receiver = self;
   v7.super_class = DevicePINController;
-  [(PSViewController *)&v7 setSpecifier:v4];
+  [(PSViewController *)&v7 setSpecifier:specifierCopy];
   WeakRetained = objc_loadWeakRetained(&self->_pinDelegate);
 
   if (!WeakRetained)
   {
-    v6 = [v4 propertyForKey:@"PINControllerDelegate"];
+    v6 = [specifierCopy propertyForKey:@"PINControllerDelegate"];
     objc_storeWeak(&self->_pinDelegate, v6);
 
-    [v4 removePropertyForKey:@"PINControllerDelegate"];
+    [specifierCopy removePropertyForKey:@"PINControllerDelegate"];
   }
 
   [(DevicePINController *)self overallContentSizeForViewInPopover];
   [(DevicePINController *)self setPreferredContentSize:?];
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  self->_mode = a3;
-  v4 = [(DevicePINController *)self title];
-  [(DevicePINController *)self setTitle:v4];
+  self->_mode = mode;
+  title = [(DevicePINController *)self title];
+  [(DevicePINController *)self setTitle:title];
 
   pinLength = self->_pinLength;
   self->_pinLength = 0;
@@ -151,9 +151,9 @@
 
 - (CGSize)overallContentSizeForViewInPopover
 {
-  v2 = [(DevicePINController *)self requiresKeyboard];
+  requiresKeyboard = [(DevicePINController *)self requiresKeyboard];
   v3 = 264.0;
-  if (!v2)
+  if (!requiresKeyboard)
   {
     v3 = 480.0;
   }
@@ -167,8 +167,8 @@
 - (void)_dismiss
 {
   self->_hasBeenDismissed = 1;
-  v3 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  [v3 setUserInteractionEnabled:1];
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  [activeKeyboard setUserInteractionEnabled:1];
 
   [(PSEditingPane *)self->super._pane dismissKeypad];
   if (self->_shouldDismissWhenDone)
@@ -203,16 +203,16 @@ void __31__DevicePINController__dismiss__block_invoke(uint64_t a1)
   return [v2 bundleForClass:v3];
 }
 
-- (id)localizedPINStringForKey:(id)a3
+- (id)localizedPINStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DevicePINController *)self stringsBundle];
-  v6 = [(DevicePINController *)self stringsTable];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_1EFE45030 table:v6];
+  keyCopy = key;
+  stringsBundle = [(DevicePINController *)self stringsBundle];
+  stringsTable = [(DevicePINController *)self stringsTable];
+  v7 = [stringsBundle localizedStringForKey:keyCopy value:&stru_1EFE45030 table:stringsTable];
 
-  if (v7 == v4)
+  if (v7 == keyCopy)
   {
-    v8 = PS_LocalizedStringForPINEntry(v4);
+    v8 = PS_LocalizedStringForPINEntry(keyCopy);
 
     v7 = v8;
   }
@@ -228,16 +228,16 @@ void __31__DevicePINController__dismiss__block_invoke(uint64_t a1)
   [(PSDetailController *)&v3 dealloc];
 }
 
-- (BOOL)pinIsAcceptable:(id)a3 outError:(id *)a4
+- (BOOL)pinIsAcceptable:(id)acceptable outError:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  acceptableCopy = acceptable;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v7 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v8 = [v7 passcode:v6 meetsCurrentConstraintsOutError:a4];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v8 = [mEMORY[0x1E69ADFB8] passcode:acceptableCopy meetsCurrentConstraintsOutError:error];
 
   if (!v8)
   {
@@ -245,59 +245,59 @@ void __31__DevicePINController__dismiss__block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  v9 = [(DevicePINController *)self pinDelegate];
-  if (([v9 conformsToProtocol:&unk_1EFE6C730] & 1) == 0)
+  pinDelegate = [(DevicePINController *)self pinDelegate];
+  if (([pinDelegate conformsToProtocol:&unk_1EFE6C730] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [(DevicePINController *)self pinDelegate];
-  v11 = [v10 specifier];
-  v12 = [v11 objectForKeyedSubscript:@"passcode"];
+  pinDelegate2 = [(DevicePINController *)self pinDelegate];
+  specifier = [pinDelegate2 specifier];
+  v12 = [specifier objectForKeyedSubscript:@"passcode"];
 
   if (!v12)
   {
 LABEL_9:
-    v16 = ![(DevicePINController *)self validatePIN:v6];
+    v16 = ![(DevicePINController *)self validatePIN:acceptableCopy];
     goto LABEL_10;
   }
 
-  v13 = [(DevicePINController *)self pinDelegate];
-  v14 = [v13 specifier];
-  v15 = [v14 objectForKeyedSubscript:@"passcode"];
-  v16 = [v15 isEqualToString:v6] ^ 1;
+  pinDelegate3 = [(DevicePINController *)self pinDelegate];
+  specifier2 = [pinDelegate3 specifier];
+  v15 = [specifier2 objectForKeyedSubscript:@"passcode"];
+  v16 = [v15 isEqualToString:acceptableCopy] ^ 1;
 
 LABEL_10:
   return v16;
 }
 
-- (void)setPIN:(id)a3 completion:(id)a4
+- (void)setPIN:(id)n completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DevicePINController *)self _createAndShowAnimatedNavBarSpinner];
+  nCopy = n;
+  completionCopy = completion;
+  _createAndShowAnimatedNavBarSpinner = [(DevicePINController *)self _createAndShowAnimatedNavBarSpinner];
   self->_showingSpinner = 1;
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  v10 = [v9 beginBackgroundTaskWithName:@"com.apple.Preferences.passcode" expirationHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v10 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:@"com.apple.Preferences.passcode" expirationHandler:0];
 
-  v11 = [(DevicePINController *)self mode];
+  mode = [(DevicePINController *)self mode];
   v12 = self->_oldPassword;
   v13 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__DevicePINController_setPIN_completion___block_invoke;
   block[3] = &unk_1E71DE7C0;
-  v25 = v11;
+  v25 = mode;
   v19 = v12;
-  v20 = v6;
-  v21 = v8;
-  v22 = self;
-  v23 = v7;
+  v20 = nCopy;
+  v21 = _createAndShowAnimatedNavBarSpinner;
+  selfCopy = self;
+  v23 = completionCopy;
   v24 = v10;
-  v14 = v7;
-  v15 = v8;
-  v16 = v6;
+  v14 = completionCopy;
+  v15 = _createAndShowAnimatedNavBarSpinner;
+  v16 = nCopy;
   v17 = v12;
   dispatch_async(v13, block);
 }
@@ -442,30 +442,30 @@ void __41__DevicePINController_setPIN_completion___block_invoke_3(uint64_t a1)
 {
   v3 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v3];
-  v5 = [(DevicePINController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(DevicePINController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   [v3 startAnimating];
 
   return v3;
 }
 
-- (BOOL)validatePIN:(id)a3
+- (BOOL)validatePIN:(id)n
 {
   v3 = MEMORY[0x1E69ADFB8];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  if ([v5 isPasscodeSet])
+  nCopy = n;
+  sharedConnection = [v3 sharedConnection];
+  if ([sharedConnection isPasscodeSet])
   {
     v8 = 0;
-    v6 = [v5 unlockDeviceWithPasscode:v4 outError:&v8];
+    v6 = [sharedConnection unlockDeviceWithPasscode:nCopy outError:&v8];
 
-    v4 = v8;
+    nCopy = v8;
   }
 
   else
   {
-    v6 = [v4 isEqualToString:&stru_1EFE45030];
+    v6 = [nCopy isEqualToString:&stru_1EFE45030];
   }
 
   return v6;
@@ -476,17 +476,17 @@ void __41__DevicePINController_setPIN_completion___block_invoke_3(uint64_t a1)
   if ([(DevicePINController *)self isCreatingPasscode])
   {
     v6 = 0;
-    v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v3 = [v2 defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v6];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    unlockScreenType = [mEMORY[0x1E69ADFB8] defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v6];
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v3 = [v2 unlockScreenType];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    unlockScreenType = [mEMORY[0x1E69ADFB8] unlockScreenType];
   }
 
-  v4 = v3;
+  v4 = unlockScreenType;
 
   return v4;
 }
@@ -494,46 +494,46 @@ void __41__DevicePINController_setPIN_completion___block_invoke_3(uint64_t a1)
 - (int)_simplePasscodeType
 {
   v6 = 0;
-  v2 = [(DevicePINController *)self isCreatingPasscode];
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v4 = v3;
-  if (v2)
+  isCreatingPasscode = [(DevicePINController *)self isCreatingPasscode];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v4 = mEMORY[0x1E69ADFB8];
+  if (isCreatingPasscode)
   {
-    [v3 defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v6];
+    [mEMORY[0x1E69ADFB8] defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v6];
   }
 
   else
   {
-    [v3 unlockScreenTypeWithOutSimplePasscodeType:&v6];
+    [mEMORY[0x1E69ADFB8] unlockScreenTypeWithOutSimplePasscodeType:&v6];
   }
 
   return v6;
 }
 
-- (void)setRequiresKeyboard:(BOOL)a3
+- (void)setRequiresKeyboard:(BOOL)keyboard
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:keyboard];
   requiresKeyboard = self->_requiresKeyboard;
   self->_requiresKeyboard = v4;
 }
 
-- (void)setPinLength:(int)a3
+- (void)setPinLength:(int)length
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&length];
   pinLength = self->_pinLength;
   self->_pinLength = v4;
 }
 
-- (void)setSimplePIN:(BOOL)a3
+- (void)setSimplePIN:(BOOL)n
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:n];
   simplePIN = self->_simplePIN;
   self->_simplePIN = v4;
 }
 
-- (void)setNumericPIN:(BOOL)a3
+- (void)setNumericPIN:(BOOL)n
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:n];
   numericPIN = self->_numericPIN;
   self->_numericPIN = v4;
 }
@@ -558,8 +558,8 @@ void __41__DevicePINController_setPIN_completion___block_invoke_3(uint64_t a1)
         v6 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"mode"];
         self->_mode = [v6 intValue];
 
-        v7 = [(DevicePINController *)self title];
-        [(DevicePINController *)self setTitle:v7];
+        title = [(DevicePINController *)self title];
+        [(DevicePINController *)self setTitle:title];
       }
     }
 
@@ -716,9 +716,9 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [(DevicePINController *)self defaultsID];
+    defaultsID = [(DevicePINController *)self defaultsID];
 
-    CFPreferencesAppSynchronize(v3);
+    CFPreferencesAppSynchronize(defaultsID);
   }
 }
 
@@ -726,23 +726,23 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
 {
   if ([(DevicePINController *)self _useSEPLockInfo])
   {
-    v3 = [(DevicePINController *)self _sepLockInfo];
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69B1A38]];
+    _sepLockInfo = [(DevicePINController *)self _sepLockInfo];
+    v4 = [_sepLockInfo objectForKeyedSubscript:*MEMORY[0x1E69B1A38]];
 
-    v5 = [v4 longValue];
-    return v5;
+    longValue = [v4 longValue];
+    return longValue;
   }
 
   else
   {
-    v7 = [(DevicePINController *)self failedAttemptsKey];
-    v8 = [(DevicePINController *)self defaultsID];
+    failedAttemptsKey = [(DevicePINController *)self failedAttemptsKey];
+    defaultsID = [(DevicePINController *)self defaultsID];
 
-    return CFPreferencesGetAppIntegerValue(v7, v8, 0);
+    return CFPreferencesGetAppIntegerValue(failedAttemptsKey, defaultsID, 0);
   }
 }
 
-- (void)_setNumberOfFailedAttempts:(int64_t)a3
+- (void)_setNumberOfFailedAttempts:(int64_t)attempts
 {
   if ([(DevicePINController *)self _useSEPLockInfo])
   {
@@ -752,10 +752,10 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(DevicePINController *)self defaultsID];
-    value = [MEMORY[0x1E696AD98] numberWithLong:a3];
-    CFPreferencesSetAppValue([(DevicePINController *)self failedAttemptsKey], value, v5);
-    CFPreferencesAppSynchronize(v5);
+    defaultsID = [(DevicePINController *)self defaultsID];
+    value = [MEMORY[0x1E696AD98] numberWithLong:attempts];
+    CFPreferencesSetAppValue([(DevicePINController *)self failedAttemptsKey], value, defaultsID);
+    CFPreferencesAppSynchronize(defaultsID);
   }
 }
 
@@ -769,20 +769,20 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [(DevicePINController *)self defaultsID];
-    CFPreferencesSetAppValue([(DevicePINController *)self failedAttemptsKey], 0, v3);
-    CFPreferencesSetAppValue([(DevicePINController *)self blockTimeIntervalKey], 0, v3);
-    v4 = [(DevicePINController *)self blockedStateKey];
-    CFPreferencesSetAppValue(v4, *MEMORY[0x1E695E4C0], v3);
+    defaultsID = [(DevicePINController *)self defaultsID];
+    CFPreferencesSetAppValue([(DevicePINController *)self failedAttemptsKey], 0, defaultsID);
+    CFPreferencesSetAppValue([(DevicePINController *)self blockTimeIntervalKey], 0, defaultsID);
+    blockedStateKey = [(DevicePINController *)self blockedStateKey];
+    CFPreferencesSetAppValue(blockedStateKey, *MEMORY[0x1E695E4C0], defaultsID);
 
-    CFPreferencesAppSynchronize(v3);
+    CFPreferencesAppSynchronize(defaultsID);
   }
 }
 
 - (double)unblockTime
 {
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  [v3 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v5 = v4;
 
   if (self->_useSEPLockInfo)
@@ -815,8 +815,8 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
   if ([(DevicePINController *)self _useSEPLockInfo])
   {
     [(DevicePINController *)self _invalidateSEPLockInfo];
-    v3 = [(DevicePINController *)self _sepLockInfo];
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69B1A28]];
+    _sepLockInfo = [(DevicePINController *)self _sepLockInfo];
+    v4 = [_sepLockInfo objectForKeyedSubscript:*MEMORY[0x1E69B1A28]];
 
     [v4 doubleValue];
     v6 = v5;
@@ -826,9 +826,9 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [(DevicePINController *)self useProgressiveDelays];
+    useProgressiveDelays = [(DevicePINController *)self useProgressiveDelays];
     result = 0.0;
-    if (v8)
+    if (useProgressiveDelays)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v10 = v9;
@@ -846,19 +846,19 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setUnblockTime:(double)a3
+- (void)_setUnblockTime:(double)time
 {
-  v5 = [(DevicePINController *)self defaultsID];
-  value = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  CFPreferencesSetAppValue([(DevicePINController *)self blockTimeIntervalKey], value, v5);
-  CFPreferencesAppSynchronize(v5);
+  defaultsID = [(DevicePINController *)self defaultsID];
+  value = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  CFPreferencesSetAppValue([(DevicePINController *)self blockTimeIntervalKey], value, defaultsID);
+  CFPreferencesAppSynchronize(defaultsID);
 }
 
-- (double)_secondsToBlockForFailedAttempts:(int64_t)a3
+- (double)_secondsToBlockForFailedAttempts:(int64_t)attempts
 {
   result = 0.0;
-  v4 = a3 - 6;
-  if (a3 >= 6)
+  v4 = attempts - 6;
+  if (attempts >= 6)
   {
     if (v4 > 2)
     {
@@ -876,24 +876,24 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
 
 - (void)_adjustUnblockTime
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v9 = [v3 valueRestrictionForFeature:*MEMORY[0x1E69ADED8]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v9 = [mEMORY[0x1E69ADFB8] valueRestrictionForFeature:*MEMORY[0x1E69ADED8]];
 
   if (v9)
   {
-    v4 = [v9 longValue];
+    longValue = [v9 longValue];
   }
 
   else
   {
-    v4 = -1;
+    longValue = -1;
   }
 
-  v5 = [(DevicePINController *)self numberOfFailedAttempts];
-  [(DevicePINController *)self _setNumberOfFailedAttempts:v5 + 1];
-  if (v4 < 0 || v5 < v4)
+  numberOfFailedAttempts = [(DevicePINController *)self numberOfFailedAttempts];
+  [(DevicePINController *)self _setNumberOfFailedAttempts:numberOfFailedAttempts + 1];
+  if (longValue < 0 || numberOfFailedAttempts < longValue)
   {
-    [(DevicePINController *)self _secondsToBlockForFailedAttempts:v5 + 1];
+    [(DevicePINController *)self _secondsToBlockForFailedAttempts:numberOfFailedAttempts + 1];
     v6 = v7;
     if (v7 == 0.0)
     {
@@ -911,9 +911,9 @@ void __38__DevicePINController__useSEPLockInfo__block_invoke(uint64_t a1)
 LABEL_9:
 }
 
-- (BOOL)attemptValidationWithPIN:(id)a3
+- (BOOL)attemptValidationWithPIN:(id)n
 {
-  v4 = [(DevicePINController *)self validatePIN:a3];
+  v4 = [(DevicePINController *)self validatePIN:n];
   if (v4)
   {
     [(DevicePINController *)self _clearBlockedState];
@@ -946,8 +946,8 @@ LABEL_9:
     v4 = 0;
   }
 
-  v5 = [(DevicePINController *)self useProgressiveDelays];
-  if (!v4 && v5)
+  useProgressiveDelays = [(DevicePINController *)self useProgressiveDelays];
+  if (!v4 && useProgressiveDelays)
   {
     [(PSEditingPane *)self->super._pane showFailedAttempts:[(DevicePINController *)self numberOfFailedAttempts]];
   }
@@ -960,9 +960,9 @@ LABEL_9:
   }
 }
 
-- (void)_updateErrorTextAndFailureCount:(BOOL)a3
+- (void)_updateErrorTextAndFailureCount:(BOOL)count
 {
-  v4 = [(DevicePINController *)self isBlocked];
+  isBlocked = [(DevicePINController *)self isBlocked];
   if (!self->_error1)
   {
     v5 = [(DevicePINController *)self localizedPINStringForKey:@"WRONG_1"];
@@ -977,7 +977,7 @@ LABEL_9:
     error2 = self->_error2;
     self->_error2 = v21;
 
-    if (v4)
+    if (isBlocked)
     {
       goto LABEL_5;
     }
@@ -988,7 +988,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!isBlocked)
   {
     goto LABEL_13;
   }
@@ -1054,31 +1054,31 @@ LABEL_14:
   }
 }
 
-- (void)_showUnacceptablePINError:(id)a3 password:(id)a4
+- (void)_showUnacceptablePINError:(id)error password:(id)password
 {
-  v11 = a3;
-  if ([(DevicePINController *)self validatePIN:a4])
+  errorCopy = error;
+  if ([(DevicePINController *)self validatePIN:password])
   {
-    v6 = [(DevicePINController *)self localizedPINStringForKey:@"CANNOT_REUSE_PASSCODE"];
+    localizedDescription = [(DevicePINController *)self localizedPINStringForKey:@"CANNOT_REUSE_PASSCODE"];
 LABEL_5:
-    v9 = v6;
+    localizedDescriptionOfCurrentPasscodeConstraints = localizedDescription;
     goto LABEL_7;
   }
 
-  v7 = [v11 domain];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E69ADFA8]];
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:*MEMORY[0x1E69ADFA8]];
 
   if (v8)
   {
-    v6 = [v11 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     goto LABEL_5;
   }
 
-  v10 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v9 = [v10 localizedDescriptionOfCurrentPasscodeConstraints];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  localizedDescriptionOfCurrentPasscodeConstraints = [mEMORY[0x1E69ADFB8] localizedDescriptionOfCurrentPasscodeConstraints];
 
 LABEL_7:
-  [(PSEditingPane *)self->super._pane setPINPolicyString:v9 visible:1];
+  [(PSEditingPane *)self->super._pane setPINPolicyString:localizedDescriptionOfCurrentPasscodeConstraints visible:1];
 }
 
 - (void)_showPINConfirmationError
@@ -1089,15 +1089,15 @@ LABEL_7:
 
 - (void)optionsTapped
 {
-  v2 = [(PSEditingPane *)self->super._pane pinView];
-  [v2 optionsButtonTapped];
+  pinView = [(PSEditingPane *)self->super._pane pinView];
+  [pinView optionsButtonTapped];
 }
 
-- (void)setPinBlocked:(BOOL)a3
+- (void)setPinBlocked:(BOOL)blocked
 {
-  v3 = a3;
-  v4 = [(PSEditingPane *)self->super._pane pinView];
-  [v4 setBlocked:v3];
+  blockedCopy = blocked;
+  pinView = [(PSEditingPane *)self->super._pane pinView];
+  [pinView setBlocked:blockedCopy];
 }
 
 - (void)deactivateKeypad
@@ -1116,10 +1116,10 @@ LABEL_7:
   }
 
   v23 = self->super._pane;
-  v4 = [(PSEditingPane *)v23 password];
-  v5 = [v4 length];
+  password = [(PSEditingPane *)v23 password];
+  v5 = [password length];
 
-  v6 = [(DevicePINController *)self navigationItem];
+  navigationItem = [(DevicePINController *)self navigationItem];
   if (!self->_cancelButton && !self->_hidesCancelButton)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped];
@@ -1131,16 +1131,16 @@ LABEL_7:
   {
     if ([(DevicePINController *)self showSimplePINCancelButtonOnLeft])
     {
-      [v6 setLeftBarButtonItem:self->_cancelButton];
-      v9 = v6;
+      [navigationItem setLeftBarButtonItem:self->_cancelButton];
+      v9 = navigationItem;
       v10 = 0;
     }
 
     else
     {
-      [v6 setLeftBarButtonItem:0];
+      [navigationItem setLeftBarButtonItem:0];
       v10 = self->_cancelButton;
-      v9 = v6;
+      v9 = navigationItem;
     }
 
     [v9 setRightBarButtonItem:v10];
@@ -1217,15 +1217,15 @@ LABEL_18:
   }
 
 LABEL_23:
-  [v6 setRightBarButtonItem:nextButton];
-  [v6 setLeftBarButtonItem:self->_cancelButton];
+  [navigationItem setRightBarButtonItem:nextButton];
+  [navigationItem setLeftBarButtonItem:self->_cancelButton];
   v22 = v5 != 0;
   [(UIBarButtonItem *)self->_nextButton setEnabled:v22];
   [(UIBarButtonItem *)self->_doneButton setEnabled:v22];
 LABEL_24:
 }
 
-- (void)adjustButtonsForPasswordLength:(unint64_t)a3
+- (void)adjustButtonsForPasswordLength:(unint64_t)length
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1240,16 +1240,16 @@ LABEL_24:
   v4.receiver = self;
   v4.super_class = DevicePINController;
   [(PSDetailController *)&v4 loadView];
-  v3 = [(DevicePINController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(DevicePINController *)self view];
+  [view setAutoresizingMask:18];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(PSViewController *)self parentController];
-  v4 = [v3 popoverPresentationController];
+  parentController = [(PSViewController *)self parentController];
+  popoverPresentationController = [parentController popoverPresentationController];
 
-  if (v4)
+  if (popoverPresentationController)
   {
     [(DevicePINController *)self overallContentSizeForViewInPopover];
     v6 = v5;
@@ -1262,13 +1262,13 @@ LABEL_24:
   }
 }
 
-- (void)_slidePasscodeFieldLeft:(BOOL)a3
+- (void)_slidePasscodeFieldLeft:(BOOL)left
 {
-  v3 = a3;
-  v5 = [(PSViewController *)self parentController];
-  v6 = [v5 popoverPresentationController];
+  leftCopy = left;
+  parentController = [(PSViewController *)self parentController];
+  popoverPresentationController = [parentController popoverPresentationController];
 
-  if (v6)
+  if (popoverPresentationController)
   {
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -1277,17 +1277,17 @@ LABEL_24:
     v12 = v11;
     [(PSEditingPane *)self->super._pane setFrame:v7, v8, v9, v11];
     [(DevicePINController *)self setPreferredContentSize:v10, v12];
-    v13 = [(DevicePINController *)self navigationController];
-    [v13 setPreferredContentSize:{v10, v12}];
+    navigationController = [(DevicePINController *)self navigationController];
+    [navigationController setPreferredContentSize:{v10, v12}];
   }
 
-  v14 = [(DevicePINController *)self pinPane];
-  [v14 setPINLength:{-[DevicePINController pinLength](self, "pinLength")}];
+  pinPane = [(DevicePINController *)self pinPane];
+  [pinPane setPINLength:{-[DevicePINController pinLength](self, "pinLength")}];
 
-  v15 = [(DevicePINController *)self pinPane];
-  v16 = [v15 _shouldReverseLayoutDirection];
+  pinPane2 = [(DevicePINController *)self pinPane];
+  _shouldReverseLayoutDirection = [pinPane2 _shouldReverseLayoutDirection];
 
-  if (v16 != v3)
+  if (_shouldReverseLayoutDirection != leftCopy)
   {
     v17 = 1;
   }
@@ -1297,27 +1297,27 @@ LABEL_24:
     v17 = 2;
   }
 
-  v18 = [(DevicePINController *)self pinPane];
-  [v18 slideToNewPasscodeField:-[DevicePINController simplePIN](self requiresKeyboard:"simplePIN") numericOnly:-[DevicePINController requiresKeyboard](self transition:"requiresKeyboard") showsOptionsButton:{-[DevicePINController isNumericPIN](self, "isNumericPIN"), v17, -[DevicePINController _shouldShowOptionsButton](self, "_shouldShowOptionsButton")}];
+  pinPane3 = [(DevicePINController *)self pinPane];
+  [pinPane3 slideToNewPasscodeField:-[DevicePINController simplePIN](self requiresKeyboard:"simplePIN") numericOnly:-[DevicePINController requiresKeyboard](self transition:"requiresKeyboard") showsOptionsButton:{-[DevicePINController isNumericPIN](self, "isNumericPIN"), v17, -[DevicePINController _shouldShowOptionsButton](self, "_shouldShowOptionsButton")}];
 
   [(DevicePINController *)self _updatePINButtons];
 }
 
-- (void)pinEntered:(id)a3
+- (void)pinEntered:(id)entered
 {
-  v4 = a3;
+  enteredCopy = entered;
   if (![(DevicePINController *)self isBlocked])
   {
-    v5 = [v4 copy];
+    v5 = [enteredCopy copy];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __34__DevicePINController_pinEntered___block_invoke;
     v6[3] = &unk_1E71DC570;
     v6[4] = self;
-    v4 = v5;
-    v7 = v4;
-    [(DevicePINController *)self _preflightPasswordForWeakness:v4 withCompletion:v6];
+    enteredCopy = v5;
+    v7 = enteredCopy;
+    [(DevicePINController *)self _preflightPasswordForWeakness:enteredCopy withCompletion:v6];
   }
 }
 
@@ -1686,16 +1686,16 @@ LABEL_9:
   [v4 _dismiss];
 }
 
-- (void)_removePinWithOldPassword:(id)a3
+- (void)_removePinWithOldPassword:(id)password
 {
-  [(DevicePINController *)self setOldPassword:a3];
-  v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-  [v4 addObject:self];
+  [(DevicePINController *)self setOldPassword:password];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  [weakObjectsHashTable addObject:self];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__DevicePINController__removePinWithOldPassword___block_invoke;
   aBlock[3] = &unk_1E71DCE98;
-  v5 = v4;
+  v5 = weakObjectsHashTable;
   v8 = v5;
   v6 = _Block_copy(aBlock);
   if ([(DevicePINController *)self isMemberOfClass:objc_opt_class()])
@@ -1735,42 +1735,42 @@ void __49__DevicePINController__removePinWithOldPassword___block_invoke(uint64_t
   [v7 _dismiss];
 }
 
-- (void)_preflightPasswordForWeakness:(id)a3 withCompletion:(id)a4
+- (void)_preflightPasswordForWeakness:(id)weakness withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  weaknessCopy = weakness;
+  completionCopy = completion;
   if ([(DevicePINController *)self _shouldCheckForWeakness]&& ([(DevicePINController *)self pinDelegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9 & 1) != 0))
   {
     v19 = 0;
-    v10 = [(DevicePINController *)self pinIsAcceptable:v6 outError:&v19];
+    v10 = [(DevicePINController *)self pinIsAcceptable:weaknessCopy outError:&v19];
     v11 = v19;
     if (v10 || ([(DevicePINController *)self pinDelegate], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_opt_respondsToSelector(), v12, (v13 & 1) == 0))
     {
-      v15 = [(DevicePINController *)self pinDelegate];
+      pinDelegate = [(DevicePINController *)self pinDelegate];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __68__DevicePINController__preflightPasswordForWeakness_withCompletion___block_invoke_2;
       v16[3] = &unk_1E71DE810;
       v16[4] = self;
-      v17 = v7;
-      [v15 devicePINController:self shouldAcceptPIN:v6 withCompletion:v16];
+      v17 = completionCopy;
+      [pinDelegate devicePINController:self shouldAcceptPIN:weaknessCopy withCompletion:v16];
     }
 
     else
     {
-      v14 = [(DevicePINController *)self pinDelegate];
+      pinDelegate2 = [(DevicePINController *)self pinDelegate];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __68__DevicePINController__preflightPasswordForWeakness_withCompletion___block_invoke;
       v18[3] = &unk_1E71DE7E8;
       v18[4] = self;
-      [v14 showWeakWarningAlertForController:self offerUseAnyway:0 withCompletion:v18];
+      [pinDelegate2 showWeakWarningAlertForController:self offerUseAnyway:0 withCompletion:v18];
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1859,13 +1859,13 @@ uint64_t __68__DevicePINController__preflightPasswordForWeakness_withCompletion_
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = DevicePINController;
-  [(PSDetailController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v4 sf_isiPhone])
+  [(PSDetailController *)&v6 viewWillAppear:appear];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isiPhone])
   {
 
 LABEL_4:
@@ -1873,9 +1873,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v5 = [(DevicePINController *)self simplePIN];
+  simplePIN = [(DevicePINController *)self simplePIN];
 
-  if (v5)
+  if (simplePIN)
   {
     goto LABEL_4;
   }
@@ -1884,30 +1884,30 @@ LABEL_5:
   self->_hasBeenDismissed = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DevicePINController;
-  [(PSDetailController *)&v4 viewDidAppear:a3];
+  [(PSDetailController *)&v4 viewDidAppear:appear];
   if (PSUsePadStylePIN())
   {
     [(PSEditingPane *)self->super._pane becomeFirstResponder];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = DevicePINController;
-  [(PSDetailController *)&v4 viewWillDisappear:a3];
+  [(PSDetailController *)&v4 viewWillDisappear:disappear];
   [(PSEditingPane *)self->super._pane resignFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = DevicePINController;
-  [(PSViewController *)&v7 viewDidDisappear:a3];
+  [(PSViewController *)&v7 viewDidDisappear:disappear];
   if (!self->_hasBeenDismissed)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pinDelegate);
@@ -1937,9 +1937,9 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v5 = [(DevicePINController *)self passcodeOptionsAlertController];
-  v6 = [v5 actions];
-  v7 = [v6 count];
+  passcodeOptionsAlertController = [(DevicePINController *)self passcodeOptionsAlertController];
+  actions = [passcodeOptionsAlertController actions];
+  v7 = [actions count];
 
   if (v7 > 1)
   {
@@ -1947,11 +1947,11 @@ LABEL_5:
   }
 
 LABEL_13:
-  v9 = [(DevicePINController *)self passcodeOptionsTitle];
-  if (v9)
+  passcodeOptionsTitle = [(DevicePINController *)self passcodeOptionsTitle];
+  if (passcodeOptionsTitle)
   {
-    v10 = [(DevicePINController *)self passcodeOptionsHandler];
-    v8 = v10 != 0;
+    passcodeOptionsHandler = [(DevicePINController *)self passcodeOptionsHandler];
+    v8 = passcodeOptionsHandler != 0;
   }
 
   else
@@ -1962,18 +1962,18 @@ LABEL_13:
   return v8;
 }
 
-- (void)_setPINPaneToSimple:(BOOL)a3 simpleLength:(int)a4 numeric:(BOOL)a5 requiresKeyboard:(int)a6
+- (void)_setPINPaneToSimple:(BOOL)simple simpleLength:(int)length numeric:(BOOL)numeric requiresKeyboard:(int)keyboard
 {
-  v6 = a5;
-  v7 = a3;
-  [(DevicePINController *)self setPinLength:*&a4];
-  v9 = [(DevicePINController *)self pinPane];
-  [v9 setPINLength:{-[DevicePINController pinLength](self, "pinLength")}];
+  numericCopy = numeric;
+  simpleCopy = simple;
+  [(DevicePINController *)self setPinLength:*&length];
+  pinPane = [(DevicePINController *)self pinPane];
+  [pinPane setPINLength:{-[DevicePINController pinLength](self, "pinLength")}];
 
-  [(DevicePINController *)self setSimplePIN:v7];
-  [(DevicePINController *)self setNumericPIN:v6];
-  v10 = [(DevicePINController *)self pinPane];
-  [v10 slideToNewPasscodeField:-[DevicePINController simplePIN](self requiresKeyboard:"simplePIN") numericOnly:-[DevicePINController requiresKeyboard](self transition:"requiresKeyboard") showsOptionsButton:{-[DevicePINController isNumericPIN](self, "isNumericPIN"), 6, -[DevicePINController _shouldShowOptionsButton](self, "_shouldShowOptionsButton")}];
+  [(DevicePINController *)self setSimplePIN:simpleCopy];
+  [(DevicePINController *)self setNumericPIN:numericCopy];
+  pinPane2 = [(DevicePINController *)self pinPane];
+  [pinPane2 slideToNewPasscodeField:-[DevicePINController simplePIN](self requiresKeyboard:"simplePIN") numericOnly:-[DevicePINController requiresKeyboard](self transition:"requiresKeyboard") showsOptionsButton:{-[DevicePINController isNumericPIN](self, "isNumericPIN"), 6, -[DevicePINController _shouldShowOptionsButton](self, "_shouldShowOptionsButton")}];
 
   [(DevicePINController *)self _updatePINButtons];
 }
@@ -1981,8 +1981,8 @@ LABEL_13:
 - (id)passcodeOptionsAlertController
 {
   v26 = 0;
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v4 = [v3 minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v26];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v4 = [mEMORY[0x1E69ADFB8] minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v26];
 
   v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
   if ([(DevicePINController *)self isNumericPIN])
@@ -2083,28 +2083,28 @@ uint64_t __53__DevicePINController_passcodeOptionsAlertController__block_invoke_
   return [v1 _setPINPaneToSimple:1 simpleLength:4 numeric:1 requiresKeyboard:v2];
 }
 
-- (void)showPasscodeOptions:(id)a3
+- (void)showPasscodeOptions:(id)options
 {
-  v6 = a3;
-  v4 = [(DevicePINController *)self passcodeOptionsAlertController];
+  optionsCopy = options;
+  passcodeOptionsAlertController = [(DevicePINController *)self passcodeOptionsAlertController];
   if (PSUsePadStylePIN())
   {
-    [v4 setModalPresentationStyle:7];
-    v5 = [v4 popoverPresentationController];
-    [v5 setSourceView:v6];
-    [v6 bounds];
-    [v5 setSourceRect:?];
+    [passcodeOptionsAlertController setModalPresentationStyle:7];
+    popoverPresentationController = [passcodeOptionsAlertController popoverPresentationController];
+    [popoverPresentationController setSourceView:optionsCopy];
+    [optionsCopy bounds];
+    [popoverPresentationController setSourceRect:?];
   }
 
-  [(DevicePINController *)self presentViewController:v4 animated:1 completion:0];
+  [(DevicePINController *)self presentViewController:passcodeOptionsAlertController animated:1 completion:0];
 }
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   v15.receiver = self;
   v15.super_class = DevicePINController;
-  [(PSDetailController *)&v15 setPane:v4];
+  [(PSDetailController *)&v15 setPane:paneCopy];
   self->_substate = 1;
   [(DevicePINController *)self setSuccess:0];
   if (self->_mode == 1000)
@@ -2112,14 +2112,14 @@ uint64_t __53__DevicePINController_passcodeOptionsAlertController__block_invoke_
     v5 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"mode"];
     self->_mode = [v5 intValue];
 
-    v6 = [(DevicePINController *)self title];
-    [(DevicePINController *)self setTitle:v6];
+    title = [(DevicePINController *)self title];
+    [(DevicePINController *)self setTitle:title];
   }
 
-  v7 = [(DevicePINController *)self passcodeOptionsHandler];
-  if (v7)
+  passcodeOptionsHandler = [(DevicePINController *)self passcodeOptionsHandler];
+  if (passcodeOptionsHandler)
   {
-    [v4 setPasscodeOptionsHandler:v7];
+    [paneCopy setPasscodeOptionsHandler:passcodeOptionsHandler];
   }
 
   else if (self->_allowOptionsButton)
@@ -2130,16 +2130,16 @@ uint64_t __53__DevicePINController_passcodeOptionsAlertController__block_invoke_
     v11 = __31__DevicePINController_setPane___block_invoke;
     v12 = &unk_1E71DE838;
     objc_copyWeak(&v13, &location);
-    [v4 setPasscodeOptionsHandler:&v9];
+    [paneCopy setPasscodeOptionsHandler:&v9];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 
   v8 = [(DevicePINController *)self passcodeOptionsTitle:v9];
-  [v4 setPasscodeOptionsTitle:v8];
+  [paneCopy setPasscodeOptionsTitle:v8];
 
-  [v4 setPINLength:{-[DevicePINController pinLength](self, "pinLength")}];
-  [v4 setSimplePIN:-[DevicePINController simplePIN](self requiresKeyboard:"simplePIN") numericOnly:-[DevicePINController requiresKeyboard](self showsOptions:{"requiresKeyboard"), -[DevicePINController isNumericPIN](self, "isNumericPIN"), -[DevicePINController _shouldShowOptionsButton](self, "_shouldShowOptionsButton")}];
+  [paneCopy setPINLength:{-[DevicePINController pinLength](self, "pinLength")}];
+  [paneCopy setSimplePIN:-[DevicePINController simplePIN](self requiresKeyboard:"simplePIN") numericOnly:-[DevicePINController requiresKeyboard](self showsOptions:{"requiresKeyboard"), -[DevicePINController isNumericPIN](self, "isNumericPIN"), -[DevicePINController _shouldShowOptionsButton](self, "_shouldShowOptionsButton")}];
   if ([(DevicePINController *)self isBlocked])
   {
     [(DevicePINController *)self _updateErrorTextAndFailureCount:0];

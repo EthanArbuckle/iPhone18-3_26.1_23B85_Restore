@@ -17,7 +17,7 @@
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     [(NSXPCListener *)v2->_listener resume];
-    v5 = [(NSXPCListener *)v2->_listener endpoint];
+    endpoint = [(NSXPCListener *)v2->_listener endpoint];
     MRSetUIServiceRelayEndpoint();
   }
 

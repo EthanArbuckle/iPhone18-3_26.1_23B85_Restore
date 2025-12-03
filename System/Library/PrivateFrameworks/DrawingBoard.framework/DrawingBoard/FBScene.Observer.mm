@@ -1,9 +1,9 @@
 @interface FBScene.Observer
 - (_TtCE12DrawingBoardCSo7FBScene8Observer)init;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneWillActivate:(id)a3;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneWillActivate:(id)activate;
 @end
 
 @implementation FBScene.Observer
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   sub_249D73274();
   sub_249D73264();
@@ -28,12 +28,12 @@
   swift_getKeyPath();
   MEMORY[0x28223BE20]();
   sub_249D39124(&qword_27EF1B090, _s8ObserverCMa);
-  v5 = a3;
-  v6 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_249D72864();
 }
 
-- (void)sceneWillActivate:(id)a3
+- (void)sceneWillActivate:(id)activate
 {
   sub_249D73274();
   sub_249D73264();
@@ -48,11 +48,11 @@
   v7 = 0xA000000000000000;
   v8 = 0;
   v9 = 0;
-  v4 = self;
+  selfCopy = self;
   sub_249D379B0(v5);
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
   sub_249D73274();
   sub_249D73264();
@@ -65,11 +65,11 @@
   swift_getKeyPath();
   MEMORY[0x28223BE20]();
   sub_249D39124(&qword_27EF1B090, _s8ObserverCMa);
-  v4 = self;
+  selfCopy = self;
   sub_249D72864();
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   sub_249D73274();
   sub_249D73264();
@@ -82,8 +82,8 @@
   sub_249D38A20(0, &qword_27EF1B0A0);
   sub_249D38A68();
   v6 = sub_249D732D4();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_249D38AD0(v6);
   v10 = v9;
 

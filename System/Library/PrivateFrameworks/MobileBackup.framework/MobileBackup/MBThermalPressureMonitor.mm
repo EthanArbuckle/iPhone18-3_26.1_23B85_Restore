@@ -66,13 +66,13 @@
 - (void)_registerForThermalPressureNotifications
 {
   objc_initWeak(&location, self);
-  v3 = [(MBThermalPressureMonitor *)self queue];
+  queue = [(MBThermalPressureMonitor *)self queue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100235FE8;
   handler[3] = &unk_1003C1000;
   objc_copyWeak(&v8, &location);
-  v4 = notify_register_dispatch(kOSThermalNotificationPressureLevelName, &self->_thermalNotificationToken, v3, handler);
+  v4 = notify_register_dispatch(kOSThermalNotificationPressureLevelName, &self->_thermalNotificationToken, queue, handler);
 
   if (v4)
   {
@@ -108,37 +108,37 @@
 
 - (void)_measureCurrentThermalPressureLevel
 {
-  v3 = [(MBThermalPressureMonitor *)self queue];
+  queue = [(MBThermalPressureMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002360C4;
   block[3] = &unk_1003BC0B0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (int)thermalPressureLevel
 {
-  v2 = self;
-  v3 = [(MBThermalPressureMonitor *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  selfCopy = self;
+  queue = [(MBThermalPressureMonitor *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = kOSThermalPressureLevelUndefined;
-  v4 = [(MBThermalPressureMonitor *)v2 queue];
+  queue2 = [(MBThermalPressureMonitor *)selfCopy queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100236360;
   v6[3] = &unk_1003BCFF0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(queue2, v6);
 
-  LODWORD(v2) = *(v8 + 6);
+  LODWORD(selfCopy) = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 @end

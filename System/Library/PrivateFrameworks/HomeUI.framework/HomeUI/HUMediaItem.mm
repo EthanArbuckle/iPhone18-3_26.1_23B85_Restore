@@ -1,77 +1,77 @@
 @interface HUMediaItem
-- (HUMediaItem)initWithPlaybackArchiveDisplayProperties:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (void)setPlaybackArchiveDisplayProperties:(id)a3;
+- (HUMediaItem)initWithPlaybackArchiveDisplayProperties:(id)properties;
+- (id)_subclass_updateWithOptions:(id)options;
+- (void)setPlaybackArchiveDisplayProperties:(id)properties;
 @end
 
 @implementation HUMediaItem
 
-- (HUMediaItem)initWithPlaybackArchiveDisplayProperties:(id)a3
+- (HUMediaItem)initWithPlaybackArchiveDisplayProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8.receiver = self;
   v8.super_class = HUMediaItem;
   v5 = [(HUMediaItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HUMediaItem *)v5 setPlaybackArchiveDisplayProperties:v4];
+    [(HUMediaItem *)v5 setPlaybackArchiveDisplayProperties:propertiesCopy];
   }
 
   return v6;
 }
 
-- (void)setPlaybackArchiveDisplayProperties:(id)a3
+- (void)setPlaybackArchiveDisplayProperties:(id)properties
 {
-  v5 = a3;
-  if (self->_playbackArchiveDisplayProperties != v5)
+  propertiesCopy = properties;
+  if (self->_playbackArchiveDisplayProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_playbackArchiveDisplayProperties, a3);
-    v5 = v6;
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->_playbackArchiveDisplayProperties, properties);
+    propertiesCopy = v6;
   }
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  playbackArchiveDisplayProperties = [(HUMediaItem *)self playbackArchiveDisplayProperties];
 
-  if (v5)
+  if (playbackArchiveDisplayProperties)
   {
-    v6 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
-    v7 = [v6 title];
-    [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x277D13F60]];
+    playbackArchiveDisplayProperties2 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
+    title = [playbackArchiveDisplayProperties2 title];
+    [dictionary setObject:title forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-    v8 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
-    v9 = [v8 subtitle];
-    [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277D13E20]];
+    playbackArchiveDisplayProperties3 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
+    subtitle = [playbackArchiveDisplayProperties3 subtitle];
+    [dictionary setObject:subtitle forKeyedSubscript:*MEMORY[0x277D13E20]];
 
-    v10 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
-    v11 = [v10 artworkImageData];
+    playbackArchiveDisplayProperties4 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
+    artworkImageData = [playbackArchiveDisplayProperties4 artworkImageData];
 
-    if (v11)
+    if (artworkImageData)
     {
       v12 = objc_alloc(MEMORY[0x277D143C8]);
-      v13 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
-      v14 = [v13 artworkImageData];
-      v15 = [v12 initWithImageData:v14];
+      playbackArchiveDisplayProperties5 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
+      artworkImageData2 = [playbackArchiveDisplayProperties5 artworkImageData];
+      v15 = [v12 initWithImageData:artworkImageData2];
 
-      [v4 setObject:v15 forKeyedSubscript:*MEMORY[0x277D13E88]];
+      [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277D13E88]];
     }
   }
 
   v24 = *MEMORY[0x277D13FB8];
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
-  v18 = [v16 numberWithInt:v17 == 0];
+  playbackArchiveDisplayProperties6 = [(HUMediaItem *)self playbackArchiveDisplayProperties];
+  v18 = [v16 numberWithInt:playbackArchiveDisplayProperties6 == 0];
   v25[0] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-  [v4 addEntriesFromDictionary:v19];
+  [dictionary addEntriesFromDictionary:v19];
 
   v20 = MEMORY[0x277D2C900];
-  v21 = [MEMORY[0x277D14780] outcomeWithResults:v4];
+  v21 = [MEMORY[0x277D14780] outcomeWithResults:dictionary];
   v22 = [v20 futureWithResult:v21];
 
   return v22;

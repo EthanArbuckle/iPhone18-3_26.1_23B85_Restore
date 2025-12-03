@@ -6,32 +6,32 @@
 - (NSArray)cityNames;
 - (NSArray)sanitizedCities;
 - (NSString)selectedCityLocationID;
-- (WeatherPrefsMonitor)initWithDelegate:(id)a3;
+- (WeatherPrefsMonitor)initWithDelegate:(id)delegate;
 - (WeatherPrefsMonitorDelegate)delegate;
 - (void)_notifyObserversOfReload;
 - (void)dealloc;
-- (void)setSelectedCity:(id)a3;
-- (void)setSelectedCityLocationID:(id)a3;
-- (void)weatherPrefsDidGetUpdated:(id)a3;
+- (void)setSelectedCity:(id)city;
+- (void)setSelectedCityLocationID:(id)d;
+- (void)weatherPrefsDidGetUpdated:(id)updated;
 @end
 
 @implementation WeatherPrefsMonitor
 
-- (WeatherPrefsMonitor)initWithDelegate:(id)a3
+- (WeatherPrefsMonitor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = WeatherPrefsMonitor;
   v5 = [(WeatherPrefsMonitor *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanoweatherprefs"];
     gizmoDefaults = v6->_gizmoDefaults;
     v6->_gizmoDefaults = v7;
 
-    v9 = [(NPSDomainAccessor *)v6->_gizmoDefaults synchronize];
+    synchronize = [(NPSDomainAccessor *)v6->_gizmoDefaults synchronize];
     v10 = objc_opt_new();
     gizmoDefaultsManager = v6->_gizmoDefaultsManager;
     v6->_gizmoDefaultsManager = v10;
@@ -63,19 +63,19 @@
 
 - (void)_notifyObserversOfReload
 {
-  v3 = [(WeatherPrefsMonitor *)self delegate];
-  [v3 monitorObservedReload:self];
+  delegate = [(WeatherPrefsMonitor *)self delegate];
+  [delegate monitorObservedReload:self];
 }
 
-- (void)weatherPrefsDidGetUpdated:(id)a3
+- (void)weatherPrefsDidGetUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = +[NSProcessInfo processInfo];
-  v6 = [v5 processName];
-  v7 = [v4 object];
+  processName = [v5 processName];
+  object = [updatedCopy object];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(updatedCopy) = [processName isEqualToString:object];
+  if ((updatedCopy & 1) == 0)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -88,22 +88,22 @@
 
 - (NSArray)cityNames
 {
-  v2 = [(WeatherPrefsMonitor *)self cities];
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  cities = [(WeatherPrefsMonitor *)self cities];
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cities count]);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_23D0;
   v3 = v5[3] = &unk_8378;
   v6 = v3;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [cities enumerateObjectsUsingBlock:v5];
 
   return v3;
 }
 
 - (NSArray)cities
 {
-  v3 = [(WeatherPrefsMonitor *)self sanitizedCities];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  sanitizedCities = [(WeatherPrefsMonitor *)self sanitizedCities];
+  v4 = [NSMutableArray arrayWithArray:sanitizedCities];
 
   if ([(WeatherPrefsMonitor *)self areLocationServicesAuthorized])
   {
@@ -117,26 +117,26 @@
 - (BOOL)areLocationServicesAuthorized
 {
   v2 = +[WeatherLocationManager sharedWeatherLocationManager];
-  v3 = [v2 forceLoadingAuthorizationStatus];
+  forceLoadingAuthorizationStatus = [v2 forceLoadingAuthorizationStatus];
 
-  return v3 > 2;
+  return forceLoadingAuthorizationStatus > 2;
 }
 
 - (BOOL)areLocationServicesResolved
 {
   v2 = +[WeatherLocationManager sharedWeatherLocationManager];
-  v3 = [v2 forceLoadingAuthorizationStatus];
+  forceLoadingAuthorizationStatus = [v2 forceLoadingAuthorizationStatus];
 
-  return v3 != 0;
+  return forceLoadingAuthorizationStatus != 0;
 }
 
 - (NSArray)sanitizedCities
 {
   v2 = +[WeatherPreferences sharedPreferences];
   [v2 synchronizeStateToDisk];
-  v3 = [v2 loadSavedCities];
+  loadSavedCities = [v2 loadSavedCities];
   v4 = [NSPredicate predicateWithBlock:&stru_83B8];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [loadSavedCities filteredArrayUsingPredicate:v4];
 
   return v5;
 }
@@ -149,37 +149,37 @@
   v18[3] = &unk_83E0;
   v18[4] = self;
   v3 = objc_retainBlock(v18);
-  v4 = [(WeatherPrefsMonitor *)self selectedCityLocationID];
-  v5 = v4;
-  if (v4 && ![v4 isEqualToString:kLocalWeatherCityID])
+  selectedCityLocationID = [(WeatherPrefsMonitor *)self selectedCityLocationID];
+  v5 = selectedCityLocationID;
+  if (selectedCityLocationID && ![selectedCityLocationID isEqualToString:kLocalWeatherCityID])
   {
-    v7 = [(WeatherPrefsMonitor *)self cities];
+    cities = [(WeatherPrefsMonitor *)self cities];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_281C;
     v16 = &unk_8408;
     v17 = v5;
-    v8 = [v7 indexOfObjectPassingTest:&v13];
+    v8 = [cities indexOfObjectPassingTest:&v13];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = (v3[2])(v3);
       v10 = v9;
       if (v9)
       {
-        v11 = v9;
+        firstObject = v9;
       }
 
       else
       {
-        v11 = [v7 firstObject];
+        firstObject = [cities firstObject];
       }
 
-      v6 = v11;
+      v6 = firstObject;
     }
 
     else
     {
-      v6 = [v7 objectAtIndexedSubscript:{v8, v13, v14, v15, v16}];
+      v6 = [cities objectAtIndexedSubscript:{v8, v13, v14, v15, v16}];
     }
   }
 
@@ -191,35 +191,35 @@
   return v6;
 }
 
-- (void)setSelectedCity:(id)a3
+- (void)setSelectedCity:(id)city
 {
-  v7 = a3;
-  v4 = [(WeatherPrefsMonitor *)self selectedCity];
-  v5 = [v7 isEqual:v4];
+  cityCopy = city;
+  selectedCity = [(WeatherPrefsMonitor *)self selectedCity];
+  v5 = [cityCopy isEqual:selectedCity];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v7 locationID];
-    [(WeatherPrefsMonitor *)self setSelectedCityLocationID:v6];
+    locationID = [cityCopy locationID];
+    [(WeatherPrefsMonitor *)self setSelectedCityLocationID:locationID];
   }
 }
 
 - (NSString)selectedCityLocationID
 {
-  v2 = [(WeatherPrefsMonitor *)self gizmoDefaults];
-  v3 = [v2 stringForKey:@"UserSelected"];
+  gizmoDefaults = [(WeatherPrefsMonitor *)self gizmoDefaults];
+  v3 = [gizmoDefaults stringForKey:@"UserSelected"];
 
   return v3;
 }
 
-- (void)setSelectedCityLocationID:(id)a3
+- (void)setSelectedCityLocationID:(id)d
 {
-  v4 = a3;
-  v5 = [(WeatherPrefsMonitor *)self gizmoDefaults];
-  [v5 setObject:v4 forKey:@"UserSelected"];
+  dCopy = d;
+  gizmoDefaults = [(WeatherPrefsMonitor *)self gizmoDefaults];
+  [gizmoDefaults setObject:dCopy forKey:@"UserSelected"];
 
-  v6 = [(WeatherPrefsMonitor *)self gizmoDefaults];
-  v7 = [v6 synchronize];
+  gizmoDefaults2 = [(WeatherPrefsMonitor *)self gizmoDefaults];
+  synchronize = [gizmoDefaults2 synchronize];
 
   v8 = dispatch_get_global_queue(2, 0);
   block[0] = _NSConcreteStackBlock;

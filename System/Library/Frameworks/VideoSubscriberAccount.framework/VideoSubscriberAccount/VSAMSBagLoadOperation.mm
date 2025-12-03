@@ -15,38 +15,38 @@
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CEE3F8] vs_defaultBag];
-  v5 = [(VSAMSBagLoadOperation *)self bagKey];
-  v6 = [v4 stringForKey:v5];
+  vs_defaultBag = [MEMORY[0x277CEE3F8] vs_defaultBag];
+  bagKey = [(VSAMSBagLoadOperation *)self bagKey];
+  v6 = [vs_defaultBag stringForKey:bagKey];
 
-  v7 = [(VSAMSBagLoadOperation *)self bagKey];
-  v8 = v7;
-  if (v7 == @"SoleProviderFeatureEnabled")
+  bagKey2 = [(VSAMSBagLoadOperation *)self bagKey];
+  v8 = bagKey2;
+  if (bagKey2 == @"SoleProviderFeatureEnabled")
   {
 
 LABEL_7:
-    v10 = [(VSAMSBagLoadOperation *)self bagKey];
-    v11 = [v4 BOOLForKey:v10];
+    bagKey3 = [(VSAMSBagLoadOperation *)self bagKey];
+    v11 = [vs_defaultBag BOOLForKey:bagKey3];
 
     v6 = v11;
     goto LABEL_8;
   }
 
-  v9 = [(VSAMSBagLoadOperation *)self bagKey];
+  bagKey4 = [(VSAMSBagLoadOperation *)self bagKey];
 
-  if (v9 == @"ShowMultiAppInstallForCaseAlwaysRequirePassword")
+  if (bagKey4 == @"ShowMultiAppInstallForCaseAlwaysRequirePassword")
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  v12 = [v6 valuePromise];
+  valuePromise = [v6 valuePromise];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __42__VSAMSBagLoadOperation_executionDidBegin__block_invoke;
   v13[3] = &unk_278B74BB0;
   v13[4] = self;
-  [v12 addFinishBlock:v13];
+  [valuePromise addFinishBlock:v13];
 }
 
 void __42__VSAMSBagLoadOperation_executionDidBegin__block_invoke(uint64_t a1, void *a2, void *a3)

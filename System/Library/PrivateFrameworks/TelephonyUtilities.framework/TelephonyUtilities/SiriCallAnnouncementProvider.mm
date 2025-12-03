@@ -1,23 +1,23 @@
 @interface SiriCallAnnouncementProvider
-- (void)propertiesDidChangeForConfiguration:(id)a3;
-- (void)voiceOverObserver:(id)a3 didChangeEnabled:(BOOL)a4;
+- (void)propertiesDidChangeForConfiguration:(id)configuration;
+- (void)voiceOverObserver:(id)observer didChangeEnabled:(BOOL)enabled;
 @end
 
 @implementation SiriCallAnnouncementProvider
 
-- (void)voiceOverObserver:(id)a3 didChangeEnabled:(BOOL)a4
+- (void)voiceOverObserver:(id)observer didChangeEnabled:(BOOL)enabled
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1003FF9C0(v6, a4);
+  selfCopy = self;
+  sub_1003FF9C0(selfCopy, enabled);
   swift_unknownObjectRelease();
 }
 
-- (void)propertiesDidChangeForConfiguration:(id)a3
+- (void)propertiesDidChangeForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003FFCFC(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1003FFCFC(configurationCopy);
 }
 
 @end

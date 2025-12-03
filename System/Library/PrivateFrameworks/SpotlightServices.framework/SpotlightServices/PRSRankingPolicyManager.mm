@@ -1,14 +1,14 @@
 @interface PRSRankingPolicyManager
-+ (double)termFrequencyComponentFor:(id)a3 matchingString:(id)a4 weighted:(BOOL)a5;
-+ (double)termFrequencyComponentForWord:(id)a3 inString:(id)a4;
++ (double)termFrequencyComponentFor:(id)for matchingString:(id)string weighted:(BOOL)weighted;
++ (double)termFrequencyComponentForWord:(id)word inString:(id)string;
 + (id)getSharedRankingPolicyManager;
-- (BOOL)doesOrderedSpanExistWithStartingIndex:(unint64_t)a3 nextArray:(id)a4 arrayOfIndexArrays:(id)a5 level:(unint64_t)a6 currentOrderedSpan:(int64_t *)a7;
-- (id)cookSQFOnClientWithServerProbabilities:(id)a3 qiCEPValues:(id)a4 localResultOrder:(id)a5 poorTextMatchCategories:(id)a6 minimumBagCEP:(double)a7 cook_sqf_topdown:(BOOL)a8 cook_sqf_fallback_qi_cep:(BOOL)a9;
-- (id)cosineComponentsUsingWordMatches:(id)a3 withField:(id)a4 withCorpusCount:(double)a5 prefixVersion:(BOOL)a6;
-- (void)computeNewFeaturesForProperty:(id)a3 query:(id)a4 qr_prop_query_norm_min_ordered_span:(double *)a5 qr_prop_query_norm_min_unordered_span:(double *)a6 qr_query_min_pair_dist_in_title:(double *)a7 prefix_match_norm_count:(double *)a8;
-- (void)computeNewFeaturesForProperty:(id)a3 query:(id)a4 qr_prop_query_norm_min_ordered_span:(double *)a5 qr_prop_query_norm_min_unordered_span:(double *)a6 qr_query_min_pair_dist_in_title:(double *)a7 prefix_match_norm_count:(double *)a8 ordered_first_term_position:(double *)a9 prefixMatch:(BOOL)a10 queryBreakDown:(id)a11 isVirtualField:(BOOL)a12 locale:(id)a13;
-- (void)computeNewFeaturesForProperty:(id)a3 query:(id)a4 qr_prop_query_norm_min_ordered_span:(double *)a5 qr_prop_query_norm_min_unordered_span:(double *)a6 qr_query_min_pair_dist_in_title:(double *)a7 prefix_match_norm_count:(double *)a8 prefixMatch:(BOOL)a9;
-- (void)minimumAnyOrderSpanWithStartingIndex:(int64_t)a3 nextArray:(id)a4 arrayOfIndexArrays:(id)a5 level:(unint64_t)a6 currentAnyOrderSpan:(int64_t)a7 minimumSpan:(int64_t *)a8 minimumDistancePair:(int64_t *)a9 currentMinimumIndex:(int64_t)a10 currentMaximumIndex:(int64_t)a11;
+- (BOOL)doesOrderedSpanExistWithStartingIndex:(unint64_t)index nextArray:(id)array arrayOfIndexArrays:(id)arrays level:(unint64_t)level currentOrderedSpan:(int64_t *)span;
+- (id)cookSQFOnClientWithServerProbabilities:(id)probabilities qiCEPValues:(id)values localResultOrder:(id)order poorTextMatchCategories:(id)categories minimumBagCEP:(double)p cook_sqf_topdown:(BOOL)cook_sqf_topdown cook_sqf_fallback_qi_cep:(BOOL)cook_sqf_fallback_qi_cep;
+- (id)cosineComponentsUsingWordMatches:(id)matches withField:(id)field withCorpusCount:(double)count prefixVersion:(BOOL)version;
+- (void)computeNewFeaturesForProperty:(id)property query:(id)query qr_prop_query_norm_min_ordered_span:(double *)qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:(double *)qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:(double *)qr_query_min_pair_dist_in_title prefix_match_norm_count:(double *)prefix_match_norm_count;
+- (void)computeNewFeaturesForProperty:(id)property query:(id)query qr_prop_query_norm_min_ordered_span:(double *)qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:(double *)qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:(double *)qr_query_min_pair_dist_in_title prefix_match_norm_count:(double *)prefix_match_norm_count ordered_first_term_position:(double *)ordered_first_term_position prefixMatch:(BOOL)self0 queryBreakDown:(id)self1 isVirtualField:(BOOL)self2 locale:(id)self3;
+- (void)computeNewFeaturesForProperty:(id)property query:(id)query qr_prop_query_norm_min_ordered_span:(double *)qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:(double *)qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:(double *)qr_query_min_pair_dist_in_title prefix_match_norm_count:(double *)prefix_match_norm_count prefixMatch:(BOOL)match;
+- (void)minimumAnyOrderSpanWithStartingIndex:(int64_t)index nextArray:(id)array arrayOfIndexArrays:(id)arrays level:(unint64_t)level currentAnyOrderSpan:(int64_t)span minimumSpan:(int64_t *)minimumSpan minimumDistancePair:(int64_t *)pair currentMinimumIndex:(int64_t)self0 currentMaximumIndex:(int64_t)self1;
 @end
 
 @implementation PRSRankingPolicyManager
@@ -32,17 +32,17 @@ uint64_t __56__PRSRankingPolicyManager_getSharedRankingPolicyManager__block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (double)termFrequencyComponentFor:(id)a3 matchingString:(id)a4 weighted:(BOOL)a5
++ (double)termFrequencyComponentFor:(id)for matchingString:(id)string weighted:(BOOL)weighted
 {
-  v5 = a5;
+  weightedCopy = weighted;
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  forCopy = for;
+  stringCopy = string;
   v9 = objc_opt_new();
-  v10 = [v7 length];
-  v11 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v36 = v8;
-  v12 = [v8 componentsSeparatedByCharactersInSet:v11];
+  v10 = [forCopy length];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v36 = stringCopy;
+  v12 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v44 = 0u;
   v45 = 0u;
@@ -66,7 +66,7 @@ uint64_t __56__PRSRankingPolicyManager_getSharedRankingPolicyManager__block_invo
         }
 
         v19 = *(*(&v42 + 1) + 8 * i);
-        if (v15 <= [v19 length] && !objc_msgSend(v19, "compare:options:range:", v7, 129, 0, v16))
+        if (v15 <= [v19 length] && !objc_msgSend(v19, "compare:options:range:", forCopy, 129, 0, v16))
         {
           v20 = [v9 objectForKey:v19];
           if (v20)
@@ -94,8 +94,8 @@ uint64_t __56__PRSRankingPolicyManager_getSharedRankingPolicyManager__block_invo
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v23 = [v9 allKeys];
-  v24 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  allKeys = [v9 allKeys];
+  v24 = [allKeys countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v24)
   {
     v25 = v24;
@@ -107,24 +107,24 @@ uint64_t __56__PRSRankingPolicyManager_getSharedRankingPolicyManager__block_invo
       {
         if (*v39 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = *(*(&v38 + 1) + 8 * j);
         v30 = [v9 objectForKey:v29];
-        v31 = [v30 unsignedIntegerValue];
+        unsignedIntegerValue = [v30 unsignedIntegerValue];
 
-        v32 = log(v31) + 1.0;
-        if (v5)
+        v32 = log(unsignedIntegerValue) + 1.0;
+        if (weightedCopy)
         {
-          v33 = v32 * [v7 length];
+          v33 = v32 * [forCopy length];
           v32 = v33 / [v29 length];
         }
 
         v27 = v27 + v32;
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v25 = [allKeys countByEnumeratingWithState:&v38 objects:v46 count:16];
     }
 
     while (v25);
@@ -139,13 +139,13 @@ uint64_t __56__PRSRankingPolicyManager_getSharedRankingPolicyManager__block_invo
   return v27;
 }
 
-+ (double)termFrequencyComponentForWord:(id)a3 inString:(id)a4
++ (double)termFrequencyComponentForWord:(id)word inString:(id)string
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+  wordCopy = word;
+  stringCopy = string;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v8 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v20 = 0u;
   v21 = 0u;
@@ -173,7 +173,7 @@ LABEL_13:
         objc_enumerationMutation(v9);
       }
 
-      if (![*(*(&v18 + 1) + 8 * i) compare:v5 options:{129, v18}])
+      if (![*(*(&v18 + 1) + 8 * i) compare:wordCopy options:{129, v18}])
       {
         v13 = v13 + 1.0;
       }
@@ -196,20 +196,20 @@ LABEL_14:
   return v15;
 }
 
-- (id)cosineComponentsUsingWordMatches:(id)a3 withField:(id)a4 withCorpusCount:(double)a5 prefixVersion:(BOOL)a6
+- (id)cosineComponentsUsingWordMatches:(id)matches withField:(id)field withCorpusCount:(double)count prefixVersion:(BOOL)version
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  versionCopy = version;
+  matchesCopy = matches;
+  fieldCopy = field;
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v13 = [v10 componentsSeparatedByCharactersInSet:v12];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v13 = [fieldCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v13 count])
   {
-    v14 = [v9 count];
+    v14 = [matchesCopy count];
     v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
-    if (v6)
+    if (versionCopy)
     {
       v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
     }
@@ -221,7 +221,7 @@ LABEL_14:
 
     v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
     v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
-    if (v6)
+    if (versionCopy)
     {
       v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
     }
@@ -235,10 +235,10 @@ LABEL_14:
     v26[1] = 3221225472;
     v26[2] = __100__PRSRankingPolicyManager_cosineComponentsUsingWordMatches_withField_withCorpusCount_prefixVersion___block_invoke;
     v26[3] = &unk_1E8596C50;
-    v33 = a5;
+    countCopy = count;
     v27 = v17;
-    v34 = v6;
-    v28 = v10;
+    v34 = versionCopy;
+    v28 = fieldCopy;
     v29 = v15;
     v30 = v16;
     v31 = v18;
@@ -248,7 +248,7 @@ LABEL_14:
     v22 = v16;
     v23 = v15;
     v24 = v17;
-    [v9 enumerateKeysAndObjectsUsingBlock:v26];
+    [matchesCopy enumerateKeysAndObjectsUsingBlock:v26];
     [v11 setTermFrequencies:v23];
     [v11 setTermFrequenciesWeighted:v22];
     [v11 setInverseDocFrequencies:v24];
@@ -317,112 +317,112 @@ void __100__PRSRankingPolicyManager_cosineComponentsUsingWordMatches_withField_w
   [v26 addObject:v27];
 }
 
-- (void)minimumAnyOrderSpanWithStartingIndex:(int64_t)a3 nextArray:(id)a4 arrayOfIndexArrays:(id)a5 level:(unint64_t)a6 currentAnyOrderSpan:(int64_t)a7 minimumSpan:(int64_t *)a8 minimumDistancePair:(int64_t *)a9 currentMinimumIndex:(int64_t)a10 currentMaximumIndex:(int64_t)a11
+- (void)minimumAnyOrderSpanWithStartingIndex:(int64_t)index nextArray:(id)array arrayOfIndexArrays:(id)arrays level:(unint64_t)level currentAnyOrderSpan:(int64_t)span minimumSpan:(int64_t *)minimumSpan minimumDistancePair:(int64_t *)pair currentMinimumIndex:(int64_t)self0 currentMaximumIndex:(int64_t)self1
 {
-  v13 = a4;
-  v14 = a5;
-  if ([v14 count] == a6)
+  arrayCopy = array;
+  arraysCopy = arrays;
+  if ([arraysCopy count] == level)
   {
     v15 = PRSLogCategoryDefault();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [PRSRankingPolicyManager minimumAnyOrderSpanWithStartingIndex:a6 nextArray:v15 arrayOfIndexArrays:? level:? currentAnyOrderSpan:? minimumSpan:? minimumDistancePair:? currentMinimumIndex:? currentMaximumIndex:?];
+      [PRSRankingPolicyManager minimumAnyOrderSpanWithStartingIndex:level nextArray:v15 arrayOfIndexArrays:? level:? currentAnyOrderSpan:? minimumSpan:? minimumDistancePair:? currentMinimumIndex:? currentMaximumIndex:?];
     }
   }
 
-  else if ([v13 count])
+  else if ([arrayCopy count])
   {
     v16 = 0;
-    v17 = a6 + 1;
-    v27 = v13;
+    v17 = level + 1;
+    v27 = arrayCopy;
     do
     {
-      v18 = [v13 objectAtIndex:v16];
-      v19 = [v18 integerValue];
+      v18 = [arrayCopy objectAtIndex:v16];
+      integerValue = [v18 integerValue];
 
-      v20 = v19 - a3;
-      if (v19 - a3 < 0)
+      v20 = integerValue - index;
+      if (integerValue - index < 0)
       {
-        v20 = a3 - v19;
+        v20 = index - integerValue;
       }
 
-      if (v20 < *a9)
+      if (v20 < *pair)
       {
-        *a9 = v20;
+        *pair = v20;
       }
 
-      v21 = v19 - a11;
-      if (v19 <= a11)
+      v21 = integerValue - maximumIndex;
+      if (integerValue <= maximumIndex)
       {
-        v22 = a11;
+        maximumIndexCopy = maximumIndex;
       }
 
       else
       {
-        v22 = v19;
+        maximumIndexCopy = integerValue;
       }
 
-      if (v19 <= a11)
+      if (integerValue <= maximumIndex)
       {
         v21 = 0;
       }
 
-      if (a10 > v19)
+      if (minimumIndex > integerValue)
       {
-        v23 = v19;
+        minimumIndexCopy = integerValue;
       }
 
       else
       {
-        v23 = a10;
+        minimumIndexCopy = minimumIndex;
       }
 
-      if (a10 > v19)
+      if (minimumIndex > integerValue)
       {
-        v24 = a11;
+        maximumIndexCopy2 = maximumIndex;
       }
 
       else
       {
-        v24 = v22;
+        maximumIndexCopy2 = maximumIndexCopy;
       }
 
-      if (a10 > v19)
+      if (minimumIndex > integerValue)
       {
-        v21 = a10 - v19;
+        v21 = minimumIndex - integerValue;
       }
 
-      v25 = v21 + a7;
-      if (v17 == [v14 count])
+      v25 = v21 + span;
+      if (v17 == [arraysCopy count])
       {
-        if (*a8 > v25)
+        if (*minimumSpan > v25)
         {
-          *a8 = v25;
+          *minimumSpan = v25;
         }
       }
 
       else
       {
-        v26 = [v14 objectAtIndex:v17];
-        [(PRSRankingPolicyManager *)self minimumAnyOrderSpanWithStartingIndex:v19 nextArray:v26 arrayOfIndexArrays:v14 level:v17 currentAnyOrderSpan:v25 minimumSpan:a8 minimumDistancePair:a9 currentMinimumIndex:v23 currentMaximumIndex:v24];
+        v26 = [arraysCopy objectAtIndex:v17];
+        [(PRSRankingPolicyManager *)self minimumAnyOrderSpanWithStartingIndex:integerValue nextArray:v26 arrayOfIndexArrays:arraysCopy level:v17 currentAnyOrderSpan:v25 minimumSpan:minimumSpan minimumDistancePair:pair currentMinimumIndex:minimumIndexCopy currentMaximumIndex:maximumIndexCopy2];
 
-        v13 = v27;
+        arrayCopy = v27;
       }
 
       ++v16;
     }
 
-    while ([v13 count] > v16);
+    while ([arrayCopy count] > v16);
   }
 }
 
-- (BOOL)doesOrderedSpanExistWithStartingIndex:(unint64_t)a3 nextArray:(id)a4 arrayOfIndexArrays:(id)a5 level:(unint64_t)a6 currentOrderedSpan:(int64_t *)a7
+- (BOOL)doesOrderedSpanExistWithStartingIndex:(unint64_t)index nextArray:(id)array arrayOfIndexArrays:(id)arrays level:(unint64_t)level currentOrderedSpan:(int64_t *)span
 {
-  v12 = a4;
-  v13 = a5;
-  if ([v13 count] != a6)
+  arrayCopy = array;
+  arraysCopy = arrays;
+  if ([arraysCopy count] != level)
   {
-    if (![v12 count])
+    if (![arrayCopy count])
     {
 LABEL_7:
       v14 = 0;
@@ -432,26 +432,26 @@ LABEL_7:
     v15 = 0;
     while (1)
     {
-      v16 = [v12 objectAtIndex:v15];
-      v17 = [v16 integerValue];
+      v16 = [arrayCopy objectAtIndex:v15];
+      integerValue = [v16 integerValue];
 
-      if (v17 > a3)
+      if (integerValue > index)
       {
         break;
       }
 
-      if ([v12 count] <= ++v15)
+      if ([arrayCopy count] <= ++v15)
       {
         goto LABEL_7;
       }
     }
 
-    *a7 += v17 - a3;
-    v19 = a6 + 1;
-    if (v19 != [v13 count])
+    *span += integerValue - index;
+    v19 = level + 1;
+    if (v19 != [arraysCopy count])
     {
-      v20 = [v13 objectAtIndex:v19];
-      v14 = [(PRSRankingPolicyManager *)self doesOrderedSpanExistWithStartingIndex:v17 nextArray:v20 arrayOfIndexArrays:v13 level:v19 currentOrderedSpan:a7];
+      v20 = [arraysCopy objectAtIndex:v19];
+      v14 = [(PRSRankingPolicyManager *)self doesOrderedSpanExistWithStartingIndex:integerValue nextArray:v20 arrayOfIndexArrays:arraysCopy level:v19 currentOrderedSpan:span];
 
       goto LABEL_8;
     }
@@ -463,47 +463,47 @@ LABEL_8:
   return v14;
 }
 
-- (void)computeNewFeaturesForProperty:(id)a3 query:(id)a4 qr_prop_query_norm_min_ordered_span:(double *)a5 qr_prop_query_norm_min_unordered_span:(double *)a6 qr_query_min_pair_dist_in_title:(double *)a7 prefix_match_norm_count:(double *)a8
+- (void)computeNewFeaturesForProperty:(id)property query:(id)query qr_prop_query_norm_min_ordered_span:(double *)qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:(double *)qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:(double *)qr_query_min_pair_dist_in_title prefix_match_norm_count:(double *)prefix_match_norm_count
 {
   v9 = 0;
   LOBYTE(v8) = 0;
-  [(PRSRankingPolicyManager *)self computeNewFeaturesForProperty:a3 query:a4 qr_prop_query_norm_min_ordered_span:a5 qr_prop_query_norm_min_unordered_span:a6 qr_query_min_pair_dist_in_title:a7 prefix_match_norm_count:&v9 prefixMatch:v8];
+  [(PRSRankingPolicyManager *)self computeNewFeaturesForProperty:property query:query qr_prop_query_norm_min_ordered_span:qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:qr_query_min_pair_dist_in_title prefix_match_norm_count:&v9 prefixMatch:v8];
 }
 
-- (void)computeNewFeaturesForProperty:(id)a3 query:(id)a4 qr_prop_query_norm_min_ordered_span:(double *)a5 qr_prop_query_norm_min_unordered_span:(double *)a6 qr_query_min_pair_dist_in_title:(double *)a7 prefix_match_norm_count:(double *)a8 prefixMatch:(BOOL)a9
+- (void)computeNewFeaturesForProperty:(id)property query:(id)query qr_prop_query_norm_min_ordered_span:(double *)qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:(double *)qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:(double *)qr_query_min_pair_dist_in_title prefix_match_norm_count:(double *)prefix_match_norm_count prefixMatch:(BOOL)match
 {
   v21 = 0;
   v15 = MEMORY[0x1E695DF58];
-  v16 = a4;
-  v17 = a3;
-  v18 = [v15 currentLocale];
+  queryCopy = query;
+  propertyCopy = property;
+  currentLocale = [v15 currentLocale];
   LOBYTE(v20) = 0;
-  LOBYTE(v19) = a9;
-  [(PRSRankingPolicyManager *)self computeNewFeaturesForProperty:v17 query:v16 qr_prop_query_norm_min_ordered_span:a5 qr_prop_query_norm_min_unordered_span:a6 qr_query_min_pair_dist_in_title:a7 prefix_match_norm_count:a8 ordered_first_term_position:&v21 prefixMatch:v19 queryBreakDown:0 isVirtualField:v20 locale:v18];
+  LOBYTE(v19) = match;
+  [(PRSRankingPolicyManager *)self computeNewFeaturesForProperty:propertyCopy query:queryCopy qr_prop_query_norm_min_ordered_span:qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:qr_query_min_pair_dist_in_title prefix_match_norm_count:prefix_match_norm_count ordered_first_term_position:&v21 prefixMatch:v19 queryBreakDown:0 isVirtualField:v20 locale:currentLocale];
 }
 
-- (void)computeNewFeaturesForProperty:(id)a3 query:(id)a4 qr_prop_query_norm_min_ordered_span:(double *)a5 qr_prop_query_norm_min_unordered_span:(double *)a6 qr_query_min_pair_dist_in_title:(double *)a7 prefix_match_norm_count:(double *)a8 ordered_first_term_position:(double *)a9 prefixMatch:(BOOL)a10 queryBreakDown:(id)a11 isVirtualField:(BOOL)a12 locale:(id)a13
+- (void)computeNewFeaturesForProperty:(id)property query:(id)query qr_prop_query_norm_min_ordered_span:(double *)qr_prop_query_norm_min_ordered_span qr_prop_query_norm_min_unordered_span:(double *)qr_prop_query_norm_min_unordered_span qr_query_min_pair_dist_in_title:(double *)qr_query_min_pair_dist_in_title prefix_match_norm_count:(double *)prefix_match_norm_count ordered_first_term_position:(double *)ordered_first_term_position prefixMatch:(BOOL)self0 queryBreakDown:(id)self1 isVirtualField:(BOOL)self2 locale:(id)self3
 {
   v130 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a11;
-  v100 = a13;
-  v80 = [v14 count];
+  propertyCopy = property;
+  downCopy = down;
+  localeCopy = locale;
+  v80 = [downCopy count];
   v87 = objc_opt_new();
-  v15 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v94 = [v13 componentsSeparatedByCharactersInSet:v15];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v94 = [propertyCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v123 = 0u;
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  obj = v14;
+  obj = downCopy;
   v91 = [obj countByEnumeratingWithState:&v121 objects:v129 count:16];
   if (v91)
   {
     v16 = 0;
     v101 = 0;
-    v88 = v13;
+    v88 = propertyCopy;
     v89 = *v122;
     v86 = 1;
 LABEL_3:
@@ -551,7 +551,7 @@ LABEL_3:
             }
 
             v26 = *(*(&v117 + 1) + 8 * i);
-            if ([PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v26 isEqualToString:v19]|| a10 && [PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v26 hasPrefix:v19 locale:v100])
+            if ([PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v26 isEqualToString:v19]|| match && [PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v26 hasPrefix:v19 locale:localeCopy])
             {
 
               v115 = 0u;
@@ -575,7 +575,7 @@ LABEL_3:
                     }
 
                     v33 = *(*(&v113 + 1) + 8 * j);
-                    if ([PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v33 isEqualToString:v19]|| a10 && [PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v33 hasPrefix:v19 locale:v100])
+                    if ([PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v33 isEqualToString:v19]|| match && [PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v33 hasPrefix:v19 locale:localeCopy])
                     {
                       v34 = [MEMORY[0x1E696AD98] numberWithInteger:v30];
                       [v20 addObject:v34];
@@ -613,7 +613,7 @@ LABEL_3:
 
       v86 = 0;
 LABEL_33:
-      v13 = v88;
+      propertyCopy = v88;
       v16 = v98 + 1;
 
       v17 = v96 + 1;
@@ -639,11 +639,11 @@ LABEL_33:
   v35 = v87;
   if (![v87 count])
   {
-    *a5 = 2147483650.0;
-    *a6 = 2147483650.0;
-    *a8 = 2147483650.0;
-    *a7 = 2147483650.0;
-    *a9 = 2147483650.0;
+    *qr_prop_query_norm_min_ordered_span = 2147483650.0;
+    *qr_prop_query_norm_min_unordered_span = 2147483650.0;
+    *prefix_match_norm_count = 2147483650.0;
+    *qr_query_min_pair_dist_in_title = 2147483650.0;
+    *ordered_first_term_position = 2147483650.0;
     goto LABEL_92;
   }
 
@@ -653,9 +653,9 @@ LABEL_33:
   v36 = [v99 count];
   if (!v36)
   {
-    *a7 = v111;
-    *a5 = 2147483650.0;
-    *a9 = 2147483650.0;
+    *qr_query_min_pair_dist_in_title = v111;
+    *qr_prop_query_norm_min_ordered_span = 2147483650.0;
+    *ordered_first_term_position = 2147483650.0;
     v74 = 2147483650.0;
     v77 = v101;
     v41 = v86;
@@ -664,7 +664,7 @@ LABEL_33:
 
   v37 = v36;
   v38 = 0;
-  v90 = 0x7FFFFFFFLL;
+  integerValue2 = 0x7FFFFFFFLL;
   v39 = 0x7FFFFFFFLL;
   v40 = 0x7FFFFFFFLL;
   v41 = v86;
@@ -677,8 +677,8 @@ LABEL_33:
       v109 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v57 = [v35 firstObject];
-      v58 = [v57 countByEnumeratingWithState:&v106 objects:v126 count:16];
+      firstObject = [v35 firstObject];
+      v58 = [firstObject countByEnumeratingWithState:&v106 objects:v126 count:16];
       if (v58)
       {
         v59 = v58;
@@ -690,7 +690,7 @@ LABEL_33:
           {
             if (*v107 != v60)
             {
-              objc_enumerationMutation(v57);
+              objc_enumerationMutation(firstObject);
             }
 
             v63 = *(*(&v106 + 1) + 8 * k);
@@ -702,11 +702,11 @@ LABEL_33:
             }
           }
 
-          v59 = [v57 countByEnumeratingWithState:&v106 objects:v126 count:16];
+          v59 = [firstObject countByEnumeratingWithState:&v106 objects:v126 count:16];
         }
 
         while (v59);
-        v90 = v61;
+        integerValue2 = v61;
         v35 = v87;
         v41 = v86;
       }
@@ -754,7 +754,7 @@ LABEL_75:
               objc_enumerationMutation(v67);
             }
 
-            v70 += [v13 localizedStandardContainsString:*(*(&v102 + 1) + 8 * m)];
+            v70 += [propertyCopy localizedStandardContainsString:*(*(&v102 + 1) + 8 * m)];
           }
 
           v69 = [v67 countByEnumeratingWithState:&v102 objects:v125 count:16];
@@ -764,7 +764,7 @@ LABEL_75:
 
         if (v70 == 1)
         {
-          v73 = [v13 componentsSeparatedByString:@" "];
+          v73 = [propertyCopy componentsSeparatedByString:@" "];
           v111 = [v73 count];
         }
 
@@ -787,38 +787,38 @@ LABEL_75:
       if (v41)
       {
         v42 = [v99 objectAtIndexedSubscript:v38];
-        v43 = [v42 integerValue];
+        integerValue = [v42 integerValue];
         v44 = [v35 objectAtIndex:1];
-        LODWORD(v43) = [(PRSRankingPolicyManager *)self doesOrderedSpanExistWithStartingIndex:v43 nextArray:v44 arrayOfIndexArrays:v35 level:1 currentOrderedSpan:&v110];
+        LODWORD(integerValue) = [(PRSRankingPolicyManager *)self doesOrderedSpanExistWithStartingIndex:integerValue nextArray:v44 arrayOfIndexArrays:v35 level:1 currentOrderedSpan:&v110];
 
-        if (v43)
+        if (integerValue)
         {
           if (v40 > v110)
           {
             v45 = [v99 objectAtIndexedSubscript:v38];
-            v90 = [v45 integerValue];
+            integerValue2 = [v45 integerValue];
 
             v40 = v110;
           }
         }
       }
 
-      if (a12)
+      if (field)
       {
         v92 = v40;
         v97 = v39;
         v46 = v37;
         v47 = [v99 objectAtIndexedSubscript:v38];
-        v48 = [v47 integerValue];
+        integerValue3 = [v47 integerValue];
         v49 = [v35 objectAtIndex:1];
         v50 = [v99 objectAtIndexedSubscript:v38];
-        v51 = [v50 integerValue];
+        integerValue4 = [v50 integerValue];
         [v99 objectAtIndexedSubscript:v38];
         v53 = v52 = v35;
-        v54 = [v53 integerValue];
+        integerValue5 = [v53 integerValue];
         v55 = v52;
         v41 = v86;
-        [(PRSRankingPolicyManager *)self minimumAnyOrderSpanWithStartingIndex:v48 nextArray:v49 arrayOfIndexArrays:v55 level:1 currentAnyOrderSpan:0 minimumSpan:&v112 minimumDistancePair:&v111 currentMinimumIndex:v51 currentMaximumIndex:v54];
+        [(PRSRankingPolicyManager *)self minimumAnyOrderSpanWithStartingIndex:integerValue3 nextArray:v49 arrayOfIndexArrays:v55 level:1 currentAnyOrderSpan:0 minimumSpan:&v112 minimumDistancePair:&v111 currentMinimumIndex:integerValue4 currentMaximumIndex:integerValue5];
 
         if (v86)
         {
@@ -862,26 +862,26 @@ LABEL_81:
   }
 
   while (v38 != v37);
-  *a7 = v111;
+  *qr_query_min_pair_dist_in_title = v111;
   v74 = 2147483650.0;
   v75 = 2147483650.0;
   v76 = 2147483650.0;
   v77 = v101;
   if (((v40 != 0x7FFFFFFF) & v41) != 0)
   {
-    v76 = v90;
+    v76 = integerValue2;
     v75 = (v40 + 2.0) / v80;
   }
 
-  *a5 = v75;
-  *a9 = v76;
+  *qr_prop_query_norm_min_ordered_span = v75;
+  *ordered_first_term_position = v76;
   if (((v39 != 0x7FFFFFFF) & v41) == 1)
   {
     v74 = (v39 + 2.0) / v80;
   }
 
 LABEL_88:
-  *a6 = v74;
+  *qr_prop_query_norm_min_unordered_span = v74;
   if (((v77 != 0) & v41) == 1)
   {
     v78 = (v77 / v80);
@@ -892,20 +892,20 @@ LABEL_88:
     v78 = 2147483650.0;
   }
 
-  *a8 = v78;
+  *prefix_match_norm_count = v78;
 
 LABEL_92:
   v79 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cookSQFOnClientWithServerProbabilities:(id)a3 qiCEPValues:(id)a4 localResultOrder:(id)a5 poorTextMatchCategories:(id)a6 minimumBagCEP:(double)a7 cook_sqf_topdown:(BOOL)a8 cook_sqf_fallback_qi_cep:(BOOL)a9
+- (id)cookSQFOnClientWithServerProbabilities:(id)probabilities qiCEPValues:(id)values localResultOrder:(id)order poorTextMatchCategories:(id)categories minimumBagCEP:(double)p cook_sqf_topdown:(BOOL)cook_sqf_topdown cook_sqf_fallback_qi_cep:(BOOL)cook_sqf_fallback_qi_cep
 {
-  v51 = a8;
+  cook_sqf_topdownCopy = cook_sqf_topdown;
   v88 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v48 = a4;
-  v14 = a5;
-  v15 = a6;
+  probabilitiesCopy = probabilities;
+  valuesCopy = values;
+  orderCopy = order;
+  categoriesCopy = categories;
   v52 = objc_opt_new();
   v55 = objc_opt_new();
   v16 = objc_opt_new();
@@ -913,7 +913,7 @@ LABEL_92:
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v14;
+  obj = orderCopy;
   v17 = [obj countByEnumeratingWithState:&v75 objects:v87 count:16];
   if (v17)
   {
@@ -927,8 +927,8 @@ LABEL_92:
           objc_enumerationMutation(obj);
         }
 
-        v20 = [PRSRankingUtilities bundleIDForCategory:*(*(&v75 + 1) + 8 * i), v48];
-        [v55 addObject:v20];
+        valuesCopy = [PRSRankingUtilities bundleIDForCategory:*(*(&v75 + 1) + 8 * i), valuesCopy];
+        [v55 addObject:valuesCopy];
       }
 
       v17 = [obj countByEnumeratingWithState:&v75 objects:v87 count:16];
@@ -941,7 +941,7 @@ LABEL_92:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v53 = v15;
+  v53 = categoriesCopy;
   v21 = [v53 countByEnumeratingWithState:&v71 objects:v86 count:16];
   if (v21)
   {
@@ -955,8 +955,8 @@ LABEL_92:
           objc_enumerationMutation(v53);
         }
 
-        v24 = [PRSRankingUtilities bundleIDForCategory:*(*(&v71 + 1) + 8 * j), v48];
-        [v16 addObject:v24];
+        valuesCopy2 = [PRSRankingUtilities bundleIDForCategory:*(*(&v71 + 1) + 8 * j), valuesCopy];
+        [v16 addObject:valuesCopy2];
       }
 
       v21 = [v53 countByEnumeratingWithState:&v71 objects:v86 count:16];
@@ -969,9 +969,9 @@ LABEL_92:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v25 = [v13 allKeys];
+  allKeys = [probabilitiesCopy allKeys];
   v26 = 0;
-  v27 = [v25 countByEnumeratingWithState:&v67 objects:v85 count:16];
+  v27 = [allKeys countByEnumeratingWithState:&v67 objects:v85 count:16];
   if (v27)
   {
     v28 = *v68;
@@ -981,11 +981,11 @@ LABEL_92:
       {
         if (*v68 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allKeys);
         }
 
         v30 = *(*(&v67 + 1) + 8 * k);
-        v31 = [v13 objectForKey:{v30, v48}];
+        v31 = [probabilitiesCopy objectForKey:{v30, valuesCopy}];
         [v31 doubleValue];
         v33 = v32;
 
@@ -1011,7 +1011,7 @@ LABEL_92:
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v67 objects:v85 count:16];
+      v27 = [allKeys countByEnumeratingWithState:&v67 objects:v85 count:16];
     }
 
     while (v27);
@@ -1020,14 +1020,14 @@ LABEL_92:
   v65[0] = 0;
   v65[1] = v65;
   v65[2] = 0x2020000000;
-  v66 = 0.0;
+  pCopy = 0.0;
   v64[0] = 0;
   v64[1] = v64;
   v64[2] = 0x2020000000;
   v64[3] = 0;
-  if (!a9)
+  if (!cook_sqf_fallback_qi_cep)
   {
-    v66 = a7;
+    pCopy = p;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1035,18 +1035,18 @@ LABEL_92:
   aBlock[2] = __175__PRSRankingPolicyManager_cookSQFOnClientWithServerProbabilities_qiCEPValues_localResultOrder_poorTextMatchCategories_minimumBagCEP_cook_sqf_topdown_cook_sqf_fallback_qi_cep___block_invoke;
   aBlock[3] = &unk_1E8596C78;
   v63 = v26;
-  v50 = v48;
+  v50 = valuesCopy;
   v57 = v50;
   v61 = v64;
   v62 = v65;
   v35 = v52;
   v58 = v35;
-  v36 = v13;
+  v36 = probabilitiesCopy;
   v59 = v36;
   v37 = v16;
   v60 = v37;
   v38 = _Block_copy(aBlock);
-  if (v51)
+  if (cook_sqf_topdownCopy)
   {
     v39 = 0;
     v40 = 1;
@@ -1064,7 +1064,7 @@ LABEL_92:
   {
     v43 = [v55 objectAtIndex:v39];
 
-    (v38)[2](v38, v43, !v51);
+    (v38)[2](v38, v43, !cook_sqf_topdownCopy);
     ++v41;
     v39 += v40;
     v42 = v43;

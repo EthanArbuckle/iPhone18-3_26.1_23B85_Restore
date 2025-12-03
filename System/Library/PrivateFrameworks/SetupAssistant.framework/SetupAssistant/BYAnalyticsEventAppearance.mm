@@ -1,27 +1,27 @@
 @interface BYAnalyticsEventAppearance
-- (BYAnalyticsEventAppearance)initWithAnalyticsManager:(id)a3 buddyPreferencesExcludedFromBackup:(id)a4;
+- (BYAnalyticsEventAppearance)initWithAnalyticsManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup;
 - (id)_biomeEvent;
 - (id)_eventPayload;
 - (id)_eventPayloadFromPreferences;
 - (id)_eventPayloadFromPreferencesIfComplete;
 - (void)_analyticsManagerDidProduceLazyEvents;
-- (void)didChooseAppearanceModeName:(id)a3 forDisposition:(unint64_t)a4;
-- (void)setChildAge:(id)a3;
+- (void)didChooseAppearanceModeName:(id)name forDisposition:(unint64_t)disposition;
+- (void)setChildAge:(id)age;
 @end
 
 @implementation BYAnalyticsEventAppearance
 
-- (BYAnalyticsEventAppearance)initWithAnalyticsManager:(id)a3 buddyPreferencesExcludedFromBackup:(id)a4
+- (BYAnalyticsEventAppearance)initWithAnalyticsManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  backupCopy = backup;
   v19.receiver = self;
   v19.super_class = BYAnalyticsEventAppearance;
   v8 = [(BYAnalyticsEventAppearance *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(BYAnalyticsEventAppearance *)v8 setBuddyPreferencesExcludedFromBackup:v7];
+    [(BYAnalyticsEventAppearance *)v8 setBuddyPreferencesExcludedFromBackup:backupCopy];
     [(BYAnalyticsEventAppearance *)v9 setShouldRemoveAnalyticsEventPayloadFromPreferences:0];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -29,38 +29,38 @@
     v17[3] = &unk_1E7D036A0;
     v10 = v9;
     v18 = v10;
-    [v6 addEvent:@"com.apple.settings.personalizedsetup_appearance_setup" withPayloadBlock:v17 persist:0];
+    [managerCopy addEvent:@"com.apple.settings.personalizedsetup_appearance_setup" withPayloadBlock:v17 persist:0];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __90__BYAnalyticsEventAppearance_initWithAnalyticsManager_buddyPreferencesExcludedFromBackup___block_invoke_2;
     v15[3] = &unk_1E7D036C8;
     v11 = v10;
     v16 = v11;
-    [v6 setAppearanceSetupEventBlock:v15];
+    [managerCopy setAppearanceSetupEventBlock:v15];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __90__BYAnalyticsEventAppearance_initWithAnalyticsManager_buddyPreferencesExcludedFromBackup___block_invoke_3;
     v13[3] = &unk_1E7D027A8;
     v14 = v11;
-    [v6 addDidProduceLazyEventsBlock:v13];
+    [managerCopy addDidProduceLazyEventsBlock:v13];
   }
 
   return v9;
 }
 
-- (void)didChooseAppearanceModeName:(id)a3 forDisposition:(unint64_t)a4
+- (void)didChooseAppearanceModeName:(id)name forDisposition:(unint64_t)disposition
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferences];
-  v7 = [v6 mutableCopy];
+  dispositionCopy = disposition;
+  nameCopy = name;
+  _eventPayloadFromPreferences = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferences];
+  v7 = [_eventPayloadFromPreferences mutableCopy];
 
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  if ((v4 & 0x10) != 0)
+  if ((dispositionCopy & 0x10) != 0)
   {
     v8 = @"child_size_choice";
   }
@@ -70,38 +70,38 @@
     v8 = @"size_choice";
   }
 
-  [v7 setObject:v10 forKeyedSubscript:v8];
-  v9 = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
-  [v9 setObject:v7 forKey:@"AppearanceAnalyticsEventPayload" persistImmediately:1];
+  [v7 setObject:nameCopy forKeyedSubscript:v8];
+  buddyPreferencesExcludedFromBackup = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
+  [buddyPreferencesExcludedFromBackup setObject:v7 forKey:@"AppearanceAnalyticsEventPayload" persistImmediately:1];
 }
 
-- (void)setChildAge:(id)a3
+- (void)setChildAge:(id)age
 {
-  v4 = a3;
-  v5 = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferences];
-  v6 = [v5 mutableCopy];
+  ageCopy = age;
+  _eventPayloadFromPreferences = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferences];
+  v6 = [_eventPayloadFromPreferences mutableCopy];
 
   if (v6)
   {
-    [v6 setObject:v4 forKeyedSubscript:@"child_age"];
-    v7 = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
-    [v7 setObject:v6 forKey:@"AppearanceAnalyticsEventPayload" persistImmediately:1];
+    [v6 setObject:ageCopy forKeyedSubscript:@"child_age"];
+    buddyPreferencesExcludedFromBackup = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
+    [buddyPreferencesExcludedFromBackup setObject:v6 forKey:@"AppearanceAnalyticsEventPayload" persistImmediately:1];
   }
 
   else
   {
-    v7 = _BYLoggingFacility();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    buddyPreferencesExcludedFromBackup = _BYLoggingFacility();
+    if (os_log_type_enabled(buddyPreferencesExcludedFromBackup, OS_LOG_TYPE_ERROR))
     {
-      [BYAnalyticsEventAppearance didChooseToSetUpForChild:v7];
+      [BYAnalyticsEventAppearance didChooseToSetUpForChild:buddyPreferencesExcludedFromBackup];
     }
   }
 }
 
 - (id)_eventPayloadFromPreferences
 {
-  v2 = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
-  v3 = [v2 objectForKey:@"AppearanceAnalyticsEventPayload"];
+  buddyPreferencesExcludedFromBackup = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
+  v3 = [buddyPreferencesExcludedFromBackup objectForKey:@"AppearanceAnalyticsEventPayload"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -115,14 +115,14 @@
 
 - (id)_eventPayloadFromPreferencesIfComplete
 {
-  v2 = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferences];
-  v3 = [v2 objectForKeyedSubscript:@"child_setup"];
+  _eventPayloadFromPreferences = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferences];
+  v3 = [_eventPayloadFromPreferences objectForKeyedSubscript:@"child_setup"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([v3 BOOLValue])
     {
-      v4 = [v2 objectForKeyedSubscript:@"child_size_choice"];
+      v4 = [_eventPayloadFromPreferences objectForKeyedSubscript:@"child_size_choice"];
 
       if (!v4)
       {
@@ -132,32 +132,32 @@
           [(BYAnalyticsEventAppearance *)v5 _eventPayloadFromPreferencesIfComplete];
         }
 
-        v2 = 0;
+        _eventPayloadFromPreferences = 0;
       }
     }
   }
 
-  return v2;
+  return _eventPayloadFromPreferences;
 }
 
 - (id)_eventPayload
 {
-  v3 = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferencesIfComplete];
-  if (v3)
+  _eventPayloadFromPreferencesIfComplete = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferencesIfComplete];
+  if (_eventPayloadFromPreferencesIfComplete)
   {
     [(BYAnalyticsEventAppearance *)self setShouldRemoveAnalyticsEventPayloadFromPreferences:1];
   }
 
-  return v3;
+  return _eventPayloadFromPreferencesIfComplete;
 }
 
 - (id)_biomeEvent
 {
-  v3 = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferencesIfComplete];
-  v4 = v3;
-  if (v3)
+  _eventPayloadFromPreferencesIfComplete = [(BYAnalyticsEventAppearance *)self _eventPayloadFromPreferencesIfComplete];
+  v4 = _eventPayloadFromPreferencesIfComplete;
+  if (_eventPayloadFromPreferencesIfComplete)
   {
-    v5 = [v3 objectForKeyedSubscript:@"size_choice"];
+    v5 = [_eventPayloadFromPreferencesIfComplete objectForKeyedSubscript:@"size_choice"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -229,8 +229,8 @@
 {
   if ([(BYAnalyticsEventAppearance *)self shouldRemoveAnalyticsEventPayloadFromPreferences])
   {
-    v3 = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
-    [v3 removeObjectForKey:@"AppearanceAnalyticsEventPayload" onlyFromMemory:0];
+    buddyPreferencesExcludedFromBackup = [(BYAnalyticsEventAppearance *)self buddyPreferencesExcludedFromBackup];
+    [buddyPreferencesExcludedFromBackup removeObjectForKey:@"AppearanceAnalyticsEventPayload" onlyFromMemory:0];
 
     [(BYAnalyticsEventAppearance *)self setShouldRemoveAnalyticsEventPayloadFromPreferences:0];
   }

@@ -2,22 +2,22 @@
 + (MRAVDistantExternalDeviceFactory)externalDeviceFactory;
 - (BOOL)isConnected;
 - (BOOL)isEligibleForHostingGroupSessionExcludingAcknowledgements;
-- (MRAVDistantEndpoint)initWithCoder:(id)a3;
-- (MRAVDistantEndpoint)initWithDescriptor:(id)a3;
-- (MRAVDistantEndpoint)initWithDescriptor:(id)a3 xpcEndpointListener:(id)a4;
+- (MRAVDistantEndpoint)initWithCoder:(id)coder;
+- (MRAVDistantEndpoint)initWithDescriptor:(id)descriptor;
+- (MRAVDistantEndpoint)initWithDescriptor:(id)descriptor xpcEndpointListener:(id)listener;
 - (MRDistantExternalDevice)distantExternalDevice;
 - (id)debugDescription;
 - (id)groupSessionInfo;
 - (uint64_t)_handleEndpointDidConnectWithExternalDevice:(uint64_t)result;
-- (void)_handleConnectionStateDidChangeNotification:(id)a3;
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3;
-- (void)_handleEndpointDidDisconnectWithError:(void *)a1;
-- (void)_onExternalDeviceQueue_setExternalDevice:(uint64_t)a1;
-- (void)_registerNotificationsForExternalDevice:(uint64_t)a1;
-- (void)_unregisterNotificationsForExternalDevice:(uint64_t)a1;
+- (void)_handleConnectionStateDidChangeNotification:(id)notification;
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification;
+- (void)_handleEndpointDidDisconnectWithError:(void *)error;
+- (void)_onExternalDeviceQueue_setExternalDevice:(uint64_t)device;
+- (void)_registerNotificationsForExternalDevice:(uint64_t)device;
+- (void)_unregisterNotificationsForExternalDevice:(uint64_t)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDistantExternalDevice:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDistantExternalDevice:(id)device;
 @end
 
 @implementation MRAVDistantEndpoint
@@ -85,39 +85,39 @@ void __44__MRAVDistantEndpoint_distantExternalDevice__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (MRAVDistantEndpoint)initWithDescriptor:(id)a3
+- (MRAVDistantEndpoint)initWithDescriptor:(id)descriptor
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v47.receiver = self;
   v47.super_class = MRAVDistantEndpoint;
-  v5 = [(MRAVEndpoint *)&v47 _init];
-  if (v5)
+  _init = [(MRAVEndpoint *)&v47 _init];
+  if (_init)
   {
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("com.apple.mediaremote.distantEndpoint/externalDeviceQueue", v6);
-    externalDeviceQueue = v5->_externalDeviceQueue;
-    v5->_externalDeviceQueue = v7;
+    externalDeviceQueue = _init->_externalDeviceQueue;
+    _init->_externalDeviceQueue = v7;
 
-    v9 = [v4 name];
-    v10 = [v9 copy];
-    localizedName = v5->_localizedName;
-    v5->_localizedName = v10;
+    name = [descriptorCopy name];
+    v10 = [name copy];
+    localizedName = _init->_localizedName;
+    _init->_localizedName = v10;
 
-    v12 = [v4 uniqueIdentifier];
-    v13 = [v12 copy];
-    uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v13;
+    uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+    v13 = [uniqueIdentifier copy];
+    uniqueIdentifier = _init->_uniqueIdentifier;
+    _init->_uniqueIdentifier = v13;
 
-    v5->_connectionType = [v4 connectionType];
-    v5->_canModifyGroupMembership = [v4 canModifyGroupMembership];
+    _init->_connectionType = [descriptorCopy connectionType];
+    _init->_canModifyGroupMembership = [descriptorCopy canModifyGroupMembership];
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v16 = [v4 outputDevices];
-    v17 = [v16 countByEnumeratingWithState:&v43 objects:v49 count:16];
+    outputDevices = [descriptorCopy outputDevices];
+    v17 = [outputDevices countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v17)
     {
       v18 = v17;
@@ -129,7 +129,7 @@ void __44__MRAVDistantEndpoint_distantExternalDevice__block_invoke(uint64_t a1)
         {
           if (*v44 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(outputDevices);
           }
 
           v21 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:*(*(&v43 + 1) + 8 * v20)];
@@ -139,7 +139,7 @@ void __44__MRAVDistantEndpoint_distantExternalDevice__block_invoke(uint64_t a1)
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v18 = [outputDevices countByEnumeratingWithState:&v43 objects:v49 count:16];
       }
 
       while (v18);
@@ -150,8 +150,8 @@ void __44__MRAVDistantEndpoint_distantExternalDevice__block_invoke(uint64_t a1)
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v23 = [v4 personalOutputDevices];
-    v24 = [v23 countByEnumeratingWithState:&v39 objects:v48 count:16];
+    personalOutputDevices = [descriptorCopy personalOutputDevices];
+    v24 = [personalOutputDevices countByEnumeratingWithState:&v39 objects:v48 count:16];
     if (v24)
     {
       v25 = v24;
@@ -163,7 +163,7 @@ void __44__MRAVDistantEndpoint_distantExternalDevice__block_invoke(uint64_t a1)
         {
           if (*v40 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(personalOutputDevices);
           }
 
           v28 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:*(*(&v39 + 1) + 8 * v27)];
@@ -173,49 +173,49 @@ void __44__MRAVDistantEndpoint_distantExternalDevice__block_invoke(uint64_t a1)
         }
 
         while (v25 != v27);
-        v25 = [v23 countByEnumeratingWithState:&v39 objects:v48 count:16];
+        v25 = [personalOutputDevices countByEnumeratingWithState:&v39 objects:v48 count:16];
       }
 
       while (v25);
     }
 
-    distantOutputDevices = v5->_distantOutputDevices;
-    v5->_distantOutputDevices = v15;
+    distantOutputDevices = _init->_distantOutputDevices;
+    _init->_distantOutputDevices = v15;
     v30 = v15;
 
-    distantPersonalOutputDevices = v5->_distantPersonalOutputDevices;
-    v5->_distantPersonalOutputDevices = v22;
+    distantPersonalOutputDevices = _init->_distantPersonalOutputDevices;
+    _init->_distantPersonalOutputDevices = v22;
     v32 = v22;
 
     v33 = [MRAVDistantOutputDevice alloc];
-    v34 = [v4 designatedGroupLeader];
-    v35 = [(MRAVDistantOutputDevice *)v33 initWithDescriptor:v34];
-    distantGroupLeader = v5->_distantGroupLeader;
-    v5->_distantGroupLeader = v35;
+    designatedGroupLeader = [descriptorCopy designatedGroupLeader];
+    v35 = [(MRAVDistantOutputDevice *)v33 initWithDescriptor:designatedGroupLeader];
+    distantGroupLeader = _init->_distantGroupLeader;
+    _init->_distantGroupLeader = v35;
   }
 
   v37 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _init;
 }
 
-- (MRAVDistantEndpoint)initWithCoder:(id)a3
+- (MRAVDistantEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalDeviceListenerEndpoint"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalDeviceListenerEndpoint"];
 
   v7 = [(MRAVDistantEndpoint *)self initWithDescriptor:v5 xpcEndpointListener:v6];
   return v7;
 }
 
-- (MRAVDistantEndpoint)initWithDescriptor:(id)a3 xpcEndpointListener:(id)a4
+- (MRAVDistantEndpoint)initWithDescriptor:(id)descriptor xpcEndpointListener:(id)listener
 {
-  v7 = a4;
-  v8 = [(MRAVDistantEndpoint *)self initWithDescriptor:a3];
+  listenerCopy = listener;
+  v8 = [(MRAVDistantEndpoint *)self initWithDescriptor:descriptor];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_externalDeviceListenerEndpoint, a4);
+    objc_storeStrong(&v8->_externalDeviceListenerEndpoint, listener);
   }
 
   return v9;
@@ -235,7 +235,7 @@ void __44__MRAVDistantEndpoint_distantExternalDevice__block_invoke(uint64_t a1)
   v9[3] = &unk_1E769A4A0;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(externalDeviceQueue, v9);
   v7 = v6;
 
@@ -253,16 +253,16 @@ uint64_t __39__MRAVDistantEndpoint_debugDescription__block_invoke(uint64_t a1)
   return [v4 appendFormat:@">"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(_MRAVEndpointDescriptorProtobuf);
   [(_MRAVEndpointDescriptorProtobuf *)v5 setName:self->_localizedName];
   [(_MRAVEndpointDescriptorProtobuf *)v5 setUniqueIdentifier:self->_uniqueIdentifier];
   [(_MRAVEndpointDescriptorProtobuf *)v5 setConnectionType:LODWORD(self->_connectionType)];
-  v6 = [(MRAVDistantOutputDevice *)self->_distantGroupLeader protobuf];
-  [(_MRAVEndpointDescriptorProtobuf *)v5 setDesignatedGroupLeader:v6];
+  protobuf = [(MRAVDistantOutputDevice *)self->_distantGroupLeader protobuf];
+  [(_MRAVEndpointDescriptorProtobuf *)v5 setDesignatedGroupLeader:protobuf];
 
   [(_MRAVEndpointDescriptorProtobuf *)v5 setCanModifyGroupMembership:self->_canModifyGroupMembership];
   v30 = 0u;
@@ -285,8 +285,8 @@ uint64_t __39__MRAVDistantEndpoint_debugDescription__block_invoke(uint64_t a1)
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v28 + 1) + 8 * v11) protobuf];
-        [(_MRAVEndpointDescriptorProtobuf *)v5 addOutputDevices:v12];
+        protobuf2 = [*(*(&v28 + 1) + 8 * v11) protobuf];
+        [(_MRAVEndpointDescriptorProtobuf *)v5 addOutputDevices:protobuf2];
 
         ++v11;
       }
@@ -318,8 +318,8 @@ uint64_t __39__MRAVDistantEndpoint_debugDescription__block_invoke(uint64_t a1)
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v24 + 1) + 8 * v17) protobuf];
-        [(_MRAVEndpointDescriptorProtobuf *)v5 addPersonalOutputDevices:v18];
+        protobuf3 = [*(*(&v24 + 1) + 8 * v17) protobuf];
+        [(_MRAVEndpointDescriptorProtobuf *)v5 addPersonalOutputDevices:protobuf3];
 
         ++v17;
       }
@@ -331,7 +331,7 @@ uint64_t __39__MRAVDistantEndpoint_debugDescription__block_invoke(uint64_t a1)
     while (v15);
   }
 
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  [coderCopy encodeObject:v5 forKey:@"protobuf"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -340,8 +340,8 @@ uint64_t __39__MRAVDistantEndpoint_debugDescription__block_invoke(uint64_t a1)
     v21[1] = 3221225472;
     v21[2] = __39__MRAVDistantEndpoint_encodeWithCoder___block_invoke;
     v21[3] = &unk_1E769A4A0;
-    v22 = v4;
-    v23 = self;
+    v22 = coderCopy;
+    selfCopy = self;
     dispatch_sync(externalDeviceQueue, v21);
   }
 
@@ -370,23 +370,23 @@ uint64_t __34__MRAVDistantEndpoint_isConnected__block_invoke(uint64_t a1)
 
 - (id)groupSessionInfo
 {
-  v3 = [(MRAVDistantEndpoint *)self distantExternalDevice];
-  v4 = [v3 deviceInfo];
+  distantExternalDevice = [(MRAVDistantEndpoint *)self distantExternalDevice];
+  deviceInfo = [distantExternalDevice deviceInfo];
 
   v5 = [MRGroupSessionInfo alloc];
-  v6 = [v4 groupSessionToken];
-  v7 = [(MRGroupSessionInfo *)v5 initWithToken:v6 isHosted:0];
+  groupSessionToken = [deviceInfo groupSessionToken];
+  v7 = [(MRGroupSessionInfo *)v5 initWithToken:groupSessionToken isHosted:0];
 
   if (v7)
   {
-    v8 = v7;
+    groupSessionInfo = v7;
   }
 
   else
   {
-    if ([v4 hasPlaceholderGroupSession])
+    if ([deviceInfo hasPlaceholderGroupSession])
     {
-      v9 = [[MRGroupSessionToken alloc] initWithDeviceInfo:v4];
+      v9 = [[MRGroupSessionToken alloc] initWithDeviceInfo:deviceInfo];
       v10 = [[MRGroupSessionInfo alloc] initWithToken:v9 isHosted:0 isPlaceholder:1];
 
       goto LABEL_7;
@@ -394,10 +394,10 @@ uint64_t __34__MRAVDistantEndpoint_isConnected__block_invoke(uint64_t a1)
 
     v12.receiver = self;
     v12.super_class = MRAVDistantEndpoint;
-    v8 = [(MRAVEndpoint *)&v12 groupSessionInfo];
+    groupSessionInfo = [(MRAVEndpoint *)&v12 groupSessionInfo];
   }
 
-  v10 = v8;
+  v10 = groupSessionInfo;
 LABEL_7:
 
   return v10;
@@ -405,24 +405,24 @@ LABEL_7:
 
 - (BOOL)isEligibleForHostingGroupSessionExcludingAcknowledgements
 {
-  v2 = [(MRAVDistantEndpoint *)self distantExternalDevice];
-  v3 = [v2 deviceInfo];
-  v4 = [v3 isEligibleForHostingGroupSessionExcludingAcknowledgements];
+  distantExternalDevice = [(MRAVDistantEndpoint *)self distantExternalDevice];
+  deviceInfo = [distantExternalDevice deviceInfo];
+  isEligibleForHostingGroupSessionExcludingAcknowledgements = [deviceInfo isEligibleForHostingGroupSessionExcludingAcknowledgements];
 
-  return v4;
+  return isEligibleForHostingGroupSessionExcludingAcknowledgements;
 }
 
-- (void)setDistantExternalDevice:(id)a3
+- (void)setDistantExternalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   externalDeviceQueue = self->_externalDeviceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__MRAVDistantEndpoint_setDistantExternalDevice___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(externalDeviceQueue, v7);
 }
 
@@ -437,50 +437,50 @@ void __48__MRAVDistantEndpoint_setDistantExternalDevice___block_invoke(uint64_t 
   }
 }
 
-- (void)_handleConnectionStateDidChangeNotification:(id)a3
+- (void)_handleConnectionStateDidChangeNotification:(id)notification
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
-  v5 = [v4 objectForKey:@"kMRExternalDeviceConnectionStateUserInfoKey"];
-  v6 = [v5 unsignedIntValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:@"kMRExternalDeviceConnectionStateUserInfoKey"];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [v10 userInfo];
-  v8 = [v7 objectForKey:*MEMORY[0x1E696AA08]];
+  userInfo2 = [notificationCopy userInfo];
+  v8 = [userInfo2 objectForKey:*MEMORY[0x1E696AA08]];
 
-  if (v6 == 3)
+  if (unsignedIntValue == 3)
   {
     [(MRAVDistantEndpoint *)self _handleEndpointDidDisconnectWithError:v8];
   }
 
-  else if (v6 == 2)
+  else if (unsignedIntValue == 2)
   {
-    v9 = [v10 object];
-    [(MRAVDistantEndpoint *)self _handleEndpointDidConnectWithExternalDevice:v9];
+    object = [notificationCopy object];
+    [(MRAVDistantEndpoint *)self _handleEndpointDidConnectWithExternalDevice:object];
   }
 }
 
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v18 = [v5 objectForKey:@"MRExternalDeviceDeviceInfoUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v18 = [userInfo objectForKey:@"MRExternalDeviceDeviceInfoUserInfoKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:@"MRExternalDevicePreviousDeviceInfoUserInfoKey"];
+  v7 = [userInfo2 objectForKey:@"MRExternalDevicePreviousDeviceInfoUserInfoKey"];
 
   if (v7)
   {
-    v8 = [v7 groupSessionToken];
-    v9 = [v18 groupSessionToken];
-    v10 = v9;
-    if (v8 == v9)
+    groupSessionToken = [v7 groupSessionToken];
+    groupSessionToken2 = [v18 groupSessionToken];
+    v10 = groupSessionToken2;
+    if (groupSessionToken == groupSessionToken2)
     {
     }
 
     else
     {
-      v11 = [(MRGroupSessionInfo *)v8 isEqual:v9];
+      v11 = [(MRGroupSessionInfo *)groupSessionToken isEqual:groupSessionToken2];
 
       if (v11)
       {
@@ -488,15 +488,15 @@ void __48__MRAVDistantEndpoint_setDistantExternalDevice___block_invoke(uint64_t 
       }
 
       v12 = [MRGroupSessionInfo alloc];
-      v13 = [v18 groupSessionToken];
-      v8 = [(MRGroupSessionInfo *)v12 initWithToken:v13 isHosted:0];
+      groupSessionToken3 = [v18 groupSessionToken];
+      groupSessionToken = [(MRGroupSessionInfo *)v12 initWithToken:groupSessionToken3 isHosted:0];
 
-      [objc_opt_class() _notifyGroupSessionInfoDidChange:v8 endpoint:self];
+      [objc_opt_class() _notifyGroupSessionInfoDidChange:groupSessionToken endpoint:self];
     }
 
 LABEL_8:
-    v17 = [v7 isEligibleForHostingGroupSessionExcludingAcknowledgements];
-    if (v17 == [v18 isEligibleForHostingGroupSessionExcludingAcknowledgements])
+    isEligibleForHostingGroupSessionExcludingAcknowledgements = [v7 isEligibleForHostingGroupSessionExcludingAcknowledgements];
+    if (isEligibleForHostingGroupSessionExcludingAcknowledgements == [v18 isEligibleForHostingGroupSessionExcludingAcknowledgements])
     {
       goto LABEL_10;
     }
@@ -505,8 +505,8 @@ LABEL_8:
   }
 
   v14 = [MRGroupSessionInfo alloc];
-  v15 = [v18 groupSessionToken];
-  v16 = [(MRGroupSessionInfo *)v14 initWithToken:v15 isHosted:0];
+  groupSessionToken4 = [v18 groupSessionToken];
+  v16 = [(MRGroupSessionInfo *)v14 initWithToken:groupSessionToken4 isHosted:0];
 
   [objc_opt_class() _notifyGroupSessionInfoDidChange:v16 endpoint:self];
 LABEL_9:
@@ -522,30 +522,30 @@ void __44__MRAVDistantEndpoint_externalDeviceFactory__block_invoke()
   externalDeviceFactory_cache = v0;
 }
 
-- (void)_onExternalDeviceQueue_setExternalDevice:(uint64_t)a1
+- (void)_onExternalDeviceQueue_setExternalDevice:(uint64_t)device
 {
   v5 = a2;
-  if (a1)
+  if (device)
   {
-    dispatch_assert_queue_V2(*(a1 + 96));
-    if (*(a1 + 88))
+    dispatch_assert_queue_V2(*(device + 96));
+    if (*(device + 88))
     {
-      [MRAVDistantEndpoint _unregisterNotificationsForExternalDevice:a1];
+      [MRAVDistantEndpoint _unregisterNotificationsForExternalDevice:device];
     }
 
-    objc_storeStrong((a1 + 88), a2);
-    if (*(a1 + 88))
+    objc_storeStrong((device + 88), a2);
+    if (*(device + 88))
     {
-      [MRAVDistantEndpoint _registerNotificationsForExternalDevice:a1];
+      [MRAVDistantEndpoint _registerNotificationsForExternalDevice:device];
     }
 
     if ([v5 connectionState] == 2)
     {
-      [(MRAVDistantEndpoint *)a1 _handleEndpointDidConnectWithExternalDevice:v5];
+      [(MRAVDistantEndpoint *)device _handleEndpointDidConnectWithExternalDevice:v5];
     }
 
     v4 = +[MRMediaRemoteServiceClient sharedServiceClient];
-    [v4 addDistantEndpoint:a1];
+    [v4 addDistantEndpoint:device];
   }
 }
 
@@ -554,8 +554,8 @@ void __44__MRAVDistantEndpoint_externalDeviceFactory__block_invoke()
   if (result)
   {
     v2 = result;
-    v3 = [a2 externalOutputContext];
-    [v2 setOutputContextDataSource:v3];
+    externalOutputContext = [a2 externalOutputContext];
+    [v2 setOutputContextDataSource:externalOutputContext];
 
     v4 = objc_opt_class();
 
@@ -565,37 +565,37 @@ void __44__MRAVDistantEndpoint_externalDeviceFactory__block_invoke()
   return result;
 }
 
-- (void)_handleEndpointDidDisconnectWithError:(void *)a1
+- (void)_handleEndpointDidDisconnectWithError:(void *)error
 {
-  if (a1)
+  if (error)
   {
     v3 = a2;
-    [a1 setOutputContextDataSource:0];
-    [objc_opt_class() _notifyEndpointDidDisconnect:a1 withError:v3];
+    [error setOutputContextDataSource:0];
+    [objc_opt_class() _notifyEndpointDidDisconnect:error withError:v3];
   }
 }
 
-- (void)_unregisterNotificationsForExternalDevice:(uint64_t)a1
+- (void)_unregisterNotificationsForExternalDevice:(uint64_t)device
 {
-  if (a1)
+  if (device)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 removeObserver:a1 name:@"kMRExternalDeviceConnectionStateDidChangeNotification" object:*(a1 + 88)];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:device name:@"kMRExternalDeviceConnectionStateDidChangeNotification" object:*(device + 88)];
 
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:a1 name:@"MRExternalDeviceDeviceInfoDidChangeNotification" object:*(a1 + 88)];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:device name:@"MRExternalDeviceDeviceInfoDidChangeNotification" object:*(device + 88)];
   }
 }
 
-- (void)_registerNotificationsForExternalDevice:(uint64_t)a1
+- (void)_registerNotificationsForExternalDevice:(uint64_t)device
 {
-  if (a1)
+  if (device)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 addObserver:a1 selector:sel__handleConnectionStateDidChangeNotification_ name:@"kMRExternalDeviceConnectionStateDidChangeNotification" object:*(a1 + 88)];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:device selector:sel__handleConnectionStateDidChangeNotification_ name:@"kMRExternalDeviceConnectionStateDidChangeNotification" object:*(device + 88)];
 
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:a1 selector:sel__handleDeviceInfoDidChangeNotification_ name:@"MRExternalDeviceDeviceInfoDidChangeNotification" object:*(a1 + 88)];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:device selector:sel__handleDeviceInfoDidChangeNotification_ name:@"MRExternalDeviceDeviceInfoDidChangeNotification" object:*(device + 88)];
   }
 }
 

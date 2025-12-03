@@ -1,14 +1,14 @@
 @interface NPKProtoStandalonePaymentApplication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
+- (int)StringAsState:(id)state;
 - (int)state;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentApplication
@@ -26,65 +26,65 @@
   }
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PaymentApplicationStateUnknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"PaymentApplicationStateUnknown"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"Personalized"])
+  else if ([stateCopy isEqualToString:@"Personalized"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"Personalizing"])
+  else if ([stateCopy isEqualToString:@"Personalizing"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"RequiresVerification"])
+  else if ([stateCopy isEqualToString:@"RequiresVerification"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"PersonalizedRequiresVerification"])
+  else if ([stateCopy isEqualToString:@"PersonalizedRequiresVerification"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"VerificationTerminated"])
+  else if ([stateCopy isEqualToString:@"VerificationTerminated"])
   {
     v4 = 150;
   }
 
-  else if ([v3 isEqualToString:@"SuspendedByIssuer"])
+  else if ([stateCopy isEqualToString:@"SuspendedByIssuer"])
   {
     v4 = 160;
   }
 
-  else if ([v3 isEqualToString:@"SuspendedLostMode"])
+  else if ([stateCopy isEqualToString:@"SuspendedLostMode"])
   {
     v4 = 170;
   }
 
-  else if ([v3 isEqualToString:@"SuspendedPasscodeDisabled"])
+  else if ([stateCopy isEqualToString:@"SuspendedPasscodeDisabled"])
   {
     v4 = 180;
   }
 
-  else if ([v3 isEqualToString:@"SuspendedCustom"])
+  else if ([stateCopy isEqualToString:@"SuspendedCustom"])
   {
     v4 = 190;
   }
 
-  else if ([v3 isEqualToString:@"RemovedByIssuer"])
+  else if ([stateCopy isEqualToString:@"RemovedByIssuer"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"InTermination"])
+  else if ([stateCopy isEqualToString:@"InTermination"])
   {
     v4 = 250;
   }
@@ -103,15 +103,15 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentApplication;
   v4 = [(NPKProtoStandalonePaymentApplication *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentApplication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentApplication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     state = self->_state;
@@ -179,7 +179,7 @@
         case 'x':
           v5 = @"Personalizing";
 LABEL_30:
-          [v3 setObject:v5 forKey:@"state"];
+          [dictionary setObject:v5 forKey:@"state"];
 
           goto LABEL_31;
       }
@@ -191,10 +191,10 @@ LABEL_30:
 
 LABEL_31:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -203,18 +203,18 @@ LABEL_31:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_state;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_state;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_state;
@@ -224,18 +224,18 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_state == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_state == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -263,11 +263,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_state = *(a3 + 2);
+    self->_state = *(from + 2);
     *&self->_has |= 1u;
   }
 }

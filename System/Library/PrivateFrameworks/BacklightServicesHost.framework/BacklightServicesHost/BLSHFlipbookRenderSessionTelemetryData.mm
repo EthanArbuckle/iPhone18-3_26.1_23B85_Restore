@@ -1,31 +1,31 @@
 @interface BLSHFlipbookRenderSessionTelemetryData
-- (BLSHFlipbookRenderSessionTelemetryData)initWithTimestamp:(double)a3 environmentIdentifiers:(id)a4 reasonEnded:(id)a5 sessionFramesHistogram:(id)a6 totalPreparationDuration:(double)a7 accumulatedLayoutDuration:(double)a8 accumulatedRenderDuration:(double)a9 preventedSleepDuration:(double)a10 didFailToRender:(BOOL)a11 timedOutEnvironmentCount:(unsigned int)a12;
+- (BLSHFlipbookRenderSessionTelemetryData)initWithTimestamp:(double)timestamp environmentIdentifiers:(id)identifiers reasonEnded:(id)ended sessionFramesHistogram:(id)histogram totalPreparationDuration:(double)duration accumulatedLayoutDuration:(double)layoutDuration accumulatedRenderDuration:(double)renderDuration preventedSleepDuration:(double)self0 didFailToRender:(BOOL)self1 timedOutEnvironmentCount:(unsigned int)self2;
 - (id)description;
 @end
 
 @implementation BLSHFlipbookRenderSessionTelemetryData
 
-- (BLSHFlipbookRenderSessionTelemetryData)initWithTimestamp:(double)a3 environmentIdentifiers:(id)a4 reasonEnded:(id)a5 sessionFramesHistogram:(id)a6 totalPreparationDuration:(double)a7 accumulatedLayoutDuration:(double)a8 accumulatedRenderDuration:(double)a9 preventedSleepDuration:(double)a10 didFailToRender:(BOOL)a11 timedOutEnvironmentCount:(unsigned int)a12
+- (BLSHFlipbookRenderSessionTelemetryData)initWithTimestamp:(double)timestamp environmentIdentifiers:(id)identifiers reasonEnded:(id)ended sessionFramesHistogram:(id)histogram totalPreparationDuration:(double)duration accumulatedLayoutDuration:(double)layoutDuration accumulatedRenderDuration:(double)renderDuration preventedSleepDuration:(double)self0 didFailToRender:(BOOL)self1 timedOutEnvironmentCount:(unsigned int)self2
 {
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
+  identifiersCopy = identifiers;
+  endedCopy = ended;
+  histogramCopy = histogram;
   v29.receiver = self;
   v29.super_class = BLSHFlipbookRenderSessionTelemetryData;
   v26 = [(BLSHFlipbookRenderSessionTelemetryData *)&v29 init];
   v27 = v26;
   if (v26)
   {
-    v26->_timestamp = a3;
-    objc_storeStrong(&v26->_environmentIdentifiers, a4);
-    objc_storeStrong(&v27->_reasonEnded, a5);
-    objc_storeStrong(&v27->_sessionFramesHistogram, a6);
-    v27->_totalPreparationDuration = a7;
-    v27->_accumulatedLayoutDuration = a8;
-    v27->_accumulatedRenderDuration = a9;
-    v27->_preventedSleepDuration = a10;
-    v27->_didFailToRender = a11;
-    v27->_timedOutEnvironmentCount = a12;
+    v26->_timestamp = timestamp;
+    objc_storeStrong(&v26->_environmentIdentifiers, identifiers);
+    objc_storeStrong(&v27->_reasonEnded, ended);
+    objc_storeStrong(&v27->_sessionFramesHistogram, histogram);
+    v27->_totalPreparationDuration = duration;
+    v27->_accumulatedLayoutDuration = layoutDuration;
+    v27->_accumulatedRenderDuration = renderDuration;
+    v27->_preventedSleepDuration = sleepDuration;
+    v27->_didFailToRender = render;
+    v27->_timedOutEnvironmentCount = count;
   }
 
   return v27;
@@ -40,7 +40,7 @@
   v15[3] = &unk_27841E538;
   v4 = v3;
   v16 = v4;
-  v17 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v15];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -48,7 +48,7 @@
   v12[3] = &unk_27841E538;
   v5 = v4;
   v13 = v5;
-  v14 = self;
+  selfCopy2 = self;
   [v5 appendBodySectionWithName:0 openDelimiter:@" {" closeDelimiter:@"} " block:v12];
   environmentIdentifiers = self->_environmentIdentifiers;
   v10[0] = MEMORY[0x277D85DD0];

@@ -1,19 +1,19 @@
 @interface STUserDeviceAddress
-+ (id)fetchOrCreateUserDeviceAddressWithUser:(id)a3 device:(id)a4 context:(id)a5 error:(id *)a6;
++ (id)fetchOrCreateUserDeviceAddressWithUser:(id)user device:(id)device context:(id)context error:(id *)error;
 @end
 
 @implementation STUserDeviceAddress
 
-+ (id)fetchOrCreateUserDeviceAddressWithUser:(id)a3 device:(id)a4 context:(id)a5 error:(id *)a6
++ (id)fetchOrCreateUserDeviceAddressWithUser:(id)user device:(id)device context:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 fetchRequest];
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %@", @"user", v10, @"device", v11];
-  [v13 setPredicate:v14];
+  userCopy = user;
+  deviceCopy = device;
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  deviceCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %@", @"user", userCopy, @"device", deviceCopy];
+  [fetchRequest setPredicate:deviceCopy];
 
-  v15 = [v13 execute:a6];
+  v15 = [fetchRequest execute:error];
   v16 = v15;
   if (v15)
   {
@@ -26,28 +26,28 @@
         [STUserDeviceAddress fetchOrCreateUserDeviceAddressWithUser:v17 device:v18 context:? error:?];
       }
 
-      if (a6)
+      if (error)
       {
         v19 = v17;
-        *a6 = v17;
+        *error = v17;
       }
     }
 
-    v20 = [v16 firstObject];
-    if (!v20)
+    firstObject = [v16 firstObject];
+    if (!firstObject)
     {
-      v20 = [[STUserDeviceAddress alloc] initWithContext:v12];
-      [(STUserDeviceAddress *)v20 setUser:v10];
-      [(STUserDeviceAddress *)v20 setDevice:v11];
+      firstObject = [[STUserDeviceAddress alloc] initWithContext:contextCopy];
+      [(STUserDeviceAddress *)firstObject setUser:userCopy];
+      [(STUserDeviceAddress *)firstObject setDevice:deviceCopy];
     }
   }
 
   else
   {
-    v20 = 0;
+    firstObject = 0;
   }
 
-  return v20;
+  return firstObject;
 }
 
 + (void)fetchOrCreateUserDeviceAddressWithUser:(uint64_t)a1 device:(NSObject *)a2 context:error:.cold.1(uint64_t a1, NSObject *a2)

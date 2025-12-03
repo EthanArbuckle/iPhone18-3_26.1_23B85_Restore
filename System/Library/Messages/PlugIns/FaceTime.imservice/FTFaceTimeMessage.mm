@@ -1,8 +1,8 @@
 @interface FTFaceTimeMessage
-- (BOOL)hasRequiredKeys:(id *)a3;
+- (BOOL)hasRequiredKeys:(id *)keys;
 - (BOOL)isValidMessage;
 - (FTFaceTimeMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (void)dealloc;
 @end
@@ -23,11 +23,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = FTFaceTimeMessage;
-  v4 = [(FTIDSMessage *)&v14 copyWithZone:a3];
+  v4 = [(FTIDSMessage *)&v14 copyWithZone:zone];
   v9 = objc_msgSend_sessionToken(self, v5, v6, v7, v8);
   objc_msgSend_setSessionToken_(v4, v10, v9, v11, v12);
   return v4;
@@ -41,9 +41,9 @@
   [(FTIDSMessage *)&v5 dealloc];
 }
 
-- (BOOL)hasRequiredKeys:(id *)a3
+- (BOOL)hasRequiredKeys:(id *)keys
 {
-  v6 = objc_msgSend_selfURI(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_selfURI(self, a2, keys, v3, v4);
   v11 = objc_msgSend_length(v6, v7, v8, v9, v10);
   if (!v11)
   {
@@ -51,7 +51,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       sub_23BCBF854(v12);
-      if (!a3)
+      if (!keys)
       {
         return v11 != 0;
       }
@@ -59,10 +59,10 @@
       goto LABEL_4;
     }
 
-    if (a3)
+    if (keys)
     {
 LABEL_4:
-      *a3 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v13, @"self URI", v14, v15);
+      *keys = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v13, @"self URI", v14, v15);
     }
   }
 
@@ -97,8 +97,8 @@ LABEL_4:
 {
   v15.receiver = self;
   v15.super_class = FTFaceTimeMessage;
-  v3 = [(IDSBaseMessage *)&v15 messageBody];
-  v12 = objc_msgSend_mutableCopy(v3, v4, v5, v6, v7);
+  messageBody = [(IDSBaseMessage *)&v15 messageBody];
+  v12 = objc_msgSend_mutableCopy(messageBody, v4, v5, v6, v7);
   if (!v12)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);

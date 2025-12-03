@@ -1,20 +1,20 @@
 @interface WFParameterValuePickerDataSource
 + (id)variableSectionIdentifier;
 - (UILocalizedIndexedCollation)localizedCollation;
-- (WFParameterValuePickerDataSource)initWithParameter:(id)a3 tableView:(id)a4 cellProvider:(id)a5;
+- (WFParameterValuePickerDataSource)initWithParameter:(id)parameter tableView:(id)view cellProvider:(id)provider;
 - (WFVariableProvider)variableProvider;
 - (WFVariableUIDelegate)variableUIDelegate;
 - (id)displayVariables;
-- (id)displayVariablesWithTitle:(id)a3;
-- (id)parameterStateAtIndexPath:(id)a3;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)snapshotForCollection:(id)a3 filterVariableTitle:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
+- (id)displayVariablesWithTitle:(id)title;
+- (id)parameterStateAtIndexPath:(id)path;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)snapshotForCollection:(id)collection filterVariableTitle:(id)title;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
 - (unint64_t)itemsCount;
 - (unint64_t)sectionsCount;
-- (void)applyCollection:(id)a3 animatingDifferences:(BOOL)a4 filterVariableTitle:(id)a5 completion:(id)a6;
-- (void)applyEmptyCollectionAnimatingDifferences:(BOOL)a3 completion:(id)a4;
+- (void)applyCollection:(id)collection animatingDifferences:(BOOL)differences filterVariableTitle:(id)title completion:(id)completion;
+- (void)applyEmptyCollectionAnimatingDifferences:(BOOL)differences completion:(id)completion;
 @end
 
 @implementation WFParameterValuePickerDataSource
@@ -33,106 +33,106 @@
   return WeakRetained;
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v7 = [(WFParameterValuePickerDataSource *)self collection:a3];
-  v8 = [v7 usesIndexedCollation];
+  v7 = [(WFParameterValuePickerDataSource *)self collection:view];
+  usesIndexedCollation = [v7 usesIndexedCollation];
 
-  if (v8)
+  if (usesIndexedCollation)
   {
-    v9 = [(WFParameterValuePickerDataSource *)self localizedCollation];
-    a5 = [v9 sectionForSectionIndexTitleAtIndex:a5];
+    localizedCollation = [(WFParameterValuePickerDataSource *)self localizedCollation];
+    index = [localizedCollation sectionForSectionIndexTitleAtIndex:index];
   }
 
-  return a5;
+  return index;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
-  v4 = [(WFParameterValuePickerDataSource *)self collection];
-  if ([v4 usesIndexedCollation])
+  collection = [(WFParameterValuePickerDataSource *)self collection];
+  if ([collection usesIndexedCollation])
   {
-    v5 = [(WFParameterValuePickerDataSource *)self localizedCollation];
-    v6 = [v5 sectionIndexTitles];
+    localizedCollation = [(WFParameterValuePickerDataSource *)self localizedCollation];
+    sectionIndexTitles = [localizedCollation sectionIndexTitles];
   }
 
   else
   {
-    v6 = 0;
+    sectionIndexTitles = 0;
   }
 
-  return v6;
+  return sectionIndexTitles;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(WFParameterValuePickerDataSource *)self collection];
-  v7 = [v6 sections];
-  v8 = [v7 count];
+  collection = [(WFParameterValuePickerDataSource *)self collection];
+  sections = [collection sections];
+  v8 = [sections count];
 
-  if (v8 <= a4)
+  if (v8 <= section)
   {
-    v15 = 0;
+    title2 = 0;
     goto LABEL_9;
   }
 
-  v9 = [(WFParameterValuePickerDataSource *)self collection];
-  v10 = [v9 sections];
-  v11 = [v10 objectAtIndexedSubscript:a4];
+  collection2 = [(WFParameterValuePickerDataSource *)self collection];
+  sections2 = [collection2 sections];
+  v11 = [sections2 objectAtIndexedSubscript:section];
 
-  v12 = [v11 items];
-  if (![v12 count])
+  items = [v11 items];
+  if (![items count])
   {
 
     goto LABEL_7;
   }
 
-  v13 = [v11 title];
-  v14 = [v13 length];
+  title = [v11 title];
+  v14 = [title length];
 
   if (!v14)
   {
 LABEL_7:
-    v15 = 0;
+    title2 = 0;
     goto LABEL_8;
   }
 
-  v15 = [v11 title];
+  title2 = [v11 title];
 LABEL_8:
 
 LABEL_9:
 
-  return v15;
+  return title2;
 }
 
-- (void)applyEmptyCollectionAnimatingDifferences:(BOOL)a3 completion:(id)a4
+- (void)applyEmptyCollectionAnimatingDifferences:(BOOL)differences completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  differencesCopy = differences;
+  completionCopy = completion;
   [(WFParameterValuePickerDataSource *)self setCollection:0];
   v7 = objc_alloc_init(MEMORY[0x277CFB890]);
   v8.receiver = self;
   v8.super_class = WFParameterValuePickerDataSource;
-  [(UITableViewDiffableDataSource *)&v8 applySnapshot:v7 animatingDifferences:v4 completion:v6];
+  [(UITableViewDiffableDataSource *)&v8 applySnapshot:v7 animatingDifferences:differencesCopy completion:completionCopy];
 }
 
-- (void)applyCollection:(id)a3 animatingDifferences:(BOOL)a4 filterVariableTitle:(id)a5 completion:(id)a6
+- (void)applyCollection:(id)collection animatingDifferences:(BOOL)differences filterVariableTitle:(id)title completion:(id)completion
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  if ([v12 usesIndexedCollation])
+  differencesCopy = differences;
+  completionCopy = completion;
+  titleCopy = title;
+  collectionCopy = collection;
+  if ([collectionCopy usesIndexedCollation])
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __104__WFParameterValuePickerDataSource_applyCollection_animatingDifferences_filterVariableTitle_completion___block_invoke;
     v20[3] = &unk_279EDB930;
     v20[4] = self;
-    v13 = [v12 wf_mapItems:v20];
+    v13 = [collectionCopy wf_mapItems:v20];
 
-    v14 = [(WFParameterValuePickerDataSource *)self localizedCollation];
-    v15 = [v13 wf_localizedIndexedCollationCollectionWithCollation:v14 collationStringSelector:sel_readableTitle];
+    localizedCollation = [(WFParameterValuePickerDataSource *)self localizedCollation];
+    v15 = [v13 wf_localizedIndexedCollationCollectionWithCollation:localizedCollation collationStringSelector:sel_readableTitle];
 
     v16 = [v15 wf_mapItems:&__block_literal_global_243];
     [(WFParameterValuePickerDataSource *)self setCollection:v16];
@@ -140,15 +140,15 @@ LABEL_9:
 
   else
   {
-    [(WFParameterValuePickerDataSource *)self setCollection:v12];
+    [(WFParameterValuePickerDataSource *)self setCollection:collectionCopy];
   }
 
-  v17 = [(WFParameterValuePickerDataSource *)self collection];
-  v18 = [(WFParameterValuePickerDataSource *)self snapshotForCollection:v17 filterVariableTitle:v11];
+  collection = [(WFParameterValuePickerDataSource *)self collection];
+  v18 = [(WFParameterValuePickerDataSource *)self snapshotForCollection:collection filterVariableTitle:titleCopy];
 
   v19.receiver = self;
   v19.super_class = WFParameterValuePickerDataSource;
-  [(UITableViewDiffableDataSource *)&v19 applySnapshot:v18 animatingDifferences:v7 completion:v10];
+  [(UITableViewDiffableDataSource *)&v19 applySnapshot:v18 animatingDifferences:differencesCopy completion:completionCopy];
 }
 
 WFParameterValueWrapper *__104__WFParameterValuePickerDataSource_applyCollection_animatingDifferences_filterVariableTitle_completion___block_invoke(uint64_t a1, void *a2)
@@ -161,14 +161,14 @@ WFParameterValueWrapper *__104__WFParameterValuePickerDataSource_applyCollection
   return v6;
 }
 
-- (id)snapshotForCollection:(id)a3 filterVariableTitle:(id)a4
+- (id)snapshotForCollection:(id)collection filterVariableTitle:(id)title
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CFB890];
-  v7 = a4;
-  v8 = a3;
+  titleCopy = title;
+  collectionCopy = collection;
   v9 = objc_alloc_init(v6);
-  v10 = [v8 sections];
+  sections = [collectionCopy sections];
 
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
@@ -176,15 +176,15 @@ WFParameterValueWrapper *__104__WFParameterValuePickerDataSource_applyCollection
   v20 = &unk_279EDBD60;
   v11 = v9;
   v21 = v11;
-  v22 = self;
-  [v10 enumerateObjectsUsingBlock:&v17];
+  selfCopy = self;
+  [sections enumerateObjectsUsingBlock:&v17];
 
-  v12 = [(WFParameterValuePickerDataSource *)self displayVariablesWithTitle:v7, v17, v18, v19, v20];
+  v12 = [(WFParameterValuePickerDataSource *)self displayVariablesWithTitle:titleCopy, v17, v18, v19, v20];
 
   if ([v12 count])
   {
-    v13 = [objc_opt_class() variableSectionIdentifier];
-    v23[0] = v13;
+    variableSectionIdentifier = [objc_opt_class() variableSectionIdentifier];
+    v23[0] = variableSectionIdentifier;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     [v11 appendSectionsWithIdentifiers:v14];
 
@@ -248,31 +248,31 @@ WFParameterValueWrapper *__78__WFParameterValuePickerDataSource_snapshotForColle
   return v6;
 }
 
-- (id)parameterStateAtIndexPath:(id)a3
+- (id)parameterStateAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(WFParameterValuePickerDataSource *)self collection];
-  v7 = [v6 sections];
-  v8 = [v7 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  collection = [(WFParameterValuePickerDataSource *)self collection];
+  sections = [collection sections];
+  v8 = [sections count];
 
-  if (v5 >= v8)
+  if (section >= v8)
   {
-    v12 = [(WFParameterValuePickerDataSource *)self displayVariables];
-    v13 = [v4 row];
+    displayVariables = [(WFParameterValuePickerDataSource *)self displayVariables];
+    v13 = [pathCopy row];
 
-    v10 = [v12 objectAtIndexedSubscript:v13];
+    v10 = [displayVariables objectAtIndexedSubscript:v13];
 
-    v14 = [(WFParameterValuePickerDataSource *)self parameter];
-    v15 = [v14 stateClass];
+    parameter = [(WFParameterValuePickerDataSource *)self parameter];
+    stateClass = [parameter stateClass];
 
-    v11 = [[v15 alloc] initWithVariable:v10];
+    value = [[stateClass alloc] initWithVariable:v10];
   }
 
   else
   {
-    v9 = [(WFParameterValuePickerDataSource *)self collection];
-    v10 = [v9 wf_itemAtIndexPath:v4];
+    collection2 = [(WFParameterValuePickerDataSource *)self collection];
+    v10 = [collection2 wf_itemAtIndexPath:pathCopy];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -280,10 +280,10 @@ WFParameterValueWrapper *__78__WFParameterValuePickerDataSource_snapshotForColle
       goto LABEL_6;
     }
 
-    v11 = [v10 value];
+    value = [v10 value];
   }
 
-  v16 = v11;
+  v16 = value;
 
   v10 = v16;
 LABEL_6:
@@ -291,16 +291,16 @@ LABEL_6:
   return v10;
 }
 
-- (WFParameterValuePickerDataSource)initWithParameter:(id)a3 tableView:(id)a4 cellProvider:(id)a5
+- (WFParameterValuePickerDataSource)initWithParameter:(id)parameter tableView:(id)view cellProvider:(id)provider
 {
-  v9 = a3;
+  parameterCopy = parameter;
   v14.receiver = self;
   v14.super_class = WFParameterValuePickerDataSource;
-  v10 = [(UITableViewDiffableDataSource *)&v14 initWithTableView:a4 cellProvider:a5];
+  v10 = [(UITableViewDiffableDataSource *)&v14 initWithTableView:view cellProvider:provider];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_parameter, a3);
+    objc_storeStrong(&v10->_parameter, parameter);
     v12 = v11;
   }
 
@@ -311,40 +311,40 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = WFParameterValuePickerDataSource;
-  v2 = [(UITableViewDiffableDataSource *)&v5 snapshot];
-  v3 = [v2 numberOfSections];
+  snapshot = [(UITableViewDiffableDataSource *)&v5 snapshot];
+  numberOfSections = [snapshot numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
 - (unint64_t)itemsCount
 {
   v5.receiver = self;
   v5.super_class = WFParameterValuePickerDataSource;
-  v2 = [(UITableViewDiffableDataSource *)&v5 snapshot];
-  v3 = [v2 numberOfItems];
+  snapshot = [(UITableViewDiffableDataSource *)&v5 snapshot];
+  numberOfItems = [snapshot numberOfItems];
 
-  return v3;
+  return numberOfItems;
 }
 
-- (id)displayVariablesWithTitle:(id)a3
+- (id)displayVariablesWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(WFParameterValuePickerDataSource *)self displayVariables];
-  v6 = v5;
-  if (v4)
+  titleCopy = title;
+  displayVariables = [(WFParameterValuePickerDataSource *)self displayVariables];
+  v6 = displayVariables;
+  if (titleCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __62__WFParameterValuePickerDataSource_displayVariablesWithTitle___block_invoke;
     v9[3] = &unk_279EDBC00;
-    v10 = v4;
+    v10 = titleCopy;
     v7 = [v6 if_objectsPassingTest:v9];
   }
 
   else
   {
-    v7 = v5;
+    v7 = displayVariables;
   }
 
   return v7;
@@ -382,16 +382,16 @@ uint64_t __62__WFParameterValuePickerDataSource_displayVariablesWithTitle___bloc
 
 - (id)displayVariables
 {
-  v3 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
-  if (![v3 count])
+  allowedVariableTypes = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
+  if (![allowedVariableTypes count])
   {
 
     goto LABEL_8;
   }
 
-  v4 = [(WFParameterValuePickerDataSource *)self variableProvider];
+  variableProvider = [(WFParameterValuePickerDataSource *)self variableProvider];
 
-  if (!v4)
+  if (!variableProvider)
   {
 LABEL_8:
     v5 = 0;
@@ -399,16 +399,16 @@ LABEL_8:
   }
 
   v5 = objc_opt_new();
-  v6 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
+  allowedVariableTypes2 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
   v7 = *MEMORY[0x277D7D038];
-  if ([v6 containsObject:*MEMORY[0x277D7D038]])
+  if ([allowedVariableTypes2 containsObject:*MEMORY[0x277D7D038]])
   {
-    v8 = [(WFParameterValuePickerDataSource *)self variableProvider];
-    if ([v8 hasAvailableActionOutputVariables])
+    variableProvider2 = [(WFParameterValuePickerDataSource *)self variableProvider];
+    if ([variableProvider2 hasAvailableActionOutputVariables])
     {
-      v9 = [(WFParameterValuePickerDataSource *)self variableUIDelegate];
+      variableUIDelegate = [(WFParameterValuePickerDataSource *)self variableUIDelegate];
 
-      if (v9)
+      if (variableUIDelegate)
       {
         [v5 addObject:v7];
       }
@@ -418,8 +418,8 @@ LABEL_8:
   }
 
 LABEL_11:
-  v10 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
-  v11 = [v10 containsObject:*MEMORY[0x277D7D040]];
+  allowedVariableTypes3 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
+  v11 = [allowedVariableTypes3 containsObject:*MEMORY[0x277D7D040]];
 
   if (v11)
   {
@@ -427,8 +427,8 @@ LABEL_11:
     [v5 addObject:v12];
   }
 
-  v13 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
-  v14 = [v13 containsObject:*MEMORY[0x277D7D048]];
+  allowedVariableTypes4 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
+  v14 = [allowedVariableTypes4 containsObject:*MEMORY[0x277D7D048]];
 
   if (v14)
   {
@@ -436,8 +436,8 @@ LABEL_11:
     [v5 addObject:v15];
   }
 
-  v16 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
-  v17 = [v16 containsObject:*MEMORY[0x277D7D058]];
+  allowedVariableTypes5 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
+  v17 = [allowedVariableTypes5 containsObject:*MEMORY[0x277D7D058]];
 
   if (v17)
   {
@@ -445,8 +445,8 @@ LABEL_11:
     [v5 addObject:v18];
   }
 
-  v19 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
-  v20 = [v19 containsObject:*MEMORY[0x277D7D060]];
+  allowedVariableTypes6 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
+  v20 = [allowedVariableTypes6 containsObject:*MEMORY[0x277D7D060]];
 
   if (v20)
   {
@@ -454,19 +454,19 @@ LABEL_11:
     [v5 addObject:v21];
   }
 
-  v22 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
-  v23 = [v22 containsObject:*MEMORY[0x277D7D070]];
+  allowedVariableTypes7 = [(WFParameterValuePickerDataSource *)self allowedVariableTypes];
+  v23 = [allowedVariableTypes7 containsObject:*MEMORY[0x277D7D070]];
 
   if (v23)
   {
-    v24 = [(WFParameterValuePickerDataSource *)self variableProvider];
-    v25 = [v24 availableVariableNames];
+    variableProvider3 = [(WFParameterValuePickerDataSource *)self variableProvider];
+    availableVariableNames = [variableProvider3 availableVariableNames];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __52__WFParameterValuePickerDataSource_displayVariables__block_invoke;
     v28[3] = &unk_279EDBA40;
     v28[4] = self;
-    v26 = [v25 if_map:v28];
+    v26 = [availableVariableNames if_map:v28];
     [v5 addObjectsFromArray:v26];
   }
 
@@ -491,9 +491,9 @@ id __52__WFParameterValuePickerDataSource_displayVariables__block_invoke(uint64_
   localizedCollation = self->_localizedCollation;
   if (!localizedCollation)
   {
-    v4 = [MEMORY[0x277D75700] currentCollation];
+    currentCollation = [MEMORY[0x277D75700] currentCollation];
     v5 = self->_localizedCollation;
-    self->_localizedCollation = v4;
+    self->_localizedCollation = currentCollation;
 
     localizedCollation = self->_localizedCollation;
   }

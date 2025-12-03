@@ -6,7 +6,7 @@
 
 - (MTSXPCConnection)makeMTSXPCConnectionWithError:()MTSDeviceSetupExtensionProcess
 {
-  v1 = [a1 makeXPCConnectionWithError:?];
+  v1 = [self makeXPCConnectionWithError:?];
   if (v1)
   {
     v2 = [[MTSXPCConnection alloc] initWithXPCConnection:v1];

@@ -1,17 +1,17 @@
 @interface MLRXPCActivityTaskWithLockedDevice
 - (NSString)description;
 - (id)criteria;
-- (void)startTaskWithCompletion:(id)a3;
+- (void)startTaskWithCompletion:(id)completion;
 @end
 
 @implementation MLRXPCActivityTaskWithLockedDevice
 
 - (NSString)description
 {
-  v3 = [(MLRXPCActivityTaskWithLockedDevice *)self identifier];
-  v4 = [(MLRXPCActivityTaskWithLockedDevice *)self activity];
-  v5 = [(MLRXPCActivityTaskWithLockedDevice *)self criteria];
-  v6 = [NSString stringWithFormat:@"identifier=%@, activity=%@, criteria=%@", v3, v4, v5];
+  identifier = [(MLRXPCActivityTaskWithLockedDevice *)self identifier];
+  activity = [(MLRXPCActivityTaskWithLockedDevice *)self activity];
+  criteria = [(MLRXPCActivityTaskWithLockedDevice *)self criteria];
+  v6 = [NSString stringWithFormat:@"identifier=%@, activity=%@, criteria=%@", identifier, activity, criteria];
 
   return v6;
 }
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (void)startTaskWithCompletion:(id)a3
+- (void)startTaskWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   GarbageCollectAllRecords();
-  v3[2](v3, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface TIAnalyticsServiceProviderImpl
 - (TIAnalyticsServiceProviderImpl)init;
-- (void)dispatchEventWithName:(id)a3 payload:(id)a4;
+- (void)dispatchEventWithName:(id)name payload:(id)payload;
 @end
 
 @implementation TIAnalyticsServiceProviderImpl
@@ -41,18 +41,18 @@
   return v2;
 }
 
-- (void)dispatchEventWithName:(id)a3 payload:(id)a4
+- (void)dispatchEventWithName:(id)name payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  payloadCopy = payload;
   if (InputAnalyticsLibraryCore() && (dispatcher = self->_dispatcher) != 0)
   {
-    [(IAEventDispatcher *)dispatcher dispatchEvent:v6 payload:v7];
+    [(IAEventDispatcher *)dispatcher dispatchEvent:nameCopy payload:payloadCopy];
   }
 
   else
   {
-    v9 = v7;
+    v9 = payloadCopy;
     AnalyticsSendEventLazy();
   }
 }

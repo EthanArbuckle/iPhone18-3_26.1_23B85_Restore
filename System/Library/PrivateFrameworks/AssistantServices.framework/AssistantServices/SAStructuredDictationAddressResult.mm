@@ -1,26 +1,26 @@
 @interface SAStructuredDictationAddressResult
-- (id)ad_transcriptionResultWithAddressBookManager:(id)a3;
+- (id)ad_transcriptionResultWithAddressBookManager:(id)manager;
 @end
 
 @implementation SAStructuredDictationAddressResult
 
-- (id)ad_transcriptionResultWithAddressBookManager:(id)a3
+- (id)ad_transcriptionResultWithAddressBookManager:(id)manager
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_alloc_init(STSiriLocation);
   [v4 setResultType:3];
-  v5 = [(SAStructuredDictationAddressResult *)v3 forwardGeoProtobuf];
-  [v4 setGeoResult:v5];
+  forwardGeoProtobuf = [(SAStructuredDictationAddressResult *)selfCopy forwardGeoProtobuf];
+  [v4 setGeoResult:forwardGeoProtobuf];
 
-  v6 = [(SAStructuredDictationAddressResult *)v3 contactId];
-  [v4 setAddressBookID:v6];
+  contactId = [(SAStructuredDictationAddressResult *)selfCopy contactId];
+  [v4 setAddressBookID:contactId];
 
-  v7 = [(SAStructuredDictationAddressResult *)v3 addressLabel];
-  [v4 setAddressLabel:v7];
+  addressLabel = [(SAStructuredDictationAddressResult *)selfCopy addressLabel];
+  [v4 setAddressLabel:addressLabel];
 
-  v8 = [(SAStructuredDictationAddressResult *)v3 contactName];
+  contactName = [(SAStructuredDictationAddressResult *)selfCopy contactName];
 
-  [v4 setContactName:v8];
+  [v4 setContactName:contactName];
 
   return v4;
 }

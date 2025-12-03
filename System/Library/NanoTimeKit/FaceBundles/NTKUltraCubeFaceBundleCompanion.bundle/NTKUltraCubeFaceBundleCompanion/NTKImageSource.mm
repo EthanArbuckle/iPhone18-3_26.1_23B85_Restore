@@ -1,16 +1,16 @@
 @interface NTKImageSource
-+ (NTKImageSource)imageSourceWithData:(id)a3;
-- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)a3;
-- (id)initImageSourceWithData:(id)a3;
++ (NTKImageSource)imageSourceWithData:(id)data;
+- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)factor;
+- (id)initImageSourceWithData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation NTKImageSource
 
-+ (NTKImageSource)imageSourceWithData:(id)a3
++ (NTKImageSource)imageSourceWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[NTKImageSource alloc] initImageSourceWithData:v3];
+  dataCopy = data;
+  v4 = [[NTKImageSource alloc] initImageSourceWithData:dataCopy];
 
   if ([v4 CGImageSource])
   {
@@ -38,15 +38,15 @@
   [(NTKImageSource *)&v4 dealloc];
 }
 
-- (id)initImageSourceWithData:(id)a3
+- (id)initImageSourceWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = NTKImageSource;
   v5 = [(NTKImageSource *)&v9 init];
   if (v5)
   {
-    v6 = CGImageSourceCreateWithData(v4, 0);
+    v6 = CGImageSourceCreateWithData(dataCopy, 0);
     v5->_imageSourceRef = v6;
     if (!v6)
     {
@@ -63,7 +63,7 @@
   return v5;
 }
 
-- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)a3
+- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)factor
 {
   if (!self->_imageSourceRef)
   {
@@ -71,7 +71,7 @@
   }
 
   v8[0] = kCGImageSourceSubsampleFactor;
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:factor];
   v8[1] = kCGImageSourceShouldCache;
   v9[0] = v4;
   v9[1] = &__kCFBooleanFalse;

@@ -1,7 +1,7 @@
 @interface MTRAsyncCallbackQueueWorkItem
 - (MTRAsyncCallbackQueueWorkItem)initWithQueue:(dispatch_queue_t)queue;
 - (void)_invalidate;
-- (void)callReadyHandlerWithContext:(id)a3;
+- (void)callReadyHandlerWithContext:(id)context;
 - (void)cancel;
 - (void)endWork;
 - (void)invalidate;
@@ -69,30 +69,30 @@
 
 - (void)endWork
 {
-  v3 = [(MTRAsyncCallbackQueueWorkItem *)self workQueue];
-  [v3 endWork:self];
+  workQueue = [(MTRAsyncCallbackQueueWorkItem *)self workQueue];
+  [workQueue endWork:self];
 
   [(MTRAsyncCallbackQueueWorkItem *)self invalidate];
 }
 
 - (void)retryWork
 {
-  v3 = [(MTRAsyncCallbackQueueWorkItem *)self workQueue];
-  [v3 retryWork:self];
+  workQueue = [(MTRAsyncCallbackQueueWorkItem *)self workQueue];
+  [workQueue retryWork:self];
 }
 
-- (void)callReadyHandlerWithContext:(id)a3
+- (void)callReadyHandlerWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(MTRAsyncCallbackQueueWorkItem *)self queue];
+  contextCopy = context;
+  queue = [(MTRAsyncCallbackQueueWorkItem *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2392DF818;
   v7[3] = &unk_278A72298;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = contextCopy;
+  v6 = contextCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)cancel
@@ -103,13 +103,13 @@
   os_unfair_lock_unlock(&self->_lock);
   if (v3)
   {
-    v4 = [(MTRAsyncCallbackQueueWorkItem *)self queue];
+    queue = [(MTRAsyncCallbackQueueWorkItem *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_2392DF9A8;
     block[3] = &unk_278A72B88;
     v6 = v3;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
   }
 }
 

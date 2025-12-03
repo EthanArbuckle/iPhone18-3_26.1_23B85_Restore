@@ -1,12 +1,12 @@
 @interface REExportedStringValue
-- (REExportedStringValue)initWithString:(id)a3;
+- (REExportedStringValue)initWithString:(id)string;
 @end
 
 @implementation REExportedStringValue
 
-- (REExportedStringValue)initWithString:(id)a3
+- (REExportedStringValue)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = REExportedStringValue;
   v5 = [(REExportedStringValue *)&v8 init];
@@ -15,12 +15,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 identifier];
+      identifier = [stringCopy identifier];
 
-      v4 = v6;
+      stringCopy = identifier;
     }
 
-    objc_storeStrong(&v5->_string, v4);
+    objc_storeStrong(&v5->_string, stringCopy);
   }
 
   return v5;

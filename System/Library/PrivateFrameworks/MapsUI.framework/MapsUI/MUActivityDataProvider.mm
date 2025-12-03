@@ -3,8 +3,8 @@
 - (MUActivityDataProvider)init;
 - (NSURL)shortenedURLOrFullIfNotLoaded;
 - (void)_initShorteningSession;
-- (void)fetchActivityURLWithCompletion:(id)a3;
-- (void)fetchShortURLWithCompletion:(id)a3;
+- (void)fetchActivityURLWithCompletion:(id)completion;
+- (void)fetchShortURLWithCompletion:(id)completion;
 - (void)preload;
 @end
 
@@ -20,25 +20,25 @@
   }
 }
 
-- (void)fetchActivityURLWithCompletion:(id)a3
+- (void)fetchActivityURLWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(MUActivityDataProvider *)self supportsURLShorteningService])
   {
-    [(MUActivityDataProvider *)self fetchShortURLWithCompletion:v5];
+    [(MUActivityDataProvider *)self fetchShortURLWithCompletion:completionCopy];
   }
 
   else
   {
-    v4 = [(MUActivityDataProvider *)self activityURL];
-    v5[2](v5, v4, 0);
+    activityURL = [(MUActivityDataProvider *)self activityURL];
+    completionCopy[2](completionCopy, activityURL, 0);
   }
 }
 
-- (void)fetchShortURLWithCompletion:(id)a3
+- (void)fetchShortURLWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MUActivityDataProvider *)self activityURL];
+  completionCopy = completion;
+  activityURL = [(MUActivityDataProvider *)self activityURL];
   if (MapsFeature_IsEnabled_Maps66())
   {
     shorteningSession = self->_shorteningSession;
@@ -46,14 +46,14 @@
     v7[1] = 3221225472;
     v7[2] = __54__MUActivityDataProvider_fetchShortURLWithCompletion___block_invoke;
     v7[3] = &unk_1E8218370;
-    v9 = v4;
-    v8 = v5;
+    v9 = completionCopy;
+    v8 = activityURL;
     [(MUURLShorteningSession *)shorteningSession shortenWithCompletion:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, v5, 0);
+    (*(completionCopy + 2))(completionCopy, activityURL, 0);
   }
 }
 
@@ -99,17 +99,17 @@ uint64_t __54__MUActivityDataProvider_fetchShortURLWithCompletion___block_invoke
       v18[5] = v7;
     }
 
-    v9 = v18[5];
+    activityURL = v18[5];
 
     _Block_object_dispose(&v17, 8);
   }
 
   else
   {
-    v9 = [(MUActivityDataProvider *)self activityURL];
+    activityURL = [(MUActivityDataProvider *)self activityURL];
   }
 
-  return v9;
+  return activityURL;
 }
 
 void __55__MUActivityDataProvider_shortenedURLOrFullIfNotLoaded__block_invoke(uint64_t a1, void *a2)
@@ -125,11 +125,11 @@ void __55__MUActivityDataProvider_shortenedURLOrFullIfNotLoaded__block_invoke(ui
 
 - (LPLinkMetadata)linkMetadata
 {
-  v3 = [(MUActivityDataProvider *)self activityURL];
-  v4 = metadataWithURL(v3);
+  activityURL = [(MUActivityDataProvider *)self activityURL];
+  v4 = metadataWithURL(activityURL);
 
-  v5 = [(MUActivityDataProvider *)self specializationMetadata];
-  [v4 setSpecialization:v5];
+  specializationMetadata = [(MUActivityDataProvider *)self specializationMetadata];
+  [v4 setSpecialization:specializationMetadata];
 
   return v4;
 }

@@ -1,9 +1,9 @@
 @interface NPTOSyncServiceController
-- (NPTOSyncServiceController)initWithService:(id)a3 relationship:(int64_t)a4 requiresConnectedDevice:(BOOL)a5 deviceControllerClass:(Class)a6;
+- (NPTOSyncServiceController)initWithService:(id)service relationship:(int64_t)relationship requiresConnectedDevice:(BOOL)device deviceControllerClass:(Class)class;
 - (NSString)description;
 - (void)_updateDeviceControllers;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service linkedDevicesChanged:(id)changed;
 @end
 
 @implementation NPTOSyncServiceController
@@ -14,7 +14,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
-    v22 = "[NPTOSyncServiceController _updateDeviceControllers]";
+    selfCopy = "[NPTOSyncServiceController _updateDeviceControllers]";
     v23 = 2080;
     v24 = "/Library/Caches/com.apple.xbs/Sources/NanoPhotos/NanoPhotosSync/Daemon Controllers/NPTOSyncServiceController.m";
     v25 = 1024;
@@ -94,7 +94,7 @@
     deviceControllers = self->_deviceControllers;
     activeDeviceControllers = self->_activeDeviceControllers;
     *buf = 138412802;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = deviceControllers;
     v25 = 2112;
@@ -113,9 +113,9 @@
   return v4;
 }
 
-- (NPTOSyncServiceController)initWithService:(id)a3 relationship:(int64_t)a4 requiresConnectedDevice:(BOOL)a5 deviceControllerClass:(Class)a6
+- (NPTOSyncServiceController)initWithService:(id)service relationship:(int64_t)relationship requiresConnectedDevice:(BOOL)device deviceControllerClass:(Class)class
 {
-  v11 = a3;
+  serviceCopy = service;
   v32.receiver = self;
   v32.super_class = NPTOSyncServiceController;
   v12 = [(NPTOSyncServiceController *)&v32 init];
@@ -133,10 +133,10 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
     }
 
-    objc_storeStrong(&v12->_serviceIdentifier, a3);
-    v12->_requiresConnectedDevice = a5;
-    v12->_deviceControllerClass = a6;
-    v12->_relationship = a4;
+    objc_storeStrong(&v12->_serviceIdentifier, service);
+    v12->_requiresConnectedDevice = device;
+    v12->_deviceControllerClass = class;
+    v12->_relationship = relationship;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v16 = [NSString stringWithFormat:@"%@.%@", v15, @"queue"];
@@ -169,7 +169,7 @@
   return v12;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v5 = sub_10000268C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -186,7 +186,7 @@
   [(NPTOSyncServiceController *)self _updateDeviceControllers];
 }
 
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4
+- (void)service:(id)service linkedDevicesChanged:(id)changed
 {
   v5 = sub_10000268C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

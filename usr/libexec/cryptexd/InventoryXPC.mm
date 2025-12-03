@@ -1,18 +1,18 @@
 @interface InventoryXPC
 - (_TtC8cryptexd12InventoryXPC)init;
-- (void)createEndpointWithCompletionHandler:(id)a3;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)createEndpointWithCompletionHandler:(id)handler;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation InventoryXPC
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -28,17 +28,17 @@
   v13[3] = 0;
   v13[4] = &_sIeghH_IeAgH_TRTA_34Tu;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_39Tu, v13);
 }
 
-- (void)createEndpointWithCompletionHandler:(id)a3
+- (void)createEndpointWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -54,7 +54,7 @@
   v13[3] = 0;
   v13[4] = &_sIeghH_IeAgH_TRTATu;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTATu, v13);
 }
 

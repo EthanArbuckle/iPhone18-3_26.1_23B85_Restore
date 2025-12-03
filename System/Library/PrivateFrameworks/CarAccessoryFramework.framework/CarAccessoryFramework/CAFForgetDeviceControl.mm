@@ -1,25 +1,25 @@
 @interface CAFForgetDeviceControl
 + (void)load;
-- (void)forgetDeviceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)forgetDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFForgetDeviceControl
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFForgetDeviceControl;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -32,12 +32,12 @@
   [(CAFControl *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -50,21 +50,21 @@
   [(CAFControl *)&v6 unregisterObserver:v5];
 }
 
-- (void)forgetDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)forgetDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v14 = @"identifier";
-  v15[0] = a3;
+  v15[0] = identifier;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = [v7 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__CAFForgetDeviceControl_forgetDeviceWithIdentifier_completion___block_invoke;
   v12[3] = &unk_27890EFF8;
-  v13 = v6;
-  v10 = v6;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [(CAFControl *)self requestWithValue:v9 response:v12];
 
   v11 = *MEMORY[0x277D85DE8];

@@ -1,15 +1,15 @@
 @interface PTPassiveTraceArchiveHandle
-- (PTPassiveTraceArchiveHandle)initWithAarPath:(id)a3 sandboxExtension:(id)a4;
+- (PTPassiveTraceArchiveHandle)initWithAarPath:(id)path sandboxExtension:(id)extension;
 - (void)dealloc;
 @end
 
 @implementation PTPassiveTraceArchiveHandle
 
-- (PTPassiveTraceArchiveHandle)initWithAarPath:(id)a3 sandboxExtension:(id)a4
+- (PTPassiveTraceArchiveHandle)initWithAarPath:(id)path sandboxExtension:(id)extension
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  extensionCopy = extension;
   v18.receiver = self;
   v18.super_class = PTPassiveTraceArchiveHandle;
   v9 = [(PTPassiveTraceArchiveHandle *)&v18 init];
@@ -21,8 +21,8 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v9->_aarPath, a3);
-  [v8 UTF8String];
+  objc_storeStrong(&v9->_aarPath, path);
+  [extensionCopy UTF8String];
   v10->_sandboxToken = sandbox_extension_consume();
   if ([(PTPassiveTraceArchiveHandle *)v10 sandboxToken]!= -1)
   {
@@ -30,7 +30,7 @@ LABEL_6:
     if (os_signpost_enabled(v11))
     {
       *buf = 138543362;
-      v20 = v7;
+      v20 = pathCopy;
       _os_signpost_emit_with_name_impl(&dword_25E3D3000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "PassiveTraceArchiveHandleCreation", "Successfully created an archive handle for '%{public}@'", buf, 0xCu);
     }
 
@@ -43,7 +43,7 @@ LABEL_6:
     v14 = __error();
     v15 = strerror(*v14);
     *buf = 138543618;
-    v20 = v7;
+    v20 = pathCopy;
     v21 = 2082;
     v22 = v15;
     _os_signpost_emit_with_name_impl(&dword_25E3D3000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ExtensionConsumptionFailed", "Failed to consume sandbox extension for '%{public}@' due to error: %{public}s", buf, 0x16u);
@@ -67,11 +67,11 @@ LABEL_10:
       v3 = _passiveArchiveHandleErrorHandle();
       if (os_signpost_enabled(v3))
       {
-        v4 = [(PTPassiveTraceArchiveHandle *)self aarPath];
+        aarPath = [(PTPassiveTraceArchiveHandle *)self aarPath];
         v5 = __error();
         v6 = strerror(*v5);
         *buf = 138543618;
-        v14 = v4;
+        v14 = aarPath;
         v15 = 2082;
         v16 = v6;
         v7 = "PassiveTraceArchiveHandleExtensionReleaseFailure";
@@ -88,9 +88,9 @@ LABEL_7:
       v3 = _passiveArchiveHandleHandle();
       if (os_signpost_enabled(v3))
       {
-        v4 = [(PTPassiveTraceArchiveHandle *)self aarPath];
+        aarPath = [(PTPassiveTraceArchiveHandle *)self aarPath];
         *buf = 138543362;
-        v14 = v4;
+        v14 = aarPath;
         v7 = "PassiveTraceArchiveHandleExtensionRelease";
         v8 = "Successfully released the sandbox extension for %{public}@";
         v9 = v3;

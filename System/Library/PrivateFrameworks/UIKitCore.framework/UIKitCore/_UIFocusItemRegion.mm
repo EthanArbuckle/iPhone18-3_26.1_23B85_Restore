@@ -1,12 +1,12 @@
 @interface _UIFocusItemRegion
 - (BOOL)_canBeOccludedByRegionsAbove;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIFocusItem)item;
-- (_UIFocusItemRegion)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4 item:(id)a5 focusSystem:(id)a6;
+- (_UIFocusItemRegion)initWithFrame:(CGRect)frame coordinateSpace:(id)space item:(id)item focusSystem:(id)system;
 - (id)_debugAssociatedObject;
 - (id)_defaultFocusItem;
 - (id)_descriptionBuilder;
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4;
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space;
 - (int64_t)_preferredDistanceComparisonType;
 - (unint64_t)_focusableBoundaries;
 @end
@@ -20,8 +20,8 @@
     return 0;
   }
 
-  v3 = [(_UIFocusItemRegion *)self item];
-  v2 = v3 != 0;
+  item = [(_UIFocusItemRegion *)self item];
+  v2 = item != 0;
 
   return v2;
 }
@@ -30,15 +30,15 @@
 {
   if ((*&self->_flags & 2) != 0)
   {
-    v4 = [(_UIFocusItemRegion *)self item];
+    item = [(_UIFocusItemRegion *)self item];
   }
 
   else
   {
-    v4 = 0;
+    item = 0;
   }
 
-  return v4;
+  return item;
 }
 
 - (int64_t)_preferredDistanceComparisonType
@@ -60,9 +60,9 @@
     return 0;
   }
 
-  v3 = [(_UIFocusItemRegion *)self item];
+  item = [(_UIFocusItemRegion *)self item];
 
-  if (!v3)
+  if (!item)
   {
     return 0;
   }
@@ -82,27 +82,27 @@
   return WeakRetained;
 }
 
-- (_UIFocusItemRegion)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4 item:(id)a5 focusSystem:(id)a6
+- (_UIFocusItemRegion)initWithFrame:(CGRect)frame coordinateSpace:(id)space item:(id)item focusSystem:(id)system
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v43 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a6;
+  itemCopy = item;
+  systemCopy = system;
   v39.receiver = self;
   v39.super_class = _UIFocusItemRegion;
-  v15 = [(_UIFocusRegion *)&v39 initWithFrame:a4 coordinateSpace:x, y, width, height];
-  v16 = v15;
-  if (!v15)
+  height = [(_UIFocusRegion *)&v39 initWithFrame:space coordinateSpace:x, y, width, height];
+  v16 = height;
+  if (!height)
   {
     goto LABEL_26;
   }
 
-  v17 = v15;
-  v18 = v13;
-  v19 = v14;
+  v17 = height;
+  v18 = itemCopy;
+  v19 = systemCopy;
   objc_storeWeak(&v17->_item, v18);
   v40 = 0;
   if (v18)
@@ -233,11 +233,11 @@ LABEL_26:
   return v16;
 }
 
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space
 {
   v8.receiver = self;
   v8.super_class = _UIFocusItemRegion;
-  v5 = [(_UIFocusRegion *)&v8 _focusRegionWithAdjustedFrame:a4 coordinateSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(_UIFocusRegion *)&v8 _focusRegionWithAdjustedFrame:space coordinateSpace:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   WeakRetained = objc_loadWeakRetained(&self->_item);
   objc_storeWeak((v5 + 56), WeakRetained);
 
@@ -250,14 +250,14 @@ LABEL_26:
 {
   v13.receiver = self;
   v13.super_class = _UIFocusItemRegion;
-  v3 = [(_UIFocusRegion *)&v13 _descriptionBuilder];
-  v4 = [(_UIFocusItemRegion *)self item];
-  if (v4)
+  _descriptionBuilder = [(_UIFocusRegion *)&v13 _descriptionBuilder];
+  item = [(_UIFocusItemRegion *)self item];
+  if (item)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v5 stringWithFormat:@"<%@: %p>", v7, v4];
+    v8 = [v5 stringWithFormat:@"<%@: %p>", v7, item];
   }
 
   else
@@ -265,22 +265,22 @@ LABEL_26:
     v8 = @"(nil)";
   }
 
-  v9 = [v3 appendObject:v8 withName:@"item"];
+  v9 = [_descriptionBuilder appendObject:v8 withName:@"item"];
 
-  v10 = [v3 appendBool:(*&self->_flags >> 1) & 1 withName:@"focusable"];
-  v11 = [v3 appendBool:(*&self->_flags >> 2) & 1 withName:@"transparent"];
+  v10 = [_descriptionBuilder appendBool:(*&self->_flags >> 1) & 1 withName:@"focusable"];
+  v11 = [_descriptionBuilder appendBool:(*&self->_flags >> 2) & 1 withName:@"transparent"];
 
-  return v3;
+  return _descriptionBuilder;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = _UIFocusItemRegion;
-  if ([(_UIFocusRegion *)&v15 isEqual:v4])
+  if ([(_UIFocusRegion *)&v15 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     WeakRetained = objc_loadWeakRetained(&self->_item);
     v7 = objc_loadWeakRetained(v5 + 7);
     v8 = WeakRetained;

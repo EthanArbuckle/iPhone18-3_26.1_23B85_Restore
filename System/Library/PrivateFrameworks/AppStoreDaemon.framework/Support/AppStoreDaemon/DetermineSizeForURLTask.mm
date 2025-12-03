@@ -1,12 +1,12 @@
 @interface DetermineSizeForURLTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation DetermineSizeForURLTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v6 = [NSURLSession sessionWithConfiguration:v5 delegate:0 delegateQueue:0];
   v7 = *(&self->_logKey + 2);
@@ -24,8 +24,8 @@
   v17 = 3221225472;
   v18 = sub_1002E6F8C;
   v19 = &unk_10051E2A8;
-  v20 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = handlerCopy;
   v21 = v11;
   v12 = [v10 dataTaskWithRequest:v8 completionHandler:&v16];
   v13 = ASDLogHandleForCategory();

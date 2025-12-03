@@ -2,7 +2,7 @@
 + (id)Evaluations;
 + (id)configurationForEvaluations;
 + (id)storeConfigurationForEvaluations;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Evaluations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEvaluations];
+  configurationForEvaluations = [self configurationForEvaluations];
   v3 = +[BMLocalAuthenticationEvaluations columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,26 +23,26 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"LocalAuthentication.Interactive.Evaluations" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LocalAuthentication.Interactive.Evaluations" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LocalAuthentication.Interactive.Evaluations" schema:v9 configuration:configurationForEvaluations];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Evaluations"])
+  if ([name isEqualToString:@"Evaluations"])
   {
-    v4 = [a1 Evaluations];
+    evaluations = [self Evaluations];
   }
 
   else
   {
-    v4 = 0;
+    evaluations = 0;
   }
 
-  return v4;
+  return evaluations;
 }
 
 + (id)validKeyPaths
@@ -58,13 +58,13 @@
 
 + (id)configurationForEvaluations
 {
-  v3 = [a1 storeConfigurationForEvaluations];
-  v4 = [a1 syncPolicyForEvaluations];
+  storeConfigurationForEvaluations = [self storeConfigurationForEvaluations];
+  syncPolicyForEvaluations = [self syncPolicyForEvaluations];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"FEF30B4C-0192-4464-AD30-99BF68533683"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LocalAuthentication.Interactive.Evaluations" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LocalAuthentication.Interactive.Evaluations" eventClass:objc_opt_class() storeConfig:storeConfigurationForEvaluations syncPolicy:syncPolicyForEvaluations legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }

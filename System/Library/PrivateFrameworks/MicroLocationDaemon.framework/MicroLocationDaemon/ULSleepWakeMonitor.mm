@@ -1,17 +1,17 @@
 @interface ULSleepWakeMonitor
-+ (int)_internalSleepWakeStateFromCUSleepWakeState:(int)a3;
-- (id)latestEventAfterAddingObserverForEventName:(id)a3;
-- (void)startMonitoring:(id)a3;
-- (void)stopMonitoring:(id)a3;
++ (int)_internalSleepWakeStateFromCUSleepWakeState:(int)state;
+- (id)latestEventAfterAddingObserverForEventName:(id)name;
+- (void)startMonitoring:(id)monitoring;
+- (void)stopMonitoring:(id)monitoring;
 @end
 
 @implementation ULSleepWakeMonitor
 
-- (void)startMonitoring:(id)a3
+- (void)startMonitoring:(id)monitoring
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -28,12 +28,12 @@
   v7 = objc_opt_new();
   [(ULSleepWakeMonitor *)self setSleepWakeMonitor:v7];
 
-  v8 = [(ULEventMonitor *)self queue];
-  v9 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
-  [v9 setDispatchQueue:v8];
+  queue2 = [(ULEventMonitor *)self queue];
+  sleepWakeMonitor = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
+  [sleepWakeMonitor setDispatchQueue:queue2];
 
-  v10 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
-  [v10 setLabel:@"com.apple.milod.ULSleepWakeMonitor"];
+  sleepWakeMonitor2 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
+  [sleepWakeMonitor2 setLabel:@"com.apple.milod.ULSleepWakeMonitor"];
 
   objc_initWeak(buf, self);
   v13[0] = MEMORY[0x277D85DD0];
@@ -41,11 +41,11 @@
   v13[2] = __38__ULSleepWakeMonitor_startMonitoring___block_invoke;
   v13[3] = &unk_2798D43E8;
   objc_copyWeak(&v14, buf);
-  v11 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
-  [v11 setSleepWakeHandler:v13];
+  sleepWakeMonitor3 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
+  [sleepWakeMonitor3 setSleepWakeHandler:v13];
 
-  v12 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
-  [v12 activateWithCompletion:0];
+  sleepWakeMonitor4 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
+  [sleepWakeMonitor4 activateWithCompletion:0];
 
   [(ULSleepWakeMonitor *)self setSleepWakeState:30];
   objc_destroyWeak(&v14);
@@ -67,10 +67,10 @@ void __38__ULSleepWakeMonitor_startMonitoring___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)stopMonitoring:(id)a3
+- (void)stopMonitoring:(id)monitoring
 {
-  v4 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -84,20 +84,20 @@ void __38__ULSleepWakeMonitor_startMonitoring___block_invoke(uint64_t a1, uint64
     _os_log_impl(&dword_258FE9000, v5, OS_LOG_TYPE_DEFAULT, "ULSleepWakeMonitor, stopMonitoring", v7, 2u);
   }
 
-  v6 = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
-  [v6 invalidate];
+  sleepWakeMonitor = [(ULSleepWakeMonitor *)self sleepWakeMonitor];
+  [sleepWakeMonitor invalidate];
 
   [(ULSleepWakeMonitor *)self setSleepWakeMonitor:0];
 }
 
-- (id)latestEventAfterAddingObserverForEventName:(id)a3
+- (id)latestEventAfterAddingObserverForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[(ULEvent *)ULSleepWakeEvent];
-  v7 = [v4 isEqual:v6];
+  v7 = [nameCopy isEqual:v6];
 
   if (v7)
   {
@@ -113,9 +113,9 @@ void __38__ULSleepWakeMonitor_startMonitoring___block_invoke(uint64_t a1, uint64
   return v8;
 }
 
-+ (int)_internalSleepWakeStateFromCUSleepWakeState:(int)a3
++ (int)_internalSleepWakeStateFromCUSleepWakeState:(int)state
 {
-  if (a3 == 50)
+  if (state == 50)
   {
     v3 = 50;
   }
@@ -125,17 +125,17 @@ void __38__ULSleepWakeMonitor_startMonitoring___block_invoke(uint64_t a1, uint64
     v3 = 0;
   }
 
-  if (a3 == 40)
+  if (state == 40)
   {
     v3 = 40;
   }
 
-  if (a3 == 30)
+  if (state == 30)
   {
     v3 = 30;
   }
 
-  if (a3 == 20)
+  if (state == 20)
   {
     v4 = 20;
   }
@@ -145,12 +145,12 @@ void __38__ULSleepWakeMonitor_startMonitoring___block_invoke(uint64_t a1, uint64
     v4 = 0;
   }
 
-  if (a3 == 10)
+  if (state == 10)
   {
     v4 = 10;
   }
 
-  if (a3 <= 29)
+  if (state <= 29)
   {
     return v4;
   }

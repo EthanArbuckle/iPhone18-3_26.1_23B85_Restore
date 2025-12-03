@@ -1,6 +1,6 @@
 @interface FCFeedTransformationIdentity
 + (id)sharedInstance;
-- (id)transformFeedItems:(id)a3;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationIdentity
@@ -26,9 +26,9 @@ uint64_t __46__FCFeedTransformationIdentity_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v3 = [a3 copy];
+  v3 = [items copy];
 
   return v3;
 }

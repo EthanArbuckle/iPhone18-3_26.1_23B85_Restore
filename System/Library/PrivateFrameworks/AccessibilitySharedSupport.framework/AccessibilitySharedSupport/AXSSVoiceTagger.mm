@@ -1,22 +1,22 @@
 @interface AXSSVoiceTagger
-+ (id)_currentLineContentForTag:(id)a3 inTags:(id)a4;
-+ (id)_primaryDialectForTag:(id)a3 inTags:(id)a4;
-+ (id)markupVoiceTagForAttributedString:(id)a3 preferredLangauge:(id)a4;
-+ (id)voiceTagsForContent:(id)a3 preferredLangauge:(id)a4;
++ (id)_currentLineContentForTag:(id)tag inTags:(id)tags;
++ (id)_primaryDialectForTag:(id)tag inTags:(id)tags;
++ (id)markupVoiceTagForAttributedString:(id)string preferredLangauge:(id)langauge;
++ (id)voiceTagsForContent:(id)content preferredLangauge:(id)langauge;
 @end
 
 @implementation AXSSVoiceTagger
 
-+ (id)voiceTagsForContent:(id)a3 preferredLangauge:(id)a4
++ (id)voiceTagsForContent:(id)content preferredLangauge:(id)langauge
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  langaugeCopy = langauge;
   v41 = objc_opt_new();
-  v42 = v6;
-  v8 = [AXSSLanguageTagger languageTagsForContent:v6];
+  v42 = contentCopy;
+  v8 = [AXSSLanguageTagger languageTagsForContent:contentCopy];
   v9 = +[AXSSLanguageManager shared];
-  v39 = v7;
-  v10 = [v9 dialectForLanguageID:v7];
+  v39 = langaugeCopy;
+  v10 = [v9 dialectForLanguageID:langaugeCopy];
 
   v43 = v10;
   if ([v8 count])
@@ -26,20 +26,20 @@
     v13 = 0;
     v14 = 0;
     v15 = v10 != 0;
-    v40 = a1;
+    selfCopy = self;
     v44 = v8;
     while (1)
     {
       v16 = [v8 objectAtIndexedSubscript:v14];
       if (v15)
       {
-        v17 = [a1 _currentLineContentForTag:v16 inTags:v8];
+        v17 = [self _currentLineContentForTag:v16 inTags:v8];
         v18 = [v43 canSpeakString:v17];
         if (v18)
         {
           if (v13)
           {
-            v19 = [a1 _createVoiceTagWithDialect:v13 range:location content:length createdFromNewline:{v42, 0}];
+            v19 = [self _createVoiceTagWithDialect:v13 range:location content:length createdFromNewline:{v42, 0}];
             [v41 addObject:v19];
           }
 
@@ -59,7 +59,7 @@
         v15 = 0;
       }
 
-      v22 = [a1 _primaryDialectForTag:v16 inTags:v8];
+      v22 = [self _primaryDialectForTag:v16 inTags:v8];
       if ([v13 isEqual:v22] & 1) != 0 || (objc_msgSend(v13, "isEqual:", v43))
       {
         v23 = 1;
@@ -67,19 +67,19 @@
 
       else
       {
-        v24 = [v16 dialect];
-        v23 = [v13 isEqual:v24];
+        dialect = [v16 dialect];
+        v23 = [v13 isEqual:dialect];
       }
 
-      v25 = [v16 taggedString];
-      v26 = [v13 canSpeakString:v25];
+      taggedString = [v16 taggedString];
+      v26 = [v13 canSpeakString:taggedString];
 
       if (!v13)
       {
         break;
       }
 
-      a1 = v40;
+      self = selfCopy;
       if ((v26 & v23) == 1)
       {
         v8 = v44;
@@ -94,21 +94,21 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v30 = [v40 _createVoiceTagWithDialect:v13 range:location content:length createdFromNewline:{v42, 0}];
+      v30 = [selfCopy _createVoiceTagWithDialect:v13 range:location content:length createdFromNewline:{v42, 0}];
       [v41 addObject:v30];
 
-      v31 = [v16 dialect];
+      dialect2 = [v16 dialect];
 
       location = [v16 taggedRange];
       length = v32;
       v15 = 1;
-      v13 = v31;
+      v13 = dialect2;
       v8 = v44;
 LABEL_23:
       if ([v16 createdFromNewline])
       {
         v15 = 1;
-        v36 = [a1 _createVoiceTagWithDialect:v13 range:location content:length createdFromNewline:{v42, 1}];
+        v36 = [self _createVoiceTagWithDialect:v13 range:location content:length createdFromNewline:{v42, 1}];
         [v41 addObject:v36];
 
         v13 = 0;
@@ -120,21 +120,21 @@ LABEL_23:
       }
     }
 
-    v27 = [v16 content];
-    v28 = [v22 canSpeakString:v27];
+    content = [v16 content];
+    v28 = [v22 canSpeakString:content];
 
-    a1 = v40;
+    self = selfCopy;
     if (v28)
     {
-      v29 = v22;
+      dialect3 = v22;
     }
 
     else
     {
-      v29 = [v16 dialect];
+      dialect3 = [v16 dialect];
     }
 
-    v13 = v29;
+    v13 = dialect3;
     v8 = v44;
     location = [v16 taggedRange];
     length = v33;
@@ -148,15 +148,15 @@ LABEL_28:
   return v41;
 }
 
-+ (id)markupVoiceTagForAttributedString:(id)a3 preferredLangauge:(id)a4
++ (id)markupVoiceTagForAttributedString:(id)string preferredLangauge:(id)langauge
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v6];
-  v9 = [v6 string];
-  v24 = v7;
-  v10 = [a1 voiceTagsForContent:v9 preferredLangauge:v7];
+  stringCopy = string;
+  langaugeCopy = langauge;
+  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:stringCopy];
+  string = [stringCopy string];
+  v24 = langaugeCopy;
+  v10 = [self voiceTagsForContent:string preferredLangauge:langaugeCopy];
 
   v27 = 0u;
   v28 = 0u;
@@ -178,10 +178,10 @@ LABEL_28:
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 dialect];
-        v18 = [v17 voiceIdentifier];
-        v19 = [v16 taggedRange];
-        [v8 addAttribute:@"AXVoiceIdentifier" value:v18 range:{v19, v20}];
+        dialect = [v16 dialect];
+        voiceIdentifier = [dialect voiceIdentifier];
+        taggedRange = [v16 taggedRange];
+        [v8 addAttribute:@"AXVoiceIdentifier" value:voiceIdentifier range:{taggedRange, v20}];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -196,27 +196,27 @@ LABEL_28:
   return v21;
 }
 
-+ (id)_currentLineContentForTag:(id)a3 inTags:(id)a4
++ (id)_currentLineContentForTag:(id)tag inTags:(id)tags
 {
-  v5 = a3;
-  v6 = a4;
+  tagCopy = tag;
+  tagsCopy = tags;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__2;
   v20 = __Block_byref_object_dispose__2;
-  v21 = [v5 taggedString];
-  v7 = [v5 content];
-  v8 = [v5 content];
-  v9 = [v8 length];
+  taggedString = [tagCopy taggedString];
+  content = [tagCopy content];
+  content2 = [tagCopy content];
+  v9 = [content2 length];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__AXSSVoiceTagger__currentLineContentForTag_inTags___block_invoke;
   v13[3] = &unk_1E8134F70;
-  v10 = v5;
+  v10 = tagCopy;
   v14 = v10;
   v15 = &v16;
-  [v7 enumerateSubstringsInRange:0 options:v9 usingBlock:{4, v13}];
+  [content enumerateSubstringsInRange:0 options:v9 usingBlock:{4, v13}];
 
   v11 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -239,11 +239,11 @@ void __52__AXSSVoiceTagger__currentLineContentForTag_inTags___block_invoke(uint6
   }
 }
 
-+ (id)_primaryDialectForTag:(id)a3 inTags:(id)a4
++ (id)_primaryDialectForTag:(id)tag inTags:(id)tags
 {
-  v4 = [a1 _currentLineContentForTag:a3 inTags:a4];
-  v5 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v4 = [self _currentLineContentForTag:tag inTags:tags];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:newlineCharacterSet];
 
   v7 = [AXSSLanguageTagger primaryLanguageForContent:v6];
   v8 = +[AXSSLanguageManager shared];

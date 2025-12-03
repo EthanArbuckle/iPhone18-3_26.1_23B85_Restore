@@ -1,5 +1,5 @@
 @interface CCUILabeledRoundButtonViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)_accessibilityControlCenterButtonFrame;
 - (id)_accessibilityControlCenterButtonLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,16 +7,16 @@
 
 @implementation CCUILabeledRoundButtonViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceMethod:@"buttonContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceVariable:@"_labelsVisible" withType:"B"];
-  [v3 validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIRoundButtonAccessibility" hasInstanceMethod:@"_accesibilityRawTraits" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButtonViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceMethod:@"buttonContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceVariable:@"_labelsVisible" withType:"B"];
+  [validationsCopy validateClass:@"CCUILabeledRoundButtonViewController" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIRoundButtonAccessibility" hasInstanceMethod:@"_accesibilityRawTraits" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButtonViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -277,17 +277,17 @@ id __95__CCUILabeledRoundButtonViewControllerAccessibility__accessibilityLoadAcc
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CCUILabeledRoundButtonViewControllerAccessibility *)self _accessibilityStringForLabelKeyValues:@"title, subtitle"];
+    accessibilityLabel = [(CCUILabeledRoundButtonViewControllerAccessibility *)self _accessibilityStringForLabelKeyValues:@"title, subtitle"];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CCUILabeledRoundButtonViewControllerAccessibility;
-    v3 = [(CCUILabeledRoundButtonViewControllerAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(CCUILabeledRoundButtonViewControllerAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

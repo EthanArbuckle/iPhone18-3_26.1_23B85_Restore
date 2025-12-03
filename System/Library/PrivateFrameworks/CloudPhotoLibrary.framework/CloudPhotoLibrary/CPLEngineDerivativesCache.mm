@@ -1,31 +1,31 @@
 @interface CPLEngineDerivativesCache
-- (BOOL)_checkGeneratedResources:(id)a3 error:(id *)a4;
-- (BOOL)_checkResource:(id)a3 name:(id)a4 error:(id *)a5;
-- (BOOL)_isUnsupportedFormatError:(id)a3;
-- (CPLEngineDerivativesCache)initWithCacheURL:(id)a3;
-- (id)_cacheKeyForReferenceResource:(id)a3 adjustments:(id)a4 includePosterFrame:(BOOL)a5;
+- (BOOL)_checkGeneratedResources:(id)resources error:(id *)error;
+- (BOOL)_checkResource:(id)resource name:(id)name error:(id *)error;
+- (BOOL)_isUnsupportedFormatError:(id)error;
+- (CPLEngineDerivativesCache)initWithCacheURL:(id)l;
+- (id)_cacheKeyForReferenceResource:(id)resource adjustments:(id)adjustments includePosterFrame:(BOOL)frame;
 - (void)_createCacheFolderIfNecessary;
-- (void)_generateDerivativesForChange:(id)a3 derivativesFilter:(id)a4 fingerprintScheme:(id)a5 completionHandler:(id)a6;
-- (void)_updateChange:(id *)a3 fromOldChange:(id)a4 withResources:(id)a5 excludeImages:(BOOL)a6;
+- (void)_generateDerivativesForChange:(id)change derivativesFilter:(id)filter fingerprintScheme:(id)scheme completionHandler:(id)handler;
+- (void)_updateChange:(id *)change fromOldChange:(id)oldChange withResources:(id)resources excludeImages:(BOOL)images;
 - (void)discardCache;
-- (void)generateDerivativesForChange:(id)a3 derivativesFilter:(id)a4 fingerprintScheme:(id)a5 completionHandler:(id)a6;
+- (void)generateDerivativesForChange:(id)change derivativesFilter:(id)filter fingerprintScheme:(id)scheme completionHandler:(id)handler;
 @end
 
 @implementation CPLEngineDerivativesCache
 
-- (void)generateDerivativesForChange:(id)a3 derivativesFilter:(id)a4 fingerprintScheme:(id)a5 completionHandler:(id)a6
+- (void)generateDerivativesForChange:(id)change derivativesFilter:(id)filter fingerprintScheme:(id)scheme completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  changeCopy = change;
+  filterCopy = filter;
+  schemeCopy = scheme;
+  handlerCopy = handler;
   v15 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __112__CPLEngineDerivativesCache_generateDerivativesForChange_derivativesFilter_fingerprintScheme_completionHandler___block_invoke;
   v51[3] = &unk_1E861CEE8;
   v51[4] = self;
-  v16 = v14;
+  v16 = handlerCopy;
   v53 = v16;
   v17 = v15;
   v52 = v17;
@@ -37,14 +37,14 @@
   v44[4] = self;
   v50 = a2;
   v19 = v17;
-  v48 = v13;
+  v48 = schemeCopy;
   v49 = v18;
   v45 = v19;
-  v46 = v11;
-  v47 = v12;
-  v20 = v13;
-  v21 = v12;
-  v22 = v11;
+  v46 = changeCopy;
+  v47 = filterCopy;
+  v20 = schemeCopy;
+  v21 = filterCopy;
+  v22 = changeCopy;
   v23 = v18;
   v24 = MEMORY[0x1E128EBA0](v44);
   v25 = [v24 copy];
@@ -328,27 +328,27 @@ void __112__CPLEngineDerivativesCache_generateDerivativesForChange_derivativesFi
   dispatch_async(v13, v17);
 }
 
-- (void)_generateDerivativesForChange:(id)a3 derivativesFilter:(id)a4 fingerprintScheme:(id)a5 completionHandler:(id)a6
+- (void)_generateDerivativesForChange:(id)change derivativesFilter:(id)filter fingerprintScheme:(id)scheme completionHandler:(id)handler
 {
   v161 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v95 = a4;
-  v96 = a5;
-  v98 = a6;
+  changeCopy = change;
+  filterCopy = filter;
+  schemeCopy = scheme;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v10 isMasterChange])
+  if ([changeCopy isMasterChange])
   {
-    v99 = [v10 resourceForType:1];
-    v11 = [v99 identity];
-    v12 = [v11 fileUTI];
+    v99 = [changeCopy resourceForType:1];
+    identity = [v99 identity];
+    fileUTI = [identity fileUTI];
 
-    if (v12)
+    if (fileUTI)
     {
-      v13 = [(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] isMovieUTI:v12];
+      v13 = [(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] isMovieUTI:fileUTI];
       if (v13)
       {
         v94 = v13;
-        v14 = [v10 resourceForType:16];
+        v14 = [changeCopy resourceForType:16];
         v15 = v14;
         if (v14 && ([v14 identity], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "fileURL"), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17))
         {
@@ -368,10 +368,10 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      if ([(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] canGenerateImageDerivativesFromUTI:v12])
+      if ([(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] canGenerateImageDerivativesFromUTI:fileUTI])
       {
         v94 = 0;
-        v25 = [v10 resourceForType:2];
+        v25 = [changeCopy resourceForType:2];
         v15 = v25;
         if (!v25 || ([v25 identity], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "fileURL"), v27 = objc_claimAutoreleasedReturnValue(), v27, v26, v28 = v15, !v27))
         {
@@ -379,7 +379,7 @@ LABEL_26:
         }
 
         v18 = v28;
-        v29 = [v10 resourceForType:18];
+        v29 = [changeCopy resourceForType:18];
         v30 = v29;
         if (v29 && ([v29 identity], v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "fileURL"), v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v32))
         {
@@ -400,7 +400,7 @@ LABEL_26:
     v18 = 0;
 LABEL_27:
 
-    v21 = 0;
+    adjustments = 0;
     if (!v99)
     {
       v24 = 0;
@@ -412,21 +412,21 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  if (![v10 isAssetChange])
+  if (![changeCopy isAssetChange])
   {
     v24 = 0;
     v18 = 0;
     v97 = 0;
-    v21 = 0;
+    adjustments = 0;
     goto LABEL_36;
   }
 
-  v20 = [v10 resourceForType:16];
-  v21 = [v10 adjustments];
+  v20 = [changeCopy resourceForType:16];
+  adjustments = [changeCopy adjustments];
   if (v20)
   {
     v19 = v20;
-    v18 = [v10 resourceForType:2];
+    v18 = [changeCopy resourceForType:2];
     v22 = 0;
     v94 = 1;
     v92 = 2;
@@ -434,9 +434,9 @@ LABEL_27:
     {
       v99 = v19;
 LABEL_43:
-      v41 = [v19 identity];
-      v42 = [v41 fileURL];
-      v40 = v42 != 0;
+      identity2 = [v19 identity];
+      fileURL = [identity2 fileURL];
+      v40 = fileURL != 0;
 
       v97 = v19;
 LABEL_44:
@@ -451,9 +451,9 @@ LABEL_44:
       v146[2] = __113__CPLEngineDerivativesCache__generateDerivativesForChange_derivativesFilter_fingerprintScheme_completionHandler___block_invoke;
       v146[3] = &unk_1E861CD58;
       v146[4] = self;
-      v21 = v21;
-      v147 = v21;
-      v43 = v10;
+      adjustments = adjustments;
+      v147 = adjustments;
+      v43 = changeCopy;
       v148 = v43;
       p_buf = &buf;
       v93 = MEMORY[0x1E128EBA0](v146);
@@ -484,15 +484,15 @@ LABEL_49:
         v56 = *(*(&buf + 1) + 40);
         if (v56)
         {
-          v57 = [v56 allResources];
+          allResources = [v56 allResources];
           v58 = [v43 copy];
-          [v58 setResources:v57];
-          (*(v98 + 2))(v98, v58, 0, 0);
+          [v58 setResources:allResources];
+          (*(handlerCopy + 2))(handlerCopy, v58, 0, 0);
         }
 
         else
         {
-          (*(v98 + 2))(v98, v43, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, v43, 0, 0);
         }
 
 LABEL_82:
@@ -507,7 +507,7 @@ LABEL_82:
       v143[2] = __113__CPLEngineDerivativesCache__generateDerivativesForChange_derivativesFilter_fingerprintScheme_completionHandler___block_invoke_45;
       v143[3] = &unk_1E861CD80;
       v143[4] = self;
-      v89 = v21;
+      v89 = adjustments;
       v144 = v89;
       v47 = v46;
       v145 = v47;
@@ -520,7 +520,7 @@ LABEL_82:
       v138[4] = self;
       v49 = v43;
       v139 = v49;
-      v142 = v98;
+      v142 = handlerCopy;
       v50 = v48;
       v140 = v50;
       v91 = v47;
@@ -632,9 +632,9 @@ LABEL_67:
         v119 = v88;
         v62 = v89;
         v120 = v62;
-        v82 = v96;
+        v82 = schemeCopy;
         v121 = v82;
-        v81 = v95;
+        v81 = filterCopy;
         v122 = v81;
         v130 = v92;
         v90 = v85;
@@ -717,9 +717,9 @@ LABEL_67:
     v97 = v19;
     v23 = 0;
 LABEL_32:
-    v36 = [v18 identity];
-    v37 = [v36 fileURL];
-    v22 = v37 != 0;
+    identity3 = [v18 identity];
+    fileURL2 = [identity3 fileURL];
+    v22 = fileURL2 != 0;
 
     if ((v94 & 1) == 0)
     {
@@ -733,11 +733,11 @@ LABEL_32:
     goto LABEL_43;
   }
 
-  v33 = [v10 resourceForType:2];
+  v33 = [changeCopy resourceForType:2];
   if (v33)
   {
     v99 = v33;
-    v97 = [v10 resourceForType:19];
+    v97 = [changeCopy resourceForType:19];
     v23 = 0;
     LOBYTE(v94) = v97 != 0;
     v92 = 2;
@@ -745,7 +745,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (!v21 || [v21 adjustmentSourceType] || (objc_msgSend(v10, "resourceForType:", 1000), v74 = objc_claimAutoreleasedReturnValue(), (v99 = v74) == 0))
+  if (!adjustments || [adjustments adjustmentSourceType] || (objc_msgSend(changeCopy, "resourceForType:", 1000), v74 = objc_claimAutoreleasedReturnValue(), (v99 = v74) == 0))
   {
     v24 = 0;
     v18 = 0;
@@ -753,12 +753,12 @@ LABEL_32:
     goto LABEL_36;
   }
 
-  v75 = [v74 identity];
-  v76 = [v75 fileUTI];
+  identity4 = [v74 identity];
+  fileUTI2 = [identity4 fileUTI];
 
-  if (v76)
+  if (fileUTI2)
   {
-    v77 = [(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] isMovieUTI:v76];
+    v77 = [(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] isMovieUTI:fileUTI2];
     v78 = v77;
     if (v77)
     {
@@ -771,7 +771,7 @@ LABEL_32:
     else
     {
       v19 = 0;
-      if (![(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] canGenerateImageDerivativesFromUTI:v76])
+      if (![(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] canGenerateImageDerivativesFromUTI:fileUTI2])
       {
         v94 = 0;
         v18 = 0;
@@ -830,14 +830,14 @@ LABEL_36:
     v38 = __CPLDerivativesOSLogDomain();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [v10 cplFullDescription];
+      cplFullDescription = [changeCopy cplFullDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v39;
+      *(&buf + 4) = cplFullDescription;
       _os_log_impl(&dword_1DC05A000, v38, OS_LOG_TYPE_DEBUG, "%@ has no resource to generate", &buf, 0xCu);
     }
   }
 
-  (*(v98 + 2))(v98, v10, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, changeCopy, 0, 0);
 LABEL_83:
 
   v73 = *MEMORY[0x1E69E9840];
@@ -1460,15 +1460,15 @@ LABEL_25:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_checkGeneratedResources:(id)a3 error:(id *)a4
+- (BOOL)_checkGeneratedResources:(id)resources error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  resourcesCopy = resources;
+  v7 = [resourcesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1479,12 +1479,12 @@ LABEL_25:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = +[CPLResource shortDescriptionForResourceType:](CPLResource, "shortDescriptionForResourceType:", [v11 resourceType]);
-        LODWORD(v11) = [(CPLEngineDerivativesCache *)self _checkResource:v11 name:v12 error:a4];
+        LODWORD(v11) = [(CPLEngineDerivativesCache *)self _checkResource:v11 name:v12 error:error];
 
         if (!v11)
         {
@@ -1493,7 +1493,7 @@ LABEL_25:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [resourcesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -1510,16 +1510,16 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_checkResource:(id)a3 name:(id)a4 error:(id *)a5
+- (BOOL)_checkResource:(id)resource name:(id)name error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identity];
-  v10 = [v9 fileURL];
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v10 path];
-  v13 = [v11 fileExistsAtPath:v12];
+  resourceCopy = resource;
+  nameCopy = name;
+  identity = [resourceCopy identity];
+  fileURL = [identity fileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [fileURL path];
+  v13 = [defaultManager fileExistsAtPath:path];
 
   if ((v13 & 1) == 0)
   {
@@ -1528,25 +1528,25 @@ LABEL_11:
       v14 = __CPLDerivativesOSLogDomain();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v10 path];
+        path2 = [fileURL path];
         *buf = 138412802;
-        v25 = v15;
+        v25 = path2;
         v26 = 2112;
-        v27 = v8;
+        v27 = nameCopy;
         v28 = 2112;
-        v29 = v7;
+        v29 = resourceCopy;
         _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_ERROR, "Unable to find resoure at its expected place '%@' for %@ (%@)", buf, 0x20u);
       }
     }
 
-    if (a5)
+    if (error)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v17 = *MEMORY[0x1E696A250];
-      v18 = [v10 path];
-      v23 = v18;
+      path3 = [fileURL path];
+      v23 = path3;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      *a5 = [v16 initWithDomain:v17 code:4 userInfo:v19];
+      *error = [v16 initWithDomain:v17 code:4 userInfo:v19];
     }
   }
 
@@ -1554,24 +1554,24 @@ LABEL_11:
   return v13;
 }
 
-- (void)_updateChange:(id *)a3 fromOldChange:(id)a4 withResources:(id)a5 excludeImages:(BOOL)a6
+- (void)_updateChange:(id *)change fromOldChange:(id)oldChange withResources:(id)resources excludeImages:(BOOL)images
 {
-  v6 = a6;
+  imagesCopy = images;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (!*a3)
+  oldChangeCopy = oldChange;
+  resourcesCopy = resources;
+  if (!*change)
   {
     v11 = [_CPLResourcesMutableArray alloc];
-    v12 = [v9 resources];
-    *a3 = [(_CPLResourcesMutableArray *)v11 initWithResources:v12];
+    resources = [oldChangeCopy resources];
+    *change = [(_CPLResourcesMutableArray *)v11 initWithResources:resources];
   }
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v10;
+  v13 = resourcesCopy;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
@@ -1588,12 +1588,12 @@ LABEL_11:
         }
 
         v18 = *(*(&v21 + 1) + 8 * v17);
-        if (!v6 || ([*(*(&v21 + 1) + 8 * v17) resourceType] - 6) <= 0xFFFFFFFFFFFFFFFCLL)
+        if (!imagesCopy || ([*(*(&v21 + 1) + 8 * v17) resourceType] - 6) <= 0xFFFFFFFFFFFFFFFCLL)
         {
-          v19 = [v18 identity];
-          [v19 setAvailable:1];
+          identity = [v18 identity];
+          [identity setAvailable:1];
 
-          [*a3 addResource:v18];
+          [*change addResource:v18];
         }
 
         ++v17;
@@ -1609,10 +1609,10 @@ LABEL_11:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isUnsupportedFormatError:(id)a3
+- (BOOL)_isUnsupportedFormatError:(id)error
 {
-  v4 = a3;
-  LOBYTE(self) = [(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] isUnsupportedOriginalFormatError:v4];
+  errorCopy = error;
+  LOBYTE(self) = [(objc_class *)[(CPLEngineDerivativesCache *)self derivativeGeneratorClass] isUnsupportedOriginalFormatError:errorCopy];
 
   return self;
 }
@@ -1621,64 +1621,64 @@ LABEL_11:
 {
   if (self->_tryCreatingCacheFolder)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    [v3 createDirectoryAtURL:self->_cacheURL withIntermediateDirectories:0 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:self->_cacheURL withIntermediateDirectories:0 attributes:0 error:0];
 
     self->_tryCreatingCacheFolder = 0;
   }
 }
 
-- (id)_cacheKeyForReferenceResource:(id)a3 adjustments:(id)a4 includePosterFrame:(BOOL)a5
+- (id)_cacheKeyForReferenceResource:(id)resource adjustments:(id)adjustments includePosterFrame:(BOOL)frame
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 itemScopedIdentifier];
+  frameCopy = frame;
+  adjustmentsCopy = adjustments;
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
   v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v11 = [v9 scopeIdentifier];
-  v12 = [v9 identifier];
-  v13 = [v8 identity];
+  scopeIdentifier = [itemScopedIdentifier scopeIdentifier];
+  identifier = [itemScopedIdentifier identifier];
+  identity = [resourceCopy identity];
 
-  v14 = [v13 fingerPrint];
-  v15 = v14;
-  if (v7)
+  fingerPrint = [identity fingerPrint];
+  v15 = fingerPrint;
+  if (adjustmentsCopy)
   {
-    v16 = [v7 otherAdjustmentsFingerprint];
-    v17 = v16;
-    if (v16)
+    otherAdjustmentsFingerprint = [adjustmentsCopy otherAdjustmentsFingerprint];
+    v17 = otherAdjustmentsFingerprint;
+    if (otherAdjustmentsFingerprint)
     {
       v18 = "no-poster";
-      if (v5)
+      if (frameCopy)
       {
         v18 = "";
       }
 
-      v19 = [v10 initWithFormat:@"%@-%@-%@-%@%s", v11, v12, v15, v16, v18];
+      v19 = [v10 initWithFormat:@"%@-%@-%@-%@%s", scopeIdentifier, identifier, v15, otherAdjustmentsFingerprint, v18];
     }
 
     else
     {
-      v21 = [v7 similarToOriginalAdjustmentsFingerprint];
-      v22 = v21;
+      similarToOriginalAdjustmentsFingerprint = [adjustmentsCopy similarToOriginalAdjustmentsFingerprint];
+      v22 = similarToOriginalAdjustmentsFingerprint;
       v23 = "no-poster";
-      if (v5)
+      if (frameCopy)
       {
         v23 = "";
       }
 
-      v19 = [v10 initWithFormat:@"%@-%@-%@-%@%s", v11, v12, v15, v21, v23];
+      v19 = [v10 initWithFormat:@"%@-%@-%@-%@%s", scopeIdentifier, identifier, v15, similarToOriginalAdjustmentsFingerprint, v23];
     }
   }
 
   else
   {
     v20 = "no-poster";
-    if (v5)
+    if (frameCopy)
     {
       v20 = "";
     }
 
-    v19 = [v10 initWithFormat:@"%@-%@-%@%s", v11, v12, v14, v20];
+    v19 = [v10 initWithFormat:@"%@-%@-%@%s", scopeIdentifier, identifier, fingerPrint, v20];
   }
 
   return v19;
@@ -1711,15 +1711,15 @@ void __41__CPLEngineDerivativesCache_discardCache__block_invoke(uint64_t a1)
   *(*(a1 + 32) + 16) = 1;
 }
 
-- (CPLEngineDerivativesCache)initWithCacheURL:(id)a3
+- (CPLEngineDerivativesCache)initWithCacheURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = CPLEngineDerivativesCache;
   v5 = [(CPLEngineDerivativesCache *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     cacheURL = v5->_cacheURL;
     v5->_cacheURL = v6;
 

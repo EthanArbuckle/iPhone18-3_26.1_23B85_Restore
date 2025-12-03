@@ -12,7 +12,7 @@
 
 - (HKWorkout)hkWorkout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutSummaryDataSource.workout.getter();
 
   return v3;
@@ -20,7 +20,7 @@
 
 - (id)customDismissHandler
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutSummaryDataSource.customDismissalHandler.getter();
   v5 = v4;
 
@@ -40,7 +40,7 @@
 
 - (BOOL)isMuted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutSummaryDataSource.isMuted.getter();
 
   return v3 & 1;
@@ -48,7 +48,7 @@
 
 - (BOOL)areHeadphonesOff
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutSummaryDataSource.areHeadphonesOff.getter();
 
   return v3 & 1;
@@ -56,7 +56,7 @@
 
 - (BOOL)isConfiguredWithWorkoutBuddy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutSummaryDataSource.isConfiguredWithWorkoutBuddy.getter();
 
   return v3 & 1;
@@ -68,7 +68,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v11 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   dispatch thunk of WorkoutSummaryDataSource.workoutVoiceOutroState.getter();
 
   v8 = (*(v4 + 88))(v6, v3);

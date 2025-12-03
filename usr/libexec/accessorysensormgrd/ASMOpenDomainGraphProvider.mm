@@ -1,7 +1,7 @@
 @interface ASMOpenDomainGraphProvider
 - (ASMOpenDomainGraphProvider)init;
-- (void)_activateWithExecutionSession:(id)a3;
-- (void)activateWithExecutionSession:(id)a3;
+- (void)_activateWithExecutionSession:(id)session;
+- (void)activateWithExecutionSession:(id)session;
 - (void)invalidate;
 @end
 
@@ -33,37 +33,37 @@
   return v2;
 }
 
-- (void)activateWithExecutionSession:(id)a3
+- (void)activateWithExecutionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000402C;
   v7[3] = &unk_1000144A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithExecutionSession:(id)a3
+- (void)_activateWithExecutionSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (!self->_activateCalled)
   {
     self->_activateCalled = 1;
-    v6 = v5;
-    objc_storeStrong(&self->_session, a3);
-    v5 = v6;
+    v6 = sessionCopy;
+    objc_storeStrong(&self->_session, session);
+    sessionCopy = v6;
   }
 }
 
 - (void)invalidate
 {
   v7 = objc_alloc_init(NSSet);
-  v3 = [(NSMutableDictionary *)self->_inputGraphMap allValues];
-  v4 = [v7 setByAddingObjectsFromArray:v3];
+  allValues = [(NSMutableDictionary *)self->_inputGraphMap allValues];
+  v4 = [v7 setByAddingObjectsFromArray:allValues];
 
   [(PSExecutionSession *)self->_session commitAddedGraphs:0 removedGraphs:v7 error:0];
   [(NSMutableDictionary *)self->_inputGraphMap removeAllObjects];

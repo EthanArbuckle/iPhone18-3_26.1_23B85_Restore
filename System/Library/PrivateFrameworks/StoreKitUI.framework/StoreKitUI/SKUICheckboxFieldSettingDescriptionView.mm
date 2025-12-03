@@ -1,22 +1,22 @@
 @interface SKUICheckboxFieldSettingDescriptionView
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (void)_addInputWithElement:(id)a3;
-- (void)_addLabelWithElement:(id)a3;
-- (void)_addSwitchWithElement:(id)a3;
-- (void)_switchValueChanged:(id)a3;
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (void)_addInputWithElement:(id)element;
+- (void)_addLabelWithElement:(id)element;
+- (void)_addSwitchWithElement:(id)element;
+- (void)_switchValueChanged:(id)changed;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUICheckboxFieldSettingDescriptionView
 
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -33,7 +33,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -54,7 +54,7 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -66,7 +66,7 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -87,9 +87,9 @@
   return result;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -103,16 +103,16 @@
   }
 
   settingDescription = self->_settingDescription;
-  self->_settingDescription = v6;
-  v16 = v6;
+  self->_settingDescription = descriptionCopy;
+  v16 = descriptionCopy;
 
-  v17 = [(SKUISettingDescription *)v16 viewElement];
+  viewElement = [(SKUISettingDescription *)v16 viewElement];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __86__SKUICheckboxFieldSettingDescriptionView_reloadWithSettingDescription_width_context___block_invoke;
   v18[3] = &unk_2781F9640;
   v18[4] = self;
-  [v17 enumerateChildrenUsingBlock:v18];
+  [viewElement enumerateChildrenUsingBlock:v18];
   [(SKUICheckboxFieldSettingDescriptionView *)self setNeedsLayout];
 }
 
@@ -142,7 +142,7 @@ LABEL_6:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -154,7 +154,7 @@ LABEL_6:
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -244,62 +244,62 @@ LABEL_6:
   [(UILabel *)self->_label setFrame:v12, v34, v30, v35];
 }
 
-- (void)_switchValueChanged:(id)a3
+- (void)_switchValueChanged:(id)changed
 {
   v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:{-[UISwitch isOn](self->_switch, "isOn")}];
   [(SKUIFieldSettingDescription *)self->_settingDescription setFieldValue:v4 forKey:@"selected"];
 }
 
-- (void)_addInputWithElement:(id)a3
+- (void)_addInputWithElement:(id)element
 {
-  v5 = a3;
-  objc_storeStrong(&self->_inputViewElement, a3);
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  elementCopy = element;
+  objc_storeStrong(&self->_inputViewElement, element);
+  if ([elementCopy isMemberOfClass:objc_opt_class()])
   {
-    [(SKUICheckboxFieldSettingDescriptionView *)self _addSwitchWithElement:v5];
+    [(SKUICheckboxFieldSettingDescriptionView *)self _addSwitchWithElement:elementCopy];
   }
 }
 
-- (void)_addLabelWithElement:(id)a3
+- (void)_addLabelWithElement:(id)element
 {
   v4 = MEMORY[0x277D756B8];
-  v5 = a3;
+  elementCopy = element;
   v6 = objc_alloc_init(v4);
   label = self->_label;
   self->_label = v6;
 
   v8 = self->_label;
-  v9 = [v5 text];
+  text = [elementCopy text];
 
-  v10 = [v9 string];
-  [(UILabel *)v8 setText:v10];
+  string = [text string];
+  [(UILabel *)v8 setText:string];
 
   v11 = self->_label;
-  v12 = [MEMORY[0x277D75348] blackColor];
-  [(UILabel *)v11 setTextColor:v12];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UILabel *)v11 setTextColor:blackColor];
 
   v13 = self->_label;
 
   [(SKUICheckboxFieldSettingDescriptionView *)self addSubview:v13];
 }
 
-- (void)_addSwitchWithElement:(id)a3
+- (void)_addSwitchWithElement:(id)element
 {
   v4 = MEMORY[0x277D75AE8];
-  v5 = a3;
+  elementCopy = element;
   v6 = objc_alloc_init(v4);
   v7 = self->_switch;
   self->_switch = v6;
 
-  v8 = [v5 isSelected];
+  isSelected = [elementCopy isSelected];
   v9 = [(SKUIFieldSettingDescription *)self->_settingDescription fieldValueForKey:@"selected"];
   v10 = v9;
   if (v9)
   {
-    v8 = [v9 BOOLValue];
+    isSelected = [v9 BOOLValue];
   }
 
-  [(UISwitch *)self->_switch setOn:v8];
+  [(UISwitch *)self->_switch setOn:isSelected];
   [(UISwitch *)self->_switch addTarget:self action:sel__switchValueChanged_ forControlEvents:4096];
   [(SKUICheckboxFieldSettingDescriptionView *)self addSubview:self->_switch];
 }

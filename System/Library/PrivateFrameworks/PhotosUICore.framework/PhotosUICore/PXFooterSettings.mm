@@ -93,8 +93,8 @@
   v27 = MEMORY[0x1E69C6638];
   v51[0] = v44;
   v51[1] = v26;
-  v28 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v51[2] = v28;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v51[2] = px_restoreDefaultsSection;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:3];
   v30 = [v27 moduleWithTitle:@"Footer" contents:v29];
 
@@ -103,9 +103,9 @@
 
 + (void)resetLastShownInfo
 {
-  v2 = [off_1E7721948 standardUserDefaults];
-  [v2 setDidShowCurationFooter:0];
-  [v2 setDidShowCompletedCurationFooterAnimation:0];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  [standardUserDefaults setDidShowCurationFooter:0];
+  [standardUserDefaults setDidShowCompletedCurationFooterAnimation:0];
 }
 
 + (PXFooterSettings)sharedInstance

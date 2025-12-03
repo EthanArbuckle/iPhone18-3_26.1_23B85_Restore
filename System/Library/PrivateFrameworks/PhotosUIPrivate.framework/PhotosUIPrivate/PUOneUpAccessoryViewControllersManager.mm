@@ -1,21 +1,21 @@
 @interface PUOneUpAccessoryViewControllersManager
 - (BOOL)_isPhoneAndLandscape;
-- (BOOL)photosDetailsUIViewControllerRequestDismissal:(id)a3;
-- (BOOL)shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:(id)a3;
-- (BOOL)shouldHideStatusBarWhenShowingAccessoryViewControllerForAssetReference:(id)a3;
-- (BOOL)shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:(id)a3;
+- (BOOL)photosDetailsUIViewControllerRequestDismissal:(id)dismissal;
+- (BOOL)shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:(id)reference;
+- (BOOL)shouldHideStatusBarWhenShowingAccessoryViewControllerForAssetReference:(id)reference;
+- (BOOL)shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:(id)reference;
 - (PUOneUpAccessoryViewControllersManager)init;
-- (PUOneUpAccessoryViewControllersManager)initWithBrowsingSession:(id)a3 spec:(id)a4;
+- (PUOneUpAccessoryViewControllersManager)initWithBrowsingSession:(id)session spec:(id)spec;
 - (PUOneUpAccessoryViewControllersManagerDelegate)delegate;
-- (id)_createAccessoryViewControllerForAssetReference:(id)a3;
-- (id)accessoryViewControllerForAssetReference:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)assetReferenceForAccessoryViewController:(id)a3;
-- (int64_t)_accessoryViewTypeForAsset:(id)a3;
-- (int64_t)accessoryViewTypeForAsset:(id)a3;
-- (void)_invalidateAccessoryViewControllersForAssetReferences:(id)a3;
-- (void)photosDetailsUIViewControllerCompositionDidChange:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (id)_createAccessoryViewControllerForAssetReference:(id)reference;
+- (id)accessoryViewControllerForAssetReference:(id)reference createIfNeeded:(BOOL)needed;
+- (id)assetReferenceForAccessoryViewController:(id)controller;
+- (int64_t)_accessoryViewTypeForAsset:(id)asset;
+- (int64_t)accessoryViewTypeForAsset:(id)asset;
+- (void)_invalidateAccessoryViewControllersForAssetReferences:(id)references;
+- (void)photosDetailsUIViewControllerCompositionDidChange:(id)change;
+- (void)setDelegate:(id)delegate;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUOneUpAccessoryViewControllersManager
@@ -27,28 +27,28 @@
   return WeakRetained;
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
   v63 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v6 = a4;
-  v39 = self;
-  v7 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
+  modelCopy = model;
+  changeCopy = change;
+  selfCopy = self;
+  _accessoryViewControllers = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
   v41 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v44 = v7;
-  v40 = v6;
-  if ([v6 assetsDataSourceDidChange])
+  v44 = _accessoryViewControllers;
+  v40 = changeCopy;
+  if ([changeCopy assetsDataSourceDidChange])
   {
-    v8 = [v43 assetsDataSource];
+    assetsDataSource = [modelCopy assetsDataSource];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v9 = [v7 keyEnumerator];
-    v10 = [v9 allObjects];
+    keyEnumerator = [_accessoryViewControllers keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
 
-    obj = v10;
-    v11 = [v10 countByEnumeratingWithState:&v56 objects:v62 count:16];
+    obj = allObjects;
+    v11 = [allObjects countByEnumeratingWithState:&v56 objects:v62 count:16];
     if (v11)
     {
       v12 = v11;
@@ -63,13 +63,13 @@
           }
 
           v15 = *(*(&v56 + 1) + 8 * i);
-          v16 = [v8 assetReferenceForAssetReference:v15];
-          v17 = [v15 asset];
-          v18 = [v16 asset];
-          if ([v17 isEqual:v18])
+          v16 = [assetsDataSource assetReferenceForAssetReference:v15];
+          asset = [v15 asset];
+          asset2 = [v16 asset];
+          if ([asset isEqual:asset2])
           {
-            v19 = [v17 mediaSubtypes];
-            if (v19 != [v18 mediaSubtypes])
+            mediaSubtypes = [asset mediaSubtypes];
+            if (mediaSubtypes != [asset2 mediaSubtypes])
             {
               [v41 addObject:v16];
             }
@@ -90,17 +90,17 @@
       while (v12);
     }
 
-    v6 = v40;
-    v7 = v44;
+    changeCopy = v40;
+    _accessoryViewControllers = v44;
   }
 
-  obja = [v6 assetViewModelChangesByAssetReference];
+  obja = [changeCopy assetViewModelChangesByAssetReference];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v45 = [v7 keyEnumerator];
-  v21 = [v45 countByEnumeratingWithState:&v52 objects:v61 count:16];
+  keyEnumerator2 = [_accessoryViewControllers keyEnumerator];
+  v21 = [keyEnumerator2 countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v21)
   {
     v22 = v21;
@@ -112,7 +112,7 @@
       {
         if (*v53 != v23)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
         v25 = *(*(&v52 + 1) + 8 * j);
@@ -137,8 +137,8 @@ LABEL_22:
             }
 
             v32 = *(*(&v48 + 1) + 8 * v31);
-            v33 = [v32 focusValueChanged];
-            if (v33)
+            focusValueChanged = [v32 focusValueChanged];
+            if (focusValueChanged)
             {
               break;
             }
@@ -168,11 +168,11 @@ LABEL_22:
           }
 
 LABEL_32:
-          v34 = [v43 assetViewModelForAssetReference:v25];
+          v34 = [modelCopy assetViewModelForAssetReference:v25];
           [v34 focusValue];
           if (fabs(v36) < 2.0)
           {
-            v37 = v33;
+            v37 = focusValueChanged;
           }
 
           else
@@ -182,14 +182,14 @@ LABEL_32:
 
           if ((v37 & 1) == 0)
           {
-            v38 = v42;
+            array = v42;
             if (!v42)
             {
-              v38 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
             }
 
-            v42 = v38;
-            [v38 addObject:v25];
+            v42 = array;
+            [array addObject:v25];
           }
 
           goto LABEL_39;
@@ -202,7 +202,7 @@ LABEL_39:
 LABEL_40:
       }
 
-      v22 = [v45 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      v22 = [keyEnumerator2 countByEnumeratingWithState:&v52 objects:v61 count:16];
     }
 
     while (v22);
@@ -215,50 +215,50 @@ LABEL_40:
 
   if ([v42 count])
   {
-    [(PUOneUpAccessoryViewControllersManager *)v39 _invalidateAccessoryViewControllersForAssetReferences:v42];
+    [(PUOneUpAccessoryViewControllersManager *)selfCopy _invalidateAccessoryViewControllersForAssetReferences:v42];
   }
 }
 
-- (void)photosDetailsUIViewControllerCompositionDidChange:(id)a3
+- (void)photosDetailsUIViewControllerCompositionDidChange:(id)change
 {
   if (self->_delegateRespondsTo.invalidateAccessoryLayout)
   {
-    v5 = [(PUOneUpAccessoryViewControllersManager *)self delegate];
-    [v5 oneUpAccessoryViewControllersManagerInvalidateAccessoryLayout:self];
+    delegate = [(PUOneUpAccessoryViewControllersManager *)self delegate];
+    [delegate oneUpAccessoryViewControllersManagerInvalidateAccessoryLayout:self];
   }
 }
 
-- (BOOL)photosDetailsUIViewControllerRequestDismissal:(id)a3
+- (BOOL)photosDetailsUIViewControllerRequestDismissal:(id)dismissal
 {
   if (!self->_delegateRespondsTo.requestDismissal)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = [(PUOneUpAccessoryViewControllersManager *)self delegate];
-  LOBYTE(v3) = [v4 oneUpAccessoryViewControllersManagerRequestAccessoryDismissal:v3];
+  selfCopy = self;
+  delegate = [(PUOneUpAccessoryViewControllersManager *)self delegate];
+  LOBYTE(selfCopy) = [delegate oneUpAccessoryViewControllersManagerRequestAccessoryDismissal:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)_createAccessoryViewControllerForAssetReference:(id)a3
+- (id)_createAccessoryViewControllerForAssetReference:(id)reference
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 asset];
-  v7 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:v6];
+  referenceCopy = reference;
+  asset = [referenceCopy asset];
+  v7 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:asset];
 
   v8 = 0;
   if (v7 <= 2)
   {
     if (v7 == 2)
     {
-      v11 = [v5 asset];
+      asset2 = [referenceCopy asset];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v11 canPerformEditOperation:2])
+        if ([asset2 canPerformEditOperation:2])
         {
           v12 = 6;
         }
@@ -278,22 +278,22 @@ LABEL_40:
           *buf = 138412546;
           *&buf[4] = v18;
           *&buf[12] = 2112;
-          *&buf[14] = v11;
+          *&buf[14] = asset2;
           _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_ERROR, "%@: Unknown asset class: %@", buf, 0x16u);
         }
 
         v12 = 38;
       }
 
-      v19 = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
-      v20 = [v19 photosDetailsContext];
+      browsingSession = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
+      photosDetailsContext = [browsingSession photosDetailsContext];
 
-      v21 = [MEMORY[0x1E69C3888] photosDetailsContextForAsset:v11 parentContext:v20];
+      v21 = [MEMORY[0x1E69C3888] photosDetailsContextForAsset:asset2 parentContext:photosDetailsContext];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __90__PUOneUpAccessoryViewControllersManager__createAccessoryViewControllerForAssetReference___block_invoke;
       v36[3] = &unk_1E7B7CD48;
-      v22 = v5;
+      v22 = referenceCopy;
       v37 = v22;
       [v21 performChanges:v36];
       if (!self->_delegateRespondsTo.preventRevealInMomentActionForAssetReference || (-[PUOneUpAccessoryViewControllersManager delegate](self, "delegate"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 oneUpAccessoryViewControllersManager:self preventRevealInMomentActionForAssetReference:v22], v23, (v24 & 1) == 0))
@@ -308,8 +308,8 @@ LABEL_40:
 
       if (self->_delegateRespondsTo.preventAlbumAttributionWidget)
       {
-        v27 = [(PUOneUpAccessoryViewControllersManager *)self delegate];
-        v28 = [v27 oneUpAccessoryViewControllersManager:self preventAlbumAttributionWidgetForAssetReference:v22];
+        delegate = [(PUOneUpAccessoryViewControllersManager *)self delegate];
+        v28 = [delegate oneUpAccessoryViewControllersManager:self preventAlbumAttributionWidgetForAssetReference:v22];
 
         if (v28)
         {
@@ -317,17 +317,17 @@ LABEL_40:
         }
       }
 
-      v29 = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
-      v30 = [v29 viewModel];
-      v31 = [v30 assetViewModelForAssetReference:v22];
+      browsingSession2 = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
+      viewModel = [browsingSession2 viewModel];
+      v31 = [viewModel assetViewModelForAssetReference:v22];
 
       v32 = objc_alloc_init(MEMORY[0x1E69C3880]);
       [v32 setOptions:v12];
-      v33 = [(PUOneUpAccessoryViewControllersManager *)self unlockDeviceStatus];
-      [v32 setUnlockDeviceStatus:v33];
+      unlockDeviceStatus = [(PUOneUpAccessoryViewControllersManager *)self unlockDeviceStatus];
+      [v32 setUnlockDeviceStatus:unlockDeviceStatus];
 
-      v34 = [(PUOneUpAccessoryViewControllersManager *)self unlockDeviceHandlerWithActionType];
-      [v32 setUnlockDeviceHandlerWithActionType:v34];
+      unlockDeviceHandlerWithActionType = [(PUOneUpAccessoryViewControllersManager *)self unlockDeviceHandlerWithActionType];
+      [v32 setUnlockDeviceHandlerWithActionType:unlockDeviceHandlerWithActionType];
 
       [v32 setScrollPocketsEnabled:{-[PUOneUpAccessoryViewControllersManager scrollPocketsEnabled](self, "scrollPocketsEnabled")}];
       v8 = [[PUPhotosDetailsViewController alloc] initWithContext:v21 configuration:v32 assetViewModel:v31];
@@ -336,8 +336,8 @@ LABEL_40:
 
     else if (v7 == 1)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"PUOneUpAccessoryViewControllersManager.m" lineNumber:252 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpAccessoryViewControllersManager.m" lineNumber:252 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -345,9 +345,9 @@ LABEL_40:
 
   else if (v7 == 3)
   {
-    v13 = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
-    v14 = [v13 viewModel];
-    v15 = [v14 assetViewModelForAssetReference:v5];
+    browsingSession3 = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
+    viewModel2 = [browsingSession3 viewModel];
+    v15 = [viewModel2 assetViewModelForAssetReference:referenceCopy];
 
     v8 = [[PUCommentsViewController alloc] initWithAssetViewModel:v15];
   }
@@ -396,25 +396,25 @@ void __90__PUOneUpAccessoryViewControllersManager__createAccessoryViewController
   [v3 setContainingAlbum:v5];
 }
 
-- (int64_t)_accessoryViewTypeForAsset:(id)a3
+- (int64_t)_accessoryViewTypeForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = +[PUOneUpSettings sharedInstance];
-  v5 = [v4 accessoryViewType];
+  accessoryViewType = [v4 accessoryViewType];
 
-  if ([v3 needsSensitivityProtection])
+  if ([assetCopy needsSensitivityProtection])
   {
     goto LABEL_2;
   }
 
-  if (v5 != 1)
+  if (accessoryViewType != 1)
   {
     goto LABEL_13;
   }
 
-  if ([PUCommentsViewController canShowCommentsForAsset:v3])
+  if ([PUCommentsViewController canShowCommentsForAsset:assetCopy])
   {
-    v5 = 3;
+    accessoryViewType = 3;
     goto LABEL_13;
   }
 
@@ -422,42 +422,42 @@ void __90__PUOneUpAccessoryViewControllersManager__createAccessoryViewController
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_2:
-    v5 = 0;
+    accessoryViewType = 0;
   }
 
   else
   {
-    v6 = v3;
+    v6 = assetCopy;
     if ([v6 isTrashed])
     {
-      v5 = 0;
+      accessoryViewType = 0;
     }
 
     else if ([v6 isRecoveredAsset])
     {
-      v5 = 0;
+      accessoryViewType = 0;
     }
 
     else
     {
-      v5 = 2;
+      accessoryViewType = 2;
     }
   }
 
 LABEL_13:
 
-  return v5;
+  return accessoryViewType;
 }
 
-- (void)_invalidateAccessoryViewControllersForAssetReferences:(id)a3
+- (void)_invalidateAccessoryViewControllersForAssetReferences:(id)references
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  referencesCopy = references;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [referencesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -469,35 +469,35 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(referencesCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
-        [v10 removeObjectForKey:v9];
+        _accessoryViewControllers = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
+        [_accessoryViewControllers removeObjectForKey:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [referencesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)assetReferenceForAccessoryViewController:(id)a3
+- (id)assetReferenceForAccessoryViewController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
+  controllerCopy = controller;
+  _accessoryViewControllers = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [_accessoryViewControllers keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -507,20 +507,20 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v5 objectForKey:v10];
+        v11 = [_accessoryViewControllers objectForKey:v10];
 
-        if (v11 == v4)
+        if (v11 == controllerCopy)
         {
           v7 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -535,31 +535,31 @@ LABEL_11:
   return v7;
 }
 
-- (id)accessoryViewControllerForAssetReference:(id)a3 createIfNeeded:(BOOL)a4
+- (id)accessoryViewControllerForAssetReference:(id)reference createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
-  v8 = [v7 viewModel];
-  v9 = [v8 assetsDataSource];
+  referenceCopy = reference;
+  browsingSession = [(PUOneUpAccessoryViewControllersManager *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
 
-  v29 = v9;
-  v10 = [v9 assetReferenceForAssetReference:v6];
+  v29 = assetsDataSource;
+  v10 = [assetsDataSource assetReferenceForAssetReference:referenceCopy];
 
-  v11 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
-  v12 = [v11 objectForKey:v10];
+  _accessoryViewControllers = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewControllers];
+  v12 = [_accessoryViewControllers objectForKey:v10];
   if (!v12)
   {
-    v26 = v4;
-    v27 = self;
-    v28 = v11;
+    v26 = neededCopy;
+    selfCopy = self;
+    v28 = _accessoryViewControllers;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = [v11 keyEnumerator];
-    v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    keyEnumerator = [_accessoryViewControllers keyEnumerator];
+    v14 = [keyEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v14)
     {
       v15 = v14;
@@ -571,13 +571,13 @@ LABEL_11:
         {
           if (*v31 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v18 = *(*(&v30 + 1) + 8 * i);
-          v19 = [v18 asset];
-          v20 = [v10 asset];
-          v21 = [v19 isEqual:v20];
+          asset = [v18 asset];
+          asset2 = [v10 asset];
+          v21 = [asset isEqual:asset2];
 
           if (v21)
           {
@@ -593,7 +593,7 @@ LABEL_11:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v15 = [keyEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v15);
@@ -606,15 +606,15 @@ LABEL_11:
 
     if (v12)
     {
-      v11 = v28;
+      _accessoryViewControllers = v28;
     }
 
     else
     {
-      v11 = v28;
+      _accessoryViewControllers = v28;
       if (v26)
       {
-        v12 = [(PUOneUpAccessoryViewControllersManager *)v27 _createAccessoryViewControllerForAssetReference:v10];
+        v12 = [(PUOneUpAccessoryViewControllersManager *)selfCopy _createAccessoryViewControllerForAssetReference:v10];
         [v28 setObject:v12 forKey:v10];
       }
     }
@@ -623,15 +623,15 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)shouldHideStatusBarWhenShowingAccessoryViewControllerForAssetReference:(id)a3
+- (BOOL)shouldHideStatusBarWhenShowingAccessoryViewControllerForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUOneUpAccessoryViewControllersManager *)self _spec];
-  v6 = [v5 hideStatusBarWhenShowingAccessoryView];
+  referenceCopy = reference;
+  _spec = [(PUOneUpAccessoryViewControllersManager *)self _spec];
+  hideStatusBarWhenShowingAccessoryView = [_spec hideStatusBarWhenShowingAccessoryView];
 
-  v7 = [v4 asset];
+  asset = [referenceCopy asset];
 
-  v8 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:v7];
+  v8 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:asset];
   if (v8 == 3)
   {
     v9 = 0;
@@ -639,21 +639,21 @@ LABEL_11:
 
   else
   {
-    v9 = v6;
+    v9 = hideStatusBarWhenShowingAccessoryView;
   }
 
   return v8 && v9;
 }
 
-- (BOOL)shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:(id)a3
+- (BOOL)shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUOneUpAccessoryViewControllersManager *)self _spec];
-  v6 = [v5 hideNavigationBarWhenShowingAccessoryView];
+  referenceCopy = reference;
+  _spec = [(PUOneUpAccessoryViewControllersManager *)self _spec];
+  hideNavigationBarWhenShowingAccessoryView = [_spec hideNavigationBarWhenShowingAccessoryView];
 
-  v7 = [v4 asset];
+  asset = [referenceCopy asset];
 
-  v8 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:v7];
+  v8 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:asset];
   if (!v8)
   {
     return 0;
@@ -661,34 +661,34 @@ LABEL_11:
 
   if (v8 == 3)
   {
-    v9 = [MEMORY[0x1E69C3640] sharedInstance];
-    if ([v9 enableSideCommentsInLandscape])
+    mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+    if ([mEMORY[0x1E69C3640] enableSideCommentsInLandscape])
     {
-      v6 = [(PUOneUpAccessoryViewControllersManager *)self _isPhoneAndLandscape];
+      hideNavigationBarWhenShowingAccessoryView = [(PUOneUpAccessoryViewControllersManager *)self _isPhoneAndLandscape];
     }
 
     else
     {
-      v6 = 0;
+      hideNavigationBarWhenShowingAccessoryView = 0;
     }
   }
 
-  return v6;
+  return hideNavigationBarWhenShowingAccessoryView;
 }
 
-- (BOOL)shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:(id)a3
+- (BOOL)shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = +[PUOneUpSettings sharedInstance];
-  v6 = [v5 hideToolbarWhenShowingAccessoryView];
+  hideToolbarWhenShowingAccessoryView = [v5 hideToolbarWhenShowingAccessoryView];
 
-  v7 = [v4 asset];
+  asset = [referenceCopy asset];
 
-  v8 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:v7];
+  v8 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:asset];
   result = 0;
   if (v8 && v8 != 3)
   {
-    if (v6)
+    if (hideToolbarWhenShowingAccessoryView)
     {
       return 1;
     }
@@ -705,40 +705,40 @@ LABEL_11:
 
 - (BOOL)_isPhoneAndLandscape
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 orientation];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  orientation = [currentDevice2 orientation];
 
-  if ((v6 - 1) > 3)
+  if ((orientation - 1) > 3)
   {
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v9 = [v8 windows];
-    v10 = [v9 firstObject];
-    v11 = [v10 windowScene];
-    v12 = [v11 interfaceOrientation];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    windows = [mEMORY[0x1E69DC668] windows];
+    firstObject = [windows firstObject];
+    windowScene = [firstObject windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    v7 = v12 - 3;
+    v7 = interfaceOrientation - 3;
   }
 
   else
   {
-    v7 = v6 - 3;
+    v7 = orientation - 3;
   }
 
   return v7 < 2;
 }
 
-- (int64_t)accessoryViewTypeForAsset:(id)a3
+- (int64_t)accessoryViewTypeForAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:v5];
+  assetCopy = asset;
+  v6 = [(PUOneUpAccessoryViewControllersManager *)self _accessoryViewTypeForAsset:assetCopy];
   v7 = v6;
   v8 = 0;
   if (v6 > 2)
@@ -753,7 +753,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    if (![PUCommentsViewController canShowCommentsForAsset:v5])
+    if (![PUCommentsViewController canShowCommentsForAsset:assetCopy])
     {
 LABEL_9:
       v8 = 0;
@@ -778,8 +778,8 @@ LABEL_7:
 
   if (v6 == 1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUOneUpAccessoryViewControllersManager.m" lineNumber:86 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpAccessoryViewControllersManager.m" lineNumber:86 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -789,9 +789,9 @@ LABEL_11:
   return v8;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -805,24 +805,24 @@ LABEL_11:
   }
 }
 
-- (PUOneUpAccessoryViewControllersManager)initWithBrowsingSession:(id)a3 spec:(id)a4
+- (PUOneUpAccessoryViewControllersManager)initWithBrowsingSession:(id)session spec:(id)spec
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  specCopy = spec;
   v15.receiver = self;
   v15.super_class = PUOneUpAccessoryViewControllersManager;
   v9 = [(PUOneUpAccessoryViewControllersManager *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_browsingSession, a3);
-    v11 = [(PUBrowsingSession *)v10->_browsingSession viewModel];
-    [v11 registerChangeObserver:v10];
+    objc_storeStrong(&v9->_browsingSession, session);
+    viewModel = [(PUBrowsingSession *)v10->_browsingSession viewModel];
+    [viewModel registerChangeObserver:v10];
 
-    objc_storeStrong(&v10->__spec, a4);
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v10->__spec, spec);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     accessoryViewControllers = v10->__accessoryViewControllers;
-    v10->__accessoryViewControllers = v12;
+    v10->__accessoryViewControllers = strongToStrongObjectsMapTable;
 
     v10->_scrollPocketsEnabled = 1;
     [MEMORY[0x1E69C38B8] preloadResources];
@@ -833,8 +833,8 @@ LABEL_11:
 
 - (PUOneUpAccessoryViewControllersManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUOneUpAccessoryViewControllersManager.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PUOneUpAccessoryViewControllersManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpAccessoryViewControllersManager.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PUOneUpAccessoryViewControllersManager init]"}];
 
   abort();
 }

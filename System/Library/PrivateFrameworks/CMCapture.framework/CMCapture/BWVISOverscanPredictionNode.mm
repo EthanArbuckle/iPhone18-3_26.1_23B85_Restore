@@ -1,20 +1,20 @@
 @interface BWVISOverscanPredictionNode
-- (BWVISOverscanPredictionNode)initWithCameraInfoByPortType:(id)a3 visInputAspectRatio:(float)a4 delegate:(id)a5;
+- (BWVISOverscanPredictionNode)initWithCameraInfoByPortType:(id)type visInputAspectRatio:(float)ratio delegate:(id)delegate;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)dealloc;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWVISOverscanPredictionNode
 
-- (BWVISOverscanPredictionNode)initWithCameraInfoByPortType:(id)a3 visInputAspectRatio:(float)a4 delegate:(id)a5
+- (BWVISOverscanPredictionNode)initWithCameraInfoByPortType:(id)type visInputAspectRatio:(float)ratio delegate:(id)delegate
 {
   v13.receiver = self;
   v13.super_class = BWVISOverscanPredictionNode;
   v8 = [(BWNode *)&v13 init];
   v9 = v8;
-  if (a3)
+  if (type)
   {
     if (v8)
     {
@@ -26,9 +26,9 @@
       [(BWNodeOutput *)v11 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
       [(BWNodeOutput *)v11 setPassthroughMode:1];
       [(BWNode *)v9 addOutput:v11];
-      v9->_visInputAspectRatio = a4;
-      v9->_delegate = a5;
-      v9->_cameraInfoByPortType = a3;
+      v9->_visInputAspectRatio = ratio;
+      v9->_delegate = delegate;
+      v9->_cameraInfoByPortType = type;
     }
   }
 
@@ -127,17 +127,17 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (a3)
+  if (buffer)
   {
-    v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if (v6)
     {
       v7 = v6;
-      ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+      ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
       Width = CVPixelBufferGetWidth(ImageBuffer);
-      v10 = CMSampleBufferGetImageBuffer(a3);
+      v10 = CMSampleBufferGetImageBuffer(buffer);
       rect.origin.x = 0.0;
       rect.origin.y = 0.0;
       rect.size.width = Width;
@@ -168,7 +168,7 @@
     [BWVISOverscanPredictionNode renderSampleBuffer:forInput:];
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 - (void)initWithCameraInfoByPortType:(void *)a1 visInputAspectRatio:delegate:.cold.1(void *a1)

@@ -1,15 +1,15 @@
 @interface HMDAppleMediaAccessoryDiagnosticInfoController
-+ (id)diagnosticInfoDescriptionWithData:(id)a3;
-+ (id)snapshotForDataSource:(id)a3;
-- (HMDAppleMediaAccessoryDiagnosticInfoController)initWithDataSource:(id)a3 isHH2Mode:(BOOL)a4;
++ (id)diagnosticInfoDescriptionWithData:(id)data;
++ (id)snapshotForDataSource:(id)source;
+- (HMDAppleMediaAccessoryDiagnosticInfoController)initWithDataSource:(id)source isHH2Mode:(BOOL)mode;
 - (HMDAppleMediaAccessoryDiagnosticInfoControllerDataSource)dataSource;
-- (id)_diagnosticInfoWithAdditionalKeys:(id)a3 filterKeyPaths:(id)a4;
-- (id)diagnosticInfoDataWithAdditionalKeys:(id)a3 filterKeyPaths:(id)a4;
+- (id)_diagnosticInfoWithAdditionalKeys:(id)keys filterKeyPaths:(id)paths;
+- (id)diagnosticInfoDataWithAdditionalKeys:(id)keys filterKeyPaths:(id)paths;
 @end
 
 @implementation HMDAppleMediaAccessoryDiagnosticInfoController
 
-+ (id)snapshotForDataSource:(id)a3
++ (id)snapshotForDataSource:(id)source
 {
   v3 = objc_allocWithZone(type metadata accessor for AccessoryDiagnosticInfoProtoDiagnosticInfoSnapshot());
   v4 = swift_unknownObjectRetain();
@@ -25,19 +25,19 @@
   return WeakRetained;
 }
 
-- (id)diagnosticInfoDataWithAdditionalKeys:(id)a3 filterKeyPaths:(id)a4
+- (id)diagnosticInfoDataWithAdditionalKeys:(id)keys filterKeyPaths:(id)paths
 {
-  v4 = [(HMDAppleMediaAccessoryDiagnosticInfoController *)self _diagnosticInfoWithAdditionalKeys:a3 filterKeyPaths:a4];
-  v5 = [v4 data];
+  v4 = [(HMDAppleMediaAccessoryDiagnosticInfoController *)self _diagnosticInfoWithAdditionalKeys:keys filterKeyPaths:paths];
+  data = [v4 data];
 
-  return v5;
+  return data;
 }
 
-- (id)_diagnosticInfoWithAdditionalKeys:(id)a3 filterKeyPaths:(id)a4
+- (id)_diagnosticInfoWithAdditionalKeys:(id)keys filterKeyPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAppleMediaAccessoryDiagnosticInfoController *)self dataSource];
+  keysCopy = keys;
+  pathsCopy = paths;
+  dataSource = [(HMDAppleMediaAccessoryDiagnosticInfoController *)self dataSource];
   v9 = objc_alloc_init(MEMORY[0x277CD16B8]);
   [v9 setVersion:12];
   if ([(HMDAppleMediaAccessoryDiagnosticInfoController *)self isHH2Mode])
@@ -54,23 +54,23 @@
   v11 = [MEMORY[0x277CBEAA8] now];
   [v11 timeIntervalSince1970];
   [v9 setGenerationTime:?];
-  v12 = [v7 count];
+  v12 = [pathsCopy count];
   v13 = &unk_283E75650;
   if (v12)
   {
-    v13 = v7;
+    v13 = pathsCopy;
   }
 
   v14 = v13;
   v15 = [[HMDKeyPaths alloc] initFor:v14];
-  if (v8)
+  if (dataSource)
   {
-    v16 = [HMDAppleMediaAccessoryDiagnosticInfoController snapshotForDataSource:v8];
+    v16 = [HMDAppleMediaAccessoryDiagnosticInfoController snapshotForDataSource:dataSource];
     v69 = v16;
     if ([v15 pushKey:@"appleMediaAccessoryDiagnosticInfo"])
     {
       v67 = v14;
-      v17 = v6;
+      v17 = keysCopy;
       v18 = objc_alloc_init(MEMORY[0x277CD16A0]);
       if ([v15 pushKey:@"cloudInfo"])
       {
@@ -96,69 +96,69 @@
 
       if ([v15 containsKey:{@"wifiInfo", v67}])
       {
-        v20 = [v16 networkInfo];
-        if (v20)
+        networkInfo = [v16 networkInfo];
+        if (networkInfo)
         {
-          [v18 setWifiInfo:v20];
+          [v18 setWifiInfo:networkInfo];
         }
       }
 
       if ([v15 containsKey:@"mediaRouteIdString"])
       {
-        v21 = [v16 mediaRouteIdString];
-        [v18 setMediaRouteIdString:v21];
+        mediaRouteIdString = [v16 mediaRouteIdString];
+        [v18 setMediaRouteIdString:mediaRouteIdString];
       }
 
       if ([v15 containsKey:@"serialNumber"])
       {
-        v22 = [v16 systemInfoSerialNumber];
-        [v18 setSerialNumber:v22];
+        systemInfoSerialNumber = [v16 systemInfoSerialNumber];
+        [v18 setSerialNumber:systemInfoSerialNumber];
       }
 
       if ([v15 containsKey:@"modelIdentifier"])
       {
-        v23 = [v16 systemInfoModelIdentifier];
-        [v18 setModelIdentifier:v23];
+        systemInfoModelIdentifier = [v16 systemInfoModelIdentifier];
+        [v18 setModelIdentifier:systemInfoModelIdentifier];
       }
 
       if ([v15 containsKey:@"softwareVersion"])
       {
-        v24 = [v16 systemInfoSoftwareVersion];
-        [v18 setSoftwareVersion:v24];
+        systemInfoSoftwareVersion = [v16 systemInfoSoftwareVersion];
+        [v18 setSoftwareVersion:systemInfoSoftwareVersion];
       }
 
       if ([v15 containsKey:@"regionInfo"])
       {
-        v25 = [v16 systemInfoRegionInfo];
-        [v18 setRegionInfo:v25];
+        systemInfoRegionInfo = [v16 systemInfoRegionInfo];
+        [v18 setRegionInfo:systemInfoRegionInfo];
       }
 
-      v26 = [v16 currentAppleMediaAccessory];
+      currentAppleMediaAccessory = [v16 currentAppleMediaAccessory];
 
-      if (v26)
+      if (currentAppleMediaAccessory)
       {
         if ([v15 containsKey:@"manufacturer"])
         {
-          v27 = [v16 currentAccessoryManufacturer];
-          [v18 setManufacturer:v27];
+          currentAccessoryManufacturer = [v16 currentAccessoryManufacturer];
+          [v18 setManufacturer:currentAccessoryManufacturer];
         }
 
         if ([v15 containsKey:@"eventRouterServerInfo"])
         {
-          v28 = [v16 eventRouterServerInfo];
-          [v18 setEventRouterServerInfo:v28];
+          eventRouterServerInfo = [v16 eventRouterServerInfo];
+          [v18 setEventRouterServerInfo:eventRouterServerInfo];
         }
 
         if ([v15 containsKey:@"softwareUpdateDescriptor"])
         {
-          v29 = [v16 softwareUpdateDescriptor];
-          [v18 setSoftwareUpdateDescriptor:v29];
+          softwareUpdateDescriptor = [v16 softwareUpdateDescriptor];
+          [v18 setSoftwareUpdateDescriptor:softwareUpdateDescriptor];
         }
 
         if ([v15 containsKey:@"softwareUpdateProgress"])
         {
-          v30 = [v16 softwareUpdateProgress];
-          [v18 setSoftwareUpdateProgress:v30];
+          softwareUpdateProgress = [v16 softwareUpdateProgress];
+          [v18 setSoftwareUpdateProgress:softwareUpdateProgress];
         }
 
         if ([v15 pushKey:@"currentAccessoryInfo"])
@@ -166,17 +166,17 @@
           v31 = objc_alloc_init(MEMORY[0x277CD16B0]);
           if ([v15 containsKey:@"uuidString"])
           {
-            v32 = [v16 currentAccessoryUUID];
-            v33 = [v32 UUIDString];
-            [v31 setUuidString:v33];
+            currentAccessoryUUID = [v16 currentAccessoryUUID];
+            uUIDString = [currentAccessoryUUID UUIDString];
+            [v31 setUuidString:uUIDString];
 
             v16 = v69;
           }
 
           if ([v15 containsKey:@"publicPairingIdentity"])
           {
-            v34 = [v16 currentAccessoryPublicPairingIdentity];
-            [v31 setPublicPairingIdentity:v34];
+            currentAccessoryPublicPairingIdentity = [v16 currentAccessoryPublicPairingIdentity];
+            [v31 setPublicPairingIdentity:currentAccessoryPublicPairingIdentity];
           }
 
           [v18 setCurrentAccessoryInfo:v31];
@@ -186,9 +186,9 @@
 
       if ([v15 containsKey:@"numAppleMediaAccessories"])
       {
-        v35 = [v16 currentHome];
+        currentHome = [v16 currentHome];
 
-        if (v35)
+        if (currentHome)
         {
           [v18 setNumAppleMediaAccessories:{objc_msgSend(v16, "currentHomeNumberOfAppleMediaAccessories")}];
         }
@@ -196,9 +196,9 @@
 
       if ([v15 containsKey:@"numResidents"])
       {
-        v36 = [v16 currentHome];
+        currentHome2 = [v16 currentHome];
 
-        if (v36)
+        if (currentHome2)
         {
           [v18 setNumResidents:{objc_msgSend(v16, "currentHomeNumberOfResidents")}];
         }
@@ -206,16 +206,16 @@
 
       if ([v15 containsKey:@"primaryResidentStatus"])
       {
-        v37 = [v16 currentHome];
+        currentHome3 = [v16 currentHome];
 
-        if (v37)
+        if (currentHome3)
         {
-          v38 = [v16 currentHome];
-          v39 = [v38 residentDeviceManager];
-          v40 = [v39 confirmedPrimaryResidentDevice];
+          currentHome4 = [v16 currentHome];
+          residentDeviceManager = [currentHome4 residentDeviceManager];
+          confirmedPrimaryResidentDevice = [residentDeviceManager confirmedPrimaryResidentDevice];
 
           v16 = v69;
-          if (v40)
+          if (confirmedPrimaryResidentDevice)
           {
             v41 = 2;
           }
@@ -236,8 +236,8 @@
 
       if ([v15 containsKey:@"networkInfos"])
       {
-        v42 = [v16 networkInfoProtoNetworkInfo];
-        v43 = [v42 mutableCopy];
+        networkInfoProtoNetworkInfo = [v16 networkInfoProtoNetworkInfo];
+        v43 = [networkInfoProtoNetworkInfo mutableCopy];
         [v18 setNetworkInfos:v43];
 
         v16 = v69;
@@ -245,8 +245,8 @@
 
       if ([v15 containsKey:@"networkServiceInfos"])
       {
-        v44 = [v16 networkInfoProtoNetworkServiceInfo];
-        v45 = [v44 mutableCopy];
+        networkInfoProtoNetworkServiceInfo = [v16 networkInfoProtoNetworkServiceInfo];
+        v45 = [networkInfoProtoNetworkServiceInfo mutableCopy];
         [v18 setNetworkServiceInfos:v45];
 
         v16 = v69;
@@ -254,8 +254,8 @@
 
       if ([v15 containsKey:@"networkVisibleDeviceInfos"])
       {
-        v46 = [v16 networkVisibleDevices];
-        v47 = [v46 mutableCopy];
+        networkVisibleDevices = [v16 networkVisibleDevices];
+        v47 = [networkVisibleDevices mutableCopy];
         [v18 setNetworkVisibleDeviceInfos:v47];
 
         v16 = v69;
@@ -263,8 +263,8 @@
 
       if ([v15 containsKey:@"nearbyVisibleDeviceInfos"])
       {
-        v48 = [v16 nearbyVisibleDevices];
-        v49 = [v48 mutableCopy];
+        nearbyVisibleDevices = [v16 nearbyVisibleDevices];
+        v49 = [nearbyVisibleDevices mutableCopy];
         [v18 setNearbyVisibleDeviceInfos:v49];
 
         v16 = v69;
@@ -275,9 +275,9 @@
         v50 = objc_alloc_init(MEMORY[0x277CD16C0]);
         if ([v15 containsKey:@"idsIdentifierString"])
         {
-          v51 = [v16 currentDeviceIDSIdentifier];
-          v52 = [v51 UUIDString];
-          [v50 setIdsIdentifierString:v52];
+          currentDeviceIDSIdentifier = [v16 currentDeviceIDSIdentifier];
+          uUIDString2 = [currentDeviceIDSIdentifier UUIDString];
+          [v50 setIdsIdentifierString:uUIDString2];
 
           v16 = v69;
         }
@@ -285,9 +285,9 @@
         if ([v15 containsKey:@"idsState"])
         {
           [v50 setIdsState:0];
-          v53 = [v16 currentDeviceIDSIdentifier];
+          currentDeviceIDSIdentifier2 = [v16 currentDeviceIDSIdentifier];
 
-          if (v53)
+          if (currentDeviceIDSIdentifier2)
           {
             [v50 setIdsState:1];
           }
@@ -302,7 +302,7 @@
       [v9 setAppleMediaAccessoryDiagnosticInfo:v18];
       [v15 popKey];
 
-      v6 = v17;
+      keysCopy = v17;
       v14 = v68;
     }
 
@@ -311,16 +311,16 @@
       [v9 setNumHomes:{objc_msgSend(v16, "numHomes")}];
     }
 
-    if ([v6 containsObject:*MEMORY[0x277CD0118]])
+    if ([keysCopy containsObject:*MEMORY[0x277CD0118]])
     {
-      v54 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v55 = [HMDCurrentAccessorySetupMetricDispatcher readLastAccessorySetupInfo:v54];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v55 = [HMDCurrentAccessorySetupMetricDispatcher readLastAccessorySetupInfo:standardUserDefaults];
 
       if (v55)
       {
         [v9 setLastSetupInfo:v55];
-        v56 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        [HMDCurrentAccessorySetupMetricDispatcher removeLastAccessorySetupInfoFromUserDefaults:v56];
+        standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        [HMDCurrentAccessorySetupMetricDispatcher removeLastAccessorySetupInfoFromUserDefaults:standardUserDefaults2];
       }
 
       v16 = v69;
@@ -328,24 +328,24 @@
 
     if ([v16 isCurrentDevicePrimaryResident] && objc_msgSend(v15, "pushKey:", @"primaryResidentDiagnosticInfo"))
     {
-      v57 = v6;
+      v57 = keysCopy;
       v58 = objc_alloc_init(MEMORY[0x277CD16C8]);
       if ([v15 containsKey:@"wifiInfo"])
       {
-        v59 = [v16 networkInfo];
-        [v58 setWifiInfo:v59];
+        networkInfo2 = [v16 networkInfo];
+        [v58 setWifiInfo:networkInfo2];
       }
 
       if ([v15 containsKey:@"eventRouterServerInfo"])
       {
-        v60 = [v16 eventRouterServerInfo];
-        [v58 setEventRouterServerInfo:v60];
+        eventRouterServerInfo2 = [v16 eventRouterServerInfo];
+        [v58 setEventRouterServerInfo:eventRouterServerInfo2];
       }
 
       if ([v15 containsKey:@"networkInfos"])
       {
-        v61 = [v16 networkInfoProtoNetworkInfo];
-        v62 = [v61 mutableCopy];
+        networkInfoProtoNetworkInfo2 = [v16 networkInfoProtoNetworkInfo];
+        v62 = [networkInfoProtoNetworkInfo2 mutableCopy];
         [v58 setNetworkInfos:v62];
 
         v16 = v69;
@@ -353,8 +353,8 @@
 
       if ([v15 containsKey:@"networkVisibleDeviceInfos"])
       {
-        v63 = [v16 networkVisibleDevices];
-        v64 = [v63 mutableCopy];
+        networkVisibleDevices2 = [v16 networkVisibleDevices];
+        v64 = [networkVisibleDevices2 mutableCopy];
         [v58 setNetworkVisibleDeviceInfos:v64];
 
         v16 = v69;
@@ -373,7 +373,7 @@
       [v9 setPrimaryResidentDiagnosticInfo:v58];
       [v15 popKey];
 
-      v6 = v57;
+      keysCopy = v57;
     }
   }
 
@@ -382,27 +382,27 @@
   return v9;
 }
 
-- (HMDAppleMediaAccessoryDiagnosticInfoController)initWithDataSource:(id)a3 isHH2Mode:(BOOL)a4
+- (HMDAppleMediaAccessoryDiagnosticInfoController)initWithDataSource:(id)source isHH2Mode:(BOOL)mode
 {
-  v6 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = HMDAppleMediaAccessoryDiagnosticInfoController;
   v7 = [(HMDAppleMediaAccessoryDiagnosticInfoController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_isHH2Mode = a4;
-    objc_storeWeak(&v7->_dataSource, v6);
+    v7->_isHH2Mode = mode;
+    objc_storeWeak(&v7->_dataSource, sourceCopy);
   }
 
   return v8;
 }
 
-+ (id)diagnosticInfoDescriptionWithData:(id)a3
++ (id)diagnosticInfoDescriptionWithData:(id)data
 {
   v235 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CD16B8]) initWithData:v3];
+  dataCopy = data;
+  v4 = [objc_alloc(MEMORY[0x277CD16B8]) initWithData:dataCopy];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -422,22 +422,22 @@
     if ([v4 hasAppleMediaAccessoryDiagnosticInfo])
     {
       v203 = v4;
-      v204 = v3;
-      v9 = [v4 appleMediaAccessoryDiagnosticInfo];
-      if ([v9 hasCloudInfo])
+      v204 = dataCopy;
+      appleMediaAccessoryDiagnosticInfo = [v4 appleMediaAccessoryDiagnosticInfo];
+      if ([appleMediaAccessoryDiagnosticInfo hasCloudInfo])
       {
         v10 = MEMORY[0x277CCABB0];
-        v11 = [v9 cloudInfo];
-        v12 = [v10 numberWithInt:{objc_msgSend(v11, "cloudState")}];
+        cloudInfo = [appleMediaAccessoryDiagnosticInfo cloudInfo];
+        v12 = [v10 numberWithInt:{objc_msgSend(cloudInfo, "cloudState")}];
         [v5 setObject:v12 forKeyedSubscript:@"cloud.state"];
 
         v13 = MEMORY[0x277CCABB0];
-        v14 = [v9 cloudInfo];
-        v15 = [v13 numberWithInt:{objc_msgSend(v14, "octagonState")}];
+        cloudInfo2 = [appleMediaAccessoryDiagnosticInfo cloudInfo];
+        v15 = [v13 numberWithInt:{objc_msgSend(cloudInfo2, "octagonState")}];
         [v5 setObject:v15 forKeyedSubscript:@"cloud.octagonstate"];
 
-        v16 = [v9 cloudInfo];
-        if ([v16 firstCloudImportComplete])
+        cloudInfo3 = [appleMediaAccessoryDiagnosticInfo cloudInfo];
+        if ([cloudInfo3 firstCloudImportComplete])
         {
           v17 = @"true";
         }
@@ -450,120 +450,120 @@
         [v5 setObject:v17 forKeyedSubscript:@"cloud.firstImportComplete"];
       }
 
-      if ([v9 hasWifiInfo])
+      if ([appleMediaAccessoryDiagnosticInfo hasWifiInfo])
       {
-        v18 = [v9 wifiInfo];
-        v19 = [v18 networkSSID];
-        [v5 setObject:v19 forKeyedSubscript:@"wifi.netssid"];
+        wifiInfo = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+        networkSSID = [wifiInfo networkSSID];
+        [v5 setObject:networkSSID forKeyedSubscript:@"wifi.netssid"];
 
-        v20 = [v9 wifiInfo];
-        v21 = [v20 networkBSSID];
-        [v5 setObject:v21 forKeyedSubscript:@"wifi.netbssid"];
+        wifiInfo2 = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+        networkBSSID = [wifiInfo2 networkBSSID];
+        [v5 setObject:networkBSSID forKeyedSubscript:@"wifi.netbssid"];
 
-        v22 = [v9 wifiInfo];
-        v23 = [v22 networkGatewayIPAddress];
-        [v5 setObject:v23 forKeyedSubscript:@"wifi.netgateway"];
+        wifiInfo3 = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+        networkGatewayIPAddress = [wifiInfo3 networkGatewayIPAddress];
+        [v5 setObject:networkGatewayIPAddress forKeyedSubscript:@"wifi.netgateway"];
 
-        v24 = [v9 wifiInfo];
-        v25 = [v24 macAddress];
-        [v5 setObject:v25 forKeyedSubscript:@"wifi.macAddress"];
+        wifiInfo4 = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+        macAddress = [wifiInfo4 macAddress];
+        [v5 setObject:macAddress forKeyedSubscript:@"wifi.macAddress"];
 
-        v26 = [v9 wifiInfo];
-        v27 = [v26 networkGatewayMacAddress];
-        [v5 setObject:v27 forKeyedSubscript:@"wifi.gatewayMacAddress"];
+        wifiInfo5 = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+        networkGatewayMacAddress = [wifiInfo5 networkGatewayMacAddress];
+        [v5 setObject:networkGatewayMacAddress forKeyedSubscript:@"wifi.gatewayMacAddress"];
 
         v28 = MEMORY[0x277CCABB0];
-        v29 = [v9 wifiInfo];
-        v30 = [v28 numberWithInt:{objc_msgSend(v29, "networkRSSI")}];
+        wifiInfo6 = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+        v30 = [v28 numberWithInt:{objc_msgSend(wifiInfo6, "networkRSSI")}];
         [v5 setObject:v30 forKeyedSubscript:@"wifi.netrssi"];
 
         v31 = MEMORY[0x277CCABB0];
-        v32 = [v9 wifiInfo];
-        v33 = [v31 numberWithBool:{objc_msgSend(v32, "requiresPassword")}];
+        wifiInfo7 = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+        v33 = [v31 numberWithBool:{objc_msgSend(wifiInfo7, "requiresPassword")}];
         [v5 setObject:v33 forKeyedSubscript:@"wifi.requiresPassword"];
       }
 
-      v34 = [v9 currentAccessoryInfo];
+      currentAccessoryInfo = [appleMediaAccessoryDiagnosticInfo currentAccessoryInfo];
 
-      if (v34)
+      if (currentAccessoryInfo)
       {
-        v35 = [v9 currentAccessoryInfo];
-        v36 = [v35 uuidString];
-        [v5 setObject:v36 forKeyedSubscript:@"accessory.uuid"];
+        currentAccessoryInfo2 = [appleMediaAccessoryDiagnosticInfo currentAccessoryInfo];
+        uuidString = [currentAccessoryInfo2 uuidString];
+        [v5 setObject:uuidString forKeyedSubscript:@"accessory.uuid"];
 
-        v37 = [v9 currentAccessoryInfo];
-        v38 = [v37 publicPairingIdentity];
-        v39 = [v38 identifier];
-        [v5 setObject:v39 forKeyedSubscript:@"accessory.pairingIdentity"];
+        currentAccessoryInfo3 = [appleMediaAccessoryDiagnosticInfo currentAccessoryInfo];
+        publicPairingIdentity = [currentAccessoryInfo3 publicPairingIdentity];
+        identifier = [publicPairingIdentity identifier];
+        [v5 setObject:identifier forKeyedSubscript:@"accessory.pairingIdentity"];
       }
 
-      v40 = [v9 mediaRouteIdString];
-      [v5 setObject:v40 forKeyedSubscript:@"accessory.mediaRouteID"];
+      mediaRouteIdString = [appleMediaAccessoryDiagnosticInfo mediaRouteIdString];
+      [v5 setObject:mediaRouteIdString forKeyedSubscript:@"accessory.mediaRouteID"];
 
-      v41 = [v9 idsInfo];
+      idsInfo = [appleMediaAccessoryDiagnosticInfo idsInfo];
 
-      if (v41)
+      if (idsInfo)
       {
-        v42 = [v9 idsInfo];
-        v43 = [v42 idsIdentifierString];
-        [v5 setObject:v43 forKeyedSubscript:@"ids.identifier"];
+        idsInfo2 = [appleMediaAccessoryDiagnosticInfo idsInfo];
+        idsIdentifierString = [idsInfo2 idsIdentifierString];
+        [v5 setObject:idsIdentifierString forKeyedSubscript:@"ids.identifier"];
 
         v44 = MEMORY[0x277CCABB0];
-        v45 = [v9 idsInfo];
-        v46 = [v44 numberWithInt:{objc_msgSend(v45, "idsState")}];
+        idsInfo3 = [appleMediaAccessoryDiagnosticInfo idsInfo];
+        v46 = [v44 numberWithInt:{objc_msgSend(idsInfo3, "idsState")}];
         [v5 setObject:v46 forKeyedSubscript:@"ids.state"];
       }
 
-      if ([v9 hasManufacturer])
+      if ([appleMediaAccessoryDiagnosticInfo hasManufacturer])
       {
-        v47 = [v9 manufacturer];
-        [v5 setObject:v47 forKeyedSubscript:@"dev.manufacturer"];
+        manufacturer = [appleMediaAccessoryDiagnosticInfo manufacturer];
+        [v5 setObject:manufacturer forKeyedSubscript:@"dev.manufacturer"];
       }
 
-      if ([v9 hasSerialNumber])
+      if ([appleMediaAccessoryDiagnosticInfo hasSerialNumber])
       {
-        v48 = [v9 serialNumber];
-        [v5 setObject:v48 forKeyedSubscript:@"dev.serialNumber"];
+        serialNumber = [appleMediaAccessoryDiagnosticInfo serialNumber];
+        [v5 setObject:serialNumber forKeyedSubscript:@"dev.serialNumber"];
       }
 
-      if ([v9 hasModelIdentifier])
+      if ([appleMediaAccessoryDiagnosticInfo hasModelIdentifier])
       {
-        v49 = [v9 modelIdentifier];
-        [v5 setObject:v49 forKeyedSubscript:@"dev.model"];
+        modelIdentifier = [appleMediaAccessoryDiagnosticInfo modelIdentifier];
+        [v5 setObject:modelIdentifier forKeyedSubscript:@"dev.model"];
       }
 
-      if ([v9 hasRegionInfo])
+      if ([appleMediaAccessoryDiagnosticInfo hasRegionInfo])
       {
-        v50 = [v9 regionInfo];
-        [v5 setObject:v50 forKeyedSubscript:@"dev.region"];
+        regionInfo = [appleMediaAccessoryDiagnosticInfo regionInfo];
+        [v5 setObject:regionInfo forKeyedSubscript:@"dev.region"];
       }
 
-      if ([v9 hasSoftwareVersion])
+      if ([appleMediaAccessoryDiagnosticInfo hasSoftwareVersion])
       {
-        v51 = [v9 softwareVersion];
-        [v5 setObject:v51 forKeyedSubscript:@"dev.software.version"];
+        softwareVersion = [appleMediaAccessoryDiagnosticInfo softwareVersion];
+        [v5 setObject:softwareVersion forKeyedSubscript:@"dev.software.version"];
       }
 
-      if ([v9 hasSoftwareUpdateDescriptor])
+      if ([appleMediaAccessoryDiagnosticInfo hasSoftwareUpdateDescriptor])
       {
         v52 = MEMORY[0x277CCABB0];
-        v53 = [v9 softwareUpdateDescriptor];
-        v54 = [v52 numberWithLongLong:{objc_msgSend(v53, "status")}];
+        softwareUpdateDescriptor = [appleMediaAccessoryDiagnosticInfo softwareUpdateDescriptor];
+        v54 = [v52 numberWithLongLong:{objc_msgSend(softwareUpdateDescriptor, "status")}];
         [v5 setObject:v54 forKeyedSubscript:@"dev.softwareUpdate.descriptor.status"];
       }
 
-      if ([v9 hasSoftwareUpdateProgress])
+      if ([appleMediaAccessoryDiagnosticInfo hasSoftwareUpdateProgress])
       {
         v55 = MEMORY[0x277CCABB0];
-        v56 = [v9 softwareUpdateProgress];
-        [v56 percentageComplete];
+        softwareUpdateProgress = [appleMediaAccessoryDiagnosticInfo softwareUpdateProgress];
+        [softwareUpdateProgress percentageComplete];
         v57 = [v55 numberWithFloat:?];
         [v5 setObject:v57 forKeyedSubscript:@"dev.softwareUpdate.progress.percentageComplete"];
       }
 
-      if ([v9 hasSfProblemFlags])
+      if ([appleMediaAccessoryDiagnosticInfo hasSfProblemFlags])
       {
-        v58 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "sfProblemFlags")}];
+        v58 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(appleMediaAccessoryDiagnosticInfo, "sfProblemFlags")}];
         [v5 setObject:v58 forKeyedSubscript:@"dev.sfProblemFlags"];
       }
 
@@ -571,8 +571,8 @@
       v229 = 0u;
       v226 = 0u;
       v227 = 0u;
-      v59 = [v9 networkVisibleDeviceInfos];
-      v60 = [v59 countByEnumeratingWithState:&v226 objects:v234 count:16];
+      networkVisibleDeviceInfos = [appleMediaAccessoryDiagnosticInfo networkVisibleDeviceInfos];
+      v60 = [networkVisibleDeviceInfos countByEnumeratingWithState:&v226 objects:v234 count:16];
       if (v60)
       {
         v61 = v60;
@@ -584,38 +584,38 @@
           {
             if (*v227 != v63)
             {
-              objc_enumerationMutation(v59);
+              objc_enumerationMutation(networkVisibleDeviceInfos);
             }
 
             v65 = *(*(&v226 + 1) + 8 * i);
-            v66 = [v65 idsIdentifierString];
+            idsIdentifierString2 = [v65 idsIdentifierString];
 
-            if (v66)
+            if (idsIdentifierString2)
             {
               v67 = MEMORY[0x277CCACA8];
               v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v62];
               v69 = [v67 stringWithFormat:@"dev.networkVisibleDevice.%@.%@", v68, @"ids"];
 
-              v70 = [v65 idsIdentifierString];
-              [v209 setObject:v70 forKeyedSubscript:v69];
+              idsIdentifierString3 = [v65 idsIdentifierString];
+              [v209 setObject:idsIdentifierString3 forKeyedSubscript:v69];
             }
 
-            v71 = [v65 mediaRouteIdString];
+            mediaRouteIdString2 = [v65 mediaRouteIdString];
 
-            if (v71)
+            if (mediaRouteIdString2)
             {
               v72 = MEMORY[0x277CCACA8];
               v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v62];
               v74 = [v72 stringWithFormat:@"dev.networkVisibleDevice.%@.%@", v73, @"mediaRouteID"];
 
-              v75 = [v65 mediaRouteIdString];
-              [v209 setObject:v75 forKeyedSubscript:v74];
+              mediaRouteIdString3 = [v65 mediaRouteIdString];
+              [v209 setObject:mediaRouteIdString3 forKeyedSubscript:v74];
             }
 
             ++v62;
           }
 
-          v61 = [v59 countByEnumeratingWithState:&v226 objects:v234 count:16];
+          v61 = [networkVisibleDeviceInfos countByEnumeratingWithState:&v226 objects:v234 count:16];
         }
 
         while (v61);
@@ -625,8 +625,8 @@
       v225 = 0u;
       v222 = 0u;
       v223 = 0u;
-      v76 = [v9 networkVisibleDeviceInfos];
-      v77 = [v76 countByEnumeratingWithState:&v222 objects:v233 count:16];
+      networkVisibleDeviceInfos2 = [appleMediaAccessoryDiagnosticInfo networkVisibleDeviceInfos];
+      v77 = [networkVisibleDeviceInfos2 countByEnumeratingWithState:&v222 objects:v233 count:16];
       if (v77)
       {
         v78 = v77;
@@ -638,38 +638,38 @@
           {
             if (*v223 != v80)
             {
-              objc_enumerationMutation(v76);
+              objc_enumerationMutation(networkVisibleDeviceInfos2);
             }
 
             v82 = *(*(&v222 + 1) + 8 * j);
-            v83 = [v82 idsIdentifierString];
+            idsIdentifierString4 = [v82 idsIdentifierString];
 
-            if (v83)
+            if (idsIdentifierString4)
             {
               v84 = MEMORY[0x277CCACA8];
               v85 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v79];
               v86 = [v84 stringWithFormat:@"dev.nearbyVisibleDevice.%@.%@", v85, @"ids"];
 
-              v87 = [v82 idsIdentifierString];
-              [v209 setObject:v87 forKeyedSubscript:v86];
+              idsIdentifierString5 = [v82 idsIdentifierString];
+              [v209 setObject:idsIdentifierString5 forKeyedSubscript:v86];
             }
 
-            v88 = [v82 mediaRouteIdString];
+            mediaRouteIdString4 = [v82 mediaRouteIdString];
 
-            if (v88)
+            if (mediaRouteIdString4)
             {
               v89 = MEMORY[0x277CCACA8];
               v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v79];
               v91 = [v89 stringWithFormat:@"dev.nearbyVisibleDevice.%@.%@", v90, @"mediaRouteID"];
 
-              v92 = [v82 mediaRouteIdString];
-              [v209 setObject:v92 forKeyedSubscript:v91];
+              mediaRouteIdString5 = [v82 mediaRouteIdString];
+              [v209 setObject:mediaRouteIdString5 forKeyedSubscript:v91];
             }
 
             ++v79;
           }
 
-          v78 = [v76 countByEnumeratingWithState:&v222 objects:v233 count:16];
+          v78 = [networkVisibleDeviceInfos2 countByEnumeratingWithState:&v222 objects:v233 count:16];
         }
 
         while (v78);
@@ -679,7 +679,7 @@
       v221 = 0u;
       v218 = 0u;
       v219 = 0u;
-      obj = [v9 networkInfos];
+      obj = [appleMediaAccessoryDiagnosticInfo networkInfos];
       v93 = [obj countByEnumeratingWithState:&v218 objects:v232 count:16];
       if (v93)
       {
@@ -697,65 +697,65 @@
             }
 
             v97 = *(*(&v218 + 1) + 8 * v96);
-            v98 = [v97 ifaceName];
+            ifaceName = [v97 ifaceName];
 
-            if (v98)
+            if (ifaceName)
             {
-              v99 = [v97 ifaceName];
-              v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", v99, @"name"];
-              [v209 setObject:v99 forKeyedSubscript:v100];
-              v101 = [v97 macAddress];
+              ifaceName2 = [v97 ifaceName];
+              v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", ifaceName2, @"name"];
+              [v209 setObject:ifaceName2 forKeyedSubscript:v100];
+              macAddress2 = [v97 macAddress];
 
-              if (v101)
+              if (macAddress2)
               {
-                v102 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", v99, @"mac"];
+                v102 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", ifaceName2, @"mac"];
 
-                v103 = [v97 macAddress];
-                [v209 setObject:v103 forKeyedSubscript:v102];
+                macAddress3 = [v97 macAddress];
+                [v209 setObject:macAddress3 forKeyedSubscript:v102];
 
                 v100 = v102;
               }
 
-              v104 = [v97 ipv4Addresses];
-              v105 = [v104 count];
+              ipv4Addresses = [v97 ipv4Addresses];
+              v105 = [ipv4Addresses count];
 
               if (v105)
               {
-                v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", v99, @"ipv4"];
+                v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", ifaceName2, @"ipv4"];
 
-                v107 = [v97 ipv4Addresses];
-                [v209 setObject:v107 forKeyedSubscript:v106];
+                ipv4Addresses2 = [v97 ipv4Addresses];
+                [v209 setObject:ipv4Addresses2 forKeyedSubscript:v106];
 
                 v100 = v106;
               }
 
-              v108 = [v97 ipv6Addresses];
-              v109 = [v108 count];
+              ipv6Addresses = [v97 ipv6Addresses];
+              v109 = [ipv6Addresses count];
 
               if (v109)
               {
-                v110 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", v99, @"ipv6"];
+                v110 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", ifaceName2, @"ipv6"];
 
-                v111 = [v97 ipv6Addresses];
-                [v209 setObject:v111 forKeyedSubscript:v110];
+                ipv6Addresses2 = [v97 ipv6Addresses];
+                [v209 setObject:ipv6Addresses2 forKeyedSubscript:v110];
 
                 v100 = v110;
               }
 
               if ([v97 hasWifiInfo])
               {
-                v112 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", v99, @"wifi.SSID"];
+                v112 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", ifaceName2, @"wifi.SSID"];
 
-                v113 = [v97 wifiInfo];
-                v114 = [v113 ssid];
-                [v209 setObject:v114 forKeyedSubscript:v112];
+                wifiInfo8 = [v97 wifiInfo];
+                ssid = [wifiInfo8 ssid];
+                [v209 setObject:ssid forKeyedSubscript:v112];
 
-                v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", v99, @"wifi.BSSID"];
+                v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkInfo.%@.%@", ifaceName2, @"wifi.BSSID"];
 
-                v115 = [v97 wifiInfo];
-                v116 = [v115 bssid];
+                wifiInfo9 = [v97 wifiInfo];
+                bssid = [wifiInfo9 bssid];
                 v94 = v205;
-                [v209 setObject:v116 forKeyedSubscript:v100];
+                [v209 setObject:bssid forKeyedSubscript:v100];
               }
             }
 
@@ -773,8 +773,8 @@
       v217 = 0u;
       v214 = 0u;
       v215 = 0u;
-      v206 = [v9 networkServiceInfos];
-      v117 = [v206 countByEnumeratingWithState:&v214 objects:v231 count:16];
+      networkServiceInfos = [appleMediaAccessoryDiagnosticInfo networkServiceInfos];
+      v117 = [networkServiceInfos countByEnumeratingWithState:&v214 objects:v231 count:16];
       if (v117)
       {
         v118 = v117;
@@ -785,130 +785,130 @@
           {
             if (*v215 != obja)
             {
-              objc_enumerationMutation(v206);
+              objc_enumerationMutation(networkServiceInfos);
             }
 
             v120 = *(*(&v214 + 1) + 8 * k);
-            v121 = [v120 ifaceName];
+            ifaceName3 = [v120 ifaceName];
 
-            if (v121)
+            if (ifaceName3)
             {
-              v122 = [v120 ifaceName];
-              v123 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", v122, @"name"];
-              [v209 setObject:v122 forKeyedSubscript:v123];
-              v124 = [v120 networkSignatureV4];
+              ifaceName4 = [v120 ifaceName];
+              v123 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", ifaceName4, @"name"];
+              [v209 setObject:ifaceName4 forKeyedSubscript:v123];
+              networkSignatureV4 = [v120 networkSignatureV4];
 
-              if (v124)
+              if (networkSignatureV4)
               {
-                v125 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", v122, @"NetSigV4"];
+                v125 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", ifaceName4, @"NetSigV4"];
 
-                v126 = [v120 networkSignatureV4];
-                [v209 setObject:v126 forKeyedSubscript:v125];
+                networkSignatureV42 = [v120 networkSignatureV4];
+                [v209 setObject:networkSignatureV42 forKeyedSubscript:v125];
 
                 v123 = v125;
               }
 
-              v127 = [v120 networkSignatureV6];
+              networkSignatureV6 = [v120 networkSignatureV6];
 
-              if (v127)
+              if (networkSignatureV6)
               {
-                v128 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", v122, @"netSigV6"];
+                v128 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", ifaceName4, @"netSigV6"];
 
-                v129 = [v120 networkSignatureV6];
-                [v209 setObject:v129 forKeyedSubscript:v128];
+                networkSignatureV62 = [v120 networkSignatureV6];
+                [v209 setObject:networkSignatureV62 forKeyedSubscript:v128];
 
                 v123 = v128;
               }
 
-              v130 = [v120 routerIPv4];
+              routerIPv4 = [v120 routerIPv4];
 
-              if (v130)
+              if (routerIPv4)
               {
-                v131 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", v122, @"routerV4"];
+                v131 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", ifaceName4, @"routerV4"];
 
-                v132 = [v120 routerIPv4];
-                [v209 setObject:v132 forKeyedSubscript:v131];
+                routerIPv42 = [v120 routerIPv4];
+                [v209 setObject:routerIPv42 forKeyedSubscript:v131];
 
                 v123 = v131;
               }
 
-              v133 = [v120 routerIPv6];
+              routerIPv6 = [v120 routerIPv6];
 
-              if (v133)
+              if (routerIPv6)
               {
-                v134 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", v122, @"routerV6"];
+                v134 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", ifaceName4, @"routerV6"];
 
-                v135 = [v120 routerIPv6];
-                [v209 setObject:v135 forKeyedSubscript:v134];
+                routerIPv62 = [v120 routerIPv6];
+                [v209 setObject:routerIPv62 forKeyedSubscript:v134];
 
                 v123 = v134;
               }
 
-              v136 = [v120 ipv4Addresses];
-              v137 = [v136 count];
+              ipv4Addresses3 = [v120 ipv4Addresses];
+              v137 = [ipv4Addresses3 count];
 
               if (v137)
               {
-                v138 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", v122, @"ipv4"];
+                v138 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", ifaceName4, @"ipv4"];
 
-                v139 = [v120 ipv4Addresses];
-                [v209 setObject:v139 forKeyedSubscript:v138];
+                ipv4Addresses4 = [v120 ipv4Addresses];
+                [v209 setObject:ipv4Addresses4 forKeyedSubscript:v138];
 
                 v123 = v138;
               }
 
-              v140 = [v120 ipv6Addresses];
-              v141 = [v140 count];
+              ipv6Addresses3 = [v120 ipv6Addresses];
+              v141 = [ipv6Addresses3 count];
 
               if (v141)
               {
-                v142 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", v122, @"ipv6"];
+                v142 = [MEMORY[0x277CCACA8] stringWithFormat:@"dev.networkService.%@.%@", ifaceName4, @"ipv6"];
 
-                v143 = [v120 ipv6Addresses];
-                [v209 setObject:v143 forKeyedSubscript:v142];
+                ipv6Addresses4 = [v120 ipv6Addresses];
+                [v209 setObject:ipv6Addresses4 forKeyedSubscript:v142];
 
                 v123 = v142;
               }
             }
           }
 
-          v118 = [v206 countByEnumeratingWithState:&v214 objects:v231 count:16];
+          v118 = [networkServiceInfos countByEnumeratingWithState:&v214 objects:v231 count:16];
         }
 
         while (v118);
       }
 
-      v144 = v9;
-      v145 = [v9 eventRouterServerInfo];
+      v144 = appleMediaAccessoryDiagnosticInfo;
+      eventRouterServerInfo = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
 
-      if (v145)
+      if (eventRouterServerInfo)
       {
         v146 = MEMORY[0x277CCABB0];
-        v147 = [v9 eventRouterServerInfo];
-        v148 = [v146 numberWithInt:{objc_msgSend(v147, "mode")}];
+        eventRouterServerInfo2 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+        v148 = [v146 numberWithInt:{objc_msgSend(eventRouterServerInfo2, "mode")}];
         [v209 setObject:v148 forKeyedSubscript:@"evtrouter.server.mode"];
 
         v149 = MEMORY[0x277CCABB0];
-        v150 = [v9 eventRouterServerInfo];
-        v151 = [v149 numberWithInt:{objc_msgSend(v150, "connectionState")}];
+        eventRouterServerInfo3 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+        v151 = [v149 numberWithInt:{objc_msgSend(eventRouterServerInfo3, "connectionState")}];
         [v209 setObject:v151 forKeyedSubscript:@"evtrouter.server.connectionState"];
 
-        v152 = [v9 eventRouterServerInfo];
-        LODWORD(v150) = [v152 hasLastConnected];
+        eventRouterServerInfo4 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+        LODWORD(eventRouterServerInfo3) = [eventRouterServerInfo4 hasLastConnected];
 
-        if (v150)
+        if (eventRouterServerInfo3)
         {
           v153 = MEMORY[0x277CBEAA8];
-          v154 = [v9 eventRouterServerInfo];
-          [v154 lastConnected];
+          eventRouterServerInfo5 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+          [eventRouterServerInfo5 lastConnected];
           v155 = [v153 dateWithTimeIntervalSinceReferenceDate:?];
           v156 = [v155 description];
           [v209 setObject:v156 forKeyedSubscript:@"evtrouter.server.lastConnected"];
         }
 
-        v157 = [v9 eventRouterServerInfo];
-        v158 = [v157 connectedClients];
-        v159 = [v158 count];
+        eventRouterServerInfo6 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+        connectedClients = [eventRouterServerInfo6 connectedClients];
+        v159 = [connectedClients count];
 
         if (v159)
         {
@@ -916,35 +916,35 @@
           v213 = 0u;
           v210 = 0u;
           v211 = 0u;
-          v160 = [v9 eventRouterServerInfo];
-          v161 = [v160 connectedClients];
+          eventRouterServerInfo7 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+          connectedClients2 = [eventRouterServerInfo7 connectedClients];
 
-          v162 = [v161 countByEnumeratingWithState:&v210 objects:v230 count:16];
+          v162 = [connectedClients2 countByEnumeratingWithState:&v210 objects:v230 count:16];
           if (v162)
           {
             v163 = v162;
             v164 = *v211;
-            v165 = &stru_283CF9D50;
+            v168 = &stru_283CF9D50;
             do
             {
               v166 = 0;
-              v167 = v165;
+              v167 = v168;
               do
               {
                 if (*v211 != v164)
                 {
-                  objc_enumerationMutation(v161);
+                  objc_enumerationMutation(connectedClients2);
                 }
 
-                v168 = [*(*(&v210 + 1) + 8 * v166) connectedClientIdentifierString];
-                v165 = [(__CFString *)v167 stringByAppendingFormat:@" %@", v168];
+                connectedClientIdentifierString = [*(*(&v210 + 1) + 8 * v166) connectedClientIdentifierString];
+                v168 = [(__CFString *)v167 stringByAppendingFormat:@" %@", connectedClientIdentifierString];
 
                 ++v166;
-                v167 = v165;
+                v167 = v168;
               }
 
               while (v163 != v166);
-              v163 = [v161 countByEnumeratingWithState:&v210 objects:v230 count:16];
+              v163 = [connectedClients2 countByEnumeratingWithState:&v210 objects:v230 count:16];
             }
 
             while (v163);
@@ -952,106 +952,106 @@
 
           else
           {
-            v165 = &stru_283CF9D50;
+            v168 = &stru_283CF9D50;
           }
 
-          [v209 setObject:v165 forKeyedSubscript:@"evtrouter.server.connectedClients"];
-          v144 = v9;
+          [v209 setObject:v168 forKeyedSubscript:@"evtrouter.server.connectedClients"];
+          v144 = appleMediaAccessoryDiagnosticInfo;
         }
       }
 
       v4 = v203;
-      v3 = v204;
+      dataCopy = v204;
     }
 
     if ([v4 hasLastSetupInfo])
     {
-      v170 = [v4 lastSetupInfo];
-      v171 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v170, "version")}];
+      lastSetupInfo = [v4 lastSetupInfo];
+      v171 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(lastSetupInfo, "version")}];
       [v209 setObject:v171 forKeyedSubscript:@"lastSetup.version"];
 
-      v172 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "sessionSetupOpenMSHH1")}];
+      v172 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "sessionSetupOpenMSHH1")}];
       [v209 setObject:v172 forKeyedSubscript:@"lastSetup.sessionSetupOpenMSHH1"];
 
-      v173 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "controllerKeyExchangeMSHH1")}];
+      v173 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "controllerKeyExchangeMSHH1")}];
       [v209 setObject:v173 forKeyedSubscript:@"lastSetup.controllerKeyExchangeMSHH1"];
 
-      v174 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "newAccessoryTransferMSHH1")}];
+      v174 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "newAccessoryTransferMSHH1")}];
       [v209 setObject:v174 forKeyedSubscript:@"lastSetup.newAccessoryTransferMSHH1"];
 
-      v175 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "sessionSetupCloseMSHH1")}];
+      v175 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "sessionSetupCloseMSHH1")}];
       [v209 setObject:v175 forKeyedSubscript:@"lastSetup.sessionSetupCloseMSHH1"];
 
-      v176 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "totalDurationMSHH1")}];
+      v176 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "totalDurationMSHH1")}];
       [v209 setObject:v176 forKeyedSubscript:@"lastSetup.totalDurationMSHH1"];
 
-      v177 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "sentinelZoneFetchMSHH1")}];
+      v177 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "sentinelZoneFetchMSHH1")}];
       [v209 setObject:v177 forKeyedSubscript:@"lastSetup.sentinelZoneFetchMSHH1"];
 
-      v178 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "accountSettleWaitMSHH2")}];
+      v178 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "accountSettleWaitMSHH2")}];
       [v209 setObject:v178 forKeyedSubscript:@"lastSetup.accountSettleWaitMSHH2"];
 
-      v179 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "currentDeviceIDSWaitMSHH2")}];
+      v179 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "currentDeviceIDSWaitMSHH2")}];
       [v209 setObject:v179 forKeyedSubscript:@"lastSetup.currentDeviceIDSWaitMSHH2"];
 
-      v180 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "homeManagerReadyMSHH2")}];
+      v180 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "homeManagerReadyMSHH2")}];
       [v209 setObject:v180 forKeyedSubscript:@"lastSetup.homeManagerReadyMSHH2"];
 
-      v181 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "firstCoreDataImportMSHH2")}];
+      v181 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "firstCoreDataImportMSHH2")}];
       [v209 setObject:v181 forKeyedSubscript:@"lastSetup.firstCoreDataImportMSHH2"];
 
-      v182 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "accessoryAddMSHH2")}];
+      v182 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "accessoryAddMSHH2")}];
       [v209 setObject:v182 forKeyedSubscript:@"lastSetup.accessoryAddMSHH2"];
 
-      v183 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "settingsCreationMSHH2")}];
+      v183 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "settingsCreationMSHH2")}];
       [v209 setObject:v183 forKeyedSubscript:@"lastSetup.settingsCreationMSHH2"];
 
-      v184 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "pairingIdentityCreationMSHH2")}];
+      v184 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "pairingIdentityCreationMSHH2")}];
       [v209 setObject:v184 forKeyedSubscript:@"lastSetup.pairingIdentityCreationMSHH2"];
 
-      v185 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "siriReadyMSHH2")}];
+      v185 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "siriReadyMSHH2")}];
       [v209 setObject:v185 forKeyedSubscript:@"lastSetup.siriReadyMSHH2"];
 
-      v186 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "eventRouterServerConnectionMSHH2")}];
+      v186 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "eventRouterServerConnectionMSHH2")}];
       [v209 setObject:v186 forKeyedSubscript:@"lastSetup.eventRouterServerConnectionMSHH2"];
 
-      v187 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "primaryResidentElectionMSHH2")}];
+      v187 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "primaryResidentElectionMSHH2")}];
       [v209 setObject:v187 forKeyedSubscript:@"lastSetup.primaryResidentElectionMSHH2"];
 
-      v188 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "eventRouterFirstEventPushMSHH2")}];
+      v188 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "eventRouterFirstEventPushMSHH2")}];
       [v209 setObject:v188 forKeyedSubscript:@"lastSetup.eventRouterFirstEventPushMSHH2"];
 
-      v189 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "totalDurationMSHH2")}];
+      v189 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "totalDurationMSHH2")}];
       [v209 setObject:v189 forKeyedSubscript:@"lastSetup.totalDurationMSHH2"];
 
-      v190 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v170, "iCloudAvailableINT")}];
+      v190 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(lastSetupInfo, "iCloudAvailableINT")}];
       [v209 setObject:v190 forKeyedSubscript:@"lastSetup.iCloudAvailableINT"];
 
-      v191 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v170, "iDSAvailableINT")}];
+      v191 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(lastSetupInfo, "iDSAvailableINT")}];
       [v209 setObject:v191 forKeyedSubscript:@"lastSetup.iDSAvailableINT"];
 
-      v192 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v170, "manateeAvailableINT")}];
+      v192 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(lastSetupInfo, "manateeAvailableINT")}];
       [v209 setObject:v192 forKeyedSubscript:@"lastSetup.manateeAvailableINT"];
 
-      v193 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v170, "networkAvailableINT")}];
+      v193 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(lastSetupInfo, "networkAvailableINT")}];
       [v209 setObject:v193 forKeyedSubscript:@"lastSetup.networkAvailableINT"];
 
-      v194 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "lastKnownStageErrorCode")}];
+      v194 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "lastKnownStageErrorCode")}];
       [v209 setObject:v194 forKeyedSubscript:@"lastSetup.lastKnownStageErrorCode"];
 
-      v195 = [v170 lastKnownStageErrorDomain];
-      [v209 setObject:v195 forKeyedSubscript:@"lastSetup.lastKnownStageErrorDomain"];
+      lastKnownStageErrorDomain = [lastSetupInfo lastKnownStageErrorDomain];
+      [v209 setObject:lastKnownStageErrorDomain forKeyedSubscript:@"lastSetup.lastKnownStageErrorDomain"];
 
-      v196 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v170, "lastKnownStageUnderlyingErrorCode")}];
+      v196 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(lastSetupInfo, "lastKnownStageUnderlyingErrorCode")}];
       [v209 setObject:v196 forKeyedSubscript:@"lastSetup.lastKnownStageUnderlyingErrorCode"];
 
-      v197 = [v170 lastKnownStageUnderlyingErrorDomain];
-      [v209 setObject:v197 forKeyedSubscript:@"lastSetup.lastKnownStageUnderlyingErrorDomain"];
+      lastKnownStageUnderlyingErrorDomain = [lastSetupInfo lastKnownStageUnderlyingErrorDomain];
+      [v209 setObject:lastKnownStageUnderlyingErrorDomain forKeyedSubscript:@"lastSetup.lastKnownStageUnderlyingErrorDomain"];
 
-      v198 = [v170 lastKnownStageErrorString];
-      [v209 setObject:v198 forKeyedSubscript:@"lastSetup.lastKnownStageErrorString"];
+      lastKnownStageErrorString = [lastSetupInfo lastKnownStageErrorString];
+      [v209 setObject:lastKnownStageErrorString forKeyedSubscript:@"lastSetup.lastKnownStageErrorString"];
 
-      v199 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v170, "savedEventState")}];
+      v199 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(lastSetupInfo, "savedEventState")}];
       [v209 setObject:v199 forKeyedSubscript:@"lastSetup.savedEventState"];
     }
 

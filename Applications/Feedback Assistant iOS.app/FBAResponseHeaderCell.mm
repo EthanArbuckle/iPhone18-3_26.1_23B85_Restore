@@ -1,58 +1,58 @@
 @interface FBAResponseHeaderCell
 - (NSLayoutConstraint)leadingConstraint;
 - (NSLayoutConstraint)topConstraint;
-- (_TtC18Feedback_Assistant21FBAResponseHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18Feedback_Assistant21FBAResponseHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (int64_t)selectionStyle;
 - (void)awakeFromNib;
-- (void)configureAssigneeForContentItem:(id)a3;
-- (void)configureForAppleFeedbackWithFollowup:(id)a3;
-- (void)configureForContentItem:(id)a3;
-- (void)configureForFollowup:(id)a3;
+- (void)configureAssigneeForContentItem:(id)item;
+- (void)configureForAppleFeedbackWithFollowup:(id)followup;
+- (void)configureForContentItem:(id)item;
+- (void)configureForFollowup:(id)followup;
 - (void)prepareForReuse;
-- (void)setContactImageView:(id)a3;
-- (void)setDateLabel:(id)a3;
-- (void)setNameLabel:(id)a3;
-- (void)setRoleLabel:(id)a3;
-- (void)setRoleView:(id)a3;
-- (void)setSelectionStyle:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContactImageView:(id)view;
+- (void)setDateLabel:(id)label;
+- (void)setNameLabel:(id)label;
+- (void)setRoleLabel:(id)label;
+- (void)setRoleView:(id)view;
+- (void)setSelectionStyle:(int64_t)style;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FBAResponseHeaderCell
 
-- (void)setNameLabel:(id)a3
+- (void)setNameLabel:(id)label
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_nameLabel);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_nameLabel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_nameLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setDateLabel:(id)a3
+- (void)setDateLabel:(id)label
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_dateLabel);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_dateLabel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_dateLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setContactImageView:(id)a3
+- (void)setContactImageView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_contactImageView);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_contactImageView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_contactImageView) = view;
+  viewCopy = view;
 }
 
-- (void)setRoleView:(id)a3
+- (void)setRoleView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_roleView);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_roleView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_roleView) = view;
+  viewCopy = view;
 }
 
-- (void)setRoleLabel:(id)a3
+- (void)setRoleLabel:(id)label
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_roleLabel);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_roleLabel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAResponseHeaderCell_roleLabel) = label;
+  labelCopy = label;
 }
 
 - (NSLayoutConstraint)leadingConstraint
@@ -69,14 +69,14 @@
   return Strong;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v7 = self;
-  v4 = a3;
-  v5 = [(FBAResponseHeaderCell *)v7 traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  selfCopy = self;
+  changeCopy = change;
+  traitCollection = [(FBAResponseHeaderCell *)selfCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (!v4 || v6 != [v4 userInterfaceStyle])
+  if (!changeCopy || userInterfaceStyle != [changeCopy userInterfaceStyle])
   {
     sub_10008A49C();
   }
@@ -84,36 +84,36 @@
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008A5CC();
 }
 
-- (void)configureForContentItem:(id)a3
+- (void)configureForContentItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_10008AA2C(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_10008AA2C(itemCopy);
 }
 
-- (void)configureForFollowup:(id)a3
+- (void)configureForFollowup:(id)followup
 {
-  v4 = a3;
-  v5 = self;
-  sub_10008AC64(v4);
+  followupCopy = followup;
+  selfCopy = self;
+  sub_10008AC64(followupCopy);
 }
 
-- (void)configureAssigneeForContentItem:(id)a3
+- (void)configureAssigneeForContentItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_10008B3B0(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_10008B3B0(itemCopy);
 }
 
-- (void)configureForAppleFeedbackWithFollowup:(id)a3
+- (void)configureForAppleFeedbackWithFollowup:(id)followup
 {
-  v4 = a3;
-  v5 = self;
-  sub_10008B6E4(v4);
+  followupCopy = followup;
+  selfCopy = self;
+  sub_10008B6E4(followupCopy);
 }
 
 - (void)prepareForReuse
@@ -135,12 +135,12 @@
   return [(FBAResponseHeaderCell *)&v3 selectionStyle];
 }
 
-- (void)setSelectionStyle:(int64_t)a3
+- (void)setSelectionStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for FBAResponseHeaderCell();
   v4 = v6.receiver;
-  [(FBAResponseHeaderCell *)&v6 setSelectionStyle:a3];
+  [(FBAResponseHeaderCell *)&v6 setSelectionStyle:style];
   if ([v4 selectionStyle])
   {
     v5 = UIAccessibilityTraitButton;
@@ -154,11 +154,11 @@
   [v4 setAccessibilityTraits:v5];
 }
 
-- (_TtC18Feedback_Assistant21FBAResponseHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant21FBAResponseHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -167,7 +167,7 @@
     v6 = 0;
   }
 
-  return sub_10008BC58(a3, a4, v6);
+  return sub_10008BC58(style, identifier, v6);
 }
 
 @end

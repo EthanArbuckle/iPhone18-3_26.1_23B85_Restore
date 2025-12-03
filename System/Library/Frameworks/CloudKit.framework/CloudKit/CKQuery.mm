@@ -1,5 +1,5 @@
 @interface CKQuery
-+ (id)copySortDescriptor:(id)a3;
++ (id)copySortDescriptor:(id)descriptor;
 + (void)initialize;
 - (CKQuery)init;
 - (CKQuery)initWithCoder:(NSCoder *)aDecoder;
@@ -8,11 +8,11 @@
 - (NSArray)sortDescriptors;
 - (id)CKPropertiesDescription;
 - (id)_sortDescriptorsWithoutCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)_setPredicate:(id)a3;
-- (void)_setRecordType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setPredicate:(id)predicate;
+- (void)_setRecordType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 - (void)setSortDescriptors:(NSArray *)sortDescriptors;
 @end
 
@@ -28,26 +28,26 @@
 
 - (id)_sortDescriptorsWithoutCopy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sortDescriptors;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sortDescriptors;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)sortDescriptors
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  sortDescriptors = v2->_sortDescriptors;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sortDescriptors = selfCopy->_sortDescriptors;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_18857D640;
   v7[3] = &unk_1E70BDE38;
-  v7[4] = v2;
+  v7[4] = selfCopy;
   v5 = objc_msgSend_CKDeepCopyWithLeafNodeCopyBlock_(sortDescriptors, v4, v7);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -103,15 +103,15 @@
   return v12;
 }
 
-+ (id)copySortDescriptor:(id)a3
++ (id)copySortDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v6 = objc_msgSend_copy(v3, v4, v5);
-  if (v6 == v3)
+  descriptorCopy = descriptor;
+  v6 = objc_msgSend_copy(descriptorCopy, v4, v5);
+  if (v6 == descriptorCopy)
   {
     v7 = objc_alloc(MEMORY[0x1E696AEB0]);
-    v10 = objc_msgSend_key(v3, v8, v9);
-    v13 = objc_msgSend_ascending(v3, v11, v12);
+    v10 = objc_msgSend_key(descriptorCopy, v8, v9);
+    v13 = objc_msgSend_ascending(descriptorCopy, v11, v12);
     v15 = objc_msgSend_initWithKey_ascending_(v7, v14, v10, v13);
 
     v6 = v15;
@@ -135,7 +135,7 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKQuery alloc];
   v7 = objc_msgSend_recordType(self, v5, v6);
@@ -149,17 +149,17 @@
   return v12;
 }
 
-- (void)_setRecordType:(id)a3
+- (void)_setRecordType:(id)type
 {
-  v13 = a3;
-  if (!objc_msgSend_length(v13, v4, v5))
+  typeCopy = type;
+  if (!objc_msgSend_length(typeCopy, v4, v5))
   {
     v10 = [CKException alloc];
     v12 = objc_msgSend_initWithName_format_(v10, v11, *MEMORY[0x1E695D940], @"Query must have a valid recordType");
     objc_exception_throw(v12);
   }
 
-  v8 = objc_msgSend_copy(v13, v6, v7);
+  v8 = objc_msgSend_copy(typeCopy, v6, v7);
   recordType = self->_recordType;
   self->_recordType = v8;
 }
@@ -229,24 +229,24 @@
     while (v7);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = sub_18857D5EC;
   v30[3] = &unk_1E70BDE38;
-  v30[4] = v12;
+  v30[4] = selfCopy;
   v14 = objc_msgSend_CKDeepCopyWithLeafNodeCopyBlock_(v5, v13, v30);
-  v15 = v12->_sortDescriptors;
-  v12->_sortDescriptors = v14;
+  v15 = selfCopy->_sortDescriptors;
+  selfCopy->_sortDescriptors = v14;
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setPredicate:(id)a3
+- (void)_setPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_autoreleasePoolPush();
   if (CKCurrentProcessLinkChecke0fc00bd437646efa0e6635c2beaaea9())
   {
@@ -255,14 +255,14 @@
 
   predicate = objc_msgSend_sharedValidator(CKPredicateValidator, v6, v7);
   v17 = 0;
-  v10 = objc_msgSend_validate_error_(predicate, v9, v4, &v17);
+  v10 = objc_msgSend_validate_error_(predicate, v9, predicateCopy, &v17);
   v11 = v17;
   v12 = v11;
   if (v10)
   {
 
 LABEL_4:
-    v13 = objc_msgSend_CKDeepCopy(v4, v6, v7);
+    v13 = objc_msgSend_CKDeepCopy(predicateCopy, v6, v7);
     predicate = self->_predicate;
     self->_predicate = v13;
     goto LABEL_7;
@@ -271,7 +271,7 @@ LABEL_4:
   if (CKShouldUseNewPredicateValidation())
   {
     v14 = [CKException alloc];
-    v16 = objc_msgSend_initWithCode_format_(v14, v15, 12, @"Invalid predicate: %@ (%@)", v4, v12);
+    v16 = objc_msgSend_initWithCode_format_(v14, v15, 12, @"Invalid predicate: %@ (%@)", predicateCopy, v12);
     objc_exception_throw(v16);
   }
 
@@ -310,18 +310,18 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend__sortDescriptorsWithoutCopy(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v17, v8, v7, @"sortDescriptorsData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"sortDescriptorsData");
 
   v11 = objc_msgSend__predicateWithoutCopy(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v17, v12, v11, @"predicateData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"predicateData");
 
   v15 = objc_msgSend_recordType(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v17, v16, v15, @"recordType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"recordType");
 
   objc_autoreleasePoolPop(v4);
 }

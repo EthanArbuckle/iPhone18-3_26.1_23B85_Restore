@@ -1,21 +1,21 @@
 @interface MTLIOAccelBuffer
-- (MTLIOAccelBuffer)initWithDevice:(id)a3 pointer:(void *)a4 length:(unint64_t)a5 options:(unint64_t)a6 sysMemSize:(unint64_t)a7 vidMemSize:(unint64_t)a8 gpuAddress:(unint64_t)a9 args:(IOAccelNewResourceArgs *)a10 argsSize:(unsigned int)a11 deallocator:(id)aBlock;
-- (MTLIOAccelBuffer)initWithHeap:(id)a3 resource:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6;
-- (MTLIOAccelBuffer)initWithMasterBuffer:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7 args:(IOAccelNewResourceArgs *)a8 argsSize:(unsigned int)a9;
+- (MTLIOAccelBuffer)initWithDevice:(id)device pointer:(void *)pointer length:(unint64_t)length options:(unint64_t)options sysMemSize:(unint64_t)size vidMemSize:(unint64_t)memSize gpuAddress:(unint64_t)address args:(IOAccelNewResourceArgs *)self0 argsSize:(unsigned int)self1 deallocator:(id)aBlock;
+- (MTLIOAccelBuffer)initWithHeap:(id)heap resource:(id)resource offset:(unint64_t)offset length:(unint64_t)length;
+- (MTLIOAccelBuffer)initWithMasterBuffer:(id)buffer heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length args:(IOAccelNewResourceArgs *)args argsSize:(unsigned int)size;
 - (__CFArray)copyAnnotations;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6;
+- (id)formattedDescription:(unint64_t)description;
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
 - (unint64_t)allocatedSize;
 - (void)dealloc;
 @end
 
 @implementation MTLIOAccelBuffer
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v13[21] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v5 = [(MTLIOAccelResource *)self retainedLabel];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  retainedLabel = [(MTLIOAccelResource *)self retainedLabel];
   v6 = MEMORY[0x1E696AEC0];
   v12.receiver = self;
   v12.super_class = MTLIOAccelBuffer;
@@ -23,9 +23,9 @@
   v13[0] = v4;
   v13[1] = @"label =";
   v8 = @"<none>";
-  if (v5)
+  if (retainedLabel)
   {
-    v8 = v5;
+    v8 = retainedLabel;
   }
 
   v13[2] = v8;
@@ -67,27 +67,27 @@
   return [(MTLIOAccelResource *)&v5 allocatedSize];
 }
 
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
   StatusReg = _ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3));
   *(StatusReg + 288) = 7085;
-  result = [(MTLIOAccelBuffer *)self newTextureWithDescriptor:a3 offset:a4 bytesPerRow:a5, a6];
+  result = [(MTLIOAccelBuffer *)self newTextureWithDescriptor:descriptor offset:offset bytesPerRow:row, image];
   *(StatusReg + 288) = 0;
   return result;
 }
 
-- (MTLIOAccelBuffer)initWithDevice:(id)a3 pointer:(void *)a4 length:(unint64_t)a5 options:(unint64_t)a6 sysMemSize:(unint64_t)a7 vidMemSize:(unint64_t)a8 gpuAddress:(unint64_t)a9 args:(IOAccelNewResourceArgs *)a10 argsSize:(unsigned int)a11 deallocator:(id)aBlock
+- (MTLIOAccelBuffer)initWithDevice:(id)device pointer:(void *)pointer length:(unint64_t)length options:(unint64_t)options sysMemSize:(unint64_t)size vidMemSize:(unint64_t)memSize gpuAddress:(unint64_t)address args:(IOAccelNewResourceArgs *)self0 argsSize:(unsigned int)self1 deallocator:(id)aBlock
 {
-  *(&a10->var0.var16.var3 + 4) = 0;
-  *&a10->var0.var16.var0.var0 = 0u;
-  *&a10->var0.var16.var3.var2[1] = 0u;
-  *&a10->var0.var8 = 0u;
-  *&a10->var0.var14 = 0u;
-  *&a10->var0.var0 = 0u;
-  *&a10->var0.var6 = 0u;
-  if (a4)
+  *(&args->var0.var16.var3 + 4) = 0;
+  *&args->var0.var16.var0.var0 = 0u;
+  *&args->var0.var16.var3.var2[1] = 0u;
+  *&args->var0.var8 = 0u;
+  *&args->var0.var14 = 0u;
+  *&args->var0.var0 = 0u;
+  *&args->var0.var6 = 0u;
+  if (pointer)
   {
-    if ((a6 & 0xF0) == 0x20)
+    if ((options & 0xF0) == 0x20)
     {
       v27 = @"storageModePrivate incompatible with ...WithBytes variant of newBuffer";
       v28 = 121;
@@ -95,7 +95,7 @@
 
     else
     {
-      if ((a6 & 0xF0) != 0x30)
+      if ((options & 0xF0) != 0x30)
       {
         goto LABEL_4;
       }
@@ -104,40 +104,40 @@
       v28 = 123;
     }
 
-    MTLReportFailure(0, "[MTLIOAccelBuffer initWithDevice:pointer:length:options:sysMemSize:vidMemSize:gpuAddress:args:argsSize:deallocator:]", v28, v27, a5, a6, a7, a8, v29);
+    MTLReportFailure(0, "[MTLIOAccelBuffer initWithDevice:pointer:length:options:sysMemSize:vidMemSize:gpuAddress:args:argsSize:deallocator:]", v28, v27, length, options, size, memSize, v29);
   }
 
 LABEL_4:
-  if (a7 >= a5)
+  if (size >= length)
   {
-    v20 = a6 & 0xF;
+    v20 = options & 0xF;
     if (v20 >= 2)
     {
-      [MTLIOAccelBuffer initWithDevice:a2 pointer:a3 length:a4 options:a5 sysMemSize:a6 vidMemSize:a7 gpuAddress:a8 args:? argsSize:? deallocator:?];
+      [MTLIOAccelBuffer initWithDevice:a2 pointer:device length:pointer options:length sysMemSize:options vidMemSize:size gpuAddress:memSize args:? argsSize:? deallocator:?];
     }
 
-    if (a4)
+    if (pointer)
     {
       v20 = 0;
     }
 
-    if (((a6 >> 4) | 2) != 2)
+    if (((options >> 4) | 2) != 2)
     {
-      MTLReportFailure(0, "[MTLIOAccelBuffer initWithDevice:pointer:length:options:sysMemSize:vidMemSize:gpuAddress:args:argsSize:deallocator:]", 157, @"Invalid storageMode %u", a5, a6, a7, a8, a6 >> 4);
+      MTLReportFailure(0, "[MTLIOAccelBuffer initWithDevice:pointer:length:options:sysMemSize:vidMemSize:gpuAddress:args:argsSize:deallocator:]", 157, @"Invalid storageMode %u", length, options, size, memSize, options >> 4);
     }
 
-    if (a6 >> 4)
+    if (options >> 4)
     {
-      v21 = a8;
+      memSizeCopy = memSize;
     }
 
     else
     {
-      v21 = 0;
+      memSizeCopy = 0;
     }
 
-    v22 = (v21 != 0) << 6;
-    if (v21)
+    v22 = (memSizeCopy != 0) << 6;
+    if (memSizeCopy)
     {
       v23 = 192;
     }
@@ -147,58 +147,58 @@ LABEL_4:
       v23 = 128;
     }
 
-    if (a4)
+    if (pointer)
     {
       v22 = v23;
     }
 
-    a10->var0.var0 = v22;
-    a10->var0.var1 = (v20 == 1) << 10;
-    *&a10->var0.var2 = 65537;
-    a10->var0.var4 = 1;
-    a10->var0.var6 = v21;
-    a10->var0.var7 = a7;
-    *&a10->var0.var8 = 16777473;
-    if (a9)
+    args->var0.var0 = v22;
+    args->var0.var1 = (v20 == 1) << 10;
+    *&args->var0.var2 = 65537;
+    args->var0.var4 = 1;
+    args->var0.var6 = memSizeCopy;
+    args->var0.var7 = size;
+    *&args->var0.var8 = 16777473;
+    if (address)
     {
-      if (v21)
+      if (memSizeCopy)
       {
-        v24 = v21;
+        sizeCopy = memSizeCopy;
       }
 
       else
       {
-        v24 = a7;
+        sizeCopy = size;
       }
 
-      a10->var0.var14 = a9;
-      a10->var0.var15 = v24;
+      args->var0.var14 = address;
+      args->var0.var15 = sizeCopy;
     }
 
-    a10->var0.var16.var0.var0 = a4;
-    a10->var0.var16.var0.var1 = a4;
-    a10->var0.var16.var0.var2 = v21;
-    a10->var0.var16.var0.var3 = a7;
-    if ((a6 & 0x10000) == 0)
+    args->var0.var16.var0.var0 = pointer;
+    args->var0.var16.var0.var1 = pointer;
+    args->var0.var16.var0.var2 = memSizeCopy;
+    args->var0.var16.var0.var3 = size;
+    if ((options & 0x10000) == 0)
     {
-      a10->var0.var12 = 64;
+      args->var0.var12 = 64;
     }
 
-    v19 = [(MTLIOAccelResource *)self initWithDevice:a3 options:a6 args:a10 argsSize:a11];
+    v19 = [(MTLIOAccelResource *)self initWithDevice:device options:options args:args argsSize:argsSize];
     if (v19)
     {
-      v19->_length = a5;
+      v19->_length = length;
       if (aBlock)
       {
-        v19->_pointer = a4;
+        v19->_pointer = pointer;
         v19->_deallocator = _Block_copy(aBlock);
       }
 
       if (**MEMORY[0x1E69A8488])
       {
-        [a3 deviceRef];
+        [device deviceRef];
         v25 = *&v19->super._anon_50[48];
-        [a3 registryID];
+        [device registryID];
         IOAccelDeviceTraceEvent();
       }
     }
@@ -213,25 +213,25 @@ LABEL_4:
   return v19;
 }
 
-- (MTLIOAccelBuffer)initWithHeap:(id)a3 resource:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6
+- (MTLIOAccelBuffer)initWithHeap:(id)heap resource:(id)resource offset:(unint64_t)offset length:(unint64_t)length
 {
-  v10 = [(MTLIOAccelResource *)self initWithResource:a4];
+  v10 = [(MTLIOAccelResource *)self initWithResource:resource];
   v11 = v10;
   if (v10)
   {
-    v10->_length = a6;
-    *&v10->super._anon_50[160] = a3;
-    *&v11->super._anon_50[168] = a4;
-    *&v11->super._anon_50[176] = a5;
-    *&v11->super._anon_50[184] = a6;
+    v10->_length = length;
+    *&v10->super._anon_50[160] = heap;
+    *&v11->super._anon_50[168] = resource;
+    *&v11->super._anon_50[176] = offset;
+    *&v11->super._anon_50[184] = length;
     v11->super._anon_50[192] = 1;
-    if ([a3 type] == 1)
+    if ([heap type] == 1)
     {
       v11->super._anon_50[192] = 0;
     }
 
-    *&v11->super._anon_50[88] += a5;
-    *&v11->super._anon_50[24] += a5;
+    *&v11->super._anon_50[88] += offset;
+    *&v11->super._anon_50[24] += offset;
     if (**MEMORY[0x1E69A8488])
     {
       [*&v11->super._anon_50[32] deviceRef];
@@ -246,48 +246,48 @@ LABEL_4:
   return v11;
 }
 
-- (MTLIOAccelBuffer)initWithMasterBuffer:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7 args:(IOAccelNewResourceArgs *)a8 argsSize:(unsigned int)a9
+- (MTLIOAccelBuffer)initWithMasterBuffer:(id)buffer heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length args:(IOAccelNewResourceArgs *)args argsSize:(unsigned int)size
 {
-  self->_masterBuffer = a3;
-  self->_masterHeapIndex = a4;
-  self->_masterBufferIndex = a5;
-  self->_masterBufferOffset = a6;
-  self->_length = a7;
-  *&a8->var0.var0 = 0u;
-  *&a8->var0.var6 = 0u;
-  *(&a8->var0.var16.var3 + 4) = 0;
-  *&a8->var0.var16.var0.var0 = 0u;
-  *&a8->var0.var16.var3.var2[1] = 0u;
-  *&a8->var0.var8 = 0u;
-  *&a8->var0.var14 = 0u;
-  v9 = a3 + 32;
-  v10 = *(*(a3 + 19) + 260);
-  a8->var0.var0 = v10 | 0x80;
-  *&a8->var0.var2 = 65537;
-  a8->var0.var4 = 1;
+  self->_masterBuffer = buffer;
+  self->_masterHeapIndex = index;
+  self->_masterBufferIndex = bufferIndex;
+  self->_masterBufferOffset = offset;
+  self->_length = length;
+  *&args->var0.var0 = 0u;
+  *&args->var0.var6 = 0u;
+  *(&args->var0.var16.var3 + 4) = 0;
+  *&args->var0.var16.var0.var0 = 0u;
+  *&args->var0.var16.var3.var2[1] = 0u;
+  *&args->var0.var8 = 0u;
+  *&args->var0.var14 = 0u;
+  v9 = buffer + 32;
+  v10 = *(*(buffer + 19) + 260);
+  args->var0.var0 = v10 | 0x80;
+  *&args->var0.var2 = 65537;
+  args->var0.var4 = 1;
   if ((v10 & 0x40) != 0)
   {
     v12 = 0;
-    v11 = *(a3 + 9) & 0xFFFFFFFFFFFFFFLL;
-    a8->var0.var6 = v11;
+    v11 = *(buffer + 9) & 0xFFFFFFFFFFFFFFLL;
+    args->var0.var6 = v11;
   }
 
   else
   {
     v11 = 0;
-    a8->var0.var6 = 0;
-    v12 = *(a3 + 43);
+    args->var0.var6 = 0;
+    v12 = *(buffer + 43);
   }
 
-  a8->var0.var7 = v12;
-  *&a8->var0.var8 = 16777473;
-  a8->var0.var16.var0.var0 = *(a3 + 21) + a6;
-  a8->var0.var16.var0.var1 = *(a3 + 21);
-  a8->var0.var16.var0.var2 = v11;
-  a8->var0.var16.var0.var3 = v12;
-  a8->var0.var16.var0.var4 = *(*(a3 + 19) + 256);
-  a8->var0.var12 = 2048;
-  v13 = -[MTLIOAccelResource initWithDevice:options:args:argsSize:](self, "initWithDevice:options:args:argsSize:", [a3 device], *(a3 + 22), a8, a9);
+  args->var0.var7 = v12;
+  *&args->var0.var8 = 16777473;
+  args->var0.var16.var0.var0 = *(buffer + 21) + offset;
+  args->var0.var16.var0.var1 = *(buffer + 21);
+  args->var0.var16.var0.var2 = v11;
+  args->var0.var16.var0.var3 = v12;
+  args->var0.var16.var0.var4 = *(*(buffer + 19) + 256);
+  args->var0.var12 = 2048;
+  v13 = -[MTLIOAccelResource initWithDevice:options:args:argsSize:](self, "initWithDevice:options:args:argsSize:", [buffer device], *(buffer + 22), args, size);
   v14 = v13;
   if (v13)
   {
@@ -352,11 +352,11 @@ LABEL_4:
   CFStringAppendFormat(v4, 0, @"%s", "MTLIOAccelBuffer");
   v5 = MTLResourceOptionsString(*&self->super._anon_50[96]);
   CFStringAppendFormat(v4, 0, @", %@", v5);
-  v6 = [(MTLIOAccelResource *)self retainedLabel];
-  if (v6)
+  retainedLabel = [(MTLIOAccelResource *)self retainedLabel];
+  if (retainedLabel)
   {
-    v7 = v6;
-    CFStringAppendFormat(v4, 0, @", %s", [v6 UTF8String]);
+    v7 = retainedLabel;
+    CFStringAppendFormat(v4, 0, @", %s", [retainedLabel UTF8String]);
   }
 
   CFDictionaryAddValue(Mutable, @"Description", v4);

@@ -1,32 +1,32 @@
 @interface WBSPasswordBreachQueuedPasswordBagManager
 - (NSDictionary)allNonbreachedPasswords;
-- (WBSPasswordBreachQueuedPasswordBagManager)initWithContext:(id)a3 results:(id)a4 passwordSource:(id)a5;
-- (id)_constructBagOnInternalQueueWithCredentials:(id)a3 ensureFakePasswordGeneration:(BOOL)a4;
+- (WBSPasswordBreachQueuedPasswordBagManager)initWithContext:(id)context results:(id)results passwordSource:(id)source;
+- (id)_constructBagOnInternalQueueWithCredentials:(id)credentials ensureFakePasswordGeneration:(BOOL)generation;
 - (id)_dictionaryRepresentation;
-- (id)_passwordBagFromDictionaryRepresentation:(id)a3;
+- (id)_passwordBagFromDictionaryRepresentation:(id)representation;
 - (id)_unbreachedCredentials;
 - (int64_t)fillState;
-- (void)getPasswordsForNextBatchWithCompletionHandler:(id)a3;
-- (void)reportPasswordCheckBatchResults:(id)a3;
+- (void)getPasswordsForNextBatchWithCompletionHandler:(id)handler;
+- (void)reportPasswordCheckBatchResults:(id)results;
 - (void)saveBagToStore;
 @end
 
 @implementation WBSPasswordBreachQueuedPasswordBagManager
 
-- (WBSPasswordBreachQueuedPasswordBagManager)initWithContext:(id)a3 results:(id)a4 passwordSource:(id)a5
+- (WBSPasswordBreachQueuedPasswordBagManager)initWithContext:(id)context results:(id)results passwordSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  resultsCopy = results;
+  sourceCopy = source;
   v22.receiver = self;
   v22.super_class = WBSPasswordBreachQueuedPasswordBagManager;
   v12 = [(WBSPasswordBreachQueuedPasswordBagManager *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_results, a4);
-    objc_storeStrong(&v13->_credentialSource, a5);
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_results, results);
+    objc_storeStrong(&v13->_credentialSource, source);
     v14 = dispatch_queue_create("com.apple.Safari.WBSPasswordBreachQueuedPasswordBagManager", 0);
     internalQueue = v13->_internalQueue;
     v13->_internalQueue = v14;
@@ -85,9 +85,9 @@ void __84__WBSPasswordBreachQueuedPasswordBagManager_initWithContext_results_pas
   }
 }
 
-- (id)_passwordBagFromDictionaryRepresentation:(id)a3
+- (id)_passwordBagFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -95,23 +95,23 @@ void __84__WBSPasswordBreachQueuedPasswordBagManager_initWithContext_results_pas
     _os_log_impl(&dword_1B8447000, v5, OS_LOG_TYPE_INFO, "Trying to restore password bag from persisted state.", buf, 2u);
   }
 
-  v6 = [v4 safari_numberForKey:@"FillState"];
+  v6 = [representationCopy safari_numberForKey:@"FillState"];
   v7 = v6;
   if (v6)
   {
     self->_fillState = [v6 integerValue];
-    v8 = [v4 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"PersistentIdentifiers"];
+    v8 = [representationCopy safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"PersistentIdentifiers"];
     if ([v8 count])
     {
       v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v8];
-      v10 = [(WBSPasswordBreachQueuedPasswordBagManager *)self _unbreachedCredentials];
+      _unbreachedCredentials = [(WBSPasswordBreachQueuedPasswordBagManager *)self _unbreachedCredentials];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __86__WBSPasswordBreachQueuedPasswordBagManager__passwordBagFromDictionaryRepresentation___block_invoke;
       v17[3] = &unk_1E7CF3210;
       v18 = v9;
       v11 = v9;
-      v12 = [v10 safari_filterObjectsUsingBlock:v17];
+      v12 = [_unbreachedCredentials safari_filterObjectsUsingBlock:v17];
       v13 = [(WBSPasswordBreachQueuedPasswordBagManager *)self _constructBagOnInternalQueueWithCredentials:v12 ensureFakePasswordGeneration:0];
     }
 
@@ -153,8 +153,8 @@ uint64_t __86__WBSPasswordBreachQueuedPasswordBagManager__passwordBagFromDiction
 - (id)_unbreachedCredentials
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSPasswordBreachCredentialSource *)self->_credentialSource credentials];
-  v4 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_40];
+  credentials = [(WBSPasswordBreachCredentialSource *)self->_credentialSource credentials];
+  v4 = [credentials safari_mapObjectsUsingBlock:&__block_literal_global_40];
   v5 = [(WBSPasswordBreachResults *)self->_results resultRecordsForQueries:v4];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v20 = 0u;
@@ -177,8 +177,8 @@ uint64_t __86__WBSPasswordBreachQueuedPasswordBagManager__passwordBagFromDiction
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 persistentIdentifier];
-        [v6 setObject:v12 forKeyedSubscript:v13];
+        persistentIdentifier = [v12 persistentIdentifier];
+        [v6 setObject:v12 forKeyedSubscript:persistentIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -193,7 +193,7 @@ uint64_t __86__WBSPasswordBreachQueuedPasswordBagManager__passwordBagFromDiction
   v18[3] = &unk_1E7CF3210;
   v19 = v6;
   v14 = v6;
-  v15 = [v3 safari_filterObjectsUsingBlock:v18];
+  v15 = [credentials safari_filterObjectsUsingBlock:v18];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -231,17 +231,17 @@ BOOL __67__WBSPasswordBreachQueuedPasswordBagManager__unbreachedCredentials__blo
   return v5;
 }
 
-- (id)_constructBagOnInternalQueueWithCredentials:(id)a3 ensureFakePasswordGeneration:(BOOL)a4
+- (id)_constructBagOnInternalQueueWithCredentials:(id)credentials ensureFakePasswordGeneration:(BOOL)generation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF20] safari_dictionaryWithObjectsInFastEnumerationCollection:a3 groupedUsingBlock:&__block_literal_global_14_0];
+  v5 = [MEMORY[0x1E695DF20] safari_dictionaryWithObjectsInFastEnumerationCollection:credentials groupedUsingBlock:&__block_literal_global_14_0];
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [v5 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  allValues = [v5 allValues];
+  v8 = [allValues countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
@@ -252,25 +252,25 @@ BOOL __67__WBSPasswordBreachQueuedPasswordBagManager__unbreachedCredentials__blo
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = [[WBSPasswordBreachQueuedPassword alloc] initWithCredentials:*(*(&v32 + 1) + 8 * i) context:self->_context];
-        v13 = [(WBSPasswordBreachQueuedPassword *)v12 uuid];
-        [v6 setObject:v12 forKeyedSubscript:v13];
+        uuid = [(WBSPasswordBreachQueuedPassword *)v12 uuid];
+        [v6 setObject:v12 forKeyedSubscript:uuid];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [(WBSPasswordBreachContext *)self->_context configuration];
-  v15 = [v14 passwordCheckBatchSize];
-  v16 = [v14 numberOfBatchesPerSession];
+  configuration = [(WBSPasswordBreachContext *)self->_context configuration];
+  passwordCheckBatchSize = [configuration passwordCheckBatchSize];
+  numberOfBatchesPerSession = [configuration numberOfBatchesPerSession];
   v17 = [v6 count];
-  if (!a4 && !v17)
+  if (!generation && !v17)
   {
     v18 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -281,8 +281,8 @@ BOOL __67__WBSPasswordBreachQueuedPasswordBagManager__unbreachedCredentials__blo
     goto LABEL_19;
   }
 
-  v19 = v16 * v15 >= v17;
-  v20 = v16 * v15 - v17;
+  v19 = numberOfBatchesPerSession * passwordCheckBatchSize >= v17;
+  v20 = numberOfBatchesPerSession * passwordCheckBatchSize - v17;
   if (v20 == 0 || !v19)
   {
 LABEL_19:
@@ -290,10 +290,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v21 = [(WBSPasswordBreachContext *)self->_context configuration];
-  v22 = [v21 verboseSensitiveLoggingEnabled];
+  configuration2 = [(WBSPasswordBreachContext *)self->_context configuration];
+  verboseSensitiveLoggingEnabled = [configuration2 verboseSensitiveLoggingEnabled];
 
-  if (v22)
+  if (verboseSensitiveLoggingEnabled)
   {
     v23 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -313,8 +313,8 @@ LABEL_19:
     }
 
     v25 = v24;
-    v26 = [v24 uuid];
-    [v6 setObject:v25 forKeyedSubscript:v26];
+    uuid2 = [v24 uuid];
+    [v6 setObject:v25 forKeyedSubscript:uuid2];
 
     if (!--v20)
     {
@@ -362,17 +362,17 @@ void *__118__WBSPasswordBreachQueuedPasswordBagManager__constructBagOnInternalQu
   return v3;
 }
 
-- (void)getPasswordsForNextBatchWithCompletionHandler:(id)a3
+- (void)getPasswordsForNextBatchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__WBSPasswordBreachQueuedPasswordBagManager_getPasswordsForNextBatchWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -597,17 +597,17 @@ LABEL_42:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportPasswordCheckBatchResults:(id)a3
+- (void)reportPasswordCheckBatchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__WBSPasswordBreachQueuedPasswordBagManager_reportPasswordCheckBatchResults___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultsCopy;
+  v6 = resultsCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -832,9 +832,9 @@ void __59__WBSPasswordBreachQueuedPasswordBagManager_saveBagToStore__block_invok
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = self;
-  v4 = [(NSMutableDictionary *)self->_queuedPasswordsByUUID allValues];
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  selfCopy = self;
+  allValues = [(NSMutableDictionary *)self->_queuedPasswordsByUUID allValues];
+  v5 = [allValues countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
@@ -845,7 +845,7 @@ void __59__WBSPasswordBreachQueuedPasswordBagManager_saveBagToStore__block_invok
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
@@ -853,8 +853,8 @@ void __59__WBSPasswordBreachQueuedPasswordBagManager_saveBagToStore__block_invok
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v10 = [v9 persistentIdentifiers];
-        v11 = [v10 countByEnumeratingWithState:&v21 objects:v31 count:16];
+        persistentIdentifiers = [v9 persistentIdentifiers];
+        v11 = [persistentIdentifiers countByEnumeratingWithState:&v21 objects:v31 count:16];
         if (v11)
         {
           v12 = v11;
@@ -865,7 +865,7 @@ void __59__WBSPasswordBreachQueuedPasswordBagManager_saveBagToStore__block_invok
             {
               if (*v22 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(persistentIdentifiers);
               }
 
               v15 = *(*(&v21 + 1) + 8 * j);
@@ -875,21 +875,21 @@ void __59__WBSPasswordBreachQueuedPasswordBagManager_saveBagToStore__block_invok
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v21 objects:v31 count:16];
+            v12 = [persistentIdentifiers countByEnumeratingWithState:&v21 objects:v31 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v6);
   }
 
   v29[0] = @"FillState";
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:v20->_fillState];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:selfCopy->_fillState];
   v29[1] = @"PersistentIdentifiers";
   v30[0] = v16;
   v30[1] = v3;

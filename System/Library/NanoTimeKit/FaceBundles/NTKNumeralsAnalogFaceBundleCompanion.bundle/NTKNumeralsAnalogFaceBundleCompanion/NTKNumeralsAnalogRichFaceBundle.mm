@@ -10,8 +10,8 @@
   {
     v6.receiver = self;
     v6.super_class = NTKNumeralsAnalogRichFaceBundle;
-    v3 = [(NTKNumeralsAnalogFaceBundle *)&v6 galleryTitle];
-    v4 = [NSString stringWithFormat:@"%@ (Legacy)", v3];
+    galleryTitle = [(NTKNumeralsAnalogFaceBundle *)&v6 galleryTitle];
+    v4 = [NSString stringWithFormat:@"%@ (Legacy)", galleryTitle];
   }
 
   else

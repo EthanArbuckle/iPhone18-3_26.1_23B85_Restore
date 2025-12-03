@@ -1,14 +1,14 @@
 @interface _UIObjectIdentifierPathProxy
-- (_UIObjectIdentifierPathProxy)initWithCoder:(id)a3;
-- (_UIObjectIdentifierPathProxy)initWithObject:(id)a3;
+- (_UIObjectIdentifierPathProxy)initWithCoder:(id)coder;
+- (_UIObjectIdentifierPathProxy)initWithObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation _UIObjectIdentifierPathProxy
 
-- (_UIObjectIdentifierPathProxy)initWithObject:(id)a3
+- (_UIObjectIdentifierPathProxy)initWithObject:(id)object
 {
-  v5 = [_restorationIdentifierPathArrayForObject(a3) componentsJoinedByString:@"/"];
+  v5 = [_restorationIdentifierPathArrayForObject(object) componentsJoinedByString:@"/"];
   if (_UIStateRestorationDebugLogEnabled())
   {
     NSLog(&cfstr_SInitializingW.isa, "[_UIObjectIdentifierPathProxy initWithObject:]", v5);
@@ -28,7 +28,7 @@
     {
       if (_UIStateRestorationDebugLogEnabled())
       {
-        NSLog(&cfstr_SWarningTriedT_0.isa, "[_UIObjectIdentifierPathProxy initWithObject:]", a3);
+        NSLog(&cfstr_SWarningTriedT_0.isa, "[_UIObjectIdentifierPathProxy initWithObject:]", object);
       }
 
       v7 = v6;
@@ -39,9 +39,9 @@
   return v6;
 }
 
-- (_UIObjectIdentifierPathProxy)initWithCoder:(id)a3
+- (_UIObjectIdentifierPathProxy)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kObjectIdentifierPathProxyIdentifierPathKey"];
+  v4 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kObjectIdentifierPathProxyIdentifierPathKey"];
   v5 = _UIStateRestorationDebugLogEnabled();
   if (v4)
   {
@@ -63,7 +63,7 @@
     v8 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
 
   return v8;
 }

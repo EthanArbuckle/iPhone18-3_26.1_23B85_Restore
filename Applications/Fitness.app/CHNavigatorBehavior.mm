@@ -1,25 +1,25 @@
 @interface CHNavigatorBehavior
 + (id)canonical;
-- (BOOL)allowedWith:(id)a3;
+- (BOOL)allowedWith:(id)with;
 - (CHNavigatorBehavior)init;
-- (CHNavigatorBehavior)initWithAllowedDuringWorkout:(BOOL)a3;
+- (CHNavigatorBehavior)initWithAllowedDuringWorkout:(BOOL)workout;
 - (NSString)description;
 @end
 
 @implementation CHNavigatorBehavior
 
-- (CHNavigatorBehavior)initWithAllowedDuringWorkout:(BOOL)a3
+- (CHNavigatorBehavior)initWithAllowedDuringWorkout:(BOOL)workout
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___CHNavigatorBehavior_allowedDuringWorkout) = a3;
+  *(&self->super.isa + OBJC_IVAR___CHNavigatorBehavior_allowedDuringWorkout) = workout;
   v7.receiver = self;
   v7.super_class = ObjectType;
   return [(CHNavigatorBehavior *)&v7 init];
 }
 
-- (BOOL)allowedWith:(id)a3
+- (BOOL)allowedWith:(id)with
 {
-  if (*(a3 + OBJC_IVAR___CHNavigatorContext_hasActiveWorkout) == 1)
+  if (*(with + OBJC_IVAR___CHNavigatorContext_hasActiveWorkout) == 1)
   {
     return *(&self->super.isa + OBJC_IVAR___CHNavigatorBehavior_allowedDuringWorkout);
   }
@@ -32,7 +32,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005A8D9C();
 
   v3 = String._bridgeToObjectiveC()();

@@ -1,27 +1,27 @@
 @interface AWDCoreRoutineTrafficConditions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPrecisionRecall:(id)a3;
-- (int)StringAsTrafficDensity:(id)a3;
+- (int)StringAsPrecisionRecall:(id)recall;
+- (int)StringAsTrafficDensity:(id)density;
 - (int)precisionRecall;
 - (int)trafficDensity;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPrecisionRecall:(BOOL)a3;
-- (void)setHasPredictedLocationOfInterest:(BOOL)a3;
-- (void)setHasTrafficDensity:(BOOL)a3;
-- (void)setHasVehicleConnected:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPrecisionRecall:(BOOL)recall;
+- (void)setHasPredictedLocationOfInterest:(BOOL)interest;
+- (void)setHasTrafficDensity:(BOOL)density;
+- (void)setHasVehicleConnected:(BOOL)connected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineTrafficConditions
 
-- (void)setHasVehicleConnected:(BOOL)a3
+- (void)setHasVehicleConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     v3 = 16;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPredictedLocationOfInterest:(BOOL)a3
+- (void)setHasPredictedLocationOfInterest:(BOOL)interest
 {
-  if (a3)
+  if (interest)
   {
     v3 = 8;
   }
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)setHasTrafficDensity:(BOOL)a3
+- (void)setHasTrafficDensity:(BOOL)density
 {
-  if (a3)
+  if (density)
   {
     v3 = 4;
   }
@@ -77,24 +77,24 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsTrafficDensity:(id)a3
+- (int)StringAsTrafficDensity:(id)density
 {
-  if ([a3 isEqualToString:@"CoreRoutineTrafficDensityUnknown"])
+  if ([density isEqualToString:@"CoreRoutineTrafficDensityUnknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineTrafficDensityLight"])
+  if ([density isEqualToString:@"CoreRoutineTrafficDensityLight"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineTrafficDensityNormal"])
+  if ([density isEqualToString:@"CoreRoutineTrafficDensityNormal"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineTrafficDensityHeavy"])
+  if ([density isEqualToString:@"CoreRoutineTrafficDensityHeavy"])
   {
     return 3;
   }
@@ -115,9 +115,9 @@
   }
 }
 
-- (void)setHasPrecisionRecall:(BOOL)a3
+- (void)setHasPrecisionRecall:(BOOL)recall
 {
-  if (a3)
+  if (recall)
   {
     v3 = 2;
   }
@@ -130,29 +130,29 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsPrecisionRecall:(id)a3
+- (int)StringAsPrecisionRecall:(id)recall
 {
-  if ([a3 isEqualToString:@"CoreRoutinePrecisionRecallUnknown"])
+  if ([recall isEqualToString:@"CoreRoutinePrecisionRecallUnknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutinePrecisionRecallTruePositive"])
+  if ([recall isEqualToString:@"CoreRoutinePrecisionRecallTruePositive"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutinePrecisionRecallFalsePositive"])
+  if ([recall isEqualToString:@"CoreRoutinePrecisionRecallFalsePositive"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutinePrecisionRecallTrueNegative"])
+  if ([recall isEqualToString:@"CoreRoutinePrecisionRecallTrueNegative"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutinePrecisionRecallFalseNegative"])
+  if ([recall isEqualToString:@"CoreRoutinePrecisionRecallFalseNegative"])
   {
     return 4;
   }
@@ -169,11 +169,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -192,7 +192,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_vehicleConnected), @"vehicleConnected"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_vehicleConnected), @"vehicleConnected"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -206,14 +206,14 @@ LABEL_4:
   }
 
 LABEL_9:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_predictedLocationOfInterest), @"predictedLocationOfInterest"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_predictedLocationOfInterest), @"predictedLocationOfInterest"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
 LABEL_5:
     if ((has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_14;
@@ -231,7 +231,7 @@ LABEL_10:
     v6 = off_29EE32600[trafficDensity];
   }
 
-  [v3 setObject:v6 forKey:@"trafficDensity"];
+  [dictionary setObject:v6 forKey:@"trafficDensity"];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
@@ -246,13 +246,13 @@ LABEL_14:
       v8 = off_29EE32620[precisionRecall];
     }
 
-    [v3 setObject:v8 forKey:@"precisionRecall"];
+    [dictionary setObject:v8 forKey:@"precisionRecall"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -320,13 +320,13 @@ LABEL_11:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -345,8 +345,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 25) = self->_vehicleConnected;
-  *(a3 + 28) |= 0x10u;
+  *(to + 25) = self->_vehicleConnected;
+  *(to + 28) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -360,8 +360,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 24) = self->_predictedLocationOfInterest;
-  *(a3 + 28) |= 8u;
+  *(to + 24) = self->_predictedLocationOfInterest;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -372,23 +372,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 4) = self->_precisionRecall;
-    *(a3 + 28) |= 2u;
+    *(to + 4) = self->_precisionRecall;
+    *(to + 28) |= 2u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 5) = self->_trafficDensity;
-  *(a3 + 28) |= 4u;
+  *(to + 5) = self->_trafficDensity;
+  *(to + 28) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -455,9 +455,9 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -465,47 +465,47 @@ LABEL_6:
 
   if (*&self->_has)
   {
-    if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(a3 + 28))
+  else if (*(equal + 28))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 28) & 0x10) == 0)
+    if ((*(equal + 28) & 0x10) == 0)
     {
       goto LABEL_31;
     }
 
-    v6 = *(a3 + 25);
+    v6 = *(equal + 25);
     if (self->_vehicleConnected)
     {
-      if ((*(a3 + 25) & 1) == 0)
+      if ((*(equal + 25) & 1) == 0)
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(a3 + 25))
+    else if (*(equal + 25))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(a3 + 28) & 0x10) != 0)
+  else if ((*(equal + 28) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(a3 + 28) & 8) == 0)
+    if ((*(equal + 28) & 8) == 0)
     {
       goto LABEL_11;
     }
@@ -515,15 +515,15 @@ LABEL_31:
     return v5;
   }
 
-  if ((*(a3 + 28) & 8) == 0)
+  if ((*(equal + 28) & 8) == 0)
   {
     goto LABEL_31;
   }
 
-  v7 = *(a3 + 24);
+  v7 = *(equal + 24);
   if (self->_predictedLocationOfInterest)
   {
-    if ((*(a3 + 24) & 1) == 0)
+    if ((*(equal + 24) & 1) == 0)
     {
       goto LABEL_31;
     }
@@ -531,7 +531,7 @@ LABEL_31:
     goto LABEL_11;
   }
 
-  if (*(a3 + 24))
+  if (*(equal + 24))
   {
     goto LABEL_31;
   }
@@ -539,21 +539,21 @@ LABEL_31:
 LABEL_11:
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 28) & 4) == 0 || self->_trafficDensity != *(a3 + 5))
+    if ((*(equal + 28) & 4) == 0 || self->_trafficDensity != *(equal + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(a3 + 28) & 4) != 0)
+  else if ((*(equal + 28) & 4) != 0)
   {
     goto LABEL_31;
   }
 
-  LOBYTE(v5) = (*(a3 + 28) & 2) == 0;
+  LOBYTE(v5) = (*(equal + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 28) & 2) == 0 || self->_precisionRecall != *(a3 + 4))
+    if ((*(equal + 28) & 2) == 0 || self->_precisionRecall != *(equal + 4))
     {
       goto LABEL_31;
     }
@@ -632,14 +632,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 0x10) == 0)
     {
 LABEL_3:
@@ -652,14 +652,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 0x10) == 0)
+  else if ((*(from + 28) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_vehicleConnected = *(a3 + 25);
+  self->_vehicleConnected = *(from + 25);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -672,9 +672,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_predictedLocationOfInterest = *(a3 + 24);
+  self->_predictedLocationOfInterest = *(from + 24);
   *&self->_has |= 8u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -684,15 +684,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_precisionRecall = *(a3 + 4);
+    self->_precisionRecall = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_10:
-  self->_trafficDensity = *(a3 + 5);
+  self->_trafficDensity = *(from + 5);
   *&self->_has |= 4u;
-  if ((*(a3 + 28) & 2) != 0)
+  if ((*(from + 28) & 2) != 0)
   {
     goto LABEL_11;
   }

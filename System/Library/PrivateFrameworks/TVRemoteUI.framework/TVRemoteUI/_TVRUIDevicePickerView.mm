@@ -1,59 +1,59 @@
 @interface _TVRUIDevicePickerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (TVRUIDevicePickerViewController)viewController;
-- (id)_initWithViewController:(id)a3;
+- (id)_initWithViewController:(id)controller;
 @end
 
 @implementation _TVRUIDevicePickerView
 
-- (id)_initWithViewController:(id)a3
+- (id)_initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = _TVRUIDevicePickerView;
   v5 = [(_TVRUIDevicePickerView *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewController, v4);
-    v7 = [(_TVRUIDevicePickerView *)v6 layer];
-    [v7 setAllowsGroupOpacity:0];
+    objc_storeWeak(&v5->_viewController, controllerCopy);
+    layer = [(_TVRUIDevicePickerView *)v6 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v8 = [(_TVRUIDevicePickerView *)v6 layer];
-    [v8 setAllowsGroupBlending:0];
+    layer2 = [(_TVRUIDevicePickerView *)v6 layer];
+    [layer2 setAllowsGroupBlending:0];
   }
 
   return v6;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(_TVRUIDevicePickerView *)self viewController];
-  v9 = [v8 isDevicePickerShowing];
+  eventCopy = event;
+  viewController = [(_TVRUIDevicePickerView *)self viewController];
+  isDevicePickerShowing = [viewController isDevicePickerShowing];
 
-  if (v9)
+  if (isDevicePickerShowing)
   {
     v45.receiver = self;
     v45.super_class = _TVRUIDevicePickerView;
-    v10 = [(_TVRUIDevicePickerView *)&v45 pointInside:v7 withEvent:x, y];
+    v10 = [(_TVRUIDevicePickerView *)&v45 pointInside:eventCopy withEvent:x, y];
   }
 
   else
   {
-    v11 = [(_TVRUIDevicePickerView *)self viewController];
-    v12 = [v11 muteButton];
-    [v12 frame];
+    viewController2 = [(_TVRUIDevicePickerView *)self viewController];
+    muteButton = [viewController2 muteButton];
+    [muteButton frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(_TVRUIDevicePickerView *)self viewController];
-    v22 = [v21 deviceTitleView];
-    [v22 frame];
+    viewController3 = [(_TVRUIDevicePickerView *)self viewController];
+    deviceTitleView = [viewController3 deviceTitleView];
+    [deviceTitleView frame];
     v59.origin.x = v23;
     v59.origin.y = v24;
     v59.size.width = v25;
@@ -68,9 +68,9 @@
     width = v54.size.width;
     height = v54.size.height;
 
-    v31 = [(_TVRUIDevicePickerView *)self viewController];
-    v32 = [v31 powerButton];
-    [v32 frame];
+    viewController4 = [(_TVRUIDevicePickerView *)self viewController];
+    powerButton = [viewController4 powerButton];
+    [powerButton frame];
     v60.origin.x = v33;
     v60.origin.y = v34;
     v60.size.width = v35;

@@ -1,12 +1,12 @@
 @interface FMDNanoSupportProtoSignedDataV3
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FMDNanoSupportProtoSignedDataV3
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = FMDNanoSupportProtoSignedDataV3;
   v3 = [(FMDNanoSupportProtoSignedDataV3 *)&v7 description];
-  v4 = [(FMDNanoSupportProtoSignedDataV3 *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(FMDNanoSupportProtoSignedDataV3 *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -55,11 +55,11 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   errorOccurred = self->_errorOccurred;
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteBOOLField();
   if (self->_signedData)
   {
@@ -85,77 +85,77 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[40] = self->_errorOccurred;
-  v5 = v4;
+  toCopy = to;
+  toCopy[40] = self->_errorOccurred;
+  v5 = toCopy;
   if (self->_signedData)
   {
-    [v4 setSignedData:?];
-    v4 = v5;
+    [toCopy setSignedData:?];
+    toCopy = v5;
   }
 
   if (self->_skAuth)
   {
     [v5 setSkAuth:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_finalRequestJsonData)
   {
     [v5 setFinalRequestJsonData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_signatureError)
   {
     [v5 setSignatureError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[40] = self->_errorOccurred;
-  v6 = [(NSData *)self->_signedData copyWithZone:a3];
+  v6 = [(NSData *)self->_signedData copyWithZone:zone];
   v7 = *(v5 + 3);
   *(v5 + 3) = v6;
 
-  v8 = [(NSData *)self->_skAuth copyWithZone:a3];
+  v8 = [(NSData *)self->_skAuth copyWithZone:zone];
   v9 = *(v5 + 4);
   *(v5 + 4) = v8;
 
-  v10 = [(NSData *)self->_finalRequestJsonData copyWithZone:a3];
+  v10 = [(NSData *)self->_finalRequestJsonData copyWithZone:zone];
   v11 = *(v5 + 1);
   *(v5 + 1) = v10;
 
-  v12 = [(NSString *)self->_signatureError copyWithZone:a3];
+  v12 = [(NSString *)self->_signatureError copyWithZone:zone];
   v13 = *(v5 + 2);
   *(v5 + 2) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (self->_errorOccurred)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_14:
     v10 = 0;
@@ -163,13 +163,13 @@ LABEL_14:
   }
 
   signedData = self->_signedData;
-  if (signedData | *(v4 + 3) && ![(NSData *)signedData isEqual:?])
+  if (signedData | *(equalCopy + 3) && ![(NSData *)signedData isEqual:?])
   {
     goto LABEL_14;
   }
 
   skAuth = self->_skAuth;
-  if (skAuth | *(v4 + 4))
+  if (skAuth | *(equalCopy + 4))
   {
     if (![(NSData *)skAuth isEqual:?])
     {
@@ -178,7 +178,7 @@ LABEL_14:
   }
 
   finalRequestJsonData = self->_finalRequestJsonData;
-  if (finalRequestJsonData | *(v4 + 1))
+  if (finalRequestJsonData | *(equalCopy + 1))
   {
     if (![(NSData *)finalRequestJsonData isEqual:?])
     {
@@ -187,7 +187,7 @@ LABEL_14:
   }
 
   signatureError = self->_signatureError;
-  if (signatureError | *(v4 + 2))
+  if (signatureError | *(equalCopy + 2))
   {
     v10 = [(NSString *)signatureError isEqual:?];
   }
@@ -211,12 +211,12 @@ LABEL_15:
   return v6 ^ [(NSString *)self->_signatureError hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_errorOccurred = v4[40];
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_errorOccurred = fromCopy[40];
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(FMDNanoSupportProtoSignedDataV3 *)self setSignedData:?];
   }

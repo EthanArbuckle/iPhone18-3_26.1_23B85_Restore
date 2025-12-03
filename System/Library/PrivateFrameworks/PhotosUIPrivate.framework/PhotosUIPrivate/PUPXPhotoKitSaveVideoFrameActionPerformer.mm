@@ -1,5 +1,5 @@
 @interface PUPXPhotoKitSaveVideoFrameActionPerformer
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
@@ -8,8 +8,8 @@
 - (void)performUserInteractionTask
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [v3 count];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  v4 = [assets count];
 
   if (v4 != 1)
   {
@@ -21,18 +21,18 @@
     }
   }
 
-  v6 = [(PXActionPerformer *)self delegate];
+  delegate = [(PXActionPerformer *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     memset(buf, 0, sizeof(buf));
     v24 = 0;
-    v8 = [(PXActionPerformer *)self delegate];
-    v9 = v8;
-    if (v8)
+    delegate2 = [(PXActionPerformer *)self delegate];
+    v9 = delegate2;
+    if (delegate2)
     {
-      [v8 playerCurrentTimeForActionPerformer:self];
+      [delegate2 playerCurrentTimeForActionPerformer:self];
     }
 
     else
@@ -42,21 +42,21 @@
     }
 
     v11 = objc_alloc(MEMORY[0x1E69C39A0]);
-    v12 = [(PXPhotoKitAssetActionPerformer *)self assets];
-    v13 = [v12 firstObject];
+    assets2 = [(PXPhotoKitAssetActionPerformer *)self assets];
+    firstObject = [assets2 firstObject];
     v21 = *buf;
     v22 = v24;
-    v14 = [v11 initWithAsset:v13 time:&v21];
+    v14 = [v11 initWithAsset:firstObject time:&v21];
 
-    v15 = [(PXActionPerformer *)self undoManager];
+    undoManager = [(PXActionPerformer *)self undoManager];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __71__PUPXPhotoKitSaveVideoFrameActionPerformer_performUserInteractionTask__block_invoke;
     v18[3] = &unk_1E7B7FB70;
     v19 = v14;
-    v20 = self;
+    selfCopy = self;
     v16 = v14;
-    [v16 executeWithUndoManager:v15 completionHandler:v18];
+    [v16 executeWithUndoManager:undoManager completionHandler:v18];
   }
 
   else
@@ -64,9 +64,9 @@
     v10 = PXAssertGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v17 = [(PXActionPerformer *)self delegate];
+      delegate3 = [(PXActionPerformer *)self delegate];
       *buf = 138412290;
-      *&buf[4] = v17;
+      *&buf[4] = delegate3;
       _os_log_fault_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_FAULT, "action performer delegate %@ doesn't implement playerCurrentTimeForActionPerformer:", buf, 0xCu);
     }
   }
@@ -108,27 +108,27 @@ void __71__PUPXPhotoKitSaveVideoFrameActionPerformer_performUserInteractionTask_
   }
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E69C3640] sharedInstance];
-  v8 = [v7 showSaveVideoFrameAction];
+  snapshotCopy = snapshot;
+  mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+  showSaveVideoFrameAction = [mEMORY[0x1E69C3640] showSaveVideoFrameAction];
 
-  if (v8)
+  if (showSaveVideoFrameAction)
   {
-    v9 = [v6 selectedIndexPaths];
-    v10 = [v9 count];
+    selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+    v10 = [selectedIndexPaths count];
 
     if (v10 == 1)
     {
-      v11 = [v6 firstObject];
+      firstObject = [snapshotCopy firstObject];
       if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
       {
-        v12 = v11;
+        v12 = firstObject;
 
         if (v12)
         {
-          v13 = [a1 _canPerformOnAsset:v12];
+          v13 = [self _canPerformOnAsset:v12];
 LABEL_10:
 
           goto LABEL_11;

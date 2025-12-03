@@ -1,15 +1,15 @@
 @interface SBAlwaysOnTelemetryMetrics
 - (SBAlwaysOnTelemetryMetrics)init;
-- (_SBMachContinuousStopwatch)_stopWatchForBacklightState:(uint64_t)a1;
-- (double)_timeForBacklightState:(uint64_t)a1;
-- (id)dataForAnalyticsEvent:(id)a3;
-- (id)dataForPowerlogEvent:(id)a3;
-- (void)_activateStopWatch:(uint64_t)a1;
-- (void)accumulateDiscardHistogram:(id)a3;
-- (void)accumulateInvalidationHistogram:(id)a3;
-- (void)accumulatePresentationSources:(id)a3;
-- (void)accumulateRenderHistogram:(id)a3;
-- (void)setBacklightState:(int64_t)a3;
+- (_SBMachContinuousStopwatch)_stopWatchForBacklightState:(uint64_t)state;
+- (double)_timeForBacklightState:(uint64_t)state;
+- (id)dataForAnalyticsEvent:(id)event;
+- (id)dataForPowerlogEvent:(id)event;
+- (void)_activateStopWatch:(uint64_t)watch;
+- (void)accumulateDiscardHistogram:(id)histogram;
+- (void)accumulateInvalidationHistogram:(id)histogram;
+- (void)accumulatePresentationSources:(id)sources;
+- (void)accumulateRenderHistogram:(id)histogram;
+- (void)setBacklightState:(int64_t)state;
 @end
 
 @implementation SBAlwaysOnTelemetryMetrics
@@ -21,28 +21,28 @@
   v2 = [(SBAlwaysOnTelemetryMetrics *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     stopWatches = v2->_stopWatches;
-    v2->_stopWatches = v3;
+    v2->_stopWatches = dictionary;
   }
 
   return v2;
 }
 
-- (void)setBacklightState:(int64_t)a3
+- (void)setBacklightState:(int64_t)state
 {
-  v5 = [(SBAlwaysOnTelemetryMetrics *)self _stopWatchForBacklightState:a3];
+  v5 = [(SBAlwaysOnTelemetryMetrics *)self _stopWatchForBacklightState:state];
   [(SBAlwaysOnTelemetryMetrics *)self _activateStopWatch:v5];
 
   stateChangeCounts = self->_stateChangeCounts;
   if (stateChangeCounts)
   {
     v7 = MEMORY[0x277CCABB0];
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:state];
     v8 = [(NSMutableDictionary *)stateChangeCounts objectForKeyedSubscript:v14];
     v9 = [v7 numberWithInteger:{objc_msgSend(v8, "integerValue") + 1}];
     v10 = self->_stateChangeCounts;
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:state];
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:v11];
 
     v12 = v14;
@@ -50,21 +50,21 @@
 
   else
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v12 = self->_stateChangeCounts;
-    self->_stateChangeCounts = v13;
+    self->_stateChangeCounts = dictionary;
   }
 }
 
-- (void)accumulateRenderHistogram:(id)a3
+- (void)accumulateRenderHistogram:(id)histogram
 {
-  v55 = a3;
+  histogramCopy = histogram;
   renderedFrameCount = self->_renderedFrameCount;
-  self->_renderedFrameCount = renderedFrameCount + [v55 totalCount];
-  [v55 presentationDuration];
+  self->_renderedFrameCount = renderedFrameCount + [histogramCopy totalCount];
+  [histogramCopy presentationDuration];
   self->_renderedPartialMinuteCount = (ceil(v5 / 60.0) + self->_renderedPartialMinuteCount);
-  v6 = [v55 presentationTimeHistogram];
-  v7 = [v6 count];
+  presentationTimeHistogram = [histogramCopy presentationTimeHistogram];
+  v7 = [presentationTimeHistogram count];
   v8 = v7;
   if (v7 > 2)
   {
@@ -73,14 +73,14 @@
       if (v7 == 3)
       {
 LABEL_17:
-        v14 = [v6 objectAtIndexedSubscript:2];
+        v14 = [presentationTimeHistogram objectAtIndexedSubscript:2];
         self->_renderedFrames2to3Min += [v14 unsignedIntegerValue];
 
         goto LABEL_18;
       }
 
 LABEL_16:
-      v13 = [v6 objectAtIndexedSubscript:3];
+      v13 = [presentationTimeHistogram objectAtIndexedSubscript:3];
       self->_renderedFrames3to4Min += [v13 unsignedIntegerValue];
 
       goto LABEL_17;
@@ -89,7 +89,7 @@ LABEL_16:
     if (v7 == 5)
     {
 LABEL_15:
-      v12 = [v6 objectAtIndexedSubscript:4];
+      v12 = [presentationTimeHistogram objectAtIndexedSubscript:4];
       self->_renderedFrames4to5Min += [v12 unsignedIntegerValue];
 
       goto LABEL_16;
@@ -98,7 +98,7 @@ LABEL_15:
     if (v7 == 6)
     {
 LABEL_14:
-      v11 = [v6 objectAtIndexedSubscript:5];
+      v11 = [presentationTimeHistogram objectAtIndexedSubscript:5];
       self->_renderedFrames5to6Min += [v11 unsignedIntegerValue];
 
       goto LABEL_15;
@@ -110,7 +110,7 @@ LABEL_11:
       v9 = 6;
       do
       {
-        v10 = [v6 objectAtIndexedSubscript:v9];
+        v10 = [presentationTimeHistogram objectAtIndexedSubscript:v9];
         self->_renderedFramesMoreThan6Min += [v10 unsignedIntegerValue];
 
         ++v9;
@@ -132,7 +132,7 @@ LABEL_11:
     if (v7 == 2)
     {
 LABEL_18:
-      v15 = [v6 objectAtIndexedSubscript:1];
+      v15 = [presentationTimeHistogram objectAtIndexedSubscript:1];
       self->_renderedFrames1to2Min += [v15 unsignedIntegerValue];
 
       goto LABEL_19;
@@ -142,13 +142,13 @@ LABEL_18:
   }
 
 LABEL_19:
-  v16 = [v6 objectAtIndexedSubscript:0];
+  v16 = [presentationTimeHistogram objectAtIndexedSubscript:0];
   self->_renderedFramesLessThan1Min += [v16 unsignedIntegerValue];
 
 LABEL_20:
   minimumAPL = self->_minimumAPL;
   v18 = MEMORY[0x277CCABB0];
-  [v55 lowestAPL];
+  [histogramCopy lowestAPL];
   v19 = [v18 numberWithFloat:?];
   v20 = NSNumberDoubleMin(minimumAPL, v19);
   v21 = self->_minimumAPL;
@@ -156,13 +156,13 @@ LABEL_20:
 
   maximumAPL = self->_maximumAPL;
   v23 = MEMORY[0x277CCABB0];
-  [v55 highestAPL];
+  [histogramCopy highestAPL];
   v24 = [v23 numberWithFloat:?];
   v25 = NSNumberDoubleMax(maximumAPL, v24);
   v26 = self->_maximumAPL;
   self->_maximumAPL = v25;
 
-  [v55 averageAPL];
+  [histogramCopy averageAPL];
   v28 = v27;
   if (self->_averageAPL)
   {
@@ -176,18 +176,18 @@ LABEL_20:
 
   [(NSNumber *)averageAPL doubleValue];
   v31 = v30;
-  if ([v55 totalCount])
+  if ([histogramCopy totalCount])
   {
     v32 = MEMORY[0x277CCABB0];
-    v33 = [v55 totalCount];
-    v34 = [v32 numberWithDouble:v33 / (renderedFrameCount + v33) * v28 + renderedFrameCount / (renderedFrameCount + v33) * v31];
+    totalCount = [histogramCopy totalCount];
+    v34 = [v32 numberWithDouble:totalCount / (renderedFrameCount + totalCount) * v28 + renderedFrameCount / (renderedFrameCount + totalCount) * v31];
     v35 = self->_averageAPL;
     self->_averageAPL = v34;
   }
 
   minimumAPLDimming = self->_minimumAPLDimming;
   v37 = MEMORY[0x277CCABB0];
-  [v55 lowestAPLDimming];
+  [histogramCopy lowestAPLDimming];
   v38 = [v37 numberWithFloat:?];
   v39 = NSNumberDoubleMin(minimumAPLDimming, v38);
   v40 = self->_minimumAPLDimming;
@@ -195,13 +195,13 @@ LABEL_20:
 
   maximumAPLDimming = self->_maximumAPLDimming;
   v42 = MEMORY[0x277CCABB0];
-  [v55 highestAPLDimming];
+  [histogramCopy highestAPLDimming];
   v43 = [v42 numberWithFloat:?];
   v44 = NSNumberDoubleMax(maximumAPLDimming, v43);
   v45 = self->_maximumAPLDimming;
   self->_maximumAPLDimming = v44;
 
-  [v55 averageAPLDimming];
+  [histogramCopy averageAPLDimming];
   v47 = v46;
   if (self->_averageAPLDimming)
   {
@@ -215,76 +215,76 @@ LABEL_20:
 
   [(NSNumber *)averageAPLDimming doubleValue];
   v50 = v49;
-  if ([v55 totalCount])
+  if ([histogramCopy totalCount])
   {
     v51 = MEMORY[0x277CCABB0];
-    v52 = [v55 totalCount];
-    v53 = [v51 numberWithDouble:v52 / (renderedFrameCount + v52) * v47 + renderedFrameCount / (renderedFrameCount + v52) * v50];
+    totalCount2 = [histogramCopy totalCount];
+    v53 = [v51 numberWithDouble:totalCount2 / (renderedFrameCount + totalCount2) * v47 + renderedFrameCount / (renderedFrameCount + totalCount2) * v50];
     v54 = self->_averageAPLDimming;
     self->_averageAPLDimming = v53;
   }
 }
 
-- (void)accumulateInvalidationHistogram:(id)a3
+- (void)accumulateInvalidationHistogram:(id)histogram
 {
-  v4 = a3;
-  v5 = [v4 totalCount];
-  v6 = [v4 countLessThan1Min];
-  v7 = v5 - (v6 + [v4 count1to2Min]);
-  v8 = v7 - [v4 count2to3Min];
-  v9 = v8 - [v4 count3to4Min];
-  LODWORD(v6) = [v4 count4to5Min];
+  histogramCopy = histogram;
+  totalCount = [histogramCopy totalCount];
+  countLessThan1Min = [histogramCopy countLessThan1Min];
+  v7 = totalCount - (countLessThan1Min + [histogramCopy count1to2Min]);
+  v8 = v7 - [histogramCopy count2to3Min];
+  v9 = v8 - [histogramCopy count3to4Min];
+  LODWORD(countLessThan1Min) = [histogramCopy count4to5Min];
 
   v10 = self->_invalidatedFramesUpTo3mStale + v7;
-  self->_invalidatedFramesUpTo2mStale += v5;
+  self->_invalidatedFramesUpTo2mStale += totalCount;
   self->_invalidatedFramesUpTo3mStale = v10;
   v11 = self->_invalidatedFramesUpTo5mStale + v9;
   self->_invalidatedFramesUpTo4mStale += v8;
   self->_invalidatedFramesUpTo5mStale = v11;
-  self->_invalidatedFramesUpTo6mStale += v9 - v6;
+  self->_invalidatedFramesUpTo6mStale += v9 - countLessThan1Min;
 }
 
-- (void)accumulateDiscardHistogram:(id)a3
+- (void)accumulateDiscardHistogram:(id)histogram
 {
-  v4 = a3;
-  v5 = [v4 totalCount];
-  v6 = [v4 countLessThan1Min];
-  v7 = v5 - (v6 + [v4 count1to2Min]);
-  v8 = v7 - [v4 count2to3Min];
-  v9 = v8 - [v4 count3to4Min];
-  LODWORD(v6) = [v4 count4to5Min];
+  histogramCopy = histogram;
+  totalCount = [histogramCopy totalCount];
+  countLessThan1Min = [histogramCopy countLessThan1Min];
+  v7 = totalCount - (countLessThan1Min + [histogramCopy count1to2Min]);
+  v8 = v7 - [histogramCopy count2to3Min];
+  v9 = v8 - [histogramCopy count3to4Min];
+  LODWORD(countLessThan1Min) = [histogramCopy count4to5Min];
 
   v10 = self->_discardedFramesUpTo3mStale + v7;
-  self->_discardedFramesUpTo2mStale += v5;
+  self->_discardedFramesUpTo2mStale += totalCount;
   self->_discardedFramesUpTo3mStale = v10;
   v11 = self->_discardedFramesUpTo5mStale + v9;
   self->_discardedFramesUpTo4mStale += v8;
   self->_discardedFramesUpTo5mStale = v11;
-  self->_discardedFramesUpTo6mStale += v9 - v6;
+  self->_discardedFramesUpTo6mStale += v9 - countLessThan1Min;
 }
 
-- (void)accumulatePresentationSources:(id)a3
+- (void)accumulatePresentationSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   presentationSources = self->_presentationSources;
-  v8 = v4;
+  v8 = sourcesCopy;
   if (!presentationSources)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_presentationSources;
     self->_presentationSources = v6;
 
-    v4 = v8;
+    sourcesCopy = v8;
     presentationSources = self->_presentationSources;
   }
 
-  [(NSMutableSet *)presentationSources unionSet:v4];
+  [(NSMutableSet *)presentationSources unionSet:sourcesCopy];
 }
 
-- (id)dataForPowerlogEvent:(id)a3
+- (id)dataForPowerlogEvent:(id)event
 {
   v52[31] = *MEMORY[0x277D85DE8];
-  if (![a3 isEqualToString:@"FlipbookStatistics"])
+  if (![event isEqualToString:@"FlipbookStatistics"])
   {
     v4 = 0;
     goto LABEL_3;
@@ -294,12 +294,12 @@ LABEL_20:
   v7 = v6 + [(SBAlwaysOnTelemetryMetrics *)self _timeForBacklightState:?];
   v8 = v7 + [(SBAlwaysOnTelemetryMetrics *)self _timeForBacklightState:?];
   v51[0] = @"contentIdentifiers";
-  v9 = [(NSMutableSet *)self->_presentationSources allObjects];
+  allObjects = [(NSMutableSet *)self->_presentationSources allObjects];
   v10 = MEMORY[0x277CBEBF8];
-  v50 = v9;
-  if (v9)
+  v50 = allObjects;
+  if (allObjects)
   {
-    v10 = v9;
+    v10 = allObjects;
   }
 
   v52[0] = v10;
@@ -387,50 +387,50 @@ LABEL_20:
   v52[25] = averageAPL;
   v51[26] = @"minimumAPL";
   minimumAPL = self->_minimumAPL;
-  v13 = minimumAPL;
+  null = minimumAPL;
   if (!minimumAPL)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v22 = v13;
-  v52[26] = v13;
+  v22 = null;
+  v52[26] = null;
   v51[27] = @"maximumAPL";
   maximumAPL = self->_maximumAPL;
-  v15 = maximumAPL;
+  null2 = maximumAPL;
   if (!maximumAPL)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v52[27] = v15;
+  v52[27] = null2;
   v51[28] = @"averageAPLDimming";
   averageAPLDimming = self->_averageAPLDimming;
-  v17 = averageAPLDimming;
+  null3 = averageAPLDimming;
   if (!averageAPLDimming)
   {
-    v17 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v52[28] = v17;
+  v52[28] = null3;
   v51[29] = @"minimumAPLDimming";
   minimumAPLDimming = self->_minimumAPLDimming;
-  v19 = minimumAPLDimming;
+  null4 = minimumAPLDimming;
   if (!minimumAPLDimming)
   {
-    v19 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v52[29] = v19;
+  v52[29] = null4;
   v51[30] = @"maximumAPLDimming";
   maximumAPLDimming = self->_maximumAPLDimming;
-  v21 = maximumAPLDimming;
+  null5 = maximumAPLDimming;
   if (!maximumAPLDimming)
   {
-    v21 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
   }
 
-  v52[30] = v21;
+  v52[30] = null5;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:{31, v22}];
   if (maximumAPLDimming)
   {
@@ -498,9 +498,9 @@ LABEL_3:
   return v4;
 }
 
-- (id)dataForAnalyticsEvent:(id)a3
+- (id)dataForAnalyticsEvent:(id)event
 {
-  if ([a3 isEqualToString:@"com.apple.springboard.alwayson.flipbookstatistics"])
+  if ([event isEqualToString:@"com.apple.springboard.alwayson.flipbookstatistics"])
   {
     v4 = [(SBAlwaysOnTelemetryMetrics *)self dataForPowerlogEvent:@"FlipbookStatistics"];
   }
@@ -513,18 +513,18 @@ LABEL_3:
   return v4;
 }
 
-- (_SBMachContinuousStopwatch)_stopWatchForBacklightState:(uint64_t)a1
+- (_SBMachContinuousStopwatch)_stopWatchForBacklightState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    v4 = *(a1 + 8);
+    v4 = *(state + 8);
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
     v6 = [v4 objectForKeyedSubscript:v5];
 
     if (!v6)
     {
       v6 = objc_alloc_init(_SBMachContinuousStopwatch);
-      v7 = *(a1 + 8);
+      v7 = *(state + 8);
       v8 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
       [v7 setObject:v6 forKeyedSubscript:v8];
     }
@@ -538,13 +538,13 @@ LABEL_3:
   return v6;
 }
 
-- (void)_activateStopWatch:(uint64_t)a1
+- (void)_activateStopWatch:(uint64_t)watch
 {
   v4 = a2;
-  if (a1)
+  if (watch)
   {
-    v7 = *(a1 + 24);
-    v5 = (a1 + 24);
+    v7 = *(watch + 24);
+    v5 = (watch + 24);
     v6 = v7;
     if (v7 != v4)
     {
@@ -569,19 +569,19 @@ LABEL_3:
   }
 }
 
-- (double)_timeForBacklightState:(uint64_t)a1
+- (double)_timeForBacklightState:(uint64_t)state
 {
-  if (!a1)
+  if (!state)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 8);
+  v2 = *(state + 8);
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
   v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [(_SBMachContinuousStopwatch *)v4 activeTime];
+  activeTime = [(_SBMachContinuousStopwatch *)v4 activeTime];
 
-  return v5;
+  return activeTime;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface SearchUIHomeScreenAppIconViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchUIHomeScreenAppIconViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIHomeScreenAppIconView" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIRowModel" hasInstanceMethod:@"identifyingResult" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFSearchResult" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIHomeScreenAppIconView" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIRowModel" hasInstanceMethod:@"identifyingResult" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFSearchResult" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SearchUIHomeScreenAppIconViewAccessibility *)self safeValueForKeyPath:@"rowModel.identifyingResult.title"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

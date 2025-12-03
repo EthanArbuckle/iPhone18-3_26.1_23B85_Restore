@@ -1,13 +1,13 @@
 @interface CAMViewfinderTipManager
-+ (id)stylesTipViewControllerWithSourceItem:(id)a3;
++ (id)stylesTipViewControllerWithSourceItem:(id)item;
 - (CAMViewfinderTipManager)init;
 @end
 
 @implementation CAMViewfinderTipManager
 
-+ (id)stylesTipViewControllerWithSourceItem:(id)a3
++ (id)stylesTipViewControllerWithSourceItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = sub_1A3989A0C();
 
   return v4;

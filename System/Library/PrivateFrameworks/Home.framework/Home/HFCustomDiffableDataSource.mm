@@ -1,11 +1,11 @@
 @interface HFCustomDiffableDataSource
 - (HFCustomDiffableDataSource)init;
 - (NSArray)sections;
-- (id)_indexPathForItem:(id)a3 inDisplayedItemsArray:(id)a4;
-- (id)indexPathForItemIdentifier:(id)a3;
-- (id)itemIdentifierForIndexPath:(id)a3;
-- (unint64_t)_sectionForItem:(id)a3 assertOnNotFound:(BOOL)a4;
-- (void)setSections:(id)a3;
+- (id)_indexPathForItem:(id)item inDisplayedItemsArray:(id)array;
+- (id)indexPathForItemIdentifier:(id)identifier;
+- (id)itemIdentifierForIndexPath:(id)path;
+- (unint64_t)_sectionForItem:(id)item assertOnNotFound:(BOOL)found;
+- (void)setSections:(id)sections;
 @end
 
 @implementation HFCustomDiffableDataSource
@@ -25,57 +25,57 @@
   return v2;
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(HFCustomDiffableDataSource *)self snapshot];
-  [v5 setSections:v4];
+  sectionsCopy = sections;
+  snapshot = [(HFCustomDiffableDataSource *)self snapshot];
+  [snapshot setSections:sectionsCopy];
 }
 
 - (NSArray)sections
 {
-  v2 = [(HFCustomDiffableDataSource *)self snapshot];
-  v3 = [v2 sections];
+  snapshot = [(HFCustomDiffableDataSource *)self snapshot];
+  sections = [snapshot sections];
 
-  return v3;
+  return sections;
 }
 
-- (id)itemIdentifierForIndexPath:(id)a3
+- (id)itemIdentifierForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(HFCustomDiffableDataSource *)self sections];
-  v7 = [v6 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  sections = [(HFCustomDiffableDataSource *)self sections];
+  v7 = [sections count];
 
-  if (v5 >= v7)
+  if (section >= v7)
   {
     v12 = 0;
   }
 
   else
   {
-    v8 = [(HFCustomDiffableDataSource *)self sections];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+    sections2 = [(HFCustomDiffableDataSource *)self sections];
+    v9 = [sections2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v10 = [v9 items];
-    if ([v4 item] < 0 || (v11 = objc_msgSend(v4, "item"), v11 >= objc_msgSend(v10, "count")))
+    items = [v9 items];
+    if ([pathCopy item] < 0 || (v11 = objc_msgSend(pathCopy, "item"), v11 >= objc_msgSend(items, "count")))
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+      v12 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     }
   }
 
   return v12;
 }
 
-- (id)indexPathForItemIdentifier:(id)a3
+- (id)indexPathForItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HFCustomDiffableDataSource *)self _sectionForItem:v4 assertOnNotFound:0];
+  identifierCopy = identifier;
+  v5 = [(HFCustomDiffableDataSource *)self _sectionForItem:identifierCopy assertOnNotFound:0];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -84,33 +84,33 @@
   else
   {
     v7 = v5;
-    v8 = [(HFCustomDiffableDataSource *)self sections];
-    v9 = [v8 objectAtIndexedSubscript:v7];
+    sections = [(HFCustomDiffableDataSource *)self sections];
+    v9 = [sections objectAtIndexedSubscript:v7];
 
-    v10 = [v9 items];
-    v6 = [(HFCustomDiffableDataSource *)self _indexPathForItem:v4 inDisplayedItemsArray:v10];
+    items = [v9 items];
+    v6 = [(HFCustomDiffableDataSource *)self _indexPathForItem:identifierCopy inDisplayedItemsArray:items];
   }
 
   return v6;
 }
 
-- (unint64_t)_sectionForItem:(id)a3 assertOnNotFound:(BOOL)a4
+- (unint64_t)_sectionForItem:(id)item assertOnNotFound:(BOOL)found
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(HFCustomDiffableDataSource *)self sections];
+  foundCopy = found;
+  itemCopy = item;
+  sections = [(HFCustomDiffableDataSource *)self sections];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __63__HFCustomDiffableDataSource__sectionForItem_assertOnNotFound___block_invoke;
   v16 = &unk_277DFBC40;
-  v9 = v7;
+  v9 = itemCopy;
   v17 = v9;
-  v10 = [v8 indexOfObjectPassingTest:&v13];
+  v10 = [sections indexOfObjectPassingTest:&v13];
 
-  if (v4 && v10 == 0x7FFFFFFFFFFFFFFFLL)
+  if (foundCopy && v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HFCustomDiffableDataSource.m" lineNumber:142 description:{@"Could not find section for item: %@", v9, v13, v14, v15, v16}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCustomDiffableDataSource.m" lineNumber:142 description:{@"Could not find section for item: %@", v9, v13, v14, v15, v16}];
   }
 
   return v10;
@@ -124,11 +124,11 @@ uint64_t __63__HFCustomDiffableDataSource__sectionForItem_assertOnNotFound___blo
   return v4;
 }
 
-- (id)_indexPathForItem:(id)a3 inDisplayedItemsArray:(id)a4
+- (id)_indexPathForItem:(id)item inDisplayedItemsArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (v8 = -[HFCustomDiffableDataSource _sectionForItem:](self, "_sectionForItem:", v6), v9 = [v7 indexOfObjectIdenticalTo:v6], v9 != 0x7FFFFFFFFFFFFFFFLL))
+  itemCopy = item;
+  arrayCopy = array;
+  if (arrayCopy && (v8 = -[HFCustomDiffableDataSource _sectionForItem:](self, "_sectionForItem:", itemCopy), v9 = [arrayCopy indexOfObjectIdenticalTo:itemCopy], v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v10 = [MEMORY[0x277CCAA70] indexPathForItem:v9 inSection:v8];
   }

@@ -1,24 +1,24 @@
 @interface VUIPlistMediaDatabaseSeason
-- (BOOL)isEqual:(id)a3;
-- (VUIPlistMediaDatabaseSeason)initWithDictionary:(id)a3 show:(id)a4;
-- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)a3 show:(id)a4;
-- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUIPlistMediaDatabaseSeason)initWithDictionary:(id)dictionary show:(id)show;
+- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)identifier show:(id)show;
+- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)identifier type:(unint64_t)type;
 - (VUIPlistMediaDatabaseShow)show;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)episodeForIdentifier:(id)a3;
+- (id)episodeForIdentifier:(id)identifier;
 - (id)isLocal;
-- (void)setEpisodes:(id)a3;
+- (void)setEpisodes:(id)episodes;
 @end
 
 @implementation VUIPlistMediaDatabaseSeason
 
-- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = VUIPlistMediaDatabaseSeason;
-  v4 = [(VUIPlistMediaDatabaseEntity *)&v8 initWithIdentifier:a3 type:a4];
+  v4 = [(VUIPlistMediaDatabaseEntity *)&v8 initWithIdentifier:identifier type:type];
   v5 = v4;
   if (v4)
   {
@@ -29,38 +29,38 @@
   return v5;
 }
 
-- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)a3 show:(id)a4
+- (VUIPlistMediaDatabaseSeason)initWithIdentifier:(id)identifier show:(id)show
 {
-  v6 = a4;
-  v7 = [(VUIPlistMediaDatabaseSeason *)self initWithIdentifier:a3 type:5];
+  showCopy = show;
+  v7 = [(VUIPlistMediaDatabaseSeason *)self initWithIdentifier:identifier type:5];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_show, v6);
+    objc_storeWeak(&v7->_show, showCopy);
   }
 
   return v8;
 }
 
-- (VUIPlistMediaDatabaseSeason)initWithDictionary:(id)a3 show:(id)a4
+- (VUIPlistMediaDatabaseSeason)initWithDictionary:(id)dictionary show:(id)show
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  showCopy = show;
   v25.receiver = self;
   v25.super_class = VUIPlistMediaDatabaseSeason;
-  v8 = [(VUIPlistMediaDatabaseEntity *)&v25 initWithDictionary:v6];
+  v8 = [(VUIPlistMediaDatabaseEntity *)&v25 initWithDictionary:dictionaryCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_show, v7);
-    v10 = [v6 vui_numberForKey:@"SeasonNumber"];
+    objc_storeWeak(&v8->_show, showCopy);
+    v10 = [dictionaryCopy vui_numberForKey:@"SeasonNumber"];
     v11 = [v10 copy];
     seasonNumber = v9->_seasonNumber;
     v9->_seasonNumber = v11;
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14 = [v6 vui_arrayForKey:@"Episodes"];
+    v14 = [dictionaryCopy vui_arrayForKey:@"Episodes"];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -100,30 +100,30 @@
   return v9;
 }
 
-- (void)setEpisodes:(id)a3
+- (void)setEpisodes:(id)episodes
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEB0];
-  v5 = a3;
+  episodesCopy = episodes;
   v6 = [v4 sortDescriptorWithKey:@"episodeNumber" ascending:1];
   v10[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v8 = [v5 sortedArrayUsingDescriptors:v7];
+  v8 = [episodesCopy sortedArrayUsingDescriptors:v7];
 
   episodes = self->_episodes;
   self->_episodes = v8;
 }
 
-- (id)episodeForIdentifier:(id)a3
+- (id)episodeForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VUIPlistMediaDatabaseSeason *)self episodes];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  episodes = [(VUIPlistMediaDatabaseSeason *)self episodes];
+  v6 = [episodes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -133,12 +133,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(episodes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -147,7 +147,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [episodes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -169,8 +169,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(VUIPlistMediaDatabaseSeason *)self episodes];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  episodes = [(VUIPlistMediaDatabaseSeason *)self episodes];
+  v3 = [episodes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -180,19 +180,19 @@ LABEL_11:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(episodes);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) isLocal];
+        isLocal = [*(*(&v9 + 1) + 8 * i) isLocal];
 
-        if (v6)
+        if (isLocal)
         {
           v3 = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [episodes countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -214,18 +214,18 @@ LABEL_11:
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = VUIPlistMediaDatabaseSeason;
-  v3 = [(VUIPlistMediaDatabaseEntity *)&v18 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
-  v5 = [(VUIPlistMediaDatabaseSeason *)self seasonNumber];
-  [v4 vui_setObjectIfNotNil:v5 forKey:@"SeasonNumber"];
+  dictionaryRepresentation = [(VUIPlistMediaDatabaseEntity *)&v18 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
+  seasonNumber = [(VUIPlistMediaDatabaseSeason *)self seasonNumber];
+  [v4 vui_setObjectIfNotNil:seasonNumber forKey:@"SeasonNumber"];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(VUIPlistMediaDatabaseSeason *)self episodes];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  episodes = [(VUIPlistMediaDatabaseSeason *)self episodes];
+  v8 = [episodes countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -236,14 +236,14 @@ LABEL_11:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(episodes);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-        [v6 addObject:v12];
+        dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+        [v6 addObject:dictionaryRepresentation2];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v9 = [episodes countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v9);
@@ -254,11 +254,11 @@ LABEL_11:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = VUIPlistMediaDatabaseSeason;
-  v4 = [(VUIPlistMediaDatabaseEntity *)&v10 copyWithZone:a3];
+  v4 = [(VUIPlistMediaDatabaseEntity *)&v10 copyWithZone:zone];
   v5 = [(NSNumber *)self->_seasonNumber copy];
   v6 = v4[9];
   v4[9] = v5;
@@ -270,18 +270,18 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -298,10 +298,10 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v7 = [(VUIPlistMediaDatabaseSeason *)self seasonNumber];
-        v8 = [(VUIPlistMediaDatabaseSeason *)v6 seasonNumber];
-        v9 = v7;
-        v10 = v8;
+        seasonNumber = [(VUIPlistMediaDatabaseSeason *)self seasonNumber];
+        seasonNumber2 = [(VUIPlistMediaDatabaseSeason *)v6 seasonNumber];
+        v9 = seasonNumber;
+        v10 = seasonNumber2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -325,10 +325,10 @@ LABEL_18:
           }
         }
 
-        v14 = [(VUIPlistMediaDatabaseSeason *)self episodes];
-        v15 = [(VUIPlistMediaDatabaseSeason *)v6 episodes];
-        v9 = v14;
-        v16 = v15;
+        episodes = [(VUIPlistMediaDatabaseSeason *)self episodes];
+        episodes2 = [(VUIPlistMediaDatabaseSeason *)v6 episodes];
+        v9 = episodes;
+        v16 = episodes2;
         v11 = v16;
         if (v9 == v16)
         {
@@ -365,13 +365,13 @@ LABEL_20:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIPlistMediaDatabaseSeason *)self seasonNumber];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"seasonNumber", v6];
+  seasonNumber = [(VUIPlistMediaDatabaseSeason *)self seasonNumber];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"seasonNumber", seasonNumber];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIPlistMediaDatabaseSeason *)self episodes];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"episodes", v9];
+  episodes = [(VUIPlistMediaDatabaseSeason *)self episodes];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"episodes", episodes];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];

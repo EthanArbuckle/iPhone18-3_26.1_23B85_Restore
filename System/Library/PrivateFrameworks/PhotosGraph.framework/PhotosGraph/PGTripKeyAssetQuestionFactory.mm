@@ -1,20 +1,20 @@
 @interface PGTripKeyAssetQuestionFactory
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
-- (void)_enumerateTrips:(id)a3;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
+- (void)_enumerateTrips:(id)trips;
 @end
 
 @implementation PGTripKeyAssetQuestionFactory
 
-- (void)_enumerateTrips:(id)a3
+- (void)_enumerateTrips:(id)trips
 {
   v85[3] = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v4 = [(PGSurveyQuestionFactory *)self workingContext];
-  v5 = [v4 photoLibrary];
+  tripsCopy = trips;
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
 
-  v6 = [v5 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(type = %d OR type = %d) AND enrichmentState == %d", 1, 2, 4];
-  [v6 setPredicate:v7];
+  [librarySpecificFetchOptions setPredicate:v7];
 
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
   v85[0] = v8;
@@ -23,24 +23,24 @@
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v85[2] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:3];
-  [v6 setSortDescriptors:v11];
+  [librarySpecificFetchOptions setSortDescriptors:v11];
 
-  v50 = v6;
-  v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:v6];
-  v52 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  v13 = [v5 librarySpecificFetchOptions];
+  v50 = librarySpecificFetchOptions;
+  v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:librarySpecificFetchOptions];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
   v84 = *MEMORY[0x277CD9AA8];
   v14 = v84;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v84 count:1];
-  v58 = v13;
-  [v13 setFetchPropertySets:v15];
+  v58 = librarySpecificFetchOptions2;
+  [librarySpecificFetchOptions2 setFetchPropertySets:v15];
 
-  v51 = v5;
-  v16 = [v5 librarySpecificFetchOptions];
+  v51 = photoLibrary;
+  librarySpecificFetchOptions3 = [photoLibrary librarySpecificFetchOptions];
   v83 = v14;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
-  v54 = v16;
-  [v16 setFetchPropertySets:v17];
+  v54 = librarySpecificFetchOptions3;
+  [librarySpecificFetchOptions3 setFetchPropertySets:v17];
 
   v76 = 0;
   v72 = 0u;
@@ -64,12 +64,12 @@
 
         v20 = *(*(&v72 + 1) + 8 * i);
         v21 = [*(v18 + 1960) fetchKeyCuratedAssetInAssetCollection:v20 referenceAsset:0 options:v58];
-        v22 = [v21 firstObject];
+        firstObject = [v21 firstObject];
 
-        if (v22)
+        if (firstObject)
         {
           buf[0] = 0;
-          v59[2](v59, v20, v22, 1, buf, &v76);
+          tripsCopy[2](tripsCopy, v20, firstObject, 1, buf, &v76);
           if (v76)
           {
 
@@ -77,8 +77,8 @@
           }
 
           v23 = MEMORY[0x277CCAC30];
-          v24 = [v20 objectID];
-          v25 = [v23 predicateWithFormat:@"highlightBeingKeyAssetPrivate.parentDayGroupPhotosHighlight == %@", v24];
+          objectID = [v20 objectID];
+          v25 = [v23 predicateWithFormat:@"highlightBeingKeyAssetPrivate.parentDayGroupPhotosHighlight == %@", objectID];
           [v54 setInternalPredicate:v25];
 
           v26 = v18;
@@ -104,7 +104,7 @@
                 }
 
                 v34 = *(*(&v68 + 1) + 8 * j);
-                if (([v34 isEqual:v22] & 1) == 0)
+                if (([v34 isEqual:firstObject] & 1) == 0)
                 {
                   [v28 addObject:v34];
                 }
@@ -118,7 +118,7 @@
 
           if ([v28 count])
           {
-            [v52 setObject:v28 forKey:v20];
+            [strongToStrongObjectsMapTable setObject:v28 forKey:v20];
           }
 
           v18 = v26;
@@ -153,8 +153,8 @@ LABEL_26:
       v67 = v35;
       v64 = v35;
       v65 = v35;
-      v36 = [v52 keyEnumerator];
-      v37 = [v36 countByEnumeratingWithState:&v64 objects:v78 count:16];
+      keyEnumerator = [strongToStrongObjectsMapTable keyEnumerator];
+      v37 = [keyEnumerator countByEnumeratingWithState:&v64 objects:v78 count:16];
       if (!v37)
       {
         break;
@@ -169,11 +169,11 @@ LABEL_26:
         {
           if (*v65 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v41 = *(*(&v64 + 1) + 8 * k);
-          v42 = [v52 objectForKey:v41];
+          v42 = [strongToStrongObjectsMapTable objectForKey:v41];
           v60 = 0u;
           v61 = 0u;
           v62 = 0u;
@@ -195,7 +195,7 @@ LABEL_26:
 
                 v48 = *(*(&v60 + 1) + 8 * m);
                 buf[0] = 0;
-                v59[2](v59, v41, v48, 0, buf, &v76);
+                tripsCopy[2](tripsCopy, v41, v48, 0, buf, &v76);
                 if (v76 == 1)
                 {
 
@@ -222,7 +222,7 @@ LABEL_26:
 LABEL_44:
         }
 
-        v38 = [v36 countByEnumeratingWithState:&v64 objects:v78 count:16];
+        v38 = [keyEnumerator countByEnumeratingWithState:&v64 objects:v78 count:16];
       }
 
       while (v38);
@@ -242,11 +242,11 @@ LABEL_50:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -270,7 +270,7 @@ LABEL_50:
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_19:
-          v18 = MEMORY[0x277CBEBF8];
+          allObjects = MEMORY[0x277CBEBF8];
           goto LABEL_22;
         }
 
@@ -285,7 +285,7 @@ LABEL_11:
       }
     }
 
-    if (!a3)
+    if (!limit)
     {
       v11 = CFAbsoluteTimeGetCurrent();
       if (v11 - v34[3] < 0.01)
@@ -312,7 +312,7 @@ LABEL_11:
     }
   }
 
-  else if (!a3)
+  else if (!limit)
   {
     goto LABEL_19;
   }
@@ -322,10 +322,10 @@ LABEL_11:
   v22 = 3221225472;
   v23 = __74__PGTripKeyAssetQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v24 = &unk_27887F378;
-  v25 = self;
+  selfCopy = self;
   v14 = v13;
   v26 = v14;
-  v30 = a3;
+  limitCopy = limit;
   v15 = v7;
   v27 = v15;
   v28 = &v33;
@@ -343,12 +343,12 @@ LABEL_11:
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    v18 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v18 = [v14 allObjects];
+    allObjects = [v14 allObjects];
   }
 
 LABEL_22:
@@ -357,7 +357,7 @@ LABEL_22:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return allObjects;
 }
 
 void __74__PGTripKeyAssetQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2, void *a3, int a4, _BYTE *a5, _BYTE *a6)

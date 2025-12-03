@@ -1,10 +1,10 @@
 @interface _CDGenericInteractionRanker
-+ (BOOL)isDateInWeekend:(id)a3;
++ (BOOL)isDateInWeekend:(id)weekend;
 - (BOOL)canRankContacts;
-- (BOOL)contactIsAllowed:(id)a3;
+- (BOOL)contactIsAllowed:(id)allowed;
 - (_CDGenericInteractionRanker)init;
-- (double)rankContact:(id)a3;
-- (id)rankInteraction:(id)a3;
+- (double)rankContact:(id)contact;
+- (id)rankInteraction:(id)interaction;
 @end
 
 @implementation _CDGenericInteractionRanker
@@ -16,8 +16,8 @@
   v2 = [(_CDGenericInteractionRanker *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [(_CDGenericInteractionRanker *)v2 setReferenceDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [(_CDGenericInteractionRanker *)v2 setReferenceDate:date];
 
     seedContacts = v2->_seedContacts;
     v2->_seedContacts = MEMORY[0x1E695E0F0];
@@ -36,36 +36,36 @@
   return v2;
 }
 
-+ (BOOL)isDateInWeekend:(id)a3
++ (BOOL)isDateInWeekend:(id)weekend
 {
   v3 = isDateInWeekend__onceToken;
-  v4 = a3;
+  weekendCopy = weekend;
   if (v3 != -1)
   {
     +[_CDGenericInteractionRanker isDateInWeekend:];
   }
 
-  v5 = [isDateInWeekend__calendar isDateInWeekend:v4];
+  v5 = [isDateInWeekend__calendar isDateInWeekend:weekendCopy];
 
   return v5;
 }
 
-- (id)rankInteraction:(id)a3
+- (id)rankInteraction:(id)interaction
 {
   v83 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [v4 endDate];
+  interactionCopy = interaction;
+  startDate = [interactionCopy startDate];
+  endDate = [interactionCopy endDate];
 
-  if (v6)
+  if (endDate)
   {
-    v7 = [v4 endDate];
-    v8 = [v5 laterDate:v7];
+    endDate2 = [interactionCopy endDate];
+    v8 = [startDate laterDate:endDate2];
 
-    v5 = v8;
+    startDate = v8;
   }
 
-  [(NSDate *)self->_referenceDate timeIntervalSinceDate:v5];
+  [(NSDate *)self->_referenceDate timeIntervalSinceDate:startDate];
   v10 = v9;
   v11 = fmod(v9, 86400.0);
   if (v11 >= 86400.0 - v11)
@@ -100,7 +100,7 @@
   v71 = exp(-(v19 * v19));
   v20 = 1.0;
   outgoingWeight = 1.0;
-  if ([v4 direction])
+  if ([interactionCopy direction])
   {
     outgoingWeight = self->_outgoingWeight;
   }
@@ -108,7 +108,7 @@
   if (self->_sameWeekPeriodWeight != self->_diffWeekPeriodWeight)
   {
     v22 = [objc_opt_class() isDateInWeekend:self->_referenceDate];
-    v23 = [objc_opt_class() isDateInWeekend:v5];
+    v23 = [objc_opt_class() isDateInWeekend:startDate];
     v24 = 136;
     if (v22 != v23)
     {
@@ -123,7 +123,7 @@
   v27 = 1.0;
   if (seedContacts && [(NSArray *)seedContacts count])
   {
-    v66 = self;
+    selfCopy = self;
     v79 = 0u;
     v80 = 0u;
     v77 = 0u;
@@ -145,15 +145,15 @@
           }
 
           v34 = *(*(&v77 + 1) + 8 * i);
-          v35 = [v4 sender];
-          if ([v35 mayRepresentSamePersonAs:v34])
+          sender = [interactionCopy sender];
+          if ([sender mayRepresentSamePersonAs:v34])
           {
           }
 
           else
           {
-            v36 = [v4 recipients];
-            v37 = [_CDInteractionAdvisorUtils contact:v34 mayRepresentTheSamePersonAsOneOf:v36];
+            recipients = [interactionCopy recipients];
+            v37 = [_CDInteractionAdvisorUtils contact:v34 mayRepresentTheSamePersonAsOneOf:recipients];
 
             if (!v37)
             {
@@ -175,23 +175,23 @@
     v31 = 0;
 LABEL_30:
 
-    self = v66;
-    if (v66->_requireAllSeedContacts && [(NSArray *)v66->_seedContacts count]> v31)
+    self = selfCopy;
+    if (selfCopy->_requireAllSeedContacts && [(NSArray *)selfCopy->_seedContacts count]> v31)
     {
       v38 = 0;
       goto LABEL_67;
     }
 
-    v27 = v66->_socialWeight * v31;
+    v27 = selfCopy->_socialWeight * v31;
   }
 
   v67 = outgoingWeight;
   v68 = v12;
-  if (self->_referenceLocationUUID && ([v4 locationUUID], (v39 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (self->_referenceLocationUUID && ([interactionCopy locationUUID], (v39 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v40 = v39;
-    v41 = [v4 locationUUID];
-    v42 = [v41 isEqualToString:self->_referenceLocationUUID];
+    locationUUID = [interactionCopy locationUUID];
+    v42 = [locationUUID isEqualToString:self->_referenceLocationUUID];
 
     if (v42)
     {
@@ -207,14 +207,14 @@ LABEL_30:
 
   referenceKeywords = self->_referenceKeywords;
   v44 = 1.0;
-  if (referenceKeywords && -[NSSet count](referenceKeywords, "count") && ([v4 keywords], v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "count"), v45, v46))
+  if (referenceKeywords && -[NSSet count](referenceKeywords, "count") && ([interactionCopy keywords], v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "count"), v45, v46))
   {
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v47 = [v4 keywords];
-    v48 = [v47 countByEnumeratingWithState:&v73 objects:v81 count:16];
+    keywords = [interactionCopy keywords];
+    v48 = [keywords countByEnumeratingWithState:&v73 objects:v81 count:16];
     if (v48)
     {
       v49 = v48;
@@ -227,13 +227,13 @@ LABEL_30:
         {
           if (*v74 != v52)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(keywords);
           }
 
-          v51 += [(NSSet *)self->_referenceKeywords containsObject:*(*(&v73 + 1) + 8 * j), v66];
+          v51 += [(NSSet *)self->_referenceKeywords containsObject:*(*(&v73 + 1) + 8 * j), selfCopy];
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v73 objects:v81 count:16];
+        v49 = [keywords countByEnumeratingWithState:&v73 objects:v81 count:16];
       }
 
       while (v49);
@@ -323,23 +323,23 @@ LABEL_67:
   return contactPrefix;
 }
 
-- (double)rankContact:(id)a3
+- (double)rankContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   contactPrefix = self->_contactPrefix;
-  if (!contactPrefix || !-[NSString length](contactPrefix, "length") || (v6 = 0.0, [v4 mayContainPrefix:self->_contactPrefix]))
+  if (!contactPrefix || !-[NSString length](contactPrefix, "length") || (v6 = 0.0, [contactCopy mayContainPrefix:self->_contactPrefix]))
   {
     v6 = 1.0;
     if (self->_referenceKeywords)
     {
-      v7 = [v4 displayName];
+      displayName = [contactCopy displayName];
 
-      if (v7)
+      if (displayName)
       {
-        v8 = [v4 displayName];
-        v9 = [v8 lowercaseString];
-        v10 = [v9 componentsSeparatedByString:@" "];
+        displayName2 = [contactCopy displayName];
+        lowercaseString = [displayName2 lowercaseString];
+        v10 = [lowercaseString componentsSeparatedByString:@" "];
 
         v21 = 0u;
         v22 = 0u;
@@ -391,14 +391,14 @@ LABEL_67:
   return v6;
 }
 
-- (BOOL)contactIsAllowed:(id)a3
+- (BOOL)contactIsAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = v4;
+  allowedCopy = allowed;
+  v5 = allowedCopy;
   allowedPersonIdType = self->_allowedPersonIdType;
   if (allowedPersonIdType)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "personIdType")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(allowedCopy, "personIdType")}];
     v8 = [(NSSet *)allowedPersonIdType containsObject:v7];
 
     if (!v8)
@@ -419,8 +419,8 @@ LABEL_7:
     allowedPersonIds = self->_allowedPersonIds;
     if (allowedPersonIds)
     {
-      v13 = [v5 personId];
-      v14 = [(NSSet *)allowedPersonIds containsObject:v13];
+      personId = [v5 personId];
+      v14 = [(NSSet *)allowedPersonIds containsObject:personId];
     }
 
     else

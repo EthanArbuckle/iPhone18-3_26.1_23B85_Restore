@@ -1,38 +1,38 @@
 @interface HUTriggerConditionEditorExpandingSectionModule
-+ (id)sectionModuleForConditionType:(unint64_t)a3 itemUpdater:(id)a4 home:(id)a5;
++ (id)sectionModuleForConditionType:(unint64_t)type itemUpdater:(id)updater home:(id)home;
 - (BOOL)conditionIsDisabled;
-- (HUTriggerConditionEditorExpandingSectionModule)initWithItemUpdater:(id)a3 conditionType:(unint64_t)a4 home:(id)a5;
+- (HUTriggerConditionEditorExpandingSectionModule)initWithItemUpdater:(id)updater conditionType:(unint64_t)type home:(id)home;
 - (id)buildConditionOptionItems;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)conditionForOptionItem:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)conditionForOptionItem:(id)item;
 - (id)conditionTitle;
-- (id)createNoConditionOptionItemWithTitle:(id)a3;
+- (id)createNoConditionOptionItemWithTitle:(id)title;
 - (id)itemProviders;
-- (id)preferredConditionFromConditions:(id)a3;
+- (id)preferredConditionFromConditions:(id)conditions;
 - (id)sectionID;
-- (id)selectOptionItem:(id)a3;
-- (id)selectOptionItemForCondition:(id)a3;
-- (id)updateSelectionWithCondition:(id)a3;
+- (id)selectOptionItem:(id)item;
+- (id)selectOptionItemForCondition:(id)condition;
+- (id)updateSelectionWithCondition:(id)condition;
 - (void)_buildItemProvider;
 @end
 
 @implementation HUTriggerConditionEditorExpandingSectionModule
 
-+ (id)sectionModuleForConditionType:(unint64_t)a3 itemUpdater:(id)a4 home:(id)a5
++ (id)sectionModuleForConditionType:(unint64_t)type itemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
-  v8 = a5;
-  if (!a3)
+  updaterCopy = updater;
+  homeCopy = home;
+  if (!type)
   {
     v9 = off_277DB18C0;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v9 = off_277DB1880;
 LABEL_5:
-    v10 = [objc_alloc(*v9) initWithItemUpdater:v7 conditionType:a3 home:v8];
+    v10 = [objc_alloc(*v9) initWithItemUpdater:updaterCopy conditionType:type home:homeCopy];
     goto LABEL_7;
   }
 
@@ -42,18 +42,18 @@ LABEL_7:
   return v10;
 }
 
-- (HUTriggerConditionEditorExpandingSectionModule)initWithItemUpdater:(id)a3 conditionType:(unint64_t)a4 home:(id)a5
+- (HUTriggerConditionEditorExpandingSectionModule)initWithItemUpdater:(id)updater conditionType:(unint64_t)type home:(id)home
 {
-  v9 = a5;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HUTriggerConditionEditorExpandingSectionModule;
-  v10 = [(HFItemModule *)&v13 initWithItemUpdater:a3];
+  v10 = [(HFItemModule *)&v13 initWithItemUpdater:updater];
   v11 = v10;
   if (v10)
   {
-    v10->_conditionType = a4;
+    v10->_conditionType = type;
     v10->_showOptions = 0;
-    objc_storeStrong(&v10->_home, a5);
+    objc_storeStrong(&v10->_home, home);
     [(HUTriggerConditionEditorExpandingSectionModule *)v11 _buildItemProvider];
   }
 
@@ -63,22 +63,22 @@ LABEL_7:
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUTriggerConditionEditorExpandingSectionModule *)self itemProvider];
-  v4 = [v2 setWithObject:v3];
+  itemProvider = [(HUTriggerConditionEditorExpandingSectionModule *)self itemProvider];
+  v4 = [v2 setWithObject:itemProvider];
 
   return v4;
 }
 
 - (id)sectionID
 {
-  v2 = [(HUTriggerConditionEditorExpandingSectionModule *)self conditionType];
+  conditionType = [(HUTriggerConditionEditorExpandingSectionModule *)self conditionType];
   v3 = @"location";
-  if (v2 != 1)
+  if (conditionType != 1)
   {
     v3 = 0;
   }
 
-  if (v2)
+  if (conditionType)
   {
     return v3;
   }
@@ -91,8 +91,8 @@ LABEL_7:
 
 - (void)_buildItemProvider
 {
-  v3 = [(HUTriggerConditionEditorExpandingSectionModule *)self home];
-  v4 = [v3 areBulletinNotificationsSupported];
+  home = [(HUTriggerConditionEditorExpandingSectionModule *)self home];
+  areBulletinNotificationsSupported = [home areBulletinNotificationsSupported];
 
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D14B38]);
@@ -101,18 +101,18 @@ LABEL_7:
   v14[2] = __68__HUTriggerConditionEditorExpandingSectionModule__buildItemProvider__block_invoke;
   v14[3] = &unk_277DB8E98;
   objc_copyWeak(&v15, &location);
-  v16 = v4;
+  v16 = areBulletinNotificationsSupported;
   v6 = [v5 initWithResultsBlock:v14];
   [(HUTriggerConditionEditorExpandingSectionModule *)self setShowOptionsItem:v6];
 
-  v7 = [(HUTriggerConditionEditorExpandingSectionModule *)self buildConditionOptionItems];
-  [(HUTriggerConditionEditorExpandingSectionModule *)self setOptionItems:v7];
+  buildConditionOptionItems = [(HUTriggerConditionEditorExpandingSectionModule *)self buildConditionOptionItems];
+  [(HUTriggerConditionEditorExpandingSectionModule *)self setOptionItems:buildConditionOptionItems];
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HUTriggerConditionEditorExpandingSectionModule *)self optionItems];
-  v10 = [v8 setWithArray:v9];
-  v11 = [(HUTriggerConditionEditorExpandingSectionModule *)self showOptionsItem];
-  v12 = [v10 setByAddingObject:v11];
+  optionItems = [(HUTriggerConditionEditorExpandingSectionModule *)self optionItems];
+  v10 = [v8 setWithArray:optionItems];
+  showOptionsItem = [(HUTriggerConditionEditorExpandingSectionModule *)self showOptionsItem];
+  v12 = [v10 setByAddingObject:showOptionsItem];
 
   v13 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v12];
   [(HUTriggerConditionEditorExpandingSectionModule *)self setItemProvider:v13];
@@ -224,30 +224,30 @@ id __68__HUTriggerConditionEditorExpandingSectionModule__buildItemProvider__bloc
   return v11;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc(MEMORY[0x277D14850]);
-  v6 = [(HUTriggerConditionEditorExpandingSectionModule *)self sectionID];
-  v7 = [v5 initWithIdentifier:v6];
+  sectionID = [(HUTriggerConditionEditorExpandingSectionModule *)self sectionID];
+  v7 = [v5 initWithIdentifier:sectionID];
 
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(HUTriggerConditionEditorExpandingSectionModule *)self showOptionsItem];
-  v10 = [v8 arrayWithObject:v9];
+  showOptionsItem = [(HUTriggerConditionEditorExpandingSectionModule *)self showOptionsItem];
+  v10 = [v8 arrayWithObject:showOptionsItem];
 
   if ([(HUTriggerConditionEditorExpandingSectionModule *)self showOptions])
   {
-    v11 = [(HUTriggerConditionEditorExpandingSectionModule *)self optionItems];
-    [v10 addObjectsFromArray:v11];
+    optionItems = [(HUTriggerConditionEditorExpandingSectionModule *)self optionItems];
+    [v10 addObjectsFromArray:optionItems];
   }
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __82__HUTriggerConditionEditorExpandingSectionModule_buildSectionsWithDisplayedItems___block_invoke;
   v16[3] = &unk_277DB85D8;
-  v17 = v4;
-  v12 = v4;
+  v17 = itemsCopy;
+  v12 = itemsCopy;
   v13 = [v10 na_filter:v16];
   [v7 setItems:v13];
 
@@ -257,12 +257,12 @@ id __68__HUTriggerConditionEditorExpandingSectionModule__buildItemProvider__bloc
   return v14;
 }
 
-- (id)selectOptionItem:(id)a3
+- (id)selectOptionItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v5 = [(HUTriggerConditionEditorExpandingSectionModule *)self conditionForOptionItem:v4];
+    v5 = [(HUTriggerConditionEditorExpandingSectionModule *)self conditionForOptionItem:itemCopy];
   }
 
   else
@@ -270,26 +270,26 @@ id __68__HUTriggerConditionEditorExpandingSectionModule__buildItemProvider__bloc
     v5 = 0;
   }
 
-  [(HUTriggerConditionEditorExpandingSectionModule *)self setSelectedOptionItem:v4];
+  [(HUTriggerConditionEditorExpandingSectionModule *)self setSelectedOptionItem:itemCopy];
   [(HUTriggerConditionEditorExpandingSectionModule *)self setCondition:v5];
 
   return v5;
 }
 
-- (id)updateSelectionWithCondition:(id)a3
+- (id)updateSelectionWithCondition:(id)condition
 {
-  v4 = a3;
-  v5 = [(HUTriggerConditionEditorExpandingSectionModule *)self selectOptionItemForCondition:v4];
+  conditionCopy = condition;
+  v5 = [(HUTriggerConditionEditorExpandingSectionModule *)self selectOptionItemForCondition:conditionCopy];
   [(HUTriggerConditionEditorExpandingSectionModule *)self setSelectedOptionItem:v5];
 
-  [(HUTriggerConditionEditorExpandingSectionModule *)self setCondition:v4];
+  [(HUTriggerConditionEditorExpandingSectionModule *)self setCondition:conditionCopy];
 
   return [(HUTriggerConditionEditorExpandingSectionModule *)self selectedOptionItem];
 }
 
-- (id)createNoConditionOptionItemWithTitle:(id)a3
+- (id)createNoConditionOptionItemWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D14B38]);
   v9[0] = MEMORY[0x277D85DD0];
@@ -297,7 +297,7 @@ id __68__HUTriggerConditionEditorExpandingSectionModule__buildItemProvider__bloc
   v9[2] = __87__HUTriggerConditionEditorExpandingSectionModule_createNoConditionOptionItemWithTitle___block_invoke;
   v9[3] = &unk_277DBB3B8;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   v7 = [v5 initWithResultsAndItemBlock:v9];
 
@@ -328,50 +328,50 @@ id __87__HUTriggerConditionEditorExpandingSectionModule_createNoConditionOptionI
   return v10;
 }
 
-- (id)selectOptionItemForCondition:(id)a3
+- (id)selectOptionItemForCondition:(id)condition
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:165 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule selectOptionItemForCondition:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:165 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule selectOptionItemForCondition:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)conditionForOptionItem:(id)a3
+- (id)conditionForOptionItem:(id)item
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:171 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule conditionForOptionItem:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:171 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule conditionForOptionItem:]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)buildConditionOptionItems
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:177 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule buildConditionOptionItems]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:177 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule buildConditionOptionItems]", objc_opt_class()}];
 
   return MEMORY[0x277CBEBF8];
 }
 
 - (id)conditionTitle
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:183 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule conditionTitle]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:183 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule conditionTitle]", objc_opt_class()}];
 
   return &stru_2823E0EE8;
 }
 
 - (BOOL)conditionIsDisabled
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:189 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule conditionIsDisabled]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:189 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule conditionIsDisabled]", objc_opt_class()}];
 
   return 1;
 }
 
-- (id)preferredConditionFromConditions:(id)a3
+- (id)preferredConditionFromConditions:(id)conditions
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:195 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule preferredConditionFromConditions:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorExpandingSectionModule.m" lineNumber:195 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUTriggerConditionEditorExpandingSectionModule preferredConditionFromConditions:]", objc_opt_class()}];
 
   return 0;
 }

@@ -5,15 +5,15 @@
 - (BOOL)isInSandboxiCloudEnvironment;
 - (_TtC8Freeform13CRLBoardActor)boardActor;
 - (_TtC8Freeform21CRLEditingCoordinator)init;
-- (id)sourceContextForPasteboardController:(id)a3;
-- (void)canPerformUserActionUsingBlock:(id)a3;
+- (id)sourceContextForPasteboardController:(id)controller;
+- (void)canPerformUserActionUsingBlock:(id)block;
 - (void)currentUserGainedEditPermissions;
 - (void)currentUserLostEditPermissions;
 - (void)didProcessAuxiliaryRealTimeChanges;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
-- (void)setBoardItemFactory:(id)a3;
-- (void)setEnableCollaboratorCursors:(BOOL)a3;
-- (void)shareStateUpdatedWithShare:(id)a3;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
+- (void)setBoardItemFactory:(id)factory;
+- (void)setEnableCollaboratorCursors:(BOOL)cursors;
+- (void)shareStateUpdatedWithShare:(id)share;
 - (void)willProcessAuxiliaryRealTimeChanges;
 - (void)willUndo;
 @end
@@ -22,19 +22,19 @@
 
 - (void)willUndo
 {
-  v1 = a1;
+  selfCopy = self;
   sub_10092CCE8();
 }
 
 - (void)willProcessAuxiliaryRealTimeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_100909C00();
 }
 
 - (void)didProcessAuxiliaryRealTimeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_10090A820();
 }
 
@@ -44,45 +44,45 @@
   return v2;
 }
 
-- (void)setBoardItemFactory:(id)a3
+- (void)setBoardItemFactory:(id)factory
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLEditingCoordinator_boardItemFactory);
-  *(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLEditingCoordinator_boardItemFactory) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLEditingCoordinator_boardItemFactory) = factory;
+  factoryCopy = factory;
 }
 
 - (BOOL)enableCollaboratorCursors
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setEnableCollaboratorCursors:(BOOL)a3
+- (void)setEnableCollaboratorCursors:(BOOL)cursors
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
   sub_10092B3AC();
 }
 
-- (void)canPerformUserActionUsingBlock:(id)a3
+- (void)canPerformUserActionUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_10092E73C(v5, v4);
+  selfCopy = self;
+  sub_10092E73C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (BOOL)canPerformUserAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10092C914();
 
   return v3;
@@ -113,22 +113,22 @@
   return qword_101AD6520 == 2;
 }
 
-- (void)shareStateUpdatedWithShare:(id)a3
+- (void)shareStateUpdatedWithShare:(id)share
 {
-  v5 = a3;
-  v6 = self;
-  sub_10092CE1C(a3);
+  shareCopy = share;
+  selfCopy = self;
+  sub_10092CE1C(share);
 }
 
 - (void)currentUserLostEditPermissions
 {
-  v2 = self;
+  selfCopy = self;
   sub_10092D0BC();
 }
 
 - (void)currentUserGainedEditPermissions
 {
-  v2 = self;
+  selfCopy = self;
   sub_10092D110();
 }
 
@@ -139,12 +139,12 @@
   return result;
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
   type metadata accessor for CRLChangeRecord();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_10092D5B4(v5);
@@ -152,7 +152,7 @@
   sub_100005070(&v7);
 }
 
-- (id)sourceContextForPasteboardController:(id)a3
+- (id)sourceContextForPasteboardController:(id)controller
 {
   v3 = *(*(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLEditingCoordinator_mainBoard) + OBJC_IVAR____TtC8Freeform8CRLBoard_store);
   v4 = type metadata accessor for CRLPasteboardSourceContext();

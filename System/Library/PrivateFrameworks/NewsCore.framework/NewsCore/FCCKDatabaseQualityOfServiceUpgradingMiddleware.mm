@@ -1,14 +1,14 @@
 @interface FCCKDatabaseQualityOfServiceUpgradingMiddleware
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5;
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error;
 @end
 
 @implementation FCCKDatabaseQualityOfServiceUpgradingMiddleware
 
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error
 {
-  v5 = a4;
-  v6 = [v5 configuration];
-  v7 = [v6 copy];
+  operationCopy = operation;
+  configuration = [operationCopy configuration];
+  v7 = [configuration copy];
   v8 = v7;
   if (v7)
   {
@@ -29,7 +29,7 @@
 
   [v10 setAutomaticallyRetryNetworkFailures:0];
   [v10 setDiscretionaryNetworkBehavior:0];
-  [v5 setConfiguration:v10];
+  [operationCopy setConfiguration:v10];
 
   return 0;
 }

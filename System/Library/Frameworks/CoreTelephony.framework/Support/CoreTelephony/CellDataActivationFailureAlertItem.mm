@@ -1,14 +1,14 @@
 @interface CellDataActivationFailureAlertItem
-- (CellDataActivationFailureAlertItem)initWithErrorCode:(int)a3 reason:(id)a4 additionalData:(dict)a5 suggestWiFi:(BOOL)a6 cellularDataOn:(BOOL)a7 wifiOn:(BOOL)a8 isSatelliteSystem:(BOOL)a9 isStewieActive:(BOOL)a10 registry:(shared_ptr<const Registry>)a11 logger:(const void *)a12;
+- (CellDataActivationFailureAlertItem)initWithErrorCode:(int)code reason:(id)reason additionalData:(dict)data suggestWiFi:(BOOL)fi cellularDataOn:(BOOL)on wifiOn:(BOOL)wifiOn isSatelliteSystem:(BOOL)system isStewieActive:(BOOL)self0 registry:(shared_ptr<const Registry>)self1 logger:(const void *)self2;
 - (id).cxx_construct;
-- (void)button_config:(BOOL)a3;
+- (void)button_config:(BOOL)button_config;
 - (void)dealloc;
 - (void)show;
 @end
 
 @implementation CellDataActivationFailureAlertItem
 
-- (CellDataActivationFailureAlertItem)initWithErrorCode:(int)a3 reason:(id)a4 additionalData:(dict)a5 suggestWiFi:(BOOL)a6 cellularDataOn:(BOOL)a7 wifiOn:(BOOL)a8 isSatelliteSystem:(BOOL)a9 isStewieActive:(BOOL)a10 registry:(shared_ptr<const Registry>)a11 logger:(const void *)a12
+- (CellDataActivationFailureAlertItem)initWithErrorCode:(int)code reason:(id)reason additionalData:(dict)data suggestWiFi:(BOOL)fi cellularDataOn:(BOOL)on wifiOn:(BOOL)wifiOn isSatelliteSystem:(BOOL)system isStewieActive:(BOOL)self0 registry:(shared_ptr<const Registry>)self1 logger:(const void *)self2
 {
   v51.receiver = self;
   v51.super_class = CellDataActivationFailureAlertItem;
@@ -19,8 +19,8 @@
     return v19;
   }
 
-  v21 = *a11.__ptr_;
-  v20 = *(a11.__ptr_ + 1);
+  v21 = *registry.__ptr_;
+  v20 = *(registry.__ptr_ + 1);
   if (v20)
   {
     atomic_fetch_add_explicit((v20 + 8), 1uLL, memory_order_relaxed);
@@ -34,12 +34,12 @@
     sub_100004A34(cntrl);
   }
 
-  v19->fLogger = a11.__cntrl_;
-  v19->_error = a3;
-  v19->_suggestWiFi = a6;
-  if (a4)
+  v19->fLogger = registry.__cntrl_;
+  v19->_error = code;
+  v19->_suggestWiFi = fi;
+  if (reason)
   {
-    v23 = [a4 copy];
+    v23 = [reason copy];
   }
 
   else
@@ -48,7 +48,7 @@
   }
 
   v19->_reason = v23;
-  v24 = *a5.fObj.fObj;
+  v24 = *data.fObj.fObj;
   if (v24)
   {
     xpc_retain(v24);
@@ -76,9 +76,9 @@
     sub_100004A34(v27);
   }
 
-  if (!a9 && !a10)
+  if (!system && !active)
   {
-    v28 = !a7 || a8;
+    v28 = !on || wifiOn;
     v29 = v19->fRegistry.__ptr_;
     v30 = v19->fRegistry.__cntrl_;
     if (v28)
@@ -227,7 +227,7 @@ LABEL_45:
 
   v34 = v19->fRegistry.__ptr_;
   v35 = v19->fRegistry.__cntrl_;
-  if (a10)
+  if (active)
   {
     if (v35)
     {
@@ -288,9 +288,9 @@ LABEL_45:
   [(CellDataActivationFailureAlertItem *)&v8 dealloc];
 }
 
-- (void)button_config:(BOOL)a3
+- (void)button_config:(BOOL)button_config
 {
-  v3 = a3;
+  button_configCopy = button_config;
   ptr = self->fRegistry.__ptr_;
   cntrl = self->fRegistry.__cntrl_;
   if (cntrl)
@@ -1007,7 +1007,7 @@ LABEL_238:
       goto LABEL_238;
     }
 
-    if (v3 && v16)
+    if (button_configCopy && v16)
     {
       if (((*(*v16 + 152))(v16) & 1) == 0)
       {
@@ -1142,7 +1142,7 @@ LABEL_86:
   {
     if ([(NSString *)reason isEqualToString:kCTRegistrationDataActivationPreventionReasonIntlRoamingOff])
     {
-      if (v3)
+      if (button_configCopy)
       {
         [+[CellDataActivationFailureAlertState sharedInstance](CellDataActivationFailureAlertState setAction:"setAction:", 1];
       }
@@ -1177,12 +1177,12 @@ LABEL_208:
             v107 = [v107 stringByAppendingString:@"_WLAN"];
           }
 
-          if (([v107 isEqualToString:@"EDGE_ROAMING_FAILURE_BODY"] & v3) == 1)
+          if (([v107 isEqualToString:@"EDGE_ROAMING_FAILURE_BODY"] & button_configCopy) == 1)
           {
             v107 = [v107 stringByAppendingString:@"_WITHSETTINGS"];
           }
 
-          if (([v107 isEqualToString:@"EDGE_ROAMING_FAILURE_BODY_WLAN"] & v3) == 1)
+          if (([v107 isEqualToString:@"EDGE_ROAMING_FAILURE_BODY_WLAN"] & button_configCopy) == 1)
           {
             v107 = [v107 stringByAppendingString:@"_WITHSETTINGS"];
           }
@@ -1349,8 +1349,8 @@ LABEL_255:
   }
 
   [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationSystemAperturePresentationKey];
-  v7 = [v6 build];
-  [v3 setObject:v7 forKeyedSubscript:SBUserNotificationSystemApertureContentDefinitionKey];
+  build = [v6 build];
+  [v3 setObject:build forKeyedSubscript:SBUserNotificationSystemApertureContentDefinitionKey];
   error = 0;
   v8 = CFUserNotificationCreate(0, 0.0, 3uLL, &error, v3);
   v9 = v8;

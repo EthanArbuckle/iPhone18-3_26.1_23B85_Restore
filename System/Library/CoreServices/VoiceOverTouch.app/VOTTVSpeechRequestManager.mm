@@ -1,13 +1,13 @@
 @interface VOTTVSpeechRequestManager
-- (BOOL)updateHeadersAndElementsWithTarget:(id)a3 ignoreLastUpdate:(BOOL)a4;
+- (BOOL)updateHeadersAndElementsWithTarget:(id)target ignoreLastUpdate:(BOOL)update;
 - (id)description;
-- (id)generateOutputRequest:(BOOL *)a3;
+- (id)generateOutputRequest:(BOOL *)request;
 - (void)reset;
 - (void)resetElements;
 - (void)resetHeaders;
-- (void)transferAllFrom:(id)a3;
-- (void)transferElementsFrom:(id)a3;
-- (void)transferHeadersFrom:(id)a3;
+- (void)transferAllFrom:(id)from;
+- (void)transferElementsFrom:(id)from;
+- (void)transferHeadersFrom:(id)from;
 @end
 
 @implementation VOTTVSpeechRequestManager
@@ -19,8 +19,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(VOTTVSpeechRequestManager *)self requestHeaders];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  requestHeaders = [(VOTTVSpeechRequestManager *)self requestHeaders];
+  v5 = [requestHeaders countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -31,13 +31,13 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestHeaders);
         }
 
         [v3 appendFormat:@"  %@\n", *(*(&v19 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [requestHeaders countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
@@ -48,8 +48,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(VOTTVSpeechRequestManager *)self requestElements];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  requestElements = [(VOTTVSpeechRequestManager *)self requestElements];
+  v10 = [requestElements countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -60,13 +60,13 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(requestElements);
         }
 
         [v3 appendFormat:@"  %@\n", *(*(&v15 + 1) + 8 * j)];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v11 = [requestElements countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v11);
@@ -75,20 +75,20 @@
   return v3;
 }
 
-- (BOOL)updateHeadersAndElementsWithTarget:(id)a3 ignoreLastUpdate:(BOOL)a4
+- (BOOL)updateHeadersAndElementsWithTarget:(id)target ignoreLastUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
+  updateCopy = update;
+  targetCopy = target;
   v7 = +[NSMutableOrderedSet orderedSet];
   v69 = +[NSMutableOrderedSet orderedSet];
-  if (([v6 isAccessibleElement] & 1) == 0)
+  if (([targetCopy isAccessibleElement] & 1) == 0)
   {
-    v8 = [v6 accessibleDescendants];
+    accessibleDescendants = [targetCopy accessibleDescendants];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v86 objects:v94 count:16];
+    v9 = [accessibleDescendants countByEnumeratingWithState:&v86 objects:v94 count:16];
     if (v9)
     {
       v10 = v9;
@@ -99,19 +99,19 @@
         {
           if (*v87 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(accessibleDescendants);
           }
 
           v13 = *(*(&v86 + 1) + 8 * i);
           [v69 addTVElement:v13];
-          v14 = [v13 headerElements];
-          [v7 addTVElements:v14];
+          headerElements = [v13 headerElements];
+          [v7 addTVElements:headerElements];
 
-          v15 = [v13 touchContainer];
-          [v7 addTVElement:v15];
+          touchContainer = [v13 touchContainer];
+          [v7 addTVElement:touchContainer];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v86 objects:v94 count:16];
+        v10 = [accessibleDescendants countByEnumeratingWithState:&v86 objects:v94 count:16];
       }
 
       while (v10);
@@ -120,24 +120,24 @@
 
   if (![v69 count])
   {
-    [v69 addTVElement:v6];
-    v16 = [v6 headerElements];
-    [v7 addTVElements:v16];
+    [v69 addTVElement:targetCopy];
+    headerElements2 = [targetCopy headerElements];
+    [v7 addTVElements:headerElements2];
 
-    v17 = [v6 touchContainer];
-    [v7 addTVElement:v17];
+    touchContainer2 = [targetCopy touchContainer];
+    [v7 addTVElement:touchContainer2];
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
   if (v18 - self->_lastFocusRequestTime < 1.0)
   {
-    v19 = [v69 array];
-    v20 = [(VOTTVSpeechRequestManager *)self requestElements];
-    if ([v19 isEqualToArray:v20])
+    array = [v69 array];
+    requestElements = [(VOTTVSpeechRequestManager *)self requestElements];
+    if ([array isEqualToArray:requestElements])
     {
-      v21 = [v7 array];
-      v22 = [(VOTTVSpeechRequestManager *)self requestHeaders];
-      v23 = [v21 isEqualToArray:v22];
+      array2 = [v7 array];
+      requestHeaders = [(VOTTVSpeechRequestManager *)self requestHeaders];
+      v23 = [array2 isEqualToArray:requestHeaders];
 
       if (v23)
       {
@@ -151,18 +151,18 @@
     }
   }
 
-  if (v4)
+  if (updateCopy)
   {
-    v25 = [v69 array];
-    [(VOTTVSpeechRequestManager *)self setRequestElements:v25];
+    array3 = [v69 array];
+    [(VOTTVSpeechRequestManager *)self setRequestElements:array3];
 
-    v26 = [v7 array];
-    [(VOTTVSpeechRequestManager *)self setRequestHeaders:v26];
+    array4 = [v7 array];
+    [(VOTTVSpeechRequestManager *)self setRequestHeaders:array4];
   }
 
   else
   {
-    v64 = v6;
+    v64 = targetCopy;
     v65 = v7;
     v27 = +[NSMutableArray array];
     v82 = 0u;
@@ -186,17 +186,17 @@
           }
 
           v33 = *(*(&v82 + 1) + 8 * j);
-          v34 = [(VOTTVSpeechRequestManager *)self requestElements];
-          v35 = [v34 containsObject:v33];
+          requestElements2 = [(VOTTVSpeechRequestManager *)self requestElements];
+          v35 = [requestElements2 containsObject:v33];
 
           if (v35)
           {
-            v36 = [(VOTTVSpeechRequestManager *)self requestElements];
-            v37 = [v36 originalElementforElement:v33];
+            requestElements3 = [(VOTTVSpeechRequestManager *)self requestElements];
+            v37 = [requestElements3 originalElementforElement:v33];
 
-            v38 = [v37 snapshot];
+            snapshot = [v37 snapshot];
             [v37 updateCache];
-            [v37 setAspectMask:{objc_msgSend(v37, "differenceAspectMask:", v38)}];
+            [v37 setAspectMask:{objc_msgSend(v37, "differenceAspectMask:", snapshot)}];
             [v27 addObject:v37];
           }
 
@@ -206,8 +206,8 @@
             v81 = 0u;
             v78 = 0u;
             v79 = 0u;
-            v39 = [(VOTTVSpeechRequestManager *)self requestElements];
-            v40 = [v39 countByEnumeratingWithState:&v78 objects:v92 count:16];
+            requestElements4 = [(VOTTVSpeechRequestManager *)self requestElements];
+            v40 = [requestElements4 countByEnumeratingWithState:&v78 objects:v92 count:16];
             if (v40)
             {
               v41 = v40;
@@ -218,7 +218,7 @@
                 {
                   if (*v79 != v42)
                   {
-                    objc_enumerationMutation(v39);
+                    objc_enumerationMutation(requestElements4);
                   }
 
                   if (![*(*(&v78 + 1) + 8 * k) differenceAspectMask:v33])
@@ -228,7 +228,7 @@
                   }
                 }
 
-                v41 = [v39 countByEnumeratingWithState:&v78 objects:v92 count:16];
+                v41 = [requestElements4 countByEnumeratingWithState:&v78 objects:v92 count:16];
                 if (v41)
                 {
                   continue;
@@ -276,17 +276,17 @@ LABEL_36:
           v50 = *(*(&v74 + 1) + 8 * m);
           if (([v28 containsObject:v50] & 1) == 0)
           {
-            v51 = [(VOTTVSpeechRequestManager *)self requestHeaders];
-            v52 = [v51 containsObject:v50];
+            requestHeaders2 = [(VOTTVSpeechRequestManager *)self requestHeaders];
+            v52 = [requestHeaders2 containsObject:v50];
 
             if (v52)
             {
-              v53 = [(VOTTVSpeechRequestManager *)self requestHeaders];
-              v54 = [v53 originalElementforElement:v50];
+              requestHeaders3 = [(VOTTVSpeechRequestManager *)self requestHeaders];
+              v54 = [requestHeaders3 originalElementforElement:v50];
 
-              v55 = [v54 snapshot];
+              snapshot2 = [v54 snapshot];
               [v54 updateCache];
-              [v54 setAspectMask:{objc_msgSend(v54, "differenceAspectMask:", v55)}];
+              [v54 setAspectMask:{objc_msgSend(v54, "differenceAspectMask:", snapshot2)}];
               [v44 addObject:v54];
             }
 
@@ -298,8 +298,8 @@ LABEL_36:
               v73 = 0u;
               v70 = 0u;
               v71 = 0u;
-              v58 = [(VOTTVSpeechRequestManager *)self requestHeaders];
-              v59 = [v58 countByEnumeratingWithState:&v70 objects:v90 count:16];
+              requestHeaders4 = [(VOTTVSpeechRequestManager *)self requestHeaders];
+              v59 = [requestHeaders4 countByEnumeratingWithState:&v70 objects:v90 count:16];
               if (v59)
               {
                 v60 = v59;
@@ -310,7 +310,7 @@ LABEL_36:
                   {
                     if (*v71 != v61)
                     {
-                      objc_enumerationMutation(v58);
+                      objc_enumerationMutation(requestHeaders4);
                     }
 
                     if (![*(*(&v70 + 1) + 8 * n) differenceAspectMask:v50])
@@ -320,7 +320,7 @@ LABEL_36:
                     }
                   }
 
-                  v60 = [v58 countByEnumeratingWithState:&v70 objects:v90 count:16];
+                  v60 = [requestHeaders4 countByEnumeratingWithState:&v70 objects:v90 count:16];
                   if (v60)
                   {
                     continue;
@@ -347,11 +347,11 @@ LABEL_57:
       while (v47);
     }
 
-    v26 = v68;
+    array4 = v68;
     [(VOTTVSpeechRequestManager *)self setRequestElements:v68];
     [(VOTTVSpeechRequestManager *)self setRequestHeaders:v44];
 
-    v6 = v64;
+    targetCopy = v64;
     v7 = v65;
   }
 
@@ -361,7 +361,7 @@ LABEL_62:
   return v24;
 }
 
-- (id)generateOutputRequest:(BOOL *)a3
+- (id)generateOutputRequest:(BOOL *)request
 {
   v5 = objc_alloc_init(VOTOutputRequest);
   [(VOTOutputRequest *)v5 setGeneratesBraille:1];
@@ -370,8 +370,8 @@ LABEL_62:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(VOTTVSpeechRequestManager *)self requestHeaders];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  requestHeaders = [(VOTTVSpeechRequestManager *)self requestHeaders];
+  v7 = [requestHeaders countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -382,27 +382,27 @@ LABEL_62:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestHeaders);
         }
 
         [(VOTOutputRequest *)v5 addTVElement:*(*(&v25 + 1) + 8 * i) servesAsHeader:1 filterWithAspectMask:1];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v8 = [requestHeaders countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(VOTOutputRequest *)v5 outputActions];
-  v12 = [v11 count];
+  outputActions = [(VOTOutputRequest *)v5 outputActions];
+  v12 = [outputActions count];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [(VOTTVSpeechRequestManager *)self requestElements];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  requestElements = [(VOTTVSpeechRequestManager *)self requestElements];
+  v14 = [requestElements countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v14)
   {
     v15 = v14;
@@ -413,24 +413,24 @@ LABEL_62:
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(requestElements);
         }
 
         [(VOTOutputRequest *)v5 addTVElement:*(*(&v21 + 1) + 8 * j) servesAsHeader:0 filterWithAspectMask:1];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v15 = [requestElements countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v15);
   }
 
-  v18 = [(VOTOutputRequest *)v5 outputActions];
-  v19 = [v18 count];
+  outputActions2 = [(VOTOutputRequest *)v5 outputActions];
+  v19 = [outputActions2 count];
 
-  if (a3)
+  if (request)
   {
-    *a3 = v19 != v12;
+    *request = v19 != v12;
   }
 
   return v5;
@@ -449,8 +449,8 @@ LABEL_62:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(VOTTVSpeechRequestManager *)self requestElements];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  requestElements = [(VOTTVSpeechRequestManager *)self requestElements];
+  v4 = [requestElements countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -462,7 +462,7 @@ LABEL_62:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requestElements);
         }
 
         [*(*(&v8 + 1) + 8 * v7) resetAspectMask];
@@ -470,7 +470,7 @@ LABEL_62:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [requestElements countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -485,8 +485,8 @@ LABEL_62:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(VOTTVSpeechRequestManager *)self requestHeaders];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  requestHeaders = [(VOTTVSpeechRequestManager *)self requestHeaders];
+  v4 = [requestHeaders countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -498,7 +498,7 @@ LABEL_62:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requestHeaders);
         }
 
         [*(*(&v8 + 1) + 8 * v7) resetAspectMask];
@@ -506,7 +506,7 @@ LABEL_62:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [requestHeaders countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -515,27 +515,27 @@ LABEL_62:
   [(VOTTVSpeechRequestManager *)self setRequestHeaders:0];
 }
 
-- (void)transferHeadersFrom:(id)a3
+- (void)transferHeadersFrom:(id)from
 {
-  v4 = [a3 requestHeaders];
-  [(VOTTVSpeechRequestManager *)self setRequestHeaders:v4];
+  requestHeaders = [from requestHeaders];
+  [(VOTTVSpeechRequestManager *)self setRequestHeaders:requestHeaders];
 }
 
-- (void)transferElementsFrom:(id)a3
+- (void)transferElementsFrom:(id)from
 {
-  v4 = [a3 requestElements];
-  [(VOTTVSpeechRequestManager *)self setRequestElements:v4];
+  requestElements = [from requestElements];
+  [(VOTTVSpeechRequestManager *)self setRequestElements:requestElements];
 }
 
-- (void)transferAllFrom:(id)a3
+- (void)transferAllFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 requestHeaders];
-  [(VOTTVSpeechRequestManager *)self setRequestHeaders:v5];
+  fromCopy = from;
+  requestHeaders = [fromCopy requestHeaders];
+  [(VOTTVSpeechRequestManager *)self setRequestHeaders:requestHeaders];
 
-  v6 = [v4 requestElements];
+  requestElements = [fromCopy requestElements];
 
-  [(VOTTVSpeechRequestManager *)self setRequestElements:v6];
+  [(VOTTVSpeechRequestManager *)self setRequestElements:requestElements];
 }
 
 @end

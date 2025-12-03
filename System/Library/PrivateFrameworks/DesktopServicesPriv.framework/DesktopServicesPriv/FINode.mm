@@ -3,31 +3,31 @@
 + (NSString)currentHostAppIdentifier;
 + (id)_dataSeparatedICloudDrive;
 + (id)_iCloudDrive;
-+ (id)appLibraryNodeForNode:(id)a3;
++ (id)appLibraryNodeForNode:(id)node;
 + (id)dataSeparatedICloudDefaultContainer;
 + (id)dataSeparatedICloudLibrariesContainer;
 + (id)fiNodeFromItem:inFPv2Domain:completion:;
-+ (id)fiNodeFromURL:(id)a3;
++ (id)fiNodeFromURL:(id)l;
 + (id)iCloudDefaultContainer;
 + (id)iCloudLibrariesContainer;
 + (id)providerDomainsContainer;
-+ (id)sizeFolder:(id)a3;
-+ (id)sizeFolder:(id)a3 forCopyInto:(id)a4 withDelegate:(id)a5;
-+ (void)fiNodeFromItem:(id)a3 inFPv2Domain:(id)a4 completion:(id)a5;
-+ (void)setCurrentHostAppIdentifier:(id)a3;
-+ (void)setProtectedAppIdentifiers:(id)a3;
-- (BOOL)markAsUsed:(id *)a3;
-- (BOOL)propertyAsBool:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (BOOL)setProperty:(unsigned int)a3 asArray:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
-- (BOOL)setProperty:(unsigned int)a3 asBool:(BOOL)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
-- (BOOL)setProperty:(unsigned int)a3 asData:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
-- (BOOL)setProperty:(unsigned int)a3 asDate:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
-- (BOOL)setProperty:(unsigned int)a3 asDictionary:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
-- (BOOL)setProperty:(unsigned int)a3 asNumber:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
-- (BOOL)setProperty:(unsigned int)a3 asObject:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
-- (BOOL)setProperty:(unsigned int)a3 asString:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7;
++ (id)sizeFolder:(id)folder;
++ (id)sizeFolder:(id)folder forCopyInto:(id)into withDelegate:(id)delegate;
++ (void)fiNodeFromItem:(id)item inFPv2Domain:(id)domain completion:(id)completion;
++ (void)setCurrentHostAppIdentifier:(id)identifier;
++ (void)setProtectedAppIdentifiers:(id)identifiers;
+- (BOOL)markAsUsed:(id *)used;
+- (BOOL)propertyAsBool:(unsigned int)bool async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asArray:(id)array async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asBool:(BOOL)bool async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asData:(id)data async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asDate:(id)date async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asDictionary:(id)dictionary async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asNumber:(id)number async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asObject:(id)object async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (BOOL)setProperty:(unsigned int)property asString:(id)string async:(BOOL)async options:(unsigned int)options error:(id *)error;
 - (FINode)_uiParent;
-- (FINode)initWithCoder:(id)a3;
+- (FINode)initWithCoder:(id)coder;
 - (FINode)parent;
 - (FINode)presentationNode;
 - (NSArray)itemDecorations;
@@ -37,20 +37,20 @@
 - (NSPersonNameComponents)ownerNameComponents;
 - (NSString)itemIdentifier;
 - (UTType)contentType;
-- (id)fetchTags:(BOOL)a3;
+- (id)fetchTags:(BOOL)tags;
 - (id)nodesToObserve;
-- (id)propertyAsArray:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (id)propertyAsData:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (id)propertyAsDate:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (id)propertyAsDictionary:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (id)propertyAsNSObject:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (id)propertyAsNumber:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (id)propertyAsString:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
+- (id)propertyAsArray:(unsigned int)array async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (id)propertyAsData:(unsigned int)data async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (id)propertyAsDate:(unsigned int)date async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (id)propertyAsDictionary:(unsigned int)dictionary async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (id)propertyAsNSObject:(unsigned int)object async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (id)propertyAsNumber:(unsigned int)number async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (id)propertyAsString:(unsigned int)string async:(BOOL)async options:(unsigned int)options error:(id *)error;
 - (id)shortDescription;
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4;
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error;
 - (unsigned)bladeRunnerFlags;
-- (unsigned)nodePermissions:(unsigned int)a3 error:(id *)a4;
-- (unsigned)volumeIs:(unsigned int)a3 error:(id *)a4;
+- (unsigned)nodePermissions:(unsigned int)permissions error:(id *)error;
+- (unsigned)volumeIs:(unsigned int)is error:(id *)error;
 - (void)synchronize;
 @end
 
@@ -77,21 +77,21 @@
 
 - (FINode)parent
 {
-  v2 = [(FINode *)self fileParent];
-  v3 = [v2 presentationNode];
+  fileParent = [(FINode *)self fileParent];
+  presentationNode = [fileParent presentationNode];
 
-  return v3;
+  return presentationNode;
 }
 
 - (FINode)presentationNode
 {
-  v3 = [FIPresentationNodeMap presentationNodeForKeyNode:self];
-  if (!v3)
+  selfCopy = [FIPresentationNodeMap presentationNodeForKeyNode:self];
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)iCloudDefaultContainer
@@ -126,8 +126,8 @@
 
 + (NSSet)protectedAppIdentifiers
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (sProtectedAppIdentifiers)
   {
     v3 = sProtectedAppIdentifiers;
@@ -139,22 +139,22 @@
   }
 
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-+ (id)appLibraryNodeForNode:(id)a3
++ (id)appLibraryNodeForNode:(id)node
 {
-  v3 = [a3 presentationNode];
-  v4 = objc_cast<FIDSNode,FINode * {__strong}>(v3);
+  presentationNode = [node presentationNode];
+  v4 = objc_cast<FIDSNode,FINode * {__strong}>(presentationNode);
 
-  v5 = [v4 fileURL];
-  v6 = [v5 URLByStandardizingPath];
-  v7 = [v6 path];
+  fileURL = [v4 fileURL];
+  uRLByStandardizingPath = [fileURL URLByStandardizingPath];
+  path = [uRLByStandardizingPath path];
   v20.fString.fRef = &stru_1F5F42870;
   CFRetain(&stru_1F5F42870);
-  TString::SetStringRefAsImmutable(&v20, v7);
+  TString::SetStringRefAsImmutable(&v20, path);
 
   v8 = +[FILocalStorageNode containerNodePathPrefix];
   v19.fString.fRef = &stru_1F5F42870;
@@ -189,10 +189,10 @@
       goto LABEL_17;
     }
 
-    v16 = [v14 path];
+    path2 = [v14 path];
     v19.fString.fRef = &stru_1F5F42870;
     CFRetain(&stru_1F5F42870);
-    TString::SetStringRefAsImmutable(&v19, v16);
+    TString::SetStringRefAsImmutable(&v19, path2);
 
     v17 = TString::BeginsWith(&v20, &v19);
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v19.fString.fRef);
@@ -227,8 +227,8 @@ LABEL_17:
       break;
     }
 
-    v12 = [v4 parent];
-    v13 = objc_cast<FIDSNode,FINode * {__strong}>(v12);
+    parent = [v4 parent];
+    v13 = objc_cast<FIDSNode,FINode * {__strong}>(parent);
 
     v4 = v13;
     if (!v13)
@@ -245,8 +245,8 @@ LABEL_18:
 
 + (NSString)currentHostAppIdentifier
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sCurrentHostAppIdentifier;
   if (!sCurrentHostAppIdentifier)
   {
@@ -256,41 +256,41 @@ LABEL_18:
   }
 
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-+ (void)setCurrentHostAppIdentifier:(id)a3
++ (void)setCurrentHostAppIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v7);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = Copy<NSMutableArray<FILocalAppContainerNode *>>(identifierCopy);
   v6 = sCurrentHostAppIdentifier;
   sCurrentHostAppIdentifier = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)setProtectedAppIdentifiers:(id)a3
++ (void)setProtectedAppIdentifiers:(id)identifiers
 {
-  v12 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  if ([sProtectedAppIdentifiers isEqual:v12])
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([sProtectedAppIdentifiers isEqual:identifiersCopy])
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v5 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v12);
+  v5 = Copy<NSMutableArray<FILocalAppContainerNode *>>(identifiersCopy);
   v6 = sProtectedAppIdentifiers;
   sProtectedAppIdentifiers = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v7 = pthread_main_np();
   v8 = [FILocalAppContainerCollection sharedInstanceCreateIfNeeded:0];
   [v8 synchronizeWithOptions:0x1000000 async:v7 != 0];
@@ -307,27 +307,27 @@ LABEL_7:
 
   if (v11)
   {
-    v4 = +[FINode dataSeparatedICloudLibrariesContainer];
-    [v4 synchronizeWithOptions:0x1000000 async:v7 != 0];
+    selfCopy = +[FINode dataSeparatedICloudLibrariesContainer];
+    [selfCopy synchronizeWithOptions:0x1000000 async:v7 != 0];
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (FINode)initWithCoder:(id)a3
+- (FINode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FINode *)self init];
-  v6 = [FIDSNode _makeWithCoder:v4];
+  v6 = [FIDSNode _makeWithCoder:coderCopy];
 
   return v6;
 }
 
-+ (id)fiNodeFromURL:(id)a3
++ (id)fiNodeFromURL:(id)l
 {
-  v3 = a3;
-  v7 = v3;
+  lCopy = l;
+  v7 = lCopy;
   v8 = 0;
   if (TNode::GetNodeFromURL(&v7, &v8, 0) || !TNodeFromFINode(v8))
   {
@@ -343,38 +343,38 @@ LABEL_8:
   return v4;
 }
 
-+ (void)fiNodeFromItem:(id)a3 inFPv2Domain:(id)a4 completion:(id)a5
++ (void)fiNodeFromItem:(id)item inFPv2Domain:(id)domain completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  itemCopy = item;
+  domainCopy = domain;
+  completionCopy = completion;
+  if (domainCopy)
   {
     v10 = 0;
 LABEL_4:
-    v13 = [FIProviderDomain providerDomainForDomain:v8];
+    v13 = [FIProviderDomain providerDomainForDomain:domainCopy];
     if ([v13 isFPv2])
     {
 
       v14 = FPItemManagerInstance();
-      v15 = [v7 itemID];
+      itemID = [itemCopy itemID];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3321888768;
       v26[2] = __49__FINode_fiNodeFromItem_inFPv2Domain_completion___block_invoke;
       v26[3] = &__block_descriptor_56_ea8_32c62_ZTSKZ49__FINode_fiNodeFromItem_inFPv2Domain_completion__E3__0_e29_v24__0__NSArray_8__NSError_16l;
-      v16 = v7;
+      v16 = itemCopy;
       *buf = v16;
-      v17 = v8;
+      v17 = domainCopy;
       *&buf[8] = v17;
-      v18 = MEMORY[0x1E692D6D0](v9);
+      v18 = MEMORY[0x1E692D6D0](completionCopy);
       *&buf[16] = v18;
       v19 = v16;
       v27 = v19;
       v20 = v17;
       v28 = v20;
       v29 = MEMORY[0x1E692D6D0](v18);
-      [v14 fetchParentsForItemID:v15 recursively:1 completionHandler:v26];
+      [v14 fetchParentsForItemID:itemID recursively:1 completionHandler:v26];
 
       v13 = v27;
     }
@@ -389,11 +389,11 @@ LABEL_4:
         *buf = 136315394;
         *&buf[4] = "+[FINode fiNodeFromItem:inFPv2Domain:completion:]";
         *&buf[12] = 2114;
-        *&buf[14] = v8;
+        *&buf[14] = domainCopy;
         _os_log_impl(&dword_1E5674000, v22, OS_LOG_TYPE_ERROR, "%s expects an item in an FPv2 domain: %{public}@", buf, 0x16u);
       }
 
-      v9[2](v9, 0, v21);
+      completionCopy[2](completionCopy, 0, v21);
       v10 = v21;
     }
 
@@ -401,12 +401,12 @@ LABEL_4:
   }
 
   v11 = FPProviderDomainClass();
-  v12 = [v7 providerDomainID];
+  providerDomainID = [itemCopy providerDomainID];
   v30 = 0;
-  v8 = [v11 providerDomainWithID:v12 cachePolicy:1 error:&v30];
+  domainCopy = [v11 providerDomainWithID:providerDomainID cachePolicy:1 error:&v30];
   v10 = v30;
 
-  if (v8)
+  if (domainCopy)
   {
     goto LABEL_4;
   }
@@ -414,16 +414,16 @@ LABEL_4:
   v24 = LogObj(4);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    v25 = [v7 providerDomainID];
+    providerDomainID2 = [itemCopy providerDomainID];
     *buf = 138412546;
-    *&buf[4] = v25;
+    *&buf[4] = providerDomainID2;
     *&buf[12] = 2112;
     *&buf[14] = v10;
     _os_log_impl(&dword_1E5674000, v24, OS_LOG_TYPE_ERROR, "Failed to get provider domain for %@: %@", buf, 0x16u);
   }
 
-  v8 = 0;
-  v9[2](v9, 0, v10);
+  domainCopy = 0;
+  completionCopy[2](completionCopy, 0, v10);
 LABEL_10:
 
   v23 = *MEMORY[0x1E69E9840];
@@ -692,31 +692,31 @@ LABEL_36:
   return v5;
 }
 
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = ErrorWithOSStatus(-8058, 0);
+    *error = ErrorWithOSStatus(-8058, 0);
   }
 
   return 0;
 }
 
-- (unsigned)volumeIs:(unsigned int)a3 error:(id *)a4
+- (unsigned)volumeIs:(unsigned int)is error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = ErrorWithOSStatus(-8058, 0);
+    *error = ErrorWithOSStatus(-8058, 0);
   }
 
   return 0;
 }
 
-- (unsigned)nodePermissions:(unsigned int)a3 error:(id *)a4
+- (unsigned)nodePermissions:(unsigned int)permissions error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = ErrorWithOSStatus(-8058, 0);
+    *error = ErrorWithOSStatus(-8058, 0);
   }
 
   return 0;
@@ -743,12 +743,12 @@ LABEL_36:
   v4 = v3;
   if (v3)
   {
-    v2 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   if (v4)
   {
-    return v2;
+    return unsignedIntValue;
   }
 
   else
@@ -790,10 +790,10 @@ LABEL_36:
     _os_log_impl(&dword_1E5674000, v3, OS_LOG_TYPE_ERROR, "FINode _uiParent is deprecated and will be removed in the near future: %{public}@", &v8, 0xCu);
   }
 
-  v5 = [(FINode *)self parent];
+  parent = [(FINode *)self parent];
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return parent;
 }
 
 - (NSObject)simplifiedFolderIcon
@@ -803,20 +803,20 @@ LABEL_36:
 
   if (v3)
   {
-    v4 = [v3 ds_simplifiedFolderIcon];
+    ds_simplifiedFolderIcon = [v3 ds_simplifiedFolderIcon];
   }
 
   else
   {
-    v4 = 0;
+    ds_simplifiedFolderIcon = 0;
   }
 
-  return v4;
+  return ds_simplifiedFolderIcon;
 }
 
-- (id)fetchTags:(BOOL)a3
+- (id)fetchTags:(BOOL)tags
 {
-  v3 = [(FINode *)self propertyAsArray:1718903156 async:!a3 options:0 error:0];
+  v3 = [(FINode *)self propertyAsArray:1718903156 async:!tags options:0 error:0];
   v4 = static_objc_cast<NSString,objc_object * {__strong}>(v3);
 
   return v4;
@@ -829,93 +829,93 @@ LABEL_36:
   return [(FINode *)self fetchTags:v3];
 }
 
-- (id)propertyAsNumber:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsNumber:(unsigned int)number async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (id)propertyAsDate:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsDate:(unsigned int)date async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (id)propertyAsString:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsString:(unsigned int)string async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (id)propertyAsArray:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsArray:(unsigned int)array async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (id)propertyAsNSObject:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsNSObject:(unsigned int)object async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (id)propertyAsDictionary:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsDictionary:(unsigned int)dictionary async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (BOOL)propertyAsBool:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (BOOL)propertyAsBool:(unsigned int)bool async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (id)propertyAsData:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsData:(unsigned int)data async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asNumber:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asNumber:(id)number async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  v8 = a4;
-  v9 = v8;
-  if (a7)
+  numberCopy = number;
+  v9 = numberCopy;
+  if (error)
   {
-    if (v8)
+    if (numberCopy)
     {
       v10 = -8051;
     }
@@ -925,69 +925,69 @@ LABEL_36:
       v10 = -8072;
     }
 
-    *a7 = ErrorWithOSStatus(v10, 0);
+    *error = ErrorWithOSStatus(v10, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asDate:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asDate:(id)date async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asString:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asString:(id)string async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asArray:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asArray:(id)array async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asDictionary:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asDictionary:(id)dictionary async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asBool:(BOOL)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asBool:(BOOL)bool async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = ErrorWithOSStatus(-8051, 0);
+    *error = ErrorWithOSStatus(-8051, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asData:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asData:(id)data async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  v8 = a4;
-  v9 = v8;
-  if (a7)
+  dataCopy = data;
+  v9 = dataCopy;
+  if (error)
   {
-    if (v8)
+    if (dataCopy)
     {
       v10 = -8051;
     }
@@ -997,19 +997,19 @@ LABEL_36:
       v10 = -8072;
     }
 
-    *a7 = ErrorWithOSStatus(v10, 0);
+    *error = ErrorWithOSStatus(v10, 0);
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 asObject:(id)a4 async:(BOOL)a5 options:(unsigned int)a6 error:(id *)a7
+- (BOOL)setProperty:(unsigned int)property asObject:(id)object async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  v8 = a4;
-  v9 = v8;
-  if (a7)
+  objectCopy = object;
+  v9 = objectCopy;
+  if (error)
   {
-    if (v8)
+    if (objectCopy)
     {
       v10 = -8051;
     }
@@ -1019,34 +1019,34 @@ LABEL_36:
       v10 = -8072;
     }
 
-    *a7 = ErrorWithOSStatus(v10, 0);
+    *error = ErrorWithOSStatus(v10, 0);
   }
 
   return 0;
 }
 
-+ (id)sizeFolder:(id)a3
++ (id)sizeFolder:(id)folder
 {
-  v3 = [a1 sizeFolder:a3 forCopyInto:0 withDelegate:0];
+  v3 = [self sizeFolder:folder forCopyInto:0 withDelegate:0];
 
   return v3;
 }
 
-+ (id)sizeFolder:(id)a3 forCopyInto:(id)a4 withDelegate:(id)a5
++ (id)sizeFolder:(id)folder forCopyInto:(id)into withDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  folderCopy = folder;
+  intoCopy = into;
+  delegateCopy = delegate;
   v22[1] = 0;
   v22[2] = 0;
-  v22[0] = v9;
+  v22[0] = delegateCopy;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
   v16 = xmmword_1F5F3DF88;
   v17 = off_1F5F3DF98;
-  v10 = _NodeSizingV2(v7, v8, &v16, v22, &v18);
+  v10 = _NodeSizingV2(folderCopy, intoCopy, &v16, v22, &v18);
   v11 = objc_alloc_init(FIFolderSize);
   v12 = v11;
   if (v10)
@@ -1067,11 +1067,11 @@ LABEL_36:
   return v12;
 }
 
-- (BOOL)markAsUsed:(id *)a3
+- (BOOL)markAsUsed:(id *)used
 {
-  if (a3)
+  if (used)
   {
-    *a3 = ErrorWithOSStatus(-8058, 0);
+    *used = ErrorWithOSStatus(-8058, 0);
   }
 
   return 0;
@@ -1095,7 +1095,7 @@ LABEL_36:
 
 + (id)fiNodeFromItem:inFPv2Domain:completion:
 {
-  v3 = a1;
+  selfCopy = self;
   v4 = a2;
   v5 = *MEMORY[0x1E695E480];
   v6 = *MEMORY[0x1E695E498];
@@ -1104,8 +1104,8 @@ LABEL_36:
   CFRetain(&stru_1F5F42870);
   TString::SetStringRefAsImmutable(&v21, obj);
   TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&obj);
-  IDContainerIteratorAdaptor<NSArray<FPItem *>>::NSForwardIterator<NSArray<FPItem *>>::NSForwardIterator(&obj, v3);
-  IDContainerIteratorAdaptor<NSArray<FPItem *>>::IDContainerIteratorAdaptor(v23, -1, v3);
+  IDContainerIteratorAdaptor<NSArray<FPItem *>>::NSForwardIterator<NSArray<FPItem *>>::NSForwardIterator(&obj, selfCopy);
+  IDContainerIteratorAdaptor<NSArray<FPItem *>>::IDContainerIteratorAdaptor(v23, -1, selfCopy);
   v7 = v4;
   theString = &stru_1F5F42870;
   CFRetain(&stru_1F5F42870);
@@ -1120,10 +1120,10 @@ LABEL_36:
       CFRetain(&stru_1F5F42870);
       TString::SetStringRefAsImmutable(&v33, v9);
       TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(v35);
-      v10 = [v8 displayName];
+      displayName = [v8 displayName];
       v32.fString.fRef = &stru_1F5F42870;
       CFRetain(&stru_1F5F42870);
-      TString::SetStringRefAsImmutable(&v32, v10);
+      TString::SetStringRefAsImmutable(&v32, displayName);
 
       fRef = v33.fString.fRef;
       v34.fString.fRef = &stru_1F5F42870;
@@ -1154,10 +1154,10 @@ LABEL_36:
 
     else
     {
-      v16 = [v8 displayName];
+      displayName2 = [v8 displayName];
       v30.fString.fRef = &stru_1F5F42870;
       CFRetain(&stru_1F5F42870);
-      TString::SetStringRefAsImmutable(&v30, v16);
+      TString::SetStringRefAsImmutable(&v30, displayName2);
     }
 
     if (CFStringGetLength(theString) && CFStringGetLength(v30.fString.fRef))

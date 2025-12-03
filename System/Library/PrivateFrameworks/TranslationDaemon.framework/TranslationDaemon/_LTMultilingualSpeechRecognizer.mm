@@ -1,33 +1,33 @@
 @interface _LTMultilingualSpeechRecognizer
-- (_LTMultilingualSpeechRecognizer)initWithModelURLs:(id)a3 modelVersions:(id)a4 taskHint:(int64_t)a5;
-- (void)addSpeechAudioData:(id)a3;
+- (_LTMultilingualSpeechRecognizer)initWithModelURLs:(id)ls modelVersions:(id)versions taskHint:(int64_t)hint;
+- (void)addSpeechAudioData:(id)data;
 - (void)cancelRecognition;
 - (void)endAudio;
-- (void)setLanguagesRecognized:(id)a3;
-- (void)startRecognitionForLocale:(id)a3 autoEndpoint:(BOOL)a4 enableStreamingSpeechTranslation:(BOOL)a5 enableMultiFieldInput:(BOOL)a6 resultHandler:(id)a7;
+- (void)setLanguagesRecognized:(id)recognized;
+- (void)startRecognitionForLocale:(id)locale autoEndpoint:(BOOL)endpoint enableStreamingSpeechTranslation:(BOOL)translation enableMultiFieldInput:(BOOL)input resultHandler:(id)handler;
 @end
 
 @implementation _LTMultilingualSpeechRecognizer
 
-- (_LTMultilingualSpeechRecognizer)initWithModelURLs:(id)a3 modelVersions:(id)a4 taskHint:(int64_t)a5
+- (_LTMultilingualSpeechRecognizer)initWithModelURLs:(id)ls modelVersions:(id)versions taskHint:(int64_t)hint
 {
-  v8 = a3;
-  v9 = a4;
+  lsCopy = ls;
+  versionsCopy = versions;
   v21.receiver = self;
   v21.super_class = _LTMultilingualSpeechRecognizer;
   v10 = [(_LTMultilingualSpeechRecognizer *)&v21 init];
   if (v10)
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __76___LTMultilingualSpeechRecognizer_initWithModelURLs_modelVersions_taskHint___block_invoke;
     v17[3] = &unk_2789B6D10;
-    v18 = v9;
-    v20 = a5;
-    v12 = v11;
+    v18 = versionsCopy;
+    hintCopy = hint;
+    v12 = dictionary;
     v19 = v12;
-    [v8 enumerateKeysAndObjectsUsingBlock:v17];
+    [lsCopy enumerateKeysAndObjectsUsingBlock:v17];
     recognizers = v10->_recognizers;
     v10->_recognizers = v12;
     v14 = v12;
@@ -38,23 +38,23 @@
   return v10;
 }
 
-- (void)startRecognitionForLocale:(id)a3 autoEndpoint:(BOOL)a4 enableStreamingSpeechTranslation:(BOOL)a5 enableMultiFieldInput:(BOOL)a6 resultHandler:(id)a7
+- (void)startRecognitionForLocale:(id)locale autoEndpoint:(BOOL)endpoint enableStreamingSpeechTranslation:(BOOL)translation enableMultiFieldInput:(BOOL)input resultHandler:(id)handler
 {
-  v44 = a4;
-  v45 = a5;
+  endpointCopy = endpoint;
+  translationCopy = translation;
   v85 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v46 = a7;
-  v48 = self;
-  objc_storeStrong(&self->_currentLocale, a3);
-  self->_enableMultiFieldInput = a6;
-  v49 = [MEMORY[0x277CBEB18] array];
+  localeCopy = locale;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_storeStrong(&self->_currentLocale, locale);
+  self->_enableMultiFieldInput = input;
+  array = [MEMORY[0x277CBEB18] array];
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v10 = [(NSDictionary *)self->_recognizers allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v72 objects:v84 count:16];
+  allKeys = [(NSDictionary *)self->_recognizers allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v72 objects:v84 count:16];
   if (v11)
   {
     v12 = *v73;
@@ -64,14 +64,14 @@
       {
         if (*v73 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
-        v14 = [*(*(&v72 + 1) + 8 * i) localeIdentifier];
-        [v49 addObject:v14];
+        localeIdentifier = [*(*(&v72 + 1) + 8 * i) localeIdentifier];
+        [array addObject:localeIdentifier];
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v72 objects:v84 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v72 objects:v84 count:16];
     }
 
     while (v11);
@@ -81,25 +81,25 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v43 localeIdentifier];
+    localeIdentifier2 = [localeCopy localeIdentifier];
     *buf = 138543618;
-    *&buf[4] = v17;
+    *&buf[4] = localeIdentifier2;
     *&buf[12] = 2114;
-    *&buf[14] = v49;
+    *&buf[14] = array;
     _os_log_impl(&dword_232E53000, v16, OS_LOG_TYPE_DEFAULT, "Starting recognition with locale %{public}@, recognizers: %{public}@", buf, 0x16u);
   }
 
-  recognizers = v48->_recognizers;
-  if (v43)
+  recognizers = selfCopy->_recognizers;
+  if (localeCopy)
   {
     v19 = [(NSDictionary *)recognizers objectForKeyedSubscript:?];
     v83 = v19;
-    v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
+    allValues = [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
   }
 
   else
   {
-    v20 = [(NSDictionary *)recognizers allValues];
+    allValues = [(NSDictionary *)recognizers allValues];
   }
 
   v21 = dispatch_queue_create("com.apple.multilingualrecognition.results", 0);
@@ -117,7 +117,7 @@
   v23 = _LTOSLogSpeech();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v20 count];
+    v24 = [allValues count];
     *v77 = 134217984;
     v78 = v24;
     _os_log_impl(&dword_232E53000, v23, OS_LOG_TYPE_DEFAULT, "Starting recognition for %zu recognizers", v77, 0xCu);
@@ -127,7 +127,7 @@
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v25 = v20;
+  v25 = allValues;
   v26 = [v25 countByEnumeratingWithState:&v67 objects:v76 count:16];
   if (v26)
   {
@@ -143,14 +143,14 @@
 
         v29 = *(*(&v67 + 1) + 8 * j);
         dispatch_group_enter(v22);
-        v30 = [v29 language];
-        v31 = [v30 localeIdentifier];
+        language = [v29 language];
+        localeIdentifier3 = [language localeIdentifier];
 
         v32 = _LTOSLogSpeech();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *v77 = 138543362;
-          v78 = v31;
+          v78 = localeIdentifier3;
           _os_log_impl(&dword_232E53000, v32, OS_LOG_TYPE_DEFAULT, "Starting recognizer: %{public}@", v77, 0xCu);
         }
 
@@ -161,7 +161,7 @@
         if (v34 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v35))
         {
           *v77 = 138543362;
-          v78 = v31;
+          v78 = localeIdentifier3;
           _os_signpost_emit_with_name_impl(&dword_232E53000, v36, OS_SIGNPOST_INTERVAL_BEGIN, v34, "ASR", "Starting ASR for %{public}@", v77, 0xCu);
         }
 
@@ -173,19 +173,19 @@
         v37 = v36;
         v55 = v37;
         v65 = v34;
-        v38 = v31;
+        v38 = localeIdentifier3;
         v56 = v38;
         v57 = v21;
-        v62 = v46;
+        v62 = handlerCopy;
         v39 = v22;
-        v66 = a6;
+        inputCopy = input;
         v58 = v39;
-        v59 = v48;
+        v59 = selfCopy;
         v40 = v25;
         v60 = v40;
         v61 = v29;
         v64 = v71;
-        [v29 startRecognitionWithAutoStop:v44 enableStreamingSpeechTranslation:v45 resultHandler:v54];
+        [v29 startRecognitionWithAutoStop:endpointCopy enableStreamingSpeechTranslation:translationCopy resultHandler:v54];
       }
 
       v26 = [v40 countByEnumeratingWithState:&v67 objects:v76 count:16];
@@ -200,8 +200,8 @@
   block[3] = &unk_2789B6D88;
   v52 = buf;
   v53 = v71;
-  v51 = v46;
-  v41 = v46;
+  v51 = handlerCopy;
+  v41 = handlerCopy;
   dispatch_group_notify(v22, v21, block);
 
   _Block_object_dispose(v71, 8);
@@ -210,16 +210,16 @@
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSpeechAudioData:(id)a3
+- (void)addSpeechAudioData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(NSDictionary *)self->_recognizers allValues];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [(NSDictionary *)self->_recognizers allValues];
+  v6 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -231,21 +231,21 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         if (self->_enableMultiFieldInput)
         {
-          v11 = [*(*(&v15 + 1) + 8 * v9) language];
-          if ([v11 isEqual:self->_currentLocale])
+          language = [*(*(&v15 + 1) + 8 * v9) language];
+          if ([language isEqual:self->_currentLocale])
           {
-            v12 = v4;
+            v12 = dataCopy;
           }
 
           else
           {
-            v12 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v4, "length")}];
+            v12 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(dataCopy, "length")}];
           }
 
           v13 = v12;
@@ -255,14 +255,14 @@
 
         else
         {
-          [*(*(&v15 + 1) + 8 * v9) addSpeechAudioData:v4];
+          [*(*(&v15 + 1) + 8 * v9) addSpeechAudioData:dataCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -284,8 +284,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSDictionary *)self->_recognizers allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSDictionary *)self->_recognizers allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -297,14 +297,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) endAudio];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -320,8 +320,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSDictionary *)self->_recognizers allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSDictionary *)self->_recognizers allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -333,14 +333,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) cancelRecognition];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -349,17 +349,17 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLanguagesRecognized:(id)a3
+- (void)setLanguagesRecognized:(id)recognized
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognizedCopy = recognized;
   v5 = _LTOSLogSpeech();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_LTMultilingualSpeechRecognizer setLanguagesRecognized:];
   }
 
-  if ([v4 isFinal] && objc_msgSend(v4, "isConfident"))
+  if ([recognizedCopy isFinal] && objc_msgSend(recognizedCopy, "isConfident"))
   {
     v21 = 0u;
     v22 = 0u;
@@ -381,11 +381,11 @@
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          v11 = [v10 language];
-          v12 = [v11 _ltLocaleIdentifier];
-          v13 = [v4 dominantLanguage];
-          v14 = [v13 _ltLocaleIdentifier];
-          v15 = [v12 isEqualToString:v14];
+          language = [v10 language];
+          _ltLocaleIdentifier = [language _ltLocaleIdentifier];
+          dominantLanguage = [recognizedCopy dominantLanguage];
+          _ltLocaleIdentifier2 = [dominantLanguage _ltLocaleIdentifier];
+          v15 = [_ltLocaleIdentifier isEqualToString:_ltLocaleIdentifier2];
 
           if ((v15 & 1) == 0)
           {

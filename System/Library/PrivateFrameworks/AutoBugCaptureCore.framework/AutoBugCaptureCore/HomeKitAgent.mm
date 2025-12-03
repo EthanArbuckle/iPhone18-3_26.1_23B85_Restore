@@ -1,24 +1,24 @@
 @interface HomeKitAgent
 + (BOOL)_loadHomeKit;
-- (HomeKitAgent)initWithIDSService:(id)a3;
-- (void)_replyWithResidentDevicesIDSIdentifiers:(id)a3;
+- (HomeKitAgent)initWithIDSService:(id)service;
+- (void)_replyWithResidentDevicesIDSIdentifiers:(id)identifiers;
 - (void)dealloc;
-- (void)fetchResidentDevicesIDSIdentifiersWithReply:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)fetchResidentDevicesIDSIdentifiersWithReply:(id)reply;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeKitAgent
 
-- (HomeKitAgent)initWithIDSService:(id)a3
+- (HomeKitAgent)initWithIDSService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = HomeKitAgent;
   v6 = [(HomeKitAgent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsService, a3);
+    objc_storeStrong(&v6->_idsService, service);
   }
 
   return v7;
@@ -99,9 +99,9 @@ LABEL_14:
   }
 }
 
-- (void)fetchResidentDevicesIDSIdentifiersWithReply:(id)a3
+- (void)fetchResidentDevicesIDSIdentifiersWithReply:(id)reply
 {
-  aBlock = a3;
+  aBlock = reply;
   v4 = +[HomeKitAgent _loadHomeKit];
   v5 = aBlock;
   if (v4)
@@ -119,11 +119,11 @@ LABEL_14:
 
     else
     {
-      v6 = [gHMMutableHomeManagerConfigurationClass defaultPrivateConfiguration];
-      [v6 setOptions:2056];
-      [v6 setCachePolicy:2];
-      [v6 setDiscretionary:1];
-      v7 = [[gHMHomeManagerClass alloc] initWithHomeMangerConfiguration:v6];
+      defaultPrivateConfiguration = [gHMMutableHomeManagerConfigurationClass defaultPrivateConfiguration];
+      [defaultPrivateConfiguration setOptions:2056];
+      [defaultPrivateConfiguration setCachePolicy:2];
+      [defaultPrivateConfiguration setDiscretionary:1];
+      v7 = [[gHMHomeManagerClass alloc] initWithHomeMangerConfiguration:defaultPrivateConfiguration];
       homeManager = self->_homeManager;
       self->_homeManager = v7;
 
@@ -150,22 +150,22 @@ LABEL_9:
   MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (void)_replyWithResidentDevicesIDSIdentifiers:(id)a3
+- (void)_replyWithResidentDevicesIDSIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(HMHomeManager *)self->_homeManager homes];
-  v6 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  homes = [(HMHomeManager *)self->_homeManager homes];
+  array = [MEMORY[0x277CBEB18] array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HomeKitAgent__replyWithResidentDevicesIDSIdentifiers___block_invoke;
   v8[3] = &unk_278CF0D58;
   v8[4] = self;
-  v7 = v6;
+  v7 = array;
   v9 = v7;
-  [v5 enumerateObjectsUsingBlock:v8];
-  if (v4)
+  [homes enumerateObjectsUsingBlock:v8];
+  if (identifiersCopy)
   {
-    v4[2](v4, v7);
+    identifiersCopy[2](identifiersCopy, v7);
   }
 }
 
@@ -234,7 +234,7 @@ void __56__HomeKitAgent__replyWithResidentDevicesIDSIdentifiers___block_invoke_2
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   self->_didUpdateHomes = 1;
   if (self->_completionBlock)

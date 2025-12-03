@@ -1,10 +1,10 @@
 @interface _UICollectionViewPlaceholderContext
-- (BOOL)commitInsertionWithDataSourceUpdates:(id)a3;
+- (BOOL)commitInsertionWithDataSourceUpdates:(id)updates;
 - (BOOL)deletePlaceholder;
 - (NSString)description;
 - (_UICollectionViewPlaceholderContextDelegate)delegate;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 - (void)setNeedsCellUpdate;
 @end
 
@@ -12,27 +12,27 @@
 
 - (BOOL)deletePlaceholder
 {
-  v2 = self;
-  v3 = [(_UICollectionViewPlaceholderContext *)self delegate];
-  v4 = [v3 placeholderContextDidDismiss:v2];
-  LOBYTE(v2) = v4 != 0;
+  selfCopy = self;
+  delegate = [(_UICollectionViewPlaceholderContext *)self delegate];
+  v4 = [delegate placeholderContextDidDismiss:selfCopy];
+  LOBYTE(selfCopy) = v4 != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)commitInsertionWithDataSourceUpdates:(id)a3
+- (BOOL)commitInsertionWithDataSourceUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewPlaceholderContext *)self delegate];
-  LOBYTE(self) = [v5 placeholderContext:self didCommitInsertionWithDataSourceUpdates:v4];
+  updatesCopy = updates;
+  delegate = [(_UICollectionViewPlaceholderContext *)self delegate];
+  LOBYTE(self) = [delegate placeholderContext:self didCommitInsertionWithDataSourceUpdates:updatesCopy];
 
   return self;
 }
 
 - (void)setNeedsCellUpdate
 {
-  v3 = [(_UICollectionViewPlaceholderContext *)self delegate];
-  [v3 placeholderContextNeedsCellUpdate:self];
+  delegate = [(_UICollectionViewPlaceholderContext *)self delegate];
+  [delegate placeholderContextNeedsCellUpdate:self];
 }
 
 - (NSString)description
@@ -52,29 +52,29 @@
     reuseIdentifier = 0;
   }
 
-  v8 = [v3 stringWithFormat:@"<%@:%p insertionIndexPath=%@ reuseIdentifier=%@>", v5, self, v6, reuseIdentifier];
+  reuseIdentifier = [v3 stringWithFormat:@"<%@:%p insertionIndexPath=%@ reuseIdentifier=%@>", v5, self, v6, reuseIdentifier];
 
-  return v8;
+  return reuseIdentifier;
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
   if (self)
   {
     self = self->_animationHandlers;
   }
 
-  [(_UICollectionViewPlaceholderContext *)self addAnimations:a3];
+  [(_UICollectionViewPlaceholderContext *)self addAnimations:animations];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
   if (self)
   {
     self = self->_animationHandlers;
   }
 
-  [(_UICollectionViewPlaceholderContext *)self addCompletion:a3];
+  [(_UICollectionViewPlaceholderContext *)self addCompletion:completion];
 }
 
 - (_UICollectionViewPlaceholderContextDelegate)delegate

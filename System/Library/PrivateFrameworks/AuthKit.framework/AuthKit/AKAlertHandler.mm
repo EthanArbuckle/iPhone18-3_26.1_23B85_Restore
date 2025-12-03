@@ -1,24 +1,24 @@
 @interface AKAlertHandler
 + (AKAlertHandler)sharedInstance;
 - (AKAlertHandlerUIProvider)uiProvider;
-- (BOOL)_shouldShowAlertForManagedAccount:(id)a3 error:(id)a4;
-- (BOOL)showAlert:(id)a3 primaryAction:(id)a4 altAction:(id)a5;
-- (BOOL)showAlert:(id)a3 primaryAction:(id)a4 altAction:(id)a5 cancelAction:(id)a6;
-- (id)_URLWithString:(id)a3 byAppendingParameters:(id)a4;
-- (id)notificationDictionaryWithTitle:(id)a3 message:(id)a4 defaultButton:(id)a5 alternateButton:(id)a6;
+- (BOOL)_shouldShowAlertForManagedAccount:(id)account error:(id)error;
+- (BOOL)showAlert:(id)alert primaryAction:(id)action altAction:(id)altAction;
+- (BOOL)showAlert:(id)alert primaryAction:(id)action altAction:(id)altAction cancelAction:(id)cancelAction;
+- (id)_URLWithString:(id)string byAppendingParameters:(id)parameters;
+- (id)notificationDictionaryWithTitle:(id)title message:(id)message defaultButton:(id)button alternateButton:(id)alternateButton;
 - (void)_openSpyglass;
-- (void)_openUpgradeAccountSecurityLevelWithBundleID:(id)a3;
-- (void)_showAlertForAccountNotSupportedWithCompletion:(id)a3;
-- (void)_showAlertForCannotFindServerWithCompletion:(id)a3;
-- (void)_showAlertForInsufficientSecurityLevelWithError:(id)a3 completionHandler:(id)a4;
-- (void)_showAlertForInvalidContextWithCompletion:(id)a3;
-- (void)_showAlertForManagedAccount:(id)a3 error:(id)a4 withCompletion:(id)a5;
-- (void)_showAlertForMissingAppleAccountWithCompletion:(id)a3;
-- (void)_showAlertForPasscodeSetupWithCompletion:(id)a3;
-- (void)_showAlertForUnderageAccount:(id)a3 withCompletion:(id)a4;
-- (void)_showAlertForUnverifiedEmailWithCompletion:(id)a3;
-- (void)showAlertForError:(id)a3 withAuthKitAccount:(id)a4 withCompletion:(id)a5;
-- (void)showAlertForError:(id)a3 withCompletion:(id)a4;
+- (void)_openUpgradeAccountSecurityLevelWithBundleID:(id)d;
+- (void)_showAlertForAccountNotSupportedWithCompletion:(id)completion;
+- (void)_showAlertForCannotFindServerWithCompletion:(id)completion;
+- (void)_showAlertForInsufficientSecurityLevelWithError:(id)error completionHandler:(id)handler;
+- (void)_showAlertForInvalidContextWithCompletion:(id)completion;
+- (void)_showAlertForManagedAccount:(id)account error:(id)error withCompletion:(id)completion;
+- (void)_showAlertForMissingAppleAccountWithCompletion:(id)completion;
+- (void)_showAlertForPasscodeSetupWithCompletion:(id)completion;
+- (void)_showAlertForUnderageAccount:(id)account withCompletion:(id)completion;
+- (void)_showAlertForUnverifiedEmailWithCompletion:(id)completion;
+- (void)showAlertForError:(id)error withAuthKitAccount:(id)account withCompletion:(id)completion;
+- (void)showAlertForError:(id)error withCompletion:(id)completion;
 @end
 
 @implementation AKAlertHandler
@@ -47,30 +47,30 @@ uint64_t __32__AKAlertHandler_sharedInstance__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (void)showAlertForError:(id)a3 withCompletion:(id)a4
+- (void)showAlertForError:(id)error withCompletion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKAlertHandler *)v7 showAlertForError:location[0] withAuthKitAccount:0 withCompletion:v5];
+  objc_storeStrong(&v5, completion);
+  [(AKAlertHandler *)selfCopy showAlertForError:location[0] withAuthKitAccount:0 withCompletion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)showAlertForError:(id)a3 withAuthKitAccount:(id)a4 withCompletion:(id)a5
+- (void)showAlertForError:(id)error withAuthKitAccount:(id)account withCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, account);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
+  objc_storeStrong(&v8, completion);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -91,55 +91,55 @@ uint64_t __32__AKAlertHandler_sharedInstance__block_invoke()
 
   if ([location[0] code] == -7044)
   {
-    [(AKAlertHandler *)v11 _showAlertForInvalidContextWithCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForInvalidContextWithCompletion:v8];
     goto LABEL_28;
   }
 
   if ([location[0] code] == -7022)
   {
-    [(AKAlertHandler *)v11 _showAlertForMissingAppleAccountWithCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForMissingAppleAccountWithCompletion:v8];
     goto LABEL_28;
   }
 
-  if ([(AKAlertHandler *)v11 _shouldShowAlertForManagedAccount:v9 error:location[0]])
+  if ([(AKAlertHandler *)selfCopy _shouldShowAlertForManagedAccount:v9 error:location[0]])
   {
-    [(AKAlertHandler *)v11 _showAlertForManagedAccount:v9 error:location[0] withCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForManagedAccount:v9 error:location[0] withCompletion:v8];
     goto LABEL_28;
   }
 
   if ([location[0] code] == -7027)
   {
-    [(AKAlertHandler *)v11 _showAlertForAccountNotSupportedWithCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForAccountNotSupportedWithCompletion:v8];
     goto LABEL_28;
   }
 
   if ([location[0] code] == -7072)
   {
-    [(AKAlertHandler *)v11 _showAlertForUnverifiedEmailWithCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForUnverifiedEmailWithCompletion:v8];
     goto LABEL_28;
   }
 
   if ([location[0] code] == -7070)
   {
-    [(AKAlertHandler *)v11 _showAlertForInsufficientSecurityLevelWithError:location[0] completionHandler:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForInsufficientSecurityLevelWithError:location[0] completionHandler:v8];
     goto LABEL_28;
   }
 
   if ([location[0] code] == -7005)
   {
-    [(AKAlertHandler *)v11 _showAlertForCannotFindServerWithCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForCannotFindServerWithCompletion:v8];
     goto LABEL_28;
   }
 
   if ([location[0] code] == -7076)
   {
-    [(AKAlertHandler *)v11 _showAlertForUnderageAccount:v9 withCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForUnderageAccount:v9 withCompletion:v8];
     goto LABEL_28;
   }
 
   if ([location[0] code] == -7080)
   {
-    [(AKAlertHandler *)v11 _showAlertForPasscodeSetupWithCompletion:v8];
+    [(AKAlertHandler *)selfCopy _showAlertForPasscodeSetupWithCompletion:v8];
     goto LABEL_28;
   }
 
@@ -162,16 +162,16 @@ LABEL_28:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_showAlertForInvalidContextWithCompletion:(id)a3
+- (void)_showAlertForInvalidContextWithCompletion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v8 = +[AKDevice currentDevice];
-  v9 = [v8 isInternalBuild];
+  isInternalBuild = [v8 isInternalBuild];
   MEMORY[0x1E69E5920](v8);
-  if (v9)
+  if (isInternalBuild)
   {
     v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:?];
     v26 = [v3 localizedStringForKey:@"AUTH_ERROR_ALERT_INVALID_CONTEXT_TITLE" value:? table:?];
@@ -183,8 +183,8 @@ LABEL_28:
     v24 = [v5 localizedStringForKey:@"AUTH_ERROR_ALERT_BUTTON_OK" value:&stru_1F0781300 table:@"Localizable"];
     MEMORY[0x1E69E5920](v5);
     v23 = 0;
-    v22 = [(AKAlertHandler *)v29 notificationDictionaryWithTitle:v26 message:v25 defaultButton:v24 alternateButton:0];
-    v7 = v29;
+    v22 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v26 message:v25 defaultButton:v24 alternateButton:0];
+    v7 = selfCopy;
     v6 = v22;
     v16 = MEMORY[0x1E69E9820];
     v17 = -1073741824;
@@ -264,12 +264,12 @@ void __60__AKAlertHandler__showAlertForInvalidContextWithCompletion___block_invo
   }
 }
 
-- (void)_showAlertForMissingAppleAccountWithCompletion:(id)a3
+- (void)_showAlertForMissingAppleAccountWithCompletion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:?];
   v25 = [v3 localizedStringForKey:@"AUTH_ERROR_ALERT_MISSING_APPLE_ACCOUNT_TITLE_REBRAND" value:? table:?];
   MEMORY[0x1E69E5920](v3);
@@ -282,15 +282,15 @@ void __60__AKAlertHandler__showAlertForInvalidContextWithCompletion___block_invo
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v22 = [v6 localizedStringForKey:@"AUTH_ERROR_ALERT_BUTTON_CLOSE" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v6);
-  v21 = [(AKAlertHandler *)v27 notificationDictionaryWithTitle:v25 message:v24 defaultButton:v23 alternateButton:v22];
-  v8 = v27;
+  v21 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v25 message:v24 defaultButton:v23 alternateButton:v22];
+  v8 = selfCopy;
   v7 = v21;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
   v16 = 0;
   v17 = __65__AKAlertHandler__showAlertForMissingAppleAccountWithCompletion___block_invoke;
   v18 = &unk_1E73D6318;
-  v19 = MEMORY[0x1E69E5928](v27);
+  v19 = MEMORY[0x1E69E5928](selfCopy);
   v20 = MEMORY[0x1E69E5928](location[0]);
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
@@ -342,12 +342,12 @@ void __65__AKAlertHandler__showAlertForMissingAppleAccountWithCompletion___block
   }
 }
 
-- (void)_showAlertForAccountNotSupportedWithCompletion:(id)a3
+- (void)_showAlertForAccountNotSupportedWithCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:?];
   v23 = [v3 localizedStringForKey:@"AUTH_ERROR_ALERT_ACCOUNT_NOT_SUPPORTED_TITLE" value:? table:?];
   MEMORY[0x1E69E5920](v3);
@@ -358,8 +358,8 @@ void __65__AKAlertHandler__showAlertForMissingAppleAccountWithCompletion___block
   v21 = [v5 localizedStringForKey:@"AUTH_ERROR_ALERT_BUTTON_OK" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v5);
   v20 = 0;
-  v19 = [(AKAlertHandler *)v25 notificationDictionaryWithTitle:v23 message:v22 defaultButton:v21 alternateButton:0];
-  v7 = v25;
+  v19 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v23 message:v22 defaultButton:v21 alternateButton:0];
+  v7 = selfCopy;
   v6 = v19;
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
@@ -414,12 +414,12 @@ void __65__AKAlertHandler__showAlertForAccountNotSupportedWithCompletion___block
   }
 }
 
-- (void)_showAlertForUnverifiedEmailWithCompletion:(id)a3
+- (void)_showAlertForUnverifiedEmailWithCompletion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:?];
   v25 = [v3 localizedStringForKey:@"AUTH_ERROR_ALERT_UNVERIFIED_EMAIL_TITLE" value:? table:?];
   MEMORY[0x1E69E5920](v3);
@@ -432,15 +432,15 @@ void __65__AKAlertHandler__showAlertForAccountNotSupportedWithCompletion___block
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v22 = [v6 localizedStringForKey:@"AUTH_ERROR_ALERT_BUTTON_CLOSE" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v6);
-  v21 = [(AKAlertHandler *)v27 notificationDictionaryWithTitle:v25 message:v24 defaultButton:v23 alternateButton:v22];
-  v8 = v27;
+  v21 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v25 message:v24 defaultButton:v23 alternateButton:v22];
+  v8 = selfCopy;
   v7 = v21;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
   v16 = 0;
   v17 = __61__AKAlertHandler__showAlertForUnverifiedEmailWithCompletion___block_invoke;
   v18 = &unk_1E73D6318;
-  v19 = MEMORY[0x1E69E5928](v27);
+  v19 = MEMORY[0x1E69E5928](selfCopy);
   v20 = MEMORY[0x1E69E5928](location[0]);
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
@@ -492,26 +492,26 @@ void __61__AKAlertHandler__showAlertForUnverifiedEmailWithCompletion___block_inv
   }
 }
 
-- (void)_showAlertForInsufficientSecurityLevelWithError:(id)a3 completionHandler:(id)a4
+- (void)_showAlertForInsufficientSecurityLevelWithError:(id)error completionHandler:(id)handler
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
-  v20 = [location[0] userInfo];
-  v44 = [v20 objectForKey:@"AKClientBundleID"];
-  MEMORY[0x1E69E5920](v20);
+  objc_storeStrong(&v45, handler);
+  userInfo = [location[0] userInfo];
+  v44 = [userInfo objectForKey:@"AKClientBundleID"];
+  MEMORY[0x1E69E5920](userInfo);
   v21 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v43 = [v21 localizedStringForKey:@"AUTH_ERROR_ALERT_INSUFFICIENT_SECURITY_LEVEL_TITLE" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v21);
-  v42 = [location[0] userInfo];
-  v22 = [v42 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  userInfo2 = [location[0] userInfo];
+  v22 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
   MEMORY[0x1E69E5920](v22);
   if (v22)
   {
-    v4 = [v42 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+    v4 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
     v5 = v43;
     v43 = v4;
     MEMORY[0x1E69E5920](v5);
@@ -520,11 +520,11 @@ void __61__AKAlertHandler__showAlertForUnverifiedEmailWithCompletion___block_inv
   v17 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v41 = [v17 localizedStringForKey:@"AUTH_ERROR_ALERT_INSUFFICIENT_SECURITY_LEVEL_MESSAGE" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v17);
-  v18 = [v42 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
+  v18 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
   MEMORY[0x1E69E5920](v18);
   if (v18)
   {
-    v6 = [v42 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
+    v6 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
     v7 = v41;
     v41 = v6;
     MEMORY[0x1E69E5920](v7);
@@ -536,11 +536,11 @@ void __61__AKAlertHandler__showAlertForUnverifiedEmailWithCompletion___block_inv
   v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v39 = [v15 localizedStringForKey:@"AUTH_ERROR_ALERT_BUTTON_CLOSE" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v15);
-  v16 = [v42 objectForKeyedSubscript:*MEMORY[0x1E696A590]];
+  v16 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A590]];
   MEMORY[0x1E69E5920](v16);
   if (v16)
   {
-    v38 = [v42 objectForKeyedSubscript:*MEMORY[0x1E696A590]];
+    v38 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A590]];
     if ([v38 count] == 2)
     {
       v8 = [v38 objectAtIndexedSubscript:0];
@@ -556,15 +556,15 @@ void __61__AKAlertHandler__showAlertForUnverifiedEmailWithCompletion___block_inv
     objc_storeStrong(&v38, 0);
   }
 
-  v37 = [(AKAlertHandler *)v47 notificationDictionaryWithTitle:v43 message:v41 defaultButton:v40 alternateButton:v39];
-  v13 = v47;
+  v37 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v43 message:v41 defaultButton:v40 alternateButton:v39];
+  v13 = selfCopy;
   v12 = v37;
   v29 = MEMORY[0x1E69E9820];
   v30 = -1073741824;
   v31 = 0;
   v32 = __84__AKAlertHandler__showAlertForInsufficientSecurityLevelWithError_completionHandler___block_invoke;
   v33 = &unk_1E73D6640;
-  v34 = MEMORY[0x1E69E5928](v47);
+  v34 = MEMORY[0x1E69E5928](selfCopy);
   v35 = MEMORY[0x1E69E5928](v44);
   v36 = MEMORY[0x1E69E5928](v45);
   v23 = MEMORY[0x1E69E9820];
@@ -582,7 +582,7 @@ void __61__AKAlertHandler__showAlertForUnverifiedEmailWithCompletion___block_inv
   objc_storeStrong(&v39, 0);
   objc_storeStrong(&v40, 0);
   objc_storeStrong(&v41, 0);
-  objc_storeStrong(&v42, 0);
+  objc_storeStrong(&userInfo2, 0);
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&v45, 0);
@@ -622,12 +622,12 @@ void __84__AKAlertHandler__showAlertForInsufficientSecurityLevelWithError_comple
   }
 }
 
-- (void)_showAlertForCannotFindServerWithCompletion:(id)a3
+- (void)_showAlertForCannotFindServerWithCompletion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v32 = [v7 localizedStringForKey:@"AUTH_ERROR_ALERT_CANNOT_FIND_SERVER_TITLE" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v7);
@@ -678,8 +678,8 @@ void __84__AKAlertHandler__showAlertForInsufficientSecurityLevelWithError_comple
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v21 = [v4 localizedStringForKey:@"AUTH_ERROR_ALERT_BUTTON_OK" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v4);
-  v20 = [(AKAlertHandler *)v34 notificationDictionaryWithTitle:v32 message:v31 defaultButton:v21 alternateButton:?];
-  v6 = v34;
+  v20 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v32 message:v31 defaultButton:v21 alternateButton:?];
+  v6 = selfCopy;
   v5 = v20;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
@@ -734,14 +734,14 @@ void __62__AKAlertHandler__showAlertForCannotFindServerWithCompletion___block_in
   }
 }
 
-- (void)_showAlertForUnderageAccount:(id)a3 withCompletion:(id)a4
+- (void)_showAlertForUnderageAccount:(id)account withCompletion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, completion);
   v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:?];
   v33 = [v14 localizedStringForKey:@"AUTH_ERROR_ALERT_UNDERAGE_ACCOUNT_TITLE" value:? table:?];
   MEMORY[0x1E69E5920](v14);
@@ -756,12 +756,12 @@ void __62__AKAlertHandler__showAlertForCannotFindServerWithCompletion___block_in
     v9 = MEMORY[0x1E696AEC0];
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
     v11 = [v12 localizedStringForKey:@"AUTH_ERROR_ALERT_UNDERAGE_ACCOUNT_MESSAGE_REBRAND" value:&stru_1F0781300 table:@"Localizable"];
-    v10 = [v31 stringValue];
-    v4 = [v9 stringWithFormat:v11, v10];
+    stringValue = [v31 stringValue];
+    v4 = [v9 stringWithFormat:v11, stringValue];
     v5 = v32;
     v32 = v4;
     MEMORY[0x1E69E5920](v5);
-    MEMORY[0x1E69E5920](v10);
+    MEMORY[0x1E69E5920](stringValue);
     MEMORY[0x1E69E5920](v11);
     MEMORY[0x1E69E5920](v12);
   }
@@ -769,8 +769,8 @@ void __62__AKAlertHandler__showAlertForCannotFindServerWithCompletion___block_in
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v30 = [v6 localizedStringForKey:@"AUTH_ERROR_ALERT_BUTTON_OK" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v6);
-  v29 = [(AKAlertHandler *)v36 notificationDictionaryWithTitle:v33 message:v32 defaultButton:v30 alternateButton:?];
-  v8 = v36;
+  v29 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v33 message:v32 defaultButton:v30 alternateButton:?];
+  v8 = selfCopy;
   v7 = v29;
   v23 = MEMORY[0x1E69E9820];
   v24 = -1073741824;
@@ -827,12 +827,12 @@ void __62__AKAlertHandler__showAlertForUnderageAccount_withCompletion___block_in
   }
 }
 
-- (void)_showAlertForPasscodeSetupWithCompletion:(id)a3
+- (void)_showAlertForPasscodeSetupWithCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:?];
   v23 = [v3 localizedStringForKey:@"AUTH_ERROR_ALERT_CREATE_PASSCODE_TITLE" value:? table:?];
   MEMORY[0x1E69E5920](v3);
@@ -842,15 +842,15 @@ void __62__AKAlertHandler__showAlertForUnderageAccount_withCompletion___block_in
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v21 = [v5 localizedStringForKey:@"AUTH_ERROR_BUTTON_OPEN_PASSCODE_SETUP" value:&stru_1F0781300 table:@"Localizable"];
   MEMORY[0x1E69E5920](v5);
-  v20 = [(AKAlertHandler *)v25 notificationDictionaryWithTitle:v23 message:v22 defaultButton:v21 alternateButton:0];
-  v7 = v25;
+  v20 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v23 message:v22 defaultButton:v21 alternateButton:0];
+  v7 = selfCopy;
   v6 = v20;
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
   v16 = __59__AKAlertHandler__showAlertForPasscodeSetupWithCompletion___block_invoke;
   v17 = &unk_1E73D6318;
-  v18 = MEMORY[0x1E69E5928](v25);
+  v18 = MEMORY[0x1E69E5928](selfCopy);
   v19 = MEMORY[0x1E69E5928](location[0]);
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
@@ -901,21 +901,21 @@ void __59__AKAlertHandler__showAlertForPasscodeSetupWithCompletion___block_invok
   }
 }
 
-- (BOOL)_shouldShowAlertForManagedAccount:(id)a3 error:(id)a4
+- (BOOL)_shouldShowAlertForManagedAccount:(id)account error:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, error);
   v10 = 0;
-  v8 = [v11 userInfo];
-  v7 = [v8 objectForKeyedSubscript:@"isManagedAccount"];
-  v9 = [v7 BOOLValue];
+  userInfo = [v11 userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"isManagedAccount"];
+  bOOLValue = [v7 BOOLValue];
   MEMORY[0x1E69E5920](v7);
-  MEMORY[0x1E69E5920](v8);
-  if (v9)
+  MEMORY[0x1E69E5920](userInfo);
+  if (bOOLValue)
   {
     v5 = 1;
     if ([v11 code] != -7100)
@@ -935,16 +935,16 @@ void __59__AKAlertHandler__showAlertForPasscodeSetupWithCompletion___block_invok
   return v10;
 }
 
-- (void)_showAlertForManagedAccount:(id)a3 error:(id)a4 withCompletion:(id)a5
+- (void)_showAlertForManagedAccount:(id)account error:(id)error withCompletion:(id)completion
 {
-  v58 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v56 = 0;
-  objc_storeStrong(&v56, a4);
+  objc_storeStrong(&v56, error);
   v55 = 0;
-  objc_storeStrong(&v55, a5);
+  objc_storeStrong(&v55, completion);
   v32 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:?];
   v54 = [v32 localizedStringForKey:@"AUTH_ERROR_ALERT_MANAGED_ACCOUNT_CANNOT_SIGN_IN_TITLE" value:? table:?];
   MEMORY[0x1E69E5920](v32);
@@ -962,12 +962,12 @@ void __59__AKAlertHandler__showAlertForPasscodeSetupWithCompletion___block_invok
     v54 = v5;
     MEMORY[0x1E69E5920](v6);
     MEMORY[0x1E69E5920](v27);
-    v28 = [v56 userInfo];
-    v51 = [v28 objectForKeyedSubscript:@"managedOrganizationName"];
-    MEMORY[0x1E69E5920](v28);
-    v29 = [v56 userInfo];
-    v50 = [v29 objectForKeyedSubscript:@"localizedAppName"];
-    MEMORY[0x1E69E5920](v29);
+    userInfo = [v56 userInfo];
+    v51 = [userInfo objectForKeyedSubscript:@"managedOrganizationName"];
+    MEMORY[0x1E69E5920](userInfo);
+    userInfo2 = [v56 userInfo];
+    v50 = [userInfo2 objectForKeyedSubscript:@"localizedAppName"];
+    MEMORY[0x1E69E5920](userInfo2);
     v49 = [v51 length] != 0;
     v48 = [v50 length] != 0;
     if (v48 && v49)
@@ -1023,8 +1023,8 @@ void __59__AKAlertHandler__showAlertForPasscodeSetupWithCompletion___block_invok
     objc_storeStrong(&v51, 0);
   }
 
-  v47 = [(AKAlertHandler *)v58 notificationDictionaryWithTitle:v54 message:v53 defaultButton:v52 alternateButton:?];
-  v16 = v58;
+  v47 = [(AKAlertHandler *)selfCopy notificationDictionaryWithTitle:v54 message:v53 defaultButton:v52 alternateButton:?];
+  v16 = selfCopy;
   v15 = v47;
   v41 = MEMORY[0x1E69E9820];
   v42 = -1073741824;
@@ -1081,27 +1081,27 @@ void __67__AKAlertHandler__showAlertForManagedAccount_error_withCompletion___blo
   }
 }
 
-- (BOOL)showAlert:(id)a3 primaryAction:(id)a4 altAction:(id)a5
+- (BOOL)showAlert:(id)alert primaryAction:(id)action altAction:(id)altAction
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, action);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  WeakRetained = objc_loadWeakRetained(&v13->_uiProvider);
+  objc_storeStrong(&v10, altAction);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_uiProvider);
   if (objc_opt_respondsToSelector())
   {
     v8 = [WeakRetained alertHandlerShowAlert:location[0] primaryAction:v11 altAction:v10];
-    objc_storeWeak(&v13->_uiProvider, 0);
+    objc_storeWeak(&selfCopy->_uiProvider, 0);
     v14 = v8 & 1;
   }
 
   else
   {
-    v14 = [(AKAlertHandler *)v13 showAlert:location[0] primaryAction:v11 altAction:v10 cancelAction:v10];
+    v14 = [(AKAlertHandler *)selfCopy showAlert:location[0] primaryAction:v11 altAction:v10 cancelAction:v10];
   }
 
   objc_storeStrong(&WeakRetained, 0);
@@ -1111,19 +1111,19 @@ void __67__AKAlertHandler__showAlertForManagedAccount_error_withCompletion___blo
   return v14 & 1;
 }
 
-- (BOOL)showAlert:(id)a3 primaryAction:(id)a4 altAction:(id)a5 cancelAction:(id)a6
+- (BOOL)showAlert:(id)alert primaryAction:(id)action altAction:(id)altAction cancelAction:(id)cancelAction
 {
   v34 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, action);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, altAction);
   v27 = 0;
-  objc_storeStrong(&v27, a6);
+  objc_storeStrong(&v27, cancelAction);
   if ([MEMORY[0x1E6985DD8] deviceIsAudioAccessory])
   {
     v26 = _AKLogSystem();
@@ -1216,18 +1216,18 @@ void __65__AKAlertHandler_showAlert_primaryAction_altAction_cancelAction___block
   CFRelease(*(a1 + 56));
 }
 
-- (id)notificationDictionaryWithTitle:(id)a3 message:(id)a4 defaultButton:(id)a5 alternateButton:(id)a6
+- (id)notificationDictionaryWithTitle:(id)title message:(id)message defaultButton:(id)button alternateButton:(id)alternateButton
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, message);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, button);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
+  objc_storeStrong(&v17, alternateButton);
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (location[0])
   {
@@ -1250,10 +1250,10 @@ void __65__AKAlertHandler_showAlert_primaryAction_altAction_cancelAction___block
   [v16 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69D44E8]];
   [v16 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69D4488]];
   v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v10 = [v11 resourceURL];
+  resourceURL = [v11 resourceURL];
   v7 = *MEMORY[0x1E695EE90];
   [v16 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v10);
+  MEMORY[0x1E69E5920](resourceURL);
   MEMORY[0x1E69E5920](v11);
   v12 = MEMORY[0x1E69E5928](v16);
   objc_storeStrong(&v16, 0);
@@ -1267,20 +1267,20 @@ void __65__AKAlertHandler_showAlert_primaryAction_altAction_cancelAction___block
 
 - (void)_openSpyglass
 {
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=APPLE_ACCOUNT"];
-  [v3 openSensitiveURL:? withOptions:?];
+  [defaultWorkspace openSensitiveURL:? withOptions:?];
   MEMORY[0x1E69E5920](v2);
-  MEMORY[0x1E69E5920](v3);
+  MEMORY[0x1E69E5920](defaultWorkspace);
 }
 
-- (void)_openUpgradeAccountSecurityLevelWithBundleID:(id)a3
+- (void)_openUpgradeAccountSecurityLevelWithBundleID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
   if (location[0])
   {
@@ -1302,29 +1302,29 @@ void __65__AKAlertHandler_showAlert_primaryAction_altAction_cancelAction___block
     MEMORY[0x1E69E5920](v7);
   }
 
-  v5 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v4 = [(AKAlertHandler *)v10 _URLWithString:@"prefs:root=APPLE_ACCOUNT&aaaction=upgradeSecurityLevel" byAppendingParameters:v8];
-  [v5 openSensitiveURL:? withOptions:?];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v4 = [(AKAlertHandler *)selfCopy _URLWithString:@"prefs:root=APPLE_ACCOUNT&aaaction=upgradeSecurityLevel" byAppendingParameters:v8];
+  [defaultWorkspace openSensitiveURL:? withOptions:?];
   MEMORY[0x1E69E5920](v4);
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](defaultWorkspace);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_URLWithString:(id)a3 byAppendingParameters:(id)a4
+- (id)_URLWithString:(id)string byAppendingParameters:(id)parameters
 {
   v22 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, parameters);
   v18 = [location[0] mutableCopy];
   memset(__b, 0, sizeof(__b));
-  v14 = [v19 keyEnumerator];
-  v15 = [v14 countByEnumeratingWithState:__b objects:v21 count:16];
+  keyEnumerator = [v19 keyEnumerator];
+  v15 = [keyEnumerator countByEnumeratingWithState:__b objects:v21 count:16];
   if (v15)
   {
     v10 = *__b[2];
@@ -1335,7 +1335,7 @@ void __65__AKAlertHandler_showAlert_primaryAction_altAction_cancelAction___block
       v9 = v11;
       if (*__b[2] != v10)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v17 = *(__b[1] + 8 * v11);
@@ -1348,7 +1348,7 @@ void __65__AKAlertHandler_showAlert_primaryAction_altAction_cancelAction___block
       if (v9 + 1 >= v12)
       {
         v11 = 0;
-        v12 = [v14 countByEnumeratingWithState:__b objects:v21 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:__b objects:v21 count:16];
         if (!v12)
         {
           break;
@@ -1357,7 +1357,7 @@ void __65__AKAlertHandler_showAlert_primaryAction_altAction_cancelAction___block
     }
   }
 
-  MEMORY[0x1E69E5920](v14);
+  MEMORY[0x1E69E5920](keyEnumerator);
   v5 = [MEMORY[0x1E695DFF8] URLWithString:v18];
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);

@@ -7,7 +7,7 @@
 + (id)ams_symbolicatedCallStackSymbols
 {
   v36 = *MEMORY[0x1E69E9840];
-  v0 = [MEMORY[0x1E696AF00] callStackReturnAddresses];
+  callStackReturnAddresses = [MEMORY[0x1E696AF00] callStackReturnAddresses];
   v1 = CSSymbolicatorCreateWithTaskFlagsAndNotification();
   v3 = v2;
   v4 = 0;
@@ -21,8 +21,8 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v23 = v0;
-    obj = v0;
+    v23 = callStackReturnAddresses;
+    obj = callStackReturnAddresses;
     v28 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v28)
     {
@@ -48,7 +48,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v9 = [*(*(&v31 + 1) + 8 * i) unsignedIntegerValue];
+          unsignedIntegerValue = [*(*(&v31 + 1) + 8 * i) unsignedIntegerValue];
           CSSymbolicatorGetSymbolOwnerWithAddressAtTime();
           v10 = v1;
           v11 = v3;
@@ -58,7 +58,7 @@
           Name = CSSymbolGetName();
           if (Name)
           {
-            asprintf(&v30, " %s + %llu", Name, v9 - Range);
+            asprintf(&v30, " %s + %llu", Name, unsignedIntegerValue - Range);
           }
 
           CSSymbolOwnerGetSourceInfoWithAddress();
@@ -94,7 +94,7 @@
             v20 = "";
           }
 
-          v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-3d %-30s\t0x%0*llx%s%s\n", v6, v18, v26, v9, v19, v20];
+          v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-3d %-30s\t0x%0*llx%s%s\n", v6, v18, v26, unsignedIntegerValue, v19, v20];
           if (v30)
           {
             free(v30);
@@ -118,7 +118,7 @@
     }
 
     v4 = [v27 copy];
-    v0 = v23;
+    callStackReturnAddresses = v23;
   }
 
   return v4;

@@ -1,163 +1,163 @@
 @interface CPSCardPlatterView
-- (CPSCardPlatterView)initWithFrame:(CGRect)a3;
-- (CPSCardPlatterView)initWithFrame:(CGRect)a3 cornerRadius:(double)a4 maskedCorners:(unint64_t)a5;
-- (CPSCardPlatterView)initWithFrame:(CGRect)a3 cornerRadius:(double)a4 maskedCorners:(unint64_t)a5 backgroundMaterial:(id)a6 backgroundColor:(id)a7;
+- (CPSCardPlatterView)initWithFrame:(CGRect)frame;
+- (CPSCardPlatterView)initWithFrame:(CGRect)frame cornerRadius:(double)radius maskedCorners:(unint64_t)corners;
+- (CPSCardPlatterView)initWithFrame:(CGRect)frame cornerRadius:(double)radius maskedCorners:(unint64_t)corners backgroundMaterial:(id)material backgroundColor:(id)color;
 - (void)_updateStyleOverridesForSubviews;
-- (void)didAddSubview:(id)a3;
-- (void)setPlatterBackgroundColor:(id)a3;
-- (void)setShadowWithRadius:(double)a3 opacity:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didAddSubview:(id)subview;
+- (void)setPlatterBackgroundColor:(id)color;
+- (void)setShadowWithRadius:(double)radius opacity:(double)opacity;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPSCardPlatterView
 
-- (CPSCardPlatterView)initWithFrame:(CGRect)a3 cornerRadius:(double)a4 maskedCorners:(unint64_t)a5
+- (CPSCardPlatterView)initWithFrame:(CGRect)frame cornerRadius:(double)radius maskedCorners:(unint64_t)corners
 {
-  v13 = a3;
-  v12 = self;
-  v10 = [MEMORY[0x277D75D68] crsui_consoleTurnCardETATrayBackgroundMaterial];
-  v9 = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
-  v12 = 0;
-  v12 = [(CPSCardPlatterView *)self initWithFrame:a5 cornerRadius:v10 maskedCorners:v13.origin.x backgroundMaterial:v13.origin.y backgroundColor:v13.size.width, v13.size.height, a4];
-  v11 = MEMORY[0x277D82BE0](v12);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  objc_storeStrong(&v12, 0);
+  frameCopy = frame;
+  selfCopy = self;
+  crsui_consoleTurnCardETATrayBackgroundMaterial = [MEMORY[0x277D75D68] crsui_consoleTurnCardETATrayBackgroundMaterial];
+  crsui_consoleTurnCardETATrayBackgroundColor = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
+  selfCopy = 0;
+  selfCopy = [(CPSCardPlatterView *)self initWithFrame:corners cornerRadius:crsui_consoleTurnCardETATrayBackgroundMaterial maskedCorners:frameCopy.origin.x backgroundMaterial:frameCopy.origin.y backgroundColor:frameCopy.size.width, frameCopy.size.height, radius];
+  v11 = MEMORY[0x277D82BE0](selfCopy);
+  MEMORY[0x277D82BD8](crsui_consoleTurnCardETATrayBackgroundColor);
+  MEMORY[0x277D82BD8](crsui_consoleTurnCardETATrayBackgroundMaterial);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (CPSCardPlatterView)initWithFrame:(CGRect)a3 cornerRadius:(double)a4 maskedCorners:(unint64_t)a5 backgroundMaterial:(id)a6 backgroundColor:(id)a7
+- (CPSCardPlatterView)initWithFrame:(CGRect)frame cornerRadius:(double)radius maskedCorners:(unint64_t)corners backgroundMaterial:(id)material backgroundColor:(id)color
 {
-  v42 = a3;
-  v41 = self;
+  frameCopy = frame;
+  selfCopy = self;
   v40 = a2;
-  v39 = a4;
-  v38 = a5;
+  radiusCopy = radius;
+  cornersCopy = corners;
   location = 0;
-  objc_storeStrong(&location, a6);
+  objc_storeStrong(&location, material);
   v36 = 0;
-  objc_storeStrong(&v36, a7);
-  v7 = v41;
-  v41 = 0;
+  objc_storeStrong(&v36, color);
+  v7 = selfCopy;
+  selfCopy = 0;
   v35.receiver = v7;
   v35.super_class = CPSCardPlatterView;
-  v41 = [(CPSCardPlatterView *)&v35 initWithFrame:v42.origin.x, v42.origin.y, v42.size.width, v42.size.height];
-  objc_storeStrong(&v41, v41);
-  if (v41)
+  selfCopy = [(CPSCardPlatterView *)&v35 initWithFrame:frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width, frameCopy.size.height];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v30 = [(CPSCardPlatterView *)v41 layer];
-    [v30 setCornerRadius:v39];
-    *&v8 = MEMORY[0x277D82BD8](v30).n128_u64[0];
-    v31 = [(CPSCardPlatterView *)v41 layer];
-    [v31 setCornerCurve:*MEMORY[0x277CDA138]];
-    *&v9 = MEMORY[0x277D82BD8](v31).n128_u64[0];
-    v32 = [(CPSCardPlatterView *)v41 layer];
-    [v32 setMaskedCorners:v38];
-    *&v10 = MEMORY[0x277D82BD8](v32).n128_u64[0];
-    [(CPSCardPlatterView *)v41 setTranslatesAutoresizingMaskIntoConstraints:0, v10];
+    layer = [(CPSCardPlatterView *)selfCopy layer];
+    [layer setCornerRadius:radiusCopy];
+    *&v8 = MEMORY[0x277D82BD8](layer).n128_u64[0];
+    layer2 = [(CPSCardPlatterView *)selfCopy layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
+    *&v9 = MEMORY[0x277D82BD8](layer2).n128_u64[0];
+    layer3 = [(CPSCardPlatterView *)selfCopy layer];
+    [layer3 setMaskedCorners:cornersCopy];
+    *&v10 = MEMORY[0x277D82BD8](layer3).n128_u64[0];
+    [(CPSCardPlatterView *)selfCopy setTranslatesAutoresizingMaskIntoConstraints:0, v10];
     if (location)
     {
       v34 = MEMORY[0x277D82BE0](location);
-      v28 = v39;
-      v29 = [v34 layer];
-      [v29 setCornerRadius:v28];
-      *&v11 = MEMORY[0x277D82BD8](v29).n128_u64[0];
-      [(CPSCardPlatterView *)v41 bounds];
+      v28 = radiusCopy;
+      layer4 = [v34 layer];
+      [layer4 setCornerRadius:v28];
+      *&v11 = MEMORY[0x277D82BD8](layer4).n128_u64[0];
+      [(CPSCardPlatterView *)selfCopy bounds];
       [location setFrame:{v12, v13, v14, v15}];
       [location setAutoresizingMask:18];
-      objc_storeStrong(&v41->_material, v34);
-      [(CPSCardPlatterView *)v41 addSubview:v41->_material];
+      objc_storeStrong(&selfCopy->_material, v34);
+      [(CPSCardPlatterView *)selfCopy addSubview:selfCopy->_material];
       objc_storeStrong(&v34, 0);
     }
 
     v25 = objc_alloc(MEMORY[0x277D75D18]);
-    [(CPSCardPlatterView *)v41 bounds];
+    [(CPSCardPlatterView *)selfCopy bounds];
     v20 = [v25 initWithFrame:{v16, v17, v18, v19}];
-    backgroundColorView = v41->_backgroundColorView;
-    v41->_backgroundColorView = v20;
+    backgroundColorView = selfCopy->_backgroundColorView;
+    selfCopy->_backgroundColorView = v20;
     MEMORY[0x277D82BD8](backgroundColorView);
-    v26 = v39;
-    v27 = [(UIView *)v41->_backgroundColorView layer];
-    [(CALayer *)v27 setCornerRadius:v26];
-    *&v22 = MEMORY[0x277D82BD8](v27).n128_u64[0];
-    [(UIView *)v41->_backgroundColorView setAutoresizingMask:18, v22];
-    [(CPSCardPlatterView *)v41 addSubview:v41->_backgroundColorView];
-    [(CPSCardPlatterView *)v41 setPlatterBackgroundColor:v36];
+    v26 = radiusCopy;
+    layer5 = [(UIView *)selfCopy->_backgroundColorView layer];
+    [(CALayer *)layer5 setCornerRadius:v26];
+    *&v22 = MEMORY[0x277D82BD8](layer5).n128_u64[0];
+    [(UIView *)selfCopy->_backgroundColorView setAutoresizingMask:18, v22];
+    [(CPSCardPlatterView *)selfCopy addSubview:selfCopy->_backgroundColorView];
+    [(CPSCardPlatterView *)selfCopy setPlatterBackgroundColor:v36];
   }
 
-  v24 = MEMORY[0x277D82BE0](v41);
+  v24 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v36, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v24;
 }
 
-- (CPSCardPlatterView)initWithFrame:(CGRect)a3
+- (CPSCardPlatterView)initWithFrame:(CGRect)frame
 {
-  v9 = a3;
-  v8 = self;
-  v6 = [MEMORY[0x277D75D68] crsui_consoleTurnCardETATrayBackgroundMaterial];
-  v5 = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
-  v8 = 0;
-  v8 = [(CPSCardPlatterView *)self initWithFrame:15 cornerRadius:v6 maskedCorners:v9.origin.x backgroundMaterial:v9.origin.y backgroundColor:v9.size.width, v9.size.height, 10.0];
-  objc_storeStrong(&v8, v8);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  v7 = MEMORY[0x277D82BE0](v8);
-  objc_storeStrong(&v8, 0);
+  frameCopy = frame;
+  selfCopy = self;
+  crsui_consoleTurnCardETATrayBackgroundMaterial = [MEMORY[0x277D75D68] crsui_consoleTurnCardETATrayBackgroundMaterial];
+  crsui_consoleTurnCardETATrayBackgroundColor = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
+  selfCopy = 0;
+  selfCopy = [(CPSCardPlatterView *)self initWithFrame:15 cornerRadius:crsui_consoleTurnCardETATrayBackgroundMaterial maskedCorners:frameCopy.origin.x backgroundMaterial:frameCopy.origin.y backgroundColor:frameCopy.size.width, frameCopy.size.height, 10.0];
+  objc_storeStrong(&selfCopy, selfCopy);
+  MEMORY[0x277D82BD8](crsui_consoleTurnCardETATrayBackgroundColor);
+  MEMORY[0x277D82BD8](crsui_consoleTurnCardETATrayBackgroundMaterial);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)setShadowWithRadius:(double)a3 opacity:(double)a4
+- (void)setShadowWithRadius:(double)radius opacity:(double)opacity
 {
-  v5 = [(CPSCardPlatterView *)self layer];
-  [v5 setShadowRadius:a3];
-  v6 = [(CPSCardPlatterView *)self layer];
-  [v6 setShadowPathIsBounds:1];
-  v7 = [(CPSCardPlatterView *)self layer];
-  HIDWORD(v4) = HIDWORD(a4);
-  *&v4 = a4;
-  [v7 setShadowOpacity:v4];
-  v8 = [(CPSCardPlatterView *)self layer];
-  [v8 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-  MEMORY[0x277D82BD8](v8);
+  layer = [(CPSCardPlatterView *)self layer];
+  [layer setShadowRadius:radius];
+  layer2 = [(CPSCardPlatterView *)self layer];
+  [layer2 setShadowPathIsBounds:1];
+  layer3 = [(CPSCardPlatterView *)self layer];
+  HIDWORD(v4) = HIDWORD(opacity);
+  *&v4 = opacity;
+  [layer3 setShadowOpacity:v4];
+  layer4 = [(CPSCardPlatterView *)self layer];
+  [layer4 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  MEMORY[0x277D82BD8](layer4);
 }
 
-- (void)setPlatterBackgroundColor:(id)a3
+- (void)setPlatterBackgroundColor:(id)color
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_platterBackgroundColor, location[0]);
-  [(UIView *)v4->_backgroundColorView setBackgroundColor:location[0]];
-  [(CPSCardPlatterView *)v4 _updateStyleOverridesForSubviews];
+  objc_storeStrong(location, color);
+  objc_storeStrong(&selfCopy->_platterBackgroundColor, location[0]);
+  [(UIView *)selfCopy->_backgroundColorView setBackgroundColor:location[0]];
+  [(CPSCardPlatterView *)selfCopy _updateStyleOverridesForSubviews];
   objc_storeStrong(location, 0);
 }
 
 - (void)_updateStyleOverridesForSubviews
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10 = 0;
   platterBackgroundColor = self->_platterBackgroundColor;
-  v5 = [(CPSCardPlatterView *)self traitCollection];
+  traitCollection = [(CPSCardPlatterView *)self traitCollection];
   location = [(UIColor *)platterBackgroundColor resolvedColorWithTraitCollection:?];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](traitCollection);
   v10 = 1;
   v7 = CPContrastingColorForColor();
-  v6 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   v8 = [v7 isEqual:?];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](whiteColor);
   *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
   if (v8)
   {
     v10 = 2;
   }
 
-  v3 = [(CPSCardPlatterView *)v12 subviews];
-  [v3 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v3);
+  subviews = [(CPSCardPlatterView *)selfCopy subviews];
+  [subviews enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](subviews);
   objc_storeStrong(&location, 0);
 }
 
@@ -170,29 +170,29 @@ void __54__CPSCardPlatterView__updateStyleOverridesForSubviews__block_invoke(voi
   objc_storeStrong(location, 0);
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, subview);
+  v3.receiver = selfCopy;
   v3.super_class = CPSCardPlatterView;
   [(CPSCardPlatterView *)&v3 didAddSubview:location[0]];
-  [(CPSCardPlatterView *)v5 _updateStyleOverridesForSubviews];
+  [(CPSCardPlatterView *)selfCopy _updateStyleOverridesForSubviews];
   objc_storeStrong(location, 0);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = CPSCardPlatterView;
   [(CPSCardPlatterView *)&v3 traitCollectionDidChange:location[0]];
-  [(CPSCardPlatterView *)v5 _updateStyleOverridesForSubviews];
+  [(CPSCardPlatterView *)selfCopy _updateStyleOverridesForSubviews];
   objc_storeStrong(location, 0);
 }
 

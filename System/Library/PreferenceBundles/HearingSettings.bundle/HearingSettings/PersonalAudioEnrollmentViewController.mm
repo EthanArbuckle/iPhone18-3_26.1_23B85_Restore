@@ -1,19 +1,19 @@
 @interface PersonalAudioEnrollmentViewController
 - (PersonalAudioEnrollmentViewController)init;
 - (void)cancelModalFlow;
-- (void)didSelectAudiogram:(id)a3;
-- (void)didSelectEnrollmentNode:(id)a3;
+- (void)didSelectAudiogram:(id)audiogram;
+- (void)didSelectEnrollmentNode:(id)node;
 - (void)mediaServerDied;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)overviewNextButtonTapped:(id)a3;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)overviewNextButtonTapped:(id)tapped;
 - (void)registerNotifications;
-- (void)showOverviewWithANCBullet:(BOOL)a3;
+- (void)showOverviewWithANCBullet:(BOOL)bullet;
 - (void)showWelcomeController;
-- (void)startEnrollmentWithAudiogram:(id)a3;
+- (void)startEnrollmentWithAudiogram:(id)audiogram;
 - (void)updateHeadphoneState;
-- (void)updateIntroButtonTrayCaption:(id)a3;
+- (void)updateIntroButtonTrayCaption:(id)caption;
 - (void)viewDidLoad;
-- (void)welcomeNextButtonTapped:(id)a3;
+- (void)welcomeNextButtonTapped:(id)tapped;
 @end
 
 @implementation PersonalAudioEnrollmentViewController
@@ -49,7 +49,7 @@
 
       v5 = v4;
       _Block_object_dispose(&v32, 8);
-      v6 = [v4 audiogramSampleType];
+      audiogramSampleType = [v4 audiogramSampleType];
       v7 = objc_alloc_init(sub_17254());
       v32 = 0;
       v33 = &v32;
@@ -75,7 +75,7 @@
       v23[2] = sub_17334;
       v23[3] = &unk_48DD0;
       objc_copyWeak(&v24, &location);
-      v11 = [v10 initWithSampleType:v6 predicate:0 limit:0 sortDescriptors:0 resultsHandler:v23];
+      v11 = [v10 initWithSampleType:audiogramSampleType predicate:0 limit:0 sortDescriptors:0 resultsHandler:v23];
       [v7 executeQuery:v11];
 
       objc_destroyWeak(&v24);
@@ -86,8 +86,8 @@
     -[PersonalAudioEnrollmentViewController setPersonalAudioWasEnabled:](v3, "setPersonalAudioWasEnabled:", [v12 personalMediaEnabled]);
 
     v13 = +[PASettings sharedInstance];
-    v14 = [v13 personalMediaConfiguration];
-    [(PersonalAudioEnrollmentViewController *)v3 setCurrentPersonalAudioConfiguration:v14];
+    personalMediaConfiguration = [v13 personalMediaConfiguration];
+    [(PersonalAudioEnrollmentViewController *)v3 setCurrentPersonalAudioConfiguration:personalMediaConfiguration];
 
     v15 = +[PASettings sharedInstance];
     -[PersonalAudioEnrollmentViewController setCurrentPersonalAudioAccommodationTypes:](v3, "setCurrentPersonalAudioAccommodationTypes:", [v15 personalAudioAccommodationTypes]);
@@ -105,8 +105,8 @@
     v20 = +[PASettings sharedInstance];
     [v20 setPersonalAudioAccommodationTypes:v19];
 
-    v21 = [(PersonalAudioEnrollmentViewController *)v3 presentationController];
-    [v21 setDelegate:v3];
+    presentationController = [(PersonalAudioEnrollmentViewController *)v3 presentationController];
+    [presentationController setDelegate:v3];
   }
 
   return v3;
@@ -160,12 +160,12 @@
   [v3 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
 }
 
-- (void)updateIntroButtonTrayCaption:(id)a3
+- (void)updateIntroButtonTrayCaption:(id)caption
 {
   introController = self->_introController;
-  v4 = a3;
-  v5 = [(OBTextWelcomeController *)introController buttonTray];
-  [v5 setCaptionText:v4 style:2];
+  captionCopy = caption;
+  buttonTray = [(OBTextWelcomeController *)introController buttonTray];
+  [buttonTray setCaptionText:captionCopy style:2];
 }
 
 - (void)cancelModalFlow
@@ -189,12 +189,12 @@
   [(PersonalAudioEnrollmentViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 performSelector:"currentNode"];
+    v7 = [viewControllerCopy performSelector:"currentNode"];
   }
 
   else
@@ -202,18 +202,18 @@
     v7 = 0;
   }
 
-  v8 = [v7 stimuli];
-  v9 = [v8 count];
+  stimuli = [v7 stimuli];
+  v9 = [stimuli count];
 
   if (v9)
   {
-    v10 = [(PAEnrollmentNode *)self->_currentNode stimuli];
+    stimuli2 = [(PAEnrollmentNode *)self->_currentNode stimuli];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_17CB4;
     v15[3] = &unk_48F30;
     v16 = v7;
-    [v10 enumerateObjectsUsingBlock:v15];
+    [stimuli2 enumerateObjectsUsingBlock:v15];
   }
 
   else
@@ -229,8 +229,8 @@
   if ([v7 section] <= 4)
   {
     v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelModalFlow"];
-    v14 = [v6 navigationItem];
-    [v14 setRightBarButtonItem:v13];
+    navigationItem = [viewControllerCopy navigationItem];
+    [navigationItem setRightBarButtonItem:v13];
   }
 }
 
@@ -246,24 +246,24 @@
 {
   if ([(PersonalAudioEnrollmentViewController *)self didLoadRouteInfo])
   {
-    v3 = [(PersonalAudioEnrollmentViewController *)self welcomeController];
+    welcomeController = [(PersonalAudioEnrollmentViewController *)self welcomeController];
 
-    if (!v3)
+    if (!welcomeController)
     {
       v4 = [OBWelcomeController alloc];
       v5 = paLocString();
       v58 = [v4 initWithTitle:v5 detailText:0 icon:0];
 
-      v6 = [v58 headerView];
-      [v6 setTitleHyphenationFactor:0.0];
+      headerView = [v58 headerView];
+      [headerView setTitleHyphenationFactor:0.0];
 
       v7 = +[OBBoldTrayButton boldButton];
       v8 = paLocString();
       [v7 setTitle:v8 forState:0];
 
       [v7 addTarget:self action:"welcomeNextButtonTapped:" forControlEvents:64];
-      v9 = [v58 buttonTray];
-      [v9 addButton:v7];
+      buttonTray = [v58 buttonTray];
+      [buttonTray addButton:v7];
 
       v10 = [UIImage systemImageNamed:@"phone.fill"];
       v11 = +[UIColor systemBlueColor];
@@ -272,9 +272,9 @@
 
       if ([UIApp userInterfaceLayoutDirection] == &dword_0 + 1)
       {
-        v14 = [v13 imageWithHorizontallyFlippedOrientation];
+        imageWithHorizontallyFlippedOrientation = [v13 imageWithHorizontallyFlippedOrientation];
 
-        v13 = v14;
+        v13 = imageWithHorizontallyFlippedOrientation;
       }
 
       v15 = paLocString();
@@ -299,8 +299,8 @@
       if (!sub_17204() && [sub_17254() isHealthDataAvailable])
       {
         v29 = paLocString();
-        v30 = [(PersonalAudioEnrollmentViewController *)self audiograms];
-        v31 = [v30 count];
+        audiograms = [(PersonalAudioEnrollmentViewController *)self audiograms];
+        v31 = [audiograms count];
 
         if (v31)
         {
@@ -343,8 +343,8 @@
       }
 
       v56 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelModalFlow"];
-      v57 = [v58 navigationItem];
-      [v57 setRightBarButtonItem:v56];
+      navigationItem = [v58 navigationItem];
+      [navigationItem setRightBarButtonItem:v56];
 
       [(PersonalAudioEnrollmentViewController *)self pushViewController:v58 animated:1];
       [(PersonalAudioEnrollmentViewController *)self setWelcomeController:v58];
@@ -352,13 +352,13 @@
   }
 }
 
-- (void)welcomeNextButtonTapped:(id)a3
+- (void)welcomeNextButtonTapped:(id)tapped
 {
   if (!sub_17204() && [sub_17254() isHealthDataAvailable] && _os_feature_enabled_impl())
   {
     v4 = [PersonalAudioAudiogramViewController alloc];
-    v7 = [(PersonalAudioEnrollmentViewController *)self audiograms];
-    v5 = [(PersonalAudioAudiogramViewController *)v4 initWithAudiograms:v7 andDelegate:self];
+    audiograms = [(PersonalAudioEnrollmentViewController *)self audiograms];
+    v5 = [(PersonalAudioAudiogramViewController *)v4 initWithAudiograms:audiograms andDelegate:self];
     [(PersonalAudioEnrollmentViewController *)self pushViewController:v5 animated:1];
   }
 
@@ -374,7 +374,7 @@
   }
 }
 
-- (void)overviewNextButtonTapped:(id)a3
+- (void)overviewNextButtonTapped:(id)tapped
 {
   introController = self->_introController;
   self->_introController = 0;
@@ -382,13 +382,13 @@
   introControllerNextButton = self->_introControllerNextButton;
   self->_introControllerNextButton = 0;
 
-  v6 = [(PersonalAudioEnrollmentViewController *)self selectedAudiogram];
-  [(PersonalAudioEnrollmentViewController *)self startEnrollmentWithAudiogram:v6];
+  selectedAudiogram = [(PersonalAudioEnrollmentViewController *)self selectedAudiogram];
+  [(PersonalAudioEnrollmentViewController *)self startEnrollmentWithAudiogram:selectedAudiogram];
 }
 
-- (void)showOverviewWithANCBullet:(BOOL)a3
+- (void)showOverviewWithANCBullet:(BOOL)bullet
 {
-  v3 = a3;
+  bulletCopy = bullet;
   v5 = [OBTextWelcomeController alloc];
   v6 = paLocString();
   v7 = [v5 initWithTitle:v6 detailText:0 symbolName:0];
@@ -403,7 +403,7 @@
   v12 = paLocString();
   [(OBTextWelcomeController *)v11 addBulletedListItemWithTitle:v12 description:&stru_49868];
 
-  if (v3)
+  if (bulletCopy)
   {
     v13 = self->_introController;
     v14 = paLocString();
@@ -423,18 +423,18 @@
   [(OBBoldTrayButton *)v19 setTitle:v20 forState:0];
 
   [(OBBoldTrayButton *)self->_introControllerNextButton addTarget:self action:"overviewNextButtonTapped:" forControlEvents:64];
-  v21 = [(OBTextWelcomeController *)self->_introController buttonTray];
-  [v21 addButton:self->_introControllerNextButton];
+  buttonTray = [(OBTextWelcomeController *)self->_introController buttonTray];
+  [buttonTray addButton:self->_introControllerNextButton];
 
   [(PersonalAudioEnrollmentViewController *)self pushViewController:self->_introController animated:1];
   [(PersonalAudioEnrollmentViewController *)self registerNotifications];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)startEnrollmentWithAudiogram:(id)a3
+- (void)startEnrollmentWithAudiogram:(id)audiogram
 {
-  v4 = a3;
-  v5 = [PAEnrollment enrollmentWithAudiogram:v4];
+  audiogramCopy = audiogram;
+  v5 = [PAEnrollment enrollmentWithAudiogram:audiogramCopy];
   [(PersonalAudioEnrollmentViewController *)self setEnrollment:v5];
   v6 = [v5 enrollmentNodeAfter:0 withSelectedNode:0];
   if (v6)
@@ -471,11 +471,11 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = +[PASettings sharedInstance];
-      v14 = [v13 audiogramConfiguration];
+      audiogramConfiguration = [v13 audiogramConfiguration];
       v15 = 67109376;
-      LODWORD(v16[0]) = v4 != 0;
+      LODWORD(v16[0]) = audiogramCopy != 0;
       WORD2(v16[0]) = 1024;
-      *(v16 + 6) = v14 != 0;
+      *(v16 + 6) = audiogramConfiguration != 0;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Skipping enrollment because no first node. Audiogram: %d, %d", &v15, 0xEu);
     }
 
@@ -483,13 +483,13 @@
   }
 }
 
-- (void)didSelectAudiogram:(id)a3
+- (void)didSelectAudiogram:(id)audiogram
 {
-  v4 = a3;
-  [(PersonalAudioEnrollmentViewController *)self setSelectedAudiogram:v4];
-  if (v4)
+  audiogramCopy = audiogram;
+  [(PersonalAudioEnrollmentViewController *)self setSelectedAudiogram:audiogramCopy];
+  if (audiogramCopy)
   {
-    [(PersonalAudioEnrollmentViewController *)self startEnrollmentWithAudiogram:v4];
+    [(PersonalAudioEnrollmentViewController *)self startEnrollmentWithAudiogram:audiogramCopy];
   }
 
   else
@@ -504,12 +504,12 @@
   }
 }
 
-- (void)didSelectEnrollmentNode:(id)a3
+- (void)didSelectEnrollmentNode:(id)node
 {
-  v4 = a3;
-  v5 = [(PersonalAudioEnrollmentViewController *)self enrollment];
-  v6 = [(PersonalAudioEnrollmentViewController *)self currentNode];
-  v7 = [v5 enrollmentNodeAfter:v6 withSelectedNode:v4];
+  nodeCopy = node;
+  enrollment = [(PersonalAudioEnrollmentViewController *)self enrollment];
+  currentNode = [(PersonalAudioEnrollmentViewController *)self currentNode];
+  v7 = [enrollment enrollmentNodeAfter:currentNode withSelectedNode:nodeCopy];
 
   if ([v7 section] == &dword_4 + 1)
   {
@@ -534,41 +534,41 @@
 
   if (!v7)
   {
-    v14 = [(PersonalAudioEnrollmentViewController *)self currentNode];
-    v15 = [v14 stimuli];
+    currentNode2 = [(PersonalAudioEnrollmentViewController *)self currentNode];
+    stimuli = [currentNode2 stimuli];
 
     v16 = +[PASettings sharedInstance];
     [v16 setConfigurationCameFromEnrollment:1];
 
-    v17 = [(PersonalAudioEnrollmentViewController *)self currentNode];
-    v18 = [v17 configuration];
+    currentNode3 = [(PersonalAudioEnrollmentViewController *)self currentNode];
+    configuration = [currentNode3 configuration];
 
-    if (v18)
+    if (configuration)
     {
-      v19 = [(PersonalAudioEnrollmentViewController *)self currentNode];
-      v20 = [v19 configuration];
-      v21 = [v20 level];
+      currentNode4 = [(PersonalAudioEnrollmentViewController *)self currentNode];
+      configuration2 = [currentNode4 configuration];
+      level = [configuration2 level];
 
       v22 = +[PASettings sharedInstance];
-      v23 = [(PersonalAudioEnrollmentViewController *)self currentNode];
-      v24 = [v23 configuration];
-      if (v21 == &dword_C)
+      currentNode5 = [(PersonalAudioEnrollmentViewController *)self currentNode];
+      configuration3 = [currentNode5 configuration];
+      if (level == &dword_C)
       {
-        [v22 setAudiogramConfiguration:v24];
+        [v22 setAudiogramConfiguration:configuration3];
 
 LABEL_13:
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_19090;
         v28[3] = &unk_48A20;
-        v29 = v15;
-        v12 = v15;
+        v29 = stimuli;
+        currentNode6 = stimuli;
         [(PersonalAudioEnrollmentViewController *)self dismissViewControllerAnimated:1 completion:v28];
         v13 = v29;
         goto LABEL_14;
       }
 
-      [v22 setPersonalMediaConfiguration:v24];
+      [v22 setPersonalMediaConfiguration:configuration3];
 
       v26 = +[PASettings sharedInstance];
       v22 = v26;
@@ -590,8 +590,8 @@ LABEL_13:
   }
 
   v11 = [PersonalAudioStimuliViewController alloc];
-  v12 = [(PersonalAudioEnrollmentViewController *)self currentNode];
-  v13 = [(PersonalAudioStimuliViewController *)v11 initWithEnrollmentNode:v7 previousNode:v12 andDelegate:self];
+  currentNode6 = [(PersonalAudioEnrollmentViewController *)self currentNode];
+  v13 = [(PersonalAudioStimuliViewController *)v11 initWithEnrollmentNode:v7 previousNode:currentNode6 andDelegate:self];
   [(PersonalAudioEnrollmentViewController *)self pushViewController:v13 animated:1];
 LABEL_14:
 }

@@ -1,89 +1,89 @@
 @interface _DASBudget
-- (BOOL)isEqual:(id)a3;
-- (BOOL)unlockedDecrementBy:(double)a3 whileModulatingBudget:(BOOL)a4;
-- (_DASBudget)initWithCoder:(id)a3;
-- (_DASBudget)initWithDictionary:(id)a3;
-- (_DASBudget)initWithName:(id)a3 capacity:(double)a4 balance:(double)a5 allocationType:(unsigned __int8)a6 lastModulatedDate:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)unlockedDecrementBy:(double)by whileModulatingBudget:(BOOL)budget;
+- (_DASBudget)initWithCoder:(id)coder;
+- (_DASBudget)initWithDictionary:(id)dictionary;
+- (_DASBudget)initWithName:(id)name capacity:(double)capacity balance:(double)balance allocationType:(unsigned __int8)type lastModulatedDate:(id)date;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)decrementBy:(double)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)registerSignificantBudgetChangeCallback:(id)a3;
-- (void)setAllocationType:(unsigned __int8)a3;
-- (void)setBalance:(double)a3;
-- (void)setCapacity:(double)a3;
+- (void)decrementBy:(double)by;
+- (void)encodeWithCoder:(id)coder;
+- (void)registerSignificantBudgetChangeCallback:(id)callback;
+- (void)setAllocationType:(unsigned __int8)type;
+- (void)setBalance:(double)balance;
+- (void)setCapacity:(double)capacity;
 @end
 
 @implementation _DASBudget
 
-- (_DASBudget)initWithName:(id)a3 capacity:(double)a4 balance:(double)a5 allocationType:(unsigned __int8)a6 lastModulatedDate:(id)a7
+- (_DASBudget)initWithName:(id)name capacity:(double)capacity balance:(double)balance allocationType:(unsigned __int8)type lastModulatedDate:(id)date
 {
-  v12 = a3;
-  v13 = a7;
+  nameCopy = name;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = _DASBudget;
   v14 = [(_DASBudget *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    v15->_capacity = a4;
-    v15->_balance = a5;
-    v15->_allocationType = a6;
-    objc_storeStrong(&v15->_lastModulatedDate, a7);
-    *&v15->_maxBudgetValue = vmulq_n_f64(xmmword_100158810, a4);
+    objc_storeStrong(&v14->_name, name);
+    v15->_capacity = capacity;
+    v15->_balance = balance;
+    v15->_allocationType = type;
+    objc_storeStrong(&v15->_lastModulatedDate, date);
+    *&v15->_maxBudgetValue = vmulq_n_f64(xmmword_100158810, capacity);
     v15->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v15;
 }
 
-- (_DASBudget)initWithDictionary:(id)a3
+- (_DASBudget)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"name"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectForKeyedSubscript:@"capacity"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"capacity"];
     if (!v7)
     {
-      v9 = 0;
+      selfCopy = 0;
 LABEL_12:
 
       goto LABEL_13;
     }
 
     v8 = v7;
-    v9 = [v4 objectForKeyedSubscript:@"balance"];
-    if (!v9)
+    selfCopy = [dictionaryCopy objectForKeyedSubscript:@"balance"];
+    if (!selfCopy)
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"allocationType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"allocationType"];
 
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"lastModulatedDateInterval"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"lastModulatedDateInterval"];
       [v11 doubleValue];
       v13 = v12;
 
-      v6 = [v4 objectForKeyedSubscript:@"name"];
-      v8 = [v4 objectForKeyedSubscript:@"capacity"];
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"capacity"];
       [v8 doubleValue];
       v15 = v14;
-      v16 = [v4 objectForKeyedSubscript:@"balance"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"balance"];
       [v16 doubleValue];
       v18 = v17;
-      v19 = [v4 objectForKeyedSubscript:@"allocationType"];
-      v20 = [v19 intValue];
-      v21 = v20;
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"allocationType"];
+      intValue = [v19 intValue];
+      v21 = intValue;
       if (v13 <= 0.0)
       {
-        self = [(_DASBudget *)self initWithName:v6 capacity:v20 balance:0 allocationType:v15 lastModulatedDate:v18];
+        self = [(_DASBudget *)self initWithName:v6 capacity:intValue balance:0 allocationType:v15 lastModulatedDate:v18];
       }
 
       else
@@ -92,22 +92,22 @@ LABEL_11:
         self = [(_DASBudget *)self initWithName:v6 capacity:v21 balance:v22 allocationType:v15 lastModulatedDate:v18];
       }
 
-      v9 = self;
+      selfCopy = self;
       goto LABEL_11;
     }
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(_DASBudget *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  name = [(_DASBudget *)self name];
+  [v3 setObject:name forKeyedSubscript:@"name"];
 
   [(_DASBudget *)self capacity];
   v5 = [NSNumber numberWithDouble:?];
@@ -120,12 +120,12 @@ LABEL_13:
   v7 = [NSNumber numberWithUnsignedChar:[(_DASBudget *)self allocationType]];
   [v3 setObject:v7 forKeyedSubscript:@"allocationType"];
 
-  v8 = [(_DASBudget *)self lastModulatedDate];
+  lastModulatedDate = [(_DASBudget *)self lastModulatedDate];
 
-  if (v8)
+  if (lastModulatedDate)
   {
-    v9 = [(_DASBudget *)self lastModulatedDate];
-    [v9 timeIntervalSinceReferenceDate];
+    lastModulatedDate2 = [(_DASBudget *)self lastModulatedDate];
+    [lastModulatedDate2 timeIntervalSinceReferenceDate];
     v10 = [NSNumber numberWithDouble:?];
     [v3 setObject:v10 forKeyedSubscript:@"lastModulatedDateInterval"];
   }
@@ -135,19 +135,19 @@ LABEL_13:
   return v11;
 }
 
-- (void)registerSignificantBudgetChangeCallback:(id)a3
+- (void)registerSignificantBudgetChangeCallback:(id)callback
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(callback);
   callback = self->_callback;
   self->_callback = v4;
 
   _objc_release_x1(v4, callback);
 }
 
-- (BOOL)unlockedDecrementBy:(double)a3 whileModulatingBudget:(BOOL)a4
+- (BOOL)unlockedDecrementBy:(double)by whileModulatingBudget:(BOOL)budget
 {
   balance = self->_balance;
-  maxBudgetValue = balance - a3;
+  maxBudgetValue = balance - by;
   if (self->_maxBudgetValue < maxBudgetValue)
   {
     maxBudgetValue = self->_maxBudgetValue;
@@ -164,7 +164,7 @@ LABEL_13:
   }
 
   self->_balance = minBudgetValue;
-  if (a4)
+  if (budget)
   {
     v8 = +[NSDate now];
     lastModulatedDate = self->_lastModulatedDate;
@@ -174,10 +174,10 @@ LABEL_13:
   return (balance > 0.0) ^ (minBudgetValue > 0.0);
 }
 
-- (void)decrementBy:(double)a3
+- (void)decrementBy:(double)by
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(_DASBudget *)self unlockedDecrementBy:0 whileModulatingBudget:a3];
+  v5 = [(_DASBudget *)self unlockedDecrementBy:0 whileModulatingBudget:by];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
@@ -191,12 +191,12 @@ LABEL_13:
   }
 }
 
-- (void)setBalance:(double)a3
+- (void)setBalance:(double)balance
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(_DASBudget *)self unlockedDecrementBy:1 whileModulatingBudget:self->_balance - a3];
+  balance = [(_DASBudget *)self unlockedDecrementBy:1 whileModulatingBudget:self->_balance - balance];
   os_unfair_lock_unlock(&self->_lock);
-  if (v5)
+  if (balance)
   {
     callback = self->_callback;
     if (callback)
@@ -208,21 +208,21 @@ LABEL_13:
   }
 }
 
-- (void)setCapacity:(double)a3
+- (void)setCapacity:(double)capacity
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = a3 * -1.2;
+  v5 = capacity * -1.2;
   balance = self->_balance;
-  if (a3 * 1.5 < balance)
+  if (capacity * 1.5 < balance)
   {
-    balance = a3 * 1.5;
+    balance = capacity * 1.5;
   }
 
-  self->_maxBudgetValue = a3 * 1.5;
+  self->_maxBudgetValue = capacity * 1.5;
   self->_minBudgetValue = v5;
   if (v5 >= balance)
   {
-    v7 = a3 * -1.2;
+    v7 = capacity * -1.2;
   }
 
   else
@@ -230,24 +230,24 @@ LABEL_13:
     v7 = balance;
   }
 
-  self->_capacity = a3;
+  self->_capacity = capacity;
   self->_balance = v7;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setAllocationType:(unsigned __int8)a3
+- (void)setAllocationType:(unsigned __int8)type
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_allocationType = a3;
+  self->_allocationType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -258,8 +258,8 @@ LABEL_13:
     if (objc_opt_isKindOfClass())
     {
       name = self->_name;
-      v6 = [(_DASBudget *)v4 name];
-      v7 = [(NSString *)name isEqual:v6];
+      name = [(_DASBudget *)equalCopy name];
+      v7 = [(NSString *)name isEqual:name];
     }
 
     else
@@ -290,13 +290,13 @@ LABEL_13:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_name forKey:@"name"];
-  [v6 encodeDouble:@"capacity" forKey:self->_capacity];
-  [v6 encodeDouble:@"balance" forKey:self->_balance];
-  [v6 encodeInteger:self->_allocationType forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeDouble:@"capacity" forKey:self->_capacity];
+  [coderCopy encodeDouble:@"balance" forKey:self->_balance];
+  [coderCopy encodeInteger:self->_allocationType forKey:@"type"];
   lastModulatedDate = self->_lastModulatedDate;
   if (lastModulatedDate)
   {
@@ -308,23 +308,23 @@ LABEL_13:
     v5 = 0.0;
   }
 
-  [v6 encodeDouble:@"lastModulatedDateInterval" forKey:v5];
+  [coderCopy encodeDouble:@"lastModulatedDateInterval" forKey:v5];
 }
 
-- (_DASBudget)initWithCoder:(id)a3
+- (_DASBudget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  [v4 decodeDoubleForKey:@"capacity"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  [coderCopy decodeDoubleForKey:@"capacity"];
   v7 = v6;
-  v8 = [v4 decodeIntegerForKey:@"type"];
+  v8 = [coderCopy decodeIntegerForKey:@"type"];
   v9 = 0;
   if (v5 && v7 != 0.0)
   {
     v10 = v8;
-    [v4 decodeDoubleForKey:@"balance"];
+    [coderCopy decodeDoubleForKey:@"balance"];
     v12 = v11;
-    [v4 decodeDoubleForKey:@"lastModulatedDateInterval"];
+    [coderCopy decodeDoubleForKey:@"lastModulatedDateInterval"];
     if (v13 <= 0.0)
     {
       v17 = objc_alloc(objc_opt_class());

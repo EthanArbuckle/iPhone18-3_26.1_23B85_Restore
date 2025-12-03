@@ -1,9 +1,9 @@
 @interface CameraCaptureButtonAppConfigurationCoordinator
-- (BOOL)isBundleIDCameraTTCAuthorized:(id)a3;
+- (BOOL)isBundleIDCameraTTCAuthorized:(id)authorized;
 - (CameraCaptureButtonAppConfigurationCoordinator)init;
-- (void)_enumerateObserversWithBlock:(id)a3;
-- (void)_setAssociatedAppBundleID:(id)a3 notifySpringBoard:(BOOL)a4 notifyDelegates:(BOOL)a5;
-- (void)_setEligibleAppsBundleIDs:(id)a3 withAuthorizedBundleIds:(id)a4;
+- (void)_enumerateObserversWithBlock:(id)block;
+- (void)_setAssociatedAppBundleID:(id)d notifySpringBoard:(BOOL)board notifyDelegates:(BOOL)delegates;
+- (void)_setEligibleAppsBundleIDs:(id)ds withAuthorizedBundleIds:(id)ids;
 - (void)dealloc;
 @end
 
@@ -93,25 +93,25 @@
   [(CameraCaptureButtonAppConfigurationCoordinator *)&v3 dealloc];
 }
 
-- (BOOL)isBundleIDCameraTTCAuthorized:(id)a3
+- (BOOL)isBundleIDCameraTTCAuthorized:(id)authorized
 {
-  v4 = a3;
-  v5 = [(CameraCaptureButtonAppConfigurationCoordinator *)self _authorizedAppsBundleIDs];
-  v6 = [v5 containsObject:v4];
+  authorizedCopy = authorized;
+  _authorizedAppsBundleIDs = [(CameraCaptureButtonAppConfigurationCoordinator *)self _authorizedAppsBundleIDs];
+  v6 = [_authorizedAppsBundleIDs containsObject:authorizedCopy];
 
   return v6;
 }
 
-- (void)_setAssociatedAppBundleID:(id)a3 notifySpringBoard:(BOOL)a4 notifyDelegates:(BOOL)a5
+- (void)_setAssociatedAppBundleID:(id)d notifySpringBoard:(BOOL)board notifyDelegates:(BOOL)delegates
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (self->_associatedAppBundleID != v9 && ![(NSString *)v9 isEqualToString:?])
+  delegatesCopy = delegates;
+  boardCopy = board;
+  dCopy = d;
+  v10 = dCopy;
+  if (self->_associatedAppBundleID != dCopy && ![(NSString *)dCopy isEqualToString:?])
   {
-    objc_storeStrong(&self->_associatedAppBundleID, a3);
-    if (v5)
+    objc_storeStrong(&self->_associatedAppBundleID, d);
+    if (delegatesCopy)
     {
       if (v10)
       {
@@ -133,7 +133,7 @@
       [(CameraCaptureButtonAppConfigurationCoordinator *)self _enumerateObserversWithBlock:v15];
     }
 
-    if (v6)
+    if (boardCopy)
     {
       v13 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -143,23 +143,23 @@
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Calling setAssociatedAppBundleIdentifier: %{public}@", buf, 0xCu);
       }
 
-      v14 = [(CameraCaptureButtonAppConfigurationCoordinator *)self _appConfigurationController];
-      [v14 setAssociatedAppBundleIdentifier:v10];
+      _appConfigurationController = [(CameraCaptureButtonAppConfigurationCoordinator *)self _appConfigurationController];
+      [_appConfigurationController setAssociatedAppBundleIdentifier:v10];
     }
   }
 }
 
-- (void)_setEligibleAppsBundleIDs:(id)a3 withAuthorizedBundleIds:(id)a4
+- (void)_setEligibleAppsBundleIDs:(id)ds withAuthorizedBundleIds:(id)ids
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_eligibleAppsBundleIDs != v7 && ![(NSSet *)v7 isEqualToSet:?]|| self->__authorizedAppsBundleIDs != v8 && ![(NSSet *)v8 isEqualToSet:?])
+  dsCopy = ds;
+  idsCopy = ids;
+  if (self->_eligibleAppsBundleIDs != dsCopy && ![(NSSet *)dsCopy isEqualToSet:?]|| self->__authorizedAppsBundleIDs != idsCopy && ![(NSSet *)idsCopy isEqualToSet:?])
   {
-    objc_storeStrong(&self->_eligibleAppsBundleIDs, a3);
-    objc_storeStrong(&self->__authorizedAppsBundleIDs, a4);
-    if (v7)
+    objc_storeStrong(&self->_eligibleAppsBundleIDs, ds);
+    objc_storeStrong(&self->__authorizedAppsBundleIDs, ids);
+    if (dsCopy)
     {
-      v9 = v7;
+      v9 = dsCopy;
     }
 
     else
@@ -178,11 +178,11 @@
   }
 }
 
-- (void)_enumerateObserversWithBlock:(id)a3
+- (void)_enumerateObserversWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CameraCaptureButtonAppConfigurationCoordinator *)self _coordinatorObservers];
-  v6 = [v5 copy];
+  blockCopy = block;
+  _coordinatorObservers = [(CameraCaptureButtonAppConfigurationCoordinator *)self _coordinatorObservers];
+  v6 = [_coordinatorObservers copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -204,7 +204,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v11));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v11));
         v11 = v11 + 1;
       }
 

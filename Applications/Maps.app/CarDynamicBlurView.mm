@@ -1,34 +1,34 @@
 @interface CarDynamicBlurView
 + (BOOL)_isGlassDisabled;
-- (CarDynamicBlurView)initWithBlurViewContext:(int64_t)a3 delegate:(id)a4;
+- (CarDynamicBlurView)initWithBlurViewContext:(int64_t)context delegate:(id)delegate;
 - (int64_t)correctedUserInterfaceStyle;
 - (void)_changeVisualEffect;
 - (void)_createContentView;
-- (void)_recalculateBlurModeWithInterfaceStyle:(int64_t)a3;
+- (void)_recalculateBlurModeWithInterfaceStyle:(int64_t)style;
 - (void)_redraw;
-- (void)_setCornerRadius:(double)a3 continuous:(BOOL)a4 maskedCorners:(unint64_t)a5;
-- (void)_setDisabled:(BOOL)a3;
+- (void)_setCornerRadius:(double)radius continuous:(BOOL)continuous maskedCorners:(unint64_t)corners;
+- (void)_setDisabled:(BOOL)disabled;
 - (void)_updateCornerValues;
 - (void)_updateOverrideUserInterfaceStyle;
 - (void)dealloc;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)lightLevelController:(id)a3 didUpdateLightLevel:(int64_t)a4;
-- (void)registerAdditionalDelegate:(id)a3;
-- (void)setCurrentMode:(int64_t)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)unregisterAdditionalDelegate:(id)a3;
+- (void)lightLevelController:(id)controller didUpdateLightLevel:(int64_t)level;
+- (void)registerAdditionalDelegate:(id)delegate;
+- (void)setCurrentMode:(int64_t)mode;
+- (void)setDisabled:(BOOL)disabled;
+- (void)traitCollectionDidChange:(id)change;
+- (void)unregisterAdditionalDelegate:(id)delegate;
 @end
 
 @implementation CarDynamicBlurView
 
 - (void)_redraw
 {
-  v3 = [(CarDynamicBlurView *)self correctedUserInterfaceStyle];
+  correctedUserInterfaceStyle = [(CarDynamicBlurView *)self correctedUserInterfaceStyle];
 
-  [(CarDynamicBlurView *)self _recalculateBlurModeWithInterfaceStyle:v3];
+  [(CarDynamicBlurView *)self _recalculateBlurModeWithInterfaceStyle:correctedUserInterfaceStyle];
 }
 
 - (int64_t)correctedUserInterfaceStyle
@@ -38,22 +38,22 @@
     v4 = sub_100C6C0F4();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v10 = [(CarDynamicBlurView *)self traitCollection];
-      v11 = [v10 userInterfaceStyle];
-      if (v11 >= 3)
+      traitCollection = [(CarDynamicBlurView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
+      if (userInterfaceStyle >= 3)
       {
-        v12 = [NSString stringWithFormat:@"<Unknown %ld>", v11];
+        v12 = [NSString stringWithFormat:@"<Unknown %ld>", userInterfaceStyle];
       }
 
       else
       {
-        v12 = *(&off_10164F3D8 + v11);
+        v12 = *(&off_10164F3D8 + userInterfaceStyle);
       }
 
       shouldUseNightMode = self->_shouldUseNightMode;
       context = self->_context;
       *buf = 134349826;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2112;
       v26 = v12;
       v27 = 1024;
@@ -72,28 +72,28 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v3 = [(CarDynamicBlurView *)self superview];
+  superview = [(CarDynamicBlurView *)self superview];
 
   v4 = sub_100C6C0F4();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (!v3)
+  if (!superview)
   {
     if (v5)
     {
-      v10 = [(CarDynamicBlurView *)self traitCollection];
-      v13 = [v10 userInterfaceStyle];
-      if (v13 >= 3)
+      traitCollection = [(CarDynamicBlurView *)self traitCollection];
+      userInterfaceStyle2 = [traitCollection userInterfaceStyle];
+      if (userInterfaceStyle2 >= 3)
       {
-        v12 = [NSString stringWithFormat:@"<Unknown %ld>", v13];
+        v12 = [NSString stringWithFormat:@"<Unknown %ld>", userInterfaceStyle2];
       }
 
       else
       {
-        v12 = *(&off_10164F3D8 + v13);
+        v12 = *(&off_10164F3D8 + userInterfaceStyle2);
       }
 
       *buf = 134349314;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2112;
       v26 = v12;
       v19 = "[%{public}p] Corrected user interface style from self: %@";
@@ -104,39 +104,39 @@ LABEL_21:
 
 LABEL_22:
 
-    v14 = [(CarDynamicBlurView *)self traitCollection];
-    v16 = [v14 userInterfaceStyle];
+    traitCollection2 = [(CarDynamicBlurView *)self traitCollection];
+    userInterfaceStyle3 = [traitCollection2 userInterfaceStyle];
     goto LABEL_23;
   }
 
   if (v5)
   {
-    v6 = [(CarDynamicBlurView *)self superview];
-    v7 = [v6 traitCollection];
-    v8 = [v7 userInterfaceStyle];
-    if (v8 >= 3)
+    superview2 = [(CarDynamicBlurView *)self superview];
+    traitCollection3 = [superview2 traitCollection];
+    userInterfaceStyle4 = [traitCollection3 userInterfaceStyle];
+    if (userInterfaceStyle4 >= 3)
     {
-      v9 = [NSString stringWithFormat:@"<Unknown %ld>", v8];
+      v9 = [NSString stringWithFormat:@"<Unknown %ld>", userInterfaceStyle4];
     }
 
     else
     {
-      v9 = *(&off_10164F3D8 + v8);
+      v9 = *(&off_10164F3D8 + userInterfaceStyle4);
     }
 
     *buf = 134349314;
-    v24 = self;
+    selfCopy3 = self;
     v25 = 2112;
     v26 = v9;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Corrected user interface style from superview: %@", buf, 0x16u);
   }
 
-  v14 = [(CarDynamicBlurView *)self superview];
-  v15 = [v14 traitCollection];
-  v16 = [v15 userInterfaceStyle];
+  traitCollection2 = [(CarDynamicBlurView *)self superview];
+  v14TraitCollection = [traitCollection2 traitCollection];
+  userInterfaceStyle3 = [v14TraitCollection userInterfaceStyle];
 
 LABEL_23:
-  return v16;
+  return userInterfaceStyle3;
 }
 
 - (void)_changeVisualEffect
@@ -147,10 +147,10 @@ LABEL_23:
     goto LABEL_14;
   }
 
-  v4 = self;
-  if (!v4)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v9 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -158,27 +158,27 @@ LABEL_23:
   v6 = NSStringFromClass(v5);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CarDynamicBlurView *)v4 performSelector:"accessibilityIdentifier"];
+    v7 = [(CarDynamicBlurView *)selfCopy performSelector:"accessibilityIdentifier"];
     v8 = v7;
     if (v7 && ![v7 isEqualToString:v6])
     {
-      v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
       goto LABEL_8;
     }
   }
 
-  v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  v10 = v9;
+  v10 = selfCopy;
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  currentMode = v4->_currentMode;
+  currentMode = selfCopy->_currentMode;
   if (currentMode >= 4)
   {
-    v14 = [NSString stringWithFormat:@"(unknown: %ld)", v4->_currentMode];
+    v14 = [NSString stringWithFormat:@"(unknown: %ld)", selfCopy->_currentMode];
   }
 
   else
@@ -191,7 +191,7 @@ LABEL_10:
   *&buf[12] = 2112;
   *&buf[14] = v12;
   *&buf[22] = 2048;
-  v49 = v4;
+  v49 = selfCopy;
   v50 = 2112;
   v51 = v14;
   _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] %@ (%p) effect changed to %@", buf, 0x2Au);
@@ -247,25 +247,25 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v17 = self;
+        selfCopy2 = self;
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         if (objc_opt_respondsToSelector())
         {
-          v20 = [(CarDynamicBlurView *)v17 performSelector:"accessibilityIdentifier"];
+          v20 = [(CarDynamicBlurView *)selfCopy2 performSelector:"accessibilityIdentifier"];
           v21 = v20;
           if (v20 && ![v20 isEqualToString:v19])
           {
-            v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+            selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy2, v21];
 
             goto LABEL_24;
           }
         }
 
-        v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy2];
 LABEL_24:
 
-        v23 = v22;
+        v23 = selfCopy2;
         v24 = self->_currentMode;
         if (v24 >= 4)
         {
@@ -306,31 +306,31 @@ LABEL_41:
 
     [(CarVisualEffectView *)self->_visualEffectView _setGroupName:v41];
 
-    v42 = [(CarVisualEffectView *)self->_visualEffectView contentView];
-    [v42 setClipsToBounds:1];
+    contentView = [(CarVisualEffectView *)self->_visualEffectView contentView];
+    [contentView setClipsToBounds:1];
 
-    v43 = [(CarVisualEffectView *)self->_visualEffectView contentView];
-    [v43 addSubview:self->_contentView];
+    contentView2 = [(CarVisualEffectView *)self->_visualEffectView contentView];
+    [contentView2 addSubview:self->_contentView];
 
     [(CarDynamicBlurView *)self _updateCornerValues];
     [(CarDynamicBlurView *)self addSubview:self->_visualEffectView];
-    v29 = +[NSMutableArray array];
+    allConstraints = +[NSMutableArray array];
     v44 = [(CarVisualEffectView *)self->_visualEffectView _maps_constraintsForCenteringInView:self];
-    [v29 addObjectsFromArray:v44];
+    [allConstraints addObjectsFromArray:v44];
 
     contentView = self->_contentView;
-    v46 = [(CarVisualEffectView *)self->_visualEffectView contentView];
-    v47 = [(UIView *)contentView _maps_constraintsForCenteringInView:v46];
-    [v29 addObjectsFromArray:v47];
+    contentView3 = [(CarVisualEffectView *)self->_visualEffectView contentView];
+    v47 = [(UIView *)contentView _maps_constraintsForCenteringInView:contentView3];
+    [allConstraints addObjectsFromArray:v47];
 
     goto LABEL_45;
   }
 
   [(CarDynamicBlurView *)self _maps_applyGlassBackgroundForButton:self->_context == 2 buttonBackgroundType:0 allowAdaptive:0 isCarPlay:1];
   [(CarDynamicBlurView *)self _updateCornerValues];
-  v26 = [(UIView *)self->_contentView superview];
+  superview = [(UIView *)self->_contentView superview];
 
-  if (v26 == self)
+  if (superview == self)
   {
     return;
   }
@@ -338,9 +338,9 @@ LABEL_41:
   [(CarDynamicBlurView *)self addSubview:self->_contentView];
   LODWORD(v27) = 1148846080;
   v28 = [(UIView *)self->_contentView _maps_constraintsEqualToEdgesOfView:self priority:v27];
-  v29 = [v28 allConstraints];
+  allConstraints = [v28 allConstraints];
 LABEL_45:
-  [NSLayoutConstraint activateConstraints:v29];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
 - (void)_updateCornerValues
@@ -361,8 +361,8 @@ LABEL_45:
     {
       [(CarDynamicBlurView *)self setClipsToBounds:1];
       v7 = self->_cornerRadius;
-      v8 = [(CarDynamicBlurView *)self layer];
-      [v8 setCornerRadius:v7];
+      layer = [(CarDynamicBlurView *)self layer];
+      [layer setCornerRadius:v7];
 
       if (self->_continuous)
       {
@@ -375,12 +375,12 @@ LABEL_45:
       }
 
       v10 = *v9;
-      v11 = [(CarDynamicBlurView *)self layer];
-      [v11 setCornerCurve:v10];
+      layer2 = [(CarDynamicBlurView *)self layer];
+      [layer2 setCornerCurve:v10];
 
       v12 = self->_maskedCorners;
-      v13 = [(CarDynamicBlurView *)self layer];
-      [v13 setMaskedCorners:v12];
+      layer3 = [(CarDynamicBlurView *)self layer];
+      [layer3 setMaskedCorners:v12];
     }
   }
 }
@@ -393,7 +393,7 @@ LABEL_45:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v5 = 134349056;
-      v6 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Overriding user interface style to .Dark", &v5, 0xCu);
     }
 
@@ -406,7 +406,7 @@ LABEL_45:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v5 = 134349056;
-      v6 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Overriding user interface style to .Unspecified", &v5, 0xCu);
     }
 
@@ -432,13 +432,13 @@ LABEL_45:
   v6.receiver = self;
   v6.super_class = CarDynamicBlurView;
   [(CarDynamicBlurView *)&v6 didMoveToWindow];
-  v3 = [(CarDynamicBlurView *)self window];
+  window = [(CarDynamicBlurView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(CarDynamicBlurView *)self window];
-    v5 = [v4 windowScene];
-    [(MapsLightLevelController *)self->_lightLevelController setWindowScene:v5];
+    window2 = [(CarDynamicBlurView *)self window];
+    windowScene = [window2 windowScene];
+    [(MapsLightLevelController *)self->_lightLevelController setWindowScene:windowScene];
 
     [(CarDynamicBlurView *)self _redraw];
   }
@@ -450,9 +450,9 @@ LABEL_45:
   v4.super_class = CarDynamicBlurView;
   [(CarDynamicBlurView *)&v4 didMoveToSuperview];
   [(CarDynamicBlurView *)self _setDisabled:self->_disabled];
-  v3 = [(CarDynamicBlurView *)self superview];
+  superview = [(CarDynamicBlurView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(CarDynamicBlurView *)self _redraw];
   }
@@ -464,7 +464,7 @@ LABEL_45:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -474,40 +474,40 @@ LABEL_45:
   [(CarDynamicBlurView *)&v4 dealloc];
 }
 
-- (void)setCurrentMode:(int64_t)a3
+- (void)setCurrentMode:(int64_t)mode
 {
-  if (self->_currentMode != a3)
+  if (self->_currentMode != mode)
   {
     v5 = sub_100089008();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
 LABEL_15:
 
-      self->_currentMode = a3;
+      self->_currentMode = mode;
       [(CarDynamicBlurView *)self _changeVisualEffect];
       [(GEOObserverHashTable *)self->_delegates dynamicBlurViewDidChangeBlurMode:self->_currentMode];
       return;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarDynamicBlurView *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarDynamicBlurView *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
-    v12 = v11;
+    v12 = selfCopy;
     currentMode = self->_currentMode;
     if (currentMode >= 4)
     {
@@ -520,58 +520,58 @@ LABEL_8:
     }
 
     v15 = v14;
-    if (a3 >= 4)
+    if (mode >= 4)
     {
-      v16 = [NSString stringWithFormat:@"(unknown: %ld)", a3];
+      mode = [NSString stringWithFormat:@"(unknown: %ld)", mode];
     }
 
     else
     {
-      v16 = *(&off_10164F3F0 + a3);
+      mode = *(&off_10164F3F0 + mode);
     }
 
     *buf = 138544130;
     v18 = v12;
     v19 = 2048;
-    v20 = v6;
+    v20 = selfCopy;
     v21 = 2112;
     v22 = v15;
     v23 = 2112;
-    v24 = v16;
+    v24 = mode;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] CarBlur for (%p) changed from %@ to %@", buf, 0x2Au);
 
     goto LABEL_15;
   }
 }
 
-- (void)_recalculateBlurModeWithInterfaceStyle:(int64_t)a3
+- (void)_recalculateBlurModeWithInterfaceStyle:(int64_t)style
 {
   if (self->_shouldUseNightMode)
   {
-    v5 = 3;
+    styleCopy = 3;
   }
 
   else
   {
-    v5 = a3;
-    if (a3 != 2)
+    styleCopy = style;
+    if (style != 2)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
         if (self->_context == 1)
         {
-          v5 = 2;
+          styleCopy = 2;
         }
 
         else
         {
-          v5 = 1;
+          styleCopy = 1;
         }
       }
 
       else
       {
-        v5 = 1;
+        styleCopy = 1;
       }
     }
   }
@@ -579,24 +579,24 @@ LABEL_8:
   v6 = sub_100C6C0F4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if (a3 >= 3)
+    if (style >= 3)
     {
-      v7 = [NSString stringWithFormat:@"<Unknown %ld>", a3];
+      style = [NSString stringWithFormat:@"<Unknown %ld>", style];
     }
 
     else
     {
-      v7 = *(&off_10164F3D8 + a3);
+      style = *(&off_10164F3D8 + style);
     }
 
     shouldUseNightMode = self->_shouldUseNightMode;
     context = self->_context;
     *buf = 134350082;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = v5;
+    v13 = styleCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = style;
     v16 = 1024;
     v17 = shouldUseNightMode;
     v18 = 2048;
@@ -604,48 +604,48 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Updated blur mode: %ld for style: %@, shouldUseNightMode: %d, context: %ld", buf, 0x30u);
   }
 
-  self->_handledUserInterfaceStyle = a3;
-  [(CarDynamicBlurView *)self setCurrentMode:v5];
+  self->_handledUserInterfaceStyle = style;
+  [(CarDynamicBlurView *)self setCurrentMode:styleCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = CarDynamicBlurView;
-  [(CarDynamicBlurView *)&v7 traitCollectionDidChange:a3];
-  v4 = [(CarDynamicBlurView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  [(CarDynamicBlurView *)&v7 traitCollectionDidChange:change];
+  traitCollection = [(CarDynamicBlurView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   handledUserInterfaceStyle = self->_handledUserInterfaceStyle;
 
-  if (v5 != handledUserInterfaceStyle)
+  if (userInterfaceStyle != handledUserInterfaceStyle)
   {
     [(CarDynamicBlurView *)self _redraw];
   }
 }
 
-- (void)lightLevelController:(id)a3 didUpdateLightLevel:(int64_t)a4
+- (void)lightLevelController:(id)controller didUpdateLightLevel:(int64_t)level
 {
-  v6 = [a3 shouldUseNightMode];
-  if (self->_shouldUseNightMode != v6)
+  shouldUseNightMode = [controller shouldUseNightMode];
+  if (self->_shouldUseNightMode != shouldUseNightMode)
   {
-    v7 = v6;
+    v7 = shouldUseNightMode;
     v8 = sub_100C6C0F4();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      if (a4 >= 3)
+      if (level >= 3)
       {
-        v9 = [NSString stringWithFormat:@"<Unknown: %ld>", a4];
+        level = [NSString stringWithFormat:@"<Unknown: %ld>", level];
       }
 
       else
       {
-        v9 = *(&off_10164F3C0 + a4);
+        level = *(&off_10164F3C0 + level);
       }
 
       *buf = 134349314;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v9;
+      v13 = level;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Got new light level: %@", buf, 0x16u);
     }
 
@@ -655,32 +655,32 @@ LABEL_8:
   }
 }
 
-- (void)_setDisabled:(BOOL)a3
+- (void)_setDisabled:(BOOL)disabled
 {
-  self->_disabled = a3;
+  self->_disabled = disabled;
   if (self->_visualEffectView)
   {
     return;
   }
 
-  v4 = a3;
-  v6 = [(CarDynamicBlurView *)self _background];
-  if (v4 && v6)
+  disabledCopy = disabled;
+  _background = [(CarDynamicBlurView *)self _background];
+  if (disabledCopy && _background)
   {
-    v10 = v6;
-    v7 = [(CarDynamicBlurView *)self _background];
+    v10 = _background;
+    _background2 = [(CarDynamicBlurView *)self _background];
     currentBackground = self->_currentBackground;
-    self->_currentBackground = v7;
+    self->_currentBackground = _background2;
 
     [(CarDynamicBlurView *)self _maps_removeBackground];
 LABEL_8:
-    v6 = v10;
+    _background = v10;
     goto LABEL_9;
   }
 
-  if (!v4 && self->_currentBackground)
+  if (!disabledCopy && self->_currentBackground)
   {
-    v10 = v6;
+    v10 = _background;
     [(CarDynamicBlurView *)self _setBackground:?];
     v9 = self->_currentBackground;
     self->_currentBackground = 0;
@@ -691,40 +691,40 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
     [(CarDynamicBlurView *)self _setDisabled:?];
   }
 }
 
-- (void)_setCornerRadius:(double)a3 continuous:(BOOL)a4 maskedCorners:(unint64_t)a5
+- (void)_setCornerRadius:(double)radius continuous:(BOOL)continuous maskedCorners:(unint64_t)corners
 {
   self->_hasCornerValues = 1;
-  self->_cornerRadius = a3;
-  self->_continuous = a4;
-  self->_maskedCorners = a5;
+  self->_cornerRadius = radius;
+  self->_continuous = continuous;
+  self->_maskedCorners = corners;
   [(CarDynamicBlurView *)self _updateCornerValues];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = CarDynamicBlurView;
-  v3 = a3;
-  [(CarDynamicBlurView *)&v4 didAddSubview:v3];
+  subviewCopy = subview;
+  [(CarDynamicBlurView *)&v4 didAddSubview:subviewCopy];
   NSClassFromString(@"_UIDebugColorBoundsView");
   objc_opt_isKindOfClass();
 }
 
-- (void)unregisterAdditionalDelegate:(id)a3
+- (void)unregisterAdditionalDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = sub_100C6C0F4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = v4;
+    v6 = delegateCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -750,24 +750,24 @@ LABEL_8:
 
 LABEL_10:
     *buf = 134349570;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Unregistering %{public}@ for blur view %p", buf, 0x20u);
   }
 
-  [(GEOObserverHashTable *)self->_delegates unregisterObserver:v4];
+  [(GEOObserverHashTable *)self->_delegates unregisterObserver:delegateCopy];
 }
 
-- (void)registerAdditionalDelegate:(id)a3
+- (void)registerAdditionalDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = sub_100C6C0F4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = v4;
+    v6 = delegateCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -793,20 +793,20 @@ LABEL_8:
 
 LABEL_10:
     *buf = 134349570;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Registering %{public}@ for blur view %p", buf, 0x20u);
   }
 
-  [(GEOObserverHashTable *)self->_delegates registerObserver:v4];
+  [(GEOObserverHashTable *)self->_delegates registerObserver:delegateCopy];
 }
 
-- (CarDynamicBlurView)initWithBlurViewContext:(int64_t)a3 delegate:(id)a4
+- (CarDynamicBlurView)initWithBlurViewContext:(int64_t)context delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = CarDynamicBlurView;
   v7 = [(CarDynamicBlurView *)&v15 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -825,9 +825,9 @@ LABEL_10:
     delegates = v7->_delegates;
     v7->_delegates = v9;
 
-    [(CarDynamicBlurView *)v7 registerAdditionalDelegate:v6];
+    [(CarDynamicBlurView *)v7 registerAdditionalDelegate:delegateCopy];
     [(CarDynamicBlurView *)v7 setUserInteractionEnabled:[(CarDynamicBlurView *)v7 supportsContentHosting]];
-    v7->_context = a3;
+    v7->_context = context;
     v11 = [[MapsLightLevelController alloc] initWithWindowScene:0];
     lightLevelController = v7->_lightLevelController;
     v7->_lightLevelController = v11;

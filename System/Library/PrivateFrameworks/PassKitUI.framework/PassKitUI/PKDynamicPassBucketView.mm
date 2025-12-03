@@ -1,41 +1,41 @@
 @interface PKDynamicPassBucketView
-- (CGSize)_measureAndFitEvenlySizedSubviewsForSize:(CGSize)a3;
-- (CGSize)_measureAndFitVariablySizedSubviewsForSize:(CGSize)a3;
-- (CGSize)fittedSizeFor:(CGSize)a3;
-- (PKDynamicPassBucketView)initWithBucket:(id)a3;
+- (CGSize)_measureAndFitEvenlySizedSubviewsForSize:(CGSize)size;
+- (CGSize)_measureAndFitVariablySizedSubviewsForSize:(CGSize)size;
+- (CGSize)fittedSizeFor:(CGSize)for;
+- (PKDynamicPassBucketView)initWithBucket:(id)bucket;
 - (id)_fieldViewsByWidth;
 - (void)_createFieldViewsIfNecessary;
 - (void)layoutSubviews;
-- (void)setLabelBlendMode:(id)a3;
-- (void)setLabelTextColor:(id)a3;
-- (void)setValueBlendMode:(id)a3;
-- (void)setValueTextColor:(id)a3;
+- (void)setLabelBlendMode:(id)mode;
+- (void)setLabelTextColor:(id)color;
+- (void)setValueBlendMode:(id)mode;
+- (void)setValueTextColor:(id)color;
 @end
 
 @implementation PKDynamicPassBucketView
 
-- (PKDynamicPassBucketView)initWithBucket:(id)a3
+- (PKDynamicPassBucketView)initWithBucket:(id)bucket
 {
-  v5 = a3;
+  bucketCopy = bucket;
   v9.receiver = self;
   v9.super_class = PKDynamicPassBucketView;
   v6 = [(PKDynamicPassBucketView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bucket, a3);
+    objc_storeStrong(&v6->_bucket, bucket);
   }
 
   return v7;
 }
 
-- (void)setLabelTextColor:(id)a3
+- (void)setLabelTextColor:(id)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!CGColorEqualToColor(-[UIColor CGColor](self->_labelTextColor, "CGColor"), [v5 CGColor]))
+  colorCopy = color;
+  if (!CGColorEqualToColor(-[UIColor CGColor](self->_labelTextColor, "CGColor"), [colorCopy CGColor]))
   {
-    objc_storeStrong(&self->_labelTextColor, a3);
+    objc_storeStrong(&self->_labelTextColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -56,7 +56,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setLabelTextColor:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * v10++) setLabelTextColor:{colorCopy, v11}];
         }
 
         while (v8 != v10);
@@ -68,12 +68,12 @@
   }
 }
 
-- (void)setLabelBlendMode:(id)a3
+- (void)setLabelBlendMode:(id)mode
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modeCopy = mode;
   v6 = self->_labelBlendMode;
-  v7 = v5;
+  v7 = modeCopy;
   v8 = v7;
   if (v6 == v7)
   {
@@ -95,7 +95,7 @@
     {
     }
 
-    objc_storeStrong(&self->_labelBlendMode, a3);
+    objc_storeStrong(&self->_labelBlendMode, mode);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -128,13 +128,13 @@
 LABEL_16:
 }
 
-- (void)setValueTextColor:(id)a3
+- (void)setValueTextColor:(id)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!CGColorEqualToColor(-[UIColor CGColor](self->_valueTextColor, "CGColor"), [v5 CGColor]))
+  colorCopy = color;
+  if (!CGColorEqualToColor(-[UIColor CGColor](self->_valueTextColor, "CGColor"), [colorCopy CGColor]))
   {
-    objc_storeStrong(&self->_valueTextColor, a3);
+    objc_storeStrong(&self->_valueTextColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -155,7 +155,7 @@ LABEL_16:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setValueTextColor:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * v10++) setValueTextColor:{colorCopy, v11}];
         }
 
         while (v8 != v10);
@@ -167,12 +167,12 @@ LABEL_16:
   }
 }
 
-- (void)setValueBlendMode:(id)a3
+- (void)setValueBlendMode:(id)mode
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modeCopy = mode;
   v6 = self->_valueBlendMode;
-  v7 = v5;
+  v7 = modeCopy;
   v8 = v7;
   if (v6 == v7)
   {
@@ -194,7 +194,7 @@ LABEL_16:
     {
     }
 
-    objc_storeStrong(&self->_valueBlendMode, a3);
+    objc_storeStrong(&self->_valueBlendMode, mode);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -422,10 +422,10 @@ LABEL_16:
   }
 }
 
-- (CGSize)fittedSizeFor:(CGSize)a3
+- (CGSize)fittedSizeFor:(CGSize)for
 {
-  height = a3.height;
-  width = a3.width;
+  height = for.height;
+  width = for.width;
   [(PKDynamicPassBucketView *)self _createFieldViewsIfNecessary];
   sizingRule = self->_sizingRule;
   if (sizingRule == 1)
@@ -456,7 +456,7 @@ LABEL_16:
     v10 = 3221225472;
     v11 = __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke;
     v12 = &unk_1E8013970;
-    v13 = self;
+    selfCopy = self;
     v14 = v4;
     v6 = v4;
     [(NSArray *)bucket enumerateObjectsUsingBlock:&v9];
@@ -495,10 +495,10 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
   [*(a1 + 32) addSubview:v10];
 }
 
-- (CGSize)_measureAndFitEvenlySizedSubviewsForSize:(CGSize)a3
+- (CGSize)_measureAndFitEvenlySizedSubviewsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v83 = *MEMORY[0x1E69E9840];
   [(PKDynamicPassBucketView *)self bounds];
   if (v7 == width)
@@ -518,8 +518,8 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
     [(UIFont *)v13 pointSize];
     v71 = v15;
     minResizeScale = self->_minResizeScale;
-    v17 = [(PKDynamicPassBucketView *)self labelFont];
-    [v17 capHeight];
+    labelFont = [(PKDynamicPassBucketView *)self labelFont];
+    [labelFont capHeight];
     v19 = v18;
     [(UIFont *)v13 capHeight];
     v21 = v19 / v20;
@@ -530,8 +530,8 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
 
     else
     {
-      v3 = [(PKDynamicPassBucketView *)self labelFont];
-      [v3 capHeight];
+      labelFont2 = [(PKDynamicPassBucketView *)self labelFont];
+      [labelFont2 capHeight];
       v23 = v22;
       [(UIFont *)v13 capHeight];
       v25 = v23 / v24;
@@ -541,14 +541,14 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
     if (v25 <= 1.0)
     {
       v26 = self->_minResizeScale;
-      v27 = [(PKDynamicPassBucketView *)self labelFont];
-      [v27 capHeight];
+      labelFont3 = [(PKDynamicPassBucketView *)self labelFont];
+      [labelFont3 capHeight];
       v29 = v28;
       [(UIFont *)v13 capHeight];
       if (v26 <= v29 / v30)
       {
-        v31 = [(PKDynamicPassBucketView *)self labelFont];
-        [v31 capHeight];
+        labelFont4 = [(PKDynamicPassBucketView *)self labelFont];
+        [labelFont4 capHeight];
         v33 = v32;
         [(UIFont *)v13 capHeight];
         v70 = v33 / v34;
@@ -597,8 +597,8 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
           v46 = v45;
           v48 = v47;
           [v44 setFrame:{v40, v41, v45, v47}];
-          v49 = [v44 valueLabel];
-          [v49 sizeThatFits:{v46, v48}];
+          valueLabel = [v44 valueLabel];
+          [valueLabel sizeThatFits:{v46, v48}];
           v51 = v50;
 
           if (v51 > v35)
@@ -637,8 +637,8 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
     if (v42 != v71)
     {
       v54 = MEMORY[0x1E69DB878];
-      v55 = [(UIFont *)v13 fontDescriptor];
-      v56 = [v54 fontWithDescriptor:v55 size:v42];
+      fontDescriptor = [(UIFont *)v13 fontDescriptor];
+      v56 = [v54 fontWithDescriptor:fontDescriptor size:v42];
 
       objc_storeStrong(&self->_resizedValueFont, v56);
       v75 = 0u;
@@ -694,10 +694,10 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
   return result;
 }
 
-- (CGSize)_measureAndFitVariablySizedSubviewsForSize:(CGSize)a3
+- (CGSize)_measureAndFitVariablySizedSubviewsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v95 = *MEMORY[0x1E69E9840];
   [(PKDynamicPassBucketView *)self bounds];
   if (v7 == width)
@@ -715,8 +715,8 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
   self->_resizedValueFont = 0;
 
   minResizeScale = self->_minResizeScale;
-  v15 = [(PKDynamicPassBucketView *)self labelFont];
-  [v15 capHeight];
+  labelFont = [(PKDynamicPassBucketView *)self labelFont];
+  [labelFont capHeight];
   v17 = v16;
   [(UIFont *)v12 capHeight];
   v19 = v17 / v18;
@@ -727,8 +727,8 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
 
   else
   {
-    v3 = [(PKDynamicPassBucketView *)self labelFont];
-    [v3 capHeight];
+    labelFont2 = [(PKDynamicPassBucketView *)self labelFont];
+    [labelFont2 capHeight];
     v21 = v20;
     [(UIFont *)v12 capHeight];
     v23 = v21 / v22;
@@ -739,14 +739,14 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
   if (v23 <= 1.0)
   {
     v26 = self->_minResizeScale;
-    v27 = [(PKDynamicPassBucketView *)self labelFont];
-    [v27 capHeight];
+    labelFont3 = [(PKDynamicPassBucketView *)self labelFont];
+    [labelFont3 capHeight];
     v29 = v28;
     [(UIFont *)v12 capHeight];
     if (v26 <= v29 / v30)
     {
-      v31 = [(PKDynamicPassBucketView *)self labelFont];
-      [v31 capHeight];
+      labelFont4 = [(PKDynamicPassBucketView *)self labelFont];
+      [labelFont4 capHeight];
       v33 = v32;
       [(UIFont *)v12 capHeight];
       v25 = v33 / v34;
@@ -797,13 +797,13 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
         v48 = v47;
         [v44 setFrame:{v82, v40, v45, v47}];
         v42 = v42 + v46;
-        v49 = [v44 labelLabel];
-        [v49 sizeThatFits:{v46, v48}];
+        labelLabel = [v44 labelLabel];
+        [labelLabel sizeThatFits:{v46, v48}];
         v50 = width;
         v52 = v51;
 
-        v53 = [v44 valueLabel];
-        [v53 sizeThatFits:{v46, v48}];
+        valueLabel = [v44 valueLabel];
+        [valueLabel sizeThatFits:{v46, v48}];
         v55 = v54;
 
         v56 = v52 < v55;
@@ -840,8 +840,8 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
     v59 = v58 * v57;
     v60 = floorf(v59);
     v61 = MEMORY[0x1E69DB878];
-    v62 = [(UIFont *)v12 fontDescriptor];
-    v36 = [v61 fontWithDescriptor:v62 size:v60];
+    fontDescriptor = [(UIFont *)v12 fontDescriptor];
+    v36 = [v61 fontWithDescriptor:fontDescriptor size:v60];
 
     objc_storeStrong(&self->_resizedValueFont, v36);
     v87 = 0u;
@@ -900,13 +900,13 @@ void __55__PKDynamicPassBucketView__createFieldViewsIfNecessary__block_invoke(ui
 LABEL_42:
   if (v42 > v35)
   {
-    v73 = [(PKDynamicPassBucketView *)self _fieldViewsByWidth];
+    _fieldViewsByWidth = [(PKDynamicPassBucketView *)self _fieldViewsByWidth];
     v74 = 0;
-    v75 = [v73 count] - 1;
+    v75 = [_fieldViewsByWidth count] - 1;
     do
     {
       v76 = v74;
-      v74 = [v73 objectAtIndex:v75];
+      v74 = [_fieldViewsByWidth objectAtIndex:v75];
 
       [v74 frame];
       memset(&remainder, 0, sizeof(remainder));

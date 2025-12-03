@@ -1,11 +1,11 @@
 @interface PKDashboardPassLinkedAppItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardPassLinkedAppItemPresenterDelegate)delegate;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6 animated:(BOOL)a7;
-- (void)appViewContentSizeChanged:(id)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path animated:(BOOL)animated;
+- (void)appViewContentSizeChanged:(id)changed;
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKDashboardPassLinkedAppItemPresenter
@@ -20,27 +20,27 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"PassLinkedAppItem" forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PassLinkedAppItem" forIndexPath:pathCopy];
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
   [v11 setHostedContentInset:{0.0, v12, 0.0, v12}];
-  [(PKDashboardPassLinkedAppItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8 animated:0];
+  [(PKDashboardPassLinkedAppItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy animated:0];
 
   return v11;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  [(PKDashboardPassLinkedAppItemPresenter *)self _configureCell:a3 forItem:a4 inCollectionView:v10 forIndexPath:v11 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  [(PKDashboardPassLinkedAppItemPresenter *)self _configureCell:cell forItem:item inCollectionView:viewCopy forIndexPath:pathCopy animated:1];
   v12 = objc_alloc_init(MEMORY[0x1E69DC860]);
-  v19[0] = v11;
+  v19[0] = pathCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   [v12 invalidateItemsAtIndexPaths:v13];
 
@@ -48,10 +48,10 @@
   v16[1] = 3221225472;
   v16[2] = __89__PKDashboardPassLinkedAppItemPresenter_updateCell_forItem_inCollectionView_atIndexPath___block_invoke;
   v16[3] = &unk_1E8010A10;
-  v17 = v10;
+  v17 = viewCopy;
   v18 = v12;
   v14 = v12;
-  v15 = v10;
+  v15 = viewCopy;
   [v15 performBatchUpdates:v16 completion:0];
 }
 
@@ -61,11 +61,11 @@ void __89__PKDashboardPassLinkedAppItemPresenter_updateCell_forItem_inCollection
   [v2 invalidateLayoutWithContext:*(a1 + 40)];
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
   sampleCell = self->_sampleCell;
   if (!sampleCell)
   {
@@ -79,8 +79,8 @@ void __89__PKDashboardPassLinkedAppItemPresenter_updateCell_forItem_inCollection
     sampleCell = self->_sampleCell;
   }
 
-  [(PKDashboardPassLinkedAppItemPresenter *)self _configureCell:sampleCell forItem:v10 inCollectionView:v11 forIndexPath:v12 animated:0];
-  [(PKDashboardContentHostCollectionViewCell *)self->_sampleCell sizeThatFits:a5, 1.79769313e308];
+  [(PKDashboardPassLinkedAppItemPresenter *)self _configureCell:sampleCell forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy animated:0];
+  [(PKDashboardContentHostCollectionViewCell *)self->_sampleCell sizeThatFits:width, 1.79769313e308];
   v19 = v18;
   v21 = v20;
   [(PKDashboardContentHostCollectionViewCell *)self->_sampleCell prepareForReuse];
@@ -92,35 +92,35 @@ void __89__PKDashboardPassLinkedAppItemPresenter_updateCell_forItem_inCollection
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6 animated:(BOOL)a7
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path animated:(BOOL)animated
 {
-  v15 = a3;
-  v9 = [a4 linkedApplication];
-  v10 = [v15 hostedContentView];
-  v11 = v10;
-  if (!v10 || ([(PKLinkedAppContentView *)v10 linkedApplication], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v9))
+  cellCopy = cell;
+  linkedApplication = [item linkedApplication];
+  hostedContentView = [cellCopy hostedContentView];
+  v11 = hostedContentView;
+  if (!hostedContentView || ([(PKLinkedAppContentView *)hostedContentView linkedApplication], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != linkedApplication))
   {
-    v13 = [[PKLinkedAppContentView alloc] initWithLinkedApplication:v9];
+    v13 = [[PKLinkedAppContentView alloc] initWithLinkedApplication:linkedApplication];
 
     [(PKLinkedAppContentView *)v13 setDelegate:self];
-    v14 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(PKLinkedAppContentView *)v13 setBackgroundColor:v14];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(PKLinkedAppContentView *)v13 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     [(UIView *)v13 pkui_setMaskType:3];
-    [v15 setHostedContentView:v13];
+    [cellCopy setHostedContentView:v13];
     v11 = v13;
   }
 }
 
-- (void)appViewContentSizeChanged:(id)a3
+- (void)appViewContentSizeChanged:(id)changed
 {
-  v4 = [a3 superview];
-  v6 = [v4 superview];
+  superview = [changed superview];
+  v4Superview = [superview superview];
 
-  if (self->_sampleCell != v6)
+  if (self->_sampleCell != v4Superview)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained dashboardPassLinkedAppItemPresenter:self reloadItemForCollectionViewCell:v6];
+    [WeakRetained dashboardPassLinkedAppItemPresenter:self reloadItemForCollectionViewCell:v4Superview];
   }
 }
 

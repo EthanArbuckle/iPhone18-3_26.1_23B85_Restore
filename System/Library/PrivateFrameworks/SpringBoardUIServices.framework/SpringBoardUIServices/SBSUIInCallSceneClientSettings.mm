@@ -10,9 +10,9 @@
 - (BOOL)transientOverlayHomeIndicatorAutoHidden;
 - (NSSet)preferredBackgroundActivitiesToSuppress;
 - (UIEdgeInsets)expanseHUDDodgingInsets;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)preferredHardwareButtonEventTypes;
 - (unint64_t)preferredStatusBarStyleOverridesToSuppress;
 @end
@@ -21,13 +21,13 @@
 
 - (NSSet)preferredBackgroundActivitiesToSuppress
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2002];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2002];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBSUIMutableInCallSceneClientSettings alloc];
 
@@ -36,60 +36,60 @@
 
 - (unint64_t)preferredHardwareButtonEventTypes
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2001];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2001];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)preferredStatusBarStyleOverridesToSuppress
 {
-  v2 = [(SBSUIInCallSceneClientSettings *)self preferredBackgroundActivitiesToSuppress];
+  preferredBackgroundActivitiesToSuppress = [(SBSUIInCallSceneClientSettings *)self preferredBackgroundActivitiesToSuppress];
 
-  return soft_STUIStyleOverridesForBackgroundActivityIdentifiers(v2);
+  return soft_STUIStyleOverridesForBackgroundActivityIdentifiers(preferredBackgroundActivitiesToSuppress);
 }
 
 - (BOOL)supportsDeviceLockActions
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2003];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2003];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldBecomeVisibleWhenWakingDisplay
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2005];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2005];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)transientOverlayHomeIndicatorAutoHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2004];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2004];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isCallConnected
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2006];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2006];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (UIEdgeInsets)expanseHUDDodgingInsets
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2007];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2007];
   [v3 UIEdgeInsetsValue];
   v5 = v4;
   v7 = v6;
@@ -109,52 +109,52 @@
 
 - (BOOL)prefersBannersHiddenFromClonedDisplay
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2008];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2008];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)prefersHiddenWhenDismissed
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2009];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2009];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldNeverBeShownWhenLaunchingFaceTime
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2010];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2010];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)prefersLockedIdleDurationOnCoversheet
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2011];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2011];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)acceptsKeyboardFocus
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2012];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2012];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 2001 > 0xB || a3 == 2007)
+  if (setting - 2001 > 0xB || setting == 2007)
   {
     v6.receiver = self;
     v6.super_class = SBSUIInCallSceneClientSettings;
@@ -163,25 +163,25 @@
 
   else
   {
-    v4 = SBSUIInCallSceneClientSettingKeyDescription(a3);
+    v4 = SBSUIInCallSceneClientSettingKeyDescription(setting);
   }
 
   return v4;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  if (a5 - 2001 > 0xB || a5 == 2007)
+  objectCopy = object;
+  if (setting - 2001 > 0xB || setting == 2007)
   {
     v13.receiver = self;
     v13.super_class = SBSUIInCallSceneClientSettings;
-    v10 = [(FBSSettings *)&v13 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v10 = [(FBSSettings *)&v13 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   else
   {
-    v10 = SBSUIInCallSceneClientSettingValueDescription(a5, v8);
+    v10 = SBSUIInCallSceneClientSettingValueDescription(setting, objectCopy);
   }
 
   v11 = v10;

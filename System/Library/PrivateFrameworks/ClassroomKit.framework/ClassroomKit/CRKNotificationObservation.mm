@@ -1,11 +1,11 @@
 @interface CRKNotificationObservation
-+ (id)observationWithNotificationCenter:(id)a3 notificationName:(id)a4 object:(id)a5 notificationHandler:(id)a6;
-- (CRKNotificationObservation)initWithNotificationCenter:(id)a3 notificationName:(id)a4 object:(id)a5 notificationHandler:(id)a6;
++ (id)observationWithNotificationCenter:(id)center notificationName:(id)name object:(id)object notificationHandler:(id)handler;
+- (CRKNotificationObservation)initWithNotificationCenter:(id)center notificationName:(id)name object:(id)object notificationHandler:(id)handler;
 - (void)beginObserving;
 - (void)dealloc;
 - (void)endObserving;
 - (void)invalidate;
-- (void)notificationDidFire:(id)a3;
+- (void)notificationDidFire:(id)fire;
 @end
 
 @implementation CRKNotificationObservation
@@ -18,25 +18,25 @@
   [(CRKNotificationObservation *)&v3 dealloc];
 }
 
-- (CRKNotificationObservation)initWithNotificationCenter:(id)a3 notificationName:(id)a4 object:(id)a5 notificationHandler:(id)a6
+- (CRKNotificationObservation)initWithNotificationCenter:(id)center notificationName:(id)name object:(id)object notificationHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  centerCopy = center;
+  nameCopy = name;
+  objectCopy = object;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = CRKNotificationObservation;
   v15 = [(CRKNotificationObservation *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_notificationCenter, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_notificationCenter, center);
+    v17 = [nameCopy copy];
     notificationName = v16->_notificationName;
     v16->_notificationName = v17;
 
-    objc_storeStrong(&v16->_object, a5);
-    v19 = MEMORY[0x245D3AAD0](v14);
+    objc_storeStrong(&v16->_object, object);
+    v19 = MEMORY[0x245D3AAD0](handlerCopy);
     notificationHandler = v16->_notificationHandler;
     v16->_notificationHandler = v19;
   }
@@ -44,13 +44,13 @@
   return v16;
 }
 
-+ (id)observationWithNotificationCenter:(id)a3 notificationName:(id)a4 object:(id)a5 notificationHandler:(id)a6
++ (id)observationWithNotificationCenter:(id)center notificationName:(id)name object:(id)object notificationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithNotificationCenter:v13 notificationName:v12 object:v11 notificationHandler:v10];
+  handlerCopy = handler;
+  objectCopy = object;
+  nameCopy = name;
+  centerCopy = center;
+  v14 = [[self alloc] initWithNotificationCenter:centerCopy notificationName:nameCopy object:objectCopy notificationHandler:handlerCopy];
 
   [v14 beginObserving];
 
@@ -91,31 +91,31 @@ void __40__CRKNotificationObservation_invalidate__block_invoke(uint64_t a1)
 
 - (void)beginObserving
 {
-  v5 = [(CRKNotificationObservation *)self notificationCenter];
-  v3 = [(CRKNotificationObservation *)self notificationName];
-  v4 = [(CRKNotificationObservation *)self object];
-  [v5 addObserver:self selector:sel_notificationDidFire_ name:v3 object:v4];
+  notificationCenter = [(CRKNotificationObservation *)self notificationCenter];
+  notificationName = [(CRKNotificationObservation *)self notificationName];
+  object = [(CRKNotificationObservation *)self object];
+  [notificationCenter addObserver:self selector:sel_notificationDidFire_ name:notificationName object:object];
 }
 
 - (void)endObserving
 {
-  v5 = [(CRKNotificationObservation *)self notificationCenter];
-  v3 = [(CRKNotificationObservation *)self notificationName];
-  v4 = [(CRKNotificationObservation *)self object];
-  [v5 removeObserver:self name:v3 object:v4];
+  notificationCenter = [(CRKNotificationObservation *)self notificationCenter];
+  notificationName = [(CRKNotificationObservation *)self notificationName];
+  object = [(CRKNotificationObservation *)self object];
+  [notificationCenter removeObserver:self name:notificationName object:object];
 }
 
-- (void)notificationDidFire:(id)a3
+- (void)notificationDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__CRKNotificationObservation_notificationDidFire___block_invoke;
   block[3] = &unk_278DC19F8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = fireCopy;
+  v5 = fireCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);

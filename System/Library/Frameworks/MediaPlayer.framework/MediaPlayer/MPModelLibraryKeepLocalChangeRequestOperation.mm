@@ -1,23 +1,23 @@
 @interface MPModelLibraryKeepLocalChangeRequestOperation
-- (void)_handleKeepLocalUpdateStatus:(int64_t)a3 forLibraryIdentifier:(int64_t)a4 mediaType:(int64_t)a5 completedWithError:(id)a6;
-- (void)_handlePersistentID:(int64_t)a3 modelClass:(Class)a4 keepLocal:(int64_t)a5 keepLocalConstraints:(unint64_t)a6 mediaLibrary:(id)a7;
+- (void)_handleKeepLocalUpdateStatus:(int64_t)status forLibraryIdentifier:(int64_t)identifier mediaType:(int64_t)type completedWithError:(id)error;
+- (void)_handlePersistentID:(int64_t)d modelClass:(Class)class keepLocal:(int64_t)local keepLocalConstraints:(unint64_t)constraints mediaLibrary:(id)library;
 - (void)execute;
 @end
 
 @implementation MPModelLibraryKeepLocalChangeRequestOperation
 
-- (void)_handleKeepLocalUpdateStatus:(int64_t)a3 forLibraryIdentifier:(int64_t)a4 mediaType:(int64_t)a5 completedWithError:(id)a6
+- (void)_handleKeepLocalUpdateStatus:(int64_t)status forLibraryIdentifier:(int64_t)identifier mediaType:(int64_t)type completedWithError:(id)error
 {
-  v10 = a6;
+  errorCopy = error;
   v11 = +[MPMediaDownloadManager sharedManager];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __128__MPModelLibraryKeepLocalChangeRequestOperation__handleKeepLocalUpdateStatus_forLibraryIdentifier_mediaType_completedWithError___block_invoke;
   v13[3] = &unk_1E767B680;
-  v14 = v10;
-  v15 = self;
-  v12 = v10;
-  [v11 sendKeepLocalStatusChanged:a3 forLibraryIdentifier:a4 entityType:a5 withCompletionHandler:v13];
+  v14 = errorCopy;
+  selfCopy = self;
+  v12 = errorCopy;
+  [v11 sendKeepLocalStatusChanged:status forLibraryIdentifier:identifier entityType:type withCompletionHandler:v13];
 }
 
 void __128__MPModelLibraryKeepLocalChangeRequestOperation__handleKeepLocalUpdateStatus_forLibraryIdentifier_mediaType_completedWithError___block_invoke(uint64_t a1, void *a2)
@@ -42,25 +42,25 @@ void __128__MPModelLibraryKeepLocalChangeRequestOperation__handleKeepLocalUpdate
   [v6 finishWithError:v5];
 }
 
-- (void)_handlePersistentID:(int64_t)a3 modelClass:(Class)a4 keepLocal:(int64_t)a5 keepLocalConstraints:(unint64_t)a6 mediaLibrary:(id)a7
+- (void)_handlePersistentID:(int64_t)d modelClass:(Class)class keepLocal:(int64_t)local keepLocalConstraints:(unint64_t)constraints mediaLibrary:(id)library
 {
-  v12 = a7;
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  libraryCopy = library;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v13 = [v12 itemWithPersistentID:a3 verifyExistence:0];
+    v13 = [libraryCopy itemWithPersistentID:d verifyExistence:0];
     if (v13)
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:constraints];
       [(MPMediaQuery *)v13 setValue:v14 forProperty:@"keepLocalConstraints"];
 
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:local];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __124__MPModelLibraryKeepLocalChangeRequestOperation__handlePersistentID_modelClass_keepLocal_keepLocalConstraints_mediaLibrary___block_invoke;
       v43[3] = &unk_1E767B090;
       v43[4] = self;
-      v43[5] = a5;
-      v43[6] = a3;
+      v43[5] = local;
+      v43[6] = d;
       [(MPMediaQuery *)v13 setValue:v15 forProperty:@"keepLocal" withCompletionBlock:v43];
 
 LABEL_20:
@@ -70,36 +70,36 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v16 = [MPMediaQuery alloc];
     v17 = MEMORY[0x1E695DFD8];
-    v18 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v18 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     v19 = [MPMediaPropertyPredicate predicateWithValue:v18 forProperty:@"albumPID"];
     v20 = [v17 setWithObject:v19];
     v13 = [(MPMediaQuery *)v16 initWithFilterPredicates:v20];
 
-    [(MPMediaQuery *)v13 setMediaLibrary:v12];
+    [(MPMediaQuery *)v13 setMediaLibrary:libraryCopy];
     [(MPMediaQuery *)v13 setIgnoreRestrictionsPredicates:1];
     [(MPMediaQuery *)v13 setShouldIncludeNonLibraryEntities:1];
     [(MPMediaQuery *)v13 setGroupingType:1];
     [(MPMediaQuery *)v13 setEntityLimit:1];
-    v21 = [(MPMediaQuery *)v13 collections];
-    v22 = [v21 firstObject];
+    collections = [(MPMediaQuery *)v13 collections];
+    firstObject = [collections firstObject];
 
-    if (v22)
+    if (firstObject)
     {
-      v23 = v22;
-      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+      v23 = firstObject;
+      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:constraints];
       [v23 setValue:v24 forProperty:@"keepLocalConstraints"];
 
-      v25 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v25 = [MEMORY[0x1E696AD98] numberWithInteger:local];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __124__MPModelLibraryKeepLocalChangeRequestOperation__handlePersistentID_modelClass_keepLocal_keepLocalConstraints_mediaLibrary___block_invoke_2;
       v39[3] = &unk_1E767B0E8;
-      v41 = a5;
-      v42 = a3;
+      localCopy = local;
+      dCopy = d;
       v39[4] = self;
       v40 = v23;
       v26 = v23;
@@ -120,23 +120,23 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v28 = [v12 playlistWithPersistentID:a3];
+    v28 = [libraryCopy playlistWithPersistentID:d];
     v13 = v28;
     if (v28)
     {
       v29 = v28;
-      v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+      v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:constraints];
       [(MPMediaQuery *)v29 setValue:v30 forProperty:@"keepLocalConstraints"];
 
-      v31 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v31 = [MEMORY[0x1E696AD98] numberWithInteger:local];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __124__MPModelLibraryKeepLocalChangeRequestOperation__handlePersistentID_modelClass_keepLocal_keepLocalConstraints_mediaLibrary___block_invoke_26;
       v35[3] = &unk_1E767B0E8;
-      v37 = a5;
-      v38 = a3;
+      localCopy2 = local;
+      dCopy2 = d;
       v35[4] = self;
       v36 = v29;
       v32 = v29;
@@ -338,11 +338,11 @@ void __124__MPModelLibraryKeepLocalChangeRequestOperation__handlePersistentID_mo
     [(NSOperationQueue *)self->_operationQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)self->_operationQueue setName:@"com.apple.MediaPlayer.MPModelLibraryKeepLocalChangeRequestOperation.operationQueue"];
     v5 = self->_operationQueue;
-    v6 = [MEMORY[0x1E696AF00] currentThread];
-    -[NSOperationQueue setQualityOfService:](v5, "setQualityOfService:", [v6 qualityOfService]);
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    -[NSOperationQueue setQualityOfService:](v5, "setQualityOfService:", [currentThread qualityOfService]);
   }
 
-  v7 = [(MPModelLibraryKeepLocalChangeRequest *)self->_request modelObject];
+  modelObject = [(MPModelLibraryKeepLocalChangeRequest *)self->_request modelObject];
   v8 = [(MPModelLibraryKeepLocalChangeRequest *)self->_request enableState]+ 1;
   if (v8 > 4)
   {
@@ -354,28 +354,28 @@ void __124__MPModelLibraryKeepLocalChangeRequestOperation__handlePersistentID_mo
     v9 = qword_1A2740290[v8];
   }
 
-  v10 = [(MPModelLibraryKeepLocalChangeRequest *)self->_request constraints];
-  v11 = [(MPAsyncOperation *)self userIdentity];
-  v12 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v11];
+  constraints = [(MPModelLibraryKeepLocalChangeRequest *)self->_request constraints];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v12 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v13 = [v7 identifiers];
-  v14 = [v13 library];
-  v15 = [v14 persistentID];
+  identifiers = [modelObject identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (v15)
+  if (persistentID)
   {
-    [(MPModelLibraryKeepLocalChangeRequestOperation *)self _handlePersistentID:v15 modelClass:objc_opt_class() keepLocal:v9 keepLocalConstraints:v10 mediaLibrary:v12];
+    [(MPModelLibraryKeepLocalChangeRequestOperation *)self _handlePersistentID:persistentID modelClass:objc_opt_class() keepLocal:v9 keepLocalConstraints:constraints mediaLibrary:v12];
   }
 
   else
   {
-    v16 = [(MPAsyncOperation *)self userIdentity];
-    v17 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:v16];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v17 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:userIdentity2];
 
     v18 = objc_alloc_init(MPStoreLibraryMappingRequestOperation);
     [(MPStoreLibraryMappingRequestOperation *)v18 setLibraryView:v17];
     [(MPStoreLibraryMappingRequestOperation *)v18 setModelClass:objc_opt_class()];
-    v30[0] = v13;
+    v30[0] = identifiers;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
     [(MPStoreLibraryMappingRequestOperation *)v18 setIdentifierSets:v19];
 
@@ -383,11 +383,11 @@ void __124__MPModelLibraryKeepLocalChangeRequestOperation__handlePersistentID_mo
     v21 = 3221225472;
     v22 = __56__MPModelLibraryKeepLocalChangeRequestOperation_execute__block_invoke;
     v23 = &unk_1E767B058;
-    v24 = v13;
-    v25 = self;
-    v26 = v7;
+    v24 = identifiers;
+    selfCopy = self;
+    v26 = modelObject;
     v28 = v9;
-    v29 = v10;
+    v29 = constraints;
     v27 = v12;
     [(MPStoreLibraryMappingRequestOperation *)v18 setResponseHandler:&v20];
     [(NSOperationQueue *)self->_operationQueue addOperation:v18, v20, v21, v22, v23];

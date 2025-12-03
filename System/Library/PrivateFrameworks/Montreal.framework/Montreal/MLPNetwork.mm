@@ -1,28 +1,28 @@
 @interface MLPNetwork
-+ (MLPNetwork)networkWithLayers:(id)a3 inputLength:(unint64_t)a4 inputHeight:(unint64_t)a5 inputChannels:(unint64_t)a6 batchSize:(unint64_t)a7 lossBatchSize:(unint64_t)a8 options:(id)a9 deviceHandler:(id)a10 optimizerParams:(id)a11;
-- (MLPNetwork)initWithLayers:(id)a3;
-- (MLPNetwork)initWithNetworkType:(unint64_t)a3 layers:(id)a4;
-- (id)computeInference:(id)a3;
-- (unint64_t)runInference:(id)a3 databatch:(id)a4 inferredResult:(id)a5 semaphore:(id)a6;
++ (MLPNetwork)networkWithLayers:(id)layers inputLength:(unint64_t)length inputHeight:(unint64_t)height inputChannels:(unint64_t)channels batchSize:(unint64_t)size lossBatchSize:(unint64_t)batchSize options:(id)options deviceHandler:(id)self0 optimizerParams:(id)self1;
+- (MLPNetwork)initWithLayers:(id)layers;
+- (MLPNetwork)initWithNetworkType:(unint64_t)type layers:(id)layers;
+- (id)computeInference:(id)inference;
+- (unint64_t)runInference:(id)inference databatch:(id)databatch inferredResult:(id)result semaphore:(id)semaphore;
 - (void)createLayerKernels;
 - (void)generateModelContainer;
-- (void)runTraining:(id)a3 databatch:(id)a4 iteration:(unint64_t)a5 lossCallback:(id)a6 semaphore:(id)a7;
+- (void)runTraining:(id)training databatch:(id)databatch iteration:(unint64_t)iteration lossCallback:(id)callback semaphore:(id)semaphore;
 @end
 
 @implementation MLPNetwork
 
-+ (MLPNetwork)networkWithLayers:(id)a3 inputLength:(unint64_t)a4 inputHeight:(unint64_t)a5 inputChannels:(unint64_t)a6 batchSize:(unint64_t)a7 lossBatchSize:(unint64_t)a8 options:(id)a9 deviceHandler:(id)a10 optimizerParams:(id)a11
++ (MLPNetwork)networkWithLayers:(id)layers inputLength:(unint64_t)length inputHeight:(unint64_t)height inputChannels:(unint64_t)channels batchSize:(unint64_t)size lossBatchSize:(unint64_t)batchSize options:(id)options deviceHandler:(id)self0 optimizerParams:(id)self1
 {
   v205 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v198 = a9;
-  v199 = a10;
-  v197 = a11;
+  layersCopy = layers;
+  optionsCopy = options;
+  handlerCopy = handler;
+  paramsCopy = params;
   v200 = 0u;
   v201 = 0u;
   v202 = 0u;
   v203 = 0u;
-  v17 = v16;
+  v17 = layersCopy;
   v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v200, v204, 16);
   if (v22)
   {
@@ -70,28 +70,28 @@ LABEL_9:
   v31 = [MLPCNNNetwork alloc];
   v28 = objc_msgSend_initWithLayers_(v31, v32, v17, v33);
 LABEL_12:
-  objc_msgSend_setOptions_(v28, v29, v198, v30);
-  v36 = objc_msgSend_exMRL_BOOLForKey_(v198, v34, MLPModelTrainerComputeLossOnEvaluationKey, v35);
+  objc_msgSend_setOptions_(v28, v29, optionsCopy, v30);
+  v36 = objc_msgSend_exMRL_BOOLForKey_(optionsCopy, v34, MLPModelTrainerComputeLossOnEvaluationKey, v35);
   objc_msgSend_setComputeLossOnInference_(v28, v37, v36, v38);
-  objc_msgSend_setDeviceHandler_(v28, v39, v199, v40);
+  objc_msgSend_setDeviceHandler_(v28, v39, handlerCopy, v40);
   v41 = objc_alloc(MEMORY[0x1E69745A0]);
-  v45 = objc_msgSend_device(v199, v42, v43, v44);
-  v49 = objc_msgSend_dataLayout(v199, v46, v47, v48);
+  v45 = objc_msgSend_device(handlerCopy, v42, v43, v44);
+  v49 = objc_msgSend_dataLayout(handlerCopy, v46, v47, v48);
   v51 = objc_msgSend_initWithDevice_dataLayout_(v41, v50, v45, v49);
   objc_msgSend_setI2mKernel_(v28, v52, v51, v53);
 
   v54 = objc_alloc(MEMORY[0x1E6974650]);
-  v58 = objc_msgSend_device(v199, v55, v56, v57);
-  v62 = objc_msgSend_dataLayout(v199, v59, v60, v61);
+  v58 = objc_msgSend_device(handlerCopy, v55, v56, v57);
+  v62 = objc_msgSend_dataLayout(handlerCopy, v59, v60, v61);
   v64 = objc_msgSend_initWithDevice_dataLayout_(v54, v63, v58, v62);
   objc_msgSend_setM2iKernel_(v28, v65, v64, v66);
 
-  objc_msgSend_setOptimizerParams_(v28, v67, v197, v68);
-  objc_msgSend_setInputLength_(v28, v69, a4, v70);
-  objc_msgSend_setInputHeight_(v28, v71, a5, v72);
-  objc_msgSend_setInputChannels_(v28, v73, a6, v74);
-  objc_msgSend_setBatchSize_(v28, v75, a7, v76);
-  objc_msgSend_setLossBatchSize_(v28, v77, a8, v78);
+  objc_msgSend_setOptimizerParams_(v28, v67, paramsCopy, v68);
+  objc_msgSend_setInputLength_(v28, v69, length, v70);
+  objc_msgSend_setInputHeight_(v28, v71, height, v72);
+  objc_msgSend_setInputChannels_(v28, v73, channels, v74);
+  objc_msgSend_setBatchSize_(v28, v75, size, v76);
+  objc_msgSend_setLossBatchSize_(v28, v77, batchSize, v78);
   if (objc_msgSend_count(v17, v79, v80, v81))
   {
     if (objc_msgSend_count(v17, v82, v83, v84) == 1)
@@ -176,9 +176,9 @@ LABEL_12:
   return v28;
 }
 
-- (MLPNetwork)initWithLayers:(id)a3
+- (MLPNetwork)initWithLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   v5 = MEMORY[0x1E695DF30];
   v6 = MEMORY[0x1E696AEC0];
   v7 = NSStringFromSelector(a2);
@@ -189,19 +189,19 @@ LABEL_12:
   objc_exception_throw(v12);
 }
 
-- (MLPNetwork)initWithNetworkType:(unint64_t)a3 layers:(id)a4
+- (MLPNetwork)initWithNetworkType:(unint64_t)type layers:(id)layers
 {
-  v6 = a4;
+  layersCopy = layers;
   v14.receiver = self;
   v14.super_class = MLPNetwork;
   v10 = [(MLPNetwork *)&v14 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v7, v8, v9);
+    v11 = objc_msgSend_copy(layersCopy, v7, v8, v9);
     layers = v10->_layers;
     v10->_layers = v11;
 
-    v10->_networkType = a3;
+    v10->_networkType = type;
   }
 
   return v10;
@@ -312,12 +312,12 @@ LABEL_20:
   return ModelContainer;
 }
 
-- (void)runTraining:(id)a3 databatch:(id)a4 iteration:(unint64_t)a5 lossCallback:(id)a6 semaphore:(id)a7
+- (void)runTraining:(id)training databatch:(id)databatch iteration:(unint64_t)iteration lossCallback:(id)callback semaphore:(id)semaphore
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  trainingCopy = training;
+  databatchCopy = databatch;
+  callbackCopy = callback;
+  semaphoreCopy = semaphore;
   v15 = MEMORY[0x1E695DF30];
   v16 = MEMORY[0x1E696AEC0];
   v17 = NSStringFromSelector(a2);
@@ -328,12 +328,12 @@ LABEL_20:
   objc_exception_throw(v22);
 }
 
-- (unint64_t)runInference:(id)a3 databatch:(id)a4 inferredResult:(id)a5 semaphore:(id)a6
+- (unint64_t)runInference:(id)inference databatch:(id)databatch inferredResult:(id)result semaphore:(id)semaphore
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  inferenceCopy = inference;
+  databatchCopy = databatch;
+  resultCopy = result;
+  semaphoreCopy = semaphore;
   v14 = MEMORY[0x1E695DF30];
   v15 = MEMORY[0x1E696AEC0];
   v16 = NSStringFromSelector(a2);
@@ -344,9 +344,9 @@ LABEL_20:
   objc_exception_throw(v21);
 }
 
-- (id)computeInference:(id)a3
+- (id)computeInference:(id)inference
 {
-  v4 = a3;
+  inferenceCopy = inference;
   v5 = MEMORY[0x1E695DF30];
   v6 = MEMORY[0x1E696AEC0];
   v7 = NSStringFromSelector(a2);

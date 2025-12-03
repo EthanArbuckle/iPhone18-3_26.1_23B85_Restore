@@ -20,12 +20,12 @@
   if (([v4 hasEndDate] & 1) != 0 || objc_msgSend(v4, "hasStartDate"))
   {
     v5 = MEMORY[0x277CCD5D8];
-    v6 = [v4 startDate];
-    v7 = [v5 createWithCodable:v6];
+    startDate = [v4 startDate];
+    v7 = [v5 createWithCodable:startDate];
 
     v8 = MEMORY[0x277CCD5D8];
-    v9 = [v4 endDate];
-    v10 = [v8 createWithCodable:v9];
+    endDate = [v4 endDate];
+    v10 = [v8 createWithCodable:endDate];
 
     if (v10)
     {
@@ -80,13 +80,13 @@ LABEL_17:
 - (HDCodableMedicalDateInterval)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableMedicalDateInterval);
-  v3 = [a1 startDate];
-  v4 = [v3 codableRepresentationForSync];
-  [(HDCodableMedicalDateInterval *)v2 setStartDate:v4];
+  startDate = [self startDate];
+  codableRepresentationForSync = [startDate codableRepresentationForSync];
+  [(HDCodableMedicalDateInterval *)v2 setStartDate:codableRepresentationForSync];
 
-  v5 = [a1 endDate];
-  v6 = [v5 codableRepresentationForSync];
-  [(HDCodableMedicalDateInterval *)v2 setEndDate:v6];
+  endDate = [self endDate];
+  codableRepresentationForSync2 = [endDate codableRepresentationForSync];
+  [(HDCodableMedicalDateInterval *)v2 setEndDate:codableRepresentationForSync2];
 
   return v2;
 }

@@ -1,9 +1,9 @@
 @interface PKDashboardTransactionInstallmentItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardTransactionInstallmentItemPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
 @end
 
 @implementation PKDashboardTransactionInstallmentItemPresenter
@@ -34,44 +34,44 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"TransactionInstallmentItemCellReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardTransactionInstallmentItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TransactionInstallmentItemCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardTransactionInstallmentItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardTransactionInstallmentItemPresenter *)self _configureCell:self->_sampleCell forItem:a3 inCollectionView:a4 forIndexPath:a6];
+  [(PKDashboardTransactionInstallmentItemPresenter *)self _configureCell:self->_sampleCell forItem:item inCollectionView:view forIndexPath:path];
   sampleCell = self->_sampleCell;
 
-  [(PKDashboardStackedImageCollectionViewCell *)sampleCell sizeThatFits:a5, 1.79769313e308];
+  [(PKDashboardStackedImageCollectionViewCell *)sampleCell sizeThatFits:width, 1.79769313e308];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = [a4 installmentPlan];
-  v9 = [v8 product];
-  v10 = [v9 serialNumber];
+  cellCopy = cell;
+  installmentPlan = [item installmentPlan];
+  product = [installmentPlan product];
+  serialNumber = [product serialNumber];
   v11 = PKSerialNumber();
-  v12 = v10;
+  v12 = serialNumber;
   v13 = v11;
   v14 = v13;
   if (v12 == v13)
   {
 
 LABEL_7:
-    v16 = PKDeviceName();
-    v17 = [v9 model];
+    model2 = PKDeviceName();
+    model = [product model];
     goto LABEL_10;
   }
 
@@ -89,14 +89,14 @@ LABEL_7:
   {
   }
 
-  v16 = [v9 model];
-  v17 = 0;
+  model2 = [product model];
+  model = 0;
 LABEL_10:
-  v18 = [v9 iconURLForScale:0 suffix:PKUIScreenScale()];
+  v18 = [product iconURLForScale:0 suffix:PKUIScreenScale()];
   if (v18)
   {
-    v19 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
-    v20 = [v19 cachedDataForURL:v18];
+    mEMORY[0x1E69B8A08] = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+    v20 = [mEMORY[0x1E69B8A08] cachedDataForURL:v18];
     if (v20)
     {
       v21 = v20;
@@ -114,8 +114,8 @@ LABEL_10:
       v30[1] = 3221225472;
       v30[2] = __103__PKDashboardTransactionInstallmentItemPresenter__configureCell_forItem_inCollectionView_forIndexPath___block_invoke;
       v30[3] = &unk_1E8020570;
-      v31 = v7;
-      [v19 downloadFromUrl:v18 completionHandler:v30];
+      v31 = cellCopy;
+      [mEMORY[0x1E69B8A08] downloadFromUrl:v18 completionHandler:v30];
     }
   }
 
@@ -134,15 +134,15 @@ LABEL_10:
   }
 
 LABEL_19:
-  v26 = [v8 summary];
-  v27 = [v26 startDate];
+  summary = [installmentPlan summary];
+  startDate = [summary startDate];
 
-  if (v27)
+  if (startDate)
   {
     v28 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v28 setDateStyle:1];
     [v28 setTimeStyle:0];
-    v29 = [v28 stringFromDate:v27];
+    v29 = [v28 stringFromDate:startDate];
   }
 
   else
@@ -150,10 +150,10 @@ LABEL_19:
     v29 = 0;
   }
 
-  [v7 setIcon:v22];
-  [v7 setTitle:v16];
-  [v7 setSubtitle:v17];
-  [v7 setTertiaryText:v29];
+  [cellCopy setIcon:v22];
+  [cellCopy setTitle:model2];
+  [cellCopy setSubtitle:model];
+  [cellCopy setTertiaryText:v29];
 }
 
 void __103__PKDashboardTransactionInstallmentItemPresenter__configureCell_forItem_inCollectionView_forIndexPath___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

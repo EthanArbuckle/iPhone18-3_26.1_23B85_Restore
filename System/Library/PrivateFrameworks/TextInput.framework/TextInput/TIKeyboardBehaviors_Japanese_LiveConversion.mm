@@ -1,17 +1,17 @@
 @interface TIKeyboardBehaviors_Japanese_LiveConversion
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Japanese_LiveConversion
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v4 = a3;
-  if (([v4 hasCandidates] & 1) != 0 || !objc_msgSend(v4, "hasInput"))
+  stateCopy = state;
+  if (([stateCopy hasCandidates] & 1) != 0 || !objc_msgSend(stateCopy, "hasInput"))
   {
     v8.receiver = self;
     v8.super_class = TIKeyboardBehaviors_Japanese_LiveConversion;
-    v5 = [(TIKeyboardBehaviors_Japanese *)&v8 keyBehaviorsForState:v4];
+    v5 = [(TIKeyboardBehaviors_Japanese *)&v8 keyBehaviorsForState:stateCopy];
   }
 
   else

@@ -4,12 +4,12 @@
 - (void)clearTimer;
 - (void)dealloc;
 - (void)sendDelayedTouches;
-- (void)sendTouchesShouldBeginForDelayedTouches:(id)a3;
-- (void)sendTouchesShouldBeginForTouches:(id)a3 withEvent:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)sendTouchesShouldBeginForDelayedTouches:(id)touches;
+- (void)sendTouchesShouldBeginForTouches:(id)touches withEvent:(id)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIScrollViewDelayedTouchesBeganGestureRecognizer
@@ -42,14 +42,14 @@
   WeakRetained = objc_loadWeakRetained(&self->_client);
   if (!WeakRetained)
   {
-    v4 = [(UIGestureRecognizer *)self view];
+    view = [(UIGestureRecognizer *)self view];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
       v5 = objc_opt_respondsToSelector();
 
       if (v5)
       {
-        WeakRetained = v4;
+        WeakRetained = view;
         objc_storeWeak(&self->_client, WeakRetained);
 LABEL_11:
 
@@ -86,17 +86,17 @@ LABEL_12:
   [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self sendTouchesShouldBeginForDelayedTouches:v3];
 }
 
-- (void)sendTouchesShouldBeginForTouches:(id)a3 withEvent:(id)a4
+- (void)sendTouchesShouldBeginForTouches:(id)touches withEvent:(id)event
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  touchesCopy = touches;
+  eventCopy = event;
   [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self clearTimer];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = touchesCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v9)
   {
@@ -119,15 +119,15 @@ LABEL_14:
       }
 
       v13 = *(*(&v21 + 1) + 8 * i);
-      v14 = [v13 view];
-      v15 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
-      ShouldBegin = _UIViewTouchShouldBegin(v13, v7, v14, v15);
+      view = [v13 view];
+      _clientView = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
+      ShouldBegin = _UIViewTouchShouldBegin(v13, eventCopy, view, _clientView);
 
       if (ShouldBegin)
       {
         v17 = UIApp;
-        v18 = [v13 window];
-        v19 = [v17 _touchesEventForWindow:v18];
+        window = [v13 window];
+        v19 = [v17 _touchesEventForWindow:window];
 
         [(UIGestureRecognizer *)self ignoreTouch:v13 forEvent:v19];
       }
@@ -152,16 +152,16 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)sendTouchesShouldBeginForDelayedTouches:(id)a3
+- (void)sendTouchesShouldBeginForDelayedTouches:(id)touches
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  touchesCopy = touches;
   [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self clearTimer];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v4;
+  v5 = touchesCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v6)
   {
@@ -201,9 +201,9 @@ LABEL_21:
       }
 
       v13 = v12;
-      v14 = [v13 view];
-      v15 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
-      ShouldBegin = _UIViewTouchShouldBegin(v10, v11, v14, v15);
+      view = [v13 view];
+      _clientView = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
+      ShouldBegin = _UIViewTouchShouldBegin(v10, v11, view, _clientView);
 
       if (ShouldBegin)
       {
@@ -248,52 +248,52 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v16 = a4;
-  v6 = a3;
+  eventCopy = event;
+  beganCopy = began;
   [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self clearTimer];
-  v7 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
-  v8 = [v7 delaysContentTouches];
+  _clientView = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
+  delaysContentTouches = [_clientView delaysContentTouches];
 
-  if (v8)
+  if (delaysContentTouches)
   {
-    v9 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _shouldMakeTimerForDelayedContentTouches:v6];
+    v9 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _shouldMakeTimerForDelayedContentTouches:beganCopy];
 
     if (v9)
     {
       v10 = [UIDelayedAction alloc];
-      v11 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
-      [v11 _touchDelayForScrollDetection];
+      _clientView2 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
+      [_clientView2 _touchDelayForScrollDetection];
       v12 = [(UIDelayedAction *)v10 initWithTarget:self action:sel_sendDelayedTouches userInfo:0 delay:*MEMORY[0x1E695DA28] mode:?];
       touchDelay = self->_touchDelay;
       self->_touchDelay = v12;
     }
 
-    v6 = [(UIGestureRecognizer *)self _activeTouchesForEvent:v16];
-    [(UIGestureRecognizer *)self _centroidOfTouches:v6 excludingEnded:0];
+    beganCopy = [(UIGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
+    [(UIGestureRecognizer *)self _centroidOfTouches:beganCopy excludingEnded:0];
     self->_startSceneReferenceLocation.x = v14;
     self->_startSceneReferenceLocation.y = v15;
   }
 
   else
   {
-    [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self sendTouchesShouldBeginForTouches:v6 withEvent:v16];
+    [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self sendTouchesShouldBeginForTouches:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = v6;
+  v8 = movedCopy;
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
-  v10 = v8;
+  _clientView = v8;
   if (v9)
   {
     v11 = v9;
@@ -307,37 +307,37 @@ LABEL_22:
           objc_enumerationMutation(v8);
         }
 
-        v14 = [*(*(&v34 + 1) + 8 * i) view];
+        view = [*(*(&v34 + 1) + 8 * i) view];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
 
-          v10 = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
-          [v10 _scrollHysteresis];
+          _clientView = [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self _clientView];
+          [_clientView _scrollHysteresis];
           v17 = v16;
-          v18 = [v10 _canScrollX];
-          v19 = [v10 _canScrollY];
-          v20 = [(UIGestureRecognizer *)self _activeTouchesForEvent:v7];
+          _canScrollX = [_clientView _canScrollX];
+          _canScrollY = [_clientView _canScrollY];
+          v20 = [(UIGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
           [(UIGestureRecognizer *)self _centroidOfTouches:v20 excludingEnded:0];
           v22 = v21;
           v24 = v23;
 
           v25 = v22 - self->_startSceneReferenceLocation.x;
           v26 = v24 - self->_startSceneReferenceLocation.y;
-          v27 = [(UIGestureRecognizer *)self view];
-          v28 = [v27 window];
-          if (v28)
+          view2 = [(UIGestureRecognizer *)self view];
+          window = [view2 window];
+          if (window)
           {
-            v29 = [v27 window];
-            [v29 _convertOffsetFromSceneReferenceSpace:{v25, v26}];
-            v25 = [(UIView *)v27 _convertOffset:v30 fromView:v31];
+            window2 = [view2 window];
+            [window2 _convertOffsetFromSceneReferenceSpace:{v25, v26}];
+            v25 = [(UIView *)view2 _convertOffset:v30 fromView:v31];
             v26 = v32;
           }
 
           v33 = v17;
-          if ((v18 & 1) == 0 && fabs(v25) > v33 || (v19 & 1) == 0 && fabs(v26) > v33)
+          if ((_canScrollX & 1) == 0 && fabs(v25) > v33 || (_canScrollY & 1) == 0 && fabs(v26) > v33)
           {
             [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self sendDelayedTouches];
           }
@@ -355,15 +355,15 @@ LABEL_22:
       break;
     }
 
-    v10 = v8;
+    _clientView = v8;
   }
 
 LABEL_18:
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]== UIGestureRecognizerStateBegan)
+  if ([(UIGestureRecognizer *)self state:ended]== UIGestureRecognizerStateBegan)
   {
 
     [(UIGestureRecognizer *)self setState:3];
@@ -382,9 +382,9 @@ LABEL_18:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self clearTimer:a3];
+  [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self clearTimer:cancelled];
 
   [(UIGestureRecognizer *)self _failWithReason:@"touchesCancelled"];
 }

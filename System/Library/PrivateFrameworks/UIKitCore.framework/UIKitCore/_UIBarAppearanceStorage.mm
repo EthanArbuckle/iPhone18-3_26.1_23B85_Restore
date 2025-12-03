@@ -1,35 +1,35 @@
 @interface _UIBarAppearanceStorage
 + (int64_t)typicalBarPosition;
 - (id)allBackgroundImages;
-- (id)backgroundImageForBarPosition:(int64_t)a3 barMetrics:(int64_t)a4;
-- (void)setAllBackgroundImages:(id)a3;
-- (void)setBackgroundImage:(id)a3 forBarPosition:(int64_t)a4 barMetrics:(int64_t)a5;
+- (id)backgroundImageForBarPosition:(int64_t)position barMetrics:(int64_t)metrics;
+- (void)setAllBackgroundImages:(id)images;
+- (void)setBackgroundImage:(id)image forBarPosition:(int64_t)position barMetrics:(int64_t)metrics;
 @end
 
 @implementation _UIBarAppearanceStorage
 
 + (int64_t)typicalBarPosition
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"UIBarCommon.m" lineNumber:76 description:@"Abstract method requires overriding in subclasses"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarCommon.m" lineNumber:76 description:@"Abstract method requires overriding in subclasses"];
 
   return 0;
 }
 
-- (void)setBackgroundImage:(id)a3 forBarPosition:(int64_t)a4 barMetrics:(int64_t)a5
+- (void)setBackgroundImage:(id)image forBarPosition:(int64_t)position barMetrics:(int64_t)metrics
 {
-  v17 = a3;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a5 + 1000 * a4];
+  imageCopy = image;
+  position = [MEMORY[0x1E696AD98] numberWithInteger:metrics + 1000 * position];
   if ([objc_opt_class() typicalBarPosition])
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
     v10 = v9;
-    if (!v17)
+    if (!imageCopy)
     {
       if (v9)
       {
         v11 = [(NSMutableDictionary *)self->_backgroundImages objectForKeyedSubscript:v9];
-        v12 = [(NSMutableDictionary *)self->_backgroundImages objectForKeyedSubscript:v8];
+        v12 = [(NSMutableDictionary *)self->_backgroundImages objectForKeyedSubscript:position];
 
         if (v11 == v12)
         {
@@ -44,10 +44,10 @@
   else
   {
     v10 = 0;
-    if (!v17)
+    if (!imageCopy)
     {
 LABEL_12:
-      [(NSMutableDictionary *)self->_backgroundImages removeObjectForKey:v8];
+      [(NSMutableDictionary *)self->_backgroundImages removeObjectForKey:position];
       goto LABEL_13;
     }
   }
@@ -69,25 +69,25 @@ LABEL_12:
 
     if (!v16)
     {
-      [(NSMutableDictionary *)self->_backgroundImages setObject:v17 forKeyedSubscript:v10];
+      [(NSMutableDictionary *)self->_backgroundImages setObject:imageCopy forKeyedSubscript:v10];
     }
   }
 
 LABEL_13:
 }
 
-- (id)backgroundImageForBarPosition:(int64_t)a3 barMetrics:(int64_t)a4
+- (id)backgroundImageForBarPosition:(int64_t)position barMetrics:(int64_t)metrics
 {
   backgroundImages = self->_backgroundImages;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a4 + 1000 * a3];
-  v6 = [(NSMutableDictionary *)backgroundImages objectForKeyedSubscript:v5];
+  position = [MEMORY[0x1E696AD98] numberWithInteger:metrics + 1000 * position];
+  v6 = [(NSMutableDictionary *)backgroundImages objectForKeyedSubscript:position];
 
   return v6;
 }
 
-- (void)setAllBackgroundImages:(id)a3
+- (void)setAllBackgroundImages:(id)images
 {
-  v4 = [a3 mutableCopy];
+  v4 = [images mutableCopy];
   backgroundImages = self->_backgroundImages;
   self->_backgroundImages = v4;
 }

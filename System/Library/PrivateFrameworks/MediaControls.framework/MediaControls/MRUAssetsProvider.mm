@@ -8,16 +8,16 @@
 + (UIImage)play;
 + (UIImage)stop;
 + (UIImage)tvRemote;
-+ (id)goBackwardForTimeInterval:(double)a3;
-+ (id)goBackwardSymbolForTimeInterval:(double)a3;
-+ (id)goForwardForTimeInterval:(double)a3;
-+ (id)goForwardSymbolForTimeInterval:(double)a3;
-+ (id)packageDescriptionWithName:(id)a3;
-+ (id)packageWithName:(id)a3;
++ (id)goBackwardForTimeInterval:(double)interval;
++ (id)goBackwardSymbolForTimeInterval:(double)interval;
++ (id)goForwardForTimeInterval:(double)interval;
++ (id)goForwardSymbolForTimeInterval:(double)interval;
++ (id)packageDescriptionWithName:(id)name;
++ (id)packageWithName:(id)name;
 - (MRUAssetsProvider)init;
-- (void)applicationIconForBundleIdentifier:(id)a3 size:(CGSize)a4 appearance:(int64_t)a5 completion:(id)a6;
-- (void)applicationIconForBundleIdentifier:(id)a3 size:(CGSize)a4 traitCollection:(id)a5 completion:(id)a6;
-- (void)imageForURL:(id)a3 completion:(id)a4;
+- (void)applicationIconForBundleIdentifier:(id)identifier size:(CGSize)size appearance:(int64_t)appearance completion:(id)completion;
+- (void)applicationIconForBundleIdentifier:(id)identifier size:(CGSize)size traitCollection:(id)collection completion:(id)completion;
+- (void)imageForURL:(id)l completion:(id)completion;
 @end
 
 @implementation MRUAssetsProvider
@@ -96,8 +96,8 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 + (UIImage)play
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [a1 playSymbol];
-  v4 = [v2 _systemImageNamed:v3];
+  playSymbol = [self playSymbol];
+  v4 = [v2 _systemImageNamed:playSymbol];
 
   return v4;
 }
@@ -105,8 +105,8 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 + (UIImage)pause
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [a1 pauseSymbol];
-  v4 = [v2 _systemImageNamed:v3];
+  pauseSymbol = [self pauseSymbol];
+  v4 = [v2 _systemImageNamed:pauseSymbol];
 
   return v4;
 }
@@ -114,8 +114,8 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 + (UIImage)stop
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [a1 stopSymbol];
-  v4 = [v2 _systemImageNamed:v3];
+  stopSymbol = [self stopSymbol];
+  v4 = [v2 _systemImageNamed:stopSymbol];
 
   return v4;
 }
@@ -123,8 +123,8 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 + (UIImage)tvRemote
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [MEMORY[0x1E696AAE8] mediaRemoteUIBundle];
-  v4 = [v2 imageNamed:@"appletvremote" inBundle:v3];
+  mediaRemoteUIBundle = [MEMORY[0x1E696AAE8] mediaRemoteUIBundle];
+  v4 = [v2 imageNamed:@"appletvremote" inBundle:mediaRemoteUIBundle];
 
   return v4;
 }
@@ -132,8 +132,8 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 + (UIImage)backward
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [a1 backwardSymbol];
-  v4 = [v2 _systemImageNamed:v3];
+  backwardSymbol = [self backwardSymbol];
+  v4 = [v2 _systemImageNamed:backwardSymbol];
 
   return v4;
 }
@@ -141,15 +141,15 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 + (UIImage)forward
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [a1 forwardSymbol];
-  v4 = [v2 _systemImageNamed:v3];
+  forwardSymbol = [self forwardSymbol];
+  v4 = [v2 _systemImageNamed:forwardSymbol];
 
   return v4;
 }
 
-+ (id)goBackwardSymbolForTimeInterval:(double)a3
++ (id)goBackwardSymbolForTimeInterval:(double)interval
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gobackward.%i", llround(fabs(a3))];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gobackward.%i", llround(fabs(interval))];
   v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3];
   if (v4)
   {
@@ -166,9 +166,9 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
   return v5;
 }
 
-+ (id)goForwardSymbolForTimeInterval:(double)a3
++ (id)goForwardSymbolForTimeInterval:(double)interval
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"goforward.%i", llround(fabs(a3))];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"goforward.%i", llround(fabs(interval))];
   v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3];
   if (v4)
   {
@@ -185,17 +185,17 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
   return v5;
 }
 
-+ (id)goBackwardForTimeInterval:(double)a3
++ (id)goBackwardForTimeInterval:(double)interval
 {
-  v3 = [a1 goBackwardSymbolForTimeInterval:a3];
+  v3 = [self goBackwardSymbolForTimeInterval:interval];
   v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3];
 
   return v4;
 }
 
-+ (id)goForwardForTimeInterval:(double)a3
++ (id)goForwardForTimeInterval:(double)interval
 {
-  v3 = [a1 goForwardSymbolForTimeInterval:a3];
+  v3 = [self goForwardSymbolForTimeInterval:interval];
   v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3];
 
   return v4;
@@ -204,55 +204,55 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 + (UIImage)emptyArtwork
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [MEMORY[0x1E696AAE8] mediaRemoteUIBundle];
-  v4 = [v2 imageNamed:@"EmptyArtwork" inBundle:v3];
+  mediaRemoteUIBundle = [MEMORY[0x1E696AAE8] mediaRemoteUIBundle];
+  v4 = [v2 imageNamed:@"EmptyArtwork" inBundle:mediaRemoteUIBundle];
 
   return v4;
 }
 
-+ (id)packageWithName:(id)a3
++ (id)packageWithName:(id)name
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
-  v5 = [v3 mediaRemoteUIBundle];
-  v6 = [v5 URLForResource:v4 withExtension:@"ca"];
+  nameCopy = name;
+  mediaRemoteUIBundle = [v3 mediaRemoteUIBundle];
+  v6 = [mediaRemoteUIBundle URLForResource:nameCopy withExtension:@"ca"];
 
   v7 = [MEMORY[0x1E6979400] packageWithContentsOfURL:v6 type:*MEMORY[0x1E6979EF8] options:0 error:0];
 
   return v7;
 }
 
-+ (id)packageDescriptionWithName:(id)a3
++ (id)packageDescriptionWithName:(id)name
 {
   v3 = MEMORY[0x1E6997248];
   v4 = MEMORY[0x1E696AAE8];
-  v5 = a3;
-  v6 = [v4 mediaRemoteUIBundle];
-  v7 = [v3 descriptionForPackageNamed:v5 inBundle:v6];
+  nameCopy = name;
+  mediaRemoteUIBundle = [v4 mediaRemoteUIBundle];
+  v7 = [v3 descriptionForPackageNamed:nameCopy inBundle:mediaRemoteUIBundle];
 
   return v7;
 }
 
-- (void)applicationIconForBundleIdentifier:(id)a3 size:(CGSize)a4 traitCollection:(id)a5 completion:(id)a6
+- (void)applicationIconForBundleIdentifier:(id)identifier size:(CGSize)size traitCollection:(id)collection completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = a3;
-  -[MRUAssetsProvider applicationIconForBundleIdentifier:size:appearance:completion:](self, "applicationIconForBundleIdentifier:size:appearance:completion:", v12, [a5 userInterfaceStyle] == 2, v11, width, height);
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  -[MRUAssetsProvider applicationIconForBundleIdentifier:size:appearance:completion:](self, "applicationIconForBundleIdentifier:size:appearance:completion:", identifierCopy, [collection userInterfaceStyle] == 2, completionCopy, width, height);
 }
 
-- (void)applicationIconForBundleIdentifier:(id)a3 size:(CGSize)a4 appearance:(int64_t)a5 completion:(id)a6
+- (void)applicationIconForBundleIdentifier:(id)identifier size:(CGSize)size appearance:(int64_t)appearance completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = v12;
-  if (!v11)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (!identifierCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_22;
   }
 
@@ -262,7 +262,7 @@ uint64_t __41__MRUAssetsProvider_sharedAssetsProvider__block_invoke()
 LABEL_9:
     v15 = v14;
 
-    v11 = v15;
+    identifierCopy = v15;
     goto LABEL_10;
   }
 
@@ -289,23 +289,23 @@ LABEL_10:
     [(NSCache *)self->_applicationCache removeAllObjects];
   }
 
-  v19 = [(NSCache *)self->_applicationCache objectForKey:v11];
+  v19 = [(NSCache *)self->_applicationCache objectForKey:identifierCopy];
   if (!v19)
   {
     v30 = 0;
-    v20 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v11 allowPlaceholder:0 error:&v30];
+    v20 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v30];
     v21 = v30;
     v19 = [MEMORY[0x1E696AD98] numberWithInt:v20 != 0];
-    [(NSCache *)self->_applicationCache setObject:v19 forKey:v11];
+    [(NSCache *)self->_applicationCache setObject:v19 forKey:identifierCopy];
     if (v21)
     {
       v22 = MCLogCategoryDefault();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v32 = self;
+        selfCopy = self;
         v33 = 2114;
-        v34 = v11;
+        v34 = identifierCopy;
         v35 = 2114;
         v36 = v21;
         _os_log_impl(&dword_1A20FC000, v22, OS_LOG_TYPE_ERROR, "%{public}@ coudln't find application with bundle: %{public}@ | error: %{public}@ ", buf, 0x20u);
@@ -315,13 +315,13 @@ LABEL_10:
 
   if ([v19 BOOLValue])
   {
-    v23 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v11];
-    v24 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v24 scale];
+    v23 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:identifierCopy];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v26 = v25;
 
     v27 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:width scale:{height, v26}];
-    [v27 setAppearance:a5];
+    [v27 setAppearance:appearance];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __83__MRUAssetsProvider_applicationIconForBundleIdentifier_size_appearance_completion___block_invoke;
@@ -352,47 +352,47 @@ void __83__MRUAssetsProvider_applicationIconForBundleIdentifier_size_appearance_
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)imageForURL:(id)a3 completion:(id)a4
+- (void)imageForURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRUAssetsProvider *)self imageCache];
-  v9 = [v8 objectForKey:v6];
+  lCopy = l;
+  completionCopy = completion;
+  imageCache = [(MRUAssetsProvider *)self imageCache];
+  v9 = [imageCache objectForKey:lCopy];
 
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
   {
-    v10 = [(MRUAssetsProvider *)self completionBlocks];
-    v9 = [v10 objectForKeyedSubscript:v6];
+    completionBlocks = [(MRUAssetsProvider *)self completionBlocks];
+    v9 = [completionBlocks objectForKeyedSubscript:lCopy];
 
     if (v9)
     {
-      v11 = _Block_copy(v7);
-      v12 = [v9 setByAddingObject:v11];
-      v13 = [(MRUAssetsProvider *)self completionBlocks];
-      [v13 setObject:v12 forKeyedSubscript:v6];
+      mEMORY[0x1E696AF78] = _Block_copy(completionCopy);
+      v12 = [v9 setByAddingObject:mEMORY[0x1E696AF78]];
+      completionBlocks2 = [(MRUAssetsProvider *)self completionBlocks];
+      [completionBlocks2 setObject:v12 forKeyedSubscript:lCopy];
     }
 
     else
     {
       v14 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v15 = _Block_copy(v7);
+      v15 = _Block_copy(completionCopy);
       v16 = [v14 initWithObjects:{v15, 0}];
-      v17 = [(MRUAssetsProvider *)self completionBlocks];
-      [v17 setObject:v16 forKeyedSubscript:v6];
+      completionBlocks3 = [(MRUAssetsProvider *)self completionBlocks];
+      [completionBlocks3 setObject:v16 forKeyedSubscript:lCopy];
 
-      v11 = [MEMORY[0x1E696AF78] sharedSession];
+      mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __44__MRUAssetsProvider_imageForURL_completion___block_invoke;
       v19[3] = &unk_1E76662B8;
       v19[4] = self;
-      v20 = v6;
-      v18 = [v11 dataTaskWithURL:v20 completionHandler:v19];
+      v20 = lCopy;
+      v18 = [mEMORY[0x1E696AF78] dataTaskWithURL:v20 completionHandler:v19];
       [v18 resume];
     }
   }

@@ -1,14 +1,14 @@
 @interface CRLBoardItemEditor
 - (BOOL)anyLayoutHasUnlockedAspectRatio;
-- (BOOL)currentSelectionContainsInfo:(id)a3;
+- (BOOL)currentSelectionContainsInfo:(id)info;
 - (BOOL)handleSpacebar;
 - (BOOL)hasPreviewableInfos;
 - (BOOL)hasSinglePreviewableInfo;
 - (BOOL)isSingleBoardItemSelected;
 - (BOOL)p_canEditAccessibilityDescription;
 - (BOOL)p_canToggleAspectRatioLock;
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5;
-- (CRLBoardItemEditor)initWithInteractiveCanvasController:(id)a3;
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors;
+- (CRLBoardItemEditor)initWithInteractiveCanvasController:(id)controller;
 - (CRLEditorController)editorController;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
 - (NSSet)layouts;
@@ -16,58 +16,58 @@
 - (_TtC8Freeform12CRLBoardItem)anyBoardItem;
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator;
 - (id)aspectRatioLockControlState;
-- (id)boardItemsOfClass:(Class)a3;
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5;
-- (id)p_sortedBoardItemsOfClass:(Class)a3;
-- (id)placeholderString:(id)a3;
-- (id)selectionWillChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5 inSelectionPath:(id)a6 withNewEditors:(id)a7;
-- (id)sortedBoardItemsOfClass:(Class)a3;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)accessibilityDescriptionEditor:(id)a3 didEndEditingWithReason:(int64_t)a4;
-- (void)addContextualMenuItemsToArray:(id)a3;
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)crlaxAddContextualMenuOptionsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)didBecomeCurrentEditorForEditorController:(id)a3;
-- (void)editAccessibilityDescription:(id)a3;
+- (id)boardItemsOfClass:(Class)class;
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path;
+- (id)p_sortedBoardItemsOfClass:(Class)class;
+- (id)placeholderString:(id)string;
+- (id)selectionWillChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags inSelectionPath:(id)path withNewEditors:(id)editors;
+- (id)sortedBoardItemsOfClass:(Class)class;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)accessibilityDescriptionEditor:(id)editor didEndEditingWithReason:(int64_t)reason;
+- (void)addContextualMenuItemsToArray:(id)array;
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)crlaxAddContextualMenuOptionsToArray:(id)array atPoint:(CGPoint)point;
+- (void)didBecomeCurrentEditorForEditorController:(id)controller;
+- (void)editAccessibilityDescription:(id)description;
 - (void)enterPreviewMode;
-- (void)launchEditAccessibilityDescriptionWithBoardItem:(id)a3;
-- (void)openItemURL:(id)a3;
-- (void)p_flipInOrientation:(int)a3;
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setBoardItems:(id)a3;
-- (void)setEditorController:(id)a3;
-- (void)toggleAspectRatioLock:(id)a3;
-- (void)updateStateForCommand:(id)a3;
+- (void)launchEditAccessibilityDescriptionWithBoardItem:(id)item;
+- (void)openItemURL:(id)l;
+- (void)p_flipInOrientation:(int)orientation;
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setBoardItems:(id)items;
+- (void)setEditorController:(id)controller;
+- (void)toggleAspectRatioLock:(id)lock;
+- (void)updateStateForCommand:(id)command;
 - (void)willResignCurrentEditor;
 @end
 
 @implementation CRLBoardItemEditor
 
-- (CRLBoardItemEditor)initWithInteractiveCanvasController:(id)a3
+- (CRLBoardItemEditor)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLBoardItemEditor;
   v5 = [(CRLBoardItemEditor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
   }
 
   return v6;
 }
 
-- (void)setBoardItems:(id)a3
+- (void)setBoardItems:(id)items
 {
-  objc_storeStrong(&self->_boardItems, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_boardItems, items);
+  itemsCopy = items;
   cachedSortedBoardItemsByClassName = self->_cachedSortedBoardItemsByClassName;
   self->_cachedSortedBoardItemsByClassName = 0;
 }
 
-- (id)boardItemsOfClass:(Class)a3
+- (id)boardItemsOfClass:(Class)class
 {
   boardItems = self->_boardItems;
   if (boardItems)
@@ -76,7 +76,7 @@
     v6[1] = 3221225472;
     v6[2] = sub_1004E4DD8;
     v6[3] = &unk_101869980;
-    v6[4] = a3;
+    v6[4] = class;
     v4 = [(NSSet *)boardItems objectsPassingTest:v6];
   }
 
@@ -88,7 +88,7 @@
   return v4;
 }
 
-- (id)sortedBoardItemsOfClass:(Class)a3
+- (id)sortedBoardItemsOfClass:(Class)class
 {
   if (!self->_cachedSortedBoardItemsByClassName)
   {
@@ -97,22 +97,22 @@
     self->_cachedSortedBoardItemsByClassName = v5;
   }
 
-  v7 = NSStringFromClass(a3);
+  v7 = NSStringFromClass(class);
   v8 = [(NSMutableDictionary *)self->_cachedSortedBoardItemsByClassName objectForKeyedSubscript:v7];
   if (!v8)
   {
-    v8 = [(CRLBoardItemEditor *)self p_sortedBoardItemsOfClass:a3];
+    v8 = [(CRLBoardItemEditor *)self p_sortedBoardItemsOfClass:class];
     [(NSMutableDictionary *)self->_cachedSortedBoardItemsByClassName setObject:v8 forKeyedSubscript:v7];
   }
 
   return v8;
 }
 
-- (id)p_sortedBoardItemsOfClass:(Class)a3
+- (id)p_sortedBoardItemsOfClass:(Class)class
 {
-  v3 = [(CRLBoardItemEditor *)self boardItemsOfClass:a3];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&stru_1018699C0];
+  v3 = [(CRLBoardItemEditor *)self boardItemsOfClass:class];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&stru_1018699C0];
 
   return v5;
 }
@@ -121,61 +121,61 @@
 {
   v3 = objc_opt_self();
   v4 = [(CRLBoardItemEditor *)self sortedBoardItemsOfClass:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (BOOL)currentSelectionContainsInfo:(id)a3
+- (BOOL)currentSelectionContainsInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self boardItems];
-  v6 = [v5 containsObject:v4];
+  infoCopy = info;
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v6 = [boardItems containsObject:infoCopy];
 
   return v6;
 }
 
 - (BOOL)isSingleBoardItemSelected
 {
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 count] == 1;
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems count] == 1;
 
   return v3;
 }
 
 - (NSSet)layouts
 {
-  v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v4 = [v3 layoutController];
-  v5 = [(CRLBoardItemEditor *)self boardItems];
-  v6 = [v4 layoutsForInfos:v5];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  layoutController = [interactiveCanvasController layoutController];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v6 = [layoutController layoutsForInfos:boardItems];
 
   return v6;
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("flipHorizontally:" != a3 && "flipVertically:" != a3)
+  senderCopy = sender;
+  if ("flipHorizontally:" != action && "flipVertically:" != action)
   {
-    if ("toggleAspectRatioLock:" == a3)
+    if ("toggleAspectRatioLock:" == action)
     {
-      v21 = [(CRLBoardItemEditor *)self p_canToggleAspectRatioLock];
+      p_canToggleAspectRatioLock = [(CRLBoardItemEditor *)self p_canToggleAspectRatioLock];
     }
 
-    else if ("showPreview:" == a3)
+    else if ("showPreview:" == action)
     {
-      v21 = [(CRLBoardItemEditor *)self canShowPreview];
+      p_canToggleAspectRatioLock = [(CRLBoardItemEditor *)self canShowPreview];
     }
 
     else
     {
-      if ("editAccessibilityDescription:" != a3 && "setAccessibilityDescription:" != a3)
+      if ("editAccessibilityDescription:" != action && "setAccessibilityDescription:" != action)
       {
-        if ("openItemURL:" == a3)
+        if ("openItemURL:" == action)
         {
-          v23 = [(CRLBoardItemEditor *)self boardItems];
-          if ([_TtC8Freeform12CRLURLEditor canOpenItemURLFor:v23])
+          boardItems = [(CRLBoardItemEditor *)self boardItems];
+          if ([_TtC8Freeform12CRLURLEditor canOpenItemURLFor:boardItems])
           {
             v19 = 1;
           }
@@ -194,10 +194,10 @@
         goto LABEL_32;
       }
 
-      v21 = [(CRLBoardItemEditor *)self p_canEditAccessibilityDescription];
+      p_canToggleAspectRatioLock = [(CRLBoardItemEditor *)self p_canEditAccessibilityDescription];
     }
 
-    if (v21)
+    if (p_canToggleAspectRatioLock)
     {
       v19 = 1;
     }
@@ -210,8 +210,8 @@
     goto LABEL_32;
   }
 
-  v8 = [(CRLBoardItemEditor *)self boardItems];
-  v9 = [v8 count];
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  v9 = [boardItems2 count];
 
   if (v9)
   {
@@ -219,8 +219,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [(CRLBoardItemEditor *)self layouts];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    layouts = [(CRLBoardItemEditor *)self layouts];
+    v11 = [layouts countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -232,13 +232,13 @@
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(layouts);
           }
 
           v15 = *(*(&v24 + 1) + 8 * v14);
           v16 = objc_opt_class();
-          v17 = [v15 info];
-          v18 = sub_100014370(v16, v17);
+          info = [v15 info];
+          v18 = sub_100014370(v16, info);
 
           if ([v15 supportsFlipping] && (objc_msgSend(v18, "locked") & 1) == 0)
           {
@@ -251,7 +251,7 @@
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v12 = [layouts countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v12)
         {
           continue;
@@ -270,38 +270,38 @@ LABEL_32:
 
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v2 editingCoordinator];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
 
-  return v3;
+  return editingCoordinator;
 }
 
-- (void)didBecomeCurrentEditorForEditorController:(id)a3
+- (void)didBecomeCurrentEditorForEditorController:(id)controller
 {
-  v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v4 = [v3 layerHost];
-  v5 = [v4 asiOSCVC];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  [v5 setContextMenuMightBeDisplayed:0];
+  [asiOSCVC setContextMenuMightBeDisplayed:0];
 }
 
 - (CRLEditorController)editorController
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v3 = [WeakRetained editorController];
+  editorController = [WeakRetained editorController];
 
-  return v3;
+  return editorController;
 }
 
-- (void)setEditorController:(id)a3
+- (void)setEditorController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v6 = [WeakRetained editorController];
+    editorController = [WeakRetained editorController];
 
-    if (v6 != v4)
+    if (editorController != controllerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -332,19 +332,19 @@ LABEL_32:
   }
 }
 
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors
 {
-  v6 = a3;
+  selectionCopy = selection;
   v7 = objc_opt_class();
-  v8 = sub_100014370(v7, v6);
+  v8 = sub_100014370(v7, selectionCopy);
 
-  v9 = [v8 boardItems];
+  boardItems = [v8 boardItems];
   if (v8)
   {
-    v10 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v11 = [v10 canvasEditor];
-    v12 = [v11 canvasEditorHelper];
-    v13 = -[CRLBoardItemEditor isMemberOfClass:](self, "isMemberOfClass:", [v12 editorClassForInfos:v9]);
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    canvasEditorHelper = [canvasEditor canvasEditorHelper];
+    v13 = -[CRLBoardItemEditor isMemberOfClass:](self, "isMemberOfClass:", [canvasEditorHelper editorClassForInfos:boardItems]);
   }
 
   else
@@ -355,9 +355,9 @@ LABEL_32:
   return v13;
 }
 
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path
 {
-  v6 = a3;
+  selectionCopy = selection;
   if ([(CRLBoardItemEditor *)self isMemberOfClass:objc_opt_class()])
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -369,7 +369,7 @@ LABEL_32:
     v8 = off_1019EDA68;
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_101385A54(v6, v7, v8);
+      sub_101385A54(selectionCopy, v7, v8);
     }
 
     if (qword_101AD5A10 != -1)
@@ -385,15 +385,15 @@ LABEL_32:
 
     v10 = [NSString stringWithUTF8String:"[CRLBoardItemEditor nextEditorForSelection:withNewEditorStack:selectionPath:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLBoardItemEditor.m"];
-    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:192 isFatal:0 description:"There is a more specific selection on top of a plain board item editor! %@", v6];
+    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:192 isFatal:0 description:"There is a more specific selection on top of a plain board item editor! %@", selectionCopy];
   }
 
   return 0;
 }
 
-- (id)selectionWillChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5 inSelectionPath:(id)a6 withNewEditors:(id)a7
+- (id)selectionWillChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags inSelectionPath:(id)path withNewEditors:(id)editors
 {
-  v7 = a4;
+  toSelectionCopy = toSelection;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -429,12 +429,12 @@ LABEL_32:
   return 0;
 }
 
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags
 {
-  v6 = a4;
+  toSelectionCopy = toSelection;
   v7 = objc_opt_class();
-  v37 = v6;
-  v8 = sub_100014370(v7, v6);
+  v37 = toSelectionCopy;
+  v8 = sub_100014370(v7, toSelectionCopy);
   if (!v8)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -464,23 +464,23 @@ LABEL_32:
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:204 isFatal:0 description:"invalid nil value for '%{public}s'", "boardItemSelection"];
   }
 
-  v12 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v13 = [v12 layerHost];
-  v14 = [v13 asiOSCVC];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v34 = v14;
-  [v14 setContextMenuMightBeDisplayed:0];
-  v36 = self;
-  v15 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v16 = [v15 editingCoordinator];
+  v34 = asiOSCVC;
+  [asiOSCVC setContextMenuMightBeDisplayed:0];
+  selfCopy = self;
+  interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController2 editingCoordinator];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
   v35 = v8;
-  v17 = [v8 boardItems];
-  v18 = [v17 countByEnumeratingWithState:&v38 objects:v50 count:16];
+  boardItems = [v8 boardItems];
+  v18 = [boardItems countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v18)
   {
     v19 = v18;
@@ -492,13 +492,13 @@ LABEL_32:
       {
         if (*v39 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(boardItems);
         }
 
         v22 = *(*(&v38 + 1) + 8 * v21);
-        v23 = [v16 mainBoard];
+        mainBoard = [editingCoordinator mainBoard];
         v24 = [v22 id];
-        v25 = [v23 containsObject:v24];
+        v25 = [mainBoard containsObject:v24];
 
         if ((v25 & 1) == 0)
         {
@@ -548,33 +548,33 @@ LABEL_32:
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      v19 = [boardItems countByEnumeratingWithState:&v38 objects:v50 count:16];
     }
 
     while (v19);
   }
 
-  v33 = [v35 boardItems];
-  [(CRLBoardItemEditor *)v36 setBoardItems:v33];
+  boardItems2 = [v35 boardItems];
+  [(CRLBoardItemEditor *)selfCopy setBoardItems:boardItems2];
 }
 
 - (NSSet)selectedLayoutsSupportingRotation
 {
-  v2 = [(CRLBoardItemEditor *)self layouts];
-  v3 = [v2 objectsPassingTest:&stru_101869B40];
+  layouts = [(CRLBoardItemEditor *)self layouts];
+  v3 = [layouts objectsPassingTest:&stru_101869B40];
 
   return v3;
 }
 
 - (BOOL)p_canToggleAspectRatioLock
 {
-  v2 = [(CRLBoardItemEditor *)self layouts];
+  layouts = [(CRLBoardItemEditor *)self layouts];
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 count] != 0;
+  v3 = [layouts count] != 0;
   v12 = 0u;
   v13 = 0u;
-  v4 = v2;
+  v4 = layouts;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -653,21 +653,21 @@ LABEL_11:
   return v3;
 }
 
-- (void)toggleAspectRatioLock:(id)a3
+- (void)toggleAspectRatioLock:(id)lock
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 commandController];
-  v6 = [(CRLBoardItemEditor *)self layouts];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  layouts = [(CRLBoardItemEditor *)self layouts];
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v8 = [v4 canvasEditor];
-  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v8 type:2];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor type:2];
 
-  [v5 openGroupWithSelectionBehavior:v9];
+  [commandController openGroupWithSelectionBehavior:v9];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = layouts;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   v12 = v10;
   if (!v11)
@@ -690,7 +690,7 @@ LABEL_11:
       v17 = [*(*(&v19 + 1) + 8 * i) commandForSettingAspectRatioLocked:{-[CRLBoardItemEditor anyLayoutHasUnlockedAspectRatio](self, "anyLayoutHasUnlockedAspectRatio", v19)}];
       if (v17)
       {
-        [v5 enqueueCommand:v17];
+        [commandController enqueueCommand:v17];
         v14 = 1;
       }
     }
@@ -704,41 +704,41 @@ LABEL_11:
   {
     v12 = +[NSBundle mainBundle];
     v18 = [v12 localizedStringForKey:@"Constrain Proportions Setting" value:0 table:0];
-    [v5 setCurrentGroupActionString:v18];
+    [commandController setCurrentGroupActionString:v18];
 
 LABEL_12:
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
 }
 
 - (void)willResignCurrentEditor
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v2 layerHost];
-  v14 = [v3 asiOSCVC];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  [v14 setContextMenuMightBeDisplayed:0];
-  LODWORD(v3) = [CRLFeatureFlagsHelper isOSFeatureEnabled:1];
+  [asiOSCVC setContextMenuMightBeDisplayed:0];
+  LODWORD(layerHost) = [CRLFeatureFlagsHelper isOSFeatureEnabled:1];
   v4 = objc_opt_class();
-  v5 = [v14 delegate];
-  v6 = [v5 currentDocumentMode];
-  v7 = sub_100014370(v4, v6);
+  delegate = [asiOSCVC delegate];
+  currentDocumentMode = [delegate currentDocumentMode];
+  v7 = sub_100014370(v4, currentDocumentMode);
 
-  if (v3 && v7)
+  if (layerHost && v7)
   {
     [v7 hideEditMenuForLassoSelection];
   }
 
   v8 = objc_opt_class();
-  v9 = [v14 presentedViewController];
-  v10 = sub_100014370(v8, v9);
+  presentedViewController = [asiOSCVC presentedViewController];
+  v10 = sub_100014370(v8, presentedViewController);
 
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = [v10 topViewController];
-    v13 = sub_100014370(v11, v12);
+    topViewController = [v10 topViewController];
+    v13 = sub_100014370(v11, topViewController);
 
     if (v13)
     {
@@ -747,12 +747,12 @@ LABEL_12:
   }
 }
 
-- (void)openItemURL:(id)a3
+- (void)openItemURL:(id)l
 {
   v4 = objc_opt_class();
-  v5 = [(CRLBoardItemEditor *)self boardItems];
-  v6 = [v5 anyObject];
-  v8 = sub_100014370(v4, v6);
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems anyObject];
+  v8 = sub_100014370(v4, anyObject);
 
   v7 = v8;
   if (v8)
@@ -764,26 +764,26 @@ LABEL_12:
 
 - (BOOL)p_canEditAccessibilityDescription
 {
-  v3 = [(CRLBoardItemEditor *)self boardItems];
-  v4 = [v3 count];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v4 = [boardItems count];
 
   if (v4 != 1)
   {
     return 0;
   }
 
-  v5 = [(CRLBoardItemEditor *)self boardItems];
-  v6 = [v5 allObjects];
-  v7 = [v6 firstObject];
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  allObjects = [boardItems2 allObjects];
+  firstObject = [allObjects firstObject];
 
-  LOBYTE(v5) = [v7 canEditAccessibilityDescription];
-  return v5;
+  LOBYTE(boardItems2) = [firstObject canEditAccessibilityDescription];
+  return boardItems2;
 }
 
-- (void)editAccessibilityDescription:(id)a3
+- (void)editAccessibilityDescription:(id)description
 {
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 anyObject];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems anyObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -794,62 +794,62 @@ LABEL_12:
     v7[2] = sub_1004E6944;
     v7[3] = &unk_10183AE28;
     v7[4] = self;
-    v8 = v5;
+    v8 = anyObject;
     dispatch_after(v6, &_dispatch_main_q, v7);
   }
 
   else
   {
-    [(CRLBoardItemEditor *)self launchEditAccessibilityDescriptionWithBoardItem:v5];
+    [(CRLBoardItemEditor *)self launchEditAccessibilityDescriptionWithBoardItem:anyObject];
   }
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
-  v17 = a3;
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 count];
+  descriptionCopy = description;
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v5 = [boardItems count];
 
   if (v5 == 1)
   {
-    v6 = [(CRLBoardItemEditor *)self anyBoardItem];
-    v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v8 = [v7 commandController];
+    anyBoardItem = [(CRLBoardItemEditor *)self anyBoardItem];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
 
-    if (v6)
+    if (anyBoardItem)
     {
-      v9 = [v8 board];
-      v10 = [v6 id];
-      v11 = [v9 getBoardItemForUUID:v10];
+      board = [commandController board];
+      v10 = [anyBoardItem id];
+      v11 = [board getBoardItemForUUID:v10];
 
       if (v11)
       {
-        v12 = [v6 accessibilityDescription];
-        v13 = [v17 isEqualToString:v12];
+        accessibilityDescription = [anyBoardItem accessibilityDescription];
+        v13 = [descriptionCopy isEqualToString:accessibilityDescription];
 
         if ((v13 & 1) == 0)
         {
-          [v8 openGroup];
-          v14 = [[_TtC8Freeform37CRLCommandSetAccessibilityDescription alloc] initWithBoardItem:v6 accessibilityDescription:v17];
-          [v8 enqueueCommand:v14];
+          [commandController openGroup];
+          v14 = [[_TtC8Freeform37CRLCommandSetAccessibilityDescription alloc] initWithBoardItem:anyBoardItem accessibilityDescription:descriptionCopy];
+          [commandController enqueueCommand:v14];
           v15 = +[NSBundle mainBundle];
           v16 = [v15 localizedStringForKey:@"Add Accessibility Description" value:0 table:0];
-          [v8 setCurrentGroupActionString:v16];
+          [commandController setCurrentGroupActionString:v16];
 
-          [v8 closeGroup];
+          [commandController closeGroup];
         }
       }
     }
   }
 }
 
-- (void)p_flipInOrientation:(int)a3
+- (void)p_flipInOrientation:(int)orientation
 {
-  v3 = *&a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 commandController];
+  v3 = *&orientation;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
 
-  [v6 openGroup];
+  [commandController openGroup];
   if (!v3)
   {
     v7 = @"Flip Horizontally";
@@ -868,13 +868,13 @@ LABEL_5:
 
   v9 = 0;
 LABEL_7:
-  [v6 setCurrentGroupActionString:v9];
+  [commandController setCurrentGroupActionString:v9];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(CRLBoardItemEditor *)self boardItems];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v11 = [boardItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -886,37 +886,37 @@ LABEL_7:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(boardItems);
         }
 
         v15 = *(*(&v19 + 1) + 8 * v14);
-        v16 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-        v17 = [v16 layoutForInfo:v15];
+        interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+        v17 = [interactiveCanvasController2 layoutForInfo:v15];
 
         if ([v17 supportsFlipping])
         {
           v18 = [v17 commandToFlipWithOrientation:v3];
-          [v6 enqueueCommand:v18];
+          [commandController enqueueCommand:v18];
         }
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [boardItems countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 
-  [v6 closeGroup];
+  [commandController closeGroup];
 }
 
-- (void)crlaxAddContextualMenuOptionsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)crlaxAddContextualMenuOptionsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  arrayCopy = array;
   v8 = +[NSMutableArray array];
   [(CRLBoardItemEditor *)self addContextualMenuElementsToArray:v8 atPoint:x, y];
   v29 = 0u;
@@ -945,8 +945,8 @@ LABEL_7:
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v12 = v11;
-          v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          title2 = v11;
+          v13 = [title2 countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (!v13)
           {
             goto LABEL_22;
@@ -959,12 +959,12 @@ LABEL_7:
             {
               if (*v24 != v14)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(title2);
               }
 
               v16 = *(*(&v23 + 1) + 8 * j);
-              v17 = [v16 title];
-              if ([v17 length])
+              title = [v16 title];
+              if ([title length])
               {
                 v18 = [v16 state] == 1;
 
@@ -973,12 +973,12 @@ LABEL_7:
                   continue;
                 }
 
-                v17 = [v16 title];
-                [v7 addObject:v17];
+                title = [v16 title];
+                [arrayCopy addObject:title];
               }
             }
 
-            v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v13 = [title2 countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (!v13)
             {
 LABEL_22:
@@ -988,8 +988,8 @@ LABEL_22:
           }
         }
 
-        v12 = [v10 title];
-        if (![v12 length])
+        title2 = [v10 title];
+        if (![title2 length])
         {
           goto LABEL_22;
         }
@@ -998,8 +998,8 @@ LABEL_22:
 
         if (v19)
         {
-          v12 = [v10 title];
-          [v7 addObject:v12];
+          title2 = [v10 title];
+          [arrayCopy addObject:title2];
           goto LABEL_22;
         }
 
@@ -1013,10 +1013,10 @@ LABEL_23:
   }
 }
 
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  v10 = a3;
-  v5 = [v10 count];
+  arrayCopy = array;
+  v5 = [arrayCopy count];
   if ([(CRLBoardItemEditor *)self p_canEditAccessibilityDescription])
   {
     v6 = +[NSBundle mainBundle];
@@ -1024,33 +1024,33 @@ LABEL_23:
     v8 = [CRLImage crl_quickInspectorImageNamed:@"figure.walk.circle"];
     v9 = [CRLQuickInspectorElement elementWithName:v7 image:v8 type:1 options:0x40000 action:"editAccessibilityDescription:" parent:0 children:0];
 
-    [v10 insertObject:v9 atIndex:v5];
+    [arrayCopy insertObject:v9 atIndex:v5];
   }
 }
 
-- (void)addContextualMenuItemsToArray:(id)a3
+- (void)addContextualMenuItemsToArray:(id)array
 {
-  v10 = a3;
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 documentIsSharedReadOnly];
+  arrayCopy = array;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  documentIsSharedReadOnly = [interactiveCanvasController documentIsSharedReadOnly];
 
-  if (v5)
+  if (documentIsSharedReadOnly)
   {
     v6 = [UIMenuItem alloc];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Preview" value:0 table:0];
     v9 = [v6 initWithTitle:v8 action:"showPreview:"];
-    [v10 addObject:v9];
+    [arrayCopy addObject:v9];
   }
 }
 
-- (void)updateStateForCommand:(id)a3
+- (void)updateStateForCommand:(id)command
 {
-  v5 = a3;
-  if ([v5 action] == "toggleAspectRatioLock:")
+  commandCopy = command;
+  if ([commandCopy action] == "toggleAspectRatioLock:")
   {
-    v4 = [(CRLBoardItemEditor *)self aspectRatioLockControlState];
-    [v5 setState:{objc_msgSend(v4, "stateValue")}];
+    aspectRatioLockControlState = [(CRLBoardItemEditor *)self aspectRatioLockControlState];
+    [commandCopy setState:{objc_msgSend(aspectRatioLockControlState, "stateValue")}];
   }
 }
 
@@ -1060,8 +1060,8 @@ LABEL_23:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CRLBoardItemEditor *)self layouts];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  layouts = [(CRLBoardItemEditor *)self layouts];
+  v3 = [layouts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1074,12 +1074,12 @@ LABEL_23:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(layouts);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) resizeMayChangeAspectRatio];
-        v5 |= v9 ^ 1;
-        v6 |= v9;
+        resizeMayChangeAspectRatio = [*(*(&v13 + 1) + 8 * i) resizeMayChangeAspectRatio];
+        v5 |= resizeMayChangeAspectRatio ^ 1;
+        v6 |= resizeMayChangeAspectRatio;
         if (v5 & 1) != 0 && (v6)
         {
 
@@ -1088,7 +1088,7 @@ LABEL_23:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [layouts countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -1124,13 +1124,13 @@ LABEL_15:
 
 - (void)enterPreviewMode
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D0FA0();
 }
 
 - (BOOL)hasSinglePreviewableInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1006D1130();
 
   return v3 & 1;
@@ -1138,46 +1138,46 @@ LABEL_15:
 
 - (BOOL)hasPreviewableInfos
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D1218();
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)accessibilityDescriptionEditor:(id)a3 didEndEditingWithReason:(int64_t)a4
+- (void)accessibilityDescriptionEditor:(id)editor didEndEditingWithReason:(int64_t)reason
 {
-  if (!a4)
+  if (!reason)
   {
     swift_unknownObjectRetain();
-    v7 = self;
-    v8 = [a3 accessibilityDescriptionToSubmit];
-    if (!v8)
+    selfCopy = self;
+    accessibilityDescriptionToSubmit = [editor accessibilityDescriptionToSubmit];
+    if (!accessibilityDescriptionToSubmit)
     {
       static String._unconditionallyBridgeFromObjectiveC(_:)();
       v9 = String._bridgeToObjectiveC()();
 
-      v8 = v9;
+      accessibilityDescriptionToSubmit = v9;
     }
 
-    v10 = v8;
-    [(CRLBoardItemEditor *)v7 setAccessibilityDescription:?];
+    v10 = accessibilityDescriptionToSubmit;
+    [(CRLBoardItemEditor *)selfCopy setAccessibilityDescription:?];
     swift_unknownObjectRelease();
   }
 }
 
-- (void)launchEditAccessibilityDescriptionWithBoardItem:(id)a3
+- (void)launchEditAccessibilityDescriptionWithBoardItem:(id)item
 {
-  v5 = a3;
-  v6 = self;
-  sub_1006D1618(a3);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1006D1618(item);
 }
 
-- (id)placeholderString:(id)a3
+- (id)placeholderString:(id)string
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006D2114(v4);
+  stringCopy = string;
+  selfCopy = self;
+  sub_1006D2114(stringCopy);
 
   v6 = String._bridgeToObjectiveC()();
 
@@ -1186,15 +1186,15 @@ LABEL_15:
 
 - (BOOL)handleSpacebar
 {
-  v2 = self;
-  if ([(CRLBoardItemEditor *)v2 canShowPreview])
+  selfCopy = self;
+  if ([(CRLBoardItemEditor *)selfCopy canShowPreview])
   {
-    [(CRLBoardItemEditor *)v2 showPreview:v2];
+    [(CRLBoardItemEditor *)selfCopy showPreview:selfCopy];
   }
 
-  v3 = [(CRLBoardItemEditor *)v2 canShowPreview];
+  canShowPreview = [(CRLBoardItemEditor *)selfCopy canShowPreview];
 
-  return v3;
+  return canShowPreview;
 }
 
 @end

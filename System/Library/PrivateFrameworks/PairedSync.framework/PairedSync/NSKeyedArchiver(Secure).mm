@@ -32,12 +32,12 @@
   v43 = *MEMORY[0x277D85DE8];
   v8 = a3;
   v9 = a4;
-  v10 = [a1 secureArchivedDataWithRootObject:v8];
+  v10 = [self secureArchivedDataWithRootObject:v8];
   if (v10)
   {
-    v11 = [v9 stringByDeletingLastPathComponent];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v12 fileExistsAtPath:v11];
+    stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
     if (v13)
     {
@@ -46,9 +46,9 @@
 
     else
     {
-      v22 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v36 = 0;
-      [v22 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v36];
+      [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v36];
       v14 = v36;
 
       if (v14)
@@ -61,13 +61,13 @@
           v25 = psd_log();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v31 = [v14 psy_safeDescription];
+            psy_safeDescription = [v14 psy_safeDescription];
             v32 = objc_opt_class();
             v33 = NSStringFromClass(v32);
             *buf = 138543874;
-            v38 = v31;
+            v38 = psy_safeDescription;
             v39 = 2114;
-            v40 = v11;
+            v40 = stringByDeletingLastPathComponent;
             v41 = 2112;
             v42 = v33;
             _os_log_error_impl(&dword_25DF25000, v25, OS_LOG_TYPE_ERROR, "Error (%{public}@) creating directory (%{public}@) for (%@)", buf, 0x20u);
@@ -99,8 +99,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
-  v16 = [v15 fileExistsAtPath:v9];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  v16 = [defaultManager3 fileExistsAtPath:v9];
 
   if (!v16)
   {
@@ -108,13 +108,13 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
   v34 = 0;
-  [v17 removeItemAtPath:v9 error:&v34];
-  v11 = v34;
+  [defaultManager4 removeItemAtPath:v9 error:&v34];
+  stringByDeletingLastPathComponent = v34;
 
-  v18 = v11 == 0;
-  if (v11)
+  v18 = stringByDeletingLastPathComponent == 0;
+  if (stringByDeletingLastPathComponent)
   {
     v19 = psd_log();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -128,7 +128,7 @@ LABEL_20:
     v21 = psd_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [NSKeyedArchiver(Secure) secureArchiveRootObject:v11 toFile:? withOptions:?];
+      [NSKeyedArchiver(Secure) secureArchiveRootObject:stringByDeletingLastPathComponent toFile:? withOptions:?];
     }
 
     v18 = 0;

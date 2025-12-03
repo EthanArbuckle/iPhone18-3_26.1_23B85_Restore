@@ -1,19 +1,19 @@
 @interface CMAltimeterInternal
 + (BOOL)_bundleBeforeTCCCheck;
-+ (BOOL)_bundleBeforeTCCCheck:(id)a3;
++ (BOOL)_bundleBeforeTCCCheck:(id)check;
 - (CMAltimeterInternal)init;
 - (id).cxx_construct;
-- (void)_handleAbsoluteAltitudeUpdate:(shared_ptr<CLConnectionMessage>)a3;
-- (void)_handleCompanionRelativeElevationUpdate:(shared_ptr<CLConnectionMessage>)a3;
-- (void)_queryElevationProfileFromDate:(id)a3 toDate:(id)a4 withBatchSize:(unint64_t)a5 fromRecordId:(int)a6 withHandler:(id)a7;
-- (void)_queryElevationProfileFromDate:(id)a3 toDate:(id)a4 withBatchSize:(unint64_t)a5 withHandler:(id)a6;
-- (void)_querySignificantElevationChangeFromDate:(id)a3 toDate:(id)a4 withHandler:(id)a5;
+- (void)_handleAbsoluteAltitudeUpdate:(shared_ptr<CLConnectionMessage>)update;
+- (void)_handleCompanionRelativeElevationUpdate:(shared_ptr<CLConnectionMessage>)update;
+- (void)_queryElevationProfileFromDate:(id)date toDate:(id)toDate withBatchSize:(unint64_t)size fromRecordId:(int)id withHandler:(id)handler;
+- (void)_queryElevationProfileFromDate:(id)date toDate:(id)toDate withBatchSize:(unint64_t)size withHandler:(id)handler;
+- (void)_querySignificantElevationChangeFromDate:(id)date toDate:(id)toDate withHandler:(id)handler;
 - (void)_releaseHandlerObjects;
-- (void)_startAbsoluteAltitudeUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startCompanionRelativeElevationUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startElevationUpdatesWithHandler:(id)a3;
+- (void)_startAbsoluteAltitudeUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startCompanionRelativeElevationUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startElevationUpdatesWithHandler:(id)handler;
 - (void)_startRelativeAltitudeUpdates;
-- (void)_startSignificantElevationUpdatesWithHandler:(id)a3;
+- (void)_startSignificantElevationUpdatesWithHandler:(id)handler;
 - (void)_stopAbsoluteAltitudeUpdates;
 - (void)_stopCompanionRelativeElevationUpdates;
 - (void)_stopElevationUpdates;
@@ -79,7 +79,7 @@
   self->fAppQueue = 0;
 }
 
-- (void)_startElevationUpdatesWithHandler:(id)a3
+- (void)_startElevationUpdatesWithHandler:(id)handler
 {
   size = self->fPressureSamples.__size_;
   v4[0] = MEMORY[0x1E69E9820];
@@ -87,7 +87,7 @@
   v4[2] = sub_19B7711C4;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(size, v4);
 }
 
@@ -102,7 +102,7 @@
   dispatch_async(size, block);
 }
 
-- (void)_startSignificantElevationUpdatesWithHandler:(id)a3
+- (void)_startSignificantElevationUpdatesWithHandler:(id)handler
 {
   size = self->fPressureSamples.__size_;
   v4[0] = MEMORY[0x1E69E9820];
@@ -110,7 +110,7 @@
   v4[2] = sub_19B77152C;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(size, v4);
 }
 
@@ -125,7 +125,7 @@
   dispatch_async(size, block);
 }
 
-- (void)_querySignificantElevationChangeFromDate:(id)a3 toDate:(id)a4 withHandler:(id)a5
+- (void)_querySignificantElevationChangeFromDate:(id)date toDate:(id)toDate withHandler:(id)handler
 {
   size = self->fPressureSamples.__size_;
   v6[0] = MEMORY[0x1E69E9820];
@@ -133,29 +133,29 @@
   v6[2] = sub_19B771884;
   v6[3] = &unk_1E7533678;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = date;
+  v6[6] = toDate;
+  v6[7] = handler;
   dispatch_async(size, v6);
 }
 
-- (void)_queryElevationProfileFromDate:(id)a3 toDate:(id)a4 withBatchSize:(unint64_t)a5 fromRecordId:(int)a6 withHandler:(id)a7
+- (void)_queryElevationProfileFromDate:(id)date toDate:(id)toDate withBatchSize:(unint64_t)size fromRecordId:(int)id withHandler:(id)handler
 {
   size = self->fPressureSamples.__size_;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_19B772160;
   v8[3] = &unk_1E7535F10;
-  v8[4] = a3;
-  v8[5] = a4;
-  v8[7] = a7;
-  v8[8] = a5;
-  v9 = a6;
+  v8[4] = date;
+  v8[5] = toDate;
+  v8[7] = handler;
+  v8[8] = size;
+  idCopy = id;
   v8[6] = self;
   dispatch_async(size, v8);
 }
 
-- (void)_queryElevationProfileFromDate:(id)a3 toDate:(id)a4 withBatchSize:(unint64_t)a5 withHandler:(id)a6
+- (void)_queryElevationProfileFromDate:(id)date toDate:(id)toDate withBatchSize:(unint64_t)size withHandler:(id)handler
 {
   size = self->fPressureSamples.__size_;
   block[0] = MEMORY[0x1E69E9820];
@@ -163,10 +163,10 @@
   block[2] = sub_19B772A30;
   block[3] = &unk_1E7535F38;
   block[4] = self;
-  block[5] = a3;
-  block[7] = a6;
-  block[8] = a5;
-  block[6] = a4;
+  block[5] = date;
+  block[7] = handler;
+  block[8] = size;
+  block[6] = toDate;
   dispatch_async(size, block);
 }
 
@@ -179,10 +179,10 @@
   return MEMORY[0x1EEE66B58](CMAltimeterInternal, sel__bundleBeforeTCCCheck_, v8);
 }
 
-+ (BOOL)_bundleBeforeTCCCheck:(id)a3
++ (BOOL)_bundleBeforeTCCCheck:(id)check
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (check)
   {
     if (qword_1EAFE2850 != -1)
     {
@@ -193,7 +193,7 @@
     if (os_log_type_enabled(qword_1EAFE2870, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315138;
-      v32 = objc_msgSend_UTF8String(a3, v5, v6);
+      v32 = objc_msgSend_UTF8String(check, v5, v6);
       _os_log_impl(&dword_19B41C000, v4, OS_LOG_TYPE_DEBUG, "app sdk version, %s", buf, 0xCu);
     }
 
@@ -206,7 +206,7 @@
         dispatch_once(&qword_1EAFE2850, &unk_1F0E3B708);
       }
 
-      objc_msgSend_UTF8String(a3, v9, v10);
+      objc_msgSend_UTF8String(check, v9, v10);
       v11 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "+[CMAltimeterInternal _bundleBeforeTCCCheck:]", "CoreLocation: %s\n", v11);
       if (v11 != buf)
@@ -215,7 +215,7 @@
       }
     }
 
-    v12 = objc_msgSend_componentsSeparatedByString_(a3, v8, @".");
+    v12 = objc_msgSend_componentsSeparatedByString_(check, v8, @".");
     if (objc_msgSend_count(v12, v13, v14))
     {
       v16 = objc_msgSend_objectAtIndexedSubscript_(v12, v15, 0);
@@ -280,15 +280,15 @@ LABEL_17:
   self->fCompanionRelativeElevationClientQueue = 0;
 }
 
-- (void)_startAbsoluteAltitudeUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAbsoluteAltitudeUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = sub_19B773118;
   v4[3] = &unk_1E7532C80;
   v4[5] = self;
-  v4[6] = a4;
-  v4[4] = a3;
+  v4[6] = handler;
+  v4[4] = queue;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v4);
 }
 
@@ -302,10 +302,10 @@ LABEL_17:
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)_handleAbsoluteAltitudeUpdate:(shared_ptr<CLConnectionMessage>)a3
+- (void)_handleAbsoluteAltitudeUpdate:(shared_ptr<CLConnectionMessage>)update
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (!*a3.var0)
+  if (!*update.var0)
   {
     if (qword_1EAFE2840 != -1)
     {
@@ -343,7 +343,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  var0 = a3.var0;
+  var0 = update.var0;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
@@ -467,15 +467,15 @@ LABEL_37:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startCompanionRelativeElevationUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startCompanionRelativeElevationUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = sub_19B773C68;
   v4[3] = &unk_1E7532C80;
   v4[5] = self;
-  v4[6] = a4;
-  v4[4] = a3;
+  v4[6] = handler;
+  v4[4] = queue;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v4);
 }
 
@@ -489,10 +489,10 @@ LABEL_37:
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)_handleCompanionRelativeElevationUpdate:(shared_ptr<CLConnectionMessage>)a3
+- (void)_handleCompanionRelativeElevationUpdate:(shared_ptr<CLConnectionMessage>)update
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (!*a3.var0)
+  if (!*update.var0)
   {
     if (qword_1EAFE2850 != -1)
     {
@@ -530,7 +530,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  var0 = a3.var0;
+  var0 = update.var0;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();

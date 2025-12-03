@@ -1,75 +1,75 @@
 @interface ODCurareCoreDuetStorage
-+ (id)predicateWithIdentifier:(id)a3 withDate:(id)a4;
++ (id)predicateWithIdentifier:(id)identifier withDate:(id)date;
 - (BOOL)deleteAllData;
-- (BOOL)deleteData:(id)a3;
-- (BOOL)deleteDataWithPredicate:(id)a3;
-- (BOOL)saveDictionaries:(id)a3 date:(id)a4 eventIdentifier:(id)a5;
-- (BOOL)saveMetadata:(id)a3 date:(id)a4 eventIdentifier:(id)a5;
-- (id)init:(id)a3;
-- (id)queryDataWithPredicate:(id)a3;
-- (unint64_t)deleteMultipleData:(id)a3;
-- (unint64_t)deleteMultipleDataWithPredicate:(id)a3;
-- (void)deleteDirectory:(id)a3;
+- (BOOL)deleteData:(id)data;
+- (BOOL)deleteDataWithPredicate:(id)predicate;
+- (BOOL)saveDictionaries:(id)dictionaries date:(id)date eventIdentifier:(id)identifier;
+- (BOOL)saveMetadata:(id)metadata date:(id)date eventIdentifier:(id)identifier;
+- (id)init:(id)init;
+- (id)queryDataWithPredicate:(id)predicate;
+- (unint64_t)deleteMultipleData:(id)data;
+- (unint64_t)deleteMultipleDataWithPredicate:(id)predicate;
+- (void)deleteDirectory:(id)directory;
 @end
 
 @implementation ODCurareCoreDuetStorage
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v14.receiver = self;
   v14.super_class = ODCurareCoreDuetStorage;
   v5 = [(ODCurareCoreDuetStorage *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(ODCurareCoreDuetStorage *)v5 setName:v4];
-    v7 = [MEMORY[0x277CFE1E8] eventStreamWithName:v4];
+    [(ODCurareCoreDuetStorage *)v5 setName:initCopy];
+    v7 = [MEMORY[0x277CFE1E8] eventStreamWithName:initCopy];
     [(ODCurareCoreDuetStorage *)v6 setStream:v7];
 
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    v9 = [v8 environment];
-    v10 = [v9 objectForKeyedSubscript:@"XCTestBundlePath"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    environment = [processInfo environment];
+    v10 = [environment objectForKeyedSubscript:@"XCTestBundlePath"];
 
     if (v10)
     {
       NSLog(&cfstr_RunningOnTest.isa);
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"/var/tmp/test-interactiondir/%@", v4];
-      [(ODCurareCoreDuetStorage *)v6 deleteDirectory:v11];
-      v12 = [MEMORY[0x277CFE200] storageWithDirectory:v11 readOnly:0];
+      initCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"/var/tmp/test-interactiondir/%@", initCopy];
+      [(ODCurareCoreDuetStorage *)v6 deleteDirectory:initCopy];
+      v12 = [MEMORY[0x277CFE200] storageWithDirectory:initCopy readOnly:0];
       [(ODCurareCoreDuetStorage *)v6 setKnowledgeStore:v12];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CFE208] userKnowledgeStore];
-      [(ODCurareCoreDuetStorage *)v6 setKnowledgeStore:v11];
+      initCopy = [MEMORY[0x277CFE208] userKnowledgeStore];
+      [(ODCurareCoreDuetStorage *)v6 setKnowledgeStore:initCopy];
     }
   }
 
   return v6;
 }
 
-- (void)deleteDirectory:(id)a3
+- (void)deleteDirectory:(id)directory
 {
-  v4 = a3;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v3 fileExistsAtPath:v4 isDirectory:0])
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:directoryCopy isDirectory:0])
   {
-    [v3 removeItemAtPath:v4 error:0];
+    [defaultManager removeItemAtPath:directoryCopy error:0];
   }
 }
 
-- (BOOL)saveDictionaries:(id)a3 date:(id)a4 eventIdentifier:(id)a5
+- (BOOL)saveDictionaries:(id)dictionaries date:(id)date eventIdentifier:(id)identifier
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dictionariesCopy = dictionaries;
+  dateCopy = date;
+  identifierCopy = identifier;
+  if (dictionariesCopy)
   {
     v27 = @"ODCurareEvaluationAndReporting-MetadataDataKey";
-    v28 = v8;
+    v28 = dictionariesCopy;
     v11 = MEMORY[0x277CBEAC0];
     v12 = &v28;
     v13 = &v27;
@@ -86,78 +86,78 @@
 
   v14 = [v11 dictionaryWithObjects:v12 forKeys:v13 count:1];
   v15 = MEMORY[0x277CFE1D8];
-  v16 = [(ODCurareCoreDuetStorage *)self stream];
-  v17 = [v15 eventWithStream:v16 startDate:v9 endDate:v9 identifierStringValue:v10 metadata:v14];
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v17 = [v15 eventWithStream:stream startDate:dateCopy endDate:dateCopy identifierStringValue:identifierCopy metadata:v14];
 
-  v18 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v26 = v17;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
   v25 = 0;
-  v20 = [v18 saveObjects:v19 error:&v25];
+  v20 = [knowledgeStore saveObjects:v19 error:&v25];
   v21 = v25;
 
   if ((v20 & 1) == 0)
   {
-    v22 = [v21 localizedDescription];
-    NSLog(&stru_286E6B670.isa, v22);
+    localizedDescription = [v21 localizedDescription];
+    NSLog(&stru_286E6B670.isa, localizedDescription);
   }
 
   v23 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (BOOL)saveMetadata:(id)a3 date:(id)a4 eventIdentifier:(id)a5
+- (BOOL)saveMetadata:(id)metadata date:(id)date eventIdentifier:(id)identifier
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  metadataCopy = metadata;
   v25 = @"ODCurareEvaluationAndReporting-MetadataDataKey";
-  v26[0] = v8;
+  v26[0] = metadataCopy;
   v9 = MEMORY[0x277CBEAC0];
-  v10 = a5;
-  v11 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v12 = [v9 dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v13 = MEMORY[0x277CFE1D8];
-  v14 = [(ODCurareCoreDuetStorage *)self stream];
-  v15 = [v13 eventWithStream:v14 startDate:v11 endDate:v11 identifierStringValue:v10 metadata:v12];
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v15 = [v13 eventWithStream:stream startDate:dateCopy endDate:dateCopy identifierStringValue:identifierCopy metadata:v12];
 
-  v16 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v24 = v15;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
   v23 = 0;
-  v18 = [v16 saveObjects:v17 error:&v23];
+  v18 = [knowledgeStore saveObjects:v17 error:&v23];
   v19 = v23;
 
   if ((v18 & 1) == 0)
   {
-    v20 = [v19 localizedDescription];
-    NSLog(&cfstr_Odcurarecoredu.isa, v20);
+    localizedDescription = [v19 localizedDescription];
+    NSLog(&cfstr_Odcurarecoredu.isa, localizedDescription);
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (id)queryDataWithPredicate:(id)a3
+- (id)queryDataWithPredicate:(id)predicate
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(MEMORY[0x277CFE1E0]);
-  v6 = [(ODCurareCoreDuetStorage *)self stream];
-  v27[0] = v6;
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v27[0] = stream;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   [v5 setEventStreams:v7];
 
   [v5 setLimit:100];
-  [v5 setPredicate:v4];
-  v8 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  [v5 setPredicate:predicateCopy];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v25 = 0;
-  v9 = [v8 executeQuery:v5 error:&v25];
+  v9 = [knowledgeStore executeQuery:v5 error:&v25];
   v10 = v25;
 
   v11 = 0;
   if (!v10)
   {
-    v20 = v4;
+    v20 = predicateCopy;
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v21 = 0u;
     v22 = 0u;
@@ -188,7 +188,7 @@
       while (v14);
     }
 
-    v4 = v20;
+    predicateCopy = v20;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -196,26 +196,26 @@
   return v11;
 }
 
-+ (id)predicateWithIdentifier:(id)a3 withDate:(id)a4
++ (id)predicateWithIdentifier:(id)identifier withDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (v5)
+  identifierCopy = identifier;
+  dateCopy = date;
+  array = [MEMORY[0x277CBEB18] array];
+  if (identifierCopy)
   {
-    v8 = [MEMORY[0x277CFE260] predicateForEventsWithStringValue:v5];
-    [v7 addObject:v8];
+    v8 = [MEMORY[0x277CFE260] predicateForEventsWithStringValue:identifierCopy];
+    [array addObject:v8];
   }
 
-  if (v6)
+  if (dateCopy)
   {
-    v9 = [MEMORY[0x277CFE260] predicateForEventsWithStartInDateRangeFrom:v6 to:v6];
-    [v7 addObject:v9];
+    v9 = [MEMORY[0x277CFE260] predicateForEventsWithStartInDateRangeFrom:dateCopy to:dateCopy];
+    [array addObject:v9];
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    v10 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v7];
+    v10 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
   }
 
   else
@@ -226,20 +226,20 @@
   return v10;
 }
 
-- (BOOL)deleteData:(id)a3
+- (BOOL)deleteData:(id)data
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x277CFE1E0]);
-  v6 = [(ODCurareCoreDuetStorage *)self stream];
-  v35[0] = v6;
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v35[0] = stream;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
   [v5 setEventStreams:v7];
 
   [v5 setLimit:100];
-  v8 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v32 = 0;
-  v9 = [v8 executeQuery:v5 error:&v32];
+  v9 = [knowledgeStore executeQuery:v5 error:&v32];
   v10 = v32;
 
   if (v10)
@@ -257,7 +257,7 @@
     v10 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v10)
     {
-      v23 = self;
+      selfCopy = self;
       v24 = v9;
       v25 = v5;
       v12 = *v29;
@@ -273,19 +273,19 @@
           v14 = *(*(&v28 + 1) + 8 * i);
           if (v14)
           {
-            v15 = [*(*(&v28 + 1) + 8 * i) startDate];
-            v16 = [v14 metadata];
-            v17 = [v16 objectForKeyedSubscript:@"ODCurareEvaluationAndReporting-MetadataDataKey"];
-            v18 = v4[2](v4, v15, v17);
+            startDate = [*(*(&v28 + 1) + 8 * i) startDate];
+            metadata = [v14 metadata];
+            v17 = [metadata objectForKeyedSubscript:@"ODCurareEvaluationAndReporting-MetadataDataKey"];
+            v18 = dataCopy[2](dataCopy, startDate, v17);
 
             if (v18)
             {
-              v19 = [(ODCurareCoreDuetStorage *)v23 knowledgeStore];
+              knowledgeStore2 = [(ODCurareCoreDuetStorage *)selfCopy knowledgeStore];
               v33 = v14;
               v11 = 1;
               v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
               v27 = 0;
-              [v19 deleteObjects:v20 error:&v27];
+              [knowledgeStore2 deleteObjects:v20 error:&v27];
               v10 = v27;
 
               goto LABEL_14;
@@ -318,20 +318,20 @@ LABEL_14:
   return v11;
 }
 
-- (unint64_t)deleteMultipleData:(id)a3
+- (unint64_t)deleteMultipleData:(id)data
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x277CFE1E0]);
-  v6 = [(ODCurareCoreDuetStorage *)self stream];
-  v39[0] = v6;
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v39[0] = stream;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
   [v5 setEventStreams:v7];
 
   [v5 setLimit:100];
-  v8 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v36 = 0;
-  v9 = [v8 executeQuery:v5 error:&v36];
+  v9 = [knowledgeStore executeQuery:v5 error:&v36];
   v10 = v36;
 
   if (v10)
@@ -352,7 +352,7 @@ LABEL_14:
     if (v12)
     {
       v13 = v12;
-      v28 = self;
+      selfCopy = self;
       v10 = 0;
       v14 = *v33;
       v30 = 0;
@@ -368,18 +368,18 @@ LABEL_14:
           v16 = *(*(&v32 + 1) + 8 * i);
           if (v16)
           {
-            v17 = [*(*(&v32 + 1) + 8 * i) startDate];
-            v18 = [v16 metadata];
-            v19 = [v18 objectForKeyedSubscript:@"ODCurareEvaluationAndReporting-MetadataDataKey"];
-            v20 = v4[2](v4, v17, v19);
+            startDate = [*(*(&v32 + 1) + 8 * i) startDate];
+            metadata = [v16 metadata];
+            v19 = [metadata objectForKeyedSubscript:@"ODCurareEvaluationAndReporting-MetadataDataKey"];
+            v20 = dataCopy[2](dataCopy, startDate, v19);
 
             if (v20)
             {
-              v21 = [(ODCurareCoreDuetStorage *)v28 knowledgeStore];
+              knowledgeStore2 = [(ODCurareCoreDuetStorage *)selfCopy knowledgeStore];
               v37 = v16;
               v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
               v31 = v10;
-              [v21 deleteObjects:v22 error:&v31];
+              [knowledgeStore2 deleteObjects:v22 error:&v31];
               v23 = v31;
 
               ++v30;
@@ -409,21 +409,21 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)deleteDataWithPredicate:(id)a3
+- (BOOL)deleteDataWithPredicate:(id)predicate
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(MEMORY[0x277CFE1E0]);
-  v6 = [(ODCurareCoreDuetStorage *)self stream];
-  v28[0] = v6;
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v28[0] = stream;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   [v5 setEventStreams:v7];
 
   [v5 setLimit:100];
-  [v5 setPredicate:v4];
-  v8 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  [v5 setPredicate:predicateCopy];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v25 = 0;
-  v9 = [v8 executeQuery:v5 error:&v25];
+  v9 = [knowledgeStore executeQuery:v5 error:&v25];
   v10 = v25;
 
   if (v10)
@@ -454,12 +454,12 @@ LABEL_14:
           v15 = *(*(&v21 + 1) + 8 * i);
           if (v15)
           {
-            v16 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+            knowledgeStore2 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
             v26 = v15;
             v11 = 1;
             v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
             v20 = 0;
-            [v16 deleteObjects:v17 error:&v20];
+            [knowledgeStore2 deleteObjects:v17 error:&v20];
             v10 = v20;
 
             goto LABEL_13;
@@ -484,22 +484,22 @@ LABEL_13:
   return v11;
 }
 
-- (unint64_t)deleteMultipleDataWithPredicate:(id)a3
+- (unint64_t)deleteMultipleDataWithPredicate:(id)predicate
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(MEMORY[0x277CFE1E0]);
-  v6 = [(ODCurareCoreDuetStorage *)self stream];
-  v37[0] = v6;
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v37[0] = stream;
   v7 = 0x277CBE000uLL;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
   [v5 setEventStreams:v8];
 
   [v5 setLimit:100];
-  [v5 setPredicate:v4];
-  v9 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  [v5 setPredicate:predicateCopy];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v34 = 0;
-  v10 = [v9 executeQuery:v5 error:&v34];
+  v10 = [knowledgeStore executeQuery:v5 error:&v34];
   v11 = v34;
 
   if (v11)
@@ -510,7 +510,7 @@ LABEL_13:
   else
   {
     v26 = v5;
-    v27 = v4;
+    v27 = predicateCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
@@ -536,17 +536,17 @@ LABEL_13:
           v17 = *(*(&v30 + 1) + 8 * i);
           if (v17)
           {
-            v18 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+            knowledgeStore2 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
             v35 = v17;
             [*(v7 + 2656) arrayWithObjects:&v35 count:1];
-            v19 = self;
+            selfCopy = self;
             v21 = v20 = v7;
             v29 = v11;
-            [v18 deleteObjects:v21 error:&v29];
+            [knowledgeStore2 deleteObjects:v21 error:&v29];
             v22 = v29;
 
             v7 = v20;
-            self = v19;
+            self = selfCopy;
 
             ++v12;
             v11 = v22;
@@ -566,7 +566,7 @@ LABEL_13:
     }
 
     v5 = v26;
-    v4 = v27;
+    predicateCopy = v27;
     v10 = v25;
   }
 
@@ -578,15 +578,15 @@ LABEL_13:
 {
   v31[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CFE1E0]);
-  v4 = [(ODCurareCoreDuetStorage *)self stream];
-  v31[0] = v4;
+  stream = [(ODCurareCoreDuetStorage *)self stream];
+  v31[0] = stream;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
   [v3 setEventStreams:v5];
 
   [v3 setLimit:100];
-  v6 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+  knowledgeStore = [(ODCurareCoreDuetStorage *)self knowledgeStore];
   v28 = 0;
-  v7 = [v6 executeQuery:v3 error:&v28];
+  v7 = [knowledgeStore executeQuery:v3 error:&v28];
   v8 = v28;
 
   v9 = v8;
@@ -617,11 +617,11 @@ LABEL_13:
           v15 = *(*(&v24 + 1) + 8 * i);
           if (v15)
           {
-            v16 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
+            knowledgeStore2 = [(ODCurareCoreDuetStorage *)self knowledgeStore];
             v29 = v15;
             v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
             v23 = v9;
-            [v16 deleteObjects:v17 error:&v23];
+            [knowledgeStore2 deleteObjects:v17 error:&v23];
             v18 = v23;
 
             v9 = v18;

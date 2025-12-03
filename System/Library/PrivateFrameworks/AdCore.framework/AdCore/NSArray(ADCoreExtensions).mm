@@ -8,13 +8,13 @@
 - (id)AD_arrayForJSON
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -32,17 +32,17 @@
     {
       if (*v21 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(selfCopy);
       }
 
       v10 = *(*(&v20 + 1) + 8 * v9);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 AD_arrayForJSON];
+        aD_arrayForJSON = [v10 AD_arrayForJSON];
 LABEL_14:
-        v13 = v11;
-        [v2 addObject:v11];
+        v13 = aD_arrayForJSON;
+        [array addObject:aD_arrayForJSON];
 
         goto LABEL_15;
       }
@@ -50,7 +50,7 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 AD_dictionaryForJSON];
+        aD_arrayForJSON = [v10 AD_dictionaryForJSON];
         goto LABEL_14;
       }
 
@@ -58,14 +58,14 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 AD_dataStringForJSON];
+        aD_arrayForJSON = [v10 AD_dataStringForJSON];
         goto LABEL_14;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 absoluteString];
+        aD_arrayForJSON = [v10 absoluteString];
         goto LABEL_14;
       }
 
@@ -73,7 +73,7 @@ LABEL_14:
       if (objc_opt_isKindOfClass())
       {
 LABEL_20:
-        [v2 addObject:v10];
+        [array addObject:v10];
         goto LABEL_15;
       }
 
@@ -86,10 +86,10 @@ LABEL_20:
           goto LABEL_20;
         }
 
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to serialize the following number into JSON. Please file a radar against SearchAds | iOS: %@ (%@). Self: %@", v10, objc_opt_class(), v3];
+        selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to serialize the following number into JSON. Please file a radar against SearchAds | iOS: %@ (%@). Self: %@", v10, objc_opt_class(), selfCopy];
 
-        [v2 addObject:@"∞"];
-        v6 = v16;
+        [array addObject:@"∞"];
+        v6 = selfCopy;
       }
 
       else
@@ -109,7 +109,7 @@ LABEL_15:
     }
 
     while (v5 != v9);
-    v17 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v17 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     v5 = v17;
   }
 
@@ -118,24 +118,24 @@ LABEL_30:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return array;
 }
 
 - (__CFString)AD_jsonStringWithPrettyPrint:()ADCoreExtensions
 {
   v4 = a3;
   v5 = MEMORY[0x277CCAAA0];
-  v6 = [a1 AD_arrayForJSON];
+  aD_arrayForJSON = [self AD_arrayForJSON];
   v15 = 0;
-  v7 = [v5 dataWithJSONObject:v6 options:v4 error:&v15];
+  v7 = [v5 dataWithJSONObject:aD_arrayForJSON options:v4 error:&v15];
   v8 = v15;
 
   if (v8)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v8 localizedDescription];
-    v11 = [a1 AD_arrayForJSON];
-    v12 = [v9 stringWithFormat:@"There was an error serializing the following array into JSON (%@):\n%@", v10, v11];
+    localizedDescription = [v8 localizedDescription];
+    aD_arrayForJSON2 = [self AD_arrayForJSON];
+    v12 = [v9 stringWithFormat:@"There was an error serializing the following array into JSON (%@):\n%@", localizedDescription, aD_arrayForJSON2];
     _ADLog(@"ToroLogging", v12, 0);
   }
 

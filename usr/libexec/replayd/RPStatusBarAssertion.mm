@@ -1,12 +1,12 @@
 @interface RPStatusBarAssertion
-- (id)rpLocalizedStatusStringForPaused:(BOOL)a3;
-- (id)stringWithTimeInterval:(double)a3;
+- (id)rpLocalizedStatusStringForPaused:(BOOL)paused;
+- (id)stringWithTimeInterval:(double)interval;
 - (void)invalidateStatusBar;
 - (void)pauseSession;
 - (void)resumeSession;
 - (void)startRepeatingTimer;
-- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4;
-- (void)updateDelegateRecordingTimer:(id)a3;
+- (void)statusBarCoordinator:(id)coordinator invalidatedRegistrationWithError:(id)error;
+- (void)updateDelegateRecordingTimer:(id)timer;
 @end
 
 @implementation RPStatusBarAssertion
@@ -48,14 +48,14 @@
   self->_totalPausedTime = 0.0;
 }
 
-- (id)stringWithTimeInterval:(double)a3
+- (id)stringWithTimeInterval:(double)interval
 {
   v4 = objc_alloc_init(NSDateComponentsFormatter);
   [v4 setUnitsStyle:0];
   [v4 setIncludesApproximationPhrase:0];
   [v4 setIncludesTimeRemainingPhrase:0];
   [v4 setMaximumUnitCount:2];
-  if (a3 >= 60.0)
+  if (interval >= 60.0)
   {
     v5 = 240;
   }
@@ -67,16 +67,16 @@
   }
 
   [v4 setAllowedUnits:v5];
-  v6 = [v4 stringFromTimeInterval:a3];
+  v6 = [v4 stringFromTimeInterval:interval];
 
   return v6;
 }
 
-- (id)rpLocalizedStatusStringForPaused:(BOOL)a3
+- (id)rpLocalizedStatusStringForPaused:(BOOL)paused
 {
   if (self->_broadcasting)
   {
-    if (a3)
+    if (paused)
     {
       v4 = @"BROADCASTING_PAUSED_STATUS_BAR_FORMAT";
     }
@@ -92,7 +92,7 @@
 
   else
   {
-    if (a3)
+    if (paused)
     {
       v5 = @"RECORDING_PAUSED_STATUS_BAR";
     }
@@ -108,7 +108,7 @@
   return v7;
 }
 
-- (void)updateDelegateRecordingTimer:(id)a3
+- (void)updateDelegateRecordingTimer:(id)timer
 {
   v4 = +[NSDate date];
   [v4 timeIntervalSinceDate:self->_timerStartDate];
@@ -119,12 +119,12 @@
   [(RPStatusBarAssertionDelegate *)assertionDelegate timerDidUpdate:v8];
 }
 
-- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4
+- (void)statusBarCoordinator:(id)coordinator invalidatedRegistrationWithError:(id)error
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = [a4 code];
+    code = [error code];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "RPStatusBarAssertion: coordinator registartion invalidated with error %li", &v5, 0xCu);
   }
 }

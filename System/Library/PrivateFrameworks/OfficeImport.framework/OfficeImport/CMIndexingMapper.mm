@@ -1,84 +1,84 @@
 @interface CMIndexingMapper
-- (void)mapSummaryWithState:(id)a3;
+- (void)mapSummaryWithState:(id)state;
 @end
 
 @implementation CMIndexingMapper
 
-- (void)mapSummaryWithState:(id)a3
+- (void)mapSummaryWithState:(id)state
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CMMapper *)self document];
-  v6 = [v5 summary];
+  stateCopy = state;
+  document = [(CMMapper *)self document];
+  summary = [document summary];
 
-  v7 = [v6 title];
-  v8 = [v7 length];
+  title = [summary title];
+  v8 = [title length];
 
   if (v8)
   {
-    v9 = [v4 searchableAttributes];
-    v10 = [v6 title];
-    [v9 setTitle:v10];
+    searchableAttributes = [stateCopy searchableAttributes];
+    title2 = [summary title];
+    [searchableAttributes setTitle:title2];
   }
 
-  v11 = [v6 author];
-  v12 = [v11 length];
+  author = [summary author];
+  v12 = [author length];
 
   if (v12)
   {
-    v13 = [v4 searchableAttributes];
-    v14 = [v6 author];
-    v35[0] = v14;
+    searchableAttributes2 = [stateCopy searchableAttributes];
+    author2 = [summary author];
+    v35[0] = author2;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-    [v13 setAuthorNames:v15];
+    [searchableAttributes2 setAuthorNames:v15];
   }
 
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v17 = [v6 keywords];
-  v18 = [v17 length] == 0;
+  keywords = [summary keywords];
+  v18 = [keywords length] == 0;
 
   if (!v18)
   {
-    v19 = [v6 keywords];
-    [v16 addObject:v19];
+    keywords2 = [summary keywords];
+    [v16 addObject:keywords2];
   }
 
   if ([v16 count])
   {
-    v20 = [v4 searchableAttributes];
-    [v20 setKeywords:v16];
+    searchableAttributes3 = [stateCopy searchableAttributes];
+    [searchableAttributes3 setKeywords:v16];
   }
 
-  v21 = [v6 subject];
-  v22 = [v21 length] == 0;
+  subject = [summary subject];
+  v22 = [subject length] == 0;
 
   if (!v22)
   {
-    v23 = [v4 searchableAttributes];
-    v24 = [v6 subject];
-    [v23 setSubject:v24];
+    searchableAttributes4 = [stateCopy searchableAttributes];
+    subject2 = [summary subject];
+    [searchableAttributes4 setSubject:subject2];
   }
 
-  v25 = [v6 company];
-  v26 = [v25 length] == 0;
+  company = [summary company];
+  v26 = [company length] == 0;
 
   if (!v26)
   {
-    v27 = [v4 searchableAttributes];
-    v28 = [v6 company];
-    v34 = v28;
+    searchableAttributes5 = [stateCopy searchableAttributes];
+    company2 = [summary company];
+    v34 = company2;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-    [v27 setOrganizations:v29];
+    [searchableAttributes5 setOrganizations:v29];
   }
 
-  v30 = [v6 comments];
-  v31 = [v30 length] == 0;
+  comments = [summary comments];
+  v31 = [comments length] == 0;
 
   if (!v31)
   {
-    v32 = [v4 searchableAttributes];
-    v33 = [v6 comments];
-    [v32 setComment:v33];
+    searchableAttributes6 = [stateCopy searchableAttributes];
+    comments2 = [summary comments];
+    [searchableAttributes6 setComment:comments2];
   }
 }
 

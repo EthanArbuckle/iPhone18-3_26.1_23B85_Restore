@@ -1,10 +1,10 @@
 @interface PersonalizationConfigurationService
-- (void)onConfigurationChange:(id)a3;
+- (void)onConfigurationChange:(id)change;
 @end
 
 @implementation PersonalizationConfigurationService
 
-- (void)onConfigurationChange:(id)a3
+- (void)onConfigurationChange:(id)change
 {
   v4 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v4 - 8);

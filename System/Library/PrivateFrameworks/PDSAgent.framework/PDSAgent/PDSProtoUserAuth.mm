@@ -1,28 +1,28 @@
 @interface PDSProtoUserAuth
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsUserauthOneof:(id)a3;
+- (int)StringAsUserauthOneof:(id)oneof;
 - (int)userauthOneof;
 - (unint64_t)hash;
 - (void)clearOneofValuesForUserauthOneof;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setGsAuthToken:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setGsAuthToken:(id)token;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDSProtoUserAuth
 
-- (void)setGsAuthToken:(id)a3
+- (void)setGsAuthToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   [(PDSProtoUserAuth *)self clearOneofValuesForUserauthOneof];
   *&self->_has |= 1u;
   self->_userauthOneof = 1;
   gsAuthToken = self->_gsAuthToken;
-  self->_gsAuthToken = v4;
+  self->_gsAuthToken = tokenCopy;
 }
 
 - (int)userauthOneof
@@ -38,17 +38,17 @@
   }
 }
 
-- (int)StringAsUserauthOneof:(id)a3
+- (int)StringAsUserauthOneof:(id)oneof
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  oneofCopy = oneof;
+  if ([oneofCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"gsAuthToken"];
+    v4 = [oneofCopy isEqualToString:@"gsAuthToken"];
   }
 
   return v4;
@@ -69,20 +69,20 @@
   v8.receiver = self;
   v8.super_class = PDSProtoUserAuth;
   v4 = [(PDSProtoUserAuth *)&v8 description];
-  v5 = [(PDSProtoUserAuth *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PDSProtoUserAuth *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   gsAuthToken = self->_gsAuthToken;
   if (gsAuthToken)
   {
-    v5 = [(PDSProtoGSTokenAuth *)gsAuthToken dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"gsAuthToken"];
+    dictionaryRepresentation = [(PDSProtoGSTokenAuth *)gsAuthToken dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"gsAuthToken"];
   }
 
   if (*&self->_has)
@@ -106,13 +106,13 @@
       v7 = @"PBUNSET";
     }
 
-    [v3 setObject:v7 forKey:@"userauth_oneof"];
+    [dictionary setObject:v7 forKey:@"userauth_oneof"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_gsAuthToken)
   {
@@ -120,26 +120,26 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_userauthOneof;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_userauthOneof;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_gsAuthToken)
   {
-    v5 = v4;
-    [v4 setGsAuthToken:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setGsAuthToken:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -147,31 +147,31 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(PDSProtoGSTokenAuth *)self->_gsAuthToken copyWithZone:a3];
+  v7 = [(PDSProtoGSTokenAuth *)self->_gsAuthToken copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_userauthOneof != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_userauthOneof != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -179,7 +179,7 @@ LABEL_9:
   }
 
   gsAuthToken = self->_gsAuthToken;
-  if (gsAuthToken | *(v4 + 1))
+  if (gsAuthToken | *(equalCopy + 1))
   {
     v7 = [(PDSProtoGSTokenAuth *)gsAuthToken isEqual:?];
   }
@@ -209,13 +209,13 @@ LABEL_10:
   return [(PDSProtoGSTokenAuth *)self->_gsAuthToken hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_userauthOneof = v4[4];
+    self->_userauthOneof = fromCopy[4];
     *&self->_has |= 1u;
   }
 

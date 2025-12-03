@@ -8,42 +8,42 @@
 - (NSDate)originalDepartureDate;
 - (NSString)boardingPassFirstName;
 - (NSString)boardingPassLastName;
-- (id)arrivalAirportLat:(int64_t)a3;
-- (id)arrivalAirportLong:(int64_t)a3;
-- (id)departureAirportLat:(int64_t)a3;
-- (id)departureAirportLong:(int64_t)a3;
-- (id)evaluateWithAttribute:(id)a3 expression:(id)a4;
+- (id)arrivalAirportLat:(int64_t)lat;
+- (id)arrivalAirportLong:(int64_t)long;
+- (id)departureAirportLat:(int64_t)lat;
+- (id)departureAirportLong:(int64_t)long;
+- (id)evaluateWithAttribute:(id)attribute expression:(id)expression;
 @end
 
 @implementation PKPass
 
-- (id)arrivalAirportLat:(int64_t)a3
+- (id)arrivalAirportLat:(int64_t)lat
 {
-  v4 = self;
-  v5 = PKPass.arrivalAirportLat(_:)(a3);
+  selfCopy = self;
+  v5 = PKPass.arrivalAirportLat(_:)(lat);
 
   return v5;
 }
 
-- (id)arrivalAirportLong:(int64_t)a3
+- (id)arrivalAirportLong:(int64_t)long
 {
-  v3 = self;
+  selfCopy = self;
   v4 = PKPass.arrivalAirportLong(_:)();
 
   return v4;
 }
 
-- (id)departureAirportLat:(int64_t)a3
+- (id)departureAirportLat:(int64_t)lat
 {
-  v4 = self;
-  v5 = PKPass.departureAirportLat(_:)(a3);
+  selfCopy = self;
+  v5 = PKPass.departureAirportLat(_:)(lat);
 
   return v5;
 }
 
-- (id)departureAirportLong:(int64_t)a3
+- (id)departureAirportLong:(int64_t)long
 {
-  v3 = self;
+  selfCopy = self;
   v4 = PKPass.departureAirportLong(_:)();
 
   return v4;
@@ -51,7 +51,7 @@
 
 - (NSDate)anyDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.anyDate.getter();
 
   return v3;
@@ -59,7 +59,7 @@
 
 - (NSDate)currentArrivalDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.currentArrivalDate.getter();
 
   return v3;
@@ -67,7 +67,7 @@
 
 - (NSDate)currentBoardingDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.currentBoardingDate.getter();
 
   return v3;
@@ -75,7 +75,7 @@
 
 - (NSDate)currentDepartureDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.currentDepartureDate.getter();
 
   return v3;
@@ -83,7 +83,7 @@
 
 - (NSDate)originalArrivalDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.originalArrivalDate.getter();
 
   return v3;
@@ -91,7 +91,7 @@
 
 - (NSDate)originalBoardingDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.originalBoardingDate.getter();
 
   return v3;
@@ -99,7 +99,7 @@
 
 - (NSDate)originalDepartureDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.originalDepartureDate.getter();
 
   return v3;
@@ -107,7 +107,7 @@
 
 - (NSString)boardingPassFirstName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.boardingPassFirstName.getter();
 
   return v3;
@@ -115,18 +115,18 @@
 
 - (NSString)boardingPassLastName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKPass.boardingPassLastName.getter();
 
   return v3;
 }
 
-- (id)evaluateWithAttribute:(id)a3 expression:(id)a4
+- (id)evaluateWithAttribute:(id)attribute expression:(id)expression
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PKPass.evaluate(attribute:expression:)(v6, v7, v17);
+  attributeCopy = attribute;
+  expressionCopy = expression;
+  selfCopy = self;
+  PKPass.evaluate(attribute:expression:)(attributeCopy, expressionCopy, v17);
 
   v9 = v18;
   if (v18)

@@ -1,23 +1,23 @@
 @interface SUUICounterCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SUUICounterCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SUUICounterCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)_reloadHighlightImageView;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SUUICounterCollectionViewCell
 
-- (SUUICounterCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUICounterCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUICounterCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SUUICounterView alloc];
@@ -26,31 +26,31 @@
     counterView = v3->_counterView;
     v3->_counterView = v5;
 
-    v7 = [(SUUICounterCollectionViewCell *)v3 contentView];
-    [v7 addSubview:v3->_counterView];
+    contentView = [(SUUICounterCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_counterView];
   }
 
   return v3;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   counterView = self->_counterView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SUUIViewReuseView *)counterView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SUUIViewReuseView *)counterView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SUUICounterCollectionViewCell;
-  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -61,9 +61,9 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUICounterView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SUUICounterView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -75,34 +75,34 @@
   v5.super_class = SUUICounterCollectionViewCell;
   [(SUUICollectionViewCell *)&v5 layoutSubviews];
   counterView = self->_counterView;
-  v4 = [(SUUICounterCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SUUICounterCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SUUICounterView *)counterView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   counterView = self->_counterView;
-  v5 = a3;
-  [(SUUIViewReuseView *)counterView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUIViewReuseView *)counterView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUICounterCollectionViewCell;
-  [(SUUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SUUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SUUICounterCollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setHighlighted:a3];
+  [(SUUICollectionViewCell *)&v4 setHighlighted:highlighted];
   [(SUUICounterCollectionViewCell *)self _reloadHighlightImageView];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SUUICounterCollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setSelected:a3];
+  [(SUUICollectionViewCell *)&v4 setSelected:selected];
   [(SUUICounterCollectionViewCell *)self _reloadHighlightImageView];
 }
 
@@ -135,8 +135,8 @@
 
         [(SUUIImageView *)self->_highlightImageView setAlpha:0.300000012];
         v9 = self->_highlightImageView;
-        v10 = [MEMORY[0x277D75348] clearColor];
-        [(SUUIImageView *)v9 setBackgroundColor:v10];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(SUUIImageView *)v9 setBackgroundColor:clearColor];
 
         highlightImageView = self->_highlightImageView;
         v4 = v29[5];
@@ -148,9 +148,9 @@
       [v29[5] center];
       [(SUUIImageView *)v11 setCenter:?];
       v12 = self->_highlightImageView;
-      v13 = [v29[5] image];
-      v14 = [MEMORY[0x277D75348] blackColor];
-      v15 = [v13 _flatImageWithColor:v14];
+      image = [v29[5] image];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v15 = [image _flatImageWithColor:blackColor];
       [(SUUIImageView *)v12 setImage:v15];
 
       v16 = self->_highlightImageView;

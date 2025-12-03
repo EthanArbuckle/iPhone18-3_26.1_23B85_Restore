@@ -1,49 +1,49 @@
 @interface _DASActivityResultDependencyGroup
-+ (id)groupFromDefaultsWithoutCreation:(id)a3;
-+ (id)groupFromPersistence:(id)a3;
-+ (void)resetDependenciesContainingSubstring:(id)a3;
-- (BOOL)deregisterProducer:(id)a3 error:(id *)a4;
-- (BOOL)isDependencySatisfiedForActivity:(id)a3;
-- (BOOL)isPersistenceAvailableWithFileProtection:(id)a3;
-- (BOOL)queue_isProducerActivity:(id)a3;
-- (BOOL)registerProducer:(id)a3 error:(id *)a4;
-- (BOOL)reportActivity:(id)a3 consumedResult:(id)a4 error:(id *)a5;
-- (BOOL)reportActivity:(id)a3 producedResult:(id)a4 error:(id *)a5;
++ (id)groupFromDefaultsWithoutCreation:(id)creation;
++ (id)groupFromPersistence:(id)persistence;
++ (void)resetDependenciesContainingSubstring:(id)substring;
+- (BOOL)deregisterProducer:(id)producer error:(id *)error;
+- (BOOL)isDependencySatisfiedForActivity:(id)activity;
+- (BOOL)isPersistenceAvailableWithFileProtection:(id)protection;
+- (BOOL)queue_isProducerActivity:(id)activity;
+- (BOOL)registerProducer:(id)producer error:(id *)error;
+- (BOOL)reportActivity:(id)activity consumedResult:(id)result error:(id *)error;
+- (BOOL)reportActivity:(id)activity producedResult:(id)result error:(id *)error;
 - (NSString)debugDescription;
 - (NSString)description;
-- (_DASActivityResultDependencyGroup)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DASActivityResultDependencyGroup)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (id)queue_aggregateResultConsumptionForActivity:(id)a3;
-- (int64_t)computeNumberOfAvailableResultsForActivity:(id)a3;
-- (void)deregisterDependent:(id)a3;
-- (void)handleActivitySubmission:(id)a3;
-- (void)persistUpdatedResultConsumptionBy:(id)a3 result:(id)a4;
-- (void)persistUpdatedResultProductionBy:(id)a3;
-- (void)pruneConsumptionEventsForActivityIdentifier:(id)a3;
+- (id)queue_aggregateResultConsumptionForActivity:(id)activity;
+- (int64_t)computeNumberOfAvailableResultsForActivity:(id)activity;
+- (void)deregisterDependent:(id)dependent;
+- (void)handleActivitySubmission:(id)submission;
+- (void)persistUpdatedResultConsumptionBy:(id)by result:(id)result;
+- (void)persistUpdatedResultProductionBy:(id)by;
+- (void)pruneConsumptionEventsForActivityIdentifier:(id)identifier;
 - (void)resetAccumulation;
-- (void)updateDependenciesPreClearedOnActivity:(id)a3 withValue:(BOOL)a4;
+- (void)updateDependenciesPreClearedOnActivity:(id)activity withValue:(BOOL)value;
 @end
 
 @implementation _DASActivityResultDependencyGroup
 
-+ (id)groupFromPersistence:(id)a3
++ (id)groupFromPersistence:(id)persistence
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:v3];
+  persistenceCopy = persistence;
+  v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:persistenceCopy];
   v5 = [_DASDaemonLogger logForCategory:@"DependencyGroupPersistence"];
   v6 = BiomeLibrary();
-  v7 = [v6 ActivityScheduler];
-  v8 = [v7 Dependency];
-  v9 = [v8 Result];
-  v10 = [v9 publisher];
+  activityScheduler = [v6 ActivityScheduler];
+  dependency = [activityScheduler Dependency];
+  result = [dependency Result];
+  publisher = [result publisher];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000B82E0;
   v26[3] = &unk_1001B7298;
-  v11 = v3;
+  v11 = persistenceCopy;
   v27 = v11;
-  v12 = [v10 filterWithIsIncluded:v26];
+  v12 = [publisher filterWithIsIncluded:v26];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000B833C;
@@ -67,17 +67,17 @@
   return v13;
 }
 
-- (_DASActivityResultDependencyGroup)initWithIdentifier:(id)a3
+- (_DASActivityResultDependencyGroup)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = _DASActivityResultDependencyGroup;
   v6 = [(_DASActivityResultDependencyGroup *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resultIdentifier, a3);
-    v8 = [[_DASActivityResult alloc] initWithIdentifier:v5];
+    objc_storeStrong(&v6->_resultIdentifier, identifier);
+    v8 = [[_DASActivityResult alloc] initWithIdentifier:identifierCopy];
     cumulativelyProducedResult = v7->_cumulativelyProducedResult;
     v7->_cumulativelyProducedResult = v8;
 
@@ -93,16 +93,16 @@
     v7->_producer = 0;
 
     v15 = BiomeLibrary();
-    v16 = [v15 ActivityScheduler];
-    v17 = [v16 Dependency];
-    v18 = [v17 Result];
+    activityScheduler = [v15 ActivityScheduler];
+    dependency = [activityScheduler Dependency];
+    result = [dependency Result];
     resultStream = v7->_resultStream;
-    v7->_resultStream = v18;
+    v7->_resultStream = result;
 
     v20 = [NSString stringWithFormat:@"com.apple.dasd.DependencyGroup.%@", v7->_resultIdentifier];
-    v21 = [v20 UTF8String];
+    uTF8String = [v20 UTF8String];
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v23 = dispatch_queue_create(v21, v22);
+    v23 = dispatch_queue_create(uTF8String, v22);
     queue = v7->_queue;
     v7->_queue = v23;
 
@@ -114,35 +114,35 @@
   return v7;
 }
 
-- (BOOL)isPersistenceAvailableWithFileProtection:(id)a3
+- (BOOL)isPersistenceAvailableWithFileProtection:(id)protection
 {
   resultStream = self->_resultStream;
-  v4 = a3;
-  v5 = [(BMStream *)resultStream configuration];
-  v6 = [v5 storeConfig];
-  v7 = [v6 protectionClass];
+  protectionCopy = protection;
+  configuration = [(BMStream *)resultStream configuration];
+  storeConfig = [configuration storeConfig];
+  protectionClass = [storeConfig protectionClass];
 
-  v8 = [v4 asBiomeProtectionClass];
-  return v8 <= v7;
+  asBiomeProtectionClass = [protectionCopy asBiomeProtectionClass];
+  return asBiomeProtectionClass <= protectionClass;
 }
 
-- (void)handleActivitySubmission:(id)a3
+- (void)handleActivitySubmission:(id)submission
 {
-  v4 = a3;
+  submissionCopy = submission;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B87AC;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = submissionCopy;
+  v6 = submissionCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)registerProducer:(id)a3 error:(id *)a4
+- (BOOL)registerProducer:(id)producer error:(id *)error
 {
-  v6 = a3;
+  producerCopy = producer;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -161,7 +161,7 @@
   v11[4] = self;
   v13 = &v18;
   v14 = &v15;
-  v8 = v6;
+  v8 = producerCopy;
   v12 = v8;
   dispatch_sync(queue, v11);
   if (*(v19 + 24) != 1 || *(v16[0] + 40))
@@ -169,7 +169,7 @@
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_100128F98(self, v16);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_6;
       }
@@ -177,10 +177,10 @@
       goto LABEL_5;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_5:
-      *a4 = *(v16[0] + 40);
+      *error = *(v16[0] + 40);
     }
   }
 
@@ -193,23 +193,23 @@ LABEL_6:
   return v9;
 }
 
-- (void)deregisterDependent:(id)a3
+- (void)deregisterDependent:(id)dependent
 {
-  v4 = a3;
+  dependentCopy = dependent;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B8BE8;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dependentCopy;
+  v6 = dependentCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)deregisterProducer:(id)a3 error:(id *)a4
+- (BOOL)deregisterProducer:(id)producer error:(id *)error
 {
-  v6 = a3;
+  producerCopy = producer;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -226,7 +226,7 @@ LABEL_6:
   v11[2] = sub_1000B8D88;
   v11[3] = &unk_1001B7EF0;
   v11[4] = self;
-  v8 = v6;
+  v8 = producerCopy;
   v12 = v8;
   v13 = &v18;
   v14 = &v15;
@@ -236,7 +236,7 @@ LABEL_6:
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_10012900C(self, v16);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_6;
       }
@@ -244,10 +244,10 @@ LABEL_6:
       goto LABEL_5;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_5:
-      *a4 = *(v16[0] + 40);
+      *error = *(v16[0] + 40);
     }
   }
 
@@ -260,14 +260,14 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)isDependencySatisfiedForActivity:(id)a3
+- (BOOL)isDependencySatisfiedForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 dependencyForIdentifier:self->_resultIdentifier];
+  activityCopy = activity;
+  v5 = [activityCopy dependencyForIdentifier:self->_resultIdentifier];
   if (v5)
   {
-    v6 = [v5 isSatisfiedByAvailableResultCount:{-[_DASActivityResultDependencyGroup computeNumberOfAvailableResultsForActivity:](self, "computeNumberOfAvailableResultsForActivity:", v4)}];
-    [(_DASActivityResultDependencyGroup *)self updateDependenciesPreClearedOnActivity:v4 withValue:v6];
+    v6 = [v5 isSatisfiedByAvailableResultCount:{-[_DASActivityResultDependencyGroup computeNumberOfAvailableResultsForActivity:](self, "computeNumberOfAvailableResultsForActivity:", activityCopy)}];
+    [(_DASActivityResultDependencyGroup *)self updateDependenciesPreClearedOnActivity:activityCopy withValue:v6];
   }
 
   else
@@ -278,10 +278,10 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)reportActivity:(id)a3 consumedResult:(id)a4 error:(id *)a5
+- (BOOL)reportActivity:(id)activity consumedResult:(id)result error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  activityCopy = activity;
+  resultCopy = result;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -298,11 +298,11 @@ LABEL_6:
   block[2] = sub_1000B9154;
   block[3] = &unk_1001B7F18;
   block[4] = self;
-  v11 = v8;
+  v11 = activityCopy;
   v16 = v11;
   v18 = &v20;
   v19 = &v23;
-  v12 = v9;
+  v12 = resultCopy;
   v17 = v12;
   dispatch_sync(queue, block);
   if ((v24[3] & 1) == 0)
@@ -310,7 +310,7 @@ LABEL_6:
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_100129080(v11, v21);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_5;
       }
@@ -318,10 +318,10 @@ LABEL_6:
       goto LABEL_4;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_4:
-      *a5 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -334,10 +334,10 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)reportActivity:(id)a3 producedResult:(id)a4 error:(id *)a5
+- (BOOL)reportActivity:(id)activity producedResult:(id)result error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  activityCopy = activity;
+  resultCopy = result;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -354,10 +354,10 @@ LABEL_5:
   block[2] = sub_1000B95D4;
   block[3] = &unk_1001B7F40;
   block[4] = self;
-  v11 = v8;
+  v11 = activityCopy;
   v16 = v11;
   v18 = &v20;
-  v12 = v9;
+  v12 = resultCopy;
   v17 = v12;
   v19 = &v23;
   dispatch_sync(queue, block);
@@ -366,7 +366,7 @@ LABEL_5:
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_1001290FC(v11, v21);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_5;
       }
@@ -374,10 +374,10 @@ LABEL_5:
       goto LABEL_4;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_4:
-      *a5 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -390,112 +390,112 @@ LABEL_5:
   return v13;
 }
 
-+ (void)resetDependenciesContainingSubstring:(id)a3
++ (void)resetDependenciesContainingSubstring:(id)substring
 {
-  v3 = a3;
+  substringCopy = substring;
   v4 = BiomeLibrary();
-  v5 = [v4 ActivityScheduler];
-  v6 = [v5 Dependency];
-  v7 = [v6 Result];
+  activityScheduler = [v4 ActivityScheduler];
+  dependency = [activityScheduler Dependency];
+  result = [dependency Result];
 
-  v8 = [v7 pruner];
+  pruner = [result pruner];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000B9910;
   v10[3] = &unk_1001B7F68;
-  v11 = v3;
-  v9 = v3;
-  [v8 deleteEventsPassingTest:v10];
+  v11 = substringCopy;
+  v9 = substringCopy;
+  [pruner deleteEventsPassingTest:v10];
 }
 
-- (void)persistUpdatedResultProductionBy:(id)a3
+- (void)persistUpdatedResultProductionBy:(id)by
 {
   resultStream = self->_resultStream;
-  v5 = a3;
-  v6 = [(BMStream *)resultStream pruner];
+  byCopy = by;
+  pruner = [(BMStream *)resultStream pruner];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B9AEC;
   v13[3] = &unk_1001B7F68;
   v13[4] = self;
-  [v6 deleteEventsPassingTest:v13];
+  [pruner deleteEventsPassingTest:v13];
 
   v7 = [BMActivitySchedulerDependencyResult alloc];
   resultIdentifier = self->_resultIdentifier;
-  v9 = [v5 identifier];
+  identifier = [byCopy identifier];
 
   v10 = [NSNumber numberWithInteger:[(_DASActivityResult *)self->_cumulativelyProducedResult count]];
-  v11 = [v7 initWithResultIdentifier:resultIdentifier activityIdentifier:v9 resultCount:v10 type:1];
+  v11 = [v7 initWithResultIdentifier:resultIdentifier activityIdentifier:identifier resultCount:v10 type:1];
 
-  v12 = [(BMStream *)self->_resultStream source];
-  [v12 sendEvent:v11];
+  source = [(BMStream *)self->_resultStream source];
+  [source sendEvent:v11];
 }
 
-- (void)persistUpdatedResultConsumptionBy:(id)a3 result:(id)a4
+- (void)persistUpdatedResultConsumptionBy:(id)by result:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifier];
-  [(_DASActivityResultDependencyGroup *)self pruneConsumptionEventsForActivityIdentifier:v8];
+  resultCopy = result;
+  byCopy = by;
+  identifier = [byCopy identifier];
+  [(_DASActivityResultDependencyGroup *)self pruneConsumptionEventsForActivityIdentifier:identifier];
 
   v9 = [BMActivitySchedulerDependencyResult alloc];
   resultIdentifier = self->_resultIdentifier;
-  v11 = [v7 identifier];
+  identifier2 = [byCopy identifier];
 
-  v12 = [v6 count];
+  v12 = [resultCopy count];
   v13 = [NSNumber numberWithInteger:v12];
-  v15 = [v9 initWithResultIdentifier:resultIdentifier activityIdentifier:v11 resultCount:v13 type:2];
+  v15 = [v9 initWithResultIdentifier:resultIdentifier activityIdentifier:identifier2 resultCount:v13 type:2];
 
-  v14 = [(BMStream *)self->_resultStream source];
-  [v14 sendEvent:v15];
+  source = [(BMStream *)self->_resultStream source];
+  [source sendEvent:v15];
 }
 
-- (void)pruneConsumptionEventsForActivityIdentifier:(id)a3
+- (void)pruneConsumptionEventsForActivityIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BMStream *)self->_resultStream pruner];
+  identifierCopy = identifier;
+  pruner = [(BMStream *)self->_resultStream pruner];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B9D50;
   v7[3] = &unk_1001B7F90;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 deleteEventsPassingTest:v7];
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  [pruner deleteEventsPassingTest:v7];
 }
 
-- (BOOL)queue_isProducerActivity:(id)a3
+- (BOOL)queue_isProducerActivity:(id)activity
 {
   producer = self->_producer;
-  v4 = a3;
-  v5 = [(_DASActivity *)producer identifier];
-  v6 = [v4 identifier];
+  activityCopy = activity;
+  identifier = [(_DASActivity *)producer identifier];
+  identifier2 = [activityCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(activityCopy) = [identifier isEqualToString:identifier2];
+  return activityCopy;
 }
 
-- (id)queue_aggregateResultConsumptionForActivity:(id)a3
+- (id)queue_aggregateResultConsumptionForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   cumulativeResultConsumption = self->_cumulativeResultConsumption;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)cumulativeResultConsumption objectForKeyedSubscript:v6];
+  identifier = [activityCopy identifier];
+  v7 = [(NSMutableDictionary *)cumulativeResultConsumption objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
     v7 = [[_DASActivityResult alloc] initWithIdentifier:self->_resultIdentifier];
     v8 = self->_cumulativeResultConsumption;
-    v9 = [v4 identifier];
-    [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
+    identifier2 = [activityCopy identifier];
+    [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:identifier2];
   }
 
   return v7;
 }
 
-- (int64_t)computeNumberOfAvailableResultsForActivity:(id)a3
+- (int64_t)computeNumberOfAvailableResultsForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -506,9 +506,9 @@ LABEL_5:
   block[2] = sub_1000BA020;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = activityCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = activityCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -516,11 +516,11 @@ LABEL_5:
   return v7;
 }
 
-- (void)updateDependenciesPreClearedOnActivity:(id)a3 withValue:(BOOL)a4
+- (void)updateDependenciesPreClearedOnActivity:(id)activity withValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
-  if (([v6 dependenciesPreCleared] & 1) == 0 && v4)
+  valueCopy = value;
+  activityCopy = activity;
+  if (([activityCopy dependenciesPreCleared] & 1) == 0 && valueCopy)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -532,12 +532,12 @@ LABEL_5:
       v12 = 2112;
       v13 = v9;
       v14 = 2112;
-      v15 = v6;
+      v15 = activityCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@ dependency has been satisfied on %@, marking as pre-cleared", &v10, 0x20u);
     }
   }
 
-  [v6 setDependenciesPreCleared:{objc_msgSend(v6, "dependenciesPreCleared") | v4}];
+  [activityCopy setDependenciesPreCleared:{objc_msgSend(activityCopy, "dependenciesPreCleared") | valueCopy}];
 }
 
 - (void)resetAccumulation
@@ -560,7 +560,7 @@ LABEL_5:
   v15 = 3221225472;
   v16 = sub_1000BA56C;
   v17 = &unk_1001B56B8;
-  v18 = self;
+  selfCopy = self;
   v6 = v3;
   v19 = v6;
   v7 = v4;
@@ -577,35 +577,35 @@ LABEL_5:
   v21[3] = @"registeredConsumers";
   v22[3] = v7;
   v21[4] = @"registeredProducer";
-  v10 = [(_DASActivity *)self->_producer name];
-  v11 = v10;
-  if (!v10)
+  name = [(_DASActivity *)self->_producer name];
+  v11 = name;
+  if (!name)
   {
     v11 = +[NSNull null];
   }
 
   v22[4] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:5];
-  if (!v10)
+  if (!name)
   {
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithIdentifier:", self->_resultIdentifier}];
-  v6 = [(_DASActivityResult *)self->_cumulativelyProducedResult copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithIdentifier:", self->_resultIdentifier}];
+  v6 = [(_DASActivityResult *)self->_cumulativelyProducedResult copyWithZone:zone];
   [v5 setCumulativelyProducedResult:v6];
 
-  v7 = [(NSMutableDictionary *)self->_cumulativeResultConsumption copyWithZone:a3];
+  v7 = [(NSMutableDictionary *)self->_cumulativeResultConsumption copyWithZone:zone];
   [v5 setCumulativeResultConsumption:v7];
 
-  v8 = [(NSMutableSet *)self->_consumers copyWithZone:a3];
+  v8 = [(NSMutableSet *)self->_consumers copyWithZone:zone];
   [v5 setConsumers:v8];
 
-  v9 = [(_DASActivity *)self->_producer copyWithZone:a3];
+  v9 = [(_DASActivity *)self->_producer copyWithZone:zone];
   [v5 setProducer:v9];
 
   return v5;
@@ -621,7 +621,7 @@ LABEL_5:
   block[3] = &unk_1001B56E0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   v6 = v5;
 
@@ -638,33 +638,33 @@ LABEL_5:
   block[3] = &unk_1001B56E0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   v6 = v5;
 
   return v5;
 }
 
-+ (id)groupFromDefaultsWithoutCreation:(id)a3
++ (id)groupFromDefaultsWithoutCreation:(id)creation
 {
-  v3 = a3;
+  creationCopy = creation;
   v4 = [_DASDaemonLogger logForCategory:@"DependencyGroupPersistence"];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
   v5 = BiomeLibrary();
-  v6 = [v5 ActivityScheduler];
-  v7 = [v6 Dependency];
-  v8 = [v7 Result];
-  v9 = [v8 publisher];
+  activityScheduler = [v5 ActivityScheduler];
+  dependency = [activityScheduler Dependency];
+  result = [dependency Result];
+  publisher = [result publisher];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000BAE48;
   v19[3] = &unk_1001B7298;
-  v10 = v3;
+  v10 = creationCopy;
   v20 = v10;
-  v11 = [v9 filterWithIsIncluded:v19];
+  v11 = [publisher filterWithIsIncluded:v19];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000BAEA4;

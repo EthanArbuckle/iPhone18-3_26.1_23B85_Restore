@@ -3,12 +3,12 @@
 + (id)valuesFromOfflineCache;
 - (JSAProfileBagManager)init;
 - (NSDictionary)values;
-- (id)cachedValueForKey:(id)a3;
-- (void)_bagDidUpdate:(id)a3;
-- (void)_saveOfflineCache:(id)a3;
-- (void)addKeyEntries:(id)a3;
+- (id)cachedValueForKey:(id)key;
+- (void)_bagDidUpdate:(id)update;
+- (void)_saveOfflineCache:(id)cache;
+- (void)addKeyEntries:(id)entries;
 - (void)dealloc;
-- (void)registerOnBagChange:(id)a3;
+- (void)registerOnBagChange:(id)change;
 - (void)resetValuesCache;
 - (void)unregisterOnBagChange;
 - (void)updateValues;
@@ -78,7 +78,7 @@
   block[1] = 3221225472;
   block[2] = sub_E25C;
   block[3] = &unk_B25E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_CC0F0 != -1)
   {
     dispatch_once(&qword_CC0F0, block);
@@ -101,7 +101,7 @@
   v6[1] = 3221225472;
   v7 = sub_E3D8;
   v8 = &unk_B2508;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -129,20 +129,20 @@
 - (void)resetValuesCache
 {
   v3 = +[BUAccountsProvider sharedProvider];
-  v4 = [v3 currentStorefront];
+  currentStorefront = [v3 currentStorefront];
 
   updateQueue = self->_updateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_E520;
   v7[3] = &unk_B2128;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = currentStorefront;
+  selfCopy = self;
+  v6 = currentStorefront;
   dispatch_sync(updateQueue, v7);
 }
 
-- (id)cachedValueForKey:(id)a3
+- (id)cachedValueForKey:(id)key
 {
   v14 = 0;
   v15 = &v14;
@@ -155,9 +155,9 @@
   v9 = sub_E7CC;
   v10 = &unk_B2818;
   v13 = &v14;
-  v11 = self;
-  v4 = a3;
-  v12 = v4;
+  selfCopy = self;
+  keyCopy = key;
+  v12 = keyCopy;
   v5 = v8;
   os_unfair_lock_lock(&self->_lock);
   v9(v5);
@@ -169,7 +169,7 @@
   return v6;
 }
 
-- (void)addKeyEntries:(id)a3
+- (void)addKeyEntries:(id)entries
 {
   v14 = 0;
   v15 = &v14;
@@ -179,9 +179,9 @@
   v8[1] = 3221225472;
   v9 = sub_E97C;
   v10 = &unk_B2840;
-  v11 = self;
-  v4 = a3;
-  v12 = v4;
+  selfCopy = self;
+  entriesCopy = entries;
+  v12 = entriesCopy;
   v13 = &v14;
   v5 = v8;
   os_unfair_lock_lock(&self->_lock);
@@ -203,9 +203,9 @@
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)registerOnBagChange:(id)a3
+- (void)registerOnBagChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -214,7 +214,7 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", &v8, 0xCu);
   }
 
-  v6 = [JSManagedValue managedValueWithValue:v4];
+  v6 = [JSManagedValue managedValueWithValue:changeCopy];
 
   bagChangeHandler = self->_bagChangeHandler;
   self->_bagChangeHandler = v6;
@@ -227,7 +227,7 @@
   _objc_release_x1();
 }
 
-- (void)_bagDidUpdate:(id)a3
+- (void)_bagDidUpdate:(id)update
 {
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -272,8 +272,8 @@
         }
 
         v7 = *(*(&v30 + 1) + 8 * v6);
-        v8 = [v5[127] defaultManager];
-        v9 = [v8 fileExistsAtPath:v7];
+        defaultManager = [v5[127] defaultManager];
+        v9 = [defaultManager fileExistsAtPath:v7];
 
         if (v9)
         {
@@ -378,7 +378,7 @@ LABEL_25:
   return result;
 }
 
-- (void)_saveOfflineCache:(id)a3
+- (void)_saveOfflineCache:(id)cache
 {
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

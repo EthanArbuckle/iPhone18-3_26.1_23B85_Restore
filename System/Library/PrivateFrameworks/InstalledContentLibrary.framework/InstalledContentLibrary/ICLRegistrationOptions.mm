@@ -1,17 +1,17 @@
 @interface ICLRegistrationOptions
-- (BOOL)isEqual:(id)a3;
-- (ICLRegistrationOptions)initWithCoder:(id)a3;
-- (ICLRegistrationOptions)initWithTargetUID:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLRegistrationOptions)initWithCoder:(id)coder;
+- (ICLRegistrationOptions)initWithTargetUID:(unsigned int)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLRegistrationOptions
 
-- (ICLRegistrationOptions)initWithTargetUID:(unsigned int)a3
+- (ICLRegistrationOptions)initWithTargetUID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v7.receiver = self;
   v7.super_class = ICLRegistrationOptions;
   v4 = [(ICLRegistrationOptions *)&v7 init];
@@ -24,38 +24,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInt:{-[ICLRegistrationOptions targetUID](self, "targetUID")}];
-  [v5 encodeObject:v6 forKey:@"targetUID"];
+  [coderCopy encodeObject:v6 forKey:@"targetUID"];
 }
 
-- (ICLRegistrationOptions)initWithCoder:(id)a3
+- (ICLRegistrationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICLRegistrationOptions *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetUID"];
     v5->_targetUID = [v6 unsignedIntValue];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setTargetUID:{-[ICLRegistrationOptions targetUID](self, "targetUID")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -65,8 +65,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ICLRegistrationOptions *)v4 targetUID];
-      v6 = v5 == [(ICLRegistrationOptions *)self targetUID];
+      targetUID = [(ICLRegistrationOptions *)equalCopy targetUID];
+      v6 = targetUID == [(ICLRegistrationOptions *)self targetUID];
     }
 
     else

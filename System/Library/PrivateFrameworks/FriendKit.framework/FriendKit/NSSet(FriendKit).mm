@@ -12,8 +12,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,7 +24,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -34,13 +34,13 @@
           v9 = v8;
           if ([v9 fkMessageDestinationType])
           {
-            v10 = [v9 fkMessageCanonicalRawAddress];
-            [v2 addObject:v10];
+            fkMessageCanonicalRawAddress = [v9 fkMessageCanonicalRawAddress];
+            [v2 addObject:fkMessageCanonicalRawAddress];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

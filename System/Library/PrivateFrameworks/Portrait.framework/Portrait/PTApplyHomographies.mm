@@ -1,26 +1,26 @@
 @interface PTApplyHomographies
-- (PTApplyHomographies)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 disparitySize:(CGSize)a5;
-- (id)updateDisparity:(id)a3 inDisparity:(id)a4;
-- (id)updatePTTexture:(id)a3 inPTTexture:(id)a4;
-- (void)_ensureSufficientBufferSizesNumberOfRows:(int)a3 numberOfCols:(int)a4;
+- (PTApplyHomographies)initWithMetalContext:(id)context colorSize:(CGSize)size disparitySize:(CGSize)disparitySize;
+- (id)updateDisparity:(id)disparity inDisparity:(id)inDisparity;
+- (id)updatePTTexture:(id)texture inPTTexture:(id)tTexture;
+- (void)_ensureSufficientBufferSizesNumberOfRows:(int)rows numberOfCols:(int)cols;
 @end
 
 @implementation PTApplyHomographies
 
-- (PTApplyHomographies)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 disparitySize:(CGSize)a5
+- (PTApplyHomographies)initWithMetalContext:(id)context colorSize:(CGSize)size disparitySize:(CGSize)disparitySize
 {
-  height = a5.height;
-  width = a5.width;
-  v114 = a4.width;
-  v115 = a4.height;
-  v9 = a3;
+  height = disparitySize.height;
+  width = disparitySize.width;
+  v114 = size.width;
+  v115 = size.height;
+  contextCopy = context;
   v118.receiver = self;
   v118.super_class = PTApplyHomographies;
   v10 = [(PTApplyHomographies *)&v118 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_metalContext, a3);
+    objc_storeStrong(&v10->_metalContext, context);
     v12 = dispatch_semaphore_create(2);
     v13 = v11[12];
     v11[12] = v12;
@@ -47,16 +47,16 @@
 
     v17 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:v114 height:v115 mipmapped:0];
     [v17 setUsage:7];
-    v18 = [*&v11[1] device];
-    v19 = [v18 newTextureWithDescriptor:v17];
+    device = [*&v11[1] device];
+    v19 = [device newTextureWithDescriptor:v17];
     v20 = v11[5];
     v11[5] = v19;
 
     if (v11[5])
     {
       [v17 setUsage:7];
-      v21 = [*&v11[1] device];
-      v22 = [v21 newTextureWithDescriptor:v17];
+      device2 = [*&v11[1] device];
+      v22 = [device2 newTextureWithDescriptor:v17];
       v23 = v11[6];
       v11[6] = v22;
 
@@ -65,8 +65,8 @@
         [v17 setWidth:width];
         [v17 setHeight:height];
         [v17 setPixelFormat:25];
-        v24 = [*&v11[1] device];
-        v25 = [v24 newTextureWithDescriptor:v17];
+        device3 = [*&v11[1] device];
+        v25 = [device3 newTextureWithDescriptor:v17];
         v26 = v11[7];
         v11[7] = v25;
 
@@ -76,55 +76,55 @@
           v28 = v11[21];
           v11[21] = v27;
 
-          v29 = [*&v11[21] colorAttachments];
-          v30 = [v29 objectAtIndexedSubscript:0];
+          colorAttachments = [*&v11[21] colorAttachments];
+          v30 = [colorAttachments objectAtIndexedSubscript:0];
           [v30 setLoadAction:0];
 
-          v31 = [*&v11[21] colorAttachments];
-          v32 = [v31 objectAtIndexedSubscript:0];
+          colorAttachments2 = [*&v11[21] colorAttachments];
+          v32 = [colorAttachments2 objectAtIndexedSubscript:0];
           [v32 setStoreAction:1];
 
-          v33 = [*&v11[21] colorAttachments];
-          v34 = [v33 objectAtIndexedSubscript:0];
+          colorAttachments3 = [*&v11[21] colorAttachments];
+          v34 = [colorAttachments3 objectAtIndexedSubscript:0];
           [v34 setClearColor:{0.0, 1.0, 0.0, 1.0}];
 
           v35 = objc_alloc_init(MEMORY[0x277CD6F78]);
           v36 = [*&v11[1] functionWithName:@"vertexShaderHomography" withConstants:0];
           [v35 setVertexFunction:v36];
 
-          v37 = [v35 vertexFunction];
+          vertexFunction = [v35 vertexFunction];
 
-          if (v37)
+          if (vertexFunction)
           {
             v38 = [*&v11[1] functionWithName:@"fragmentShaderSample" withConstants:0];
             [v35 setFragmentFunction:v38];
 
-            v39 = [v35 fragmentFunction];
+            fragmentFunction = [v35 fragmentFunction];
 
-            if (v39)
+            if (fragmentFunction)
             {
-              v40 = [*&v11[6] pixelFormat];
-              v41 = [v35 colorAttachments];
-              v42 = [v41 objectAtIndexedSubscript:0];
-              [v42 setPixelFormat:v40];
+              pixelFormat = [*&v11[6] pixelFormat];
+              colorAttachments4 = [v35 colorAttachments];
+              v42 = [colorAttachments4 objectAtIndexedSubscript:0];
+              [v42 setPixelFormat:pixelFormat];
 
-              v43 = [*&v11[1] device];
+              device4 = [*&v11[1] device];
               v117 = 0;
-              v44 = [v43 newRenderPipelineStateWithDescriptor:v35 error:&v117];
+              v44 = [device4 newRenderPipelineStateWithDescriptor:v35 error:&v117];
               v45 = v117;
               v46 = v11[19];
               v11[19] = v44;
 
               if (v11[19])
               {
-                v47 = [*&v11[7] pixelFormat];
-                v48 = [v35 colorAttachments];
-                v49 = [v48 objectAtIndexedSubscript:0];
-                [v49 setPixelFormat:v47];
+                pixelFormat2 = [*&v11[7] pixelFormat];
+                colorAttachments5 = [v35 colorAttachments];
+                v49 = [colorAttachments5 objectAtIndexedSubscript:0];
+                [v49 setPixelFormat:pixelFormat2];
 
-                v50 = [*&v11[1] device];
+                device5 = [*&v11[1] device];
                 v116 = v45;
-                v51 = [v50 newRenderPipelineStateWithDescriptor:v35 error:&v116];
+                v51 = [device5 newRenderPipelineStateWithDescriptor:v35 error:&v116];
                 v52 = v116;
 
                 v53 = v11[20];
@@ -221,46 +221,46 @@ LABEL_37:
   return v54;
 }
 
-- (void)_ensureSufficientBufferSizesNumberOfRows:(int)a3 numberOfCols:(int)a4
+- (void)_ensureSufficientBufferSizesNumberOfRows:(int)rows numberOfCols:(int)cols
 {
-  v7 = a4 + 2 * a3 * (a4 - 1);
-  self->_vertexCountHomography = a4 * a3;
+  v7 = cols + 2 * rows * (cols - 1);
+  self->_vertexCountHomography = cols * rows;
   self->_indexCountHomography = v7;
-  v8 = (a4 * a3) << 6;
+  v8 = (cols * rows) << 6;
   if (v8 > [(MTLBuffer *)self->_vertexBufferHomography[0] length])
   {
-    v9 = [(PTMetalContext *)self->_metalContext device];
-    v10 = [v9 newBufferWithLength:v8 options:0];
+    device = [(PTMetalContext *)self->_metalContext device];
+    v10 = [device newBufferWithLength:v8 options:0];
     v11 = self->_vertexBufferHomography[0];
     self->_vertexBufferHomography[0] = v10;
 
-    v12 = [(PTMetalContext *)self->_metalContext device];
-    v13 = [v12 newBufferWithLength:v8 options:0];
+    device2 = [(PTMetalContext *)self->_metalContext device];
+    v13 = [device2 newBufferWithLength:v8 options:0];
     v14 = self->_vertexBufferHomography[1];
     self->_vertexBufferHomography[1] = v13;
   }
 
-  if (self->_numberOfRowsOverscan != a3 || self->_numberOfColsOverscan != a4)
+  if (self->_numberOfRowsOverscan != rows || self->_numberOfColsOverscan != cols)
   {
-    v17 = [(PTMetalContext *)self->_metalContext device];
-    v15 = [v17 newBufferWithLength:2 * v7 options:0];
+    device3 = [(PTMetalContext *)self->_metalContext device];
+    v15 = [device3 newBufferWithLength:2 * v7 options:0];
     indexBufferHomography = self->_indexBufferHomography;
     self->_indexBufferHomography = v15;
   }
 }
 
-- (id)updatePTTexture:(id)a3 inPTTexture:(id)a4
+- (id)updatePTTexture:(id)texture inPTTexture:(id)tTexture
 {
   colorConversion = self->_colorConversion;
   rgbaLinear = self->_rgbaLinear;
-  v8 = a3;
-  [(PTColorConversion *)colorConversion convertRGBLinearFromPTTexture:v8 inPTTexture:a4 outRGBA:rgbaLinear];
+  textureCopy = texture;
+  [(PTColorConversion *)colorConversion convertRGBLinearFromPTTexture:textureCopy inPTTexture:tTexture outRGBA:rgbaLinear];
   rgbaLinearVIS = self->_rgbaLinearVIS;
-  v10 = [(MTLRenderPassDescriptor *)self->_homographyRenderPassDescriptor colorAttachments];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_homographyRenderPassDescriptor colorAttachments];
+  v11 = [colorAttachments objectAtIndexedSubscript:0];
   [v11 setTexture:rgbaLinearVIS];
 
-  v12 = [v8 renderCommandEncoderWithDescriptor:self->_homographyRenderPassDescriptor];
+  v12 = [textureCopy renderCommandEncoderWithDescriptor:self->_homographyRenderPassDescriptor];
 
   [v12 setRenderPipelineState:self->_renderPipelineState];
   [v12 setVertexBuffer:self->_vertexBufferHomography[self->_frameCounter & 1] offset:0 atIndex:0];
@@ -281,22 +281,22 @@ LABEL_37:
   return v13;
 }
 
-- (id)updateDisparity:(id)a3 inDisparity:(id)a4
+- (id)updateDisparity:(id)disparity inDisparity:(id)inDisparity
 {
   disparityVIS = self->_disparityVIS;
   homographyRenderPassDescriptor = self->_homographyRenderPassDescriptor;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MTLRenderPassDescriptor *)homographyRenderPassDescriptor colorAttachments];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  inDisparityCopy = inDisparity;
+  disparityCopy = disparity;
+  colorAttachments = [(MTLRenderPassDescriptor *)homographyRenderPassDescriptor colorAttachments];
+  v11 = [colorAttachments objectAtIndexedSubscript:0];
   [v11 setTexture:disparityVIS];
 
-  v12 = [v9 renderCommandEncoderWithDescriptor:self->_homographyRenderPassDescriptor];
+  v12 = [disparityCopy renderCommandEncoderWithDescriptor:self->_homographyRenderPassDescriptor];
 
   [v12 setRenderPipelineState:self->_renderPipelineStateDisparity];
   [v12 setVertexBuffer:self->_vertexBufferHomography[self->_frameCounter & 1] offset:0 atIndex:0];
   [v12 setVertexBytes:self->_inputColorSize length:8 atIndex:1];
-  [v12 setFragmentTexture:v8 atIndex:0];
+  [v12 setFragmentTexture:inDisparityCopy atIndex:0];
 
   [v12 drawIndexedPrimitives:4 indexCount:self->_indexCountHomography indexType:0 indexBuffer:self->_indexBufferHomography indexBufferOffset:0];
   [v12 endEncoding];

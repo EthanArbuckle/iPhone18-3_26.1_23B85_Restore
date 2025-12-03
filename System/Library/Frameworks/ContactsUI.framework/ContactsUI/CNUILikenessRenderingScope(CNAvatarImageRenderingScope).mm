@@ -6,7 +6,7 @@
 
 - (uint64_t)avatarViewBackgroundStyle
 {
-  result = [a1 backgroundStyle];
+  result = [self backgroundStyle];
   if ((result - 1) >= 4)
   {
     return 0;

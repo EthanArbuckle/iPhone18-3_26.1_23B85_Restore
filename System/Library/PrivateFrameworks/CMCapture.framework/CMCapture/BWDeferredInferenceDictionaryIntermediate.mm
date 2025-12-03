@@ -1,48 +1,48 @@
 @interface BWDeferredInferenceDictionaryIntermediate
-- (BWDeferredInferenceDictionaryIntermediate)initWithCoder:(id)a3;
-- (BWDeferredInferenceDictionaryIntermediate)initWithDictionary:(id)a3 tag:(id)a4 inferenceAttachmentKey:(id)a5 portType:(id)a6 URL:(id)a7;
+- (BWDeferredInferenceDictionaryIntermediate)initWithCoder:(id)coder;
+- (BWDeferredInferenceDictionaryIntermediate)initWithDictionary:(id)dictionary tag:(id)tag inferenceAttachmentKey:(id)key portType:(id)type URL:(id)l;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWDeferredInferenceDictionaryIntermediate
 
-- (BWDeferredInferenceDictionaryIntermediate)initWithDictionary:(id)a3 tag:(id)a4 inferenceAttachmentKey:(id)a5 portType:(id)a6 URL:(id)a7
+- (BWDeferredInferenceDictionaryIntermediate)initWithDictionary:(id)dictionary tag:(id)tag inferenceAttachmentKey:(id)key portType:(id)type URL:(id)l
 {
   v11.receiver = self;
   v11.super_class = BWDeferredInferenceDictionaryIntermediate;
-  v9 = [(BWDeferredDictionaryIntermediate *)&v11 initWithDictionary:a3 tag:a4 URL:a7];
+  v9 = [(BWDeferredDictionaryIntermediate *)&v11 initWithDictionary:dictionary tag:tag URL:l];
   if (v9)
   {
-    v9->_inferenceAttachmentKey = a5;
-    v9->_portType = a6;
+    v9->_inferenceAttachmentKey = key;
+    v9->_portType = type;
   }
 
   return v9;
 }
 
-- (BWDeferredInferenceDictionaryIntermediate)initWithCoder:(id)a3
+- (BWDeferredInferenceDictionaryIntermediate)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BWDeferredInferenceDictionaryIntermediate;
   v4 = [(BWDeferredDictionaryIntermediate *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_inferenceAttachmentKey = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"inferenceAttachmentKey"];
-    v4->_portType = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"portType"];
+    v4->_inferenceAttachmentKey = [coder decodeObjectOfClass:objc_opt_class() forKey:@"inferenceAttachmentKey"];
+    v4->_portType = [coder decodeObjectOfClass:objc_opt_class() forKey:@"portType"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BWDeferredInferenceDictionaryIntermediate;
   [(BWDeferredDictionaryIntermediate *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_inferenceAttachmentKey forKey:@"inferenceAttachmentKey"];
-  [a3 encodeObject:self->_portType forKey:@"portType"];
+  [coder encodeObject:self->_inferenceAttachmentKey forKey:@"inferenceAttachmentKey"];
+  [coder encodeObject:self->_portType forKey:@"portType"];
 }
 
 - (void)dealloc

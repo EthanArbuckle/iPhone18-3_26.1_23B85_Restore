@@ -1,17 +1,17 @@
 @interface PMGeneratedPasswordsLogController
-+ (id)viewControllerWithDelegate:(id)a3 searchTerm:(id)a4 alwaysShowSearchBar:(BOOL)a5;
++ (id)viewControllerWithDelegate:(id)delegate searchTerm:(id)term alwaysShowSearchBar:(BOOL)bar;
 - (_TtC17PasswordManagerUI33PMGeneratedPasswordsLogController)init;
 @end
 
 @implementation PMGeneratedPasswordsLogController
 
-+ (id)viewControllerWithDelegate:(id)a3 searchTerm:(id)a4 alwaysShowSearchBar:(BOOL)a5
++ (id)viewControllerWithDelegate:(id)delegate searchTerm:(id)term alwaysShowSearchBar:(BOOL)bar
 {
-  v5 = a5;
+  barCopy = bar;
   v6 = sub_21CB855C4();
   v8 = v7;
   v9 = swift_unknownObjectRetain();
-  v10 = _s17PasswordManagerUI33PMGeneratedPasswordsLogControllerC04viewG04with10searchTerm19alwaysShowSearchBarSo06UIViewG0CSo0deF8Delegate_p_SSSbtFZ_0(v9, v6, v8, v5);
+  v10 = _s17PasswordManagerUI33PMGeneratedPasswordsLogControllerC04viewG04with10searchTerm19alwaysShowSearchBarSo06UIViewG0CSo0deF8Delegate_p_SSSbtFZ_0(v9, v6, v8, barCopy);
   swift_unknownObjectRelease();
 
   return v10;

@@ -1,5 +1,5 @@
 @interface AXARViewElement
-- (AXARViewElement)initWithAccessibilityContainer:(id)a3 entityWrapper:(id)a4;
+- (AXARViewElement)initWithAccessibilityContainer:(id)container entityWrapper:(id)wrapper;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (CGRect)_boundingRect;
@@ -15,16 +15,16 @@
 
 @implementation AXARViewElement
 
-- (AXARViewElement)initWithAccessibilityContainer:(id)a3 entityWrapper:(id)a4
+- (AXARViewElement)initWithAccessibilityContainer:(id)container entityWrapper:(id)wrapper
 {
-  v7 = a4;
+  wrapperCopy = wrapper;
   v11.receiver = self;
   v11.super_class = AXARViewElement;
-  v8 = [(AXARViewElement *)&v11 initWithAccessibilityContainer:a3];
+  v8 = [(AXARViewElement *)&v11 initWithAccessibilityContainer:container];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_entityWrapper, a4);
+    objc_storeStrong(&v8->_entityWrapper, wrapper);
   }
 
   return v9;
@@ -39,11 +39,11 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(AXARViewElement *)self entityWrapper];
-  if ([v3 safeBoolForKey:@"isEntityAccessible"])
+  entityWrapper = [(AXARViewElement *)self entityWrapper];
+  if ([entityWrapper safeBoolForKey:@"isEntityAccessible"])
   {
-    v4 = [(AXARViewElement *)self entityWrapper];
-    v5 = [v4 safeBoolForKey:@"isEntityActive"];
+    entityWrapper2 = [(AXARViewElement *)self entityWrapper];
+    v5 = [entityWrapper2 safeBoolForKey:@"isEntityActive"];
   }
 
   else
@@ -56,9 +56,9 @@
 
 - (CGRect)_boundingRect
 {
-  v2 = [(AXARViewElement *)self _arView];
-  v3 = v2;
-  if (v2)
+  _arView = [(AXARViewElement *)self _arView];
+  v3 = _arView;
+  if (_arView)
   {
     v13 = 0;
     v14 = &v13;
@@ -66,7 +66,7 @@
     v16 = &unk_29C200CD1;
     v17 = 0u;
     v18 = 0u;
-    v12 = v2;
+    v12 = _arView;
     AXPerformSafeBlock();
     v4 = v14[4];
     v5 = v14[5];
@@ -114,7 +114,7 @@ void __32__AXARViewElement__boundingRect__block_invoke(uint64_t a1)
   v8 = v7;
   v10 = v9;
   objc_opt_class();
-  v11 = [(AXARViewElement *)self _arView];
+  _arView = [(AXARViewElement *)self _arView];
   v12 = __UIAccessibilityCastAsClass();
 
   [v12 bounds];
@@ -160,8 +160,8 @@ void __32__AXARViewElement__boundingRect__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(AXARViewElement *)self entityWrapper];
-    v5 = [v6 safeValueForKey:@"entityLabel"];
+    entityWrapper = [(AXARViewElement *)self entityWrapper];
+    v5 = [entityWrapper safeValueForKey:@"entityLabel"];
 
     [(AXARViewElement *)self _boundingRect];
     if (CGRectIsNull(v11))
@@ -227,8 +227,8 @@ void __38__AXARViewElement_accessibilityTraits__block_invoke(uint64_t a1)
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(AXARViewElement *)self _arView];
-    [v15 accessibilityFrame];
+    _arView = [(AXARViewElement *)self _arView];
+    [_arView accessibilityFrame];
     v31 = v16;
     LODWORD(v16) = v5;
     v32 = [v6 descriptionForDistance:v16 objectFrame:v8 viewBounds:{v10, v12, v14, *&v31, v17, v18, v19}];
@@ -274,8 +274,8 @@ void __45__AXARViewElement__accessibilityScrollStatus__block_invoke(uint64_t a1)
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(AXARViewElement *)self entityWrapper];
-  v4 = [v3 safeBoolForKey:@"entitySupportsAccessibilityActivateAction"];
+  entityWrapper = [(AXARViewElement *)self entityWrapper];
+  v4 = [entityWrapper safeBoolForKey:@"entitySupportsAccessibilityActivateAction"];
 
   if (v4)
   {
@@ -283,7 +283,7 @@ void __45__AXARViewElement__accessibilityScrollStatus__block_invoke(uint64_t a1)
     v19 = 3221225472;
     v20 = __40__AXARViewElement_accessibilityActivate__block_invoke;
     v21 = &unk_29F2F1600;
-    v22 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
     return 1;
   }
@@ -296,7 +296,7 @@ void __45__AXARViewElement__accessibilityScrollStatus__block_invoke(uint64_t a1)
   v9 = 3221225472;
   v10 = __40__AXARViewElement_accessibilityActivate__block_invoke_2;
   v11 = &unk_29F2F15D8;
-  v12 = self;
+  selfCopy2 = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v5 = *(v15 + 24);
@@ -326,24 +326,24 @@ void __40__AXARViewElement_accessibilityActivate__block_invoke_2(uint64_t a1)
 
 - (id)accessibilityCustomContent
 {
-  v2 = [(AXARViewElement *)self entityWrapper];
-  v3 = [v2 safeValueForKey:@"entityAccessibilityCustomContent"];
+  entityWrapper = [(AXARViewElement *)self entityWrapper];
+  v3 = [entityWrapper safeValueForKey:@"entityAccessibilityCustomContent"];
 
   return v3;
 }
 
 - (id)accessibilityCustomActions
 {
-  v2 = [(AXARViewElement *)self entityWrapper];
-  v3 = [v2 safeValueForKey:@"entityAccessibilityCustomActions"];
+  entityWrapper = [(AXARViewElement *)self entityWrapper];
+  v3 = [entityWrapper safeValueForKey:@"entityAccessibilityCustomActions"];
 
   return v3;
 }
 
 - (id)accessibilityCustomRotors
 {
-  v2 = [(AXARViewElement *)self entityWrapper];
-  v3 = [v2 safeValueForKey:@"entityAccessibilityCustomRotors"];
+  entityWrapper = [(AXARViewElement *)self entityWrapper];
+  v3 = [entityWrapper safeValueForKey:@"entityAccessibilityCustomRotors"];
 
   return v3;
 }

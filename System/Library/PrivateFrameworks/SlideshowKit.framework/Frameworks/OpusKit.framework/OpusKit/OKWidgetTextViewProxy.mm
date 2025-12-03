@@ -1,26 +1,26 @@
 @interface OKWidgetTextViewProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
 - (CGRect)textViewFrame;
-- (OKWidgetTextViewProxy)initWithWidget:(id)a3;
+- (OKWidgetTextViewProxy)initWithWidget:(id)widget;
 - (UIEdgeInsets)settingTextEdgeInsets;
 - (UIEdgeInsets)textEdgeInsets;
 - (id)layoutSettingsKeys;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (void)dealloc;
-- (void)setSettingTextEdgeInsets:(UIEdgeInsets)a3;
+- (void)setSettingTextEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation OKWidgetTextViewProxy
 
-- (OKWidgetTextViewProxy)initWithWidget:(id)a3
+- (OKWidgetTextViewProxy)initWithWidget:(id)widget
 {
   v4.receiver = self;
   v4.super_class = OKWidgetTextViewProxy;
-  return [(OKWidgetViewProxy *)&v4 initWithWidget:a3];
+  return [(OKWidgetViewProxy *)&v4 initWithWidget:widget];
 }
 
 - (void)dealloc
@@ -76,7 +76,7 @@
 + (id)supportedSettings
 {
   v24[9] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetTextViewProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v23[0] = @"textAlignment";
@@ -141,11 +141,11 @@
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetTextViewProxy;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
 - (UIEdgeInsets)settingTextEdgeInsets
@@ -163,12 +163,12 @@
   return result;
 }
 
-- (void)setSettingTextEdgeInsets:(UIEdgeInsets)a3
+- (void)setSettingTextEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(OKWidgetViewProxy *)self layoutFactor];
   self->_textEdgeInsets.top = top * v8;
   self->_textEdgeInsets.left = left * v9;
@@ -178,33 +178,33 @@
   [(OKWidgetTextViewProxy *)self setNeedsLayout];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v4.receiver = self;
   v4.super_class = OKWidgetTextViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:display];
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v4.receiver = self;
   v4.super_class = OKWidgetTextViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:warmup];
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v4.receiver = self;
   v4.super_class = OKWidgetTextViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForUnload:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForUnload:unload];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetTextView"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetTextView"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

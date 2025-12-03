@@ -1,7 +1,7 @@
 @interface JSASessionStorage
 + (id)sharedInstance;
 - (JSASessionStorage)init;
-- (void)removeItem:(id)a3;
+- (void)removeItem:(id)item;
 @end
 
 @implementation JSASessionStorage
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_859C;
   block[3] = &unk_B25E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_CC0A0 != -1)
   {
     dispatch_once(&qword_CC0A0, block);
@@ -38,9 +38,9 @@
   return v2;
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     [(NSMutableDictionary *)self->_values removeObjectForKey:?];
   }

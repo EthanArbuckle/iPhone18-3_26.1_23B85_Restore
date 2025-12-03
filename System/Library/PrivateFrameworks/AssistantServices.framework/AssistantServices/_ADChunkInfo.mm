@@ -1,35 +1,35 @@
 @interface _ADChunkInfo
-- (_ADChunkInfo)initWithDictionary:(id)a3;
-- (id)anchorWithKey:(id)a3 appID:(id)a4 syncType:(id)a5;
+- (_ADChunkInfo)initWithDictionary:(id)dictionary;
+- (id)anchorWithKey:(id)key appID:(id)d syncType:(id)type;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation _ADChunkInfo
 
-- (id)anchorWithKey:(id)a3 appID:(id)a4 syncType:(id)a5
+- (id)anchorWithKey:(id)key appID:(id)d syncType:(id)type
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dCopy = d;
+  typeCopy = type;
+  keyCopy = key;
   v11 = objc_alloc_init(SASyncAnchor);
-  [v11 setKey:v10];
+  [v11 setKey:keyCopy];
 
   [v11 setValidity:self->_validity];
   [v11 setGeneration:self->_postGen];
-  if (v8 | v9)
+  if (dCopy | typeCopy)
   {
     v12 = objc_alloc_init(SASyncAppMetaData);
-    if (v9)
+    if (typeCopy)
     {
-      v16 = v9;
+      v16 = typeCopy;
       v13 = [NSArray arrayWithObjects:&v16 count:1];
       [v12 setSyncSlots:v13];
     }
 
-    if (v8)
+    if (dCopy)
     {
       v14 = objc_alloc_init(SASyncAppIdentifyingInfo);
-      [v14 setBundleId:v8];
+      [v14 setBundleId:dCopy];
       [v12 setAppIdentifyingInfo:v14];
     }
 
@@ -58,9 +58,9 @@
   return v4;
 }
 
-- (_ADChunkInfo)initWithDictionary:(id)a3
+- (_ADChunkInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _ADChunkInfo;
   v5 = [(_ADChunkInfo *)&v13 init];
@@ -70,7 +70,7 @@
     {
       objc_opt_class();
       v6 = SASyncAnchorGenerationPListKey;
-      v7 = [v4 objectForKey:SASyncAnchorGenerationPListKey];
+      v7 = [dictionaryCopy objectForKey:SASyncAnchorGenerationPListKey];
       if (objc_opt_isKindOfClass())
       {
         [(_ADChunkInfo *)v5 setPostGen:v7];
@@ -89,7 +89,7 @@
         }
       }
 
-      v10 = [v4 objectForKey:SASyncAnchorValidityPListKey];
+      v10 = [dictionaryCopy objectForKey:SASyncAnchorValidityPListKey];
 
       if (objc_opt_isKindOfClass())
       {

@@ -1,35 +1,35 @@
 @interface APSigningAuthority
-- (APSigningAuthority)initWithPoolName:(id)a3;
-- (BOOL)_createAttribute:(void *)a3 enableStashing:(BOOL *)a4;
-- (BOOL)_verifyContext:(void *)a3;
+- (APSigningAuthority)initWithPoolName:(id)name;
+- (BOOL)_createAttribute:(void *)attribute enableStashing:(BOOL *)stashing;
+- (BOOL)_verifyContext:(void *)context;
 - (BOOL)isUsed;
 - (BOOL)usingStashedContext;
-- (id)_createContext:(void *)a3 requestStashed:(BOOL *)a4;
-- (id)_failureString:(int64_t)a3;
-- (id)_getEncodedStringFromFPDIDataRef:(void *)a3 withLength:(unsigned int)a4;
-- (id)_signatureForData:(id)a3 error:(id *)a4;
-- (id)signatureForData:(id)a3 error:(id *)a4;
-- (void)_destroyObject:(void *)a3 ofType:(int64_t)a4;
-- (void)_sendInitRequest:(id)a3 forContextRef:(void *)a4 withCompletion:(id)a5;
-- (void)_sendSetupRequest:(id)a3 forContextRef:(unint64_t *)a4 withCompletion:(id)a5;
-- (void)_setFailureStateWithError:(int64_t)a3 finalState:(unint64_t)a4;
-- (void)_setFailureStateWithErrorAndDestroyContext:(int64_t)a3 finalState:(unint64_t)a4 contextRef:(void *)a5;
-- (void)_setupNewContext:(BOOL)a3 withCompletion:(id)a4;
-- (void)setState:(int64_t)a3;
+- (id)_createContext:(void *)context requestStashed:(BOOL *)stashed;
+- (id)_failureString:(int64_t)string;
+- (id)_getEncodedStringFromFPDIDataRef:(void *)ref withLength:(unsigned int)length;
+- (id)_signatureForData:(id)data error:(id *)error;
+- (id)signatureForData:(id)data error:(id *)error;
+- (void)_destroyObject:(void *)object ofType:(int64_t)type;
+- (void)_sendInitRequest:(id)request forContextRef:(void *)ref withCompletion:(id)completion;
+- (void)_sendSetupRequest:(id)request forContextRef:(unint64_t *)ref withCompletion:(id)completion;
+- (void)_setFailureStateWithError:(int64_t)error finalState:(unint64_t)state;
+- (void)_setFailureStateWithErrorAndDestroyContext:(int64_t)context finalState:(unint64_t)state contextRef:(void *)ref;
+- (void)_setupNewContext:(BOOL)context withCompletion:(id)completion;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation APSigningAuthority
 
-- (APSigningAuthority)initWithPoolName:(id)a3
+- (APSigningAuthority)initWithPoolName:(id)name
 {
   v54[7] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nameCopy = name;
   v51.receiver = self;
   v51.super_class = APSigningAuthority;
   v9 = [(APSigningAuthority *)&v51 init];
   if (v9)
   {
-    v50 = v5;
+    v50 = nameCopy;
     v10 = objc_msgSend_null(MEMORY[0x1E695DFB0], v6, v7, v8);
     v54[0] = v10;
     v14 = objc_msgSend_null(MEMORY[0x1E695DFB0], v11, v12, v13);
@@ -51,7 +51,7 @@
 
     if (objc_msgSend_isAllowedClient(APSigningClientValidator, v42, v43, v44))
     {
-      objc_storeStrong(&v9->_poolName, a3);
+      objc_storeStrong(&v9->_poolName, name);
       v9->_failureError = 7204;
       v9->_state = 17005;
       v46 = APPerfLogForCategory(0x30uLL);
@@ -67,23 +67,23 @@
       AnalyticsSendEvent();
     }
 
-    v5 = v50;
+    nameCopy = v50;
   }
 
   v48 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (void)_setupNewContext:(BOOL)a3 withCompletion:(id)a4
+- (void)_setupNewContext:(BOOL)context withCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v5 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v6 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v35 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BADC1000, v6, OS_LOG_TYPE_INFO, "Setting up new context for authority %p", buf, 0xCu);
   }
 
@@ -92,10 +92,10 @@
   v15 = objc_msgSend_poolName(self, v9, v10, v11);
   if (!v15 || (objc_msgSend_poolName(self, v12, v13, v14), v16 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend_length(v16, v17, v18, v19) == 0, v16, v15, v20))
   {
-    v33 = 0;
+    contextCopy = 0;
   }
 
-  v21 = objc_msgSend__createContext_requestStashed_(self, v12, &v32, &v33);
+  v21 = objc_msgSend__createContext_requestStashed_(self, v12, &v32, &contextCopy);
   if (v21)
   {
     objc_initWeak(buf, self);
@@ -107,8 +107,8 @@
     objc_copyWeak(v30, buf);
     v30[1] = v32;
     v28[4] = self;
-    v31 = v33;
-    v29 = v5;
+    v31 = contextCopy;
+    v29 = completionCopy;
     objc_msgSend__sendInitRequest_forContextRef_withCompletion_(self, v23, v21, v22, v28);
 
     objc_destroyWeak(v30);
@@ -121,18 +121,18 @@
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 136642819;
-      v35 = "[APSigningAuthority _setupNewContext:withCompletion:]";
+      selfCopy = "[APSigningAuthority _setupNewContext:withCompletion:]";
       _os_log_impl(&dword_1BADC1000, v24, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: initRequest nil, FPDI creation failed.", buf, 0xCu);
     }
 
     objc_msgSend_setState_(self, v25, 7200, v26);
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createContext:(void *)a3 requestStashed:(BOOL *)a4
+- (id)_createContext:(void *)context requestStashed:(BOOL *)stashed
 {
   v80[1] = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
@@ -149,7 +149,7 @@
   }
 
   v72[8] = 0;
-  *v72 = a4 != 0;
+  *v72 = stashed != 0;
   v15 = 0;
   if (objc_msgSend__createAttribute_enableStashing_(self, v14, &v72[1], v72))
   {
@@ -159,23 +159,23 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v76 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1BADC1000, v16, OS_LOG_TYPE_INFO, "Signing Authority %p creating context", buf, 0xCu);
     }
 
-    inited = objc_msgSend_FPDICreateContext_withAttribute_initRequest_initRequestLength_(APFPDIWrapper, v17, a3, *&v72[1], &v71, &v70);
+    inited = objc_msgSend_FPDICreateContext_withAttribute_initRequest_initRequestLength_(APFPDIWrapper, v17, context, *&v72[1], &v71, &v70);
     if (inited == -44663 || (v20 = inited, inited == -44802))
     {
       v21 = APLogForCategory(0x30uLL);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v76 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1BADC1000, v21, OS_LOG_TYPE_INFO, "Attempting to re-create stashed context for authority %p as non-stashed", buf, 0xCu);
       }
 
       objc_msgSend_FPDISetStashingIsEnabled_forAttribute_(APFPDIWrapper, v22, 0, *&v72[1]);
-      v24 = objc_msgSend_FPDICreateContext_withAttribute_initRequest_initRequestLength_(APFPDIWrapper, v23, a3, *&v72[1], &v71, &v70);
+      v24 = objc_msgSend_FPDICreateContext_withAttribute_initRequest_initRequestLength_(APFPDIWrapper, v23, context, *&v72[1], &v71, &v70);
       if (v24 == -44663)
       {
         objc_msgSend__setFailureStateWithError_finalState_(self, v19, 7201, 3);
@@ -217,7 +217,7 @@ LABEL_27:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
         *buf = 136643075;
-        v76 = "[APSigningAuthority _createContext:requestStashed:]";
+        selfCopy3 = "[APSigningAuthority _createContext:requestStashed:]";
         v77 = 1025;
         v78 = v20;
         _os_log_impl(&dword_1BADC1000, v45, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: Attribution set privacy level error, FPDI creation failed. Status: %{private}d", buf, 0x12u);
@@ -241,7 +241,7 @@ LABEL_27:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v76 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1BADC1000, v49, OS_LOG_TYPE_INFO, "Signing Authority %p finished creating context", buf, 0xCu);
       }
     }
@@ -273,10 +273,10 @@ LABEL_28:
   return v15;
 }
 
-- (BOOL)_createAttribute:(void *)a3 enableStashing:(BOOL *)a4
+- (BOOL)_createAttribute:(void *)attribute enableStashing:(BOOL *)stashing
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_FPDIInitAttribute_(APFPDIWrapper, a2, a3, a4) && objc_msgSend_FPDISetHighPrivacyLevelForAttribute_(APFPDIWrapper, v7, *a3, v8))
+  if (objc_msgSend_FPDIInitAttribute_(APFPDIWrapper, a2, attribute, stashing) && objc_msgSend_FPDISetHighPrivacyLevelForAttribute_(APFPDIWrapper, v7, *attribute, v8))
   {
     v9 = APLogForCategory(0x30uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -287,7 +287,7 @@ LABEL_28:
     }
 
     objc_msgSend__setFailureStateWithError_finalState_(self, v10, 7200, 4);
-    objc_msgSend__destroyObject_ofType_(self, v11, a3, 1205);
+    objc_msgSend__destroyObject_ofType_(self, v11, attribute, 1205);
     v24 = @"finalStatus";
     v25[0] = &unk_1F3909058;
     v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v12, v25, &v24, 1);
@@ -298,7 +298,7 @@ LABEL_28:
 
   else
   {
-    IsEnabled_forAttribute = objc_msgSend_FPDISetStashingIsEnabled_forAttribute_(APFPDIWrapper, v7, a4 != 0, *a3);
+    IsEnabled_forAttribute = objc_msgSend_FPDISetStashingIsEnabled_forAttribute_(APFPDIWrapper, v7, stashing != 0, *attribute);
     if (IsEnabled_forAttribute)
     {
       v16 = IsEnabled_forAttribute;
@@ -308,7 +308,7 @@ LABEL_28:
         v18 = @"NO";
         v20 = 67109634;
         *v21 = v16;
-        if (a4)
+        if (stashing)
         {
           v18 = @"YES";
         }
@@ -316,11 +316,11 @@ LABEL_28:
         *&v21[4] = 2112;
         *&v21[6] = v18;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1BADC1000, v17, OS_LOG_TYPE_ERROR, "Error %d setting stash attribute to %@ for signing authority %p", &v20, 0x1Cu);
       }
 
-      *a4 = 0;
+      *stashing = 0;
     }
 
     result = 1;
@@ -330,16 +330,16 @@ LABEL_28:
   return result;
 }
 
-- (void)_sendInitRequest:(id)a3 forContextRef:(void *)a4 withCompletion:(id)a5
+- (void)_sendInitRequest:(id)request forContextRef:(void *)ref withCompletion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v50 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BADC1000, v10, OS_LOG_TYPE_INFO, "Signing Authority %p sending init request", buf, 0xCu);
   }
 
@@ -360,8 +360,8 @@ LABEL_28:
   objc_copyWeak(v47, buf);
   aBlock[4] = self;
   v47[1] = *&Current;
-  v47[2] = a4;
-  v17 = v9;
+  v47[2] = ref;
+  v17 = completionCopy;
   v46 = v17;
   v18 = _Block_copy(aBlock);
   if (!objc_msgSend_isAppleInternalInstall(APSystemInternal, v19, v20, v21))
@@ -378,7 +378,7 @@ LABEL_28:
 
 LABEL_11:
     v22 = objc_alloc_init(APSigningServerRequestor);
-    objc_msgSend_sendRequestForData_requestType_completionHandler_(v22, v41, v8, 1301, v18);
+    objc_msgSend_sendRequestForData_requestType_completionHandler_(v22, v41, requestCopy, 1301, v18);
     goto LABEL_12;
   }
 
@@ -400,16 +400,16 @@ LABEL_12:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendSetupRequest:(id)a3 forContextRef:(unint64_t *)a4 withCompletion:(id)a5
+- (void)_sendSetupRequest:(id)request forContextRef:(unint64_t *)ref withCompletion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v53 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BADC1000, v10, OS_LOG_TYPE_INFO, "Signing Authority %p sending setup request", buf, 0xCu);
   }
 
@@ -430,8 +430,8 @@ LABEL_12:
   objc_copyWeak(v50, buf);
   aBlock[4] = self;
   v50[1] = *&Current;
-  v50[2] = a4;
-  v17 = v9;
+  v50[2] = ref;
+  v17 = completionCopy;
   v49 = v17;
   v18 = _Block_copy(aBlock);
   if (!objc_msgSend_isAppleInternalInstall(APSystemInternal, v19, v20, v21))
@@ -453,7 +453,7 @@ LABEL_11:
     v44[2] = sub_1BAF2880C;
     v44[3] = &unk_1E7F1D520;
     v45 = v18;
-    objc_msgSend_sendRequestForData_requestType_completionHandler_(v22, v42, v8, 1302, v44);
+    objc_msgSend_sendRequestForData_requestType_completionHandler_(v22, v42, requestCopy, 1302, v44);
     v41 = &v45;
     goto LABEL_12;
   }
@@ -477,14 +477,14 @@ LABEL_12:
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_verifyContext:(void *)a3
+- (BOOL)_verifyContext:(void *)context
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1BADC1000, v5, OS_LOG_TYPE_INFO, "Signing Authority %p verifying stored context", buf, 0xCu);
   }
 
@@ -494,7 +494,7 @@ LABEL_12:
   v17 = objc_msgSend_length(v8, v14, v15, v16);
   v30 = 0;
   v29 = 0;
-  v19 = objc_msgSend_FPDISignWithContext_message_messageLength_rawSignature_rawSignatureLength_(APFPDIWrapper, v18, a3, v13, v17, &v30, &v29);
+  v19 = objc_msgSend_FPDISignWithContext_message_messageLength_rawSignature_rawSignatureLength_(APFPDIWrapper, v18, context, v13, v17, &v30, &v29);
   v20 = APLogForCategory(0x30uLL);
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
   if (v19)
@@ -502,7 +502,7 @@ LABEL_12:
     if (v21)
     {
       *buf = 134217984;
-      v34 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1BADC1000, v20, OS_LOG_TYPE_INFO, "FPDI context for signing authority %p is not valid.", buf, 0xCu);
     }
 
@@ -517,7 +517,7 @@ LABEL_12:
     if (v21)
     {
       *buf = 134217984;
-      v34 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1BADC1000, v20, OS_LOG_TYPE_INFO, "Signing Authority %p verified context", buf, 0xCu);
     }
 
@@ -530,26 +530,26 @@ LABEL_12:
   return v19 == 0;
 }
 
-- (void)_destroyObject:(void *)a3 ofType:(int64_t)a4
+- (void)_destroyObject:(void *)object ofType:(int64_t)type
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a4 == 1207)
+  if (type == 1207)
   {
-    if (!objc_msgSend_FPDIDestroyContext_(APFPDIWrapper, a2, a3, 1207))
+    if (!objc_msgSend_FPDIDestroyContext_(APFPDIWrapper, a2, object, 1207))
     {
       goto LABEL_10;
     }
   }
 
-  else if (a4 == 1206)
+  else if (type == 1206)
   {
-    if (!objc_msgSend_FPDIDestroyData_(APFPDIWrapper, a2, a3, 1206))
+    if (!objc_msgSend_FPDIDestroyData_(APFPDIWrapper, a2, object, 1206))
     {
       goto LABEL_10;
     }
   }
 
-  else if (a4 != 1205 || !objc_msgSend_FPDIDestroyAttribute_(APFPDIWrapper, a2, a3, 1205))
+  else if (type != 1205 || !objc_msgSend_FPDIDestroyAttribute_(APFPDIWrapper, a2, object, 1205))
   {
 LABEL_10:
     v5 = APLogForCategory(0x30uLL);
@@ -558,7 +558,7 @@ LABEL_10:
       v10 = 136643075;
       v11 = "[APSigningAuthority _destroyObject:ofType:]";
       v12 = 2050;
-      v13 = a4;
+      typeCopy2 = type;
       v6 = "[%{sensitive}s]: Successfully destroyed an object of type %{public}ld";
       v7 = v5;
       v8 = OS_LOG_TYPE_INFO;
@@ -574,7 +574,7 @@ LABEL_10:
     v10 = 136643075;
     v11 = "[APSigningAuthority _destroyObject:ofType:]";
     v12 = 2050;
-    v13 = a4;
+    typeCopy2 = type;
     v6 = "[%{sensitive}s]: Unsuccessfully attempted to destroy an object of type %{public}ld, object possibly no longer exists.";
     v7 = v5;
     v8 = OS_LOG_TYPE_DEBUG;
@@ -587,31 +587,31 @@ LABEL_13:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getEncodedStringFromFPDIDataRef:(void *)a3 withLength:(unsigned int)a4
+- (id)_getEncodedStringFromFPDIDataRef:(void *)ref withLength:(unsigned int)length
 {
-  v4 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], a2, a3, a4);
+  v4 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], a2, ref, length);
   v7 = objc_msgSend_base64EncodedStringWithOptions_(v4, v5, 0, v6);
 
   return v7;
 }
 
-- (id)_failureString:(int64_t)a3
+- (id)_failureString:(int64_t)string
 {
-  if ((a3 - 7200) <= 6)
+  if ((string - 7200) <= 6)
   {
-    a2 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, off_1E7F1D5B8[a3 - 7200], v3, self);
+    a2 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, off_1E7F1D5B8[string - 7200], v3, self);
   }
 
   return a2;
 }
 
-- (void)_setFailureStateWithError:(int64_t)a3 finalState:(unint64_t)a4
+- (void)_setFailureStateWithError:(int64_t)error finalState:(unint64_t)state
 {
   v18 = *MEMORY[0x1E69E9840];
-  objc_msgSend_setFailureError_(self, a2, a3, a4);
-  objc_msgSend_setFinalState_(self, v7, a4, v8);
+  objc_msgSend_setFailureError_(self, a2, error, state);
+  objc_msgSend_setFinalState_(self, v7, state, v8);
   objc_msgSend_setState_(self, v9, 17003, v10);
-  v13 = objc_msgSend__failureString_(self, v11, a3, v12);
+  v13 = objc_msgSend__failureString_(self, v11, error, v12);
   v14 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
@@ -623,28 +623,28 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setFailureStateWithErrorAndDestroyContext:(int64_t)a3 finalState:(unint64_t)a4 contextRef:(void *)a5
+- (void)_setFailureStateWithErrorAndDestroyContext:(int64_t)context finalState:(unint64_t)state contextRef:(void *)ref
 {
-  objc_msgSend__setFailureStateWithError_finalState_(self, a2, a3, a4);
-  if (a5)
+  objc_msgSend__setFailureStateWithError_finalState_(self, a2, context, state);
+  if (ref)
   {
     v11 = objc_msgSend_poolName(self, v7, v8, v9);
-    objc_msgSend_removeContextForPool_contextIdentifier_(APSigningContextStorage, v10, v11, a5);
+    objc_msgSend_removeContextForPool_contextIdentifier_(APSigningContextStorage, v10, v11, ref);
   }
 }
 
-- (id)_signatureForData:(id)a3 error:(id *)a4
+- (id)_signatureForData:(id)data error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   if (objc_msgSend_state(self, v7, v8, v9) == 17002)
   {
     v13 = objc_msgSend_signingContextStorage(self, v10, v11, v12);
     objc_msgSend_setUsed_(v13, v14, 1, v15);
 
-    v16 = v6;
+    v16 = dataCopy;
     v20 = objc_msgSend_bytes(v16, v17, v18, v19);
-    v24 = objc_msgSend_length(v6, v21, v22, v23);
+    v24 = objc_msgSend_length(dataCopy, v21, v22, v23);
     v63 = 0;
     v62 = 0;
     v28 = objc_msgSend_signingContextStorage(self, v25, v26, v27);
@@ -653,14 +653,14 @@ LABEL_13:
 
     if (v34)
     {
-      if (a4)
+      if (error)
       {
         v37 = MEMORY[0x1E696ABC0];
         v64 = *MEMORY[0x1E696A578];
         v38 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v35, @"failed with error code %d.", v36, v34);
         v65 = v38;
         v40 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v39, &v65, &v64, 1);
-        *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v37, v41, @"com.apple.ap.signingAuthorityErrorDomain", 7202, v40);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v37, v41, @"com.apple.ap.signingAuthorityErrorDomain", 7202, v40);
       }
 
       v42 = APLogForCategory(0x30uLL);
@@ -698,13 +698,13 @@ LABEL_13:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v54 = MEMORY[0x1E696ABC0];
       v70 = *MEMORY[0x1E696A578];
       v71[0] = @"Signing authority is not setup, can not sign data";
       v55 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v10, v71, &v70, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v54, v56, @"com.apple.ap.signingAuthorityErrorDomain", 7202, v55);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v54, v56, @"com.apple.ap.signingAuthorityErrorDomain", 7202, v55);
     }
 
     v57 = APLogForCategory(0x30uLL);
@@ -741,7 +741,7 @@ LABEL_13:
   return v8;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = APLogForCategory(0x30uLL);
@@ -758,18 +758,18 @@ LABEL_13:
       v10 = off_1E7F1D5F0[v9 - 17000];
     }
 
-    if ((a3 - 17000) > 4)
+    if ((state - 17000) > 4)
     {
       v11 = @"invalid";
     }
 
     else
     {
-      v11 = off_1E7F1D5F0[a3 - 17000];
+      v11 = off_1E7F1D5F0[state - 17000];
     }
 
     v13 = 134218498;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
@@ -777,14 +777,14 @@ LABEL_13:
     _os_log_impl(&dword_1BADC1000, v5, OS_LOG_TYPE_INFO, "SigningAuthority %p state %@ -> %@", &v13, 0x20u);
   }
 
-  self->_state = a3;
+  self->_state = state;
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)signatureForData:(id)a3 error:(id *)a4
+- (id)signatureForData:(id)data error:(id *)error
 {
-  v6 = objc_msgSend_sha256(a3, a2, a3, a4);
-  v8 = objc_msgSend__signatureForData_error_(self, v7, v6, a4);
+  v6 = objc_msgSend_sha256(data, a2, data, error);
+  v8 = objc_msgSend__signatureForData_error_(self, v7, v6, error);
 
   return v8;
 }

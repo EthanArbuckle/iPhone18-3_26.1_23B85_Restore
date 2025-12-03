@@ -1,7 +1,7 @@
 @interface CRLKVOToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRLKVOToken)init;
-- (CRLKVOToken)initWithObserver:(id)a3 target:(id)a4 keyPath:(id)a5 context:(void *)a6;
+- (CRLKVOToken)initWithObserver:(id)observer target:(id)target keyPath:(id)path context:(void *)context;
 @end
 
 @implementation CRLKVOToken
@@ -56,49 +56,49 @@
   objc_exception_throw(v10);
 }
 
-- (CRLKVOToken)initWithObserver:(id)a3 target:(id)a4 keyPath:(id)a5 context:(void *)a6
+- (CRLKVOToken)initWithObserver:(id)observer target:(id)target keyPath:(id)path context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  observerCopy = observer;
+  targetCopy = target;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = CRLKVOToken;
   v13 = [(CRLKVOToken *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_observer = v10;
-    v13->_target = v11;
-    v15 = [v12 copy];
+    v13->_observer = observerCopy;
+    v13->_target = targetCopy;
+    v15 = [pathCopy copy];
     keyPath = v14->_keyPath;
     v14->_keyPath = v15;
 
-    v14->_context = a6;
+    v14->_context = context;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6 && (context = self->_context, context == [v6 context]))
   {
     observer = self->_observer;
-    v10 = [v6 observer];
-    if (observer == v10)
+    observer = [v6 observer];
+    if (observer == observer)
     {
       keyPath = self->_keyPath;
-      v12 = [v6 keyPath];
-      v8 = [(NSString *)keyPath isEqualToString:v12];
+      keyPath = [v6 keyPath];
+      v8 = [(NSString *)keyPath isEqualToString:keyPath];
     }
 
     else

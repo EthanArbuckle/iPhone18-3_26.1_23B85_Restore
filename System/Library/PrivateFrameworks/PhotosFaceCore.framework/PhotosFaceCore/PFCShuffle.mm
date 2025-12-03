@@ -1,23 +1,23 @@
 @interface PFCShuffle
-- (PFCShuffle)initWithPeople:(id)a3 pets:(BOOL)a4 nature:(BOOL)a5 cityscape:(BOOL)a6;
+- (PFCShuffle)initWithPeople:(id)people pets:(BOOL)pets nature:(BOOL)nature cityscape:(BOOL)cityscape;
 - (id)description;
 @end
 
 @implementation PFCShuffle
 
-- (PFCShuffle)initWithPeople:(id)a3 pets:(BOOL)a4 nature:(BOOL)a5 cityscape:(BOOL)a6
+- (PFCShuffle)initWithPeople:(id)people pets:(BOOL)pets nature:(BOOL)nature cityscape:(BOOL)cityscape
 {
-  v11 = a3;
+  peopleCopy = people;
   v15.receiver = self;
   v15.super_class = PFCShuffle;
   v12 = [(PFCShuffle *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_people, a3);
-    v13->_pets = a4;
-    v13->_nature = a5;
-    v13->_cityscape = a6;
+    objc_storeStrong(&v12->_people, people);
+    v13->_pets = pets;
+    v13->_nature = nature;
+    v13->_cityscape = cityscape;
   }
 
   return v13;

@@ -1,16 +1,16 @@
 @interface TRANSITPbRegionPreloadManifest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMarkets:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addMarkets:(id)markets;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExpirationAgeSecs:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasExpirationAgeSecs:(BOOL)secs;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TRANSITPbRegionPreloadManifest
@@ -23,9 +23,9 @@
   [(TRANSITPbRegionPreloadManifest *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasExpirationAgeSecs:(BOOL)a3
+- (void)setHasExpirationAgeSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 2;
   }
@@ -53,7 +53,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addMarkets:(id)a3
+- (void)addMarkets:(id)markets
 {
   markets = self->_markets;
   if (!markets)
@@ -62,7 +62,7 @@
     self->_markets = markets;
   }
 
-  [(NSMutableArray *)markets addObject:a3];
+  [(NSMutableArray *)markets addObject:markets];
 }
 
 - (id)description
@@ -142,7 +142,7 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -203,7 +203,7 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) == 0)
@@ -214,8 +214,8 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 1) = *&self->_generationTimeSecs;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = *&self->_generationTimeSecs;
+    *(to + 36) |= 1u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_5;
@@ -224,8 +224,8 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  *(a3 + 8) = self->_version;
-  *(a3 + 36) |= 4u;
+  *(to + 8) = self->_version;
+  *(to + 36) |= 4u;
   has = self->_has;
   if (has)
   {
@@ -236,29 +236,29 @@ LABEL_3:
   if ((has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 4) = self->_expirationAgeSecs;
-    *(a3 + 36) |= 2u;
+    *(to + 4) = self->_expirationAgeSecs;
+    *(to + 36) |= 2u;
   }
 
 LABEL_5:
   if ([(TRANSITPbRegionPreloadManifest *)self marketsCount])
   {
-    [a3 clearMarkets];
-    v6 = [(TRANSITPbRegionPreloadManifest *)self marketsCount];
-    if (v6)
+    [to clearMarkets];
+    marketsCount = [(TRANSITPbRegionPreloadManifest *)self marketsCount];
+    if (marketsCount)
     {
-      v7 = v6;
+      v7 = marketsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addMarkets:{-[TRANSITPbRegionPreloadManifest marketsAtIndex:](self, "marketsAtIndex:", i)}];
+        [to addMarkets:{-[TRANSITPbRegionPreloadManifest marketsAtIndex:](self, "marketsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -312,7 +312,7 @@ LABEL_5:
           objc_enumerationMutation(markets);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v6 addMarkets:v13];
       }
 
@@ -325,20 +325,20 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_version != *(a3 + 8))
+      if ((*(equal + 36) & 4) == 0 || self->_version != *(equal + 8))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -347,32 +347,32 @@ LABEL_19:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_generationTimeSecs != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_generationTimeSecs != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
       goto LABEL_19;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_expirationAgeSecs != *(a3 + 4))
+      if ((*(equal + 36) & 2) == 0 || self->_expirationAgeSecs != *(equal + 4))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
       goto LABEL_19;
     }
 
     markets = self->_markets;
-    if (markets | *(a3 + 3))
+    if (markets | *(equal + 3))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)markets isEqual:?];
@@ -448,14 +448,14 @@ LABEL_9:
   return v12 ^ v8 ^ v13 ^ [(NSMutableArray *)self->_markets hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = *(a3 + 36);
+  v4 = *(from + 36);
   if ((v4 & 4) != 0)
   {
-    self->_version = *(a3 + 8);
+    self->_version = *(from + 8);
     *&self->_has |= 4u;
-    v4 = *(a3 + 36);
+    v4 = *(from + 36);
     if ((v4 & 1) == 0)
     {
 LABEL_3:
@@ -468,17 +468,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 36) & 1) == 0)
+  else if ((*(from + 36) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_generationTimeSecs = *(a3 + 1);
+  self->_generationTimeSecs = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 36) & 2) != 0)
+  if ((*(from + 36) & 2) != 0)
   {
 LABEL_4:
-    self->_expirationAgeSecs = *(a3 + 4);
+    self->_expirationAgeSecs = *(from + 4);
     *&self->_has |= 2u;
   }
 
@@ -487,7 +487,7 @@ LABEL_5:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

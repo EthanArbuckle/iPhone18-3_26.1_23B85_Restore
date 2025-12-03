@@ -1,25 +1,25 @@
 @interface TMLReference
-+ (id)referenceForTarget:(id)a3;
-+ (id)referenceWithBlock:(id)a3;
++ (id)referenceForTarget:(id)target;
++ (id)referenceWithBlock:(id)block;
 - (NSString)description;
-- (TMLReference)initWithTarget:(id)a3 block:(id)a4;
+- (TMLReference)initWithTarget:(id)target block:(id)block;
 - (id)value;
 @end
 
 @implementation TMLReference
 
-- (TMLReference)initWithTarget:(id)a3 block:(id)a4
+- (TMLReference)initWithTarget:(id)target block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  targetCopy = target;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = TMLReference;
   v9 = [(TMLReference *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_target, a3);
-    v11 = MEMORY[0x27438BB60](v8);
+    objc_storeStrong(&v9->_target, target);
+    v11 = MEMORY[0x27438BB60](blockCopy);
     block = v10->_block;
     v10->_block = v11;
   }
@@ -27,20 +27,20 @@
   return v10;
 }
 
-+ (id)referenceForTarget:(id)a3
++ (id)referenceForTarget:(id)target
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v8 = objc_msgSend_initWithTarget_block_(v5, v6, v7, v4, 0);
+  targetCopy = target;
+  v5 = [self alloc];
+  v8 = objc_msgSend_initWithTarget_block_(v5, v6, v7, targetCopy, 0);
 
   return v8;
 }
 
-+ (id)referenceWithBlock:(id)a3
++ (id)referenceWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v8 = objc_msgSend_initWithTarget_block_(v5, v6, v7, 0, v4);
+  blockCopy = block;
+  v5 = [self alloc];
+  v8 = objc_msgSend_initWithTarget_block_(v5, v6, v7, 0, blockCopy);
 
   return v8;
 }

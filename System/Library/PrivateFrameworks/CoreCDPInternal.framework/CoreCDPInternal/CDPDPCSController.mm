@@ -1,18 +1,18 @@
 @interface CDPDPCSController
-- (BOOL)_shoudAllowKeyFetchForService:(id)a3;
-- (BOOL)isCloudProtectionEnabledLocally:(id *)a3;
-- (BOOL)isCompanionInKeychainCircle:(id *)a3;
+- (BOOL)_shoudAllowKeyFetchForService:(id)service;
+- (BOOL)isCloudProtectionEnabledLocally:(id *)locally;
+- (BOOL)isCompanionInKeychainCircle:(id *)circle;
 - (CDPDPCSController)init;
-- (CDPDPCSController)initWithContext:(id)a3 pcsProxy:(id)a4;
-- (_PCSIdentitySetData)_getOrSetupIdentitySetRef:(id *)a3;
-- (id)_fetchKeyForPCSIdentityRef:(_PCSIdentityData *)a3;
-- (id)pcsKeysForService:(id)a3 error:(id *)a4;
-- (void)_checkiCDPStatusNetwork:(BOOL)a3 withCompletion:(id)a4;
-- (void)_enableCDPWithCompletion:(id)a3;
-- (void)_reauthenticateAndCheckiCDPStatusWithNetwork:(BOOL)a3 completion:(id)a4;
-- (void)enableCDPWithCompletion:(id)a3;
-- (void)recoverAndSynchronizeKeysWithCompletion:(id)a3;
-- (void)recoverKeysWithCompletion:(id)a3;
+- (CDPDPCSController)initWithContext:(id)context pcsProxy:(id)proxy;
+- (_PCSIdentitySetData)_getOrSetupIdentitySetRef:(id *)ref;
+- (id)_fetchKeyForPCSIdentityRef:(_PCSIdentityData *)ref;
+- (id)pcsKeysForService:(id)service error:(id *)error;
+- (void)_checkiCDPStatusNetwork:(BOOL)network withCompletion:(id)completion;
+- (void)_enableCDPWithCompletion:(id)completion;
+- (void)_reauthenticateAndCheckiCDPStatusWithNetwork:(BOOL)network completion:(id)completion;
+- (void)enableCDPWithCompletion:(id)completion;
+- (void)recoverAndSynchronizeKeysWithCompletion:(id)completion;
+- (void)recoverKeysWithCompletion:(id)completion;
 @end
 
 @implementation CDPDPCSController
@@ -32,26 +32,26 @@
   return v2;
 }
 
-- (CDPDPCSController)initWithContext:(id)a3 pcsProxy:(id)a4
+- (CDPDPCSController)initWithContext:(id)context pcsProxy:(id)proxy
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  proxyCopy = proxy;
   v12.receiver = self;
   v12.super_class = CDPDPCSController;
   v9 = [(CDPDPCSController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pcsProxy, a4);
-    objc_storeStrong(&v10->_context, a3);
+    objc_storeStrong(&v9->_pcsProxy, proxy);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;
 }
 
-- (void)recoverKeysWithCompletion:(id)a3
+- (void)recoverKeysWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,8 +64,8 @@
   v7[2] = __47__CDPDPCSController_recoverKeysWithCompletion___block_invoke;
   v7[3] = &unk_278E24AE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CDPDPCSController *)self checkiCDPStatusNetwork:1 withCompletion:v7];
 }
 
@@ -103,9 +103,9 @@ void __47__CDPDPCSController_recoverKeysWithCompletion___block_invoke(uint64_t a
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recoverAndSynchronizeKeysWithCompletion:(id)a3
+- (void)recoverAndSynchronizeKeysWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,8 +118,8 @@ void __47__CDPDPCSController_recoverKeysWithCompletion___block_invoke(uint64_t a
   v7[2] = __61__CDPDPCSController_recoverAndSynchronizeKeysWithCompletion___block_invoke;
   v7[3] = &unk_278E24AE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CDPDPCSController *)self checkiCDPStatusNetwork:1 withCompletion:v7];
 }
 
@@ -182,9 +182,9 @@ void __59__CDPDPCSController_checkiCDPStatusNetwork_withCompletion___block_invok
   }
 }
 
-- (void)_reauthenticateAndCheckiCDPStatusWithNetwork:(BOOL)a3 completion:(id)a4
+- (void)_reauthenticateAndCheckiCDPStatusWithNetwork:(BOOL)network completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -196,10 +196,10 @@ void __59__CDPDPCSController_checkiCDPStatusNetwork_withCompletion___block_invok
   v10[1] = 3221225472;
   v10[2] = __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_completion___block_invoke;
   v10[3] = &unk_278E24B38;
-  v12 = a3;
+  networkCopy = network;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(CDPContext *)context reauthenticateUserWithCompletion:v10];
 }
 
@@ -223,10 +223,10 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
   return MEMORY[0x2821F9730]();
 }
 
-- (void)_checkiCDPStatusNetwork:(BOOL)a3 withCompletion:(id)a4
+- (void)_checkiCDPStatusNetwork:(BOOL)network withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  networkCopy = network;
+  completionCopy = completion;
   v17 = 0;
   v7 = [(CDPDPCSController *)self _getOrSetupIdentitySetRef:&v17];
   v8 = v17;
@@ -239,11 +239,11 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
     }
 
     pcsProxy = self->_pcsProxy;
-    if (v4)
+    if (networkCopy)
     {
-      v11 = [(CDPDPCSController *)self _contextSetupDictionary];
+      _contextSetupDictionary = [(CDPDPCSController *)self _contextSetupDictionary];
       v16 = 0;
-      v12 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentitySetIsInICDPNetwork:v7 options:v11 error:&v16];
+      v12 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentitySetIsInICDPNetwork:v7 options:_contextSetupDictionary error:&v16];
       v13 = v16;
     }
 
@@ -260,21 +260,21 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
       [(CDPDPCSController *)v12 _checkiCDPStatusNetwork:v13 withCompletion:v14];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v12, v13);
+      completionCopy[2](completionCopy, v12, v13);
     }
 
     CFRelease(v7);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 }
 
-- (BOOL)isCloudProtectionEnabledLocally:(id *)a3
+- (BOOL)isCloudProtectionEnabledLocally:(id *)locally
 {
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -283,10 +283,10 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "Checking local iCDP state...", buf, 2u);
   }
 
-  v6 = [(CDPDPCSController *)self _contextSetupDictionary];
+  _contextSetupDictionary = [(CDPDPCSController *)self _contextSetupDictionary];
   pcsProxy = self->_pcsProxy;
   v16 = 0;
-  v8 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityCreateWithInfo:v6 error:&v16];
+  v8 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityCreateWithInfo:_contextSetupDictionary error:&v16];
   v9 = v16;
   v10 = v9;
   if (v8)
@@ -297,11 +297,11 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
     CFRelease(v8);
   }
 
-  else if (a3)
+  else if (locally)
   {
     v13 = v9;
     v12 = 0;
-    *a3 = v10;
+    *locally = v10;
   }
 
   else
@@ -312,7 +312,7 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
   return v12;
 }
 
-- (BOOL)isCompanionInKeychainCircle:(id *)a3
+- (BOOL)isCompanionInKeychainCircle:(id *)circle
 {
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -321,10 +321,10 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "Checking companion circle state...", buf, 2u);
   }
 
-  v6 = [(CDPDPCSController *)self _contextSetupDictionary];
+  _contextSetupDictionary = [(CDPDPCSController *)self _contextSetupDictionary];
   pcsProxy = self->_pcsProxy;
   v16 = 0;
-  v8 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityCreateWithInfo:v6 error:&v16];
+  v8 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityCreateWithInfo:_contextSetupDictionary error:&v16];
   v9 = v16;
   v10 = v9;
   if (v8)
@@ -335,11 +335,11 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
     CFRelease(v8);
   }
 
-  else if (a3)
+  else if (circle)
   {
     v13 = v9;
     v12 = 0;
-    *a3 = v10;
+    *circle = v10;
   }
 
   else
@@ -350,12 +350,12 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
   return v12;
 }
 
-- (_PCSIdentitySetData)_getOrSetupIdentitySetRef:(id *)a3
+- (_PCSIdentitySetData)_getOrSetupIdentitySetRef:(id *)ref
 {
-  v4 = [(CDPDPCSController *)self _contextSetupDictionary];
+  _contextSetupDictionary = [(CDPDPCSController *)self _contextSetupDictionary];
   pcsProxy = self->_pcsProxy;
   v14 = 0;
-  v6 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityCreateWithInfo:v4 error:&v14];
+  v6 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityCreateWithInfo:_contextSetupDictionary error:&v14];
   v7 = v14;
   if (v6)
   {
@@ -370,7 +370,7 @@ uint64_t __77__CDPDPCSController__reauthenticateAndCheckiCDPStatusWithNetwork_co
 
   v9 = self->_pcsProxy;
   v13 = v7;
-  v6 = [(CDPProtectedCloudStorageProxy *)v9 pcsIdentitySetupWithInfo:v4 error:&v13];
+  v6 = [(CDPProtectedCloudStorageProxy *)v9 pcsIdentitySetupWithInfo:_contextSetupDictionary error:&v13];
   v10 = v13;
 
   if (v6)
@@ -399,16 +399,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)enableCDPWithCompletion:(id)a3
+- (void)enableCDPWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__CDPDPCSController_enableCDPWithCompletion___block_invoke;
   v6[3] = &unk_278E24AE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CDPDPCSController *)self _enableCDPWithCompletion:v6];
 }
 
@@ -465,34 +465,34 @@ uint64_t __45__CDPDPCSController_enableCDPWithCompletion___block_invoke_17(uint6
   return MEMORY[0x2821F9730]();
 }
 
-- (void)_enableCDPWithCompletion:(id)a3
+- (void)_enableCDPWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CDPDPCSController *)self _contextSetupDictionary];
+  completionCopy = completion;
+  _contextSetupDictionary = [(CDPDPCSController *)self _contextSetupDictionary];
   pcsProxy = self->_pcsProxy;
   v9 = 0;
-  v7 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityMigrateToiCDPWithInfo:v5 error:&v9];
+  v7 = [(CDPProtectedCloudStorageProxy *)pcsProxy pcsIdentityMigrateToiCDPWithInfo:_contextSetupDictionary error:&v9];
   v8 = v9;
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v7, v8);
+    completionCopy[2](completionCopy, v7, v8);
   }
 }
 
-- (id)pcsKeysForService:(id)a3 error:(id *)a4
+- (id)pcsKeysForService:(id)service error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  serviceCopy = service;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v6;
+    v29 = serviceCopy;
     _os_log_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEFAULT, "Checking PCS identities for service: %@", buf, 0xCu);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (!v6)
+  if (!serviceCopy)
   {
     v17 = _CDPLogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -500,13 +500,13 @@ uint64_t __45__CDPDPCSController_enableCDPWithCompletion___block_invoke_17(uint6
       [CDPDPCSController pcsKeysForService:v17 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v18 = MEMORY[0x277CCA9B8];
       v19 = -5003;
 LABEL_20:
       [v18 cdp_errorWithCode:v19];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_27;
     }
 
@@ -515,7 +515,7 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  if (![(CDPDPCSController *)self _shoudAllowKeyFetchForService:v6])
+  if (![(CDPDPCSController *)self _shoudAllowKeyFetchForService:serviceCopy])
   {
     v20 = _CDPLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -523,7 +523,7 @@ LABEL_21:
       [CDPDPCSController pcsKeysForService:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v18 = MEMORY[0x277CCA9B8];
       v19 = -5302;
@@ -533,19 +533,19 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v9 = [(CDPDPCSController *)self _contextSetupDictionary];
+  _contextSetupDictionary = [(CDPDPCSController *)self _contextSetupDictionary];
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [CDPDPCSController pcsKeysForService:error:];
   }
 
-  v11 = [(CDPProtectedCloudStorageProxy *)self->_pcsProxy pcsIdentityCreateWithInfo:v9 error:a4];
+  v11 = [(CDPProtectedCloudStorageProxy *)self->_pcsProxy pcsIdentityCreateWithInfo:_contextSetupDictionary error:error];
   if (v11)
   {
     v12 = v11;
     v26 = *MEMORY[0x277D430D8];
-    v27 = v6;
+    v27 = serviceCopy;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v14 = _CDPLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -560,12 +560,12 @@ LABEL_21:
     CFRelease(v12);
   }
 
-  else if (a4)
+  else if (error)
   {
     v21 = _CDPLogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [CDPDPCSController pcsKeysForService:a4 error:v21];
+      [CDPDPCSController pcsKeysForService:error error:v21];
     }
 
     v16 = 0;
@@ -596,7 +596,7 @@ void __45__CDPDPCSController_pcsKeysForService_error___block_invoke(uint64_t a1,
   }
 }
 
-- (id)_fetchKeyForPCSIdentityRef:(_PCSIdentityData *)a3
+- (id)_fetchKeyForPCSIdentityRef:(_PCSIdentityData *)ref
 {
   _PCSIdentityGetKey();
   v3 = _PCSKeyCopyExportedPrivateKey();
@@ -609,16 +609,16 @@ void __45__CDPDPCSController_pcsKeysForService_error___block_invoke(uint64_t a1,
   return v4;
 }
 
-- (BOOL)_shoudAllowKeyFetchForService:(id)a3
+- (BOOL)_shoudAllowKeyFetchForService:(id)service
 {
   v3 = _shoudAllowKeyFetchForService__onceToken;
-  v4 = a3;
+  serviceCopy = service;
   if (v3 != -1)
   {
     [CDPDPCSController _shoudAllowKeyFetchForService:];
   }
 
-  v5 = [_shoudAllowKeyFetchForService__allowedServices containsObject:v4];
+  v5 = [_shoudAllowKeyFetchForService__allowedServices containsObject:serviceCopy];
 
   return v5;
 }

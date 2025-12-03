@@ -1,6 +1,6 @@
 @interface AVMetadataTrackedFacesObject
-+ (id)trackedFacesWithTime:(id *)a3 faceTrackingDictionary:(id)a4 input:(id)a5;
-- (AVMetadataTrackedFacesObject)initWithTime:(id *)a3 faceTrackingDictionary:(id)a4 input:(id)a5;
++ (id)trackedFacesWithTime:(id *)time faceTrackingDictionary:(id)dictionary input:(id)input;
+- (AVMetadataTrackedFacesObject)initWithTime:(id *)time faceTrackingDictionary:(id)dictionary input:(id)input;
 - (NSDictionary)payload;
 - (id)description;
 - (void)dealloc;
@@ -8,7 +8,7 @@
 
 @implementation AVMetadataTrackedFacesObject
 
-- (AVMetadataTrackedFacesObject)initWithTime:(id *)a3 faceTrackingDictionary:(id)a4 input:(id)a5
+- (AVMetadataTrackedFacesObject)initWithTime:(id *)time faceTrackingDictionary:(id)dictionary input:(id)input
 {
   v13 = *MEMORY[0x1E6960C70];
   v14 = *(MEMORY[0x1E6960C70] + 16);
@@ -18,15 +18,15 @@
   v9 = *(MEMORY[0x1E695F058] + 24);
   v16.receiver = self;
   v16.super_class = AVMetadataTrackedFacesObject;
-  v15 = *a3;
-  v10 = [(AVMetadataObject *)&v16 initWithType:@"trackedFaces" time:&v15 duration:&v13 bounds:0 optionalInfoDict:0 originalMetadataObject:a5 sourceCaptureInput:v6, v7, v8, v9];
+  v15 = *time;
+  v10 = [(AVMetadataObject *)&v16 initWithType:@"trackedFaces" time:&v15 duration:&v13 bounds:0 optionalInfoDict:0 originalMetadataObject:input sourceCaptureInput:v6, v7, v8, v9];
   if (v10)
   {
     v11 = objc_alloc_init(AVMetadataTrackedFacesObjectInternal);
     v10->_trackedFacesObjectInternal = v11;
     if (v11)
     {
-      [(AVMetadataTrackedFacesObjectInternal *)v11 setPayload:a4];
+      [(AVMetadataTrackedFacesObjectInternal *)v11 setPayload:dictionary];
     }
 
     else
@@ -39,11 +39,11 @@
   return v10;
 }
 
-+ (id)trackedFacesWithTime:(id *)a3 faceTrackingDictionary:(id)a4 input:(id)a5
++ (id)trackedFacesWithTime:(id *)time faceTrackingDictionary:(id)dictionary input:(id)input
 {
   v8 = objc_alloc(objc_opt_class());
-  v10 = *a3;
-  return [v8 initWithTime:&v10 faceTrackingDictionary:a4 input:a5];
+  v10 = *time;
+  return [v8 initWithTime:&v10 faceTrackingDictionary:dictionary input:input];
 }
 
 - (void)dealloc
@@ -58,9 +58,9 @@
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
   v5 = [v3 stringWithFormat:@"<%@: %p", NSStringFromClass(v4), self];
-  v22 = self;
-  v6 = [(AVMetadataTrackedFacesObject *)self payload];
-  v7 = [(NSDictionary *)v6 objectForKeyedSubscript:@"lite_shareddata"];
+  selfCopy = self;
+  payload = [(AVMetadataTrackedFacesObject *)self payload];
+  v7 = [(NSDictionary *)payload objectForKeyedSubscript:@"lite_shareddata"];
   if (v7)
   {
     v35 = 0u;
@@ -102,7 +102,7 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v23 = [(NSDictionary *)v6 objectForKeyedSubscript:@"tracked_faces"];
+    v23 = [(NSDictionary *)payload objectForKeyedSubscript:@"tracked_faces"];
     v14 = [v23 countByEnumeratingWithState:&v30 objects:v29 count:16];
     if (v14)
     {
@@ -138,9 +138,9 @@
     }
   }
 
-  if (v22)
+  if (selfCopy)
   {
-    [(AVMetadataObject *)v22 time];
+    [(AVMetadataObject *)selfCopy time];
     v20 = v27;
   }
 
@@ -156,9 +156,9 @@
 
 - (NSDictionary)payload
 {
-  v2 = [(AVMetadataTrackedFacesObjectInternal *)self->_trackedFacesObjectInternal payload];
+  payload = [(AVMetadataTrackedFacesObjectInternal *)self->_trackedFacesObjectInternal payload];
 
-  return v2;
+  return payload;
 }
 
 - (void)initWithTime:(void *)a1 faceTrackingDictionary:input:.cold.1(void *a1)

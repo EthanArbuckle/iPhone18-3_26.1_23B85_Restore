@@ -1,5 +1,5 @@
 @interface FBAAdaptiveWebView
-- (id)loadHTMLString:(id)a3 baseURL:(id)a4;
+- (id)loadHTMLString:(id)string baseURL:(id)l;
 - (void)layoutSubviews;
 - (void)updateViewport;
 @end
@@ -14,11 +14,11 @@
   [(FBAAdaptiveWebView *)self updateViewport];
 }
 
-- (id)loadHTMLString:(id)a3 baseURL:(id)a4
+- (id)loadHTMLString:(id)string baseURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = FBAAdaptiveWebView;
-  v5 = [(FBAAdaptiveWebView *)&v7 loadHTMLString:a3 baseURL:a4];
+  v5 = [(FBAAdaptiveWebView *)&v7 loadHTMLString:string baseURL:l];
   [(FBAAdaptiveWebView *)self updateViewport];
 
   return v5;

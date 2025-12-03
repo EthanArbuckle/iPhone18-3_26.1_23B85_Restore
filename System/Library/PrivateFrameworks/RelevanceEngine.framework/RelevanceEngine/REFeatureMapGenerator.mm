@@ -1,19 +1,19 @@
 @interface REFeatureMapGenerator
-- (REFeatureMapGenerator)initWithFeatureList:(id)a3;
+- (REFeatureMapGenerator)initWithFeatureList:(id)list;
 - (id)createFeatureMap;
 @end
 
 @implementation REFeatureMapGenerator
 
-- (REFeatureMapGenerator)initWithFeatureList:(id)a3
+- (REFeatureMapGenerator)initWithFeatureList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v14.receiver = self;
   v14.super_class = REFeatureMapGenerator;
   v5 = [(REFeatureMapGenerator *)&v14 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] sharedKeySetForKeys:v4];
+    v6 = [MEMORY[0x277CBEB38] sharedKeySetForKeys:listCopy];
     v7 = [MEMORY[0x277CBEB38] dictionaryWithSharedKeySet:v6];
     featureIndexMap = v5->_featureIndexMap;
     v5->_featureIndexMap = v7;
@@ -28,7 +28,7 @@
     v10[3] = &unk_2785F9C58;
     v11 = v5;
     v12 = v13;
-    [v4 enumerateObjectsUsingBlock:v10];
+    [listCopy enumerateObjectsUsingBlock:v10];
 
     _Block_object_dispose(v13, 8);
   }

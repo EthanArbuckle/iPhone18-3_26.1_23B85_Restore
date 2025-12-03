@@ -1,18 +1,18 @@
 @interface CubicSpringTimingParameters
 - (_TtC12NowPlayingUI27CubicSpringTimingParameters)init;
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDampingRatio:(double)a3 initialVelocity:(CGVector)a4;
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDuration:(double)a3 bounce:(double)a4 initialVelocity:(CGVector)a5;
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(CGVector)a6;
-- (id)copyWithZone:(void *)a3;
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDampingRatio:(double)ratio initialVelocity:(CGVector)velocity;
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDuration:(double)duration bounce:(double)bounce initialVelocity:(CGVector)velocity;
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(CGVector)velocity;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation CubicSpringTimingParameters
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_D8750(a3, v7);
+  selfCopy = self;
+  sub_D8750(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_1453AC();
@@ -28,13 +28,13 @@
   return [(CubicSpringTimingParameters *)&v3 init];
 }
 
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC12NowPlayingUI27CubicSpringTimingParameters_springCubicTimingParameters) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CubicSpringTimingParameters();
-  v4 = a3;
-  v5 = [(CubicSpringTimingParameters *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CubicSpringTimingParameters *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -43,34 +43,34 @@
   return v5;
 }
 
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDampingRatio:(double)a3 initialVelocity:(CGVector)a4
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDampingRatio:(double)ratio initialVelocity:(CGVector)velocity
 {
-  dy = a4.dy;
-  dx = a4.dx;
+  dy = velocity.dy;
+  dx = velocity.dx;
   *(&self->super.super.isa + OBJC_IVAR____TtC12NowPlayingUI27CubicSpringTimingParameters_springCubicTimingParameters) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CubicSpringTimingParameters();
-  return [(CubicSpringTimingParameters *)&v8 initWithDampingRatio:a3 initialVelocity:dx, dy];
+  return [(CubicSpringTimingParameters *)&v8 initWithDampingRatio:ratio initialVelocity:dx, dy];
 }
 
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(CGVector)a6
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(CGVector)velocity
 {
-  dy = a6.dy;
-  dx = a6.dx;
+  dy = velocity.dy;
+  dx = velocity.dx;
   *(&self->super.super.isa + OBJC_IVAR____TtC12NowPlayingUI27CubicSpringTimingParameters_springCubicTimingParameters) = 0;
   v12.receiver = self;
   v12.super_class = type metadata accessor for CubicSpringTimingParameters();
-  return [(CubicSpringTimingParameters *)&v12 initWithMass:a3 stiffness:a4 damping:a5 initialVelocity:dx, dy];
+  return [(CubicSpringTimingParameters *)&v12 initWithMass:mass stiffness:stiffness damping:damping initialVelocity:dx, dy];
 }
 
-- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDuration:(double)a3 bounce:(double)a4 initialVelocity:(CGVector)a5
+- (_TtC12NowPlayingUI27CubicSpringTimingParameters)initWithDuration:(double)duration bounce:(double)bounce initialVelocity:(CGVector)velocity
 {
-  dy = a5.dy;
-  dx = a5.dx;
+  dy = velocity.dy;
+  dx = velocity.dx;
   *(&self->super.super.isa + OBJC_IVAR____TtC12NowPlayingUI27CubicSpringTimingParameters_springCubicTimingParameters) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CubicSpringTimingParameters();
-  return [(CubicSpringTimingParameters *)&v10 initWithDuration:a3 bounce:a4 initialVelocity:dx, dy];
+  return [(CubicSpringTimingParameters *)&v10 initWithDuration:duration bounce:bounce initialVelocity:dx, dy];
 }
 
 @end

@@ -1,54 +1,54 @@
 @interface SBFlexibleWindowingAutoLayoutController
-- (BOOL)_isDockVisibleForBoundingBox:(CGRect)a3 configuration:(id)a4 slideOverItem:(id)a5;
-- (BOOL)_isStripVisibleForBoundingBox:(CGRect)a3 configuration:(id)a4 effectiveStripWidth:(double)a5 slideOverItem:(id)a6;
-- (CGRect)_boundingBoxForSpace:(id)a3 configuration:(id)a4;
-- (CGRect)_effectiveStageAreaForSnappingItem:(id)a3 inSpace:(id)a4 configuration:(id)a5;
-- (CGRect)_stageAreaForBoundingBox:(CGRect)a3 configuration:(id)a4 effectiveStripWidth:(double)a5 slideOverItem:(id)a6;
-- (id)spaceByPerformingFlexibleAutoLayoutWithSpace:(id)a3 configuration:(id)a4 options:(unint64_t)a5 itemsNeedingPositionSnapping:(id)a6 itemsNeedingSizeSnapping:(id)a7;
-- (int64_t)_snapPositionOfItem:(id)a3 ifNecessaryInSpace:(id)a4 autoLayoutConfiguration:(id)a5 snappedEdgesMask:(int64_t)a6;
-- (int64_t)_snapPositionOfItem:(id)a3 toRect:(CGRect)a4 inSpace:(id)a5 autoLayoutConfiguration:(id)a6 considerAdjacency:(BOOL)a7 snappedEdgesMask:(int64_t)a8 itemForPotentialPairing:(id)a9;
-- (int64_t)_snapSizeOfItem:(id)a3 ifNecessaryForSpace:(id)a4 configuration:(id)a5 snappedEdgesMask:(int64_t)a6;
-- (int64_t)_snapSizeOfItem:(id)a3 toRect:(CGRect)a4 inSpace:(id)a5 windowingConfiguration:(id)a6 considerAdjacency:(BOOL)a7 snappedEdgesMask:(int64_t)a8 newFrame:(CGRect *)a9;
-- (void)_clusterForExposeWithRects:(CGRect *)a3 count:(int64_t)a4 stage:(CGRect)a5 padding:(CGSize)a6 screenScale:(double)a7 fullScreenRectsIfAny:(BOOL *)a8;
-- (void)_updateCompactedFramesForSpace:(id)a3 configuration:(id)a4;
-- (void)_updateExposeFramesForSpace:(id)a3 configuration:(id)a4;
-- (void)_updateGroupingsOnSpace:(id)a3 windowingConfiguration:(id)a4;
-- (void)_updateOcclusionStatusForItemsInSpace:(id)a3 containerBounds:(CGRect)a4;
-- (void)_updateOccupiedAreaForSpace:(id)a3 configuration:(id)a4;
-- (void)_updateOwnedRectEdgesForSpace:(id)a3 configuration:(id)a4;
+- (BOOL)_isDockVisibleForBoundingBox:(CGRect)box configuration:(id)configuration slideOverItem:(id)item;
+- (BOOL)_isStripVisibleForBoundingBox:(CGRect)box configuration:(id)configuration effectiveStripWidth:(double)width slideOverItem:(id)item;
+- (CGRect)_boundingBoxForSpace:(id)space configuration:(id)configuration;
+- (CGRect)_effectiveStageAreaForSnappingItem:(id)item inSpace:(id)space configuration:(id)configuration;
+- (CGRect)_stageAreaForBoundingBox:(CGRect)box configuration:(id)configuration effectiveStripWidth:(double)width slideOverItem:(id)item;
+- (id)spaceByPerformingFlexibleAutoLayoutWithSpace:(id)space configuration:(id)configuration options:(unint64_t)options itemsNeedingPositionSnapping:(id)snapping itemsNeedingSizeSnapping:(id)sizeSnapping;
+- (int64_t)_snapPositionOfItem:(id)item ifNecessaryInSpace:(id)space autoLayoutConfiguration:(id)configuration snappedEdgesMask:(int64_t)mask;
+- (int64_t)_snapPositionOfItem:(id)item toRect:(CGRect)rect inSpace:(id)space autoLayoutConfiguration:(id)configuration considerAdjacency:(BOOL)adjacency snappedEdgesMask:(int64_t)mask itemForPotentialPairing:(id)pairing;
+- (int64_t)_snapSizeOfItem:(id)item ifNecessaryForSpace:(id)space configuration:(id)configuration snappedEdgesMask:(int64_t)mask;
+- (int64_t)_snapSizeOfItem:(id)item toRect:(CGRect)rect inSpace:(id)space windowingConfiguration:(id)configuration considerAdjacency:(BOOL)adjacency snappedEdgesMask:(int64_t)mask newFrame:(CGRect *)frame;
+- (void)_clusterForExposeWithRects:(CGRect *)rects count:(int64_t)count stage:(CGRect)stage padding:(CGSize)padding screenScale:(double)scale fullScreenRectsIfAny:(BOOL *)any;
+- (void)_updateCompactedFramesForSpace:(id)space configuration:(id)configuration;
+- (void)_updateExposeFramesForSpace:(id)space configuration:(id)configuration;
+- (void)_updateGroupingsOnSpace:(id)space windowingConfiguration:(id)configuration;
+- (void)_updateOcclusionStatusForItemsInSpace:(id)space containerBounds:(CGRect)bounds;
+- (void)_updateOccupiedAreaForSpace:(id)space configuration:(id)configuration;
+- (void)_updateOwnedRectEdgesForSpace:(id)space configuration:(id)configuration;
 @end
 
 @implementation SBFlexibleWindowingAutoLayoutController
 
-- (id)spaceByPerformingFlexibleAutoLayoutWithSpace:(id)a3 configuration:(id)a4 options:(unint64_t)a5 itemsNeedingPositionSnapping:(id)a6 itemsNeedingSizeSnapping:(id)a7
+- (id)spaceByPerformingFlexibleAutoLayoutWithSpace:(id)space configuration:(id)configuration options:(unint64_t)options itemsNeedingPositionSnapping:(id)snapping itemsNeedingSizeSnapping:(id)sizeSnapping
 {
   v151 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v121 = a6;
-  v120 = a7;
-  v12 = [v11 windowingConfiguration];
-  [v11 containerBounds];
+  spaceCopy = space;
+  configurationCopy = configuration;
+  snappingCopy = snapping;
+  sizeSnappingCopy = sizeSnapping;
+  windowingConfiguration = [configurationCopy windowingConfiguration];
+  [configurationCopy containerBounds];
   v129 = v14;
   v130 = v13;
   v134 = v16;
   v135 = v15;
-  v17 = [v10 mutableCopy];
-  v18 = [v17 autoLayoutItems];
-  v19 = [v18 count];
+  v17 = [spaceCopy mutableCopy];
+  autoLayoutItems = [v17 autoLayoutItems];
+  v19 = [autoLayoutItems count];
 
   if (v19)
   {
-    v116 = v10;
-    [v12 minimumOnscreenWindowMargin];
+    v116 = spaceCopy;
+    [windowingConfiguration minimumOnscreenWindowMargin];
     v21 = v20;
     v144 = 0u;
     v145 = 0u;
     v146 = 0u;
     v147 = 0u;
     v118 = v17;
-    v22 = [v17 autoLayoutItems];
-    v23 = [v22 countByEnumeratingWithState:&v144 objects:v150 count:16];
+    autoLayoutItems2 = [v17 autoLayoutItems];
+    v23 = [autoLayoutItems2 countByEnumeratingWithState:&v144 objects:v150 count:16];
     if (v23)
     {
       v24 = v23;
@@ -64,24 +64,24 @@
         {
           if (*v145 != v26)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(autoLayoutItems2);
           }
 
           v29 = *(*(&v144 + 1) + 8 * i);
-          v30 = [v29 isInSlideOver];
+          isInSlideOver = [v29 isInSlideOver];
           [v29 position];
           v32 = v31;
           v34 = v33;
           [v29 size];
           v37 = v35;
           v38 = v36;
-          if (v30)
+          if (isInSlideOver)
           {
-            [v12 slideOverBorderWidth];
+            [windowingConfiguration slideOverBorderWidth];
             v40 = v39;
-            [v12 dockTopMargin];
+            [windowingConfiguration dockTopMargin];
             v42 = v40 + v41;
-            [v12 statusBarHeight];
+            [windowingConfiguration statusBarHeight];
             v44 = v40 + v43;
             obj = v40 + v43;
             if (v37 > v135 + v42 * -2.0)
@@ -173,7 +173,7 @@
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v144 objects:v150 count:16];
+        v24 = [autoLayoutItems2 countByEnumeratingWithState:&v144 objects:v150 count:16];
       }
 
       while (v24);
@@ -184,22 +184,22 @@
       v25 = 0;
     }
 
-    [v12 stripWidth];
+    [windowingConfiguration stripWidth];
     v56 = v55;
-    [v12 minimumDefaultWindowSize];
+    [windowingConfiguration minimumDefaultWindowSize];
     v58 = (v135 - v57) * 0.5;
     if (v56 >= v58)
     {
       v56 = v58;
     }
 
-    [(SBFlexibleWindowingAutoLayoutController *)self _boundingBoxForSpace:v17 configuration:v11];
+    [(SBFlexibleWindowingAutoLayoutController *)self _boundingBoxForSpace:v17 configuration:configurationCopy];
     v60 = v59;
     v62 = v61;
     v64 = v63;
     v66 = v65;
     v123 = v56;
-    [SBFlexibleWindowingAutoLayoutController _stageAreaForBoundingBox:"_stageAreaForBoundingBox:configuration:effectiveStripWidth:slideOverItem:" configuration:v11 effectiveStripWidth:v25 slideOverItem:?];
+    [SBFlexibleWindowingAutoLayoutController _stageAreaForBoundingBox:"_stageAreaForBoundingBox:configuration:effectiveStripWidth:slideOverItem:" configuration:configurationCopy effectiveStripWidth:v25 slideOverItem:?];
     v68 = v67;
     v70 = v69;
     v72 = v71;
@@ -214,31 +214,31 @@
     v80 = v70;
     v125 = v72;
     [v17 setStageArea:{v79, v70, v77, v72}];
-    v127 = [v120 count];
-    v117 = v11;
+    v127 = [sizeSnappingCopy count];
+    v117 = configurationCopy;
     if (v127 < 1)
     {
-      v128 = [v121 count];
+      v128 = [snappingCopy count];
       if (v128 < 1)
       {
         v88 = v123;
         v89 = v115;
 LABEL_68:
-        v112 = [(SBFlexibleWindowingAutoLayoutController *)self _isStripVisibleForBoundingBox:v11 configuration:v25 effectiveStripWidth:v73 slideOverItem:v89, v75, v66, v88];
-        v113 = [(SBFlexibleWindowingAutoLayoutController *)self _isDockVisibleForBoundingBox:v11 configuration:v25 slideOverItem:v73, v89, v75, v66];
+        v112 = [(SBFlexibleWindowingAutoLayoutController *)self _isStripVisibleForBoundingBox:configurationCopy configuration:v25 effectiveStripWidth:v73 slideOverItem:v89, v75, v66, v88];
+        v113 = [(SBFlexibleWindowingAutoLayoutController *)self _isDockVisibleForBoundingBox:configurationCopy configuration:v25 slideOverItem:v73, v89, v75, v66];
         [v17 setBoundingBox:{v73, v89, v75, v66}];
         [v17 setStageArea:{v78, v80, v77, v125}];
         [v17 setStripVisible:v112];
         [v17 setDockVisible:v113];
-        [v17 setConfiguration:v11];
+        [v17 setConfiguration:configurationCopy];
         [(SBFlexibleWindowingAutoLayoutController *)self _updateOcclusionStatusForItemsInSpace:v17 containerBounds:v130, v129, v135, v134];
-        [(SBFlexibleWindowingAutoLayoutController *)self _updateCompactedFramesForSpace:v17 configuration:v11];
-        [(SBFlexibleWindowingAutoLayoutController *)self _updateGroupingsOnSpace:v17 windowingConfiguration:v12];
-        [(SBFlexibleWindowingAutoLayoutController *)self _updateExposeFramesForSpace:v17 configuration:v11];
-        [(SBFlexibleWindowingAutoLayoutController *)self _updateOwnedRectEdgesForSpace:v17 configuration:v11];
-        [(SBFlexibleWindowingAutoLayoutController *)self _updateOccupiedAreaForSpace:v17 configuration:v11];
+        [(SBFlexibleWindowingAutoLayoutController *)self _updateCompactedFramesForSpace:v17 configuration:configurationCopy];
+        [(SBFlexibleWindowingAutoLayoutController *)self _updateGroupingsOnSpace:v17 windowingConfiguration:windowingConfiguration];
+        [(SBFlexibleWindowingAutoLayoutController *)self _updateExposeFramesForSpace:v17 configuration:configurationCopy];
+        [(SBFlexibleWindowingAutoLayoutController *)self _updateOwnedRectEdgesForSpace:v17 configuration:configurationCopy];
+        [(SBFlexibleWindowingAutoLayoutController *)self _updateOccupiedAreaForSpace:v17 configuration:configurationCopy];
 
-        v10 = v116;
+        spaceCopy = v116;
         goto LABEL_69;
       }
 
@@ -253,11 +253,11 @@ LABEL_68:
       v143 = 0u;
       v140 = 0u;
       v141 = 0u;
-      v81 = [v17 autoLayoutItems];
-      v82 = [v81 reverseObjectEnumerator];
+      autoLayoutItems3 = [v17 autoLayoutItems];
+      reverseObjectEnumerator = [autoLayoutItems3 reverseObjectEnumerator];
 
-      obja = v82;
-      v83 = [v82 countByEnumeratingWithState:&v140 objects:v149 count:16];
+      obja = reverseObjectEnumerator;
+      v83 = [reverseObjectEnumerator countByEnumeratingWithState:&v140 objects:v149 count:16];
       if (v83)
       {
         v84 = v83;
@@ -276,8 +276,8 @@ LABEL_42:
           }
 
           v91 = *(*(&v140 + 1) + 8 * v90);
-          v92 = [v91 displayItem];
-          v93 = [v120 containsObject:v92];
+          displayItem = [v91 displayItem];
+          v93 = [sizeSnappingCopy containsObject:displayItem];
 
           if (v93)
           {
@@ -308,7 +308,7 @@ LABEL_42:
         v89 = v115;
       }
 
-      v128 = [v121 count];
+      v128 = [snappingCopy count];
       if (v128 <= 0)
       {
         goto LABEL_65;
@@ -321,11 +321,11 @@ LABEL_42:
     v139 = 0u;
     v136 = 0u;
     v137 = 0u;
-    v94 = [v17 autoLayoutItems];
-    v95 = [v94 reverseObjectEnumerator];
+    autoLayoutItems4 = [v17 autoLayoutItems];
+    reverseObjectEnumerator2 = [autoLayoutItems4 reverseObjectEnumerator];
 
-    objb = v95;
-    v96 = [v95 countByEnumeratingWithState:&v136 objects:v148 count:16];
+    objb = reverseObjectEnumerator2;
+    v96 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v136 objects:v148 count:16];
     if (v96)
     {
       v97 = v96;
@@ -341,8 +341,8 @@ LABEL_57:
         }
 
         v101 = *(*(&v136 + 1) + 8 * v100);
-        v102 = [v101 displayItem];
-        v103 = [v121 containsObject:v102];
+        displayItem2 = [v101 displayItem];
+        v103 = [snappingCopy containsObject:displayItem2];
 
         if (v103)
         {
@@ -367,7 +367,7 @@ LABEL_57:
     }
 
 LABEL_65:
-    v11 = v117;
+    configurationCopy = v117;
     v17 = v118;
     if (v85)
     {
@@ -391,36 +391,36 @@ LABEL_69:
   return v17;
 }
 
-- (int64_t)_snapPositionOfItem:(id)a3 ifNecessaryInSpace:(id)a4 autoLayoutConfiguration:(id)a5 snappedEdgesMask:(int64_t)a6
+- (int64_t)_snapPositionOfItem:(id)item ifNecessaryInSpace:(id)space autoLayoutConfiguration:(id)configuration snappedEdgesMask:(int64_t)mask
 {
-  v6 = a6;
-  v10 = ~a6;
+  maskCopy = mask;
+  v10 = ~mask;
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v12 autoLayoutItems];
-  v15 = [v14 firstObject];
+  itemCopy = item;
+  spaceCopy = space;
+  configurationCopy = configuration;
+  autoLayoutItems = [spaceCopy autoLayoutItems];
+  firstObject = [autoLayoutItems firstObject];
 
   if ((v10 & 0xF) != 0)
   {
-    [(SBFlexibleWindowingAutoLayoutController *)self _effectiveStageAreaForSnappingItem:v11 inSpace:v12 configuration:v13];
-    v6 = [(SBFlexibleWindowingAutoLayoutController *)self _snapPositionOfItem:v11 toRect:v12 inSpace:v13 autoLayoutConfiguration:0 considerAdjacency:v6 snappedEdgesMask:0 itemForPotentialPairing:?];
+    [(SBFlexibleWindowingAutoLayoutController *)self _effectiveStageAreaForSnappingItem:itemCopy inSpace:spaceCopy configuration:configurationCopy];
+    maskCopy = [(SBFlexibleWindowingAutoLayoutController *)self _snapPositionOfItem:itemCopy toRect:spaceCopy inSpace:configurationCopy autoLayoutConfiguration:0 considerAdjacency:maskCopy snappedEdgesMask:0 itemForPotentialPairing:?];
   }
 
-  if (([v11 isInSlideOver] & 1) == 0)
+  if (([itemCopy isInSlideOver] & 1) == 0)
   {
-    v24 = v11;
+    v24 = itemCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [v12 autoLayoutItems];
-    v17 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    autoLayoutItems2 = [spaceCopy autoLayoutItems];
+    v17 = [autoLayoutItems2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v17)
     {
       v18 = v17;
-      v19 = self;
+      selfCopy = self;
       v20 = *v26;
 LABEL_6:
       v21 = 0;
@@ -428,10 +428,10 @@ LABEL_6:
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(autoLayoutItems2);
         }
 
-        if ((~v6 & 0xF) == 0)
+        if ((~maskCopy & 0xF) == 0)
         {
           break;
         }
@@ -440,12 +440,12 @@ LABEL_6:
         if ((BSEqualObjects() & 1) == 0)
         {
           [v22 frame];
-          v6 = [(SBFlexibleWindowingAutoLayoutController *)v19 _snapPositionOfItem:v24 toRect:v12 inSpace:v13 autoLayoutConfiguration:1 considerAdjacency:v6 snappedEdgesMask:v22 itemForPotentialPairing:?];
+          maskCopy = [(SBFlexibleWindowingAutoLayoutController *)selfCopy _snapPositionOfItem:v24 toRect:spaceCopy inSpace:configurationCopy autoLayoutConfiguration:1 considerAdjacency:maskCopy snappedEdgesMask:v22 itemForPotentialPairing:?];
         }
 
         if (v18 == ++v21)
         {
-          v18 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v18 = [autoLayoutItems2 countByEnumeratingWithState:&v25 objects:v29 count:16];
           if (v18)
           {
             goto LABEL_6;
@@ -456,36 +456,36 @@ LABEL_6:
       }
     }
 
-    v11 = v24;
+    itemCopy = v24;
   }
 
-  return v6;
+  return maskCopy;
 }
 
-- (int64_t)_snapPositionOfItem:(id)a3 toRect:(CGRect)a4 inSpace:(id)a5 autoLayoutConfiguration:(id)a6 considerAdjacency:(BOOL)a7 snappedEdgesMask:(int64_t)a8 itemForPotentialPairing:(id)a9
+- (int64_t)_snapPositionOfItem:(id)item toRect:(CGRect)rect inSpace:(id)space autoLayoutConfiguration:(id)configuration considerAdjacency:(BOOL)adjacency snappedEdgesMask:(int64_t)mask itemForPotentialPairing:(id)pairing
 {
-  v10 = a8;
-  v11 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = ~a8;
-  v19 = a3;
-  v20 = a5;
-  v21 = a6;
-  v22 = a9;
+  maskCopy = mask;
+  adjacencyCopy = adjacency;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v18 = ~mask;
+  itemCopy = item;
+  spaceCopy = space;
+  configurationCopy = configuration;
+  pairingCopy = pairing;
   if ((v18 & 0xF) == 0)
   {
     goto LABEL_5;
   }
 
-  [v19 frame];
+  [itemCopy frame];
   v27 = v23;
   v28 = v24;
-  v29 = v10 & 0xC;
-  v30 = v10 & 3;
-  if ((v10 & 3) != 0 && (v10 & 0xC) != 0)
+  v29 = maskCopy & 0xC;
+  v30 = maskCopy & 3;
+  if ((maskCopy & 3) != 0 && (maskCopy & 0xC) != 0)
   {
     goto LABEL_4;
   }
@@ -494,24 +494,24 @@ LABEL_6:
   v100 = x + width;
   v101 = v23 + v25;
   v33 = y + height;
-  [v20 stageArea];
-  v34 = [v21 windowingConfiguration];
-  v35 = [v34 snapPaddingSettings];
-  [v35 interItemPadding];
+  [spaceCopy stageArea];
+  windowingConfiguration = [configurationCopy windowingConfiguration];
+  snapPaddingSettings = [windowingConfiguration snapPaddingSettings];
+  [snapPaddingSettings interItemPadding];
   v37 = v36;
 
-  v38 = [v34 snapPaddingSettings];
-  [v38 edgePadding];
+  snapPaddingSettings2 = [windowingConfiguration snapPaddingSettings];
+  [snapPaddingSettings2 edgePadding];
   v99 = v39;
 
-  [v34 stageInterItemSpacing];
+  [windowingConfiguration stageInterItemSpacing];
   v96 = v40;
-  [v34 splitViewHandleNubWidth];
-  v41 = [v19 isInSlideOver];
+  [windowingConfiguration splitViewHandleNubWidth];
+  isInSlideOver = [itemCopy isInSlideOver];
   v42 = 0.0;
-  if (v41)
+  if (isInSlideOver)
   {
-    [v34 slideOverBorderWidth];
+    [windowingConfiguration slideOverBorderWidth];
     v42 = v43;
   }
 
@@ -554,7 +554,7 @@ LABEL_6:
 
   v97 = v46;
   v98 = v47 - v48;
-  if (!v11)
+  if (!adjacencyCopy)
   {
     v37 = v99;
   }
@@ -567,15 +567,15 @@ LABEL_6:
 
   v95 = v42;
   v50 = v28 - v42;
-  [v19 position];
-  if (v11 && fabs(v50 - v33) <= v37 && v98 > 0.0)
+  [itemCopy position];
+  if (adjacencyCopy && fabs(v50 - v33) <= v37 && v98 > 0.0)
   {
     goto LABEL_33;
   }
 
   v42 = v95;
   v51 = v32 + v95;
-  if (v11 && fabs(v51 - y) < v37 && v98 > 0.0)
+  if (adjacencyCopy && fabs(v51 - y) < v37 && v98 > 0.0)
   {
     goto LABEL_33;
   }
@@ -586,7 +586,7 @@ LABEL_6:
     if (fabs(v33 - v51) <= v37 && v97 > 0.0)
     {
 LABEL_33:
-      [v19 setPosition:?];
+      [itemCopy setPosition:?];
       if (!v30)
       {
         v49 = 1;
@@ -597,15 +597,15 @@ LABEL_33:
 LABEL_34:
 
 LABEL_4:
-      v10 = 15;
+      maskCopy = 15;
       goto LABEL_5;
     }
   }
 
   else
   {
-    [v19 setPosition:?];
-    if (v11 || !BSFloatIsZero())
+    [itemCopy setPosition:?];
+    if (adjacencyCopy || !BSFloatIsZero())
     {
       v49 = 1;
       v42 = v95;
@@ -613,19 +613,19 @@ LABEL_4:
 
     else
     {
-      [v19 position];
+      [itemCopy position];
       v91 = v52;
       v92 = v53;
-      [v21 containerBounds];
+      [configurationCopy containerBounds];
       v55 = v54;
       v57 = vabdd_f64(v27, v56);
       v90 = v56;
       v89 = v56 + v54;
       v94 = vabdd_f64(v101, v56 + v54);
-      [v21 leftStatusBarPartIntersectionRegion];
+      [configurationCopy leftStatusBarPartIntersectionRegion];
       v93 = v58;
       v60 = v59;
-      [v21 rightStatusBarPartIntersectionRegion];
+      [configurationCopy rightStatusBarPartIntersectionRegion];
       v62 = v93 + v60;
       v63 = (v93 + v60) * 0.5;
       if (v99 >= v63)
@@ -645,7 +645,7 @@ LABEL_4:
 
       if (v57 <= v63 || v94 <= v64)
       {
-        [v19 size];
+        [itemCopy size];
         v67 = v87 * 0.5;
         if (v57 <= v94 || v94 > v64)
         {
@@ -657,7 +657,7 @@ LABEL_4:
 LABEL_91:
         v88 = v68 - v67;
 LABEL_94:
-        [v19 setPosition:{v88, v92, v66}];
+        [itemCopy setPosition:{v88, v92, v66}];
         goto LABEL_34;
       }
 
@@ -685,25 +685,25 @@ LABEL_23:
 LABEL_56:
     v69 = v42;
     v70 = v101 + v42;
-    [v19 position];
+    [itemCopy position];
     v73 = v71;
-    if (v11 && (v74 = v70 - x, fabs(v70 - x) <= v37) && v97 > 0.0)
+    if (adjacencyCopy && (v74 = v70 - x, fabs(v70 - x) <= v37) && v97 > 0.0)
     {
       v75 = v71;
       v76 = v72;
-      if (v22 && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat())
+      if (pairingCopy && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat())
       {
 LABEL_75:
-        [v21 screenScale];
+        [configurationCopy screenScale];
         UISizeRoundToScale();
         v80 = v79;
         v82 = v81;
-        [v22 setSize:?];
+        [pairingCopy setSize:?];
         UIRectGetCenter();
-        [v22 setPosition:?];
-        [v19 setSize:{v80, v82}];
+        [pairingCopy setPosition:?];
+        [itemCopy setSize:{v80, v82}];
         UIRectGetCenter();
-        v84 = v19;
+        v84 = itemCopy;
         goto LABEL_85;
       }
 
@@ -713,13 +713,13 @@ LABEL_75:
     else
     {
       v77 = v27 - v69;
-      if (!v11 || (v78 = v77 - v100, fabs(v77 - v100) > v37) || v97 <= 0.0)
+      if (!adjacencyCopy || (v78 = v77 - v100, fabs(v77 - v100) > v37) || v97 <= 0.0)
       {
         v85 = x - v77;
         if (fabs(v85) > v37 || v98 <= 0.0)
         {
           v85 = v100 - v70;
-          v10 = 0;
+          maskCopy = 0;
           if (fabs(v100 - v70) > v37 || v98 <= 0.0)
           {
             goto LABEL_25;
@@ -727,13 +727,13 @@ LABEL_75:
         }
 
         v83 = v85 + v73;
-        v84 = v19;
+        v84 = itemCopy;
 LABEL_85:
         [v84 setPosition:{v83, v72}];
 
         if ((v49 & 1) == 0)
         {
-          v10 = 3;
+          maskCopy = 3;
           goto LABEL_5;
         }
 
@@ -742,7 +742,7 @@ LABEL_85:
 
       v75 = v73;
       v76 = v72;
-      if (v22 && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat())
+      if (pairingCopy && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat() && BSFloatApproximatelyEqualToFloat())
       {
         goto LABEL_75;
       }
@@ -751,34 +751,34 @@ LABEL_85:
     }
 
     v83 = v75 - v86;
-    v84 = v19;
+    v84 = itemCopy;
     v72 = v76;
     goto LABEL_85;
   }
 
-  v10 = 3;
+  maskCopy = 3;
 LABEL_25:
 
   if (v49)
   {
-    v10 |= 0xCuLL;
+    maskCopy |= 0xCuLL;
   }
 
 LABEL_5:
 
-  return v10;
+  return maskCopy;
 }
 
-- (int64_t)_snapSizeOfItem:(id)a3 ifNecessaryForSpace:(id)a4 configuration:(id)a5 snappedEdgesMask:(int64_t)a6
+- (int64_t)_snapSizeOfItem:(id)item ifNecessaryForSpace:(id)space configuration:(id)configuration snappedEdgesMask:(int64_t)mask
 {
-  v6 = a6;
-  v10 = ~a6;
+  maskCopy = mask;
+  v10 = ~mask;
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v13 windowingConfiguration];
-  v15 = v11;
+  itemCopy = item;
+  spaceCopy = space;
+  configurationCopy = configuration;
+  windowingConfiguration = [configurationCopy windowingConfiguration];
+  v15 = itemCopy;
   [v15 frame];
   v36.origin.x = v16;
   v36.origin.y = v17;
@@ -786,19 +786,19 @@ LABEL_5:
   v36.size.height = v19;
   if ((v10 & 0xF) != 0)
   {
-    [(SBFlexibleWindowingAutoLayoutController *)self _effectiveStageAreaForSnappingItem:v15 inSpace:v12 configuration:v13];
-    v6 = [(SBFlexibleWindowingAutoLayoutController *)self _snapSizeOfItem:v15 toRect:v12 inSpace:v14 windowingConfiguration:0 considerAdjacency:v6 snappedEdgesMask:&v36 newFrame:?];
+    [(SBFlexibleWindowingAutoLayoutController *)self _effectiveStageAreaForSnappingItem:v15 inSpace:spaceCopy configuration:configurationCopy];
+    maskCopy = [(SBFlexibleWindowingAutoLayoutController *)self _snapSizeOfItem:v15 toRect:spaceCopy inSpace:windowingConfiguration windowingConfiguration:0 considerAdjacency:maskCopy snappedEdgesMask:&v36 newFrame:?];
   }
 
   if (([v15 isInSlideOver] & 1) == 0)
   {
-    v31 = v13;
+    v31 = configurationCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v20 = [v12 autoLayoutItems];
-    v21 = [v20 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    autoLayoutItems = [spaceCopy autoLayoutItems];
+    v21 = [autoLayoutItems countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v21)
     {
       v22 = v21;
@@ -809,10 +809,10 @@ LABEL_6:
       {
         if (*v33 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(autoLayoutItems);
         }
 
-        if ((~v6 & 0xF) == 0)
+        if ((~maskCopy & 0xF) == 0)
         {
           break;
         }
@@ -821,12 +821,12 @@ LABEL_6:
         if ((BSEqualObjects() & 1) == 0)
         {
           [v25 frame];
-          v6 = [(SBFlexibleWindowingAutoLayoutController *)self _snapSizeOfItem:v15 toRect:v12 inSpace:v14 windowingConfiguration:1 considerAdjacency:v6 snappedEdgesMask:&v36 newFrame:?];
+          maskCopy = [(SBFlexibleWindowingAutoLayoutController *)self _snapSizeOfItem:v15 toRect:spaceCopy inSpace:windowingConfiguration windowingConfiguration:1 considerAdjacency:maskCopy snappedEdgesMask:&v36 newFrame:?];
         }
 
         if (v22 == ++v24)
         {
-          v22 = [v20 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v22 = [autoLayoutItems countByEnumeratingWithState:&v32 objects:v37 count:16];
           if (v22)
           {
             goto LABEL_6;
@@ -837,10 +837,10 @@ LABEL_6:
       }
     }
 
-    v13 = v31;
+    configurationCopy = v31;
   }
 
-  if (v6)
+  if (maskCopy)
   {
     [v15 frame];
     v39.origin.x = v26;
@@ -849,7 +849,7 @@ LABEL_6:
     v39.size.height = v29;
     if (!CGRectEqualToRect(v36, v39))
     {
-      [v13 screenScale];
+      [configurationCopy screenScale];
       UISizeRoundToScale();
       [v15 setSize:?];
       UIRectGetCenter();
@@ -857,45 +857,45 @@ LABEL_6:
     }
   }
 
-  return v6;
+  return maskCopy;
 }
 
-- (int64_t)_snapSizeOfItem:(id)a3 toRect:(CGRect)a4 inSpace:(id)a5 windowingConfiguration:(id)a6 considerAdjacency:(BOOL)a7 snappedEdgesMask:(int64_t)a8 newFrame:(CGRect *)a9
+- (int64_t)_snapSizeOfItem:(id)item toRect:(CGRect)rect inSpace:(id)space windowingConfiguration:(id)configuration considerAdjacency:(BOOL)adjacency snappedEdgesMask:(int64_t)mask newFrame:(CGRect *)frame
 {
-  v11 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  v18 = a6;
-  v19 = [v18 snapPaddingSettings];
-  [v19 interItemPadding];
+  adjacencyCopy = adjacency;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  itemCopy = item;
+  configurationCopy = configuration;
+  snapPaddingSettings = [configurationCopy snapPaddingSettings];
+  [snapPaddingSettings interItemPadding];
   v21 = v20;
 
-  v22 = [v18 snapPaddingSettings];
-  [v22 edgePadding];
+  snapPaddingSettings2 = [configurationCopy snapPaddingSettings];
+  [snapPaddingSettings2 edgePadding];
   v24 = v23;
 
-  [v18 stageInterItemSpacing];
+  [configurationCopy stageInterItemSpacing];
   v26 = v25;
   v27 = 0.0;
-  if ([v17 isInSlideOver])
+  if ([itemCopy isInSlideOver])
   {
-    [v18 slideOverBorderWidth];
+    [configurationCopy slideOverBorderWidth];
     v27 = v28;
   }
 
-  if ((~a8 & 0xFLL) != 0)
+  if ((~mask & 0xFLL) != 0)
   {
-    [v17 frame];
+    [itemCopy frame];
     v32 = v29 + v31;
     v34 = v30 + v33;
     v35 = x + width;
     v36 = y + height;
-    v37 = a9->size.width;
+    v37 = frame->size.width;
     v38 = v29 - v27;
-    if (v11)
+    if (adjacencyCopy)
     {
       v39 = v21;
     }
@@ -942,7 +942,7 @@ LABEL_6:
     }
 
     v44 = v43 - v29;
-    if ((a8 & 1) == 0 && v11 && vabdd_f64(v38, v35) < v39 && v38 - v35 != 0.0 && v42 >= 0.0)
+    if ((mask & 1) == 0 && adjacencyCopy && vabdd_f64(v38, v35) < v39 && v38 - v35 != 0.0 && v42 >= 0.0)
     {
       v37 = v37 + v38 - v35 - v26;
       v45 = v35 + v26;
@@ -954,10 +954,10 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v46 = a9->origin.x + v37 * 0.5;
-    if ((a8 & 1) != 0 || (v47 = x - v38, fabs(v47) >= v39))
+    v46 = frame->origin.x + v37 * 0.5;
+    if ((mask & 1) != 0 || (v47 = x - v38, fabs(v47) >= v39))
     {
-      if (a8)
+      if (mask)
       {
         v32 = v37 * 0.5 + v46;
         goto LABEL_33;
@@ -979,15 +979,15 @@ LABEL_33:
 
 LABEL_34:
     v49 = v27 + v32;
-    if ((a8 & 2) != 0 || !v11 || vabdd_f64(v49, x) >= v39 || v49 - x == 0.0 || v42 < 0.0)
+    if ((mask & 2) != 0 || !adjacencyCopy || vabdd_f64(v49, x) >= v39 || v49 - x == 0.0 || v42 < 0.0)
     {
-      v51 = (a8 >> 1) & 1;
-      if ((a8 & 2) != 0 || (v52 = v35 - v49, fabs(v52) >= v39) || (LODWORD(v51) = 0, v52 == 0.0) || v44 <= 0.0)
+      v51 = (mask >> 1) & 1;
+      if ((mask & 2) != 0 || (v52 = v35 - v49, fabs(v52) >= v39) || (LODWORD(v51) = 0, v52 == 0.0) || v44 <= 0.0)
       {
 LABEL_46:
-        v53 = a9->size.height;
+        v53 = frame->size.height;
         v54 = v30 - v27;
-        if ((a8 & 4) == 0 && v11)
+        if ((mask & 4) == 0 && adjacencyCopy)
         {
           v55 = v54 - v36;
           if (fabs(v54 - v36) < v39 && v55 != 0.0 && v44 >= 0.0)
@@ -1003,10 +1003,10 @@ LABEL_61:
           }
         }
 
-        v57 = a9->origin.y + v53 * 0.5;
-        if ((a8 & 4) != 0 || (v58 = y - v54, fabs(y - v54) >= v39))
+        v57 = frame->origin.y + v53 * 0.5;
+        if ((mask & 4) != 0 || (v58 = y - v54, fabs(y - v54) >= v39))
         {
-          if ((a8 & 4) != 0)
+          if ((mask & 4) != 0)
           {
             v34 = v53 * 0.5 + v57;
             goto LABEL_61;
@@ -1028,9 +1028,9 @@ LABEL_61:
 
 LABEL_62:
         v60 = v27 + v34;
-        if ((a8 & 8) != 0 || !v11 || vabdd_f64(v60, y) >= v39 || v60 - y == 0.0 || v44 < 0.0)
+        if ((mask & 8) != 0 || !adjacencyCopy || vabdd_f64(v60, y) >= v39 || v60 - y == 0.0 || v44 < 0.0)
         {
-          if ((a8 & 8) != 0 || (v61 = v36 - v60, fabs(v36 - v60) >= v39))
+          if ((mask & 8) != 0 || (v61 = v36 - v60, fabs(v36 - v60) >= v39))
           {
             if (v51)
             {
@@ -1042,7 +1042,7 @@ LABEL_62:
               v48 |= 4uLL;
             }
 
-            if ((a8 & 8) == 0)
+            if ((mask & 8) == 0)
             {
               goto LABEL_88;
             }
@@ -1088,11 +1088,11 @@ LABEL_62:
 LABEL_83:
         v48 |= 8uLL;
 LABEL_88:
-        a9->origin.x = v46 - v37 * 0.5;
-        a9->origin.y = v57 - v53 * 0.5;
-        a9->size.width = v37;
-        a9->size.height = v53;
-        a8 = v48;
+        frame->origin.x = v46 - v37 * 0.5;
+        frame->origin.y = v57 - v53 * 0.5;
+        frame->size.width = v37;
+        frame->size.height = v53;
+        mask = v48;
         goto LABEL_89;
       }
 
@@ -1113,20 +1113,20 @@ LABEL_88:
 
 LABEL_89:
 
-  return a8;
+  return mask;
 }
 
-- (void)_updateOcclusionStatusForItemsInSpace:(id)a3 containerBounds:(CGRect)a4
+- (void)_updateOcclusionStatusForItemsInSpace:(id)space containerBounds:(CGRect)bounds
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  spaceCopy = space;
   context = objc_autoreleasePoolPush();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 autoLayoutItems];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  autoLayoutItems = [spaceCopy autoLayoutItems];
+  v6 = [autoLayoutItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1139,7 +1139,7 @@ LABEL_89:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(autoLayoutItems);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
@@ -1204,7 +1204,7 @@ LABEL_89:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [autoLayoutItems countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -1213,18 +1213,18 @@ LABEL_89:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)_updateOccupiedAreaForSpace:(id)a3 configuration:(id)a4
+- (void)_updateOccupiedAreaForSpace:(id)space configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 containerBounds];
+  spaceCopy = space;
+  configurationCopy = configuration;
+  [configurationCopy containerBounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v5 autoLayoutItems];
+  autoLayoutItems = [spaceCopy autoLayoutItems];
   v16 = objc_autoreleasePoolPush();
-  if ([v15 count])
+  if ([autoLayoutItems count])
   {
     v17 = 0;
     v18 = MEMORY[0x277CBF398];
@@ -1232,7 +1232,7 @@ LABEL_89:
     v34 = 0.0;
     do
     {
-      v19 = [v15 objectAtIndex:{v17, *&v33}];
+      v19 = [autoLayoutItems objectAtIndex:{v17, *&v33}];
       [v19 frame];
       v39.origin.x = v8;
       v39.origin.y = v10;
@@ -1310,7 +1310,7 @@ LABEL_89:
       ++v17;
     }
 
-    while (v17 < [v15 count]);
+    while (v17 < [autoLayoutItems count]);
   }
 
   else
@@ -1319,20 +1319,20 @@ LABEL_89:
   }
 
   objc_autoreleasePoolPop(v16);
-  [v5 setOccupiedAreaPercentage:round(v34 / (v12 * v14) * 1000.0) / 1000.0];
+  [spaceCopy setOccupiedAreaPercentage:round(v34 / (v12 * v14) * 1000.0) / 1000.0];
 }
 
-- (void)_updateGroupingsOnSpace:(id)a3 windowingConfiguration:(id)a4
+- (void)_updateGroupingsOnSpace:(id)space windowingConfiguration:(id)configuration
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [a4 stageInterItemSpacing];
+  spaceCopy = space;
+  [configuration stageInterItemSpacing];
   v7 = v6;
   v51 = objc_opt_new();
   v8 = objc_opt_new();
   v9 = objc_opt_new();
-  v10 = [v5 autoLayoutItems];
-  if ([v10 count])
+  autoLayoutItems = [spaceCopy autoLayoutItems];
+  if ([autoLayoutItems count])
   {
     v11 = 0;
     v12 = v7 + 1.0;
@@ -1355,16 +1355,16 @@ LABEL_89:
       v16 = v11 + 1;
 LABEL_35:
       v11 = v16;
-      if (v16 >= [v10 count])
+      if (v16 >= [autoLayoutItems count])
       {
         goto LABEL_36;
       }
     }
 
 LABEL_7:
-    v17 = [v10 objectAtIndex:v11];
+    v17 = [autoLayoutItems objectAtIndex:v11];
     v18 = v11 + 1;
-    if (v11 + 1 >= [v10 count])
+    if (v11 + 1 >= [autoLayoutItems count])
     {
 LABEL_34:
 
@@ -1390,7 +1390,7 @@ LABEL_34:
       {
       }
 
-      v22 = [v10 objectAtIndex:v18];
+      v22 = [autoLayoutItems objectAtIndex:v18];
       if (([v17 isOverlapped] & 1) == 0 && (objc_msgSend(v22, "isOverlapped") & 1) == 0 && (objc_msgSend(v17, "isInSlideOver") & 1) == 0 && (objc_msgSend(v22, "isInSlideOver") & 1) == 0)
       {
         [v17 frame];
@@ -1478,7 +1478,7 @@ LABEL_31:
       }
 
 LABEL_33:
-      if (++v18 >= [v10 count])
+      if (++v18 >= [autoLayoutItems count])
       {
         goto LABEL_34;
       }
@@ -1486,13 +1486,13 @@ LABEL_33:
   }
 
 LABEL_36:
-  [v5 setGroups:v51];
+  [spaceCopy setGroups:v51];
 }
 
-- (CGRect)_boundingBoxForSpace:(id)a3 configuration:(id)a4
+- (CGRect)_boundingBoxForSpace:(id)space configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
+  spaceCopy = space;
+  configurationCopy = configuration;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1509,7 +1509,7 @@ LABEL_36:
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0x10000000000000;
-  v7 = [v5 autoLayoutItems];
+  autoLayoutItems = [spaceCopy autoLayoutItems];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __78__SBFlexibleWindowingAutoLayoutController__boundingBoxForSpace_configuration___block_invoke;
@@ -1518,7 +1518,7 @@ LABEL_36:
   v16[5] = &v25;
   v16[6] = &v21;
   v16[7] = &v17;
-  [v7 enumerateObjectsUsingBlock:v16];
+  [autoLayoutItems enumerateObjectsUsingBlock:v16];
 
   v8 = v30[3];
   v9 = v22[3];
@@ -1587,18 +1587,18 @@ void __78__SBFlexibleWindowingAutoLayoutController__boundingBoxForSpace_configur
   *(*(a1[7] + 8) + 24) = v18;
 }
 
-- (void)_updateCompactedFramesForSpace:(id)a3 configuration:(id)a4
+- (void)_updateCompactedFramesForSpace:(id)space configuration:(id)configuration
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v6 containerBounds];
+  spaceCopy = space;
+  configurationCopy = configuration;
+  [configurationCopy containerBounds];
   v42 = v8;
   v43 = v7;
-  v9 = [v6 windowingConfiguration];
-  [v9 switcherPileCompactingFactor];
+  windowingConfiguration = [configurationCopy windowingConfiguration];
+  [windowingConfiguration switcherPileCompactingFactor];
   v41 = v10;
-  [v6 containerBounds];
+  [configurationCopy containerBounds];
   UIRectGetCenter();
   v39 = v12;
   v40 = v11;
@@ -1606,8 +1606,8 @@ void __78__SBFlexibleWindowingAutoLayoutController__boundingBoxForSpace_configur
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v13 = [v5 autoLayoutItems];
-  v14 = [v13 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  autoLayoutItems = [spaceCopy autoLayoutItems];
+  v14 = [autoLayoutItems countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1623,7 +1623,7 @@ void __78__SBFlexibleWindowingAutoLayoutController__boundingBoxForSpace_configur
         v44 = v18;
         if (*v46 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(autoLayoutItems);
         }
 
         v22 = *(*(&v45 + 1) + 8 * i);
@@ -1692,29 +1692,29 @@ void __78__SBFlexibleWindowingAutoLayoutController__boundingBoxForSpace_configur
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v15 = [autoLayoutItems countByEnumeratingWithState:&v45 objects:v49 count:16];
     }
 
     while (v15);
   }
 
-  [v6 screenScale];
+  [configurationCopy screenScale];
   UIRectRoundToScale();
-  [v5 setCompactedBoundingBox:?];
+  [spaceCopy setCompactedBoundingBox:?];
 }
 
-- (BOOL)_isStripVisibleForBoundingBox:(CGRect)a3 configuration:(id)a4 effectiveStripWidth:(double)a5 slideOverItem:(id)a6
+- (BOOL)_isStripVisibleForBoundingBox:(CGRect)box configuration:(id)configuration effectiveStripWidth:(double)width slideOverItem:(id)item
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = a6;
+  width = box.size.width;
+  x = box.origin.x;
+  configurationCopy = configuration;
+  itemCopy = item;
   v12 = MEMORY[0x277D76620];
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
   {
-    [v10 containerBounds];
-    v15 = x + width <= v13 + v14 - a5;
-    if (!v11)
+    [configurationCopy containerBounds];
+    v15 = x + width <= v13 + v14 - width;
+    if (!itemCopy)
     {
       goto LABEL_10;
     }
@@ -1722,8 +1722,8 @@ void __78__SBFlexibleWindowingAutoLayoutController__boundingBoxForSpace_configur
 
   else
   {
-    v15 = x >= a5;
-    if (!v11)
+    v15 = x >= width;
+    if (!itemCopy)
     {
       goto LABEL_10;
     }
@@ -1731,23 +1731,23 @@ void __78__SBFlexibleWindowingAutoLayoutController__boundingBoxForSpace_configur
 
   if (v15)
   {
-    v16 = [v10 windowingConfiguration];
-    v17 = [*v12 userInterfaceLayoutDirection];
-    [v11 frame];
+    windowingConfiguration = [configurationCopy windowingConfiguration];
+    userInterfaceLayoutDirection = [*v12 userInterfaceLayoutDirection];
+    [itemCopy frame];
     v20 = v18;
-    if (v17 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v21 = v18 + v19;
-      [v16 slideOverBorderWidth];
+      [windowingConfiguration slideOverBorderWidth];
       v23 = v22 + v21;
-      [v10 containerBounds];
-      LOBYTE(v15) = v23 <= v24 + v25 - a5;
+      [configurationCopy containerBounds];
+      LOBYTE(v15) = v23 <= v24 + v25 - width;
     }
 
     else
     {
-      [v16 slideOverBorderWidth];
-      LOBYTE(v15) = v20 - v26 >= a5;
+      [windowingConfiguration slideOverBorderWidth];
+      LOBYTE(v15) = v20 - v26 >= width;
     }
   }
 
@@ -1756,44 +1756,44 @@ LABEL_10:
   return v15;
 }
 
-- (CGRect)_stageAreaForBoundingBox:(CGRect)a3 configuration:(id)a4 effectiveStripWidth:(double)a5 slideOverItem:(id)a6
+- (CGRect)_stageAreaForBoundingBox:(CGRect)box configuration:(id)configuration effectiveStripWidth:(double)width slideOverItem:(id)item
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
-  v14 = a4;
-  v15 = [v14 windowingConfiguration];
-  [v14 containerBounds];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  itemCopy = item;
+  configurationCopy = configuration;
+  windowingConfiguration = [configurationCopy windowingConfiguration];
+  [configurationCopy containerBounds];
   v17 = v16;
   v19 = v18;
-  v20 = [(SBFlexibleWindowingAutoLayoutController *)self _isStripVisibleForBoundingBox:v14 configuration:v13 effectiveStripWidth:x slideOverItem:y, width, height, a5];
-  v21 = [(SBFlexibleWindowingAutoLayoutController *)self _isDockVisibleForBoundingBox:v14 configuration:v13 slideOverItem:x, y, width, height];
+  width = [(SBFlexibleWindowingAutoLayoutController *)self _isStripVisibleForBoundingBox:configurationCopy configuration:itemCopy effectiveStripWidth:x slideOverItem:y, width, height, width];
+  height = [(SBFlexibleWindowingAutoLayoutController *)self _isDockVisibleForBoundingBox:configurationCopy configuration:itemCopy slideOverItem:x, y, width, height];
 
-  [v15 statusBarHeight];
+  [windowingConfiguration statusBarHeight];
   v23 = 0.0;
   v24 = y < v22 * 0.5;
   v25 = 0.0;
   if (!v24)
   {
-    [v15 statusBarHeight];
+    [windowingConfiguration statusBarHeight];
     v25 = v26;
   }
 
-  if (v20)
+  if (width)
   {
-    v23 = [v15 prefersStripHidden] ? 0.0 : a5;
-    if (![v15 prefersStripHidden])
+    v23 = [windowingConfiguration prefersStripHidden] ? 0.0 : width;
+    if (![windowingConfiguration prefersStripHidden])
     {
-      v17 = v17 - a5;
+      v17 = v17 - width;
     }
   }
 
   v27 = v19 - v25;
-  if (v21)
+  if (height)
   {
-    [v15 floatingDockHeightWithTopAndBottomPadding];
+    [windowingConfiguration floatingDockHeightWithTopAndBottomPadding];
     v27 = v27 - v28;
   }
 
@@ -1808,28 +1808,28 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_isDockVisibleForBoundingBox:(CGRect)a3 configuration:(id)a4 slideOverItem:(id)a5
+- (BOOL)_isDockVisibleForBoundingBox:(CGRect)box configuration:(id)configuration slideOverItem:(id)item
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 windowingConfiguration];
-  [v9 containerBounds];
+  height = box.size.height;
+  y = box.origin.y;
+  itemCopy = item;
+  configurationCopy = configuration;
+  windowingConfiguration = [configurationCopy windowingConfiguration];
+  [configurationCopy containerBounds];
   v12 = v11;
 
-  [v10 floatingDockHeightWithTopAndBottomPadding];
+  [windowingConfiguration floatingDockHeightWithTopAndBottomPadding];
   if (v12 - (y + height) >= v13)
   {
-    v15 = [v10 prefersDockHidden];
-    v14 = v15 ^ 1;
-    if (v8 && (v15 & 1) == 0)
+    prefersDockHidden = [windowingConfiguration prefersDockHidden];
+    v14 = prefersDockHidden ^ 1;
+    if (itemCopy && (prefersDockHidden & 1) == 0)
     {
-      [v8 frame];
+      [itemCopy frame];
       v18 = v16 + v17;
-      [v10 slideOverBorderWidth];
+      [windowingConfiguration slideOverBorderWidth];
       v20 = v19 + v18;
-      [v10 floatingDockHeightWithTopAndBottomPadding];
+      [windowingConfiguration floatingDockHeightWithTopAndBottomPadding];
       v14 = v20 <= v12 - v21;
     }
   }
@@ -1842,37 +1842,37 @@ LABEL_10:
   return v14;
 }
 
-- (CGRect)_effectiveStageAreaForSnappingItem:(id)a3 inSpace:(id)a4 configuration:(id)a5
+- (CGRect)_effectiveStageAreaForSnappingItem:(id)item inSpace:(id)space configuration:(id)configuration
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  [v7 stageArea];
+  spaceCopy = space;
+  configurationCopy = configuration;
+  itemCopy = item;
+  [spaceCopy stageArea];
   v36 = v10;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v8 containerBounds];
+  [configurationCopy containerBounds];
   v18 = v17;
-  v19 = [v8 windowingConfiguration];
-  [v19 floatingDockHeightWithTopAndBottomPadding];
+  windowingConfiguration = [configurationCopy windowingConfiguration];
+  [windowingConfiguration floatingDockHeightWithTopAndBottomPadding];
   v21 = v20;
-  v22 = [v9 isInSlideOver];
+  isInSlideOver = [itemCopy isInSlideOver];
 
   v23 = 0.0;
   v24 = 0.0;
-  if (v22)
+  if (isInSlideOver)
   {
-    [v19 dockTopMargin];
+    [windowingConfiguration dockTopMargin];
     v23 = v25;
-    [v19 statusBarHeight];
+    [windowingConfiguration statusBarHeight];
     v24 = v26;
   }
 
   v27 = v12 + v16;
-  if (([v19 prefersDockHidden] & 1) != 0 || (objc_msgSend(v8, "dockHeightWithBottomEdgePadding"), v27 <= v18 - v28) || (objc_msgSend(v7, "boundingBox"), v18 - (v29 + v30) <= v21 * 0.5))
+  if (([windowingConfiguration prefersDockHidden] & 1) != 0 || (objc_msgSend(configurationCopy, "dockHeightWithBottomEdgePadding"), v27 <= v18 - v28) || (objc_msgSend(spaceCopy, "boundingBox"), v18 - (v29 + v30) <= v21 * 0.5))
   {
-    [v19 floatingDockHeightWithTopAndBottomPadding];
+    [windowingConfiguration floatingDockHeightWithTopAndBottomPadding];
     if (v27 > v18 - v31 + 1.0)
     {
       v16 = v16 - v23;
@@ -1901,18 +1901,18 @@ LABEL_10:
   return result;
 }
 
-- (void)_updateOwnedRectEdgesForSpace:(id)a3 configuration:(id)a4
+- (void)_updateOwnedRectEdgesForSpace:(id)space configuration:(id)configuration
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  spaceCopy = space;
+  configurationCopy = configuration;
   context = objc_autoreleasePoolPush();
-  [v6 leftStatusBarPartIntersectionRegion];
-  [v6 rightStatusBarPartIntersectionRegion];
+  [configurationCopy leftStatusBarPartIntersectionRegion];
+  [configurationCopy rightStatusBarPartIntersectionRegion];
   SBSafeAutoreleasedRegionFromCGRect();
   SBSafeAutoreleasedRegionFromCGRect();
-  v46 = v6;
-  [v6 containerBounds];
+  v46 = configurationCopy;
+  [configurationCopy containerBounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1921,8 +1921,8 @@ LABEL_10:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v47 = v5;
-  obj = [v5 autoLayoutItems];
+  v47 = spaceCopy;
+  obj = [spaceCopy autoLayoutItems];
   v15 = [obj countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v15)
   {
@@ -2077,23 +2077,23 @@ LABEL_10:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)_updateExposeFramesForSpace:(id)a3 configuration:(id)a4
+- (void)_updateExposeFramesForSpace:(id)space configuration:(id)configuration
 {
-  v56 = a3;
-  v6 = a4;
-  v7 = [v56 autoLayoutItems];
-  v8 = [v7 count];
+  spaceCopy = space;
+  configurationCopy = configuration;
+  autoLayoutItems = [spaceCopy autoLayoutItems];
+  v8 = [autoLayoutItems count];
 
   if (v8 >= 1)
   {
-    v9 = [v6 windowingConfiguration];
-    [v9 statusBarHeight];
+    windowingConfiguration = [configurationCopy windowingConfiguration];
+    [windowingConfiguration statusBarHeight];
     v11 = v10;
-    [v6 containerBounds];
+    [configurationCopy containerBounds];
     v13 = v12;
     v15 = v14;
     v16 = v14 + -16.0;
-    [v6 dockHeightWithBottomEdgePadding];
+    [configurationCopy dockHeightWithBottomEdgePadding];
     v61.size.width = v13 + -160.0;
     v18 = v16 - v17 - v11;
     v61.origin.x = 80.0;
@@ -2110,16 +2110,16 @@ LABEL_10:
       v24 = v23;
       v53 = height;
       v54 = x;
-      v58 = self;
-      v55 = v9;
+      selfCopy = self;
+      v55 = windowingConfiguration;
       v57 = v18 + -80.0 + -40.0;
-      v25 = [v56 autoLayoutItems];
+      autoLayoutItems2 = [spaceCopy autoLayoutItems];
       v26 = 0;
       v27 = 0;
       v28 = v24 + 2;
       do
       {
-        v29 = [v25 objectAtIndex:v27];
+        v29 = [autoLayoutItems2 objectAtIndex:v27];
         [v29 position];
         v31 = v30;
         v33 = v32;
@@ -2151,8 +2151,8 @@ LABEL_10:
       }
 
       while (v8 != v27);
-      [v6 screenScale];
-      [(SBFlexibleWindowingAutoLayoutController *)v58 _clusterForExposeWithRects:v24 count:v8 stage:v26 padding:v54 screenScale:y fullScreenRectsIfAny:width, v53, 40.0, 40.0, v39];
+      [configurationCopy screenScale];
+      [(SBFlexibleWindowingAutoLayoutController *)selfCopy _clusterForExposeWithRects:v24 count:v8 stage:v26 padding:v54 screenScale:y fullScreenRectsIfAny:width, v53, 40.0, 40.0, v39];
       v40 = 0;
       v41 = v24 + 2;
       v42 = -1.79769313e308;
@@ -2161,7 +2161,7 @@ LABEL_10:
       v45 = -1.79769313e308;
       do
       {
-        v46 = [v25 objectAtIndex:v40];
+        v46 = [autoLayoutItems2 objectAtIndex:v40];
         v47 = *(v41 - 2);
         v48 = *(v41 - 1);
         v49 = *v41;
@@ -2206,30 +2206,30 @@ LABEL_10:
       }
 
       while (v8 != v40);
-      [v56 setExposeBoundingBox:{v43, v44, v42 - v43, v45 - v44}];
+      [spaceCopy setExposeBoundingBox:{v43, v44, v42 - v43, v45 - v44}];
       free(v24);
       if (v26)
       {
         free(v26);
       }
 
-      v9 = v55;
+      windowingConfiguration = v55;
     }
   }
 }
 
-- (void)_clusterForExposeWithRects:(CGRect *)a3 count:(int64_t)a4 stage:(CGRect)a5 padding:(CGSize)a6 screenScale:(double)a7 fullScreenRectsIfAny:(BOOL *)a8
+- (void)_clusterForExposeWithRects:(CGRect *)rects count:(int64_t)count stage:(CGRect)stage padding:(CGSize)padding screenScale:(double)scale fullScreenRectsIfAny:(BOOL *)any
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5.size.height;
-  v11 = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
-  v15 = a4;
-  v16 = round(sqrt(a4 / (a5.size.width / a5.size.height)));
-  if (v16 == 1.0 && a8 == 0 && a4 == 3)
+  height = padding.height;
+  width = padding.width;
+  v10 = stage.size.height;
+  v11 = stage.size.width;
+  y = stage.origin.y;
+  x = stage.origin.x;
+  countCopy = count;
+  countCopy2 = count;
+  v16 = round(sqrt(count / (stage.size.width / stage.size.height)));
+  if (v16 == 1.0 && any == 0 && count == 3)
   {
     v19 = 2.0;
   }
@@ -2239,16 +2239,16 @@ LABEL_10:
     v19 = v16;
   }
 
-  v20 = ceil(v15 / v19);
+  v20 = ceil(countCopy2 / v19);
   while (1)
   {
     v21 = v20 * v19;
-    if (v20 * v19 >= v15)
+    if (v20 * v19 >= countCopy2)
     {
       break;
     }
 
-    if (v11 <= a5.size.height)
+    if (v11 <= stage.size.height)
     {
       v19 = v19 + 1.0;
     }
@@ -2313,7 +2313,7 @@ LABEL_10:
     while (v157 > v26);
   }
 
-  v34 = v22 <= v14 ? v14 : v22;
+  v34 = v22 <= countCopy ? countCopy : v22;
   v154 = malloc_type_calloc(v34 * v34, 8uLL, 0x100004000313F17uLL);
   if (!v154)
   {
@@ -2333,8 +2333,8 @@ LABEL_10:
     do
     {
       v38 = 0;
-      v39 = &a3[v35];
-      if (v35 >= v14)
+      v39 = &rects[v35];
+      if (v35 >= countCopy)
       {
         v39 = MEMORY[0x277CBF398];
       }
@@ -2352,16 +2352,16 @@ LABEL_10:
       do
       {
         v47 = 0.0;
-        if (v35 < v14 && v38 < v22)
+        if (v35 < countCopy && v38 < v22)
         {
           v48 = *(v46 - 1);
           v49 = *v46;
           v50 = hypot(v48 - v163, *v46 - v161);
           v51 = v50 + hypot(v48 - v44, v49 - v45);
           v47 = v51 + hypot(v48 - v40, v49 - v41);
-          if (a8)
+          if (any)
           {
-            if (a8[v35])
+            if (any[v35])
             {
               v47 = v47 + (v48 - v28) * (v159 + v47);
             }
@@ -2380,16 +2380,16 @@ LABEL_10:
     while (v35 != v34);
   }
 
-  v52 = malloc_type_calloc(v14, 8uLL, 0x100004000313F17uLL);
+  v52 = malloc_type_calloc(countCopy, 8uLL, 0x100004000313F17uLL);
   if (!v52)
   {
     return;
   }
 
   v53 = v52;
-  if (v14 >= 1)
+  if (countCopy >= 1)
   {
-    memset(v52, 255, 8 * v14);
+    memset(v52, 255, 8 * countCopy);
   }
 
   v54 = malloc_type_calloc(v22, 8uLL, 0x100004000313F17uLL);
@@ -2525,26 +2525,26 @@ LABEL_136:
     {
       if (v65 > 2)
       {
-        v67 = v162;
+        countCopy3 = v162;
         if (v65 != 3)
         {
-          v67 = count;
+          countCopy3 = count;
           if (v65 != 4)
           {
-            v67 = v145;
+            countCopy3 = v145;
           }
         }
       }
 
       else
       {
-        v67 = v164;
+        countCopy3 = v164;
         if (v65)
         {
-          v67 = v160;
+          countCopy3 = v160;
           if (v65 != 1)
           {
-            v67 = v146;
+            countCopy3 = v146;
             if (v65 != 2)
             {
               goto LABEL_63;
@@ -2553,7 +2553,7 @@ LABEL_136:
         }
       }
 
-      v65 = v67[2](v67);
+      v65 = countCopy3[2](countCopy3);
 LABEL_63:
       if (v66 < v63 * v34 + 12)
       {
@@ -2568,7 +2568,7 @@ LABEL_63:
     }
   }
 
-  if (v14 >= 1)
+  if (countCopy >= 1)
   {
     v68 = 0;
     v69 = v62;
@@ -2590,7 +2590,7 @@ LABEL_63:
       v69 += v34;
     }
 
-    while (v68 != v14);
+    while (v68 != countCopy);
   }
 
   free(v143);
@@ -2601,13 +2601,13 @@ LABEL_63:
   _Block_object_dispose(v184, 8);
   _Block_object_dispose(v185, 8);
 
-  if (v14 >= 1)
+  if (countCopy >= 1)
   {
-    p_size = &a3->size;
+    p_size = &rects->size;
     __asm { FMOV            V0.2D, #-0.5 }
 
     v76 = v53;
-    v77 = v14;
+    v77 = countCopy;
     do
     {
       v78 = *v76++;
@@ -2645,7 +2645,7 @@ LABEL_63:
               v90 = v55[(v88 + v84 * v156)];
               if (v90 != -1)
               {
-                v91 = &a3[v90];
+                v91 = &rects[v90];
                 v86 = v86 + v91->size.width;
                 if (v87 < v91->size.height)
                 {
@@ -2689,10 +2689,10 @@ LABEL_63:
       }
 
       v95 = fmin(v94, 1.0);
-      if (v14 >= 1)
+      if (countCopy >= 1)
       {
-        v96 = &a3->size;
-        v97 = v14;
+        v96 = &rects->size;
+        v97 = countCopy;
         do
         {
           *&v96[-1].width = CGRectInset(*&v96[-1].width, width * -0.5 / v95, v150 * -0.5 / v95);
@@ -2722,7 +2722,7 @@ LABEL_63:
               v106 = v55[(v102 + v99 * v156)];
               if (v106 != -1)
               {
-                v107 = &a3[v106];
+                v107 = &rects[v106];
                 v108 = v107->origin.x;
                 if (v103 == 1.79769313e308)
                 {
@@ -2766,7 +2766,7 @@ LABEL_125:
           v112 = v55[(v110 + v99 * v156)];
           if (v112 != -1)
           {
-            a3[v112].origin.x = v109 + a3[v112].origin.x;
+            rects[v112].origin.x = v109 + rects[v112].origin.x;
           }
 
           v110 = v111++;
@@ -2792,7 +2792,7 @@ LABEL_122:
           }
         }
 
-        v117 = &a3[v116];
+        v117 = &rects[v116];
         v118 = v117->origin.y;
         v119 = v117->size.height;
         if (v104 != -1.79769313e308)
@@ -2822,10 +2822,10 @@ LABEL_121:
       }
 
 LABEL_126:
-      if (v14 > 0)
+      if (countCopy > 0)
       {
-        v121 = &a3->size;
-        v122 = v14;
+        v121 = &rects->size;
+        v122 = countCopy;
         do
         {
           *&v121[-1].width = CGRectInset(*&v121[-1].width, width * 0.5 / v95, v150 * 0.5 / v95);
@@ -2838,8 +2838,8 @@ LABEL_126:
         v123 = *(MEMORY[0x277CBF398] + 24);
         v125 = *MEMORY[0x277CBF398];
         v126 = *(MEMORY[0x277CBF398] + 8);
-        v127 = &a3->size;
-        v128 = v14;
+        v127 = &rects->size;
+        v128 = countCopy;
         do
         {
           v130 = v127[-1].width;
@@ -2884,9 +2884,9 @@ LABEL_126:
 
       UIRectGetCenter();
       UIRectGetCenter();
-      if (v14 >= 1)
+      if (countCopy >= 1)
       {
-        v137 = &a3->size;
+        v137 = &rects->size;
         do
         {
           UIRectRoundToScale();
@@ -2895,10 +2895,10 @@ LABEL_126:
           v137->width = v140;
           v137->height = v141;
           v137 += 2;
-          --v14;
+          --countCopy;
         }
 
-        while (v14);
+        while (countCopy);
       }
 
       free(v147);

@@ -1,44 +1,44 @@
 @interface SiriUIUtilities
-+ (BOOL)string:(id)a3 isSameAsUserUtterance:(id)a4;
-+ (id)_normalizeTextString:(id)a3;
++ (BOOL)string:(id)string isSameAsUserUtterance:(id)utterance;
++ (id)_normalizeTextString:(id)string;
 + (id)defaultBrowserBundleIdentifier;
-+ (id)deviceSpecificKeyForDefaultKey:(id)a3;
++ (id)deviceSpecificKeyForDefaultKey:(id)key;
 + (id)stringForDeviceType;
-+ (id)stringForSiriUIBackgroundBlurReason:(int64_t)a3;
++ (id)stringForSiriUIBackgroundBlurReason:(int64_t)reason;
 @end
 
 @implementation SiriUIUtilities
 
-+ (id)stringForSiriUIBackgroundBlurReason:(int64_t)a3
++ (id)stringForSiriUIBackgroundBlurReason:(int64_t)reason
 {
-  if ((a3 - 1) > 4)
+  if ((reason - 1) > 4)
   {
     return @"SiriUIBackgroundBlurReasonForceDismissal";
   }
 
   else
   {
-    return off_279C5A790[a3 - 1];
+    return off_279C5A790[reason - 1];
   }
 }
 
 + (id)stringForDeviceType
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 model];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice model];
 
-  return v3;
+  return model;
 }
 
-+ (id)deviceSpecificKeyForDefaultKey:(id)a3
++ (id)deviceSpecificKeyForDefaultKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SiriUIUtilities stringForDeviceType];
   if ([v4 containsString:@"iPhone"])
   {
     v5 = @"_IPHONE";
 LABEL_7:
-    v6 = [v3 stringByAppendingString:v5];
+    v6 = [keyCopy stringByAppendingString:v5];
     goto LABEL_8;
   }
 
@@ -54,31 +54,31 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = v3;
+  v6 = keyCopy;
 LABEL_8:
   v7 = v6;
 
   return v7;
 }
 
-+ (BOOL)string:(id)a3 isSameAsUserUtterance:(id)a4
++ (BOOL)string:(id)string isSameAsUserUtterance:(id)utterance
 {
-  v6 = a4;
-  v7 = [a1 _normalizeTextString:a3];
-  v8 = [v6 bestTextInterpretation];
+  utteranceCopy = utterance;
+  v7 = [self _normalizeTextString:string];
+  bestTextInterpretation = [utteranceCopy bestTextInterpretation];
 
-  v9 = [a1 _normalizeTextString:v8];
-  LOBYTE(v6) = [v7 localizedStandardCompare:v9] == 0;
+  v9 = [self _normalizeTextString:bestTextInterpretation];
+  LOBYTE(utteranceCopy) = [v7 localizedStandardCompare:v9] == 0;
 
-  return v6;
+  return utteranceCopy;
 }
 
-+ (id)_normalizeTextString:(id)a3
++ (id)_normalizeTextString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  stringCopy = string;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v7 = [v6 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"“" withString:@""];
@@ -106,9 +106,9 @@ LABEL_8:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 defaultBrowserBundleIdentifier];
+  defaultBrowserBundleIdentifier = [v2 defaultBrowserBundleIdentifier];
 
-  return v4;
+  return defaultBrowserBundleIdentifier;
 }
 
 @end

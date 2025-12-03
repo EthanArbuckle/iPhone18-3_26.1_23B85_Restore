@@ -1,13 +1,13 @@
 @interface BSServiceQueue
-+ (BSServiceQueue)queueWithDispatchQueue:(id)a3;
-+ (BSServiceQueue)queueWithMainRunLoopModes:(id)a3;
++ (BSServiceQueue)queueWithDispatchQueue:(id)queue;
++ (BSServiceQueue)queueWithMainRunLoopModes:(id)modes;
 + (id)mainDispatchQueue;
 - (BSServiceQueue)init;
-- (void)_performAsync:(id)a3 withHandoff:(id)a4;
-- (void)_xpcReplyQueue_performReply:(id)a3;
+- (void)_performAsync:(id)async withHandoff:(id)handoff;
+- (void)_xpcReplyQueue_performReply:(id)reply;
 - (void)assertBarrierOnQueue;
-- (void)performAfter:(double)a3 withBlock:(id)a4;
-- (void)performAsync:(id)a3;
+- (void)performAfter:(double)after withBlock:(id)block;
+- (void)performAsync:(id)async;
 @end
 
 @implementation BSServiceQueue
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (void)_performAsync:(id)a3 withHandoff:(id)a4
+- (void)_performAsync:(id)async withHandoff:(id)handoff
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  asyncCopy = async;
+  handoffCopy = handoff;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = NSStringFromSelector(a2);
@@ -34,7 +34,7 @@
     v14 = 2112;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = @"BSServiceQueue.m";
     v20 = 1024;
@@ -45,10 +45,10 @@
   __break(0);
 }
 
-- (void)_xpcReplyQueue_performReply:(id)a3
+- (void)_xpcReplyQueue_performReply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = NSStringFromSelector(a2);
@@ -59,7 +59,7 @@
     v11 = 2112;
     v12 = v8;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = @"BSServiceQueue.m";
     v17 = 1024;
@@ -73,14 +73,14 @@
 + (id)mainDispatchQueue
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     v4 = NSClassFromString(&cfstr_Fbsserialqueue.isa);
-    if (!v4 || v4 != a1)
+    if (!v4 || v4 != self)
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = NSStringFromSelector(a2);
-      v9 = [v7 stringWithFormat:@"%@ is not available on subclass %@", v8, a1];
+      v9 = [v7 stringWithFormat:@"%@ is not available on subclass %@", v8, self];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -92,7 +92,7 @@
         v16 = 2114;
         v17 = v12;
         v18 = 2048;
-        v19 = a1;
+        selfCopy = self;
         v20 = 2114;
         v21 = @"BSServiceQueue.m";
         v22 = 1024;
@@ -115,11 +115,11 @@
   return +[BSServiceDispatchQueue mainQueue];
 }
 
-+ (BSServiceQueue)queueWithDispatchQueue:(id)a3
++ (BSServiceQueue)queueWithDispatchQueue:(id)queue
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"targetQueue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -132,7 +132,7 @@
       v27 = 2114;
       v28 = v21;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSServiceQueue.m";
       v33 = 1024;
@@ -149,14 +149,14 @@
     JUMPOUT(0x19A857BE8);
   }
 
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     v6 = NSClassFromString(&cfstr_Fbsserialqueue.isa);
-    if (!v6 || v6 != a1)
+    if (!v6 || v6 != self)
     {
       v11 = MEMORY[0x1E696AEC0];
       v12 = NSStringFromSelector(a2);
-      v13 = [v11 stringWithFormat:@"%@ is not available on subclass %@", v12, a1];
+      v13 = [v11 stringWithFormat:@"%@ is not available on subclass %@", v12, self];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -168,7 +168,7 @@
         v27 = 2114;
         v28 = v16;
         v29 = 2048;
-        v30 = a1;
+        selfCopy2 = self;
         v31 = 2114;
         v32 = @"BSServiceQueue.m";
         v33 = 1024;
@@ -186,14 +186,14 @@
     }
   }
 
-  v7 = [BSServiceDispatchQueue _queueOfDispatchQueue:v5];
+  v7 = [BSServiceDispatchQueue _queueOfDispatchQueue:queueCopy];
   if (!v7)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__BSServiceQueue_queueWithDispatchQueue___block_invoke;
     block[3] = &unk_1E75205D0;
-    v8 = v5;
+    v8 = queueCopy;
     v24 = v8;
     dispatch_async(v8, block);
     v7 = [BSServiceDispatchQueue _queueWithDispatchQueue:v8];
@@ -204,18 +204,18 @@
   return v7;
 }
 
-+ (BSServiceQueue)queueWithMainRunLoopModes:(id)a3
++ (BSServiceQueue)queueWithMainRunLoopModes:(id)modes
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (objc_opt_class() != a1)
+  modesCopy = modes;
+  if (objc_opt_class() != self)
   {
     v6 = NSClassFromString(&cfstr_Fbsserialqueue.isa);
-    if (!v6 || v6 != a1)
+    if (!v6 || v6 != self)
     {
       v10 = MEMORY[0x1E696AEC0];
       v11 = NSStringFromSelector(a2);
-      v12 = [v10 stringWithFormat:@"%@ is not available on subclass %@", v11, a1];
+      v12 = [v10 stringWithFormat:@"%@ is not available on subclass %@", v11, self];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -227,7 +227,7 @@
         v19 = 2114;
         v20 = v15;
         v21 = 2048;
-        v22 = a1;
+        selfCopy = self;
         v23 = 2114;
         v24 = @"BSServiceQueue.m";
         v25 = 1024;
@@ -245,7 +245,7 @@
     }
   }
 
-  v7 = [BSServiceMainRunLoopQueue queueWithModes:v5];
+  v7 = [BSServiceMainRunLoopQueue queueWithModes:modesCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -265,7 +265,7 @@
     v9 = 2112;
     v10 = v6;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = @"BSServiceQueue.m";
     v15 = 1024;
@@ -276,10 +276,10 @@
   __break(0);
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  asyncCopy = async;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = NSStringFromSelector(a2);
@@ -290,7 +290,7 @@
     v11 = 2112;
     v12 = v8;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = @"BSServiceQueue.m";
     v17 = 1024;
@@ -301,10 +301,10 @@
   __break(0);
 }
 
-- (void)performAfter:(double)a3 withBlock:(id)a4
+- (void)performAfter:(double)after withBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = NSStringFromSelector(a2);
@@ -315,7 +315,7 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = @"BSServiceQueue.m";
     v18 = 1024;

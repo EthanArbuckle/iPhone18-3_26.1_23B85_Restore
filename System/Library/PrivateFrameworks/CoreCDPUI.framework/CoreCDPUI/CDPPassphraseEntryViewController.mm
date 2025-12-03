@@ -16,13 +16,13 @@
   {
     [(DevicePINController *)v2 setMode:3];
     [(DevicePINController *)v3 setShouldDismissWhenDone:0];
-    v4 = [MEMORY[0x277D3FA48] appearance];
-    v5 = [MEMORY[0x277D75348] labelColor];
-    [v4 setTextColor:v5];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [appearance setTextColor:labelColor];
 
-    v6 = [MEMORY[0x277D3FA48] appearance];
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v6 setBackgroundColor:v7];
+    appearance2 = [MEMORY[0x277D3FA48] appearance];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [appearance2 setBackgroundColor:systemBackgroundColor];
   }
 
   return v3;

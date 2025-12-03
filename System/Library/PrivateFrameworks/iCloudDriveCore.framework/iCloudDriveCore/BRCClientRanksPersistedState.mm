@@ -1,14 +1,14 @@
 @interface BRCClientRanksPersistedState
-+ (id)loadFromClientStateInSession:(id)a3 options:(id)a4;
++ (id)loadFromClientStateInSession:(id)session options:(id)options;
 - (BOOL)getAndClearIsNotifRankChanged;
 - (BRCClientRanksPersistedState)init;
-- (BRCClientRanksPersistedState)initWithCoder:(id)a3;
+- (BRCClientRanksPersistedState)initWithCoder:(id)coder;
 - (unint64_t)allocateItemRowID;
 - (unint64_t)allocateNotifRank;
 - (unint64_t)allocatePackageItemRank;
-- (void)encodeWithCoder:(id)a3;
-- (void)setNextNotifRank:(unint64_t)a3;
-- (void)setNextPackageItemRank:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setNextNotifRank:(unint64_t)rank;
+- (void)setNextPackageItemRank:(unint64_t)rank;
 @end
 
 @implementation BRCClientRanksPersistedState
@@ -38,15 +38,15 @@
   return result;
 }
 
-- (void)setNextNotifRank:(unint64_t)a3
+- (void)setNextNotifRank:(unint64_t)rank
 {
   [(BRCPersistedState *)self assertQueue];
-  if (self->_nextNotifRank > a3)
+  if (self->_nextNotifRank > rank)
   {
     [BRCClientRanksPersistedState setNextNotifRank:];
   }
 
-  self->_nextNotifRank = a3;
+  self->_nextNotifRank = rank;
   self->_notifRankChanged = 1;
 }
 
@@ -58,32 +58,32 @@
   return result;
 }
 
-- (void)setNextPackageItemRank:(unint64_t)a3
+- (void)setNextPackageItemRank:(unint64_t)rank
 {
   [(BRCPersistedState *)self assertQueue];
-  if (self->_nextPackageItemRank > a3)
+  if (self->_nextPackageItemRank > rank)
   {
     [BRCClientRanksPersistedState setNextPackageItemRank:];
   }
 
-  self->_nextPackageItemRank = a3;
+  self->_nextPackageItemRank = rank;
 }
 
-+ (id)loadFromClientStateInSession:(id)a3 options:(id)a4
++ (id)loadFromClientStateInSession:(id)session options:(id)options
 {
-  v4 = a3;
-  v5 = [v4 clientState];
-  v6 = [v5 objectForKeyedSubscript:@"clientRanks"];
+  sessionCopy = session;
+  clientState = [sessionCopy clientState];
+  v6 = [clientState objectForKeyedSubscript:@"clientRanks"];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = objc_opt_new();
 
-    [v5 setObject:v9 forKeyedSubscript:@"clientRanks"];
+    [clientState setObject:v9 forKeyedSubscript:@"clientRanks"];
     v6 = v9;
   }
 
-  v7 = [v4 clientTruthWorkloop];
-  [v6 setAssertionQueue:v7];
+  clientTruthWorkloop = [sessionCopy clientTruthWorkloop];
+  [v6 setAssertionQueue:clientTruthWorkloop];
 
   return v6;
 }
@@ -104,36 +104,36 @@
   return result;
 }
 
-- (BRCClientRanksPersistedState)initWithCoder:(id)a3
+- (BRCClientRanksPersistedState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BRCClientRanksPersistedState;
-  v5 = [(BRCPersistedState *)&v7 initWithCoder:v4];
+  v5 = [(BRCPersistedState *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_nextItemRowID = [v4 decodeInt64ForKey:@"nextItemRowID"];
-    v5->_nextNotifRank = [v4 decodeInt64ForKey:@"nextNotifRank"];
-    v5->_nextPackageItemRank = [v4 decodeInt64ForKey:@"nextPackageItemRank"];
-    v5->_telemetryMinRowID = [v4 decodeInt64ForKey:@"telemetryRowID"];
-    v5->_telemetryToken = [v4 decodeInt64ForKey:@"telemetryToken"];
+    v5->_nextItemRowID = [coderCopy decodeInt64ForKey:@"nextItemRowID"];
+    v5->_nextNotifRank = [coderCopy decodeInt64ForKey:@"nextNotifRank"];
+    v5->_nextPackageItemRank = [coderCopy decodeInt64ForKey:@"nextPackageItemRank"];
+    v5->_telemetryMinRowID = [coderCopy decodeInt64ForKey:@"telemetryRowID"];
+    v5->_telemetryToken = [coderCopy decodeInt64ForKey:@"telemetryToken"];
     v5->_notifRankChanged = 0;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BRCClientRanksPersistedState;
-  v4 = a3;
-  [(BRCPersistedState *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_nextItemRowID forKey:{@"nextItemRowID", v5.receiver, v5.super_class}];
-  [v4 encodeInt64:self->_nextNotifRank forKey:@"nextNotifRank"];
-  [v4 encodeInt64:self->_nextPackageItemRank forKey:@"nextPackageItemRank"];
-  [v4 encodeInt64:self->_telemetryMinRowID forKey:@"telemetryRowID"];
-  [v4 encodeInt64:self->_telemetryToken forKey:@"telemetryToken"];
+  coderCopy = coder;
+  [(BRCPersistedState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_nextItemRowID forKey:{@"nextItemRowID", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt64:self->_nextNotifRank forKey:@"nextNotifRank"];
+  [coderCopy encodeInt64:self->_nextPackageItemRank forKey:@"nextPackageItemRank"];
+  [coderCopy encodeInt64:self->_telemetryMinRowID forKey:@"telemetryRowID"];
+  [coderCopy encodeInt64:self->_telemetryToken forKey:@"telemetryToken"];
 }
 
 - (void)setNextNotifRank:.cold.1()

@@ -1,18 +1,18 @@
 @interface SXRenderingConfigurationAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXRenderingConfigurationAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F5416848 factory:&__block_literal_global_22];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F5416848 factory:&__block_literal_global_22];
 
-  v7 = [v3 privateContainer];
+  privateContainer = [registryCopy privateContainer];
 
-  v6 = [v7 registerClass:objc_opt_class() factory:&__block_literal_global_46];
+  v6 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_46];
 }
 
 id __51__SXRenderingConfigurationAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

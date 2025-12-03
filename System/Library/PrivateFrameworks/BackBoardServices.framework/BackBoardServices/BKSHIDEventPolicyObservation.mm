@@ -1,15 +1,15 @@
 @interface BKSHIDEventPolicyObservation
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
 - (BKSHIDEventPolicyObservation)init;
-- (BKSHIDEventPolicyObservation)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BKSHIDEventPolicyObservation)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithCopyOf:(id *)of;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_init;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventPolicyObservation
@@ -84,54 +84,54 @@
   return BSHashPurifyNS();
 }
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSHIDEventPolicyObservation *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSHIDEventPolicyObservation *)of _init];
+    of = _init;
+    if (_init)
     {
-      *(v4 + 2) = *(v3 + 2);
-      objc_storeStrong(v4 + 2, *(v3 + 2));
-      objc_storeStrong(a1 + 3, *(v3 + 3));
-      objc_storeStrong(a1 + 4, *(v3 + 4));
-      objc_storeStrong(a1 + 5, *(v3 + 5));
-      a1[6] = *(v3 + 6);
-      *(a1 + 56) = *(v3 + 56);
+      *(_init + 2) = *(v3 + 2);
+      objc_storeStrong(_init + 2, *(v3 + 2));
+      objc_storeStrong(of + 3, *(v3 + 3));
+      objc_storeStrong(of + 4, *(v3 + 4));
+      objc_storeStrong(of + 5, *(v3 + 5));
+      of[6] = *(v3 + 6);
+      *(of + 56) = *(v3 + 56);
     }
   }
 
-  return a1;
+  return of;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v11 = a3;
-  v4 = [v11 appendInteger:self->_pid withName:@"pid"];
-  v5 = [v11 appendObject:self->_display withName:@"display"];
-  v6 = [v11 appendObject:self->_environment withName:@"environment"];
-  v7 = [v11 appendObject:self->_selectionPath withName:@"selectionPath"];
-  v8 = [v11 appendObject:self->_token withName:@"token"];
-  v9 = [v11 appendInteger:self->_policyStatus withName:@"policyStatus"];
-  v10 = [v11 appendBool:self->_finalStringToken withName:@"finalStringToken"];
+  streamCopy = stream;
+  v4 = [streamCopy appendInteger:self->_pid withName:@"pid"];
+  v5 = [streamCopy appendObject:self->_display withName:@"display"];
+  v6 = [streamCopy appendObject:self->_environment withName:@"environment"];
+  v7 = [streamCopy appendObject:self->_selectionPath withName:@"selectionPath"];
+  v8 = [streamCopy appendObject:self->_token withName:@"token"];
+  v9 = [streamCopy appendInteger:self->_policyStatus withName:@"policyStatus"];
+  v10 = [streamCopy appendBool:self->_finalStringToken withName:@"finalStringToken"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventPolicyObservation alloc];
 
   return [(BKSHIDEventPolicyObservation *)&v4->super.super.isa _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5[2] != self->_pid)
     {
@@ -167,66 +167,66 @@ LABEL_10:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeInteger:self->_pid forKey:@"pid"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_pid forKey:@"pid"];
   display = self->_display;
   if (display)
   {
-    [v9 encodeObject:display forKey:@"display"];
+    [coderCopy encodeObject:display forKey:@"display"];
   }
 
   environment = self->_environment;
   if (environment)
   {
-    [v9 encodeObject:environment forKey:@"environment"];
+    [coderCopy encodeObject:environment forKey:@"environment"];
   }
 
   selectionPath = self->_selectionPath;
-  v7 = v9;
+  v7 = coderCopy;
   if (selectionPath)
   {
-    [v9 encodeObject:selectionPath forKey:@"selectionPath"];
-    v7 = v9;
+    [coderCopy encodeObject:selectionPath forKey:@"selectionPath"];
+    v7 = coderCopy;
   }
 
   token = self->_token;
   if (token)
   {
-    [v9 encodeObject:token forKey:@"token"];
-    v7 = v9;
+    [coderCopy encodeObject:token forKey:@"token"];
+    v7 = coderCopy;
   }
 
   [v7 encodeInteger:self->_policyStatus forKey:@"policyStatus"];
-  [v9 encodeBool:self->_finalStringToken forKey:@"finalStringToken"];
+  [coderCopy encodeBool:self->_finalStringToken forKey:@"finalStringToken"];
 }
 
-- (BKSHIDEventPolicyObservation)initWithCoder:(id)a3
+- (BKSHIDEventPolicyObservation)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = BKSHIDEventPolicyObservation;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSHIDEventPolicyObservation *)&v15 init];
-  v4->_pid = [v3 decodeIntegerForKey:{@"pid", v15.receiver, v15.super_class}];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"display"];
+  v4->_pid = [coderCopy decodeIntegerForKey:{@"pid", v15.receiver, v15.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display"];
   display = v4->_display;
   v4->_display = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
   environment = v4->_environment;
   v4->_environment = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"selectionPath"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectionPath"];
   selectionPath = v4->_selectionPath;
   v4->_selectionPath = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
   token = v4->_token;
   v4->_token = v11;
 
-  v4->_policyStatus = [v3 decodeIntegerForKey:@"policyStatus"];
-  v13 = [v3 decodeBoolForKey:@"finalStringToken"];
+  v4->_policyStatus = [coderCopy decodeIntegerForKey:@"policyStatus"];
+  v13 = [coderCopy decodeBoolForKey:@"finalStringToken"];
 
   v4->_finalStringToken = v13;
   return v4;
@@ -278,13 +278,13 @@ LABEL_10:
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSHIDEventPolicyObservation *)[BKSMutableHIDEventPolicyObservation alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSHIDEventPolicyObservation *)[BKSMutableHIDEventPolicyObservation alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

@@ -1,55 +1,55 @@
 @interface AVPeriodicTimebaseObserver
-- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 interval:(id *)a4 offset:(id *)a5 queue:(id)a6 block:(id)a7;
-- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 interval:(id *)a4 queue:(id)a5 block:(id)a6;
+- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase interval:(id *)interval offset:(id *)offset queue:(id)queue block:(id)block;
+- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase interval:(id *)interval queue:(id)queue block:(id)block;
 - (void)_effectiveRateChanged;
-- (void)_fireBlockForTime:(id *)a3;
+- (void)_fireBlockForTime:(id *)time;
 - (void)_handleTimeDiscontinuity;
 - (void)_resetNextFireTime;
 - (void)dealloc;
-- (void)initGutsWithTimebase:(OpaqueCMTimebase *)a3 interval:(id *)a4 offset:(id *)a5 queue:(id)a6 block:(id)a7;
+- (void)initGutsWithTimebase:(OpaqueCMTimebase *)timebase interval:(id *)interval offset:(id *)offset queue:(id)queue block:(id)block;
 @end
 
 @implementation AVPeriodicTimebaseObserver
 
-- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 interval:(id *)a4 queue:(id)a5 block:(id)a6
+- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase interval:(id *)interval queue:(id)queue block:(id)block
 {
   v17.receiver = self;
   v17.super_class = AVPeriodicTimebaseObserver;
-  v10 = [(AVTimebaseObserver *)&v17 initWithTimebase:a3 queue:a5];
+  v10 = [(AVTimebaseObserver *)&v17 initWithTimebase:timebase queue:queue];
   v11 = v10;
   if (v10)
   {
-    v15 = *&a4->var0;
-    var3 = a4->var3;
+    v15 = *&interval->var0;
+    var3 = interval->var3;
     v13 = *MEMORY[0x1E6960CC0];
     v14 = *(MEMORY[0x1E6960CC0] + 16);
-    [(AVPeriodicTimebaseObserver *)v10 initGutsWithTimebase:a3 interval:&v15 offset:&v13 queue:a5 block:a6];
+    [(AVPeriodicTimebaseObserver *)v10 initGutsWithTimebase:timebase interval:&v15 offset:&v13 queue:queue block:block];
   }
 
   return v11;
 }
 
-- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 interval:(id *)a4 offset:(id *)a5 queue:(id)a6 block:(id)a7
+- (AVPeriodicTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase interval:(id *)interval offset:(id *)offset queue:(id)queue block:(id)block
 {
   v19.receiver = self;
   v19.super_class = AVPeriodicTimebaseObserver;
-  v12 = [(AVTimebaseObserver *)&v19 initWithTimebase:a3 queue:a6];
+  v12 = [(AVTimebaseObserver *)&v19 initWithTimebase:timebase queue:queue];
   v13 = v12;
   if (v12)
   {
-    v17 = *&a4->var0;
-    var3 = a4->var3;
-    v15 = *&a5->var0;
-    v16 = a5->var3;
-    [(AVPeriodicTimebaseObserver *)v12 initGutsWithTimebase:a3 interval:&v17 offset:&v15 queue:a6 block:a7];
+    v17 = *&interval->var0;
+    var3 = interval->var3;
+    v15 = *&offset->var0;
+    v16 = offset->var3;
+    [(AVPeriodicTimebaseObserver *)v12 initGutsWithTimebase:timebase interval:&v17 offset:&v15 queue:queue block:block];
   }
 
   return v13;
 }
 
-- (void)initGutsWithTimebase:(OpaqueCMTimebase *)a3 interval:(id *)a4 offset:(id *)a5 queue:(id)a6 block:(id)a7
+- (void)initGutsWithTimebase:(OpaqueCMTimebase *)timebase interval:(id *)interval offset:(id *)offset queue:(id)queue block:(id)block
 {
-  if ((a4->var2 & 0x1D) != 1)
+  if ((interval->var2 & 0x1D) != 1)
   {
     timerQueue = self->super._timerQueue;
     if (timerQueue)
@@ -67,9 +67,9 @@
       [(AVTimebaseObserver *)self invalidate];
     }
 
-    if ((a4->var2 & 0x1D) != 1)
+    if ((interval->var2 & 0x1D) != 1)
     {
-      v18 = self;
+      selfCopy = self;
       v24 = MEMORY[0x1E695DF30];
       v25 = *MEMORY[0x1E695D940];
       v26 = "((Boolean)(((interval).flags & (kCMTimeFlags_Valid | kCMTimeFlags_ImpliedValueFlagsMask)) == kCMTimeFlags_Valid))";
@@ -77,7 +77,7 @@
     }
   }
 
-  time1 = *a4;
+  time1 = *interval;
   v30 = *MEMORY[0x1E6960CC0];
   *&time2.value = *MEMORY[0x1E6960CC0];
   v13 = *(MEMORY[0x1E6960CC0] + 16);
@@ -100,12 +100,12 @@
       [(AVTimebaseObserver *)self invalidate];
     }
 
-    time1 = *a4;
+    time1 = *interval;
     *&time2.value = v30;
     time2.epoch = v13;
     if (CMTimeCompare(&time1, &time2) <= 0)
     {
-      v28 = self;
+      selfCopy2 = self;
       v24 = MEMORY[0x1E695DF30];
       v25 = *MEMORY[0x1E695D940];
       v26 = "((Boolean)(CMTimeCompare(interval, kCMTimeZero) > 0))";
@@ -113,7 +113,7 @@
     }
   }
 
-  if (!a7)
+  if (!block)
   {
     v17 = self->super._timerQueue;
     if (v17)
@@ -131,7 +131,7 @@
       [(AVTimebaseObserver *)self invalidate];
     }
 
-    v27 = self;
+    selfCopy3 = self;
     v24 = MEMORY[0x1E695DF30];
     v25 = *MEMORY[0x1E695D940];
     v26 = "block != ((void *)0)";
@@ -140,12 +140,12 @@ LABEL_19:
     objc_exception_throw(v29);
   }
 
-  *&self->_sequenceNum = [a7 copy];
-  var3 = a4->var3;
-  *(&self->super._invalid + 4) = *&a4->var0;
+  *&self->_sequenceNum = [block copy];
+  var3 = interval->var3;
+  *(&self->super._invalid + 4) = *&interval->var0;
   *&self->_intervalRequested.flags = var3;
-  v16 = a5->var3;
-  *(&self->_lastStopTime.epoch + 4) = *&a5->var0;
+  v16 = offset->var3;
+  *(&self->_lastStopTime.epoch + 4) = *&offset->var0;
   *&self->_nonPeriodicOffset.flags = v16;
   *&self->_lastPeriodicFireTime.flags = v13;
   *(&self->_lastIntervalUsed.epoch + 4) = v30;
@@ -177,14 +177,14 @@ void __79__AVPeriodicTimebaseObserver_initGutsWithTimebase_interval_offset_queue
   [(AVTimebaseObserver *)&v3 dealloc];
 }
 
-- (void)_fireBlockForTime:(id *)a3
+- (void)_fireBlockForTime:(id *)time
 {
   if (!self->super._invalid)
   {
     v3 = *&self->_sequenceNum;
     v4 = *(v3 + 16);
-    v5 = *a3;
-    v4(v3, &v5, a3);
+    v5 = *time;
+    v4(v3, &v5, time);
   }
 }
 

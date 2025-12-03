@@ -6,7 +6,7 @@
 
 + (id)assetAdjustmentOptionsForFileSystemImport
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setShouldUpdateAttributes:1];
   [v2 setShouldGenerateThumbnails:1];
   [v2 setFileIngestionType:0];

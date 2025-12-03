@@ -1,45 +1,45 @@
 @interface NSString
-+ (NSString)stringWithBytes:(id)a3 hibyte:(unint64_t)a4 offset:(unint64_t)a5 length:(unint64_t)a6;
-+ (NSString)stringWithInts:(id)a3 offset:(int)a4 length:(int)a5;
-+ (NSString)stringWithJavaLangStringBuilder:(id)a3;
-+ (id)valueOf:(id)a3;
-+ (id)valueOfBool:(BOOL)a3;
-- (BOOL)contains:(id)a3;
-- (BOOL)contentEqualsCharSequence:(id)a3;
-- (BOOL)contentEqualsStringBuffer:(id)a3;
-- (BOOL)hasPrefix:(id)a3 offset:(int)a4;
-- (BOOL)regionMatches:(BOOL)a3 thisOffset:(int)a4 aString:(id)a5 otherOffset:(int)a6 count:(int)a7;
-- (id)concat:(id)a3;
++ (NSString)stringWithBytes:(id)bytes hibyte:(unint64_t)hibyte offset:(unint64_t)offset length:(unint64_t)length;
++ (NSString)stringWithInts:(id)ints offset:(int)offset length:(int)length;
++ (NSString)stringWithJavaLangStringBuilder:(id)builder;
++ (id)valueOf:(id)of;
++ (id)valueOfBool:(BOOL)bool;
+- (BOOL)contains:(id)contains;
+- (BOOL)contentEqualsCharSequence:(id)sequence;
+- (BOOL)contentEqualsStringBuffer:(id)buffer;
+- (BOOL)hasPrefix:(id)prefix offset:(int)offset;
+- (BOOL)regionMatches:(BOOL)matches thisOffset:(int)offset aString:(id)string otherOffset:(int)otherOffset count:(int)count;
+- (id)concat:(id)concat;
 - (id)getBytes;
-- (id)getBytesWithCharset:(id)a3;
-- (id)getBytesWithCharsetName:(id)a3;
-- (id)getBytesWithEncoding:(unint64_t)a3;
-- (id)lowercaseStringWithJRELocale:(id)a3;
-- (id)replace:(id)a3 withSequence:(id)a4;
-- (id)replace:(unsigned __int16)a3 withChar:(unsigned __int16)a4;
-- (id)replaceAll:(id)a3 withReplacement:(id)a4;
-- (id)replaceFirst:(id)a3 withReplacement:(id)a4;
-- (id)split:(id)a3;
-- (id)subSequenceFrom:(int)a3 to:(int)a4;
+- (id)getBytesWithCharset:(id)charset;
+- (id)getBytesWithCharsetName:(id)name;
+- (id)getBytesWithEncoding:(unint64_t)encoding;
+- (id)lowercaseStringWithJRELocale:(id)locale;
+- (id)replace:(id)replace withSequence:(id)sequence;
+- (id)replace:(unsigned __int16)replace withChar:(unsigned __int16)char;
+- (id)replaceAll:(id)all withReplacement:(id)replacement;
+- (id)replaceFirst:(id)first withReplacement:(id)replacement;
+- (id)split:(id)split;
+- (id)subSequenceFrom:(int)from to:(int)to;
 - (id)trim;
-- (id)uppercaseStringWithJRELocale:(id)a3;
-- (int)compareToIgnoreCase:(id)a3;
-- (int)compareToWithId:(id)a3;
-- (int)indexOfString:(id)a3;
-- (int)indexOfString:(id)a3 fromIndex:(int)a4;
-- (int)lastIndexOfString:(id)a3;
-- (int)lastIndexOfString:(id)a3 fromIndex:(int)a4;
-- (unsigned)charAtWithInt:(int)a3;
-- (void)getBytesWithSrcBegin:(int)a3 withSrcEnd:(int)a4 withDst:(id)a5 withDstBegin:(int)a6;
+- (id)uppercaseStringWithJRELocale:(id)locale;
+- (int)compareToIgnoreCase:(id)case;
+- (int)compareToWithId:(id)id;
+- (int)indexOfString:(id)string;
+- (int)indexOfString:(id)string fromIndex:(int)index;
+- (int)lastIndexOfString:(id)string;
+- (int)lastIndexOfString:(id)string fromIndex:(int)index;
+- (unsigned)charAtWithInt:(int)int;
+- (void)getBytesWithSrcBegin:(int)begin withSrcEnd:(int)end withDst:(id)dst withDstBegin:(int)dstBegin;
 @end
 
 @implementation NSString
 
-+ (id)valueOf:(id)a3
++ (id)valueOf:(id)of
 {
-  if (a3)
+  if (of)
   {
-    return [a3 description];
+    return [of description];
   }
 
   else
@@ -48,9 +48,9 @@
   }
 }
 
-+ (id)valueOfBool:(BOOL)a3
++ (id)valueOfBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     return @"true";
   }
@@ -61,33 +61,33 @@
   }
 }
 
-+ (NSString)stringWithJavaLangStringBuilder:(id)a3
++ (NSString)stringWithJavaLangStringBuilder:(id)builder
 {
-  if (!a3)
+  if (!builder)
   {
     v5 = objc_opt_class();
     Exception = makeException(v5);
     objc_exception_throw(Exception);
   }
 
-  return [a3 description];
+  return [builder description];
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!id || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = objc_opt_class();
     Exception = makeException(v6);
     objc_exception_throw(Exception);
   }
 
-  return [(NSString *)self compare:a3 options:2];
+  return [(NSString *)self compare:id options:2];
 }
 
-- (int)compareToIgnoreCase:(id)a3
+- (int)compareToIgnoreCase:(id)case
 {
-  if (!a3)
+  if (!case)
   {
     v4 = objc_opt_class();
     Exception = makeException(v4);
@@ -97,63 +97,63 @@
   return [(NSString *)self caseInsensitiveCompare:?];
 }
 
-- (int)indexOfString:(id)a3
+- (int)indexOfString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v6 = objc_opt_class();
     Exception = makeException(v6);
     objc_exception_throw(Exception);
   }
 
-  v5 = [a3 length];
+  v5 = [string length];
   if (v5)
   {
-    LODWORD(v5) = [(NSString *)self rangeOfString:a3];
+    LODWORD(v5) = [(NSString *)self rangeOfString:string];
   }
 
   return v5;
 }
 
-- (int)indexOfString:(id)a3 fromIndex:(int)a4
+- (int)indexOfString:(id)string fromIndex:(int)index
 {
-  if (!a3)
+  if (!string)
   {
     v9 = objc_opt_class();
     Exception = makeException(v9);
     objc_exception_throw(Exception);
   }
 
-  v7 = [a3 length];
+  v7 = [string length];
   if (v7)
   {
     v8 = [(NSString *)self length];
-    if (v8 <= a4)
+    if (v8 <= index)
     {
       LODWORD(v7) = -1;
     }
 
     else
     {
-      LODWORD(v7) = [(NSString *)self rangeOfString:a3 options:2 range:a4 & ~(a4 >> 31), v8 - (a4 & ~(a4 >> 31))];
+      LODWORD(v7) = [(NSString *)self rangeOfString:string options:2 range:index & ~(index >> 31), v8 - (index & ~(index >> 31))];
     }
   }
 
   return v7;
 }
 
-- (int)lastIndexOfString:(id)a3
+- (int)lastIndexOfString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v6 = objc_opt_class();
     Exception = makeException(v6);
     objc_exception_throw(Exception);
   }
 
-  if ([a3 length])
+  if ([string length])
   {
-    return [(NSString *)self rangeOfString:a3 options:4];
+    return [(NSString *)self rangeOfString:string options:4];
   }
 
   else
@@ -162,9 +162,9 @@
   }
 }
 
-- (int)lastIndexOfString:(id)a3 fromIndex:(int)a4
+- (int)lastIndexOfString:(id)string fromIndex:(int)index
 {
-  if (!a3)
+  if (!string)
   {
     v12 = objc_opt_class();
     Exception = makeException(v12);
@@ -172,7 +172,7 @@
   }
 
   v7 = [(NSString *)self length];
-  if (a4 < 0)
+  if (index < 0)
   {
     return -1;
   }
@@ -183,37 +183,37 @@
     return 0;
   }
 
-  v9 = [a3 length];
+  v9 = [string length];
   if (v9)
   {
-    v10 = v9 + a4;
-    if ((v9 + a4) >= v8)
+    v10 = v9 + index;
+    if ((v9 + index) >= v8)
     {
       v10 = v8;
     }
 
-    return [(NSString *)self rangeOfString:a3 options:4 range:0, v10];
+    return [(NSString *)self rangeOfString:string options:4 range:0, v10];
   }
 
-  return a4;
+  return index;
 }
 
-- (unsigned)charAtWithInt:(int)a3
+- (unsigned)charAtWithInt:(int)int
 {
-  if (a3 < 0 || [(NSString *)self length]<= a3)
+  if (int < 0 || [(NSString *)self length]<= int)
   {
     v6 = objc_opt_class();
     Exception = makeException(v6);
     objc_exception_throw(Exception);
   }
 
-  return [(NSString *)self characterAtIndex:a3];
+  return [(NSString *)self characterAtIndex:int];
 }
 
-- (id)subSequenceFrom:(int)a3 to:(int)a4
+- (id)subSequenceFrom:(int)from to:(int)to
 {
   v7 = [(NSString *)self length];
-  if (a3 < 0 || (v8 = a4 - a3, a4 < a3) || v7 < a4)
+  if (from < 0 || (v8 = to - from, to < from) || v7 < to)
   {
     v13 = objc_opt_class();
     Exception = makeException(v13);
@@ -222,91 +222,91 @@
 
   v9 = v8;
   v10 = malloc_type_calloc(v8, 2uLL, 0x1000040BDFB0063uLL);
-  [(NSString *)self getCharacters:v10 range:a3, v9];
+  [(NSString *)self getCharacters:v10 range:from, v9];
   v11 = [NSString stringWithCharacters:v10 length:v9];
   free(v10);
   return v11;
 }
 
-- (id)replace:(unsigned __int16)a3 withChar:(unsigned __int16)a4
+- (id)replace:(unsigned __int16)replace withChar:(unsigned __int16)char
 {
-  v6 = a3;
-  v5 = a4;
-  return [(NSString *)self replace:[NSString withSequence:"stringWithCharacters:length:" stringWithCharacters:1 length:?], [NSString stringWithCharacters:&v5 length:1]];
+  replaceCopy = replace;
+  charCopy = char;
+  return [(NSString *)self replace:[NSString withSequence:"stringWithCharacters:length:" stringWithCharacters:1 length:?], [NSString stringWithCharacters:&charCopy length:1]];
 }
 
-- (id)replace:(id)a3 withSequence:(id)a4
+- (id)replace:(id)replace withSequence:(id)sequence
 {
-  v6 = [a3 description];
-  v7 = [a4 description];
+  v6 = [replace description];
+  v7 = [sequence description];
 
   return [(NSString *)self stringByReplacingOccurrencesOfString:v6 withString:v7];
 }
 
-- (id)replaceAll:(id)a3 withReplacement:(id)a4
+- (id)replaceAll:(id)all withReplacement:(id)replacement
 {
   v7 = [(NSString *)self length];
 
-  return [(NSString *)self stringByReplacingOccurrencesOfString:a3 withString:a4 options:1024 range:0, v7];
+  return [(NSString *)self stringByReplacingOccurrencesOfString:all withString:replacement options:1024 range:0, v7];
 }
 
-- (id)replaceFirst:(id)a3 withReplacement:(id)a4
+- (id)replaceFirst:(id)first withReplacement:(id)replacement
 {
-  v7 = [(NSString *)self rangeOfString:a3 options:1024];
+  v7 = [(NSString *)self rangeOfString:first options:1024];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return self;
   }
 
-  return [(NSString *)self stringByReplacingOccurrencesOfString:a3 withString:a4 options:1024 range:v7, v8];
+  return [(NSString *)self stringByReplacingOccurrencesOfString:first withString:replacement options:1024 range:v7, v8];
 }
 
-+ (NSString)stringWithBytes:(id)a3 hibyte:(unint64_t)a4 offset:(unint64_t)a5 length:(unint64_t)a6
++ (NSString)stringWithBytes:(id)bytes hibyte:(unint64_t)hibyte offset:(unint64_t)offset length:(unint64_t)length
 {
-  v8 = a4;
-  v10 = malloc_type_calloc(a6, 2uLL, 0x1000040BDFB0063uLL);
+  hibyteCopy = hibyte;
+  v10 = malloc_type_calloc(length, 2uLL, 0x1000040BDFB0063uLL);
   v11 = v10;
-  if (a6)
+  if (length)
   {
-    v12 = a3 + a5 + 12;
+    v12 = bytes + offset + 12;
     v13 = v10;
-    v14 = a6;
+    lengthCopy = length;
     do
     {
       v15 = *v12++;
-      *v13++ = (v8 << 8) | v15;
-      --v14;
+      *v13++ = (hibyteCopy << 8) | v15;
+      --lengthCopy;
     }
 
-    while (v14);
+    while (lengthCopy);
   }
 
-  v16 = [NSString stringWithCharacters:v10 length:a6];
+  v16 = [NSString stringWithCharacters:v10 length:length];
   free(v11);
   return v16;
 }
 
-+ (NSString)stringWithInts:(id)a3 offset:(int)a4 length:(int)a5
++ (NSString)stringWithInts:(id)ints offset:(int)offset length:(int)length
 {
-  v8 = *(a3 + 2);
+  v8 = *(ints + 2);
   v9 = malloc_type_malloc(4 * v8, 0x100004052888210uLL);
-  [a3 getInts:v9 length:v8];
-  v10 = malloc_type_malloc(a5, 0x1000040BDFB0063uLL);
+  [ints getInts:v9 length:v8];
+  v10 = malloc_type_malloc(length, 0x1000040BDFB0063uLL);
   v11 = v10;
-  if (a5 >= 1)
+  if (length >= 1)
   {
-    v12 = a5;
+    lengthCopy = length;
     v13 = v10;
     do
     {
-      *v13++ = v9[a4++];
-      --v12;
+      *v13++ = v9[offset++];
+      --lengthCopy;
     }
 
-    while (v12);
+    while (lengthCopy);
   }
 
-  v14 = [NSString stringWithCharacters:v10 length:a5];
+  v14 = [NSString stringWithCharacters:v10 length:length];
   free(v11);
   free(v9);
   return v14;
@@ -314,28 +314,28 @@
 
 - (id)getBytes
 {
-  v3 = [JavaNioCharsetCharset_defaultCharset() nsEncoding];
+  nsEncoding = [JavaNioCharsetCharset_defaultCharset() nsEncoding];
 
-  return [(NSString *)self getBytesWithEncoding:v3];
+  return [(NSString *)self getBytesWithEncoding:nsEncoding];
 }
 
-- (id)getBytesWithCharsetName:(id)a3
+- (id)getBytesWithCharsetName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     v5 = objc_opt_class();
     Exception = makeException(v5);
     objc_exception_throw(Exception);
   }
 
-  v4 = [JavaNioCharsetCharset_forNameUEEWithNSString_(a3) nsEncoding];
+  nsEncoding = [JavaNioCharsetCharset_forNameUEEWithNSString_(name) nsEncoding];
 
-  return [(NSString *)self getBytesWithEncoding:v4];
+  return [(NSString *)self getBytesWithEncoding:nsEncoding];
 }
 
-- (id)getBytesWithCharset:(id)a3
+- (id)getBytesWithCharset:(id)charset
 {
-  if (!a3)
+  if (!charset)
   {
     JreThrowNullPointerException();
   }
@@ -343,17 +343,17 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    objc_exception_throw(-[JavaNioCharsetUnsupportedCharsetException initWithNSString:]([JavaNioCharsetUnsupportedCharsetException alloc], "initWithNSString:", [a3 description]));
+    objc_exception_throw(-[JavaNioCharsetUnsupportedCharsetException initWithNSString:]([JavaNioCharsetUnsupportedCharsetException alloc], "initWithNSString:", [charset description]));
   }
 
-  v5 = [a3 nsEncoding];
+  nsEncoding = [charset nsEncoding];
 
-  return [(NSString *)self getBytesWithEncoding:v5];
+  return [(NSString *)self getBytesWithEncoding:nsEncoding];
 }
 
-- (id)getBytesWithEncoding:(unint64_t)a3
+- (id)getBytesWithEncoding:(unint64_t)encoding
 {
-  if (!a3)
+  if (!encoding)
   {
     v14 = objc_opt_class();
     Exception = makeException(v14);
@@ -363,7 +363,7 @@
   v5 = [(NSString *)self maximumLengthOfBytesUsingEncoding:?];
   v6 = v5 << 32;
   v7 = (v5 << 32) + 0x200000000;
-  if (a3 != 10)
+  if (encoding != 10)
   {
     v7 = v5 << 32;
   }
@@ -371,7 +371,7 @@
   v8 = v7 >> 32;
   v9 = malloc_type_malloc(v7 >> 32, 0x100004077774924uLL);
   v10 = v9;
-  if (a3 == 10)
+  if (encoding == 10)
   {
     *v9 = -2;
     v16 = 0;
@@ -383,7 +383,7 @@
   else
   {
     v16 = 0;
-    [(NSString *)self getBytes:v9 maxLength:v8 usedLength:&v16 encoding:a3 options:0 range:0 remainingRange:[(NSString *)self length], 0];
+    [(NSString *)self getBytes:v9 maxLength:v8 usedLength:&v16 encoding:encoding options:0 range:0 remainingRange:[(NSString *)self length], 0];
     v11 = v16;
   }
 
@@ -392,9 +392,9 @@
   return v12;
 }
 
-- (void)getBytesWithSrcBegin:(int)a3 withSrcEnd:(int)a4 withDst:(id)a5 withDstBegin:(int)a6
+- (void)getBytesWithSrcBegin:(int)begin withSrcEnd:(int)end withDst:(id)dst withDstBegin:(int)dstBegin
 {
-  if (a3 < 0)
+  if (begin < 0)
   {
     v14 = @"srcBegin < 0";
 LABEL_12:
@@ -403,26 +403,26 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a4 < a3)
+  if (end < begin)
   {
     v14 = @"srcBegin > srcEnd";
     goto LABEL_12;
   }
 
-  if ([(NSString *)self length]< a4)
+  if ([(NSString *)self length]< end)
   {
     v14 = @"srcEnd > string length";
     goto LABEL_12;
   }
 
-  v11 = a4 - a3;
-  if (a4 - a3 > [(NSString *)self length])
+  v11 = end - begin;
+  if (end - begin > [(NSString *)self length])
   {
     v14 = @"dstBegin+(srcEnd-srcBegin) > dst.length";
     goto LABEL_12;
   }
 
-  if (!a5)
+  if (!dst)
   {
     v17 = objc_opt_class();
     Exception = makeException(v17);
@@ -432,8 +432,8 @@ LABEL_12:
   v12 = [(NSString *)self maximumLengthOfBytesUsingEncoding:4];
   v13 = malloc_type_malloc(v12, 0x100004077774924uLL);
   v19 = 0;
-  [(NSString *)self getBytes:v13 maxLength:v12 usedLength:&v19 encoding:4 options:0 range:a3 remainingRange:v11, 0];
-  if (*(a5 + 2) - a6 < v19)
+  [(NSString *)self getBytes:v13 maxLength:v12 usedLength:&v19 encoding:4 options:0 range:begin remainingRange:v11, 0];
+  if (*(dst + 2) - dstBegin < v19)
   {
     free(v13);
     v15 = [JavaLangStringIndexOutOfBoundsException alloc];
@@ -442,20 +442,20 @@ LABEL_13:
     objc_exception_throw([(JavaLangStringIndexOutOfBoundsException *)v15 initWithNSString:v16]);
   }
 
-  [a5 replaceBytes:v13 length:? offset:?];
+  [dst replaceBytes:v13 length:? offset:?];
   free(v13);
 }
 
-- (BOOL)hasPrefix:(id)a3 offset:(int)a4
+- (BOOL)hasPrefix:(id)prefix offset:(int)offset
 {
-  if (!a3)
+  if (!prefix)
   {
     v5 = objc_opt_class();
     Exception = makeException(v5);
     objc_exception_throw(Exception);
   }
 
-  return -[NSString compare:options:range:](self, "compare:options:range:", a3, 2, a4, [a3 length]) == NSOrderedSame;
+  return -[NSString compare:options:range:](self, "compare:options:range:", prefix, 2, offset, [prefix length]) == NSOrderedSame;
 }
 
 - (id)trim
@@ -465,9 +465,9 @@ LABEL_13:
   return [(NSString *)self stringByTrimmingCharactersInSet:v3];
 }
 
-- (id)split:(id)a3
+- (id)split:(id)split
 {
-  if (!a3)
+  if (!split)
   {
     v4 = objc_opt_class();
     Exception = makeException(v4);
@@ -477,16 +477,16 @@ LABEL_13:
   return [NSString split:"split:limit:" limit:?];
 }
 
-- (id)lowercaseStringWithJRELocale:(id)a3
+- (id)lowercaseStringWithJRELocale:(id)locale
 {
-  if (!a3)
+  if (!locale)
   {
     v10 = objc_opt_class();
     Exception = makeException(v10);
     objc_exception_throw(Exception);
   }
 
-  v4 = [[NSLocale alloc] initWithLocaleIdentifier:{objc_msgSend(a3, "description")}];
+  v4 = [[NSLocale alloc] initWithLocaleIdentifier:{objc_msgSend(locale, "description")}];
   v5 = v4;
   MutableCopy = CFStringCreateMutableCopy(0, 0, self);
   CFStringLowercase(MutableCopy, v4);
@@ -496,16 +496,16 @@ LABEL_13:
   return v7;
 }
 
-- (id)uppercaseStringWithJRELocale:(id)a3
+- (id)uppercaseStringWithJRELocale:(id)locale
 {
-  if (!a3)
+  if (!locale)
   {
     v10 = objc_opt_class();
     Exception = makeException(v10);
     objc_exception_throw(Exception);
   }
 
-  v4 = [[NSLocale alloc] initWithLocaleIdentifier:{objc_msgSend(a3, "description")}];
+  v4 = [[NSLocale alloc] initWithLocaleIdentifier:{objc_msgSend(locale, "description")}];
   v5 = v4;
   MutableCopy = CFStringCreateMutableCopy(0, 0, self);
   CFStringUppercase(MutableCopy, v4);
@@ -515,42 +515,42 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)regionMatches:(BOOL)a3 thisOffset:(int)a4 aString:(id)a5 otherOffset:(int)a6 count:(int)a7
+- (BOOL)regionMatches:(BOOL)matches thisOffset:(int)offset aString:(id)string otherOffset:(int)otherOffset count:(int)count
 {
-  if (a4 < 0)
+  if (offset < 0)
   {
     return 0;
   }
 
-  v11 = a3;
-  v12 = self;
+  matchesCopy = matches;
+  selfCopy = self;
   v13 = [(NSString *)self length];
   result = 0;
-  if ((a6 & 0x80000000) == 0 && (v13 - a4) >= a7)
+  if ((otherOffset & 0x80000000) == 0 && (v13 - offset) >= count)
   {
-    if (([a5 length] - a6) < a7)
+    if (([string length] - otherOffset) < count)
     {
       return 0;
     }
 
-    if (!a5)
+    if (!string)
     {
       v16 = objc_opt_class();
       Exception = makeException(v16);
       objc_exception_throw(Exception);
     }
 
-    if (a4 || [(NSString *)v12 length]!= a7)
+    if (offset || [(NSString *)selfCopy length]!= count)
     {
-      v12 = [(NSString *)v12 substringWithRange:a4, a7];
+      selfCopy = [(NSString *)selfCopy substringWithRange:offset, count];
     }
 
-    if (a6 || [a5 length] != a7)
+    if (otherOffset || [string length] != count)
     {
-      a5 = [a5 substringWithRange:{a6, a7}];
+      string = [string substringWithRange:{otherOffset, count}];
     }
 
-    if (v11)
+    if (matchesCopy)
     {
       v15 = 3;
     }
@@ -560,15 +560,15 @@ LABEL_13:
       v15 = 2;
     }
 
-    return [(NSString *)v12 compare:a5 options:v15]== NSOrderedSame;
+    return [(NSString *)selfCopy compare:string options:v15]== NSOrderedSame;
   }
 
   return result;
 }
 
-- (id)concat:(id)a3
+- (id)concat:(id)concat
 {
-  if (!a3)
+  if (!concat)
   {
     v5 = objc_opt_class();
     Exception = makeException(v5);
@@ -578,28 +578,28 @@ LABEL_13:
   return [(NSString *)self stringByAppendingString:?];
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  if (!a3)
+  if (!contains)
   {
     v6 = objc_opt_class();
     Exception = makeException(v6);
     objc_exception_throw(Exception);
   }
 
-  return ![a3 length] || -[NSString rangeOfString:](self, "rangeOfString:", objc_msgSend(a3, "description")) != 0x7FFFFFFFFFFFFFFFLL;
+  return ![contains length] || -[NSString rangeOfString:](self, "rangeOfString:", objc_msgSend(contains, "description")) != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)contentEqualsCharSequence:(id)a3
+- (BOOL)contentEqualsCharSequence:(id)sequence
 {
-  v4 = [a3 description];
+  v4 = [sequence description];
 
   return [(NSString *)self isEqualToString:v4];
 }
 
-- (BOOL)contentEqualsStringBuffer:(id)a3
+- (BOOL)contentEqualsStringBuffer:(id)buffer
 {
-  v4 = [a3 description];
+  v4 = [buffer description];
 
   return [(NSString *)self isEqualToString:v4];
 }

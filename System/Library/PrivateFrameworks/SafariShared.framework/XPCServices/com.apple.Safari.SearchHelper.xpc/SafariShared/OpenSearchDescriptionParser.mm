@@ -1,24 +1,24 @@
 @interface OpenSearchDescriptionParser
-- (OpenSearchDescriptionParser)initWithURL:(id)a3;
-- (id)_replaceStartPagePlaceholderInTemplate:(id)a3 elementAttributes:(id)a4;
-- (id)_searchDescriptionKeyForTypeString:(id)a3;
-- (void)_handleNetworkError:(id)a3;
-- (void)_handleParsingError:(id)a3;
-- (void)_parseParameterElementWithAttributes:(id)a3;
-- (void)_parseURLElementWithAttributes:(id)a3;
+- (OpenSearchDescriptionParser)initWithURL:(id)l;
+- (id)_replaceStartPagePlaceholderInTemplate:(id)template elementAttributes:(id)attributes;
+- (id)_searchDescriptionKeyForTypeString:(id)string;
+- (void)_handleNetworkError:(id)error;
+- (void)_handleParsingError:(id)error;
+- (void)_parseParameterElementWithAttributes:(id)attributes;
+- (void)_parseURLElementWithAttributes:(id)attributes;
 - (void)_startParsing;
-- (void)parseWithCompletionHandler:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parserDidEndDocument:(id)a3;
-- (void)parserDidStartDocument:(id)a3;
+- (void)parseWithCompletionHandler:(id)handler;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parserDidEndDocument:(id)document;
+- (void)parserDidStartDocument:(id)document;
 @end
 
 @implementation OpenSearchDescriptionParser
 
-- (OpenSearchDescriptionParser)initWithURL:(id)a3
+- (OpenSearchDescriptionParser)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = OpenSearchDescriptionParser;
   v5 = [(OpenSearchDescriptionParser *)&v12 init];
@@ -28,7 +28,7 @@
     parsingQueue = v5->_parsingQueue;
     v5->_parsingQueue = v6;
 
-    v8 = [v4 copy];
+    v8 = [lCopy copy];
     searchDescriptionURL = v5->_searchDescriptionURL;
     v5->_searchDescriptionURL = v8;
 
@@ -38,9 +38,9 @@
   return v5;
 }
 
-- (void)parseWithCompletionHandler:(id)a3
+- (void)parseWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
@@ -76,28 +76,28 @@
   v13 = sub_1000012CC;
   v14 = &unk_1000083E8;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v9 = v7;
   v10 = [v9 dataTaskWithRequest:v8 completionHandler:&v11];
   [v10 resume];
 }
 
-- (void)_handleParsingError:(id)a3
+- (void)_handleParsingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_1000039F8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100003AF0(v5, v4);
+    sub_100003AF0(v5, errorCopy);
   }
 
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    if (v4)
+    if (errorCopy)
     {
       v10 = NSUnderlyingErrorKey;
-      v11 = v4;
+      v11 = errorCopy;
       v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     }
 
@@ -109,7 +109,7 @@
     v8 = [NSError errorWithDomain:@"OpenSearchDescriptionParserErrorDomain" code:1 userInfo:v7];
     completionHandler[2](completionHandler, 0, v8);
 
-    if (v4)
+    if (errorCopy)
     {
     }
 
@@ -118,13 +118,13 @@
   }
 }
 
-- (void)_handleNetworkError:(id)a3
+- (void)_handleNetworkError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_1000039F8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100003B98(self, v5, v4);
+    sub_100003B98(self, v5, errorCopy);
   }
 
   if (self->_completionHandler)
@@ -134,19 +134,19 @@
     v6[2] = sub_10000168C;
     v6[3] = &unk_1000083C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = errorCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (id)_searchDescriptionKeyForTypeString:(id)a3
+- (id)_searchDescriptionKeyForTypeString:(id)string
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"text/html"])
+  stringCopy = string;
+  if ([stringCopy caseInsensitiveCompare:@"text/html"])
   {
-    if ([v3 caseInsensitiveCompare:@"application/x-suggestions+json"])
+    if ([stringCopy caseInsensitiveCompare:@"application/x-suggestions+json"])
     {
-      if ([v3 caseInsensitiveCompare:@"application/x-suggestions+xml"])
+      if ([stringCopy caseInsensitiveCompare:@"application/x-suggestions+xml"])
       {
         v4 = 0;
         goto LABEL_9;
@@ -172,42 +172,42 @@ LABEL_9:
   return v4;
 }
 
-- (id)_replaceStartPagePlaceholderInTemplate:(id)a3 elementAttributes:(id)a4
+- (id)_replaceStartPagePlaceholderInTemplate:(id)template elementAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
+  templateCopy = template;
+  attributesCopy = attributes;
   v7 = WBSOpenSearchStartPageParameterName;
-  if ([v5 includesParameter:WBSOpenSearchStartPageParameterName])
+  if ([templateCopy includesParameter:WBSOpenSearchStartPageParameterName])
   {
-    v8 = [v6 objectForKeyedSubscript:@"pageOffset"];
+    v8 = [attributesCopy objectForKeyedSubscript:@"pageOffset"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v10 = 1;
+      integerValue = 1;
     }
 
-    v12 = [NSString stringWithFormat:@"%zd", v10];
-    v11 = [v5 templateBySubstitutingValue:v12 forParameter:v7];
+    v12 = [NSString stringWithFormat:@"%zd", integerValue];
+    v11 = [templateCopy templateBySubstitutingValue:v12 forParameter:v7];
   }
 
   else
   {
-    v11 = v5;
+    v11 = templateCopy;
   }
 
   return v11;
 }
 
-- (void)_parseURLElementWithAttributes:(id)a3
+- (void)_parseURLElementWithAttributes:(id)attributes
 {
-  v10 = a3;
-  v4 = [v10 safari_stringForKey:@"type"];
-  v5 = [v10 safari_stringForKey:@"template"];
+  attributesCopy = attributes;
+  v4 = [attributesCopy safari_stringForKey:@"type"];
+  v5 = [attributesCopy safari_stringForKey:@"template"];
   if (v5)
   {
     if (v4)
@@ -219,7 +219,7 @@ LABEL_9:
       if (self->_currentSearchDescriptionURLKey)
       {
         v8 = [[WBSOpenSearchURLTemplate alloc] initWithString:v5];
-        v9 = [(OpenSearchDescriptionParser *)self _replaceStartPagePlaceholderInTemplate:v8 elementAttributes:v10];
+        v9 = [(OpenSearchDescriptionParser *)self _replaceStartPagePlaceholderInTemplate:v8 elementAttributes:attributesCopy];
 
         self->_templateURLDoesNotContainSearchTerms = [v9 includesParameter:WBSOpenSearchSearchTermsParameterName] ^ 1;
         [(NSMutableDictionary *)self->_searchDescriptionDictionary setObject:v9 forKeyedSubscript:self->_currentSearchDescriptionURLKey];
@@ -228,11 +228,11 @@ LABEL_9:
   }
 }
 
-- (void)_parseParameterElementWithAttributes:(id)a3
+- (void)_parseParameterElementWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v8 = [v4 safari_stringForKey:@"value"];
-  v5 = [v4 safari_stringForKey:@"name"];
+  attributesCopy = attributes;
+  v8 = [attributesCopy safari_stringForKey:@"value"];
+  v5 = [attributesCopy safari_stringForKey:@"name"];
 
   if (v8 && [v5 length] && objc_msgSend(v8, "isEqualToString:", @"{searchTerms}"))
   {
@@ -243,7 +243,7 @@ LABEL_9:
   }
 }
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   searchDescriptionDictionary = self->_searchDescriptionDictionary;
@@ -256,7 +256,7 @@ LABEL_9:
   [(NSMutableDictionary *)v7 setObject:searchDescriptionURL forKeyedSubscript:v8];
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -266,24 +266,24 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v10 = a4;
-  v9 = a7;
-  if ([v10 isEqualToString:@"Url"])
+  elementCopy = element;
+  attributesCopy = attributes;
+  if ([elementCopy isEqualToString:@"Url"])
   {
-    [(OpenSearchDescriptionParser *)self _parseURLElementWithAttributes:v9];
+    [(OpenSearchDescriptionParser *)self _parseURLElementWithAttributes:attributesCopy];
   }
 
-  else if (self->_templateURLDoesNotContainSearchTerms && !self->_didFindSearchTermsParameter && (([v10 isEqualToString:@"Param"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"Parameter")))
+  else if (self->_templateURLDoesNotContainSearchTerms && !self->_didFindSearchTermsParameter && (([elementCopy isEqualToString:@"Param"] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", @"Parameter")))
   {
-    [(OpenSearchDescriptionParser *)self _parseParameterElementWithAttributes:v9];
+    [(OpenSearchDescriptionParser *)self _parseParameterElementWithAttributes:attributesCopy];
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  if ([a4 isEqualToString:@"Url"])
+  if ([element isEqualToString:@"Url"])
   {
     if (self->_templateURLDoesNotContainSearchTerms && !self->_didFindSearchTermsParameter)
     {

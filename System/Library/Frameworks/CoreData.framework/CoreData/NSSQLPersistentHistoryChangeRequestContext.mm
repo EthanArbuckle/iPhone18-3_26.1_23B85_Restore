@@ -1,11 +1,11 @@
 @interface NSSQLPersistentHistoryChangeRequestContext
-- (BOOL)executeRequestUsingConnection:(id)a3;
+- (BOOL)executeRequestUsingConnection:(id)connection;
 - (BOOL)isWritingRequest;
 - (NSPersistentHistoryChangeRequest)request;
-- (NSSQLPersistentHistoryChangeRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5;
+- (NSSQLPersistentHistoryChangeRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core;
 - (id)createCountRequestContextForChanges;
 - (id)createDeleteTransactionsRequestContext;
-- (id)createRequestContextForChangesWithTransactionIDs:(id)a3;
+- (id)createRequestContextForChangesWithTransactionIDs:(id)ds;
 - (id)fetchRequestContextForChanges;
 - (id)fetchRequestDescribingChanges;
 - (void)dealloc;
@@ -21,9 +21,9 @@
     return 1;
   }
 
-  v4 = [(NSSQLPersistentHistoryChangeRequestContext *)self request];
+  request = [(NSSQLPersistentHistoryChangeRequestContext *)self request];
 
-  return [(NSPersistentHistoryChangeRequest *)v4 isPercentageDelete];
+  return [(NSPersistentHistoryChangeRequest *)request isPercentageDelete];
 }
 
 - (NSPersistentHistoryChangeRequest)request
@@ -37,7 +37,7 @@
 {
   if ([(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] fetchRequest])
   {
-    v3 = [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] entityNameToFetch];
+    entityNameToFetch = [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] entityNameToFetch];
     if (self)
     {
       sqlCore = self->super._sqlCore;
@@ -51,7 +51,7 @@
     if (![objc_msgSend(-[NSSQLCore ancillarySQLModels](sqlCore "ancillarySQLModels")])
     {
       v5 = MEMORY[0x1E695DF30];
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid entity for NSPersistentHistoryChangeRequest: %@", v3];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid entity for NSPersistentHistoryChangeRequest: %@", entityNameToFetch];
       objc_exception_throw([v5 exceptionWithName:*MEMORY[0x1E695D930] reason:v6 userInfo:0]);
     }
   }
@@ -113,10 +113,10 @@
 - (id)fetchRequestContextForChanges
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(NSSQLPersistentHistoryChangeRequestContext *)&self->super.super.isa fetchRequestDescribingChanges];
-  v4 = [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] fetchBatchSize];
+  fetchRequestDescribingChanges = [(NSSQLPersistentHistoryChangeRequestContext *)&self->super.super.isa fetchRequestDescribingChanges];
+  fetchBatchSize = [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] fetchBatchSize];
   fetchRequest = self->_fetchRequest;
-  if (v4)
+  if (fetchBatchSize)
   {
     [(NSFetchRequest *)fetchRequest setResultType:0];
   }
@@ -130,22 +130,22 @@
   if ([(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] resultType]== NSPersistentHistoryResultTypeTransactionsAndChanges)
   {
     v14[0] = @"CHANGES";
-    [v3 setRelationshipKeyPathsForPrefetching:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v14, 1)}];
+    [fetchRequestDescribingChanges setRelationshipKeyPathsForPrefetching:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v14, 1)}];
   }
 
   v6 = [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] resultType]== NSPersistentHistoryResultTypeStatusOnly || [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] resultType]== NSPersistentHistoryResultTypeCount || [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] resultType]== (NSPersistentHistoryResultTypeChangesOnly|NSPersistentHistoryResultTypeCount);
   if ([(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] propertiesToFetch])
   {
-    v7 = [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] propertiesToFetch];
+    propertiesToFetch = [(NSPersistentHistoryChangeRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] propertiesToFetch];
 LABEL_12:
-    [v3 setPropertiesToFetch:v7];
+    [fetchRequestDescribingChanges setPropertiesToFetch:propertiesToFetch];
     goto LABEL_13;
   }
 
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DF70] arrayWithArray:{-[NSPersistentHistoryChangeRequest propertiesToFetchForEntity:includeTransactionStrings:](-[NSSQLPersistentHistoryChangeRequestContext request](self, "request"), "propertiesToFetchForEntity:includeTransactionStrings:", objc_msgSend(v3, "entity"), -[NSSQLiteConnection _hasHistoryTransactionStringTable](self->super._connection))}];
-    v7 = v12;
+    v12 = [MEMORY[0x1E695DF70] arrayWithArray:{-[NSPersistentHistoryChangeRequest propertiesToFetchForEntity:includeTransactionStrings:](-[NSSQLPersistentHistoryChangeRequestContext request](self, "request"), "propertiesToFetchForEntity:includeTransactionStrings:", objc_msgSend(fetchRequestDescribingChanges, "entity"), -[NSSQLiteConnection _hasHistoryTransactionStringTable](self->super._connection))}];
+    propertiesToFetch = v12;
     context = self->super._context;
     if (context && (*(&context->_flags + 2) & 0x80) != 0)
     {
@@ -158,10 +158,10 @@ LABEL_12:
 LABEL_13:
   if ([(NSArray *)[(NSPersistentStoreRequest *)[(NSSQLPersistentHistoryChangeRequestContext *)self request] affectedStores] count])
   {
-    [v3 setAffectedStores:{-[NSPersistentStoreRequest affectedStores](-[NSSQLPersistentHistoryChangeRequestContext request](self, "request"), "affectedStores")}];
+    [fetchRequestDescribingChanges setAffectedStores:{-[NSPersistentStoreRequest affectedStores](-[NSSQLPersistentHistoryChangeRequestContext request](self, "request"), "affectedStores")}];
   }
 
-  v8 = [[NSSQLFetchRequestContext alloc] initWithRequest:v3 context:self->super._context sqlCore:self->super._sqlCore];
+  v8 = [[NSSQLFetchRequestContext alloc] initWithRequest:fetchRequestDescribingChanges context:self->super._context sqlCore:self->super._sqlCore];
   v9 = v8;
   if (v8)
   {
@@ -182,16 +182,16 @@ LABEL_13:
   [(NSSQLStoreRequestContext *)&v3 dealloc];
 }
 
-- (NSSQLPersistentHistoryChangeRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5
+- (NSSQLPersistentHistoryChangeRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core
 {
   v9.receiver = self;
   v9.super_class = NSSQLPersistentHistoryChangeRequestContext;
-  v6 = [(NSSQLStoreRequestContext *)&v9 initWithRequest:a3 context:a4 sqlCore:a5];
+  v6 = [(NSSQLStoreRequestContext *)&v9 initWithRequest:request context:context sqlCore:core];
   if (v6)
   {
-    if ([a3 fetchBatchSize])
+    if ([request fetchBatchSize])
     {
-      v7 = [a3 resultType] > 2;
+      v7 = [request resultType] > 2;
     }
 
     else
@@ -207,8 +207,8 @@ LABEL_13:
 
 - (id)createCountRequestContextForChanges
 {
-  v3 = [(NSSQLPersistentHistoryChangeRequestContext *)&self->super.super.isa fetchRequestDescribingChanges];
-  [v3 setResultType:4];
+  fetchRequestDescribingChanges = [(NSSQLPersistentHistoryChangeRequestContext *)&self->super.super.isa fetchRequestDescribingChanges];
+  [fetchRequestDescribingChanges setResultType:4];
   v4 = [NSSQLCountRequestContext alloc];
   if (self)
   {
@@ -222,14 +222,14 @@ LABEL_13:
     sqlCore = 0;
   }
 
-  v7 = [(NSSQLFetchRequestContext *)v4 initWithRequest:v3 context:context sqlCore:sqlCore];
+  v7 = [(NSSQLFetchRequestContext *)v4 initWithRequest:fetchRequestDescribingChanges context:context sqlCore:sqlCore];
 
   return v7;
 }
 
-- (id)createRequestContextForChangesWithTransactionIDs:(id)a3
+- (id)createRequestContextForChangesWithTransactionIDs:(id)ds
 {
-  v4 = [[NSPersistentHistoryChangeRequest alloc] initWithTransactionIDs:a3];
+  v4 = [[NSPersistentHistoryChangeRequest alloc] initWithTransactionIDs:ds];
   v5 = [NSSQLPersistentHistoryChangeRequestContext alloc];
   if (self)
   {
@@ -272,16 +272,16 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)executeRequestUsingConnection:(id)a3
+- (BOOL)executeRequestUsingConnection:(id)connection
 {
   newValue = 0;
   v5 = objc_autoreleasePoolPush();
-  [(NSSQLStoreRequestContext *)self setConnection:a3];
-  [(NSSQLiteConnection *)a3 connect];
+  [(NSSQLStoreRequestContext *)self setConnection:connection];
+  [(NSSQLiteConnection *)connection connect];
   v7 = _executeChangeRequest(self, &newValue);
   if (v7)
   {
-    v8 = [(NSSQLPersistentHistoryChangeRequestContext *)self request];
+    request = [(NSSQLPersistentHistoryChangeRequestContext *)self request];
     if (self)
     {
       sqlCore = self->super._sqlCore;
@@ -292,7 +292,7 @@ LABEL_13:
       sqlCore = 0;
     }
 
-    [(NSSQLStoreRequestContext *)self setResult:[NSPersistentHistoryResult _processResult:v7 forRequest:v8 withProvider:sqlCore]];
+    [(NSSQLStoreRequestContext *)self setResult:[NSPersistentHistoryResult _processResult:v7 forRequest:request withProvider:sqlCore]];
   }
 
   v10 = newValue == 0;

@@ -1,42 +1,42 @@
 @interface SBUIAnimationControllerSteppedAnimator
-- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)a3;
-- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)a3 stepper:(id)a4;
+- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)controller;
+- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)controller stepper:(id)stepper;
 - (double)percentComplete;
-- (void)cancelTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5;
-- (void)finishInteractiveTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5;
+- (void)cancelTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve;
+- (void)finishInteractiveTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve;
 @end
 
 @implementation SBUIAnimationControllerSteppedAnimator
 
-- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)a3
+- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)controller
 {
   v5 = MEMORY[0x277CCA890];
-  v6 = a3;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"SBUIAnimationControllerSteppedAnimator.m" lineNumber:17 description:@"use the designated initializer"];
+  controllerCopy = controller;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBUIAnimationControllerSteppedAnimator.m" lineNumber:17 description:@"use the designated initializer"];
 
-  v8 = [(SBUIAnimationControllerSteppedAnimator *)self initWithAnimationController:v6 stepper:0];
+  v8 = [(SBUIAnimationControllerSteppedAnimator *)self initWithAnimationController:controllerCopy stepper:0];
   return v8;
 }
 
-- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)a3 stepper:(id)a4
+- (SBUIAnimationControllerSteppedAnimator)initWithAnimationController:(id)controller stepper:(id)stepper
 {
-  v7 = a4;
+  stepperCopy = stepper;
   v11.receiver = self;
   v11.super_class = SBUIAnimationControllerSteppedAnimator;
-  v8 = [(SBUIAnimationControllerAnimator *)&v11 initWithAnimationController:a3];
+  v8 = [(SBUIAnimationControllerAnimator *)&v11 initWithAnimationController:controller];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_stepper, a4);
+    objc_storeStrong(&v8->_stepper, stepper);
   }
 
   return v9;
 }
 
-- (void)cancelTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5
+- (void)cancelTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve
 {
-  v6 = [(SBUIAnimationControllerAnimator *)self animationController:a3];
+  v6 = [(SBUIAnimationControllerAnimator *)self animationController:transition];
   [v6 _addAuditHistoryItem:@"finishSteppingBackwardToStart"];
   stepper = self->_stepper;
   v9[0] = MEMORY[0x277D85DD0];
@@ -60,9 +60,9 @@ uint64_t __95__SBUIAnimationControllerSteppedAnimator_cancelTransition_withCompl
   return [v3 _noteAnimationDidFail];
 }
 
-- (void)finishInteractiveTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5
+- (void)finishInteractiveTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve
 {
-  v6 = [(SBUIAnimationControllerAnimator *)self animationController:a3];
+  v6 = [(SBUIAnimationControllerAnimator *)self animationController:transition];
   [v6 _addAuditHistoryItem:@"finishSteppingForwardToEnd"];
   stepper = self->_stepper;
   v9[0] = MEMORY[0x277D85DD0];
@@ -88,8 +88,8 @@ uint64_t __106__SBUIAnimationControllerSteppedAnimator_finishInteractiveTransiti
 
 - (double)percentComplete
 {
-  v2 = [(SBUIAnimationControllerSteppedAnimator *)self stepper];
-  [v2 stepPercentage];
+  stepper = [(SBUIAnimationControllerSteppedAnimator *)self stepper];
+  [stepper stepPercentage];
   v4 = v3;
 
   return v4;

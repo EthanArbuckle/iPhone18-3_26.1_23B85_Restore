@@ -1,21 +1,21 @@
 @interface MOContextActivityMetaDataMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextActivityMetaDataMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextActivityMetaDataMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOContextActivityMetaDataMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 activityDuration];
-  [(MOContextActivityMetaDataMO *)v7 setActivityDuration:v8];
+  activityDuration = [objectCopy activityDuration];
+  [(MOContextActivityMetaDataMO *)v7 setActivityDuration:activityDuration];
 
-  v9 = [v6 activityType];
+  activityType = [objectCopy activityType];
 
-  [(MOContextActivityMetaDataMO *)v7 setActivityType:v9];
+  [(MOContextActivityMetaDataMO *)v7 setActivityType:activityType];
 
   return v7;
 }

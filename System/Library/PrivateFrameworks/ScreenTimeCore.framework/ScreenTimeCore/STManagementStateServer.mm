@@ -1,81 +1,81 @@
 @interface STManagementStateServer
-- (STManagementStateServer)initWithScreenTimeStateManager:(id)a3;
+- (STManagementStateServer)initWithScreenTimeStateManager:(id)manager;
 - (id)_observedManagerKeyPaths;
-- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)a3;
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)authenticateRestrictionsPasscode:(id)a3 replyHandler:(id)a4;
-- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)a3;
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4;
-- (void)communicationPoliciesWithCompletionHandler:(id)a3;
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4;
+- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)handler;
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler;
+- (void)authenticateRestrictionsPasscode:(id)passcode replyHandler:(id)handler;
+- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)handler;
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler;
+- (void)communicationPoliciesWithCompletionHandler:(id)handler;
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6;
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 replyHandler:(id)a5;
-- (void)deleteAllWebApplicationHistory:(id)a3 replyHandler:(id)a4;
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)enableRemoteManagementForDSID:(id)a3 completionHandler:(id)a4;
-- (void)enableScreenTimeForDSID:(id)a3 completionHandler:(id)a4;
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3;
-- (void)exportDatabaseToURL:(id)a3 replyHandler:(id)a4;
-- (void)fetchAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6;
-- (void)fetchHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 completionHandler:(id)a4;
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4;
-- (void)isExplicitContentRestrictedWithCompletionHandler:(id)a3;
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4;
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3;
-- (void)isWebContentRestrictedWithCompletionHandler:(id)a3;
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3;
-- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performMigrationFromMCXSettings:(id)a3 completionHandler:(id)a4;
-- (void)permitWebFilterURL:(id)a3 pageTitle:(id)a4 completionHandler:(id)a5;
-- (void)postNotificationForContext:(id)a3;
-- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)a3;
-- (void)restrictionsForUserDSID:(id)a3 completionHandler:(id)a4;
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3;
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteAllWebApplicationHistory:(id)history replyHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application replyHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application replyHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application replyHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application replyHandler:(id)handler;
+- (void)enableRemoteManagementForDSID:(id)d completionHandler:(id)handler;
+- (void)enableScreenTimeForDSID:(id)d completionHandler:(id)handler;
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler;
+- (void)exportDatabaseToURL:(id)l replyHandler:(id)handler;
+- (void)fetchAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)fetchHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)isCommunicationSafetyEnabledForUserDSID:(id)d completionHandler:(id)handler;
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler;
+- (void)isExplicitContentRestrictedWithCompletionHandler:(id)handler;
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler;
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler;
+- (void)isWebContentRestrictedWithCompletionHandler:(id)handler;
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler;
+- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performMigrationFromMCXSettings:(id)settings completionHandler:(id)handler;
+- (void)permitWebFilterURL:(id)l pageTitle:(id)title completionHandler:(id)handler;
+- (void)postNotificationForContext:(id)context;
+- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)handler;
+- (void)restrictionsForUserDSID:(id)d completionHandler:(id)handler;
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler;
 - (void)scheduleManagementStateUpdateNotification;
-- (void)screenTimeStateWithCompletionHandler:(id)a3;
-- (void)screenTimeSyncStateWithCompletionHandler:(id)a3;
-- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3;
-- (void)setContactManagementState:(int64_t)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4;
-- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 replyHandler:(id)a4;
-- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 replyHandler:(id)a4;
-- (void)shouldAllowOneMoreMinuteForWebDomain:(id)a3 replyHandler:(id)a4;
-- (void)shouldRequestMoreTimeWithCompletionHandler:(id)a3;
-- (void)triggerDowngradeMigrationWithCompletionHandler:(id)a3;
+- (void)screenTimeStateWithCompletionHandler:(id)handler;
+- (void)screenTimeSyncStateWithCompletionHandler:(id)handler;
+- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler;
+- (void)setContactManagementState:(int64_t)state forDSID:(id)d completionHandler:(id)handler;
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler;
+- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)shouldAllowOneMoreMinuteForWebDomain:(id)domain replyHandler:(id)handler;
+- (void)shouldRequestMoreTimeWithCompletionHandler:(id)handler;
+- (void)triggerDowngradeMigrationWithCompletionHandler:(id)handler;
 @end
 
 @implementation STManagementStateServer
 
-- (STManagementStateServer)initWithScreenTimeStateManager:(id)a3
+- (STManagementStateServer)initWithScreenTimeStateManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = STManagementStateServer;
   v6 = [(STManagementStateServer *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_screenTimeManager, a3);
+    objc_storeStrong(&v6->_screenTimeManager, manager);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(STManagementStateServer *)v7 _observedManagerKeyPaths];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    _observedManagerKeyPaths = [(STManagementStateServer *)v7 _observedManagerKeyPaths];
+    v9 = [_observedManagerKeyPaths countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -87,15 +87,15 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_observedManagerKeyPaths);
           }
 
-          [v5 addObserver:v7 forKeyPath:*(*(&v14 + 1) + 8 * v12) options:0 context:"STManagementStateServerObservationContext"];
+          [managerCopy addObserver:v7 forKeyPath:*(*(&v14 + 1) + 8 * v12) options:0 context:"STManagementStateServerObservationContext"];
           v12 = v12 + 1;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v10 = [_observedManagerKeyPaths countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v10);
@@ -107,13 +107,13 @@
 
 - (void)dealloc
 {
-  v3 = [(STManagementStateServer *)self screenTimeManager];
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(STManagementStateServer *)self _observedManagerKeyPaths];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _observedManagerKeyPaths = [(STManagementStateServer *)self _observedManagerKeyPaths];
+  v5 = [_observedManagerKeyPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -125,15 +125,15 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_observedManagerKeyPaths);
         }
 
-        [v3 removeObserver:self forKeyPath:*(*(&v10 + 1) + 8 * v8) context:"STManagementStateServerObservationContext"];
+        [screenTimeManager removeObserver:self forKeyPath:*(*(&v10 + 1) + 8 * v8) context:"STManagementStateServerObservationContext"];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [_observedManagerKeyPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -154,9 +154,9 @@
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STManagementStateServerObservationContext")
+  if (context == "STManagementStateServerObservationContext")
   {
 
     [(STManagementStateServer *)self performSelectorOnMainThread:"scheduleManagementStateUpdateNotification" withObject:0 waitUntilDone:0];
@@ -168,15 +168,15 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = STManagementStateServer;
-    [(STManagementStateServer *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STManagementStateServer *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)scheduleManagementStateUpdateNotification
 {
-  v3 = [(STManagementStateServer *)self notificationTimer];
+  notificationTimer = [(STManagementStateServer *)self notificationTimer];
 
-  if (!v3)
+  if (!notificationTimer)
   {
     objc_initWeak(&location, self);
     v5 = _NSConcreteStackBlock;
@@ -192,11 +192,11 @@
   }
 }
 
-- (void)screenTimeStateWithCompletionHandler:(id)a3
+- (void)screenTimeStateWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = [(STManagementStateServer *)self screenTimeManager];
-  if ([v7 isScreenTimeEnabled])
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  if ([screenTimeManager isScreenTimeEnabled])
   {
     v6 = 2;
   }
@@ -206,30 +206,30 @@
     v6 = 1;
   }
 
-  (*(a3 + 2))(v5, v6, 0);
+  (*(handler + 2))(handlerCopy, v6, 0);
 }
 
-- (void)enableScreenTimeForDSID:(id)a3 completionHandler:(id)a4
+- (void)enableScreenTimeForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 enableScreenTimeForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager enableScreenTimeForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)enableRemoteManagementForDSID:(id)a3 completionHandler:(id)a4
+- (void)enableRemoteManagementForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 enableRemoteManagementForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager enableRemoteManagementForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)screenTimeSyncStateWithCompletionHandler:(id)a3
+- (void)screenTimeSyncStateWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = [(STManagementStateServer *)self screenTimeManager];
-  if ([v7 isScreenTimeSyncingEnabled])
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  if ([screenTimeManager isScreenTimeSyncingEnabled])
   {
     v6 = 2;
   }
@@ -239,23 +239,23 @@
     v6 = 1;
   }
 
-  (*(a3 + 2))(v5, v6, 0);
+  (*(handler + 2))(handlerCopy, v6, 0);
 }
 
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 isContentPrivacyEnabledForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager isContentPrivacyEnabledForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)a3
+- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v9 = 0;
-  v6 = [v5 clearRestrictionsPasscodeWithError:&v9];
+  v6 = [screenTimeManager clearRestrictionsPasscodeWithError:&v9];
   v7 = v9;
 
   if (v6)
@@ -268,18 +268,18 @@
     v8 = v7;
   }
 
-  (v4)[2](v4, v8);
+  (handlerCopy)[2](handlerCopy, v8);
 }
 
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v12 = 0;
-  v6 = [v5 getIsRestrictionsPasscodeSetAndReturnError:&v12];
+  v6 = [screenTimeManager getIsRestrictionsPasscodeSetAndReturnError:&v12];
   v7 = v12;
 
-  v8 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
   v9 = +[STLog screentime];
   v10 = v9;
   if (v6)
@@ -287,7 +287,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = @"is not";
-      if (v8)
+      if (bOOLValue)
       {
         v11 = @"is";
       }
@@ -303,46 +303,46 @@
     sub_100117F9C();
   }
 
-  v4[2](v4, v8, v7);
+  handlerCopy[2](handlerCopy, bOOLValue, v7);
 }
 
-- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)a3
+- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v8 = 0;
-  v6 = [v5 getNeedsToSetRestrictionsPasscodeAndReturnError:&v8];
+  v6 = [screenTimeManager getNeedsToSetRestrictionsPasscodeAndReturnError:&v8];
   v7 = v8;
 
-  v4[2](v4, [v6 BOOLValue], v7);
+  handlerCopy[2](handlerCopy, [v6 BOOLValue], v7);
 }
 
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v10 = 0;
-  [v8 setRestrictionsPasscode:v7 error:&v10];
+  [screenTimeManager setRestrictionsPasscode:passcodeCopy error:&v10];
 
   v9 = v10;
-  v6[2](v6, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
-  [v5 restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:v4];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:handlerCopy];
 }
 
-- (void)authenticateRestrictionsPasscode:(id)a3 replyHandler:(id)a4
+- (void)authenticateRestrictionsPasscode:(id)passcode replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v12 = 0;
-  v9 = [v8 authenticateRestrictionsPasscode:v7 error:&v12];
+  v9 = [screenTimeManager authenticateRestrictionsPasscode:passcodeCopy error:&v12];
 
   v10 = v12;
   if ((v9 & 1) == 0)
@@ -354,50 +354,50 @@
     }
   }
 
-  v6[2](v6, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
-- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3
+- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
-  [v5 sendPasscodeActivityToParentsWithCompletionHandler:v4];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager sendPasscodeActivityToParentsWithCompletionHandler:handlerCopy];
 }
 
-- (void)shouldRequestMoreTimeWithCompletionHandler:(id)a3
+- (void)shouldRequestMoreTimeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog screentime];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10011806C(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(STManagementStateServer *)self screenTimeManager];
-  v4[2](v4, [v13 shouldRequestMoreTime], 0);
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy[2](handlerCopy, [screenTimeManager shouldRequestMoreTime], 0);
 }
 
-- (void)communicationPoliciesWithCompletionHandler:(id)a3
+- (void)communicationPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
-  [v5 communicationPoliciesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager communicationPoliciesWithCompletionHandler:handlerCopy];
 }
 
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 communicationPoliciesForDSID:v7 withCompletionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager communicationPoliciesForDSID:dCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)a3
+- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v9 = 0;
-  v6 = [v5 getPrimaryiCloudCardDAVAccountIdentifierWithError:&v9];
+  v6 = [screenTimeManager getPrimaryiCloudCardDAVAccountIdentifierWithError:&v9];
   v7 = v9;
 
   if (!v6)
@@ -409,34 +409,34 @@
     }
   }
 
-  v4[2](v4, v6, v7);
+  handlerCopy[2](handlerCopy, v6, v7);
 }
 
-- (void)setContactManagementState:(int64_t)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)setContactManagementState:(int64_t)state forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(STManagementStateServer *)self screenTimeManager];
-  [v10 setContactManagementState:a3 forDSID:v9 completionHandler:v8];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager setContactManagementState:state forDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 contactManagementStateForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager contactManagementStateForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)isExplicitContentRestrictedWithCompletionHandler:(id)a3
+- (void)isExplicitContentRestrictedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v12 = 0;
-  v6 = [v5 getIsExplicitContentRestrictedAndReturnError:&v12];
+  v6 = [screenTimeManager getIsExplicitContentRestrictedAndReturnError:&v12];
   v7 = v12;
 
-  v8 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
   v9 = +[STLog screentime];
   v10 = v9;
   if (v6)
@@ -444,7 +444,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = @"is not";
-      if (v8)
+      if (bOOLValue)
       {
         v11 = @"is";
       }
@@ -460,18 +460,18 @@
     sub_10011810C();
   }
 
-  v4[2](v4, v8, v7);
+  handlerCopy[2](handlerCopy, bOOLValue, v7);
 }
 
-- (void)isWebContentRestrictedWithCompletionHandler:(id)a3
+- (void)isWebContentRestrictedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v12 = 0;
-  v6 = [v5 getIsWebContentRestrictedAndReturnError:&v12];
+  v6 = [screenTimeManager getIsWebContentRestrictedAndReturnError:&v12];
   v7 = v12;
 
-  v8 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
   v9 = +[STLog screentime];
   v10 = v9;
   if (v6)
@@ -479,7 +479,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = @"is not";
-      if (v8)
+      if (bOOLValue)
       {
         v11 = @"is";
       }
@@ -495,23 +495,23 @@
     sub_100118174();
   }
 
-  v4[2](v4, v8, v7);
+  handlerCopy[2](handlerCopy, bOOLValue, v7);
 }
 
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
-  [v5 enableWebContentFilterWithCompletionHandler:v4];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager enableWebContentFilterWithCompletionHandler:handlerCopy];
 }
 
-- (void)exportDatabaseToURL:(id)a3 replyHandler:(id)a4
+- (void)exportDatabaseToURL:(id)l replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  lCopy = l;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v12 = 0;
-  v9 = [v8 exportDatabaseToURL:v7 error:&v12];
+  v9 = [screenTimeManager exportDatabaseToURL:lCopy error:&v12];
 
   v10 = v12;
   if (v9)
@@ -524,28 +524,28 @@
     v11 = v10;
   }
 
-  (v6)[2](v6, v11);
+  (handlerCopy)[2](handlerCopy, v11);
 }
 
-- (void)fetchHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)fetchHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v10 = a7;
-  v11 = [_TtC15ScreenTimeAgent14STEventStreams fetchURLsDuringInterval:a3 bundleIdentifier:a4 profileIdentifier:a5];
-  v10[2](v10, v11, 0);
+  handlerCopy = handler;
+  v11 = [_TtC15ScreenTimeAgent14STEventStreams fetchURLsDuringInterval:interval bundleIdentifier:application profileIdentifier:identifier];
+  handlerCopy[2](handlerCopy, v11, 0);
 }
 
-- (void)fetchAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6
+- (void)fetchAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v8 = a6;
-  v9 = [_TtC15ScreenTimeAgent14STEventStreams fetchAllURLsForBundleIdentifier:a3 profileIdentifier:a4];
-  v8[2](v8, v9, 0);
+  handlerCopy = handler;
+  v9 = [_TtC15ScreenTimeAgent14STEventStreams fetchAllURLsForBundleIdentifier:history profileIdentifier:identifier];
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  lCopy = l;
+  handlerCopy = handler;
+  applicationCopy = application;
   v10 = +[STLog usage];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -557,22 +557,22 @@
   v14[1] = 3221225472;
   v14[2] = sub_100047F24;
   v14[3] = &unk_1001A43C0;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v11 deleteHistoryForURL:v13 webApplication:v9 completionHandler:v14];
+  v15 = lCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lCopy;
+  [v11 deleteHistoryForURL:v13 webApplication:applicationCopy completionHandler:v14];
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  lsCopy = ls;
+  handlerCopy = handler;
+  applicationCopy = application;
   v10 = +[STLog usage];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001182AC(v7);
+    sub_1001182AC(lsCopy);
   }
 
   v11 = objc_opt_new();
@@ -580,18 +580,18 @@
   v14[1] = 3221225472;
   v14[2] = sub_1000480CC;
   v14[3] = &unk_1001A43C0;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v11 deleteHistoryForURLs:v13 webApplication:v9 completionHandler:v14];
+  v15 = lsCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lsCopy;
+  [v11 deleteHistoryForURLs:v13 webApplication:applicationCopy completionHandler:v14];
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
+  applicationCopy = application;
   v10 = +[STLog usage];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -603,18 +603,18 @@
   v14[1] = 3221225472;
   v14[2] = sub_100048274;
   v14[3] = &unk_1001A43C0;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v11 deleteHistoryForDomain:v13 webApplication:v9 completionHandler:v14];
+  v15 = domainCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = domainCopy;
+  [v11 deleteHistoryForDomain:v13 webApplication:applicationCopy completionHandler:v14];
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  applicationCopy = application;
   v10 = +[STLog usage];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -626,17 +626,17 @@
   v14[1] = 3221225472;
   v14[2] = sub_10004841C;
   v14[3] = &unk_1001A43C0;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v11 deleteHistoryDuringInterval:v13 webApplication:v9 completionHandler:v14];
+  v15 = intervalCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = intervalCopy;
+  [v11 deleteHistoryDuringInterval:v13 webApplication:applicationCopy completionHandler:v14];
 }
 
-- (void)deleteAllWebApplicationHistory:(id)a3 replyHandler:(id)a4
+- (void)deleteAllWebApplicationHistory:(id)history replyHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  historyCopy = history;
   v7 = +[STLog usage];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -648,17 +648,17 @@
   v17[1] = 3221225472;
   v17[2] = sub_100048594;
   v17[3] = &unk_1001A3978;
-  v18 = v5;
-  v16 = v5;
-  [v15 deleteAllHistoryForApplication:v6 completionHandler:v17];
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  [v15 deleteAllHistoryForApplication:historyCopy completionHandler:v17];
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  lCopy = l;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
   v13 = +[STLog usage];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -670,19 +670,19 @@
   v17[1] = 3221225472;
   v17[2] = sub_10004874C;
   v17[3] = &unk_1001A43C0;
-  v18 = v9;
-  v19 = v10;
-  v15 = v10;
-  v16 = v9;
-  [v14 deleteHistoryForURL:v16 webApplication:v12 profileIdentifier:v11 completionHandler:v17];
+  v18 = lCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = lCopy;
+  [v14 deleteHistoryForURL:v16 webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v17];
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  lsCopy = ls;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
   v13 = +[STLog usage];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -694,19 +694,19 @@
   v17[1] = 3221225472;
   v17[2] = sub_100048908;
   v17[3] = &unk_1001A43C0;
-  v18 = v9;
-  v19 = v10;
-  v15 = v10;
-  v16 = v9;
-  [v14 deleteHistoryForURLs:v16 webApplication:v12 profileIdentifier:v11 completionHandler:v17];
+  v18 = lsCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = lsCopy;
+  [v14 deleteHistoryForURLs:v16 webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v17];
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
   v13 = +[STLog usage];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -718,19 +718,19 @@
   v17[1] = 3221225472;
   v17[2] = sub_100048AC4;
   v17[3] = &unk_1001A43C0;
-  v18 = v9;
-  v19 = v10;
-  v15 = v10;
-  v16 = v9;
-  [v14 deleteHistoryForDomain:v16 webApplication:v12 profileIdentifier:v11 completionHandler:v17];
+  v18 = domainCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = domainCopy;
+  [v14 deleteHistoryForDomain:v16 webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v17];
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
   v13 = +[STLog usage];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -742,18 +742,18 @@
   v17[1] = 3221225472;
   v17[2] = sub_100048C80;
   v17[3] = &unk_1001A43C0;
-  v18 = v9;
-  v19 = v10;
-  v15 = v10;
-  v16 = v9;
-  [v14 deleteHistoryDuringInterval:v16 webApplication:v12 profileIdentifier:v11 completionHandler:v17];
+  v18 = intervalCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = intervalCopy;
+  [v14 deleteHistoryDuringInterval:v16 webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v17];
 }
 
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 replyHandler:(id)a5
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  historyCopy = history;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v10 = +[STLog usage];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -765,19 +765,19 @@
   v14[1] = 3221225472;
   v14[2] = sub_100048E28;
   v14[3] = &unk_1001A43C0;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v11 deleteAllHistoryForApplication:v13 profileIdentifier:v9 completionHandler:v14];
+  v15 = historyCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = historyCopy;
+  [v11 deleteAllHistoryForApplication:v13 profileIdentifier:identifierCopy completionHandler:v14];
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v10 = a7;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  lCopy = l;
   v14 = [USWebHistory alloc];
   v15 = +[NSXPCConnection currentConnection];
   v16 = v15;
@@ -793,15 +793,15 @@
 
   v17 = [v14 initWithAuditToken:v18];
 
-  [v17 deleteHistoryForURL:v13 webApplication:v12 profileIdentifier:v11 completionHandler:v10];
+  [v17 deleteHistoryForURL:lCopy webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v10 = a7;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  intervalCopy = interval;
   v14 = [USWebHistory alloc];
   v15 = +[NSXPCConnection currentConnection];
   v16 = v15;
@@ -817,14 +817,14 @@
 
   v17 = [v14 initWithAuditToken:v18];
 
-  [v17 deleteHistoryDuringInterval:v13 webApplication:v12 profileIdentifier:v11 completionHandler:v10];
+  [v17 deleteHistoryDuringInterval:intervalCopy webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  historyCopy = history;
   v11 = [USWebHistory alloc];
   v12 = +[NSXPCConnection currentConnection];
   v13 = v12;
@@ -840,137 +840,137 @@
 
   v14 = [v11 initWithAuditToken:v15];
 
-  [v14 deleteAllHistoryForApplication:v10 profileIdentifier:v9 completionHandler:v8];
+  [v14 deleteAllHistoryForApplication:historyCopy profileIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)performMigrationFromMCXSettings:(id)a3 completionHandler:(id)a4
+- (void)performMigrationFromMCXSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 performMigrationFromMCXSettings:v7 completionHandler:v6];
+  handlerCopy = handler;
+  settingsCopy = settings;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager performMigrationFromMCXSettings:settingsCopy completionHandler:handlerCopy];
 }
 
-- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)a3
+- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
-  [v5 applyDefaultUserPoliciesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager applyDefaultUserPoliciesWithCompletionHandler:handlerCopy];
 }
 
-- (void)permitWebFilterURL:(id)a3 pageTitle:(id)a4 completionHandler:(id)a5
+- (void)permitWebFilterURL:(id)l pageTitle:(id)title completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STManagementStateServer *)self screenTimeManager];
-  [v11 permitWebFilterURL:v10 pageTitle:v9 completionHandler:v8];
+  handlerCopy = handler;
+  titleCopy = title;
+  lCopy = l;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager permitWebFilterURL:lCopy pageTitle:titleCopy completionHandler:handlerCopy];
 }
 
-- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 replyHandler:(id)a4
+- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v11 = 0;
-  v9 = [v8 shouldAllowOneMoreMinuteForBundleIdentifier:v7 error:&v11];
+  v9 = [screenTimeManager shouldAllowOneMoreMinuteForBundleIdentifier:identifierCopy error:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  handlerCopy[2](handlerCopy, v9, v10);
 }
 
-- (void)shouldAllowOneMoreMinuteForWebDomain:(id)a3 replyHandler:(id)a4
+- (void)shouldAllowOneMoreMinuteForWebDomain:(id)domain replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  domainCopy = domain;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v11 = 0;
-  v9 = [v8 shouldAllowOneMoreMinuteForWebDomain:v7 error:&v11];
+  v9 = [screenTimeManager shouldAllowOneMoreMinuteForWebDomain:domainCopy error:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  handlerCopy[2](handlerCopy, v9, v10);
 }
 
-- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 replyHandler:(id)a4
+- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
   v11 = 0;
-  v9 = [v8 shouldAllowOneMoreMinuteForCategoryIdentifier:v7 error:&v11];
+  v9 = [screenTimeManager shouldAllowOneMoreMinuteForCategoryIdentifier:identifierCopy error:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  handlerCopy[2](handlerCopy, v9, v10);
 }
 
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STManagementStateServer *)self screenTimeManager];
-  [v11 applyIntroductionModel:v10 forDSID:v9 completionHandler:v8];
+  handlerCopy = handler;
+  dCopy = d;
+  modelCopy = model;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager applyIntroductionModel:modelCopy forDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 isLocationSharingModificationAllowedForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager isLocationSharingModificationAllowedForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 lastCommunicationLimitsModifcationDateForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager lastCommunicationLimitsModifcationDateForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 lastModifcationDateForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager lastModifcationDateForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)postNotificationForContext:(id)a3
+- (void)postNotificationForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[NSNotificationCenter defaultCenter];
-  [v4 postNotificationName:@"STUserNotificationManagerShouldPostNotification" object:v3];
+  [v4 postNotificationName:@"STUserNotificationManagerShouldPostNotification" object:contextCopy];
 }
 
-- (void)triggerDowngradeMigrationWithCompletionHandler:(id)a3
+- (void)triggerDowngradeMigrationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
-  [v5 triggerDowngradeMigrationWithCompletionHandler:v4];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager triggerDowngradeMigrationWithCompletionHandler:handlerCopy];
 }
 
-- (void)restrictionsForUserDSID:(id)a3 completionHandler:(id)a4
+- (void)restrictionsForUserDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 restrictionsForUserDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager restrictionsForUserDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 completionHandler:(id)a4
+- (void)isCommunicationSafetyEnabledForUserDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementStateServer *)self screenTimeManager];
-  [v8 isCommunicationSafetyEnabledForUserDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager isCommunicationSafetyEnabledForUserDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementStateServer *)self screenTimeManager];
-  [v5 managingGuardianAppleIDsForLocalUserWithCompletionHandler:v4];
+  handlerCopy = handler;
+  screenTimeManager = [(STManagementStateServer *)self screenTimeManager];
+  [screenTimeManager managingGuardianAppleIDsForLocalUserWithCompletionHandler:handlerCopy];
 }
 
 @end

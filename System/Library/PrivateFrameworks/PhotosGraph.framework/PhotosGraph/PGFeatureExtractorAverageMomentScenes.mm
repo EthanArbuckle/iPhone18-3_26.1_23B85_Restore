@@ -1,23 +1,23 @@
 @interface PGFeatureExtractorAverageMomentScenes
 - (NSArray)featureNames;
 - (PGFeatureExtractorAverageMomentScenes)init;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAverageMomentScenes
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = FeatureExtractorAverageMomentScenes.floatVector(withEntity:)(v5);
+  entityCopy = entity;
+  selfCopy = self;
+  v7 = FeatureExtractorAverageMomentScenes.floatVector(withEntity:)(entityCopy);
 
   return v7;
 }
 
 - (NSArray)featureNames
 {
-  v2 = self;
+  selfCopy = self;
   FeatureExtractorAverageMomentScenes.featureNames.getter();
 
   v3 = sub_22F741160();

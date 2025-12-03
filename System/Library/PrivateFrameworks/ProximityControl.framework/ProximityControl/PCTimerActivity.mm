@@ -1,21 +1,21 @@
 @interface PCTimerActivity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (PCTimerActivity)initWithActivity:(id)a3;
+- (PCTimerActivity)initWithActivity:(id)activity;
 - (double)timeLeft;
 - (id)description;
 - (id)displayTitle;
 - (id)fireDate;
 - (id)image;
-- (id)initFromTimer:(id)a3;
+- (id)initFromTimer:(id)timer;
 @end
 
 @implementation PCTimerActivity
 
-- (id)initFromTimer:(id)a3
+- (id)initFromTimer:(id)timer
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timerCopy = timer;
   v14.receiver = self;
   v14.super_class = PCTimerActivity;
   v5 = [(PCTimerActivity *)&v14 initWithActivityType:@"com.apple.ProximityControl.activity.timer"];
@@ -23,22 +23,22 @@
   if (v5)
   {
     makeIneligibleForProcessing(v5);
-    v7 = [v4 displayTitle];
-    if ([@"TIMER_DEFAULT_TITLE" isEqualToString:v7])
+    displayTitle = [timerCopy displayTitle];
+    if ([@"TIMER_DEFAULT_TITLE" isEqualToString:displayTitle])
     {
       v8 = [PCLocalizedString localizedStringForKey:8];
 
-      v7 = v8;
+      displayTitle = v8;
     }
 
-    [(PCTimerActivity *)v6 setTitle:v7];
+    [(PCTimerActivity *)v6 setTitle:displayTitle];
     v9 = MEMORY[0x277CBEAA8];
-    [v4 remainingTime];
+    [timerCopy remainingTime];
     v10 = [v9 dateWithTimeIntervalSinceNow:?];
     v15[0] = @"fireDate";
     v15[1] = @"displayTitle";
     v16[0] = v10;
-    v16[1] = v7;
+    v16[1] = displayTitle;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
     [(PCTimerActivity *)v6 setUserInfo:v11];
   }
@@ -47,51 +47,51 @@
   return v6;
 }
 
-- (PCTimerActivity)initWithActivity:(id)a3
+- (PCTimerActivity)initWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [@"com.apple.ProximityControl.activity.timer" isEqualToString:v5];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [@"com.apple.ProximityControl.activity.timer" isEqualToString:activityType];
 
   if (v6)
   {
-    v7 = [v4 activityType];
+    activityType2 = [activityCopy activityType];
     v13.receiver = self;
     v13.super_class = PCTimerActivity;
-    v8 = [(PCTimerActivity *)&v13 initWithActivityType:v7];
+    v8 = [(PCTimerActivity *)&v13 initWithActivityType:activityType2];
 
     if (v8)
     {
-      localizeActivityIfNeeded(v4, 8);
+      localizeActivityIfNeeded(activityCopy, 8);
       makeIneligibleForProcessing(v8);
-      v9 = [v4 userInfo];
-      [(PCTimerActivity *)v8 setUserInfo:v9];
+      userInfo = [activityCopy userInfo];
+      [(PCTimerActivity *)v8 setUserInfo:userInfo];
 
-      v10 = [v4 title];
-      [(PCTimerActivity *)v8 setTitle:v10];
+      title = [activityCopy title];
+      [(PCTimerActivity *)v8 setTitle:title];
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
 {
   [(PCTimerActivity *)self timeLeft];
   v4 = v3;
-  v5 = [(PCTimerActivity *)self displayTitle];
-  if (v5 && v4 > 0.0)
+  displayTitle = [(PCTimerActivity *)self displayTitle];
+  if (displayTitle && v4 > 0.0)
   {
     v6 = [PCActivityUtility formattedDurationFor:v4];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@", v5, v6];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@", displayTitle, v6];
   }
 
   else
@@ -104,17 +104,17 @@
 
 - (BOOL)isValid
 {
-  v2 = [(PCTimerActivity *)self userInfo];
-  v3 = [v2 allKeys];
-  v4 = [v3 count] != 0;
+  userInfo = [(PCTimerActivity *)self userInfo];
+  allKeys = [userInfo allKeys];
+  v4 = [allKeys count] != 0;
 
   return v4;
 }
 
 - (double)timeLeft
 {
-  v2 = [(PCTimerActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"fireDate"];
+  userInfo = [(PCTimerActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"fireDate"];
 
   if (v3)
   {
@@ -132,33 +132,33 @@
 
 - (id)fireDate
 {
-  v2 = [(PCTimerActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"fireDate"];
+  userInfo = [(PCTimerActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"fireDate"];
 
   return v3;
 }
 
 - (id)displayTitle
 {
-  v2 = [(PCTimerActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"displayTitle"];
+  userInfo = [(PCTimerActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"displayTitle"];
 
   return v3;
 }
 
 - (id)image
 {
-  v2 = [(PCTimerActivity *)self bundleIdentifier];
-  v3 = [PCActivityUtility iconForBundleIdentifier:v2];
+  bundleIdentifier = [(PCTimerActivity *)self bundleIdentifier];
+  v3 = [PCActivityUtility iconForBundleIdentifier:bundleIdentifier];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 pcactivityType];
-  if (v5 == [(PCTimerActivity *)self pcactivityType])
+  equalCopy = equal;
+  pcactivityType = [equalCopy pcactivityType];
+  if (pcactivityType == [(PCTimerActivity *)self pcactivityType])
   {
     v6 = 0;
   }
@@ -166,7 +166,7 @@
   else
   {
     v7 = [(PCTimerActivity *)self description];
-    v8 = [v4 description];
+    v8 = [equalCopy description];
     v6 = [v7 isEqualToString:v8];
   }
 

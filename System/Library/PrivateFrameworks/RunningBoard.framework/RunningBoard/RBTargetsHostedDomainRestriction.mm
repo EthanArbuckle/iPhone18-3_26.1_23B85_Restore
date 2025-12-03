@@ -1,7 +1,7 @@
 @interface RBTargetsHostedDomainRestriction
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4;
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error;
+- (BOOL)allowsContext:(id)context withError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
 - (id)description;
 @end
@@ -12,17 +12,17 @@
 {
   v6.receiver = self;
   v6.super_class = RBTargetsHostedDomainRestriction;
-  v2 = [(RBDomainRestriction *)&v6 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(RBDomainRestriction *)&v6 _init];
+  v3 = _init;
+  if (_init)
   {
-    v4 = v2;
+    v4 = _init;
   }
 
   return v3;
 }
 
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error
 {
   if (domainRestrictionForDictionary_withError__onceToken_293 != -1)
   {
@@ -41,18 +41,18 @@ uint64_t __77__RBTargetsHostedDomainRestriction_domainRestrictionForDictionary_w
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4
+- (BOOL)allowsContext:(id)context withError:(id *)error
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 targetProcess];
-  v8 = [v7 identity];
-  v9 = [v8 hostIdentifier];
-  v10 = [v9 pid];
-  v11 = [v6 originatorProcess];
+  contextCopy = context;
+  targetProcess = [contextCopy targetProcess];
+  identity = [targetProcess identity];
+  hostIdentifier = [identity hostIdentifier];
+  v10 = [hostIdentifier pid];
+  originatorProcess = [contextCopy originatorProcess];
 
-  v12 = [v11 rbs_pid];
-  if (a4 && v10 != v12)
+  rbs_pid = [originatorProcess rbs_pid];
+  if (error && v10 != rbs_pid)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277D47050];
@@ -64,22 +64,22 @@ uint64_t __77__RBTargetsHostedDomainRestriction_domainRestrictionForDictionary_w
     v17 = [(RBTargetsHostedDomainRestriction *)self description];
     v22[1] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
-    *a4 = [v13 errorWithDomain:v14 code:3 userInfo:v18];
+    *error = [v13 errorWithDomain:v14 code:3 userInfo:v18];
   }
 
-  result = v10 == v12;
+  result = v10 == rbs_pid;
   v20 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
 

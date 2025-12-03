@@ -1,15 +1,15 @@
 @interface LDAPTask
 - (DATaskManager)taskManager;
 - (id)delegate;
-- (int64_t)taskStatusForError:(id)a3;
+- (int64_t)taskStatusForError:(id)error;
 - (void)_performQuery;
-- (void)cancelTaskWithReason:(int)a3 underlyingError:(id)a4;
+- (void)cancelTaskWithReason:(int)reason underlyingError:(id)error;
 - (void)dealloc;
 - (void)disable;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)initializeConnection;
 - (void)performTask;
-- (void)reportStatusWithError:(id)a3;
+- (void)reportStatusWithError:(id)error;
 @end
 
 @implementation LDAPTask
@@ -37,56 +37,56 @@
 
 - (void)performTask
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"LDAPTask.m" lineNumber:30 description:@"Must be implemented in subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"LDAPTask.m" lineNumber:30 description:@"Must be implemented in subclass"];
 }
 
 - (void)_performQuery
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"LDAPTask.m" lineNumber:34 description:@"Must be implemented in subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"LDAPTask.m" lineNumber:34 description:@"Must be implemented in subclass"];
 }
 
-- (void)reportStatusWithError:(id)a3
+- (void)reportStatusWithError:(id)error
 {
-  v8 = [(LDAPTask *)self taskManager];
-  v5 = [v8 account];
-  v6 = [v5 statusReport];
-  v7 = v6;
-  if (a3)
+  taskManager = [(LDAPTask *)self taskManager];
+  account = [taskManager account];
+  statusReport = [account statusReport];
+  v7 = statusReport;
+  if (error)
   {
-    [v6 noteFailedNetworkRequest];
+    [statusReport noteFailedNetworkRequest];
   }
 
   else
   {
-    [v6 noteSuccessfulRequestWithNumDownloadedElements:{-[LDAPTask numDownloadedElements](self, "numDownloadedElements")}];
+    [statusReport noteSuccessfulRequestWithNumDownloadedElements:{-[LDAPTask numDownloadedElements](self, "numDownloadedElements")}];
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  [(LDAPTask *)self reportStatusWithError:a3];
-  v4 = [(LDAPTask *)self taskManager];
-  [v4 taskDidFinish:self];
+  [(LDAPTask *)self reportStatusWithError:error];
+  taskManager = [(LDAPTask *)self taskManager];
+  [taskManager taskDidFinish:self];
 }
 
-- (void)cancelTaskWithReason:(int)a3 underlyingError:(id)a4
+- (void)cancelTaskWithReason:(int)reason underlyingError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24857C000, v6, v7, "Task %@ canceled.", buf, 0xCu);
   }
 
-  if (v5)
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[LDAPTask taskStatusForError:](self, "taskStatusForError:", v5, *MEMORY[0x277CCA7E8], *MEMORY[0x277D038E8], v5)}];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[LDAPTask taskStatusForError:](self, "taskStatusForError:", errorCopy, *MEMORY[0x277CCA7E8], *MEMORY[0x277D038E8], errorCopy)}];
     v13[1] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:2];
   }
@@ -102,40 +102,40 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)taskStatusForError:(id)a3
+- (int64_t)taskStatusForError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x277D038E0]];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:*MEMORY[0x277D038E0]];
 
     if (v6)
     {
-      v7 = [v4 code];
+      code = [v4 code];
     }
 
     else
     {
-      v7 = 0;
+      code = 0;
     }
 
-    v8 = [v4 domain];
-    v9 = [v8 isEqualToString:*MEMORY[0x277D03700]];
+    domain2 = [v4 domain];
+    v9 = [domain2 isEqualToString:*MEMORY[0x277D03700]];
 
     if (v9 && [v4 code] == 102)
     {
-      v7 = 79;
+      code = 79;
     }
   }
 
   else
   {
-    v7 = 2;
+    code = 2;
   }
 
-  return v7;
+  return code;
 }
 
 - (void)initializeConnection
@@ -149,12 +149,12 @@
     _os_log_impl(&dword_24857C000, v3, v5, "Initializing the server", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [(LDAPTask *)self setDateConnectionWentOut:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(LDAPTask *)self setDateConnectionWentOut:date];
 
-  v7 = [(LDAPTask *)self taskManager];
-  v8 = [v7 account];
-  v9 = [v8 connectionURLWithSSL:0];
+  taskManager = [(LDAPTask *)self taskManager];
+  account = [taskManager account];
+  v9 = [account connectionURLWithSSL:0];
 
   if ([v9 length])
   {
@@ -166,9 +166,9 @@
     v10 = 0;
   }
 
-  v11 = [(LDAPTask *)self taskManager];
-  v12 = [v11 account];
-  v13 = [v12 connectionURLWithSSL:1];
+  taskManager2 = [(LDAPTask *)self taskManager];
+  account2 = [taskManager2 account];
+  v13 = [account2 connectionURLWithSSL:1];
 
   if ([v13 length])
   {
@@ -180,18 +180,18 @@
     v14 = 0;
   }
 
-  v15 = [(LDAPTask *)self taskManager];
-  v16 = [v15 user];
+  taskManager3 = [(LDAPTask *)self taskManager];
+  user = [taskManager3 user];
 
-  v17 = [(LDAPTask *)self taskManager];
-  v18 = [v17 password];
+  taskManager4 = [(LDAPTask *)self taskManager];
+  password = [taskManager4 password];
 
   if (!v10 || !v14)
   {
     goto LABEL_20;
   }
 
-  if ([v16 length] && !objc_msgSend(v18, "length"))
+  if ([user length] && !objc_msgSend(password, "length"))
   {
     v29 = DALoggingwithCategory();
     v30 = *(v4 + 3);
@@ -214,8 +214,8 @@ LABEL_20:
   v40[2] = __32__LDAPTask_initializeConnection__block_invoke;
   v40[3] = &unk_278F1FA08;
   v40[4] = self;
-  v41 = v16;
-  v42 = v18;
+  v41 = user;
+  v42 = password;
   v19 = MEMORY[0x24C1D1EE0](v40);
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -223,10 +223,10 @@ LABEL_20:
   v39[3] = &unk_278F1FA30;
   v39[4] = self;
   v20 = MEMORY[0x24C1D1EE0](v39);
-  v21 = [(LDAPTask *)self taskManager];
-  v22 = [v21 useSSL];
+  taskManager5 = [(LDAPTask *)self taskManager];
+  useSSL = [taskManager5 useSSL];
 
-  if (v22)
+  if (useSSL)
   {
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;

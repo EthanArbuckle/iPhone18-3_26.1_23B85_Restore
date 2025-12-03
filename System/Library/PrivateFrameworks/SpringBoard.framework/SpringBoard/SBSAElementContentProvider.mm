@@ -1,20 +1,20 @@
 @interface SBSAElementContentProvider
-+ (id)appearanceTransitionElementContentProviderWithParentProvider:(id)a3 staticLayoutTransition:(id)a4;
-+ (id)disappearanceTransitionElementContentProviderWithParentProvider:(id)a3 staticLayoutTransition:(id)a4;
++ (id)appearanceTransitionElementContentProviderWithParentProvider:(id)provider staticLayoutTransition:(id)transition;
++ (id)disappearanceTransitionElementContentProviderWithParentProvider:(id)provider staticLayoutTransition:(id)transition;
 - (double)_sensorObscuringShadowApexMilestone;
-- (id)_initWithParentProvider:(id)a3 transitionDirection:(int64_t)a4 staticLayoutTransition:(id)a5;
-- (id)_updatedElementDescriptionFromDescription:(id)a3 layoutTransition:(id)a4 transitionDescriptions:(id)a5 context:(id)a6;
+- (id)_initWithParentProvider:(id)provider transitionDirection:(int64_t)direction staticLayoutTransition:(id)transition;
+- (id)_updatedElementDescriptionFromDescription:(id)description layoutTransition:(id)transition transitionDescriptions:(id)descriptions context:(id)context;
 - (id)defaultTransitionSettings;
 - (id)description;
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAElementContentProvider
 
 - (double)_sensorObscuringShadowApexMilestone
 {
-  v2 = [objc_opt_class() settings];
-  [v2 sensorObscuringShadowApexProgress];
+  settings = [objc_opt_class() settings];
+  [settings sensorObscuringShadowApexProgress];
   v4 = v3;
 
   return v4;
@@ -22,23 +22,23 @@
 
 - (id)defaultTransitionSettings
 {
-  v2 = [objc_opt_class() settings];
-  v3 = [v2 elementContentTransitionSettings];
+  settings = [objc_opt_class() settings];
+  elementContentTransitionSettings = [settings elementContentTransitionSettings];
 
-  return v3;
+  return elementContentTransitionSettings;
 }
 
-- (id)_initWithParentProvider:(id)a3 transitionDirection:(int64_t)a4 staticLayoutTransition:(id)a5
+- (id)_initWithParentProvider:(id)provider transitionDirection:(int64_t)direction staticLayoutTransition:(id)transition
 {
-  v8 = a5;
+  transitionCopy = transition;
   v14.receiver = self;
   v14.super_class = SBSAElementContentProvider;
-  v9 = [(SBSABasePreferencesProvider *)&v14 initWithParentProvider:a3];
+  v9 = [(SBSABasePreferencesProvider *)&v14 initWithParentProvider:provider];
   v10 = v9;
   if (v9)
   {
-    v9->_transitionDirection = a4;
-    v11 = [v8 copy];
+    v9->_transitionDirection = direction;
+    v11 = [transitionCopy copy];
     staticLayoutTransition = v10->_staticLayoutTransition;
     v10->_staticLayoutTransition = v11;
   }
@@ -46,20 +46,20 @@
   return v10;
 }
 
-+ (id)disappearanceTransitionElementContentProviderWithParentProvider:(id)a3 staticLayoutTransition:(id)a4
++ (id)disappearanceTransitionElementContentProviderWithParentProvider:(id)provider staticLayoutTransition:(id)transition
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithParentProvider:v6 transitionDirection:-1 staticLayoutTransition:v5];
+  transitionCopy = transition;
+  providerCopy = provider;
+  v7 = [objc_alloc(objc_opt_class()) _initWithParentProvider:providerCopy transitionDirection:-1 staticLayoutTransition:transitionCopy];
 
   return v7;
 }
 
-+ (id)appearanceTransitionElementContentProviderWithParentProvider:(id)a3 staticLayoutTransition:(id)a4
++ (id)appearanceTransitionElementContentProviderWithParentProvider:(id)provider staticLayoutTransition:(id)transition
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithParentProvider:v6 transitionDirection:1 staticLayoutTransition:v5];
+  transitionCopy = transition;
+  providerCopy = provider;
+  v7 = [objc_alloc(objc_opt_class()) _initWithParentProvider:providerCopy transitionDirection:1 staticLayoutTransition:transitionCopy];
 
   return v7;
 }
@@ -82,14 +82,14 @@
   return [v3 stringWithFormat:@"<%@: %p; transitionDirection: %@; staticLayoutTransition: %@>", v4, self, v6, self->_staticLayoutTransition];
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v5 = objc_opt_self();
-    v6 = v4;
+    v6 = contextCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -123,12 +123,12 @@
 
   v51 = v8;
 
-  v9 = [v8 preferences];
-  v46 = v4;
-  if (v9)
+  preferences = [v8 preferences];
+  v46 = contextCopy;
+  if (preferences)
   {
     v10 = objc_opt_self();
-    v11 = v9;
+    v11 = preferences;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -168,8 +168,8 @@
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v14 = [v8 animatedTransitionResults];
-    v15 = [v14 countByEnumeratingWithState:&v64 objects:v69 count:16];
+    animatedTransitionResults = [v8 animatedTransitionResults];
+    v15 = [animatedTransitionResults countByEnumeratingWithState:&v64 objects:v69 count:16];
     if (v15)
     {
       v16 = v15;
@@ -180,11 +180,11 @@
         {
           if (*v65 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(animatedTransitionResults);
           }
 
           v19 = *(*(&v64 + 1) + 8 * i);
-          v20 = [v19 associatedInterfaceElementPropertyIdentity];
+          associatedInterfaceElementPropertyIdentity = [v19 associatedInterfaceElementPropertyIdentity];
           if (BSEqualObjects())
           {
             [v19 targetedMilestone];
@@ -201,7 +201,7 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v64 objects:v69 count:16];
+        v16 = [animatedTransitionResults countByEnumeratingWithState:&v64 objects:v69 count:16];
       }
 
       while (v16);
@@ -216,8 +216,8 @@
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v23 = [v13 elementDescriptions];
-  v24 = [v23 countByEnumeratingWithState:&v60 objects:v68 count:16];
+  elementDescriptions = [v13 elementDescriptions];
+  v24 = [elementDescriptions countByEnumeratingWithState:&v60 objects:v68 count:16];
   if (!v24)
   {
     v26 = 0;
@@ -233,7 +233,7 @@
     {
       if (*v61 != v27)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(elementDescriptions);
       }
 
       v29 = *(*(&v60 + 1) + 8 * j);
@@ -249,8 +249,8 @@
 
       else
       {
-        v32 = [v49 elementLayoutTransition];
-        v31 = [(SBSAElementContentProvider *)self _updatedElementDescriptionFromDescription:v29 layoutTransition:v32 transitionDescriptions:v22 context:v51];
+        elementLayoutTransition = [v49 elementLayoutTransition];
+        v31 = [(SBSAElementContentProvider *)self _updatedElementDescriptionFromDescription:v29 layoutTransition:elementLayoutTransition transitionDescriptions:v22 context:v51];
 
         v8 = v51;
         if (!v31)
@@ -274,7 +274,7 @@
 LABEL_44:
     }
 
-    v25 = [v23 countByEnumeratingWithState:&v60 objects:v68 count:16];
+    v25 = [elementDescriptions countByEnumeratingWithState:&v60 objects:v68 count:16];
   }
 
   while (v25);
@@ -503,32 +503,32 @@ void __53__SBSAElementContentProvider_preferencesFromContext___block_invoke_2(ui
   [v6 addMilestones:v17 forPropertyIdentity:*(*(a1 + 32) + 40)];
 }
 
-- (id)_updatedElementDescriptionFromDescription:(id)a3 layoutTransition:(id)a4 transitionDescriptions:(id)a5 context:(id)a6
+- (id)_updatedElementDescriptionFromDescription:(id)description layoutTransition:(id)transition transitionDescriptions:(id)descriptions context:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v11)
+  descriptionCopy = description;
+  transitionCopy = transition;
+  descriptionsCopy = descriptions;
+  contextCopy = context;
+  v15 = contextCopy;
+  if (descriptionCopy)
   {
-    v16 = [v14 preferences];
-    v17 = [v11 associatedSystemApertureElementIdentity];
-    v18 = [v15 elementContexts];
+    preferences = [contextCopy preferences];
+    associatedSystemApertureElementIdentity = [descriptionCopy associatedSystemApertureElementIdentity];
+    elementContexts = [v15 elementContexts];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __120__SBSAElementContentProvider__updatedElementDescriptionFromDescription_layoutTransition_transitionDescriptions_context___block_invoke;
     v38[3] = &unk_2783AD700;
-    v19 = v17;
+    v19 = associatedSystemApertureElementIdentity;
     v39 = v19;
-    v20 = [v18 bs_firstObjectPassingTest:v38];
+    v20 = [elementContexts bs_firstObjectPassingTest:v38];
 
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __120__SBSAElementContentProvider__updatedElementDescriptionFromDescription_layoutTransition_transitionDescriptions_context___block_invoke_2;
     v36[3] = &unk_2783AD7A0;
     v36[4] = self;
-    v37 = v13;
+    v37 = descriptionsCopy;
     v21 = MEMORY[0x223D6F7F0](v36);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -536,21 +536,21 @@ void __53__SBSAElementContentProvider_preferencesFromContext___block_invoke_2(ui
     v27[3] = &unk_2783B29B8;
     v35 = a2;
     v27[4] = self;
-    v28 = v12;
+    v28 = transitionCopy;
     v29 = v19;
-    v30 = v16;
+    v30 = preferences;
     v31 = v20;
-    v32 = v11;
+    v32 = descriptionCopy;
     v33 = v15;
     v34 = v21;
     v22 = v21;
     v23 = v20;
-    v24 = v16;
+    v24 = preferences;
     v25 = v19;
-    v11 = [v11 copyWithBlock:v27];
+    descriptionCopy = [descriptionCopy copyWithBlock:v27];
   }
 
-  return v11;
+  return descriptionCopy;
 }
 
 void __120__SBSAElementContentProvider__updatedElementDescriptionFromDescription_layoutTransition_transitionDescriptions_context___block_invoke_2(uint64_t a1, void *a2, void *a3, uint64_t a4)

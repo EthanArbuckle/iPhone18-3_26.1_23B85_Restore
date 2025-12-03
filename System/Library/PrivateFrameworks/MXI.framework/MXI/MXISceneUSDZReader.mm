@@ -1,23 +1,23 @@
 @interface MXISceneUSDZReader
-- (MXIGeometry)copyMXIGeometryWithError:(SEL)a3;
-- (MXISceneUSDZReader)initWithUSDZFileURL:(id)a3;
-- (double)getDoubleValueForKey:(id)a3 default:(double)a4;
-- (float)getFloatValueForKey:(id)a3 default:(float)a4;
-- (float32x4_t)getModelToWorldTransformWithDefault:(uint64_t)a3;
-- (id)copyTexturesWithDevice:(id)a3 error:(id *)a4;
-- (id)getStringValueForKey:(id)a3;
-- (id)getThumbnailDataInternal:(id)a3;
-- (id)getThumbnailDataWithError:(id *)a3;
-- (int)getIntValueForKey:(id)a3 default:(int)a4;
-- (void)getDouble4x4ValueForKey:(_OWORD *)a3@<X3> default:(_OWORD *)a4@<X8>;
+- (MXIGeometry)copyMXIGeometryWithError:(SEL)error;
+- (MXISceneUSDZReader)initWithUSDZFileURL:(id)l;
+- (double)getDoubleValueForKey:(id)key default:(double)default;
+- (float)getFloatValueForKey:(id)key default:(float)default;
+- (float32x4_t)getModelToWorldTransformWithDefault:(uint64_t)default;
+- (id)copyTexturesWithDevice:(id)device error:(id *)error;
+- (id)getStringValueForKey:(id)key;
+- (id)getThumbnailDataInternal:(id)internal;
+- (id)getThumbnailDataWithError:(id *)error;
+- (int)getIntValueForKey:(id)key default:(int)default;
+- (void)getDouble4x4ValueForKey:(_OWORD *)key@<X3> default:(_OWORD *)default@<X8>;
 @end
 
 @implementation MXISceneUSDZReader
 
-- (MXISceneUSDZReader)initWithUSDZFileURL:(id)a3
+- (MXISceneUSDZReader)initWithUSDZFileURL:(id)l
 {
   v253 = *MEMORY[0x277D85DE8];
-  v243 = a3;
+  lCopy = l;
   v248.receiver = self;
   v248.super_class = MXISceneUSDZReader;
   v8 = [(MXISceneUSDZReader *)&v248 init];
@@ -26,17 +26,17 @@
     goto LABEL_37;
   }
 
-  v9 = objc_msgSend_pathExtension(v243, v4, v5, v6, v7);
+  v9 = objc_msgSend_pathExtension(lCopy, v4, v5, v6, v7);
   isEqualToString = objc_msgSend_isEqualToString_(v9, v10, @"usdz", v11, v12);
 
   if (isEqualToString)
   {
-    v18 = v243;
+    v18 = lCopy;
   }
 
   else
   {
-    v20 = objc_msgSend_pathExtension(v243, v14, v15, v16, v17);
+    v20 = objc_msgSend_pathExtension(lCopy, v14, v15, v16, v17);
     v24 = objc_msgSend_isEqualToString_(v20, v21, @"mxibundle", v22, v23);
 
     if (!v24)
@@ -46,7 +46,7 @@
       goto LABEL_9;
     }
 
-    v28 = objc_msgSend_URLByAppendingPathComponent_(v243, v25, @"scene.usdc", v26, v27);
+    v28 = objc_msgSend_URLByAppendingPathComponent_(lCopy, v25, @"scene.usdc", v26, v27);
     v29 = v8->_usdURL;
     v8->_usdURL = v28;
 
@@ -59,7 +59,7 @@
       goto LABEL_10;
     }
 
-    v18 = objc_msgSend_URLByAppendingPathComponent_(v243, v44, @"scene.usda", v45, v46);
+    v18 = objc_msgSend_URLByAppendingPathComponent_(lCopy, v44, @"scene.usda", v45, v46);
   }
 
   usdURL = v8->_usdURL;
@@ -256,7 +256,7 @@ LABEL_38:
   return v65;
 }
 
-- (MXIGeometry)copyMXIGeometryWithError:(SEL)a3
+- (MXIGeometry)copyMXIGeometryWithError:(SEL)error
 {
   memset(__p, 0, sizeof(__p));
   *v196 = 0u;
@@ -270,7 +270,7 @@ LABEL_38:
   meshNode = self->_meshNode;
   if (meshNode)
   {
-    v10 = objc_msgSend_properties(meshNode, a3, a4, v4, v5);
+    v10 = objc_msgSend_properties(meshNode, error, a4, v4, v5);
     v14 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"points", v12, v13);
 
     if (!v14 || (objc_msgSend_data(v14, v15, v16, v17, v18), (v23 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend_data(v14, v19, v20, v21, v22), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend_type(v24, v25, v26, v27, v28), v29 = objc_claimAutoreleasedReturnValue(), v30 = *MEMORY[0x277D77908], v29, v24, v23, v30 != v29))
@@ -482,10 +482,10 @@ LABEL_14:
   return result;
 }
 
-- (id)copyTexturesWithDevice:(id)a3 error:(id *)a4
+- (id)copyTexturesWithDevice:(id)device error:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = objc_alloc(MEMORY[0x277D77888]);
   v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"/Root/%@/RealityKitTexture2DArray", v9, v10, @"MXIMaterial");
   v15 = objc_msgSend_initWithString_(v7, v12, v11, v13, v14);
@@ -512,7 +512,7 @@ LABEL_14:
         *(&v86 + 1) = objc_msgSend_bytes(v53, v54, v55, v56, v57);
         v87 = objc_msgSend_length(v49, v58, v59, v60, v61);
         v88 = 0;
-        v62 = image::ReadKTX(&v86, v6, 1, IntValueForKey_default < 3);
+        v62 = image::ReadKTX(&v86, deviceCopy, 1, IntValueForKey_default < 3);
         if (!v62)
         {
           v63 = _mxi_log();
@@ -522,7 +522,7 @@ LABEL_14:
             _os_log_impl(&dword_22F9C3000, v63, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneUSDZReader.mm:207] Could not read ktx", buf, 2u);
           }
 
-          objc_msgSend_fillError_withDescription_(MXIInternalError, v64, a4, @"Could not read ktx", v65);
+          objc_msgSend_fillError_withDescription_(MXIInternalError, v64, error, @"Could not read ktx", v65);
         }
       }
 
@@ -538,7 +538,7 @@ LABEL_14:
         }
 
         v49 = objc_msgSend_resourcePath(v29, v78, v79, v80, v81);
-        objc_msgSend_fillError_withFormattedDescription_(MXIInternalError, v82, a4, @"Could not get resource from path: %@", v83, v49);
+        objc_msgSend_fillError_withFormattedDescription_(MXIInternalError, v82, error, @"Could not get resource from path: %@", v83, v49);
         v62 = 0;
       }
     }
@@ -552,7 +552,7 @@ LABEL_14:
         _os_log_impl(&dword_22F9C3000, v66, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneUSDZReader.mm:190] Could not get inputs file property", &v86, 2u);
       }
 
-      objc_msgSend_fillError_withDescription_(MXIInternalError, v67, a4, @"Could not get inputs file property", v68);
+      objc_msgSend_fillError_withDescription_(MXIInternalError, v67, error, @"Could not get inputs file property", v68);
       v62 = 0;
     }
   }
@@ -567,18 +567,18 @@ LABEL_14:
       _os_log_impl(&dword_22F9C3000, v69, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneUSDZReader.mm:184] Could not get texture 2D array from path: %@", &v86, 0xCu);
     }
 
-    objc_msgSend_fillError_withFormattedDescription_(MXIInternalError, v70, a4, @"Could not get texture 2D array from path: %@", v71, v15);
+    objc_msgSend_fillError_withFormattedDescription_(MXIInternalError, v70, error, @"Could not get texture 2D array from path: %@", v71, v15);
     v62 = 0;
   }
 
   return v62;
 }
 
-- (id)getThumbnailDataInternal:(id)a3
+- (id)getThumbnailDataInternal:(id)internal
 {
-  v3 = a3;
-  v8 = v3;
-  if (v3 && (objc_msgSend_type(v3, v4, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v10 = *MEMORY[0x277D77930], v9, v9 == v10))
+  internalCopy = internal;
+  v8 = internalCopy;
+  if (internalCopy && (objc_msgSend_type(internalCopy, v4, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v10 = *MEMORY[0x277D77930], v9, v9 == v10))
   {
     v16 = MEMORY[0x277D77898];
     v17 = objc_msgSend_resourcePath(v8, v11, v12, v13, v14);
@@ -605,7 +605,7 @@ LABEL_14:
   return v15;
 }
 
-- (id)getThumbnailDataWithError:(id *)a3
+- (id)getThumbnailDataWithError:(id *)error
 {
   v5 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_rootNode, a2, @"assetInfo", @"previews:thumbnails:default:defaultImage", v3);
   v11 = objc_msgSend_getThumbnailDataInternal_(self, v6, v5, v7, v8);
@@ -635,10 +635,10 @@ LABEL_14:
   return v11;
 }
 
-- (id)getStringValueForKey:(id)a3
+- (id)getStringValueForKey:(id)key
 {
-  v4 = a3;
-  v8 = objc_msgSend_metadataWithKey_(self->_scene, v5, v4, v6, v7);
+  keyCopy = key;
+  v8 = objc_msgSend_metadataWithKey_(self->_scene, v5, keyCopy, v6, v7);
   v13 = v8;
   v14 = MEMORY[0x277D77938];
   if (v8 && (objc_msgSend_type(v8, v9, v10, v11, v12), v15 = objc_claimAutoreleasedReturnValue(), v16 = *v14, v15, v16 == v15))
@@ -648,7 +648,7 @@ LABEL_14:
 
   else
   {
-    v19 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v9, @"customLayerData", v4, v12);
+    v19 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v9, @"customLayerData", keyCopy, v12);
 
     if (v19 && (objc_msgSend_type(v19, v20, v21, v22, v23), v24 = objc_claimAutoreleasedReturnValue(), v25 = *v14, v24, v24 == v25))
     {
@@ -658,7 +658,7 @@ LABEL_14:
 
     else
     {
-      v27 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v20, v4, v22, v23);
+      v27 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v20, keyCopy, v22, v23);
 
       if (!v27)
       {
@@ -689,10 +689,10 @@ LABEL_14:
   return v38;
 }
 
-- (int)getIntValueForKey:(id)a3 default:(int)a4
+- (int)getIntValueForKey:(id)key default:(int)default
 {
-  v6 = a3;
-  v10 = objc_msgSend_metadataWithKey_(self->_scene, v7, v6, v8, v9);
+  keyCopy = key;
+  v10 = objc_msgSend_metadataWithKey_(self->_scene, v7, keyCopy, v8, v9);
   v15 = v10;
   v16 = MEMORY[0x277D77918];
   if (v10)
@@ -706,7 +706,7 @@ LABEL_14:
     }
   }
 
-  v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v11, @"customLayerData", v6, v14);
+  v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v11, @"customLayerData", keyCopy, v14);
 
   if (v21)
   {
@@ -717,13 +717,13 @@ LABEL_14:
     {
       v15 = v21;
 LABEL_10:
-      a4 = objc_msgSend_intValue(v15, v11, v19, v20, v14);
+      default = objc_msgSend_intValue(v15, v11, v19, v20, v14);
       v25 = v15;
       goto LABEL_11;
     }
   }
 
-  v25 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v11, v6, v20, v14);
+  v25 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v11, keyCopy, v20, v14);
 
   if (v25)
   {
@@ -739,13 +739,13 @@ LABEL_10:
 
 LABEL_11:
 
-  return a4;
+  return default;
 }
 
-- (float)getFloatValueForKey:(id)a3 default:(float)a4
+- (float)getFloatValueForKey:(id)key default:(float)default
 {
-  v6 = a3;
-  v10 = objc_msgSend_metadataWithKey_(self->_scene, v7, v6, v8, v9);
+  keyCopy = key;
+  v10 = objc_msgSend_metadataWithKey_(self->_scene, v7, keyCopy, v8, v9);
   v15 = v10;
   v16 = MEMORY[0x277D778E8];
   if (v10)
@@ -759,7 +759,7 @@ LABEL_11:
     }
   }
 
-  v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v11, @"customLayerData", v6, v14);
+  v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v11, @"customLayerData", keyCopy, v14);
 
   if (v21)
   {
@@ -771,13 +771,13 @@ LABEL_11:
       v15 = v21;
 LABEL_10:
       objc_msgSend_floatValue(v15, v11, v19, v20, v14);
-      a4 = v32;
+      default = v32;
       v25 = v15;
       goto LABEL_11;
     }
   }
 
-  v25 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v11, v6, v20, v14);
+  v25 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v11, keyCopy, v20, v14);
 
   if (v25)
   {
@@ -793,13 +793,13 @@ LABEL_10:
 
 LABEL_11:
 
-  return a4;
+  return default;
 }
 
-- (double)getDoubleValueForKey:(id)a3 default:(double)a4
+- (double)getDoubleValueForKey:(id)key default:(double)default
 {
-  v6 = a3;
-  v10 = objc_msgSend_metadataWithKey_(self->_scene, v7, v6, v8, v9);
+  keyCopy = key;
+  v10 = objc_msgSend_metadataWithKey_(self->_scene, v7, keyCopy, v8, v9);
   v15 = v10;
   v16 = MEMORY[0x277D778D0];
   if (v10)
@@ -813,7 +813,7 @@ LABEL_11:
     }
   }
 
-  v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v11, @"customLayerData", v6, v14);
+  v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(self->_scene, v11, @"customLayerData", keyCopy, v14);
 
   if (v21)
   {
@@ -825,13 +825,13 @@ LABEL_11:
       v15 = v21;
 LABEL_10:
       objc_msgSend_doubleValue(v15, v11, v19, v20, v14);
-      a4 = v32;
+      default = v32;
       v25 = v15;
       goto LABEL_11;
     }
   }
 
-  v25 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v11, v6, v20, v14);
+  v25 = objc_msgSend_customMetadataWithKey_(self->_rootNode, v11, keyCopy, v20, v14);
 
   if (v25)
   {
@@ -847,13 +847,13 @@ LABEL_10:
 
 LABEL_11:
 
-  return a4;
+  return default;
 }
 
-- (void)getDouble4x4ValueForKey:(_OWORD *)a3@<X3> default:(_OWORD *)a4@<X8>
+- (void)getDouble4x4ValueForKey:(_OWORD *)key@<X3> default:(_OWORD *)default@<X8>
 {
   v44 = a2;
-  v10 = objc_msgSend_metadataWithKey_(*(a1 + 16), v7, v44, v8, v9);
+  v10 = objc_msgSend_metadataWithKey_(*(self + 16), v7, v44, v8, v9);
   v15 = v10;
   v16 = MEMORY[0x277D778E0];
   if (v10 && (objc_msgSend_type(v10, v11, v12, v13, v14), v17 = objc_claimAutoreleasedReturnValue(), v18 = *v16, v17, v18 == v17))
@@ -863,7 +863,7 @@ LABEL_11:
 
   else
   {
-    v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(*(a1 + 16), v11, @"customLayerData", v44, v14);
+    v21 = objc_msgSend_dictionaryMetadataWithKey_dictionaryKey_(*(self + 16), v11, @"customLayerData", v44, v14);
 
     if (v21 && (objc_msgSend_type(v21, v22, v23, v24, v25), v26 = objc_claimAutoreleasedReturnValue(), v27 = *v16, v26, v27 == v26))
     {
@@ -873,7 +873,7 @@ LABEL_11:
 
     else
     {
-      v29 = objc_msgSend_customMetadataWithKey_(*(a1 + 24), v22, v44, v24, v25);
+      v29 = objc_msgSend_customMetadataWithKey_(*(self + 24), v22, v44, v24, v25);
 
       if (v29 && (objc_msgSend_type(v29, v30, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), v35 = *v16, v34, v35 == v34))
       {
@@ -883,27 +883,27 @@ LABEL_11:
 
       else
       {
-        v40 = a3[5];
-        a4[4] = a3[4];
-        a4[5] = v40;
-        v41 = a3[7];
-        a4[6] = a3[6];
-        a4[7] = v41;
-        v42 = a3[1];
-        *a4 = *a3;
-        a4[1] = v42;
-        v43 = a3[3];
+        v40 = key[5];
+        default[4] = key[4];
+        default[5] = v40;
+        v41 = key[7];
+        default[6] = key[6];
+        default[7] = v41;
+        v42 = key[1];
+        *default = *key;
+        default[1] = v42;
+        v43 = key[3];
         v15 = v29;
-        a4[2] = a3[2];
-        a4[3] = v43;
+        default[2] = key[2];
+        default[3] = v43;
       }
     }
   }
 }
 
-- (float32x4_t)getModelToWorldTransformWithDefault:(uint64_t)a3
+- (float32x4_t)getModelToWorldTransformWithDefault:(uint64_t)default
 {
-  v6 = objc_msgSend_properties(*(a1 + 24), a2, a3, a4, a5);
+  v6 = objc_msgSend_properties(*(self + 24), a2, default, a4, a5);
   v10 = objc_msgSend_objectForKeyedSubscript_(v6, v7, @"xformOp:transform", v8, v9);
 
   if (v10)

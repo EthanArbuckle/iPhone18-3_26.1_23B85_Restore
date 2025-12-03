@@ -8,11 +8,11 @@
 
 - (id)CHIPRemoteResults
 {
-  v2 = [a1 objectForKeyedSubscript:@"results"];
+  v2 = [self objectForKeyedSubscript:@"results"];
 
   if (v2)
   {
-    v3 = [a1 objectForKeyedSubscript:@"results"];
+    v3 = [self objectForKeyedSubscript:@"results"];
     v4 = decodeValues(v3);
   }
 
@@ -27,7 +27,7 @@
 - (id)CHIPSubscribeParams
 {
   v1 = MEMORY[0x277CD5318];
-  v2 = [a1 objectForKeyedSubscript:@"params"];
+  v2 = [self objectForKeyedSubscript:@"params"];
   v3 = [v1 decodeXPCSubscribeParams:v2];
 
   return v3;
@@ -36,7 +36,7 @@
 - (id)CHIPReadParams
 {
   v1 = MEMORY[0x277CD5318];
-  v2 = [a1 objectForKeyedSubscript:@"params"];
+  v2 = [self objectForKeyedSubscript:@"params"];
   v3 = [v1 decodeXPCReadParams:v2];
 
   return v3;

@@ -1,13 +1,13 @@
 @interface MIODictionaryConstraint
-- (BOOL)isEqual:(id)a3;
-- (MIODictionaryConstraint)initWithSpecification:(const void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MIODictionaryConstraint)initWithSpecification:(const void *)specification;
 - (NSString)description;
 - (int64_t)keyType;
 @end
 
 @implementation MIODictionaryConstraint
 
-- (MIODictionaryConstraint)initWithSpecification:(const void *)a3
+- (MIODictionaryConstraint)initWithSpecification:(const void *)specification
 {
   v7.receiver = self;
   v7.super_class = MIODictionaryConstraint;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    CoreML::Specification::DictionaryFeatureType::CopyFrom((v4 + 8), a3);
+    CoreML::Specification::DictionaryFeatureType::CopyFrom((v4 + 8), specification);
   }
 
   return v5;
@@ -30,10 +30,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -43,9 +43,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIODictionaryConstraint *)self keyType];
-      v7 = v6 == [(MIODictionaryConstraint *)v5 keyType];
+      v5 = equalCopy;
+      keyType = [(MIODictionaryConstraint *)self keyType];
+      v7 = keyType == [(MIODictionaryConstraint *)v5 keyType];
     }
 
     else

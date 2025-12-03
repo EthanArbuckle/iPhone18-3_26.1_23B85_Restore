@@ -2,7 +2,7 @@
 - (BOOL)shouldShowSiriSuggestions;
 - (CNSiriIntelligenceSettings)init;
 - (void)dealloc;
-- (void)setShouldShowSiriSuggestions:(BOOL)a3;
+- (void)setShouldShowSiriSuggestions:(BOOL)suggestions;
 - (void)shouldShowSiriSuggestions;
 @end
 
@@ -76,12 +76,12 @@ void __34__CNSiriIntelligenceSettings_init__block_invoke(uint64_t a1)
   [(CNSiriIntelligenceSettings *)&v4 dealloc];
 }
 
-- (void)setShouldShowSiriSuggestions:(BOOL)a3
+- (void)setShouldShowSiriSuggestions:(BOOL)suggestions
 {
-  atomic_store(a3, &self->_shouldShowSiriSuggestions);
+  atomic_store(suggestions, &self->_shouldShowSiriSuggestions);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    [CNSiriIntelligenceSettings setShouldShowSiriSuggestions:a3];
+    [CNSiriIntelligenceSettings setShouldShowSiriSuggestions:suggestions];
   }
 }
 
@@ -89,7 +89,7 @@ void __34__CNSiriIntelligenceSettings_init__block_invoke(uint64_t a1)
 {
   v2 = *MEMORY[0x1E69E9840];
   v1[0] = 67109120;
-  v1[1] = a1 & 1;
+  v1[1] = self & 1;
   _os_log_debug_impl(&dword_1954A0000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "canShowSiriSuggestions = %d", v1, 8u);
 }
 

@@ -1,9 +1,9 @@
 @interface OrgApacheLuceneUtilFrequencyTrackingRingBuffer_IntBag
 + (void)initialize;
-- (BOOL)removeWithInt:(int)a3;
+- (BOOL)removeWithInt:(int)int;
 - (id)asMap;
-- (int)addWithInt:(int)a3;
-- (int)frequencyWithInt:(int)a3;
+- (int)addWithInt:(int)int;
+- (int)frequencyWithInt:(int)int;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
 @end
@@ -17,7 +17,7 @@
   return v4 + OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithIntArray_(self->freqs_);
 }
 
-- (int)frequencyWithInt:(int)a3
+- (int)frequencyWithInt:(int)int
 {
   keys = self->keys_;
   if (!keys)
@@ -25,7 +25,7 @@
     goto LABEL_19;
   }
 
-  v5 = self->mask_ & a3;
+  v5 = self->mask_ & int;
   while (1)
   {
     size = keys->super.size_;
@@ -36,7 +36,7 @@
 
     v7 = *(&keys->super.size_ + v5 + 1);
     freqs = self->freqs_;
-    if (v7 == a3)
+    if (v7 == int)
     {
       break;
     }
@@ -80,7 +80,7 @@ LABEL_19:
   return *(&freqs->super.size_ + v5 + 1);
 }
 
-- (int)addWithInt:(int)a3
+- (int)addWithInt:(int)int
 {
   freqs = self->freqs_;
   if (!freqs)
@@ -88,7 +88,7 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v5 = self->mask_ & a3;
+  v5 = self->mask_ & int;
   while (1)
   {
     v6 = v5;
@@ -116,7 +116,7 @@ LABEL_19:
       IOSArray_throwOutOfBoundsWithMsg(v10, v5);
     }
 
-    if (*(&keys->super.size_ + v5 + 1) == a3)
+    if (*(&keys->super.size_ + v5 + 1) == int)
     {
       v16 = self->freqs_;
       v17 = v16->super.size_;
@@ -150,7 +150,7 @@ LABEL_24:
     IOSArray_throwOutOfBoundsWithMsg(v11, v5);
   }
 
-  *(&keys->super.size_ + v5 + 1) = a3;
+  *(&keys->super.size_ + v5 + 1) = int;
   v12 = self->freqs_;
   v13 = v12->super.size_;
   if (v5 < 0 || v5 >= v13)
@@ -165,7 +165,7 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)removeWithInt:(int)a3
+- (BOOL)removeWithInt:(int)int
 {
   freqs = self->freqs_;
   if (!freqs)
@@ -174,7 +174,7 @@ LABEL_19:
     JreThrowNullPointerException();
   }
 
-  v5 = self->mask_ & a3;
+  v5 = self->mask_ & int;
   while (1)
   {
     v6 = v5;
@@ -202,7 +202,7 @@ LABEL_19:
       IOSArray_throwOutOfBoundsWithMsg(v10, v5);
     }
 
-    if (*(&keys->super.size_ + v5 + 1) == a3)
+    if (*(&keys->super.size_ + v5 + 1) == int)
     {
       v11 = self->freqs_;
       v12 = v11->super.size_;
@@ -295,7 +295,7 @@ LABEL_16:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilFrequencyTrackingRingBuffer_IntBag_class_();
     qword_100553F88 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

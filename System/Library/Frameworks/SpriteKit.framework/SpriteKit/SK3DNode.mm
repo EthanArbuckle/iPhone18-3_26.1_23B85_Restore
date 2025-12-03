@@ -5,11 +5,11 @@
 - (SK3DNode)init;
 - (SK3DNode)initWithCoder:(NSCoder *)aDecoder;
 - (SK3DNode)initWithViewportSize:(CGSize)viewportSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (vector_float3)projectPoint:(vector_float3)point;
 - (vector_float3)unprojectPoint:(vector_float3)point;
 - (void)_didMakeBackingNode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setScnScene:(SCNScene *)scnScene;
 - (void)setViewportSize:(CGSize)viewportSize;
 @end
@@ -68,16 +68,16 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SK3DNode;
-  [(SKNode *)&v6 encodeWithCoder:v4];
+  [(SKNode *)&v6 encodeWithCoder:coderCopy];
   [(SK3DNode *)self viewportSize];
-  [v4 encodeCGSize:@"viewportSize" forKey:?];
-  v5 = [(SK3DNode *)self scnScene];
-  [v4 encodeObject:v5 forKey:@"_scene"];
+  [coderCopy encodeCGSize:@"viewportSize" forKey:?];
+  scnScene = [(SK3DNode *)self scnScene];
+  [coderCopy encodeObject:scnScene forKey:@"_scene"];
 }
 
 - (void)setViewportSize:(CGSize)viewportSize
@@ -115,15 +115,15 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SK3DNode;
-  v4 = [(SKNode *)&v8 copyWithZone:a3];
+  v4 = [(SKNode *)&v8 copyWithZone:zone];
   [(SK3DNode *)self viewportSize];
   [v4 setViewportSize:?];
-  v5 = [(SK3DNode *)self scnScene];
-  v6 = [v5 copy];
+  scnScene = [(SK3DNode *)self scnScene];
+  v6 = [scnScene copy];
   [v4 setScnScene:v6];
 
   return v4;
@@ -135,16 +135,16 @@
   skc3DNode = self->_skc3DNode;
   if (*(skc3DNode + 73))
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:@"kC3DSceneDidUpdateNotification" object:*(self->_skc3DNode + 73)];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"kC3DSceneDidUpdateNotification" object:*(self->_skc3DNode + 73)];
 
     skc3DNode = self->_skc3DNode;
   }
 
   objc_storeStrong(skc3DNode + 73, scnScene);
   [*(self->_skc3DNode + 70) setScene:*(self->_skc3DNode + 73)];
-  v7 = [*(self->_skc3DNode + 70) pointOfView];
-  [v7 position];
+  pointOfView = [*(self->_skc3DNode + 70) pointOfView];
+  [pointOfView position];
   v8 = self->_skc3DNode;
   v8[142] = v9;
   v8[143] = v10;
@@ -152,8 +152,8 @@
 
   if (v13)
   {
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:self selector:sel__scnSceneDidUpdate_ name:@"kC3DSceneDidUpdateNotification" object:v13];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__scnSceneDidUpdate_ name:@"kC3DSceneDidUpdateNotification" object:v13];
   }
 }
 

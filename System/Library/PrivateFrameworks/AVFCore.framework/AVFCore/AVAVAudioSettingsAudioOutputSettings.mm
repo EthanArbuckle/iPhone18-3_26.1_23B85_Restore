@@ -1,28 +1,28 @@
 @interface AVAVAudioSettingsAudioOutputSettings
-+ (id)_audioOutputSettingsWithAudioSettingsDictionary:(id)a3 exceptionReason:(id *)a4;
-- (AVAVAudioSettingsAudioOutputSettings)initWithAVAudioSettingsDictionary:(id)a3 exceptionReason:(id *)a4;
-- (AudioChannelLayout)copyAudioChannelLayoutForSourceFormatDescription:(opaqueCMFormatDescription *)a3 audioChannelLayoutSize:(unint64_t *)a4;
-- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)a3;
-- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)a3;
++ (id)_audioOutputSettingsWithAudioSettingsDictionary:(id)dictionary exceptionReason:(id *)reason;
+- (AVAVAudioSettingsAudioOutputSettings)initWithAVAudioSettingsDictionary:(id)dictionary exceptionReason:(id *)reason;
+- (AudioChannelLayout)copyAudioChannelLayoutForSourceFormatDescription:(opaqueCMFormatDescription *)description audioChannelLayoutSize:(unint64_t *)size;
+- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)reason;
+- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)error;
 - (id)audioOptions;
-- (void)getAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3 forAudioFileTypeID:(unsigned int)a4 sourceFormatDescription:(opaqueCMFormatDescription *)a5;
+- (void)getAudioStreamBasicDescription:(AudioStreamBasicDescription *)description forAudioFileTypeID:(unsigned int)d sourceFormatDescription:(opaqueCMFormatDescription *)formatDescription;
 @end
 
 @implementation AVAVAudioSettingsAudioOutputSettings
 
-+ (id)_audioOutputSettingsWithAudioSettingsDictionary:(id)a3 exceptionReason:(id *)a4
++ (id)_audioOutputSettingsWithAudioSettingsDictionary:(id)dictionary exceptionReason:(id *)reason
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithAVAudioSettingsDictionary:a3 exceptionReason:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithAVAudioSettingsDictionary:dictionary exceptionReason:reason];
 
   return v4;
 }
 
-- (AVAVAudioSettingsAudioOutputSettings)initWithAVAudioSettingsDictionary:(id)a3 exceptionReason:(id *)a4
+- (AVAVAudioSettingsAudioOutputSettings)initWithAVAudioSettingsDictionary:(id)dictionary exceptionReason:(id *)reason
 {
-  v149 = 0;
-  v7 = [(AVAudioOutputSettings *)self initWithAudioSettingsDictionary:a3 exceptionReason:&v149];
+  v135 = 0;
+  v7 = [(AVAudioOutputSettings *)self initWithAudioSettingsDictionary:dictionary exceptionReason:&v135];
   v8 = v7;
-  if (!a3)
+  if (!dictionary)
   {
     v126 = v7;
     v132 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v8 userInfo:{a2, @"invalid parameter not satisfying: %s", v127, v128, v129, v130, v131, "avAudioSettingsDictionary != nil"), 0}];
@@ -35,19 +35,19 @@
   }
 
   v144 = v7;
-  v145 = a4;
-  v9 = [a3 allKeys];
+  reasonCopy = reason;
+  allKeys = [dictionary allKeys];
   v147 = *MEMORY[0x1E69582B0];
-  v10 = [v9 containsObject:?];
+  v10 = [allKeys containsObject:?];
   if ((v10 & 1) == 0)
   {
-    v149 = @"AVAudioSettings dictionary must contain AVFormatIDKey";
+    v135 = @"AVAudioSettings dictionary must contain AVFormatIDKey";
   }
 
   v143 = *MEMORY[0x1E6958280];
-  v11 = [v9 containsObject:?];
+  v11 = [allKeys containsObject:?];
   v142 = *MEMORY[0x1E6958290];
-  v12 = [v9 containsObject:?];
+  v12 = [allKeys containsObject:?];
   v13 = (v10 & v11) != 1 || v12 == 0;
   v14 = MEMORY[0x1E69582E8];
   v15 = MEMORY[0x1E69582C8];
@@ -60,7 +60,7 @@
     }
 
     v16 = *MEMORY[0x1E69582E8];
-    if ((![v9 containsObject:*MEMORY[0x1E69582E8]] || objc_msgSend(v9, "containsObject:", *v15)) && ((objc_msgSend(v9, "containsObject:", v16) & 1) != 0 || !objc_msgSend(v9, "containsObject:", *v15)))
+    if ((![allKeys containsObject:*MEMORY[0x1E69582E8]] || objc_msgSend(allKeys, "containsObject:", *v15)) && ((objc_msgSend(allKeys, "containsObject:", v16) & 1) != 0 || !objc_msgSend(allKeys, "containsObject:", *v15)))
     {
       v17 = 1;
       goto LABEL_19;
@@ -76,10 +76,10 @@
     v18 = @"Cannot specify both AVEncoderBitRateKey and AVEncoderBitRatePerChannelKey";
   }
 
-  v149 = v18;
+  v135 = v18;
 LABEL_19:
   v141 = *v15;
-  v19 = [a3 objectForKey:?];
+  v19 = [dictionary objectForKey:?];
   v20 = v19;
   if (v17 && v19)
   {
@@ -96,12 +96,12 @@ LABEL_19:
     else
     {
       v17 = 0;
-      v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bit depth can only be one of: %@", objc_msgSend(objc_msgSend(v25, "allObjects"), "componentsJoinedByString:", @", ")];
+      v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bit depth can only be one of: %@", objc_msgSend(objc_msgSend(v25, "allObjects"), "componentsJoinedByString:", @", ")];
     }
   }
 
   v140 = *MEMORY[0x1E6958278];
-  v26 = [a3 objectForKey:?];
+  v26 = [dictionary objectForKey:?];
   if (v17)
   {
     v27 = v26;
@@ -120,13 +120,13 @@ LABEL_19:
       else
       {
         v17 = 0;
-        v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bit depth hint can only be one of: %@", objc_msgSend(objc_msgSend(v32, "allObjects"), "componentsJoinedByString:", @", ")];
+        v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bit depth hint can only be one of: %@", objc_msgSend(objc_msgSend(v32, "allObjects"), "componentsJoinedByString:", @", ")];
       }
     }
   }
 
   v139 = *MEMORY[0x1E6958298];
-  v33 = [a3 objectForKey:?];
+  v33 = [dictionary objectForKey:?];
   v34 = v33;
   if (v17 && v33)
   {
@@ -139,12 +139,12 @@ LABEL_19:
     else
     {
       v17 = 0;
-      v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bit rate strategy can only be one of: %@", objc_msgSend(objc_msgSend(v35, "allObjects"), "componentsJoinedByString:", @", ")];
+      v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bit rate strategy can only be one of: %@", objc_msgSend(objc_msgSend(v35, "allObjects"), "componentsJoinedByString:", @", ")];
     }
   }
 
   v138 = *MEMORY[0x1E6958268];
-  v36 = [a3 objectForKey:?];
+  v36 = [dictionary objectForKey:?];
   if (v17 && v36)
   {
     objc_opt_class();
@@ -156,29 +156,29 @@ LABEL_19:
         goto LABEL_43;
       }
 
-      v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot specify a value for AVEncoderAudioQualityForVBRKey without also specifying AVAudioBitRateStrategy_Variable for AVEncoderBitRateStrategyKey", v133];
+      v133 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot specify a value for AVEncoderAudioQualityForVBRKey without also specifying AVAudioBitRateStrategy_Variable for AVEncoderBitRateStrategyKey", v133];
     }
 
     else
     {
       v37 = MEMORY[0x1E696AEC0];
       v38 = objc_opt_class();
-      v39 = [v37 stringWithFormat:@"Value for AVEncoderAudioQualityForVBRKey must be an instance of %@", NSStringFromClass(v38)];
+      v133 = [v37 stringWithFormat:@"Value for AVEncoderAudioQualityForVBRKey must be an instance of %@", NSStringFromClass(v38)];
     }
 
     v17 = 0;
-    v149 = v39;
+    v135 = v133;
   }
 
 LABEL_43:
   v40 = *v14;
-  v41 = [a3 objectForKey:*v14];
+  v41 = [dictionary objectForKey:*v14];
   if (v17 && v41 && v20)
   {
     if ([v41 BOOLValue] && objc_msgSend(v20, "integerValue") != 32)
     {
       v17 = 0;
-      v149 = @"Floating-point LPCM must be 32-bit";
+      v135 = @"Floating-point LPCM must be 32-bit";
     }
 
     else
@@ -188,14 +188,14 @@ LABEL_43:
   }
 
   v42 = *MEMORY[0x1E6958300];
-  v43 = [a3 objectForKey:*MEMORY[0x1E6958300]];
+  v43 = [dictionary objectForKey:*MEMORY[0x1E6958300]];
   v44 = v43;
   if (v17 && v43)
   {
     if ([v43 integerValue] <= 0)
     {
       v17 = 0;
-      v149 = @"Channel count must be positive";
+      v135 = @"Channel count must be positive";
     }
 
     else
@@ -206,7 +206,7 @@ LABEL_43:
 
   *inSpecifierSize = 0;
   v45 = *MEMORY[0x1E6958258];
-  v46 = copyAudioChannelLayoutFromData([a3 objectForKey:*MEMORY[0x1E6958258]], inSpecifierSize);
+  v46 = copyAudioChannelLayoutFromData([dictionary objectForKey:*MEMORY[0x1E6958258]], inSpecifierSize);
   v47 = v46;
   if (v17 && v46)
   {
@@ -215,7 +215,7 @@ LABEL_43:
       v17 = 0;
       v48 = @"AudioChannelLayout is invalid";
 LABEL_66:
-      v149 = v48;
+      v135 = v48;
       goto LABEL_67;
     }
 
@@ -241,7 +241,7 @@ LABEL_66:
 LABEL_67:
   v137 = v44;
   v50 = *MEMORY[0x1E6958348];
-  v51 = [a3 objectForKey:*MEMORY[0x1E6958348]];
+  v51 = [dictionary objectForKey:*MEMORY[0x1E6958348]];
   v52 = v51;
   if (v17 && v51)
   {
@@ -249,7 +249,7 @@ LABEL_67:
     if (v53 < 8000.0 || v53 > 192000.0)
     {
       v17 = 0;
-      v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %.2f for AVSampleRateKey; sample rate must be between 8.0 and 192.0 kHz inclusive", v53];
+      v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %.2f for AVSampleRateKey; sample rate must be between 8.0 and 192.0 kHz inclusive", v53];
     }
 
     else
@@ -260,11 +260,11 @@ LABEL_67:
 
   inSpecifier = v47;
   v54 = *MEMORY[0x1E6958318];
-  v55 = [a3 objectForKey:*MEMORY[0x1E6958318]];
+  v55 = [dictionary objectForKey:*MEMORY[0x1E6958318]];
   if (!v17 || (v56 = v55) == 0)
   {
 LABEL_79:
-    v57 = [a3 objectForKey:v147];
+    v57 = [dictionary objectForKey:v147];
     if (!v17)
     {
       goto LABEL_173;
@@ -276,19 +276,19 @@ LABEL_79:
       goto LABEL_173;
     }
 
-    v59 = [v57 unsignedIntValue];
+    unsignedIntValue = [v57 unsignedIntValue];
     v60 = [MEMORY[0x1E695DFD8] setWithObjects:{v147, v50, v42, v54, *MEMORY[0x1E6958338], v45, 0}];
-    v61 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(a3, "allKeys")}];
+    v61 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(dictionary, "allKeys")}];
     [objc_msgSend(MEMORY[0x1E695DFA8] setWithSet:{v61), "intersectSet:", v60}];
     v62 = MEMORY[0x1E695DFD8];
-    v136 = v59;
-    if (v59 == 1634492771)
+    v136 = unsignedIntValue;
+    if (unsignedIntValue == 1634492771)
     {
       v66 = [MEMORY[0x1E695DFD8] setWithObjects:{v140, 0}];
       v64 = [MEMORY[0x1E695DFA8] setWithSet:v66];
     }
 
-    else if (v59 == 1819304813)
+    else if (unsignedIntValue == 1819304813)
     {
       v63 = [MEMORY[0x1E695DFD8] setWithObjects:{v141, *MEMORY[0x1E69582D0], v40, *MEMORY[0x1E69582F0], 0}];
       v64 = [MEMORY[0x1E695DFA8] setWithSet:v63];
@@ -297,7 +297,7 @@ LABEL_79:
 
     else
     {
-      v67 = v59;
+      v67 = unsignedIntValue;
       v68 = *MEMORY[0x1E6958270];
       v69 = [v61 containsObject:v142];
       v70 = v143;
@@ -322,19 +322,19 @@ LABEL_79:
     {
       v74 = [MEMORY[0x1E695DFA8] setWithSet:v72];
       [v74 minusSet:v64];
-      v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The following keys are not allowed when format ID is '%@': %@", AVStringForOSType(v136), objc_msgSend(objc_msgSend(v74, "allObjects"), "componentsJoinedByString:", @", ")];
+      v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The following keys are not allowed when format ID is '%@': %@", AVStringForOSType(v136), objc_msgSend(objc_msgSend(v74, "allObjects"), "componentsJoinedByString:", @", ")];
       goto LABEL_93;
     }
 
-    v77 = [v58 unsignedIntValue];
+    unsignedIntValue2 = [v58 unsignedIntValue];
     v76 = inSpecifier;
-    if (!encoderExistsForFormat(v77))
+    if (!encoderExistsForFormat(unsignedIntValue2))
     {
 LABEL_179:
       free(v76);
       v75 = v144;
-      a4 = v145;
-      if (!v145)
+      reason = reasonCopy;
+      if (!reasonCopy)
       {
         return v75;
       }
@@ -349,7 +349,7 @@ LABEL_179:
 
     [v52 doubleValue];
     v79 = v78;
-    LODWORD(outPropertyData) = v77;
+    LODWORD(outPropertyData) = unsignedIntValue2;
     ioPropertyDataSize[0] = 0;
     if (AudioFormatGetPropertyInfo(0x61657372u, 4u, &outPropertyData, ioPropertyDataSize))
     {
@@ -414,20 +414,20 @@ LABEL_119:
     if (v79 != v81)
     {
       v88 = MEMORY[0x1E696AEC0];
-      v135 = AVStringForOSType(v77);
+      v135 = AVStringForOSType(unsignedIntValue2);
       v134 = *&v79;
       v89 = @"%g Hz is not a valid sample rate for Format ID '%@'.  Use kAudioFormatProperty_AvailableEncodeSampleRates (<AudioToolbox/AudioFormat.h>) to enumerate available rates for a given format.";
 LABEL_121:
       v90 = v88;
 LABEL_151:
       v17 = 0;
-      v149 = [v90 stringWithFormat:v89, v134, v135];
+      v135 = [v90 stringWithFormat:v89, v134, v135];
 LABEL_159:
-      v107 = [a3 objectForKey:*MEMORY[0x1E69582A8]];
+      v107 = [dictionary objectForKey:*MEMORY[0x1E69582A8]];
       if (v17 && v107)
       {
-        v108 = [v107 integerValue];
-        if (v108 < 5)
+        integerValue = [v107 integerValue];
+        if (integerValue < 5)
         {
           v17 = 1;
         }
@@ -435,15 +435,15 @@ LABEL_159:
         else
         {
           v17 = 0;
-          v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %ld for AVEncoderDynamicRangeControlConfigurationKey; dynamic range control config must be between AVAudioDynamicRangeControlConfiguration_None and AVAudioDynamicRangeControlConfiguration_Capture inclusive", v108];
+          v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %ld for AVEncoderDynamicRangeControlConfigurationKey; dynamic range control config must be between AVAudioDynamicRangeControlConfiguration_None and AVAudioDynamicRangeControlConfiguration_Capture inclusive", integerValue];
         }
       }
 
-      v109 = [a3 objectForKey:*MEMORY[0x1E69582A0]];
+      v109 = [dictionary objectForKey:*MEMORY[0x1E69582A0]];
       if (v17 && v109)
       {
-        v110 = [v109 integerValue];
-        if ((v110 - 11) > 0xFFFFFFFFFFFFFFF5)
+        integerValue2 = [v109 integerValue];
+        if ((integerValue2 - 11) > 0xFFFFFFFFFFFFFFF5)
         {
           v17 = 1;
         }
@@ -451,20 +451,20 @@ LABEL_159:
         else
         {
           v17 = 0;
-          v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %ld for AVEncoderContentSourceKey; content source must be between AVAudioContentSource_AppleCapture_Traditional and AVAudioContentSource_ApplePassthrough inclusive", v110];
+          v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %ld for AVEncoderContentSourceKey; content source must be between AVAudioContentSource_AppleCapture_Traditional and AVAudioContentSource_ApplePassthrough inclusive", integerValue2];
         }
       }
 
-      v111 = [a3 objectForKey:*MEMORY[0x1E6958260]];
+      v111 = [dictionary objectForKey:*MEMORY[0x1E6958260]];
       if (v17 && v111)
       {
-        v112 = [v111 integerValue];
+        integerValue3 = [v111 integerValue];
         v76 = inSpecifier;
-        if (v112 <= 2)
+        if (integerValue3 <= 2)
         {
-          v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %ld for AVEncoderASPFrequencyKey; audio sync packet frequency must be an integer larger than 2.", v112];
+          v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid value %ld for AVEncoderASPFrequencyKey; audio sync packet frequency must be an integer larger than 2.", integerValue3];
           v75 = v144;
-          a4 = v145;
+          reason = reasonCopy;
           goto LABEL_94;
         }
 
@@ -474,7 +474,7 @@ LABEL_159:
 LABEL_173:
       free(inSpecifier);
       v75 = v144;
-      a4 = v145;
+      reason = reasonCopy;
       if (v17)
       {
         goto LABEL_176;
@@ -486,12 +486,12 @@ LABEL_173:
 LABEL_122:
     if (v137)
     {
-      v91 = [v137 unsignedIntegerValue];
+      unsignedIntegerValue = [v137 unsignedIntegerValue];
       ioPropertyDataSize[0] = 0;
       v153 = 0;
       outPropertyData = 0u;
       v152 = 0u;
-      DWORD2(outPropertyData) = v77;
+      DWORD2(outPropertyData) = unsignedIntValue2;
       if (AudioFormatGetPropertyInfo(0x61766E63u, 0x28u, &outPropertyData, ioPropertyDataSize))
       {
         v92 = 0;
@@ -515,9 +515,9 @@ LABEL_122:
               {
                 v100 = *v98++;
                 v99 = v100;
-                if (v100 == v91)
+                if (v100 == unsignedIntegerValue)
                 {
-                  v94 = v91;
+                  v94 = unsignedIntegerValue;
                   goto LABEL_149;
                 }
 
@@ -541,9 +541,9 @@ LABEL_122:
                   v95 = v101;
                 }
 
-                if (v99 > v97 && v99 < v91)
+                if (v99 > v97 && v99 < unsignedIntegerValue)
                 {
-                  v97 = v91;
+                  v97 = unsignedIntegerValue;
                 }
 
                 --v93;
@@ -573,11 +573,11 @@ LABEL_122:
 
 LABEL_149:
             free(v92);
-            if (v94 != v91)
+            if (v94 != unsignedIntegerValue)
             {
               v103 = MEMORY[0x1E696AEC0];
-              v134 = v91;
-              v135 = AVStringForOSType(v77);
+              v134 = unsignedIntegerValue;
+              v135 = AVStringForOSType(unsignedIntValue2);
               v89 = @"%d is not a valid channel count for Format ID '%@'.  Use kAudioFormatProperty_AvailableEncodeNumberChannels (<AudioToolbox/AudioFormat.h>) to enumerate available channel counts for a given format.";
               v90 = v103;
               goto LABEL_151;
@@ -611,7 +611,7 @@ LABEL_154:
     outPropertyData = 0u;
     v152 = 0u;
     v153 = 0;
-    DWORD2(outPropertyData) = v77;
+    DWORD2(outPropertyData) = unsignedIntValue2;
     HIDWORD(v152) = v106;
     if (AudioFormatGetPropertyInfo(0x6165636Cu, 0x28u, &outPropertyData, &outPropertyDataSize))
     {
@@ -656,7 +656,7 @@ LABEL_193:
     }
 
 LABEL_188:
-    if (v77 == 1634754915 || v77 == 1667330147 || v77 == 1902211171)
+    if (unsignedIntValue2 == 1634754915 || unsignedIntValue2 == 1667330147 || unsignedIntValue2 == 1902211171)
     {
       v119 = v150;
       free(v114);
@@ -672,7 +672,7 @@ LABEL_194:
       free(v114);
     }
 
-    if (*inSpecifier || v77 != 1634754915 && v77 != 1902211171 && v77 != 1667330147)
+    if (*inSpecifier || unsignedIntValue2 != 1634754915 && unsignedIntValue2 != 1902211171 && unsignedIntValue2 != 1667330147)
     {
       goto LABEL_196;
     }
@@ -704,7 +704,7 @@ LABEL_194:
     {
 LABEL_196:
       v88 = MEMORY[0x1E696AEC0];
-      v134 = AVStringForOSType(v77);
+      v134 = AVStringForOSType(unsignedIntValue2);
       v89 = @"Channel layout is not valid for Format ID '%@'.  Use kAudioFormatProperty_AvailableEncodeChannelLayoutTags (<AudioToolbox/AudioFormat.h>) to enumerate available channel layout tags for a given format.";
       goto LABEL_121;
     }
@@ -731,11 +731,11 @@ LABEL_158:
     v65 = @"Value for AVSampleRateConverterAlgorithmKey must be an instance of NSString";
   }
 
-  v149 = v65;
-  [a3 objectForKey:v147];
+  v135 = v65;
+  [dictionary objectForKey:v147];
 LABEL_93:
   v75 = v144;
-  a4 = v145;
+  reason = reasonCopy;
   v76 = inSpecifier;
 LABEL_94:
   free(v76);
@@ -744,41 +744,41 @@ LABEL_174:
 LABEL_175:
   v75 = 0;
 LABEL_176:
-  if (a4)
+  if (reason)
   {
 LABEL_177:
-    *a4 = v149;
+    *reason = v135;
   }
 
   return v75;
 }
 
-- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)a3
+- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)error
 {
-  v4 = [(AVAudioOutputSettings *)self audioSettingsDictionary];
-  v5 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E69582B0]];
+  audioSettingsDictionary = [(AVAudioOutputSettings *)self audioSettingsDictionary];
+  v5 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E69582B0]];
   v6 = encoderExistsForFormat([v5 unsignedIntValue]);
   if ((v6 & 1) == 0)
   {
     v7 = AVLocalizedError(@"AVFoundationErrorDomain", -11834, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"soun", @"AVErrorMediaTypeKey", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", v5, 0), @"AVErrorMediaSubTypeKey", 0}]);
-    if (a3)
+    if (error)
     {
-      *a3 = v7;
+      *error = v7;
     }
   }
 
   return v6;
 }
 
-- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)a3
+- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)reason
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(AVAudioOutputSettings *)self audioSettingsDictionary];
+  audioSettingsDictionary = [(AVAudioOutputSettings *)self audioSettingsDictionary];
   v5 = *MEMORY[0x1E69582B0];
   v6 = *MEMORY[0x1E6958258];
   v7 = [MEMORY[0x1E695DFA8] setWithObjects:{*MEMORY[0x1E69582B0], *MEMORY[0x1E6958348], *MEMORY[0x1E6958258], 0}];
-  v8 = [-[NSDictionary objectForKey:](v4 objectForKey:{v5), "unsignedIntValue"}];
-  v9 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958300]];
+  v8 = [-[NSDictionary objectForKey:](audioSettingsDictionary objectForKey:{v5), "unsignedIntValue"}];
+  v9 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958300]];
   if (v9 && ([v9 integerValue] - 1) <= 1)
   {
     [v7 removeObject:v6];
@@ -820,17 +820,17 @@ LABEL_9:
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        if (![(NSDictionary *)v4 objectForKey:v15])
+        if (![(NSDictionary *)audioSettingsDictionary objectForKey:v15])
         {
           v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing required key %@", v15];
-          if (!a3)
+          if (!reason)
           {
             return 0;
           }
 
           v18 = v17;
           result = 0;
-          *a3 = v18;
+          *reason = v18;
           return result;
         }
       }
@@ -848,23 +848,23 @@ LABEL_9:
   return 1;
 }
 
-- (void)getAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3 forAudioFileTypeID:(unsigned int)a4 sourceFormatDescription:(opaqueCMFormatDescription *)a5
+- (void)getAudioStreamBasicDescription:(AudioStreamBasicDescription *)description forAudioFileTypeID:(unsigned int)d sourceFormatDescription:(opaqueCMFormatDescription *)formatDescription
 {
   v69 = 0;
   outPropertyData = 0u;
   v68 = 0u;
-  if (!a5)
+  if (!formatDescription)
   {
-    v11 = [(AVAudioOutputSettings *)self audioSettingsDictionary];
+    audioSettingsDictionary = [(AVAudioOutputSettings *)self audioSettingsDictionary];
     StreamBasicDescription = 0;
     goto LABEL_5;
   }
 
-  RichestDecodableFormat = CMAudioFormatDescriptionGetRichestDecodableFormat(a5);
+  RichestDecodableFormat = CMAudioFormatDescriptionGetRichestDecodableFormat(formatDescription);
   if (!RichestDecodableFormat)
   {
-    StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(a5);
-    v11 = [(AVAudioOutputSettings *)self audioSettingsDictionary];
+    StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription);
+    audioSettingsDictionary = [(AVAudioOutputSettings *)self audioSettingsDictionary];
     if (StreamBasicDescription)
     {
       goto LABEL_7;
@@ -877,16 +877,16 @@ LABEL_5:
   }
 
   StreamBasicDescription = &RichestDecodableFormat->mASBD;
-  v11 = [(AVAudioOutputSettings *)self audioSettingsDictionary];
+  audioSettingsDictionary = [(AVAudioOutputSettings *)self audioSettingsDictionary];
 LABEL_7:
   v12 = 0;
   v13 = StreamBasicDescription->mFormatID != 1819304813;
 LABEL_8:
-  v14 = [-[NSDictionary objectForKey:](v11 objectForKey:{*MEMORY[0x1E69582B0]), "unsignedIntValue"}];
+  v14 = [-[NSDictionary objectForKey:](audioSettingsDictionary objectForKey:{*MEMORY[0x1E69582B0]), "unsignedIntValue"}];
   DWORD2(outPropertyData) = v14;
   if (v14 == 1634492771)
   {
-    v16 = [-[NSDictionary objectForKey:](v11 objectForKey:{*MEMORY[0x1E6958278]), "integerValue"}];
+    v16 = [-[NSDictionary objectForKey:](audioSettingsDictionary objectForKey:{*MEMORY[0x1E6958278]), "integerValue"}];
     if ((v12 & 1) == 0 && StreamBasicDescription->mFormatID == 1819304813)
     {
       mBitsPerChannel = StreamBasicDescription->mBitsPerChannel;
@@ -944,9 +944,9 @@ LABEL_26:
   desc[0] = 0;
   if (v12 & 1 | !v13)
   {
-    if (a5)
+    if (formatDescription)
     {
-      v15 = CFRetain(a5);
+      v15 = CFRetain(formatDescription);
     }
 
     else
@@ -960,7 +960,7 @@ LABEL_26:
 
   else
   {
-    v22 = [MEMORY[0x1E695DEC8] arrayWithObject:a5];
+    v22 = [MEMORY[0x1E695DEC8] arrayWithObject:formatDescription];
     CMAudioFormatDescriptionCreateSummary(*MEMORY[0x1E695E480], v22, 0, desc);
     v23 = CMAudioFormatDescriptionGetStreamBasicDescription(desc[0]);
   }
@@ -977,12 +977,12 @@ LABEL_26:
   }
 
   HIDWORD(outPropertyData) = v24;
-  v25 = [(NSDictionary *)v11 objectForKey:*MEMORY[0x1E69582F0], desc[0]];
+  v25 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E69582F0], desc[0]];
   if (v25)
   {
-    v26 = [v25 BOOLValue];
+    bOOLValue = [v25 BOOLValue];
     v27 = HIDWORD(outPropertyData);
-    if (v26)
+    if (bOOLValue)
     {
       v28 = HIDWORD(outPropertyData) | 0x20;
 LABEL_42:
@@ -995,7 +995,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (a4)
+  if (d)
   {
     v27 = HIDWORD(outPropertyData);
     goto LABEL_41;
@@ -1008,12 +1008,12 @@ LABEL_41:
   }
 
 LABEL_43:
-  v29 = [(NSDictionary *)v11 objectForKey:*MEMORY[0x1E69582D0]];
+  v29 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E69582D0]];
   if (v29)
   {
-    v30 = [v29 BOOLValue];
+    bOOLValue2 = [v29 BOOLValue];
     v31 = HIDWORD(outPropertyData);
-    if (!v30)
+    if (!bOOLValue2)
     {
       goto LABEL_54;
     }
@@ -1025,9 +1025,9 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if (a4 > 1380333107)
+  if (d > 1380333107)
   {
-    if (a4 == 1380333108 || a4 == 1463899717)
+    if (d == 1380333108 || d == 1463899717)
     {
       v31 = HIDWORD(outPropertyData);
 LABEL_54:
@@ -1036,7 +1036,7 @@ LABEL_54:
     }
   }
 
-  else if (a4 == 1095321155 || a4 == 1095321158)
+  else if (d == 1095321155 || d == 1095321158)
   {
     v31 = HIDWORD(outPropertyData);
     goto LABEL_50;
@@ -1049,7 +1049,7 @@ LABEL_54:
   }
 
 LABEL_56:
-  v33 = [(NSDictionary *)v11 objectForKey:*MEMORY[0x1E69582E8]];
+  v33 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E69582E8]];
   v34 = MEMORY[0x1E69582C8];
   if (v33)
   {
@@ -1059,7 +1059,7 @@ LABEL_56:
       goto LABEL_77;
     }
 
-    v37 = a4 == 1380333108 || a4 == 1463899717;
+    v37 = d == 1380333108 || d == 1463899717;
     v35 = HIDWORD(outPropertyData) & 0xFFFFFFFA;
     if (v37 && v69 == 8)
     {
@@ -1071,7 +1071,7 @@ LABEL_56:
 
   if ((v12 & 1) != 0 || StreamBasicDescription->mFormatID != 1634492771)
   {
-    if (a4 != 1095321158)
+    if (d != 1095321158)
     {
       if (!v23)
       {
@@ -1083,7 +1083,7 @@ LABEL_56:
 LABEL_77:
       HIDWORD(outPropertyData) = v35;
 LABEL_78:
-      v36 = [(NSDictionary *)v11 objectForKey:*v34];
+      v36 = [(NSDictionary *)audioSettingsDictionary objectForKey:*v34];
       if (v36)
       {
         goto LABEL_79;
@@ -1104,7 +1104,7 @@ LABEL_72:
   }
 
   HIDWORD(outPropertyData) = HIDWORD(outPropertyData) & 0xFFFFFFFA | 4;
-  v36 = [(NSDictionary *)v11 objectForKey:*MEMORY[0x1E69582C8]];
+  v36 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E69582C8]];
   if (v36)
   {
 LABEL_79:
@@ -1153,9 +1153,9 @@ LABEL_86:
 
   v40 = v23->mBitsPerChannel;
   LODWORD(v69) = v40;
-  if (a4 > 1380333107)
+  if (d > 1380333107)
   {
-    if (a4 == 1463899717)
+    if (d == 1463899717)
     {
       goto LABEL_93;
     }
@@ -1165,7 +1165,7 @@ LABEL_86:
 
   else
   {
-    if (a4 == 1095321155)
+    if (d == 1095321155)
     {
       goto LABEL_93;
     }
@@ -1173,7 +1173,7 @@ LABEL_86:
     v41 = 1095321158;
   }
 
-  if (a4 != v41)
+  if (d != v41)
   {
     goto LABEL_113;
   }
@@ -1182,7 +1182,7 @@ LABEL_93:
   HIDWORD(outPropertyData) = HIDWORD(outPropertyData) & 0xFFFFFFE7 | 8;
   if (v23->mFormatFlags)
   {
-    if (a4 != 1095321158)
+    if (d != 1095321158)
     {
       goto LABEL_113;
     }
@@ -1190,7 +1190,7 @@ LABEL_93:
     goto LABEL_109;
   }
 
-  if ((a4 == 1095321155 || a4 == 1463899717 || a4 == 1380333108) && v40 >= 0x40)
+  if ((d == 1095321155 || d == 1463899717 || d == 1380333108) && v40 >= 0x40)
   {
     v39 = 64;
 LABEL_112:
@@ -1233,9 +1233,9 @@ LABEL_113:
   }
 
 LABEL_115:
-  v42 = [(NSDictionary *)v11 objectForKey:*MEMORY[0x1E6958300]];
+  v42 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958300]];
   *inSpecifierSize = 0;
-  v43 = copyAudioChannelLayoutFromData([(NSDictionary *)v11 objectForKey:*MEMORY[0x1E6958258]], inSpecifierSize);
+  v43 = copyAudioChannelLayoutFromData([(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958258]], inSpecifierSize);
   v44 = v43;
   if (v42)
   {
@@ -1265,8 +1265,8 @@ LABEL_115:
     v42 = [v46 numberWithInteger:v47];
   }
 
-  v48 = [(NSDictionary *)v11 objectForKey:*MEMORY[0x1E6958348]];
-  v49 = [(NSDictionary *)v11 objectForKey:*MEMORY[0x1E6958280]];
+  v48 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958348]];
+  v49 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958280]];
   if (v12)
   {
     v50 = 0;
@@ -1310,7 +1310,7 @@ LABEL_115:
 
   else
   {
-    if (a4 == 1634562662)
+    if (d == 1634562662)
     {
       HIDWORD(v68) = 1;
       if (v48)
@@ -1339,7 +1339,7 @@ LABEL_134:
     goto LABEL_144;
   }
 
-  if (a4 == 1634562662)
+  if (d == 1634562662)
   {
     goto LABEL_139;
   }
@@ -1392,25 +1392,25 @@ LABEL_144:
   free(v44);
   LODWORD(desc[0]) = 40;
   AudioFormatGetProperty(0x666D7469u, 0, 0, desc, &outPropertyData);
-  if (a3)
+  if (description)
   {
     v62 = v68;
-    *&a3->mSampleRate = outPropertyData;
-    *&a3->mBytesPerPacket = v62;
-    *&a3->mBitsPerChannel = v69;
+    *&description->mSampleRate = outPropertyData;
+    *&description->mBytesPerPacket = v62;
+    *&description->mBitsPerChannel = v69;
   }
 }
 
-- (AudioChannelLayout)copyAudioChannelLayoutForSourceFormatDescription:(opaqueCMFormatDescription *)a3 audioChannelLayoutSize:(unint64_t *)a4
+- (AudioChannelLayout)copyAudioChannelLayoutForSourceFormatDescription:(opaqueCMFormatDescription *)description audioChannelLayoutSize:(unint64_t *)size
 {
   v22 = 0;
-  v6 = [(AVAudioOutputSettings *)self audioSettingsDictionary];
-  v7 = [(NSDictionary *)v6 objectForKey:*MEMORY[0x1E6958258]];
-  v8 = [(NSDictionary *)v6 objectForKey:*MEMORY[0x1E6958300]];
+  audioSettingsDictionary = [(AVAudioOutputSettings *)self audioSettingsDictionary];
+  v7 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958258]];
+  v8 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958300]];
   if (v7)
   {
     v9 = copyAudioChannelLayoutFromData(v7, &v22);
-    if (!a4)
+    if (!size)
     {
       return v9;
     }
@@ -1419,16 +1419,16 @@ LABEL_144:
   }
 
   v10 = v8;
-  if (a3)
+  if (description)
   {
     *inSpecifierSize = 0;
-    v9 = AVCopyBestAudioChannelLayoutFromFormatDescription(a3, inSpecifierSize);
+    v9 = AVCopyBestAudioChannelLayoutFromFormatDescription(description, inSpecifierSize);
     if (!v9 || !v10)
     {
       goto LABEL_10;
     }
 
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
     ioPropertyDataSize = 4;
     outPropertyData = 0;
     Property = AudioFormatGetProperty(0x6E63686Du, inSpecifierSize[0], v9, &ioPropertyDataSize, &outPropertyData);
@@ -1438,11 +1438,11 @@ LABEL_144:
       v13 = 0;
     }
 
-    if (v13 == v11)
+    if (v13 == unsignedIntegerValue)
     {
 LABEL_10:
       v22 = *inSpecifierSize;
-      if (!a4)
+      if (!size)
       {
         return v9;
       }
@@ -1450,14 +1450,14 @@ LABEL_10:
       goto LABEL_25;
     }
 
-    if (v11 == 1)
+    if (unsignedIntegerValue == 1)
     {
       v16 = 6553601;
     }
 
     else
     {
-      if (v11 != 2)
+      if (unsignedIntegerValue != 2)
       {
         v19 = 0;
         v20 = 0;
@@ -1465,7 +1465,7 @@ LABEL_30:
         v22 = v19;
         free(v9);
         v9 = v20;
-        if (!a4)
+        if (!size)
         {
           return v9;
         }
@@ -1485,7 +1485,7 @@ LABEL_30:
   if (!v8)
   {
     v9 = 0;
-    if (!a4)
+    if (!size)
     {
       return v9;
     }
@@ -1493,14 +1493,14 @@ LABEL_30:
     goto LABEL_25;
   }
 
-  v14 = [v8 integerValue];
-  if (v14 == 1)
+  integerValue = [v8 integerValue];
+  if (integerValue == 1)
   {
     v15 = 6553601;
     goto LABEL_22;
   }
 
-  if (v14 == 2)
+  if (integerValue == 2)
   {
     v15 = 6619138;
 LABEL_22:
@@ -1514,10 +1514,10 @@ LABEL_22:
   v9 = 0;
 LABEL_24:
   v22 = v17;
-  if (a4)
+  if (size)
   {
 LABEL_25:
-    *a4 = v22;
+    *size = v22;
   }
 
   return v9;
@@ -1525,23 +1525,23 @@ LABEL_25:
 
 - (id)audioOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AVAudioOutputSettings *)self audioSettingsDictionary];
-  v5 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958280]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  audioSettingsDictionary = [(AVAudioOutputSettings *)self audioSettingsDictionary];
+  v5 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958280]];
   v6 = MEMORY[0x1E6971628];
   if (v5)
   {
-    [v3 setObject:v5 forKey:*MEMORY[0x1E6971628]];
+    [dictionary setObject:v5 forKey:*MEMORY[0x1E6971628]];
   }
 
-  v7 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958270]];
+  v7 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958270]];
   if (v7)
   {
-    [v3 setObject:v7 forKey:*MEMORY[0x1E6971648]];
+    [dictionary setObject:v7 forKey:*MEMORY[0x1E6971648]];
   }
 
-  v8 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958290]];
-  v9 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958300]];
+  v8 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958290]];
+  v9 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958300]];
   if (v8)
   {
     v10 = v9 == 0;
@@ -1555,12 +1555,12 @@ LABEL_25:
   if (!v10)
   {
     v11 = v9;
-    v12 = [v8 integerValue];
-    v13 = [v11 integerValue];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v13 * v12), *v6}];
+    integerValue = [v8 integerValue];
+    integerValue2 = [v11 integerValue];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", integerValue2 * integerValue), *v6}];
   }
 
-  v14 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958298]];
+  v14 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958298]];
   if (v14)
   {
     v15 = v14;
@@ -1591,16 +1591,16 @@ LABEL_25:
     }
 
     v18 = [v16 numberWithUnsignedInteger:v17];
-    [v3 setObject:v18 forKey:*MEMORY[0x1E6971640]];
+    [dictionary setObject:v18 forKey:*MEMORY[0x1E6971640]];
   }
 
-  v19 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958268]];
+  v19 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958268]];
   if (v19)
   {
-    [v3 setObject:v19 forKey:*MEMORY[0x1E6971660]];
+    [dictionary setObject:v19 forKey:*MEMORY[0x1E6971660]];
   }
 
-  v20 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958318]];
+  v20 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958318]];
   if (v20)
   {
     v21 = v20;
@@ -1621,29 +1621,29 @@ LABEL_25:
     }
 
     v24 = [v22 numberWithUnsignedInt:v23];
-    [v3 setObject:v24 forKey:*MEMORY[0x1E6971630]];
+    [dictionary setObject:v24 forKey:*MEMORY[0x1E6971630]];
   }
 
-  v25 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E69582A8]];
+  v25 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E69582A8]];
   if (v25)
   {
-    [v3 setObject:v25 forKey:*MEMORY[0x1E6971658]];
+    [dictionary setObject:v25 forKey:*MEMORY[0x1E6971658]];
   }
 
-  v26 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E69582A0]];
+  v26 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E69582A0]];
   if (v26)
   {
-    [v3 setObject:v26 forKey:*MEMORY[0x1E6971650]];
+    [dictionary setObject:v26 forKey:*MEMORY[0x1E6971650]];
   }
 
-  v27 = [(NSDictionary *)v4 objectForKey:*MEMORY[0x1E6958260]];
+  v27 = [(NSDictionary *)audioSettingsDictionary objectForKey:*MEMORY[0x1E6958260]];
   if (v27)
   {
-    [v3 setObject:v27 forKey:*MEMORY[0x1E6971638]];
+    [dictionary setObject:v27 forKey:*MEMORY[0x1E6971638]];
   }
 
   [(AVAVAudioSettingsAudioOutputSettings *)self willYieldCompressedSamples];
-  return v3;
+  return dictionary;
 }
 
 @end

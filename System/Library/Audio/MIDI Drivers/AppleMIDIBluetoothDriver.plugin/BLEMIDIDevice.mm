@@ -1,21 +1,21 @@
 @interface BLEMIDIDevice
-- (BLEMIDIDevice)initWithPeripheral:(id)a3 mtu:(unsigned int)a4;
+- (BLEMIDIDevice)initWithPeripheral:(id)peripheral mtu:(unsigned int)mtu;
 - (id).cxx_construct;
-- (shared_ptr<BLEIOBuffer>)bufferAtIndex:(unsigned __int8)a3;
+- (shared_ptr<BLEIOBuffer>)bufferAtIndex:(unsigned __int8)index;
 - (shared_ptr<BLEIOBuffer>)centralBuffer;
 - (unsigned)advanceBuffer;
 - (unsigned)recycleBuffer;
 - (void)createBuffers;
 - (void)dealloc;
-- (void)setCentralBuffer:(shared_ptr<BLEIOBuffer>)a3;
-- (void)setMtu:(unsigned int)a3;
+- (void)setCentralBuffer:(shared_ptr<BLEIOBuffer>)buffer;
+- (void)setMtu:(unsigned int)mtu;
 @end
 
 @implementation BLEMIDIDevice
 
 - (void)createBuffers
 {
-  v2 = self;
+  selfCopy = self;
   if (self->peripheral)
   {
     sub_297C();
@@ -24,7 +24,7 @@
   sub_297C();
 }
 
-- (BLEMIDIDevice)initWithPeripheral:(id)a3 mtu:(unsigned int)a4
+- (BLEMIDIDevice)initWithPeripheral:(id)peripheral mtu:(unsigned int)mtu
 {
   v10.receiver = self;
   v10.super_class = BLEMIDIDevice;
@@ -34,18 +34,18 @@
   {
     v6->mtu = 0;
     *&v6->nextBufferIndex = 0;
-    [(BLEMIDIDevice *)v6 setPeripheral:a3];
-    if (a4)
+    [(BLEMIDIDevice *)v6 setPeripheral:peripheral];
+    if (mtu)
     {
-      v8 = a4;
+      mtuCopy = mtu;
     }
 
     else
     {
-      v8 = 20;
+      mtuCopy = 20;
     }
 
-    [(BLEMIDIDevice *)v7 setMtu:v8];
+    [(BLEMIDIDevice *)v7 setMtu:mtuCopy];
   }
 
   return v7;
@@ -73,9 +73,9 @@
   [(BLEMIDIDevice *)&v6 dealloc];
 }
 
-- (void)setMtu:(unsigned int)a3
+- (void)setMtu:(unsigned int)mtu
 {
-  if (self->mtu != a3)
+  if (self->mtu != mtu)
   {
     sub_24F4(&self->localPeripheralBuffers);
     if (self->centralBuffer.__ptr_)
@@ -89,16 +89,16 @@
       }
     }
 
-    self->mtu = a3;
+    self->mtu = mtu;
 
     [(BLEMIDIDevice *)self createBuffers];
   }
 }
 
-- (shared_ptr<BLEIOBuffer>)bufferAtIndex:(unsigned __int8)a3
+- (shared_ptr<BLEIOBuffer>)bufferAtIndex:(unsigned __int8)index
 {
   begin = self->localPeripheralBuffers.__begin_;
-  if (a3 >= ((self->localPeripheralBuffers.__end_ - begin) >> 4))
+  if (index >= ((self->localPeripheralBuffers.__end_ - begin) >> 4))
   {
     *v3 = 0;
     v3[1] = 0;
@@ -106,7 +106,7 @@
 
   else
   {
-    v5 = begin[a3];
+    v5 = begin[index];
     *v3 = v5;
     if (*(&v5 + 1))
     {
@@ -202,10 +202,10 @@
   return result;
 }
 
-- (void)setCentralBuffer:(shared_ptr<BLEIOBuffer>)a3
+- (void)setCentralBuffer:(shared_ptr<BLEIOBuffer>)buffer
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *buffer.__ptr_;
+  v3 = *(buffer.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

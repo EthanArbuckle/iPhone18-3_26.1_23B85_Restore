@@ -1,17 +1,17 @@
 @interface AFExperiment
-+ (id)newWithBuilder:(id)a3;
-- (AFExperiment)initWithBuilder:(id)a3;
-- (AFExperiment)initWithCoder:(id)a3;
-- (AFExperiment)initWithConfigurationIdentifier:(id)a3 configurationVersion:(id)a4 deploymentGroupIdentifier:(id)a5 deploymentGroupProperties:(id)a6 deploymentReason:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFExperiment)initWithBuilder:(id)builder;
+- (AFExperiment)initWithCoder:(id)coder;
+- (AFExperiment)initWithConfigurationIdentifier:(id)identifier configurationVersion:(id)version deploymentGroupIdentifier:(id)groupIdentifier deploymentGroupProperties:(id)properties deploymentReason:(int64_t)reason;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)playsSessionInactiveSoundForSiriVOXSounds;
 - (BOOL)playsSound;
 - (BOOL)playsTwoShotSoundForSiriVOXSounds;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)featureGroups;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)logExperimentExposureForInvocationFeedbacks;
 - (void)logExperimentExposureForSiriVOXSounds;
 - (void)logExperimentExposureForTapToSiriBehavior;
@@ -28,40 +28,40 @@
 
 - (BOOL)playsSessionInactiveSoundForSiriVOXSounds
 {
-  v2 = [(AFExperiment *)self deploymentGroupProperties];
-  v3 = [v2 objectForKey:@"playsSessionInactiveSound"];
-  v4 = [v3 BOOLValue];
+  deploymentGroupProperties = [(AFExperiment *)self deploymentGroupProperties];
+  v3 = [deploymentGroupProperties objectForKey:@"playsSessionInactiveSound"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)playsTwoShotSoundForSiriVOXSounds
 {
-  v2 = [(AFExperiment *)self deploymentGroupProperties];
-  v3 = [v2 objectForKey:@"playsTwoShotSound"];
-  v4 = [v3 BOOLValue];
+  deploymentGroupProperties = [(AFExperiment *)self deploymentGroupProperties];
+  v3 = [deploymentGroupProperties objectForKey:@"playsTwoShotSound"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   configurationIdentifier = self->_configurationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:configurationIdentifier forKey:@"AFExperiment::configurationIdentifier"];
-  [v5 encodeObject:self->_configurationVersion forKey:@"AFExperiment::configurationVersion"];
-  [v5 encodeObject:self->_deploymentGroupIdentifier forKey:@"AFExperiment::deploymentGroupIdentifier"];
-  [v5 encodeObject:self->_deploymentGroupProperties forKey:@"AFExperiment::deploymentGroupProperties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:configurationIdentifier forKey:@"AFExperiment::configurationIdentifier"];
+  [coderCopy encodeObject:self->_configurationVersion forKey:@"AFExperiment::configurationVersion"];
+  [coderCopy encodeObject:self->_deploymentGroupIdentifier forKey:@"AFExperiment::deploymentGroupIdentifier"];
+  [coderCopy encodeObject:self->_deploymentGroupProperties forKey:@"AFExperiment::deploymentGroupProperties"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_deploymentReason];
-  [v5 encodeObject:v6 forKey:@"AFExperiment::deploymentReason"];
+  [coderCopy encodeObject:v6 forKey:@"AFExperiment::deploymentReason"];
 }
 
-- (AFExperiment)initWithCoder:(id)a3
+- (AFExperiment)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::configurationIdentifier"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::configurationVersion"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::deploymentGroupIdentifier"];
+  coderCopy = coder;
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::configurationIdentifier"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::configurationVersion"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::deploymentGroupIdentifier"];
   v20 = MEMORY[0x1E695DFD8];
   v21 = v4;
   v5 = objc_opt_class();
@@ -74,20 +74,20 @@
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v20 setWithObjects:{v5, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"AFExperiment::deploymentGroupProperties"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"AFExperiment::deploymentGroupProperties"];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::deploymentReason"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperiment::deploymentReason"];
 
-  v17 = [v16 integerValue];
-  v18 = [(AFExperiment *)self initWithConfigurationIdentifier:v23 configurationVersion:v22 deploymentGroupIdentifier:v21 deploymentGroupProperties:v15 deploymentReason:v17];
+  integerValue = [v16 integerValue];
+  v18 = [(AFExperiment *)self initWithConfigurationIdentifier:v23 configurationVersion:v22 deploymentGroupIdentifier:v21 deploymentGroupProperties:v15 deploymentReason:integerValue];
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -97,25 +97,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       deploymentReason = self->_deploymentReason;
       if (deploymentReason == [(AFExperiment *)v5 deploymentReason])
       {
-        v7 = [(AFExperiment *)v5 configurationIdentifier];
+        configurationIdentifier = [(AFExperiment *)v5 configurationIdentifier];
         configurationIdentifier = self->_configurationIdentifier;
-        if (configurationIdentifier == v7 || [(NSString *)configurationIdentifier isEqual:v7])
+        if (configurationIdentifier == configurationIdentifier || [(NSString *)configurationIdentifier isEqual:configurationIdentifier])
         {
-          v9 = [(AFExperiment *)v5 configurationVersion];
+          configurationVersion = [(AFExperiment *)v5 configurationVersion];
           configurationVersion = self->_configurationVersion;
-          if (configurationVersion == v9 || [(NSString *)configurationVersion isEqual:v9])
+          if (configurationVersion == configurationVersion || [(NSString *)configurationVersion isEqual:configurationVersion])
           {
-            v11 = [(AFExperiment *)v5 deploymentGroupIdentifier];
+            deploymentGroupIdentifier = [(AFExperiment *)v5 deploymentGroupIdentifier];
             deploymentGroupIdentifier = self->_deploymentGroupIdentifier;
-            if (deploymentGroupIdentifier == v11 || [(NSString *)deploymentGroupIdentifier isEqual:v11])
+            if (deploymentGroupIdentifier == deploymentGroupIdentifier || [(NSString *)deploymentGroupIdentifier isEqual:deploymentGroupIdentifier])
             {
-              v13 = [(AFExperiment *)v5 deploymentGroupProperties];
+              deploymentGroupProperties = [(AFExperiment *)v5 deploymentGroupProperties];
               deploymentGroupProperties = self->_deploymentGroupProperties;
-              v15 = deploymentGroupProperties == v13 || [(NSDictionary *)deploymentGroupProperties isEqual:v13];
+              v15 = deploymentGroupProperties == deploymentGroupProperties || [(NSDictionary *)deploymentGroupProperties isEqual:deploymentGroupProperties];
             }
 
             else
@@ -163,7 +163,7 @@
   return v6 ^ v8;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v15.receiver = self;
@@ -190,25 +190,25 @@
   return v13;
 }
 
-- (AFExperiment)initWithConfigurationIdentifier:(id)a3 configurationVersion:(id)a4 deploymentGroupIdentifier:(id)a5 deploymentGroupProperties:(id)a6 deploymentReason:(int64_t)a7
+- (AFExperiment)initWithConfigurationIdentifier:(id)identifier configurationVersion:(id)version deploymentGroupIdentifier:(id)groupIdentifier deploymentGroupProperties:(id)properties deploymentReason:(int64_t)reason
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  groupIdentifierCopy = groupIdentifier;
+  propertiesCopy = properties;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __138__AFExperiment_initWithConfigurationIdentifier_configurationVersion_deploymentGroupIdentifier_deploymentGroupProperties_deploymentReason___block_invoke;
   v22[3] = &unk_1E7344790;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = a7;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v23 = identifierCopy;
+  v24 = versionCopy;
+  v25 = groupIdentifierCopy;
+  v26 = propertiesCopy;
+  reasonCopy = reason;
+  v16 = propertiesCopy;
+  v17 = groupIdentifierCopy;
+  v18 = versionCopy;
+  v19 = identifierCopy;
   v20 = [(AFExperiment *)self initWithBuilder:v22];
 
   return v20;
@@ -225,36 +225,36 @@ void __138__AFExperiment_initWithConfigurationIdentifier_configurationVersion_de
   [v4 setDeploymentReason:a1[8]];
 }
 
-- (AFExperiment)initWithBuilder:(id)a3
+- (AFExperiment)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = AFExperiment;
   v5 = [(AFExperiment *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFExperimentMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFExperimentMutation *)v7 isDirty])
     {
-      v8 = [(_AFExperimentMutation *)v7 getConfigurationIdentifier];
-      v9 = [v8 copy];
+      getConfigurationIdentifier = [(_AFExperimentMutation *)v7 getConfigurationIdentifier];
+      v9 = [getConfigurationIdentifier copy];
       configurationIdentifier = v6->_configurationIdentifier;
       v6->_configurationIdentifier = v9;
 
-      v11 = [(_AFExperimentMutation *)v7 getConfigurationVersion];
-      v12 = [v11 copy];
+      getConfigurationVersion = [(_AFExperimentMutation *)v7 getConfigurationVersion];
+      v12 = [getConfigurationVersion copy];
       configurationVersion = v6->_configurationVersion;
       v6->_configurationVersion = v12;
 
-      v14 = [(_AFExperimentMutation *)v7 getDeploymentGroupIdentifier];
-      v15 = [v14 copy];
+      getDeploymentGroupIdentifier = [(_AFExperimentMutation *)v7 getDeploymentGroupIdentifier];
+      v15 = [getDeploymentGroupIdentifier copy];
       deploymentGroupIdentifier = v6->_deploymentGroupIdentifier;
       v6->_deploymentGroupIdentifier = v15;
 
-      v17 = [(_AFExperimentMutation *)v7 getDeploymentGroupProperties];
-      v18 = [v17 copy];
+      getDeploymentGroupProperties = [(_AFExperimentMutation *)v7 getDeploymentGroupProperties];
+      v18 = [getDeploymentGroupProperties copy];
       deploymentGroupProperties = v6->_deploymentGroupProperties;
       v6->_deploymentGroupProperties = v18;
 
@@ -265,41 +265,41 @@ void __138__AFExperiment_initWithConfigurationIdentifier_configurationVersion_de
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFExperimentMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFExperimentMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFExperiment);
-      v7 = [(_AFExperimentMutation *)v5 getConfigurationIdentifier];
-      v8 = [v7 copy];
+      getConfigurationIdentifier = [(_AFExperimentMutation *)v5 getConfigurationIdentifier];
+      v8 = [getConfigurationIdentifier copy];
       configurationIdentifier = v6->_configurationIdentifier;
       v6->_configurationIdentifier = v8;
 
-      v10 = [(_AFExperimentMutation *)v5 getConfigurationVersion];
-      v11 = [v10 copy];
+      getConfigurationVersion = [(_AFExperimentMutation *)v5 getConfigurationVersion];
+      v11 = [getConfigurationVersion copy];
       configurationVersion = v6->_configurationVersion;
       v6->_configurationVersion = v11;
 
-      v13 = [(_AFExperimentMutation *)v5 getDeploymentGroupIdentifier];
-      v14 = [v13 copy];
+      getDeploymentGroupIdentifier = [(_AFExperimentMutation *)v5 getDeploymentGroupIdentifier];
+      v14 = [getDeploymentGroupIdentifier copy];
       deploymentGroupIdentifier = v6->_deploymentGroupIdentifier;
       v6->_deploymentGroupIdentifier = v14;
 
-      v16 = [(_AFExperimentMutation *)v5 getDeploymentGroupProperties];
-      v17 = [v16 copy];
+      getDeploymentGroupProperties = [(_AFExperimentMutation *)v5 getDeploymentGroupProperties];
+      v17 = [getDeploymentGroupProperties copy];
       deploymentGroupProperties = v6->_deploymentGroupProperties;
       v6->_deploymentGroupProperties = v17;
 
@@ -329,11 +329,11 @@ void __138__AFExperiment_initWithConfigurationIdentifier_configurationVersion_de
 
 - (BOOL)playsSound
 {
-  v2 = [(AFExperiment *)self deploymentGroupProperties];
-  v3 = [v2 objectForKey:@"playsSound"];
-  v4 = [v3 BOOLValue];
+  deploymentGroupProperties = [(AFExperiment *)self deploymentGroupProperties];
+  v3 = [deploymentGroupProperties objectForKey:@"playsSound"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)logExperimentExposureForInvocationFeedbacks
@@ -345,11 +345,11 @@ void __138__AFExperiment_initWithConfigurationIdentifier_configurationVersion_de
 
 - (unint64_t)featureGroups
 {
-  v2 = [(AFExperiment *)self deploymentGroupProperties];
-  v3 = [v2 objectForKey:@"featureGroups"];
-  v4 = [v3 unsignedIntegerValue];
+  deploymentGroupProperties = [(AFExperiment *)self deploymentGroupProperties];
+  v3 = [deploymentGroupProperties objectForKey:@"featureGroups"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 @end

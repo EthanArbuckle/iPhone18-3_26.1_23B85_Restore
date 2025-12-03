@@ -1,13 +1,13 @@
 @interface ICSearchIndexImplementation
 - (CSSearchableIndex)searchableIndex;
 - (void)beginIndexBatch;
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)deleteSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)endIndexBatchWithClientState:(id)a3 completionHandler:(id)a4;
-- (void)fetchLastClientStateWithCompletionHandler:(id)a3;
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4;
-- (void)slowFetchAttributes:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 identifiers:(id)a6 completionHandler:(id)a7;
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)endIndexBatchWithClientState:(id)state completionHandler:(id)handler;
+- (void)fetchLastClientStateWithCompletionHandler:(id)handler;
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler;
+- (void)slowFetchAttributes:(id)attributes protectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers completionHandler:(id)handler;
 @end
 
 @implementation ICSearchIndexImplementation
@@ -32,65 +32,65 @@
 
 - (void)beginIndexBatch
 {
-  v2 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v2 beginIndexBatch];
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex beginIndexBatch];
 }
 
-- (void)endIndexBatchWithClientState:(id)a3 completionHandler:(id)a4
+- (void)endIndexBatchWithClientState:(id)state completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v8 endIndexBatchWithClientState:v7 completionHandler:v6];
+  handlerCopy = handler;
+  stateCopy = state;
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex endIndexBatchWithClientState:stateCopy completionHandler:handlerCopy];
 }
 
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v8 indexSearchableItems:v7 completionHandler:v6];
+  handlerCopy = handler;
+  itemsCopy = items;
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex indexSearchableItems:itemsCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v5 deleteAllSearchableItemsWithCompletionHandler:v4];
+  handlerCopy = handler;
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex deleteAllSearchableItemsWithCompletionHandler:handlerCopy];
 }
 
-- (void)deleteSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v8 deleteSearchableItemsWithIdentifiers:v7 completionHandler:v6];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex deleteSearchableItemsWithIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v8 deleteSearchableItemsWithDomainIdentifiers:v7 completionHandler:v6];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex deleteSearchableItemsWithDomainIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (void)slowFetchAttributes:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 identifiers:(id)a6 completionHandler:(id)a7
+- (void)slowFetchAttributes:(id)attributes protectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v17 slowFetchAttributes:v16 protectionClass:v15 bundleID:v14 identifiers:v13 completionHandler:v12];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  classCopy = class;
+  attributesCopy = attributes;
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex slowFetchAttributes:attributesCopy protectionClass:classCopy bundleID:dCopy identifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchLastClientStateWithCompletionHandler:(id)a3
+- (void)fetchLastClientStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICSearchIndexImplementation *)self searchableIndex];
-  [v5 fetchLastClientStateWithCompletionHandler:v4];
+  handlerCopy = handler;
+  searchableIndex = [(ICSearchIndexImplementation *)self searchableIndex];
+  [searchableIndex fetchLastClientStateWithCompletionHandler:handlerCopy];
 }
 
 @end

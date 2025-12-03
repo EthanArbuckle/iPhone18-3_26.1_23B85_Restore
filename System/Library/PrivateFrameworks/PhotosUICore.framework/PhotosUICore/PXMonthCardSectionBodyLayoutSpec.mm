@@ -1,8 +1,8 @@
 @interface PXMonthCardSectionBodyLayoutSpec
-- (PXMonthCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
-- (double)_cardHeightWithExtendedTraitCollection:(id)a3;
+- (PXMonthCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
+- (double)_cardHeightWithExtendedTraitCollection:(id)collection;
 - (double)interitemSpacing;
-- (void)_configureDynamicAspectRatioWithExtendedTraitCollection:(id)a3;
+- (void)_configureDynamicAspectRatioWithExtendedTraitCollection:(id)collection;
 @end
 
 @implementation PXMonthCardSectionBodyLayoutSpec
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (double)_cardHeightWithExtendedTraitCollection:(id)a3
+- (double)_cardHeightWithExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   [(PXMonthCardSectionBodyLayoutSpec *)self layoutReferenceSize];
   v6 = v5;
   v8 = v7;
@@ -37,9 +37,9 @@
   [(PXExploreLayoutGenerator *)v18 setItemLayoutInfoBlock:&__block_literal_global_96587];
   [(PXExploreLayoutGenerator *)v18 size];
   v20 = v19;
-  if ([v4 layoutSizeClass] == 2)
+  if ([collectionCopy layoutSizeClass] == 2)
   {
-    v21 = [[PXCuratedLibraryStyleGuide alloc] initWithExtendedTraitCollection:v4];
+    v21 = [[PXCuratedLibraryStyleGuide alloc] initWithExtendedTraitCollection:collectionCopy];
     [(PXCuratedLibraryStyleGuide *)v21 secondaryToolbarContentInsets];
     if (v22 >= v10)
     {
@@ -47,7 +47,7 @@
     }
   }
 
-  v23 = [[PXCuratedLibraryChapterHeaderLayoutSpec alloc] initWithExtendedTraitCollection:v4];
+  v23 = [[PXCuratedLibraryChapterHeaderLayoutSpec alloc] initWithExtendedTraitCollection:collectionCopy];
   [(PXCuratedLibraryChapterHeaderLayoutSpec *)v23 titleHeight];
   v25 = v10 + 11.0 + v24;
   [(PXCuratedLibraryChapterHeaderLayoutSpec *)v23 spacingBetweenTitleBottomAndNextCardTop];
@@ -72,25 +72,25 @@ id __75__PXMonthCardSectionBodyLayoutSpec__cardHeightWithExtendedTraitCollection
   return v0;
 }
 
-- (void)_configureDynamicAspectRatioWithExtendedTraitCollection:(id)a3
+- (void)_configureDynamicAspectRatioWithExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   [(PXMonthCardSectionBodyLayoutSpec *)self layoutReferenceSize];
   v6 = v5;
   [(PXCuratedLibraryCardSectionBodyLayoutSpec *)self horizontalMargin];
   v8 = v6 + v7 * -2.0;
-  [(PXMonthCardSectionBodyLayoutSpec *)self _cardHeightWithExtendedTraitCollection:v4];
+  [(PXMonthCardSectionBodyLayoutSpec *)self _cardHeightWithExtendedTraitCollection:collectionCopy];
   v10 = v9;
 
   [(PXCuratedLibraryCardSectionBodyLayoutSpec *)self setAspectRatio:v8 / v10];
 }
 
-- (PXMonthCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXMonthCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
+  collectionCopy = collection;
   v22.receiver = self;
   v22.super_class = PXMonthCardSectionBodyLayoutSpec;
-  v7 = [(PXCuratedLibraryCardSectionBodyLayoutSpec *)&v22 initWithExtendedTraitCollection:v6 options:a4];
+  v7 = [(PXCuratedLibraryCardSectionBodyLayoutSpec *)&v22 initWithExtendedTraitCollection:collectionCopy options:options];
   if (v7)
   {
     v8 = +[PXCuratedLibrarySettings sharedInstance];
@@ -100,7 +100,7 @@ id __75__PXMonthCardSectionBodyLayoutSpec__cardHeightWithExtendedTraitCollection
       v10 = v9;
 LABEL_4:
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v7 setHorizontalMargin:v10];
-      [(PXMonthCardSectionBodyLayoutSpec *)v7 _configureDynamicAspectRatioWithExtendedTraitCollection:v6];
+      [(PXMonthCardSectionBodyLayoutSpec *)v7 _configureDynamicAspectRatioWithExtendedTraitCollection:collectionCopy];
 LABEL_8:
       [v8 cornerRadiusForMonths];
       *&v12 = v12;
@@ -108,7 +108,7 @@ LABEL_8:
       LODWORD(v14) = LODWORD(v12);
       LODWORD(v15) = LODWORD(v12);
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v7 setCornerRadius:v12, v13, v14, v15];
-      v7->_layoutStyle = [v6 curatedLibraryLayoutStyle];
+      v7->_layoutStyle = [collectionCopy curatedLibraryLayoutStyle];
       [(PXFeatureSpec *)v7 spacingBetweenMonthCards];
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v7 setDistanceToNextLayout:?];
 
@@ -128,7 +128,7 @@ LABEL_8:
       {
         [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v7 horizontalMargin];
         v18 = v17;
-        if ([v6 windowOrientation] == 1)
+        if ([collectionCopy windowOrientation] == 1)
         {
           v18 = v18 + v18;
         }
@@ -147,9 +147,9 @@ LABEL_8:
         goto LABEL_4;
       }
 
-      if ([v6 layoutOrientation] == 2)
+      if ([collectionCopy layoutOrientation] == 2)
       {
-        [v6 layoutReferenceSize];
+        [collectionCopy layoutReferenceSize];
         v10 = (v21 + -560.0) * 0.5;
         if (v10 < 104.0)
         {

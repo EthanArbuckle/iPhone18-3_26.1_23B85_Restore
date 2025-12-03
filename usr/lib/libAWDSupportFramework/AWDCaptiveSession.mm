@@ -1,38 +1,38 @@
 @interface AWDCaptiveSession
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRedirectURLType:(id)a3;
-- (int)StringAsWhiteListProbeStatus:(id)a3;
+- (int)StringAsRedirectURLType:(id)type;
+- (int)StringAsWhiteListProbeStatus:(id)status;
 - (int)redirectURLType;
 - (int)whiteListProbeStatus;
 - (unint64_t)hash;
-- (void)addInstalledCNPDisplayIDs:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addInstalledCNPDisplayIDs:(id)ds;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAutoLoginFailed:(BOOL)a3;
-- (void)setHasAutoLoginType:(BOOL)a3;
-- (void)setHasDetectedNotCaptiveHandledByCNP:(BOOL)a3;
-- (void)setHasDurationNetworkNotCaptive:(BOOL)a3;
-- (void)setHasDurationOnNetwork:(BOOL)a3;
-- (void)setHasHandlerCNPTriggeredLogOff:(BOOL)a3;
-- (void)setHasIsDetectedCaptive:(BOOL)a3;
-- (void)setHasNonCaptiveDetectedAsCaptive:(BOOL)a3;
-- (void)setHasPassiveCaptivityCorrectDetection:(BOOL)a3;
-- (void)setHasPassiveCaptivityDetected:(BOOL)a3;
-- (void)setHasPassiveCaptivityIncorrectDetection:(BOOL)a3;
-- (void)setHasPassiveCaptivitySymptom:(BOOL)a3;
-- (void)setHasRedirectURLType:(BOOL)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasWebsheetProbeCount:(BOOL)a3;
-- (void)setHasWebsheetScrapeResult:(BOOL)a3;
-- (void)setHasWebsheetScraped:(BOOL)a3;
-- (void)setHasWhiteListProbeCompletionTime:(BOOL)a3;
-- (void)setHasWhiteListProbeStatus:(BOOL)a3;
-- (void)setHasWisprDetected:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAutoLoginFailed:(BOOL)failed;
+- (void)setHasAutoLoginType:(BOOL)type;
+- (void)setHasDetectedNotCaptiveHandledByCNP:(BOOL)p;
+- (void)setHasDurationNetworkNotCaptive:(BOOL)captive;
+- (void)setHasDurationOnNetwork:(BOOL)network;
+- (void)setHasHandlerCNPTriggeredLogOff:(BOOL)off;
+- (void)setHasIsDetectedCaptive:(BOOL)captive;
+- (void)setHasNonCaptiveDetectedAsCaptive:(BOOL)captive;
+- (void)setHasPassiveCaptivityCorrectDetection:(BOOL)detection;
+- (void)setHasPassiveCaptivityDetected:(BOOL)detected;
+- (void)setHasPassiveCaptivityIncorrectDetection:(BOOL)detection;
+- (void)setHasPassiveCaptivitySymptom:(BOOL)symptom;
+- (void)setHasRedirectURLType:(BOOL)type;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasWebsheetProbeCount:(BOOL)count;
+- (void)setHasWebsheetScrapeResult:(BOOL)result;
+- (void)setHasWebsheetScraped:(BOOL)scraped;
+- (void)setHasWhiteListProbeCompletionTime:(BOOL)time;
+- (void)setHasWhiteListProbeStatus:(BOOL)status;
+- (void)setHasWisprDetected:(BOOL)detected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCaptiveSession
@@ -48,9 +48,9 @@
   [(AWDCaptiveSession *)&v3 dealloc];
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 256;
   }
@@ -63,9 +63,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasWebsheetProbeCount:(BOOL)a3
+- (void)setHasWebsheetProbeCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -78,9 +78,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasWebsheetScraped:(BOOL)a3
+- (void)setHasWebsheetScraped:(BOOL)scraped
 {
-  if (a3)
+  if (scraped)
   {
     v3 = 0x80000;
   }
@@ -93,9 +93,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasWebsheetScrapeResult:(BOOL)a3
+- (void)setHasWebsheetScrapeResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 1024;
   }
@@ -108,7 +108,7 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)addInstalledCNPDisplayIDs:(id)a3
+- (void)addInstalledCNPDisplayIDs:(id)ds
 {
   installedCNPDisplayIDs = self->_installedCNPDisplayIDs;
   if (!installedCNPDisplayIDs)
@@ -117,12 +117,12 @@
     self->_installedCNPDisplayIDs = installedCNPDisplayIDs;
   }
 
-  [(NSMutableArray *)installedCNPDisplayIDs addObject:a3];
+  [(NSMutableArray *)installedCNPDisplayIDs addObject:ds];
 }
 
-- (void)setHasDetectedNotCaptiveHandledByCNP:(BOOL)a3
+- (void)setHasDetectedNotCaptiveHandledByCNP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 0x4000;
   }
@@ -135,9 +135,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasAutoLoginType:(BOOL)a3
+- (void)setHasAutoLoginType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -150,9 +150,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasAutoLoginFailed:(BOOL)a3
+- (void)setHasAutoLoginFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 0x2000;
   }
@@ -165,9 +165,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasWisprDetected:(BOOL)a3
+- (void)setHasWisprDetected:(BOOL)detected
 {
-  if (a3)
+  if (detected)
   {
     v3 = 0x100000;
   }
@@ -180,9 +180,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasPassiveCaptivityDetected:(BOOL)a3
+- (void)setHasPassiveCaptivityDetected:(BOOL)detected
 {
-  if (a3)
+  if (detected)
   {
     v3 = 0x40000;
   }
@@ -195,9 +195,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasPassiveCaptivityCorrectDetection:(BOOL)a3
+- (void)setHasPassiveCaptivityCorrectDetection:(BOOL)detection
 {
-  if (a3)
+  if (detection)
   {
     v3 = 16;
   }
@@ -210,9 +210,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasPassiveCaptivityIncorrectDetection:(BOOL)a3
+- (void)setHasPassiveCaptivityIncorrectDetection:(BOOL)detection
 {
-  if (a3)
+  if (detection)
   {
     v3 = 32;
   }
@@ -225,9 +225,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasHandlerCNPTriggeredLogOff:(BOOL)a3
+- (void)setHasHandlerCNPTriggeredLogOff:(BOOL)off
 {
-  if (a3)
+  if (off)
   {
     v3 = 0x8000;
   }
@@ -240,9 +240,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasIsDetectedCaptive:(BOOL)a3
+- (void)setHasIsDetectedCaptive:(BOOL)captive
 {
-  if (a3)
+  if (captive)
   {
     v3 = 0x10000;
   }
@@ -255,9 +255,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasDurationOnNetwork:(BOOL)a3
+- (void)setHasDurationOnNetwork:(BOOL)network
 {
-  if (a3)
+  if (network)
   {
     v3 = 8;
   }
@@ -270,9 +270,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasDurationNetworkNotCaptive:(BOOL)a3
+- (void)setHasDurationNetworkNotCaptive:(BOOL)captive
 {
-  if (a3)
+  if (captive)
   {
     v3 = 4;
   }
@@ -285,9 +285,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasPassiveCaptivitySymptom:(BOOL)a3
+- (void)setHasPassiveCaptivitySymptom:(BOOL)symptom
 {
-  if (a3)
+  if (symptom)
   {
     v3 = 64;
   }
@@ -300,9 +300,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasNonCaptiveDetectedAsCaptive:(BOOL)a3
+- (void)setHasNonCaptiveDetectedAsCaptive:(BOOL)captive
 {
-  if (a3)
+  if (captive)
   {
     v3 = 0x20000;
   }
@@ -328,9 +328,9 @@
   }
 }
 
-- (void)setHasRedirectURLType:(BOOL)a3
+- (void)setHasRedirectURLType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -343,24 +343,24 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (int)StringAsRedirectURLType:(id)a3
+- (int)StringAsRedirectURLType:(id)type
 {
-  if ([a3 isEqualToString:@"REDIRECT_URLTYPE_NONE"])
+  if ([type isEqualToString:@"REDIRECT_URLTYPE_NONE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"REDIRECT_URLTYPE_HTTP"])
+  if ([type isEqualToString:@"REDIRECT_URLTYPE_HTTP"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"REDIRECT_URLTYPE_HTTPS_TRUSTED_CERTIFICATE"])
+  if ([type isEqualToString:@"REDIRECT_URLTYPE_HTTPS_TRUSTED_CERTIFICATE"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"REDIRECT_URLTYPE_HTTPS_UNTRUSTED_CERTIFICATE"])
+  if ([type isEqualToString:@"REDIRECT_URLTYPE_HTTPS_UNTRUSTED_CERTIFICATE"])
   {
     return 3;
   }
@@ -381,9 +381,9 @@
   }
 }
 
-- (void)setHasWhiteListProbeStatus:(BOOL)a3
+- (void)setHasWhiteListProbeStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4096;
   }
@@ -396,24 +396,24 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (int)StringAsWhiteListProbeStatus:(id)a3
+- (int)StringAsWhiteListProbeStatus:(id)status
 {
-  if ([a3 isEqualToString:@"WHITELIST_PROBE_STATUS_NOT_PROBED"])
+  if ([status isEqualToString:@"WHITELIST_PROBE_STATUS_NOT_PROBED"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"WHITELIST_PROBE_STATUS_NOT_CAPTIVE"])
+  if ([status isEqualToString:@"WHITELIST_PROBE_STATUS_NOT_CAPTIVE"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"WHITELIST_PROBE_STATUS_DETECTED_IMMEDIATELY"])
+  if ([status isEqualToString:@"WHITELIST_PROBE_STATUS_DETECTED_IMMEDIATELY"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"WHITELIST_PROBE_STATUS_DETECTED_WHEN_TRIGGERED"])
+  if ([status isEqualToString:@"WHITELIST_PROBE_STATUS_DETECTED_WHEN_TRIGGERED"])
   {
     return 3;
   }
@@ -421,9 +421,9 @@
   return 0;
 }
 
-- (void)setHasWhiteListProbeCompletionTime:(BOOL)a3
+- (void)setHasWhiteListProbeCompletionTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2048;
   }
@@ -445,11 +445,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (*&has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 0x100) == 0)
     {
@@ -468,7 +468,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_result), @"result"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_result), @"result"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -482,7 +482,7 @@ LABEL_4:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_websheetProbeCount), @"websheetProbeCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_websheetProbeCount), @"websheetProbeCount"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -496,30 +496,30 @@ LABEL_5:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_websheetScraped), @"websheetScraped"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_websheetScraped), @"websheetScraped"}];
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_websheetScrapeResult), @"websheetScrapeResult"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_websheetScrapeResult), @"websheetScrapeResult"}];
   }
 
 LABEL_7:
   installedCNPDisplayIDs = self->_installedCNPDisplayIDs;
   if (installedCNPDisplayIDs)
   {
-    [v3 setObject:installedCNPDisplayIDs forKey:@"installedCNPDisplayIDs"];
+    [dictionary setObject:installedCNPDisplayIDs forKey:@"installedCNPDisplayIDs"];
   }
 
   handlerCNP = self->_handlerCNP;
   if (handlerCNP)
   {
-    [v3 setObject:handlerCNP forKey:@"handlerCNP"];
+    [dictionary setObject:handlerCNP forKey:@"handlerCNP"];
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x4000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_detectedNotCaptiveHandledByCNP), @"detectedNotCaptiveHandledByCNP"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_detectedNotCaptiveHandledByCNP), @"detectedNotCaptiveHandledByCNP"}];
     v7 = self->_has;
     if ((*&v7 & 2) == 0)
     {
@@ -538,24 +538,24 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_autoLoginType), @"autoLoginType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_autoLoginType), @"autoLoginType"}];
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_autoLoginFailed), @"autoLoginFailed"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_autoLoginFailed), @"autoLoginFailed"}];
   }
 
 LABEL_15:
   autoLoginCarrierID = self->_autoLoginCarrierID;
   if (autoLoginCarrierID)
   {
-    [v3 setObject:autoLoginCarrierID forKey:@"autoLoginCarrierID"];
+    [dictionary setObject:autoLoginCarrierID forKey:@"autoLoginCarrierID"];
   }
 
   v9 = self->_has;
   if ((*&v9 & 0x100000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wisprDetected), @"wisprDetected"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wisprDetected), @"wisprDetected"}];
     v9 = self->_has;
     if ((*&v9 & 0x40000) == 0)
     {
@@ -574,7 +574,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_passiveCaptivityDetected), @"passiveCaptivityDetected"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_passiveCaptivityDetected), @"passiveCaptivityDetected"}];
   v9 = self->_has;
   if ((*&v9 & 0x10) == 0)
   {
@@ -588,7 +588,7 @@ LABEL_20:
   }
 
 LABEL_45:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_passiveCaptivityCorrectDetection), @"passiveCaptivityCorrectDetection"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_passiveCaptivityCorrectDetection), @"passiveCaptivityCorrectDetection"}];
   v9 = self->_has;
   if ((*&v9 & 0x20) == 0)
   {
@@ -602,7 +602,7 @@ LABEL_21:
   }
 
 LABEL_46:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_passiveCaptivityIncorrectDetection), @"passiveCaptivityIncorrectDetection"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_passiveCaptivityIncorrectDetection), @"passiveCaptivityIncorrectDetection"}];
   v9 = self->_has;
   if ((*&v9 & 0x8000) == 0)
   {
@@ -616,7 +616,7 @@ LABEL_22:
   }
 
 LABEL_47:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_handlerCNPTriggeredLogOff), @"handlerCNPTriggeredLogOff"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_handlerCNPTriggeredLogOff), @"handlerCNPTriggeredLogOff"}];
   v9 = self->_has;
   if ((*&v9 & 0x10000) == 0)
   {
@@ -630,7 +630,7 @@ LABEL_23:
   }
 
 LABEL_48:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isDetectedCaptive), @"isDetectedCaptive"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isDetectedCaptive), @"isDetectedCaptive"}];
   v9 = self->_has;
   if ((*&v9 & 8) == 0)
   {
@@ -644,7 +644,7 @@ LABEL_24:
   }
 
 LABEL_49:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationOnNetwork), @"durationOnNetwork"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationOnNetwork), @"durationOnNetwork"}];
   v9 = self->_has;
   if ((*&v9 & 4) == 0)
   {
@@ -658,24 +658,24 @@ LABEL_25:
   }
 
 LABEL_50:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationNetworkNotCaptive), @"durationNetworkNotCaptive"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationNetworkNotCaptive), @"durationNetworkNotCaptive"}];
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_26:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_passiveCaptivitySymptom), @"passiveCaptivitySymptom"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_passiveCaptivitySymptom), @"passiveCaptivitySymptom"}];
   }
 
 LABEL_27:
   appTriggeredPassiveSymptom = self->_appTriggeredPassiveSymptom;
   if (appTriggeredPassiveSymptom)
   {
-    [v3 setObject:appTriggeredPassiveSymptom forKey:@"appTriggeredPassiveSymptom"];
+    [dictionary setObject:appTriggeredPassiveSymptom forKey:@"appTriggeredPassiveSymptom"];
   }
 
   v11 = self->_has;
   if ((*&v11 & 0x20000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_nonCaptiveDetectedAsCaptive), @"nonCaptiveDetectedAsCaptive"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_nonCaptiveDetectedAsCaptive), @"nonCaptiveDetectedAsCaptive"}];
     v11 = self->_has;
     if ((*&v11 & 0x80) == 0)
     {
@@ -697,13 +697,13 @@ LABEL_57:
         v16 = off_29EE32480[whiteListProbeStatus];
       }
 
-      [v3 setObject:v16 forKey:@"whiteListProbeStatus"];
+      [dictionary setObject:v16 forKey:@"whiteListProbeStatus"];
       if ((*&self->_has & 0x800) != 0)
       {
         goto LABEL_33;
       }
 
-      return v3;
+      return dictionary;
     }
   }
 
@@ -723,7 +723,7 @@ LABEL_57:
     v14 = off_29EE32460[redirectURLType];
   }
 
-  [v3 setObject:v14 forKey:@"redirectURLType"];
+  [dictionary setObject:v14 forKey:@"redirectURLType"];
   v11 = self->_has;
   if ((*&v11 & 0x1000) != 0)
   {
@@ -734,13 +734,13 @@ LABEL_32:
   if ((*&v11 & 0x800) != 0)
   {
 LABEL_33:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_whiteListProbeCompletionTime), @"whiteListProbeCompletionTime"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_whiteListProbeCompletionTime), @"whiteListProbeCompletionTime"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v41 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -1057,13 +1057,13 @@ LABEL_39:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (*&has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 27) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 27) |= 1u;
     has = self->_has;
     if ((*&has & 0x100) == 0)
     {
@@ -1082,8 +1082,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 20) = self->_result;
-  *(a3 + 27) |= 0x100u;
+  *(to + 20) = self->_result;
+  *(to + 27) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1094,8 +1094,8 @@ LABEL_4:
     }
 
 LABEL_40:
-    *(a3 + 106) = self->_websheetScraped;
-    *(a3 + 27) |= 0x80000u;
+    *(to + 106) = self->_websheetScraped;
+    *(to + 27) |= 0x80000u;
     if ((*&self->_has & 0x400) == 0)
     {
       goto LABEL_7;
@@ -1105,8 +1105,8 @@ LABEL_40:
   }
 
 LABEL_39:
-  *(a3 + 21) = self->_websheetProbeCount;
-  *(a3 + 27) |= 0x200u;
+  *(to + 21) = self->_websheetProbeCount;
+  *(to + 27) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x80000) != 0)
   {
@@ -1117,35 +1117,35 @@ LABEL_5:
   if ((*&has & 0x400) != 0)
   {
 LABEL_6:
-    *(a3 + 22) = self->_websheetScrapeResult;
-    *(a3 + 27) |= 0x400u;
+    *(to + 22) = self->_websheetScrapeResult;
+    *(to + 27) |= 0x400u;
   }
 
 LABEL_7:
   if ([(AWDCaptiveSession *)self installedCNPDisplayIDsCount])
   {
-    [a3 clearInstalledCNPDisplayIDs];
-    v6 = [(AWDCaptiveSession *)self installedCNPDisplayIDsCount];
-    if (v6)
+    [to clearInstalledCNPDisplayIDs];
+    installedCNPDisplayIDsCount = [(AWDCaptiveSession *)self installedCNPDisplayIDsCount];
+    if (installedCNPDisplayIDsCount)
     {
-      v7 = v6;
+      v7 = installedCNPDisplayIDsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addInstalledCNPDisplayIDs:{-[AWDCaptiveSession installedCNPDisplayIDsAtIndex:](self, "installedCNPDisplayIDsAtIndex:", i)}];
+        [to addInstalledCNPDisplayIDs:{-[AWDCaptiveSession installedCNPDisplayIDsAtIndex:](self, "installedCNPDisplayIDsAtIndex:", i)}];
       }
     }
   }
 
   if (self->_handlerCNP)
   {
-    [a3 setHandlerCNP:?];
+    [to setHandlerCNP:?];
   }
 
   v9 = self->_has;
   if ((*&v9 & 0x4000) != 0)
   {
-    *(a3 + 101) = self->_detectedNotCaptiveHandledByCNP;
-    *(a3 + 27) |= 0x4000u;
+    *(to + 101) = self->_detectedNotCaptiveHandledByCNP;
+    *(to + 27) |= 0x4000u;
     v9 = self->_has;
     if ((*&v9 & 2) == 0)
     {
@@ -1164,26 +1164,26 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  *(a3 + 8) = self->_autoLoginType;
-  *(a3 + 27) |= 2u;
+  *(to + 8) = self->_autoLoginType;
+  *(to + 27) |= 2u;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_16:
-    *(a3 + 100) = self->_autoLoginFailed;
-    *(a3 + 27) |= 0x2000u;
+    *(to + 100) = self->_autoLoginFailed;
+    *(to + 27) |= 0x2000u;
   }
 
 LABEL_17:
   if (self->_autoLoginCarrierID)
   {
-    [a3 setAutoLoginCarrierID:?];
+    [to setAutoLoginCarrierID:?];
   }
 
   v10 = self->_has;
   if ((*&v10 & 0x100000) != 0)
   {
-    *(a3 + 107) = self->_wisprDetected;
-    *(a3 + 27) |= 0x100000u;
+    *(to + 107) = self->_wisprDetected;
+    *(to + 27) |= 0x100000u;
     v10 = self->_has;
     if ((*&v10 & 0x40000) == 0)
     {
@@ -1202,8 +1202,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  *(a3 + 105) = self->_passiveCaptivityDetected;
-  *(a3 + 27) |= 0x40000u;
+  *(to + 105) = self->_passiveCaptivityDetected;
+  *(to + 27) |= 0x40000u;
   v10 = self->_has;
   if ((*&v10 & 0x10) == 0)
   {
@@ -1217,8 +1217,8 @@ LABEL_22:
   }
 
 LABEL_47:
-  *(a3 + 16) = self->_passiveCaptivityCorrectDetection;
-  *(a3 + 27) |= 0x10u;
+  *(to + 16) = self->_passiveCaptivityCorrectDetection;
+  *(to + 27) |= 0x10u;
   v10 = self->_has;
   if ((*&v10 & 0x20) == 0)
   {
@@ -1232,8 +1232,8 @@ LABEL_23:
   }
 
 LABEL_48:
-  *(a3 + 17) = self->_passiveCaptivityIncorrectDetection;
-  *(a3 + 27) |= 0x20u;
+  *(to + 17) = self->_passiveCaptivityIncorrectDetection;
+  *(to + 27) |= 0x20u;
   v10 = self->_has;
   if ((*&v10 & 0x8000) == 0)
   {
@@ -1247,8 +1247,8 @@ LABEL_24:
   }
 
 LABEL_49:
-  *(a3 + 102) = self->_handlerCNPTriggeredLogOff;
-  *(a3 + 27) |= 0x8000u;
+  *(to + 102) = self->_handlerCNPTriggeredLogOff;
+  *(to + 27) |= 0x8000u;
   v10 = self->_has;
   if ((*&v10 & 0x10000) == 0)
   {
@@ -1262,8 +1262,8 @@ LABEL_25:
   }
 
 LABEL_50:
-  *(a3 + 103) = self->_isDetectedCaptive;
-  *(a3 + 27) |= 0x10000u;
+  *(to + 103) = self->_isDetectedCaptive;
+  *(to + 27) |= 0x10000u;
   v10 = self->_has;
   if ((*&v10 & 8) == 0)
   {
@@ -1277,8 +1277,8 @@ LABEL_26:
   }
 
 LABEL_51:
-  *(a3 + 10) = self->_durationOnNetwork;
-  *(a3 + 27) |= 8u;
+  *(to + 10) = self->_durationOnNetwork;
+  *(to + 27) |= 8u;
   v10 = self->_has;
   if ((*&v10 & 4) == 0)
   {
@@ -1292,26 +1292,26 @@ LABEL_27:
   }
 
 LABEL_52:
-  *(a3 + 9) = self->_durationNetworkNotCaptive;
-  *(a3 + 27) |= 4u;
+  *(to + 9) = self->_durationNetworkNotCaptive;
+  *(to + 27) |= 4u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_28:
-    *(a3 + 18) = self->_passiveCaptivitySymptom;
-    *(a3 + 27) |= 0x40u;
+    *(to + 18) = self->_passiveCaptivitySymptom;
+    *(to + 27) |= 0x40u;
   }
 
 LABEL_29:
   if (self->_appTriggeredPassiveSymptom)
   {
-    [a3 setAppTriggeredPassiveSymptom:?];
+    [to setAppTriggeredPassiveSymptom:?];
   }
 
   v11 = self->_has;
   if ((*&v11 & 0x20000) != 0)
   {
-    *(a3 + 104) = self->_nonCaptiveDetectedAsCaptive;
-    *(a3 + 27) |= 0x20000u;
+    *(to + 104) = self->_nonCaptiveDetectedAsCaptive;
+    *(to + 27) |= 0x20000u;
     v11 = self->_has;
     if ((*&v11 & 0x80) == 0)
     {
@@ -1330,8 +1330,8 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  *(a3 + 19) = self->_redirectURLType;
-  *(a3 + 27) |= 0x80u;
+  *(to + 19) = self->_redirectURLType;
+  *(to + 27) |= 0x80u;
   v11 = self->_has;
   if ((*&v11 & 0x1000) == 0)
   {
@@ -1345,22 +1345,22 @@ LABEL_34:
   }
 
 LABEL_56:
-  *(a3 + 24) = self->_whiteListProbeStatus;
-  *(a3 + 27) |= 0x1000u;
+  *(to + 24) = self->_whiteListProbeStatus;
+  *(to + 27) |= 0x1000u;
   if ((*&self->_has & 0x800) == 0)
   {
     return;
   }
 
 LABEL_35:
-  *(a3 + 23) = self->_whiteListProbeCompletionTime;
-  *(a3 + 27) |= 0x800u;
+  *(to + 23) = self->_whiteListProbeCompletionTime;
+  *(to + 27) |= 0x800u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (*&has)
@@ -1444,7 +1444,7 @@ LABEL_7:
           objc_enumerationMutation(installedCNPDisplayIDs);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v19 + 1) + 8 * i) copyWithZone:zone];
         [v6 addInstalledCNPDisplayIDs:v13];
       }
 
@@ -1454,7 +1454,7 @@ LABEL_7:
     while (v10);
   }
 
-  *(v6 + 48) = [(NSString *)self->_handlerCNP copyWithZone:a3];
+  *(v6 + 48) = [(NSString *)self->_handlerCNP copyWithZone:zone];
   v14 = self->_has;
   if ((*&v14 & 0x4000) != 0)
   {
@@ -1489,7 +1489,7 @@ LABEL_17:
 
 LABEL_18:
 
-  *(v6 + 24) = [(NSString *)self->_autoLoginCarrierID copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_autoLoginCarrierID copyWithZone:zone];
   v15 = self->_has;
   if ((*&v15 & 0x100000) != 0)
   {
@@ -1614,7 +1614,7 @@ LABEL_27:
 
 LABEL_28:
 
-  *(v6 + 16) = [(NSString *)self->_appTriggeredPassiveSymptom copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_appTriggeredPassiveSymptom copyWithZone:zone];
   v16 = self->_has;
   if ((*&v16 & 0x20000) != 0)
   {
@@ -1667,19 +1667,19 @@ LABEL_33:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 27);
+  v7 = *(equal + 27);
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_140;
     }
@@ -1692,7 +1692,7 @@ LABEL_33:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_result != *(a3 + 20))
+    if ((v7 & 0x100) == 0 || self->_result != *(equal + 20))
     {
       goto LABEL_140;
     }
@@ -1705,7 +1705,7 @@ LABEL_33:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_websheetProbeCount != *(a3 + 21))
+    if ((v7 & 0x200) == 0 || self->_websheetProbeCount != *(equal + 21))
     {
       goto LABEL_140;
     }
@@ -1723,16 +1723,16 @@ LABEL_33:
       goto LABEL_140;
     }
 
-    v8 = *(a3 + 106);
+    v8 = *(equal + 106);
     if (self->_websheetScraped)
     {
-      if ((*(a3 + 106) & 1) == 0)
+      if ((*(equal + 106) & 1) == 0)
       {
         goto LABEL_140;
       }
     }
 
-    else if (*(a3 + 106))
+    else if (*(equal + 106))
     {
       goto LABEL_140;
     }
@@ -1745,7 +1745,7 @@ LABEL_33:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_websheetScrapeResult != *(a3 + 22))
+    if ((v7 & 0x400) == 0 || self->_websheetScrapeResult != *(equal + 22))
     {
       goto LABEL_140;
     }
@@ -1757,13 +1757,13 @@ LABEL_33:
   }
 
   installedCNPDisplayIDs = self->_installedCNPDisplayIDs;
-  if (!(installedCNPDisplayIDs | *(a3 + 7)) || (v5 = [(NSMutableArray *)installedCNPDisplayIDs isEqual:?]) != 0)
+  if (!(installedCNPDisplayIDs | *(equal + 7)) || (v5 = [(NSMutableArray *)installedCNPDisplayIDs isEqual:?]) != 0)
   {
     handlerCNP = self->_handlerCNP;
-    if (!(handlerCNP | *(a3 + 6)) || (v5 = [(NSString *)handlerCNP isEqual:?]) != 0)
+    if (!(handlerCNP | *(equal + 6)) || (v5 = [(NSString *)handlerCNP isEqual:?]) != 0)
     {
       v11 = self->_has;
-      v12 = *(a3 + 27);
+      v12 = *(equal + 27);
       if ((*&v11 & 0x4000) != 0)
       {
         if ((v12 & 0x4000) == 0)
@@ -1771,16 +1771,16 @@ LABEL_33:
           goto LABEL_140;
         }
 
-        v13 = *(a3 + 101);
+        v13 = *(equal + 101);
         if (self->_detectedNotCaptiveHandledByCNP)
         {
-          if ((*(a3 + 101) & 1) == 0)
+          if ((*(equal + 101) & 1) == 0)
           {
             goto LABEL_140;
           }
         }
 
-        else if (*(a3 + 101))
+        else if (*(equal + 101))
         {
           goto LABEL_140;
         }
@@ -1793,7 +1793,7 @@ LABEL_33:
 
       if ((*&v11 & 2) != 0)
       {
-        if ((v12 & 2) == 0 || self->_autoLoginType != *(a3 + 8))
+        if ((v12 & 2) == 0 || self->_autoLoginType != *(equal + 8))
         {
           goto LABEL_140;
         }
@@ -1811,16 +1811,16 @@ LABEL_33:
           goto LABEL_140;
         }
 
-        v16 = *(a3 + 100);
+        v16 = *(equal + 100);
         if (self->_autoLoginFailed)
         {
-          if ((*(a3 + 100) & 1) == 0)
+          if ((*(equal + 100) & 1) == 0)
           {
             goto LABEL_140;
           }
         }
 
-        else if (*(a3 + 100))
+        else if (*(equal + 100))
         {
           goto LABEL_140;
         }
@@ -1832,7 +1832,7 @@ LABEL_33:
       }
 
       autoLoginCarrierID = self->_autoLoginCarrierID;
-      if (autoLoginCarrierID | *(a3 + 3))
+      if (autoLoginCarrierID | *(equal + 3))
       {
         v5 = [(NSString *)autoLoginCarrierID isEqual:?];
         if (!v5)
@@ -1843,7 +1843,7 @@ LABEL_33:
         v11 = self->_has;
       }
 
-      v15 = *(a3 + 27);
+      v15 = *(equal + 27);
       if ((*&v11 & 0x100000) != 0)
       {
         if ((v15 & 0x100000) == 0)
@@ -1851,16 +1851,16 @@ LABEL_33:
           goto LABEL_140;
         }
 
-        v17 = *(a3 + 107);
+        v17 = *(equal + 107);
         if (self->_wisprDetected)
         {
-          if ((*(a3 + 107) & 1) == 0)
+          if ((*(equal + 107) & 1) == 0)
           {
             goto LABEL_140;
           }
         }
 
-        else if (*(a3 + 107))
+        else if (*(equal + 107))
         {
           goto LABEL_140;
         }
@@ -1878,16 +1878,16 @@ LABEL_33:
           goto LABEL_140;
         }
 
-        v18 = *(a3 + 105);
+        v18 = *(equal + 105);
         if (self->_passiveCaptivityDetected)
         {
-          if ((*(a3 + 105) & 1) == 0)
+          if ((*(equal + 105) & 1) == 0)
           {
             goto LABEL_140;
           }
         }
 
-        else if (*(a3 + 105))
+        else if (*(equal + 105))
         {
           goto LABEL_140;
         }
@@ -1900,7 +1900,7 @@ LABEL_33:
 
       if ((*&v11 & 0x10) != 0)
       {
-        if ((v15 & 0x10) == 0 || self->_passiveCaptivityCorrectDetection != *(a3 + 16))
+        if ((v15 & 0x10) == 0 || self->_passiveCaptivityCorrectDetection != *(equal + 16))
         {
           goto LABEL_140;
         }
@@ -1913,7 +1913,7 @@ LABEL_33:
 
       if ((*&v11 & 0x20) != 0)
       {
-        if ((v15 & 0x20) == 0 || self->_passiveCaptivityIncorrectDetection != *(a3 + 17))
+        if ((v15 & 0x20) == 0 || self->_passiveCaptivityIncorrectDetection != *(equal + 17))
         {
           goto LABEL_140;
         }
@@ -1931,16 +1931,16 @@ LABEL_33:
           goto LABEL_140;
         }
 
-        v19 = *(a3 + 102);
+        v19 = *(equal + 102);
         if (self->_handlerCNPTriggeredLogOff)
         {
-          if ((*(a3 + 102) & 1) == 0)
+          if ((*(equal + 102) & 1) == 0)
           {
             goto LABEL_140;
           }
         }
 
-        else if (*(a3 + 102))
+        else if (*(equal + 102))
         {
           goto LABEL_140;
         }
@@ -1958,16 +1958,16 @@ LABEL_33:
           goto LABEL_140;
         }
 
-        v20 = *(a3 + 103);
+        v20 = *(equal + 103);
         if (self->_isDetectedCaptive)
         {
-          if ((*(a3 + 103) & 1) == 0)
+          if ((*(equal + 103) & 1) == 0)
           {
             goto LABEL_140;
           }
         }
 
-        else if (*(a3 + 103))
+        else if (*(equal + 103))
         {
           goto LABEL_140;
         }
@@ -1980,7 +1980,7 @@ LABEL_33:
 
       if ((*&v11 & 8) != 0)
       {
-        if ((v15 & 8) == 0 || self->_durationOnNetwork != *(a3 + 10))
+        if ((v15 & 8) == 0 || self->_durationOnNetwork != *(equal + 10))
         {
           goto LABEL_140;
         }
@@ -1993,7 +1993,7 @@ LABEL_33:
 
       if ((*&v11 & 4) != 0)
       {
-        if ((v15 & 4) == 0 || self->_durationNetworkNotCaptive != *(a3 + 9))
+        if ((v15 & 4) == 0 || self->_durationNetworkNotCaptive != *(equal + 9))
         {
           goto LABEL_140;
         }
@@ -2006,7 +2006,7 @@ LABEL_33:
 
       if ((*&v11 & 0x40) != 0)
       {
-        if ((v15 & 0x40) == 0 || self->_passiveCaptivitySymptom != *(a3 + 18))
+        if ((v15 & 0x40) == 0 || self->_passiveCaptivitySymptom != *(equal + 18))
         {
           goto LABEL_140;
         }
@@ -2018,7 +2018,7 @@ LABEL_33:
       }
 
       appTriggeredPassiveSymptom = self->_appTriggeredPassiveSymptom;
-      if (appTriggeredPassiveSymptom | *(a3 + 2))
+      if (appTriggeredPassiveSymptom | *(equal + 2))
       {
         v5 = [(NSString *)appTriggeredPassiveSymptom isEqual:?];
         if (!v5)
@@ -2029,7 +2029,7 @@ LABEL_33:
         v11 = self->_has;
       }
 
-      v22 = *(a3 + 27);
+      v22 = *(equal + 27);
       if ((*&v11 & 0x20000) == 0)
       {
         if ((v22 & 0x20000) != 0)
@@ -2042,10 +2042,10 @@ LABEL_33:
 
       if ((v22 & 0x20000) != 0)
       {
-        v23 = *(a3 + 104);
+        v23 = *(equal + 104);
         if (self->_nonCaptiveDetectedAsCaptive)
         {
-          if ((*(a3 + 104) & 1) == 0)
+          if ((*(equal + 104) & 1) == 0)
           {
             goto LABEL_140;
           }
@@ -2053,12 +2053,12 @@ LABEL_33:
           goto LABEL_126;
         }
 
-        if ((*(a3 + 104) & 1) == 0)
+        if ((*(equal + 104) & 1) == 0)
         {
 LABEL_126:
           if ((*&v11 & 0x80) != 0)
           {
-            if ((v22 & 0x80) == 0 || self->_redirectURLType != *(a3 + 19))
+            if ((v22 & 0x80) == 0 || self->_redirectURLType != *(equal + 19))
             {
               goto LABEL_140;
             }
@@ -2071,7 +2071,7 @@ LABEL_126:
 
           if ((*&v11 & 0x1000) != 0)
           {
-            if ((v22 & 0x1000) == 0 || self->_whiteListProbeStatus != *(a3 + 24))
+            if ((v22 & 0x1000) == 0 || self->_whiteListProbeStatus != *(equal + 24))
             {
               goto LABEL_140;
             }
@@ -2082,10 +2082,10 @@ LABEL_126:
             goto LABEL_140;
           }
 
-          LOBYTE(v5) = (*(a3 + 27) & 0x800) == 0;
+          LOBYTE(v5) = (*(equal + 27) & 0x800) == 0;
           if ((*&v11 & 0x800) != 0)
           {
-            if ((v22 & 0x800) == 0 || self->_whiteListProbeCompletionTime != *(a3 + 23))
+            if ((v22 & 0x800) == 0 || self->_whiteListProbeCompletionTime != *(equal + 23))
             {
               goto LABEL_140;
             }
@@ -2387,15 +2387,15 @@ LABEL_42:
   return v31 ^ v32 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 27);
+  v5 = *(from + 27);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 27);
+    v5 = *(from + 27);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -2413,9 +2413,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_result = *(a3 + 20);
+  self->_result = *(from + 20);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 27);
+  v5 = *(from + 27);
   if ((v5 & 0x200) == 0)
   {
 LABEL_4:
@@ -2428,9 +2428,9 @@ LABEL_4:
   }
 
 LABEL_42:
-  self->_websheetProbeCount = *(a3 + 21);
+  self->_websheetProbeCount = *(from + 21);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 27);
+  v5 = *(from + 27);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_5:
@@ -2443,12 +2443,12 @@ LABEL_5:
   }
 
 LABEL_43:
-  self->_websheetScraped = *(a3 + 106);
+  self->_websheetScraped = *(from + 106);
   *&self->_has |= 0x80000u;
-  if ((*(a3 + 27) & 0x400) != 0)
+  if ((*(from + 27) & 0x400) != 0)
   {
 LABEL_6:
-    self->_websheetScrapeResult = *(a3 + 22);
+    self->_websheetScrapeResult = *(from + 22);
     *&self->_has |= 0x400u;
   }
 
@@ -2457,7 +2457,7 @@ LABEL_7:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = *(a3 + 7);
+  v6 = *(from + 7);
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -2481,17 +2481,17 @@ LABEL_7:
     while (v8);
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDCaptiveSession *)self setHandlerCNP:?];
   }
 
-  v11 = *(a3 + 27);
+  v11 = *(from + 27);
   if ((v11 & 0x4000) != 0)
   {
-    self->_detectedNotCaptiveHandledByCNP = *(a3 + 101);
+    self->_detectedNotCaptiveHandledByCNP = *(from + 101);
     *&self->_has |= 0x4000u;
-    v11 = *(a3 + 27);
+    v11 = *(from + 27);
     if ((v11 & 2) == 0)
     {
 LABEL_18:
@@ -2509,27 +2509,27 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  self->_autoLoginType = *(a3 + 8);
+  self->_autoLoginType = *(from + 8);
   *&self->_has |= 2u;
-  if ((*(a3 + 27) & 0x2000) != 0)
+  if ((*(from + 27) & 0x2000) != 0)
   {
 LABEL_19:
-    self->_autoLoginFailed = *(a3 + 100);
+    self->_autoLoginFailed = *(from + 100);
     *&self->_has |= 0x2000u;
   }
 
 LABEL_20:
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCaptiveSession *)self setAutoLoginCarrierID:?];
   }
 
-  v12 = *(a3 + 27);
+  v12 = *(from + 27);
   if ((v12 & 0x100000) != 0)
   {
-    self->_wisprDetected = *(a3 + 107);
+    self->_wisprDetected = *(from + 107);
     *&self->_has |= 0x100000u;
-    v12 = *(a3 + 27);
+    v12 = *(from + 27);
     if ((v12 & 0x40000) == 0)
     {
 LABEL_24:
@@ -2547,9 +2547,9 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  self->_passiveCaptivityDetected = *(a3 + 105);
+  self->_passiveCaptivityDetected = *(from + 105);
   *&self->_has |= 0x40000u;
-  v12 = *(a3 + 27);
+  v12 = *(from + 27);
   if ((v12 & 0x10) == 0)
   {
 LABEL_25:
@@ -2562,9 +2562,9 @@ LABEL_25:
   }
 
 LABEL_50:
-  self->_passiveCaptivityCorrectDetection = *(a3 + 16);
+  self->_passiveCaptivityCorrectDetection = *(from + 16);
   *&self->_has |= 0x10u;
-  v12 = *(a3 + 27);
+  v12 = *(from + 27);
   if ((v12 & 0x20) == 0)
   {
 LABEL_26:
@@ -2577,9 +2577,9 @@ LABEL_26:
   }
 
 LABEL_51:
-  self->_passiveCaptivityIncorrectDetection = *(a3 + 17);
+  self->_passiveCaptivityIncorrectDetection = *(from + 17);
   *&self->_has |= 0x20u;
-  v12 = *(a3 + 27);
+  v12 = *(from + 27);
   if ((v12 & 0x8000) == 0)
   {
 LABEL_27:
@@ -2592,9 +2592,9 @@ LABEL_27:
   }
 
 LABEL_52:
-  self->_handlerCNPTriggeredLogOff = *(a3 + 102);
+  self->_handlerCNPTriggeredLogOff = *(from + 102);
   *&self->_has |= 0x8000u;
-  v12 = *(a3 + 27);
+  v12 = *(from + 27);
   if ((v12 & 0x10000) == 0)
   {
 LABEL_28:
@@ -2607,9 +2607,9 @@ LABEL_28:
   }
 
 LABEL_53:
-  self->_isDetectedCaptive = *(a3 + 103);
+  self->_isDetectedCaptive = *(from + 103);
   *&self->_has |= 0x10000u;
-  v12 = *(a3 + 27);
+  v12 = *(from + 27);
   if ((v12 & 8) == 0)
   {
 LABEL_29:
@@ -2622,9 +2622,9 @@ LABEL_29:
   }
 
 LABEL_54:
-  self->_durationOnNetwork = *(a3 + 10);
+  self->_durationOnNetwork = *(from + 10);
   *&self->_has |= 8u;
-  v12 = *(a3 + 27);
+  v12 = *(from + 27);
   if ((v12 & 4) == 0)
   {
 LABEL_30:
@@ -2637,27 +2637,27 @@ LABEL_30:
   }
 
 LABEL_55:
-  self->_durationNetworkNotCaptive = *(a3 + 9);
+  self->_durationNetworkNotCaptive = *(from + 9);
   *&self->_has |= 4u;
-  if ((*(a3 + 27) & 0x40) != 0)
+  if ((*(from + 27) & 0x40) != 0)
   {
 LABEL_31:
-    self->_passiveCaptivitySymptom = *(a3 + 18);
+    self->_passiveCaptivitySymptom = *(from + 18);
     *&self->_has |= 0x40u;
   }
 
 LABEL_32:
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDCaptiveSession *)self setAppTriggeredPassiveSymptom:?];
   }
 
-  v13 = *(a3 + 27);
+  v13 = *(from + 27);
   if ((v13 & 0x20000) != 0)
   {
-    self->_nonCaptiveDetectedAsCaptive = *(a3 + 104);
+    self->_nonCaptiveDetectedAsCaptive = *(from + 104);
     *&self->_has |= 0x20000u;
-    v13 = *(a3 + 27);
+    v13 = *(from + 27);
     if ((v13 & 0x80) == 0)
     {
 LABEL_36:
@@ -2667,9 +2667,9 @@ LABEL_36:
       }
 
 LABEL_59:
-      self->_whiteListProbeStatus = *(a3 + 24);
+      self->_whiteListProbeStatus = *(from + 24);
       *&self->_has |= 0x1000u;
-      if ((*(a3 + 27) & 0x800) == 0)
+      if ((*(from + 27) & 0x800) == 0)
       {
         goto LABEL_39;
       }
@@ -2683,9 +2683,9 @@ LABEL_59:
     goto LABEL_36;
   }
 
-  self->_redirectURLType = *(a3 + 19);
+  self->_redirectURLType = *(from + 19);
   *&self->_has |= 0x80u;
-  v13 = *(a3 + 27);
+  v13 = *(from + 27);
   if ((v13 & 0x1000) != 0)
   {
     goto LABEL_59;
@@ -2695,7 +2695,7 @@ LABEL_37:
   if ((v13 & 0x800) != 0)
   {
 LABEL_38:
-    self->_whiteListProbeCompletionTime = *(a3 + 23);
+    self->_whiteListProbeCompletionTime = *(from + 23);
     *&self->_has |= 0x800u;
   }
 

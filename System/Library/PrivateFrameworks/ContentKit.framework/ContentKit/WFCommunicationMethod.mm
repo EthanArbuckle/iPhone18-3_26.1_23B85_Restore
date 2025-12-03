@@ -1,46 +1,46 @@
 @interface WFCommunicationMethod
-- (BOOL)isEqual:(id)a3;
-- (WFCommunicationMethod)initWithBundleIdentifier:(id)a3 type:(id)a4;
-- (WFCommunicationMethod)initWithCoder:(id)a3;
-- (WFCommunicationMethod)initWithSerializedRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFCommunicationMethod)initWithBundleIdentifier:(id)identifier type:(id)type;
+- (WFCommunicationMethod)initWithCoder:(id)coder;
+- (WFCommunicationMethod)initWithSerializedRepresentation:(id)representation;
 - (id)serializedRepresentation;
 - (int64_t)callCapability;
 - (int64_t)preferredCallProvider;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFCommunicationMethod
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFCommunicationMethod *)self type];
-  [v4 encodeObject:v5 forKey:@"type"];
+  coderCopy = coder;
+  type = [(WFCommunicationMethod *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  v6 = [(WFCommunicationMethod *)self bundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(WFCommunicationMethod *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (WFCommunicationMethod)initWithCoder:(id)a3
+- (WFCommunicationMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   v7 = [(WFCommunicationMethod *)self initWithBundleIdentifier:v6 type:v5];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -58,10 +58,10 @@
   v7 = v6;
   if (v6 != self)
   {
-    v8 = [(WFCommunicationMethod *)v6 bundleIdentifier];
-    v9 = [(WFCommunicationMethod *)self bundleIdentifier];
-    v10 = v8;
-    v11 = v9;
+    bundleIdentifier = [(WFCommunicationMethod *)v6 bundleIdentifier];
+    bundleIdentifier2 = [(WFCommunicationMethod *)self bundleIdentifier];
+    v10 = bundleIdentifier;
+    v11 = bundleIdentifier2;
     v12 = v11;
     if (v10 == v11)
     {
@@ -88,10 +88,10 @@ LABEL_21:
       }
     }
 
-    v16 = [(WFCommunicationMethod *)v7 type];
-    v17 = [(WFCommunicationMethod *)self type];
-    v15 = v16;
-    v18 = v17;
+    type = [(WFCommunicationMethod *)v7 type];
+    type2 = [(WFCommunicationMethod *)self type];
+    v15 = type;
+    v18 = type2;
     v14 = v18;
     if (v15 == v18)
     {
@@ -118,26 +118,26 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(WFCommunicationMethod *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(WFCommunicationMethod *)self type];
-  v6 = [v5 hash];
+  bundleIdentifier = [(WFCommunicationMethod *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  type = [(WFCommunicationMethod *)self type];
+  v6 = [type hash];
 
   return v6 ^ v4;
 }
 
 - (int64_t)callCapability
 {
-  v3 = [(WFCommunicationMethod *)self type];
-  v4 = [v3 isEqualToString:@"AudioCall"];
+  type = [(WFCommunicationMethod *)self type];
+  v4 = [type isEqualToString:@"AudioCall"];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(WFCommunicationMethod *)self type];
-  v7 = [v6 isEqualToString:@"VideoCall"];
+  type2 = [(WFCommunicationMethod *)self type];
+  v7 = [type2 isEqualToString:@"VideoCall"];
 
   if (v7)
   {
@@ -152,16 +152,16 @@ LABEL_22:
 
 - (int64_t)preferredCallProvider
 {
-  v3 = [(WFCommunicationMethod *)self bundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D7A278]];
+  bundleIdentifier = [(WFCommunicationMethod *)self bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:*MEMORY[0x277D7A278]];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(WFCommunicationMethod *)self bundleIdentifier];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D7A248]];
+  bundleIdentifier2 = [(WFCommunicationMethod *)self bundleIdentifier];
+  v7 = [bundleIdentifier2 isEqualToString:*MEMORY[0x277D7A248]];
 
   if (v7)
   {
@@ -178,30 +178,30 @@ LABEL_22:
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"WFCommunicationMethodType";
-  v3 = [(WFCommunicationMethod *)self type];
+  type = [(WFCommunicationMethod *)self type];
   v7[1] = @"WFCommunicationMethodBundleIdentifier";
-  v8[0] = v3;
-  v4 = [(WFCommunicationMethod *)self bundleIdentifier];
-  v8[1] = v4;
+  v8[0] = type;
+  bundleIdentifier = [(WFCommunicationMethod *)self bundleIdentifier];
+  v8[1] = bundleIdentifier;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-- (WFCommunicationMethod)initWithBundleIdentifier:(id)a3 type:(id)a4
+- (WFCommunicationMethod)initWithBundleIdentifier:(id)identifier type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = WFCommunicationMethod;
   v8 = [(WFCommunicationMethod *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [typeCopy copy];
     type = v8->_type;
     v8->_type = v11;
 
@@ -211,11 +211,11 @@ LABEL_22:
   return v8;
 }
 
-- (WFCommunicationMethod)initWithSerializedRepresentation:(id)a3
+- (WFCommunicationMethod)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_opt_class();
-  v6 = WFEnforceClass(v4, v5);
+  v6 = WFEnforceClass(representationCopy, v5);
 
   v7 = [v6 objectForKeyedSubscript:@"WFCommunicationMethodType"];
   v8 = objc_opt_class();

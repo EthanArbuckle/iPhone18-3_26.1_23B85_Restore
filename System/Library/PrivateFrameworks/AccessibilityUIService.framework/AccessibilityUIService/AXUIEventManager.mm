@@ -1,9 +1,9 @@
 @interface AXUIEventManager
 + (id)sharedEventManager;
-- (BOOL)_handleUIEvent:(id)a3;
+- (BOOL)_handleUIEvent:(id)event;
 - (id)_init;
-- (void)registerEventHandler:(id)a3;
-- (void)unregisterEventHandler:(id)a3;
+- (void)registerEventHandler:(id)handler;
+- (void)unregisterEventHandler:(id)handler;
 @end
 
 @implementation AXUIEventManager
@@ -34,30 +34,30 @@ uint64_t __38__AXUIEventManager_sharedEventManager__block_invoke()
   v2 = [(AXUIEventManager *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CE7E18] sharedInstance];
-    v2->_laserEnabled = [v3 laserEnabled];
+    mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+    v2->_laserEnabled = [mEMORY[0x277CE7E18] laserEnabled];
   }
 
   return v2;
 }
 
-- (BOOL)_handleUIEvent:(id)a3
+- (BOOL)_handleUIEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   if ([(AXUIEventManager *)self laserEnabled])
   {
-    v5 = _AXUIPointerEventFromHIDEvent([v4 _hidEvent]);
+    v5 = _AXUIPointerEventFromHIDEvent([eventCopy _hidEvent]);
     if (v5)
     {
-      v6 = [(AXUIEventManager *)self eventHandlers];
-      v7 = [v6 allObjects];
+      eventHandlers = [(AXUIEventManager *)self eventHandlers];
+      allObjects = [eventHandlers allObjects];
 
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = v7;
+      v8 = allObjects;
       v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
@@ -107,29 +107,29 @@ uint64_t __38__AXUIEventManager_sharedEventManager__block_invoke()
   return v11 & 1;
 }
 
-- (void)registerEventHandler:(id)a3
+- (void)registerEventHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AXUIEventManager *)self eventHandlers];
+  handlerCopy = handler;
+  eventHandlers = [(AXUIEventManager *)self eventHandlers];
 
-  if (!v5)
+  if (!eventHandlers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(AXUIEventManager *)self setEventHandlers:v6];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(AXUIEventManager *)self setEventHandlers:weakObjectsHashTable];
   }
 
-  v7 = [(AXUIEventManager *)self eventHandlers];
-  [v7 addObject:v4];
+  eventHandlers2 = [(AXUIEventManager *)self eventHandlers];
+  [eventHandlers2 addObject:handlerCopy];
 }
 
-- (void)unregisterEventHandler:(id)a3
+- (void)unregisterEventHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AXUIEventManager *)self eventHandlers];
-  [v5 removeObject:v4];
+  handlerCopy = handler;
+  eventHandlers = [(AXUIEventManager *)self eventHandlers];
+  [eventHandlers removeObject:handlerCopy];
 
-  v6 = [(AXUIEventManager *)self eventHandlers];
-  v7 = [v6 count];
+  eventHandlers2 = [(AXUIEventManager *)self eventHandlers];
+  v7 = [eventHandlers2 count];
 
   if (!v7)
   {

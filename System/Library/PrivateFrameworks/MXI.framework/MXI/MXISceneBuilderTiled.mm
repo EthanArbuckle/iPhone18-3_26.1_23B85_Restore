@@ -1,20 +1,20 @@
 @interface MXISceneBuilderTiled
-- (BOOL)generateBackingPlaneTexture:(id)a3 forScene:(id)a4 error:(id *)a5;
-- (id)buildSceneWithOptions:(id)a3 error:(id *)a4;
-- (id)initBuilderWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 materialDescriptor:(id)a6 options:(id)a7;
-- (void)generateBackingPlaneMesh:(void *)a3 atDepth:(float)a4;
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 params:(id)a8 error:(id *)a9;
+- (BOOL)generateBackingPlaneTexture:(id)texture forScene:(id)scene error:(id *)error;
+- (id)buildSceneWithOptions:(id)options error:(id *)error;
+- (id)initBuilderWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range materialDescriptor:(id)descriptor options:(id)options;
+- (void)generateBackingPlaneMesh:(void *)mesh atDepth:(float)depth;
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth params:(id)params error:(id *)error;
 @end
 
 @implementation MXISceneBuilderTiled
 
-- (id)initBuilderWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 materialDescriptor:(id)a6 options:(id)a7
+- (id)initBuilderWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range materialDescriptor:(id)descriptor options:(id)options
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v228 = *MEMORY[0x277D85DE8];
-  v210 = a6;
-  v11 = a7;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   v12 = objc_alloc(MEMORY[0x277CBEBD0]);
   v207 = objc_msgSend_initWithSuiteName_(v12, v13, @"com.apple.mxi", v14, v15);
   self->_requestHighCompatibilityUSD = objc_msgSend_BOOLForKey_(v207, v16, @"RequestHighCompatibilityUSD", v17, v18);
@@ -22,7 +22,7 @@
   v212.super_class = MXISceneBuilderTiled;
   *&v19 = var0;
   *&v20 = var1;
-  v21 = [(MXISceneBuilder *)&v212 initBuilderWithType:a3 numberOfLayers:a4 depthRange:v210 materialDescriptor:v11 options:v19, v20];
+  v21 = [(MXISceneBuilder *)&v212 initBuilderWithType:type numberOfLayers:layers depthRange:descriptorCopy materialDescriptor:optionsCopy options:v19, v20];
   if (v21)
   {
     v22 = MTLCreateSystemDefaultDevice();
@@ -31,7 +31,7 @@
 
     if (*(v21 + 17))
     {
-      v27 = objc_msgSend_valueForKey_(v11, v24, @"tile_size", v25, v26);
+      v27 = objc_msgSend_valueForKey_(optionsCopy, v24, @"tile_size", v25, v26);
       *(v21 + 39) = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v28, v27, 64, v29);
 
       v33 = *(v21 + 39);
@@ -45,16 +45,16 @@
       {
         if ((v33 & (v33 - 1)) == 0)
         {
-          v34 = objc_msgSend_valueForKey_(v11, v30, @"thread_pool_size", v31, v32);
+          v34 = objc_msgSend_valueForKey_(optionsCopy, v30, @"thread_pool_size", v31, v32);
           *(v21 + 38) = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v35, v34, 1, v36);
 
-          v40 = objc_msgSend_valueForKey_(v11, v37, @"atlas_slice_count", v38, v39);
+          v40 = objc_msgSend_valueForKey_(optionsCopy, v37, @"atlas_slice_count", v38, v39);
           v205 = objc_msgSend_parseInt_defaultValue_(MXIUtilities, v41, v40, 0, v42);
 
-          v46 = objc_msgSend_valueForKey_(v11, v43, @"pack_in_compressed_atlas", v44, v45);
+          v46 = objc_msgSend_valueForKey_(optionsCopy, v43, @"pack_in_compressed_atlas", v44, v45);
           v204 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v47, v46, 0, v48);
 
-          v52 = objc_msgSend_valueForKey_(v11, v49, @"atlas_slice_size", v50, v51);
+          v52 = objc_msgSend_valueForKey_(optionsCopy, v49, @"atlas_slice_size", v50, v51);
           *(v21 + 40) = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v53, v52, 4096, v54);
 
           v58 = *(v21 + 40);
@@ -77,31 +77,31 @@
           v61 = v60 | (v60 >> 1) | ((v60 | (v60 >> 1)) >> 2);
           v62 = v61 | (v61 >> 4) | ((v61 | (v61 >> 4)) >> 8);
           *(v21 + 40) = (v62 | HIWORD(v62)) + 1;
-          v63 = objc_msgSend_valueForKey_(v11, v55, @"astc_quality", v56, v57);
+          v63 = objc_msgSend_valueForKey_(optionsCopy, v55, @"astc_quality", v56, v57);
           v206 = objc_msgSend_parseString_defaultValue_(MXIUtilities, v64, v63, @"astc_thorough", v65);
 
-          v69 = objc_msgSend_valueForKey_(v11, v66, @"fail_on_binary_archive_miss", v67, v68);
+          v69 = objc_msgSend_valueForKey_(optionsCopy, v66, @"fail_on_binary_archive_miss", v67, v68);
           v203 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v70, v69, 0, v71);
 
-          v75 = objc_msgSend_valueForKey_(v11, v72, @"separate_opaque_geometry", v73, v74);
+          v75 = objc_msgSend_valueForKey_(optionsCopy, v72, @"separate_opaque_geometry", v73, v74);
           v202 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v76, v75, 0, v77);
 
-          v81 = objc_msgSend_valueForKey_(v11, v78, @"allow_diagonal_flip", v79, v80);
+          v81 = objc_msgSend_valueForKey_(optionsCopy, v78, @"allow_diagonal_flip", v79, v80);
           v201 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v82, v81, 0, v83);
 
-          v87 = objc_msgSend_valueForKey_(v11, v84, @"min_opacity_tolerance", v85, v86);
+          v87 = objc_msgSend_valueForKey_(optionsCopy, v84, @"min_opacity_tolerance", v85, v86);
           objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v88, v87, v89, v90, 0.0);
           v92 = v91;
 
-          v96 = objc_msgSend_valueForKey_(v11, v93, @"max_opacity_tolerance", v94, v95);
+          v96 = objc_msgSend_valueForKey_(optionsCopy, v93, @"max_opacity_tolerance", v94, v95);
           LODWORD(v97) = 1.0;
           objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v98, v96, v99, v100, v97);
           v102 = v101;
 
-          v106 = objc_msgSend_valueForKey_(v11, v103, @"pack_in_array_of_textures", v104, v105);
+          v106 = objc_msgSend_valueForKey_(optionsCopy, v103, @"pack_in_array_of_textures", v104, v105);
           v21[165] = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v107, v106, 1, v108);
 
-          v112 = objc_msgSend_valueForKey_(v11, v109, @"include_backing_plane", v110, v111);
+          v112 = objc_msgSend_valueForKey_(optionsCopy, v109, @"include_backing_plane", v110, v111);
           v21[166] = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v113, v112, 0, v114);
 
           v121 = 0.1;
@@ -132,12 +132,12 @@
             v122 = 5;
           }
 
-          v125 = objc_msgSend_valueForKey_(v11, v118, @"astc_gpu_rank_modes_count_ratio", v119, v120);
+          v125 = objc_msgSend_valueForKey_(optionsCopy, v118, @"astc_gpu_rank_modes_count_ratio", v119, v120);
           *&v126 = v121;
           objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v127, v125, v128, v129, v126);
           v131 = v130;
 
-          v135 = objc_msgSend_valueForKey_(v11, v132, @"astc_gpu_fast_skip_threshold", v133, v134);
+          v135 = objc_msgSend_valueForKey_(optionsCopy, v132, @"astc_gpu_fast_skip_threshold", v133, v134);
           v138 = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v136, v135, v122, v137);
 
           v143 = objc_msgSend_inputColorPrimaries(v21, v139, v140, v141, v142);
@@ -212,7 +212,7 @@ LABEL_37:
               *(&v227[1] + 1) = *(v21 + 165);
               v196 = *(v21 + 17);
               v211 = 0;
-              tiled::Processor::Create(v196, a3, a4, buf, &v211);
+              tiled::Processor::Create(v196, type, layers, buf, &v211);
             }
 
             v222 = 0x3C65AD08A506;
@@ -249,13 +249,13 @@ LABEL_37:
   return v197;
 }
 
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 params:(id)a8 error:(id *)a9
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth params:(id)params error:(id *)error
 {
   *(&v95[1] + 7) = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  processCopy = process;
+  colorCopy = color;
+  depthCopy = depth;
+  paramsCopy = params;
   v19 = _MXISignpostLogSystem();
   v20 = _MXISignpostCreate(v19);
   v21 = v19;
@@ -265,30 +265,30 @@ LABEL_37:
   if (v23 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
   {
     *buf = 134217984;
-    *&buf[4] = a4;
+    *&buf[4] = layer;
     _os_signpost_emit_with_name_impl(&dword_22F9C3000, v22, OS_SIGNPOST_INTERVAL_BEGIN, spid, "MXI_PROCESS_LAYER", "layer_index %ld", buf, 0xCu);
   }
 
   v90.receiver = self;
   v90.super_class = MXISceneBuilderTiled;
-  [(MXISceneBuilder *)&v90 process:v15 layer:a4 face:a5 color:v16 depth:v17 params:v18 error:a9];
-  v28 = objc_msgSend_width(v16, v24, v25, v26, v27);
-  *&v33 = v28 / objc_msgSend_height(v16, v29, v30, v31, v32);
+  [(MXISceneBuilder *)&v90 process:processCopy layer:layer face:face color:colorCopy depth:depthCopy params:paramsCopy error:error];
+  v28 = objc_msgSend_width(colorCopy, v24, v25, v26, v27);
+  *&v33 = v28 / objc_msgSend_height(colorCopy, v29, v30, v31, v32);
   objc_msgSend_setAspectRatio_(self, v34, v35, v36, v37, v33);
-  v42 = objc_msgSend_width(v16, v38, v39, v40, v41);
+  v42 = objc_msgSend_width(colorCopy, v38, v39, v40, v41);
   objc_msgSend_setResolutionWidth_(self, v43, v42, v44, v45);
-  v50 = objc_msgSend_height(v16, v46, v47, v48, v49);
+  v50 = objc_msgSend_height(colorCopy, v46, v47, v48, v49);
   objc_msgSend_setResolutionHeight_(self, v51, v50, v52, v53);
-  objc_msgSend_getLayerDepth_(self, v54, a4, v55, v56);
+  objc_msgSend_getLayerDepth_(self, v54, layer, v55, v56);
   v62 = v61;
-  if (v18)
+  if (paramsCopy)
   {
-    objc_msgSend_projection(v18, v57, v58, v59, v60);
+    objc_msgSend_projection(paramsCopy, v57, v58, v59, v60);
     v87 = v64;
     v88 = v63;
     v85 = v66;
     v86 = v65;
-    v71 = objc_msgSend_linearDepth(v18, v67, v68, v69, v70);
+    v71 = objc_msgSend_linearDepth(paramsCopy, v67, v68, v69, v70);
     v73 = v87;
     v72 = v88;
     v75 = v85;
@@ -313,10 +313,10 @@ LABEL_37:
   v95[0] = 0;
   *(v95 + 7) = 0;
   objc_msgSend_fovInRadians(self, v57, v58, v59, v60);
-  v79 = tiled::Processor::AddLayer(ptr, v15, a4, a5, v16, v17, buf, v62, v77);
+  v79 = tiled::Processor::AddLayer(ptr, processCopy, layer, face, colorCopy, depthCopy, buf, v62, v77);
   if (self->_backingPlane)
   {
-    objc_msgSend_processWthCommandBuffer_colorTexture_depthTexture_(self->_backLayer, v78, v15, v16, v17);
+    objc_msgSend_processWthCommandBuffer_colorTexture_depthTexture_(self->_backLayer, v78, processCopy, colorCopy, depthCopy);
   }
 
   if (v79)
@@ -336,32 +336,32 @@ LABEL_37:
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *&buf[4] = a4;
+      *&buf[4] = layer;
       *&buf[12] = 2048;
-      *&buf[14] = a5;
+      *&buf[14] = face;
       _os_log_impl(&dword_22F9C3000, v82, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderTiled.mm:229] Could not add layer (%ld), face (%ld)", buf, 0x16u);
     }
 
-    objc_msgSend_fillError_withFormattedDescription_(MXIInternalError, v83, a9, @"Could not add layer (%ld), face (%ld)", v84, a4, a5);
+    objc_msgSend_fillError_withFormattedDescription_(MXIInternalError, v83, error, @"Could not add layer (%ld), face (%ld)", v84, layer, face);
   }
 }
 
-- (id)buildSceneWithOptions:(id)a3 error:(id *)a4
+- (id)buildSceneWithOptions:(id)options error:(id *)error
 {
   v266 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v263.receiver = self;
   v263.super_class = MXISceneBuilderTiled;
-  v7 = [(MXISceneBuilder *)&v263 buildSceneWithOptions:v6 error:a4];
+  v7 = [(MXISceneBuilder *)&v263 buildSceneWithOptions:optionsCopy error:error];
   v254 = CFPreferencesCopyMultiple(0, @"com.apple.mxi", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (!v254)
   {
     v254 = objc_alloc_init(MEMORY[0x277CBEAC0]);
   }
 
-  if (v6)
+  if (optionsCopy)
   {
-    v12 = objc_msgSend_mutableCopy(v6, v8, v9, v10, v11);
+    v12 = objc_msgSend_mutableCopy(optionsCopy, v8, v9, v10, v11);
     objc_msgSend_addEntriesFromDictionary_(v12, v13, v254, v14, v15);
   }
 
@@ -370,8 +370,8 @@ LABEL_37:
     v12 = v254;
   }
 
-  tiled::Processor::GetMesh(self->_proc.__ptr_, a4, &v257);
-  if (a4 && *a4)
+  tiled::Processor::GetMesh(self->_proc.__ptr_, error, &v257);
+  if (error && *error)
   {
     v19 = 0;
     goto LABEL_82;
@@ -405,13 +405,13 @@ LABEL_37:
   if (self->_packInArrayOfTextures)
   {
     memset(v265, 0, sizeof(v265));
-    if (tiled::Processor::GetAtlas(self->_proc.__ptr_, v265, v50, v23, v57, a4, v33))
+    if (tiled::Processor::GetAtlas(self->_proc.__ptr_, v265, v50, v23, v57, error, v33))
     {
       v252 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v58, *v265, (*&v265[8] - *v265) >> 3, v59);
       *buf = v265;
       sub_22F9DC140(buf);
       v253 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_18;
       }
@@ -435,18 +435,18 @@ LABEL_37:
   {
     ptr = self->_proc.__ptr_;
     v255 = 0;
-    Atlas = tiled::Processor::GetAtlas(ptr, &v255, &v256, v50, v23, v57, a4, v33);
+    Atlas = tiled::Processor::GetAtlas(ptr, &v255, &v256, v50, v23, v57, error, v33);
     v253 = v255;
     if (Atlas)
     {
       v252 = MEMORY[0x277CBEBF8];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_18;
       }
 
 LABEL_17:
-      if (*a4)
+      if (*error)
       {
 LABEL_33:
         v19 = 0;
@@ -487,7 +487,7 @@ LABEL_18:
 
       if (v70 >= 0x21)
       {
-        objc_msgSend_fillError_withFormattedDescription_(MXIError, v86, a4, @"Atlas slice count (%d) exceeds the limit of 32. You can try to set MXISceneBuilderConfigurationAtlasSliceSize option to use fewer, larger slices.", v88, v70);
+        objc_msgSend_fillError_withFormattedDescription_(MXIError, v86, error, @"Atlas slice count (%d) exceeds the limit of 32. You can try to set MXISceneBuilderConfigurationAtlasSliceSize option to use fewer, larger slices.", v88, v70);
         goto LABEL_33;
       }
 
@@ -596,7 +596,7 @@ LABEL_52:
           v215 = objc_msgSend_attributes(self, v211, v212, v213, v214);
           objc_msgSend_setAttributes_(v104, v216, v215, v217, v218);
 
-          if (self->_backingPlane && (objc_msgSend_generateBackingPlaneTexture_forScene_error_(self, v219, self->_device, v104, a4) & 1) == 0)
+          if (self->_backingPlane && (objc_msgSend_generateBackingPlaneTexture_forScene_error_(self, v219, self->_device, v104, error) & 1) == 0)
           {
             v230 = _mxi_log();
             if (os_log_type_enabled(v230, OS_LOG_TYPE_ERROR))
@@ -736,9 +736,9 @@ LABEL_82:
   return v19;
 }
 
-- (void)generateBackingPlaneMesh:(void *)a3 atDepth:(float)a4
+- (void)generateBackingPlaneMesh:(void *)mesh atDepth:(float)depth
 {
-  objc_msgSend_fovInRadians(self, a2, a3, v4, v5);
+  objc_msgSend_fovInRadians(self, a2, mesh, v4, v5);
   v34 = tanf(v8 * 0.5);
   objc_msgSend_aspectRatio(self, v9, v10, v11, v12);
   v14 = v13 * v34;
@@ -748,39 +748,39 @@ LABEL_82:
   v20.f32[0] = -(v13 * v34);
   v21 = v20;
   v21.f32[1] = v34;
-  **a3 = vmulq_n_f32(v21, a4);
+  **mesh = vmulq_n_f32(v21, depth);
   v20.f32[1] = -v34;
   _Q2.f32[0] = v14;
-  *(*a3 + 16) = vmulq_n_f32(v20, a4);
+  *(*mesh + 16) = vmulq_n_f32(v20, depth);
   v22 = _Q2;
   v22.f32[1] = v34;
-  *(*a3 + 32) = vmulq_n_f32(v22, a4);
+  *(*mesh + 32) = vmulq_n_f32(v22, depth);
   _Q2.f32[1] = -v34;
-  *(*a3 + 48) = vmulq_n_f32(_Q2, a4);
+  *(*mesh + 48) = vmulq_n_f32(_Q2, depth);
   v27 = vcvts_n_f32_s32(1 << (objc_msgSend_mipLevelsCount(self, v23, v24, v25, v26) - 1), 2uLL);
   atlasSize = self->_atlasSize;
   *v29.i32 = v27 / atlasSize;
   *v30.i32 = (self->_tileSize - v27) / atlasSize;
   v31 = vdup_lane_s32(v29, 0);
   v29.i32[1] = v30.i32[0];
-  **(a3 + 3) = v31;
-  *(*(a3 + 3) + 8) = v29;
-  *(*(a3 + 3) + 16) = __PAIR64__(v29.u32[0], v30.u32[0]);
-  *(*(a3 + 3) + 24) = vdup_lane_s32(v30, 0);
-  v32 = *(a3 + 6);
+  **(mesh + 3) = v31;
+  *(*(mesh + 3) + 8) = v29;
+  *(*(mesh + 3) + 16) = __PAIR64__(v29.u32[0], v30.u32[0]);
+  *(*(mesh + 3) + 24) = vdup_lane_s32(v30, 0);
+  v32 = *(mesh + 6);
   *v32 = 0x100000000;
   *(v32 + 8) = 2;
-  v33 = *(a3 + 6);
+  v33 = *(mesh + 6);
   *(v33 + 12) = 0x100000002;
   *(v33 + 20) = 3;
-  **(a3 + 9) = 0;
+  **(mesh + 9) = 0;
 }
 
-- (BOOL)generateBackingPlaneTexture:(id)a3 forScene:(id)a4 error:(id *)a5
+- (BOOL)generateBackingPlaneTexture:(id)texture forScene:(id)scene error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v13 = objc_msgSend_newCommandQueue(v7, v9, v10, v11, v12);
+  textureCopy = texture;
+  sceneCopy = scene;
+  v13 = objc_msgSend_newCommandQueue(textureCopy, v9, v10, v11, v12);
   v18 = objc_msgSend_commandBuffer(v13, v14, v15, v16, v17);
   objc_msgSend_createBackLayerWthCommandBuffer_(self->_backLayer, v19, v18, v20, v21);
   objc_msgSend_commitAndWaitUntilSubmitted(v18, v22, v23, v24, v25);
@@ -788,15 +788,15 @@ LABEL_82:
   if (objc_msgSend_status(v18, v30, v31, v32, v33) == 4)
   {
     v38 = objc_msgSend_tileTexture(self->_backLayer, v34, v35, v36, v37);
-    if (objc_msgSend_textureCompressionType(v8, v39, v40, v41, v42) == 1)
+    if (objc_msgSend_textureCompressionType(sceneCopy, v39, v40, v41, v42) == 1)
     {
       v47 = image::ToASTC(v38, 4, 4u, 5, 1.0);
 
       v38 = v47;
     }
 
-    v52 = objc_msgSend_colorTexture(v8, v43, v44, v45, v46);
-    if (v52 || (objc_msgSend_colorTextures(v8, v48, v49, v50, v51), v93 = objc_claimAutoreleasedReturnValue(), v98 = objc_msgSend_count(v93, v94, v95, v96, v97), v93, v98) && (objc_msgSend_colorTextures(v8, v99, v100, v101, v102), v103 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectAtIndex_(v103, v104, 0, v105, v106), v52 = objc_claimAutoreleasedReturnValue(), v103, v52))
+    v52 = objc_msgSend_colorTexture(sceneCopy, v43, v44, v45, v46);
+    if (v52 || (objc_msgSend_colorTextures(sceneCopy, v48, v49, v50, v51), v93 = objc_claimAutoreleasedReturnValue(), v98 = objc_msgSend_count(v93, v94, v95, v96, v97), v93, v98) && (objc_msgSend_colorTextures(sceneCopy, v99, v100, v101, v102), v103 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectAtIndex_(v103, v104, 0, v105, v106), v52 = objc_claimAutoreleasedReturnValue(), v103, v52))
     {
       v53 = objc_msgSend_commandBuffer(v13, v48, v49, v50, v51);
 
@@ -828,9 +828,9 @@ LABEL_82:
           _os_log_impl(&dword_22F9C3000, v88, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderTiled.mm:436] MTLCommandBuffer failed", buf, 2u);
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = objc_msgSend_error(v53, v89, v90, v91, v92);
+          *error = objc_msgSend_error(v53, v89, v90, v91, v92);
         }
       }
     }
@@ -853,10 +853,10 @@ LABEL_82:
       _os_log_impl(&dword_22F9C3000, v69, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderTiled.mm:395] MTLCommandBuffer failed", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       objc_msgSend_error(v18, v70, v71, v72, v73);
-      *a5 = v74 = 0;
+      *error = v74 = 0;
     }
 
     else

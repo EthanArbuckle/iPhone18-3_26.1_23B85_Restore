@@ -1,33 +1,33 @@
 @interface PPNamedEntityStore
 + (id)defaultStore;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)donateLocationNamedEntities:(id)a3 bundleId:(id)a4 groupId:(id)a5 error:(id *)a6;
-- (BOOL)donateMapItem:(id)a3 forPlaceName:(id)a4 error:(id *)a5;
-- (BOOL)donateNamedEntities:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 sentimentScore:(double)a7 error:(id *)a8;
-- (BOOL)iterNamedEntityRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)iterRankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4;
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 query:(id)a4 error:(id *)a5;
-- (BOOL)removeMapItemForPlaceName:(id)a3 error:(id *)a4;
-- (BOOL)removeMapItemsBeforeCutoffDate:(id)a3 error:(id *)a4;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)donateLocationNamedEntities:(id)entities bundleId:(id)id groupId:(id)groupId error:(id *)error;
+- (BOOL)donateMapItem:(id)item forPlaceName:(id)name error:(id *)error;
+- (BOOL)donateNamedEntities:(id)entities source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync sentimentScore:(double)score error:(id *)error;
+- (BOOL)iterNamedEntityRecordsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)iterRankedNamedEntitiesWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error;
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate query:(id)query error:(id *)error;
+- (BOOL)removeMapItemForPlaceName:(id)name error:(id *)error;
+- (BOOL)removeMapItemsBeforeCutoffDate:(id)date error:(id *)error;
 - (PPNamedEntityStore)init;
 - (id)_initFromSubclass;
-- (id)mapItemForPlaceName:(id)a3 error:(id *)a4;
-- (id)namedEntityRecordsWithQuery:(id)a3 error:(id *)a4;
-- (id)rankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (id)mapItemForPlaceName:(id)name error:(id *)error;
+- (id)namedEntityRecordsWithQuery:(id)query error:(id *)error;
+- (id)rankedNamedEntitiesWithQuery:(id)query error:(id *)error;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPNamedEntityStore
 
 - (PPNamedEntityStore)init
 {
-  v3 = [[PPXPCNamedEntityStore alloc] _init];
+  _init = [[PPXPCNamedEntityStore alloc] _init];
 
-  return v3;
+  return _init;
 }
 
 - (id)_initFromSubclass
@@ -37,134 +37,134 @@
   return [(PPNamedEntityStore *)&v3 init];
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   __break(1u);
 }
 
-- (BOOL)donateLocationNamedEntities:(id)a3 bundleId:(id)a4 groupId:(id)a5 error:(id *)a6
+- (BOOL)donateLocationNamedEntities:(id)entities bundleId:(id)id groupId:(id)groupId error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entitiesCopy = entities;
+  idCopy = id;
+  groupIdCopy = groupId;
   __break(1u);
-  return v10;
+  return groupIdCopy;
 }
 
-- (BOOL)removeMapItemsBeforeCutoffDate:(id)a3 error:(id *)a4
+- (BOOL)removeMapItemsBeforeCutoffDate:(id)date error:(id *)error
 {
-  v4 = a3;
+  dateCopy = date;
   __break(1u);
-  return v4;
+  return dateCopy;
 }
 
-- (BOOL)removeMapItemForPlaceName:(id)a3 error:(id *)a4
+- (BOOL)removeMapItemForPlaceName:(id)name error:(id *)error
 {
-  v4 = a3;
+  nameCopy = name;
   __break(1u);
-  return v4;
+  return nameCopy;
 }
 
-- (id)mapItemForPlaceName:(id)a3 error:(id *)a4
+- (id)mapItemForPlaceName:(id)name error:(id *)error
 {
-  result = a3;
+  result = name;
   __break(1u);
   return result;
 }
 
-- (BOOL)donateMapItem:(id)a3 forPlaceName:(id)a4 error:(id *)a5
+- (BOOL)donateMapItem:(id)item forPlaceName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  nameCopy = name;
   __break(1u);
-  return v7;
+  return nameCopy;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  groupIdCopy = groupId;
+  thanCopy = than;
   __break(1u);
-  return v11;
+  return thanCopy;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v5 = a3;
+  idCopy = id;
   __break(1u);
-  return v5;
+  return idCopy;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  idsCopy = ids;
   __break(1u);
-  return v8;
+  return idsCopy;
 }
 
-- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  idsCopy = ids;
   __break(1u);
-  return v8;
+  return idsCopy;
 }
 
-- (BOOL)donateNamedEntities:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 sentimentScore:(double)a7 error:(id *)a8
+- (BOOL)donateNamedEntities:(id)entities source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync sentimentScore:(double)score error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  entitiesCopy = entities;
+  sourceCopy = source;
   __break(1u);
-  return v10;
+  return sourceCopy;
 }
 
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 query:(id)a4 error:(id *)a5
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate query:(id)query error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queryCopy = query;
   __break(1u);
-  return v7;
+  return queryCopy;
 }
 
-- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4
+- (BOOL)loadNamedEntityRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error
 {
-  v4 = a3;
+  delegateCopy = delegate;
   __break(1u);
-  return v4;
+  return delegateCopy;
 }
 
-- (id)namedEntityRecordsWithQuery:(id)a3 error:(id *)a4
+- (id)namedEntityRecordsWithQuery:(id)query error:(id *)error
 {
-  result = a3;
+  result = query;
   __break(1u);
   return result;
 }
 
-- (BOOL)iterNamedEntityRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterNamedEntityRecordsWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v6 = a3;
-  v7 = a5;
+  queryCopy = query;
+  blockCopy = block;
   __break(1u);
-  return v7;
+  return blockCopy;
 }
 
-- (id)rankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4
+- (id)rankedNamedEntitiesWithQuery:(id)query error:(id *)error
 {
-  result = a3;
+  result = query;
   __break(1u);
   return result;
 }
 
-- (BOOL)iterRankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterRankedNamedEntitiesWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v6 = a3;
-  v7 = a5;
+  queryCopy = query;
+  blockCopy = block;
   __break(1u);
-  return v7;
+  return blockCopy;
 }
 
 + (id)defaultStore
@@ -173,7 +173,7 @@
   block[1] = 3221225472;
   block[2] = __34__PPNamedEntityStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore__pasOnceToken12_9705 != -1)
   {
     dispatch_once(&defaultStore__pasOnceToken12_9705, block);

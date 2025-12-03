@@ -1,16 +1,16 @@
 @interface CMSmoothGaitMetrics
-+ (SmoothedGaitMetrics)inputFromPreparedStatement:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMSmoothGaitMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMSmoothGaitMetrics)initWithCoder:(id)a3;
-- (CMSmoothGaitMetrics)initWithRecordId:(unint64_t)a3 startDate:(id)a4 walkingSpeed:(double)a5 stepLength:(double)a6 cycleTime:(double)a7 distance:(double)a8 doubleSupportPercentage:(double)a9 asymmetryProbability:(double)a10 numGaitMetrics:(unsigned int)a11;
-- (CMSmoothGaitMetrics)initWithSample:(SmoothedGaitMetrics *)a3;
++ (SmoothedGaitMetrics)inputFromPreparedStatement:(SEL)statement;
+- (BOOL)isEqual:(id)equal;
+- (CMSmoothGaitMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMSmoothGaitMetrics)initWithCoder:(id)coder;
+- (CMSmoothGaitMetrics)initWithRecordId:(unint64_t)id startDate:(id)date walkingSpeed:(double)speed stepLength:(double)length cycleTime:(double)time distance:(double)distance doubleSupportPercentage:(double)percentage asymmetryProbability:(double)self0 numGaitMetrics:(unsigned int)self1;
+- (CMSmoothGaitMetrics)initWithSample:(SmoothedGaitMetrics *)sample;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMSmoothGaitMetrics
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (CMSmoothGaitMetrics)initWithRecordId:(unint64_t)a3 startDate:(id)a4 walkingSpeed:(double)a5 stepLength:(double)a6 cycleTime:(double)a7 distance:(double)a8 doubleSupportPercentage:(double)a9 asymmetryProbability:(double)a10 numGaitMetrics:(unsigned int)a11
+- (CMSmoothGaitMetrics)initWithRecordId:(unint64_t)id startDate:(id)date walkingSpeed:(double)speed stepLength:(double)length cycleTime:(double)time distance:(double)distance doubleSupportPercentage:(double)percentage asymmetryProbability:(double)self0 numGaitMetrics:(unsigned int)self1
 {
   v23.receiver = self;
   v23.super_class = CMSmoothGaitMetrics;
@@ -59,21 +59,21 @@
   v21 = v20;
   if (v20)
   {
-    v20->fRecordId = a3;
-    v20->fStartDate = a4;
-    v21->fWalkingSpeed = a5;
-    v21->fStepLength = a6;
-    v21->fCycleTime = a7;
-    v21->fDistance = a8;
-    v21->fDoubleSupportPercentage = a9;
-    v21->fAsymmetryProbability = a10;
-    v21->fNumGaitMetrics = a11;
+    v20->fRecordId = id;
+    v20->fStartDate = date;
+    v21->fWalkingSpeed = speed;
+    v21->fStepLength = length;
+    v21->fCycleTime = time;
+    v21->fDistance = distance;
+    v21->fDoubleSupportPercentage = percentage;
+    v21->fAsymmetryProbability = probability;
+    v21->fNumGaitMetrics = metrics;
   }
 
   return v21;
 }
 
-- (CMSmoothGaitMetrics)initWithSample:(SmoothedGaitMetrics *)a3
+- (CMSmoothGaitMetrics)initWithSample:(SmoothedGaitMetrics *)sample
 {
   v14.receiver = self;
   v14.super_class = CMSmoothGaitMetrics;
@@ -81,19 +81,19 @@
   v5 = v4;
   if (v4)
   {
-    v4->fRecordId = a3->var0;
+    v4->fRecordId = sample->var0;
     v6 = objc_alloc(MEMORY[0x1E695DF00]);
-    v5->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, a3->var1);
-    var3 = a3->var3;
-    var5 = a3->var5;
-    var4 = a3->var4;
-    v5->fWalkingSpeed = a3->var2;
+    v5->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, sample->var1);
+    var3 = sample->var3;
+    var5 = sample->var5;
+    var4 = sample->var4;
+    v5->fWalkingSpeed = sample->var2;
     v5->fStepLength = var4;
-    v12 = vcvtq_f64_f32(*&a3->var6);
+    v12 = vcvtq_f64_f32(*&sample->var6);
     *&v5->fCycleTime = vextq_s8(v12, v12, 8uLL);
     v5->fDoubleSupportPercentage = var3;
     v5->fAsymmetryProbability = var5;
-    v5->fNumGaitMetrics = a3->var8;
+    v5->fNumGaitMetrics = sample->var8;
   }
 
   return v5;
@@ -106,39 +106,39 @@
   [(CMSmoothGaitMetrics *)&v3 dealloc];
 }
 
-- (CMSmoothGaitMetrics)initWithCoder:(id)a3
+- (CMSmoothGaitMetrics)initWithCoder:(id)coder
 {
   v25.receiver = self;
   v25.super_class = CMSmoothGaitMetrics;
   v5 = [(CMSmoothGaitMetrics *)&v25 init];
   if (v5)
   {
-    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMSmoothGaitMetricsCodingKeyRecordId");
+    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMSmoothGaitMetricsCodingKeyRecordId");
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v7, v6, @"kCMSmoothGaitMetricsCodingKeyStartDate");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v7, v6, @"kCMSmoothGaitMetricsCodingKeyStartDate");
     v5->fStartDate = objc_msgSend_copy(v8, v9, v10);
-    objc_msgSend_decodeDoubleForKey_(a3, v11, @"kCMSmoothGaitMetricsCodingKeyWalkingSpeed");
+    objc_msgSend_decodeDoubleForKey_(coder, v11, @"kCMSmoothGaitMetricsCodingKeyWalkingSpeed");
     v5->fWalkingSpeed = v12;
-    objc_msgSend_decodeDoubleForKey_(a3, v13, @"kCMSmoothGaitMetricsCodingKeyStepLength");
+    objc_msgSend_decodeDoubleForKey_(coder, v13, @"kCMSmoothGaitMetricsCodingKeyStepLength");
     v5->fStepLength = v14;
-    objc_msgSend_decodeDoubleForKey_(a3, v15, @"kCMSmoothGaitMetricsCodingKeyCycleTime");
+    objc_msgSend_decodeDoubleForKey_(coder, v15, @"kCMSmoothGaitMetricsCodingKeyCycleTime");
     v5->fCycleTime = v16;
-    objc_msgSend_decodeDoubleForKey_(a3, v17, @"kCMSmoothGaitMetricsCodingKeyDistance");
+    objc_msgSend_decodeDoubleForKey_(coder, v17, @"kCMSmoothGaitMetricsCodingKeyDistance");
     v5->fDistance = v18;
-    objc_msgSend_decodeDoubleForKey_(a3, v19, @"kCMSmoothGaitMetricsCodingKeyDoubleSupportPercentage");
+    objc_msgSend_decodeDoubleForKey_(coder, v19, @"kCMSmoothGaitMetricsCodingKeyDoubleSupportPercentage");
     v5->fDoubleSupportPercentage = v20;
-    objc_msgSend_decodeDoubleForKey_(a3, v21, @"kCMSmoothGaitMetricsCodingKeyAsymmetryProbability");
+    objc_msgSend_decodeDoubleForKey_(coder, v21, @"kCMSmoothGaitMetricsCodingKeyAsymmetryProbability");
     v5->fAsymmetryProbability = v22;
-    v5->fNumGaitMetrics = objc_msgSend_decodeInt32ForKey_(a3, v23, @"kCMSmoothGaitMetricsCodingKeyNumGaitMetrics");
+    v5->fNumGaitMetrics = objc_msgSend_decodeInt32ForKey_(coder, v23, @"kCMSmoothGaitMetricsCodingKeyNumGaitMetrics");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   fRecordId = self->fRecordId;
-  objc_msgSend_timeIntervalSinceReferenceDate(self->fStartDate, a2, a3);
+  objc_msgSend_timeIntervalSinceReferenceDate(self->fStartDate, a2, zone);
   v7 = v6;
   fWalkingSpeed = self->fWalkingSpeed;
   fDoubleSupportPercentage = self->fDoubleSupportPercentage;
@@ -147,7 +147,7 @@
   fNumGaitMetrics = self->fNumGaitMetrics;
   v13 = vcvt_f32_f64(*&self->fCycleTime);
   v14 = objc_opt_class();
-  v16 = objc_msgSend_allocWithZone_(v14, v15, a3);
+  v16 = objc_msgSend_allocWithZone_(v14, v15, zone);
   v19 = fRecordId;
   v20 = v7;
   v21 = fWalkingSpeed;
@@ -159,22 +159,22 @@
   return objc_msgSend_initWithSample_(v16, v17, &v19);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInteger_forKey_(a3, a2, self->fRecordId, @"kCMSmoothGaitMetricsCodingKeyRecordId");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fStartDate, @"kCMSmoothGaitMetricsCodingKeyStartDate");
-  objc_msgSend_encodeDouble_forKey_(a3, v6, @"kCMSmoothGaitMetricsCodingKeyWalkingSpeed", self->fWalkingSpeed);
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"kCMSmoothGaitMetricsCodingKeyStepLength", self->fStepLength);
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kCMSmoothGaitMetricsCodingKeyCycleTime", self->fCycleTime);
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMSmoothGaitMetricsCodingKeyDistance", self->fDistance);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kCMSmoothGaitMetricsCodingKeyDoubleSupportPercentage", self->fDoubleSupportPercentage);
-  objc_msgSend_encodeDouble_forKey_(a3, v11, @"kCMSmoothGaitMetricsCodingKeyAsymmetryProbability", self->fAsymmetryProbability);
+  objc_msgSend_encodeInteger_forKey_(coder, a2, self->fRecordId, @"kCMSmoothGaitMetricsCodingKeyRecordId");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fStartDate, @"kCMSmoothGaitMetricsCodingKeyStartDate");
+  objc_msgSend_encodeDouble_forKey_(coder, v6, @"kCMSmoothGaitMetricsCodingKeyWalkingSpeed", self->fWalkingSpeed);
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"kCMSmoothGaitMetricsCodingKeyStepLength", self->fStepLength);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kCMSmoothGaitMetricsCodingKeyCycleTime", self->fCycleTime);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMSmoothGaitMetricsCodingKeyDistance", self->fDistance);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kCMSmoothGaitMetricsCodingKeyDoubleSupportPercentage", self->fDoubleSupportPercentage);
+  objc_msgSend_encodeDouble_forKey_(coder, v11, @"kCMSmoothGaitMetricsCodingKeyAsymmetryProbability", self->fAsymmetryProbability);
   fNumGaitMetrics = self->fNumGaitMetrics;
 
-  objc_msgSend_encodeInt32_forKey_(a3, v12, fNumGaitMetrics, @"kCMSmoothGaitMetricsCodingKeyNumGaitMetrics");
+  objc_msgSend_encodeInt32_forKey_(coder, v12, fNumGaitMetrics, @"kCMSmoothGaitMetricsCodingKeyNumGaitMetrics");
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -183,45 +183,45 @@
   }
 
   v7 = objc_msgSend_recordId(self, v5, v6);
-  if (v7 != objc_msgSend_recordId(a3, v8, v9))
+  if (v7 != objc_msgSend_recordId(equal, v8, v9))
   {
     goto LABEL_13;
   }
 
-  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(a3, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(a3, v15, v16), (isEqualToDate = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
+  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(equal, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(equal, v15, v16), (isEqualToDate = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
   {
     objc_msgSend_walkingSpeed(self, v12, v13);
     v21 = v20;
-    objc_msgSend_walkingSpeed(a3, v22, v23);
+    objc_msgSend_walkingSpeed(equal, v22, v23);
     if (v21 == v26)
     {
       objc_msgSend_stepLength(self, v24, v25);
       v28 = v27;
-      objc_msgSend_stepLength(a3, v29, v30);
+      objc_msgSend_stepLength(equal, v29, v30);
       if (v28 == v33)
       {
         objc_msgSend_cycleTime(self, v31, v32);
         v35 = v34;
-        objc_msgSend_cycleTime(a3, v36, v37);
+        objc_msgSend_cycleTime(equal, v36, v37);
         if (v35 == v40)
         {
           objc_msgSend_distance(self, v38, v39);
           v42 = v41;
-          objc_msgSend_distance(a3, v43, v44);
+          objc_msgSend_distance(equal, v43, v44);
           if (v42 == v47)
           {
             objc_msgSend_doubleSupportPercentage(self, v45, v46);
             v49 = v48;
-            objc_msgSend_doubleSupportPercentage(a3, v50, v51);
+            objc_msgSend_doubleSupportPercentage(equal, v50, v51);
             if (v49 == v54)
             {
               objc_msgSend_asymmetryProbability(self, v52, v53);
               v56 = v55;
-              objc_msgSend_asymmetryProbability(a3, v57, v58);
+              objc_msgSend_asymmetryProbability(equal, v57, v58);
               if (v56 == v61)
               {
                 v62 = objc_msgSend_numGaitMetrics(self, v59, v60);
-                LOBYTE(isEqualToDate) = v62 == objc_msgSend_numGaitMetrics(a3, v63, v64);
+                LOBYTE(isEqualToDate) = v62 == objc_msgSend_numGaitMetrics(equal, v63, v64);
                 return isEqualToDate;
               }
             }
@@ -260,7 +260,7 @@ LABEL_13:
   return objc_msgSend_stringWithFormat_(v3, v39, @"%@, <recordId, %lu, startDate, %@, walkingSpeed, %f, stepLength, %f, cycleTime, %f, distance, %f, doubleSupportPercentage, %f, asymmetryProbability, %f, numGaitMetrics, %d>", v5, v8, started, v15, v19, v23, v27, v31, v35, v38);
 }
 
-+ (SmoothedGaitMetrics)inputFromPreparedStatement:(SEL)a3
++ (SmoothedGaitMetrics)inputFromPreparedStatement:(SEL)statement
 {
   retstr->var0 = sqlite3_column_int(a4, 0);
   retstr->var1 = sqlite3_column_double(a4, 1);
@@ -290,9 +290,9 @@ LABEL_13:
   return v5;
 }
 
-- (CMSmoothGaitMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMSmoothGaitMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMSmoothGaitMetrics;
@@ -301,7 +301,7 @@ LABEL_13:
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

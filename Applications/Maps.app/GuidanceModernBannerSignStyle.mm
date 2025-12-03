@@ -1,5 +1,5 @@
 @interface GuidanceModernBannerSignStyle
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)a3;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)style;
 + (id)sharedSignStyle;
 - (id)accentColor;
 @end
@@ -8,13 +8,13 @@
 
 - (id)accentColor
 {
-  v2 = [(GuidanceModernBannerSignStyle *)self foregroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.959999979];
+  foregroundColor = [(GuidanceModernBannerSignStyle *)self foregroundColor];
+  v3 = [foregroundColor colorWithAlphaComponent:0.959999979];
 
   return v3;
 }
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)a3
++ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)style
 {
   *&retstr->var59 = 0u;
   *&retstr->var61 = 0u;

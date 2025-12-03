@@ -1,16 +1,16 @@
 @interface SKUIStarRatingViewElement
-- (SKUIStarRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIStarRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIViewElementText)text;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIStarRatingViewElement
 
-- (SKUIStarRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIStarRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIStarRatingViewElement initWithDOMElement:parent:elementFactory:];
@@ -18,10 +18,10 @@
 
   v25.receiver = self;
   v25.super_class = SKUIStarRatingViewElement;
-  v11 = [(SKUIViewElement *)&v25 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v25 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"value"];
+    v12 = [elementCopy getAttribute:@"value"];
     v13 = v12;
     if (v12)
     {
@@ -30,7 +30,7 @@
       v11->_ratingValue = *&v14;
     }
 
-    v15 = [v8 getAttribute:@"type"];
+    v15 = [elementCopy getAttribute:@"type"];
     if (v15)
     {
       if ([@"large" isEqualToString:v15])
@@ -44,7 +44,7 @@ LABEL_13:
       if (![@"large" isEqualToString:v15])
       {
 LABEL_14:
-        v17 = [v8 getAttribute:@"disabled"];
+        v17 = [elementCopy getAttribute:@"disabled"];
         if (v17)
         {
           if ([@"yes" isEqualToString:v17])
@@ -64,17 +64,17 @@ LABEL_14:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v24 = v9;
-          v20 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:v8 usingParseBlock:0];
-          v21 = [v20 string];
-          v22 = [v21 length];
+          v24 = parentCopy;
+          v20 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:elementCopy usingParseBlock:0];
+          string = [v20 string];
+          v22 = [string length];
 
           if (v22)
           {
             objc_storeStrong(&v11->_text, v20);
           }
 
-          v9 = v24;
+          parentCopy = v24;
         }
 
         goto LABEL_24;
@@ -95,30 +95,30 @@ LABEL_24:
   text = self->_text;
   if (text)
   {
-    v3 = text;
+    text = text;
   }
 
   else
   {
     v4 = [(SKUIViewElement *)self firstChildForElementType:138];
-    v3 = [v4 text];
+    text = [v4 text];
   }
 
-  return v3;
+  return text;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SKUIStarRatingViewElement;
-  v5 = [(SKUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    [(SKUIStarRatingViewElement *)v4 ratingValue];
+    [(SKUIStarRatingViewElement *)elementCopy ratingValue];
     self->_ratingValue = v7;
-    objc_storeStrong(&self->_text, v4->_text);
+    objc_storeStrong(&self->_text, elementCopy->_text);
   }
 
   return v6;

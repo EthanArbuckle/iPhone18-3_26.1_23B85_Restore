@@ -3,7 +3,7 @@
 - (BOOL)isLocalNews;
 - (BOOL)isPublic;
 - (FCTagMetadata)init;
-- (FCTagMetadata)initWithIdentifier:(id)a3 tagType:(unint64_t)a4 dictionary:(id)a5;
+- (FCTagMetadata)initWithIdentifier:(id)identifier tagType:(unint64_t)type dictionary:(id)dictionary;
 - (NSString)coverImage;
 - (NSString)feedNavImage;
 - (NSString)feedNavImageHQ;
@@ -54,19 +54,19 @@
   objc_exception_throw(v6);
 }
 
-- (FCTagMetadata)initWithIdentifier:(id)a3 tagType:(unint64_t)a4 dictionary:(id)a5
+- (FCTagMetadata)initWithIdentifier:(id)identifier tagType:(unint64_t)type dictionary:(id)dictionary
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = FCTagMetadata;
   v11 = [(FCTagMetadata *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    v12->_tagType = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_identifier, identifier);
+    v12->_tagType = type;
+    v13 = [dictionaryCopy copy];
     dictionary = v12->_dictionary;
     v12->_dictionary = v13;
   }
@@ -76,122 +76,122 @@
 
 - (NSString)name
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"name"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"name"];
 
   return v3;
 }
 
 - (NSString)nameImage
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"nameImage"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"nameImage"];
 
   return v3;
 }
 
 - (NSString)nameImageForDarkBackground
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"nameImageForDarkBackground"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"nameImageForDarkBackground"];
 
   return v3;
 }
 
 - (NSString)nameImageMetadata
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"nameImageMetadata"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"nameImageMetadata"];
 
   return v3;
 }
 
 - (NSString)nameImageMask
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"nameImageMask"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"nameImageMask"];
 
   return v3;
 }
 
 - (int64_t)nameImageBaselineShift
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"nameImageBaselineShift"];
-  v4 = [v3 longValue];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"nameImageBaselineShift"];
+  longValue = [v3 longValue];
 
-  return v4;
+  return longValue;
 }
 
 - (int64_t)nameImageScaleFactor
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"nameImageScaleFactor"];
-  v4 = [v3 longValue];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"nameImageScaleFactor"];
+  longValue = [v3 longValue];
 
-  return v4;
+  return longValue;
 }
 
 - (NSString)coverImage
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"coverImage"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"coverImage"];
 
   return v3;
 }
 
 - (NSString)feedNavImage
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"feedNavImage"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"feedNavImage"];
 
   return v3;
 }
 
 - (NSString)feedNavImageHQ
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"feedNavImageHQ"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"feedNavImageHQ"];
 
   return v3;
 }
 
 - (NSString)publisherPaidAuthorizationURL
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"publisherPaidAuthorizationURL"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"publisherPaidAuthorizationURL"];
 
   return v3;
 }
 
 - (NSString)publisherPaidVerificationURL
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"publisherPaidVerificationURL"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"publisherPaidVerificationURL"];
 
   return v3;
 }
 
 - (NSString)sportsPrimaryName
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sportsPrimaryName"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sportsPrimaryName"];
 
   return v3;
 }
 
 - (NSString)sportsSecondaryName
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sportsSecondaryName"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sportsSecondaryName"];
 
   return v3;
 }
 
 - (NSString)sportsSecondaryShortName
 {
-  v3 = [(FCTagMetadata *)self dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"shortSecondaryName"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v4 = [dictionary objectForKeyedSubscript:@"shortSecondaryName"];
   v5 = v4;
   if (v4)
   {
@@ -200,8 +200,8 @@
 
   else
   {
-    v7 = [(FCTagMetadata *)self dictionary];
-    v6 = [v7 objectForKeyedSubscript:@"secondaryShortName"];
+    dictionary2 = [(FCTagMetadata *)self dictionary];
+    v6 = [dictionary2 objectForKeyedSubscript:@"secondaryShortName"];
   }
 
   return v6;
@@ -209,16 +209,16 @@
 
 - (NSString)sportsFullName
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sportsFullName"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sportsFullName"];
 
   return v3;
 }
 
 - (unint64_t)sportsLeagueType
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sportsLeagueType"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sportsLeagueType"];
   v4 = FCSportsLeagueTypeFromString(v3);
 
   return v4;
@@ -226,50 +226,50 @@
 
 - (NSString)sportsPrimaryColor
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sportsPrimaryColor"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sportsPrimaryColor"];
 
   return v3;
 }
 
 - (NSString)sportsLogoImageCompact
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sportsLogoImageCompact"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sportsLogoImageCompact"];
 
   return v3;
 }
 
 - (NSString)groupTitleColor
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupTitleColor"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupTitleColor"];
 
   return v3;
 }
 
 - (BOOL)isAthlete
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"tagTypes"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"tagTypes"];
 
-  LOBYTE(v2) = [v3 containsObject:@"ATHLETE"];
-  return v2;
+  LOBYTE(dictionary) = [v3 containsObject:@"ATHLETE"];
+  return dictionary;
 }
 
 - (BOOL)isLocalNews
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"tagTypes"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"tagTypes"];
 
-  LOBYTE(v2) = [v3 containsObject:@"LOCAL_NEWS"];
-  return v2;
+  LOBYTE(dictionary) = [v3 containsObject:@"LOCAL_NEWS"];
+  return dictionary;
 }
 
 - (BOOL)isPublic
 {
-  v2 = [(FCTagMetadata *)self dictionary];
-  [v2 objectForKeyedSubscript:@"isPublic"];
+  dictionary = [(FCTagMetadata *)self dictionary];
+  [dictionary objectForKeyedSubscript:@"isPublic"];
 
   return 1;
 }

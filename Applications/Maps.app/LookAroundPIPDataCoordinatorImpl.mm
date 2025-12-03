@@ -1,56 +1,56 @@
 @interface LookAroundPIPDataCoordinatorImpl
 - (CLLocationCoordinate2D)lastCoordinate;
-- (LookAroundPIPDataCoordinatorImpl)initWithMapView:(id)a3;
-- (SEL)_selectorForObserverEventType:(unint64_t)a3;
+- (LookAroundPIPDataCoordinatorImpl)initWithMapView:(id)view;
+- (SEL)_selectorForObserverEventType:(unint64_t)type;
 - (VKMuninMarker)muninMarker;
 - (double)_filteredHeadingWithHeading:(double)result;
-- (void)_didEndMovingLookAroundView:(BOOL)a3;
-- (void)_dispatchSelector:(SEL)a3 toObserver:(id)a4;
+- (void)_didEndMovingLookAroundView:(BOOL)view;
+- (void)_dispatchSelector:(SEL)selector toObserver:(id)observer;
 - (void)_filteredHeadingReset;
-- (void)_getEntryMuninMarkerAtCoordinate:(CLLocationCoordinate2D)a3 shouldWait:(BOOL)a4 andContinue:(id)a5;
-- (void)_getEntryMuninMarkerWithMapViewOrMapItem:(id)a3 shouldWait:(BOOL)a4 andContinue:(id)a5;
-- (void)_getMuninMarkerAtCoordinate:(CLLocationCoordinate2D)a3 shouldWait:(BOOL)a4 andContinue:(id)a5;
-- (void)_getMuninMarkerWithMapViewOrMapItem:(id)a3 shouldWait:(BOOL)a4 andContinue:(id)a5;
-- (void)_handleMapView:(id)a3 didDidChangeLookAroundAvailability:(int64_t)a4;
-- (void)_handleMapViewDidResumeIfNeeded:(id)a3;
-- (void)_handleMapViewOneFingerPanWithZoomDirection:(int64_t)a3;
-- (void)_handleMapViewPanStart:(id)a3;
-- (void)_handleMapViewPanStop:(id)a3 shouldMoveLookAroundView:(BOOL)a4;
-- (void)_handleMapViewPanningIfNeeded:(id)a3;
-- (void)_handleMapViewPinchWithZoomDirection:(int64_t)a3;
-- (void)_handleMapViewRotateStart:(id)a3;
-- (void)_handleMapViewRotateStop:(id)a3;
-- (void)_handleMapViewRotatingIfNeeded:(id)a3;
-- (void)_handleMapViewTap:(id)a3 atPoint:(CGPoint)a4;
-- (void)_handleMapViewZoomStart:(id)a3;
-- (void)_handleMapViewZoomStop:(id)a3 zoomGestureType:(int64_t)a4 zoomDirection:(int64_t)a5;
+- (void)_getEntryMuninMarkerAtCoordinate:(CLLocationCoordinate2D)coordinate shouldWait:(BOOL)wait andContinue:(id)continue;
+- (void)_getEntryMuninMarkerWithMapViewOrMapItem:(id)item shouldWait:(BOOL)wait andContinue:(id)continue;
+- (void)_getMuninMarkerAtCoordinate:(CLLocationCoordinate2D)coordinate shouldWait:(BOOL)wait andContinue:(id)continue;
+- (void)_getMuninMarkerWithMapViewOrMapItem:(id)item shouldWait:(BOOL)wait andContinue:(id)continue;
+- (void)_handleMapView:(id)view didDidChangeLookAroundAvailability:(int64_t)availability;
+- (void)_handleMapViewDidResumeIfNeeded:(id)needed;
+- (void)_handleMapViewOneFingerPanWithZoomDirection:(int64_t)direction;
+- (void)_handleMapViewPanStart:(id)start;
+- (void)_handleMapViewPanStop:(id)stop shouldMoveLookAroundView:(BOOL)view;
+- (void)_handleMapViewPanningIfNeeded:(id)needed;
+- (void)_handleMapViewPinchWithZoomDirection:(int64_t)direction;
+- (void)_handleMapViewRotateStart:(id)start;
+- (void)_handleMapViewRotateStop:(id)stop;
+- (void)_handleMapViewRotatingIfNeeded:(id)needed;
+- (void)_handleMapViewTap:(id)tap atPoint:(CGPoint)point;
+- (void)_handleMapViewZoomStart:(id)start;
+- (void)_handleMapViewZoomStop:(id)stop zoomGestureType:(int64_t)type zoomDirection:(int64_t)direction;
 - (void)_moveLookAroundViewIfNeeded;
-- (void)_moveLookAroundViewToCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_moveLookAroundViewToMapItem:(id)a3;
-- (void)_nearestMuninMarkerWithCompleteMarkerHandler:(id)a3;
-- (void)_nonselectingTapGestureRecognizerAction:(id)a3;
-- (void)_notifyObservers:(unint64_t)a3;
-- (void)_onSuccess:(BOOL)a3 setLookAroundViewEntryPointWithMapItem:(id)a4 orMuninMarker:(id)a5 andContinue:(id)a6;
-- (void)_onSuccess:(BOOL)a3 synchronizeMapViewCenterToLookAroundViewCenterAndContinue:(id)a4;
-- (void)_onSuccess:(BOOL)a3 waitForLookAroundViewToBecomeAdequatelyDrawnIfNeededAndContinue:(id)a4;
-- (void)_onSuccessProceedToEnterLookArounPIP:(BOOL)a3;
-- (void)_refineLabelMarker:(id)a3;
-- (void)_startMovingLookAroundViewToMapItem:(id)a3 orMuninMarker:(id)a4 heading:(double)a5 shouldZoom:(BOOL)a6;
-- (void)_willEndMovingLookAroundView:(BOOL)a3 shouldZoomIfFinished:(BOOL)a4;
-- (void)coordinateLookAroundViewDidChangeVisibleRegion:(id)a3;
-- (void)coordinateLookAroundViewDidStartUserInteraction:(id)a3;
-- (void)coordinateLookAroundViewDidStopUserInteraction:(id)a3;
-- (void)coordinateMapView:(id)a3 didChangeLookAroundAvailability:(int64_t)a4;
-- (void)coordinateMapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)coordinateMapView:(id)a3 willSelectLabelMarker:(id)a4;
-- (void)coordinateMapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)coordinateMapViewDidChangeVisibleRegion:(id)a3;
-- (void)coordinateMapViewDidStartUserInteraction:(id)a3;
-- (void)coordinateMapViewDidStopUserInteraction:(id)a3;
-- (void)coordinateMapViewRegionDidChange:(id)a3;
+- (void)_moveLookAroundViewToCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_moveLookAroundViewToMapItem:(id)item;
+- (void)_nearestMuninMarkerWithCompleteMarkerHandler:(id)handler;
+- (void)_nonselectingTapGestureRecognizerAction:(id)action;
+- (void)_notifyObservers:(unint64_t)observers;
+- (void)_onSuccess:(BOOL)success setLookAroundViewEntryPointWithMapItem:(id)item orMuninMarker:(id)marker andContinue:(id)continue;
+- (void)_onSuccess:(BOOL)success synchronizeMapViewCenterToLookAroundViewCenterAndContinue:(id)continue;
+- (void)_onSuccess:(BOOL)success waitForLookAroundViewToBecomeAdequatelyDrawnIfNeededAndContinue:(id)continue;
+- (void)_onSuccessProceedToEnterLookArounPIP:(BOOL)p;
+- (void)_refineLabelMarker:(id)marker;
+- (void)_startMovingLookAroundViewToMapItem:(id)item orMuninMarker:(id)marker heading:(double)heading shouldZoom:(BOOL)zoom;
+- (void)_willEndMovingLookAroundView:(BOOL)view shouldZoomIfFinished:(BOOL)finished;
+- (void)coordinateLookAroundViewDidChangeVisibleRegion:(id)region;
+- (void)coordinateLookAroundViewDidStartUserInteraction:(id)interaction;
+- (void)coordinateLookAroundViewDidStopUserInteraction:(id)interaction;
+- (void)coordinateMapView:(id)view didChangeLookAroundAvailability:(int64_t)availability;
+- (void)coordinateMapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)coordinateMapView:(id)view willSelectLabelMarker:(id)marker;
+- (void)coordinateMapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)coordinateMapViewDidChangeVisibleRegion:(id)region;
+- (void)coordinateMapViewDidStartUserInteraction:(id)interaction;
+- (void)coordinateMapViewDidStopUserInteraction:(id)interaction;
+- (void)coordinateMapViewRegionDidChange:(id)change;
 - (void)dealloc;
-- (void)enterLookAroundPIPWithLookAroundView:(id)a3 mapItem:(id)a4;
-- (void)exitLookAroundPIPAfter:(double)a3 withCompletion:(id)a4;
+- (void)enterLookAroundPIPWithLookAroundView:(id)view mapItem:(id)item;
+- (void)exitLookAroundPIPAfter:(double)after withCompletion:(id)completion;
 - (void)pause;
 - (void)resume;
 - (void)setNeedsLookAroundAvailabilityUpdate;
@@ -69,20 +69,20 @@
   return result;
 }
 
-- (void)_nearestMuninMarkerWithCompleteMarkerHandler:(id)a3
+- (void)_nearestMuninMarkerWithCompleteMarkerHandler:(id)handler
 {
-  v10 = a3;
+  handlerCopy = handler;
   [(MKMapView *)self->_mapView centerCoordinate];
   v5 = v4;
   [(MKMapView *)self->_mapView centerCoordinate];
   v7 = v6;
-  v8 = [(MKMapView *)self->_mapView _mapLayer];
-  v9 = [v8 muninMarkerAtCoordinate:v10 completeMarkerHandler:{v5, v7}];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  v9 = [_mapLayer muninMarkerAtCoordinate:handlerCopy completeMarkerHandler:{v5, v7}];
 }
 
-- (void)_didEndMovingLookAroundView:(BOOL)a3
+- (void)_didEndMovingLookAroundView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   [(MKMapView *)self->_mapView centerCoordinate];
   v6 = v5;
   v8 = v7;
@@ -94,7 +94,7 @@
     v12 = @"NO";
     isMapViewInSyncWithLookAroundView = self->_isMapViewInSyncWithLookAroundView;
     *v15 = 134219010;
-    if (v3)
+    if (viewCopy)
     {
       v14 = @"YES";
     }
@@ -133,10 +133,10 @@
   [(LookAroundPIPDataCoordinatorImpl *)self _notifyObservers:16, *v15];
 }
 
-- (void)_willEndMovingLookAroundView:(BOOL)a3 shouldZoomIfFinished:(BOOL)a4
+- (void)_willEndMovingLookAroundView:(BOOL)view shouldZoomIfFinished:(BOOL)finished
 {
-  v4 = a4;
-  v5 = a3;
+  finishedCopy = finished;
+  viewCopy = view;
   [(MKMapView *)self->_mapView centerCoordinate];
   v9 = [[CLLocation alloc] initWithLatitude:v7 longitude:v8];
   [(MKLookAroundView *)self->_lookAroundView centerCoordinate];
@@ -145,17 +145,17 @@
   v14 = [[CLLocation alloc] initWithLatitude:v10 longitude:v12];
   [v9 distanceFromLocation:v14];
   v16 = v15;
-  v17 = 0;
+  isMoving = 0;
   self->_isMapViewInSyncWithLookAroundView = v15 < 10.0;
-  if (!v5 && v15 < 500.0)
+  if (!viewCopy && v15 < 500.0)
   {
-    v17 = [(LookAroundPIPStateMachine *)self->_stateMachine isMoving];
+    isMoving = [(LookAroundPIPStateMachine *)self->_stateMachine isMoving];
   }
 
-  v18 = 0;
-  if (v5 && v4)
+  isActive = 0;
+  if (viewCopy && finishedCopy)
   {
-    v18 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+    isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
   }
 
   v19 = sub_100798614();
@@ -164,7 +164,7 @@
     isMapViewInSyncWithLookAroundView = self->_isMapViewInSyncWithLookAroundView;
     v21 = @"NO";
     *v30 = 134219266;
-    if (v5)
+    if (viewCopy)
     {
       v22 = @"YES";
     }
@@ -185,7 +185,7 @@
       v23 = @"NO";
     }
 
-    if (v17)
+    if (isMoving)
     {
       v21 = @"YES";
     }
@@ -203,26 +203,26 @@
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "LookAroundView will end moving to coordinate=(%g, %g), distance=%g, finished=%@, isMapViewInSyncWithLookAroundView=%@, shouldSnapBack=%@", v30, 0x3Eu);
   }
 
-  if (v17)
+  if (isMoving)
   {
     lastHeading = self->_lastHeading;
-    v25 = [(MKMapView *)self->_mapView camera];
-    v26 = [v25 copy];
+    camera = [(MKMapView *)self->_mapView camera];
+    v26 = [camera copy];
 
     [v26 setCenterCoordinate:{v11, v13}];
     [(MKMapView *)self->_mapView setCamera:v26 animated:1];
     [(LookAroundPIPDataCoordinatorImpl *)self setIsMapViewInSyncWithLookAroundView:1];
-    v27 = [(LookAroundPIPDataCoordinatorImpl *)self lookAroundView];
-    [v27 setPresentationYaw:lastHeading];
+    lookAroundView = [(LookAroundPIPDataCoordinatorImpl *)self lookAroundView];
+    [lookAroundView setPresentationYaw:lastHeading];
 
 LABEL_23:
     goto LABEL_24;
   }
 
-  if (v18)
+  if (isActive)
   {
-    v28 = [(MKMapView *)self->_mapView camera];
-    v26 = [v28 copy];
+    camera2 = [(MKMapView *)self->_mapView camera];
+    v26 = [camera2 copy];
 
     [v26 centerCoordinateDistance];
     if (v29 < 950.0)
@@ -236,13 +236,13 @@ LABEL_23:
   }
 
 LABEL_24:
-  [(LookAroundPIPDataCoordinatorImpl *)self _didEndMovingLookAroundView:v5, *v30];
+  [(LookAroundPIPDataCoordinatorImpl *)self _didEndMovingLookAroundView:viewCopy, *v30];
 }
 
-- (void)_startMovingLookAroundViewToMapItem:(id)a3 orMuninMarker:(id)a4 heading:(double)a5 shouldZoom:(BOOL)a6
+- (void)_startMovingLookAroundViewToMapItem:(id)item orMuninMarker:(id)marker heading:(double)heading shouldZoom:(BOOL)zoom
 {
-  v10 = a3;
-  v11 = a4;
+  itemCopy = item;
+  markerCopy = marker;
   v12 = self->_stateMachine;
   if (![(LookAroundPIPStateMachine *)v12 canSetStateTo:3])
   {
@@ -250,9 +250,9 @@ LABEL_24:
   }
 
   [(LookAroundPIPStateMachine *)v12 setStateTo:3];
-  [v11 coordinate];
+  [markerCopy coordinate];
   v14 = v13;
-  [v11 coordinate];
+  [markerCopy coordinate];
   v16 = CLLocationCoordinate2DMake(v14, v15);
   v17 = sub_100798614();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -262,7 +262,7 @@ LABEL_24:
     *&buf[12] = 2048;
     *&buf[14] = v16.longitude;
     *&buf[22] = 2048;
-    v46 = a5;
+    headingCopy = heading;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "LookAroundView started moving to coordinate=(%g, %g), heading=%g", buf, 0x20u);
   }
 
@@ -271,7 +271,7 @@ LABEL_24:
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  LOBYTE(v46) = 0;
+  LOBYTE(headingCopy) = 0;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -289,8 +289,8 @@ LABEL_24:
   v21 = v19;
   v29 = v21;
   objc_copyWeak(&v32, &location);
-  v33 = a6;
-  v22 = [(MKLookAroundView *)lookAroundView moveToMapItem:v10 wantsCloseUpView:1 orMuninMarker:v11 withHeading:v28 completionHandler:a5];
+  zoomCopy = zoom;
+  v22 = [(MKLookAroundView *)lookAroundView moveToMapItem:itemCopy wantsCloseUpView:1 orMuninMarker:markerCopy withHeading:v28 completionHandler:heading];
   v23 = v22;
   if (!v22)
   {
@@ -321,15 +321,15 @@ LABEL_24:
     v41 = 2048;
     longitude = v16.longitude;
     v43 = 2048;
-    v44 = a5;
+    headingCopy2 = heading;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "MapView synchronizing with muninMarker at coordinate=(%g, %g), heading=%g", v39, 0x20u);
   }
 
-  v26 = [(MKMapView *)v18 camera];
-  v27 = [v26 copy];
+  camera = [(MKMapView *)v18 camera];
+  v27 = [camera copy];
 
   [v27 setCenterCoordinate:{v16.latitude, v16.longitude}];
-  [(LookAroundPIPDataCoordinatorImpl *)self setLookAroundViewHeading:a5];
+  [(LookAroundPIPDataCoordinatorImpl *)self setLookAroundViewHeading:heading];
   [(MKMapView *)v18 setCamera:v27 animated:1];
   [(LookAroundPIPDataCoordinatorImpl *)self _notifyObservers:15];
 
@@ -347,18 +347,18 @@ LABEL_13:
   }
 }
 
-- (void)_dispatchSelector:(SEL)a3 toObserver:(id)a4
+- (void)_dispatchSelector:(SEL)selector toObserver:(id)observer
 {
-  v6 = a4;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    ([v6 methodForSelector:a3])(v6, a3, self, self->_mapView);
+    ([observerCopy methodForSelector:selector])(observerCopy, selector, self, self->_mapView);
   }
 }
 
-- (SEL)_selectorForObserverEventType:(unint64_t)a3
+- (SEL)_selectorForObserverEventType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       result = "lookAroundPIPDataCoordinatorWillEnterLookArounPIP:";
@@ -440,10 +440,10 @@ LABEL_13:
   return result;
 }
 
-- (void)_notifyObservers:(unint64_t)a3
+- (void)_notifyObservers:(unint64_t)observers
 {
   v5 = [(LookAroundPIPDataCoordinatorImpl *)self _selectorForObserverEventType:?];
-  if (a3 > 0xC || ((1 << a3) & 0x1480) == 0)
+  if (observers > 0xC || ((1 << observers) & 0x1480) == 0)
   {
     v6 = sub_100798614();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -488,14 +488,14 @@ LABEL_13:
   }
 }
 
-- (void)_refineLabelMarker:(id)a3
+- (void)_refineLabelMarker:(id)marker
 {
-  v5 = a3;
-  objc_storeStrong(&self->_labelMarkerToRefine, a3);
-  [v5 coordinate];
+  markerCopy = marker;
+  objc_storeStrong(&self->_labelMarkerToRefine, marker);
+  [markerCopy coordinate];
   v7 = v6;
-  [v5 coordinate];
-  v9 = [[GEOMapItemIdentifier alloc] initWithMUID:objc_msgSend(v5 coordinate:{"businessID"), v7, v8}];
+  [markerCopy coordinate];
+  v9 = [[GEOMapItemIdentifier alloc] initWithMUID:objc_msgSend(markerCopy coordinate:{"businessID"), v7, v8}];
   v10 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:v9];
   [(MKMapServiceTicket *)self->_refineTicket cancel];
   v11 = +[MKMapService sharedService];
@@ -512,7 +512,7 @@ LABEL_13:
   v17[2] = sub_100E3475C;
   v17[3] = &unk_10165DCC8;
   objc_copyWeak(&v19, &location);
-  v16 = v5;
+  v16 = markerCopy;
   v18 = v16;
   [(MKMapServiceTicket *)v15 submitWithHandler:v17 networkActivity:0];
 
@@ -520,14 +520,14 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleMapViewDidResumeIfNeeded:(id)a3
+- (void)_handleMapViewDidResumeIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = self->_stateMachine;
   if ([(LookAroundPIPStateMachine *)v5 canSetStateTo:7])
   {
-    v6 = [v4 camera];
-    v7 = [v6 copy];
+    camera = [neededCopy camera];
+    v7 = [camera copy];
 
     [(MKLookAroundView *)self->_lookAroundView centerCoordinate];
     [v7 setCenterCoordinate:?];
@@ -537,13 +537,13 @@ LABEL_13:
     v8[2] = sub_100E34B44;
     v8[3] = &unk_101661738;
     v9 = v5;
-    [v4 setCamera:v7 animated:1 completionHandler:v8];
+    [neededCopy setCamera:v7 animated:1 completionHandler:v8];
   }
 }
 
-- (void)_moveLookAroundViewToMapItem:(id)a3
+- (void)_moveLookAroundViewToMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewPanStart:self->_mapView];
   v6[0] = _NSConcreteStackBlock;
@@ -551,7 +551,7 @@ LABEL_13:
   v6[2] = sub_100E34C50;
   v6[3] = &unk_101655D30;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = itemCopy;
   v7 = v5;
   [(LookAroundPIPDataCoordinatorImpl *)self _getMuninMarkerWithMapViewOrMapItem:v5 shouldWait:1 andContinue:v6];
 
@@ -559,10 +559,10 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)_moveLookAroundViewToCoordinate:(CLLocationCoordinate2D)a3
+- (void)_moveLookAroundViewToCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   objc_initWeak(&location, self);
   [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewPanStart:self->_mapView];
   v6[0] = _NSConcreteStackBlock;
@@ -593,26 +593,26 @@ LABEL_13:
   }
 }
 
-- (void)_handleMapView:(id)a3 didDidChangeLookAroundAvailability:(int64_t)a4
+- (void)_handleMapView:(id)view didDidChangeLookAroundAvailability:(int64_t)availability
 {
-  v6 = a3;
-  [v6 centerCoordinate];
+  viewCopy = view;
+  [viewCopy centerCoordinate];
   v8 = v7;
   v10 = v9;
-  [v6 _zoomLevel];
+  [viewCopy _zoomLevel];
   v12 = v11;
 
   v13 = sub_100798614();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    if (a4 > 2)
+    if (availability > 2)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = *(&off_101655E68 + a4);
+      v14 = *(&off_101655E68 + availability);
     }
 
     v15 = 138413058;
@@ -630,12 +630,12 @@ LABEL_13:
   [(LookAroundPIPDataCoordinatorImpl *)self _moveLookAroundViewIfNeeded];
 }
 
-- (void)_handleMapViewTap:(id)a3 atPoint:(CGPoint)a4
+- (void)_handleMapViewTap:(id)tap atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  if (self->_mapView == v7 && self->_lookAroundView && [(LookAroundPIPStateMachine *)self->_stateMachine isActive])
+  y = point.y;
+  x = point.x;
+  tapCopy = tap;
+  if (self->_mapView == tapCopy && self->_lookAroundView && [(LookAroundPIPStateMachine *)self->_stateMachine isActive])
   {
     if ([(LookAroundPIPStateMachine *)self->_stateMachine canSetStateTo:1])
     {
@@ -671,40 +671,40 @@ LABEL_13:
   }
 }
 
-- (void)_handleMapViewZoomStop:(id)a3 zoomGestureType:(int64_t)a4 zoomDirection:(int64_t)a5
+- (void)_handleMapViewZoomStop:(id)stop zoomGestureType:(int64_t)type zoomDirection:(int64_t)direction
 {
-  v8 = a3;
-  if (a4 == 2 && a5 == 1)
+  stopCopy = stop;
+  if (type == 2 && direction == 1)
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = 19;
 LABEL_7:
-    [(LookAroundPIPDataCoordinatorImpl *)v9 _notifyObservers:v10];
+    [(LookAroundPIPDataCoordinatorImpl *)selfCopy2 _notifyObservers:v10];
     goto LABEL_8;
   }
 
-  if (a4 == 3 && a5 == 2)
+  if (type == 3 && direction == 2)
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = 20;
     goto LABEL_7;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
-    [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewOneFingerPanWithZoomDirection:a5];
+    [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewOneFingerPanWithZoomDirection:direction];
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
-    [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewPinchWithZoomDirection:a5];
+    [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewPinchWithZoomDirection:direction];
   }
 
 LABEL_8:
-  [v8 centerCoordinate];
+  [stopCopy centerCoordinate];
   v12 = v11;
   v14 = v13;
-  [v8 _zoomLevel];
+  [stopCopy _zoomLevel];
   v16 = v15;
   v17 = sub_100798614();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -722,16 +722,16 @@ LABEL_8:
   [(LookAroundPIPDataCoordinatorImpl *)self _moveLookAroundViewIfNeeded];
 }
 
-- (void)_handleMapViewOneFingerPanWithZoomDirection:(int64_t)a3
+- (void)_handleMapViewOneFingerPanWithZoomDirection:(int64_t)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     v3 = 17;
   }
 
   else
   {
-    if (a3 != 2)
+    if (direction != 2)
     {
       return;
     }
@@ -742,16 +742,16 @@ LABEL_8:
   [(LookAroundPIPDataCoordinatorImpl *)self _notifyObservers:v3];
 }
 
-- (void)_handleMapViewPinchWithZoomDirection:(int64_t)a3
+- (void)_handleMapViewPinchWithZoomDirection:(int64_t)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     v3 = 21;
   }
 
   else
   {
-    if (a3 != 2)
+    if (direction != 2)
     {
       return;
     }
@@ -762,13 +762,13 @@ LABEL_8:
   [(LookAroundPIPDataCoordinatorImpl *)self _notifyObservers:v3];
 }
 
-- (void)_handleMapViewRotateStop:(id)a3
+- (void)_handleMapViewRotateStop:(id)stop
 {
-  v4 = a3;
-  [v4 centerCoordinate];
+  stopCopy = stop;
+  [stopCopy centerCoordinate];
   v6 = v5;
   v8 = v7;
-  [v4 presentationYaw];
+  [stopCopy presentationYaw];
   v10 = v9;
 
   v11 = sub_100798614();
@@ -787,13 +787,13 @@ LABEL_8:
   [(LookAroundPIPDataCoordinatorImpl *)self _notifyObservers:11];
 }
 
-- (void)_handleMapViewPanStop:(id)a3 shouldMoveLookAroundView:(BOOL)a4
+- (void)_handleMapViewPanStop:(id)stop shouldMoveLookAroundView:(BOOL)view
 {
-  v4 = a4;
-  v6 = a3;
+  viewCopy = view;
+  stopCopy = stop;
   if ([(LookAroundPIPDataCoordinatorImpl *)self isPanningMapView])
   {
-    [v6 centerCoordinate];
+    [stopCopy centerCoordinate];
     v8 = v7;
     v10 = v9;
     lastHeading = self->_lastHeading;
@@ -813,7 +813,7 @@ LABEL_8:
     self->_lastCoordinate.latitude = v8;
     self->_lastCoordinate.longitude = v10;
     [(LookAroundPIPDataCoordinatorImpl *)self _notifyObservers:8];
-    if (v4 && [(LookAroundPIPDataCoordinatorImpl *)self isLookAroundDataAvailable])
+    if (viewCopy && [(LookAroundPIPDataCoordinatorImpl *)self isLookAroundDataAvailable])
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
@@ -831,7 +831,7 @@ LABEL_8:
   }
 }
 
-- (void)_handleMapViewRotatingIfNeeded:(id)a3
+- (void)_handleMapViewRotatingIfNeeded:(id)needed
 {
   if (self->_isRotatingMapView)
   {
@@ -839,12 +839,12 @@ LABEL_8:
   }
 }
 
-- (void)_handleMapViewPanningIfNeeded:(id)a3
+- (void)_handleMapViewPanningIfNeeded:(id)needed
 {
-  v10 = a3;
+  neededCopy = needed;
   if ([(LookAroundPIPDataCoordinatorImpl *)self isPanningMapView])
   {
-    [v10 centerCoordinate];
+    [neededCopy centerCoordinate];
     v5 = v4;
     longitude = self->_lastCoordinate.longitude;
     v8 = vabdd_f64(self->_lastCoordinate.latitude, v7);
@@ -861,13 +861,13 @@ LABEL_8:
   }
 }
 
-- (void)_handleMapViewZoomStart:(id)a3
+- (void)_handleMapViewZoomStart:(id)start
 {
-  v4 = a3;
-  [v4 centerCoordinate];
+  startCopy = start;
+  [startCopy centerCoordinate];
   v6 = v5;
   v8 = v7;
-  [v4 _zoomLevel];
+  [startCopy _zoomLevel];
   v10 = v9;
 
   v11 = sub_100798614();
@@ -885,13 +885,13 @@ LABEL_8:
   self->_isZoomingMapView = 1;
 }
 
-- (void)_handleMapViewRotateStart:(id)a3
+- (void)_handleMapViewRotateStart:(id)start
 {
-  v4 = a3;
-  [v4 centerCoordinate];
+  startCopy = start;
+  [startCopy centerCoordinate];
   v6 = v5;
   v8 = v7;
-  [v4 presentationYaw];
+  [startCopy presentationYaw];
   v10 = v9;
 
   v11 = sub_100798614();
@@ -910,13 +910,13 @@ LABEL_8:
   [(LookAroundPIPDataCoordinatorImpl *)self _notifyObservers:9];
 }
 
-- (void)_handleMapViewPanStart:(id)a3
+- (void)_handleMapViewPanStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if ([(LookAroundPIPStateMachine *)self->_stateMachine canSetStateTo:4])
   {
     [(LookAroundPIPStateMachine *)self->_stateMachine setStateTo:4];
-    [v4 centerCoordinate];
+    [startCopy centerCoordinate];
     v6 = v5;
     v8 = v7;
     v9 = sub_100798614();
@@ -1008,8 +1008,8 @@ LABEL_8:
   [(LookAroundPIPDataCoordinatorImpl *)self coordinateMapView:v5 didChangeLookAroundAvailability:[(MKMapView *)v5 _lookAroundAvailability]];
   if ([(MKMapView *)v5 _lookAroundAvailability]!= 2)
   {
-    v3 = [(MKMapView *)v5 camera];
-    v4 = [v3 copy];
+    camera = [(MKMapView *)v5 camera];
+    v4 = [camera copy];
 
     [v4 setCenterCoordinateDistance:950.0];
     [(MKMapView *)v5 setCamera:v4 animated:0];
@@ -1038,15 +1038,15 @@ LABEL_8:
         v16 = v15;
         [(MKLookAroundView *)self->_lookAroundView centerCoordinate];
         v18 = v17;
-        v19 = [(LookAroundPIPStateMachine *)self->_stateMachine state];
-        if (v19 > 7)
+        state = [(LookAroundPIPStateMachine *)self->_stateMachine state];
+        if (state > 7)
         {
           v20 = &stru_1016631F0;
         }
 
         else
         {
-          v20 = off_101656310[v19];
+          v20 = off_101656310[state];
         }
 
         v21 = v20;
@@ -1101,14 +1101,14 @@ LABEL_8:
   }
 }
 
-- (void)coordinateLookAroundViewDidChangeVisibleRegion:(id)a3
+- (void)coordinateLookAroundViewDidChangeVisibleRegion:(id)region
 {
-  v4 = a3;
-  v5 = v4;
+  regionCopy = region;
+  v5 = regionCopy;
   lookAroundView = self->_lookAroundView;
   if (lookAroundView)
   {
-    v7 = lookAroundView == v4;
+    v7 = lookAroundView == regionCopy;
   }
 
   else
@@ -1118,10 +1118,10 @@ LABEL_8:
 
   if (v7)
   {
-    v11 = v4;
-    v8 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+    v11 = regionCopy;
+    isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
     v5 = v11;
-    if (v8)
+    if (isActive)
     {
       [(MKLookAroundView *)v11 presentationYaw];
       self->_lookAroundViewHeading = v9;
@@ -1143,12 +1143,12 @@ LABEL_8:
   }
 }
 
-- (void)coordinateLookAroundViewDidStopUserInteraction:(id)a3
+- (void)coordinateLookAroundViewDidStopUserInteraction:(id)interaction
 {
   lookAroundView = self->_lookAroundView;
   if (lookAroundView)
   {
-    v4 = lookAroundView == a3;
+    v4 = lookAroundView == interaction;
   }
 
   else
@@ -1165,12 +1165,12 @@ LABEL_8:
   }
 }
 
-- (void)coordinateLookAroundViewDidStartUserInteraction:(id)a3
+- (void)coordinateLookAroundViewDidStartUserInteraction:(id)interaction
 {
   lookAroundView = self->_lookAroundView;
   if (lookAroundView)
   {
-    v4 = lookAroundView == a3;
+    v4 = lookAroundView == interaction;
   }
 
   else
@@ -1187,70 +1187,70 @@ LABEL_8:
   }
 }
 
-- (void)coordinateMapView:(id)a3 didChangeLookAroundAvailability:(int64_t)a4
+- (void)coordinateMapView:(id)view didChangeLookAroundAvailability:(int64_t)availability
 {
-  v6 = a3;
-  if (self->_mapView == v6)
+  viewCopy = view;
+  if (self->_mapView == viewCopy)
   {
     if (self->_lookAroundView)
     {
-      v8 = v6;
-      v7 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
-      v6 = v8;
-      if (v7)
+      v8 = viewCopy;
+      isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+      viewCopy = v8;
+      if (isActive)
       {
-        [(LookAroundPIPDataCoordinatorImpl *)self _handleMapView:v8 didDidChangeLookAroundAvailability:a4];
+        [(LookAroundPIPDataCoordinatorImpl *)self _handleMapView:v8 didDidChangeLookAroundAvailability:availability];
         [(MKLookAroundView *)self->_lookAroundView setUserInteractionEnabled:[(LookAroundPIPDataCoordinatorImpl *)self isLookAroundDataAvailable]];
-        v6 = v8;
+        viewCopy = v8;
       }
     }
   }
 }
 
-- (void)coordinateMapViewDidChangeVisibleRegion:(id)a3
+- (void)coordinateMapViewDidChangeVisibleRegion:(id)region
 {
-  v4 = a3;
-  if (self->_mapView == v4)
+  regionCopy = region;
+  if (self->_mapView == regionCopy)
   {
     if (self->_lookAroundView)
     {
-      v6 = v4;
-      v5 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
-      v4 = v6;
-      if (v5)
+      v6 = regionCopy;
+      isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+      regionCopy = v6;
+      if (isActive)
       {
         [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewPanningIfNeeded:v6];
         [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewRotatingIfNeeded:v6];
-        v4 = v6;
+        regionCopy = v6;
       }
     }
   }
 }
 
-- (void)coordinateMapViewRegionDidChange:(id)a3
+- (void)coordinateMapViewRegionDidChange:(id)change
 {
-  v4 = a3;
-  if (self->_mapView == v4)
+  changeCopy = change;
+  if (self->_mapView == changeCopy)
   {
     if (self->_lookAroundView)
     {
-      v6 = v4;
-      v5 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
-      v4 = v6;
-      if (v5)
+      v6 = changeCopy;
+      isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+      changeCopy = v6;
+      if (isActive)
       {
         [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewDidResumeIfNeeded:v6];
-        v4 = v6;
+        changeCopy = v6;
       }
     }
   }
 }
 
-- (void)coordinateMapView:(id)a3 willSelectLabelMarker:(id)a4
+- (void)coordinateMapView:(id)view willSelectLabelMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_mapView == v6 && self->_lookAroundView && [(LookAroundPIPStateMachine *)self->_stateMachine isActive])
+  viewCopy = view;
+  markerCopy = marker;
+  if (self->_mapView == viewCopy && self->_lookAroundView && [(LookAroundPIPStateMachine *)self->_stateMachine isActive])
   {
     if ([(LookAroundPIPStateMachine *)self->_stateMachine canSetStateTo:1])
     {
@@ -1269,55 +1269,55 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = markerCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "MapView will refine label marker %@", &v10, 0xCu);
     }
 
-    [(LookAroundPIPDataCoordinatorImpl *)self _refineLabelMarker:v7];
+    [(LookAroundPIPDataCoordinatorImpl *)self _refineLabelMarker:markerCopy];
   }
 }
 
-- (void)coordinateMapViewDidStopUserInteraction:(id)a3
+- (void)coordinateMapViewDidStopUserInteraction:(id)interaction
 {
-  v4 = a3;
-  if (self->_mapView == v4)
+  interactionCopy = interaction;
+  if (self->_mapView == interactionCopy)
   {
     if (self->_lookAroundView)
     {
-      v6 = v4;
-      v5 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
-      v4 = v6;
-      if (v5)
+      v6 = interactionCopy;
+      isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+      interactionCopy = v6;
+      if (isActive)
       {
         [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewPanStop:v6 shouldMoveLookAroundView:1];
         self->_isMapViewUserInteractionStarted = 0;
         [(MKLookAroundView *)self->_lookAroundView setUserInteractionEnabled:[(LookAroundPIPDataCoordinatorImpl *)self isLookAroundDataAvailable]];
-        v4 = v6;
+        interactionCopy = v6;
       }
     }
   }
 }
 
-- (void)coordinateMapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)coordinateMapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  v12 = a3;
-  if (self->_mapView == v12)
+  viewCopy = view;
+  if (self->_mapView == viewCopy)
   {
     if (self->_lookAroundView)
     {
-      v14 = v12;
-      v13 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
-      v12 = v14;
-      if (v13)
+      v14 = viewCopy;
+      isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+      viewCopy = v14;
+      if (isActive)
       {
-        if (a4 == 1)
+        if (gesture == 1)
         {
-          [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewZoomStop:v14 zoomGestureType:a6 zoomDirection:a5];
+          [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewZoomStop:v14 zoomGestureType:type zoomDirection:direction];
         }
 
         else
         {
-          if (a4 != 2)
+          if (gesture != 2)
           {
             goto LABEL_2;
           }
@@ -1325,7 +1325,7 @@ LABEL_8:
           [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewRotateStop:v14];
         }
 
-        v12 = v14;
+        viewCopy = v14;
       }
     }
   }
@@ -1333,31 +1333,31 @@ LABEL_8:
 LABEL_2:
 }
 
-- (void)coordinateMapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)coordinateMapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  v7 = a3;
-  if (self->_mapView == v7)
+  viewCopy = view;
+  if (self->_mapView == viewCopy)
   {
     if (self->_lookAroundView)
     {
-      v9 = v7;
-      v8 = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
-      v7 = v9;
-      if (v8)
+      v9 = viewCopy;
+      isActive = [(LookAroundPIPStateMachine *)self->_stateMachine isActive];
+      viewCopy = v9;
+      if (isActive)
       {
-        if (a4 == 2)
+        if (gesture == 2)
         {
           [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewRotateStart:v9];
         }
 
-        else if (a4 == 1)
+        else if (gesture == 1)
         {
           [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewZoomStart:v9];
         }
 
         else
         {
-          if (a4)
+          if (gesture)
           {
             goto LABEL_2;
           }
@@ -1365,7 +1365,7 @@ LABEL_2:
           [(LookAroundPIPDataCoordinatorImpl *)self _handleMapViewPanStart:v9];
         }
 
-        v7 = v9;
+        viewCopy = v9;
       }
     }
   }
@@ -1373,10 +1373,10 @@ LABEL_2:
 LABEL_2:
 }
 
-- (void)coordinateMapViewDidStartUserInteraction:(id)a3
+- (void)coordinateMapViewDidStartUserInteraction:(id)interaction
 {
-  v4 = a3;
-  if (self->_mapView == v4)
+  interactionCopy = interaction;
+  if (self->_mapView == interactionCopy)
   {
     if (self->_lookAroundView)
     {
@@ -1401,9 +1401,9 @@ LABEL_2:
   }
 }
 
-- (void)exitLookAroundPIPAfter:(double)a3 withCompletion:(id)a4
+- (void)exitLookAroundPIPAfter:(double)after withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_lookAroundView)
   {
     v7 = sub_100798614();
@@ -1451,21 +1451,21 @@ LABEL_2:
       self->_lookAroundViewDidBecomeAdequatelyDrawnObserver = 0;
     }
 
-    v13 = [(MKMapView *)self->_mapView _mapLayer];
-    [v13 setDesiredMapMode:0];
+    _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+    [_mapLayer setDesiredMapMode:0];
 
     [(LookAroundPIPStateMachine *)self->_stateMachine setStateTo:0];
     lookAroundView = self->_lookAroundView;
     self->_lookAroundView = 0;
 
     objc_initWeak(buf, self);
-    v15 = dispatch_time(0, (a3 * 1000000000.0));
+    v15 = dispatch_time(0, (after * 1000000000.0));
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100E36A78;
     v16[3] = &unk_101660648;
     objc_copyWeak(&v18, buf);
-    v17 = v6;
+    v17 = completionCopy;
     dispatch_after(v15, &_dispatch_main_q, v16);
 
     objc_destroyWeak(&v18);
@@ -1473,9 +1473,9 @@ LABEL_2:
   }
 }
 
-- (void)_onSuccessProceedToEnterLookArounPIP:(BOOL)a3
+- (void)_onSuccessProceedToEnterLookArounPIP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     [(LookAroundPIPStateMachine *)self->_stateMachine setStateTo:2];
     [(MKMapView *)self->_mapView centerCoordinate];
@@ -1514,11 +1514,11 @@ LABEL_2:
   }
 }
 
-- (void)_onSuccess:(BOOL)a3 synchronizeMapViewCenterToLookAroundViewCenterAndContinue:(id)a4
+- (void)_onSuccess:(BOOL)success synchronizeMapViewCenterToLookAroundViewCenterAndContinue:(id)continue
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  successCopy = success;
+  continueCopy = continue;
+  if (successCopy)
   {
     lookAroundView = self->_lookAroundView;
     if (lookAroundView)
@@ -1540,14 +1540,14 @@ LABEL_2:
     }
   }
 
-  v6[2](v6, v4);
+  continueCopy[2](continueCopy, successCopy);
 }
 
-- (void)_onSuccess:(BOOL)a3 waitForLookAroundViewToBecomeAdequatelyDrawnIfNeededAndContinue:(id)a4
+- (void)_onSuccess:(BOOL)success waitForLookAroundViewToBecomeAdequatelyDrawnIfNeededAndContinue:(id)continue
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v4)
+  successCopy = success;
+  continueCopy = continue;
+  if (!successCopy)
   {
     goto LABEL_6;
   }
@@ -1586,7 +1586,7 @@ LABEL_2:
     v20[3] = &unk_101655DA8;
     objc_copyWeak(&v22, buf);
     v17 = MKLookAroundViewDidBecomeAdequatelyDrawnNotification;
-    v21 = v6;
+    v21 = continueCopy;
     v18 = [v14 addObserverForName:v17 object:v15 queue:v16 usingBlock:v20];
     lookAroundViewDidBecomeAdequatelyDrawnObserver = self->_lookAroundViewDidBecomeAdequatelyDrawnObserver;
     self->_lookAroundViewDidBecomeAdequatelyDrawnObserver = v18;
@@ -1598,47 +1598,47 @@ LABEL_2:
   else
   {
 LABEL_6:
-    (*(v6 + 2))(v6, v4);
+    (*(continueCopy + 2))(continueCopy, successCopy);
   }
 }
 
-- (void)_onSuccess:(BOOL)a3 setLookAroundViewEntryPointWithMapItem:(id)a4 orMuninMarker:(id)a5 andContinue:(id)a6
+- (void)_onSuccess:(BOOL)success setLookAroundViewEntryPointWithMapItem:(id)item orMuninMarker:(id)marker andContinue:(id)continue
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v11 && v8 && ([(MKLookAroundView *)self->_lookAroundView hasEnteredLookAround]& 1) == 0)
+  successCopy = success;
+  itemCopy = item;
+  markerCopy = marker;
+  continueCopy = continue;
+  if (markerCopy && successCopy && ([(MKLookAroundView *)self->_lookAroundView hasEnteredLookAround]& 1) == 0)
   {
-    if ([v10 _hasLookAroundStorefront])
+    if ([itemCopy _hasLookAroundStorefront])
     {
       v13 = sub_100798614();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v10 name];
+        name = [itemCopy name];
         *buf = 138412290;
-        v25 = v14;
+        v25 = name;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Entering lookAroundView with mapItem=%@", buf, 0xCu);
       }
 
       lookAroundView = self->_lookAroundView;
-      v16 = [MKLookAroundEntryPoint entryPointWithMapItem:v10];
+      v16 = [MKLookAroundEntryPoint entryPointWithMapItem:itemCopy];
       [(MKLookAroundView *)lookAroundView enterLookAroundWithEntryPoint:v16];
     }
 
     else
     {
       [(MKMapView *)self->_mapView presentationYaw];
-      if (v10)
+      if (itemCopy)
       {
-        [v11 coordinate];
-        [v11 coordinate];
-        [v10 _coordinate];
-        [v10 _coordinate];
+        [markerCopy coordinate];
+        [markerCopy coordinate];
+        [itemCopy _coordinate];
+        [itemCopy _coordinate];
         GEOBearingFromCoordinateToCoordinate();
         v19 = v18;
-        v20 = [v10 name];
-        v16 = [NSString stringWithFormat:@"and mapItem=%@", v20];
+        name2 = [itemCopy name];
+        v16 = [NSString stringWithFormat:@"and mapItem=%@", name2];
       }
 
       else
@@ -1656,19 +1656,19 @@ LABEL_6:
       }
 
       v22 = self->_lookAroundView;
-      v23 = [MKLookAroundEntryPoint entryPointWithMuninMarker:v11 heading:v19];
+      v23 = [MKLookAroundEntryPoint entryPointWithMuninMarker:markerCopy heading:v19];
       [(MKLookAroundView *)v22 enterLookAroundWithEntryPoint:v23];
     }
   }
 
-  v12[2](v12, v8);
+  continueCopy[2](continueCopy, successCopy);
 }
 
-- (void)_getMuninMarkerAtCoordinate:(CLLocationCoordinate2D)a3 shouldWait:(BOOL)a4 andContinue:(id)a5
+- (void)_getMuninMarkerAtCoordinate:(CLLocationCoordinate2D)coordinate shouldWait:(BOOL)wait andContinue:(id)continue
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  continueCopy = continue;
   v10 = self->_mapView;
   v11 = sub_100798614();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1680,49 +1680,49 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Asking mapView for a muninMarker at coordinate=(%g, %g)", buf, 0x16u);
   }
 
-  v12 = [(MKMapView *)v10 _mapLayer];
+  _mapLayer = [(MKMapView *)v10 _mapLayer];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100E374BC;
   v16[3] = &unk_101655D80;
-  v21 = a4;
+  waitCopy = wait;
   v17 = v10;
-  v18 = v9;
+  v18 = continueCopy;
   v19 = latitude;
   v20 = longitude;
-  v13 = v9;
+  v13 = continueCopy;
   v14 = v10;
-  v15 = [v12 muninMarkerAtCoordinate:v16 completeMarkerHandler:{latitude, longitude}];
+  v15 = [_mapLayer muninMarkerAtCoordinate:v16 completeMarkerHandler:{latitude, longitude}];
 }
 
-- (void)_getEntryMuninMarkerAtCoordinate:(CLLocationCoordinate2D)a3 shouldWait:(BOOL)a4 andContinue:(id)a5
+- (void)_getEntryMuninMarkerAtCoordinate:(CLLocationCoordinate2D)coordinate shouldWait:(BOOL)wait andContinue:(id)continue
 {
-  v5 = a4;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  waitCopy = wait;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   lookAroundView = self->_lookAroundView;
-  v10 = a5;
+  continueCopy = continue;
   if ([(MKLookAroundView *)lookAroundView hasEnteredLookAround])
   {
-    v10[2](v10, 1, 0);
+    continueCopy[2](continueCopy, 1, 0);
   }
 
   else
   {
-    [(LookAroundPIPDataCoordinatorImpl *)self _getMuninMarkerAtCoordinate:v5 shouldWait:v10 andContinue:latitude, longitude];
+    [(LookAroundPIPDataCoordinatorImpl *)self _getMuninMarkerAtCoordinate:waitCopy shouldWait:continueCopy andContinue:latitude, longitude];
   }
 }
 
-- (void)_getMuninMarkerWithMapViewOrMapItem:(id)a3 shouldWait:(BOOL)a4 andContinue:(id)a5
+- (void)_getMuninMarkerWithMapViewOrMapItem:(id)item shouldWait:(BOOL)wait andContinue:(id)continue
 {
-  v6 = a4;
-  v11 = a3;
+  waitCopy = wait;
+  itemCopy = item;
   v8 = self->_lookAroundView;
   stateMachine = self->_stateMachine;
-  v10 = a5;
+  continueCopy = continue;
   if ([(LookAroundPIPStateMachine *)stateMachine isActive]|| ![(MKLookAroundView *)v8 hasEnteredLookAround])
   {
-    [v11 closeUpViewCoordinate];
+    [itemCopy closeUpViewCoordinate];
   }
 
   else
@@ -1730,19 +1730,19 @@ LABEL_6:
     [(MKLookAroundView *)v8 centerCoordinate];
   }
 
-  [(LookAroundPIPDataCoordinatorImpl *)self _getMuninMarkerAtCoordinate:v6 shouldWait:v10 andContinue:?];
+  [(LookAroundPIPDataCoordinatorImpl *)self _getMuninMarkerAtCoordinate:waitCopy shouldWait:continueCopy andContinue:?];
 }
 
-- (void)_getEntryMuninMarkerWithMapViewOrMapItem:(id)a3 shouldWait:(BOOL)a4 andContinue:(id)a5
+- (void)_getEntryMuninMarkerWithMapViewOrMapItem:(id)item shouldWait:(BOOL)wait andContinue:(id)continue
 {
-  v6 = a4;
-  v11 = a3;
+  waitCopy = wait;
+  itemCopy = item;
   v8 = self->_lookAroundView;
   stateMachine = self->_stateMachine;
-  v10 = a5;
+  continueCopy = continue;
   if ([(LookAroundPIPStateMachine *)stateMachine isActive]|| ![(MKLookAroundView *)v8 hasEnteredLookAround])
   {
-    [v11 closeUpViewCoordinate];
+    [itemCopy closeUpViewCoordinate];
   }
 
   else
@@ -1750,30 +1750,30 @@ LABEL_6:
     [(MKLookAroundView *)v8 centerCoordinate];
   }
 
-  [(LookAroundPIPDataCoordinatorImpl *)self _getEntryMuninMarkerAtCoordinate:v6 shouldWait:v10 andContinue:?];
+  [(LookAroundPIPDataCoordinatorImpl *)self _getEntryMuninMarkerAtCoordinate:waitCopy shouldWait:continueCopy andContinue:?];
 }
 
-- (void)enterLookAroundPIPWithLookAroundView:(id)a3 mapItem:(id)a4
+- (void)enterLookAroundPIPWithLookAroundView:(id)view mapItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  itemCopy = item;
   if (!self->_lookAroundView)
   {
-    objc_storeStrong(&self->_lookAroundView, a3);
-    v9 = [(MKMapView *)self->_mapView _mapLayer];
-    [v9 setDesiredMapMode:3];
+    objc_storeStrong(&self->_lookAroundView, view);
+    _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+    [_mapLayer setDesiredMapMode:3];
 
     [(LookAroundPIPStateMachine *)self->_stateMachine setStateTo:0];
-    if (v8)
+    if (itemCopy)
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [NSString stringWithFormat:@", mapItem=<%@: %p>", v11, v8];
+      itemCopy = [NSString stringWithFormat:@", mapItem=<%@: %p>", v11, itemCopy];
     }
 
     else
     {
-      v12 = &stru_1016631F0;
+      itemCopy = &stru_1016631F0;
     }
 
     v13 = sub_100798614();
@@ -1787,7 +1787,7 @@ LABEL_6:
       v22 = 2048;
       v23 = lookAroundView;
       v24 = 2112;
-      v25 = v12;
+      v25 = itemCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Enter LookAround PIP with lookAroundView=<%@: %p>%@", buf, 0x20u);
     }
 
@@ -1797,7 +1797,7 @@ LABEL_6:
     v17[2] = sub_100E37C6C;
     v17[3] = &unk_101655D30;
     objc_copyWeak(&v19, buf);
-    v18 = v8;
+    v18 = itemCopy;
     [(LookAroundPIPDataCoordinatorImpl *)self _getEntryMuninMarkerWithMapViewOrMapItem:v18 shouldWait:0 andContinue:v17];
 
     objc_destroyWeak(&v19);
@@ -1811,18 +1811,18 @@ LABEL_6:
   v4 = v3;
   [(MKMapView *)self->_mapView centerCoordinate];
   v6 = v5;
-  v7 = [(MKMapView *)self->_mapView _mapLayer];
-  v8 = [v7 muninMarkerAtCoordinate:{v4, v6}];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  v8 = [_mapLayer muninMarkerAtCoordinate:{v4, v6}];
 
   return v8;
 }
 
-- (void)_nonselectingTapGestureRecognizerAction:(id)a3
+- (void)_nonselectingTapGestureRecognizerAction:(id)action
 {
   mapView = self->_mapView;
-  v5 = a3;
-  v10 = [(LookAroundPIPDataCoordinatorImpl *)self mapView];
-  [v5 locationInView:v10];
+  actionCopy = action;
+  mapView = [(LookAroundPIPDataCoordinatorImpl *)self mapView];
+  [actionCopy locationInView:mapView];
   v7 = v6;
   v9 = v8;
 
@@ -1831,8 +1831,8 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(MKMapView *)self->_mapView _nonselectingTapGestureRecognizer];
-  [v3 removeTarget:self action:0];
+  _nonselectingTapGestureRecognizer = [(MKMapView *)self->_mapView _nonselectingTapGestureRecognizer];
+  [_nonselectingTapGestureRecognizer removeTarget:self action:0];
 
   [(MKMapServiceTicket *)self->_refineTicket cancel];
   refineTicket = self->_refineTicket;
@@ -1843,9 +1843,9 @@ LABEL_6:
   [(LookAroundPIPDataCoordinatorImpl *)&v5 dealloc];
 }
 
-- (LookAroundPIPDataCoordinatorImpl)initWithMapView:(id)a3
+- (LookAroundPIPDataCoordinatorImpl)initWithMapView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = LookAroundPIPDataCoordinatorImpl;
   v6 = [(LookAroundPIPDataCoordinatorImpl *)&v13 init];
@@ -1855,9 +1855,9 @@ LABEL_6:
     observers = v6->_observers;
     v6->_observers = v7;
 
-    objc_storeStrong(&v6->_mapView, a3);
-    v9 = [(MKMapView *)v6->_mapView _nonselectingTapGestureRecognizer];
-    [v9 addTarget:v6 action:"_nonselectingTapGestureRecognizerAction:"];
+    objc_storeStrong(&v6->_mapView, view);
+    _nonselectingTapGestureRecognizer = [(MKMapView *)v6->_mapView _nonselectingTapGestureRecognizer];
+    [_nonselectingTapGestureRecognizer addTarget:v6 action:"_nonselectingTapGestureRecognizerAction:"];
 
     v10 = objc_alloc_init(LookAroundPIPStateMachine);
     stateMachine = v6->_stateMachine;

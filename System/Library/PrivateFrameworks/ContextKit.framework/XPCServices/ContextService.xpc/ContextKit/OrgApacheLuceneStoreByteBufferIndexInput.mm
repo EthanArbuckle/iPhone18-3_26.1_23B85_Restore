@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneStoreByteBufferIndexInput
 - (char)readByte;
-- (char)readByteWithLong:(int64_t)a3;
-- (id)buildSliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
+- (char)readByteWithLong:(int64_t)long;
+- (id)buildSliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong;
 - (id)clone;
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong;
 - (int)readInt;
-- (int)readIntWithLong:(int64_t)a3;
+- (int)readIntWithLong:(int64_t)long;
 - (int64_t)getFilePointer;
 - (int64_t)readLong;
-- (int64_t)readLongWithLong:(int64_t)a3;
+- (int64_t)readLongWithLong:(int64_t)long;
 - (signed)readShort;
-- (signed)readShortWithLong:(int64_t)a3;
+- (signed)readShortWithLong:(int64_t)long;
 - (void)close;
 - (void)dealloc;
-- (void)freeBufferWithJavaNioByteBuffer:(id)a3;
-- (void)seekWithLong:(int64_t)a3;
+- (void)freeBufferWithJavaNioByteBuffer:(id)buffer;
+- (void)seekWithLong:(int64_t)long;
 - (void)unsetBuffers;
 @end
 
@@ -77,9 +77,9 @@
   return (curBufIndex << chunkSizePower) + [(JavaNioBuffer *)curBuf position];
 }
 
-- (void)seekWithLong:(int64_t)a3
+- (void)seekWithLong:(int64_t)long
 {
-  v4 = a3 >> self->chunkSizePower_;
+  v4 = long >> self->chunkSizePower_;
   if (self->curBufIndex_ == v4)
   {
     curBuf = self->curBuf_;
@@ -88,7 +88,7 @@
       JreThrowNullPointerException();
     }
 
-    [(JavaNioBuffer *)curBuf positionWithInt:self->chunkSizeMask_ & a3];
+    [(JavaNioBuffer *)curBuf positionWithInt:self->chunkSizeMask_ & long];
   }
 
   else
@@ -112,13 +112,13 @@ LABEL_9:
       JreThrowNullPointerException();
     }
 
-    [(IOSClass *)v8 positionWithInt:self->chunkSizeMask_ & a3];
+    [(IOSClass *)v8 positionWithInt:self->chunkSizeMask_ & long];
     self->curBufIndex_ = v4;
     JreStrongAssign(&self->curBuf_, v8);
   }
 }
 
-- (char)readByteWithLong:(int64_t)a3
+- (char)readByteWithLong:(int64_t)long
 {
   buffers = self->buffers_;
   if (!buffers)
@@ -126,11 +126,11 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v5 = a3 >> self->chunkSizePower_;
+  v5 = long >> self->chunkSizePower_;
   size = buffers->super.size_;
   if ((v5 & 0x80000000) != 0 || size <= v5)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> self->chunkSizePower_);
+    IOSArray_throwOutOfBoundsWithMsg(size, long >> self->chunkSizePower_);
   }
 
   v7 = (&buffers->elementType_)[v5];
@@ -140,12 +140,12 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  return [(IOSClass *)v7 getWithInt:self->chunkSizeMask_ & a3];
+  return [(IOSClass *)v7 getWithInt:self->chunkSizeMask_ & long];
 }
 
-- (signed)readShortWithLong:(int64_t)a3
+- (signed)readShortWithLong:(int64_t)long
 {
-  v4 = a3 >> self->chunkSizePower_;
+  v4 = long >> self->chunkSizePower_;
   buffers = self->buffers_;
   if (!buffers)
   {
@@ -165,12 +165,12 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  return [(IOSClass *)v7 getShortWithInt:self->chunkSizeMask_ & a3];
+  return [(IOSClass *)v7 getShortWithInt:self->chunkSizeMask_ & long];
 }
 
-- (int)readIntWithLong:(int64_t)a3
+- (int)readIntWithLong:(int64_t)long
 {
-  v4 = a3 >> self->chunkSizePower_;
+  v4 = long >> self->chunkSizePower_;
   buffers = self->buffers_;
   if (!buffers)
   {
@@ -190,12 +190,12 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  return [(IOSClass *)v7 getIntWithInt:self->chunkSizeMask_ & a3];
+  return [(IOSClass *)v7 getIntWithInt:self->chunkSizeMask_ & long];
 }
 
-- (int64_t)readLongWithLong:(int64_t)a3
+- (int64_t)readLongWithLong:(int64_t)long
 {
-  v4 = a3 >> self->chunkSizePower_;
+  v4 = long >> self->chunkSizePower_;
   buffers = self->buffers_;
   if (!buffers)
   {
@@ -215,7 +215,7 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  return [(IOSClass *)v7 getLongWithInt:self->chunkSizeMask_ & a3];
+  return [(IOSClass *)v7 getLongWithInt:self->chunkSizeMask_ & long];
 }
 
 - (id)clone
@@ -231,43 +231,43 @@ LABEL_6:
   return v4;
 }
 
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong
 {
-  if ((a5 | a4) < 0)
+  if ((withLong | long) < 0)
   {
     length = self->length_;
 LABEL_7:
-    v11 = JreStrcat("$$$J$J$J$@", a2, a3, a4, a5, v5, v6, v7, @"slice() ");
+    v11 = JreStrcat("$$$J$J$J$@", a2, string, long, withLong, v5, v6, v7, @"slice() ");
     v12 = new_JavaLangIllegalArgumentException_initWithNSString_(v11);
     objc_exception_throw(v12);
   }
 
-  if (a5 + a4 > self->length_)
+  if (withLong + long > self->length_)
   {
     goto LABEL_7;
   }
 
-  return [OrgApacheLuceneStoreByteBufferIndexInput buildSliceWithNSString:"buildSliceWithNSString:withLong:withLong:" withLong:a3 withLong:?];
+  return [OrgApacheLuceneStoreByteBufferIndexInput buildSliceWithNSString:"buildSliceWithNSString:withLong:withLong:" withLong:string withLong:?];
 }
 
-- (id)buildSliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (id)buildSliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong
 {
   buffers = self->buffers_;
   if (!buffers)
   {
-    v14 = JreStrcat("$@", 0, a3, a4, a5, v5, v6, v7, @"Already closed: ");
+    v14 = JreStrcat("$@", 0, string, long, withLong, v5, v6, v7, @"Already closed: ");
     v15 = new_OrgApacheLuceneStoreAlreadyClosedException_initWithNSString_(v14);
     objc_exception_throw(v15);
   }
 
-  v10 = [(OrgApacheLuceneStoreByteBufferIndexInput *)self newCloneInstanceWithNSString:[(OrgApacheLuceneStoreIndexInput *)self getFullSliceDescriptionWithNSString:a3] withJavaNioByteBufferArray:sub_1001288C8(self withInt:buffers withLong:a4, a5), self->chunkSizeMask_ & a4, a5];
-  if (!v10)
+  withLong = [(OrgApacheLuceneStoreByteBufferIndexInput *)self newCloneInstanceWithNSString:[(OrgApacheLuceneStoreIndexInput *)self getFullSliceDescriptionWithNSString:string] withJavaNioByteBufferArray:sub_1001288C8(self withInt:buffers withLong:long, withLong), self->chunkSizeMask_ & long, withLong];
+  if (!withLong)
   {
     JreThrowNullPointerException();
   }
 
-  v11 = v10;
-  v10[80] = 1;
+  v11 = withLong;
+  withLong[80] = 1;
   clones = self->clones_;
   if (clones)
   {
@@ -301,18 +301,18 @@ LABEL_7:
       v5 = self->clones_;
       if (v5)
       {
-        v6 = [(OrgApacheLuceneUtilWeakIdentityMap *)v5 keyIterator];
-        if (!v6)
+        keyIterator = [(OrgApacheLuceneUtilWeakIdentityMap *)v5 keyIterator];
+        if (!keyIterator)
         {
           JreThrowNullPointerException();
         }
 
-        while (([v6 hasNext] & 1) != 0)
+        while (([keyIterator hasNext] & 1) != 0)
         {
-          v7 = [v6 next];
-          JreStrongAssign(v7 + 7, 0);
-          JreStrongAssign(v7 + 9, 0);
-          *(v7 + 16) = 0;
+          next = [keyIterator next];
+          JreStrongAssign(next + 7, 0);
+          JreStrongAssign(next + 9, 0);
+          *(next + 16) = 0;
         }
 
         [(OrgApacheLuceneUtilWeakIdentityMap *)self->clones_ clear];
@@ -350,12 +350,12 @@ LABEL_7:
   self->curBufIndex_ = 0;
 }
 
-- (void)freeBufferWithJavaNioByteBuffer:(id)a3
+- (void)freeBufferWithJavaNioByteBuffer:(id)buffer
 {
   cleaner = self->cleaner_;
   if (cleaner)
   {
-    [(OrgApacheLuceneStoreByteBufferIndexInput_BufferCleaner *)cleaner freeBufferWithOrgApacheLuceneStoreByteBufferIndexInput:self withJavaNioByteBuffer:a3];
+    [(OrgApacheLuceneStoreByteBufferIndexInput_BufferCleaner *)cleaner freeBufferWithOrgApacheLuceneStoreByteBufferIndexInput:self withJavaNioByteBuffer:buffer];
   }
 }
 

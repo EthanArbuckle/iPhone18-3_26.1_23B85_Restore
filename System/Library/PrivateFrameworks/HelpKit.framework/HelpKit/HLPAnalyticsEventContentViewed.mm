@@ -1,33 +1,33 @@
 @interface HLPAnalyticsEventContentViewed
-+ (id)eventWithTopicID:(id)a3 topicTitle:(id)a4 source:(id)a5 interfaceStyle:(int64_t)a6;
-- (id)_initWithTopicID:(id)a3 topicTitle:(id)a4 source:(id)a5 interfaceStyle:(int64_t)a6;
++ (id)eventWithTopicID:(id)d topicTitle:(id)title source:(id)source interfaceStyle:(int64_t)style;
+- (id)_initWithTopicID:(id)d topicTitle:(id)title source:(id)source interfaceStyle:(int64_t)style;
 - (id)caRepresentation;
 - (void)log;
 @end
 
 @implementation HLPAnalyticsEventContentViewed
 
-- (id)_initWithTopicID:(id)a3 topicTitle:(id)a4 source:(id)a5 interfaceStyle:(int64_t)a6
+- (id)_initWithTopicID:(id)d topicTitle:(id)title source:(id)source interfaceStyle:(int64_t)style
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  titleCopy = title;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = HLPAnalyticsEventContentViewed;
   v14 = [(HLPAnalyticsEventContentViewed *)&v19 init];
   p_isa = &v14->super.super.isa;
   if (v14)
   {
-    objc_storeStrong(&v14->_topicID, a3);
-    objc_storeStrong(p_isa + 4, a4);
-    objc_storeStrong(p_isa + 5, a5);
+    objc_storeStrong(&v14->_topicID, d);
+    objc_storeStrong(p_isa + 4, title);
+    objc_storeStrong(p_isa + 5, source);
     v16 = @"unspecified";
-    if (a6 == 1)
+    if (style == 1)
     {
       v16 = @"light";
     }
 
-    if (a6 == 2)
+    if (style == 2)
     {
       v17 = @"dark";
     }
@@ -43,12 +43,12 @@
   return p_isa;
 }
 
-+ (id)eventWithTopicID:(id)a3 topicTitle:(id)a4 source:(id)a5 interfaceStyle:(int64_t)a6
++ (id)eventWithTopicID:(id)d topicTitle:(id)title source:(id)source interfaceStyle:(int64_t)style
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] _initWithTopicID:v12 topicTitle:v11 source:v10 interfaceStyle:a6];
+  sourceCopy = source;
+  titleCopy = title;
+  dCopy = d;
+  v13 = [[self alloc] _initWithTopicID:dCopy topicTitle:titleCopy source:sourceCopy interfaceStyle:style];
 
   return v13;
 }
@@ -67,35 +67,35 @@
 {
   v16.receiver = self;
   v16.super_class = HLPAnalyticsEventContentViewed;
-  v3 = [(HLPAnalyticsEvent *)&v16 caRepresentation];
-  v4 = [v3 mutableCopy];
+  caRepresentation = [(HLPAnalyticsEvent *)&v16 caRepresentation];
+  v4 = [caRepresentation mutableCopy];
 
-  v5 = [(HLPAnalyticsEventContentViewed *)self source];
-  [v4 setObject:v5 forKeyedSubscript:@"view_src"];
+  source = [(HLPAnalyticsEventContentViewed *)self source];
+  [v4 setObject:source forKeyedSubscript:@"view_src"];
 
-  v6 = [(HLPAnalyticsEventContentViewed *)self viewMode];
-  [v4 setObject:v6 forKeyedSubscript:@"mode"];
+  viewMode = [(HLPAnalyticsEventContentViewed *)self viewMode];
+  [v4 setObject:viewMode forKeyedSubscript:@"mode"];
 
-  v7 = [(HLPAnalyticsEventContentViewed *)self topicID];
-  [v4 setObject:v7 forKeyedSubscript:@"topic_ID"];
+  topicID = [(HLPAnalyticsEventContentViewed *)self topicID];
+  [v4 setObject:topicID forKeyedSubscript:@"topic_ID"];
 
-  v8 = [(HLPAnalyticsEventContentViewed *)self topicTitle];
-  [v4 setObject:v8 forKeyedSubscript:@"topic_title"];
+  topicTitle = [(HLPAnalyticsEventContentViewed *)self topicTitle];
+  [v4 setObject:topicTitle forKeyedSubscript:@"topic_title"];
 
-  v9 = [(HLPAnalyticsEventContentViewed *)self fromTopicID];
+  fromTopicID = [(HLPAnalyticsEventContentViewed *)self fromTopicID];
 
-  if (v9)
+  if (fromTopicID)
   {
-    v10 = [(HLPAnalyticsEventContentViewed *)self fromTopicID];
-    [v4 setObject:v10 forKeyedSubscript:@"from_topic_ID"];
+    fromTopicID2 = [(HLPAnalyticsEventContentViewed *)self fromTopicID];
+    [v4 setObject:fromTopicID2 forKeyedSubscript:@"from_topic_ID"];
   }
 
-  v11 = [(HLPAnalyticsEventContentViewed *)self externalURLString];
+  externalURLString = [(HLPAnalyticsEventContentViewed *)self externalURLString];
 
-  if (v11)
+  if (externalURLString)
   {
-    v12 = [(HLPAnalyticsEventContentViewed *)self externalURLString];
-    [v4 setObject:v12 forKeyedSubscript:@"external_link"];
+    externalURLString2 = [(HLPAnalyticsEventContentViewed *)self externalURLString];
+    [v4 setObject:externalURLString2 forKeyedSubscript:@"external_link"];
   }
 
   v13 = +[HLPAnalyticsEventController sharedInstance];

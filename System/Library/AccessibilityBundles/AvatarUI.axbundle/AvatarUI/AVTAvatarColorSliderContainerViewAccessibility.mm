@@ -1,21 +1,21 @@
 @interface AVTAvatarColorSliderContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AVTAvatarColorSliderContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTColorPreset"];
-  [v3 validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"sectionItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorItem" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTCoreModelColor" hasInstanceMethod:@"baseColorPreset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"setSectionItem:animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"AVTColorPreset" hasInstanceMethod:@"colorPresetWithVariation:" withFullSignature:{"@", "f", 0}];
-  [v3 validateClass:@"AVTColorPreset" hasInstanceMethod:@"previewColor" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTColorPreset"];
+  [validationsCopy validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"sectionItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorItem" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTCoreModelColor" hasInstanceMethod:@"baseColorPreset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"setSectionItem:animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"AVTColorPreset" hasInstanceMethod:@"colorPresetWithVariation:" withFullSignature:{"@", "f", 0}];
+  [validationsCopy validateClass:@"AVTColorPreset" hasInstanceMethod:@"previewColor" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

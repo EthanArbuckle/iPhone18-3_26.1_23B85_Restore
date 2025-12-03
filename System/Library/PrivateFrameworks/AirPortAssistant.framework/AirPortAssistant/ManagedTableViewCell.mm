@@ -1,29 +1,29 @@
 @interface ManagedTableViewCell
-- (ManagedTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (double)calculateFrameSizeForView:(id)a3 forItem:(id)a4 atItemIndex:(unint64_t)a5 withRemainingContentWidth:(double)a6;
-- (double)edgeInsetValue:(id)a3;
-- (double)horizontalSpacingForView:(id)a3 withItem:(id)a4;
-- (double)leftInsetForView:(id)a3 withItem:(id)a4;
-- (double)rightInsetForView:(id)a3 withItem:(id)a4;
-- (double)usableContentWidthForItem:(id)a3 withVerticalNeighborView:(id)a4;
+- (ManagedTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (double)calculateFrameSizeForView:(id)view forItem:(id)item atItemIndex:(unint64_t)index withRemainingContentWidth:(double)width;
+- (double)edgeInsetValue:(id)value;
+- (double)horizontalSpacingForView:(id)view withItem:(id)item;
+- (double)leftInsetForView:(id)view withItem:(id)item;
+- (double)rightInsetForView:(id)view withItem:(id)item;
+- (double)usableContentWidthForItem:(id)item withVerticalNeighborView:(id)view;
 - (double)verticalInset;
-- (double)verticalSpacingForView:(id)a3 withItem:(id)a4;
+- (double)verticalSpacingForView:(id)view withItem:(id)item;
 - (id)accessibilityValue;
-- (void)calculatePositionForView:(id)a3 forItem:(id)a4 atItemIndex:(unint64_t)a5;
+- (void)calculatePositionForView:(id)view forItem:(id)item atItemIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)repositionView:(id)a3 ifOverlapsPreviousView:(id)a4;
-- (void)setCellDict:(id)a3;
+- (void)repositionView:(id)view ifOverlapsPreviousView:(id)previousView;
+- (void)setCellDict:(id)dict;
 @end
 
 @implementation ManagedTableViewCell
 
-- (ManagedTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ManagedTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = ManagedTableViewCell;
-  return [(ManagedTableViewCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  return [(ManagedTableViewCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
 }
 
 - (void)prepareForReuse
@@ -105,14 +105,14 @@
   [(ManagedTableViewCell *)&v3 dealloc];
 }
 
-- (void)setCellDict:(id)a3
+- (void)setCellDict:(id)dict
 {
-  if (self->_cellDict != a3)
+  if (self->_cellDict != dict)
   {
-    v5 = a3;
+    dictCopy = dict;
 
-    self->_cellDict = a3;
-    if (a3)
+    self->_cellDict = dict;
+    if (dict)
     {
 
       objc_msgSend_setNeedsLayout(self, v6, v7);
@@ -120,9 +120,9 @@
   }
 }
 
-- (double)edgeInsetValue:(id)a3
+- (double)edgeInsetValue:(id)value
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"edgeInset");
+  v3 = objc_msgSend_objectForKey_(value, a2, @"edgeInset");
   if (!v3)
   {
     return 10.0;
@@ -132,25 +132,25 @@
   return v6;
 }
 
-- (double)horizontalSpacingForView:(id)a3 withItem:(id)a4
+- (double)horizontalSpacingForView:(id)view withItem:(id)item
 {
-  objc_msgSend_frame(a3, a2, a3);
+  objc_msgSend_frame(view, a2, view);
   if (v7 == 0.0)
   {
     return 0.0;
   }
 
-  objc_msgSend_edgeInsetValue_(self, v6, a4);
+  objc_msgSend_edgeInsetValue_(self, v6, item);
   return result;
 }
 
-- (double)verticalSpacingForView:(id)a3 withItem:(id)a4
+- (double)verticalSpacingForView:(id)view withItem:(id)item
 {
-  objc_msgSend_frame(a3, a2, a3);
+  objc_msgSend_frame(view, a2, view);
   result = 0.0;
   if (v7 > 0.0)
   {
-    v8 = objc_msgSend_valueForKey_(a4, v5, @"itemType", 0.0);
+    v8 = objc_msgSend_valueForKey_(item, v5, @"itemType", 0.0);
     isEqualToString = objc_msgSend_isEqualToString_(v8, v9, @"labelView");
     result = 5.0;
     if (isEqualToString)
@@ -173,22 +173,22 @@
   return result;
 }
 
-- (double)leftInsetForView:(id)a3 withItem:(id)a4
+- (double)leftInsetForView:(id)view withItem:(id)item
 {
-  if (sub_23EC132F8(self, a2, a3))
+  if (sub_23EC132F8(self, a2, view))
   {
     return 15.0;
   }
 
-  objc_msgSend_edgeInsetValue_(self, v6, a4);
+  objc_msgSend_edgeInsetValue_(self, v6, item);
   return result;
 }
 
-- (double)rightInsetForView:(id)a3 withItem:(id)a4
+- (double)rightInsetForView:(id)view withItem:(id)item
 {
-  if (sub_23EC132F8(self, a2, a3))
+  if (sub_23EC132F8(self, a2, view))
   {
-    if (!objc_msgSend_objectForKey_(a4, v7, @"edgeInset"))
+    if (!objc_msgSend_objectForKey_(item, v7, @"edgeInset"))
     {
       v10 = objc_msgSend_cellDict(self, v7, v9);
       v12 = objc_msgSend_valueForKey_(v10, v11, @"accessory");
@@ -202,9 +202,9 @@
     }
   }
 
-  else if (a3)
+  else if (view)
   {
-    objc_msgSend_frame(a3, v7, v8);
+    objc_msgSend_frame(view, v7, v8);
     result = 0.0;
     if (v14 <= 0.0)
     {
@@ -212,19 +212,19 @@
     }
   }
 
-  objc_msgSend_edgeInsetValue_(self, v7, a4);
+  objc_msgSend_edgeInsetValue_(self, v7, item);
   return result;
 }
 
-- (double)usableContentWidthForItem:(id)a3 withVerticalNeighborView:(id)a4
+- (double)usableContentWidthForItem:(id)item withVerticalNeighborView:(id)view
 {
   width = self->_modifiedContentViewFrame.size.width;
-  if (a3)
+  if (item)
   {
-    objc_msgSend_rightInsetForView_withItem_(self, a2, 0, a3);
+    objc_msgSend_rightInsetForView_withItem_(self, a2, 0, item);
     v9 = v8;
-    isEqualToString = objc_msgSend_objectForKey_(a3, v10, @"position");
-    if (!a4)
+    isEqualToString = objc_msgSend_objectForKey_(item, v10, @"position");
+    if (!view)
     {
       goto LABEL_9;
     }
@@ -244,7 +244,7 @@
       v9 = 10.0;
     }
 
-    if (!a4)
+    if (!view)
     {
       goto LABEL_9;
     }
@@ -253,7 +253,7 @@
   isEqualToString = objc_msgSend_isEqualToString_(isEqualToString, v12, @"bottom");
   if ((isEqualToString & 1) == 0)
   {
-    objc_msgSend_frame(a4, v12, v13);
+    objc_msgSend_frame(view, v12, v13);
     return width - (v9 + v22);
   }
 
@@ -275,15 +275,15 @@ LABEL_9:
   return result;
 }
 
-- (void)calculatePositionForView:(id)a3 forItem:(id)a4 atItemIndex:(unint64_t)a5
+- (void)calculatePositionForView:(id)view forItem:(id)item atItemIndex:(unint64_t)index
 {
   if (dword_27E382F68 <= 800 && (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u)))
   {
-    sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculatePositionForView:forItem:atItemIndex:]", 800, "\n", a5, v5, v6, v7, v108);
+    sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculatePositionForView:forItem:atItemIndex:]", 800, "\n", index, v5, v6, v7, v108);
   }
 
-  v11 = objc_msgSend_objectForKey_(a4, a2, @"neighbor");
-  v13 = objc_msgSend_edgeInsetValue_(self, v12, a4);
+  v11 = objc_msgSend_objectForKey_(item, a2, @"neighbor");
+  v13 = objc_msgSend_edgeInsetValue_(self, v12, item);
   v109 = v16;
   if (v11)
   {
@@ -318,7 +318,7 @@ LABEL_9:
     v28 = 44.0;
   }
 
-  v33 = objc_msgSend_objectForKey_(a4, v20, @"position");
+  v33 = objc_msgSend_objectForKey_(item, v20, @"position");
   if (v33)
   {
     v40 = v33;
@@ -350,7 +350,7 @@ LABEL_9:
     }
   }
 
-  objc_msgSend_frame(a3, v34, v35);
+  objc_msgSend_frame(view, v34, v35);
   v42 = v41;
   v44 = v43;
   v46 = v45;
@@ -449,7 +449,7 @@ LABEL_49:
       v77 = width + forcedRightmostEditTextInset;
       if (!v29)
       {
-        objc_msgSend_horizontalSpacingForView_withItem_(self, v62, a3, a4);
+        objc_msgSend_horizontalSpacingForView_withItem_(self, v62, view, item);
         forcedRightmostEditTextInset = v77 + v80;
         *&v80 = (v28 - v48) * 0.5;
         v44 = y + floorf(*&v80);
@@ -492,7 +492,7 @@ LABEL_45:
           goto LABEL_73;
         }
 
-        objc_msgSend_leftInsetForView_withItem_(self, v62, a3, a4);
+        objc_msgSend_leftInsetForView_withItem_(self, v62, view, item);
         forcedRightmostEditTextInset = v81;
         goto LABEL_49;
       }
@@ -504,7 +504,7 @@ LABEL_45:
           goto LABEL_73;
         }
 
-        objc_msgSend_horizontalSpacingForView_withItem_(self, v62, a3, a4);
+        objc_msgSend_horizontalSpacingForView_withItem_(self, v62, view, item);
         forcedRightmostEditTextInset = width + forcedRightmostEditTextInset + v87;
         goto LABEL_49;
       }
@@ -513,7 +513,7 @@ LABEL_45:
       {
         if (!v29)
         {
-          objc_msgSend_verticalSpacingForView_withItem_(self, v62, a3, a4);
+          objc_msgSend_verticalSpacingForView_withItem_(self, v62, view, item);
           v44 = v28 + y + v88;
           goto LABEL_74;
         }
@@ -526,7 +526,7 @@ LABEL_45:
         goto LABEL_73;
       }
 
-      objc_msgSend_horizontalSpacingForView_withItem_(self, v62, a3, a4);
+      objc_msgSend_horizontalSpacingForView_withItem_(self, v62, view, item);
       forcedRightmostEditTextInset = width + forcedRightmostEditTextInset + v107;
     }
 
@@ -538,14 +538,14 @@ LABEL_45:
   v44 = floorf(v75);
   if (v29)
   {
-    objc_msgSend_leftInsetForView_withItem_(self, v74, a3, a4);
+    objc_msgSend_leftInsetForView_withItem_(self, v74, view, item);
     forcedRightmostEditTextInset = v76;
   }
 
   else
   {
     forcedRightmostEditTextInset = forcedRightmostEditTextInset - v46;
-    objc_msgSend_horizontalSpacingForView_withItem_(self, v74, a3, a4);
+    objc_msgSend_horizontalSpacingForView_withItem_(self, v74, view, item);
     v46 = v46 - v78;
   }
 
@@ -556,13 +556,13 @@ LABEL_74:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      objc_msgSend_frame(a3, v91, v92);
+      objc_msgSend_frame(view, v91, v92);
       if (forcedRightmostEditTextInset < v109 && v95 > 0.0)
       {
         forcedRightmostEditTextInset = v109;
       }
 
-      objc_msgSend_frame(a3, v93, v94);
+      objc_msgSend_frame(view, v93, v94);
       if (v99 > 0.0)
       {
         objc_msgSend_verticalInset(self, v97, v98);
@@ -586,38 +586,38 @@ LABEL_74:
     forcedRightmostEditTextInset = self->_forcedRightmostEditTextInset;
   }
 
-  objc_msgSend_setFrame_(a3, v101, v102, forcedRightmostEditTextInset, v44, v46, v48);
+  objc_msgSend_setFrame_(view, v101, v102, forcedRightmostEditTextInset, v44, v46, v48);
   if (dword_27E382F68 <= 800 && (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u)))
   {
     sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculatePositionForView:forItem:atItemIndex:]", 800, "view.frame set to frame=(x = %.1f, y = %.1f, w = %.1f, h = %.1f)\n", v103, v104, v105, v106, *&forcedRightmostEditTextInset);
   }
 }
 
-- (double)calculateFrameSizeForView:(id)a3 forItem:(id)a4 atItemIndex:(unint64_t)a5 withRemainingContentWidth:(double)a6
+- (double)calculateFrameSizeForView:(id)view forItem:(id)item atItemIndex:(unint64_t)index withRemainingContentWidth:(double)width
 {
   v185[1] = *MEMORY[0x277D85DE8];
   if (dword_27E382F68 <= 800 && (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u)))
   {
-    sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "\n", a5, v6, v7, v8, v180);
+    sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "\n", index, v6, v7, v8, v180);
   }
 
-  v14 = objc_msgSend_objectForKey_(a4, a2, @"position");
-  objc_msgSend_edgeInsetValue_(self, v15, a4);
+  v14 = objc_msgSend_objectForKey_(item, a2, @"position");
+  objc_msgSend_edgeInsetValue_(self, v15, item);
   if ((objc_msgSend_isEqualToString_(v14, v16, @"bottomLeft") & 1) != 0 || objc_msgSend_isEqualToString_(v14, v17, @"bottom"))
   {
-    v19 = objc_msgSend_objectForKey_(a4, v17, @"neighbor");
+    v19 = objc_msgSend_objectForKey_(item, v17, @"neighbor");
     if (v19)
     {
       v21 = objc_msgSend_objectForKey_(v19, v20, @"cachedView");
-      objc_msgSend_usableContentWidthForItem_withVerticalNeighborView_(self, v22, a4, v21);
+      objc_msgSend_usableContentWidthForItem_withVerticalNeighborView_(self, v22, item, v21);
     }
 
     else
     {
-      objc_msgSend_usableContentWidthForItem_withVerticalNeighborView_(self, v20, a4, 0);
+      objc_msgSend_usableContentWidthForItem_withVerticalNeighborView_(self, v20, item, 0);
     }
 
-    a6 = v23;
+    width = v23;
     v24 = 1;
   }
 
@@ -628,7 +628,7 @@ LABEL_74:
 
   v25 = objc_msgSend_cellDict(self, v17, v18);
   v27 = objc_msgSend_objectForKey_(v25, v26, @"items");
-  if (objc_msgSend_count(v27, v28, v29) - 1 == a5)
+  if (objc_msgSend_count(v27, v28, v29) - 1 == index)
   {
     v34 = 1;
   }
@@ -652,45 +652,45 @@ LABEL_74:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_frame(a3, v36, v37);
+    objc_msgSend_frame(view, v36, v37);
     v39 = v38;
     v41 = v40;
-    v43 = v42;
+    widthCopy = v42;
     v45 = v44;
-    if (!objc_msgSend_text(a3, v46, v47))
+    if (!objc_msgSend_text(view, v46, v47))
     {
       goto LABEL_54;
     }
 
-    if (objc_msgSend_numberOfLines(a3, v48, v49) == 1)
+    if (objc_msgSend_numberOfLines(view, v48, v49) == 1)
     {
-      v52 = objc_msgSend_text(a3, v50, v51);
+      v52 = objc_msgSend_text(view, v50, v51);
       v184 = *MEMORY[0x277D740A8];
-      v185[0] = objc_msgSend_font(a3, v53, v54);
+      v185[0] = objc_msgSend_font(view, v53, v54);
       v56 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v55, v185, &v184, 1);
-      objc_msgSend_boundingRectWithSize_options_attributes_context_(v52, v57, 32, v56, 0, a6, 1.79769313e308);
+      objc_msgSend_boundingRectWithSize_options_attributes_context_(v52, v57, 32, v56, 0, width, 1.79769313e308);
     }
 
     else
     {
       if (dword_27E382F68 <= 800 && (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u)))
       {
-        objc_msgSend_numberOfLines(a3, v50, v51);
-        sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "laying out UILabel to width = %.1f (number of lines %d)\n", v121, v122, v123, v124, *&a6);
+        objc_msgSend_numberOfLines(view, v50, v51);
+        sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "laying out UILabel to width = %.1f (number of lines %d)\n", v121, v122, v123, v124, *&width);
       }
 
-      v125 = objc_msgSend_text(a3, v50, v51);
+      v125 = objc_msgSend_text(view, v50, v51);
       v182 = *MEMORY[0x277D740A8];
-      v183 = objc_msgSend_font(a3, v126, v127);
+      v183 = objc_msgSend_font(view, v126, v127);
       v129 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v128, &v183, &v182, 1);
-      objc_msgSend_boundingRectWithSize_options_attributes_context_(v125, v130, 1, v129, 0, a6, 1.79769313e308);
+      objc_msgSend_boundingRectWithSize_options_attributes_context_(v125, v130, 1, v129, 0, width, 1.79769313e308);
     }
 
     v39 = v58;
     v41 = v59;
     v131 = v60;
     v132 = ceilf(v131);
-    v43 = v132;
+    widthCopy = v132;
     v133 = v61;
     v134 = ceilf(v133);
     if (v132 == 0.0)
@@ -707,7 +707,7 @@ LABEL_74:
     {
       v186.origin.x = v39;
       v186.origin.y = v41;
-      v186.size.width = v43;
+      v186.size.width = widthCopy;
       v186.size.height = v45;
       v135 = NSStringFromCGRect(v186);
       sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "computed text rect = %@ (remainingContentWidth %.3f)\n", v136, v137, v138, v139, v135);
@@ -715,31 +715,31 @@ LABEL_74:
 
     if (v34)
     {
-      v43 = a6;
-      objc_msgSend_setFrame_(a3, v48, v49, v39, v41, a6, v45);
+      widthCopy = width;
+      objc_msgSend_setFrame_(view, v48, v49, v39, v41, width, v45);
     }
 
     else
     {
 LABEL_54:
-      objc_msgSend_setFrame_(a3, v48, v49, v39, v41, v43, v45);
+      objc_msgSend_setFrame_(view, v48, v49, v39, v41, widthCopy, v45);
     }
 
-    a6 = a6 - v43;
+    width = width - widthCopy;
     if (dword_27E382F68 <= 800)
     {
       if (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u))
       {
-        objc_msgSend_frame(a3, v140, v141);
+        objc_msgSend_frame(view, v140, v141);
         v143 = v142;
-        objc_msgSend_frame(a3, v144, v145);
+        objc_msgSend_frame(view, v144, v145);
         sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "UILabel size set to=(w = %.1f, h = %.1f)\n", v146, v147, v148, v149, v143);
       }
 
 LABEL_59:
       if (dword_27E382F68 <= 800 && (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u)))
       {
-        sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "returning remainingContentWidth of %.1f\n", v96, v97, v98, v99, *&a6);
+        sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "returning remainingContentWidth of %.1f\n", v96, v97, v98, v99, *&width);
       }
     }
   }
@@ -752,17 +752,17 @@ LABEL_59:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_msgSend_sizeToFit(a3, v108, v109);
+        objc_msgSend_sizeToFit(view, v108, v109);
         if (dword_27E382F68 <= 800 && (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u)))
         {
-          objc_msgSend_frame(a3, v110, v111);
+          objc_msgSend_frame(view, v110, v111);
           v113 = v112;
-          objc_msgSend_frame(a3, v114, v115);
+          objc_msgSend_frame(view, v114, v115);
           sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "UIButton size set to=(w = %.1f, h = %.1f)\n", v116, v117, v118, v119, v113);
         }
 
-        objc_msgSend_frame(a3, v110, v111);
-        a6 = a6 - v120;
+        objc_msgSend_frame(view, v110, v111);
+        width = width - v120;
       }
 
       else
@@ -803,16 +803,16 @@ LABEL_59:
             modifiedContentViewFrame = self->_modifiedContentViewFrame;
           }
 
-          objc_msgSend_setFrame_(a3, v154, v155, modifiedContentViewFrame.origin.x, modifiedContentViewFrame.origin.y, modifiedContentViewFrame.size.width, modifiedContentViewFrame.size.height);
+          objc_msgSend_setFrame_(view, v154, v155, modifiedContentViewFrame.origin.x, modifiedContentViewFrame.origin.y, modifiedContentViewFrame.size.width, modifiedContentViewFrame.size.height);
         }
 
         else
         {
-          objc_msgSend_frame(a3, v152, v153);
-          a6 = a6 - v174;
+          objc_msgSend_frame(view, v152, v153);
+          width = width - v174;
           if (dword_27E382F68 > 800)
           {
-            return a6;
+            return width;
           }
 
           if (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u))
@@ -830,38 +830,38 @@ LABEL_59:
     v64 = MEMORY[0x277D74300];
     objc_msgSend_labelFontSize(MEMORY[0x277D74300], v62, v63);
     v67 = objc_msgSend_systemFontOfSize_(v64, v65, v66);
-    v70 = objc_msgSend_font(a3, v68, v69);
+    v70 = objc_msgSend_font(view, v68, v69);
     objc_msgSend_pointSize(v70, v71, v72);
     v74 = v73;
     objc_msgSend_pointSize(v67, v75, v76);
     if (v74 > v79)
     {
-      v67 = objc_msgSend_font(a3, v77, v78);
+      v67 = objc_msgSend_font(view, v77, v78);
     }
 
-    objc_msgSend_frame(a3, v77, v78);
+    objc_msgSend_frame(view, v77, v78);
     v81 = v80;
     v83 = v82;
     objc_msgSend_lineHeight(v67, v84, v85);
-    v89 = a6;
-    v90 = a6 * 0.5;
+    widthCopy2 = width;
+    v90 = width * 0.5;
     v91 = floorf(v90);
     if (!v34)
     {
-      v89 = v91;
+      widthCopy2 = v91;
     }
 
-    v92 = ceilf(v89);
+    v92 = ceilf(widthCopy2);
     v93 = v88;
-    objc_msgSend_setFrame_(a3, v86, v87, v81, v83, v92, ceilf(v93));
-    a6 = a6 - v92;
+    objc_msgSend_setFrame_(view, v86, v87, v81, v83, v92, ceilf(v93));
+    width = width - v92;
     if (dword_27E382F68 <= 800)
     {
       if (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u))
       {
-        objc_msgSend_frame(a3, v94, v95);
+        objc_msgSend_frame(view, v94, v95);
         v101 = v100;
-        objc_msgSend_frame(a3, v102, v103);
+        objc_msgSend_frame(view, v102, v103);
         sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell calculateFrameSizeForView:forItem:atItemIndex:withRemainingContentWidth:]", 800, "UITextField size set to=(w = %.1f, h = %.1f)\n", v104, v105, v106, v107, v101);
       }
 
@@ -869,17 +869,17 @@ LABEL_59:
     }
   }
 
-  return a6;
+  return width;
 }
 
-- (void)repositionView:(id)a3 ifOverlapsPreviousView:(id)a4
+- (void)repositionView:(id)view ifOverlapsPreviousView:(id)previousView
 {
-  objc_msgSend_frame(a3, a2, a3);
+  objc_msgSend_frame(view, a2, view);
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  objc_msgSend_frame(a4, v14, v15);
+  objc_msgSend_frame(previousView, v14, v15);
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -900,7 +900,7 @@ LABEL_59:
     v30 = v7;
     if (dword_27E382F68 <= 800 && (dword_27E382F68 != -1 || sub_23EB74AC8(&dword_27E382F68, 0x320u)))
     {
-      sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell repositionView:ifOverlapsPreviousView:]", 800, "view %@ collides with %@\n", v24, v25, v26, v27, a3);
+      sub_23EB75374(&dword_27E382F68, "[ManagedTableViewCell repositionView:ifOverlapsPreviousView:]", 800, "view %@ collides with %@\n", v24, v25, v26, v27, view);
     }
 
     v41.origin.x = v17;
@@ -927,7 +927,7 @@ LABEL_59:
       v44.size.height = v38;
       v37 = v21 - (v34 - (CGRectGetMinX(v44) + -10.0));
 
-      objc_msgSend_setFrame_(a4, v35, v36, v17, v19, v37, v23);
+      objc_msgSend_setFrame_(previousView, v35, v36, v17, v19, v37, v23);
     }
   }
 }

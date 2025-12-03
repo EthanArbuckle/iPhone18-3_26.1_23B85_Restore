@@ -1,11 +1,11 @@
 @interface CKPreSharingContext
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (CKPreSharingContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (CKPreSharingContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKPreSharingContext
@@ -20,12 +20,12 @@
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
+  dataCopy = data;
   v8 = objc_opt_class();
-  v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v6, v9, v8, v7, a5);
+  v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v6, v9, v8, dataCopy, error);
 
   return v10;
 }
@@ -40,39 +40,39 @@
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v10 = 0;
   v7 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v6, self, 1, &v10);
   v8 = v10;
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v7, v8);
+    handlerCopy[2](handlerCopy, v7, v8);
   }
 
   return 0;
 }
 
-- (CKPreSharingContext)initWithCoder:(id)a3
+- (CKPreSharingContext)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CKPreSharingContext;
-  return [(CKSharingContext *)&v4 initWithCoder:a3];
+  return [(CKSharingContext *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CKPreSharingContext;
-  [(CKSharingContext *)&v3 encodeWithCoder:a3];
+  [(CKSharingContext *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CKPreSharingContext;
-  return [(CKSharingContext *)&v4 copyWithZone:a3];
+  return [(CKSharingContext *)&v4 copyWithZone:zone];
 }
 
 @end

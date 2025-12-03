@@ -5,34 +5,34 @@
 - (NSNumber)assigneeIdentifier;
 - (NSString)assigneeContactIdentifier;
 - (NSString)assigneeToneStyle;
-- (SSTonePurchase)initWithCoder:(id)a3;
-- (SSTonePurchase)initWithItem:(id)a3 offer:(id)a4;
-- (SSTonePurchase)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSTonePurchase)initWithCoder:(id)coder;
+- (SSTonePurchase)initWithItem:(id)item offer:(id)offer;
+- (SSTonePurchase)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (void)_addEntriesToDatabaseEncoding:(id)a3;
-- (void)_setValuesUsingDatabaseEncoding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAllowedToneStyles:(id)a3;
-- (void)setAssigneeContactIdentifier:(id)a3;
-- (void)setAssigneeIdentifier:(id)a3;
-- (void)setAssigneeToneStyle:(id)a3;
-- (void)setShouldMakeDefaultRingtone:(BOOL)a3;
-- (void)setShouldMakeDefaultTextTone:(BOOL)a3;
+- (void)_addEntriesToDatabaseEncoding:(id)encoding;
+- (void)_setValuesUsingDatabaseEncoding:(id)encoding;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAllowedToneStyles:(id)styles;
+- (void)setAssigneeContactIdentifier:(id)identifier;
+- (void)setAssigneeIdentifier:(id)identifier;
+- (void)setAssigneeToneStyle:(id)style;
+- (void)setShouldMakeDefaultRingtone:(BOOL)ringtone;
+- (void)setShouldMakeDefaultTextTone:(BOOL)tone;
 @end
 
 @implementation SSTonePurchase
 
-- (SSTonePurchase)initWithItem:(id)a3 offer:(id)a4
+- (SSTonePurchase)initWithItem:(id)item offer:(id)offer
 {
-  v6 = a4;
+  offerCopy = offer;
   v12.receiver = self;
   v12.super_class = SSTonePurchase;
-  v7 = [(SSPurchase *)&v12 initWithItem:a3 offer:v6];
+  v7 = [(SSPurchase *)&v12 initWithItem:item offer:offerCopy];
   if (v7)
   {
-    v8 = [v6 allowedToneStyles];
-    v9 = [v8 copy];
+    allowedToneStyles = [offerCopy allowedToneStyles];
+    v9 = [allowedToneStyles copy];
     allowedToneStyles = v7->_allowedToneStyles;
     v7->_allowedToneStyles = v9;
   }
@@ -136,17 +136,17 @@ void __35__SSTonePurchase_assigneeToneStyle__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setAllowedToneStyles:(id)a3
+- (void)setAllowedToneStyles:(id)styles
 {
-  v4 = a3;
+  stylesCopy = styles;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__SSTonePurchase_setAllowedToneStyles___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stylesCopy;
+  v6 = stylesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -163,17 +163,17 @@ void __39__SSTonePurchase_setAllowedToneStyles___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAssigneeIdentifier:(id)a3
+- (void)setAssigneeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__SSTonePurchase_setAssigneeIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -187,17 +187,17 @@ void __40__SSTonePurchase_setAssigneeIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAssigneeContactIdentifier:(id)a3
+- (void)setAssigneeContactIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SSTonePurchase_setAssigneeContactIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -211,17 +211,17 @@ void __47__SSTonePurchase_setAssigneeContactIdentifier___block_invoke(uint64_t a
   }
 }
 
-- (void)setAssigneeToneStyle:(id)a3
+- (void)setAssigneeToneStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__SSTonePurchase_setAssigneeToneStyle___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = styleCopy;
+  v6 = styleCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -235,7 +235,7 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShouldMakeDefaultRingtone:(BOOL)a3
+- (void)setShouldMakeDefaultRingtone:(BOOL)ringtone
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -243,11 +243,11 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
   v4[2] = __47__SSTonePurchase_setShouldMakeDefaultRingtone___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  ringtoneCopy = ringtone;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setShouldMakeDefaultTextTone:(BOOL)a3
+- (void)setShouldMakeDefaultTextTone:(BOOL)tone
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -255,7 +255,7 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
   v4[2] = __47__SSTonePurchase_setShouldMakeDefaultTextTone___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  toneCopy = tone;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -297,14 +297,14 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_addEntriesToDatabaseEncoding:(id)a3
+- (void)_addEntriesToDatabaseEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
+  encodingCopy = encoding;
+  v5 = encodingCopy;
   allowedToneStyles = self->_allowedToneStyles;
   if (allowedToneStyles)
   {
-    [v4 setObject:allowedToneStyles forKey:@"00"];
+    [encodingCopy setObject:allowedToneStyles forKey:@"00"];
   }
 
   assigneeIdentifier = self->_assigneeIdentifier;
@@ -337,10 +337,10 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
   [(SSPurchase *)&v12 _addEntriesToDatabaseEncoding:v5];
 }
 
-- (void)_setValuesUsingDatabaseEncoding:(id)a3
+- (void)_setValuesUsingDatabaseEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"00"];
+  encodingCopy = encoding;
+  v5 = [encodingCopy objectForKey:@"00"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -349,7 +349,7 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
     self->_allowedToneStyles = v6;
   }
 
-  v8 = [v4 objectForKey:@"01"];
+  v8 = [encodingCopy objectForKey:@"01"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -359,7 +359,7 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
     self->_assigneeIdentifier = v9;
   }
 
-  v11 = [v4 objectForKey:@"06"];
+  v11 = [encodingCopy objectForKey:@"06"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -369,7 +369,7 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
     self->_assigneeContactIdentifier = v12;
   }
 
-  v14 = [v4 objectForKey:@"02"];
+  v14 = [encodingCopy objectForKey:@"02"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -379,14 +379,14 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
     self->_assigneeToneStyle = v15;
   }
 
-  v17 = [v4 objectForKey:@"04"];
+  v17 = [encodingCopy objectForKey:@"04"];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v17 BOOLValue])
   {
     self->_shouldMakeDefaultRingtone = 1;
   }
 
-  v18 = [v4 objectForKey:@"05"];
+  v18 = [encodingCopy objectForKey:@"05"];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v18 BOOLValue])
   {
@@ -395,67 +395,67 @@ void __39__SSTonePurchase_setAssigneeToneStyle___block_invoke(uint64_t a1)
 
   v19.receiver = self;
   v19.super_class = SSTonePurchase;
-  [(SSPurchase *)&v19 _setValuesUsingDatabaseEncoding:v4];
+  [(SSPurchase *)&v19 _setValuesUsingDatabaseEncoding:encodingCopy];
 }
 
-- (SSTonePurchase)initWithCoder:(id)a3
+- (SSTonePurchase)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [SSTonePurchase initWithCoder:];
   }
 
   v18.receiver = self;
   v18.super_class = SSTonePurchase;
-  v5 = [(SSPurchase *)&v18 initWithCoder:v4];
+  v5 = [(SSPurchase *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"tonestyles"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"tonestyles"];
     allowedToneStyles = v5->_allowedToneStyles;
     v5->_allowedToneStyles = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assignee"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assignee"];
     assigneeIdentifier = v5->_assigneeIdentifier;
     v5->_assigneeIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
     assigneeContactIdentifier = v5->_assigneeContactIdentifier;
     v5->_assigneeContactIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tonestyle"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tonestyle"];
     assigneeToneStyle = v5->_assigneeToneStyle;
     v5->_assigneeToneStyle = v15;
 
-    v5->_shouldMakeDefaultRingtone = [v4 decodeBoolForKey:@"makedefault"];
-    v5->_shouldMakeDefaultTextTone = [v4 decodeBoolForKey:@"makedefaulttext"];
+    v5->_shouldMakeDefaultRingtone = [coderCopy decodeBoolForKey:@"makedefault"];
+    v5->_shouldMakeDefaultTextTone = [coderCopy decodeBoolForKey:@"makedefaulttext"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [SSTonePurchase encodeWithCoder:];
   }
 
   v10.receiver = self;
   v10.super_class = SSTonePurchase;
-  [(SSPurchase *)&v10 encodeWithCoder:v4];
+  [(SSPurchase *)&v10 encodeWithCoder:coderCopy];
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SSTonePurchase_encodeWithCoder___block_invoke;
   v7[3] = &unk_1E84AC028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = coderCopy;
+  selfCopy = self;
+  v6 = coderCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -472,11 +472,11 @@ uint64_t __34__SSTonePurchase_encodeWithCoder___block_invoke(uint64_t a1)
   return [v2 encodeBool:v3 forKey:@"makedefaulttext"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SSTonePurchase;
-  v4 = [(SSPurchase *)&v12 copyWithZone:a3];
+  v4 = [(SSPurchase *)&v12 copyWithZone:zone];
   dispatchQueue = self->super._dispatchQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -484,7 +484,7 @@ uint64_t __34__SSTonePurchase_encodeWithCoder___block_invoke(uint64_t a1)
   v9[3] = &unk_1E84AC028;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v9);
   v7 = v6;
 
@@ -508,15 +508,15 @@ uint64_t __31__SSTonePurchase_copyWithZone___block_invoke(uint64_t a1)
 {
   v11.receiver = self;
   v11.super_class = SSTonePurchase;
-  v3 = [(SSPurchase *)&v11 copyXPCEncoding];
+  copyXPCEncoding = [(SSPurchase *)&v11 copyXPCEncoding];
   dispatchQueue = self->super._dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__SSTonePurchase_copyXPCEncoding__block_invoke;
   v8[3] = &unk_1E84AC028;
-  v5 = v3;
+  v5 = copyXPCEncoding;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 
@@ -536,36 +536,36 @@ void __33__SSTonePurchase_copyXPCEncoding__block_invoke(uint64_t a1)
   xpc_dictionary_set_BOOL(v2, "55", 1);
 }
 
-- (SSTonePurchase)initWithXPCEncoding:(id)a3
+- (SSTonePurchase)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
+  encodingCopy = encoding;
   v19.receiver = self;
   v19.super_class = SSTonePurchase;
-  v5 = [(SSPurchase *)&v19 initWithXPCEncoding:v4];
+  v5 = [(SSPurchase *)&v19 initWithXPCEncoding:encodingCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = SSXPCDictionaryCopyObjectWithClass(v4, "50", v6);
+    v7 = SSXPCDictionaryCopyObjectWithClass(encodingCopy, "50", v6);
     allowedToneStyles = v5->_allowedToneStyles;
     v5->_allowedToneStyles = v7;
 
     v9 = objc_opt_class();
-    v10 = SSXPCDictionaryCopyObjectWithClass(v4, "51", v9);
+    v10 = SSXPCDictionaryCopyObjectWithClass(encodingCopy, "51", v9);
     assigneeIdentifier = v5->_assigneeIdentifier;
     v5->_assigneeIdentifier = v10;
 
     v12 = objc_opt_class();
-    v13 = SSXPCDictionaryCopyObjectWithClass(v4, "56", v12);
+    v13 = SSXPCDictionaryCopyObjectWithClass(encodingCopy, "56", v12);
     assigneeContactIdentifier = v5->_assigneeContactIdentifier;
     v5->_assigneeContactIdentifier = v13;
 
     v15 = objc_opt_class();
-    v16 = SSXPCDictionaryCopyObjectWithClass(v4, "52", v15);
+    v16 = SSXPCDictionaryCopyObjectWithClass(encodingCopy, "52", v15);
     assigneeToneStyle = v5->_assigneeToneStyle;
     v5->_assigneeToneStyle = v16;
 
-    v5->_shouldMakeDefaultRingtone = xpc_dictionary_get_BOOL(v4, "53");
-    v5->_shouldMakeDefaultTextTone = xpc_dictionary_get_BOOL(v4, "54");
+    v5->_shouldMakeDefaultRingtone = xpc_dictionary_get_BOOL(encodingCopy, "53");
+    v5->_shouldMakeDefaultTextTone = xpc_dictionary_get_BOOL(encodingCopy, "54");
   }
 
   return v5;

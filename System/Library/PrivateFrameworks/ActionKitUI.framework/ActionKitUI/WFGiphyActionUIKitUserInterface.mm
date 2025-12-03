@@ -1,41 +1,41 @@
 @interface WFGiphyActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithContent:(id)a3 error:(id)a4;
-- (void)giphyViewController:(id)a3 didSelectObjects:(id)a4;
-- (void)giphyViewControllerDidCancel:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showWithQuery:(id)a3 selectMultiple:(BOOL)a4 completionHandler:(id)a5;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithContent:(id)content error:(id)error;
+- (void)giphyViewController:(id)controller didSelectObjects:(id)objects;
+- (void)giphyViewControllerDidCancel:(id)cancel;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showWithQuery:(id)query selectMultiple:(BOOL)multiple completionHandler:(id)handler;
 @end
 
 @implementation WFGiphyActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFGiphyActionUIKitUserInterface *)self finishWithContent:0 error:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFGiphyActionUIKitUserInterface *)self finishWithContent:0 error:userCancelledError];
 }
 
-- (void)giphyViewController:(id)a3 didSelectObjects:(id)a4
+- (void)giphyViewController:(id)controller didSelectObjects:(id)objects
 {
-  v6 = a4;
+  objectsCopy = objects;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__WFGiphyActionUIKitUserInterface_giphyViewController_didSelectObjects___block_invoke;
   v8[3] = &unk_278C375A0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 dismissViewControllerAnimated:1 completion:v8];
+  v9 = objectsCopy;
+  v7 = objectsCopy;
+  [controller dismissViewControllerAnimated:1 completion:v8];
 }
 
-- (void)giphyViewControllerDidCancel:(id)a3
+- (void)giphyViewControllerDidCancel:(id)cancel
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __64__WFGiphyActionUIKitUserInterface_giphyViewControllerDidCancel___block_invoke;
   v3[3] = &unk_278C37538;
   v3[4] = self;
-  [a3 dismissViewControllerAnimated:1 completion:v3];
+  [cancel dismissViewControllerAnimated:1 completion:v3];
 }
 
 void __64__WFGiphyActionUIKitUserInterface_giphyViewControllerDidCancel___block_invoke(uint64_t a1)
@@ -45,18 +45,18 @@ void __64__WFGiphyActionUIKitUserInterface_giphyViewControllerDidCancel___block_
   [v1 finishWithContent:0 error:v2];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__WFGiphyActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFGiphyActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -71,30 +71,30 @@ uint64_t __75__WFGiphyActionUIKitUserInterface_cancelPresentationWithCompletionH
   return v4();
 }
 
-- (void)finishWithContent:(id)a3 error:(id)a4
+- (void)finishWithContent:(id)content error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFGiphyActionUIKitUserInterface *)self completionHandler];
+  contentCopy = content;
+  errorCopy = error;
+  completionHandler = [(WFGiphyActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFGiphyActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFGiphyActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, contentCopy, errorCopy);
   }
 
   [(WFGiphyActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithQuery:(id)a3 selectMultiple:(BOOL)a4 completionHandler:(id)a5
+- (void)showWithQuery:(id)query selectMultiple:(BOOL)multiple completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  queryCopy = query;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!queryCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFGiphyActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFGiphyActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
     if (v11)
     {
@@ -102,13 +102,13 @@ uint64_t __75__WFGiphyActionUIKitUserInterface_cancelPresentationWithCompletionH
     }
 
 LABEL_5:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFGiphyActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFGiphyActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -119,10 +119,10 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __82__WFGiphyActionUIKitUserInterface_showWithQuery_selectMultiple_completionHandler___block_invoke;
   block[3] = &unk_278C37408;
-  v18 = a4;
-  v16 = v9;
-  v17 = self;
-  v12 = v9;
+  multipleCopy = multiple;
+  v16 = queryCopy;
+  selfCopy = self;
+  v12 = queryCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

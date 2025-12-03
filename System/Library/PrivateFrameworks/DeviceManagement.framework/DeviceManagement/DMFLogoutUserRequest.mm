@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = DMFLogoutUserRequest;
-  v2 = [(DMFLogOutUserRequest *)&v4 classForCoder];
+  classForCoder = [(DMFLogOutUserRequest *)&v4 classForCoder];
 
-  return v2;
+  return classForCoder;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface LACAccessControl
-+ (BOOL)_checkConstraints:(id)a3 contain:(id)a4;
-+ (BOOL)checkACL:(id)a3 hasConstraint:(id)a4 forOperation:(id)a5;
-+ (BOOL)checkACLAllowsAll:(id)a3;
++ (BOOL)_checkConstraints:(id)constraints contain:(id)contain;
++ (BOOL)checkACL:(id)l hasConstraint:(id)constraint forOperation:(id)operation;
++ (BOOL)checkACLAllowsAll:(id)all;
 + (__SecAccessControl)allowAllACL;
 + (__SecAccessControl)denyAllACL;
-+ (__SecAccessControl)deserializeACL:(id)a3;
-+ (id)constraintsFromACL:(__SecAccessControl *)a3;
-+ (id)serializeACL:(__SecAccessControl *)a3;
++ (__SecAccessControl)deserializeACL:(id)l;
++ (id)constraintsFromACL:(__SecAccessControl *)l;
++ (id)serializeACL:(__SecAccessControl *)l;
 @end
 
 @implementation LACAccessControl
 
-+ (id)constraintsFromACL:(__SecAccessControl *)a3
++ (id)constraintsFromACL:(__SecAccessControl *)l
 {
   Constraints = SecAccessControlGetConstraints();
   Copy = CFDictionaryCreateCopy(0, Constraints);
@@ -19,16 +19,16 @@
   return Copy;
 }
 
-+ (id)serializeACL:(__SecAccessControl *)a3
++ (id)serializeACL:(__SecAccessControl *)l
 {
   v3 = SecAccessControlCopyData();
 
   return v3;
 }
 
-+ (__SecAccessControl)deserializeACL:(id)a3
++ (__SecAccessControl)deserializeACL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = SecAccessControlCreateFromData();
   if (!v4)
   {
@@ -79,8 +79,8 @@
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D940];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not initialize trivial ACL (%@)", error];
-    v8 = [v5 exceptionWithName:v6 reason:v7 userInfo:0];
+    error = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not initialize trivial ACL (%@)", error];
+    v8 = [v5 exceptionWithName:v6 reason:error userInfo:0];
     v9 = v8;
 
     objc_exception_throw(v8);
@@ -91,7 +91,7 @@
   return v3;
 }
 
-+ (BOOL)checkACLAllowsAll:(id)a3
++ (BOOL)checkACLAllowsAll:(id)all
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695E480];
@@ -103,8 +103,8 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v6 allValues];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allValues = [v6 allValues];
+    v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -116,7 +116,7 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           if (!CFEqual(*(*(&v15 + 1) + 8 * i), v11))
@@ -126,7 +126,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -149,30 +149,30 @@ LABEL_14:
   return v5;
 }
 
-+ (BOOL)checkACL:(id)a3 hasConstraint:(id)a4 forOperation:(id)a5
++ (BOOL)checkACL:(id)l hasConstraint:(id)constraint forOperation:(id)operation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 deserializeACL:a3];
-  v11 = [a1 constraintsFromACL:v10];
+  operationCopy = operation;
+  constraintCopy = constraint;
+  v10 = [self deserializeACL:l];
+  v11 = [self constraintsFromACL:v10];
   if (v10)
   {
     CFRelease(v10);
   }
 
-  v12 = [v8 keyOp];
-  v13 = [v11 objectForKey:v12];
+  keyOp = [operationCopy keyOp];
+  v13 = [v11 objectForKey:keyOp];
 
-  v14 = [a1 _checkConstraints:v13 contain:v9];
+  v14 = [self _checkConstraints:v13 contain:constraintCopy];
   return v14;
 }
 
-+ (BOOL)_checkConstraints:(id)a3 contain:(id)a4
++ (BOOL)_checkConstraints:(id)constraints contain:(id)contain
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:v7];
+  constraintsCopy = constraints;
+  containCopy = contain;
+  v8 = [constraintsCopy objectForKeyedSubscript:containCopy];
 
   if (v8)
   {
@@ -185,14 +185,14 @@ LABEL_14:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v10 = [v6 allValues];
-    v11 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    allValues = [constraintsCopy allValues];
+    v11 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v11)
     {
       v12 = v11;
       v13 = *v34;
       v14 = 0x1E695D000uLL;
-      v28 = v10;
+      v28 = allValues;
       v26 = *v34;
       while (2)
       {
@@ -202,12 +202,12 @@ LABEL_14:
         {
           if (*v34 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allValues);
           }
 
           v16 = *(*(&v33 + 1) + 8 * v15);
           objc_opt_class();
-          if (objc_opt_isKindOfClass() & 1) != 0 && ([a1 _checkConstraints:v16 contain:v7])
+          if (objc_opt_isKindOfClass() & 1) != 0 && ([self _checkConstraints:v16 contain:containCopy])
           {
             v9 = 1;
             goto LABEL_26;
@@ -238,11 +238,11 @@ LABEL_14:
 
                   v23 = *(*(&v29 + 1) + 8 * i);
                   objc_opt_class();
-                  if (objc_opt_isKindOfClass() & 1) != 0 && ([a1 _checkConstraints:v23 contain:v7])
+                  if (objc_opt_isKindOfClass() & 1) != 0 && ([self _checkConstraints:v23 contain:containCopy])
                   {
 
                     v9 = 1;
-                    v10 = v28;
+                    allValues = v28;
                     goto LABEL_26;
                   }
                 }
@@ -258,7 +258,7 @@ LABEL_14:
             }
 
             v12 = v27;
-            v10 = v28;
+            allValues = v28;
             v13 = v26;
             v14 = 0x1E695D000;
           }
@@ -267,7 +267,7 @@ LABEL_14:
         }
 
         while (v15 != v12);
-        v12 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v12 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
         v9 = 0;
         if (v12)
         {

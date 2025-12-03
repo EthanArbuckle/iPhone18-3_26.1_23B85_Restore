@@ -1,9 +1,9 @@
 @interface BKSHIDServiceConnectionFactory
 + (id)sharedInstance;
-- (id)clientConnectionForServiceWithName:(id)a3;
-- (id)clientConnectionForServiceWithName:(id)a3 isNonLaunching:(BOOL *)a4;
-- (id)clientConnectionForServiceWithName:(id)a3 multiplexer:(id)a4;
-- (id)clientConnectionForServiceWithName:(void *)a3 multiplexer:(_BYTE *)a4 isNonLaunching:;
+- (id)clientConnectionForServiceWithName:(id)name;
+- (id)clientConnectionForServiceWithName:(id)name isNonLaunching:(BOOL *)launching;
+- (id)clientConnectionForServiceWithName:(id)name multiplexer:(id)multiplexer;
+- (id)clientConnectionForServiceWithName:(void *)name multiplexer:(_BYTE *)multiplexer isNonLaunching:;
 @end
 
 @implementation BKSHIDServiceConnectionFactory
@@ -35,23 +35,23 @@ void __48__BKSHIDServiceConnectionFactory_sharedInstance__block_invoke()
   sharedInstance___sharedInstance = v0;
 }
 
-- (id)clientConnectionForServiceWithName:(id)a3 isNonLaunching:(BOOL *)a4
+- (id)clientConnectionForServiceWithName:(id)name isNonLaunching:(BOOL *)launching
 {
   v6 = MEMORY[0x1E698F4E0];
-  v7 = a3;
-  v8 = [v6 defaultMultiplexer];
-  v9 = [(BKSHIDServiceConnectionFactory *)self clientConnectionForServiceWithName:v7 multiplexer:v8 isNonLaunching:a4];
+  nameCopy = name;
+  defaultMultiplexer = [v6 defaultMultiplexer];
+  v9 = [(BKSHIDServiceConnectionFactory *)self clientConnectionForServiceWithName:nameCopy multiplexer:defaultMultiplexer isNonLaunching:launching];
 
   return v9;
 }
 
-- (id)clientConnectionForServiceWithName:(void *)a3 multiplexer:(_BYTE *)a4 isNonLaunching:
+- (id)clientConnectionForServiceWithName:(void *)name multiplexer:(_BYTE *)multiplexer isNonLaunching:
 {
   v39 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  nameCopy = name;
+  v9 = nameCopy;
+  if (self)
   {
     if (!v7)
     {
@@ -66,7 +66,7 @@ void __48__BKSHIDServiceConnectionFactory_sharedInstance__block_invoke()
         v29 = 2114;
         v30 = v20;
         v31 = 2048;
-        v32 = a1;
+        selfCopy2 = self;
         v33 = 2114;
         v34 = @"BKSHIDServiceConnectionFactory.m";
         v35 = 1024;
@@ -82,7 +82,7 @@ void __48__BKSHIDServiceConnectionFactory_sharedInstance__block_invoke()
       JUMPOUT(0x18638FA2CLL);
     }
 
-    if (!v8)
+    if (!nameCopy)
     {
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"multiplexer"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -95,7 +95,7 @@ void __48__BKSHIDServiceConnectionFactory_sharedInstance__block_invoke()
         v29 = 2114;
         v30 = v24;
         v31 = 2048;
-        v32 = a1;
+        selfCopy2 = self;
         v33 = 2114;
         v34 = @"BKSHIDServiceConnectionFactory.m";
         v35 = 1024;
@@ -115,9 +115,9 @@ void __48__BKSHIDServiceConnectionFactory_sharedInstance__block_invoke()
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (multiplexer)
       {
-        *a4 = [v10 isNonLaunching];
+        *multiplexer = [v10 isNonLaunching];
       }
 
       v12 = objc_alloc(MEMORY[0x1E698F4D8]);
@@ -154,21 +154,21 @@ void __48__BKSHIDServiceConnectionFactory_sharedInstance__block_invoke()
   return v13;
 }
 
-- (id)clientConnectionForServiceWithName:(id)a3 multiplexer:(id)a4
+- (id)clientConnectionForServiceWithName:(id)name multiplexer:(id)multiplexer
 {
   v6 = 0;
-  v4 = [(BKSHIDServiceConnectionFactory *)self clientConnectionForServiceWithName:a3 multiplexer:a4 isNonLaunching:&v6];
+  v4 = [(BKSHIDServiceConnectionFactory *)self clientConnectionForServiceWithName:name multiplexer:multiplexer isNonLaunching:&v6];
 
   return v4;
 }
 
-- (id)clientConnectionForServiceWithName:(id)a3
+- (id)clientConnectionForServiceWithName:(id)name
 {
   v9 = 0;
   v4 = MEMORY[0x1E698F4E0];
-  v5 = a3;
-  v6 = [v4 defaultMultiplexer];
-  v7 = [(BKSHIDServiceConnectionFactory *)self clientConnectionForServiceWithName:v5 multiplexer:v6 isNonLaunching:&v9];
+  nameCopy = name;
+  defaultMultiplexer = [v4 defaultMultiplexer];
+  v7 = [(BKSHIDServiceConnectionFactory *)self clientConnectionForServiceWithName:nameCopy multiplexer:defaultMultiplexer isNonLaunching:&v9];
 
   return v7;
 }

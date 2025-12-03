@@ -1,6 +1,6 @@
 @interface PSGSoftwareVersionController
 - (PSGSoftwareVersionController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)osUpdateDetailCellSpecifier;
 - (id)osUpdateDetailGroup;
 - (id)osUpdateLearnMoreButton;
@@ -9,13 +9,13 @@
 - (id)splatUpdateDetailCellSpecifier;
 - (id)splatUpdateDetailGroup;
 - (id)splatUpdateLearnMoreButton;
-- (void)client:(id)a3 rollbackDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 rollbackDidFinish:(id)a4;
-- (void)client:(id)a3 rollbackDidStart:(id)a4;
+- (void)client:(id)client rollbackDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client rollbackDidFinish:(id)finish;
+- (void)client:(id)client rollbackDidStart:(id)start;
 - (void)osLearnMoreTapped;
-- (void)presentLearnMoreSheetForDocumentationData:(id)a3;
+- (void)presentLearnMoreSheetForDocumentationData:(id)data;
 - (void)removeSecurityResponse;
-- (void)setPreparingRollback:(BOOL)a3;
+- (void)setPreparingRollback:(BOOL)rollback;
 - (void)splatLearnMoreTapped;
 - (void)viewDidLoad;
 @end
@@ -75,8 +75,8 @@ void __43__PSGSoftwareVersionController_viewDidLoad__block_invoke(uint64_t a1)
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(PSGSoftwareVersionController *)self specifier];
-    v6 = [v5 propertyForKey:@"SUManagerClient"];
+    specifier = [(PSGSoftwareVersionController *)self specifier];
+    v6 = [specifier propertyForKey:@"SUManagerClient"];
     suClient = self->_suClient;
     self->_suClient = v6;
 
@@ -86,16 +86,16 @@ void __43__PSGSoftwareVersionController_viewDidLoad__block_invoke(uint64_t a1)
     self->_osDocumentationData = v8;
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v11 = [(PSGSoftwareVersionController *)self osUpdateDetailGroup];
-    [v10 addObject:v11];
+    osUpdateDetailGroup = [(PSGSoftwareVersionController *)self osUpdateDetailGroup];
+    [v10 addObject:osUpdateDetailGroup];
 
-    v12 = [(PSGSoftwareVersionController *)self osUpdateDetailCellSpecifier];
-    [v10 addObject:v12];
+    osUpdateDetailCellSpecifier = [(PSGSoftwareVersionController *)self osUpdateDetailCellSpecifier];
+    [v10 addObject:osUpdateDetailCellSpecifier];
 
-    v13 = [(PSGSoftwareVersionController *)self osUpdateLearnMoreButton];
-    if (v13)
+    osUpdateLearnMoreButton = [(PSGSoftwareVersionController *)self osUpdateLearnMoreButton];
+    if (osUpdateLearnMoreButton)
     {
-      [v10 addObject:v13];
+      [v10 addObject:osUpdateLearnMoreButton];
     }
 
     if ([(SUManagerClient *)self->_suClient isSplatOnlyUpdateInstalled])
@@ -104,35 +104,35 @@ void __43__PSGSoftwareVersionController_viewDidLoad__block_invoke(uint64_t a1)
       splatDocumentationData = self->_splatDocumentationData;
       self->_splatDocumentationData = v14;
 
-      v16 = [(PSGSoftwareVersionController *)self splatUpdateDetailGroup];
-      [v10 addObject:v16];
+      splatUpdateDetailGroup = [(PSGSoftwareVersionController *)self splatUpdateDetailGroup];
+      [v10 addObject:splatUpdateDetailGroup];
 
-      v17 = [(PSGSoftwareVersionController *)self splatUpdateDetailCellSpecifier];
-      [v10 addObject:v17];
+      splatUpdateDetailCellSpecifier = [(PSGSoftwareVersionController *)self splatUpdateDetailCellSpecifier];
+      [v10 addObject:splatUpdateDetailCellSpecifier];
 
-      v18 = [(PSGSoftwareVersionController *)self splatUpdateLearnMoreButton];
-      if (v18)
+      splatUpdateLearnMoreButton = [(PSGSoftwareVersionController *)self splatUpdateLearnMoreButton];
+      if (splatUpdateLearnMoreButton)
       {
-        [v10 addObject:v18];
+        [v10 addObject:splatUpdateLearnMoreButton];
       }
 
       if ([(SUManagerClient *)self->_suClient isSplatOnlyUpdateRollbackAllowed:0])
       {
-        v19 = [(PSGSoftwareVersionController *)self splatRollbackButton];
-        if (v19)
+        splatRollbackButton = [(PSGSoftwareVersionController *)self splatRollbackButton];
+        if (splatRollbackButton)
         {
-          [v10 addObject:v19];
+          [v10 addObject:splatRollbackButton];
         }
       }
     }
 
     else
     {
-      v18 = _PSGLoggingFacility();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      splatUpdateLearnMoreButton = _PSGLoggingFacility();
+      if (os_log_type_enabled(splatUpdateLearnMoreButton, OS_LOG_TYPE_DEFAULT))
       {
         *v22 = 0;
-        _os_log_impl(&dword_21CF20000, v18, OS_LOG_TYPE_DEFAULT, "Cryptex-only content not installed", v22, 2u);
+        _os_log_impl(&dword_21CF20000, splatUpdateLearnMoreButton, OS_LOG_TYPE_DEFAULT, "Cryptex-only content not installed", v22, 2u);
       }
     }
 
@@ -169,9 +169,9 @@ void __43__PSGSoftwareVersionController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (id)osUpdateLearnMoreButton
 {
-  v3 = [(SUDocumentationData *)self->_osDocumentationData readme];
+  readme = [(SUDocumentationData *)self->_osDocumentationData readme];
 
-  if (v3)
+  if (readme)
   {
     v4 = MEMORY[0x277D3FAD8];
     v5 = PSG_LocalizedStringForGeneral(@"LEARN_MORE");
@@ -215,9 +215,9 @@ void __43__PSGSoftwareVersionController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (id)splatUpdateLearnMoreButton
 {
-  v3 = [(SUDocumentationData *)self->_splatDocumentationData readme];
+  readme = [(SUDocumentationData *)self->_splatDocumentationData readme];
 
-  if (v3)
+  if (readme)
   {
     v4 = MEMORY[0x277D3FAD8];
     v5 = PSG_LocalizedStringForGeneral(@"LEARN_MORE");
@@ -289,9 +289,9 @@ void __51__PSGSoftwareVersionController_splatRollbackButton__block_invoke(uint64
   }
 }
 
-- (void)setPreparingRollback:(BOOL)a3
+- (void)setPreparingRollback:(BOOL)rollback
 {
-  v3 = a3;
+  rollbackCopy = rollback;
   v5 = [(PSGSoftwareVersionController *)self specifierForID:@"ROLLBACK_BUTTON"];
   if (!v5)
   {
@@ -303,7 +303,7 @@ void __51__PSGSoftwareVersionController_splatRollbackButton__block_invoke(uint64
     }
   }
 
-  if (v3)
+  if (rollbackCopy)
   {
     v7 = @"PREPARING_REMOVAL";
   }
@@ -316,7 +316,7 @@ void __51__PSGSoftwareVersionController_splatRollbackButton__block_invoke(uint64
   v8 = PSG_LocalizedStringForGeneral(v7);
   [v5 setName:v8];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:!v3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:!rollbackCopy];
   [v5 setProperty:v9 forKey:*MEMORY[0x277D3FF38]];
 
   [(PSGSoftwareVersionController *)self reloadSpecifier:v5 animated:1];
@@ -346,14 +346,14 @@ void __51__PSGSoftwareVersionController_splatRollbackButton__block_invoke(uint64
   [(PSGSoftwareVersionController *)self presentLearnMoreSheetForDocumentationData:self->_splatDocumentationData];
 }
 
-- (void)presentLearnMoreSheetForDocumentationData:(id)a3
+- (void)presentLearnMoreSheetForDocumentationData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = objc_alloc(MEMORY[0x277CCACA8]);
-    v6 = [v4 readme];
-    v7 = [v5 initWithData:v6 encoding:4];
+    readme = [dataCopy readme];
+    v7 = [v5 initWithData:readme encoding:4];
 
     if (v7)
     {
@@ -362,8 +362,8 @@ void __51__PSGSoftwareVersionController_splatRollbackButton__block_invoke(uint64
       v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
       [v9 setModalPresentationStyle:2];
       v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_releaseNotesDonePressed_];
-      v11 = [v8 navigationItem];
-      [v11 setRightBarButtonItem:v10];
+      navigationItem = [v8 navigationItem];
+      [navigationItem setRightBarButtonItem:v10];
 
       [(PSGSoftwareVersionController *)self presentViewController:v9 animated:1 completion:0];
     }
@@ -449,16 +449,16 @@ void __54__PSGSoftwareVersionController_removeSecurityResponse__block_invoke(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 rollbackDidStart:(id)a4
+- (void)client:(id)client rollbackDidStart:(id)start
 {
-  v5 = a4;
+  startCopy = start;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__PSGSoftwareVersionController_client_rollbackDidStart___block_invoke;
   v7[3] = &unk_278324FE8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = startCopy;
+  selfCopy = self;
+  v6 = startCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -479,16 +479,16 @@ uint64_t __56__PSGSoftwareVersionController_client_rollbackDidStart___block_invo
   return result;
 }
 
-- (void)client:(id)a3 rollbackDidFinish:(id)a4
+- (void)client:(id)client rollbackDidFinish:(id)finish
 {
-  v5 = a4;
+  finishCopy = finish;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__PSGSoftwareVersionController_client_rollbackDidFinish___block_invoke;
   v7[3] = &unk_278324FE8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = finishCopy;
+  selfCopy = self;
+  v6 = finishCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -509,16 +509,16 @@ uint64_t __57__PSGSoftwareVersionController_client_rollbackDidFinish___block_inv
   return result;
 }
 
-- (void)client:(id)a3 rollbackDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client rollbackDidFail:(id)fail withError:(id)error
 {
-  v6 = a4;
+  failCopy = fail;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__PSGSoftwareVersionController_client_rollbackDidFail_withError___block_invoke;
   v8[3] = &unk_278324FE8;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  v9 = failCopy;
+  selfCopy = self;
+  v7 = failCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -539,25 +539,25 @@ uint64_t __65__PSGSoftwareVersionController_client_rollbackDidFail_withError___b
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSGSoftwareVersionController *)self specifierAtIndex:[(PSGSoftwareVersionController *)self indexForIndexPath:v6]];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(PSGSoftwareVersionController *)self specifierAtIndex:[(PSGSoftwareVersionController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:*MEMORY[0x277D40148]];
   [v9 layoutIfNeeded];
   v10 = [(PSGSoftwareVersionController *)self specifierForID:@"OS_VERSION_CELL"];
 
   if (v8 == v10)
   {
-    [v9 preferredHeightWithTable:v7];
+    [v9 preferredHeightWithTable:viewCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = PSGSoftwareVersionController;
-    [(PSGSoftwareVersionController *)&v14 tableView:v7 heightForRowAtIndexPath:v6];
+    [(PSGSoftwareVersionController *)&v14 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
   }
 
   v12 = v11;

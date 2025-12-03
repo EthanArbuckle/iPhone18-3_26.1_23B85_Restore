@@ -8,10 +8,10 @@
 {
   [self _accessibilityReloadMediaStrings];
   v3 = [(SUShortLinkCellConfigurationAccessibility *)self safeValueForKey:@"_accessibilityStringsArrayPointer"];
-  v4 = [v3 bytes];
-  v5 = *(v4 + 16);
-  v6 = *(v4 + 8);
-  v7 = *(v4 + 24);
+  bytes = [v3 bytes];
+  v5 = *(bytes + 16);
+  v6 = *(bytes + 8);
+  v7 = *(bytes + 24);
   v8 = v5;
   v9 = __UIAXStringForVariables();
 

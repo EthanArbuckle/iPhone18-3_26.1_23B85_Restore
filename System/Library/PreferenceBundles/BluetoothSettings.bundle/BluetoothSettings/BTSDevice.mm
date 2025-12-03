@@ -1,23 +1,23 @@
 @interface BTSDevice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isiPad;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation BTSDevice
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BTSDevice *)self identifier];
-    v7 = [v5 identifier];
+    v5 = equalCopy;
+    identifier = [(BTSDevice *)self identifier];
+    identifier2 = [v5 identifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -30,52 +30,52 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BTSDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(BTSDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(BTSDevice *)self shouldDenyIncomingClassicConnection];
-  if (v5 != [v4 shouldDenyIncomingClassicConnection])
+  compareCopy = compare;
+  shouldDenyIncomingClassicConnection = [(BTSDevice *)self shouldDenyIncomingClassicConnection];
+  if (shouldDenyIncomingClassicConnection != [compareCopy shouldDenyIncomingClassicConnection])
   {
-    v6 = [(BTSDevice *)self shouldDenyIncomingClassicConnection];
+    shouldDenyIncomingClassicConnection2 = [(BTSDevice *)self shouldDenyIncomingClassicConnection];
 LABEL_5:
-    v8 = !v6;
+    v8 = !shouldDenyIncomingClassicConnection2;
     goto LABEL_6;
   }
 
-  v7 = [(BTSDevice *)self connected];
-  if (v7 != [v4 connected])
+  connected = [(BTSDevice *)self connected];
+  if (connected != [compareCopy connected])
   {
-    v6 = [(BTSDevice *)self connected];
+    shouldDenyIncomingClassicConnection2 = [(BTSDevice *)self connected];
     goto LABEL_5;
   }
 
-  v11 = [(BTSDevice *)self paired]|| [(BTSDevice *)self isHealthDevice]|| [(BTSDevice *)self isManagedByDeviceAccess];
-  if ([v4 paired] & 1) != 0 || (objc_msgSend(v4, "isHealthDevice"))
+  isManagedByDeviceAccess = [(BTSDevice *)self paired]|| [(BTSDevice *)self isHealthDevice]|| [(BTSDevice *)self isManagedByDeviceAccess];
+  if ([compareCopy paired] & 1) != 0 || (objc_msgSend(compareCopy, "isHealthDevice"))
   {
-    v12 = 1;
+    isManagedByDeviceAccess2 = 1;
   }
 
   else
   {
-    v12 = [v4 isManagedByDeviceAccess];
+    isManagedByDeviceAccess2 = [compareCopy isManagedByDeviceAccess];
   }
 
-  if (v12 == v11)
+  if (isManagedByDeviceAccess2 == isManagedByDeviceAccess)
   {
-    v13 = [(BTSDevice *)self name];
-    v14 = [v4 name];
-    v9 = [v13 compare:v14 options:1];
+    name = [(BTSDevice *)self name];
+    name2 = [compareCopy name];
+    v9 = [name compare:name2 options:1];
 
     goto LABEL_9;
   }
 
-  v8 = v11 == 0;
+  v8 = isManagedByDeviceAccess == 0;
 LABEL_6:
   if (v8)
   {

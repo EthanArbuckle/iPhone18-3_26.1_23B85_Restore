@@ -1,27 +1,27 @@
 @interface PowerUIMLWatchPredictor
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8;
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log;
 @end
 
 @implementation PowerUIMLWatchPredictor
 
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log
 {
   v141 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a7;
-  v12 = a8;
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
-  v14 = [v13 components:32 fromDate:v11];
+  eventsCopy = events;
+  dateCopy = date;
+  logCopy = log;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v14 = [currentCalendar components:32 fromDate:dateCopy];
 
   v105 = v14;
-  v117 = [v14 hour];
-  v15 = [PowerUIPredictorHelper events:v10 forHourBin:1 date:v11 withMaxDuration:12.0];
-  v16 = [PowerUIPredictorHelper events:v10 forHourBin:2 date:v11 withMaxDuration:12.0];
-  v17 = [PowerUIPredictorHelper events:v10 forHourBin:4 date:v11 withMaxDuration:12.0];
-  v18 = [PowerUIPredictorHelper events:v10 forHourBin:8 date:v11 withMaxDuration:12.0];
-  v19 = [PowerUIPredictorHelper events:v10 forHourBin:16 date:v11 withMaxDuration:12.0];
-  v108 = v10;
-  v20 = [PowerUIPredictorHelper events:v10 forHourBin:24 date:v11 withMaxDuration:12.0];
+  hour = [v14 hour];
+  v15 = [PowerUIPredictorHelper events:eventsCopy forHourBin:1 date:dateCopy withMaxDuration:12.0];
+  v16 = [PowerUIPredictorHelper events:eventsCopy forHourBin:2 date:dateCopy withMaxDuration:12.0];
+  v17 = [PowerUIPredictorHelper events:eventsCopy forHourBin:4 date:dateCopy withMaxDuration:12.0];
+  v18 = [PowerUIPredictorHelper events:eventsCopy forHourBin:8 date:dateCopy withMaxDuration:12.0];
+  v19 = [PowerUIPredictorHelper events:eventsCopy forHourBin:16 date:dateCopy withMaxDuration:12.0];
+  v108 = eventsCopy;
+  v20 = [PowerUIPredictorHelper events:eventsCopy forHourBin:24 date:dateCopy withMaxDuration:12.0];
   [PowerUIPredictorHelper standardDeviationOf:v15];
   v22 = v21;
   [PowerUIPredictorHelper standardDeviationOf:v16];
@@ -47,17 +47,17 @@
   v38 = v37;
   [PowerUIPredictorHelper medianOf:v20];
   v40 = v39;
-  v41 = v12;
+  v41 = logCopy;
   v119 = v15;
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = [MEMORY[0x277CCABB0] numberWithDouble:v117];
-    [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v42 = [MEMORY[0x277CCABB0] numberWithDouble:hour];
+    [MEMORY[0x277CCABB0] numberWithUnsignedInteger:level];
     v43 = v16;
     v45 = v44 = v20;
-    [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    [MEMORY[0x277CCABB0] numberWithDouble:features];
     v47 = v46 = v17;
-    [MEMORY[0x277CCABB0] numberWithDouble:a6];
+    [MEMORY[0x277CCABB0] numberWithDouble:plugin];
     v49 = v48 = v18;
     *buf = 138413058;
     v134 = v42;
@@ -167,7 +167,7 @@
     _os_log_impl(&dword_21B766000, v58, OS_LOG_TYPE_DEFAULT, "Model inputs for hourBin16: count %lu, std_dur_16: %f, med_dur_16: %lf", buf, 0x20u);
   }
 
-  v107 = v11;
+  v107 = dateCopy;
 
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
   {
@@ -187,82 +187,82 @@
     _os_log_impl(&dword_21B766000, v60, OS_LOG_TYPE_DEFAULT, "Model inputs for hourBin24: count %lu, std_dur_24: %f, med_dur_24: %lf", buf, 0x20u);
   }
 
-  v62 = [MEMORY[0x277CBEB38] dictionary];
-  v63 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  [v62 setObject:v63 forKeyedSubscript:@"plugin_battery_level"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v63 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:level];
+  [dictionary setObject:v63 forKeyedSubscript:@"plugin_battery_level"];
 
-  v64 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
-  [v62 setObject:v64 forKeyedSubscript:@"time_from_plugin"];
+  v64 = [MEMORY[0x277CCABB0] numberWithDouble:plugin];
+  [dictionary setObject:v64 forKeyedSubscript:@"time_from_plugin"];
 
-  v65 = [MEMORY[0x277CCABB0] numberWithDouble:v117];
-  [v62 setObject:v65 forKeyedSubscript:@"hour"];
+  v65 = [MEMORY[0x277CCABB0] numberWithDouble:hour];
+  [dictionary setObject:v65 forKeyedSubscript:@"hour"];
 
   v66 = [MEMORY[0x277CCABB0] numberWithDouble:*&v109];
-  [v62 setObject:v66 forKeyedSubscript:@"med_dur_1"];
+  [dictionary setObject:v66 forKeyedSubscript:@"med_dur_1"];
 
   v67 = [MEMORY[0x277CCABB0] numberWithDouble:v111];
-  [v62 setObject:v67 forKeyedSubscript:@"med_dur_2"];
+  [dictionary setObject:v67 forKeyedSubscript:@"med_dur_2"];
 
   v68 = [MEMORY[0x277CCABB0] numberWithDouble:v113];
-  [v62 setObject:v68 forKeyedSubscript:@"med_dur_4"];
+  [dictionary setObject:v68 forKeyedSubscript:@"med_dur_4"];
 
   v69 = [MEMORY[0x277CCABB0] numberWithDouble:v115];
-  [v62 setObject:v69 forKeyedSubscript:@"med_dur_8"];
+  [dictionary setObject:v69 forKeyedSubscript:@"med_dur_8"];
 
   v70 = [MEMORY[0x277CCABB0] numberWithDouble:v38];
-  [v62 setObject:v70 forKeyedSubscript:@"med_dur_16"];
+  [dictionary setObject:v70 forKeyedSubscript:@"med_dur_16"];
 
   v71 = [MEMORY[0x277CCABB0] numberWithDouble:v40];
-  [v62 setObject:v71 forKeyedSubscript:@"med_dur_24"];
+  [dictionary setObject:v71 forKeyedSubscript:@"med_dur_24"];
 
   v72 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-  [v62 setObject:v72 forKeyedSubscript:@"cnt_dur_1"];
+  [dictionary setObject:v72 forKeyedSubscript:@"cnt_dur_1"];
 
   v118 = v16;
   v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
-  [v62 setObject:v73 forKeyedSubscript:@"cnt_dur_2"];
+  [dictionary setObject:v73 forKeyedSubscript:@"cnt_dur_2"];
 
   v116 = v17;
   v74 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
-  [v62 setObject:v74 forKeyedSubscript:@"cnt_dur_4"];
+  [dictionary setObject:v74 forKeyedSubscript:@"cnt_dur_4"];
 
   v114 = v18;
   v75 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v18, "count")}];
-  [v62 setObject:v75 forKeyedSubscript:@"cnt_dur_8"];
+  [dictionary setObject:v75 forKeyedSubscript:@"cnt_dur_8"];
 
   v76 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v120, "count")}];
-  [v62 setObject:v76 forKeyedSubscript:@"cnt_dur_16"];
+  [dictionary setObject:v76 forKeyedSubscript:@"cnt_dur_16"];
 
   v112 = v20;
   v77 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
-  [v62 setObject:v77 forKeyedSubscript:@"cnt_dur_24"];
+  [dictionary setObject:v77 forKeyedSubscript:@"cnt_dur_24"];
 
   v78 = [MEMORY[0x277CCABB0] numberWithDouble:v22];
-  [v62 setObject:v78 forKeyedSubscript:@"std_dur_1"];
+  [dictionary setObject:v78 forKeyedSubscript:@"std_dur_1"];
 
   v79 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
-  [v62 setObject:v79 forKeyedSubscript:@"std_dur_2"];
+  [dictionary setObject:v79 forKeyedSubscript:@"std_dur_2"];
 
   v80 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
-  [v62 setObject:v80 forKeyedSubscript:@"std_dur_4"];
+  [dictionary setObject:v80 forKeyedSubscript:@"std_dur_4"];
 
   v81 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
-  [v62 setObject:v81 forKeyedSubscript:@"std_dur_8"];
+  [dictionary setObject:v81 forKeyedSubscript:@"std_dur_8"];
 
   v82 = [MEMORY[0x277CCABB0] numberWithDouble:v30];
-  [v62 setObject:v82 forKeyedSubscript:@"std_dur_16"];
+  [dictionary setObject:v82 forKeyedSubscript:@"std_dur_16"];
 
   v83 = [MEMORY[0x277CCABB0] numberWithDouble:v32];
-  [v62 setObject:v83 forKeyedSubscript:@"std_dur_24"];
+  [dictionary setObject:v83 forKeyedSubscript:@"std_dur_24"];
 
-  v110 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v62 error:0];
+  v110 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:dictionary error:0];
   v125 = 0u;
   v126 = 0u;
   v127 = 0u;
   v128 = 0u;
-  v123 = v62;
-  v84 = [v62 allKeys];
-  v85 = [v84 countByEnumeratingWithState:&v125 objects:v132 count:16];
+  v123 = dictionary;
+  allKeys = [dictionary allKeys];
+  v85 = [allKeys countByEnumeratingWithState:&v125 objects:v132 count:16];
   if (v85)
   {
     v86 = v85;
@@ -274,7 +274,7 @@
       {
         if (*v126 != v87)
         {
-          objc_enumerationMutation(v84);
+          objc_enumerationMutation(allKeys);
         }
 
         v89 = *(*(&v125 + 1) + 8 * v88);
@@ -293,7 +293,7 @@
       }
 
       while (v86 != v88);
-      v86 = [v84 countByEnumeratingWithState:&v125 objects:v132 count:16];
+      v86 = [allKeys countByEnumeratingWithState:&v125 objects:v132 count:16];
     }
 
     while (v86);

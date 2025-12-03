@@ -1,11 +1,11 @@
 @interface NDTodayClientConnection
 - (NDTodayClientConnection)init;
-- (NDTodayClientConnection)initWithClient:(id)a3 contentContext:(id)a4 fetchQueue:(id)a5;
-- (void)fetchLatestResultsWithParameters:(id)a3 completion:(id)a4;
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3;
-- (void)fetchPlaceholderResultsWithOperationInfo:(id)a3 syncCompletion:(id)a4;
-- (void)markAnalyticsElement:(id)a3 asReadAtDate:(id)a4 withCompletion:(id)a5;
-- (void)markAnalyticsElements:(id)a3 asSeenAtDate:(id)a4 withCompletion:(id)a5;
+- (NDTodayClientConnection)initWithClient:(id)client contentContext:(id)context fetchQueue:(id)queue;
+- (void)fetchLatestResultsWithParameters:(id)parameters completion:(id)completion;
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion;
+- (void)fetchPlaceholderResultsWithOperationInfo:(id)info syncCompletion:(id)completion;
+- (void)markAnalyticsElement:(id)element asReadAtDate:(id)date withCompletion:(id)completion;
+- (void)markAnalyticsElements:(id)elements asSeenAtDate:(id)date withCompletion:(id)completion;
 @end
 
 @implementation NDTodayClientConnection
@@ -33,21 +33,21 @@
   objc_exception_throw(v4);
 }
 
-- (NDTodayClientConnection)initWithClient:(id)a3 contentContext:(id)a4 fetchQueue:(id)a5
+- (NDTodayClientConnection)initWithClient:(id)client contentContext:(id)context fetchQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  clientCopy = client;
+  contextCopy = context;
+  queueCopy = queue;
+  if (!clientCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000522A8();
-    if (v9)
+    if (contextCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (contextCopy)
   {
     goto LABEL_6;
   }
@@ -58,7 +58,7 @@
   }
 
 LABEL_6:
-  if (!v10 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!queueCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100052438();
   }
@@ -72,15 +72,15 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = sub_100005D88;
     block[3] = &unk_100071DB0;
-    v17 = v9;
-    v18 = v10;
+    v17 = contextCopy;
+    v18 = queueCopy;
     if (qword_10007F700 != -1)
     {
       dispatch_once(&qword_10007F700, block);
     }
 
     objc_storeStrong(&v11->_accessQueue, qword_10007F6F8);
-    objc_initWeak(&location, v8);
+    objc_initWeak(&location, clientCopy);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100005E64;
@@ -95,38 +95,38 @@ LABEL_6:
   return v11;
 }
 
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100052500();
   }
 
-  v5 = [(NDTodayClientConnection *)self todayContext];
+  todayContext = [(NDTodayClientConnection *)self todayContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005F70;
   v7[3] = &unk_100071E00;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchModuleDescriptorsWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [todayContext fetchModuleDescriptorsWithCompletion:v7];
 }
 
-- (void)fetchLatestResultsWithParameters:(id)a3 completion:(id)a4
+- (void)fetchLatestResultsWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (!parametersCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000525C4();
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -137,30 +137,30 @@ LABEL_6:
   }
 
 LABEL_6:
-  v8 = [(NDTodayClientConnection *)self todayContext];
+  todayContext = [(NDTodayClientConnection *)self todayContext];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100006090;
   v10[3] = &unk_100071E28;
-  v11 = v7;
-  v9 = v7;
-  [v8 fetchLatestResultsWithOperationInfo:v6 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [todayContext fetchLatestResultsWithOperationInfo:parametersCopy completion:v10];
 }
 
-- (void)fetchPlaceholderResultsWithOperationInfo:(id)a3 syncCompletion:(id)a4
+- (void)fetchPlaceholderResultsWithOperationInfo:(id)info syncCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10005274C();
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -171,27 +171,27 @@ LABEL_6:
   }
 
 LABEL_6:
-  v8 = [(NDTodayClientConnection *)self todayContext];
-  v9 = [v8 placeholderResultsWithOperationInfo:v6];
+  todayContext = [(NDTodayClientConnection *)self todayContext];
+  v9 = [todayContext placeholderResultsWithOperationInfo:infoCopy];
 
-  v7[2](v7, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)markAnalyticsElements:(id)a3 asSeenAtDate:(id)a4 withCompletion:(id)a5
+- (void)markAnalyticsElements:(id)elements asSeenAtDate:(id)date withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  elementsCopy = elements;
+  dateCopy = date;
+  completionCopy = completion;
+  if (!elementsCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000528D4();
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -202,36 +202,36 @@ LABEL_6:
   }
 
 LABEL_6:
-  v11 = [(NDTodayClientConnection *)self accessQueue];
+  accessQueue = [(NDTodayClientConnection *)self accessQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100006364;
   v15[3] = &unk_100071C40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = elementsCopy;
+  v17 = dateCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dateCopy;
+  v14 = elementsCopy;
+  dispatch_async(accessQueue, v15);
 }
 
-- (void)markAnalyticsElement:(id)a3 asReadAtDate:(id)a4 withCompletion:(id)a5
+- (void)markAnalyticsElement:(id)element asReadAtDate:(id)date withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  elementCopy = element;
+  dateCopy = date;
+  completionCopy = completion;
+  if (!elementCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100052A5C();
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -242,19 +242,19 @@ LABEL_6:
   }
 
 LABEL_6:
-  v11 = [(NDTodayClientConnection *)self accessQueue];
+  accessQueue = [(NDTodayClientConnection *)self accessQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100006514;
   v15[3] = &unk_100071C40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = elementCopy;
+  v17 = dateCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dateCopy;
+  v14 = elementCopy;
+  dispatch_async(accessQueue, v15);
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface _CNObservableResultEvent
 - (BOOL)hasValue;
-- (BOOL)isEqual:(id)a3;
-- (_CNObservableResultEvent)initWithResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CNObservableResultEvent)initWithResult:(id)result;
 - (id)description;
 - (unint64_t)hash;
-- (void)dematerializeWithObserver:(id)a3;
+- (void)dematerializeWithObserver:(id)observer;
 @end
 
 @implementation _CNObservableResultEvent
 
 - (BOOL)hasValue
 {
-  v2 = [(_CNObservableResultEvent *)self value];
-  v3 = v2 != 0;
+  value = [(_CNObservableResultEvent *)self value];
+  v3 = value != 0;
 
   return v3;
 }
 
-- (_CNObservableResultEvent)initWithResult:(id)a3
+- (_CNObservableResultEvent)initWithResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = _CNObservableResultEvent;
   v6 = [(_CNObservableResultEvent *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_result, a3);
+    objc_storeStrong(&v6->_result, result);
     v8 = v7;
   }
 
@@ -36,24 +36,24 @@
 - (id)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(_CNObservableResultEvent *)self value];
-  v5 = [v3 appendName:@"value" object:v4];
+  value = [(_CNObservableResultEvent *)self value];
+  v5 = [v3 appendName:@"value" object:value];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36___CNObservableResultEvent_isEqual___block_invoke;
   v7[3] = &unk_1E6ED60C8;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = equalCopy;
+  v5 = equalCopy;
   LOBYTE(self) = [CNEqualsBuilder isObject:v5 memberOfSameClassAndEqualTo:self withBlocks:v7, 0];
 
   return self;
@@ -69,13 +69,13 @@
   return [CNHashBuilder hashWithBlocks:v3, 0];
 }
 
-- (void)dematerializeWithObserver:(id)a3
+- (void)dematerializeWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if ([(_CNObservableResultEvent *)self hasValue])
   {
-    v4 = [(_CNObservableResultEvent *)self value];
-    [v5 observerDidReceiveResult:v4];
+    value = [(_CNObservableResultEvent *)self value];
+    [observerCopy observerDidReceiveResult:value];
   }
 }
 

@@ -3,26 +3,26 @@
 + (SKShader)shaderWithFileNamed:(NSString *)name;
 + (SKShader)shaderWithSource:(NSString *)source;
 + (SKShader)shaderWithSource:(NSString *)source uniforms:(NSArray *)uniforms;
-+ (id)precompiledMetalShaderWithFile:(id)a3 uniforms:(id)a4;
-- (BOOL)isEqualToShader:(id)a3;
++ (id)precompiledMetalShaderWithFile:(id)file uniforms:(id)uniforms;
+- (BOOL)isEqualToShader:(id)shader;
 - (BOOL)isValid;
 - (NSArray)_textureUniforms;
 - (NSArray)attributes;
 - (NSArray)uniforms;
 - (NSString)source;
-- (SKShader)initWithCoder:(id)a3;
+- (SKShader)initWithCoder:(id)coder;
 - (SKShader)initWithSource:(NSString *)source uniforms:(NSArray *)uniforms;
 - (SKUniform)uniformNamed:(NSString *)name;
 - (id).cxx_construct;
-- (id)_fullMetalVertexSourceWithImplementation:(BOOL)a3;
-- (id)_fullVertexSourceWithImplementation:(int64_t)a3;
+- (id)_fullMetalVertexSourceWithImplementation:(BOOL)implementation;
+- (id)_fullVertexSourceWithImplementation:(int64_t)implementation;
 - (id)_generateMetalSource;
 - (id)_getLegacyUniformData;
 - (id)_getMetalFragmentFunctionName;
 - (id)_getMetalFragmentShaderSource;
 - (id)_getMetalVertexOutDefinition;
-- (id)_getMetalVertexShaderSource:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_getMetalVertexShaderSource:(BOOL)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fragmentPrelude;
 - (id)fragmentPreludeMetal;
 - (id)fullFragmentSource;
@@ -30,13 +30,13 @@
 - (shared_ptr<jet_command_buffer>)_commands;
 - (shared_ptr<jet_program>)_backingProgram;
 - (shared_ptr<jet_program>)_backingProgramWithTransform;
-- (shared_ptr<jet_program>)_makeBackingProgramWithImplementation:(int64_t)a3;
-- (void)_removeTargetNode:(id)a3;
+- (shared_ptr<jet_program>)_makeBackingProgramWithImplementation:(int64_t)implementation;
+- (void)_removeTargetNode:(id)node;
 - (void)_setUniformsDirty;
 - (void)addUniform:(SKUniform *)uniform;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFragmentAttributeDeclares:(id *)a3;
-- (void)generateVertexAttributeDeclares:(id *)a3 statements:(id *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFragmentAttributeDeclares:(id *)declares;
+- (void)generateVertexAttributeDeclares:(id *)declares statements:(id *)statements;
 - (void)removeUniformNamed:(NSString *)name;
 - (void)setAttributes:(NSArray *)attributes;
 - (void)setSource:(NSString *)source;
@@ -54,13 +54,13 @@
   v8 = [(SKShader *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     targetNodes = v8->_targetNodes;
-    v8->_targetNodes = v9;
+    v8->_targetNodes = weakObjectsPointerArray;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     uniformData = v8->_uniformData;
-    v8->_uniformData = v11;
+    v8->_uniformData = dictionary;
 
     *&v8->_usesTimeUniform = 0;
     v8->_isPrecompiledMetal = 0;
@@ -128,18 +128,18 @@
   return v9;
 }
 
-+ (id)precompiledMetalShaderWithFile:(id)a3 uniforms:(id)a4
++ (id)precompiledMetalShaderWithFile:(id)file uniforms:(id)uniforms
 {
-  v5 = a3;
-  v6 = a4;
+  fileCopy = file;
+  uniformsCopy = uniforms;
   v7 = objc_alloc_init(objc_opt_class());
   v8 = v7[5];
-  v7[5] = v5;
-  v9 = v5;
+  v7[5] = fileCopy;
+  v9 = fileCopy;
 
   *(v7 + 48) = 1;
   v10 = v7[1];
-  v7[1] = v6;
+  v7[1] = uniformsCopy;
 
   return v7;
 }
@@ -320,13 +320,13 @@ void __26__SKShader_setAttributes___block_invoke(uint64_t a1, void *a2)
   v34 = *MEMORY[0x277D85DE8];
   v3 = [SKShader_preamble_fsh copy];
   v27 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:self->_uniformData];
-  v4 = [(SKShader *)self _getLegacyUniformData];
-  v26 = v4;
-  if (v4)
+  _getLegacyUniformData = [(SKShader *)self _getLegacyUniformData];
+  v26 = _getLegacyUniformData;
+  if (_getLegacyUniformData)
   {
-    v5 = [v4 uniform];
-    v6 = [v5 name];
-    [v27 setObject:v26 forKey:v6];
+    uniform = [_getLegacyUniformData uniform];
+    name = [uniform name];
+    [v27 setObject:v26 forKey:name];
 
     v7 = 1;
   }
@@ -356,57 +356,57 @@ void __26__SKShader_setAttributes___block_invoke(uint64_t a1, void *a2)
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 uniform];
-        v13 = [v12 name];
-        v14 = [v12 uniformType];
-        if (v14 <= 4)
+        uniform2 = [v11 uniform];
+        name2 = [uniform2 name];
+        uniformType = [uniform2 uniformType];
+        if (uniformType <= 4)
         {
-          if (v14 > 2)
+          if (uniformType > 2)
           {
-            v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump vec4 %@ ", v13];;
-            v16 = [v3 stringByAppendingString:v15];
+            textureValue3 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump vec4 %@ ", name2];;
+            v16 = [v3 stringByAppendingString:textureValue3];
           }
 
-          else if (v14 == 1)
+          else if (uniformType == 1)
           {
-            v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump float %@ ", v13];;
-            v16 = [v3 stringByAppendingString:v15];
+            textureValue3 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump float %@ ", name2];;
+            v16 = [v3 stringByAppendingString:textureValue3];
           }
 
           else
           {
-            if (v14 != 2)
+            if (uniformType != 2)
             {
               goto LABEL_30;
             }
 
-            v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump vec2 %@ ", v13];;
-            v16 = [v3 stringByAppendingString:v15];
+            textureValue3 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump vec2 %@ ", name2];;
+            v16 = [v3 stringByAppendingString:textureValue3];
           }
 
           goto LABEL_28;
         }
 
-        if (v14 <= 6)
+        if (uniformType <= 6)
         {
-          if (v14 == 5)
+          if (uniformType == 5)
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump mat2 %@; ", v13];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump mat2 %@; ", name2];
           }
 
           else
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump mat3 %@; ", v13];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump mat3 %@; ", name2];
           }
-          v15 = ;
-          v16 = [v3 stringByAppendingString:v15];
+          textureValue3 = ;
+          v16 = [v3 stringByAppendingString:textureValue3];
           goto LABEL_28;
         }
 
-        if (v14 == 7)
+        if (uniformType == 7)
         {
-          v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump mat4 %@ ", v13];;
-          v16 = [v3 stringByAppendingString:v15];
+          textureValue3 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform mediump mat4 %@ ", name2];;
+          v16 = [v3 stringByAppendingString:textureValue3];
 LABEL_28:
           v23 = v16;
 
@@ -415,26 +415,26 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        if (v14 == 8)
+        if (uniformType == 8)
         {
-          v17 = [v12 textureValue];
-          v18 = v17 == 0;
+          textureValue = [uniform2 textureValue];
+          v18 = textureValue == 0;
 
           if (!v18)
           {
-            v19 = [v12 textureValue];
-            v20 = [v19 textureTarget];
+            textureValue2 = [uniform2 textureValue];
+            textureTarget = [textureValue2 textureTarget];
 
-            if (v20 == 3553)
+            if (textureTarget == 3553)
             {
-              v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform lowp sampler2D %@ ", v13];;
+              v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"uniform lowp sampler2D %@ ", name2];;
               v22 = [v3 stringByAppendingString:v21];
 
               v3 = v22;
             }
 
-            v15 = [v12 textureValue];
-            [v11 setTextureTarget:{objc_msgSend(v15, "textureTarget")}];
+            textureValue3 = [uniform2 textureValue];
+            [v11 setTextureTarget:{objc_msgSend(textureValue3, "textureTarget")}];
             v23 = v3;
             goto LABEL_29;
           }
@@ -456,23 +456,23 @@ LABEL_30:
 - (id)fragmentPreludeMetal
 {
   v3 = [SKShader_Metal_preamble_fsh copy];
-  v4 = [(SKShader *)self _getMetalVertexOutDefinition];
-  v5 = [v3 stringByAppendingString:v4];
+  _getMetalVertexOutDefinition = [(SKShader *)self _getMetalVertexOutDefinition];
+  v5 = [v3 stringByAppendingString:_getMetalVertexOutDefinition];
 
   return v5;
 }
 
-- (void)generateVertexAttributeDeclares:(id *)a3 statements:(id *)a4
+- (void)generateVertexAttributeDeclares:(id *)declares statements:(id *)statements
 {
   v20 = *MEMORY[0x277D85DE8];
-  *a3 = @"\n\n/* Vertex Attribute Declares */\n";
-  *a4 = @"\n\n/* Vertex Attribute Statements */\n";
+  *declares = @"\n\n/* Vertex Attribute Declares */\n";
+  *statements = @"\n\n/* Vertex Attribute Statements */\n";
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(SKShader *)self attributes];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  attributes = [(SKShader *)self attributes];
+  v7 = [attributes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -482,7 +482,7 @@ LABEL_30:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attributes);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -490,34 +490,34 @@ LABEL_30:
         if (v11 < 8)
         {
           v12 = off_278310550[v11];
-          v13 = [v10 name];
-          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@attribute %@ a_%@\n", *a3, v12, v13];;
-          *a3 = v14;
-          *a3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@varying mediump %@ %@\n", v14, v12, v13];;
-          *a4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@ = a_%@\n", *a4, v13, v13];;
+          name = [v10 name];
+          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@attribute %@ a_%@\n", *declares, v12, name];;
+          *declares = v14;
+          *declares = [MEMORY[0x277CCACA8] stringWithFormat:@"%@varying mediump %@ %@\n", v14, v12, name];;
+          *statements = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@ = a_%@\n", *statements, name, name];;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [attributes countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  *a3 = [*a3 stringByAppendingString:@"\n\n"];
-  *a4 = [*a4 stringByAppendingString:@"\n\n"];
+  *declares = [*declares stringByAppendingString:@"\n\n"];
+  *statements = [*statements stringByAppendingString:@"\n\n"];
 }
 
-- (void)generateFragmentAttributeDeclares:(id *)a3
+- (void)generateFragmentAttributeDeclares:(id *)declares
 {
   v17 = *MEMORY[0x277D85DE8];
-  *a3 = @"\n\n/* Fragment Attribute Declares */\n";
+  *declares = @"\n\n/* Fragment Attribute Declares */\n";
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SKShader *)self attributes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  attributes = [(SKShader *)self attributes];
+  v5 = [attributes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -527,7 +527,7 @@ LABEL_30:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributes);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -535,28 +535,28 @@ LABEL_30:
         if (v9 < 8)
         {
           v10 = off_278310550[v9];
-          v11 = [v8 name];
-          *a3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@varying mediump %@ %@\n", *a3, v10, v11];;
+          name = [v8 name];
+          *declares = [MEMORY[0x277CCACA8] stringWithFormat:@"%@varying mediump %@ %@\n", *declares, v10, name];;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [attributes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  *a3 = [*a3 stringByAppendingString:@"\n\n"];
+  *declares = [*declares stringByAppendingString:@"\n\n"];
 }
 
-- (id)_fullVertexSourceWithImplementation:(int64_t)a3
+- (id)_fullVertexSourceWithImplementation:(int64_t)implementation
 {
   v18 = 0;
   v19 = 0;
   [(SKShader *)self generateVertexAttributeDeclares:&v19 statements:&v18];
   v4 = v19;
   v5 = v18;
-  if (a3)
+  if (implementation)
   {
     v6 = [SKShader_declares_with_transform_vsh copy];
     v7 = [v6 stringByAppendingString:v4];
@@ -593,12 +593,12 @@ LABEL_30:
   v23 = 0;
   [(SKShader *)self generateFragmentAttributeDeclares:&v23];
   v16 = v23;
-  v3 = [(SKShader *)self fragmentPrelude];
-  v18 = [v16 stringByAppendingString:v3];
+  fragmentPrelude = [(SKShader *)self fragmentPrelude];
+  v18 = [v16 stringByAppendingString:fragmentPrelude];
 
   v4 = [&stru_282E190D8 stringByAppendingString:v18];
-  v5 = [(SKShader *)self source];
-  v6 = [v4 stringByAppendingString:v5];
+  source = [(SKShader *)self source];
+  v6 = [v4 stringByAppendingString:source];
 
   v21 = 0u;
   v22 = 0u;
@@ -621,9 +621,9 @@ LABEL_30:
         v10 = *(*(&v19 + 1) + 8 * i);
         if ([v10 uniformType] == 3)
         {
-          v11 = [v10 name];
-          v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"\\b%@(?=\\b)", v11];
-          v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@.xyz)", v11];
+          name = [v10 name];
+          v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"\\b%@(?=\\b)", name];
+          v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@.xyz)", name];
           v14 = [v6 stringByReplacingOccurrencesOfString:v12 withString:v13 options:1024 range:{objc_msgSend(v18, "length"), objc_msgSend(v6, "length") - objc_msgSend(v18, "length")}];
 
           v6 = v14;
@@ -639,15 +639,15 @@ LABEL_30:
   return v6;
 }
 
-- (id)_fullMetalVertexSourceWithImplementation:(BOOL)a3
+- (id)_fullMetalVertexSourceWithImplementation:(BOOL)implementation
 {
-  v28 = a3;
+  implementationCopy = implementation;
   v35 = *MEMORY[0x277D85DE8];
   v4 = [SKShader_Metal_declares_vsh copy];
-  v5 = [(SKShader *)self _getMetalVertexOutDefinition];
-  v6 = [v4 stringByAppendingString:v5];
+  _getMetalVertexOutDefinition = [(SKShader *)self _getMetalVertexOutDefinition];
+  v6 = [v4 stringByAppendingString:_getMetalVertexOutDefinition];
 
-  if (v28)
+  if (implementationCopy)
   {
     v27 = objc_msgSend(v6, "stringByAppendingString:", @"               vertex SKShader_VertexOut SKShader_VertexFunc (const device float4 *a_position  [[buffer(0)]],\n               const device float2 *a_tex_coord [[buffer(1)]],\n               constant float4 &u_color         [[buffer(2)]],\n               constant float4x4 &u_transform   [[buffer(3)]],\n               \n");
     v7 = 4;
@@ -684,10 +684,10 @@ LABEL_30:
         if (v14 < 8)
         {
           v15 = off_278310590[v14];
-          v16 = [v13 name];
-          v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@const device %@ *a_%@   [[buffer(%d)]], ", v9, v15, v16, v7];
+          name = [v13 name];
+          v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@const device %@ *a_%@   [[buffer(%d)]], ", v9, v15, name, v7];
 
-          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@vOut.%@ = a_%@[vid]\n", v11, v16, v16];;
+          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@vOut.%@ = a_%@[vid]\n", v11, name, name];;
 
           v7 = (v7 + 1);
           v9 = v17;
@@ -709,7 +709,7 @@ LABEL_30:
 
   v19 = [v27 stringByAppendingString:v9];
 
-  if (v28)
+  if (implementationCopy)
   {
     v20 = @"               unsigned int vid                  [[vertex_id]]\n               {\n               SKShader_VertexOut vOut;\n               vOut.position = a_position[vid] * u_transform;\n               vOut.v_tex_coord = a_tex_coord[vid];\n               vOut.v_color_mix = u_color;\n               return vOut;\n               \n");
   }
@@ -733,11 +733,11 @@ LABEL_30:
 - (id)fullMetalFragmentSource
 {
   v3 = [SKShader_Metal_declares_vsh copy];
-  v4 = [(SKShader *)self fragmentPreludeMetal];
-  v5 = [v3 stringByAppendingString:v4];
+  fragmentPreludeMetal = [(SKShader *)self fragmentPreludeMetal];
+  v5 = [v3 stringByAppendingString:fragmentPreludeMetal];
 
-  v6 = [(SKShader *)self _generateMetalSource];
-  v7 = [v5 stringByAppendingString:v6];
+  _generateMetalSource = [(SKShader *)self _generateMetalSource];
+  v7 = [v5 stringByAppendingString:_generateMetalSource];
 
   return v7;
 }
@@ -745,14 +745,14 @@ LABEL_30:
 - (void)setUniforms:(NSArray *)uniforms
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = uniforms;
-  if (!v5)
+  array = uniforms;
+  if (!array)
   {
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v21 = v5;
-  v6 = [(NSArray *)v5 mutableCopy];
+  v21 = array;
+  v6 = [(NSArray *)array mutableCopy];
   v7 = self->_uniforms;
   self->_uniforms = v6;
 
@@ -776,36 +776,36 @@ LABEL_30:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [(NSMutableDictionary *)self->_uniformData objectForKey:v12];
+        name = [v11 name];
+        v13 = [(NSMutableDictionary *)self->_uniformData objectForKey:name];
         if (v13)
         {
-          NSLog(&cfstr_ErrorDuplicate.isa, v12);
+          NSLog(&cfstr_ErrorDuplicate.isa, name);
           v14 = self->_uniforms;
-          v15 = [v13 uniform];
-          [(NSMutableArray *)v14 removeExactObject:v15];
+          uniform = [v13 uniform];
+          [(NSMutableArray *)v14 removeExactObject:uniform];
         }
 
         v16 = objc_opt_new();
         [v16 setUniform:v11];
-        v17 = [v11 uniformType];
-        if (v17 == 8)
+        uniformType = [v11 uniformType];
+        if (uniformType == 8)
         {
-          v3 = [v11 textureValue];
-          v18 = [v3 textureTarget];
+          textureValue = [v11 textureValue];
+          textureTarget = [textureValue textureTarget];
         }
 
         else
         {
-          v18 = 0;
+          textureTarget = 0;
         }
 
-        [v16 setTextureTarget:v18];
-        if (v17 == 8)
+        [v16 setTextureTarget:textureTarget];
+        if (uniformType == 8)
         {
         }
 
-        [(NSMutableDictionary *)self->_uniformData setObject:v16 forKey:v12];
+        [(NSMutableDictionary *)self->_uniformData setObject:v16 forKey:name];
         [v11 _addTargetShader:self];
       }
 
@@ -839,36 +839,36 @@ LABEL_30:
   if (v5)
   {
     v14 = v5;
-    v6 = [(SKUniform *)v5 name];
-    v7 = [(NSMutableDictionary *)self->_uniformData objectForKey:v6];
+    name = [(SKUniform *)v5 name];
+    v7 = [(NSMutableDictionary *)self->_uniformData objectForKey:name];
     if (v7)
     {
-      NSLog(&cfstr_ErrorDuplicate.isa, v6);
+      NSLog(&cfstr_ErrorDuplicate.isa, name);
       uniforms = self->_uniforms;
-      v8 = [v7 uniform];
-      [uniforms removeObject:v8];
+      uniform = [v7 uniform];
+      [uniforms removeObject:uniform];
     }
 
     v9 = objc_opt_new();
     [v9 setUniform:v14];
-    v10 = [(SKUniform *)v14 uniformType];
-    if (v10 == 8)
+    uniformType = [(SKUniform *)v14 uniformType];
+    if (uniformType == 8)
     {
       uniforms = [(SKUniform *)v14 textureValue];
-      v11 = [uniforms textureTarget];
+      textureTarget = [uniforms textureTarget];
     }
 
     else
     {
-      v11 = 0;
+      textureTarget = 0;
     }
 
-    [v9 setTextureTarget:v11];
-    if (v10 == 8)
+    [v9 setTextureTarget:textureTarget];
+    if (uniformType == 8)
     {
     }
 
-    [(NSMutableDictionary *)self->_uniformData setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_uniformData setObject:v9 forKey:name];
     [(NSMutableArray *)self->_uniforms addObject:v14];
     [(SKUniform *)v14 _addTargetShader:self];
     *&self->_programDirty = 257;
@@ -895,9 +895,9 @@ LABEL_30:
 - (SKUniform)uniformNamed:(NSString *)name
 {
   v3 = [(NSMutableDictionary *)self->_uniformData objectForKey:name];
-  v4 = [v3 uniform];
+  uniform = [v3 uniform];
 
-  return v4;
+  return uniform;
 }
 
 - (void)removeUniformNamed:(NSString *)name
@@ -908,11 +908,11 @@ LABEL_30:
   {
     [(NSMutableDictionary *)self->_uniformData removeObjectForKey:v10];
     uniforms = self->_uniforms;
-    v6 = [v4 uniform];
-    [(NSMutableArray *)uniforms removeExactObject:v6];
+    uniform = [v4 uniform];
+    [(NSMutableArray *)uniforms removeExactObject:uniform];
 
-    v7 = [v4 uniform];
-    [v7 _removeTargetShader:self];
+    uniform2 = [v4 uniform];
+    [uniform2 _removeTargetShader:self];
 
     *&self->_programDirty = 257;
     cntrl = self->_backingProgram.__cntrl_;
@@ -936,7 +936,7 @@ LABEL_30:
 - (NSArray)_textureUniforms
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -958,7 +958,7 @@ LABEL_30:
         v8 = *(*(&v10 + 1) + 8 * i);
         if ([v8 uniformType] == 8)
         {
-          [v3 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -968,7 +968,7 @@ LABEL_30:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)isValid
@@ -984,7 +984,7 @@ LABEL_30:
 
 - (shared_ptr<jet_program>)_backingProgram
 {
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   ptr = self->_backingProgram.__ptr_;
   if (!ptr)
@@ -992,21 +992,21 @@ LABEL_30:
     if (self->_programDirty)
     {
       [(SKShader *)self _makeBackingProgramWithImplementation:0];
-      v6 = v3->_backingProgram.__ptr_;
-      self = v3->_backingProgram.__cntrl_;
-      v3->_backingProgram = v8;
+      v6 = selfCopy->_backingProgram.__ptr_;
+      self = selfCopy->_backingProgram.__cntrl_;
+      selfCopy->_backingProgram = v8;
       v8.__cntrl_ = self;
-      v3->_programDirty = 0;
+      selfCopy->_programDirty = 0;
       if (!v8.__ptr_)
       {
-        if (v3->_fileName)
+        if (selfCopy->_fileName)
         {
-          NSLog(&cfstr_SkshaderFailed_0.isa, v3->_fileName, v3->_compileLog, v6);
+          NSLog(&cfstr_SkshaderFailed_0.isa, selfCopy->_fileName, selfCopy->_compileLog, v6);
         }
 
         else
         {
-          NSLog(&cfstr_SkshaderFailed_1.isa, v3->_compileLog);
+          NSLog(&cfstr_SkshaderFailed_1.isa, selfCopy->_compileLog);
         }
 
         kdebug_trace();
@@ -1018,7 +1018,7 @@ LABEL_30:
         std::__shared_weak_count::__release_shared[abi:ne200100](self);
       }
 
-      ptr = v3->_backingProgram.__ptr_;
+      ptr = selfCopy->_backingProgram.__ptr_;
     }
 
     else
@@ -1027,7 +1027,7 @@ LABEL_30:
     }
   }
 
-  cntrl = v3->_backingProgram.__cntrl_;
+  cntrl = selfCopy->_backingProgram.__cntrl_;
   *v4 = ptr;
   v4[1] = cntrl;
   if (cntrl)
@@ -1042,7 +1042,7 @@ LABEL_30:
 
 - (shared_ptr<jet_program>)_backingProgramWithTransform
 {
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   ptr = self->_backingProgramWithTransform.__ptr_;
   if (!ptr)
@@ -1050,21 +1050,21 @@ LABEL_30:
     if (self->_programWithTransformDirty)
     {
       [(SKShader *)self _makeBackingProgramWithImplementation:1];
-      v6 = v3->_backingProgramWithTransform.__ptr_;
-      self = v3->_backingProgramWithTransform.__cntrl_;
-      v3->_backingProgramWithTransform = v8;
+      v6 = selfCopy->_backingProgramWithTransform.__ptr_;
+      self = selfCopy->_backingProgramWithTransform.__cntrl_;
+      selfCopy->_backingProgramWithTransform = v8;
       v8.__cntrl_ = self;
-      v3->_programWithTransformDirty = 0;
+      selfCopy->_programWithTransformDirty = 0;
       if (!v8.__ptr_)
       {
-        if (v3->_fileName)
+        if (selfCopy->_fileName)
         {
-          NSLog(&cfstr_SkshaderFailed_0.isa, v3->_fileName, v3->_compileLog, v6);
+          NSLog(&cfstr_SkshaderFailed_0.isa, selfCopy->_fileName, selfCopy->_compileLog, v6);
         }
 
         else
         {
-          NSLog(&cfstr_SkshaderFailed_1.isa, v3->_compileLog);
+          NSLog(&cfstr_SkshaderFailed_1.isa, selfCopy->_compileLog);
         }
 
         kdebug_trace();
@@ -1076,7 +1076,7 @@ LABEL_30:
         std::__shared_weak_count::__release_shared[abi:ne200100](self);
       }
 
-      ptr = v3->_backingProgramWithTransform.__ptr_;
+      ptr = selfCopy->_backingProgramWithTransform.__ptr_;
     }
 
     else
@@ -1085,7 +1085,7 @@ LABEL_30:
     }
   }
 
-  cntrl = v3->_backingProgramWithTransform.__cntrl_;
+  cntrl = selfCopy->_backingProgramWithTransform.__cntrl_;
   *v4 = ptr;
   v4[1] = cntrl;
   if (cntrl)
@@ -1098,7 +1098,7 @@ LABEL_30:
   return result;
 }
 
-- (shared_ptr<jet_program>)_makeBackingProgramWithImplementation:(int64_t)a3
+- (shared_ptr<jet_program>)_makeBackingProgramWithImplementation:(int64_t)implementation
 {
   v4 = v3;
   v9 = 0;
@@ -1114,7 +1114,7 @@ LABEL_30:
   v8[2] = __50__SKShader__makeBackingProgramWithImplementation___block_invoke;
   v8[3] = &unk_278310530;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = implementation;
   v8[4] = self;
   SKCPerformResourceOperation(v8);
   v5 = v10[7];
@@ -1283,8 +1283,8 @@ LABEL_31:
 - (id)_generateMetalSource
 {
   v62 = *MEMORY[0x277D85DE8];
-  v2 = [(SKShader *)self source];
-  v3 = [v2 copy];
+  source = [(SKShader *)self source];
+  v3 = [source copy];
 
   if (v3)
   {
@@ -1303,8 +1303,8 @@ LABEL_31:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v6 = [(SKShader *)self attributes];
-  v7 = [v6 countByEnumeratingWithState:&v54 objects:v61 count:16];
+  attributes = [(SKShader *)self attributes];
+  v7 = [attributes countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v7)
   {
     v8 = *v55;
@@ -1314,14 +1314,14 @@ LABEL_31:
       {
         if (*v55 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attributes);
         }
 
-        v10 = [*(*(&v54 + 1) + 8 * i) name];
-        [v41 addObject:v10];
+        name = [*(*(&v54 + 1) + 8 * i) name];
+        [v41 addObject:name];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v54 objects:v61 count:16];
+      v7 = [attributes countByEnumeratingWithState:&v54 objects:v61 count:16];
     }
 
     while (v7);
@@ -1385,8 +1385,8 @@ LABEL_31:
         v22 = *(*(&v46 + 1) + 8 * j);
         if ([v22 uniformType] != 8)
         {
-          v23 = [v22 name];
-          [v38 addObject:v23];
+          name2 = [v22 name];
+          [v38 addObject:name2];
         }
       }
 
@@ -1439,8 +1439,8 @@ LABEL_31:
 
   v31 = objc_msgSend(v5, "stringByReplacingOccurrencesOfString:withString:options:range:", CFSTR("mat2\\s*\\("), CFSTR("_make_mat2("), 1024, 0, objc_msgSend(v5, "length"));
 
-  v32 = [(SKShader *)self _getMetalFragmentFunctionName];
-  v33 = [v31 stringByReplacingOccurrencesOfString:@"void\\s+main\\s*\\(\\s*(void)?\\s*\\)" withString:v32 options:1024 range:{0, objc_msgSend(v31, "length")}];
+  _getMetalFragmentFunctionName = [(SKShader *)self _getMetalFragmentFunctionName];
+  v33 = [v31 stringByReplacingOccurrencesOfString:@"void\\s+main\\s*\\(\\s*(void)?\\s*\\)" withString:_getMetalFragmentFunctionName options:1024 range:{0, objc_msgSend(v31, "length")}];
 
   v34 = [v33 stringByReplacingOccurrencesOfString:@"\\bdiscard(?=\\b)" withString:@" discard_fragment()" options:1024 range:{0, objc_msgSend(v33, "length")}];
 
@@ -1456,8 +1456,8 @@ LABEL_31:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(SKShader *)self attributes];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  attributes = [(SKShader *)self attributes];
+  v3 = [attributes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = @"    struct SKShader_VertexOut {\n    float4 position [[position]];\n    float2 v_tex_coord;\n    float4 v_color_mix;\n    float v_path_distance;\n    ";
@@ -1468,7 +1468,7 @@ LABEL_31:
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attributes);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
@@ -1476,14 +1476,14 @@ LABEL_31:
         if (v8 < 8)
         {
           v9 = off_278310590[v8];
-          v10 = [v7 name];
-          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@ %@\n", v4, v9, v10];;
+          name = [v7 name];
+          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@ %@\n", v4, v9, name];;
 
           v4 = v11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v3 = [attributes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v3);
@@ -1503,13 +1503,13 @@ LABEL_31:
 {
   v37 = *MEMORY[0x277D85DE8];
   v29 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:self->_uniformData];
-  v3 = [(SKShader *)self _getLegacyUniformData];
-  v28 = v3;
-  if (v3)
+  _getLegacyUniformData = [(SKShader *)self _getLegacyUniformData];
+  v28 = _getLegacyUniformData;
+  if (_getLegacyUniformData)
   {
-    v4 = [v3 uniform];
-    v5 = [v4 name];
-    [v29 setObject:v28 forKey:v5];
+    uniform = [_getLegacyUniformData uniform];
+    name = [uniform name];
+    [v29 setObject:v28 forKey:name];
 
     v6 = 1;
   }
@@ -1542,45 +1542,45 @@ LABEL_31:
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [v12 uniform];
-        v14 = [v13 name];
-        v15 = [v13 uniformType];
-        if (v15 <= 4)
+        uniform2 = [v12 uniform];
+        name2 = [uniform2 name];
+        uniformType = [uniform2 uniformType];
+        if (uniformType <= 4)
         {
-          if (v15 <= 2)
+          if (uniformType <= 2)
           {
-            if (v15 == 1)
+            if (uniformType == 1)
             {
-              v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"const device float * %@ [[buffer(%d)]], ", v14, v8];
-              v17 = [(__CFString *)v9 stringByAppendingString:v16];
+              textureValue3 = [MEMORY[0x277CCACA8] stringWithFormat:@"const device float * %@ [[buffer(%d)]], ", name2, v8];
+              v17 = [(__CFString *)v9 stringByAppendingString:textureValue3];
             }
 
             else
             {
-              if (v15 != 2)
+              if (uniformType != 2)
               {
                 goto LABEL_32;
               }
 
-              v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"const device float2 * %@ [[buffer(%d)]], ", v14, v8];
-              v17 = [(__CFString *)v9 stringByAppendingString:v16];
+              textureValue3 = [MEMORY[0x277CCACA8] stringWithFormat:@"const device float2 * %@ [[buffer(%d)]], ", name2, v8];
+              v17 = [(__CFString *)v9 stringByAppendingString:textureValue3];
             }
 
             goto LABEL_30;
           }
 
-          if (v15 == 3)
+          if (uniformType == 3)
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float3 * %@ [[buffer(%d)]], ", v14, v8];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float3 * %@ [[buffer(%d)]], ", name2, v8];
           }
 
           else
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float4 * %@ [[buffer(%d)]], ", v14, v8];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float4 * %@ [[buffer(%d)]], ", name2, v8];
           }
 
-          v16 = LABEL_17:;
-          v17 = [(__CFString *)v9 stringByAppendingString:v16];
+          textureValue3 = LABEL_17:;
+          v17 = [(__CFString *)v9 stringByAppendingString:textureValue3];
 LABEL_30:
           v24 = v17;
 
@@ -1591,49 +1591,49 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        if (v15 <= 6)
+        if (uniformType <= 6)
         {
-          if (v15 == 5)
+          if (uniformType == 5)
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float2x2 * %@ [[buffer(%d)]], ", v14, v8];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float2x2 * %@ [[buffer(%d)]], ", name2, v8];
           }
 
           else
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float3x3 * %@ [[buffer(%d)]], ", v14, v8];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"const device float3x3 * %@ [[buffer(%d)]], ", name2, v8];
           }
 
           goto LABEL_17;
         }
 
-        if (v15 == 7)
+        if (uniformType == 7)
         {
-          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"const device float4x4 * %@ [[buffer(%d)]], ", v14, v8];
-          v17 = [(__CFString *)v9 stringByAppendingString:v16];
+          textureValue3 = [MEMORY[0x277CCACA8] stringWithFormat:@"const device float4x4 * %@ [[buffer(%d)]], ", name2, v8];
+          v17 = [(__CFString *)v9 stringByAppendingString:textureValue3];
           goto LABEL_30;
         }
 
-        if (v15 == 8)
+        if (uniformType == 8)
         {
-          v18 = [v13 textureValue];
-          v19 = v18 == 0;
+          textureValue = [uniform2 textureValue];
+          v19 = textureValue == 0;
 
           if (!v19)
           {
-            v20 = [v13 textureValue];
-            v21 = [v20 textureTarget];
+            textureValue2 = [uniform2 textureValue];
+            textureTarget = [textureValue2 textureTarget];
 
-            if (v21 == 3553)
+            if (textureTarget == 3553)
             {
-              v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"texture2d<float> %@ [[texture(%d)]], ", v14, v30];
+              v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"texture2d<float> %@ [[texture(%d)]], ", name2, v30];
               v23 = [(__CFString *)v9 stringByAppendingString:v22];
 
               v30 = (v30 + 1);
               v9 = v23;
             }
 
-            v16 = [v13 textureValue];
-            [v12 setTextureTarget:{objc_msgSend(v16, "textureTarget")}];
+            textureValue3 = [uniform2 textureValue];
+            [v12 setTextureTarget:{objc_msgSend(textureValue3, "textureTarget")}];
             v24 = v9;
             goto LABEL_31;
           }
@@ -1659,7 +1659,7 @@ LABEL_36:
   return v25;
 }
 
-- (id)_getMetalVertexShaderSource:(BOOL)a3
+- (id)_getMetalVertexShaderSource:(BOOL)source
 {
   if (self->_isPrecompiledMetal)
   {
@@ -1668,7 +1668,7 @@ LABEL_36:
 
   else
   {
-    if (a3)
+    if (source)
     {
       [(SKShader *)self fullMetalVertexWithTransformSource];
     }
@@ -1687,15 +1687,15 @@ LABEL_36:
 {
   if (self->_isPrecompiledMetal)
   {
-    v4 = 0;
+    fullMetalFragmentSource = 0;
   }
 
   else
   {
-    v4 = [(SKShader *)self fullMetalFragmentSource];
+    fullMetalFragmentSource = [(SKShader *)self fullMetalFragmentSource];
   }
 
-  return v4;
+  return fullMetalFragmentSource;
 }
 
 - (void)_setUniformsDirty
@@ -1748,55 +1748,55 @@ LABEL_36:
   }
 }
 
-- (void)_removeTargetNode:(id)a3
+- (void)_removeTargetNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   for (i = 0; [(NSPointerArray *)self->_targetNodes count]> i; ++i)
   {
-    if ([(NSPointerArray *)self->_targetNodes pointerAtIndex:i]== v5)
+    if ([(NSPointerArray *)self->_targetNodes pointerAtIndex:i]== nodeCopy)
     {
       [(NSPointerArray *)self->_targetNodes replacePointerAtIndex:i withPointer:0];
     }
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeBool:-[SKShader performFullCapture](self forKey:{"performFullCapture"), @"_isCapture"}];
-  v4 = [(SKShader *)self uniforms];
-  [v6 encodeObject:v4 forKey:@"_uniforms"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SKShader performFullCapture](self forKey:{"performFullCapture"), @"_isCapture"}];
+  uniforms = [(SKShader *)self uniforms];
+  [coderCopy encodeObject:uniforms forKey:@"_uniforms"];
 
-  v5 = [(SKShader *)self source];
-  [v6 encodeObject:v5 forKey:@"_source"];
+  source = [(SKShader *)self source];
+  [coderCopy encodeObject:source forKey:@"_source"];
 
-  [v6 encodeObject:self->_fileName forKey:@"_fileName"];
-  [v6 encodeObject:self->_attributes forKey:@"_attributes"];
+  [coderCopy encodeObject:self->_fileName forKey:@"_fileName"];
+  [coderCopy encodeObject:self->_attributes forKey:@"_attributes"];
 }
 
-- (SKShader)initWithCoder:(id)a3
+- (SKShader)initWithCoder:(id)coder
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+  coderCopy = coder;
+  weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
   targetNodes = self->_targetNodes;
-  self->_targetNodes = v5;
+  self->_targetNodes = weakObjectsPointerArray;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   uniformData = self->_uniformData;
-  self->_uniformData = v7;
+  self->_uniformData = dictionary;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fileName"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fileName"];
   fileName = self->_fileName;
   self->_fileName = v9;
 
   v11 = self->_fileName;
-  if (v11 && -[NSString length](v11, "length") && ([v4 decodeBoolForKey:@"_isCapture"] & 1) == 0)
+  if (v11 && -[NSString length](v11, "length") && ([coderCopy decodeBoolForKey:@"_isCapture"] & 1) == 0)
   {
     v22 = [SKShader shaderWithFileNamed:self->_fileName];
-    v23 = [v22 source];
+    source = [v22 source];
     source = self->_source;
-    self->_source = v23;
+    self->_source = source;
 
     *&self->_programDirty = 257;
     cntrl = self->_backingProgram.__cntrl_;
@@ -1818,7 +1818,7 @@ LABEL_36:
 
   else
   {
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_source"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_source"];
     [(SKShader *)self setSource:v12];
   }
 
@@ -1829,7 +1829,7 @@ LABEL_36:
   v28[3] = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
   v15 = [v13 setWithArray:v14];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"_attributes"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"_attributes"];
   [(SKShader *)self setAttributes:v16];
 
   v17 = MEMORY[0x277CBEB98];
@@ -1839,16 +1839,16 @@ LABEL_36:
   v27[3] = objc_opt_class();
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:4];
   v19 = [v17 setWithArray:v18];
-  v20 = [v4 decodeObjectOfClasses:v19 forKey:@"_uniforms"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"_uniforms"];
   [(SKShader *)self setUniforms:v20];
 
   return self;
 }
 
-- (BOOL)isEqualToShader:(id)a3
+- (BOOL)isEqualToShader:(id)shader
 {
-  v4 = a3;
-  if (self == v4)
+  shaderCopy = shader;
+  if (self == shaderCopy)
   {
     v9 = 1;
   }
@@ -1859,7 +1859,7 @@ LABEL_36:
     while ([(NSMutableArray *)self->_uniforms count]> v5)
     {
       v6 = [(NSMutableArray *)self->_uniforms objectAtIndexedSubscript:v5];
-      v7 = [(NSMutableArray *)v4->_uniforms objectAtIndexedSubscript:v5];
+      v7 = [(NSMutableArray *)shaderCopy->_uniforms objectAtIndexedSubscript:v5];
       v8 = [v6 isEqualToUniform:v7];
 
       ++v5;
@@ -1873,7 +1873,7 @@ LABEL_36:
     while ([(NSArray *)self->_attributes count]> v10)
     {
       v11 = [(NSArray *)self->_attributes objectAtIndexedSubscript:v10];
-      v12 = [(NSArray *)v4->_attributes objectAtIndexedSubscript:v10];
+      v12 = [(NSArray *)shaderCopy->_attributes objectAtIndexedSubscript:v10];
       v13 = [v11 isEqualToAttribute:v12];
 
       ++v10;
@@ -1884,9 +1884,9 @@ LABEL_36:
     }
 
     fileName = self->_fileName;
-    if ((!fileName || !v4->_fileName || ([(NSString *)fileName isEqual:?]& 1) != 0) && [(NSString *)self->_source isEqual:v4->_source])
+    if ((!fileName || !shaderCopy->_fileName || ([(NSString *)fileName isEqual:?]& 1) != 0) && [(NSString *)self->_source isEqual:shaderCopy->_source])
     {
-      v9 = self->_performFullCapture == v4->_performFullCapture;
+      v9 = self->_performFullCapture == shaderCopy->_performFullCapture;
       goto LABEL_17;
     }
 
@@ -1899,16 +1899,16 @@ LABEL_17:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(SKShader *)self source];
-  v5 = [v4 copy];
-  v6 = [(SKShader *)self uniforms];
-  v7 = [v6 copy];
+  source = [(SKShader *)self source];
+  v5 = [source copy];
+  uniforms = [(SKShader *)self uniforms];
+  v7 = [uniforms copy];
   v8 = [SKShader shaderWithSource:v5 uniforms:v7];
 
-  v9 = [(SKShader *)self attributes];
-  [v8 setAttributes:v9];
+  attributes = [(SKShader *)self attributes];
+  [v8 setAttributes:attributes];
 
   return v8;
 }
@@ -1920,8 +1920,8 @@ LABEL_17:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(NSMutableDictionary *)self->_uniformData allValues];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_uniformData allValues];
+  v4 = [(NSArray *)allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = *v22;
@@ -1931,12 +1931,12 @@ LABEL_3:
     {
       if (*v22 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allValues);
       }
 
-      v7 = [*(*(&v21 + 1) + 8 * v6) uniform];
-      v8 = [v7 name];
-      v9 = [v8 isEqual:@"u_sprite_size"];
+      uniform = [*(*(&v21 + 1) + 8 * v6) uniform];
+      name = [uniform name];
+      v9 = [name isEqual:@"u_sprite_size"];
 
       if (v9)
       {
@@ -1945,7 +1945,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [(NSArray *)v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v4 = [(NSArray *)allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -1964,15 +1964,15 @@ LABEL_9:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v3 = self->_attributes;
-    v10 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    allValues = self->_attributes;
+    v10 = [(NSArray *)allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (!v10)
     {
 LABEL_17:
 
-      v3 = [SKUniform uniformWithName:@"u_sprite_size" vectorFloat2:0.0];
+      allValues = [SKUniform uniformWithName:@"u_sprite_size" vectorFloat2:0.0];
       v15 = objc_opt_new();
-      [v15 setUniform:v3];
+      [v15 setUniform:allValues];
       goto LABEL_19;
     }
 
@@ -1983,11 +1983,11 @@ LABEL_11:
     {
       if (*v18 != v11)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allValues);
       }
 
-      v13 = [*(*(&v17 + 1) + 8 * v12) name];
-      v14 = [v13 isEqual:@"u_sprite_size"];
+      name2 = [*(*(&v17 + 1) + 8 * v12) name];
+      v14 = [name2 isEqual:@"u_sprite_size"];
 
       if (v14)
       {
@@ -1996,7 +1996,7 @@ LABEL_11:
 
       if (v10 == ++v12)
       {
-        v10 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v10 = [(NSArray *)allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           goto LABEL_11;

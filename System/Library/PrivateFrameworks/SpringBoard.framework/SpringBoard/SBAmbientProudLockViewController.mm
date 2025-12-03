@@ -1,26 +1,26 @@
 @interface SBAmbientProudLockViewController
 - (SBAmbientProudLockViewController)init;
-- (SBAmbientProudLockViewController)initWithBiometricResource:(id)a3 authenticationController:(id)a4;
+- (SBAmbientProudLockViewController)initWithBiometricResource:(id)resource authenticationController:(id)controller;
 - (void)_dismissTransientProudLockAnimated;
 - (void)_prepareBlurForWrapperView;
-- (void)setAuthenticated:(BOOL)a3 completion:(id)a4;
+- (void)setAuthenticated:(BOOL)authenticated completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation SBAmbientProudLockViewController
 
-- (SBAmbientProudLockViewController)initWithBiometricResource:(id)a3 authenticationController:(id)a4
+- (SBAmbientProudLockViewController)initWithBiometricResource:(id)resource authenticationController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SBAmbientProudLockViewController;
   v9 = [(SBAmbientProudLockViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_biometricResource, a3);
-    objc_storeStrong(&v10->_authenticationController, a4);
+    objc_storeStrong(&v9->_biometricResource, resource);
+    objc_storeStrong(&v10->_authenticationController, controller);
   }
 
   return v10;
@@ -28,9 +28,9 @@
 
 - (SBAmbientProudLockViewController)init
 {
-  v3 = [MEMORY[0x277D67C98] sharedInstance];
-  v4 = [SBApp authenticationController];
-  v5 = [(SBAmbientProudLockViewController *)self initWithBiometricResource:v3 authenticationController:v4];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  authenticationController = [SBApp authenticationController];
+  v5 = [(SBAmbientProudLockViewController *)self initWithBiometricResource:mEMORY[0x277D67C98] authenticationController:authenticationController];
 
   return v5;
 }
@@ -40,19 +40,19 @@
   v28.receiver = self;
   v28.super_class = SBAmbientProudLockViewController;
   [(SBAmbientProudLockViewController *)&v28 viewDidLoad];
-  v3 = [(SBAmbientProudLockViewController *)self view];
+  view = [(SBAmbientProudLockViewController *)self view];
   v4 = objc_alloc_init(SBPropertyAnimatingView);
   proudLockWrapperView = self->_proudLockWrapperView;
   self->_proudLockWrapperView = v4;
 
-  [v3 addSubview:self->_proudLockWrapperView];
+  [view addSubview:self->_proudLockWrapperView];
   [(SBAmbientProudLockViewController *)self _prepareBlurForWrapperView];
   v6 = [objc_alloc(MEMORY[0x277D67D80]) initWithAuthenticationInformationProvider:self];
   proudLockContainerViewController = self->_proudLockContainerViewController;
   self->_proudLockContainerViewController = v6;
 
-  v8 = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
-  [v8 setAlpha:0.0];
+  view2 = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
+  [view2 setAlpha:0.0];
   objc_initWeak(&location, self);
   v9 = self->_proudLockContainerViewController;
   v24[0] = MEMORY[0x277D85DD0];
@@ -60,10 +60,10 @@
   v24[2] = __47__SBAmbientProudLockViewController_viewDidLoad__block_invoke;
   v24[3] = &unk_2783A9CE8;
   objc_copyWeak(&v26, &location);
-  v10 = v8;
+  v10 = view2;
   v25 = v10;
   [(SBUIProudLockContainerViewController *)v9 setAuthenticated:1 completion:v24];
-  [v3 bounds];
+  [view bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -97,14 +97,14 @@ void __47__SBAmbientProudLockViewController_viewDidLoad__block_invoke(uint64_t a
   [v3 animateWithDuration:v4 animations:0.5];
 }
 
-- (void)setAuthenticated:(BOOL)a3 completion:(id)a4
+- (void)setAuthenticated:(BOOL)authenticated completion:(id)completion
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   proudLockContainerViewController = self->_proudLockContainerViewController;
-  v7 = a4;
-  [(SBUIProudLockContainerViewController *)proudLockContainerViewController setAuthenticated:v4];
+  completionCopy = completion;
+  [(SBUIProudLockContainerViewController *)proudLockContainerViewController setAuthenticated:authenticatedCopy];
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__dismissTransientProudLockAnimated object:0];
-  v8 = MEMORY[0x223D6F7F0](v7);
+  v8 = MEMORY[0x223D6F7F0](completionCopy);
 
   authenticationCompletion = self->_authenticationCompletion;
   self->_authenticationCompletion = v8;
@@ -118,18 +118,18 @@ void __47__SBAmbientProudLockViewController_viewDidLoad__block_invoke(uint64_t a
   proudLockWrapperView = self->_proudLockWrapperView;
   if (proudLockWrapperView)
   {
-    v4 = [(SBPropertyAnimatingView *)proudLockWrapperView layer];
-    v5 = [v4 valueForKeyPath:@"filters.gaussianBlur"];
+    layer = [(SBPropertyAnimatingView *)proudLockWrapperView layer];
+    v5 = [layer valueForKeyPath:@"filters.gaussianBlur"];
     if (!v5)
     {
       v6 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
       [v6 setValue:MEMORY[0x277CBEC38] forKey:@"inputHardEdges"];
       [v6 setName:@"gaussianBlur"];
-      v7 = [v4 filters];
+      filters = [layer filters];
 
-      if (v7)
+      if (filters)
       {
-        v8 = [v4 mutableArrayValueForKeyPath:@"filters"];
+        v8 = [layer mutableArrayValueForKeyPath:@"filters"];
         [v8 addObject:v6];
       }
 
@@ -137,12 +137,12 @@ void __47__SBAmbientProudLockViewController_viewDidLoad__block_invoke(uint64_t a
       {
         v14[0] = v6;
         v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-        [v4 setFilters:v8];
+        [layer setFilters:v8];
       }
     }
 
-    v9 = [(SBPropertyAnimatingView *)self->_proudLockWrapperView animatedLayerProperties];
-    v10 = [v9 mutableCopy];
+    animatedLayerProperties = [(SBPropertyAnimatingView *)self->_proudLockWrapperView animatedLayerProperties];
+    v10 = [animatedLayerProperties mutableCopy];
     v11 = v10;
     if (v10)
     {

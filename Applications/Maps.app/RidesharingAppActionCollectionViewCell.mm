@@ -1,13 +1,13 @@
 @interface RidesharingAppActionCollectionViewCell
-- (RidesharingAppActionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (RidesharingAppActionCollectionViewCell)initWithFrame:(CGRect)frame;
 - (RidesharingAppActionCollectionViewCellDelegate)delegate;
-- (void)_openAppPressed:(id)a3;
+- (void)_openAppPressed:(id)pressed;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)_updateContentSizeCategoryDependentFontsAndConstraints;
-- (void)configureWithRideBookingRideOptionStatus:(id)a3 titleType:(unint64_t)a4;
+- (void)configureWithRideBookingRideOptionStatus:(id)status titleType:(unint64_t)type;
 - (void)dealloc;
-- (void)setApplicationName:(id)a3 titleType:(unint64_t)a4;
+- (void)setApplicationName:(id)name titleType:(unint64_t)type;
 - (void)updateTheme;
 @end
 
@@ -20,15 +20,15 @@
   return WeakRetained;
 }
 
-- (void)setApplicationName:(id)a3 titleType:(unint64_t)a4
+- (void)setApplicationName:(id)name titleType:(unint64_t)type
 {
-  v13 = a3;
-  self->_titleType = a4;
-  if (a4 <= 1)
+  nameCopy = name;
+  self->_titleType = type;
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_12;
       }
@@ -50,7 +50,7 @@
     goto LABEL_10;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     actionButton = self->_actionButton;
     v7 = +[NSBundle mainBundle];
@@ -58,13 +58,13 @@
     v9 = @"More from App %@ [Ridesharing]";
 LABEL_10:
     v11 = [v7 localizedStringForKey:v9 value:@"localized string not found" table:0];
-    v12 = [NSString localizedStringWithFormat:v11, v13];
-    [(UIButton *)actionButton setTitle:v12 forState:0];
+    nameCopy = [NSString localizedStringWithFormat:v11, nameCopy];
+    [(UIButton *)actionButton setTitle:nameCopy forState:0];
 
     goto LABEL_11;
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
     goto LABEL_12;
   }
@@ -78,59 +78,59 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)configureWithRideBookingRideOptionStatus:(id)a3 titleType:(unint64_t)a4
+- (void)configureWithRideBookingRideOptionStatus:(id)status titleType:(unint64_t)type
 {
-  objc_storeStrong(&self->_status, a3);
-  v7 = a3;
-  v9 = [v7 application];
+  objc_storeStrong(&self->_status, status);
+  statusCopy = status;
+  application = [statusCopy application];
 
-  v8 = [v9 name];
-  [(RidesharingAppActionCollectionViewCell *)self setApplicationName:v8 titleType:a4];
+  name = [application name];
+  [(RidesharingAppActionCollectionViewCell *)self setApplicationName:name titleType:type];
 }
 
 - (void)_updateContentSizeCategoryDependentFontsAndConstraints
 {
   v3 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleSubheadline addingSymbolicTraits:0];
-  v4 = [(UIButton *)self->_actionButton titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [(UIButton *)self->_actionButton titleLabel];
+  [titleLabel setFont:v3];
 
-  v6 = [(UIButton *)self->_actionButton titleLabel];
-  v5 = [v6 font];
-  [v5 _mapkit_scaledValueForValue:25.0];
+  titleLabel2 = [(UIButton *)self->_actionButton titleLabel];
+  font = [titleLabel2 font];
+  [font _mapkit_scaledValueForValue:25.0];
   [(NSLayoutConstraint *)self->_buttonBaselineToTopConstraint setConstant:?];
 }
 
-- (void)_openAppPressed:(id)a3
+- (void)_openAppPressed:(id)pressed
 {
-  v4 = [(RidesharingAppActionCollectionViewCell *)self delegate];
-  [v4 ridesharingAppActionCollectionViewCellDidPerformAction:self];
+  delegate = [(RidesharingAppActionCollectionViewCell *)self delegate];
+  [delegate ridesharingAppActionCollectionViewCellDidPerformAction:self];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(UIButton *)self->_actionButton firstBaselineAnchor];
-  v4 = [(RidesharingAppActionCollectionViewCell *)self contentView];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  firstBaselineAnchor = [(UIButton *)self->_actionButton firstBaselineAnchor];
+  contentView = [(RidesharingAppActionCollectionViewCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  v6 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   buttonBaselineToTopConstraint = self->_buttonBaselineToTopConstraint;
   self->_buttonBaselineToTopConstraint = v6;
 
-  v20 = [(UIButton *)self->_actionButton leadingAnchor];
-  v21 = [(RidesharingAppActionCollectionViewCell *)self contentView];
-  v19 = [v21 leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:16.0];
+  leadingAnchor = [(UIButton *)self->_actionButton leadingAnchor];
+  contentView2 = [(RidesharingAppActionCollectionViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v22[0] = v18;
-  v8 = [(UIButton *)self->_actionButton trailingAnchor];
-  v9 = [(RidesharingAppActionCollectionViewCell *)self contentView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintLessThanOrEqualToAnchor:v10 constant:-16.0];
+  trailingAnchor = [(UIButton *)self->_actionButton trailingAnchor];
+  contentView3 = [(RidesharingAppActionCollectionViewCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v11 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-16.0];
   v12 = self->_buttonBaselineToTopConstraint;
   v22[1] = v11;
   v22[2] = v12;
-  v13 = [(UIButton *)self->_actionButton centerYAnchor];
-  v14 = [(RidesharingAppActionCollectionViewCell *)self contentView];
-  v15 = [v14 centerYAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  centerYAnchor = [(UIButton *)self->_actionButton centerYAnchor];
+  contentView4 = [(RidesharingAppActionCollectionViewCell *)self contentView];
+  centerYAnchor2 = [contentView4 centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[3] = v16;
   v17 = [NSArray arrayWithObjects:v22 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -142,14 +142,14 @@ LABEL_12:
   v9.super_class = RidesharingAppActionCollectionViewCell;
   [(MapsThemeCollectionViewCell *)&v9 updateTheme];
   actionButton = self->_actionButton;
-  v4 = [(RidesharingAppActionCollectionViewCell *)self theme];
-  v5 = [v4 keyColor];
-  [(UIButton *)actionButton setTitleColor:v5 forState:0];
+  theme = [(RidesharingAppActionCollectionViewCell *)self theme];
+  keyColor = [theme keyColor];
+  [(UIButton *)actionButton setTitleColor:keyColor forState:0];
 
   v6 = self->_actionButton;
-  v7 = [(RidesharingAppActionCollectionViewCell *)self theme];
-  v8 = [v7 darkKeyColor];
-  [(UIButton *)v6 setTitleColor:v8 forState:1];
+  theme2 = [(RidesharingAppActionCollectionViewCell *)self theme];
+  darkKeyColor = [theme2 darkKeyColor];
+  [(UIButton *)v6 setTitleColor:darkKeyColor forState:1];
 }
 
 - (void)_setupViews
@@ -160,8 +160,8 @@ LABEL_12:
 
   [(UIButton *)self->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_actionButton addTarget:self action:"_openAppPressed:" forControlEvents:0x2000];
-  v5 = [(RidesharingAppActionCollectionViewCell *)self contentView];
-  [v5 addSubview:self->_actionButton];
+  contentView = [(RidesharingAppActionCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_actionButton];
 
   [(RidesharingAppActionCollectionViewCell *)self updateTheme];
 }
@@ -176,11 +176,11 @@ LABEL_12:
   [(RidesharingAppActionCollectionViewCell *)&v4 dealloc];
 }
 
-- (RidesharingAppActionCollectionViewCell)initWithFrame:(CGRect)a3
+- (RidesharingAppActionCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = RidesharingAppActionCollectionViewCell;
-  v3 = [(MapsThemeCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsThemeCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

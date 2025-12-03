@@ -1,15 +1,15 @@
 @interface CPLPrequeliteOutgoingResources
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 discardedResources:(id *)a6 error:(id *)a7;
-- (BOOL)deleteResourcesToUploadWithUploadIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount discardedResources:(id *)resources error:(id *)error;
+- (BOOL)deleteResourcesToUploadWithUploadIdentifier:(id)identifier error:(id *)error;
 - (BOOL)initializeStorage;
-- (BOOL)shouldUploadResource:(id)a3;
-- (BOOL)storeResourceToUpload:(id)a3 withUploadIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (id)resourceTypesToUploadForUploadIdentifier:(id)a3;
-- (id)resourcesToUploadForUploadIdentifier:(id)a3;
+- (BOOL)shouldUploadResource:(id)resource;
+- (BOOL)storeResourceToUpload:(id)upload withUploadIdentifier:(id)identifier error:(id *)error;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (id)resourceTypesToUploadForUploadIdentifier:(id)identifier;
+- (id)resourcesToUploadForUploadIdentifier:(id)identifier;
 - (id)status;
 - (id)statusPerScopeIndex;
-- (unint64_t)availableResourceSizeForUploadIdentifier:(id)a3;
+- (unint64_t)availableResourceSizeForUploadIdentifier:(id)identifier;
 - (void)_cacheCountOfOriginalsIfNecessary;
 - (void)_cacheUploadSizesIfNecessary;
 - (void)writeTransactionDidFail;
@@ -21,17 +21,17 @@
 {
   if ((self->_sizeOfOriginalResourcesToUpload & 0x100000000) == 0)
   {
-    v3 = [(CPLPrequeliteStorage *)self pqStore];
-    v10 = [v3 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
     v4 = objc_opt_class();
-    v5 = [(CPLPrequeliteStorage *)self mainTable];
-    v6 = [v10 cplFetchObjectOfClass:v4 sql:{@"SELECT SUM(fileSize) FROM %@", v5}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v6 = [pqlConnection cplFetchObjectOfClass:v4 sql:{@"SELECT SUM(fileSize) FROM %@", mainTable}];
     *(&self->_countOfOriginalOthers + 4) = [v6 unsignedLongLongValue];
 
     v7 = objc_opt_class();
-    v8 = [(CPLPrequeliteStorage *)self mainTable];
-    v9 = [v10 cplFetchObjectOfClass:v7 sql:{@"SELECT SUM(fileSize) FROM %@ WHERE resourceType = %i", v8, 1}];
+    mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+    v9 = [pqlConnection cplFetchObjectOfClass:v7 sql:{@"SELECT SUM(fileSize) FROM %@ WHERE resourceType = %i", mainTable2, 1}];
     *(&self->_sizeOfResourcesToUpload + 4) = [v9 unsignedLongLongValue];
 
     BYTE4(self->_sizeOfOriginalResourcesToUpload) = 1;
@@ -48,11 +48,11 @@
     *(&self->_countOfOriginalImages + 4) = 0;
     v5 = &self->_countOfOriginalVideos + 4;
     *(&self->_countOfOriginalVideos + 4) = 0;
-    v6 = [(CPLPrequeliteStorage *)self pqStore];
-    v12 = [v6 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v7 = [(CPLPrequeliteStorage *)self mainTable];
-    v8 = [v12 cplFetch:{@"SELECT fileKind, count(fileKind) FROM %@ WHERE resourceType = %i GROUP BY fileKind", v7, 1}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v8 = [pqlConnection cplFetch:{@"SELECT fileKind, count(fileKind) FROM %@ WHERE resourceType = %i GROUP BY fileKind", mainTable, 1}];
 
     if ([v8 next])
     {
@@ -89,25 +89,25 @@
 {
   v5.receiver = self;
   v5.super_class = CPLPrequeliteOutgoingResources;
-  v3 = [(CPLPrequeliteStorage *)&v5 initializeStorage];
-  if (v3)
+  initializeStorage = [(CPLPrequeliteStorage *)&v5 initializeStorage];
+  if (initializeStorage)
   {
-    v3 = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"scopeIndex INTEGER NOT NULL error:itemIdentifier TEXT NOT NULL, resourceType INTEGER NOT NULL, fingerPrint TEXT NOT NULL, fileUTI TEXT NOT NULL, fileKind INTEGER NOT NULL, fileSize INTEGER NOT NULL, uploadIdentifier TEXT NOT NULL", 0];
-    if (v3)
+    initializeStorage = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"scopeIndex INTEGER NOT NULL error:itemIdentifier TEXT NOT NULL, resourceType INTEGER NOT NULL, fingerPrint TEXT NOT NULL, fileUTI TEXT NOT NULL, fileKind INTEGER NOT NULL, fileSize INTEGER NOT NULL, uploadIdentifier TEXT NOT NULL", 0];
+    if (initializeStorage)
     {
-      v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"resourceType" withDefinition:@"resourceType unique:fileKind" error:0, 0];
-      if (v3)
+      initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"resourceType" withDefinition:@"resourceType unique:fileKind" error:0, 0];
+      if (initializeStorage)
       {
-        v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"resource" withDefinition:@"itemIdentifier unique:resourceType error:fingerPrint", 0, 0];
-        if (v3)
+        initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"resource" withDefinition:@"itemIdentifier unique:resourceType error:fingerPrint", 0, 0];
+        if (initializeStorage)
         {
-          v3 = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"uploadIdentifier" error:0];
-          if (v3)
+          initializeStorage = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"uploadIdentifier" error:0];
+          if (initializeStorage)
           {
-            v3 = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"scopeIndex" error:0];
-            if (v3)
+            initializeStorage = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"scopeIndex" error:0];
+            if (initializeStorage)
             {
-              LOBYTE(v3) = 1;
+              LOBYTE(initializeStorage) = 1;
               *(&self->super._shouldUpgradeSchema + 1) = 1;
               *(&self->_countOfOriginalsIsCached + 4) = 0;
               *(&self->_countOfOriginalImages + 4) = 0;
@@ -122,17 +122,17 @@
     }
   }
 
-  return v3;
+  return initializeStorage;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v7.receiver = self;
   v7.super_class = CPLPrequeliteOutgoingResources;
   v5 = [(CPLPrequeliteStorage *)&v7 upgradeStorageToVersion:?];
   if (v5)
   {
-    switch(a3)
+    switch(version)
     {
       case 52:
         if ([(CPLPrequeliteStorage *)self shouldUpgradeSchema])
@@ -162,59 +162,59 @@
   return v5;
 }
 
-- (BOOL)storeResourceToUpload:(id)a3 withUploadIdentifier:(id)a4 error:(id *)a5
+- (BOOL)storeResourceToUpload:(id)upload withUploadIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 itemScopedIdentifier];
-  v11 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v10];
+  uploadCopy = upload;
+  identifierCopy = identifier;
+  itemScopedIdentifier = [uploadCopy itemScopedIdentifier];
+  v11 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:itemScopedIdentifier];
 
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v32 = a5;
-    v14 = [(CPLPrequeliteStorage *)self pqStore];
-    v34 = [v14 pqlConnection];
+    errorCopy = error;
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v36 = v8;
-    v35 = v9;
-    v15 = [[CPLPrequeliteOutgoingResource alloc] initWithResource:v8 uploadIdentifier:v9];
-    v16 = [(CPLPrequeliteStorage *)self mainTable];
-    v33 = [(CPLPrequeliteOutgoingResource *)v15 scopeIndex];
-    v17 = [(CPLPrequeliteOutgoingResource *)v15 itemIdentifier];
-    v18 = [(CPLPrequeliteOutgoingResource *)v15 resourceType];
-    v19 = [(CPLPrequeliteOutgoingResource *)v15 fingerPrint];
-    v20 = [(CPLPrequeliteOutgoingResource *)v15 fileUTI];
-    v21 = [(CPLPrequeliteOutgoingResource *)v15 fileKind];
-    v22 = [(CPLPrequeliteOutgoingResource *)v15 fileSize];
-    v23 = [(CPLPrequeliteOutgoingResource *)v15 uploadIdentifier];
-    v31 = v18;
-    v12 = v34;
-    v13 = [v34 cplExecute:{@"INSERT INTO %@ (scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileKind, fileSize, uploadIdentifier) VALUES (%ld, %@, %i, %@, %@, %i, %llu, %@)", v16, v33, v17, v31, v19, v20, v21, v22, v23}];
+    v36 = uploadCopy;
+    v35 = identifierCopy;
+    v15 = [[CPLPrequeliteOutgoingResource alloc] initWithResource:uploadCopy uploadIdentifier:identifierCopy];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    scopeIndex = [(CPLPrequeliteOutgoingResource *)v15 scopeIndex];
+    itemIdentifier = [(CPLPrequeliteOutgoingResource *)v15 itemIdentifier];
+    resourceType = [(CPLPrequeliteOutgoingResource *)v15 resourceType];
+    fingerPrint = [(CPLPrequeliteOutgoingResource *)v15 fingerPrint];
+    fileUTI = [(CPLPrequeliteOutgoingResource *)v15 fileUTI];
+    fileKind = [(CPLPrequeliteOutgoingResource *)v15 fileKind];
+    fileSize = [(CPLPrequeliteOutgoingResource *)v15 fileSize];
+    uploadIdentifier = [(CPLPrequeliteOutgoingResource *)v15 uploadIdentifier];
+    v31 = resourceType;
+    itemScopedIdentifier2 = pqlConnection;
+    v13 = [pqlConnection cplExecute:{@"INSERT INTO %@ (scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileKind, fileSize, uploadIdentifier) VALUES (%ld, %@, %i, %@, %@, %i, %llu, %@)", mainTable, scopeIndex, itemIdentifier, v31, fingerPrint, fileUTI, fileKind, fileSize, uploadIdentifier}];
 
     if (v13)
     {
       BYTE5(self->_sizeOfOriginalResourcesToUpload) = 1;
-      v8 = v36;
+      uploadCopy = v36;
       if (BYTE4(self->_sizeOfOriginalResourcesToUpload) == 1)
       {
-        v24 = [v36 identity];
-        v25 = [v24 fileSize];
+        identity = [v36 identity];
+        fileSize2 = [identity fileSize];
 
-        *(&self->_countOfOriginalOthers + 4) += v25;
+        *(&self->_countOfOriginalOthers + 4) += fileSize2;
         if ([v36 resourceType] == 1)
         {
-          *(&self->_sizeOfResourcesToUpload + 4) += v25;
+          *(&self->_sizeOfResourcesToUpload + 4) += fileSize2;
         }
       }
 
       if (*(&self->super._shouldUpgradeSchema + 1) && [v36 resourceType] == 1)
       {
-        v26 = [v36 identity];
-        v27 = [v26 fileUTI];
+        identity2 = [v36 identity];
+        fileUTI2 = [identity2 fileUTI];
 
-        if (v27)
+        if (fileUTI2)
         {
-          v28 = [UTType typeWithIdentifier:v27];
+          v28 = [UTType typeWithIdentifier:fileUTI2];
           if ([v28 conformsToType:UTTypeImage])
           {
             v29 = 44;
@@ -242,22 +242,22 @@
 
     else
     {
-      v8 = v36;
-      if (v32)
+      uploadCopy = v36;
+      if (errorCopy)
       {
-        *v32 = [v34 lastCPLError];
+        *errorCopy = [pqlConnection lastCPLError];
       }
     }
 
-    v9 = v35;
+    identifierCopy = v35;
     goto LABEL_23;
   }
 
-  if (a5)
+  if (error)
   {
-    v12 = [v8 itemScopedIdentifier];
-    [CPLErrors invalidScopeErrorWithScopedIdentifier:v12];
-    *a5 = v13 = 0;
+    itemScopedIdentifier2 = [uploadCopy itemScopedIdentifier];
+    [CPLErrors invalidScopeErrorWithScopedIdentifier:itemScopedIdentifier2];
+    *error = v13 = 0;
 LABEL_23:
 
     goto LABEL_24;
@@ -269,14 +269,14 @@ LABEL_24:
   return v13;
 }
 
-- (BOOL)deleteResourcesToUploadWithUploadIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteResourcesToUploadWithUploadIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [v7 pqlConnection];
+  identifierCopy = identifier;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v9 = [(CPLPrequeliteStorage *)self mainTable];
-  v10 = [v8 cplExecute:{@"DELETE FROM %@ WHERE uploadIdentifier = %@", v9, v6}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v10 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE uploadIdentifier = %@", mainTable, identifierCopy}];
 
   if (v10)
   {
@@ -285,23 +285,23 @@ LABEL_24:
     *(&self->super._shouldUpgradeSchema + 1) = 0;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [v8 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v10;
 }
 
-- (id)resourceTypesToUploadForUploadIdentifier:(id)a3
+- (id)resourceTypesToUploadForUploadIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(CPLResourceTypeSet);
-  v6 = [(CPLPrequeliteStorage *)self pqStore];
-  v7 = [v6 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
-  v9 = [v7 cplFetch:{@"SELECT resourceType FROM %@ WHERE uploadIdentifier = %@", v8, v4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v9 = [pqlConnection cplFetch:{@"SELECT resourceType FROM %@ WHERE uploadIdentifier = %@", mainTable, identifierCopy}];
 
   if ([v9 next])
   {
@@ -316,29 +316,29 @@ LABEL_24:
   return v5;
 }
 
-- (unint64_t)availableResourceSizeForUploadIdentifier:(id)a3
+- (unint64_t)availableResourceSizeForUploadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  identifierCopy = identifier;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
   v7 = objc_opt_class();
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
-  v9 = [v6 cplFetchObjectOfClass:v7 sql:{@"SELECT SUM(fileSize) FROM %@ WHERE uploadIdentifier = %@", v8, v4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v9 = [pqlConnection cplFetchObjectOfClass:v7 sql:{@"SELECT SUM(fileSize) FROM %@ WHERE uploadIdentifier = %@", mainTable, identifierCopy}];
 
-  v10 = [v9 unsignedLongLongValue];
-  return v10;
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
+  return unsignedLongLongValue;
 }
 
-- (id)resourcesToUploadForUploadIdentifier:(id)a3
+- (id)resourcesToUploadForUploadIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(CPLPrequeliteStorage *)self pqStore];
-  v7 = [v6 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
-  v9 = [v7 cplFetch:{@"SELECT scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileKind, fileSize, uploadIdentifier FROM %@ WHERE uploadIdentifier = %@", v8, v4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v9 = [pqlConnection cplFetch:{@"SELECT scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileKind, fileSize, uploadIdentifier FROM %@ WHERE uploadIdentifier = %@", mainTable, identifierCopy}];
 
   if ([v9 next])
   {
@@ -358,11 +358,11 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)shouldUploadResource:(id)a3
+- (BOOL)shouldUploadResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 itemScopedIdentifier];
-  v6 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v5];
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  v6 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:itemScopedIdentifier];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -371,14 +371,14 @@ LABEL_24:
   else
   {
     v8 = v6;
-    v9 = [(CPLPrequeliteStorage *)self pqStore];
-    v10 = [(CPLPrequeliteStorage *)self mainTable];
-    v11 = [v5 identifier];
-    v12 = [v4 resourceType];
-    v13 = [v4 identity];
-    v14 = [v13 fingerPrint];
-    v15 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND itemIdentifier = %@ AND resourceType = %i AND fingerPrint = %@", v8, v11, v12, v14];
-    v7 = [v9 table:v10 hasRecordsMatchingQuery:v15];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [itemScopedIdentifier identifier];
+    resourceType = [resourceCopy resourceType];
+    identity = [resourceCopy identity];
+    fingerPrint = [identity fingerPrint];
+    v15 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND itemIdentifier = %@ AND resourceType = %i AND fingerPrint = %@", v8, identifier, resourceType, fingerPrint];
+    v7 = [pqStore table:mainTable hasRecordsMatchingQuery:v15];
   }
 
   return v7;
@@ -392,30 +392,30 @@ LABEL_24:
   v14 = sub_100004590;
   v15 = sub_1000053AC;
   v16 = 0;
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100159FA0;
   v10[3] = &unk_10027B6A0;
   v10[4] = self;
   v10[5] = &v11;
-  [v3 table:v4 enumerateCountGroupedByUnsignedIntegerProperty:@"resourceType" block:v10];
+  [pqStore table:mainTable enumerateCountGroupedByUnsignedIntegerProperty:@"resourceType" block:v10];
 
   v5 = v12[5];
   if (v5)
   {
-    v6 = v5;
+    status = v5;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CPLPrequeliteOutgoingResources;
-    v6 = [(CPLPrequeliteStorage *)&v9 status];
+    status = [(CPLPrequeliteStorage *)&v9 status];
   }
 
-  v7 = v6;
+  v7 = status;
   _Block_object_dispose(&v11, 8);
 
   return v7;
@@ -442,29 +442,29 @@ LABEL_24:
   }
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 discardedResources:(id *)a6 error:(id *)a7
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount discardedResources:(id *)resources error:(id *)error
 {
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 1;
-  if (a4 >= 100)
+  if (count >= 100)
   {
-    v10 = 100;
+    countCopy = 100;
   }
 
   else
   {
-    v10 = a4;
+    countCopy = count;
   }
 
   v11 = objc_alloc_init(NSMutableIndexSet);
-  v12 = [[NSMutableArray alloc] initWithCapacity:v10];
-  v13 = [(CPLPrequeliteStorage *)self pqStore];
-  v14 = [v13 pqlConnection];
+  v12 = [[NSMutableArray alloc] initWithCapacity:countCopy];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v15 = [(CPLPrequeliteStorage *)self mainTable];
-  v16 = [v14 cplFetch:{@"SELECT scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileKind, fileSize, uploadIdentifier, rowID FROM %@ WHERE scopeIndex = %ld LIMIT %ld", v15, a3, v10}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v16 = [pqlConnection cplFetch:{@"SELECT scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileKind, fileSize, uploadIdentifier, rowID FROM %@ WHERE scopeIndex = %ld LIMIT %ld", mainTable, index, countCopy}];
   while (1)
   {
 
@@ -473,8 +473,8 @@ LABEL_24:
       break;
     }
 
-    v17 = [[CPLPrequeliteOutgoingResource alloc] initFromPQLResultSet:v16 error:a7];
-    v15 = v17;
+    v17 = [[CPLPrequeliteOutgoingResource alloc] initFromPQLResultSet:v16 error:error];
+    mainTable = v17;
     if (!v17)
     {
       *(v31 + 24) = 0;
@@ -494,21 +494,21 @@ LABEL_24:
     v26[2] = sub_10015A5B4;
     v26[3] = &unk_10027B708;
     v29 = &v30;
-    v20 = v14;
+    v20 = pqlConnection;
     v27 = v20;
-    v28 = self;
+    selfCopy = self;
     [v11 enumerateIndexesUsingBlock:v26];
-    if (a7 && (v31[3] & 1) == 0)
+    if (error && (v31[3] & 1) == 0)
     {
-      *a7 = [v20 lastError];
+      *error = [v20 lastError];
     }
 
     v19 = v31;
     if (v31[3])
     {
-      *a5 = [v11 count];
+      *deletedCount = [v11 count];
       v21 = v12;
-      *a6 = v12;
+      *resources = v12;
       v19 = v31;
     }
   }

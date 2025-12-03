@@ -1,32 +1,32 @@
 @interface CNisUsingSharedPhotoDescription
-- (id)CNValueForContact:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
-- (void)setCNValue:(id)a3 onContact:(id)a4;
+- (id)CNValueForContact:(id)contact;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
+- (void)setCNValue:(id)value onContact:(id)contact;
 @end
 
 @implementation CNisUsingSharedPhotoDescription
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v6 = a4;
-  v5 = [a3 decodeBoolForKey:@"_isUsingSharedPhoto"];
-  v6[376] = v5;
+  contactCopy = contact;
+  v5 = [coder decodeBoolForKey:@"_isUsingSharedPhoto"];
+  contactCopy[376] = v5;
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](v5, contactCopy);
 }
 
-- (id)CNValueForContact:(id)a3
+- (id)CNValueForContact:(id)contact
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 isUsingSharedPhoto];
+  isUsingSharedPhoto = [contact isUsingSharedPhoto];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:isUsingSharedPhoto];
 }
 
-- (void)setCNValue:(id)a3 onContact:(id)a4
+- (void)setCNValue:(id)value onContact:(id)contact
 {
-  v5 = a4;
-  [v5 setIsUsingSharedPhoto:{objc_msgSend(a3, "BOOLValue")}];
+  contactCopy = contact;
+  [contactCopy setIsUsingSharedPhoto:{objc_msgSend(value, "BOOLValue")}];
 }
 
 @end

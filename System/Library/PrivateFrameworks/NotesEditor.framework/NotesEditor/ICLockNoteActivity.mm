@@ -1,38 +1,38 @@
 @interface ICLockNoteActivity
-- (ICLockNoteActivity)initWithNote:(id)a3 presentingViewController:(id)a4;
+- (ICLockNoteActivity)initWithNote:(id)note presentingViewController:(id)controller;
 - (UIViewController)presentingViewController;
 - (id)accessibilityLabel;
 - (id)activityImage;
 - (id)activityTitle;
 - (void)accessibilityAnnounceToggledLock;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICLockNoteActivity
 
-- (ICLockNoteActivity)initWithNote:(id)a3 presentingViewController:(id)a4
+- (ICLockNoteActivity)initWithNote:(id)note presentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = ICLockNoteActivity;
   v8 = [(ICActivity *)&v17 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277D36870]) initWithNote:v6];
+    v9 = [objc_alloc(MEMORY[0x277D36870]) initWithNote:noteCopy];
     lockManager = v8->_lockManager;
     v8->_lockManager = v9;
 
-    v11 = [v7 view];
-    v12 = [v11 window];
-    [(ICNoteLockManager *)v8->_lockManager setWindow:v12];
+    view = [controllerCopy view];
+    window = [view window];
+    [(ICNoteLockManager *)v8->_lockManager setWindow:window];
 
-    objc_storeWeak(&v8->_presentingViewController, v7);
-    v13 = [(ICLockNoteActivity *)v8 presentingViewController];
-    v14 = [v13 view];
-    v15 = [v14 window];
+    objc_storeWeak(&v8->_presentingViewController, controllerCopy);
+    presentingViewController = [(ICLockNoteActivity *)v8 presentingViewController];
+    view2 = [presentingViewController view];
+    window2 = [view2 window];
 
-    if (!v15)
+    if (!window2)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((self.presentingViewController.view.window) != nil)" functionName:"-[ICLockNoteActivity initWithNote:presentingViewController:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.presentingViewController.view.window"}];
     }
@@ -43,12 +43,12 @@
 
 - (id)activityTitle
 {
-  v2 = [(ICLockNoteActivity *)self lockManager];
-  v3 = [v2 note];
-  v4 = [v3 isPasswordProtected];
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = v5;
-  if (v4)
+  lockManager = [(ICLockNoteActivity *)self lockManager];
+  note = [lockManager note];
+  isPasswordProtected = [note isPasswordProtected];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = mainBundle;
+  if (isPasswordProtected)
   {
     v7 = @"Remove";
   }
@@ -58,18 +58,18 @@
     v7 = @"Lock";
   }
 
-  v8 = [v5 localizedStringForKey:v7 value:&stru_282757698 table:0];
+  v8 = [mainBundle localizedStringForKey:v7 value:&stru_282757698 table:0];
 
   return v8;
 }
 
 - (id)activityImage
 {
-  v2 = [(ICLockNoteActivity *)self lockManager];
-  v3 = [v2 note];
-  v4 = [v3 isPasswordProtected];
+  lockManager = [(ICLockNoteActivity *)self lockManager];
+  note = [lockManager note];
+  isPasswordProtected = [note isPasswordProtected];
   v5 = @"lock.fill";
-  if (v4)
+  if (isPasswordProtected)
   {
     v5 = @"lock.slash.fill";
   }
@@ -81,10 +81,10 @@
   return v7;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v3 = v4;
+  completionCopy = completion;
+  v3 = completionCopy;
   dispatchMainAfterDelay();
 }
 
@@ -155,12 +155,12 @@ LABEL_6:
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICLockNoteActivity *)self lockManager];
-  v3 = [v2 note];
-  v4 = [v3 isPasswordProtected];
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = v5;
-  if (v4)
+  lockManager = [(ICLockNoteActivity *)self lockManager];
+  note = [lockManager note];
+  isPasswordProtected = [note isPasswordProtected];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = mainBundle;
+  if (isPasswordProtected)
   {
     v7 = @"Remove Lock";
   }
@@ -170,7 +170,7 @@ LABEL_6:
     v7 = @"Lock Note";
   }
 
-  v8 = [v5 localizedStringForKey:v7 value:&stru_282757698 table:0];
+  v8 = [mainBundle localizedStringForKey:v7 value:&stru_282757698 table:0];
 
   return v8;
 }

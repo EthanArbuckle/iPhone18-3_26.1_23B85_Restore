@@ -1,8 +1,8 @@
 @interface CPImage
 - (CGRect)bounds;
 - (CGRect)renderedBounds;
-- (CPImage)initWithBounds:(CGRect)a3;
-- (CPImage)initWithPDFImage:(CPPDFImage *)a3;
+- (CPImage)initWithBounds:(CGRect)bounds;
+- (CPImage)initWithPDFImage:(CPPDFImage *)image;
 - (void)recomputeRenderedBounds;
 @end
 
@@ -90,12 +90,12 @@
   return result;
 }
 
-- (CPImage)initWithBounds:(CGRect)a3
+- (CPImage)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = CPImage;
   result = [(CPGraphicObject *)&v8 init];
@@ -110,15 +110,15 @@
   return result;
 }
 
-- (CPImage)initWithPDFImage:(CPPDFImage *)a3
+- (CPImage)initWithPDFImage:(CPPDFImage *)image
 {
-  v4 = [(CPImage *)self initWithBounds:a3->var0.var0.origin.x, a3->var0.var0.origin.y, a3->var0.var0.size.width, a3->var0.var0.size.height];
+  v4 = [(CPImage *)self initWithBounds:image->var0.var0.origin.x, image->var0.var0.origin.y, image->var0.var0.size.width, image->var0.var0.size.height];
   v5 = v4;
   if (v4)
   {
-    v4->imageData = a3;
-    v4->super.clipIndex = a3->var0.var2;
-    [(CPChunk *)v4 setInsertionOrder:a3->var0.var3];
+    v4->imageData = image;
+    v4->super.clipIndex = image->var0.var2;
+    [(CPChunk *)v4 setInsertionOrder:image->var0.var3];
   }
 
   return v5;

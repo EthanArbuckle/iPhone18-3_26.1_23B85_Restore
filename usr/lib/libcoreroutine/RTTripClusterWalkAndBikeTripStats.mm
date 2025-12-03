@@ -4,7 +4,7 @@
 - (int64_t)transportModeAfterDrive;
 - (int64_t)transportModeBeforeDrive;
 - (int64_t)transportModeNoDrive;
-- (void)updateWalkAndBikeStats:(id)a3 isTripSegmentBeforeDriving:(BOOL)a4;
+- (void)updateWalkAndBikeStats:(id)stats isTripSegmentBeforeDriving:(BOOL)driving;
 @end
 
 @implementation RTTripClusterWalkAndBikeTripStats
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (void)updateWalkAndBikeStats:(id)a3 isTripSegmentBeforeDriving:(BOOL)a4
+- (void)updateWalkAndBikeStats:(id)stats isTripSegmentBeforeDriving:(BOOL)driving
 {
-  v4 = a4;
+  drivingCopy = driving;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  statsCopy = stats;
+  if (!statsCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -44,19 +44,19 @@
     }
   }
 
-  if ([v6 modeOfTransportation] == 1 || objc_msgSend(v6, "modeOfTransportation") == 3)
+  if ([statsCopy modeOfTransportation] == 1 || objc_msgSend(statsCopy, "modeOfTransportation") == 3)
   {
-    v8 = [v6 dateInterval];
-    [v8 duration];
+    dateInterval = [statsCopy dateInterval];
+    [dateInterval duration];
     v10 = v9;
 
-    if ([v6 modeOfTransportation] == 1)
+    if ([statsCopy modeOfTransportation] == 1)
     {
-      if (v4)
+      if (drivingCopy)
       {
         self->_isWalkSegmentBeforeDrivePresent = 1;
         self->_walkTimeDurationBeforeDrive_sec = v10 + self->_walkTimeDurationBeforeDrive_sec;
-        [v6 tripDistance];
+        [statsCopy tripDistance];
         self->_walkDistanceBeforeDrive_m = v11 + self->_walkDistanceBeforeDrive_m;
       }
 
@@ -64,18 +64,18 @@
       {
         self->_isWalkSegmentAfterDrivePresent = 1;
         self->_walkTimeDurationAfterDrive_sec = v10 + self->_walkTimeDurationAfterDrive_sec;
-        [v6 tripDistance];
+        [statsCopy tripDistance];
         self->_walkDistanceAfterDrive_m = v13 + self->_walkDistanceAfterDrive_m;
       }
     }
 
-    else if ([v6 modeOfTransportation] == 3)
+    else if ([statsCopy modeOfTransportation] == 3)
     {
-      if (v4)
+      if (drivingCopy)
       {
         self->_isBikeSegmentBeforeDrivePresent = 1;
         self->_bikeTimeDurationBeforeDrive_sec = v10 + self->_bikeTimeDurationBeforeDrive_sec;
-        [v6 tripDistance];
+        [statsCopy tripDistance];
         self->_bikeDistanceBeforeDrive_m = v12 + self->_bikeDistanceBeforeDrive_m;
       }
 
@@ -83,7 +83,7 @@
       {
         self->_isBikeSegmentAfterDrivePresent = 1;
         self->_bikeTimeDurationAfterDrive_sec = v10 + self->_bikeTimeDurationAfterDrive_sec;
-        [v6 tripDistance];
+        [statsCopy tripDistance];
         self->_bikeDistanceAfterDrive_m = v18 + self->_bikeDistanceAfterDrive_m;
       }
     }
@@ -95,11 +95,11 @@
       {
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
-        v17 = [v6 modeOfTransportation];
+        modeOfTransportation = [statsCopy modeOfTransportation];
         v19 = 138412546;
         v20 = v16;
         v21 = 2048;
-        v22 = v17;
+        v22 = modeOfTransportation;
         _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@,Warning,unsupported transport mode,%ld,ignoring", &v19, 0x16u);
       }
     }

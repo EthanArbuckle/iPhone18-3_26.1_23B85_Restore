@@ -1,56 +1,56 @@
 @interface RCPMovie
-+ (__CVBuffer)pixelBufferFromUIImage:(id)a3 size:(CGSize)a4 orientation:(int64_t)a5;
-- (RCPMovie)initWithContentsOfURL:(id)a3;
-- (RCPMovie)initWithEventStream:(id)a3 snapshots:(id)a4;
-- (RCPMovie)initWithXPC:(id)a3;
++ (__CVBuffer)pixelBufferFromUIImage:(id)image size:(CGSize)size orientation:(int64_t)orientation;
+- (RCPMovie)initWithContentsOfURL:(id)l;
+- (RCPMovie)initWithEventStream:(id)stream snapshots:(id)snapshots;
+- (RCPMovie)initWithXPC:(id)c;
 - (id)encodeToXPC;
-- (id)trimmedFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (void)writeToURL:(id)a3 completion:(id)a4;
+- (id)trimmedFrom:(unint64_t)from to:(unint64_t)to;
+- (void)writeToURL:(id)l completion:(id)completion;
 @end
 
 @implementation RCPMovie
 
-- (RCPMovie)initWithEventStream:(id)a3 snapshots:(id)a4
+- (RCPMovie)initWithEventStream:(id)stream snapshots:(id)snapshots
 {
-  v6 = a3;
+  streamCopy = stream;
   v18.receiver = self;
   v18.super_class = RCPMovie;
-  v7 = a4;
+  snapshotsCopy = snapshots;
   v8 = [(RCPMovie *)&v18 init];
   eventStream = v8->_eventStream;
-  v8->_eventStream = v6;
-  v10 = v6;
+  v8->_eventStream = streamCopy;
+  v10 = streamCopy;
 
-  v11 = [v7 copy];
+  v11 = [snapshotsCopy copy];
   snapshots = v8->_snapshots;
   v8->_snapshots = v11;
 
-  v13 = [(NSArray *)v8->_snapshots lastObject];
-  v14 = [v13 snapshotImage];
-  v8->_interfaceOrientation = [v14 imageOrientation];
+  lastObject = [(NSArray *)v8->_snapshots lastObject];
+  snapshotImage = [lastObject snapshotImage];
+  v8->_interfaceOrientation = [snapshotImage imageOrientation];
 
   v15 = [(NSArray *)v8->_snapshots objectAtIndexedSubscript:0];
   v8->_startTimestamp = [v15 timestamp];
 
-  v16 = [(NSArray *)v8->_snapshots lastObject];
+  lastObject2 = [(NSArray *)v8->_snapshots lastObject];
 
-  v8->_endTimestamp = [v16 timestamp];
+  v8->_endTimestamp = [lastObject2 timestamp];
   return v8;
 }
 
-- (id)trimmedFrom:(unint64_t)a3 to:(unint64_t)a4
+- (id)trimmedFrom:(unint64_t)from to:(unint64_t)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [(RCPMovie *)self eventStream];
-  v8 = [v7 trimmedFrom:a3 to:a4];
+  eventStream = [(RCPMovie *)self eventStream];
+  v8 = [eventStream trimmedFrom:from to:to];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(RCPMovie *)self snapshots];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  snapshots = [(RCPMovie *)self snapshots];
+  v11 = [snapshots countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -61,32 +61,32 @@
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(snapshots);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        if ([v15 timestamp] >= a3 && objc_msgSend(v15, "timestamp") <= a4)
+        if ([v15 timestamp] >= from && objc_msgSend(v15, "timestamp") <= to)
         {
           [v9 addObject:v15];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [snapshots countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 
   v16 = [[RCPMovie alloc] initWithEventStream:v8 snapshots:v9];
-  v17 = [(RCPMovie *)self screenshot];
-  [(RCPMovie *)v16 setScreenshot:v17];
+  screenshot = [(RCPMovie *)self screenshot];
+  [(RCPMovie *)v16 setScreenshot:screenshot];
 
   return v16;
 }
 
-- (RCPMovie)initWithXPC:(id)a3
+- (RCPMovie)initWithXPC:(id)c
 {
-  xdict = a3;
+  xdict = c;
   v3 = xpc_dictionary_get_array(xdict, "snapshots");
   count = xpc_array_get_count(v3);
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
@@ -122,14 +122,14 @@
 - (id)encodeToXPC
 {
   v44 = *MEMORY[0x277D85DE8];
-  v32 = [(RCPMovie *)self snapshots];
+  snapshots = [(RCPMovie *)self snapshots];
   v31 = &v28;
-  v29 = [v32 count];
+  v29 = [snapshots count];
   v35 = &v28 - ((8 * v29 + 15) & 0xFFFFFFFFFFFFFFF0);
   v30 = 8 * v29;
   bzero(v35, 8 * v29);
-  v3 = [(RCPMovie *)self snapshots];
-  v4 = [v3 count];
+  snapshots2 = [(RCPMovie *)self snapshots];
+  v4 = [snapshots2 count];
 
   if (v4)
   {
@@ -140,43 +140,43 @@
     {
       *keys = v34;
       v43 = v33;
-      v38 = [(RCPMovie *)self snapshots];
-      v37 = [v38 objectAtIndexedSubscript:v5];
-      v36 = [v37 snapshotImage];
-      XPCObject = IOSurfaceCreateXPCObject([v36 ioSurface]);
+      snapshots3 = [(RCPMovie *)self snapshots];
+      v37 = [snapshots3 objectAtIndexedSubscript:v5];
+      snapshotImage = [v37 snapshotImage];
+      XPCObject = IOSurfaceCreateXPCObject([snapshotImage ioSurface]);
       values[0] = XPCObject;
-      v7 = [(RCPMovie *)self snapshots];
-      v8 = [v7 objectAtIndexedSubscript:v5];
+      snapshots4 = [(RCPMovie *)self snapshots];
+      v8 = [snapshots4 objectAtIndexedSubscript:v5];
       v9 = xpc_uint64_create([v8 timestamp]);
       values[1] = v9;
-      v10 = [(RCPMovie *)self snapshots];
-      v11 = [v10 objectAtIndexedSubscript:v5];
-      v12 = [v11 snapshotImage];
-      v13 = xpc_uint64_create([v12 imageOrientation]);
+      snapshots5 = [(RCPMovie *)self snapshots];
+      v11 = [snapshots5 objectAtIndexedSubscript:v5];
+      snapshotImage2 = [v11 snapshotImage];
+      v13 = xpc_uint64_create([snapshotImage2 imageOrientation]);
       values[2] = v13;
       v14 = xpc_dictionary_create(keys, values, 3uLL);
       v15 = *&v35[8 * v5];
       *&v35[8 * v5] = v14;
 
       ++v5;
-      v16 = [(RCPMovie *)self snapshots];
-      v17 = [v16 count];
+      snapshots6 = [(RCPMovie *)self snapshots];
+      v17 = [snapshots6 count];
     }
 
     while (v5 < v17);
   }
 
-  v18 = [(RCPMovie *)self eventStream];
-  v19 = [v18 dataRepresentation];
+  eventStream = [(RCPMovie *)self eventStream];
+  dataRepresentation = [eventStream dataRepresentation];
 
   v40[0] = "snapshots";
   v40[1] = "eventStream";
-  v20 = [(RCPMovie *)self snapshots];
-  v21 = [v20 count];
+  snapshots7 = [(RCPMovie *)self snapshots];
+  v21 = [snapshots7 count];
   v22 = v35;
   v23 = xpc_array_create(v35, v21);
   v39[0] = v23;
-  v24 = xpc_data_create([v19 bytes], objc_msgSend(v19, "length"));
+  v24 = xpc_data_create([dataRepresentation bytes], objc_msgSend(dataRepresentation, "length"));
   v39[1] = v24;
   v25 = xpc_dictionary_create(v40, v39, 2uLL);
 
@@ -195,15 +195,15 @@
   return v25;
 }
 
-- (RCPMovie)initWithContentsOfURL:(id)a3
+- (RCPMovie)initWithContentsOfURL:(id)l
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v41.receiver = self;
   v41.super_class = RCPMovie;
   v5 = [(RCPMovie *)&v41 init];
-  v34 = v4;
-  v6 = [MEMORY[0x277CE6650] URLAssetWithURL:v4 options:&unk_287426D58];
+  v34 = lCopy;
+  v6 = [MEMORY[0x277CE6650] URLAssetWithURL:lCopy options:&unk_287426D58];
   screenRecording = v5->_screenRecording;
   v5->_screenRecording = v6;
 
@@ -211,10 +211,10 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = [(RCPMovie *)v5 screenRecording];
-  v9 = [v8 metadata];
+  screenRecording = [(RCPMovie *)v5 screenRecording];
+  metadata = [screenRecording metadata];
 
-  v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v10 = [metadata countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (!v10)
   {
     goto LABEL_22;
@@ -232,60 +232,60 @@
     {
       if (*v38 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(metadata);
       }
 
       v15 = *(*(&v37 + 1) + 8 * v14);
-      v16 = [v15 identifier];
-      v17 = [v16 isEqualToString:v13];
+      identifier = [v15 identifier];
+      v17 = [identifier isEqualToString:v13];
 
       if (v17)
       {
-        v18 = [v15 value];
-        v5->_startTimestamp = [v18 integerValue];
+        value = [v15 value];
+        v5->_startTimestamp = [value integerValue];
         goto LABEL_15;
       }
 
-      v19 = [v15 identifier];
-      v20 = [v19 isEqualToString:@"mdta/com.apple.recap.endTimestamp"];
+      identifier2 = [v15 identifier];
+      v20 = [identifier2 isEqualToString:@"mdta/com.apple.recap.endTimestamp"];
 
       if (v20)
       {
-        v18 = [v15 value];
-        v5->_endTimestamp = [v18 integerValue];
+        value = [v15 value];
+        v5->_endTimestamp = [value integerValue];
         goto LABEL_15;
       }
 
-      v21 = [v15 identifier];
-      v22 = [v21 isEqualToString:@"mdta/com.apple.recap.events"];
+      identifier3 = [v15 identifier];
+      v22 = [identifier3 isEqualToString:@"mdta/com.apple.recap.events"];
 
       if (v22)
       {
-        v18 = [v15 dataValue];
-        v23 = [RCPEventStream eventStreamWithData:v18 error:0];
+        value = [v15 dataValue];
+        v23 = [RCPEventStream eventStreamWithData:value error:0];
         eventStream = v5->_eventStream;
         v5->_eventStream = v23;
         goto LABEL_12;
       }
 
-      v25 = [v15 identifier];
-      v26 = [v25 isEqualToString:v36];
+      identifier4 = [v15 identifier];
+      v26 = [identifier4 isEqualToString:v36];
 
       if (v26)
       {
-        v18 = [v15 value];
-        v5->_interfaceOrientation = [v18 integerValue];
+        value = [v15 value];
+        v5->_interfaceOrientation = [value integerValue];
         goto LABEL_15;
       }
 
-      v27 = [v15 identifier];
-      v28 = [v27 isEqualToString:v35];
+      identifier5 = [v15 identifier];
+      v28 = [identifier5 isEqualToString:v35];
 
       if (v28)
       {
         v29 = MEMORY[0x277D755B8];
-        v18 = [v15 value];
-        v30 = [v29 imageWithData:v18];
+        value = [v15 value];
+        v30 = [v29 imageWithData:value];
         eventStream = v5->_screenshot;
         v5->_screenshot = v30;
 LABEL_12:
@@ -300,7 +300,7 @@ LABEL_16:
     }
 
     while (v11 != v14);
-    v31 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    v31 = [metadata countByEnumeratingWithState:&v37 objects:v42 count:16];
     v11 = v31;
   }
 
@@ -320,29 +320,29 @@ LABEL_22:
   return v32;
 }
 
-- (void)writeToURL:(id)a3 completion:(id)a4
+- (void)writeToURL:(id)l completion:(id)completion
 {
   v84[5] = *MEMORY[0x277D85DE8];
-  v64 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  lCopy = l;
+  completionCopy = completion;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v80 = 0;
-  [v7 removeItemAtURL:v64 error:&v80];
+  [defaultManager removeItemAtURL:lCopy error:&v80];
   v8 = v80;
 
-  v9 = [(RCPMovie *)self snapshots];
-  v10 = [v9 lastObject];
-  v11 = [v10 snapshotImage];
-  [v11 size];
+  snapshots = [(RCPMovie *)self snapshots];
+  lastObject = [snapshots lastObject];
+  snapshotImage = [lastObject snapshotImage];
+  [snapshotImage size];
   v13 = v12;
   v15 = v14;
 
   v16 = MEMORY[0x277CBEBC0];
   v17 = NSTemporaryDirectory();
   v18 = [v16 fileURLWithPath:v17];
-  v19 = [MEMORY[0x277CCAD78] UUID];
-  v20 = [v19 UUIDString];
-  v21 = [v18 URLByAppendingPathComponent:v20];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v21 = [v18 URLByAppendingPathComponent:uUIDString];
   v22 = [v21 URLByAppendingPathExtension:@"mov"];
 
   v23 = objc_alloc(MEMORY[0x277CE6460]);
@@ -354,7 +354,7 @@ LABEL_22:
   if (v26)
   {
     NSLog(&cfstr_FailedToCreate.isa, v26);
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -381,16 +381,16 @@ LABEL_22:
     v31 = objc_alloc_init(MEMORY[0x277CE6558]);
     [v31 setIdentifier:@"mdta/com.apple.recap.events"];
     [v31 setDataType:*MEMORY[0x277CC05B0]];
-    v32 = [(RCPMovie *)self eventStream];
-    v33 = [v32 dataRepresentation];
-    [v31 setValue:v33];
+    eventStream = [(RCPMovie *)self eventStream];
+    dataRepresentation = [eventStream dataRepresentation];
+    [v31 setValue:dataRepresentation];
 
-    v34 = [(RCPMovie *)self screenshot];
+    screenshot = [(RCPMovie *)self screenshot];
 
-    if (v34)
+    if (screenshot)
     {
-      v35 = [(RCPMovie *)self screenshot];
-      v36 = RCPCGImageBackedImageFromImage(v35);
+      screenshot2 = [(RCPMovie *)self screenshot];
+      v36 = RCPCGImageBackedImageFromImage(screenshot2);
 
       v37 = objc_alloc_init(MEMORY[0x277CE6558]);
       [v37 setIdentifier:*MEMORY[0x277CE5F58]];
@@ -432,9 +432,9 @@ LABEL_22:
     v44 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:v60];
     v45 = [MEMORY[0x277CE6478] assetWriterInputPixelBufferAdaptorWithAssetWriterInput:v44 sourcePixelBufferAttributes:0];
     [v25 addInput:v44];
-    v46 = [(RCPMovie *)self eventStream];
-    v47 = [v46 environment];
-    [v47 timeScale];
+    eventStream2 = [(RCPMovie *)self eventStream];
+    environment = [eventStream2 environment];
+    [environment timeScale];
     v49 = v48;
 
     [v25 startWriting];
@@ -455,8 +455,8 @@ LABEL_22:
       dispatch_set_target_queue(v52, v53);
     }
 
-    v54 = [(RCPMovie *)self snapshots];
-    v55 = [v54 copy];
+    snapshots2 = [(RCPMovie *)self snapshots];
+    v55 = [snapshots2 copy];
 
     v56 = self->_serializationQueue;
     v65[0] = MEMORY[0x277D85DD0];
@@ -475,8 +475,8 @@ LABEL_22:
     v68 = v59;
     v69 = v25;
     v70 = v22;
-    v71 = v64;
-    v72 = v6;
+    v71 = lCopy;
+    v72 = completionCopy;
     [v57 requestMediaDataWhenReadyOnQueue:v56 usingBlock:v65];
 
     _Block_object_dispose(&v77, 8);
@@ -582,18 +582,18 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
   return v4();
 }
 
-+ (__CVBuffer)pixelBufferFromUIImage:(id)a3 size:(CGSize)a4 orientation:(int64_t)a5
++ (__CVBuffer)pixelBufferFromUIImage:(id)image size:(CGSize)size orientation:(int64_t)orientation
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  width = a4.width;
-  height = a4.height;
+  width = size.width;
+  height = size.height;
   v8 = *MEMORY[0x277CC4D68];
   v34[0] = *MEMORY[0x277CC4D70];
   v34[1] = v8;
   v35[0] = MEMORY[0x277CBEC38];
   v35[1] = MEMORY[0x277CBEC38];
   v9 = MEMORY[0x277CBEAC0];
-  v10 = a3;
+  imageCopy = image;
   v11 = [v9 dictionaryWithObjects:v35 forKeys:v34 count:2];
   pixelBufferOut = 0;
   CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, 0x20u, v11, &pixelBufferOut);
@@ -609,7 +609,7 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
   v20 = -width;
   v21 = v20;
   v22 = v17;
-  if (a5 == 1)
+  if (orientation == 1)
   {
     v23 = height;
   }
@@ -619,7 +619,7 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
     v23 = 0.0;
   }
 
-  if (a5 == 1)
+  if (orientation == 1)
   {
     v24 = width;
   }
@@ -629,13 +629,13 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
     v24 = 0.0;
   }
 
-  if (a5 != 1)
+  if (orientation != 1)
   {
     v22 = height;
     v21 = width;
   }
 
-  if (a5 == 2)
+  if (orientation == 2)
   {
     v23 = 0.0;
     v24 = width;
@@ -647,7 +647,7 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
     v20 = 0.0;
   }
 
-  if (a5 == 2)
+  if (orientation == 2)
   {
     v25 = height;
   }
@@ -657,12 +657,12 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
     v25 = 0.0;
   }
 
-  if (a5 == 2)
+  if (orientation == 2)
   {
     v21 = 0.0;
   }
 
-  if (a5 == 3)
+  if (orientation == 3)
   {
     v22 = 0.0;
   }
@@ -672,7 +672,7 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
     v19 = v23;
   }
 
-  if (a5 == 3)
+  if (orientation == 3)
   {
     v26 = 0.0;
   }
@@ -688,7 +688,7 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
   v32.b = v17;
   v32.c = v18;
   v32.d = v22;
-  if (a5 == 3)
+  if (orientation == 3)
   {
     v27 = 0.0;
   }
@@ -701,14 +701,14 @@ uint64_t __34__RCPMovie_writeToURL_completion___block_invoke_2(uint64_t a1)
   v32.tx = v27;
   v32.ty = v19;
   CGContextConcatCTM(v15, &v32);
-  v28 = v10;
-  v29 = [v28 CGImage];
+  v28 = imageCopy;
+  cGImage = [v28 CGImage];
 
   v36.origin.x = 0.0;
   v36.origin.y = 0.0;
   v36.size.width = 1.0;
   v36.size.height = 1.0;
-  CGContextDrawImage(v16, v36, v29);
+  CGContextDrawImage(v16, v36, cGImage);
   CGColorSpaceRelease(DeviceRGB);
   CGContextRelease(v16);
   CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);

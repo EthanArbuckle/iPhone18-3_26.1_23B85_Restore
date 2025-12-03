@@ -46,7 +46,7 @@
 
 - (NSDictionary)commandProperties
 {
-  v2 = self;
+  selfCopy = self;
   VCCommandObjC.commandProperties.getter();
 
   v3 = sub_26B5429A4();
@@ -56,7 +56,7 @@
 
 - (BOOL)isNewForCurrentDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VCCommandObjC.isNewForCurrentDevice.getter();
 
   return v3 & 1;
@@ -64,7 +64,7 @@
 
 - (BOOL)showCodingGuideInSettings
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VCCommandObjC.showCodingGuideInSettings.getter();
 
   return v3 & 1;

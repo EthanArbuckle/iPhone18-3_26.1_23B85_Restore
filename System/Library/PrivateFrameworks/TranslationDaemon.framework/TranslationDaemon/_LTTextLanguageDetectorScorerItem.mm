@@ -1,13 +1,13 @@
 @interface _LTTextLanguageDetectorScorerItem
-- (_LTTextLanguageDetectorScorerItem)initWithLocale:(id)a3 confidence:(double)a4 wordCount:(int64_t)a5;
+- (_LTTextLanguageDetectorScorerItem)initWithLocale:(id)locale confidence:(double)confidence wordCount:(int64_t)count;
 @end
 
 @implementation _LTTextLanguageDetectorScorerItem
 
-- (_LTTextLanguageDetectorScorerItem)initWithLocale:(id)a3 confidence:(double)a4 wordCount:(int64_t)a5
+- (_LTTextLanguageDetectorScorerItem)initWithLocale:(id)locale confidence:(double)confidence wordCount:(int64_t)count
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  localeCopy = locale;
   v18.receiver = self;
   v18.super_class = _LTTextLanguageDetectorScorerItem;
   v10 = [(_LTTextLanguageDetectorScorerItem *)&v18 init];
@@ -20,7 +20,7 @@ LABEL_8:
 
   v11 = _LTOSLogLID();
   v12 = v11;
-  if (!v9)
+  if (!localeCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -34,19 +34,19 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v16 = v12;
-    v17 = [v9 localeIdentifier];
+    localeIdentifier = [localeCopy localeIdentifier];
     *buf = 138543874;
-    v20 = v17;
+    v20 = localeIdentifier;
     v21 = 2048;
-    v22 = a4;
+    confidenceCopy = confidence;
     v23 = 2048;
-    v24 = a5;
+    countCopy = count;
     _os_log_debug_impl(&dword_232E53000, v16, OS_LOG_TYPE_DEBUG, "new scoring item locale: %{public}@; confidence: %f; words: %ld", buf, 0x20u);
   }
 
-  objc_storeStrong(&v10->_locale, a3);
-  v10->_confidence = a4;
-  v10->_wordCount = a5;
+  objc_storeStrong(&v10->_locale, locale);
+  v10->_confidence = confidence;
+  v10->_wordCount = count;
   v13 = v10;
 LABEL_9:
 

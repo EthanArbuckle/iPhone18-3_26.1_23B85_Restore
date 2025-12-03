@@ -1,9 +1,9 @@
 @interface WFSearchVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIEdgeInsets)textFieldLandscapeLayoutInsets;
 - (UIEdgeInsets)textFieldPortraitLayoutInsets;
 - (WFSearchVisualConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WFSearchVisualConfiguration
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -49,7 +49,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if (self->_textFieldWidth == v7->f64[1] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textFieldPortraitLayoutInsets.top, v7[1]), vceqq_f64(*&self->_textFieldPortraitLayoutInsets.bottom, v7[2])))) & 1) != 0)
       {
         v8 = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textFieldLandscapeLayoutInsets.top, v7[3]), vceqq_f64(*&self->_textFieldLandscapeLayoutInsets.bottom, v7[4]))));
@@ -70,7 +70,7 @@
   return v8 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)

@@ -1,14 +1,14 @@
 @interface CAMImageControlModeCommand
-- (CAMImageControlModeCommand)initWithCaptureMode:(int64_t)a3 capturing:(BOOL)a4;
-- (CAMImageControlModeCommand)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMImageControlModeCommand)initWithCaptureMode:(int64_t)mode capturing:(BOOL)capturing;
+- (CAMImageControlModeCommand)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMImageControlModeCommand
 
-- (CAMImageControlModeCommand)initWithCaptureMode:(int64_t)a3 capturing:(BOOL)a4
+- (CAMImageControlModeCommand)initWithCaptureMode:(int64_t)mode capturing:(BOOL)capturing
 {
   v10.receiver = self;
   v10.super_class = CAMImageControlModeCommand;
@@ -16,68 +16,68 @@
   v7 = v6;
   if (v6)
   {
-    v6->__captureMode = a3;
-    v6->__capturing = a4;
+    v6->__captureMode = mode;
+    v6->__capturing = capturing;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (CAMImageControlModeCommand)initWithCoder:(id)a3
+- (CAMImageControlModeCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMImageControlModeCommand;
   v5 = [(CAMCaptureCommand *)&v8 init];
   if (v5)
   {
-    v5->__captureMode = [v4 decodeIntegerForKey:@"CAMImageControlModeCommandCaptureMode"];
-    v5->__capturing = [v4 decodeBoolForKey:@"CAMImageControlModeCommandCapturing"];
+    v5->__captureMode = [coderCopy decodeIntegerForKey:@"CAMImageControlModeCommandCaptureMode"];
+    v5->__capturing = [coderCopy decodeBoolForKey:@"CAMImageControlModeCommandCapturing"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMImageControlModeCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[CAMImageControlModeCommand _captureMode](self forKey:{"_captureMode", v5.receiver, v5.super_class), @"CAMImageControlModeCommandCaptureMode"}];
-  [v4 encodeBool:-[CAMImageControlModeCommand _capturing](self forKey:{"_capturing"), @"CAMImageControlModeCommandCapturing"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[CAMImageControlModeCommand _captureMode](self forKey:{"_captureMode", v5.receiver, v5.super_class), @"CAMImageControlModeCommandCaptureMode"}];
+  [coderCopy encodeBool:-[CAMImageControlModeCommand _capturing](self forKey:{"_capturing"), @"CAMImageControlModeCommandCapturing"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMImageControlModeCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[4] = [(CAMImageControlModeCommand *)self _captureMode];
   *(v4 + 24) = [(CAMImageControlModeCommand *)self _capturing];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentVideoDevice];
-  v5 = [(CAMImageControlModeCommand *)self _captureMode];
-  if (v5 <= 9)
+  currentVideoDevice = [context currentVideoDevice];
+  _captureMode = [(CAMImageControlModeCommand *)self _captureMode];
+  if (_captureMode <= 9)
   {
-    if (((1 << v5) & 0x3D7) != 0)
+    if (((1 << _captureMode) & 0x3D7) != 0)
     {
-      [v4 setAutomaticallyAdjustsImageControlMode:1];
+      [currentVideoDevice setAutomaticallyAdjustsImageControlMode:1];
       goto LABEL_4;
     }
 
-    if (v5 == 3)
+    if (_captureMode == 3)
     {
-      if ([v4 isImageControlModeSupported:4])
+      if ([currentVideoDevice isImageControlModeSupported:4])
       {
-        [v4 setAutomaticallyAdjustsImageControlMode:0];
-        v6 = v4;
+        [currentVideoDevice setAutomaticallyAdjustsImageControlMode:0];
+        v6 = currentVideoDevice;
         v7 = 4;
 LABEL_18:
         [v6 setImageControlMode:v7];
@@ -97,7 +97,7 @@ LABEL_23:
 
     else
     {
-      if ([v4 isImageControlModeSupported:5] && objc_msgSend(v4, "isImageControlModeSupported:", 6))
+      if ([currentVideoDevice isImageControlModeSupported:5] && objc_msgSend(currentVideoDevice, "isImageControlModeSupported:", 6))
       {
         if ([(CAMImageControlModeCommand *)self _capturing])
         {
@@ -115,15 +115,15 @@ LABEL_23:
         v8 = 2;
       }
 
-      if ([v4 isImageControlModeSupported:v8])
+      if ([currentVideoDevice isImageControlModeSupported:v8])
       {
-        if ([v4 isTorchModeSupported:0])
+        if ([currentVideoDevice isTorchModeSupported:0])
         {
-          [v4 setTorchMode:0];
+          [currentVideoDevice setTorchMode:0];
         }
 
-        [v4 setAutomaticallyAdjustsImageControlMode:0];
-        v6 = v4;
+        [currentVideoDevice setAutomaticallyAdjustsImageControlMode:0];
+        v6 = currentVideoDevice;
         v7 = v8;
         goto LABEL_18;
       }

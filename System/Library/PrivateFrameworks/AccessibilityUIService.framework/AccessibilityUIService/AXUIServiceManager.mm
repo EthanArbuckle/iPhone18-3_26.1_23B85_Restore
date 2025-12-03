@@ -3,35 +3,35 @@
 + (void)_releaseSharedServiceManager;
 - (AXUIServiceManager)init;
 - (AXUIServiceManagerDelegate)delegate;
-- (BOOL)_extractAndHandleRegistration:(id)a3 clientIdentifier:(id)a4 messageIdentifier:(unint64_t)a5 context:(id)a6 error:(id *)a7;
-- (BOOL)_registerClientWithIdentifier:(id)a3 connection:(id)a4 serviceBundleName:(id)a5 initiatingMessageIdentifier:(unint64_t)a6 error:(id *)a7;
-- (BOOL)_serviceWithClass:(Class)a3 canProcessMessageWithIdentifier:(unint64_t)a4 fromClientWithConnection:(id)a5 possibleRequiredEntitlements:(id *)a6 needsToRequireEntitlements:(BOOL *)a7;
+- (BOOL)_extractAndHandleRegistration:(id)registration clientIdentifier:(id)identifier messageIdentifier:(unint64_t)messageIdentifier context:(id)context error:(id *)error;
+- (BOOL)_registerClientWithIdentifier:(id)identifier connection:(id)connection serviceBundleName:(id)name initiatingMessageIdentifier:(unint64_t)messageIdentifier error:(id *)error;
+- (BOOL)_serviceWithClass:(Class)class canProcessMessageWithIdentifier:(unint64_t)identifier fromClientWithConnection:(id)connection possibleRequiredEntitlements:(id *)entitlements needsToRequireEntitlements:(BOOL *)requireEntitlements;
 - (BOOL)_start;
-- (id)_clientMessengerWithIdentifier:(id)a3;
-- (id)_extractClientIdentifier:(id)a3;
-- (id)_sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 toClientWithMessenger:(id)a5 error:(id *)a6;
-- (id)_serviceContextForClientWithIdentifier:(id)a3;
-- (id)_serviceContextForService:(id)a3;
-- (id)_serviceFromBundlePath:(id)a3 clientIdentifier:(id)a4 connection:(id)a5 initiatingMessageIdentifier:(unint64_t)a6 stopSearching:(BOOL *)a7 error:(id *)a8;
+- (id)_clientMessengerWithIdentifier:(id)identifier;
+- (id)_extractClientIdentifier:(id)identifier;
+- (id)_sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier toClientWithMessenger:(id)messenger error:(id *)error;
+- (id)_serviceContextForClientWithIdentifier:(id)identifier;
+- (id)_serviceContextForService:(id)service;
+- (id)_serviceFromBundlePath:(id)path clientIdentifier:(id)identifier connection:(id)connection initiatingMessageIdentifier:(unint64_t)messageIdentifier stopSearching:(BOOL *)searching error:(id *)error;
 - (id)_services;
-- (id)_servicesForUniqueIdentifiers:(id)a3;
-- (id)clientsForService:(id)a3;
+- (id)_servicesForUniqueIdentifiers:(id)identifiers;
+- (id)clientsForService:(id)service;
 - (unint64_t)_servicesCount;
 - (void)_applicationDidFinishLaunching;
-- (void)_applicationDidReceiveMemoryWarning:(id)a3;
-- (void)_handleConnection:(id)a3;
-- (void)_processXPCObject:(id)a3 context:(id)a4;
+- (void)_applicationDidReceiveMemoryWarning:(id)warning;
+- (void)_handleConnection:(id)connection;
+- (void)_processXPCObject:(id)object context:(id)context;
 - (void)_registerForSystemAppDeath;
-- (void)_unregisterAllClientsWithConnection:(id)a3;
-- (void)_unregisterClientsIdentifiersLists:(id)a3 serviceContexts:(id)a4;
-- (void)beginTransactionWithIdentifier:(id)a3 forService:(id)a4;
+- (void)_unregisterAllClientsWithConnection:(id)connection;
+- (void)_unregisterClientsIdentifiersLists:(id)lists serviceContexts:(id)contexts;
+- (void)beginTransactionWithIdentifier:(id)identifier forService:(id)service;
 - (void)dealloc;
-- (void)endTransactionWithIdentifier:(id)a3 forService:(id)a4;
+- (void)endTransactionWithIdentifier:(id)identifier forService:(id)service;
 - (void)invalidateConnectionListener;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)messageSender:(id)a3 accessLaunchAngelConnectionForMessageWithContext:(void *)a4 usingBlock:(id)a5;
-- (void)messageSender:(id)a3 willSendXPCMessage:(id)a4 context:(void *)a5;
-- (void)sendBoardServiceMessage:(id)a3 callback:(id)a4;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)messageSender:(id)sender accessLaunchAngelConnectionForMessageWithContext:(void *)context usingBlock:(id)block;
+- (void)messageSender:(id)sender willSendXPCMessage:(id)message context:(void *)context;
+- (void)sendBoardServiceMessage:(id)message callback:(id)callback;
 - (void)startLaunchAngel;
 @end
 
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __42__AXUIServiceManager_sharedServiceManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServiceManager__AXUIServiceManagerSharedInstanceOnceToken != -1)
   {
     dispatch_once(&sharedServiceManager__AXUIServiceManagerSharedInstanceOnceToken, block);
@@ -105,8 +105,8 @@ uint64_t __42__AXUIServiceManager_sharedServiceManager__block_invoke(uint64_t a1
       [(AXUIServiceManager *)v2 setEntitlementsCheckersAccessQueue:v6];
       [(AXUIServiceManager *)v2 setResumingConnectionsQueue:v7];
       [(AXUIServiceManager *)v2 setMessageSender:v9];
-      v14 = [MEMORY[0x277CBEB38] dictionary];
-      [(AXUIServiceManager *)v2 setTransactions:v14];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(AXUIServiceManager *)v2 setTransactions:dictionary];
 
       v15 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
       v16 = dispatch_queue_create("AXUIServiceManager-transactions", v15);
@@ -117,8 +117,8 @@ uint64_t __42__AXUIServiceManager_sharedServiceManager__block_invoke(uint64_t a1
       if (v17)
       {
         [(AXUIServiceManager *)v2 setDisplayManager:v17];
-        v18 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v18 addObserver:v2 selector:sel__applicationDidReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter addObserver:v2 selector:sel__applicationDidReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
       }
     }
   }
@@ -130,14 +130,14 @@ uint64_t __42__AXUIServiceManager_sharedServiceManager__block_invoke(uint64_t a1
 - (void)dealloc
 {
   [(AXUIServiceManager *)self invalidateConnectionListener];
-  v3 = [MEMORY[0x277CE7D28] server];
-  [v3 registerAccessibilityUIServicePID:0];
+  server = [MEMORY[0x277CE7D28] server];
+  [server registerAccessibilityUIServicePID:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
 
-  v5 = [(AXUIServiceManager *)self displayManager];
-  [v5 _resetServiceManager];
+  displayManager = [(AXUIServiceManager *)self displayManager];
+  [displayManager _resetServiceManager];
 
   v6.receiver = self;
   v6.super_class = AXUIServiceManager;
@@ -155,17 +155,17 @@ uint64_t __42__AXUIServiceManager_sharedServiceManager__block_invoke(uint64_t a1
   }
 }
 
-- (void)beginTransactionWithIdentifier:(id)a3 forService:(id)a4
+- (void)beginTransactionWithIdentifier:(id)identifier forService:(id)service
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CE6990] sharedInstance];
-  v9 = [v8 ignoreLogging];
+  identifierCopy = identifier;
+  serviceCopy = service;
+  mEMORY[0x277CE6990] = [MEMORY[0x277CE6990] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6990] ignoreLogging];
 
-  if ((v9 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v10 = [MEMORY[0x277CE6990] identifier];
+    identifier = [MEMORY[0x277CE6990] identifier];
     v11 = AXLoggerForFacility();
 
     v12 = AXOSLogLevelFromAXLogLevel();
@@ -182,19 +182,19 @@ uint64_t __42__AXUIServiceManager_sharedServiceManager__block_invoke(uint64_t a1
     }
   }
 
-  [v6 UTF8String];
+  [identifierCopy UTF8String];
   v15 = os_transaction_create();
-  v16 = [(AXUIServiceManager *)self transactionsQueue];
+  transactionsQueue = [(AXUIServiceManager *)self transactionsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__AXUIServiceManager_beginTransactionWithIdentifier_forService___block_invoke;
   block[3] = &unk_278BF2EA8;
   block[4] = self;
-  v21 = v6;
+  v21 = identifierCopy;
   v22 = v15;
   v17 = v15;
-  v18 = v6;
-  dispatch_async(v16, block);
+  v18 = identifierCopy;
+  dispatch_async(transactionsQueue, block);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -206,25 +206,25 @@ void __64__AXUIServiceManager_beginTransactionWithIdentifier_forService___block_
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)endTransactionWithIdentifier:(id)a3 forService:(id)a4
+- (void)endTransactionWithIdentifier:(id)identifier forService:(id)service
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CE6990] sharedInstance];
-  v9 = [v8 ignoreLogging];
+  identifierCopy = identifier;
+  serviceCopy = service;
+  mEMORY[0x277CE6990] = [MEMORY[0x277CE6990] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6990] ignoreLogging];
 
-  if ((v9 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v10 = [MEMORY[0x277CE6990] identifier];
+    identifier = [MEMORY[0x277CE6990] identifier];
     v11 = AXLoggerForFacility();
 
     v12 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v11, v12))
     {
       v13 = AXColorizeFormatLog();
-      v18 = v6;
-      v19 = v7;
+      v18 = identifierCopy;
+      v19 = serviceCopy;
       v14 = _AXStringForArgs();
       if (os_log_type_enabled(v11, v12))
       {
@@ -241,8 +241,8 @@ void __64__AXUIServiceManager_beginTransactionWithIdentifier_forService___block_
   block[2] = __62__AXUIServiceManager_endTransactionWithIdentifier_forService___block_invoke;
   block[3] = &unk_278BF2ED0;
   block[4] = self;
-  v21 = v6;
-  v16 = v6;
+  v21 = identifierCopy;
+  v16 = identifierCopy;
   dispatch_async(v15, block);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -254,21 +254,21 @@ void __62__AXUIServiceManager_endTransactionWithIdentifier_forService___block_in
   [v2 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (id)clientsForService:(id)a3
+- (id)clientsForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = objc_opt_new();
-  v6 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __40__AXUIServiceManager_clientsForService___block_invoke;
   v12[3] = &unk_278BF2EA8;
   v12[4] = self;
-  v13 = v4;
+  v13 = serviceCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  [v6 performSynchronousReadingBlock:v12];
+  v8 = serviceCopy;
+  [servicesAccessQueue performSynchronousReadingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -327,25 +327,25 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_clientMessengerWithIdentifier:(id)a3
+- (id)_clientMessengerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__AXUIServiceManager__clientMessengerWithIdentifier___block_invoke;
   v9[3] = &unk_278BF2EF8;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
-  [v5 performSynchronousReadingBlock:v9];
+  [servicesAccessQueue performSynchronousReadingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -414,33 +414,33 @@ void __144__AXUIServiceManager__sendAsynchronousMessage_withIdentifier_toClientW
   *(v3 + 40) = 0;
 }
 
-- (id)_sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 toClientWithMessenger:(id)a5 error:(id *)a6
+- (id)_sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier toClientWithMessenger:(id)messenger error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(AXUIServiceManager *)self messageSender];
-  v13 = [v12 sendSynchronousMessage:v11 withIdentifier:a4 context:v10 error:a6];
+  messengerCopy = messenger;
+  messageCopy = message;
+  messageSender = [(AXUIServiceManager *)self messageSender];
+  v13 = [messageSender sendSynchronousMessage:messageCopy withIdentifier:identifier context:messengerCopy error:error];
 
   return v13;
 }
 
-- (void)messageSender:(id)a3 accessLaunchAngelConnectionForMessageWithContext:(void *)a4 usingBlock:(id)a5
+- (void)messageSender:(id)sender accessLaunchAngelConnectionForMessageWithContext:(void *)context usingBlock:(id)block
 {
-  v6 = a5;
-  v7 = [a4 connection];
-  v8 = [v7 serviceConnection];
-  v9 = [v8 remoteTarget];
+  blockCopy = block;
+  connection = [context connection];
+  serviceConnection = [connection serviceConnection];
+  remoteTarget = [serviceConnection remoteTarget];
 
-  v6[2](v6, v9);
+  blockCopy[2](blockCopy, remoteTarget);
 }
 
-- (void)messageSender:(id)a3 willSendXPCMessage:(id)a4 context:(void *)a5
+- (void)messageSender:(id)sender willSendXPCMessage:(id)message context:(void *)context
 {
   v6 = *MEMORY[0x277CE77B8];
-  v7 = a4;
-  v9 = [a5 clientIdentifier];
-  v8 = v9;
-  xpc_dictionary_set_string(v7, v6, [v9 UTF8String]);
+  messageCopy = message;
+  clientIdentifier = [context clientIdentifier];
+  v8 = clientIdentifier;
+  xpc_dictionary_set_string(messageCopy, v6, [clientIdentifier UTF8String]);
 }
 
 - (BOOL)_start
@@ -449,19 +449,19 @@ void __144__AXUIServiceManager__sendAsynchronousMessage_withIdentifier_toClientW
   UIAccessibilityInstallSafeCategory();
   AXUISetMainBundleFakesSystemExtension(1);
   dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global);
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v7 = *MEMORY[0x277CBE620];
-  v8 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __28__AXUIServiceManager__start__block_invoke_2;
   v14[3] = &unk_278BF2F68;
-  v9 = v5;
+  v9 = localeIdentifier;
   v15 = v9;
-  v10 = [v6 addObserverForName:v7 object:0 queue:v8 usingBlock:v14];
+  v10 = [defaultCenter addObserverForName:v7 object:0 queue:mainQueue usingBlock:v14];
 
   if (AXInPreboardScenario())
   {
@@ -532,19 +532,19 @@ void __38__AXUIServiceManager_startLaunchAngel__block_invoke(uint64_t a1, void *
   [v3 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v7 = AXUIServiceManagerLaunchAngelInterface();
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __64__AXUIServiceManager_listener_didReceiveConnection_withContext___block_invoke;
   v12 = &unk_278BF2FE0;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v8 = v7;
-  [v6 configureConnection:&v9];
-  [v6 activate];
+  [connectionCopy configureConnection:&v9];
+  [connectionCopy activate];
 }
 
 void __64__AXUIServiceManager_listener_didReceiveConnection_withContext___block_invoke(uint64_t a1, void *a2)
@@ -585,37 +585,37 @@ void __64__AXUIServiceManager_listener_didReceiveConnection_withContext___block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendBoardServiceMessage:(id)a3 callback:(id)a4
+- (void)sendBoardServiceMessage:(id)message callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  messageCopy = message;
   v11 = objc_opt_new();
-  [v11 setXpc_handler:v6];
+  [v11 setXpc_handler:callbackCopy];
 
-  v8 = [MEMORY[0x277CF3280] currentContext];
-  v9 = [v8 remoteProcess];
-  [v11 setProcessHandle:v9];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  [v11 setProcessHandle:remoteProcess];
 
-  v10 = [MEMORY[0x277CF3280] currentContext];
-  [v11 setServiceConnection:v10];
+  currentContext2 = [MEMORY[0x277CF3280] currentContext];
+  [v11 setServiceConnection:currentContext2];
 
-  [(AXUIServiceManager *)self _processXPCObject:v7 context:v11];
+  [(AXUIServiceManager *)self _processXPCObject:messageCopy context:v11];
 }
 
-- (void)_handleConnection:(id)a3
+- (void)_handleConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v6 = *MEMORY[0x277CE77E0];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v5 initWithFormat:@"%@.%@.%@-%p", v6, v8, v10, v4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  connectionCopy = [v5 initWithFormat:@"%@.%@.%@-%p", v6, v8, uUIDString, connectionCopy];
 
-  v12 = dispatch_queue_create([v11 UTF8String], 0);
-  xpc_connection_set_target_queue(v4, v12);
-  objc_initWeak(&location, v4);
+  v12 = dispatch_queue_create([connectionCopy UTF8String], 0);
+  xpc_connection_set_target_queue(connectionCopy, v12);
+  objc_initWeak(&location, connectionCopy);
   objc_initWeak(&from, self);
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -623,16 +623,16 @@ void __64__AXUIServiceManager_listener_didReceiveConnection_withContext___block_
   handler[3] = &unk_278BF3008;
   objc_copyWeak(&v18, &location);
   objc_copyWeak(&v19, &from);
-  xpc_connection_set_event_handler(v4, handler);
-  v13 = [(AXUIServiceManager *)self resumingConnectionsQueue];
+  xpc_connection_set_event_handler(connectionCopy, handler);
+  resumingConnectionsQueue = [(AXUIServiceManager *)self resumingConnectionsQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __40__AXUIServiceManager__handleConnection___block_invoke_2;
   v15[3] = &unk_278BF2ED0;
   v15[4] = self;
-  v14 = v4;
+  v14 = connectionCopy;
   v16 = v14;
-  [v13 performAsynchronousWritingBlock:v15];
+  [resumingConnectionsQueue performAsynchronousWritingBlock:v15];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v18);
@@ -675,15 +675,15 @@ void __40__AXUIServiceManager__handleConnection___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_processXPCObject:(id)a3 context:(id)a4
+- (void)_processXPCObject:(id)object context:(id)context
 {
   v92 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = MEMORY[0x23EEF9360](v6);
+  objectCopy = object;
+  contextCopy = context;
+  v8 = MEMORY[0x23EEF9360](objectCopy);
   if (v8 == MEMORY[0x277D86468])
   {
-    v10 = v6;
+    v10 = objectCopy;
     uint64 = xpc_dictionary_get_uint64(v10, *MEMORY[0x277CE77C8]);
     if (!uint64)
     {
@@ -705,13 +705,13 @@ void __40__AXUIServiceManager__handleConnection___block_invoke_2(uint64_t a1)
     v85 = __Block_byref_object_dispose_;
     v86 = 0;
     v80 = 0;
-    v14 = [(AXUIServiceManager *)self _extractAndHandleRegistration:v10 clientIdentifier:v13 messageIdentifier:v12 context:v7 error:&v80];
+    v14 = [(AXUIServiceManager *)self _extractAndHandleRegistration:v10 clientIdentifier:v13 messageIdentifier:v12 context:contextCopy error:&v80];
     objc_storeStrong(&v86, v80);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __48__AXUIServiceManager__processXPCObject_context___block_invoke;
     aBlock[3] = &unk_278BF3078;
-    v15 = v7;
+    v15 = contextCopy;
     v77 = v15;
     v16 = v10;
     v78 = v16;
@@ -766,8 +766,8 @@ LABEL_77:
     }
 
     buf[0] = 0;
-    v53 = [v18 service];
-    if (v53)
+    service = [v18 service];
+    if (service)
     {
       v29 = objc_opt_class();
       v75 = 0;
@@ -784,7 +784,7 @@ LABEL_77:
           objc_storeStrong(v31 + 5, obj);
           if ([v32 count])
           {
-            [v53 processInitializationMessage:v32];
+            [service processInitializationMessage:v32];
           }
         }
 
@@ -808,10 +808,10 @@ LABEL_77:
         }
 
         v50 = v35;
-        v36 = v53;
+        v36 = service;
         if (objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector()))
         {
-          if ([v53 messageWithIdentifierShouldBeProcessedAsynchronously:v12])
+          if ([service messageWithIdentifierShouldBeProcessedAsynchronously:v12])
           {
             if (objc_opt_respondsToSelector())
             {
@@ -819,7 +819,7 @@ LABEL_77:
               v70[1] = 3221225472;
               v70[2] = __48__AXUIServiceManager__processXPCObject_context___block_invoke_378;
               v70[3] = &unk_278BF30C8;
-              v70[4] = v53;
+              v70[4] = service;
               v70[5] = v50;
               v72 = v12;
               v70[6] = v13;
@@ -836,7 +836,7 @@ LABEL_77:
               v69[1] = 3221225472;
               v69[2] = __48__AXUIServiceManager__processXPCObject_context___block_invoke_3_380;
               v69[3] = &unk_278BF30F0;
-              v69[4] = v53;
+              v69[4] = service;
               v69[5] = v50;
               v69[8] = v12;
               v69[6] = v13;
@@ -849,23 +849,23 @@ LABEL_77:
             v41 = v37 + 5;
             v42 = v37 + 6;
 
-            v36 = v53;
+            v36 = service;
             if (v51)
             {
 LABEL_67:
-              if ((objc_opt_respondsToSelector() & 1) == 0 || ([v36 accessQueueForProcessingMessageWithIdentifier:v12], (v47 = objc_claimAutoreleasedReturnValue()) == 0))
+              if ((objc_opt_respondsToSelector() & 1) == 0 || ([v36 accessQueueForProcessingMessageWithIdentifier:v12], (mainAccessQueue = objc_claimAutoreleasedReturnValue()) == 0))
               {
-                v47 = [MEMORY[0x277CE6948] mainAccessQueue];
+                mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
               }
 
               if ((objc_opt_respondsToSelector() & 1) != 0 && ![v36 messageWithIdentifierRequiresWritingBlock:v12])
               {
-                [v47 performAsynchronousReadingBlock:v51];
+                [mainAccessQueue performAsynchronousReadingBlock:v51];
               }
 
               else
               {
-                [v47 performAsynchronousWritingBlock:v51];
+                [mainAccessQueue performAsynchronousWritingBlock:v51];
               }
 
               v35 = v50;
@@ -927,7 +927,7 @@ LABEL_75:
         v46 = v44[4];
 LABEL_66:
 
-        v36 = v53;
+        v36 = service;
         goto LABEL_67;
       }
 
@@ -958,7 +958,7 @@ LABEL_76:
 
   if (v8 == MEMORY[0x277D86480])
   {
-    if (v6 == MEMORY[0x277D863F8])
+    if (objectCopy == MEMORY[0x277D863F8])
     {
       v27 = AXLogUI();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -966,12 +966,12 @@ LABEL_76:
         [AXUIServiceManager _processXPCObject:v27 context:?];
       }
 
-      [(AXUIServiceManager *)self _unregisterAllClientsWithConnection:v7];
+      [(AXUIServiceManager *)self _unregisterAllClientsWithConnection:contextCopy];
     }
 
     else
     {
-      v23 = v6 == MEMORY[0x277D86420];
+      v23 = objectCopy == MEMORY[0x277D86420];
       v24 = AXLogUI();
       v25 = v24;
       if (v23)
@@ -987,7 +987,7 @@ LABEL_76:
       {
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          [AXUIServiceManager _processXPCObject:v6 context:v25];
+          [AXUIServiceManager _processXPCObject:objectCopy context:v25];
         }
       }
     }
@@ -995,9 +995,9 @@ LABEL_76:
 
   else
   {
-    if (v6)
+    if (objectCopy)
     {
-      v9 = MEMORY[0x23EEF92E0](v6);
+      v9 = MEMORY[0x23EEF92E0](objectCopy);
     }
 
     else
@@ -1156,9 +1156,9 @@ void __48__AXUIServiceManager__processXPCObject_context___block_invoke_6(void *a
   *(v10 + 40) = 0;
 }
 
-- (id)_extractClientIdentifier:(id)a3
+- (id)_extractClientIdentifier:(id)identifier
 {
-  string = xpc_dictionary_get_string(a3, *MEMORY[0x277CE77B8]);
+  string = xpc_dictionary_get_string(identifier, *MEMORY[0x277CE77B8]);
   if (string)
   {
     string = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:string];
@@ -1167,18 +1167,18 @@ void __48__AXUIServiceManager__processXPCObject_context___block_invoke_6(void *a
   return string;
 }
 
-- (BOOL)_extractAndHandleRegistration:(id)a3 clientIdentifier:(id)a4 messageIdentifier:(unint64_t)a5 context:(id)a6 error:(id *)a7
+- (BOOL)_extractAndHandleRegistration:(id)registration clientIdentifier:(id)identifier messageIdentifier:(unint64_t)messageIdentifier context:(id)context error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a6;
-  string = xpc_dictionary_get_string(a3, *MEMORY[0x277CE77D8]);
+  identifierCopy = identifier;
+  contextCopy = context;
+  string = xpc_dictionary_get_string(registration, *MEMORY[0x277CE77D8]);
   v15 = 0;
-  if (v12 && string)
+  if (identifierCopy && string)
   {
     v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:string];
-    v17 = [(AXUIServiceManager *)self _serviceContextForClientWithIdentifier:v12];
-    if (v17 || [(AXUIServiceManager *)self _registerClientWithIdentifier:v12 connection:v13 serviceBundleName:v16 initiatingMessageIdentifier:a5 error:a7])
+    v17 = [(AXUIServiceManager *)self _serviceContextForClientWithIdentifier:identifierCopy];
+    if (v17 || [(AXUIServiceManager *)self _registerClientWithIdentifier:identifierCopy connection:contextCopy serviceBundleName:v16 initiatingMessageIdentifier:messageIdentifier error:error])
     {
       v15 = 1;
     }
@@ -1188,9 +1188,9 @@ void __48__AXUIServiceManager__processXPCObject_context___block_invoke_6(void *a
       v20 = AXLogUI();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = *a7;
+        v21 = *error;
         v22 = 138412802;
-        v23 = v12;
+        v23 = identifierCopy;
         v24 = 2112;
         v25 = v16;
         v26 = 2112;
@@ -1206,15 +1206,15 @@ void __48__AXUIServiceManager__processXPCObject_context___block_invoke_6(void *a
   return v15;
 }
 
-- (BOOL)_serviceWithClass:(Class)a3 canProcessMessageWithIdentifier:(unint64_t)a4 fromClientWithConnection:(id)a5 possibleRequiredEntitlements:(id *)a6 needsToRequireEntitlements:(BOOL *)a7
+- (BOOL)_serviceWithClass:(Class)class canProcessMessageWithIdentifier:(unint64_t)identifier fromClientWithConnection:(id)connection possibleRequiredEntitlements:(id *)entitlements needsToRequireEntitlements:(BOOL *)requireEntitlements
 {
-  v12 = a5;
+  connectionCopy = connection;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v13 = NSStringFromClass(a3);
-  v14 = [(AXUIServiceManager *)self entitlementsCheckersAccessQueue];
+  v13 = NSStringFromClass(class);
+  entitlementsCheckersAccessQueue = [(AXUIServiceManager *)self entitlementsCheckersAccessQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __153__AXUIServiceManager__serviceWithClass_canProcessMessageWithIdentifier_fromClientWithConnection_possibleRequiredEntitlements_needsToRequireEntitlements___block_invoke;
@@ -1223,18 +1223,18 @@ void __48__AXUIServiceManager__processXPCObject_context___block_invoke_6(void *a
   v15 = v13;
   v19 = v15;
   v21 = &v26;
-  v22 = a3;
-  v23 = a4;
-  v16 = v12;
+  classCopy = class;
+  identifierCopy = identifier;
+  v16 = connectionCopy;
   v20 = v16;
-  v24 = a6;
-  v25 = a7;
-  [v14 performSynchronousWritingBlock:v18];
+  entitlementsCopy = entitlements;
+  requireEntitlementsCopy = requireEntitlements;
+  [entitlementsCheckersAccessQueue performSynchronousWritingBlock:v18];
 
-  LOBYTE(a7) = *(v27 + 24);
+  LOBYTE(requireEntitlements) = *(v27 + 24);
   _Block_object_dispose(&v26, 8);
 
-  return a7;
+  return requireEntitlements;
 }
 
 void __153__AXUIServiceManager__serviceWithClass_canProcessMessageWithIdentifier_fromClientWithConnection_possibleRequiredEntitlements_needsToRequireEntitlements___block_invoke(uint64_t a1)
@@ -1260,13 +1260,13 @@ void __153__AXUIServiceManager__serviceWithClass_canProcessMessageWithIdentifier
 
 - (void)_registerForSystemAppDeath
 {
-  v3 = [MEMORY[0x277CE7E58] server];
+  server = [MEMORY[0x277CE7E58] server];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__AXUIServiceManager__registerForSystemAppDeath__block_invoke;
   v4[3] = &unk_278BF3190;
   v4[4] = self;
-  [v3 pid:v4];
+  [server pid:v4];
 }
 
 void __48__AXUIServiceManager__registerForSystemAppDeath__block_invoke(uint64_t a1, uint64_t a2)
@@ -1302,16 +1302,16 @@ void __48__AXUIServiceManager__registerForSystemAppDeath__block_invoke_3()
 
 - (void)_applicationDidFinishLaunching
 {
-  v3 = [(AXUIServiceManager *)self resumingConnectionsQueue];
+  resumingConnectionsQueue = [(AXUIServiceManager *)self resumingConnectionsQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__AXUIServiceManager__applicationDidFinishLaunching__block_invoke;
   v5[3] = &unk_278BF3050;
   v5[4] = self;
-  [v3 performAsynchronousWritingBlock:v5];
+  [resumingConnectionsQueue performAsynchronousWritingBlock:v5];
 
-  v4 = [MEMORY[0x277CE7D28] server];
-  [v4 registerAccessibilityUIServicePID:getpid()];
+  server = [MEMORY[0x277CE7D28] server];
+  [server registerAccessibilityUIServicePID:getpid()];
 
   [(AXUIServiceManager *)self _registerForSystemAppDeath];
 }
@@ -1355,39 +1355,39 @@ void __52__AXUIServiceManager__applicationDidFinishLaunching__block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applicationDidReceiveMemoryWarning:(id)a3
+- (void)_applicationDidReceiveMemoryWarning:(id)warning
 {
-  v4 = [(AXUIServiceManager *)self entitlementsCheckersAccessQueue];
+  entitlementsCheckersAccessQueue = [(AXUIServiceManager *)self entitlementsCheckersAccessQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__AXUIServiceManager__applicationDidReceiveMemoryWarning___block_invoke;
   v5[3] = &unk_278BF3050;
   v5[4] = self;
-  [v4 performAsynchronousWritingBlock:v5];
+  [entitlementsCheckersAccessQueue performAsynchronousWritingBlock:v5];
 }
 
-- (BOOL)_registerClientWithIdentifier:(id)a3 connection:(id)a4 serviceBundleName:(id)a5 initiatingMessageIdentifier:(unint64_t)a6 error:(id *)a7
+- (BOOL)_registerClientWithIdentifier:(id)identifier connection:(id)connection serviceBundleName:(id)name initiatingMessageIdentifier:(unint64_t)messageIdentifier error:(id *)error
 {
   v68[3] = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v51 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  nameCopy = name;
   v11 = AXSystemRootDirectory();
   v12 = [v11 stringByAppendingPathComponent:@"System/Library/AccessibilityBundles"];
-  v13 = [v12 stringByStandardizingPath];
+  stringByStandardizingPath = [v12 stringByStandardizingPath];
 
   v14 = AXSystemRootDirectory();
   v15 = [v14 stringByAppendingPathComponent:@"Developer/Library/PrivateFrameworks/AccessibilityAudit.framework"];
-  v16 = [v15 stringByStandardizingPath];
+  stringByStandardizingPath2 = [v15 stringByStandardizingPath];
 
   v17 = AXSystemRootDirectory();
   v18 = [v17 stringByAppendingPathComponent:@"AppleInternal/Library/AccessibilityUIServices"];
-  v19 = [v18 stringByStandardizingPath];
+  stringByStandardizingPath3 = [v18 stringByStandardizingPath];
 
-  v68[0] = v13;
-  v68[1] = v16;
-  v46 = v19;
-  v68[2] = v19;
+  v68[0] = stringByStandardizingPath;
+  v68[1] = stringByStandardizingPath2;
+  v46 = stringByStandardizingPath3;
+  v68[2] = stringByStandardizingPath3;
   [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:3];
   v59 = 0u;
   v60 = 0u;
@@ -1403,7 +1403,7 @@ void __52__AXUIServiceManager__applicationDidFinishLaunching__block_invoke(uint6
     v33 = 0;
 LABEL_19:
     v34 = v46;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -1412,9 +1412,9 @@ LABEL_19:
   }
 
   v22 = v21;
-  v44 = v16;
-  v45 = v13;
-  v49 = a7;
+  v44 = stringByStandardizingPath2;
+  v45 = stringByStandardizingPath;
+  errorCopy = error;
   v23 = 0;
   v24 = *v60;
   v47 = *MEMORY[0x277CE7770];
@@ -1428,15 +1428,15 @@ LABEL_3:
     }
 
     v26 = *(*(&v59 + 1) + 8 * v25);
-    v27 = [v10 stringByAppendingPathExtension:@"axuiservice"];
+    v27 = [nameCopy stringByAppendingPathExtension:@"axuiservice"];
     v28 = [v26 stringByAppendingPathComponent:v27];
-    v29 = [v28 stringByStandardizingPath];
+    stringByStandardizingPath4 = [v28 stringByStandardizingPath];
 
-    if (([v29 hasPrefix:v26] & 1) == 0)
+    if (([stringByStandardizingPath4 hasPrefix:v26] & 1) == 0)
     {
-      if (v49)
+      if (errorCopy)
       {
-        v31 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:v47 description:{@"Invalid service bundle path: %@", v29}];
+        v31 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:v47 description:{@"Invalid service bundle path: %@", stringByStandardizingPath4}];
 
         v23 = v31;
       }
@@ -1446,7 +1446,7 @@ LABEL_3:
 
     buf[0] = 0;
     v58 = 0;
-    v30 = [(AXUIServiceManager *)self _serviceFromBundlePath:v29 clientIdentifier:v52 connection:v51 initiatingMessageIdentifier:a6 stopSearching:buf error:&v58];
+    v30 = [(AXUIServiceManager *)self _serviceFromBundlePath:stringByStandardizingPath4 clientIdentifier:identifierCopy connection:connectionCopy initiatingMessageIdentifier:messageIdentifier stopSearching:buf error:&v58];
     v23 = v58;
     if (buf[0])
     {
@@ -1477,14 +1477,14 @@ LABEL_13:
 LABEL_18:
     v32 = 0;
     v33 = 0;
-    a7 = v49;
-    v16 = v44;
-    v13 = v45;
+    error = errorCopy;
+    stringByStandardizingPath2 = v44;
+    stringByStandardizingPath = v45;
     goto LABEL_19;
   }
 
 LABEL_22:
-  v38 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __115__AXUIServiceManager__registerClientWithIdentifier_connection_serviceBundleName_initiatingMessageIdentifier_error___block_invoke;
@@ -1492,15 +1492,15 @@ LABEL_22:
   v54[4] = self;
   v33 = v30;
   v55 = v33;
-  v39 = v52;
+  v39 = identifierCopy;
   v56 = v39;
-  v57 = v51;
-  [v38 performSynchronousWritingBlock:v54];
+  v57 = connectionCopy;
+  [servicesAccessQueue performSynchronousWritingBlock:v54];
 
   v40 = AXLogAssertions();
-  a7 = v49;
-  v16 = v44;
-  v13 = v45;
+  error = errorCopy;
+  stringByStandardizingPath2 = v44;
+  stringByStandardizingPath = v45;
   v34 = v46;
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
@@ -1511,8 +1511,8 @@ LABEL_22:
     _os_log_impl(&dword_23DBD1000, v40, OS_LOG_TYPE_DEFAULT, "Registered service/client: %@ %@", buf, 0x16u);
   }
 
-  v41 = [(AXUIServiceManager *)self displayManager];
-  [v41 serviceDidConnect:v33 clientWithIdentifier:v39];
+  displayManager = [(AXUIServiceManager *)self displayManager];
+  [displayManager serviceDidConnect:v33 clientWithIdentifier:v39];
 
   v42 = +[AXUIAssertionManager sharedInstance];
   [v42 acquireAssertionIfNeeded];
@@ -1521,11 +1521,11 @@ LABEL_22:
   [v43 acquireAssertionUIIfNeededForService:v33 clientIdentifier:v39];
 
   v32 = 1;
-  if (v49)
+  if (errorCopy)
   {
 LABEL_20:
     v35 = v23;
-    *a7 = v23;
+    *error = v23;
   }
 
 LABEL_21:
@@ -1558,46 +1558,46 @@ void __115__AXUIServiceManager__registerClientWithIdentifier_connection_serviceB
   [(AXUIServiceContext *)v6 addClientWithIdentifier:*(a1 + 48) connection:*(a1 + 56)];
 }
 
-- (id)_serviceFromBundlePath:(id)a3 clientIdentifier:(id)a4 connection:(id)a5 initiatingMessageIdentifier:(unint64_t)a6 stopSearching:(BOOL *)a7 error:(id *)a8
+- (id)_serviceFromBundlePath:(id)path clientIdentifier:(id)identifier connection:(id)connection initiatingMessageIdentifier:(unint64_t)messageIdentifier stopSearching:(BOOL *)searching error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = [MEMORY[0x277CCA8D8] bundleWithPath:v14];
+  pathCopy = path;
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  v17 = [MEMORY[0x277CCA8D8] bundleWithPath:pathCopy];
   v18 = v17;
   if (!v17)
   {
-    [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Failed to create service bundle at path: %@", v14}];
-    *a8 = v28 = 0;
+    [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Failed to create service bundle at path: %@", pathCopy}];
+    *error = infoDictionary = 0;
     goto LABEL_37;
   }
 
-  if (([v17 isLoaded] & 1) == 0 && (objc_msgSend(v18, "loadAndReturnError:", a8) & 1) == 0 && !*a8)
+  if (([v17 isLoaded] & 1) == 0 && (objc_msgSend(v18, "loadAndReturnError:", error) & 1) == 0 && !*error)
   {
-    *a8 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Failed to load service bundle at path: %@", v14}];
+    *error = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Failed to load service bundle at path: %@", pathCopy}];
   }
 
   if ([v18 isLoaded])
   {
-    v47 = a7;
-    v19 = [v18 principalClass];
+    searchingCopy = searching;
+    principalClass = [v18 principalClass];
     v20 = AXLogUI();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v18 bundlePath];
+      bundlePath = [v18 bundlePath];
       *buf = 138412546;
-      v51 = v21;
+      v51 = bundlePath;
       v52 = 2112;
-      v53 = v19;
+      v53 = principalClass;
       _os_log_impl(&dword_23DBD1000, v20, OS_LOG_TYPE_DEFAULT, "AXUIServer will attempt to load principal class from bundle: %@: '%@'", buf, 0x16u);
     }
 
     v49 = 0;
-    if (v19)
+    if (principalClass)
     {
       v48 = 0;
-      v22 = [(AXUIServiceManager *)self _serviceWithClass:v19 canProcessMessageWithIdentifier:a6 fromClientWithConnection:v16 possibleRequiredEntitlements:&v48 needsToRequireEntitlements:&v49];
+      v22 = [(AXUIServiceManager *)self _serviceWithClass:principalClass canProcessMessageWithIdentifier:messageIdentifier fromClientWithConnection:connectionCopy possibleRequiredEntitlements:&v48 needsToRequireEntitlements:&v49];
       v23 = v48;
       if (v22)
       {
@@ -1609,11 +1609,11 @@ void __115__AXUIServiceManager__registerClientWithIdentifier_connection_serviceB
           if (v26)
           {
             *buf = 138412290;
-            v51 = v19;
+            v51 = principalClass;
             _os_log_impl(&dword_23DBD1000, v25, OS_LOG_TYPE_DEFAULT, "Principal class does respond to sharedInstance. Calling sharedInstance on '%@'", buf, 0xCu);
           }
 
-          v27 = [v19 sharedInstance];
+          sharedInstance = [principalClass sharedInstance];
         }
 
         else
@@ -1621,29 +1621,29 @@ void __115__AXUIServiceManager__registerClientWithIdentifier_connection_serviceB
           if (v26)
           {
             *buf = 138412290;
-            v51 = v19;
+            v51 = principalClass;
             _os_log_impl(&dword_23DBD1000, v25, OS_LOG_TYPE_DEFAULT, "Principal class does not respond to sharedInstance. Calling new on '%@'", buf, 0xCu);
           }
 
-          v27 = objc_opt_new();
+          sharedInstance = objc_opt_new();
         }
 
-        v28 = v27;
-        if (v27)
+        infoDictionary = sharedInstance;
+        if (sharedInstance)
         {
-          a7 = v47;
-          if ([v27 conformsToProtocol:&unk_2850140C0])
+          searching = searchingCopy;
+          if ([sharedInstance conformsToProtocol:&unk_2850140C0])
           {
             goto LABEL_35;
           }
 
-          *a8 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Service instance does not conform to service protocol: %@.", v28}];
+          *error = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Service instance does not conform to service protocol: %@.", infoDictionary}];
 LABEL_34:
 
-          v28 = 0;
+          infoDictionary = 0;
 LABEL_35:
 
-          if (!*a8)
+          if (!*error)
           {
             goto LABEL_37;
           }
@@ -1653,8 +1653,8 @@ LABEL_35:
 
         v38 = MEMORY[0x277CCA9B8];
         v39 = *MEMORY[0x277CE7770];
-        v28 = NSStringFromClass(v19);
-        v42 = v28;
+        infoDictionary = NSStringFromClass(principalClass);
+        v42 = infoDictionary;
         v35 = @"Failed to instantiate service of class %@";
         v36 = v38;
         v37 = v39;
@@ -1666,21 +1666,21 @@ LABEL_35:
         if (v49 == 1)
         {
           v34 = *MEMORY[0x277CE7780];
-          v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-          v42 = v19;
-          v43 = v28;
+          infoDictionary = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:messageIdentifier];
+          v42 = principalClass;
+          v43 = infoDictionary;
           v35 = @"Service: '%@' unable to process message:'%@'. The service needs to require entitlements.";
         }
 
         else
         {
           v34 = *MEMORY[0x277CE7768];
-          v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-          v45 = v15;
-          v46 = [v16 pid];
-          v43 = v28;
+          infoDictionary = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:messageIdentifier];
+          v45 = identifierCopy;
+          v46 = [connectionCopy pid];
+          v43 = infoDictionary;
           v44 = v23;
-          v42 = v19;
+          v42 = principalClass;
           v35 = @"Service: '%@' unable to process message:'%@'. Entitlements may be missing. See guidance in rdar://126183364. required: %@ [client identifier: %@:%d]";
         }
 
@@ -1688,35 +1688,35 @@ LABEL_35:
         v37 = v34;
       }
 
-      *a8 = [v36 ax_errorWithDomain:v37 description:{v35, v42, v43, v44, v45, v46}];
+      *error = [v36 ax_errorWithDomain:v37 description:{v35, v42, v43, v44, v45, v46}];
     }
 
     else
     {
       v29 = MEMORY[0x277CCA9B8];
       v30 = *MEMORY[0x277CE7770];
-      v28 = [v18 infoDictionary];
-      v31 = [v28 objectForKeyedSubscript:@"NSPrincipalClass"];
-      *a8 = [v29 ax_errorWithDomain:v30 description:{@"Couldn't find principal class for service bundle at path: %@ %@", v14, v31}];
+      infoDictionary = [v18 infoDictionary];
+      v31 = [infoDictionary objectForKeyedSubscript:@"NSPrincipalClass"];
+      *error = [v29 ax_errorWithDomain:v30 description:{@"Couldn't find principal class for service bundle at path: %@ %@", pathCopy, v31}];
 
       v23 = 0;
     }
 
-    a7 = v47;
+    searching = searchingCopy;
     goto LABEL_34;
   }
 
-  if (*a8)
+  if (*error)
   {
-    v28 = 0;
+    infoDictionary = 0;
 LABEL_36:
-    *a7 = 1;
+    *searching = 1;
     goto LABEL_37;
   }
 
-  v32 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Service bundle still not loaded, weird... Service bundle path: %@", v14}];
-  v28 = 0;
-  *a8 = v32;
+  v32 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7770] description:{@"Service bundle still not loaded, weird... Service bundle path: %@", pathCopy}];
+  infoDictionary = 0;
+  *error = v32;
   if (v32)
   {
     goto LABEL_36;
@@ -1726,12 +1726,12 @@ LABEL_37:
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return infoDictionary;
 }
 
-- (void)_unregisterAllClientsWithConnection:(id)a3
+- (void)_unregisterAllClientsWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1744,19 +1744,19 @@ LABEL_37:
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v5 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke;
   v11[3] = &unk_278BF3208;
   v11[4] = self;
-  v6 = v4;
+  v6 = connectionCopy;
   v12 = v6;
   v13 = &v21;
   v14 = &v15;
-  [v5 performSynchronousReadingBlock:v11];
+  [servicesAccessQueue performSynchronousReadingBlock:v11];
   [(AXUIServiceManager *)self _unregisterClientsIdentifiersLists:v16[5] serviceContexts:v22[5]];
-  v7 = [(AXUIServiceManager *)self entitlementsCheckersAccessQueue];
+  entitlementsCheckersAccessQueue = [(AXUIServiceManager *)self entitlementsCheckersAccessQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke_3;
@@ -1764,7 +1764,7 @@ LABEL_37:
   v9[4] = self;
   v8 = v6;
   v10 = v8;
-  [v7 performSynchronousWritingBlock:v9];
+  [entitlementsCheckersAccessQueue performSynchronousWritingBlock:v9];
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
@@ -1881,23 +1881,23 @@ void __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke
   [v2 enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (void)_unregisterClientsIdentifiersLists:(id)a3 serviceContexts:(id)a4
+- (void)_unregisterClientsIdentifiersLists:(id)lists serviceContexts:(id)contexts
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  listsCopy = lists;
+  contextsCopy = contexts;
   v7 = AXLogAssertions();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v58 = v5;
+    v58 = listsCopy;
     v59 = 2112;
-    v60 = v6;
+    v60 = contextsCopy;
     _os_log_impl(&dword_23DBD1000, v7, OS_LOG_TYPE_DEFAULT, "Unregister: %@ %@", buf, 0x16u);
   }
 
-  v8 = [v6 count];
-  if (v8 != [v5 count])
+  v8 = [contextsCopy count];
+  if (v8 != [listsCopy count])
   {
     _AXAssert();
   }
@@ -1905,18 +1905,18 @@ void __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke
   if (v8)
   {
     v9 = 0;
-    v37 = v6;
-    v38 = v5;
+    v37 = contextsCopy;
+    v38 = listsCopy;
     v36 = v8;
     do
     {
-      v10 = [v6 objectAtIndex:v9];
-      v11 = [v10 service];
+      v10 = [contextsCopy objectAtIndex:v9];
+      service = [v10 service];
       if (objc_opt_respondsToSelector())
       {
         v39 = v10;
         v40 = v9;
-        v12 = [v5 objectAtIndex:v9];
+        v12 = [listsCopy objectAtIndex:v9];
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
@@ -1936,12 +1936,12 @@ void __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke
               }
 
               v17 = *(*(&v51 + 1) + 8 * i);
-              [v11 connectionWillBeInterruptedForClientWithIdentifier:v17];
+              [service connectionWillBeInterruptedForClientWithIdentifier:v17];
               v18 = AXLogAssertions();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v58 = v11;
+                v58 = service;
                 v59 = 2112;
                 v60 = v17;
                 _os_log_impl(&dword_23DBD1000, v18, OS_LOG_TYPE_DEFAULT, "Service disconnected client: %@ %@", buf, 0x16u);
@@ -1954,8 +1954,8 @@ void __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke
           while (v14);
         }
 
-        v6 = v37;
-        v5 = v38;
+        contextsCopy = v37;
+        listsCopy = v38;
         v8 = v36;
         v10 = v39;
         v9 = v40;
@@ -1968,21 +1968,21 @@ void __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke
   }
 
   v19 = objc_opt_new();
-  v20 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __73__AXUIServiceManager__unregisterClientsIdentifiersLists_serviceContexts___block_invoke;
   v46[3] = &unk_278BF3258;
   v46[4] = self;
   v50 = v8;
-  v21 = v6;
+  v21 = contextsCopy;
   v47 = v21;
-  v22 = v5;
+  v22 = listsCopy;
   v48 = v22;
   v23 = v19;
   v49 = v23;
-  v41 = v20;
-  [v20 performSynchronousWritingBlock:v46];
+  v41 = servicesAccessQueue;
+  [servicesAccessQueue performSynchronousWritingBlock:v46];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -2004,9 +2004,9 @@ void __58__AXUIServiceManager__unregisterAllClientsWithConnection___block_invoke
 
         v29 = *(*(&v42 + 1) + 8 * j);
         v30 = +[AXUIAssertionManager sharedInstance];
-        v31 = [v29 firstObject];
-        v32 = [v29 lastObject];
-        [v30 invalidateAssertionUIIfNeededForService:v31 clientIdentifier:v32];
+        firstObject = [v29 firstObject];
+        lastObject = [v29 lastObject];
+        [v30 invalidateAssertionUIIfNeededForService:firstObject clientIdentifier:lastObject];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v42 objects:v55 count:16];
@@ -2128,25 +2128,25 @@ void __73__AXUIServiceManager__unregisterClientsIdentifiersLists_serviceContexts
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_serviceContextForClientWithIdentifier:(id)a3
+- (id)_serviceContextForClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__AXUIServiceManager__serviceContextForClientWithIdentifier___block_invoke;
   v9[3] = &unk_278BF3280;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 performSynchronousReadingBlock:v9];
+  [servicesAccessQueue performSynchronousReadingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -2201,16 +2201,16 @@ LABEL_11:
 
 - (id)_services
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(AXUIServiceManager *)self servicesAccessQueue];
+  array = [MEMORY[0x277CBEB18] array];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __31__AXUIServiceManager__services__block_invoke;
   v9[3] = &unk_278BF2ED0;
   v9[4] = self;
-  v5 = v3;
+  v5 = array;
   v10 = v5;
-  [v4 performSynchronousReadingBlock:v9];
+  [servicesAccessQueue performSynchronousReadingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -2264,14 +2264,14 @@ void __31__AXUIServiceManager__services__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__AXUIServiceManager__servicesCount__block_invoke;
   v6[3] = &unk_278BF32A8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performSynchronousReadingBlock:v6];
+  [servicesAccessQueue performSynchronousReadingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -2284,25 +2284,25 @@ void __36__AXUIServiceManager__servicesCount__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (id)_serviceContextForService:(id)a3
+- (id)_serviceContextForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__AXUIServiceManager__serviceContextForService___block_invoke;
   v9[3] = &unk_278BF3280;
   v9[4] = self;
-  v6 = v4;
+  v6 = serviceCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 performSynchronousReadingBlock:v9];
+  [servicesAccessQueue performSynchronousReadingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -2358,25 +2358,25 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_servicesForUniqueIdentifiers:(id)a3
+- (id)_servicesForUniqueIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(AXUIServiceManager *)self servicesAccessQueue];
+  servicesAccessQueue = [(AXUIServiceManager *)self servicesAccessQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__AXUIServiceManager__servicesForUniqueIdentifiers___block_invoke;
   v9[3] = &unk_278BF3280;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifiersCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 performSynchronousWritingBlock:v9];
+  [servicesAccessQueue performSynchronousWritingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

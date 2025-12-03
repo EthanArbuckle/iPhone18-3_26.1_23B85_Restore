@@ -8,7 +8,7 @@
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v2 = [[_UICollectionLayoutContainer alloc] initWithContentSize:1000.0 contentInsets:0.0, 0.0, 0.0, 0.0];
-  v3 = [[_UICollectionLayoutItemSolver alloc] initWithItem:a1];
+  v3 = [[_UICollectionLayoutItemSolver alloc] initWithItem:self];
   v4 = v3;
   if (v3)
   {

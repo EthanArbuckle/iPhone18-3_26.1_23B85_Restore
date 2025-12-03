@@ -1,21 +1,21 @@
 @interface PBBProtoWarrantySentinel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAppleLanguages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSentinelExists:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppleLanguages:(id)languages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSentinelExists:(BOOL)exists;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoWarrantySentinel
 
-- (void)setHasSentinelExists:(BOOL)a3
+- (void)setHasSentinelExists:(BOOL)exists
 {
-  if (a3)
+  if (exists)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAppleLanguages:(id)a3
+- (void)addAppleLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   appleLanguages = self->_appleLanguages;
-  v8 = v4;
+  v8 = languagesCopy;
   if (!appleLanguages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_appleLanguages;
     self->_appleLanguages = v6;
 
-    v4 = v8;
+    languagesCopy = v8;
     appleLanguages = self->_appleLanguages;
   }
 
-  [(NSMutableArray *)appleLanguages addObject:v4];
+  [(NSMutableArray *)appleLanguages addObject:languagesCopy];
 }
 
 - (id)description
@@ -52,20 +52,20 @@
   v8.receiver = self;
   v8.super_class = PBBProtoWarrantySentinel;
   v4 = [(PBBProtoWarrantySentinel *)&v8 description];
-  v5 = [(PBBProtoWarrantySentinel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoWarrantySentinel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_sentinelExists];
-    [v3 setObject:v5 forKey:@"sentinelExists"];
+    [dictionary setObject:v5 forKey:@"sentinelExists"];
 
     has = self->_has;
   }
@@ -73,34 +73,34 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_removeSentinel];
-    [v3 setObject:v6 forKey:@"removeSentinel"];
+    [dictionary setObject:v6 forKey:@"removeSentinel"];
   }
 
   appleLanguages = self->_appleLanguages;
   if (appleLanguages)
   {
-    [v3 setObject:appleLanguages forKey:@"appleLanguages"];
+    [dictionary setObject:appleLanguages forKey:@"appleLanguages"];
   }
 
   appleLocale = self->_appleLocale;
   if (appleLocale)
   {
-    [v3 setObject:appleLocale forKey:@"appleLocale"];
+    [dictionary setObject:appleLocale forKey:@"appleLocale"];
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
-    [v3 setObject:deviceName forKey:@"deviceName"];
+    [dictionary setObject:deviceName forKey:@"deviceName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -157,31 +157,31 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[33] = self->_sentinelExists;
-    v4[36] |= 2u;
+    toCopy[33] = self->_sentinelExists;
+    toCopy[36] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[32] = self->_removeSentinel;
-    v4[36] |= 1u;
+    toCopy[32] = self->_removeSentinel;
+    toCopy[36] |= 1u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if ([(PBBProtoWarrantySentinel *)self appleLanguagesCount])
   {
     [v11 clearAppleLanguages];
-    v6 = [(PBBProtoWarrantySentinel *)self appleLanguagesCount];
-    if (v6)
+    appleLanguagesCount = [(PBBProtoWarrantySentinel *)self appleLanguagesCount];
+    if (appleLanguagesCount)
     {
-      v7 = v6;
+      v7 = appleLanguagesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PBBProtoWarrantySentinel *)self appleLanguagesAtIndex:i];
@@ -203,10 +203,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -241,7 +241,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v13 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addAppleLanguages:v13];
       }
 
@@ -251,11 +251,11 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_appleLocale copyWithZone:a3];
+  v14 = [(NSString *)self->_appleLocale copyWithZone:zone];
   v15 = v6[2];
   v6[2] = v14;
 
-  v16 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v16 = [(NSString *)self->_deviceName copyWithZone:zone];
   v17 = v6[3];
   v6[3] = v16;
 
@@ -263,38 +263,38 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_21;
     }
 
-    v10 = *(v4 + 33);
+    v10 = *(equalCopy + 33);
     if (self->_sentinelExists)
     {
-      if ((*(v4 + 33) & 1) == 0)
+      if ((*(equalCopy + 33) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 33))
+    else if (*(equalCopy + 33))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_21;
   }
@@ -304,12 +304,12 @@
     goto LABEL_5;
   }
 
-  if ((*(v4 + 36) & 1) == 0)
+  if ((*(equalCopy + 36) & 1) == 0)
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (!self->_removeSentinel)
   {
 LABEL_5:
@@ -323,20 +323,20 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ((*(v4 + 32) & 1) == 0)
+  if ((*(equalCopy + 32) & 1) == 0)
   {
     goto LABEL_21;
   }
 
 LABEL_6:
   appleLanguages = self->_appleLanguages;
-  if (appleLanguages | *(v4 + 1) && ![(NSMutableArray *)appleLanguages isEqual:?])
+  if (appleLanguages | *(equalCopy + 1) && ![(NSMutableArray *)appleLanguages isEqual:?])
   {
     goto LABEL_21;
   }
 
   appleLocale = self->_appleLocale;
-  if (appleLocale | *(v4 + 2))
+  if (appleLocale | *(equalCopy + 2))
   {
     if (![(NSString *)appleLocale isEqual:?])
     {
@@ -345,7 +345,7 @@ LABEL_6:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 3))
+  if (deviceName | *(equalCopy + 3))
   {
     v9 = [(NSString *)deviceName isEqual:?];
   }
@@ -389,22 +389,22 @@ LABEL_6:
   return v5 ^ v6 ^ [(NSString *)self->_deviceName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if ((v6 & 2) != 0)
   {
-    self->_sentinelExists = *(v4 + 33);
+    self->_sentinelExists = *(fromCopy + 33);
     *&self->_has |= 2u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
   }
 
   if (v6)
   {
-    self->_removeSentinel = *(v4 + 32);
+    self->_removeSentinel = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 
@@ -412,7 +412,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

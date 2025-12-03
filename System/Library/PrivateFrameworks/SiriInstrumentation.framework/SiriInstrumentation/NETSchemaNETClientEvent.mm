@@ -1,8 +1,8 @@
 @interface NETSchemaNETClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETClientEvent)initWithDictionary:(id)a3;
-- (NETSchemaNETClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETClientEvent)initWithDictionary:(id)dictionary;
+- (NETSchemaNETClientEvent)initWithJSON:(id)n;
 - (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)debugNetworkConnectionStatePreparationSnapshotCaptured;
 - (NETSchemaNETDebugNetworkConnectionStateReadySnapshotCaptured)debugNetworkConnectionStateReadySnapshotCaptured;
 - (NETSchemaNETDebugSessionConnectionSnapshotCaptured)debugSessionConnectionSnapshotCaptured;
@@ -14,7 +14,7 @@
 - (NETSchemaNETSessionConnectionSnapshotCaptured)sessionConnectionSnapshotCaptured;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -30,31 +30,31 @@
 - (void)deleteSessionConnectionFailed;
 - (void)deleteSessionConnectionHttpHeaderCreated;
 - (void)deleteSessionConnectionSnapshotCaptured;
-- (void)setDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)a3;
-- (void)setDebugNetworkConnectionStateReadySnapshotCaptured:(id)a3;
-- (void)setDebugSessionConnectionSnapshotCaptured:(id)a3;
-- (void)setNetworkConnectionStatePreparationSnapshotCaptured:(id)a3;
-- (void)setNetworkConnectionStateReadySnapshotCaptured:(id)a3;
-- (void)setPeerConnectionFailed:(id)a3;
-- (void)setSessionConnectionFailed:(id)a3;
-- (void)setSessionConnectionHttpHeaderCreated:(id)a3;
-- (void)setSessionConnectionSnapshotCaptured:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)captured;
+- (void)setDebugNetworkConnectionStateReadySnapshotCaptured:(id)captured;
+- (void)setDebugSessionConnectionSnapshotCaptured:(id)captured;
+- (void)setNetworkConnectionStatePreparationSnapshotCaptured:(id)captured;
+- (void)setNetworkConnectionStateReadySnapshotCaptured:(id)captured;
+- (void)setPeerConnectionFailed:(id)failed;
+- (void)setSessionConnectionFailed:(id)failed;
+- (void)setSessionConnectionHttpHeaderCreated:(id)created;
+- (void)setSessionConnectionSnapshotCaptured:(id)captured;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETClientEvent
 
 - (id)qualifiedMessageName
 {
-  v2 = [(NETSchemaNETClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 8)
+  whichEvent_Type = [(NETSchemaNETClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 8)
   {
     return @"com.apple.aiml.siri.net.NETClientEvent";
   }
 
   else
   {
-    return off_1E78DB060[v2 - 101];
+    return off_1E78DB060[whichEvent_Type - 101];
   }
 }
 
@@ -193,15 +193,15 @@
   return v3;
 }
 
-- (NETSchemaNETClientEvent)initWithDictionary:(id)a3
+- (NETSchemaNETClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = NETSchemaNETClientEvent;
   v5 = [(NETSchemaNETClientEvent *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -209,7 +209,7 @@
       [(NETSchemaNETClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sessionConnectionHttpHeaderCreated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sessionConnectionHttpHeaderCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -217,7 +217,7 @@
       [(NETSchemaNETClientEvent *)v5 setSessionConnectionHttpHeaderCreated:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"sessionConnectionSnapshotCaptured"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"sessionConnectionSnapshotCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -226,7 +226,7 @@
     }
 
     v30 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"debugSessionConnectionSnapshotCaptured"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"debugSessionConnectionSnapshotCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -235,7 +235,7 @@
     }
 
     v29 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"sessionConnectionFailed"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sessionConnectionFailed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -243,7 +243,7 @@
       [(NETSchemaNETClientEvent *)v5 setSessionConnectionFailed:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"peerConnectionFailed"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"peerConnectionFailed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -252,7 +252,7 @@
     }
 
     v31 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"networkConnectionStatePreparationSnapshotCaptured"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"networkConnectionStatePreparationSnapshotCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,7 +261,7 @@
     }
 
     v20 = v6;
-    v21 = [v4 objectForKeyedSubscript:@"debugNetworkConnectionStatePreparationSnapshotCaptured"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"debugNetworkConnectionStatePreparationSnapshotCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -269,7 +269,7 @@
       [(NETSchemaNETClientEvent *)v5 setDebugNetworkConnectionStatePreparationSnapshotCaptured:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"networkConnectionStateReadySnapshotCaptured"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"networkConnectionStateReadySnapshotCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -277,7 +277,7 @@
       [(NETSchemaNETClientEvent *)v5 setNetworkConnectionStateReadySnapshotCaptured:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"debugNetworkConnectionStateReadySnapshotCaptured"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"debugNetworkConnectionStateReadySnapshotCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -291,30 +291,30 @@
   return v5;
 }
 
-- (NETSchemaNETClientEvent)initWithJSON:(id)a3
+- (NETSchemaNETClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -327,170 +327,170 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_debugNetworkConnectionStatePreparationSnapshotCaptured)
   {
-    v4 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    debugNetworkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
+    dictionaryRepresentation = [debugNetworkConnectionStatePreparationSnapshotCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"debugNetworkConnectionStatePreparationSnapshotCaptured"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"debugNetworkConnectionStatePreparationSnapshotCaptured"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"debugNetworkConnectionStatePreparationSnapshotCaptured"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"debugNetworkConnectionStatePreparationSnapshotCaptured"];
     }
   }
 
   if (self->_debugNetworkConnectionStateReadySnapshotCaptured)
   {
-    v7 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    debugNetworkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
+    dictionaryRepresentation2 = [debugNetworkConnectionStateReadySnapshotCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"debugNetworkConnectionStateReadySnapshotCaptured"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"debugNetworkConnectionStateReadySnapshotCaptured"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"debugNetworkConnectionStateReadySnapshotCaptured"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"debugNetworkConnectionStateReadySnapshotCaptured"];
     }
   }
 
   if (self->_debugSessionConnectionSnapshotCaptured)
   {
-    v10 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    debugSessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
+    dictionaryRepresentation3 = [debugSessionConnectionSnapshotCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"debugSessionConnectionSnapshotCaptured"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"debugSessionConnectionSnapshotCaptured"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"debugSessionConnectionSnapshotCaptured"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"debugSessionConnectionSnapshotCaptured"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v13 = [(NETSchemaNETClientEvent *)self eventMetadata];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    eventMetadata = [(NETSchemaNETClientEvent *)self eventMetadata];
+    dictionaryRepresentation4 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"eventMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_networkConnectionStatePreparationSnapshotCaptured)
   {
-    v16 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    networkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
+    dictionaryRepresentation5 = [networkConnectionStatePreparationSnapshotCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"networkConnectionStatePreparationSnapshotCaptured"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"networkConnectionStatePreparationSnapshotCaptured"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"networkConnectionStatePreparationSnapshotCaptured"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"networkConnectionStatePreparationSnapshotCaptured"];
     }
   }
 
   if (self->_networkConnectionStateReadySnapshotCaptured)
   {
-    v19 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    networkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
+    dictionaryRepresentation6 = [networkConnectionStateReadySnapshotCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"networkConnectionStateReadySnapshotCaptured"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"networkConnectionStateReadySnapshotCaptured"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"networkConnectionStateReadySnapshotCaptured"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"networkConnectionStateReadySnapshotCaptured"];
     }
   }
 
   if (self->_peerConnectionFailed)
   {
-    v22 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    peerConnectionFailed = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
+    dictionaryRepresentation7 = [peerConnectionFailed dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"peerConnectionFailed"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"peerConnectionFailed"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"peerConnectionFailed"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"peerConnectionFailed"];
     }
   }
 
   if (self->_sessionConnectionFailed)
   {
-    v25 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    sessionConnectionFailed = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
+    dictionaryRepresentation8 = [sessionConnectionFailed dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"sessionConnectionFailed"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"sessionConnectionFailed"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"sessionConnectionFailed"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"sessionConnectionFailed"];
     }
   }
 
   if (self->_sessionConnectionHttpHeaderCreated)
   {
-    v28 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    sessionConnectionHttpHeaderCreated = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
+    dictionaryRepresentation9 = [sessionConnectionHttpHeaderCreated dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"sessionConnectionHttpHeaderCreated"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"sessionConnectionHttpHeaderCreated"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"sessionConnectionHttpHeaderCreated"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"sessionConnectionHttpHeaderCreated"];
     }
   }
 
   if (self->_sessionConnectionSnapshotCaptured)
   {
-    v31 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    sessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
+    dictionaryRepresentation10 = [sessionConnectionSnapshotCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"sessionConnectionSnapshotCaptured"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"sessionConnectionSnapshotCaptured"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"sessionConnectionSnapshotCaptured"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"sessionConnectionSnapshotCaptured"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -507,34 +507,34 @@
   return v9 ^ v11 ^ [(NETSchemaNETDebugNetworkConnectionStateReadySnapshotCaptured *)self->_debugNetworkConnectionStateReadySnapshotCaptured hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_53;
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v8 = [(NETSchemaNETClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(NETSchemaNETClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(NETSchemaNETClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(NETSchemaNETClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -546,20 +546,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
-  v7 = [v4 sessionConnectionHttpHeaderCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
+  eventMetadata2 = [equalCopy sessionConnectionHttpHeaderCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v13 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
-  if (v13)
+  sessionConnectionHttpHeaderCreated = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
+  if (sessionConnectionHttpHeaderCreated)
   {
-    v14 = v13;
-    v15 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
-    v16 = [v4 sessionConnectionHttpHeaderCreated];
-    v17 = [v15 isEqual:v16];
+    v14 = sessionConnectionHttpHeaderCreated;
+    sessionConnectionHttpHeaderCreated2 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
+    sessionConnectionHttpHeaderCreated3 = [equalCopy sessionConnectionHttpHeaderCreated];
+    v17 = [sessionConnectionHttpHeaderCreated2 isEqual:sessionConnectionHttpHeaderCreated3];
 
     if (!v17)
     {
@@ -571,20 +571,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
-  v7 = [v4 sessionConnectionSnapshotCaptured];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
+  eventMetadata2 = [equalCopy sessionConnectionSnapshotCaptured];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v18 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
-  if (v18)
+  sessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
+  if (sessionConnectionSnapshotCaptured)
   {
-    v19 = v18;
-    v20 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
-    v21 = [v4 sessionConnectionSnapshotCaptured];
-    v22 = [v20 isEqual:v21];
+    v19 = sessionConnectionSnapshotCaptured;
+    sessionConnectionSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
+    sessionConnectionSnapshotCaptured3 = [equalCopy sessionConnectionSnapshotCaptured];
+    v22 = [sessionConnectionSnapshotCaptured2 isEqual:sessionConnectionSnapshotCaptured3];
 
     if (!v22)
     {
@@ -596,20 +596,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
-  v7 = [v4 debugSessionConnectionSnapshotCaptured];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
+  eventMetadata2 = [equalCopy debugSessionConnectionSnapshotCaptured];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v23 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
-  if (v23)
+  debugSessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
+  if (debugSessionConnectionSnapshotCaptured)
   {
-    v24 = v23;
-    v25 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
-    v26 = [v4 debugSessionConnectionSnapshotCaptured];
-    v27 = [v25 isEqual:v26];
+    v24 = debugSessionConnectionSnapshotCaptured;
+    debugSessionConnectionSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
+    debugSessionConnectionSnapshotCaptured3 = [equalCopy debugSessionConnectionSnapshotCaptured];
+    v27 = [debugSessionConnectionSnapshotCaptured2 isEqual:debugSessionConnectionSnapshotCaptured3];
 
     if (!v27)
     {
@@ -621,20 +621,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
-  v7 = [v4 sessionConnectionFailed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
+  eventMetadata2 = [equalCopy sessionConnectionFailed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v28 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
-  if (v28)
+  sessionConnectionFailed = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
+  if (sessionConnectionFailed)
   {
-    v29 = v28;
-    v30 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
-    v31 = [v4 sessionConnectionFailed];
-    v32 = [v30 isEqual:v31];
+    v29 = sessionConnectionFailed;
+    sessionConnectionFailed2 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
+    sessionConnectionFailed3 = [equalCopy sessionConnectionFailed];
+    v32 = [sessionConnectionFailed2 isEqual:sessionConnectionFailed3];
 
     if (!v32)
     {
@@ -646,20 +646,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
-  v7 = [v4 peerConnectionFailed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
+  eventMetadata2 = [equalCopy peerConnectionFailed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v33 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
-  if (v33)
+  peerConnectionFailed = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
+  if (peerConnectionFailed)
   {
-    v34 = v33;
-    v35 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
-    v36 = [v4 peerConnectionFailed];
-    v37 = [v35 isEqual:v36];
+    v34 = peerConnectionFailed;
+    peerConnectionFailed2 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
+    peerConnectionFailed3 = [equalCopy peerConnectionFailed];
+    v37 = [peerConnectionFailed2 isEqual:peerConnectionFailed3];
 
     if (!v37)
     {
@@ -671,20 +671,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
-  v7 = [v4 networkConnectionStatePreparationSnapshotCaptured];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
+  eventMetadata2 = [equalCopy networkConnectionStatePreparationSnapshotCaptured];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v38 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
-  if (v38)
+  networkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
+  if (networkConnectionStatePreparationSnapshotCaptured)
   {
-    v39 = v38;
-    v40 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
-    v41 = [v4 networkConnectionStatePreparationSnapshotCaptured];
-    v42 = [v40 isEqual:v41];
+    v39 = networkConnectionStatePreparationSnapshotCaptured;
+    networkConnectionStatePreparationSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
+    networkConnectionStatePreparationSnapshotCaptured3 = [equalCopy networkConnectionStatePreparationSnapshotCaptured];
+    v42 = [networkConnectionStatePreparationSnapshotCaptured2 isEqual:networkConnectionStatePreparationSnapshotCaptured3];
 
     if (!v42)
     {
@@ -696,20 +696,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
-  v7 = [v4 debugNetworkConnectionStatePreparationSnapshotCaptured];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
+  eventMetadata2 = [equalCopy debugNetworkConnectionStatePreparationSnapshotCaptured];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v43 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
-  if (v43)
+  debugNetworkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
+  if (debugNetworkConnectionStatePreparationSnapshotCaptured)
   {
-    v44 = v43;
-    v45 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
-    v46 = [v4 debugNetworkConnectionStatePreparationSnapshotCaptured];
-    v47 = [v45 isEqual:v46];
+    v44 = debugNetworkConnectionStatePreparationSnapshotCaptured;
+    debugNetworkConnectionStatePreparationSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
+    debugNetworkConnectionStatePreparationSnapshotCaptured3 = [equalCopy debugNetworkConnectionStatePreparationSnapshotCaptured];
+    v47 = [debugNetworkConnectionStatePreparationSnapshotCaptured2 isEqual:debugNetworkConnectionStatePreparationSnapshotCaptured3];
 
     if (!v47)
     {
@@ -721,20 +721,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
-  v7 = [v4 networkConnectionStateReadySnapshotCaptured];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
+  eventMetadata2 = [equalCopy networkConnectionStateReadySnapshotCaptured];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v48 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
-  if (v48)
+  networkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
+  if (networkConnectionStateReadySnapshotCaptured)
   {
-    v49 = v48;
-    v50 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
-    v51 = [v4 networkConnectionStateReadySnapshotCaptured];
-    v52 = [v50 isEqual:v51];
+    v49 = networkConnectionStateReadySnapshotCaptured;
+    networkConnectionStateReadySnapshotCaptured2 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
+    networkConnectionStateReadySnapshotCaptured3 = [equalCopy networkConnectionStateReadySnapshotCaptured];
+    v52 = [networkConnectionStateReadySnapshotCaptured2 isEqual:networkConnectionStateReadySnapshotCaptured3];
 
     if (!v52)
     {
@@ -746,12 +746,12 @@
   {
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
-  v7 = [v4 debugNetworkConnectionStateReadySnapshotCaptured];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
+  eventMetadata2 = [equalCopy debugNetworkConnectionStateReadySnapshotCaptured];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v53 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
-    if (!v53)
+    debugNetworkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
+    if (!debugNetworkConnectionStateReadySnapshotCaptured)
     {
 
 LABEL_56:
@@ -759,10 +759,10 @@ LABEL_56:
       goto LABEL_54;
     }
 
-    v54 = v53;
-    v55 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
-    v56 = [v4 debugNetworkConnectionStateReadySnapshotCaptured];
-    v57 = [v55 isEqual:v56];
+    v54 = debugNetworkConnectionStateReadySnapshotCaptured;
+    debugNetworkConnectionStateReadySnapshotCaptured2 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
+    debugNetworkConnectionStateReadySnapshotCaptured3 = [equalCopy debugNetworkConnectionStateReadySnapshotCaptured];
+    v57 = [debugNetworkConnectionStateReadySnapshotCaptured2 isEqual:debugNetworkConnectionStateReadySnapshotCaptured3];
 
     if (v57)
     {
@@ -782,90 +782,90 @@ LABEL_54:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
-  v4 = [(NETSchemaNETClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(NETSchemaNETClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(NETSchemaNETClientEvent *)self eventMetadata];
+    eventMetadata2 = [(NETSchemaNETClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
+  sessionConnectionHttpHeaderCreated = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
 
-  if (v6)
+  if (sessionConnectionHttpHeaderCreated)
   {
-    v7 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
+    sessionConnectionHttpHeaderCreated2 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
+  sessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
 
-  if (v8)
+  if (sessionConnectionSnapshotCaptured)
   {
-    v9 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
+    sessionConnectionSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
+  debugSessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
 
-  if (v10)
+  if (debugSessionConnectionSnapshotCaptured)
   {
-    v11 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
+    debugSessionConnectionSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
+  sessionConnectionFailed = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
 
-  if (v12)
+  if (sessionConnectionFailed)
   {
-    v13 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
+    sessionConnectionFailed2 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
+  peerConnectionFailed = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
 
-  if (v14)
+  if (peerConnectionFailed)
   {
-    v15 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
+    peerConnectionFailed2 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
+  networkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
 
-  if (v16)
+  if (networkConnectionStatePreparationSnapshotCaptured)
   {
-    v17 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
+    networkConnectionStatePreparationSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
+  debugNetworkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
 
-  if (v18)
+  if (debugNetworkConnectionStatePreparationSnapshotCaptured)
   {
-    v19 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
+    debugNetworkConnectionStatePreparationSnapshotCaptured2 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
+  networkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
 
-  if (v20)
+  if (networkConnectionStateReadySnapshotCaptured)
   {
-    v21 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
+    networkConnectionStateReadySnapshotCaptured2 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
+  debugNetworkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (debugNetworkConnectionStateReadySnapshotCaptured)
   {
-    v24 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
+    debugNetworkConnectionStateReadySnapshotCaptured2 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
     PBDataWriterWriteSubmessage();
 
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
@@ -879,9 +879,9 @@ LABEL_54:
   }
 }
 
-- (void)setDebugNetworkConnectionStateReadySnapshotCaptured:(id)a3
+- (void)setDebugNetworkConnectionStateReadySnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -907,14 +907,14 @@ LABEL_54:
   self->_networkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 109;
-  if (!v4)
+  if (!capturedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   debugNetworkConnectionStateReadySnapshotCaptured = self->_debugNetworkConnectionStateReadySnapshotCaptured;
-  self->_debugNetworkConnectionStateReadySnapshotCaptured = v4;
+  self->_debugNetworkConnectionStateReadySnapshotCaptured = capturedCopy;
 }
 
 - (void)deleteNetworkConnectionStateReadySnapshotCaptured
@@ -927,9 +927,9 @@ LABEL_54:
   }
 }
 
-- (void)setNetworkConnectionStateReadySnapshotCaptured:(id)a3
+- (void)setNetworkConnectionStateReadySnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -955,14 +955,14 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 108;
-  if (!v4)
+  if (!capturedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   networkConnectionStateReadySnapshotCaptured = self->_networkConnectionStateReadySnapshotCaptured;
-  self->_networkConnectionStateReadySnapshotCaptured = v4;
+  self->_networkConnectionStateReadySnapshotCaptured = capturedCopy;
 }
 
 - (void)deleteDebugNetworkConnectionStatePreparationSnapshotCaptured
@@ -975,9 +975,9 @@ LABEL_54:
   }
 }
 
-- (void)setDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)a3
+- (void)setDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -1003,14 +1003,14 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 107;
-  if (!v4)
+  if (!capturedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   debugNetworkConnectionStatePreparationSnapshotCaptured = self->_debugNetworkConnectionStatePreparationSnapshotCaptured;
-  self->_debugNetworkConnectionStatePreparationSnapshotCaptured = v4;
+  self->_debugNetworkConnectionStatePreparationSnapshotCaptured = capturedCopy;
 }
 
 - (void)deleteNetworkConnectionStatePreparationSnapshotCaptured
@@ -1023,9 +1023,9 @@ LABEL_54:
   }
 }
 
-- (void)setNetworkConnectionStatePreparationSnapshotCaptured:(id)a3
+- (void)setNetworkConnectionStatePreparationSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -1051,14 +1051,14 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 106;
-  if (!v4)
+  if (!capturedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   networkConnectionStatePreparationSnapshotCaptured = self->_networkConnectionStatePreparationSnapshotCaptured;
-  self->_networkConnectionStatePreparationSnapshotCaptured = v4;
+  self->_networkConnectionStatePreparationSnapshotCaptured = capturedCopy;
 }
 
 - (void)deletePeerConnectionFailed
@@ -1071,9 +1071,9 @@ LABEL_54:
   }
 }
 
-- (void)setPeerConnectionFailed:(id)a3
+- (void)setPeerConnectionFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -1099,14 +1099,14 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 105;
-  if (!v4)
+  if (!failedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   peerConnectionFailed = self->_peerConnectionFailed;
-  self->_peerConnectionFailed = v4;
+  self->_peerConnectionFailed = failedCopy;
 }
 
 - (void)deleteSessionConnectionFailed
@@ -1119,9 +1119,9 @@ LABEL_54:
   }
 }
 
-- (void)setSessionConnectionFailed:(id)a3
+- (void)setSessionConnectionFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -1147,14 +1147,14 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 104;
-  if (!v4)
+  if (!failedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   sessionConnectionFailed = self->_sessionConnectionFailed;
-  self->_sessionConnectionFailed = v4;
+  self->_sessionConnectionFailed = failedCopy;
 }
 
 - (void)deleteDebugSessionConnectionSnapshotCaptured
@@ -1167,9 +1167,9 @@ LABEL_54:
   }
 }
 
-- (void)setDebugSessionConnectionSnapshotCaptured:(id)a3
+- (void)setDebugSessionConnectionSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -1195,14 +1195,14 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 103;
-  if (!v4)
+  if (!capturedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   debugSessionConnectionSnapshotCaptured = self->_debugSessionConnectionSnapshotCaptured;
-  self->_debugSessionConnectionSnapshotCaptured = v4;
+  self->_debugSessionConnectionSnapshotCaptured = capturedCopy;
 }
 
 - (void)deleteSessionConnectionSnapshotCaptured
@@ -1215,9 +1215,9 @@ LABEL_54:
   }
 }
 
-- (void)setSessionConnectionSnapshotCaptured:(id)a3
+- (void)setSessionConnectionSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
   self->_sessionConnectionHttpHeaderCreated = 0;
 
@@ -1243,14 +1243,14 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 102;
-  if (!v4)
+  if (!capturedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   sessionConnectionSnapshotCaptured = self->_sessionConnectionSnapshotCaptured;
-  self->_sessionConnectionSnapshotCaptured = v4;
+  self->_sessionConnectionSnapshotCaptured = capturedCopy;
 }
 
 - (void)deleteSessionConnectionHttpHeaderCreated
@@ -1263,9 +1263,9 @@ LABEL_54:
   }
 }
 
-- (void)setSessionConnectionHttpHeaderCreated:(id)a3
+- (void)setSessionConnectionHttpHeaderCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   sessionConnectionSnapshotCaptured = self->_sessionConnectionSnapshotCaptured;
   self->_sessionConnectionSnapshotCaptured = 0;
 
@@ -1291,108 +1291,108 @@ LABEL_54:
   self->_debugNetworkConnectionStateReadySnapshotCaptured = 0;
 
   v13 = 101;
-  if (!v4)
+  if (!createdCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   sessionConnectionHttpHeaderCreated = self->_sessionConnectionHttpHeaderCreated;
-  self->_sessionConnectionHttpHeaderCreated = v4;
+  self->_sessionConnectionHttpHeaderCreated = createdCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v37.receiver = self;
   v37.super_class = NETSchemaNETClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:v4];
-  v6 = [(NETSchemaNETClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(NETSchemaNETClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NETSchemaNETClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  sessionConnectionHttpHeaderCreated = [(NETSchemaNETClientEvent *)self sessionConnectionHttpHeaderCreated];
+  v10 = [sessionConnectionHttpHeaderCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NETSchemaNETClientEvent *)self deleteSessionConnectionHttpHeaderCreated];
   }
 
-  v12 = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  sessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self sessionConnectionSnapshotCaptured];
+  v13 = [sessionConnectionSnapshotCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NETSchemaNETClientEvent *)self deleteSessionConnectionSnapshotCaptured];
   }
 
-  v15 = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  debugSessionConnectionSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugSessionConnectionSnapshotCaptured];
+  v16 = [debugSessionConnectionSnapshotCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(NETSchemaNETClientEvent *)self deleteDebugSessionConnectionSnapshotCaptured];
   }
 
-  v18 = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  sessionConnectionFailed = [(NETSchemaNETClientEvent *)self sessionConnectionFailed];
+  v19 = [sessionConnectionFailed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(NETSchemaNETClientEvent *)self deleteSessionConnectionFailed];
   }
 
-  v21 = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  peerConnectionFailed = [(NETSchemaNETClientEvent *)self peerConnectionFailed];
+  v22 = [peerConnectionFailed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(NETSchemaNETClientEvent *)self deletePeerConnectionFailed];
   }
 
-  v24 = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  networkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStatePreparationSnapshotCaptured];
+  v25 = [networkConnectionStatePreparationSnapshotCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(NETSchemaNETClientEvent *)self deleteNetworkConnectionStatePreparationSnapshotCaptured];
   }
 
-  v27 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  debugNetworkConnectionStatePreparationSnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStatePreparationSnapshotCaptured];
+  v28 = [debugNetworkConnectionStatePreparationSnapshotCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(NETSchemaNETClientEvent *)self deleteDebugNetworkConnectionStatePreparationSnapshotCaptured];
   }
 
-  v30 = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  networkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self networkConnectionStateReadySnapshotCaptured];
+  v31 = [networkConnectionStateReadySnapshotCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(NETSchemaNETClientEvent *)self deleteNetworkConnectionStateReadySnapshotCaptured];
   }
 
-  v33 = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  debugNetworkConnectionStateReadySnapshotCaptured = [(NETSchemaNETClientEvent *)self debugNetworkConnectionStateReadySnapshotCaptured];
+  v34 = [debugNetworkConnectionStateReadySnapshotCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(NETSchemaNETClientEvent *)self deleteDebugNetworkConnectionStateReadySnapshotCaptured];
   }
@@ -1410,98 +1410,98 @@ LABEL_54:
 
 - (int)componentName
 {
-  v2 = [(NETSchemaNETClientEvent *)self eventMetadata];
-  v3 = [v2 netId];
+  eventMetadata = [(NETSchemaNETClientEvent *)self eventMetadata];
+  netId = [eventMetadata netId];
 
-  if (v3)
+  if (netId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [netId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [netId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 18;
+        LODWORD(value) = 18;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(NETSchemaNETClientEvent *)self eventMetadata];
-  v3 = [v2 netId];
+  eventMetadata = [(NETSchemaNETClientEvent *)self eventMetadata];
+  netId = [eventMetadata netId];
 
-  if (!v3)
+  if (!netId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [netId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [netId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = netId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(NETSchemaNETClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 8)
+  whichEvent_Type = [(NETSchemaNETClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 8)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EA0C8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EA0C8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 8)
+  if (tag - 101 > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA110[a3 - 101];
+    return off_1E78EA110[tag - 101];
   }
 }
 

@@ -45,10 +45,10 @@
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
 
   v15 = [MEMORY[0x1E69C6638] sectionWithRows:v14 title:@"TV Widget"];
-  v16 = [MEMORY[0x1E69DC938] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [v12 addObject:v15];
   }

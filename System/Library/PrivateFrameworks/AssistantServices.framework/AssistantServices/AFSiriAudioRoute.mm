@@ -1,13 +1,13 @@
 @interface AFSiriAudioRoute
-- (AFSiriAudioRoute)initWithRouteDescription:(id)a3 hearingAidsAnnounceEnabled:(BOOL)a4 builtInSpeakerAnnounceEnabled:(BOOL)a5 ringerSwitchState:(int64_t)a6;
+- (AFSiriAudioRoute)initWithRouteDescription:(id)description hearingAidsAnnounceEnabled:(BOOL)enabled builtInSpeakerAnnounceEnabled:(BOOL)announceEnabled ringerSwitchState:(int64_t)state;
 - (BOOL)_isAppleHeadphone;
 - (BOOL)_isBuiltInSpeakerRoute;
 - (BOOL)isBluetoothHeadset;
-- (BOOL)isEqualToRoute:(id)a3;
+- (BOOL)isEqualToRoute:(id)route;
 - (BOOL)isNonAnnounceSupportedWirelessHeadset;
 - (BOOL)supportsVolumeAdjustment;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_announcementPlatform;
 - (unint64_t)_getRouteCapabilities;
 - (unint64_t)hash;
@@ -491,7 +491,7 @@ LABEL_21:
   return v7 ^ v9;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v16 = [NSString alloc];
   v18.receiver = self;
@@ -520,7 +520,7 @@ LABEL_21:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AFSiriAudioRoute alloc];
   avscRouteDescription = self->_avscRouteDescription;
@@ -579,11 +579,11 @@ LABEL_21:
   return v6;
 }
 
-- (BOOL)isEqualToRoute:(id)a3
+- (BOOL)isEqualToRoute:(id)route
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  routeCopy = route;
+  v6 = routeCopy;
+  if (self == routeCopy)
   {
     LOBYTE(v12) = 1;
     goto LABEL_22;
@@ -593,18 +593,18 @@ LABEL_21:
   v8 = productID;
   if (!productID)
   {
-    v9 = [(AFSiriAudioRoute *)v5 productID];
-    if (!v9)
+    productID = [(AFSiriAudioRoute *)routeCopy productID];
+    if (!productID)
     {
       goto LABEL_10;
     }
 
-    v3 = v9;
+    v3 = productID;
     v8 = self->_productID;
   }
 
-  v10 = [(AFSiriAudioRoute *)v6 productID];
-  v11 = [(NSString *)v8 isEqualToString:v10];
+  productID2 = [(AFSiriAudioRoute *)v6 productID];
+  v11 = [(NSString *)v8 isEqualToString:productID2];
 
   if (productID)
   {
@@ -628,18 +628,18 @@ LABEL_10:
   v14 = btAddress;
   if (!btAddress)
   {
-    v15 = [(AFSiriAudioRoute *)v6 btAddress];
-    if (!v15)
+    btAddress = [(AFSiriAudioRoute *)v6 btAddress];
+    if (!btAddress)
     {
       goto LABEL_17;
     }
 
-    v3 = v15;
+    v3 = btAddress;
     v14 = self->_btAddress;
   }
 
-  v16 = [(AFSiriAudioRoute *)v6 btAddress];
-  v17 = [(NSString *)v14 isEqualToString:v16];
+  btAddress2 = [(AFSiriAudioRoute *)v6 btAddress];
+  v17 = [(NSString *)v14 isEqualToString:btAddress2];
 
   if (btAddress)
   {
@@ -660,8 +660,8 @@ LABEL_21:
 
 LABEL_17:
   name = self->_name;
-  v19 = [(AFSiriAudioRoute *)v6 name];
-  LODWORD(name) = [(NSString *)name isEqualToString:v19];
+  name = [(AFSiriAudioRoute *)v6 name];
+  LODWORD(name) = [(NSString *)name isEqualToString:name];
 
   if (!name)
   {
@@ -680,8 +680,8 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  v22 = [(AFSiriAudioRoute *)self hasAuthenticationCapability];
-  v12 = v22 ^ [(AFSiriAudioRoute *)v6 hasAuthenticationCapability]^ 1;
+  hasAuthenticationCapability = [(AFSiriAudioRoute *)self hasAuthenticationCapability];
+  v12 = hasAuthenticationCapability ^ [(AFSiriAudioRoute *)v6 hasAuthenticationCapability]^ 1;
 LABEL_22:
 
   return v12;
@@ -697,13 +697,13 @@ LABEL_22:
 
 - (BOOL)isNonAnnounceSupportedWirelessHeadset
 {
-  v2 = [(AFSiriAudioRoute *)self isBluetoothHeadset];
-  if (v2)
+  isBluetoothHeadset = [(AFSiriAudioRoute *)self isBluetoothHeadset];
+  if (isBluetoothHeadset)
   {
-    LOBYTE(v2) = AFBTProductIDSupportsAnnounce() ^ 1;
+    LOBYTE(isBluetoothHeadset) = AFBTProductIDSupportsAnnounce() ^ 1;
   }
 
-  return v2;
+  return isBluetoothHeadset;
 }
 
 - (BOOL)isBluetoothHeadset
@@ -718,19 +718,19 @@ LABEL_22:
   return [(NSString *)name isEqualToString:@"HeadphonesBT"];
 }
 
-- (AFSiriAudioRoute)initWithRouteDescription:(id)a3 hearingAidsAnnounceEnabled:(BOOL)a4 builtInSpeakerAnnounceEnabled:(BOOL)a5 ringerSwitchState:(int64_t)a6
+- (AFSiriAudioRoute)initWithRouteDescription:(id)description hearingAidsAnnounceEnabled:(BOOL)enabled builtInSpeakerAnnounceEnabled:(BOOL)announceEnabled ringerSwitchState:(int64_t)state
 {
-  v11 = a3;
+  descriptionCopy = description;
   v15.receiver = self;
   v15.super_class = AFSiriAudioRoute;
   v12 = [(AFSiriAudioRoute *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_avscRouteDescription, a3);
-    v13->_hearingAidsAnnounceEnabled = a4;
-    v13->_builtInSpeakerAnnounceEnabled = a5;
-    v13->_ringerSwitchState = a6;
+    objc_storeStrong(&v12->_avscRouteDescription, description);
+    v13->_hearingAidsAnnounceEnabled = enabled;
+    v13->_builtInSpeakerAnnounceEnabled = announceEnabled;
+    v13->_ringerSwitchState = state;
     [(AFSiriAudioRoute *)v13 _initializeInternalState];
     v13->_availableAnnouncementRequestTypes = [(AFSiriAudioRoute *)v13 _getRouteCapabilities];
     v13->_announcePlatformForRoute = [(AFSiriAudioRoute *)v13 _announcementPlatform];

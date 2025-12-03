@@ -1,14 +1,14 @@
 @interface CuratedGuideTableViewCell
 + (NSString)reuseIdentifier;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC4Maps25CuratedGuideTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC4Maps25CuratedGuideTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (_TtP4Maps33CuratedGuideTableViewCellDelegate_)delegate;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)configureWith:(id)a3 delegate:(id)a4 template:(id)a5;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)configureWith:(id)with delegate:(id)delegate template:(id)template;
 - (void)prepareForReuse;
-- (void)setCuratedGuideImageProvider:(id)a3;
-- (void)setTemplate:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)setCuratedGuideImageProvider:(id)provider;
+- (void)setTemplate:(id)template;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation CuratedGuideTableViewCell
@@ -27,32 +27,32 @@
   return v2;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_viewModel);
-  *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_viewModel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_viewModel) = model;
+  modelCopy = model;
 }
 
-- (void)setTemplate:(id)a3
+- (void)setTemplate:(id)template
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_template);
-  *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_template) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_template) = template;
+  templateCopy = template;
 }
 
-- (void)setCuratedGuideImageProvider:(id)a3
+- (void)setCuratedGuideImageProvider:(id)provider
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_curatedGuideImageProvider);
-  *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_curatedGuideImageProvider) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_curatedGuideImageProvider) = provider;
+  providerCopy = provider;
 }
 
-- (_TtC4Maps25CuratedGuideTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC4Maps25CuratedGuideTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -61,7 +61,7 @@
     v6 = 0;
   }
 
-  return sub_10026B1B8(a3, a4, v6);
+  return sub_10026B1B8(style, identifier, v6);
 }
 
 - (void)prepareForReuse
@@ -78,17 +78,17 @@
   *&v2[OBJC_IVAR____TtC4Maps25CuratedGuideTableViewCell_template] = 0;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10 = objc_opt_self();
-  v11 = self;
+  selfCopy = self;
   [v10 setFrameStallSkipRequest:1];
-  v20.receiver = v11;
+  v20.receiver = selfCopy;
   v20.super_class = type metadata accessor for CuratedGuideTableViewCell();
-  *&v12 = a4;
-  *&v13 = a5;
+  *&v12 = priority;
+  *&v13 = fittingPriority;
   [(CuratedGuideTableViewCell *)&v20 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v12, v13];
   v15 = v14;
   v17 = v16;
@@ -100,25 +100,25 @@
   return result;
 }
 
-- (void)configureWith:(id)a3 delegate:(id)a4 template:(id)a5
+- (void)configureWith:(id)with delegate:(id)delegate template:(id)template
 {
-  v8 = a3;
+  withCopy = with;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10026B55C(v8, a4, a5);
+  templateCopy = template;
+  selfCopy = self;
+  sub_10026B55C(withCopy, delegate, template);
 
   swift_unknownObjectRelease();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10026B7F4();
 
   (*(v5 + 8))(v7, v4);

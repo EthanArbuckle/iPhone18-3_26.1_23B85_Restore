@@ -1,38 +1,38 @@
 @interface BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithTimeInterval:(id)a3 cohortType:(id)a4 cohortDataAvailabilityState:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithTimeInterval:(id)interval cohortType:(id)type cohortDataAvailabilityState:(id)state;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
-    v7 = [v5 timeInterval];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    timeInterval = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
+    timeInterval2 = [v5 timeInterval];
+    v8 = timeInterval2;
+    if (timeInterval == timeInterval2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
-      v10 = [v5 timeInterval];
-      v11 = [v9 isEqual:v10];
+      timeInterval3 = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
+      timeInterval4 = [v5 timeInterval];
+      v11 = [timeInterval3 isEqual:timeInterval4];
 
       if (!v11)
       {
@@ -50,8 +50,8 @@
 
       if (-[BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts hasCohortDataAvailabilityState](self, "hasCohortDataAvailabilityState") && [v5 hasCohortDataAvailabilityState])
       {
-        v14 = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self cohortDataAvailabilityState];
-        v12 = v14 == [v5 cohortDataAvailabilityState];
+        cohortDataAvailabilityState = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self cohortDataAvailabilityState];
+        v12 = cohortDataAvailabilityState == [v5 cohortDataAvailabilityState];
 LABEL_18:
 
         goto LABEL_19;
@@ -72,8 +72,8 @@ LABEL_19:
 - (id)jsonDictionary
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
-  v4 = [v3 jsonDictionary];
+  timeInterval = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
+  jsonDictionary = [timeInterval jsonDictionary];
 
   if ([(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self hasCohortType])
   {
@@ -96,29 +96,29 @@ LABEL_19:
   }
 
   v13[0] = @"timeInterval";
-  v7 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v7;
+  v14[0] = null;
   v13[1] = @"cohortType";
-  v8 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v8;
+  v14[1] = null2;
   v13[2] = @"cohortDataAvailabilityState";
-  v9 = v6;
+  null3 = v6;
   if (!v6)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v9;
+  v14[2] = null3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   if (v6)
   {
@@ -129,7 +129,7 @@ LABEL_19:
 
 LABEL_20:
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_16;
     }
@@ -143,7 +143,7 @@ LABEL_20:
   }
 
 LABEL_15:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_16;
   }
@@ -156,11 +156,11 @@ LABEL_16:
   return v10;
 }
 
-- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"timeInterval"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"timeInterval"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -176,27 +176,27 @@ LABEL_16:
     v16 = v26;
     if (v16)
     {
-      if (a4)
+      if (error)
       {
         v16 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"cohortType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"cohortType"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_12;
         }
 
@@ -208,8 +208,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         v20 = [v24 initWithDomain:v19 code:2 userInfo:v11];
         v10 = 0;
-        v13 = 0;
-        *a4 = v20;
+        selfCopy = 0;
+        *error = v20;
         goto LABEL_11;
       }
 
@@ -221,13 +221,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"cohortDataAvailabilityState"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"cohortDataAvailabilityState"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v25 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -235,11 +235,11 @@ LABEL_4:
           v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"cohortDataAvailabilityState"];
           v28 = v21;
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-          *a4 = [v25 initWithDomain:v23 code:2 userInfo:v22];
+          *error = [v25 initWithDomain:v23 code:2 userInfo:v22];
         }
 
         v12 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
 
@@ -252,16 +252,16 @@ LABEL_4:
     }
 
     self = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self initWithTimeInterval:v8 cohortType:v10 cohortDataAvailabilityState:v12];
-    v13 = self;
+    selfCopy = self;
 LABEL_11:
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -271,31 +271,31 @@ LABEL_12:
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"timeInterval"];
   v32[0] = v8;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-  v13 = 0;
-  *a4 = [v17 initWithDomain:v18 code:2 userInfo:v10];
+  selfCopy = 0;
+  *error = [v17 initWithDomain:v18 code:2 userInfo:v10];
 LABEL_13:
 
 LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_timeInterval)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriOnDeviceDigestSegmentsCohortsTimeInterval *)self->_timeInterval writeTo:v4];
+    [(BMSiriOnDeviceDigestSegmentsCohortsTimeInterval *)self->_timeInterval writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -312,9 +312,9 @@ LABEL_14:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts;
   v5 = [(BMEventBase *)&v35 init];
@@ -323,12 +323,12 @@ LABEL_14:
     goto LABEL_56;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_54;
       }
@@ -339,18 +339,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v36[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v36[0] & 0x7F) << v7;
@@ -368,9 +368,9 @@ LABEL_14:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_54;
       }
@@ -390,18 +390,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v36[0]) = 0;
-          v21 = [v4 position] + 1;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 1;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v23 = [v4 data];
-            [v23 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (v36[0] & 0x7F) << v18;
@@ -419,7 +419,7 @@ LABEL_16:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v24 = 0;
         }
@@ -445,7 +445,7 @@ LABEL_52:
           goto LABEL_55;
         }
 
-        v16 = [[BMSiriOnDeviceDigestSegmentsCohortsTimeInterval alloc] initByReadFrom:v4];
+        v16 = [[BMSiriOnDeviceDigestSegmentsCohortsTimeInterval alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_55;
@@ -463,8 +463,8 @@ LABEL_52:
       }
 
 LABEL_53:
-      v32 = [v4 position];
-      if (v32 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_54;
       }
@@ -477,18 +477,18 @@ LABEL_53:
     while (1)
     {
       LOBYTE(v36[0]) = 0;
-      v28 = [v4 position] + 1;
-      if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+      v28 = [fromCopy position] + 1;
+      if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
       {
-        v30 = [v4 data];
-        [v30 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+        data3 = [fromCopy data];
+        [data3 getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v27 |= (v36[0] & 0x7F) << v25;
@@ -506,7 +506,7 @@ LABEL_53:
       }
     }
 
-    if ([v4 hasError])
+    if ([fromCopy hasError])
     {
       v24 = 0;
     }
@@ -522,7 +522,7 @@ LABEL_51:
   }
 
 LABEL_54:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_55:
     v33 = 0;
@@ -540,52 +540,52 @@ LABEL_56:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
+  timeInterval = [(BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts *)self timeInterval];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts cohortType](self, "cohortType")}];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts cohortDataAvailabilityState](self, "cohortDataAvailabilityState")}];
-  v7 = [v3 initWithFormat:@"BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts with timeInterval: %@, cohortType: %@, cohortDataAvailabilityState: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts with timeInterval: %@, cohortType: %@, cohortDataAvailabilityState: %@", timeInterval, v5, v6];
 
   return v7;
 }
 
-- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithTimeInterval:(id)a3 cohortType:(id)a4 cohortDataAvailabilityState:(id)a5
+- (BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts)initWithTimeInterval:(id)interval cohortType:(id)type cohortDataAvailabilityState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  intervalCopy = interval;
+  typeCopy = type;
+  stateCopy = state;
   v16.receiver = self;
   v16.super_class = BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts;
   v12 = [(BMEventBase *)&v16 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_timeInterval, a3);
-    if (v10)
+    objc_storeStrong(&v12->_timeInterval, interval);
+    if (typeCopy)
     {
       v12->_hasCohortType = 1;
-      v13 = [v10 intValue];
+      intValue = [typeCopy intValue];
     }
 
     else
     {
       v12->_hasCohortType = 0;
-      v13 = -1;
+      intValue = -1;
     }
 
-    v12->_cohortType = v13;
-    if (v11)
+    v12->_cohortType = intValue;
+    if (stateCopy)
     {
       v12->_hasCohortDataAvailabilityState = 1;
-      v14 = [v11 intValue];
+      intValue2 = [stateCopy intValue];
     }
 
     else
     {
       v12->_hasCohortDataAvailabilityState = 0;
-      v14 = -1;
+      intValue2 = -1;
     }
 
-    v12->_cohortDataAvailabilityState = v14;
+    v12->_cohortDataAvailabilityState = intValue2;
   }
 
   return v12;
@@ -632,9 +632,9 @@ id __59__BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts_columns__block_invoke(
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -642,8 +642,8 @@ id __59__BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts_columns__block_invoke(
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriOnDeviceDigestSegmentsCohortsDeviceCohorts alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,18 +1,18 @@
 @interface ECLabelChangeMessageAction
-- (ECLabelChangeMessageAction)initWithBuilder:(id)a3;
+- (ECLabelChangeMessageAction)initWithBuilder:(id)builder;
 @end
 
 @implementation ECLabelChangeMessageAction
 
-- (ECLabelChangeMessageAction)initWithBuilder:(id)a3
+- (ECLabelChangeMessageAction)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ECLabelChangeMessageAction;
   v5 = [(ECLabelChangeMessageAction *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;

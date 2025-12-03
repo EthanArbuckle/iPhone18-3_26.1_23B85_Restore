@@ -1,5 +1,5 @@
 @interface MOVStreamCompandedRawBayerPostProcessor
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5;
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error;
 - (unsigned)processedPixelFormat;
 @end
 
@@ -15,37 +15,37 @@
   return [(MOVStreamDefaultPostProcessor *)self originalPixelFormat];
 }
 
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:@"RawBayerFormat"];
-  v10 = [v9 unsignedIntValue];
+  metadataCopy = metadata;
+  v9 = [metadataCopy objectForKeyedSubscript:@"RawBayerFormat"];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  if (!v10)
+  if (!unsignedIntValue)
   {
-    v10 = [(MOVStreamDefaultPostProcessor *)self originalPixelFormat];
+    unsignedIntValue = [(MOVStreamDefaultPostProcessor *)self originalPixelFormat];
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(from);
+  Height = CVPixelBufferGetHeight(from);
   LODWORD(v17) = 1;
   HIDWORD(v17) = [(MOVStreamDefaultPostProcessor *)self bufferCacheMode];
-  v13 = [MIOPixelBufferUtility createRawPixelBufferWithWidth:Width height:Height extendedRows:0 extendedPixelsPerRow:0 pixelFormat:v10 bytesPerRowAlignment:1 planeAlignment:v17 bufferCacheMode:?];
-  if ([MIOPixelBufferUtility joinCompandedWarholBuffer:a3 intoCompandedBayerBuffer:v13])
+  v13 = [MIOPixelBufferUtility createRawPixelBufferWithWidth:Width height:Height extendedRows:0 extendedPixelsPerRow:0 pixelFormat:unsignedIntValue bytesPerRowAlignment:1 planeAlignment:v17 bufferCacheMode:?];
+  if ([MIOPixelBufferUtility joinCompandedWarholBuffer:from intoCompandedBayerBuffer:v13])
   {
-    if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:v13 metadata:v8])
+    if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:v13 metadata:metadataCopy])
     {
-      v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:v13 error:a5];
+      v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:v13 error:error];
       CVPixelBufferRelease(v13);
 LABEL_9:
       v13 = v14;
       goto LABEL_10;
     }
 
-    if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:a3])
+    if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:from])
     {
-      v15 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-      v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:v15 fromPixelBuffer:a3 error:a5];
+      exactBytesPerRow = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+      v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:exactBytesPerRow fromPixelBuffer:from error:error];
 
       CVPixelBufferRelease(v13);
       goto LABEL_9;
@@ -54,7 +54,7 @@ LABEL_9:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateStreamError:a5 message:@"Error joining Warhol-Buffer for Companded-RawBayer pixel buffer." code:2];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Error joining Warhol-Buffer for Companded-RawBayer pixel buffer." code:2];
     v13 = 0;
   }
 

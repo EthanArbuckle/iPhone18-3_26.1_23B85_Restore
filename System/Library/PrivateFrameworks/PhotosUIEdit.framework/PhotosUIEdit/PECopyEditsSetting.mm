@@ -1,9 +1,9 @@
 @interface PECopyEditsSetting
 + (id)allSettings;
-- (BOOL)isApplicableToCompositionController:(id)a3 asset:(id)a4;
+- (BOOL)isApplicableToCompositionController:(id)controller asset:(id)asset;
 - (NSArray)compositionKeys;
 - (NSString)localizedTitle;
-- (PECopyEditsSetting)initWithIdentifier:(unint64_t)a3;
+- (PECopyEditsSetting)initWithIdentifier:(unint64_t)identifier;
 @end
 
 @implementation PECopyEditsSetting
@@ -11,13 +11,13 @@
 - (NSArray)compositionKeys
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v2 = [(PECopyEditsSetting *)self identifier];
+  identifier = [(PECopyEditsSetting *)self identifier];
   v3 = MEMORY[0x277CBEBF8];
-  if (v2 <= 3)
+  if (identifier <= 3)
   {
-    if (v2 > 1)
+    if (identifier > 1)
     {
-      if (v2 == 2)
+      if (identifier == 2)
       {
         v9 = *MEMORY[0x277D3ABB8];
         v22[0] = *MEMORY[0x277D3ABC0];
@@ -52,7 +52,7 @@
 
     else
     {
-      if (!v2)
+      if (!identifier)
       {
         v24[0] = *MEMORY[0x277D3AAB0];
         v4 = MEMORY[0x277CBEA60];
@@ -60,7 +60,7 @@
         goto LABEL_23;
       }
 
-      if (v2 != 1)
+      if (identifier != 1)
       {
         goto LABEL_25;
       }
@@ -78,9 +78,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (v2 <= 6)
+  if (identifier <= 6)
   {
-    if (v2 == 4)
+    if (identifier == 4)
     {
       v20 = *MEMORY[0x277D3AA08];
       v4 = MEMORY[0x277CBEA60];
@@ -89,7 +89,7 @@ LABEL_24:
 
     else
     {
-      if (v2 != 5)
+      if (identifier != 5)
       {
         goto LABEL_25;
       }
@@ -102,7 +102,7 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  if (v2 == 7)
+  if (identifier == 7)
   {
     v18 = *MEMORY[0x277D3A9E0];
     v4 = MEMORY[0x277CBEA60];
@@ -110,7 +110,7 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  if (v2 == 8)
+  if (identifier == 8)
   {
     v17 = *MEMORY[0x277D3AB10];
     v4 = MEMORY[0x277CBEA60];
@@ -118,7 +118,7 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  if (v2 != 9)
+  if (identifier != 9)
   {
     goto LABEL_25;
   }
@@ -141,29 +141,29 @@ LABEL_25:
 
 - (NSString)localizedTitle
 {
-  v2 = [(PECopyEditsSetting *)self identifier];
-  if (v2 > 9)
+  identifier = [(PECopyEditsSetting *)self identifier];
+  if (identifier > 9)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279A30140[v2];
+    v3 = off_279A30140[identifier];
   }
 
   return PELocalizedString(v3);
 }
 
-- (BOOL)isApplicableToCompositionController:(id)a3 asset:(id)a4
+- (BOOL)isApplicableToCompositionController:(id)controller asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  assetCopy = asset;
   if ([(PECopyEditsSetting *)self identifier]== 6)
   {
-    if ([PESmartPasteablePreset isAssetTypeEligibleForSmartPaste:v7])
+    if ([PESmartPasteablePreset isAssetTypeEligibleForSmartPaste:assetCopy])
     {
-      IsValid = [PESmartPasteablePreset isCompositionControllerEligibleForSmartPaste:v6];
+      IsValid = [PESmartPasteablePreset isCompositionControllerEligibleForSmartPaste:controllerCopy];
 LABEL_9:
       v9 = IsValid;
       goto LABEL_10;
@@ -174,14 +174,14 @@ LABEL_9:
   {
     if ([(PECopyEditsSetting *)self identifier]!= 5)
     {
-      v10 = [(PECopyEditsSetting *)self compositionKeys];
-      v12 = v6;
+      compositionKeys = [(PECopyEditsSetting *)self compositionKeys];
+      v12 = controllerCopy;
       v9 = PFExists();
 
       goto LABEL_10;
     }
 
-    if ([v6 userOrientation] != 1)
+    if ([controllerCopy userOrientation] != 1)
     {
       IsValid = NUOrientationIsValid();
       goto LABEL_9;
@@ -219,7 +219,7 @@ uint64_t __64__PECopyEditsSetting_isApplicableToCompositionController_asset___bl
   return v4;
 }
 
-- (PECopyEditsSetting)initWithIdentifier:(unint64_t)a3
+- (PECopyEditsSetting)initWithIdentifier:(unint64_t)identifier
 {
   v7.receiver = self;
   v7.super_class = PECopyEditsSetting;
@@ -227,8 +227,8 @@ uint64_t __64__PECopyEditsSetting_isApplicableToCompositionController_asset___bl
   v5 = v4;
   if (v4)
   {
-    v4->_identifier = a3;
-    v4->_enabled = [PECopyEditsSetting _isSettingIdentifierEnabledByDefault:a3];
+    v4->_identifier = identifier;
+    v4->_enabled = [PECopyEditsSetting _isSettingIdentifierEnabledByDefault:identifier];
   }
 
   return v5;

@@ -1,7 +1,7 @@
 @interface RENoContentRelevanceProvider
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RENoContentRelevanceProvider)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)_hash;
 @end
@@ -15,22 +15,22 @@
   return [(RERelevanceProvider *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = RENoContentRelevanceProvider;
-  return [(RERelevanceProvider *)&v4 copyWithZone:a3];
+  return [(RERelevanceProvider *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = 1;
-  if (v4 != self)
+  if (equalCopy != self)
   {
     v7.receiver = self;
     v7.super_class = RENoContentRelevanceProvider;
-    if (![(RERelevanceProvider *)&v7 isEqual:v4]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (![(RERelevanceProvider *)&v7 isEqual:equalCopy]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v5 = 0;
     }

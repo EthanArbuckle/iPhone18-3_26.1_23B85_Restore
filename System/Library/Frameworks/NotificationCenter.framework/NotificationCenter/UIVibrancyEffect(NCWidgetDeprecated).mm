@@ -10,18 +10,18 @@
 {
   v0 = [MEMORY[0x277D26740] _visualStylingProviderForStyleSetNamed:@"platterClientStyle" inBundle:0];
   v1 = [v0 _visualStylingForStyle:0];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)widgetSecondaryVibrancyEffect
 {
   v0 = [MEMORY[0x277D26740] _visualStylingProviderForStyleSetNamed:@"platterClientStyle" inBundle:0];
   v1 = [v0 _visualStylingForStyle:1];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)notificationCenterVibrancyEffect

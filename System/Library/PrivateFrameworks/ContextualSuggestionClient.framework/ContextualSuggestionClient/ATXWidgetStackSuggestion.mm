@@ -1,6 +1,6 @@
 @interface ATXWidgetStackSuggestion
 - (ATXWidgetStackSuggestion)init;
-- (ATXWidgetStackSuggestion)initWithStackIdentifier:(id)a3 topWidget:(id)a4 suggestedWidgets:(id)a5;
+- (ATXWidgetStackSuggestion)initWithStackIdentifier:(id)identifier topWidget:(id)widget suggestedWidgets:(id)widgets;
 - (NSSet)suggestedWidgets;
 - (NSString)description;
 - (NSString)stackIdentifier;
@@ -11,7 +11,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ATXWidgetStackSuggestion.description.getter();
 
   v3 = sub_2441D8C4C();
@@ -40,7 +40,7 @@
   return v3;
 }
 
-- (ATXWidgetStackSuggestion)initWithStackIdentifier:(id)a3 topWidget:(id)a4 suggestedWidgets:(id)a5
+- (ATXWidgetStackSuggestion)initWithStackIdentifier:(id)identifier topWidget:(id)widget suggestedWidgets:(id)widgets
 {
   v7 = sub_2441D8C6C();
   v9 = v8;
@@ -50,22 +50,22 @@
   v11 = (self + OBJC_IVAR___ATXWidgetStackSuggestion_stackIdentifier);
   *v11 = v7;
   v11[1] = v9;
-  *(self + OBJC_IVAR___ATXWidgetStackSuggestion_topWidget) = a4;
+  *(self + OBJC_IVAR___ATXWidgetStackSuggestion_topWidget) = widget;
   *(self + OBJC_IVAR___ATXWidgetStackSuggestion_suggestedWidgets) = v10;
   v14.receiver = self;
   v14.super_class = ATXWidgetStackSuggestion;
-  v12 = a4;
+  widgetCopy = widget;
   return [(ATXWidgetStackSuggestion *)&v14 init];
 }
 
 - (NSString)topWidgetIdentifier
 {
-  v2 = self;
-  v3 = [(ATXWidgetStackSuggestion *)v2 topWidget];
-  if (v3)
+  selfCopy = self;
+  topWidget = [(ATXWidgetStackSuggestion *)selfCopy topWidget];
+  if (topWidget)
   {
-    v4 = v3;
-    v5 = [(ATXWidget *)v3 identifier];
+    v4 = topWidget;
+    identifier = [(ATXWidget *)topWidget identifier];
 
     sub_2441D8C6C();
     v6 = sub_2441D8C4C();

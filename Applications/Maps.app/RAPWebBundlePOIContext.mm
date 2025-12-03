@@ -8,16 +8,16 @@
 {
   v71.receiver = self;
   v71.super_class = RAPWebBundlePOIContext;
-  v3 = [(RAPWebBundleAddToMapContext *)&v71 context];
-  v4 = [v3 mutableCopy];
+  context = [(RAPWebBundleAddToMapContext *)&v71 context];
+  v4 = [context mutableCopy];
 
   v5 = objc_alloc_init(NSMutableArray);
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v6 = [(RAPWebBundlePOIContext *)self businessHours];
-  v7 = [v6 countByEnumeratingWithState:&v67 objects:v75 count:16];
+  businessHours = [(RAPWebBundlePOIContext *)self businessHours];
+  v7 = [businessHours countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v7)
   {
     v8 = v7;
@@ -28,14 +28,14 @@
       {
         if (*v68 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(businessHours);
         }
 
-        v11 = [*(*(&v67 + 1) + 8 * i) context];
-        [v5 addObject:v11];
+        context2 = [*(*(&v67 + 1) + 8 * i) context];
+        [v5 addObject:context2];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v67 objects:v75 count:16];
+      v8 = [businessHours countByEnumeratingWithState:&v67 objects:v75 count:16];
     }
 
     while (v8);
@@ -60,20 +60,20 @@
     [v15 setObject:v5 forKeyedSubscript:@"businessHoursNormal"];
   }
 
-  v16 = [(RAPWebBundlePOIContext *)self name];
+  name = [(RAPWebBundlePOIContext *)self name];
 
-  if (v16)
+  if (name)
   {
-    v17 = [(RAPWebBundlePOIContext *)self name];
-    [v15 setObject:v17 forKeyedSubscript:@"entityName"];
+    name2 = [(RAPWebBundlePOIContext *)self name];
+    [v15 setObject:name2 forKeyedSubscript:@"entityName"];
   }
 
-  v18 = [(RAPWebBundlePOIContext *)self phoneNumber];
+  phoneNumber = [(RAPWebBundlePOIContext *)self phoneNumber];
 
-  if (v18)
+  if (phoneNumber)
   {
-    v19 = [(RAPWebBundlePOIContext *)self phoneNumber];
-    [v15 setObject:v19 forKeyedSubscript:@"entityTelephone"];
+    phoneNumber2 = [(RAPWebBundlePOIContext *)self phoneNumber];
+    [v15 setObject:phoneNumber2 forKeyedSubscript:@"entityTelephone"];
   }
 
   v20 = [(RAPWebBundlePOIContext *)self url];
@@ -84,13 +84,13 @@
     [v15 setObject:v21 forKeyedSubscript:@"entityURL"];
   }
 
-  v22 = [(RAPWebBundlePOIContext *)self categories];
-  v23 = [v22 count];
+  categories = [(RAPWebBundlePOIContext *)self categories];
+  v23 = [categories count];
 
   if (v23 >= 2)
   {
-    v24 = [(RAPWebBundlePOIContext *)self categories];
-    [v15 setObject:v24 forKeyedSubscript:@"entityCategories"];
+    categories2 = [(RAPWebBundlePOIContext *)self categories];
+    [v15 setObject:categories2 forKeyedSubscript:@"entityCategories"];
   }
 
   if ([v5 count] >= 2)
@@ -110,8 +110,8 @@
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v29 = [(RAPWebBundlePOIContext *)self transitInfos];
-  v30 = [v29 countByEnumeratingWithState:&v63 objects:v74 count:16];
+  transitInfos = [(RAPWebBundlePOIContext *)self transitInfos];
+  v30 = [transitInfos countByEnumeratingWithState:&v63 objects:v74 count:16];
   if (v30)
   {
     v31 = v30;
@@ -122,14 +122,14 @@
       {
         if (*v64 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(transitInfos);
         }
 
-        v34 = [*(*(&v63 + 1) + 8 * j) context];
-        [v28 addObject:v34];
+        context3 = [*(*(&v63 + 1) + 8 * j) context];
+        [v28 addObject:context3];
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v63 objects:v74 count:16];
+      v31 = [transitInfos countByEnumeratingWithState:&v63 objects:v74 count:16];
     }
 
     while (v31);
@@ -147,8 +147,8 @@
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v37 = [(RAPWebBundlePOIContext *)self containsPlaces];
-  v38 = [v37 countByEnumeratingWithState:&v59 objects:v73 count:16];
+  containsPlaces = [(RAPWebBundlePOIContext *)self containsPlaces];
+  v38 = [containsPlaces countByEnumeratingWithState:&v59 objects:v73 count:16];
   if (v38)
   {
     v39 = v38;
@@ -159,14 +159,14 @@
       {
         if (*v60 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(containsPlaces);
         }
 
-        v42 = [*(*(&v59 + 1) + 8 * k) context];
-        [v36 addObject:v42];
+        context4 = [*(*(&v59 + 1) + 8 * k) context];
+        [v36 addObject:context4];
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v59 objects:v73 count:16];
+      v39 = [containsPlaces countByEnumeratingWithState:&v59 objects:v73 count:16];
     }
 
     while (v39);
@@ -183,8 +183,8 @@
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v45 = [(RAPWebBundlePOIContext *)self containedInPlaces];
-  v46 = [v45 countByEnumeratingWithState:&v55 objects:v72 count:16];
+  containedInPlaces = [(RAPWebBundlePOIContext *)self containedInPlaces];
+  v46 = [containedInPlaces countByEnumeratingWithState:&v55 objects:v72 count:16];
   if (v46)
   {
     v47 = v46;
@@ -195,14 +195,14 @@
       {
         if (*v56 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(containedInPlaces);
         }
 
-        v50 = [*(*(&v55 + 1) + 8 * m) context];
-        [v44 addObject:v50];
+        context5 = [*(*(&v55 + 1) + 8 * m) context];
+        [v44 addObject:context5];
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v55 objects:v72 count:16];
+      v47 = [containedInPlaces countByEnumeratingWithState:&v55 objects:v72 count:16];
     }
 
     while (v47);

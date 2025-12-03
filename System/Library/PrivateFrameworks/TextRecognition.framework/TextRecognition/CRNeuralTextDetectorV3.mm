@@ -1,38 +1,38 @@
 @interface CRNeuralTextDetectorV3
-+ (BOOL)computeClassCount:(void *)a3 classProbabiity:(void *)a4 fromSingleTextFeature:(id)a5 map:(const void *)a6 backgroundClass:(int)a7;
-+ (CGSize)scaledImageSizeForConfiguration:(id)a3 imageSize:(CGSize)a4;
-+ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)a3 originalImageSize:(CGSize)a4 configuration:(id)a5;
-+ (double)scaledImageSizeForMaxSize:(double)a3 minSize:(double)a4 inputLengthLimit:(double)a5 imageSize:(double)a6 scale:(double)a7;
-+ (float64x2_t)calculateTargetOutputSize:(double)a3 adjustedInputScale:(double)a4 paddedSize:(double)a5 imageSize:(double)a6 maximumSize:(double)a7 minimumSize:(uint64_t)a8 inputLengthLimit:(float64x2_t *)a9;
++ (BOOL)computeClassCount:(void *)count classProbabiity:(void *)probabiity fromSingleTextFeature:(id)feature map:(const void *)map backgroundClass:(int)class;
++ (CGSize)scaledImageSizeForConfiguration:(id)configuration imageSize:(CGSize)size;
++ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)height originalImageSize:(CGSize)size configuration:(id)configuration;
++ (double)scaledImageSizeForMaxSize:(double)size minSize:(double)minSize inputLengthLimit:(double)limit imageSize:(double)imageSize scale:(double)scale;
++ (float64x2_t)calculateTargetOutputSize:(double)size adjustedInputScale:(double)scale paddedSize:(double)paddedSize imageSize:(double)imageSize maximumSize:(double)maximumSize minimumSize:(uint64_t)minimumSize inputLengthLimit:(float64x2_t *)limit;
 + (id)supportedTextType;
 + (uint64_t)numSupportedTextType;
-+ (void)computeOrientationFromSingleTextFeature:(uint64_t)a3 map:;
-+ (void)computeScriptCategoryFromSingleTextFeature:(uint64_t *)a3 map:(void *)a4 scriptRatioThresholds:;
-+ (void)computeTextTypeFromSingleTextFeature:(uint64_t)a3 map:;
-+ (void)createImageMap:(void *)a3 targetSize:;
-+ (void)createMultiChannelImageMaps:(CGFloat)a3 size:(uint64_t)a4 channels:(void *)a5;
-- (BOOL)preheatWithError:(id *)a3;
-- (CRNeuralTextDetectorV3)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5;
-- (double)getBorderPoints:(char *)a3 sourceImageSize:(uint64_t)a4 outP1:(char)a5 outP2:(__n128)a6 isHorizontal:;
-- (id)detectInImage:(id)a3 delegate:(id)a4 error:(id *)a5;
-- (id)detectInImage:(id)a3 trackingSession:(id)a4 delegate:(id)a5 error:(id *)a6;
-- (id)enumerateTilesForImage:(id)a3 cachedSurface:(__IOSurface *)a4 guidedByScoreMapFullTile:(void *)a5 delegate:(id)a6 block:(id)a7;
-- (id)processFineScaleMaps:(uint64_t *)a3 adjustedSize:(CRIntermediateDetectorResult *)a4 fullTileMaps:(int64x2_t *)a5 adjustedFullTileSize:(void *)a6 targetSize:(void *)a7 targetSizeFullTile:(double)a8 intermediateResults:(double)a9 withScaleIds:(double)a10 sourceImageSize:(double)a11 tileRects:(float64_t)a12 trackingSession:(float64_t)a13;
-- (void)addIntermediateResults:(uint64_t)a3 idxLog:(void *)a4 adjustedSize:(uint64_t)a5 quadFeatures:(uint64_t)a6 nmsOutputScale:(uint64_t)a7;
-- (void)computeClassificationType:(void *)a3 fromTextFeatures:(uint64_t *)a4 fineScaleMap:(uint64_t *)a5 fullTileMap:(void *)a6 withScaleIds:;
-- (void)getBorderPoints:(float64x2_t *)a3 sourceImageSize:(char)a4 outP1:(float64_t)a5 outP2:(float64_t)a6 isHorizontal:;
-- (void)runFullTileInferenceOnImage:(id)a3 cachedSurface:(__IOSurface *)a4 outputMaps:(void *)a5 inputSize:(CGSize *)a6 outputSize:(CGSize *)a7 modelContext:(id)a8 delegate:(id)a9 error:(id *)a10;
-- (void)runNMSForDirection:(uint64_t *)a3 adjustedSize:(void *)a4 fullTileMaps:(void *)a5 adjustedFullTileSize:(void *)a6 targetSize:(int)a7 targetSizeFullTile:(id *)a8 intermediateResults:(uint64_t *)a9 withScaleIds:(unsigned __int8)a10 sourceImageSize:(unsigned __int8)a11 tileRects:isHorizontal:resultTextFeatures:quadFeatures:isFineScaleVerticalLinkActive:isFullTileVerticalLinkActive:idxLog:;
-- (void)updateNMS:(uint64_t)a3 andQuadFeatures:(uint64_t *)a4 inMaps:(void *)a5 tileRects:(uint64_t)a6 intermediateResult:(int)a7 isFullTile:(float)a8 isHorizontal:adjustedSize:randomPrefix:;
++ (void)computeOrientationFromSingleTextFeature:(uint64_t)feature map:;
++ (void)computeScriptCategoryFromSingleTextFeature:(uint64_t *)feature map:(void *)map scriptRatioThresholds:;
++ (void)computeTextTypeFromSingleTextFeature:(uint64_t)feature map:;
++ (void)createImageMap:(void *)map targetSize:;
++ (void)createMultiChannelImageMaps:(CGFloat)maps size:(uint64_t)size channels:(void *)channels;
+- (BOOL)preheatWithError:(id *)error;
+- (CRNeuralTextDetectorV3)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error;
+- (double)getBorderPoints:(char *)points sourceImageSize:(uint64_t)size outP1:(char)p1 outP2:(__n128)p2 isHorizontal:;
+- (id)detectInImage:(id)image delegate:(id)delegate error:(id *)error;
+- (id)detectInImage:(id)image trackingSession:(id)session delegate:(id)delegate error:(id *)error;
+- (id)enumerateTilesForImage:(id)image cachedSurface:(__IOSurface *)surface guidedByScoreMapFullTile:(void *)tile delegate:(id)delegate block:(id)block;
+- (id)processFineScaleMaps:(uint64_t *)maps adjustedSize:(CRIntermediateDetectorResult *)size fullTileMaps:(int64x2_t *)tileMaps adjustedFullTileSize:(void *)tileSize targetSize:(void *)targetSize targetSizeFullTile:(double)tile intermediateResults:(double)results withScaleIds:(double)self0 sourceImageSize:(double)self1 tileRects:(float64_t)self2 trackingSession:(float64_t)self3;
+- (void)addIntermediateResults:(uint64_t)results idxLog:(void *)log adjustedSize:(uint64_t)size quadFeatures:(uint64_t)features nmsOutputScale:(uint64_t)scale;
+- (void)computeClassificationType:(void *)type fromTextFeatures:(uint64_t *)features fineScaleMap:(uint64_t *)map fullTileMap:(void *)tileMap withScaleIds:;
+- (void)getBorderPoints:(float64x2_t *)points sourceImageSize:(char)size outP1:(float64_t)p1 outP2:(float64_t)p2 isHorizontal:;
+- (void)runFullTileInferenceOnImage:(id)image cachedSurface:(__IOSurface *)surface outputMaps:(void *)maps inputSize:(CGSize *)size outputSize:(CGSize *)outputSize modelContext:(id)context delegate:(id)delegate error:(id *)self0;
+- (void)runNMSForDirection:(uint64_t *)direction adjustedSize:(void *)size fullTileMaps:(void *)maps adjustedFullTileSize:(void *)tileSize targetSize:(int)targetSize targetSizeFullTile:(id *)tile intermediateResults:(uint64_t *)results withScaleIds:(unsigned __int8)self0 sourceImageSize:(unsigned __int8)self1 tileRects:isHorizontal:resultTextFeatures:quadFeatures:isFineScaleVerticalLinkActive:isFullTileVerticalLinkActive:idxLog:;
+- (void)updateNMS:(uint64_t)s andQuadFeatures:(uint64_t *)features inMaps:(void *)maps tileRects:(uint64_t)rects intermediateResult:(int)result isFullTile:(float)tile isHorizontal:adjustedSize:randomPrefix:;
 @end
 
 @implementation CRNeuralTextDetectorV3
 
-+ (void)computeScriptCategoryFromSingleTextFeature:(uint64_t *)a3 map:(void *)a4 scriptRatioThresholds:
++ (void)computeScriptCategoryFromSingleTextFeature:(uint64_t *)feature map:(void *)map scriptRatioThresholds:
 {
   v120[16] = *MEMORY[0x1E69E9840];
   v99 = a2;
-  v5 = a4;
+  mapCopy = map;
   objc_opt_self();
   v6 = +[CRScriptCategoryV1 supportedCategories];
   v7 = [v6 count];
@@ -41,9 +41,9 @@
   std::vector<double>::vector[abi:ne200100](v114, v7);
   v120[0] = 0;
   std::vector<long>::vector[abi:ne200100](&v112, v7);
-  [objc_opt_class() computeClassCount:&v112 classProbabiity:v114 fromSingleTextFeature:v99 map:a3 backgroundClass:0];
-  v100 = v5;
-  v97 = v5;
+  [objc_opt_class() computeClassCount:&v112 classProbabiity:v114 fromSingleTextFeature:v99 map:feature backgroundClass:0];
+  v100 = mapCopy;
+  v97 = mapCopy;
   objc_opt_self();
   v8 = v112;
   if (v112 == v113)
@@ -279,7 +279,7 @@ LABEL_53:
   std::vector<long>::__init_with_size[abi:ne200100]<long *,long *>(&__p, v112, v113, (v113 - v112) >> 3);
   v102 = v99;
   objc_opt_self();
-  v61 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v62 = objc_opt_new();
   v117 = 0u;
   v118 = 0u;
@@ -308,7 +308,7 @@ LABEL_53:
         v70 = *(v114[0] + v65);
         *&v70 = v70;
         v71 = [(CRScriptCategoryResult *)v69 initWithScriptCategory:v68 probability:v70];
-        [v61 addObject:v71];
+        [array addObject:v71];
 
         v72 = [MEMORY[0x1E696AD98] numberWithLong:*(__p + v65)];
         [v62 setObject:v72 forKeyedSubscript:v68];
@@ -325,7 +325,7 @@ LABEL_53:
     while (v64);
   }
 
-  [v102 setScriptCategoryResults:v61];
+  [v102 setScriptCategoryResults:array];
   v73 = +[CRScriptCategoryV1 supportedCategories];
   v74 = [v73 objectAtIndexedSubscript:v101];
   [v102 setSelectedScriptCategory:v74];
@@ -337,7 +337,7 @@ LABEL_53:
     operator delete(__p);
   }
 
-  v75 = **a3;
+  v75 = **feature;
   v77 = *(v75 + 8);
   v76 = *(v75 + 16);
   v78 = v102;
@@ -346,9 +346,9 @@ LABEL_53:
   v80 = +[CRScriptCategoryV1 common];
   v81 = [v79 indexOfObject:v80];
 
-  v82 = [v78 selectedScriptCategory];
+  selectedScriptCategory = [v78 selectedScriptCategory];
   v83 = +[CRScriptCategoryV1 common];
-  if ([v82 isEqual:v83])
+  if ([selectedScriptCategory isEqual:v83])
   {
     v84 = *(v114[0] + v81);
   }
@@ -386,8 +386,8 @@ LABEL_72:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v89 = [v78 subFeatures];
-  v90 = [v89 countByEnumeratingWithState:&v105 objects:v119 count:16];
+  subFeatures = [v78 subFeatures];
+  v90 = [subFeatures countByEnumeratingWithState:&v105 objects:v119 count:16];
   if (v90)
   {
     v91 = *v106;
@@ -397,23 +397,23 @@ LABEL_72:
       {
         if (*v106 != v91)
         {
-          objc_enumerationMutation(v89);
+          objc_enumerationMutation(subFeatures);
         }
 
         v93 = *(*(&v105 + 1) + 8 * i);
-        v94 = [v78 scriptCategoryResults];
-        [v93 setScriptCategoryResults:v94];
+        scriptCategoryResults = [v78 scriptCategoryResults];
+        [v93 setScriptCategoryResults:scriptCategoryResults];
 
-        v95 = [v78 selectedScriptCategory];
-        [v93 setSelectedScriptCategory:v95];
+        selectedScriptCategory2 = [v78 selectedScriptCategory];
+        [v93 setSelectedScriptCategory:selectedScriptCategory2];
 
-        v96 = [v78 scriptCounts];
-        [v93 setScriptCounts:v96];
+        scriptCounts = [v78 scriptCounts];
+        [v93 setScriptCounts:scriptCounts];
 
         [v93 setUseSequenceScriptLocale:{objc_msgSend(v78, "useSequenceScriptLocale")}];
       }
 
-      v90 = [v89 countByEnumeratingWithState:&v105 objects:v119 count:16];
+      v90 = [subFeatures countByEnumeratingWithState:&v105 objects:v119 count:16];
     }
 
     while (v90);
@@ -460,7 +460,7 @@ void __63__CRNeuralTextDetectorV3_CRDetectorTextType__supportedTextType__block_i
   qword_1ED960250 = &unk_1F2BFB188;
 }
 
-+ (void)computeTextTypeFromSingleTextFeature:(uint64_t)a3 map:
++ (void)computeTextTypeFromSingleTextFeature:(uint64_t)feature map:
 {
   v39 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -471,7 +471,7 @@ void __63__CRNeuralTextDetectorV3_CRDetectorTextType__supportedTextType__block_i
   std::vector<double>::vector[abi:ne200100](&v36, v5);
   v33 = 0;
   std::vector<long>::vector[abi:ne200100](&__p, v5);
-  v6 = [objc_opt_class() computeClassCount:&__p classProbabiity:&v36 fromSingleTextFeature:v4 map:a3 backgroundClass:0];
+  v6 = [objc_opt_class() computeClassCount:&__p classProbabiity:&v36 fromSingleTextFeature:v4 map:feature backgroundClass:0];
   v7 = __p;
   if (v6)
   {
@@ -539,15 +539,15 @@ void __63__CRNeuralTextDetectorV3_CRDetectorTextType__supportedTextType__block_i
       objc_opt_class();
       v22 = +[CRNeuralTextDetectorV3 supportedTextType];
       v23 = [v22 objectAtIndex:((v9 - v7) >> 3)];
-      v24 = [v23 unsignedIntegerValue];
+      unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-      [v4 setTextType:v24];
+      [v4 setTextType:unsignedIntegerValue];
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v25 = [v4 subFeatures];
-      v26 = [v25 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      subFeatures = [v4 subFeatures];
+      v26 = [subFeatures countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v26)
       {
         v27 = *v30;
@@ -557,13 +557,13 @@ void __63__CRNeuralTextDetectorV3_CRDetectorTextType__supportedTextType__block_i
           {
             if (*v30 != v27)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(subFeatures);
             }
 
             [*(*(&v29 + 1) + 8 * i) setTextType:{objc_msgSend(v4, "textType")}];
           }
 
-          v26 = [v25 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v26 = [subFeatures countByEnumeratingWithState:&v29 objects:v38 count:16];
         }
 
         while (v26);
@@ -586,10 +586,10 @@ void __63__CRNeuralTextDetectorV3_CRDetectorTextType__supportedTextType__block_i
   }
 }
 
-- (CRNeuralTextDetectorV3)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5
+- (CRNeuralTextDetectorV3)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  ownerCopy = owner;
   v18.receiver = self;
   v18.super_class = CRNeuralTextDetectorV3;
   v10 = [(CRNeuralTextDetector *)&v18 init];
@@ -600,30 +600,30 @@ void __63__CRNeuralTextDetectorV3_CRDetectorTextType__supportedTextType__block_i
 
   if (+[CRNeuralTextDetectorV3 useE5Detector])
   {
-    v11 = [[CRTextDetectorModelV3E5ML alloc] initWithConfiguration:v8 owner:v9 error:a5];
+    v11 = [[CRTextDetectorModelV3E5ML alloc] initWithConfiguration:configurationCopy owner:ownerCopy error:error];
     [(CRNeuralTextDetectorV3 *)v10 setModelE5:v11];
   }
 
   else
   {
-    v11 = [[CRTextDetectorModelV3CoreML alloc] initWithConfiguration:v8 owner:v9 error:a5];
+    v11 = [[CRTextDetectorModelV3CoreML alloc] initWithConfiguration:configurationCopy owner:ownerCopy error:error];
     [(CRNeuralTextDetectorV3 *)v10 setModelEIR:v11];
   }
 
-  v12 = [(CRNeuralTextDetectorV3 *)v10 modelE5];
-  if (v12)
+  modelE5 = [(CRNeuralTextDetectorV3 *)v10 modelE5];
+  if (modelE5)
   {
 
 LABEL_8:
-    [(CRNeuralTextDetector *)v10 setConfiguration:v8];
+    [(CRNeuralTextDetector *)v10 setConfiguration:configurationCopy];
 LABEL_9:
     v14 = v10;
     goto LABEL_10;
   }
 
-  v13 = [(CRNeuralTextDetectorV3 *)v10 modelEIR];
+  modelEIR = [(CRNeuralTextDetectorV3 *)v10 modelEIR];
 
-  if (v13)
+  if (modelEIR)
   {
     goto LABEL_8;
   }
@@ -641,7 +641,7 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)preheatWithError:(id *)a3
+- (BOOL)preheatWithError:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
   if (+[CRNeuralTextDetectorV3 useE5Detector])
@@ -650,32 +650,32 @@ LABEL_10:
     v23[0] = MEMORY[0x1E695E0F8];
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     texture = 0;
-    v6 = [(CRNeuralTextDetector *)self configuration];
-    [v6 tileSize];
+    configuration = [(CRNeuralTextDetector *)self configuration];
+    [configuration tileSize];
     v8 = v7;
-    v9 = [(CRNeuralTextDetector *)self configuration];
-    [v9 tileSize];
+    configuration2 = [(CRNeuralTextDetector *)self configuration];
+    [configuration2 tileSize];
     CVPixelBufferCreate(*MEMORY[0x1E695E480], v8, v10, 0x42475241u, v5, &texture);
 
-    v11 = [(CRNeuralTextDetectorV3 *)self modelE5];
-    v12 = [v11 createExecutionContext];
+    modelE5 = [(CRNeuralTextDetectorV3 *)self modelE5];
+    createExecutionContext = [modelE5 createExecutionContext];
 
-    v13 = [v12 predictionFromImage:texture error:a3];
+    v13 = [createExecutionContext predictionFromImage:texture error:error];
     CVPixelBufferRelease(texture);
   }
 
   else
   {
     texture = 0;
-    v14 = [(CRNeuralTextDetector *)self configuration];
-    [v14 tileSize];
+    configuration3 = [(CRNeuralTextDetector *)self configuration];
+    [configuration3 tileSize];
     v16 = v15;
-    v17 = [(CRNeuralTextDetector *)self configuration];
-    [v17 tileSize];
+    configuration4 = [(CRNeuralTextDetector *)self configuration];
+    [configuration4 tileSize];
     CVPixelBufferCreate(*MEMORY[0x1E695E480], v16, v18, 0x42475241u, MEMORY[0x1E695E0F8], &texture);
 
-    v19 = [(CRNeuralTextDetectorV3 *)self modelEIR];
-    v13 = [v19 predictionFromImage:texture error:a3];
+    modelEIR = [(CRNeuralTextDetectorV3 *)self modelEIR];
+    v13 = [modelEIR predictionFromImage:texture error:error];
 
     CVPixelBufferRelease(texture);
   }
@@ -683,12 +683,12 @@ LABEL_10:
   return v13 != 0;
 }
 
-+ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)a3 originalImageSize:(CGSize)a4 configuration:(id)a5
++ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)height originalImageSize:(CGSize)size configuration:(id)configuration
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [a5 prioritization];
-  v9 = [v8 isEqualToString:@"CRImageReaderPrioritizationPerformance"];
+  height = size.height;
+  width = size.width;
+  prioritization = [configuration prioritization];
+  v9 = [prioritization isEqualToString:@"CRImageReaderPrioritizationPerformance"];
 
   v10 = 4032.0;
   if (v9)
@@ -698,16 +698,16 @@ LABEL_10:
 
   if (width <= height)
   {
-    v11 = height;
+    heightCopy = height;
   }
 
   else
   {
-    v11 = width;
+    heightCopy = width;
   }
 
-  v12 = v10 / v11;
-  if (a3 <= 0.0)
+  v12 = v10 / heightCopy;
+  if (height <= 0.0)
   {
     v19 = 1.0;
     v18 = v12 <= 1.0;
@@ -717,19 +717,19 @@ LABEL_10:
   {
     if (width >= height)
     {
-      v13 = height;
+      heightCopy2 = height;
     }
 
     else
     {
-      v13 = width;
+      heightCopy2 = width;
     }
 
-    v14 = 480.0 / v13;
+    v14 = 480.0 / heightCopy2;
     v15 = v12;
-    if (30.0 / (height * a3) < v15)
+    if (30.0 / (height * height) < v15)
     {
-      v15 = 30.0 / (height * a3);
+      v15 = 30.0 / (height * height);
     }
 
     v16 = v14;
@@ -764,31 +764,31 @@ LABEL_10:
   return result;
 }
 
-+ (double)scaledImageSizeForMaxSize:(double)a3 minSize:(double)a4 inputLengthLimit:(double)a5 imageSize:(double)a6 scale:(double)a7
++ (double)scaledImageSizeForMaxSize:(double)size minSize:(double)minSize inputLengthLimit:(double)limit imageSize:(double)imageSize scale:(double)scale
 {
   objc_opt_self();
-  if (a3 >= a6)
+  if (size >= imageSize)
   {
-    v17 = a6;
+    sizeCopy = imageSize;
   }
 
   else
   {
-    v17 = a3;
+    sizeCopy = size;
   }
 
-  if (a4 >= a7)
+  if (minSize >= scale)
   {
-    v18 = a7;
+    minSizeCopy = scale;
   }
 
   else
   {
-    v18 = a4;
+    minSizeCopy = minSize;
   }
 
-  v19 = v17 / a6;
-  v20 = v18 / a7;
+  v19 = sizeCopy / imageSize;
+  v20 = minSizeCopy / scale;
   if (v19 <= v20)
   {
     v19 = v20;
@@ -798,18 +798,18 @@ LABEL_10:
   v22 = 0.0;
   if (v21 < 1.0)
   {
-    v23 = a6 <= a7 ? a7 : a6;
-    v22 = a5 / v23;
+    v23 = imageSize <= scale ? scale : imageSize;
+    v22 = limit / v23;
     if (v21 < v22)
     {
       v22 = v21;
     }
   }
 
-  v24 = a1 / a6;
-  if (a1 / a6 >= a2 / a7)
+  v24 = self / imageSize;
+  if (self / imageSize >= a2 / scale)
   {
-    v24 = a2 / a7;
+    v24 = a2 / scale;
   }
 
   if (v24 > 1.0)
@@ -824,13 +824,13 @@ LABEL_10:
   }
 
   *a9 = v22;
-  return (a6 * v22 + 0.5);
+  return (imageSize * v22 + 0.5);
 }
 
-+ (float64x2_t)calculateTargetOutputSize:(double)a3 adjustedInputScale:(double)a4 paddedSize:(double)a5 imageSize:(double)a6 maximumSize:(double)a7 minimumSize:(uint64_t)a8 inputLengthLimit:(float64x2_t *)a9
++ (float64x2_t)calculateTargetOutputSize:(double)size adjustedInputScale:(double)scale paddedSize:(double)paddedSize imageSize:(double)imageSize maximumSize:(double)maximumSize minimumSize:(uint64_t)minimumSize inputLengthLimit:(float64x2_t *)limit
 {
   v21 = objc_opt_self();
-  v22.f64[0] = [(CRNeuralTextDetectorV3 *)a3 scaledImageSizeForMaxSize:a4 minSize:a5 inputLengthLimit:a6 imageSize:a7 scale:a1, a2, v21, a10];
+  v22.f64[0] = [(CRNeuralTextDetectorV3 *)size scaledImageSizeForMaxSize:scale minSize:paddedSize inputLengthLimit:imageSize imageSize:maximumSize scale:self, a2, v21, a10];
   v22.f64[1] = v23;
   v24 = vcvt_s32_f32(vrndp_f32(vcvt_f32_f64(vmulq_f64(v22, vdupq_n_s64(0x3FA0000000000000uLL)))));
   v25 = vcgt_s32(0xF0000000FLL, v24);
@@ -842,33 +842,33 @@ LABEL_10:
   __asm { FMOV            V1.2D, #0.5 }
 
   result = vcvtq_f64_f32(vrndp_f32(vcvt_f32_f64(vmulq_f64(v28, _Q1))));
-  *a9 = result;
+  *limit = result;
   return result;
 }
 
-- (id)enumerateTilesForImage:(id)a3 cachedSurface:(__IOSurface *)a4 guidedByScoreMapFullTile:(void *)a5 delegate:(id)a6 block:(id)a7
+- (id)enumerateTilesForImage:(id)image cachedSurface:(__IOSurface *)surface guidedByScoreMapFullTile:(void *)tile delegate:(id)delegate block:(id)block
 {
-  v98 = a3;
-  v97 = a6;
-  v89 = a7;
-  if (v89)
+  imageCopy = image;
+  delegateCopy = delegate;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v11 = [(CRNeuralTextDetector *)self configuration];
-    [v11 tileOverlap];
+    configuration = [(CRNeuralTextDetector *)self configuration];
+    [configuration tileOverlap];
     v13 = v12;
 
-    v14 = [(CRNeuralTextDetector *)self configuration];
-    [v14 tileSize];
+    configuration2 = [(CRNeuralTextDetector *)self configuration];
+    [configuration2 tileSize];
     v91 = v16;
     v92 = v15;
 
-    v17 = [v98 width];
-    v18 = [v98 height];
+    width = [imageCopy width];
+    height = [imageCopy height];
     v19 = v92 - v13;
-    v20 = (v17 - v13) / (v92 - v13);
+    v20 = (width - v13) / (v92 - v13);
     v21 = vcvtps_s32_f32(v20);
     v83 = v91 - v13;
-    v22 = (v18 - v13) / (v91 - v13);
+    v22 = (height - v13) / (v91 - v13);
     v95 = v21;
     v85 = vcvtps_s32_f32(v22);
     v23 = v85 * v21;
@@ -878,11 +878,11 @@ LABEL_10:
     std::vector<CGRect>::vector[abi:ne200100](__p, v23);
     v104 = 0.0;
     v94 = 1.0;
-    if (*a5 && (-[CRNeuralTextDetector configuration](self, "configuration"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 useScaleTraversal], v24, v25))
+    if (*tile && (-[CRNeuralTextDetector configuration](self, "configuration"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 useScaleTraversal], v24, v25))
     {
       v96 = 0;
-      v26 = (v92 / [v98 width] * *(*a5 + 16));
-      v27 = (v91 / [v98 height] * *(*a5 + 8));
+      v26 = (v92 / [imageCopy width] * *(*tile + 16));
+      v27 = (v91 / [imageCopy height] * *(*tile + 8));
       v28 = (v26 * v27) / v92 / v91;
       *&v28 = v28 + v28 + v28 + v28;
       v94 = *&v28;
@@ -935,14 +935,14 @@ LABEL_10:
               height = v109.size.height;
             }
 
-            if (width + x >= [v98 width])
+            if (width + x >= [imageCopy width])
             {
-              v34 = [v98 width];
+              width2 = [imageCopy width];
               v110.origin.x = x;
               v110.origin.y = y;
               v110.size.width = width;
               v110.size.height = height;
-              v111 = CGRectOffset(v110, v34 - (width + x), 0.0);
+              v111 = CGRectOffset(v110, width2 - (width + x), 0.0);
               x = v111.origin.x;
               y = v111.origin.y;
               width = v111.size.width;
@@ -962,14 +962,14 @@ LABEL_10:
               height = v113.size.height;
             }
 
-            if (height + y >= [v98 height])
+            if (height + y >= [imageCopy height])
             {
-              v35 = [v98 height];
+              height2 = [imageCopy height];
               v114.origin.x = x;
               v114.origin.y = y;
               v114.size.width = width;
               v114.size.height = height;
-              v115 = CGRectOffset(v114, 0.0, v35 - (height + y));
+              v115 = CGRectOffset(v114, 0.0, height2 - (height + y));
               x = v115.origin.x;
               y = v115.origin.y;
               width = v115.size.width;
@@ -982,14 +982,14 @@ LABEL_10:
             v37[1] = y;
             v37[2] = width;
             v37[3] = height;
-            if (!v97 || ([v98 size], objc_msgSend(v97, "shouldRunTileForRect:imageSize:", x, y, width, height, v38, v39)))
+            if (!delegateCopy || ([imageCopy size], objc_msgSend(delegateCopy, "shouldRunTileForRect:imageSize:", x, y, width, height, v38, v39)))
             {
-              v40 = [v98 width];
-              v41 = [v98 height];
-              v42 = [v98 width];
-              v43 = [v98 height];
-              v44 = x / v40;
-              v45 = [MEMORY[0x1E696B098] valueWithRect:{v44, y / v41, width / v42, height / v43}];
+              width3 = [imageCopy width];
+              height3 = [imageCopy height];
+              width4 = [imageCopy width];
+              height4 = [imageCopy height];
+              v44 = x / width3;
+              v45 = [MEMORY[0x1E696B098] valueWithRect:{v44, y / height3, width / width4, height / height4}];
               [v90 addObject:v45];
 
               if (v96)
@@ -1001,8 +1001,8 @@ LABEL_10:
               {
                 if (v27)
                 {
-                  v46 = (y / v41 * *(*a5 + 8));
-                  v47 = (v44 * *(*a5 + 16));
+                  v46 = (y / height3 * *(*tile + 8));
+                  v47 = (v44 * *(*tile + 16));
                   do
                   {
                     __C = 0.2;
@@ -1010,7 +1010,7 @@ LABEL_10:
                     v48 = malloc_type_calloc(v26, 4uLL, 0x100004052888210uLL);
                     __NHigh = 0;
                     __NLow = 0;
-                    vDSP_vclipc((**a5 + 4 * *(*a5 + 16) * v46 + 4 * v47), 1, &__B, &__C, v48, 1, v26, &__NLow, &__NHigh);
+                    vDSP_vclipc((**tile + 4 * *(*tile + 16) * v46 + 4 * v47), 1, &__B, &__C, v48, 1, v26, &__NLow, &__NHigh);
                     free(v48);
                     v49 = v106[0];
                     *(v106[0] + v36) = *(v106[0] + v36) + __NHigh;
@@ -1037,17 +1037,17 @@ LABEL_10:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v98 imageByCroppingRectangle:a4 toSurface:{x, y, width, height}];
+                    [imageCopy imageByCroppingRectangle:surface toSurface:{x, y, width, height}];
                   }
 
                   else
                   {
-                    [v98 imageByCroppingRectangle:{x, y, width, height}];
+                    [imageCopy imageByCroppingRectangle:{x, y, width, height}];
                   }
                   v50 = ;
-                  v51 = [v50 pixelBuffer];
+                  pixelBuffer = [v50 pixelBuffer];
                   v104 = 0.0;
-                  v89[2](v89, v51, &v104, &v103, x, y, width, height);
+                  blockCopy[2](blockCopy, pixelBuffer, &v104, &v103, x, y, width, height);
                   v96 = (v94 * v104) > *(v106[0] + v36);
                   ++v88;
                 }
@@ -1070,15 +1070,15 @@ LABEL_10:
           break;
         }
 
-        v52 = [(CRNeuralTextDetector *)self shouldCancel];
-        v53 = ++v87 == v85 || v52;
+        shouldCancel = [(CRNeuralTextDetector *)self shouldCancel];
+        v53 = ++v87 == v85 || shouldCancel;
       }
 
       while ((v53 & 1) == 0);
       v54 = v88 != 0;
     }
 
-    if (v96 || v54 || (v56 = v85 / 2 * v95 + v95 / 2, v57 = (__p[0] + 32 * v56), v59 = *v57, v58 = v57[1], v61 = v57[2], v60 = v57[3], v97) && ([v98 size], (objc_msgSend(v97, "shouldRunTileForRect:imageSize:", v59, v58, v61, v60, v62, v63) & 1) == 0))
+    if (v96 || v54 || (v56 = v85 / 2 * v95 + v95 / 2, v57 = (__p[0] + 32 * v56), v59 = *v57, v58 = v57[1], v61 = v57[2], v60 = v57[3], delegateCopy) && ([imageCopy size], (objc_msgSend(delegateCopy, "shouldRunTileForRect:imageSize:", v59, v58, v61, v60, v62, v63) & 1) == 0))
     {
       if (v85 >= 1 && v96)
       {
@@ -1091,17 +1091,17 @@ LABEL_10:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v98 imageByCroppingRectangle:a4 toSurface:{v59, v58, v61, v60}];
+        [imageCopy imageByCroppingRectangle:surface toSurface:{v59, v58, v61, v60}];
       }
 
       else
       {
-        [v98 imageByCroppingRectangle:{v59, v58, v61, v60}];
+        [imageCopy imageByCroppingRectangle:{v59, v58, v61, v60}];
       }
       v64 = ;
-      v65 = [v64 pixelBuffer];
+      pixelBuffer2 = [v64 pixelBuffer];
       v104 = 0.0;
-      v89[2](v89, v65, &v104, &v103, *(__p[0] + 4 * v56), *(__p[0] + 4 * v56 + 1), *(__p[0] + 4 * v56 + 2), *(__p[0] + 4 * v56 + 3));
+      blockCopy[2](blockCopy, pixelBuffer2, &v104, &v103, *(__p[0] + 4 * v56), *(__p[0] + 4 * v56 + 1), *(__p[0] + 4 * v56 + 2), *(__p[0] + 4 * v56 + 3));
       if (v104 <= 0.0)
       {
       }
@@ -1119,8 +1119,8 @@ LABEL_56:
 LABEL_73:
             if ((v103 & 1) == 0)
             {
-              v80 = [(CRNeuralTextDetector *)self shouldCancel];
-              v81 = ++v66 == v85 || v80;
+              shouldCancel2 = [(CRNeuralTextDetector *)self shouldCancel];
+              v81 = ++v66 == v85 || shouldCancel2;
               if ((v81 & 1) == 0)
               {
                 continue;
@@ -1139,8 +1139,8 @@ LABEL_73:
 LABEL_66:
               if ((v103 & 1) == 0)
               {
-                v78 = [(CRNeuralTextDetector *)self shouldCancel];
-                v79 = ++v67 == v95 || v78;
+                shouldCancel3 = [(CRNeuralTextDetector *)self shouldCancel];
+                v79 = ++v67 == v95 || shouldCancel3;
                 if ((v79 & 1) == 0)
                 {
                   continue;
@@ -1155,22 +1155,22 @@ LABEL_66:
             v71 = v69[1];
             v72 = v69[2];
             v73 = v69[3];
-            if (!v97 || ([v98 size], (objc_msgSend(v97, "shouldRunTileForRect:imageSize:", v70, v71, v72, v73, v74, v75) & 1) != 0))
+            if (!delegateCopy || ([imageCopy size], (objc_msgSend(delegateCopy, "shouldRunTileForRect:imageSize:", v70, v71, v72, v73, v74, v75) & 1) != 0))
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v98 imageByCroppingRectangle:a4 toSurface:{v70, v71, v72, v73}];
+                [imageCopy imageByCroppingRectangle:surface toSurface:{v70, v71, v72, v73}];
               }
 
               else
               {
-                [v98 imageByCroppingRectangle:{v70, v71, v72, v73}];
+                [imageCopy imageByCroppingRectangle:{v70, v71, v72, v73}];
               }
               v76 = ;
-              v77 = [v76 pixelBuffer];
+              pixelBuffer3 = [v76 pixelBuffer];
               v104 = 1.0;
-              v89[2](v89, v77, &v104, &v103, v70, v71, v72, v73);
+              blockCopy[2](blockCopy, pixelBuffer3, &v104, &v103, v70, v71, v72, v73);
 
               goto LABEL_66;
             }
@@ -1207,45 +1207,45 @@ LABEL_80:
   return v55;
 }
 
-+ (void)createImageMap:(void *)a3 targetSize:
++ (void)createImageMap:(void *)map targetSize:
 {
-  v5 = a3;
+  mapCopy = map;
   objc_opt_self();
-  v3 = [v5 shape];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  shape = [mapCopy shape];
+  v4 = [shape objectAtIndexedSubscript:0];
   [v4 integerValue];
 
   operator new();
 }
 
-+ (void)createMultiChannelImageMaps:(CGFloat)a3 size:(uint64_t)a4 channels:(void *)a5
++ (void)createMultiChannelImageMaps:(CGFloat)maps size:(uint64_t)size channels:(void *)channels
 {
-  v25 = a5;
+  channelsCopy = channels;
   objc_opt_self();
-  v9 = [v25 strides];
-  v10 = [v9 objectAtIndexedSubscript:0];
-  v11 = [v10 integerValue];
+  strides = [channelsCopy strides];
+  v10 = [strides objectAtIndexedSubscript:0];
+  integerValue = [v10 integerValue];
 
-  v12 = [v25 strides];
-  v13 = [v12 objectAtIndexedSubscript:1];
-  v14 = [v13 integerValue];
+  strides2 = [channelsCopy strides];
+  v13 = [strides2 objectAtIndexedSubscript:1];
+  integerValue2 = [v13 integerValue];
 
   v28.width = a2;
-  v28.height = a3;
-  CRDetectorOutputMaps::createMaps(a6, v28, a1);
-  v15 = [v25 dataPointer];
+  v28.height = maps;
+  CRDetectorOutputMaps::createMaps(a6, v28, self);
+  dataPointer = [channelsCopy dataPointer];
   if (a6 >= 1)
   {
-    v16 = v15;
+    v16 = dataPointer;
     v17 = 0;
     v18 = vcvtd_n_u64_f64(a2, 2uLL);
-    v19 = 4 * v11;
-    v20 = 4 * v14;
+    v19 = 4 * integerValue;
+    v20 = 4 * integerValue2;
     do
     {
-      if (a3 > 0.0)
+      if (maps > 0.0)
       {
-        v21 = **(*a1 + 8 * v17);
+        v21 = **(*self + 8 * v17);
         v22 = 1;
         v23 = v16;
         do
@@ -1256,7 +1256,7 @@ LABEL_80:
           v21 += 4 * a2;
         }
 
-        while (a3 > v24);
+        while (maps > v24);
       }
 
       ++v17;
@@ -1267,19 +1267,19 @@ LABEL_80:
   }
 }
 
-- (id)detectInImage:(id)a3 delegate:(id)a4 error:(id *)a5
+- (id)detectInImage:(id)image delegate:(id)delegate error:(id *)error
 {
-  v5 = [(CRNeuralTextDetectorV3 *)self detectInImage:a3 trackingSession:0 delegate:a4 error:a5];
+  v5 = [(CRNeuralTextDetectorV3 *)self detectInImage:image trackingSession:0 delegate:delegate error:error];
 
   return v5;
 }
 
-- (id)detectInImage:(id)a3 trackingSession:(id)a4 delegate:(id)a5 error:(id *)a6
+- (id)detectInImage:(id)image trackingSession:(id)session delegate:(id)delegate error:(id *)error
 {
   v135 = *MEMORY[0x1E69E9840];
-  v58 = a3;
-  v61 = a4;
-  v60 = a5;
+  imageCopy = image;
+  sessionCopy = session;
+  delegateCopy = delegate;
   v129[0] = 0;
   v129[1] = v129;
   v129[2] = 0x9812000000;
@@ -1332,38 +1332,38 @@ LABEL_80:
   v114[3] = __Block_byref_object_copy__11;
   v114[4] = __Block_byref_object_dispose__12;
   v114[5] = &unk_1B4305E9E;
-  v10 = [(CRNeuralTextDetector *)self configuration];
-  v11 = [v10 disableScriptDetection];
+  configuration = [(CRNeuralTextDetector *)self configuration];
+  disableScriptDetection = [configuration disableScriptDetection];
 
-  v12 = [(CRNeuralTextDetector *)self configuration];
-  v13 = [v12 disableTextTypeDetection];
+  configuration2 = [(CRNeuralTextDetector *)self configuration];
+  disableTextTypeDetection = [configuration2 disableTextTypeDetection];
 
-  if (v60)
+  if (delegateCopy)
   {
-    v14 = [v60 detectTables];
-    if (v61)
+    detectTables = [delegateCopy detectTables];
+    if (sessionCopy)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v14;
+      v15 = detectTables;
     }
   }
 
   else
   {
-    v16 = [(CRNeuralTextDetector *)self configuration];
-    v17 = [v16 detectTables];
-    if (v61)
+    configuration3 = [(CRNeuralTextDetector *)self configuration];
+    detectTables2 = [configuration3 detectTables];
+    if (sessionCopy)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v17;
+      v15 = detectTables2;
     }
   }
 
@@ -1373,36 +1373,36 @@ LABEL_80:
   v112[3] = __Block_byref_object_copy__9;
   v112[4] = __Block_byref_object_dispose__10;
   v113 = 0;
-  v18 = [(CRNeuralTextDetector *)self detectorStats];
-  v19 = v11 ^ 1;
+  detectorStats = [(CRNeuralTextDetector *)self detectorStats];
+  v19 = disableScriptDetection ^ 1;
   v99[0] = MEMORY[0x1E69E9820];
   v99[1] = 3221225472;
   v99[2] = __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error___block_invoke;
   v99[3] = &unk_1E7BC3400;
   v99[4] = self;
   v102 = v116;
-  v59 = v58;
+  v59 = imageCopy;
   v100 = v59;
   v103 = &v118;
   v104 = v117;
   v105 = v124;
   v106 = v115;
   v107 = v114;
-  v57 = v60;
+  v57 = delegateCopy;
   v101 = v57;
   v108 = v129;
-  v110 = v11 ^ 1;
-  v111 = v13 ^ 1;
+  v110 = disableScriptDetection ^ 1;
+  v111 = disableTextTypeDetection ^ 1;
   v109 = v112;
-  [v18 measureBlock:v99];
+  [detectorStats measureBlock:v99];
 
   v20 = v119[5];
   if (v20)
   {
     v21 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v20;
+      *error = v20;
     }
   }
 
@@ -1434,7 +1434,7 @@ LABEL_80:
     v86 = __Block_byref_object_copy__9;
     v87 = __Block_byref_object_dispose__10;
     v88 = 0;
-    v22 = [(CRNeuralTextDetector *)self postProcStats];
+    postProcStats = [(CRNeuralTextDetector *)self postProcStats];
     v66[0] = MEMORY[0x1E69E9820];
     v66[1] = 3221225472;
     v66[2] = __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error___block_invoke_27;
@@ -1454,14 +1454,14 @@ LABEL_80:
     v78 = v112;
     v80 = v19;
     v81 = v15;
-    v68 = v61;
+    v68 = sessionCopy;
     v79 = v89;
-    v82 = v13 ^ 1;
-    [v22 measureBlock:v66];
+    v82 = disableTextTypeDetection ^ 1;
+    [postProcStats measureBlock:v66];
 
     v24 = objc_opt_new();
-    v25 = [(CRNeuralTextDetector *)self configuration];
-    v26 = [v25 skipVerticalText];
+    configuration4 = [(CRNeuralTextDetector *)self configuration];
+    skipVerticalText = [configuration4 skipVerticalText];
 
     v64 = 0u;
     v65 = 0u;
@@ -1482,7 +1482,7 @@ LABEL_80:
           }
 
           v31 = *(*(&v62 + 1) + 8 * i);
-          if (!v26 || ([*(*(&v62 + 1) + 8 * i) isVerticalLayout] & 1) == 0)
+          if (!skipVerticalText || ([*(*(&v62 + 1) + 8 * i) isVerticalLayout] & 1) == 0)
           {
             v32 = objc_opt_class();
             [v23 size];
@@ -1513,14 +1513,14 @@ LABEL_80:
     }
 
     v21 = [[CRDetectionResult alloc] initWithLines:v24];
-    v44 = [v84[5] pyramidPreIntraScaleNMSTextFeatures];
-    [(CRDetectionResult *)v21 setPyramidPreIntraScaleNMSTextFeatures:v44];
+    pyramidPreIntraScaleNMSTextFeatures = [v84[5] pyramidPreIntraScaleNMSTextFeatures];
+    [(CRDetectionResult *)v21 setPyramidPreIntraScaleNMSTextFeatures:pyramidPreIntraScaleNMSTextFeatures];
 
-    v45 = [v84[5] pyramidScaleSize];
-    [(CRDetectionResult *)v21 setPyramidScaleSize:v45];
+    pyramidScaleSize = [v84[5] pyramidScaleSize];
+    [(CRDetectionResult *)v21 setPyramidScaleSize:pyramidScaleSize];
 
-    v46 = [v84[5] pyramidScaleName];
-    [(CRDetectionResult *)v21 setPyramidScaleName:v46];
+    pyramidScaleName = [v84[5] pyramidScaleName];
+    [(CRDetectionResult *)v21 setPyramidScaleName:pyramidScaleName];
 
     v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:? count:?];
     [(CRDetectionResult *)v21 setTableRegions:v47];
@@ -2313,18 +2313,18 @@ void __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error__
   }
 }
 
-- (id)processFineScaleMaps:(uint64_t *)a3 adjustedSize:(CRIntermediateDetectorResult *)a4 fullTileMaps:(int64x2_t *)a5 adjustedFullTileSize:(void *)a6 targetSize:(void *)a7 targetSizeFullTile:(double)a8 intermediateResults:(double)a9 withScaleIds:(double)a10 sourceImageSize:(double)a11 tileRects:(float64_t)a12 trackingSession:(float64_t)a13
+- (id)processFineScaleMaps:(uint64_t *)maps adjustedSize:(CRIntermediateDetectorResult *)size fullTileMaps:(int64x2_t *)tileMaps adjustedFullTileSize:(void *)tileSize targetSize:(void *)targetSize targetSizeFullTile:(double)tile intermediateResults:(double)results withScaleIds:(double)self0 sourceImageSize:(double)self1 tileRects:(float64_t)self2 trackingSession:(float64_t)self3
 {
   v531 = *MEMORY[0x1E69E9840];
-  v444 = a6;
-  v439 = a7;
-  if (!a1)
+  tileSizeCopy = tileSize;
+  targetSizeCopy = targetSize;
+  if (!self)
   {
     goto LABEL_407;
   }
 
-  v440 = a4;
-  if (a4)
+  sizeCopy = size;
+  if (size)
   {
     v446 = [[CRIntermediateDetectorResult alloc] initWithNumberOfScales:4];
   }
@@ -2343,12 +2343,12 @@ void __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error__
   v505 = 0;
   v504[1] = 0;
   v20 = 1;
-  if (*a3 && *a2)
+  if (*maps && *a2)
   {
     v22 = a2[4];
     v21 = a2[5];
-    v24 = a3[4];
-    v23 = a3[5];
+    v24 = maps[4];
+    v23 = maps[5];
     memset(&__dst, 0, sizeof(__dst));
     CRDetectorUtils::erodeImageMap(v24, &__dst);
     memset(v528, 0, 32);
@@ -2435,9 +2435,9 @@ void __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error__
 
   v504[0] = 0;
   v442 = v19;
-  [CRNeuralTextDetectorV3 runNMSForDirection:a1 adjustedSize:v18 fullTileMaps:a3 adjustedFullTileSize:v446 targetSize:&v507 targetSizeFullTile:v444 intermediateResults:1 withScaleIds:v504 sourceImageSize:&v505 tileRects:v19 & 1 isHorizontal:v20 & 1 resultTextFeatures:? quadFeatures:? isFineScaleVerticalLinkActive:? isFullTileVerticalLinkActive:? idxLog:?];
+  [CRNeuralTextDetectorV3 runNMSForDirection:self adjustedSize:v18 fullTileMaps:maps adjustedFullTileSize:v446 targetSize:&v507 targetSizeFullTile:tileSizeCopy intermediateResults:1 withScaleIds:v504 sourceImageSize:&v505 tileRects:v19 & 1 isHorizontal:v20 & 1 resultTextFeatures:? quadFeatures:? isFineScaleVerticalLinkActive:? isFullTileVerticalLinkActive:? idxLog:?];
   v443 = v504[0];
-  if (&v507 != a5)
+  if (&v507 != tileMaps)
   {
     v50 = (v509 >> 9) & 0x7FFFFFFFFFFFF8;
     v51 = (*(&v507 + 1) + v50);
@@ -2455,8 +2455,8 @@ void __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error__
       if ((*(*(&v507 + 1) + v54) + ((WORD4(v509) + v509) & 0xFFF)) != v53)
       {
         v55 = ((WORD4(v509) + v509) & 0xFFF) - v52 + ((v54 - v50) << 9);
-        v57 = &a5[2].i64[1];
-        v56 = a5[2].u64[1];
+        v57 = &tileMaps[2].i64[1];
+        v56 = tileMaps[2].u64[1];
         if (v56 < v55)
         {
           v58 = (*v51 + (v509 & 0xFFF));
@@ -2478,43 +2478,43 @@ void __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error__
             }
           }
 
-          v81 = a5->i64[1];
-          if (a5[1].i64[0] == v81)
+          v81 = tileMaps->i64[1];
+          if (tileMaps[1].i64[0] == v81)
           {
             v82 = 0;
           }
 
           else
           {
-            v82 = *(v81 + 8 * (a5[2].i64[0] >> 12)) + (a5[2].i64[0] & 0xFFF);
+            v82 = *(v81 + 8 * (tileMaps[2].i64[0] >> 12)) + (tileMaps[2].i64[0] & 0xFFF);
           }
 
-          __dst.data = (v81 + 8 * (a5[2].i64[0] >> 12));
+          __dst.data = (v81 + 8 * (tileMaps[2].i64[0] >> 12));
           __dst.height = v82;
           std::__for_each_segment[abi:ne200100]<std::__deque_iterator<unsigned char,unsigned char const*,unsigned char const&,unsigned char const* const*,long,4096l>,std::__copy_impl::_CopySegment<std::__deque_iterator<unsigned char,unsigned char const*,unsigned char const&,unsigned char const* const*,long,4096l>,std::__deque_iterator<unsigned char,unsigned char *,unsigned char &,unsigned char **,long,4096l>>>(v51, v53, v59, v58, &__dst);
-          v83 = a5->i64[1];
-          v84 = a5[1].i64[0];
+          v83 = tileMaps->i64[1];
+          v84 = tileMaps[1].i64[0];
           v85 = ((v84 - v83) << 9) - 1;
           if (v84 == v83)
           {
             v85 = 0;
           }
 
-          v86 = a5[2].i64[1];
-          v87 = a5[2].i64[0] + v86;
+          v86 = tileMaps[2].i64[1];
+          v87 = tileMaps[2].i64[0] + v86;
           v88 = v85 - v87;
           if (v55 - v86 <= v88)
           {
-            v89 = a5[2].i64[1];
+            v89 = tileMaps[2].i64[1];
           }
 
           else
           {
-            std::deque<unsigned char>::__add_back_capacity(a5, v55 - v86 - v88);
-            v89 = a5[2].i64[1];
-            v83 = a5->i64[1];
-            v84 = a5[1].i64[0];
-            v87 = a5[2].i64[0] + v89;
+            std::deque<unsigned char>::__add_back_capacity(tileMaps, v55 - v86 - v88);
+            v89 = tileMaps[2].i64[1];
+            v83 = tileMaps->i64[1];
+            v84 = tileMaps[1].i64[0];
+            v87 = tileMaps[2].i64[0] + v89;
           }
 
           v90 = (v83 + 8 * (v87 >> 12));
@@ -2596,11 +2596,11 @@ void __71__CRNeuralTextDetectorV3_detectInImage_trackingSession_delegate_error__
         }
 
         v61 = (*v51 + (v509 & 0xFFF));
-        v62 = a5;
+        tileMapsCopy2 = tileMaps;
 LABEL_32:
-        v63 = v62[1];
-        v64 = (v63 + 8 * (v62[4] >> 12));
-        if (v62[2] == v63)
+        v63 = tileMapsCopy2[1];
+        v64 = (v63 + 8 * (tileMapsCopy2[4] >> 12));
+        if (tileMapsCopy2[2] == v63)
         {
           v65 = 0;
           if (v55)
@@ -2626,7 +2626,7 @@ LABEL_34:
 
         else
         {
-          v65 = *v64 + (v62[4] & 0xFFF);
+          v65 = *v64 + (tileMapsCopy2[4] & 0xFFF);
           if (v55)
           {
             goto LABEL_34;
@@ -2638,10 +2638,10 @@ LABEL_39:
         __dst.data = v64;
         __dst.height = v65;
         std::__for_each_segment[abi:ne200100]<std::__deque_iterator<unsigned char,unsigned char const*,unsigned char const&,unsigned char const* const*,long,4096l>,std::__copy_impl::_CopySegment<std::__deque_iterator<unsigned char,unsigned char const*,unsigned char const&,unsigned char const* const*,long,4096l>,std::__deque_iterator<unsigned char,unsigned char *,unsigned char &,unsigned char **,long,4096l>>>(v51, v53, v67, v61, &__dst);
-        v69 = a5[2].i64[0];
-        v70 = a5[2].i64[1];
-        v72 = a5->i64[1];
-        v71 = a5[1].i64[0];
+        v69 = tileMaps[2].i64[0];
+        v70 = tileMaps[2].i64[1];
+        v72 = tileMaps->i64[1];
+        v71 = tileMaps[1].i64[0];
         v73 = (v72 + 8 * ((v69 + v70) >> 12));
         if (v71 == v72)
         {
@@ -2666,9 +2666,9 @@ LABEL_39:
               do
               {
                 operator delete(*(v71 - 8));
-                v78 = a5->i64[1];
-                v71 = a5[1].i64[0] - 8;
-                a5[1].i64[0] = v71;
+                v78 = tileMaps->i64[1];
+                v71 = tileMaps[1].i64[0] - 8;
+                tileMaps[1].i64[0] = v71;
                 if (v71 == v78)
                 {
                   v79 = 0;
@@ -2680,7 +2680,7 @@ LABEL_39:
                 }
               }
 
-              while ((v79 - (a5[2].i64[1] + a5[2].i64[0])) >> 13);
+              while ((v79 - (tileMaps[2].i64[1] + tileMaps[2].i64[0])) >> 13);
             }
           }
         }
@@ -2692,8 +2692,8 @@ LABEL_39:
     }
 
     v55 = 0;
-    v62 = a5;
-    v57 = &a5[2].i64[1];
+    tileMapsCopy2 = tileMaps;
+    v57 = &tileMaps[2].i64[1];
     goto LABEL_32;
   }
 
@@ -2707,7 +2707,7 @@ LABEL_81:
     v499 = 0;
     v500 = 0;
     v497 = 0;
-    [CRNeuralTextDetectorV3 runNMSForDirection:a1 adjustedSize:a2 fullTileMaps:a3 adjustedFullTileSize:v446 targetSize:&v501 targetSizeFullTile:v444 intermediateResults:0 withScaleIds:&v497 sourceImageSize:&v498 tileRects:v442 & 1 isHorizontal:v20 & 1 resultTextFeatures:? quadFeatures:? isFineScaleVerticalLinkActive:? isFullTileVerticalLinkActive:? idxLog:?];
+    [CRNeuralTextDetectorV3 runNMSForDirection:self adjustedSize:a2 fullTileMaps:maps adjustedFullTileSize:v446 targetSize:&v501 targetSizeFullTile:tileSizeCopy intermediateResults:0 withScaleIds:&v497 sourceImageSize:&v498 tileRects:v442 & 1 isHorizontal:v20 & 1 resultTextFeatures:? quadFeatures:? isFineScaleVerticalLinkActive:? isFullTileVerticalLinkActive:? idxLog:?];
     v101 = v497;
     v441 = v443;
     v448 = v101;
@@ -2781,8 +2781,8 @@ LABEL_81:
                 v114 = *(v515.height + 8 * i);
                 v115 = v109;
                 v116 = v114;
-                [(CRNeuralTextDetectorV3 *)v115 getBorderPoints:&v525 sourceImageSize:1 outP1:a12 outP2:a13 isHorizontal:?];
-                [(CRNeuralTextDetectorV3 *)v116 getBorderPoints:&v523 sourceImageSize:0 outP1:a12 outP2:a13 isHorizontal:?];
+                [(CRNeuralTextDetectorV3 *)v115 getBorderPoints:&v525 sourceImageSize:1 outP1:rects outP2:session isHorizontal:?];
+                [(CRNeuralTextDetectorV3 *)v116 getBorderPoints:&v523 sourceImageSize:0 outP1:rects outP2:session isHorizontal:?];
                 v117 = v510;
                 v118 = v525;
                 v119 = v524;
@@ -3069,13 +3069,13 @@ LABEL_81:
     if ([v198 count])
     {
       v213 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v214 = a3;
+      mapsCopy = maps;
       if (v442)
       {
-        v214 = a2;
+        mapsCopy = a2;
       }
 
-      CRDetectorPostProcessV3::getSplitComponents(v197, v198, *v214, v213);
+      CRDetectorPostProcessV3::getSplitComponents(v197, v198, *mapsCopy, v213);
     }
 
     *&v525.f64[0] = &v510;
@@ -3173,7 +3173,7 @@ LABEL_81:
           v222 = v221;
         }
 
-        v530 = &v505;
+        tileMapsCopy3 = &v505;
         if (v222)
         {
           std::__allocate_at_least[abi:ne200100]<std::allocator<CRDetectorUtils::CRTextDetectorQuadFeature>>(&v505, v222);
@@ -3233,12 +3233,12 @@ LABEL_81:
       }
     }
 
-    v246 = a5[2].u64[0];
-    v245 = a5[2].i64[1];
+    v246 = tileMaps[2].u64[0];
+    v245 = tileMaps[2].i64[1];
     v247 = v246 + v245;
     v248 = ((v246 + v245) >> 9) & 0x7FFFFFFFFFFFF8;
-    v249 = a5->i64[1];
-    v250 = a5[1].i64[0];
+    v249 = tileMaps->i64[1];
+    v250 = tileMaps[1].i64[0];
     if (v250 == v249)
     {
       v251 = 0;
@@ -3288,7 +3288,7 @@ LABEL_81:
 
     else
     {
-      v262 = *(v249 + v260) + (a5[2].i64[0] & 0xFFF);
+      v262 = *(v249 + v260) + (tileMaps[2].i64[0] & 0xFFF);
     }
 
     v483 = v256;
@@ -3339,19 +3339,19 @@ LABEL_81:
 
         if (v267 <= v268 >> 12)
         {
-          for (a5[2].i64[0] = v246 + (v270 << 12); v270; --v270)
+          for (tileMaps[2].i64[0] = v246 + (v270 << 12); v270; --v270)
           {
-            v284 = a5[1].i64[0];
+            v284 = tileMaps[1].i64[0];
             __dst.data = *(v284 - 8);
-            a5[1].i64[0] = v284 - 8;
-            std::__split_buffer<unsigned long *>::emplace_front<unsigned long *>(a5, &__dst);
+            tileMaps[1].i64[0] = v284 - 8;
+            std::__split_buffer<unsigned long *>::emplace_front<unsigned long *>(tileMaps, &__dst);
           }
         }
 
         else
         {
           v271 = v267 - v270;
-          v272 = a5[1].i64[1] - a5->i64[0];
+          v272 = tileMaps[1].i64[1] - tileMaps->i64[0];
           if (v267 - v270 > (v272 >> 3) - (v266 >> 3))
           {
             v273 = v271 + (v266 >> 3);
@@ -3365,10 +3365,10 @@ LABEL_81:
               v274 = v272 >> 2;
             }
 
-            v530 = a5;
+            tileMapsCopy3 = tileMaps;
             if (v274)
             {
-              std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned long *>>(a5, v274);
+              std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned long *>>(tileMaps, v274);
             }
 
             memset(&__dst, 0, sizeof(__dst));
@@ -3377,7 +3377,7 @@ LABEL_81:
 
           if (v271)
           {
-            if (v249 != a5->i64[0])
+            if (v249 != tileMaps->i64[0])
             {
               operator new();
             }
@@ -3385,18 +3385,18 @@ LABEL_81:
             operator new();
           }
 
-          for (a5[2].i64[0] = v246 + (v270 << 12); v270; --v270)
+          for (tileMaps[2].i64[0] = v246 + (v270 << 12); v270; --v270)
           {
-            v312 = a5[1].i64[0];
+            v312 = tileMaps[1].i64[0];
             __dst.data = *(v312 - 8);
-            a5[1].i64[0] = v312 - 8;
-            std::__split_buffer<unsigned long *>::emplace_front<unsigned long *>(a5, &__dst);
+            tileMaps[1].i64[0] = v312 - 8;
+            std::__split_buffer<unsigned long *>::emplace_front<unsigned long *>(tileMaps, &__dst);
           }
         }
 
-        v246 = a5[2].u64[0];
-        v249 = a5->i64[1];
-        v250 = a5[1].i64[0];
+        v246 = tileMaps[2].u64[0];
+        v249 = tileMaps->i64[1];
+        v250 = tileMaps[1].i64[0];
         v259 = v246 >> 12;
       }
 
@@ -3452,7 +3452,7 @@ LABEL_316:
 
               v337 = *--v334;
               *--v318 = v337;
-              a5[2] = vaddq_s64(a5[2], xmmword_1B42AF9D0);
+              tileMaps[2] = vaddq_s64(tileMaps[2], xmmword_1B42AF9D0);
             }
 
             while (v334 != v314);
@@ -3699,7 +3699,7 @@ LABEL_306:
 
               v328 = *--v325;
               *--v318 = v328;
-              a5[2] = vaddq_s64(a5[2], xmmword_1B42AF9D0);
+              tileMaps[2] = vaddq_s64(tileMaps[2], xmmword_1B42AF9D0);
             }
 
             while (v325 != v315);
@@ -3728,11 +3728,11 @@ LABEL_306:
     v276 = v275 - v247;
     if (v258 > v276)
     {
-      std::deque<unsigned char>::__add_back_capacity(a5, v258 - v276);
-      v245 = a5[2].i64[1];
-      v249 = a5->i64[1];
-      v250 = a5[1].i64[0];
-      v247 = a5[2].i64[0] + v245;
+      std::deque<unsigned char>::__add_back_capacity(tileMaps, v258 - v276);
+      v245 = tileMaps[2].i64[1];
+      v249 = tileMaps->i64[1];
+      v250 = tileMaps[1].i64[0];
+      v247 = tileMaps[2].i64[0] + v245;
     }
 
     v277 = (v249 + 8 * (v247 >> 12));
@@ -3814,7 +3814,7 @@ LABEL_240:
               v290 = v292;
             }
 
-            ++a5[2].i64[1];
+            ++tileMaps[2].i64[1];
           }
 
           while (v290 != v257);
@@ -3868,7 +3868,7 @@ LABEL_410:
               v298 = v300;
             }
 
-            ++a5[2].i64[1];
+            ++tileMaps[2].i64[1];
           }
 
           while (v298 != v278);
@@ -4266,7 +4266,7 @@ LABEL_367:
           objc_enumerationMutation(v468);
         }
 
-        v368 = a5[2].u64[1];
+        v368 = tileMaps[2].u64[1];
         if (v368)
         {
           if (v368 <= v367)
@@ -4274,7 +4274,7 @@ LABEL_367:
             v369 = 1;
           }
 
-          else if (*(*(a5->i64[1] + (((a5[2].i64[0] + v367) >> 9) & 0x7FFFFFFFFFFFF8)) + ((a5[2].i64[0] + v367) & 0xFFF)))
+          else if (*(*(tileMaps->i64[1] + (((tileMaps[2].i64[0] + v367) >> 9) & 0x7FFFFFFFFFFFF8)) + ((tileMaps[2].i64[0] + v367) & 0xFFF)))
           {
             v369 = 2;
           }
@@ -4292,8 +4292,8 @@ LABEL_367:
 
         v370 = *(*(&v493 + 1) + 8 * v480);
         [v370 setNmsOutputScale:v369];
-        v371 = [v370 featureID];
-        v372 = *&v505[21 * v371 + 9] - *&v505[21 * v371 + 8];
+        featureID = [v370 featureID];
+        v372 = *&v505[21 * featureID + 9] - *&v505[21 * featureID + 8];
         if ((v372 >> 4) < 1)
         {
           [v370 setPolygon:0];
@@ -4307,10 +4307,10 @@ LABEL_367:
           v375 = v373;
           do
           {
-            v376 = [v370 featureID];
-            v377 = *(*&v505[21 * v376 + 8] + v374);
-            v378 = [v370 featureID];
-            v379 = *(*&v505[21 * v378 + 8] + v374 + 8);
+            featureID2 = [v370 featureID];
+            v377 = *(*&v505[21 * featureID2 + 8] + v374);
+            featureID3 = [v370 featureID];
+            v379 = *(*&v505[21 * featureID3 + 8] + v374 + 8);
             v380 = __dst.data + v374;
             *v380 = v377;
             v380[1] = v379;
@@ -4334,8 +4334,8 @@ LABEL_367:
         v492 = 0u;
         v489 = 0u;
         v490 = 0u;
-        v484 = [v370 subFeatures];
-        v383 = [v484 countByEnumeratingWithState:&v489 objects:v526 count:16];
+        subFeatures = [v370 subFeatures];
+        v383 = [subFeatures countByEnumeratingWithState:&v489 objects:v526 count:16];
         if (v383)
         {
           __srcb = *v490;
@@ -4345,12 +4345,12 @@ LABEL_367:
             {
               if (*v490 != __srcb)
               {
-                objc_enumerationMutation(v484);
+                objc_enumerationMutation(subFeatures);
               }
 
               v385 = *(*(&v489 + 1) + 8 * j);
-              v386 = [v370 featureID];
-              v387 = *&v505[21 * v386 + 9] - *&v505[21 * v386 + 8];
+              featureID4 = [v370 featureID];
+              v387 = *&v505[21 * featureID4 + 9] - *&v505[21 * featureID4 + 8];
               if ((v387 >> 4) < 1)
               {
                 [v385 setPolygon:0];
@@ -4364,10 +4364,10 @@ LABEL_367:
                 v390 = v388;
                 do
                 {
-                  v391 = [v370 featureID];
-                  v392 = *(*&v505[21 * v391 + 8] + v389);
-                  v393 = [v370 featureID];
-                  v394 = *(*&v505[21 * v393 + 8] + v389 + 8);
+                  featureID5 = [v370 featureID];
+                  v392 = *(*&v505[21 * featureID5 + 8] + v389);
+                  featureID6 = [v370 featureID];
+                  v394 = *(*&v505[21 * featureID6 + 8] + v389 + 8);
                   v395 = __dst.data + v389;
                   *v395 = v392;
                   v395[1] = v394;
@@ -4390,7 +4390,7 @@ LABEL_367:
               [v385 setNmsOutputScale:v369];
             }
 
-            v383 = [v484 countByEnumeratingWithState:&v489 objects:v526 count:16];
+            v383 = [subFeatures countByEnumeratingWithState:&v489 objects:v526 count:16];
           }
 
           while (v383);
@@ -4417,35 +4417,35 @@ LABEL_367:
 
   *&v506 = v399;
   std::vector<CRDetectorUtils::CRTextDetectorQuadFeature>::shrink_to_fit(&v505);
-  if (v440 && v446)
+  if (sizeCopy && v446)
   {
     v400 = v446;
-    *v440 = v446;
+    *sizeCopy = v446;
   }
 
   __dst.data = &v505;
-  a1 = v468;
+  self = v468;
   std::vector<CRDetectorUtils::CRTextDetectorQuadFeature>::__destroy_vector::operator()[abi:ne200100](&__dst);
   std::deque<unsigned char>::~deque[abi:ne200100](&v507);
 
 LABEL_407:
 
-  return a1;
+  return self;
 }
 
-- (void)computeClassificationType:(void *)a3 fromTextFeatures:(uint64_t *)a4 fineScaleMap:(uint64_t *)a5 fullTileMap:(void *)a6 withScaleIds:
+- (void)computeClassificationType:(void *)type fromTextFeatures:(uint64_t *)features fineScaleMap:(uint64_t *)map fullTileMap:(void *)tileMap withScaleIds:
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v23 = a1;
-  if (a1)
+  typeCopy = type;
+  selfCopy = self;
+  if (self)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v22 = v10;
-    obj = v10;
+    v22 = typeCopy;
+    obj = typeCopy;
     v11 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
@@ -4463,10 +4463,10 @@ LABEL_407:
             objc_enumerationMutation(obj);
           }
 
-          v14 = a4[1];
-          v15 = v14 == *a4;
-          v16 = v14 == *a4 || a5[1] == *a5;
-          v17 = (a5[1] == *a5) ^ v16;
+          v14 = features[1];
+          v15 = v14 == *features;
+          v16 = v14 == *features || map[1] == *map;
+          v17 = (map[1] == *map) ^ v16;
           if (!v15)
           {
             v17 = 0;
@@ -4474,27 +4474,27 @@ LABEL_407:
 
           if (v17)
           {
-            v18 = a5;
+            featuresCopy3 = map;
           }
 
           else
           {
-            v18 = a4;
+            featuresCopy3 = features;
           }
 
           if (!v16)
           {
-            v18 = a4;
-            if (a6[5] > v12)
+            featuresCopy3 = features;
+            if (tileMap[5] > v12)
             {
-              if (*(*(a6[1] + (((v12 + a6[4]) >> 9) & 0x7FFFFFFFFFFFF8)) + ((v12 + a6[4]) & 0xFFF)))
+              if (*(*(tileMap[1] + (((v12 + tileMap[4]) >> 9) & 0x7FFFFFFFFFFFF8)) + ((v12 + tileMap[4]) & 0xFFF)))
               {
-                v18 = a5;
+                featuresCopy3 = map;
               }
 
               else
               {
-                v18 = a4;
+                featuresCopy3 = features;
               }
             }
           }
@@ -4504,20 +4504,20 @@ LABEL_407:
           {
             if (a2 == 1)
             {
-              [CRNeuralTextDetectorV3 computeOrientationFromSingleTextFeature:v18 map:?];
+              [CRNeuralTextDetectorV3 computeOrientationFromSingleTextFeature:featuresCopy3 map:?];
             }
 
             else
             {
-              [CRNeuralTextDetectorV3 computeTextTypeFromSingleTextFeature:v18 map:?];
+              [CRNeuralTextDetectorV3 computeTextTypeFromSingleTextFeature:featuresCopy3 map:?];
             }
           }
 
           else
           {
-            v20 = [v23 configuration];
-            v21 = [v20 scriptRatioThresholds];
-            [CRNeuralTextDetectorV3 computeScriptCategoryFromSingleTextFeature:v19 map:v18 scriptRatioThresholds:v21];
+            configuration = [selfCopy configuration];
+            scriptRatioThresholds = [configuration scriptRatioThresholds];
+            [CRNeuralTextDetectorV3 computeScriptCategoryFromSingleTextFeature:v19 map:featuresCopy3 scriptRatioThresholds:scriptRatioThresholds];
           }
 
           ++v12;
@@ -4531,49 +4531,49 @@ LABEL_407:
       while (v11);
     }
 
-    v10 = v22;
+    typeCopy = v22;
   }
 }
 
-- (void)runFullTileInferenceOnImage:(id)a3 cachedSurface:(__IOSurface *)a4 outputMaps:(void *)a5 inputSize:(CGSize *)a6 outputSize:(CGSize *)a7 modelContext:(id)a8 delegate:(id)a9 error:(id *)a10
+- (void)runFullTileInferenceOnImage:(id)image cachedSurface:(__IOSurface *)surface outputMaps:(void *)maps inputSize:(CGSize *)size outputSize:(CGSize *)outputSize modelContext:(id)context delegate:(id)delegate error:(id *)self0
 {
   v55 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v38 = a8;
-  v37 = a9;
+  imageCopy = image;
+  contextCopy = context;
+  delegateCopy = delegate;
   v16 = objc_autoreleasePoolPush();
-  v17 = [(CRNeuralTextDetector *)self configuration];
-  [v17 disableScriptDetection];
+  configuration = [(CRNeuralTextDetector *)self configuration];
+  [configuration disableScriptDetection];
 
-  v18 = [(CRNeuralTextDetector *)self configuration];
-  [v18 disableTextTypeDetection];
+  configuration2 = [(CRNeuralTextDetector *)self configuration];
+  [configuration2 disableTextTypeDetection];
 
   v52 = 0.0;
-  [v15 size];
+  [imageCopy size];
   v20 = v19;
   v22 = v21;
-  v23 = [(CRNeuralTextDetector *)self configuration];
-  [v23 tileSize];
-  [(CRNeuralTextDetectorV3 *)v20 calculateTargetOutputSize:v22 adjustedInputScale:v24 paddedSize:v25 imageSize:*MEMORY[0x1E695F060] maximumSize:*(MEMORY[0x1E695F060] + 8) minimumSize:0.0 inputLengthLimit:CRNeuralTextDetectorV3, a7, &v52, &v51];
+  configuration3 = [(CRNeuralTextDetector *)self configuration];
+  [configuration3 tileSize];
+  [(CRNeuralTextDetectorV3 *)v20 calculateTargetOutputSize:v22 adjustedInputScale:v24 paddedSize:v25 imageSize:*MEMORY[0x1E695F060] maximumSize:*(MEMORY[0x1E695F060] + 8) minimumSize:0.0 inputLengthLimit:CRNeuralTextDetectorV3, outputSize, &v52, &v51];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v15;
+    v26 = imageCopy;
   }
 
   else
   {
-    v26 = -[CRImage_PixelBuffer initWithCVPixelBuffer:]([CRImage_PixelBuffer alloc], "initWithCVPixelBuffer:", [v15 pixelBuffer]);
+    v26 = -[CRImage_PixelBuffer initWithCVPixelBuffer:]([CRImage_PixelBuffer alloc], "initWithCVPixelBuffer:", [imageCopy pixelBuffer]);
   }
 
   v27 = v26;
-  v28 = [(CRImage_PixelBuffer *)v26 pixelBufferWithScale:a6 paddedToSize:1 adjustedToSize:1111970369 paddingMode:+[CRNeuralTextDetectorV3 format:"useE5Detector"]hardwareAcceleration:a4 toSurface:v52, v51.f64[0], v51.f64[1]];
+  v28 = [(CRImage_PixelBuffer *)v26 pixelBufferWithScale:size paddedToSize:1 adjustedToSize:1111970369 paddingMode:+[CRNeuralTextDetectorV3 format:"useE5Detector"]hardwareAcceleration:surface toSurface:v52, v51.f64[0], v51.f64[1]];
   if (v28)
   {
     if (+[CRNeuralTextDetectorV3 useE5Detector])
     {
-      [v38 prebindInputImageSurface:*a4 error:0];
+      [contextCopy prebindInputImageSurface:*surface error:0];
     }
 
     *v45 = 0;
@@ -4582,29 +4582,29 @@ LABEL_407:
     v48 = __Block_byref_object_copy__9;
     v49 = __Block_byref_object_dispose__10;
     v50 = 0;
-    v29 = [(CRNeuralTextDetector *)self inferenceStats];
+    inferenceStats = [(CRNeuralTextDetector *)self inferenceStats];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_outputMaps_inputSize_outputSize_modelContext_delegate_error___block_invoke;
     v39[3] = &unk_1E7BC3450;
     v42 = v45;
-    v40 = v38;
-    v41 = self;
+    v40 = contextCopy;
+    selfCopy = self;
     v43 = v28;
-    v44 = a10;
-    [v29 measureBlock:v39];
+    errorCopy = error;
+    [inferenceStats measureBlock:v39];
 
     CVPixelBufferRelease(v28);
-    if (a10)
+    if (error)
     {
-      if (*a10 || !*(v46 + 5))
+      if (*error || !*(v46 + 5))
       {
         v30 = CROSLogForCategory(0);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
         {
-          v31 = [*a10 localizedDescription];
+          localizedDescription = [*error localizedDescription];
           buf = 138412290;
-          *buf_4 = v31;
+          *buf_4 = localizedDescription;
           _os_log_impl(&dword_1B40D2000, v30, OS_LOG_TYPE_FAULT, "Model prediction error for full tile: %@", &buf, 0xCu);
         }
 
@@ -4626,18 +4626,18 @@ LABEL_407:
 
     if (![(CRNeuralTextDetector *)self shouldCancel])
     {
-      v36 = [*(v46 + 5) region_score];
-      [(CRNeuralTextDetectorV3 *)&buf createImageMap:v36 targetSize:?];
+      region_score = [*(v46 + 5) region_score];
+      [(CRNeuralTextDetectorV3 *)&buf createImageMap:region_score targetSize:?];
     }
 
-    if (!a10)
+    if (!error)
     {
       goto LABEL_24;
     }
 
     v35 = [CRImageReader errorWithErrorCode:-3];
-    v30 = *a10;
-    *a10 = v35;
+    v30 = *error;
+    *error = v35;
 LABEL_22:
 
 LABEL_24:
@@ -4653,11 +4653,11 @@ LABEL_24:
     _os_log_impl(&dword_1B40D2000, v32, OS_LOG_TYPE_FAULT, "NULL when creating fullTilePixelBuffer.", v45, 2u);
   }
 
-  if (a10)
+  if (error)
   {
     v33 = [CRImageReader errorWithErrorCode:-5];
-    v34 = *a10;
-    *a10 = v33;
+    v34 = *error;
+    *error = v33;
   }
 
 LABEL_25:
@@ -4734,51 +4734,51 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
   }
 }
 
-- (void)addIntermediateResults:(uint64_t)a3 idxLog:(void *)a4 adjustedSize:(uint64_t)a5 quadFeatures:(uint64_t)a6 nmsOutputScale:(uint64_t)a7
+- (void)addIntermediateResults:(uint64_t)results idxLog:(void *)log adjustedSize:(uint64_t)size quadFeatures:(uint64_t)features nmsOutputScale:(uint64_t)scale
 {
   v21 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = [v12 pyramidScaleSize];
-  v14 = [MEMORY[0x1E696B098] valueWithSize:{a1, a2}];
-  [v13 insertObject:v14 atIndex:a5];
+  logCopy = log;
+  pyramidScaleSize = [logCopy pyramidScaleSize];
+  v14 = [MEMORY[0x1E696B098] valueWithSize:{self, a2}];
+  [pyramidScaleSize insertObject:v14 atIndex:size];
 
-  v15 = [v12 pyramidScaleName];
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a7];
-  [v15 insertObject:v16 atIndex:a5];
+  pyramidScaleName = [logCopy pyramidScaleName];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:scale];
+  [pyramidScaleName insertObject:v16 atIndex:size];
 
-  v17 = [v12 pyramidPreIntraScaleNMSTextFeatures];
-  v18 = [v17 objectAtIndexedSubscript:a5];
-  v19 = [objc_opt_class() textFeaturesFromPolygons:a6 withScale:&v20 withNMSOutputScale:0];
+  pyramidPreIntraScaleNMSTextFeatures = [logCopy pyramidPreIntraScaleNMSTextFeatures];
+  v18 = [pyramidPreIntraScaleNMSTextFeatures objectAtIndexedSubscript:size];
+  v19 = [objc_opt_class() textFeaturesFromPolygons:features withScale:&v20 withNMSOutputScale:0];
   [v18 addObjectsFromArray:v19];
 }
 
-- (void)updateNMS:(uint64_t)a3 andQuadFeatures:(uint64_t *)a4 inMaps:(void *)a5 tileRects:(uint64_t)a6 intermediateResult:(int)a7 isFullTile:(float)a8 isHorizontal:adjustedSize:randomPrefix:
+- (void)updateNMS:(uint64_t)s andQuadFeatures:(uint64_t *)features inMaps:(void *)maps tileRects:(uint64_t)rects intermediateResult:(int)result isFullTile:(float)tile isHorizontal:adjustedSize:randomPrefix:
 {
   a2;
-  v27 = a5;
-  v14 = *a4;
-  if (a7)
+  mapsCopy = maps;
+  v14 = *features;
+  if (result)
   {
-    v15 = a4[4];
+    v15 = features[4];
   }
 
   else
   {
-    v15 = a4[5];
+    v15 = features[5];
   }
 
-  if (a7)
+  if (result)
   {
-    v16 = a4[5];
+    v16 = features[5];
   }
 
   else
   {
-    v16 = a4[4];
+    v16 = features[4];
   }
 
-  v17 = [a1 configuration];
-  [v17 scoreMapScaleFactor];
+  configuration = [self configuration];
+  [configuration scoreMapScaleFactor];
 
   v18 = malloc_type_calloc(*(v14 + 8) * *(v14 + 16), 4uLL, 0x100004052888210uLL);
   v19 = *(v14 + 8);
@@ -4787,7 +4787,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
   v31[1] = v19;
   v31[2] = v20;
   v31[3] = (4 * v20);
-  if (a7)
+  if (result)
   {
     v21 = @"hor";
   }
@@ -4797,7 +4797,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
     v21 = @"ver";
   }
 
-  v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f_%@", a8, v21, v27];
+  mapsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f_%@", tile, v21, mapsCopy];
   if (CRSignpostLog_onceToken != -1)
   {
     dispatch_once(&CRSignpostLog_onceToken, &__block_literal_global_12);
@@ -4819,69 +4819,69 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
     _os_signpost_emit_with_name_impl(&dword_1B40D2000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "OCRDetectorPostprocessingExtractTextBoxes", "", buf, 2u);
   }
 
-  [a1 configuration];
-  v26 = [objc_claimAutoreleasedReturnValue() extractPolygons];
-  CRDetectorPostProcessV3::extractTextBoxes(v14, v15, v16, a3, v31, a6, v26, v29);
+  [self configuration];
+  extractPolygons = [objc_claimAutoreleasedReturnValue() extractPolygons];
+  CRDetectorPostProcessV3::extractTextBoxes(v14, v15, v16, s, v31, rects, extractPolygons, mapsCopy);
 }
 
-- (void)runNMSForDirection:(uint64_t *)a3 adjustedSize:(void *)a4 fullTileMaps:(void *)a5 adjustedFullTileSize:(void *)a6 targetSize:(int)a7 targetSizeFullTile:(id *)a8 intermediateResults:(uint64_t *)a9 withScaleIds:(unsigned __int8)a10 sourceImageSize:(unsigned __int8)a11 tileRects:isHorizontal:resultTextFeatures:quadFeatures:isFineScaleVerticalLinkActive:isFullTileVerticalLinkActive:idxLog:
+- (void)runNMSForDirection:(uint64_t *)direction adjustedSize:(void *)size fullTileMaps:(void *)maps adjustedFullTileSize:(void *)tileSize targetSize:(int)targetSize targetSizeFullTile:(id *)tile intermediateResults:(uint64_t *)results withScaleIds:(unsigned __int8)self0 sourceImageSize:(unsigned __int8)self1 tileRects:isHorizontal:resultTextFeatures:quadFeatures:isFineScaleVerticalLinkActive:isFullTileVerticalLinkActive:idxLog:
 {
   v76 = *MEMORY[0x1E69E9840];
-  v48 = a4;
-  v17 = a6;
-  v47 = v17;
+  sizeCopy = size;
+  tileSizeCopy = tileSize;
+  v47 = tileSizeCopy;
   v49 = 0;
-  v18 = *a3 != 0;
+  v18 = *direction != 0;
   if (*a2)
   {
-    v19 = a10;
+    idsCopy = ids;
   }
 
   else
   {
-    v19 = 0;
+    idsCopy = 0;
   }
 
-  if (*a3)
+  if (*direction)
   {
-    v20 = a11;
+    imageSizeCopy = imageSize;
   }
 
   else
   {
-    v20 = 0;
+    imageSizeCopy = 0;
   }
 
-  if (a7)
+  if (targetSize)
   {
     v21 = *a2 != 0;
   }
 
   else
   {
-    v21 = v19;
+    v21 = idsCopy;
   }
 
   v62 = 0;
   v63 = 0;
-  if (a7)
+  if (targetSize)
   {
-    v20 = v18;
+    imageSizeCopy = v18;
   }
 
   v64 = 0;
   v59 = 0;
   v60 = 0;
   v61 = 0;
-  v51 = v20;
-  v54 = v20 & v21;
-  if ((v20 & v21) == 1)
+  v51 = imageSizeCopy;
+  v54 = imageSizeCopy & v21;
+  if ((imageSizeCopy & v21) == 1)
   {
-    v17 = [[CRNMS alloc] initForRevision:3, v17, v48, 0];
-    v49 = v17;
+    tileSizeCopy = [[CRNMS alloc] initForRevision:3, tileSizeCopy, sizeCopy, 0];
+    v49 = tileSizeCopy;
   }
 
-  CRLogger = CRLogger::getCRLogger(v17);
+  CRLogger = CRLogger::getCRLogger(tileSizeCopy);
   if (*CRLogger == 1 && (CRLogger[8] & 1) != 0)
   {
     v23 = rand();
@@ -4895,19 +4895,19 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
   v24 = v23;
   if (v21)
   {
-    [CRNeuralTextDetectorV3 updateNMS:a1 andQuadFeatures:v49 inMaps:&v59 tileRects:a2 intermediateResult:0 isFullTile:0 isHorizontal:a7 adjustedSize:v24 randomPrefix:?];
+    [CRNeuralTextDetectorV3 updateNMS:self andQuadFeatures:v49 inMaps:&v59 tileRects:a2 intermediateResult:0 isFullTile:0 isHorizontal:targetSize adjustedSize:v24 randomPrefix:?];
   }
 
   if (v51)
   {
-    [CRNeuralTextDetectorV3 updateNMS:a1 andQuadFeatures:v49 inMaps:&v62 tileRects:a3 intermediateResult:v47 isFullTile:1 isHorizontal:a7 adjustedSize:v24 randomPrefix:?];
+    [CRNeuralTextDetectorV3 updateNMS:self andQuadFeatures:v49 inMaps:&v62 tileRects:direction intermediateResult:v47 isFullTile:1 isHorizontal:targetSize adjustedSize:v24 randomPrefix:?];
   }
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = *a8;
+  obj = *tile;
   v25 = [obj countByEnumeratingWithState:&v55 objects:v75 count:16];
   if (v25)
   {
@@ -4926,7 +4926,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
           objc_enumerationMutation(obj);
         }
 
-        if (v54 && ((v30 = a5[5]) == 0 || v30 > v29 && *(*(a5[1] + (((v29 + a5[4]) >> 9) & 0x7FFFFFFFFFFFF8)) + ((v29 + a5[4]) & 0xFFF))))
+        if (v54 && ((v30 = maps[5]) == 0 || v30 > v29 && *(*(maps[1] + (((v29 + maps[4]) >> 9) & 0x7FFFFFFFFFFFF8)) + ((v29 + maps[4]) & 0xFFF))))
         {
           v31 = 1;
           v32 = 2;
@@ -4940,7 +4940,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
 
         v33 = *(*(&v55 + 1) + 8 * v28);
         [v33 setNmsOutputScale:{v32, v47}];
-        v34 = [v33 featureID];
+        featureID = [v33 featureID];
         if (v31)
         {
           v35 = v62;
@@ -4951,7 +4951,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
           v35 = v59;
         }
 
-        v36 = v35 + 168 * v34;
+        v36 = v35 + 168 * featureID;
         v37 = *v36;
         v38 = *(v36 + 16);
         v39 = *(v36 + 48);
@@ -4974,7 +4974,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
         std::vector<CRDetectorUtils::CRTextDetectorQuad>::__init_with_size[abi:ne200100]<CRDetectorUtils::CRTextDetectorQuad*,CRDetectorUtils::CRTextDetectorQuad*>(v74, *(v36 + 144), *(v36 + 152), 0x8E38E38E38E38E39 * ((*(v36 + 152) - *(v36 + 144)) >> 4));
         [v33 setFeatureID:v26];
         HIDWORD(v73) = v26;
-        std::vector<CRDetectorUtils::CRTextDetectorQuadFeature>::push_back[abi:ne200100](a9, v66);
+        std::vector<CRDetectorUtils::CRTextDetectorQuadFeature>::push_back[abi:ne200100](results, v66);
         v65 = v74;
         std::vector<CRDetectorUtils::CRTextDetectorQuad>::__destroy_vector::operator()[abi:ne200100](&v65);
         if (__p)
@@ -5018,20 +5018,20 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
   std::vector<CRDetectorUtils::CRTextDetectorQuadFeature>::__destroy_vector::operator()[abi:ne200100](v66);
 }
 
-- (void)getBorderPoints:(float64x2_t *)a3 sourceImageSize:(char)a4 outP1:(float64_t)a5 outP2:(float64_t)a6 isHorizontal:
+- (void)getBorderPoints:(float64x2_t *)points sourceImageSize:(char)size outP1:(float64_t)p1 outP2:(float64_t)p2 isHorizontal:
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a1;
-  [v9 topLeft];
+  selfCopy = self;
+  [selfCopy topLeft];
   v33[0] = v10;
   v33[1] = v11;
-  [v9 topRight];
+  [selfCopy topRight];
   v33[2] = v12;
   v33[3] = v13;
-  [v9 bottomRight];
+  [selfCopy bottomRight];
   v33[4] = v14;
   v33[5] = v15;
-  [v9 bottomLeft];
+  [selfCopy bottomLeft];
   v33[6] = v16;
   v33[7] = v17;
   v31 = 0;
@@ -5039,7 +5039,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
   __p = 0;
   std::vector<CGPoint>::__init_with_size[abi:ne200100]<CGPoint const*,CGPoint const*>(&__p, v33, &v34, 4uLL);
   v19 = 126 - 2 * __clz((v31 - __p) >> 4);
-  LOBYTE(v33[0]) = a4;
+  LOBYTE(v33[0]) = size;
   if (v31 == __p)
   {
     v20 = 0;
@@ -5052,29 +5052,29 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
 
   std::__introsort<std::_ClassicAlgPolicy,[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *,false>(__p, v31, v33, v20, 1, v18);
   v21 = __p;
-  v22.f64[0] = a5;
-  v22.f64[1] = a6;
+  v22.f64[0] = p1;
+  v22.f64[1] = p2;
   __asm { FMOV            V1.2D, #0.5 }
 
   *a2 = vmulq_f64(vmulq_f64(v22, vaddq_f64(*__p, *(__p + 1))), _Q1);
-  *a3 = vmulq_f64(vmulq_f64(v22, vaddq_f64(v21[2], v21[3])), _Q1);
+  *points = vmulq_f64(vmulq_f64(v22, vaddq_f64(v21[2], v21[3])), _Q1);
   v31 = v21;
   operator delete(v21);
 }
 
-+ (CGSize)scaledImageSizeForConfiguration:(id)a3 imageSize:(CGSize)a4
++ (CGSize)scaledImageSizeForConfiguration:(id)configuration imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  [v7 maximumInputSize];
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  [configurationCopy maximumInputSize];
   v9 = v8;
   v11 = v10;
-  [v7 tileSize];
+  [configurationCopy tileSize];
   v13 = v12;
   v15 = v14;
-  [v7 inputLengthLimit];
-  v17 = [(CRNeuralTextDetectorV3 *)v9 scaledImageSizeForMaxSize:v11 minSize:v13 inputLengthLimit:v15 imageSize:v16 scale:width, height, a1, &v22];
+  [configurationCopy inputLengthLimit];
+  v17 = [(CRNeuralTextDetectorV3 *)v9 scaledImageSizeForMaxSize:v11 minSize:v13 inputLengthLimit:v15 imageSize:v16 scale:width, height, self, &v22];
   v19 = v18;
 
   v20 = v17;
@@ -5084,42 +5084,42 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
   return result;
 }
 
-+ (BOOL)computeClassCount:(void *)a3 classProbabiity:(void *)a4 fromSingleTextFeature:(id)a5 map:(const void *)a6 backgroundClass:(int)a7
++ (BOOL)computeClassCount:(void *)count classProbabiity:(void *)probabiity fromSingleTextFeature:(id)feature map:(const void *)map backgroundClass:(int)class
 {
   v100[8] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v94 = a3;
-  v13 = a3;
-  v12 = *a3;
-  v11 = v13[1];
-  v14 = **a6;
+  featureCopy = feature;
+  countCopy = count;
+  countCopy2 = count;
+  v12 = *count;
+  v11 = countCopy2[1];
+  v14 = **map;
   v16 = *(v14 + 8);
   v15 = *(v14 + 16);
-  [v10 topLeft];
+  [featureCopy topLeft];
   v18 = v17;
-  [v10 topLeft];
+  [featureCopy topLeft];
   v100[0] = v18 * v15;
   v100[1] = v19 * v16;
-  [v10 topRight];
+  [featureCopy topRight];
   v21 = v20;
-  [v10 topRight];
+  [featureCopy topRight];
   v100[2] = v21 * v15;
   v100[3] = v22 * v16;
-  [v10 bottomRight];
+  [featureCopy bottomRight];
   v24 = v23;
-  [v10 bottomRight];
+  [featureCopy bottomRight];
   v100[4] = v24 * v15;
   v100[5] = v25 * v16;
-  [v10 bottomLeft];
+  [featureCopy bottomLeft];
   v27 = v26;
-  [v10 bottomLeft];
+  [featureCopy bottomLeft];
   v100[6] = v27 * v15;
   v100[7] = v28 * v16;
   CenterPoint = CRDetectorUtils::makeCenterPoint(v100, v29);
   v98.x = CenterPoint;
   v98.y = v31;
   v95 = v31;
-  [v10 baselineAngle];
+  [featureCopy baselineAngle];
   v32 = v11 - v12;
   CRDetectorUtils::rotatePolygon(v100, &v98, &v99, v33, v34);
   CRDetectorUtils::convertPointToRect(&v99, v35);
@@ -5140,7 +5140,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
   v43 = (v32 >> 3) & 0x7FFFFFFF;
   if ((v32 >> 3) >= 1)
   {
-    v44 = *a6;
+    v44 = *map;
     v45 = 0;
     v46 = (v32 >> 3) & 0x7FFFFFFF;
     do
@@ -5177,7 +5177,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
       v57 = v90;
       do
       {
-        [v10 baselineAngle];
+        [featureCopy baselineAngle];
         v59 = __sincosf_stret(v58);
         v60 = -v59.__sinval;
         v61 = CenterPoint + v56 * v60 + (v53 - CenterPoint) * v59.__cosval;
@@ -5206,9 +5206,9 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
 
         std::vector<double>::vector[abi:ne200100](&__p, v41);
         v67 = v15 * v66 + v64;
-        v68 = *a4;
+        v68 = *probabiity;
         v69 = __p;
-        v70 = *(a4 + 1) - *a4;
+        v70 = *(probabiity + 1) - *probabiity;
         if (v70)
         {
           v71 = v70 >> 3;
@@ -5271,7 +5271,7 @@ void __128__CRNeuralTextDetectorV3_runFullTileInferenceOnImage_cachedSurface_out
             while (v84);
           }
 
-          ++*(*v94 + (v82 << 29 >> 29));
+          ++*(*countCopy + (v82 << 29 >> 29));
           ++v50;
         }
 
@@ -5300,9 +5300,9 @@ LABEL_42:
 
   else
   {
-    v86 = *a4;
-    v87 = *(a4 + 1);
-    if (*a4 != v87)
+    v86 = *probabiity;
+    v87 = *(probabiity + 1);
+    if (*probabiity != v87)
     {
       do
       {
@@ -5319,52 +5319,52 @@ LABEL_42:
   return v88;
 }
 
-- (double)getBorderPoints:(char *)a3 sourceImageSize:(uint64_t)a4 outP1:(char)a5 outP2:(__n128)a6 isHorizontal:
+- (double)getBorderPoints:(char *)points sourceImageSize:(uint64_t)size outP1:(char)p1 outP2:(__n128)p2 isHorizontal:
 {
 LABEL_1:
   v10 = a2 - 1;
   v193 = a2 - 3;
   v194 = a2 - 2;
   v196 = &a2[-1].n128_u64[1];
-  v11 = a1;
+  selfCopy = self;
   while (1)
   {
-    a1 = v11;
-    v12 = a2 - v11;
+    self = selfCopy;
+    v12 = a2 - selfCopy;
     if (v12 <= 2)
     {
       if (v12 < 2)
       {
-        return a6.n128_f64[0];
+        return p2.n128_f64[0];
       }
 
       if (v12 == 2)
       {
         v118 = 1;
-        if (*a3)
+        if (*points)
         {
           v118 = 0;
         }
 
         n128_u64 = &a2[-1].n128_u64[1];
-        if (*a3)
+        if (*points)
         {
           n128_u64 = a2[-1].n128_u64;
         }
 
-        a6.n128_u64[0] = *n128_u64;
-        if (*n128_u64 >= v11->n128_f64[v118])
+        p2.n128_u64[0] = *n128_u64;
+        if (*n128_u64 >= selfCopy->n128_f64[v118])
         {
-          return a6.n128_f64[0];
+          return p2.n128_f64[0];
         }
 
 LABEL_239:
-        v217 = *v11;
-        *v11 = *v10;
-        a6 = v217;
+        v217 = *selfCopy;
+        *selfCopy = *v10;
+        p2 = v217;
 LABEL_240:
-        *v10 = a6;
-        return a6.n128_f64[0];
+        *v10 = p2;
+        return p2.n128_f64[0];
       }
 
       goto LABEL_9;
@@ -5378,101 +5378,101 @@ LABEL_240:
     if (v12 == 4)
     {
 
-      a6.n128_u64[0] = std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *,0>(v11, v11 + 1, v11 + 2, a2[-1].n128_u64, a3, a6).n128_u64[0];
-      return a6.n128_f64[0];
+      p2.n128_u64[0] = std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *,0>(selfCopy, selfCopy + 1, selfCopy + 2, a2[-1].n128_u64, points, p2).n128_u64[0];
+      return p2.n128_f64[0];
     }
 
     if (v12 == 5)
     {
-      v104 = v11 + 1;
-      v105 = v11 + 2;
-      v106 = v11 + 3;
-      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *,0>(v11, v11 + 1, v11 + 2, v11[3].n128_u64, a3, a6);
+      v104 = selfCopy + 1;
+      v105 = selfCopy + 2;
+      v106 = selfCopy + 3;
+      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *,0>(selfCopy, selfCopy + 1, selfCopy + 2, selfCopy[3].n128_u64, points, p2);
       v107 = 1;
-      if (*a3)
+      if (*points)
       {
         v107 = 0;
       }
 
       v108 = v196;
-      if (*a3)
+      if (*points)
       {
         v108 = v10;
       }
 
-      a6.n128_u64[0] = *v108;
+      p2.n128_u64[0] = *v108;
       if (*v108 < v106->n128_f64[v107])
       {
         v109 = *v106;
         *v106 = *v10;
         *v10 = v109;
-        v110 = &v11[3].n128_u64[1];
+        v110 = &selfCopy[3].n128_u64[1];
         v111 = 1;
-        if (*a3)
+        if (*points)
         {
           v111 = 0;
-          v110 = v11[3].n128_u64;
+          v110 = selfCopy[3].n128_u64;
         }
 
-        a6.n128_u64[0] = *v110;
+        p2.n128_u64[0] = *v110;
         if (*v110 < v105->n128_f64[v111])
         {
           v112 = *v105;
           *v105 = *v106;
           *v106 = v112;
-          v113 = &v11[2].n128_u64[1];
+          v113 = &selfCopy[2].n128_u64[1];
           v114 = 1;
-          if (*a3)
+          if (*points)
           {
             v114 = 0;
-            v113 = v11[2].n128_u64;
+            v113 = selfCopy[2].n128_u64;
           }
 
-          a6.n128_u64[0] = *v113;
+          p2.n128_u64[0] = *v113;
           if (*v113 < v104->n128_f64[v114])
           {
             v115 = *v104;
             *v104 = *v105;
             *v105 = v115;
-            v116 = &v11[1].n128_u64[1];
+            v116 = &selfCopy[1].n128_u64[1];
             v117 = 1;
-            if (*a3)
+            if (*points)
             {
               v117 = 0;
-              v116 = v11[1].n128_u64;
+              v116 = selfCopy[1].n128_u64;
             }
 
-            a6.n128_u64[0] = *v116;
-            if (*v116 < v11->n128_f64[v117])
+            p2.n128_u64[0] = *v116;
+            if (*v116 < selfCopy->n128_f64[v117])
             {
-              v216 = *v11;
-              *v11 = *v104;
-              a6.n128_u64[0] = v216.n128_u64[0];
+              v216 = *selfCopy;
+              *selfCopy = *v104;
+              p2.n128_u64[0] = v216.n128_u64[0];
               *v104 = v216;
             }
           }
         }
       }
 
-      return a6.n128_f64[0];
+      return p2.n128_f64[0];
     }
 
 LABEL_9:
     if (v12 <= 23)
     {
-      v126 = v11 + 1;
-      v128 = v11 == a2 || v126 == a2;
-      if (a5)
+      v126 = selfCopy + 1;
+      v128 = selfCopy == a2 || v126 == a2;
+      if (p1)
       {
         if (!v128)
         {
           v129 = 0;
-          v130 = v11;
+          v130 = selfCopy;
           do
           {
             v131 = v130[1].n128_f64[0];
-            a6.n128_u64[0] = v130[1].n128_u64[1];
-            if (*a3)
+            p2.n128_u64[0] = v130[1].n128_u64[1];
+            if (*points)
             {
               v132 = 0;
             }
@@ -5484,14 +5484,14 @@ LABEL_9:
 
             v133 = v130->n128_f64[v132];
             v130 = v126;
-            if (*a3)
+            if (*points)
             {
               v134 = v131;
             }
 
             else
             {
-              v134 = a6.n128_f64[0];
+              v134 = p2.n128_f64[0];
             }
 
             if (v134 < v133)
@@ -5499,13 +5499,13 @@ LABEL_9:
               v135 = v129;
               while (1)
               {
-                *(v11 + v135 + 16) = *(v11 + v135);
+                *(selfCopy + v135 + 16) = *(selfCopy + v135);
                 if (!v135)
                 {
                   break;
                 }
 
-                if (*a3)
+                if (*points)
                 {
                   v136 = 0;
                 }
@@ -5515,29 +5515,29 @@ LABEL_9:
                   v136 = 8;
                 }
 
-                if (*a3)
+                if (*points)
                 {
                   v137 = v131;
                 }
 
                 else
                 {
-                  v137 = a6.n128_f64[0];
+                  v137 = p2.n128_f64[0];
                 }
 
-                v138 = *(v11[-1].n128_f64 + v135 + v136);
+                v138 = *(selfCopy[-1].n128_f64 + v135 + v136);
                 v135 -= 16;
                 if (v137 >= v138)
                 {
-                  v139 = &v11[1] + v135;
+                  v139 = &selfCopy[1] + v135;
                   goto LABEL_271;
                 }
               }
 
-              v139 = v11;
+              v139 = selfCopy;
 LABEL_271:
               *v139 = v131;
-              *(v139 + 8) = a6.n128_u64[0];
+              *(v139 + 8) = p2.n128_u64[0];
             }
 
             v126 = v130 + 1;
@@ -5550,15 +5550,15 @@ LABEL_271:
 
       else if (!v128)
       {
-        v180 = *a3;
-        v181 = v11 - 1;
+        v180 = *points;
+        v181 = selfCopy - 1;
         do
         {
-          v182 = a1[1].n128_f64[0];
-          a6.n128_u64[0] = a1[1].n128_u64[1];
+          v182 = self[1].n128_f64[0];
+          p2.n128_u64[0] = self[1].n128_u64[1];
           v183 = (v180 & 1) == 0;
-          v184 = a1->n128_f64[v183];
-          a1 = v126;
+          v184 = self->n128_f64[v183];
+          self = v126;
           if (v180)
           {
             v185 = v182;
@@ -5566,7 +5566,7 @@ LABEL_271:
 
           else
           {
-            v185 = a6.n128_f64[0];
+            v185 = p2.n128_f64[0];
           }
 
           if (v185 < v184)
@@ -5575,8 +5575,8 @@ LABEL_271:
             do
             {
               v186[2] = v186[1];
-              v180 = *a3;
-              if (*a3)
+              v180 = *points;
+              if (*points)
               {
                 v187 = 0;
               }
@@ -5586,14 +5586,14 @@ LABEL_271:
                 v187 = 1;
               }
 
-              if (*a3)
+              if (*points)
               {
                 v188 = v182;
               }
 
               else
               {
-                v188 = a6.n128_f64[0];
+                v188 = p2.n128_f64[0];
               }
 
               v189 = v186->n128_f64[v187];
@@ -5602,22 +5602,22 @@ LABEL_271:
 
             while (v188 < v189);
             v186[2].n128_f64[0] = v182;
-            v186[2].n128_u64[1] = a6.n128_u64[0];
+            v186[2].n128_u64[1] = p2.n128_u64[0];
           }
 
-          v126 = a1 + 1;
+          v126 = self + 1;
           ++v181;
         }
 
-        while (&a1[1] != a2);
+        while (&self[1] != a2);
       }
 
-      return a6.n128_f64[0];
+      return p2.n128_f64[0];
     }
 
-    if (!a4)
+    if (!size)
     {
-      if (v11 != a2)
+      if (selfCopy != a2)
       {
         v140 = (v12 - 2) >> 1;
         v141 = v140;
@@ -5627,19 +5627,19 @@ LABEL_271:
           if (v140 >= v141)
           {
             v143 = (2 * v141) | 1;
-            v144 = &v11[v143];
+            v144 = &selfCopy[v143];
             if (2 * v142 + 2 >= v12)
             {
-              v146 = (*a3 & 1) == 0;
+              v146 = (*points & 1) == 0;
             }
 
             else
             {
               n128_f64 = &v144->n128_f64[1];
-              v146 = (*a3 & 1) == 0;
-              if (*a3)
+              v146 = (*points & 1) == 0;
+              if (*points)
               {
-                n128_f64 = v11[v143].n128_f64;
+                n128_f64 = selfCopy[v143].n128_f64;
               }
 
               if (*n128_f64 < v144[1].n128_f64[v146])
@@ -5649,8 +5649,8 @@ LABEL_271:
               }
             }
 
-            v147 = &v11[v142];
-            if (*a3)
+            v147 = &selfCopy[v142];
+            if (*points)
             {
               v148 = v144;
             }
@@ -5676,14 +5676,14 @@ LABEL_271:
 
                 v152 = 2 * v143;
                 v143 = (2 * v143) | 1;
-                v144 = &v11[v143];
+                v144 = &selfCopy[v143];
                 if (v152 + 2 < v12)
                 {
                   v153 = &v144->n128_f64[1];
-                  v154 = (*a3 & 1) == 0;
-                  if (*a3)
+                  v154 = (*points & 1) == 0;
+                  if (*points)
                   {
-                    v153 = v11[v143].n128_f64;
+                    v153 = selfCopy[v143].n128_f64;
                   }
 
                   if (*v153 < v144[1].n128_f64[v154])
@@ -5693,8 +5693,8 @@ LABEL_271:
                   }
                 }
 
-                v155 = (*a3 & 1) != 0 ? v144 : &v144->n128_i8[8];
-                v156 = (*a3 & 1) != 0 ? v149.n128_f64[0] : v150;
+                v155 = (*points & 1) != 0 ? v144 : &v144->n128_i8[8];
+                v156 = (*points & 1) != 0 ? v149.n128_f64[0] : v150;
               }
 
               while (*v155 >= v156);
@@ -5709,8 +5709,8 @@ LABEL_271:
         do
         {
           v157 = 0;
-          v218 = *v11;
-          v158 = v11;
+          v218 = *selfCopy;
+          v158 = selfCopy;
           do
           {
             v159 = v158;
@@ -5723,7 +5723,7 @@ LABEL_271:
             {
               v163 = v160 + 2;
               v164 = &v160[1].n128_f64[1];
-              if (*a3)
+              if (*points)
               {
                 v165 = 0;
               }
@@ -5733,7 +5733,7 @@ LABEL_271:
                 v165 = 1;
               }
 
-              if (*a3)
+              if (*points)
               {
                 v164 = v158;
               }
@@ -5751,24 +5751,24 @@ LABEL_271:
           while (v157 <= ((v12 - 2) >> 1));
           if (v158 == --a2)
           {
-            a6.n128_u64[0] = v218.n128_u64[0];
+            p2.n128_u64[0] = v218.n128_u64[0];
             *v158 = v218;
           }
 
           else
           {
             *v158 = *a2;
-            a6.n128_u64[0] = v218.n128_u64[0];
+            p2.n128_u64[0] = v218.n128_u64[0];
             *a2 = v218;
-            v166 = (v158 - v11 + 16) >> 4;
+            v166 = (v158 - selfCopy + 16) >> 4;
             v167 = v166 < 2;
             v168 = v166 - 2;
             if (!v167)
             {
               v169 = v168 >> 1;
-              v170 = &v11[v169];
+              v170 = &selfCopy[v169];
               v171 = &v170->n128_u64[1];
-              if (*a3)
+              if (*points)
               {
                 v172 = 0;
               }
@@ -5778,15 +5778,15 @@ LABEL_271:
                 v172 = 1;
               }
 
-              if (*a3)
+              if (*points)
               {
-                v171 = v11[v169].n128_u64;
+                v171 = selfCopy[v169].n128_u64;
               }
 
-              a6.n128_u64[0] = *v171;
+              p2.n128_u64[0] = *v171;
               if (*v171 < v158->n128_f64[v172])
               {
-                a6.n128_u64[0] = v158->n128_u64[0];
+                p2.n128_u64[0] = v158->n128_u64[0];
                 v173 = v158->n128_f64[1];
                 do
                 {
@@ -5799,13 +5799,13 @@ LABEL_271:
                   }
 
                   v169 = (v169 - 1) >> 1;
-                  v170 = &v11[v169];
-                  v175 = *a3 ? &v11[v169] : &v170->n128_i8[8];
-                  v176 = *a3 ? a6.n128_f64[0] : v173;
+                  v170 = &selfCopy[v169];
+                  v175 = *points ? &selfCopy[v169] : &v170->n128_i8[8];
+                  v176 = *points ? p2.n128_f64[0] : v173;
                 }
 
                 while (*v175 < v176);
-                v158->n128_u64[0] = a6.n128_u64[0];
+                v158->n128_u64[0] = p2.n128_u64[0];
                 v158->n128_f64[1] = v173;
               }
             }
@@ -5817,11 +5817,11 @@ LABEL_271:
         while (!v167);
       }
 
-      return a6.n128_f64[0];
+      return p2.n128_f64[0];
     }
 
-    v13 = &v11[v12 >> 1];
-    if (*a3)
+    v13 = &selfCopy[v12 >> 1];
+    if (*points)
     {
       v14 = 0;
     }
@@ -5832,7 +5832,7 @@ LABEL_271:
     }
 
     v15 = &a2[-1].n128_f64[1];
-    if (*a3)
+    if (*points)
     {
       v15 = a2[-1].n128_f64;
     }
@@ -5841,13 +5841,13 @@ LABEL_271:
     if (v12 >= 0x81)
     {
       v17 = &v13->n128_f64[1];
-      if (*a3)
+      if (*points)
       {
         v17 = v13;
       }
 
       v18 = v13->n128_f64[v14];
-      if (*v17 >= v11->n128_f64[v14])
+      if (*v17 >= selfCopy->n128_f64[v14])
       {
         if (v16 < v18)
         {
@@ -5855,7 +5855,7 @@ LABEL_271:
           *v13 = *v10;
           *v10 = v199;
           v21 = &v13->n128_f64[1];
-          if (*a3)
+          if (*points)
           {
             v22 = 0;
           }
@@ -5865,15 +5865,15 @@ LABEL_271:
             v22 = 1;
           }
 
-          if (*a3)
+          if (*points)
           {
             v21 = v13;
           }
 
-          if (*v21 < v11->n128_f64[v22])
+          if (*v21 < selfCopy->n128_f64[v22])
           {
-            v200 = *v11;
-            *v11 = *v13;
+            v200 = *selfCopy;
+            *selfCopy = *v13;
             *v13 = v200;
           }
         }
@@ -5883,15 +5883,15 @@ LABEL_271:
       {
         if (v16 < v18)
         {
-          v197 = *v11;
-          *v11 = *v10;
+          v197 = *selfCopy;
+          *selfCopy = *v10;
           goto LABEL_50;
         }
 
-        v203 = *v11;
-        *v11 = *v13;
+        v203 = *selfCopy;
+        *selfCopy = *v13;
         *v13 = v203;
-        if (*a3)
+        if (*points)
         {
           v25 = 0;
         }
@@ -5902,7 +5902,7 @@ LABEL_271:
         }
 
         v26 = &a2[-1].n128_f64[1];
-        if (*a3)
+        if (*points)
         {
           v26 = a2[-1].n128_f64;
         }
@@ -5916,11 +5916,11 @@ LABEL_50:
         }
       }
 
-      v27 = v11 + 1;
+      v27 = selfCopy + 1;
       v28 = v13 - 1;
       v29 = &v13[-1].n128_f64[1];
       v30 = &a2[-2].n128_f64[1];
-      if (*a3)
+      if (*points)
       {
         v31 = 0;
       }
@@ -5930,14 +5930,14 @@ LABEL_50:
         v31 = 1;
       }
 
-      if (*a3)
+      if (*points)
       {
         v29 = v13[-1].n128_f64;
       }
 
       v32 = *v29;
       v33 = a2[-2].n128_f64;
-      if (!*a3)
+      if (!*points)
       {
         v33 = &a2[-2].n128_f64[1];
       }
@@ -5952,7 +5952,7 @@ LABEL_50:
           *v28 = *v194;
           *v194 = v204;
           v37 = &v13[-1].n128_f64[1];
-          if (*a3)
+          if (*points)
           {
             v38 = 0;
           }
@@ -5962,7 +5962,7 @@ LABEL_50:
             v38 = 1;
           }
 
-          if (*a3)
+          if (*points)
           {
             v37 = v13[-1].n128_f64;
           }
@@ -5981,7 +5981,7 @@ LABEL_50:
         v42 = *v27;
         *v27 = *v28;
         *v28 = v42;
-        if (*a3)
+        if (*points)
         {
           v43 = 0;
         }
@@ -5991,7 +5991,7 @@ LABEL_50:
           v43 = 1;
         }
 
-        if (*a3)
+        if (*points)
         {
           v30 = a2[-2].n128_f64;
         }
@@ -6011,11 +6011,11 @@ LABEL_50:
         *v194 = v36;
       }
 
-      v44 = v11 + 2;
+      v44 = selfCopy + 2;
       v45 = v13 + 1;
       v46 = &v13[1].n128_f64[1];
       v47 = &a2[-3].n128_f64[1];
-      if (*a3)
+      if (*points)
       {
         v48 = 0;
       }
@@ -6025,14 +6025,14 @@ LABEL_50:
         v48 = 1;
       }
 
-      if (*a3)
+      if (*points)
       {
         v46 = v13[1].n128_f64;
       }
 
       v49 = *v46;
       v50 = a2[-3].n128_f64;
-      if (!*a3)
+      if (!*points)
       {
         v50 = &a2[-3].n128_f64[1];
       }
@@ -6047,7 +6047,7 @@ LABEL_50:
           *v45 = *v193;
           *v193 = v207;
           v54 = &v13[1].n128_f64[1];
-          if (*a3)
+          if (*points)
           {
             v55 = 0;
           }
@@ -6057,7 +6057,7 @@ LABEL_50:
             v55 = 1;
           }
 
-          if (*a3)
+          if (*points)
           {
             v54 = v13[1].n128_f64;
           }
@@ -6076,7 +6076,7 @@ LABEL_50:
         v57 = *v44;
         *v44 = *v45;
         *v45 = v57;
-        if (*a3)
+        if (*points)
         {
           v58 = 0;
         }
@@ -6086,7 +6086,7 @@ LABEL_50:
           v58 = 1;
         }
 
-        if (*a3)
+        if (*points)
         {
           v47 = a2[-3].n128_f64;
         }
@@ -6107,7 +6107,7 @@ LABEL_50:
       }
 
       v59 = &v13->n128_f64[1];
-      if (*a3)
+      if (*points)
       {
         v60 = 0;
       }
@@ -6117,14 +6117,14 @@ LABEL_50:
         v60 = 1;
       }
 
-      if (*a3)
+      if (*points)
       {
         v59 = v13;
       }
 
       v61 = *v59;
       v62 = &v13[1].n128_f64[1];
-      if (*a3)
+      if (*points)
       {
         v62 = v13[1].n128_f64;
       }
@@ -6139,7 +6139,7 @@ LABEL_50:
           *v13 = *v45;
           *v45 = v210;
           v65 = &v13->n128_f64[1];
-          if (*a3)
+          if (*points)
           {
             v66 = 0;
           }
@@ -6149,7 +6149,7 @@ LABEL_50:
             v66 = 1;
           }
 
-          if (*a3)
+          if (*points)
           {
             v65 = v13;
           }
@@ -6176,7 +6176,7 @@ LABEL_50:
         *v28 = *v13;
         *v13 = v212;
         v67 = &v13[1].n128_f64[1];
-        if (*a3)
+        if (*points)
         {
           v68 = 0;
         }
@@ -6186,7 +6186,7 @@ LABEL_50:
           v68 = 1;
         }
 
-        if (*a3)
+        if (*points)
         {
           v67 = v13[1].n128_f64;
         }
@@ -6200,30 +6200,30 @@ LABEL_134:
         }
       }
 
-      v213 = *v11;
-      *v11 = *v13;
-      a6.n128_u64[1] = v213.n128_u64[1];
+      v213 = *selfCopy;
+      *selfCopy = *v13;
+      p2.n128_u64[1] = v213.n128_u64[1];
       *v13 = v213;
       goto LABEL_136;
     }
 
-    v19 = &v11->n128_f64[1];
-    if (*a3)
+    v19 = &selfCopy->n128_f64[1];
+    if (*points)
     {
-      v19 = v11;
+      v19 = selfCopy;
     }
 
-    v20 = v11->n128_f64[v14];
+    v20 = selfCopy->n128_f64[v14];
     if (*v19 >= v13->n128_f64[v14])
     {
       if (v16 < v20)
       {
-        v201 = *v11;
-        *v11 = *v10;
-        a6.n128_u64[1] = v201.n128_u64[1];
+        v201 = *selfCopy;
+        *selfCopy = *v10;
+        p2.n128_u64[1] = v201.n128_u64[1];
         *v10 = v201;
-        v23 = &v11->n128_f64[1];
-        if (*a3)
+        v23 = &selfCopy->n128_f64[1];
+        if (*points)
         {
           v24 = 0;
         }
@@ -6233,17 +6233,17 @@ LABEL_134:
           v24 = 1;
         }
 
-        if (*a3)
+        if (*points)
         {
-          v23 = v11;
+          v23 = selfCopy;
         }
 
         if (*v23 < v13->n128_f64[v24])
         {
           v202 = *v13;
-          *v13 = *v11;
-          a6.n128_u64[1] = v202.n128_u64[1];
-          *v11 = v202;
+          *v13 = *selfCopy;
+          p2.n128_u64[1] = v202.n128_u64[1];
+          *selfCopy = v202;
         }
       }
     }
@@ -6255,16 +6255,16 @@ LABEL_134:
         v198 = *v13;
         *v13 = *v10;
 LABEL_76:
-        a6.n128_u64[1] = v198.n128_u64[1];
+        p2.n128_u64[1] = v198.n128_u64[1];
         *v10 = v198;
         goto LABEL_136;
       }
 
       v205 = *v13;
-      *v13 = *v11;
-      a6.n128_u64[1] = v205.n128_u64[1];
-      *v11 = v205;
-      if (*a3)
+      *v13 = *selfCopy;
+      p2.n128_u64[1] = v205.n128_u64[1];
+      *selfCopy = v205;
+      if (*points)
       {
         v40 = 0;
       }
@@ -6275,54 +6275,54 @@ LABEL_76:
       }
 
       v41 = &a2[-1].n128_f64[1];
-      if (*a3)
+      if (*points)
       {
         v41 = a2[-1].n128_f64;
       }
 
-      if (*v41 < v11->n128_f64[v40])
+      if (*v41 < selfCopy->n128_f64[v40])
       {
-        v198 = *v11;
-        *v11 = *v10;
+        v198 = *selfCopy;
+        *selfCopy = *v10;
         goto LABEL_76;
       }
     }
 
 LABEL_136:
-    --a4;
-    if (a5)
+    --size;
+    if (p1)
     {
-      a6.n128_u64[0] = v11->n128_u64[0];
+      p2.n128_u64[0] = selfCopy->n128_u64[0];
       goto LABEL_144;
     }
 
-    v69 = v11[-1].n128_f64;
-    v70 = (*a3 & 1) == 0;
-    if ((*a3 & 1) == 0)
+    v69 = selfCopy[-1].n128_f64;
+    v70 = (*points & 1) == 0;
+    if ((*points & 1) == 0)
     {
-      v69 = &v11[-1].n128_f64[1];
+      v69 = &selfCopy[-1].n128_f64[1];
     }
 
-    a6.n128_u64[0] = v11->n128_u64[0];
-    if (*v69 >= v11->n128_f64[v70])
+    p2.n128_u64[0] = selfCopy->n128_u64[0];
+    if (*v69 >= selfCopy->n128_f64[v70])
     {
-      v89 = v11->n128_f64[1];
-      if (*a3)
+      v89 = selfCopy->n128_f64[1];
+      if (*points)
       {
-        v90 = v11->n128_f64[0];
+        v90 = selfCopy->n128_f64[0];
       }
 
       else
       {
-        v90 = v11->n128_f64[1];
+        v90 = selfCopy->n128_f64[1];
       }
 
       if (v90 >= v10->n128_f64[v70])
       {
-        v93 = v11 + 1;
+        v93 = selfCopy + 1;
         do
         {
-          v11 = v93;
+          selfCopy = v93;
           if (v93 >= a2)
           {
             break;
@@ -6337,10 +6337,10 @@ LABEL_136:
 
       else
       {
-        v91 = v11;
+        v91 = selfCopy;
         do
         {
-          v11 = v91 + 1;
+          selfCopy = v91 + 1;
           v92 = *(v91->n128_f64 + ((v70 * 8) | 0x10));
           ++v91;
         }
@@ -6349,7 +6349,7 @@ LABEL_136:
       }
 
       v95 = a2;
-      if (v11 < a2)
+      if (selfCopy < a2)
       {
         v96 = (v70 * 8) | 0xFFFFFFFFFFFFFFF0;
         v97 = a2;
@@ -6363,12 +6363,12 @@ LABEL_136:
         while (v90 < v98);
       }
 
-      while (v11 < v95)
+      while (selfCopy < v95)
       {
-        v215 = *v11;
-        *v11 = *v95;
+        v215 = *selfCopy;
+        *selfCopy = *v95;
         *v95 = v215;
-        if (*a3)
+        if (*points)
         {
           v99 = 0;
         }
@@ -6378,9 +6378,9 @@ LABEL_136:
           v99 = 8;
         }
 
-        if (*a3)
+        if (*points)
         {
-          v100 = a6.n128_f64[0];
+          v100 = p2.n128_f64[0];
         }
 
         else
@@ -6390,8 +6390,8 @@ LABEL_136:
 
         do
         {
-          v101 = *(v11->n128_f64 + (v99 | 0x10));
-          ++v11;
+          v101 = *(selfCopy->n128_f64 + (v99 | 0x10));
+          ++selfCopy;
         }
 
         while (v100 >= v101);
@@ -6405,34 +6405,34 @@ LABEL_136:
         while (v100 < v103);
       }
 
-      if (&v11[-1] != a1)
+      if (&selfCopy[-1] != self)
       {
-        *a1 = v11[-1];
+        *self = selfCopy[-1];
       }
 
-      a5 = 0;
-      v11[-1].n128_u64[0] = a6.n128_u64[0];
-      v11[-1].n128_f64[1] = v89;
+      p1 = 0;
+      selfCopy[-1].n128_u64[0] = p2.n128_u64[0];
+      selfCopy[-1].n128_f64[1] = v89;
     }
 
     else
     {
 LABEL_144:
       v71 = 0;
-      v72 = v11->n128_f64[1];
-      if (*a3)
+      v72 = selfCopy->n128_f64[1];
+      if (*points)
       {
-        v73 = a6.n128_f64[0];
+        v73 = p2.n128_f64[0];
       }
 
       else
       {
-        v73 = v11->n128_f64[1];
+        v73 = selfCopy->n128_f64[1];
       }
 
       do
       {
-        if (*a3)
+        if (*points)
         {
           v74 = 2;
         }
@@ -6442,11 +6442,11 @@ LABEL_144:
           v74 = 3;
         }
 
-        v75 = v11[v71++].n128_f64[v74];
+        v75 = selfCopy[v71++].n128_f64[v74];
       }
 
       while (v75 < v73);
-      v76 = &v11[v71];
+      v76 = &selfCopy[v71];
       v77 = a2;
       if (v71 == 1)
       {
@@ -6455,7 +6455,7 @@ LABEL_144:
         {
           v78 = v81[-1].n128_f64;
           v82 = &v81[-1].n128_f64[1];
-          if (*a3)
+          if (*points)
           {
             v82 = v78;
           }
@@ -6477,7 +6477,7 @@ LABEL_144:
         {
           v78 = v77[-1].n128_f64;
           v79 = &v77[-1].n128_f64[1];
-          if (*a3)
+          if (*points)
           {
             v79 = v78;
           }
@@ -6490,18 +6490,18 @@ LABEL_144:
       }
 
 LABEL_165:
-      v11 = v76;
+      selfCopy = v76;
       if (v76 < v78)
       {
         v83 = v78;
         do
         {
-          v214 = *v11;
-          *v11 = *v83;
+          v214 = *selfCopy;
+          *selfCopy = *v83;
           *v83 = v214;
-          if (*a3)
+          if (*points)
           {
-            v84 = a6.n128_f64[0];
+            v84 = p2.n128_f64[0];
           }
 
           else
@@ -6511,11 +6511,11 @@ LABEL_165:
 
           do
           {
-            v85 = &v11[1].n128_f64[1];
-            ++v11;
-            if (*a3)
+            v85 = &selfCopy[1].n128_f64[1];
+            ++selfCopy;
+            if (*points)
             {
-              v85 = v11;
+              v85 = selfCopy;
             }
           }
 
@@ -6524,7 +6524,7 @@ LABEL_165:
           {
             v86 = &v83[-1].n128_f64[1];
             --v83;
-            if (*a3)
+            if (*points)
             {
               v86 = v83;
             }
@@ -6533,81 +6533,81 @@ LABEL_165:
           while (*v86 >= v84);
         }
 
-        while (v11 < v83);
+        while (selfCopy < v83);
       }
 
-      if (&v11[-1] != a1)
+      if (&selfCopy[-1] != self)
       {
-        *a1 = v11[-1];
+        *self = selfCopy[-1];
       }
 
-      v11[-1].n128_u64[0] = a6.n128_u64[0];
-      v11[-1].n128_f64[1] = v72;
+      selfCopy[-1].n128_u64[0] = p2.n128_u64[0];
+      selfCopy[-1].n128_f64[1] = v72;
       if (v76 < v78)
       {
         goto LABEL_182;
       }
 
-      v87 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *>(a1, v11 - 1, a3, a6);
-      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *>(v11, a2, a3, v88))
+      v87 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *>(self, selfCopy - 1, points, p2);
+      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *>(selfCopy, a2, points, v88))
       {
-        a2 = v11 - 1;
+        a2 = selfCopy - 1;
         if (!v87)
         {
           goto LABEL_1;
         }
 
-        return a6.n128_f64[0];
+        return p2.n128_f64[0];
       }
 
       if (!v87)
       {
 LABEL_182:
-        std::__introsort<std::_ClassicAlgPolicy,[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *,false>(a1, &v11[-1], a3, a4, a5 & 1);
-        a5 = 0;
+        std::__introsort<std::_ClassicAlgPolicy,[CRNeuralTextDetectorV3 getBorderPoints:sourceImageSize:outP1:outP2:isHorizontal:]::$_0 &,CGPoint *,false>(self, &selfCopy[-1], points, size, p1 & 1);
+        p1 = 0;
       }
     }
   }
 
-  v120 = v11 + 1;
-  v121 = &v11[1].n128_f64[1];
+  v120 = selfCopy + 1;
+  v121 = &selfCopy[1].n128_f64[1];
   v122 = 1;
-  if (*a3)
+  if (*points)
   {
     v122 = 0;
-    v121 = v11[1].n128_f64;
+    v121 = selfCopy[1].n128_f64;
   }
 
   v123 = *v121;
   v124 = &a2[-1].n128_u64[1];
-  if (*a3)
+  if (*points)
   {
     v124 = a2[-1].n128_u64;
   }
 
-  a6.n128_u64[0] = *v124;
+  p2.n128_u64[0] = *v124;
   v125 = v120->n128_f64[v122];
-  if (v123 >= v11->n128_f64[v122])
+  if (v123 >= selfCopy->n128_f64[v122])
   {
-    if (a6.n128_f64[0] < v125)
+    if (p2.n128_f64[0] < v125)
     {
       v177 = *v120;
       *v120 = *v10;
       *v10 = v177;
-      v178 = &v11[1].n128_u64[1];
+      v178 = &selfCopy[1].n128_u64[1];
       v179 = 1;
-      if (*a3)
+      if (*points)
       {
         v179 = 0;
-        v178 = v11[1].n128_u64;
+        v178 = selfCopy[1].n128_u64;
       }
 
-      a6.n128_u64[0] = *v178;
-      if (*v178 < v11->n128_f64[v179])
+      p2.n128_u64[0] = *v178;
+      if (*v178 < selfCopy->n128_f64[v179])
       {
-        v219 = *v11;
-        *v11 = *v120;
-        a6.n128_u64[0] = v219.n128_u64[0];
+        v219 = *selfCopy;
+        *selfCopy = *v120;
+        p2.n128_u64[0] = v219.n128_u64[0];
         *v120 = v219;
       }
     }
@@ -6615,39 +6615,39 @@ LABEL_182:
 
   else
   {
-    if (a6.n128_f64[0] < v125)
+    if (p2.n128_f64[0] < v125)
     {
       goto LABEL_239;
     }
 
-    v220 = *v11;
-    *v11 = *v120;
+    v220 = *selfCopy;
+    *selfCopy = *v120;
     *v120 = v220;
     v190 = 1;
-    if (*a3)
+    if (*points)
     {
       v190 = 0;
     }
 
     v191 = &a2[-1].n128_u64[1];
-    if (*a3)
+    if (*points)
     {
       v191 = a2[-1].n128_u64;
     }
 
-    a6.n128_u64[0] = *v191;
+    p2.n128_u64[0] = *v191;
     if (*v191 < v120->n128_f64[v190])
     {
-      a6 = *v120;
+      p2 = *v120;
       *v120 = *v10;
       goto LABEL_240;
     }
   }
 
-  return a6.n128_f64[0];
+  return p2.n128_f64[0];
 }
 
-+ (void)computeOrientationFromSingleTextFeature:(uint64_t)a3 map:
++ (void)computeOrientationFromSingleTextFeature:(uint64_t)feature map:
 {
   v66[16] = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -6658,7 +6658,7 @@ LABEL_182:
   std::vector<double>::vector[abi:ne200100](&v59, 9uLL);
   v66[0] = 0;
   std::vector<long>::vector[abi:ne200100](&__p, 9uLL);
-  if ([objc_opt_class() computeClassCount:&__p classProbabiity:&v59 fromSingleTextFeature:v4 map:a3 backgroundClass:0])
+  if ([objc_opt_class() computeClassCount:&__p classProbabiity:&v59 fromSingleTextFeature:v4 map:feature backgroundClass:0])
   {
     v5 = v4;
     objc_opt_self();
@@ -6857,8 +6857,8 @@ LABEL_48:
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v48 = [v5 subFeatures];
-        v49 = [v48 countByEnumeratingWithState:&v61 objects:v66 count:16];
+        subFeatures = [v5 subFeatures];
+        v49 = [subFeatures countByEnumeratingWithState:&v61 objects:v66 count:16];
         if (v49)
         {
           v50 = *v62;
@@ -6868,7 +6868,7 @@ LABEL_48:
             {
               if (*v62 != v50)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(subFeatures);
               }
 
               v52 = *(*(&v61 + 1) + 8 * i);
@@ -6878,7 +6878,7 @@ LABEL_48:
               [v52 setUseSequenceOrientation:{objc_msgSend(v5, "useSequenceOrientation")}];
             }
 
-            v49 = [v48 countByEnumeratingWithState:&v61 objects:v66 count:16];
+            v49 = [subFeatures countByEnumeratingWithState:&v61 objects:v66 count:16];
           }
 
           while (v49);
@@ -6904,8 +6904,8 @@ LABEL_48:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v14 = [v4 subFeatures];
-  v15 = [v14 countByEnumeratingWithState:&v53 objects:v65 count:16];
+  subFeatures2 = [v4 subFeatures];
+  v15 = [subFeatures2 countByEnumeratingWithState:&v53 objects:v65 count:16];
   if (v15)
   {
     v16 = *v54;
@@ -6915,13 +6915,13 @@ LABEL_48:
       {
         if (*v54 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(subFeatures2);
         }
 
         [*(*(&v53 + 1) + 8 * j) setUseSequenceOrientation:{objc_msgSend(v4, "useSequenceOrientation")}];
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v53 objects:v65 count:16];
+      v15 = [subFeatures2 countByEnumeratingWithState:&v53 objects:v65 count:16];
     }
 
     while (v15);

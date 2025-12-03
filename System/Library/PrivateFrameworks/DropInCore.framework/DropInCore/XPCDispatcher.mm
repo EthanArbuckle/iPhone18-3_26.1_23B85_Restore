@@ -1,52 +1,52 @@
 @interface XPCDispatcher
-- (void)cancelSessionWithContext:(id)a3 session:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)requestStateForDevice:(id)a3 completionHandler:(id)a4;
-- (void)setUplinkMutedForCurrentSession:(BOOL)a3 completionHandler:(id)a4;
-- (void)updateState:(int64_t)a3 reason:(id)a4 completionHandler:(id)a5;
+- (void)cancelSessionWithContext:(id)context session:(id)session error:(id)error completionHandler:(id)handler;
+- (void)requestStateForDevice:(id)device completionHandler:(id)handler;
+- (void)setUplinkMutedForCurrentSession:(BOOL)session completionHandler:(id)handler;
+- (void)updateState:(int64_t)state reason:(id)reason completionHandler:(id)handler;
 @end
 
 @implementation XPCDispatcher
 
-- (void)cancelSessionWithContext:(id)a3 session:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)cancelSessionWithContext:(id)context session:(id)session error:(id)error completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  v11 = a3;
-  v12 = a4;
+  contextCopy = context;
+  sessionCopy = session;
 
-  v13 = a5;
-  sub_249DFF4C0(v11, v12, a5, sub_249E04BAC, v10);
+  errorCopy = error;
+  sub_249DFF4C0(contextCopy, sessionCopy, error, sub_249E04BAC, v10);
 }
 
-- (void)setUplinkMutedForCurrentSession:(BOOL)a3 completionHandler:(id)a4
+- (void)setUplinkMutedForCurrentSession:(BOOL)session completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
 
-  sub_249E0067C(a3, self, v6);
+  sub_249E0067C(session, self, v6);
   _Block_release(v6);
 }
 
-- (void)updateState:(int64_t)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)updateState:(int64_t)state reason:(id)reason completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_249E7AAA8();
   v10 = v9;
   _Block_copy(v7);
 
-  sub_249E02684(a3, v8, v10, self, v7);
+  sub_249E02684(state, v8, v10, self, v7);
   _Block_release(v7);
 }
 
-- (void)requestStateForDevice:(id)a3 completionHandler:(id)a4
+- (void)requestStateForDevice:(id)device completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
+  deviceCopy = device;
 
-  sub_249E03120(v7, sub_249E0439C, v6);
+  sub_249E03120(deviceCopy, sub_249E0439C, v6);
 }
 
 @end

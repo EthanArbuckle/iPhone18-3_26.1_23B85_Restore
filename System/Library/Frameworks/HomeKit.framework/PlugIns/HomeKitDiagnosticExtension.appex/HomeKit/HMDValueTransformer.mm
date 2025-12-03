@@ -1,28 +1,28 @@
 @interface HMDValueTransformer
 + (Class)valueClass;
-+ (id)decodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5;
-+ (id)encodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5;
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
++ (id)decodeValue:(id)value withTransformerNamed:(id)named error:(id *)error;
++ (id)encodeValue:(id)value withTransformerNamed:(id)named error:(id *)error;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
 + (id)sharedTransformer;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
-+ (id)valueTransformerForName:(id)a3;
++ (id)transformedValue:(id)value error:(id *)error;
++ (id)valueTransformerForName:(id)name;
 - (HMDValueTransformer)init;
 - (id)description;
-- (id)reverseTransformedValue:(id)a3;
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-- (id)transformedValue:(id)a3;
-- (id)transformedValue:(id)a3 error:(id *)a4;
+- (id)reverseTransformedValue:(id)value;
+- (id)reverseTransformedValue:(id)value error:(id *)error;
+- (id)transformedValue:(id)value;
+- (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDValueTransformer
 
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4
+- (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = objc_opt_class();
-  if (sub_10000D26C(v5, [v6 transformedValueClass], a4))
+  if (sub_10000D26C(valueCopy, [v6 transformedValueClass], error))
   {
-    v7 = [v6 reverseTransformedValue:v5 error:a4];
+    v7 = [v6 reverseTransformedValue:valueCopy error:error];
   }
 
   else
@@ -33,13 +33,13 @@
   return v7;
 }
 
-- (id)transformedValue:(id)a3 error:(id *)a4
+- (id)transformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = objc_opt_class();
-  if (sub_10000D26C(v5, [v6 valueClass], a4))
+  if (sub_10000D26C(valueCopy, [v6 valueClass], error))
   {
-    v7 = [v6 transformedValue:v5 error:a4];
+    v7 = [v6 transformedValue:valueCopy error:error];
   }
 
   else
@@ -50,13 +50,13 @@
   return v7;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     v13 = 0;
-    v5 = [(HMDValueTransformer *)self reverseTransformedValue:v4 error:&v13];
+    v5 = [(HMDValueTransformer *)self reverseTransformedValue:valueCopy error:&v13];
     v6 = v13;
     if (!v5)
     {
@@ -89,13 +89,13 @@
   return v5;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     v13 = 0;
-    v5 = [(HMDValueTransformer *)self transformedValue:v4 error:&v13];
+    v5 = [(HMDValueTransformer *)self transformedValue:valueCopy error:&v13];
     v6 = v13;
     if (!v5)
     {
@@ -153,9 +153,9 @@
   return [(HMDValueTransformer *)&v10 init];
 }
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = NSStringFromSelector(a2);
   v7 = [NSString stringWithFormat:@"You must override %@ in a subclass", v6];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
@@ -164,9 +164,9 @@
   objc_exception_throw(v8);
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = NSStringFromSelector(a2);
   v7 = [NSString stringWithFormat:@"You must override %@ in a subclass", v6];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
@@ -185,10 +185,10 @@
   objc_exception_throw(v4);
 }
 
-+ (id)valueTransformerForName:(id)a3
++ (id)valueTransformerForName:(id)name
 {
-  v3 = a3;
-  v4 = [NSValueTransformer valueTransformerForName:v3];
+  nameCopy = name;
+  v4 = [NSValueTransformer valueTransformerForName:nameCopy];
   if (v4)
   {
     objc_opt_class();
@@ -204,7 +204,7 @@
         dispatch_once(&qword_10003B1B0, &stru_100030A78);
       }
 
-      v5 = [qword_10003B1A8 objectForKey:v3];
+      v5 = [qword_10003B1A8 objectForKey:nameCopy];
       if (!v5)
       {
         objc_opt_class();
@@ -216,7 +216,7 @@
         else
         {
           v7 = off_1000304A8;
-          if (([v3 isEqualToString:NSKeyedUnarchiveFromDataTransformerName] & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", NSUnarchiveFromDataTransformerName))
+          if (([nameCopy isEqualToString:NSKeyedUnarchiveFromDataTransformerName] & 1) == 0 && !objc_msgSend(nameCopy, "isEqualToString:", NSUnarchiveFromDataTransformerName))
           {
             v7 = off_1000304A0;
           }
@@ -225,7 +225,7 @@
         v8 = *v7;
         v5 = [objc_alloc(objc_opt_class()) initWithTransformer:v4];
         v9 = qword_10003B1A8;
-        v10 = [v3 copy];
+        v10 = [nameCopy copy];
         [v9 setObject:v5 forKey:v10];
       }
     }
@@ -241,46 +241,46 @@
 
 + (id)sharedTransformer
 {
-  v2 = NSStringFromClass(a1);
+  v2 = NSStringFromClass(self);
   v3 = [NSValueTransformer valueTransformerForName:v2];
 
   return v3;
 }
 
-+ (id)decodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5
++ (id)decodeValue:(id)value withTransformerNamed:(id)named error:(id *)error
 {
-  if (a4)
+  if (named)
   {
-    v7 = a4;
+    namedCopy = named;
   }
 
   else
   {
-    v7 = NSKeyedUnarchiveFromDataTransformerName;
+    namedCopy = NSKeyedUnarchiveFromDataTransformerName;
   }
 
-  v8 = a3;
-  v9 = sub_10000DFC0(a1, v7);
-  v10 = [v9 reverseTransformedValue:v8 error:a5];
+  valueCopy = value;
+  v9 = sub_10000DFC0(self, namedCopy);
+  v10 = [v9 reverseTransformedValue:valueCopy error:error];
 
   return v10;
 }
 
-+ (id)encodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5
++ (id)encodeValue:(id)value withTransformerNamed:(id)named error:(id *)error
 {
-  if (a4)
+  if (named)
   {
-    v7 = a4;
+    namedCopy = named;
   }
 
   else
   {
-    v7 = NSKeyedUnarchiveFromDataTransformerName;
+    namedCopy = NSKeyedUnarchiveFromDataTransformerName;
   }
 
-  v8 = a3;
-  v9 = sub_10000DFC0(a1, v7);
-  v10 = [v9 transformedValue:v8 error:a5];
+  valueCopy = value;
+  v9 = sub_10000DFC0(self, namedCopy);
+  v10 = [v9 transformedValue:valueCopy error:error];
 
   return v10;
 }

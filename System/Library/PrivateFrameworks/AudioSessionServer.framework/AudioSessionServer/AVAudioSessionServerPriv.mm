@@ -1,25 +1,25 @@
 @interface AVAudioSessionServerPriv
 - (AVAudioSessionServerPriv)init;
-- (AVAudioSessionServerPriv)initWithAudioControlQueue:(id)a3 delegate:(id)a4;
+- (AVAudioSessionServerPriv)initWithAudioControlQueue:(id)queue delegate:(id)delegate;
 - (BOOL)checkMicrophoneInjectionPermission;
-- (id)createTimestampWriterForDevice:(id)a3 halID:(unsigned int)a4 isDecoupledInput:(BOOL)a5;
+- (id)createTimestampWriterForDevice:(id)device halID:(unsigned int)d isDecoupledInput:(BOOL)input;
 - (id)getSessionsWithMicrophoneInjectionPreference;
-- (int)queuePIDOverridden:(int)a3;
-- (int)setMXSessionProperty:(id)a3 forSessionID:(unsigned int)a4 value:(id)a5;
-- (opaqueCMSession)copyCMSession:(unsigned int)a3;
+- (int)queuePIDOverridden:(int)overridden;
+- (int)setMXSessionProperty:(id)property forSessionID:(unsigned int)d value:(id)value;
+- (opaqueCMSession)copyCMSession:(unsigned int)session;
 - (tuple<int,)getDescriptionForSession:(int> *__return_ptr)retstr;
 - (tuple<int,)getJSONDescriptionForSession:(int> *__return_ptr)retstr;
-- (tuple<int,)getMXSessionProperty:(id)a3 forSessionID:(unsigned int)a4;
+- (tuple<int,)getMXSessionProperty:(id)property forSessionID:(unsigned int)d;
 - (tuple<int,)getSourceProcessAuditToken:(AVAudioSessionServerPriv *)self;
-- (tuple<int,)setPlayState:(unsigned int)a3 sessionID:(unsigned int)a4 playerType:(unsigned int)a5 playerRef:(void *)a6 modes:(unsigned int)a7 subsessionRef:(void *)a8;
+- (tuple<int,)setPlayState:(unsigned int)state sessionID:(unsigned int)d playerType:(unsigned int)type playerRef:(void *)ref modes:(unsigned int)modes subsessionRef:(void *)subsessionRef;
 - (tuple<opaqueCMSession)createCoreMXSessionForPID:(unsigned int> *__return_ptr)retstr;
 - (tuple<opaqueCMSession)createCoreMXSessionForProcID:(unsigned int> *__return_ptr)retstr type:(AVAudioSessionServerPriv *)self;
 - (tuple<opaqueCMSession)getPrimarySessionForProcID:(unsigned int> *__return_ptr)retstr createIfNecessary:(AVAudioSessionServerPriv *)self;
-- (unint64_t)dynamicLatencyForDevice:(unsigned int)a3 isInput:(BOOL)a4;
+- (unint64_t)dynamicLatencyForDevice:(unsigned int)device isInput:(BOOL)input;
 - (vector<unsigned)getSessionIDsForToken:(AVAudioSessionServerPriv *)self;
-- (void)destroyTimestampWriterForDevice:(id)a3;
-- (void)mapSession:(unsigned int)a3 isInput:(BOOL)a4 toDevice:(id)a5;
-- (void)sampleRateChanged:(double)a3 forDevice:(unsigned int)a4;
+- (void)destroyTimestampWriterForDevice:(id)device;
+- (void)mapSession:(unsigned int)session isInput:(BOOL)input toDevice:(id)device;
+- (void)sampleRateChanged:(double)changed forDevice:(unsigned int)device;
 - (void)startXPCServer;
 @end
 
@@ -40,21 +40,21 @@
   return v2;
 }
 
-- (AVAudioSessionServerPriv)initWithAudioControlQueue:(id)a3 delegate:(id)a4
+- (AVAudioSessionServerPriv)initWithAudioControlQueue:(id)queue delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = AVAudioSessionServerPriv;
   v8 = [(AVAudioSessionServerPriv *)&v12 init];
   if (v8)
   {
-    avas::server::SetAudioControlQueue(v6);
-    v9 = [[AVAudioSessionXPCServer alloc] initWithDelegate:v7];
+    avas::server::SetAudioControlQueue(queueCopy);
+    v9 = [[AVAudioSessionXPCServer alloc] initWithDelegate:delegateCopy];
     xpcServer = v8->_xpcServer;
     v8->_xpcServer = v9;
 
-    objc_storeStrong(&v8->_serverDelegate, a4);
+    objc_storeStrong(&v8->_serverDelegate, delegate);
   }
 
   return v8;
@@ -222,12 +222,12 @@
   return result;
 }
 
-- (int)queuePIDOverridden:(int)a3
+- (int)queuePIDOverridden:(int)overridden
 {
   v5 = avas::server::LegacySessionManager::Instance(self);
   v8[0] = 0;
   v8[32] = 0;
-  v9 = a3;
+  overriddenCopy = overridden;
   avas::server::LegacySessionManager::FindOrCreatePrimarySession(v5, v8, 0, self->_serverDelegate, 1, &v10);
   if (v10)
   {
@@ -248,12 +248,12 @@
   return v6;
 }
 
-- (tuple<int,)setPlayState:(unsigned int)a3 sessionID:(unsigned int)a4 playerType:(unsigned int)a5 playerRef:(void *)a6 modes:(unsigned int)a7 subsessionRef:(void *)a8
+- (tuple<int,)setPlayState:(unsigned int)state sessionID:(unsigned int)d playerType:(unsigned int)type playerRef:(void *)ref modes:(unsigned int)modes subsessionRef:(void *)subsessionRef
 {
   memset(v12, 0, 12);
-  v11[0] = a4;
+  v11[0] = d;
   v11[4] = 0;
-  v8 = avas::server::require_acq::AudioSessionServerSetClientPlayState(v11, a5, a6, a7, a3, v12, a8);
+  v8 = avas::server::require_acq::AudioSessionServerSetClientPlayState(v11, type, ref, modes, state, v12, subsessionRef);
   std::__variant_detail::__dtor<std::__variant_detail::__traits<unsigned int,std::shared_ptr<avas::server::AudioSessionInfo>>,(std::__variant_detail::_Trait)1>::__destroy[abi:ne200100](v11);
   v9 = *(v12 + 4);
   v10 = v8 | (LODWORD(v12[0]) << 32);
@@ -262,10 +262,10 @@
   return result;
 }
 
-- (opaqueCMSession)copyCMSession:(unsigned int)a3
+- (opaqueCMSession)copyCMSession:(unsigned int)session
 {
   cf[13] = *MEMORY[0x277D85DE8];
-  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v8, a3);
+  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v8, session);
   v3 = v8;
   if (!v8)
   {
@@ -434,20 +434,20 @@
   return result;
 }
 
-- (id)createTimestampWriterForDevice:(id)a3 halID:(unsigned int)a4 isDecoupledInput:(BOOL)a5
+- (id)createTimestampWriterForDevice:(id)device halID:(unsigned int)d isDecoupledInput:(BOOL)input
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = avas::server::LegacySessionManager::Instance(v7);
+  inputCopy = input;
+  deviceCopy = device;
+  v8 = avas::server::LegacySessionManager::Instance(deviceCopy);
   v9 = v8[37];
   if (v9)
   {
     os_unfair_lock_lock(v8[37]);
-    v13 = a4;
-    applesauce::CF::StringRef::from_ns(v7, &cf);
-    v15 = v5;
+    dCopy = d;
+    applesauce::CF::StringRef::from_ns(deviceCopy, &cf);
+    v15 = inputCopy;
     v10 = mach_absolute_time();
-    Device = avas::server::DeviceTimeObserver::createDevice((v9 + 8), &v13, v10, !v5);
+    Device = avas::server::DeviceTimeObserver::createDevice((v9 + 8), &dCopy, v10, !inputCopy);
     v17 = v11;
     if (cf)
     {
@@ -461,15 +461,15 @@
   return v9;
 }
 
-- (void)destroyTimestampWriterForDevice:(id)a3
+- (void)destroyTimestampWriterForDevice:(id)device
 {
-  v3 = a3;
-  v4 = avas::server::LegacySessionManager::Instance(v3);
+  deviceCopy = device;
+  v4 = avas::server::LegacySessionManager::Instance(deviceCopy);
   v5 = *(v4 + 37);
   if (v5)
   {
     os_unfair_lock_lock(*(v4 + 37));
-    applesauce::CF::StringRef::from_ns(v3, &cf);
+    applesauce::CF::StringRef::from_ns(deviceCopy, &cf);
     v6 = mach_absolute_time();
     avas::server::DeviceTimeObserver::removeDevice(&v5[2], &cf, v6);
     if (cf)
@@ -481,18 +481,18 @@
   }
 }
 
-- (void)mapSession:(unsigned int)a3 isInput:(BOOL)a4 toDevice:(id)a5
+- (void)mapSession:(unsigned int)session isInput:(BOOL)input toDevice:(id)device
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = avas::server::LegacySessionManager::Instance(v7);
+  inputCopy = input;
+  deviceCopy = device;
+  v8 = avas::server::LegacySessionManager::Instance(deviceCopy);
   v9 = *(v8 + 37);
   if (v9)
   {
     os_unfair_lock_lock(*(v8 + 37));
-    applesauce::CF::StringRef::from_ns(v7, &cf);
+    applesauce::CF::StringRef::from_ns(deviceCopy, &cf);
     v10 = mach_absolute_time();
-    avas::server::DeviceTimeObserver::mapSessionToDevice((v9 + 8), a3, v5, &cf, v10);
+    avas::server::DeviceTimeObserver::mapSessionToDevice((v9 + 8), session, inputCopy, &cf, v10);
     if (cf)
     {
       CFRelease(cf);
@@ -502,7 +502,7 @@
   }
 }
 
-- (void)sampleRateChanged:(double)a3 forDevice:(unsigned int)a4
+- (void)sampleRateChanged:(double)changed forDevice:(unsigned int)device
 {
   v24 = *MEMORY[0x277D85DE8];
   v6 = avas::server::LegacySessionManager::Instance(self);
@@ -510,7 +510,7 @@
   if (v7)
   {
     os_unfair_lock_lock(*(v6 + 37));
-    avas::server::DeviceTimeObserver::setSampleRate(&v7[2], a4, a3);
+    avas::server::DeviceTimeObserver::setSampleRate(&v7[2], device, changed);
     os_unfair_lock_unlock(v7);
     outData = 0;
     ioDataSize = 4;
@@ -518,7 +518,7 @@
     inAddress_8 = 0;
     *&v15.mSelector = *"tlwhtpni";
     v15.mElement = 0;
-    PropertyData = AudioObjectGetPropertyData(a4, &inAddress, 0, 0, &ioDataSize, &outData);
+    PropertyData = AudioObjectGetPropertyData(device, &inAddress, 0, 0, &ioDataSize, &outData);
     if (PropertyData)
     {
       v9 = *avas::server::gSessionServerLog(PropertyData);
@@ -535,15 +535,15 @@ LABEL_8:
 
     else
     {
-      v10 = AudioObjectGetPropertyData(a4, &v15, 0, 0, &ioDataSize, &inAddress_8 + 4);
+      v10 = AudioObjectGetPropertyData(device, &v15, 0, 0, &ioDataSize, &inAddress_8 + 4);
       if (!v10)
       {
         os_unfair_lock_lock(v7);
         LODWORD(v11) = HIDWORD(inAddress_8);
-        v12 = 1000000000.0 / a3 * v11;
+        v12 = 1000000000.0 / changed * v11;
         v13 = llround(v12);
         LODWORD(v12) = outData;
-        avas::server::DeviceTimeObserver::setFixedLatency(&v7[2], a4, v13, llround(1000000000.0 / a3 * *&v12));
+        avas::server::DeviceTimeObserver::setFixedLatency(&v7[2], device, v13, llround(1000000000.0 / changed * *&v12));
         os_unfair_lock_unlock(v7);
         goto LABEL_10;
       }
@@ -578,7 +578,7 @@ LABEL_10:
   return avas::server::LegacySessionManager::GetSessionsWithMicrophoneInjectionPreference(v2);
 }
 
-- (unint64_t)dynamicLatencyForDevice:(unsigned int)a3 isInput:(BOOL)a4
+- (unint64_t)dynamicLatencyForDevice:(unsigned int)device isInput:(BOOL)input
 {
   v6 = avas::server::LegacySessionManager::Instance(self);
   v7 = *(v6 + 37);
@@ -588,7 +588,7 @@ LABEL_10:
   }
 
   os_unfair_lock_lock(*(v6 + 37));
-  v8 = avas::server::DeviceTimeObserver::nanosecondLatency(&v7[2], a3, a4);
+  v8 = avas::server::DeviceTimeObserver::nanosecondLatency(&v7[2], device, input);
   os_unfair_lock_unlock(v7);
   return v8;
 }
@@ -646,11 +646,11 @@ LABEL_7:
   return result;
 }
 
-- (tuple<int,)getMXSessionProperty:(id)a3 forSessionID:(unsigned int)a4
+- (tuple<int,)getMXSessionProperty:(id)property forSessionID:(unsigned int)d
 {
   v6 = v4;
-  v7 = a3;
-  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v12, a4);
+  propertyCopy = property;
+  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v12, d);
   v8 = v12;
   if (v12)
   {
@@ -660,7 +660,7 @@ LABEL_7:
       atomic_fetch_add_explicit(&v13->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    avas::server::mx::MXAccessor::GetMXProperty(*(v8 + 120), v7, v6);
+    avas::server::mx::MXAccessor::GetMXProperty(*(v8 + 120), propertyCopy, v6);
     if (v9)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v9);
@@ -683,11 +683,11 @@ LABEL_7:
   return result;
 }
 
-- (int)setMXSessionProperty:(id)a3 forSessionID:(unsigned int)a4 value:(id)a5
+- (int)setMXSessionProperty:(id)property forSessionID:(unsigned int)d value:(id)value
 {
-  v7 = a3;
-  v8 = a5;
-  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v13, a4);
+  propertyCopy = property;
+  valueCopy = value;
+  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v13, d);
   v9 = v13;
   if (v13)
   {
@@ -697,7 +697,7 @@ LABEL_7:
       atomic_fetch_add_explicit(&v14->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v11 = avas::server::mx::MXAccessor::SetMXProperty(*(v9 + 120), v7, v8);
+    v11 = avas::server::mx::MXAccessor::SetMXProperty(*(v9 + 120), propertyCopy, valueCopy);
     if (v10)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v10);

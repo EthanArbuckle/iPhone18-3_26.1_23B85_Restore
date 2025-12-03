@@ -1,14 +1,14 @@
 @interface PBUIPosterSceneLayerHostView
 - (void)dealloc;
-- (void)setContextID:(unsigned int)a3 scene:(id)a4;
+- (void)setContextID:(unsigned int)d scene:(id)scene;
 @end
 
 @implementation PBUIPosterSceneLayerHostView
 
-- (void)setContextID:(unsigned int)a3 scene:(id)a4
+- (void)setContextID:(unsigned int)d scene:(id)scene
 {
-  v4 = *&a3;
-  v14 = a4;
+  v4 = *&d;
+  sceneCopy = scene;
   if ([(PBUIPosterSceneLayerHostView *)self contextID]!= v4)
   {
     [(PBUIPosterSceneLayerHostView *)self setContextID:v4];
@@ -16,21 +16,21 @@
     presenter = self->_presenter;
     self->_presenter = 0;
 
-    [(PBUIPosterSceneLayerHostView *)self setScene:v14];
+    [(PBUIPosterSceneLayerHostView *)self setScene:sceneCopy];
     if ([(PBUIPosterSceneLayerHostView *)self contextID])
     {
       v7 = [MEMORY[0x277D75968] targetForContextID:{-[PBUIPosterSceneLayerHostView contextID](self, "contextID")}];
-      v8 = [(PBUIPosterSceneLayerHostView *)self scene];
-      v9 = [v8 uiPresentationManager];
-      v10 = [(PBUIPosterSceneLayerHostView *)self identifier];
-      v11 = [v9 createPresenterForLayerTarget:v7 identifier:v10 priority:100];
+      scene = [(PBUIPosterSceneLayerHostView *)self scene];
+      uiPresentationManager = [scene uiPresentationManager];
+      identifier = [(PBUIPosterSceneLayerHostView *)self identifier];
+      v11 = [uiPresentationManager createPresenterForLayerTarget:v7 identifier:identifier priority:100];
       v12 = self->_presenter;
       self->_presenter = v11;
 
       [(UIScenePresenter *)self->_presenter modifyPresentationContext:&__block_literal_global_1];
       [(UIScenePresenter *)self->_presenter activate];
-      v13 = [(UIScenePresenter *)self->_presenter presentationView];
-      [(PBUIPosterSceneLayerHostView *)self addSubview:v13];
+      presentationView = [(UIScenePresenter *)self->_presenter presentationView];
+      [(PBUIPosterSceneLayerHostView *)self addSubview:presentationView];
     }
   }
 }

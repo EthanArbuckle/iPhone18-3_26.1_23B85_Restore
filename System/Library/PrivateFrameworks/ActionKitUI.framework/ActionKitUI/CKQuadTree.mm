@@ -1,17 +1,17 @@
 @interface CKQuadTree
-- (CKQuadTree)initWithPoints:(id)a3;
+- (CKQuadTree)initWithPoints:(id)points;
 @end
 
 @implementation CKQuadTree
 
-- (CKQuadTree)initWithPoints:(id)a3
+- (CKQuadTree)initWithPoints:(id)points
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  pointsCopy = points;
+  if (!pointsCopy)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"points"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"points"}];
   }
 
   v39.receiver = self;
@@ -23,7 +23,7 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v7 = v5;
+    v7 = pointsCopy;
     v8 = [v7 countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v8)
     {

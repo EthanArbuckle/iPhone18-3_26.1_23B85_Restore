@@ -1,20 +1,20 @@
 @interface DMFConnection
 + (DMFConnection)currentUserConnection;
-+ (id)connectionForAppleID:(id)a3;
-- (DMFConnection)initWithTransportProvider:(id)a3 userInfo:(id)a4;
++ (id)connectionForAppleID:(id)d;
+- (DMFConnection)initWithTransportProvider:(id)provider userInfo:(id)info;
 - (DMFTransportProvider)transportProvider;
-- (id)batchOperationToPerformOperations:(id)a3;
+- (id)batchOperationToPerformOperations:(id)operations;
 - (id)makeNewTransport;
-- (id)prepareOperationForRequest:(id)a3;
-- (void)_operationDidFinish:(id)a3 completion:(id)a4;
+- (id)prepareOperationForRequest:(id)request;
+- (void)_operationDidFinish:(id)finish completion:(id)completion;
 - (void)_reconnectTaskClient;
-- (void)client:(id)a3 didInterruptWithError:(id)a4;
-- (void)clientDidConnect:(id)a3;
-- (void)clientDidDisconnect:(id)a3;
-- (void)clientDidInvalidate:(id)a3;
+- (void)client:(id)client didInterruptWithError:(id)error;
+- (void)clientDidConnect:(id)connect;
+- (void)clientDidDisconnect:(id)disconnect;
+- (void)clientDidInvalidate:(id)invalidate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performRequest:(id)a3 completion:(id)a4;
+- (void)performRequest:(id)request completion:(id)completion;
 @end
 
 @implementation DMFConnection
@@ -23,7 +23,7 @@
 {
   v3 = getuid();
 
-  return [a1 connectionForUID:v3];
+  return [self connectionForUID:v3];
 }
 
 uint64_t __34__DMFConnection_connectionForUID___block_invoke()
@@ -33,18 +33,18 @@ uint64_t __34__DMFConnection_connectionForUID___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)connectionForAppleID:(id)a3
++ (id)connectionForAppleID:(id)d
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     +[DMFConnection connectionForAppleID:];
   }
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v10 = @"DMFConnectionAppleIDKey";
-  v11[0] = v4;
+  v11[0] = dCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v5 initWithUserInfo:v6];
 
@@ -53,11 +53,11 @@ uint64_t __34__DMFConnection_connectionForUID___block_invoke()
   return v7;
 }
 
-- (DMFConnection)initWithTransportProvider:(id)a3 userInfo:(id)a4
+- (DMFConnection)initWithTransportProvider:(id)provider userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  providerCopy = provider;
+  infoCopy = info;
+  if (!providerCopy)
   {
     [DMFConnection initWithTransportProvider:userInfo:];
   }
@@ -74,13 +74,13 @@ uint64_t __34__DMFConnection_connectionForUID___block_invoke()
     v9->_operationQueue = v10;
 
     [(CATOperationQueue *)v9->_operationQueue setMaxConcurrentOperationCount:0x7FFFFFFFFFFFFFFFLL];
-    objc_storeWeak(&v9->_transportProvider, v6);
+    objc_storeWeak(&v9->_transportProvider, providerCopy);
     v12 = objc_opt_new();
     taskClient = v9->_taskClient;
     v9->_taskClient = v12;
 
     [(CATTaskClient *)v9->_taskClient setDelegate:v9];
-    v14 = [v7 copy];
+    v14 = [infoCopy copy];
     [(CATTaskClient *)v9->_taskClient setUserInfo:v14];
 
     [(DMFConnection *)v9 _reconnectTaskClient];
@@ -91,41 +91,41 @@ uint64_t __34__DMFConnection_connectionForUID___block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(DMFConnection *)self taskClient];
-  [v3 setDelegate:0];
+  taskClient = [(DMFConnection *)self taskClient];
+  [taskClient setDelegate:0];
 
-  v4 = [(DMFConnection *)self taskClient];
-  [v4 disconnect];
+  taskClient2 = [(DMFConnection *)self taskClient];
+  [taskClient2 disconnect];
 
-  v5 = [(DMFConnection *)self taskClient];
-  [v5 invalidate];
+  taskClient3 = [(DMFConnection *)self taskClient];
+  [taskClient3 invalidate];
 
   v6.receiver = self;
   v6.super_class = DMFConnection;
   [(DMFConnection *)&v6 dealloc];
 }
 
-- (void)performRequest:(id)a3 completion:(id)a4
+- (void)performRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (!requestCopy)
   {
     [DMFConnection performRequest:completion:];
   }
 
-  v8 = [(DMFConnection *)self prepareOperationForRequest:v6];
+  v8 = [(DMFConnection *)self prepareOperationForRequest:requestCopy];
   if (v8 && !+[DMFConnection isFactoryBuild])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v12 = MEMORY[0x1E128DE70](v7);
+      v12 = MEMORY[0x1E128DE70](completionCopy);
       v13 = dispatch_get_global_queue(25, 0);
       [v8 addTarget:self selector:sel__operationDidFinish_completion_ forOperationEvents:6 userInfo:v12 delegateQueue:v13];
     }
 
-    v11 = [(DMFConnection *)self operationQueue];
-    [v11 addOperation:v8];
+    operationQueue = [(DMFConnection *)self operationQueue];
+    [operationQueue addOperation:v8];
   }
 
   else
@@ -137,8 +137,8 @@ uint64_t __34__DMFConnection_connectionForUID___block_invoke()
     v14[2] = __43__DMFConnection_performRequest_completion___block_invoke;
     v14[3] = &unk_1E86162A8;
     v15 = v9;
-    v16 = v7;
-    v11 = v9;
+    v16 = completionCopy;
+    operationQueue = v9;
     dispatch_async(v10, v14);
   }
 }
@@ -154,19 +154,19 @@ uint64_t __43__DMFConnection_performRequest_completion___block_invoke(uint64_t a
   return result;
 }
 
-- (id)prepareOperationForRequest:(id)a3
+- (id)prepareOperationForRequest:(id)request
 {
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [DMFConnection prepareOperationForRequest:];
   }
 
   if (+[DMFConnection isFactoryBuild])
   {
-    v5 = DMFErrorWithCodeAndUserInfo(7, 0);
-    v6 = [(DMFConnection *)self taskClient];
-    [v6 invalidateWithError:v5];
+    taskClient2 = DMFErrorWithCodeAndUserInfo(7, 0);
+    taskClient = [(DMFConnection *)self taskClient];
+    [taskClient invalidateWithError:taskClient2];
 
     v7 = 0;
   }
@@ -178,27 +178,27 @@ uint64_t __43__DMFConnection_performRequest_completion___block_invoke(uint64_t a
       [(DMFConnection *)self _reconnectTaskClient];
     }
 
-    v5 = [(DMFConnection *)self taskClient];
-    v7 = [v5 prepareTaskOperationForRequest:v4];
+    taskClient2 = [(DMFConnection *)self taskClient];
+    v7 = [taskClient2 prepareTaskOperationForRequest:requestCopy];
   }
 
   return v7;
 }
 
-- (id)batchOperationToPerformOperations:(id)a3
+- (id)batchOperationToPerformOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   v5 = objc_opt_new();
   v6 = [(DMFConnection *)self prepareOperationForRequest:v5];
-  v7 = [[DMFBatchRequestOperation alloc] initWithActivityTransactionOperation:v6 subOperations:v4];
+  v7 = [[DMFBatchRequestOperation alloc] initWithActivityTransactionOperation:v6 subOperations:operationsCopy];
 
   return v7;
 }
 
 - (void)invalidate
 {
-  v2 = [(DMFConnection *)self taskClient];
-  [v2 invalidate];
+  taskClient = [(DMFConnection *)self taskClient];
+  [taskClient invalidate];
 }
 
 - (id)makeNewTransport
@@ -209,13 +209,13 @@ uint64_t __43__DMFConnection_performRequest_completion___block_invoke(uint64_t a
   return v3;
 }
 
-- (void)clientDidConnect:(id)a3
+- (void)clientDidConnect:(id)connect
 {
   v8 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a3;
+    connectCopy = connect;
     _os_log_impl(&dword_1DBFFF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Client did connect: %{public}@", &v6, 0xCu);
   }
 
@@ -223,13 +223,13 @@ uint64_t __43__DMFConnection_performRequest_completion___block_invoke(uint64_t a
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientDidDisconnect:(id)a3
+- (void)clientDidDisconnect:(id)disconnect
 {
   v8 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a3;
+    disconnectCopy = disconnect;
     _os_log_impl(&dword_1DBFFF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Client did disconnect: %{public}@", &v6, 0xCu);
   }
 
@@ -237,13 +237,13 @@ uint64_t __43__DMFConnection_performRequest_completion___block_invoke(uint64_t a
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientDidInvalidate:(id)a3
+- (void)clientDidInvalidate:(id)invalidate
 {
   v8 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a3;
+    invalidateCopy = invalidate;
     _os_log_impl(&dword_1DBFFF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Client did invalidate: %{public}@", &v6, 0xCu);
   }
 
@@ -251,19 +251,19 @@ uint64_t __43__DMFConnection_performRequest_completion___block_invoke(uint64_t a
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)client:(id)a3 didInterruptWithError:(id)a4
+- (void)client:(id)client didInterruptWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    [DMFConnection client:v6 didInterruptWithError:v7];
+    [DMFConnection client:clientCopy didInterruptWithError:errorCopy];
   }
 
   [(DMFConnection *)self setConnectionState:0];
-  v8 = [(DMFConnection *)self operationQueue];
-  v9 = [v8 operations];
-  v10 = [v9 count];
+  operationQueue = [(DMFConnection *)self operationQueue];
+  operations = [operationQueue operations];
+  v10 = [operations count];
 
   if (v10)
   {
@@ -271,31 +271,31 @@ uint64_t __43__DMFConnection_performRequest_completion___block_invoke(uint64_t a
   }
 }
 
-- (void)_operationDidFinish:(id)a3 completion:(id)a4
+- (void)_operationDidFinish:(id)finish completion:(id)completion
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v8 error];
-  if (v6)
+  finishCopy = finish;
+  completionCopy = completion;
+  error = [finishCopy error];
+  if (error)
   {
-    v7 = 0;
+    resultObject = 0;
   }
 
   else
   {
-    v7 = [v8 resultObject];
+    resultObject = [finishCopy resultObject];
   }
 
-  v5[2](v5, v7, v6);
+  completionCopy[2](completionCopy, resultObject, error);
 }
 
 - (void)_reconnectTaskClient
 {
   [(DMFConnection *)self setConnectionState:1];
-  v5 = [(DMFConnection *)self taskClient];
-  v3 = [(DMFConnection *)self transportProvider];
-  v4 = [v3 makeNewTransport];
-  [v5 connectWithTransport:v4];
+  taskClient = [(DMFConnection *)self taskClient];
+  transportProvider = [(DMFConnection *)self transportProvider];
+  makeNewTransport = [transportProvider makeNewTransport];
+  [taskClient connectWithTransport:makeNewTransport];
 }
 
 - (DMFTransportProvider)transportProvider

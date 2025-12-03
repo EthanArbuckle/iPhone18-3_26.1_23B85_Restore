@@ -1,21 +1,21 @@
 @interface TLAttentionAwarenessEffectCoordinator
 - ($8F739DADA627152431EF347AE70D5328)effectParameters;
-- (TLAttentionAwarenessEffectCoordinator)initWithEffectParameters:(id)a3 audioSession:(id)a4;
-- (id)audioMixForAsset:(id)a3;
-- (void)_finalizeAudioProcessingWithEffectAudioTapContext:(id)a3;
-- (void)_unprepareAudioProcessingWithEffectAudioTapContext:(id)a3;
+- (TLAttentionAwarenessEffectCoordinator)initWithEffectParameters:(id)parameters audioSession:(id)session;
+- (id)audioMixForAsset:(id)asset;
+- (void)_finalizeAudioProcessingWithEffectAudioTapContext:(id)context;
+- (void)_unprepareAudioProcessingWithEffectAudioTapContext:(id)context;
 - (void)dealloc;
-- (void)setEffectParameters:(id)a3;
-- (void)setEffectParameters:(id)a3 effectMixFadeDuration:(double)a4;
+- (void)setEffectParameters:(id)parameters;
+- (void)setEffectParameters:(id)parameters effectMixFadeDuration:(double)duration;
 @end
 
 @implementation TLAttentionAwarenessEffectCoordinator
 
-- (TLAttentionAwarenessEffectCoordinator)initWithEffectParameters:(id)a3 audioSession:(id)a4
+- (TLAttentionAwarenessEffectCoordinator)initWithEffectParameters:(id)parameters audioSession:(id)session
 {
-  var2 = a3.var2;
-  v6 = *&a3.var0;
-  v8 = a4;
+  var2 = parameters.var2;
+  v6 = *&parameters.var0;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = TLAttentionAwarenessEffectCoordinator;
   v9 = [(TLAttentionAwarenessEffectCoordinator *)&v14 init];
@@ -23,7 +23,7 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_audioSession, a4);
+    objc_storeStrong(&v9->_audioSession, session);
     os_unfair_lock_lock(&v10->_lock);
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     effectAudioTapContexts = v10->_effectAudioTapContexts;
@@ -49,18 +49,18 @@
   [(TLAttentionAwarenessEffectCoordinator *)&v4 dealloc];
 }
 
-- (id)audioMixForAsset:(id)a3
+- (id)audioMixForAsset:(id)asset
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  [v4 tracks];
+  [assetCopy tracks];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v5 = v32 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v45 count:16];
-  if (v6)
+  audioMix = [v5 countByEnumeratingWithState:&v31 objects:v45 count:16];
+  if (audioMix)
   {
     v7 = *v32;
     v8 = *MEMORY[0x1E69875A0];
@@ -74,18 +74,18 @@ LABEL_3:
       }
 
       v10 = *(*(&v31 + 1) + 8 * v9);
-      v11 = [v10 mediaType];
-      v12 = [v11 isEqualToString:v8];
+      mediaType = [v10 mediaType];
+      v12 = [mediaType isEqualToString:v8];
 
       if (v12)
       {
         break;
       }
 
-      if (v6 == ++v9)
+      if (audioMix == ++v9)
       {
-        v6 = [v5 countByEnumeratingWithState:&v31 objects:v45 count:16];
-        if (v6)
+        audioMix = [v5 countByEnumeratingWithState:&v31 objects:v45 count:16];
+        if (audioMix)
         {
           goto LABEL_3;
         }
@@ -98,12 +98,12 @@ LABEL_3:
 
     if (!v13)
     {
-      v6 = 0;
+      audioMix = 0;
       goto LABEL_21;
     }
 
-    v6 = [MEMORY[0x1E6988038] audioMix];
-    if (!v6)
+    audioMix = [MEMORY[0x1E6988038] audioMix];
+    if (!audioMix)
     {
       goto LABEL_21;
     }
@@ -157,7 +157,7 @@ LABEL_3:
         CFRelease(cf);
         v44 = v14;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-        [v6 setInputParameters:v19];
+        [audioMix setInputParameters:v19];
       }
     }
   }
@@ -170,10 +170,10 @@ LABEL_9:
   }
 
 LABEL_21:
-  v20 = v6;
+  v20 = audioMix;
 
   v21 = *MEMORY[0x1E69E9840];
-  return v6;
+  return audioMix;
 }
 
 - ($8F739DADA627152431EF347AE70D5328)effectParameters
@@ -190,10 +190,10 @@ LABEL_21:
   return result;
 }
 
-- (void)setEffectParameters:(id)a3
+- (void)setEffectParameters:(id)parameters
 {
-  var2 = a3.var2;
-  v4 = *&a3.var0;
+  var2 = parameters.var2;
+  v4 = *&parameters.var0;
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   *&self->_effectParameters.shouldBypassLowPassFilter = v4;
@@ -219,8 +219,8 @@ LABEL_21:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) effectProcessor];
-        [v11 setEffectParameters:{v4, LODWORD(var2)}];
+        effectProcessor = [*(*(&v13 + 1) + 8 * v10) effectProcessor];
+        [effectProcessor setEffectParameters:{v4, LODWORD(var2)}];
 
         ++v10;
       }
@@ -235,10 +235,10 @@ LABEL_21:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEffectParameters:(id)a3 effectMixFadeDuration:(double)a4
+- (void)setEffectParameters:(id)parameters effectMixFadeDuration:(double)duration
 {
-  var2 = a3.var2;
-  v6 = *&a3.var0;
+  var2 = parameters.var2;
+  v6 = *&parameters.var0;
   v20 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   *&self->_effectParameters.shouldBypassLowPassFilter = v6;
@@ -264,8 +264,8 @@ LABEL_21:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) effectProcessor];
-        [v13 setEffectParameters:v6 effectMixFadeDuration:{LODWORD(var2), a4}];
+        effectProcessor = [*(*(&v15 + 1) + 8 * v12) effectProcessor];
+        [effectProcessor setEffectParameters:v6 effectMixFadeDuration:{LODWORD(var2), duration}];
 
         ++v12;
       }
@@ -280,9 +280,9 @@ LABEL_21:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_unprepareAudioProcessingWithEffectAudioTapContext:(id)a3
+- (void)_unprepareAudioProcessingWithEffectAudioTapContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   effectProcessor = self->_effectProcessor;
   if (effectProcessor && [(TLAttentionAwarenessEffectProcessor *)effectProcessor isStarted])
   {
@@ -292,19 +292,19 @@ LABEL_21:
       [(TLAttentionAwarenessEffectCoordinator *)self _unprepareAudioProcessingWithEffectAudioTapContext:v6];
     }
 
-    v7 = [v4 effectProcessor];
-    [v7 stop];
+    effectProcessor = [contextCopy effectProcessor];
+    [effectProcessor stop];
   }
 }
 
-- (void)_finalizeAudioProcessingWithEffectAudioTapContext:(id)a3
+- (void)_finalizeAudioProcessingWithEffectAudioTapContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  [v5 setEffectProcessor:0];
-  v4 = self;
+  [contextCopy setEffectProcessor:0];
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)v4->_effectAudioTapContexts removeObject:v5];
+  [(NSMutableSet *)selfCopy->_effectAudioTapContexts removeObject:contextCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 

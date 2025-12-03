@@ -1,21 +1,21 @@
 @interface BWMetadataDetectorGatingNode
-- (BWMetadataDetectorGatingNode)initWithMRCEnabled:(BOOL)a3 appClipCodeEnabled:(BOOL)a4 textLocalizationEnabled:(BOOL)a5 lowPowerModeEnabled:(BOOL)a6 compressed8BitInputEnabled:(BOOL)a7;
-- (BWMetadataDetectorGatingNode)initWithSceneClassifierVersion:(id)a3 mrcEnabled:(BOOL)a4 appClipCodeEnabled:(BOOL)a5 textLocalizationEnabled:(BOOL)a6 lowPowerModeEnabled:(BOOL)a7 compressed8BitInputEnabled:(BOOL)a8;
-- (CVPixelBufferRef)_createOutputPixelBufferFromSbuf:(_BYTE *)a3 appliedPrimaryCaptureRect:;
+- (BWMetadataDetectorGatingNode)initWithMRCEnabled:(BOOL)enabled appClipCodeEnabled:(BOOL)codeEnabled textLocalizationEnabled:(BOOL)localizationEnabled lowPowerModeEnabled:(BOOL)modeEnabled compressed8BitInputEnabled:(BOOL)inputEnabled;
+- (BWMetadataDetectorGatingNode)initWithSceneClassifierVersion:(id)version mrcEnabled:(BOOL)enabled appClipCodeEnabled:(BOOL)codeEnabled textLocalizationEnabled:(BOOL)localizationEnabled lowPowerModeEnabled:(BOOL)modeEnabled compressed8BitInputEnabled:(BOOL)inputEnabled;
+- (CVPixelBufferRef)_createOutputPixelBufferFromSbuf:(_BYTE *)sbuf appliedPrimaryCaptureRect:;
 - (uint64_t)_anyOutputShouldApplySceneMotion;
 - (uint64_t)_anyOutputShouldRunDetection;
-- (uint64_t)_ensureOutputBufferPoolWithDimensions:(uint64_t)a1;
+- (uint64_t)_ensureOutputBufferPoolWithDimensions:(uint64_t)dimensions;
 - (uint64_t)_ensureTransferSession;
 - (uint64_t)_synchronizeOutputControllersWhenApplicable;
 - (uint64_t)_updateInputRequirements:(uint64_t)result;
 - (uint64_t)_updateOutputRequirementsIfNecessary;
 - (void)_updateNodeOutputPassthroughMode:(void *)result;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)sceneDidChangeQRConfidence:(float)a3 appClipCodeConfidence:(float)a4 documentConfidence:(float)a5 textConfidence:(float)a6;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)sceneDidChangeQRConfidence:(float)confidence appClipCodeConfidence:(float)codeConfidence documentConfidence:(float)documentConfidence textConfidence:(float)textConfidence;
 @end
 
 @implementation BWMetadataDetectorGatingNode
@@ -84,34 +84,34 @@
   return result;
 }
 
-- (BWMetadataDetectorGatingNode)initWithMRCEnabled:(BOOL)a3 appClipCodeEnabled:(BOOL)a4 textLocalizationEnabled:(BOOL)a5 lowPowerModeEnabled:(BOOL)a6 compressed8BitInputEnabled:(BOOL)a7
+- (BWMetadataDetectorGatingNode)initWithMRCEnabled:(BOOL)enabled appClipCodeEnabled:(BOOL)codeEnabled textLocalizationEnabled:(BOOL)localizationEnabled lowPowerModeEnabled:(BOOL)modeEnabled compressed8BitInputEnabled:(BOOL)inputEnabled
 {
-  if (a3)
+  if (enabled)
   {
-    v7 = 2;
+    enabledCopy = 2;
   }
 
   else
   {
-    v7 = 1;
+    enabledCopy = 1;
   }
 
-  if (!a4)
+  if (!codeEnabled)
   {
-    v7 = a3;
+    enabledCopy = enabled;
   }
 
-  v8 = (v7 + a5);
-  if (!(v7 + a5))
+  v8 = (enabledCopy + localizationEnabled);
+  if (!(enabledCopy + localizationEnabled))
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"No detectors enabled" userInfo:{0, a6, a7}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"No detectors enabled" userInfo:{0, modeEnabled, inputEnabled}]);
   }
 
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  inputEnabledCopy = inputEnabled;
+  modeEnabledCopy = modeEnabled;
+  localizationEnabledCopy = localizationEnabled;
+  codeEnabledCopy = codeEnabled;
+  enabledCopy2 = enabled;
   v22.receiver = self;
   v22.super_class = BWMetadataDetectorGatingNode;
   v14 = [(BWFanOutNode *)&v22 initWithFanOutCount:v8 mediaType:1986618469];
@@ -120,68 +120,68 @@
     v14->_sceneStabilityMonitor = objc_alloc_init(BWSceneStabilityMonitor);
     v14->_outputControllers = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
     v14->_detectorsAvailableGroup = dispatch_group_create();
-    if (v13)
+    if (enabledCopy2)
     {
       v14->_mrcOutput = [(NSArray *)[(BWNode *)v14 outputs] objectAtIndexedSubscript:0];
       v16 = [[BWMetadataDetectorGatingOutputController alloc] initWithOutput:v14->_mrcOutput name:@"MRC Output Controller" sceneStabilityMonitor:v14->_sceneStabilityMonitor detectorAvailableGroup:v14->_detectorsAvailableGroup];
       v14->_mrcOutputController = v16;
-      [(BWMetadataDetectorGatingOutputController *)v16 setLowPowerModeEnabled:v10];
-      v13 = 1;
+      [(BWMetadataDetectorGatingOutputController *)v16 setLowPowerModeEnabled:modeEnabledCopy];
+      enabledCopy2 = 1;
       [(BWMetadataDetectorGatingOutputController *)v14->_mrcOutputController setSceneMotionEstimatesSupported:1];
       [(BWMetadataDetectorGatingOutputController *)v14->_mrcOutputController setShouldEmitFirstBufferAfterSceneChange:1];
       [(BWMetadataDetectorGatingOutputController *)v14->_mrcOutputController setSynchronizeWithOtherControllers:1];
       [(NSMutableArray *)v14->_outputControllers addObject:v14->_mrcOutputController];
-      if (!v12)
+      if (!codeEnabledCopy)
       {
 LABEL_11:
         p_superclass = (BWMultitaskingSessionAnalyticsPayload + 8);
         v18 = 240;
 LABEL_14:
-        if (v11)
+        if (localizationEnabledCopy)
         {
-          v14->_textLocalizationOutput = [(NSArray *)[(BWNode *)v14 outputs] objectAtIndexedSubscript:v13];
+          v14->_textLocalizationOutput = [(NSArray *)[(BWNode *)v14 outputs] objectAtIndexedSubscript:enabledCopy2];
           v20 = [objc_alloc((p_superclass + 84)) initWithOutput:v14->_textLocalizationOutput name:@"Text Localization Output Controller" sceneStabilityMonitor:v14->_sceneStabilityMonitor detectorAvailableGroup:*(&v14->super.super.super.isa + v18)];
           v14->_textLocalizationOutputController = v20;
-          [(BWMetadataDetectorGatingOutputController *)v20 setLowPowerModeEnabled:v10];
+          [(BWMetadataDetectorGatingOutputController *)v20 setLowPowerModeEnabled:modeEnabledCopy];
           [(NSMutableArray *)v14->_outputControllers addObject:v14->_textLocalizationOutputController];
         }
 
-        [(BWMetadataDetectorGatingNode *)v14 _updateInputRequirements:v9];
+        [(BWMetadataDetectorGatingNode *)v14 _updateInputRequirements:inputEnabledCopy];
         [(BWNodeInput *)v14->super.super._input setPassthroughMode:0];
         [(BWMetadataDetectorGatingNode *)v14 _updateNodeOutputPassthroughMode:?];
-        v14->_lowPowerModeEnabled = v10;
+        v14->_lowPowerModeEnabled = modeEnabledCopy;
         v14->_needsSynchronization = 1;
         return v14;
       }
     }
 
-    else if (!v12)
+    else if (!codeEnabledCopy)
     {
       goto LABEL_11;
     }
 
-    v14->_appClipCodeOutput = [(NSArray *)[(BWNode *)v14 outputs] objectAtIndexedSubscript:v13];
+    v14->_appClipCodeOutput = [(NSArray *)[(BWNode *)v14 outputs] objectAtIndexedSubscript:enabledCopy2];
     p_superclass = BWMultitaskingSessionAnalyticsPayload.superclass;
     v18 = v21;
     v19 = [[BWMetadataDetectorGatingOutputController alloc] initWithOutput:v14->_appClipCodeOutput name:@"AppClipCode Output Controller" sceneStabilityMonitor:v14->_sceneStabilityMonitor detectorAvailableGroup:*(&v14->super.super.super.isa + v21)];
     v14->_appClipCodeOutputController = v19;
-    [(BWMetadataDetectorGatingOutputController *)v19 setLowPowerModeEnabled:v10];
+    [(BWMetadataDetectorGatingOutputController *)v19 setLowPowerModeEnabled:modeEnabledCopy];
     [(BWMetadataDetectorGatingOutputController *)v14->_appClipCodeOutputController setSynchronizeWithOtherControllers:1];
     [(NSMutableArray *)v14->_outputControllers addObject:v14->_appClipCodeOutputController];
-    ++v13;
+    ++enabledCopy2;
     goto LABEL_14;
   }
 
   return v14;
 }
 
-- (BWMetadataDetectorGatingNode)initWithSceneClassifierVersion:(id)a3 mrcEnabled:(BOOL)a4 appClipCodeEnabled:(BOOL)a5 textLocalizationEnabled:(BOOL)a6 lowPowerModeEnabled:(BOOL)a7 compressed8BitInputEnabled:(BOOL)a8
+- (BWMetadataDetectorGatingNode)initWithSceneClassifierVersion:(id)version mrcEnabled:(BOOL)enabled appClipCodeEnabled:(BOOL)codeEnabled textLocalizationEnabled:(BOOL)localizationEnabled lowPowerModeEnabled:(BOOL)modeEnabled compressed8BitInputEnabled:(BOOL)inputEnabled
 {
-  v9 = [(BWMetadataDetectorGatingNode *)self initWithMRCEnabled:a4 appClipCodeEnabled:a5 textLocalizationEnabled:a6 lowPowerModeEnabled:a7 compressed8BitInputEnabled:a8];
+  v9 = [(BWMetadataDetectorGatingNode *)self initWithMRCEnabled:enabled appClipCodeEnabled:codeEnabled textLocalizationEnabled:localizationEnabled lowPowerModeEnabled:modeEnabled compressed8BitInputEnabled:inputEnabled];
   v10 = v9;
   if (v9)
   {
-    [BWMetadataDetectorGatingNode initWithSceneClassifierVersion:v9 mrcEnabled:a8 appClipCodeEnabled:? textLocalizationEnabled:? lowPowerModeEnabled:? compressed8BitInputEnabled:?];
+    [BWMetadataDetectorGatingNode initWithSceneClassifierVersion:v9 mrcEnabled:inputEnabled appClipCodeEnabled:? textLocalizationEnabled:? lowPowerModeEnabled:? compressed8BitInputEnabled:?];
   }
 
   return v10;
@@ -200,11 +200,11 @@ LABEL_14:
   [(BWFanOutNode *)&v4 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v7.receiver = self;
   v7.super_class = BWMetadataDetectorGatingNode;
-  [(BWFanOutNode *)&v7 didSelectFormat:a3 forInput:a4];
+  [(BWFanOutNode *)&v7 didSelectFormat:format forInput:input];
   if (self)
   {
     v6 = &unk_1F2248D78;
@@ -215,7 +215,7 @@ LABEL_14:
     v6 = 0;
   }
 
-  if ([v6 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "pixelFormat"))}])
+  if ([v6 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(format, "pixelFormat"))}])
   {
     [BWMetadataDetectorGatingNode didSelectFormat:? forInput:?];
   }
@@ -228,7 +228,7 @@ LABEL_14:
   v17.receiver = self;
   v17.super_class = BWMetadataDetectorGatingNode;
   [(BWNode *)&v17 prepareForCurrentConfigurationToBecomeLive];
-  v3 = [(BWVideoFormat *)[(BWNodeInput *)self->super.super._input videoFormat] pixelFormat];
+  pixelFormat = [(BWVideoFormat *)[(BWNodeInput *)self->super.super._input videoFormat] pixelFormat];
   if (self)
   {
     v4 = &unk_1F2248D78;
@@ -239,20 +239,20 @@ LABEL_14:
     v4 = 0;
   }
 
-  if (![v4 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v3)}] || -[BWVideoFormat cacheMode](-[BWNodeInput videoFormat](self->super.super._input, "videoFormat"), "cacheMode") == 1792)
+  if (![v4 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", pixelFormat)}] || -[BWVideoFormat cacheMode](-[BWNodeInput videoFormat](self->super.super._input, "videoFormat"), "cacheMode") == 1792)
   {
     [(BWMetadataDetectorGatingNode *)self _ensureTransferSession];
   }
 
   if (self->_mrcOutputController)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (self->_lowPowerModeEnabled)
     {
       v6 = 5;
       do
       {
-        [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 10.0)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 10.0)}];
         --v6;
       }
 
@@ -260,7 +260,7 @@ LABEL_14:
       v7 = 5;
       do
       {
-        [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 7.5)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 7.5)}];
         --v7;
       }
 
@@ -273,7 +273,7 @@ LABEL_14:
       v9 = 15;
       do
       {
-        [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 15.0)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 15.0)}];
         --v9;
       }
 
@@ -281,26 +281,26 @@ LABEL_14:
       LODWORD(v8) = 15;
       do
       {
-        [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 7.5)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 7.5)}];
         v8 = (v8 - 1);
       }
 
       while (v8);
     }
 
-    [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 5.0)}];
-    [(BWMetadataDetectorGatingOutputController *)self->_mrcOutputController enableDetectionFrameRateControllingWithRamp:v5 startIndex:v8];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 5.0)}];
+    [(BWMetadataDetectorGatingOutputController *)self->_mrcOutputController enableDetectionFrameRateControllingWithRamp:array startIndex:v8];
   }
 
   if (self->_appClipCodeOutputController)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v11 = 5;
     if (+[BWInferenceEngine isNeuralEngineSupported])
     {
       do
       {
-        [v10 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 10.0)}];
+        [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 10.0)}];
         --v11;
       }
 
@@ -308,7 +308,7 @@ LABEL_14:
       v12 = 5;
       do
       {
-        [v10 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 7.5)}];
+        [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 7.5)}];
         --v12;
       }
 
@@ -320,7 +320,7 @@ LABEL_14:
     {
       do
       {
-        [v10 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 10.0)}];
+        [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 10.0)}];
         --v11;
       }
 
@@ -328,7 +328,7 @@ LABEL_14:
       v14 = 5;
       do
       {
-        [v10 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 2.0)}];
+        [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", 2.0)}];
         --v14;
       }
 
@@ -336,8 +336,8 @@ LABEL_14:
       v13 = 1.0;
     }
 
-    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", v13)}];
-    [(BWMetadataDetectorGatingOutputController *)self->_appClipCodeOutputController enableDetectionFrameRateControllingWithRamp:v10 startIndex:5];
+    [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", v13)}];
+    [(BWMetadataDetectorGatingOutputController *)self->_appClipCodeOutputController enableDetectionFrameRateControllingWithRamp:array2 startIndex:5];
   }
 
   textLocalizationOutputController = self->_textLocalizationOutputController;
@@ -348,7 +348,7 @@ LABEL_14:
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   transferSession = self->_transferSession;
   if (transferSession)
@@ -360,17 +360,17 @@ LABEL_14:
   self->_outputBufferPool = 0;
   v8.receiver = self;
   v8.super_class = BWMetadataDetectorGatingNode;
-  [(BWFanOutNode *)&v8 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWFanOutNode *)&v8 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (void)sceneDidChangeQRConfidence:(float)a3 appClipCodeConfidence:(float)a4 documentConfidence:(float)a5 textConfidence:(float)a6
+- (void)sceneDidChangeQRConfidence:(float)confidence appClipCodeConfidence:(float)codeConfidence documentConfidence:(float)documentConfidence textConfidence:(float)textConfidence
 {
   if ([(BWMetadataDetectorGatingOutputController *)self->_mrcOutputController usesSceneClassifierToGateDetection]|| [(BWMetadataDetectorGatingOutputController *)self->_appClipCodeOutputController usesSceneClassifierToGateDetection]|| [(BWMetadataDetectorGatingOutputController *)self->_textLocalizationOutputController usesSceneClassifierToGateDetection])
   {
     os_unfair_lock_lock(&self->_sceneLock);
-    BWSmartCameraSceneUpdateWithConfidence(&self->_qrCodeScene, a3);
-    BWSmartCameraSceneUpdateWithConfidence(&self->_appClipCodeScene, a4);
-    BWSmartCameraSceneUpdateWithConfidence(&self->_textScene, a6);
+    BWSmartCameraSceneUpdateWithConfidence(&self->_qrCodeScene, confidence);
+    BWSmartCameraSceneUpdateWithConfidence(&self->_appClipCodeScene, codeConfidence);
+    BWSmartCameraSceneUpdateWithConfidence(&self->_textScene, textConfidence);
     confident = self->_qrCodeScene.confident;
     v11 = self->_appClipCodeScene.confident;
     v12 = self->_textScene.confident;
@@ -388,24 +388,24 @@ LABEL_14:
   if (result)
   {
     v3 = result;
-    v4 = [*(result + 8) formatRequirements];
-    v5 = [MEMORY[0x1E695DF70] array];
-    [v5 addObjectsFromArray:&unk_1F2248D78];
+    formatRequirements = [*(result + 8) formatRequirements];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:&unk_1F2248D78];
     if ([v3[25] usesSceneClassifierToGateDetection] & 1) != 0 || (objc_msgSend(v3[26], "usesSceneClassifierToGateDetection"))
     {
-      v6 = 1;
+      usesSceneClassifierToGateDetection = 1;
     }
 
     else
     {
-      v6 = [v3[27] usesSceneClassifierToGateDetection];
+      usesSceneClassifierToGateDetection = [v3[27] usesSceneClassifierToGateDetection];
     }
 
-    [v5 addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(1, 0, 1, 1, 0, v6, 1, 1)}];
-    [v5 addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, 3, 1, 1, 0, v6 | a2, 1, 1)}];
-    [v5 addObjectsFromArray:&unk_1F2248D90];
+    [array addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(1, 0, 1, 1, 0, usesSceneClassifierToGateDetection, 1, 1)}];
+    [array addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, 3, 1, 1, 0, usesSceneClassifierToGateDetection | a2, 1, 1)}];
+    [array addObjectsFromArray:&unk_1F2248D90];
 
-    return [v4 setSupportedPixelFormats:v5];
+    return [formatRequirements setSupportedPixelFormats:array];
   }
 
   return result;
@@ -419,8 +419,8 @@ LABEL_14:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [result outputs];
-    result = [v3 countByEnumeratingWithState:&v8 objects:v7 count:16];
+    outputs = [result outputs];
+    result = [outputs countByEnumeratingWithState:&v8 objects:v7 count:16];
     if (result)
     {
       v4 = result;
@@ -432,7 +432,7 @@ LABEL_14:
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v8 + 1) + 8 * v6) setPassthroughMode:a2];
@@ -440,7 +440,7 @@ LABEL_14:
         }
 
         while (v4 != v6);
-        result = [v3 countByEnumeratingWithState:&v8 objects:v7 count:16];
+        result = [outputs countByEnumeratingWithState:&v8 objects:v7 count:16];
         v4 = result;
       }
 
@@ -453,12 +453,12 @@ LABEL_14:
 
 - (uint64_t)_ensureTransferSession
 {
-  if (!a1 || *(a1 + 256))
+  if (!self || *(self + 256))
   {
     return 0;
   }
 
-  v1 = VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], (a1 + 256));
+  v1 = VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], (self + 256));
   if (v1)
   {
     fig_log_get_emitter();
@@ -469,9 +469,9 @@ LABEL_14:
   return v1;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v9 = self;
+  selfCopy = self;
   if (self->_needsSynchronization)
   {
     self = [(BWMetadataDetectorGatingNode *)self _synchronizeOutputControllersWhenApplicable];
@@ -481,8 +481,8 @@ LABEL_14:
   v135 = 0u;
   v132 = 0u;
   v133 = 0u;
-  outputControllers = v9->_outputControllers;
-  v11 = OUTLINED_FUNCTION_10_32(self, a2, a3, a4, v4, v5, v6, v7, v62, v65, v68, v71, v74, v77, v80, v83, v86, v89, v92, v95, v98, v101, v104, v107, v110, v113, v115, v117, v119, v121, v123, v125, v127.value, *&v127.timescale, v127.epoch, v128, v129.value, *&v129.timescale, v129.epoch, v130, v131);
+  outputControllers = selfCopy->_outputControllers;
+  v11 = OUTLINED_FUNCTION_10_32(self, a2, buffer, input, v4, v5, v6, v7, v62, v65, v68, v71, v74, v77, v80, v83, v86, v89, v92, v95, v98, v101, v104, v107, v110, v113, v115, v117, v119, v121, v123, v125, v127.value, *&v127.timescale, v127.epoch, v128, v129.value, *&v129.timescale, v129.epoch, v130, v131);
   if (v11)
   {
     v12 = v11;
@@ -496,7 +496,7 @@ LABEL_14:
           objc_enumerationMutation(outputControllers);
         }
 
-        v15 = [*(*(&v132 + 1) + 8 * i) prepareToEmitBuffer:a3];
+        v15 = [*(*(&v132 + 1) + 8 * i) prepareToEmitBuffer:buffer];
       }
 
       v12 = OUTLINED_FUNCTION_10_32(v15, v16, v17, v18, v19, v20, v21, v22, v63, v66, v69, v72, v75, v78, v81, v84, v87, v90, v93, v96, v99, v102, v105, v108, v111, v114, v116, v118, v120, v122, v124, v126, v127.value, *&v127.timescale, v127.epoch, v128, v129.value, *&v129.timescale, v129.epoch, v130, v131);
@@ -506,18 +506,18 @@ LABEL_14:
   }
 
   HIBYTE(v130) = 0;
-  v23 = [(BWMetadataDetectorGatingNode *)v9 _createOutputPixelBufferFromSbuf:a3 appliedPrimaryCaptureRect:&v130 + 7];
+  v23 = [(BWMetadataDetectorGatingNode *)selfCopy _createOutputPixelBufferFromSbuf:buffer appliedPrimaryCaptureRect:&v130 + 7];
   if (v23)
   {
     v24 = v23;
     memset(&v129, 0, sizeof(v129));
-    BWGetOriginalPresentationTimeStampFromBuffer(a3, &v129);
-    v25 = CMGetAttachment(a3, *off_1E798A3C8, 0);
-    sceneStabilityMonitor = v9->_sceneStabilityMonitor;
-    ShouldApplyScene = [(BWMetadataDetectorGatingNode *)v9 _anyOutputShouldApplySceneMotion:v27];
+    BWGetOriginalPresentationTimeStampFromBuffer(buffer, &v129);
+    v25 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
+    sceneStabilityMonitor = selfCopy->_sceneStabilityMonitor;
+    ShouldApplyScene = [(BWMetadataDetectorGatingNode *)selfCopy _anyOutputShouldApplySceneMotion:v27];
     v127 = v129;
     v35 = [(BWSceneStabilityMonitor *)sceneStabilityMonitor calculateStabilityWithPixelBuffer:v24 pts:&v127 metadataDictionary:v25 forceSceneMotion:ShouldApplyScene];
-    v36 = v9->_outputControllers;
+    v36 = selfCopy->_outputControllers;
     v44 = OUTLINED_FUNCTION_4_2(v35, v37, v38, v39, v40, v41, v42, v43, v63, v66, v69, v72, v75, v78, v81, v84, v87, v90, v93, v96, v99, v102, v105, v108, 0);
     if (v44)
     {
@@ -534,14 +534,14 @@ LABEL_14:
           }
 
           v49 = *(8 * j);
-          v50 = [(BWMetadataDetectorGatingOutputController *)v49 shouldEmitBuffer];
-          if (v50)
+          shouldEmitBuffer = [(BWMetadataDetectorGatingOutputController *)v49 shouldEmitBuffer];
+          if (shouldEmitBuffer)
           {
-            if (v49 == v9->_textLocalizationOutputController)
+            if (v49 == selfCopy->_textLocalizationOutputController)
             {
-              ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+              ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
               v59 = v49;
-              v61 = a3;
+              bufferCopy2 = buffer;
               v58 = 0;
             }
 
@@ -550,14 +550,14 @@ LABEL_14:
               v58 = v47 & 1;
               v59 = v49;
               ImageBuffer = v24;
-              v61 = a3;
+              bufferCopy2 = buffer;
             }
 
-            v50 = [(BWMetadataDetectorGatingOutputController *)v59 emitPixelBuffer:ImageBuffer inputSampleBuffer:v61 appliedPrimaryCaptureRect:v58];
+            shouldEmitBuffer = [(BWMetadataDetectorGatingOutputController *)v59 emitPixelBuffer:ImageBuffer inputSampleBuffer:bufferCopy2 appliedPrimaryCaptureRect:v58];
           }
         }
 
-        v45 = OUTLINED_FUNCTION_4_2(v50, v51, v52, v53, v54, v55, v56, v57, v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, v106, v109, v112);
+        v45 = OUTLINED_FUNCTION_4_2(shouldEmitBuffer, v51, v52, v53, v54, v55, v56, v57, v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, v106, v109, v112);
       }
 
       while (v45);
@@ -575,14 +575,14 @@ LABEL_14:
   }
 
   v1 = result;
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v160 = 0u;
   v161 = 0u;
   v162 = 0u;
   v163 = 0u;
   v4 = *(v1 + 224);
-  v12 = OUTLINED_FUNCTION_9_39(v3, v5, v6, v7, v8, v9, v10, v11, v58, v61, v63, v66, v69, v72, v75, v78, v81, v84, v87, v90, v93, v96, v99, v102, v105, v108, v111, v115, v118, v121, v124, v127, v130, v133, v136, *(&v136 + 1), v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159);
+  v12 = OUTLINED_FUNCTION_9_39(array2, v5, v6, v7, v8, v9, v10, v11, v58, v61, v63, v66, v69, v72, v75, v78, v81, v84, v87, v90, v93, v96, v99, v102, v105, v108, v111, v115, v118, v121, v124, v127, v130, v133, v136, *(&v136 + 1), v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159);
   if (!v12)
   {
     goto LABEL_23;
@@ -602,24 +602,24 @@ LABEL_14:
       }
 
       v24 = *(*(&v160 + 1) + 8 * v23);
-      v25 = [v24 synchronizeWithOtherControllers];
-      if (v25)
+      synchronizeWithOtherControllers = [v24 synchronizeWithOtherControllers];
+      if (synchronizeWithOtherControllers)
       {
         if ([v24 forceSynchronizedControllersToRunDetectionImmediately])
         {
           v21 = 1;
-          v25 = v3;
+          synchronizeWithOtherControllers = array2;
 LABEL_10:
-          v25 = [v25 addObject:v24];
+          synchronizeWithOtherControllers = [synchronizeWithOtherControllers addObject:v24];
           goto LABEL_13;
         }
 
-        v25 = [v24 usesSceneClassifierToGateDetection];
-        if ((v25 & 1) == 0)
+        synchronizeWithOtherControllers = [v24 usesSceneClassifierToGateDetection];
+        if ((synchronizeWithOtherControllers & 1) == 0)
         {
-          v33 = [v24 lastDetectedCodesCount];
-          v25 = v2;
-          if (!v33)
+          lastDetectedCodesCount = [v24 lastDetectedCodesCount];
+          synchronizeWithOtherControllers = array;
+          if (!lastDetectedCodesCount)
           {
             goto LABEL_10;
           }
@@ -631,7 +631,7 @@ LABEL_13:
     }
 
     while (v20 != v23);
-    v12 = OUTLINED_FUNCTION_9_39(v25, v26, v27, v28, v29, v30, v31, v32, v59, *(&v59 + 1), v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, v106, v109, v112, v116, v119, v122, v125, v128, v131, v134, v136, *(&v136 + 1), v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159);
+    v12 = OUTLINED_FUNCTION_9_39(synchronizeWithOtherControllers, v26, v27, v28, v29, v30, v31, v32, v59, *(&v59 + 1), v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, v106, v109, v112, v116, v119, v122, v125, v128, v131, v134, v136, *(&v136 + 1), v137, v138, v139, v140, v141, v142, v143, v144, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159);
     v20 = v12;
   }
 
@@ -656,7 +656,7 @@ LABEL_13:
         {
           if (*v156 != v35)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(array);
           }
 
           v38 = *(*(&v155 + 1) + 8 * v37);
@@ -688,7 +688,7 @@ LABEL_23:
       {
         if (MEMORY[0] != v48)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(array2);
         }
 
         v50 = [*(8 * v49++) setForceSynchronizedControllersToRunDetectionImmediately:0];
@@ -705,25 +705,25 @@ LABEL_23:
   return result;
 }
 
-- (CVPixelBufferRef)_createOutputPixelBufferFromSbuf:(_BYTE *)a3 appliedPrimaryCaptureRect:
+- (CVPixelBufferRef)_createOutputPixelBufferFromSbuf:(_BYTE *)sbuf appliedPrimaryCaptureRect:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  *a3 = 0;
+  *sbuf = 0;
   v6 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v6;
   v7 = CMGetAttachment(target, *off_1E798A430, 0);
   CGRectMakeWithDictionaryRepresentation(v7, &rect);
-  if ([*(a1 + 208) shouldRunDetection] && !CGRectIsNull(rect) && -[BWMetadataDetectorGatingNode _ensureTransferSession](a1))
+  if ([*(self + 208) shouldRunDetection] && !CGRectIsNull(rect) && -[BWMetadataDetectorGatingNode _ensureTransferSession](self))
   {
     goto LABEL_26;
   }
 
-  if (([(BWMetadataDetectorGatingNode *)a1 _anyOutputShouldRunDetection:v8]& 1) == 0 && ![(BWMetadataDetectorGatingNode *)a1 _anyOutputShouldApplySceneMotion:v15]|| !*(a1 + 256))
+  if (([(BWMetadataDetectorGatingNode *)self _anyOutputShouldRunDetection:v8]& 1) == 0 && ![(BWMetadataDetectorGatingNode *)self _anyOutputShouldApplySceneMotion:v15]|| !*(self + 256))
   {
     ImageBuffer = CMSampleBufferGetImageBuffer(target);
     return CVPixelBufferRetain(ImageBuffer);
@@ -758,7 +758,7 @@ LABEL_23:
     v35 = v25;
     v36 = v26;
     DictionaryRepresentation = CGRectCreateDictionaryRepresentation(*&v27);
-    v38 = VTSessionSetProperty(*(a1 + 256), *MEMORY[0x1E6983E40], DictionaryRepresentation);
+    v38 = VTSessionSetProperty(*(self + 256), *MEMORY[0x1E6983E40], DictionaryRepresentation);
     if (DictionaryRepresentation)
     {
       CFRelease(DictionaryRepresentation);
@@ -773,37 +773,37 @@ LABEL_23:
     Height = v26;
   }
 
-  if ([(BWMetadataDetectorGatingNode *)a1 _ensureOutputBufferPoolWithDimensions:?])
+  if ([(BWMetadataDetectorGatingNode *)self _ensureOutputBufferPoolWithDimensions:?])
   {
 LABEL_26:
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_6();
     FigDebugAssert3();
-    v39 = 0;
+    newPixelBuffer = 0;
     goto LABEL_27;
   }
 
-  v39 = [*(a1 + 264) newPixelBuffer];
-  if (!v39)
+  newPixelBuffer = [*(self + 264) newPixelBuffer];
+  if (!newPixelBuffer)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_6();
     FigDebugAssert3();
-    return v39;
+    return newPixelBuffer;
   }
 
-  if (VTPixelTransferSessionTransferImage(*(a1 + 256), v22, v39))
+  if (VTPixelTransferSessionTransferImage(*(self + 256), v22, newPixelBuffer))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_6();
     FigDebugAssert3();
 LABEL_27:
-    CVPixelBufferRelease(v39);
+    CVPixelBufferRelease(newPixelBuffer);
     return 0;
   }
 
-  *a3 = 1;
-  return v39;
+  *sbuf = 1;
+  return newPixelBuffer;
 }
 
 - (uint64_t)_anyOutputShouldApplySceneMotion
@@ -826,8 +826,8 @@ LABEL_27:
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(8 * v11) shouldApplySceneMotion];
-          if (v12)
+          shouldApplySceneMotion = [*(8 * v11) shouldApplySceneMotion];
+          if (shouldApplySceneMotion)
           {
             return 1;
           }
@@ -836,7 +836,7 @@ LABEL_27:
         }
 
         while (v9 != v11);
-        result = OUTLINED_FUNCTION_57(v12, v13, v14, v15, v16, v17, v18, v19, v21);
+        result = OUTLINED_FUNCTION_57(shouldApplySceneMotion, v13, v14, v15, v16, v17, v18, v19, v21);
         v9 = result;
         if (result)
         {
@@ -851,23 +851,23 @@ LABEL_27:
   return result;
 }
 
-- (uint64_t)_ensureOutputBufferPoolWithDimensions:(uint64_t)a1
+- (uint64_t)_ensureOutputBufferPoolWithDimensions:(uint64_t)dimensions
 {
-  if (!a1)
+  if (!dimensions)
   {
     return 0;
   }
 
   v4 = HIDWORD(a2);
-  if (*(a1 + 272) == a2)
+  if (*(dimensions + 272) == a2)
   {
     return 0;
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [a1 name];
+  name = [dimensions name];
   v8 = objc_alloc_init(BWVideoFormatRequirements);
-  if (FigCapturePixelFormatIsFullRange([objc_msgSend(*(a1 + 8) "videoFormat")]))
+  if (FigCapturePixelFormatIsFullRange([objc_msgSend(*(dimensions + 8) "videoFormat")]))
   {
     v9 = 875704422;
   }
@@ -886,9 +886,9 @@ LABEL_27:
   if (v10)
   {
     v11 = v10;
-    if (v7)
+    if (name)
     {
-      v12 = v7;
+      v12 = name;
     }
 
     else
@@ -896,7 +896,7 @@ LABEL_27:
       v12 = @"MRC PixelTransfer";
     }
 
-    if (*(a1 + 232))
+    if (*(dimensions + 232))
     {
       v13 = 1;
     }
@@ -906,11 +906,11 @@ LABEL_27:
       v13 = 2;
     }
 
-    v14 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", v11, v13, v12, [*(a1 + 16) memoryPool]);
+    v14 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", v11, v13, v12, [*(dimensions + 16) memoryPool]);
     v5 = 0;
-    *(a1 + 264) = v14;
-    *(a1 + 272) = a2;
-    *(a1 + 276) = v4;
+    *(dimensions + 264) = v14;
+    *(dimensions + 272) = a2;
+    *(dimensions + 276) = v4;
   }
 
   else
@@ -943,8 +943,8 @@ LABEL_27:
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(8 * v11) shouldRunDetection];
-          if (v12)
+          shouldRunDetection = [*(8 * v11) shouldRunDetection];
+          if (shouldRunDetection)
           {
             return 1;
           }
@@ -953,7 +953,7 @@ LABEL_27:
         }
 
         while (v9 != v11);
-        result = OUTLINED_FUNCTION_57(v12, v13, v14, v15, v16, v17, v18, v19, v21);
+        result = OUTLINED_FUNCTION_57(shouldRunDetection, v13, v14, v15, v16, v17, v18, v19, v21);
         v9 = result;
         if (result)
         {

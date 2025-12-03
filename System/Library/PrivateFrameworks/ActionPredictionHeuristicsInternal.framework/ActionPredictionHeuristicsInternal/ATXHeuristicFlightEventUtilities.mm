@@ -1,61 +1,61 @@
 @interface ATXHeuristicFlightEventUtilities
-+ (BOOL)currentLocationIsWithinAirportForEvent:(id)a3;
-+ (CLLocationCoordinate2D)locationAtArrivalAirport:(id)a3 event:(id)a4 heuristicDevice:(id)a5;
-+ (id)_dateIntervalWithEvent:(id)a3;
-+ (id)fetchDestinationPlacemarkForFlightEvent:(id)a3 heuristicDevice:(id)a4;
-+ (id)flightInformationSchemaForEvent:(id)a3;
-+ (id)flightInformationSpotlightSuggestionForEvent:(id)a3 schemaForFlight:(id)a4 predictionReasons:(unint64_t)a5 score:(double)a6 validStartDate:(id)a7 validEndDate:(id)a8;
-+ (id)flightSchemaForEvent:(id)a3;
-+ (id)lastFlightLegEndTimeForEvent:(id)a3 heuristicDevice:(id)a4;
-+ (id)updatedFlightInformationSchemaForEvent:(id)a3 schemaForFlight:(id)a4 heuristicDevice:(id)a5;
-+ (void)logSuggestion:(id)a3 description:(id)a4;
++ (BOOL)currentLocationIsWithinAirportForEvent:(id)event;
++ (CLLocationCoordinate2D)locationAtArrivalAirport:(id)airport event:(id)event heuristicDevice:(id)device;
++ (id)_dateIntervalWithEvent:(id)event;
++ (id)fetchDestinationPlacemarkForFlightEvent:(id)event heuristicDevice:(id)device;
++ (id)flightInformationSchemaForEvent:(id)event;
++ (id)flightInformationSpotlightSuggestionForEvent:(id)event schemaForFlight:(id)flight predictionReasons:(unint64_t)reasons score:(double)score validStartDate:(id)date validEndDate:(id)endDate;
++ (id)flightSchemaForEvent:(id)event;
++ (id)lastFlightLegEndTimeForEvent:(id)event heuristicDevice:(id)device;
++ (id)updatedFlightInformationSchemaForEvent:(id)event schemaForFlight:(id)flight heuristicDevice:(id)device;
++ (void)logSuggestion:(id)suggestion description:(id)description;
 @end
 
 @implementation ATXHeuristicFlightEventUtilities
 
-+ (void)logSuggestion:(id)a3 description:(id)a4
++ (void)logSuggestion:(id)suggestion description:(id)description
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 atxActionCriteria];
+  suggestionCopy = suggestion;
+  descriptionCopy = description;
+  atxActionCriteria = [suggestionCopy atxActionCriteria];
   v8 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 startDate];
-    v10 = [v7 endDate];
+    startDate = [atxActionCriteria startDate];
+    endDate = [atxActionCriteria endDate];
     v12 = 138413058;
-    v13 = v6;
+    v13 = descriptionCopy;
     v14 = 2112;
-    v15 = v9;
+    v15 = startDate;
     v16 = 2112;
-    v17 = v10;
+    v17 = endDate;
     v18 = 2112;
-    v19 = v5;
+    v19 = suggestionCopy;
     _os_log_impl(&dword_23E3EA000, v8, OS_LOG_TYPE_DEFAULT, "%@: start: %@, end: %@, %@", &v12, 0x2Au);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)flightSchemaForEvent:(id)a3
++ (id)flightSchemaForEvent:(id)event
 {
-  v3 = [a3 customObjectForKey:@"SGEventMetadataKey"];
+  v3 = [event customObjectForKey:@"SGEventMetadataKey"];
   v4 = [v3 objectForKeyedSubscript:@"SGEventMetadataSchemaOrgKey"];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)flightInformationSchemaForEvent:(id)a3
++ (id)flightInformationSchemaForEvent:(id)event
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 customObjectForKey:@"SGEventMetadataKey"];
+  v3 = [event customObjectForKey:@"SGEventMetadataKey"];
   DeepCopy = CFPropertyListCreateDeepCopy(0, v3, 1uLL);
   v5 = [DeepCopy objectForKeyedSubscript:@"SGEventMetadataSchemaOrgKey"];
-  v6 = [v5 firstObject];
-  v7 = [v6 objectForKeyedSubscript:@"reservationFor"];
-  v8 = [v6 objectForKeyedSubscript:@"reservationFor"];
+  firstObject = [v5 firstObject];
+  v7 = [firstObject objectForKeyedSubscript:@"reservationFor"];
+  v8 = [firstObject objectForKeyedSubscript:@"reservationFor"];
   v9 = [v8 objectForKeyedSubscript:@"arrivalAirport"];
 
   v10 = [v9 objectForKeyedSubscript:@"address"];
@@ -76,11 +76,11 @@
   {
     v26 = DeepCopy;
     v27 = v3;
-    v14 = [MEMORY[0x277D024F0] sharedInstance];
-    v15 = [v14 cityForIataCode:v12];
-    v16 = [v15 capitalizedString];
+    mEMORY[0x277D024F0] = [MEMORY[0x277D024F0] sharedInstance];
+    v15 = [mEMORY[0x277D024F0] cityForIataCode:v12];
+    capitalizedString = [v15 capitalizedString];
 
-    if (v16)
+    if (capitalizedString)
     {
       v17 = [v9 objectForKeyedSubscript:@"address"];
       if (v17)
@@ -88,13 +88,13 @@
         v18 = [v9 objectForKeyedSubscript:@"address"];
         v19 = v18;
         v20 = @"addressLocality";
-        v21 = v16;
+        v21 = capitalizedString;
       }
 
       else
       {
         v28 = @"addressLocality";
-        v29[0] = v16;
+        v29[0] = capitalizedString;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
         v20 = @"address";
         v18 = v9;
@@ -105,15 +105,15 @@
     }
 
     [v7 setObject:v9 forKeyedSubscript:@"arrivalAirport"];
-    [v6 setObject:v7 forKeyedSubscript:@"reservationFor"];
+    [firstObject setObject:v7 forKeyedSubscript:@"reservationFor"];
 
     DeepCopy = v26;
     v3 = v27;
   }
 
-  if (v6)
+  if (firstObject)
   {
-    v22 = v6;
+    v22 = firstObject;
   }
 
   else
@@ -128,25 +128,25 @@
   return v23;
 }
 
-+ (id)updatedFlightInformationSchemaForEvent:(id)a3 schemaForFlight:(id)a4 heuristicDevice:(id)a5
++ (id)updatedFlightInformationSchemaForEvent:(id)event schemaForFlight:(id)flight heuristicDevice:(id)device
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 customObjectForKey:@"SGEventMetadataKey"];
+  eventCopy = event;
+  flightCopy = flight;
+  deviceCopy = device;
+  v10 = [eventCopy customObjectForKey:@"SGEventMetadataKey"];
   v11 = v10;
   if (v10 && ([v10 objectForKeyedSubscript:@"SGEventMetadataCategoryDescriptionKey"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"Flight"), v12, (v13 & 1) != 0))
   {
-    DeepCopy = CFPropertyListCreateDeepCopy(0, v8, 1uLL);
-    v15 = [ATXHeuristicFlightEventUtilities fetchDestinationPlacemarkForFlightEvent:v7 heuristicDevice:v9];
+    DeepCopy = CFPropertyListCreateDeepCopy(0, flightCopy, 1uLL);
+    v15 = [ATXHeuristicFlightEventUtilities fetchDestinationPlacemarkForFlightEvent:eventCopy heuristicDevice:deviceCopy];
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 locality];
-      v18 = [v16 country];
-      v19 = v18;
-      if (v17 && v18)
+      locality = [v15 locality];
+      country = [v16 country];
+      v19 = country;
+      if (locality && country)
       {
         v29 = [DeepCopy objectForKeyedSubscript:@"reservationFor"];
         v20 = [DeepCopy objectForKeyedSubscript:@"reservationFor"];
@@ -157,11 +157,11 @@
         v23 = [v22 objectForKeyedSubscript:@"addressLocality"];
         v30 = [v22 objectForKeyedSubscript:@"addressCountry"];
         v28 = v19;
-        if (!v23 || !v30 || ![v17 isEqualToString:v23] || (objc_msgSend(v19, "isEqualToString:", v30) & 1) == 0)
+        if (!v23 || !v30 || ![locality isEqualToString:v23] || (objc_msgSend(v19, "isEqualToString:", v30) & 1) == 0)
         {
           if (v22)
           {
-            [v22 setObject:v17 forKeyedSubscript:@"addressLocality"];
+            [v22 setObject:locality forKeyedSubscript:@"addressLocality"];
             [v22 setObject:v19 forKeyedSubscript:@"addressCountry"];
           }
 
@@ -169,7 +169,7 @@
           {
             v31[0] = @"addressLocality";
             v31[1] = @"addressCountry";
-            v32[0] = v17;
+            v32[0] = locality;
             v32[1] = v19;
             v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
             v22 = [v24 mutableCopy];
@@ -187,7 +187,7 @@
 
   else
   {
-    DeepCopy = v8;
+    DeepCopy = flightCopy;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -195,14 +195,14 @@
   return DeepCopy;
 }
 
-+ (id)lastFlightLegEndTimeForEvent:(id)a3 heuristicDevice:(id)a4
++ (id)lastFlightLegEndTimeForEvent:(id)event heuristicDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 endDate];
-  v9 = [v7 endDate];
+  deviceCopy = device;
+  eventCopy = event;
+  endDate = [eventCopy endDate];
+  endDate2 = [eventCopy endDate];
 
-  v10 = [v9 dateByAddingTimeInterval:43200.0];
+  v10 = [endDate2 dateByAddingTimeInterval:43200.0];
 
   v11 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -211,16 +211,16 @@
     _os_log_impl(&dword_23E3EA000, v11, OS_LOG_TYPE_DEFAULT, "lastFlightLedEnd Event search", buf, 2u);
   }
 
-  v12 = [[ATXCalendarEventsDataSource alloc] initWithDevice:v6];
-  v13 = [(ATXCalendarEventsDataSource *)v12 flightEventsFromStartDate:v8 endDate:v10 reason:@"last flight leg computation"];
-  v14 = [MEMORY[0x277CBEAA8] date];
+  v12 = [[ATXCalendarEventsDataSource alloc] initWithDevice:deviceCopy];
+  v13 = [(ATXCalendarEventsDataSource *)v12 flightEventsFromStartDate:endDate endDate:v10 reason:@"last flight leg computation"];
+  date = [MEMORY[0x277CBEAA8] date];
   v15 = MEMORY[0x277CCAC30];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __81__ATXHeuristicFlightEventUtilities_lastFlightLegEndTimeForEvent_heuristicDevice___block_invoke;
   v26[3] = &unk_278C3CE60;
-  v27 = v14;
-  v16 = v14;
+  v27 = date;
+  v16 = date;
   v17 = [v15 predicateWithBlock:v26];
   v18 = [v13 filteredArrayUsingPredicate:v17];
 
@@ -228,21 +228,21 @@
   if ([v19 count])
   {
     v25 = v10;
-    v20 = v8;
-    v21 = [v19 lastObject];
-    v22 = [a1 lastFlightLegEndTimeForEvent:v21 heuristicDevice:v6];
+    v20 = endDate;
+    lastObject = [v19 lastObject];
+    v22 = [self lastFlightLegEndTimeForEvent:lastObject heuristicDevice:deviceCopy];
     if (v22)
     {
-      [a1 lastFlightLegEndTimeForEvent:v21 heuristicDevice:v6];
+      [self lastFlightLegEndTimeForEvent:lastObject heuristicDevice:deviceCopy];
     }
 
     else
     {
-      [v21 endDate];
+      [lastObject endDate];
     }
     v23 = ;
 
-    v8 = v20;
+    endDate = v20;
     v10 = v25;
   }
 
@@ -263,23 +263,23 @@ BOOL __81__ATXHeuristicFlightEventUtilities_lastFlightLegEndTimeForEvent_heurist
   return v4;
 }
 
-+ (id)fetchDestinationPlacemarkForFlightEvent:(id)a3 heuristicDevice:(id)a4
++ (id)fetchDestinationPlacemarkForFlightEvent:(id)event heuristicDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  deviceCopy = device;
   v8 = objc_opt_new();
   v9 = objc_autoreleasePoolPush();
-  v10 = [a1 lastFlightLegEndTimeForEvent:v6 heuristicDevice:v7];
+  v10 = [self lastFlightLegEndTimeForEvent:eventCopy heuristicDevice:deviceCopy];
   objc_autoreleasePoolPop(v9);
   if (!v10)
   {
-    v11 = [v6 endDate];
-    v10 = [v11 dateByAddingTimeInterval:43200.0];
+    endDate = [eventCopy endDate];
+    v10 = [endDate dateByAddingTimeInterval:43200.0];
   }
 
   v12 = objc_opt_new();
-  v13 = [v6 startDate];
-  [v12 setFromDate:v13];
+  startDate = [eventCopy startDate];
+  [v12 setFromDate:startDate];
 
   [v12 setToDate:v10];
   v14 = objc_autoreleasePoolPush();
@@ -299,10 +299,10 @@ BOOL __81__ATXHeuristicFlightEventUtilities_lastFlightLegEndTimeForEvent_heurist
   v89 = v8;
   [v8 iterScoredEventsWithQuery:v12 error:v101 block:v98];
   v88 = v101[0];
-  v18 = [MEMORY[0x277CBEAA8] date];
-  v90 = v6;
-  v19 = [v6 startDate];
-  v20 = [v19 dateByAddingTimeInterval:-3600.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v90 = eventCopy;
+  startDate2 = [eventCopy startDate];
+  v20 = [startDate2 dateByAddingTimeInterval:-3600.0];
 
   v21 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -311,15 +311,15 @@ BOOL __81__ATXHeuristicFlightEventUtilities_lastFlightLegEndTimeForEvent_heurist
     _os_log_impl(&dword_23E3EA000, v21, OS_LOG_TYPE_DEFAULT, "fetchDestinationPlacemark Event search", buf, 2u);
   }
 
-  v22 = v7;
-  v23 = [[ATXCalendarEventsDataSource alloc] initWithDevice:v7];
+  v22 = deviceCopy;
+  v23 = [[ATXCalendarEventsDataSource alloc] initWithDevice:deviceCopy];
   v24 = [(ATXCalendarEventsDataSource *)v23 flightEventsFromStartDate:v20 endDate:v10 reason:@"destination placemark event search"];
   v25 = MEMORY[0x277CCAC30];
   v95[0] = MEMORY[0x277D85DD0];
   v95[1] = 3221225472;
   v95[2] = __92__ATXHeuristicFlightEventUtilities_fetchDestinationPlacemarkForFlightEvent_heuristicDevice___block_invoke_229;
   v95[3] = &unk_278C3CE60;
-  v84 = v18;
+  v84 = date;
   v96 = v84;
   v26 = [v25 predicateWithBlock:v95];
   v85 = v24;
@@ -340,7 +340,7 @@ BOOL __81__ATXHeuristicFlightEventUtilities_lastFlightLegEndTimeForEvent_heurist
 
   v77 = v27;
   v80 = v12;
-  v76 = [v28 firstObject];
+  firstObject = [v28 firstObject];
   v30 = [ATXHeuristicFlightEventUtilities flightSchemaForEvent:?];
   v31 = [v30 objectForKeyedSubscript:@"reservationFor"];
   v32 = [v31 objectForKeyedSubscript:@"arrivalAirport"];
@@ -362,7 +362,7 @@ BOOL __81__ATXHeuristicFlightEventUtilities_lastFlightLegEndTimeForEvent_heurist
 
   v82 = v10;
   v74 = v22;
-  [v29 addObject:v76];
+  [v29 addObject:firstObject];
   v37 = v94;
   if ([v94 count] < 2)
   {
@@ -391,8 +391,8 @@ BOOL __81__ATXHeuristicFlightEventUtilities_lastFlightLegEndTimeForEvent_heurist
       goto LABEL_17;
     }
 
-    v47 = [v93 lastObject];
-    if (![v47 isEqualToString:v36])
+    lastObject = [v93 lastObject];
+    if (![lastObject isEqualToString:v36])
     {
       break;
     }
@@ -427,28 +427,28 @@ LABEL_21:
 LABEL_22:
   if ([v29 count])
   {
-    v49 = [v29 lastObject];
+    lastObject2 = [v29 lastObject];
   }
 
   else
   {
-    v49 = v90;
+    lastObject2 = v90;
   }
 
-  v50 = v49;
+  v50 = lastObject2;
   v51 = v22;
-  v52 = [v49 endLocation];
+  endLocation = [lastObject2 endLocation];
   v53 = v92;
-  if (!v52)
+  if (!endLocation)
   {
     goto LABEL_32;
   }
 
-  v54 = v52;
-  v55 = [v50 endLocation];
-  v56 = [v55 geoLocation];
+  v54 = endLocation;
+  endLocation2 = [v50 endLocation];
+  geoLocation = [endLocation2 geoLocation];
 
-  if (!v56)
+  if (!geoLocation)
   {
     goto LABEL_32;
   }
@@ -480,11 +480,11 @@ LABEL_22:
     }
 
     v68 = MEMORY[0x277CBFC40];
-    v69 = [v50 endLocation];
-    v70 = [v69 geoLocation];
-    v71 = [v50 endLocation];
-    v72 = [v71 title];
-    v62 = [v68 placemarkWithLocation:v70 name:v72 postalAddress:v67];
+    endLocation3 = [v50 endLocation];
+    geoLocation2 = [endLocation3 geoLocation];
+    endLocation4 = [v50 endLocation];
+    title = [endLocation4 title];
+    v62 = [v68 placemarkWithLocation:geoLocation2 name:title postalAddress:v67];
 
     v51 = v75;
   }
@@ -532,31 +532,31 @@ BOOL __92__ATXHeuristicFlightEventUtilities_fetchDestinationPlacemarkForFlightEv
   return v4;
 }
 
-+ (CLLocationCoordinate2D)locationAtArrivalAirport:(id)a3 event:(id)a4 heuristicDevice:(id)a5
++ (CLLocationCoordinate2D)locationAtArrivalAirport:(id)airport event:(id)event heuristicDevice:(id)device
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a1 fetchDestinationPlacemarkForFlightEvent:a4 heuristicDevice:a5];
+  airportCopy = airport;
+  v9 = [self fetchDestinationPlacemarkForFlightEvent:event heuristicDevice:device];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 location];
-    [v11 coordinate];
+    location = [v9 location];
+    [location coordinate];
     latitude = v12;
     longitude = v14;
   }
 
   else
   {
-    v16 = [v8 objectForKeyedSubscript:@"geo"];
-    v11 = [v16 objectForKeyedSubscript:@"latitude"];
+    v16 = [airportCopy objectForKeyedSubscript:@"geo"];
+    location = [v16 objectForKeyedSubscript:@"latitude"];
 
-    v17 = [v8 objectForKeyedSubscript:@"geo"];
+    v17 = [airportCopy objectForKeyedSubscript:@"geo"];
     v18 = [v17 objectForKeyedSubscript:@"longitude"];
 
-    if (v11 && v18)
+    if (location && v18)
     {
-      [v11 doubleValue];
+      [location doubleValue];
       v20 = v19;
       [v18 doubleValue];
       v22 = v21;
@@ -581,7 +581,7 @@ BOOL __92__ATXHeuristicFlightEventUtilities_fetchDestinationPlacemarkForFlightEv
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v29 = 138412546;
-        v30 = *&v11;
+        v30 = *&location;
         v31 = 2112;
         v32 = *&v18;
         _os_log_impl(&dword_23E3EA000, v25, OS_LOG_TYPE_DEFAULT, "ATXHeuristicFlightEventUtilities: Missing latitude/longitude information: %@, %@", &v29, 0x16u);
@@ -600,41 +600,41 @@ BOOL __92__ATXHeuristicFlightEventUtilities_fetchDestinationPlacemarkForFlightEv
   return result;
 }
 
-+ (BOOL)currentLocationIsWithinAirportForEvent:(id)a3
++ (BOOL)currentLocationIsWithinAirportForEvent:(id)event
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 endLocation];
-  if (!v4)
+  eventCopy = event;
+  endLocation = [eventCopy endLocation];
+  if (!endLocation)
   {
     goto LABEL_20;
   }
 
-  v5 = v4;
-  v6 = [v3 endLocation];
-  v7 = [v6 geoLocation];
+  v5 = endLocation;
+  endLocation2 = [eventCopy endLocation];
+  geoLocation = [endLocation2 geoLocation];
 
-  if (!v7)
+  if (!geoLocation)
   {
     goto LABEL_20;
   }
 
   v8 = 0x278C3C000uLL;
-  v9 = [v3 endLocation];
-  v10 = [v9 geoLocation];
-  v11 = [ATXHeuristicNavigationUtilities destinationPlacemarkForLocation:v10 withDestinationName:0];
+  endLocation3 = [eventCopy endLocation];
+  geoLocation2 = [endLocation3 geoLocation];
+  v11 = [ATXHeuristicNavigationUtilities destinationPlacemarkForLocation:geoLocation2 withDestinationName:0];
 
   if (!v11)
   {
-    v35 = [v3 customObjectForKey:@"SGEventMetadataKey"];
+    v35 = [eventCopy customObjectForKey:@"SGEventMetadataKey"];
     v16 = [v35 objectForKeyedSubscript:@"SGEventMetadataSchemaOrgKey"];
-    v17 = [v16 firstObject];
-    v18 = [v17 objectForKeyedSubscript:@"reservationFor"];
+    firstObject = [v16 firstObject];
+    v18 = [firstObject objectForKeyedSubscript:@"reservationFor"];
     v19 = [v18 objectForKeyedSubscript:@"arrivalAirport"];
     v20 = [v19 objectForKeyedSubscript:@"geo"];
     v21 = [v20 objectForKeyedSubscript:@"latitude"];
 
-    v22 = [v17 objectForKeyedSubscript:@"reservationFor"];
+    v22 = [firstObject objectForKeyedSubscript:@"reservationFor"];
     v23 = [v22 objectForKeyedSubscript:@"arrivalAirport"];
     v24 = [v23 objectForKeyedSubscript:@"geo"];
     v25 = [v24 objectForKeyedSubscript:@"longitude"];
@@ -701,8 +701,8 @@ LABEL_22:
 
 LABEL_4:
   v12 = *(v8 + 880);
-  v13 = [v11 location];
-  v14 = [v12 isAtLocation:v13 maxDistance:5000];
+  location = [v11 location];
+  v14 = [v12 isAtLocation:location maxDistance:5000];
 
   v15 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -717,27 +717,27 @@ LABEL_23:
   return v14;
 }
 
-+ (id)_dateIntervalWithEvent:(id)a3
++ (id)_dateIntervalWithEvent:(id)event
 {
   v3 = MEMORY[0x277CCA970];
-  v4 = a3;
+  eventCopy = event;
   v5 = [v3 alloc];
-  v6 = [v4 startDate];
-  v7 = [v4 endDate];
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
 
-  v8 = [v5 initWithStartDate:v6 endDate:v7];
+  v8 = [v5 initWithStartDate:startDate endDate:endDate];
 
   return v8;
 }
 
-+ (id)flightInformationSpotlightSuggestionForEvent:(id)a3 schemaForFlight:(id)a4 predictionReasons:(unint64_t)a5 score:(double)a6 validStartDate:(id)a7 validEndDate:(id)a8
++ (id)flightInformationSpotlightSuggestionForEvent:(id)event schemaForFlight:(id)flight predictionReasons:(unint64_t)reasons score:(double)score validStartDate:(id)date validEndDate:(id)endDate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = [v15 objectForKeyedSubscript:@"reservationFor"];
+  eventCopy = event;
+  flightCopy = flight;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v18 = [flightCopy objectForKeyedSubscript:@"reservationFor"];
   v19 = [v18 objectForKeyedSubscript:@"flightNumber"];
 
   if ([v19 length])
@@ -748,11 +748,11 @@ LABEL_23:
     v23 = [v20 localizedStringWithFormat:v22, v19];
 
     v24 = [ATXContextFlightEventSuggestionProducer alloc];
-    v25 = [a1 _dateIntervalWithEvent:v14];
-    v26 = [(ATXContextFlightEventSuggestionProducer *)v24 initWithTitle:v23 flightInformationSchema:v15 urlString:0 teamIdentifier:0 validFromStartDate:v16 validToEndDate:v17 alternateDestinationTitle:0 dateInterval:v25];
+    v25 = [self _dateIntervalWithEvent:eventCopy];
+    v26 = [(ATXContextFlightEventSuggestionProducer *)v24 initWithTitle:v23 flightInformationSchema:flightCopy urlString:0 teamIdentifier:0 validFromStartDate:dateCopy validToEndDate:endDateCopy alternateDestinationTitle:0 dateInterval:v25];
 
-    v27 = [v14 startDate];
-    v28 = [(ATXContextFlightEventSuggestionProducer *)v26 suggestionForFlightInformationWithReason:a5 score:v27 date:a6];
+    startDate = [eventCopy startDate];
+    v28 = [(ATXContextFlightEventSuggestionProducer *)v26 suggestionForFlightInformationWithReason:reasons score:startDate date:score];
 
     [ATXHeuristicFlightEventUtilities logSuggestion:v28 description:@"ATXHeuristicFlightEventUtilities: Flight info suggestion"];
   }

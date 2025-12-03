@@ -1,50 +1,50 @@
 @interface TIUserModelDataStore
-+ (id)initializeDataStoreAtPath:(id)a3;
-- (BOOL)_updateDurableValue:(id)a3 forKey:(id)a4 forDate:(id)a5 withUpdateQuery:(const char *)a6;
-- (BOOL)addValue:(id)a3 andSecondaryValue:(id)a4 andRealValue:(id)a5 andProperties:(id)a6 forKey:(id)a7 forInputMode:(id)a8 forDate:(id)a9;
++ (id)initializeDataStoreAtPath:(id)path;
+- (BOOL)_updateDurableValue:(id)value forKey:(id)key forDate:(id)date withUpdateQuery:(const char *)query;
+- (BOOL)addValue:(id)value andSecondaryValue:(id)secondaryValue andRealValue:(id)realValue andProperties:(id)properties forKey:(id)key forInputMode:(id)mode forDate:(id)date;
 - (BOOL)closeDatabase;
 - (BOOL)createOrOpenDatabase;
 - (BOOL)isDatabaseValid;
 - (BOOL)isValid;
-- (BOOL)purgeDataForKey:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5;
-- (BOOL)purgeDataForKeyPrefix:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5;
-- (BOOL)purgeDurableDataForKeyPrefix:(id)a3;
+- (BOOL)purgeDataForKey:(id)key forInputMode:(id)mode beforeDate:(id)date;
+- (BOOL)purgeDataForKeyPrefix:(id)prefix forInputMode:(id)mode beforeDate:(id)date;
+- (BOOL)purgeDurableDataForKeyPrefix:(id)prefix;
 - (NSDate)durableLastMigrationDate;
 - (NSDate)propertiesLastMigrationDate;
 - (NSDate)transientLastMigrationDate;
-- (TIUserModelDataStore)initWithPath:(id)a3;
+- (TIUserModelDataStore)initWithPath:(id)path;
 - (id)durableCreationSchema;
 - (id)durableMigrationFromV2Schema;
 - (id)durableMigrationFromV3Schema;
-- (id)durableMigrationSchemaForDatabase:(sqlite3 *)a3;
-- (id)getAllKnownInputModesSinceDate:(id)a3;
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 fromDate:(id)a5 toDate:(id)a6;
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5;
-- (id)getAllValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5;
-- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 weeklyKeySuffixes:(id)a5 endDate:(id)a6;
-- (id)getDurableValueForKey:(id)a3;
-- (id)getInputModesForKey:(id)a3;
-- (id)lastMigrationDateForKey:(id)a3 fromDatabase:(sqlite3 *)a4;
+- (id)durableMigrationSchemaForDatabase:(sqlite3 *)database;
+- (id)getAllKnownInputModesSinceDate:(id)date;
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode fromDate:(id)date toDate:(id)toDate;
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode sinceDate:(id)date;
+- (id)getAllValuesForKeyPrefix:(id)prefix forInputMode:(id)mode sinceDate:(id)date;
+- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)prefix forInputMode:(id)mode weeklyKeySuffixes:(id)suffixes endDate:(id)date;
+- (id)getDurableValueForKey:(id)key;
+- (id)getInputModesForKey:(id)key;
+- (id)lastMigrationDateForKey:(id)key fromDatabase:(sqlite3 *)database;
 - (id)propertiesCreationSchema;
 - (id)propertiesMigrationFromV1Schema;
-- (id)propertiesMigrationSchemaForDatabase:(sqlite3 *)a3;
+- (id)propertiesMigrationSchemaForDatabase:(sqlite3 *)database;
 - (id)transientCreationSchema;
-- (id)transientMigrationSchemaForDatabase:(sqlite3 *)a3;
+- (id)transientMigrationSchemaForDatabase:(sqlite3 *)database;
 - (int)durableVersion;
-- (int)durableVersionFromDatabase:(sqlite3 *)a3;
+- (int)durableVersionFromDatabase:(sqlite3 *)database;
 - (int)propertiesVersion;
-- (int)propertiesVersionFromDatabase:(sqlite3 *)a3;
+- (int)propertiesVersionFromDatabase:(sqlite3 *)database;
 - (int)transientVersion;
-- (int)transientVersionFromDatabase:(sqlite3 *)a3;
-- (int)versionForKey:(id)a3 fromDatabase:(sqlite3 *)a4;
+- (int)transientVersionFromDatabase:(sqlite3 *)database;
+- (int)versionForKey:(id)key fromDatabase:(sqlite3 *)database;
 - (void)dealloc;
 @end
 
 @implementation TIUserModelDataStore
 
-- (BOOL)purgeDataForKeyPrefix:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5
+- (BOOL)purgeDataForKeyPrefix:(id)prefix forInputMode:(id)mode beforeDate:(id)date
 {
-  v8 = a4;
+  modeCopy = mode;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -54,21 +54,21 @@
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__13059;
   v20[4] = __Block_byref_object_dispose__13060;
-  v21 = a5;
-  v9 = v21;
-  v10 = [a3 stringByAppendingString:@"%"];
+  dateCopy = date;
+  v9 = dateCopy;
+  v10 = [prefix stringByAppendingString:@"%"];
   database_queue = self->_database_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__TIUserModelDataStore_purgeDataForKeyPrefix_forInputMode_beforeDate___block_invoke;
   v15[3] = &unk_1E6F4DAA0;
   v15[4] = self;
-  v16 = v8;
+  v16 = modeCopy;
   v17 = v10;
   v18 = v20;
   v19 = &v22;
   v12 = v10;
-  v13 = v8;
+  v13 = modeCopy;
   TIDispatchSync(database_queue, v15);
   LOBYTE(database_queue) = *(v23 + 24);
 
@@ -146,11 +146,11 @@ void __70__TIUserModelDataStore_purgeDataForKeyPrefix_forInputMode_beforeDate___
   }
 }
 
-- (BOOL)purgeDataForKey:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5
+- (BOOL)purgeDataForKey:(id)key forInputMode:(id)mode beforeDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  modeCopy = mode;
+  dateCopy = date;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -160,26 +160,26 @@ void __70__TIUserModelDataStore_purgeDataForKeyPrefix_forInputMode_beforeDate___
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy__13059;
   v21[4] = __Block_byref_object_dispose__13060;
-  v22 = v10;
+  v22 = dateCopy;
   database_queue = self->_database_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__TIUserModelDataStore_purgeDataForKey_forInputMode_beforeDate___block_invoke;
   v16[3] = &unk_1E6F4DAA0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
+  v17 = keyCopy;
+  v18 = modeCopy;
   v19 = v21;
   v20 = &v23;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v12 = modeCopy;
+  v13 = keyCopy;
+  v14 = dateCopy;
   TIDispatchSync(database_queue, v16);
-  LOBYTE(v9) = *(v24 + 24);
+  LOBYTE(modeCopy) = *(v24 + 24);
 
   _Block_object_dispose(v21, 8);
   _Block_object_dispose(&v23, 8);
-  return v9;
+  return modeCopy;
 }
 
 void __64__TIUserModelDataStore_purgeDataForKey_forInputMode_beforeDate___block_invoke(uint64_t a1)
@@ -229,7 +229,7 @@ void __64__TIUserModelDataStore_purgeDataForKey_forInputMode_beforeDate___block_
   }
 }
 
-- (id)getAllKnownInputModesSinceDate:(id)a3
+- (id)getAllKnownInputModesSinceDate:(id)date
 {
   v12 = 0;
   v13 = &v12;
@@ -242,8 +242,8 @@ void __64__TIUserModelDataStore_purgeDataForKey_forInputMode_beforeDate___block_
   v10[2] = 0x3032000000;
   v10[3] = __Block_byref_object_copy__13059;
   v10[4] = __Block_byref_object_dispose__13060;
-  v4 = a3;
-  v11 = v4;
+  dateCopy = date;
+  v11 = dateCopy;
   database_queue = self->_database_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -334,9 +334,9 @@ void __55__TIUserModelDataStore_getAllKnownInputModesSinceDate___block_invoke(ui
   }
 }
 
-- (id)getInputModesForKey:(id)a3
+- (id)getInputModesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -349,7 +349,7 @@ void __55__TIUserModelDataStore_getAllKnownInputModesSinceDate___block_invoke(ui
   v10[2] = __44__TIUserModelDataStore_getInputModesForKey___block_invoke;
   v10[3] = &unk_1E6F4DA50;
   v10[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v11 = v6;
   v12 = &v13;
   TIDispatchSync(database_queue, v10);
@@ -433,9 +433,9 @@ void __44__TIUserModelDataStore_getInputModesForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (id)getDurableValueForKey:(id)a3
+- (id)getDurableValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -449,7 +449,7 @@ void __44__TIUserModelDataStore_getInputModesForKey___block_invoke(uint64_t a1)
   v9[3] = &unk_1E6F4DA50;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   v10 = v6;
   TIDispatchSync(database_queue, v9);
   if ([v13[5] count])
@@ -531,12 +531,12 @@ void __46__TIUserModelDataStore_getDurableValueForKey___block_invoke(uint64_t a1
   }
 }
 
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 fromDate:(id)a5 toDate:(id)a6
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode fromDate:(id)date toDate:(id)toDate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  modeCopy = mode;
+  dateCopy = date;
+  toDateCopy = toDate;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -548,27 +548,27 @@ void __46__TIUserModelDataStore_getDurableValueForKey___block_invoke(uint64_t a1
   v34[2] = 0x3032000000;
   v34[3] = __Block_byref_object_copy__13059;
   v34[4] = __Block_byref_object_dispose__13060;
-  v14 = v12;
+  v14 = dateCopy;
   v35 = v14;
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
   v32[3] = __Block_byref_object_copy__13059;
   v32[4] = __Block_byref_object_dispose__13060;
-  v15 = v13;
+  v15 = toDateCopy;
   v33 = v15;
   database_queue = self->_database_queue;
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __72__TIUserModelDataStore_getAllValuesForKey_forInputMode_fromDate_toDate___block_invoke;
   v25 = &unk_1E6F4DA28;
-  v26 = self;
+  selfCopy = self;
   v29 = v34;
   v30 = v32;
   v31 = &v36;
-  v17 = v10;
+  v17 = keyCopy;
   v27 = v17;
-  v18 = v11;
+  v18 = modeCopy;
   v28 = v18;
   TIDispatchSync(database_queue, &v22);
   if ([v37[5] count])
@@ -682,11 +682,11 @@ void __72__TIUserModelDataStore_getAllValuesForKey_forInputMode_fromDate_toDate_
   }
 }
 
-- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 weeklyKeySuffixes:(id)a5 endDate:(id)a6
+- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)prefix forInputMode:(id)mode weeklyKeySuffixes:(id)suffixes endDate:(id)date
 {
-  v10 = a3;
-  v22 = a4;
-  v11 = a5;
+  prefixCopy = prefix;
+  modeCopy = mode;
+  suffixesCopy = suffixes;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -698,35 +698,35 @@ void __72__TIUserModelDataStore_getAllValuesForKey_forInputMode_fromDate_toDate_
   v36[2] = 0x3032000000;
   v36[3] = __Block_byref_object_copy__13059;
   v36[4] = __Block_byref_object_dispose__13060;
-  v12 = a6;
-  v37 = v12;
+  dateCopy = date;
+  v37 = dateCopy;
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
   v34[3] = __Block_byref_object_copy__13059;
   v34[4] = __Block_byref_object_dispose__13060;
-  v35 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v12 sinceDate:kCommonMetricQueryTimeFrame * -86400.0];
+  v35 = [MEMORY[0x1E695DF00] dateWithTimeInterval:dateCopy sinceDate:kCommonMetricQueryTimeFrame * -86400.0];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
   v32[3] = __Block_byref_object_copy__13059;
   v32[4] = __Block_byref_object_dispose__13060;
-  v33 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v12 sinceDate:kFeatureUsageQueryTimeFrame * -86400.0];
-  v13 = [v10 stringByAppendingString:@"%"];
+  v33 = [MEMORY[0x1E695DF00] dateWithTimeInterval:dateCopy sinceDate:kFeatureUsageQueryTimeFrame * -86400.0];
+  v13 = [prefixCopy stringByAppendingString:@"%"];
   database_queue = self->_database_queue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __99__TIUserModelDataStore_getDailyAndWeeklyValuesForKeyPrefix_forInputMode_weeklyKeySuffixes_endDate___block_invoke;
   v23[3] = &unk_1E6F4DA00;
   v23[4] = self;
-  v15 = v11;
+  v15 = suffixesCopy;
   v24 = v15;
-  v16 = v10;
+  v16 = prefixCopy;
   v25 = v16;
   v28 = &v38;
   v17 = v13;
   v26 = v17;
-  v18 = v22;
+  v18 = modeCopy;
   v27 = v18;
   v29 = v36;
   v30 = v34;
@@ -917,9 +917,9 @@ LABEL_25:
   }
 }
 
-- (id)getAllValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5
+- (id)getAllValuesForKeyPrefix:(id)prefix forInputMode:(id)mode sinceDate:(id)date
 {
-  v8 = a4;
+  modeCopy = mode;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -931,9 +931,9 @@ LABEL_25:
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__13059;
   v22[4] = __Block_byref_object_dispose__13060;
-  v9 = a5;
-  v23 = v9;
-  v10 = [a3 stringByAppendingString:@"%"];
+  dateCopy = date;
+  v23 = dateCopy;
+  v10 = [prefix stringByAppendingString:@"%"];
   database_queue = self->_database_queue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -944,7 +944,7 @@ LABEL_25:
   v21 = &v24;
   v12 = v10;
   v18 = v12;
-  v13 = v8;
+  v13 = modeCopy;
   v19 = v13;
   TIDispatchSync(database_queue, v17);
   if ([v25[5] count])
@@ -1045,10 +1045,10 @@ void __72__TIUserModelDataStore_getAllValuesForKeyPrefix_forInputMode_sinceDate_
   }
 }
 
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode sinceDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  modeCopy = mode;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1060,8 +1060,8 @@ void __72__TIUserModelDataStore_getAllValuesForKeyPrefix_forInputMode_sinceDate_
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__13059;
   v22[4] = __Block_byref_object_dispose__13060;
-  v10 = a5;
-  v23 = v10;
+  dateCopy = date;
+  v23 = dateCopy;
   database_queue = self->_database_queue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -1070,9 +1070,9 @@ void __72__TIUserModelDataStore_getAllValuesForKeyPrefix_forInputMode_sinceDate_
   v17[4] = self;
   v20 = v22;
   v21 = &v24;
-  v12 = v8;
+  v12 = keyCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = modeCopy;
   v19 = v13;
   TIDispatchSync(database_queue, v17);
   if ([v25[5] count])
@@ -1172,11 +1172,11 @@ void __66__TIUserModelDataStore_getAllValuesForKey_forInputMode_sinceDate___bloc
   }
 }
 
-- (BOOL)_updateDurableValue:(id)a3 forKey:(id)a4 forDate:(id)a5 withUpdateQuery:(const char *)a6
+- (BOOL)_updateDurableValue:(id)value forKey:(id)key forDate:(id)date withUpdateQuery:(const char *)query
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  dateCopy = date;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1187,14 +1187,14 @@ void __66__TIUserModelDataStore_getAllValuesForKey_forInputMode_sinceDate___bloc
   v18[2] = __75__TIUserModelDataStore__updateDurableValue_forKey_forDate_withUpdateQuery___block_invoke;
   v18[3] = &unk_1E6F4D9D8;
   v18[4] = self;
-  v19 = v11;
+  v19 = keyCopy;
   v22 = &v24;
-  v23 = a6;
-  v20 = v10;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  queryCopy = query;
+  v20 = valueCopy;
+  v21 = dateCopy;
+  v14 = dateCopy;
+  v15 = valueCopy;
+  v16 = keyCopy;
   TIDispatchSync(database_queue, v18);
   LOBYTE(database_queue) = *(v25 + 24);
 
@@ -1287,15 +1287,15 @@ void __75__TIUserModelDataStore__updateDurableValue_forKey_forDate_withUpdateQue
   }
 }
 
-- (BOOL)addValue:(id)a3 andSecondaryValue:(id)a4 andRealValue:(id)a5 andProperties:(id)a6 forKey:(id)a7 forInputMode:(id)a8 forDate:(id)a9
+- (BOOL)addValue:(id)value andSecondaryValue:(id)secondaryValue andRealValue:(id)realValue andProperties:(id)properties forKey:(id)key forInputMode:(id)mode forDate:(id)date
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  valueCopy = value;
+  secondaryValueCopy = secondaryValue;
+  realValueCopy = realValue;
+  propertiesCopy = properties;
+  keyCopy = key;
+  modeCopy = mode;
+  dateCopy = date;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -1305,22 +1305,22 @@ void __75__TIUserModelDataStore__updateDurableValue_forKey_forDate_withUpdateQue
   v31[1] = 3221225472;
   v31[2] = __106__TIUserModelDataStore_addValue_andSecondaryValue_andRealValue_andProperties_forKey_forInputMode_forDate___block_invoke;
   v31[3] = &unk_1E6F4D9B0;
-  v32 = v19;
-  v33 = v20;
-  v34 = self;
-  v35 = v15;
-  v36 = v16;
-  v37 = v17;
-  v38 = v18;
-  v39 = v21;
+  v32 = keyCopy;
+  v33 = modeCopy;
+  selfCopy = self;
+  v35 = valueCopy;
+  v36 = secondaryValueCopy;
+  v37 = realValueCopy;
+  v38 = propertiesCopy;
+  v39 = dateCopy;
   v40 = &v41;
-  v23 = v21;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = v15;
-  v28 = v20;
-  v29 = v19;
+  v23 = dateCopy;
+  v24 = propertiesCopy;
+  v25 = realValueCopy;
+  v26 = secondaryValueCopy;
+  v27 = valueCopy;
+  v28 = modeCopy;
+  v29 = keyCopy;
   TIDispatchSync(database_queue, v31);
   LOBYTE(database_queue) = *(v42 + 24);
 
@@ -1427,13 +1427,13 @@ LABEL_15:
   }
 }
 
-- (id)transientMigrationSchemaForDatabase:(sqlite3 *)a3
+- (id)transientMigrationSchemaForDatabase:(sqlite3 *)database
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(TIUserModelDataStore *)self transientVersionFromDatabase:a3];
+  v4 = [(TIUserModelDataStore *)self transientVersionFromDatabase:database];
   if (v4 == 7)
   {
-    v7 = &stru_1EF56D550;
+    transientCreationSchema2 = &stru_1EF56D550;
   }
 
   else
@@ -1450,9 +1450,9 @@ LABEL_15:
         _os_log_impl(&dword_1863F7000, v8, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
       }
 
-      v10 = [(TIUserModelDataStore *)self transientResetSchema];
-      v11 = [(TIUserModelDataStore *)self transientCreationSchema];
-      v7 = [v10 stringByAppendingString:v11];
+      transientResetSchema = [(TIUserModelDataStore *)self transientResetSchema];
+      transientCreationSchema = [(TIUserModelDataStore *)self transientCreationSchema];
+      transientCreationSchema2 = [transientResetSchema stringByAppendingString:transientCreationSchema];
     }
 
     else
@@ -1466,17 +1466,17 @@ LABEL_15:
         _os_log_debug_impl(&dword_1863F7000, v6, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v7 = [(TIUserModelDataStore *)self transientCreationSchema];
+      transientCreationSchema2 = [(TIUserModelDataStore *)self transientCreationSchema];
     }
   }
 
-  return v7;
+  return transientCreationSchema2;
 }
 
-- (id)durableMigrationSchemaForDatabase:(sqlite3 *)a3
+- (id)durableMigrationSchemaForDatabase:(sqlite3 *)database
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(TIUserModelDataStore *)self durableVersionFromDatabase:a3];
+  v4 = [(TIUserModelDataStore *)self durableVersionFromDatabase:database];
   v5 = &stru_1EF56D550;
   if (v4 > 1)
   {
@@ -1491,7 +1491,7 @@ LABEL_15:
         _os_log_impl(&dword_1863F7000, v14, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
       }
 
-      v12 = [(TIUserModelDataStore *)self durableMigrationFromV2Schema];
+      durableMigrationFromV2Schema = [(TIUserModelDataStore *)self durableMigrationFromV2Schema];
     }
 
     else
@@ -1510,7 +1510,7 @@ LABEL_15:
         _os_log_impl(&dword_1863F7000, v10, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
       }
 
-      v12 = [(TIUserModelDataStore *)self durableMigrationFromV3Schema];
+      durableMigrationFromV2Schema = [(TIUserModelDataStore *)self durableMigrationFromV3Schema];
     }
 
     goto LABEL_18;
@@ -1527,9 +1527,9 @@ LABEL_15:
       _os_log_debug_impl(&dword_1863F7000, v13, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    v12 = [(TIUserModelDataStore *)self durableCreationSchema];
+    durableMigrationFromV2Schema = [(TIUserModelDataStore *)self durableCreationSchema];
 LABEL_18:
-    v5 = v12;
+    v5 = durableMigrationFromV2Schema;
     goto LABEL_19;
   }
 
@@ -1544,9 +1544,9 @@ LABEL_18:
       _os_log_impl(&dword_1863F7000, v6, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v8 = [(TIUserModelDataStore *)self durableResetSchema];
-    v9 = [(TIUserModelDataStore *)self durableCreationSchema];
-    v5 = [v8 stringByAppendingString:v9];
+    durableResetSchema = [(TIUserModelDataStore *)self durableResetSchema];
+    durableCreationSchema = [(TIUserModelDataStore *)self durableCreationSchema];
+    v5 = [durableResetSchema stringByAppendingString:durableCreationSchema];
   }
 
 LABEL_19:
@@ -1554,10 +1554,10 @@ LABEL_19:
   return v5;
 }
 
-- (id)propertiesMigrationSchemaForDatabase:(sqlite3 *)a3
+- (id)propertiesMigrationSchemaForDatabase:(sqlite3 *)database
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [(TIUserModelDataStore *)self propertiesVersionFromDatabase:a3];
+  v4 = [(TIUserModelDataStore *)self propertiesVersionFromDatabase:database];
   if (v4 == 1)
   {
     v7 = IXADefaultLogFacility();
@@ -1569,12 +1569,12 @@ LABEL_19:
       _os_log_impl(&dword_1863F7000, v7, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v6 = [(TIUserModelDataStore *)self propertiesMigrationFromV1Schema];
+    propertiesMigrationFromV1Schema = [(TIUserModelDataStore *)self propertiesMigrationFromV1Schema];
   }
 
   else if (v4)
   {
-    v6 = &stru_1EF56D550;
+    propertiesMigrationFromV1Schema = &stru_1EF56D550;
   }
 
   else
@@ -1588,43 +1588,43 @@ LABEL_19:
       _os_log_debug_impl(&dword_1863F7000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    v6 = [(TIUserModelDataStore *)self propertiesCreationSchema];
+    propertiesMigrationFromV1Schema = [(TIUserModelDataStore *)self propertiesCreationSchema];
   }
 
-  return v6;
+  return propertiesMigrationFromV1Schema;
 }
 
-- (id)lastMigrationDateForKey:(id)a3 fromDatabase:(sqlite3 *)a4
+- (id)lastMigrationDateForKey:(id)key fromDatabase:(sqlite3 *)database
 {
-  v5 = a3;
-  if (a4)
+  keyCopy = key;
+  if (database)
   {
     ppStmt = 0;
-    v6 = sqlite3_prepare_v2(a4, "SELECT value FROM properties WHERE key = ?", -1, &ppStmt, 0);
-    a4 = 0;
+    v6 = sqlite3_prepare_v2(database, "SELECT value FROM properties WHERE key = ?", -1, &ppStmt, 0);
+    database = 0;
     if (ppStmt && v6 == 0)
     {
-      sqlite3_bind_text(ppStmt, 1, [v5 UTF8String], -1, 0);
-      a4 = 0;
+      sqlite3_bind_text(ppStmt, 1, [keyCopy UTF8String], -1, 0);
+      database = 0;
       if (sqlite3_step(ppStmt) == 100)
       {
-        a4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{sqlite3_column_double(ppStmt, 0)}];
+        database = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{sqlite3_column_double(ppStmt, 0)}];
       }
 
       sqlite3_finalize(ppStmt);
     }
   }
 
-  return a4;
+  return database;
 }
 
-- (int)versionForKey:(id)a3 fromDatabase:(sqlite3 *)a4
+- (int)versionForKey:(id)key fromDatabase:(sqlite3 *)database
 {
-  v5 = a3;
-  if (a4)
+  keyCopy = key;
+  if (database)
   {
     ppStmt = 0;
-    v6 = sqlite3_prepare_v2(a4, "SELECT value FROM properties WHERE key = ?", -1, &ppStmt, 0);
+    v6 = sqlite3_prepare_v2(database, "SELECT value FROM properties WHERE key = ?", -1, &ppStmt, 0);
     if (ppStmt)
     {
       v7 = v6 == 0;
@@ -1637,15 +1637,15 @@ LABEL_19:
 
     if (v7)
     {
-      sqlite3_bind_text(ppStmt, 1, [v5 UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 1, [keyCopy UTF8String], -1, 0);
       if (sqlite3_step(ppStmt) == 100)
       {
-        LODWORD(a4) = sqlite3_column_int(ppStmt, 0);
+        LODWORD(database) = sqlite3_column_int(ppStmt, 0);
       }
 
       else
       {
-        LODWORD(a4) = 0;
+        LODWORD(database) = 0;
       }
 
       sqlite3_finalize(ppStmt);
@@ -1653,11 +1653,11 @@ LABEL_19:
 
     else
     {
-      LODWORD(a4) = 0;
+      LODWORD(database) = 0;
     }
   }
 
-  return a4;
+  return database;
 }
 
 - (NSDate)transientLastMigrationDate
@@ -1748,13 +1748,13 @@ void __40__TIUserModelDataStore_transientVersion__block_invoke(uint64_t a1)
   }
 }
 
-- (int)transientVersionFromDatabase:(sqlite3 *)a3
+- (int)transientVersionFromDatabase:(sqlite3 *)database
 {
-  result = [(TIUserModelDataStore *)self versionForKey:@"transient_version" fromDatabase:a3];
+  result = [(TIUserModelDataStore *)self versionForKey:@"transient_version" fromDatabase:database];
   if (!result)
   {
 
-    return [(TIUserModelDataStore *)self versionForKey:@"version" fromDatabase:a3];
+    return [(TIUserModelDataStore *)self versionForKey:@"version" fromDatabase:database];
   }
 
   return result;
@@ -1848,12 +1848,12 @@ void __38__TIUserModelDataStore_durableVersion__block_invoke(uint64_t a1)
   }
 }
 
-- (int)durableVersionFromDatabase:(sqlite3 *)a3
+- (int)durableVersionFromDatabase:(sqlite3 *)database
 {
-  result = [(TIUserModelDataStore *)self versionForKey:@"durable_version" fromDatabase:a3];
+  result = [(TIUserModelDataStore *)self versionForKey:@"durable_version" fromDatabase:database];
   if (!result)
   {
-    result = [(TIUserModelDataStore *)self versionForKey:@"version" fromDatabase:a3];
+    result = [(TIUserModelDataStore *)self versionForKey:@"version" fromDatabase:database];
     if (result >= 2)
     {
       return 2;
@@ -1951,12 +1951,12 @@ void __41__TIUserModelDataStore_propertiesVersion__block_invoke(uint64_t a1)
   }
 }
 
-- (int)propertiesVersionFromDatabase:(sqlite3 *)a3
+- (int)propertiesVersionFromDatabase:(sqlite3 *)database
 {
-  result = [(TIUserModelDataStore *)self versionForKey:@"properties_version" fromDatabase:a3];
+  result = [(TIUserModelDataStore *)self versionForKey:@"properties_version" fromDatabase:database];
   if (!result)
   {
-    return [(TIUserModelDataStore *)self versionForKey:@"version" fromDatabase:a3]> 0 || [(TIUserModelDataStore *)self versionForKey:@"durable_version" fromDatabase:a3]>= 1;
+    return [(TIUserModelDataStore *)self versionForKey:@"version" fromDatabase:database]> 0 || [(TIUserModelDataStore *)self versionForKey:@"durable_version" fromDatabase:database]>= 1;
   }
 
   return result;
@@ -2092,15 +2092,15 @@ void __37__TIUserModelDataStore_closeDatabase__block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_1863F7000, v3, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v4 = [(NSString *)self->_path UTF8String];
+  uTF8String = [(NSString *)self->_path UTF8String];
   ppDb = 0;
-  if (sqlite3_open_v2(v4, &ppDb, 3145734, 0))
+  if (sqlite3_open_v2(uTF8String, &ppDb, 3145734, 0))
   {
     v5 = sqlite3_extended_errcode(ppDb);
     v6 = IXADefaultLogFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s TIUserModelDataStore: Couldn't open or create database at path %s: %d %s", "-[TIUserModelDataStore createOrOpenDatabase]", v4, v5, sqlite3_errmsg(ppDb)];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s TIUserModelDataStore: Couldn't open or create database at path %s: %d %s", "-[TIUserModelDataStore createOrOpenDatabase]", uTF8String, v5, sqlite3_errmsg(ppDb)];
       *buf = 138412290;
       v34 = v26;
       _os_log_error_impl(&dword_1863F7000, v6, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
@@ -2109,7 +2109,7 @@ void __37__TIUserModelDataStore_closeDatabase__block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  if ((TI_IS_FILE_CLASS_C(v4) & 1) != 0 || TI_SET_PROTECTION_CLASS_C(v4))
+  if ((TI_IS_FILE_CLASS_C(uTF8String) & 1) != 0 || TI_SET_PROTECTION_CLASS_C(uTF8String))
   {
     v8 = sqlite3_extended_result_codes(ppDb, 1);
     if (v8)
@@ -2253,16 +2253,16 @@ uint64_t __31__TIUserModelDataStore_isValid__block_invoke(uint64_t a1)
   [(TIUserModelDataStore *)&v3 dealloc];
 }
 
-- (TIUserModelDataStore)initWithPath:(id)a3
+- (TIUserModelDataStore)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = TIUserModelDataStore;
   v6 = [(TIUserModelDataStore *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v7->_user_model_db = 0;
     v7->_user_model_db_failed = 0;
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -2276,13 +2276,13 @@ uint64_t __31__TIUserModelDataStore_isValid__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)initializeDataStoreAtPath:(id)a3
++ (id)initializeDataStoreAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   TI_DEVICE_UNLOCKED_SINCE_BOOT();
   if (v4)
   {
-    v5 = [[TIUserModelDataStore alloc] initWithPath:v3];
+    v5 = [[TIUserModelDataStore alloc] initWithPath:pathCopy];
   }
 
   else
@@ -2293,13 +2293,13 @@ uint64_t __31__TIUserModelDataStore_isValid__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)purgeDurableDataForKeyPrefix:(id)a3
+- (BOOL)purgeDurableDataForKeyPrefix:(id)prefix
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v4 = [a3 stringByAppendingString:@"%"];
+  v4 = [prefix stringByAppendingString:@"%"];
   database_queue = self->_database_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;

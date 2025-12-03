@@ -1,13 +1,13 @@
 @interface HMDHomeActivityStateManagerStorage
 + (id)logCategory;
-- (HMDHomeActivityStateManagerStorage)initWithDataSource:(id)a3;
+- (HMDHomeActivityStateManagerStorage)initWithDataSource:(id)source;
 - (HMDHomeActivityStateManagerStorageDelegate)delegate;
-- (id)contributorTypeArrayFromActivityStateEnabledContributors:(id)a3;
+- (id)contributorTypeArrayFromActivityStateEnabledContributors:(id)contributors;
 - (id)logIdentifier;
 - (void)_registerForNotifications;
-- (void)fetchCurrentStateDetailsWithCompletion:(id)a3;
-- (void)fetchEnabledContributors:(id)a3;
-- (void)handleManagedObjectContextDidSaveNotification:(id)a3;
+- (void)fetchCurrentStateDetailsWithCompletion:(id)completion;
+- (void)fetchEnabledContributors:(id)contributors;
+- (void)handleManagedObjectContextDidSaveNotification:(id)notification;
 @end
 
 @implementation HMDHomeActivityStateManagerStorage
@@ -21,21 +21,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeActivityStateManagerStorage *)self dataSource];
-  v3 = [v2 logIdentifier];
+  dataSource = [(HMDHomeActivityStateManagerStorage *)self dataSource];
+  logIdentifier = [dataSource logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (id)contributorTypeArrayFromActivityStateEnabledContributors:(id)a3
+- (id)contributorTypeArrayFromActivityStateEnabledContributors:(id)contributors
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 longLongValue];
-  if ((v5 & 0x8000000000000000) != 0)
+  contributorsCopy = contributors;
+  longLongValue = [contributorsCopy longLongValue];
+  if ((longLongValue & 0x8000000000000000) != 0)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -43,7 +43,7 @@
       v17 = 138543618;
       v18 = v14;
       v19 = 2048;
-      v20 = v5;
+      v20 = longLongValue;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@encodedEnabledContributors is an unexpected value: %llu", &v17, 0x16u);
     }
 
@@ -54,23 +54,23 @@
   else
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (v5)
+    if (longLongValue)
     {
       v7 = 0;
       do
       {
-        if (v5)
+        if (longLongValue)
         {
           v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
           [v6 addObject:v8];
         }
 
-        if (v5 < 2)
+        if (longLongValue < 2)
         {
           break;
         }
 
-        v5 >>= 1;
+        longLongValue >>= 1;
       }
 
       while (v7++ < 4);
@@ -84,15 +84,15 @@
   return v10;
 }
 
-- (void)handleManagedObjectContextDidSaveNotification:(id)a3
+- (void)handleManagedObjectContextDidSaveNotification:(id)notification
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -104,10 +104,10 @@
 
   if (v7)
   {
-    v8 = [v7 name];
-    v9 = [(HMDHomeActivityStateManagerStorage *)self homeUUID];
-    v10 = HMDWorkingContextNameForHomeUUID(v9);
-    v11 = [v8 isEqualToString:v10];
+    name = [v7 name];
+    homeUUID = [(HMDHomeActivityStateManagerStorage *)self homeUUID];
+    v10 = HMDWorkingContextNameForHomeUUID(homeUUID);
+    v11 = [name isEqualToString:v10];
 
     if (v11)
     {
@@ -115,15 +115,15 @@
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v12 = [v4 userInfo];
-      v13 = [v12 hmf_setForKey:*MEMORY[0x277CBE310]];
+      userInfo = [notificationCopy userInfo];
+      v13 = [userInfo hmf_setForKey:*MEMORY[0x277CBE310]];
 
       obj = v13;
       v14 = [v13 countByEnumeratingWithState:&v53 objects:v63 count:16];
       if (v14)
       {
         v15 = v14;
-        v49 = v4;
+        v49 = notificationCopy;
         v50 = v7;
         v52 = *v54;
         v16 = v13;
@@ -151,12 +151,12 @@
 
             if (v20)
             {
-              v21 = [(HMDHomeActivityStateManagerStorage *)self homeUUID];
-              v22 = [v20 modelID];
+              homeUUID2 = [(HMDHomeActivityStateManagerStorage *)self homeUUID];
+              modelID = [v20 modelID];
               v23 = HMFEqualObjects();
 
               v24 = objc_autoreleasePoolPush();
-              v25 = self;
+              selfCopy = self;
               v26 = HMFGetOSLogHandle();
               v27 = v26;
               if (v23)
@@ -172,64 +172,64 @@
                 }
 
                 objc_autoreleasePoolPop(v24);
-                v33 = [(HMDHomeActivityStateManagerStorage *)v25 delegate];
+                delegate = [(HMDHomeActivityStateManagerStorage *)selfCopy delegate];
                 if (objc_opt_respondsToSelector())
                 {
-                  v34 = [v20 activityState];
-                  v35 = [v34 unsignedIntegerValue];
+                  activityState = [v20 activityState];
+                  unsignedIntegerValue = [activityState unsignedIntegerValue];
 
-                  v36 = [v20 isActivityStateHoldActive];
-                  v37 = [v36 BOOLValue];
+                  isActivityStateHoldActive = [v20 isActivityStateHoldActive];
+                  bOOLValue = [isActivityStateHoldActive BOOLValue];
 
-                  v38 = [v20 activityStateHoldEndDate];
-                  v39 = [v20 activityStateTransitionalStateEndDate];
-                  [v33 storageDidUpdateActivityState:v35 isActivityStateHoldActive:v37 activityStateHoldEndDate:v38 transitionalStateEndDate:v39];
+                  activityStateHoldEndDate = [v20 activityStateHoldEndDate];
+                  activityStateTransitionalStateEndDate = [v20 activityStateTransitionalStateEndDate];
+                  [delegate storageDidUpdateActivityState:unsignedIntegerValue isActivityStateHoldActive:bOOLValue activityStateHoldEndDate:activityStateHoldEndDate transitionalStateEndDate:activityStateTransitionalStateEndDate];
                 }
 
                 v7 = v50;
                 if (objc_opt_respondsToSelector())
                 {
-                  v40 = [v20 activityStateEnabledContributors];
+                  activityStateEnabledContributors = [v20 activityStateEnabledContributors];
 
-                  if (v40)
+                  if (activityStateEnabledContributors)
                   {
                     v41 = objc_autoreleasePoolPush();
-                    v42 = v25;
+                    v42 = selfCopy;
                     v43 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
                     {
                       v44 = HMFGetLogIdentifier();
-                      v45 = [v20 activityStateEnabledContributors];
+                      activityStateEnabledContributors2 = [v20 activityStateEnabledContributors];
                       *buf = 138543618;
                       v58 = v44;
                       v59 = 2112;
-                      v60 = v45;
+                      v60 = activityStateEnabledContributors2;
                       _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_DEBUG, "%{public}@Calling delegate with activityStateEnabledContributors: %@", buf, 0x16u);
                     }
 
                     objc_autoreleasePoolPop(v41);
-                    v46 = [v20 activityStateEnabledContributors];
-                    v47 = [(HMDHomeActivityStateManagerStorage *)v42 contributorTypeArrayFromActivityStateEnabledContributors:v46];
-                    [v33 storageDidUpdateEnabledContributors:v47];
+                    activityStateEnabledContributors3 = [v20 activityStateEnabledContributors];
+                    v47 = [(HMDHomeActivityStateManagerStorage *)v42 contributorTypeArrayFromActivityStateEnabledContributors:activityStateEnabledContributors3];
+                    [delegate storageDidUpdateEnabledContributors:v47];
 
                     v7 = v50;
                   }
                 }
 
-                v4 = v49;
+                notificationCopy = v49;
                 goto LABEL_33;
               }
 
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
                 v28 = HMFGetLogIdentifier();
-                v29 = [v20 modelID];
-                [(HMDHomeActivityStateManagerStorage *)v25 homeUUID];
+                modelID2 = [v20 modelID];
+                [(HMDHomeActivityStateManagerStorage *)selfCopy homeUUID];
                 v31 = v30 = self;
                 *buf = 138543874;
                 v58 = v28;
                 v59 = 2112;
-                v60 = v29;
+                v60 = modelID2;
                 v61 = 2112;
                 v62 = v31;
                 _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly handling notification for MOC save of updated home with some other UUID: %@, expected: %@", buf, 0x20u);
@@ -252,7 +252,7 @@
         }
 
         v18 = v16;
-        v4 = v49;
+        notificationCopy = v49;
         v7 = v50;
       }
 
@@ -271,17 +271,17 @@ LABEL_33:
 - (void)_registerForNotifications
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateManagerStorage *)self notificationCenter];
-  v4 = v3;
-  if (v3)
+  notificationCenter = [(HMDHomeActivityStateManagerStorage *)self notificationCenter];
+  v4 = notificationCenter;
+  if (notificationCenter)
   {
-    [v3 addObserver:self selector:sel_handleManagedObjectContextDidSaveNotification_ name:*MEMORY[0x277CBE1A8] object:0];
+    [notificationCenter addObserver:self selector:sel_handleManagedObjectContextDidSaveNotification_ name:*MEMORY[0x277CBE1A8] object:0];
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -297,28 +297,28 @@ LABEL_33:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchEnabledContributors:(id)a3
+- (void)fetchEnabledContributors:(id)contributors
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateManagerStorage *)self dataSource];
-  v6 = [v5 workingStoreContext];
+  contributorsCopy = contributors;
+  dataSource = [(HMDHomeActivityStateManagerStorage *)self dataSource];
+  workingStoreContext = [dataSource workingStoreContext];
 
-  if (v6)
+  if (workingStoreContext)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__HMDHomeActivityStateManagerStorage_fetchEnabledContributors___block_invoke;
     v12[3] = &unk_27868A7A0;
     v12[4] = self;
-    v13 = v4;
-    [v6 performBlock:v12];
+    v13 = contributorsCopy;
+    [workingStoreContext performBlock:v12];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -329,7 +329,7 @@ LABEL_33:
     }
 
     objc_autoreleasePoolPop(v7);
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8]);
+    (*(contributorsCopy + 2))(contributorsCopy, MEMORY[0x277CBEBF8]);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -412,28 +412,28 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCurrentStateDetailsWithCompletion:(id)a3
+- (void)fetchCurrentStateDetailsWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateManagerStorage *)self dataSource];
-  v6 = [v5 workingStoreContext];
+  completionCopy = completion;
+  dataSource = [(HMDHomeActivityStateManagerStorage *)self dataSource];
+  workingStoreContext = [dataSource workingStoreContext];
 
-  if (v6)
+  if (workingStoreContext)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __77__HMDHomeActivityStateManagerStorage_fetchCurrentStateDetailsWithCompletion___block_invoke;
     v14[3] = &unk_27868A7A0;
     v14[4] = self;
-    v15 = v4;
-    [v6 performBlock:v14];
+    v15 = completionCopy;
+    [workingStoreContext performBlock:v14];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -444,7 +444,7 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = _Block_copy(v4);
+    v11 = _Block_copy(completionCopy);
     v12 = v11;
     if (v11)
     {
@@ -561,24 +561,24 @@ void __77__HMDHomeActivityStateManagerStorage_fetchCurrentStateDetailsWithComple
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeActivityStateManagerStorage)initWithDataSource:(id)a3
+- (HMDHomeActivityStateManagerStorage)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HMDHomeActivityStateManagerStorage;
   v6 = [(HMDHomeActivityStateManagerStorage *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
-    v8 = [v5 notificationCenter];
+    objc_storeStrong(&v6->_dataSource, source);
+    notificationCenter = [sourceCopy notificationCenter];
     notificationCenter = v7->_notificationCenter;
-    v7->_notificationCenter = v8;
+    v7->_notificationCenter = notificationCenter;
 
-    v10 = [v5 home];
-    v11 = [v10 uuid];
+    home = [sourceCopy home];
+    uuid = [home uuid];
     homeUUID = v7->_homeUUID;
-    v7->_homeUUID = v11;
+    v7->_homeUUID = uuid;
   }
 
   return v7;

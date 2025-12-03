@@ -34,63 +34,63 @@
 - (id)_wallpaperSceneSettings;
 - (int64_t)liveWallpaperPlaybackState;
 - (int64_t)wallpaperVariant;
-- (void)_handleImageSlotRequestAction:(id)a3;
-- (void)_handlePreheatAction:(id)a3;
-- (void)_handleUpdateAndPrewarmAction:(id)a3;
-- (void)_handleUpdateLocationsAction:(id)a3;
-- (void)_handleWallpaperEffectImageRequestAction:(id)a3;
-- (void)_updateDisallowRasterizationForHomescreen:(BOOL)a3 lockscreen:(BOOL)a4;
-- (void)_updateHomescreenStyleChangesDelayed:(BOOL)a3;
-- (void)_updateHomescreenStyleTransitionStateTo:(id)a3 from:(id)a4;
-- (void)_updateHomescreenWallpaperAlpha:(double)a3;
-- (void)_updateLiveWallpaperInteractive:(BOOL)a3;
-- (void)_updateLiveWallpaperTouchActive:(BOOL)a3;
-- (void)_updateLockscreenOnlyWallpaperAlpha:(double)a3;
-- (void)_updateLockscreenStyleTransitionStateTo:(id)a3 from:(id)a4;
-- (void)_updateLockscreenWallpaperAlpha:(double)a3;
-- (void)_updateLockscreenWallpaperContentsRect:(CGRect)a3;
-- (void)_updateWallpaperAnimationSuspended:(BOOL)a3;
-- (void)_updateWallpaperHiddenForHomescreen:(BOOL)a3 lockscreen:(BOOL)a4;
-- (void)_updateWallpaperRequired:(BOOL)a3;
-- (void)_updateWallpaperSceneClientSettingsWithBlock:(id)a3;
-- (void)_updateWallpaperVariant:(int64_t)a3 inAnimationSettings:(id)a4 outAnimationSettings:(id)a5;
-- (void)noteWallpaperDidChangeForVariant:(int64_t)a3;
+- (void)_handleImageSlotRequestAction:(id)action;
+- (void)_handlePreheatAction:(id)action;
+- (void)_handleUpdateAndPrewarmAction:(id)action;
+- (void)_handleUpdateLocationsAction:(id)action;
+- (void)_handleWallpaperEffectImageRequestAction:(id)action;
+- (void)_updateDisallowRasterizationForHomescreen:(BOOL)homescreen lockscreen:(BOOL)lockscreen;
+- (void)_updateHomescreenStyleChangesDelayed:(BOOL)delayed;
+- (void)_updateHomescreenStyleTransitionStateTo:(id)to from:(id)from;
+- (void)_updateHomescreenWallpaperAlpha:(double)alpha;
+- (void)_updateLiveWallpaperInteractive:(BOOL)interactive;
+- (void)_updateLiveWallpaperTouchActive:(BOOL)active;
+- (void)_updateLockscreenOnlyWallpaperAlpha:(double)alpha;
+- (void)_updateLockscreenStyleTransitionStateTo:(id)to from:(id)from;
+- (void)_updateLockscreenWallpaperAlpha:(double)alpha;
+- (void)_updateLockscreenWallpaperContentsRect:(CGRect)rect;
+- (void)_updateWallpaperAnimationSuspended:(BOOL)suspended;
+- (void)_updateWallpaperHiddenForHomescreen:(BOOL)homescreen lockscreen:(BOOL)lockscreen;
+- (void)_updateWallpaperRequired:(BOOL)required;
+- (void)_updateWallpaperSceneClientSettingsWithBlock:(id)block;
+- (void)_updateWallpaperVariant:(int64_t)variant inAnimationSettings:(id)settings outAnimationSettings:(id)animationSettings;
+- (void)noteWallpaperDidChangeForVariant:(int64_t)variant;
 - (void)noteWallpaperDidCompleteWallpaperChange;
-- (void)noteWallpaperWillChangeForVariant:(int64_t)a3;
-- (void)setHomescreenAverageColor:(id)a3;
-- (void)setHomescreenContentStatic:(BOOL)a3;
-- (void)setHomescreenContrast:(double)a3;
-- (void)setHomescreenLegibilitySettings:(id)a3;
-- (void)setHomescreenMinimumWallpaperScale:(double)a3;
-- (void)setHomescreenParallaxEnabled:(BOOL)a3;
-- (void)setHomescreenParallaxFactor:(double)a3;
-- (void)setHomescreenZoomFactor:(double)a3;
-- (void)setLiveWallpaperPlaybackState:(int64_t)a3;
-- (void)setLockscreenAverageColor:(id)a3;
-- (void)setLockscreenContentIsLiveWallpaper:(BOOL)a3;
-- (void)setLockscreenContentStatic:(BOOL)a3;
-- (void)setLockscreenContrast:(double)a3;
-- (void)setLockscreenLegibilitySettings:(id)a3;
-- (void)setLockscreenMinimumWallpaperScale:(double)a3;
-- (void)setLockscreenParallaxEnabled:(BOOL)a3;
-- (void)setLockscreenParallaxFactor:(double)a3;
-- (void)setLockscreenZoomFactor:(double)a3;
+- (void)noteWallpaperWillChangeForVariant:(int64_t)variant;
+- (void)setHomescreenAverageColor:(id)color;
+- (void)setHomescreenContentStatic:(BOOL)static;
+- (void)setHomescreenContrast:(double)contrast;
+- (void)setHomescreenLegibilitySettings:(id)settings;
+- (void)setHomescreenMinimumWallpaperScale:(double)scale;
+- (void)setHomescreenParallaxEnabled:(BOOL)enabled;
+- (void)setHomescreenParallaxFactor:(double)factor;
+- (void)setHomescreenZoomFactor:(double)factor;
+- (void)setLiveWallpaperPlaybackState:(int64_t)state;
+- (void)setLockscreenAverageColor:(id)color;
+- (void)setLockscreenContentIsLiveWallpaper:(BOOL)wallpaper;
+- (void)setLockscreenContentStatic:(BOOL)static;
+- (void)setLockscreenContrast:(double)contrast;
+- (void)setLockscreenLegibilitySettings:(id)settings;
+- (void)setLockscreenMinimumWallpaperScale:(double)scale;
+- (void)setLockscreenParallaxEnabled:(BOOL)enabled;
+- (void)setLockscreenParallaxFactor:(double)factor;
+- (void)setLockscreenZoomFactor:(double)factor;
 @end
 
 @implementation PBUIWallpaperWindowScene
 
 - (int64_t)wallpaperVariant
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 wallpaperVariant];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  wallpaperVariant = [_wallpaperSceneSettings wallpaperVariant];
 
-  return v3;
+  return wallpaperVariant;
 }
 
 - (CGRect)lockscreenWallpaperContentsRect
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  [v2 lockscreenWallpaperContentsRect];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  [_wallpaperSceneSettings lockscreenWallpaperContentsRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -109,8 +109,8 @@
 
 - (double)lockscreenWallpaperAlpha
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  [v2 lockscreenWallpaperAlpha];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  [_wallpaperSceneSettings lockscreenWallpaperAlpha];
   v4 = v3;
 
   return v4;
@@ -118,8 +118,8 @@
 
 - (double)homescreenWallpaperAlpha
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  [v2 homescreenWallpaperAlpha];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  [_wallpaperSceneSettings homescreenWallpaperAlpha];
   v4 = v3;
 
   return v4;
@@ -127,8 +127,8 @@
 
 - (double)lockscreenOnlyWallpaperAlpha
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  [v2 lockscreenOnlyWallpaperAlpha];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  [_wallpaperSceneSettings lockscreenOnlyWallpaperAlpha];
   v4 = v3;
 
   return v4;
@@ -136,457 +136,457 @@
 
 - (BOOL)disallowHomescreenRasterization
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 disallowHomescreenRasterization];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  disallowHomescreenRasterization = [_wallpaperSceneSettings disallowHomescreenRasterization];
 
-  return v3;
+  return disallowHomescreenRasterization;
 }
 
 - (BOOL)disallowLockscreenRasterization
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 disallowLockscreenRasterization];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  disallowLockscreenRasterization = [_wallpaperSceneSettings disallowLockscreenRasterization];
 
-  return v3;
+  return disallowLockscreenRasterization;
 }
 
 - (BOOL)wallpaperAnimationSuspended
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 wallpaperAnimationSuspended];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  wallpaperAnimationSuspended = [_wallpaperSceneSettings wallpaperAnimationSuspended];
 
-  return v3;
+  return wallpaperAnimationSuspended;
 }
 
 - (BOOL)wallpaperRequired
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 wallpaperRequired];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  wallpaperRequired = [_wallpaperSceneSettings wallpaperRequired];
 
-  return v3;
+  return wallpaperRequired;
 }
 
 - (BOOL)homescreenStyleChangesDelayed
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 homescreenStyleChangesDelayed];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  homescreenStyleChangesDelayed = [_wallpaperSceneSettings homescreenStyleChangesDelayed];
 
-  return v3;
+  return homescreenStyleChangesDelayed;
 }
 
 - (NSString)cachingIdentifier
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 cachingIdentifier];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  cachingIdentifier = [_wallpaperSceneSettings cachingIdentifier];
 
-  return v3;
+  return cachingIdentifier;
 }
 
 - (PBUIWallpaperWindowSceneStyleTransitionState)homescreenStyleTransitionState
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 homescreenStyleTransitionState];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  homescreenStyleTransitionState = [_wallpaperSceneSettings homescreenStyleTransitionState];
 
-  return v3;
+  return homescreenStyleTransitionState;
 }
 
 - (PBUIWallpaperWindowSceneStyleTransitionState)lockscreenStyleTransitionState
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 lockscreenStyleTransitionState];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  lockscreenStyleTransitionState = [_wallpaperSceneSettings lockscreenStyleTransitionState];
 
-  return v3;
+  return lockscreenStyleTransitionState;
 }
 
 - (BOOL)liveWallpaperTouchActive
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 liveWallpaperTouchActive];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  liveWallpaperTouchActive = [_wallpaperSceneSettings liveWallpaperTouchActive];
 
-  return v3;
+  return liveWallpaperTouchActive;
 }
 
 - (BOOL)liveWallpaperInteractive
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
-  v3 = [v2 liveWallpaperInteractive];
+  _wallpaperSceneSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneSettings];
+  liveWallpaperInteractive = [_wallpaperSceneSettings liveWallpaperInteractive];
 
-  return v3;
+  return liveWallpaperInteractive;
 }
 
 - (double)homescreenMinimumWallpaperScale
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 homescreenMinimumWallpaperScale];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings homescreenMinimumWallpaperScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHomescreenMinimumWallpaperScale:(double)a3
+- (void)setHomescreenMinimumWallpaperScale:(double)scale
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __63__PBUIWallpaperWindowScene_setHomescreenMinimumWallpaperScale___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = scale;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (double)lockscreenMinimumWallpaperScale
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 lockscreenMinimumWallpaperScale];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings lockscreenMinimumWallpaperScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLockscreenMinimumWallpaperScale:(double)a3
+- (void)setLockscreenMinimumWallpaperScale:(double)scale
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __63__PBUIWallpaperWindowScene_setLockscreenMinimumWallpaperScale___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = scale;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (_UILegibilitySettings)homescreenLegibilitySettings
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 homescreenLegibilitySettings];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  homescreenLegibilitySettings = [_wallpaperSceneClientSettings homescreenLegibilitySettings];
 
-  return v3;
+  return homescreenLegibilitySettings;
 }
 
-- (void)setHomescreenLegibilitySettings:(id)a3
+- (void)setHomescreenLegibilitySettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__PBUIWallpaperWindowScene_setHomescreenLegibilitySettings___block_invoke;
   v6[3] = &unk_278362728;
-  v7 = v4;
-  v5 = v4;
+  v7 = settingsCopy;
+  v5 = settingsCopy;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v6];
 }
 
 - (_UILegibilitySettings)lockscreenLegibilitySettings
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 lockscreenLegibilitySettings];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  lockscreenLegibilitySettings = [_wallpaperSceneClientSettings lockscreenLegibilitySettings];
 
-  return v3;
+  return lockscreenLegibilitySettings;
 }
 
-- (void)setLockscreenLegibilitySettings:(id)a3
+- (void)setLockscreenLegibilitySettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__PBUIWallpaperWindowScene_setLockscreenLegibilitySettings___block_invoke;
   v6[3] = &unk_278362728;
-  v7 = v4;
-  v5 = v4;
+  v7 = settingsCopy;
+  v5 = settingsCopy;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v6];
 }
 
 - (UIColor)homescreenAverageColor
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 homescreenAverageColor];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  homescreenAverageColor = [_wallpaperSceneClientSettings homescreenAverageColor];
 
-  return v3;
+  return homescreenAverageColor;
 }
 
-- (void)setHomescreenAverageColor:(id)a3
+- (void)setHomescreenAverageColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__PBUIWallpaperWindowScene_setHomescreenAverageColor___block_invoke;
   v6[3] = &unk_278362728;
-  v7 = v4;
-  v5 = v4;
+  v7 = colorCopy;
+  v5 = colorCopy;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v6];
 }
 
 - (UIColor)lockscreenAverageColor
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 lockscreenAverageColor];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  lockscreenAverageColor = [_wallpaperSceneClientSettings lockscreenAverageColor];
 
-  return v3;
+  return lockscreenAverageColor;
 }
 
-- (void)setLockscreenAverageColor:(id)a3
+- (void)setLockscreenAverageColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__PBUIWallpaperWindowScene_setLockscreenAverageColor___block_invoke;
   v6[3] = &unk_278362728;
-  v7 = v4;
-  v5 = v4;
+  v7 = colorCopy;
+  v5 = colorCopy;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v6];
 }
 
 - (double)homescreenContrast
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 homescreenContrast];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings homescreenContrast];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHomescreenContrast:(double)a3
+- (void)setHomescreenContrast:(double)contrast
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __50__PBUIWallpaperWindowScene_setHomescreenContrast___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = contrast;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (double)lockscreenContrast
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 lockscreenContrast];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings lockscreenContrast];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLockscreenContrast:(double)a3
+- (void)setLockscreenContrast:(double)contrast
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __50__PBUIWallpaperWindowScene_setLockscreenContrast___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = contrast;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (double)homescreenParallaxFactor
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 homescreenParallaxFactor];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings homescreenParallaxFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHomescreenParallaxFactor:(double)a3
+- (void)setHomescreenParallaxFactor:(double)factor
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56__PBUIWallpaperWindowScene_setHomescreenParallaxFactor___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = factor;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (double)lockscreenParallaxFactor
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 lockscreenParallaxFactor];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings lockscreenParallaxFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLockscreenParallaxFactor:(double)a3
+- (void)setLockscreenParallaxFactor:(double)factor
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56__PBUIWallpaperWindowScene_setLockscreenParallaxFactor___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = factor;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (BOOL)homescreenParallaxEnabled
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 homescreenParallaxEnabled];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  homescreenParallaxEnabled = [_wallpaperSceneClientSettings homescreenParallaxEnabled];
 
-  return v3;
+  return homescreenParallaxEnabled;
 }
 
-- (void)setHomescreenParallaxEnabled:(BOOL)a3
+- (void)setHomescreenParallaxEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__PBUIWallpaperWindowScene_setHomescreenParallaxEnabled___block_invoke;
   v3[3] = &__block_descriptor_33_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  v4 = a3;
+  enabledCopy = enabled;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (BOOL)lockscreenParallaxEnabled
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 lockscreenParallaxEnabled];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  lockscreenParallaxEnabled = [_wallpaperSceneClientSettings lockscreenParallaxEnabled];
 
-  return v3;
+  return lockscreenParallaxEnabled;
 }
 
-- (void)setLockscreenParallaxEnabled:(BOOL)a3
+- (void)setLockscreenParallaxEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__PBUIWallpaperWindowScene_setLockscreenParallaxEnabled___block_invoke;
   v3[3] = &__block_descriptor_33_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  v4 = a3;
+  enabledCopy = enabled;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (double)homescreenZoomFactor
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 homescreenZoomFactor];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings homescreenZoomFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHomescreenZoomFactor:(double)a3
+- (void)setHomescreenZoomFactor:(double)factor
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__PBUIWallpaperWindowScene_setHomescreenZoomFactor___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = factor;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (double)lockscreenZoomFactor
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  [v2 lockscreenZoomFactor];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  [_wallpaperSceneClientSettings lockscreenZoomFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLockscreenZoomFactor:(double)a3
+- (void)setLockscreenZoomFactor:(double)factor
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__PBUIWallpaperWindowScene_setLockscreenZoomFactor___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  *&v3[4] = a3;
+  *&v3[4] = factor;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (BOOL)isHomescreenContentStatic
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 isHomescreenContentStatic];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  isHomescreenContentStatic = [_wallpaperSceneClientSettings isHomescreenContentStatic];
 
-  return v3;
+  return isHomescreenContentStatic;
 }
 
-- (void)setHomescreenContentStatic:(BOOL)a3
+- (void)setHomescreenContentStatic:(BOOL)static
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __55__PBUIWallpaperWindowScene_setHomescreenContentStatic___block_invoke;
   v3[3] = &__block_descriptor_33_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  v4 = a3;
+  staticCopy = static;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (BOOL)isLockscreenContentStatic
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 isLockscreenContentStatic];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  isLockscreenContentStatic = [_wallpaperSceneClientSettings isLockscreenContentStatic];
 
-  return v3;
+  return isLockscreenContentStatic;
 }
 
-- (void)setLockscreenContentStatic:(BOOL)a3
+- (void)setLockscreenContentStatic:(BOOL)static
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __55__PBUIWallpaperWindowScene_setLockscreenContentStatic___block_invoke;
   v3[3] = &__block_descriptor_33_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  v4 = a3;
+  staticCopy = static;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (BOOL)isLockscreenContentLiveWallpaper
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 isLockscreenContentLiveWallpaper];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  isLockscreenContentLiveWallpaper = [_wallpaperSceneClientSettings isLockscreenContentLiveWallpaper];
 
-  return v3;
+  return isLockscreenContentLiveWallpaper;
 }
 
-- (void)setLockscreenContentIsLiveWallpaper:(BOOL)a3
+- (void)setLockscreenContentIsLiveWallpaper:(BOOL)wallpaper
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __64__PBUIWallpaperWindowScene_setLockscreenContentIsLiveWallpaper___block_invoke;
   v3[3] = &__block_descriptor_33_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  v4 = a3;
+  wallpaperCopy = wallpaper;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
 - (int64_t)liveWallpaperPlaybackState
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
-  v3 = [v2 liveWallpaperPlaybackState];
+  _wallpaperSceneClientSettings = [(PBUIWallpaperWindowScene *)self _wallpaperSceneClientSettings];
+  liveWallpaperPlaybackState = [_wallpaperSceneClientSettings liveWallpaperPlaybackState];
 
-  return v3;
+  return liveWallpaperPlaybackState;
 }
 
-- (void)setLiveWallpaperPlaybackState:(int64_t)a3
+- (void)setLiveWallpaperPlaybackState:(int64_t)state
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __58__PBUIWallpaperWindowScene_setLiveWallpaperPlaybackState___block_invoke;
   v3[3] = &__block_descriptor_40_e55_v16__0__PBUIMutableWallpaperWindowSceneClientSettings_8l;
-  v3[4] = a3;
+  v3[4] = state;
   [(PBUIWallpaperWindowScene *)self _updateWallpaperSceneClientSettingsWithBlock:v3];
 }
 
-- (void)noteWallpaperWillChangeForVariant:(int64_t)a3
+- (void)noteWallpaperWillChangeForVariant:(int64_t)variant
 {
-  v7 = [(PBUIWallpaperWindowScene *)self _FBSScene];
+  _FBSScene = [(PBUIWallpaperWindowScene *)self _FBSScene];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [[PBUIWallpaperWillChangeAction alloc] initWithVariant:a3];
+  v5 = [[PBUIWallpaperWillChangeAction alloc] initWithVariant:variant];
   v6 = [v4 setWithObject:v5];
-  [v7 sendActions:v6];
+  [_FBSScene sendActions:v6];
 }
 
-- (void)noteWallpaperDidChangeForVariant:(int64_t)a3
+- (void)noteWallpaperDidChangeForVariant:(int64_t)variant
 {
-  v7 = [(PBUIWallpaperWindowScene *)self _FBSScene];
+  _FBSScene = [(PBUIWallpaperWindowScene *)self _FBSScene];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [[PBUIWallpaperDidChangeAction alloc] initWithVariant:a3];
+  v5 = [[PBUIWallpaperDidChangeAction alloc] initWithVariant:variant];
   v6 = [v4 setWithObject:v5];
-  [v7 sendActions:v6];
+  [_FBSScene sendActions:v6];
 }
 
 - (void)noteWallpaperDidCompleteWallpaperChange
 {
-  v5 = [(PBUIWallpaperWindowScene *)self _FBSScene];
+  _FBSScene = [(PBUIWallpaperWindowScene *)self _FBSScene];
   v2 = MEMORY[0x277CBEB98];
   v3 = objc_alloc_init(PBUIWallpaperDidCompleteWallpaperChangeAction);
   v4 = [v2 setWithObject:v3];
-  [v5 sendActions:v4];
+  [_FBSScene sendActions:v4];
 }
 
 - (id)_wallpaperSceneSettings
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _FBSScene];
-  v3 = [v2 settings];
+  _FBSScene = [(PBUIWallpaperWindowScene *)self _FBSScene];
+  settings = [_FBSScene settings];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = settings;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -607,10 +607,10 @@
 
 - (id)_wallpaperSceneClientSettings
 {
-  v2 = [(PBUIWallpaperWindowScene *)self _FBSScene];
-  v3 = [v2 clientSettings];
+  _FBSScene = [(PBUIWallpaperWindowScene *)self _FBSScene];
+  clientSettings = [_FBSScene clientSettings];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = clientSettings;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -629,17 +629,17 @@
   return v4;
 }
 
-- (void)_updateWallpaperSceneClientSettingsWithBlock:(id)a3
+- (void)_updateWallpaperSceneClientSettingsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self _FBSScene];
+  blockCopy = block;
+  _FBSScene = [(PBUIWallpaperWindowScene *)self _FBSScene];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__PBUIWallpaperWindowScene__updateWallpaperSceneClientSettingsWithBlock___block_invoke;
   v7[3] = &unk_278362770;
-  v8 = v4;
-  v6 = v4;
-  [v5 updateClientSettingsWithBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [_FBSScene updateClientSettingsWithBlock:v7];
 }
 
 void __73__PBUIWallpaperWindowScene__updateWallpaperSceneClientSettingsWithBlock___block_invoke(uint64_t a1, void *a2)
@@ -673,161 +673,161 @@ void __73__PBUIWallpaperWindowScene__updateWallpaperSceneClientSettingsWithBlock
   }
 }
 
-- (void)_updateWallpaperVariant:(int64_t)a3 inAnimationSettings:(id)a4 outAnimationSettings:(id)a5
+- (void)_updateWallpaperVariant:(int64_t)variant inAnimationSettings:(id)settings outAnimationSettings:(id)animationSettings
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [(PBUIWallpaperWindowScene *)self delegate];
+  settingsCopy = settings;
+  animationSettingsCopy = animationSettings;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 wallpaperWindowScene:self didUpdateVariant:a3 inAnimationSettings:v10 outAnimationSettings:v8];
+    [delegate wallpaperWindowScene:self didUpdateVariant:variant inAnimationSettings:settingsCopy outAnimationSettings:animationSettingsCopy];
   }
 }
 
-- (void)_updateLockscreenWallpaperContentsRect:(CGRect)a3
+- (void)_updateLockscreenWallpaperContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PBUIWallpaperWindowScene *)self delegate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 wallpaperWindowScene:self didUpdateLockscreenWallpaperContentsRect:{x, y, width, height}];
+    [delegate wallpaperWindowScene:self didUpdateLockscreenWallpaperContentsRect:{x, y, width, height}];
   }
 }
 
-- (void)_updateLockscreenWallpaperAlpha:(double)a3
+- (void)_updateLockscreenWallpaperAlpha:(double)alpha
 {
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateLockscreenWallpaperAlpha:a3];
+    [delegate wallpaperWindowScene:self didUpdateLockscreenWallpaperAlpha:alpha];
   }
 }
 
-- (void)_updateHomescreenWallpaperAlpha:(double)a3
+- (void)_updateHomescreenWallpaperAlpha:(double)alpha
 {
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateHomescreenWallpaperAlpha:a3];
+    [delegate wallpaperWindowScene:self didUpdateHomescreenWallpaperAlpha:alpha];
   }
 }
 
-- (void)_updateLockscreenOnlyWallpaperAlpha:(double)a3
+- (void)_updateLockscreenOnlyWallpaperAlpha:(double)alpha
 {
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateLockscreenOnlyWallpaperAlpha:a3];
+    [delegate wallpaperWindowScene:self didUpdateLockscreenOnlyWallpaperAlpha:alpha];
   }
 }
 
-- (void)_updateDisallowRasterizationForHomescreen:(BOOL)a3 lockscreen:(BOOL)a4
+- (void)_updateDisallowRasterizationForHomescreen:(BOOL)homescreen lockscreen:(BOOL)lockscreen
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PBUIWallpaperWindowScene *)self delegate];
+  lockscreenCopy = lockscreen;
+  homescreenCopy = homescreen;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 wallpaperWindowScene:self didUpdateRasterizationDisallowedForHomescreen:v5 lockscreen:v4];
+    [delegate wallpaperWindowScene:self didUpdateRasterizationDisallowedForHomescreen:homescreenCopy lockscreen:lockscreenCopy];
   }
 }
 
-- (void)_updateWallpaperHiddenForHomescreen:(BOOL)a3 lockscreen:(BOOL)a4
+- (void)_updateWallpaperHiddenForHomescreen:(BOOL)homescreen lockscreen:(BOOL)lockscreen
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PBUIWallpaperWindowScene *)self delegate];
+  lockscreenCopy = lockscreen;
+  homescreenCopy = homescreen;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 wallpaperWindowScene:self didUpdateHomescreenWallpaperHidden:v5 lockscreenWallpaperHidden:v4];
+    [delegate wallpaperWindowScene:self didUpdateHomescreenWallpaperHidden:homescreenCopy lockscreenWallpaperHidden:lockscreenCopy];
   }
 }
 
-- (void)_updateWallpaperAnimationSuspended:(BOOL)a3
+- (void)_updateWallpaperAnimationSuspended:(BOOL)suspended
 {
-  v3 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  suspendedCopy = suspended;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateWallpaperAnimationSuspended:v3];
+    [delegate wallpaperWindowScene:self didUpdateWallpaperAnimationSuspended:suspendedCopy];
   }
 }
 
-- (void)_updateWallpaperRequired:(BOOL)a3
+- (void)_updateWallpaperRequired:(BOOL)required
 {
-  v3 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  requiredCopy = required;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateWallpaperRequired:v3];
+    [delegate wallpaperWindowScene:self didUpdateWallpaperRequired:requiredCopy];
   }
 }
 
-- (void)_updateHomescreenStyleChangesDelayed:(BOOL)a3
+- (void)_updateHomescreenStyleChangesDelayed:(BOOL)delayed
 {
-  v3 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  delayedCopy = delayed;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateHomescreenStyleChangesDelayed:v3];
+    [delegate wallpaperWindowScene:self didUpdateHomescreenStyleChangesDelayed:delayedCopy];
   }
 }
 
-- (void)_updateHomescreenStyleTransitionStateTo:(id)a3 from:(id)a4
+- (void)_updateHomescreenStyleTransitionStateTo:(id)to from:(id)from
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PBUIWallpaperWindowScene *)self delegate];
+  toCopy = to;
+  fromCopy = from;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 wallpaperWindowScene:self didUpdateHomescreenStyleTransitionStateTo:v8 from:v6];
+    [delegate wallpaperWindowScene:self didUpdateHomescreenStyleTransitionStateTo:toCopy from:fromCopy];
   }
 }
 
-- (void)_updateLockscreenStyleTransitionStateTo:(id)a3 from:(id)a4
+- (void)_updateLockscreenStyleTransitionStateTo:(id)to from:(id)from
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PBUIWallpaperWindowScene *)self delegate];
+  toCopy = to;
+  fromCopy = from;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 wallpaperWindowScene:self didUpdateLockscreenStyleTransitionStateTo:v8 from:v6];
+    [delegate wallpaperWindowScene:self didUpdateLockscreenStyleTransitionStateTo:toCopy from:fromCopy];
   }
 }
 
-- (void)_updateLiveWallpaperTouchActive:(BOOL)a3
+- (void)_updateLiveWallpaperTouchActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  activeCopy = active;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateLiveWallpaperTouchActive:v3];
+    [delegate wallpaperWindowScene:self didUpdateLiveWallpaperTouchActive:activeCopy];
   }
 }
 
-- (void)_updateLiveWallpaperInteractive:(BOOL)a3
+- (void)_updateLiveWallpaperInteractive:(BOOL)interactive
 {
-  v3 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  interactiveCopy = interactive;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 wallpaperWindowScene:self didUpdateLiveWallpaperInteractive:v3];
+    [delegate wallpaperWindowScene:self didUpdateLiveWallpaperInteractive:interactiveCopy];
   }
 }
 
-- (void)_handleImageSlotRequestAction:(id)a3
+- (void)_handleImageSlotRequestAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  actionCopy = action;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v31 = 0;
     v32 = &v31;
     v33 = 0x2020000000;
-    v34 = [v4 desiredStyle];
+    desiredStyle = [actionCopy desiredStyle];
     v25 = 0;
     v26 = &v25;
     v27 = 0x3032000000;
@@ -840,9 +840,9 @@ void __73__PBUIWallpaperWindowScene__updateWallpaperSceneClientSettingsWithBlock
     v22 = __Block_byref_object_copy__2;
     v23 = __Block_byref_object_dispose__2;
     v24 = 0;
-    v6 = [v4 variant];
+    variant = [actionCopy variant];
     v7 = v32[3];
-    v8 = [v4 traitCollection];
+    traitCollection = [actionCopy traitCollection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __58__PBUIWallpaperWindowScene__handleImageSlotRequestAction___block_invoke;
@@ -850,11 +850,11 @@ void __73__PBUIWallpaperWindowScene__updateWallpaperSceneClientSettingsWithBlock
     v18[4] = &v25;
     v18[5] = &v19;
     v18[6] = &v31;
-    [v5 wallpaperWindowScene:self requestsWallpaperEffectImageForVariant:v6 style:v7 traitCollection:v8 result:v18];
+    [delegate wallpaperWindowScene:self requestsWallpaperEffectImageForVariant:variant style:v7 traitCollection:traitCollection result:v18];
 
     if (v26[5])
     {
-      v9 = [v4 slotIdentifier];
+      slotIdentifier = [actionCopy slotIdentifier];
       wallpaperEffectImageSlots = self->_wallpaperEffectImageSlots;
       if (!wallpaperEffectImageSlots)
       {
@@ -866,17 +866,17 @@ void __73__PBUIWallpaperWindowScene__updateWallpaperSceneClientSettingsWithBlock
       }
 
       [v26[5] size];
-      [(PBUIImageSlotRepository *)wallpaperEffectImageSlots allocateImageSlotForIdentifier:v9 size:v32[3] actualStyle:v20[5] url:v4 lifetimeObject:?];
+      [(PBUIImageSlotRepository *)wallpaperEffectImageSlots allocateImageSlotForIdentifier:slotIdentifier size:v32[3] actualStyle:v20[5] url:actionCopy lifetimeObject:?];
       objc_initWeak(&location, self);
-      objc_initWeak(&from, v4);
+      objc_initWeak(&from, actionCopy);
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __58__PBUIWallpaperWindowScene__handleImageSlotRequestAction___block_invoke_2;
       v13[3] = &unk_278362798;
       objc_copyWeak(&v14, &location);
       objc_copyWeak(&v15, &from);
-      [v4 setNullificationHandler:v13];
-      [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots setImageSlot:v26[5] forIdentifier:v9];
+      [actionCopy setNullificationHandler:v13];
+      [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots setImageSlot:v26[5] forIdentifier:slotIdentifier];
       objc_destroyWeak(&v15);
       objc_destroyWeak(&v14);
       objc_destroyWeak(&from);
@@ -936,27 +936,27 @@ void __58__PBUIWallpaperWindowScene__handleImageSlotRequestAction___block_invoke
   }
 }
 
-- (void)_handleWallpaperEffectImageRequestAction:(id)a3
+- (void)_handleWallpaperEffectImageRequestAction:(id)action
 {
-  v20 = a3;
-  v4 = [v20 slotIdentifier];
-  v5 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots hasSlotForIdentifier:v4];
-  v6 = [v20 canSendResponse];
+  actionCopy = action;
+  slotIdentifier = [actionCopy slotIdentifier];
+  v5 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots hasSlotForIdentifier:slotIdentifier];
+  canSendResponse = [actionCopy canSendResponse];
   if (v5)
   {
-    if (!v6)
+    if (!canSendResponse)
     {
       goto LABEL_9;
     }
 
-    [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots sizeForIdentifier:v4];
+    [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots sizeForIdentifier:slotIdentifier];
     v8 = v7;
     v10 = v9;
-    v11 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots actualStyleForIdentifier:v4];
-    v12 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots urlForIdentifier:v4];
+    v11 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots actualStyleForIdentifier:slotIdentifier];
+    v12 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots urlForIdentifier:slotIdentifier];
     if (!v12)
     {
-      v16 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots ioSurfaceForIdentifier:v4];
+      v16 = [(PBUIImageSlotRepository *)self->_wallpaperEffectImageSlots ioSurfaceForIdentifier:slotIdentifier];
       if (v16)
       {
         v17 = v16;
@@ -978,7 +978,7 @@ void __58__PBUIWallpaperWindowScene__handleImageSlotRequestAction___block_invoke
 
   else
   {
-    if (!v6)
+    if (!canSendResponse)
     {
       goto LABEL_9;
     }
@@ -990,62 +990,62 @@ void __58__PBUIWallpaperWindowScene__handleImageSlotRequestAction___block_invoke
 
   v15 = v13;
 LABEL_8:
-  [v20 sendResponse:v15];
+  [actionCopy sendResponse:v15];
 
 LABEL_9:
 }
 
-- (void)_handlePreheatAction:(id)a3
+- (void)_handlePreheatAction:(id)action
 {
-  v5 = a3;
-  v4 = [(PBUIWallpaperWindowScene *)self delegate];
+  actionCopy = action;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 wallpaperWindowScene:self didReceivePreheatRequestForVariant:{objc_msgSend(v5, "variant")}];
+    [delegate wallpaperWindowScene:self didReceivePreheatRequestForVariant:{objc_msgSend(actionCopy, "variant")}];
   }
 }
 
-- (void)_handleUpdateAndPrewarmAction:(id)a3
+- (void)_handleUpdateAndPrewarmAction:(id)action
 {
-  v9 = a3;
-  v4 = [(PBUIWallpaperWindowScene *)self delegate];
+  actionCopy = action;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    v6 = [v5 beginBackgroundTaskWithName:@"Update and prewarm" expirationHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v6 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:@"Update and prewarm" expirationHandler:0];
 
-    [v4 wallpaperWindowSceneDidReceiveUpdateAndPrewarmRequest:self];
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    [v7 endBackgroundTask:v6];
+    [delegate wallpaperWindowSceneDidReceiveUpdateAndPrewarmRequest:self];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128]2 endBackgroundTask:v6];
   }
 
-  if ([v9 canSendResponse])
+  if ([actionCopy canSendResponse])
   {
-    v8 = [MEMORY[0x277CF0B68] response];
-    [v9 sendResponse:v8];
+    response = [MEMORY[0x277CF0B68] response];
+    [actionCopy sendResponse:response];
   }
 }
 
-- (void)_handleUpdateLocationsAction:(id)a3
+- (void)_handleUpdateLocationsAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PBUIWallpaperWindowScene *)self delegate];
+  actionCopy = action;
+  delegate = [(PBUIWallpaperWindowScene *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 locations];
-    v7 = [v4 wallpaperMode];
+    locations = [actionCopy locations];
+    wallpaperMode = [actionCopy wallpaperMode];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __57__PBUIWallpaperWindowScene__handleUpdateLocationsAction___block_invoke;
     v9[3] = &unk_278361E18;
-    v10 = v4;
-    [v5 wallpaperWindowScene:self didReceiveUpdateRequestForLocations:v6 wallpaperMode:v7 completion:v9];
+    v10 = actionCopy;
+    [delegate wallpaperWindowScene:self didReceiveUpdateRequestForLocations:locations wallpaperMode:wallpaperMode completion:v9];
   }
 
-  else if ([v4 canSendResponse])
+  else if ([actionCopy canSendResponse])
   {
     v8 = objc_alloc_init(PBUIWallpaperUpdateActionResponse);
-    [v4 sendResponse:v8];
+    [actionCopy sendResponse:v8];
   }
 }
 

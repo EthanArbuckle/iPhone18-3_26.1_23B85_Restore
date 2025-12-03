@@ -1,21 +1,21 @@
 @interface EGStillImageReferenceFrameSelectionNode
-- (EGStillImageReferenceFrameSelectionNode)initWithName:(id)a3 numSampleBufferInputs:(int)a4;
+- (EGStillImageReferenceFrameSelectionNode)initWithName:(id)name numSampleBufferInputs:(int)inputs;
 - (void)dealloc;
-- (void)receiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)receiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageReferenceFrameSelectionNode
 
-- (EGStillImageReferenceFrameSelectionNode)initWithName:(id)a3 numSampleBufferInputs:(int)a4
+- (EGStillImageReferenceFrameSelectionNode)initWithName:(id)name numSampleBufferInputs:(int)inputs
 {
   v13.receiver = self;
   v13.super_class = EGStillImageReferenceFrameSelectionNode;
-  v5 = [(EGNode *)&v13 initWithName:a3];
+  v5 = [(EGNode *)&v13 initWithName:name];
   if (v5)
   {
     v5->_sampleBufferInputs = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = [[EGInputGroup alloc] initWithName:@"sbufInputs"];
-    if (a4 >= 1)
+    if (inputs >= 1)
     {
       v7 = 0;
       do
@@ -27,7 +27,7 @@
         v7 = (v7 + 1);
       }
 
-      while (a4 != v7);
+      while (inputs != v7);
     }
 
     v10 = [[EGInput alloc] initWithName:@"fusionMode"];
@@ -49,9 +49,9 @@
   [(EGNode *)&v3 dealloc];
 }
 
-- (void)receiveData:(id)a3 fromInputGroup:(id)a4
+- (void)receiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_fusionModeInput, "name", a3, a4)), "number"), "intValue"}];
+  v6 = [objc_msgSend(objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_fusionModeInput, "name", data, group)), "number"), "intValue"}];
   if (v6)
   {
     v7 = v6;
@@ -74,7 +74,7 @@
             objc_enumerationMutation(sampleBufferInputs);
           }
 
-          v13 = [objc_msgSend(a3 objectForKeyedSubscript:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "name")), "sampleBuffer"}];
+          v13 = [objc_msgSend(data objectForKeyedSubscript:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "name")), "sampleBuffer"}];
           v14 = BWStillImageCaptureFrameFlagsForSampleBuffer(v13);
           if (v7 == 1 && (v14 & 0x10) != 0 || v7 == 2 && (v14 & 4) != 0)
           {

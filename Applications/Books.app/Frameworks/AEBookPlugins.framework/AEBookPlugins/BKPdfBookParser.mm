@@ -1,109 +1,109 @@
 @interface BKPdfBookParser
-+ (unint64_t)pdfHrefToPageNumber:(id)a3;
-- (id)hrefForPageNumber:(unint64_t)a3;
-- (int)constructBKNavigationInfoWithPdfTocEntry:(id)a3 absoluteOrder:(int)a4 indentationLevel:(int)a5;
++ (unint64_t)pdfHrefToPageNumber:(id)number;
+- (id)hrefForPageNumber:(unint64_t)number;
+- (int)constructBKNavigationInfoWithPdfTocEntry:(id)entry absoluteOrder:(int)order indentationLevel:(int)level;
 - (int)loadMetadata;
-- (int)parse:(BOOL)a3;
-- (void)constructBKDocumentWithPdfTocParser:(id)a3;
-- (void)constructBKNavigationInfoWithPdfTocParser:(id)a3;
+- (int)parse:(BOOL)parse;
+- (void)constructBKDocumentWithPdfTocParser:(id)parser;
+- (void)constructBKNavigationInfoWithPdfTocParser:(id)parser;
 @end
 
 @implementation BKPdfBookParser
 
-- (int)parse:(BOOL)a3
+- (int)parse:(BOOL)parse
 {
-  v5 = [(BKBookParser *)self book];
-  v6 = [v5 wasParsed];
+  book = [(BKBookParser *)self book];
+  wasParsed = [book wasParsed];
 
-  if (v6)
+  if (wasParsed)
   {
     return 0;
   }
 
   v8 = +[AEPdfCache sharedInstance];
-  v9 = [(BKBookParser *)self book];
-  v10 = [v8 copyCacheObjectForBook:v9];
+  book2 = [(BKBookParser *)self book];
+  v10 = [v8 copyCacheObjectForBook:book2];
   pdfObject = self->_pdfObject;
   self->_pdfObject = v10;
 
-  v12 = [(BKPdfBookParser *)self pdfObject];
-  v13 = [v12 document];
+  pdfObject = [(BKPdfBookParser *)self pdfObject];
+  document = [pdfObject document];
 
-  if (v13)
+  if (document)
   {
-    if ([v13 isLocked])
+    if ([document isLocked])
     {
-      v14 = [(BKBookParser *)self book];
+      book3 = [(BKBookParser *)self book];
       v15 = AEBundle();
       v16 = [v15 localizedStringForKey:@"Untitled" value:&stru_1E7188 table:0];
-      [(BKPdfTocParser *)v14 setBookTitle:v16];
+      [(BKPdfTocParser *)book3 setBookTitle:v16];
 
-      v17 = AEBundle();
-      v18 = [v17 localizedStringForKey:@"Untitled" value:&stru_1E7188 table:0];
-      [(BKPdfTocParser *)v14 setSortTitle:v18];
+      book5 = AEBundle();
+      v18 = [book5 localizedStringForKey:@"Untitled" value:&stru_1E7188 table:0];
+      [(BKPdfTocParser *)book3 setSortTitle:v18];
     }
 
     else
     {
-      v7 = [(BKPdfBookParser *)self loadMetadata];
-      if (v7 || a3)
+      loadMetadata = [(BKPdfBookParser *)self loadMetadata];
+      if (loadMetadata || parse)
       {
         goto LABEL_11;
       }
 
-      v19 = [(BKBookParser *)self book];
-      [v19 resetAsNewlyDownloaded];
+      book4 = [(BKBookParser *)self book];
+      [book4 resetAsNewlyDownloaded];
 
-      v14 = -[BKPdfTocParser initWithDocument:]([BKPdfTocParser alloc], "initWithDocument:", [v13 documentRef]);
-      [(BKPdfBookParser *)self constructBKNavigationInfoWithPdfTocParser:v14];
-      [(BKPdfBookParser *)self constructBKDocumentWithPdfTocParser:v14];
-      v17 = [(BKBookParser *)self book];
-      [v17 setParserVersion:BKPdfBookParser_CurrentVersion[0]];
+      book3 = -[BKPdfTocParser initWithDocument:]([BKPdfTocParser alloc], "initWithDocument:", [document documentRef]);
+      [(BKPdfBookParser *)self constructBKNavigationInfoWithPdfTocParser:book3];
+      [(BKPdfBookParser *)self constructBKDocumentWithPdfTocParser:book3];
+      book5 = [(BKBookParser *)self book];
+      [book5 setParserVersion:BKPdfBookParser_CurrentVersion[0]];
     }
 
-    v7 = 0;
+    loadMetadata = 0;
   }
 
   else
   {
-    v7 = -1;
+    loadMetadata = -1;
   }
 
 LABEL_11:
-  v20 = [(BKBookParser *)self book];
-  v21 = [v20 fileSize];
-  v22 = [v21 longLongValue];
+  book6 = [(BKBookParser *)self book];
+  fileSize = [book6 fileSize];
+  longLongValue = [fileSize longLongValue];
 
-  if (!v22)
+  if (!longLongValue)
   {
     v23 = +[NSFileManager defaultManager];
-    v24 = [(BKBookParser *)self book];
-    v25 = [v24 url];
-    v26 = [v25 path];
-    v27 = [v23 attributesOfItemAtPath:v26 error:0];
+    book7 = [(BKBookParser *)self book];
+    v25 = [book7 url];
+    path = [v25 path];
+    v27 = [v23 attributesOfItemAtPath:path error:0];
 
-    v28 = [v27 fileSize];
-    if (v28)
+    fileSize2 = [v27 fileSize];
+    if (fileSize2)
     {
-      v29 = [(BKBookParser *)self book];
-      v30 = [NSNumber numberWithLongLong:v28];
-      [v29 setFileSize:v30];
+      book8 = [(BKBookParser *)self book];
+      v30 = [NSNumber numberWithLongLong:fileSize2];
+      [book8 setFileSize:v30];
     }
   }
 
-  return v7;
+  return loadMetadata;
 }
 
-- (id)hrefForPageNumber:(unint64_t)a3
+- (id)hrefForPageNumber:(unint64_t)number
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (number == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = &stru_1E7188;
   }
 
   else
   {
-    v5 = [NSString stringWithFormat:@"%@%d", BKPdfBookParserFakeBaseHref[0], a3, v3];
+    v5 = [NSString stringWithFormat:@"%@%d", BKPdfBookParserFakeBaseHref[0], number, v3];
   }
 
   return v5;
@@ -111,9 +111,9 @@ LABEL_11:
 
 - (int)loadMetadata
 {
-  v3 = [(BKPdfBookParser *)self pdfObject];
-  v4 = [v3 document];
-  Info = CGPDFDocumentGetInfo([v4 documentRef]);
+  pdfObject = [(BKPdfBookParser *)self pdfObject];
+  document = [pdfObject document];
+  Info = CGPDFDocumentGetInfo([document documentRef]);
 
   if (!Info)
   {
@@ -121,32 +121,32 @@ LABEL_11:
   }
 
   value = 0;
-  v6 = [(BKBookParser *)self book];
+  book = [(BKBookParser *)self book];
   if (CGPDFDictionaryGetString(Info, "Title", &value))
   {
     v7 = CGPDFStringCopyTextString(value);
     if ([(__CFString *)v7 length])
     {
-      v8 = [v6 bookTitle];
-      v9 = [v8 length];
+      bookTitle = [book bookTitle];
+      v9 = [bookTitle length];
 
       if (!v9)
       {
-        [v6 setBookTitle:v7];
-        [v6 setSortTitle:v7];
+        [book setBookTitle:v7];
+        [book setSortTitle:v7];
       }
     }
   }
 
-  v10 = [v6 bookAuthor];
-  if (![v10 length])
+  bookAuthor = [book bookAuthor];
+  if (![bookAuthor length])
   {
 
     goto LABEL_11;
   }
 
-  v11 = [v6 sortAuthor];
-  v12 = [v11 length];
+  sortAuthor = [book sortAuthor];
+  v12 = [sortAuthor length];
 
   if (!v12)
   {
@@ -156,50 +156,50 @@ LABEL_11:
       v13 = CGPDFStringCopyTextString(value);
       if ([(__CFString *)v13 length])
       {
-        v14 = [v6 bookAuthor];
-        v15 = [v14 length];
+        bookAuthor2 = [book bookAuthor];
+        v15 = [bookAuthor2 length];
 
         if (!v15)
         {
-          [v6 setBookAuthor:v13];
+          [book setBookAuthor:v13];
         }
 
-        v16 = [v6 sortAuthor];
-        v17 = [v16 length];
+        sortAuthor2 = [book sortAuthor];
+        v17 = [sortAuthor2 length];
 
         if (!v17)
         {
-          [v6 setSortAuthor:v13];
+          [book setSortAuthor:v13];
         }
       }
     }
   }
 
-  v18 = [v6 genre];
-  v19 = [v18 length];
+  genre = [book genre];
+  v19 = [genre length];
 
   if (!v19 && CGPDFDictionaryGetString(Info, "Subject", &value))
   {
     v20 = CGPDFStringCopyTextString(value);
     if ([(__CFString *)v20 length])
     {
-      [v6 setGenre:v20];
+      [book setGenre:v20];
     }
   }
 
   v21 = [(BKPdfBookParser *)self hrefForPageNumber:1];
-  [v6 setEmbeddedArtHref:v21];
+  [book setEmbeddedArtHref:v21];
 
   return 0;
 }
 
-+ (unint64_t)pdfHrefToPageNumber:(id)a3
++ (unint64_t)pdfHrefToPageNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = [(__CFString *)BKPdfBookParserFakeBaseHref[0] length];
-  if ([v3 length] >= v4)
+  if ([numberCopy length] >= v4)
   {
-    v6 = [v3 substringFromIndex:v4];
+    v6 = [numberCopy substringFromIndex:v4];
     if ([v6 length])
     {
       v5 = [BKPdfBookParser pdfAnchorToPageNumber:v6];
@@ -219,11 +219,11 @@ LABEL_11:
   return v5;
 }
 
-- (int)constructBKNavigationInfoWithPdfTocEntry:(id)a3 absoluteOrder:(int)a4 indentationLevel:(int)a5
+- (int)constructBKNavigationInfoWithPdfTocEntry:(id)entry absoluteOrder:(int)order indentationLevel:(int)level
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
+  v5 = *&level;
+  v6 = *&order;
+  entryCopy = entry;
   if ((v6 & 0x80000000) != 0)
   {
     v17 = 0;
@@ -232,16 +232,16 @@ LABEL_11:
 
   else
   {
-    v9 = [(BKBookParser *)self book];
-    v10 = [v9 managedObjectContext];
+    book = [(BKBookParser *)self book];
+    managedObjectContext = [book managedObjectContext];
 
-    v11 = [BKNavigationInfo newEmptyNavigationInfo:v10];
-    v12 = -[BKPdfBookParser hrefForPageNumber:](self, "hrefForPageNumber:", [v8 pageNumber]);
+    v11 = [BKNavigationInfo newEmptyNavigationInfo:managedObjectContext];
+    v12 = -[BKPdfBookParser hrefForPageNumber:](self, "hrefForPageNumber:", [entryCopy pageNumber]);
     [v11 setHref:v12];
 
     [v11 setBaseHref:BKPdfBookParserFakeBaseHref[0]];
-    v13 = [v8 title];
-    [v11 setName:v13];
+    title = [entryCopy title];
+    [v11 setName:title];
 
     v14 = [NSNumber numberWithInt:v5];
     [v11 setIndentationLevel:v14];
@@ -249,19 +249,19 @@ LABEL_11:
     v15 = [NSNumber numberWithInt:v6];
     [v11 setAbsoluteOrder:v15];
 
-    v16 = [(BKBookParser *)self book];
-    [v16 addChaptersObject:v11];
+    book2 = [(BKBookParser *)self book];
+    [book2 addChaptersObject:v11];
 
     v17 = (v5 + 1);
     v18 = (v6 + 1);
   }
 
-  v19 = [v8 numberOfChildren];
-  if (v19)
+  numberOfChildren = [entryCopy numberOfChildren];
+  if (numberOfChildren)
   {
-    for (i = 0; i != v19; ++i)
+    for (i = 0; i != numberOfChildren; ++i)
     {
-      v21 = [v8 childAtIndex:i];
+      v21 = [entryCopy childAtIndex:i];
       if (v21)
       {
         v18 = [(BKPdfBookParser *)self constructBKNavigationInfoWithPdfTocEntry:v21 absoluteOrder:v18 indentationLevel:v17];
@@ -272,36 +272,36 @@ LABEL_11:
   return v18;
 }
 
-- (void)constructBKNavigationInfoWithPdfTocParser:(id)a3
+- (void)constructBKNavigationInfoWithPdfTocParser:(id)parser
 {
-  v4 = a3;
-  if (v4)
+  parserCopy = parser;
+  if (parserCopy)
   {
-    v6 = v4;
-    v5 = [v4 tocRoot];
-    if (v5)
+    v6 = parserCopy;
+    tocRoot = [parserCopy tocRoot];
+    if (tocRoot)
     {
-      [(BKPdfBookParser *)self constructBKNavigationInfoWithPdfTocEntry:v5 absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL];
+      [(BKPdfBookParser *)self constructBKNavigationInfoWithPdfTocEntry:tocRoot absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL];
     }
 
-    v4 = v6;
+    parserCopy = v6;
   }
 }
 
-- (void)constructBKDocumentWithPdfTocParser:(id)a3
+- (void)constructBKDocumentWithPdfTocParser:(id)parser
 {
-  v18 = a3;
-  v4 = [(BKBookParser *)self book];
-  v5 = [v4 bookBundlePath];
-  Size = ITFileUtil::GetSize(v5, v6);
+  parserCopy = parser;
+  book = [(BKBookParser *)self book];
+  bookBundlePath = [book bookBundlePath];
+  Size = ITFileUtil::GetSize(bookBundlePath, v6);
 
-  v8 = [(BKBookParser *)self book];
-  v9 = [v8 managedObjectContext];
+  book2 = [(BKBookParser *)self book];
+  managedObjectContext = [book2 managedObjectContext];
 
-  v10 = [BKDocument newEmptyDocument:v9];
-  v11 = [(BKBookParser *)self book];
-  v12 = [v11 databaseKey];
-  [v10 setBookDatabaseKey:v12];
+  v10 = [BKDocument newEmptyDocument:managedObjectContext];
+  book3 = [(BKBookParser *)self book];
+  databaseKey = [book3 databaseKey];
+  [v10 setBookDatabaseKey:databaseKey];
 
   [v10 setHref:BKPdfBookParserFakeBaseHref[0]];
   [v10 setMime:@"application/pdf"];
@@ -312,10 +312,10 @@ LABEL_11:
   [v10 setFileSize:v14];
 
   [v10 setManifestId:&stru_1E7188];
-  v15 = [v18 tocRoot];
-  v16 = [v15 numberOfChildren];
+  tocRoot = [parserCopy tocRoot];
+  numberOfChildren = [tocRoot numberOfChildren];
 
-  if (v16)
+  if (numberOfChildren)
   {
     v17 = [NSNumber numberWithBool:1];
     [v10 setHasTocElements:v17];

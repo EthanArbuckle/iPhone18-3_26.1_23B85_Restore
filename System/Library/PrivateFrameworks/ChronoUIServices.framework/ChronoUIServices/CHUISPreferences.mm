@@ -1,7 +1,7 @@
 @interface CHUISPreferences
 + (CHUISPreferences)sharedInstance;
 - (CHUISPreferences)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CHUISPreferences
@@ -51,13 +51,13 @@ void __34__CHUISPreferences_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == @"_userWantsWidgetDataWhenPasscodeLocked" && ([v12 objectForKeyedSubscript:*MEMORY[0x1E696A4E8]], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "intValue"), v14, v15 == 1))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == @"_userWantsWidgetDataWhenPasscodeLocked" && ([changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4E8]], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "intValue"), v14, v15 == 1))
   {
     v16 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     self->_userWantsWidgetDataWhenPasscodeLocked = [v16 BOOLValue];
@@ -67,7 +67,7 @@ void __34__CHUISPreferences_sharedInstance__block_invoke()
   {
     v17.receiver = self;
     v17.super_class = CHUISPreferences;
-    [(CHUISPreferences *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v13 context:a6];
+    [(CHUISPreferences *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:v13 context:context];
   }
 }
 

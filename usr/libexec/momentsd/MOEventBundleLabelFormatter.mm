@@ -1,18 +1,18 @@
 @interface MOEventBundleLabelFormatter
 - (MOEventBundleLabelFormatter)init;
-- (MOEventBundleLabelFormatter)initWithTemplatePath:(id)a3;
+- (MOEventBundleLabelFormatter)initWithTemplatePath:(id)path;
 - (NSDictionary)context;
 - (NSDictionary)templates;
-- (id)formattedStringsForMetaData:(id)a3 templateType:(id)a4 bundleType:(id)a5;
-- (id)formattedStringsForMetaData:(id)a3 templates:(id)a4;
-- (id)getContextForBundleType:(id)a3;
+- (id)formattedStringsForMetaData:(id)data templateType:(id)type bundleType:(id)bundleType;
+- (id)formattedStringsForMetaData:(id)data templates:(id)templates;
+- (id)getContextForBundleType:(id)type;
 - (id)getTemplateDirectoryURL;
-- (id)keywordForTemplateType:(id)a3 bundleType:(id)a4;
-- (id)loadDictionaryFromPath:(id)a3;
-- (id)shuffleStrings:(id)a3 shuffleMode:(unint64_t)a4;
+- (id)keywordForTemplateType:(id)type bundleType:(id)bundleType;
+- (id)loadDictionaryFromPath:(id)path;
+- (id)shuffleStrings:(id)strings shuffleMode:(unint64_t)mode;
 - (void)getTemplateDirectoryURL;
 - (void)loadLabelTemplates;
-- (void)loadLabelTemplatesFromDirectory:(id)a3;
+- (void)loadLabelTemplatesFromDirectory:(id)directory;
 - (void)logDiagnoticsInformation;
 @end
 
@@ -39,16 +39,16 @@
   return v3;
 }
 
-- (MOEventBundleLabelFormatter)initWithTemplatePath:(id)a3
+- (MOEventBundleLabelFormatter)initWithTemplatePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MOEventBundleLabelFormatter;
   v6 = [(MOEventBundleLabelFormatter *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templatePath, a3);
+    objc_storeStrong(&v6->_templatePath, path);
     templates = v7->_templates;
     v7->_templates = 0;
 
@@ -69,10 +69,10 @@
 - (id)getTemplateDirectoryURL
 {
   v2 = +[MOEventBundleLabelLocalizer _MomentsBundle];
-  v3 = [v2 bundlePath];
-  if (v3)
+  bundlePath = [v2 bundlePath];
+  if (bundlePath)
   {
-    v4 = [NSURL fileURLWithPath:v3 isDirectory:1];
+    v4 = [NSURL fileURLWithPath:bundlePath isDirectory:1];
     v5 = [v4 URLByAppendingPathComponent:@"LabelTemplates"];
   }
 
@@ -98,10 +98,10 @@
     templatePath = self->_templatePath;
     if (!templatePath)
     {
-      v5 = [(MOEventBundleLabelFormatter *)self getTemplateDirectoryURL];
-      v6 = [v5 path];
+      getTemplateDirectoryURL = [(MOEventBundleLabelFormatter *)self getTemplateDirectoryURL];
+      path = [getTemplateDirectoryURL path];
       v7 = self->_templatePath;
-      self->_templatePath = v6;
+      self->_templatePath = path;
 
       templatePath = self->_templatePath;
     }
@@ -121,10 +121,10 @@
     templatePath = self->_templatePath;
     if (!templatePath)
     {
-      v5 = [(MOEventBundleLabelFormatter *)self getTemplateDirectoryURL];
-      v6 = [v5 path];
+      getTemplateDirectoryURL = [(MOEventBundleLabelFormatter *)self getTemplateDirectoryURL];
+      path = [getTemplateDirectoryURL path];
       v7 = self->_templatePath;
-      self->_templatePath = v6;
+      self->_templatePath = path;
 
       templatePath = self->_templatePath;
     }
@@ -136,9 +136,9 @@
   return context;
 }
 
-- (void)loadLabelTemplatesFromDirectory:(id)a3
+- (void)loadLabelTemplatesFromDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -147,7 +147,7 @@
 
   +[NSFileManager defaultManager];
   v66 = v116 = 0;
-  v5 = [v66 contentsOfDirectoryAtPath:v3 error:&v116];
+  v5 = [v66 contentsOfDirectoryAtPath:directoryCopy error:&v116];
   v6 = v116;
   v7 = [NSPredicate predicateWithFormat:@"self ENDSWITH '.json'"];
   v65 = v5;
@@ -164,7 +164,7 @@
     v114 = 0u;
     v115 = 0u;
     obj = v8;
-    v67 = v3;
+    v67 = directoryCopy;
     v70 = [obj countByEnumeratingWithState:&v112 objects:v126 count:16];
     if (v70)
     {
@@ -182,7 +182,7 @@
           v72 = v9;
           v10 = *(*(&v112 + 1) + 8 * v9);
           v71 = objc_autoreleasePoolPush();
-          v11 = [v3 stringByAppendingPathComponent:v10];
+          v11 = [directoryCopy stringByAppendingPathComponent:v10];
           v12 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
@@ -461,7 +461,7 @@
               v90 = 0;
             }
 
-            v3 = v67;
+            directoryCopy = v67;
           }
 
           else
@@ -497,7 +497,7 @@
     self->_templates = v75;
     v61 = v75;
 
-    v3 = v67;
+    directoryCopy = v67;
     v62 = self->_context;
     self->_context = v79;
 
@@ -514,11 +514,11 @@
   }
 }
 
-- (id)loadDictionaryFromPath:(id)a3
+- (id)loadDictionaryFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v14 = 0;
-  v4 = [NSData dataWithContentsOfFile:v3 options:0 error:&v14];
+  v4 = [NSData dataWithContentsOfFile:pathCopy options:0 error:&v14];
   v5 = v14;
   if (v5)
   {
@@ -570,34 +570,34 @@ LABEL_14:
   return v8;
 }
 
-- (id)getContextForBundleType:(id)a3
+- (id)getContextForBundleType:(id)type
 {
-  v4 = a3;
-  v5 = [(MOEventBundleLabelFormatter *)self context];
+  typeCopy = type;
+  context = [(MOEventBundleLabelFormatter *)self context];
 
   v6 = 0;
-  if (v4 && v5)
+  if (typeCopy && context)
   {
-    v7 = [(MOEventBundleLabelFormatter *)self context];
-    v6 = [v7 objectForKey:v4];
+    context2 = [(MOEventBundleLabelFormatter *)self context];
+    v6 = [context2 objectForKey:typeCopy];
   }
 
   return v6;
 }
 
-- (id)formattedStringsForMetaData:(id)a3 templates:(id)a4
+- (id)formattedStringsForMetaData:(id)data templates:(id)templates
 {
-  v6 = a3;
+  dataCopy = data;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  templatesCopy = templates;
+  v8 = [templatesCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
-    v20 = self;
+    selfCopy = self;
     v10 = *v22;
     v11 = &__NSArray0__struct;
     while (2)
@@ -606,7 +606,7 @@ LABEL_14:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(templatesCopy);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
@@ -619,15 +619,15 @@ LABEL_14:
           _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "template, %@", buf, 0xCu);
         }
 
-        if ([v13 checkConditionForMetaData:v6])
+        if ([v13 checkConditionForMetaData:dataCopy])
         {
-          v16 = [v13 formattedStringsForMetaData:v6];
+          v16 = [v13 formattedStringsForMetaData:dataCopy];
           if ([v16 count])
           {
-            v17 = [v6 objectForKey:@"shuffle_mode"];
-            v18 = [v17 intValue];
+            v17 = [dataCopy objectForKey:@"shuffle_mode"];
+            intValue = [v17 intValue];
 
-            v11 = [(MOEventBundleLabelFormatter *)v20 shuffleStrings:v16 shuffleMode:v18];
+            v11 = [(MOEventBundleLabelFormatter *)selfCopy shuffleStrings:v16 shuffleMode:intValue];
 
             objc_autoreleasePoolPop(v14);
             goto LABEL_16;
@@ -637,7 +637,7 @@ LABEL_14:
         objc_autoreleasePoolPop(v14);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v9 = [templatesCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
       if (v9)
       {
         continue;
@@ -657,13 +657,13 @@ LABEL_16:
   return v11;
 }
 
-- (id)shuffleStrings:(id)a3 shuffleMode:(unint64_t)a4
+- (id)shuffleStrings:(id)strings shuffleMode:(unint64_t)mode
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  stringsCopy = strings;
+  v6 = stringsCopy;
+  if (stringsCopy && [stringsCopy count])
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
       v7 = +[NSDate now];
       [v7 timeIntervalSinceReferenceDate];
@@ -713,28 +713,28 @@ LABEL_16:
   return v12;
 }
 
-- (id)formattedStringsForMetaData:(id)a3 templateType:(id)a4 bundleType:(id)a5
+- (id)formattedStringsForMetaData:(id)data templateType:(id)type bundleType:(id)bundleType
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MOEventBundleLabelFormatter *)self keywordForTemplateType:v9 bundleType:a5];
+  dataCopy = data;
+  typeCopy = type;
+  v10 = [(MOEventBundleLabelFormatter *)self keywordForTemplateType:typeCopy bundleType:bundleType];
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [MOEventBundleLabelFormatter formattedStringsForMetaData:templateType:bundleType:];
   }
 
-  v12 = [(MOEventBundleLabelFormatter *)self templates];
-  v13 = [v12 objectForKey:v10];
+  templates = [(MOEventBundleLabelFormatter *)self templates];
+  v13 = [templates objectForKey:v10];
 
   if (v13 && [v13 count])
   {
-    v14 = [(MOEventBundleLabelFormatter *)self formattedStringsForMetaData:v8 templates:v13];
+    v14 = [(MOEventBundleLabelFormatter *)self formattedStringsForMetaData:dataCopy templates:v13];
   }
 
   else
   {
-    if ([v9 isEqualToString:@"prompts"])
+    if ([typeCopy isEqualToString:@"prompts"])
     {
       v15 = @"default_prompt";
     }
@@ -744,7 +744,7 @@ LABEL_16:
       v15 = @"default_label";
     }
 
-    v16 = [v8 objectForKey:v15];
+    v16 = [dataCopy objectForKey:v15];
     v17 = v16;
     if (v16)
     {
@@ -757,15 +757,15 @@ LABEL_16:
       v18 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v8 allKeys];
-        v21 = [(MOEventBundleLabelFormatter *)self templates];
-        v22 = [v21 allKeys];
+        allKeys = [dataCopy allKeys];
+        templates2 = [(MOEventBundleLabelFormatter *)self templates];
+        allKeys2 = [templates2 allKeys];
         v23 = 138412802;
         v24 = v10;
         v25 = 2112;
-        v26 = v20;
+        v26 = allKeys;
         v27 = 2112;
-        v28 = v22;
+        v28 = allKeys2;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "The label template is not found for the keyword, %@, meta, %@, all keywords, %@", &v23, 0x20u);
       }
 
@@ -776,12 +776,12 @@ LABEL_16:
   return v14;
 }
 
-- (id)keywordForTemplateType:(id)a3 bundleType:(id)a4
+- (id)keywordForTemplateType:(id)type bundleType:(id)bundleType
 {
-  v4 = [NSString stringWithFormat:@"%@_%@", a3, a4];
-  v5 = [v4 lowercaseString];
+  bundleType = [NSString stringWithFormat:@"%@_%@", type, bundleType];
+  lowercaseString = [bundleType lowercaseString];
 
-  return v5;
+  return lowercaseString;
 }
 
 - (void)logDiagnoticsInformation

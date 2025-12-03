@@ -1,6 +1,6 @@
 @interface ATXDateRelevantContext
 - (ATXDateRelevantContext)init;
-- (ATXDateRelevantContext)initWithStartDate:(id)a3 endDate:(id)a4;
+- (ATXDateRelevantContext)initWithStartDate:(id)date endDate:(id)endDate;
 - (NSDate)endDate;
 - (NSDate)startDate;
 - (NSString)description;
@@ -43,7 +43,7 @@
   return v11;
 }
 
-- (ATXDateRelevantContext)initWithStartDate:(id)a3 endDate:(id)a4
+- (ATXDateRelevantContext)initWithStartDate:(id)date endDate:(id)endDate
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D7A2530, qword_2268738A0);
   v7 = *(*(v6 - 8) + 64);
@@ -55,7 +55,7 @@
   MEMORY[0x28223BE20](v11, v14);
   v16 = &v21 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2268351F8();
-  if (a4)
+  if (endDate)
   {
     sub_2268351F8();
     v17 = 0;
@@ -80,7 +80,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2267EBF08();
 
   v3 = sub_2268363F8();

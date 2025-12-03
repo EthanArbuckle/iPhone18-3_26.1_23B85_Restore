@@ -1,28 +1,28 @@
 @interface SECSFAMatchProperty
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECSFAMatchProperty
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[1])
   {
     [(SECSFAMatchProperty *)self setPropertyName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   value = self->_value;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (value)
   {
     if (v6)
@@ -39,13 +39,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((propertyName = self->_propertyName, !(propertyName | v4[1])) || -[NSString isEqual:](propertyName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((propertyName = self->_propertyName, !(propertyName | equalCopy[1])) || -[NSString isEqual:](propertyName, "isEqual:")))
   {
     value = self->_value;
-    if (value | v4[2])
+    if (value | equalCopy[2])
     {
       v7 = [(SECSFAPropertyValue *)value isEqual:?];
     }
@@ -64,64 +64,64 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_propertyName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_propertyName copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(SECSFAPropertyValue *)self->_value copyWithZone:a3];
+  v8 = [(SECSFAPropertyValue *)self->_value copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_propertyName)
   {
-    [v4 setPropertyName:?];
-    v4 = v5;
+    [toCopy setPropertyName:?];
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     [v5 setValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_propertyName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -130,18 +130,18 @@
       while (1)
       {
         LOBYTE(v18[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v18 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v18 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v18[0] & 0x7F) << v6;
@@ -158,11 +158,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       if ((v13 >> 3) == 2)
@@ -186,10 +186,10 @@ LABEL_23:
       }
 
 LABEL_25:
-      v16 = [a3 position];
-      if (v16 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -197,7 +197,7 @@ LABEL_25:
     objc_storeStrong(&self->_value, propertyName);
     v18[0] = 0xAAAAAAAAAAAAAAAALL;
     v18[1] = 0xAAAAAAAAAAAAAAAALL;
-    if (!PBReaderPlaceMark() || !SECSFAPropertyValueReadFrom(propertyName, a3))
+    if (!PBReaderPlaceMark() || !SECSFAPropertyValueReadFrom(propertyName, from))
     {
 
       return 0;
@@ -207,24 +207,24 @@ LABEL_25:
     goto LABEL_23;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   propertyName = self->_propertyName;
   if (propertyName)
   {
-    [v3 setObject:propertyName forKey:@"propertyName"];
+    [dictionary setObject:propertyName forKey:@"propertyName"];
   }
 
   value = self->_value;
   if (value)
   {
-    v7 = [(SECSFAPropertyValue *)value dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"value"];
+    dictionaryRepresentation = [(SECSFAPropertyValue *)value dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   return v4;
@@ -236,8 +236,8 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = SECSFAMatchProperty;
   v4 = [(SECSFAMatchProperty *)&v8 description];
-  v5 = [(SECSFAMatchProperty *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SECSFAMatchProperty *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,10 +1,10 @@
 @interface ELSConsentSignatureView
 - (BOOL)isForceTouchAvailable;
-- (BOOL)isTouchTypeStylus:(id)a3;
+- (BOOL)isTouchTypeStylus:(id)stylus;
 - (BOOL)signatureExists;
 - (CGSize)signatureImageSize;
-- (ELSConsentSignatureView)initWithCoder:(id)a3;
-- (ELSConsentSignatureView)initWithFrame:(CGRect)a3;
+- (ELSConsentSignatureView)initWithCoder:(id)coder;
+- (ELSConsentSignatureView)initWithFrame:(CGRect)frame;
 - (ELSConsentSignatureViewDelegate)delegate;
 - (NSArray)backgroundLines;
 - (NSArray)signaturePath;
@@ -15,43 +15,43 @@
 - (id)signatureImage;
 - (void)clear;
 - (void)commitCurrentPath;
-- (void)drawRect:(CGRect)a3;
-- (void)gestureTouchesBegan:(id)a3 withEvent:(id)a4;
-- (void)gestureTouchesMoved:(id)a3 withEvent:(id)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)gestureTouchesBegan:(id)began withEvent:(id)event;
+- (void)gestureTouchesMoved:(id)moved withEvent:(id)event;
 - (void)makeSignatureGestureRecognizer;
-- (void)setSignaturePath:(id)a3;
+- (void)setSignaturePath:(id)path;
 @end
 
 @implementation ELSConsentSignatureView
 
-- (ELSConsentSignatureView)initWithCoder:(id)a3
+- (ELSConsentSignatureView)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = ELSConsentSignatureView;
-  v3 = [(ELSConsentSignatureView *)&v15 initWithCoder:a3];
+  v3 = [(ELSConsentSignatureView *)&v15 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
     v3->_lineWidth = 1.0;
     v3->_lineWidthVariation = 3.0;
     v5 = +[UIColor lightGrayColor];
-    v6 = [v5 CGColor];
-    v7 = [(ELSConsentSignatureView *)v4 layer];
-    [v7 setBorderColor:v6];
+    cGColor = [v5 CGColor];
+    layer = [(ELSConsentSignatureView *)v4 layer];
+    [layer setBorderColor:cGColor];
 
     v8 = +[UIColor whiteColor];
-    v9 = [v8 CGColor];
-    v10 = [(ELSConsentSignatureView *)v4 layer];
-    [v10 setBackgroundColor:v9];
+    cGColor2 = [v8 CGColor];
+    layer2 = [(ELSConsentSignatureView *)v4 layer];
+    [layer2 setBackgroundColor:cGColor2];
 
-    v11 = [(ELSConsentSignatureView *)v4 layer];
-    [v11 setMasksToBounds:1];
+    layer3 = [(ELSConsentSignatureView *)v4 layer];
+    [layer3 setMasksToBounds:1];
 
-    v12 = [(ELSConsentSignatureView *)v4 layer];
-    [v12 setBorderWidth:1.0];
+    layer4 = [(ELSConsentSignatureView *)v4 layer];
+    [layer4 setBorderWidth:1.0];
 
-    v13 = [(ELSConsentSignatureView *)v4 layer];
-    [v13 setCornerRadius:26.0];
+    layer5 = [(ELSConsentSignatureView *)v4 layer];
+    [layer5 setCornerRadius:26.0];
 
     [(ELSConsentSignatureView *)v4 makeSignatureGestureRecognizer];
   }
@@ -59,34 +59,34 @@
   return v4;
 }
 
-- (ELSConsentSignatureView)initWithFrame:(CGRect)a3
+- (ELSConsentSignatureView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = ELSConsentSignatureView;
-  v3 = [(ELSConsentSignatureView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ELSConsentSignatureView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_lineWidth = 1.0;
     v3->_lineWidthVariation = 3.0;
     v5 = +[UIColor lightGrayColor];
-    v6 = [v5 CGColor];
-    v7 = [(ELSConsentSignatureView *)v4 layer];
-    [v7 setBorderColor:v6];
+    cGColor = [v5 CGColor];
+    layer = [(ELSConsentSignatureView *)v4 layer];
+    [layer setBorderColor:cGColor];
 
     v8 = +[UIColor whiteColor];
-    v9 = [v8 CGColor];
-    v10 = [(ELSConsentSignatureView *)v4 layer];
-    [v10 setBackgroundColor:v9];
+    cGColor2 = [v8 CGColor];
+    layer2 = [(ELSConsentSignatureView *)v4 layer];
+    [layer2 setBackgroundColor:cGColor2];
 
-    v11 = [(ELSConsentSignatureView *)v4 layer];
-    [v11 setMasksToBounds:1];
+    layer3 = [(ELSConsentSignatureView *)v4 layer];
+    [layer3 setMasksToBounds:1];
 
-    v12 = [(ELSConsentSignatureView *)v4 layer];
-    [v12 setBorderWidth:1.0];
+    layer4 = [(ELSConsentSignatureView *)v4 layer];
+    [layer4 setBorderWidth:1.0];
 
-    v13 = [(ELSConsentSignatureView *)v4 layer];
-    [v13 setCornerRadius:26.0];
+    layer5 = [(ELSConsentSignatureView *)v4 layer];
+    [layer5 setCornerRadius:26.0];
 
     [(ELSConsentSignatureView *)v4 makeSignatureGestureRecognizer];
   }
@@ -202,37 +202,37 @@
   return byte_100202D80;
 }
 
-- (BOOL)isTouchTypeStylus:(id)a3
+- (BOOL)isTouchTypeStylus:(id)stylus
 {
-  v3 = a3;
-  v4 = (objc_opt_respondsToSelector() & 1) != 0 && [v3 type] == 2;
+  stylusCopy = stylus;
+  v4 = (objc_opt_respondsToSelector() & 1) != 0 && [stylusCopy type] == 2;
 
   return v4;
 }
 
-- (void)gestureTouchesBegan:(id)a3 withEvent:(id)a4
+- (void)gestureTouchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v21 = [v7 anyObject];
-  v8 = [(ELSConsentSignatureView *)self pathWithRoundedStyle];
-  [(ELSConsentSignatureView *)self setCurrentPath:v8];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  pathWithRoundedStyle = [(ELSConsentSignatureView *)self pathWithRoundedStyle];
+  [(ELSConsentSignatureView *)self setCurrentPath:pathWithRoundedStyle];
 
   [(ELSConsentSignatureView *)self setNeedsDisplay];
-  [v21 previousLocationInView:self];
+  [anyObject previousLocationInView:self];
   self->previousPoint1.x = v9;
   self->previousPoint1.y = v10;
-  [v21 previousLocationInView:self];
+  [anyObject previousLocationInView:self];
   self->previousPoint2.x = v11;
   self->previousPoint2.y = v12;
   p_currentPoint = &self->currentPoint;
-  [v21 locationInView:self];
+  [anyObject locationInView:self];
   self->currentPoint.x = v14;
   self->currentPoint.y = v15;
-  if ([(ELSConsentSignatureView *)self isForceTouchAvailable]|| [(ELSConsentSignatureView *)self isTouchTypeStylus:v21])
+  if ([(ELSConsentSignatureView *)self isForceTouchAvailable]|| [(ELSConsentSignatureView *)self isTouchTypeStylus:anyObject])
   {
     self->minPressure = 0.0;
-    [v21 maximumPossibleForce];
+    [anyObject maximumPossibleForce];
     v17 = v16 * 0.5;
     v18 = &OBJC_IVAR___ELSConsentSignatureView_maxPressure;
   }
@@ -241,41 +241,41 @@
   {
     self->minPressure = 0.0;
     self->maxPressure = 9.0;
-    [v21 timestamp];
+    [anyObject timestamp];
     v18 = &OBJC_IVAR___ELSConsentSignatureView_previousTouchTime;
   }
 
   *(&self->super.super.super.isa + *v18) = v17;
-  v19 = [(ELSConsentSignatureView *)self currentPath];
-  [v19 moveToPoint:{p_currentPoint->x, self->currentPoint.y}];
+  currentPath = [(ELSConsentSignatureView *)self currentPath];
+  [currentPath moveToPoint:{p_currentPoint->x, self->currentPoint.y}];
 
-  v20 = [(ELSConsentSignatureView *)self currentPath];
-  [v20 addArcWithCenter:1 radius:p_currentPoint->x startAngle:self->currentPoint.y endAngle:0.1 clockwise:{0.0, 6.28318531}];
+  currentPath2 = [(ELSConsentSignatureView *)self currentPath];
+  [currentPath2 addArcWithCenter:1 radius:p_currentPoint->x startAngle:self->currentPoint.y endAngle:0.1 clockwise:{0.0, 6.28318531}];
 
-  [(ELSConsentSignatureView *)self gestureTouchesMoved:v7 withEvent:v6];
+  [(ELSConsentSignatureView *)self gestureTouchesMoved:beganCopy withEvent:eventCopy];
 }
 
-- (void)gestureTouchesMoved:(id)a3 withEvent:(id)a4
+- (void)gestureTouchesMoved:(id)moved withEvent:(id)event
 {
-  v61 = a4;
-  v6 = [a3 anyObject];
-  [v6 locationInView:self];
+  eventCopy = event;
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
   p_currentPoint = &self->currentPoint;
   v10 = (v9 - self->currentPoint.y) * (v9 - self->currentPoint.y) + (v8 - self->currentPoint.x) * (v8 - self->currentPoint.x);
   if (v10 >= 25.0)
   {
-    if ([(ELSConsentSignatureView *)self isForceTouchAvailable]|| [(ELSConsentSignatureView *)self isTouchTypeStylus:v6])
+    if ([(ELSConsentSignatureView *)self isForceTouchAvailable]|| [(ELSConsentSignatureView *)self isTouchTypeStylus:anyObject])
     {
-      [v6 force];
+      [anyObject force];
       v12 = v11;
     }
 
     else
     {
       maxPressure = self->maxPressure;
-      [v61 timestamp];
+      [eventCopy timestamp];
       v12 = maxPressure - log(sqrt(v10) / fmax(v14 - self->previousTouchTime, 0.0001));
-      [v61 timestamp];
+      [eventCopy timestamp];
       self->previousTouchTime = v15;
     }
 
@@ -295,8 +295,8 @@
       v17 = self->maxPressure;
     }
 
-    v18 = [(ELSConsentSignatureView *)self currentPath];
-    [v18 lineWidth];
+    currentPath = [(ELSConsentSignatureView *)self currentPath];
+    [currentPath lineWidth];
     v20 = v19;
 
     v21 = v17 - self->minPressure;
@@ -318,22 +318,22 @@
       {
 LABEL_19:
         [(ELSConsentSignatureView *)self commitCurrentPath];
-        v32 = [(ELSConsentSignatureView *)self pathWithRoundedStyle];
-        [(ELSConsentSignatureView *)self setCurrentPath:v32];
+        pathWithRoundedStyle = [(ELSConsentSignatureView *)self pathWithRoundedStyle];
+        [(ELSConsentSignatureView *)self setCurrentPath:pathWithRoundedStyle];
 
-        v33 = [(ELSConsentSignatureView *)self currentPath];
-        [v33 setLineWidth:v20];
+        currentPath2 = [(ELSConsentSignatureView *)self currentPath];
+        [currentPath2 setLineWidth:v20];
 
         v57 = vmulq_f64(vaddq_f64(*p_currentPoint, self->previousPoint1), v59);
-        v34 = [(ELSConsentSignatureView *)self currentPath];
-        [v34 moveToPoint:*&v57];
+        currentPath3 = [(ELSConsentSignatureView *)self currentPath];
+        [currentPath3 moveToPoint:*&v57];
 
 LABEL_20:
         self->previousPoint2 = self->previousPoint1;
-        [v6 previousLocationInView:self];
+        [anyObject previousLocationInView:self];
         self->previousPoint1.x = v35;
         self->previousPoint1.y = v36;
-        [v6 locationInView:self];
+        [anyObject locationInView:self];
         p_currentPoint->x = v37.f64[0];
         self->currentPoint.y = v38;
         v37.f64[1] = v38;
@@ -347,23 +347,23 @@ LABEL_20:
         y = BoundingBox.origin.y;
         width = BoundingBox.size.width;
         height = BoundingBox.size.height;
-        v44 = [(ELSConsentSignatureView *)self currentPath];
-        [v44 addQuadCurveToPoint:*&v60 controlPoint:{self->previousPoint1.x, self->previousPoint1.y}];
+        currentPath4 = [(ELSConsentSignatureView *)self currentPath];
+        [currentPath4 addQuadCurveToPoint:*&v60 controlPoint:{self->previousPoint1.x, self->previousPoint1.y}];
 
-        v45 = [(ELSConsentSignatureView *)self currentPath];
-        [v45 lineWidth];
+        currentPath5 = [(ELSConsentSignatureView *)self currentPath];
+        [currentPath5 lineWidth];
         v47 = x - v46 * 2.0;
 
-        v48 = [(ELSConsentSignatureView *)self currentPath];
-        [v48 lineWidth];
+        currentPath6 = [(ELSConsentSignatureView *)self currentPath];
+        [currentPath6 lineWidth];
         v50 = y - v49 * 2.0;
 
-        v51 = [(ELSConsentSignatureView *)self currentPath];
-        [v51 lineWidth];
+        currentPath7 = [(ELSConsentSignatureView *)self currentPath];
+        [currentPath7 lineWidth];
         v53 = width + v52 * 4.0;
 
-        v54 = [(ELSConsentSignatureView *)self currentPath];
-        [v54 lineWidth];
+        currentPath8 = [(ELSConsentSignatureView *)self currentPath];
+        [currentPath8 lineWidth];
         v56 = height + v55 * 4.0;
 
         [(ELSConsentSignatureView *)self setNeedsDisplayInRect:v47, v50, v53, v56];
@@ -387,31 +387,31 @@ LABEL_21:
 
 - (void)commitCurrentPath
 {
-  v3 = [(ELSConsentSignatureView *)self currentPath];
-  [v3 bounds];
+  currentPath = [(ELSConsentSignatureView *)self currentPath];
+  [currentPath bounds];
   v5 = v4;
   v7 = v6;
 
   if (v5 != CGSizeZero.width || v7 != CGSizeZero.height)
   {
-    v9 = [(ELSConsentSignatureView *)self pathArray];
-    v10 = [(ELSConsentSignatureView *)self currentPath];
-    [v9 addObject:v10];
+    pathArray = [(ELSConsentSignatureView *)self pathArray];
+    currentPath2 = [(ELSConsentSignatureView *)self currentPath];
+    [pathArray addObject:currentPath2];
 
     [(ELSConsentSignatureView *)self setCurrentPath:0];
-    v11 = [(ELSConsentSignatureView *)self delegate];
-    [v11 didEdit:self];
+    delegate = [(ELSConsentSignatureView *)self delegate];
+    [delegate didEdit:self];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ELSConsentSignatureView *)self layer];
-  [v8 cornerRadius];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layer = [(ELSConsentSignatureView *)self layer];
+  [layer cornerRadius];
 
   [(ELSConsentSignatureView *)self bounds];
   v9 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
@@ -429,8 +429,8 @@ LABEL_21:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(ELSConsentSignatureView *)self pathArray];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  pathArray = [(ELSConsentSignatureView *)self pathArray];
+  v13 = [pathArray countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -442,44 +442,44 @@ LABEL_21:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(pathArray);
         }
 
         v17 = *(*(&v21 + 1) + 8 * v16);
-        v18 = [(ELSConsentSignatureView *)self lineColor];
-        [v18 setStroke];
+        lineColor = [(ELSConsentSignatureView *)self lineColor];
+        [lineColor setStroke];
 
         [v17 stroke];
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [pathArray countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
   }
 
-  v19 = [(ELSConsentSignatureView *)self lineColor];
-  [v19 setStroke];
+  lineColor2 = [(ELSConsentSignatureView *)self lineColor];
+  [lineColor2 setStroke];
 
-  v20 = [(ELSConsentSignatureView *)self currentPath];
-  [v20 stroke];
+  currentPath = [(ELSConsentSignatureView *)self currentPath];
+  [currentPath stroke];
 }
 
 - (NSArray)signaturePath
 {
-  v2 = [(ELSConsentSignatureView *)self pathArray];
-  v3 = [v2 copy];
+  pathArray = [(ELSConsentSignatureView *)self pathArray];
+  v3 = [pathArray copy];
 
   return v3;
 }
 
-- (void)setSignaturePath:(id)a3
+- (void)setSignaturePath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [path mutableCopy];
     pathArray = self->_pathArray;
     self->_pathArray = v4;
 
@@ -495,8 +495,8 @@ LABEL_21:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(ELSConsentSignatureView *)self pathArray];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pathArray = [(ELSConsentSignatureView *)self pathArray];
+  v4 = [pathArray countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -507,17 +507,17 @@ LABEL_21:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathArray);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [(ELSConsentSignatureView *)self lineColor];
-        [v9 setStroke];
+        lineColor = [(ELSConsentSignatureView *)self lineColor];
+        [lineColor setStroke];
 
         [v8 stroke];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [pathArray countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -531,29 +531,29 @@ LABEL_21:
 
 - (BOOL)signatureExists
 {
-  v2 = [(ELSConsentSignatureView *)self pathArray];
-  v3 = [v2 count] != 0;
+  pathArray = [(ELSConsentSignatureView *)self pathArray];
+  v3 = [pathArray count] != 0;
 
   return v3;
 }
 
 - (void)clear
 {
-  v3 = [(ELSConsentSignatureView *)self pathArray];
-  v4 = [v3 count];
+  pathArray = [(ELSConsentSignatureView *)self pathArray];
+  v4 = [pathArray count];
 
   if (v4)
   {
-    v5 = [(ELSConsentSignatureView *)self currentPath];
+    currentPath = [(ELSConsentSignatureView *)self currentPath];
 
-    if (v5)
+    if (currentPath)
     {
-      v6 = [(ELSConsentSignatureView *)self pathWithRoundedStyle];
-      [(ELSConsentSignatureView *)self setCurrentPath:v6];
+      pathWithRoundedStyle = [(ELSConsentSignatureView *)self pathWithRoundedStyle];
+      [(ELSConsentSignatureView *)self setCurrentPath:pathWithRoundedStyle];
     }
 
-    v7 = [(ELSConsentSignatureView *)self pathArray];
-    [v7 removeAllObjects];
+    pathArray2 = [(ELSConsentSignatureView *)self pathArray];
+    [pathArray2 removeAllObjects];
 
     [(ELSConsentSignatureView *)self bounds];
 

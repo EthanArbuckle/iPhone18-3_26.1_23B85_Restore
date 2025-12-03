@@ -1,25 +1,25 @@
 @interface NSBatchUpdateRequestEncodingToken
-- (NSBatchUpdateRequestEncodingToken)initWithCoder:(id)a3;
-- (id)initForRequest:(id)a3;
+- (NSBatchUpdateRequestEncodingToken)initWithCoder:(id)coder;
+- (id)initForRequest:(id)request;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSBatchUpdateRequestEncodingToken
 
-- (id)initForRequest:(id)a3
+- (id)initForRequest:(id)request
 {
   v30 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [objc_msgSend(a3 "propertiesToUpdate")];
+  v5 = [objc_msgSend(request "propertiesToUpdate")];
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
-    v21 = self;
+    selfCopy = self;
     v8 = 0;
     v9 = *v24;
 LABEL_3:
@@ -59,7 +59,7 @@ LABEL_3:
         }
 
         v13 = v8;
-        self = v21;
+        self = selfCopy;
         goto LABEL_18;
       }
     }
@@ -104,13 +104,13 @@ LABEL_18:
   v18 = [(NSBatchUpdateRequestEncodingToken *)&v22 init];
   if (v18)
   {
-    v18->_entityName = [objc_msgSend(a3 "entityName")];
-    v18->_predicate = [objc_msgSend(a3 "predicate")];
-    v18->_columnsToUpdate = [objc_msgSend(a3 "propertiesToUpdate")];
-    v18->_resultType = [a3 resultType];
+    v18->_entityName = [objc_msgSend(request "entityName")];
+    v18->_predicate = [objc_msgSend(request "predicate")];
+    v18->_columnsToUpdate = [objc_msgSend(request "propertiesToUpdate")];
+    v18->_resultType = [request resultType];
     v18->_nullValueCount = v13;
-    v18->_includeSubEntities = [a3 includesSubentities];
-    v18->_secure = [a3 _secureOperation];
+    v18->_includeSubEntities = [request includesSubentities];
+    v18->_secure = [request _secureOperation];
   }
 
 LABEL_22:
@@ -129,44 +129,44 @@ LABEL_22:
   [(NSBatchUpdateRequestEncodingToken *)&v3 dealloc];
 }
 
-- (NSBatchUpdateRequestEncodingToken)initWithCoder:(id)a3
+- (NSBatchUpdateRequestEncodingToken)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = NSBatchUpdateRequestEncodingToken;
   v4 = [(NSBatchUpdateRequestEncodingToken *)&v14 init];
   if (v4)
   {
-    v4->_entityName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"entityName"];
+    v4->_entityName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"entityName"];
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_predicate = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"predicate"}];
+    v4->_predicate = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"predicate"}];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v7 setWithObjects:{v8, v9, v10, v11, objc_opt_class(), 0}];
-    if ([objc_msgSend(a3 "allowedClasses")])
+    if ([objc_msgSend(coder "allowedClasses")])
     {
-      v12 = [v12 setByAddingObjectsFromSet:{objc_msgSend(a3, "allowedClasses")}];
+      v12 = [v12 setByAddingObjectsFromSet:{objc_msgSend(coder, "allowedClasses")}];
     }
 
-    v4->_columnsToUpdate = [a3 decodeObjectOfClasses:v12 forKey:@"columnsToUpdate"];
-    v4->_nullValueCount = [a3 decodeIntegerForKey:@"nullValueCount"];
-    v4->_resultType = [a3 decodeIntegerForKey:@"resultType"];
-    v4->_includeSubEntities = [a3 decodeBoolForKey:@"includeSubEntities"];
-    v4->_secure = [a3 decodeBoolForKey:@"secure"];
+    v4->_columnsToUpdate = [coder decodeObjectOfClasses:v12 forKey:@"columnsToUpdate"];
+    v4->_nullValueCount = [coder decodeIntegerForKey:@"nullValueCount"];
+    v4->_resultType = [coder decodeIntegerForKey:@"resultType"];
+    v4->_includeSubEntities = [coder decodeBoolForKey:@"includeSubEntities"];
+    v4->_secure = [coder decodeBoolForKey:@"secure"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  [a3 encodeObject:self->_entityName forKey:@"entityName"];
-  v18 = a3;
-  [a3 encodeObject:self->_predicate forKey:@"predicate"];
+  [coder encodeObject:self->_entityName forKey:@"entityName"];
+  coderCopy = coder;
+  [coder encodeObject:self->_predicate forKey:@"predicate"];
   v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSDictionary count](self->_columnsToUpdate, "count")}];
   v20 = 0u;
   v21 = 0u;
@@ -235,12 +235,12 @@ LABEL_14:
     while (v16);
   }
 
-  [v18 encodeObject:v19 forKey:@"columnsToUpdate"];
+  [coderCopy encodeObject:v19 forKey:@"columnsToUpdate"];
 
-  [v18 encodeInteger:self->_nullValueCount forKey:@"nullValueCount"];
-  [v18 encodeInteger:self->_resultType forKey:@"resultType"];
-  [v18 encodeBool:self->_includeSubEntities forKey:@"includeSubEntities"];
-  [v18 encodeBool:self->_secure forKey:@"secure"];
+  [coderCopy encodeInteger:self->_nullValueCount forKey:@"nullValueCount"];
+  [coderCopy encodeInteger:self->_resultType forKey:@"resultType"];
+  [coderCopy encodeBool:self->_includeSubEntities forKey:@"includeSubEntities"];
+  [coderCopy encodeBool:self->_secure forKey:@"secure"];
   v17 = *MEMORY[0x1E69E9840];
 }
 

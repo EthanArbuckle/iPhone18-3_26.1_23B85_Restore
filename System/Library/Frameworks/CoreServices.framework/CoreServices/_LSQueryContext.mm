@@ -1,12 +1,12 @@
 @interface _LSQueryContext
 + (BOOL)simulateLimitedMappingForXCTests;
 + (id)defaultContext;
-+ (void)setSimulateLimitedMappingForXCTests:(BOOL)a3;
++ (void)setSimulateLimitedMappingForXCTests:(BOOL)tests;
 - (id)_init;
-- (id)_resolveQueries:(id)a3 XPCConnection:(id)a4 error:(id *)a5;
+- (id)_resolveQueries:(id)queries XPCConnection:(id)connection error:(id *)error;
 - (id)debugDescription;
-- (id)resolveQueries:(id)a3 error:(id *)a4;
-- (void)enumerateResolvedResultsOfQuery:(id)a3 withBlock:(id)a4;
+- (id)resolveQueries:(id)queries error:(id *)error;
+- (void)enumerateResolvedResultsOfQuery:(id)query withBlock:(id)block;
 @end
 
 @implementation _LSQueryContext
@@ -62,7 +62,7 @@
 
 - (id)debugDescription
 {
-  v3 = [(_LSQueryContext *)self _resolver];
+  _resolver = [(_LSQueryContext *)self _resolver];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = @"no";
@@ -81,14 +81,14 @@
   return v10;
 }
 
-- (void)enumerateResolvedResultsOfQuery:(id)a3 withBlock:(id)a4
+- (void)enumerateResolvedResultsOfQuery:(id)query withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  queryCopy = query;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (queryCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -96,8 +96,8 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"query != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"query != nil"}];
 
     if (v9)
     {
@@ -105,21 +105,21 @@
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
 
 LABEL_3:
-  v10 = [(_LSQueryContext *)self _resolver];
-  v11 = v10;
-  if (v10)
+  _resolver = [(_LSQueryContext *)self _resolver];
+  v11 = _resolver;
+  if (_resolver)
   {
-    [v10 _enumerateResolvedResultsOfQuery:v7 XPCConnection:0 withBlock:v9];
+    [_resolver _enumerateResolvedResultsOfQuery:queryCopy XPCConnection:0 withBlock:v9];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:91 description:@"Could not get query resolver"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:91 description:@"Could not get query resolver"];
 
     v16 = 0;
     v15 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[_LSQueryContext(QueryResolution) enumerateResolvedResultsOfQuery:withBlock:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSQuery/LSQueryContext.mm", 99);
@@ -127,36 +127,36 @@ LABEL_3:
   }
 }
 
-- (id)resolveQueries:(id)a3 error:(id *)a4
+- (id)resolveQueries:(id)queries error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  queriesCopy = queries;
+  if (!queriesCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"queries != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"queries != nil"}];
   }
 
   v12 = 0;
-  v8 = [(_LSQueryContext *)self _resolveQueries:v7 XPCConnection:0 error:&v12];
+  v8 = [(_LSQueryContext *)self _resolveQueries:queriesCopy XPCConnection:0 error:&v12];
   v9 = v12;
-  if (a4 && !v8)
+  if (error && !v8)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (id)_resolveQueries:(id)a3 XPCConnection:(id)a4 error:(id *)a5
+- (id)_resolveQueries:(id)queries XPCConnection:(id)connection error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(_LSQueryContext *)self _resolver];
-  if (v11)
+  queriesCopy = queries;
+  connectionCopy = connection;
+  _resolver = [(_LSQueryContext *)self _resolver];
+  if (_resolver)
   {
-    if (!v9)
+    if (!queriesCopy)
     {
       goto LABEL_7;
     }
@@ -164,21 +164,21 @@ LABEL_3:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:160 description:@"Could not get query resolver"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:160 description:@"Could not get query resolver"];
 
-    if (!v9)
+    if (!queriesCopy)
     {
       goto LABEL_7;
     }
   }
 
-  if ([v9 count])
+  if ([queriesCopy count])
   {
     v19 = 0;
-    v12 = [v11 _resolveQueries:v9 XPCConnection:v10 error:&v19];
+    v12 = [_resolver _resolveQueries:queriesCopy XPCConnection:connectionCopy error:&v19];
     v13 = v19;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -193,7 +193,7 @@ LABEL_7:
   v13 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[_LSQueryContext(Internal) _resolveQueries:XPCConnection:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSQuery/LSQueryContext.mm", 168);
 
   v12 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -202,7 +202,7 @@ LABEL_8:
   if (!v12)
   {
     v16 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
 LABEL_10:
@@ -212,12 +212,12 @@ LABEL_10:
   return v12;
 }
 
-+ (void)setSimulateLimitedMappingForXCTests:(BOOL)a3
++ (void)setSimulateLimitedMappingForXCTests:(BOOL)tests
 {
-  v3 = a3;
+  testsCopy = tests;
   if ([__LSDefaultsGetSharedInstance() isInXCTestRigInsecure])
   {
-    if (v3)
+    if (testsCopy)
     {
       v4 = "1";
     }

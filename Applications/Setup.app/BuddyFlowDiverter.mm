@@ -1,48 +1,48 @@
 @interface BuddyFlowDiverter
-- (BOOL)shouldSkipControllerClass:(Class)a3 reason:(id *)a4 humanReadableReason:(id *)a5;
-- (BuddyFlowDiverter)initWithEnvironment:(id)a3;
-- (void)didSkipControllerClass:(Class)a3 forReason:(id)a4;
-- (void)prepareWithCompletion:(id)a3;
+- (BOOL)shouldSkipControllerClass:(Class)class reason:(id *)reason humanReadableReason:(id *)readableReason;
+- (BuddyFlowDiverter)initWithEnvironment:(id)environment;
+- (void)didSkipControllerClass:(Class)class forReason:(id)reason;
+- (void)prepareWithCompletion:(id)completion;
 @end
 
 @implementation BuddyFlowDiverter
 
-- (BuddyFlowDiverter)initWithEnvironment:(id)a3
+- (BuddyFlowDiverter)initWithEnvironment:(id)environment
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, environment);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = BuddyFlowDiverter;
-  v12 = [(BuddyFlowDiverter *)&v10 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(BuddyFlowDiverter *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v12 + 2, location[0]);
+    objc_storeStrong(selfCopy + 2, location[0]);
     v4 = +[BuddyDeviceManagementSupport sharedSupport];
-    v5 = *(v12 + 1);
-    *(v12 + 1) = v4;
+    v5 = *(selfCopy + 1);
+    *(selfCopy + 1) = v4;
 
-    v6 = [location[0] flowItemDispositionProvider];
-    v7 = *(v12 + 3);
-    *(v12 + 3) = v6;
+    flowItemDispositionProvider = [location[0] flowItemDispositionProvider];
+    v7 = *(selfCopy + 3);
+    *(selfCopy + 3) = flowItemDispositionProvider;
   }
 
-  v8 = v12;
+  v8 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v14 = _BYLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -54,57 +54,57 @@
   }
 
   objc_storeStrong(&v14, 0);
-  v5 = [(BuddyFlowDiverter *)v16 deviceManagementSupport];
+  deviceManagementSupport = [(BuddyFlowDiverter *)selfCopy deviceManagementSupport];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_100162664;
   v10 = &unk_10032C630;
   v11 = location[0];
-  [(BuddyDeviceManagementSupport *)v5 loadSkipKeys:&v6];
+  [(BuddyDeviceManagementSupport *)deviceManagementSupport loadSkipKeys:&v6];
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldSkipControllerClass:(Class)a3 reason:(id *)a4 humanReadableReason:(id *)a5
+- (BOOL)shouldSkipControllerClass:(Class)class reason:(id *)reason humanReadableReason:(id *)readableReason
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
-  aClass = a3;
-  v28 = a4;
-  v27 = a5;
+  aClass = class;
+  reasonCopy = reason;
+  readableReasonCopy = readableReason;
   v5 = +[BuddyCloudConfigManager sharedManager];
   v6 = [v5 cloudConfigWantsToSkipControllerClass:aClass];
 
   if (v6)
   {
-    if (v27)
+    if (readableReasonCopy)
     {
-      *v27 = @"cloud configuration";
+      *readableReasonCopy = @"cloud configuration";
     }
 
-    if (v28)
+    if (reasonCopy)
     {
-      *v28 = &off_10033D2B0;
+      *reasonCopy = &off_10033D2B0;
     }
 
     return 1;
   }
 
-  v7 = [(BuddyFlowDiverter *)v31 deviceManagementSupport];
-  v8 = [(BuddyDeviceManagementSupport *)v7 deviceManagementWantsToSkipControllerClass:aClass];
+  deviceManagementSupport = [(BuddyFlowDiverter *)selfCopy deviceManagementSupport];
+  v8 = [(BuddyDeviceManagementSupport *)deviceManagementSupport deviceManagementWantsToSkipControllerClass:aClass];
 
   if (v8)
   {
-    if (v27)
+    if (readableReasonCopy)
     {
-      *v27 = @"device management";
+      *readableReasonCopy = @"device management";
     }
 
-    if (v28)
+    if (reasonCopy)
     {
-      *v28 = &off_10033D2C8;
+      *reasonCopy = &off_10033D2C8;
     }
 
     return 1;
@@ -118,53 +118,53 @@
   v26 = +[UIApplication isRunningInStoreDemoMode]& 1;
   if (objc_opt_respondsToSelector() & 1) != 0 && ([(objc_class *)aClass hiddenFromStoreDemoMode]& 1) != 0 && (v26)
   {
-    if (v27)
+    if (readableReasonCopy)
     {
-      *v27 = @"store demo mode";
+      *readableReasonCopy = @"store demo mode";
     }
 
-    if (v28)
+    if (reasonCopy)
     {
-      *v28 = &off_10033D2E0;
+      *reasonCopy = &off_10033D2E0;
     }
 
     return 1;
   }
 
   v9 = +[BuddyCloudConfigManager sharedManager];
-  v10 = [v9 isMultiUser];
+  isMultiUser = [v9 isMultiUser];
 
-  v25 = v10 & 1;
+  v25 = isMultiUser & 1;
   if (objc_opt_respondsToSelector() & 1) != 0 && ([(objc_class *)aClass hiddenFromMultiUser]& 1) != 0 && (v25)
   {
-    if (v27)
+    if (readableReasonCopy)
     {
-      *v27 = @"multi user";
+      *readableReasonCopy = @"multi user";
     }
 
-    if (v28)
+    if (reasonCopy)
     {
-      *v28 = &off_10033D2F8;
+      *reasonCopy = &off_10033D2F8;
     }
 
     return 1;
   }
 
-  v24 = [(objc_class *)aClass applicableDispositions];
-  v11 = [(BuddyFlowDiverter *)v31 flowItemDispositionProvider];
-  v12 = [(BuddyFlowItemDispositionProvider *)v11 dispositions];
+  applicableDispositions = [(objc_class *)aClass applicableDispositions];
+  flowItemDispositionProvider = [(BuddyFlowDiverter *)selfCopy flowItemDispositionProvider];
+  dispositions = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider dispositions];
 
-  if (!v12)
+  if (!dispositions)
   {
     return 0;
   }
 
-  v13 = [(BuddyFlowDiverter *)v31 flowItemDispositionProvider];
-  v14 = ([(BuddyFlowItemDispositionProvider *)v13 dispositions]& 2) == 2;
+  flowItemDispositionProvider2 = [(BuddyFlowDiverter *)selfCopy flowItemDispositionProvider];
+  v14 = ([(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider2 dispositions]& 2) == 2;
 
   v23 = v14;
-  v15 = [(BuddyFlowDiverter *)v31 flowItemDispositionProvider];
-  v16 = (v24 & [(BuddyFlowItemDispositionProvider *)v15 dispositions]) != 0;
+  flowItemDispositionProvider3 = [(BuddyFlowDiverter *)selfCopy flowItemDispositionProvider];
+  v16 = (applicableDispositions & [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider3 dispositions]) != 0;
 
   v22 = v16;
   if (v16)
@@ -188,40 +188,40 @@
     objc_exception_throw([NSException exceptionWithName:v21 reason:0 userInfo:0]);
   }
 
-  if (v27)
+  if (readableReasonCopy)
   {
     v18 = BYStringForFlowItemDispositions();
-    *v27 = [NSString stringWithFormat:@"inapplicable disposition (%@)", v18];
+    *readableReasonCopy = [NSString stringWithFormat:@"inapplicable disposition (%@)", v18];
   }
 
-  if (v28)
+  if (reasonCopy)
   {
-    *v28 = &off_10033D2E0;
+    *reasonCopy = &off_10033D2E0;
   }
 
   return 1;
 }
 
-- (void)didSkipControllerClass:(Class)a3 forReason:(id)a4
+- (void)didSkipControllerClass:(Class)class forReason:(id)reason
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  classCopy = class;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = [location unsignedIntegerValue];
-  if (v4 && (v4 - 1) <= 2)
+  objc_storeStrong(&location, reason);
+  unsignedIntegerValue = [location unsignedIntegerValue];
+  if (unsignedIntegerValue && (unsignedIntegerValue - 1) <= 2)
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = v8;
-      v6 = [(BuddyFlowDiverter *)v10 environment];
-      [(objc_class *)v5 skippedByCloudConfigWithEnvironment:v6];
+      v5 = classCopy;
+      environment = [(BuddyFlowDiverter *)selfCopy environment];
+      [(objc_class *)v5 skippedByCloudConfigWithEnvironment:environment];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [(objc_class *)v8 skippedByCloudConfig];
+      [(objc_class *)classCopy skippedByCloudConfig];
     }
   }
 

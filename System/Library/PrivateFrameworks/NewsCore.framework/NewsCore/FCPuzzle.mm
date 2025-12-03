@@ -1,46 +1,46 @@
 @interface FCPuzzle
 - (FCContentArchive)contentArchive;
 - (FCContentManifest)contentManifest;
-- (FCPuzzle)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 puzzleDescription:(id)a6 puzzleType:(id)a7 dataResourceID:(id)a8 authors:(id)a9 publishDate:(id)a10 isPaid:(BOOL)a11 difficulty:(int64_t)a12 difficultyDescription:(id)a13 relatedPuzzleIDs:(id)a14 thumbnailSmallImageAssetHandle:(id)a15 thumbnailLargeImageAssetHandle:(id)a16 loadDate:(id)a17 teaserClue:(id)a18 teaserAnswer:(id)a19 teaserInfo:(id)a20 teaserDirection:(id)a21 teaserNumber:(id)a22 language:(id)a23 blockedStorefrontIDs:(id)a24 allowedStorefrontIDs:(id)a25 minimumNewsVersion:(int64_t)a26 showInfoModalOnFirstPlay:(BOOL)a27 ignoreFromStatsAndStreaks:(BOOL)a28 isDeprecated:(BOOL)a29 isDraft:(BOOL)a30 lastModifiedDate:(id)a31;
-- (FCPuzzle)initWithPuzzle:(id)a3 overrides:(id)a4;
-- (FCPuzzle)initWithPuzzleRecord:(id)a3 puzzleType:(id)a4 assetManager:(id)a5 interestToken:(id)a6 difficultyDescriptions:(id)a7;
+- (FCPuzzle)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle puzzleDescription:(id)description puzzleType:(id)type dataResourceID:(id)d authors:(id)authors publishDate:(id)self0 isPaid:(BOOL)self1 difficulty:(int64_t)self2 difficultyDescription:(id)self3 relatedPuzzleIDs:(id)self4 thumbnailSmallImageAssetHandle:(id)self5 thumbnailLargeImageAssetHandle:(id)self6 loadDate:(id)self7 teaserClue:(id)self8 teaserAnswer:(id)self9 teaserInfo:(id)info teaserDirection:(id)direction teaserNumber:(id)number language:(id)language blockedStorefrontIDs:(id)iDs allowedStorefrontIDs:(id)storefrontIDs minimumNewsVersion:(int64_t)version showInfoModalOnFirstPlay:(BOOL)play ignoreFromStatsAndStreaks:(BOOL)streaks isDeprecated:(BOOL)deprecated isDraft:(BOOL)identifier0 lastModifiedDate:(id)identifier1;
+- (FCPuzzle)initWithPuzzle:(id)puzzle overrides:(id)overrides;
+- (FCPuzzle)initWithPuzzleRecord:(id)record puzzleType:(id)type assetManager:(id)manager interestToken:(id)token difficultyDescriptions:(id)descriptions;
 - (NSString)publishDateString;
 @end
 
 @implementation FCPuzzle
 
-- (FCPuzzle)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 puzzleDescription:(id)a6 puzzleType:(id)a7 dataResourceID:(id)a8 authors:(id)a9 publishDate:(id)a10 isPaid:(BOOL)a11 difficulty:(int64_t)a12 difficultyDescription:(id)a13 relatedPuzzleIDs:(id)a14 thumbnailSmallImageAssetHandle:(id)a15 thumbnailLargeImageAssetHandle:(id)a16 loadDate:(id)a17 teaserClue:(id)a18 teaserAnswer:(id)a19 teaserInfo:(id)a20 teaserDirection:(id)a21 teaserNumber:(id)a22 language:(id)a23 blockedStorefrontIDs:(id)a24 allowedStorefrontIDs:(id)a25 minimumNewsVersion:(int64_t)a26 showInfoModalOnFirstPlay:(BOOL)a27 ignoreFromStatsAndStreaks:(BOOL)a28 isDeprecated:(BOOL)a29 isDraft:(BOOL)a30 lastModifiedDate:(id)a31
+- (FCPuzzle)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle puzzleDescription:(id)description puzzleType:(id)type dataResourceID:(id)d authors:(id)authors publishDate:(id)self0 isPaid:(BOOL)self1 difficulty:(int64_t)self2 difficultyDescription:(id)self3 relatedPuzzleIDs:(id)self4 thumbnailSmallImageAssetHandle:(id)self5 thumbnailLargeImageAssetHandle:(id)self6 loadDate:(id)self7 teaserClue:(id)self8 teaserAnswer:(id)self9 teaserInfo:(id)info teaserDirection:(id)direction teaserNumber:(id)number language:(id)language blockedStorefrontIDs:(id)iDs allowedStorefrontIDs:(id)storefrontIDs minimumNewsVersion:(int64_t)version showInfoModalOnFirstPlay:(BOOL)play ignoreFromStatsAndStreaks:(BOOL)streaks isDeprecated:(BOOL)deprecated isDraft:(BOOL)identifier0 lastModifiedDate:(id)identifier1
 {
-  v70 = a3;
-  v50 = a4;
-  v69 = a4;
-  v51 = a5;
-  v68 = a5;
-  v52 = a6;
-  v67 = a6;
-  v53 = a7;
-  v36 = a7;
-  v65 = a8;
-  v64 = a9;
-  v63 = a10;
-  v62 = a13;
-  v61 = a14;
-  v60 = a15;
-  v59 = a16;
-  v58 = a17;
-  v57 = a18;
-  v37 = a19;
-  v38 = a20;
-  v39 = a21;
-  v40 = a22;
-  v41 = a23;
-  v55 = a24;
-  v54 = a25;
-  v42 = a31;
-  v43 = [v70 length];
+  identifierCopy = identifier;
+  titleCopy = title;
+  titleCopy2 = title;
+  subtitleCopy = subtitle;
+  subtitleCopy2 = subtitle;
+  descriptionCopy = description;
+  descriptionCopy2 = description;
+  typeCopy = type;
+  typeCopy2 = type;
+  dCopy = d;
+  authorsCopy = authors;
+  dateCopy = date;
+  difficultyDescriptionCopy = difficultyDescription;
+  dsCopy = ds;
+  handleCopy = handle;
+  assetHandleCopy = assetHandle;
+  loadDateCopy = loadDate;
+  clueCopy = clue;
+  answerCopy = answer;
+  infoCopy = info;
+  directionCopy = direction;
+  numberCopy = number;
+  languageCopy = language;
+  iDsCopy = iDs;
+  storefrontIDsCopy = storefrontIDs;
+  modifiedDateCopy = modifiedDate;
+  v43 = [identifierCopy length];
   v44 = 0;
-  v66 = v36;
-  if (v36 && v43)
+  v66 = typeCopy2;
+  if (typeCopy2 && v43)
   {
     v71.receiver = self;
     v71.super_class = FCPuzzle;
@@ -48,61 +48,61 @@
     v46 = v45;
     if (v45)
     {
-      objc_storeStrong(&v45->_identifier, a3);
-      objc_storeStrong(&v46->_title, v50);
-      objc_storeStrong(&v46->_subtitle, v51);
-      objc_storeStrong(&v46->_puzzleDescription, v52);
-      objc_storeStrong(&v46->_puzzleType, v53);
-      objc_storeStrong(&v46->_dataResourceID, a8);
-      objc_storeStrong(&v46->_authors, a9);
-      objc_storeStrong(&v46->_publishDate, a10);
-      v46->_paid = a11;
-      v46->_difficulty = a12;
-      objc_storeStrong(&v46->_difficultyDescription, a13);
-      objc_storeStrong(&v46->_relatedPuzzleIDs, a14);
-      objc_storeStrong(&v46->_thumbnailSmallImageAssetHandle, a15);
-      objc_storeStrong(&v46->_thumbnailLargeImageAssetHandle, a16);
-      objc_storeStrong(&v46->_loadDate, a17);
-      objc_storeStrong(&v46->_teaserClue, a18);
-      objc_storeStrong(&v46->_teaserAnswer, a19);
-      objc_storeStrong(&v46->_teaserInfo, a20);
-      objc_storeStrong(&v46->_teaserDirection, a21);
-      objc_storeStrong(&v46->_teaserNumber, a22);
-      objc_storeStrong(&v46->_language, a23);
-      objc_storeStrong(&v46->_blockedStorefrontIDs, a24);
-      objc_storeStrong(&v46->_allowedStorefrontIDs, a25);
-      v46->_minimumNewsVersion = a26;
-      v46->_showInfoModalOnFirstPlay = a27;
-      v46->_ignoreFromStatsAndStreaks = a28;
-      v46->_deprecated = a29;
-      v46->_draft = a30;
-      objc_storeStrong(&v46->_lastModifiedDate, a31);
+      objc_storeStrong(&v45->_identifier, identifier);
+      objc_storeStrong(&v46->_title, titleCopy);
+      objc_storeStrong(&v46->_subtitle, subtitleCopy);
+      objc_storeStrong(&v46->_puzzleDescription, descriptionCopy);
+      objc_storeStrong(&v46->_puzzleType, typeCopy);
+      objc_storeStrong(&v46->_dataResourceID, d);
+      objc_storeStrong(&v46->_authors, authors);
+      objc_storeStrong(&v46->_publishDate, date);
+      v46->_paid = paid;
+      v46->_difficulty = difficulty;
+      objc_storeStrong(&v46->_difficultyDescription, difficultyDescription);
+      objc_storeStrong(&v46->_relatedPuzzleIDs, ds);
+      objc_storeStrong(&v46->_thumbnailSmallImageAssetHandle, handle);
+      objc_storeStrong(&v46->_thumbnailLargeImageAssetHandle, assetHandle);
+      objc_storeStrong(&v46->_loadDate, loadDate);
+      objc_storeStrong(&v46->_teaserClue, clue);
+      objc_storeStrong(&v46->_teaserAnswer, answer);
+      objc_storeStrong(&v46->_teaserInfo, info);
+      objc_storeStrong(&v46->_teaserDirection, direction);
+      objc_storeStrong(&v46->_teaserNumber, number);
+      objc_storeStrong(&v46->_language, language);
+      objc_storeStrong(&v46->_blockedStorefrontIDs, iDs);
+      objc_storeStrong(&v46->_allowedStorefrontIDs, storefrontIDs);
+      v46->_minimumNewsVersion = version;
+      v46->_showInfoModalOnFirstPlay = play;
+      v46->_ignoreFromStatsAndStreaks = streaks;
+      v46->_deprecated = deprecated;
+      v46->_draft = draft;
+      objc_storeStrong(&v46->_lastModifiedDate, modifiedDate);
     }
 
-    v47 = v46;
-    v44 = v47;
+    selfCopy = v46;
+    v44 = selfCopy;
   }
 
   else
   {
-    v47 = self;
+    selfCopy = self;
   }
 
   return v44;
 }
 
-- (FCPuzzle)initWithPuzzleRecord:(id)a3 puzzleType:(id)a4 assetManager:(id)a5 interestToken:(id)a6 difficultyDescriptions:(id)a7
+- (FCPuzzle)initWithPuzzleRecord:(id)record puzzleType:(id)type assetManager:(id)manager interestToken:(id)token difficultyDescriptions:(id)descriptions
 {
   v91 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v81 = a6;
-  v16 = a7;
-  v17 = [v13 base];
-  v18 = [v17 identifier];
+  recordCopy = record;
+  typeCopy = type;
+  managerCopy = manager;
+  tokenCopy = token;
+  descriptionsCopy = descriptions;
+  base = [recordCopy base];
+  identifier = [base identifier];
 
-  if (!v18 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!identifier && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v79 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier != 0"];
     *buf = 136315906;
@@ -121,56 +121,56 @@
   v19 = [(FCPuzzle *)&v82 init];
   if (v19)
   {
-    if ([v18 length])
+    if ([identifier length])
     {
       context = objc_autoreleasePoolPush();
-      objc_storeStrong(&v19->_puzzleRecord, a3);
-      objc_storeStrong(&v19->_interestToken, a6);
-      v20 = [MEMORY[0x1E695DF00] date];
+      objc_storeStrong(&v19->_puzzleRecord, record);
+      objc_storeStrong(&v19->_interestToken, token);
+      date = [MEMORY[0x1E695DF00] date];
       loadDate = v19->_loadDate;
-      v19->_loadDate = v20;
+      v19->_loadDate = date;
 
-      v22 = [v18 copy];
+      v22 = [identifier copy];
       identifier = v19->_identifier;
       v19->_identifier = v22;
 
-      v24 = [v13 title];
+      title = [recordCopy title];
       title = v19->_title;
-      v19->_title = v24;
+      v19->_title = title;
 
-      v26 = [v13 subtitle];
-      v27 = [v26 length];
-      if (v27)
+      subtitle = [recordCopy subtitle];
+      subtitle2 = [subtitle length];
+      if (subtitle2)
       {
-        v27 = [v13 subtitle];
+        subtitle2 = [recordCopy subtitle];
       }
 
       subtitle = v19->_subtitle;
-      v19->_subtitle = v27;
+      v19->_subtitle = subtitle2;
 
-      v29 = [v13 puzzleDescription];
+      puzzleDescription = [recordCopy puzzleDescription];
       puzzleDescription = v19->_puzzleDescription;
-      v19->_puzzleDescription = v29;
+      v19->_puzzleDescription = puzzleDescription;
 
-      objc_storeStrong(&v19->_puzzleType, a4);
-      v31 = [v13 dataResourceID];
+      objc_storeStrong(&v19->_puzzleType, type);
+      dataResourceID = [recordCopy dataResourceID];
       dataResourceID = v19->_dataResourceID;
-      v19->_dataResourceID = v31;
+      v19->_dataResourceID = dataResourceID;
 
-      v19->_paid = [v13 isPaid];
-      v33 = [v13 authors];
+      v19->_paid = [recordCopy isPaid];
+      authors = [recordCopy authors];
       authors = v19->_authors;
-      v19->_authors = v33;
+      v19->_authors = authors;
 
       v35 = MEMORY[0x1E695DF00];
-      v36 = [v13 publishedDate];
-      v37 = [v35 dateWithPBDate:v36];
+      publishedDate = [recordCopy publishedDate];
+      v37 = [v35 dateWithPBDate:publishedDate];
       publishDate = v19->_publishDate;
       v19->_publishDate = v37;
 
-      v19->_difficulty = [v13 difficultyLevel];
-      v39 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v13, "difficultyLevel")}];
-      v40 = [v16 fc_safeObjectForKey:v39];
+      v19->_difficulty = [recordCopy difficultyLevel];
+      v39 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(recordCopy, "difficultyLevel")}];
+      v40 = [descriptionsCopy fc_safeObjectForKey:v39];
       v41 = v40;
       if (v40)
       {
@@ -184,23 +184,23 @@
 
       objc_storeStrong(&v19->_difficultyDescription, v42);
 
-      v43 = [v13 relatedPuzzleIDs];
+      relatedPuzzleIDs = [recordCopy relatedPuzzleIDs];
       relatedPuzzleIDs = v19->_relatedPuzzleIDs;
-      v19->_relatedPuzzleIDs = v43;
+      v19->_relatedPuzzleIDs = relatedPuzzleIDs;
 
-      v45 = [v14 thumbnailDirectory];
+      thumbnailDirectory = [typeCopy thumbnailDirectory];
       v46 = v19->_publishDate;
-      v47 = resolvedPuzzleTypeDifficultyWithPuzzleType(v14, v19->_difficulty);
-      v48 = [v45 smallThumbnailForDate:v46 difficulty:v47];
+      v47 = resolvedPuzzleTypeDifficultyWithPuzzleType(typeCopy, v19->_difficulty);
+      v48 = [thumbnailDirectory smallThumbnailForDate:v46 difficulty:v47];
       thumbnailSmallImageAssetHandle = v19->_thumbnailSmallImageAssetHandle;
       v19->_thumbnailSmallImageAssetHandle = v48;
 
-      v50 = [v13 generateThumbnailLargeImageAssetHandleWithAssetManager:v15];
+      v50 = [recordCopy generateThumbnailLargeImageAssetHandleWithAssetManager:managerCopy];
       thumbnailLargeImageAssetHandle = v19->_thumbnailLargeImageAssetHandle;
       v19->_thumbnailLargeImageAssetHandle = v50;
 
-      v52 = [v13 teaserConfiguration];
-      v53 = [v52 dataUsingEncoding:4];
+      teaserConfiguration = [recordCopy teaserConfiguration];
+      v53 = [teaserConfiguration dataUsingEncoding:4];
 
       if (v53)
       {
@@ -228,28 +228,28 @@
         v19->_teaserNumber = v64;
       }
 
-      v66 = [v13 language];
+      language = [recordCopy language];
       language = v19->_language;
-      v19->_language = v66;
+      v19->_language = language;
 
-      v68 = [v13 blockedStorefrontIDs];
+      blockedStorefrontIDs = [recordCopy blockedStorefrontIDs];
       blockedStorefrontIDs = v19->_blockedStorefrontIDs;
-      v19->_blockedStorefrontIDs = v68;
+      v19->_blockedStorefrontIDs = blockedStorefrontIDs;
 
-      v70 = [v13 allowedStorefrontIDs];
+      allowedStorefrontIDs = [recordCopy allowedStorefrontIDs];
       allowedStorefrontIDs = v19->_allowedStorefrontIDs;
-      v19->_allowedStorefrontIDs = v70;
+      v19->_allowedStorefrontIDs = allowedStorefrontIDs;
 
-      v19->_minimumNewsVersion = [v13 minimumNewsVersion];
-      v19->_showInfoModalOnFirstPlay = [v13 behaviorFlags] & 1;
-      v19->_ignoreFromStatsAndStreaks = ([v13 behaviorFlags] & 2) != 0;
-      v19->_behaviorFlags = [v13 behaviorFlags];
-      v19->_deprecated = [v13 isDeprecated];
-      v19->_draft = [v13 isDraft];
+      v19->_minimumNewsVersion = [recordCopy minimumNewsVersion];
+      v19->_showInfoModalOnFirstPlay = [recordCopy behaviorFlags] & 1;
+      v19->_ignoreFromStatsAndStreaks = ([recordCopy behaviorFlags] & 2) != 0;
+      v19->_behaviorFlags = [recordCopy behaviorFlags];
+      v19->_deprecated = [recordCopy isDeprecated];
+      v19->_draft = [recordCopy isDraft];
       v72 = MEMORY[0x1E695DF00];
-      v73 = [v13 base];
-      v74 = [v73 modificationDate];
-      v75 = [v72 dateWithPBDate:v74];
+      base2 = [recordCopy base];
+      modificationDate = [base2 modificationDate];
+      v75 = [v72 dateWithPBDate:modificationDate];
       lastModifiedDate = v19->_lastModifiedDate;
       v19->_lastModifiedDate = v75;
 
@@ -267,118 +267,118 @@
   return v19;
 }
 
-- (FCPuzzle)initWithPuzzle:(id)a3 overrides:(id)a4
+- (FCPuzzle)initWithPuzzle:(id)puzzle overrides:(id)overrides
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v8 = [v6 title];
-  v9 = v8;
-  if (!v8)
+  puzzleCopy = puzzle;
+  overridesCopy = overrides;
+  identifier = [puzzleCopy identifier];
+  title = [overridesCopy title];
+  title2 = title;
+  if (!title)
   {
-    v9 = [v5 title];
+    title2 = [puzzleCopy title];
   }
 
-  v10 = [v6 subtitle];
-  v43 = v10;
-  if (!v10)
+  subtitle = [overridesCopy subtitle];
+  v43 = subtitle;
+  if (!subtitle)
   {
-    v10 = [v5 subtitle];
+    subtitle = [puzzleCopy subtitle];
   }
 
-  v11 = [v6 puzzleDescription];
-  v12 = v11;
-  if (!v11)
+  puzzleDescription = [overridesCopy puzzleDescription];
+  puzzleDescription2 = puzzleDescription;
+  if (!puzzleDescription)
   {
-    v12 = [v5 puzzleDescription];
+    puzzleDescription2 = [puzzleCopy puzzleDescription];
   }
 
-  v63 = [v5 puzzleType];
-  v62 = [v5 dataResourceID];
-  v13 = [v6 author];
-  if (v13)
+  puzzleType = [puzzleCopy puzzleType];
+  dataResourceID = [puzzleCopy dataResourceID];
+  author = [overridesCopy author];
+  if (author)
   {
-    v38 = [v6 author];
-    v64[0] = v38;
-    v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:1];
+    author2 = [overridesCopy author];
+    v64[0] = author2;
+    authors = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:1];
   }
 
   else
   {
-    v14 = [v5 authors];
-    v38 = v14;
+    authors = [puzzleCopy authors];
+    author2 = authors;
   }
 
-  v51 = v14;
-  v61 = [v5 publishDate];
-  v35 = [v5 isPaid];
-  v34 = [v5 difficulty];
-  v60 = [v5 difficultyDescription];
-  v59 = [v5 relatedPuzzleIDs];
-  v58 = [v5 thumbnailSmallImageAssetHandle];
-  v57 = [v5 thumbnailLargeImageAssetHandle];
-  v56 = [v5 loadDate];
-  v55 = [v6 teaserClue];
-  v49 = v55;
-  if (!v55)
+  v51 = authors;
+  publishDate = [puzzleCopy publishDate];
+  isPaid = [puzzleCopy isPaid];
+  difficulty = [puzzleCopy difficulty];
+  difficultyDescription = [puzzleCopy difficultyDescription];
+  relatedPuzzleIDs = [puzzleCopy relatedPuzzleIDs];
+  thumbnailSmallImageAssetHandle = [puzzleCopy thumbnailSmallImageAssetHandle];
+  thumbnailLargeImageAssetHandle = [puzzleCopy thumbnailLargeImageAssetHandle];
+  loadDate = [puzzleCopy loadDate];
+  teaserClue = [overridesCopy teaserClue];
+  v49 = teaserClue;
+  if (!teaserClue)
   {
-    v55 = [v5 teaserClue];
+    teaserClue = [puzzleCopy teaserClue];
   }
 
-  v54 = [v6 teaserAnswer];
-  v48 = v54;
-  if (!v54)
+  teaserAnswer = [overridesCopy teaserAnswer];
+  v48 = teaserAnswer;
+  if (!teaserAnswer)
   {
-    v54 = [v5 teaserAnswer];
+    teaserAnswer = [puzzleCopy teaserAnswer];
   }
 
-  v53 = [v6 teaserInfo];
-  v47 = v53;
-  if (!v53)
+  teaserInfo = [overridesCopy teaserInfo];
+  v47 = teaserInfo;
+  if (!teaserInfo)
   {
-    v53 = [v5 teaserInfo];
+    teaserInfo = [puzzleCopy teaserInfo];
   }
 
-  v41 = v11;
-  v52 = [v6 teaserDirection];
-  v33 = v52;
-  if (!v52)
+  v41 = puzzleDescription;
+  teaserDirection = [overridesCopy teaserDirection];
+  v33 = teaserDirection;
+  if (!teaserDirection)
   {
-    v52 = [v5 teaserDirection];
+    teaserDirection = [puzzleCopy teaserDirection];
   }
 
-  v39 = v13;
-  v40 = v12;
-  v42 = v10;
-  v50 = v9;
-  v44 = v8;
-  v45 = v7;
-  v46 = v6;
-  v15 = [v6 teaserNumber];
-  v16 = v15;
-  if (!v15)
+  v39 = author;
+  v40 = puzzleDescription2;
+  v42 = subtitle;
+  v50 = title2;
+  v44 = title;
+  v45 = identifier;
+  v46 = overridesCopy;
+  teaserNumber = [overridesCopy teaserNumber];
+  teaserNumber2 = teaserNumber;
+  if (!teaserNumber)
   {
-    v16 = [v5 teaserNumber];
+    teaserNumber2 = [puzzleCopy teaserNumber];
   }
 
-  v32 = [v5 language];
-  v31 = [v5 blockedStorefrontIDs];
-  v17 = [v5 allowedStorefrontIDs];
-  v18 = [v5 minimumNewsVersion];
-  v19 = [v5 showInfoModalOnFirstPlay];
-  v20 = [v5 ignoreFromStatsAndStreaks];
-  v21 = [v5 isDeprecated];
-  v22 = [v5 isDraft];
-  v23 = [v5 lastModifiedDate];
-  BYTE3(v30) = v22;
-  BYTE2(v30) = v21;
-  BYTE1(v30) = v20;
-  LOBYTE(v30) = v19;
-  LOBYTE(v29) = v35;
-  v37 = [FCPuzzle initWithIdentifier:"initWithIdentifier:title:subtitle:puzzleDescription:puzzleType:dataResourceID:authors:publishDate:isPaid:difficulty:difficultyDescription:relatedPuzzleIDs:thumbnailSmallImageAssetHandle:thumbnailLargeImageAssetHandle:loadDate:teaserClue:teaserAnswer:teaserInfo:teaserDirection:teaserNumber:language:blockedStorefrontIDs:allowedStorefrontIDs:minimumNewsVersion:showInfoModalOnFirstPlay:ignoreFromStatsAndStreaks:isDeprecated:isDraft:lastModifiedDate:" title:v45 subtitle:v50 puzzleDescription:v42 puzzleType:v40 dataResourceID:v63 authors:v62 publishDate:v51 isPaid:v61 difficulty:v29 difficultyDescription:v34 relatedPuzzleIDs:v60 thumbnailSmallImageAssetHandle:v59 thumbnailLargeImageAssetHandle:v58 loadDate:v57 teaserClue:v56 teaserAnswer:v55 teaserInfo:v54 teaserDirection:v53 teaserNumber:v52 language:v16 blockedStorefrontIDs:v32 allowedStorefrontIDs:v31 minimumNewsVersion:v17 showInfoModalOnFirstPlay:v18 ignoreFromStatsAndStreaks:v30 isDeprecated:v23 isDraft:? lastModifiedDate:?];
+  language = [puzzleCopy language];
+  blockedStorefrontIDs = [puzzleCopy blockedStorefrontIDs];
+  allowedStorefrontIDs = [puzzleCopy allowedStorefrontIDs];
+  minimumNewsVersion = [puzzleCopy minimumNewsVersion];
+  showInfoModalOnFirstPlay = [puzzleCopy showInfoModalOnFirstPlay];
+  ignoreFromStatsAndStreaks = [puzzleCopy ignoreFromStatsAndStreaks];
+  isDeprecated = [puzzleCopy isDeprecated];
+  isDraft = [puzzleCopy isDraft];
+  lastModifiedDate = [puzzleCopy lastModifiedDate];
+  BYTE3(v30) = isDraft;
+  BYTE2(v30) = isDeprecated;
+  BYTE1(v30) = ignoreFromStatsAndStreaks;
+  LOBYTE(v30) = showInfoModalOnFirstPlay;
+  LOBYTE(v29) = isPaid;
+  v37 = [FCPuzzle initWithIdentifier:"initWithIdentifier:title:subtitle:puzzleDescription:puzzleType:dataResourceID:authors:publishDate:isPaid:difficulty:difficultyDescription:relatedPuzzleIDs:thumbnailSmallImageAssetHandle:thumbnailLargeImageAssetHandle:loadDate:teaserClue:teaserAnswer:teaserInfo:teaserDirection:teaserNumber:language:blockedStorefrontIDs:allowedStorefrontIDs:minimumNewsVersion:showInfoModalOnFirstPlay:ignoreFromStatsAndStreaks:isDeprecated:isDraft:lastModifiedDate:" title:v45 subtitle:v50 puzzleDescription:v42 puzzleType:v40 dataResourceID:puzzleType authors:dataResourceID publishDate:v51 isPaid:publishDate difficulty:v29 difficultyDescription:difficulty relatedPuzzleIDs:difficultyDescription thumbnailSmallImageAssetHandle:relatedPuzzleIDs thumbnailLargeImageAssetHandle:thumbnailSmallImageAssetHandle loadDate:thumbnailLargeImageAssetHandle teaserClue:loadDate teaserAnswer:teaserClue teaserInfo:teaserAnswer teaserDirection:teaserInfo teaserNumber:teaserDirection language:teaserNumber2 blockedStorefrontIDs:language allowedStorefrontIDs:blockedStorefrontIDs minimumNewsVersion:allowedStorefrontIDs showInfoModalOnFirstPlay:minimumNewsVersion ignoreFromStatsAndStreaks:v30 isDeprecated:lastModifiedDate isDraft:? lastModifiedDate:?];
 
-  if (!v15)
+  if (!teaserNumber)
   {
   }
 
@@ -443,8 +443,8 @@
     v3 = publishDateString_dateFormatter;
   }
 
-  v7 = [(FCPuzzle *)self publishDate];
-  v8 = [v3 stringFromDate:v7];
+  publishDate = [(FCPuzzle *)self publishDate];
+  v8 = [v3 stringFromDate:publishDate];
 
   return v8;
 }

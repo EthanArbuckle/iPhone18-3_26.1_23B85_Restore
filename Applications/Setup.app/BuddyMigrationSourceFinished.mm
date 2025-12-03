@@ -1,6 +1,6 @@
 @interface BuddyMigrationSourceFinished
 - (BuddyMigrationSourceFinished)init;
-- (void)continueTapped:(id)a3;
+- (void)continueTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -25,28 +25,28 @@
 
 - (void)viewDidLoad
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   v24.receiver = self;
   v24.super_class = BuddyMigrationSourceFinished;
   [(BuddyMigrationSourceFinished *)&v24 viewDidLoad];
-  v2 = [(BuddyMigrationSourceFinished *)v26 headerView];
-  [v2 setIconInheritsTint:1];
+  headerView = [(BuddyMigrationSourceFinished *)selfCopy headerView];
+  [headerView setIconInheritsTint:1];
 
-  v3 = [(BuddyMigrationSourceFinished *)v26 navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(BuddyMigrationSourceFinished *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v23 = 0;
   location = 0;
-  if (v26->_buddyMigrationSourceFinishedStringProvider)
+  if (selfCopy->_buddyMigrationSourceFinishedStringProvider)
   {
-    v4 = [(BuddyMigrationSourceFinishedStringProvider *)v26->_buddyMigrationSourceFinishedStringProvider detailText];
+    detailText = [(BuddyMigrationSourceFinishedStringProvider *)selfCopy->_buddyMigrationSourceFinishedStringProvider detailText];
     v5 = v23;
-    v23 = v4;
+    v23 = detailText;
 
-    v6 = [(BuddyMigrationSourceFinishedStringProvider *)v26->_buddyMigrationSourceFinishedStringProvider buttonText];
+    buttonText = [(BuddyMigrationSourceFinishedStringProvider *)selfCopy->_buddyMigrationSourceFinishedStringProvider buttonText];
     v7 = location;
-    location = v6;
+    location = buttonText;
   }
 
   else
@@ -67,9 +67,9 @@
   v15 = 0;
   if (os_variant_has_internal_ui())
   {
-    v21 = [(BuddyMigrationSourceFinished *)v26 internalStatistics];
+    internalStatistics = [(BuddyMigrationSourceFinished *)selfCopy internalStatistics];
     v20 = 1;
-    v15 = v21 != 0;
+    v15 = internalStatistics != 0;
   }
 
   if (v20)
@@ -78,32 +78,32 @@
 
   if (v15)
   {
-    v16 = [(BuddyMigrationSourceFinished *)v26 internalStatistics];
-    v17 = [NSString stringWithFormat:@"%@\n\n%@", v23, v16];
+    internalStatistics2 = [(BuddyMigrationSourceFinished *)selfCopy internalStatistics];
+    v17 = [NSString stringWithFormat:@"%@\n\n%@", v23, internalStatistics2];
     v18 = v23;
     v23 = v17;
   }
 
-  v19 = [(BuddyMigrationSourceFinished *)v26 headerView];
-  [v19 setDetailText:v23];
+  headerView2 = [(BuddyMigrationSourceFinished *)selfCopy headerView];
+  [headerView2 setDetailText:v23];
 
-  [(BuddyWelcomeController *)v26 addBoldButton:location action:"continueTapped:"];
+  [(BuddyWelcomeController *)selfCopy addBoldButton:location action:"continueTapped:"];
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v23, 0);
 }
 
-- (void)continueTapped:(id)a3
+- (void)continueTapped:(id)tapped
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMigrationSourceFinished *)v7 miscState];
-  v4 = [(BuddyMiscState *)v3 migrationLockscreenController];
-  [(BuddyMigrationLockscreenController *)v4 deactivate];
+  objc_storeStrong(location, tapped);
+  miscState = [(BuddyMigrationSourceFinished *)selfCopy miscState];
+  migrationLockscreenController = [(BuddyMiscState *)miscState migrationLockscreenController];
+  [(BuddyMigrationLockscreenController *)migrationLockscreenController deactivate];
 
-  v5 = [(BuddyWelcomeController *)v7 delegate];
-  [(BFFFlowItemDelegate *)v5 flowItemDone:v7];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }

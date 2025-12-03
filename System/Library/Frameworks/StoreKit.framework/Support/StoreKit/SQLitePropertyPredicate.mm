@@ -1,35 +1,35 @@
 @interface SQLitePropertyPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)SQLJoinClausesForEntityClass:(Class)a3;
-- (id)_transformedSQLForEntityClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLJoinClausesForEntityClass:(Class)class;
+- (id)_transformedSQLForEntityClass:(Class)class;
 - (unint64_t)hash;
-- (void)applyBinding:(id)a3 atIndex:(int *)a4;
+- (void)applyBinding:(id)binding atIndex:(int *)index;
 @end
 
 @implementation SQLitePropertyPredicate
 
-- (id)_transformedSQLForEntityClass:(Class)a3
+- (id)_transformedSQLForEntityClass:(Class)class
 {
-  v5 = [(SQLitePropertyPredicate *)self property];
-  v6 = [(objc_class *)a3 disambiguatedSQLForProperty:v5];
+  property = [(SQLitePropertyPredicate *)self property];
+  v6 = [(objc_class *)class disambiguatedSQLForProperty:property];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    property2 = v6;
   }
 
   else
   {
-    v8 = [(SQLitePropertyPredicate *)self property];
+    property2 = [(SQLitePropertyPredicate *)self property];
   }
 
-  v9 = v8;
+  v9 = property2;
 
-  v10 = [(SQLitePropertyPredicate *)self transform];
-  v11 = v10;
-  if (v10)
+  transform = [(SQLitePropertyPredicate *)self transform];
+  v11 = transform;
+  if (transform)
   {
-    v12 = [v10 transformSQLWithRoot:v9];
+    v12 = [transform transformSQLWithRoot:v9];
   }
 
   else
@@ -47,29 +47,29 @@
   v9.receiver = self;
   v9.super_class = SQLitePropertyPredicate;
   v3 = [(SQLitePredicate *)&v9 hash];
-  v4 = [(SQLitePropertyPredicate *)self property];
-  v5 = [v4 hash];
-  v6 = [(SQLitePropertyPredicate *)self transform];
-  v7 = [v6 hash] + v5;
+  property = [(SQLitePropertyPredicate *)self property];
+  v5 = [property hash];
+  transform = [(SQLitePropertyPredicate *)self transform];
+  v7 = [transform hash] + v5;
 
   return v3 + v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = SQLitePropertyPredicate;
-  if ([(SQLitePredicate *)&v16 isEqual:v6])
+  if ([(SQLitePredicate *)&v16 isEqual:equalCopy])
   {
-    v7 = [(SQLitePropertyPredicate *)self property];
-    v8 = [v6 property];
-    if (v7 == v8 || (-[SQLitePropertyPredicate property](self, "property"), v3 = objc_claimAutoreleasedReturnValue(), [v6 property], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    property = [(SQLitePropertyPredicate *)self property];
+    property2 = [equalCopy property];
+    if (property == property2 || (-[SQLitePropertyPredicate property](self, "property"), v3 = objc_claimAutoreleasedReturnValue(), [equalCopy property], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v10 = [(SQLitePropertyPredicate *)self transform];
-      v11 = [v6 transform];
-      v12 = v11;
-      if (v10 == v11)
+      transform = [(SQLitePropertyPredicate *)self transform];
+      transform2 = [equalCopy transform];
+      v12 = transform2;
+      if (transform == transform2)
       {
 
         v9 = 1;
@@ -77,12 +77,12 @@
 
       else
       {
-        v13 = [(SQLitePropertyPredicate *)self transform];
-        v14 = [v6 transform];
-        v9 = [v13 isEqual:v14];
+        transform3 = [(SQLitePropertyPredicate *)self transform];
+        transform4 = [equalCopy transform];
+        v9 = [transform3 isEqual:transform4];
       }
 
-      if (v7 == v8)
+      if (property == property2)
       {
         goto LABEL_11;
       }
@@ -103,20 +103,20 @@ LABEL_12:
   return v9;
 }
 
-- (void)applyBinding:(id)a3 atIndex:(int *)a4
+- (void)applyBinding:(id)binding atIndex:(int *)index
 {
-  v8 = a3;
-  v6 = [(SQLitePropertyPredicate *)self transform];
-  v7 = v6;
-  if (v6)
+  bindingCopy = binding;
+  transform = [(SQLitePropertyPredicate *)self transform];
+  v7 = transform;
+  if (transform)
   {
-    [v6 applyTransformBinding:v8 atIndex:a4];
+    [transform applyTransformBinding:bindingCopy atIndex:index];
   }
 }
 
-- (id)SQLJoinClausesForEntityClass:(Class)a3
+- (id)SQLJoinClausesForEntityClass:(Class)class
 {
-  v3 = [(objc_class *)a3 joinClauseForProperty:self->_property];
+  v3 = [(objc_class *)class joinClauseForProperty:self->_property];
   if (v3)
   {
     v4 = [NSSet setWithObject:v3];

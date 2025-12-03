@@ -25,16 +25,16 @@
 
 + (id)pbDate
 {
-  v0 = [MEMORY[0x1E695DF00] date];
-  v1 = [v0 pbDate];
+  date = [MEMORY[0x1E695DF00] date];
+  pbDate = [date pbDate];
 
-  return v1;
+  return pbDate;
 }
 
 - (id)pbDate
 {
   v2 = objc_alloc_init(MEMORY[0x1E69B6E00]);
-  [a1 timeIntervalSince1970];
+  [self timeIntervalSince1970];
   [v2 setTimeIntervalSince1970:?];
 
   return v2;

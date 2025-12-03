@@ -1,37 +1,37 @@
 @interface NUStyleTransferThumbnailNode
 - ($0AC6E346AE4835514AAA8AC86D8F4844)thumbnailSize;
-- (NUStyleTransferThumbnailNode)initWithInput:(id)a3 settings:(id)a4;
-- (NUStyleTransferThumbnailNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (NUStyleTransferThumbnailNode)initWithInput:(id)input settings:(id)settings;
+- (NUStyleTransferThumbnailNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUStyleTransferThumbnailNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v5 = [(NUStyleTransferNode *)self inputNode];
-  v6 = [v5 outputImage:a3];
+  inputNode = [(NUStyleTransferNode *)self inputNode];
+  v6 = [inputNode outputImage:image];
 
   if (v6)
   {
-    v7 = [(NUStyleTransferThumbnailNode *)self thumbnailSize];
+    thumbnailSize = [(NUStyleTransferThumbnailNode *)self thumbnailSize];
     v9 = v8;
     [v6 extent];
-    if (v7 == v11 && v9 == v10)
+    if (thumbnailSize == v11 && v9 == v10)
     {
-      v21 = v6;
+      image = v6;
     }
 
     else
     {
-      v13 = [(NUStyleTransferNode *)self tuningParameters];
-      v14 = [(NUStyleTransferNode *)self configuration];
-      v15 = [v14 mutableCopy];
+      tuningParameters = [(NUStyleTransferNode *)self tuningParameters];
+      configuration = [(NUStyleTransferNode *)self configuration];
+      v15 = [configuration mutableCopy];
 
-      v16 = [(NURenderNode *)self settings];
-      v17 = [v16 objectForKeyedSubscript:@"useFloat16"];
+      settings = [(NURenderNode *)self settings];
+      v17 = [settings objectForKeyedSubscript:@"useFloat16"];
       v18 = v17;
       if (v17)
       {
@@ -45,38 +45,38 @@
 
       [v15 setObject:v19 forKeyedSubscript:@"useFloat16"];
 
-      v20 = [(NUStyleTransferNode *)self targetColorSpace];
-      v21 = [_NUStyleTransferThumbnailProcessor generateThumbnailForImage:v6 targetSize:v7 colorSpace:v9 configuration:v20 tuningParameters:v15 error:v13, a3];
+      targetColorSpace = [(NUStyleTransferNode *)self targetColorSpace];
+      image = [_NUStyleTransferThumbnailProcessor generateThumbnailForImage:v6 targetSize:thumbnailSize colorSpace:v9 configuration:targetColorSpace tuningParameters:v15 error:tuningParameters, image];
       if ([(NUStyleTransferNode *)self shouldCache])
       {
-        v22 = [[NUProcessorCache alloc] initWithImage:v21];
+        v22 = [[NUProcessorCache alloc] initWithImage:image];
         [(NUProcessorCache *)v22 setLabel:@"NUStyleTransferThumbnailNode.Provider"];
-        v23 = [(NUProcessorCache *)v22 outputImage];
+        outputImage = [(NUProcessorCache *)v22 outputImage];
 
-        v21 = v23;
+        image = outputImage;
       }
     }
   }
 
   else
   {
-    v21 = 0;
+    image = 0;
   }
 
-  return v21;
+  return image;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  inputsCopy = inputs;
+  settingsCopy = settings;
+  stateCopy = state;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v13 = [v10 objectForKeyedSubscript:NUStyleTransferNodeConfigurationKey];
+  v13 = [settingsCopy objectForKeyedSubscript:NUStyleTransferNodeConfigurationKey];
   v14 = [v13 mutableCopy];
   [v14 removeObjectForKey:@"priorMatrix"];
   [v12 setObject:v14 forKeyedSubscript:NUStyleTransferNodeConfigurationKey];
-  v15 = [v10 objectForKeyedSubscript:@"thumbnailWidth"];
+  v15 = [settingsCopy objectForKeyedSubscript:@"thumbnailWidth"];
   if (v15)
   {
     [v12 setObject:v15 forKeyedSubscript:@"thumbnailWidth"];
@@ -88,7 +88,7 @@
     [v12 setObject:v16 forKeyedSubscript:@"thumbnailWidth"];
   }
 
-  v17 = [v10 objectForKeyedSubscript:@"thumbnailHeight"];
+  v17 = [settingsCopy objectForKeyedSubscript:@"thumbnailHeight"];
   if (v17)
   {
     [v12 setObject:v17 forKeyedSubscript:@"thumbnailHeight"];
@@ -97,58 +97,58 @@
   else
   {
     [v13 objectForKeyedSubscript:@"thumbnailHeight"];
-    v18 = v9;
-    v20 = v19 = a6;
+    v18 = inputsCopy;
+    v20 = v19 = error;
     [v12 setObject:v20 forKeyedSubscript:@"thumbnailHeight"];
 
-    a6 = v19;
-    v9 = v18;
+    error = v19;
+    inputsCopy = v18;
   }
 
-  v21 = [v10 objectForKeyedSubscript:NUStyleTransferNodeTuningParametersKey];
+  v21 = [settingsCopy objectForKeyedSubscript:NUStyleTransferNodeTuningParametersKey];
   [v12 setObject:v21 forKeyedSubscript:NUStyleTransferNodeTuningParametersKey];
 
-  v22 = [v10 objectForKeyedSubscript:NUStyleTransferNodeTargetColorSpaceKey];
+  v22 = [settingsCopy objectForKeyedSubscript:NUStyleTransferNodeTargetColorSpaceKey];
   [v12 setObject:v22 forKeyedSubscript:NUStyleTransferNodeTargetColorSpaceKey];
 
-  v23 = [v10 objectForKeyedSubscript:@"useFloat16"];
+  v23 = [settingsCopy objectForKeyedSubscript:@"useFloat16"];
   [v12 setObject:v23 forKeyedSubscript:@"useFloat16"];
 
-  if (([v11 disableIntermediateCaching] & 1) == 0 && objc_msgSend(v11, "evaluationMode") == 1)
+  if (([stateCopy disableIntermediateCaching] & 1) == 0 && objc_msgSend(stateCopy, "evaluationMode") == 1)
   {
     [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:NUStyleTransferNodeShouldCacheKey];
   }
 
   v27.receiver = self;
   v27.super_class = NUStyleTransferThumbnailNode;
-  v24 = [(NUStyleTransferNode *)&v27 resolvedNodeWithCachedInputs:v9 settings:v12 pipelineState:v11 error:a6];
+  v24 = [(NUStyleTransferNode *)&v27 resolvedNodeWithCachedInputs:inputsCopy settings:v12 pipelineState:stateCopy error:error];
 
   return v24;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 auxiliaryImageType] == 1)
+  cacheCopy = cache;
+  stateCopy = state;
+  if ([stateCopy auxiliaryImageType] == 1)
   {
-    v10 = [v9 copy];
-    v11 = [v9 scale];
-    if (NUScaleCompare(v11, v12, 1, 4) >= 1 && [v10 mediaComponentType] == 1)
+    v10 = [stateCopy copy];
+    scale = [stateCopy scale];
+    if (NUScaleCompare(scale, v12, 1, 4) >= 1 && [v10 mediaComponentType] == 1)
     {
       [v10 setScale:{1, 4}];
     }
 
-    v13 = [(NUStyleTransferNode *)self inputNode];
-    v14 = [v13 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    inputNode = [(NUStyleTransferNode *)self inputNode];
+    v14 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 
     if (v14)
     {
       v19 = @"input";
       v20[0] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      v16 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v15 cache:v8 pipelineState:v9 error:a5];
+      v16 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v15 cache:cacheCopy pipelineState:stateCopy error:error];
     }
 
     else
@@ -159,18 +159,18 @@
 
   else
   {
-    v17 = [(NUStyleTransferNode *)self inputNode];
-    v16 = [v17 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    inputNode2 = [(NUStyleTransferNode *)self inputNode];
+    v16 = [inputNode2 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   }
 
   return v16;
 }
 
-- (NUStyleTransferThumbnailNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUStyleTransferThumbnailNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_30130);
@@ -214,8 +214,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -231,8 +231,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -251,43 +251,43 @@ LABEL_14:
 - ($0AC6E346AE4835514AAA8AC86D8F4844)thumbnailSize
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(NUStyleTransferNode *)self configuration];
-  v4 = [(NURenderNode *)self settings];
-  v5 = [v4 objectForKeyedSubscript:@"thumbnailWidth"];
+  configuration = [(NUStyleTransferNode *)self configuration];
+  settings = [(NURenderNode *)self settings];
+  v5 = [settings objectForKeyedSubscript:@"thumbnailWidth"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v8 = [v3 objectForKeyedSubscript:@"thumbnailWidth"];
-    v7 = [v8 integerValue];
+    v8 = [configuration objectForKeyedSubscript:@"thumbnailWidth"];
+    integerValue = [v8 integerValue];
   }
 
-  v9 = [(NURenderNode *)self settings];
-  v10 = [v9 objectForKeyedSubscript:@"thumbnailHeight"];
+  settings2 = [(NURenderNode *)self settings];
+  v10 = [settings2 objectForKeyedSubscript:@"thumbnailHeight"];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 integerValue];
+    integerValue2 = [v10 integerValue];
   }
 
   else
   {
-    v13 = [v3 objectForKeyedSubscript:@"thumbnailHeight"];
-    v12 = [v13 integerValue];
+    v13 = [configuration objectForKeyedSubscript:@"thumbnailHeight"];
+    integerValue2 = [v13 integerValue];
   }
 
-  if ((v12 | v7) < 0)
+  if ((integerValue2 | integerValue) < 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
     v34 = @"(width >= 0) && (height >= 0)";
-    [v16 handleFailureInFunction:v17 file:@"NUGeometryPrimitives.h" lineNumber:38 description:@"Invalid parameter not satisfying: %@"];
+    [currentHandler handleFailureInFunction:v17 file:@"NUGeometryPrimitives.h" lineNumber:38 description:@"Invalid parameter not satisfying: %@"];
 
-    if (!v7)
+    if (!integerValue)
     {
 LABEL_12:
       v18 = NUAssertLogger_30110();
@@ -309,8 +309,8 @@ LABEL_12:
           v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v26 = MEMORY[0x1E696AF00];
           v27 = v25;
-          v28 = [v26 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v26 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v36 = v25;
           v37 = 2114;
@@ -321,8 +321,8 @@ LABEL_12:
 
       else if (v22)
       {
-        v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v36 = v24;
         _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -332,29 +332,29 @@ LABEL_12:
     }
   }
 
-  else if (!v7)
+  else if (!integerValue)
   {
     goto LABEL_12;
   }
 
-  if (!v12)
+  if (!integerValue2)
   {
     goto LABEL_12;
   }
 
-  v14 = v7;
-  v15 = v12;
+  v14 = integerValue;
+  v15 = integerValue2;
   result.var1 = v15;
   result.var0 = v14;
   return result;
 }
 
-- (NUStyleTransferThumbnailNode)initWithInput:(id)a3 settings:(id)a4
+- (NUStyleTransferThumbnailNode)initWithInput:(id)input settings:(id)settings
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v12 = NUAssertLogger_30110();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -375,8 +375,8 @@ LABEL_12:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v19;
         v33 = 2114;
@@ -387,8 +387,8 @@ LABEL_12:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -397,9 +397,9 @@ LABEL_12:
     _NUAssertFailHandler("[NUStyleTransferThumbnailNode initWithInput:settings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1078, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "input != nil");
   }
 
-  v8 = v7;
+  v8 = settingsCopy;
   v29 = @"input";
-  v30 = v6;
+  v30 = inputCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   v28.receiver = self;
   v28.super_class = NUStyleTransferThumbnailNode;

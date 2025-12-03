@@ -2,10 +2,10 @@
 - (BOOL)suspended;
 - (RCOperationThrottlerDelegate)delegate;
 - (RCTimedOperationThrottler)init;
-- (RCTimedOperationThrottler)initWithDelegate:(id)a3;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
+- (RCTimedOperationThrottler)initWithDelegate:(id)delegate;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
 - (void)tickle;
-- (void)tickleWithCompletion:(id)a3;
+- (void)tickleWithCompletion:(id)completion;
 @end
 
 @implementation RCTimedOperationThrottler
@@ -36,10 +36,10 @@
   objc_exception_throw(v6);
 }
 
-- (RCTimedOperationThrottler)initWithDelegate:(id)a3
+- (RCTimedOperationThrottler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  delegateCopy = delegate;
+  if (!delegateCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCTimedOperationThrottler initWithDelegate:];
   }
@@ -50,7 +50,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[RCOperationThrottler alloc] initWithDelegate:v6];
     operationThrottler = v6->_operationThrottler;
     v6->_operationThrottler = v7;
@@ -61,34 +61,34 @@
 
 - (void)tickle
 {
-  v2 = [(RCTimedOperationThrottler *)self operationThrottler];
-  [v2 tickle];
+  operationThrottler = [(RCTimedOperationThrottler *)self operationThrottler];
+  [operationThrottler tickle];
 }
 
-- (void)tickleWithCompletion:(id)a3
+- (void)tickleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RCTimedOperationThrottler *)self operationThrottler];
-  [v5 tickleWithCompletion:v4];
+  completionCopy = completion;
+  operationThrottler = [(RCTimedOperationThrottler *)self operationThrottler];
+  [operationThrottler tickleWithCompletion:completionCopy];
 }
 
 - (BOOL)suspended
 {
-  v2 = [(RCTimedOperationThrottler *)self operationThrottler];
-  v3 = [v2 suspended];
+  operationThrottler = [(RCTimedOperationThrottler *)self operationThrottler];
+  suspended = [operationThrottler suspended];
 
-  return v3;
+  return suspended;
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __84__RCTimedOperationThrottler_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
   v12 = &unk_27822F1A8;
-  v13 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = completionCopy;
   v14 = v6;
   v7 = _Block_copy(&v9);
   v8 = [(RCTimedOperationThrottler *)self delegate:v9];

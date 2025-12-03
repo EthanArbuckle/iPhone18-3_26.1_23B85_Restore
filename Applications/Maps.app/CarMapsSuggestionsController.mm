@@ -6,32 +6,32 @@
 - (void)_notifyObservers;
 - (void)_verifyHaveObservers;
 - (void)dealloc;
-- (void)hintRefreshOfType:(int64_t)a3;
+- (void)hintRefreshOfType:(int64_t)type;
 - (void)refreshSuggestions;
-- (void)registerObserver:(id)a3;
-- (void)setAllowLowFuelAlert:(BOOL)a3;
-- (void)setHoldProcessAssertion:(BOOL)a3;
-- (void)setMonitorLowFuel:(BOOL)a3;
-- (void)setSinkAttached:(BOOL)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)setAllowLowFuelAlert:(BOOL)alert;
+- (void)setHoldProcessAssertion:(BOOL)assertion;
+- (void)setMonitorLowFuel:(BOOL)fuel;
+- (void)setSinkAttached:(BOOL)attached;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CarMapsSuggestionsController
 
-- (void)setAllowLowFuelAlert:(BOOL)a3
+- (void)setAllowLowFuelAlert:(BOOL)alert
 {
-  if (self->_allowLowFuelAlert != a3)
+  if (self->_allowLowFuelAlert != alert)
   {
-    v3 = a3;
-    self->_allowLowFuelAlert = a3;
+    alertCopy = alert;
+    self->_allowLowFuelAlert = alert;
     obj = [(CarMapsSuggestionsController *)self observers];
     objc_sync_enter(obj);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(CarMapsSuggestionsController *)self observers];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+    observers = [(CarMapsSuggestionsController *)self observers];
+    v6 = [observers countByEnumeratingWithState:&v13 objects:v21 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -41,7 +41,7 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(observers);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
@@ -57,11 +57,11 @@
               v20 = allowLowFuelAlert;
             }
 
-            [v9 setAllowLowFuelSuggestion:v3];
+            [v9 setAllowLowFuelSuggestion:alertCopy];
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+        v6 = [observers countByEnumeratingWithState:&v13 objects:v21 count:16];
       }
 
       while (v6);
@@ -73,17 +73,17 @@
 
 - (unint64_t)suggestionCount
 {
-  v2 = [(CarMapsSuggestionsController *)self suggestions];
-  v3 = [v2 count];
+  suggestions = [(CarMapsSuggestionsController *)self suggestions];
+  v3 = [suggestions count];
 
   return v3;
 }
 
-- (void)setSinkAttached:(BOOL)a3
+- (void)setSinkAttached:(BOOL)attached
 {
-  if (self->_sinkAttached != a3)
+  if (self->_sinkAttached != attached)
   {
-    v3 = a3;
+    attachedCopy = attached;
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -98,7 +98,7 @@
       }
 
       v7 = v6;
-      if (v3)
+      if (attachedCopy)
       {
         v8 = @"YES";
       }
@@ -116,35 +116,35 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[CarMapsSuggestionsController] _sinkAttached=%@ sinkAttached=%@", &v20, 0x16u);
     }
 
-    self->_sinkAttached = v3;
-    if (v3)
+    self->_sinkAttached = attachedCopy;
+    if (attachedCopy)
     {
       v10 = [[MapsSuggestionsBlockFilter alloc] initWithBlock:&stru_10164F808];
-      v11 = [(CarMapsSuggestionsController *)self suggestionsEngine];
-      [v11 addAdditionalFilter:v10 forSink:self];
+      suggestionsEngine = [(CarMapsSuggestionsController *)self suggestionsEngine];
+      [suggestionsEngine addAdditionalFilter:v10 forSink:self];
 
-      v12 = [(CarMapsSuggestionsController *)self suggestionsEngine];
+      suggestionsEngine2 = [(CarMapsSuggestionsController *)self suggestionsEngine];
       v13 = [[MapsSuggestionsBlockFilter alloc] initWithBlock:&stru_10164F828];
-      [v12 addAdditionalFilter:v13 forSink:self];
+      [suggestionsEngine2 addAdditionalFilter:v13 forSink:self];
 
-      v14 = [(CarMapsSuggestionsController *)self suggestionsEngine];
-      v15 = [(CarMapsSuggestionsController *)self myAdditionalFilter];
-      [v14 addAdditionalFilter:v15 forSink:self];
+      suggestionsEngine3 = [(CarMapsSuggestionsController *)self suggestionsEngine];
+      myAdditionalFilter = [(CarMapsSuggestionsController *)self myAdditionalFilter];
+      [suggestionsEngine3 addAdditionalFilter:myAdditionalFilter forSink:self];
 
-      v16 = [(CarMapsSuggestionsController *)self suggestionsEngine];
-      [v16 attachSink:self];
+      suggestionsEngine4 = [(CarMapsSuggestionsController *)self suggestionsEngine];
+      [suggestionsEngine4 attachSink:self];
 
       [(CarMapsSuggestionsController *)self refreshSuggestions];
     }
 
     else
     {
-      v17 = [(CarMapsSuggestionsController *)self suggestionsEngine];
-      [v17 detachSink:self];
+      suggestionsEngine5 = [(CarMapsSuggestionsController *)self suggestionsEngine];
+      [suggestionsEngine5 detachSink:self];
 
-      v18 = [(CarMapsSuggestionsController *)self suggestionsEngine];
-      v19 = [(CarMapsSuggestionsController *)self myAdditionalFilter];
-      [v18 removeAdditionalFilter:v19 forSink:self];
+      suggestionsEngine6 = [(CarMapsSuggestionsController *)self suggestionsEngine];
+      myAdditionalFilter2 = [(CarMapsSuggestionsController *)self myAdditionalFilter];
+      [suggestionsEngine6 removeAdditionalFilter:myAdditionalFilter2 forSink:self];
 
       [(CarMapsSuggestionsController *)self setSuggestions:0];
     }
@@ -153,24 +153,24 @@
 
 - (BOOL)monitorLowFuel
 {
-  v2 = [(CarMapsSuggestionsController *)self lowFuelObserver];
-  v3 = [v2 active];
+  lowFuelObserver = [(CarMapsSuggestionsController *)self lowFuelObserver];
+  active = [lowFuelObserver active];
 
-  return v3;
+  return active;
 }
 
-- (void)setMonitorLowFuel:(BOOL)a3
+- (void)setMonitorLowFuel:(BOOL)fuel
 {
-  v3 = a3;
-  v4 = [(CarMapsSuggestionsController *)self lowFuelObserver];
-  [v4 setActive:v3];
+  fuelCopy = fuel;
+  lowFuelObserver = [(CarMapsSuggestionsController *)self lowFuelObserver];
+  [lowFuelObserver setActive:fuelCopy];
 }
 
-- (void)setHoldProcessAssertion:(BOOL)a3
+- (void)setHoldProcessAssertion:(BOOL)assertion
 {
-  if (self->_holdProcessAssertion != a3)
+  if (self->_holdProcessAssertion != assertion)
   {
-    v3 = a3;
+    assertionCopy = assertion;
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -185,7 +185,7 @@
       }
 
       v7 = v6;
-      if (v3)
+      if (assertionCopy)
       {
         v8 = @"YES";
       }
@@ -203,16 +203,16 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[CarMapsSuggestionsController] _holdProcessAssertion=%{public}@ holdProcessAssertion=%{public}@", buf, 0x16u);
     }
 
-    self->_holdProcessAssertion = v3;
-    v10 = [(CarMapsSuggestionsController *)self processAssertion];
-    [v10 invalidate];
+    self->_holdProcessAssertion = assertionCopy;
+    processAssertion = [(CarMapsSuggestionsController *)self processAssertion];
+    [processAssertion invalidate];
 
-    v11 = [(CarMapsSuggestionsController *)self processAssertionTimer];
-    [v11 invalidate];
+    processAssertionTimer = [(CarMapsSuggestionsController *)self processAssertionTimer];
+    [processAssertionTimer invalidate];
 
     [(CarMapsSuggestionsController *)self setProcessAssertion:0];
     [(CarMapsSuggestionsController *)self setProcessAssertionTimer:0];
-    if (v3)
+    if (assertionCopy)
     {
       v12 = [[BKSProcessAssertion alloc] initWithBundleIdentifier:@"com.apple.Maps" flags:3 reason:3 name:@"com.apple.Maps.LowFuelAlert" withHandler:&stru_10164F7E8];
       [(CarMapsSuggestionsController *)self setProcessAssertion:v12];
@@ -235,19 +235,19 @@
 
 - (void)_verifyHaveObservers
 {
-  v3 = [(CarMapsSuggestionsController *)self observers];
-  objc_sync_enter(v3);
-  v4 = [(CarMapsSuggestionsController *)self observers];
-  v5 = [v4 allObjects];
-  if ([v5 count] || -[CarMapsSuggestionsController sinkDetaching](self, "sinkDetaching"))
+  observers = [(CarMapsSuggestionsController *)self observers];
+  objc_sync_enter(observers);
+  observers2 = [(CarMapsSuggestionsController *)self observers];
+  allObjects = [observers2 allObjects];
+  if ([allObjects count] || -[CarMapsSuggestionsController sinkDetaching](self, "sinkDetaching"))
   {
   }
 
   else
   {
-    v6 = [(CarMapsSuggestionsController *)self sinkAttached];
+    sinkAttached = [(CarMapsSuggestionsController *)self sinkAttached];
 
-    if (v6)
+    if (sinkAttached)
     {
       v7 = sub_100006E1C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -270,19 +270,19 @@
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(observers);
 }
 
 - (void)_notifyObservers
 {
-  v3 = [(CarMapsSuggestionsController *)self observers];
-  objc_sync_enter(v3);
+  observers = [(CarMapsSuggestionsController *)self observers];
+  objc_sync_enter(observers);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CarMapsSuggestionsController *)self observers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  observers2 = [(CarMapsSuggestionsController *)self observers];
+  v5 = [observers2 countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v7 = *v13;
@@ -294,7 +294,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(observers2);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -307,47 +307,47 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [observers2 countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v5);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(observers);
   [(CarMapsSuggestionsController *)self _verifyHaveObservers];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v8 = a3;
-  v4 = [(CarMapsSuggestionsController *)self observers];
-  objc_sync_enter(v4);
-  v5 = [(CarMapsSuggestionsController *)self observers];
-  v6 = [v5 containsObject:v8];
+  observerCopy = observer;
+  observers = [(CarMapsSuggestionsController *)self observers];
+  objc_sync_enter(observers);
+  observers2 = [(CarMapsSuggestionsController *)self observers];
+  v6 = [observers2 containsObject:observerCopy];
 
   if (v6)
   {
-    v7 = [(CarMapsSuggestionsController *)self observers];
-    [v7 removeObject:v8];
+    observers3 = [(CarMapsSuggestionsController *)self observers];
+    [observers3 removeObject:observerCopy];
 
     [(CarMapsSuggestionsController *)self _verifyHaveObservers];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(observers);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v8 = a3;
-  v4 = [(CarMapsSuggestionsController *)self observers];
-  objc_sync_enter(v4);
-  v5 = [(CarMapsSuggestionsController *)self observers];
-  v6 = [v5 containsObject:v8];
+  observerCopy = observer;
+  observers = [(CarMapsSuggestionsController *)self observers];
+  objc_sync_enter(observers);
+  observers2 = [(CarMapsSuggestionsController *)self observers];
+  v6 = [observers2 containsObject:observerCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CarMapsSuggestionsController *)self observers];
-    [v7 addObject:v8];
+    observers3 = [(CarMapsSuggestionsController *)self observers];
+    [observers3 addObject:observerCopy];
 
     if (![(CarMapsSuggestionsController *)self sinkAttached])
     {
@@ -355,7 +355,7 @@
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(observers);
 }
 
 - (void)refreshSuggestions
@@ -377,7 +377,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[CarMapsSuggestionsController] Requesting topSuggestions from suggestions engine", v13, 2u);
     }
 
-    v10 = [(CarMapsSuggestionsController *)self suggestionsEngine];
+    suggestionsEngine = [(CarMapsSuggestionsController *)self suggestionsEngine];
     if (qword_10195ED98 != -1)
     {
       dispatch_once(&qword_10195ED98, &stru_10164F7A8);
@@ -385,7 +385,7 @@
 
     v11 = qword_10195ED90;
     v12 = dispatch_get_global_queue(2, 0);
-    [v10 topSuggestionsForSink:self count:v11 transportType:0 callback:v8 onQueue:v12];
+    [suggestionsEngine topSuggestionsForSink:self count:v11 transportType:0 callback:v8 onQueue:v12];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
@@ -427,10 +427,10 @@
   }
 }
 
-- (void)hintRefreshOfType:(int64_t)a3
+- (void)hintRefreshOfType:(int64_t)type
 {
-  v5 = [(CarMapsSuggestionsController *)self suggestionsEngine];
-  [v5 hintRefreshOfType:a3];
+  suggestionsEngine = [(CarMapsSuggestionsController *)self suggestionsEngine];
+  [suggestionsEngine hintRefreshOfType:type];
 
   [(CarMapsSuggestionsController *)self refreshSuggestions];
 }

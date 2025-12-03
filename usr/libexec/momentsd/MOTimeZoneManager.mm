@@ -1,33 +1,33 @@
 @interface MOTimeZoneManager
-- (MOTimeZoneManager)initWithUniverse:(id)a3;
-- (id)condensedRecordsFromRecords:(id)a3;
+- (MOTimeZoneManager)initWithUniverse:(id)universe;
+- (id)condensedRecordsFromRecords:(id)records;
 - (id)description;
-- (id)keywordForDate:(id)a3;
-- (id)timeZoneAtDate:(id)a3;
-- (void)processTimeZoneEvents:(id)a3;
+- (id)keywordForDate:(id)date;
+- (id)timeZoneAtDate:(id)date;
+- (void)processTimeZoneEvents:(id)events;
 @end
 
 @implementation MOTimeZoneManager
 
-- (MOTimeZoneManager)initWithUniverse:(id)a3
+- (MOTimeZoneManager)initWithUniverse:(id)universe
 {
   v4.receiver = self;
   v4.super_class = MOTimeZoneManager;
   return [(MOTimeZoneManager *)&v4 init];
 }
 
-- (void)processTimeZoneEvents:(id)a3
+- (void)processTimeZoneEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v33 = [NSPredicate predicateWithFormat:@"timeZone != nil"];
-  v34 = v4;
-  v5 = [v4 filteredArrayUsingPredicate:?];
+  v34 = eventsCopy;
+  v5 = [eventsCopy filteredArrayUsingPredicate:?];
   v32 = [[NSSortDescriptor alloc] initWithKey:@"endDate" ascending:1];
   v51 = v32;
   v6 = [NSArray arrayWithObjects:&v51 count:1];
   v7 = [v5 sortedArrayUsingDescriptors:v6];
 
-  v8 = self;
+  selfCopy = self;
   v9 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
@@ -35,7 +35,7 @@
   v41 = 0u;
   obj = v7;
   v10 = [obj countByEnumeratingWithState:&v38 objects:v50 count:16];
-  v36 = self;
+  selfCopy2 = self;
   if (v10)
   {
     v11 = v10;
@@ -50,30 +50,30 @@
         }
 
         v14 = *(*(&v38 + 1) + 8 * i);
-        v15 = [v14 endDate];
-        v16 = [(MOTimeZoneManager *)v8 keywordForDate:v15];
+        endDate = [v14 endDate];
+        v16 = [(MOTimeZoneManager *)selfCopy keywordForDate:endDate];
 
-        v17 = [v14 timeZone];
-        v18 = [v17 name];
-        [v9 setObject:v18 forKey:v16];
+        timeZone = [v14 timeZone];
+        name = [timeZone name];
+        [v9 setObject:name forKey:v16];
 
         v19 = _mo_log_facility_get_os_log(&MOLogFacilityDefaults);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v20 = NSStringFromSelector(a2);
-          v21 = [v14 endDate];
-          v22 = [v14 timeZone];
+          endDate2 = [v14 endDate];
+          timeZone2 = [v14 timeZone];
           *buf = 138413058;
           v43 = v20;
           v44 = 2112;
-          v45 = v21;
+          v45 = endDate2;
           v46 = 2112;
           v47 = v16;
           v48 = 2112;
-          v49 = v22;
+          v49 = timeZone2;
           _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%@, raw timeZone, date %@, keyword, %@, event.timeZone, %@", buf, 0x2Au);
 
-          v8 = v36;
+          selfCopy = selfCopy2;
         }
       }
 
@@ -86,15 +86,15 @@
   if (![v9 count])
   {
     v23 = +[NSDate date];
-    v24 = [(MOTimeZoneManager *)v36 keywordForDate:v23];
+    v24 = [(MOTimeZoneManager *)selfCopy2 keywordForDate:v23];
 
     v25 = +[NSTimeZone systemTimeZone];
-    v26 = [v25 name];
-    [v9 setObject:v26 forKey:v24];
+    name2 = [v25 name];
+    [v9 setObject:name2 forKey:v24];
   }
 
   v27 = [v9 copy];
-  [(MOTimeZoneManager *)v36 setTimeZoneRecords:v27];
+  [(MOTimeZoneManager *)selfCopy2 setTimeZoneRecords:v27];
 
   v28 = _mo_log_facility_get_os_log(&MOLogFacilityDefaults);
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -102,23 +102,23 @@
     [(MOTimeZoneManager *)a2 processTimeZoneEvents:v9];
   }
 
-  v29 = [(MOTimeZoneManager *)v36 timeZoneRecords];
-  v30 = [(MOTimeZoneManager *)v36 condensedRecordsFromRecords:v29];
-  [(MOTimeZoneManager *)v36 setCondensedRecords:v30];
+  timeZoneRecords = [(MOTimeZoneManager *)selfCopy2 timeZoneRecords];
+  v30 = [(MOTimeZoneManager *)selfCopy2 condensedRecordsFromRecords:timeZoneRecords];
+  [(MOTimeZoneManager *)selfCopy2 setCondensedRecords:v30];
 
   v31 = _mo_log_facility_get_os_log(&MOLogFacilityDefaults);
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
-    [(MOTimeZoneManager *)a2 processTimeZoneEvents:v36];
+    [(MOTimeZoneManager *)a2 processTimeZoneEvents:selfCopy2];
   }
 }
 
-- (id)condensedRecordsFromRecords:(id)a3
+- (id)condensedRecordsFromRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = objc_opt_new();
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:"compare:"];
+  allKeys = [recordsCopy allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v31 = 0u;
   v32 = 0u;
@@ -144,7 +144,7 @@
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v9 = [v3 objectForKey:v15];
+        v9 = [recordsCopy objectForKey:v15];
         if (v13 && ([v14 isEqualToString:v9] & 1) == 0)
         {
           v16 = [v4 objectForKey:v13];
@@ -224,17 +224,17 @@
   return v22;
 }
 
-- (id)timeZoneAtDate:(id)a3
+- (id)timeZoneAtDate:(id)date
 {
-  v5 = a3;
-  v6 = [(MOTimeZoneManager *)self keywordForDate:v5];
-  v7 = [(MOTimeZoneManager *)self condensedRecords];
-  v8 = [v7 objectForKey:v6];
+  dateCopy = date;
+  v6 = [(MOTimeZoneManager *)self keywordForDate:dateCopy];
+  condensedRecords = [(MOTimeZoneManager *)self condensedRecords];
+  v8 = [condensedRecords objectForKey:v6];
 
   if (!v8)
   {
-    v11 = [(MOTimeZoneManager *)self condensedRecords];
-    v12 = [v11 keysSortedByValueUsingSelector:"compare:"];
+    condensedRecords2 = [(MOTimeZoneManager *)self condensedRecords];
+    v12 = [condensedRecords2 keysSortedByValueUsingSelector:"compare:"];
 
     v39 = 0u;
     v40 = 0u;
@@ -246,7 +246,7 @@
     {
       v15 = v14;
       v35 = a2;
-      v36 = v5;
+      v36 = dateCopy;
       v16 = 0;
       v17 = *v38;
       v18 = 1.79769313e308;
@@ -260,8 +260,8 @@
           }
 
           v20 = *(*(&v37 + 1) + 8 * i);
-          v21 = [(MOTimeZoneManager *)self condensedRecords];
-          v22 = [v21 objectForKey:v20];
+          condensedRecords3 = [(MOTimeZoneManager *)self condensedRecords];
+          v22 = [condensedRecords3 objectForKey:v20];
 
           [v6 doubleValue];
           v24 = v23;
@@ -282,7 +282,7 @@
       while (v15);
 
       v8 = 0;
-      v5 = v36;
+      dateCopy = v36;
       a2 = v35;
       if (v16)
       {
@@ -320,7 +320,7 @@ LABEL_22:
       *buf = 138413058;
       v43 = v32;
       v44 = 2112;
-      v45 = v5;
+      v45 = dateCopy;
       v46 = 2112;
       v47 = v6;
       v48 = 2112;
@@ -339,7 +339,7 @@ LABEL_22:
     *buf = 138413058;
     v43 = v31;
     v44 = 2112;
-    v45 = v5;
+    v45 = dateCopy;
     v46 = 2112;
     v47 = v6;
     v48 = 2112;
@@ -353,9 +353,9 @@ LABEL_23:
   return v10;
 }
 
-- (id)keywordForDate:(id)a3
+- (id)keywordForDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
   return [NSNumber numberWithUnsignedInteger:(v3 / 3600.0)];
 }
@@ -363,9 +363,9 @@ LABEL_23:
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"TimeZone records:"];
-  v4 = [(MOTimeZoneManager *)self condensedRecords];
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:"compare:"];
+  condensedRecords = [(MOTimeZoneManager *)self condensedRecords];
+  allKeys = [condensedRecords allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v19 = 0u;
   v20 = 0u;
@@ -387,8 +387,8 @@ LABEL_23:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [(MOTimeZoneManager *)self condensedRecords];
-        v14 = [v13 objectForKey:v12];
+        condensedRecords2 = [(MOTimeZoneManager *)self condensedRecords];
+        v14 = [condensedRecords2 objectForKey:v12];
 
         [v3 appendFormat:@"<%@:%@>", v12, v14, v17];
       }

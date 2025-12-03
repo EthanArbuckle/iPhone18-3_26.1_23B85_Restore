@@ -1,27 +1,27 @@
 @interface SKUIChartColumnsView
-- (SKUIChartColumnsView)initWithFrame:(CGRect)a3;
+- (SKUIChartColumnsView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (id)_headerViewWithViewControllers:(id)a3;
-- (void)_headerViewAction:(id)a3;
+- (id)_headerViewWithViewControllers:(id)controllers;
+- (void)_headerViewAction:(id)action;
 - (void)_reloadColumnViews;
-- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)a3;
+- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)columns;
 - (void)dealloc;
 - (void)endColumnChangeAnimation;
 - (void)layoutSubviews;
-- (void)segmentedControl:(id)a3 didSelectSegmentIndex:(int64_t)a4;
-- (void)setChartViewControllers:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setNumberOfVisibleColumns:(int64_t)a3;
+- (void)segmentedControl:(id)control didSelectSegmentIndex:(int64_t)index;
+- (void)setChartViewControllers:(id)controllers;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setNumberOfVisibleColumns:(int64_t)columns;
 @end
 
 @implementation SKUIChartColumnsView
 
-- (SKUIChartColumnsView)initWithFrame:(CGRect)a3
+- (SKUIChartColumnsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIChartColumnsView initWithFrame:];
@@ -29,51 +29,51 @@
 
   v28.receiver = self;
   v28.super_class = SKUIChartColumnsView;
-  v8 = [(SKUIChartColumnsView *)&v28 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIChartColumnsView *)&v28 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 0.0, 44.0}];
-    headerBackgroundView = v8->_headerBackgroundView;
-    v8->_headerBackgroundView = v9;
+    headerBackgroundView = height->_headerBackgroundView;
+    height->_headerBackgroundView = v9;
 
-    [(SKUIChartColumnsView *)v8 addSubview:v8->_headerBackgroundView];
+    [(SKUIChartColumnsView *)height addSubview:height->_headerBackgroundView];
     v11 = objc_alloc(MEMORY[0x277D75D68]);
     v12 = [MEMORY[0x277D75210] effectWithStyle:10];
     v13 = [v11 initWithEffect:v12];
-    effectView = v8->_effectView;
-    v8->_effectView = v13;
+    effectView = height->_effectView;
+    height->_effectView = v13;
 
-    [(UIView *)v8->_headerBackgroundView addSubview:v8->_effectView];
+    [(UIView *)height->_headerBackgroundView addSubview:height->_effectView];
     v15 = objc_alloc_init(MEMORY[0x277D75D18]);
-    borderView0 = v8->_borderView0;
-    v8->_borderView0 = v15;
+    borderView0 = height->_borderView0;
+    height->_borderView0 = v15;
 
-    v17 = v8->_borderView0;
-    v18 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v17 setBackgroundColor:v18];
+    v17 = height->_borderView0;
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v17 setBackgroundColor:separatorColor];
 
-    [(SKUIChartColumnsView *)v8 addSubview:v8->_borderView0];
+    [(SKUIChartColumnsView *)height addSubview:height->_borderView0];
     v19 = objc_alloc_init(MEMORY[0x277D75D18]);
-    borderView1 = v8->_borderView1;
-    v8->_borderView1 = v19;
+    borderView1 = height->_borderView1;
+    height->_borderView1 = v19;
 
-    v21 = v8->_borderView1;
-    v22 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v21 setBackgroundColor:v22];
+    v21 = height->_borderView1;
+    separatorColor2 = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v21 setBackgroundColor:separatorColor2];
 
-    [(SKUIChartColumnsView *)v8 addSubview:v8->_borderView1];
+    [(SKUIChartColumnsView *)height addSubview:height->_borderView1];
     v23 = objc_alloc_init(MEMORY[0x277D75D18]);
-    headerBackgroundBottomBorder = v8->_headerBackgroundBottomBorder;
-    v8->_headerBackgroundBottomBorder = v23;
+    headerBackgroundBottomBorder = height->_headerBackgroundBottomBorder;
+    height->_headerBackgroundBottomBorder = v23;
 
-    v25 = v8->_headerBackgroundBottomBorder;
-    v26 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v25 setBackgroundColor:v26];
+    v25 = height->_headerBackgroundBottomBorder;
+    separatorColor3 = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v25 setBackgroundColor:separatorColor3];
 
-    [(UIView *)v8->_headerBackgroundView addSubview:v8->_headerBackgroundBottomBorder];
+    [(UIView *)height->_headerBackgroundView addSubview:height->_headerBackgroundBottomBorder];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -84,16 +84,16 @@
   [(SKUIChartColumnsView *)&v3 dealloc];
 }
 
-- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)a3
+- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)columns
 {
   columnChangeAnimationCount = self->_columnChangeAnimationCount;
   self->_columnChangeAnimationCount = columnChangeAnimationCount + 1;
   if (!columnChangeAnimationCount)
   {
-    self->_animatingToNumberOfVisibleColumns = a3;
-    if (self->_numberOfVisibleColumns >= a3)
+    self->_animatingToNumberOfVisibleColumns = columns;
+    if (self->_numberOfVisibleColumns >= columns)
     {
-      self->_numberOfVisibleColumns = a3;
+      self->_numberOfVisibleColumns = columns;
 
       [(SKUIChartColumnsView *)self setNeedsLayout];
     }
@@ -125,11 +125,11 @@
   }
 }
 
-- (void)setChartViewControllers:(id)a3
+- (void)setChartViewControllers:(id)controllers
 {
-  if (self->_allViewControllers != a3)
+  if (self->_allViewControllers != controllers)
   {
-    v4 = [a3 copy];
+    v4 = [controllers copy];
     allViewControllers = self->_allViewControllers;
     self->_allViewControllers = v4;
 
@@ -137,24 +137,24 @@
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIChartColumnsView *)self setNeedsLayout];
   }
 }
 
-- (void)setNumberOfVisibleColumns:(int64_t)a3
+- (void)setNumberOfVisibleColumns:(int64_t)columns
 {
-  if (self->_numberOfVisibleColumns != a3)
+  if (self->_numberOfVisibleColumns != columns)
   {
-    self->_numberOfVisibleColumns = a3;
+    self->_numberOfVisibleColumns = columns;
     if (!self->_columnChangeAnimationCount)
     {
       [(SKUIChartColumnsView *)self _reloadColumnViews];
@@ -174,15 +174,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
 
   v14 = [(NSArray *)self->_columnViews count];
-  v15 = [(SKUIChartColumnsView *)self numberOfVisibleColumns];
-  if (v14 >= v15)
+  numberOfVisibleColumns = [(SKUIChartColumnsView *)self numberOfVisibleColumns];
+  if (v14 >= numberOfVisibleColumns)
   {
-    v16 = v15;
+    v16 = numberOfVisibleColumns;
   }
 
   else
@@ -280,31 +280,31 @@ LABEL_13:
   [(UIView *)borderView1 setHidden:v38];
 }
 
-- (void)_headerViewAction:(id)a3
+- (void)_headerViewAction:(id)action
 {
-  v6 = a3;
+  actionCopy = action;
   v4 = [(NSArray *)self->_headerViews indexOfObjectIdenticalTo:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [(NSArray *)self->_columnViews objectAtIndex:v4];
-    [v5 setSelectedViewControllerIndex:{objc_msgSend(v6, "selectedTitleIndex")}];
+    [v5 setSelectedViewControllerIndex:{objc_msgSend(actionCopy, "selectedTitleIndex")}];
   }
 }
 
-- (void)segmentedControl:(id)a3 didSelectSegmentIndex:(int64_t)a4
+- (void)segmentedControl:(id)control didSelectSegmentIndex:(int64_t)index
 {
-  v5 = [(NSArray *)self->_columnViews firstObject];
-  [v5 setSelectedViewControllerIndex:a4];
+  firstObject = [(NSArray *)self->_columnViews firstObject];
+  [firstObject setSelectedViewControllerIndex:index];
 }
 
-- (id)_headerViewWithViewControllers:(id)a3
+- (id)_headerViewWithViewControllers:(id)controllers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = objc_alloc_init(SKUIChartColumnHeaderView);
   [(SKUIChartColumnHeaderView *)v5 addTarget:self action:sel__headerViewAction_ forControlEvents:4096];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIChartColumnHeaderView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SKUIChartColumnHeaderView *)v5 setBackgroundColor:clearColor];
 
   [(SKUIChartColumnHeaderView *)v5 sizeToFit];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -312,7 +312,7 @@ LABEL_13:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v4;
+  v8 = controllersCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -327,8 +327,8 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) title];
-        [v7 addObject:v13];
+        title = [*(*(&v15 + 1) + 8 * i) title];
+        [v7 addObject:title];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -348,7 +348,7 @@ LABEL_13:
   v51 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v54 = self;
+  selfCopy = self;
   v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v72 = 0u;
   v73 = 0u;
@@ -369,10 +369,10 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v72 + 1) + 8 * i) selectedViewController];
-        if (v9)
+        selectedViewController = [*(*(&v72 + 1) + 8 * i) selectedViewController];
+        if (selectedViewController)
         {
-          [v55 addObject:v9];
+          [v55 addObject:selectedViewController];
         }
       }
 
@@ -382,7 +382,7 @@ LABEL_13:
     while (v6);
   }
 
-  if (v54->_columnChangeAnimationCount <= 0)
+  if (selfCopy->_columnChangeAnimationCount <= 0)
   {
     v10 = &OBJC_IVAR___SKUIChartColumnsView__numberOfVisibleColumns;
   }
@@ -392,14 +392,14 @@ LABEL_13:
     v10 = &OBJC_IVAR___SKUIChartColumnsView__animatingToNumberOfVisibleColumns;
   }
 
-  v53 = *(&v54->super.super.super.isa + *v10);
-  v11 = [(NSArray *)v54->_allViewControllers count];
+  v53 = *(&selfCopy->super.super.super.isa + *v10);
+  v11 = [(NSArray *)selfCopy->_allViewControllers count];
   if (v11 >= 1)
   {
     v12 = v11;
     for (j = 0; j != v12; ++j)
     {
-      v14 = [(NSArray *)v54->_allViewControllers objectAtIndex:j];
+      v14 = [(NSArray *)selfCopy->_allViewControllers objectAtIndex:j];
       if ([v3 count] <= (j % v53))
       {
         v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v14, 0}];
@@ -418,12 +418,12 @@ LABEL_13:
     }
   }
 
-  if (v53 == 1 && !v54->_segmentedControl)
+  if (v53 == 1 && !selfCopy->_segmentedControl)
   {
     v18 = objc_alloc_init(SKUIFlexibleSegmentedControl);
-    v19 = v54;
-    segmentedControl = v54->_segmentedControl;
-    v54->_segmentedControl = v18;
+    v19 = selfCopy;
+    segmentedControl = selfCopy->_segmentedControl;
+    selfCopy->_segmentedControl = v18;
 
     [(SKUIFlexibleSegmentedControl *)v19->_segmentedControl setDelegate:v19];
     [(UIView *)v19->_headerBackgroundView addSubview:v19->_segmentedControl];
@@ -440,7 +440,7 @@ LABEL_13:
   {
     v21 = *v69;
     v22 = 0x7FFFFFFFFFFFFFFFLL;
-    v23 = v54;
+    v23 = selfCopy;
     v47 = *v69;
     do
     {
@@ -494,7 +494,7 @@ LABEL_13:
 
           v22 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_37:
-          v23 = v54;
+          v23 = selfCopy;
         }
 
         if (v53 < 2)
@@ -519,8 +519,8 @@ LABEL_37:
                   objc_enumerationMutation(v34);
                 }
 
-                v39 = [*(*(&v60 + 1) + 8 * n) title];
-                [v33 addObject:v39];
+                title = [*(*(&v60 + 1) + 8 * n) title];
+                [v33 addObject:title];
               }
 
               v36 = [v34 countByEnumeratingWithState:&v60 objects:v77 count:16];
@@ -530,7 +530,7 @@ LABEL_37:
           }
 
           [v49 addObjectsFromArray:v33];
-          v23 = v54;
+          v23 = selfCopy;
           v21 = v47;
         }
 
@@ -554,7 +554,7 @@ LABEL_37:
   else
   {
     v22 = 0x7FFFFFFFFFFFFFFFLL;
-    v23 = v54;
+    v23 = selfCopy;
   }
 
   [(SKUIFlexibleSegmentedControl *)v23->_segmentedControl setItemTitles:v49];

@@ -1,38 +1,38 @@
 @interface ICDocCamRecropTransitionAnimator
 - (CGRect)containerViewFrame;
-- (ICDocCamRecropTransitionAnimator)initWithImage:(id)a3 unfilteredImage:(id)a4 orientation:(int64_t)a5 indexPath:(id)a6 duration:(double)a7 completion:(id)a8;
+- (ICDocCamRecropTransitionAnimator)initWithImage:(id)image unfilteredImage:(id)unfilteredImage orientation:(int64_t)orientation indexPath:(id)path duration:(double)duration completion:(id)completion;
 - (UIView)startView;
-- (double)matrixTransformingToUnitSquareWithPoints:(double)a1 y0:(double)a2 x1:(double)a3 y1:(double)a4 x2:(double)a5 y2:(double)a6 x3:(double)a7 y3:(double)a8;
-- (id)imageMeshTransform:(BOOL)a3;
-- (id)scrollViewTransform:(BOOL)a3;
-- (uint64_t)matrixTransformingQuadForOverlayToImageView:(_BYTE *)a3;
-- (void)animateTransition:(id)a3;
-- (void)performPopTransitionFromViewController:(id)a3 toViewController:(id)a4 transitionContext:(id)a5;
-- (void)performPushTransitionFromViewController:(id)a3 toViewController:(id)a4 transitionContext:(id)a5;
-- (void)performSimpleFadeInFromViewController:(id)a3 toViewController:(id)a4 transitionContext:(id)a5;
-- (void)sortPoints:(CGPoint *)a3 sorted:(CGPoint *)a4;
+- (double)matrixTransformingToUnitSquareWithPoints:(double)points y0:(double)y0 x1:(double)x1 y1:(double)y1 x2:(double)x2 y2:(double)y2 x3:(double)x3 y3:(double)y3;
+- (id)imageMeshTransform:(BOOL)transform;
+- (id)scrollViewTransform:(BOOL)transform;
+- (uint64_t)matrixTransformingQuadForOverlayToImageView:(_BYTE *)view;
+- (void)animateTransition:(id)transition;
+- (void)performPopTransitionFromViewController:(id)controller toViewController:(id)viewController transitionContext:(id)context;
+- (void)performPushTransitionFromViewController:(id)controller toViewController:(id)viewController transitionContext:(id)context;
+- (void)performSimpleFadeInFromViewController:(id)controller toViewController:(id)viewController transitionContext:(id)context;
+- (void)sortPoints:(CGPoint *)points sorted:(CGPoint *)sorted;
 @end
 
 @implementation ICDocCamRecropTransitionAnimator
 
-- (ICDocCamRecropTransitionAnimator)initWithImage:(id)a3 unfilteredImage:(id)a4 orientation:(int64_t)a5 indexPath:(id)a6 duration:(double)a7 completion:(id)a8
+- (ICDocCamRecropTransitionAnimator)initWithImage:(id)image unfilteredImage:(id)unfilteredImage orientation:(int64_t)orientation indexPath:(id)path duration:(double)duration completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
+  imageCopy = image;
+  unfilteredImageCopy = unfilteredImage;
+  pathCopy = path;
+  completionCopy = completion;
   v24.receiver = self;
   v24.super_class = ICDocCamRecropTransitionAnimator;
   v19 = [(ICDocCamRecropTransitionAnimator *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_filteredImage, a3);
-    objc_storeStrong(&v20->_unfilteredImage, a4);
-    v20->_orientation = a5;
-    objc_storeStrong(&v20->_indexPath, a6);
-    v20->_duration = a7;
-    v21 = _Block_copy(v18);
+    objc_storeStrong(&v19->_filteredImage, image);
+    objc_storeStrong(&v20->_unfilteredImage, unfilteredImage);
+    v20->_orientation = orientation;
+    objc_storeStrong(&v20->_indexPath, path);
+    v20->_duration = duration;
+    v21 = _Block_copy(completionCopy);
     completion = v20->_completion;
     v20->_completion = v21;
   }
@@ -40,62 +40,62 @@
   return v20;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v4 = *MEMORY[0x277D77240];
-  v5 = a3;
-  v8 = [v5 viewControllerForKey:v4];
-  v6 = [v5 viewControllerForKey:*MEMORY[0x277D77230]];
-  v7 = [v5 containerView];
-  [v7 frame];
+  transitionCopy = transition;
+  v8 = [transitionCopy viewControllerForKey:v4];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  containerView = [transitionCopy containerView];
+  [containerView frame];
   [(ICDocCamRecropTransitionAnimator *)self setContainerViewFrame:?];
 
   if ([(ICDocCamRecropTransitionAnimator *)self presenting])
   {
-    [(ICDocCamRecropTransitionAnimator *)self performPushTransitionFromViewController:v6 toViewController:v8 transitionContext:v5];
+    [(ICDocCamRecropTransitionAnimator *)self performPushTransitionFromViewController:v6 toViewController:v8 transitionContext:transitionCopy];
   }
 
   else
   {
-    [(ICDocCamRecropTransitionAnimator *)self performPopTransitionFromViewController:v6 toViewController:v8 transitionContext:v5];
+    [(ICDocCamRecropTransitionAnimator *)self performPopTransitionFromViewController:v6 toViewController:v8 transitionContext:transitionCopy];
   }
 }
 
-- (void)performPushTransitionFromViewController:(id)a3 toViewController:(id)a4 transitionContext:(id)a5
+- (void)performPushTransitionFromViewController:(id)controller toViewController:(id)viewController transitionContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 containerView];
-  v12 = [v9 view];
-  [v11 addSubview:v12];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  contextCopy = context;
+  containerView = [contextCopy containerView];
+  view = [viewControllerCopy view];
+  [containerView addSubview:view];
 
-  [v10 finalFrameForViewController:v9];
+  [contextCopy finalFrameForViewController:viewControllerCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v9 view];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  view2 = [viewControllerCopy view];
+  [view2 setFrame:{v14, v16, v18, v20}];
 
-  v22 = [v9 view];
-  [v22 setNeedsLayout];
+  view3 = [viewControllerCopy view];
+  [view3 setNeedsLayout];
 
-  v23 = [v9 view];
-  [v23 layoutIfNeeded];
+  view4 = [viewControllerCopy view];
+  [view4 layoutIfNeeded];
 
-  v24 = [v9 view];
-  v25 = [v24 layer];
-  [v25 setOpacity:0.0];
+  view5 = [viewControllerCopy view];
+  layer = [view5 layer];
+  [layer setOpacity:0.0];
 
   v26 = objc_opt_class();
-  v27 = DCDynamicCast(v26, v9);
+  v27 = DCDynamicCast(v26, viewControllerCopy);
   v28 = objc_opt_class();
-  v103 = v8;
-  v29 = DCDynamicCast(v28, v8);
-  v30 = [v27 quadForOverlay];
-  v31 = [(ICDocCamRecropTransitionAnimator *)self indexPath];
-  [v29 recropTargetForIndexPath:v31];
+  v103 = controllerCopy;
+  v29 = DCDynamicCast(v28, controllerCopy);
+  quadForOverlay = [v27 quadForOverlay];
+  indexPath = [(ICDocCamRecropTransitionAnimator *)self indexPath];
+  [v29 recropTargetForIndexPath:indexPath];
   v33 = v32;
   v35 = v34;
   v37 = v36;
@@ -104,7 +104,7 @@
   v40 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v33, v35, v37, v39}];
   v41 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v33, v35, v37, v39}];
   [(ICDocCamRecropTransitionAnimator *)self setStartView:v41];
-  [(ICDocCamRecropTransitionAnimator *)self setQuadForOverlay:v30];
+  [(ICDocCamRecropTransitionAnimator *)self setQuadForOverlay:quadForOverlay];
   v42 = [(ICDocCamRecropTransitionAnimator *)self scrollViewTransform:0];
   v104 = [(ICDocCamRecropTransitionAnimator *)self scrollViewTransform:1];
   v43 = [(ICDocCamRecropTransitionAnimator *)self imageMeshTransform:0];
@@ -115,50 +115,50 @@
     [v27 placard];
     v45 = v96 = v42;
     [v45 layer];
-    v46 = v98 = v30;
+    v46 = v98 = quadForOverlay;
     [v46 setOpacity:0.0];
 
-    v47 = [v27 scrollView];
-    v48 = [v47 layer];
-    [v48 setOpacity:0.0];
+    scrollView = [v27 scrollView];
+    layer2 = [scrollView layer];
+    [layer2 setOpacity:0.0];
 
-    v49 = [v27 overlay];
-    v50 = [v49 layer];
-    [v50 setOpacity:0.0];
+    overlay = [v27 overlay];
+    layer3 = [overlay layer];
+    [layer3 setOpacity:0.0];
 
     [v40 setContentMode:0];
-    v51 = [(ICDocCamRecropTransitionAnimator *)self unfilteredImage];
-    [v40 setImage:v51];
+    unfilteredImage = [(ICDocCamRecropTransitionAnimator *)self unfilteredImage];
+    [v40 setImage:unfilteredImage];
 
-    v52 = [v10 containerView];
-    [v52 addSubview:v40];
+    containerView2 = [contextCopy containerView];
+    [containerView2 addSubview:v40];
 
     [v41 setContentMode:0];
-    v53 = [(ICDocCamRecropTransitionAnimator *)self filteredImage];
-    [v41 setImage:v53];
+    filteredImage = [(ICDocCamRecropTransitionAnimator *)self filteredImage];
+    [v41 setImage:filteredImage];
 
-    v54 = [v10 containerView];
-    [v54 addSubview:v41];
+    containerView3 = [contextCopy containerView];
+    [containerView3 addSubview:v41];
 
-    v55 = [v29 bottomToolbar];
-    [v55 frame];
+    bottomToolbar = [v29 bottomToolbar];
+    [bottomToolbar frame];
     v57 = v56;
-    [v55 frame];
+    [bottomToolbar frame];
     v59 = v58;
-    [v55 frame];
+    [bottomToolbar frame];
     v61 = v60;
-    v95 = v55;
-    [v55 frame];
+    v95 = bottomToolbar;
+    [bottomToolbar frame];
     v63 = v62;
-    v64 = [v29 view];
-    [v64 safeAreaInsets];
+    view6 = [v29 view];
+    [view6 safeAreaInsets];
     v66 = v63 + v65;
 
-    v67 = [v55 resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v61, v66, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+    v67 = [bottomToolbar resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v61, v66, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
     [v67 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v67 setFrame:{v57, v59, v61, v66}];
-    v68 = [v10 containerView];
-    [v68 addSubview:v67];
+    containerView4 = [contextCopy containerView];
+    [containerView4 addSubview:v67];
 
     [MEMORY[0x277CD9FF0] begin];
     v99 = v29;
@@ -167,16 +167,16 @@
     v105[1] = 3221225472;
     v105[2] = __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewController_toViewController_transitionContext___block_invoke;
     v105[3] = &unk_278F93208;
-    v106 = v10;
-    v101 = v10;
+    v106 = contextCopy;
+    v101 = contextCopy;
     v70 = v41;
     v107 = v70;
     v71 = v40;
     v108 = v71;
     v109 = v67;
     v110 = v27;
-    v111 = self;
-    v93 = v9;
+    selfCopy = self;
+    v93 = viewControllerCopy;
     v112 = v93;
     v94 = v67;
     [v69 setCompletionBlock:v105];
@@ -197,11 +197,11 @@
     v78 = v97 = v40;
     [v72 setTimingFunction:v78];
 
-    v79 = [v70 layer];
-    [v79 addAnimation:v72 forKey:@"meshTransform"];
+    layer4 = [v70 layer];
+    [layer4 addAnimation:v72 forKey:@"meshTransform"];
 
-    v80 = [v71 layer];
-    [v80 addAnimation:v72 forKey:@"meshTransform"];
+    layer5 = [v71 layer];
+    [layer5 addAnimation:v72 forKey:@"meshTransform"];
 
     v81 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
     [v81 setFromValue:&unk_285C6D3A8];
@@ -216,8 +216,8 @@
     v85 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
     [v81 setTimingFunction:v85];
 
-    v86 = [v70 layer];
-    [v86 addAnimation:v81 forKey:@"opacity"];
+    layer6 = [v70 layer];
+    [layer6 addAnimation:v81 forKey:@"opacity"];
 
     v87 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
     v40 = v97;
@@ -231,16 +231,16 @@
     v89 = [MEMORY[0x277CD9EF8] functionWithName:v84];
     [v87 setTimingFunction:v89];
 
-    v90 = [v93 view];
-    v91 = [v90 layer];
-    v30 = v98;
-    [v91 addAnimation:v87 forKey:@"opacity"];
+    view7 = [v93 view];
+    layer7 = [view7 layer];
+    quadForOverlay = v98;
+    [layer7 addAnimation:v87 forKey:@"opacity"];
 
     v29 = v99;
     v43 = v92;
     [MEMORY[0x277CD9FF0] commit];
 
-    v10 = v101;
+    contextCopy = v101;
     v27 = v100;
 
     v42 = v96;
@@ -248,7 +248,7 @@
 
   else
   {
-    [(ICDocCamRecropTransitionAnimator *)self performSimpleFadeInFromViewController:v103 toViewController:v9 transitionContext:v10];
+    [(ICDocCamRecropTransitionAnimator *)self performSimpleFadeInFromViewController:v103 toViewController:viewControllerCopy transitionContext:contextCopy];
   }
 }
 
@@ -347,37 +347,37 @@ void __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewContro
   }
 }
 
-- (void)performPopTransitionFromViewController:(id)a3 toViewController:(id)a4 transitionContext:(id)a5
+- (void)performPopTransitionFromViewController:(id)controller toViewController:(id)viewController transitionContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v9 containerView];
-  v12 = [v8 view];
-  [v11 addSubview:v12];
+  viewControllerCopy = viewController;
+  contextCopy = context;
+  controllerCopy = controller;
+  containerView = [contextCopy containerView];
+  view = [viewControllerCopy view];
+  [containerView addSubview:view];
 
-  [v9 finalFrameForViewController:v8];
+  [contextCopy finalFrameForViewController:viewControllerCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v8 view];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  view2 = [viewControllerCopy view];
+  [view2 setFrame:{v14, v16, v18, v20}];
 
-  v22 = [v8 view];
-  [v22 setNeedsLayout];
+  view3 = [viewControllerCopy view];
+  [view3 setNeedsLayout];
 
-  v23 = [v8 view];
-  [v23 layoutIfNeeded];
+  view4 = [viewControllerCopy view];
+  [view4 layoutIfNeeded];
 
   v24 = objc_opt_class();
-  v106 = DCDynamicCast(v24, v10);
+  v106 = DCDynamicCast(v24, controllerCopy);
 
   v25 = objc_opt_class();
-  v26 = DCDynamicCast(v25, v8);
+  v26 = DCDynamicCast(v25, viewControllerCopy);
   [v26 resetImageCentering];
-  v27 = [(ICDocCamRecropTransitionAnimator *)self indexPath];
-  [v26 recropTargetForIndexPath:v27];
+  indexPath = [(ICDocCamRecropTransitionAnimator *)self indexPath];
+  [v26 recropTargetForIndexPath:indexPath];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -388,58 +388,58 @@ void __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewContro
   [v36 setAccessibilityLabel:@"unfilteredImageView"];
   [v37 setAccessibilityLabel:@"filteredImageView"];
   [(ICDocCamRecropTransitionAnimator *)self setStartView:v37];
-  v38 = [v106 finalQuadFromOverlay];
-  [(ICDocCamRecropTransitionAnimator *)self setQuadForOverlay:v38];
+  finalQuadFromOverlay = [v106 finalQuadFromOverlay];
+  [(ICDocCamRecropTransitionAnimator *)self setQuadForOverlay:finalQuadFromOverlay];
 
   v109 = [(ICDocCamRecropTransitionAnimator *)self imageMeshTransform:1];
   v108 = [(ICDocCamRecropTransitionAnimator *)self imageMeshTransform:0];
-  v39 = [v8 view];
-  v40 = [v39 layer];
-  [v40 setOpacity:0.0];
+  view5 = [viewControllerCopy view];
+  layer = [view5 layer];
+  [layer setOpacity:0.0];
 
   [v37 setContentMode:0];
-  v41 = [(ICDocCamRecropTransitionAnimator *)self filteredImage];
-  [v37 setImage:v41];
+  filteredImage = [(ICDocCamRecropTransitionAnimator *)self filteredImage];
+  [v37 setImage:filteredImage];
 
-  v42 = [v9 containerView];
-  [v42 addSubview:v37];
+  containerView2 = [contextCopy containerView];
+  [containerView2 addSubview:v37];
 
   [v36 setContentMode:0];
-  v43 = [(ICDocCamRecropTransitionAnimator *)self unfilteredImage];
-  [v36 setImage:v43];
+  unfilteredImage = [(ICDocCamRecropTransitionAnimator *)self unfilteredImage];
+  [v36 setImage:unfilteredImage];
 
-  v44 = [v9 containerView];
-  [v44 addSubview:v36];
+  containerView3 = [contextCopy containerView];
+  [containerView3 addSubview:v36];
 
-  v45 = [v26 pageViewController];
-  v46 = [v45 view];
-  v47 = [v46 layer];
-  [v47 setOpacity:0.0];
+  pageViewController = [v26 pageViewController];
+  view6 = [pageViewController view];
+  layer2 = [view6 layer];
+  [layer2 setOpacity:0.0];
 
-  v48 = [v26 bottomToolbar];
-  [v48 frame];
+  bottomToolbar = [v26 bottomToolbar];
+  [bottomToolbar frame];
   v50 = v49;
-  [v48 frame];
+  [bottomToolbar frame];
   v52 = v51;
-  [v48 frame];
+  [bottomToolbar frame];
   v54 = v53;
-  v105 = v48;
-  [v48 frame];
+  v105 = bottomToolbar;
+  [bottomToolbar frame];
   v56 = v55;
-  v57 = [v26 view];
-  [v57 safeAreaInsets];
+  view7 = [v26 view];
+  [view7 safeAreaInsets];
   v59 = v56 + v58;
 
-  v60 = [v48 resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v54, v59, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  v60 = [bottomToolbar resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v54, v59, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v60 setFrame:{v50, v52, v54, v59}];
-  v61 = [v9 containerView];
-  [v61 addSubview:v60];
+  containerView4 = [contextCopy containerView];
+  [containerView4 addSubview:v60];
 
-  v62 = [v26 topToolbar];
-  v63 = [v8 view];
-  v64 = [v63 layer];
-  [v64 setOpacity:0.0];
+  topToolbar = [v26 topToolbar];
+  view8 = [viewControllerCopy view];
+  layer3 = [view8 layer];
+  [layer3 setOpacity:0.0];
 
   [MEMORY[0x277CD9FF0] begin];
   v65 = MEMORY[0x277CD9FF0];
@@ -447,21 +447,21 @@ void __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewContro
   v110[1] = 3221225472;
   v110[2] = __110__ICDocCamRecropTransitionAnimator_performPopTransitionFromViewController_toViewController_transitionContext___block_invoke;
   v110[3] = &unk_278F93230;
-  v111 = v9;
+  v111 = contextCopy;
   v112 = v26;
-  v113 = v8;
+  v113 = viewControllerCopy;
   v114 = v37;
   v115 = v36;
   v116 = v60;
-  v117 = v62;
-  v118 = self;
-  v104 = v62;
+  v117 = topToolbar;
+  selfCopy = self;
+  v104 = topToolbar;
   v103 = v60;
   v66 = v36;
   v100 = v37;
-  v107 = v8;
+  v107 = viewControllerCopy;
   v102 = v26;
-  v101 = v9;
+  v101 = contextCopy;
   [v65 setCompletionBlock:v110];
   [(ICDocCamRecropTransitionAnimator *)self duration];
   v68 = v67 + -0.2;
@@ -478,13 +478,13 @@ void __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewContro
   v74 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v71 :0.0 :v72 :v73];
   [v69 setTimingFunction:v74];
 
-  v75 = [v100 layer];
-  [v75 addAnimation:v69 forKey:@"meshTransform"];
+  layer4 = [v100 layer];
+  [layer4 addAnimation:v69 forKey:@"meshTransform"];
 
   v76 = v66;
   v99 = v66;
-  v77 = [v66 layer];
-  [v77 addAnimation:v69 forKey:@"meshTransform"];
+  layer5 = [v66 layer];
+  [layer5 addAnimation:v69 forKey:@"meshTransform"];
 
   v78 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v78 setFromValue:&unk_285C6D3A8];
@@ -498,8 +498,8 @@ void __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewContro
   v81 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v78 setTimingFunction:v81];
 
-  v82 = [v76 layer];
-  [v82 addAnimation:v78 forKey:@"opacity"];
+  layer6 = [v76 layer];
+  [layer6 addAnimation:v78 forKey:@"opacity"];
 
   v83 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v83 setFromValue:&unk_285C6D390];
@@ -512,9 +512,9 @@ void __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewContro
   v85 = [MEMORY[0x277CD9EF8] functionWithName:v80];
   [v83 setTimingFunction:v85];
 
-  v86 = [v107 view];
-  v87 = [v86 layer];
-  [v87 addAnimation:v83 forKey:@"opacity"];
+  view9 = [v107 view];
+  layer7 = [view9 layer];
+  [layer7 addAnimation:v83 forKey:@"opacity"];
 
   v88 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v88 setFromValue:&unk_285C6D3A8];
@@ -527,21 +527,21 @@ void __111__ICDocCamRecropTransitionAnimator_performPushTransitionFromViewContro
   v90 = [MEMORY[0x277CD9EF8] functionWithName:v80];
   [v88 setTimingFunction:v90];
 
-  v91 = [v106 overlay];
-  v92 = [v91 layer];
-  [v92 addAnimation:v88 forKey:@"opacity"];
+  overlay = [v106 overlay];
+  layer8 = [overlay layer];
+  [layer8 addAnimation:v88 forKey:@"opacity"];
 
-  v93 = [v106 placard];
-  v94 = [v93 layer];
-  [v94 addAnimation:v88 forKey:@"opacity"];
+  placard = [v106 placard];
+  layer9 = [placard layer];
+  [layer9 addAnimation:v88 forKey:@"opacity"];
 
-  v95 = [v106 backgroundImageView];
-  v96 = [v95 layer];
-  [v96 addAnimation:v88 forKey:@"opacity"];
+  backgroundImageView = [v106 backgroundImageView];
+  layer10 = [backgroundImageView layer];
+  [layer10 addAnimation:v88 forKey:@"opacity"];
 
-  v97 = [v106 imageView];
-  v98 = [v97 layer];
-  [v98 addAnimation:v88 forKey:@"opacity"];
+  imageView = [v106 imageView];
+  layer11 = [imageView layer];
+  [layer11 addAnimation:v88 forKey:@"opacity"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -613,13 +613,13 @@ void __110__ICDocCamRecropTransitionAnimator_performPopTransitionFromViewControl
   }
 }
 
-- (void)performSimpleFadeInFromViewController:(id)a3 toViewController:(id)a4 transitionContext:(id)a5
+- (void)performSimpleFadeInFromViewController:(id)controller toViewController:(id)viewController transitionContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 view];
-  v10 = [v9 layer];
-  [v10 setOpacity:0.0];
+  viewControllerCopy = viewController;
+  contextCopy = context;
+  view = [viewControllerCopy view];
+  layer = [view layer];
+  [layer setOpacity:0.0];
 
   [MEMORY[0x277CD9FF0] begin];
   v11 = MEMORY[0x277CD9FF0];
@@ -627,11 +627,11 @@ void __110__ICDocCamRecropTransitionAnimator_performPopTransitionFromViewControl
   v19[1] = 3221225472;
   v19[2] = __109__ICDocCamRecropTransitionAnimator_performSimpleFadeInFromViewController_toViewController_transitionContext___block_invoke;
   v19[3] = &unk_278F93258;
-  v20 = v8;
-  v21 = v7;
-  v22 = self;
-  v12 = v7;
-  v13 = v8;
+  v20 = contextCopy;
+  v21 = viewControllerCopy;
+  selfCopy = self;
+  v12 = viewControllerCopy;
+  v13 = contextCopy;
   [v11 setCompletionBlock:v19];
   v14 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v14 setFromValue:&unk_285C6D390];
@@ -645,9 +645,9 @@ void __110__ICDocCamRecropTransitionAnimator_performPopTransitionFromViewControl
   v16 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v14 setTimingFunction:v16];
 
-  v17 = [v12 view];
-  v18 = [v17 layer];
-  [v18 addAnimation:v14 forKey:@"opacity"];
+  view2 = [v12 view];
+  layer2 = [view2 layer];
+  [layer2 addAnimation:v14 forKey:@"opacity"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -669,17 +669,17 @@ void __109__ICDocCamRecropTransitionAnimator_performSimpleFadeInFromViewControll
   }
 }
 
-- (id)imageMeshTransform:(BOOL)a3
+- (id)imageMeshTransform:(BOOL)transform
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CD9F18] meshTransform];
-  v6 = v5;
-  if (!v3)
+  transformCopy = transform;
+  meshTransform = [MEMORY[0x277CD9F18] meshTransform];
+  v6 = meshTransform;
+  if (!transformCopy)
   {
     v83 = xmmword_2492F7870;
     v84 = xmmword_2492F7870;
     v85 = 0;
-    [v5 addVertex:&v83];
+    [meshTransform addVertex:&v83];
     __asm { FMOV            V0.2D, #1.0 }
 
     v83 = _Q0;
@@ -703,8 +703,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [(ICDocCamRecropTransitionAnimator *)self startView];
-  [v7 frame];
+  startView = [(ICDocCamRecropTransitionAnimator *)self startView];
+  [startView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -713,45 +713,45 @@ LABEL_12:
   v86 = 0uLL;
   if (![(ICDocCamRecropTransitionAnimator *)self orientation])
   {
-    v35 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v35 topLeft];
+    quadForOverlay = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay topLeft];
     v18 = v36;
     v20 = v37;
 
-    v38 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v38 topRight];
+    quadForOverlay2 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay2 topRight];
     v81 = v40;
     v82 = v39;
 
-    v41 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v41 bottomLeft];
+    quadForOverlay3 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay3 bottomLeft];
     v79 = v43;
     v80 = v42;
 
-    v27 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v27 bottomRight];
+    quadForOverlay4 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay4 bottomRight];
     goto LABEL_11;
   }
 
   if ([(ICDocCamRecropTransitionAnimator *)self orientation]== 2)
   {
-    v16 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v16 topRight];
+    quadForOverlay5 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay5 topRight];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v21 bottomRight];
+    quadForOverlay6 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay6 bottomRight];
     v81 = v23;
     v82 = v22;
 
-    v24 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v24 topLeft];
+    quadForOverlay7 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay7 topLeft];
     v79 = v26;
     v80 = v25;
 
-    v27 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v27 bottomLeft];
+    quadForOverlay4 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay4 bottomLeft];
 LABEL_11:
     v77 = v29;
     v78 = v28;
@@ -794,45 +794,45 @@ LABEL_11:
 
   if ([(ICDocCamRecropTransitionAnimator *)self orientation]== 3)
   {
-    v44 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v44 bottomLeft];
+    quadForOverlay8 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay8 bottomLeft];
     v18 = v45;
     v20 = v46;
 
-    v47 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v47 topLeft];
+    quadForOverlay9 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay9 topLeft];
     v81 = v49;
     v82 = v48;
 
-    v50 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v50 bottomRight];
+    quadForOverlay10 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay10 bottomRight];
     v79 = v52;
     v80 = v51;
 
-    v27 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v27 topRight];
+    quadForOverlay4 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay4 topRight];
     goto LABEL_11;
   }
 
   if ([(ICDocCamRecropTransitionAnimator *)self orientation]== 1)
   {
-    v53 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v53 bottomRight];
+    quadForOverlay11 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay11 bottomRight];
     v18 = v54;
     v20 = v55;
 
-    v56 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v56 bottomLeft];
+    quadForOverlay12 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay12 bottomLeft];
     v81 = v58;
     v82 = v57;
 
-    v59 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v59 topRight];
+    quadForOverlay13 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay13 topRight];
     v79 = v61;
     v80 = v60;
 
-    v27 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
-    [v27 topLeft];
+    quadForOverlay4 = [(ICDocCamRecropTransitionAnimator *)self quadForOverlay];
+    [quadForOverlay4 topLeft];
     goto LABEL_11;
   }
 
@@ -842,17 +842,17 @@ LABEL_13:
   return v75;
 }
 
-- (id)scrollViewTransform:(BOOL)a3
+- (id)scrollViewTransform:(BOOL)transform
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CD9F18] meshTransform];
-  v6 = v5;
-  if (v3)
+  transformCopy = transform;
+  meshTransform = [MEMORY[0x277CD9F18] meshTransform];
+  v6 = meshTransform;
+  if (transformCopy)
   {
     v56 = xmmword_2492F7870;
     v57 = xmmword_2492F7870;
     v58 = 0;
-    [v5 addVertex:&v56];
+    [meshTransform addVertex:&v56];
     __asm { FMOV            V0.2D, #1.0 }
 
     v56 = _Q0;
@@ -978,47 +978,47 @@ LABEL_7:
   return v41;
 }
 
-- (uint64_t)matrixTransformingQuadForOverlayToImageView:(_BYTE *)a3
+- (uint64_t)matrixTransformingQuadForOverlayToImageView:(_BYTE *)view
 {
   v55[8] = *MEMORY[0x277D85DE8];
-  v5 = [a1 startView];
-  [v5 frame];
+  startView = [self startView];
+  [startView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [a1 quadForOverlay];
-  [v14 topLeft];
+  quadForOverlay = [self quadForOverlay];
+  [quadForOverlay topLeft];
   v16 = v15;
-  v17 = [a1 quadForOverlay];
-  [v17 topLeft];
+  quadForOverlay2 = [self quadForOverlay];
+  [quadForOverlay2 topLeft];
   v55[0] = v16;
   v55[1] = v18;
-  v19 = [a1 quadForOverlay];
-  [v19 topRight];
+  quadForOverlay3 = [self quadForOverlay];
+  [quadForOverlay3 topRight];
   v21 = v20;
-  v22 = [a1 quadForOverlay];
-  [v22 topRight];
+  quadForOverlay4 = [self quadForOverlay];
+  [quadForOverlay4 topRight];
   v55[2] = v21;
   v55[3] = v23;
-  v24 = [a1 quadForOverlay];
-  [v24 bottomRight];
+  quadForOverlay5 = [self quadForOverlay];
+  [quadForOverlay5 bottomRight];
   v26 = v25;
-  v27 = [a1 quadForOverlay];
-  [v27 bottomRight];
+  quadForOverlay6 = [self quadForOverlay];
+  [quadForOverlay6 bottomRight];
   v55[4] = v26;
   v55[5] = v28;
-  v29 = [a1 quadForOverlay];
-  [v29 bottomLeft];
+  quadForOverlay7 = [self quadForOverlay];
+  [quadForOverlay7 bottomLeft];
   v31 = v30;
-  v32 = [a1 quadForOverlay];
-  [v32 bottomLeft];
+  quadForOverlay8 = [self quadForOverlay];
+  [quadForOverlay8 bottomLeft];
   v55[6] = v31;
   v55[7] = v33;
 
-  [a1 sortPoints:v55 sorted:v54];
-  result = [a1 matrixTransformingToUnitSquareWithPoints:v54[0] y0:v54[1] x1:v54[2] y1:v54[3] x2:v54[4] y2:v54[5] x3:v54[6] y3:v54[7]];
+  [self sortPoints:v55 sorted:v54];
+  result = [self matrixTransformingToUnitSquareWithPoints:v54[0] y0:v54[1] x1:v54[2] y1:v54[3] x2:v54[4] y2:v54[5] x3:v54[6] y3:v54[7]];
   v36 = vmulq_f32(v35.columns[0], vmlaq_f32(vmulq_f32(vextq_s8(vextq_s8(v35.columns[2], v35.columns[2], 0xCuLL), v35.columns[2], 8uLL), vnegq_f32(vextq_s8(vuzp1q_s32(v35.columns[1], v35.columns[1]), v35.columns[1], 0xCuLL))), vextq_s8(vuzp1q_s32(v35.columns[2], v35.columns[2]), v35.columns[2], 0xCuLL), vextq_s8(vextq_s8(v35.columns[1], v35.columns[1], 0xCuLL), v35.columns[1], 8uLL)));
   if (fabsf(v36.f32[2] + vaddv_f32(*v36.f32)) >= 0.01)
   {
@@ -1065,7 +1065,7 @@ LABEL_7:
     v63.origin.y = v9;
     v63.size.width = v11;
     v63.size.height = v13;
-    result = [a1 matrixTransformingToUnitSquareWithPoints:MinX y0:MaxY x1:MaxX y1:v38 x2:v39 y2:MinY x3:v41 y3:CGRectGetMinY(v63)];
+    result = [self matrixTransformingToUnitSquareWithPoints:MinX y0:MaxY x1:MaxX y1:v38 x2:v39 y2:MinY x3:v41 y3:CGRectGetMinY(v63)];
     v45 = 0;
     v52[0] = v51;
     v52[1] = v50;
@@ -1078,27 +1078,27 @@ LABEL_7:
     }
 
     while (v45 != 3);
-    *a3 = 1;
+    *view = 1;
   }
 
   else
   {
-    *a3 = 0;
+    *view = 0;
   }
 
   return result;
 }
 
-- (void)sortPoints:(CGPoint *)a3 sorted:(CGPoint *)a4
+- (void)sortPoints:(CGPoint *)points sorted:(CGPoint *)sorted
 {
   v53[4] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a3->x, a3->y}];
+  v6 = [MEMORY[0x277CCAE60] valueWithCGPoint:{points->x, points->y}];
   v53[0] = v6;
-  v7 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a3[1].x, a3[1].y}];
+  v7 = [MEMORY[0x277CCAE60] valueWithCGPoint:{points[1].x, points[1].y}];
   v53[1] = v7;
-  v8 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a3[2].x, a3[2].y}];
+  v8 = [MEMORY[0x277CCAE60] valueWithCGPoint:{points[2].x, points[2].y}];
   v53[2] = v8;
-  v9 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a3[3].x, a3[3].y}];
+  v9 = [MEMORY[0x277CCAE60] valueWithCGPoint:{points[3].x, points[3].y}];
   v53[3] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:4];
 
@@ -1169,14 +1169,14 @@ LABEL_7:
     v41 = v52;
   }
 
-  a4->x = v44;
-  a4->y = v46;
-  a4[1].x = v39;
-  a4[1].y = v41;
-  a4[2].x = v34;
-  a4[2].y = v36;
-  a4[3].x = v29;
-  a4[3].y = v31;
+  sorted->x = v44;
+  sorted->y = v46;
+  sorted[1].x = v39;
+  sorted[1].y = v41;
+  sorted[2].x = v34;
+  sorted[2].y = v36;
+  sorted[3].x = v29;
+  sorted[3].y = v31;
 }
 
 uint64_t __54__ICDocCamRecropTransitionAnimator_sortPoints_sorted___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1195,27 +1195,27 @@ uint64_t __54__ICDocCamRecropTransitionAnimator_sortPoints_sorted___block_invoke
   return v11;
 }
 
-- (double)matrixTransformingToUnitSquareWithPoints:(double)a1 y0:(double)a2 x1:(double)a3 y1:(double)a4 x2:(double)a5 y2:(double)a6 x3:(double)a7 y3:(double)a8
+- (double)matrixTransformingToUnitSquareWithPoints:(double)points y0:(double)y0 x1:(double)x1 y1:(double)y1 x2:(double)x2 y2:(double)y2 x3:(double)x3 y3:(double)y3
 {
-  v8 = a1 - a3 + a5 - a7;
-  v9 = a2 - a4 + a6 - a8;
+  v8 = points - x1 + x2 - x3;
+  v9 = y0 - y1 + y2 - y3;
   if (v8 == 0.0 && v9 == 0.0)
   {
-    v10 = a3 - a1;
-    v11 = a4 - a2;
+    v10 = x1 - points;
+    v11 = y1 - y0;
   }
 
   else
   {
     v12 = v8;
     v13 = v9;
-    v14 = a7 - a5;
-    v15 = a8 - a6;
-    v16 = a3 - a5;
-    v17 = a4 - a6;
+    v14 = x3 - x2;
+    v15 = y3 - y2;
+    v16 = x1 - x2;
+    v17 = y1 - y2;
     v18 = (((v12 * v15) - (v13 * v14)) / ((v16 * v15) - (v17 * v14)));
-    v10 = a3 - a1 + v18 * a3;
-    v11 = a4 - a2 + v18 * a4;
+    v10 = x1 - points + v18 * x1;
+    v11 = y1 - y0 + v18 * y1;
   }
 
   *&v19 = v10;

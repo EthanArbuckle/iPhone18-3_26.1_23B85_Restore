@@ -1,36 +1,36 @@
 @interface CKDetailsControllerLocationHelper
-+ (id)mapURLFor:(id)a3 in:(id)a4;
-+ (int64_t)cellTypeForRow:(int64_t)a3 conversation:(id)a4 isFMFEnabled:(BOOL)a5 shouldShowFMFView:(BOOL)a6;
-+ (int64_t)numberOfCellsInLocationSectionWithConversation:(id)a3 isFMFEnabled:(BOOL)a4 isSharingLocation:(BOOL)a5 shouldShowFMFView:(BOOL)a6;
++ (id)mapURLFor:(id)for in:(id)in;
++ (int64_t)cellTypeForRow:(int64_t)row conversation:(id)conversation isFMFEnabled:(BOOL)enabled shouldShowFMFView:(BOOL)view;
++ (int64_t)numberOfCellsInLocationSectionWithConversation:(id)conversation isFMFEnabled:(BOOL)enabled isSharingLocation:(BOOL)location shouldShowFMFView:(BOOL)view;
 - (_TtC7ChatKit33CKDetailsControllerLocationHelper)init;
 @end
 
 @implementation CKDetailsControllerLocationHelper
 
-+ (int64_t)numberOfCellsInLocationSectionWithConversation:(id)a3 isFMFEnabled:(BOOL)a4 isSharingLocation:(BOOL)a5 shouldShowFMFView:(BOOL)a6
++ (int64_t)numberOfCellsInLocationSectionWithConversation:(id)conversation isFMFEnabled:(BOOL)enabled isSharingLocation:(BOOL)location shouldShowFMFView:(BOOL)view
 {
-  v9 = a3;
-  v10 = _s7ChatKit33CKDetailsControllerLocationHelperC015numberOfCellsInE7Section12conversation12isFMFEnabled0m7SharingE017shouldShowFMFViewSiSo14CKConversationC_S3btFZ_0(v9, a4, a5, a6);
+  conversationCopy = conversation;
+  v10 = _s7ChatKit33CKDetailsControllerLocationHelperC015numberOfCellsInE7Section12conversation12isFMFEnabled0m7SharingE017shouldShowFMFViewSiSo14CKConversationC_S3btFZ_0(conversationCopy, enabled, location, view);
 
   return v10;
 }
 
-+ (int64_t)cellTypeForRow:(int64_t)a3 conversation:(id)a4 isFMFEnabled:(BOOL)a5 shouldShowFMFView:(BOOL)a6
++ (int64_t)cellTypeForRow:(int64_t)row conversation:(id)conversation isFMFEnabled:(BOOL)enabled shouldShowFMFView:(BOOL)view
 {
-  v9 = a4;
-  v10 = _s7ChatKit33CKDetailsControllerLocationHelperC8cellType6forRow12conversation12isFMFEnabled17shouldShowFMFViewAA021CKLocationSectionCellH0OSi_So14CKConversationCS2btFZ_0(a3, v9, a5, a6);
+  conversationCopy = conversation;
+  v10 = _s7ChatKit33CKDetailsControllerLocationHelperC8cellType6forRow12conversation12isFMFEnabled17shouldShowFMFViewAA021CKLocationSectionCellH0OSi_So14CKConversationCS2btFZ_0(row, conversationCopy, enabled, view);
 
   return v10;
 }
 
-+ (id)mapURLFor:(id)a3 in:(id)a4
++ (id)mapURLFor:(id)for in:(id)in
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD55F20);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v17 - v7;
-  v9 = a3;
-  v10 = a4;
-  static CKDetailsControllerLocationHelper.mapURL(for:in:)(v9, v10, v8);
+  forCopy = for;
+  inCopy = in;
+  static CKDetailsControllerLocationHelper.mapURL(for:in:)(forCopy, inCopy, v8);
 
   v11 = sub_190D515F0();
   v12 = *(v11 - 8);

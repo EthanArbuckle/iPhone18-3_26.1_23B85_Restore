@@ -1,6 +1,6 @@
 @interface HDConceptResolutionConfiguration
 - (HDConceptResolutionConfiguration)init;
-- (HDConceptResolutionConfiguration)initWithCountryCode:(id)a3 recordCategoryType:(int64_t)a4 options:(unint64_t)a5;
+- (HDConceptResolutionConfiguration)initWithCountryCode:(id)code recordCategoryType:(int64_t)type options:(unint64_t)options;
 - (id)description;
 @end
 
@@ -16,20 +16,20 @@
   return 0;
 }
 
-- (HDConceptResolutionConfiguration)initWithCountryCode:(id)a3 recordCategoryType:(int64_t)a4 options:(unint64_t)a5
+- (HDConceptResolutionConfiguration)initWithCountryCode:(id)code recordCategoryType:(int64_t)type options:(unint64_t)options
 {
-  v8 = a3;
+  codeCopy = code;
   v13.receiver = self;
   v13.super_class = HDConceptResolutionConfiguration;
   v9 = [(HDConceptResolutionConfiguration *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [codeCopy copy];
     countryCode = v9->_countryCode;
     v9->_countryCode = v10;
 
-    v9->_recordCategoryType = a4;
-    v9->_options = a5;
+    v9->_recordCategoryType = type;
+    v9->_options = options;
   }
 
   return v9;

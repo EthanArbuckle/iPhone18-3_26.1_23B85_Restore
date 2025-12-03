@@ -1,47 +1,47 @@
 @interface AKTokenUpgrader
-- (AKTokenUpgrader)initWithClient:(id)a3;
-- (void)_performTokenUpgradeWithContext:(id)a3 completion:(id)a4;
-- (void)upgradeTokenWithContext:(id)a3 completion:(id)a4;
+- (AKTokenUpgrader)initWithClient:(id)client;
+- (void)_performTokenUpgradeWithContext:(id)context completion:(id)completion;
+- (void)upgradeTokenWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKTokenUpgrader
 
-- (AKTokenUpgrader)initWithClient:(id)a3
+- (AKTokenUpgrader)initWithClient:(id)client
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AKTokenUpgrader;
   v8 = [(AKTokenUpgrader *)&v9 init];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v11->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
     v4 = +[AKAccountManager sharedInstance];
-    accountManager = v11->_accountManager;
-    v11->_accountManager = v4;
+    accountManager = selfCopy->_accountManager;
+    selfCopy->_accountManager = v4;
     _objc_release(accountManager);
   }
 
-  v7 = _objc_retain(v11);
+  v7 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)upgradeTokenWithContext:(id)a3 completion:(id)a4
+- (void)upgradeTokenWithContext:(id)context completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, completion);
   if ([location[0] authenticationType] == 2 || objc_msgSend(location[0], "authenticationType") == 3)
   {
     v21 = _AKLogSystem();
@@ -68,7 +68,7 @@
 
   else
   {
-    v5 = v24;
+    v5 = selfCopy;
     v4 = location[0];
     v11 = _NSConcreteStackBlock;
     v12 = -1073741824;
@@ -87,28 +87,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performTokenUpgradeWithContext:(id)a3 completion:(id)a4
+- (void)_performTokenUpgradeWithContext:(id)context completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v18 = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [location[0] altDSID];
-    sub_1000194D4(v22, v7);
+    altDSID = [location[0] altDSID];
+    sub_1000194D4(v22, altDSID);
     _os_log_impl(&_mh_execute_header, v18, v17, "Attempting Upgrade Token request with altDSID %@...", v22, 0xCu);
-    _objc_release(v7);
+    _objc_release(altDSID);
   }
 
   objc_storeStrong(&v18, 0);
   v4 = [AKTokenUpgradeRequestProvider alloc];
   v16 = [(AKURLRequestProviderImpl *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyTokenUpgrade];
-  [(AKURLRequestProviderImpl *)v16 setClient:v21->_client];
+  [(AKURLRequestProviderImpl *)v16 setClient:selfCopy->_client];
   v5 = [AKServiceControllerImpl alloc];
   v15 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v16];
   v6 = v15;

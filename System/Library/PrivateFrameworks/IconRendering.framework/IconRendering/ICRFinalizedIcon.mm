@@ -1,19 +1,19 @@
 @interface ICRFinalizedIcon
-- (CGImage)renderedFullBleedIconWithConfiguration:(id)a3;
-- (CGImage)renderedFullBleedIconWithConfiguration:(id)a3 excludeChicletSpecularHighlights:(BOOL)a4;
-- (CGImage)renderedIconWithConfiguration:(id)a3;
-- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)a3 forDeviceClass:(int64_t)a4;
-- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)a3 forDeviceClass:(int64_t)a4 maskToIconShape:(BOOL)a5;
-- (CGImage)renderedSystemGlassCompatibleIconWithConfiguration:(id)a3;
-- (id)initFromSerializedData:(id)a3 device:(id)a4 error:(id *)a5;
-- (id)serializedDataWithError:(id *)a3;
+- (CGImage)renderedFullBleedIconWithConfiguration:(id)configuration;
+- (CGImage)renderedFullBleedIconWithConfiguration:(id)configuration excludeChicletSpecularHighlights:(BOOL)highlights;
+- (CGImage)renderedIconWithConfiguration:(id)configuration;
+- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)configuration forDeviceClass:(int64_t)class;
+- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)configuration forDeviceClass:(int64_t)class maskToIconShape:(BOOL)shape;
+- (CGImage)renderedSystemGlassCompatibleIconWithConfiguration:(id)configuration;
+- (id)initFromSerializedData:(id)data device:(id)device error:(id *)error;
+- (id)serializedDataWithError:(id *)error;
 - (unint64_t)layoutDirection;
-- (void)serializedDataWithCompletionHandler:(id)a3;
+- (void)serializedDataWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICRFinalizedIcon
 
-- (id)serializedDataWithError:(id *)a3
+- (id)serializedDataWithError:(id *)error
 {
   v4 = OBJC_IVAR___ICRFinalizedIcon_finalizedIcon;
   swift_beginAccess();
@@ -27,31 +27,31 @@
   return v8;
 }
 
-- (CGImage)renderedIconWithConfiguration:(id)a3
+- (CGImage)renderedIconWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1B15FBEBC(v4, 1);
+  configurationCopy = configuration;
+  selfCopy = self;
+  v6 = sub_1B15FBEBC(configurationCopy, 1);
 
   return v6;
 }
 
-- (id)initFromSerializedData:(id)a3 device:(id)a4 error:(id *)a5
+- (id)initFromSerializedData:(id)data device:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   v8 = sub_1B1619BD8();
   v10 = v9;
 
-  return sub_1B15FB900(v8, v10, a4);
+  return sub_1B15FB900(v8, v10, device);
 }
 
-- (void)serializedDataWithCompletionHandler:(id)a3
+- (void)serializedDataWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB753190);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -67,7 +67,7 @@
   v12[3] = 0;
   v12[4] = &unk_1B161F170;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1B15FCDFC(0, 0, v7, &unk_1B161F180, v12);
 }
 
@@ -93,43 +93,43 @@
   }
 }
 
-- (CGImage)renderedSystemGlassCompatibleIconWithConfiguration:(id)a3
+- (CGImage)renderedSystemGlassCompatibleIconWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1B15FBEBC(v4, 0);
+  configurationCopy = configuration;
+  selfCopy = self;
+  v6 = sub_1B15FBEBC(configurationCopy, 0);
 
   return v6;
 }
 
-- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)a3 forDeviceClass:(int64_t)a4
+- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)configuration forDeviceClass:(int64_t)class
 {
-  v4 = [(ICRFinalizedIcon *)self renderedLegacyCompatibleIconWithConfiguration:a3 forDeviceClass:a4 maskToIconShape:0];
+  v4 = [(ICRFinalizedIcon *)self renderedLegacyCompatibleIconWithConfiguration:configuration forDeviceClass:class maskToIconShape:0];
 
   return v4;
 }
 
-- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)a3 forDeviceClass:(int64_t)a4 maskToIconShape:(BOOL)a5
+- (CGImage)renderedLegacyCompatibleIconWithConfiguration:(id)configuration forDeviceClass:(int64_t)class maskToIconShape:(BOOL)shape
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1B15FC07C(v6);
+  configurationCopy = configuration;
+  selfCopy = self;
+  v8 = sub_1B15FC07C(configurationCopy);
 
   return v8;
 }
 
-- (CGImage)renderedFullBleedIconWithConfiguration:(id)a3
+- (CGImage)renderedFullBleedIconWithConfiguration:(id)configuration
 {
-  v3 = [(ICRFinalizedIcon *)self renderedFullBleedIconWithConfiguration:a3 excludeChicletSpecularHighlights:1];
+  v3 = [(ICRFinalizedIcon *)self renderedFullBleedIconWithConfiguration:configuration excludeChicletSpecularHighlights:1];
 
   return v3;
 }
 
-- (CGImage)renderedFullBleedIconWithConfiguration:(id)a3 excludeChicletSpecularHighlights:(BOOL)a4
+- (CGImage)renderedFullBleedIconWithConfiguration:(id)configuration excludeChicletSpecularHighlights:(BOOL)highlights
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1B15FC89C(v5);
+  configurationCopy = configuration;
+  selfCopy = self;
+  v7 = sub_1B15FC89C(configurationCopy);
 
   return v7;
 }

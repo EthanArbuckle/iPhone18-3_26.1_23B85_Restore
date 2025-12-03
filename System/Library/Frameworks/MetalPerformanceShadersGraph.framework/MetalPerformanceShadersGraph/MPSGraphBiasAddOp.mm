@@ -1,31 +1,31 @@
 @interface MPSGraphBiasAddOp
-- (MPSGraphBiasAddOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 dataLayout:(unint64_t)a6 name:(id)a7;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphBiasAddOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies dataLayout:(unint64_t)layout name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphBiasAddOp
 
-- (MPSGraphBiasAddOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 dataLayout:(unint64_t)a6 name:(id)a7
+- (MPSGraphBiasAddOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies dataLayout:(unint64_t)layout name:(id)name
 {
-  self->_inputLayout = a6;
+  self->_inputLayout = layout;
   v8.receiver = self;
   v8.super_class = MPSGraphBiasAddOp;
-  return [(MPSGraphOperation *)&v8 initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a7];
+  return [(MPSGraphOperation *)&v8 initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphBiasAddOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphActivationOps.mm", v27);
-  v12 = v11;
+  v12 = nameCopy;
   v35 = 260;
   v34[0] = v27;
-  StringAttr = mlir::Builder::getStringAttr(a3, v34);
+  StringAttr = mlir::Builder::getStringAttr(builder, v34);
   v15 = mlir::FileLineColLoc::get(StringAttr, 0x77u, 0);
   if (v12)
   {
-    v16 = [v12 UTF8String];
-    v17 = strlen(v16);
+    uTF8String = [v12 UTF8String];
+    v17 = strlen(uTF8String);
     if (v17 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -40,7 +40,7 @@
     v33 = v17;
     if (v17)
     {
-      memmove(&__dst, v16, v17);
+      memmove(&__dst, uTF8String, v17);
     }
 
     v19 = (&__dst + v18);
@@ -55,7 +55,7 @@
   }
 
   *v19 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v14, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v14, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -71,7 +71,7 @@
   }
 
   LOBYTE(v35) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v34);
+  v22 = mlir::Builder::getStringAttr(builder, v34);
   v23 = mlir::NameLoc::get(v22, v15);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -121,14 +121,14 @@ LABEL_24:
   }
 
 LABEL_22:
-  v24 = *a5;
-  if (*(a5 + 1) - *a5 <= 8uLL)
+  v24 = *values;
+  if (*(values + 1) - *values <= 8uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
   LODWORD(__dst) = self->_inputLayout;
-  v34[0] = mlir::OpBuilder::create<mlir::mps::BiasAddOp,mlir::Value &,mlir::Value &,mlir::mps::TensorDataLayout>(a3, v23, v24, v24 + 1, &__dst) - 16;
+  v34[0] = mlir::OpBuilder::create<mlir::mps::BiasAddOp,mlir::Value &,mlir::Value &,mlir::mps::TensorDataLayout>(builder, v23, v24, v24 + 1, &__dst) - 16;
   DefiningOp = mlir::Value::getDefiningOp(v34);
 
   return DefiningOp;

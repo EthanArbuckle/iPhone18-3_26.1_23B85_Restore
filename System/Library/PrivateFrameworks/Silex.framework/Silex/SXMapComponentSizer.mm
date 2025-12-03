@@ -1,17 +1,17 @@
 @interface SXMapComponentSizer
-+ ($04509175BD9135993A1E69B8DF80FE31)regionForCoordinates:(SEL)a3;
-+ ($04509175BD9135993A1E69B8DF80FE31)regionFromRegion:(SEL)a3 coordinates:(id *)a4;
-+ ($5703109703F67BAFA4DD21228B123405)mapRectForRegion:(id *)a3;
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
++ ($04509175BD9135993A1E69B8DF80FE31)regionForCoordinates:(SEL)coordinates;
++ ($04509175BD9135993A1E69B8DF80FE31)regionFromRegion:(SEL)region coordinates:(id *)coordinates;
++ ($5703109703F67BAFA4DD21228B123405)mapRectForRegion:(id *)region;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXMapComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v4 = [(SXComponentSizer *)self layoutOptions:a4];
-  v5 = [v4 columnLayout];
-  [v5 constrainedViewportSize];
+  v4 = [(SXComponentSizer *)self layoutOptions:context];
+  columnLayout = [v4 columnLayout];
+  [columnLayout constrainedViewportSize];
   v7 = v6;
   v9 = v8;
 
@@ -24,25 +24,25 @@
   return v9 * v10;
 }
 
-+ ($04509175BD9135993A1E69B8DF80FE31)regionFromRegion:(SEL)a3 coordinates:(id *)a4
++ ($04509175BD9135993A1E69B8DF80FE31)regionFromRegion:(SEL)region coordinates:(id *)coordinates
 {
   v9 = v8;
   v10 = v7;
   v11 = v6;
   v12 = v5;
-  v14 = a4;
+  coordinatesCopy = coordinates;
   v15 = [a2 isSpanSetOnRegion:{v12, v11, v10, v9}];
   v16 = [a2 isCenterSetOnRegion:{v12, v11, v10, v9}];
-  v17 = [($04509175BD9135993A1E69B8DF80FE31 *)v14 count];
+  v17 = [($04509175BD9135993A1E69B8DF80FE31 *)coordinatesCopy count];
   if (((v15 | v16) & 1) != 0 && v17)
   {
-    [a2 regionForCoordinates:v14];
+    [a2 regionForCoordinates:coordinatesCopy];
   }
 
   return result;
 }
 
-+ ($04509175BD9135993A1E69B8DF80FE31)regionForCoordinates:(SEL)a3
++ ($04509175BD9135993A1E69B8DF80FE31)regionForCoordinates:(SEL)coordinates
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = a4;
@@ -155,7 +155,7 @@
   return result;
 }
 
-+ ($5703109703F67BAFA4DD21228B123405)mapRectForRegion:(id *)a3
++ ($5703109703F67BAFA4DD21228B123405)mapRectForRegion:(id *)region
 {
   v7 = v4;
   v8 = v3;

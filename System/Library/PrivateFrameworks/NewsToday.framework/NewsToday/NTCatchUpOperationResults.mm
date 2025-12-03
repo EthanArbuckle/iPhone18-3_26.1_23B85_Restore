@@ -1,12 +1,12 @@
 @interface NTCatchUpOperationResults
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NTCatchUpOperationResults)init;
-- (NTCatchUpOperationResults)initWithFeedItems:(id)a3 supplementalInterestToken:(id)a4 feedContextByFeedID:(id)a5;
-- (NTCatchUpOperationResults)initWithHeadlines:(id)a3 rankingFeedback:(id)a4 actionURLsByArticleID:(id)a5;
-- (NTCatchUpOperationResults)initWithItems:(id)a3 rankingFeedback:(id)a4 supplementalInterestToken:(id)a5;
-- (id)copyWithItems:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)resultsByCombiningWithResults:(id)a3;
+- (NTCatchUpOperationResults)initWithFeedItems:(id)items supplementalInterestToken:(id)token feedContextByFeedID:(id)d;
+- (NTCatchUpOperationResults)initWithHeadlines:(id)headlines rankingFeedback:(id)feedback actionURLsByArticleID:(id)d;
+- (NTCatchUpOperationResults)initWithItems:(id)items rankingFeedback:(id)feedback supplementalInterestToken:(id)token;
+- (id)copyWithItems:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)resultsByCombiningWithResults:(id)results;
 - (unint64_t)hash;
 @end
 
@@ -38,12 +38,12 @@
   objc_exception_throw(v6);
 }
 
-- (NTCatchUpOperationResults)initWithHeadlines:(id)a3 rankingFeedback:(id)a4 actionURLsByArticleID:(id)a5
+- (NTCatchUpOperationResults)initWithHeadlines:(id)headlines rankingFeedback:(id)feedback actionURLsByArticleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  headlinesCopy = headlines;
+  feedbackCopy = feedback;
+  dCopy = d;
+  if (!headlinesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationResults initWithHeadlines:rankingFeedback:actionURLsByArticleID:];
   }
@@ -52,10 +52,10 @@
   v15[1] = 3221225472;
   v15[2] = __85__NTCatchUpOperationResults_initWithHeadlines_rankingFeedback_actionURLsByArticleID___block_invoke;
   v15[3] = &unk_279982E70;
-  v16 = v10;
-  v11 = v10;
-  v12 = [v8 fc_arrayByTransformingWithBlock:v15];
-  v13 = [(NTCatchUpOperationResults *)self initWithItems:v12 rankingFeedback:v9 supplementalInterestToken:0];
+  v16 = dCopy;
+  v11 = dCopy;
+  v12 = [headlinesCopy fc_arrayByTransformingWithBlock:v15];
+  v13 = [(NTCatchUpOperationResults *)self initWithItems:v12 rankingFeedback:feedbackCopy supplementalInterestToken:0];
 
   return v13;
 }
@@ -73,12 +73,12 @@ NTFeedTransformationHeadlineItem *__85__NTCatchUpOperationResults_initWithHeadli
   return v9;
 }
 
-- (NTCatchUpOperationResults)initWithFeedItems:(id)a3 supplementalInterestToken:(id)a4 feedContextByFeedID:(id)a5
+- (NTCatchUpOperationResults)initWithFeedItems:(id)items supplementalInterestToken:(id)token feedContextByFeedID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  tokenCopy = token;
+  dCopy = d;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationResults initWithFeedItems:supplementalInterestToken:feedContextByFeedID:];
   }
@@ -87,10 +87,10 @@ NTFeedTransformationHeadlineItem *__85__NTCatchUpOperationResults_initWithHeadli
   v15[1] = 3221225472;
   v15[2] = __93__NTCatchUpOperationResults_initWithFeedItems_supplementalInterestToken_feedContextByFeedID___block_invoke;
   v15[3] = &unk_279982E98;
-  v16 = v10;
-  v11 = v10;
-  v12 = [v8 fc_arrayByTransformingWithBlock:v15];
-  v13 = [(NTCatchUpOperationResults *)self initWithItems:v12 rankingFeedback:0 supplementalInterestToken:v9];
+  v16 = dCopy;
+  v11 = dCopy;
+  v12 = [itemsCopy fc_arrayByTransformingWithBlock:v15];
+  v13 = [(NTCatchUpOperationResults *)self initWithItems:v12 rankingFeedback:0 supplementalInterestToken:tokenCopy];
 
   return v13;
 }
@@ -110,12 +110,12 @@ NTFeedTransformationFeedItem *__93__NTCatchUpOperationResults_initWithFeedItems_
   return v9;
 }
 
-- (NTCatchUpOperationResults)initWithItems:(id)a3 rankingFeedback:(id)a4 supplementalInterestToken:(id)a5
+- (NTCatchUpOperationResults)initWithItems:(id)items rankingFeedback:(id)feedback supplementalInterestToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  feedbackCopy = feedback;
+  tokenCopy = token;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationResults initWithItems:rankingFeedback:supplementalInterestToken:];
   }
@@ -125,46 +125,46 @@ NTFeedTransformationFeedItem *__93__NTCatchUpOperationResults_initWithFeedItems_
   v11 = [(NTCatchUpOperationResults *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [itemsCopy copy];
     items = v11->_items;
     v11->_items = v12;
 
-    v14 = [v9 copy];
+    v14 = [feedbackCopy copy];
     rankingFeedback = v11->_rankingFeedback;
     v11->_rankingFeedback = v14;
 
-    objc_storeStrong(&v11->_supplementalInterestToken, a5);
+    objc_storeStrong(&v11->_supplementalInterestToken, token);
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NTCatchUpOperationResults allocWithZone:a3];
-  v5 = [(NTCatchUpOperationResults *)self items];
-  v6 = [(NTCatchUpOperationResults *)self rankingFeedback];
-  v7 = [(NTCatchUpOperationResults *)self supplementalInterestToken];
-  v8 = [(NTCatchUpOperationResults *)v4 initWithItems:v5 rankingFeedback:v6 supplementalInterestToken:v7];
+  v4 = [NTCatchUpOperationResults allocWithZone:zone];
+  items = [(NTCatchUpOperationResults *)self items];
+  rankingFeedback = [(NTCatchUpOperationResults *)self rankingFeedback];
+  supplementalInterestToken = [(NTCatchUpOperationResults *)self supplementalInterestToken];
+  v8 = [(NTCatchUpOperationResults *)v4 initWithItems:items rankingFeedback:rankingFeedback supplementalInterestToken:supplementalInterestToken];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(NTCatchUpOperationResults *)self items];
-    v7 = [v5 items];
-    if ([v6 isEqual:v7])
+    items = [(NTCatchUpOperationResults *)self items];
+    items2 = [v5 items];
+    if ([items isEqual:items2])
     {
-      v8 = [(NTCatchUpOperationResults *)self rankingFeedback];
-      v9 = [v5 rankingFeedback];
-      v10 = [v8 isEqual:v9];
+      rankingFeedback = [(NTCatchUpOperationResults *)self rankingFeedback];
+      rankingFeedback2 = [v5 rankingFeedback];
+      v10 = [rankingFeedback isEqual:rankingFeedback2];
     }
 
     else
@@ -183,59 +183,59 @@ NTFeedTransformationFeedItem *__93__NTCatchUpOperationResults_initWithFeedItems_
 
 - (unint64_t)hash
 {
-  v3 = [(NTCatchUpOperationResults *)self items];
-  v4 = [v3 hash];
-  v5 = [(NTCatchUpOperationResults *)self rankingFeedback];
-  v6 = [v5 hash];
+  items = [(NTCatchUpOperationResults *)self items];
+  v4 = [items hash];
+  rankingFeedback = [(NTCatchUpOperationResults *)self rankingFeedback];
+  v6 = [rankingFeedback hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithItems:(id)a3
+- (id)copyWithItems:(id)items
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationResults copyWithItems:];
   }
 
   v5 = [NTCatchUpOperationResults alloc];
-  v6 = [(NTCatchUpOperationResults *)self rankingFeedback];
-  v7 = [(NTCatchUpOperationResults *)self supplementalInterestToken];
-  v8 = [(NTCatchUpOperationResults *)v5 initWithItems:v4 rankingFeedback:v6 supplementalInterestToken:v7];
+  rankingFeedback = [(NTCatchUpOperationResults *)self rankingFeedback];
+  supplementalInterestToken = [(NTCatchUpOperationResults *)self supplementalInterestToken];
+  v8 = [(NTCatchUpOperationResults *)v5 initWithItems:itemsCopy rankingFeedback:rankingFeedback supplementalInterestToken:supplementalInterestToken];
 
   return v8;
 }
 
-- (id)resultsByCombiningWithResults:(id)a3
+- (id)resultsByCombiningWithResults:(id)results
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  resultsCopy = results;
+  if (!resultsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationResults resultsByCombiningWithResults:];
   }
 
-  v5 = [(NTCatchUpOperationResults *)self rankingFeedback];
+  rankingFeedback = [(NTCatchUpOperationResults *)self rankingFeedback];
 
-  if (v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (rankingFeedback && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationResults resultsByCombiningWithResults:];
   }
 
-  v6 = [v4 rankingFeedback];
+  rankingFeedback2 = [resultsCopy rankingFeedback];
 
-  if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (rankingFeedback2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationResults resultsByCombiningWithResults:];
   }
 
   v7 = [NTCatchUpOperationResults alloc];
   v8 = MEMORY[0x277CBEA60];
-  v9 = [v4 items];
-  v10 = [(NTCatchUpOperationResults *)self items];
-  v11 = [v8 fc_arrayByAddingObjectsFromArray:v9 toArray:v10];
-  v12 = [(NTCatchUpOperationResults *)self supplementalInterestToken];
-  v13 = [(NTCatchUpOperationResults *)v7 initWithItems:v11 rankingFeedback:0 supplementalInterestToken:v12];
+  items = [resultsCopy items];
+  items2 = [(NTCatchUpOperationResults *)self items];
+  v11 = [v8 fc_arrayByAddingObjectsFromArray:items toArray:items2];
+  supplementalInterestToken = [(NTCatchUpOperationResults *)self supplementalInterestToken];
+  v13 = [(NTCatchUpOperationResults *)v7 initWithItems:v11 rankingFeedback:0 supplementalInterestToken:supplementalInterestToken];
 
   return v13;
 }

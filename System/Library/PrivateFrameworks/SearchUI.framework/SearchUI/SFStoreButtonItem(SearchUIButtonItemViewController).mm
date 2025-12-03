@@ -8,7 +8,7 @@
 {
   if ([MEMORY[0x1E69D9240] isSpotlightUICLI])
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &off_1F566EC08;
     v2 = objc_msgSendSuper2(&v4, sel_searchUI_viewControllerClass);
   }

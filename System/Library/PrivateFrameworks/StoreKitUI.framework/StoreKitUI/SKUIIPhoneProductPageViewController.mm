@@ -2,11 +2,11 @@
 - (BOOL)_isIncompatibleItem;
 - (CGPoint)topContentOffset;
 - (SKUIIPhoneProductPageDelegate)delegate;
-- (SKUIIPhoneProductPageViewController)initWithItem:(id)a3;
-- (SKUIIPhoneProductPageViewController)initWithItemIdentifier:(int64_t)a3;
-- (SKUIIPhoneProductPageViewController)initWithProductPage:(id)a3;
-- (SKUIIPhoneProductPageViewController)initWithURL:(id)a3;
-- (SKUIIPhoneProductPageViewController)initWithURLRequest:(id)a3;
+- (SKUIIPhoneProductPageViewController)initWithItem:(id)item;
+- (SKUIIPhoneProductPageViewController)initWithItemIdentifier:(int64_t)identifier;
+- (SKUIIPhoneProductPageViewController)initWithProductPage:(id)page;
+- (SKUIIPhoneProductPageViewController)initWithURL:(id)l;
+- (SKUIIPhoneProductPageViewController)initWithURLRequest:(id)request;
 - (id)_detailsViewController;
 - (id)_headerViewController;
 - (id)_initSKUIIPhoneProductPageViewController;
@@ -14,41 +14,41 @@
 - (id)_relatedPlaceholderViewController;
 - (id)_relatedViewController;
 - (id)_reviewsViewController;
-- (id)_viewControllerForSectionIndex:(unint64_t)a3;
+- (id)_viewControllerForSectionIndex:(unint64_t)index;
 - (void)_animateAddToWishlist;
 - (void)_hideBanner;
 - (void)_initSKUIIPhoneProductPageViewController;
 - (void)_invalidateChildViewControllers;
-- (void)_metricsEnterEventNotification:(id)a3;
+- (void)_metricsEnterEventNotification:(id)notification;
 - (void)_presentHTMLProductPage;
 - (void)_reloadChildViewControllers;
-- (void)_setContentInsetsForChildViewController:(id)a3;
-- (void)_setHeaderPositionForChildViewController:(id)a3;
-- (void)_setMetricsController:(id)a3;
-- (void)_setProductPage:(id)a3 error:(id)a4;
-- (void)_setSectionIndexWithFragment:(int64_t)a3;
-- (void)_shareButtonAction:(id)a3;
+- (void)_setContentInsetsForChildViewController:(id)controller;
+- (void)_setHeaderPositionForChildViewController:(id)controller;
+- (void)_setMetricsController:(id)controller;
+- (void)_setProductPage:(id)page error:(id)error;
+- (void)_setSectionIndexWithFragment:(int64_t)fragment;
+- (void)_shareButtonAction:(id)action;
 - (void)_showActivityViewController;
 - (void)_showBanner;
-- (void)_showError:(id)a3;
-- (void)askPermissionBannerDidSelect:(id)a3;
-- (void)configureMetricsWithPageEvent:(id)a3;
+- (void)_showError:(id)error;
+- (void)askPermissionBannerDidSelect:(id)select;
+- (void)configureMetricsWithPageEvent:(id)event;
 - (void)dealloc;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)loadView;
-- (void)networkErrorViewControllerInvalidated:(id)a3;
-- (void)productPageChildOpenItem:(id)a3;
-- (void)productPageChildOpenURL:(id)a3 viewControllerBlock:(id)a4;
-- (void)productPageChildViewControllerDidScroll:(id)a3;
-- (void)productPageHeaderView:(id)a3 didReloadItemOffer:(id)a4;
-- (void)productPageHeaderView:(id)a3 didSelectSectionIndex:(int64_t)a4;
-- (void)productPageHeaderView:(id)a3 didSelectURL:(id)a4;
-- (void)productViewControllerDidFinish:(id)a3;
+- (void)networkErrorViewControllerInvalidated:(id)invalidated;
+- (void)productPageChildOpenItem:(id)item;
+- (void)productPageChildOpenURL:(id)l viewControllerBlock:(id)block;
+- (void)productPageChildViewControllerDidScroll:(id)scroll;
+- (void)productPageHeaderView:(id)view didReloadItemOffer:(id)offer;
+- (void)productPageHeaderView:(id)view didSelectSectionIndex:(int64_t)index;
+- (void)productPageHeaderView:(id)view didSelectURL:(id)l;
+- (void)productViewControllerDidFinish:(id)finish;
 - (void)reloadData;
-- (void)setAskPermission:(BOOL)a3;
-- (void)setBannerText:(id)a3;
+- (void)setAskPermission:(BOOL)permission;
+- (void)setBannerText:(id)text;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIIPhoneProductPageViewController
@@ -72,43 +72,43 @@
     p_isa[148] = v5;
 
     [p_isa[148] setMaxConcurrentOperationCount:6];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:p_isa selector:sel__metricsEnterEventNotification_ name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:p_isa selector:sel__metricsEnterEventNotification_ name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
   }
 
   return p_isa;
 }
 
-- (SKUIIPhoneProductPageViewController)initWithItem:(id)a3
+- (SKUIIPhoneProductPageViewController)initWithItem:(id)item
 {
-  v5 = a3;
-  v6 = [(SKUIIPhoneProductPageViewController *)self _initSKUIIPhoneProductPageViewController];
-  v7 = v6;
-  if (v6)
+  itemCopy = item;
+  _initSKUIIPhoneProductPageViewController = [(SKUIIPhoneProductPageViewController *)self _initSKUIIPhoneProductPageViewController];
+  v7 = _initSKUIIPhoneProductPageViewController;
+  if (_initSKUIIPhoneProductPageViewController)
   {
-    objc_storeStrong(v6 + 142, a3);
+    objc_storeStrong(_initSKUIIPhoneProductPageViewController + 142, item);
     v7[146] = [v7[142] itemIdentifier];
-    v8 = [v5 productPageURLString];
-    if (v8)
+    productPageURLString = [itemCopy productPageURLString];
+    if (productPageURLString)
     {
       v9 = MEMORY[0x277CBABA0];
-      v10 = [MEMORY[0x277CBEBC0] URLWithString:v8];
+      v10 = [MEMORY[0x277CBEBC0] URLWithString:productPageURLString];
       v11 = [v9 requestWithURL:v10];
       v12 = v7[154];
       v7[154] = v11;
     }
 
-    v13 = [v7[142] itemKind];
-    if (v13 != 5 && !SKUIItemKindIsSoftwareKind(v13))
+    itemKind = [v7[142] itemKind];
+    if (itemKind != 5 && !SKUIItemKindIsSoftwareKind(itemKind))
     {
       v16 = objc_alloc_init(SKUIDismissingProductViewController);
       v17 = [v7[154] URL];
       [(SKStoreProductViewController *)v16 loadProductWithURL:v17 completionBlock:0];
 
-      v18 = [MEMORY[0x277D75128] sharedApplication];
-      v19 = [v18 keyWindow];
-      v20 = [v19 rootViewController];
-      [v20 presentViewController:v16 animated:1 completion:0];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      keyWindow = [mEMORY[0x277D75128] keyWindow];
+      rootViewController = [keyWindow rootViewController];
+      [rootViewController presentViewController:v16 animated:1 completion:0];
 
       v14 = 0;
       goto LABEL_8;
@@ -121,61 +121,61 @@ LABEL_8:
   return v14;
 }
 
-- (SKUIIPhoneProductPageViewController)initWithItemIdentifier:(int64_t)a3
+- (SKUIIPhoneProductPageViewController)initWithItemIdentifier:(int64_t)identifier
 {
   result = [(SKUIIPhoneProductPageViewController *)self _initSKUIIPhoneProductPageViewController];
   if (result)
   {
-    result->_lookupItemIdentifier = a3;
+    result->_lookupItemIdentifier = identifier;
   }
 
   return result;
 }
 
-- (SKUIIPhoneProductPageViewController)initWithProductPage:(id)a3
+- (SKUIIPhoneProductPageViewController)initWithProductPage:(id)page
 {
-  v5 = a3;
-  v6 = [v5 item];
-  v7 = [(SKUIIPhoneProductPageViewController *)self initWithItem:v6];
+  pageCopy = page;
+  item = [pageCopy item];
+  v7 = [(SKUIIPhoneProductPageViewController *)self initWithItem:item];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_productPage, a3);
-    -[SKUIIPhoneProductPageViewController _setSectionIndexWithFragment:](v7, "_setSectionIndexWithFragment:", [v5 defaultPageFragment]);
+    objc_storeStrong(&v7->_productPage, page);
+    -[SKUIIPhoneProductPageViewController _setSectionIndexWithFragment:](v7, "_setSectionIndexWithFragment:", [pageCopy defaultPageFragment]);
   }
 
   return v7;
 }
 
-- (SKUIIPhoneProductPageViewController)initWithURL:(id)a3
+- (SKUIIPhoneProductPageViewController)initWithURL:(id)l
 {
-  v4 = [MEMORY[0x277CBABA0] requestWithURL:a3];
+  v4 = [MEMORY[0x277CBABA0] requestWithURL:l];
   v5 = [(SKUIIPhoneProductPageViewController *)self initWithURLRequest:v4];
 
   return v5;
 }
 
-- (SKUIIPhoneProductPageViewController)initWithURLRequest:(id)a3
+- (SKUIIPhoneProductPageViewController)initWithURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SKUIIPhoneProductPageViewController *)self _initSKUIIPhoneProductPageViewController];
-  if (v5)
+  requestCopy = request;
+  _initSKUIIPhoneProductPageViewController = [(SKUIIPhoneProductPageViewController *)self _initSKUIIPhoneProductPageViewController];
+  if (_initSKUIIPhoneProductPageViewController)
   {
-    v6 = [v4 URL];
-    [(SKUIIPhoneProductPageViewController *)v5 _setSectionIndexWithFragment:SKUIProductPageFragmentWithURL(v6)];
+    v6 = [requestCopy URL];
+    [(SKUIIPhoneProductPageViewController *)_initSKUIIPhoneProductPageViewController _setSectionIndexWithFragment:SKUIProductPageFragmentWithURL(v6)];
 
-    v7 = [v4 copy];
-    urlRequest = v5->_urlRequest;
-    v5->_urlRequest = v7;
+    v7 = [requestCopy copy];
+    urlRequest = _initSKUIIPhoneProductPageViewController->_urlRequest;
+    _initSKUIIPhoneProductPageViewController->_urlRequest = v7;
   }
 
-  return v5;
+  return _initSKUIIPhoneProductPageViewController;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
   [(SKUIProductPageDetailsViewController *)self->_detailsViewController setDelegate:0];
   [(SKUINetworkErrorViewController *)self->_errorViewController setDelegate:0];
   [(SKUIIncompatibleAppViewController *)self->_incompatibleViewController setDelegate:0];
@@ -189,11 +189,11 @@ LABEL_8:
   [(SKUIViewController *)&v4 dealloc];
 }
 
-- (void)setAskPermission:(BOOL)a3
+- (void)setAskPermission:(BOOL)permission
 {
-  if (self->_askPermission != a3)
+  if (self->_askPermission != permission)
   {
-    self->_askPermission = a3;
+    self->_askPermission = permission;
     [(SKUIProductPageDetailsViewController *)self->_detailsViewController setAskPermission:?];
     [(SKUIProductPageReviewsViewController *)self->_reviewsViewController setAskPermission:self->_askPermission];
     [(SKUISwooshArrayViewController *)self->_relatedViewController setAskPermission:self->_askPermission];
@@ -204,12 +204,12 @@ LABEL_8:
   }
 }
 
-- (void)setBannerText:(id)a3
+- (void)setBannerText:(id)text
 {
-  v5 = a3;
-  if (self->_bannerText != v5)
+  textCopy = text;
+  if (self->_bannerText != textCopy)
   {
-    objc_storeStrong(&self->_bannerText, a3);
+    objc_storeStrong(&self->_bannerText, text);
     if (self->_bannerText)
     {
       [(SKUIIPhoneProductPageViewController *)self _showBanner];
@@ -217,26 +217,26 @@ LABEL_8:
   }
 }
 
-- (void)configureMetricsWithPageEvent:(id)a3
+- (void)configureMetricsWithPageEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   metricsController = self->_metricsController;
   if (metricsController)
   {
-    [(SKUIMetricsController *)metricsController recordEvent:v4];
+    [(SKUIMetricsController *)metricsController recordEvent:eventCopy];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v6 = [(SKUIViewController *)self clientContext];
+    clientContext = [(SKUIViewController *)self clientContext];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__SKUIIPhoneProductPageViewController_configureMetricsWithPageEvent___block_invoke;
     v7[3] = &unk_2781FE488;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    [v6 getDefaultMetricsControllerWithCompletionBlock:v7];
+    v8 = eventCopy;
+    [clientContext getDefaultMetricsControllerWithCompletionBlock:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -257,7 +257,7 @@ void __69__SKUIIPhoneProductPageViewController_configureMetricsWithPageEvent___b
 
 - (void)reloadData
 {
-  v3 = [(SKUIViewController *)self clientContext];
+  clientContext = [(SKUIViewController *)self clientContext];
   objc_initWeak(&location, self);
   if (!self->_metricsController)
   {
@@ -266,7 +266,7 @@ void __69__SKUIIPhoneProductPageViewController_configureMetricsWithPageEvent___b
     v10[2] = __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke;
     v10[3] = &unk_2781FB478;
     objc_copyWeak(&v11, &location);
-    [v3 getDefaultMetricsControllerWithCompletionBlock:v10];
+    [clientContext getDefaultMetricsControllerWithCompletionBlock:v10];
     objc_destroyWeak(&v11);
   }
 
@@ -274,7 +274,7 @@ void __69__SKUIIPhoneProductPageViewController_configureMetricsWithPageEvent___b
   {
     if (self->_urlRequest)
     {
-      v4 = [[SKUILoadProductPageOperation alloc] initWithProductPageURLRequest:self->_urlRequest clientContext:v3];
+      v4 = [[SKUILoadProductPageOperation alloc] initWithProductPageURLRequest:self->_urlRequest clientContext:clientContext];
     }
 
     else
@@ -284,7 +284,7 @@ void __69__SKUIIPhoneProductPageViewController_configureMetricsWithPageEvent___b
         goto LABEL_10;
       }
 
-      v4 = [[SKUILoadProductPageOperation alloc] initWithItemIdentifier:self->_lookupItemIdentifier clientContext:v3];
+      v4 = [[SKUILoadProductPageOperation alloc] initWithItemIdentifier:self->_lookupItemIdentifier clientContext:clientContext];
     }
 
     loadOperation = self->_loadOperation;
@@ -342,7 +342,7 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
   [WeakRetained _setProductPage:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   metricsController = self->_metricsController;
   v6 = SKUIMetricsWindowOrientationForInterfaceOrientation([(SKUIIPhoneProductPageViewController *)self interfaceOrientation]);
@@ -350,7 +350,7 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
 
   v7.receiver = self;
   v7.super_class = SKUIIPhoneProductPageViewController;
-  [(SKUIIPhoneProductPageViewController *)&v7 didRotateFromInterfaceOrientation:a3];
+  [(SKUIIPhoneProductPageViewController *)&v7 didRotateFromInterfaceOrientation:orientation];
 }
 
 - (void)loadView
@@ -360,24 +360,24 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
   [(SKUIViewController *)self showDefaultNavigationItems];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:9 target:self action:sel__shareButtonAction_];
   [v3 setImageInsets:{-3.0, 0.0, 3.0, 0.0}];
-  v4 = [(SKUIIPhoneProductPageViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItems];
-  v6 = [v5 mutableCopy];
+  navigationItem = [(SKUIIPhoneProductPageViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  v6 = [rightBarButtonItems mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    array = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
   [v9 addObject:v3];
-  [v4 setRightBarButtonItems:v9];
+  [navigationItem setRightBarButtonItems:v9];
 }
 
 - (void)viewDidLayoutSubviews
@@ -393,16 +393,16 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
   [(SKUIIPhoneProductPageViewController *)&v3 viewDidLayoutSubviews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (self->_metricsController)
   {
     lastPageEvent = self->_lastPageEvent;
     if (lastPageEvent)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:v6];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:date];
 
       [(SKUIMetricsController *)self->_metricsController recordEvent:self->_lastPageEvent];
     }
@@ -411,16 +411,16 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
   [(SKUIIPhoneProductPageViewController *)self reloadData];
   v7.receiver = self;
   v7.super_class = SKUIIPhoneProductPageViewController;
-  [(SKUIViewController *)&v7 viewWillAppear:v3];
+  [(SKUIViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)networkErrorViewControllerInvalidated:(id)a3
+- (void)networkErrorViewControllerInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   errorViewController = self->_errorViewController;
   if (errorViewController)
   {
-    v9 = v4;
+    v9 = invalidatedCopy;
     childViewController = self->_childViewController;
     if (errorViewController == childViewController)
     {
@@ -430,8 +430,8 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
     }
 
     [(SKUINetworkErrorViewController *)errorViewController setDelegate:0];
-    v7 = [(SKUINetworkErrorViewController *)self->_errorViewController view];
-    [v7 removeFromSuperview];
+    view = [(SKUINetworkErrorViewController *)self->_errorViewController view];
+    [view removeFromSuperview];
 
     [(SKUINetworkErrorViewController *)self->_errorViewController removeFromParentViewController];
     v8 = self->_errorViewController;
@@ -439,27 +439,27 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
 
     [(SKUIIPhoneProductPageViewController *)self _reloadChildViewControllers];
     errorViewController = [(SKUIIPhoneProductPageViewController *)self reloadData];
-    v4 = v9;
+    invalidatedCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](errorViewController, v4);
+  MEMORY[0x2821F96F8](errorViewController, invalidatedCopy);
 }
 
-- (void)productPageHeaderView:(id)a3 didReloadItemOffer:(id)a4
+- (void)productPageHeaderView:(id)view didReloadItemOffer:(id)offer
 {
-  v17 = a3;
-  v5 = [v17 isViewLoaded];
-  v6 = v17;
-  if (v5)
+  viewCopy = view;
+  isViewLoaded = [viewCopy isViewLoaded];
+  v6 = viewCopy;
+  if (isViewLoaded)
   {
-    v7 = [v17 view];
-    [v7 sizeToFit];
+    view = [viewCopy view];
+    [view sizeToFit];
 
-    v8 = [(SKUIProductPageChildViewController *)self->_childViewController scrollView];
-    v9 = v8;
-    if (v8)
+    scrollView = [(SKUIProductPageChildViewController *)self->_childViewController scrollView];
+    v9 = scrollView;
+    if (scrollView)
     {
-      [v8 contentOffset];
+      [scrollView contentOffset];
       v11 = v10;
       v13 = v12;
       [v9 contentInset];
@@ -470,31 +470,31 @@ void __49__SKUIIPhoneProductPageViewController_reloadData__block_invoke_3(uint64
       [v9 setContentOffset:{v11, v13 + v15 - v16}];
     }
 
-    v6 = v17;
+    v6 = viewCopy;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](isViewLoaded, v6);
 }
 
-- (void)productPageHeaderView:(id)a3 didSelectSectionIndex:(int64_t)a4
+- (void)productPageHeaderView:(id)view didSelectSectionIndex:(int64_t)index
 {
-  if (self->_sectionIndex != a4)
+  if (self->_sectionIndex != index)
   {
-    self->_sectionIndex = a4;
+    self->_sectionIndex = index;
     [(SKUIIPhoneProductPageViewController *)self _reloadChildViewControllers];
   }
 }
 
-- (void)productPageHeaderView:(id)a3 didSelectURL:(id)a4
+- (void)productPageHeaderView:(id)view didSelectURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__SKUIIPhoneProductPageViewController_productPageHeaderView_didSelectURL___block_invoke;
   v7[3] = &unk_2781FE4D8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = lCopy;
+  v6 = lCopy;
   [(SKUIIPhoneProductPageViewController *)self productPageChildOpenURL:v6 viewControllerBlock:v7];
 }
 
@@ -513,9 +513,9 @@ SKUIStorePageViewController *__74__SKUIIPhoneProductPageViewController_productPa
   return v2;
 }
 
-- (void)askPermissionBannerDidSelect:(id)a3
+- (void)askPermissionBannerDidSelect:(id)select
 {
-  v4 = a3;
+  selectCopy = select;
   if (!self->_bannerText)
   {
     objc_initWeak(&location, self);
@@ -524,13 +524,13 @@ SKUIStorePageViewController *__74__SKUIIPhoneProductPageViewController_productPa
     v7 = SKUIAskPermissionFramework();
     v8 = *SKUIWeakLinkedSymbolForString("kPRRequestQueueiTunesStoreIdentifier", v7);
     v9 = [v6 _requestQueueForIdentifier:v8];
-    v10 = [(SKUIItem *)self->_item itemIdentifier];
+    itemIdentifier = [(SKUIItem *)self->_item itemIdentifier];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __68__SKUIIPhoneProductPageViewController_askPermissionBannerDidSelect___block_invoke;
     v11[3] = &unk_2781FE5E8;
     objc_copyWeak(&v12, &location);
-    [v9 _attemptLocalApprovalForStorePurchaseRequestWithItemIdentifier:v10 completionHandler:v11];
+    [v9 _attemptLocalApprovalForStorePurchaseRequestWithItemIdentifier:itemIdentifier completionHandler:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -558,49 +558,49 @@ void __68__SKUIIPhoneProductPageViewController_askPermissionBannerDidSelect___bl
   }
 }
 
-- (void)productPageChildOpenItem:(id)a3
+- (void)productPageChildOpenItem:(id)item
 {
-  v11 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
-  if ((v5 & 1) == 0 || (v6 = objc_loadWeakRetained(&self->_delegate), v7 = [v6 iPhoneProductPage:self shouldOpenItem:v11], v6, v7))
+  if ((v5 & 1) == 0 || (v6 = objc_loadWeakRetained(&self->_delegate), v7 = [v6 iPhoneProductPage:self shouldOpenItem:itemCopy], v6, v7))
   {
-    v8 = [[SKUIIPhoneProductPageViewController alloc] initWithItem:v11];
-    v9 = [(SKUIViewController *)self clientContext];
-    [(SKUIViewController *)v8 setClientContext:v9];
+    v8 = [[SKUIIPhoneProductPageViewController alloc] initWithItem:itemCopy];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIViewController *)v8 setClientContext:clientContext];
 
-    v10 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-    [v10 pushViewController:v8 animated:1];
+    navigationController = [(SKUIIPhoneProductPageViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
-- (void)productPageChildOpenURL:(id)a3 viewControllerBlock:(id)a4
+- (void)productPageChildOpenURL:(id)l viewControllerBlock:(id)block
 {
-  v14 = a3;
-  v6 = a4;
+  lCopy = l;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
-  if ((v8 & 1) == 0 || (v9 = objc_loadWeakRetained(&self->_delegate), v10 = [v9 iPhoneProductPage:self shouldOpenURL:v14], v9, v10))
+  if ((v8 & 1) == 0 || (v9 = objc_loadWeakRetained(&self->_delegate), v10 = [v9 iPhoneProductPage:self shouldOpenURL:lCopy], v9, v10))
   {
-    if (v6 && (v6[2](v6), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (blockCopy && (blockCopy[2](blockCopy), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
-      v13 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-      [v13 pushViewController:v12 animated:1];
+      navigationController = [(SKUIIPhoneProductPageViewController *)self navigationController];
+      [navigationController pushViewController:v12 animated:1];
     }
 
     else
     {
-      SKUIMetricsOpenURL(v14);
+      SKUIMetricsOpenURL(lCopy);
     }
   }
 }
 
-- (void)productPageChildViewControllerDidScroll:(id)a3
+- (void)productPageChildViewControllerDidScroll:(id)scroll
 {
-  if (self->_childViewController == a3)
+  if (self->_childViewController == scroll)
   {
     [(SKUIIPhoneProductPageViewController *)self _setHeaderPositionForChildViewController:?];
   }
@@ -608,16 +608,16 @@ void __68__SKUIIPhoneProductPageViewController_askPermissionBannerDidSelect___bl
 
 - (CGPoint)topContentOffset
 {
-  v2 = self;
+  selfCopy = self;
   [(SKUIMessageBanner *)self->_banner frame];
   v4 = v3;
-  v5 = [v2 clientContext];
-  v6 = SKUIUserInterfaceIdiom(v5);
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  clientContext = [selfCopy clientContext];
+  navigationBar = SKUIUserInterfaceIdiom(clientContext);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v9 = (v8 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-  v10 = v6 != 1;
+  v9 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v10 = navigationBar != 1;
   if (v10 == v9)
   {
     v11 = 0.0;
@@ -625,17 +625,17 @@ void __68__SKUIIPhoneProductPageViewController_askPermissionBannerDidSelect___bl
 
   else
   {
-    v2 = [v2 navigationController];
-    v6 = [v2 navigationBar];
-    [v6 frame];
+    selfCopy = [selfCopy navigationController];
+    navigationBar = [selfCopy navigationBar];
+    [navigationBar frame];
   }
 
   v12 = v10 ^ v9;
   v13 = v4 + v11;
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v15 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v16 = v13 + 0.0;
     if (!v12)
@@ -646,8 +646,8 @@ void __68__SKUIIPhoneProductPageViewController_askPermissionBannerDidSelect___bl
     goto LABEL_10;
   }
 
-  v17 = [MEMORY[0x277D75128] sharedApplication];
-  [v17 statusBarFrame];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] statusBarFrame];
   v18 = 20.0;
   if (v19 == 0.0)
   {
@@ -670,17 +670,17 @@ LABEL_11:
   return result;
 }
 
-- (void)productViewControllerDidFinish:(id)a3
+- (void)productViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   objc_initWeak(&location, self);
-  [v4 setDelegate:0];
+  [finishCopy setDelegate:0];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___block_invoke;
   v5[3] = &unk_2781F8320;
   objc_copyWeak(&v6, &location);
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [finishCopy dismissViewControllerAnimated:1 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -706,15 +706,15 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
   }
 }
 
-- (void)_metricsEnterEventNotification:(id)a3
+- (void)_metricsEnterEventNotification:(id)notification
 {
   if (SKUIViewControllerIsVisible(self))
   {
     lastPageEvent = self->_lastPageEvent;
     if (lastPageEvent)
     {
-      v5 = [MEMORY[0x277CBEAA8] date];
-      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:v5];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:date];
 
       metricsController = self->_metricsController;
       v7 = self->_lastPageEvent;
@@ -724,7 +724,7 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
   }
 }
 
-- (void)_shareButtonAction:(id)a3
+- (void)_shareButtonAction:(id)action
 {
   if (self->_productPage)
   {
@@ -740,13 +740,13 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
 
 - (void)_animateAddToWishlist
 {
-  v8 = [(SKUIProductPageHeaderViewController *)self->_headerViewController iconImage];
-  v3 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-  v4 = [v3 navigationBar];
+  iconImage = [(SKUIProductPageHeaderViewController *)self->_headerViewController iconImage];
+  navigationController = [(SKUIIPhoneProductPageViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
   v5 = [SKUIAddToWishlistAnimation alloc];
-  v6 = [(SKUIViewController *)self _wishlistButtonItem];
-  v7 = [(SKUIAddToWishlistAnimation *)v5 initWithImage:v8 buttonItem:v6 navigationBar:v4];
+  _wishlistButtonItem = [(SKUIViewController *)self _wishlistButtonItem];
+  v7 = [(SKUIAddToWishlistAnimation *)v5 initWithImage:iconImage buttonItem:_wishlistButtonItem navigationBar:navigationBar];
 
   [(SKUIAddToWishlistAnimation *)v7 animateWithCompletionBlock:0];
 }
@@ -763,8 +763,8 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
       self->_detailsViewController = v4;
 
       v6 = self->_detailsViewController;
-      v7 = [(SKUIViewController *)self clientContext];
-      [(SKUIProductPageDetailsViewController *)v6 setClientContext:v7];
+      clientContext = [(SKUIViewController *)self clientContext];
+      [(SKUIProductPageDetailsViewController *)v6 setClientContext:clientContext];
 
       [(SKUIProductPageDetailsViewController *)self->_detailsViewController setDelegate:self];
       [(SKUIProductPageDetailsViewController *)self->_detailsViewController setOperationQueue:self->_operationQueue];
@@ -793,8 +793,8 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
       self->_reviewsViewController = v4;
 
       v6 = self->_reviewsViewController;
-      v7 = [(SKUIViewController *)self clientContext];
-      [(SKUIProductPageReviewsViewController *)v6 setClientContext:v7];
+      clientContext = [(SKUIViewController *)self clientContext];
+      [(SKUIProductPageReviewsViewController *)v6 setClientContext:clientContext];
 
       [(SKUIProductPageReviewsViewController *)self->_reviewsViewController setDelegate:self];
       [(SKUIProductPageReviewsViewController *)self->_reviewsViewController setAskPermission:self->_askPermission];
@@ -812,22 +812,22 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
 
 - (id)_relatedViewController
 {
-  v3 = [(SKUIProductPage *)self->_productPage relatedContentSwooshes];
-  v4 = v3;
-  if (!self->_relatedViewController && [v3 count])
+  relatedContentSwooshes = [(SKUIProductPage *)self->_productPage relatedContentSwooshes];
+  v4 = relatedContentSwooshes;
+  if (!self->_relatedViewController && [relatedContentSwooshes count])
   {
     v5 = [[SKUISwooshArrayViewController alloc] initWithSwooshComponents:v4];
     relatedViewController = self->_relatedViewController;
     self->_relatedViewController = v5;
 
     v7 = self->_relatedViewController;
-    v8 = [(SKUIProductPage *)self->_productPage uber];
-    v9 = [v8 colorScheme];
-    [(SKUISwooshArrayViewController *)v7 setColorScheme:v9];
+    uber = [(SKUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [(SKUISwooshArrayViewController *)v7 setColorScheme:colorScheme];
 
     v10 = self->_relatedViewController;
-    v11 = [(SKUIViewController *)self clientContext];
-    [(SKUISwooshArrayViewController *)v10 setClientContext:v11];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUISwooshArrayViewController *)v10 setClientContext:clientContext];
 
     [(SKUISwooshArrayViewController *)self->_relatedViewController setDelegate:self];
     [(SKUISwooshArrayViewController *)self->_relatedViewController setOperationQueue:self->_operationQueue];
@@ -848,16 +848,16 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
     return;
   }
 
-  v26 = [(SKUIIPhoneProductPageViewController *)self view];
+  view = [(SKUIIPhoneProductPageViewController *)self view];
   [(SKUIMessageBanner *)self->_banner frame];
   v4 = v3;
-  v5 = [(SKUIViewController *)self clientContext];
-  v6 = SKUIUserInterfaceIdiom(v5);
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  clientContext = [(SKUIViewController *)self clientContext];
+  navigationController = SKUIUserInterfaceIdiom(clientContext);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v9 = (v8 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-  v10 = v6 != 1;
+  v9 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v10 = navigationController != 1;
   if (v10 == v9)
   {
     v11 = 0.0;
@@ -865,19 +865,19 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
 
   else
   {
-    v6 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-    v7 = [v6 navigationBar];
-    [v7 frame];
+    navigationController = [(SKUIIPhoneProductPageViewController *)self navigationController];
+    currentDevice = [navigationController navigationBar];
+    [currentDevice frame];
   }
 
   v12 = v10 ^ v9;
   v13 = v4 + v11;
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v15 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    [v26 setBannerOffset:v13 + 0.0];
+    [view setBannerOffset:v13 + 0.0];
     if (!v12)
     {
       goto LABEL_12;
@@ -886,15 +886,15 @@ void __70__SKUIIPhoneProductPageViewController_productViewControllerDidFinish___
 
   else
   {
-    v16 = [MEMORY[0x277D75128] sharedApplication];
-    [v16 statusBarFrame];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] statusBarFrame];
     v17 = 20.0;
     if (v18 == 0.0)
     {
       v17 = 0.0;
     }
 
-    [v26 setBannerOffset:v13 + v17];
+    [view setBannerOffset:v13 + v17];
 
     if (!v12)
     {
@@ -916,15 +916,15 @@ LABEL_12:
 
   else
   {
-    v22 = [(SKUIViewController *)self clientContext];
-    v23 = [(SKUIIPhoneProductPageViewController *)self view];
-    v24 = [v23 tintColor];
-    v25 = SKUIMessageBannerAttributedString(v22, v24);
+    clientContext2 = [(SKUIViewController *)self clientContext];
+    view2 = [(SKUIIPhoneProductPageViewController *)self view];
+    tintColor = [view2 tintColor];
+    v25 = SKUIMessageBannerAttributedString(clientContext2, tintColor);
     [(SKUIMessageBanner *)v21 setAttributedMessage:v25];
   }
 
-  [v26 setBannerView:self->_banner];
-  [v26 layoutSubviews];
+  [view setBannerView:self->_banner];
+  [view layoutSubviews];
   [(SKUIIPhoneProductPageViewController *)self _setContentInsetsForChildViewController:self->_childViewController];
   [(SKUIIPhoneProductPageViewController *)self _setHeaderPositionForChildViewController:self->_childViewController];
 }
@@ -933,11 +933,11 @@ LABEL_12:
 {
   if (self->_banner)
   {
-    v3 = [(SKUIIPhoneProductPageViewController *)self view];
-    [v3 setBannerView:0];
+    view = [(SKUIIPhoneProductPageViewController *)self view];
+    [view setBannerView:0];
 
-    v4 = [(SKUIIPhoneProductPageViewController *)self view];
-    [v4 layoutSubviews];
+    view2 = [(SKUIIPhoneProductPageViewController *)self view];
+    [view2 layoutSubviews];
 
     [(SKUIMessageBanner *)self->_banner setDelegate:0];
     banner = self->_banner;
@@ -952,22 +952,22 @@ LABEL_12:
 
 - (id)_relatedPlaceholderViewController
 {
-  v3 = [(SKUIProductPage *)self->_productPage relatedContentSwooshes];
-  v4 = v3;
-  if (!self->_relatedPlaceholderViewController && ![v3 count])
+  relatedContentSwooshes = [(SKUIProductPage *)self->_productPage relatedContentSwooshes];
+  v4 = relatedContentSwooshes;
+  if (!self->_relatedPlaceholderViewController && ![relatedContentSwooshes count])
   {
     v5 = [[SKUIProductPagePlaceholderViewController alloc] initWithStyle:0];
     relatedPlaceholderViewController = self->_relatedPlaceholderViewController;
     self->_relatedPlaceholderViewController = v5;
 
     v7 = self->_relatedPlaceholderViewController;
-    v8 = [(SKUIProductPage *)self->_productPage uber];
-    v9 = [v8 colorScheme];
-    [(SKUIProductPagePlaceholderViewController *)v7 setColorScheme:v9];
+    uber = [(SKUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [(SKUIProductPagePlaceholderViewController *)v7 setColorScheme:colorScheme];
 
     v10 = self->_relatedPlaceholderViewController;
-    v11 = [(SKUIViewController *)self clientContext];
-    [(SKUIProductPagePlaceholderViewController *)v10 setClientContext:v11];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIProductPagePlaceholderViewController *)v10 setClientContext:clientContext];
 
     [(SKUIProductPagePlaceholderViewController *)self->_relatedPlaceholderViewController setDelegate:self];
   }
@@ -988,13 +988,13 @@ LABEL_12:
     self->_loadingViewController = v4;
 
     v6 = self->_loadingViewController;
-    v7 = [(SKUIProductPage *)self->_productPage uber];
-    v8 = [v7 colorScheme];
-    [(SKUIProductPagePlaceholderViewController *)v6 setColorScheme:v8];
+    uber = [(SKUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [(SKUIProductPagePlaceholderViewController *)v6 setColorScheme:colorScheme];
 
     v9 = self->_loadingViewController;
-    v10 = [(SKUIViewController *)self clientContext];
-    [(SKUIProductPagePlaceholderViewController *)v9 setClientContext:v10];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIProductPagePlaceholderViewController *)v9 setClientContext:clientContext];
 
     [(SKUIProductPagePlaceholderViewController *)self->_loadingViewController setDelegate:self];
     loadingViewController = self->_loadingViewController;
@@ -1015,8 +1015,8 @@ LABEL_12:
       self->_headerViewController = v4;
 
       v6 = self->_headerViewController;
-      v7 = [(SKUIViewController *)self clientContext];
-      [(SKUIProductPageHeaderViewController *)v6 setClientContext:v7];
+      clientContext = [(SKUIViewController *)self clientContext];
+      [(SKUIProductPageHeaderViewController *)v6 setClientContext:clientContext];
 
       [(SKUIProductPageHeaderViewController *)self->_headerViewController setDelegate:self];
       [(SKUIProductPageHeaderViewController *)self->_headerViewController setOperationQueue:self->_operationQueue];
@@ -1039,8 +1039,8 @@ LABEL_12:
 {
   if ([(SKUIIPhoneProductPageViewController *)self isViewLoaded])
   {
-    v3 = [(SKUIIPhoneProductPageViewController *)self view];
-    [v3 setView:0];
+    view = [(SKUIIPhoneProductPageViewController *)self view];
+    [view setView:0];
   }
 
   childViewController = self->_childViewController;
@@ -1079,10 +1079,10 @@ LABEL_12:
 
 - (BOOL)_isIncompatibleItem
 {
-  v3 = [(SKUIProductPage *)self->_productPage item];
-  if (v3)
+  item = [(SKUIProductPage *)self->_productPage item];
+  if (item)
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -1096,17 +1096,17 @@ LABEL_5:
     }
   }
 
-  v5 = [(SKUIItem *)v4 deviceFamilies];
-  if ((v5 & 6) != 0)
+  deviceFamilies = [(SKUIItem *)v4 deviceFamilies];
+  if ((deviceFamilies & 6) != 0)
   {
     goto LABEL_5;
   }
 
-  v7 = v5;
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  v7 = deviceFamilies;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v6 = (v7 & 1) == 0 || (v9 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+  v6 = (v7 & 1) == 0 || (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1;
 LABEL_12:
   v11 = [(SKUIItem *)v4 itemKind]== 5 || v6;
 
@@ -1126,14 +1126,14 @@ LABEL_12:
 - (void)_reloadChildViewControllers
 {
   v201 = [(SKUIIPhoneProductPageViewController *)self _viewControllerForSectionIndex:self->_sectionIndex];
-  v3 = [(SKUIIPhoneProductPageViewController *)self isViewLoaded];
+  isViewLoaded = [(SKUIIPhoneProductPageViewController *)self isViewLoaded];
   v4 = v201;
-  if (!v3 || self->_childViewController == v201)
+  if (!isViewLoaded || self->_childViewController == v201)
   {
     goto LABEL_97;
   }
 
-  v5 = [(SKUIIPhoneProductPageViewController *)self navigationItem];
+  navigationItem = [(SKUIIPhoneProductPageViewController *)self navigationItem];
   item = [(SKUIProductPage *)self->_productPage item];
   v7 = item;
   if (!item)
@@ -1141,51 +1141,51 @@ LABEL_12:
     item = self->_item;
   }
 
-  v8 = [item title];
-  [v5 setBackButtonTitle:v8];
+  title = [item title];
+  [navigationItem setBackButtonTitle:title];
 
-  v9 = [(SKUIIPhoneProductPageViewController *)self view];
-  v10 = [(SKUIIPhoneProductPageViewController *)self _headerViewController];
+  view = [(SKUIIPhoneProductPageViewController *)self view];
+  _headerViewController = [(SKUIIPhoneProductPageViewController *)self _headerViewController];
   v11 = self->_childViewController;
   [(SKUIProductPageChildViewController *)v11 setHeaderViewController:0];
-  [v9 setView:0];
+  [view setView:0];
   v200 = v11;
   [(SKUIProductPageChildViewController *)v11 removeFromParentViewController];
   objc_storeStrong(&self->_childViewController, v201);
   [(SKUIIPhoneProductPageViewController *)self addChildViewController:self->_childViewController];
-  v12 = [(SKUIProductPageChildViewController *)self->_childViewController view];
-  [v9 setView:v12];
+  view2 = [(SKUIProductPageChildViewController *)self->_childViewController view];
+  [view setView:view2];
 
-  v198 = v10;
-  [(SKUIProductPageChildViewController *)self->_childViewController setHeaderViewController:v10];
+  v198 = _headerViewController;
+  [(SKUIProductPageChildViewController *)self->_childViewController setHeaderViewController:_headerViewController];
   [(SKUIIPhoneProductPageViewController *)self _setHeaderPositionForChildViewController:self->_childViewController];
   [(SKUIMessageBanner *)self->_banner frame];
   v14 = v13;
-  v15 = [(SKUIViewController *)self clientContext];
-  v16 = SKUIUserInterfaceIdiom(v15);
-  v17 = [MEMORY[0x277D75418] currentDevice];
-  v18 = [v17 userInterfaceIdiom];
+  clientContext = [(SKUIViewController *)self clientContext];
+  navigationController = SKUIUserInterfaceIdiom(clientContext);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v19 = (v18 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-  v20 = v16 != 1;
+  v19 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v20 = navigationController != 1;
   v21 = 0.0;
   v22 = 0.0;
   if (v20 != v19)
   {
-    v16 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-    v17 = [v16 navigationBar];
-    [v17 frame];
+    navigationController = [(SKUIIPhoneProductPageViewController *)self navigationController];
+    currentDevice = [navigationController navigationBar];
+    [currentDevice frame];
   }
 
   v23 = v14 + v22;
-  v24 = [MEMORY[0x277D75418] currentDevice];
-  v25 = [v24 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  v26 = v25 & 0xFFFFFFFFFFFFFFFBLL;
+  v26 = userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL;
   if (v26 != 1)
   {
-    v24 = [MEMORY[0x277D75128] sharedApplication];
-    [v24 statusBarFrame];
+    currentDevice2 = [MEMORY[0x277D75128] sharedApplication];
+    [currentDevice2 statusBarFrame];
     if (v27 == 0.0)
     {
       v21 = 0.0;
@@ -1199,7 +1199,7 @@ LABEL_12:
 
   v28 = v20 ^ v19;
   [(SKUIMessageBanner *)self->_banner frame];
-  [v9 setBannerOffset:v23 + v21 - v29];
+  [view setBannerOffset:v23 + v21 - v29];
   if (v26 != 1)
   {
   }
@@ -1209,11 +1209,11 @@ LABEL_12:
   }
 
   v30 = &qword_215F3F000;
-  v199 = v9;
+  v199 = view;
   if (v200)
   {
-    v31 = [(SKUIProductPageChildViewController *)v200 scrollView];
-    [v31 contentOffset];
+    scrollView = [(SKUIProductPageChildViewController *)v200 scrollView];
+    [scrollView contentOffset];
     v197 = v32;
     v34 = v33;
   }
@@ -1222,31 +1222,31 @@ LABEL_12:
   {
     [(SKUIMessageBanner *)self->_banner frame];
     v36 = v35;
-    v31 = [(SKUIViewController *)self clientContext];
-    v37 = SKUIUserInterfaceIdiom(v31);
-    v38 = [MEMORY[0x277D75418] currentDevice];
-    v39 = [v38 userInterfaceIdiom];
+    scrollView = [(SKUIViewController *)self clientContext];
+    navigationController2 = SKUIUserInterfaceIdiom(scrollView);
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-    v40 = (v39 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    v41 = v37 != 1;
+    v40 = (userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v41 = navigationController2 != 1;
     v42 = 0.0;
     v43 = 0.0;
     if (v41 != v40)
     {
-      v37 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-      v38 = [v37 navigationBar];
-      [v38 frame];
+      navigationController2 = [(SKUIIPhoneProductPageViewController *)self navigationController];
+      currentDevice3 = [navigationController2 navigationBar];
+      [currentDevice3 frame];
     }
 
     v44 = v36 + v43;
-    v45 = [MEMORY[0x277D75418] currentDevice];
-    v46 = [v45 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    v47 = v46 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v46 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    v47 = userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
-      v45 = [MEMORY[0x277D75128] sharedApplication];
-      [v45 statusBarFrame];
+      currentDevice4 = [MEMORY[0x277D75128] sharedApplication];
+      [currentDevice4 statusBarFrame];
       if (v48 == 0.0)
       {
         v42 = 0.0;
@@ -1260,8 +1260,8 @@ LABEL_12:
 
     v49 = MEMORY[0x277CBF348];
     v50 = v41 ^ v40;
-    v51 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-    [v51 frame];
+    view3 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+    [view3 frame];
     v53 = -(v44 + v42) - v52;
 
     if (v47 != 1)
@@ -1279,13 +1279,13 @@ LABEL_12:
 
   [(SKUIMessageBanner *)self->_banner frame];
   v55 = v54;
-  v56 = [(SKUIViewController *)self clientContext];
-  v57 = SKUIUserInterfaceIdiom(v56);
-  v58 = [MEMORY[0x277D75418] currentDevice];
-  v59 = [v58 userInterfaceIdiom];
+  clientContext2 = [(SKUIViewController *)self clientContext];
+  navigationController3 = SKUIUserInterfaceIdiom(clientContext2);
+  currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom5 = [currentDevice5 userInterfaceIdiom];
 
-  v60 = (v59 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-  v61 = v57 != 1;
+  v60 = (userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v61 = navigationController3 != 1;
   if (v61 == v60)
   {
     v62 = 0.0;
@@ -1293,25 +1293,25 @@ LABEL_12:
 
   else
   {
-    v57 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-    v58 = [v57 navigationBar];
-    [v58 frame];
+    navigationController3 = [(SKUIIPhoneProductPageViewController *)self navigationController];
+    currentDevice5 = [navigationController3 navigationBar];
+    [currentDevice5 frame];
   }
 
   v63 = v61 ^ v60;
   v64 = v55 + v62;
-  v65 = [MEMORY[0x277D75418] currentDevice];
-  v66 = [v65 userInterfaceIdiom];
+  currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom6 = [currentDevice6 userInterfaceIdiom];
 
-  if ((v66 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v67 = v64 + 0.0;
   }
 
   else
   {
-    v68 = [MEMORY[0x277D75128] sharedApplication];
-    [v68 statusBarFrame];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] statusBarFrame];
     v69 = 20.0;
     if (v70 == 0.0)
     {
@@ -1331,13 +1331,13 @@ LABEL_12:
   {
     [(SKUIMessageBanner *)self->_banner frame];
     v74 = v73;
-    v75 = [(SKUIViewController *)self clientContext];
-    v76 = SKUIUserInterfaceIdiom(v75);
-    v77 = [MEMORY[0x277D75418] currentDevice];
-    v78 = [v77 userInterfaceIdiom];
+    clientContext3 = [(SKUIViewController *)self clientContext];
+    navigationController4 = SKUIUserInterfaceIdiom(clientContext3);
+    currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom7 = [currentDevice7 userInterfaceIdiom];
 
-    v79 = (v78 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    v80 = v76 != 1;
+    v79 = (userInterfaceIdiom7 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v80 = navigationController4 != 1;
     if (v80 == v79)
     {
       v81 = 0.0;
@@ -1345,17 +1345,17 @@ LABEL_12:
 
     else
     {
-      v76 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-      v77 = [v76 navigationBar];
-      [v77 frame];
+      navigationController4 = [(SKUIIPhoneProductPageViewController *)self navigationController];
+      currentDevice7 = [navigationController4 navigationBar];
+      [currentDevice7 frame];
     }
 
     v82 = v80 ^ v79;
     v83 = v74 + v81;
-    v84 = [MEMORY[0x277D75418] currentDevice];
-    v85 = [v84 userInterfaceIdiom];
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom8 = [currentDevice8 userInterfaceIdiom];
 
-    if ((v85 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v86 = v83 + 0.0;
       if (!v82)
@@ -1366,8 +1366,8 @@ LABEL_12:
 
     else
     {
-      v87 = [MEMORY[0x277D75128] sharedApplication];
-      [v87 statusBarFrame];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128]2 statusBarFrame];
       v88 = 20.0;
       if (v89 == 0.0)
       {
@@ -1389,32 +1389,32 @@ LABEL_49:
   v196 = v34;
   [(SKUIMessageBanner *)self->_banner frame];
   v91 = v90;
-  v194 = [(SKUIViewController *)self clientContext];
-  v92 = SKUIUserInterfaceIdiom(v194);
-  v93 = [MEMORY[0x277D75418] currentDevice];
-  v94 = [v93 userInterfaceIdiom];
+  clientContext4 = [(SKUIViewController *)self clientContext];
+  v92 = SKUIUserInterfaceIdiom(clientContext4);
+  currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom9 = [currentDevice9 userInterfaceIdiom];
 
   v95 = 0.0;
   v96 = 0.0;
   v191 = v92 != 1;
-  v192 = (v94 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v192 = (userInterfaceIdiom9 & 0xFFFFFFFFFFFFFFFBLL) == 1;
   if (v191 != v192)
   {
-    v185 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-    v184 = [v185 navigationBar];
-    [v184 frame];
+    navigationController5 = [(SKUIIPhoneProductPageViewController *)self navigationController];
+    navigationBar = [navigationController5 navigationBar];
+    [navigationBar frame];
     v96 = v97;
   }
 
   v195 = v71;
-  v98 = [MEMORY[0x277D75418] currentDevice];
-  v99 = [v98 userInterfaceIdiom];
+  currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom10 = [currentDevice10 userInterfaceIdiom];
 
-  v190 = v99 & 0xFFFFFFFFFFFFFFFBLL;
-  if ((v99 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  v190 = userInterfaceIdiom10 & 0xFFFFFFFFFFFFFFFBLL;
+  if ((userInterfaceIdiom10 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v186 = [MEMORY[0x277D75128] sharedApplication];
-    [v186 statusBarFrame];
+    mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128]3 statusBarFrame];
     if (v100 == 0.0)
     {
       v95 = 0.0;
@@ -1427,45 +1427,45 @@ LABEL_49:
   }
 
   v189 = SKUIViewControllerGetAncestorTabBarController(self);
-  v187 = [v189 tabBar];
-  [v187 frame];
+  tabBar = [v189 tabBar];
+  [tabBar frame];
   v102 = v101;
-  v103 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v103 frame];
+  view4 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view4 frame];
   v105 = v104;
-  v106 = [(SKUIProductPageChildViewController *)self->_childViewController scrollView];
-  [v106 contentSize];
+  scrollView2 = [(SKUIProductPageChildViewController *)self->_childViewController scrollView];
+  [scrollView2 contentSize];
   v188 = v107;
-  v108 = [MEMORY[0x277D759A0] mainScreen];
-  [v108 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v193 = v109;
   [(SKUIMessageBanner *)self->_banner frame];
   v111 = v110;
-  v112 = [(SKUIViewController *)self clientContext];
-  v113 = SKUIUserInterfaceIdiom(v112);
-  v114 = [MEMORY[0x277D75418] currentDevice];
-  v115 = [v114 userInterfaceIdiom];
+  clientContext5 = [(SKUIViewController *)self clientContext];
+  v113 = SKUIUserInterfaceIdiom(clientContext5);
+  currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom11 = [currentDevice11 userInterfaceIdiom];
 
-  v116 = (v115 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v116 = (userInterfaceIdiom11 & 0xFFFFFFFFFFFFFFFBLL) == 1;
   v117 = v113 != 1;
   v118 = 0.0;
   v119 = 0.0;
   if (v117 != v116)
   {
-    v183 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-    v182 = [v183 navigationBar];
-    [v182 frame];
+    navigationController6 = [(SKUIIPhoneProductPageViewController *)self navigationController];
+    navigationBar2 = [navigationController6 navigationBar];
+    [navigationBar2 frame];
     v119 = v120;
   }
 
-  v121 = [MEMORY[0x277D75418] currentDevice];
-  v122 = [v121 userInterfaceIdiom];
+  currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom12 = [currentDevice12 userInterfaceIdiom];
 
-  v123 = v122 & 0xFFFFFFFFFFFFFFFBLL;
-  if ((v122 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  v123 = userInterfaceIdiom12 & 0xFFFFFFFFFFFFFFFBLL;
+  if ((userInterfaceIdiom12 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v121 = [MEMORY[0x277D75128] sharedApplication];
-    [v121 statusBarFrame];
+    currentDevice12 = [MEMORY[0x277D75128] sharedApplication];
+    [currentDevice12 statusBarFrame];
     if (v124 == 0.0)
     {
       v118 = 0.0;
@@ -1479,8 +1479,8 @@ LABEL_49:
 
   v125 = v91 + v96;
   v126 = v117 ^ v116;
-  v127 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v127 frame];
+  view5 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view5 frame];
   v129 = v128;
 
   if (v123 != 1)
@@ -1508,32 +1508,32 @@ LABEL_49:
 
   [(SKUIMessageBanner *)self->_banner frame];
   v136 = v135;
-  v137 = [(SKUIViewController *)self clientContext];
-  v138 = SKUIUserInterfaceIdiom(v137);
-  v139 = [MEMORY[0x277D75418] currentDevice];
-  v140 = [v139 userInterfaceIdiom];
+  clientContext6 = [(SKUIViewController *)self clientContext];
+  navigationController7 = SKUIUserInterfaceIdiom(clientContext6);
+  currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom13 = [currentDevice13 userInterfaceIdiom];
 
-  v141 = (v140 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-  v142 = v138 != 1;
+  v141 = (userInterfaceIdiom13 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v142 = navigationController7 != 1;
   v143 = 0.0;
   v144 = 0.0;
   if (v142 != v141)
   {
-    v138 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-    v139 = [v138 navigationBar];
-    [v139 frame];
+    navigationController7 = [(SKUIIPhoneProductPageViewController *)self navigationController];
+    currentDevice13 = [navigationController7 navigationBar];
+    [currentDevice13 frame];
   }
 
   v145 = v134 + v129;
   v146 = v136 + v144;
-  v147 = [MEMORY[0x277D75418] currentDevice];
-  v148 = [v147 userInterfaceIdiom];
+  currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom14 = [currentDevice14 userInterfaceIdiom];
 
-  v149 = v148 & 0xFFFFFFFFFFFFFFFBLL;
-  if ((v148 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  v149 = userInterfaceIdiom14 & 0xFFFFFFFFFFFFFFFBLL;
+  if ((userInterfaceIdiom14 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v147 = [MEMORY[0x277D75128] sharedApplication];
-    [v147 statusBarFrame];
+    currentDevice14 = [MEMORY[0x277D75128] sharedApplication];
+    [currentDevice14 statusBarFrame];
     if (v150 == 0.0)
     {
       v143 = 0.0;
@@ -1548,8 +1548,8 @@ LABEL_49:
   v151 = v132 + v188 + 49.0 - v193;
   v152 = v145 + 49.0;
   v153 = v142 ^ v141;
-  v154 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v154 frame];
+  view6 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view6 frame];
   v156 = -(v146 + v143) - v155;
 
   if (v149 != 1)
@@ -1566,31 +1566,31 @@ LABEL_49:
   {
     [(SKUIMessageBanner *)self->_banner frame];
     v160 = v159;
-    v161 = [(SKUIViewController *)self clientContext];
-    v162 = SKUIUserInterfaceIdiom(v161);
-    v163 = [MEMORY[0x277D75418] currentDevice];
-    v164 = [v163 userInterfaceIdiom];
+    clientContext7 = [(SKUIViewController *)self clientContext];
+    navigationController8 = SKUIUserInterfaceIdiom(clientContext7);
+    currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom15 = [currentDevice15 userInterfaceIdiom];
 
-    v165 = (v164 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    v166 = v162 != 1;
+    v165 = (userInterfaceIdiom15 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v166 = navigationController8 != 1;
     v167 = 0.0;
     v168 = 0.0;
     if (v166 != v165)
     {
-      v162 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-      v163 = [v162 navigationBar];
-      [v163 frame];
+      navigationController8 = [(SKUIIPhoneProductPageViewController *)self navigationController];
+      currentDevice15 = [navigationController8 navigationBar];
+      [currentDevice15 frame];
     }
 
     v169 = v160 + v168;
-    v170 = [MEMORY[0x277D75418] currentDevice];
-    v171 = [v170 userInterfaceIdiom];
+    currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom16 = [currentDevice16 userInterfaceIdiom];
 
-    v172 = v171 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v171 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    v172 = userInterfaceIdiom16 & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom16 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
-      v170 = [MEMORY[0x277D75128] sharedApplication];
-      [v170 statusBarFrame];
+      currentDevice16 = [MEMORY[0x277D75128] sharedApplication];
+      [currentDevice16 statusBarFrame];
       if (v173 == 0.0)
       {
         v167 = 0.0;
@@ -1604,8 +1604,8 @@ LABEL_49:
 
     v174 = v166 ^ v165;
     v175 = -(v169 + v167);
-    v176 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-    [v176 frame];
+    view7 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+    [view7 frame];
     v178 = v177;
 
     if (v172 != 1)
@@ -1626,8 +1626,8 @@ LABEL_49:
     v157 = v196;
   }
 
-  v180 = [(SKUIProductPageChildViewController *)self->_childViewController scrollView];
-  [v180 setContentOffset:{v197, v157}];
+  scrollView3 = [(SKUIProductPageChildViewController *)self->_childViewController scrollView];
+  [scrollView3 setContentOffset:{v197, v157}];
 
   [v158 animateYPosition:v196 - v157];
   incompatibleViewController = self->_incompatibleViewController;
@@ -1639,46 +1639,46 @@ LABEL_49:
   v4 = v201;
 LABEL_97:
 
-  MEMORY[0x2821F96F8](v3, v4);
+  MEMORY[0x2821F96F8](isViewLoaded, v4);
 }
 
-- (void)_setContentInsetsForChildViewController:(id)a3
+- (void)_setContentInsetsForChildViewController:(id)controller
 {
-  v4 = [a3 scrollView];
-  if (v4)
+  scrollView = [controller scrollView];
+  if (scrollView)
   {
-    v52 = v4;
-    v5 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-    [v5 frame];
+    v52 = scrollView;
+    view = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+    [view frame];
     v7 = v6;
     [(SKUIMessageBanner *)self->_banner frame];
     v9 = v8;
-    v10 = [(SKUIViewController *)self clientContext];
-    v11 = SKUIUserInterfaceIdiom(v10);
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    clientContext = [(SKUIViewController *)self clientContext];
+    v11 = SKUIUserInterfaceIdiom(clientContext);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v14 = (v13 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v14 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
     v15 = v11 != 1;
     v16 = 0.0;
     v17 = 0.0;
     if (v15 != v14)
     {
-      v12 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-      v51 = [v12 navigationBar];
-      [v51 frame];
+      currentDevice = [(SKUIIPhoneProductPageViewController *)self navigationController];
+      navigationBar = [currentDevice navigationBar];
+      [navigationBar frame];
     }
 
     v18 = v7 + 49.0;
     v19 = v9 + v17;
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    v22 = v21 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v21 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    v22 = userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
-      v20 = [MEMORY[0x277D75128] sharedApplication];
-      [v20 statusBarFrame];
+      currentDevice2 = [MEMORY[0x277D75128] sharedApplication];
+      [currentDevice2 statusBarFrame];
       if (v23 == 0.0)
       {
         v16 = 0.0;
@@ -1692,8 +1692,8 @@ LABEL_97:
 
     v24 = v15 ^ v14;
     v25 = SKUIViewControllerGetAncestorTabBarController(self);
-    v26 = [v25 tabBar];
-    [v26 frame];
+    tabBar = [v25 tabBar];
+    [tabBar frame];
     [v52 setContentInset:{v18 + v19 + v16, 0.0, v27, 0.0}];
 
     if (v22 != 1)
@@ -1706,31 +1706,31 @@ LABEL_97:
 
     [(SKUIMessageBanner *)self->_banner frame];
     v29 = v28;
-    v30 = [(SKUIViewController *)self clientContext];
-    v31 = SKUIUserInterfaceIdiom(v30);
-    v32 = [MEMORY[0x277D75418] currentDevice];
-    v33 = [v32 userInterfaceIdiom];
+    clientContext2 = [(SKUIViewController *)self clientContext];
+    navigationController = SKUIUserInterfaceIdiom(clientContext2);
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-    v34 = (v33 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    v35 = v31 != 1;
+    v34 = (userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v35 = navigationController != 1;
     v36 = 0.0;
     v37 = 0.0;
     if (v35 != v34)
     {
-      v31 = [(SKUIIPhoneProductPageViewController *)self navigationController];
-      v32 = [v31 navigationBar];
-      [v32 frame];
+      navigationController = [(SKUIIPhoneProductPageViewController *)self navigationController];
+      currentDevice3 = [navigationController navigationBar];
+      [currentDevice3 frame];
     }
 
     v38 = v29 + v37;
-    v39 = [MEMORY[0x277D75418] currentDevice];
-    v40 = [v39 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    v41 = v40 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v40 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    v41 = userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
-      v39 = [MEMORY[0x277D75128] sharedApplication];
-      [v39 statusBarFrame];
+      currentDevice4 = [MEMORY[0x277D75128] sharedApplication];
+      [currentDevice4 statusBarFrame];
       if (v42 == 0.0)
       {
         v36 = 0.0;
@@ -1744,8 +1744,8 @@ LABEL_97:
 
     v43 = v35 ^ v34;
     v44 = SKUIViewControllerGetAncestorTabBarController(self);
-    v45 = [v44 tabBar];
-    [v45 frame];
+    tabBar2 = [v44 tabBar];
+    [tabBar2 frame];
     [v52 setScrollIndicatorInsets:{v38 + v36, 0.0, v46, 0.0}];
 
     if (v41 != 1)
@@ -1756,144 +1756,144 @@ LABEL_97:
     {
     }
 
-    v47 = [(SKUIProductPage *)self->_productPage uber];
-    v48 = [v47 colorScheme];
-    v49 = [v48 backgroundColor];
-    if (v49)
+    uber = [(SKUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    backgroundColor = [colorScheme backgroundColor];
+    if (backgroundColor)
     {
-      SKUIScrollViewSetTopBackgroundColor(v52, v49);
+      SKUIScrollViewSetTopBackgroundColor(v52, backgroundColor);
     }
 
     else
     {
-      v50 = [MEMORY[0x277D75348] whiteColor];
-      SKUIScrollViewSetTopBackgroundColor(v52, v50);
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      SKUIScrollViewSetTopBackgroundColor(v52, whiteColor);
     }
 
     SKUIScrollViewLayoutTopBackgroundColorForProductPage(v52, 0.0);
-    v4 = v52;
+    scrollView = v52;
   }
 }
 
-- (void)_setHeaderPositionForChildViewController:(id)a3
+- (void)_setHeaderPositionForChildViewController:(id)controller
 {
-  v23 = [a3 scrollView];
-  [v23 contentOffset];
+  scrollView = [controller scrollView];
+  [scrollView contentOffset];
   v5 = v4;
-  v6 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-  v7 = [(SKUIProductPageHeaderViewController *)self->_headerViewController floatingView];
-  [v23 contentInset];
+  view = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+  floatingView = [(SKUIProductPageHeaderViewController *)self->_headerViewController floatingView];
+  [scrollView contentInset];
   v9 = v8;
-  v10 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v10 frame];
+  view2 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view2 frame];
   v12 = v9 - v11 + -49.0;
 
-  [v7 frame];
-  [v7 setFrame:?];
-  [v6 frame];
+  [floatingView frame];
+  [floatingView setFrame:?];
+  [view frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v19 frame];
+  view3 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view3 frame];
   v21 = -(v20 + 49.0);
 
-  [v6 setFrame:{v14, v21, v16, v18}];
+  [view setFrame:{v14, v21, v16, v18}];
   v22 = 0.0;
   if (v5 > -(v12 + 49.0))
   {
     v22 = (v5 + 49.0 + v12) / 49.0;
   }
 
-  [v7 setBackdropAlpha:{1.0 - fmin(v22, 1.0)}];
+  [floatingView setBackdropAlpha:{1.0 - fmin(v22, 1.0)}];
 }
 
-- (void)_setMetricsController:(id)a3
+- (void)_setMetricsController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (!self->_metricsController)
   {
-    v22 = v5;
-    v6 = [(SKUIProductPage *)self->_productPage metricsConfiguration];
-    objc_storeStrong(&self->_metricsController, a3);
-    [(SKUIMetricsController *)self->_metricsController setPageConfiguration:v6];
+    v22 = controllerCopy;
+    metricsConfiguration = [(SKUIProductPage *)self->_productPage metricsConfiguration];
+    objc_storeStrong(&self->_metricsController, controller);
+    [(SKUIMetricsController *)self->_metricsController setPageConfiguration:metricsConfiguration];
     metricsController = self->_metricsController;
-    v8 = [(SKUIProductPage *)self->_productPage pageURL];
-    v9 = [v8 absoluteString];
-    [(SKUIMetricsController *)metricsController setPageURL:v9];
+    pageURL = [(SKUIProductPage *)self->_productPage pageURL];
+    absoluteString = [pageURL absoluteString];
+    [(SKUIMetricsController *)metricsController setPageURL:absoluteString];
 
-    v10 = [MEMORY[0x277D75128] sharedApplication];
-    v11 = [v10 statusBarOrientation];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
     v12 = self->_metricsController;
-    v13 = SKUIMetricsWindowOrientationForInterfaceOrientation(v11);
+    v13 = SKUIMetricsWindowOrientationForInterfaceOrientation(statusBarOrientation);
     [(SKUIMetricsController *)v12 setWindowOrientation:v13];
 
-    v14 = [(SKUIViewController *)self clientContext];
+    clientContext = [(SKUIViewController *)self clientContext];
     v15 = self->_metricsController;
-    v16 = [v14 clientInterface];
-    v17 = [v16 clientIdentifier];
-    [(SKUIMetricsController *)v15 setApplicationIdentifier:v17];
+    clientInterface = [clientContext clientInterface];
+    clientIdentifier = [clientInterface clientIdentifier];
+    [(SKUIMetricsController *)v15 setApplicationIdentifier:clientIdentifier];
 
     v18 = self->_metricsController;
-    v19 = [v14 metricsPageContextForViewController:self];
+    v19 = [clientContext metricsPageContextForViewController:self];
     [(SKUIMetricsController *)v18 setPageContext:v19];
 
     [(SKUISwooshArrayViewController *)self->_relatedViewController setMetricsController:self->_metricsController];
     v20 = self->_metricsController;
-    v21 = [v6 pingURLs];
-    [(SKUIMetricsController *)v20 pingURLs:v21 withClientContext:v14];
+    pingURLs = [metricsConfiguration pingURLs];
+    [(SKUIMetricsController *)v20 pingURLs:pingURLs withClientContext:clientContext];
 
-    v5 = v22;
+    controllerCopy = v22;
   }
 }
 
-- (void)_setProductPage:(id)a3 error:(id)a4
+- (void)_setProductPage:(id)page error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SKUILoadProductPageOperation *)self->_loadOperation metricsPageEvent];
+  pageCopy = page;
+  errorCopy = error;
+  metricsPageEvent = [(SKUILoadProductPageOperation *)self->_loadOperation metricsPageEvent];
   [(SKUILoadProductPageOperation *)self->_loadOperation setOutputBlock:0];
   loadOperation = self->_loadOperation;
   self->_loadOperation = 0;
 
-  v11 = [v7 ITMLData];
+  iTMLData = [pageCopy ITMLData];
 
-  if (v11)
+  if (iTMLData)
   {
-    v12 = [(SKUIViewController *)self clientContext];
-    v13 = [v7 ITMLData];
-    v14 = [v7 ITMLResponse];
-    [v12 sendOnPageResponseWithDocument:0 data:v13 URLResponse:v14 performanceMetrics:0];
+    clientContext = [(SKUIViewController *)self clientContext];
+    iTMLData2 = [pageCopy ITMLData];
+    iTMLResponse = [pageCopy ITMLResponse];
+    [clientContext sendOnPageResponseWithDocument:0 data:iTMLData2 URLResponse:iTMLResponse performanceMetrics:0];
   }
 
   else
   {
-    if (!v7)
+    if (!pageCopy)
     {
       goto LABEL_14;
     }
 
-    objc_storeStrong(&self->_productPage, a3);
-    v12 = [(SKUIProductPage *)self->_productPage metricsConfiguration];
-    [(SKUIMetricsController *)self->_metricsController setPageConfiguration:v12];
+    objc_storeStrong(&self->_productPage, page);
+    clientContext = [(SKUIProductPage *)self->_productPage metricsConfiguration];
+    [(SKUIMetricsController *)self->_metricsController setPageConfiguration:clientContext];
     metricsController = self->_metricsController;
-    v16 = [(SKUIProductPage *)self->_productPage pageURL];
-    v17 = [v16 absoluteString];
-    [(SKUIMetricsController *)metricsController setPageURL:v17];
+    pageURL = [(SKUIProductPage *)self->_productPage pageURL];
+    absoluteString = [pageURL absoluteString];
+    [(SKUIMetricsController *)metricsController setPageURL:absoluteString];
 
     if (!self->_item)
     {
-      v18 = [(SKUIProductPage *)self->_productPage item];
+      item = [(SKUIProductPage *)self->_productPage item];
       item = self->_item;
-      self->_item = v18;
+      self->_item = item;
     }
 
     [(SKUIProductPageHeaderViewController *)self->_headerViewController setProductPage:self->_productPage];
     if ([(SKUIProductPageHeaderViewController *)self->_headerViewController isViewLoaded])
     {
-      v20 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-      [v20 sizeToFit];
+      view = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+      [view sizeToFit];
     }
 
     [(SKUIIPhoneProductPageViewController *)self _invalidateChildViewControllers];
@@ -1906,14 +1906,14 @@ LABEL_97:
     block[3] = &unk_2781F80F0;
     block[4] = self;
     dispatch_after(v21, MEMORY[0x277D85CD0], block);
-    if (v9)
+    if (metricsPageEvent)
     {
-      v22 = [MEMORY[0x277CBEAA8] date];
-      [v22 timeIntervalSince1970];
-      [v9 setPageRenderTime:?];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
+      [metricsPageEvent setPageRenderTime:?];
 
-      [(SKUIMetricsController *)self->_metricsController recordEvent:v9];
-      objc_storeStrong(&self->_lastPageEvent, v9);
+      [(SKUIMetricsController *)self->_metricsController recordEvent:metricsPageEvent];
+      objc_storeStrong(&self->_lastPageEvent, metricsPageEvent);
     }
 
     if (self->_wantsActivityViewController)
@@ -1922,20 +1922,20 @@ LABEL_97:
     }
 
     v23 = self->_metricsController;
-    v24 = [v12 pingURLs];
-    v25 = [(SKUIViewController *)self clientContext];
-    [(SKUIMetricsController *)v23 pingURLs:v24 withClientContext:v25];
+    pingURLs = [clientContext pingURLs];
+    clientContext2 = [(SKUIViewController *)self clientContext];
+    [(SKUIMetricsController *)v23 pingURLs:pingURLs withClientContext:clientContext2];
   }
 
 LABEL_14:
-  if (v8)
+  if (errorCopy)
   {
-    v26 = [v8 domain];
-    if ([v26 isEqualToString:@"SKUIErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"SKUIErrorDomain"])
     {
-      v27 = [v8 code];
+      code = [errorCopy code];
 
-      if (v27 == 1)
+      if (code == 1)
       {
         [(SKUIIPhoneProductPageViewController *)self _presentHTMLProductPage];
         goto LABEL_20;
@@ -1946,7 +1946,7 @@ LABEL_14:
     {
     }
 
-    [(SKUIIPhoneProductPageViewController *)self _showError:v8];
+    [(SKUIIPhoneProductPageViewController *)self _showError:errorCopy];
   }
 
 LABEL_20:
@@ -1958,24 +1958,24 @@ void __61__SKUIIPhoneProductPageViewController__setProductPage_error___block_inv
   [v1 reloadData];
 }
 
-- (void)_setSectionIndexWithFragment:(int64_t)a3
+- (void)_setSectionIndexWithFragment:(int64_t)fragment
 {
-  if (a3 <= 2)
+  if (fragment <= 2)
   {
-    self->_sectionIndex = a3;
+    self->_sectionIndex = fragment;
   }
 }
 
-- (void)_showError:(id)a3
+- (void)_showError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   if (!self->_errorViewController)
   {
-    v12 = v4;
-    v4 = [SKUINetworkErrorViewController canDisplayError:v4];
+    v12 = errorCopy;
+    errorCopy = [SKUINetworkErrorViewController canDisplayError:errorCopy];
     v5 = v12;
-    if (v4)
+    if (errorCopy)
     {
       [(SKUIProductPageChildViewController *)self->_childViewController setHeaderViewController:0];
       [(SKUIProductPageChildViewController *)self->_childViewController removeFromParentViewController];
@@ -1984,32 +1984,32 @@ void __61__SKUIIPhoneProductPageViewController__setProductPage_error___block_inv
       self->_errorViewController = v6;
 
       v8 = self->_errorViewController;
-      v9 = [(SKUIViewController *)self clientContext];
-      [(SKUINetworkErrorViewController *)v8 setClientContext:v9];
+      clientContext = [(SKUIViewController *)self clientContext];
+      [(SKUINetworkErrorViewController *)v8 setClientContext:clientContext];
 
       [(SKUINetworkErrorViewController *)self->_errorViewController setDelegate:self];
       objc_storeStrong(&self->_childViewController, self->_errorViewController);
       [(SKUIIPhoneProductPageViewController *)self addChildViewController:self->_childViewController];
-      v10 = [(SKUIIPhoneProductPageViewController *)self view];
-      v11 = [(SKUINetworkErrorViewController *)self->_errorViewController view];
-      [v11 setAutoresizingMask:18];
-      [v10 bounds];
-      [v11 setFrame:?];
-      [v10 addSubview:v11];
+      view = [(SKUIIPhoneProductPageViewController *)self view];
+      view2 = [(SKUINetworkErrorViewController *)self->_errorViewController view];
+      [view2 setAutoresizingMask:18];
+      [view bounds];
+      [view2 setFrame:?];
+      [view addSubview:view2];
 
       v5 = v12;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](errorCopy, v5);
 }
 
 - (void)_showActivityViewController
 {
   v3 = [SKUIProductPageActivityViewController alloc];
-  v4 = [(SKUIProductPage *)self->_productPage item];
-  v5 = [(SKUIViewController *)self clientContext];
-  v6 = [(SKUIProductPageActivityViewController *)v3 initWithProductPageItem:v4 clientContext:v5];
+  item = [(SKUIProductPage *)self->_productPage item];
+  clientContext = [(SKUIViewController *)self clientContext];
+  v6 = [(SKUIProductPageActivityViewController *)v3 initWithProductPageItem:item clientContext:clientContext];
 
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D85DD0];
@@ -2033,7 +2033,7 @@ void __66__SKUIIPhoneProductPageViewController__showActivityViewController__bloc
   }
 }
 
-- (id)_viewControllerForSectionIndex:(unint64_t)a3
+- (id)_viewControllerForSectionIndex:(unint64_t)index
 {
   if (!self->_item)
   {
@@ -2046,76 +2046,76 @@ void __66__SKUIIPhoneProductPageViewController__showActivityViewController__bloc
     if (!incompatibleViewController)
     {
       v6 = [SKUIIncompatibleAppViewController alloc];
-      v7 = [(SKUIProductPage *)self->_productPage item];
-      v8 = [(SKUIIncompatibleAppViewController *)v6 initWithIncompatibleItem:v7];
+      item = [(SKUIProductPage *)self->_productPage item];
+      v8 = [(SKUIIncompatibleAppViewController *)v6 initWithIncompatibleItem:item];
       v9 = self->_incompatibleViewController;
       self->_incompatibleViewController = v8;
 
       v10 = self->_incompatibleViewController;
-      v11 = [(SKUIViewController *)self clientContext];
-      [(SKUIViewController *)v10 setClientContext:v11];
+      clientContext = [(SKUIViewController *)self clientContext];
+      [(SKUIViewController *)v10 setClientContext:clientContext];
 
       [(SKUIIncompatibleAppViewController *)self->_incompatibleViewController setDelegate:self];
       [(SKUIIncompatibleAppViewController *)self->_incompatibleViewController setOperationQueue:self->_operationQueue];
       incompatibleViewController = self->_incompatibleViewController;
     }
 
-    v12 = incompatibleViewController;
+    _loadingViewController = incompatibleViewController;
     goto LABEL_18;
   }
 
   productPage = self->_productPage;
   if (!productPage)
   {
-    v12 = [(SKUIIPhoneProductPageViewController *)self _loadingViewController];
+    _loadingViewController = [(SKUIIPhoneProductPageViewController *)self _loadingViewController];
     goto LABEL_18;
   }
 
-  if (a3 == 2)
+  if (index == 2)
   {
-    v15 = [(SKUIProductPage *)productPage relatedContentSwooshes];
-    v16 = [v15 count];
+    relatedContentSwooshes = [(SKUIProductPage *)productPage relatedContentSwooshes];
+    v16 = [relatedContentSwooshes count];
 
     if (v16)
     {
-      v17 = [(SKUIIPhoneProductPageViewController *)self _relatedViewController];
-      if ([v17 isSkLoaded])
+      _relatedViewController = [(SKUIIPhoneProductPageViewController *)self _relatedViewController];
+      if ([_relatedViewController isSkLoaded])
       {
-        v14 = v17;
+        _loadingViewController2 = _relatedViewController;
       }
 
       else
       {
-        v14 = [(SKUIIPhoneProductPageViewController *)self _loadingViewController];
-        [v17 loadMissingItemData];
+        _loadingViewController2 = [(SKUIIPhoneProductPageViewController *)self _loadingViewController];
+        [_relatedViewController loadMissingItemData];
       }
 
       goto LABEL_19;
     }
 
-    v12 = [(SKUIIPhoneProductPageViewController *)self _relatedPlaceholderViewController];
+    _loadingViewController = [(SKUIIPhoneProductPageViewController *)self _relatedPlaceholderViewController];
     goto LABEL_18;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
-    v12 = [(SKUIIPhoneProductPageViewController *)self _reviewsViewController];
+    _loadingViewController = [(SKUIIPhoneProductPageViewController *)self _reviewsViewController];
     goto LABEL_18;
   }
 
-  if (a3)
+  if (index)
   {
 LABEL_11:
-    v14 = 0;
+    _loadingViewController2 = 0;
     goto LABEL_19;
   }
 
-  v12 = [(SKUIIPhoneProductPageViewController *)self _detailsViewController];
+  _loadingViewController = [(SKUIIPhoneProductPageViewController *)self _detailsViewController];
 LABEL_18:
-  v14 = v12;
+  _loadingViewController2 = _loadingViewController;
 LABEL_19:
 
-  return v14;
+  return _loadingViewController2;
 }
 
 - (SKUIIPhoneProductPageDelegate)delegate

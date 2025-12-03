@@ -1,29 +1,29 @@
 @interface SBSUIStarkNotificationsSceneTransitionContext
 - (BOOL)dismissNotification;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
-- (void)setDismissNotification:(BOOL)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (void)setDismissNotification:(BOOL)notification;
 @end
 
 @implementation SBSUIStarkNotificationsSceneTransitionContext
 
 - (BOOL)dismissNotification
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:2998744415];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:2998744415];
 
   return v3;
 }
 
-- (void)setDismissNotification:(BOOL)a3
+- (void)setDismissNotification:(BOOL)notification
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:2998744415];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:2998744415];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 2998744415)
+  if (setting == 2998744415)
   {
     v5 = @"dismissNotification";
   }
@@ -40,9 +40,9 @@
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 == 2998744415)
+  if (setting == 2998744415)
   {
     v5 = BSSettingFlagDescription();
   }
@@ -51,7 +51,7 @@
   {
     v7.receiver = self;
     v7.super_class = SBSUIStarkNotificationsSceneTransitionContext;
-    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:a3 object:a4 ofSetting:?];
+    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:flag object:object ofSetting:?];
   }
 
   return v5;

@@ -7,38 +7,38 @@
 - (uint64_t)firstIndexCommonWithIndexSet:()SCRCIndexSetExtras
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = [v4 count];
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 && v6)
   {
     if (v5 >= v6)
     {
-      v8 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = v4;
+      selfCopy = v4;
     }
 
     if (v5 >= v6)
     {
-      v9 = v4;
+      selfCopy2 = v4;
     }
 
     else
     {
-      v9 = a1;
+      selfCopy2 = self;
     }
 
-    v10 = v8;
-    v11 = v9;
-    v12 = [v11 firstIndex];
+    v10 = selfCopy;
+    v11 = selfCopy2;
+    firstIndex = [v11 firstIndex];
     v7 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = v12;
+      v7 = firstIndex;
       while (([v10 containsIndex:v7] & 1) == 0)
       {
         v7 = [v11 indexGreaterThanIndex:v7];

@@ -1,21 +1,21 @@
 @interface CNComposeTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CNComposeTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNComposeTableViewCell" hasProperty:@"titleLabel" withType:"@"];
-  [v3 validateClass:@"CNComposeTableViewCell" hasProperty:@"detailLabel" withType:"@"];
-  [v3 validateClass:@"CNComposeTableViewCell" hasProperty:@"labelColor" withType:"@"];
-  [v3 validateClass:@"CNComposeTableViewCell" hasInstanceMethod:@"recipient" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"isGroup" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"initWithStyle:reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
-  [v3 validateClass:@"UIDynamicCatalogColor" hasInstanceMethod:@"_debugName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNComposeTableViewCell" hasProperty:@"titleLabel" withType:"@"];
+  [validationsCopy validateClass:@"CNComposeTableViewCell" hasProperty:@"detailLabel" withType:"@"];
+  [validationsCopy validateClass:@"CNComposeTableViewCell" hasProperty:@"labelColor" withType:"@"];
+  [validationsCopy validateClass:@"CNComposeTableViewCell" hasInstanceMethod:@"recipient" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"isGroup" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"initWithStyle:reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
+  [validationsCopy validateClass:@"UIDynamicCatalogColor" hasInstanceMethod:@"_debugName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -52,8 +52,8 @@
 LABEL_9:
 
 LABEL_10:
-  v8 = [MEMORY[0x29EDC7A00] tintColor];
-  if ([v4 isEqual:v8])
+  tintColor = [MEMORY[0x29EDC7A00] tintColor];
+  if ([v4 isEqual:tintColor])
   {
     v9 = AXApplicationGetMainBundleIdentifier();
     v10 = [v9 isEqualToString:*MEMORY[0x29EDBD658]];
@@ -64,15 +64,15 @@ LABEL_10:
     }
 
     accessibilityLocalizedString(@"contact.kind.eligible");
-    v7 = v8 = v7;
+    v7 = tintColor = v7;
   }
 
 LABEL_14:
   v11 = [(CNComposeTableViewCellAccessibility *)self safeUIViewForKey:@"titleLabel"];
-  v12 = [v11 accessibilityLabel];
+  accessibilityLabel = [v11 accessibilityLabel];
 
   v13 = [(CNComposeTableViewCellAccessibility *)self safeUIViewForKey:@"detailLabel"];
-  v14 = [v13 accessibilityLabel];
+  accessibilityLabel2 = [v13 accessibilityLabel];
 
   v15 = [(CNComposeTableViewCellAccessibility *)self safeValueForKey:@"recipient"];
   if ([v15 safeBoolForKey:@"isGroup"])

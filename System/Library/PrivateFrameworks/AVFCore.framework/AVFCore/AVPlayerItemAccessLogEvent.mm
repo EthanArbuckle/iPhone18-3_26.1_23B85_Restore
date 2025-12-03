@@ -1,6 +1,6 @@
 @interface AVPlayerItemAccessLogEvent
 - (AVPlayerItemAccessLogEvent)init;
-- (AVPlayerItemAccessLogEvent)initWithDictionary:(id)a3;
+- (AVPlayerItemAccessLogEvent)initWithDictionary:(id)dictionary;
 - (NSDate)playbackStartDate;
 - (NSInteger)downloadOverdue;
 - (NSInteger)mediaRequestsWWAN;
@@ -69,7 +69,7 @@
   return result;
 }
 
-- (AVPlayerItemAccessLogEvent)initWithDictionary:(id)a3
+- (AVPlayerItemAccessLogEvent)initWithDictionary:(id)dictionary
 {
   v8.receiver = self;
   v8.super_class = AVPlayerItemAccessLogEvent;
@@ -79,11 +79,11 @@
     return 0;
   }
 
-  v5 = [(AVPlayerItemAccessLogEvent *)v4 _common_init];
-  v6 = v5;
-  if (a3 && v5)
+  _common_init = [(AVPlayerItemAccessLogEvent *)v4 _common_init];
+  v6 = _common_init;
+  if (dictionary && _common_init)
   {
-    *(*(v5 + 8) + 8) = a3;
+    *(*(_common_init + 8) + 8) = dictionary;
   }
 
   return v6;

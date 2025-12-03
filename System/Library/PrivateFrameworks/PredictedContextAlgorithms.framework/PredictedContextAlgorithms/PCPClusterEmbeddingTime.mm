@@ -1,25 +1,25 @@
 @interface PCPClusterEmbeddingTime
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDayOfWeekSin:(BOOL)a3;
-- (void)setHasIsWeekend:(BOOL)a3;
-- (void)setHasNormalizedDuration:(BOOL)a3;
-- (void)setHasTimeOfDayCos:(BOOL)a3;
-- (void)setHasTimeOfDaySin:(BOOL)a3;
-- (void)setHasWeekOfYear:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDayOfWeekSin:(BOOL)sin;
+- (void)setHasIsWeekend:(BOOL)weekend;
+- (void)setHasNormalizedDuration:(BOOL)duration;
+- (void)setHasTimeOfDayCos:(BOOL)cos;
+- (void)setHasTimeOfDaySin:(BOOL)sin;
+- (void)setHasWeekOfYear:(BOOL)year;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPClusterEmbeddingTime
 
-- (void)setHasNormalizedDuration:(BOOL)a3
+- (void)setHasNormalizedDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimeOfDayCos:(BOOL)a3
+- (void)setHasTimeOfDayCos:(BOOL)cos
 {
-  if (a3)
+  if (cos)
   {
     v3 = 8;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTimeOfDaySin:(BOOL)a3
+- (void)setHasTimeOfDaySin:(BOOL)sin
 {
-  if (a3)
+  if (sin)
   {
     v3 = 16;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDayOfWeekSin:(BOOL)a3
+- (void)setHasDayOfWeekSin:(BOOL)sin
 {
-  if (a3)
+  if (sin)
   {
     v3 = 2;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsWeekend:(BOOL)a3
+- (void)setHasIsWeekend:(BOOL)weekend
 {
-  if (a3)
+  if (weekend)
   {
     v3 = 64;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasWeekOfYear:(BOOL)a3
+- (void)setHasWeekOfYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 32;
   }
@@ -113,20 +113,20 @@
   v8.receiver = self;
   v8.super_class = PCPClusterEmbeddingTime;
   v4 = [(PCPClusterEmbeddingTime *)&v8 description];
-  v5 = [(PCPClusterEmbeddingTime *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPClusterEmbeddingTime *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_normalizedDuration];
-    [v3 setObject:v7 forKey:@"normalizedDuration"];
+    [dictionary setObject:v7 forKey:@"normalizedDuration"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -147,7 +147,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timeOfDayCos];
-  [v3 setObject:v8 forKey:@"timeOfDayCos"];
+  [dictionary setObject:v8 forKey:@"timeOfDayCos"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -163,7 +163,7 @@ LABEL_4:
 
 LABEL_14:
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timeOfDaySin];
-  [v3 setObject:v9 forKey:@"timeOfDaySin"];
+  [dictionary setObject:v9 forKey:@"timeOfDaySin"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -179,7 +179,7 @@ LABEL_5:
 
 LABEL_15:
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dayOfWeekCos];
-  [v3 setObject:v10 forKey:@"dayOfWeekCos"];
+  [dictionary setObject:v10 forKey:@"dayOfWeekCos"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -195,7 +195,7 @@ LABEL_6:
 
 LABEL_16:
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dayOfWeekSin];
-  [v3 setObject:v11 forKey:@"dayOfWeekSin"];
+  [dictionary setObject:v11 forKey:@"dayOfWeekSin"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -211,23 +211,23 @@ LABEL_7:
 
 LABEL_17:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_isWeekend];
-  [v3 setObject:v12 forKey:@"isWeekend"];
+  [dictionary setObject:v12 forKey:@"isWeekend"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_weekOfYear];
-    [v3 setObject:v5 forKey:@"weekOfYear"];
+    [dictionary setObject:v5 forKey:@"weekOfYear"];
   }
 
 LABEL_9:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -323,14 +323,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = *&self->_normalizedDuration;
-    *(v4 + 56) |= 4u;
+    toCopy[3] = *&self->_normalizedDuration;
+    *(toCopy + 56) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -349,8 +349,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = *&self->_timeOfDayCos;
-  *(v4 + 56) |= 8u;
+  toCopy[4] = *&self->_timeOfDayCos;
+  *(toCopy + 56) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -364,8 +364,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  v4[5] = *&self->_timeOfDaySin;
-  *(v4 + 56) |= 0x10u;
+  toCopy[5] = *&self->_timeOfDaySin;
+  *(toCopy + 56) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -379,8 +379,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  v4[1] = *&self->_dayOfWeekCos;
-  *(v4 + 56) |= 1u;
+  toCopy[1] = *&self->_dayOfWeekCos;
+  *(toCopy + 56) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -394,8 +394,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  v4[2] = *&self->_dayOfWeekSin;
-  *(v4 + 56) |= 2u;
+  toCopy[2] = *&self->_dayOfWeekSin;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -409,21 +409,21 @@ LABEL_7:
   }
 
 LABEL_17:
-  *(v4 + 52) = self->_isWeekend;
-  *(v4 + 56) |= 0x40u;
+  *(toCopy + 52) = self->_isWeekend;
+  *(toCopy + 56) |= 0x40u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
-    *(v4 + 12) = self->_weekOfYear;
-    *(v4 + 56) |= 0x20u;
+    *(toCopy + 12) = self->_weekOfYear;
+    *(toCopy + 56) |= 0x20u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -520,82 +520,82 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_normalizedDuration != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_normalizedDuration != *(equalCopy + 3))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_timeOfDayCos != *(v4 + 4))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_timeOfDayCos != *(equalCopy + 4))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0 || self->_timeOfDaySin != *(v4 + 5))
+    if ((*(equalCopy + 56) & 0x10) == 0 || self->_timeOfDaySin != *(equalCopy + 5))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 56) & 0x10) != 0)
+  else if ((*(equalCopy + 56) & 0x10) != 0)
   {
     goto LABEL_34;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_dayOfWeekCos != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_dayOfWeekCos != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_dayOfWeekSin != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_dayOfWeekSin != *(equalCopy + 2))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((*(v4 + 56) & 0x40) == 0)
+    if ((*(equalCopy + 56) & 0x40) == 0)
     {
       goto LABEL_29;
     }
@@ -605,30 +605,30 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ((*(v4 + 56) & 0x40) == 0)
+  if ((*(equalCopy + 56) & 0x40) == 0)
   {
     goto LABEL_34;
   }
 
-  v7 = *(v4 + 52);
+  v7 = *(equalCopy + 52);
   if (self->_isWeekend)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_34;
   }
 
 LABEL_29:
-  v5 = (*(v4 + 56) & 0x20) == 0;
+  v5 = (*(equalCopy + 56) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 56) & 0x20) == 0 || self->_weekOfYear != *(v4 + 12))
+    if ((*(equalCopy + 56) & 0x20) == 0 || self->_weekOfYear != *(equalCopy + 12))
     {
       goto LABEL_34;
     }
@@ -836,15 +836,15 @@ LABEL_43:
   return v8 ^ v4 ^ v12 ^ v16 ^ v20 ^ v24 ^ v25;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 56);
+  fromCopy = from;
+  v5 = *(fromCopy + 56);
   if ((v5 & 4) != 0)
   {
-    self->_normalizedDuration = *(v4 + 3);
+    self->_normalizedDuration = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -857,14 +857,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 56) & 8) == 0)
+  else if ((*(fromCopy + 56) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_timeOfDayCos = *(v4 + 4);
+  self->_timeOfDayCos = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -877,9 +877,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_timeOfDaySin = *(v4 + 5);
+  self->_timeOfDaySin = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -892,9 +892,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_dayOfWeekCos = *(v4 + 1);
+  self->_dayOfWeekCos = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -907,9 +907,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_dayOfWeekSin = *(v4 + 2);
+  self->_dayOfWeekSin = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -922,12 +922,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_isWeekend = *(v4 + 52);
+  self->_isWeekend = *(fromCopy + 52);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 56) & 0x20) != 0)
+  if ((*(fromCopy + 56) & 0x20) != 0)
   {
 LABEL_8:
-    self->_weekOfYear = *(v4 + 12);
+    self->_weekOfYear = *(fromCopy + 12);
     *&self->_has |= 0x20u;
   }
 

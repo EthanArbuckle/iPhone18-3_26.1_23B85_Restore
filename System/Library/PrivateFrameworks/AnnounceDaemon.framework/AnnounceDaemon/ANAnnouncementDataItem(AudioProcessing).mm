@@ -9,25 +9,25 @@
   v50 = *MEMORY[0x277D85DE8];
   if (a3)
   {
-    if ([a1 type] == 1)
+    if ([self type] == 1)
     {
-      v7 = [a1 data];
+      data = [self data];
 
-      if (v7)
+      if (data)
       {
         v8 = MEMORY[0x277CEAB98];
-        v9 = [a1 data];
+        data2 = [self data];
         v10 = *MEMORY[0x277CEA9D8];
         v11 = objc_opt_new();
-        v12 = [v11 UUIDString];
-        v13 = [v8 createTemporaryFileWithData:v9 extension:v10 directory:v12];
+        uUIDString = [v11 UUIDString];
+        v13 = [v8 createTemporaryFileWithData:data2 extension:v10 directory:uUIDString];
 
         if (v13)
         {
           v14 = MEMORY[0x277CEAB98];
           v15 = objc_opt_new();
-          v16 = [v15 UUIDString];
-          v17 = [v14 createTemporaryURLWithFileExtension:v10 directory:v16];
+          uUIDString2 = [v15 UUIDString];
+          v17 = [v14 createTemporaryURLWithFileExtension:v10 directory:uUIDString2];
 
           if (!v17)
           {
@@ -95,7 +95,7 @@ LABEL_44:
               v28 = v27 != 0;
               if (v27)
               {
-                [a1 setData:v27];
+                [self setData:v27];
               }
 
               else
@@ -117,8 +117,8 @@ LABEL_44:
               goto LABEL_42;
             }
 
-            v35 = [MEMORY[0x277CEAB80] sharedInstance];
-            v36 = [v35 BOOLForDefault:*MEMORY[0x277CEA978]];
+            mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+            v36 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA978]];
 
             if (v36)
             {
@@ -139,8 +139,8 @@ LABEL_44:
               [MEMORY[0x277CCA9B8] an_errorWithCode:1044 component:*MEMORY[0x277CEA9A8]];
               *a4 = v28 = 0;
 LABEL_42:
-              v40 = [MEMORY[0x277CEAB80] sharedInstance];
-              v41 = [v40 BOOLForDefault:*MEMORY[0x277CEA908]];
+              mEMORY[0x277CEAB80]2 = [MEMORY[0x277CEAB80] sharedInstance];
+              v41 = [mEMORY[0x277CEAB80]2 BOOLForDefault:*MEMORY[0x277CEA908]];
 
               if ((v41 & 1) == 0)
               {

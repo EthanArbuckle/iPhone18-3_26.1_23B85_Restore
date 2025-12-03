@@ -1,6 +1,6 @@
 @interface MTKeyProcessorPair
 - (MTKeyProcessorPair)init;
-- (MTKeyProcessorPair)initWithKey:(id)a3 processor:(id)a4;
+- (MTKeyProcessorPair)initWithKey:(id)key processor:(id)processor;
 - (MZKeyValueStoreTransactionProcessing)processor;
 - (NSString)key;
 @end
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (MTKeyProcessorPair)initWithKey:(id)a3 processor:(id)a4
+- (MTKeyProcessorPair)initWithKey:(id)key processor:(id)processor
 {
   ObjectType = swift_getObjectType();
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = (self + OBJC_IVAR___MTKeyProcessorPair_key);
   *v8 = v7;
   v8[1] = v9;
-  *(self + OBJC_IVAR___MTKeyProcessorPair_processor) = a4;
+  *(self + OBJC_IVAR___MTKeyProcessorPair_processor) = processor;
   v11.receiver = self;
   v11.super_class = ObjectType;
   swift_unknownObjectRetain();

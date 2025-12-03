@@ -1,34 +1,34 @@
 @interface SFSSCachingService
 + (id)sharedInstance;
 - (SFSSCachingService)init;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)clear;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SFSSCachingService
 
 - (void)clear
 {
-  v2 = [(SFSSCachingService *)self memoryCache];
-  [v2 removeAllObjects];
+  memoryCache = [(SFSSCachingService *)self memoryCache];
+  [memoryCache removeAllObjects];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SFSSCachingService *)self memoryCache];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  memoryCache = [(SFSSCachingService *)self memoryCache];
+  v6 = [memoryCache objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFSSCachingService *)self memoryCache];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  memoryCache = [(SFSSCachingService *)self memoryCache];
+  [memoryCache setObject:objectCopy forKey:keyCopy];
 }
 
 - (SFSSCachingService)init

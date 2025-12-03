@@ -1,37 +1,37 @@
 @interface HMFNetworkDiagnostic
 + (id)logCategory;
-+ (id)runDiagnostics:(id)a3 timeout:(double)a4;
-- (HMFNetworkDiagnostic)initWithDevice:(id)a3 delegate:(id)a4 queue:(id)a5;
++ (id)runDiagnostics:(id)diagnostics timeout:(double)timeout;
+- (HMFNetworkDiagnostic)initWithDevice:(id)device delegate:(id)delegate queue:(id)queue;
 - (HMFNetworkDiagnosticDelegate)delegate;
 - (id)shortDescription;
-- (void)handleReceivedData:(id)a3;
+- (void)handleReceivedData:(id)data;
 - (void)stop;
 @end
 
 @implementation HMFNetworkDiagnostic
 
-- (HMFNetworkDiagnostic)initWithDevice:(id)a3 delegate:(id)a4 queue:(id)a5
+- (HMFNetworkDiagnostic)initWithDevice:(id)device delegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HMFNetworkDiagnostic;
   v12 = [(HMFNetworkDiagnostic *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_device, a3);
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v13->_workQueue, a5);
+    objc_storeStrong(&v12->_device, device);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_workQueue, queue);
   }
 
   return v13;
 }
 
-+ (id)runDiagnostics:(id)a3 timeout:(double)a4
++ (id)runDiagnostics:(id)diagnostics timeout:(double)timeout
 {
-  v5 = a3;
+  diagnosticsCopy = diagnostics;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
@@ -41,10 +41,10 @@
   v11[2] = __47__HMFNetworkDiagnostic_runDiagnostics_timeout___block_invoke;
   v11[3] = &unk_2786E73F0;
   v11[4] = v12;
-  v6 = [v5 na_map:v11];
+  v6 = [diagnosticsCopy na_map:v11];
   v7 = [HMFFuture allSettled:v6];
-  v8 = [v7 ignoreResult];
-  v9 = [v8 timeout:a4];
+  ignoreResult = [v7 ignoreResult];
+  v9 = [ignoreResult timeout:timeout];
 
   _Block_object_dispose(v12, 8);
 
@@ -70,7 +70,7 @@ double __47__HMFNetworkDiagnostic_runDiagnostics_timeout___block_invoke(uint64_t
   v6 = [v2 exceptionWithName:v3 reason:v5 userInfo:0];
 }
 
-- (void)handleReceivedData:(id)a3
+- (void)handleReceivedData:(id)data
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -103,9 +103,9 @@ uint64_t __35__HMFNetworkDiagnostic_logCategory__block_invoke()
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMFNetworkDiagnostic *)self device];
-  v6 = [v5 hostName];
-  v7 = [v3 stringWithFormat:@"%@ (%@)", v4, v6];
+  device = [(HMFNetworkDiagnostic *)self device];
+  hostName = [device hostName];
+  v7 = [v3 stringWithFormat:@"%@ (%@)", v4, hostName];
 
   return v7;
 }

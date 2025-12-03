@@ -1,25 +1,25 @@
 @interface PLUnintendedChangeChecker
 + (BOOL)shouldCheckForUnintendedChanges;
-+ (void)checkForUnintendedChangeOnMergeConflicts:(id)a3 withBlock:(id)a4;
-+ (void)checkForUnintendedChangesDuringeSave:(id)a3 withBlock:(id)a4;
++ (void)checkForUnintendedChangeOnMergeConflicts:(id)conflicts withBlock:(id)block;
++ (void)checkForUnintendedChangesDuringeSave:(id)save withBlock:(id)block;
 - (PLUnintendedChangeChecker)init;
-- (void)_checkForUnintendedCPLChangesOnObject:(id)a3 withBlock:(id)a4;
-- (void)_checkForUnintendedChangesOnObject:(id)a3 withBlock:(id)a4;
-- (void)_checkForUnintendedChangesOnObject:(id)a3 withEntity:(id)a4 unexpectedKeys:(id)a5 block:(id)a6;
-- (void)_checkForUnintendedMomentChangesOnObject:(id)a3 withBlock:(id)a4;
-- (void)checkForUnintendedChangeOnMergeConflicts:(id)a3 withBlock:(id)a4;
-- (void)checkForUnintendedChangesDuringeSave:(id)a3 withBlock:(id)a4;
+- (void)_checkForUnintendedCPLChangesOnObject:(id)object withBlock:(id)block;
+- (void)_checkForUnintendedChangesOnObject:(id)object withBlock:(id)block;
+- (void)_checkForUnintendedChangesOnObject:(id)object withEntity:(id)entity unexpectedKeys:(id)keys block:(id)block;
+- (void)_checkForUnintendedMomentChangesOnObject:(id)object withBlock:(id)block;
+- (void)checkForUnintendedChangeOnMergeConflicts:(id)conflicts withBlock:(id)block;
+- (void)checkForUnintendedChangesDuringeSave:(id)save withBlock:(id)block;
 @end
 
 @implementation PLUnintendedChangeChecker
 
 + (BOOL)shouldCheckForUnintendedChanges
 {
-  v2 = MEMORY[0x19EAEE230](a1, a2);
+  v2 = MEMORY[0x19EAEE230](self, a2);
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"PLEnableUnintendedChangeChecks"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"PLEnableUnintendedChangeChecks"];
 
     LOBYTE(v2) = v4;
   }
@@ -27,32 +27,32 @@
   return v2;
 }
 
-- (void)_checkForUnintendedChangesOnObject:(id)a3 withEntity:(id)a4 unexpectedKeys:(id)a5 block:(id)a6
+- (void)_checkForUnintendedChangesOnObject:(id)object withEntity:(id)entity unexpectedKeys:(id)keys block:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 entity];
-  v14 = [v13 isKindOfEntity:v10];
+  objectCopy = object;
+  entityCopy = entity;
+  keysCopy = keys;
+  blockCopy = block;
+  entity = [objectCopy entity];
+  v14 = [entity isKindOfEntity:entityCopy];
 
   if (v14)
   {
-    v28 = v10;
-    v30 = v9;
-    v15 = [v9 changedValues];
+    v28 = entityCopy;
+    v30 = objectCopy;
+    changedValues = [objectCopy changedValues];
     v16 = MEMORY[0x1E695DFD8];
-    v29 = v15;
-    v17 = [v15 allKeys];
-    v18 = [v16 setWithArray:v17];
+    v29 = changedValues;
+    allKeys = [changedValues allKeys];
+    v18 = [v16 setWithArray:allKeys];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v27 = v11;
-    obj = v11;
+    v27 = keysCopy;
+    obj = keysCopy;
     v19 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v19)
     {
@@ -71,9 +71,9 @@
           if ([v18 containsObject:v23])
           {
             v24 = [v29 objectForKeyedSubscript:v23];
-            v25 = [v30 managedObjectContext];
-            v26 = [v25 name];
-            v12[2](v12, v23, v24, v26);
+            managedObjectContext = [v30 managedObjectContext];
+            name = [managedObjectContext name];
+            blockCopy[2](blockCopy, v23, v24, name);
           }
         }
 
@@ -83,63 +83,63 @@
       while (v20);
     }
 
-    v9 = v30;
-    v11 = v27;
-    v10 = v28;
+    objectCopy = v30;
+    keysCopy = v27;
+    entityCopy = v28;
   }
 }
 
-- (void)_checkForUnintendedCPLChangesOnObject:(id)a3 withBlock:(id)a4
+- (void)_checkForUnintendedCPLChangesOnObject:(id)object withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  objectCopy = object;
   v8 = +[PLManagedAsset entity];
-  [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:v7 withEntity:v8 unexpectedKeys:self->_unexpectedCPLAssetKeys block:v6];
+  [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:objectCopy withEntity:v8 unexpectedKeys:self->_unexpectedCPLAssetKeys block:blockCopy];
 }
 
-- (void)_checkForUnintendedMomentChangesOnObject:(id)a3 withBlock:(id)a4
+- (void)_checkForUnintendedMomentChangesOnObject:(id)object withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  objectCopy = object;
   v8 = +[PLManagedAsset entity];
-  [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:v7 withEntity:v8 unexpectedKeys:self->_unexpectedMomentAssetKeys block:v6];
+  [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:objectCopy withEntity:v8 unexpectedKeys:self->_unexpectedMomentAssetKeys block:blockCopy];
 
   v9 = +[PLAdditionalAssetAttributes entity];
-  [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:v7 withEntity:v9 unexpectedKeys:self->_unexpectedMomentAdditionalAssetAttributeKeys block:v6];
+  [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:objectCopy withEntity:v9 unexpectedKeys:self->_unexpectedMomentAdditionalAssetAttributeKeys block:blockCopy];
 }
 
-- (void)_checkForUnintendedChangesOnObject:(id)a3 withBlock:(id)a4
+- (void)_checkForUnintendedChangesOnObject:(id)object withBlock:(id)block
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [v10 managedObjectContext];
-  v9 = [v8 name];
+  managedObjectContext = [objectCopy managedObjectContext];
+  name = [managedObjectContext name];
 
-  if ([v9 hasPrefix:PLDatabaseContextNameMomentLibrary])
+  if ([name hasPrefix:PLDatabaseContextNameMomentLibrary])
   {
-    [(PLUnintendedChangeChecker *)self _checkForUnintendedMomentChangesOnObject:v10 withBlock:v6];
+    [(PLUnintendedChangeChecker *)self _checkForUnintendedMomentChangesOnObject:objectCopy withBlock:blockCopy];
   }
 
-  else if ([v9 hasPrefix:PLDatabaseContextNameCPLLibrary])
+  else if ([name hasPrefix:PLDatabaseContextNameCPLLibrary])
   {
-    [(PLUnintendedChangeChecker *)self _checkForUnintendedCPLChangesOnObject:v10 withBlock:v6];
+    [(PLUnintendedChangeChecker *)self _checkForUnintendedCPLChangesOnObject:objectCopy withBlock:blockCopy];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)checkForUnintendedChangeOnMergeConflicts:(id)a3 withBlock:(id)a4
+- (void)checkForUnintendedChangeOnMergeConflicts:(id)conflicts withBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  conflictsCopy = conflicts;
+  blockCopy = block;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  obj = conflictsCopy;
+  v8 = [conflictsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -154,15 +154,15 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 sourceObject];
+        sourceObject = [v12 sourceObject];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __80__PLUnintendedChangeChecker_checkForUnintendedChangeOnMergeConflicts_withBlock___block_invoke;
         v16[3] = &unk_1E7574690;
-        v14 = v7;
+        v14 = blockCopy;
         v16[4] = v12;
         v17 = v14;
-        [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:v13 withBlock:v16];
+        [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:sourceObject withBlock:v16];
       }
 
       v9 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -172,16 +172,16 @@
   }
 }
 
-- (void)checkForUnintendedChangesDuringeSave:(id)a3 withBlock:(id)a4
+- (void)checkForUnintendedChangesDuringeSave:(id)save withBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [a3 updatedObjects];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  updatedObjects = [save updatedObjects];
+  v8 = [updatedObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -193,7 +193,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(updatedObjects);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
@@ -201,7 +201,7 @@
         v14[1] = 3221225472;
         v14[2] = __76__PLUnintendedChangeChecker_checkForUnintendedChangesDuringeSave_withBlock___block_invoke;
         v14[3] = &unk_1E7574690;
-        v13 = v6;
+        v13 = blockCopy;
         v14[4] = v12;
         v15 = v13;
         [(PLUnintendedChangeChecker *)self _checkForUnintendedChangesOnObject:v12 withBlock:v14];
@@ -210,7 +210,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [updatedObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -249,29 +249,29 @@
   return v2;
 }
 
-+ (void)checkForUnintendedChangeOnMergeConflicts:(id)a3 withBlock:(id)a4
++ (void)checkForUnintendedChangeOnMergeConflicts:(id)conflicts withBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
+  conflictsCopy = conflicts;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  if ([a1 shouldCheckForUnintendedChanges])
+  if ([self shouldCheckForUnintendedChanges])
   {
     v8 = objc_alloc_init(PLUnintendedChangeChecker);
-    [(PLUnintendedChangeChecker *)v8 checkForUnintendedChangeOnMergeConflicts:v9 withBlock:v6];
+    [(PLUnintendedChangeChecker *)v8 checkForUnintendedChangeOnMergeConflicts:conflictsCopy withBlock:blockCopy];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-+ (void)checkForUnintendedChangesDuringeSave:(id)a3 withBlock:(id)a4
++ (void)checkForUnintendedChangesDuringeSave:(id)save withBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
+  saveCopy = save;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  if ([a1 shouldCheckForUnintendedChanges])
+  if ([self shouldCheckForUnintendedChanges])
   {
     v8 = objc_alloc_init(PLUnintendedChangeChecker);
-    [(PLUnintendedChangeChecker *)v8 checkForUnintendedChangesDuringeSave:v9 withBlock:v6];
+    [(PLUnintendedChangeChecker *)v8 checkForUnintendedChangesDuringeSave:saveCopy withBlock:blockCopy];
   }
 
   objc_autoreleasePoolPop(v7);

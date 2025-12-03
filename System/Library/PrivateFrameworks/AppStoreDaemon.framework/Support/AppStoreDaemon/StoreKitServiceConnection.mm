@@ -1,23 +1,23 @@
 @interface StoreKitServiceConnection
-- (void)addPostbacksFromDictionaries:(id)a3 forBundleID:(id)a4 completion:(id)a5;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)configureSourceForTestPostbackDictionaries:(id)a3 forBundleID:(id)a4 completion:(id)a5;
-- (void)developerPostbackURLForBundleID:(id)a3 completion:(id)a4;
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4;
-- (void)retrieveTestPostbacksForBundleID:(id)a3 completion:(id)a4;
-- (void)sendTestPingbackForBundleID:(id)a3 completion:(id)a4;
-- (void)validateSKAdNetworkImpression:(id)a3 withPublicKey:(id)a4 forBundleID:(id)a5 source:(int64_t)a6 completion:(id)a7;
+- (void)addPostbacksFromDictionaries:(id)dictionaries forBundleID:(id)d completion:(id)completion;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)configureSourceForTestPostbackDictionaries:(id)dictionaries forBundleID:(id)d completion:(id)completion;
+- (void)developerPostbackURLForBundleID:(id)d completion:(id)completion;
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler;
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler;
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler;
+- (void)retrieveTestPostbacksForBundleID:(id)d completion:(id)completion;
+- (void)sendTestPingbackForBundleID:(id)d completion:(id)completion;
+- (void)validateSKAdNetworkImpression:(id)impression withPublicKey:(id)key forBundleID:(id)d source:(int64_t)source completion:(id)completion;
 @end
 
 @implementation StoreKitServiceConnection
 
-- (void)addPostbacksFromDictionaries:(id)a3 forBundleID:(id)a4 completion:(id)a5
+- (void)addPostbacksFromDictionaries:(id)dictionaries forBundleID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionariesCopy = dictionaries;
+  dCopy = d;
+  completionCopy = completion;
   v11 = sub_10024E8E0(self, @"com.apple.private.storekit.octane-ad-network");
   v12 = ASDLogHandleForCategory();
   v13 = v12;
@@ -26,14 +26,14 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2082;
       v39 = "[StoreKitServiceConnection addPostbacksFromDictionaries:forBundleID:completion:]";
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
     }
 
     v14 = sub_1003A4EE0();
-    v15 = sub_1003AEC50(v14, v9);
+    v15 = sub_1003AEC50(v14, dCopy);
 
     v16 = ASDLogHandleForCategory();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -49,12 +49,12 @@
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v16 = v8;
+      v16 = dictionariesCopy;
       v18 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v18)
       {
         v19 = v18;
-        v30 = v8;
+        v30 = dictionariesCopy;
         v20 = *v32;
         while (1)
         {
@@ -66,7 +66,7 @@
             }
 
             v22 = sub_10024BCE8(InstallAttributionPingback, *(*(&v31 + 1) + 8 * i));
-            sub_10024D43C(v22, v9);
+            sub_10024D43C(v22, dCopy);
             v23 = sub_1003A4EE0();
             v24 = sub_1003AE708(v23, v22);
 
@@ -103,7 +103,7 @@ LABEL_18:
           v19 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
           if (!v19)
           {
-            v8 = v30;
+            dictionariesCopy = v30;
             break;
           }
         }
@@ -116,7 +116,7 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Clearing prior postbacks failed. Not adding new ones", buf, 2u);
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -124,19 +124,19 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v37 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "[%{public}@] Process is not entitled for SKAdNetwork test methods", buf, 0xCu);
     }
 
     v29 = ASDErrorWithTitleAndMessage();
-    (v10)[2](v10, v29);
+    (completionCopy)[2](completionCopy, v29);
   }
 }
 
-- (void)developerPostbackURLForBundleID:(id)a3 completion:(id)a4
+- (void)developerPostbackURLForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = sub_10024E8E0(self, @"com.apple.private.storekit.octane-ad-network");
   v9 = ASDLogHandleForCategory();
   v10 = v9;
@@ -145,14 +145,14 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2082;
       v23 = "[StoreKitServiceConnection developerPostbackURLForBundleID:completion:]";
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
     }
 
     v19 = 0;
-    v11 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v19];
+    v11 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v19];
     v12 = v11;
     if (v11)
     {
@@ -170,7 +170,7 @@ LABEL_18:
         v17 = 0;
       }
 
-      v7[2](v7, v17);
+      completionCopy[2](completionCopy, v17);
     }
 
     else
@@ -179,13 +179,13 @@ LABEL_18:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v21 = v19;
+        selfCopy2 = v19;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "App record not found:%@", buf, 0xCu);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
@@ -195,18 +195,18 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Process is not entitled for SKAdNetwork test methods", buf, 0xCu);
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)retrieveTestPostbacksForBundleID:(id)a3 completion:(id)a4
+- (void)retrieveTestPostbacksForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = sub_10024E8E0(self, @"com.apple.private.storekit.octane-ad-network");
   v9 = ASDLogHandleForCategory();
   v10 = v9;
@@ -215,14 +215,14 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2082;
       v16 = "[StoreKitServiceConnection retrieveTestPostbacksForBundleID:completion:]";
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v13, 0x16u);
     }
 
     v11 = sub_1003A4EE0();
-    v12 = sub_1003AE9B0(v11, v6);
+    v12 = sub_1003AE9B0(v11, dCopy);
   }
 
   else
@@ -230,20 +230,20 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v13 = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Process is not entitled for SKAdNetwork test methods", &v13, 0xCu);
     }
 
     v12 = objc_opt_new();
   }
 
-  v7[2](v7, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)sendTestPingbackForBundleID:(id)a3 completion:(id)a4
+- (void)sendTestPingbackForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = sub_10024E8E0(self, @"com.apple.private.storekit.octane-ad-network");
   v9 = ASDLogHandleForCategory();
   v10 = v9;
@@ -252,7 +252,7 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2082;
       v17 = "[StoreKitServiceConnection sendTestPingbackForBundleID:completion:]";
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -263,8 +263,8 @@ LABEL_18:
     v12[1] = 3221225472;
     v12[2] = sub_10024EF60;
     v12[3] = &unk_10051E8A8;
-    v13 = v7;
-    sub_1003B09D4(v11, v6, v12);
+    v13 = completionCopy;
+    sub_1003B09D4(v11, dCopy, v12);
   }
 
   else
@@ -272,20 +272,20 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Process is not entitled for SKAdNetwork test methods", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)validateSKAdNetworkImpression:(id)a3 withPublicKey:(id)a4 forBundleID:(id)a5 source:(int64_t)a6 completion:(id)a7
+- (void)validateSKAdNetworkImpression:(id)impression withPublicKey:(id)key forBundleID:(id)d source:(int64_t)source completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  impressionCopy = impression;
+  keyCopy = key;
+  dCopy = d;
+  completionCopy = completion;
   v16 = sub_10024E8E0(self, @"com.apple.private.storekit.octane-ad-network");
   v17 = ASDLogHandleForCategory();
   v18 = v17;
@@ -306,13 +306,13 @@ LABEL_18:
     v37 = sub_10024F4B8;
     v38 = sub_10024F4C8;
     v39 = 0;
-    if (a6 == 4)
+    if (source == 4)
     {
       v19 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *v34 = 138543362;
-        v35 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Validating test impression from web", v34, 0xCu);
       }
 
@@ -322,7 +322,7 @@ LABEL_18:
       v33[2] = sub_10024F4D0;
       v33[3] = &unk_10051E8D0;
       v33[4] = buf;
-      [v20 validateWebAdImpressionResponseProperties:v12 completionHandler:v33];
+      [v20 validateWebAdImpressionResponseProperties:impressionCopy completionHandler:v33];
     }
 
     else
@@ -331,22 +331,22 @@ LABEL_18:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *v34 = 138543362;
-        v35 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Validating test web impression from app", v34, 0xCu);
       }
 
-      v20 = [v12 objectForKeyedSubscript:@"adNetworkAttributionSignature"];
+      v20 = [impressionCopy objectForKeyedSubscript:@"adNetworkAttributionSignature"];
       if (!v20)
       {
         v31 = ASDErrorWithDescription();
-        v15[2](v15, v31);
+        completionCopy[2](completionCopy, v31);
 
         goto LABEL_22;
       }
 
-      v23 = [ASDInstallAttributionParamsConfig paramsFromDictionary:v12];
-      [v23 setSourceAppBundleId:v14];
-      v24 = [v12 objectForKeyedSubscript:@"fidelity-type"];
+      v23 = [ASDInstallAttributionParamsConfig paramsFromDictionary:impressionCopy];
+      [v23 setSourceAppBundleId:dCopy];
+      v24 = [impressionCopy objectForKeyedSubscript:@"fidelity-type"];
       v25 = sub_1003BC9A0();
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
@@ -363,7 +363,7 @@ LABEL_18:
       {
         v27 = *(*&buf[8] + 40);
         *v34 = 138412290;
-        v35 = v27;
+        selfCopy2 = v27;
         v28 = "Validation failed with error:%@";
         v29 = v26;
         v30 = 12;
@@ -385,7 +385,7 @@ LABEL_20:
       }
     }
 
-    v15[2](v15, *(*&buf[8] + 40));
+    completionCopy[2](completionCopy, *(*&buf[8] + 40));
 LABEL_22:
     _Block_object_dispose(buf, 8);
 
@@ -400,15 +400,15 @@ LABEL_22:
   }
 
   v21 = ASDErrorWithTitleAndMessage();
-  v15[2](v15, v21);
+  completionCopy[2](completionCopy, v21);
 
 LABEL_23:
 }
 
-- (void)configureSourceForTestPostbackDictionaries:(id)a3 forBundleID:(id)a4 completion:(id)a5
+- (void)configureSourceForTestPostbackDictionaries:(id)dictionaries forBundleID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  dictionariesCopy = dictionaries;
+  completionCopy = completion;
   v9 = sub_10024E8E0(self, @"com.apple.private.storekit.octane-ad-network");
   v10 = ASDLogHandleForCategory();
   v11 = v10;
@@ -417,14 +417,14 @@ LABEL_23:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2082;
       v16 = "[StoreKitServiceConnection configureSourceForTestPostbackDictionaries:forBundleID:completion:]";
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v13, 0x16u);
     }
 
     v12 = sub_1003A4EE0();
-    sub_1003AEFC0(v12, v7, v8);
+    sub_1003AEFC0(v12, dictionariesCopy, completionCopy);
   }
 
   else
@@ -432,19 +432,19 @@ LABEL_23:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[%{public}@] Process is not entitled for SKAdNetwork test methods", &v13, 0xCu);
     }
 
     v12 = ASDErrorWithTitleAndMessage();
-    (*(v8 + 2))(v8, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = sub_10024E8E0(self, @"com.apple.private.storekit.background-auth");
   v9 = ASDLogHandleForCategory();
   v10 = v9;
@@ -453,20 +453,20 @@ LABEL_23:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting authenticate task", buf, 0xCu);
     }
 
-    v11 = [[AMSAuthenticateTask alloc] initWithRequest:v6];
+    v11 = [[AMSAuthenticateTask alloc] initWithRequest:requestCopy];
     [v11 setDelegate:self];
-    v12 = [v11 performAuthentication];
+    performAuthentication = [v11 performAuthentication];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10024F8BC;
     v13[3] = &unk_10051E040;
     v13[4] = self;
-    v14 = v7;
-    [v12 addFinishBlock:v13];
+    v14 = handlerCopy;
+    [performAuthentication addFinishBlock:v13];
   }
 
   else
@@ -474,51 +474,51 @@ LABEL_23:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Process is not entitled for background authentication", buf, 0xCu);
     }
 
     v11 = ASDErrorWithTitleAndMessage();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = ASDErrorWithTitleAndMessage();
-  (*(a4 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = ASDErrorWithTitleAndMessage();
-  (*(a4 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting dialog task", buf, 0xCu);
   }
 
-  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v8];
-  v11 = [v10 present];
+  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
+  present = [v10 present];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10024FC40;
   v13[3] = &unk_10051E068;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [present addFinishBlock:v13];
 }
 
 @end

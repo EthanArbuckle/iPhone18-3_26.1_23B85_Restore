@@ -1,15 +1,15 @@
 @interface NRPendingOutgoingSeqnoReq
-- (BOOL)cancelIfMatchesPrefix:(id)a3 routerID:(unint64_t)a4 seqno:(unsigned __int16)a5;
+- (BOOL)cancelIfMatchesPrefix:(id)prefix routerID:(unint64_t)d seqno:(unsigned __int16)seqno;
 - (BOOL)cancelIfRouteUnselected;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesPrefix:(id)a3 routerID:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesPrefix:(id)prefix routerID:(unint64_t)d;
 - (NRBabelInstance)instance;
 - (NRBabelRoute)route;
-- (NRPendingOutgoingSeqnoReq)initWithInstance:(id)a3 prefix:(id)a4 routerID:(unint64_t)a5;
+- (NRPendingOutgoingSeqnoReq)initWithInstance:(id)instance prefix:(id)prefix routerID:(unint64_t)d;
 - (id)createTLV;
 - (id)description;
 - (void)cancelTimer;
-- (void)cancelWithDelay:(BOOL)a3;
+- (void)cancelWithDelay:(BOOL)delay;
 - (void)dealloc;
 - (void)sendSeqnoReq;
 - (void)start;
@@ -31,24 +31,24 @@
   return WeakRetained;
 }
 
-- (BOOL)cancelIfMatchesPrefix:(id)a3 routerID:(unint64_t)a4 seqno:(unsigned __int16)a5
+- (BOOL)cancelIfMatchesPrefix:(id)prefix routerID:(unint64_t)d seqno:(unsigned __int16)seqno
 {
-  v5 = a5;
-  v7 = [(NRPendingOutgoingSeqnoReq *)self matchesPrefix:a3 routerID:a4];
+  seqnoCopy = seqno;
+  v7 = [(NRPendingOutgoingSeqnoReq *)self matchesPrefix:prefix routerID:d];
   if (!v7)
   {
     return v7;
   }
 
-  v8 = [(NRPendingOutgoingSeqnoReq *)self seqno];
-  if (v8 == v5)
+  seqno = [(NRPendingOutgoingSeqnoReq *)self seqno];
+  if (seqno == seqnoCopy)
   {
     goto LABEL_11;
   }
 
-  if (v8 >= v5)
+  if (seqno >= seqnoCopy)
   {
-    if ((v8 - v5) >= 0)
+    if ((seqno - seqnoCopy) >= 0)
     {
       LOBYTE(v9) = -1;
     }
@@ -58,7 +58,7 @@
       LOBYTE(v9) = 1;
     }
 
-    if ((v8 - v5) == 0x8000)
+    if ((seqno - seqnoCopy) == 0x8000)
     {
       goto LABEL_11;
     }
@@ -66,7 +66,7 @@
     goto LABEL_10;
   }
 
-  if ((v5 - v8) == 0x8000)
+  if ((seqnoCopy - seqno) == 0x8000)
   {
 LABEL_11:
     [(NRPendingOutgoingSeqnoReq *)self cancelWithDelay:0];
@@ -74,7 +74,7 @@ LABEL_11:
     return v7;
   }
 
-  v9 = ((v5 - v8) >> 15) | 1;
+  v9 = ((seqnoCopy - seqno) >> 15) | 1;
 LABEL_10:
   if ((v9 & 0x80) == 0)
   {
@@ -87,9 +87,9 @@ LABEL_10:
 
 - (BOOL)cancelIfRouteUnselected
 {
-  v3 = [(NRPendingOutgoingSeqnoReq *)self route];
-  v4 = v3;
-  if (!v3)
+  route = [(NRPendingOutgoingSeqnoReq *)self route];
+  v4 = route;
+  if (!route)
   {
     if (qword_100229100 != -1)
     {
@@ -107,13 +107,13 @@ LABEL_10:
     }
 
     v9 = 2524;
-    v10 = self;
+    selfCopy2 = self;
     v7 = "";
     v8 = "[NRPendingOutgoingSeqnoReq cancelIfRouteUnselected]";
     goto LABEL_16;
   }
 
-  if (([v3 selected] & 1) == 0)
+  if (([route selected] & 1) == 0)
   {
     if (qword_100229100 != -1)
     {
@@ -130,7 +130,7 @@ LABEL_10:
       dispatch_once(&qword_100229100, &stru_1001FB6C8);
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v11 = v4;
     v9 = 2529;
     v7 = "";
@@ -138,7 +138,7 @@ LABEL_10:
 LABEL_16:
     _NRLogWithArgs();
 LABEL_17:
-    [(NRPendingOutgoingSeqnoReq *)self cancelWithDelay:0, v7, v8, v9, v10, v11];
+    [(NRPendingOutgoingSeqnoReq *)self cancelWithDelay:0, v7, v8, v9, selfCopy2, v11];
     v5 = 1;
     goto LABEL_18;
   }
@@ -164,7 +164,7 @@ LABEL_18:
     }
 
     v5 = 2516;
-    v6 = self;
+    selfCopy = self;
     v3 = "";
     v4 = "[NRPendingOutgoingSeqnoReq dealloc]";
     _NRLogWithArgs();
@@ -176,9 +176,9 @@ LABEL_18:
   [(NRPendingOutgoingSeqnoReq *)&v7 dealloc];
 }
 
-- (void)cancelWithDelay:(BOOL)a3
+- (void)cancelWithDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     if (qword_100229100 != -1)
     {
@@ -217,16 +217,16 @@ LABEL_18:
       }
 
       v9 = 2508;
-      v10 = self;
+      selfCopy = self;
       v7 = "";
       v8 = "[NRPendingOutgoingSeqnoReq cancelWithDelay:]";
       _NRLogWithArgs();
     }
 
     [(NRPendingOutgoingSeqnoReq *)self cancelTimer:v7];
-    v11 = [(NRPendingOutgoingSeqnoReq *)self instance];
-    v6 = [v11 posrs];
-    [v6 removeObject:self];
+    instance = [(NRPendingOutgoingSeqnoReq *)self instance];
+    posrs = [instance posrs];
+    [posrs removeObject:self];
   }
 }
 
@@ -295,17 +295,17 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 bPrefix];
-    v7 = [v5 routerID];
+    v5 = equalCopy;
+    bPrefix = [v5 bPrefix];
+    routerID = [v5 routerID];
 
-    v8 = [(NRPendingOutgoingSeqnoReq *)self matchesPrefix:v6 routerID:v7];
+    v8 = [(NRPendingOutgoingSeqnoReq *)self matchesPrefix:bPrefix routerID:routerID];
   }
 
   else
@@ -316,11 +316,11 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)matchesPrefix:(id)a3 routerID:(unint64_t)a4
+- (BOOL)matchesPrefix:(id)prefix routerID:(unint64_t)d
 {
-  if (self->_routerID == a4)
+  if (self->_routerID == d)
   {
-    return [(NRBabelPrefix *)self->_bPrefix isEqual:a3];
+    return [(NRBabelPrefix *)self->_bPrefix isEqual:prefix];
   }
 
   else
@@ -329,10 +329,10 @@ LABEL_18:
   }
 }
 
-- (NRPendingOutgoingSeqnoReq)initWithInstance:(id)a3 prefix:(id)a4 routerID:(unint64_t)a5
+- (NRPendingOutgoingSeqnoReq)initWithInstance:(id)instance prefix:(id)prefix routerID:(unint64_t)d
 {
-  v8 = a3;
-  v9 = a4;
+  instanceCopy = instance;
+  prefixCopy = prefix;
   v29.receiver = self;
   v29.super_class = NRPendingOutgoingSeqnoReq;
   v10 = [(NRPendingOutgoingSeqnoReq *)&v29 init];
@@ -357,14 +357,14 @@ LABEL_18:
   }
 
   v11 = v10;
-  [(NRPendingOutgoingSeqnoReq *)v10 setInstance:v8];
+  [(NRPendingOutgoingSeqnoReq *)v10 setInstance:instanceCopy];
   bPrefix = v11->_bPrefix;
-  v11->_bPrefix = v9;
-  v13 = v9;
+  v11->_bPrefix = prefixCopy;
+  v13 = prefixCopy;
 
-  v11->_routerID = a5;
-  v14 = [v8 queue];
-  v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v14);
+  v11->_routerID = d;
+  queue = [instanceCopy queue];
+  v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   retryTimer = v11->_retryTimer;
   v11->_retryTimer = v15;
 
@@ -401,7 +401,7 @@ LABEL_18:
     }
 
     v8 = 2418;
-    v9 = self;
+    selfCopy = self;
     v6 = "";
     v7 = "[NRPendingOutgoingSeqnoReq sendSeqnoReq]";
     _NRLogWithArgs();

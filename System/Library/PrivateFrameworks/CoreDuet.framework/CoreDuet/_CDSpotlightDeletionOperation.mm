@@ -1,63 +1,63 @@
 @interface _CDSpotlightDeletionOperation
-+ (id)deletionForEventsWithDomainIdentifiers:(id)a3 bundleId:(id)a4 completion:(id)a5;
-+ (id)deletionForEventsWithItemIdentifiers:(id)a3 bundleId:(id)a4 completion:(id)a5;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)deletionForEventsWithDomainIdentifiers:(id)identifiers bundleId:(id)id completion:(id)completion;
++ (id)deletionForEventsWithItemIdentifiers:(id)identifiers bundleId:(id)id completion:(id)completion;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (NSString)description;
-- (_CDSpotlightDeletionOperation)initWithCoder:(id)a3;
-- (_CDSpotlightDeletionOperation)initWithDeletionType:(id)a3 bundleId:(id)a4 itemIdentifiers:(id)a5 domainIdentifiers:(id)a6 completion:(id)a7;
+- (_CDSpotlightDeletionOperation)initWithCoder:(id)coder;
+- (_CDSpotlightDeletionOperation)initWithDeletionType:(id)type bundleId:(id)id itemIdentifiers:(id)identifiers domainIdentifiers:(id)domainIdentifiers completion:(id)completion;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)serialize;
 @end
 
 @implementation _CDSpotlightDeletionOperation
 
-+ (id)deletionForEventsWithItemIdentifiers:(id)a3 bundleId:(id)a4 completion:(id)a5
++ (id)deletionForEventsWithItemIdentifiers:(id)identifiers bundleId:(id)id completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v10];
+  completionCopy = completion;
+  idCopy = id;
+  identifiersCopy = identifiers;
+  v11 = [self alloc];
+  v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:identifiersCopy];
 
   v13 = objc_opt_new();
-  v14 = [v11 initWithDeletionType:@"identifiers" bundleId:v9 itemIdentifiers:v12 domainIdentifiers:v13 completion:v8];
+  v14 = [v11 initWithDeletionType:@"identifiers" bundleId:idCopy itemIdentifiers:v12 domainIdentifiers:v13 completion:completionCopy];
 
   return v14;
 }
 
-+ (id)deletionForEventsWithDomainIdentifiers:(id)a3 bundleId:(id)a4 completion:(id)a5
++ (id)deletionForEventsWithDomainIdentifiers:(id)identifiers bundleId:(id)id completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
+  completionCopy = completion;
+  idCopy = id;
+  identifiersCopy = identifiers;
+  v11 = [self alloc];
   v12 = objc_opt_new();
-  v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v10];
+  v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:identifiersCopy];
 
-  v14 = [v11 initWithDeletionType:@"domainIdentifiers" bundleId:v9 itemIdentifiers:v12 domainIdentifiers:v13 completion:v8];
+  v14 = [v11 initWithDeletionType:@"domainIdentifiers" bundleId:idCopy itemIdentifiers:v12 domainIdentifiers:v13 completion:completionCopy];
 
   return v14;
 }
 
-- (_CDSpotlightDeletionOperation)initWithDeletionType:(id)a3 bundleId:(id)a4 itemIdentifiers:(id)a5 domainIdentifiers:(id)a6 completion:(id)a7
+- (_CDSpotlightDeletionOperation)initWithDeletionType:(id)type bundleId:(id)id itemIdentifiers:(id)identifiers domainIdentifiers:(id)domainIdentifiers completion:(id)completion
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  idCopy = id;
+  identifiersCopy = identifiers;
+  domainIdentifiersCopy = domainIdentifiers;
+  completionCopy = completion;
   v23.receiver = self;
   v23.super_class = _CDSpotlightDeletionOperation;
   v17 = [(_CDSpotlightDeletionOperation *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deletionType, a3);
-    objc_storeStrong(&v18->_bundleId, a4);
-    objc_storeStrong(&v18->_itemIdentifiers, a5);
-    objc_storeStrong(&v18->_domainIdentifiers, a6);
-    v19 = [v16 copy];
+    objc_storeStrong(&v17->_deletionType, type);
+    objc_storeStrong(&v18->_bundleId, id);
+    objc_storeStrong(&v18->_itemIdentifiers, identifiers);
+    objc_storeStrong(&v18->_domainIdentifiers, domainIdentifiers);
+    v19 = [completionCopy copy];
     completion = v18->_completion;
     v18->_completion = v19;
   }
@@ -84,17 +84,17 @@
     domainIdentifiers = 0;
   }
 
-  v9 = [v3 initWithFormat:@"%@ - bundleId: %@, itemIdentifiers: %@, domainIdentifiers: %@", v5, v6, v7, domainIdentifiers];
+  domainIdentifiers = [v3 initWithFormat:@"%@ - bundleId: %@, itemIdentifiers: %@, domainIdentifiers: %@", v5, v6, v7, domainIdentifiers];
 
-  return v9;
+  return domainIdentifiers;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v8 = 0;
-    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:a1 fromData:a3 error:&v8];
+    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:self fromData:data error:&v8];
     v5 = v8;
     if (v5)
     {
@@ -131,23 +131,23 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deletionType = self->_deletionType;
-  v5 = a3;
-  [v5 encodeObject:deletionType forKey:@"deletionType"];
-  [v5 encodeObject:self->_bundleId forKey:@"bundleId"];
-  [v5 encodeObject:self->_itemIdentifiers forKey:@"itemIdentifiers"];
-  [v5 encodeObject:self->_domainIdentifiers forKey:@"domainIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deletionType forKey:@"deletionType"];
+  [coderCopy encodeObject:self->_bundleId forKey:@"bundleId"];
+  [coderCopy encodeObject:self->_itemIdentifiers forKey:@"itemIdentifiers"];
+  [coderCopy encodeObject:self->_domainIdentifiers forKey:@"domainIdentifiers"];
 }
 
-- (_CDSpotlightDeletionOperation)initWithCoder:(id)a3
+- (_CDSpotlightDeletionOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C5D78] robustDecodeObjectOfClass:objc_opt_class() forKey:@"deletionType" withCoder:v4 expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
+  coderCopy = coder;
+  v5 = [MEMORY[0x1E69C5D78] robustDecodeObjectOfClass:objc_opt_class() forKey:@"deletionType" withCoder:coderCopy expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69C5D78] robustDecodeObjectOfClass:objc_opt_class() forKey:@"bundleId" withCoder:v4 expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
+    v6 = [MEMORY[0x1E69C5D78] robustDecodeObjectOfClass:objc_opt_class() forKey:@"bundleId" withCoder:coderCopy expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
     if (v6)
     {
       v7 = MEMORY[0x1E69C5D78];
@@ -156,7 +156,7 @@
       v10 = objc_opt_class();
       v11 = [v9 initWithObjects:{v10, objc_opt_class(), 0}];
       objc_autoreleasePoolPop(v8);
-      v12 = [v7 robustDecodeObjectOfClasses:v11 forKey:@"itemIdentifiers" withCoder:v4 expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
+      v12 = [v7 robustDecodeObjectOfClasses:v11 forKey:@"itemIdentifiers" withCoder:coderCopy expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
 
       if (v12)
       {
@@ -166,38 +166,38 @@
         v16 = objc_opt_class();
         v17 = [v15 initWithObjects:{v16, objc_opt_class(), 0}];
         objc_autoreleasePoolPop(v14);
-        v18 = [v13 robustDecodeObjectOfClasses:v17 forKey:@"domainIdentifiers" withCoder:v4 expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
+        v18 = [v13 robustDecodeObjectOfClasses:v17 forKey:@"domainIdentifiers" withCoder:coderCopy expectNonNull:1 errorDomain:@"_CDSpotlightDeletionErrorDomain" errorCode:-1 logHandle:0];
 
         if (v18)
         {
           self = [(_CDSpotlightDeletionOperation *)self initWithDeletionType:v5 bundleId:v6 itemIdentifiers:v12 domainIdentifiers:v18 completion:0];
-          v19 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v19 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v19 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v19 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 + (void)eventWithData:(uint64_t)a1 dataVersion:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)
@@ -213,7 +213,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_191750000, a2, OS_LOG_TYPE_ERROR, "_CDSpotlightDeletionOperation archive error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -21,7 +21,7 @@
   *v133 = v13;
   *&v133[1] = v14;
   v111 = v14;
-  [a1 vkBounds];
+  [self vkBounds];
   v19 = 0;
   v128 = v15;
   v129 = v16;
@@ -34,7 +34,7 @@
   {
     if (*&v133[v19] <= *v20 || *v21 >= *&v130[v19])
     {
-      v108 = 0;
+      array = 0;
       goto LABEL_90;
     }
 
@@ -51,7 +51,7 @@
   v103 = v17;
   v104 = v15;
   v109 = a5;
-  v108 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24.f64[0] = v116;
   v24.f64[1] = v111;
   v25.f64[0] = v115;
@@ -67,8 +67,8 @@
   v126[0] = 0;
   v126[1] = 0;
   v125 = v126;
-  v31 = [v110 composedRoute];
-  v32 = [v31 transportType] == 2;
+  composedRoute = [v110 composedRoute];
+  v32 = [composedRoute transportType] == 2;
 
   if (v32)
   {
@@ -76,10 +76,10 @@
     v124 = 0u;
     v121 = 0u;
     v122 = 0u;
-    v33 = [v110 composedRoute];
-    v34 = [v33 visualInfos];
+    composedRoute2 = [v110 composedRoute];
+    visualInfos = [composedRoute2 visualInfos];
 
-    v35 = [v34 countByEnumeratingWithState:&v121 objects:v135 count:16];
+    v35 = [visualInfos countByEnumeratingWithState:&v121 objects:v135 count:16];
     if (v35)
     {
       v36 = *v122;
@@ -89,7 +89,7 @@
         {
           if (*v122 != v36)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(visualInfos);
           }
 
           v38 = *(*(&v121 + 1) + 8 * i);
@@ -97,28 +97,28 @@
           {
             if ([v38 routeCoordinateRange])
             {
-              v118 = [v38 routeCoordinateRange];
-              std::__tree<int>::__emplace_unique_key_args<int,int>(&v125, v118);
+              routeCoordinateRange = [v38 routeCoordinateRange];
+              std::__tree<int>::__emplace_unique_key_args<int,int>(&v125, routeCoordinateRange);
             }
 
             [v38 routeCoordinateRange];
             if (v39)
             {
               [v38 routeCoordinateRange];
-              v118 = v40;
+              routeCoordinateRange = v40;
               std::__tree<int>::__emplace_unique_key_args<int,int>(&v125, v40);
             }
           }
         }
 
-        v35 = [v34 countByEnumeratingWithState:&v121 objects:v135 count:16];
+        v35 = [visualInfos countByEnumeratingWithState:&v121 objects:v135 count:16];
       }
 
       while (v35);
     }
 
-    v41 = [v110 splitSections];
-    v41[1] = *v41;
+    splitSections = [v110 splitSections];
+    splitSections[1] = *splitSections;
     v42 = v125;
     if (v125 != v126)
     {
@@ -126,20 +126,20 @@
       do
       {
         v44 = *(v42 + 7);
-        v45 = [v110 splitSections];
-        v46 = v45;
-        v47 = v45[1];
-        v48 = v45[2];
+        splitSections2 = [v110 splitSections];
+        v46 = splitSections2;
+        v47 = splitSections2[1];
+        v48 = splitSections2[2];
         if (v47 >= v48)
         {
-          v50 = (v47 - *v45) >> 4;
+          v50 = (v47 - *splitSections2) >> 4;
           v51 = v50 + 1;
           if ((v50 + 1) >> 60)
           {
             std::__throw_bad_array_new_length[abi:nn200100]();
           }
 
-          v52 = v48 - *v45;
+          v52 = v48 - *splitSections2;
           if (v52 >> 3 > v51)
           {
             v51 = v52 >> 3;
@@ -221,29 +221,29 @@
     }
   }
 
-  v61 = a1;
-  v62 = [a1 endPointIndex];
+  selfCopy2 = self;
+  endPointIndex = [self endPointIndex];
   v63 = 0;
   v64 = 0;
-  v117 = v62;
-  v65 = v62;
-  while (v63 < [v61 pointCount] - 1)
+  v117 = endPointIndex;
+  v65 = endPointIndex;
+  while (v63 < [selfCopy2 pointCount] - 1)
   {
     v112 = *MEMORY[0x1E69A27A0];
-    v114 = *&v61[v112];
+    v114 = *&selfCopy2[v112];
     v66 = (v114 + v63);
-    v67 = (*&v61[*MEMORY[0x1E69A2798]] + 12 * v63);
+    v67 = (*&selfCopy2[*MEMORY[0x1E69A2798]] + 12 * v63);
     v134[0] = *v67;
     v134[1] = *(v67 + 12);
     *&v68 = gm::Box<float,2>::boxEnclosingPoints(v134, 2);
     v69 = 0;
     v70 = 0;
-    v118 = LODWORD(v68);
+    routeCoordinateRange = LODWORD(v68);
     v119 = v71;
     v120[0] = v72;
     v120[1] = v73;
     v74 = &v127;
-    v75 = &v118;
+    v75 = &routeCoordinateRange;
     while (1)
     {
       LODWORD(v68) = v120[v70];
@@ -318,15 +318,15 @@ LABEL_56:
     {
       if (v65 < v117)
       {
-        v84 = [v61 transportType];
+        transportType = [selfCopy2 transportType];
         v85 = off_1E7B2EB88;
-        if (v84)
+        if (transportType)
         {
           v85 = off_1E7B2EC58;
         }
 
-        v86 = [objc_alloc(*v85) initWithOverlay:v110 section:a1 routeStartIndex:v65 routeEndIndex:v66 matchedPathSegments:0 elevationSource:a6 elevationSourceContext:a7];
-        [v108 addObject:v86];
+        v86 = [objc_alloc(*v85) initWithOverlay:v110 section:self routeStartIndex:v65 routeEndIndex:v66 matchedPathSegments:0 elevationSource:a6 elevationSourceContext:a7];
+        [array addObject:v86];
         if (v78)
         {
           v65 = v66;
@@ -340,7 +340,7 @@ LABEL_56:
 LABEL_75:
         v89 = v64;
 LABEL_76:
-        v61 = a1;
+        selfCopy2 = self;
         goto LABEL_78;
       }
     }
@@ -389,18 +389,18 @@ LABEL_76:
           v93 = v114;
           if (v65 < v66)
           {
-            v94 = [a1 transportType];
+            transportType2 = [self transportType];
             v95 = off_1E7B2EB88;
-            if (v94)
+            if (transportType2)
             {
               v95 = off_1E7B2EC58;
             }
 
-            v96 = [objc_alloc(*v95) initWithOverlay:v110 section:a1 routeStartIndex:v65 routeEndIndex:v66 matchedPathSegments:0 elevationSource:a6 elevationSourceContext:a7];
-            [v108 addObject:v96];
+            v96 = [objc_alloc(*v95) initWithOverlay:v110 section:self routeStartIndex:v65 routeEndIndex:v66 matchedPathSegments:0 elevationSource:a6 elevationSourceContext:a7];
+            [array addObject:v96];
 
             v91 = v90[1];
-            v93 = *&a1[v112];
+            v93 = *&self[v112];
           }
 
           v63 = v91 - v114;
@@ -418,38 +418,38 @@ LABEL_78:
 
   if (v65 < v117)
   {
-    v97 = [v61 transportType];
+    transportType3 = [selfCopy2 transportType];
     v98 = off_1E7B2EB88;
-    if (v97)
+    if (transportType3)
     {
       v98 = off_1E7B2EC58;
     }
 
-    v99 = [objc_alloc(*v98) initWithOverlay:v110 section:a1 routeStartIndex:v65 routeEndIndex:objc_msgSend(a1 matchedPathSegments:"endPointIndex") elevationSource:0 elevationSourceContext:{a6, a7}];
-    [v108 addObject:v99];
+    v99 = [objc_alloc(*v98) initWithOverlay:v110 section:self routeStartIndex:v65 routeEndIndex:objc_msgSend(self matchedPathSegments:"endPointIndex") elevationSource:0 elevationSourceContext:{a6, a7}];
+    [array addObject:v99];
   }
 
   std::__tree<geo::Pool<gdc::FallbackNode>::Element *,std::less<geo::Pool<gdc::FallbackNode>::Element *>,std::allocator<geo::Pool<gdc::FallbackNode>::Element *>>::destroy(v126[0]);
 LABEL_90:
 
-  return v108;
+  return array;
 }
 
 - (id)pathsForRenderRegion:()RenderRegion inOverlay:elevationSource:elevationSourceContext:
 {
-  v6 = &a1[*MEMORY[0x1E69A2780]];
-  v7 = &a1[*MEMORY[0x1E69A2788]];
+  v6 = &self[*MEMORY[0x1E69A2780]];
+  v7 = &self[*MEMORY[0x1E69A2788]];
   v8 = *(v6 + 24);
   *v7 = *v6;
   *(v7 + 1) = v8;
-  v9 = [a1 pathsForRenderRegion:a3 inOverlay:a4 excludedSegments:0 elevationSource:a5 elevationSourceContext:a6];
+  v9 = [self pathsForRenderRegion:a3 inOverlay:a4 excludedSegments:0 elevationSource:a5 elevationSourceContext:a6];
 
   return v9;
 }
 
 - (id)pathsForRenderRegion:()RenderRegion inOverlay:shouldSnapToTransit:verifySnapping:elevationSource:elevationSourceContext:
 {
-  v8 = [a1 pathsForRenderRegion:a3 inOverlay:a4 elevationSource:a7 elevationSourceContext:a8];
+  v8 = [self pathsForRenderRegion:a3 inOverlay:a4 elevationSource:a7 elevationSourceContext:a8];
 
   return v8;
 }

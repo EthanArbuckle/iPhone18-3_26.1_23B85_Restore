@@ -1,9 +1,9 @@
 @interface FRArticleNotificationArticleSource
 - (FCContentContext)contentContext;
 - (FRArticleNotificationArticleSource)init;
-- (FRArticleNotificationArticleSource)initWithCachesDirectory:(id)a3;
+- (FRArticleNotificationArticleSource)initWithCachesDirectory:(id)directory;
 - (void)dealloc;
-- (void)fetchArticleWithID:(id)a3 completion:(id)a4;
+- (void)fetchArticleWithID:(id)d completion:(id)completion;
 @end
 
 @implementation FRArticleNotificationArticleSource
@@ -39,10 +39,10 @@
   [(FRArticleNotificationArticleSource *)&v3 dealloc];
 }
 
-- (FRArticleNotificationArticleSource)initWithCachesDirectory:(id)a3
+- (FRArticleNotificationArticleSource)initWithCachesDirectory:(id)directory
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  directoryCopy = directory;
+  if (!directoryCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100002F2C();
   }
@@ -52,11 +52,11 @@
   v5 = [(FRArticleNotificationArticleSource *)&v11 init];
   if (v5)
   {
-    v6 = [NSURL URLWithString:@"News" relativeToURL:v4];
+    v6 = [NSURL URLWithString:@"News" relativeToURL:directoryCopy];
     archiveFileURL = v5->_archiveFileURL;
     v5->_archiveFileURL = v6;
 
-    v8 = [v4 copy];
+    v8 = [directoryCopy copy];
     cachesDirectory = v5->_cachesDirectory;
     v5->_cachesDirectory = v8;
   }
@@ -72,14 +72,14 @@
     v4 = +[FCFeldsparIDProvider sharedInstance];
     v5 = [FCConfigurationManager alloc];
     v6 = +[FCContextConfiguration defaultConfiguration];
-    v7 = [(FRArticleNotificationArticleSource *)self cachesDirectory];
-    v8 = [v5 initWithContextConfiguration:v6 contentHostDirectoryFileURL:v7 feldsparIDProvider:v4];
+    cachesDirectory = [(FRArticleNotificationArticleSource *)self cachesDirectory];
+    v8 = [v5 initWithContextConfiguration:v6 contentHostDirectoryFileURL:cachesDirectory feldsparIDProvider:v4];
 
     v9 = [FCContentContext alloc];
     v10 = +[FCContextConfiguration defaultConfiguration];
-    v11 = [(FRArticleNotificationArticleSource *)self cachesDirectory];
+    cachesDirectory2 = [(FRArticleNotificationArticleSource *)self cachesDirectory];
     v12 = +[FCNetworkReachability sharedNetworkReachability];
-    v13 = [v9 initWithConfiguration:v10 configurationManager:v8 contentHostDirectory:v11 networkBehaviorMonitor:0 networkReachability:v12 desiredHeadlineFieldOptions:82368 feedUsage:1 assetKeyManagerDelegate:0 appActivityMonitor:0 backgroundTaskable:0 pptContext:0];
+    v13 = [v9 initWithConfiguration:v10 configurationManager:v8 contentHostDirectory:cachesDirectory2 networkBehaviorMonitor:0 networkReachability:v12 desiredHeadlineFieldOptions:82368 feedUsage:1 assetKeyManagerDelegate:0 appActivityMonitor:0 backgroundTaskable:0 pptContext:0];
 
     [v13 enableFlushingWithFlushingThreshold:0];
     v14 = self->_contentContext;
@@ -91,18 +91,18 @@
   return contentContext;
 }
 
-- (void)fetchArticleWithID:(id)a3 completion:(id)a4
+- (void)fetchArticleWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10000300C();
   }
 
-  v8 = [(FRArticleNotificationArticleSource *)self contentContext];
-  v9 = [v8 articleController];
-  v10 = [v9 articleWithID:v6 qualityOfService:25 relativePriority:2];
+  contentContext = [(FRArticleNotificationArticleSource *)self contentContext];
+  articleController = [contentContext articleController];
+  v10 = [articleController articleWithID:dCopy qualityOfService:25 relativePriority:2];
 
   [(FRArticleNotificationArticleSource *)self setLoadedArticle:v10];
   objc_initWeak(&location, self);
@@ -111,7 +111,7 @@
   v12[2] = sub_100001600;
   v12[3] = &unk_100008308;
   objc_copyWeak(&v14, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v13 = v11;
   [v10 performBlockWhenFullyLoaded:v12];
 

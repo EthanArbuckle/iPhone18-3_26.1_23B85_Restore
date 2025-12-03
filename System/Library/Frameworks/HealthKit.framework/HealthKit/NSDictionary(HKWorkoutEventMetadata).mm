@@ -22,11 +22,11 @@
   v15[3] = &unk_1E737FF78;
   v17 = &v20;
   v18 = a2;
-  v15[4] = a1;
+  v15[4] = self;
   v10 = v9;
   v16 = v10;
   v19 = a4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v15];
+  [self enumerateKeysAndObjectsUsingBlock:v15];
   v11 = v21[5];
   v12 = v11;
   if (v11)
@@ -73,11 +73,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [v9 type];
-  if (v12 != 3)
+  type = [v9 type];
+  if (type != 3)
   {
     v19 = MEMORY[0x1E696ABC0];
-    v20 = _HKWorkoutEventTypeName(v12);
+    v20 = _HKWorkoutEventTypeName(type);
     [v19 hk_assignError:a6 code:3 format:{@"Invalid metadata key %@ for %@", @"HKSwimmingStrokeStyle", v20}];
 
     goto LABEL_8;
@@ -104,9 +104,9 @@ LABEL_9:
     v12 = @"HKElevationAscended";
     if ([@"HKElevationAscended" isEqualToString:v11] || (v12 = @"HKElevationDescended", objc_msgSend(@"HKElevationDescended", "isEqualToString:", v11)))
     {
-      v13 = [v9 type];
+      type = [v9 type];
       v14 = v10;
-      if (HKValidateWorkoutEventTypeSegment(v13, v12, a6))
+      if (HKValidateWorkoutEventTypeSegment(type, v12, a6))
       {
         v15 = +[HKUnit meterUnit];
         v16 = [HKMetadataValidationUtilities hk_validateQuantityMetadataValue:v12 value:v14 compatibleUnit:v15 error:a6];
@@ -120,9 +120,9 @@ LABEL_9:
 
     else if ([@"HKAverageSpeed" isEqualToString:v11] || objc_msgSend(@"HKMaximumSpeed", "isEqualToString:", v11))
     {
-      v18 = [v9 type];
+      type2 = [v9 type];
       v19 = v10;
-      if (HKValidateWorkoutEventTypeSegment(v18, @"HKAverageSpeed", a6))
+      if (HKValidateWorkoutEventTypeSegment(type2, @"HKAverageSpeed", a6))
       {
         v20 = [HKUnit unitFromString:@"m/s"];
         v16 = [HKMetadataValidationUtilities hk_validateQuantityMetadataValue:@"HKAverageSpeed" value:v19 compatibleUnit:v20 error:a6];
@@ -158,11 +158,11 @@ LABEL_9:
   v11 = a3;
   v12 = a4;
   v13 = a5;
-  if ([a1 _hk_validateBaseMetadataValueForWorkoutEvent:v11 valueContent:v12 key:v13 error:a7])
+  if ([self _hk_validateBaseMetadataValueForWorkoutEvent:v11 valueContent:v12 key:v13 error:a7])
   {
     if (HKProgramSDKTokenAtLeast())
     {
-      v14 = [a1 _hk_validateYukonMetadataValueForWorkoutEvent:v11 valueContent:v12 key:v13 error:a7];
+      v14 = [self _hk_validateYukonMetadataValueForWorkoutEvent:v11 valueContent:v12 key:v13 error:a7];
     }
 
     else

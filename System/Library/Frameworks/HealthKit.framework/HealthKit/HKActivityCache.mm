@@ -1,9 +1,9 @@
 @interface HKActivityCache
-+ (id)_activityCacheWithStartDate:(id)a3 endDate:(id)a4 dateComponents:(id)a5 sequence:(int64_t)a6 energyBurned:(id)a7 energyBurnedGoal:(id)a8 walkingAndRunningDistance:(id)a9 metadata:(id)a10;
-+ (id)_activityCacheWithStartDate:(id)a3 endDate:(id)a4 dateComponents:(id)a5 sequence:(int64_t)a6 metadata:(id)a7;
-+ (id)_activityCacheWithUUID:(id)a3 startDate:(id)a4 endDate:(id)a5 dateComponents:(id)a6 sequence:(int64_t)a7;
-- (BOOL)_isEqualToActivityCache:(id)a3;
-- (BOOL)_lock_isEqualToActivityCache:(id)a3;
++ (id)_activityCacheWithStartDate:(id)date endDate:(id)endDate dateComponents:(id)components sequence:(int64_t)sequence energyBurned:(id)burned energyBurnedGoal:(id)goal walkingAndRunningDistance:(id)distance metadata:(id)self0;
++ (id)_activityCacheWithStartDate:(id)date endDate:(id)endDate dateComponents:(id)components sequence:(int64_t)sequence metadata:(id)metadata;
++ (id)_activityCacheWithUUID:(id)d startDate:(id)date endDate:(id)endDate dateComponents:(id)components sequence:(int64_t)sequence;
+- (BOOL)_isEqualToActivityCache:(id)cache;
+- (BOOL)_lock_isEqualToActivityCache:(id)cache;
 - (BOOL)hasActiveHours;
 - (BOOL)hasActiveHoursGoal;
 - (BOOL)hasActiveHoursGoalDate;
@@ -25,7 +25,7 @@
 - (BOOL)hasWalkingAndRunningDistance;
 - (BOOL)hasWheelchairUse;
 - (BOOL)isPaused;
-- (HKActivityCache)initWithCoder:(id)a3;
+- (HKActivityCache)initWithCoder:(id)coder;
 - (HKQuantity)activeHoursGoal;
 - (HKQuantity)briskMinutesGoal;
 - (HKQuantity)energyBurned;
@@ -80,7 +80,7 @@
 - (id)_lock_startDate;
 - (id)_lock_walkingAndRunningDistance;
 - (id)_valueDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)endDate;
 - (id)metadata;
 - (id)startDate;
@@ -94,69 +94,69 @@
 - (int64_t)wheelchairUse;
 - (unint64_t)_lock_knownFields;
 - (unint64_t)knownFields;
-- (void)_lock_setActiveHours:(double)a3;
-- (void)_lock_setActiveHoursGoal:(id)a3 date:(id)a4;
-- (void)_lock_setActiveHoursGoalDateOnly:(id)a3;
-- (void)_lock_setActiveHoursGoalOnly:(id)a3;
-- (void)_lock_setActivityMoveMode:(int64_t)a3;
-- (void)_lock_setBriskMinutes:(double)a3;
-- (void)_lock_setBriskMinutesGoal:(id)a3 date:(id)a4;
-- (void)_lock_setBriskMinutesGoalDateOnly:(id)a3;
-- (void)_lock_setBriskMinutesGoalOnly:(id)a3;
-- (void)_lock_setCacheIndex:(int64_t)a3;
-- (void)_lock_setDailyBriskMinutesStatistics:(id)a3;
-- (void)_lock_setDailyEnergyBurnedStatistics:(id)a3;
-- (void)_lock_setDailyMoveMinutesStatistics:(id)a3;
-- (void)_lock_setDeepBreathingDuration:(double)a3;
-- (void)_lock_setEndDate:(id)a3;
-- (void)_lock_setEnergyBurned:(id)a3;
-- (void)_lock_setEnergyBurnedGoal:(id)a3 date:(id)a4;
-- (void)_lock_setEnergyBurnedGoalDateOnly:(id)a3;
-- (void)_lock_setEnergyBurnedGoalOnly:(id)a3;
-- (void)_lock_setFlightsClimbed:(int64_t)a3;
-- (void)_lock_setMetadata:(id)a3;
-- (void)_lock_setMoveMinutes:(double)a3;
-- (void)_lock_setMoveMinutesGoal:(id)a3 date:(id)a4;
-- (void)_lock_setMoveMinutesGoalDateOnly:(id)a3;
-- (void)_lock_setMoveMinutesGoalOnly:(id)a3;
-- (void)_lock_setPushCount:(int64_t)a3;
-- (void)_lock_setStartDate:(id)a3;
-- (void)_lock_setStepCount:(int64_t)a3;
-- (void)_lock_setWalkingAndRunningDistance:(id)a3;
-- (void)_lock_setWheelchairUse:(int64_t)a3;
-- (void)_setActiveHours:(double)a3;
-- (void)_setActiveHoursGoal:(id)a3 date:(id)a4;
-- (void)_setActiveHoursGoalDateOnly:(id)a3;
-- (void)_setActiveHoursGoalOnly:(id)a3;
-- (void)_setActivityMoveMode:(int64_t)a3;
-- (void)_setBriskMinutes:(double)a3;
-- (void)_setBriskMinutesGoal:(id)a3 date:(id)a4;
-- (void)_setBriskMinutesGoalDateOnly:(id)a3;
-- (void)_setBriskMinutesGoalOnly:(id)a3;
-- (void)_setCacheIndex:(int64_t)a3;
-- (void)_setDailyBriskMinutesStatistics:(id)a3;
-- (void)_setDailyEnergyBurnedStatistics:(id)a3;
-- (void)_setDailyMoveMinutesStatistics:(id)a3;
-- (void)_setDeepBreathingDuration:(double)a3;
-- (void)_setEndDate:(id)a3;
-- (void)_setEnergyBurned:(id)a3;
-- (void)_setEnergyBurnedGoal:(id)a3 date:(id)a4;
-- (void)_setEnergyBurnedGoalDateOnly:(id)a3;
-- (void)_setEnergyBurnedGoalOnly:(id)a3;
-- (void)_setFlightsClimbed:(int64_t)a3;
-- (void)_setMetadata:(id)a3;
-- (void)_setMoveMinutes:(double)a3;
-- (void)_setMoveMinutesGoal:(id)a3 date:(id)a4;
-- (void)_setMoveMinutesGoalDateOnly:(id)a3;
-- (void)_setMoveMinutesGoalOnly:(id)a3;
-- (void)_setPushCount:(int64_t)a3;
-- (void)_setSequence:(int64_t)a3;
-- (void)_setStartDate:(id)a3;
-- (void)_setStepCount:(int64_t)a3;
-- (void)_setVersion:(int64_t)a3;
-- (void)_setWalkingAndRunningDistance:(id)a3;
-- (void)_setWheelchairUse:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_lock_setActiveHours:(double)hours;
+- (void)_lock_setActiveHoursGoal:(id)goal date:(id)date;
+- (void)_lock_setActiveHoursGoalDateOnly:(id)only;
+- (void)_lock_setActiveHoursGoalOnly:(id)only;
+- (void)_lock_setActivityMoveMode:(int64_t)mode;
+- (void)_lock_setBriskMinutes:(double)minutes;
+- (void)_lock_setBriskMinutesGoal:(id)goal date:(id)date;
+- (void)_lock_setBriskMinutesGoalDateOnly:(id)only;
+- (void)_lock_setBriskMinutesGoalOnly:(id)only;
+- (void)_lock_setCacheIndex:(int64_t)index;
+- (void)_lock_setDailyBriskMinutesStatistics:(id)statistics;
+- (void)_lock_setDailyEnergyBurnedStatistics:(id)statistics;
+- (void)_lock_setDailyMoveMinutesStatistics:(id)statistics;
+- (void)_lock_setDeepBreathingDuration:(double)duration;
+- (void)_lock_setEndDate:(id)date;
+- (void)_lock_setEnergyBurned:(id)burned;
+- (void)_lock_setEnergyBurnedGoal:(id)goal date:(id)date;
+- (void)_lock_setEnergyBurnedGoalDateOnly:(id)only;
+- (void)_lock_setEnergyBurnedGoalOnly:(id)only;
+- (void)_lock_setFlightsClimbed:(int64_t)climbed;
+- (void)_lock_setMetadata:(id)metadata;
+- (void)_lock_setMoveMinutes:(double)minutes;
+- (void)_lock_setMoveMinutesGoal:(id)goal date:(id)date;
+- (void)_lock_setMoveMinutesGoalDateOnly:(id)only;
+- (void)_lock_setMoveMinutesGoalOnly:(id)only;
+- (void)_lock_setPushCount:(int64_t)count;
+- (void)_lock_setStartDate:(id)date;
+- (void)_lock_setStepCount:(int64_t)count;
+- (void)_lock_setWalkingAndRunningDistance:(id)distance;
+- (void)_lock_setWheelchairUse:(int64_t)use;
+- (void)_setActiveHours:(double)hours;
+- (void)_setActiveHoursGoal:(id)goal date:(id)date;
+- (void)_setActiveHoursGoalDateOnly:(id)only;
+- (void)_setActiveHoursGoalOnly:(id)only;
+- (void)_setActivityMoveMode:(int64_t)mode;
+- (void)_setBriskMinutes:(double)minutes;
+- (void)_setBriskMinutesGoal:(id)goal date:(id)date;
+- (void)_setBriskMinutesGoalDateOnly:(id)only;
+- (void)_setBriskMinutesGoalOnly:(id)only;
+- (void)_setCacheIndex:(int64_t)index;
+- (void)_setDailyBriskMinutesStatistics:(id)statistics;
+- (void)_setDailyEnergyBurnedStatistics:(id)statistics;
+- (void)_setDailyMoveMinutesStatistics:(id)statistics;
+- (void)_setDeepBreathingDuration:(double)duration;
+- (void)_setEndDate:(id)date;
+- (void)_setEnergyBurned:(id)burned;
+- (void)_setEnergyBurnedGoal:(id)goal date:(id)date;
+- (void)_setEnergyBurnedGoalDateOnly:(id)only;
+- (void)_setEnergyBurnedGoalOnly:(id)only;
+- (void)_setFlightsClimbed:(int64_t)climbed;
+- (void)_setMetadata:(id)metadata;
+- (void)_setMoveMinutes:(double)minutes;
+- (void)_setMoveMinutesGoal:(id)goal date:(id)date;
+- (void)_setMoveMinutesGoalDateOnly:(id)only;
+- (void)_setMoveMinutesGoalOnly:(id)only;
+- (void)_setPushCount:(int64_t)count;
+- (void)_setSequence:(int64_t)sequence;
+- (void)_setStartDate:(id)date;
+- (void)_setStepCount:(int64_t)count;
+- (void)_setVersion:(int64_t)version;
+- (void)_setWalkingAndRunningDistance:(id)distance;
+- (void)_setWheelchairUse:(int64_t)use;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
 @end
 
@@ -165,92 +165,92 @@
 - (int64_t)cacheIndex
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_cacheIndex];
+  _lock_cacheIndex = [(HKActivityCache *)self _lock_cacheIndex];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_cacheIndex;
 }
 
 - (BOOL)hasBriskMinutes
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasBriskMinutes];
+  _lock_hasBriskMinutes = [(HKActivityCache *)self _lock_hasBriskMinutes];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasBriskMinutes;
 }
 
 - (BOOL)hasActiveHours
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasActiveHours];
+  _lock_hasActiveHours = [(HKActivityCache *)self _lock_hasActiveHours];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasActiveHours;
 }
 
 - (BOOL)hasStepCount
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasStepCount];
+  _lock_hasStepCount = [(HKActivityCache *)self _lock_hasStepCount];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasStepCount;
 }
 
 - (BOOL)hasPushCount
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasPushCount];
+  _lock_hasPushCount = [(HKActivityCache *)self _lock_hasPushCount];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasPushCount;
 }
 
 - (BOOL)hasWheelchairUse
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasWheelchairUse];
+  _lock_hasWheelchairUse = [(HKActivityCache *)self _lock_hasWheelchairUse];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasWheelchairUse;
 }
 
 - (BOOL)hasDeepBreathingDuration
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasDeepBreathingDuration];
+  _lock_hasDeepBreathingDuration = [(HKActivityCache *)self _lock_hasDeepBreathingDuration];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasDeepBreathingDuration;
 }
 
 - (BOOL)hasFlightsClimbed
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasFlightsClimbed];
+  _lock_hasFlightsClimbed = [(HKActivityCache *)self _lock_hasFlightsClimbed];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasFlightsClimbed;
 }
 
 - (NSDateComponents)dateComponents
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_dateComponents];
+  _lock_dateComponents = [(HKActivityCache *)self _lock_dateComponents];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_dateComponents;
 }
 
 - (HKQuantity)energyBurned
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_energyBurned];
+  _lock_energyBurned = [(HKActivityCache *)self _lock_energyBurned];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_energyBurned;
 }
 
 - (HKQuantity)walkingAndRunningDistance
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
+  _lock_walkingAndRunningDistance = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_walkingAndRunningDistance;
 }
 
 - (double)briskMinutes
@@ -274,25 +274,25 @@
 - (int64_t)stepCount
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_stepCount];
+  _lock_stepCount = [(HKActivityCache *)self _lock_stepCount];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_stepCount;
 }
 
 - (int64_t)pushCount
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_pushCount];
+  _lock_pushCount = [(HKActivityCache *)self _lock_pushCount];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_pushCount;
 }
 
 - (int64_t)wheelchairUse
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_wheelchairUse];
+  _lock_wheelchairUse = [(HKActivityCache *)self _lock_wheelchairUse];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_wheelchairUse;
 }
 
 - (double)deepBreathingDuration
@@ -307,119 +307,119 @@
 - (BOOL)hasEnergyBurnedGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasEnergyBurnedGoal];
+  _lock_hasEnergyBurnedGoal = [(HKActivityCache *)self _lock_hasEnergyBurnedGoal];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasEnergyBurnedGoal;
 }
 
 - (HKQuantity)energyBurnedGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_energyBurnedGoal];
+  _lock_energyBurnedGoal = [(HKActivityCache *)self _lock_energyBurnedGoal];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_energyBurnedGoal;
 }
 
 - (NSDate)energyBurnedGoalDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_energyBurnedGoalDate];
+  _lock_energyBurnedGoalDate = [(HKActivityCache *)self _lock_energyBurnedGoalDate];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_energyBurnedGoalDate;
 }
 
 - (int64_t)flightsClimbed
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_flightsClimbed];
+  _lock_flightsClimbed = [(HKActivityCache *)self _lock_flightsClimbed];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_flightsClimbed;
 }
 
 - (NSArray)dailyEnergyBurnedStatistics
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_dailyEnergyBurnedStatistics];
+  _lock_dailyEnergyBurnedStatistics = [(HKActivityCache *)self _lock_dailyEnergyBurnedStatistics];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_dailyEnergyBurnedStatistics;
 }
 
 - (NSArray)dailyBriskMinutesStatistics
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_dailyBriskMinutesStatistics];
+  _lock_dailyBriskMinutesStatistics = [(HKActivityCache *)self _lock_dailyBriskMinutesStatistics];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_dailyBriskMinutesStatistics;
 }
 
 - (BOOL)hasActiveHoursGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
+  _lock_hasActiveHoursGoal = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasActiveHoursGoal;
 }
 
 - (HKQuantity)activeHoursGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_activeHoursGoal];
+  _lock_activeHoursGoal = [(HKActivityCache *)self _lock_activeHoursGoal];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_activeHoursGoal;
 }
 
 - (BOOL)hasEnergyBurned
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasEnergyBurned];
+  _lock_hasEnergyBurned = [(HKActivityCache *)self _lock_hasEnergyBurned];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasEnergyBurned;
 }
 
 - (BOOL)hasBriskMinutesGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasBriskMinutesGoal];
+  _lock_hasBriskMinutesGoal = [(HKActivityCache *)self _lock_hasBriskMinutesGoal];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasBriskMinutesGoal;
 }
 
 - (HKQuantity)briskMinutesGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_briskMinutesGoal];
+  _lock_briskMinutesGoal = [(HKActivityCache *)self _lock_briskMinutesGoal];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_briskMinutesGoal;
 }
 
 - (BOOL)hasWalkingAndRunningDistance
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasWalkingAndRunningDistance];
+  _lock_hasWalkingAndRunningDistance = [(HKActivityCache *)self _lock_hasWalkingAndRunningDistance];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasWalkingAndRunningDistance;
 }
 
 - (BOOL)hasDailyEnergyBurnedStatistics
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasDailyEnergyBurnedStatistics];
+  _lock_hasDailyEnergyBurnedStatistics = [(HKActivityCache *)self _lock_hasDailyEnergyBurnedStatistics];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasDailyEnergyBurnedStatistics;
 }
 
 - (BOOL)hasDailyBriskMinutesStatistics
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasDailyBriskMinutesStatistics];
+  _lock_hasDailyBriskMinutesStatistics = [(HKActivityCache *)self _lock_hasDailyBriskMinutesStatistics];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasDailyBriskMinutesStatistics;
 }
 
 - (id)_valueDescription
@@ -427,8 +427,8 @@
   os_unfair_lock_lock(&self->_lock);
   v30 = MEMORY[0x1E696AEC0];
   v3 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sequence];
-  v33 = [(HKActivityCache *)self _lock_hasEnergyBurned];
-  if (v33)
+  _lock_hasEnergyBurned = [(HKActivityCache *)self _lock_hasEnergyBurned];
+  if (_lock_hasEnergyBurned)
   {
     v4 = MEMORY[0x1E696AD98];
     [(HKActivityCache *)self _lock_energyBurnedInKilocalories];
@@ -440,8 +440,8 @@
     v44 = 0;
   }
 
-  v32 = [(HKActivityCache *)self _lock_hasEnergyBurnedGoal];
-  if (v32)
+  _lock_hasEnergyBurnedGoal = [(HKActivityCache *)self _lock_hasEnergyBurnedGoal];
+  if (_lock_hasEnergyBurnedGoal)
   {
     v5 = MEMORY[0x1E696AD98];
     [(HKActivityCache *)self _lock_energyBurnedGoalInKilocalories];
@@ -453,8 +453,8 @@
     v43 = 0;
   }
 
-  v31 = [(HKActivityCache *)self _lock_hasMoveMinutes];
-  if (v31)
+  _lock_hasMoveMinutes = [(HKActivityCache *)self _lock_hasMoveMinutes];
+  if (_lock_hasMoveMinutes)
   {
     v42 = [MEMORY[0x1E696AD98] numberWithDouble:self->_moveMinutes];
   }
@@ -464,8 +464,8 @@
     v42 = 0;
   }
 
-  v29 = [(HKActivityCache *)self _lock_hasMoveMinutesGoal];
-  if (v29)
+  _lock_hasMoveMinutesGoal = [(HKActivityCache *)self _lock_hasMoveMinutesGoal];
+  if (_lock_hasMoveMinutesGoal)
   {
     v6 = MEMORY[0x1E696AD98];
     [(HKActivityCache *)self _lock_moveMinutesGoalInMinutes];
@@ -477,8 +477,8 @@
     v41 = 0;
   }
 
-  v28 = [(HKActivityCache *)self _lock_hasBriskMinutes];
-  if (v28)
+  _lock_hasBriskMinutes = [(HKActivityCache *)self _lock_hasBriskMinutes];
+  if (_lock_hasBriskMinutes)
   {
     v40 = [MEMORY[0x1E696AD98] numberWithDouble:self->_briskMinutes];
   }
@@ -488,8 +488,8 @@
     v40 = 0;
   }
 
-  v27 = [(HKActivityCache *)self _lock_hasBriskMinutesGoal];
-  if (v27)
+  _lock_hasBriskMinutesGoal = [(HKActivityCache *)self _lock_hasBriskMinutesGoal];
+  if (_lock_hasBriskMinutesGoal)
   {
     v7 = MEMORY[0x1E696AD98];
     [(HKActivityCache *)self _lock_briskMinutesGoalInMinutes];
@@ -501,8 +501,8 @@
     v39 = 0;
   }
 
-  v26 = [(HKActivityCache *)self _lock_hasActiveHours];
-  if (v26)
+  _lock_hasActiveHours = [(HKActivityCache *)self _lock_hasActiveHours];
+  if (_lock_hasActiveHours)
   {
     v38 = [MEMORY[0x1E696AD98] numberWithDouble:self->_activeHours];
   }
@@ -512,8 +512,8 @@
     v38 = 0;
   }
 
-  v25 = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
-  if (v25)
+  _lock_hasActiveHoursGoal = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
+  if (_lock_hasActiveHoursGoal)
   {
     v8 = MEMORY[0x1E696AD98];
     [(HKActivityCache *)self _lock_activeHoursGoalCount];
@@ -525,8 +525,8 @@
     v37 = 0;
   }
 
-  v24 = [(HKActivityCache *)self _lock_hasStepCount];
-  if (v24)
+  _lock_hasStepCount = [(HKActivityCache *)self _lock_hasStepCount];
+  if (_lock_hasStepCount)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithInteger:self->_stepCount];
   }
@@ -536,8 +536,8 @@
     v36 = 0;
   }
 
-  v23 = [(HKActivityCache *)self _lock_hasPushCount];
-  if (v23)
+  _lock_hasPushCount = [(HKActivityCache *)self _lock_hasPushCount];
+  if (_lock_hasPushCount)
   {
     v35 = [MEMORY[0x1E696AD98] numberWithInteger:self->_pushCount];
   }
@@ -547,8 +547,8 @@
     v35 = 0;
   }
 
-  v9 = [(HKActivityCache *)self _lock_hasWalkingAndRunningDistance];
-  if (v9)
+  _lock_hasWalkingAndRunningDistance = [(HKActivityCache *)self _lock_hasWalkingAndRunningDistance];
+  if (_lock_hasWalkingAndRunningDistance)
   {
     v10 = MEMORY[0x1E696AD98];
     [(HKActivityCache *)self _lock_walkingAndRunningDistanceInMeters];
@@ -560,8 +560,8 @@
     v34 = 0;
   }
 
-  v11 = [(HKActivityCache *)self _lock_hasDeepBreathingDuration];
-  if (v11)
+  _lock_hasDeepBreathingDuration = [(HKActivityCache *)self _lock_hasDeepBreathingDuration];
+  if (_lock_hasDeepBreathingDuration)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_deepBreathingDuration];
   }
@@ -571,9 +571,9 @@
     v12 = 0;
   }
 
-  v13 = [(HKActivityCache *)self _lock_hasFlightsClimbed];
+  _lock_hasFlightsClimbed = [(HKActivityCache *)self _lock_hasFlightsClimbed];
   v14 = v3;
-  if (v13)
+  if (_lock_hasFlightsClimbed)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:self->_flightsClimbed];
   }
@@ -599,13 +599,13 @@
   v19 = v14;
   v20 = [v30 stringWithFormat:@"{HKActivityCache: Sequence=%@ EnergyBurned=(%@/%@) MoveMinutes=(%@/%@) BriskMinutes=(%@/%@) ActiveHours=(%@/%@) StepCount=(%@) PushCount=(%@) Meters=(%@) BreatheDuration=(%@) Flights=(%@) ActivityModeMode=(%@) Paused=(%@) Version=(%@)}", v14, v44, v43, v42, v41, v40, v39, v38, v37, v36, v35, v34, v12, v15, v16, v22, v18];
 
-  if (v13)
+  if (_lock_hasFlightsClimbed)
   {
 
-    if (!v11)
+    if (!_lock_hasDeepBreathingDuration)
     {
 LABEL_45:
-      if (!v9)
+      if (!_lock_hasWalkingAndRunningDistance)
       {
         goto LABEL_47;
       }
@@ -614,54 +614,54 @@ LABEL_45:
     }
   }
 
-  else if (!v11)
+  else if (!_lock_hasDeepBreathingDuration)
   {
     goto LABEL_45;
   }
 
-  if (v9)
+  if (_lock_hasWalkingAndRunningDistance)
   {
 LABEL_46:
   }
 
 LABEL_47:
-  if (v23)
+  if (_lock_hasPushCount)
   {
   }
 
-  if (v24)
+  if (_lock_hasStepCount)
   {
   }
 
-  if (v25)
+  if (_lock_hasActiveHoursGoal)
   {
   }
 
-  if (v26)
+  if (_lock_hasActiveHours)
   {
   }
 
-  if (v27)
+  if (_lock_hasBriskMinutesGoal)
   {
   }
 
-  if (v28)
+  if (_lock_hasBriskMinutes)
   {
   }
 
-  if (v29)
+  if (_lock_hasMoveMinutesGoal)
   {
   }
 
-  if (v31)
+  if (_lock_hasMoveMinutes)
   {
   }
 
-  if (v32)
+  if (_lock_hasEnergyBurnedGoal)
   {
   }
 
-  if (v33)
+  if (_lock_hasEnergyBurned)
   {
   }
 
@@ -697,39 +697,39 @@ LABEL_47:
   return v4;
 }
 
-+ (id)_activityCacheWithStartDate:(id)a3 endDate:(id)a4 dateComponents:(id)a5 sequence:(int64_t)a6 energyBurned:(id)a7 energyBurnedGoal:(id)a8 walkingAndRunningDistance:(id)a9 metadata:(id)a10
++ (id)_activityCacheWithStartDate:(id)date endDate:(id)endDate dateComponents:(id)components sequence:(int64_t)sequence energyBurned:(id)burned energyBurnedGoal:(id)goal walkingAndRunningDistance:(id)distance metadata:(id)self0
 {
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = [a1 _activityCacheWithStartDate:a3 endDate:a4 dateComponents:a5 sequence:a6 metadata:a10];
-  [v20 _setEnergyBurned:v19];
+  distanceCopy = distance;
+  goalCopy = goal;
+  burnedCopy = burned;
+  v20 = [self _activityCacheWithStartDate:date endDate:endDate dateComponents:components sequence:sequence metadata:metadata];
+  [v20 _setEnergyBurned:burnedCopy];
 
-  [v20 _setEnergyBurnedGoal:v18];
-  [v20 _setWalkingAndRunningDistance:v17];
+  [v20 _setEnergyBurnedGoal:goalCopy];
+  [v20 _setWalkingAndRunningDistance:distanceCopy];
 
   return v20;
 }
 
-+ (id)_activityCacheWithStartDate:(id)a3 endDate:(id)a4 dateComponents:(id)a5 sequence:(int64_t)a6 metadata:(id)a7
++ (id)_activityCacheWithStartDate:(id)date endDate:(id)endDate dateComponents:(id)components sequence:(int64_t)sequence metadata:(id)metadata
 {
   v7 = 0;
-  if (a4 && a3 && a5)
+  if (endDate && date && components)
   {
-    v13 = a7;
-    v14 = a5;
-    v15 = a4;
-    v16 = a3;
+    metadataCopy = metadata;
+    componentsCopy = components;
+    endDateCopy = endDate;
+    dateCopy = date;
     v17 = _HKCachedImmutableGregorianCalendarWithUTCTimeZone();
     v32 = 0;
-    v18 = _HKDerivedCacheIndexAndDateComponents(v17, v14, &v32);
+    v18 = _HKDerivedCacheIndexAndDateComponents(v17, componentsCopy, &v32);
 
     v19 = v32;
     v20 = +[HKObjectType activityCacheType];
-    [v16 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v22 = v21;
 
-    [v15 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     v24 = v23;
 
     v28[0] = MEMORY[0x1E69E9820];
@@ -738,11 +738,11 @@ LABEL_47:
     v28[3] = &unk_1E7381408;
     v29 = v19;
     v30 = v18;
-    v31 = a6;
-    v27.receiver = a1;
+    sequenceCopy = sequence;
+    v27.receiver = self;
     v27.super_class = &OBJC_METACLASS___HKActivityCache;
     v25 = v19;
-    v7 = objc_msgSendSuper2(&v27, sel__newSampleWithType_startDate_endDate_device_metadata_config_, v20, 0, v13, v28, v22, v24);
+    v7 = objc_msgSendSuper2(&v27, sel__newSampleWithType_startDate_endDate_device_metadata_config_, v20, 0, metadataCopy, v28, v22, v24);
   }
 
   return v7;
@@ -760,26 +760,26 @@ void __88__HKActivityCache__activityCacheWithStartDate_endDate_dateComponents_se
   *(v4 + 24) = 0;
 }
 
-+ (id)_activityCacheWithUUID:(id)a3 startDate:(id)a4 endDate:(id)a5 dateComponents:(id)a6 sequence:(int64_t)a7
++ (id)_activityCacheWithUUID:(id)d startDate:(id)date endDate:(id)endDate dateComponents:(id)components sequence:(int64_t)sequence
 {
-  v12 = a3;
-  v13 = v12;
+  dCopy = d;
+  v13 = dCopy;
   v14 = 0;
-  if (a5 && a4 && v12 && a6)
+  if (endDate && date && dCopy && components)
   {
-    v15 = a6;
-    v16 = a5;
-    v17 = a4;
+    componentsCopy = components;
+    endDateCopy = endDate;
+    dateCopy = date;
     v18 = _HKCachedImmutableGregorianCalendarWithUTCTimeZone();
     v34 = 0;
-    v19 = _HKDerivedCacheIndexAndDateComponents(v18, v15, &v34);
+    v19 = _HKDerivedCacheIndexAndDateComponents(v18, componentsCopy, &v34);
 
     v20 = v34;
     v21 = +[HKObjectType activityCacheType];
-    [v17 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v23 = v22;
 
-    [v16 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     v25 = v24;
 
     v29[0] = MEMORY[0x1E69E9820];
@@ -787,10 +787,10 @@ void __88__HKActivityCache__activityCacheWithStartDate_endDate_dateComponents_se
     v29[2] = __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponents_sequence___block_invoke;
     v29[3] = &unk_1E7381430;
     v32 = v19;
-    v33 = a7;
+    sequenceCopy = sequence;
     v30 = v20;
     v31 = v13;
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = &OBJC_METACLASS___HKActivityCache;
     v26 = v20;
     v14 = objc_msgSendSuper2(&v28, sel__newSampleWithType_startDate_endDate_device_metadata_config_, v21, 0, 0, v29, v23, v25);
@@ -817,34 +817,34 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
   os_unfair_lock_assert_owner(&self->_lock);
   v5.receiver = self;
   v5.super_class = HKActivityCache;
-  v3 = [(HKSample *)&v5 startDate];
+  startDate = [(HKSample *)&v5 startDate];
 
-  return v3;
+  return startDate;
 }
 
 - (id)startDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_startDate];
+  _lock_startDate = [(HKActivityCache *)self _lock_startDate];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_startDate;
 }
 
-- (void)_lock_setStartDate:(id)a3
+- (void)_lock_setStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
   v5.receiver = self;
   v5.super_class = HKActivityCache;
-  [(HKSample *)&v5 _setStartDate:v4];
+  [(HKSample *)&v5 _setStartDate:dateCopy];
 }
 
-- (void)_setStartDate:(id)a3
+- (void)_setStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setStartDate:v4];
+  [(HKActivityCache *)self _lock_setStartDate:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -854,34 +854,34 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
   os_unfair_lock_assert_owner(&self->_lock);
   v5.receiver = self;
   v5.super_class = HKActivityCache;
-  v3 = [(HKSample *)&v5 endDate];
+  endDate = [(HKSample *)&v5 endDate];
 
-  return v3;
+  return endDate;
 }
 
 - (id)endDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_endDate];
+  _lock_endDate = [(HKActivityCache *)self _lock_endDate];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_endDate;
 }
 
-- (void)_lock_setEndDate:(id)a3
+- (void)_lock_setEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
   v5.receiver = self;
   v5.super_class = HKActivityCache;
-  [(HKSample *)&v5 _setEndDate:v4];
+  [(HKSample *)&v5 _setEndDate:dateCopy];
 }
 
-- (void)_setEndDate:(id)a3
+- (void)_setEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setEndDate:v4];
+  [(HKActivityCache *)self _lock_setEndDate:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -891,76 +891,76 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
   os_unfair_lock_assert_owner(&self->_lock);
   v5.receiver = self;
   v5.super_class = HKActivityCache;
-  v3 = [(HKObject *)&v5 metadata];
+  metadata = [(HKObject *)&v5 metadata];
 
-  return v3;
+  return metadata;
 }
 
 - (id)metadata
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_metadata];
+  _lock_metadata = [(HKActivityCache *)self _lock_metadata];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_metadata;
 }
 
-- (void)_lock_setMetadata:(id)a3
+- (void)_lock_setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_assert_owner(&self->_lock);
   v5.receiver = self;
   v5.super_class = HKActivityCache;
-  [(HKObject *)&v5 _setMetadata:v4];
+  [(HKObject *)&v5 _setMetadata:metadataCopy];
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setMetadata:v4];
+  [(HKActivityCache *)self _lock_setMetadata:metadataCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_isEqualToActivityCache:(id)a3
+- (BOOL)_isEqualToActivityCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HKActivityCache *)self _lock_isEqualToActivityCache:v4];
+  v5 = [(HKActivityCache *)self _lock_isEqualToActivityCache:cacheCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (BOOL)_lock_isEqualToActivityCache:(id)a3
+- (BOOL)_lock_isEqualToActivityCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (!v4)
+  if (!cacheCopy)
   {
     goto LABEL_55;
   }
 
-  v5 = [(HKActivityCache *)self _lock_energyBurned];
-  v6 = [v4 energyBurned];
-  v7 = v6;
-  if (v5 == v6)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_energyBurned];
+  energyBurned = [cacheCopy energyBurned];
+  v7 = energyBurned;
+  if (_lock_energyBurned == energyBurned)
   {
   }
 
   else
   {
-    v8 = [v4 energyBurned];
-    if (!v8)
+    energyBurned2 = [cacheCopy energyBurned];
+    if (!energyBurned2)
     {
       goto LABEL_54;
     }
 
-    v9 = v8;
-    v10 = [(HKActivityCache *)self _lock_energyBurned];
-    v11 = [v4 energyBurned];
-    v12 = [v10 isEqual:v11];
+    v9 = energyBurned2;
+    _lock_energyBurned2 = [(HKActivityCache *)self _lock_energyBurned];
+    energyBurned3 = [cacheCopy energyBurned];
+    v12 = [_lock_energyBurned2 isEqual:energyBurned3];
 
     if (!v12)
     {
@@ -968,25 +968,25 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
     }
   }
 
-  v5 = [(HKActivityCache *)self _lock_energyBurnedGoal];
-  v13 = [v4 energyBurnedGoal];
-  v7 = v13;
-  if (v5 == v13)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_energyBurnedGoal];
+  energyBurnedGoal = [cacheCopy energyBurnedGoal];
+  v7 = energyBurnedGoal;
+  if (_lock_energyBurned == energyBurnedGoal)
   {
   }
 
   else
   {
-    v14 = [v4 energyBurnedGoal];
-    if (!v14)
+    energyBurnedGoal2 = [cacheCopy energyBurnedGoal];
+    if (!energyBurnedGoal2)
     {
       goto LABEL_54;
     }
 
-    v15 = v14;
-    v16 = [(HKActivityCache *)self _lock_energyBurnedGoal];
-    v17 = [v4 energyBurnedGoal];
-    v18 = [v16 isEqual:v17];
+    v15 = energyBurnedGoal2;
+    _lock_energyBurnedGoal = [(HKActivityCache *)self _lock_energyBurnedGoal];
+    energyBurnedGoal3 = [cacheCopy energyBurnedGoal];
+    v18 = [_lock_energyBurnedGoal isEqual:energyBurnedGoal3];
 
     if (!v18)
     {
@@ -996,31 +996,31 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
 
   [(HKActivityCache *)self _lock_moveMinutes];
   v20 = v19;
-  [v4 moveMinutes];
+  [cacheCopy moveMinutes];
   if (v20 != v21)
   {
     goto LABEL_55;
   }
 
-  v5 = [(HKActivityCache *)self _lock_moveMinutesGoal];
-  v22 = [v4 moveMinutesGoal];
-  v7 = v22;
-  if (v5 == v22)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_moveMinutesGoal];
+  moveMinutesGoal = [cacheCopy moveMinutesGoal];
+  v7 = moveMinutesGoal;
+  if (_lock_energyBurned == moveMinutesGoal)
   {
   }
 
   else
   {
-    v23 = [v4 moveMinutesGoal];
-    if (!v23)
+    moveMinutesGoal2 = [cacheCopy moveMinutesGoal];
+    if (!moveMinutesGoal2)
     {
       goto LABEL_54;
     }
 
-    v24 = v23;
-    v25 = [(HKActivityCache *)self _lock_moveMinutesGoal];
-    v26 = [v4 moveMinutesGoal];
-    v27 = [v25 isEqual:v26];
+    v24 = moveMinutesGoal2;
+    _lock_moveMinutesGoal = [(HKActivityCache *)self _lock_moveMinutesGoal];
+    moveMinutesGoal3 = [cacheCopy moveMinutesGoal];
+    v27 = [_lock_moveMinutesGoal isEqual:moveMinutesGoal3];
 
     if (!v27)
     {
@@ -1030,31 +1030,31 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
 
   [(HKActivityCache *)self _lock_briskMinutes];
   v29 = v28;
-  [v4 briskMinutes];
+  [cacheCopy briskMinutes];
   if (v29 != v30)
   {
     goto LABEL_55;
   }
 
-  v5 = [(HKActivityCache *)self _lock_briskMinutesGoal];
-  v31 = [v4 briskMinutesGoal];
-  v7 = v31;
-  if (v5 == v31)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_briskMinutesGoal];
+  briskMinutesGoal = [cacheCopy briskMinutesGoal];
+  v7 = briskMinutesGoal;
+  if (_lock_energyBurned == briskMinutesGoal)
   {
   }
 
   else
   {
-    v32 = [v4 briskMinutesGoal];
-    if (!v32)
+    briskMinutesGoal2 = [cacheCopy briskMinutesGoal];
+    if (!briskMinutesGoal2)
     {
       goto LABEL_54;
     }
 
-    v33 = v32;
-    v34 = [(HKActivityCache *)self _lock_briskMinutesGoal];
-    v35 = [v4 briskMinutesGoal];
-    v36 = [v34 isEqual:v35];
+    v33 = briskMinutesGoal2;
+    _lock_briskMinutesGoal = [(HKActivityCache *)self _lock_briskMinutesGoal];
+    briskMinutesGoal3 = [cacheCopy briskMinutesGoal];
+    v36 = [_lock_briskMinutesGoal isEqual:briskMinutesGoal3];
 
     if (!v36)
     {
@@ -1064,31 +1064,31 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
 
   [(HKActivityCache *)self _lock_activeHours];
   v38 = v37;
-  [v4 activeHours];
+  [cacheCopy activeHours];
   if (v38 != v39)
   {
     goto LABEL_55;
   }
 
-  v5 = [(HKActivityCache *)self _lock_activeHoursGoal];
-  v40 = [v4 activeHoursGoal];
-  v7 = v40;
-  if (v5 == v40)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_activeHoursGoal];
+  activeHoursGoal = [cacheCopy activeHoursGoal];
+  v7 = activeHoursGoal;
+  if (_lock_energyBurned == activeHoursGoal)
   {
   }
 
   else
   {
-    v41 = [v4 activeHoursGoal];
-    if (!v41)
+    activeHoursGoal2 = [cacheCopy activeHoursGoal];
+    if (!activeHoursGoal2)
     {
       goto LABEL_54;
     }
 
-    v42 = v41;
-    v43 = [(HKActivityCache *)self _lock_activeHoursGoal];
-    v44 = [v4 activeHoursGoal];
-    v45 = [v43 isEqual:v44];
+    v42 = activeHoursGoal2;
+    _lock_activeHoursGoal = [(HKActivityCache *)self _lock_activeHoursGoal];
+    activeHoursGoal3 = [cacheCopy activeHoursGoal];
+    v45 = [_lock_activeHoursGoal isEqual:activeHoursGoal3];
 
     if (!v45)
     {
@@ -1096,57 +1096,57 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
     }
   }
 
-  v46 = [(HKActivityCache *)self _lock_stepCount];
-  if (v46 != [v4 stepCount])
+  _lock_stepCount = [(HKActivityCache *)self _lock_stepCount];
+  if (_lock_stepCount != [cacheCopy stepCount])
   {
     goto LABEL_55;
   }
 
-  v47 = [(HKActivityCache *)self _lock_pushCount];
-  if (v47 != [v4 pushCount])
+  _lock_pushCount = [(HKActivityCache *)self _lock_pushCount];
+  if (_lock_pushCount != [cacheCopy pushCount])
   {
     goto LABEL_55;
   }
 
-  v48 = [(HKActivityCache *)self _lock_wheelchairUse];
-  if (v48 != [v4 wheelchairUse])
+  _lock_wheelchairUse = [(HKActivityCache *)self _lock_wheelchairUse];
+  if (_lock_wheelchairUse != [cacheCopy wheelchairUse])
   {
     goto LABEL_55;
   }
 
   [(HKActivityCache *)self _lock_deepBreathingDuration];
   v50 = v49;
-  [v4 deepBreathingDuration];
+  [cacheCopy deepBreathingDuration];
   if (v50 != v51)
   {
     goto LABEL_55;
   }
 
-  v52 = [(HKActivityCache *)self _lock_flightsClimbed];
-  if (v52 != [v4 flightsClimbed])
+  _lock_flightsClimbed = [(HKActivityCache *)self _lock_flightsClimbed];
+  if (_lock_flightsClimbed != [cacheCopy flightsClimbed])
   {
     goto LABEL_55;
   }
 
-  v5 = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
-  v53 = [v4 walkingAndRunningDistance];
-  v7 = v53;
-  if (v5 == v53)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
+  walkingAndRunningDistance = [cacheCopy walkingAndRunningDistance];
+  v7 = walkingAndRunningDistance;
+  if (_lock_energyBurned == walkingAndRunningDistance)
   {
   }
 
   else
   {
-    v54 = [v4 walkingAndRunningDistance];
-    if (!v54)
+    walkingAndRunningDistance2 = [cacheCopy walkingAndRunningDistance];
+    if (!walkingAndRunningDistance2)
     {
       goto LABEL_54;
     }
 
-    v55 = v54;
-    v56 = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
-    v57 = [v4 walkingAndRunningDistance];
-    v58 = [v56 isEqual:v57];
+    v55 = walkingAndRunningDistance2;
+    _lock_walkingAndRunningDistance = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
+    walkingAndRunningDistance3 = [cacheCopy walkingAndRunningDistance];
+    v58 = [_lock_walkingAndRunningDistance isEqual:walkingAndRunningDistance3];
 
     if (!v58)
     {
@@ -1154,25 +1154,25 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
     }
   }
 
-  v5 = [(HKActivityCache *)self _lock_startDate];
-  v59 = [v4 startDate];
-  v7 = v59;
-  if (v5 == v59)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_startDate];
+  startDate = [cacheCopy startDate];
+  v7 = startDate;
+  if (_lock_energyBurned == startDate)
   {
   }
 
   else
   {
-    v60 = [v4 startDate];
-    if (!v60)
+    startDate2 = [cacheCopy startDate];
+    if (!startDate2)
     {
       goto LABEL_54;
     }
 
-    v61 = v60;
-    v62 = [(HKActivityCache *)self _lock_startDate];
-    v63 = [v4 startDate];
-    v64 = [v62 isEqual:v63];
+    v61 = startDate2;
+    _lock_startDate = [(HKActivityCache *)self _lock_startDate];
+    startDate3 = [cacheCopy startDate];
+    v64 = [_lock_startDate isEqual:startDate3];
 
     if (!v64)
     {
@@ -1180,25 +1180,25 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
     }
   }
 
-  v5 = [(HKActivityCache *)self _lock_endDate];
-  v65 = [v4 endDate];
-  v7 = v65;
-  if (v5 == v65)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_endDate];
+  endDate = [cacheCopy endDate];
+  v7 = endDate;
+  if (_lock_energyBurned == endDate)
   {
   }
 
   else
   {
-    v66 = [v4 endDate];
-    if (!v66)
+    endDate2 = [cacheCopy endDate];
+    if (!endDate2)
     {
       goto LABEL_54;
     }
 
-    v67 = v66;
-    v68 = [(HKActivityCache *)self _lock_endDate];
-    v69 = [v4 endDate];
-    v70 = [v68 isEqual:v69];
+    v67 = endDate2;
+    _lock_endDate = [(HKActivityCache *)self _lock_endDate];
+    endDate3 = [cacheCopy endDate];
+    v70 = [_lock_endDate isEqual:endDate3];
 
     if (!v70)
     {
@@ -1206,18 +1206,18 @@ void __84__HKActivityCache__activityCacheWithUUID_startDate_endDate_dateComponen
     }
   }
 
-  v5 = [(HKActivityCache *)self _lock_dateComponents];
-  v71 = [v4 dateComponents];
-  v7 = v71;
-  if (v5 != v71)
+  _lock_energyBurned = [(HKActivityCache *)self _lock_dateComponents];
+  dateComponents = [cacheCopy dateComponents];
+  v7 = dateComponents;
+  if (_lock_energyBurned != dateComponents)
   {
-    v72 = [v4 dateComponents];
-    if (v72)
+    dateComponents2 = [cacheCopy dateComponents];
+    if (dateComponents2)
     {
-      v73 = v72;
-      v74 = [(HKActivityCache *)self _lock_dateComponents];
-      v75 = [v4 dateComponents];
-      v76 = [v74 isEqual:v75];
+      v73 = dateComponents2;
+      _lock_dateComponents = [(HKActivityCache *)self _lock_dateComponents];
+      dateComponents3 = [cacheCopy dateComponents];
+      v76 = [_lock_dateComponents isEqual:dateComponents3];
 
       if (!v76)
       {
@@ -1233,14 +1233,14 @@ LABEL_54:
   }
 
 LABEL_58:
-  v79 = [(HKActivityCache *)self _lock_activityMoveMode];
-  if (v79 == [v4 activityMoveMode])
+  _lock_activityMoveMode = [(HKActivityCache *)self _lock_activityMoveMode];
+  if (_lock_activityMoveMode == [cacheCopy activityMoveMode])
   {
-    v80 = [(HKActivityCache *)self _lock_isPaused];
-    if (v80 == [v4 isPaused])
+    _lock_isPaused = [(HKActivityCache *)self _lock_isPaused];
+    if (_lock_isPaused == [cacheCopy isPaused])
     {
-      v81 = [(HKActivityCache *)self _lock_version];
-      v77 = v81 == [v4 version];
+      _lock_version = [(HKActivityCache *)self _lock_version];
+      v77 = _lock_version == [cacheCopy version];
       goto LABEL_56;
     }
   }
@@ -1260,19 +1260,19 @@ LABEL_56:
   return energyBurned;
 }
 
-- (void)_lock_setEnergyBurned:(id)a3
+- (void)_lock_setEnergyBurned:(id)burned
 {
-  v4 = a3;
+  burnedCopy = burned;
   os_unfair_lock_assert_owner(&self->_lock);
   energyBurned = self->_energyBurned;
-  self->_energyBurned = v4;
+  self->_energyBurned = burnedCopy;
 }
 
-- (void)_setEnergyBurned:(id)a3
+- (void)_setEnergyBurned:(id)burned
 {
-  v4 = a3;
+  burnedCopy = burned;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setEnergyBurned:v4];
+  [(HKActivityCache *)self _lock_setEnergyBurned:burnedCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1286,17 +1286,17 @@ LABEL_56:
   return v4;
 }
 
-- (void)_lock_setMoveMinutes:(double)a3
+- (void)_lock_setMoveMinutes:(double)minutes
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_moveMinutes = a3;
+  self->_moveMinutes = minutes;
   self->_knownFields |= 0x4000uLL;
 }
 
-- (void)_setMoveMinutes:(double)a3
+- (void)_setMoveMinutes:(double)minutes
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setMoveMinutes:a3];
+  [(HKActivityCache *)self _lock_setMoveMinutes:minutes];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1304,37 +1304,37 @@ LABEL_56:
 - (BOOL)hasMoveMinutes
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasMoveMinutes];
+  _lock_hasMoveMinutes = [(HKActivityCache *)self _lock_hasMoveMinutes];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasMoveMinutes;
 }
 
-- (void)_lock_setBriskMinutes:(double)a3
+- (void)_lock_setBriskMinutes:(double)minutes
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_briskMinutes = a3;
+  self->_briskMinutes = minutes;
   self->_knownFields |= 4uLL;
 }
 
-- (void)_setBriskMinutes:(double)a3
+- (void)_setBriskMinutes:(double)minutes
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setBriskMinutes:a3];
+  [(HKActivityCache *)self _lock_setBriskMinutes:minutes];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setActiveHours:(double)a3
+- (void)_lock_setActiveHours:(double)hours
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_activeHours = a3;
+  self->_activeHours = hours;
   self->_knownFields |= 8uLL;
 }
 
-- (void)_setActiveHours:(double)a3
+- (void)_setActiveHours:(double)hours
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setActiveHours:a3];
+  [(HKActivityCache *)self _lock_setActiveHours:hours];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1355,58 +1355,58 @@ LABEL_56:
   return energyBurnedGoalDate;
 }
 
-- (void)_lock_setEnergyBurnedGoal:(id)a3 date:(id)a4
+- (void)_lock_setEnergyBurnedGoal:(id)goal date:(id)date
 {
-  v11 = a3;
-  v7 = a4;
+  goalCopy = goal;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (!v7 || (energyBurnedGoalDate = self->_energyBurnedGoalDate) == 0 || -[NSDate compare:](energyBurnedGoalDate, "compare:", v7) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v7 compare:v9], v9, v10 == -1))
+  if (!dateCopy || (energyBurnedGoalDate = self->_energyBurnedGoalDate) == 0 || -[NSDate compare:](energyBurnedGoalDate, "compare:", dateCopy) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [dateCopy compare:v9], v9, v10 == -1))
   {
-    objc_storeStrong(&self->_energyBurnedGoal, a3);
-    objc_storeStrong(&self->_energyBurnedGoalDate, a4);
+    objc_storeStrong(&self->_energyBurnedGoal, goal);
+    objc_storeStrong(&self->_energyBurnedGoalDate, date);
   }
 }
 
-- (void)_setEnergyBurnedGoal:(id)a3 date:(id)a4
+- (void)_setEnergyBurnedGoal:(id)goal date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  goalCopy = goal;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setEnergyBurnedGoal:v7 date:v6];
+  [(HKActivityCache *)self _lock_setEnergyBurnedGoal:goalCopy date:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setEnergyBurnedGoalOnly:(id)a3
+- (void)_lock_setEnergyBurnedGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   energyBurnedGoal = self->_energyBurnedGoal;
-  self->_energyBurnedGoal = v4;
+  self->_energyBurnedGoal = onlyCopy;
 }
 
-- (void)_setEnergyBurnedGoalOnly:(id)a3
+- (void)_setEnergyBurnedGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setEnergyBurnedGoalOnly:v4];
+  [(HKActivityCache *)self _lock_setEnergyBurnedGoalOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setEnergyBurnedGoalDateOnly:(id)a3
+- (void)_lock_setEnergyBurnedGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   energyBurnedGoalDate = self->_energyBurnedGoalDate;
-  self->_energyBurnedGoalDate = v4;
+  self->_energyBurnedGoalDate = onlyCopy;
 }
 
-- (void)_setEnergyBurnedGoalDateOnly:(id)a3
+- (void)_setEnergyBurnedGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setEnergyBurnedGoalDateOnly:v4];
+  [(HKActivityCache *)self _lock_setEnergyBurnedGoalDateOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1422,10 +1422,10 @@ LABEL_56:
 - (HKQuantity)moveMinutesGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_moveMinutesGoal];
+  _lock_moveMinutesGoal = [(HKActivityCache *)self _lock_moveMinutesGoal];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_moveMinutesGoal;
 }
 
 - (id)_lock_moveMinutesGoalDate
@@ -1439,64 +1439,64 @@ LABEL_56:
 - (NSDate)moveMinutesGoalDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_moveMinutesGoalDate];
+  _lock_moveMinutesGoalDate = [(HKActivityCache *)self _lock_moveMinutesGoalDate];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_moveMinutesGoalDate;
 }
 
-- (void)_lock_setMoveMinutesGoal:(id)a3 date:(id)a4
+- (void)_lock_setMoveMinutesGoal:(id)goal date:(id)date
 {
-  v11 = a3;
-  v7 = a4;
+  goalCopy = goal;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (!v7 || (moveMinutesGoalDate = self->_moveMinutesGoalDate) == 0 || -[NSDate compare:](moveMinutesGoalDate, "compare:", v7) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v7 compare:v9], v9, v10 == -1))
+  if (!dateCopy || (moveMinutesGoalDate = self->_moveMinutesGoalDate) == 0 || -[NSDate compare:](moveMinutesGoalDate, "compare:", dateCopy) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [dateCopy compare:v9], v9, v10 == -1))
   {
-    objc_storeStrong(&self->_moveMinutesGoal, a3);
-    objc_storeStrong(&self->_moveMinutesGoalDate, a4);
+    objc_storeStrong(&self->_moveMinutesGoal, goal);
+    objc_storeStrong(&self->_moveMinutesGoalDate, date);
   }
 }
 
-- (void)_setMoveMinutesGoal:(id)a3 date:(id)a4
+- (void)_setMoveMinutesGoal:(id)goal date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  goalCopy = goal;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setMoveMinutesGoal:v7 date:v6];
+  [(HKActivityCache *)self _lock_setMoveMinutesGoal:goalCopy date:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setMoveMinutesGoalOnly:(id)a3
+- (void)_lock_setMoveMinutesGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   moveMinutesGoal = self->_moveMinutesGoal;
-  self->_moveMinutesGoal = v4;
+  self->_moveMinutesGoal = onlyCopy;
 }
 
-- (void)_setMoveMinutesGoalOnly:(id)a3
+- (void)_setMoveMinutesGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setMoveMinutesGoalOnly:v4];
+  [(HKActivityCache *)self _lock_setMoveMinutesGoalOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setMoveMinutesGoalDateOnly:(id)a3
+- (void)_lock_setMoveMinutesGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   moveMinutesGoalDate = self->_moveMinutesGoalDate;
-  self->_moveMinutesGoalDate = v4;
+  self->_moveMinutesGoalDate = onlyCopy;
 }
 
-- (void)_setMoveMinutesGoalDateOnly:(id)a3
+- (void)_setMoveMinutesGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setMoveMinutesGoalDateOnly:v4];
+  [(HKActivityCache *)self _lock_setMoveMinutesGoalDateOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1504,9 +1504,9 @@ LABEL_56:
 - (BOOL)hasMoveMinutesGoal
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasMoveMinutesGoal];
+  _lock_hasMoveMinutesGoal = [(HKActivityCache *)self _lock_hasMoveMinutesGoal];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasMoveMinutesGoal;
 }
 
 - (id)_lock_fallbackBriskMinutesGoal
@@ -1532,74 +1532,74 @@ LABEL_56:
   briskMinutesGoal = self->_briskMinutesGoal;
   if (briskMinutesGoal)
   {
-    v4 = briskMinutesGoal;
+    _lock_fallbackBriskMinutesGoal = briskMinutesGoal;
   }
 
   else
   {
-    v4 = [(HKActivityCache *)self _lock_fallbackBriskMinutesGoal];
+    _lock_fallbackBriskMinutesGoal = [(HKActivityCache *)self _lock_fallbackBriskMinutesGoal];
   }
 
-  return v4;
+  return _lock_fallbackBriskMinutesGoal;
 }
 
-- (void)_lock_setBriskMinutesGoal:(id)a3 date:(id)a4
+- (void)_lock_setBriskMinutesGoal:(id)goal date:(id)date
 {
-  v12 = a3;
-  v8 = a4;
+  goalCopy = goal;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v12 && [v12 _isZero])
+  if (goalCopy && [goalCopy _isZero])
   {
     [HKActivityCache _lock_setBriskMinutesGoal:a2 date:self];
   }
 
-  if (!v8 || (briskMinutesGoalDate = self->_briskMinutesGoalDate) == 0 || -[NSDate compare:](briskMinutesGoalDate, "compare:", v8) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v8 compare:v10], v10, v11 == -1))
+  if (!dateCopy || (briskMinutesGoalDate = self->_briskMinutesGoalDate) == 0 || -[NSDate compare:](briskMinutesGoalDate, "compare:", dateCopy) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [dateCopy compare:v10], v10, v11 == -1))
   {
-    objc_storeStrong(&self->_briskMinutesGoal, a3);
-    objc_storeStrong(&self->_briskMinutesGoalDate, a4);
+    objc_storeStrong(&self->_briskMinutesGoal, goal);
+    objc_storeStrong(&self->_briskMinutesGoalDate, date);
   }
 }
 
-- (void)_setBriskMinutesGoal:(id)a3 date:(id)a4
+- (void)_setBriskMinutesGoal:(id)goal date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  goalCopy = goal;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setBriskMinutesGoal:v7 date:v6];
+  [(HKActivityCache *)self _lock_setBriskMinutesGoal:goalCopy date:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setBriskMinutesGoalOnly:(id)a3
+- (void)_lock_setBriskMinutesGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   briskMinutesGoal = self->_briskMinutesGoal;
-  self->_briskMinutesGoal = v4;
+  self->_briskMinutesGoal = onlyCopy;
 }
 
-- (void)_setBriskMinutesGoalOnly:(id)a3
+- (void)_setBriskMinutesGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setBriskMinutesGoalOnly:v4];
+  [(HKActivityCache *)self _lock_setBriskMinutesGoalOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setBriskMinutesGoalDateOnly:(id)a3
+- (void)_lock_setBriskMinutesGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   briskMinutesGoalDate = self->_briskMinutesGoalDate;
-  self->_briskMinutesGoalDate = v4;
+  self->_briskMinutesGoalDate = onlyCopy;
 }
 
-- (void)_setBriskMinutesGoalDateOnly:(id)a3
+- (void)_setBriskMinutesGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setBriskMinutesGoalDateOnly:v4];
+  [(HKActivityCache *)self _lock_setBriskMinutesGoalDateOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1607,9 +1607,9 @@ LABEL_56:
 - (BOOL)hasBriskMinutesGoalDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasBriskMinutesGoalDate];
+  _lock_hasBriskMinutesGoalDate = [(HKActivityCache *)self _lock_hasBriskMinutesGoalDate];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasBriskMinutesGoalDate;
 }
 
 - (id)_lock_fallbackActiveHoursGoal
@@ -1642,74 +1642,74 @@ LABEL_56:
   activeHoursGoal = self->_activeHoursGoal;
   if (activeHoursGoal)
   {
-    v4 = activeHoursGoal;
+    _lock_fallbackActiveHoursGoal = activeHoursGoal;
   }
 
   else
   {
-    v4 = [(HKActivityCache *)self _lock_fallbackActiveHoursGoal];
+    _lock_fallbackActiveHoursGoal = [(HKActivityCache *)self _lock_fallbackActiveHoursGoal];
   }
 
-  return v4;
+  return _lock_fallbackActiveHoursGoal;
 }
 
-- (void)_lock_setActiveHoursGoal:(id)a3 date:(id)a4
+- (void)_lock_setActiveHoursGoal:(id)goal date:(id)date
 {
-  v12 = a3;
-  v8 = a4;
+  goalCopy = goal;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v12 && [v12 _isZero])
+  if (goalCopy && [goalCopy _isZero])
   {
     [HKActivityCache _lock_setActiveHoursGoal:a2 date:self];
   }
 
-  if (!v8 || (activeHoursGoalDate = self->_activeHoursGoalDate) == 0 || -[NSDate compare:](activeHoursGoalDate, "compare:", v8) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v8 compare:v10], v10, v11 == -1))
+  if (!dateCopy || (activeHoursGoalDate = self->_activeHoursGoalDate) == 0 || -[NSDate compare:](activeHoursGoalDate, "compare:", dateCopy) == NSOrderedAscending && (-[HKActivityCache _lock_endDate](self, "_lock_endDate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [dateCopy compare:v10], v10, v11 == -1))
   {
-    objc_storeStrong(&self->_activeHoursGoal, a3);
-    objc_storeStrong(&self->_activeHoursGoalDate, a4);
+    objc_storeStrong(&self->_activeHoursGoal, goal);
+    objc_storeStrong(&self->_activeHoursGoalDate, date);
   }
 }
 
-- (void)_setActiveHoursGoal:(id)a3 date:(id)a4
+- (void)_setActiveHoursGoal:(id)goal date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  goalCopy = goal;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setActiveHoursGoal:v7 date:v6];
+  [(HKActivityCache *)self _lock_setActiveHoursGoal:goalCopy date:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setActiveHoursGoalOnly:(id)a3
+- (void)_lock_setActiveHoursGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   activeHoursGoal = self->_activeHoursGoal;
-  self->_activeHoursGoal = v4;
+  self->_activeHoursGoal = onlyCopy;
 }
 
-- (void)_setActiveHoursGoalOnly:(id)a3
+- (void)_setActiveHoursGoalOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setActiveHoursGoalOnly:v4];
+  [(HKActivityCache *)self _lock_setActiveHoursGoalOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setActiveHoursGoalDateOnly:(id)a3
+- (void)_lock_setActiveHoursGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_assert_owner(&self->_lock);
   activeHoursGoalDate = self->_activeHoursGoalDate;
-  self->_activeHoursGoalDate = v4;
+  self->_activeHoursGoalDate = onlyCopy;
 }
 
-- (void)_setActiveHoursGoalDateOnly:(id)a3
+- (void)_setActiveHoursGoalDateOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setActiveHoursGoalDateOnly:v4];
+  [(HKActivityCache *)self _lock_setActiveHoursGoalDateOnly:onlyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1717,9 +1717,9 @@ LABEL_56:
 - (BOOL)hasActiveHoursGoalDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasActiveHoursGoalDate];
+  _lock_hasActiveHoursGoalDate = [(HKActivityCache *)self _lock_hasActiveHoursGoalDate];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasActiveHoursGoalDate;
 }
 
 - (double)_lock_energyBurnedGoalPercentage
@@ -1771,9 +1771,9 @@ LABEL_56:
 - (double)_lock_briskMinutesGoalPercentage
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasBriskMinutesGoal];
+  _lock_hasBriskMinutesGoal = [(HKActivityCache *)self _lock_hasBriskMinutesGoal];
   result = 0.0;
-  if (v3)
+  if (_lock_hasBriskMinutesGoal)
   {
     briskMinutes = self->_briskMinutes;
     [(HKActivityCache *)self _lock_briskMinutesGoalInMinutes];
@@ -1795,9 +1795,9 @@ LABEL_56:
 - (double)_lock_activeHoursGoalPercentage
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
+  _lock_hasActiveHoursGoal = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
   result = 0.0;
-  if (v3)
+  if (_lock_hasActiveHoursGoal)
   {
     activeHours = self->_activeHours;
     [(HKActivityCache *)self _lock_activeHoursGoalCount];
@@ -1816,21 +1816,21 @@ LABEL_56:
   return v4;
 }
 
-- (void)_lock_setCacheIndex:(int64_t)a3
+- (void)_lock_setCacheIndex:(int64_t)index
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_cacheIndex = a3;
-  v5 = _HKActivityCacheDateComponentsFromCacheIndex(a3);
+  self->_cacheIndex = index;
+  v5 = _HKActivityCacheDateComponentsFromCacheIndex(index);
   dateComponents = self->_dateComponents;
   self->_dateComponents = v5;
 
   MEMORY[0x1EEE66BB8](v5, dateComponents);
 }
 
-- (void)_setCacheIndex:(int64_t)a3
+- (void)_setCacheIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setCacheIndex:a3];
+  [(HKActivityCache *)self _lock_setCacheIndex:index];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1838,15 +1838,15 @@ LABEL_56:
 - (int64_t)sequence
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_sequence];
+  _lock_sequence = [(HKActivityCache *)self _lock_sequence];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_sequence;
 }
 
-- (void)_setSequence:(int64_t)a3
+- (void)_setSequence:(int64_t)sequence
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setSequence:a3];
+  [(HKActivityCache *)self _lock_setSequence:sequence];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1862,67 +1862,67 @@ LABEL_56:
 - (BOOL)hasDateComponents
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasDateComponents];
+  _lock_hasDateComponents = [(HKActivityCache *)self _lock_hasDateComponents];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasDateComponents;
 }
 
-- (void)_lock_setStepCount:(int64_t)a3
+- (void)_lock_setStepCount:(int64_t)count
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_stepCount = a3;
+  self->_stepCount = count;
   self->_knownFields |= 0x80uLL;
 }
 
-- (void)_setStepCount:(int64_t)a3
+- (void)_setStepCount:(int64_t)count
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setStepCount:a3];
+  [(HKActivityCache *)self _lock_setStepCount:count];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setPushCount:(int64_t)a3
+- (void)_lock_setPushCount:(int64_t)count
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_pushCount = a3;
+  self->_pushCount = count;
   self->_knownFields |= 0x800uLL;
 }
 
-- (void)_setPushCount:(int64_t)a3
+- (void)_setPushCount:(int64_t)count
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setPushCount:a3];
+  [(HKActivityCache *)self _lock_setPushCount:count];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setWheelchairUse:(int64_t)a3
+- (void)_lock_setWheelchairUse:(int64_t)use
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_wheelchairUse = a3;
+  self->_wheelchairUse = use;
   self->_knownFields |= 0x2000uLL;
 }
 
-- (void)_setWheelchairUse:(int64_t)a3
+- (void)_setWheelchairUse:(int64_t)use
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setWheelchairUse:a3];
+  [(HKActivityCache *)self _lock_setWheelchairUse:use];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setDeepBreathingDuration:(double)a3
+- (void)_lock_setDeepBreathingDuration:(double)duration
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_deepBreathingDuration = a3;
+  self->_deepBreathingDuration = duration;
   self->_knownFields |= 0x400uLL;
 }
 
-- (void)_setDeepBreathingDuration:(double)a3
+- (void)_setDeepBreathingDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setDeepBreathingDuration:a3];
+  [(HKActivityCache *)self _lock_setDeepBreathingDuration:duration];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1935,34 +1935,34 @@ LABEL_56:
   return walkingAndRunningDistance;
 }
 
-- (void)_lock_setWalkingAndRunningDistance:(id)a3
+- (void)_lock_setWalkingAndRunningDistance:(id)distance
 {
-  v4 = a3;
+  distanceCopy = distance;
   os_unfair_lock_assert_owner(&self->_lock);
   walkingAndRunningDistance = self->_walkingAndRunningDistance;
-  self->_walkingAndRunningDistance = v4;
+  self->_walkingAndRunningDistance = distanceCopy;
 }
 
-- (void)_setWalkingAndRunningDistance:(id)a3
+- (void)_setWalkingAndRunningDistance:(id)distance
 {
-  v4 = a3;
+  distanceCopy = distance;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setWalkingAndRunningDistance:v4];
+  [(HKActivityCache *)self _lock_setWalkingAndRunningDistance:distanceCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setFlightsClimbed:(int64_t)a3
+- (void)_lock_setFlightsClimbed:(int64_t)climbed
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_flightsClimbed = a3;
+  self->_flightsClimbed = climbed;
   self->_knownFields |= 0x1000uLL;
 }
 
-- (void)_setFlightsClimbed:(int64_t)a3
+- (void)_setFlightsClimbed:(int64_t)climbed
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setFlightsClimbed:a3];
+  [(HKActivityCache *)self _lock_setFlightsClimbed:climbed];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1975,21 +1975,21 @@ LABEL_56:
   return dailyEnergyBurnedStatistics;
 }
 
-- (void)_lock_setDailyEnergyBurnedStatistics:(id)a3
+- (void)_lock_setDailyEnergyBurnedStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [statisticsCopy copy];
 
   dailyEnergyBurnedStatistics = self->_dailyEnergyBurnedStatistics;
   self->_dailyEnergyBurnedStatistics = v5;
 }
 
-- (void)_setDailyEnergyBurnedStatistics:(id)a3
+- (void)_setDailyEnergyBurnedStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setDailyEnergyBurnedStatistics:v4];
+  [(HKActivityCache *)self _lock_setDailyEnergyBurnedStatistics:statisticsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1997,9 +1997,9 @@ LABEL_56:
 - (BOOL)hasDailyMoveMinutesStatistics
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_hasDailyMoveMinutesStatistics];
+  _lock_hasDailyMoveMinutesStatistics = [(HKActivityCache *)self _lock_hasDailyMoveMinutesStatistics];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasDailyMoveMinutesStatistics;
 }
 
 - (id)_lock_dailyMoveMinutesStatistics
@@ -2013,27 +2013,27 @@ LABEL_56:
 - (NSArray)dailyMoveMinutesStatistics
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_dailyMoveMinutesStatistics];
+  _lock_dailyMoveMinutesStatistics = [(HKActivityCache *)self _lock_dailyMoveMinutesStatistics];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_dailyMoveMinutesStatistics;
 }
 
-- (void)_lock_setDailyMoveMinutesStatistics:(id)a3
+- (void)_lock_setDailyMoveMinutesStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [statisticsCopy copy];
 
   dailyMoveMinutesStatistics = self->_dailyMoveMinutesStatistics;
   self->_dailyMoveMinutesStatistics = v5;
 }
 
-- (void)_setDailyMoveMinutesStatistics:(id)a3
+- (void)_setDailyMoveMinutesStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setDailyMoveMinutesStatistics:v4];
+  [(HKActivityCache *)self _lock_setDailyMoveMinutesStatistics:statisticsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2046,21 +2046,21 @@ LABEL_56:
   return dailyBriskMinutesStatistics;
 }
 
-- (void)_lock_setDailyBriskMinutesStatistics:(id)a3
+- (void)_lock_setDailyBriskMinutesStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [statisticsCopy copy];
 
   dailyBriskMinutesStatistics = self->_dailyBriskMinutesStatistics;
   self->_dailyBriskMinutesStatistics = v5;
 }
 
-- (void)_setDailyBriskMinutesStatistics:(id)a3
+- (void)_setDailyBriskMinutesStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setDailyBriskMinutesStatistics:v4];
+  [(HKActivityCache *)self _lock_setDailyBriskMinutesStatistics:statisticsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2068,26 +2068,26 @@ LABEL_56:
 - (int64_t)activityMoveMode
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_activityMoveMode];
+  _lock_activityMoveMode = [(HKActivityCache *)self _lock_activityMoveMode];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_activityMoveMode;
 }
 
-- (void)_lock_setActivityMoveMode:(int64_t)a3
+- (void)_lock_setActivityMoveMode:(int64_t)mode
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  if (!a3)
+  if (!mode)
   {
     [(HKActivityCache *)a2 _lock_setActivityMoveMode:?];
   }
 
-  self->_activityMoveMode = a3;
+  self->_activityMoveMode = mode;
 }
 
-- (void)_setActivityMoveMode:(int64_t)a3
+- (void)_setActivityMoveMode:(int64_t)mode
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setActivityMoveMode:a3];
+  [(HKActivityCache *)self _lock_setActivityMoveMode:mode];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2095,23 +2095,23 @@ LABEL_56:
 - (BOOL)isPaused
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_isPaused];
+  _lock_isPaused = [(HKActivityCache *)self _lock_isPaused];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_isPaused;
 }
 
 - (int64_t)version
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_version];
+  _lock_version = [(HKActivityCache *)self _lock_version];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_version;
 }
 
-- (void)_setVersion:(int64_t)a3
+- (void)_setVersion:(int64_t)version
 {
   os_unfair_lock_lock(&self->_lock);
-  [(HKActivityCache *)self _lock_setVersion:a3];
+  [(HKActivityCache *)self _lock_setVersion:version];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2129,9 +2129,9 @@ LABEL_56:
     v3 = 0;
   }
 
-  v4 = [(HKActivityCache *)self _lock_hasBriskMinutes];
+  _lock_hasBriskMinutes = [(HKActivityCache *)self _lock_hasBriskMinutes];
   v5 = 4;
-  if (!v4)
+  if (!_lock_hasBriskMinutes)
   {
     v5 = 0;
   }
@@ -2147,9 +2147,9 @@ LABEL_56:
     v7 = 0;
   }
 
-  v8 = [(HKActivityCache *)self _lock_hasEnergyBurnedGoal];
+  _lock_hasEnergyBurnedGoal = [(HKActivityCache *)self _lock_hasEnergyBurnedGoal];
   v9 = 16;
-  if (!v8)
+  if (!_lock_hasEnergyBurnedGoal)
   {
     v9 = 0;
   }
@@ -2165,17 +2165,17 @@ LABEL_56:
     v11 = 0;
   }
 
-  v12 = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
+  _lock_hasActiveHoursGoal = [(HKActivityCache *)self _lock_hasActiveHoursGoal];
   v13 = 64;
-  if (!v12)
+  if (!_lock_hasActiveHoursGoal)
   {
     v13 = 0;
   }
 
   v14 = v11 | v13;
-  v15 = [(HKActivityCache *)self _lock_hasStepCount];
+  _lock_hasStepCount = [(HKActivityCache *)self _lock_hasStepCount];
   v16 = 128;
-  if (!v15)
+  if (!_lock_hasStepCount)
   {
     v16 = 0;
   }
@@ -2191,33 +2191,33 @@ LABEL_56:
     v18 = 0;
   }
 
-  v19 = [(HKActivityCache *)self _lock_hasWalkingAndRunningDistance];
+  _lock_hasWalkingAndRunningDistance = [(HKActivityCache *)self _lock_hasWalkingAndRunningDistance];
   v20 = 256;
-  if (!v19)
+  if (!_lock_hasWalkingAndRunningDistance)
   {
     v20 = 0;
   }
 
   v21 = v18 | v20;
-  v22 = [(HKActivityCache *)self _lock_hasPushCount];
+  _lock_hasPushCount = [(HKActivityCache *)self _lock_hasPushCount];
   v23 = 2048;
-  if (!v22)
+  if (!_lock_hasPushCount)
   {
     v23 = 0;
   }
 
   v24 = v21 | v23;
-  v25 = [(HKActivityCache *)self _lock_hasWheelchairUse];
+  _lock_hasWheelchairUse = [(HKActivityCache *)self _lock_hasWheelchairUse];
   v26 = 0x2000;
-  if (!v25)
+  if (!_lock_hasWheelchairUse)
   {
     v26 = 0;
   }
 
   v27 = v17 | v24 | v26;
-  v28 = [(HKActivityCache *)self _lock_hasFlightsClimbed];
+  _lock_hasFlightsClimbed = [(HKActivityCache *)self _lock_hasFlightsClimbed];
   v29 = 4096;
-  if (!v28)
+  if (!_lock_hasFlightsClimbed)
   {
     v29 = 0;
   }
@@ -2228,9 +2228,9 @@ LABEL_56:
 - (unint64_t)knownFields
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKActivityCache *)self _lock_knownFields];
+  _lock_knownFields = [(HKActivityCache *)self _lock_knownFields];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_knownFields;
 }
 
 - (void)reset
@@ -2380,23 +2380,23 @@ LABEL_56:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(HKActivityCache *)self _lock_startDate];
-  v5 = [(HKActivityCache *)self _lock_endDate];
-  v6 = [(HKActivityCache *)self _lock_dateComponents];
-  v7 = [(HKActivityCache *)self _lock_sequence];
-  v8 = [(HKActivityCache *)self _lock_metadata];
-  v9 = [HKActivityCache _activityCacheWithStartDate:v4 endDate:v5 dateComponents:v6 sequence:v7 metadata:v8];
+  _lock_startDate = [(HKActivityCache *)self _lock_startDate];
+  _lock_endDate = [(HKActivityCache *)self _lock_endDate];
+  _lock_dateComponents = [(HKActivityCache *)self _lock_dateComponents];
+  _lock_sequence = [(HKActivityCache *)self _lock_sequence];
+  _lock_metadata = [(HKActivityCache *)self _lock_metadata];
+  v9 = [HKActivityCache _activityCacheWithStartDate:_lock_startDate endDate:_lock_endDate dateComponents:_lock_dateComponents sequence:_lock_sequence metadata:_lock_metadata];
 
-  v10 = [(HKObject *)self UUID];
-  [v9 _setUUID:v10];
+  uUID = [(HKObject *)self UUID];
+  [v9 _setUUID:uUID];
 
   if ([(HKActivityCache *)self _lock_hasEnergyBurned])
   {
-    v11 = [(HKActivityCache *)self _lock_energyBurned];
-    [v9 _setEnergyBurned:v11];
+    _lock_energyBurned = [(HKActivityCache *)self _lock_energyBurned];
+    [v9 _setEnergyBurned:_lock_energyBurned];
   }
 
   if ([(HKActivityCache *)self _lock_hasMoveMinutes])
@@ -2434,8 +2434,8 @@ LABEL_56:
 
   if ([(HKActivityCache *)self _lock_hasWalkingAndRunningDistance])
   {
-    v12 = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
-    [v9 _setWalkingAndRunningDistance:v12];
+    _lock_walkingAndRunningDistance = [(HKActivityCache *)self _lock_walkingAndRunningDistance];
+    [v9 _setWalkingAndRunningDistance:_lock_walkingAndRunningDistance];
   }
 
   if ([(HKActivityCache *)self _lock_hasDeepBreathingDuration])
@@ -2446,28 +2446,28 @@ LABEL_56:
 
   if ([(HKActivityCache *)self _lock_hasEnergyBurnedGoal])
   {
-    v13 = [(HKActivityCache *)self _lock_energyBurnedGoal];
-    v14 = [(HKActivityCache *)self _lock_energyBurnedGoalDate];
-    [v9 _setEnergyBurnedGoal:v13 date:v14];
+    _lock_energyBurnedGoal = [(HKActivityCache *)self _lock_energyBurnedGoal];
+    _lock_energyBurnedGoalDate = [(HKActivityCache *)self _lock_energyBurnedGoalDate];
+    [v9 _setEnergyBurnedGoal:_lock_energyBurnedGoal date:_lock_energyBurnedGoalDate];
   }
 
   if ([(HKActivityCache *)self _lock_hasMoveMinutesGoal])
   {
-    v15 = [(HKActivityCache *)self _lock_moveMinutesGoal];
-    v16 = [(HKActivityCache *)self _lock_moveMinutesGoalDate];
-    [v9 _setMoveMinutesGoal:v15 date:v16];
+    _lock_moveMinutesGoal = [(HKActivityCache *)self _lock_moveMinutesGoal];
+    _lock_moveMinutesGoalDate = [(HKActivityCache *)self _lock_moveMinutesGoalDate];
+    [v9 _setMoveMinutesGoal:_lock_moveMinutesGoal date:_lock_moveMinutesGoalDate];
   }
 
   if ([(HKActivityCache *)self _lock_hasBriskMinutesGoal])
   {
-    v17 = [(HKActivityCache *)self _lock_briskMinutesGoal];
-    [v9 _setBriskMinutesGoal:v17];
+    _lock_briskMinutesGoal = [(HKActivityCache *)self _lock_briskMinutesGoal];
+    [v9 _setBriskMinutesGoal:_lock_briskMinutesGoal];
   }
 
   if ([(HKActivityCache *)self _lock_hasActiveHoursGoal])
   {
-    v18 = [(HKActivityCache *)self _lock_activeHoursGoal];
-    [v9 _setActiveHoursGoal:v18];
+    _lock_activeHoursGoal = [(HKActivityCache *)self _lock_activeHoursGoal];
+    [v9 _setActiveHoursGoal:_lock_activeHoursGoal];
   }
 
   if ([(HKActivityCache *)self _lock_hasFlightsClimbed])
@@ -2475,14 +2475,14 @@ LABEL_56:
     [v9 _setFlightsClimbed:{-[HKActivityCache _lock_flightsClimbed](self, "_lock_flightsClimbed")}];
   }
 
-  v19 = [(HKActivityCache *)self _lock_dailyEnergyBurnedStatistics];
-  [v9 _setDailyEnergyBurnedStatistics:v19];
+  _lock_dailyEnergyBurnedStatistics = [(HKActivityCache *)self _lock_dailyEnergyBurnedStatistics];
+  [v9 _setDailyEnergyBurnedStatistics:_lock_dailyEnergyBurnedStatistics];
 
-  v20 = [(HKActivityCache *)self _lock_dailyMoveMinutesStatistics];
-  [v9 _setDailyMoveMinutesStatistics:v20];
+  _lock_dailyMoveMinutesStatistics = [(HKActivityCache *)self _lock_dailyMoveMinutesStatistics];
+  [v9 _setDailyMoveMinutesStatistics:_lock_dailyMoveMinutesStatistics];
 
-  v21 = [(HKActivityCache *)self _lock_dailyBriskMinutesStatistics];
-  [v9 _setDailyBriskMinutesStatistics:v21];
+  _lock_dailyBriskMinutesStatistics = [(HKActivityCache *)self _lock_dailyBriskMinutesStatistics];
+  [v9 _setDailyBriskMinutesStatistics:_lock_dailyBriskMinutesStatistics];
 
   [v9 _setActivityMoveMode:{-[HKActivityCache _lock_activityMoveMode](self, "_lock_activityMoveMode")}];
   [v9 _setPaused:{-[HKActivityCache _lock_isPaused](self, "_lock_isPaused")}];
@@ -2491,13 +2491,13 @@ LABEL_56:
   return v9;
 }
 
-- (HKActivityCache)initWithCoder:(id)a3
+- (HKActivityCache)initWithCoder:(id)coder
 {
   v57[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v54.receiver = self;
   v54.super_class = HKActivityCache;
-  v5 = [(HKSample *)&v54 initWithCoder:v4];
+  v5 = [(HKSample *)&v54 initWithCoder:coderCopy];
   v6 = v5;
   if (!v5)
   {
@@ -2506,41 +2506,41 @@ LABEL_56:
 
   v5->_lock._os_unfair_lock_opaque = 0;
   os_unfair_lock_lock(&v5->_lock);
-  -[HKActivityCache _lock_setCacheIndex:](v6, "_lock_setCacheIndex:", [v4 decodeInt64ForKey:@"cacheIndex"]);
-  -[HKActivityCache _lock_setSequence:](v6, "_lock_setSequence:", [v4 decodeInt64ForKey:@"sequence"]);
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"energyBurned"];
+  -[HKActivityCache _lock_setCacheIndex:](v6, "_lock_setCacheIndex:", [coderCopy decodeInt64ForKey:@"cacheIndex"]);
+  -[HKActivityCache _lock_setSequence:](v6, "_lock_setSequence:", [coderCopy decodeInt64ForKey:@"sequence"]);
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"energyBurned"];
   energyBurned = v6->_energyBurned;
   v6->_energyBurned = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"energyBurnedGoal"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"energyBurnedGoal"];
   energyBurnedGoal = v6->_energyBurnedGoal;
   v6->_energyBurnedGoal = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"energyBurnedGoalDate"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"energyBurnedGoalDate"];
   energyBurnedGoalDate = v6->_energyBurnedGoalDate;
   v6->_energyBurnedGoalDate = v11;
 
-  if ([v4 containsValueForKey:@"moveMinutes"])
+  if ([coderCopy containsValueForKey:@"moveMinutes"])
   {
-    [v4 decodeDoubleForKey:@"moveMinutes"];
+    [coderCopy decodeDoubleForKey:@"moveMinutes"];
     [(HKActivityCache *)v6 _lock_setMoveMinutes:?];
   }
 
-  if ([v4 containsValueForKey:@"moveMinutesGoalQuantity"])
+  if ([coderCopy containsValueForKey:@"moveMinutesGoalQuantity"])
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"moveMinutesGoalQuantity"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"moveMinutesGoalQuantity"];
     moveMinutesGoal = v6->_moveMinutesGoal;
     v6->_moveMinutesGoal = v13;
   }
 
   else
   {
-    if (![v4 containsValueForKey:@"moveMinutesGoal"])
+    if (![coderCopy containsValueForKey:@"moveMinutesGoal"])
     {
       goto LABEL_9;
     }
 
-    [v4 decodeDoubleForKey:@"moveMinutesGoal"];
+    [coderCopy decodeDoubleForKey:@"moveMinutesGoal"];
     v16 = v15;
     moveMinutesGoal = +[HKUnit minuteUnit];
     v17 = [HKQuantity quantityWithUnit:moveMinutesGoal doubleValue:v16];
@@ -2549,30 +2549,30 @@ LABEL_56:
   }
 
 LABEL_9:
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"moveMinutesGoalDate"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"moveMinutesGoalDate"];
   moveMinutesGoalDate = v6->_moveMinutesGoalDate;
   v6->_moveMinutesGoalDate = v19;
 
-  if ([v4 containsValueForKey:@"activeHours"])
+  if ([coderCopy containsValueForKey:@"activeHours"])
   {
-    [v4 decodeDoubleForKey:@"activeHours"];
+    [coderCopy decodeDoubleForKey:@"activeHours"];
     [(HKActivityCache *)v6 _lock_setActiveHours:?];
   }
 
-  if ([v4 containsValueForKey:@"activeHoursGoalQuantity"])
+  if ([coderCopy containsValueForKey:@"activeHoursGoalQuantity"])
   {
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeHoursGoalQuantity"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeHoursGoalQuantity"];
     [(HKActivityCache *)v6 _lock_setActiveHoursGoalOnly:v21];
   }
 
   else
   {
-    if (![v4 containsValueForKey:@"activeHoursGoal"])
+    if (![coderCopy containsValueForKey:@"activeHoursGoal"])
     {
       goto LABEL_16;
     }
 
-    [v4 decodeDoubleForKey:@"activeHoursGoal"];
+    [coderCopy decodeDoubleForKey:@"activeHoursGoal"];
     v23 = v22;
     v21 = +[HKUnit countUnit];
     v24 = [HKQuantity quantityWithUnit:v21 doubleValue:v23];
@@ -2580,30 +2580,30 @@ LABEL_9:
   }
 
 LABEL_16:
-  if ([v4 containsValueForKey:@"activeHoursGoalDate"])
+  if ([coderCopy containsValueForKey:@"activeHoursGoalDate"])
   {
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeHoursGoalDate"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeHoursGoalDate"];
     [(HKActivityCache *)v6 _lock_setActiveHoursGoalDateOnly:v25];
   }
 
-  if ([v4 containsValueForKey:@"briskMinutes"])
+  if ([coderCopy containsValueForKey:@"briskMinutes"])
   {
-    [v4 decodeDoubleForKey:@"briskMinutes"];
+    [coderCopy decodeDoubleForKey:@"briskMinutes"];
     [(HKActivityCache *)v6 _lock_setBriskMinutes:?];
   }
 
-  if ([v4 containsValueForKey:@"briskMinutesGoalQuantity"])
+  if ([coderCopy containsValueForKey:@"briskMinutesGoalQuantity"])
   {
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"briskMinutesGoalQuantity"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"briskMinutesGoalQuantity"];
     [(HKActivityCache *)v6 _lock_setBriskMinutesGoalOnly:v26];
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  if ([v4 containsValueForKey:@"briskMinutesGoal"])
+  if ([coderCopy containsValueForKey:@"briskMinutesGoal"])
   {
-    [v4 decodeDoubleForKey:@"briskMinutesGoal"];
+    [coderCopy decodeDoubleForKey:@"briskMinutesGoal"];
     v28 = v27;
     v26 = +[HKUnit minuteUnit];
     v29 = [HKQuantity quantityWithUnit:v26 doubleValue:v28];
@@ -2613,40 +2613,40 @@ LABEL_24:
   }
 
 LABEL_25:
-  if ([v4 containsValueForKey:@"briskMinutesGoalDate"])
+  if ([coderCopy containsValueForKey:@"briskMinutesGoalDate"])
   {
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"briskMinutesGoalDate"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"briskMinutesGoalDate"];
     [(HKActivityCache *)v6 _lock_setBriskMinutesGoalDateOnly:v30];
   }
 
-  if ([v4 containsValueForKey:@"stepCount"])
+  if ([coderCopy containsValueForKey:@"stepCount"])
   {
-    -[HKActivityCache _lock_setStepCount:](v6, "_lock_setStepCount:", [v4 decodeIntegerForKey:@"stepCount"]);
+    -[HKActivityCache _lock_setStepCount:](v6, "_lock_setStepCount:", [coderCopy decodeIntegerForKey:@"stepCount"]);
   }
 
-  if ([v4 containsValueForKey:@"pushCount"])
+  if ([coderCopy containsValueForKey:@"pushCount"])
   {
-    -[HKActivityCache _lock_setPushCount:](v6, "_lock_setPushCount:", [v4 decodeIntegerForKey:@"pushCount"]);
+    -[HKActivityCache _lock_setPushCount:](v6, "_lock_setPushCount:", [coderCopy decodeIntegerForKey:@"pushCount"]);
   }
 
-  if ([v4 containsValueForKey:@"wheelchairUse"])
+  if ([coderCopy containsValueForKey:@"wheelchairUse"])
   {
-    -[HKActivityCache _lock_setWheelchairUse:](v6, "_lock_setWheelchairUse:", [v4 decodeIntegerForKey:@"wheelchairUse"]);
+    -[HKActivityCache _lock_setWheelchairUse:](v6, "_lock_setWheelchairUse:", [coderCopy decodeIntegerForKey:@"wheelchairUse"]);
   }
 
-  if ([v4 containsValueForKey:@"deepBreathingDuration"])
+  if ([coderCopy containsValueForKey:@"deepBreathingDuration"])
   {
-    [v4 decodeDoubleForKey:@"deepBreathingDuration"];
+    [coderCopy decodeDoubleForKey:@"deepBreathingDuration"];
     [(HKActivityCache *)v6 _lock_setDeepBreathingDuration:?];
   }
 
-  v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"walkRunDistance"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"walkRunDistance"];
   walkingAndRunningDistance = v6->_walkingAndRunningDistance;
   v6->_walkingAndRunningDistance = v31;
 
-  if ([v4 containsValueForKey:@"flightsClimbed"])
+  if ([coderCopy containsValueForKey:@"flightsClimbed"])
   {
-    -[HKActivityCache _lock_setFlightsClimbed:](v6, "_lock_setFlightsClimbed:", [v4 decodeIntegerForKey:@"flightsClimbed"]);
+    -[HKActivityCache _lock_setFlightsClimbed:](v6, "_lock_setFlightsClimbed:", [coderCopy decodeIntegerForKey:@"flightsClimbed"]);
   }
 
   v33 = MEMORY[0x1E695DFD8];
@@ -2654,7 +2654,7 @@ LABEL_25:
   v57[1] = objc_opt_class();
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
   v35 = [v33 setWithArray:v34];
-  v36 = [v4 decodeObjectOfClasses:v35 forKey:@"dailyEnergyBurnedStatistics"];
+  v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"dailyEnergyBurnedStatistics"];
   dailyEnergyBurnedStatistics = v6->_dailyEnergyBurnedStatistics;
   v6->_dailyEnergyBurnedStatistics = v36;
 
@@ -2663,7 +2663,7 @@ LABEL_25:
   v56[1] = objc_opt_class();
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
   v40 = [v38 setWithArray:v39];
-  v41 = [v4 decodeObjectOfClasses:v40 forKey:@"dailyMoveMinutesStatistics"];
+  v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"dailyMoveMinutesStatistics"];
   dailyMoveMinutesStatistics = v6->_dailyMoveMinutesStatistics;
   v6->_dailyMoveMinutesStatistics = v41;
 
@@ -2672,13 +2672,13 @@ LABEL_25:
   v55[1] = objc_opt_class();
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
   v45 = [v43 setWithArray:v44];
-  v46 = [v4 decodeObjectOfClasses:v45 forKey:@"dailyBriskMinutesStatistics"];
+  v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"dailyBriskMinutesStatistics"];
   dailyBriskMinutesStatistics = v6->_dailyBriskMinutesStatistics;
   v6->_dailyBriskMinutesStatistics = v46;
 
-  if ([v4 containsValueForKey:@"activityMoveMode"])
+  if ([coderCopy containsValueForKey:@"activityMoveMode"])
   {
-    v48 = [v4 decodeIntegerForKey:@"activityMoveMode"];
+    v48 = [coderCopy decodeIntegerForKey:@"activityMoveMode"];
     if (v48 <= 1)
     {
       v49 = 1;
@@ -2696,9 +2696,9 @@ LABEL_25:
   }
 
   [(HKActivityCache *)v6 _lock_setActivityMoveMode:v49];
-  if ([v4 containsValueForKey:@"paused"])
+  if ([coderCopy containsValueForKey:@"paused"])
   {
-    v50 = [v4 decodeBoolForKey:@"paused"];
+    v50 = [coderCopy decodeBoolForKey:@"paused"];
   }
 
   else
@@ -2707,9 +2707,9 @@ LABEL_25:
   }
 
   [(HKActivityCache *)v6 _lock_setPaused:v50];
-  if ([v4 containsValueForKey:@"version"])
+  if ([coderCopy containsValueForKey:@"version"])
   {
-    v51 = [v4 decodeIntegerForKey:@"version"];
+    v51 = [coderCopy decodeIntegerForKey:@"version"];
   }
 
   else
@@ -2725,82 +2725,82 @@ LABEL_49:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
   v5.receiver = self;
   v5.super_class = HKActivityCache;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_cacheIndex forKey:@"cacheIndex"];
-  [v4 encodeInt64:self->_sequence forKey:@"sequence"];
-  [v4 encodeObject:self->_energyBurned forKey:@"energyBurned"];
-  [v4 encodeObject:self->_energyBurnedGoal forKey:@"energyBurnedGoal"];
-  [v4 encodeObject:self->_energyBurnedGoalDate forKey:@"energyBurnedGoalDate"];
-  [v4 encodeDouble:@"moveMinutes" forKey:self->_moveMinutes];
-  [v4 encodeObject:self->_moveMinutesGoal forKey:@"moveMinutesGoalQuantity"];
-  [v4 encodeObject:self->_moveMinutesGoalDate forKey:@"moveMinutesGoalDate"];
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_cacheIndex forKey:@"cacheIndex"];
+  [coderCopy encodeInt64:self->_sequence forKey:@"sequence"];
+  [coderCopy encodeObject:self->_energyBurned forKey:@"energyBurned"];
+  [coderCopy encodeObject:self->_energyBurnedGoal forKey:@"energyBurnedGoal"];
+  [coderCopy encodeObject:self->_energyBurnedGoalDate forKey:@"energyBurnedGoalDate"];
+  [coderCopy encodeDouble:@"moveMinutes" forKey:self->_moveMinutes];
+  [coderCopy encodeObject:self->_moveMinutesGoal forKey:@"moveMinutesGoalQuantity"];
+  [coderCopy encodeObject:self->_moveMinutesGoalDate forKey:@"moveMinutesGoalDate"];
   if ([(HKActivityCache *)self _lock_hasBriskMinutes])
   {
-    [v4 encodeDouble:@"briskMinutes" forKey:self->_briskMinutes];
+    [coderCopy encodeDouble:@"briskMinutes" forKey:self->_briskMinutes];
   }
 
   if ([(HKActivityCache *)self _lock_hasBriskMinutesGoal])
   {
-    [v4 encodeObject:self->_briskMinutesGoal forKey:@"briskMinutesGoalQuantity"];
+    [coderCopy encodeObject:self->_briskMinutesGoal forKey:@"briskMinutesGoalQuantity"];
   }
 
   if ([(HKActivityCache *)self _lock_hasBriskMinutesGoalDate])
   {
-    [v4 encodeObject:self->_briskMinutesGoalDate forKey:@"briskMinutesGoalDate"];
+    [coderCopy encodeObject:self->_briskMinutesGoalDate forKey:@"briskMinutesGoalDate"];
   }
 
   if ([(HKActivityCache *)self _lock_hasActiveHours])
   {
-    [v4 encodeDouble:@"activeHours" forKey:self->_activeHours];
+    [coderCopy encodeDouble:@"activeHours" forKey:self->_activeHours];
   }
 
   if ([(HKActivityCache *)self _lock_hasActiveHoursGoal])
   {
-    [v4 encodeObject:self->_activeHoursGoal forKey:@"activeHoursGoalQuantity"];
+    [coderCopy encodeObject:self->_activeHoursGoal forKey:@"activeHoursGoalQuantity"];
   }
 
   if ([(HKActivityCache *)self _lock_hasActiveHoursGoalDate])
   {
-    [v4 encodeObject:self->_activeHoursGoalDate forKey:@"activeHoursGoalDate"];
+    [coderCopy encodeObject:self->_activeHoursGoalDate forKey:@"activeHoursGoalDate"];
   }
 
   if ([(HKActivityCache *)self _lock_hasStepCount])
   {
-    [v4 encodeInteger:self->_stepCount forKey:@"stepCount"];
+    [coderCopy encodeInteger:self->_stepCount forKey:@"stepCount"];
   }
 
   if ([(HKActivityCache *)self _lock_hasPushCount])
   {
-    [v4 encodeInteger:self->_pushCount forKey:@"pushCount"];
+    [coderCopy encodeInteger:self->_pushCount forKey:@"pushCount"];
   }
 
   if ([(HKActivityCache *)self _lock_hasWheelchairUse])
   {
-    [v4 encodeInteger:self->_wheelchairUse forKey:@"wheelchairUse"];
+    [coderCopy encodeInteger:self->_wheelchairUse forKey:@"wheelchairUse"];
   }
 
   if ([(HKActivityCache *)self _lock_hasDeepBreathingDuration])
   {
-    [v4 encodeDouble:@"deepBreathingDuration" forKey:self->_deepBreathingDuration];
+    [coderCopy encodeDouble:@"deepBreathingDuration" forKey:self->_deepBreathingDuration];
   }
 
   if ([(HKActivityCache *)self _lock_hasFlightsClimbed])
   {
-    [v4 encodeInteger:self->_flightsClimbed forKey:@"flightsClimbed"];
+    [coderCopy encodeInteger:self->_flightsClimbed forKey:@"flightsClimbed"];
   }
 
-  [v4 encodeObject:self->_walkingAndRunningDistance forKey:@"walkRunDistance"];
-  [v4 encodeObject:self->_dailyEnergyBurnedStatistics forKey:@"dailyEnergyBurnedStatistics"];
-  [v4 encodeObject:self->_dailyBriskMinutesStatistics forKey:@"dailyBriskMinutesStatistics"];
-  [v4 encodeInteger:self->_activityMoveMode forKey:@"activityMoveMode"];
-  [v4 encodeBool:self->_paused forKey:@"paused"];
-  [v4 encodeInteger:self->_version forKey:@"version"];
+  [coderCopy encodeObject:self->_walkingAndRunningDistance forKey:@"walkRunDistance"];
+  [coderCopy encodeObject:self->_dailyEnergyBurnedStatistics forKey:@"dailyEnergyBurnedStatistics"];
+  [coderCopy encodeObject:self->_dailyBriskMinutesStatistics forKey:@"dailyBriskMinutesStatistics"];
+  [coderCopy encodeInteger:self->_activityMoveMode forKey:@"activityMoveMode"];
+  [coderCopy encodeBool:self->_paused forKey:@"paused"];
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
   os_unfair_lock_unlock(&self->_lock);
 }
 

@@ -1,49 +1,49 @@
 @interface HUAccessorySceneListContentItemManager
-+ (BOOL)_action:(id)a3 involvesServiceLikeItem:(id)a4;
-+ (BOOL)matterAction:(id)a3 involves:(id)a4;
-+ (id)computeNumberOfItemsToDisplayForContentSource:(unint64_t)a3 serviceLikeItem:(id)a4 home:(id)a5;
-+ (id)createItemProviderForContentSource:(unint64_t)a3 serviceLikeItem:(id)a4 home:(id)a5 persistAddedSuggestions:(BOOL)a6;
-- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)a3 contentSource:(unint64_t)a4 serviceLikeItem:(id)a5;
-- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 shouldGroupByRoom:(BOOL)a5 shouldShowSectionHeaders:(BOOL)a6 itemProvidersCreator:(id)a7;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_transformedUpdateOutcomeForItem:(id)a3 proposedOutcome:(id)a4;
-- (id)actionSetBuilderForItem:(id)a3;
-- (id)commitSelectionChangesWithSelectedItems:(id)a3;
++ (BOOL)_action:(id)_action involvesServiceLikeItem:(id)item;
++ (BOOL)matterAction:(id)action involves:(id)involves;
++ (id)computeNumberOfItemsToDisplayForContentSource:(unint64_t)source serviceLikeItem:(id)item home:(id)home;
++ (id)createItemProviderForContentSource:(unint64_t)source serviceLikeItem:(id)item home:(id)home persistAddedSuggestions:(BOOL)suggestions;
+- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)delegate contentSource:(unint64_t)source serviceLikeItem:(id)item;
+- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)delegate sourceItem:(id)item shouldGroupByRoom:(BOOL)room shouldShowSectionHeaders:(BOOL)headers itemProvidersCreator:(id)creator;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_transformedUpdateOutcomeForItem:(id)item proposedOutcome:(id)outcome;
+- (id)actionSetBuilderForItem:(id)item;
+- (id)commitSelectionChangesWithSelectedItems:(id)items;
 - (id)suggestionItemProvider;
 @end
 
 @implementation HUAccessorySceneListContentItemManager
 
-+ (BOOL)matterAction:(id)a3 involves:(id)a4
++ (BOOL)matterAction:(id)action involves:(id)involves
 {
-  v5 = a3;
+  actionCopy = action;
   swift_unknownObjectRetain();
-  v6 = _sSo38HUAccessorySceneListContentItemManagerC6HomeUIE12matterAction_8involvesSbSo015HMMatterCommandJ0C_So013HFServiceLikeE0_ptFZ_0(v5, a4);
+  v6 = _sSo38HUAccessorySceneListContentItemManagerC6HomeUIE12matterAction_8involvesSbSo015HMMatterCommandJ0C_So013HFServiceLikeE0_ptFZ_0(actionCopy, involves);
 
   swift_unknownObjectRelease();
   return v6 & 1;
 }
 
-- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 shouldGroupByRoom:(BOOL)a5 shouldShowSectionHeaders:(BOOL)a6 itemProvidersCreator:(id)a7
+- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)delegate sourceItem:(id)item shouldGroupByRoom:(BOOL)room shouldShowSectionHeaders:(BOOL)headers itemProvidersCreator:(id)creator
 {
-  v9 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v10 = NSStringFromSelector(sel_initWithDelegate_contentSource_serviceLikeItem_);
-  [v9 handleFailureInMethod:a2 object:self file:@"HUAccessorySceneListContentItemManager.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySceneListContentItemManager initWithDelegate:sourceItem:shouldGroupByRoom:shouldShowSectionHeaders:itemProvidersCreator:]", v10}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySceneListContentItemManager.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySceneListContentItemManager initWithDelegate:sourceItem:shouldGroupByRoom:shouldShowSectionHeaders:itemProvidersCreator:]", v10}];
 
   return 0;
 }
 
-- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)a3 contentSource:(unint64_t)a4 serviceLikeItem:(id)a5
+- (HUAccessorySceneListContentItemManager)initWithDelegate:(id)delegate contentSource:(unint64_t)source serviceLikeItem:(id)item
 {
-  v9 = a5;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = HUAccessorySceneListContentItemManager;
-  v10 = [(HUServiceGridItemManager *)&v15 initWithDelegate:a3 sourceItem:0 shouldGroupByRoom:0 shouldShowSectionHeaders:0 itemProvidersCreator:&__block_literal_global_231];
+  v10 = [(HUServiceGridItemManager *)&v15 initWithDelegate:delegate sourceItem:0 shouldGroupByRoom:0 shouldShowSectionHeaders:0 itemProvidersCreator:&__block_literal_global_231];
   v11 = v10;
   if (v10)
   {
-    v10->_contentSource = a4;
-    objc_storeStrong(&v10->_serviceLikeItem, a5);
+    v10->_contentSource = source;
+    objc_storeStrong(&v10->_serviceLikeItem, item);
     v12 = objc_opt_new();
     committedActionBuildersByActionSetID = v11->_committedActionBuildersByActionSetID;
     v11->_committedActionBuildersByActionSetID = v12;
@@ -52,31 +52,31 @@
   return v11;
 }
 
-+ (id)createItemProviderForContentSource:(unint64_t)a3 serviceLikeItem:(id)a4 home:(id)a5 persistAddedSuggestions:(BOOL)a6
++ (id)createItemProviderForContentSource:(unint64_t)source serviceLikeItem:(id)item home:(id)home persistAddedSuggestions:(BOOL)suggestions
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  if (a3 == 1)
+  itemCopy = item;
+  homeCopy = home;
+  if (source == 1)
   {
     v12 = objc_alloc(MEMORY[0x277D17E38]);
-    v18[0] = v10;
+    v18[0] = itemCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-    v6 = [v12 initWithHome:v11 andServiceLikeItems:v13];
+    v6 = [v12 initWithHome:homeCopy andServiceLikeItems:v13];
 
     [v6 setEngineOptions:{objc_msgSend(v6, "engineOptions") & 0xFFFFFFFFFFFFFFEFLL}];
   }
 
-  else if (!a3)
+  else if (!source)
   {
-    v6 = [objc_alloc(MEMORY[0x277D143A8]) initWithHome:v11 actionSetItemStyle:0];
-    [v6 setServiceLikeItem:v10];
+    v6 = [objc_alloc(MEMORY[0x277D143A8]) initWithHome:homeCopy actionSetItemStyle:0];
+    [v6 setServiceLikeItem:itemCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __122__HUAccessorySceneListContentItemManager_createItemProviderForContentSource_serviceLikeItem_home_persistAddedSuggestions___block_invoke;
     v15[3] = &unk_277DC2408;
-    v17 = a1;
-    v16 = v10;
+    selfCopy = self;
+    v16 = itemCopy;
     [v6 setFilter:v15];
   }
 
@@ -113,18 +113,18 @@ uint64_t __122__HUAccessorySceneListContentItemManager_createItemProviderForCont
   return v9;
 }
 
-+ (id)computeNumberOfItemsToDisplayForContentSource:(unint64_t)a3 serviceLikeItem:(id)a4 home:(id)a5
++ (id)computeNumberOfItemsToDisplayForContentSource:(unint64_t)source serviceLikeItem:(id)item home:(id)home
 {
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  homeCopy = home;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__27;
   v19 = __Block_byref_object_dispose__27;
-  v20 = [a1 createItemProviderForContentSource:a3 serviceLikeItem:v8 home:v9 persistAddedSuggestions:0];
-  v10 = [v16[5] reloadItems];
-  v11 = [v10 flatMap:&__block_literal_global_94_0];
+  v20 = [self createItemProviderForContentSource:source serviceLikeItem:itemCopy home:homeCopy persistAddedSuggestions:0];
+  reloadItems = [v16[5] reloadItems];
+  v11 = [reloadItems flatMap:&__block_literal_global_94_0];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -198,11 +198,11 @@ uint64_t __109__HUAccessorySceneListContentItemManager_computeNumberOfItemsToDis
   return v4;
 }
 
-- (id)actionSetBuilderForItem:(id)a3
+- (id)actionSetBuilderForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -218,21 +218,21 @@ uint64_t __109__HUAccessorySceneListContentItemManager_computeNumberOfItemsToDis
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277D14398]);
-    v9 = [v7 actionSet];
-    v10 = [(HFItemManager *)self home];
-    v11 = [v8 initWithExistingObject:v9 inHome:v10];
+    actionSet = [v7 actionSet];
+    home = [(HFItemManager *)self home];
+    v11 = [v8 initWithExistingObject:actionSet inHome:home];
   }
 
   else
   {
-    v12 = [v5 latestResults];
+    latestResults = [v5 latestResults];
     v13 = *MEMORY[0x277D13D40];
-    v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13D40]];
+    v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D40]];
 
     if (v14)
     {
-      v15 = [v5 latestResults];
-      v11 = [v15 objectForKeyedSubscript:v13];
+      latestResults2 = [v5 latestResults];
+      v11 = [latestResults2 objectForKeyedSubscript:v13];
     }
 
     else
@@ -245,21 +245,21 @@ uint64_t __109__HUAccessorySceneListContentItemManager_computeNumberOfItemsToDis
   return v11;
 }
 
-- (id)commitSelectionChangesWithSelectedItems:(id)a3
+- (id)commitSelectionChangesWithSelectedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = MEMORY[0x277D2C900];
-  v6 = [(HFItemManager *)self allDisplayedItems];
+  allDisplayedItems = [(HFItemManager *)self allDisplayedItems];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __82__HUAccessorySceneListContentItemManager_commitSelectionChangesWithSelectedItems___block_invoke;
   v15 = &unk_277DC24E0;
-  v16 = self;
-  v17 = v4;
-  v7 = v4;
-  v8 = [v6 na_map:&v12];
-  v9 = [v8 allObjects];
-  v10 = [v5 combineAllFutures:v9];
+  selfCopy = self;
+  v17 = itemsCopy;
+  v7 = itemsCopy;
+  v8 = [allDisplayedItems na_map:&v12];
+  allObjects = [v8 allObjects];
+  v10 = [v5 combineAllFutures:allObjects];
 
   return v10;
 }
@@ -347,13 +347,13 @@ uint64_t __82__HUAccessorySceneListContentItemManager_commitSelectionChangesWith
   return v5;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUAccessorySceneListContentItemManager *)self contentSource];
-  v6 = [(HUAccessorySceneListContentItemManager *)self serviceLikeItem];
-  v7 = [HUAccessorySceneListContentItemManager createItemProviderForContentSource:v5 serviceLikeItem:v6 home:v4 persistAddedSuggestions:[(HUAccessorySceneListContentItemManager *)self persistAddedSuggestions]];
+  homeCopy = home;
+  contentSource = [(HUAccessorySceneListContentItemManager *)self contentSource];
+  serviceLikeItem = [(HUAccessorySceneListContentItemManager *)self serviceLikeItem];
+  v7 = [HUAccessorySceneListContentItemManager createItemProviderForContentSource:contentSource serviceLikeItem:serviceLikeItem home:homeCopy persistAddedSuggestions:[(HUAccessorySceneListContentItemManager *)self persistAddedSuggestions]];
 
   v10[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
@@ -361,14 +361,14 @@ uint64_t __82__HUAccessorySceneListContentItemManager_commitSelectionChangesWith
   return v8;
 }
 
-- (id)_transformedUpdateOutcomeForItem:(id)a3 proposedOutcome:(id)a4
+- (id)_transformedUpdateOutcomeForItem:(id)item proposedOutcome:(id)outcome
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  outcomeCopy = outcome;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 mutableCopy];
+    v8 = [outcomeCopy mutableCopy];
 
     [v8 setObject:&unk_282491FB8 forKeyedSubscript:*MEMORY[0x277D14068]];
   }
@@ -377,7 +377,7 @@ uint64_t __82__HUAccessorySceneListContentItemManager_commitSelectionChangesWith
   {
     v10.receiver = self;
     v10.super_class = HUAccessorySceneListContentItemManager;
-    v8 = [(HFItemManager *)&v10 _transformedUpdateOutcomeForItem:v6 proposedOutcome:v7];
+    v8 = [(HFItemManager *)&v10 _transformedUpdateOutcomeForItem:itemCopy proposedOutcome:outcomeCopy];
   }
 
   return v8;
@@ -385,8 +385,8 @@ uint64_t __82__HUAccessorySceneListContentItemManager_commitSelectionChangesWith
 
 - (id)suggestionItemProvider
 {
-  v2 = [(HFItemManager *)self itemProviders];
-  v3 = [v2 na_firstObjectPassingTest:&__block_literal_global_124_4];
+  itemProviders = [(HFItemManager *)self itemProviders];
+  v3 = [itemProviders na_firstObjectPassingTest:&__block_literal_global_124_4];
 
   return v3;
 }
@@ -400,12 +400,12 @@ uint64_t __64__HUAccessorySceneListContentItemManager_suggestionItemProvider__bl
   return isKindOfClass & 1;
 }
 
-+ (BOOL)_action:(id)a3 involvesServiceLikeItem:(id)a4
++ (BOOL)_action:(id)_action involvesServiceLikeItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 hf_affectedCharacteristic];
-  if (v7 && (v8 = v7, [v6 services], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "hf_affectedCharacteristic"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "service"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v9, "containsObject:", v11), v11, v10, v9, v8, (v12 & 1) != 0))
+  _actionCopy = _action;
+  itemCopy = item;
+  hf_affectedCharacteristic = [_actionCopy hf_affectedCharacteristic];
+  if (hf_affectedCharacteristic && (v8 = hf_affectedCharacteristic, [itemCopy services], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(_actionCopy, "hf_affectedCharacteristic"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "service"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v9, "containsObject:", v11), v11, v10, v9, v8, (v12 & 1) != 0))
   {
     v13 = 1;
   }
@@ -413,7 +413,7 @@ uint64_t __64__HUAccessorySceneListContentItemManager_suggestionItemProvider__bl
   else
   {
     objc_opt_class();
-    v14 = v5;
+    v14 = _actionCopy;
     if (objc_opt_isKindOfClass())
     {
       v15 = v14;
@@ -426,14 +426,14 @@ uint64_t __64__HUAccessorySceneListContentItemManager_suggestionItemProvider__bl
 
     v16 = v15;
 
-    if (v16 && [HUAccessorySceneListContentItemManager matterAction:v16 involves:v6])
+    if (v16 && [HUAccessorySceneListContentItemManager matterAction:v16 involves:itemCopy])
     {
       v13 = 1;
     }
 
     else
     {
-      v17 = v6;
+      v17 = itemCopy;
       if ([v17 conformsToProtocol:&unk_28251B3F0])
       {
         v18 = v17;
@@ -446,12 +446,12 @@ uint64_t __64__HUAccessorySceneListContentItemManager_suggestionItemProvider__bl
 
       v19 = v18;
 
-      v20 = [v14 hf_affectedAccessoryProfiles];
-      if (v20)
+      hf_affectedAccessoryProfiles = [v14 hf_affectedAccessoryProfiles];
+      if (hf_affectedAccessoryProfiles)
       {
-        v21 = [v19 profiles];
-        v22 = [v14 hf_affectedAccessoryProfiles];
-        v13 = [v21 intersectsSet:v22];
+        profiles = [v19 profiles];
+        hf_affectedAccessoryProfiles2 = [v14 hf_affectedAccessoryProfiles];
+        v13 = [profiles intersectsSet:hf_affectedAccessoryProfiles2];
       }
 
       else

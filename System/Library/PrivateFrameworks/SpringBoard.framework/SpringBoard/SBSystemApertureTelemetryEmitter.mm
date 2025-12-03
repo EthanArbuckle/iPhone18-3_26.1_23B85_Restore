@@ -1,35 +1,35 @@
 @interface SBSystemApertureTelemetryEmitter
-+ (id)stringBySanitizingNil:(id)a3;
-+ (void)_emitCoreAnalyticsTelemetryIfNecessaryWithUpdatedContext:(id)a3 previousContext:(id)a4;
-+ (void)_emitPowerLogIfNecessaryWithUpdatedContext:(id)a3 previousContext:(id)a4;
-+ (void)logTelemetryForInteractionLongPress:(BOOL)a3 clientIdentifier:(id)a4 elementIdentifier:(id)a5;
-+ (void)logTelemetryForInteractionPanGesture:(int64_t)a3 handled:(BOOL)a4 clientIdentifier:(id)a5 elementIdentifier:(id)a6;
-+ (void)logTelemetryForInteractionTap:(BOOL)a3 clientIdentifier:(id)a4 elementIdentifier:(id)a5;
-+ (void)logTelemetryForUpdatedContext:(id)a3;
++ (id)stringBySanitizingNil:(id)nil;
++ (void)_emitCoreAnalyticsTelemetryIfNecessaryWithUpdatedContext:(id)context previousContext:(id)previousContext;
++ (void)_emitPowerLogIfNecessaryWithUpdatedContext:(id)context previousContext:(id)previousContext;
++ (void)logTelemetryForInteractionLongPress:(BOOL)press clientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier;
++ (void)logTelemetryForInteractionPanGesture:(int64_t)gesture handled:(BOOL)handled clientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier;
++ (void)logTelemetryForInteractionTap:(BOOL)tap clientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier;
++ (void)logTelemetryForUpdatedContext:(id)context;
 @end
 
 @implementation SBSystemApertureTelemetryEmitter
 
-+ (void)logTelemetryForUpdatedContext:(id)a3
++ (void)logTelemetryForUpdatedContext:(id)context
 {
-  v4 = a3;
-  [a1 _emitPowerLogIfNecessaryWithUpdatedContext:v4 previousContext:logTelemetryForUpdatedContext____previousContext];
-  [a1 _emitCoreAnalyticsTelemetryIfNecessaryWithUpdatedContext:v4 previousContext:logTelemetryForUpdatedContext____previousContext];
+  contextCopy = context;
+  [self _emitPowerLogIfNecessaryWithUpdatedContext:contextCopy previousContext:logTelemetryForUpdatedContext____previousContext];
+  [self _emitCoreAnalyticsTelemetryIfNecessaryWithUpdatedContext:contextCopy previousContext:logTelemetryForUpdatedContext____previousContext];
   v5 = logTelemetryForUpdatedContext____previousContext;
-  logTelemetryForUpdatedContext____previousContext = v4;
+  logTelemetryForUpdatedContext____previousContext = contextCopy;
 }
 
-+ (void)_emitCoreAnalyticsTelemetryIfNecessaryWithUpdatedContext:(id)a3 previousContext:(id)a4
++ (void)_emitCoreAnalyticsTelemetryIfNecessaryWithUpdatedContext:(id)context previousContext:(id)previousContext
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  previousContextCopy = previousContext;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v7 = [v5 elementContexts];
-    v8 = [v7 count];
+    elementContexts = [contextCopy elementContexts];
+    v8 = [elementContexts count];
     if (v8)
     {
-      v9 = [v7 objectAtIndexedSubscript:0];
+      v9 = [elementContexts objectAtIndexedSubscript:0];
       if (v8 == 1)
       {
         v8 = 0;
@@ -37,7 +37,7 @@
 
       else
       {
-        v8 = [v7 objectAtIndexedSubscript:1];
+        v8 = [elementContexts objectAtIndexedSubscript:1];
       }
     }
 
@@ -46,11 +46,11 @@
       v9 = 0;
     }
 
-    v10 = [v6 elementContexts];
-    v11 = [v10 count];
+    elementContexts2 = [previousContextCopy elementContexts];
+    v11 = [elementContexts2 count];
     if (v11)
     {
-      v12 = [v10 objectAtIndexedSubscript:0];
+      v12 = [elementContexts2 objectAtIndexedSubscript:0];
       if (v11 == 1)
       {
         v11 = 0;
@@ -58,7 +58,7 @@
 
       else
       {
-        v11 = [v10 objectAtIndexedSubscript:1];
+        v11 = [elementContexts2 objectAtIndexedSubscript:1];
       }
     }
 
@@ -150,17 +150,17 @@ id __109__SBSystemApertureTelemetryEmitter__emitCoreAnalyticsTelemetryIfNecessar
   return v8;
 }
 
-+ (void)_emitPowerLogIfNecessaryWithUpdatedContext:(id)a3 previousContext:(id)a4
++ (void)_emitPowerLogIfNecessaryWithUpdatedContext:(id)context previousContext:(id)previousContext
 {
-  v23 = a3;
-  v5 = a4;
+  contextCopy = context;
+  previousContextCopy = previousContext;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v6 = [v23 elementContexts];
-    v7 = [v6 count];
+    elementContexts = [contextCopy elementContexts];
+    v7 = [elementContexts count];
     if (v7)
     {
-      v8 = [v6 objectAtIndexedSubscript:0];
+      v8 = [elementContexts objectAtIndexedSubscript:0];
       if (v7 == 1)
       {
         v7 = 0;
@@ -168,7 +168,7 @@ id __109__SBSystemApertureTelemetryEmitter__emitCoreAnalyticsTelemetryIfNecessar
 
       else
       {
-        v7 = [v6 objectAtIndexedSubscript:1];
+        v7 = [elementContexts objectAtIndexedSubscript:1];
       }
     }
 
@@ -177,11 +177,11 @@ id __109__SBSystemApertureTelemetryEmitter__emitCoreAnalyticsTelemetryIfNecessar
       v8 = 0;
     }
 
-    v9 = [v5 elementContexts];
-    v10 = [v9 count];
+    elementContexts2 = [previousContextCopy elementContexts];
+    v10 = [elementContexts2 count];
     if (v10)
     {
-      v11 = [v9 objectAtIndexedSubscript:0];
+      v11 = [elementContexts2 objectAtIndexedSubscript:0];
       if (v10 == 1)
       {
         v10 = 0;
@@ -189,7 +189,7 @@ id __109__SBSystemApertureTelemetryEmitter__emitCoreAnalyticsTelemetryIfNecessar
 
       else
       {
-        v10 = [v9 objectAtIndexedSubscript:1];
+        v10 = [elementContexts2 objectAtIndexedSubscript:1];
       }
     }
 
@@ -200,35 +200,35 @@ id __109__SBSystemApertureTelemetryEmitter__emitCoreAnalyticsTelemetryIfNecessar
 
     if (!_SBElementContextsMatchIdentityAndLayoutState(v8, v11) || !_SBElementContextsMatchIdentityAndLayoutState(v7, v10))
     {
-      v12 = [v8 clientIdentifier];
-      v13 = [v8 elementIdentifier];
-      v14 = [v8 layoutMode];
+      clientIdentifier = [v8 clientIdentifier];
+      elementIdentifier = [v8 elementIdentifier];
+      layoutMode = [v8 layoutMode];
       [v7 clientIdentifier];
       v21 = v8;
-      v22 = v5;
-      v15 = v9;
+      v22 = previousContextCopy;
+      v15 = elementContexts2;
       v16 = v11;
-      v18 = v17 = v6;
+      v18 = v17 = elementContexts;
       [v7 elementIdentifier];
       v20 = v19 = v10;
-      SBSystemAperturePowerLogEvent(v12, v13, v14, v18, v20);
+      SBSystemAperturePowerLogEvent(clientIdentifier, elementIdentifier, layoutMode, v18, v20);
 
       v10 = v19;
-      v6 = v17;
+      elementContexts = v17;
       v11 = v16;
-      v9 = v15;
+      elementContexts2 = v15;
       v8 = v21;
-      v5 = v22;
+      previousContextCopy = v22;
     }
   }
 }
 
-+ (void)logTelemetryForInteractionTap:(BOOL)a3 clientIdentifier:(id)a4 elementIdentifier:(id)a5
++ (void)logTelemetryForInteractionTap:(BOOL)tap clientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  identifierCopy = identifier;
+  elementIdentifierCopy = elementIdentifier;
+  v7 = elementIdentifierCopy;
+  v8 = identifierCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -251,12 +251,12 @@ id __101__SBSystemApertureTelemetryEmitter_logTelemetryForInteractionTap_clientI
   return v5;
 }
 
-+ (void)logTelemetryForInteractionLongPress:(BOOL)a3 clientIdentifier:(id)a4 elementIdentifier:(id)a5
++ (void)logTelemetryForInteractionLongPress:(BOOL)press clientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  identifierCopy = identifier;
+  elementIdentifierCopy = elementIdentifier;
+  v7 = elementIdentifierCopy;
+  v8 = identifierCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -279,12 +279,12 @@ id __107__SBSystemApertureTelemetryEmitter_logTelemetryForInteractionLongPress_c
   return v5;
 }
 
-+ (void)logTelemetryForInteractionPanGesture:(int64_t)a3 handled:(BOOL)a4 clientIdentifier:(id)a5 elementIdentifier:(id)a6
++ (void)logTelemetryForInteractionPanGesture:(int64_t)gesture handled:(BOOL)handled clientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier
 {
-  v7 = a5;
-  v10 = a6;
-  v8 = v10;
-  v9 = v7;
+  identifierCopy = identifier;
+  elementIdentifierCopy = elementIdentifier;
+  v8 = elementIdentifierCopy;
+  v9 = identifierCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -310,13 +310,13 @@ id __116__SBSystemApertureTelemetryEmitter_logTelemetryForInteractionPanGesture_
   return v6;
 }
 
-+ (id)stringBySanitizingNil:(id)a3
++ (id)stringBySanitizingNil:(id)nil
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nilCopy = nil;
+  v4 = nilCopy;
+  if (nilCopy)
   {
-    v5 = v3;
+    v5 = nilCopy;
   }
 
   else

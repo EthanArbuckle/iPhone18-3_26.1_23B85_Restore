@@ -1,23 +1,23 @@
 @interface SFSpeechSynthesisUtils
-+ (double)absoluteTimeToSecond:(unint64_t)a3;
-+ (id)footprintStringFromFootprint:(int64_t)a3;
-+ (id)genderStringFromGender:(int64_t)a3;
-+ (id)typeStringFromType:(int64_t)a3;
-+ (int64_t)footprintFromString:(id)a3;
-+ (int64_t)genderFromString:(id)a3;
-+ (int64_t)typeFromString:(id)a3;
++ (double)absoluteTimeToSecond:(unint64_t)second;
++ (id)footprintStringFromFootprint:(int64_t)footprint;
++ (id)genderStringFromGender:(int64_t)gender;
++ (id)typeStringFromType:(int64_t)type;
++ (int64_t)footprintFromString:(id)string;
++ (int64_t)genderFromString:(id)string;
++ (int64_t)typeFromString:(id)string;
 @end
 
 @implementation SFSpeechSynthesisUtils
 
-+ (double)absoluteTimeToSecond:(unint64_t)a3
++ (double)absoluteTimeToSecond:(unint64_t)second
 {
   if (absoluteTimeToSecond__onceToken != -1)
   {
     dispatch_once(&absoluteTimeToSecond__onceToken, &__block_literal_global_1411);
   }
 
-  return *&absoluteTimeToSecond__clockFactor * a3;
+  return *&absoluteTimeToSecond__clockFactor * second;
 }
 
 double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
@@ -31,11 +31,11 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
   return result;
 }
 
-+ (int64_t)typeFromString:(id)a3
++ (int64_t)typeFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"vocalizer" lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString = [string lowercaseString];
+  lowercaseString2 = [@"vocalizer" lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v5)
   {
@@ -44,8 +44,8 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
 
   else
   {
-    v7 = [@"gryphon" lowercaseString];
-    v8 = [v3 isEqualToString:v7];
+    lowercaseString3 = [@"gryphon" lowercaseString];
+    v8 = [lowercaseString isEqualToString:lowercaseString3];
 
     if (v8)
     {
@@ -54,8 +54,8 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
 
     else
     {
-      v9 = [@"neural" lowercaseString];
-      v10 = [v3 isEqualToString:v9];
+      lowercaseString4 = [@"neural" lowercaseString];
+      v10 = [lowercaseString isEqualToString:lowercaseString4];
 
       if (v10)
       {
@@ -72,24 +72,24 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
   return v6;
 }
 
-+ (id)typeStringFromType:(int64_t)a3
++ (id)typeStringFromType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_279C4C330[a3 - 1];
+    return off_279C4C330[type - 1];
   }
 }
 
-+ (int64_t)footprintFromString:(id)a3
++ (int64_t)footprintFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"beta" lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString = [string lowercaseString];
+  lowercaseString2 = [@"beta" lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v5)
   {
@@ -98,8 +98,8 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
 
   else
   {
-    v7 = [@"compact" lowercaseString];
-    v8 = [v3 isEqualToString:v7];
+    lowercaseString3 = [@"compact" lowercaseString];
+    v8 = [lowercaseString isEqualToString:lowercaseString3];
 
     if (v8)
     {
@@ -108,8 +108,8 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
 
     else
     {
-      v9 = [@"premium" lowercaseString];
-      v10 = [v3 isEqualToString:v9];
+      lowercaseString4 = [@"premium" lowercaseString];
+      v10 = [lowercaseString isEqualToString:lowercaseString4];
 
       if (v10)
       {
@@ -118,8 +118,8 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
 
       else
       {
-        v11 = [@"premiumhigh" lowercaseString];
-        v12 = [v3 isEqualToString:v11];
+        lowercaseString5 = [@"premiumhigh" lowercaseString];
+        v12 = [lowercaseString isEqualToString:lowercaseString5];
 
         if (v12)
         {
@@ -137,24 +137,24 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
   return v6;
 }
 
-+ (id)footprintStringFromFootprint:(int64_t)a3
++ (id)footprintStringFromFootprint:(int64_t)footprint
 {
-  if ((a3 + 1) > 4)
+  if ((footprint + 1) > 4)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_279C4C308[a3 + 1];
+    return off_279C4C308[footprint + 1];
   }
 }
 
-+ (int64_t)genderFromString:(id)a3
++ (int64_t)genderFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"male" lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString = [string lowercaseString];
+  lowercaseString2 = [@"male" lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v5)
   {
@@ -163,8 +163,8 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
 
   else
   {
-    v7 = [@"female" lowercaseString];
-    v8 = [v3 isEqualToString:v7];
+    lowercaseString3 = [@"female" lowercaseString];
+    v8 = [lowercaseString isEqualToString:lowercaseString3];
 
     if (v8)
     {
@@ -180,15 +180,15 @@ double __47__SFSpeechSynthesisUtils_absoluteTimeToSecond___block_invoke()
   return v6;
 }
 
-+ (id)genderStringFromGender:(int64_t)a3
++ (id)genderStringFromGender:(int64_t)gender
 {
   v3 = @"undefined";
-  if (a3 == 2)
+  if (gender == 2)
   {
     v3 = @"female";
   }
 
-  if (a3 == 1)
+  if (gender == 1)
   {
     return @"male";
   }

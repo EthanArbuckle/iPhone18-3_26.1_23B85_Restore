@@ -1,33 +1,33 @@
 @interface PUAssetsDataSourceConverter
 + (PUTilingDataSourceConverter)defaultConverter;
-- (BOOL)convertIndexPath:(id *)a3 tileKind:(id *)a4 fromDataSource:(id)a5 toDataSource:(id)a6;
+- (BOOL)convertIndexPath:(id *)path tileKind:(id *)kind fromDataSource:(id)source toDataSource:(id)dataSource;
 @end
 
 @implementation PUAssetsDataSourceConverter
 
-- (BOOL)convertIndexPath:(id *)a3 tileKind:(id *)a4 fromDataSource:(id)a5 toDataSource:(id)a6
+- (BOOL)convertIndexPath:(id *)path tileKind:(id *)kind fromDataSource:(id)source toDataSource:(id)dataSource
 {
-  v10 = a5;
-  v11 = a6;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
   v23.receiver = self;
   v23.super_class = PUAssetsDataSourceConverter;
-  if ([(PUTilingDataSourceConverter *)&v23 convertIndexPath:a3 tileKind:a4 fromDataSource:v10 toDataSource:v11])
+  if ([(PUTilingDataSourceConverter *)&v23 convertIndexPath:path tileKind:kind fromDataSource:sourceCopy toDataSource:dataSourceCopy])
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = *a3;
-    v14 = *a4;
+    v13 = *path;
+    v14 = *kind;
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v15 = [v11 convertIndexPath:v13 fromAssetsDataSource:v10];
+      v15 = [dataSourceCopy convertIndexPath:v13 fromAssetsDataSource:sourceCopy];
       if (v15)
       {
-        v16 = [v10 assetAtIndexPath:v13];
-        v17 = [v11 assetAtIndexPath:v15];
+        v16 = [sourceCopy assetAtIndexPath:v13];
+        v17 = [dataSourceCopy assetAtIndexPath:v15];
         v18 = [(PUAssetsDataSourceConverter *)self shouldReloadTileControllerFromAsset:v16 toAsset:v17 tileKind:v14];
         if (v18)
         {
@@ -38,10 +38,10 @@
           v22 = v14;
 
           v19 = v15;
-          *a3 = v15;
+          *path = v15;
           v16 = v22;
           v20 = v22;
-          *a4 = v22;
+          *kind = v22;
         }
 
         v12 = !v18;

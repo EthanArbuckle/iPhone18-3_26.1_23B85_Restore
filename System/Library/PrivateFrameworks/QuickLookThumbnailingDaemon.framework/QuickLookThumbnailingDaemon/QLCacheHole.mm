@@ -1,27 +1,27 @@
 @interface QLCacheHole
-+ (id)holeWithLocation:(unint64_t)a3 length:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (QLCacheHole)initWithLocation:(unint64_t)a3 length:(unint64_t)a4;
++ (id)holeWithLocation:(unint64_t)location length:(unint64_t)length;
+- (BOOL)isEqual:(id)equal;
+- (QLCacheHole)initWithLocation:(unint64_t)location length:(unint64_t)length;
 - (_NSRange)range;
-- (void)setRange:(_NSRange)a3;
+- (void)setRange:(_NSRange)range;
 @end
 
 @implementation QLCacheHole
 
-+ (id)holeWithLocation:(unint64_t)a3 length:(unint64_t)a4
++ (id)holeWithLocation:(unint64_t)location length:(unint64_t)length
 {
-  v4 = [[QLCacheHole alloc] initWithLocation:a3 length:a4];
+  v4 = [[QLCacheHole alloc] initWithLocation:location length:length];
 
   return v4;
 }
 
-- (QLCacheHole)initWithLocation:(unint64_t)a3 length:(unint64_t)a4
+- (QLCacheHole)initWithLocation:(unint64_t)location length:(unint64_t)length
 {
   v7.receiver = self;
   v7.super_class = QLCacheHole;
   result = [(QLCacheHole *)&v7 init];
-  result->_location = a3;
-  result->_length = a4;
+  result->_location = location;
+  result->_length = length;
   return result;
 }
 
@@ -34,18 +34,18 @@
   return result;
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  length = a3.length;
-  [(QLCacheHole *)self setLocation:a3.location];
+  length = range.length;
+  [(QLCacheHole *)self setLocation:range.location];
 
   [(QLCacheHole *)self setLength:length];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -53,10 +53,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(QLCacheHole *)self location], v5 == [(QLCacheHole *)v4 location]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(QLCacheHole *)self location], v5 == [(QLCacheHole *)equalCopy location]))
     {
       v6 = [(QLCacheHole *)self length];
-      v7 = v6 == [(QLCacheHole *)v4 length];
+      v7 = v6 == [(QLCacheHole *)equalCopy length];
     }
 
     else

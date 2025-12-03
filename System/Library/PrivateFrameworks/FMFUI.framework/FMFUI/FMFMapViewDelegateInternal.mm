@@ -1,35 +1,35 @@
 @interface FMFMapViewDelegateInternal
-- ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)a3 andRadius:(double)a4;
-- (BOOL)canSelectAnnotation:(id)a3;
+- ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(double)radius;
+- (BOOL)canSelectAnnotation:(id)annotation;
 - (CLLocationCoordinate2D)lastUserLocationCoordinate;
-- (FMFMapViewDelegateInternal)initWithDelegate:(id)a3 mapView:(id)a4;
+- (FMFMapViewDelegateInternal)initWithDelegate:(id)delegate mapView:(id)view;
 - (FMFMapViewDelegateInternalDelegate)delegate;
-- (UIEdgeInsets)edgeInsetsWithMinApplied:(UIEdgeInsets)a3;
-- (id)accuracyCircleForLocation:(id)a3;
+- (UIEdgeInsets)edgeInsetsWithMinApplied:(UIEdgeInsets)applied;
+- (id)accuracyCircleForLocation:(id)location;
 - (id)fmfOverlayColor;
 - (id)fmfOverlayColorSatellite;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_moveCenterByOffset:(CGPoint)a3 from:(CLLocationCoordinate2D)a4 mapView:(id)a5;
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4;
-- (void)selectAnnotation:(id)a3;
-- (void)slideAnnotation:(id)a3 intoViewIfNeededForMapView:(id)a4;
-- (void)zoomToFitAnnotationsForMapView:(id)a3 includeMe:(BOOL)a4 duration:(double)a5;
-- (void)zoomToFitLocation:(id)a3 forMapView:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_moveCenterByOffset:(CGPoint)offset from:(CLLocationCoordinate2D)from mapView:(id)view;
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didUpdateUserLocation:(id)location;
+- (void)selectAnnotation:(id)annotation;
+- (void)slideAnnotation:(id)annotation intoViewIfNeededForMapView:(id)view;
+- (void)zoomToFitAnnotationsForMapView:(id)view includeMe:(BOOL)me duration:(double)duration;
+- (void)zoomToFitLocation:(id)location forMapView:(id)view;
 @end
 
 @implementation FMFMapViewDelegateInternal
 
-- (FMFMapViewDelegateInternal)initWithDelegate:(id)a3 mapView:(id)a4
+- (FMFMapViewDelegateInternal)initWithDelegate:(id)delegate mapView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  viewCopy = view;
   v8 = objc_alloc_init(objc_opt_class());
 
-  [(FMFMapViewDelegateInternal *)v8 setDelegate:v6];
-  [(FMFMapViewDelegateInternal *)v8 setMapView:v7];
+  [(FMFMapViewDelegateInternal *)v8 setDelegate:delegateCopy];
+  [(FMFMapViewDelegateInternal *)v8 setMapView:viewCopy];
   objc_initWeak(&location, v8);
   v9 = objc_alloc_init(FMFWildcardGestureRecognizer);
   [(FMFMapViewDelegateInternal *)v8 setGr:v9];
@@ -47,7 +47,7 @@
   v11[3] = &unk_278FE2B78;
   objc_copyWeak(&v12, &location);
   [(FMFWildcardGestureRecognizer *)v8->_gr setTouchesEndedCallback:v11];
-  [v7 addGestureRecognizer:v8->_gr];
+  [viewCopy addGestureRecognizer:v8->_gr];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -67,13 +67,13 @@ void __55__FMFMapViewDelegateInternal_initWithDelegate_mapView___block_invoke_2(
   [WeakRetained performSelector:sel_endTouches withObject:0 afterDelay:0.5];
 }
 
-- (BOOL)canSelectAnnotation:(id)a3
+- (BOOL)canSelectAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMFMapViewDelegateInternal *)self delegate];
+  annotationCopy = annotation;
+  delegate = [(FMFMapViewDelegateInternal *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 canSelectAnnotation:v4];
+    v6 = [delegate canSelectAnnotation:annotationCopy];
   }
 
   else
@@ -84,65 +84,65 @@ void __55__FMFMapViewDelegateInternal_initWithDelegate_mapView___block_invoke_2(
   return v6;
 }
 
-- (void)selectAnnotation:(id)a3
+- (void)selectAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMFMapViewDelegateInternal *)self mapView];
-  [v5 selectAnnotation:v4 animated:1];
+  annotationCopy = annotation;
+  mapView = [(FMFMapViewDelegateInternal *)self mapView];
+  [mapView selectAnnotation:annotationCopy animated:1];
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  annotationCopy = annotation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 dequeueReusableAnnotationViewWithIdentifier:@"fmfAnnotation"];
-    v9 = [(FMFMapViewDelegateInternal *)self delegate];
-    v10 = [v9 _internalAnnotationTintColor];
-    if (v10)
+    v8 = [viewCopy dequeueReusableAnnotationViewWithIdentifier:@"fmfAnnotation"];
+    delegate = [(FMFMapViewDelegateInternal *)self delegate];
+    _internalAnnotationTintColor = [delegate _internalAnnotationTintColor];
+    if (_internalAnnotationTintColor)
     {
-      [v7 setTintColor:v10];
+      [annotationCopy setTintColor:_internalAnnotationTintColor];
     }
 
     else
     {
-      v11 = [MEMORY[0x277D75348] fmfOrangeColor];
-      [v7 setTintColor:v11];
+      fmfOrangeColor = [MEMORY[0x277D75348] fmfOrangeColor];
+      [annotationCopy setTintColor:fmfOrangeColor];
     }
 
-    v12 = [v7 handle];
-    v13 = [v9 annotationImageForAnnotation:v7 andHandle:v12];
-    [v7 setSmallAnnotationIcon:v13];
-    [v7 setLargeAnnotationIcon:v13];
+    handle = [annotationCopy handle];
+    v13 = [delegate annotationImageForAnnotation:annotationCopy andHandle:handle];
+    [annotationCopy setSmallAnnotationIcon:v13];
+    [annotationCopy setLargeAnnotationIcon:v13];
 
     if (!v8)
     {
       v14 = [FMFAnnotationView alloc];
-      v15 = [v7 tintColor];
-      v8 = [(FMFAnnotationView *)v14 initWithAnnotation:v7 reuseIdentifier:@"fmfAnnotation" tintColor:v15];
+      tintColor = [annotationCopy tintColor];
+      v8 = [(FMFAnnotationView *)v14 initWithAnnotation:annotationCopy reuseIdentifier:@"fmfAnnotation" tintColor:tintColor];
     }
 
-    v16 = [v7 handle];
-    v17 = [v16 cachedPrettyName];
+    handle2 = [annotationCopy handle];
+    cachedPrettyName = [handle2 cachedPrettyName];
 
     v18 = MEMORY[0x277CCACA8];
-    v19 = [v7 locationShortAddressWithAgeIncludeLocating];
-    v20 = [v18 stringWithFormat:@"%@, %@", v17, v19];
+    locationShortAddressWithAgeIncludeLocating = [annotationCopy locationShortAddressWithAgeIncludeLocating];
+    v20 = [v18 stringWithFormat:@"%@, %@", cachedPrettyName, locationShortAddressWithAgeIncludeLocating];
     [(FMFAnnotationView *)v8 setAccessibilityLabel:v20];
 
-    [(FMAnnotationView *)v8 setShouldPreventLargeAnnotationState:[(FMFMapViewDelegateInternal *)self canSelectAnnotation:v7]^ 1];
-    if (!v17)
+    [(FMAnnotationView *)v8 setShouldPreventLargeAnnotationState:[(FMFMapViewDelegateInternal *)self canSelectAnnotation:annotationCopy]^ 1];
+    if (!cachedPrettyName)
     {
-      v21 = [v7 handle];
+      handle3 = [annotationCopy handle];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __56__FMFMapViewDelegateInternal_mapView_viewForAnnotation___block_invoke;
       v23[3] = &unk_278FE2B50;
-      v24 = v6;
-      v25 = v7;
-      [v21 prettyNameWithCompletion:v23];
+      v24 = viewCopy;
+      v25 = annotationCopy;
+      [handle3 prettyNameWithCompletion:v23];
     }
   }
 
@@ -169,86 +169,86 @@ void __56__FMFMapViewDelegateInternal_mapView_viewForAnnotation___block_invoke(u
   }
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v6 annotation];
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  annotation = [annotationViewCopy annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v6 annotation];
-    v10 = [(FMFMapViewDelegateInternal *)self delegate];
-    [v10 didSelectLocation:v9];
+    annotation2 = [annotationViewCopy annotation];
+    delegate = [(FMFMapViewDelegateInternal *)self delegate];
+    [delegate didSelectLocation:annotation2];
     if (![(FMFMapViewDelegateInternal *)self isMapCenteringDisabled])
     {
-      v11 = [v6 annotation];
-      [(FMFMapViewDelegateInternal *)self slideAnnotation:v11 intoViewIfNeededForMapView:v12];
+      annotation3 = [annotationViewCopy annotation];
+      [(FMFMapViewDelegateInternal *)self slideAnnotation:annotation3 intoViewIfNeededForMapView:viewCopy];
     }
   }
 }
 
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 annotation];
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  annotation = [annotationViewCopy annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v6 annotation];
-    v10 = [(FMFMapViewDelegateInternal *)self selectedAnnotationView];
-    v11 = [v10 annotation];
-    v12 = [v6 annotation];
-    v13 = [v11 isEqual:v12];
+    annotation2 = [annotationViewCopy annotation];
+    selectedAnnotationView = [(FMFMapViewDelegateInternal *)self selectedAnnotationView];
+    annotation3 = [selectedAnnotationView annotation];
+    annotation4 = [annotationViewCopy annotation];
+    v13 = [annotation3 isEqual:annotation4];
 
     if (v13)
     {
       [(FMFMapViewDelegateInternal *)self setSelectedAnnotationView:0];
     }
 
-    v14 = [(FMFMapViewDelegateInternal *)self delegate];
-    if (([v14 alwaysShowAccuracy] & 1) == 0)
+    delegate = [(FMFMapViewDelegateInternal *)self delegate];
+    if (([delegate alwaysShowAccuracy] & 1) == 0)
     {
-      v15 = [v16 overlays];
-      [v16 removeOverlays:v15];
+      overlays = [viewCopy overlays];
+      [viewCopy removeOverlays:overlays];
     }
 
-    [v14 didDeselectLocation:v9];
+    [delegate didDeselectLocation:annotation2];
   }
 }
 
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4
+- (void)mapView:(id)view didUpdateUserLocation:(id)location
 {
-  v8 = a4;
-  [v8 coordinate];
-  if (vabdd_f64(v5, self->_lastUserLocationCoordinate.latitude) >= 0.0001 || ([v8 coordinate], vabdd_f64(v6, self->_lastUserLocationCoordinate.longitude) >= 0.0001))
+  locationCopy = location;
+  [locationCopy coordinate];
+  if (vabdd_f64(v5, self->_lastUserLocationCoordinate.latitude) >= 0.0001 || ([locationCopy coordinate], vabdd_f64(v6, self->_lastUserLocationCoordinate.longitude) >= 0.0001))
   {
-    [v8 coordinate];
+    [locationCopy coordinate];
     [(FMFMapViewDelegateInternal *)self setLastUserLocationCoordinate:?];
-    v7 = [(FMFMapViewDelegateInternal *)self delegate];
-    if ([v7 shouldZoomToFitMeAndLocations])
+    delegate = [(FMFMapViewDelegateInternal *)self delegate];
+    if ([delegate shouldZoomToFitMeAndLocations])
     {
-      [v7 reZoomToFit];
+      [delegate reZoomToFit];
     }
 
-    [v7 didUpdateUserLocation:v8];
+    [delegate didUpdateUserLocation:locationCopy];
   }
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
   v6 = MEMORY[0x277CD4DA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithCircle:v7];
+  overlayCopy = overlay;
+  viewCopy = view;
+  v9 = [[v6 alloc] initWithCircle:overlayCopy];
 
-  v10 = [v8 mapType];
-  if (v10)
+  mapType = [viewCopy mapType];
+  if (mapType)
   {
     [(FMFMapViewDelegateInternal *)self fmfOverlayColorSatellite];
   }
@@ -265,9 +265,9 @@ void __56__FMFMapViewDelegateInternal_mapView_viewForAnnotation___block_invoke(u
 
 - (id)fmfOverlayColor
 {
-  v2 = [(FMFMapViewDelegateInternal *)self delegate];
-  v3 = [v2 _internalAnnotationTintColor];
-  v4 = [v3 colorWithAlphaComponent:0.100000001];
+  delegate = [(FMFMapViewDelegateInternal *)self delegate];
+  _internalAnnotationTintColor = [delegate _internalAnnotationTintColor];
+  v4 = [_internalAnnotationTintColor colorWithAlphaComponent:0.100000001];
 
   v5 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.156862751 blue:0.0 alpha:0.0799999982];
   v6 = v5;
@@ -288,9 +288,9 @@ void __56__FMFMapViewDelegateInternal_mapView_viewForAnnotation___block_invoke(u
 
 - (id)fmfOverlayColorSatellite
 {
-  v2 = [(FMFMapViewDelegateInternal *)self delegate];
-  v3 = [v2 _internalAnnotationTintColor];
-  v4 = [v3 colorWithAlphaComponent:0.200000003];
+  delegate = [(FMFMapViewDelegateInternal *)self delegate];
+  _internalAnnotationTintColor = [delegate _internalAnnotationTintColor];
+  v4 = [_internalAnnotationTintColor colorWithAlphaComponent:0.200000003];
 
   v5 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.156862751 blue:0.0 alpha:0.200000003];
   v6 = v5;
@@ -309,28 +309,28 @@ void __56__FMFMapViewDelegateInternal_mapView_viewForAnnotation___block_invoke(u
   return v7;
 }
 
-- (id)accuracyCircleForLocation:(id)a3
+- (id)accuracyCircleForLocation:(id)location
 {
   v3 = MEMORY[0x277CD4DA0];
-  v4 = a3;
-  v5 = [v4 location];
-  [v5 coordinate];
+  locationCopy = location;
+  location = [locationCopy location];
+  [location coordinate];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 location];
+  location2 = [locationCopy location];
 
-  [v10 horizontalAccuracy];
+  [location2 horizontalAccuracy];
   v12 = [v3 circleWithCenterCoordinate:v7 radius:{v9, v11}];
 
   return v12;
 }
 
-- (void)slideAnnotation:(id)a3 intoViewIfNeededForMapView:(id)a4
+- (void)slideAnnotation:(id)annotation intoViewIfNeededForMapView:(id)view
 {
-  v19 = a3;
-  v6 = a4;
-  [v19 coordinate];
-  [v6 convertCoordinate:v6 toPointToView:?];
+  annotationCopy = annotation;
+  viewCopy = view;
+  [annotationCopy coordinate];
+  [viewCopy convertCoordinate:viewCopy toPointToView:?];
   v8 = v7;
   v10 = 170.0 - v9;
   if (v7 < 52.0)
@@ -341,7 +341,7 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  [v6 frame];
+  [viewCopy frame];
   v16 = v15 + -52.0;
   if (v10 <= 0.0 && v8 <= v16)
   {
@@ -351,38 +351,38 @@ LABEL_3:
   v12 = 0.0;
   if (v8 > v16)
   {
-    [v6 frame];
+    [viewCopy frame];
     v11 = v18 + -52.0;
     goto LABEL_3;
   }
 
 LABEL_4:
-  [v19 coordinate];
-  [(FMFMapViewDelegateInternal *)self _moveCenterByOffset:v6 from:v12 mapView:fmax(v10, 0.0), v13, v14];
+  [annotationCopy coordinate];
+  [(FMFMapViewDelegateInternal *)self _moveCenterByOffset:viewCopy from:v12 mapView:fmax(v10, 0.0), v13, v14];
 LABEL_11:
 }
 
-- (void)_moveCenterByOffset:(CGPoint)a3 from:(CLLocationCoordinate2D)a4 mapView:(id)a5
+- (void)_moveCenterByOffset:(CGPoint)offset from:(CLLocationCoordinate2D)from mapView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = a5;
-  [v11 centerCoordinate];
-  [v11 convertCoordinate:v11 toPointToView:?];
-  [v11 convertPoint:v11 toCoordinateFromView:{v7 - x, v8 - y}];
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  [viewCopy centerCoordinate];
+  [viewCopy convertCoordinate:viewCopy toPointToView:?];
+  [viewCopy convertPoint:viewCopy toCoordinateFromView:{v7 - x, v8 - y}];
   latitude = v13.latitude;
   longitude = v13.longitude;
   if (CLLocationCoordinate2DIsValid(v13))
   {
-    [v11 setCenterCoordinate:1 animated:{latitude, longitude}];
+    [viewCopy setCenterCoordinate:1 animated:{latitude, longitude}];
   }
 }
 
-- (void)zoomToFitLocation:(id)a3 forMapView:(id)a4
+- (void)zoomToFitLocation:(id)location forMapView:(id)view
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 coordinate];
+  viewCopy = view;
+  [location coordinate];
   v8 = v7;
   v10 = v9;
   if ([(FMFMapViewDelegateInternal *)self regionIsValid:?])
@@ -392,20 +392,20 @@ LABEL_11:
     v47 = v11;
     v44 = v14;
     v45 = v13;
-    v15 = [(FMFMapViewDelegateInternal *)self delegate];
-    [v15 edgeInsets];
+    delegate = [(FMFMapViewDelegateInternal *)self delegate];
+    [delegate edgeInsets];
     [(FMFMapViewDelegateInternal *)self edgeInsetsWithMinApplied:?];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(FMFMapViewDelegateInternal *)self mapView];
-    [v24 bounds];
+    mapView = [(FMFMapViewDelegateInternal *)self mapView];
+    [mapView bounds];
     v26 = v25;
     v28 = v27;
 
-    v29 = [(FMFMapViewDelegateInternal *)self mapView];
-    [v29 mapRectThatFits:v47 edgePadding:{v46, v45, v44, v17, v19, v21, v23}];
+    mapView2 = [(FMFMapViewDelegateInternal *)self mapView];
+    [mapView2 mapRectThatFits:v47 edgePadding:{v46, v45, v44, v17, v19, v21, v23}];
     v31 = v30;
     v33 = v32;
     v35 = v34;
@@ -421,10 +421,10 @@ LABEL_11:
       _os_log_impl(&dword_24A4E3000, v39, OS_LOG_TYPE_DEFAULT, "FMMapViewDelegateInternal: camera updated %@", buf, 0xCu);
     }
 
-    if ([FMFMapUtilities doNotAnimateToNewLocation:v6 forMapView:v8, v10])
+    if ([FMFMapUtilities doNotAnimateToNewLocation:viewCopy forMapView:v8, v10])
     {
-      v41 = [(FMFMapViewDelegateInternal *)self mapView];
-      [v41 setCamera:v38 animated:0];
+      mapView3 = [(FMFMapViewDelegateInternal *)self mapView];
+      [mapView3 setCamera:v38 animated:0];
     }
 
     else
@@ -442,11 +442,11 @@ LABEL_11:
 
   else
   {
-    v15 = LogCategory_Daemon();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    delegate = LogCategory_Daemon();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_24A4E3000, v15, OS_LOG_TYPE_DEFAULT, "Not zooming due to invalid region (0,0).", buf, 2u);
+      _os_log_impl(&dword_24A4E3000, delegate, OS_LOG_TYPE_DEFAULT, "Not zooming due to invalid region (0,0).", buf, 2u);
     }
   }
 
@@ -459,11 +459,11 @@ void __59__FMFMapViewDelegateInternal_zoomToFitLocation_forMapView___block_invok
   [v2 setCamera:*(a1 + 40) animated:1];
 }
 
-- (void)zoomToFitAnnotationsForMapView:(id)a3 includeMe:(BOOL)a4 duration:(double)a5
+- (void)zoomToFitAnnotationsForMapView:(id)view includeMe:(BOOL)me duration:(double)duration
 {
   v108 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 userTrackingMode] != 2)
+  viewCopy = view;
+  if ([viewCopy userTrackingMode] != 2)
   {
     v9 = LogCategory_Daemon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -472,41 +472,41 @@ void __59__FMFMapViewDelegateInternal_zoomToFitLocation_forMapView___block_invok
       _os_log_impl(&dword_24A4E3000, v9, OS_LOG_TYPE_DEFAULT, "zoomToFitAnnotationsForMapView", buf, 2u);
     }
 
-    v10 = [(FMFMapViewDelegateInternal *)self delegate];
-    if (![v10 viewWillAppearCalled])
+    delegate = [(FMFMapViewDelegateInternal *)self delegate];
+    if (![delegate viewWillAppearCalled])
     {
       goto LABEL_46;
     }
 
-    v11 = [v8 annotations];
-    if (a4)
+    annotations = [viewCopy annotations];
+    if (me)
     {
-      v12 = [(FMFMapViewDelegateInternal *)self mapView];
-      v13 = [v12 selectedAnnotations];
-      v14 = [v13 count];
+      mapView = [(FMFMapViewDelegateInternal *)self mapView];
+      selectedAnnotations = [mapView selectedAnnotations];
+      v14 = [selectedAnnotations count];
 
       if (!v14)
       {
         goto LABEL_29;
       }
 
-      v15 = [(FMFMapViewDelegateInternal *)self mapView];
-      v16 = [v15 selectedAnnotations];
-      v17 = [v16 mutableCopy];
+      mapView2 = [(FMFMapViewDelegateInternal *)self mapView];
+      selectedAnnotations2 = [mapView2 selectedAnnotations];
+      array = [selectedAnnotations2 mutableCopy];
 
       v98 = 0u;
       v99 = 0u;
       v96 = 0u;
       v97 = 0u;
-      v18 = [(FMFMapViewDelegateInternal *)self mapView];
-      v19 = [v18 annotations];
+      mapView3 = [(FMFMapViewDelegateInternal *)self mapView];
+      annotations2 = [mapView3 annotations];
 
-      v20 = [v19 countByEnumeratingWithState:&v96 objects:v106 count:16];
+      v20 = [annotations2 countByEnumeratingWithState:&v96 objects:v106 count:16];
       if (v20)
       {
         v21 = v20;
-        v90 = v11;
-        v92 = v10;
+        v90 = annotations;
+        v92 = delegate;
         v22 = *v97;
         while (2)
         {
@@ -514,19 +514,19 @@ void __59__FMFMapViewDelegateInternal_zoomToFitLocation_forMapView___block_invok
           {
             if (*v97 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(annotations2);
             }
 
             v24 = *(*(&v96 + 1) + 8 * i);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v17 addObject:v24];
+              [array addObject:v24];
               goto LABEL_27;
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v96 objects:v106 count:16];
+          v21 = [annotations2 countByEnumeratingWithState:&v96 objects:v106 count:16];
           if (v21)
           {
             continue;
@@ -539,18 +539,18 @@ void __59__FMFMapViewDelegateInternal_zoomToFitLocation_forMapView___block_invok
 
     else
     {
-      v17 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v100 = 0u;
       v101 = 0u;
       v102 = 0u;
       v103 = 0u;
-      v19 = v11;
-      v25 = [v19 countByEnumeratingWithState:&v100 objects:v107 count:16];
+      annotations2 = annotations;
+      v25 = [annotations2 countByEnumeratingWithState:&v100 objects:v107 count:16];
       if (v25)
       {
         v26 = v25;
-        v90 = v11;
-        v92 = v10;
+        v90 = annotations;
+        v92 = delegate;
         v27 = *v101;
         do
         {
@@ -558,42 +558,42 @@ void __59__FMFMapViewDelegateInternal_zoomToFitLocation_forMapView___block_invok
           {
             if (*v101 != v27)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(annotations2);
             }
 
             v29 = *(*(&v100 + 1) + 8 * j);
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              [v17 addObject:v29];
+              [array addObject:v29];
             }
           }
 
-          v26 = [v19 countByEnumeratingWithState:&v100 objects:v107 count:16];
+          v26 = [annotations2 countByEnumeratingWithState:&v100 objects:v107 count:16];
         }
 
         while (v26);
 LABEL_27:
-        v11 = v90;
-        v10 = v92;
+        annotations = v90;
+        delegate = v92;
       }
     }
 
-    v11 = v17;
+    annotations = array;
 LABEL_29:
-    [FMFMapUtilities regionForAnnotations:v11];
+    [FMFMapUtilities regionForAnnotations:annotations];
     latitude = v30;
     longitude = v32;
     latitudeDelta = v34;
     longitudeDelta = v36;
-    v38 = [v11 firstObject];
-    if ([v10 alwaysShowAccuracy] && !a4)
+    firstObject = [annotations firstObject];
+    if ([delegate alwaysShowAccuracy] && !me)
     {
-      [v38 coordinate];
+      [firstObject coordinate];
       v40 = v39;
       v42 = v41;
-      v43 = [v38 location];
-      [v43 horizontalAccuracy];
+      location = [firstObject location];
+      [location horizontalAccuracy];
       [(FMFMapViewDelegateInternal *)self mapRectMakeWithRadialDistanceForCoordinate:v40 andRadius:v42, v44];
       v46 = v45;
       v48 = v47;
@@ -623,7 +623,7 @@ LABEL_29:
 
     if ([(FMFMapViewDelegateInternal *)self regionIsValid:latitude, longitude, latitudeDelta, longitudeDelta])
     {
-      v93 = a5;
+      durationCopy = duration;
       v87 = longitude;
       v88 = latitude;
       [FMFMapUtilities mapRectForCoordinateRegion:latitude, longitude, latitudeDelta, longitudeDelta];
@@ -631,19 +631,19 @@ LABEL_29:
       v91 = v53;
       v56 = v55;
       v58 = v57;
-      [v10 edgeInsets];
+      [delegate edgeInsets];
       [(FMFMapViewDelegateInternal *)self edgeInsetsWithMinApplied:?];
       v60 = v59;
       v62 = v61;
       v64 = v63;
       v66 = v65;
-      v67 = [(FMFMapViewDelegateInternal *)self mapView];
-      [v67 bounds];
+      mapView4 = [(FMFMapViewDelegateInternal *)self mapView];
+      [mapView4 bounds];
       v69 = v68;
       v71 = v70;
 
-      v72 = [(FMFMapViewDelegateInternal *)self mapView];
-      [v72 mapRectThatFits:v91 edgePadding:{v89, v56, v58, v60, v62, v64, v66}];
+      mapView5 = [(FMFMapViewDelegateInternal *)self mapView];
+      [mapView5 mapRectThatFits:v91 edgePadding:{v89, v56, v58, v60, v62, v64, v66}];
       v74 = v73;
       v76 = v75;
       v78 = v77;
@@ -659,10 +659,10 @@ LABEL_29:
         _os_log_impl(&dword_24A4E3000, v82, OS_LOG_TYPE_DEFAULT, "FMFMapViewDelegateInternal: zoomToFitAnnotationsForMapView new camera %@", buf, 0xCu);
       }
 
-      if (v93 <= 0.0 || [FMFMapUtilities doNotAnimateToNewLocation:v8 forMapView:v88, v87])
+      if (durationCopy <= 0.0 || [FMFMapUtilities doNotAnimateToNewLocation:viewCopy forMapView:v88, v87])
       {
-        v84 = [(FMFMapViewDelegateInternal *)self mapView];
-        [v84 setCamera:v81 animated:0];
+        mapView6 = [(FMFMapViewDelegateInternal *)self mapView];
+        [mapView6 setCamera:v81 animated:0];
       }
 
       else
@@ -675,7 +675,7 @@ LABEL_29:
         v94[4] = self;
         v81 = v81;
         v95 = v81;
-        [v85 animateWithDuration:196614 delay:v94 options:&__block_literal_global_1 animations:v93 completion:0.0];
+        [v85 animateWithDuration:196614 delay:v94 options:&__block_literal_global_1 animations:durationCopy completion:0.0];
       }
     }
 
@@ -701,11 +701,11 @@ void __80__FMFMapViewDelegateInternal_zoomToFitAnnotationsForMapView_includeMe_d
   [v2 setCamera:*(a1 + 40) animated:1];
 }
 
-- ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)a3 andRadius:(double)a4
+- ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(double)radius
 {
-  latitude = a3.latitude;
-  v6 = MKMapPointForCoordinate(a3);
-  v7 = MEMORY[0x24C2193E0](latitude) * a4;
+  latitude = coordinate.latitude;
+  v6 = MKMapPointForCoordinate(coordinate);
+  v7 = MEMORY[0x24C2193E0](latitude) * radius;
   v8 = v6.x - v7;
   v9 = v6.y - v7;
   v10 = v7 + v7;
@@ -717,12 +717,12 @@ void __80__FMFMapViewDelegateInternal_zoomToFitAnnotationsForMapView_includeMe_d
   return result;
 }
 
-- (UIEdgeInsets)edgeInsetsWithMinApplied:(UIEdgeInsets)a3
+- (UIEdgeInsets)edgeInsetsWithMinApplied:(UIEdgeInsets)applied
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = applied.right;
+  bottom = applied.bottom;
+  left = applied.left;
+  top = applied.top;
   v22 = *MEMORY[0x277D85DE8];
   v7 = LogCategory_Daemon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

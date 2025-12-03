@@ -1,7 +1,7 @@
 @interface PLAssetsdClient
 + (id)sharedSystemLibraryAssetsdClient;
 - (BOOL)_isSecondXPCConnectionDisabled;
-- (PLAssetsdClient)initWithPhotoLibraryURL:(id)a3;
+- (PLAssetsdClient)initWithPhotoLibraryURL:(id)l;
 - (PLAssetsdCloudClient)cloudClient;
 - (PLAssetsdCloudInternalClient)cloudInternalClient;
 - (PLAssetsdDebugClient)debugClient;
@@ -25,8 +25,8 @@
 - (id)privacySupportClient;
 - (id)resourceWriteOnlyClient;
 - (id)systemLibraryURLReadOnlyClient;
-- (void)addPhotoLibraryUnavailabilityHandler:(id)a3;
-- (void)sendDaemonJob:(id)a3 shouldRunSerially:(BOOL)a4 replyHandler:(id)a5;
+- (void)addPhotoLibraryUnavailabilityHandler:(id)handler;
+- (void)sendDaemonJob:(id)job shouldRunSerially:(BOOL)serially replyHandler:(id)handler;
 - (void)waitUntilConnectionSendsAllMessages;
 @end
 
@@ -34,10 +34,10 @@
 
 - (PLAssetsdLibraryClient)libraryClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 libraryClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  libraryClient = [_primitiveClientForCurrentQoS libraryClient];
 
-  return v3;
+  return libraryClient;
 }
 
 - (id)_primitiveClientForCurrentQoS
@@ -101,18 +101,18 @@ void __51__PLAssetsdClient_sharedSystemLibraryAssetsdClient__block_invoke_3()
 
 - (PLNonBindingAssetsdPhotoKitAddClient)nonBindingPhotoKitAddClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 nonBindingPhotoKitAddClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  nonBindingPhotoKitAddClient = [_primitiveClientForCurrentQoS nonBindingPhotoKitAddClient];
 
-  return v3;
+  return nonBindingPhotoKitAddClient;
 }
 
 - (PLNonBindingAssetsdPhotoKitClient)nonBindingPhotoKitClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 nonBindingPhotoKitClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  nonBindingPhotoKitClient = [_primitiveClientForCurrentQoS nonBindingPhotoKitClient];
 
-  return v3;
+  return nonBindingPhotoKitClient;
 }
 
 void __49__PLAssetsdClient__isSecondXPCConnectionDisabled__block_invoke()
@@ -133,154 +133,154 @@ void __49__PLAssetsdClient__isSecondXPCConnectionDisabled__block_invoke()
 
 - (PLAssetsdNonBindingDebugClient)nonBindingDebugClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 nonBindingDebugClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  nonBindingDebugClient = [_primitiveClientForCurrentQoS nonBindingDebugClient];
 
-  return v3;
+  return nonBindingDebugClient;
 }
 
 - (id)privacySupportClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 privacySupportClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  privacySupportClient = [_primitiveClientForCurrentQoS privacySupportClient];
 
-  return v3;
+  return privacySupportClient;
 }
 
 - (PLAssetsdDebugClient)debugClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 debugClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  debugClient = [_primitiveClientForCurrentQoS debugClient];
 
-  return v3;
+  return debugClient;
 }
 
 - (PLAssetsdDiagnosticsClient)diagnosticsClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 diagnosticsClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  diagnosticsClient = [_primitiveClientForCurrentQoS diagnosticsClient];
 
-  return v3;
+  return diagnosticsClient;
 }
 
 - (PLAssetsdDemoClient)demoClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 demoClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  demoClient = [_primitiveClientForCurrentQoS demoClient];
 
-  return v3;
+  return demoClient;
 }
 
 - (PLAssetsdNotificationClient)notificationClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 notificationClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  notificationClient = [_primitiveClientForCurrentQoS notificationClient];
 
-  return v3;
+  return notificationClient;
 }
 
 - (PLAssetsdSyncClient)syncClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 syncClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  syncClient = [_primitiveClientForCurrentQoS syncClient];
 
-  return v3;
+  return syncClient;
 }
 
 - (PLAssetsdMigrationClient)migrationClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 migrationClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  migrationClient = [_primitiveClientForCurrentQoS migrationClient];
 
-  return v3;
+  return migrationClient;
 }
 
 - (PLAssetsdCloudInternalClient)cloudInternalClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 cloudInternalClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  cloudInternalClient = [_primitiveClientForCurrentQoS cloudInternalClient];
 
-  return v3;
+  return cloudInternalClient;
 }
 
 - (PLAssetsdCloudClient)cloudClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 cloudClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  cloudClient = [_primitiveClientForCurrentQoS cloudClient];
 
-  return v3;
+  return cloudClient;
 }
 
 - (PLAssetsdResourceInternalClient)resourceInternalClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 resourceInternalClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  resourceInternalClient = [_primitiveClientForCurrentQoS resourceInternalClient];
 
-  return v3;
+  return resourceInternalClient;
 }
 
 - (id)resourceWriteOnlyClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 resourceWriteOnlyClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  resourceWriteOnlyClient = [_primitiveClientForCurrentQoS resourceWriteOnlyClient];
 
-  return v3;
+  return resourceWriteOnlyClient;
 }
 
 - (PLAssetsdResourceClient)resourceClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 resourceClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  resourceClient = [_primitiveClientForCurrentQoS resourceClient];
 
-  return v3;
+  return resourceClient;
 }
 
 - (PLAssetsdPhotoKitAddClient)photoKitAddClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 photoKitAddClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  photoKitAddClient = [_primitiveClientForCurrentQoS photoKitAddClient];
 
-  return v3;
+  return photoKitAddClient;
 }
 
 - (PLAssetsdResourceAvailabilityClient)resourceAvailabilityClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 resourceAvailabilityClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  resourceAvailabilityClient = [_primitiveClientForCurrentQoS resourceAvailabilityClient];
 
-  return v3;
+  return resourceAvailabilityClient;
 }
 
 - (PLAssetsdPhotoKitClient)photoKitClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 photoKitClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  photoKitClient = [_primitiveClientForCurrentQoS photoKitClient];
 
-  return v3;
+  return photoKitClient;
 }
 
 - (PLAssetsdLibraryManagementClient)libraryManagementClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 libraryManagementClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  libraryManagementClient = [_primitiveClientForCurrentQoS libraryManagementClient];
 
-  return v3;
+  return libraryManagementClient;
 }
 
 - (id)systemLibraryURLReadOnlyClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 systemLibraryURLReadOnlyClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  systemLibraryURLReadOnlyClient = [_primitiveClientForCurrentQoS systemLibraryURLReadOnlyClient];
 
-  return v3;
+  return systemLibraryURLReadOnlyClient;
 }
 
 - (PLAssetsdLibraryInternalClient)libraryInternalClient
 {
-  v2 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  v3 = [v2 libraryInternalClient];
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  libraryInternalClient = [_primitiveClientForCurrentQoS libraryInternalClient];
 
-  return v3;
+  return libraryInternalClient;
 }
 
 - (void)waitUntilConnectionSendsAllMessages
@@ -291,26 +291,26 @@ void __49__PLAssetsdClient__isSecondXPCConnectionDisabled__block_invoke()
   [(PLPrimitiveAssetsdClient *)lowPriorityClient waitUntilConnectionSendsAllMessages];
 }
 
-- (void)sendDaemonJob:(id)a3 shouldRunSerially:(BOOL)a4 replyHandler:(id)a5
+- (void)sendDaemonJob:(id)job shouldRunSerially:(BOOL)serially replyHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
-  [v10 sendDaemonJob:v9 shouldRunSerially:v5 replyHandler:v8];
+  seriallyCopy = serially;
+  handlerCopy = handler;
+  jobCopy = job;
+  _primitiveClientForCurrentQoS = [(PLAssetsdClient *)self _primitiveClientForCurrentQoS];
+  [_primitiveClientForCurrentQoS sendDaemonJob:jobCopy shouldRunSerially:seriallyCopy replyHandler:handlerCopy];
 }
 
-- (void)addPhotoLibraryUnavailabilityHandler:(id)a3
+- (void)addPhotoLibraryUnavailabilityHandler:(id)handler
 {
   highPriorityClient = self->_highPriorityClient;
-  v5 = a3;
-  [(PLPrimitiveAssetsdClient *)highPriorityClient addPhotoLibraryUnavailabilityHandler:v5];
-  [(PLPrimitiveAssetsdClient *)self->_lowPriorityClient addPhotoLibraryUnavailabilityHandler:v5];
+  handlerCopy = handler;
+  [(PLPrimitiveAssetsdClient *)highPriorityClient addPhotoLibraryUnavailabilityHandler:handlerCopy];
+  [(PLPrimitiveAssetsdClient *)self->_lowPriorityClient addPhotoLibraryUnavailabilityHandler:handlerCopy];
 }
 
-- (PLAssetsdClient)initWithPhotoLibraryURL:(id)a3
+- (PLAssetsdClient)initWithPhotoLibraryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = PLAssetsdClient;
   v5 = [(PLAssetsdClient *)&v14 init];
@@ -320,11 +320,11 @@ void __49__PLAssetsdClient__isSecondXPCConnectionDisabled__block_invoke()
     clientState = v5->_clientState;
     v5->_clientState = v6;
 
-    v8 = [[PLPrimitiveAssetsdClient alloc] initWithPhotoLibraryURL:v4 clientState:v5->_clientState];
+    v8 = [[PLPrimitiveAssetsdClient alloc] initWithPhotoLibraryURL:lCopy clientState:v5->_clientState];
     highPriorityClient = v5->_highPriorityClient;
     v5->_highPriorityClient = v8;
 
-    v10 = [[PLPrimitiveAssetsdClient alloc] initWithPhotoLibraryURL:v4 clientState:v5->_clientState];
+    v10 = [[PLPrimitiveAssetsdClient alloc] initWithPhotoLibraryURL:lCopy clientState:v5->_clientState];
     lowPriorityClient = v5->_lowPriorityClient;
     v5->_lowPriorityClient = v10;
 

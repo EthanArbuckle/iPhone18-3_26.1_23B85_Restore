@@ -1,14 +1,14 @@
 @interface UserPromptExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UserPromptExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  UserPromptExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  UserPromptExperience.encode(with:)(coderCopy);
 }
 
 @end

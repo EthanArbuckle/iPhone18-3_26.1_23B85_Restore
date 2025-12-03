@@ -7,8 +7,8 @@
 - (BOOL)success
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(DKCloudUploadResults *)self syncResult];
-  if (v3 && (v4 = v3, -[DKCloudUploadResults syncResult](self, "syncResult"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 success], v5, v4, !v6))
+  syncResult = [(DKCloudUploadResults *)self syncResult];
+  if (syncResult && (v4 = syncResult, -[DKCloudUploadResults syncResult](self, "syncResult"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 success], v5, v4, !v6))
   {
     v12 = 0;
   }
@@ -19,8 +19,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(DKCloudUploadResults *)self backupResults];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    backupResults = [(DKCloudUploadResults *)self backupResults];
+    v8 = [backupResults countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -31,7 +31,7 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(backupResults);
           }
 
           if (![*(*(&v15 + 1) + 8 * i) success])
@@ -41,7 +41,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [backupResults countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;

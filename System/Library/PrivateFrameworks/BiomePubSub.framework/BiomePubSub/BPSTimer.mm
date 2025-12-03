@@ -1,20 +1,20 @@
 @interface BPSTimer
 - (BOOL)completed;
-- (BPSTimer)initWithUpstream:(id)a3 interval:(double)a4 getTimestamp:(id)a5;
+- (BPSTimer)initWithUpstream:(id)upstream interval:(double)interval getTimestamp:(id)timestamp;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)nextEvent;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSTimer
 
-- (BPSTimer)initWithUpstream:(id)a3 interval:(double)a4 getTimestamp:(id)a5
+- (BPSTimer)initWithUpstream:(id)upstream interval:(double)interval getTimestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a5;
-  if (a4 <= 0.0)
+  upstreamCopy = upstream;
+  timestampCopy = timestamp;
+  if (interval <= 0.0)
   {
     [BPSTimer initWithUpstream:a2 interval:self getTimestamp:?];
   }
@@ -25,15 +25,15 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_upstream, a3);
-    v13->_interval = a4;
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_upstream, upstream);
+    v13->_interval = interval;
+    v14 = [timestampCopy copy];
     getTimestamp = v13->_getTimestamp;
     v13->_getTimestamp = v14;
 
-    v16 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     nextIntervalBoundary = v13->_nextIntervalBoundary;
-    v13->_nextIntervalBoundary = v16;
+    v13->_nextIntervalBoundary = distantPast;
 
     v18 = objc_opt_new();
     pendingTimers = v13->_pendingTimers;
@@ -43,9 +43,9 @@
   return v13;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -55,18 +55,18 @@
   v6 = [_BPSTimerInner alloc];
   [(BPSTimer *)self interval];
   v8 = v7;
-  v9 = [(BPSTimer *)self getTimestamp];
-  v10 = [(_BPSTimerInner *)v6 initWithDownstream:v4 interval:v9 getTimestamp:v8];
+  getTimestamp = [(BPSTimer *)self getTimestamp];
+  v10 = [(_BPSTimerInner *)v6 initWithDownstream:subscribeCopy interval:getTimestamp getTimestamp:v8];
 
-  v11 = [(BPSTimer *)self upstream];
-  [v11 subscribe:v10];
+  upstream = [(BPSTimer *)self upstream];
+  [upstream subscribe:v10];
 }
 
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSTimer *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSTimer *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -77,19 +77,19 @@
 - (id)nextEvent
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(BPSTimer *)self pendingTimers];
-  v4 = [v3 count];
+  pendingTimers = [(BPSTimer *)self pendingTimers];
+  v4 = [pendingTimers count];
 
   if (v4)
   {
-    v5 = [(BPSTimer *)self pendingTimers];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    pendingTimers2 = [(BPSTimer *)self pendingTimers];
+    nextEvent2 = [pendingTimers2 objectAtIndexedSubscript:0];
 
-    v7 = [(BPSTimer *)self pendingTimers];
-    [v7 removeObjectAtIndex:0];
+    pendingTimers3 = [(BPSTimer *)self pendingTimers];
+    [pendingTimers3 removeObjectAtIndex:0];
 
-    v8 = __biome_log_for_category();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    nextEvent = __biome_log_for_category();
+    if (os_log_type_enabled(nextEvent, OS_LOG_TYPE_DEBUG))
     {
       [BPSTimer nextEvent];
     }
@@ -97,12 +97,12 @@
     goto LABEL_4;
   }
 
-  v11 = [(BPSTimer *)self upstream];
-  v8 = [v11 nextEvent];
+  upstream = [(BPSTimer *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (!v8)
+  if (!nextEvent)
   {
-    v6 = 0;
+    nextEvent2 = 0;
     goto LABEL_5;
   }
 
@@ -110,8 +110,8 @@
   v42 = v12;
   while (1)
   {
-    v13 = [(BPSTimer *)self getTimestamp];
-    v14 = (v13)[2](v13, v8);
+    getTimestamp = [(BPSTimer *)self getTimestamp];
+    v14 = (getTimestamp)[2](getTimestamp, nextEvent);
 
     v15 = __biome_log_for_category();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -121,15 +121,15 @@
       *buf = v42;
       v44 = v37;
       v45 = 2112;
-      v46 = v8;
+      v46 = nextEvent;
       v47 = 2112;
       v48 = v38;
       _os_log_debug_impl(&dword_1C871B000, v15, OS_LOG_TYPE_DEBUG, "%@ - receiving: %@ at %@", buf, 0x20u);
     }
 
-    v16 = [(BPSTimer *)self nextIntervalBoundary];
-    v17 = [MEMORY[0x1E695DF00] distantPast];
-    v18 = [v16 isEqualToDate:v17];
+    nextIntervalBoundary = [(BPSTimer *)self nextIntervalBoundary];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    v18 = [nextIntervalBoundary isEqualToDate:distantPast];
 
     if ((v18 & 1) == 0)
     {
@@ -145,73 +145,73 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       v39 = objc_opt_class();
-      v40 = [(BPSTimer *)self nextIntervalBoundary];
+      nextIntervalBoundary2 = [(BPSTimer *)self nextIntervalBoundary];
       *buf = 138412546;
       v44 = v39;
       v45 = 2112;
-      v46 = v40;
+      v46 = nextIntervalBoundary2;
       _os_log_debug_impl(&dword_1C871B000, v21, OS_LOG_TYPE_DEBUG, "%@ - started with nextIntervalBoundary: %@", buf, 0x16u);
     }
 
 LABEL_25:
-    v36 = [(BPSTimer *)self upstream];
-    v6 = [v36 nextEvent];
+    upstream2 = [(BPSTimer *)self upstream];
+    nextEvent2 = [upstream2 nextEvent];
 
-    v8 = v6;
-    if (!v6)
+    nextEvent = nextEvent2;
+    if (!nextEvent2)
     {
       goto LABEL_5;
     }
   }
 
-  v22 = [(BPSTimer *)self nextIntervalBoundary];
-  v23 = [v14 compare:v22];
+  nextIntervalBoundary3 = [(BPSTimer *)self nextIntervalBoundary];
+  v23 = [v14 compare:nextIntervalBoundary3];
 
   if (v23 != 1)
   {
     goto LABEL_25;
   }
 
-  v6 = 0;
+  nextEvent2 = 0;
   do
   {
-    if (v6)
+    if (nextEvent2)
     {
-      v24 = [(BPSTimer *)self pendingTimers];
-      v25 = [(BPSTimer *)self nextIntervalBoundary];
-      [v24 addObject:v25];
+      pendingTimers4 = [(BPSTimer *)self pendingTimers];
+      nextIntervalBoundary4 = [(BPSTimer *)self nextIntervalBoundary];
+      [pendingTimers4 addObject:nextIntervalBoundary4];
     }
 
     else
     {
-      v6 = [(BPSTimer *)self nextIntervalBoundary];
+      nextEvent2 = [(BPSTimer *)self nextIntervalBoundary];
     }
 
     v26 = MEMORY[0x1E695DF00];
     [(BPSTimer *)self interval];
     v28 = v27;
-    v29 = [(BPSTimer *)self nextIntervalBoundary];
-    v30 = [v26 dateWithTimeInterval:v29 sinceDate:v28];
+    nextIntervalBoundary5 = [(BPSTimer *)self nextIntervalBoundary];
+    v30 = [v26 dateWithTimeInterval:nextIntervalBoundary5 sinceDate:v28];
     [(BPSTimer *)self setNextIntervalBoundary:v30];
 
     v31 = __biome_log_for_category();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
       v34 = objc_opt_class();
-      v35 = [(BPSTimer *)self nextIntervalBoundary];
+      nextIntervalBoundary6 = [(BPSTimer *)self nextIntervalBoundary];
       *buf = 138412546;
       v44 = v34;
       v45 = 2112;
-      v46 = v35;
+      v46 = nextIntervalBoundary6;
       _os_log_debug_impl(&dword_1C871B000, v31, OS_LOG_TYPE_DEBUG, "%@ - set new nextIntervalBoundary: %@", buf, 0x16u);
     }
 
-    v32 = [(BPSTimer *)self nextIntervalBoundary];
-    v33 = [v14 compare:v32];
+    nextIntervalBoundary7 = [(BPSTimer *)self nextIntervalBoundary];
+    v33 = [v14 compare:nextIntervalBoundary7];
   }
 
   while (v33 == 1);
-  if (!v6)
+  if (!nextEvent2)
   {
     goto LABEL_25;
   }
@@ -226,13 +226,13 @@ LABEL_4:
 LABEL_5:
   v9 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return nextEvent2;
 }
 
 - (void)reset
 {
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  [(BPSTimer *)self setNextIntervalBoundary:v3];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [(BPSTimer *)self setNextIntervalBoundary:distantPast];
 
   v4 = objc_opt_new();
   [(BPSTimer *)self setPendingTimers:v4];
@@ -244,8 +244,8 @@ LABEL_5:
 
 - (BOOL)completed
 {
-  v3 = [(BPSTimer *)self pendingTimers];
-  v4 = [v3 count];
+  pendingTimers = [(BPSTimer *)self pendingTimers];
+  v4 = [pendingTimers count];
 
   if (v4)
   {

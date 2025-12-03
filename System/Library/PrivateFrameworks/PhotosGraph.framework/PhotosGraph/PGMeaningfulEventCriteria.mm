@@ -4,7 +4,7 @@
 - (PGMeaningfulEventCollectionTrait)poisTrait;
 - (PGMeaningfulEventCollectionTrait)roisTrait;
 - (PGMeaningfulEventCollectionTrait)socialGroupsTrait;
-- (PGMeaningfulEventCriteria)initWithGraph:(id)a3;
+- (PGMeaningfulEventCriteria)initWithGraph:(id)graph;
 - (PGMeaningfulEventLocationCollectionTrait)locationsTrait;
 - (PGMeaningfulEventLocationMobilityTrait)locationMobilityTrait;
 - (PGMeaningfulEventNumberTrait)maximumDurationTrait;
@@ -12,16 +12,16 @@
 - (PGMeaningfulEventNumberTrait)numberOfPeopleTrait;
 - (PGMeaningfulEventPartOfDayTrait)allPartsOfDayTrait;
 - (PGMeaningfulEventPartOfDayTrait)significantPartsOfDayTrait;
-- (id)_debugDescriptionWithMomentNode:(id)a3;
+- (id)_debugDescriptionWithMomentNode:(id)node;
 @end
 
 @implementation PGMeaningfulEventCriteria
 
-- (id)_debugDescriptionWithMomentNode:(id)a3
+- (id)_debugDescriptionWithMomentNode:(id)node
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
-  if ([v4 isSmartInteresting])
+  nodeCopy = node;
+  string = [MEMORY[0x277CCAB68] string];
+  if ([nodeCopy isSmartInteresting])
   {
     v6 = @"YES";
   }
@@ -31,7 +31,7 @@
     v6 = @"NO";
   }
 
-  if ([v4 isInteresting])
+  if ([nodeCopy isInteresting])
   {
     v7 = @"YES";
   }
@@ -41,39 +41,39 @@
     v7 = @"NO";
   }
 
-  [v5 appendFormat:@"\n\tsmartInteresting: %@, interesting: %@", v6, v7];
-  [v5 appendFormat:@"\n\tassetCount: %lu, ", objc_msgSend(v4, "numberOfAssets")];
-  v8 = [(PGMeaningfulEventCriteria *)self significantPartsOfDayTrait];
-  v9 = [v8 debugDescriptionWithMomentNode:v4];
-  [v5 appendFormat:@"\n\tsignificantPartsOfDay: %@, ", v9];
+  [string appendFormat:@"\n\tsmartInteresting: %@, interesting: %@", v6, v7];
+  [string appendFormat:@"\n\tassetCount: %lu, ", objc_msgSend(nodeCopy, "numberOfAssets")];
+  significantPartsOfDayTrait = [(PGMeaningfulEventCriteria *)self significantPartsOfDayTrait];
+  v9 = [significantPartsOfDayTrait debugDescriptionWithMomentNode:nodeCopy];
+  [string appendFormat:@"\n\tsignificantPartsOfDay: %@, ", v9];
 
-  v10 = [(PGMeaningfulEventCriteria *)self allPartsOfDayTrait];
-  v11 = [v10 debugDescriptionWithMomentNode:v4];
-  [v5 appendFormat:@"\n\tallPartsOfDay: %@, ", v11];
+  allPartsOfDayTrait = [(PGMeaningfulEventCriteria *)self allPartsOfDayTrait];
+  v11 = [allPartsOfDayTrait debugDescriptionWithMomentNode:nodeCopy];
+  [string appendFormat:@"\n\tallPartsOfDay: %@, ", v11];
 
-  v12 = [(PGMeaningfulEventCriteria *)self minimumDurationTrait];
-  v13 = [v12 debugDescriptionWithMomentNode:v4];
-  [v5 appendFormat:@"\n\tminDuration: %@, ", v13];
+  minimumDurationTrait = [(PGMeaningfulEventCriteria *)self minimumDurationTrait];
+  v13 = [minimumDurationTrait debugDescriptionWithMomentNode:nodeCopy];
+  [string appendFormat:@"\n\tminDuration: %@, ", v13];
 
-  v14 = [(PGMeaningfulEventCriteria *)self maximumDurationTrait];
-  v15 = [v14 debugDescriptionWithMomentNode:v4];
-  [v5 appendFormat:@"\n\tmaxDuration: %@, ", v15];
+  maximumDurationTrait = [(PGMeaningfulEventCriteria *)self maximumDurationTrait];
+  v15 = [maximumDurationTrait debugDescriptionWithMomentNode:nodeCopy];
+  [string appendFormat:@"\n\tmaxDuration: %@, ", v15];
 
-  v16 = [(PGMeaningfulEventCriteria *)self numberOfPeopleTrait];
-  v17 = [v16 debugDescriptionWithMomentNode:v4];
-  [v5 appendFormat:@"\n\tnumberOfPeople: %@, ", v17];
+  numberOfPeopleTrait = [(PGMeaningfulEventCriteria *)self numberOfPeopleTrait];
+  v17 = [numberOfPeopleTrait debugDescriptionWithMomentNode:nodeCopy];
+  [string appendFormat:@"\n\tnumberOfPeople: %@, ", v17];
 
-  v18 = [(PGMeaningfulEventCriteria *)self locationMobilityTrait];
-  v19 = [v18 debugDescriptionWithMomentNode:v4];
-  [v5 appendFormat:@"\n\tlocationMobility: %@, ", v19];
+  locationMobilityTrait = [(PGMeaningfulEventCriteria *)self locationMobilityTrait];
+  v19 = [locationMobilityTrait debugDescriptionWithMomentNode:nodeCopy];
+  [string appendFormat:@"\n\tlocationMobility: %@, ", v19];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__PGMeaningfulEventCriteria__debugDescriptionWithMomentNode___block_invoke;
   aBlock[3] = &unk_2788820B0;
-  v20 = v5;
+  v20 = string;
   v40 = v20;
-  v21 = v4;
+  v21 = nodeCopy;
   v41 = v21;
   v22 = _Block_copy(aBlock);
   v36[0] = MEMORY[0x277D85DD0];
@@ -85,29 +85,29 @@
   v38 = v21;
   v24 = v21;
   v25 = _Block_copy(v36);
-  v26 = [(PGMeaningfulEventCriteria *)self datesTrait];
-  v22[2](v22, @"dates", v26);
+  datesTrait = [(PGMeaningfulEventCriteria *)self datesTrait];
+  v22[2](v22, @"dates", datesTrait);
 
-  v27 = [(PGMeaningfulEventCriteria *)self peopleTrait];
-  v22[2](v22, @"people", v27);
+  peopleTrait = [(PGMeaningfulEventCriteria *)self peopleTrait];
+  v22[2](v22, @"people", peopleTrait);
 
-  v28 = [(PGMeaningfulEventCriteria *)self socialGroupsTrait];
-  v22[2](v22, @"socialGroups", v28);
+  socialGroupsTrait = [(PGMeaningfulEventCriteria *)self socialGroupsTrait];
+  v22[2](v22, @"socialGroups", socialGroupsTrait);
 
-  v29 = [(PGMeaningfulEventCriteria *)self locationsTrait];
-  v22[2](v22, @"locations", v29);
+  locationsTrait = [(PGMeaningfulEventCriteria *)self locationsTrait];
+  v22[2](v22, @"locations", locationsTrait);
 
-  v30 = [(PGMeaningfulEventCriteria *)self poisTrait];
-  v22[2](v22, @"pois", v30);
+  poisTrait = [(PGMeaningfulEventCriteria *)self poisTrait];
+  v22[2](v22, @"pois", poisTrait);
 
-  v31 = [(PGMeaningfulEventCriteria *)self roisTrait];
-  v22[2](v22, @"rois", v31);
+  roisTrait = [(PGMeaningfulEventCriteria *)self roisTrait];
+  v22[2](v22, @"rois", roisTrait);
 
-  v32 = [(PGMeaningfulEventCriteria *)self scenesTrait];
-  v25[2](v25, @"scenes", v32);
+  scenesTrait = [(PGMeaningfulEventCriteria *)self scenesTrait];
+  v25[2](v25, @"scenes", scenesTrait);
 
-  v33 = [(PGMeaningfulEventCriteria *)self publicEventCategoriesTrait];
-  v22[2](v22, @"publicEvents", v33);
+  publicEventCategoriesTrait = [(PGMeaningfulEventCriteria *)self publicEventCategoriesTrait];
+  v22[2](v22, @"publicEvents", publicEventCategoriesTrait);
 
   v34 = v23;
   return v23;
@@ -333,16 +333,16 @@ void __61__PGMeaningfulEventCriteria__debugDescriptionWithMomentNode___block_inv
   return roisTrait;
 }
 
-- (PGMeaningfulEventCriteria)initWithGraph:(id)a3
+- (PGMeaningfulEventCriteria)initWithGraph:(id)graph
 {
-  v5 = a3;
+  graphCopy = graph;
   v9.receiver = self;
   v9.super_class = PGMeaningfulEventCriteria;
   v6 = [(PGMeaningfulEventCriteria *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graph, a3);
+    objc_storeStrong(&v6->_graph, graph);
     v7->_debug = 0;
   }
 

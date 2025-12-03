@@ -1,11 +1,11 @@
 @interface IOThreadXPCMappedMemoryTransporter
-+ (id)memory:(const MappedMemory *)a3;
-- (BOOL)isEqual:(id)a3;
-- (IOThreadXPCMappedMemoryTransporter)initWithCoder:(id)a3;
-- (IOThreadXPCMappedMemoryTransporter)initWithObject:(id)a3;
++ (id)memory:(const MappedMemory *)memory;
+- (BOOL)isEqual:(id)equal;
+- (IOThreadXPCMappedMemoryTransporter)initWithCoder:(id)coder;
+- (IOThreadXPCMappedMemoryTransporter)initWithObject:(id)object;
 - (MappedMemory)getMappedMemory;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IOThreadXPCMappedMemoryTransporter
@@ -14,12 +14,12 @@
 {
   v7 = 0;
   v8 = 0;
-  v3 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
+  serverMemory = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
 
-  if (v3)
+  if (serverMemory)
   {
-    v4 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
-    v8 = xpc_shmem_map(v4, &v7);
+    serverMemory2 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
+    v8 = xpc_shmem_map(serverMemory2, &v7);
 
     v5 = v7;
     v6 = v8;
@@ -36,26 +36,26 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
+    v5 = equalCopy;
+    serverMemory = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
 
-    if (v6)
+    if (serverMemory)
     {
-      v7 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
-      v8 = [v5 serverMemory];
-      LOBYTE(v9) = xpc_equal(v7, v8);
+      serverMemory2 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
+      serverMemory3 = [v5 serverMemory];
+      LOBYTE(v9) = xpc_equal(serverMemory2, serverMemory3);
     }
 
     else
     {
-      v7 = [v5 serverMemory];
-      v9 = v7 == 0;
+      serverMemory2 = [v5 serverMemory];
+      v9 = serverMemory2 == 0;
     }
   }
 
@@ -67,29 +67,29 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"This object may only be decoded by an NSXPCCoder."];
   }
 
-  v7 = v4;
-  v5 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
+  v7 = coderCopy;
+  serverMemory = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
 
-  if (v5)
+  if (serverMemory)
   {
-    v6 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
+    serverMemory2 = [(IOThreadXPCMappedMemoryTransporter *)self serverMemory];
   }
 
   else
   {
-    v6 = xpc_null_create();
+    serverMemory2 = xpc_null_create();
   }
 
-  [v7 encodeXPCObject:v6 forKey:@"IOThreadXPCMappedMemoryTransporter"];
+  [v7 encodeXPCObject:serverMemory2 forKey:@"IOThreadXPCMappedMemoryTransporter"];
 }
 
 - (void)dealloc
@@ -102,9 +102,9 @@
   [(IOThreadXPCMappedMemoryTransporter *)&v4 dealloc];
 }
 
-- (IOThreadXPCMappedMemoryTransporter)initWithCoder:(id)a3
+- (IOThreadXPCMappedMemoryTransporter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -116,7 +116,7 @@
   v5 = [(IOThreadXPCMappedMemoryTransporter *)&v12 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     v7 = [v6 decodeXPCObjectForKey:@"IOThreadXPCMappedMemoryTransporter"];
     serverMemory = v5->_serverMemory;
     v5->_serverMemory = v7;
@@ -141,24 +141,24 @@ LABEL_10:
   return v10;
 }
 
-- (IOThreadXPCMappedMemoryTransporter)initWithObject:(id)a3
+- (IOThreadXPCMappedMemoryTransporter)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = IOThreadXPCMappedMemoryTransporter;
   v6 = [(IOThreadXPCMappedMemoryTransporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverMemory, a3);
+    objc_storeStrong(&v6->_serverMemory, object);
   }
 
   return v7;
 }
 
-+ (id)memory:(const MappedMemory *)a3
++ (id)memory:(const MappedMemory *)memory
 {
-  v3 = xpc_shmem_create(a3->var0, a3->var1);
+  v3 = xpc_shmem_create(memory->var0, memory->var1);
   v4 = [[IOThreadXPCMappedMemoryTransporter alloc] initWithObject:v3];
 
   return v4;

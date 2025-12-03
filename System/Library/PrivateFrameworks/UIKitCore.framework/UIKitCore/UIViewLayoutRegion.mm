@@ -1,31 +1,31 @@
 @interface UIViewLayoutRegion
-+ (id)marginsLayoutRegionWithCornerAdaptation:(unint64_t)a3;
-+ (id)readableContentLayoutRegionWithCornerAdaptation:(unint64_t)a3;
-+ (id)safeAreaLayoutRegionWithCornerAdaptation:(unint64_t)a3;
++ (id)marginsLayoutRegionWithCornerAdaptation:(unint64_t)adaptation;
++ (id)readableContentLayoutRegionWithCornerAdaptation:(unint64_t)adaptation;
++ (id)safeAreaLayoutRegionWithCornerAdaptation:(unint64_t)adaptation;
 - (UIViewLayoutRegion)init;
 @end
 
 @implementation UIViewLayoutRegion
 
-+ (id)safeAreaLayoutRegionWithCornerAdaptation:(unint64_t)a3
++ (id)safeAreaLayoutRegionWithCornerAdaptation:(unint64_t)adaptation
 {
-  v3 = [objc_allocWithZone(UIViewLayoutRegion) initWithSafeAreaLayoutRegionWithCornerAdaptation_];
+  initWithSafeAreaLayoutRegionWithCornerAdaptation_ = [objc_allocWithZone(UIViewLayoutRegion) initWithSafeAreaLayoutRegionWithCornerAdaptation_];
 
-  return v3;
+  return initWithSafeAreaLayoutRegionWithCornerAdaptation_;
 }
 
-+ (id)marginsLayoutRegionWithCornerAdaptation:(unint64_t)a3
++ (id)marginsLayoutRegionWithCornerAdaptation:(unint64_t)adaptation
 {
-  v3 = [objc_allocWithZone(UIViewLayoutRegion) initWithMarginsLayoutRegionWithCornerAdaptation_];
+  initWithMarginsLayoutRegionWithCornerAdaptation_ = [objc_allocWithZone(UIViewLayoutRegion) initWithMarginsLayoutRegionWithCornerAdaptation_];
 
-  return v3;
+  return initWithMarginsLayoutRegionWithCornerAdaptation_;
 }
 
-+ (id)readableContentLayoutRegionWithCornerAdaptation:(unint64_t)a3
++ (id)readableContentLayoutRegionWithCornerAdaptation:(unint64_t)adaptation
 {
-  v3 = [objc_allocWithZone(UIViewLayoutRegion) initWithReadableContentLayoutRegionWithCornerAdaptation_];
+  initWithReadableContentLayoutRegionWithCornerAdaptation_ = [objc_allocWithZone(UIViewLayoutRegion) initWithReadableContentLayoutRegionWithCornerAdaptation_];
 
-  return v3;
+  return initWithReadableContentLayoutRegionWithCornerAdaptation_;
 }
 
 - (UIViewLayoutRegion)init

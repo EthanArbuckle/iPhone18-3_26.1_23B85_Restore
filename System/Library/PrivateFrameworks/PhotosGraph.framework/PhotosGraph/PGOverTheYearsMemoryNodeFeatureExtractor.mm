@@ -1,18 +1,18 @@
 @interface PGOverTheYearsMemoryNodeFeatureExtractor
-- (PGOverTheYearsMemoryNodeFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
+- (PGOverTheYearsMemoryNodeFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
 @end
 
 @implementation PGOverTheYearsMemoryNodeFeatureExtractor
 
-- (PGOverTheYearsMemoryNodeFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGOverTheYearsMemoryNodeFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v16[0] = @"OverTheYears";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v6 = MEMORY[0x277D22C90];
   v7 = +[PGGraphOverTheYearsNode filter];
-  v8 = [v7 relation];
-  v15 = v8;
+  relation = [v7 relation];
+  v15 = relation;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
   v10 = [v6 chain:v9];
 

@@ -1,5 +1,5 @@
 @interface ICDocCamFilterViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGSize)contentSize;
 - (DCSinglePixelHorizontalLineView)horizontalLineView;
 - (DCSinglePixelVerticalLineView)verticalLineView;
@@ -7,16 +7,16 @@
 - (ICDocCamFilterViewDelegate)filterViewDelegate;
 - (UIScrollView)scrollView;
 - (UIView)backgroundView;
-- (id)filterButtonFromLocation:(CGPoint)a3;
-- (void)applyToAll:(signed __int16)a3;
-- (void)centerContent:(BOOL)a3 isPortrait:(BOOL)a4;
+- (id)filterButtonFromLocation:(CGPoint)location;
+- (void)applyToAll:(signed __int16)all;
+- (void)centerContent:(BOOL)content isPortrait:(BOOL)portrait;
 - (void)dealloc;
-- (void)filterSelected:(id)a3;
+- (void)filterSelected:(id)selected;
 - (void)initializeFilters;
-- (void)longPressGesture:(id)a3;
-- (void)prepareToAnimateIn:(BOOL)a3;
-- (void)setBottomContentInset:(double)a3;
-- (void)setCurrentFilterType:(signed __int16)a3;
+- (void)longPressGesture:(id)gesture;
+- (void)prepareToAnimateIn:(BOOL)in;
+- (void)setBottomContentInset:(double)inset;
+- (void)setCurrentFilterType:(signed __int16)type;
 - (void)setUpScrollView;
 - (void)updateConstraints;
 - (void)updateConstraintsPad;
@@ -24,8 +24,8 @@
 - (void)updateScrollViewContentSize;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICDocCamFilterViewController
@@ -45,67 +45,67 @@
   v17.receiver = self;
   v17.super_class = ICDocCamFilterViewController;
   [(ICDocCamFilterViewController *)&v17 viewDidLoad];
-  v3 = [(ICDocCamFilterViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:1];
+  view = [(ICDocCamFilterViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v4 = [(ICDocCamFilterViewController *)self view];
-  [v4 setAutoresizingMask:18];
+  view2 = [(ICDocCamFilterViewController *)self view];
+  [view2 setAutoresizingMask:18];
 
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v6 = [(ICDocCamFilterViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view3 = [(ICDocCamFilterViewController *)self view];
+  [view3 setBackgroundColor:clearColor];
 
-  v7 = [(ICDocCamFilterViewController *)self scrollView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView = [(ICDocCamFilterViewController *)self scrollView];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(ICDocCamFilterViewController *)self scrollView];
-  [v8 setAutoresizingMask:0];
+  scrollView2 = [(ICDocCamFilterViewController *)self scrollView];
+  [scrollView2 setAutoresizingMask:0];
 
-  v9 = [(ICDocCamFilterViewController *)self scrollView];
-  [v9 setScrollEnabled:0];
+  scrollView3 = [(ICDocCamFilterViewController *)self scrollView];
+  [scrollView3 setScrollEnabled:0];
 
-  v10 = [(ICDocCamFilterViewController *)self backgroundView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  backgroundView = [(ICDocCamFilterViewController *)self backgroundView];
+  [backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(ICDocCamFilterViewController *)self initializeFilters];
   v11 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_longPressGesture_];
   [(ICDocCamFilterViewController *)self setLongPressGesture:v11];
 
-  v12 = [(ICDocCamFilterViewController *)self longPressGesture];
-  [v12 setDelegate:self];
+  longPressGesture = [(ICDocCamFilterViewController *)self longPressGesture];
+  [longPressGesture setDelegate:self];
 
-  v13 = [(ICDocCamFilterViewController *)self view];
-  v14 = [(ICDocCamFilterViewController *)self longPressGesture];
-  [v13 addGestureRecognizer:v14];
+  view4 = [(ICDocCamFilterViewController *)self view];
+  longPressGesture2 = [(ICDocCamFilterViewController *)self longPressGesture];
+  [view4 addGestureRecognizer:longPressGesture2];
 
-  v15 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v16 = [(ICDocCamFilterViewController *)self backgroundView];
-  [v16 setBackgroundColor:v15];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  backgroundView2 = [(ICDocCamFilterViewController *)self backgroundView];
+  [backgroundView2 setBackgroundColor:systemBackgroundColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ICDocCamFilterViewController;
-  [(ICDocCamFilterViewController *)&v3 viewWillAppear:a3];
+  [(ICDocCamFilterViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)centerContent:(BOOL)a3 isPortrait:(BOOL)a4
+- (void)centerContent:(BOOL)content isPortrait:(BOOL)portrait
 {
-  if (a3)
+  if (content)
   {
-    v4 = a4;
-    v6 = [(ICDocCamFilterViewController *)self scrollView];
-    [v6 contentSize];
+    portraitCopy = portrait;
+    scrollView = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView contentSize];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(ICDocCamFilterViewController *)self scrollView];
-    [v11 bounds];
+    scrollView2 = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView2 bounds];
     v13 = v12;
     v15 = v14;
 
-    if (v4)
+    if (portraitCopy)
     {
       if (v8 >= v13)
       {
@@ -117,8 +117,8 @@
         v16 = (v13 - v8) * -0.5;
       }
 
-      v23 = [(ICDocCamFilterViewController *)self scrollView];
-      [v23 setContentOffset:{v16, 0.0}];
+      scrollView3 = [(ICDocCamFilterViewController *)self scrollView];
+      [scrollView3 setContentOffset:{v16, 0.0}];
     }
 
     else
@@ -133,14 +133,14 @@
         v17 = (v15 - v10) * -0.5;
       }
 
-      v23 = [(ICDocCamFilterViewController *)self navigationController];
-      v18 = [v23 navigationBar];
-      [v18 bounds];
+      scrollView3 = [(ICDocCamFilterViewController *)self navigationController];
+      navigationBar = [scrollView3 navigationBar];
+      [navigationBar bounds];
       MaxY = CGRectGetMaxY(v25);
       [(ICDocCamFilterViewController *)self bottomContentInset];
       v21 = v17 + (MaxY - v20) * -0.5;
-      v22 = [(ICDocCamFilterViewController *)self scrollView];
-      [v22 setContentOffset:{0.0, v21}];
+      scrollView4 = [(ICDocCamFilterViewController *)self scrollView];
+      [scrollView4 setContentOffset:{0.0, v21}];
     }
   }
 }
@@ -158,27 +158,27 @@
   [(UIViewController *)self dc_getEffectiveInterfaceOrientation:&v7 andEffectiveInterfaceIdiom:&v6];
   v3 = v6 == 0;
   v4 = ([(UIViewController *)self dc_effectiveInterfaceOrientation]- 1) < 2;
-  v5 = [(ICDocCamFilterViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(ICDocCamFilterViewController *)self view];
+  [view layoutIfNeeded];
 
   [(ICDocCamFilterViewController *)self centerContent:v3 isPortrait:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = ICDocCamFilterViewController;
-  v7 = a4;
-  [(ICDocCamFilterViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ICDocCamFilterViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(ICDocCamFilterViewController *)self setTransitioning:1];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83__ICDocCamFilterViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_278F92D48;
   v8[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_7 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_7 completion:v8];
 }
 
 uint64_t __83__ICDocCamFilterViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -196,17 +196,17 @@ uint64_t __83__ICDocCamFilterViewController_viewWillTransitionToSize_withTransit
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICDocCamFilterViewController;
   [(ICDocCamFilterViewController *)&v4 dealloc];
 }
 
-- (void)prepareToAnimateIn:(BOOL)a3
+- (void)prepareToAnimateIn:(BOOL)in
 {
-  v3 = a3;
+  inCopy = in;
   v17 = 0;
   v18 = 0;
   [(UIViewController *)self dc_getEffectiveInterfaceOrientation:&v18 andEffectiveInterfaceIdiom:&v17];
@@ -227,7 +227,7 @@ uint64_t __83__ICDocCamFilterViewController_viewWillTransitionToSize_withTransit
   [(ICDocCamFilterViewController *)self setBottomOffset:v7];
   [(ICDocCamFilterViewController *)self updateConstraints];
   v8 = MEMORY[0x277D75D18];
-  if (v3)
+  if (inCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -328,25 +328,25 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
   [v4 setOpacity:0.0];
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
-  if (self->_bottomContentInset != a3)
+  if (self->_bottomContentInset != inset)
   {
-    self->_bottomContentInset = a3;
-    v4 = [(ICDocCamFilterViewController *)self view];
-    [v4 setNeedsLayout];
+    self->_bottomContentInset = inset;
+    view = [(ICDocCamFilterViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(ICDocCamFilterViewController *)self layoutConstraints];
+  layoutConstraints = [(ICDocCamFilterViewController *)self layoutConstraints];
 
-  if (v3)
+  if (layoutConstraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(ICDocCamFilterViewController *)self layoutConstraints];
-    [v4 deactivateConstraints:v5];
+    layoutConstraints2 = [(ICDocCamFilterViewController *)self layoutConstraints];
+    [v4 deactivateConstraints:layoutConstraints2];
 
     [(ICDocCamFilterViewController *)self setLayoutConstraints:0];
   }
@@ -369,74 +369,74 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
 - (void)updateConstraintsPad
 {
   v52 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(ICDocCamFilterViewController *)self view];
-  [v3 bounds];
+  view = [(ICDocCamFilterViewController *)self view];
+  [view bounds];
   v5 = v4;
 
-  v6 = [(ICDocCamFilterViewController *)self scrollView];
-  [v6 contentSize];
+  scrollView = [(ICDocCamFilterViewController *)self scrollView];
+  [scrollView contentSize];
   v8 = v7;
 
   v9 = (v5 - v8) * 0.5;
-  v10 = [(ICDocCamFilterViewController *)self navigationController];
-  v11 = [v10 navigationBar];
-  [v11 frame];
+  navigationController = [(ICDocCamFilterViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   MaxY = CGRectGetMaxY(v54);
   [(ICDocCamFilterViewController *)self bottomContentInset];
   v14 = (MaxY - v13) * 0.5;
 
-  v15 = [(ICDocCamFilterViewController *)self backgroundView];
-  v16 = [v15 widthAnchor];
-  v17 = [v16 constraintEqualToConstant:128.0];
+  backgroundView = [(ICDocCamFilterViewController *)self backgroundView];
+  widthAnchor = [backgroundView widthAnchor];
+  v17 = [widthAnchor constraintEqualToConstant:128.0];
   [v52 addObject:v17];
 
-  v18 = [(ICDocCamFilterViewController *)self backgroundView];
-  v19 = [v18 trailingAnchor];
-  v20 = [(ICDocCamFilterViewController *)self view];
-  v21 = [v20 trailingAnchor];
+  backgroundView2 = [(ICDocCamFilterViewController *)self backgroundView];
+  trailingAnchor = [backgroundView2 trailingAnchor];
+  view2 = [(ICDocCamFilterViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
   [(ICDocCamFilterViewController *)self horizontalOffset];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:?];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:?];
   [v52 addObject:v22];
 
-  v23 = [(ICDocCamFilterViewController *)self backgroundView];
-  v24 = [v23 topAnchor];
-  v25 = [(ICDocCamFilterViewController *)self view];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  backgroundView3 = [(ICDocCamFilterViewController *)self backgroundView];
+  topAnchor = [backgroundView3 topAnchor];
+  view3 = [(ICDocCamFilterViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v52 addObject:v27];
 
-  v28 = [(ICDocCamFilterViewController *)self backgroundView];
-  v29 = [v28 bottomAnchor];
-  v30 = [(ICDocCamFilterViewController *)self view];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  backgroundView4 = [(ICDocCamFilterViewController *)self backgroundView];
+  bottomAnchor = [backgroundView4 bottomAnchor];
+  view4 = [(ICDocCamFilterViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v52 addObject:v32];
 
-  v33 = [(ICDocCamFilterViewController *)self scrollView];
-  v34 = [v33 widthAnchor];
-  v35 = [v34 constraintEqualToConstant:60.0];
+  scrollView2 = [(ICDocCamFilterViewController *)self scrollView];
+  widthAnchor2 = [scrollView2 widthAnchor];
+  v35 = [widthAnchor2 constraintEqualToConstant:60.0];
   [v52 addObject:v35];
 
-  v36 = [(ICDocCamFilterViewController *)self scrollView];
-  v37 = [v36 trailingAnchor];
-  v38 = [(ICDocCamFilterViewController *)self view];
-  v39 = [v38 trailingAnchor];
+  scrollView3 = [(ICDocCamFilterViewController *)self scrollView];
+  trailingAnchor3 = [scrollView3 trailingAnchor];
+  view5 = [(ICDocCamFilterViewController *)self view];
+  trailingAnchor4 = [view5 trailingAnchor];
   [(ICDocCamFilterViewController *)self horizontalOffset];
-  v41 = [v37 constraintEqualToAnchor:v39 constant:v40 + -34.0];
+  v41 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v40 + -34.0];
   [v52 addObject:v41];
 
-  v42 = [(ICDocCamFilterViewController *)self scrollView];
-  v43 = [v42 topAnchor];
-  v44 = [(ICDocCamFilterViewController *)self view];
-  v45 = [v44 topAnchor];
-  v46 = [v43 constraintEqualToAnchor:v45 constant:v9 + v14];
+  scrollView4 = [(ICDocCamFilterViewController *)self scrollView];
+  topAnchor3 = [scrollView4 topAnchor];
+  view6 = [(ICDocCamFilterViewController *)self view];
+  topAnchor4 = [view6 topAnchor];
+  v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v9 + v14];
   [v52 addObject:v46];
 
-  v47 = [(ICDocCamFilterViewController *)self scrollView];
-  v48 = [v47 bottomAnchor];
-  v49 = [(ICDocCamFilterViewController *)self view];
-  v50 = [v49 bottomAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50 constant:v14 - v9];
+  scrollView5 = [(ICDocCamFilterViewController *)self scrollView];
+  bottomAnchor3 = [scrollView5 bottomAnchor];
+  view7 = [(ICDocCamFilterViewController *)self view];
+  bottomAnchor4 = [view7 bottomAnchor];
+  v51 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v14 - v9];
   [v52 addObject:v51];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v52];
@@ -445,8 +445,8 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
 
 - (CGSize)contentSize
 {
-  v3 = [(ICDocCamFilterViewController *)self view];
-  [v3 bounds];
+  view = [(ICDocCamFilterViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -473,8 +473,8 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
     }
 
     v12 = v11 * 2.0 + 60.0;
-    v13 = [(ICDocCamFilterViewController *)self view];
-    [v13 dc_directionalSafeAreaInsets];
+    view2 = [(ICDocCamFilterViewController *)self view];
+    [view2 dc_directionalSafeAreaInsets];
     v5 = v12 + v14;
   }
 
@@ -497,108 +497,108 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
   v92 = 0;
   [(UIViewController *)self dc_getEffectiveInterfaceOrientation:&v92 andEffectiveInterfaceIdiom:&v91];
   v4 = v92 - 3;
-  v5 = [(ICDocCamFilterViewController *)self backgroundView];
-  v6 = v5;
+  backgroundView = [(ICDocCamFilterViewController *)self backgroundView];
+  v6 = backgroundView;
   if (v4 > 1)
   {
-    v34 = [v5 heightAnchor];
-    v35 = [v34 constraintEqualToConstant:100.0];
+    heightAnchor = [backgroundView heightAnchor];
+    v35 = [heightAnchor constraintEqualToConstant:100.0];
     [v3 addObject:v35];
 
-    v36 = [(ICDocCamFilterViewController *)self backgroundView];
-    v37 = [v36 leadingAnchor];
-    v38 = [(ICDocCamFilterViewController *)self view];
-    v39 = [v38 leadingAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39];
+    backgroundView2 = [(ICDocCamFilterViewController *)self backgroundView];
+    leadingAnchor = [backgroundView2 leadingAnchor];
+    view = [(ICDocCamFilterViewController *)self view];
+    leadingAnchor2 = [view leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v3 addObject:v40];
 
-    v41 = [(ICDocCamFilterViewController *)self backgroundView];
-    v42 = [v41 trailingAnchor];
-    v43 = [(ICDocCamFilterViewController *)self view];
-    v44 = [v43 trailingAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
+    backgroundView3 = [(ICDocCamFilterViewController *)self backgroundView];
+    trailingAnchor = [backgroundView3 trailingAnchor];
+    view2 = [(ICDocCamFilterViewController *)self view];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v45 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v3 addObject:v45];
 
-    v46 = [(ICDocCamFilterViewController *)self backgroundView];
-    v47 = [v46 bottomAnchor];
-    v48 = [(ICDocCamFilterViewController *)self view];
-    v49 = [v48 bottomAnchor];
+    backgroundView4 = [(ICDocCamFilterViewController *)self backgroundView];
+    bottomAnchor = [backgroundView4 bottomAnchor];
+    view3 = [(ICDocCamFilterViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
     [(ICDocCamFilterViewController *)self bottomOffset];
     v51 = v50;
     [(ICDocCamFilterViewController *)self bottomContentInset];
-    v53 = [v47 constraintEqualToAnchor:v49 constant:v51 - v52];
+    v53 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v51 - v52];
     [v3 addObject:v53];
 
-    v54 = [(ICDocCamFilterViewController *)self scrollView];
-    v55 = [v54 heightAnchor];
-    v56 = [v55 constraintEqualToConstant:60.0];
+    scrollView = [(ICDocCamFilterViewController *)self scrollView];
+    heightAnchor2 = [scrollView heightAnchor];
+    v56 = [heightAnchor2 constraintEqualToConstant:60.0];
     [v3 addObject:v56];
 
-    v57 = [(ICDocCamFilterViewController *)self scrollView];
-    v58 = [v57 leadingAnchor];
-    v59 = [(ICDocCamFilterViewController *)self view];
-    v60 = [v59 leadingAnchor];
-    v61 = [v58 constraintEqualToAnchor:v60];
+    scrollView2 = [(ICDocCamFilterViewController *)self scrollView];
+    leadingAnchor3 = [scrollView2 leadingAnchor];
+    view4 = [(ICDocCamFilterViewController *)self view];
+    leadingAnchor4 = [view4 leadingAnchor];
+    v61 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v3 addObject:v61];
 
-    v62 = [(ICDocCamFilterViewController *)self scrollView];
-    v63 = [v62 trailingAnchor];
-    v64 = [(ICDocCamFilterViewController *)self view];
-    v65 = [v64 trailingAnchor];
-    v66 = [v63 constraintEqualToAnchor:v65];
+    scrollView3 = [(ICDocCamFilterViewController *)self scrollView];
+    trailingAnchor3 = [scrollView3 trailingAnchor];
+    view5 = [(ICDocCamFilterViewController *)self view];
+    trailingAnchor4 = [view5 trailingAnchor];
+    v66 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v3 addObject:v66];
 
-    v67 = [(ICDocCamFilterViewController *)self scrollView];
-    v68 = [v67 bottomAnchor];
-    v69 = [(ICDocCamFilterViewController *)self view];
-    v70 = [v69 bottomAnchor];
+    scrollView4 = [(ICDocCamFilterViewController *)self scrollView];
+    bottomAnchor3 = [scrollView4 bottomAnchor];
+    view6 = [(ICDocCamFilterViewController *)self view];
+    bottomAnchor4 = [view6 bottomAnchor];
     [(ICDocCamFilterViewController *)self bottomOffset];
     v72 = v71;
     [(ICDocCamFilterViewController *)self bottomContentInset];
-    v74 = [v68 constraintEqualToAnchor:v70 constant:v72 - (v73 + 28.0)];
+    v74 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v72 - (v73 + 28.0)];
     [(ICDocCamFilterViewController *)self setScrollViewBottomConstraint:v74];
 
-    v75 = [(ICDocCamFilterViewController *)self scrollViewBottomConstraint];
-    [v3 addObject:v75];
+    scrollViewBottomConstraint = [(ICDocCamFilterViewController *)self scrollViewBottomConstraint];
+    [v3 addObject:scrollViewBottomConstraint];
   }
 
   else
   {
-    v7 = [v5 widthAnchor];
-    v8 = [(ICDocCamFilterViewController *)self view];
-    [v8 dc_directionalSafeAreaInsets];
-    v10 = [v7 constraintEqualToConstant:v9 + 92.0];
+    widthAnchor = [backgroundView widthAnchor];
+    view7 = [(ICDocCamFilterViewController *)self view];
+    [view7 dc_directionalSafeAreaInsets];
+    v10 = [widthAnchor constraintEqualToConstant:v9 + 92.0];
     [v3 addObject:v10];
 
-    v11 = [(ICDocCamFilterViewController *)self backgroundView];
-    v12 = [v11 trailingAnchor];
-    v13 = [(ICDocCamFilterViewController *)self view];
-    v14 = [v13 trailingAnchor];
+    backgroundView5 = [(ICDocCamFilterViewController *)self backgroundView];
+    trailingAnchor5 = [backgroundView5 trailingAnchor];
+    view8 = [(ICDocCamFilterViewController *)self view];
+    trailingAnchor6 = [view8 trailingAnchor];
     [(ICDocCamFilterViewController *)self horizontalOffset];
-    v15 = [v12 constraintEqualToAnchor:v14 constant:?];
+    v15 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:?];
     [v3 addObject:v15];
 
-    v16 = [(ICDocCamFilterViewController *)self backgroundView];
-    v17 = [v16 topAnchor];
-    v18 = [(ICDocCamFilterViewController *)self view];
-    v19 = [v18 topAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    backgroundView6 = [(ICDocCamFilterViewController *)self backgroundView];
+    topAnchor = [backgroundView6 topAnchor];
+    view9 = [(ICDocCamFilterViewController *)self view];
+    topAnchor2 = [view9 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v3 addObject:v20];
 
-    v21 = [(ICDocCamFilterViewController *)self backgroundView];
-    v22 = [v21 bottomAnchor];
-    v23 = [(ICDocCamFilterViewController *)self view];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    backgroundView7 = [(ICDocCamFilterViewController *)self backgroundView];
+    bottomAnchor5 = [backgroundView7 bottomAnchor];
+    view10 = [(ICDocCamFilterViewController *)self view];
+    bottomAnchor6 = [view10 bottomAnchor];
+    v25 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     [v3 addObject:v25];
 
-    v26 = [(ICDocCamFilterViewController *)self scrollView];
-    v27 = [v26 widthAnchor];
-    v28 = [v27 constraintEqualToConstant:60.0];
+    scrollView5 = [(ICDocCamFilterViewController *)self scrollView];
+    widthAnchor2 = [scrollView5 widthAnchor];
+    v28 = [widthAnchor2 constraintEqualToConstant:60.0];
     [v3 addObject:v28];
 
-    v29 = [(ICDocCamFilterViewController *)self view];
-    [v29 dc_directionalSafeAreaInsets];
+    view11 = [(ICDocCamFilterViewController *)self view];
+    [view11 dc_directionalSafeAreaInsets];
     if (v30 == 0.0)
     {
       v33 = 16.0;
@@ -606,31 +606,31 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
 
     else
     {
-      v31 = [(ICDocCamFilterViewController *)self view];
-      [v31 dc_directionalSafeAreaInsets];
+      view12 = [(ICDocCamFilterViewController *)self view];
+      [view12 dc_directionalSafeAreaInsets];
       v33 = v32;
     }
 
-    v76 = [(ICDocCamFilterViewController *)self scrollView];
-    v77 = [v76 trailingAnchor];
-    v78 = [(ICDocCamFilterViewController *)self view];
-    v79 = [v78 trailingAnchor];
+    scrollView6 = [(ICDocCamFilterViewController *)self scrollView];
+    trailingAnchor7 = [scrollView6 trailingAnchor];
+    view13 = [(ICDocCamFilterViewController *)self view];
+    trailingAnchor8 = [view13 trailingAnchor];
     [(ICDocCamFilterViewController *)self horizontalOffset];
-    v81 = [v77 constraintEqualToAnchor:v79 constant:v80 - v33];
+    v81 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:v80 - v33];
     [v3 addObject:v81];
 
-    v82 = [(ICDocCamFilterViewController *)self scrollView];
-    v83 = [v82 topAnchor];
-    v84 = [(ICDocCamFilterViewController *)self view];
-    v85 = [v84 topAnchor];
-    v86 = [v83 constraintEqualToAnchor:v85];
+    scrollView7 = [(ICDocCamFilterViewController *)self scrollView];
+    topAnchor3 = [scrollView7 topAnchor];
+    view14 = [(ICDocCamFilterViewController *)self view];
+    topAnchor4 = [view14 topAnchor];
+    v86 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v3 addObject:v86];
 
-    v75 = [(ICDocCamFilterViewController *)self scrollView];
-    v87 = [v75 bottomAnchor];
-    v88 = [(ICDocCamFilterViewController *)self view];
-    v89 = [v88 bottomAnchor];
-    v90 = [v87 constraintEqualToAnchor:v89];
+    scrollViewBottomConstraint = [(ICDocCamFilterViewController *)self scrollView];
+    bottomAnchor7 = [scrollViewBottomConstraint bottomAnchor];
+    view15 = [(ICDocCamFilterViewController *)self view];
+    bottomAnchor8 = [view15 bottomAnchor];
+    v90 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     [v3 addObject:v90];
   }
 
@@ -638,19 +638,19 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
   [(ICDocCamFilterViewController *)self setLayoutConstraints:v3];
 }
 
-- (void)filterSelected:(id)a3
+- (void)filterSelected:(id)selected
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICDocCamFilterViewController *)self currentFilterType];
-  if (v5 != [v4 filterType])
+  selectedCopy = selected;
+  currentFilterType = [(ICDocCamFilterViewController *)self currentFilterType];
+  if (currentFilterType != [selectedCopy filterType])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(ICDocCamFilterViewController *)self filterButtons];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    filterButtons = [(ICDocCamFilterViewController *)self filterButtons];
+    v7 = [filterButtons countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = *v20;
@@ -660,7 +660,7 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(filterButtons);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
@@ -672,7 +672,7 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [filterButtons countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v7)
         {
           continue;
@@ -684,9 +684,9 @@ void __51__ICDocCamFilterViewController_prepareToAnimateIn___block_invoke_5(uint
 
 LABEL_12:
 
-    [v4 setSelected:1];
+    [selectedCopy setSelected:1];
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, selectedCopy);
     objc_initWeak(&v16, v7);
     v11 = dispatch_time(0, 50000000);
     v12[0] = MEMORY[0x277D85DD0];
@@ -733,24 +733,24 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
 
 - (void)initializeFilters
 {
-  v3 = [(ICDocCamFilterViewController *)self filterButtons];
+  filterButtons = [(ICDocCamFilterViewController *)self filterButtons];
 
-  if (!v3)
+  if (!filterButtons)
   {
-    v4 = [(ICDocCamFilterViewController *)self scrollView];
-    [v4 setShowsVerticalScrollIndicator:0];
+    scrollView = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView setShowsVerticalScrollIndicator:0];
 
-    v5 = [(ICDocCamFilterViewController *)self scrollView];
-    [v5 setShowsHorizontalScrollIndicator:0];
+    scrollView2 = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView2 setShowsHorizontalScrollIndicator:0];
 
-    v6 = [(ICDocCamFilterViewController *)self scrollView];
-    [v6 setDelegate:self];
+    scrollView3 = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView3 setDelegate:self];
 
-    v7 = [(ICDocCamFilterViewController *)self scrollView];
-    [v7 setClipsToBounds:0];
+    scrollView4 = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView4 setClipsToBounds:0];
 
-    v8 = [(ICDocCamFilterViewController *)self scrollView];
-    [v8 setDelaysContentTouches:0];
+    scrollView5 = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView5 setDelaysContentTouches:0];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     for (i = 0; i != 4; ++i)
@@ -758,8 +758,8 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
       v10 = [ICDocCamFilterButton filterButtonWithType:word_249307230[i]];
       [v10 addTarget:self action:sel_filterSelected_ forControlEvents:64];
       [v12 addObject:v10];
-      v11 = [(ICDocCamFilterViewController *)self scrollView];
-      [v11 addSubview:v10];
+      scrollView6 = [(ICDocCamFilterViewController *)self scrollView];
+      [scrollView6 addSubview:v10];
     }
 
     [(ICDocCamFilterViewController *)self setFilterButtons:v12];
@@ -776,21 +776,21 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
   {
     v21 = *MEMORY[0x277CBF3A8];
     v22 = *(MEMORY[0x277CBF3A8] + 8);
-    v23 = [(ICDocCamFilterViewController *)self filterButtons];
-    v24 = [v23 count];
+    filterButtons = [(ICDocCamFilterViewController *)self filterButtons];
+    v24 = [filterButtons count];
 
     if (v24)
     {
       v25 = 0;
       do
       {
-        v26 = [(ICDocCamFilterViewController *)self filterButtons];
-        v27 = [v26 objectAtIndexedSubscript:v25];
+        filterButtons2 = [(ICDocCamFilterViewController *)self filterButtons];
+        v27 = [filterButtons2 objectAtIndexedSubscript:v25];
 
         [v27 bounds];
         v29 = v28;
-        v30 = [(ICDocCamFilterViewController *)self filterButtons];
-        v31 = [v30 count] - 1;
+        filterButtons3 = [(ICDocCamFilterViewController *)self filterButtons];
+        v31 = [filterButtons3 count] - 1;
 
         if (v31 <= v25)
         {
@@ -805,8 +805,8 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
         v22 = v22 + v32;
 
         ++v25;
-        v33 = [(ICDocCamFilterViewController *)self filterButtons];
-        v34 = [v33 count];
+        filterButtons4 = [(ICDocCamFilterViewController *)self filterButtons];
+        v34 = [filterButtons4 count];
       }
 
       while (v34 > v25);
@@ -818,9 +818,9 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
     v3 = 20.0;
     if ((v45 - 3) <= 1)
     {
-      v4 = [(ICDocCamFilterViewController *)self view];
-      v5 = [v4 safeAreaLayoutGuide];
-      [v5 layoutFrame];
+      view = [(ICDocCamFilterViewController *)self view];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+      [safeAreaLayoutGuide layoutFrame];
       Height = CGRectGetHeight(v46);
 
       if (Height > 322.0)
@@ -834,14 +834,14 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
       }
     }
 
-    v7 = [(ICDocCamFilterViewController *)self view];
-    [v7 bounds];
+    view2 = [(ICDocCamFilterViewController *)self view];
+    [view2 bounds];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(ICDocCamFilterViewController *)self navigationController];
-    v13 = [v12 navigationBar];
-    [v13 frame];
+    navigationController = [(ICDocCamFilterViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v14 = CGRectGetMaxY(v47) + v3 * 2.0;
     [(ICDocCamFilterViewController *)self bottomContentInset];
     v16 = v14 + v15;
@@ -864,14 +864,14 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
     v22 = v11 - v19;
   }
 
-  v35 = [(ICDocCamFilterViewController *)self filterButtons];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  filterButtons5 = [(ICDocCamFilterViewController *)self filterButtons];
+  v36 = [filterButtons5 objectAtIndexedSubscript:0];
 
   if (v44)
   {
     [v36 size];
     v38 = v37;
-    v39 = [(ICDocCamFilterViewController *)self scrollView];
+    scrollView = [(ICDocCamFilterViewController *)self scrollView];
   }
 
   else
@@ -880,7 +880,7 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
     [v36 size];
     v38 = v41;
     v43 = v42;
-    v39 = [(ICDocCamFilterViewController *)self scrollView];
+    scrollView = [(ICDocCamFilterViewController *)self scrollView];
     if (v40 <= 1)
     {
       v38 = v21;
@@ -888,7 +888,7 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
     }
   }
 
-  [v39 setContentSize:{v38, v22}];
+  [scrollView setContentSize:{v38, v22}];
 }
 
 - (void)setUpScrollView
@@ -901,9 +901,9 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
   v5 = v49;
   if ((v50 - 3) <= 1 && v49 == 0)
   {
-    v9 = [(ICDocCamFilterViewController *)self view];
-    v10 = [v9 safeAreaLayoutGuide];
-    [v10 layoutFrame];
+    view = [(ICDocCamFilterViewController *)self view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     Height = CGRectGetHeight(v51);
 
     v12 = Height > 322.0;
@@ -939,7 +939,7 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
   v14 = v3[1];
   if (v5)
   {
-    v15 = 0;
+    dc_isRTL = 0;
     v16 = 16.0;
     v17 = v3[1];
     v18 = *v3;
@@ -947,8 +947,8 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
 
   else
   {
-    v19 = [(ICDocCamFilterViewController *)self scrollView];
-    [v19 contentSize];
+    scrollView = [(ICDocCamFilterViewController *)self scrollView];
+    [scrollView contentSize];
     v21 = v20;
     v23 = v22;
 
@@ -956,16 +956,16 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
     {
       v25 = [MEMORY[0x277D74300] systemFontOfSize:11.0];
 
-      v26 = [(ICDocCamFilterViewController *)self filterButtons];
-      v24 = [v26 firstObject];
+      filterButtons = [(ICDocCamFilterViewController *)self filterButtons];
+      firstObject = [filterButtons firstObject];
 
-      [v24 setIconSize:v8];
-      [v24 bounds];
+      [firstObject setIconSize:v8];
+      [firstObject bounds];
       v28 = v23 - (v27 - v7);
-      v29 = [(ICDocCamFilterViewController *)self filterButtons];
-      v17 = v28 / ([v29 count] - 1);
+      filterButtons2 = [(ICDocCamFilterViewController *)self filterButtons];
+      v17 = v28 / ([filterButtons2 count] - 1);
 
-      v15 = 0;
+      dc_isRTL = 0;
       v16 = 14.0;
       v4 = v25;
       v18 = v13;
@@ -973,16 +973,16 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
 
     else
     {
-      v15 = [MEMORY[0x277D74248] dc_isRTL];
-      v24 = [(ICDocCamFilterViewController *)self filterButtons];
-      v18 = (v21 - v8) / ([v24 count] - 1);
+      dc_isRTL = [MEMORY[0x277D74248] dc_isRTL];
+      firstObject = [(ICDocCamFilterViewController *)self filterButtons];
+      v18 = (v21 - v8) / ([firstObject count] - 1);
       v16 = 20.0;
       v17 = v14;
     }
   }
 
-  v30 = [(ICDocCamFilterViewController *)self filterButtons];
-  v31 = [v30 count];
+  filterButtons3 = [(ICDocCamFilterViewController *)self filterButtons];
+  v31 = [filterButtons3 count];
 
   if (v31)
   {
@@ -990,24 +990,24 @@ void __47__ICDocCamFilterViewController_filterSelected___block_invoke(id *a1)
     v33 = -1;
     do
     {
-      v34 = [(ICDocCamFilterViewController *)self filterButtons];
-      v35 = v34;
-      if (v15)
+      filterButtons4 = [(ICDocCamFilterViewController *)self filterButtons];
+      v35 = filterButtons4;
+      if (dc_isRTL)
       {
-        v36 = [(ICDocCamFilterViewController *)self filterButtons];
-        v37 = [v35 objectAtIndexedSubscript:{objc_msgSend(v36, "count") + v33}];
+        filterButtons5 = [(ICDocCamFilterViewController *)self filterButtons];
+        v37 = [v35 objectAtIndexedSubscript:{objc_msgSend(filterButtons5, "count") + v33}];
       }
 
       else
       {
-        v37 = [v34 objectAtIndexedSubscript:v32];
+        v37 = [filterButtons4 objectAtIndexedSubscript:v32];
       }
 
-      v38 = [v37 filterNameLabel];
-      [v38 setFont:v4];
+      filterNameLabel = [v37 filterNameLabel];
+      [filterNameLabel setFont:v4];
 
-      v39 = [v37 labelVerticalSpacingConstraint];
-      [v39 setConstant:v16];
+      labelVerticalSpacingConstraint = [v37 labelVerticalSpacingConstraint];
+      [labelVerticalSpacingConstraint setConstant:v16];
 
       [v37 setIconSize:v8];
       [v37 bounds];
@@ -1070,8 +1070,8 @@ LABEL_32:
       v14 = v14 + v46;
 
       ++v32;
-      v47 = [(ICDocCamFilterViewController *)self filterButtons];
-      v48 = [v47 count];
+      filterButtons6 = [(ICDocCamFilterViewController *)self filterButtons];
+      v48 = [filterButtons6 count];
 
       --v33;
     }
@@ -1080,17 +1080,17 @@ LABEL_32:
   }
 }
 
-- (void)setCurrentFilterType:(signed __int16)a3
+- (void)setCurrentFilterType:(signed __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v14 = *MEMORY[0x277D85DE8];
-  self->_currentFilterType = a3;
+  self->_currentFilterType = type;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(ICDocCamFilterViewController *)self filterButtons];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  filterButtons = [(ICDocCamFilterViewController *)self filterButtons];
+  v5 = [filterButtons countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1102,27 +1102,27 @@ LABEL_32:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filterButtons);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setSelected:{objc_msgSend(*(*(&v9 + 1) + 8 * v8), "filterType") == v3}];
+        [*(*(&v9 + 1) + 8 * v8) setSelected:{objc_msgSend(*(*(&v9 + 1) + 8 * v8), "filterType") == typeCopy}];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [filterButtons countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)filterButtonFromLocation:(CGPoint)a3
+- (id)filterButtonFromLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(ICDocCamFilterViewController *)self view];
-  v6 = [v5 hitTest:0 withEvent:{x, y}];
+  y = location.y;
+  x = location.x;
+  view = [(ICDocCamFilterViewController *)self view];
+  v6 = [view hitTest:0 withEvent:{x, y}];
 
   if (v6)
   {
@@ -1134,12 +1134,12 @@ LABEL_32:
         break;
       }
 
-      v7 = [v6 superview];
+      superview = [v6 superview];
 
-      v6 = v7;
+      v6 = superview;
     }
 
-    while (v7);
+    while (superview);
   }
 
   v8 = objc_opt_class();
@@ -1148,15 +1148,15 @@ LABEL_32:
   return v9;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(ICDocCamFilterViewController *)self longPressGesture];
+  beginCopy = begin;
+  longPressGesture = [(ICDocCamFilterViewController *)self longPressGesture];
 
-  if (v5 == v4)
+  if (longPressGesture == beginCopy)
   {
-    v7 = [(ICDocCamFilterViewController *)self view];
-    [v4 locationInView:v7];
+    view = [(ICDocCamFilterViewController *)self view];
+    [beginCopy locationInView:view];
     v8 = [(ICDocCamFilterViewController *)self filterButtonFromLocation:?];
 
     v6 = v8 != 0;
@@ -1170,27 +1170,27 @@ LABEL_32:
   return v6;
 }
 
-- (void)applyToAll:(signed __int16)a3
+- (void)applyToAll:(signed __int16)all
 {
-  v3 = a3;
-  v5 = [(ICDocCamFilterViewController *)self filterViewDelegate];
-  [v5 filterViewControllerApplyToAll:v3];
+  allCopy = all;
+  filterViewDelegate = [(ICDocCamFilterViewController *)self filterViewDelegate];
+  [filterViewDelegate filterViewControllerApplyToAll:allCopy];
 
-  [(ICDocCamFilterViewController *)self setCurrentFilterType:v3];
+  [(ICDocCamFilterViewController *)self setCurrentFilterType:allCopy];
 }
 
-- (void)longPressGesture:(id)a3
+- (void)longPressGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v5 = [(ICDocCamFilterViewController *)self view];
-    [v4 locationInView:v5];
+    view = [(ICDocCamFilterViewController *)self view];
+    [gestureCopy locationInView:view];
     v6 = [(ICDocCamFilterViewController *)self filterButtonFromLocation:?];
 
-    v7 = [v6 filterType];
-    v8 = [(ICDocCamFilterViewController *)self filterViewDelegate];
-    v9 = [v8 filterViewControllerCanApplyToAll:v7];
+    filterType = [v6 filterType];
+    filterViewDelegate = [(ICDocCamFilterViewController *)self filterViewDelegate];
+    v9 = [filterViewDelegate filterViewControllerCanApplyToAll:filterType];
 
     if (v9)
     {
@@ -1202,7 +1202,7 @@ LABEL_32:
       v20[2] = __49__ICDocCamFilterViewController_longPressGesture___block_invoke;
       v20[3] = &unk_278F935F0;
       v20[4] = self;
-      v21 = v7;
+      v21 = filterType;
       v13 = [v11 actionWithTitle:v12 style:0 handler:v20];
 
       [v10 addAction:v13];
@@ -1212,13 +1212,13 @@ LABEL_32:
       v16 = [v14 actionWithTitle:v15 style:1 handler:&__block_literal_global_57];
       [v10 addAction:v16];
 
-      v17 = [v10 popoverPresentationController];
-      v18 = [v6 filterIconView];
-      [v17 setSourceView:v18];
+      popoverPresentationController = [v10 popoverPresentationController];
+      filterIconView = [v6 filterIconView];
+      [popoverPresentationController setSourceView:filterIconView];
 
-      v19 = [v6 filterIconView];
-      [v19 bounds];
-      [v17 setSourceRect:?];
+      filterIconView2 = [v6 filterIconView];
+      [filterIconView2 bounds];
+      [popoverPresentationController setSourceRect:?];
 
       [(ICDocCamFilterViewController *)self presentViewController:v10 animated:1 completion:0];
     }

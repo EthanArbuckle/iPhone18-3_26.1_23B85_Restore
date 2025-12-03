@@ -1,7 +1,7 @@
 @interface MCAppWhitelistPayloadBase
 + (id)knownOptionsKeys;
 + (id)knownUserEnabledOptionKeys;
-- (MCAppWhitelistPayloadBase)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCAppWhitelistPayloadBase)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)restrictions;
 - (id)stubDictionary;
@@ -76,28 +76,28 @@ void __55__MCAppWhitelistPayloadBase_knownUserEnabledOptionKeys__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (MCAppWhitelistPayloadBase)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCAppWhitelistPayloadBase)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = MCAppWhitelistPayloadBase;
-  v10 = [(MCPayload *)&v16 initWithDictionary:v8 profile:v9 outError:a5];
-  if (v10 && [v9 isStub])
+  v10 = [(MCPayload *)&v16 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
+  if (v10 && [profileCopy isStub])
   {
-    v11 = [v8 objectForKey:@"Apps"];
+    v11 = [dictionaryCopy objectForKey:@"Apps"];
     whitelistedAppsAndOptions = v10->_whitelistedAppsAndOptions;
     v10->_whitelistedAppsAndOptions = v11;
 
-    v13 = [v8 objectForKey:@"AllowAccessWithoutPasscode"];
+    v13 = [dictionaryCopy objectForKey:@"AllowAccessWithoutPasscode"];
     v10->_allowAccessWithoutPasscode = [v13 BOOLValue];
 
-    v14 = [v8 objectForKey:@"ForceAllowSupervisorAccess"];
+    v14 = [dictionaryCopy objectForKey:@"ForceAllowSupervisorAccess"];
     v10->_forceAllowSupervisorAccess = [v14 BOOLValue];
 
-    [v8 removeObjectForKey:@"Apps"];
-    [v8 removeObjectForKey:@"AllowAccessWithoutPasscode"];
-    [v8 removeObjectForKey:@"ForceAllowSupervisorAccess"];
+    [dictionaryCopy removeObjectForKey:@"Apps"];
+    [dictionaryCopy removeObjectForKey:@"AllowAccessWithoutPasscode"];
+    [dictionaryCopy removeObjectForKey:@"ForceAllowSupervisorAccess"];
   }
 
   return v10;
@@ -129,20 +129,20 @@ void __55__MCAppWhitelistPayloadBase_knownUserEnabledOptionKeys__block_invoke()
   }
 
   [v3 setObject:v4 forKeyedSubscript:@"restrictedBool"];
-  v7 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+  whitelistedAppsAndOptions = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
 
-  if (v7)
+  if (whitelistedAppsAndOptions)
   {
     v8 = MEMORY[0x1E695DF70];
-    v9 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
-    v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    whitelistedAppsAndOptions2 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+    v10 = [v8 arrayWithCapacity:{objc_msgSend(whitelistedAppsAndOptions2, "count")}];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    whitelistedAppsAndOptions3 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+    v12 = [whitelistedAppsAndOptions3 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v12)
     {
       v13 = v12;
@@ -153,7 +153,7 @@ void __55__MCAppWhitelistPayloadBase_knownUserEnabledOptionKeys__block_invoke()
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(whitelistedAppsAndOptions3);
           }
 
           v16 = [*(*(&v21 + 1) + 8 * i) objectForKey:@"Identifier"];
@@ -163,7 +163,7 @@ void __55__MCAppWhitelistPayloadBase_knownUserEnabledOptionKeys__block_invoke()
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v13 = [whitelistedAppsAndOptions3 countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v13);
@@ -187,12 +187,12 @@ void __55__MCAppWhitelistPayloadBase_knownUserEnabledOptionKeys__block_invoke()
 {
   v9.receiver = self;
   v9.super_class = MCAppWhitelistPayloadBase;
-  v3 = [(MCPayload *)&v9 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v9 stubDictionary];
+  v4 = stubDictionary;
   whitelistedAppsAndOptions = self->_whitelistedAppsAndOptions;
   if (whitelistedAppsAndOptions)
   {
-    [v3 setObject:whitelistedAppsAndOptions forKey:@"Apps"];
+    [stubDictionary setObject:whitelistedAppsAndOptions forKey:@"Apps"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCAppWhitelistPayloadBase allowAccessWithoutPasscode](self, "allowAccessWithoutPasscode")}];
@@ -208,12 +208,12 @@ void __55__MCAppWhitelistPayloadBase_knownUserEnabledOptionKeys__block_invoke()
 {
   v7.receiver = self;
   v7.super_class = MCAppWhitelistPayloadBase;
-  v3 = [(MCPayload *)&v7 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v7 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   [v4 appendFormat:@"App whitelist:\n"];
-  v5 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
-  [v4 appendFormat:@"  Apps: %@\n", v5];
+  whitelistedAppsAndOptions = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+  [v4 appendFormat:@"  Apps: %@\n", whitelistedAppsAndOptions];
 
   [v4 appendFormat:@"  Allow access without passcode: %d\n", -[MCAppWhitelistPayloadBase allowAccessWithoutPasscode](self, "allowAccessWithoutPasscode")];
   [v4 appendFormat:@"  Allow supervisor access: %d\n", -[MCAppWhitelistPayloadBase forceAllowSupervisorAccess](self, "forceAllowSupervisorAccess")];
@@ -242,9 +242,9 @@ void __55__MCAppWhitelistPayloadBase_knownUserEnabledOptionKeys__block_invoke()
 
   v14 = v3;
   [v3 addObject:v13];
-  v15 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+  whitelistedAppsAndOptions = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
 
-  if (v15)
+  if (whitelistedAppsAndOptions)
   {
     v29 = v13;
     v30 = v11;

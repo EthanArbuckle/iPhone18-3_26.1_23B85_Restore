@@ -11,12 +11,12 @@
   v12 = MEMORY[0x277CCACA8];
   v13 = __error();
   v14 = [v12 stringWithFormat:@"%@: %s", v11, strerror(*v13)];
-  return [objc_msgSend(a1 exceptionWithName:a3 reason:v14 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", *__error()), @"SFUFileUtilsErrnoKey", "raise"}];
+  return [objc_msgSend(self exceptionWithName:a3 reason:v14 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", *__error()), @"SFUFileUtilsErrnoKey", "raise"}];
 }
 
 - (uint64_t)localErrno
 {
-  v1 = [objc_msgSend(a1 "userInfo")];
+  v1 = [objc_msgSend(self "userInfo")];
   if (!v1)
   {
     return 0;

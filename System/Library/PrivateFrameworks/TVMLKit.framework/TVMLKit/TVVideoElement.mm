@@ -1,5 +1,5 @@
 @interface TVVideoElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)assets;
 @end
 
@@ -7,9 +7,9 @@
 
 - (NSArray)assets
 {
-  v2 = [(TVViewElement *)self childViewElements];
+  childViewElements = [(TVViewElement *)self childViewElements];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_4];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [childViewElements filteredArrayUsingPredicate:v3];
 
   v5 = [v4 copy];
 
@@ -25,16 +25,16 @@ uint64_t __24__TVVideoElement_assets__block_invoke(uint64_t a1, void *a2)
   return isKindOfClass & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TVVideoElement *)self assets];
-    v6 = [v4 assets];
-    v7 = [v5 isEqualToArray:v6];
+    assets = [(TVVideoElement *)self assets];
+    assets2 = [equalCopy assets];
+    v7 = [assets isEqualToArray:assets2];
   }
 
   else

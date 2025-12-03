@@ -1,22 +1,22 @@
 @interface SUUISortDataRequest
-- (SUUISortDataRequest)initWithSortURL:(id)a3;
+- (SUUISortDataRequest)initWithSortURL:(id)l;
 - (SUUISortDataRequestDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newLoadOperation;
-- (void)finishWithResource:(id)a3;
+- (void)finishWithResource:(id)resource;
 @end
 
 @implementation SUUISortDataRequest
 
-- (SUUISortDataRequest)initWithSortURL:(id)a3
+- (SUUISortDataRequest)initWithSortURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SUUISortDataRequest;
   v5 = [(SUUIResourceRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     sortURL = v5->_sortURL;
     v5->_sortURL = v6;
   }
@@ -24,13 +24,13 @@
   return v5;
 }
 
-- (void)finishWithResource:(id)a3
+- (void)finishWithResource:(id)resource
 {
-  v5 = a3;
+  resourceCopy = resource;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained sortDataRequest:self didFinishWithLockups:v5];
+    [WeakRetained sortDataRequest:self didFinishWithLockups:resourceCopy];
   }
 }
 
@@ -41,12 +41,12 @@
   return [(SUUILoadSortDataOperation *)v3 initWithResourceRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SUUISortDataRequest;
   v5 = [(SUUIResourceRequest *)&v9 copyWithZone:?];
-  v6 = [(NSURL *)self->_sortURL copyWithZone:a3];
+  v6 = [(NSURL *)self->_sortURL copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 

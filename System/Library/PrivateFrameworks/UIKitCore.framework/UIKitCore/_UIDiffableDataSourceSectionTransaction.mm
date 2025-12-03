@@ -1,27 +1,27 @@
 @interface _UIDiffableDataSourceSectionTransaction
-- (BOOL)isEqual:(id)a3;
-- (_UIDiffableDataSourceSectionTransaction)initWithSectionIdentifier:(id)a3 initialSnapshot:(id)a4 finalSnapshot:(id)a5 difference:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (_UIDiffableDataSourceSectionTransaction)initWithSectionIdentifier:(id)identifier initialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference;
 - (id)description;
 @end
 
 @implementation _UIDiffableDataSourceSectionTransaction
 
-- (_UIDiffableDataSourceSectionTransaction)initWithSectionIdentifier:(id)a3 initialSnapshot:(id)a4 finalSnapshot:(id)a5 difference:(id)a6
+- (_UIDiffableDataSourceSectionTransaction)initWithSectionIdentifier:(id)identifier initialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  snapshotCopy = snapshot;
+  finalSnapshotCopy = finalSnapshot;
+  differenceCopy = difference;
   v18.receiver = self;
   v18.super_class = _UIDiffableDataSourceSectionTransaction;
   v15 = [(_UIDiffableDataSourceSectionTransaction *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sectionIdentifier, a3);
-    objc_storeStrong(&v16->_initialSnapshot, a4);
-    objc_storeStrong(&v16->_finalSnapshot, a5);
-    objc_storeStrong(&v16->_difference, a6);
+    objc_storeStrong(&v15->_sectionIdentifier, identifier);
+    objc_storeStrong(&v16->_initialSnapshot, snapshot);
+    objc_storeStrong(&v16->_finalSnapshot, finalSnapshot);
+    objc_storeStrong(&v16->_difference, difference);
   }
 
   return v16;
@@ -37,26 +37,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v18 = 1;
     }
 
     else
     {
-      v6 = v4;
+      v6 = equalCopy;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && (-[_UIDiffableDataSourceSectionTransaction sectionIdentifier](v6, "sectionIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), -[_UIDiffableDataSourceSectionTransaction sectionIdentifier](self, "sectionIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, v9) && (-[_UIDiffableDataSourceSectionTransaction difference](v6, "difference"), v10 = objc_claimAutoreleasedReturnValue(), -[_UIDiffableDataSourceSectionTransaction difference](self, "difference"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqual:", v11), v11, v10, v12) && (-[_UIDiffableDataSourceSectionTransaction initialSnapshot](v6, "initialSnapshot"), v13 = objc_claimAutoreleasedReturnValue(), -[_UIDiffableDataSourceSectionTransaction initialSnapshot](self, "initialSnapshot"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqual:", v14), v14, v13, v15))
       {
-        v16 = [(_UIDiffableDataSourceSectionTransaction *)v6 finalSnapshot];
-        v17 = [(_UIDiffableDataSourceSectionTransaction *)self finalSnapshot];
-        v18 = [v16 isEqual:v17];
+        finalSnapshot = [(_UIDiffableDataSourceSectionTransaction *)v6 finalSnapshot];
+        finalSnapshot2 = [(_UIDiffableDataSourceSectionTransaction *)self finalSnapshot];
+        v18 = [finalSnapshot isEqual:finalSnapshot2];
       }
 
       else

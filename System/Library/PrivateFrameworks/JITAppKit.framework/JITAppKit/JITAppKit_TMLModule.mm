@@ -1,13 +1,13 @@
 @interface JITAppKit_TMLModule
 + (BOOL)loadModule;
-+ (void)initializeJSContext:(id)a3;
++ (void)initializeJSContext:(id)context;
 @end
 
 @implementation JITAppKit_TMLModule
 
 + (BOOL)loadModule
 {
-  v16 = a1;
+  selfCopy = self;
   v15 = a2;
   v10 = 0;
   v11 = &v10;
@@ -34,17 +34,17 @@
   return v3 & 1;
 }
 
-+ (void)initializeJSContext:(id)a3
++ (void)initializeJSContext:(id)context
 {
   v57[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v3 = MEMORY[0x277CD4658];
-  v4 = [location[0] context];
+  context = [location[0] context];
   v38 = [v3 valueWithNewObjectInContext:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](context);
   v5 = location[0];
   v21 = MEMORY[0x277CD4630];
   v56[0] = *MEMORY[0x277CD4630];

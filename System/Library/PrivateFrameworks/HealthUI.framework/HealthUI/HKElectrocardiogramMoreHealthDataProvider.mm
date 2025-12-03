@@ -1,15 +1,15 @@
 @interface HKElectrocardiogramMoreHealthDataProvider
 - (HKElectrocardiogramMoreHealthDataProvider)init;
 - (UIEdgeInsets)_offscreenInsets;
-- (id)_defaultCellWithBackgroundColor:(id)a3;
-- (id)_itemViewForRow:(int64_t)a3;
+- (id)_defaultCellWithBackgroundColor:(id)color;
+- (id)_itemViewForRow:(int64_t)row;
 - (id)_sentinelCell;
-- (id)cellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)unitTesting_itemsForIdentifiers:(id)a3;
+- (id)cellForRow:(int64_t)row tableView:(id)view;
+- (id)unitTesting_itemsForIdentifiers:(id)identifiers;
 - (int64_t)count;
-- (void)_configureLayoutForView:(id)a3 inCell:(id)a4;
-- (void)addItem:(id)a3;
-- (void)removeItemWithIdentifier:(id)a3;
+- (void)_configureLayoutForView:(id)view inCell:(id)cell;
+- (void)addItem:(id)item;
+- (void)removeItemWithIdentifier:(id)identifier;
 @end
 
 @implementation HKElectrocardiogramMoreHealthDataProvider
@@ -21,9 +21,9 @@
   v2 = [(HKElectrocardiogramMoreHealthDataProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     dataSource = v2->_dataSource;
-    v2->_dataSource = v3;
+    v2->_dataSource = array;
   }
 
   return v2;
@@ -31,91 +31,91 @@
 
 - (int64_t)count
 {
-  v2 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-  v3 = [v2 count];
+  dataSource = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+  v3 = [dataSource count];
 
   return v3;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
-    v5 = [v4 identifier];
-    [(HKElectrocardiogramMoreHealthDataProvider *)self removeItemWithIdentifier:v5];
+    itemCopy = item;
+    identifier = [itemCopy identifier];
+    [(HKElectrocardiogramMoreHealthDataProvider *)self removeItemWithIdentifier:identifier];
 
-    v6 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-    [v6 addObject:v4];
+    dataSource = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+    [dataSource addObject:itemCopy];
   }
 }
 
-- (void)removeItemWithIdentifier:(id)a3
+- (void)removeItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-  v7 = [v5 hk_itemForIdentifier:v4];
+  identifierCopy = identifier;
+  dataSource = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+  v7 = [dataSource hk_itemForIdentifier:identifierCopy];
 
   if (v7)
   {
-    v6 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-    [v6 removeObject:v7];
+    dataSource2 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+    [dataSource2 removeObject:v7];
   }
 }
 
-- (id)cellForRow:(int64_t)a3 tableView:(id)a4
+- (id)cellForRow:(int64_t)row tableView:(id)view
 {
-  v6 = a4;
-  v7 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-  v8 = [v7 count];
+  viewCopy = view;
+  dataSource = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+  v8 = [dataSource count];
 
-  if (v8 <= a3)
+  if (v8 <= row)
   {
-    v9 = [(HKElectrocardiogramMoreHealthDataProvider *)self _sentinelCell];
+    _sentinelCell = [(HKElectrocardiogramMoreHealthDataProvider *)self _sentinelCell];
   }
 
   else
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"MoreHealthReuseIdentifier"];
-    if (!v9)
+    _sentinelCell = [viewCopy dequeueReusableCellWithIdentifier:@"MoreHealthReuseIdentifier"];
+    if (!_sentinelCell)
     {
-      v10 = [v6 backgroundColor];
-      v9 = [(HKElectrocardiogramMoreHealthDataProvider *)self _defaultCellWithBackgroundColor:v10];
+      backgroundColor = [viewCopy backgroundColor];
+      _sentinelCell = [(HKElectrocardiogramMoreHealthDataProvider *)self _defaultCellWithBackgroundColor:backgroundColor];
 
-      v11 = [(HKElectrocardiogramMoreHealthDataProvider *)self _itemViewForRow:a3];
-      v12 = [v9 contentView];
-      [v12 addSubview:v11];
+      v11 = [(HKElectrocardiogramMoreHealthDataProvider *)self _itemViewForRow:row];
+      contentView = [_sentinelCell contentView];
+      [contentView addSubview:v11];
 
-      [(HKElectrocardiogramMoreHealthDataProvider *)self _configureLayoutForView:v11 inCell:v9];
+      [(HKElectrocardiogramMoreHealthDataProvider *)self _configureLayoutForView:v11 inCell:_sentinelCell];
     }
   }
 
-  return v9;
+  return _sentinelCell;
 }
 
-- (id)_itemViewForRow:(int64_t)a3
+- (id)_itemViewForRow:(int64_t)row
 {
-  v4 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-  v5 = [v4 objectAtIndexedSubscript:a3];
-  v6 = [v5 view];
+  dataSource = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+  v5 = [dataSource objectAtIndexedSubscript:row];
+  view = [v5 view];
 
-  v7 = [v6 layer];
-  [v7 setCornerRadius:10.0];
+  layer = [view layer];
+  [layer setCornerRadius:10.0];
 
-  v8 = [v6 layer];
-  [v8 setMasksToBounds:1];
+  layer2 = [view layer];
+  [layer2 setMasksToBounds:1];
 
-  return v6;
+  return view;
 }
 
-- (id)_defaultCellWithBackgroundColor:(id)a3
+- (id)_defaultCellWithBackgroundColor:(id)color
 {
   v4 = MEMORY[0x1E69DD028];
-  v5 = a3;
+  colorCopy = color;
   v6 = [[v4 alloc] initWithStyle:0 reuseIdentifier:@"MoreHealthReuseIdentifier"];
-  [v6 setBackgroundColor:v5];
-  v7 = [v6 contentView];
-  [v7 setBackgroundColor:v5];
+  [v6 setBackgroundColor:colorCopy];
+  contentView = [v6 contentView];
+  [contentView setBackgroundColor:colorCopy];
 
   [(HKElectrocardiogramMoreHealthDataProvider *)self _offscreenInsets];
   [v6 setSeparatorInset:?];
@@ -123,25 +123,25 @@
   return v6;
 }
 
-- (void)_configureLayoutForView:(id)a3 inCell:(id)a4
+- (void)_configureLayoutForView:(id)view inCell:(id)cell
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 contentView];
+  cellCopy = cell;
+  viewCopy = view;
+  contentView = [cellCopy contentView];
   v9 = 0.0;
-  [v7 hk_alignHorizontalConstraintsWithView:v8 margin:0.0];
+  [viewCopy hk_alignHorizontalConstraintsWithView:contentView margin:0.0];
 
-  v10 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-  v11 = [v10 firstObject];
-  v12 = [v11 view];
-  if (v12 != v7)
+  dataSource = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+  firstObject = [dataSource firstObject];
+  view = [firstObject view];
+  if (view != viewCopy)
   {
     v9 = 10.0;
   }
 
-  v13 = [v6 contentView];
+  contentView2 = [cellCopy contentView];
 
-  [v7 hk_alignVerticalConstraintsWithView:v13 insets:{v9, 0.0, 0.0, 0.0}];
+  [viewCopy hk_alignVerticalConstraintsWithView:contentView2 insets:{v9, 0.0, 0.0, 0.0}];
 }
 
 - (UIEdgeInsets)_offscreenInsets
@@ -164,13 +164,13 @@
   return v2;
 }
 
-- (id)unitTesting_itemsForIdentifiers:(id)a3
+- (id)unitTesting_itemsForIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  identifiersCopy = identifiers;
   v4 = MEMORY[0x1E695DF70];
-  v5 = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  dataSource = [(HKElectrocardiogramMoreHealthDataProvider *)self dataSource];
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(dataSource, "count")}];
 
   v28 = 0u;
   v29 = 0u;
@@ -196,7 +196,7 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v11 = v21;
+        v11 = identifiersCopy;
         v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v12)
         {
@@ -212,8 +212,8 @@
               }
 
               v16 = *(*(&v22 + 1) + 8 * j);
-              v17 = [v10 identifier];
-              LODWORD(v16) = [v17 isEqualToString:v16];
+              identifier = [v10 identifier];
+              LODWORD(v16) = [identifier isEqualToString:v16];
 
               if (v16)
               {

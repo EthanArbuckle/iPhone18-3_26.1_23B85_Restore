@@ -1,53 +1,53 @@
 @interface _CNBlockFutureImpl
-+ (id)implWithBlock:(id)a3;
-+ (id)implWithSchedulerProvider:(id)a3 block:(id)a4;
-+ (id)lazyImplWithBlock:(id)a3;
-+ (id)lazyImplWithSchedulerProvider:(id)a3 block:(id)a4;
++ (id)implWithBlock:(id)block;
++ (id)implWithSchedulerProvider:(id)provider block:(id)block;
++ (id)lazyImplWithBlock:(id)block;
++ (id)lazyImplWithSchedulerProvider:(id)provider block:(id)block;
 + (id)log;
 - (BOOL)_nts_isFinished;
 - (BOOL)cancel;
-- (BOOL)finishWithResult:(id)a3 error:(id)a4;
+- (BOOL)finishWithResult:(id)result error:(id)error;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (BOOL)nts_isFinished;
 - (BOOL)nts_mayResumeQueue;
 - (_CNBlockFutureImpl)init;
-- (_CNBlockFutureImpl)initWithSchedulerProvider:(id)a3;
+- (_CNBlockFutureImpl)initWithSchedulerProvider:(id)provider;
 - (id)futureResult;
-- (id)futureResultFromAsynchronousLookupBeforeDate:(id)a3 error:(id *)a4;
+- (id)futureResultFromAsynchronousLookupBeforeDate:(id)date error:(id *)error;
 - (id)futureResultFromImmediateLookup;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
+- (id)resultBeforeDate:(id)date error:(id *)error;
 - (void)_flushCompletionBlocks;
-- (void)addFailureBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)addWriterBlock:(id)a3;
+- (void)addFailureBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)addWriterBlock:(id)block;
 - (void)dealloc;
 - (void)implicitlyResumeQueue;
 - (void)nts_resumeQueue;
 - (void)resumeQueue;
-- (void)updateDescriptionWithBuilder:(id)a3;
+- (void)updateDescriptionWithBuilder:(id)builder;
 @end
 
 @implementation _CNBlockFutureImpl
 
 - (BOOL)_nts_isFinished
 {
-  v2 = [(_CNBlockFutureImpl *)self stateLock];
-  v3 = [v2 condition] == 1;
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  v3 = [stateLock condition] == 1;
 
   return v3;
 }
 
 - (BOOL)isFinished
 {
-  v3 = [(_CNBlockFutureImpl *)self stateLock];
-  [v3 lock];
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock lock];
 
-  LOBYTE(v3) = [(_CNBlockFutureImpl *)self _nts_isFinished];
-  v4 = [(_CNBlockFutureImpl *)self stateLock];
-  [v4 unlock];
+  LOBYTE(stateLock) = [(_CNBlockFutureImpl *)self _nts_isFinished];
+  stateLock2 = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock2 unlock];
 
-  return v3;
+  return stateLock;
 }
 
 - (id)futureResultFromImmediateLookup
@@ -63,14 +63,14 @@
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v3 = [(_CNBlockFutureImpl *)self stateLock];
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __43___CNBlockFutureImpl_implicitlyResumeQueue__block_invoke;
   v4[3] = &unk_1E6ED6E58;
   v4[4] = self;
   v4[5] = &v5;
-  CNRunWithLock(v3, v4);
+  CNRunWithLock(stateLock, v4);
 
   if (*(v6 + 24) == 1)
   {
@@ -90,13 +90,13 @@
 
 - (void)resumeQueue
 {
-  v3 = [(_CNBlockFutureImpl *)self stateLock];
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __33___CNBlockFutureImpl_resumeQueue__block_invoke;
   v4[3] = &unk_1E6ED5830;
   v4[4] = self;
-  CNRunWithLock(v3, v4);
+  CNRunWithLock(stateLock, v4);
 }
 
 - (void)nts_resumeQueue
@@ -117,12 +117,12 @@
 
 - (id)futureResult
 {
-  v3 = [(_CNBlockFutureImpl *)self stateLock];
-  [v3 lock];
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock lock];
 
   v4 = [(CNFutureResult *)self->_futureResult copy];
-  v5 = [(_CNBlockFutureImpl *)self stateLock];
-  [v5 unlock];
+  stateLock2 = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock2 unlock];
 
   return v4;
 }
@@ -139,30 +139,30 @@
   return v3;
 }
 
-+ (id)implWithBlock:(id)a3
++ (id)implWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [a1 implWithSchedulerProvider:v5 block:v4];
+  v6 = [self implWithSchedulerProvider:v5 block:blockCopy];
 
   return v6;
 }
 
-+ (id)implWithSchedulerProvider:(id)a3 block:(id)a4
++ (id)implWithSchedulerProvider:(id)provider block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSchedulerProvider:v7];
+  blockCopy = block;
+  providerCopy = provider;
+  v8 = [[self alloc] initWithSchedulerProvider:providerCopy];
 
   [v8 resumeQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54___CNBlockFutureImpl_implWithSchedulerProvider_block___block_invoke;
   v14[3] = &unk_1E6ED52C0;
-  v16 = v6;
+  v16 = blockCopy;
   v9 = v8;
   v15 = v9;
-  v10 = v6;
+  v10 = blockCopy;
   [v9 addWriterBlock:v14];
   v11 = v15;
   v12 = v9;
@@ -170,26 +170,26 @@
   return v9;
 }
 
-+ (id)lazyImplWithBlock:(id)a3
++ (id)lazyImplWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [a1 lazyImplWithSchedulerProvider:v5 block:v4];
+  v6 = [self lazyImplWithSchedulerProvider:v5 block:blockCopy];
 
   return v6;
 }
 
-+ (id)lazyImplWithSchedulerProvider:(id)a3 block:(id)a4
++ (id)lazyImplWithSchedulerProvider:(id)provider block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithSchedulerProvider:v6];
+  providerCopy = provider;
+  blockCopy = block;
+  v8 = [[self alloc] initWithSchedulerProvider:providerCopy];
   objc_initWeak(&location, v8);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58___CNBlockFutureImpl_lazyImplWithSchedulerProvider_block___block_invoke;
   v11[3] = &unk_1E6ED6E30;
-  v9 = v7;
+  v9 = blockCopy;
   v12 = v9;
   objc_copyWeak(&v13, &location);
   [v8 addWriterBlock:v11];
@@ -208,9 +208,9 @@
   return v4;
 }
 
-- (_CNBlockFutureImpl)initWithSchedulerProvider:(id)a3
+- (_CNBlockFutureImpl)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = _CNBlockFutureImpl;
   v5 = [(_CNBlockFutureImpl *)&v15 init];
@@ -225,8 +225,8 @@
     futureResult = v5->_futureResult;
     v5->_futureResult = v8;
 
-    v10 = [v4 immediateScheduler];
-    v11 = [CNSuspendableSchedulerDecorator suspendedSchedulerWithScheduler:v10];
+    immediateScheduler = [providerCopy immediateScheduler];
+    v11 = [CNSuspendableSchedulerDecorator suspendedSchedulerWithScheduler:immediateScheduler];
     blockScheduler = v5->_blockScheduler;
     v5->_blockScheduler = v11;
 
@@ -237,18 +237,18 @@
   return v5;
 }
 
-- (void)updateDescriptionWithBuilder:(id)a3
+- (void)updateDescriptionWithBuilder:(id)builder
 {
-  v13 = a3;
-  v4 = [(_CNBlockFutureImpl *)self stateLock];
-  v5 = [v4 tryLock];
+  builderCopy = builder;
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  tryLock = [stateLock tryLock];
 
-  if (v5)
+  if (tryLock)
   {
-    v6 = [(_CNBlockFutureImpl *)self stateLock];
-    v7 = [v6 condition];
+    stateLock2 = [(_CNBlockFutureImpl *)self stateLock];
+    condition = [stateLock2 condition];
 
-    if (v7)
+    if (condition)
     {
       v8 = @"finished";
     }
@@ -258,55 +258,55 @@
       v8 = @"ready";
     }
 
-    v9 = [v13 appendName:@"state" object:v8];
-    v10 = [(_CNBlockFutureImpl *)self stateLock];
-    [v10 unlock];
+    v9 = [builderCopy appendName:@"state" object:v8];
+    stateLock3 = [(_CNBlockFutureImpl *)self stateLock];
+    [stateLock3 unlock];
   }
 
   else
   {
-    v11 = [v13 appendName:@"state" object:@"locked"];
+    v11 = [builderCopy appendName:@"state" object:@"locked"];
   }
 
-  v12 = [v13 appendName:@"result" object:self->_futureResult];
+  v12 = [builderCopy appendName:@"result" object:self->_futureResult];
 }
 
-- (void)addWriterBlock:(id)a3
+- (void)addWriterBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v5 = [(_CNBlockFutureImpl *)self blockScheduler];
+  blockScheduler = [(_CNBlockFutureImpl *)self blockScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37___CNBlockFutureImpl_addWriterBlock___block_invoke;
   v7[3] = &unk_1E6ED6E80;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [blockScheduler performBlock:v7];
 
   [(_CNBlockFutureImpl *)self setWorkBlockScheduled:1];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   [(_CNBlockFutureImpl *)self implicitlyResumeQueue];
   if ([(_CNBlockFutureImpl *)self isFinished])
   {
-    v7 = [(_CNBlockFutureImpl *)self futureResultFromImmediateLookup];
+    futureResultFromImmediateLookup = [(_CNBlockFutureImpl *)self futureResultFromImmediateLookup];
 LABEL_4:
-    v8 = [v7 result];
-    v9 = [v7 error];
-    v10 = [CNFoundationError ifResultIsNil:v8 setOutputError:a4 toError:v9];
+    result = [futureResultFromImmediateLookup result];
+    error = [futureResultFromImmediateLookup error];
+    v10 = [CNFoundationError ifResultIsNil:result setOutputError:error toError:error];
 
     goto LABEL_5;
   }
 
-  v7 = [(_CNBlockFutureImpl *)self futureResultFromAsynchronousLookupBeforeDate:v6 error:a4];
-  if (v7)
+  futureResultFromImmediateLookup = [(_CNBlockFutureImpl *)self futureResultFromAsynchronousLookupBeforeDate:dateCopy error:error];
+  if (futureResultFromImmediateLookup)
   {
     goto LABEL_4;
   }
@@ -317,9 +317,9 @@ LABEL_5:
   return v10;
 }
 
-- (id)futureResultFromAsynchronousLookupBeforeDate:(id)a3 error:(id *)a4
+- (id)futureResultFromAsynchronousLookupBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -341,18 +341,18 @@ LABEL_5:
   v8 = v7;
   v21 = v8;
   v23 = &v27;
-  v9 = v6;
+  v9 = dateCopy;
   v22 = v9;
   v24 = &v31;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, block);
-  v11 = [(_CNBlockFutureImpl *)self blockScheduler];
+  blockScheduler = [(_CNBlockFutureImpl *)self blockScheduler];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __73___CNBlockFutureImpl_futureResultFromAsynchronousLookupBeforeDate_error___block_invoke_26;
   v18[3] = &unk_1E6ED5F68;
   v12 = v10;
   v19 = v12;
-  [v11 performBlock:v18];
+  [blockScheduler performBlock:v18];
 
   [v9 timeIntervalSinceNow];
   if (v13 <= 1000000000.0)
@@ -368,10 +368,10 @@ LABEL_5:
   if (dispatch_group_wait(v8, v14) || (v28[3] & 1) == 0)
   {
     v16 = +[CNFoundationError timeoutError];
-    if (a4)
+    if (error)
     {
       v16 = v16;
-      *a4 = v16;
+      *error = v16;
     }
 
     v15 = 0;
@@ -393,13 +393,13 @@ LABEL_5:
 
 - (BOOL)isCancelled
 {
-  v3 = [(_CNBlockFutureImpl *)self stateLock];
-  [v3 lock];
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock lock];
 
   if ([(_CNBlockFutureImpl *)self nts_isFinished])
   {
-    v4 = [(CNFutureResult *)self->_futureResult error];
-    v5 = [CNFoundationError isCanceledError:v4];
+    error = [(CNFutureResult *)self->_futureResult error];
+    v5 = [CNFoundationError isCanceledError:error];
   }
 
   else
@@ -407,32 +407,32 @@ LABEL_5:
     v5 = 0;
   }
 
-  v6 = [(_CNBlockFutureImpl *)self stateLock];
-  [v6 unlock];
+  stateLock2 = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock2 unlock];
 
   return v5;
 }
 
 - (BOOL)nts_isFinished
 {
-  v2 = [(_CNBlockFutureImpl *)self stateLock];
-  v3 = [v2 condition] == 1;
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  v3 = [stateLock condition] == 1;
 
   return v3;
 }
 
 - (BOOL)cancel
 {
-  v3 = [(_CNBlockFutureImpl *)self stateLock];
-  [v3 lock];
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock lock];
 
-  v4 = [(_CNBlockFutureImpl *)self stateLock];
-  v5 = [v4 condition];
+  stateLock2 = [(_CNBlockFutureImpl *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v5 == 1)
+  if (condition == 1)
   {
-    v8 = [(_CNBlockFutureImpl *)self stateLock];
-    [v8 unlock];
+    stateLock3 = [(_CNBlockFutureImpl *)self stateLock];
+    [stateLock3 unlock];
   }
 
   else
@@ -441,8 +441,8 @@ LABEL_5:
     [(CNFutureResult *)self->_futureResult setError:v6];
 
     LODWORD(v6) = [(_CNBlockFutureImpl *)self nts_mayResumeQueue];
-    v7 = [(_CNBlockFutureImpl *)self stateLock];
-    [v7 unlockWithCondition:1];
+    stateLock4 = [(_CNBlockFutureImpl *)self stateLock];
+    [stateLock4 unlockWithCondition:1];
 
     if (v6)
     {
@@ -450,17 +450,17 @@ LABEL_5:
     }
   }
 
-  return v5 != 1;
+  return condition != 1;
 }
 
-- (BOOL)finishWithResult:(id)a3 error:(id)a4
+- (BOOL)finishWithResult:(id)result error:(id)error
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   if (+[CNObservableContractEnforcement shouldSwizzleNilResults])
   {
-    v8 = (v6 | v7) == 0;
+    v8 = (resultCopy | errorCopy) == 0;
   }
 
   else
@@ -470,12 +470,12 @@ LABEL_5:
 
   if (!v8)
   {
-    v9 = v6 != 0;
-    v10 = v7 != 0;
+    v9 = resultCopy != 0;
+    v10 = errorCopy != 0;
     if ((v9 ^ v10))
     {
 LABEL_20:
-      v18 = v6;
+      null = resultCopy;
       goto LABEL_21;
     }
 
@@ -509,7 +509,7 @@ LABEL_6:
     v29[1] = CNObserverProtocolExceptionErrorKey[0];
     if (v9)
     {
-      v16 = v6;
+      v16 = resultCopy;
     }
 
     else
@@ -519,7 +519,7 @@ LABEL_6:
 
     if (v10)
     {
-      v15 = v7;
+      v15 = errorCopy;
     }
 
     v30[0] = v16;
@@ -542,8 +542,8 @@ LABEL_6:
     [_CNBlockFutureImpl finishWithResult:error:];
   }
 
-  v18 = [MEMORY[0x1E695DFB0] null];
-  if (!v18)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (!null)
   {
     v10 = 0;
     v9 = 0;
@@ -551,68 +551,68 @@ LABEL_6:
   }
 
 LABEL_21:
-  v19 = [(_CNBlockFutureImpl *)self stateLock];
-  [v19 lock];
+  stateLock = [(_CNBlockFutureImpl *)self stateLock];
+  [stateLock lock];
 
-  v20 = [(_CNBlockFutureImpl *)self stateLock];
-  v21 = [v20 condition];
+  stateLock2 = [(_CNBlockFutureImpl *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v21 == 1)
+  if (condition == 1)
   {
-    v24 = [(_CNBlockFutureImpl *)self stateLock];
-    [v24 unlock];
+    stateLock3 = [(_CNBlockFutureImpl *)self stateLock];
+    [stateLock3 unlock];
   }
 
   else
   {
-    [(CNFutureResult *)self->_futureResult setResult:v18 error:v7];
-    v22 = [(_CNBlockFutureImpl *)self nts_mayResumeQueue];
-    v23 = [(_CNBlockFutureImpl *)self stateLock];
-    [v23 unlockWithCondition:1];
+    [(CNFutureResult *)self->_futureResult setResult:null error:errorCopy];
+    nts_mayResumeQueue = [(_CNBlockFutureImpl *)self nts_mayResumeQueue];
+    stateLock4 = [(_CNBlockFutureImpl *)self stateLock];
+    [stateLock4 unlockWithCondition:1];
 
-    if (v22)
+    if (nts_mayResumeQueue)
     {
       [(CNSuspendableSchedulerDecorator *)self->_blockScheduler resume];
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
-  return v21 != 1;
+  return condition != 1;
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_CNBlockFutureImpl *)self implicitlyResumeQueue];
   objc_initWeak(&location, self);
-  v5 = [(_CNBlockFutureImpl *)self blockScheduler];
+  blockScheduler = [(_CNBlockFutureImpl *)self blockScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38___CNBlockFutureImpl_addSuccessBlock___block_invoke;
   v7[3] = &unk_1E6ED6E80;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [blockScheduler performBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_CNBlockFutureImpl *)self implicitlyResumeQueue];
   objc_initWeak(&location, self);
-  v5 = [(_CNBlockFutureImpl *)self blockScheduler];
+  blockScheduler = [(_CNBlockFutureImpl *)self blockScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38___CNBlockFutureImpl_addFailureBlock___block_invoke;
   v7[3] = &unk_1E6ED6E80;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [blockScheduler performBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -620,8 +620,8 @@ LABEL_21:
 
 - (void)_flushCompletionBlocks
 {
-  v2 = [(_CNBlockFutureImpl *)self blockScheduler];
-  [v2 performBlock:&__block_literal_global_36_0];
+  blockScheduler = [(_CNBlockFutureImpl *)self blockScheduler];
+  [blockScheduler performBlock:&__block_literal_global_36_0];
 }
 
 - (void)finishWithResult:error:.cold.1()

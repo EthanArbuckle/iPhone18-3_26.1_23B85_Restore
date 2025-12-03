@@ -1,33 +1,33 @@
 @interface PXPhotosDetailsAssetsWidgetAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 @end
 
 @implementation PXPhotosDetailsAssetsWidgetAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXUIPlayButtonTile"];
-  [v3 validateClass:@"PXSelectionSnapshot"];
-  [v3 validateClass:@"PXHighFidelityVideoOverlayButton" hasInstanceVariable:@"_button" withType:"UIButton"];
-  [v3 validateClass:@"PXUIPlayButtonTile" hasInstanceVariable:@"_playButtonView" withType:"UIView<PXVideoOverlayButton>"];
-  [v3 validateClass:@"PXPhotosDetailsAssetsWidget" hasInstanceMethod:@"_assetsScene" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXUIPlayButtonTile"];
+  [validationsCopy validateClass:@"PXSelectionSnapshot"];
+  [validationsCopy validateClass:@"PXHighFidelityVideoOverlayButton" hasInstanceVariable:@"_button" withType:"UIButton"];
+  [validationsCopy validateClass:@"PXUIPlayButtonTile" hasInstanceVariable:@"_playButtonView" withType:"UIView<PXVideoOverlayButton>"];
+  [validationsCopy validateClass:@"PXPhotosDetailsAssetsWidget" hasInstanceMethod:@"_assetsScene" withFullSignature:{"@", 0}];
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
   v12.receiver = self;
   v12.super_class = PXPhotosDetailsAssetsWidgetAccessibility;
-  v4 = *&a3->var1[5];
-  v10[2] = *&a3->var1[3];
+  v4 = *&identifier->var1[5];
+  v10[2] = *&identifier->var1[3];
   v10[3] = v4;
-  v10[4] = *&a3->var1[7];
-  v11 = a3->var1[9];
-  v5 = *&a3->var1[1];
-  v10[0] = *&a3->var0;
+  v10[4] = *&identifier->var1[7];
+  v11 = identifier->var1[9];
+  v5 = *&identifier->var1[1];
+  v10[0] = *&identifier->var0;
   v10[1] = v5;
-  v6 = [(PXPhotosDetailsAssetsWidgetAccessibility *)&v12 checkOutTileForIdentifier:v10 layout:a4];
+  v6 = [(PXPhotosDetailsAssetsWidgetAccessibility *)&v12 checkOutTileForIdentifier:v10 layout:layout];
   MEMORY[0x29C2E6930](@"PXUIPlayButtonTile");
   if (objc_opt_isKindOfClass())
   {

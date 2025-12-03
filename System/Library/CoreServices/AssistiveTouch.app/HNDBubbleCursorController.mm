@@ -1,11 +1,11 @@
 @interface HNDBubbleCursorController
 - (HNDBubbleCursorController)init;
 - (id)description;
-- (void)hide:(BOOL)a3 animate:(BOOL)a4;
-- (void)updateLevel:(int)a3 animated:(BOOL)a4;
-- (void)updatePath:(id)a3 frame:(CGRect)a4 isSimpleRect:(BOOL)a5 animated:(BOOL)a6;
-- (void)updateTheme:(int)a3 animated:(BOOL)a4;
-- (void)updateTheme:(int)a3 level:(int)a4 path:(id)a5 frame:(CGRect)a6 isSimpleRect:(BOOL)a7 animated:(BOOL)a8;
+- (void)hide:(BOOL)hide animate:(BOOL)animate;
+- (void)updateLevel:(int)level animated:(BOOL)animated;
+- (void)updatePath:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated;
+- (void)updateTheme:(int)theme animated:(BOOL)animated;
+- (void)updateTheme:(int)theme level:(int)level path:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated;
 @end
 
 @implementation HNDBubbleCursorController
@@ -37,17 +37,17 @@
     [(HNDBubbleCursorController *)v2 setCursorCompositingLayer:v8];
     v10 = objc_alloc_init(CALayer);
     [(HNDBubbleCursorController *)v2 setCursorContainerLayer:v10];
-    v11 = [(HNDBubbleCursorController *)v2 cursorContainerLayer];
-    v12 = [(HNDBubbleCursorController *)v2 cursorForegroundLayer];
-    [v11 addSublayer:v12];
+    cursorContainerLayer = [(HNDBubbleCursorController *)v2 cursorContainerLayer];
+    cursorForegroundLayer = [(HNDBubbleCursorController *)v2 cursorForegroundLayer];
+    [cursorContainerLayer addSublayer:cursorForegroundLayer];
 
-    v13 = [(HNDBubbleCursorController *)v2 cursorContainerLayer];
-    v14 = [(HNDBubbleCursorController *)v2 cursorBackgroundLayer];
-    [v13 addSublayer:v14];
+    cursorContainerLayer2 = [(HNDBubbleCursorController *)v2 cursorContainerLayer];
+    cursorBackgroundLayer = [(HNDBubbleCursorController *)v2 cursorBackgroundLayer];
+    [cursorContainerLayer2 addSublayer:cursorBackgroundLayer];
 
-    v15 = [(HNDBubbleCursorController *)v2 cursorContainerLayer];
-    v16 = [(HNDBubbleCursorController *)v2 cursorCompositingLayer];
-    [v15 addSublayer:v16];
+    cursorContainerLayer3 = [(HNDBubbleCursorController *)v2 cursorContainerLayer];
+    cursorCompositingLayer = [(HNDBubbleCursorController *)v2 cursorCompositingLayer];
+    [cursorContainerLayer3 addSublayer:cursorCompositingLayer];
   }
 
   return v2;
@@ -55,98 +55,98 @@
 
 - (id)description
 {
-  v3 = [(HNDBubbleCursorController *)self cursorForegroundLayer];
-  v4 = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
-  v5 = [NSString stringWithFormat:@"HNDBubbleCursorController:<%p>. %@. %@", self, v3, v4];
+  cursorForegroundLayer = [(HNDBubbleCursorController *)self cursorForegroundLayer];
+  cursorBackgroundLayer = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
+  v5 = [NSString stringWithFormat:@"HNDBubbleCursorController:<%p>. %@. %@", self, cursorForegroundLayer, cursorBackgroundLayer];
 
   return v5;
 }
 
-- (void)updateTheme:(int)a3 level:(int)a4 path:(id)a5 frame:(CGRect)a6 isSimpleRect:(BOOL)a7 animated:(BOOL)a8
+- (void)updateTheme:(int)theme level:(int)level path:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated
 {
-  v8 = a8;
-  v9 = a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v14 = *&a4;
-  v15 = *&a3;
-  v17 = a5;
-  [(HNDBubbleCursorController *)self updateTheme:v15 animated:v8];
-  [(HNDBubbleCursorController *)self updateLevel:v14 animated:v8];
-  [(HNDBubbleCursorController *)self updatePath:v17 frame:v9 isSimpleRect:v8 animated:x, y, width, height];
+  animatedCopy = animated;
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v14 = *&level;
+  v15 = *&theme;
+  pathCopy = path;
+  [(HNDBubbleCursorController *)self updateTheme:v15 animated:animatedCopy];
+  [(HNDBubbleCursorController *)self updateLevel:v14 animated:animatedCopy];
+  [(HNDBubbleCursorController *)self updatePath:pathCopy frame:rectCopy isSimpleRect:animatedCopy animated:x, y, width, height];
 }
 
-- (void)updateTheme:(int)a3 animated:(BOOL)a4
+- (void)updateTheme:(int)theme animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
-  [v7 updateTheme:v5 animated:v4];
+  animatedCopy = animated;
+  v5 = *&theme;
+  cursorBackgroundLayer = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer updateTheme:v5 animated:animatedCopy];
 
-  v8 = [(HNDBubbleCursorController *)self cursorForegroundLayer];
-  [v8 updateTheme:v5 animated:v4];
+  cursorForegroundLayer = [(HNDBubbleCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer updateTheme:v5 animated:animatedCopy];
 
-  v9 = [(HNDBubbleCursorController *)self cursorCompositingLayer];
-  [v9 updateTheme:v5 animated:v4];
+  cursorCompositingLayer = [(HNDBubbleCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer updateTheme:v5 animated:animatedCopy];
 }
 
-- (void)updateLevel:(int)a3 animated:(BOOL)a4
+- (void)updateLevel:(int)level animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
-  [v7 updateLevel:v5 animated:v4];
+  animatedCopy = animated;
+  v5 = *&level;
+  cursorBackgroundLayer = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer updateLevel:v5 animated:animatedCopy];
 
-  v8 = [(HNDBubbleCursorController *)self cursorForegroundLayer];
-  [v8 updateLevel:v5 animated:v4];
+  cursorForegroundLayer = [(HNDBubbleCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer updateLevel:v5 animated:animatedCopy];
 
-  v9 = [(HNDBubbleCursorController *)self cursorCompositingLayer];
-  [v9 updateLevel:v5 animated:v4];
+  cursorCompositingLayer = [(HNDBubbleCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer updateLevel:v5 animated:animatedCopy];
 }
 
-- (void)updatePath:(id)a3 frame:(CGRect)a4 isSimpleRect:(BOOL)a5 animated:(BOOL)a6
+- (void)updatePath:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
+  animatedCopy = animated;
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  if (v13)
+  if (pathCopy)
   {
-    v14 = [(HNDBubbleCursorController *)self cursorContainerLayer];
-    [v14 setFrame:{x, y, width, height}];
+    cursorContainerLayer = [(HNDBubbleCursorController *)self cursorContainerLayer];
+    [cursorContainerLayer setFrame:{x, y, width, height}];
   }
 
   +[CATransaction commit];
   v15 = CGPointZero.y;
-  v16 = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
-  [v16 updatePath:v13 frame:v7 isSimpleRect:v6 animated:{CGPointZero.x, v15, width, height}];
+  cursorBackgroundLayer = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer updatePath:pathCopy frame:rectCopy isSimpleRect:animatedCopy animated:{CGPointZero.x, v15, width, height}];
 
-  v17 = [(HNDBubbleCursorController *)self cursorForegroundLayer];
-  [v17 updatePath:v13 frame:v7 isSimpleRect:v6 animated:{CGPointZero.x, v15, width, height}];
+  cursorForegroundLayer = [(HNDBubbleCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer updatePath:pathCopy frame:rectCopy isSimpleRect:animatedCopy animated:{CGPointZero.x, v15, width, height}];
 
-  v18 = [(HNDBubbleCursorController *)self cursorCompositingLayer];
-  [v18 updatePath:v13 frame:v7 isSimpleRect:v6 animated:{CGPointZero.x, v15, width, height}];
+  cursorCompositingLayer = [(HNDBubbleCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer updatePath:pathCopy frame:rectCopy isSimpleRect:animatedCopy animated:{CGPointZero.x, v15, width, height}];
 }
 
-- (void)hide:(BOOL)a3 animate:(BOOL)a4
+- (void)hide:(BOOL)hide animate:(BOOL)animate
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(HNDBubbleCursorController *)self cursorForegroundLayer];
-  [v7 ensureHidden:v5 animated:v4];
+  animateCopy = animate;
+  hideCopy = hide;
+  cursorForegroundLayer = [(HNDBubbleCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer ensureHidden:hideCopy animated:animateCopy];
 
-  v8 = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
-  [v8 ensureHidden:v5 animated:v4];
+  cursorBackgroundLayer = [(HNDBubbleCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer ensureHidden:hideCopy animated:animateCopy];
 
-  v9 = [(HNDBubbleCursorController *)self cursorCompositingLayer];
-  [v9 ensureHidden:v5 animated:v4];
+  cursorCompositingLayer = [(HNDBubbleCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer ensureHidden:hideCopy animated:animateCopy];
 }
 
 @end

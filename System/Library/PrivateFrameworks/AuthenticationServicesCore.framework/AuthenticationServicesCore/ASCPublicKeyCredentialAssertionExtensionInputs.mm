@@ -1,18 +1,18 @@
 @interface ASCPublicKeyCredentialAssertionExtensionInputs
 - (BOOL)hasAtLeastOneExtension;
 - (_TtC26AuthenticationServicesCore46ASCPublicKeyCredentialAssertionExtensionInputs)init;
-- (id)descriptionForLoggingWithIndentationCount:(int64_t)a3;
+- (id)descriptionForLoggingWithIndentationCount:(int64_t)count;
 - (int64_t)caBLEAuthenticatorMinimumRequirement;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPublicKeyCredentialAssertionExtensionInputs
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C210090C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C210090C(coderCopy);
 }
 
 - (_TtC26AuthenticationServicesCore46ASCPublicKeyCredentialAssertionExtensionInputs)init
@@ -42,9 +42,9 @@
   return *(v4 + 5) != 1;
 }
 
-- (id)descriptionForLoggingWithIndentationCount:(int64_t)a3
+- (id)descriptionForLoggingWithIndentationCount:(int64_t)count
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C2101184();
 
   v4 = sub_1C21708F4();

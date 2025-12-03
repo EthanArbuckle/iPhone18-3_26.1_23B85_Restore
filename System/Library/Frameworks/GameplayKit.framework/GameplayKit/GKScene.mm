@@ -1,28 +1,28 @@
 @interface GKScene
-+ (id)_sceneWithFileNamed:(id)a3 rootNode:(id)a4;
++ (id)_sceneWithFileNamed:(id)named rootNode:(id)node;
 - (GKScene)init;
-- (GKScene)initWithCoder:(id)a3;
+- (GKScene)initWithCoder:(id)coder;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)addEntity:(GKEntity *)entity;
 - (void)addGraph:(GKGraph *)graph name:(NSString *)name;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeEntity:(GKEntity *)entity;
 - (void)removeGraph:(NSString *)name;
 @end
 
 @implementation GKScene
 
-+ (id)_sceneWithFileNamed:(id)a3 rootNode:(id)a4
++ (id)_sceneWithFileNamed:(id)named rootNode:(id)node
 {
   v85[16] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 pathForResource:v5 ofType:@"gks"];
+  namedCopy = named;
+  nodeCopy = node;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [mainBundle pathForResource:namedCopy ofType:@"gks"];
   if (!v8)
   {
-    v8 = [v7 pathForResource:v5 ofType:0];
+    v8 = [mainBundle pathForResource:namedCopy ofType:0];
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -51,13 +51,13 @@
     v12 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v11 error:0];
     v53 = objc_opt_new();
     [v12 setDelegate:?];
-    v58 = v7;
-    v59 = v5;
+    v58 = mainBundle;
+    v59 = namedCopy;
     v56 = v9;
     v57 = v8;
     v55 = v11;
     v61 = v12;
-    if (v6)
+    if (nodeCopy)
     {
       v13 = *MEMORY[0x277CCA308];
       v80 = 0;
@@ -78,26 +78,26 @@
       {
         if (!NSClassFromString(&cfstr_Skscene.isa))
         {
-          NSLog(&cfstr_CannotLoadScen.isa, v5);
+          NSLog(&cfstr_CannotLoadScen.isa, namedCopy);
         }
 
         v60 = 0;
         goto LABEL_32;
       }
 
-      v6 = v34;
+      nodeCopy = v34;
     }
 
-    RepairGKSceneNodeReferencesRelativeToScene(v14, v6);
-    [v14 setRootNode:v6];
-    v60 = v6;
+    RepairGKSceneNodeReferencesRelativeToScene(v14, nodeCopy);
+    [v14 setRootNode:nodeCopy];
+    v60 = nodeCopy;
 LABEL_32:
     v78 = 0u;
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v35 = [v14 entities];
-    v36 = [v35 countByEnumeratingWithState:&v76 objects:v84 count:16];
+    entities = [v14 entities];
+    v36 = [entities countByEnumeratingWithState:&v76 objects:v84 count:16];
     if (v36)
     {
       v37 = v36;
@@ -108,7 +108,7 @@ LABEL_32:
         {
           if (*v77 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(entities);
           }
 
           v40 = *(*(&v76 + 1) + 8 * i);
@@ -116,8 +116,8 @@ LABEL_32:
           v73 = 0u;
           v74 = 0u;
           v75 = 0u;
-          v41 = [v40 components];
-          v42 = [v41 countByEnumeratingWithState:&v72 objects:v83 count:16];
+          components = [v40 components];
+          v42 = [components countByEnumeratingWithState:&v72 objects:v83 count:16];
           if (v42)
           {
             v43 = v42;
@@ -128,20 +128,20 @@ LABEL_32:
               {
                 if (*v73 != v44)
                 {
-                  objc_enumerationMutation(v41);
+                  objc_enumerationMutation(components);
                 }
 
                 [v40 addComponent:*(*(&v72 + 1) + 8 * j)];
               }
 
-              v43 = [v41 countByEnumeratingWithState:&v72 objects:v83 count:16];
+              v43 = [components countByEnumeratingWithState:&v72 objects:v83 count:16];
             }
 
             while (v43);
           }
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v76 objects:v84 count:16];
+        v37 = [entities countByEnumeratingWithState:&v76 objects:v84 count:16];
       }
 
       while (v37);
@@ -152,20 +152,20 @@ LABEL_32:
     v47 = v53;
 LABEL_48:
 
-    v5 = v59;
-    v6 = v60;
+    namedCopy = v59;
+    nodeCopy = v60;
     v8 = v57;
-    v7 = v58;
+    mainBundle = v58;
     v9 = v56;
 LABEL_49:
     v48 = v14;
     goto LABEL_50;
   }
 
-  v17 = [v7 pathForResource:v5 ofType:@"sks"];
+  v17 = [mainBundle pathForResource:namedCopy ofType:@"sks"];
   if (!v17)
   {
-    v17 = [v7 pathForResource:v5 ofType:0];
+    v17 = [mainBundle pathForResource:namedCopy ofType:0];
     if (!v17)
     {
       v14 = 0;
@@ -197,8 +197,8 @@ LABEL_49:
     v55 = v18;
     v56 = v9;
     v57 = 0;
-    v58 = v7;
-    v59 = v5;
+    v58 = mainBundle;
+    v59 = namedCopy;
     if (objc_opt_isKindOfClass())
     {
       RepairGKSceneNodeReferencesRelativeToScene(v14, v60);
@@ -209,8 +209,8 @@ LABEL_49:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v23 = [v14 entities];
-    v24 = [v23 countByEnumeratingWithState:&v67 objects:v82 count:16];
+    entities2 = [v14 entities];
+    v24 = [entities2 countByEnumeratingWithState:&v67 objects:v82 count:16];
     if (v24)
     {
       v25 = v24;
@@ -221,7 +221,7 @@ LABEL_49:
         {
           if (*v68 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(entities2);
           }
 
           v28 = *(*(&v67 + 1) + 8 * k);
@@ -229,8 +229,8 @@ LABEL_49:
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v29 = [v28 components];
-          v30 = [v29 countByEnumeratingWithState:&v63 objects:v81 count:16];
+          components2 = [v28 components];
+          v30 = [components2 countByEnumeratingWithState:&v63 objects:v81 count:16];
           if (v30)
           {
             v31 = v30;
@@ -241,20 +241,20 @@ LABEL_49:
               {
                 if (*v64 != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(components2);
                 }
 
                 [v28 addComponent:*(*(&v63 + 1) + 8 * m)];
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v63 objects:v81 count:16];
+              v31 = [components2 countByEnumeratingWithState:&v63 objects:v81 count:16];
             }
 
             while (v31);
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v67 objects:v82 count:16];
+        v25 = [entities2 countByEnumeratingWithState:&v67 objects:v82 count:16];
       }
 
       while (v25);
@@ -267,7 +267,7 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  NSLog(&cfstr_CannotLoadScen.isa, v5);
+  NSLog(&cfstr_CannotLoadScen.isa, namedCopy);
   v48 = v14;
 
 LABEL_50:
@@ -283,22 +283,22 @@ LABEL_50:
   v2 = [(GKScene *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     entities = v2->_entities;
-    v2->_entities = v3;
+    v2->_entities = array;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     graphs = v2->_graphs;
-    v2->_graphs = v5;
+    v2->_graphs = dictionary;
   }
 
   return v2;
 }
 
-- (GKScene)initWithCoder:(id)a3
+- (GKScene)initWithCoder:(id)coder
 {
   v16[16] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = GKScene;
   v5 = [(GKScene *)&v15 init];
@@ -324,14 +324,14 @@ LABEL_50:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:16];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"_entities"];
+    v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_entities"];
     entities = v5->_entities;
     v5->_entities = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v6 forKey:@"_graphs"];
+    v11 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_graphs"];
     graphs = v5->_graphs;
     v5->_graphs = v11;
   }
@@ -340,12 +340,12 @@ LABEL_50:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entities = self->_entities;
-  v5 = a3;
-  [v5 encodeObject:entities forKey:@"_entities"];
-  [v5 encodeObject:self->_graphs forKey:@"_graphs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entities forKey:@"_entities"];
+  [coderCopy encodeObject:self->_graphs forKey:@"_graphs"];
 }
 
 - (id)copy
@@ -355,11 +355,11 @@ LABEL_50:
   return [(GKScene *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -380,7 +380,7 @@ LABEL_50:
         }
 
         v11 = [*(*(&v27 + 1) + 8 * i) copy];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -389,14 +389,14 @@ LABEL_50:
     while (v8);
   }
 
-  objc_storeStrong(v4 + 1, v5);
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  objc_storeStrong(v4 + 1, array);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [(NSMutableDictionary *)self->_graphs allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  allKeys = [(NSMutableDictionary *)self->_graphs allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -407,22 +407,22 @@ LABEL_50:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v18 = *(*(&v23 + 1) + 8 * j);
         v19 = [(NSMutableDictionary *)self->_graphs objectForKeyedSubscript:v18];
-        [v12 setObject:v19 forKeyedSubscript:v18];
+        [dictionary setObject:v19 forKeyedSubscript:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v15);
   }
 
   v20 = v4[2];
-  v4[2] = v12;
+  v4[2] = dictionary;
 
   v21 = *MEMORY[0x277D85DE8];
   return v4;

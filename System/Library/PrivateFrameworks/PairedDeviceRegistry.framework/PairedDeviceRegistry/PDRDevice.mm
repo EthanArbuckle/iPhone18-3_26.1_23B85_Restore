@@ -10,14 +10,14 @@
 - (id)lastActiveDate;
 - (id)pairingStorePath;
 - (id)propertyNames;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 @end
 
 @implementation PDRDevice
 
 - (BOOL)isAltAccount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PDRDevice.isPaired()(PDRDevicePropertyKeyIsAltAccount);
 
   return v3 & 1;
@@ -32,7 +32,7 @@
 
 - (BOOL)isArchived
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PDRDevice.isPaired()(PDRDevicePropertyKeyIsArchived);
 
   return v3 & 1;
@@ -40,7 +40,7 @@
 
 - (BOOL)isActive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PDRDevice.isPaired()(PDRDevicePropertyKeyIsActive);
 
   return v3 & 1;
@@ -48,7 +48,7 @@
 
 - (id)pairingStorePath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PDRDevice.localPairingDataStorePath.getter();
   v5 = v4;
 
@@ -67,7 +67,7 @@
 
 - (BOOL)isPaired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PDRDevice.isPaired()(PDRDevicePropertyKeyIsPaired);
 
   return v3 & 1;
@@ -75,7 +75,7 @@
 
 - (BOOL)isSetup
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PDRDevice.isPaired()(PDRDevicePropertyKeyIsSetup);
 
   return v3 & 1;
@@ -87,7 +87,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   PDRDevice.lastActiveDate()(v6);
 
   v8 = type metadata accessor for Date();
@@ -111,7 +111,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   PDRDevice.bluetoothIdentifier()(v7);
 
   v9.super.isa = UUID._bridgeToObjectiveC()().super.isa;
@@ -127,7 +127,7 @@
   return 0;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0();

@@ -1,10 +1,10 @@
 @interface CSNotificationAdjunctListViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (BOOL)isPresentingTransientContent;
 - (BOOL)isShowingMediaControls;
-- (CGAffineTransform)_disappearedTransformForContentWithHeight:(SEL)a3;
+- (CGAffineTransform)_disappearedTransformForContentWithHeight:(SEL)height;
 - (CGSize)sizeToMimic;
-- (CGSize)sizeToMimicForHost:(id)a3;
+- (CGSize)sizeToMimicForHost:(id)host;
 - (CGSize)stackViewContentSize;
 - (CSNotificationAdjunctListViewController)init;
 - (CSNotificationAdjunctListViewControllerDelegate)delegate;
@@ -12,27 +12,27 @@
 - (PRWidgetMetricsProvider)widgetMetricsProvider;
 - (SBFActionProviding)contentActionProvider;
 - (UIViewController)digestOnboardingSuggestionViewController;
-- (id)_createItemViewForHost:(id)a3 recipe:(int64_t)a4;
+- (id)_createItemViewForHost:(id)host recipe:(int64_t)recipe;
 - (id)_groupNameBase;
 - (id)_stackView;
-- (unint64_t)_preferredIndexForItem:(id)a3;
+- (unint64_t)_preferredIndexForItem:(id)item;
 - (void)_didUpdateDisplay;
-- (void)_insertItem:(id)a3 atPreferredIndex:(int64_t)a4 animated:(BOOL)a5;
-- (void)_removeItem:(id)a3 animated:(BOOL)a4;
-- (void)_setIsFocusActivityIndicatorVisible:(BOOL)a3;
+- (void)_insertItem:(id)item atPreferredIndex:(int64_t)index animated:(BOOL)animated;
+- (void)_removeItem:(id)item animated:(BOOL)animated;
+- (void)_setIsFocusActivityIndicatorVisible:(BOOL)visible;
 - (void)_updateItemsSizeToMimic;
-- (void)adjunctListModel:(id)a3 didAddItem:(id)a4;
-- (void)adjunctListModel:(id)a3 didRemoveItem:(id)a4;
-- (void)adjunctListModel:(id)a3 didUpdateItem:(id)a4 withItem:(id)a5;
-- (void)focusActivityIndicatorDidChangeToVisible:(BOOL)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setProminentElementHeightToMimic:(double)a3;
-- (void)setRemoteContentInlineProvider:(id)a3;
+- (void)adjunctListModel:(id)model didAddItem:(id)item;
+- (void)adjunctListModel:(id)model didRemoveItem:(id)item;
+- (void)adjunctListModel:(id)model didUpdateItem:(id)item withItem:(id)withItem;
+- (void)focusActivityIndicatorDidChangeToVisible:(BOOL)visible;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setDelegate:(id)delegate;
+- (void)setProminentElementHeightToMimic:(double)mimic;
+- (void)setRemoteContentInlineProvider:(id)provider;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CSNotificationAdjunctListViewController
@@ -66,9 +66,9 @@
     actionInterpreter = v3->_actionInterpreter;
     v3->_actionInterpreter = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     identifiersToItems = v3->_identifiersToItems;
-    v3->_identifiersToItems = v8;
+    v3->_identifiersToItems = dictionary;
 
     v10 = objc_alloc_init(CSAdjunctListModel);
     model = v3->_model;
@@ -97,25 +97,25 @@
   v7.receiver = self;
   v7.super_class = CSNotificationAdjunctListViewController;
   [(CSCoverSheetViewControllerBase *)&v7 viewDidLoad];
-  v3 = [(CSNotificationAdjunctListViewController *)self _stackView];
-  v4 = [(CSNotificationAdjunctListViewController *)self delegate];
-  [v4 insetMarginsToMimicForAdjunctListViewController:self];
-  [v3 setLayoutMargins:?];
-  [v4 interItemSpacingToMimicForAdjunctListViewController:self];
-  [v3 setSpacing:?];
-  [v3 setAxis:1];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 setAlignment:3];
+  _stackView = [(CSNotificationAdjunctListViewController *)self _stackView];
+  delegate = [(CSNotificationAdjunctListViewController *)self delegate];
+  [delegate insetMarginsToMimicForAdjunctListViewController:self];
+  [_stackView setLayoutMargins:?];
+  [delegate interItemSpacingToMimicForAdjunctListViewController:self];
+  [_stackView setSpacing:?];
+  [_stackView setAxis:1];
+  [_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [_stackView setAlignment:3];
   actionInterpreter = self->_actionInterpreter;
-  v6 = [(CSNowPlayingController *)self->_nowPlayingController controlsViewController];
-  [(CSContentActionInterpreter *)actionInterpreter setNowPlayingViewController:v6];
+  controlsViewController = [(CSNowPlayingController *)self->_nowPlayingController controlsViewController];
+  [(CSContentActionInterpreter *)actionInterpreter setNowPlayingViewController:controlsViewController];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSNotificationAdjunctListViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(CSAdjunctListModel *)self->_model resumeItemHandling];
   [(CSNotificationAdjunctListViewController *)self _updateItemsSizeToMimic];
   [(CSNotificationAdjunctListViewController *)self _setIsFocusActivityIndicatorVisible:[(CSFocusActivityManager *)self->_focusActivityManager isFocusActivityIndicatorVisible]];
@@ -136,32 +136,32 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CSNotificationAdjunctListViewController;
-  v7 = a4;
-  [(CSCoverSheetViewControllerBase *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CSCoverSheetViewControllerBase *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__CSNotificationAdjunctListViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_27838C938;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  containerCopy = container;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_identifiersToItems allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_identifiersToItems allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -172,20 +172,20 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 contentHost];
+        contentHost = [v10 contentHost];
 
-        if (v11 == v4)
+        if (contentHost == containerCopy)
         {
-          v12 = [v10 itemView];
-          [v12 invalidateIntrinsicContentSize];
+          itemView = [v10 itemView];
+          [itemView invalidateIntrinsicContentSize];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -194,11 +194,11 @@
 
 - (CGSize)stackViewContentSize
 {
-  v3 = [(CSNotificationAdjunctListViewController *)self delegate];
-  [v3 sizeToMimicForAdjunctListViewController:self];
+  delegate = [(CSNotificationAdjunctListViewController *)self delegate];
+  [delegate sizeToMimicForAdjunctListViewController:self];
   v5 = v4;
-  v6 = [(CSNotificationAdjunctListViewController *)self view];
-  [v6 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  view = [(CSNotificationAdjunctListViewController *)self view];
+  [view systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v8 = v7;
 
   v9 = v5;
@@ -216,16 +216,16 @@
   return v3;
 }
 
-- (CGSize)sizeToMimicForHost:(id)a3
+- (CGSize)sizeToMimicForHost:(id)host
 {
-  v4 = a3;
-  v5 = [(CSNotificationAdjunctListViewController *)self delegate];
-  [v5 sizeToMimicForAdjunctListViewController:self];
+  hostCopy = host;
+  delegate = [(CSNotificationAdjunctListViewController *)self delegate];
+  [delegate sizeToMimicForAdjunctListViewController:self];
   v7 = v6;
   v9 = v8;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [v4 insetsMargins])
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [hostCopy insetsMargins])
   {
-    [v5 insetMarginsToMimicForAdjunctListViewController:self];
+    [delegate insetMarginsToMimicForAdjunctListViewController:self];
     v7 = v7 - v10 - v11;
   }
 
@@ -236,60 +236,60 @@
   return result;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = CSNotificationAdjunctListViewController;
-  if ([(CSCoverSheetViewControllerBase *)&v9 handleEvent:v4])
+  if ([(CSCoverSheetViewControllerBase *)&v9 handleEvent:eventCopy])
   {
-    v5 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    v5 = 0;
+    isConsumable = 0;
   }
 
-  v6 = [v4 type];
-  if (v6 == 8)
+  type = [eventCopy type];
+  if (type == 8)
   {
     [(CSAdjunctListModel *)self->_model resumeItemHandling];
   }
 
-  else if (v6 == 9)
+  else if (type == 9)
   {
     [(CSAdjunctListModel *)self->_model suspendItemHandling];
   }
 
-  else if (!v5)
+  else if (!isConsumable)
   {
-    v7 = 0;
+    isConsumable2 = 0;
     goto LABEL_10;
   }
 
-  v7 = [v4 isConsumable];
+  isConsumable2 = [eventCopy isConsumable];
 LABEL_10:
 
-  return v7;
+  return isConsumable2;
 }
 
-- (void)setRemoteContentInlineProvider:(id)a3
+- (void)setRemoteContentInlineProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_remoteContentInlineProvider, v4);
-  [(CSRemoteContentInlineManager *)self->_remoteContentInlineManager setRemoteContentInlineProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_remoteContentInlineProvider, providerCopy);
+  [(CSRemoteContentInlineManager *)self->_remoteContentInlineManager setRemoteContentInlineProvider:providerCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v4);
-    [v4 adjunctListViewController:self didAddSectionWithIdentifier:@"AdjunctTopSticky"];
+    objc_storeWeak(&self->_delegate, delegateCopy);
+    [delegateCopy adjunctListViewController:self didAddSectionWithIdentifier:@"AdjunctTopSticky"];
     spacerViewController = self->_spacerViewController;
     if (!spacerViewController)
     {
@@ -312,10 +312,10 @@ LABEL_10:
       v13[3] = &unk_27838B7C0;
       v13[4] = self;
       v14 = v9;
-      v15 = v4;
+      v15 = delegateCopy;
       [v11 performWithoutAnimation:v13];
-      v12 = [(CSNotificationAdjunctListViewController *)self view];
-      [v12 setNeedsLayout];
+      view = [(CSNotificationAdjunctListViewController *)self view];
+      [view setNeedsLayout];
 
       [(CSNotificationAdjunctListViewController *)self _didUpdateDisplay];
     }
@@ -330,95 +330,95 @@ uint64_t __55__CSNotificationAdjunctListViewController_setDelegate___block_invok
   return [v2 adjunctListViewController:? didAddViewController:? withIdentifier:?];
 }
 
-- (void)setProminentElementHeightToMimic:(double)a3
+- (void)setProminentElementHeightToMimic:(double)mimic
 {
-  if (self->_prominentElementHeightToMimic != a3)
+  if (self->_prominentElementHeightToMimic != mimic)
   {
-    self->_prominentElementHeightToMimic = a3;
+    self->_prominentElementHeightToMimic = mimic;
     [(CSProminentUISpacerViewController *)self->_spacerViewController setTopMarginToMimic:?];
   }
 }
 
-- (void)adjunctListModel:(id)a3 didAddItem:(id)a4
+- (void)adjunctListModel:(id)model didAddItem:(id)item
 {
-  v6 = a4;
-  v5 = [v6 animatePresentation] && -[CSNotificationAdjunctListViewController _canAnimate](self, "_canAnimate") && self->_allowsAddRemoveAnimations;
-  [(CSNotificationAdjunctListViewController *)self _insertItem:v6 atPreferredIndex:[(CSNotificationAdjunctListViewController *)self _preferredIndexForItem:v6] animated:v5];
+  itemCopy = item;
+  v5 = [itemCopy animatePresentation] && -[CSNotificationAdjunctListViewController _canAnimate](self, "_canAnimate") && self->_allowsAddRemoveAnimations;
+  [(CSNotificationAdjunctListViewController *)self _insertItem:itemCopy atPreferredIndex:[(CSNotificationAdjunctListViewController *)self _preferredIndexForItem:itemCopy] animated:v5];
 }
 
-- (void)adjunctListModel:(id)a3 didRemoveItem:(id)a4
+- (void)adjunctListModel:(id)model didRemoveItem:(id)item
 {
-  v6 = a4;
-  v5 = [v6 animateDismissal] && -[CSNotificationAdjunctListViewController _canAnimate](self, "_canAnimate") && self->_allowsAddRemoveAnimations;
-  [(CSNotificationAdjunctListViewController *)self _removeItem:v6 animated:v5];
+  itemCopy = item;
+  v5 = [itemCopy animateDismissal] && -[CSNotificationAdjunctListViewController _canAnimate](self, "_canAnimate") && self->_allowsAddRemoveAnimations;
+  [(CSNotificationAdjunctListViewController *)self _removeItem:itemCopy animated:v5];
 }
 
-- (void)adjunctListModel:(id)a3 didUpdateItem:(id)a4 withItem:(id)a5
+- (void)adjunctListModel:(id)model didUpdateItem:(id)item withItem:(id)withItem
 {
-  v12 = a4;
-  v7 = a5;
-  if (v12 != v7)
+  itemCopy = item;
+  withItemCopy = withItem;
+  if (itemCopy != withItemCopy)
   {
-    v8 = [(CSNotificationAdjunctListViewController *)self _stackView];
-    v9 = [v12 itemView];
-    v10 = [v8 arrangedSubviews];
-    v11 = [v10 indexOfObject:v9];
+    _stackView = [(CSNotificationAdjunctListViewController *)self _stackView];
+    itemView = [itemCopy itemView];
+    arrangedSubviews = [_stackView arrangedSubviews];
+    v11 = [arrangedSubviews indexOfObject:itemView];
     if (!v11)
     {
-      v11 = [(CSNotificationAdjunctListViewController *)self _preferredIndexForItem:v7];
+      v11 = [(CSNotificationAdjunctListViewController *)self _preferredIndexForItem:withItemCopy];
     }
 
-    [(CSNotificationAdjunctListViewController *)self _removeItem:v12 animated:0];
-    [(CSNotificationAdjunctListViewController *)self _insertItem:v7 atPreferredIndex:v11 animated:0];
+    [(CSNotificationAdjunctListViewController *)self _removeItem:itemCopy animated:0];
+    [(CSNotificationAdjunctListViewController *)self _insertItem:withItemCopy atPreferredIndex:v11 animated:0];
   }
 }
 
-- (void)focusActivityIndicatorDidChangeToVisible:(BOOL)a3
+- (void)focusActivityIndicatorDidChangeToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained focusActivityViewChangedToVisible:v3];
+  [WeakRetained focusActivityViewChangedToVisible:visibleCopy];
 }
 
-- (void)_insertItem:(id)a3 atPreferredIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)_insertItem:(id)item atPreferredIndex:(int64_t)index animated:(BOOL)animated
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 identifier];
-  [(NSMutableDictionary *)self->_identifiersToItems setObject:v6 forKey:v7];
-  v8 = [v6 action];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  [(NSMutableDictionary *)self->_identifiersToItems setObject:itemCopy forKey:identifier];
+  action = [itemCopy action];
 
-  if (v8)
+  if (action)
   {
     actionInterpreter = self->_actionInterpreter;
-    v10 = [v6 action];
+    action2 = [itemCopy action];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __81__CSNotificationAdjunctListViewController__insertItem_atPreferredIndex_animated___block_invoke;
     v28[3] = &unk_27838C9A0;
-    v29 = v6;
-    [(CSContentActionInterpreter *)actionInterpreter _viewControllerFromAction:v10 completion:v28];
+    v29 = itemCopy;
+    [(CSContentActionInterpreter *)actionInterpreter _viewControllerFromAction:action2 completion:v28];
   }
 
-  v11 = [v6 contentHost];
+  contentHost = [itemCopy contentHost];
 
-  if (v11)
+  if (contentHost)
   {
-    v12 = [v6 contentHost];
-    v13 = [v6 action];
-    v14 = [v13 sb_materialRecipe];
-    if (v14 <= 1)
+    contentHost2 = [itemCopy contentHost];
+    action3 = [itemCopy action];
+    sb_materialRecipe = [action3 sb_materialRecipe];
+    if (sb_materialRecipe <= 1)
     {
       v15 = 1;
     }
 
     else
     {
-      v15 = v14;
+      v15 = sb_materialRecipe;
     }
 
-    v16 = [(CSNotificationAdjunctListViewController *)self _createItemViewForHost:v12 recipe:v15];
-    [v6 setItemView:v16];
+    v16 = [(CSNotificationAdjunctListViewController *)self _createItemViewForHost:contentHost2 recipe:v15];
+    [itemCopy setItemView:v16];
     if (v16)
     {
       v17 = MEMORY[0x277D75D18];
@@ -426,8 +426,8 @@ uint64_t __55__CSNotificationAdjunctListViewController_setDelegate___block_invok
       v22 = 3221225472;
       v23 = __81__CSNotificationAdjunctListViewController__insertItem_atPreferredIndex_animated___block_invoke_35;
       v24 = &unk_27838B7C0;
-      v25 = self;
-      v26 = v12;
+      selfCopy = self;
+      v26 = contentHost2;
       v27 = v16;
       [v17 performWithoutAnimation:&v21];
       v18 = [(CSNotificationAdjunctListViewController *)self view:v21];
@@ -436,9 +436,9 @@ uint64_t __55__CSNotificationAdjunctListViewController_setDelegate___block_invok
       v19 = SBLogDashBoard();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v6 identifier];
+        identifier2 = [itemCopy identifier];
         *buf = 138412290;
-        v31 = v20;
+        v31 = identifier2;
         _os_log_impl(&dword_21EB05000, v19, OS_LOG_TYPE_DEFAULT, "Inserted adjunct list item with identifier: %@", buf, 0xCu);
       }
     }
@@ -446,10 +446,10 @@ uint64_t __55__CSNotificationAdjunctListViewController_setDelegate___block_invok
 
   else
   {
-    v12 = SBLogDashBoard();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    contentHost2 = SBLogDashBoard();
+    if (os_log_type_enabled(contentHost2, OS_LOG_TYPE_ERROR))
     {
-      [CSNotificationAdjunctListViewController _insertItem:v12 atPreferredIndex:? animated:?];
+      [CSNotificationAdjunctListViewController _insertItem:contentHost2 atPreferredIndex:? animated:?];
     }
   }
 }
@@ -483,46 +483,46 @@ uint64_t __81__CSNotificationAdjunctListViewController__insertItem_atPreferredIn
   return [v3 _didUpdateDisplay];
 }
 
-- (void)_removeItem:(id)a3 animated:(BOOL)a4
+- (void)_removeItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 contentHost];
-  v8 = [v6 itemView];
+  itemCopy = item;
+  contentHost = [itemCopy contentHost];
+  itemView = [itemCopy itemView];
   v9 = SBLogDashBoard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v6;
+    *&buf[4] = itemCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = contentHost;
     *&buf[22] = 2112;
-    *&buf[24] = v8;
+    *&buf[24] = itemView;
     _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "Removing adjunct list item: %@, and content host: %@, itemView: %@", buf, 0x20u);
   }
 
-  if (v8 && v7)
+  if (itemView && contentHost)
   {
-    [v8 setHidden:0];
-    [v8 setAlpha:1.0];
+    [itemView setHidden:0];
+    [itemView setAlpha:1.0];
     v10 = *(MEMORY[0x277CBF2C0] + 16);
     *buf = *MEMORY[0x277CBF2C0];
     *&buf[16] = v10;
     v25 = *(MEMORY[0x277CBF2C0] + 32);
-    [v8 setTransform:buf];
+    [itemView setTransform:buf];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __64__CSNotificationAdjunctListViewController__removeItem_animated___block_invoke;
     v21[3] = &unk_27838B838;
-    v22 = v8;
-    v23 = self;
+    v22 = itemView;
+    selfCopy = self;
     v11 = MEMORY[0x223D698D0](v21);
-    v12 = [(CSNotificationAdjunctListViewController *)self delegate];
-    [v12 adjunctListViewController:self willRemoveViewWithIdentifier:@"com.apple.SpringBoard.sleep"];
+    delegate = [(CSNotificationAdjunctListViewController *)self delegate];
+    [delegate adjunctListViewController:self willRemoveViewWithIdentifier:@"com.apple.SpringBoard.sleep"];
 
     v13 = MEMORY[0x277D75D18];
-    if (v4)
+    if (animatedCopy)
     {
       [(CSNotificationAdjunctListViewController *)self listViewContentAnimationDuration];
       v15 = v14;
@@ -543,9 +543,9 @@ uint64_t __81__CSNotificationAdjunctListViewController__insertItem_atPreferredIn
     v17 = SBLogDashBoard();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v6 identifier];
+      identifier = [itemCopy identifier];
       *buf = 138412290;
-      *&buf[4] = v18;
+      *&buf[4] = identifier;
       _os_log_impl(&dword_21EB05000, v17, OS_LOG_TYPE_DEFAULT, "Removed adjunct list item with identifier: %@", buf, 0xCu);
     }
   }
@@ -574,10 +574,10 @@ uint64_t __64__CSNotificationAdjunctListViewController__removeItem_animated___bl
   return [*(a1 + 40) _didUpdateDisplay];
 }
 
-- (unint64_t)_preferredIndexForItem:(id)a3
+- (unint64_t)_preferredIndexForItem:(id)item
 {
-  v3 = [a3 identifier];
-  if ([v3 hasPrefix:@"focus activity identifier"])
+  identifier = [item identifier];
+  if ([identifier hasPrefix:@"focus activity identifier"])
   {
     v4 = 0;
   }
@@ -590,15 +590,15 @@ uint64_t __64__CSNotificationAdjunctListViewController__removeItem_animated___bl
   return v4;
 }
 
-- (id)_createItemViewForHost:(id)a3 recipe:(int64_t)a4
+- (id)_createItemViewForHost:(id)host recipe:(int64_t)recipe
 {
-  v6 = a3;
-  v7 = [[CSAdjunctItemView alloc] initWithRecipe:a4];
-  v8 = [(CSNotificationAdjunctListViewController *)self _groupNameBase];
-  [(CSAdjunctItemView *)v7 setMaterialGroupNameBase:v8];
+  hostCopy = host;
+  v7 = [[CSAdjunctItemView alloc] initWithRecipe:recipe];
+  _groupNameBase = [(CSNotificationAdjunctListViewController *)self _groupNameBase];
+  [(CSAdjunctItemView *)v7 setMaterialGroupNameBase:_groupNameBase];
 
-  [(CSAdjunctItemView *)v7 setContentHost:v6];
-  [(CSNotificationAdjunctListViewController *)self sizeToMimicForHost:v6];
+  [(CSAdjunctItemView *)v7 setContentHost:hostCopy];
+  [(CSNotificationAdjunctListViewController *)self sizeToMimicForHost:hostCopy];
   v10 = v9;
   v12 = v11;
 
@@ -614,10 +614,10 @@ uint64_t __64__CSNotificationAdjunctListViewController__removeItem_animated___bl
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(CSNotificationAdjunctListViewController *)self _stackView];
-  v4 = [v3 arrangedSubviews];
+  _stackView = [(CSNotificationAdjunctListViewController *)self _stackView];
+  arrangedSubviews = [_stackView arrangedSubviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -628,16 +628,16 @@ uint64_t __64__CSNotificationAdjunctListViewController__removeItem_animated___bl
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 contentHost];
-        [(CSNotificationAdjunctListViewController *)self sizeToMimicForHost:v10];
+        contentHost = [v9 contentHost];
+        [(CSNotificationAdjunctListViewController *)self sizeToMimicForHost:contentHost];
         [v9 setSizeToMimic:?];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -655,8 +655,8 @@ uint64_t __64__CSNotificationAdjunctListViewController__removeItem_animated___bl
 - (void)_didUpdateDisplay
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [(CSNotificationAdjunctListViewController *)self _stackView];
-  [v3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  _stackView = [(CSNotificationAdjunctListViewController *)self _stackView];
+  [_stackView systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v5 = v4;
   v7 = v6;
 
@@ -672,7 +672,7 @@ uint64_t __64__CSNotificationAdjunctListViewController__removeItem_animated___bl
   }
 }
 
-- (CGAffineTransform)_disappearedTransformForContentWithHeight:(SEL)a3
+- (CGAffineTransform)_disappearedTransformForContentWithHeight:(SEL)height
 {
   memset(&v10, 0, sizeof(v10));
   CGAffineTransformMakeScale(&v10, 0.05, 0.05);
@@ -683,22 +683,22 @@ uint64_t __64__CSNotificationAdjunctListViewController__removeItem_animated___bl
   return CGAffineTransformConcat(retstr, &t1, &v7);
 }
 
-- (void)_setIsFocusActivityIndicatorVisible:(BOOL)a3
+- (void)_setIsFocusActivityIndicatorVisible:(BOOL)visible
 {
-  if (self->_isFocusActivityIndicatorVisible != a3)
+  if (self->_isFocusActivityIndicatorVisible != visible)
   {
-    v4 = a3;
-    self->_isFocusActivityIndicatorVisible = a3;
-    v5 = [(CSNotificationAdjunctListViewController *)self delegate];
-    [v5 focusActivityViewChangedToVisible:v4];
+    visibleCopy = visible;
+    self->_isFocusActivityIndicatorVisible = visible;
+    delegate = [(CSNotificationAdjunctListViewController *)self delegate];
+    [delegate focusActivityViewChangedToVisible:visibleCopy];
   }
 }
 
 - (id)_stackView
 {
-  v2 = [(CSNotificationAdjunctListViewController *)self view];
+  view = [(CSNotificationAdjunctListViewController *)self view];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = view;
   if (v3)
   {
     if (objc_opt_isKindOfClass())

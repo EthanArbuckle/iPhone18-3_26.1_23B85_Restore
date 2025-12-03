@@ -1,35 +1,35 @@
 @interface MTDeleteTimerIntentHandler
-- (id)_responseToDeleteTimerIntent:(id)a3 withDeletedTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6;
-- (id)_timerFromIntentTargetTimer:(id)a3 defaultState:(int64_t)a4;
-- (void)_deleteTimer:(id)a3 multiple:(BOOL)a4 dryRun:(BOOL)a5 completion:(id)a6;
-- (void)confirmDeleteTimer:(id)a3 completion:(id)a4;
-- (void)handleDeleteTimer:(id)a3 completion:(id)a4;
-- (void)resolveDeleteMultipleForDeleteTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveTargetTimerForDeleteTimer:(id)a3 withCompletion:(id)a4;
+- (id)_responseToDeleteTimerIntent:(id)intent withDeletedTimers:(id)timers error:(id)error dryRun:(BOOL)run;
+- (id)_timerFromIntentTargetTimer:(id)timer defaultState:(int64_t)state;
+- (void)_deleteTimer:(id)timer multiple:(BOOL)multiple dryRun:(BOOL)run completion:(id)completion;
+- (void)confirmDeleteTimer:(id)timer completion:(id)completion;
+- (void)handleDeleteTimer:(id)timer completion:(id)completion;
+- (void)resolveDeleteMultipleForDeleteTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveTargetTimerForDeleteTimer:(id)timer withCompletion:(id)completion;
 @end
 
 @implementation MTDeleteTimerIntentHandler
 
-- (void)resolveTargetTimerForDeleteTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveTargetTimerForDeleteTimer:(id)timer withCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v22 = "[MTDeleteTimerIntentHandler resolveTargetTimerForDeleteTimer:withCompletion:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [v6 targetTimer];
-    v10 = [v6 targetTimer];
-    v11 = -[MTDeleteTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", v9, [v10 state]);
+    targetTimer = [timerCopy targetTimer];
+    targetTimer2 = [timerCopy targetTimer];
+    v11 = -[MTDeleteTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", targetTimer, [targetTimer2 state]);
 
     if ([v11 type] == 2)
     {
@@ -41,16 +41,16 @@
       [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F2965E70, &unk_1F2965E88, &unk_1F2965EA0, 0}];
     }
     v12 = ;
-    v13 = [v6 deleteMultiple];
-    v14 = [v13 BOOLValue];
+    deleteMultiple = [timerCopy deleteMultiple];
+    bOOLValue = [deleteMultiple BOOLValue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __78__MTDeleteTimerIntentHandler_resolveTargetTimerForDeleteTimer_withCompletion___block_invoke;
     v18[3] = &unk_1E7B0C3E8;
     v19 = v11;
-    v20 = v7;
+    v20 = completionCopy;
     v15 = v11;
-    [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v15 multiple:v14 allowedTimerStatesForFollowup:v12 completion:v18];
+    [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v15 multiple:bOOLValue allowedTimerStatesForFollowup:v12 completion:v18];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -74,63 +74,63 @@ void __78__MTDeleteTimerIntentHandler_resolveTargetTimerForDeleteTimer_withCompl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resolveDeleteMultipleForDeleteTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveDeleteMultipleForDeleteTimer:(id)timer withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v7 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[MTDeleteTimerIntentHandler resolveDeleteMultipleForDeleteTimer:withCompletion:]";
     v14 = 2112;
-    v15 = v5;
+    v15 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_INFO, "%s %@", &v12, 0x16u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v8 = MEMORY[0x1E696E760];
-    v9 = [v5 deleteMultiple];
-    v10 = [v8 successWithResolvedValue:{objc_msgSend(v9, "BOOLValue")}];
-    v6[2](v6, v10);
+    deleteMultiple = [timerCopy deleteMultiple];
+    v10 = [v8 successWithResolvedValue:{objc_msgSend(deleteMultiple, "BOOLValue")}];
+    completionCopy[2](completionCopy, v10);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)confirmDeleteTimer:(id)a3 completion:(id)a4
+- (void)confirmDeleteTimer:(id)timer completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v19 = "[MTDeleteTimerIntentHandler confirmDeleteTimer:completion:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [v6 targetTimer];
-    v10 = [v6 targetTimer];
-    v11 = -[MTDeleteTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", v9, [v10 state]);
+    targetTimer = [timerCopy targetTimer];
+    targetTimer2 = [timerCopy targetTimer];
+    v11 = -[MTDeleteTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", targetTimer, [targetTimer2 state]);
 
-    v12 = [v6 deleteMultiple];
-    v13 = [v12 BOOLValue];
+    deleteMultiple = [timerCopy deleteMultiple];
+    bOOLValue = [deleteMultiple BOOLValue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__MTDeleteTimerIntentHandler_confirmDeleteTimer_completion___block_invoke;
     v15[3] = &unk_1E7B0E258;
-    v17 = v7;
+    v17 = completionCopy;
     v15[4] = self;
-    v16 = v6;
-    [(MTDeleteTimerIntentHandler *)self _deleteTimer:v11 multiple:v13 dryRun:1 completion:v15];
+    v16 = timerCopy;
+    [(MTDeleteTimerIntentHandler *)self _deleteTimer:v11 multiple:bOOLValue dryRun:1 completion:v15];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -143,37 +143,37 @@ void __60__MTDeleteTimerIntentHandler_confirmDeleteTimer_completion___block_invo
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)handleDeleteTimer:(id)a3 completion:(id)a4
+- (void)handleDeleteTimer:(id)timer completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v21 = "[MTDeleteTimerIntentHandler handleDeleteTimer:completion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  v9 = [v6 targetTimer];
-  v10 = [v6 targetTimer];
-  v11 = -[MTDeleteTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", v9, [v10 state]);
+  targetTimer = [timerCopy targetTimer];
+  targetTimer2 = [timerCopy targetTimer];
+  v11 = -[MTDeleteTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", targetTimer, [targetTimer2 state]);
 
-  v12 = [v6 deleteMultiple];
-  v13 = [v12 BOOLValue];
+  deleteMultiple = [timerCopy deleteMultiple];
+  bOOLValue = [deleteMultiple BOOLValue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invoke;
   v17[3] = &unk_1E7B0E258;
-  v18 = v6;
-  v19 = v7;
+  v18 = timerCopy;
+  v19 = completionCopy;
   v17[4] = self;
-  v14 = v6;
-  v15 = v7;
-  [(MTDeleteTimerIntentHandler *)self _deleteTimer:v11 multiple:v13 dryRun:0 completion:v17];
+  v14 = timerCopy;
+  v15 = completionCopy;
+  [(MTDeleteTimerIntentHandler *)self _deleteTimer:v11 multiple:bOOLValue dryRun:0 completion:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -188,18 +188,18 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
   }
 }
 
-- (id)_responseToDeleteTimerIntent:(id)a3 withDeletedTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6
+- (id)_responseToDeleteTimerIntent:(id)intent withDeletedTimers:(id)timers error:(id)error dryRun:(BOOL)run
 {
-  v6 = a6;
+  runCopy = run;
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v10 || v11)
+  intentCopy = intent;
+  timersCopy = timers;
+  errorCopy = error;
+  v12 = errorCopy;
+  if (!timersCopy || errorCopy)
   {
-    v17 = [v11 domain];
-    v18 = [v17 isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
+    domain = [errorCopy domain];
+    v18 = [domain isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
 
     if (!v18 || (v19 = [v12 code], (v19 - 5) > 2) || (v14 = objc_msgSend(objc_alloc(MEMORY[0x1E696E828]), "initWithCode:userActivity:", qword_1B20B8A00[v19 - 5], 0)) == 0)
     {
@@ -209,7 +209,7 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
     v20 = *MEMORY[0x1E696E6D8];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v23 = v6 ? @"confirm" : @"handle";
+      v23 = runCopy ? @"confirm" : @"handle";
       if (v12)
       {
         v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"due to error %@", v12];
@@ -225,7 +225,7 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
       v27 = 2112;
       v28 = v23;
       v29 = 2112;
-      v30 = v9;
+      v30 = intentCopy;
       v31 = 2112;
       v32 = v24;
       v33 = 2112;
@@ -239,7 +239,7 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
 
   else
   {
-    if ([v10 count])
+    if ([timersCopy count])
     {
       v13 = 3;
     }
@@ -250,7 +250,7 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
     }
 
     v14 = [objc_alloc(MEMORY[0x1E696E828]) initWithCode:v13 userActivity:0];
-    [(__CFString *)v14 setDeletedTimers:v10];
+    [(__CFString *)v14 setDeletedTimers:timersCopy];
     v15 = *MEMORY[0x1E696E6D8];
     if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
     {
@@ -258,14 +258,14 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
       *buf = 136315906;
       v26 = "[MTDeleteTimerIntentHandler _responseToDeleteTimerIntent:withDeletedTimers:error:dryRun:]";
       v27 = 2112;
-      if (v6)
+      if (runCopy)
       {
         v16 = @"confirmed";
       }
 
       v28 = v16;
       v29 = 2112;
-      v30 = v9;
+      v30 = intentCopy;
       v31 = 2112;
       v32 = v14;
       _os_log_impl(&dword_1B1F9F000, v15, OS_LOG_TYPE_INFO, "%s Successfully %@ delete timer attribute intent %@ with response %@", buf, 0x2Au);
@@ -277,20 +277,20 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
   return v14;
 }
 
-- (void)_deleteTimer:(id)a3 multiple:(BOOL)a4 dryRun:(BOOL)a5 completion:(id)a6
+- (void)_deleteTimer:(id)timer multiple:(BOOL)multiple dryRun:(BOOL)run completion:(id)completion
 {
-  v7 = a5;
+  runCopy = run;
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(MTTimerIntentHandler *)self _timerManager];
+  timerCopy = timer;
+  completionCopy = completion;
+  _timerManager = [(MTTimerIntentHandler *)self _timerManager];
   v13 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v14 = &stru_1F29360E0;
     *buf = 136315906;
     v37 = "[MTDeleteTimerIntentHandler _deleteTimer:multiple:dryRun:completion:]";
-    if (v7)
+    if (runCopy)
     {
       v14 = @" (dry-run)";
     }
@@ -298,9 +298,9 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
     v38 = 2112;
     v39 = v14;
     v40 = 2112;
-    v41 = v10;
+    v41 = timerCopy;
     v42 = 2112;
-    v43 = v12;
+    v43 = _timerManager;
     _os_log_impl(&dword_1B1F9F000, v13, OS_LOG_TYPE_INFO, "%s Deleting%@ timer %@ from timer manager %@", buf, 0x2Au);
   }
 
@@ -308,12 +308,12 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
   aBlock[1] = 3221225472;
   aBlock[2] = __70__MTDeleteTimerIntentHandler__deleteTimer_multiple_dryRun_completion___block_invoke;
   aBlock[3] = &unk_1E7B0E280;
-  v35 = v7;
-  v15 = v10;
+  v35 = runCopy;
+  v15 = timerCopy;
   v32 = v15;
-  v16 = v12;
+  v16 = _timerManager;
   v33 = v16;
-  v17 = v11;
+  v17 = completionCopy;
   v34 = v17;
   v18 = _Block_copy(aBlock);
   v24[0] = MEMORY[0x1E69E9820];
@@ -322,8 +322,8 @@ void __59__MTDeleteTimerIntentHandler_handleDeleteTimer_completion___block_invok
   v24[3] = &unk_1E7B0E318;
   v24[4] = self;
   v25 = v15;
-  v29 = a4;
-  v30 = v7;
+  multipleCopy = multiple;
+  v30 = runCopy;
   v27 = v18;
   v28 = v17;
   v26 = v16;
@@ -489,41 +489,41 @@ void __70__MTDeleteTimerIntentHandler__deleteTimer_multiple_dryRun_completion___
   }
 }
 
-- (id)_timerFromIntentTargetTimer:(id)a3 defaultState:(int64_t)a4
+- (id)_timerFromIntentTargetTimer:(id)timer defaultState:(int64_t)state
 {
-  v5 = a3;
-  v6 = [v5 label];
-  v7 = [v6 spokenPhrase];
-  if ([v7 length])
+  timerCopy = timer;
+  label = [timerCopy label];
+  spokenPhrase = [label spokenPhrase];
+  if ([spokenPhrase length])
   {
     v8 = 0;
   }
 
   else
   {
-    [v5 duration];
+    [timerCopy duration];
     v8 = v9 == -1.0;
   }
 
-  v10 = [v5 type];
+  type = [timerCopy type];
   if (v8)
   {
-    v11 = 2 * ([v5 type] == 2);
+    v11 = 2 * ([timerCopy type] == 2);
   }
 
   else
   {
-    v11 = v10;
+    v11 = type;
   }
 
   v12 = objc_alloc(MEMORY[0x1E696EAC0]);
-  v13 = [v5 label];
-  [v5 duration];
+  label2 = [timerCopy label];
+  [timerCopy duration];
   v15 = v14;
-  [v5 remainingTime];
+  [timerCopy remainingTime];
   v17 = v16;
-  v18 = [v5 identifier];
-  v19 = [v12 initWithLabel:v13 duration:v18 remainingTime:a4 identifier:v11 state:v15 type:v17];
+  identifier = [timerCopy identifier];
+  v19 = [v12 initWithLabel:label2 duration:identifier remainingTime:state identifier:v11 state:v15 type:v17];
 
   return v19;
 }

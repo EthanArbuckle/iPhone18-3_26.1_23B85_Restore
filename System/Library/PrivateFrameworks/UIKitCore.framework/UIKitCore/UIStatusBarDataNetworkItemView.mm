@@ -1,6 +1,6 @@
 @interface UIStatusBarDataNetworkItemView
-- (BOOL)_updateWithData:(id *)a3 networkType:(int)a4;
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)_updateWithData:(id *)data networkType:(int)type;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (double)extraLeftPadding;
 - (double)extraRightPadding;
 - (double)maximumOverlap;
@@ -8,7 +8,7 @@
 - (id)_dataNetworkImageName;
 - (id)accessibilityHUDRepresentation;
 - (id)contentsImage;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UIStatusBarDataNetworkItemView
@@ -19,11 +19,11 @@
   v10.super_class = UIStatusBarDataNetworkItemView;
   [(UIStatusBarItemView *)&v10 extraLeftPadding];
   v4 = v3;
-  v5 = [(UIStatusBarItemView *)self foregroundStyle];
-  v6 = [v5 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
   dataNetworkType = self->_dataNetworkType;
-  if (v6)
+  if (usesVerticalLayout)
   {
     if (dataNetworkType != 5)
     {
@@ -55,10 +55,10 @@
   v8.super_class = UIStatusBarDataNetworkItemView;
   [(UIStatusBarItemView *)&v8 extraRightPadding];
   v4 = v3;
-  v5 = [(UIStatusBarItemView *)self foregroundStyle];
-  v6 = [v5 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
-  if (v6 && self->_dataNetworkType != 5)
+  if (usesVerticalLayout && self->_dataNetworkType != 5)
   {
     return v4 + -3.0;
   }
@@ -68,10 +68,10 @@
 
 - (double)maximumOverlap
 {
-  v3 = [(UIStatusBarItemView *)self foregroundStyle];
-  v4 = [v3 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
-  if (v4)
+  if (usesVerticalLayout)
   {
     return 0.0;
   }
@@ -80,36 +80,36 @@
   return result;
 }
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
-  v6 = *(v5 + 2096);
+  rawData = [data rawData];
+  v6 = *(rawData + 2096);
 
-  return [(UIStatusBarDataNetworkItemView *)self _updateWithData:v5 networkType:v6];
+  return [(UIStatusBarDataNetworkItemView *)self _updateWithData:rawData networkType:v6];
 }
 
-- (BOOL)_updateWithData:(id *)a3 networkType:(int)a4
+- (BOOL)_updateWithData:(id *)data networkType:(int)type
 {
-  v5 = *(a3 + 3149);
-  var18 = a3->var18;
-  if (a3->var19 >= 3)
+  v5 = *(data + 3149);
+  var18 = data->var18;
+  if (data->var19 >= 3)
   {
     var19 = 3;
   }
 
   else
   {
-    var19 = a3->var19;
+    var19 = data->var19;
   }
 
-  v8 = *(a3 + 2529);
+  v8 = *(data + 2529);
   v9 = (v8 >> 2) & 1;
   showRSSI = self->_showRSSI;
   dataNetworkType = self->_dataNetworkType;
-  v12 = dataNetworkType != a4;
-  if (dataNetworkType != a4)
+  v12 = dataNetworkType != type;
+  if (dataNetworkType != type)
   {
-    self->_dataNetworkType = a4;
+    self->_dataNetworkType = type;
   }
 
   if (v9 == self->_enableRSSI)
@@ -120,7 +120,7 @@
     }
 
 LABEL_11:
-    v15 = (a4 - 5) < 2;
+    v15 = (type - 5) < 2;
     goto LABEL_13;
   }
 
@@ -130,7 +130,7 @@ LABEL_11:
   [(UIView *)self setUserInteractionEnabled:v13 != 0];
   if (v14 == 1)
   {
-    a4 = self->_dataNetworkType;
+    type = self->_dataNetworkType;
     goto LABEL_11;
   }
 
@@ -175,37 +175,37 @@ LABEL_13:
 
 - (id)contentsImage
 {
-  v3 = [(UIStatusBarItemView *)self foregroundStyle];
-  v4 = [v3 textForNetworkType:self->_dataNetworkType];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v4 = [foregroundStyle textForNetworkType:self->_dataNetworkType];
 
   if (self->_showRSSI || v4)
   {
     if (self->_showRSSI)
     {
-      v6 = [(UIStatusBarDataNetworkItemView *)self _stringForRSSI];
+      _stringForRSSI = [(UIStatusBarDataNetworkItemView *)self _stringForRSSI];
     }
 
     else
     {
-      v6 = v4;
+      _stringForRSSI = v4;
     }
 
-    v7 = v6;
-    v5 = [(UIStatusBarItemView *)self imageWithText:v6];
+    v7 = _stringForRSSI;
+    _dataNetworkImage = [(UIStatusBarItemView *)self imageWithText:_stringForRSSI];
   }
 
   else
   {
-    v5 = [(UIStatusBarDataNetworkItemView *)self _dataNetworkImage];
+    _dataNetworkImage = [(UIStatusBarDataNetworkItemView *)self _dataNetworkImage];
   }
 
-  return v5;
+  return _dataNetworkImage;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (self->_enableRSSI && (self->_dataNetworkType - 5) <= 1)
   {
     self->_showRSSI ^= 1u;
@@ -213,14 +213,14 @@ LABEL_13:
     if (v8 != 0.0)
     {
       v9 = v8;
-      v10 = [(UIStatusBarItemView *)self layoutManager];
-      [v10 itemView:self sizeChangedBy:v9];
+      layoutManager = [(UIStatusBarItemView *)self layoutManager];
+      [layoutManager itemView:self sizeChangedBy:v9];
     }
   }
 
   v11.receiver = self;
   v11.super_class = UIStatusBarDataNetworkItemView;
-  [(UIResponder *)&v11 touchesEnded:v6 withEvent:v7];
+  [(UIResponder *)&v11 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 - (id)_dataNetworkImageName
@@ -298,16 +298,16 @@ LABEL_22:
 
 - (id)_dataNetworkImage
 {
-  v3 = [(UIStatusBarDataNetworkItemView *)self _dataNetworkImageName];
-  v4 = [(UIStatusBarItemView *)self imageWithShadowNamed:v3];
+  _dataNetworkImageName = [(UIStatusBarDataNetworkItemView *)self _dataNetworkImageName];
+  v4 = [(UIStatusBarItemView *)self imageWithShadowNamed:_dataNetworkImageName];
 
   return v4;
 }
 
 - (id)accessibilityHUDRepresentation
 {
-  v3 = [(UIStatusBarItemView *)self foregroundStyle];
-  v4 = [v3 textForNetworkType:self->_dataNetworkType];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v4 = [foregroundStyle textForNetworkType:self->_dataNetworkType];
 
   if (v4)
   {
@@ -363,9 +363,9 @@ LABEL_15:
   }
 
 LABEL_19:
-  v11 = [(UIStatusBarItemView *)self foregroundStyle];
-  v12 = [(UIStatusBarDataNetworkItemView *)self _dataNetworkImageName];
-  v4 = [v11 accessibilityHUDImageNamed:v12];
+  foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+  _dataNetworkImageName = [(UIStatusBarDataNetworkItemView *)self _dataNetworkImageName];
+  v4 = [foregroundStyle2 accessibilityHUDImageNamed:_dataNetworkImageName];
 
   v8 = [[UIAccessibilityHUDItem alloc] initWithTitle:0 image:v4 imageInsets:1 scaleImage:0.0, 0.0, 0.0, 0.0];
 LABEL_16:

@@ -1,11 +1,11 @@
 @interface HKHandwashingDateRangeDataSourceDelegate
-- (HKHandwashingDateRangeDataSourceDelegate)initWithGoal:(double)a3;
-- (id)dataForDateRange:(id)a3 timeScope:(int64_t)a4;
+- (HKHandwashingDateRangeDataSourceDelegate)initWithGoal:(double)goal;
+- (id)dataForDateRange:(id)range timeScope:(int64_t)scope;
 @end
 
 @implementation HKHandwashingDateRangeDataSourceDelegate
 
-- (HKHandwashingDateRangeDataSourceDelegate)initWithGoal:(double)a3
+- (HKHandwashingDateRangeDataSourceDelegate)initWithGoal:(double)goal
 {
   v7.receiver = self;
   v7.super_class = HKHandwashingDateRangeDataSourceDelegate;
@@ -13,24 +13,24 @@
   v5 = v4;
   if (v4)
   {
-    [(HKHandwashingDateRangeDataSourceDelegate *)v4 setGoal:a3];
+    [(HKHandwashingDateRangeDataSourceDelegate *)v4 setGoal:goal];
   }
 
   return v5;
 }
 
-- (id)dataForDateRange:(id)a3 timeScope:(int64_t)a4
+- (id)dataForDateRange:(id)range timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:a4];
+  rangeCopy = range;
+  v7 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:scope];
   v8 = [v7 seriesPointIntervalComponentsAtResolution:0];
   v9 = +[HKGraphZoomLevelConfiguration defaultCalendar];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = objc_alloc(MEMORY[0x1E696AB80]);
-  v12 = [v6 startDate];
-  v13 = [v6 endDate];
+  startDate = [rangeCopy startDate];
+  endDate = [rangeCopy endDate];
 
-  v14 = [v11 initWithStartDate:v12 endDate:v13];
+  v14 = [v11 initWithStartDate:startDate endDate:endDate];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __71__HKHandwashingDateRangeDataSourceDelegate_dataForDateRange_timeScope___block_invoke;

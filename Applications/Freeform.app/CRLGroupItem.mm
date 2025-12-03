@@ -1,14 +1,14 @@
 @interface CRLGroupItem
 + (CGSize)unscaledSizeForEmptyGroups;
-+ (id)groupGeometryFromChildrenInfos:(id)a3;
-+ (id)groupGeometryFromChildrenInfos:(id)a3 currentlyLaidOutWithLayoutController:(id)a4;
++ (id)groupGeometryFromChildrenInfos:(id)infos;
++ (id)groupGeometryFromChildrenInfos:(id)infos currentlyLaidOutWithLayoutController:(id)controller;
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock;
 - (BOOL)canAspectRatioLockBeChangedByUser;
 - (BOOL)containsUnknownContent;
 - (BOOL)isEffectivelyEmpty;
-- (BOOL)isItemAllowed:(id)a3;
+- (BOOL)isItemAllowed:(id)allowed;
 - (BOOL)isSelectable;
-- (BOOL)makeChildGeometriesRelativeAndComputeOwnAbsoluteGeometryAndReturnError:(id *)a3;
+- (BOOL)makeChildGeometriesRelativeAndComputeOwnAbsoluteGeometryAndReturnError:(id *)error;
 - (BOOL)requiresAdditionalBoardItemsForCopyImaging;
 - (BOOL)shouldBeIgnoredWhenCopying;
 - (BOOL)supportsParentRotation;
@@ -17,21 +17,21 @@
 - (Class)repClass;
 - (NSArray)additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases;
 - (NSArray)generativePlaygroundImageItems;
-- (id)groupedGeometryForChildItem:(id)a3;
-- (id)ungroupedGeometryForChildItem:(id)a3;
-- (void)crl_onBoard:(id)a3 moveItemToPosition:(CGPoint)a4 size:(CGSize)a5;
+- (id)groupedGeometryForChildItem:(id)item;
+- (id)ungroupedGeometryForChildItem:(id)item;
+- (void)crl_onBoard:(id)board moveItemToPosition:(CGPoint)position size:(CGSize)size;
 - (void)prepareBoardItemForConnectorModeDuplication;
 @end
 
 @implementation CRLGroupItem
 
-- (void)crl_onBoard:(id)a3 moveItemToPosition:(CGPoint)a4 size:(CGSize)a5
+- (void)crl_onBoard:(id)board moveItemToPosition:(CGPoint)position size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  boardCopy = board;
   [(CRLGroupItem *)self allNestedChildrenItemsIncludingGroups];
   v62 = 0u;
   v63 = 0u;
@@ -50,8 +50,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v15 = [*(*(&v60 + 1) + 8 * i) geometry];
-        if (![v15 widthValid] || (objc_msgSend(v15, "heightValid") & 1) == 0)
+        geometry = [*(*(&v60 + 1) + 8 * i) geometry];
+        if (![geometry widthValid] || (objc_msgSend(geometry, "heightValid") & 1) == 0)
         {
 
           [(CRLBoardItem *)self visibleBoundsForPositioning];
@@ -231,8 +231,8 @@
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v36 = [(CRLGroupItem *)self childrenToPosition];
-    v37 = [v36 countByEnumeratingWithState:&v55 objects:v64 count:16];
+    childrenToPosition = [(CRLGroupItem *)self childrenToPosition];
+    v37 = [childrenToPosition countByEnumeratingWithState:&v55 objects:v64 count:16];
     if (v37)
     {
       v38 = *v56;
@@ -242,17 +242,17 @@
         {
           if (*v56 != v38)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(childrenToPosition);
           }
 
           v40 = *(*(&v55 + 1) + 8 * j);
           v41 = objc_opt_class();
           v42 = sub_100014370(v41, v40);
           [v42 visibleBoundsForPositioning];
-          [v42 crl_onBoard:v10 moveItemToPosition:v20 * v43 size:{v24 * v44, v20 * v45, v24 * v46}];
+          [v42 crl_onBoard:boardCopy moveItemToPosition:v20 * v43 size:{v24 * v44, v20 * v45, v24 * v46}];
         }
 
-        v37 = [v36 countByEnumeratingWithState:&v55 objects:v64 count:16];
+        v37 = [childrenToPosition countByEnumeratingWithState:&v55 objects:v64 count:16];
       }
 
       while (v37);
@@ -266,8 +266,8 @@ LABEL_65:
   v49 = v48;
   if (v48 != x || v47 != y)
   {
-    v50 = [(CRLBoardItemBase *)self geometry];
-    v51 = [v50 mutableCopy];
+    geometry2 = [(CRLBoardItemBase *)self geometry];
+    v51 = [geometry2 mutableCopy];
 
     v52 = sub_10011F31C(x, y, v49);
     [v51 position];
@@ -278,7 +278,7 @@ LABEL_65:
 
 - (BOOL)isSelectable
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_1005F4200())
   {
 
@@ -318,7 +318,7 @@ LABEL_65:
 {
   v3 = OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems;
   v4 = *&self->_TtC8Freeform16CRLContainerItem_opaque[OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems];
-  v5 = self;
+  selfCopy = self;
   if (!v4)
   {
     sub_10096C7D4();
@@ -380,9 +380,9 @@ LABEL_8:
 LABEL_16:
 }
 
-- (BOOL)isItemAllowed:(id)a3
+- (BOOL)isItemAllowed:(id)allowed
 {
-  v3 = (*((swift_isaMask & *a3) + 0xC8))(self, a2);
+  v3 = (*((swift_isaMask & *allowed) + 0xC8))(self, a2);
   if ((v5 & 0x100) == 0)
   {
     return 1;
@@ -442,7 +442,7 @@ LABEL_16:
 
 - (BOOL)isEffectivelyEmpty
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F4200();
 
   return v3;
@@ -450,7 +450,7 @@ LABEL_16:
 
 - (BOOL)containsUnknownContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F436C();
 
   return v3;
@@ -458,7 +458,7 @@ LABEL_16:
 
 - (BOOL)requiresAdditionalBoardItemsForCopyImaging
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F44CC();
 
   return v3 & 1;
@@ -466,7 +466,7 @@ LABEL_16:
 
 - (BOOL)shouldBeIgnoredWhenCopying
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F4654();
 
   return v3;
@@ -483,13 +483,13 @@ LABEL_16:
 
 - (BOOL)supportsParentRotation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F4814();
 
   return v3 & 1;
 }
 
-+ (id)groupGeometryFromChildrenInfos:(id)a3
++ (id)groupGeometryFromChildrenInfos:(id)infos
 {
   type metadata accessor for CRLBoardItem(0);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -499,23 +499,23 @@ LABEL_16:
   return v4;
 }
 
-+ (id)groupGeometryFromChildrenInfos:(id)a3 currentlyLaidOutWithLayoutController:(id)a4
++ (id)groupGeometryFromChildrenInfos:(id)infos currentlyLaidOutWithLayoutController:(id)controller
 {
   type metadata accessor for CRLBoardItem(0);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
-  v7 = sub_1005F6690(v5, v6);
+  controllerCopy = controller;
+  v7 = sub_1005F6690(v5, controllerCopy);
 
   return v7;
 }
 
-- (id)groupedGeometryForChildItem:(id)a3
+- (id)groupedGeometryForChildItem:(id)item
 {
-  v4 = *((swift_isaMask & *a3) + 0xE0);
-  v5 = a3;
-  v6 = self;
+  v4 = *((swift_isaMask & *item) + 0xE0);
+  itemCopy = item;
+  selfCopy = self;
   v7 = v4();
-  v8 = *(**&v6->_TtC8Freeform16CRLContainerItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 296);
+  v8 = *(**&selfCopy->_TtC8Freeform16CRLContainerItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 296);
 
   v10 = v8(v9);
 
@@ -524,18 +524,18 @@ LABEL_16:
   return v11;
 }
 
-- (id)ungroupedGeometryForChildItem:(id)a3
+- (id)ungroupedGeometryForChildItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1005F4F44(v4);
+  itemCopy = item;
+  selfCopy = self;
+  v6 = sub_1005F4F44(itemCopy);
 
   return v6;
 }
 
-- (BOOL)makeChildGeometriesRelativeAndComputeOwnAbsoluteGeometryAndReturnError:(id *)a3
+- (BOOL)makeChildGeometriesRelativeAndComputeOwnAbsoluteGeometryAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1005F582C();
 
   return 1;
@@ -543,7 +543,7 @@ LABEL_16:
 
 - (BOOL)canAspectRatioLockBeChangedByUser
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F5D88();
 
   return v3 & 1;
@@ -551,7 +551,7 @@ LABEL_16:
 
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F5FC0();
 
   return v3 & 1;
@@ -559,7 +559,7 @@ LABEL_16:
 
 - (NSArray)additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005F36D4();
   sub_100798D00(v3);
 
@@ -577,14 +577,14 @@ LABEL_16:
     v3 = swift_allocObject();
     *(v3 + 16) = xmmword_101465920;
     *(v3 + 32) = self;
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems;
     v6 = *&self->_TtC8Freeform16CRLContainerItem_opaque[OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems];
-    v7 = self;
+    selfCopy2 = self;
     if (!v6)
     {
       sub_10096C7D4();

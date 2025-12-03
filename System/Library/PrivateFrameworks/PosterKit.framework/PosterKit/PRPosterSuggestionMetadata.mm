@@ -1,27 +1,27 @@
 @interface PRPosterSuggestionMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PRPosterSuggestionMetadata)initWithCoder:(id)a3;
-- (PRPosterSuggestionMetadata)initWithLastModifiedDate:(id)a3;
-- (PRPosterSuggestionMetadata)initWithSuggestedGalleryItem:(id)a3 suggestedComplicationsByIdentifier:(id)a4 lastModifiedDate:(id)a5;
+- (PRPosterSuggestionMetadata)initWithCoder:(id)coder;
+- (PRPosterSuggestionMetadata)initWithLastModifiedDate:(id)date;
+- (PRPosterSuggestionMetadata)initWithSuggestedGalleryItem:(id)item suggestedComplicationsByIdentifier:(id)identifier lastModifiedDate:(id)date;
 - (id)metadataBySettingLastModifiedDateToNow;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterSuggestionMetadata
 
-- (PRPosterSuggestionMetadata)initWithSuggestedGalleryItem:(id)a3 suggestedComplicationsByIdentifier:(id)a4 lastModifiedDate:(id)a5
+- (PRPosterSuggestionMetadata)initWithSuggestedGalleryItem:(id)item suggestedComplicationsByIdentifier:(id)identifier lastModifiedDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(PRPosterSuggestionMetadata *)self initWithLastModifiedDate:a5];
+  itemCopy = item;
+  identifierCopy = identifier;
+  v11 = [(PRPosterSuggestionMetadata *)self initWithLastModifiedDate:date];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_suggestedGalleryItem, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_suggestedGalleryItem, item);
+    v13 = [identifierCopy copy];
     suggestedComplicationsByIdentifier = v12->_suggestedComplicationsByIdentifier;
     v12->_suggestedComplicationsByIdentifier = v13;
   }
@@ -29,15 +29,15 @@
   return v12;
 }
 
-- (PRPosterSuggestionMetadata)initWithLastModifiedDate:(id)a3
+- (PRPosterSuggestionMetadata)initWithLastModifiedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = PRPosterSuggestionMetadata;
   v5 = [(PRPosterSuggestionMetadata *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dateCopy copy];
     lastModifiedDate = v5->_lastModifiedDate;
     v5->_lastModifiedDate = v6;
   }
@@ -48,19 +48,19 @@
 - (id)metadataBySettingLastModifiedDateToNow
 {
   v3 = [PRPosterSuggestionMetadata alloc];
-  v4 = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
-  v5 = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [(PRPosterSuggestionMetadata *)v3 initWithSuggestedGalleryItem:v4 suggestedComplicationsByIdentifier:v5 lastModifiedDate:v6];
+  suggestedGalleryItem = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
+  suggestedComplicationsByIdentifier = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [(PRPosterSuggestionMetadata *)v3 initWithSuggestedGalleryItem:suggestedGalleryItem suggestedComplicationsByIdentifier:suggestedComplicationsByIdentifier lastModifiedDate:date];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v31 = 1;
   }
@@ -72,10 +72,10 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
-      v9 = [(PRPosterSuggestionMetadata *)v7 suggestedGalleryItem];
-      v10 = ATXFaceGalleryItemEqualObjects(v8, v9);
+      v7 = equalCopy;
+      suggestedGalleryItem = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
+      suggestedGalleryItem2 = [(PRPosterSuggestionMetadata *)v7 suggestedGalleryItem];
+      v10 = ATXFaceGalleryItemEqualObjects(suggestedGalleryItem, suggestedGalleryItem2);
 
       if (v10 && (v11 = MEMORY[0x1E695DFD8], -[PRPosterSuggestionMetadata suggestedComplicationsByIdentifier](self, "suggestedComplicationsByIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), [v12 allKeys], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "setWithArray:", v13), v14 = objc_claimAutoreleasedReturnValue(), v15 = MEMORY[0x1E695DFD8], -[PRPosterSuggestionMetadata suggestedComplicationsByIdentifier](v7, "suggestedComplicationsByIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "allKeys"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "setWithArray:", v17), v18 = objc_claimAutoreleasedReturnValue(), v19 = BSEqualObjects(), v18, v17, v16, v14, v13, v12, v19))
       {
@@ -83,10 +83,10 @@
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v20 = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
-        v21 = [v20 allKeys];
+        suggestedComplicationsByIdentifier = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
+        allKeys = [suggestedComplicationsByIdentifier allKeys];
 
-        v22 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v22)
         {
           v23 = v22;
@@ -97,25 +97,25 @@
             {
               if (*v34 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(allKeys);
               }
 
               v26 = *(*(&v33 + 1) + 8 * i);
-              v27 = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
-              v28 = [v27 objectForKey:v26];
+              suggestedComplicationsByIdentifier2 = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
+              v28 = [suggestedComplicationsByIdentifier2 objectForKey:v26];
 
-              v29 = [(PRPosterSuggestionMetadata *)v7 suggestedComplicationsByIdentifier];
-              v30 = [v29 objectForKey:v26];
+              suggestedComplicationsByIdentifier3 = [(PRPosterSuggestionMetadata *)v7 suggestedComplicationsByIdentifier];
+              v30 = [suggestedComplicationsByIdentifier3 objectForKey:v26];
 
-              LODWORD(v29) = ATXComplicationEqualObjects(v28, v30);
-              if (!v29)
+              LODWORD(suggestedComplicationsByIdentifier3) = ATXComplicationEqualObjects(v28, v30);
+              if (!suggestedComplicationsByIdentifier3)
               {
                 v31 = 0;
                 goto LABEL_18;
               }
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+            v23 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
             if (v23)
             {
               continue;
@@ -146,10 +146,10 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
-  v4 = [v3 hash];
-  v5 = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
-  v6 = [v5 hash];
+  suggestedGalleryItem = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
+  v4 = [suggestedGalleryItem hash];
+  suggestedComplicationsByIdentifier = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
+  v6 = [suggestedComplicationsByIdentifier hash];
 
   return v6 ^ v4;
 }
@@ -161,7 +161,7 @@ LABEL_18:
   v8 = 3221225472;
   v9 = __41__PRPosterSuggestionMetadata_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -170,29 +170,29 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
-  [v4 encodeObject:v5 forKey:@"suggestedGalleryItem"];
+  coderCopy = coder;
+  suggestedGalleryItem = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
+  [coderCopy encodeObject:suggestedGalleryItem forKey:@"suggestedGalleryItem"];
 
-  v6 = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
-  [v4 encodeObject:v6 forKey:@"suggestedComplicationsByIdentifier"];
+  suggestedComplicationsByIdentifier = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
+  [coderCopy encodeObject:suggestedComplicationsByIdentifier forKey:@"suggestedComplicationsByIdentifier"];
 
-  v7 = [(PRPosterSuggestionMetadata *)self lastModifiedDate];
-  [v4 encodeObject:v7 forKey:@"lastModifiedDate"];
+  lastModifiedDate = [(PRPosterSuggestionMetadata *)self lastModifiedDate];
+  [coderCopy encodeObject:lastModifiedDate forKey:@"lastModifiedDate"];
 }
 
-- (PRPosterSuggestionMetadata)initWithCoder:(id)a3
+- (PRPosterSuggestionMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedGalleryItem"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedGalleryItem"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"suggestedComplicationsByIdentifier"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"suggestedComplicationsByIdentifier"];
 
   v12 = MEMORY[0x1E695E0F8];
   if (v11)
@@ -206,17 +206,17 @@ LABEL_18:
   return v14;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v10 = a3;
-  v4 = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
-  v5 = [v10 appendObject:v4 withName:@"suggestedGalleryItem"];
+  formatterCopy = formatter;
+  suggestedGalleryItem = [(PRPosterSuggestionMetadata *)self suggestedGalleryItem];
+  v5 = [formatterCopy appendObject:suggestedGalleryItem withName:@"suggestedGalleryItem"];
 
-  v6 = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
-  v7 = [v10 appendObject:v6 withName:@"suggestedComplicationsByIdentifier"];
+  suggestedComplicationsByIdentifier = [(PRPosterSuggestionMetadata *)self suggestedComplicationsByIdentifier];
+  v7 = [formatterCopy appendObject:suggestedComplicationsByIdentifier withName:@"suggestedComplicationsByIdentifier"];
 
-  v8 = [(PRPosterSuggestionMetadata *)self lastModifiedDate];
-  v9 = [v10 appendObject:v8 withName:@"lastModifiedDate"];
+  lastModifiedDate = [(PRPosterSuggestionMetadata *)self lastModifiedDate];
+  v9 = [formatterCopy appendObject:lastModifiedDate withName:@"lastModifiedDate"];
 }
 
 @end

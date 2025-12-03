@@ -3,38 +3,38 @@
 + (id)_iPadMultitaskingMode;
 + (id)_isFindMyEnabled;
 + (id)_isScreenTimeEnabled;
-+ (id)createExpressSettingsWithQueue:(id)a3;
-+ (id)privacyBundleForIdentifier:(id)a3;
++ (id)createExpressSettingsWithQueue:(id)queue;
++ (id)privacyBundleForIdentifier:(id)identifier;
 + (int)_appearanceValue;
-+ (void)fetchSettingsWithCompletion:(id)a3;
-+ (void)updateSettings:(id)a3 withCompletion:(id)a4;
++ (void)fetchSettingsWithCompletion:(id)completion;
++ (void)updateSettings:(id)settings withCompletion:(id)completion;
 @end
 
 @implementation BYExpressCloudSettings
 
-+ (id)createExpressSettingsWithQueue:(id)a3
++ (id)createExpressSettingsWithQueue:(id)queue
 {
-  v3 = a3;
-  dispatch_assert_queue_V2(v3);
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   v4 = objc_alloc_init(MEMORY[0x1E69CA9D8]);
   [v4 setVersion:1];
-  v5 = [MEMORY[0x1E69CA9E8] productType];
-  [v4 setProductType:v5];
+  productType = [MEMORY[0x1E69CA9E8] productType];
+  [v4 setProductType:productType];
 
-  v6 = [MEMORY[0x1E69CA9E8] deviceClass];
-  [v4 setDeviceClass:v6];
+  deviceClass = [MEMORY[0x1E69CA9E8] deviceClass];
+  [v4 setDeviceClass:deviceClass];
 
-  v7 = [MEMORY[0x1E69CA9E8] productVersion];
-  [v4 setProductVersion:v7];
+  productVersion = [MEMORY[0x1E69CA9E8] productVersion];
+  [v4 setProductVersion:productVersion];
 
-  v8 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  [v4 setDeviceAnalyticsOptIn:{objc_msgSend(v8, "userBoolValueForSetting:", *MEMORY[0x1E69ADE40]) == 1}];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  [v4 setDeviceAnalyticsOptIn:{objc_msgSend(mEMORY[0x1E69ADFB8], "userBoolValueForSetting:", *MEMORY[0x1E69ADE40]) == 1}];
 
   v9 = [BYExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.analyticsdevice"];
   [v4 setDeviceAnalyticsPrivacyBundle:v9];
 
-  v10 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  [v4 setAppAnalyticsOptIn:{objc_msgSend(v10, "userBoolValueForSetting:", *MEMORY[0x1E69ADD88]) == 1}];
+  mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  [v4 setAppAnalyticsOptIn:{objc_msgSend(mEMORY[0x1E69ADFB8]2, "userBoolValueForSetting:", *MEMORY[0x1E69ADD88]) == 1}];
 
   v11 = [BYExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.analyticsapp"];
   [v4 setAppAnalyticsPrivacyBundle:v11];
@@ -61,30 +61,30 @@
 
   v14 = v13;
   _Block_object_dispose(&v48, 8);
-  v15 = [v13 sharedPreferences];
-  [v4 setSiriOptIn:{objc_msgSend(v15, "assistantIsEnabled")}];
+  sharedPreferences = [v13 sharedPreferences];
+  [v4 setSiriOptIn:{objc_msgSend(sharedPreferences, "assistantIsEnabled")}];
 
   v16 = [BYExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.siri"];
   [v4 setSiriPrivacyBundle:v16];
 
   [v4 setSiriVoiceTriggerEnabled:{+[BYSiriUtilities isVoiceTriggerEnabled](BYSiriUtilities, "isVoiceTriggerEnabled")}];
-  v17 = [objc_opt_class() _isFindMyEnabled];
-  v18 = v17;
-  if (v17)
+  _isFindMyEnabled = [objc_opt_class() _isFindMyEnabled];
+  v18 = _isFindMyEnabled;
+  if (_isFindMyEnabled)
   {
-    [v4 setFindMyOptIn:{objc_msgSend(v17, "BOOLValue")}];
+    [v4 setFindMyOptIn:{objc_msgSend(_isFindMyEnabled, "BOOLValue")}];
     v19 = [BYExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.findmy"];
     [v4 setFindMyPrivacyBundle:v19];
   }
 
-  v20 = [BYSUManagerClient createWithQueue:v3 clientType:0];
+  v20 = [BYSUManagerClient createWithQueue:queueCopy clientType:0];
   [v4 setSoftwareUpdateAutoUpdateEnabled:{objc_msgSend(v20, "isAutomaticUpdateV2Enabled")}];
   [v4 setSoftwareUpdateAutoDownloadEnabled:{objc_msgSend(v20, "isAutomaticDownloadEnabled")}];
-  v21 = [objc_opt_class() _isScreenTimeEnabled];
-  v22 = v21;
-  if (v21)
+  _isScreenTimeEnabled = [objc_opt_class() _isScreenTimeEnabled];
+  v22 = _isScreenTimeEnabled;
+  if (_isScreenTimeEnabled)
   {
-    [v4 setScreenTimeEnabled:{objc_msgSend(v21, "BOOLValue")}];
+    [v4 setScreenTimeEnabled:{objc_msgSend(_isScreenTimeEnabled, "BOOLValue")}];
   }
 
   v48 = 0;
@@ -105,9 +105,9 @@
 
   v24 = v23;
   _Block_object_dispose(&v48, 8);
-  v25 = [v23 sharedInstance];
-  v26 = [v25 backupMetadata];
-  [v4 setWalletData:v26];
+  sharedInstance = [v23 sharedInstance];
+  backupMetadata = [sharedInstance backupMetadata];
+  [v4 setWalletData:backupMetadata];
 
   v48 = 0;
   v49 = &v48;
@@ -127,16 +127,16 @@
 
   v28 = v27;
   _Block_object_dispose(&v48, 8);
-  v29 = [v27 sharedMigrator];
-  v30 = [v29 migrationConsentRequestData];
-  [v4 setWatchMigrationData:v30];
+  sharedMigrator = [v27 sharedMigrator];
+  migrationConsentRequestData = [sharedMigrator migrationConsentRequestData];
+  [v4 setWatchMigrationData:migrationConsentRequestData];
 
   [v4 setAppearanceMode:{objc_msgSend(objc_opt_class(), "_appearanceValue")}];
-  v31 = [objc_opt_class() _displayZoomOption];
-  v32 = v31;
-  if (v31)
+  _displayZoomOption = [objc_opt_class() _displayZoomOption];
+  v32 = _displayZoomOption;
+  if (_displayZoomOption)
   {
-    [v4 setDisplayZoomOption:{objc_msgSend(v31, "intValue")}];
+    [v4 setDisplayZoomOption:{objc_msgSend(_displayZoomOption, "intValue")}];
   }
 
   v48 = 0;
@@ -157,24 +157,24 @@
 
   v34 = v33;
   _Block_object_dispose(&v48, 8);
-  v35 = [v33 currentDevice];
-  v36 = [v35 userInterfaceIdiom];
+  currentDevice = [v33 currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v36 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v37 = [objc_opt_class() _iPadMultitaskingMode];
-    v38 = v37;
-    if (v37)
+    _iPadMultitaskingMode = [objc_opt_class() _iPadMultitaskingMode];
+    v38 = _iPadMultitaskingMode;
+    if (_iPadMultitaskingMode)
     {
-      [v4 setIPadMultitaskingMode:{objc_msgSend(v37, "intValue")}];
+      [v4 setIPadMultitaskingMode:{objc_msgSend(_iPadMultitaskingMode, "intValue")}];
     }
   }
 
-  v39 = [MEMORY[0x1E696EE70] sharedInstance];
-  [v4 setStolenDeviceProtectionEnabled:{objc_msgSend(v39, "isFeatureEnabled")}];
+  mEMORY[0x1E696EE70] = [MEMORY[0x1E696EE70] sharedInstance];
+  [v4 setStolenDeviceProtectionEnabled:{objc_msgSend(mEMORY[0x1E696EE70], "isFeatureEnabled")}];
 
-  v40 = [MEMORY[0x1E696EE70] sharedInstance];
-  [v4 setStolenDeviceProtectionStrictModeEnabled:{objc_msgSend(v40, "isFeatureStrictModeEnabled")}];
+  mEMORY[0x1E696EE70]2 = [MEMORY[0x1E696EE70] sharedInstance];
+  [v4 setStolenDeviceProtectionStrictModeEnabled:{objc_msgSend(mEMORY[0x1E696EE70]2, "isFeatureStrictModeEnabled")}];
 
   v41 = _BYLoggingFacility();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -185,26 +185,26 @@
   return v4;
 }
 
-+ (void)updateSettings:(id)a3 withCompletion:(id)a4
++ (void)updateSettings:(id)settings withCompletion:(id)completion
 {
   v5 = MEMORY[0x1E69CA9D0];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
   v8 = objc_alloc_init(v5);
-  [v8 updateSettings:v7 withCompletion:v6];
+  [v8 updateSettings:settingsCopy withCompletion:completionCopy];
 }
 
-+ (void)fetchSettingsWithCompletion:(id)a3
++ (void)fetchSettingsWithCompletion:(id)completion
 {
   v3 = MEMORY[0x1E69CA9D0];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(v3);
-  [v5 fetchSettingsWithCompletion:v4];
+  [v5 fetchSettingsWithCompletion:completionCopy];
 }
 
-+ (id)privacyBundleForIdentifier:(id)a3
++ (id)privacyBundleForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -223,13 +223,13 @@
 
   v5 = v4;
   _Block_object_dispose(&v11, 8);
-  v6 = [v4 bundleWithIdentifier:v3];
-  v7 = [v6 privacyFlow];
-  if (v7)
+  v6 = [v4 bundleWithIdentifier:identifierCopy];
+  privacyFlow = [v6 privacyFlow];
+  if (privacyFlow)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69CA9E0]);
-    [v8 setIdentifier:v3];
-    [v8 setContentVersion:{objc_msgSend(v7, "contentVersion")}];
+    [v8 setIdentifier:identifierCopy];
+    [v8 setContentVersion:{objc_msgSend(privacyFlow, "contentVersion")}];
   }
 
   else
@@ -267,7 +267,7 @@
 
   v4 = v3;
   _Block_object_dispose(&v19, 8);
-  v5 = [v3 sharedInstance];
+  sharedInstance = [v3 sharedInstance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__BYExpressCloudSettings__isFindMyEnabled__block_invoke;
@@ -275,7 +275,7 @@
   v11 = &v12;
   v6 = v2;
   v10 = v6;
-  [v5 fmipStateWithCompletion:v9];
+  [sharedInstance fmipStateWithCompletion:v9];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
@@ -393,8 +393,8 @@ void __46__BYExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a1
   v3 = v2;
   _Block_object_dispose(&v10, 8);
   v4 = [[v2 alloc] initWithDelegate:0];
-  v5 = [v4 modeValue];
-  if (v5 == 1)
+  modeValue = [v4 modeValue];
+  if (modeValue == 1)
   {
     v6 = 1;
   }
@@ -404,7 +404,7 @@ void __46__BYExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a1
     v6 = 3;
   }
 
-  if (v5 == 2)
+  if (modeValue == 2)
   {
     v7 = 2;
   }
@@ -458,12 +458,12 @@ void __46__BYExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a1
 
     v18 = v17;
     _Block_object_dispose(&v25, 8);
-    v19 = [v17 mainDisplay];
-    v20 = [v19 currentMode];
+    mainDisplay = [v17 mainDisplay];
+    currentMode = [mainDisplay currentMode];
 
-    v21 = [v20 height];
+    height = [currentMode height];
     v22 = v13 * v16;
-    if (v22 == v21 && v7 * v10 == [v20 width])
+    if (v22 == height && v7 * v10 == [currentMode width])
     {
       v4 = &unk_1F30A7808;
     }
@@ -498,15 +498,15 @@ void __46__BYExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a1
   v3 = v2;
   _Block_object_dispose(&v9, 8);
   v4 = objc_alloc_init(v2);
-  v5 = [v4 currentMultitaskingOption];
+  currentMultitaskingOption = [v4 currentMultitaskingOption];
 
   v6 = &unk_1F30A7838;
-  if (v5)
+  if (currentMultitaskingOption)
   {
     v6 = 0;
   }
 
-  if (v5 == 1)
+  if (currentMultitaskingOption == 1)
   {
     return &unk_1F30A7820;
   }

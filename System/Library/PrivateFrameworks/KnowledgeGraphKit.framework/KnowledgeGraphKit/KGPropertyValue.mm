@@ -1,6 +1,6 @@
 @interface KGPropertyValue
-+ (id)kgPropertiesWithMAProperties:(id)a3;
-+ (id)kgPropertyValueWithMAPropertyValue:(id)a3;
++ (id)kgPropertiesWithMAProperties:(id)properties;
++ (id)kgPropertyValueWithMAPropertyValue:(id)value;
 - (KGPropertyTypeProtocol)kgPropertyValue;
 - (id)description;
 - (id)initForSubclasses;
@@ -11,8 +11,8 @@
 
 - (id)description
 {
-  v2 = [(KGPropertyValue *)self kgPropertyValue];
-  v3 = [v2 description];
+  kgPropertyValue = [(KGPropertyValue *)self kgPropertyValue];
+  v3 = [kgPropertyValue description];
 
   return v3;
 }
@@ -36,16 +36,16 @@
   return [(KGPropertyValue *)&v3 init];
 }
 
-+ (id)kgPropertiesWithMAProperties:(id)a3
++ (id)kgPropertiesWithMAProperties:(id)properties
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  propertiesCopy = properties;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = propertiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -92,21 +92,21 @@ LABEL_11:
   return v14;
 }
 
-+ (id)kgPropertyValueWithMAPropertyValue:(id)a3
++ (id)kgPropertyValueWithMAPropertyValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 kgPropertyType];
+  valueCopy = value;
+  kgPropertyType = [valueCopy kgPropertyType];
   v5 = 0;
-  if (v4 <= 2)
+  if (kgPropertyType <= 2)
   {
-    if (v4 != 1)
+    if (kgPropertyType != 1)
     {
-      if (v4 != 2)
+      if (kgPropertyType != 2)
       {
         goto LABEL_12;
       }
 
-      v6 = v3;
+      v6 = valueCopy;
       v7 = [KGDoublePropertyValue alloc];
       [v6 doubleValue];
       v9 = v8;
@@ -115,11 +115,11 @@ LABEL_11:
       goto LABEL_10;
     }
 
-    v11 = v3;
+    v11 = valueCopy;
     v12 = [KGInt64PropertyValue alloc];
-    v13 = [v11 integerValue];
+    integerValue = [v11 integerValue];
 LABEL_9:
-    v14 = v13;
+    v14 = integerValue;
 
     v10 = [(KGInt64PropertyValue *)v12 initWithValue:v14];
 LABEL_10:
@@ -127,20 +127,20 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v4 != 3)
+  if (kgPropertyType != 3)
   {
-    if (v4 != 4)
+    if (kgPropertyType != 4)
     {
       goto LABEL_12;
     }
 
-    v11 = v3;
+    v11 = valueCopy;
     v12 = [KGUInt64PropertyValue alloc];
-    v13 = [v11 unsignedIntegerValue];
+    integerValue = [v11 unsignedIntegerValue];
     goto LABEL_9;
   }
 
-  v15 = v3;
+  v15 = valueCopy;
   v5 = [[KGStringPropertyValue alloc] initWithValue:v15];
 
 LABEL_12:

@@ -1,8 +1,8 @@
 @interface DUTopicDetectionResponse
 - (_TtC21DocumentUnderstanding11DUDebugInfo)responseDebugInfo;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setResponseDebugInfo:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setResponseDebugInfo:(id)info;
 @end
 
 @implementation DUTopicDetectionResponse
@@ -14,16 +14,16 @@
   return v2;
 }
 
-- (void)setResponseDebugInfo:(id)a3
+- (void)setResponseDebugInfo:(id)info
 {
-  v5 = a3;
-  v6 = self;
-  sub_232C0FA20(a3);
+  infoCopy = info;
+  selfCopy = self;
+  sub_232C0FA20(info);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232C10640(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232C10734(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232C10734(coderCopy);
 }
 
 @end

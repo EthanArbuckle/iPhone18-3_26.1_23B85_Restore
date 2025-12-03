@@ -1,7 +1,7 @@
 @interface AAUITrustedDeviceSpecifierCell
 - (id)blankIcon;
 - (id)getLazyIcon;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AAUITrustedDeviceSpecifierCell
@@ -23,19 +23,19 @@
   v3 = [_AAUITrustedDeviceImage alloc];
   v7.receiver = self;
   v7.super_class = AAUITrustedDeviceSpecifierCell;
-  v4 = [(AAUITrustedDeviceSpecifierCell *)&v7 getLazyIcon];
-  v5 = -[_AAUITrustedDeviceImage initWithCGImage:](v3, "initWithCGImage:", [v4 CGImage]);
+  getLazyIcon = [(AAUITrustedDeviceSpecifierCell *)&v7 getLazyIcon];
+  v5 = -[_AAUITrustedDeviceImage initWithCGImage:](v3, "initWithCGImage:", [getLazyIcon CGImage]);
 
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = AAUITrustedDeviceSpecifierCell;
-  [(AAUITrustedDeviceSpecifierCell *)&v5 refreshCellContentsWithSpecifier:a3];
-  v4 = [(AAUITrustedDeviceSpecifierCell *)self imageView];
-  [v4 setContentMode:2];
+  [(AAUITrustedDeviceSpecifierCell *)&v5 refreshCellContentsWithSpecifier:specifier];
+  imageView = [(AAUITrustedDeviceSpecifierCell *)self imageView];
+  [imageView setContentMode:2];
 }
 
 @end

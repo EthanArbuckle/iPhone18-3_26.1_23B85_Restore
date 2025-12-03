@@ -1,9 +1,9 @@
 @interface AXManagedAssetTaskContext
-+ (AXManagedAssetTaskContext)contextWithActivity:(id)a3;
++ (AXManagedAssetTaskContext)contextWithActivity:(id)activity;
 + (AXManagedAssetTaskContext)contextWithXPCClient;
 - (BOOL)shouldDefer;
 - (id)_init;
-- (void)finishWithResult:(unint64_t)a3;
+- (void)finishWithResult:(unint64_t)result;
 @end
 
 @implementation AXManagedAssetTaskContext
@@ -15,22 +15,22 @@
   return [(AXManagedAssetTaskContext *)&v3 init];
 }
 
-+ (AXManagedAssetTaskContext)contextWithActivity:(id)a3
++ (AXManagedAssetTaskContext)contextWithActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [[AXManagedAssetTaskContext alloc] _init];
-  [v4 setEnvironment:1];
-  [v4 setActivity:v3];
+  activityCopy = activity;
+  _init = [[AXManagedAssetTaskContext alloc] _init];
+  [_init setEnvironment:1];
+  [_init setActivity:activityCopy];
 
-  return v4;
+  return _init;
 }
 
 + (AXManagedAssetTaskContext)contextWithXPCClient
 {
-  v2 = [[AXManagedAssetTaskContext alloc] _init];
-  [v2 setEnvironment:0];
+  _init = [[AXManagedAssetTaskContext alloc] _init];
+  [_init setEnvironment:0];
 
-  return v2;
+  return _init;
 }
 
 - (BOOL)shouldDefer
@@ -40,19 +40,19 @@
     return 0;
   }
 
-  v3 = [(AXManagedAssetTaskContext *)self activity];
-  v4 = [v3 shouldDefer];
+  activity = [(AXManagedAssetTaskContext *)self activity];
+  shouldDefer = [activity shouldDefer];
 
-  return v4;
+  return shouldDefer;
 }
 
-- (void)finishWithResult:(unint64_t)a3
+- (void)finishWithResult:(unint64_t)result
 {
-  if ([(AXManagedAssetTaskContext *)self environment]== 1 && a3 <= 2)
+  if ([(AXManagedAssetTaskContext *)self environment]== 1 && result <= 2)
   {
-    v5 = qword_1000107F0[a3];
-    v6 = [(AXManagedAssetTaskContext *)self activity];
-    [v6 updateState:v5];
+    v5 = qword_1000107F0[result];
+    activity = [(AXManagedAssetTaskContext *)self activity];
+    [activity updateState:v5];
   }
 }
 

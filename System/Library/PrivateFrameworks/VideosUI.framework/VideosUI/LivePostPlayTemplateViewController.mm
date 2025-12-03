@@ -1,6 +1,6 @@
 @interface LivePostPlayTemplateViewController
 - (NSString)description;
-- (void)vuiCollectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5;
+- (void)vuiCollectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section;
 - (void)vui_viewDidLoad;
 @end
 
@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A586A8();
 
   v3 = sub_1E4205ED4();
@@ -18,16 +18,16 @@
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A58AA0();
 }
 
-- (void)vuiCollectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5
+- (void)vuiCollectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section
 {
-  v8 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_1E3A58C44(v8, a4, a5);
+  selfCopy = self;
+  sub_1E3A58C44(viewCopy, scroll, section);
 
   swift_unknownObjectRelease();
 }

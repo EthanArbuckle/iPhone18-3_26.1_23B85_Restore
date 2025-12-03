@@ -1,34 +1,34 @@
 @interface WFGetCurrentLocationAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetCurrentLocationAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a5;
+  nameCopy = name;
   v7 = WFLocalizedString(@"Allow “%1$@” to access your current location?");
-  v8 = [v5 localizedStringWithFormat:v7, v6];
+  nameCopy = [v5 localizedStringWithFormat:v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = [(WFGetCurrentLocationAction *)self parameterValueForKey:@"Accuracy" ofClass:objc_opt_class()];
   WFCLLocationAccuracyFromWFLocationAccuracy();
   v6 = v5;
   v7 = MEMORY[0x277D7C628];
-  v8 = [(WFGetCurrentLocationAction *)self workflow];
-  v9 = [v8 environment];
+  workflow = [(WFGetCurrentLocationAction *)self workflow];
+  environment = [workflow environment];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__WFGetCurrentLocationAction_runAsynchronouslyWithInput___block_invoke;
   v10[3] = &unk_278C199E8;
   v10[4] = self;
-  [v7 determineLocationWithWorkflowEnvironment:v9 desiredAccuracy:v10 completion:v6];
+  [v7 determineLocationWithWorkflowEnvironment:environment desiredAccuracy:v10 completion:v6];
 }
 
 void __57__WFGetCurrentLocationAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3)

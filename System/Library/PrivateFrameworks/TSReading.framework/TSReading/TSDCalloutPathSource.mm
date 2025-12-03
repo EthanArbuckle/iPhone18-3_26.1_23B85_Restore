@@ -1,46 +1,46 @@
 @interface TSDCalloutPathSource
-+ (id)calloutWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6;
-+ (id)quoteBubbleWithTailPosition:(CGPoint)a3 tailSize:(double)a4 naturalSize:(CGSize)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)calloutWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize;
++ (id)quoteBubbleWithTailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOval;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (CGPoint)p_adjustedCenterForPath:(id)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (CGPoint)p_adjustedCenterForPath:(id)path;
 - (CGPoint)p_getControlKnobPointForRoundedRect;
 - (CGPoint)p_tailPosition;
 - (CGPoint)tailCenter;
 - (CGPoint)tailKnobPosition;
 - (CGPoint)tailSizeKnobPosition;
 - (CGSize)naturalSize;
-- (TSDCalloutPathSource)initWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6 tailAtCenter:(BOOL)a7;
+- (TSDCalloutPathSource)initWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize tailAtCenter:(BOOL)center;
 - (double)maxTailSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)getFeedbackStringForKnob:(unint64_t)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)getFeedbackStringForKnob:(unint64_t)knob;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)p_basePath;
 - (id)p_buildPath;
-- (id)valueForSetSelector:(SEL)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)valueForSetSelector:(SEL)selector;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
-- (void)p_getTailPath:(id)a3 center:(CGPoint *)a4 tailSize:(double *)a5 intersections:(CGPoint)a6[2];
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setCornerRadius:(double)a3;
-- (void)setTailKnobPosition:(CGPoint)a3;
-- (void)setTailSize:(double)a3;
-- (void)setTailSizeKnobPosition:(CGPoint)a3;
+- (void)p_getTailPath:(id)path center:(CGPoint *)center tailSize:(double *)size intersections:(CGPoint)intersections[2];
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setCornerRadius:(double)radius;
+- (void)setTailKnobPosition:(CGPoint)position;
+- (void)setTailSize:(double)size;
+- (void)setTailSizeKnobPosition:(CGPoint)position;
 @end
 
 @implementation TSDCalloutPathSource
 
-- (TSDCalloutPathSource)initWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6 tailAtCenter:(BOOL)a7
+- (TSDCalloutPathSource)initWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize tailAtCenter:(BOOL)center
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
-  y = a4.y;
-  x = a4.x;
+  centerCopy = center;
+  height = naturalSize.height;
+  width = naturalSize.width;
+  y = position.y;
+  x = position.x;
   v17.receiver = self;
   v17.super_class = TSDCalloutPathSource;
   v14 = [(TSDCalloutPathSource *)&v17 init];
@@ -48,34 +48,34 @@
   if (v14)
   {
     [(TSDCalloutPathSource *)v14 p_setNaturalSize:width, height];
-    [(TSDCalloutPathSource *)v15 p_setCornerRadius:a3];
+    [(TSDCalloutPathSource *)v15 p_setCornerRadius:radius];
     [(TSDCalloutPathSource *)v15 p_setTailPosition:x, y];
-    [(TSDCalloutPathSource *)v15 p_setTailSize:a5];
-    [(TSDCalloutPathSource *)v15 p_setTailAtCenter:v7];
+    [(TSDCalloutPathSource *)v15 p_setTailSize:size];
+    [(TSDCalloutPathSource *)v15 p_setTailAtCenter:centerCopy];
   }
 
   return v15;
 }
 
-+ (id)calloutWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6
++ (id)calloutWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize
 {
-  v6 = [[a1 alloc] initWithCornerRadius:0 tailPosition:a3 tailSize:a4.x naturalSize:a4.y tailAtCenter:{a5, a6.width, a6.height}];
+  v6 = [[self alloc] initWithCornerRadius:0 tailPosition:radius tailSize:position.x naturalSize:position.y tailAtCenter:{size, naturalSize.width, naturalSize.height}];
 
   return v6;
 }
 
-+ (id)quoteBubbleWithTailPosition:(CGPoint)a3 tailSize:(double)a4 naturalSize:(CGSize)a5
++ (id)quoteBubbleWithTailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize
 {
-  v5 = [[a1 alloc] initWithCornerRadius:1 tailPosition:a5.width + 10.0 tailSize:a3.x naturalSize:a3.y tailAtCenter:{a4, a5.width, a5.height}];
+  v5 = [[self alloc] initWithCornerRadius:1 tailPosition:naturalSize.width + 10.0 tailSize:position.x naturalSize:position.y tailAtCenter:{size, naturalSize.width, naturalSize.height}];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TSDCalloutPathSource;
-  v4 = [(TSDPathSource *)&v6 copyWithZone:a3];
+  v4 = [(TSDPathSource *)&v6 copyWithZone:zone];
   [v4 p_setNaturalSize:{self->mNaturalSize.width, self->mNaturalSize.height}];
   [v4 p_setCornerRadius:self->mCornerRadius];
   [v4 p_setTailPosition:{self->mTailPosition.x, self->mTailPosition.y}];
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v9) = 1;
     return v9;
@@ -107,7 +107,7 @@
       goto LABEL_9;
     }
 
-    [a3 naturalSize];
+    [equal naturalSize];
     v9 = TSDNearlyEqualSizes(self->mNaturalSize.width, self->mNaturalSize.height, v10, v11);
     if (!v9)
     {
@@ -115,7 +115,7 @@
     }
 
     mCornerRadius = self->mCornerRadius;
-    [a3 cornerRadius];
+    [equal cornerRadius];
     if (vabdd_f64(mCornerRadius, v13) >= 0.00999999978)
     {
 LABEL_9:
@@ -123,12 +123,12 @@ LABEL_9:
       return v9;
     }
 
-    [a3 p_tailPosition];
+    [equal p_tailPosition];
     v9 = TSDNearlyEqualPoints(self->mTailPosition.x, self->mTailPosition.y, v14, v15);
     if (v9)
     {
       mTailSize = self->mTailSize;
-      [a3 tailSize];
+      [equal tailSize];
       LOBYTE(v9) = vabdd_f64(mTailSize, v17) < 0.00999999978;
     }
   }
@@ -156,9 +156,9 @@ LABEL_9:
   return v3;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  switch(a3)
+  switch(position)
   {
     case 0xEuLL:
       [(TSDCalloutPathSource *)self tailSizeKnobPosition];
@@ -180,25 +180,25 @@ LABEL_9:
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  switch(a3)
+  switch(position)
   {
     case 0xEuLL:
-      [(TSDCalloutPathSource *)self setTailSizeKnobPosition:a4.x, a4.y];
+      [(TSDCalloutPathSource *)self setTailSizeKnobPosition:point.x, point.y];
       break;
     case 0xDuLL:
-      [(TSDCalloutPathSource *)self p_setControlKnobPointForRoundedRect:a4.x, a4.y];
+      [(TSDCalloutPathSource *)self p_setControlKnobPointForRoundedRect:point.x, point.y];
       break;
     case 0xCuLL:
-      [(TSDCalloutPathSource *)self setTailKnobPosition:a4.x, a4.y];
+      [(TSDCalloutPathSource *)self setTailKnobPosition:point.x, point.y];
       break;
   }
 }
 
-- (id)getFeedbackStringForKnob:(unint64_t)a3
+- (id)getFeedbackStringForKnob:(unint64_t)knob
 {
-  if (a3 != 13)
+  if (knob != 13)
   {
     return &stru_287D36338;
   }
@@ -216,9 +216,9 @@ LABEL_9:
   return [v8 localizedStringForKey:@"Oval" value:&stru_287D36338 table:@"TSDrawables"];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  [(TSDCalloutPathSource *)self p_setCornerRadius:a3];
+  [(TSDCalloutPathSource *)self p_setCornerRadius:radius];
   mCornerRadius = self->mCornerRadius;
   v5 = 0.0;
   if (mCornerRadius >= 0.0)
@@ -243,9 +243,9 @@ LABEL_9:
   return mCornerRadius >= v3;
 }
 
-- (void)setTailSize:(double)a3
+- (void)setTailSize:(double)size
 {
-  [(TSDCalloutPathSource *)self p_setTailSize:a3];
+  [(TSDCalloutPathSource *)self p_setTailSize:size];
   height = self->mNaturalSize.height;
   if (height <= self->mNaturalSize.width)
   {
@@ -318,8 +318,8 @@ LABEL_9:
   [(TSDCalloutPathSource *)self p_tailPosition];
   v4 = v3;
   v6 = v5;
-  v7 = [(TSDCalloutPathSource *)self p_basePath];
-  [(TSDCalloutPathSource *)self p_adjustedCenterForPath:v7];
+  p_basePath = [(TSDCalloutPathSource *)self p_basePath];
+  [(TSDCalloutPathSource *)self p_adjustedCenterForPath:p_basePath];
   v9 = v8;
   v11 = v10;
   v12 = TSDDistance(v4, v6, v8, v10);
@@ -329,21 +329,21 @@ LABEL_9:
   v34[3] = v11;
   v27 = 0.0;
   v28 = 0.0;
-  v13 = [v7 elementCount];
-  if (v13 < 1)
+  elementCount = [p_basePath elementCount];
+  if (elementCount < 1)
   {
     v24 = 0.0;
     v25 = 0.0;
     return fmin(v25, -v24) * 0.899999976;
   }
 
-  v14 = v13;
+  v14 = elementCount;
   v15 = TSDSubtractPoints(v9, v11, v4);
   v17 = TSDNormalizePoint(v15, v16);
   v19 = v18;
   for (i = 0; i != v14; ++i)
   {
-    v21 = [v7 elementAtIndex:i allPoints:&v29];
+    v21 = [p_basePath elementAtIndex:i allPoints:&v29];
     if (v21 == 2)
     {
       p_getMaxMinTailSize(v34, &v28, &v27, v29.f64[0], v29.f64[1], v17, v19, v4, v6, v12);
@@ -371,9 +371,9 @@ LABEL_9:
   return fmin(v25, -v24) * 0.899999976;
 }
 
-- (void)setTailSizeKnobPosition:(CGPoint)a3
+- (void)setTailSizeKnobPosition:(CGPoint)position
 {
-  x = a3.x;
+  x = position.x;
   v31 = *MEMORY[0x277D85DE8];
   [(TSDCalloutPathSource *)self naturalSize];
   v6 = v5;
@@ -409,10 +409,10 @@ LABEL_9:
   self->mTailSize = v26;
 }
 
-- (void)setTailKnobPosition:(CGPoint)a3
+- (void)setTailKnobPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(TSDCalloutPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
@@ -469,9 +469,9 @@ LABEL_9:
   return result;
 }
 
-- (id)valueForSetSelector:(SEL)a3
+- (id)valueForSetSelector:(SEL)selector
 {
-  if (sel_setCornerRadiusValue_ == a3)
+  if (sel_setCornerRadiusValue_ == selector)
   {
     v4 = MEMORY[0x277CCABB0];
     [(TSDCalloutPathSource *)self cornerRadius];
@@ -479,7 +479,7 @@ LABEL_9:
 
   else
   {
-    if (sel_setTailPositionValue_ == a3)
+    if (sel_setTailPositionValue_ == selector)
     {
       v6 = MEMORY[0x277CCAE60];
       [(TSDCalloutPathSource *)self tailKnobPosition];
@@ -488,9 +488,9 @@ LABEL_13:
       return [v6 valueWithCGPoint:?];
     }
 
-    if (sel_setTailSizeValue_ != a3)
+    if (sel_setTailSizeValue_ != selector)
     {
-      if (sel_setTailSizeKnobPosition_ != a3)
+      if (sel_setTailSizeKnobPosition_ != selector)
       {
         v7.receiver = self;
         v7.super_class = TSDCalloutPathSource;
@@ -511,15 +511,15 @@ LABEL_13:
   return [v4 numberWithFloat:v5];
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TSDPathSource *)self uniformScaleForScalingToNaturalSize:?];
   v7 = v6;
   [(TSDCalloutPathSource *)self naturalSize];
   v9 = v8;
-  v10 = [(TSDCalloutPathSource *)self isOval];
+  isOval = [(TSDCalloutPathSource *)self isOval];
   p_mTailPosition = &self->mTailPosition;
   v12 = *MEMORY[0x277CBF348];
   if (self->mTailPosition.x > v9 * 0.5)
@@ -537,7 +537,7 @@ LABEL_13:
   self->mTailPosition.y = v16;
   [(TSDCalloutPathSource *)self p_setNaturalSize:width, height];
   [(TSDCalloutPathSource *)self maxCornerRadius];
-  if (v10)
+  if (isOval)
   {
     v18 = v17 + 1.0;
   }
@@ -610,15 +610,15 @@ LABEL_13:
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__TSDCalloutPathSource_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __45__TSDCalloutPathSource_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -653,16 +653,16 @@ uint64_t __45__TSDCalloutPathSource_mixingTypeWithObject___block_invoke(uint64_t
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__TSDCalloutPathSource_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -703,7 +703,7 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
   return result;
 }
 
-- (CGPoint)p_adjustedCenterForPath:(id)a3
+- (CGPoint)p_adjustedCenterForPath:(id)path
 {
   v16[4] = *MEMORY[0x277D85DE8];
   [(TSDCalloutPathSource *)self tailCenter];
@@ -715,7 +715,7 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
   *&v16[2] = v6;
   *&v16[3] = v8;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [a3 addIntersectionsWithLine:v16 to:v11];
+  [path addIntersectionsWithLine:v16 to:v11];
   if ([v11 count])
   {
     [objc_msgSend(v11 "lastObject")];
@@ -730,7 +730,7 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
   return result;
 }
 
-- (void)p_getTailPath:(id)a3 center:(CGPoint *)a4 tailSize:(double *)a5 intersections:(CGPoint)a6[2]
+- (void)p_getTailPath:(id)path center:(CGPoint *)center tailSize:(double *)size intersections:(CGPoint)intersections[2]
 {
   v87[4] = *MEMORY[0x277D85DE8];
   [(TSDCalloutPathSource *)self tailSize];
@@ -738,7 +738,7 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
   [(TSDCalloutPathSource *)self p_tailPosition];
   v14 = v13;
   v16 = v15;
-  [(TSDCalloutPathSource *)self p_adjustedCenterForPath:a3];
+  [(TSDCalloutPathSource *)self p_adjustedCenterForPath:path];
   v18 = v17;
   v20 = v19;
   [(TSDCalloutPathSource *)self maxTailSize];
@@ -765,8 +765,8 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
   v86[3] = v41;
   v42 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [a3 addIntersectionsWithLine:v87 to:v42];
-  [a3 addIntersectionsWithLine:v86 to:v43];
+  [path addIntersectionsWithLine:v87 to:v42];
+  [path addIntersectionsWithLine:v86 to:v43];
   if ([v42 count])
   {
     [objc_msgSend(v42 objectAtIndex:{0), "point"}];
@@ -805,7 +805,7 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
 
   else
   {
-    v60 = TSDPathNearestAngleOnPathToLine([a3 CGPath], v87);
+    v60 = TSDPathNearestAngleOnPathToLine([path CGPath], v87);
   }
 
   v62 = v60;
@@ -842,25 +842,25 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
 
   else
   {
-    v78 = TSDPathNearestAngleOnPathToLine([a3 CGPath], v86);
+    v78 = TSDPathNearestAngleOnPathToLine([path CGPath], v86);
   }
 
   v80 = v78;
   v81 = v79;
 
-  a6->x = v62;
-  a6->y = v63;
-  a6[1].x = v80;
-  a6[1].y = v81;
-  if (a4)
+  intersections->x = v62;
+  intersections->y = v63;
+  intersections[1].x = v80;
+  intersections[1].y = v81;
+  if (center)
   {
-    a4->x = v18;
-    a4->y = v85;
+    center->x = v18;
+    center->y = v85;
   }
 
-  if (a5)
+  if (size)
   {
-    *a5 = v84;
+    *size = v84;
   }
 }
 
@@ -916,28 +916,28 @@ TSDCalloutPathSource *__57__TSDCalloutPathSource_mixedObjectWithFraction_ofObjec
 - (id)p_buildPath
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v3 = [(TSDCalloutPathSource *)self p_basePath];
+  p_basePath = [(TSDCalloutPathSource *)self p_basePath];
   [(TSDCalloutPathSource *)self p_tailPosition];
   v5 = v4;
   v7 = v6;
-  if (([v3 containsPoint:?] & 1) == 0)
+  if (([p_basePath containsPoint:?] & 1) == 0)
   {
-    [(TSDCalloutPathSource *)self p_getTailPath:v3 center:0 tailSize:0 intersections:v11];
+    [(TSDCalloutPathSource *)self p_getTailPath:p_basePath center:0 tailSize:0 intersections:v11];
     v8 = +[TSDBezierPath bezierPath];
     [v8 moveToPoint:{v11[0], v11[1]}];
     [v8 lineToPoint:{v5, v7}];
     [v8 lineToPoint:{v11[2], v11[3]}];
-    v9 = +[TSDBezierPath uniteBezierPaths:](TSDBezierPath, "uniteBezierPaths:", [MEMORY[0x277CBEA60] arrayWithObjects:{v3, v8, 0}]);
+    v9 = +[TSDBezierPath uniteBezierPaths:](TSDBezierPath, "uniteBezierPaths:", [MEMORY[0x277CBEA60] arrayWithObjects:{p_basePath, v8, 0}]);
     if ([v9 elementCount])
     {
       return v9;
     }
   }
 
-  return v3;
+  return p_basePath;
 }
 
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect
 {
   [(TSDCalloutPathSource *)self maxCornerRadius];
   TSUClamp();

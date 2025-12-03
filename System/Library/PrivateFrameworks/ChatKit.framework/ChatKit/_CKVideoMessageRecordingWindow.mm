@@ -1,14 +1,14 @@
 @interface _CKVideoMessageRecordingWindow
-- (_CKVideoMessageRecordingWindow)initWithFrame:(CGRect)a3;
+- (_CKVideoMessageRecordingWindow)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _CKVideoMessageRecordingWindow
 
-- (_CKVideoMessageRecordingWindow)initWithFrame:(CGRect)a3
+- (_CKVideoMessageRecordingWindow)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _CKVideoMessageRecordingWindow;
-  v3 = [(_CKVideoMessageRecordingWindow *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_CKVideoMessageRecordingWindow *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

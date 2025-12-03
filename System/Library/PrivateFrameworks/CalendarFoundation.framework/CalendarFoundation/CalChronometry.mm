@@ -3,8 +3,8 @@
 + (id)currentLanguageCode;
 + (id)currentLocationCode;
 + (void)_configureChronometry;
-+ (void)_currentLocaleDidChange:(id)a3;
-+ (void)_currentTimeZoneDidChange:(id)a3;
++ (void)_currentLocaleDidChange:(id)change;
++ (void)_currentTimeZoneDidChange:(id)change;
 + (void)_resetTodayRolloverTimer;
 + (void)_todayRolloverTimerFired;
 + (void)_updateActiveCalendar;
@@ -12,17 +12,17 @@
 + (void)_updateEveything;
 + (void)_updateForLocaleChange;
 + (void)initialize;
-+ (void)setActiveTimeZone:(id)a3;
++ (void)setActiveTimeZone:(id)zone;
 @end
 
 @implementation CalChronometry
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 _configureChronometry];
+    [self _configureChronometry];
   }
 }
 
@@ -31,71 +31,71 @@
   if ((_configureChronometry___DidInitialize & 1) == 0)
   {
     _configureChronometry___DidInitialize = 1;
-    [a1 _updateActiveCalendar];
+    [self _updateActiveCalendar];
     +[CalDateLocalization initializeFormatters];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:a1 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__currentLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:a1 selector:sel__currentTimeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__currentTimeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:a1 selector:sel__resetTodayRolloverTimer name:*MEMORY[0x1E695DA60] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__resetTodayRolloverTimer name:*MEMORY[0x1E695DA60] object:0];
   }
 }
 
-+ (void)_currentLocaleDidChange:(id)a3
++ (void)_currentLocaleDidChange:(id)change
 {
-  [a1 cancelPreviousPerformRequestsWithTarget:a1 selector:sel__updateForLocaleChange object:0];
+  [self cancelPreviousPerformRequestsWithTarget:self selector:sel__updateForLocaleChange object:0];
 
-  [a1 performSelector:sel__updateForLocaleChange withObject:0 afterDelay:0.5];
+  [self performSelector:sel__updateForLocaleChange withObject:0 afterDelay:0.5];
 }
 
 + (void)_updateForLocaleChange
 {
-  [a1 _updateEveything];
-  v2 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v2 postNotificationName:@"com.apple.calendar.LocaleChanged" object:0];
+  [self _updateEveything];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.calendar.LocaleChanged" object:0];
 }
 
-+ (void)_currentTimeZoneDidChange:(id)a3
++ (void)_currentTimeZoneDidChange:(id)change
 {
-  [a1 _updateActiveTimeZone];
+  [self _updateActiveTimeZone];
 
-  [a1 _resetTodayRolloverTimer];
+  [self _resetTodayRolloverTimer];
 }
 
 + (void)_updateEveything
 {
-  [a1 _updateActiveCalendar];
+  [self _updateActiveCalendar];
   +[CalDateLocalization rebuildFormatters];
 
   +[CalDateLocalization rebuildWeekendDays];
 }
 
-+ (void)setActiveTimeZone:(id)a3
++ (void)setActiveTimeZone:(id)zone
 {
-  v6 = a3;
-  if (v6)
+  zoneCopy = zone;
+  if (zoneCopy)
   {
-    v4 = [a1 activeTimeZone];
-    v5 = [v6 isEqual:v4];
+    activeTimeZone = [self activeTimeZone];
+    v5 = [zoneCopy isEqual:activeTimeZone];
 
     if ((v5 & 1) == 0)
     {
-      [MEMORY[0x1E695DFE8] setDefaultTimeZone:v6];
-      [a1 _updateActiveTimeZone];
-      [a1 _resetTodayRolloverTimer];
+      [MEMORY[0x1E695DFE8] setDefaultTimeZone:zoneCopy];
+      [self _updateActiveTimeZone];
+      [self _resetTodayRolloverTimer];
     }
   }
 }
 
 + (void)_updateActiveTimeZone
 {
-  [a1 _updateActiveCalendar];
+  [self _updateActiveCalendar];
   +[CalDateLocalization rebuildFormatters];
-  v2 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v2 postNotificationName:@"com.apple.calendar.TimeZoneChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.calendar.TimeZoneChanged" object:0];
 }
 
 + (void)_updateActiveCalendar
@@ -106,39 +106,39 @@
     abort();
   }
 
-  v3 = a1;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (__ActiveCalendar != obj)
   {
     objc_storeStrong(&__ActiveCalendar, obj);
     v4 = __ActiveCalendar;
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    [v4 setLocale:v5];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v4 setLocale:currentLocale];
 
     v6 = __ActiveCalendar;
-    v7 = [v3 activeTimeZone];
-    [v6 setTimeZone:v7];
+    activeTimeZone = [selfCopy activeTimeZone];
+    [v6 setTimeZone:activeTimeZone];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 + (id)activeCalendar
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = __ActiveCalendar;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 + (id)currentLocationCode
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v4 = [v3 componentsSeparatedByString:@"_"];
+  v4 = [localeIdentifier componentsSeparatedByString:@"_"];
   if ([v4 count] < 2)
   {
     v5 = 0;
@@ -154,13 +154,13 @@
 
 + (id)currentLanguageCode
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v4 = [v3 componentsSeparatedByString:@"_"];
+  v4 = [localeIdentifier componentsSeparatedByString:@"_"];
   if ([v4 count] < 2)
   {
-    v5 = v3;
+    v5 = localeIdentifier;
   }
 
   else
@@ -180,24 +180,24 @@
   v3 = _todayRolloverTimer;
   _todayRolloverTimer = 0;
 
-  v4 = [a1 activeTimeZone];
-  v5 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  v6 = [v4 isEquivalentTo:v5];
+  activeTimeZone = [self activeTimeZone];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  v6 = [activeTimeZone isEquivalentTo:systemTimeZone];
 
   if ((v6 & 1) == 0)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v16 setDay:1];
-    v7 = [a1 activeCalendar];
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [v7 dateByAddingComponents:v16 toDate:v8 options:0];
+    activeCalendar = [self activeCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [activeCalendar dateByAddingComponents:v16 toDate:date options:0];
 
-    v10 = [v7 components:30 fromDate:v9];
-    v11 = [v7 dateFromComponents:v10];
+    v10 = [activeCalendar components:30 fromDate:v9];
+    v11 = [activeCalendar dateFromComponents:v10];
     v12 = MEMORY[0x1E695DFF0];
-    v13 = [MEMORY[0x1E695DF00] date];
-    [v11 timeIntervalSinceDate:v13];
-    v14 = [v12 scheduledTimerWithTimeInterval:a1 target:sel__todayRolloverTimerFired selector:0 userInfo:0 repeats:?];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [v11 timeIntervalSinceDate:date2];
+    v14 = [v12 scheduledTimerWithTimeInterval:self target:sel__todayRolloverTimerFired selector:0 userInfo:0 repeats:?];
     v15 = _todayRolloverTimer;
     _todayRolloverTimer = v14;
   }
@@ -205,10 +205,10 @@
 
 + (void)_todayRolloverTimerFired
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"CalChronometryTodayChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CalChronometryTodayChangedNotification" object:0];
 
-  [a1 _resetTodayRolloverTimer];
+  [self _resetTodayRolloverTimer];
 }
 
 @end

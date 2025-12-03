@@ -1,15 +1,15 @@
 @interface HMDSettingsControllerDependency
 - (HMDSettingTransactionReceiverProtocol)transactionReceiver;
-- (HMDSettingsControllerDependency)initWithParentUUID:(id)a3 logName:(id)a4 queue:(id)a5 metadataFileName:(id)a6 codingKey:(id)a7 messageHandler:(id)a8 migrationProvider:(id)a9 keyPathsToPrune:(id)a10;
+- (HMDSettingsControllerDependency)initWithParentUUID:(id)d logName:(id)name queue:(id)queue metadataFileName:(id)fileName codingKey:(id)key messageHandler:(id)handler migrationProvider:(id)provider keyPathsToPrune:(id)self0;
 - (HMDSettingsMessageHandlerProtocol)messageHandler;
 - (HMDUserSettingsInitialValueProviding)migrationProvider;
-- (id)createSettingGroupModelWithName:(id)a3 parent:(id)a4;
-- (id)createSettingModelWithName:(id)a3 parent:(id)a4 type:(id)a5 properties:(id)a6;
-- (id)createSettingRootGroupModelWithParentModelID:(id)a3;
+- (id)createSettingGroupModelWithName:(id)name parent:(id)parent;
+- (id)createSettingModelWithName:(id)name parent:(id)parent type:(id)type properties:(id)properties;
+- (id)createSettingRootGroupModelWithParentModelID:(id)d;
 - (id)loadMetadata;
-- (id)settingModelForUpdateWithIdentifier:(id)a3 parentIdentifier:(id)a4 value:(id)a5;
-- (id)settingValueForValue:(id)a3 type:(id)a4 constraintModels:(id)a5 error:(id *)a6;
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4 backingStoreController:(id)a5;
+- (id)settingModelForUpdateWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier value:(id)value;
+- (id)settingValueForValue:(id)value type:(id)type constraintModels:(id)models error:(id *)error;
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher backingStoreController:(id)controller;
 @end
 
 @implementation HMDSettingsControllerDependency
@@ -28,43 +28,43 @@
   return WeakRetained;
 }
 
-- (id)createSettingModelWithName:(id)a3 parent:(id)a4 type:(id)a5 properties:(id)a6
+- (id)createSettingModelWithName:(id)name parent:(id)parent type:(id)type properties:(id)properties
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  propertiesCopy = properties;
+  typeCopy = type;
+  parentCopy = parent;
+  nameCopy = name;
   v13 = [HMDSettingModel alloc];
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [(HMBModel *)v13 initWithModelID:v14 parentModelID:v11];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v15 = [(HMBModel *)v13 initWithModelID:uUID parentModelID:parentCopy];
 
-  [(HMDSettingModel *)v15 setName:v12];
-  [(HMDSettingModel *)v15 setType:v10];
+  [(HMDSettingModel *)v15 setName:nameCopy];
+  [(HMDSettingModel *)v15 setType:typeCopy];
 
-  [(HMDSettingModel *)v15 setProperties:v9];
+  [(HMDSettingModel *)v15 setProperties:propertiesCopy];
 
   return v15;
 }
 
-- (id)createSettingGroupModelWithName:(id)a3 parent:(id)a4
+- (id)createSettingGroupModelWithName:(id)name parent:(id)parent
 {
-  v5 = a4;
-  v6 = a3;
+  parentCopy = parent;
+  nameCopy = name;
   v7 = [HMDSettingGroupModel alloc];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [(HMBModel *)v7 initWithModelID:v8 parentModelID:v5];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v9 = [(HMBModel *)v7 initWithModelID:uUID parentModelID:parentCopy];
 
-  [(HMDSettingGroupModel *)v9 setName:v6];
+  [(HMDSettingGroupModel *)v9 setName:nameCopy];
 
   return v9;
 }
 
-- (id)createSettingRootGroupModelWithParentModelID:(id)a3
+- (id)createSettingRootGroupModelWithParentModelID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [HMDSettingRootGroupModel alloc];
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [(HMDSettingRootGroupModel *)v4 initWithModelID:v5 parentModelID:v3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v6 = [(HMDSettingRootGroupModel *)v4 initWithModelID:uUID parentModelID:dCopy];
 
   return v6;
 }
@@ -73,7 +73,7 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v3 resourceURL];
+  resourceURL = [v3 resourceURL];
   if (self)
   {
     Property = objc_getProperty(self, v4, 72, 1);
@@ -84,11 +84,11 @@
     Property = 0;
   }
 
-  v7 = [v5 URLByAppendingPathComponent:Property];
+  v7 = [resourceURL URLByAppendingPathComponent:Property];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v7 path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
@@ -98,7 +98,7 @@
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -119,26 +119,26 @@
   return v11;
 }
 
-- (id)settingValueForValue:(id)a3 type:(id)a4 constraintModels:(id)a5 error:(id *)a6
+- (id)settingValueForValue:(id)value type:(id)type constraintModels:(id)models error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v9;
-  v12 = v10;
-  v13 = [a4 integerValue];
+  valueCopy = value;
+  modelsCopy = models;
+  v11 = valueCopy;
+  v12 = modelsCopy;
+  integerValue = [type integerValue];
   v14 = 0;
   v15 = 0;
-  if (v13 <= 2)
+  if (integerValue <= 2)
   {
-    if (v13 == 1)
+    if (integerValue == 1)
     {
       v16 = [objc_alloc(MEMORY[0x277CD1DD0]) initDataSettingWithValue:v11];
     }
 
     else
     {
-      if (v13 != 2)
+      if (integerValue != 2)
       {
         goto LABEL_23;
       }
@@ -151,21 +151,21 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  if (v13 == 3)
+  if (integerValue == 3)
   {
     v16 = [objc_alloc(MEMORY[0x277CD1DD0]) initStringSettingWithValue:v11];
     goto LABEL_21;
   }
 
-  if (v13 != 4)
+  if (integerValue != 4)
   {
-    if (v13 == 5)
+    if (integerValue == 5)
     {
       goto LABEL_29;
     }
 
 LABEL_23:
-    if (!a6)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -200,14 +200,14 @@ LABEL_23:
         }
 
         v20 = *(*(&v27 + 1) + 8 * i);
-        v21 = [v20 stringValue];
-        v22 = [v21 isEqualToString:v11];
+        stringValue = [v20 stringValue];
+        v22 = [stringValue isEqualToString:v11];
 
         if (v22)
         {
           v23 = objc_alloc(MEMORY[0x277CD1DD0]);
-          v24 = [v20 hmbModelID];
-          v15 = [v23 initWithType:4 stringValue:0 numberValue:0 dataValue:0 selectionIdentifier:v24 selectionValue:v11];
+          hmbModelID = [v20 hmbModelID];
+          v15 = [v23 initWithType:4 stringValue:0 numberValue:0 dataValue:0 selectionIdentifier:hmbModelID selectionValue:v11];
 
           v14 = 1;
           goto LABEL_26;
@@ -227,12 +227,12 @@ LABEL_23:
   v14 = 0;
 LABEL_26:
 
-  if (a6)
+  if (error)
   {
 LABEL_27:
     if ((v14 & 1) == 0)
     {
-      *a6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3 description:@"Unable to create setting value" reason:@"Could not determine type" suggestion:0];
+      *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:3 description:@"Unable to create setting value" reason:@"Could not determine type" suggestion:0];
     }
   }
 
@@ -243,14 +243,14 @@ LABEL_29:
   return v15;
 }
 
-- (id)settingModelForUpdateWithIdentifier:(id)a3 parentIdentifier:(id)a4 value:(id)a5
+- (id)settingModelForUpdateWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier value:(id)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMBModel *)[HMDSettingModel alloc] initWithModelID:v8 parentModelID:v9];
-  if ([(HMDSettingModel *)v11 setSettingValue:v10])
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
+  valueCopy = value;
+  v11 = [(HMBModel *)[HMDSettingModel alloc] initWithModelID:identifierCopy parentModelID:parentIdentifierCopy];
+  if ([(HMDSettingModel *)v11 setSettingValue:valueCopy])
   {
     v12 = v11;
   }
@@ -258,7 +258,7 @@ LABEL_29:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -288,15 +288,15 @@ LABEL_29:
   return self;
 }
 
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4 backingStoreController:(id)a5
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher backingStoreController:(id)controller
 {
-  v14 = a3;
-  v8 = a4;
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
   if (self)
   {
-    v9 = a5;
-    objc_setProperty_atomic(self, v10, v8, 88);
-    objc_setProperty_atomic(self, v11, v9, 40);
+    controllerCopy = controller;
+    objc_setProperty_atomic(self, v10, dispatcherCopy, 88);
+    objc_setProperty_atomic(self, v11, controllerCopy, 40);
 
     Property = objc_getProperty(self, v12, 96, 1);
   }
@@ -306,44 +306,44 @@ LABEL_29:
     Property = 0;
   }
 
-  [Property configureWithMessageDispatcher:v8 home:v14];
+  [Property configureWithMessageDispatcher:dispatcherCopy home:homeCopy];
 }
 
-- (HMDSettingsControllerDependency)initWithParentUUID:(id)a3 logName:(id)a4 queue:(id)a5 metadataFileName:(id)a6 codingKey:(id)a7 messageHandler:(id)a8 migrationProvider:(id)a9 keyPathsToPrune:(id)a10
+- (HMDSettingsControllerDependency)initWithParentUUID:(id)d logName:(id)name queue:(id)queue metadataFileName:(id)fileName codingKey:(id)key messageHandler:(id)handler migrationProvider:(id)provider keyPathsToPrune:(id)self0
 {
-  v35 = a3;
-  v17 = a4;
-  v34 = a5;
-  v33 = a6;
-  v32 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  dCopy = d;
+  nameCopy = name;
+  queueCopy = queue;
+  fileNameCopy = fileName;
+  keyCopy = key;
+  handlerCopy = handler;
+  providerCopy = provider;
+  pruneCopy = prune;
   v36.receiver = self;
   v36.super_class = HMDSettingsControllerDependency;
   v21 = [(HMDSettingsControllerDependency *)&v36 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_internalMessageHandler, a8);
+    objc_storeStrong(&v21->_internalMessageHandler, handler);
     messageDispatcher = v22->_messageDispatcher;
     v22->_messageDispatcher = 0;
 
-    objc_storeStrong(&v22->_parentIdentifier, a3);
-    v24 = [v35 UUIDString];
-    v25 = [v17 stringByAppendingString:v24];
+    objc_storeStrong(&v22->_parentIdentifier, d);
+    uUIDString = [dCopy UUIDString];
+    v25 = [nameCopy stringByAppendingString:uUIDString];
     logIdentifier = v22->_logIdentifier;
     v22->_logIdentifier = v25;
 
-    objc_storeStrong(&v22->_queue, a5);
+    objc_storeStrong(&v22->_queue, queue);
     v27 = [[HMDSettingsMetadataParser alloc] initWithDependency:v22];
     metadataParser = v22->_metadataParser;
     v22->_metadataParser = v27;
 
-    objc_storeStrong(&v22->_metadataFileName, a6);
-    objc_storeStrong(&v22->_codingKey, a7);
-    objc_storeWeak(&v22->_migrationProvider, v19);
-    v29 = [v20 copy];
+    objc_storeStrong(&v22->_metadataFileName, fileName);
+    objc_storeStrong(&v22->_codingKey, key);
+    objc_storeWeak(&v22->_migrationProvider, providerCopy);
+    v29 = [pruneCopy copy];
     keyPathsToPrune = v22->_keyPathsToPrune;
     v22->_keyPathsToPrune = v29;
   }

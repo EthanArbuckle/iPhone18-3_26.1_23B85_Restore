@@ -1,56 +1,56 @@
 @interface BackgroundTextConsumer
-- (id)consumeMailContentWithContext:(id)a3;
-- (id)consumeNewsArticleViewsWithContext:(id)a3;
-- (id)consumeNotesContentWithContext:(id)a3;
-- (id)consumeSafariContentWithContext:(id)a3;
-- (id)consumeThirdPartyAppContentWithContext:(id)a3;
+- (id)consumeMailContentWithContext:(id)context;
+- (id)consumeNewsArticleViewsWithContext:(id)context;
+- (id)consumeNotesContentWithContext:(id)context;
+- (id)consumeSafariContentWithContext:(id)context;
+- (id)consumeThirdPartyAppContentWithContext:(id)context;
 - (id)consumerName;
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3;
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request;
 @end
 
 @implementation BackgroundTextConsumer
 
-- (id)consumeMailContentWithContext:(id)a3
+- (id)consumeMailContentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_232264DB4(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_232264DB4(contextCopy);
 
   return v6;
 }
 
-- (id)consumeNewsArticleViewsWithContext:(id)a3
+- (id)consumeNewsArticleViewsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v8 = sub_232264F08(v4, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  v8 = sub_232264F08(contextCopy, v6, v7);
 
   return v8;
 }
 
-- (id)consumeNotesContentWithContext:(id)a3
+- (id)consumeNotesContentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_232264F9C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_232264F9C(contextCopy);
 
   return v6;
 }
 
-- (id)consumeSafariContentWithContext:(id)a3
+- (id)consumeSafariContentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_232265034(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_232265034(contextCopy);
 
   return v6;
 }
 
-- (id)consumeThirdPartyAppContentWithContext:(id)a3
+- (id)consumeThirdPartyAppContentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v8 = sub_23226515C(v4, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  v8 = sub_23226515C(contextCopy, v6, v7);
 
   return v8;
 }
@@ -63,11 +63,11 @@
   return v2;
 }
 
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_23224DF64(v4);
+  requestCopy = request;
+  selfCopy = self;
+  v6 = sub_23224DF64(requestCopy);
 
   return v6;
 }

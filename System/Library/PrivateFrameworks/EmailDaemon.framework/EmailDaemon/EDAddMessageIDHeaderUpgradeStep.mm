@@ -1,5 +1,5 @@
 @interface EDAddMessageIDHeaderUpgradeStep
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4;
++ (BOOL)runWithConnection:(id)connection error:(id *)error;
 + (id)log;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __38__EDAddMessageIDHeaderUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_8 != -1)
   {
     dispatch_once(&log_onceToken_8, block);
@@ -30,13 +30,13 @@ void __38__EDAddMessageIDHeaderUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_8 = v1;
 }
 
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4
++ (BOOL)runWithConnection:(id)connection error:(id *)error
 {
-  v5 = a3;
-  v6 = sqlite3_exec([v5 sqlDB], "ALTER TABLE message_global_data ADD COLUMN message_id_header TEXT COLLATE BINARY;", 0, 0, 0);
+  connectionCopy = connection;
+  v6 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE message_global_data ADD COLUMN message_id_header TEXT COLLATE BINARY;", 0, 0, 0);
   if (v6)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v6];
+    *error = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v6];
     v7 = +[EDAddMessageIDHeaderUpgradeStep log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -46,14 +46,14 @@ void __38__EDAddMessageIDHeaderUpgradeStep_log__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = sqlite3_exec([v5 sqlDB], "UPDATE OR IGNORE searchable_messages SET reindex_type = 2 WHERE transaction_id != 0", 0, 0, 0);
+    v8 = sqlite3_exec([connectionCopy sqlDB], "UPDATE OR IGNORE searchable_messages SET reindex_type = 2 WHERE transaction_id != 0", 0, 0, 0);
     if (!v8)
     {
       v9 = 1;
       goto LABEL_8;
     }
 
-    *a4 = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v8];
+    *error = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v8];
     v7 = +[EDAddMessageIDHeaderUpgradeStep log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {

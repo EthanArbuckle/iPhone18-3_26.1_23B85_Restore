@@ -1,7 +1,7 @@
 @interface EARCaesuraSPGHelper
-- (EARCaesuraSPGHelper)initWithDelegate:(RDOSDDelegate *)a3;
-- (void)addAudio:(signed __int16 *)a3 count:(int)a4;
-- (void)clientSilenceFeaturesAvailable:(id)a3;
+- (EARCaesuraSPGHelper)initWithDelegate:(RDOSDDelegate *)delegate;
+- (void)addAudio:(signed __int16 *)audio count:(int)count;
+- (void)clientSilenceFeaturesAvailable:(id)available;
 - (void)createCaesuraSPG;
 - (void)endAudio;
 @end
@@ -30,7 +30,7 @@
   dispatch_sync(helperQueue, block);
 }
 
-- (EARCaesuraSPGHelper)initWithDelegate:(RDOSDDelegate *)a3
+- (EARCaesuraSPGHelper)initWithDelegate:(RDOSDDelegate *)delegate
 {
   v15.receiver = self;
   v15.super_class = EARCaesuraSPGHelper;
@@ -55,33 +55,33 @@
 
     fprintf(__stdoutp, "hybridendpointer config path is at %s\n", [(NSString *)v5->caesuraSPG_config UTF8String]);
     [(EARCaesuraSPGHelper *)v5 createCaesuraSPG];
-    v13 = *&a3->ctx;
-    v5->_caesuraSPGDelegate.SpeechEnded = a3->SpeechEnded;
+    v13 = *&delegate->ctx;
+    v5->_caesuraSPGDelegate.SpeechEnded = delegate->SpeechEnded;
     *&v5->_caesuraSPGDelegate.ctx = v13;
   }
 
   return v5;
 }
 
-- (void)addAudio:(signed __int16 *)a3 count:(int)a4
+- (void)addAudio:(signed __int16 *)audio count:(int)count
 {
   helperQueue = self->helperQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004DAD0;
   block[3] = &unk_1000FFD00;
-  v6 = a4;
+  countCopy = count;
   block[4] = self;
-  block[5] = a3;
+  block[5] = audio;
   dispatch_sync(helperQueue, block);
 }
 
-- (void)clientSilenceFeaturesAvailable:(id)a3
+- (void)clientSilenceFeaturesAvailable:(id)available
 {
-  v4 = a3;
-  [v4 silenceProbability];
+  availableCopy = available;
+  [availableCopy silenceProbability];
   v6 = v5;
-  [v4 silenceDurationMs];
+  [availableCopy silenceDurationMs];
   v8 = v7;
 
   if (v8 >= 60000.0)

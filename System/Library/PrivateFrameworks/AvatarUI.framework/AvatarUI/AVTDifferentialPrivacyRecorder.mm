@@ -1,9 +1,9 @@
 @interface AVTDifferentialPrivacyRecorder
-+ (id)makeCachingNumRecorderProvider:(id)a3;
-+ (id)makeCachingStringRecorderProvider:(id)a3;
-- (AVTDifferentialPrivacyRecorder)initWithStringRecorderProvider:(id)a3 numericDataRecorderProvider:(id)a4;
-- (void)recordNumber:(id)a3 forKey:(id)a4;
-- (void)recordString:(id)a3 forKey:(id)a4;
++ (id)makeCachingNumRecorderProvider:(id)provider;
++ (id)makeCachingStringRecorderProvider:(id)provider;
+- (AVTDifferentialPrivacyRecorder)initWithStringRecorderProvider:(id)provider numericDataRecorderProvider:(id)recorderProvider;
+- (void)recordNumber:(id)number forKey:(id)key;
+- (void)recordString:(id)string forKey:(id)key;
 @end
 
 @implementation AVTDifferentialPrivacyRecorder
@@ -60,18 +60,18 @@ id __38__AVTDifferentialPrivacyRecorder_init__block_invoke_2(uint64_t a1, void *
   return v5;
 }
 
-+ (id)makeCachingStringRecorderProvider:(id)a3
++ (id)makeCachingStringRecorderProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  providerCopy = provider;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__AVTDifferentialPrivacyRecorder_makeCachingStringRecorderProvider___block_invoke;
   v9[3] = &unk_1E7F3C9F8;
-  v10 = v4;
-  v11 = v3;
-  v5 = v3;
-  v6 = v4;
+  v10 = dictionary;
+  v11 = providerCopy;
+  v5 = providerCopy;
+  v6 = dictionary;
   v7 = MEMORY[0x1BFB0DE80](v9);
 
   return v7;
@@ -90,18 +90,18 @@ id __68__AVTDifferentialPrivacyRecorder_makeCachingStringRecorderProvider___bloc
   return v4;
 }
 
-+ (id)makeCachingNumRecorderProvider:(id)a3
++ (id)makeCachingNumRecorderProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  providerCopy = provider;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__AVTDifferentialPrivacyRecorder_makeCachingNumRecorderProvider___block_invoke;
   v9[3] = &unk_1E7F3CA20;
-  v10 = v4;
-  v11 = v3;
-  v5 = v3;
-  v6 = v4;
+  v10 = dictionary;
+  v11 = providerCopy;
+  v5 = providerCopy;
+  v6 = dictionary;
   v7 = MEMORY[0x1BFB0DE80](v9);
 
   return v7;
@@ -120,20 +120,20 @@ id __65__AVTDifferentialPrivacyRecorder_makeCachingNumRecorderProvider___block_i
   return v4;
 }
 
-- (AVTDifferentialPrivacyRecorder)initWithStringRecorderProvider:(id)a3 numericDataRecorderProvider:(id)a4
+- (AVTDifferentialPrivacyRecorder)initWithStringRecorderProvider:(id)provider numericDataRecorderProvider:(id)recorderProvider
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  recorderProviderCopy = recorderProvider;
   v14.receiver = self;
   v14.super_class = AVTDifferentialPrivacyRecorder;
   v8 = [(AVTDifferentialPrivacyRecorder *)&v14 init];
   if (v8)
   {
-    v9 = [objc_opt_class() makeCachingStringRecorderProvider:v6];
+    v9 = [objc_opt_class() makeCachingStringRecorderProvider:providerCopy];
     stringRecorderProvider = v8->_stringRecorderProvider;
     v8->_stringRecorderProvider = v9;
 
-    v11 = [objc_opt_class() makeCachingNumRecorderProvider:v7];
+    v11 = [objc_opt_class() makeCachingNumRecorderProvider:recorderProviderCopy];
     numRecorderProvider = v8->_numRecorderProvider;
     v8->_numRecorderProvider = v11;
   }
@@ -141,29 +141,29 @@ id __65__AVTDifferentialPrivacyRecorder_makeCachingNumRecorderProvider___block_i
   return v8;
 }
 
-- (void)recordString:(id)a3 forKey:(id)a4
+- (void)recordString:(id)string forKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTDifferentialPrivacyRecorder *)self stringRecorderProvider];
-  v9 = (v8)[2](v8, v6);
+  keyCopy = key;
+  stringCopy = string;
+  stringRecorderProvider = [(AVTDifferentialPrivacyRecorder *)self stringRecorderProvider];
+  v9 = (stringRecorderProvider)[2](stringRecorderProvider, keyCopy);
 
-  v11[0] = v7;
+  v11[0] = stringCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
   [v9 record:v10];
 }
 
-- (void)recordNumber:(id)a3 forKey:(id)a4
+- (void)recordNumber:(id)number forKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTDifferentialPrivacyRecorder *)self numRecorderProvider];
-  v9 = (v8)[2](v8, v6);
+  keyCopy = key;
+  numberCopy = number;
+  numRecorderProvider = [(AVTDifferentialPrivacyRecorder *)self numRecorderProvider];
+  v9 = (numRecorderProvider)[2](numRecorderProvider, keyCopy);
 
-  v11[0] = v7;
+  v11[0] = numberCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
   [v9 record:v10];

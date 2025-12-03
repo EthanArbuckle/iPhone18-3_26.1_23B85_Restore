@@ -1,18 +1,18 @@
 @interface SUCoreDiagStats
 - (SUCoreDiagStats)init;
-- (SUCoreDiagStats)initWithBeginCount:(int64_t)a3 withEndSuccessCount:(int64_t)a4 withEndFailCount:(int64_t)a5 withEndFailIndicationsCount:(int64_t)a6 withEndFailAllIndications:(int64_t)a7 withErrorCount:(int64_t)a8 withErrorIndicationsCount:(int64_t)a9 withErrorAllIndications:(int64_t)a10 withAnomalyCount:(int64_t)a11 withAnomalyIndicationsCount:(int64_t)a12 withAnomalyAllIndications:(int64_t)a13 withFailureCount:(int64_t)a14 withFailureIndicationsCount:(int64_t)a15 withFailureAllIndications:(int64_t)a16 withFaultCount:(int64_t)a17 withFaultIndicationsCount:(int64_t)a18 withFaultAllIndications:(int64_t)a19 withStateEventCount:(int64_t)a20;
-- (SUCoreDiagStats)initWithCoder:(id)a3;
+- (SUCoreDiagStats)initWithBeginCount:(int64_t)count withEndSuccessCount:(int64_t)successCount withEndFailCount:(int64_t)failCount withEndFailIndicationsCount:(int64_t)indicationsCount withEndFailAllIndications:(int64_t)indications withErrorCount:(int64_t)errorCount withErrorIndicationsCount:(int64_t)errorIndicationsCount withErrorAllIndications:(int64_t)self0 withAnomalyCount:(int64_t)self1 withAnomalyIndicationsCount:(int64_t)self2 withAnomalyAllIndications:(int64_t)self3 withFailureCount:(int64_t)self4 withFailureIndicationsCount:(int64_t)self5 withFailureAllIndications:(int64_t)self6 withFaultCount:(int64_t)self7 withFaultIndicationsCount:(int64_t)self8 withFaultAllIndications:(int64_t)self9 withStateEventCount:(int64_t)eventCount;
+- (SUCoreDiagStats)initWithCoder:(id)coder;
 - (id)copy;
 - (id)description;
-- (id)initByCombining:(id)a3 withAdditonal:(id)a4;
-- (id)initByCombining:(id)a3 withBeginCount:(int64_t)a4 withEndSuccessCount:(int64_t)a5 withEndFailCount:(int64_t)a6 withEndFailIndicationsCount:(int64_t)a7 withEndFailAllIndications:(int64_t)a8 withErrorCount:(int64_t)a9 withErrorIndicationsCount:(int64_t)a10 withErrorAllIndications:(int64_t)a11 withAnomalyCount:(int64_t)a12 withAnomalyIndicationsCount:(int64_t)a13 withAnomalyAllIndications:(int64_t)a14 withFailureCount:(int64_t)a15 withFailureIndicationsCount:(int64_t)a16 withFailureAllIndications:(int64_t)a17 withFaultCount:(int64_t)a18 withFaultIndicationsCount:(int64_t)a19 withFaultAllIndications:(int64_t)a20 withStateEventCount:(int64_t)a21;
+- (id)initByCombining:(id)combining withAdditonal:(id)additonal;
+- (id)initByCombining:(id)combining withBeginCount:(int64_t)count withEndSuccessCount:(int64_t)successCount withEndFailCount:(int64_t)failCount withEndFailIndicationsCount:(int64_t)indicationsCount withEndFailAllIndications:(int64_t)indications withErrorCount:(int64_t)errorCount withErrorIndicationsCount:(int64_t)self0 withErrorAllIndications:(int64_t)self1 withAnomalyCount:(int64_t)self2 withAnomalyIndicationsCount:(int64_t)self3 withAnomalyAllIndications:(int64_t)self4 withFailureCount:(int64_t)self5 withFailureIndicationsCount:(int64_t)self6 withFailureAllIndications:(int64_t)self7 withFaultCount:(int64_t)self8 withFaultIndicationsCount:(int64_t)self9 withFaultAllIndications:(int64_t)faultAllIndications withStateEventCount:(int64_t)eventCount;
 - (id)initIgnoringSuccessRelated;
 - (id)summary;
 - (id)summaryOfProblems;
 - (int64_t)allIndications;
-- (void)combineStartingFrom:(id)a3 endingWith:(id)a4;
-- (void)combineWithStats:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)combineStartingFrom:(id)from endingWith:(id)with;
+- (void)combineWithStats:(id)stats;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreDiagStats
@@ -61,244 +61,244 @@
   return result;
 }
 
-- (SUCoreDiagStats)initWithBeginCount:(int64_t)a3 withEndSuccessCount:(int64_t)a4 withEndFailCount:(int64_t)a5 withEndFailIndicationsCount:(int64_t)a6 withEndFailAllIndications:(int64_t)a7 withErrorCount:(int64_t)a8 withErrorIndicationsCount:(int64_t)a9 withErrorAllIndications:(int64_t)a10 withAnomalyCount:(int64_t)a11 withAnomalyIndicationsCount:(int64_t)a12 withAnomalyAllIndications:(int64_t)a13 withFailureCount:(int64_t)a14 withFailureIndicationsCount:(int64_t)a15 withFailureAllIndications:(int64_t)a16 withFaultCount:(int64_t)a17 withFaultIndicationsCount:(int64_t)a18 withFaultAllIndications:(int64_t)a19 withStateEventCount:(int64_t)a20
+- (SUCoreDiagStats)initWithBeginCount:(int64_t)count withEndSuccessCount:(int64_t)successCount withEndFailCount:(int64_t)failCount withEndFailIndicationsCount:(int64_t)indicationsCount withEndFailAllIndications:(int64_t)indications withErrorCount:(int64_t)errorCount withErrorIndicationsCount:(int64_t)errorIndicationsCount withErrorAllIndications:(int64_t)self0 withAnomalyCount:(int64_t)self1 withAnomalyIndicationsCount:(int64_t)self2 withAnomalyAllIndications:(int64_t)self3 withFailureCount:(int64_t)self4 withFailureIndicationsCount:(int64_t)self5 withFailureAllIndications:(int64_t)self6 withFaultCount:(int64_t)self7 withFaultIndicationsCount:(int64_t)self8 withFaultAllIndications:(int64_t)self9 withStateEventCount:(int64_t)eventCount
 {
   v27.receiver = self;
   v27.super_class = SUCoreDiagStats;
   result = [(SUCoreDiagStats *)&v27 init];
   if (result)
   {
-    result->_beginCount = a3;
-    result->_endSuccessCount = a4;
-    result->_endFailCount = a5;
-    result->_endFailIndicationsCount = a6;
-    result->_endFailAllIndications = a7;
-    result->_errorCount = a8;
-    result->_errorIndicationsCount = a9;
-    result->_errorAllIndications = a10;
-    result->_anomalyCount = a11;
-    result->_anomalyIndicationsCount = a12;
-    result->_anomalyAllIndications = a13;
-    result->_failureCount = a14;
-    result->_failureIndicationsCount = a15;
-    result->_failureAllIndications = a16;
-    result->_faultCount = a17;
-    result->_faultIndicationsCount = a18;
-    result->_faultAllIndications = a19;
-    result->_stateEventCount = a20;
+    result->_beginCount = count;
+    result->_endSuccessCount = successCount;
+    result->_endFailCount = failCount;
+    result->_endFailIndicationsCount = indicationsCount;
+    result->_endFailAllIndications = indications;
+    result->_errorCount = errorCount;
+    result->_errorIndicationsCount = errorIndicationsCount;
+    result->_errorAllIndications = allIndications;
+    result->_anomalyCount = anomalyCount;
+    result->_anomalyIndicationsCount = anomalyIndicationsCount;
+    result->_anomalyAllIndications = anomalyAllIndications;
+    result->_failureCount = failureCount;
+    result->_failureIndicationsCount = failureIndicationsCount;
+    result->_failureAllIndications = failureAllIndications;
+    result->_faultCount = faultCount;
+    result->_faultIndicationsCount = faultIndicationsCount;
+    result->_faultAllIndications = faultAllIndications;
+    result->_stateEventCount = eventCount;
   }
 
   return result;
 }
 
-- (id)initByCombining:(id)a3 withBeginCount:(int64_t)a4 withEndSuccessCount:(int64_t)a5 withEndFailCount:(int64_t)a6 withEndFailIndicationsCount:(int64_t)a7 withEndFailAllIndications:(int64_t)a8 withErrorCount:(int64_t)a9 withErrorIndicationsCount:(int64_t)a10 withErrorAllIndications:(int64_t)a11 withAnomalyCount:(int64_t)a12 withAnomalyIndicationsCount:(int64_t)a13 withAnomalyAllIndications:(int64_t)a14 withFailureCount:(int64_t)a15 withFailureIndicationsCount:(int64_t)a16 withFailureAllIndications:(int64_t)a17 withFaultCount:(int64_t)a18 withFaultIndicationsCount:(int64_t)a19 withFaultAllIndications:(int64_t)a20 withStateEventCount:(int64_t)a21
+- (id)initByCombining:(id)combining withBeginCount:(int64_t)count withEndSuccessCount:(int64_t)successCount withEndFailCount:(int64_t)failCount withEndFailIndicationsCount:(int64_t)indicationsCount withEndFailAllIndications:(int64_t)indications withErrorCount:(int64_t)errorCount withErrorIndicationsCount:(int64_t)self0 withErrorAllIndications:(int64_t)self1 withAnomalyCount:(int64_t)self2 withAnomalyIndicationsCount:(int64_t)self3 withAnomalyAllIndications:(int64_t)self4 withFailureCount:(int64_t)self5 withFailureIndicationsCount:(int64_t)self6 withFailureAllIndications:(int64_t)self7 withFaultCount:(int64_t)self8 withFaultIndicationsCount:(int64_t)self9 withFaultAllIndications:(int64_t)faultAllIndications withStateEventCount:(int64_t)eventCount
 {
-  v27 = a3;
+  combiningCopy = combining;
   v39.receiver = self;
   v39.super_class = SUCoreDiagStats;
   v28 = [(SUCoreDiagStats *)&v39 init];
   if (v28)
   {
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((count & 0x8000000000000000) == 0)
     {
-      a4 += [v27 beginCount];
+      count += [combiningCopy beginCount];
     }
 
-    v28->_beginCount = a4;
-    if ((a5 & 0x8000000000000000) == 0)
+    v28->_beginCount = count;
+    if ((successCount & 0x8000000000000000) == 0)
     {
-      a5 += [v27 endSuccessCount];
+      successCount += [combiningCopy endSuccessCount];
     }
 
-    v29 = a9;
-    v28->_endSuccessCount = a5;
-    if ((a6 & 0x8000000000000000) == 0)
+    errorCountCopy = errorCount;
+    v28->_endSuccessCount = successCount;
+    if ((failCount & 0x8000000000000000) == 0)
     {
-      a6 += [v27 endFailCount];
+      failCount += [combiningCopy endFailCount];
     }
 
-    v30 = a10;
-    v28->_endFailCount = a6;
-    if ((a7 & 0x8000000000000000) == 0)
+    errorIndicationsCountCopy = errorIndicationsCount;
+    v28->_endFailCount = failCount;
+    if ((indicationsCount & 0x8000000000000000) == 0)
     {
-      a7 += [v27 endFailIndicationsCount];
+      indicationsCount += [combiningCopy endFailIndicationsCount];
     }
 
-    v31 = a12;
-    v28->_endFailIndicationsCount = a7;
-    v28->_endFailAllIndications = [v27 endFailAllIndications] | a8;
-    if ((a9 & 0x8000000000000000) == 0)
+    anomalyCountCopy = anomalyCount;
+    v28->_endFailIndicationsCount = indicationsCount;
+    v28->_endFailAllIndications = [combiningCopy endFailAllIndications] | indications;
+    if ((errorCount & 0x8000000000000000) == 0)
     {
-      v29 = [v27 errorCount] + a9;
+      errorCountCopy = [combiningCopy errorCount] + errorCount;
     }
 
-    v32 = a13;
-    v28->_errorCount = v29;
-    if ((a10 & 0x8000000000000000) == 0)
+    anomalyIndicationsCountCopy = anomalyIndicationsCount;
+    v28->_errorCount = errorCountCopy;
+    if ((errorIndicationsCount & 0x8000000000000000) == 0)
     {
-      v30 = [v27 errorIndicationsCount] + a10;
+      errorIndicationsCountCopy = [combiningCopy errorIndicationsCount] + errorIndicationsCount;
     }
 
-    v33 = a15;
-    v28->_errorIndicationsCount = v30;
-    v28->_errorAllIndications = [v27 errorAllIndications] | a11;
-    if ((a12 & 0x8000000000000000) == 0)
+    failureCountCopy = failureCount;
+    v28->_errorIndicationsCount = errorIndicationsCountCopy;
+    v28->_errorAllIndications = [combiningCopy errorAllIndications] | allIndications;
+    if ((anomalyCount & 0x8000000000000000) == 0)
     {
-      v31 = [v27 anomalyCount] + a12;
+      anomalyCountCopy = [combiningCopy anomalyCount] + anomalyCount;
     }
 
-    v34 = a16;
-    v28->_anomalyCount = v31;
-    if ((a13 & 0x8000000000000000) == 0)
+    failureIndicationsCountCopy = failureIndicationsCount;
+    v28->_anomalyCount = anomalyCountCopy;
+    if ((anomalyIndicationsCount & 0x8000000000000000) == 0)
     {
-      v32 = [v27 anomalyIndicationsCount] + a13;
+      anomalyIndicationsCountCopy = [combiningCopy anomalyIndicationsCount] + anomalyIndicationsCount;
     }
 
-    v35 = a18;
-    v28->_anomalyIndicationsCount = v32;
-    v28->_anomalyAllIndications = [v27 anomalyAllIndications] | a14;
-    if ((a15 & 0x8000000000000000) == 0)
+    faultCountCopy = faultCount;
+    v28->_anomalyIndicationsCount = anomalyIndicationsCountCopy;
+    v28->_anomalyAllIndications = [combiningCopy anomalyAllIndications] | anomalyAllIndications;
+    if ((failureCount & 0x8000000000000000) == 0)
     {
-      v33 = [v27 failureCount] + a15;
+      failureCountCopy = [combiningCopy failureCount] + failureCount;
     }
 
-    v36 = a19;
-    v28->_failureCount = v33;
-    if ((a16 & 0x8000000000000000) == 0)
+    faultIndicationsCountCopy = faultIndicationsCount;
+    v28->_failureCount = failureCountCopy;
+    if ((failureIndicationsCount & 0x8000000000000000) == 0)
     {
-      v34 = [v27 failureIndicationsCount] + a16;
+      failureIndicationsCountCopy = [combiningCopy failureIndicationsCount] + failureIndicationsCount;
     }
 
-    v37 = a21;
-    v28->_failureIndicationsCount = v34;
-    v28->_failureAllIndications = [v27 failureAllIndications] | a17;
-    if ((a18 & 0x8000000000000000) == 0)
+    eventCountCopy = eventCount;
+    v28->_failureIndicationsCount = failureIndicationsCountCopy;
+    v28->_failureAllIndications = [combiningCopy failureAllIndications] | failureAllIndications;
+    if ((faultCount & 0x8000000000000000) == 0)
     {
-      v35 = [v27 faultCount] + a18;
+      faultCountCopy = [combiningCopy faultCount] + faultCount;
     }
 
-    v28->_faultCount = v35;
-    if ((a19 & 0x8000000000000000) == 0)
+    v28->_faultCount = faultCountCopy;
+    if ((faultIndicationsCount & 0x8000000000000000) == 0)
     {
-      v36 = [v27 faultIndicationsCount] + a19;
+      faultIndicationsCountCopy = [combiningCopy faultIndicationsCount] + faultIndicationsCount;
     }
 
-    v28->_faultIndicationsCount = v36;
-    v28->_faultAllIndications = [v27 faultAllIndications] | a20;
-    if ((a21 & 0x8000000000000000) == 0)
+    v28->_faultIndicationsCount = faultIndicationsCountCopy;
+    v28->_faultAllIndications = [combiningCopy faultAllIndications] | faultAllIndications;
+    if ((eventCount & 0x8000000000000000) == 0)
     {
-      v37 = [v27 stateEventCount] + a21;
+      eventCountCopy = [combiningCopy stateEventCount] + eventCount;
     }
 
-    v28->_stateEventCount = v37;
+    v28->_stateEventCount = eventCountCopy;
   }
 
   return v28;
 }
 
-- (id)initByCombining:(id)a3 withAdditonal:(id)a4
+- (id)initByCombining:(id)combining withAdditonal:(id)additonal
 {
-  v6 = a3;
-  v7 = a4;
+  combiningCopy = combining;
+  additonalCopy = additonal;
   v28.receiver = self;
   v28.super_class = SUCoreDiagStats;
   v8 = [(SUCoreDiagStats *)&v28 init];
   if (v8)
   {
-    v9 = [v6 beginCount];
-    v8->_beginCount = [v7 beginCount] + v9;
-    v10 = [v6 endSuccessCount];
-    v8->_endSuccessCount = [v7 endSuccessCount] + v10;
-    v11 = [v6 endFailCount];
-    v8->_endFailCount = [v7 endFailCount] + v11;
-    v12 = [v6 endFailIndicationsCount];
-    v8->_endFailIndicationsCount = [v7 endFailIndicationsCount] + v12;
-    v13 = [v6 endFailAllIndications];
-    v8->_endFailAllIndications = [v7 endFailAllIndications] | v13;
-    v14 = [v6 errorCount];
-    v8->_errorCount = [v7 errorCount] + v14;
-    v15 = [v6 errorIndicationsCount];
-    v8->_errorIndicationsCount = [v7 errorIndicationsCount] + v15;
-    v16 = [v6 errorAllIndications];
-    v8->_errorAllIndications = [v7 errorAllIndications] | v16;
-    v17 = [v6 anomalyCount];
-    v8->_anomalyCount = [v7 anomalyCount] + v17;
-    v18 = [v6 anomalyIndicationsCount];
-    v8->_anomalyIndicationsCount = [v7 anomalyIndicationsCount] + v18;
-    v19 = [v6 anomalyAllIndications];
-    v8->_anomalyAllIndications = [v7 anomalyAllIndications] | v19;
-    v20 = [v6 failureCount];
-    v8->_failureCount = [v7 failureCount] + v20;
-    v21 = [v6 failureIndicationsCount];
-    v8->_failureIndicationsCount = [v7 failureIndicationsCount] + v21;
-    v22 = [v6 failureAllIndications];
-    v8->_failureAllIndications = [v7 failureAllIndications] | v22;
-    v23 = [v6 faultCount];
-    v8->_faultCount = [v7 faultCount] + v23;
-    v24 = [v6 faultIndicationsCount];
-    v8->_faultIndicationsCount = [v7 faultIndicationsCount] + v24;
-    v25 = [v6 faultAllIndications];
-    v8->_faultAllIndications = [v7 faultAllIndications] | v25;
-    v26 = [v6 stateEventCount];
-    v8->_stateEventCount = [v7 stateEventCount] + v26;
+    beginCount = [combiningCopy beginCount];
+    v8->_beginCount = [additonalCopy beginCount] + beginCount;
+    endSuccessCount = [combiningCopy endSuccessCount];
+    v8->_endSuccessCount = [additonalCopy endSuccessCount] + endSuccessCount;
+    endFailCount = [combiningCopy endFailCount];
+    v8->_endFailCount = [additonalCopy endFailCount] + endFailCount;
+    endFailIndicationsCount = [combiningCopy endFailIndicationsCount];
+    v8->_endFailIndicationsCount = [additonalCopy endFailIndicationsCount] + endFailIndicationsCount;
+    endFailAllIndications = [combiningCopy endFailAllIndications];
+    v8->_endFailAllIndications = [additonalCopy endFailAllIndications] | endFailAllIndications;
+    errorCount = [combiningCopy errorCount];
+    v8->_errorCount = [additonalCopy errorCount] + errorCount;
+    errorIndicationsCount = [combiningCopy errorIndicationsCount];
+    v8->_errorIndicationsCount = [additonalCopy errorIndicationsCount] + errorIndicationsCount;
+    errorAllIndications = [combiningCopy errorAllIndications];
+    v8->_errorAllIndications = [additonalCopy errorAllIndications] | errorAllIndications;
+    anomalyCount = [combiningCopy anomalyCount];
+    v8->_anomalyCount = [additonalCopy anomalyCount] + anomalyCount;
+    anomalyIndicationsCount = [combiningCopy anomalyIndicationsCount];
+    v8->_anomalyIndicationsCount = [additonalCopy anomalyIndicationsCount] + anomalyIndicationsCount;
+    anomalyAllIndications = [combiningCopy anomalyAllIndications];
+    v8->_anomalyAllIndications = [additonalCopy anomalyAllIndications] | anomalyAllIndications;
+    failureCount = [combiningCopy failureCount];
+    v8->_failureCount = [additonalCopy failureCount] + failureCount;
+    failureIndicationsCount = [combiningCopy failureIndicationsCount];
+    v8->_failureIndicationsCount = [additonalCopy failureIndicationsCount] + failureIndicationsCount;
+    failureAllIndications = [combiningCopy failureAllIndications];
+    v8->_failureAllIndications = [additonalCopy failureAllIndications] | failureAllIndications;
+    faultCount = [combiningCopy faultCount];
+    v8->_faultCount = [additonalCopy faultCount] + faultCount;
+    faultIndicationsCount = [combiningCopy faultIndicationsCount];
+    v8->_faultIndicationsCount = [additonalCopy faultIndicationsCount] + faultIndicationsCount;
+    faultAllIndications = [combiningCopy faultAllIndications];
+    v8->_faultAllIndications = [additonalCopy faultAllIndications] | faultAllIndications;
+    stateEventCount = [combiningCopy stateEventCount];
+    v8->_stateEventCount = [additonalCopy stateEventCount] + stateEventCount;
   }
 
   return v8;
 }
 
-- (SUCoreDiagStats)initWithCoder:(id)a3
+- (SUCoreDiagStats)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SUCoreDiagStats;
   v5 = [(SUCoreDiagStats *)&v7 init];
   if (v5)
   {
-    v5->_beginCount = [v4 decodeInt64ForKey:@"beginCount"];
-    v5->_endSuccessCount = [v4 decodeInt64ForKey:@"endSuccessCount"];
-    v5->_endFailCount = [v4 decodeInt64ForKey:@"endFailCount"];
-    v5->_endFailIndicationsCount = [v4 decodeInt64ForKey:@"endFailIndicationsCount"];
-    v5->_endFailAllIndications = [v4 decodeInt64ForKey:@"endFailAllIndications"];
-    v5->_errorCount = [v4 decodeInt64ForKey:@"errorCount"];
-    v5->_errorIndicationsCount = [v4 decodeInt64ForKey:@"errorIndicationsCount"];
-    v5->_errorAllIndications = [v4 decodeInt64ForKey:@"errorAllIndications"];
-    v5->_anomalyCount = [v4 decodeInt64ForKey:@"anomalyCount"];
-    v5->_anomalyIndicationsCount = [v4 decodeInt64ForKey:@"anomalyIndicationsCount"];
-    v5->_anomalyAllIndications = [v4 decodeInt64ForKey:@"anomalyAllIndications"];
-    v5->_failureCount = [v4 decodeInt64ForKey:@"failureCount"];
-    v5->_failureIndicationsCount = [v4 decodeInt64ForKey:@"failureIndicationsCount"];
-    v5->_failureAllIndications = [v4 decodeInt64ForKey:@"failureAllIndications"];
-    v5->_faultCount = [v4 decodeInt64ForKey:@"faultCount"];
-    v5->_faultIndicationsCount = [v4 decodeInt64ForKey:@"faultIndicationsCount"];
-    v5->_faultAllIndications = [v4 decodeInt64ForKey:@"faultAllIndications"];
-    v5->_stateEventCount = [v4 decodeInt64ForKey:@"stateEventCount"];
+    v5->_beginCount = [coderCopy decodeInt64ForKey:@"beginCount"];
+    v5->_endSuccessCount = [coderCopy decodeInt64ForKey:@"endSuccessCount"];
+    v5->_endFailCount = [coderCopy decodeInt64ForKey:@"endFailCount"];
+    v5->_endFailIndicationsCount = [coderCopy decodeInt64ForKey:@"endFailIndicationsCount"];
+    v5->_endFailAllIndications = [coderCopy decodeInt64ForKey:@"endFailAllIndications"];
+    v5->_errorCount = [coderCopy decodeInt64ForKey:@"errorCount"];
+    v5->_errorIndicationsCount = [coderCopy decodeInt64ForKey:@"errorIndicationsCount"];
+    v5->_errorAllIndications = [coderCopy decodeInt64ForKey:@"errorAllIndications"];
+    v5->_anomalyCount = [coderCopy decodeInt64ForKey:@"anomalyCount"];
+    v5->_anomalyIndicationsCount = [coderCopy decodeInt64ForKey:@"anomalyIndicationsCount"];
+    v5->_anomalyAllIndications = [coderCopy decodeInt64ForKey:@"anomalyAllIndications"];
+    v5->_failureCount = [coderCopy decodeInt64ForKey:@"failureCount"];
+    v5->_failureIndicationsCount = [coderCopy decodeInt64ForKey:@"failureIndicationsCount"];
+    v5->_failureAllIndications = [coderCopy decodeInt64ForKey:@"failureAllIndications"];
+    v5->_faultCount = [coderCopy decodeInt64ForKey:@"faultCount"];
+    v5->_faultIndicationsCount = [coderCopy decodeInt64ForKey:@"faultIndicationsCount"];
+    v5->_faultAllIndications = [coderCopy decodeInt64ForKey:@"faultAllIndications"];
+    v5->_stateEventCount = [coderCopy decodeInt64ForKey:@"stateEventCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   beginCount = self->_beginCount;
-  v5 = a3;
-  [v5 encodeInt64:beginCount forKey:@"beginCount"];
-  [v5 encodeInt64:self->_endSuccessCount forKey:@"endSuccessCount"];
-  [v5 encodeInt64:self->_endFailCount forKey:@"endFailCount"];
-  [v5 encodeInt64:self->_endFailIndicationsCount forKey:@"endFailIndicationsCount"];
-  [v5 encodeInt64:self->_endFailAllIndications forKey:@"endFailAllIndications"];
-  [v5 encodeInt64:self->_errorCount forKey:@"errorCount"];
-  [v5 encodeInt64:self->_errorIndicationsCount forKey:@"errorIndicationsCount"];
-  [v5 encodeInt64:self->_errorAllIndications forKey:@"errorAllIndications"];
-  [v5 encodeInt64:self->_anomalyCount forKey:@"anomalyCount"];
-  [v5 encodeInt64:self->_anomalyIndicationsCount forKey:@"anomalyIndicationsCount"];
-  [v5 encodeInt64:self->_anomalyAllIndications forKey:@"anomalyAllIndications"];
-  [v5 encodeInt64:self->_failureCount forKey:@"failureCount"];
-  [v5 encodeInt64:self->_failureIndicationsCount forKey:@"failureIndicationsCount"];
-  [v5 encodeInt64:self->_failureAllIndications forKey:@"failureAllIndications"];
-  [v5 encodeInt64:self->_faultCount forKey:@"faultCount"];
-  [v5 encodeInt64:self->_faultIndicationsCount forKey:@"faultIndicationsCount"];
-  [v5 encodeInt64:self->_faultAllIndications forKey:@"faultAllIndications"];
-  [v5 encodeInt64:self->_stateEventCount forKey:@"stateEventCount"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:beginCount forKey:@"beginCount"];
+  [coderCopy encodeInt64:self->_endSuccessCount forKey:@"endSuccessCount"];
+  [coderCopy encodeInt64:self->_endFailCount forKey:@"endFailCount"];
+  [coderCopy encodeInt64:self->_endFailIndicationsCount forKey:@"endFailIndicationsCount"];
+  [coderCopy encodeInt64:self->_endFailAllIndications forKey:@"endFailAllIndications"];
+  [coderCopy encodeInt64:self->_errorCount forKey:@"errorCount"];
+  [coderCopy encodeInt64:self->_errorIndicationsCount forKey:@"errorIndicationsCount"];
+  [coderCopy encodeInt64:self->_errorAllIndications forKey:@"errorAllIndications"];
+  [coderCopy encodeInt64:self->_anomalyCount forKey:@"anomalyCount"];
+  [coderCopy encodeInt64:self->_anomalyIndicationsCount forKey:@"anomalyIndicationsCount"];
+  [coderCopy encodeInt64:self->_anomalyAllIndications forKey:@"anomalyAllIndications"];
+  [coderCopy encodeInt64:self->_failureCount forKey:@"failureCount"];
+  [coderCopy encodeInt64:self->_failureIndicationsCount forKey:@"failureIndicationsCount"];
+  [coderCopy encodeInt64:self->_failureAllIndications forKey:@"failureAllIndications"];
+  [coderCopy encodeInt64:self->_faultCount forKey:@"faultCount"];
+  [coderCopy encodeInt64:self->_faultIndicationsCount forKey:@"faultIndicationsCount"];
+  [coderCopy encodeInt64:self->_faultAllIndications forKey:@"faultAllIndications"];
+  [coderCopy encodeInt64:self->_stateEventCount forKey:@"stateEventCount"];
 }
 
 - (id)copy
@@ -325,218 +325,218 @@
   return v3;
 }
 
-- (void)combineWithStats:(id)a3
+- (void)combineWithStats:(id)stats
 {
-  v30 = a3;
-  if ([v30 beginCount] >= 1)
+  statsCopy = stats;
+  if ([statsCopy beginCount] >= 1)
   {
-    v4 = [(SUCoreDiagStats *)self beginCount];
-    v5 = [v30 beginCount];
-    if ((v4 & 0x8000000000000000) == 0)
+    beginCount = [(SUCoreDiagStats *)self beginCount];
+    beginCount2 = [statsCopy beginCount];
+    if ((beginCount & 0x8000000000000000) == 0)
     {
-      v5 += [(SUCoreDiagStats *)self beginCount];
+      beginCount2 += [(SUCoreDiagStats *)self beginCount];
     }
 
-    [(SUCoreDiagStats *)self setBeginCount:v5];
+    [(SUCoreDiagStats *)self setBeginCount:beginCount2];
   }
 
-  if ([v30 endSuccessCount] >= 1)
+  if ([statsCopy endSuccessCount] >= 1)
   {
-    v6 = [(SUCoreDiagStats *)self endSuccessCount];
-    v7 = [v30 endSuccessCount];
-    if ((v6 & 0x8000000000000000) == 0)
+    endSuccessCount = [(SUCoreDiagStats *)self endSuccessCount];
+    endSuccessCount2 = [statsCopy endSuccessCount];
+    if ((endSuccessCount & 0x8000000000000000) == 0)
     {
-      v7 += [(SUCoreDiagStats *)self endSuccessCount];
+      endSuccessCount2 += [(SUCoreDiagStats *)self endSuccessCount];
     }
 
-    [(SUCoreDiagStats *)self setEndSuccessCount:v7];
+    [(SUCoreDiagStats *)self setEndSuccessCount:endSuccessCount2];
   }
 
-  if ([v30 endFailCount] >= 1)
+  if ([statsCopy endFailCount] >= 1)
   {
-    v8 = [(SUCoreDiagStats *)self endFailCount];
-    v9 = [v30 endFailCount];
-    if ((v8 & 0x8000000000000000) == 0)
+    endFailCount = [(SUCoreDiagStats *)self endFailCount];
+    endFailCount2 = [statsCopy endFailCount];
+    if ((endFailCount & 0x8000000000000000) == 0)
     {
-      v9 += [(SUCoreDiagStats *)self endFailCount];
+      endFailCount2 += [(SUCoreDiagStats *)self endFailCount];
     }
 
-    [(SUCoreDiagStats *)self setEndFailCount:v9];
+    [(SUCoreDiagStats *)self setEndFailCount:endFailCount2];
   }
 
-  if ([v30 endFailIndicationsCount] >= 1)
+  if ([statsCopy endFailIndicationsCount] >= 1)
   {
-    v10 = [(SUCoreDiagStats *)self endFailIndicationsCount];
-    v11 = [v30 endFailIndicationsCount];
-    if ((v10 & 0x8000000000000000) == 0)
+    endFailIndicationsCount = [(SUCoreDiagStats *)self endFailIndicationsCount];
+    endFailIndicationsCount2 = [statsCopy endFailIndicationsCount];
+    if ((endFailIndicationsCount & 0x8000000000000000) == 0)
     {
-      v11 += [(SUCoreDiagStats *)self endFailIndicationsCount];
+      endFailIndicationsCount2 += [(SUCoreDiagStats *)self endFailIndicationsCount];
     }
 
-    [(SUCoreDiagStats *)self setEndFailIndicationsCount:v11];
+    [(SUCoreDiagStats *)self setEndFailIndicationsCount:endFailIndicationsCount2];
   }
 
-  -[SUCoreDiagStats setEndFailAllIndications:](self, "setEndFailAllIndications:", -[SUCoreDiagStats endFailAllIndications](self, "endFailAllIndications") | [v30 endFailAllIndications]);
-  if ([v30 errorCount] >= 1)
+  -[SUCoreDiagStats setEndFailAllIndications:](self, "setEndFailAllIndications:", -[SUCoreDiagStats endFailAllIndications](self, "endFailAllIndications") | [statsCopy endFailAllIndications]);
+  if ([statsCopy errorCount] >= 1)
   {
-    v12 = [(SUCoreDiagStats *)self errorCount];
-    v13 = [v30 errorCount];
-    if ((v12 & 0x8000000000000000) == 0)
+    errorCount = [(SUCoreDiagStats *)self errorCount];
+    errorCount2 = [statsCopy errorCount];
+    if ((errorCount & 0x8000000000000000) == 0)
     {
-      v13 += [(SUCoreDiagStats *)self errorCount];
+      errorCount2 += [(SUCoreDiagStats *)self errorCount];
     }
 
-    [(SUCoreDiagStats *)self setErrorCount:v13];
+    [(SUCoreDiagStats *)self setErrorCount:errorCount2];
   }
 
-  if ([v30 errorIndicationsCount] >= 1)
+  if ([statsCopy errorIndicationsCount] >= 1)
   {
-    v14 = [(SUCoreDiagStats *)self errorIndicationsCount];
-    v15 = [v30 errorIndicationsCount];
-    if ((v14 & 0x8000000000000000) == 0)
+    errorIndicationsCount = [(SUCoreDiagStats *)self errorIndicationsCount];
+    errorIndicationsCount2 = [statsCopy errorIndicationsCount];
+    if ((errorIndicationsCount & 0x8000000000000000) == 0)
     {
-      v15 += [(SUCoreDiagStats *)self errorIndicationsCount];
+      errorIndicationsCount2 += [(SUCoreDiagStats *)self errorIndicationsCount];
     }
 
-    [(SUCoreDiagStats *)self setErrorIndicationsCount:v15];
+    [(SUCoreDiagStats *)self setErrorIndicationsCount:errorIndicationsCount2];
   }
 
-  -[SUCoreDiagStats setErrorAllIndications:](self, "setErrorAllIndications:", -[SUCoreDiagStats errorAllIndications](self, "errorAllIndications") | [v30 errorAllIndications]);
-  if ([v30 anomalyCount] >= 1)
+  -[SUCoreDiagStats setErrorAllIndications:](self, "setErrorAllIndications:", -[SUCoreDiagStats errorAllIndications](self, "errorAllIndications") | [statsCopy errorAllIndications]);
+  if ([statsCopy anomalyCount] >= 1)
   {
-    v16 = [(SUCoreDiagStats *)self anomalyCount];
-    v17 = [v30 anomalyCount];
-    if ((v16 & 0x8000000000000000) == 0)
+    anomalyCount = [(SUCoreDiagStats *)self anomalyCount];
+    anomalyCount2 = [statsCopy anomalyCount];
+    if ((anomalyCount & 0x8000000000000000) == 0)
     {
-      v17 += [(SUCoreDiagStats *)self anomalyCount];
+      anomalyCount2 += [(SUCoreDiagStats *)self anomalyCount];
     }
 
-    [(SUCoreDiagStats *)self setAnomalyCount:v17];
+    [(SUCoreDiagStats *)self setAnomalyCount:anomalyCount2];
   }
 
-  if ([v30 anomalyIndicationsCount] >= 1)
+  if ([statsCopy anomalyIndicationsCount] >= 1)
   {
-    v18 = [(SUCoreDiagStats *)self anomalyIndicationsCount];
-    v19 = [v30 anomalyIndicationsCount];
-    if ((v18 & 0x8000000000000000) == 0)
+    anomalyIndicationsCount = [(SUCoreDiagStats *)self anomalyIndicationsCount];
+    anomalyIndicationsCount2 = [statsCopy anomalyIndicationsCount];
+    if ((anomalyIndicationsCount & 0x8000000000000000) == 0)
     {
-      v19 += [(SUCoreDiagStats *)self anomalyIndicationsCount];
+      anomalyIndicationsCount2 += [(SUCoreDiagStats *)self anomalyIndicationsCount];
     }
 
-    [(SUCoreDiagStats *)self setAnomalyIndicationsCount:v19];
+    [(SUCoreDiagStats *)self setAnomalyIndicationsCount:anomalyIndicationsCount2];
   }
 
-  -[SUCoreDiagStats setAnomalyAllIndications:](self, "setAnomalyAllIndications:", -[SUCoreDiagStats anomalyAllIndications](self, "anomalyAllIndications") | [v30 anomalyAllIndications]);
-  if ([v30 failureCount] >= 1)
+  -[SUCoreDiagStats setAnomalyAllIndications:](self, "setAnomalyAllIndications:", -[SUCoreDiagStats anomalyAllIndications](self, "anomalyAllIndications") | [statsCopy anomalyAllIndications]);
+  if ([statsCopy failureCount] >= 1)
   {
-    v20 = [(SUCoreDiagStats *)self failureCount];
-    v21 = [v30 failureCount];
-    if ((v20 & 0x8000000000000000) == 0)
+    failureCount = [(SUCoreDiagStats *)self failureCount];
+    failureCount2 = [statsCopy failureCount];
+    if ((failureCount & 0x8000000000000000) == 0)
     {
-      v21 += [(SUCoreDiagStats *)self failureCount];
+      failureCount2 += [(SUCoreDiagStats *)self failureCount];
     }
 
-    [(SUCoreDiagStats *)self setFailureCount:v21];
+    [(SUCoreDiagStats *)self setFailureCount:failureCount2];
   }
 
-  if ([v30 failureIndicationsCount] >= 1)
+  if ([statsCopy failureIndicationsCount] >= 1)
   {
-    v22 = [(SUCoreDiagStats *)self failureIndicationsCount];
-    v23 = [v30 failureIndicationsCount];
-    if ((v22 & 0x8000000000000000) == 0)
+    failureIndicationsCount = [(SUCoreDiagStats *)self failureIndicationsCount];
+    failureIndicationsCount2 = [statsCopy failureIndicationsCount];
+    if ((failureIndicationsCount & 0x8000000000000000) == 0)
     {
-      v23 += [(SUCoreDiagStats *)self failureIndicationsCount];
+      failureIndicationsCount2 += [(SUCoreDiagStats *)self failureIndicationsCount];
     }
 
-    [(SUCoreDiagStats *)self setFailureIndicationsCount:v23];
+    [(SUCoreDiagStats *)self setFailureIndicationsCount:failureIndicationsCount2];
   }
 
-  -[SUCoreDiagStats setFailureAllIndications:](self, "setFailureAllIndications:", -[SUCoreDiagStats failureAllIndications](self, "failureAllIndications") | [v30 failureAllIndications]);
-  if ([v30 faultCount] >= 1)
+  -[SUCoreDiagStats setFailureAllIndications:](self, "setFailureAllIndications:", -[SUCoreDiagStats failureAllIndications](self, "failureAllIndications") | [statsCopy failureAllIndications]);
+  if ([statsCopy faultCount] >= 1)
   {
-    v24 = [(SUCoreDiagStats *)self faultCount];
-    v25 = [v30 faultCount];
-    if ((v24 & 0x8000000000000000) == 0)
+    faultCount = [(SUCoreDiagStats *)self faultCount];
+    faultCount2 = [statsCopy faultCount];
+    if ((faultCount & 0x8000000000000000) == 0)
     {
-      v25 += [(SUCoreDiagStats *)self faultCount];
+      faultCount2 += [(SUCoreDiagStats *)self faultCount];
     }
 
-    [(SUCoreDiagStats *)self setFaultCount:v25];
+    [(SUCoreDiagStats *)self setFaultCount:faultCount2];
   }
 
-  if ([v30 faultIndicationsCount] >= 1)
+  if ([statsCopy faultIndicationsCount] >= 1)
   {
-    v26 = [(SUCoreDiagStats *)self faultIndicationsCount];
-    v27 = [v30 faultIndicationsCount];
-    if ((v26 & 0x8000000000000000) == 0)
+    faultIndicationsCount = [(SUCoreDiagStats *)self faultIndicationsCount];
+    faultIndicationsCount2 = [statsCopy faultIndicationsCount];
+    if ((faultIndicationsCount & 0x8000000000000000) == 0)
     {
-      v27 += [(SUCoreDiagStats *)self faultIndicationsCount];
+      faultIndicationsCount2 += [(SUCoreDiagStats *)self faultIndicationsCount];
     }
 
-    [(SUCoreDiagStats *)self setFaultIndicationsCount:v27];
+    [(SUCoreDiagStats *)self setFaultIndicationsCount:faultIndicationsCount2];
   }
 
-  -[SUCoreDiagStats setFaultAllIndications:](self, "setFaultAllIndications:", -[SUCoreDiagStats faultAllIndications](self, "faultAllIndications") | [v30 faultAllIndications]);
-  if ([v30 stateEventCount] >= 1)
+  -[SUCoreDiagStats setFaultAllIndications:](self, "setFaultAllIndications:", -[SUCoreDiagStats faultAllIndications](self, "faultAllIndications") | [statsCopy faultAllIndications]);
+  if ([statsCopy stateEventCount] >= 1)
   {
-    v28 = [(SUCoreDiagStats *)self stateEventCount];
-    v29 = [v30 stateEventCount];
-    if ((v28 & 0x8000000000000000) == 0)
+    stateEventCount = [(SUCoreDiagStats *)self stateEventCount];
+    stateEventCount2 = [statsCopy stateEventCount];
+    if ((stateEventCount & 0x8000000000000000) == 0)
     {
-      v29 += [(SUCoreDiagStats *)self stateEventCount];
+      stateEventCount2 += [(SUCoreDiagStats *)self stateEventCount];
     }
 
-    [(SUCoreDiagStats *)self setStateEventCount:v29];
+    [(SUCoreDiagStats *)self setStateEventCount:stateEventCount2];
   }
 }
 
-- (void)combineStartingFrom:(id)a3 endingWith:(id)a4
+- (void)combineStartingFrom:(id)from endingWith:(id)with
 {
-  v6 = a4;
-  v7 = a3;
-  -[SUCoreDiagStats setBeginCount:](self, "setBeginCount:", [v6 beginCount] - objc_msgSend(v7, "beginCount") + -[SUCoreDiagStats beginCount](self, "beginCount"));
-  -[SUCoreDiagStats setEndSuccessCount:](self, "setEndSuccessCount:", [v6 endSuccessCount] - objc_msgSend(v7, "endSuccessCount") + -[SUCoreDiagStats endSuccessCount](self, "endSuccessCount"));
-  -[SUCoreDiagStats setEndFailCount:](self, "setEndFailCount:", [v6 endFailCount] - objc_msgSend(v7, "endFailCount") + -[SUCoreDiagStats endFailCount](self, "endFailCount"));
-  -[SUCoreDiagStats setEndFailIndicationsCount:](self, "setEndFailIndicationsCount:", [v6 endFailIndicationsCount] - objc_msgSend(v7, "endFailIndicationsCount") + -[SUCoreDiagStats endFailIndicationsCount](self, "endFailIndicationsCount"));
-  -[SUCoreDiagStats setEndFailAllIndications:](self, "setEndFailAllIndications:", [v6 endFailAllIndications] | objc_msgSend(v7, "endFailAllIndications") | -[SUCoreDiagStats endFailAllIndications](self, "endFailAllIndications"));
-  -[SUCoreDiagStats setErrorCount:](self, "setErrorCount:", [v6 errorCount] - objc_msgSend(v7, "errorCount") + -[SUCoreDiagStats errorCount](self, "errorCount"));
-  -[SUCoreDiagStats setErrorIndicationsCount:](self, "setErrorIndicationsCount:", [v6 errorIndicationsCount] - objc_msgSend(v7, "errorIndicationsCount") + -[SUCoreDiagStats errorIndicationsCount](self, "errorIndicationsCount"));
-  -[SUCoreDiagStats setErrorAllIndications:](self, "setErrorAllIndications:", [v6 errorAllIndications] | objc_msgSend(v7, "errorAllIndications") | -[SUCoreDiagStats errorAllIndications](self, "errorAllIndications"));
-  -[SUCoreDiagStats setAnomalyCount:](self, "setAnomalyCount:", [v6 anomalyCount] - objc_msgSend(v7, "anomalyCount") + -[SUCoreDiagStats anomalyCount](self, "anomalyCount"));
-  -[SUCoreDiagStats setAnomalyIndicationsCount:](self, "setAnomalyIndicationsCount:", [v6 anomalyIndicationsCount] - objc_msgSend(v7, "anomalyIndicationsCount") + -[SUCoreDiagStats anomalyIndicationsCount](self, "anomalyIndicationsCount"));
-  -[SUCoreDiagStats setAnomalyAllIndications:](self, "setAnomalyAllIndications:", [v6 anomalyAllIndications] | objc_msgSend(v7, "anomalyAllIndications") | -[SUCoreDiagStats anomalyAllIndications](self, "anomalyAllIndications"));
-  -[SUCoreDiagStats setFailureCount:](self, "setFailureCount:", [v6 failureCount] - objc_msgSend(v7, "failureCount") + -[SUCoreDiagStats failureCount](self, "failureCount"));
-  -[SUCoreDiagStats setFailureIndicationsCount:](self, "setFailureIndicationsCount:", [v6 failureIndicationsCount] - objc_msgSend(v7, "failureIndicationsCount") + -[SUCoreDiagStats failureIndicationsCount](self, "failureIndicationsCount"));
-  -[SUCoreDiagStats setFailureAllIndications:](self, "setFailureAllIndications:", [v6 failureAllIndications] | objc_msgSend(v7, "failureAllIndications") | -[SUCoreDiagStats failureAllIndications](self, "failureAllIndications"));
-  -[SUCoreDiagStats setFaultCount:](self, "setFaultCount:", [v6 faultCount] - objc_msgSend(v7, "faultCount") + -[SUCoreDiagStats faultCount](self, "faultCount"));
-  -[SUCoreDiagStats setFaultIndicationsCount:](self, "setFaultIndicationsCount:", [v6 faultIndicationsCount] - objc_msgSend(v7, "faultIndicationsCount") + -[SUCoreDiagStats faultIndicationsCount](self, "faultIndicationsCount"));
-  -[SUCoreDiagStats setFaultAllIndications:](self, "setFaultAllIndications:", [v6 faultAllIndications] | objc_msgSend(v7, "faultAllIndications") | -[SUCoreDiagStats faultAllIndications](self, "faultAllIndications"));
-  v8 = [v6 stateEventCount];
+  withCopy = with;
+  fromCopy = from;
+  -[SUCoreDiagStats setBeginCount:](self, "setBeginCount:", [withCopy beginCount] - objc_msgSend(fromCopy, "beginCount") + -[SUCoreDiagStats beginCount](self, "beginCount"));
+  -[SUCoreDiagStats setEndSuccessCount:](self, "setEndSuccessCount:", [withCopy endSuccessCount] - objc_msgSend(fromCopy, "endSuccessCount") + -[SUCoreDiagStats endSuccessCount](self, "endSuccessCount"));
+  -[SUCoreDiagStats setEndFailCount:](self, "setEndFailCount:", [withCopy endFailCount] - objc_msgSend(fromCopy, "endFailCount") + -[SUCoreDiagStats endFailCount](self, "endFailCount"));
+  -[SUCoreDiagStats setEndFailIndicationsCount:](self, "setEndFailIndicationsCount:", [withCopy endFailIndicationsCount] - objc_msgSend(fromCopy, "endFailIndicationsCount") + -[SUCoreDiagStats endFailIndicationsCount](self, "endFailIndicationsCount"));
+  -[SUCoreDiagStats setEndFailAllIndications:](self, "setEndFailAllIndications:", [withCopy endFailAllIndications] | objc_msgSend(fromCopy, "endFailAllIndications") | -[SUCoreDiagStats endFailAllIndications](self, "endFailAllIndications"));
+  -[SUCoreDiagStats setErrorCount:](self, "setErrorCount:", [withCopy errorCount] - objc_msgSend(fromCopy, "errorCount") + -[SUCoreDiagStats errorCount](self, "errorCount"));
+  -[SUCoreDiagStats setErrorIndicationsCount:](self, "setErrorIndicationsCount:", [withCopy errorIndicationsCount] - objc_msgSend(fromCopy, "errorIndicationsCount") + -[SUCoreDiagStats errorIndicationsCount](self, "errorIndicationsCount"));
+  -[SUCoreDiagStats setErrorAllIndications:](self, "setErrorAllIndications:", [withCopy errorAllIndications] | objc_msgSend(fromCopy, "errorAllIndications") | -[SUCoreDiagStats errorAllIndications](self, "errorAllIndications"));
+  -[SUCoreDiagStats setAnomalyCount:](self, "setAnomalyCount:", [withCopy anomalyCount] - objc_msgSend(fromCopy, "anomalyCount") + -[SUCoreDiagStats anomalyCount](self, "anomalyCount"));
+  -[SUCoreDiagStats setAnomalyIndicationsCount:](self, "setAnomalyIndicationsCount:", [withCopy anomalyIndicationsCount] - objc_msgSend(fromCopy, "anomalyIndicationsCount") + -[SUCoreDiagStats anomalyIndicationsCount](self, "anomalyIndicationsCount"));
+  -[SUCoreDiagStats setAnomalyAllIndications:](self, "setAnomalyAllIndications:", [withCopy anomalyAllIndications] | objc_msgSend(fromCopy, "anomalyAllIndications") | -[SUCoreDiagStats anomalyAllIndications](self, "anomalyAllIndications"));
+  -[SUCoreDiagStats setFailureCount:](self, "setFailureCount:", [withCopy failureCount] - objc_msgSend(fromCopy, "failureCount") + -[SUCoreDiagStats failureCount](self, "failureCount"));
+  -[SUCoreDiagStats setFailureIndicationsCount:](self, "setFailureIndicationsCount:", [withCopy failureIndicationsCount] - objc_msgSend(fromCopy, "failureIndicationsCount") + -[SUCoreDiagStats failureIndicationsCount](self, "failureIndicationsCount"));
+  -[SUCoreDiagStats setFailureAllIndications:](self, "setFailureAllIndications:", [withCopy failureAllIndications] | objc_msgSend(fromCopy, "failureAllIndications") | -[SUCoreDiagStats failureAllIndications](self, "failureAllIndications"));
+  -[SUCoreDiagStats setFaultCount:](self, "setFaultCount:", [withCopy faultCount] - objc_msgSend(fromCopy, "faultCount") + -[SUCoreDiagStats faultCount](self, "faultCount"));
+  -[SUCoreDiagStats setFaultIndicationsCount:](self, "setFaultIndicationsCount:", [withCopy faultIndicationsCount] - objc_msgSend(fromCopy, "faultIndicationsCount") + -[SUCoreDiagStats faultIndicationsCount](self, "faultIndicationsCount"));
+  -[SUCoreDiagStats setFaultAllIndications:](self, "setFaultAllIndications:", [withCopy faultAllIndications] | objc_msgSend(fromCopy, "faultAllIndications") | -[SUCoreDiagStats faultAllIndications](self, "faultAllIndications"));
+  stateEventCount = [withCopy stateEventCount];
 
-  v9 = [v7 stateEventCount];
-  v10 = v8 - v9 + [(SUCoreDiagStats *)self stateEventCount];
+  stateEventCount2 = [fromCopy stateEventCount];
+  v10 = stateEventCount - stateEventCount2 + [(SUCoreDiagStats *)self stateEventCount];
 
   [(SUCoreDiagStats *)self setStateEventCount:v10];
 }
 
 - (int64_t)allIndications
 {
-  v3 = [(SUCoreDiagStats *)self endFailAllIndications];
-  v4 = [(SUCoreDiagStats *)self errorAllIndications]| v3;
-  v5 = [(SUCoreDiagStats *)self anomalyAllIndications];
-  v6 = v4 | v5 | [(SUCoreDiagStats *)self failureAllIndications];
+  endFailAllIndications = [(SUCoreDiagStats *)self endFailAllIndications];
+  v4 = [(SUCoreDiagStats *)self errorAllIndications]| endFailAllIndications;
+  anomalyAllIndications = [(SUCoreDiagStats *)self anomalyAllIndications];
+  v6 = v4 | anomalyAllIndications | [(SUCoreDiagStats *)self failureAllIndications];
   return v6 | [(SUCoreDiagStats *)self faultAllIndications];
 }
 
 - (id)description
 {
   v31 = MEMORY[0x1E696AEC0];
-  v30 = [(SUCoreDiagStats *)self beginCount];
-  v29 = [(SUCoreDiagStats *)self endSuccessCount];
-  v28 = [(SUCoreDiagStats *)self endFailCount];
-  v27 = [(SUCoreDiagStats *)self endFailIndicationsCount];
-  v33 = [(SUCoreDiagStats *)self endFailAllIndications];
-  if (v33)
+  beginCount = [(SUCoreDiagStats *)self beginCount];
+  endSuccessCount = [(SUCoreDiagStats *)self endSuccessCount];
+  endFailCount = [(SUCoreDiagStats *)self endFailCount];
+  endFailIndicationsCount = [(SUCoreDiagStats *)self endFailIndicationsCount];
+  endFailAllIndications = [(SUCoreDiagStats *)self endFailAllIndications];
+  if (endFailAllIndications)
   {
     v3 = [SUCoreErrorInformation summaryOfIndications:[(SUCoreDiagStats *)self endFailAllIndications]];
   }
@@ -546,10 +546,10 @@
     v3 = @"None";
   }
 
-  v25 = [(SUCoreDiagStats *)self errorCount];
-  v24 = [(SUCoreDiagStats *)self errorIndicationsCount];
-  v26 = [(SUCoreDiagStats *)self errorAllIndications];
-  if (v26)
+  errorCount = [(SUCoreDiagStats *)self errorCount];
+  errorIndicationsCount = [(SUCoreDiagStats *)self errorIndicationsCount];
+  errorAllIndications = [(SUCoreDiagStats *)self errorAllIndications];
+  if (errorAllIndications)
   {
     v4 = [SUCoreErrorInformation summaryOfIndications:[(SUCoreDiagStats *)self errorAllIndications]];
   }
@@ -559,10 +559,10 @@
     v4 = @"None";
   }
 
-  v22 = [(SUCoreDiagStats *)self anomalyCount];
-  v21 = [(SUCoreDiagStats *)self anomalyIndicationsCount];
-  v23 = [(SUCoreDiagStats *)self anomalyAllIndications];
-  if (v23)
+  anomalyCount = [(SUCoreDiagStats *)self anomalyCount];
+  anomalyIndicationsCount = [(SUCoreDiagStats *)self anomalyIndicationsCount];
+  anomalyAllIndications = [(SUCoreDiagStats *)self anomalyAllIndications];
+  if (anomalyAllIndications)
   {
     v5 = [SUCoreErrorInformation summaryOfIndications:[(SUCoreDiagStats *)self anomalyAllIndications]];
   }
@@ -573,11 +573,11 @@
   }
 
   v32 = v3;
-  v20 = [(SUCoreDiagStats *)self failureCount];
-  v6 = [(SUCoreDiagStats *)self failureIndicationsCount];
-  v7 = [(SUCoreDiagStats *)self failureAllIndications];
+  failureCount = [(SUCoreDiagStats *)self failureCount];
+  failureIndicationsCount = [(SUCoreDiagStats *)self failureIndicationsCount];
+  failureAllIndications = [(SUCoreDiagStats *)self failureAllIndications];
   v8 = v4;
-  if (v7)
+  if (failureAllIndications)
   {
     v9 = [SUCoreErrorInformation summaryOfIndications:[(SUCoreDiagStats *)self failureAllIndications]];
   }
@@ -587,10 +587,10 @@
     v9 = @"None";
   }
 
-  v10 = [(SUCoreDiagStats *)self faultCount];
-  v11 = [(SUCoreDiagStats *)self faultIndicationsCount];
-  v12 = [(SUCoreDiagStats *)self faultAllIndications];
-  if (v12)
+  faultCount = [(SUCoreDiagStats *)self faultCount];
+  faultIndicationsCount = [(SUCoreDiagStats *)self faultIndicationsCount];
+  faultAllIndications = [(SUCoreDiagStats *)self faultAllIndications];
+  if (faultAllIndications)
   {
     v13 = [SUCoreErrorInformation summaryOfIndications:[(SUCoreDiagStats *)self faultAllIndications]];
   }
@@ -600,28 +600,28 @@
     v13 = @"None";
   }
 
-  v19 = v11;
+  v19 = faultIndicationsCount;
   v18 = v5;
   v14 = v5;
   v15 = v8;
-  v16 = [v31 stringWithFormat:@"\n[>>>\n                beginCount: %ld\n           endSuccessCount: %ld\n\n              endFailCount: %ld\n   endFailIndicationsCount: %ld\n     endFailAllIndications: %@\n\n                errorCount: %ld\n     errorIndicationsCount: %ld\n       errorAllIndications: %@\n\n              anomalyCount: %ld\n   anomalyIndicationsCount: %ld\n     anomalyAllIndications: %@\n\n              failureCount: %ld\n   failureIndicationsCount: %ld\n     failureAllIndications: %@\n\n                faultCount: %ld\n     faultIndicationsCount: %ld\n       faultAllIndications: %@\n\n           stateEventCount: %ld\n<<<]", v30, v29, v28, v27, v32, v25, v24, v8, v22, v21, v18, v20, v6, v9, v10, v19, v13, -[SUCoreDiagStats stateEventCount](self, "stateEventCount")];
-  if (v12)
+  v16 = [v31 stringWithFormat:@"\n[>>>\n                beginCount: %ld\n           endSuccessCount: %ld\n\n              endFailCount: %ld\n   endFailIndicationsCount: %ld\n     endFailAllIndications: %@\n\n                errorCount: %ld\n     errorIndicationsCount: %ld\n       errorAllIndications: %@\n\n              anomalyCount: %ld\n   anomalyIndicationsCount: %ld\n     anomalyAllIndications: %@\n\n              failureCount: %ld\n   failureIndicationsCount: %ld\n     failureAllIndications: %@\n\n                faultCount: %ld\n     faultIndicationsCount: %ld\n       faultAllIndications: %@\n\n           stateEventCount: %ld\n<<<]", beginCount, endSuccessCount, endFailCount, endFailIndicationsCount, v32, errorCount, errorIndicationsCount, v8, anomalyCount, anomalyIndicationsCount, v18, failureCount, failureIndicationsCount, v9, faultCount, v19, v13, -[SUCoreDiagStats stateEventCount](self, "stateEventCount")];
+  if (faultAllIndications)
   {
   }
 
-  if (v7)
+  if (failureAllIndications)
   {
   }
 
-  if (v23)
+  if (anomalyAllIndications)
   {
   }
 
-  if (v26)
+  if (errorAllIndications)
   {
   }
 
-  if (v33)
+  if (endFailAllIndications)
   {
   }
 
@@ -630,26 +630,26 @@
 
 - (id)summary
 {
-  v3 = [(SUCoreDiagStats *)self allIndications];
+  allIndications = [(SUCoreDiagStats *)self allIndications];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SUCoreDiagStats *)self beginCount];
-  v6 = [(SUCoreDiagStats *)self endSuccessCount];
-  v7 = [(SUCoreDiagStats *)self endFailCount];
-  v8 = [(SUCoreDiagStats *)self errorCount];
-  v9 = [(SUCoreDiagStats *)self anomalyCount];
-  v10 = [(SUCoreDiagStats *)self failureCount];
-  v11 = [(SUCoreDiagStats *)self faultCount];
-  v12 = [(SUCoreDiagStats *)self stateEventCount];
-  v13 = v12;
-  if (v3)
+  beginCount = [(SUCoreDiagStats *)self beginCount];
+  endSuccessCount = [(SUCoreDiagStats *)self endSuccessCount];
+  endFailCount = [(SUCoreDiagStats *)self endFailCount];
+  errorCount = [(SUCoreDiagStats *)self errorCount];
+  anomalyCount = [(SUCoreDiagStats *)self anomalyCount];
+  failureCount = [(SUCoreDiagStats *)self failureCount];
+  faultCount = [(SUCoreDiagStats *)self faultCount];
+  stateEventCount = [(SUCoreDiagStats *)self stateEventCount];
+  v13 = stateEventCount;
+  if (allIndications)
   {
-    v14 = [SUCoreErrorInformation summaryOfIndications:v3];
-    v15 = [v4 stringWithFormat:@"beginCount:%ld, endSuccessCount:%ld, endFailCount:%ld, errorCount:%ld, anomalyCount:%ld, failureCount:%ld, faultCount:%ld, stateEventCount:%ld, allIndications:%@", v5, v6, v7, v8, v9, v10, v11, v13, v14];
+    v14 = [SUCoreErrorInformation summaryOfIndications:allIndications];
+    v15 = [v4 stringWithFormat:@"beginCount:%ld, endSuccessCount:%ld, endFailCount:%ld, errorCount:%ld, anomalyCount:%ld, failureCount:%ld, faultCount:%ld, stateEventCount:%ld, allIndications:%@", beginCount, endSuccessCount, endFailCount, errorCount, anomalyCount, failureCount, faultCount, v13, v14];
   }
 
   else
   {
-    v15 = [v4 stringWithFormat:@"beginCount:%ld, endSuccessCount:%ld, endFailCount:%ld, errorCount:%ld, anomalyCount:%ld, failureCount:%ld, faultCount:%ld, stateEventCount:%ld, allIndications:%@", v5, v6, v7, v8, v9, v10, v11, v12, @"None"];
+    v15 = [v4 stringWithFormat:@"beginCount:%ld, endSuccessCount:%ld, endFailCount:%ld, errorCount:%ld, anomalyCount:%ld, failureCount:%ld, faultCount:%ld, stateEventCount:%ld, allIndications:%@", beginCount, endSuccessCount, endFailCount, errorCount, anomalyCount, failureCount, faultCount, stateEventCount, @"None"];
   }
 
   return v15;
@@ -657,13 +657,13 @@
 
 - (id)summaryOfProblems
 {
-  v3 = [(SUCoreDiagStats *)self allIndications];
-  if (v3 || [(SUCoreDiagStats *)self endFailCount]> 0 || [(SUCoreDiagStats *)self errorCount]> 0 || [(SUCoreDiagStats *)self anomalyCount]> 0 || [(SUCoreDiagStats *)self failureCount]> 0 || [(SUCoreDiagStats *)self faultCount]>= 1)
+  allIndications = [(SUCoreDiagStats *)self allIndications];
+  if (allIndications || [(SUCoreDiagStats *)self endFailCount]> 0 || [(SUCoreDiagStats *)self errorCount]> 0 || [(SUCoreDiagStats *)self anomalyCount]> 0 || [(SUCoreDiagStats *)self failureCount]> 0 || [(SUCoreDiagStats *)self faultCount]>= 1)
   {
     v4 = [MEMORY[0x1E696AD60] stringWithString:@"|"];
-    if (v3)
+    if (allIndications)
     {
-      v5 = [SUCoreErrorInformation summaryOfIndications:v3];
+      v5 = [SUCoreErrorInformation summaryOfIndications:allIndications];
       [(__CFString *)v4 appendFormat:@"%@|", v5];
     }
 

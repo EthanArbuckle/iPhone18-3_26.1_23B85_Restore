@@ -1,7 +1,7 @@
 @interface MSDFileDownloadCredentialRequest
 - (BOOL)isValid;
 - (id)getQueryItems;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDFileDownloadCredentialRequest
@@ -15,8 +15,8 @@
     return 0;
   }
 
-  v3 = [(MSDFileDownloadCredentialRequest *)self manifestInfo];
-  v4 = v3 != 0;
+  manifestInfo = [(MSDFileDownloadCredentialRequest *)self manifestInfo];
+  v4 = manifestInfo != 0;
 
   return v4;
 }
@@ -46,15 +46,15 @@
           }
 
           v8 = *(*(&v15 + 1) + 8 * i);
-          v9 = [(MSDFileDownloadCredentialRequest *)self manifestInfo];
-          v10 = [v9 objectForKey:v8];
+          manifestInfo = [(MSDFileDownloadCredentialRequest *)self manifestInfo];
+          v10 = [manifestInfo objectForKey:v8];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 stringValue];
+            stringValue = [v10 stringValue];
 
-            v10 = v11;
+            v10 = stringValue;
           }
 
           v12 = [NSURLQueryItem queryItemWithName:v8 value:v10];
@@ -76,24 +76,24 @@
   return v3;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v15.receiver = self;
   v15.super_class = MSDFileDownloadCredentialRequest;
-  v8 = [(MSDServerRequest *)&v15 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v15 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
-    v11 = v6;
+    v11 = errorCopy;
   }
 
   else
   {
-    v14 = v6;
-    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v14];
+    v14 = errorCopy;
+    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v14];
     v11 = v14;
 
     if (v10)
@@ -102,9 +102,9 @@
     }
   }
 
-  v12 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v12)
+  if (!error2)
   {
     [v8 setError:v11];
   }

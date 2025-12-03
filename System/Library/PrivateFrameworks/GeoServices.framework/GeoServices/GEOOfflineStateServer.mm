@@ -1,33 +1,33 @@
 @interface GEOOfflineStateServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (GEOOfflineStateServer)initWithDaemon:(id)a3;
-- (void)_suggestedOfflineStateChanged:(id)a3;
-- (void)checkConnectivityWithMessage:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (GEOOfflineStateServer)initWithDaemon:(id)daemon;
+- (void)_suggestedOfflineStateChanged:(id)changed;
+- (void)checkConnectivityWithMessage:(id)message;
 - (void)dealloc;
-- (void)fetchStateWithRequest:(id)a3;
-- (void)peerDidDisconnect:(id)a3;
-- (void)setStateWithRequest:(id)a3;
-- (void)subscribeWithRequest:(id)a3;
+- (void)fetchStateWithRequest:(id)request;
+- (void)peerDidDisconnect:(id)disconnect;
+- (void)setStateWithRequest:(id)request;
+- (void)subscribeWithRequest:(id)request;
 @end
 
 @implementation GEOOfflineStateServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = sub_100001334(v10);
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  v13 = sub_100001334(messageCopy);
   v14 = 0;
   if (v13 > 1034)
   {
     if (v13 == 1789)
     {
-      v22 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+      v22 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
       v17 = v22;
       if (v22)
       {
-        [v22 setSignpostId:a6];
+        [v22 setSignpostId:id];
         [(GEOOfflineStateServer *)self checkConnectivityWithMessage:v17];
         goto LABEL_14;
       }
@@ -38,11 +38,11 @@
     if (v13 == 1035)
     {
       v18 = objc_opt_class();
-      v19 = sub_100001388(@"offlinestate", v10, v11, v18, v12);
+      v19 = sub_100001388(@"offlinestate", messageCopy, objectCopy, v18, peerCopy);
       v17 = v19;
       if (v19)
       {
-        [v19 setSignpostId:a6];
+        [v19 setSignpostId:id];
         [(GEOOfflineStateServer *)self fetchStateWithRequest:v17];
         goto LABEL_14;
       }
@@ -58,11 +58,11 @@ LABEL_17:
     if (v13 == 845)
     {
       v20 = objc_opt_class();
-      v21 = sub_100001388(@"offlinestate", v10, v11, v20, v12);
+      v21 = sub_100001388(@"offlinestate", messageCopy, objectCopy, v20, peerCopy);
       v17 = v21;
       if (v21)
       {
-        [v21 setSignpostId:a6];
+        [v21 setSignpostId:id];
         [(GEOOfflineStateServer *)self setStateWithRequest:v17];
         goto LABEL_14;
       }
@@ -73,11 +73,11 @@ LABEL_17:
     if (v13 == 962)
     {
       v15 = objc_opt_class();
-      v16 = sub_100001388(@"offlinestate", v10, v11, v15, v12);
+      v16 = sub_100001388(@"offlinestate", messageCopy, objectCopy, v15, peerCopy);
       v17 = v16;
       if (v16)
       {
-        [v16 setSignpostId:a6];
+        [v16 setSignpostId:id];
         [(GEOOfflineStateServer *)self subscribeWithRequest:v17];
 LABEL_14:
         v14 = 1;
@@ -95,9 +95,9 @@ LABEL_16:
   return v14;
 }
 
-- (void)peerDidDisconnect:(id)a3
+- (void)peerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -105,17 +105,17 @@ LABEL_16:
   v11 = sub_10001CBC4;
   v12 = 0;
   peersIsolater = self->_peersIsolater;
-  v6 = v4;
+  v6 = disconnectCopy;
   geo_isolate_sync_data();
   sub_10001CE08(v8[5], 1);
 
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)_suggestedOfflineStateChanged:(id)a3
+- (void)_suggestedOfflineStateChanged:(id)changed
 {
-  v9 = [a3 object];
-  v4 = sub_10001D448(self, v9);
+  object = [changed object];
+  v4 = sub_10001D448(self, object);
   v5 = v4;
   if (v4)
   {
@@ -124,41 +124,41 @@ LABEL_16:
     {
       v7 = v5[2];
       geo_isolate_sync_data();
-      v8 = [WeakRetained connection];
-      [v8 initiateBarrierIfNecessary:0 delegate:v5];
+      connection = [WeakRetained connection];
+      [connection initiateBarrierIfNecessary:0 delegate:v5];
     }
   }
 }
 
-- (void)checkConnectivityWithMessage:(id)a3
+- (void)checkConnectivityWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 preferredAuditToken];
-  v6 = [v5 offlineCohortId];
+  messageCopy = message;
+  preferredAuditToken = [messageCopy preferredAuditToken];
+  offlineCohortId = [preferredAuditToken offlineCohortId];
 
-  if (![v6 length])
+  if (![offlineCohortId length])
   {
     v11 = @"Invalid cohort id";
 LABEL_8:
     v9 = [NSError GEOErrorWithCode:-10 reason:v11];
-    v10 = [NSDictionary _geo_replyDictionaryForError:v9 key:@"err"];
-    [v4 sendReply:v10];
+    peer3 = [NSDictionary _geo_replyDictionaryForError:v9 key:@"err"];
+    [messageCopy sendReply:peer3];
     goto LABEL_9;
   }
 
-  v7 = [v4 peer];
-  v8 = sub_10001D804(self, v7, v6);
+  peer = [messageCopy peer];
+  v8 = sub_10001D804(self, peer, offlineCohortId);
 
   if (!v8)
   {
     v12 = GEOGetOfflineServiceLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v4 peer];
+      peer2 = [messageCopy peer];
       v14 = 138543618;
-      v15 = v6;
+      v15 = offlineCohortId;
       v16 = 2114;
-      v17 = v13;
+      v17 = peer2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Non-active peer attempted to check the connectivity for %{public}@ - %{public}@", &v14, 0x16u);
     }
 
@@ -167,36 +167,36 @@ LABEL_8:
   }
 
   v9 = +[GEOOfflineStateManager shared];
-  v10 = [v4 peer];
-  [v9 checkConnectivityForPeer:v10];
+  peer3 = [messageCopy peer];
+  [v9 checkConnectivityForPeer:peer3];
 LABEL_9:
 }
 
-- (void)setStateWithRequest:(id)a3
+- (void)setStateWithRequest:(id)request
 {
-  v31 = a3;
-  v4 = [v31 preferredAuditToken];
-  v32 = [v4 offlineCohortId];
+  requestCopy = request;
+  preferredAuditToken = [requestCopy preferredAuditToken];
+  offlineCohortId = [preferredAuditToken offlineCohortId];
 
-  v30 = [[GEOOfflineServiceSetStateReply alloc] initWithRequest:v31];
-  if ([v32 length])
+  v30 = [[GEOOfflineServiceSetStateReply alloc] initWithRequest:requestCopy];
+  if ([offlineCohortId length])
   {
-    v5 = sub_10001D448(self, v32);
+    v5 = sub_10001D448(self, offlineCohortId);
     v6 = v5;
     if (v5 && (WeakRetained = objc_loadWeakRetained((v5 + 24)), v6, (v29 = WeakRetained) != 0))
     {
-      v8 = [v31 peer];
+      peer = [requestCopy peer];
 
-      if (WeakRetained != v8)
+      if (WeakRetained != peer)
       {
         v9 = GEOGetOfflineServiceLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v10 = [v31 peer];
+          peer2 = [requestCopy peer];
           *buf = 138543618;
-          v57 = v32;
+          v57 = offlineCohortId;
           v58 = 2114;
-          v59 = v10;
+          v59 = peer2;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Non-active peer attempted to set the offline state for %{public}@ - %{public}@", buf, 0x16u);
         }
 
@@ -213,14 +213,14 @@ LABEL_9:
       v29 = 0;
     }
 
-    if ([v32 length])
+    if ([offlineCohortId length])
     {
       v15 = +[GEOOfflineStateManager shared];
-      [v15 setState:objc_msgSend(v31 forCohortId:{"state"), v32}];
+      [v15 setState:objc_msgSend(requestCopy forCohortId:{"state"), offlineCohortId}];
 
       [v30 send];
-      v28 = [v31 peer];
-      v16 = v32;
+      peer3 = [requestCopy peer];
+      v16 = offlineCohortId;
       if (self)
       {
         v45 = 0;
@@ -234,10 +234,10 @@ LABEL_9:
         v38 = 3221225472;
         v39 = sub_10001DD74;
         v40 = &unk_1000826F8;
-        v41 = self;
+        selfCopy = self;
         v27 = v16;
         v42 = v16;
-        v43 = v28;
+        v43 = peer3;
         v44 = &v45;
         geo_isolate_sync_data();
         v35 = 0u;
@@ -271,8 +271,8 @@ LABEL_9:
                   v54 = &unk_1000838C8;
                   v55 = v22;
                   geo_isolate_sync_data();
-                  v25 = [v23 connection];
-                  [v25 initiateBarrierIfNecessary:0 delegate:v22];
+                  connection = [v23 connection];
+                  [connection initiateBarrierIfNecessary:0 delegate:v22];
                 }
               }
             }
@@ -310,14 +310,14 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)subscribeWithRequest:(id)a3
+- (void)subscribeWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 preferredAuditToken];
-  v6 = [v5 offlineCohortId];
+  requestCopy = request;
+  preferredAuditToken = [requestCopy preferredAuditToken];
+  offlineCohortId = [preferredAuditToken offlineCohortId];
 
-  v7 = [[GEOOfflineServiceStateSubscribeReply alloc] initWithRequest:v4];
-  if ([v6 length])
+  v7 = [[GEOOfflineServiceStateSubscribeReply alloc] initWithRequest:requestCopy];
+  if ([offlineCohortId length])
   {
     v62 = 0;
     v63 = &v62;
@@ -335,12 +335,12 @@ LABEL_28:
     v53 = sub_10001CBB4;
     v54 = sub_10001CBC4;
     v55 = 0;
-    if (![v4 subscribe])
+    if (![requestCopy subscribe])
     {
       [v7 setSubscribed:0];
       peersIsolater = self->_peersIsolater;
-      v14 = v6;
-      v42 = v4;
+      v14 = offlineCohortId;
+      v42 = requestCopy;
       geo_isolate_sync_data();
       *(v63 + 24) = v57[5] != 0;
       v15 = GEOGetOfflineServiceLog();
@@ -360,7 +360,7 @@ LABEL_28:
       goto LABEL_32;
     }
 
-    v8 = [v4 peer];
+    peer = [requestCopy peer];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v44 = sub_10001EA8C;
@@ -369,8 +369,8 @@ LABEL_28:
     v47 = &v62;
     v48 = &v56;
     v49 = &v50;
-    v9 = v8;
-    v10 = v6;
+    v9 = peer;
+    v10 = offlineCohortId;
     v11 = v43;
     if (!self)
     {
@@ -412,7 +412,7 @@ LABEL_32:
       *(&v96 + 1) = &v96;
       v97 = 0x3032000000;
       v98 = sub_10001CBB4;
-      v99 = sub_10001CBC4;
+      selfCopy3 = sub_10001CBC4;
       v100 = 0;
       v20 = self->_peersIsolater;
       *buf = _NSConcreteStackBlock;
@@ -420,7 +420,7 @@ LABEL_32:
       *&buf[16] = sub_10001F7C4;
       v104 = &unk_1000826F8;
       v108 = &v96;
-      v105 = self;
+      selfCopy2 = self;
       v106 = 0;
       v21 = v19;
       v107 = v21;
@@ -436,7 +436,7 @@ LABEL_32:
     *&buf[8] = 3221225472;
     *&buf[16] = sub_10001EDC4;
     v104 = &unk_1000826F8;
-    v105 = self;
+    selfCopy2 = self;
     v106 = v10;
     v108 = &v86;
     v24 = v9;
@@ -479,7 +479,7 @@ LABEL_21:
     *(&v96 + 1) = 3221225472;
     v97 = sub_10001EEC4;
     v98 = &unk_1000826F8;
-    v99 = self;
+    selfCopy3 = self;
     v28 = v10;
     v100 = v28;
     v102 = &v80;
@@ -506,7 +506,7 @@ LABEL_21:
       v67 = 3221225472;
       v68 = sub_10001F034;
       v69 = &unk_100083990;
-      v70 = self;
+      selfCopy5 = self;
       v33 = v28;
       v71 = v33;
       v72 = &v74;
@@ -544,7 +544,7 @@ LABEL_21:
       v67 = 3221225472;
       v68 = sub_10001F0D8;
       v69 = &unk_100083990;
-      v70 = self;
+      selfCopy5 = self;
       v38 = v28;
       v71 = v38;
       v72 = &v74;
@@ -581,23 +581,23 @@ LABEL_21:
 LABEL_33:
 }
 
-- (void)fetchStateWithRequest:(id)a3
+- (void)fetchStateWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 preferredAuditToken];
-  v6 = [v5 offlineCohortId];
+  requestCopy = request;
+  preferredAuditToken = [requestCopy preferredAuditToken];
+  offlineCohortId = [preferredAuditToken offlineCohortId];
 
-  v7 = [[GEOOfflineServiceStateFetchStateReply alloc] initWithRequest:v4];
-  if ([v6 length])
+  v7 = [[GEOOfflineServiceStateFetchStateReply alloc] initWithRequest:requestCopy];
+  if ([offlineCohortId length])
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
     peersIsolater = self->_peersIsolater;
-    v13 = self;
-    v9 = v6;
-    v15 = v4;
+    selfCopy = self;
+    v9 = offlineCohortId;
+    v15 = requestCopy;
     geo_isolate_sync_data();
     if (*(v18 + 24) == 1)
     {
@@ -607,7 +607,7 @@ LABEL_33:
 
     else
     {
-      [v7 setCurrentSuggestedState:{0, _NSConcreteStackBlock, 3221225472, sub_10001FA18, &unk_1000826F8, v13, v9, v15, &v17}];
+      [v7 setCurrentSuggestedState:{0, _NSConcreteStackBlock, 3221225472, sub_10001FA18, &unk_1000826F8, selfCopy, v9, v15, &v17}];
     }
 
     v12 = +[GEOOfflineStateManager shared];
@@ -636,11 +636,11 @@ LABEL_33:
   [(GEOOfflineStateServer *)&v4 dealloc];
 }
 
-- (GEOOfflineStateServer)initWithDaemon:(id)a3
+- (GEOOfflineStateServer)initWithDaemon:(id)daemon
 {
   v10.receiver = self;
   v10.super_class = GEOOfflineStateServer;
-  v3 = [(GEOOfflineStateServer *)&v10 initWithDaemon:a3];
+  v3 = [(GEOOfflineStateServer *)&v10 initWithDaemon:daemon];
   if (v3)
   {
     v4 = geo_isolater_create();

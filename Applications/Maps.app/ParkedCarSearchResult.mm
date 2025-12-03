@@ -1,20 +1,20 @@
 @interface ParkedCarSearchResult
-- (ParkedCarSearchResult)initWithParkedCar:(id)a3;
+- (ParkedCarSearchResult)initWithParkedCar:(id)car;
 @end
 
 @implementation ParkedCarSearchResult
 
-- (ParkedCarSearchResult)initWithParkedCar:(id)a3
+- (ParkedCarSearchResult)initWithParkedCar:(id)car
 {
-  v5 = a3;
-  v6 = [v5 mapItem];
+  carCopy = car;
+  mapItem = [carCopy mapItem];
   v9.receiver = self;
   v9.super_class = ParkedCarSearchResult;
-  v7 = [(SearchResult *)&v9 initWithMapItem:v6];
+  v7 = [(SearchResult *)&v9 initWithMapItem:mapItem];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_parkedCar, a3);
+    objc_storeStrong(&v7->_parkedCar, car);
   }
 
   return v7;

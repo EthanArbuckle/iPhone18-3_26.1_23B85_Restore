@@ -1,12 +1,12 @@
 @interface __AISSetupController
 - (__AISSetupController)init;
-- (__AISSetupController)initWithQueue:(id)a3;
-- (void)setupWithContext:(id)a3 completionHandler:(id)a4;
+- (__AISSetupController)initWithQueue:(id)queue;
+- (void)setupWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation __AISSetupController
 
-- (__AISSetupController)initWithQueue:(id)a3
+- (__AISSetupController)initWithQueue:(id)queue
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E4B9B18, &qword_24076CB30);
   v5 = *(*(v4 - 8) + 64);
@@ -18,8 +18,8 @@
   v10 = *(v9 + 48);
   v11 = *(v9 + 52);
   swift_allocObject();
-  v12 = a3;
-  v13 = sub_2406A95B8(a3, v7, 0);
+  queueCopy = queue;
+  v13 = sub_2406A95B8(queue, v7, 0);
   v14 = type metadata accessor for __SetupController();
   v15 = objc_allocWithZone(v14);
   *&v15[OBJC_IVAR_____AISSetupController_setupController] = v13;
@@ -33,9 +33,9 @@
   return v16;
 }
 
-- (void)setupWithContext:(id)a3 completionHandler:(id)a4
+- (void)setupWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -48,9 +48,9 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_2406A7458(v8, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2406A7458(contextCopy, v6, v7);
   sub_24058CA60(v6);
 }
 

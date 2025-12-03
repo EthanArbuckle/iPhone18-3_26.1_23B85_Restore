@@ -1,24 +1,24 @@
 @interface _GCSystemButtonClientConnection
-- (_GCSystemButtonClientConnection)initWithConnection:(id)a3;
+- (_GCSystemButtonClientConnection)initWithConnection:(id)connection;
 - (_GCSystemButtonServerInterface)exportedObject;
-- (void)setExportedObject:(id)a3;
+- (void)setExportedObject:(id)object;
 @end
 
 @implementation _GCSystemButtonClientConnection
 
-- (_GCSystemButtonClientConnection)initWithConnection:(id)a3
+- (_GCSystemButtonClientConnection)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = _GCSystemButtonClientConnection;
-  v5 = [(GCIPCRemoteIncomingConnection *)&v9 initWithConnection:v4];
+  v5 = [(GCIPCRemoteIncomingConnection *)&v9 initWithConnection:connectionCopy];
   if (v5)
   {
     v6 = _GCSystemButtonServerInterface();
-    [v4 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
     v7 = _GCSystemButtonClientInterface();
-    [v4 setRemoteObjectInterface:v7];
+    [connectionCopy setRemoteObjectInterface:v7];
   }
 
   return v5;
@@ -26,17 +26,17 @@
 
 - (_GCSystemButtonServerInterface)exportedObject
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 exportedObject];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  exportedObject = [connection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  [v5 setExportedObject:v4];
+  objectCopy = object;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  [connection setExportedObject:objectCopy];
 }
 
 @end

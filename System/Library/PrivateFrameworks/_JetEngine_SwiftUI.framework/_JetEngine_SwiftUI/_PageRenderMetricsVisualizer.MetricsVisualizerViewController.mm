@@ -1,12 +1,12 @@
 @interface _PageRenderMetricsVisualizer.MetricsVisualizerViewController
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithCoder:(id)a3;
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithCoder:(id)coder;
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation _PageRenderMetricsVisualizer.MetricsVisualizerViewController
 
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithCoder:(id)a3
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithCoder:(id)coder
 {
   sub_1B7A9A760();
   sub_1B7A9A750();
@@ -33,11 +33,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1B7A236EC();
 }
 
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer31MetricsVisualizerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_1B7A9A760();
   sub_1B7A9A750();

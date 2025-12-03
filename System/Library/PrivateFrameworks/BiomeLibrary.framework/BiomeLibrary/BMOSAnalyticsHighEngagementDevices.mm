@@ -1,38 +1,38 @@
 @interface BMOSAnalyticsHighEngagementDevices
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOSAnalyticsHighEngagementDevices)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMOSAnalyticsHighEngagementDevices)initWithTopCategory1:(id)a3 topCategory2:(id)a4 topCategory3:(id)a5 highEngagementCategory1:(id)a6 highEngagementCategory2:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMOSAnalyticsHighEngagementDevices)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMOSAnalyticsHighEngagementDevices)initWithTopCategory1:(id)category1 topCategory2:(id)category2 topCategory3:(id)category3 highEngagementCategory1:(id)engagementCategory1 highEngagementCategory2:(id)engagementCategory2;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOSAnalyticsHighEngagementDevices
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
-    v7 = [v5 topCategory1];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    topCategory1 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
+    topCategory12 = [v5 topCategory1];
+    v8 = topCategory12;
+    if (topCategory1 == topCategory12)
     {
     }
 
     else
     {
-      v9 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
-      v10 = [v5 topCategory1];
-      v11 = [v9 isEqual:v10];
+      topCategory13 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
+      topCategory14 = [v5 topCategory1];
+      v11 = [topCategory13 isEqual:topCategory14];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
-    v14 = [v5 topCategory2];
-    v15 = v14;
-    if (v13 == v14)
+    topCategory2 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
+    topCategory22 = [v5 topCategory2];
+    v15 = topCategory22;
+    if (topCategory2 == topCategory22)
     {
     }
 
     else
     {
-      v16 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
-      v17 = [v5 topCategory2];
-      v18 = [v16 isEqual:v17];
+      topCategory23 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
+      topCategory24 = [v5 topCategory2];
+      v18 = [topCategory23 isEqual:topCategory24];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
-    v20 = [v5 topCategory3];
-    v21 = v20;
-    if (v19 == v20)
+    topCategory3 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
+    topCategory32 = [v5 topCategory3];
+    v21 = topCategory32;
+    if (topCategory3 == topCategory32)
     {
     }
 
     else
     {
-      v22 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
-      v23 = [v5 topCategory3];
-      v24 = [v22 isEqual:v23];
+      topCategory33 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
+      topCategory34 = [v5 topCategory3];
+      v24 = [topCategory33 isEqual:topCategory34];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
-    v26 = [v5 highEngagementCategory1];
-    v27 = v26;
-    if (v25 == v26)
+    highEngagementCategory1 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
+    highEngagementCategory12 = [v5 highEngagementCategory1];
+    v27 = highEngagementCategory12;
+    if (highEngagementCategory1 == highEngagementCategory12)
     {
     }
 
     else
     {
-      v28 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
-      v29 = [v5 highEngagementCategory1];
-      v30 = [v28 isEqual:v29];
+      highEngagementCategory13 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
+      highEngagementCategory14 = [v5 highEngagementCategory1];
+      v30 = [highEngagementCategory13 isEqual:highEngagementCategory14];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
-    v32 = [v5 highEngagementCategory2];
-    if (v31 == v32)
+    highEngagementCategory2 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
+    highEngagementCategory22 = [v5 highEngagementCategory2];
+    if (highEngagementCategory2 == highEngagementCategory22)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
-      v34 = [v5 highEngagementCategory2];
-      v12 = [v33 isEqual:v34];
+      highEngagementCategory23 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
+      highEngagementCategory24 = [v5 highEngagementCategory2];
+      v12 = [highEngagementCategory23 isEqual:highEngagementCategory24];
     }
 
     goto LABEL_23;
@@ -127,56 +127,56 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
-  v4 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
-  v5 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
-  v6 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
-  v7 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
+  topCategory1 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
+  topCategory2 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
+  topCategory3 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
+  highEngagementCategory1 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
+  highEngagementCategory2 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
   v18 = @"topCategory1";
-  v8 = v3;
-  if (!v3)
+  null = topCategory1;
+  if (!topCategory1)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"topCategory2";
-  v9 = v4;
-  if (!v4)
+  null2 = topCategory2;
+  if (!topCategory2)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"topCategory3";
-  v10 = v5;
-  if (!v5)
+  null3 = topCategory3;
+  if (!topCategory3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"highEngagementCategory1";
-  v11 = v6;
-  if (!v6)
+  null4 = highEngagementCategory1;
+  if (!highEngagementCategory1)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"highEngagementCategory2";
-  v12 = v7;
-  if (!v7)
+  null5 = highEngagementCategory2;
+  if (!highEngagementCategory2)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (highEngagementCategory2)
   {
-    if (v6)
+    if (highEngagementCategory1)
     {
       goto LABEL_13;
     }
@@ -185,10 +185,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (highEngagementCategory1)
     {
 LABEL_13:
-      if (v5)
+      if (topCategory3)
       {
         goto LABEL_14;
       }
@@ -197,17 +197,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (topCategory3)
   {
 LABEL_14:
-    if (v4)
+    if (topCategory2)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (topCategory1)
     {
       goto LABEL_16;
     }
@@ -217,13 +217,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!topCategory2)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (topCategory1)
   {
     goto LABEL_16;
   }
@@ -236,29 +236,29 @@ LABEL_16:
   return v13;
 }
 
-- (BMOSAnalyticsHighEngagementDevices)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOSAnalyticsHighEngagementDevices)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"topCategory1"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"topCategory1"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"topCategory2"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"topCategory2"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v38 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v32 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v45 = *MEMORY[0x1E696A578];
@@ -267,7 +267,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         v38 = 0;
         v16 = 0;
-        *v32 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -279,22 +279,22 @@ LABEL_4:
       v38 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"topCategory3"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"topCategory3"];
     v35 = v8;
-    v37 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v36 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v43 = *MEMORY[0x1E696A578];
@@ -303,10 +303,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
         v36 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v37;
+        self = selfCopy;
         v8 = v35;
 LABEL_19:
 
@@ -321,14 +321,14 @@ LABEL_19:
       v36 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"highEngagementCategory1"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"highEngagementCategory1"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -344,7 +344,7 @@ LABEL_19:
         v28 = [v33 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v12 = v28;
+        *errorCopy3 = v28;
         goto LABEL_17;
       }
 
@@ -356,13 +356,13 @@ LABEL_19:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"highEngagementCategory2"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"highEngagementCategory2"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v12)
+        if (errorCopy3)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -370,7 +370,7 @@ LABEL_19:
           v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"highEngagementCategory2"];
           v40 = v29;
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-          *v12 = [v34 initWithDomain:v31 code:2 userInfo:v30];
+          *errorCopy3 = [v34 initWithDomain:v31 code:2 userInfo:v30];
         }
 
         v15 = 0;
@@ -386,8 +386,8 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [(BMOSAnalyticsHighEngagementDevices *)v37 initWithTopCategory1:v35 topCategory2:v38 topCategory3:v36 highEngagementCategory1:v13 highEngagementCategory2:v15];
-    v37 = v16;
+    v16 = [(BMOSAnalyticsHighEngagementDevices *)selfCopy initWithTopCategory1:v35 topCategory2:v38 topCategory3:v36 highEngagementCategory1:v13 highEngagementCategory2:v15];
+    selfCopy = v16;
 LABEL_17:
 
     goto LABEL_18;
@@ -400,14 +400,14 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy4 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v47 = *MEMORY[0x1E696A578];
@@ -416,7 +416,7 @@ LABEL_17:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy4 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -428,49 +428,49 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMOSAnalyticsHighEngagementDevices *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_topCategory1)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_topCategory2)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_topCategory3)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highEngagementCategory1)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highEngagementCategory2)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMOSAnalyticsHighEngagementDevices;
   v5 = [(BMEventBase *)&v23 init];
@@ -479,12 +479,12 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -495,18 +495,18 @@ LABEL_21:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -523,9 +523,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -548,13 +548,13 @@ LABEL_16:
         *(&v5->super.super.isa + v18) = v17;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v21 = 0;
@@ -572,34 +572,34 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
-  v5 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
-  v6 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
-  v7 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
-  v8 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
-  v9 = [v3 initWithFormat:@"BMOSAnalyticsHighEngagementDevices with topCategory1: %@, topCategory2: %@, topCategory3: %@, highEngagementCategory1: %@, highEngagementCategory2: %@", v4, v5, v6, v7, v8];
+  topCategory1 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory1];
+  topCategory2 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory2];
+  topCategory3 = [(BMOSAnalyticsHighEngagementDevices *)self topCategory3];
+  highEngagementCategory1 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory1];
+  highEngagementCategory2 = [(BMOSAnalyticsHighEngagementDevices *)self highEngagementCategory2];
+  v9 = [v3 initWithFormat:@"BMOSAnalyticsHighEngagementDevices with topCategory1: %@, topCategory2: %@, topCategory3: %@, highEngagementCategory1: %@, highEngagementCategory2: %@", topCategory1, topCategory2, topCategory3, highEngagementCategory1, highEngagementCategory2];
 
   return v9;
 }
 
-- (BMOSAnalyticsHighEngagementDevices)initWithTopCategory1:(id)a3 topCategory2:(id)a4 topCategory3:(id)a5 highEngagementCategory1:(id)a6 highEngagementCategory2:(id)a7
+- (BMOSAnalyticsHighEngagementDevices)initWithTopCategory1:(id)category1 topCategory2:(id)category2 topCategory3:(id)category3 highEngagementCategory1:(id)engagementCategory1 highEngagementCategory2:(id)engagementCategory2
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  category1Copy = category1;
+  category2Copy = category2;
+  category3Copy = category3;
+  engagementCategory1Copy = engagementCategory1;
+  engagementCategory2Copy = engagementCategory2;
   v20.receiver = self;
   v20.super_class = BMOSAnalyticsHighEngagementDevices;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_topCategory1, a3);
-    objc_storeStrong(&v17->_topCategory2, a4);
-    objc_storeStrong(&v17->_topCategory3, a5);
-    objc_storeStrong(&v17->_highEngagementCategory1, a6);
-    objc_storeStrong(&v17->_highEngagementCategory2, a7);
+    objc_storeStrong(&v17->_topCategory1, category1);
+    objc_storeStrong(&v17->_topCategory2, category2);
+    objc_storeStrong(&v17->_topCategory3, category3);
+    objc_storeStrong(&v17->_highEngagementCategory1, engagementCategory1);
+    objc_storeStrong(&v17->_highEngagementCategory2, engagementCategory2);
   }
 
   return v17;
@@ -644,9 +644,9 @@ LABEL_24:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -654,8 +654,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOSAnalyticsHighEngagementDevices alloc] initByReadFrom:v7];
     v4 = v8;

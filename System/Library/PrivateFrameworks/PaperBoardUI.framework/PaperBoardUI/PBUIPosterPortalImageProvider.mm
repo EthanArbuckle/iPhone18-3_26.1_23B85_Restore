@@ -1,19 +1,19 @@
 @interface PBUIPosterPortalImageProvider
-- (PBUIPosterPortalImageProvider)initWithRootObject:(id)a3;
+- (PBUIPosterPortalImageProvider)initWithRootObject:(id)object;
 @end
 
 @implementation PBUIPosterPortalImageProvider
 
-- (PBUIPosterPortalImageProvider)initWithRootObject:(id)a3
+- (PBUIPosterPortalImageProvider)initWithRootObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = PBUIPosterPortalImageProvider;
   v6 = [(PBUIPosterPortalImageProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootObject, a3);
+    objc_storeStrong(&v6->_rootObject, object);
   }
 
   return v7;

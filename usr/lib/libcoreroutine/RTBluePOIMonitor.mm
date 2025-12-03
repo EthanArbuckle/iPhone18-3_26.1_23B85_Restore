@@ -1,41 +1,41 @@
 @interface RTBluePOIMonitor
-- (BOOL)isSignificantConfidenceUpdateFromConfidence:(double)a3 toConfidence:(double)a4;
-- (BOOL)shouldPostUpdateOnPOIEstimate:(id)a3 fromPOIEstimate:(id)a4;
-- (BOOL)shouldRefreshAOIAtLocation:(id)a3;
-- (RTBluePOIMonitor)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitorEnabler:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 fingerprintManager:(id)a8 locationManager:(id)a9 mapItemManager:(id)a10 mapServiceManager:(id)a11 platform:(id)a12 wifiManager:(id)a13;
-- (id)_fetchLocalMapItemsFromReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 skipAggregation:(BOOL)a7 collectMetrics:(BOOL)a8 error:(id *)a9;
-- (id)fetchLocalMapItemsFromReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 skipAggregation:(BOOL)a7 collectMetrics:(BOOL)a8 error:(id *)a9;
-- (id)localBluePOIResultForReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 tileRequestPriority:(unint64_t)a7 collectMetrics:(BOOL)a8 error:(id *)a9;
+- (BOOL)isSignificantConfidenceUpdateFromConfidence:(double)confidence toConfidence:(double)toConfidence;
+- (BOOL)shouldPostUpdateOnPOIEstimate:(id)estimate fromPOIEstimate:(id)iEstimate;
+- (BOOL)shouldRefreshAOIAtLocation:(id)location;
+- (RTBluePOIMonitor)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitorEnabler:(id)enabler bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator fingerprintManager:(id)fingerprintManager locationManager:(id)locationManager mapItemManager:(id)self0 mapServiceManager:(id)self1 platform:(id)self2 wifiManager:(id)self3;
+- (id)_fetchLocalMapItemsFromReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env skipAggregation:(BOOL)aggregation collectMetrics:(BOOL)metrics error:(id *)error;
+- (id)fetchLocalMapItemsFromReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env skipAggregation:(BOOL)aggregation collectMetrics:(BOOL)metrics error:(id *)error;
+- (id)localBluePOIResultForReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env tileRequestPriority:(unint64_t)priority collectMetrics:(BOOL)metrics error:(id *)error;
 - (void)_processScanResultBuffer;
-- (void)_processWifiScanResults:(id)a3;
-- (void)_updateLocalMapItemsFromReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 error:(id *)a7;
-- (void)logLocalBluePOIResult:(id)a3 aggregatedPOIEstimate:(id)a4;
-- (void)onLeechWifiScanResultsNotification:(id)a3;
+- (void)_processWifiScanResults:(id)results;
+- (void)_updateLocalMapItemsFromReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env error:(id *)error;
+- (void)logLocalBluePOIResult:(id)result aggregatedPOIEstimate:(id)estimate;
+- (void)onLeechWifiScanResultsNotification:(id)notification;
 @end
 
 @implementation RTBluePOIMonitor
 
-- (RTBluePOIMonitor)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitorEnabler:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 fingerprintManager:(id)a8 locationManager:(id)a9 mapItemManager:(id)a10 mapServiceManager:(id)a11 platform:(id)a12 wifiManager:(id)a13
+- (RTBluePOIMonitor)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitorEnabler:(id)enabler bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator fingerprintManager:(id)fingerprintManager locationManager:(id)locationManager mapItemManager:(id)self0 mapServiceManager:(id)self1 platform:(id)self2 wifiManager:(id)self3
 {
-  v18 = a3;
-  v53 = a4;
-  v19 = a4;
-  v54 = a5;
-  v58 = a5;
-  v60 = a6;
-  v55 = a7;
-  v59 = a7;
-  v56 = a8;
-  v63 = a8;
-  v64 = a9;
-  v67 = a10;
-  v66 = a11;
-  v65 = a12;
-  v20 = a13;
-  v62 = v20;
-  if (!v18)
+  managerCopy = manager;
+  metricManagerCopy = metricManager;
+  metricManagerCopy2 = metricManager;
+  enablerCopy = enabler;
+  enablerCopy2 = enabler;
+  tileManagerCopy = tileManager;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  fingerprintManagerCopy = fingerprintManager;
+  fingerprintManagerCopy2 = fingerprintManager;
+  locationManagerCopy = locationManager;
+  itemManagerCopy = itemManager;
+  serviceManagerCopy = serviceManager;
+  platformCopy = platform;
+  wifiManagerCopy = wifiManager;
+  v62 = wifiManagerCopy;
+  if (!managerCopy)
   {
-    v21 = v19;
+    v21 = metricManagerCopy2;
     v46 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
@@ -44,15 +44,15 @@
     }
 
     v45 = 0;
-    v44 = self;
+    selfCopy3 = self;
     goto LABEL_25;
   }
 
-  v21 = v19;
-  if (!v19)
+  v21 = metricManagerCopy2;
+  if (!metricManagerCopy2)
   {
     v47 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v44 = self;
+    selfCopy3 = self;
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -61,21 +61,21 @@
 
     v45 = 0;
 LABEL_25:
-    v22 = v58;
-    v24 = v59;
-    v23 = v60;
-    v26 = v63;
-    v25 = v64;
+    v22 = enablerCopy2;
+    v24 = calculatorCopy2;
+    v23 = tileManagerCopy;
+    v26 = fingerprintManagerCopy2;
+    v25 = locationManagerCopy;
     goto LABEL_48;
   }
 
-  v22 = v58;
-  if (!v58)
+  v22 = enablerCopy2;
+  if (!enablerCopy2)
   {
     v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v24 = v59;
-    v23 = v60;
-    v25 = v64;
+    v24 = calculatorCopy2;
+    v23 = tileManagerCopy;
+    v25 = locationManagerCopy;
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -83,17 +83,17 @@ LABEL_25:
     }
 
     v45 = 0;
-    v26 = v63;
+    v26 = fingerprintManagerCopy2;
     goto LABEL_47;
   }
 
-  v24 = v59;
-  v23 = v60;
-  v25 = v64;
-  if (!v60)
+  v24 = calculatorCopy2;
+  v23 = tileManagerCopy;
+  v25 = locationManagerCopy;
+  if (!tileManagerCopy)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v26 = v63;
+    v26 = fingerprintManagerCopy2;
     if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_46;
@@ -106,8 +106,8 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v26 = v63;
-  if (!v59)
+  v26 = fingerprintManagerCopy2;
+  if (!calculatorCopy2)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -120,7 +120,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (!v63)
+  if (!fingerprintManagerCopy2)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -133,7 +133,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (!v64)
+  if (!locationManagerCopy)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -146,7 +146,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (!v67)
+  if (!itemManagerCopy)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -159,7 +159,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (!v66)
+  if (!serviceManagerCopy)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -172,7 +172,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (!v65)
+  if (!platformCopy)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -185,7 +185,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (!v20)
+  if (!wifiManagerCopy)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -199,7 +199,7 @@ LABEL_46:
 
     v45 = 0;
 LABEL_47:
-    v44 = self;
+    selfCopy3 = self;
     goto LABEL_48;
   }
 
@@ -210,25 +210,25 @@ LABEL_47:
   if (!v27)
   {
 LABEL_18:
-    v44 = v28;
-    v45 = v44;
+    selfCopy3 = v28;
+    v45 = selfCopy3;
     goto LABEL_48;
   }
 
-  objc_storeStrong(&v27->_defaultsManager, a3);
+  objc_storeStrong(&v27->_defaultsManager, manager);
   v28->_aoiRefreshBackoffInterval = 5.0;
-  v29 = [[RTBluePOIAggregator alloc] initWithBluePOIMetricManager:v21 defaultsManager:v18 distanceCalculator:v59 platform:v65];
+  v29 = [[RTBluePOIAggregator alloc] initWithBluePOIMetricManager:v21 defaultsManager:managerCopy distanceCalculator:calculatorCopy2 platform:platformCopy];
   bluePOIAggregator = v28->_bluePOIAggregator;
   v28->_bluePOIAggregator = v29;
 
   if (v28->_bluePOIAggregator)
   {
-    objc_storeStrong(&v28->_bluePOIMetricManager, v53);
-    objc_storeStrong(&v28->_bluePOIMonitorEnabler, v54);
-    objc_storeStrong(&v28->_bluePOITileManager, a6);
-    objc_storeStrong(&v28->_distanceCalculator, v55);
+    objc_storeStrong(&v28->_bluePOIMetricManager, metricManagerCopy);
+    objc_storeStrong(&v28->_bluePOIMonitorEnabler, enablerCopy);
+    objc_storeStrong(&v28->_bluePOITileManager, tileManager);
+    objc_storeStrong(&v28->_distanceCalculator, calculatorCopy);
     v28->_distanceToRefreshAOI = 0.0;
-    objc_storeStrong(&v28->_fingerprintManager, v56);
+    objc_storeStrong(&v28->_fingerprintManager, fingerprintManagerCopy);
     lastAOIRefreshResult = v28->_lastAOIRefreshResult;
     v28->_lastAOIRefreshResult = 0;
 
@@ -238,26 +238,26 @@ LABEL_18:
     lastPostedBluePOIEstimate = v28->_lastPostedBluePOIEstimate;
     v28->_lastPostedBluePOIEstimate = 0;
 
-    objc_storeStrong(&v28->_locationManager, a9);
-    objc_storeStrong(&v28->_mapItemManager, a10);
-    objc_storeStrong(&v28->_mapServiceManager, a11);
+    objc_storeStrong(&v28->_locationManager, locationManager);
+    objc_storeStrong(&v28->_mapItemManager, itemManager);
+    objc_storeStrong(&v28->_mapServiceManager, serviceManager);
     nextAOIRefreshDate = v28->_nextAOIRefreshDate;
     v28->_nextAOIRefreshDate = 0;
 
-    objc_storeStrong(&v28->_platform, a12);
+    objc_storeStrong(&v28->_platform, platform);
     v35 = objc_opt_new();
     scanResultBuffer = v28->_scanResultBuffer;
     v28->_scanResultBuffer = v35;
 
     v37 = v28;
-    objc_storeStrong(&v28->_wifiManager, a13);
+    objc_storeStrong(&v28->_wifiManager, wifiManager);
     wifiManager = v28->_wifiManager;
     v39 = +[(RTNotification *)RTWiFiManagerNotificationLeechScanResults];
-    v40 = wifiManager;
+    wifiManagerCopy2 = wifiManager;
     v28 = v37;
     v41 = v37;
-    v25 = v64;
-    [(RTNotifier *)v40 addObserver:v41 selector:sel_onLeechWifiScanResultsNotification_ name:v39];
+    v25 = locationManagerCopy;
+    [(RTNotifier *)wifiManagerCopy2 addObserver:v41 selector:sel_onLeechWifiScanResultsNotification_ name:v39];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -275,7 +275,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v44 = v28;
+  selfCopy3 = v28;
   v52 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
   {
@@ -289,12 +289,12 @@ LABEL_48:
   return v45;
 }
 
-- (void)onLeechWifiScanResultsNotification:(id)a3
+- (void)onLeechWifiScanResultsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTBluePOIMonitorEnabler *)self->_bluePOIMonitorEnabler enabled];
+  notificationCopy = notification;
+  enabled = [(RTBluePOIMonitorEnabler *)self->_bluePOIMonitorEnabler enabled];
   v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (enabled)
   {
     if (v6)
     {
@@ -306,14 +306,14 @@ LABEL_48:
       }
     }
 
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __55__RTBluePOIMonitor_onLeechWifiScanResultsNotification___block_invoke;
     v10[3] = &unk_2788C4A70;
-    v11 = v4;
-    v12 = self;
-    dispatch_async(v8, v10);
+    v11 = notificationCopy;
+    selfCopy = self;
+    dispatch_async(queue, v10);
 
     v9 = v11;
 LABEL_10:
@@ -354,66 +354,66 @@ uint64_t __55__RTBluePOIMonitor_onLeechWifiScanResultsNotification___block_invok
   return result;
 }
 
-- (void)_processWifiScanResults:(id)a3
+- (void)_processWifiScanResults:(id)results
 {
-  v4 = a3;
-  v5 = [(RTBluePOIMonitor *)self lastInferredScanResultDate];
-  v6 = [v4 firstObject];
-  v7 = [v6 date];
-  [v5 timeIntervalSinceDate:v7];
+  resultsCopy = results;
+  lastInferredScanResultDate = [(RTBluePOIMonitor *)self lastInferredScanResultDate];
+  firstObject = [resultsCopy firstObject];
+  date = [firstObject date];
+  [lastInferredScanResultDate timeIntervalSinceDate:date];
   v9 = v8;
 
   if (v9 <= 0.0)
   {
-    v11 = [(RTBluePOIMonitor *)self scanResultBuffer];
-    v12 = [v11 count];
+    scanResultBuffer = [(RTBluePOIMonitor *)self scanResultBuffer];
+    v12 = [scanResultBuffer count];
 
-    v13 = [(RTBluePOIMonitor *)self scanResultBuffer];
-    v14 = v13;
+    scanResultBuffer2 = [(RTBluePOIMonitor *)self scanResultBuffer];
+    v14 = scanResultBuffer2;
     if (v12)
     {
-      v15 = [v13 firstObject];
-      v16 = [v15 date];
+      firstObject2 = [scanResultBuffer2 firstObject];
+      date2 = [firstObject2 date];
 
-      v17 = [v4 firstObject];
-      v18 = [v17 date];
+      firstObject3 = [resultsCopy firstObject];
+      date3 = [firstObject3 date];
 
-      [v18 timeIntervalSinceDate:v16];
+      [date3 timeIntervalSinceDate:date2];
       if (v19 >= 5.0)
       {
         [(RTBluePOIMonitor *)self _processScanResultBuffer];
-        v23 = [(RTBluePOIMonitor *)self scanResultBuffer];
-        [v23 addObjectsFromArray:v4];
+        scanResultBuffer3 = [(RTBluePOIMonitor *)self scanResultBuffer];
+        [scanResultBuffer3 addObjectsFromArray:resultsCopy];
 
         v24 = dispatch_time(0, 5000000000);
-        v25 = [(RTNotifier *)self queue];
+        queue = [(RTNotifier *)self queue];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __44__RTBluePOIMonitor__processWifiScanResults___block_invoke_2;
         v26[3] = &unk_2788C4EA0;
         v26[4] = self;
-        dispatch_after(v24, v25, v26);
+        dispatch_after(v24, queue, v26);
       }
 
       else
       {
-        v20 = [(RTBluePOIMonitor *)self scanResultBuffer];
-        [v20 addObjectsFromArray:v4];
+        scanResultBuffer4 = [(RTBluePOIMonitor *)self scanResultBuffer];
+        [scanResultBuffer4 addObjectsFromArray:resultsCopy];
       }
     }
 
     else
     {
-      [v13 addObjectsFromArray:v4];
+      [scanResultBuffer2 addObjectsFromArray:resultsCopy];
 
       v21 = dispatch_time(0, 5000000000);
-      v22 = [(RTNotifier *)self queue];
+      queue2 = [(RTNotifier *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __44__RTBluePOIMonitor__processWifiScanResults___block_invoke;
       block[3] = &unk_2788C4EA0;
       block[4] = self;
-      dispatch_after(v21, v22, block);
+      dispatch_after(v21, queue2, block);
     }
   }
 
@@ -430,22 +430,22 @@ uint64_t __55__RTBluePOIMonitor_onLeechWifiScanResultsNotification___block_invok
 
 - (void)_processScanResultBuffer
 {
-  v3 = [(RTBluePOIMonitor *)self scanResultBuffer];
-  v4 = [v3 count];
+  scanResultBuffer = [(RTBluePOIMonitor *)self scanResultBuffer];
+  v4 = [scanResultBuffer count];
 
   if (v4)
   {
-    v5 = [(RTBluePOIMonitor *)self scanResultBuffer];
-    v6 = [v5 copy];
+    scanResultBuffer2 = [(RTBluePOIMonitor *)self scanResultBuffer];
+    v6 = [scanResultBuffer2 copy];
 
-    v7 = [(RTBluePOIMonitor *)self scanResultBuffer];
-    [v7 removeAllObjects];
+    scanResultBuffer3 = [(RTBluePOIMonitor *)self scanResultBuffer];
+    [scanResultBuffer3 removeAllObjects];
 
-    v8 = [v6 firstObject];
-    v9 = [v8 date];
+    firstObject = [v6 firstObject];
+    date = [firstObject date];
 
-    v10 = [(RTBluePOIMonitor *)self lastInferredScanResultDate];
-    [v10 timeIntervalSinceDate:v9];
+    lastInferredScanResultDate = [(RTBluePOIMonitor *)self lastInferredScanResultDate];
+    [lastInferredScanResultDate timeIntervalSinceDate:date];
     v12 = v11;
 
     if (v12 <= 0.0)
@@ -462,8 +462,8 @@ uint64_t __55__RTBluePOIMonitor_onLeechWifiScanResultsNotification___block_invok
       v20[3] = __Block_byref_object_copy__50;
       v20[4] = __Block_byref_object_dispose__50;
       v21 = 0;
-      v14 = [(RTBluePOIMonitor *)self locationManager];
-      v15 = [objc_alloc(MEMORY[0x277D01198]) initWithDate:v9];
+      locationManager = [(RTBluePOIMonitor *)self locationManager];
+      v15 = [objc_alloc(MEMORY[0x277D01198]) initWithDate:date];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __44__RTBluePOIMonitor__processScanResultBuffer__block_invoke;
@@ -472,7 +472,7 @@ uint64_t __55__RTBluePOIMonitor_onLeechWifiScanResultsNotification___block_invok
       v18 = v20;
       v19 = buf;
       v17 = v6;
-      [v14 fetchLocationsFromCoreLocationWithOptions:v15 handler:v16];
+      [locationManager fetchLocationsFromCoreLocationWithOptions:v15 handler:v16];
 
       _Block_object_dispose(v20, 8);
       _Block_object_dispose(buf, 8);
@@ -539,23 +539,23 @@ void __44__RTBluePOIMonitor__processScanResultBuffer__block_invoke_2(uint64_t a1
   }
 }
 
-- (BOOL)shouldRefreshAOIAtLocation:(id)a3
+- (BOOL)shouldRefreshAOIAtLocation:(id)location
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
-  if (v6)
+  locationCopy = location;
+  nextAOIRefreshDate = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
+  if (nextAOIRefreshDate)
   {
-    v7 = v6;
-    v8 = [v5 date];
-    v9 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
-    v10 = [v8 isOnOrAfter:v9];
+    v7 = nextAOIRefreshDate;
+    date = [locationCopy date];
+    nextAOIRefreshDate2 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
+    v10 = [date isOnOrAfter:nextAOIRefreshDate2];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [v5 date];
-      v12 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
-      [v11 timeIntervalSinceDate:v12];
+      date2 = [locationCopy date];
+      nextAOIRefreshDate3 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
+      [date2 timeIntervalSinceDate:nextAOIRefreshDate3];
       v14 = v13;
 
       if (v14 < 0.0)
@@ -572,19 +572,19 @@ void __44__RTBluePOIMonitor__processScanResultBuffer__block_invoke_2(uint64_t a1
           goto LABEL_26;
         }
 
-        v22 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+        referenceLocation = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
+        if (os_log_type_enabled(referenceLocation, OS_LOG_TYPE_INFO))
         {
           v44 = NSStringFromSelector(a2);
-          v45 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
-          v46 = [v5 date];
+          nextAOIRefreshDate4 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
+          date3 = [locationCopy date];
           *buf = 138412802;
           v49 = v44;
           v50 = 2112;
-          v51 = v45;
+          v51 = nextAOIRefreshDate4;
           v52 = 2112;
-          v53 = v46;
-          _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@, NO, nextAOIRefreshDate, %@, updatedLocationDate, %@", buf, 0x20u);
+          v53 = date3;
+          _os_log_impl(&dword_2304B3000, referenceLocation, OS_LOG_TYPE_INFO, "%@, NO, nextAOIRefreshDate, %@, updatedLocationDate, %@", buf, 0x20u);
         }
 
         v33 = 0;
@@ -597,37 +597,37 @@ void __44__RTBluePOIMonitor__processScanResultBuffer__block_invoke_2(uint64_t a1
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v17 = NSStringFromSelector(a2);
-          v18 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
-          v19 = [v5 date];
+          nextAOIRefreshDate5 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
+          date4 = [locationCopy date];
           *buf = 138412802;
           v49 = v17;
           v50 = 2112;
-          v51 = v18;
+          v51 = nextAOIRefreshDate5;
           v52 = 2112;
-          v53 = v19;
+          v53 = date4;
           _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@, resetting nextAOIRefreshDate, %@, updatedLocationDate, %@", buf, 0x20u);
         }
       }
 
-      v20 = [v5 date];
-      [(RTBluePOIMonitor *)self setNextAOIRefreshDate:v20];
+      date5 = [locationCopy date];
+      [(RTBluePOIMonitor *)self setNextAOIRefreshDate:date5];
     }
   }
 
-  v21 = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
-  v22 = [v21 referenceLocation];
+  lastAOIRefreshResult = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
+  referenceLocation = [lastAOIRefreshResult referenceLocation];
 
-  if (v22)
+  if (referenceLocation)
   {
-    v23 = [(RTBluePOIMonitor *)self distanceCalculator];
+    distanceCalculator = [(RTBluePOIMonitor *)self distanceCalculator];
     v47 = 0;
-    [v23 distanceFromLocation:v22 toLocation:v5 error:&v47];
+    [distanceCalculator distanceFromLocation:referenceLocation toLocation:locationCopy error:&v47];
     v25 = v24;
     v26 = v47;
 
-    [v22 horizontalUncertainty];
+    [referenceLocation horizontalUncertainty];
     v28 = v27;
-    [v5 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v30 = v25 + v29;
     if (v28 < v30)
     {
@@ -653,21 +653,21 @@ void __44__RTBluePOIMonitor__processScanResultBuffer__block_invoke_2(uint64_t a1
           v36 = @"YES";
         }
 
-        v37 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
-        v38 = [v5 date];
+        nextAOIRefreshDate6 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
+        date6 = [locationCopy date];
         [(RTBluePOIMonitor *)self distanceToRefreshAOI];
         *buf = 138414083;
         v49 = v35;
         v50 = 2112;
         v51 = v36;
         v52 = 2112;
-        v53 = v37;
+        v53 = nextAOIRefreshDate6;
         v54 = 2112;
-        v55 = v38;
+        v55 = date6;
         v56 = 2117;
-        v57 = v22;
+        v57 = referenceLocation;
         v58 = 2117;
-        v59 = v5;
+        v59 = locationCopy;
         v60 = 2048;
         v61 = v28;
         v62 = 2048;
@@ -682,7 +682,7 @@ void __44__RTBluePOIMonitor__processScanResultBuffer__block_invoke_2(uint64_t a1
     v33 = 1;
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v22 = 0;
+      referenceLocation = 0;
       goto LABEL_25;
     }
 
@@ -690,14 +690,14 @@ void __44__RTBluePOIMonitor__processScanResultBuffer__block_invoke_2(uint64_t a1
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v40 = NSStringFromSelector(a2);
-      v41 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
-      v42 = [v5 date];
+      nextAOIRefreshDate7 = [(RTBluePOIMonitor *)self nextAOIRefreshDate];
+      date7 = [locationCopy date];
       *buf = 138413059;
       v49 = v40;
       v50 = 2112;
-      v51 = v41;
+      v51 = nextAOIRefreshDate7;
       v52 = 2112;
-      v53 = v42;
+      v53 = date7;
       v54 = 2117;
       v55 = 0;
       _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "%@, YES, nextAOIRefreshDate, %@, updatedLocationDate, %@, lastAOIRefreshLocation, %{sensitive}@", buf, 0x2Au);
@@ -710,7 +710,7 @@ LABEL_26:
   return v33;
 }
 
-- (BOOL)isSignificantConfidenceUpdateFromConfidence:(double)a3 toConfidence:(double)a4
+- (BOOL)isSignificantConfidenceUpdateFromConfidence:(double)confidence toConfidence:(double)toConfidence
 {
   if ([&unk_2845A0C38 count] == 1)
   {
@@ -724,13 +724,13 @@ LABEL_26:
   {
     v9 = [&unk_2845A0C38 objectAtIndexedSubscript:v6];
     [v9 doubleValue];
-    if (v10 <= a3)
+    if (v10 <= confidence)
     {
       v11 = [&unk_2845A0C38 objectAtIndexedSubscript:v6 + 1];
       [v11 doubleValue];
       v13 = v12;
 
-      if (v13 > a3)
+      if (v13 > confidence)
       {
         v8 = v6;
       }
@@ -742,13 +742,13 @@ LABEL_26:
 
     v14 = [&unk_2845A0C38 objectAtIndexedSubscript:v6];
     [v14 doubleValue];
-    if (v15 <= a4)
+    if (v15 <= toConfidence)
     {
       v16 = [&unk_2845A0C38 objectAtIndexedSubscript:v6 + 1];
       [v16 doubleValue];
       v18 = v17;
 
-      if (v18 > a4)
+      if (v18 > toConfidence)
       {
         v7 = v6;
       }
@@ -771,34 +771,34 @@ LABEL_26:
 
   if (v7 <= v8)
   {
-    return a3 - a4 > 0.15;
+    return confidence - toConfidence > 0.15;
   }
 
   return 1;
 }
 
-- (BOOL)shouldPostUpdateOnPOIEstimate:(id)a3 fromPOIEstimate:(id)a4
+- (BOOL)shouldPostUpdateOnPOIEstimate:(id)estimate fromPOIEstimate:(id)iEstimate
 {
-  v6 = a3;
-  v7 = a4;
-  v37 = !v7 || ((v9 = [v7 mostConfidentPOI], v10 = objc_msgSend(v6, "mostConfidentPOI"), objc_msgSend(v8, "poiConfidences"), v11 = v8 = v7;
+  estimateCopy = estimate;
+  iEstimateCopy = iEstimate;
+  v37 = !iEstimateCopy || ((v9 = [iEstimateCopy mostConfidentPOI], v10 = objc_msgSend(estimateCopy, "mostConfidentPOI"), objc_msgSend(v8, "poiConfidences"), v11 = v8 = iEstimateCopy;
 
   return v37;
 }
 
-- (void)logLocalBluePOIResult:(id)a3 aggregatedPOIEstimate:(id)a4
+- (void)logLocalBluePOIResult:(id)result aggregatedPOIEstimate:(id)estimate
 {
   v83 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v58 = a4;
+  resultCopy = result;
+  estimateCopy = estimate;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v5 = [v57 poiConfidences];
-  v6 = [v5 allKeys];
+  poiConfidences = [resultCopy poiConfidences];
+  allKeys = [poiConfidences allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v71 objects:v82 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v71 objects:v82 count:16];
   if (v7)
   {
     v8 = v7;
@@ -810,7 +810,7 @@ LABEL_26:
       {
         if (*v72 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v71 + 1) + 8 * i);
@@ -819,12 +819,12 @@ LABEL_26:
           v13 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
-            v14 = [v12 unsignedIntegerValue];
-            v15 = [v57 poiConfidences];
-            v16 = [v15 objectForKeyedSubscript:v12];
+            unsignedIntegerValue = [v12 unsignedIntegerValue];
+            poiConfidences2 = [resultCopy poiConfidences];
+            v16 = [poiConfidences2 objectForKeyedSubscript:v12];
             [v16 doubleValue];
             *buf = 134218240;
-            v79 = v14;
+            v79 = unsignedIntegerValue;
             v80 = 2048;
             v81 = v17;
             _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "originalBluePOIResult, POI, %lu, confidence, %f", buf, 0x16u);
@@ -832,7 +832,7 @@ LABEL_26:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v71 objects:v82 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v71 objects:v82 count:16];
     }
 
     while (v8);
@@ -842,10 +842,10 @@ LABEL_26:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v18 = [v58 poiConfidences];
-  v19 = [v18 allKeys];
+  poiConfidences3 = [estimateCopy poiConfidences];
+  allKeys2 = [poiConfidences3 allKeys];
 
-  v20 = [v19 countByEnumeratingWithState:&v67 objects:v77 count:16];
+  v20 = [allKeys2 countByEnumeratingWithState:&v67 objects:v77 count:16];
   if (v20)
   {
     v21 = v20;
@@ -857,7 +857,7 @@ LABEL_26:
       {
         if (*v68 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allKeys2);
         }
 
         v25 = *(*(&v67 + 1) + 8 * j);
@@ -866,12 +866,12 @@ LABEL_26:
           v26 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
-            v27 = [v25 unsignedIntegerValue];
-            v28 = [v58 poiConfidences];
-            v29 = [v28 objectForKeyedSubscript:v25];
+            unsignedIntegerValue2 = [v25 unsignedIntegerValue];
+            poiConfidences4 = [estimateCopy poiConfidences];
+            v29 = [poiConfidences4 objectForKeyedSubscript:v25];
             [v29 doubleValue];
             *buf = 134218240;
-            v79 = v27;
+            v79 = unsignedIntegerValue2;
             v80 = 2048;
             v81 = v30;
             _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "aggregatedPOIEstimate, POI, %lu, confidence, %f", buf, 0x16u);
@@ -879,7 +879,7 @@ LABEL_26:
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v67 objects:v77 count:16];
+      v21 = [allKeys2 countByEnumeratingWithState:&v67 objects:v77 count:16];
     }
 
     while (v21);
@@ -889,10 +889,10 @@ LABEL_26:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v31 = [v57 aoiConfidences];
-  v32 = [v31 allKeys];
+  aoiConfidences = [resultCopy aoiConfidences];
+  allKeys3 = [aoiConfidences allKeys];
 
-  v33 = [v32 countByEnumeratingWithState:&v63 objects:v76 count:16];
+  v33 = [allKeys3 countByEnumeratingWithState:&v63 objects:v76 count:16];
   if (v33)
   {
     v34 = v33;
@@ -904,7 +904,7 @@ LABEL_26:
       {
         if (*v64 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(allKeys3);
         }
 
         v38 = *(*(&v63 + 1) + 8 * k);
@@ -913,12 +913,12 @@ LABEL_26:
           v39 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
           if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
           {
-            v40 = [v38 unsignedIntegerValue];
-            v41 = [v57 aoiConfidences];
-            v42 = [v41 objectForKeyedSubscript:v38];
+            unsignedIntegerValue3 = [v38 unsignedIntegerValue];
+            aoiConfidences2 = [resultCopy aoiConfidences];
+            v42 = [aoiConfidences2 objectForKeyedSubscript:v38];
             [v42 doubleValue];
             *buf = 134218240;
-            v79 = v40;
+            v79 = unsignedIntegerValue3;
             v80 = 2048;
             v81 = v43;
             _os_log_impl(&dword_2304B3000, v39, OS_LOG_TYPE_INFO, "originalBluePOIResult, AOI, %lu, confidence, %f", buf, 0x16u);
@@ -926,7 +926,7 @@ LABEL_26:
         }
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v63 objects:v76 count:16];
+      v34 = [allKeys3 countByEnumeratingWithState:&v63 objects:v76 count:16];
     }
 
     while (v34);
@@ -936,10 +936,10 @@ LABEL_26:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v44 = [v58 aoiConfidences];
-  v45 = [v44 allKeys];
+  aoiConfidences3 = [estimateCopy aoiConfidences];
+  allKeys4 = [aoiConfidences3 allKeys];
 
-  v46 = [v45 countByEnumeratingWithState:&v59 objects:v75 count:16];
+  v46 = [allKeys4 countByEnumeratingWithState:&v59 objects:v75 count:16];
   if (v46)
   {
     v47 = v46;
@@ -951,7 +951,7 @@ LABEL_26:
       {
         if (*v60 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(allKeys4);
         }
 
         v51 = *(*(&v59 + 1) + 8 * m);
@@ -960,12 +960,12 @@ LABEL_26:
           v52 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
           if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
           {
-            v53 = [v51 unsignedIntegerValue];
-            v54 = [v58 aoiConfidences];
-            v55 = [v54 objectForKeyedSubscript:v51];
+            unsignedIntegerValue4 = [v51 unsignedIntegerValue];
+            aoiConfidences4 = [estimateCopy aoiConfidences];
+            v55 = [aoiConfidences4 objectForKeyedSubscript:v51];
             [v55 doubleValue];
             *buf = 134218240;
-            v79 = v53;
+            v79 = unsignedIntegerValue4;
             v80 = 2048;
             v81 = v56;
             _os_log_impl(&dword_2304B3000, v52, OS_LOG_TYPE_INFO, "aggregatedPOIEstimate, AOI, %lu, confidence, %f", buf, 0x16u);
@@ -973,39 +973,39 @@ LABEL_26:
         }
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v59 objects:v75 count:16];
+      v47 = [allKeys4 countByEnumeratingWithState:&v59 objects:v75 count:16];
     }
 
     while (v47);
   }
 }
 
-- (id)localBluePOIResultForReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 tileRequestPriority:(unint64_t)a7 collectMetrics:(BOOL)a8 error:(id *)a9
+- (id)localBluePOIResultForReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env tileRequestPriority:(unint64_t)priority collectMetrics:(BOOL)metrics error:(id *)error
 {
-  dsema = a8;
+  dsema = metrics;
   v198 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  locationCopy = location;
+  locationsCopy = locations;
+  pointsCopy = points;
   v189[0] = MEMORY[0x277D85DD0];
   v189[1] = 3221225472;
   v189[2] = __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_accessPoints_signalEnv_tileRequestPriority_collectMetrics_error___block_invoke;
   v189[3] = &__block_descriptor_40_e34_v32__0__RTWiFiAccessPoint_8Q16_B24l;
   aSelector = a2;
   v189[4] = a2;
-  v149 = v14;
-  [v14 enumerateObjectsUsingBlock:v189];
+  v149 = pointsCopy;
+  [pointsCopy enumerateObjectsUsingBlock:v189];
   v188[0] = MEMORY[0x277D85DD0];
   v188[1] = 3221225472;
   v188[2] = __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_accessPoints_signalEnv_tileRequestPriority_collectMetrics_error___block_invoke_61;
   v188[3] = &__block_descriptor_40_e27_v32__0__RTLocation_8Q16_B24l;
   v188[4] = a2;
-  [v13 enumerateObjectsUsingBlock:v188];
+  [locationsCopy enumerateObjectsUsingBlock:v188];
   v186 = 0u;
   v187 = 0u;
   v184 = 0u;
   v185 = 0u;
-  obj = v13;
+  obj = locationsCopy;
   v15 = [obj countByEnumeratingWithState:&v184 objects:v195 count:16];
   if (v15)
   {
@@ -1023,22 +1023,22 @@ LABEL_26:
         [v18 horizontalUncertainty];
         if (v19 > 0.0)
         {
-          if (v12)
+          if (locationCopy)
           {
             [v18 horizontalUncertainty];
             v21 = v20;
-            [v12 horizontalUncertainty];
+            [locationCopy horizontalUncertainty];
             if (v21 < v22)
             {
               v23 = v18;
 
-              v12 = v23;
+              locationCopy = v23;
             }
           }
 
           else
           {
-            v12 = v18;
+            locationCopy = v18;
           }
         }
       }
@@ -1049,16 +1049,16 @@ LABEL_26:
     while (v15);
   }
 
-  v24 = [v12 date];
-  if (!v24)
+  date = [locationCopy date];
+  if (!date)
   {
     goto LABEL_17;
   }
 
-  v25 = [v149 firstObject];
-  v26 = [v25 date];
-  v27 = [v12 date];
-  [v26 timeIntervalSinceDate:v27];
+  firstObject = [v149 firstObject];
+  date2 = [firstObject date];
+  date3 = [locationCopy date];
+  [date2 timeIntervalSinceDate:date3];
   v29 = v28;
 
   v30 = -v29;
@@ -1071,28 +1071,28 @@ LABEL_26:
 
   if (!v31)
   {
-    v150 = v12;
+    v150 = locationCopy;
   }
 
   else
   {
 LABEL_17:
     v32 = objc_alloc(MEMORY[0x277D01160]);
-    [v12 latitude];
+    [locationCopy latitude];
     v34 = v33;
-    [v12 longitude];
+    [locationCopy longitude];
     v36 = v35;
-    [v12 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v38 = v37;
-    [v12 altitude];
+    [locationCopy altitude];
     v40 = v39;
-    [v12 verticalUncertainty];
+    [locationCopy verticalUncertainty];
     v42 = v41;
-    v43 = [v149 firstObject];
-    v44 = [v43 date];
-    v45 = [v12 referenceFrame];
-    [v12 speed];
-    v150 = [v32 initWithLatitude:v44 longitude:v45 horizontalUncertainty:objc_msgSend(v12 altitude:"sourceAccuracy") verticalUncertainty:v34 date:v36 referenceFrame:v38 speed:v40 sourceAccuracy:{v42, v46}];
+    firstObject2 = [v149 firstObject];
+    date4 = [firstObject2 date];
+    referenceFrame = [locationCopy referenceFrame];
+    [locationCopy speed];
+    v150 = [v32 initWithLatitude:date4 longitude:referenceFrame horizontalUncertainty:objc_msgSend(locationCopy altitude:"sourceAccuracy") verticalUncertainty:v34 date:v36 referenceFrame:v38 speed:v40 sourceAccuracy:{v42, v46}];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1111,7 +1111,7 @@ LABEL_17:
 
   if (dsema)
   {
-    if (a7 == 1)
+    if (priority == 1)
     {
       v49 = 1;
     }
@@ -1121,12 +1121,12 @@ LABEL_17:
       v49 = 2;
     }
 
-    v50 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+    bluePOIMetricManager = [(RTBluePOIMonitor *)self bluePOIMetricManager];
     v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v49];
-    [v50 setEventMetricsValue:v51 forKey:@"queryType"];
+    [bluePOIMetricManager setEventMetricsValue:v51 forKey:@"queryType"];
 
-    v52 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
-    v145 = [v52 objectForKey:@"BluePOIQueryEventLastActiveWiFiScanDate"];
+    bluePOIMetricManager2 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+    v145 = [bluePOIMetricManager2 objectForKey:@"BluePOIQueryEventLastActiveWiFiScanDate"];
 
     if (v145)
     {
@@ -1161,17 +1161,17 @@ LABEL_17:
       }
     }
 
-    v58 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+    bluePOIMetricManager3 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
     v59 = [MEMORY[0x277CCABB0] numberWithBool:v54];
-    [v58 setEventMetricsValue:v59 forKey:@"activeWiFiScanRequest"];
+    [bluePOIMetricManager3 setEventMetricsValue:v59 forKey:@"activeWiFiScanRequest"];
 
     v60 = 1;
     v61 = MEMORY[0x277CBEC28];
     do
     {
-      v62 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+      bluePOIMetricManager4 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
       v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"kRTBluePOIQueryEventHasResultWiFiChannel%lu", v60];
-      [v62 setEventMetricsValue:v61 forKey:v63];
+      [bluePOIMetricManager4 setEventMetricsValue:v61 forKey:v63];
 
       ++v60;
     }
@@ -1199,9 +1199,9 @@ LABEL_17:
           v69 = *(*(&v180 + 1) + 8 * j);
           if ([v69 channel] && objc_msgSend(v69, "channel") <= 0xD)
           {
-            v70 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+            bluePOIMetricManager5 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
             v71 = [MEMORY[0x277CCACA8] stringWithFormat:@"kRTBluePOIQueryEventHasResultWiFiChannel%ld", objc_msgSend(v69, "channel")];
-            [v70 setEventMetricsValue:v67 forKey:v71];
+            [bluePOIMetricManager5 setEventMetricsValue:v67 forKey:v71];
           }
         }
 
@@ -1231,7 +1231,7 @@ LABEL_17:
   v172 = __Block_byref_object_dispose__50;
   v173 = 0;
   v72 = dispatch_semaphore_create(0);
-  v73 = [(RTBluePOIMonitor *)self bluePOITileManager];
+  bluePOITileManager = [(RTBluePOIMonitor *)self bluePOITileManager];
   v162[0] = MEMORY[0x277D85DD0];
   v162[1] = 3221225472;
   v162[2] = __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_accessPoints_signalEnv_tileRequestPriority_collectMetrics_error___block_invoke_75;
@@ -1243,7 +1243,7 @@ LABEL_17:
   v74 = v72;
   v164 = v74;
   v151 = v163;
-  [v73 fetchBluePOITileAtLocation:v163 priority:a7 validateTile:0 collectMetrics:dsema handler:v162];
+  [bluePOITileManager fetchBluePOITileAtLocation:v163 priority:priority validateTile:0 collectMetrics:dsema handler:v162];
 
   aSelectora = v74;
   v75 = [MEMORY[0x277CBEAA8] now];
@@ -1257,11 +1257,11 @@ LABEL_17:
     v81 = v80;
     v82 = objc_opt_new();
     v83 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_239_0];
-    v84 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v85 = [v84 filteredArrayUsingPredicate:v83];
-    v86 = [v85 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v85 = [callStackSymbols filteredArrayUsingPredicate:v83];
+    firstObject3 = [v85 firstObject];
 
-    [v82 submitToCoreAnalytics:v86 type:1 duration:v81];
+    [v82 submitToCoreAnalytics:firstObject3 type:1 duration:v81];
     v87 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v87, OS_LOG_TYPE_FAULT))
     {
@@ -1300,7 +1300,7 @@ LABEL_55:
 
   v93 = [(RTBluePOIMonitor *)self shouldRefreshAOIAtLocation:v151];
   v94 = dispatch_semaphore_create(0);
-  v95 = [(RTBluePOIMonitor *)self mapServiceManager];
+  mapServiceManager = [(RTBluePOIMonitor *)self mapServiceManager];
   v96 = *(*&buf[8] + 40);
   v158[0] = MEMORY[0x277D85DD0];
   v158[1] = 3221225472;
@@ -1310,7 +1310,7 @@ LABEL_55:
   v161 = &v174;
   v97 = v94;
   v159 = v97;
-  [v95 inferLocalBluePOIWithReferenceLocation:v151 locations:obj accessPoints:v149 bluePOITile:v96 signalEnv:a6 refreshAOI:v93 handler:v158];
+  [mapServiceManager inferLocalBluePOIWithReferenceLocation:v151 locations:obj accessPoints:v149 bluePOITile:v96 signalEnv:env refreshAOI:v93 handler:v158];
 
   dsemaa = v97;
   v98 = [MEMORY[0x277CBEAA8] now];
@@ -1325,11 +1325,11 @@ LABEL_55:
   v102 = v101;
   v103 = objc_opt_new();
   v104 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_239_0];
-  v105 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v106 = [v105 filteredArrayUsingPredicate:v104];
-  v107 = [v106 firstObject];
+  callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v106 = [callStackSymbols2 filteredArrayUsingPredicate:v104];
+  firstObject4 = [v106 firstObject];
 
-  [v103 submitToCoreAnalytics:v107 type:1 duration:v102];
+  [v103 submitToCoreAnalytics:firstObject4 type:1 duration:v102];
   v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v108, OS_LOG_TYPE_FAULT))
   {
@@ -1366,9 +1366,9 @@ LABEL_62:
   if (v93)
   {
     [(RTBluePOIMonitor *)self setLastAOIRefreshResult:v169[5]];
-    v115 = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
-    v116 = [v115 distanceToNearestAOILowerBound];
-    [v116 doubleValue];
+    lastAOIRefreshResult = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
+    distanceToNearestAOILowerBound = [lastAOIRefreshResult distanceToNearestAOILowerBound];
+    [distanceToNearestAOILowerBound doubleValue];
     [(RTBluePOIMonitor *)self setDistanceToRefreshAOI:?];
 
     if ([v175[5] hasStorageFullError])
@@ -1378,9 +1378,9 @@ LABEL_62:
 
     else
     {
-      v118 = [v175[5] hasAOIInferenceError];
+      hasAOIInferenceError = [v175[5] hasAOIInferenceError];
       v117 = 5.0;
-      if (v118)
+      if (hasAOIInferenceError)
       {
         [(RTBluePOIMonitor *)self aoiRefreshBackoffInterval];
         v117 = fmin(v119 + v119, 3600.0);
@@ -1391,41 +1391,41 @@ LABEL_62:
     v120 = MEMORY[0x277CBEAA8];
     [(RTBluePOIMonitor *)self aoiRefreshBackoffInterval];
     v122 = v121;
-    v123 = [v151 date];
-    v124 = [v120 dateWithTimeInterval:v123 sinceDate:v122];
+    date5 = [v151 date];
+    v124 = [v120 dateWithTimeInterval:date5 sinceDate:v122];
     [(RTBluePOIMonitor *)self setNextAOIRefreshDate:v124];
   }
 
-  v125 = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
-  v126 = [v125 aoiConfidences];
-  v127 = v126;
+  lastAOIRefreshResult2 = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
+  aoiConfidences = [lastAOIRefreshResult2 aoiConfidences];
+  v127 = aoiConfidences;
   v128 = MEMORY[0x277CBEC10];
-  if (v126)
+  if (aoiConfidences)
   {
-    v128 = v126;
+    v128 = aoiConfidences;
   }
 
   v129 = v128;
 
-  v130 = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
-  v131 = [v130 distanceToNearestAOILowerBound];
-  v132 = v131;
+  lastAOIRefreshResult3 = [(RTBluePOIMonitor *)self lastAOIRefreshResult];
+  distanceToNearestAOILowerBound2 = [lastAOIRefreshResult3 distanceToNearestAOILowerBound];
+  v132 = distanceToNearestAOILowerBound2;
   v133 = &unk_2845A1B38;
-  if (v131)
+  if (distanceToNearestAOILowerBound2)
   {
-    v133 = v131;
+    v133 = distanceToNearestAOILowerBound2;
   }
 
   v134 = v133;
 
-  *a9 = v175[5];
+  *error = v175[5];
   if (v169[5])
   {
     v135 = objc_alloc(MEMORY[0x277D01158]);
-    v136 = [v169[5] poiConfidences];
-    v137 = [v169[5] referenceLocation];
-    v138 = [v169[5] queryTime];
-    v139 = [v135 initWithPOIConfidences:v136 aoiConfidences:v129 distanceToNearestAOILowerBound:v134 referenceLocation:v137 queryTime:v138];
+    poiConfidences = [v169[5] poiConfidences];
+    referenceLocation = [v169[5] referenceLocation];
+    queryTime = [v169[5] queryTime];
+    v139 = [v135 initWithPOIConfidences:poiConfidences aoiConfidences:v129 distanceToNearestAOILowerBound:v134 referenceLocation:referenceLocation queryTime:queryTime];
     v140 = v169[5];
     v169[5] = v139;
   }
@@ -1433,9 +1433,9 @@ LABEL_62:
   else
   {
     v141 = objc_alloc(MEMORY[0x277D01158]);
-    v136 = [MEMORY[0x277CBEAA8] now];
-    v142 = [v141 initWithPOIConfidences:MEMORY[0x277CBEC10] aoiConfidences:v129 distanceToNearestAOILowerBound:v134 referenceLocation:v151 queryTime:v136];
-    v137 = v169[5];
+    poiConfidences = [MEMORY[0x277CBEAA8] now];
+    v142 = [v141 initWithPOIConfidences:MEMORY[0x277CBEC10] aoiConfidences:v129 distanceToNearestAOILowerBound:v134 referenceLocation:v151 queryTime:poiConfidences];
+    referenceLocation = v169[5];
     v169[5] = v142;
   }
 
@@ -1540,21 +1540,21 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_updateLocalMapItemsFromReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 error:(id *)a7
+- (void)_updateLocalMapItemsFromReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env error:(id *)error
 {
-  v7 = *&a6;
+  v7 = *&env;
   v90 = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  v59 = a4;
-  v63 = a5;
+  locationCopy = location;
+  locationsCopy = locations;
+  pointsCopy = points;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
   v78 = __Block_byref_object_copy__50;
   v79 = __Block_byref_object_dispose__50;
   v80 = 0;
-  v12 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
-  v62 = [v12 requestCollectQueryEvent];
+  bluePOIMetricManager = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+  requestCollectQueryEvent = [bluePOIMetricManager requestCollectQueryEvent];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1564,7 +1564,7 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
       v14 = NSStringFromSelector(a2);
       v15 = v14;
       v16 = @"NO";
-      if (v62)
+      if (requestCollectQueryEvent)
       {
         v16 = @"YES";
       }
@@ -1579,21 +1579,21 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
 
   v17 = (v76 + 5);
   obj = v76[5];
-  v61 = [(RTBluePOIMonitor *)self localBluePOIResultForReferenceLocation:v60 locations:v59 accessPoints:v63 signalEnv:v7 tileRequestPriority:1 collectMetrics:v62 error:&obj];
+  v61 = [(RTBluePOIMonitor *)self localBluePOIResultForReferenceLocation:locationCopy locations:locationsCopy accessPoints:pointsCopy signalEnv:v7 tileRequestPriority:1 collectMetrics:requestCollectQueryEvent error:&obj];
   objc_storeStrong(v17, obj);
   if (!v76[5] || v61)
   {
-    v19 = [v63 lastObject];
-    v20 = [v19 date];
-    [(RTBluePOIMonitor *)self setLastInferredScanResultDate:v20];
+    lastObject = [pointsCopy lastObject];
+    date = [lastObject date];
+    [(RTBluePOIMonitor *)self setLastInferredScanResultDate:date];
 
-    v21 = [(RTBluePOIMonitor *)self bluePOIAggregator];
+    bluePOIAggregator = [(RTBluePOIMonitor *)self bluePOIAggregator];
     v73 = 0;
-    v58 = [v21 updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:v61 collectMetrics:v62 error:&v73];
+    v58 = [bluePOIAggregator updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:v61 collectMetrics:requestCollectQueryEvent error:&v73];
     v56 = v73;
 
-    v22 = [(RTBluePOIMonitor *)self lastPostedBluePOIEstimate];
-    v23 = [(RTBluePOIMonitor *)self shouldPostUpdateOnPOIEstimate:v58 fromPOIEstimate:v22];
+    lastPostedBluePOIEstimate = [(RTBluePOIMonitor *)self lastPostedBluePOIEstimate];
+    v23 = [(RTBluePOIMonitor *)self shouldPostUpdateOnPOIEstimate:v58 fromPOIEstimate:lastPostedBluePOIEstimate];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1610,14 +1610,14 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
           v25 = @"NO";
         }
 
-        v26 = [v58 queryTime];
-        v27 = [v58 referenceLocation];
+        queryTime = [v58 queryTime];
+        referenceLocation = [v58 referenceLocation];
         *buf = 138412803;
         v82 = v25;
         v83 = 2112;
-        v84 = v26;
+        v84 = queryTime;
         v85 = 2117;
-        v86 = v27;
+        v86 = referenceLocation;
         _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_INFO, "shouldPostUpdate, %@, on Updated POI Estimate at query time, %@, location, %{sensitive}@", buf, 0x20u);
       }
     }
@@ -1625,13 +1625,13 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
     [(RTBluePOIMonitor *)self logLocalBluePOIResult:v61 aggregatedPOIEstimate:v58];
     if (v23)
     {
-      v28 = [MEMORY[0x277CBEAA8] distantFuture];
-      v29 = [MEMORY[0x277CBEAA8] distantPast];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
       v71 = 0u;
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v30 = v63;
+      v30 = pointsCopy;
       v31 = [v30 countByEnumeratingWithState:&v69 objects:v89 count:16];
       if (v31)
       {
@@ -1646,24 +1646,24 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
             }
 
             v34 = *(*(&v69 + 1) + 8 * i);
-            v35 = [v34 date];
-            v36 = [v35 compare:v28] == -1;
+            date2 = [v34 date];
+            v36 = [date2 compare:distantFuture] == -1;
 
             if (v36)
             {
-              v37 = [v34 date];
+              date3 = [v34 date];
 
-              v28 = v37;
+              distantFuture = date3;
             }
 
-            v38 = [v34 date];
-            v39 = [v38 compare:v29] == 1;
+            date4 = [v34 date];
+            v39 = [date4 compare:distantPast] == 1;
 
             if (v39)
             {
-              v40 = [v34 date];
+              date5 = [v34 date];
 
-              v29 = v40;
+              distantPast = date5;
             }
           }
 
@@ -1674,9 +1674,9 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
       }
 
       [(RTBluePOIMonitor *)self setLastPostedBluePOIEstimate:v58];
-      v41 = [(RTBluePOIMonitor *)self mapItemManager];
+      mapItemManager = [(RTBluePOIMonitor *)self mapItemManager];
       v68 = 0;
-      v42 = [v41 mapItemsFromLocalBluePOIResult:v58 withConfidenceThreshold:&v68 error:0.5];
+      v42 = [mapItemManager mapItemsFromLocalBluePOIResult:v58 withConfidenceThreshold:&v68 error:0.5];
       v43 = v68;
 
       if ([RTBluePOIHelper shouldFilterByBusinessHours:[(RTPlatform *)self->_platform internalInstall]])
@@ -1687,8 +1687,8 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
         v64[2] = __101__RTBluePOIMonitor__updateLocalMapItemsFromReferenceLocation_locations_accessPoints_signalEnv_error___block_invoke;
         v64[3] = &unk_2788C82A8;
         v64[4] = self;
-        v65 = v28;
-        v66 = v29;
+        v65 = distantFuture;
+        v66 = distantPast;
         v67 = &v75;
         v45 = [(_RTMap *)v44 withBlock:v64];
       }
@@ -1699,7 +1699,7 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
         v45 = [(_RTMap *)v46 withBlock:&__block_literal_global_37];
       }
 
-      v47 = [[RTBluePOIMonitorEstimateUpdateNotification alloc] initWithInferredMapItems:v45 referenceLocation:v60 locations:v59 accessPoints:v30];
+      v47 = [[RTBluePOIMonitorEstimateUpdateNotification alloc] initWithInferredMapItems:v45 referenceLocation:locationCopy locations:locationsCopy accessPoints:v30];
       [(RTNotifier *)self postNotification:v47];
     }
 
@@ -1716,10 +1716,10 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
     v48 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
     {
-      v49 = [v63 count];
+      v49 = [pointsCopy count];
       v50 = v76[5];
       *buf = 138740739;
-      v82 = v60;
+      v82 = locationCopy;
       v83 = 2048;
       v84 = v49;
       v85 = 2117;
@@ -1733,21 +1733,21 @@ void __133__RTBluePOIMonitor_localBluePOIResultForReferenceLocation_locations_ac
   v51 = v76[5];
   if (v51)
   {
-    *a7 = v51;
+    *error = v51;
   }
 
-  if (v62)
+  if (requestCollectQueryEvent)
   {
-    v52 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
-    [v52 setEventMetricsValue:@"com.apple.CoreRoutine.BluePOIMonitor" forKey:@"appIdentifier"];
+    bluePOIMetricManager2 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+    [bluePOIMetricManager2 setEventMetricsValue:@"com.apple.CoreRoutine.BluePOIMonitor" forKey:@"appIdentifier"];
 
-    v53 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
-    [v53 stopCollectQueryEvent];
+    bluePOIMetricManager3 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+    [bluePOIMetricManager3 stopCollectQueryEvent];
   }
 
-  v54 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
-  v55 = [v54 dailyMetrics];
-  [v55 increaseCountForKey:@"BluePOIDailyEventBackgroundQueryCount"];
+  bluePOIMetricManager4 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+  dailyMetrics = [bluePOIMetricManager4 dailyMetrics];
+  [dailyMetrics increaseCountForKey:@"BluePOIDailyEventBackgroundQueryCount"];
 
   _Block_object_dispose(&v75, 8);
 }
@@ -1864,11 +1864,11 @@ id __101__RTBluePOIMonitor__updateLocalMapItemsFromReferenceLocation_locations_a
   return v6;
 }
 
-- (id)fetchLocalMapItemsFromReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 skipAggregation:(BOOL)a7 collectMetrics:(BOOL)a8 error:(id *)a9
+- (id)fetchLocalMapItemsFromReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env skipAggregation:(BOOL)aggregation collectMetrics:(BOOL)metrics error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  locationCopy = location;
+  locationsCopy = locations;
+  pointsCopy = points;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -1881,28 +1881,28 @@ id __101__RTBluePOIMonitor__updateLocalMapItemsFromReferenceLocation_locations_a
   v36 = __Block_byref_object_copy__50;
   v37 = __Block_byref_object_dispose__50;
   v38 = 0;
-  v17 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_accessPoints_signalEnv_skipAggregation_collectMetrics_error___block_invoke;
   block[3] = &unk_2788C9340;
   v28 = &v39;
   block[4] = self;
-  v18 = v14;
+  v18 = locationCopy;
   v25 = v18;
-  v19 = v15;
+  v19 = locationsCopy;
   v26 = v19;
-  v20 = v16;
-  v30 = a6;
-  v31 = a7;
-  v32 = a8;
+  v20 = pointsCopy;
+  envCopy = env;
+  aggregationCopy = aggregation;
+  metricsCopy = metrics;
   v27 = v20;
   v29 = &v33;
-  dispatch_sync(v17, block);
+  dispatch_sync(queue, block);
 
-  if (a9)
+  if (error)
   {
-    *a9 = v34[5];
+    *error = v34[5];
   }
 
   v21 = v40[5];
@@ -1931,20 +1931,20 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
   *(v11 + 40) = v10;
 }
 
-- (id)_fetchLocalMapItemsFromReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 signalEnv:(int)a6 skipAggregation:(BOOL)a7 collectMetrics:(BOOL)a8 error:(id *)a9
+- (id)_fetchLocalMapItemsFromReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points signalEnv:(int)env skipAggregation:(BOOL)aggregation collectMetrics:(BOOL)metrics error:(id *)error
 {
-  v54 = a8;
+  metricsCopy = metrics;
   v84 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v56 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CBEAA8] distantFuture];
-  v14 = [MEMORY[0x277CBEAA8] distantPast];
+  locationCopy = location;
+  locationsCopy = locations;
+  pointsCopy = points;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v15 = v12;
+  v15 = pointsCopy;
   v16 = [v15 countByEnumeratingWithState:&v71 objects:v83 count:16];
   if (v16)
   {
@@ -1959,24 +1959,24 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
         }
 
         v19 = *(*(&v71 + 1) + 8 * i);
-        v20 = [v19 date];
-        v21 = [v20 compare:v13] == -1;
+        date = [v19 date];
+        v21 = [date compare:distantFuture] == -1;
 
         if (v21)
         {
-          v22 = [v19 date];
+          date2 = [v19 date];
 
-          v13 = v22;
+          distantFuture = date2;
         }
 
-        v23 = [v19 date];
-        v24 = [v23 compare:v14] == 1;
+        date3 = [v19 date];
+        v24 = [date3 compare:distantPast] == 1;
 
         if (v24)
         {
-          v25 = [v19 date];
+          date4 = [v19 date];
 
-          v14 = v25;
+          distantPast = date4;
         }
       }
 
@@ -1993,26 +1993,26 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
   v69 = __Block_byref_object_dispose__50;
   v70 = 0;
   obj = 0;
-  v26 = [(RTBluePOIMonitor *)self localBluePOIResultForReferenceLocation:v57 locations:v56 accessPoints:v15 signalEnv:a6 tileRequestPriority:3 collectMetrics:v54 error:&obj];
+  v26 = [(RTBluePOIMonitor *)self localBluePOIResultForReferenceLocation:locationCopy locations:locationsCopy accessPoints:v15 signalEnv:env tileRequestPriority:3 collectMetrics:metricsCopy error:&obj];
   objc_storeStrong(&v70, obj);
   if (!v66[5] || v26)
   {
     v28 = v26;
     v29 = v28;
-    if (a7)
+    if (aggregation)
     {
       v30 = v28;
     }
 
     else
     {
-      v31 = [v15 lastObject];
-      v32 = [v31 date];
-      [(RTBluePOIMonitor *)self setLastInferredScanResultDate:v32];
+      lastObject = [v15 lastObject];
+      date5 = [lastObject date];
+      [(RTBluePOIMonitor *)self setLastInferredScanResultDate:date5];
 
-      v33 = [(RTBluePOIMonitor *)self bluePOIAggregator];
+      bluePOIAggregator = [(RTBluePOIMonitor *)self bluePOIAggregator];
       v63 = 0;
-      v30 = [v33 updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:v29 collectMetrics:v54 error:&v63];
+      v30 = [bluePOIAggregator updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:v29 collectMetrics:metricsCopy error:&v63];
       v34 = v63;
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2021,12 +2021,12 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           v53 = v34;
-          v55 = [v30 queryTime];
-          v36 = [v30 referenceLocation];
+          queryTime = [v30 queryTime];
+          referenceLocation = [v30 referenceLocation];
           *buf = 138412547;
-          v76 = v55;
+          v76 = queryTime;
           v77 = 2117;
-          v78 = v36;
+          v78 = referenceLocation;
           _os_log_impl(&dword_2304B3000, v35, OS_LOG_TYPE_INFO, "Updated POI Estimate at query time, %@, location, %{sensitive}@", buf, 0x16u);
 
           v34 = v53;
@@ -2037,9 +2037,9 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
       [(RTBluePOIMonitor *)self logLocalBluePOIResult:v29 aggregatedPOIEstimate:v30];
     }
 
-    v37 = [(RTBluePOIMonitor *)self mapItemManager];
+    mapItemManager = [(RTBluePOIMonitor *)self mapItemManager];
     v62 = 0;
-    v27 = [v37 mapItemsFromLocalBluePOIResult:v30 withConfidenceThreshold:&v62 error:0.5];
+    v27 = [mapItemManager mapItemsFromLocalBluePOIResult:v30 withConfidenceThreshold:&v62 error:0.5];
     v38 = v62;
     v39 = v62;
 
@@ -2063,7 +2063,7 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
       v42 = [v27 count];
       v43 = v66[5];
       *buf = 138740739;
-      v76 = v57;
+      v76 = locationCopy;
       v77 = 2048;
       v78 = v41;
       v79 = 2048;
@@ -2083,8 +2083,8 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
     v58[2] = __131__RTBluePOIMonitor__fetchLocalMapItemsFromReferenceLocation_locations_accessPoints_signalEnv_skipAggregation_collectMetrics_error___block_invoke_95;
     v58[3] = &unk_2788C82A8;
     v58[4] = self;
-    v59 = v13;
-    v60 = v14;
+    v59 = distantFuture;
+    v60 = distantPast;
     v61 = &v65;
     v45 = [(_RTMap *)v44 withBlock:v58];
   }
@@ -2098,12 +2098,12 @@ void __130__RTBluePOIMonitor_fetchLocalMapItemsFromReferenceLocation_locations_a
   v47 = v66[5];
   if (v47)
   {
-    *a9 = v47;
+    *error = v47;
   }
 
-  v48 = [(RTBluePOIMonitor *)self bluePOIMetricManager];
-  v49 = [v48 dailyMetrics];
-  [v49 increaseCountForKey:@"BluePOIDailyEventOnDemandQueryCount"];
+  bluePOIMetricManager = [(RTBluePOIMonitor *)self bluePOIMetricManager];
+  dailyMetrics = [bluePOIMetricManager dailyMetrics];
+  [dailyMetrics increaseCountForKey:@"BluePOIDailyEventOnDemandQueryCount"];
 
   _Block_object_dispose(&v65, 8);
 

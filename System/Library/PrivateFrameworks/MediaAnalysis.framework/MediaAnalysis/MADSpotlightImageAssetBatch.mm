@@ -1,30 +1,30 @@
 @interface MADSpotlightImageAssetBatch
-+ (id)batchWithCancelBlock:(id)a3;
-- (id)createSearchableItemForAssetEntry:(id)a3;
++ (id)batchWithCancelBlock:(id)block;
+- (id)createSearchableItemForAssetEntry:(id)entry;
 - (int)prepare;
 - (int)publish;
-- (void)addAsset:(id)a3;
+- (void)addAsset:(id)asset;
 @end
 
 @implementation MADSpotlightImageAssetBatch
 
-+ (id)batchWithCancelBlock:(id)a3
++ (id)batchWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCancelBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithCancelBlock:blockCopy];
 
   return v5;
 }
 
-- (void)addAsset:(id)a3
+- (void)addAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(MADSpotlightImageAssetBatchBase *)self assetEntries];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  assetEntries = [(MADSpotlightImageAssetBatchBase *)self assetEntries];
+  v6 = [assetEntries countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -34,13 +34,13 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assetEntries);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) asset];
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v4 uniqueIdentifier];
-        v12 = [v10 isEqual:v11];
+        asset = [*(*(&v16 + 1) + 8 * i) asset];
+        uniqueIdentifier = [asset uniqueIdentifier];
+        uniqueIdentifier2 = [assetCopy uniqueIdentifier];
+        v12 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
         if (v12)
         {
@@ -49,12 +49,12 @@
             v13 = VCPLogToOSLogType[4];
             if (os_log_type_enabled(&_os_log_default, v13))
             {
-              v14 = [(MADSpotlightImageAssetBatch *)self logPrefix];
-              v15 = [v4 uniqueIdentifier];
+              logPrefix = [(MADSpotlightImageAssetBatch *)self logPrefix];
+              uniqueIdentifier3 = [assetCopy uniqueIdentifier];
               *buf = 138412546;
-              v21 = v14;
+              v21 = logPrefix;
               v22 = 2112;
-              v23 = v15;
+              v23 = uniqueIdentifier3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[%@][%@] Batch already contains asset; ignoring", buf, 0x16u);
             }
           }
@@ -63,7 +63,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v6 = [assetEntries countByEnumeratingWithState:&v16 objects:v24 count:16];
       if (v6)
       {
         continue;
@@ -73,10 +73,10 @@
     }
   }
 
-  if (v4)
+  if (assetCopy)
   {
-    v5 = [MADSpotlightImageAssetEntry entryWithAsset:v4];
-    [(MADSpotlightImageAssetBatchBase *)self addAssetEntry:v5];
+    assetEntries = [MADSpotlightImageAssetEntry entryWithAsset:assetCopy];
+    [(MADSpotlightImageAssetBatchBase *)self addAssetEntry:assetEntries];
 LABEL_14:
   }
 }
@@ -107,30 +107,30 @@ LABEL_14:
         v7 = *(*(&v29 + 1) + 8 * i);
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v5))
         {
-          v8 = [(MADSpotlightImageAssetBatch *)self logPrefix];
-          v9 = [v7 asset];
-          v10 = [v9 uniqueIdentifier];
+          logPrefix = [(MADSpotlightImageAssetBatch *)self logPrefix];
+          asset = [v7 asset];
+          uniqueIdentifier = [asset uniqueIdentifier];
           *buf = v25;
-          v34 = v8;
+          v34 = logPrefix;
           v35 = 2112;
-          v36 = v10;
+          v36 = uniqueIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[%@][Prepare] %@", buf, 0x16u);
         }
 
-        v11 = [v7 asset];
-        [v11 setStatus:1];
+        asset2 = [v7 asset];
+        [asset2 setStatus:1];
 
-        v12 = [v7 asset];
-        [v12 setAttemptCount:{objc_msgSend(v12, "attemptCount") + 1}];
+        asset3 = [v7 asset];
+        [asset3 setAttemptCount:{objc_msgSend(asset3, "attemptCount") + 1}];
 
-        v13 = [v7 asset];
-        [v13 attemptCount];
+        asset4 = [v7 asset];
+        [asset4 attemptCount];
         MADRetryBackoffTime();
         v15 = v14;
 
         v16 = [NSDate dateWithTimeIntervalSinceNow:v15];
-        v17 = [v7 asset];
-        [v17 setNextAttemptDate:v16];
+        asset5 = [v7 asset];
+        [asset5 setNextAttemptDate:v16];
       }
 
       v2 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -156,9 +156,9 @@ LABEL_14:
       v22 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v22))
       {
-        v23 = [(MADSpotlightImageAssetBatch *)self logPrefix];
+        logPrefix2 = [(MADSpotlightImageAssetBatch *)self logPrefix];
         *buf = 138412546;
-        v34 = v23;
+        v34 = logPrefix2;
         v35 = 2112;
         v36 = v20;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[%@][Prepare] Failed during commit changes - %@", buf, 0x16u);
@@ -171,16 +171,16 @@ LABEL_14:
   return v21;
 }
 
-- (id)createSearchableItemForAssetEntry:(id)a3
+- (id)createSearchableItemForAssetEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 attributeSet];
-  if (v4)
+  entryCopy = entry;
+  attributeSet = [entryCopy attributeSet];
+  if (attributeSet)
   {
     v5 = [CSSearchableItem alloc];
-    v6 = [v3 asset];
-    v7 = [v6 uniqueIdentifier];
-    v8 = [v5 initWithUniqueIdentifier:v7 domainIdentifier:0 attributeSet:v4];
+    asset = [entryCopy asset];
+    uniqueIdentifier = [asset uniqueIdentifier];
+    v8 = [v5 initWithUniqueIdentifier:uniqueIdentifier domainIdentifier:0 attributeSet:attributeSet];
 
     [v8 setIsUpdate:1];
   }
@@ -204,9 +204,9 @@ LABEL_14:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v69 = self;
-  v3 = [(MADSpotlightImageAssetBatchBase *)self assetEntries];
-  v4 = [v3 countByEnumeratingWithState:&v90 objects:v106 count:16];
+  selfCopy = self;
+  assetEntries = [(MADSpotlightImageAssetBatchBase *)self assetEntries];
+  v4 = [assetEntries countByEnumeratingWithState:&v90 objects:v106 count:16];
   if (v4)
   {
     v5 = *v91;
@@ -217,19 +217,19 @@ LABEL_14:
       {
         if (*v91 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(assetEntries);
         }
 
         v8 = *(*(&v90 + 1) + 8 * i);
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v6))
         {
-          v9 = [(MADSpotlightImageAssetBatch *)v69 logPrefix];
-          v10 = [v8 asset];
-          v11 = [v10 uniqueIdentifier];
+          logPrefix = [(MADSpotlightImageAssetBatch *)selfCopy logPrefix];
+          asset = [v8 asset];
+          uniqueIdentifier = [asset uniqueIdentifier];
           *buf = 138412546;
-          v99 = v9;
+          v99 = logPrefix;
           v100 = 2112;
-          v101 = v11;
+          v101 = uniqueIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[%@][Publish] %@", buf, 0x16u);
         }
 
@@ -237,56 +237,56 @@ LABEL_14:
         {
           if ([v8 status] != -128)
           {
-            v15 = [v8 asset];
-            [v15 setStatus:3];
+            asset2 = [v8 asset];
+            [asset2 setStatus:3];
             goto LABEL_19;
           }
 
-          v12 = [v8 previousStatus];
-          v13 = [v8 asset];
-          [v13 setStatus:v12];
+          previousStatus = [v8 previousStatus];
+          asset3 = [v8 asset];
+          [asset3 setStatus:previousStatus];
 
-          v14 = [v8 asset];
-          [v14 setAttemptCount:{objc_msgSend(v14, "attemptCount") - 1}];
+          asset4 = [v8 asset];
+          [asset4 setAttemptCount:{objc_msgSend(asset4, "attemptCount") - 1}];
 
-          v15 = +[NSDate date];
-          v16 = [v8 asset];
-          [v16 setNextAttemptDate:v15];
+          asset2 = +[NSDate date];
+          asset5 = [v8 asset];
+          [asset5 setNextAttemptDate:asset2];
         }
 
         else
         {
-          v17 = [(MADSpotlightImageAssetBatch *)v69 createSearchableItemForAssetEntry:v8];
-          v15 = v17;
+          v17 = [(MADSpotlightImageAssetBatch *)selfCopy createSearchableItemForAssetEntry:v8];
+          asset2 = v17;
           if (v17)
           {
-            v18 = [v17 bundleID];
-            v19 = [v67 objectForKeyedSubscript:v18];
+            bundleID = [v17 bundleID];
+            v19 = [v67 objectForKeyedSubscript:bundleID];
             v20 = v19 == 0;
 
             if (v20)
             {
               v21 = +[NSMutableArray array];
-              v22 = [v15 bundleID];
-              [v67 setObject:v21 forKeyedSubscript:v22];
+              bundleID2 = [asset2 bundleID];
+              [v67 setObject:v21 forKeyedSubscript:bundleID2];
             }
 
-            v16 = [v15 bundleID];
-            v23 = [v67 objectForKeyedSubscript:v16];
-            [v23 addObject:v15];
+            asset5 = [asset2 bundleID];
+            v23 = [v67 objectForKeyedSubscript:asset5];
+            [v23 addObject:asset2];
           }
 
           else
           {
-            v16 = [v8 asset];
-            [v16 setStatus:3];
+            asset5 = [v8 asset];
+            [asset5 setStatus:3];
           }
         }
 
 LABEL_19:
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v90 objects:v106 count:16];
+      v4 = [assetEntries countByEnumeratingWithState:&v90 objects:v106 count:16];
     }
 
     while (v4);
@@ -321,7 +321,7 @@ LABEL_19:
         v79[1] = 3221225472;
         v79[2] = sub_1001AAB8C;
         v79[3] = &unk_100288668;
-        v79[4] = v69;
+        v79[4] = selfCopy;
         v30 = obj;
         v80 = v30;
         v81 = v27;
@@ -343,8 +343,8 @@ LABEL_19:
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v66 = [(MADSpotlightImageAssetBatchBase *)v69 assetEntries];
-  v31 = [v66 countByEnumeratingWithState:&v75 objects:v104 count:16];
+  assetEntries2 = [(MADSpotlightImageAssetBatchBase *)selfCopy assetEntries];
+  v31 = [assetEntries2 countByEnumeratingWithState:&v75 objects:v104 count:16];
   if (v31)
   {
     v33 = *v76;
@@ -358,65 +358,65 @@ LABEL_19:
       {
         if (*v76 != v33)
         {
-          objc_enumerationMutation(v66);
+          objc_enumerationMutation(assetEntries2);
         }
 
         v36 = *(*(&v75 + 1) + 8 * k);
-        v37 = [v36 asset];
-        v38 = [v37 uniqueIdentifier];
-        v39 = [v71 containsObject:v38];
+        asset6 = [v36 asset];
+        uniqueIdentifier2 = [asset6 uniqueIdentifier];
+        v39 = [v71 containsObject:uniqueIdentifier2];
 
         if (v39)
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v34))
           {
-            v40 = [(MADSpotlightImageAssetBatch *)v69 logPrefix];
-            v41 = [v36 asset];
-            v42 = [v41 uniqueIdentifier];
+            logPrefix2 = [(MADSpotlightImageAssetBatch *)selfCopy logPrefix];
+            asset7 = [v36 asset];
+            uniqueIdentifier3 = [asset7 uniqueIdentifier];
             *buf = 138412546;
-            v99 = v40;
+            v99 = logPrefix2;
             v100 = 2112;
-            v101 = v42;
+            v101 = uniqueIdentifier3;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "[%@][Publish] Mark %@ as soft failure", buf, 0x16u);
           }
 
-          v43 = [v36 asset];
-          [v43 setStatus:3];
+          asset8 = [v36 asset];
+          [asset8 setStatus:3];
         }
 
-        v44 = [v36 asset];
-        v45 = [v44 uniqueIdentifier];
-        v46 = [v70 containsObject:v45];
+        asset9 = [v36 asset];
+        uniqueIdentifier4 = [asset9 uniqueIdentifier];
+        v46 = [v70 containsObject:uniqueIdentifier4];
 
         if (v46)
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v34))
           {
-            v47 = [(MADSpotlightImageAssetBatch *)v69 logPrefix];
-            v48 = [v36 asset];
-            v49 = [v48 uniqueIdentifier];
+            logPrefix3 = [(MADSpotlightImageAssetBatch *)selfCopy logPrefix];
+            asset10 = [v36 asset];
+            uniqueIdentifier5 = [asset10 uniqueIdentifier];
             *buf = 138412546;
-            v99 = v47;
+            v99 = logPrefix3;
             v100 = 2112;
-            v101 = v49;
+            v101 = uniqueIdentifier5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "[%@][Publish] Delete entry %@.", buf, 0x16u);
           }
 
-          v50 = [v36 asset];
-          v51 = [v50 uniqueIdentifier];
+          asset11 = [v36 asset];
+          uniqueIdentifier6 = [asset11 uniqueIdentifier];
           v74 = 0;
-          v52 = [MADManagedSpotlightEntry deleteEntryWithUniqueIdentifier:v51 error:&v74];
+          v52 = [MADManagedSpotlightEntry deleteEntryWithUniqueIdentifier:uniqueIdentifier6 error:&v74];
           v53 = v74;
 
           if ((v52 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
           {
-            v54 = [(MADSpotlightImageAssetBatch *)v69 logPrefix];
-            v55 = [v36 asset];
-            v56 = [v55 uniqueIdentifier];
+            logPrefix4 = [(MADSpotlightImageAssetBatch *)selfCopy logPrefix];
+            asset12 = [v36 asset];
+            uniqueIdentifier7 = [asset12 uniqueIdentifier];
             *buf = v64;
-            v99 = v54;
+            v99 = logPrefix4;
             v100 = 2112;
-            v101 = v56;
+            v101 = uniqueIdentifier7;
             v102 = 2112;
             v103 = v53;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][Publish] %@ Failed to delete entry (%@)", buf, 0x20u);
@@ -424,7 +424,7 @@ LABEL_19:
         }
       }
 
-      v31 = [v66 countByEnumeratingWithState:&v75 objects:v104 count:16];
+      v31 = [assetEntries2 countByEnumeratingWithState:&v75 objects:v104 count:16];
     }
 
     while (v31);
@@ -447,9 +447,9 @@ LABEL_19:
       v61 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v61))
       {
-        v62 = [(MADSpotlightImageAssetBatch *)v69 logPrefix];
+        logPrefix5 = [(MADSpotlightImageAssetBatch *)selfCopy logPrefix];
         *buf = 138412546;
-        v99 = v62;
+        v99 = logPrefix5;
         v100 = 2112;
         v101 = v59;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v61, "[%@] Publish failed during commit changes (%@)", buf, 0x16u);

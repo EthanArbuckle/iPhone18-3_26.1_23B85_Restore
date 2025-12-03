@@ -1,51 +1,51 @@
 @interface DADeviceDecoratorWithUI
-+ (id)decorateWithDevice:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (DADeviceDecoratorWithUI)initWithDevice:(id)a3;
++ (id)decorateWithDevice:(id)device;
+- (BOOL)isKindOfClass:(Class)class;
+- (DADeviceDecoratorWithUI)initWithDevice:(id)device;
 - (DADeviceWithUIDelegate)delegate;
 - (DKBrightnessResponder)brightnessResponder;
 - (DKStatusBarResponder)statusBarResponder;
 - (DKUserAlertResponder)userAlertResponder;
 - (DKViewControllerDelegate)viewControllerDelegate;
 - (DKVolumeHUDResponder)volumeHUDResponder;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)_reset;
 - (void)_startInterceptingButtonEvents;
 - (void)connect;
 - (void)end;
-- (void)executeTestWithTestAttributes:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)forwardInvocation:(id)a3;
-- (void)handleButtonEvent:(unint64_t)a3;
+- (void)executeTestWithTestAttributes:(id)attributes parameters:(id)parameters completion:(id)completion;
+- (void)forwardInvocation:(id)invocation;
+- (void)handleButtonEvent:(unint64_t)event;
 - (void)idle;
-- (void)requestSuiteFinishWithCompletionHandler:(id)a3;
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4;
+- (void)requestSuiteFinishWithCompletionHandler:(id)handler;
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler;
 - (void)resumeTests;
-- (void)setBrightnessResponder:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setStatusBarResponder:(id)a3;
-- (void)setUserAlertResponder:(id)a3;
-- (void)setViewControllerDelegate:(id)a3;
-- (void)setVolumeHUDResponder:(id)a3;
+- (void)setBrightnessResponder:(id)responder;
+- (void)setDelegate:(id)delegate;
+- (void)setStatusBarResponder:(id)responder;
+- (void)setUserAlertResponder:(id)responder;
+- (void)setViewControllerDelegate:(id)delegate;
+- (void)setVolumeHUDResponder:(id)responder;
 - (void)start;
-- (void)startInOperationMode:(int64_t)a3;
+- (void)startInOperationMode:(int64_t)mode;
 - (void)suspendTests;
 @end
 
 @implementation DADeviceDecoratorWithUI
 
-+ (id)decorateWithDevice:(id)a3
++ (id)decorateWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDevice:v4];
+  deviceCopy = device;
+  v5 = [[self alloc] initWithDevice:deviceCopy];
 
   return v5;
 }
 
-- (DADeviceDecoratorWithUI)initWithDevice:(id)a3
+- (DADeviceDecoratorWithUI)initWithDevice:(id)device
 {
-  objc_storeStrong(&self->_original, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_original, device);
+  deviceCopy = device;
   v6 = [DATestQueue testQueueWithDelegate:self];
   [(DADeviceMaterialized *)self->_original setTestQueue:v6];
 
@@ -59,171 +59,171 @@
 
 - (DADeviceWithUIDelegate)delegate
 {
-  v2 = [(DADeviceDecoratorWithUI *)self original];
-  v3 = [v2 delegate];
+  original = [(DADeviceDecoratorWithUI *)self original];
+  delegate = [original delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(DADeviceDecoratorWithUI *)self original];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  original = [(DADeviceDecoratorWithUI *)self original];
+  [original setDelegate:delegateCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = NSStringFromSelector(a3);
-    v7 = [(DADeviceDecoratorWithUI *)self original];
+    v6 = NSStringFromSelector(selector);
+    original = [(DADeviceDecoratorWithUI *)self original];
     v11 = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v7;
+    v14 = original;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fast forwarding %@ to %@", &v11, 0x16u);
   }
 
-  v8 = [(DADeviceDecoratorWithUI *)self original];
+  original2 = [(DADeviceDecoratorWithUI *)self original];
   if (objc_opt_respondsToSelector())
   {
-    self = v8;
+    self = original2;
   }
 
-  v9 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = NSStringFromSelector([v4 selector]);
-    v7 = [(DADeviceDecoratorWithUI *)self original];
+    v6 = NSStringFromSelector([invocationCopy selector]);
+    original = [(DADeviceDecoratorWithUI *)self original];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v7;
+    v12 = original;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Slow forwarding %@ to %@", &v9, 0x16u);
   }
 
-  v8 = [(DADeviceDecoratorWithUI *)self original];
-  [v4 invokeWithTarget:v8];
+  original2 = [(DADeviceDecoratorWithUI *)self original];
+  [invocationCopy invokeWithTarget:original2];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = DADeviceDecoratorWithUI;
   v5 = [(DADeviceDecoratorWithUI *)&v8 methodSignatureForSelector:?];
   if (!v5)
   {
-    v6 = [(DADeviceDecoratorWithUI *)self original];
-    v5 = [v6 methodSignatureForSelector:a3];
+    original = [(DADeviceDecoratorWithUI *)self original];
+    v5 = [original methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v4 = [(DADeviceDecoratorWithUI *)self original];
+    original = [(DADeviceDecoratorWithUI *)self original];
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
   return isKindOfClass & 1;
 }
 
-- (void)setViewControllerDelegate:(id)a3
+- (void)setViewControllerDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_viewControllerDelegate, v4);
-  v5 = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
-  [v5 setViewControllerDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_viewControllerDelegate, delegateCopy);
+  diagnosticsManager = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
+  [diagnosticsManager setViewControllerDelegate:delegateCopy];
 }
 
-- (void)setVolumeHUDResponder:(id)a3
+- (void)setVolumeHUDResponder:(id)responder
 {
-  v4 = a3;
-  objc_storeWeak(&self->_volumeHUDResponder, v4);
-  v5 = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
-  [v5 setVolumeHUDResponder:v4];
+  responderCopy = responder;
+  objc_storeWeak(&self->_volumeHUDResponder, responderCopy);
+  diagnosticsManager = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
+  [diagnosticsManager setVolumeHUDResponder:responderCopy];
 }
 
-- (void)setBrightnessResponder:(id)a3
+- (void)setBrightnessResponder:(id)responder
 {
-  v4 = a3;
-  objc_storeWeak(&self->_brightnessResponder, v4);
-  v5 = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
-  [v5 setBrightnessResponder:v4];
+  responderCopy = responder;
+  objc_storeWeak(&self->_brightnessResponder, responderCopy);
+  diagnosticsManager = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
+  [diagnosticsManager setBrightnessResponder:responderCopy];
 }
 
-- (void)setUserAlertResponder:(id)a3
+- (void)setUserAlertResponder:(id)responder
 {
-  v4 = a3;
-  objc_storeWeak(&self->_userAlertResponder, v4);
-  v5 = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
-  [v5 setUserAlertResponder:v4];
+  responderCopy = responder;
+  objc_storeWeak(&self->_userAlertResponder, responderCopy);
+  diagnosticsManager = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
+  [diagnosticsManager setUserAlertResponder:responderCopy];
 }
 
-- (void)setStatusBarResponder:(id)a3
+- (void)setStatusBarResponder:(id)responder
 {
-  v4 = a3;
-  objc_storeWeak(&self->_statusBarResponder, v4);
-  v5 = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
-  [v5 setStatusBarResponder:v4];
+  responderCopy = responder;
+  objc_storeWeak(&self->_statusBarResponder, responderCopy);
+  diagnosticsManager = [(DADeviceDecoratorWithUI *)self diagnosticsManager];
+  [diagnosticsManager setStatusBarResponder:responderCopy];
 }
 
 - (void)connect
 {
-  v2 = [(DADeviceDecoratorWithUI *)self original];
-  [v2 connect];
+  original = [(DADeviceDecoratorWithUI *)self original];
+  [original connect];
 }
 
 - (void)start
 {
   BKSDisplayBrightnessGetCurrent();
   [(DADeviceDecoratorWithUI *)self setOriginalScreenBrightness:?];
-  v3 = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
+  buttonEventMonitor = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
 
-  if (!v3)
+  if (!buttonEventMonitor)
   {
     v4 = objc_alloc_init(DSHardwareButtonEventMonitor);
     [(DADeviceDecoratorWithUI *)self setButtonEventMonitor:v4];
   }
 
-  v5 = [(DADeviceDecoratorWithUI *)self original];
-  [v5 start];
+  original = [(DADeviceDecoratorWithUI *)self original];
+  [original start];
 }
 
 - (void)idle
 {
-  v2 = [(DADeviceDecoratorWithUI *)self original];
-  [v2 idle];
+  original = [(DADeviceDecoratorWithUI *)self original];
+  [original idle];
 }
 
 - (void)suspendTests
 {
-  v2 = [(DADeviceDecoratorWithUI *)self original];
-  [v2 suspendTests];
+  original = [(DADeviceDecoratorWithUI *)self original];
+  [original suspendTests];
 }
 
 - (void)resumeTests
 {
-  v2 = [(DADeviceDecoratorWithUI *)self original];
-  [v2 resumeTests];
+  original = [(DADeviceDecoratorWithUI *)self original];
+  [original resumeTests];
 }
 
 - (void)end
@@ -237,50 +237,50 @@
   dispatch_async(v3, block);
 }
 
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(DADeviceDecoratorWithUI *)self original];
+  startCopy = start;
+  handlerCopy = handler;
+  original = [(DADeviceDecoratorWithUI *)self original];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(DADeviceDecoratorWithUI *)self original];
-    [v9 requestSuiteStart:v10 completionHandler:v6];
+    original2 = [(DADeviceDecoratorWithUI *)self original];
+    [original2 requestSuiteStart:startCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)requestSuiteFinishWithCompletionHandler:(id)a3
+- (void)requestSuiteFinishWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(DADeviceDecoratorWithUI *)self original];
+  handlerCopy = handler;
+  original = [(DADeviceDecoratorWithUI *)self original];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DADeviceDecoratorWithUI *)self original];
-    [v6 requestSuiteFinishWithCompletionHandler:v7];
+    original2 = [(DADeviceDecoratorWithUI *)self original];
+    [original2 requestSuiteFinishWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)startInOperationMode:(int64_t)a3
+- (void)startInOperationMode:(int64_t)mode
 {
-  v5 = [(DADeviceDecoratorWithUI *)self original];
+  original = [(DADeviceDecoratorWithUI *)self original];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DADeviceDecoratorWithUI *)self original];
-    [v7 startInOperationMode:a3];
+    original2 = [(DADeviceDecoratorWithUI *)self original];
+    [original2 startInOperationMode:mode];
   }
 }
 
-- (void)executeTestWithTestAttributes:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)executeTestWithTestAttributes:(id)attributes parameters:(id)parameters completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attributesCopy = attributes;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v11 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -290,38 +290,38 @@
   }
 
   objc_initWeak(buf, self);
-  v12 = [(DADeviceDecoratorWithUI *)self delegate];
-  v13 = [v8 identifier];
-  v14 = [v8 isHeadless];
+  delegate = [(DADeviceDecoratorWithUI *)self delegate];
+  identifier = [attributesCopy identifier];
+  isHeadless = [attributesCopy isHeadless];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10002BA78;
   v18[3] = &unk_1001BD628;
   objc_copyWeak(&v22, buf);
   v18[4] = self;
-  v15 = v8;
+  v15 = attributesCopy;
   v19 = v15;
-  v16 = v9;
+  v16 = parametersCopy;
   v20 = v16;
-  v17 = v10;
+  v17 = completionCopy;
   v21 = v17;
-  [v12 device:self shouldStartTestWithTestId:v13 fullscreen:v14 ^ 1 response:v18];
+  [delegate device:self shouldStartTestWithTestId:identifier fullscreen:isHeadless ^ 1 response:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
 }
 
-- (void)handleButtonEvent:(unint64_t)a3
+- (void)handleButtonEvent:(unint64_t)event
 {
   if (![(DADeviceDecoratorWithUI *)self ignoreButtonEvents])
   {
-    if (a3 >= 0x8000)
+    if (event >= 0x8000)
     {
-      if (a3 >= 0x200000)
+      if (event >= 0x200000)
       {
-        if (a3 > 0x7FFFFFF)
+        if (event > 0x7FFFFFF)
         {
-          if (a3 == 0x20000000)
+          if (event == 0x20000000)
           {
             goto LABEL_25;
           }
@@ -331,7 +331,7 @@
 
         else
         {
-          if (a3 == 0x200000)
+          if (event == 0x200000)
           {
             goto LABEL_25;
           }
@@ -339,7 +339,7 @@
           v5 = 0x2000000;
         }
 
-        if (a3 != v5)
+        if (event != v5)
         {
           return;
         }
@@ -360,7 +360,7 @@ LABEL_25:
         return;
       }
 
-      if (a3 == 0x8000 || a3 == 0x20000 || a3 == 0x80000)
+      if (event == 0x8000 || event == 0x20000 || event == 0x80000)
       {
         goto LABEL_25;
       }
@@ -368,9 +368,9 @@ LABEL_25:
 
     else
     {
-      if (a3 <= 127)
+      if (event <= 127)
       {
-        if (a3 > 0x20 || ((1 << a3) & 0x100000114) == 0)
+        if (event > 0x20 || ((1 << event) & 0x100000114) == 0)
         {
           return;
         }
@@ -378,15 +378,15 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      if (a3 > 2047)
+      if (event > 2047)
       {
-        if (a3 == 2048 || a3 == 0x2000)
+        if (event == 2048 || event == 0x2000)
         {
           goto LABEL_25;
         }
       }
 
-      else if (a3 == 128 || a3 == 512)
+      else if (event == 128 || event == 512)
       {
         goto LABEL_25;
       }
@@ -397,13 +397,13 @@ LABEL_25:
 - (void)_startInterceptingButtonEvents
 {
   objc_initWeak(&location, self);
-  v3 = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
+  buttonEventMonitor = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002C080;
   v4[3] = &unk_1001BC698;
   objc_copyWeak(&v5, &location);
-  [v3 startWithPriority:26 completion:v4];
+  [buttonEventMonitor startWithPriority:26 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -411,20 +411,20 @@ LABEL_25:
 
 - (void)_reset
 {
-  v3 = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
+  buttonEventMonitor = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
 
-  if (v3)
+  if (buttonEventMonitor)
   {
     v4 = +[NSNotificationCenter defaultCenter];
     [v4 removeObserver:self name:@"com.apple.Diagnostics.DKViewControllerPresented" object:0];
 
-    v5 = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
+    buttonEventMonitor2 = [(DADeviceDecoratorWithUI *)self buttonEventMonitor];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10002C230;
     v7[3] = &unk_1001BC580;
     v7[4] = self;
-    [v5 stopWithCompletion:v7];
+    [buttonEventMonitor2 stopWithCompletion:v7];
   }
 
   v6[0] = _NSConcreteStackBlock;

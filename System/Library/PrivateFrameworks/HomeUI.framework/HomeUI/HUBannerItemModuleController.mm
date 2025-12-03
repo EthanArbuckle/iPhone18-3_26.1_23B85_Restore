@@ -1,40 +1,40 @@
 @interface HUBannerItemModuleController
-- (BOOL)hasTapActionForItem:(id)a3;
-- (Class)collectionCellClassForItem:(id)a3;
-- (HUBannerItemModuleController)initWithModule:(id)a3;
-- (HUBannerItemModuleController)initWithModule:(id)a3 host:(id)a4 delegate:(id)a5;
+- (BOOL)hasTapActionForItem:(id)item;
+- (Class)collectionCellClassForItem:(id)item;
+- (HUBannerItemModuleController)initWithModule:(id)module;
+- (HUBannerItemModuleController)initWithModule:(id)module host:(id)host delegate:(id)delegate;
 - (HUBannerItemModuleControllerDelegate)delegate;
-- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)a3;
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)_sendBannerInteractionforItem:(id)a3 tappedBannerItemOverrideClassName:(id)a4;
-- (void)bannerView:(id)a3 dismissButtonTapped:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)size;
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment;
+- (unint64_t)didSelectItem:(id)item;
+- (void)_sendBannerInteractionforItem:(id)item tappedBannerItemOverrideClassName:(id)name;
+- (void)bannerView:(id)view dismissButtonTapped:(id)tapped;
+- (void)configureCell:(id)cell forItem:(id)item;
 - (void)dealloc;
 - (void)dismissCameraUpgradeBanner;
-- (void)fetchMediaAccountForHome:(id)a3;
+- (void)fetchMediaAccountForHome:(id)home;
 - (void)upgradeCameraSelected;
-- (void)user:(id)a3 didUpdateNeedsiTunesMultiUserRepair:(BOOL)a4;
+- (void)user:(id)user didUpdateNeedsiTunesMultiUserRepair:(BOOL)repair;
 @end
 
 @implementation HUBannerItemModuleController
 
-- (HUBannerItemModuleController)initWithModule:(id)a3
+- (HUBannerItemModuleController)initWithModule:(id)module
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithModule_host_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUBannerItemModuleController.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HUBannerItemModuleController initWithModule:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUBannerItemModuleController.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HUBannerItemModuleController initWithModule:]", v6}];
 
   return 0;
 }
 
-- (HUBannerItemModuleController)initWithModule:(id)a3 host:(id)a4 delegate:(id)a5
+- (HUBannerItemModuleController)initWithModule:(id)module host:(id)host delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  moduleCopy = module;
+  hostCopy = host;
+  delegateCopy = delegate;
   v11 = objc_opt_class();
-  v12 = v8;
+  v12 = moduleCopy;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -53,9 +53,9 @@
       goto LABEL_8;
     }
 
-    v15 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v15 handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
   }
 
   v14 = 0;
@@ -67,23 +67,23 @@ LABEL_8:
   v18 = v17;
   if (v17)
   {
-    [(HUItemModuleController *)v17 setHost:v9];
-    [(HUBannerItemModuleController *)v18 setDelegate:v10];
-    v19 = [(HUItemModuleController *)v18 host];
-    v20 = [v19 presentingViewControllerForModuleController:v18];
+    [(HUItemModuleController *)v17 setHost:hostCopy];
+    [(HUBannerItemModuleController *)v18 setDelegate:delegateCopy];
+    host = [(HUItemModuleController *)v18 host];
+    v20 = [host presentingViewControllerForModuleController:v18];
 
-    v21 = [v20 view];
-    [v21 frame];
+    view = [v20 view];
+    [view frame];
     v24 = [(HUBannerItemModuleController *)v18 _defaultCellLayoutOptionsForViewSize:v22, v23];
     layoutOptions = v18->_layoutOptions;
     v18->_layoutOptions = v24;
 
-    v26 = [v12 context];
-    v27 = [v26 home];
-    [(HUBannerItemModuleController *)v18 fetchMediaAccountForHome:v27];
+    context = [v12 context];
+    home = [context home];
+    [(HUBannerItemModuleController *)v18 fetchMediaAccountForHome:home];
 
-    v28 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v28 addUserObserver:v18];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addUserObserver:v18];
   }
 
   return v18;
@@ -91,24 +91,24 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(HUBannerItemModuleController *)self homeMediaAccountFuture];
-  [v3 cancel];
+  homeMediaAccountFuture = [(HUBannerItemModuleController *)self homeMediaAccountFuture];
+  [homeMediaAccountFuture cancel];
 
   v4.receiver = self;
   v4.super_class = HUBannerItemModuleController;
   [(HUBannerItemModuleController *)&v4 dealloc];
 }
 
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment
 {
   v48[1] = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D14CE8] isAnIPad])
   {
     objc_opt_class();
-    v5 = [(HUItemModuleController *)self host];
+    host = [(HUItemModuleController *)self host];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = host;
     }
 
     else
@@ -118,8 +118,8 @@ LABEL_8:
 
     v7 = v6;
 
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    if (([v8 orientation] - 1) >= 2)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if (([currentDevice orientation] - 1) >= 2)
     {
       v9 = 0.75;
     }
@@ -129,12 +129,12 @@ LABEL_8:
       v9 = 0.67;
     }
 
-    v10 = [v7 view];
-    [v10 bounds];
+    view = [v7 view];
+    [view bounds];
     v12 = v11;
-    v13 = [v7 view];
+    view2 = [v7 view];
 
-    [v13 bounds];
+    [view2 bounds];
     v15 = v12 / v14;
 
     v16 = MEMORY[0x277CFB840];
@@ -162,8 +162,8 @@ LABEL_12:
   v23 = [MEMORY[0x277CFB860] itemWithLayoutSize:v22];
   v24 = MEMORY[0x277CFB870];
   v25 = [MEMORY[0x277CFB840] fractionalWidthDimension:1.0];
-  v26 = [v22 heightDimension];
-  v27 = [v24 sizeWithWidthDimension:v25 heightDimension:v26];
+  heightDimension = [v22 heightDimension];
+  v27 = [v24 sizeWithWidthDimension:v25 heightDimension:heightDimension];
 
   v28 = MEMORY[0x277CFB850];
   if (v17)
@@ -179,35 +179,35 @@ LABEL_12:
   }
 
   v31 = MEMORY[0x277CFB878];
-  v32 = [(HUBannerItemModuleController *)self layoutOptions];
-  [v32 columnSpacing];
+  layoutOptions = [(HUBannerItemModuleController *)self layoutOptions];
+  [layoutOptions columnSpacing];
   v33 = [v31 fixedSpacing:?];
   [v30 setInterItemSpacing:v33];
 
   v34 = [MEMORY[0x277CFB868] sectionWithGroup:v30];
-  v35 = [(HUBannerItemModuleController *)self layoutOptions];
-  [v35 rowSpacing];
+  layoutOptions2 = [(HUBannerItemModuleController *)self layoutOptions];
+  [layoutOptions2 rowSpacing];
   [v34 setInterGroupSpacing:?];
 
-  v36 = [(HUBannerItemModuleController *)self layoutOptions];
-  [v36 sectionTopMargin];
+  layoutOptions3 = [(HUBannerItemModuleController *)self layoutOptions];
+  [layoutOptions3 sectionTopMargin];
   v38 = v37;
-  v39 = [(HUBannerItemModuleController *)self layoutOptions];
-  [v39 sectionLeadingMargin];
+  layoutOptions4 = [(HUBannerItemModuleController *)self layoutOptions];
+  [layoutOptions4 sectionLeadingMargin];
   v41 = v40;
-  v42 = [(HUBannerItemModuleController *)self layoutOptions];
-  [v42 sectionBottomMargin];
+  layoutOptions5 = [(HUBannerItemModuleController *)self layoutOptions];
+  [layoutOptions5 sectionBottomMargin];
   v44 = v43;
-  v45 = [(HUBannerItemModuleController *)self layoutOptions];
-  [v45 sectionTrailingMargin];
+  layoutOptions6 = [(HUBannerItemModuleController *)self layoutOptions];
+  [layoutOptions6 sectionTrailingMargin];
   [v34 setContentInsets:{v38, v41, v44, v46}];
 
   return v34;
 }
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -224,14 +224,14 @@ LABEL_12:
   return v4;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v37.receiver = self;
   v37.super_class = HUBannerItemModuleController;
-  [(HUItemModuleController *)&v37 configureCell:v6 forItem:v7];
-  v8 = [(HUBannerItemModuleController *)self layoutOptions];
+  [(HUItemModuleController *)&v37 configureCell:cellCopy forItem:itemCopy];
+  layoutOptions = [(HUBannerItemModuleController *)self layoutOptions];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -239,7 +239,7 @@ LABEL_12:
     if (objc_opt_isKindOfClass())
     {
       v20 = objc_opt_class();
-      v21 = v6;
+      v21 = cellCopy;
       if (v21)
       {
         if (objc_opt_isKindOfClass())
@@ -258,21 +258,21 @@ LABEL_12:
           goto LABEL_19;
         }
 
-        v23 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-        [v23 handleFailureInFunction:v24 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v20, objc_opt_class()}];
+        [currentHandler handleFailureInFunction:v24 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v20, objc_opt_class()}];
       }
 
       v12 = 0;
 LABEL_19:
 
       [v12 setDelegate:self];
-      v25 = [v7 latestResults];
-      v26 = [v25 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+      latestResults = [itemCopy latestResults];
+      v26 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
       [v12 setAccessibilityIdentifier:v26];
 
-      v17 = [v8 welcomeUIBannerCellOptions];
-      [v12 setLayoutOptions:v17];
+      welcomeUIBannerCellOptions = [layoutOptions welcomeUIBannerCellOptions];
+      [v12 setLayoutOptions:welcomeUIBannerCellOptions];
       goto LABEL_20;
     }
 
@@ -283,7 +283,7 @@ LABEL_19:
     }
 
     v27 = objc_opt_class();
-    v28 = v6;
+    v28 = cellCopy;
     if (v28)
     {
       if (objc_opt_isKindOfClass())
@@ -302,21 +302,21 @@ LABEL_19:
         goto LABEL_31;
       }
 
-      v30 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v30 handleFailureInFunction:v31 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v27, objc_opt_class()}];
+      [currentHandler2 handleFailureInFunction:v31 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v27, objc_opt_class()}];
     }
 
     v12 = 0;
 LABEL_31:
 
     [v12 setDelegate:self];
-    v32 = [v8 bannerCellOptions];
-    [v12 setLayoutOptions:v32];
+    bannerCellOptions = [layoutOptions bannerCellOptions];
+    [v12 setLayoutOptions:bannerCellOptions];
 
-    v33 = [v7 latestResults];
+    latestResults2 = [itemCopy latestResults];
     v34 = *MEMORY[0x277D13DC8];
-    v35 = [v33 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    v35 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
     [v12 setAccessibilityIdentifier:v35];
 
     objc_opt_class();
@@ -325,17 +325,17 @@ LABEL_31:
       goto LABEL_21;
     }
 
-    v36 = [v12 bannerView];
-    [v36 setDisableHighlighting:1];
+    bannerView = [v12 bannerView];
+    [bannerView setDisableHighlighting:1];
 
-    v16 = [v7 latestResults];
-    v17 = v16;
+    latestResults3 = [itemCopy latestResults];
+    welcomeUIBannerCellOptions = latestResults3;
     v18 = v34;
     goto LABEL_10;
   }
 
   v9 = objc_opt_class();
-  v10 = v6;
+  v10 = cellCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -354,23 +354,23 @@ LABEL_31:
       goto LABEL_9;
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
+    [currentHandler3 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
   }
 
   v12 = 0;
 LABEL_9:
 
   [v12 setDelegate:self];
-  v15 = [v8 bannerCellOptions];
-  [v12 setLayoutOptions:v15];
+  bannerCellOptions2 = [layoutOptions bannerCellOptions];
+  [v12 setLayoutOptions:bannerCellOptions2];
 
-  v16 = [v7 latestResults];
-  v17 = v16;
+  latestResults3 = [itemCopy latestResults];
+  welcomeUIBannerCellOptions = latestResults3;
   v18 = *MEMORY[0x277D13DC8];
 LABEL_10:
-  v19 = [v16 objectForKeyedSubscript:v18];
+  v19 = [latestResults3 objectForKeyedSubscript:v18];
   [v12 setAccessibilityIdentifier:v19];
 
 LABEL_20:
@@ -379,11 +379,11 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)a3
+- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x277D14CE8] isAMac];
+  height = size.height;
+  width = size.width;
+  isAMac = [MEMORY[0x277D14CE8] isAMac];
   if ([MEMORY[0x277D14CE8] useMacIdiom])
   {
     v6 = &unk_282491760;
@@ -394,44 +394,44 @@ LABEL_22:
     v6 = 0;
   }
 
-  v7 = [HUGridLayoutOptions defaultOptionsForViewSize:v5 columnStyle:v6 overrideSizeSubclass:width, height];
-  [v7 setStatusHidden:0];
+  height = [HUGridLayoutOptions defaultOptionsForViewSize:isAMac columnStyle:v6 overrideSizeSubclass:width, height];
+  [height setStatusHidden:0];
   v8 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:0];
-  v9 = [v8 preferredContentSizeCategory];
-  [v7 setContentSizeCategory:v9];
+  preferredContentSizeCategory = [v8 preferredContentSizeCategory];
+  [height setContentSizeCategory:preferredContentSizeCategory];
 
-  [v7 setEditing:0];
-  [v7 setSectionLeadingMargin:0.0];
-  [v7 setSectionTrailingMargin:0.0];
+  [height setEditing:0];
+  [height setSectionLeadingMargin:0.0];
+  [height setSectionTrailingMargin:0.0];
 
-  return v7;
+  return height;
 }
 
-- (void)bannerView:(id)a3 dismissButtonTapped:(id)a4
+- (void)bannerView:(id)view dismissButtonTapped:(id)tapped
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewCopy = view;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v33 = self;
+    selfCopy = self;
     v34 = 2080;
     v35 = "[HUBannerItemModuleController bannerView:dismissButtonTapped:]";
     v36 = 2112;
-    v37 = v5;
+    v37 = viewCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped dismiss button for %@", buf, 0x20u);
   }
 
   v7 = objc_alloc(MEMORY[0x277D14C98]);
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 context];
-  v10 = [v9 home];
-  v11 = [(HUItemModuleController *)self module];
-  v12 = [v11 context];
-  v13 = [v12 home];
-  v14 = [v13 currentUser];
-  v15 = [v7 initWithHome:v10 user:v14 nameStyle:0];
+  module = [(HUItemModuleController *)self module];
+  context = [module context];
+  home = [context home];
+  module2 = [(HUItemModuleController *)self module];
+  context2 = [module2 context];
+  home2 = [context2 home];
+  currentUser = [home2 currentUser];
+  v15 = [v7 initWithHome:home user:currentUser nameStyle:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -441,33 +441,33 @@ LABEL_22:
 
   v17 = MEMORY[0x277D14788];
   v18 = MEMORY[0x277CBEB98];
-  v19 = [v5 item];
-  v20 = [v18 na_setWithSafeObject:v19];
+  item = [viewCopy item];
+  v20 = [v18 na_setWithSafeObject:item];
   v21 = [v17 requestToUpdateItems:v20 senderSelector:a2];
 
-  v22 = [(HUItemModuleController *)self module];
-  v23 = [v22 itemUpdater];
-  v24 = [v23 performItemUpdateRequest:v21];
+  module3 = [(HUItemModuleController *)self module];
+  itemUpdater = [module3 itemUpdater];
+  v24 = [itemUpdater performItemUpdateRequest:v21];
 
   v25 = MEMORY[0x277CCACA8];
-  v26 = [v5 item];
+  item2 = [viewCopy item];
   v27 = objc_opt_class();
   v28 = NSStringFromClass(v27);
   v29 = [v25 stringWithFormat:@"%@-dismiss", v28];
 
-  v30 = [v5 item];
-  [(HUBannerItemModuleController *)self _sendBannerInteractionforItem:v30 tappedBannerItemOverrideClassName:v29];
+  item3 = [viewCopy item];
+  [(HUBannerItemModuleController *)self _sendBannerInteractionforItem:item3 tappedBannerItemOverrideClassName:v29];
 }
 
-- (BOOL)hasTapActionForItem:(id)a3
+- (BOOL)hasTapActionForItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (isKindOfClass & 1) != 0 && ([v5 latestResults], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKeyedSubscript:", *MEMORY[0x277D13DC8]), v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v4, "isEqualToString:", @"Home.Banners.Symptoms.InternetOutage")))
+    if (isKindOfClass & 1) != 0 && ([itemCopy latestResults], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKeyedSubscript:", *MEMORY[0x277D13DC8]), v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v4, "isEqualToString:", @"Home.Banners.Symptoms.InternetOutage")))
     {
       v6 = 1;
     }
@@ -477,8 +477,8 @@ LABEL_22:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v5 latestResults];
-        v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13DC0]];
+        latestResults = [itemCopy latestResults];
+        v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DC0]];
         if (v9)
         {
 
@@ -491,8 +491,8 @@ LABEL_22:
 
         else
         {
-          v11 = [v5 latestResults];
-          v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+          latestResults2 = [itemCopy latestResults];
+          v12 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
           v6 = v12 == 0;
 
           if ((isKindOfClass & 1) == 0)
@@ -521,31 +521,31 @@ LABEL_12:
   return v6;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
   v142 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v135 = self;
+    selfCopy9 = self;
     v136 = 2080;
     v137 = "[HUBannerItemModuleController didSelectItem:]";
     v138 = 2112;
-    v139 = v5;
+    v139 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped %@", buf, 0x20u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 latestResults];
-    v8 = [v7 objectForKeyedSubscript:@"HFResultSetupBannerType"];
-    v9 = [v8 unsignedIntegerValue];
+    latestResults = [itemCopy latestResults];
+    v8 = [latestResults objectForKeyedSubscript:@"HFResultSetupBannerType"];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    v10 = [v5 latestResults];
-    v11 = [v10 objectForKeyedSubscript:@"HFResultKeyPathsForUnfinishedOnboardingFlows"];
+    latestResults2 = [itemCopy latestResults];
+    v11 = [latestResults2 objectForKeyedSubscript:@"HFResultKeyPathsForUnfinishedOnboardingFlows"];
 
     if ([v11 count])
     {
@@ -561,52 +561,52 @@ LABEL_12:
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v135 = self;
+      selfCopy9 = self;
       v136 = 2080;
       v137 = "[HUBannerItemModuleController didSelectItem:]";
       v138 = 2112;
-      v139 = v5;
+      v139 = itemCopy;
       v140 = 2112;
       v141 = v125;
       _os_log_impl(&dword_20CEB6000, v47, OS_LOG_TYPE_DEFAULT, "(%@:%s) User tapped Setup Banner %@ %@", buf, 0x2Au);
     }
 
-    if (v9 != 1)
+    if (unsignedIntegerValue != 1)
     {
-      if (v9)
+      if (unsignedIntegerValue)
       {
 LABEL_69:
 
         goto LABEL_70;
       }
 
-      v48 = [MEMORY[0x277CBEB38] dictionary];
-      [v48 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromUserInput"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromUserInput"];
       v133 = *MEMORY[0x277D13910];
       v49 = [MEMORY[0x277CBEA60] arrayWithObjects:&v133 count:1];
       v50 = [v11 isEqualToArray:v49];
 
       v51 = [MEMORY[0x277CCABB0] numberWithBool:v50];
-      [v48 setObject:v51 forKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromNaturalLightingReminder"];
+      [dictionary setObject:v51 forKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromNaturalLightingReminder"];
 
-      v124 = [(HUItemModuleController *)self module];
-      v52 = [v124 context];
-      v53 = [v52 home];
-      v54 = [(HUItemModuleController *)self host];
-      v55 = [HUHomeFeatureOnboardingUtilities home:v53 onboardFeaturesForKeyPaths:v11 presentingViewController:v54 usageOptions:v48];
+      module = [(HUItemModuleController *)self module];
+      context = [module context];
+      home = [context home];
+      host = [(HUItemModuleController *)self host];
+      v55 = [HUHomeFeatureOnboardingUtilities home:home onboardFeaturesForKeyPaths:v11 presentingViewController:host usageOptions:dictionary];
 
 LABEL_68:
       goto LABEL_69;
     }
 
-    v56 = [v5 latestResults];
-    v57 = [v56 objectForKeyedSubscript:@"HFResultSetupBannerAccessorySetupFlowsKey"];
+    latestResults3 = [itemCopy latestResults];
+    v57 = [latestResults3 objectForKeyedSubscript:@"HFResultSetupBannerAccessorySetupFlowsKey"];
 
     v58 = HFLogForCategory();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v135 = self;
+      selfCopy9 = self;
       v136 = 2080;
       v137 = "[HUBannerItemModuleController didSelectItem:]";
       v138 = 2112;
@@ -614,94 +614,94 @@ LABEL_68:
       _os_log_impl(&dword_20CEB6000, v58, OS_LOG_TYPE_DEFAULT, "(%@:%s) Status banner type is Accessory Setup. accessorySetupFlows = %@", buf, 0x20u);
     }
 
-    v124 = [v57 na_firstObjectPassingTest:&__block_literal_global_121];
+    module = [v57 na_firstObjectPassingTest:&__block_literal_global_121];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __46__HUBannerItemModuleController_didSelectItem___block_invoke_2;
     aBlock[3] = &unk_277DBD798;
     aBlock[4] = self;
-    v48 = v57;
-    v132 = v48;
+    dictionary = v57;
+    v132 = dictionary;
     v123 = _Block_copy(aBlock);
-    v122 = [v48 na_firstObjectPassingTest:&__block_literal_global_145];
-    v121 = [v48 na_firstObjectPassingTest:&__block_literal_global_148];
-    if (v124)
+    v122 = [dictionary na_firstObjectPassingTest:&__block_literal_global_145];
+    v121 = [dictionary na_firstObjectPassingTest:&__block_literal_global_148];
+    if (module)
     {
-      v59 = [(HUItemModuleController *)self module];
-      v60 = [v59 context];
-      v61 = [v60 home];
-      v62 = [v124 homeKitObjects];
-      v63 = [v62 na_map:&__block_literal_global_153];
-      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForResumeAccessorySetupInHome:v61 accessoryUUIDs:v63];
+      module2 = [(HUItemModuleController *)self module];
+      context2 = [module2 context];
+      home2 = [context2 home];
+      homeKitObjects = [module homeKitObjects];
+      v63 = [homeKitObjects na_map:&__block_literal_global_153];
+      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForResumeAccessorySetupInHome:home2 accessoryUUIDs:v63];
 
       v123[2](v123, v64, &stru_2823E0EE8);
     }
 
     else if (v122)
     {
-      v67 = [(HUItemModuleController *)self module];
-      v68 = [v67 context];
-      v69 = [v68 home];
-      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForSafetyAndSecurityInHome:v69];
+      module3 = [(HUItemModuleController *)self module];
+      context3 = [module3 context];
+      home3 = [context3 home];
+      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForSafetyAndSecurityInHome:home3];
 
       v123[2](v123, v64, &stru_2823E0EE8);
     }
 
     else if (v121)
     {
-      v72 = [(HUItemModuleController *)self module];
-      v73 = [v72 context];
-      v74 = [v73 home];
-      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForSiriEndpointInHome:v74];
+      module4 = [(HUItemModuleController *)self module];
+      context4 = [module4 context];
+      home4 = [context4 home];
+      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForSiriEndpointInHome:home4];
 
       v123[2](v123, v64, &stru_2823E0EE8);
     }
 
-    else if ([v48 na_any:&__block_literal_global_155])
+    else if ([dictionary na_any:&__block_literal_global_155])
     {
-      v81 = [(HUItemModuleController *)self module];
-      v82 = [v81 context];
-      v83 = [v82 home];
-      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForLockAccessFirmwareUpgradeSetupInHome:v83];
+      module5 = [(HUItemModuleController *)self module];
+      context5 = [module5 context];
+      home5 = [context5 home];
+      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForLockAccessFirmwareUpgradeSetupInHome:home5];
 
       v123[2](v123, v64, &stru_2823E0EE8);
     }
 
-    else if ([v48 na_any:&__block_literal_global_157])
+    else if ([dictionary na_any:&__block_literal_global_157])
     {
-      v102 = [(HUItemModuleController *)self module];
-      v103 = [v102 context];
-      v104 = [v103 home];
-      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForLockAccessWalletKeySetupInHome:v104];
+      module6 = [(HUItemModuleController *)self module];
+      context6 = [module6 context];
+      home6 = [context6 home];
+      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForLockAccessWalletKeySetupInHome:home6];
 
       v123[2](v123, v64, &stru_2823E0EE8);
     }
 
-    else if ([v48 na_any:&__block_literal_global_159])
+    else if ([dictionary na_any:&__block_literal_global_159])
     {
-      v105 = [(HUItemModuleController *)self module];
-      v106 = [v105 context];
-      v107 = [v106 home];
-      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForLockAccessPinCodeSetupInHome:v107];
+      module7 = [(HUItemModuleController *)self module];
+      context7 = [module7 context];
+      home7 = [context7 home];
+      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForLockAccessPinCodeSetupInHome:home7];
 
-      v108 = [MEMORY[0x277D146E8] sharedDispatcher];
-      v109 = [v108 homeManager];
-      [v109 launchHomeUIServiceToResumeSetupWithUserInfo:v64 completionHandler:&__block_literal_global_161];
+      mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+      homeManager = [mEMORY[0x277D146E8] homeManager];
+      [homeManager launchHomeUIServiceToResumeSetupWithUserInfo:v64 completionHandler:&__block_literal_global_161];
     }
 
     else
     {
-      if (![v48 na_any:&__block_literal_global_163])
+      if (![dictionary na_any:&__block_literal_global_163])
       {
 LABEL_67:
 
         goto LABEL_68;
       }
 
-      v114 = [(HUItemModuleController *)self module];
-      v115 = [v114 context];
-      v116 = [v115 home];
-      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForThermostatAutoClimateControlSetupInHome:v116];
+      module8 = [(HUItemModuleController *)self module];
+      context8 = [module8 context];
+      home8 = [context8 home];
+      v64 = [HUHomeUIServiceLaunchUserInfo userInfoForThermostatAutoClimateControlSetupInHome:home8];
 
       v123[2](v123, v64, &stru_2823E0EE8);
     }
@@ -709,47 +709,47 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  v12 = [(HUItemModuleController *)self module];
-  v13 = [v12 bannerItemProvider];
-  v14 = [v13 multiUserTokenFixBannerItem];
-  v15 = [v5 isEqual:v14];
+  module9 = [(HUItemModuleController *)self module];
+  bannerItemProvider = [module9 bannerItemProvider];
+  multiUserTokenFixBannerItem = [bannerItemProvider multiUserTokenFixBannerItem];
+  v15 = [itemCopy isEqual:multiUserTokenFixBannerItem];
 
   if (v15)
   {
-    v16 = [(HUItemModuleController *)self module];
-    v17 = [v16 bannerItemProvider];
-    v18 = [v17 multiUserTokenFixBannerItem];
-    v19 = [v18 homeMediaAccount];
+    module10 = [(HUItemModuleController *)self module];
+    bannerItemProvider2 = [module10 bannerItemProvider];
+    multiUserTokenFixBannerItem2 = [bannerItemProvider2 multiUserTokenFixBannerItem];
+    homeMediaAccount = [multiUserTokenFixBannerItem2 homeMediaAccount];
 
     v20 = objc_alloc(MEMORY[0x277CEE938]);
-    v21 = [(HUItemModuleController *)self module];
-    v22 = [v21 context];
-    v23 = [v22 home];
-    v24 = [v23 uniqueIdentifier];
-    v25 = [(HUItemModuleController *)self host];
-    v26 = [v20 initWithAccount:v19 homeIdentifier:v24 viewController:v25];
+    module11 = [(HUItemModuleController *)self module];
+    context9 = [module11 context];
+    home9 = [context9 home];
+    uniqueIdentifier = [home9 uniqueIdentifier];
+    host2 = [(HUItemModuleController *)self host];
+    v26 = [v20 initWithAccount:homeMediaAccount homeIdentifier:uniqueIdentifier viewController:host2];
     [(HUBannerItemModuleController *)self setMultiUserTokenFixTask:v26];
 
-    v27 = [(HUBannerItemModuleController *)self multiUserTokenFixTask];
-    v28 = [v27 performTask];
+    multiUserTokenFixTask = [(HUBannerItemModuleController *)self multiUserTokenFixTask];
+    performTask = [multiUserTokenFixTask performTask];
 
-    v29 = [(HUItemModuleController *)self module];
-    v30 = [v29 bannerItemProvider];
-    v31 = [v30 multiUserTokenFixBannerItem];
-    [v31 setForceHidden:1];
+    module12 = [(HUItemModuleController *)self module];
+    bannerItemProvider3 = [module12 bannerItemProvider];
+    multiUserTokenFixBannerItem3 = [bannerItemProvider3 multiUserTokenFixBannerItem];
+    [multiUserTokenFixBannerItem3 setForceHidden:1];
 
     v32 = MEMORY[0x277D14788];
     v33 = MEMORY[0x277CBEB98];
-    v34 = [(HUItemModuleController *)self module];
-    v35 = [v34 bannerItemProvider];
-    v36 = [v35 multiUserTokenFixBannerItem];
-    v37 = [v33 na_setWithSafeObject:v36];
+    module13 = [(HUItemModuleController *)self module];
+    bannerItemProvider4 = [module13 bannerItemProvider];
+    multiUserTokenFixBannerItem4 = [bannerItemProvider4 multiUserTokenFixBannerItem];
+    v37 = [v33 na_setWithSafeObject:multiUserTokenFixBannerItem4];
     v38 = [v32 requestToUpdateItems:v37 senderSelector:a2];
 
-    v39 = [(HUItemModuleController *)self module];
-    v40 = [v39 itemUpdater];
+    module14 = [(HUItemModuleController *)self module];
+    itemUpdater = [module14 itemUpdater];
 
-    v41 = [v40 performItemUpdateRequest:v38];
+    v41 = [itemUpdater performItemUpdateRequest:v38];
     objc_initWeak(buf, self);
     v126[0] = MEMORY[0x277D85DD0];
     v126[1] = 3221225472;
@@ -757,13 +757,13 @@ LABEL_67:
     v126[3] = &unk_277DBD7C0;
     objc_copyWeak(v130, buf);
     v130[1] = a2;
-    v42 = v19;
+    v42 = homeMediaAccount;
     v127 = v42;
-    v43 = v40;
+    v43 = itemUpdater;
     v128 = v43;
     v44 = v38;
     v129 = v44;
-    [v28 addFinishBlock:v126];
+    [performTask addFinishBlock:v126];
 
     objc_destroyWeak(v130);
     objc_destroyWeak(buf);
@@ -778,12 +778,12 @@ LABEL_67:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v135 = self;
+        selfCopy9 = self;
         _os_log_impl(&dword_20CEB6000, v45, OS_LOG_TYPE_DEFAULT, "%@: User tapped See home hubs", buf, 0xCu);
       }
 
-      v46 = [(HUBannerItemModuleController *)self delegate];
-      [v46 didSelectUnreachableResidentsBanner:self];
+      delegate = [(HUBannerItemModuleController *)self delegate];
+      [delegate didSelectUnreachableResidentsBanner:self];
     }
 
     else
@@ -795,12 +795,12 @@ LABEL_67:
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v135 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_20CEB6000, v65, OS_LOG_TYPE_DEFAULT, "%@: User tapped WelcomeUIBanner", buf, 0xCu);
         }
 
-        v66 = [(HUBannerItemModuleController *)self delegate];
-        [v66 didSelectWelcomeBanner:self];
+        delegate2 = [(HUBannerItemModuleController *)self delegate];
+        [delegate2 didSelectWelcomeBanner:self];
       }
 
       else
@@ -812,12 +812,12 @@ LABEL_67:
           if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v135 = self;
+            selfCopy9 = self;
             _os_log_impl(&dword_20CEB6000, v70, OS_LOG_TYPE_DEFAULT, "%@: User tapped HomeHubMigrationBanner", buf, 0xCu);
           }
 
-          v71 = [(HUBannerItemModuleController *)self delegate];
-          [v71 didSelectHomeHubMigrationBanner:self];
+          delegate3 = [(HUBannerItemModuleController *)self delegate];
+          [delegate3 didSelectHomeHubMigrationBanner:self];
         }
 
         else
@@ -829,16 +829,16 @@ LABEL_67:
             if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v135 = self;
+              selfCopy9 = self;
               _os_log_impl(&dword_20CEB6000, v75, OS_LOG_TYPE_DEFAULT, "%@: User tapped Media Service Error Banner", buf, 0xCu);
             }
 
-            v76 = [v5 latestResults];
-            v77 = [v76 objectForKeyedSubscript:@"HFResultMediaServiceBundleIdentifierKey"];
+            latestResults4 = [itemCopy latestResults];
+            v77 = [latestResults4 objectForKeyedSubscript:@"HFResultMediaServiceBundleIdentifierKey"];
 
             v78 = [MEMORY[0x277CBEBC0] hf_appStoreURLForBundleIdentifier:v77];
-            v79 = [MEMORY[0x277D148E8] sharedInstance];
-            v80 = [v79 openURL:v78];
+            mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+            v80 = [mEMORY[0x277D148E8] openURL:v78];
           }
 
           else
@@ -850,12 +850,12 @@ LABEL_67:
               if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v135 = self;
+                selfCopy9 = self;
                 _os_log_impl(&dword_20CEB6000, v84, OS_LOG_TYPE_DEFAULT, "%@: User tapped DropIn Banner", buf, 0xCu);
               }
 
               objc_opt_class();
-              v85 = v5;
+              v85 = itemCopy;
               if (objc_opt_isKindOfClass())
               {
                 v86 = v85;
@@ -868,18 +868,18 @@ LABEL_67:
 
               v87 = v86;
 
-              v88 = [v87 device];
-              v89 = [(HUItemModuleController *)self module];
-              v90 = [v89 context];
-              v91 = [v90 home];
-              v92 = [v88 homeKitIdentifier];
-              v93 = [v91 hf_accessoryWithIdentifier:v92];
+              device = [v87 device];
+              module15 = [(HUItemModuleController *)self module];
+              context10 = [module15 context];
+              home10 = [context10 home];
+              homeKitIdentifier = [device homeKitIdentifier];
+              v93 = [home10 hf_accessoryWithIdentifier:homeKitIdentifier];
 
               objc_opt_class();
-              v94 = [(HUItemModuleController *)self host];
+              host3 = [(HUItemModuleController *)self host];
               if (objc_opt_isKindOfClass())
               {
-                v95 = v94;
+                v95 = host3;
               }
 
               else
@@ -890,14 +890,14 @@ LABEL_67:
               v96 = v95;
 
               v97 = [HUHomeControlServiceContext alloc];
-              v98 = [v93 home];
-              v99 = [(HUHomeControlServiceContext *)v97 initWithServiceType:2 home:v98 accessory:v93 presentingViewController:v96];
+              home11 = [v93 home];
+              v99 = [(HUHomeControlServiceContext *)v97 initWithServiceType:2 home:home11 accessory:v93 presentingViewController:v96];
 
               v100 = HFLogForCategory();
               if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v135 = self;
+                selfCopy9 = self;
                 v136 = 2112;
                 v137 = v93;
                 _os_log_impl(&dword_20CEB6000, v100, OS_LOG_TYPE_DEFAULT, "%@: Launching dropin session for accessory: %@", buf, 0x16u);
@@ -920,13 +920,13 @@ LABEL_67:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
                 {
-                  v110 = [v5 latestResults];
-                  v111 = [v110 objectForKeyedSubscript:*MEMORY[0x277D13DC0]];
+                  latestResults5 = [itemCopy latestResults];
+                  v111 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D13DC0]];
 
                   if (v111)
                   {
-                    v112 = [MEMORY[0x277D148E8] sharedInstance];
-                    v113 = [v112 openURL:v111];
+                    mEMORY[0x277D148E8]2 = [MEMORY[0x277D148E8] sharedInstance];
+                    v113 = [mEMORY[0x277D148E8]2 openURL:v111];
                   }
                 }
 
@@ -938,13 +938,13 @@ LABEL_67:
                     goto LABEL_70;
                   }
 
-                  v118 = [v5 latestResults];
-                  v111 = [v118 objectForKeyedSubscript:*MEMORY[0x277D13DC0]];
+                  latestResults6 = [itemCopy latestResults];
+                  v111 = [latestResults6 objectForKeyedSubscript:*MEMORY[0x277D13DC0]];
 
                   if (v111)
                   {
-                    v119 = [MEMORY[0x277D148E8] sharedInstance];
-                    v120 = [v119 openURL:v111];
+                    mEMORY[0x277D148E8]3 = [MEMORY[0x277D148E8] sharedInstance];
+                    v120 = [mEMORY[0x277D148E8]3 openURL:v111];
                   }
                 }
               }
@@ -956,7 +956,7 @@ LABEL_67:
   }
 
 LABEL_70:
-  [(HUBannerItemModuleController *)self _sendBannerInteractionforItem:v5 tappedBannerItemOverrideClassName:0];
+  [(HUBannerItemModuleController *)self _sendBannerInteractionforItem:itemCopy tappedBannerItemOverrideClassName:0];
 
   return 0;
 }
@@ -1172,44 +1172,44 @@ void __46__HUBannerItemModuleController_didSelectItem___block_invoke_9(uint64_t 
   }
 }
 
-- (void)fetchMediaAccountForHome:(id)a3
+- (void)fetchMediaAccountForHome:(id)home
 {
-  v5 = a3;
-  if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && objc_msgSend(v5, "isMultiUserEnabled"))
+  homeCopy = home;
+  if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && objc_msgSend(homeCopy, "isMultiUserEnabled"))
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x277D14400] sharedInstance];
-    v7 = [v5 uniqueIdentifier];
-    v8 = [v7 UUIDString];
-    v9 = [v6 mediaAccountForHomeIdentifier:v8];
+    mEMORY[0x277D14400] = [MEMORY[0x277D14400] sharedInstance];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    v9 = [mEMORY[0x277D14400] mediaAccountForHomeIdentifier:uUIDString];
 
     if (v9)
     {
-      v10 = [(HUItemModuleController *)self module];
-      v11 = [v10 bannerItemProvider];
-      v12 = [v11 multiUserTokenFixBannerItem];
-      [v12 setHomeMediaAccount:v9];
+      module = [(HUItemModuleController *)self module];
+      bannerItemProvider = [module bannerItemProvider];
+      multiUserTokenFixBannerItem = [bannerItemProvider multiUserTokenFixBannerItem];
+      [multiUserTokenFixBannerItem setHomeMediaAccount:v9];
     }
 
     else
     {
-      v13 = [MEMORY[0x277D14400] sharedInstance];
-      v14 = [v13 executeHomeMediaAccountFetchForHome:v5];
+      mEMORY[0x277D14400]2 = [MEMORY[0x277D14400] sharedInstance];
+      v14 = [mEMORY[0x277D14400]2 executeHomeMediaAccountFetchForHome:homeCopy];
       [(HUBannerItemModuleController *)self setHomeMediaAccountFuture:v14];
 
-      v15 = [(HUBannerItemModuleController *)self homeMediaAccountFuture];
+      homeMediaAccountFuture = [(HUBannerItemModuleController *)self homeMediaAccountFuture];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __57__HUBannerItemModuleController_fetchMediaAccountForHome___block_invoke;
       v25[3] = &unk_277DB8E70;
       v27 = a2;
-      v16 = v5;
+      v16 = homeCopy;
       v26 = v16;
-      v17 = [v15 addFailureBlock:v25];
+      v17 = [homeMediaAccountFuture addFailureBlock:v25];
 
-      v18 = [(HUBannerItemModuleController *)self homeMediaAccountFuture];
-      v19 = [MEMORY[0x277D2C938] mainThreadScheduler];
-      v20 = [v18 reschedule:v19];
+      homeMediaAccountFuture2 = [(HUBannerItemModuleController *)self homeMediaAccountFuture];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+      v20 = [homeMediaAccountFuture2 reschedule:mainThreadScheduler];
 
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
@@ -1221,7 +1221,7 @@ void __46__HUBannerItemModuleController_didSelectItem___block_invoke_9(uint64_t 
       v21 = [v20 addSuccessBlock:v22];
 
       objc_destroyWeak(v24);
-      v10 = v26;
+      module = v26;
     }
 
     objc_destroyWeak(&location);
@@ -1294,19 +1294,19 @@ void __57__HUBannerItemModuleController_fetchMediaAccountForHome___block_invoke_
   }
 }
 
-- (void)user:(id)a3 didUpdateNeedsiTunesMultiUserRepair:(BOOL)a4
+- (void)user:(id)user didUpdateNeedsiTunesMultiUserRepair:(BOOL)repair
 {
   v6 = MEMORY[0x277D14788];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(HUItemModuleController *)self module:a3];
-  v9 = [v8 bannerItemProvider];
-  v10 = [v9 multiUserTokenFixBannerItem];
-  v11 = [v7 na_setWithSafeObject:v10];
+  v8 = [(HUItemModuleController *)self module:user];
+  bannerItemProvider = [v8 bannerItemProvider];
+  multiUserTokenFixBannerItem = [bannerItemProvider multiUserTokenFixBannerItem];
+  v11 = [v7 na_setWithSafeObject:multiUserTokenFixBannerItem];
   v15 = [v6 requestToUpdateItems:v11 senderSelector:a2];
 
-  v12 = [(HUItemModuleController *)self module];
-  v13 = [v12 itemUpdater];
-  v14 = [v13 performItemUpdateRequest:v15];
+  module = [(HUItemModuleController *)self module];
+  itemUpdater = [module itemUpdater];
+  v14 = [itemUpdater performItemUpdateRequest:v15];
 }
 
 - (void)dismissCameraUpgradeBanner
@@ -1319,14 +1319,14 @@ void __57__HUBannerItemModuleController_fetchMediaAccountForHome___block_invoke_
   }
 
   v5 = objc_alloc(MEMORY[0x277D14C98]);
-  v6 = [(HUItemModuleController *)self module];
-  v7 = [v6 context];
-  v8 = [v7 home];
-  v9 = [(HUItemModuleController *)self module];
-  v10 = [v9 context];
-  v11 = [v10 home];
-  v12 = [v11 currentUser];
-  v13 = [v5 initWithHome:v8 user:v12 nameStyle:0];
+  module = [(HUItemModuleController *)self module];
+  context = [module context];
+  home = [context home];
+  module2 = [(HUItemModuleController *)self module];
+  context2 = [module2 context];
+  home2 = [context2 home];
+  currentUser = [home2 currentUser];
+  v13 = [v5 initWithHome:home user:currentUser nameStyle:0];
 
   objc_initWeak(buf, self);
   v14 = [v13 setDismissCameraUpgradeBanner:1];
@@ -1361,11 +1361,11 @@ void __58__HUBannerItemModuleController_dismissCameraUpgradeBanner__block_invoke
 - (void)upgradeCameraSelected
 {
   v59 = *MEMORY[0x277D85DE8];
-  v2 = [(HUItemModuleController *)self module];
-  v3 = [v2 context];
-  v4 = [v3 home];
-  v5 = [v4 hf_allCameraProfilesSupportingRecording];
-  v44 = [v5 count];
+  module = [(HUItemModuleController *)self module];
+  context = [module context];
+  home = [context home];
+  hf_allCameraProfilesSupportingRecording = [home hf_allCameraProfilesSupportingRecording];
+  v44 = [hf_allCameraProfilesSupportingRecording count];
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1375,23 +1375,23 @@ void __58__HUBannerItemModuleController_dismissCameraUpgradeBanner__block_invoke
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "Upgrade camera selected. Number of cameras supporting recording %lu", buf, 0xCu);
   }
 
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 bannerItemProvider];
-  v9 = [v8 cameraUpgradeOfferBannerItem];
-  v45 = [v9 sheetActionText];
+  module2 = [(HUItemModuleController *)self module];
+  bannerItemProvider = [module2 bannerItemProvider];
+  cameraUpgradeOfferBannerItem = [bannerItemProvider cameraUpgradeOfferBannerItem];
+  sheetActionText = [cameraUpgradeOfferBannerItem sheetActionText];
 
   v50 = objc_alloc_init(MEMORY[0x277D43330]);
-  v10 = [(HUItemModuleController *)self module];
-  v11 = [v10 bannerItemProvider];
-  v12 = [v11 cameraUpgradeOfferBannerItem];
-  v13 = [v12 sheetTitle];
-  [v50 setTitle:v13];
+  module3 = [(HUItemModuleController *)self module];
+  bannerItemProvider2 = [module3 bannerItemProvider];
+  cameraUpgradeOfferBannerItem2 = [bannerItemProvider2 cameraUpgradeOfferBannerItem];
+  sheetTitle = [cameraUpgradeOfferBannerItem2 sheetTitle];
+  [v50 setTitle:sheetTitle];
 
-  v14 = [(HUItemModuleController *)self module];
-  v15 = [v14 bannerItemProvider];
-  v16 = [v15 cameraUpgradeOfferBannerItem];
-  v17 = [v16 sheetMessage];
-  [v50 setSubtitle:v17];
+  module4 = [(HUItemModuleController *)self module];
+  bannerItemProvider3 = [module4 bannerItemProvider];
+  cameraUpgradeOfferBannerItem3 = [bannerItemProvider3 cameraUpgradeOfferBannerItem];
+  sheetMessage = [cameraUpgradeOfferBannerItem3 sheetMessage];
+  [v50 setSubtitle:sheetMessage];
 
   [v50 setDismissalType:3];
   v18 = objc_alloc(MEMORY[0x277D755E8]);
@@ -1399,24 +1399,24 @@ void __58__HUBannerItemModuleController_dismissCameraUpgradeBanner__block_invoke
   v48 = [v18 initWithImage:v19];
 
   [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = [v50 contentView];
-  [v20 addSubview:v48];
+  contentView = [v50 contentView];
+  [contentView addSubview:v48];
 
-  v21 = [v50 contentView];
-  v47 = [v21 mainContentGuide];
+  contentView2 = [v50 contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
   v22 = MEMORY[0x277CCAAD0];
-  v46 = [v48 topAnchor];
-  v23 = [v47 topAnchor];
-  v24 = [v46 constraintGreaterThanOrEqualToAnchor:v23];
+  topAnchor = [v48 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v24 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v56[0] = v24;
-  v25 = [v48 centerYAnchor];
-  v26 = [v47 centerYAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerYAnchor = [v48 centerYAnchor];
+  centerYAnchor2 = [mainContentGuide centerYAnchor];
+  v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v56[1] = v27;
-  v28 = [v48 centerXAnchor];
-  v29 = [v47 centerXAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  centerXAnchor = [v48 centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[2] = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:3];
   [v22 activateConstraints:v31];
@@ -1429,7 +1429,7 @@ void __58__HUBannerItemModuleController_dismissCameraUpgradeBanner__block_invoke
   v54[3] = &unk_277DBD838;
   objc_copyWeak(v55, buf);
   v55[1] = v44;
-  v33 = [v32 actionWithTitle:v45 style:0 handler:v54];
+  v33 = [v32 actionWithTitle:sheetActionText style:0 handler:v54];
   v34 = [v50 addAction:v33];
 
   v35 = MEMORY[0x277D432F0];
@@ -1445,10 +1445,10 @@ void __58__HUBannerItemModuleController_dismissCameraUpgradeBanner__block_invoke
   v39 = [v37 addAction:v38];
 
   objc_opt_class();
-  v40 = [(HUItemModuleController *)self host];
+  host = [(HUItemModuleController *)self host];
   if (objc_opt_isKindOfClass())
   {
-    v41 = v40;
+    v41 = host;
   }
 
   else
@@ -1597,15 +1597,15 @@ void __53__HUBannerItemModuleController_upgradeCameraSelected__block_invoke_211(
   v10 = [v9 moduleController:WeakRetained dismissViewControllerForRequest:v8];
 }
 
-- (void)_sendBannerInteractionforItem:(id)a3 tappedBannerItemOverrideClassName:(id)a4
+- (void)_sendBannerInteractionforItem:(id)item tappedBannerItemOverrideClassName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  itemCopy = item;
   objc_opt_class();
-  v8 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = module;
   }
 
   else
@@ -1616,8 +1616,8 @@ void __53__HUBannerItemModuleController_upgradeCameraSelected__block_invoke_211(
   v12 = v9;
 
   v10 = MEMORY[0x277D143D8];
-  v11 = [v12 hiddenBanners];
-  [v10 sendBannerInteractionforItem:v7 tappedBannerItemOverrideClassName:v6 hiddenBannerEvents:v11];
+  hiddenBanners = [v12 hiddenBanners];
+  [v10 sendBannerInteractionforItem:itemCopy tappedBannerItemOverrideClassName:nameCopy hiddenBannerEvents:hiddenBanners];
 }
 
 - (HUBannerItemModuleControllerDelegate)delegate

@@ -23,53 +23,53 @@
 - (id)decidedNonChannelApps
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [(VSNonChannelAppDecider *)self appDescriptions];
-  v4 = [(VSNonChannelAppDecider *)self preferredAppBundleOrAdamID];
-  if ([v3 count] <= 1)
+  appDescriptions = [(VSNonChannelAppDecider *)self appDescriptions];
+  preferredAppBundleOrAdamID = [(VSNonChannelAppDecider *)self preferredAppBundleOrAdamID];
+  if ([appDescriptions count] <= 1)
   {
-    v5 = v3;
+    v5 = appDescriptions;
     goto LABEL_31;
   }
 
-  if (!v4)
+  if (!preferredAppBundleOrAdamID)
   {
-    v28 = [(VSNonChannelAppDecider *)self preferredDeviceFamily];
-    v29 = v28;
-    if (v28)
+    preferredDeviceFamily = [(VSNonChannelAppDecider *)self preferredDeviceFamily];
+    v29 = preferredDeviceFamily;
+    if (preferredDeviceFamily)
     {
-      v30 = v28;
+      v30 = preferredDeviceFamily;
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __47__VSNonChannelAppDecider_decidedNonChannelApps__block_invoke;
       v42[3] = &unk_279E1A608;
       v43 = v30;
-      v5 = [v3 sortedArrayUsingComparator:v42];
+      v5 = [appDescriptions sortedArrayUsingComparator:v42];
     }
 
     else
     {
-      v5 = v3;
+      v5 = appDescriptions;
     }
 
     goto LABEL_31;
   }
 
-  v6 = [v3 firstObject];
+  firstObject = [appDescriptions firstObject];
 
-  if (!v6)
+  if (!firstObject)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [appDescriptions firstObject] parameter must not be nil."];
   }
 
-  v7 = [v3 firstObject];
-  v33 = v4;
-  v8 = v4;
+  firstObject2 = [appDescriptions firstObject];
+  v33 = preferredAppBundleOrAdamID;
+  v8 = preferredAppBundleOrAdamID;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v34 = v3;
-  v9 = v3;
+  v34 = appDescriptions;
+  v9 = appDescriptions;
   v10 = [v9 countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (!v10)
   {
@@ -98,11 +98,11 @@
         v16 = v15;
 
         v36 = 1;
-        v7 = v16;
+        firstObject2 = v16;
       }
 
-      v17 = [v15 bundleID];
-      if ([v17 isEqualToString:v8])
+      bundleID = [v15 bundleID];
+      if ([bundleID isEqualToString:v8])
       {
       }
 
@@ -111,13 +111,13 @@
         [v15 adamID];
         v37 = v12;
         v18 = v9;
-        v20 = v19 = v7;
+        v20 = v19 = firstObject2;
         [v20 stringValue];
         v22 = v21 = v11;
         v23 = [v22 isEqualToString:v8];
 
         v11 = v21;
-        v7 = v19;
+        firstObject2 = v19;
         v9 = v18;
         v12 = v37;
         v13 = v35;
@@ -152,7 +152,7 @@ LABEL_27:
 
   else
   {
-    v25 = v7;
+    v25 = firstObject2;
   }
 
   v44 = v25;
@@ -161,8 +161,8 @@ LABEL_27:
   v5 = [v26 arrayWithObjects:&v44 count:1];
 
 LABEL_28:
-  v4 = v33;
-  v3 = v34;
+  preferredAppBundleOrAdamID = v33;
+  appDescriptions = v34;
 LABEL_31:
 
   v31 = *MEMORY[0x277D85DE8];

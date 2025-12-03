@@ -1,8 +1,8 @@
 @interface SKUIReportAConcernDetailsDataSource
 - (SKUIReportAConcernDetailsDataSource)init;
-- (SKUIReportAConcernDetailsDataSource)initWithTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (SKUIReportAConcernDetailsDataSource)initWithTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation SKUIReportAConcernDetailsDataSource
@@ -15,37 +15,37 @@
   return v4;
 }
 
-- (SKUIReportAConcernDetailsDataSource)initWithTableView:(id)a3
+- (SKUIReportAConcernDetailsDataSource)initWithTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SKUIReportAConcernDetailsDataSource;
   v6 = [(SKUIReportAConcernDetailsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tableView, a3);
-    [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"SKUIConcernDetailsCell"];
+    objc_storeStrong(&v6->_tableView, view);
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"SKUIConcernDetailsCell"];
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"SKUIConcernDetailsCell", a4}];
-  v6 = [(SKUIReportAConcernDetailsDataSource *)self placeholder];
-  [v5 setPlaceholderText:v6];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"SKUIConcernDetailsCell", path}];
+  placeholder = [(SKUIReportAConcernDetailsDataSource *)self placeholder];
+  [v5 setPlaceholderText:placeholder];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(SKUIReportAConcernDetailsDataSource *)self selectedReason:a3];
-  v5 = [v4 uppercaseString];
+  v4 = [(SKUIReportAConcernDetailsDataSource *)self selectedReason:view];
+  uppercaseString = [v4 uppercaseString];
 
-  return v5;
+  return uppercaseString;
 }
 
 @end

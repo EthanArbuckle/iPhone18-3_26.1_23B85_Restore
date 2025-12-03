@@ -1,31 +1,31 @@
 @interface FPProcessGroup
-- (BOOL)isEqual:(id)a3;
-- (void)addProcess:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (void)addProcess:(id)process;
 @end
 
 @implementation FPProcessGroup
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([(FPProcessGroup *)v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([(FPProcessGroup *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v7.receiver = self;
     v7.super_class = FPProcessGroup;
-    v5 = [(FPProcessGroupMinimal *)&v7 isEqual:v4];
+    v5 = [(FPProcessGroupMinimal *)&v7 isEqual:equalCopy];
   }
 
   else
   {
-    v5 = self == v4;
+    v5 = self == equalCopy;
   }
 
   return v5;
 }
 
-- (void)addProcess:(id)a3
+- (void)addProcess:(id)process
 {
-  v3 = a3;
+  processCopy = process;
   _os_crash();
   __break(1u);
 }

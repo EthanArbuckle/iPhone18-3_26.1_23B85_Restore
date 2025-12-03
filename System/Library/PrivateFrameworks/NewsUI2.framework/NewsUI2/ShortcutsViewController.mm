@@ -1,8 +1,8 @@
 @interface ShortcutsViewController
-- (_TtC7NewsUI223ShortcutsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI223ShortcutsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)startTraversingWithDirection:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)startTraversingWithDirection:(int64_t)direction;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -12,16 +12,16 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
 
   sub_219BE58F4();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(ShortcutsViewController *)&v5 dealloc];
 }
 
-- (_TtC7NewsUI223ShortcutsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI223ShortcutsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -30,30 +30,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B1F104();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B1F798();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(ShortcutsViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(ShortcutsViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_219B21D94();
 }
 
-- (void)startTraversingWithDirection:(int64_t)a3
+- (void)startTraversingWithDirection:(int64_t)direction
 {
-  v3 = self;
+  selfCopy = self;
   sub_219BE8684();
 }
 

@@ -1,14 +1,14 @@
 @interface UIKitAccessibilityTextMarker
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation UIKitAccessibilityTextMarker
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WebAccessibilityTextMarker" hasInstanceMethod:@"dataRepresentation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityTextMarker" hasInstanceMethod:@"initWithData: accessibilityObject:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WebAccessibilityTextMarker" hasInstanceMethod:@"dataRepresentation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityTextMarker" hasInstanceMethod:@"initWithData: accessibilityObject:" withFullSignature:{"@", "@", "@", 0}];
 }
 
 @end

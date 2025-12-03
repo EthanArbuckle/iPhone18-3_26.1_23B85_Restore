@@ -7,20 +7,20 @@
 - (CGAffineTransform)microphoneContentTransform;
 - (CGRect)keyContentRect;
 - (NSNumber)microphoneContentOriginX;
-- (SFCapsuleURLField)initWithTextField:(id)a3;
+- (SFCapsuleURLField)initWithTextField:(id)field;
 - (_NSRange)rangeOfKeyText;
-- (id)_newDimmingButtonWithSystemImageNamed:(id)a3 action:(SEL)a4 accessibilityIdentifier:(id)a5;
-- (void)_clearTextButtonTapped:(id)a3;
-- (void)_updateKeyboardInputMode:(id)a3;
+- (id)_newDimmingButtonWithSystemImageNamed:(id)named action:(SEL)action accessibilityIdentifier:(id)identifier;
+- (void)_clearTextButtonTapped:(id)tapped;
+- (void)_updateKeyboardInputMode:(id)mode;
 - (void)_updateLayoutDirectionIfNeeded;
 - (void)_updatePlaceholderText;
-- (void)_voiceSearchButtonTapped:(id)a3;
+- (void)_voiceSearchButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setKeyContentTransform:(CGAffineTransform *)a3;
-- (void)setMicrophoneContentTransform:(CGAffineTransform *)a3;
-- (void)setNonKeyContentAlpha:(double)a3;
-- (void)textFieldDidChange:(id)a3;
+- (void)setKeyContentTransform:(CGAffineTransform *)transform;
+- (void)setMicrophoneContentTransform:(CGAffineTransform *)transform;
+- (void)setNonKeyContentAlpha:(double)alpha;
+- (void)textFieldDidChange:(id)change;
 - (void)updateButtonsVisibility;
 - (void)updateConstraints;
 @end
@@ -46,9 +46,9 @@
   {
     v5 = _WBSLocalizedString();
     v14 = *MEMORY[0x1E69DB648];
-    v6 = [(UITextField *)self->_textField _placeholderLabel];
-    v7 = [v6 font];
-    v15[0] = v7;
+    _placeholderLabel = [(UITextField *)self->_textField _placeholderLabel];
+    font = [_placeholderLabel font];
+    v15[0] = font;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     [v5 sizeWithAttributes:v8];
     v10 = v9;
@@ -64,9 +64,9 @@
       [(UITextField *)self->_textField setPlaceholder:v11];
     }
 
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v13 = [(UITextField *)self->_textField _placeholderLabel];
-    [v13 setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    _placeholderLabel2 = [(UITextField *)self->_textField _placeholderLabel];
+    [_placeholderLabel2 setTextColor:secondaryLabelColor];
 
     self->_lastPlaceholderWidth = Width;
   }
@@ -82,32 +82,32 @@
 
 - (BOOL)showsVoiceSearchButton
 {
-  v2 = [(_SFDimmingButton *)self->_voiceSearchButton superview];
-  v3 = v2 != 0;
+  superview = [(_SFDimmingButton *)self->_voiceSearchButton superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
-- (SFCapsuleURLField)initWithTextField:(id)a3
+- (SFCapsuleURLField)initWithTextField:(id)field
 {
   v80[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  fieldCopy = field;
   v78.receiver = self;
   v78.super_class = SFCapsuleURLField;
   v6 = [(SFCapsuleURLField *)&v78 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v6)
   {
-    obj = a3;
+    obj = field;
     v76 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v6 action:sel__tap_];
     [(SFCapsuleURLField *)v6 addGestureRecognizer:?];
     v7 = [(SFCapsuleURLField *)v6 _newDimmingButtonWithSystemImageNamed:@"xmark.circle.fill" action:sel__clearTextButtonTapped_ accessibilityIdentifier:@"ClearTextButton"];
-    v77 = v5;
+    v77 = fieldCopy;
     clearTextButton = v6->_clearTextButton;
     v6->_clearTextButton = v7;
 
-    v9 = [(UIView *)v6 _sf_usesLeftToRightLayout];
+    _sf_usesLeftToRightLayout = [(UIView *)v6 _sf_usesLeftToRightLayout];
     v10 = 8.0;
-    if (v9)
+    if (_sf_usesLeftToRightLayout)
     {
       v11 = 8.0;
     }
@@ -117,7 +117,7 @@
       v11 = 0.0;
     }
 
-    if (v9)
+    if (_sf_usesLeftToRightLayout)
     {
       v10 = 0.0;
     }
@@ -125,8 +125,8 @@
     [(_SFDimmingButton *)v6->_clearTextButton setImageEdgeInsets:0.0, v10, 0.0, v11];
     [(_SFDimmingButton *)v6->_clearTextButton setPointerInteractionEnabled:1];
     [(_SFDimmingButton *)v6->_clearTextButton setPointerStyleProvider:&__block_literal_global_49];
-    v12 = [MEMORY[0x1E69DC668] sharedApplication];
-    v6->_keyboardInputModeIsRTL = [v12 safari_currentKeyboardInputIsRTL];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v6->_keyboardInputModeIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
     keyboardInputModeIsRTL = v6->_keyboardInputModeIsRTL;
     v6->_layoutShouldBeRTL = keyboardInputModeIsRTL;
@@ -141,27 +141,27 @@
     }
 
     [(SFCapsuleURLField *)v6 setSemanticContentAttribute:v14];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v6 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
-    [v15 addObserver:v6 selector:sel__updateKeyboardInputMode_ name:@"SFDidGetTextInputModeDirectionality" object:0];
-    v75 = v15;
-    [v15 addObserver:v6 selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
+    [defaultCenter addObserver:v6 selector:sel__updateKeyboardInputMode_ name:@"SFDidGetTextInputModeDirectionality" object:0];
+    v75 = defaultCenter;
+    [defaultCenter addObserver:v6 selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
     [(SFCapsuleURLField *)v6 addSubview:v6->_clearTextButton];
     v64 = MEMORY[0x1E696ACD8];
-    v70 = [(_SFDimmingButton *)v6->_clearTextButton trailingAnchor];
-    v68 = [(SFCapsuleURLField *)v6 trailingAnchor];
-    v66 = [v70 constraintEqualToAnchor:v68];
+    trailingAnchor = [(_SFDimmingButton *)v6->_clearTextButton trailingAnchor];
+    trailingAnchor2 = [(SFCapsuleURLField *)v6 trailingAnchor];
+    v66 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v80[0] = v66;
-    v16 = [(_SFDimmingButton *)v6->_clearTextButton topAnchor];
-    v17 = [(SFCapsuleURLField *)v6 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    topAnchor = [(_SFDimmingButton *)v6->_clearTextButton topAnchor];
+    topAnchor2 = [(SFCapsuleURLField *)v6 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v80[1] = v18;
-    v19 = [(_SFDimmingButton *)v6->_clearTextButton bottomAnchor];
-    v20 = [(SFCapsuleURLField *)v6 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [(_SFDimmingButton *)v6->_clearTextButton bottomAnchor];
+    bottomAnchor2 = [(SFCapsuleURLField *)v6 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v80[2] = v21;
-    v22 = [(_SFDimmingButton *)v6->_clearTextButton widthAnchor];
-    v23 = [v22 constraintEqualToConstant:44.0];
+    widthAnchor = [(_SFDimmingButton *)v6->_clearTextButton widthAnchor];
+    v23 = [widthAnchor constraintEqualToConstant:44.0];
     v80[3] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:4];
     [v64 activateConstraints:v24];
@@ -183,9 +183,9 @@
     [(UITextField *)v6->_textField setSmartQuotesType:1];
     [(UITextField *)v6->_textField setTintAdjustmentMode:1];
     [(UITextField *)v6->_textField setTranslatesAutoresizingMaskIntoConstraints:0];
-    v26 = [(UITextField *)v6->_textField trailingAnchor];
-    v27 = [(_SFDimmingButton *)v6->_clearTextButton leadingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor3 = [(UITextField *)v6->_textField trailingAnchor];
+    leadingAnchor = [(_SFDimmingButton *)v6->_clearTextButton leadingAnchor];
+    v28 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor];
     textFieldToClearButtonConstraint = v6->_textFieldToClearButtonConstraint;
     v6->_textFieldToClearButtonConstraint = v28;
 
@@ -216,57 +216,57 @@
     v36 = objc_alloc_init(MEMORY[0x1E69DCC18]);
     [(_SFDimmingButton *)v35 addInteraction:v36];
 
-    v37 = [(_SFDimmingButton *)v6->_voiceSearchButton trailingAnchor];
-    v38 = [(_SFDimmingButton *)v6->_clearTextButton leadingAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    trailingAnchor4 = [(_SFDimmingButton *)v6->_voiceSearchButton trailingAnchor];
+    leadingAnchor2 = [(_SFDimmingButton *)v6->_clearTextButton leadingAnchor];
+    v39 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor2];
     voiceSearchToClearButtonConstraint = v6->_voiceSearchToClearButtonConstraint;
     v6->_voiceSearchToClearButtonConstraint = v39;
 
-    v41 = [(_SFDimmingButton *)v6->_voiceSearchButton trailingAnchor];
-    v42 = [(SFCapsuleURLField *)v6 trailingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    trailingAnchor5 = [(_SFDimmingButton *)v6->_voiceSearchButton trailingAnchor];
+    trailingAnchor6 = [(SFCapsuleURLField *)v6 trailingAnchor];
+    v43 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     voiceSearchToCapsuleConstraint = v6->_voiceSearchToCapsuleConstraint;
     v6->_voiceSearchToCapsuleConstraint = v43;
 
     [(SFCapsuleURLField *)v6 addSubview:v6->_voiceSearchButton];
     [(_SFDimmingButton *)v6->_voiceSearchButton setHidden:1];
-    v45 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v45 addObserver:v6 selector:sel__voiceSearchAvailabilityDidChange_ name:@"SFVoiceSearchAvailabilityDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__voiceSearchAvailabilityDidChange_ name:@"SFVoiceSearchAvailabilityDidChangeNotification" object:0];
 
     [(SFCapsuleURLField *)v6 _voiceSearchAvailabilityDidChange:0];
     v61 = MEMORY[0x1E696ACD8];
-    v74 = [(UITextField *)v6->_textField leadingAnchor];
+    leadingAnchor3 = [(UITextField *)v6->_textField leadingAnchor];
     obja = [(SFCapsuleURLField *)v6 leadingAnchor];
-    v71 = [v74 constraintEqualToAnchor:obja constant:12.0];
+    v71 = [leadingAnchor3 constraintEqualToAnchor:obja constant:12.0];
     v79[0] = v71;
     v79[1] = v6->_textFieldToClearButtonConstraint;
-    v69 = [(UITextField *)v6->_textField topAnchor];
-    v67 = [(SFCapsuleURLField *)v6 topAnchor];
-    v65 = [v69 constraintEqualToAnchor:v67];
+    topAnchor3 = [(UITextField *)v6->_textField topAnchor];
+    topAnchor4 = [(SFCapsuleURLField *)v6 topAnchor];
+    v65 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v79[2] = v65;
-    v63 = [(UITextField *)v6->_textField centerYAnchor];
-    v62 = [(SFCapsuleURLField *)v6 centerYAnchor];
-    v60 = [v63 constraintEqualToAnchor:v62];
+    centerYAnchor = [(UITextField *)v6->_textField centerYAnchor];
+    centerYAnchor2 = [(SFCapsuleURLField *)v6 centerYAnchor];
+    v60 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v79[3] = v60;
-    v59 = [(_SFDimmingButton *)v6->_voiceSearchButton topAnchor];
-    v58 = [(SFCapsuleURLField *)v6 topAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    topAnchor5 = [(_SFDimmingButton *)v6->_voiceSearchButton topAnchor];
+    topAnchor6 = [(SFCapsuleURLField *)v6 topAnchor];
+    v57 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v79[4] = v57;
-    v46 = [(_SFDimmingButton *)v6->_voiceSearchButton bottomAnchor];
-    v47 = [(SFCapsuleURLField *)v6 bottomAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    bottomAnchor3 = [(_SFDimmingButton *)v6->_voiceSearchButton bottomAnchor];
+    bottomAnchor4 = [(SFCapsuleURLField *)v6 bottomAnchor];
+    v48 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v79[5] = v48;
-    v49 = [(_SFDimmingButton *)v6->_voiceSearchButton widthAnchor];
-    v50 = [v49 constraintEqualToConstant:44.0];
+    widthAnchor2 = [(_SFDimmingButton *)v6->_voiceSearchButton widthAnchor];
+    v50 = [widthAnchor2 constraintEqualToConstant:44.0];
     v79[6] = v50;
-    v51 = [(_SFDimmingButton *)v6->_voiceSearchButton leadingAnchor];
-    v52 = [(UITextField *)v6->_textField trailingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    leadingAnchor4 = [(_SFDimmingButton *)v6->_voiceSearchButton leadingAnchor];
+    trailingAnchor7 = [(UITextField *)v6->_textField trailingAnchor];
+    v53 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor7];
     v79[7] = v53;
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:8];
     [v61 activateConstraints:v54];
 
-    v5 = v77;
+    fieldCopy = v77;
     v6->_nonKeyContentAlpha = 1.0;
     v55 = v6;
   }
@@ -310,42 +310,42 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SFCapsuleURLField;
   [(SFCapsuleURLField *)&v4 dealloc];
 }
 
-- (id)_newDimmingButtonWithSystemImageNamed:(id)a3 action:(SEL)a4 accessibilityIdentifier:(id)a5
+- (id)_newDimmingButtonWithSystemImageNamed:(id)named action:(SEL)action accessibilityIdentifier:(id)identifier
 {
   v8 = MEMORY[0x1E69DC740];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 plainButtonConfiguration];
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  v13 = [v11 background];
-  [v13 setBackgroundColor:v12];
+  identifierCopy = identifier;
+  namedCopy = named;
+  plainButtonConfiguration = [v8 plainButtonConfiguration];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
-  [v11 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:v10];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:namedCopy];
 
-  [v11 setImage:v14];
+  [plainButtonConfiguration setImage:v14];
   v15 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:2];
   v16 = [MEMORY[0x1E69DCAD8] configurationWithWeight:5];
   v17 = [v15 configurationByApplyingConfiguration:v16];
-  [v11 setPreferredSymbolConfigurationForImage:v17];
+  [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v17];
 
-  v18 = [_SFDimmingButton buttonWithConfiguration:v11 primaryAction:0];
+  v18 = [_SFDimmingButton buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
   [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v18 setNormalImageAlpha:1.0];
   [v18 setHighlightedImageAlpha:0.2];
-  v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v18 setTintColor:v19];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v18 setTintColor:secondaryLabelColor];
 
-  [v18 setAccessibilityIdentifier:v9];
-  [v18 addTarget:self action:a4 forControlEvents:64];
+  [v18 setAccessibilityIdentifier:identifierCopy];
+  [v18 addTarget:self action:action forControlEvents:64];
   [v18 sf_applyContentSizeCategoryLimitsForToolbarButton];
 
   return v18;
@@ -355,8 +355,8 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
 {
   p_rangeOfKeyText = &self->_rangeOfKeyText;
   v4 = self->_rangeOfKeyText.length + self->_rangeOfKeyText.location;
-  v5 = [(UITextField *)self->_textField text];
-  if (v4 <= [v5 length])
+  text = [(UITextField *)self->_textField text];
+  if (v4 <= [text length])
   {
     location = p_rangeOfKeyText->location;
     length = p_rangeOfKeyText->length;
@@ -364,15 +364,15 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
 
   else
   {
-    v6 = [(UITextField *)self->_textField text];
-    length = [v6 length];
+    text2 = [(UITextField *)self->_textField text];
+    length = [text2 length];
 
     location = 0;
   }
 
   textField = self->_textField;
-  v10 = [(UITextField *)textField beginningOfDocument];
-  v11 = [(UITextField *)textField positionFromPosition:v10 offset:location];
+  beginningOfDocument = [(UITextField *)textField beginningOfDocument];
+  v11 = [(UITextField *)textField positionFromPosition:beginningOfDocument offset:location];
 
   v12 = [(UITextField *)self->_textField positionFromPosition:v11 offset:length];
   v13 = [(UITextField *)self->_textField textRangeFromPosition:v11 toPosition:v12];
@@ -407,37 +407,37 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (void)setKeyContentTransform:(CGAffineTransform *)a3
+- (void)setKeyContentTransform:(CGAffineTransform *)transform
 {
   p_keyContentTransform = &self->_keyContentTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_keyContentTransform.c;
   *&v11.a = *&self->_keyContentTransform.a;
   *&v11.c = v7;
   *&v11.tx = *&self->_keyContentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v11))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_keyContentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_keyContentTransform->c = *&transform->c;
     *&p_keyContentTransform->tx = v9;
     *&p_keyContentTransform->a = v8;
-    v10 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v10 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v10;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(UITextField *)self->_textField setTransform:&t1];
   }
 }
 
-- (void)setNonKeyContentAlpha:(double)a3
+- (void)setNonKeyContentAlpha:(double)alpha
 {
-  if (self->_nonKeyContentAlpha != a3)
+  if (self->_nonKeyContentAlpha != alpha)
   {
-    self->_nonKeyContentAlpha = a3;
+    self->_nonKeyContentAlpha = alpha;
     [(_SFDimmingButton *)self->_voiceSearchButton setAlpha:?];
 
     [(SFCapsuleURLField *)self updateButtonsVisibility];
@@ -446,11 +446,11 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
 
 - (NSNumber)microphoneContentOriginX
 {
-  v3 = [(_SFDimmingButton *)self->_voiceSearchButton imageView];
+  imageView = [(_SFDimmingButton *)self->_voiceSearchButton imageView];
   if ([(SFCapsuleURLField *)self showsVoiceSearchButton])
   {
     v4 = MEMORY[0x1E696AD98];
-    [v3 frame];
+    [imageView frame];
     [(SFCapsuleURLField *)self convertRect:self->_voiceSearchButton fromView:?];
     v5 = [v4 numberWithDouble:CGRectGetMinX(v8)];
   }
@@ -463,33 +463,33 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (void)setMicrophoneContentTransform:(CGAffineTransform *)a3
+- (void)setMicrophoneContentTransform:(CGAffineTransform *)transform
 {
   p_microphoneContentTransform = &self->_microphoneContentTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_microphoneContentTransform.c;
   *&v11.a = *&self->_microphoneContentTransform.a;
   *&v11.c = v7;
   *&v11.tx = *&self->_microphoneContentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v11))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_microphoneContentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_microphoneContentTransform->c = *&transform->c;
     *&p_microphoneContentTransform->tx = v9;
     *&p_microphoneContentTransform->a = v8;
-    v10 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v10 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v10;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(_SFDimmingButton *)self->_voiceSearchButton setTransform:&t1];
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
   if ([(SFCapsuleURLField *)self _canUpdateLayoutDirectionImmediately])
   {
@@ -503,8 +503,8 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
 
 - (BOOL)shouldShowClearButton
 {
-  v2 = [(UITextField *)self->_textField text];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_1EFF36230];
+  text = [(UITextField *)self->_textField text];
+  v3 = [text stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_1EFF36230];
   v4 = [v3 length] != 0;
 
   return v4;
@@ -525,18 +525,18 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
 
 - (void)updateButtonsVisibility
 {
-  v3 = [(SFCapsuleURLField *)self shouldShowClearButton];
-  [(_SFDimmingButton *)self->_clearTextButton setHidden:v3 ^ 1];
+  shouldShowClearButton = [(SFCapsuleURLField *)self shouldShowClearButton];
+  [(_SFDimmingButton *)self->_clearTextButton setHidden:shouldShowClearButton ^ 1];
   v4 = 0.2;
-  if (v3)
+  if (shouldShowClearButton)
   {
     v4 = 1.0;
   }
 
   [(_SFDimmingButton *)self->_clearTextButton setAlpha:v4 * self->_nonKeyContentAlpha];
-  [(_SFDimmingButton *)self->_clearTextButton setUserInteractionEnabled:v3];
-  v5 = [(SFCapsuleURLField *)self shouldShowVoiceSearchButton];
-  if (v5)
+  [(_SFDimmingButton *)self->_clearTextButton setUserInteractionEnabled:shouldShowClearButton];
+  shouldShowVoiceSearchButton = [(SFCapsuleURLField *)self shouldShowVoiceSearchButton];
+  if (shouldShowVoiceSearchButton)
   {
     v6 = +[SFVoiceSearchManager sharedManager];
     v7 = [v6 availability] == 1;
@@ -547,7 +547,7 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
     v7 = 0;
   }
 
-  [(_SFDimmingButton *)self->_voiceSearchButton setHidden:!v5];
+  [(_SFDimmingButton *)self->_voiceSearchButton setHidden:!shouldShowVoiceSearchButton];
   [(_SFDimmingButton *)self->_voiceSearchButton setEnabled:v7];
   if (v7)
   {
@@ -561,7 +561,7 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
   v8 = ;
   [(_SFDimmingButton *)self->_voiceSearchButton setTintColor:v8];
 
-  v9 = v3 & v5;
+  v9 = shouldShowClearButton & shouldShowVoiceSearchButton;
   [(NSLayoutConstraint *)self->_voiceSearchToClearButtonConstraint setActive:v9];
   [(NSLayoutConstraint *)self->_voiceSearchToCapsuleConstraint setActive:v9 ^ 1];
   textFieldToClearButtonConstraint = self->_textFieldToClearButtonConstraint;
@@ -569,7 +569,7 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
   [(NSLayoutConstraint *)textFieldToClearButtonConstraint setActive:v9 ^ 1];
 }
 
-- (void)_clearTextButtonTapped:(id)a3
+- (void)_clearTextButtonTapped:(id)tapped
 {
   [(UITextField *)self->_textField setText:&stru_1EFF36230];
   textField = self->_textField;
@@ -577,7 +577,7 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
   [(UITextField *)textField sendActionsForControlEvents:0x20000];
 }
 
-- (void)_voiceSearchButtonTapped:(id)a3
+- (void)_voiceSearchButtonTapped:(id)tapped
 {
   voiceSearchTappedAction = self->_voiceSearchTappedAction;
   if (voiceSearchTappedAction)
@@ -586,14 +586,14 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_updateKeyboardInputMode:(id)a3
+- (void)_updateKeyboardInputMode:(id)mode
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 safari_currentKeyboardInputIsRTL];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  safari_currentKeyboardInputIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
-  if (self->_keyboardInputModeIsRTL != v5)
+  if (self->_keyboardInputModeIsRTL != safari_currentKeyboardInputIsRTL)
   {
-    self->_keyboardInputModeIsRTL = v5;
+    self->_keyboardInputModeIsRTL = safari_currentKeyboardInputIsRTL;
     if ([(SFCapsuleURLField *)self _canUpdateLayoutDirectionImmediately])
     {
 
@@ -604,16 +604,16 @@ id __39__SFCapsuleURLField_initWithTextField___block_invoke(uint64_t a1, void *a
 
 - (BOOL)_canUpdateLayoutDirectionImmediately
 {
-  v3 = [(UITextField *)self->_textField text];
-  if ([v3 length])
+  text = [(UITextField *)self->_textField text];
+  if ([text length])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(UITextField *)self->_textField _fieldEditor];
-    v4 = [v5 isHidden] ^ 1;
+    _fieldEditor = [(UITextField *)self->_textField _fieldEditor];
+    v4 = [_fieldEditor isHidden] ^ 1;
   }
 
   return v4;

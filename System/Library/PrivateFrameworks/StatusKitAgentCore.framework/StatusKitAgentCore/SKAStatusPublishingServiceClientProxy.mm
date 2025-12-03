@@ -1,31 +1,31 @@
 @interface SKAStatusPublishingServiceClientProxy
 - (SKAStatusPublishingServiceClient)underlyingClient;
 - (SKAStatusPublishingServiceClientProxy)init;
-- (SKAStatusPublishingServiceClientProxy)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 databaseManager:(id)a6 invitationManager:(id)a7 publishingManager:(id)a8 channelManager:(id)a9;
-- (void)fetchHandleInvitability:(SKHandle *)a3 fromHandle:(SKHandle *)a4 forStatusTypeIdentifier:(NSString *)a5 completion:(id)a6;
-- (void)inviteHandles:(NSArray *)a3 fromSenderHandle:(SKHandle *)a4 withInvitationPayload:(SKInvitationPayload *)a5 statusTypeIdentifier:(NSString *)a6 completion:(id)a7;
-- (void)invitedHandlesForStatusTypeIdentifier:(NSString *)a3 completion:(id)a4;
-- (void)isHandleInviteable:(SKHandle *)a3 fromHandle:(SKHandle *)a4 forStatusTypeIdentifier:(NSString *)a5 completion:(id)a6;
-- (void)isHandleInvited:(SKHandle *)a3 fromSenderHandle:(SKHandle *)a4 forStatusTypeIdentifier:(NSString *)a5 completion:(id)a6;
-- (void)provisionPayloads:(NSArray *)a3 statusTypeIdentifier:(NSString *)a4 completion:(id)a5;
-- (void)publishStatusRequest:(SKStatusPublishRequest *)a3 statusTypeIdentifier:(NSString *)a4 completion:(id)a5;
-- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(NSString *)a3 completion:(id)a4;
-- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(NSString *)a3 completion:(id)a4;
-- (void)removeInvitedHandles:(NSArray *)a3 statusTypeIdentifier:(NSString *)a4 completion:(id)a5;
-- (void)setUnderlyingClient:(id)a3;
+- (SKAStatusPublishingServiceClientProxy)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate databaseManager:(id)manager invitationManager:(id)invitationManager publishingManager:(id)publishingManager channelManager:(id)channelManager;
+- (void)fetchHandleInvitability:(SKHandle *)invitability fromHandle:(SKHandle *)handle forStatusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)inviteHandles:(NSArray *)handles fromSenderHandle:(SKHandle *)handle withInvitationPayload:(SKInvitationPayload *)payload statusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)invitedHandlesForStatusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)isHandleInviteable:(SKHandle *)inviteable fromHandle:(SKHandle *)handle forStatusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)isHandleInvited:(SKHandle *)invited fromSenderHandle:(SKHandle *)handle forStatusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)provisionPayloads:(NSArray *)payloads statusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)publishStatusRequest:(SKStatusPublishRequest *)request statusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)removeInvitedHandles:(NSArray *)handles statusTypeIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)setUnderlyingClient:(id)client;
 @end
 
 @implementation SKAStatusPublishingServiceClientProxy
 
-- (void)publishStatusRequest:(SKStatusPublishRequest *)a3 statusTypeIdentifier:(NSString *)a4 completion:(id)a5
+- (void)publishStatusRequest:(SKStatusPublishRequest *)request statusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = request;
+  v13[3] = identifier;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -40,9 +40,9 @@
   v16[3] = 0;
   v16[4] = &_sIeghH_IeAgH_TRTA_182Tu;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  requestCopy = request;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v11, &_sIeAgH_ytIeAgHr_TRTA_187Tu, v16);
 }
 
@@ -53,16 +53,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUnderlyingClient:(id)a3
+- (void)setUnderlyingClient:(id)client
 {
   v5 = OBJC_IVAR___SKAStatusPublishingServiceClientProxy_underlyingClient;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = client;
+  clientCopy = client;
 }
 
-- (SKAStatusPublishingServiceClientProxy)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 databaseManager:(id)a6 invitationManager:(id)a7 publishingManager:(id)a8 channelManager:(id)a9
+- (SKAStatusPublishingServiceClientProxy)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate databaseManager:(id)manager invitationManager:(id)invitationManager publishingManager:(id)publishingManager channelManager:(id)channelManager
 {
   type metadata accessor for SKAPrimaryQueueActor();
   swift_initStaticObject();
@@ -73,14 +73,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v15 = a3;
-  v16 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v17 = a7;
+  invitationManagerCopy = invitationManager;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return SKAStatusPublishingServiceClientProxy.init(xpcConnection:queue:delegate:databaseManager:invitationManager:publishingManager:channelManager:)(v15, v16, a5, a6, v17, a8, a9);
+  return SKAStatusPublishingServiceClientProxy.init(xpcConnection:queue:delegate:databaseManager:invitationManager:publishingManager:channelManager:)(connectionCopy, queueCopy, delegate, manager, invitationManagerCopy, publishingManager, channelManager);
 }
 
 - (SKAStatusPublishingServiceClientProxy)init
@@ -107,16 +107,16 @@
   return [(SKAStatusPublishingServiceClientProxy *)&v9 init];
 }
 
-- (void)provisionPayloads:(NSArray *)a3 statusTypeIdentifier:(NSString *)a4 completion:(id)a5
+- (void)provisionPayloads:(NSArray *)payloads statusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = payloads;
+  v14[3] = identifier;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -131,21 +131,21 @@
   v17[3] = 0;
   v17[4] = &_sIeghH_IeAgH_TRTA_167Tu;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  payloadsCopy = payloads;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v12, &_sIeAgH_ytIeAgHr_TRTA_172Tu, v17);
 }
 
-- (void)invitedHandlesForStatusTypeIdentifier:(NSString *)a3 completion:(id)a4
+- (void)invitedHandlesForStatusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -160,22 +160,22 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTA_152Tu;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTA_157Tu, v15);
 }
 
-- (void)isHandleInvited:(SKHandle *)a3 fromSenderHandle:(SKHandle *)a4 forStatusTypeIdentifier:(NSString *)a5 completion:(id)a6
+- (void)isHandleInvited:(SKHandle *)invited fromSenderHandle:(SKHandle *)handle forStatusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = invited;
+  v16[3] = handle;
+  v16[4] = identifier;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -190,24 +190,24 @@
   v19[3] = 0;
   v19[4] = &_sIeghH_IeAgH_TRTA_137Tu;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  invitedCopy = invited;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v14, &_sIeAgH_ytIeAgHr_TRTA_142Tu, v19);
 }
 
-- (void)isHandleInviteable:(SKHandle *)a3 fromHandle:(SKHandle *)a4 forStatusTypeIdentifier:(NSString *)a5 completion:(id)a6
+- (void)isHandleInviteable:(SKHandle *)inviteable fromHandle:(SKHandle *)handle forStatusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = inviteable;
+  v16[3] = handle;
+  v16[4] = identifier;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -222,24 +222,24 @@
   v19[3] = 0;
   v19[4] = &_sIeghH_IeAgH_TRTA_122Tu;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  inviteableCopy = inviteable;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v14, &_sIeAgH_ytIeAgHr_TRTA_127Tu, v19);
 }
 
-- (void)fetchHandleInvitability:(SKHandle *)a3 fromHandle:(SKHandle *)a4 forStatusTypeIdentifier:(NSString *)a5 completion:(id)a6
+- (void)fetchHandleInvitability:(SKHandle *)invitability fromHandle:(SKHandle *)handle forStatusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = invitability;
+  v16[3] = handle;
+  v16[4] = identifier;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -254,25 +254,25 @@
   v19[3] = 0;
   v19[4] = &_sIeghH_IeAgH_TRTA_107Tu;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  invitabilityCopy = invitability;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v14, &_sIeAgH_ytIeAgHr_TRTA_112Tu, v19);
 }
 
-- (void)inviteHandles:(NSArray *)a3 fromSenderHandle:(SKHandle *)a4 withInvitationPayload:(SKInvitationPayload *)a5 statusTypeIdentifier:(NSString *)a6 completion:(id)a7
+- (void)inviteHandles:(NSArray *)handles fromSenderHandle:(SKHandle *)handle withInvitationPayload:(SKInvitationPayload *)payload statusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v27 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(completion);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = handles;
+  v18[3] = handle;
+  v18[4] = payload;
+  v18[5] = identifier;
   v18[6] = v17;
   v18[7] = self;
   v19 = type metadata accessor for TaskPriority();
@@ -287,24 +287,24 @@
   v21[3] = 0;
   v21[4] = &_sIeghH_IeAgH_TRTA_92Tu;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = self;
+  handlesCopy = handles;
+  handleCopy = handle;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v16, &_sIeAgH_ytIeAgHr_TRTA_97Tu, v21);
 }
 
-- (void)removeInvitedHandles:(NSArray *)a3 statusTypeIdentifier:(NSString *)a4 completion:(id)a5
+- (void)removeInvitedHandles:(NSArray *)handles statusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = handles;
+  v14[3] = identifier;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -319,21 +319,21 @@
   v17[3] = 0;
   v17[4] = &_sIeghH_IeAgH_TRTA_77Tu;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  handlesCopy = handles;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v12, &_sIeAgH_ytIeAgHr_TRTA_82Tu, v17);
 }
 
-- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(NSString *)a3 completion:(id)a4
+- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -348,20 +348,20 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTA_62Tu;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTA_67Tu, v15);
 }
 
-- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(NSString *)a3 completion:(id)a4
+- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(NSString *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -376,8 +376,8 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTATu;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTATu, v15);
 }
 

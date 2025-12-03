@@ -1,11 +1,11 @@
 @interface ACUISGestureRecognizer
-- (ACUISGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (BOOL)_shouldRecognizeTouchForView:(id)a3;
-- (BOOL)_shouldRecognizeTouches:(id)a3;
+- (ACUISGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (BOOL)_shouldRecognizeTouchForView:(id)view;
+- (BOOL)_shouldRecognizeTouches:(id)touches;
 - (NSSet)observedControlClasses;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation ACUISGestureRecognizer
@@ -27,11 +27,11 @@
   return observedControlClasses;
 }
 
-- (ACUISGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (ACUISGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = ACUISGestureRecognizer;
-  v4 = [(ACUISGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(ACUISGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -43,57 +43,57 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = ACUISGestureRecognizer;
-  v6 = a3;
-  [(ACUISGestureRecognizer *)&v7 touchesBegan:v6 withEvent:a4];
-  LODWORD(a4) = [(ACUISGestureRecognizer *)self _shouldRecognizeTouches:v6, v7.receiver, v7.super_class];
+  beganCopy = began;
+  [(ACUISGestureRecognizer *)&v7 touchesBegan:beganCopy withEvent:event];
+  LODWORD(event) = [(ACUISGestureRecognizer *)self _shouldRecognizeTouches:beganCopy, v7.receiver, v7.super_class];
 
-  if (a4)
+  if (event)
   {
     [(ACUISGestureRecognizer *)self setState:1];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = ACUISGestureRecognizer;
-  v6 = a3;
-  [(ACUISGestureRecognizer *)&v7 touchesMoved:v6 withEvent:a4];
-  LODWORD(a4) = [(ACUISGestureRecognizer *)self _shouldRecognizeTouches:v6, v7.receiver, v7.super_class];
+  movedCopy = moved;
+  [(ACUISGestureRecognizer *)&v7 touchesMoved:movedCopy withEvent:event];
+  LODWORD(event) = [(ACUISGestureRecognizer *)self _shouldRecognizeTouches:movedCopy, v7.receiver, v7.super_class];
 
-  if (a4)
+  if (event)
   {
     [(ACUISGestureRecognizer *)self setState:2];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = ACUISGestureRecognizer;
-  v6 = a3;
-  [(ACUISGestureRecognizer *)&v7 touchesEnded:v6 withEvent:a4];
-  LODWORD(a4) = [(ACUISGestureRecognizer *)self _shouldRecognizeTouches:v6, v7.receiver, v7.super_class];
+  endedCopy = ended;
+  [(ACUISGestureRecognizer *)&v7 touchesEnded:endedCopy withEvent:event];
+  LODWORD(event) = [(ACUISGestureRecognizer *)self _shouldRecognizeTouches:endedCopy, v7.receiver, v7.super_class];
 
-  if (a4)
+  if (event)
   {
     [(ACUISGestureRecognizer *)self setState:3];
   }
 }
 
-- (BOOL)_shouldRecognizeTouches:(id)a3
+- (BOOL)_shouldRecognizeTouches:(id)touches
 {
   v29 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  touchesCopy = touches;
+  v5 = [touchesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -104,11 +104,11 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(touchesCopy);
         }
 
-        v9 = [*(*(&v23 + 1) + 8 * i) view];
-        if ([(ACUISGestureRecognizer *)self _shouldRecognizeTouchForView:v9])
+        view = [*(*(&v23 + 1) + 8 * i) view];
+        if ([(ACUISGestureRecognizer *)self _shouldRecognizeTouchForView:view])
         {
 LABEL_19:
 
@@ -120,8 +120,8 @@ LABEL_19:
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = [(ACUISGestureRecognizer *)self observedControlClasses];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        observedControlClasses = [(ACUISGestureRecognizer *)self observedControlClasses];
+        v11 = [observedControlClasses countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -132,7 +132,7 @@ LABEL_19:
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(observedControlClasses);
               }
 
               v15 = *(*(&v19 + 1) + 8 * j);
@@ -143,7 +143,7 @@ LABEL_19:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [observedControlClasses countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v12)
             {
               continue;
@@ -154,7 +154,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [touchesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
       v16 = 0;
       if (v6)
       {
@@ -176,22 +176,22 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)_shouldRecognizeTouchForView:(id)a3
+- (BOOL)_shouldRecognizeTouchForView:(id)view
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    v6 = v4;
+    v6 = viewCopy;
     while ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [(ACUISGestureRecognizer *)self observedControlClasses];
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      observedControlClasses = [(ACUISGestureRecognizer *)self observedControlClasses];
+      v8 = [observedControlClasses countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         v9 = v8;
@@ -202,7 +202,7 @@ LABEL_21:
           {
             if (*v20 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(observedControlClasses);
             }
 
             v12 = *(*(&v19 + 1) + 8 * i);
@@ -210,7 +210,7 @@ LABEL_21:
           }
 
           v14 = isKindOfClass;
-          v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v9 = [observedControlClasses countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v9);
@@ -226,10 +226,10 @@ LABEL_21:
       {
       }
 
-      v15 = [v6 superview];
+      superview = [v6 superview];
 
-      v6 = v15;
-      if (!v15)
+      v6 = superview;
+      if (!superview)
       {
         v16 = 0;
         goto LABEL_18;

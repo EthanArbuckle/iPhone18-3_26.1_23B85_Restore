@@ -1,27 +1,27 @@
 @interface HKInteractiveChartTrendOverlayFormatter
 - (BOOL)_displayTypeIsSleep;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartTrendOverlayFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 firstObject];
-  if (v5)
+  firstObject = [data firstObject];
+  if (firstObject)
   {
     v6 = [[HKSelectedRangeData alloc] initWithStatisticsType:3];
-    v7 = [(HKInteractiveChartTrendOverlayFormatter *)self _displayTypeIsSleep];
-    [v5 minValue];
+    _displayTypeIsSleep = [(HKInteractiveChartTrendOverlayFormatter *)self _displayTypeIsSleep];
+    [firstObject minValue];
     v9 = v8;
-    v10 = [v5 unit];
-    v11 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v10 unit:!v7 showUnit:v9];
+    unit = [firstObject unit];
+    v11 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unit unit:!_displayTypeIsSleep showUnit:v9];
     [(HKSelectedRangeData *)v6 setAttributedString:v11];
 
     [(HKSelectedRangeData *)v6 setDataType:0];
     v12 = MEMORY[0x1E696AD98];
-    [v5 minValue];
+    [firstObject minValue];
     v13 = [v12 numberWithDouble:?];
     [(HKSelectedRangeData *)v6 setValueAsNumber:v13];
 
@@ -39,31 +39,31 @@
 
 - (BOOL)_displayTypeIsSleep
 {
-  v3 = [(HKInteractiveChartDataFormatter *)self displayType];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
 
-  if (v3)
+  if (displayType)
   {
-    v4 = [(HKInteractiveChartDataFormatter *)self displayType];
+    displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v6 = [(HKInteractiveChartDataFormatter *)self displayType];
-    v7 = v6;
+    displayType3 = [(HKInteractiveChartDataFormatter *)self displayType];
+    v7 = displayType3;
     if (isKindOfClass)
     {
-      v8 = [v6 baseDisplayType];
-      v3 = [v8 displayTypeIdentifier];
+      baseDisplayType = [displayType3 baseDisplayType];
+      displayType = [baseDisplayType displayTypeIdentifier];
     }
 
     else
     {
-      v3 = [v6 displayTypeIdentifier];
+      displayType = [displayType3 displayTypeIdentifier];
     }
 
-    LOBYTE(v3) = v3 == 63;
+    LOBYTE(displayType) = displayType == 63;
   }
 
-  return v3;
+  return displayType;
 }
 
 @end

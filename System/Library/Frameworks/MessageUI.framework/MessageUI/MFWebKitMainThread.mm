@@ -1,8 +1,8 @@
 @interface MFWebKitMainThread
 + (id)sharedInstance;
 - (MFWebKitMainThread)init;
-- (int)dictValueForMimeType:(id)a3;
-- (void)_mainThreadPopulateDictForMimeType:(id)a3;
+- (int)dictValueForMimeType:(id)type;
+- (void)_mainThreadPopulateDictForMimeType:(id)type;
 - (void)dealloc;
 @end
 
@@ -53,9 +53,9 @@
   [(MFWebKitMainThread *)&v4 dealloc];
 }
 
-- (void)_mainThreadPopulateDictForMimeType:(id)a3
+- (void)_mainThreadPopulateDictForMimeType:(id)type
 {
-  key = a3;
+  key = type;
   WebThreadLock();
   v4 = [MEMORY[0x1E69E2FB8] canShowMIMEType:key];
   [(MFLock *)self->_visibleDictLock lock];
@@ -63,13 +63,13 @@
   [(MFLock *)self->_visibleDictLock unlock];
 }
 
-- (int)dictValueForMimeType:(id)a3
+- (int)dictValueForMimeType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   value = 0;
   [(MFLock *)self->_visibleDictLock lock];
   visibleDict = self->_visibleDict;
-  if (!visibleDict || !CFDictionaryGetValueIfPresent(visibleDict, v4, &value))
+  if (!visibleDict || !CFDictionaryGetValueIfPresent(visibleDict, typeCopy, &value))
   {
     [(MFLock *)self->_visibleDictLock unlock];
     v11[0] = MEMORY[0x1E69E9820];
@@ -77,10 +77,10 @@
     v11[2] = __43__MFWebKitMainThread_dictValueForMimeType___block_invoke;
     v11[3] = &unk_1E806C520;
     v11[4] = self;
-    v6 = v4;
+    v6 = typeCopy;
     v12 = v6;
-    v7 = [MEMORY[0x1E699B978] mainThreadScheduler];
-    [v7 performSyncBlock:v11];
+    mainThreadScheduler = [MEMORY[0x1E699B978] mainThreadScheduler];
+    [mainThreadScheduler performSyncBlock:v11];
 
     [(MFLock *)self->_visibleDictLock lock];
     v8 = self->_visibleDict;

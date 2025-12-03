@@ -1,8 +1,8 @@
 @interface COSProfileInstallHelper
 - (COSProfileInstallHelper)init;
 - (id)_lastActiveTraditionallyPairedDevices;
-- (void)_didEnterBackground:(id)a3;
-- (void)selectDeviceIfNecessaryWithCompletionBlock:(id)a3;
+- (void)_didEnterBackground:(id)background;
+- (void)selectDeviceIfNecessaryWithCompletionBlock:(id)block;
 @end
 
 @implementation COSProfileInstallHelper
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)selectDeviceIfNecessaryWithCompletionBlock:(id)a3
+- (void)selectDeviceIfNecessaryWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,9 +32,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(COSProfileInstallHelper *)self _lastActiveTraditionallyPairedDevices];
+  _lastActiveTraditionallyPairedDevices = [(COSProfileInstallHelper *)self _lastActiveTraditionallyPairedDevices];
   currentActiveDevice = self->_currentActiveDevice;
-  self->_currentActiveDevice = v6;
+  self->_currentActiveDevice = _lastActiveTraditionallyPairedDevices;
 
   v8 = sub_10002E3D0();
   v9 = pbb_bridge_log();
@@ -62,7 +62,7 @@
 
   if ([v8 count])
   {
-    [(COSProfileInstallHelper *)self setCompletionBlock:v4];
+    [(COSProfileInstallHelper *)self setCompletionBlock:blockCopy];
     objc_initWeak(buf, self);
     v12 = [[COSProfileTargetDeviceListViewController alloc] initWithActiveDevice:self->_currentActiveDevice otherDevices:v8];
     deviceSelectorController = self->_deviceSelectorController;
@@ -83,7 +83,7 @@
 
   else
   {
-    v4[2](v4, 1);
+    blockCopy[2](blockCopy, 1);
   }
 }
 
@@ -92,16 +92,16 @@
   v2 = sub_100009350();
   v3 = [v2 sortedArrayUsingComparator:&stru_10026A7C0];
 
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (void)_didEnterBackground:(id)a3
+- (void)_didEnterBackground:(id)background
 {
-  v4 = [(COSProfileInstallHelper *)self deviceSelectorController];
+  deviceSelectorController = [(COSProfileInstallHelper *)self deviceSelectorController];
 
-  if (v4)
+  if (deviceSelectorController)
   {
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -110,8 +110,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dismissing profile device selector because Bridge was backgrounded.", v7, 2u);
     }
 
-    v6 = [(COSProfileInstallHelper *)self deviceSelectorController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    deviceSelectorController2 = [(COSProfileInstallHelper *)self deviceSelectorController];
+    [deviceSelectorController2 dismissViewControllerAnimated:1 completion:0];
 
     [(COSProfileInstallHelper *)self setDeviceSelectorController:0];
     [(COSProfileInstallHelper *)self setCompletionBlock:0];

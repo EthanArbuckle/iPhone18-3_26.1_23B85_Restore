@@ -1,41 +1,41 @@
 @interface VUILibraryStackView
-- (VUILibraryStackView)initWithFrame:(CGRect)a3;
+- (VUILibraryStackView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCollectionView:(id)a3;
+- (void)setCollectionView:(id)view;
 @end
 
 @implementation VUILibraryStackView
 
-- (VUILibraryStackView)initWithFrame:(CGRect)a3
+- (VUILibraryStackView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VUILibraryStackView;
-  v3 = [(VUILibraryStackView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILibraryStackView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUILibraryStackView *)v3 setBackgroundColor:v4];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUILibraryStackView *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
   }
 
   return v3;
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  if (collectionView != v5)
+  if (collectionView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UICollectionView *)collectionView removeFromSuperview];
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     if (self->_collectionView)
     {
       [(VUILibraryStackView *)self addSubview:?];
     }
 
     [(VUILibraryStackView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 

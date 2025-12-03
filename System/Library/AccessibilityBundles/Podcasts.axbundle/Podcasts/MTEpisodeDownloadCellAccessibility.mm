@@ -1,6 +1,6 @@
 @interface MTEpisodeDownloadCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityDeleteAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityDeleteAction:(id)action;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_privateAccessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -8,18 +8,18 @@
 
 @implementation MTEpisodeDownloadCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTEpisodeDownloadCell" isKindOfClass:@"MTCollectionViewCell"];
-  [v3 validateClass:@"MTCollectionViewCell" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCollectionView" isKindOfClass:@"UICollectionView"];
-  [v3 validateClass:@"MTGenericCollectionCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTGenericCollectionCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"author" withType:"@"];
-  [v3 validateClass:@"MTEpisodeDownloadCell" hasInstanceMethod:@"downloadButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCollectionViewCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTDownloadsCollectionViewController" hasInstanceMethod:@"episodeForDownloadAtIndex:" withFullSignature:{"@", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTEpisodeDownloadCell" isKindOfClass:@"MTCollectionViewCell"];
+  [validationsCopy validateClass:@"MTCollectionViewCell" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCollectionView" isKindOfClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"MTGenericCollectionCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTGenericCollectionCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"author" withType:"@"];
+  [validationsCopy validateClass:@"MTEpisodeDownloadCell" hasInstanceMethod:@"downloadButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCollectionViewCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTDownloadsCollectionViewController" hasInstanceMethod:@"episodeForDownloadAtIndex:" withFullSignature:{"@", "Q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -80,17 +80,17 @@ uint64_t __56__MTEpisodeDownloadCellAccessibility_accessibilityLabel__block_invo
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(MTEpisodeDownloadCellAccessibility *)self safeValueForKey:@"downloadButton"];
   if (v4)
   {
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)accessibilityDeleteAction:(id)a3
+- (BOOL)accessibilityDeleteAction:(id)action
 {
   v3 = [(MTEpisodeDownloadCellAccessibility *)self safeValueForKey:@"deleteButton"];
   [v3 accessibilityActivate];
@@ -100,20 +100,20 @@ uint64_t __56__MTEpisodeDownloadCellAccessibility_accessibilityLabel__block_invo
 
 - (id)_privateAccessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   objc_opt_class();
   v4 = [(MTEpisodeDownloadCellAccessibility *)self safeValueForKey:@"deleteButton"];
   v5 = __UIAccessibilityCastAsClass();
 
   if (v5 && ([v5 isHidden] & 1) == 0)
   {
-    v6 = [v5 accessibilityLabel];
-    v7 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v6 target:self selector:sel_accessibilityDeleteAction_];
+    accessibilityLabel = [v5 accessibilityLabel];
+    v7 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityLabel target:self selector:sel_accessibilityDeleteAction_];
     [v7 setSortPriority:*MEMORY[0x29EDC72F8]];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
 @end

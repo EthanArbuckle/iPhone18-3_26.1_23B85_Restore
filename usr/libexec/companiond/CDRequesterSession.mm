@@ -1,22 +1,22 @@
 @interface CDRequesterSession
-- (CDRequesterSession)initWithClient:(id)a3 request:(id)a4;
+- (CDRequesterSession)initWithClient:(id)client request:(id)request;
 - (void)_invalidated;
-- (void)_notifyDeviceAcceptedNotification:(id)a3;
-- (void)_notifyDeviceStartedAuthentication:(id)a3;
-- (void)_notifySessionFailed:(id)a3;
-- (void)_notifySessionFinished:(id)a3;
-- (void)_presentShieldWithStyle:(int64_t)a3 device:(id)a4;
+- (void)_notifyDeviceAcceptedNotification:(id)notification;
+- (void)_notifyDeviceStartedAuthentication:(id)authentication;
+- (void)_notifySessionFailed:(id)failed;
+- (void)_notifySessionFinished:(id)finished;
+- (void)_presentShieldWithStyle:(int64_t)style device:(id)device;
 - (void)_stopAdvertisingNearbyAction;
-- (void)activateWithCompletionHandler:(id)a3;
+- (void)activateWithCompletionHandler:(id)handler;
 - (void)invalidate;
 @end
 
 @implementation CDRequesterSession
 
-- (CDRequesterSession)initWithClient:(id)a3 request:(id)a4
+- (CDRequesterSession)initWithClient:(id)client request:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = CDRequesterSession;
   v9 = [(CDRequesterSession *)&v13 init];
@@ -28,16 +28,16 @@
 
     objc_storeStrong(&v9->_dispatchQueue, &_dispatch_main_q);
     v9->_activateCalledAtomic = 0;
-    objc_storeStrong(&v9->_client, a3);
-    objc_storeStrong(&v9->_request, a4);
+    objc_storeStrong(&v9->_client, client);
+    objc_storeStrong(&v9->_request, request);
   }
 
   return v9;
 }
 
-- (void)activateWithCompletionHandler:(id)a3
+- (void)activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   atomic_store(1u, &self->_activateCalledAtomic);
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -45,8 +45,8 @@
   v7[2] = sub_10001ADC0;
   v7[3] = &unk_100089D58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -105,93 +105,93 @@
   }
 }
 
-- (void)_presentShieldWithStyle:(int64_t)a3 device:(id)a4
+- (void)_presentShieldWithStyle:(int64_t)style device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v7 = cps_session_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Present Shield for device: %@", &v9, 0xCu);
   }
 
   presentShieldHandler = self->_presentShieldHandler;
   if (presentShieldHandler)
   {
-    presentShieldHandler[2](presentShieldHandler, a3, v6);
+    presentShieldHandler[2](presentShieldHandler, style, deviceCopy);
   }
 }
 
-- (void)_notifyDeviceAcceptedNotification:(id)a3
+- (void)_notifyDeviceAcceptedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = cps_session_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device accepted notification: %@", &v7, 0xCu);
   }
 
   deviceAcceptedNotificationHandler = self->_deviceAcceptedNotificationHandler;
   if (deviceAcceptedNotificationHandler)
   {
-    deviceAcceptedNotificationHandler[2](deviceAcceptedNotificationHandler, v4);
+    deviceAcceptedNotificationHandler[2](deviceAcceptedNotificationHandler, notificationCopy);
   }
 }
 
-- (void)_notifyDeviceStartedAuthentication:(id)a3
+- (void)_notifyDeviceStartedAuthentication:(id)authentication
 {
-  v4 = a3;
+  authenticationCopy = authentication;
   v5 = cps_session_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = authenticationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device started server authentication: %@", &v7, 0xCu);
   }
 
   deviceStartedAuthenticationHandler = self->_deviceStartedAuthenticationHandler;
   if (deviceStartedAuthenticationHandler)
   {
-    deviceStartedAuthenticationHandler[2](deviceStartedAuthenticationHandler, v4);
+    deviceStartedAuthenticationHandler[2](deviceStartedAuthenticationHandler, authenticationCopy);
   }
 }
 
-- (void)_notifySessionFinished:(id)a3
+- (void)_notifySessionFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = cps_session_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = finishedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Authentication session finished: %@", &v7, 0xCu);
   }
 
   sessionFinishedHandler = self->_sessionFinishedHandler;
   if (sessionFinishedHandler)
   {
-    sessionFinishedHandler[2](sessionFinishedHandler, v4);
+    sessionFinishedHandler[2](sessionFinishedHandler, finishedCopy);
   }
 }
 
-- (void)_notifySessionFailed:(id)a3
+- (void)_notifySessionFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = cps_session_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100064380(v4, v5);
+    sub_100064380(failedCopy, v5);
   }
 
   sessionFailedHandler = self->_sessionFailedHandler;
   if (sessionFailedHandler)
   {
-    if (v4)
+    if (failedCopy)
     {
-      sessionFailedHandler[2](sessionFailedHandler, v4);
+      sessionFailedHandler[2](sessionFailedHandler, failedCopy);
     }
 
     else

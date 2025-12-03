@@ -1,7 +1,7 @@
 @interface CHSIconResolver
 - (CHSIconResolver)init;
-- (id)resolveIconVersionForExtensionIdentity:(id)a3;
-- (void)resolveIconForContainerIdentity:(id)a3 completion:(id)a4;
+- (id)resolveIconVersionForExtensionIdentity:(id)identity;
+- (void)resolveIconForContainerIdentity:(id)identity completion:(id)completion;
 @end
 
 @implementation CHSIconResolver
@@ -35,22 +35,22 @@
   return [(CHSIconResolver *)&v17 init];
 }
 
-- (void)resolveIconForContainerIdentity:(id)a3 completion:(id)a4
+- (void)resolveIconForContainerIdentity:(id)identity completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_195FA08B8();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_195F9DBD0(v6, v8, sub_195F9E0E8, v9);
 }
 
-- (id)resolveIconVersionForExtensionIdentity:(id)a3
+- (id)resolveIconVersionForExtensionIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  sub_195F9DEE4(v4);
+  identityCopy = identity;
+  selfCopy = self;
+  sub_195F9DEE4(identityCopy);
   v7 = v6;
 
   if (v7)

@@ -1,40 +1,40 @@
 @interface UIWindow
-- (id)im_ancestorConformingToProtocol:(id)a3;
+- (id)im_ancestorConformingToProtocol:(id)protocol;
 @end
 
 @implementation UIWindow
 
-- (id)im_ancestorConformingToProtocol:(id)a3
+- (id)im_ancestorConformingToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(UIWindow *)self windowScene];
-  v6 = [v5 delegate];
-  if (![v6 conformsToProtocol:v4] || (v7 = v6) == 0)
+  protocolCopy = protocol;
+  windowScene = [(UIWindow *)self windowScene];
+  delegate = [windowScene delegate];
+  if (![delegate conformsToProtocol:protocolCopy] || (controller = delegate) == 0)
   {
     objc_opt_class();
     v8 = BUDynamicCast();
-    v7 = [v8 controller];
-    if (([v7 conformsToProtocol:v4] & 1) == 0)
+    controller = [v8 controller];
+    if (([controller conformsToProtocol:protocolCopy] & 1) == 0)
     {
 
 LABEL_7:
       v9 = +[UIApplication jsa_sharedApplicationIfNotExtension];
-      v10 = [v9 delegate];
+      delegate2 = [v9 delegate];
 
-      if ([v10 conformsToProtocol:v4])
+      if ([delegate2 conformsToProtocol:protocolCopy])
       {
-        v7 = v10;
+        controller = delegate2;
       }
 
       else
       {
-        v7 = 0;
+        controller = 0;
       }
 
       goto LABEL_11;
     }
 
-    if (!v7)
+    if (!controller)
     {
       goto LABEL_7;
     }
@@ -42,7 +42,7 @@ LABEL_7:
 
 LABEL_11:
 
-  return v7;
+  return controller;
 }
 
 @end

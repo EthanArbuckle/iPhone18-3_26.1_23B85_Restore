@@ -1,6 +1,6 @@
 @interface _UIClickInteraction
 - (BOOL)driverCancelsTouchesInView;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (Class)_driverClass;
 - (UIView)view;
 - (_UIClickInteraction)init;
@@ -8,16 +8,16 @@
 - (void)_beginInteraction;
 - (void)_createFeedbackGenerator;
 - (void)_endInteraction;
-- (void)_setOverrideDriverClass:(Class)a3;
+- (void)_setOverrideDriverClass:(Class)class;
 - (void)_updateDriver;
 - (void)cancelInteraction;
-- (void)clickDriver:(id)a3 didPerformEvent:(unint64_t)a4;
-- (void)clickDriver:(id)a3 didUpdateHighlightProgress:(double)a4;
-- (void)clickDriver:(id)a3 shouldBegin:(id)a4;
-- (void)didMoveToView:(id)a3;
-- (void)setAllowableMovement:(double)a3;
-- (void)setDriverCancelsTouchesInView:(BOOL)a3;
-- (void)willMoveToView:(id)a3;
+- (void)clickDriver:(id)driver didPerformEvent:(unint64_t)event;
+- (void)clickDriver:(id)driver didUpdateHighlightProgress:(double)progress;
+- (void)clickDriver:(id)driver shouldBegin:(id)begin;
+- (void)didMoveToView:(id)view;
+- (void)setAllowableMovement:(double)movement;
+- (void)setDriverCancelsTouchesInView:(BOOL)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIClickInteraction
@@ -46,14 +46,14 @@
 
 - (void)_updateDriver
 {
-  v3 = [(_UIClickInteraction *)self _driverClass];
-  v4 = [(_UIClickInteraction *)self driver];
+  _driverClass = [(_UIClickInteraction *)self _driverClass];
+  driver = [(_UIClickInteraction *)self driver];
   if (objc_opt_class())
   {
-    v5 = [(_UIClickInteraction *)self driver];
+    driver2 = [(_UIClickInteraction *)self driver];
     v6 = objc_opt_class();
 
-    if (v3 == v6)
+    if (_driverClass == v6)
     {
       return;
     }
@@ -63,13 +63,13 @@
   {
   }
 
-  v7 = [(_UIClickInteraction *)self driver];
-  [v7 setView:0];
+  driver3 = [(_UIClickInteraction *)self driver];
+  [driver3 setView:0];
 
   v9 = objc_opt_new();
   [v9 setDelegate:self];
-  v8 = [(_UIClickInteraction *)self view];
-  [v9 setView:v8];
+  view = [(_UIClickInteraction *)self view];
+  [v9 setView:view];
 
   [(_UIClickInteraction *)self allowableMovement];
   [v9 setAllowableMovement:?];
@@ -78,19 +78,19 @@
 
 - (Class)_driverClass
 {
-  v3 = [(_UIClickInteraction *)self overrideDriverClass];
-  if (!v3)
+  overrideDriverClass = [(_UIClickInteraction *)self overrideDriverClass];
+  if (!overrideDriverClass)
   {
-    v4 = [(_UIClickInteraction *)self delegate];
+    delegate = [(_UIClickInteraction *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 _clickInteractionDefaultDriverType:self];
+      [delegate _clickInteractionDefaultDriverType:self];
     }
 
-    v3 = _UIClickInteractionDriverForActivationStyle();
+    overrideDriverClass = _UIClickInteractionDriverForActivationStyle();
   }
 
-  return v3;
+  return overrideDriverClass;
 }
 
 - (_UIClickInteractionDelegate)delegate
@@ -100,45 +100,45 @@
   return WeakRetained;
 }
 
-- (void)setAllowableMovement:(double)a3
+- (void)setAllowableMovement:(double)movement
 {
-  if (self->_allowableMovement != a3)
+  if (self->_allowableMovement != movement)
   {
-    self->_allowableMovement = a3;
-    v4 = [(_UIClickInteraction *)self driver];
-    [v4 setAllowableMovement:a3];
+    self->_allowableMovement = movement;
+    driver = [(_UIClickInteraction *)self driver];
+    [driver setAllowableMovement:movement];
   }
 }
 
 - (void)cancelInteraction
 {
-  v2 = [(_UIClickInteraction *)self driver];
-  [v2 cancelInteraction];
+  driver = [(_UIClickInteraction *)self driver];
+  [driver cancelInteraction];
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   interactionEffect = self->_interactionEffect;
   self->_interactionEffect = 0;
 
-  v5 = [(_UIClickInteraction *)self driver];
-  [v5 setView:0];
+  driver = [(_UIClickInteraction *)self driver];
+  [driver setView:0];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     [(_UIClickInteraction *)self _updateDriver];
   }
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIClickInteraction *)self driver];
-  [v5 locationInCoordinateSpace:v4];
+  spaceCopy = space;
+  driver = [(_UIClickInteraction *)self driver];
+  [driver locationInCoordinateSpace:spaceCopy];
   v7 = v6;
   v9 = v8;
 
@@ -151,12 +151,12 @@
 
 - (void)_beginInteraction
 {
-  v6 = [(_UIClickInteraction *)self delegate];
-  v3 = [(_UIClickInteraction *)self interactionEffect];
+  delegate = [(_UIClickInteraction *)self delegate];
+  interactionEffect = [(_UIClickInteraction *)self interactionEffect];
 
-  if (!v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (!interactionEffect && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v6 highlightEffectForClickInteraction:self];
+    v4 = [delegate highlightEffectForClickInteraction:self];
     interactionEffect = self->_interactionEffect;
     self->_interactionEffect = v4;
   }
@@ -166,93 +166,93 @@
 
 - (void)_endInteraction
 {
-  v3 = [(_UIClickInteraction *)self interactionEffect];
+  interactionEffect = [(_UIClickInteraction *)self interactionEffect];
 
-  if (v3)
+  if (interactionEffect)
   {
     v4 = objc_opt_new();
     [v4 setProgress:0.0];
     [v4 setEnded:1];
-    v5 = [(_UIClickInteraction *)self interactionEffect];
-    [v5 interaction:self didChangeWithContext:v4];
+    interactionEffect2 = [(_UIClickInteraction *)self interactionEffect];
+    [interactionEffect2 interaction:self didChangeWithContext:v4];
 
     interactionEffect = self->_interactionEffect;
     self->_interactionEffect = 0;
   }
 
-  v7 = [(_UIClickInteraction *)self delegate];
+  delegate = [(_UIClickInteraction *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(_UIClickInteraction *)self delegate];
-    [v9 clickInteractionDidEnd:self];
+    delegate2 = [(_UIClickInteraction *)self delegate];
+    [delegate2 clickInteractionDidEnd:self];
   }
 
   if ([(_UIClickInteraction *)self hapticsEnabled])
   {
-    v10 = [(_UIClickInteraction *)self feedbackGenerator];
-    [v10 userInteractionEnded];
+    feedbackGenerator = [(_UIClickInteraction *)self feedbackGenerator];
+    [feedbackGenerator userInteractionEnded];
 
     [(_UIClickInteraction *)self setFeedbackGenerator:0];
   }
 }
 
-- (void)_setOverrideDriverClass:(Class)a3
+- (void)_setOverrideDriverClass:(Class)class
 {
-  if (self->_overrideDriverClass != a3)
+  if (self->_overrideDriverClass != class)
   {
-    self->_overrideDriverClass = a3;
+    self->_overrideDriverClass = class;
     [(_UIClickInteraction *)self _updateDriver];
   }
 }
 
 - (void)_createFeedbackGenerator
 {
-  v9 = [(_UIClickInteraction *)self view];
-  v3 = [v9 window];
-  if (v3)
+  view = [(_UIClickInteraction *)self view];
+  window = [view window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [(_UIClickInteraction *)self hapticsEnabled];
+    v4 = window;
+    hapticsEnabled = [(_UIClickInteraction *)self hapticsEnabled];
 
-    if (!v5)
+    if (!hapticsEnabled)
     {
       return;
     }
 
     v6 = [_UIClickFeedbackGenerator alloc];
-    v7 = [(_UIClickInteraction *)self view];
-    v8 = [(_UIClickFeedbackGenerator *)v6 initWithView:v7];
+    view2 = [(_UIClickInteraction *)self view];
+    v8 = [(_UIClickFeedbackGenerator *)v6 initWithView:view2];
     [(_UIClickInteraction *)self setFeedbackGenerator:v8];
 
-    v9 = [(_UIClickInteraction *)self feedbackGenerator];
-    [v9 userInteractionStarted];
+    view = [(_UIClickInteraction *)self feedbackGenerator];
+    [view userInteractionStarted];
   }
 }
 
 - (BOOL)driverCancelsTouchesInView
 {
-  v2 = [(_UIClickInteraction *)self driver];
-  v3 = [v2 cancelsTouchesInView];
+  driver = [(_UIClickInteraction *)self driver];
+  cancelsTouchesInView = [driver cancelsTouchesInView];
 
-  return v3;
+  return cancelsTouchesInView;
 }
 
-- (void)setDriverCancelsTouchesInView:(BOOL)a3
+- (void)setDriverCancelsTouchesInView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(_UIClickInteraction *)self driver];
-  [v4 setCancelsTouchesInView:v3];
+  viewCopy = view;
+  driver = [(_UIClickInteraction *)self driver];
+  [driver setCancelsTouchesInView:viewCopy];
 }
 
-- (void)clickDriver:(id)a3 shouldBegin:(id)a4
+- (void)clickDriver:(id)driver shouldBegin:(id)begin
 {
-  v7 = a4;
-  v5 = [(_UIClickInteraction *)self delegate];
+  beginCopy = begin;
+  delegate = [(_UIClickInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    if ([v5 clickInteractionShouldBegin:self])
+    if ([delegate clickInteractionShouldBegin:self])
     {
       v6 = 0;
     }
@@ -268,45 +268,45 @@
     v6 = 0;
   }
 
-  v7[2](v7, v6);
+  beginCopy[2](beginCopy, v6);
 }
 
-- (void)clickDriver:(id)a3 didPerformEvent:(unint64_t)a4
+- (void)clickDriver:(id)driver didPerformEvent:(unint64_t)event
 {
-  v9 = a3;
-  v6 = [(_UIClickInteraction *)self delegate];
-  if (a4 > 1)
+  driverCopy = driver;
+  delegate = [(_UIClickInteraction *)self delegate];
+  if (event > 1)
   {
-    if (a4 == 2)
+    if (event == 2)
     {
-      if (-[_UIClickInteraction hapticsEnabled](self, "hapticsEnabled") && ([v9 clicksUpAutomaticallyAfterTimeout] & 1) == 0)
+      if (-[_UIClickInteraction hapticsEnabled](self, "hapticsEnabled") && ([driverCopy clicksUpAutomaticallyAfterTimeout] & 1) == 0)
       {
-        v8 = [(_UIClickInteraction *)self feedbackGenerator];
-        [v8 pressedUp];
+        feedbackGenerator = [(_UIClickInteraction *)self feedbackGenerator];
+        [feedbackGenerator pressedUp];
       }
 
-      [v6 clickInteractionDidClickUp:self];
+      [delegate clickInteractionDidClickUp:self];
     }
 
-    else if (a4 == 3)
+    else if (event == 3)
     {
       [(_UIClickInteraction *)self _endInteraction];
     }
   }
 
-  else if (a4)
+  else if (event)
   {
-    if (a4 == 1)
+    if (event == 1)
     {
       if ([(_UIClickInteraction *)self hapticsEnabled])
       {
-        v7 = [(_UIClickInteraction *)self feedbackGenerator];
-        [v7 pressedDown];
+        feedbackGenerator2 = [(_UIClickInteraction *)self feedbackGenerator];
+        [feedbackGenerator2 pressedDown];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v6 clickInteractionDidClickDown:self];
+        [delegate clickInteractionDidClickDown:self];
       }
     }
   }
@@ -317,17 +317,17 @@
   }
 }
 
-- (void)clickDriver:(id)a3 didUpdateHighlightProgress:(double)a4
+- (void)clickDriver:(id)driver didUpdateHighlightProgress:(double)progress
 {
-  v6 = a3;
+  driverCopy = driver;
   v10 = objc_opt_new();
-  [v10 setProgress:a4];
-  [v6 maximumEffectProgress];
+  [v10 setProgress:progress];
+  [driverCopy maximumEffectProgress];
   v8 = v7;
 
   [v10 setMaximumProgress:v8];
-  v9 = [(_UIClickInteraction *)self interactionEffect];
-  [v9 interaction:self didChangeWithContext:v10];
+  interactionEffect = [(_UIClickInteraction *)self interactionEffect];
+  [interactionEffect interaction:self didChangeWithContext:v10];
 }
 
 @end

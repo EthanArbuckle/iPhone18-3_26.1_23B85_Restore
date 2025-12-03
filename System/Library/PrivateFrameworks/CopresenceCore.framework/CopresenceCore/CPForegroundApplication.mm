@@ -19,7 +19,7 @@
 
 - (NSString)localizedApplicationName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CPForegroundApplication.localizedApplicationName.getter();
   v5 = v4;
 
@@ -33,11 +33,11 @@
   v3 = OBJC_IVAR___CPForegroundApplication_featureFlags;
   swift_beginAccess();
   v4 = *(self + v3);
-  v5 = self;
+  selfCopy = self;
   if ([v4 gameCenterSharePlayIntegration] && (v6 = CPForegroundApplication.applicationRecord.getter()) != 0)
   {
     v7 = v6;
-    v8 = [v6 entitlements];
+    entitlements = [v6 entitlements];
 
     v9 = LSPropertyList.containsAnyGameCenterEntitlements()();
   }

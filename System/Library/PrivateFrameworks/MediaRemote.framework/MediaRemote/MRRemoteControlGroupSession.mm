@@ -1,13 +1,13 @@
 @interface MRRemoteControlGroupSession
 - (BOOL)canHandleJoinRequests;
 - (BOOL)canManageParticipants;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocalSession;
 - (MRGroupSessionDelegate)delegate;
 - (MRGroupSessionParticipant)host;
 - (MRGroupSessionParticipant)localParticipant;
 - (MRGroupSessionToken)joinToken;
-- (MRRemoteControlGroupSession)initWithIdentifier:(id)a3 delegate:(id)a4;
+- (MRRemoteControlGroupSession)initWithIdentifier:(id)identifier delegate:(id)delegate;
 - (NSData)synchronizedMetadata;
 - (NSSet)members;
 - (NSSet)participants;
@@ -15,58 +15,58 @@
 - (NSString)description;
 - (NSString)localizedSessionName;
 - (id)assertSessionManagementScreenVisible;
-- (id)memberForIdentifier:(id)a3;
-- (id)participantForIdentifier:(id)a3;
-- (id)pendingParticipantForIdentifier:(id)a3;
+- (id)memberForIdentifier:(id)identifier;
+- (id)participantForIdentifier:(id)identifier;
+- (id)pendingParticipantForIdentifier:(id)identifier;
 - (int64_t)state;
 - (unsigned)routeType;
-- (void)approvePendingParticipant:(id)a3 completion:(id)a4;
+- (void)approvePendingParticipant:(id)participant completion:(id)completion;
 - (void)dealloc;
-- (void)denyPendingParticipant:(id)a3 completion:(id)a4;
+- (void)denyPendingParticipant:(id)participant completion:(id)completion;
 - (void)initializeConnection;
-- (void)notifyDelegateOfInvalidation:(id)a3;
-- (void)parseInitialState:(id)a3;
-- (void)parseParticipants:(id)a3 local:(id *)a4 host:(id *)a5 parsed:(id *)a6;
-- (void)removeAllParticipantsWithCompletion:(id)a3;
-- (void)removeParticipant:(id)a3 completion:(id)a4;
-- (void)session:(id)a3 didChangeState:(int64_t)a4;
-- (void)session:(id)a3 didConnectWithInitialState:(id)a4;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 didUpdateMembers:(id)a4;
-- (void)session:(id)a3 didUpdateParticipants:(id)a4;
-- (void)session:(id)a3 didUpdatePendingParticipants:(id)a4;
-- (void)session:(id)a3 didUpdateSynchronizedMetadata:(id)a4;
+- (void)notifyDelegateOfInvalidation:(id)invalidation;
+- (void)parseInitialState:(id)state;
+- (void)parseParticipants:(id)participants local:(id *)local host:(id *)host parsed:(id *)parsed;
+- (void)removeAllParticipantsWithCompletion:(id)completion;
+- (void)removeParticipant:(id)participant completion:(id)completion;
+- (void)session:(id)session didChangeState:(int64_t)state;
+- (void)session:(id)session didConnectWithInitialState:(id)state;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session didUpdateMembers:(id)members;
+- (void)session:(id)session didUpdateParticipants:(id)participants;
+- (void)session:(id)session didUpdatePendingParticipants:(id)participants;
+- (void)session:(id)session didUpdateSynchronizedMetadata:(id)metadata;
 - (void)updateParticipantsForOptimisticStateChange;
 @end
 
 @implementation MRRemoteControlGroupSession
 
-- (MRRemoteControlGroupSession)initWithIdentifier:(id)a3 delegate:(id)a4
+- (MRRemoteControlGroupSession)initWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = MRRemoteControlGroupSession;
   v8 = [(MRRemoteControlGroupSession *)&v32 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
     v8->_state = 0;
-    objc_storeWeak(&v8->_delegate, v7);
-    v11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     participantMap = v8->_participantMap;
-    v8->_participantMap = v11;
+    v8->_participantMap = strongToStrongObjectsMapTable;
 
-    v13 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     memberMap = v8->_memberMap;
-    v8->_memberMap = v13;
+    v8->_memberMap = strongToStrongObjectsMapTable2;
 
-    v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     pendingParticipantMap = v8->_pendingParticipantMap;
-    v8->_pendingParticipantMap = v15;
+    v8->_pendingParticipantMap = strongToStrongObjectsMapTable3;
 
     v17 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:0 capacity:2];
     optimisticApprovedPendingParticipants = v8->_optimisticApprovedPendingParticipants;
@@ -105,7 +105,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRGroupSession] <%p> dealloc", buf, 0xCu);
   }
 
@@ -207,10 +207,10 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -221,7 +221,7 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = v4->_identifier;
+      v6 = equalCopy->_identifier;
       v7 = identifier;
       v8 = v7;
       if (v7 == v6)
@@ -246,51 +246,51 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
 
 - (NSString)description
 {
-  v3 = [(MRGroupSessionToken *)self->_joinToken hostInfo];
+  hostInfo = [(MRGroupSessionToken *)self->_joinToken hostInfo];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = objc_opt_class();
-  v6 = [(MRRemoteControlGroupSession *)self identifier];
-  v7 = [v3 displayName];
-  v8 = MRGroupSessionRouteTypeDescription([v3 routeType]);
+  identifier = [(MRRemoteControlGroupSession *)self identifier];
+  displayName = [hostInfo displayName];
+  v8 = MRGroupSessionRouteTypeDescription([hostInfo routeType]);
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[MRRemoteControlGroupSession isPlaceholder](self, "isPlaceholder")}];
-  v10 = [v9 stringValue];
-  v11 = [v4 initWithFormat:@"<%@: identifier=%@, name=%@, route=%@, placeholder=%@>", v5, v6, v7, v8, v10];
+  stringValue = [v9 stringValue];
+  v11 = [v4 initWithFormat:@"<%@: identifier=%@, name=%@, route=%@, placeholder=%@>", v5, identifier, displayName, v8, stringValue];
 
   return v11;
 }
 
-- (void)notifyDelegateOfInvalidation:(id)a3
+- (void)notifyDelegateOfInvalidation:(id)invalidation
 {
-  v4 = a3;
-  v5 = [(MRRemoteControlGroupSession *)self delegate];
-  if (v5)
+  invalidationCopy = invalidation;
+  delegate = [(MRRemoteControlGroupSession *)self delegate];
+  if (delegate)
   {
-    v6 = [(MRRemoteControlGroupSession *)self callbackQueue];
+    callbackQueue = [(MRRemoteControlGroupSession *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__MRRemoteControlGroupSession_notifyDelegateOfInvalidation___block_invoke;
     block[3] = &unk_1E769BA00;
-    v8 = v5;
-    v9 = self;
-    v10 = v4;
-    dispatch_async(v6, block);
+    v8 = delegate;
+    selfCopy = self;
+    v10 = invalidationCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
 - (BOOL)isLocalSession
 {
-  v2 = [(MRRemoteControlGroupSession *)self identifier];
+  identifier = [(MRRemoteControlGroupSession *)self identifier];
   v3 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-  v4 = [v3 groupSessionInfo];
-  v5 = [v4 identifier];
-  if (v2 == v5)
+  groupSessionInfo = [v3 groupSessionInfo];
+  identifier2 = [groupSessionInfo identifier];
+  if (identifier == identifier2)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v2 isEqual:v5];
+    v6 = [identifier isEqual:identifier2];
   }
 
   return v6;
@@ -298,15 +298,15 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
 
 - (BOOL)canManageParticipants
 {
-  v3 = [(MRRemoteControlGroupSession *)self localParticipant];
+  localParticipant = [(MRRemoteControlGroupSession *)self localParticipant];
   if ([(MRRemoteControlGroupSession *)self isLocalSession])
   {
     LOBYTE(v4) = 1;
   }
 
-  else if (v3)
+  else if (localParticipant)
   {
-    v4 = [v3 isGuest] ^ 1;
+    v4 = [localParticipant isGuest] ^ 1;
   }
 
   else
@@ -324,38 +324,38 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
     return 1;
   }
 
-  v4 = [(MRGroupSessionToken *)self->_joinToken equivalentMediaIdentifier];
-  v3 = v4 != 0;
+  equivalentMediaIdentifier = [(MRGroupSessionToken *)self->_joinToken equivalentMediaIdentifier];
+  v3 = equivalentMediaIdentifier != 0;
 
   return v3;
 }
 
 - (NSString)localizedSessionName
 {
-  v3 = [(MRRemoteControlGroupSession *)self host];
-  v4 = v3;
-  if (v3)
+  host = [(MRRemoteControlGroupSession *)self host];
+  v4 = host;
+  if (host)
   {
-    v5 = [v3 identity];
-    v6 = [v5 displayName];
-    v7 = MRGroupSessionRouteMakeName(v6, [(MRRemoteControlGroupSession *)self routeType]);
+    identity = [host identity];
+    displayName = [identity displayName];
+    localizedSessionName = MRGroupSessionRouteMakeName(displayName, [(MRRemoteControlGroupSession *)self routeType]);
   }
 
   else
   {
-    v5 = [(MRGroupSessionToken *)self->_joinToken hostInfo];
-    v7 = [v5 localizedSessionName];
+    identity = [(MRGroupSessionToken *)self->_joinToken hostInfo];
+    localizedSessionName = [identity localizedSessionName];
   }
 
-  return v7;
+  return localizedSessionName;
 }
 
 - (unsigned)routeType
 {
-  v2 = [(MRGroupSessionToken *)self->_joinToken hostInfo];
-  v3 = [v2 routeType];
+  hostInfo = [(MRGroupSessionToken *)self->_joinToken hostInfo];
+  routeType = [hostInfo routeType];
 
-  return v3;
+  return routeType;
 }
 
 - (MRGroupSessionToken)joinToken
@@ -379,14 +379,14 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__MRRemoteControlGroupSession_state__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -401,14 +401,14 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
   v10 = __Block_byref_object_copy__44;
   v11 = __Block_byref_object_dispose__44;
   v12 = 0;
-  v3 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__MRRemoteControlGroupSession_synchronizedMetadata__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -424,14 +424,14 @@ void __51__MRRemoteControlGroupSession_initializeConnection__block_invoke_4(uint
   v10 = __Block_byref_object_copy__44;
   v11 = __Block_byref_object_dispose__44;
   v12 = 0;
-  v3 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__MRRemoteControlGroupSession_members__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -463,14 +463,14 @@ void __38__MRRemoteControlGroupSession_members__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__44;
   v11 = __Block_byref_object_dispose__44;
   v12 = 0;
-  v3 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__MRRemoteControlGroupSession_participants__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -502,14 +502,14 @@ void __43__MRRemoteControlGroupSession_participants__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__44;
   v11 = __Block_byref_object_dispose__44;
   v12 = 0;
-  v3 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__MRRemoteControlGroupSession_pendingParticipants__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -541,14 +541,14 @@ void __50__MRRemoteControlGroupSession_pendingParticipants__block_invoke(uint64_
   v10 = __Block_byref_object_copy__44;
   v11 = __Block_byref_object_dispose__44;
   v12 = 0;
-  v3 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__MRRemoteControlGroupSession_host__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -576,14 +576,14 @@ void __35__MRRemoteControlGroupSession_host__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__44;
   v11 = __Block_byref_object_dispose__44;
   v12 = 0;
-  v3 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__MRRemoteControlGroupSession_localParticipant__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -591,25 +591,25 @@ void __35__MRRemoteControlGroupSession_host__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)memberForIdentifier:(id)a3
+- (id)memberForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__44;
   v16 = __Block_byref_object_dispose__44;
   v17 = 0;
-  v5 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__MRRemoteControlGroupSession_memberForIdentifier___block_invoke;
   block[3] = &unk_1E769BBB8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v6 = identifierCopy;
+  dispatch_async_and_wait(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -626,25 +626,25 @@ void __51__MRRemoteControlGroupSession_memberForIdentifier___block_invoke(uint64
   *(v3 + 40) = v2;
 }
 
-- (id)participantForIdentifier:(id)a3
+- (id)participantForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__44;
   v16 = __Block_byref_object_dispose__44;
   v17 = 0;
-  v5 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__MRRemoteControlGroupSession_participantForIdentifier___block_invoke;
   block[3] = &unk_1E769BBB8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v6 = identifierCopy;
+  dispatch_async_and_wait(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -661,25 +661,25 @@ void __56__MRRemoteControlGroupSession_participantForIdentifier___block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (id)pendingParticipantForIdentifier:(id)a3
+- (id)pendingParticipantForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__44;
   v16 = __Block_byref_object_dispose__44;
   v17 = 0;
-  v5 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__MRRemoteControlGroupSession_pendingParticipantForIdentifier___block_invoke;
   block[3] = &unk_1E769BBB8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v6 = identifierCopy;
+  dispatch_async_and_wait(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -696,21 +696,21 @@ void __63__MRRemoteControlGroupSession_pendingParticipantForIdentifier___block_i
   *(v3 + 40) = v2;
 }
 
-- (void)approvePendingParticipant:(id)a3 completion:(id)a4
+- (void)approvePendingParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRRemoteControlGroupSession *)self queue];
+  participantCopy = participant;
+  completionCopy = completion;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__MRRemoteControlGroupSession_approvePendingParticipant_completion___block_invoke;
   block[3] = &unk_1E769E410;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = participantCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = participantCopy;
+  dispatch_async(queue, block);
 }
 
 void __68__MRRemoteControlGroupSession_approvePendingParticipant_completion___block_invoke(id *a1)
@@ -814,21 +814,21 @@ void __68__MRRemoteControlGroupSession_approvePendingParticipant_completion___bl
   [v4 session:v5 approvePendingParticipant:a1[5] reply:a1[6]];
 }
 
-- (void)denyPendingParticipant:(id)a3 completion:(id)a4
+- (void)denyPendingParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRRemoteControlGroupSession *)self queue];
+  participantCopy = participant;
+  completionCopy = completion;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__MRRemoteControlGroupSession_denyPendingParticipant_completion___block_invoke;
   block[3] = &unk_1E769E410;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = participantCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = participantCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__MRRemoteControlGroupSession_denyPendingParticipant_completion___block_invoke(id *a1)
@@ -930,8 +930,8 @@ void __65__MRRemoteControlGroupSession_denyPendingParticipant_completion___block
 - (id)assertSessionManagementScreenVisible
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v21 = 0;
   v22 = &v21;
@@ -939,14 +939,14 @@ void __65__MRRemoteControlGroupSession_denyPendingParticipant_completion___block
   v24 = __Block_byref_object_copy__44;
   v25 = __Block_byref_object_dispose__44;
   v26 = 0;
-  v5 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MRRemoteControlGroupSession_assertSessionManagementScreenVisible__block_invoke;
   block[3] = &unk_1E769A2A0;
   block[4] = self;
   block[5] = &v21;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v27[0] = @"MRGroupSessionEventOptionEventType";
   v27[1] = @"MRGroupSessionEventOptionSessionIdentifier";
@@ -954,13 +954,13 @@ void __65__MRRemoteControlGroupSession_denyPendingParticipant_completion___block
   v28[0] = &unk_1F1577AE8;
   v28[1] = v6;
   v27[2] = @"MRGroupSessionEventOptionAssertionIdentifier";
-  v28[2] = v4;
+  v28[2] = uUIDString;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __67__MRRemoteControlGroupSession_assertSessionManagementScreenVisible__block_invoke_395;
   v17[3] = &unk_1E76A3E08;
-  v8 = v4;
+  v8 = uUIDString;
   v18 = v8;
   v19 = &v21;
   MRGroupSessionSendEvent(v7, v17);
@@ -1061,18 +1061,18 @@ void __67__MRRemoteControlGroupSession_assertSessionManagementScreenVisible__blo
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAllParticipantsWithCompletion:(id)a3
+- (void)removeAllParticipantsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRRemoteControlGroupSession *)self queue];
+  completionCopy = completion;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MRRemoteControlGroupSession_removeAllParticipantsWithCompletion___block_invoke;
   v7[3] = &unk_1E769A0A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__MRRemoteControlGroupSession_removeAllParticipantsWithCompletion___block_invoke(uint64_t a1)
@@ -1097,21 +1097,21 @@ void __67__MRRemoteControlGroupSession_removeAllParticipantsWithCompletion___blo
   [v4 session:v5 removeAllParticipantsWithReply:*(a1 + 40)];
 }
 
-- (void)removeParticipant:(id)a3 completion:(id)a4
+- (void)removeParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRRemoteControlGroupSession *)self queue];
+  participantCopy = participant;
+  completionCopy = completion;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invoke;
   block[3] = &unk_1E769E410;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = participantCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = participantCopy;
+  dispatch_async(queue, block);
 }
 
 void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invoke(id *a1)
@@ -1205,16 +1205,16 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
   [v4 session:v6 removeParticipant:v5 reply:*(a1 + 48)];
 }
 
-- (void)parseParticipants:(id)a3 local:(id *)a4 host:(id *)a5 parsed:(id *)a6
+- (void)parseParticipants:(id)participants local:(id *)local host:(id *)host parsed:(id *)parsed
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [v9 mutableCopy];
+  participantsCopy = participants;
+  v10 = [participantsCopy mutableCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v9;
+  v11 = participantsCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -1233,14 +1233,14 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
         if ([v16 isLocal])
         {
           v17 = v16;
-          *a4 = v16;
+          *local = v16;
           [v10 removeObject:v16];
         }
 
         if ([v16 isHost])
         {
           v18 = v16;
-          *a5 = v16;
+          *host = v16;
         }
 
         if ([v16 isHidden])
@@ -1255,18 +1255,18 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
     while (v13);
   }
 
-  *a6 = [v10 copy];
+  *parsed = [v10 copy];
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)parseInitialState:(id)a3
+- (void)parseInitialState:(id)state
 {
   v91 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v60 = [v4 objectForKeyedSubscript:@"_MRGroupSessionStateInitialSyncKey"];
-  v55 = [v60 integerValue];
-  self->_state = v55;
-  v5 = [v4 objectForKeyedSubscript:@"_MRGroupSessionPlaceholderInitialSyncKey"];
+  stateCopy = state;
+  v60 = [stateCopy objectForKeyedSubscript:@"_MRGroupSessionStateInitialSyncKey"];
+  integerValue = [v60 integerValue];
+  self->_state = integerValue;
+  v5 = [stateCopy objectForKeyedSubscript:@"_MRGroupSessionPlaceholderInitialSyncKey"];
   v6 = v5;
   if (v5)
   {
@@ -1275,12 +1275,12 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
 
   v59 = v6;
   v7 = [MRGroupSessionToken alloc];
-  v8 = [v4 objectForKeyedSubscript:@"_MRGroupSessionTokenInitialSyncKey"];
+  v8 = [stateCopy objectForKeyedSubscript:@"_MRGroupSessionTokenInitialSyncKey"];
   v9 = [(MRGroupSessionToken *)v7 initWithData:v8];
   joinToken = self->_joinToken;
   self->_joinToken = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"_MRGroupSessionParticipantsInitialSyncKey"];
+  v11 = [stateCopy objectForKeyedSubscript:@"_MRGroupSessionParticipantsInitialSyncKey"];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
@@ -1300,9 +1300,9 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
         }
 
         v16 = *(*(&v84 + 1) + 8 * i);
-        v17 = [(MRRemoteControlGroupSession *)self participantMap];
-        v18 = [v16 identifier];
-        [v17 setObject:v16 forKey:v18];
+        participantMap = [(MRRemoteControlGroupSession *)self participantMap];
+        identifier = [v16 identifier];
+        [participantMap setObject:v16 forKey:identifier];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v84 objects:v90 count:16];
@@ -1311,8 +1311,8 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
     while (v13);
   }
 
-  v62 = v4;
-  v19 = [v4 objectForKeyedSubscript:@"_MRGroupSessionPendingParticipantsInitialSyncKey"];
+  v62 = stateCopy;
+  v19 = [stateCopy objectForKeyedSubscript:@"_MRGroupSessionPendingParticipantsInitialSyncKey"];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
@@ -1332,9 +1332,9 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
         }
 
         v24 = *(*(&v80 + 1) + 8 * j);
-        v25 = [(MRRemoteControlGroupSession *)self pendingParticipantMap];
-        v26 = [v24 identifier];
-        [v25 setObject:v24 forKey:v26];
+        pendingParticipantMap = [(MRRemoteControlGroupSession *)self pendingParticipantMap];
+        identifier2 = [v24 identifier];
+        [pendingParticipantMap setObject:v24 forKey:identifier2];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v80 objects:v89 count:16];
@@ -1417,9 +1417,9 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
         }
 
         v44 = *(*(&v73 + 1) + 8 * k);
-        v45 = [(MRRemoteControlGroupSession *)self memberMap];
-        v46 = [v44 identifier];
-        [v45 setObject:v44 forKey:v46];
+        memberMap = [(MRRemoteControlGroupSession *)self memberMap];
+        identifier3 = [v44 identifier];
+        [memberMap setObject:v44 forKey:identifier3];
       }
 
       v41 = [v39 countByEnumeratingWithState:&v73 objects:v88 count:16];
@@ -1433,18 +1433,18 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
   v48 = [v61 count];
   v49 = [v39 count];
   v50 = [v19 count];
-  v51 = [(MRRemoteControlGroupSession *)self delegate];
-  if (v51)
+  delegate = [(MRRemoteControlGroupSession *)self delegate];
+  if (delegate)
   {
     v52 = v48 != 0;
-    v53 = [(MRRemoteControlGroupSession *)self callbackQueue];
+    callbackQueue = [(MRRemoteControlGroupSession *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__MRRemoteControlGroupSession_parseInitialState___block_invoke;
     block[3] = &unk_1E76A3E58;
-    v64 = v51;
-    v65 = self;
-    v69 = v55;
+    v64 = delegate;
+    selfCopy = self;
+    v69 = integerValue;
     v70 = v49 != 0;
     v66 = v39;
     v71 = v52;
@@ -1452,7 +1452,7 @@ void __60__MRRemoteControlGroupSession_removeParticipant_completion___block_invo
     v67 = v61;
     v72 = v50 != 0;
     v68 = v19;
-    dispatch_async(v53, block);
+    dispatch_async(callbackQueue, block);
   }
 
   v54 = *MEMORY[0x1E69E9840];
@@ -1508,32 +1508,32 @@ uint64_t __49__MRRemoteControlGroupSession_parseInitialState___block_invoke(uint
 - (void)updateParticipantsForOptimisticStateChange
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = [(MRRemoteControlGroupSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRRemoteControlGroupSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = _MRLogForCategory(0xCuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v64 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v4, OS_LOG_TYPE_DEFAULT, "[MRGroupSession] <%p> updateParticipantsForOptimisticStateChange.", buf, 0xCu);
   }
 
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [(MRRemoteControlGroupSession *)self participantMap];
-  v7 = [v6 objectEnumerator];
-  v8 = [v7 allObjects];
-  v9 = [v5 setWithArray:v8];
+  participantMap = [(MRRemoteControlGroupSession *)self participantMap];
+  objectEnumerator = [participantMap objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v9 = [v5 setWithArray:allObjects];
 
   v10 = [(NSSet *)self->_pendingParticipants mutableCopy];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v11 = [(MRRemoteControlGroupSession *)self optimisticApprovedPendingParticipants];
-  v12 = [v11 allObjects];
+  optimisticApprovedPendingParticipants = [(MRRemoteControlGroupSession *)self optimisticApprovedPendingParticipants];
+  allObjects2 = [optimisticApprovedPendingParticipants allObjects];
 
-  v13 = [v12 countByEnumeratingWithState:&v57 objects:v62 count:16];
+  v13 = [allObjects2 countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1544,18 +1544,18 @@ uint64_t __49__MRRemoteControlGroupSession_parseInitialState___block_invoke(uint
       {
         if (*v58 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObjects2);
         }
 
         v17 = *(*(&v57 + 1) + 8 * i);
-        v18 = [v17 expectedState];
-        [v10 removeObject:v18];
+        expectedState = [v17 expectedState];
+        [v10 removeObject:expectedState];
 
-        v19 = [v17 expectedState];
-        [v9 addObject:v19];
+        expectedState2 = [v17 expectedState];
+        [v9 addObject:expectedState2];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v57 objects:v62 count:16];
+      v14 = [allObjects2 countByEnumeratingWithState:&v57 objects:v62 count:16];
     }
 
     while (v14);
@@ -1565,10 +1565,10 @@ uint64_t __49__MRRemoteControlGroupSession_parseInitialState___block_invoke(uint
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v20 = [(MRRemoteControlGroupSession *)self optimisticDeniedPendingParticipants];
-  v21 = [v20 allObjects];
+  optimisticDeniedPendingParticipants = [(MRRemoteControlGroupSession *)self optimisticDeniedPendingParticipants];
+  allObjects3 = [optimisticDeniedPendingParticipants allObjects];
 
-  v22 = [v21 countByEnumeratingWithState:&v53 objects:v61 count:16];
+  v22 = [allObjects3 countByEnumeratingWithState:&v53 objects:v61 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1579,14 +1579,14 @@ uint64_t __49__MRRemoteControlGroupSession_parseInitialState___block_invoke(uint
       {
         if (*v54 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allObjects3);
         }
 
-        v26 = [*(*(&v53 + 1) + 8 * j) initialState];
-        [v10 removeObject:v26];
+        initialState = [*(*(&v53 + 1) + 8 * j) initialState];
+        [v10 removeObject:initialState];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v53 objects:v61 count:16];
+      v23 = [allObjects3 countByEnumeratingWithState:&v53 objects:v61 count:16];
     }
 
     while (v23);
@@ -1616,22 +1616,22 @@ uint64_t __49__MRRemoteControlGroupSession_parseInitialState___block_invoke(uint
 
   v35 = !v32;
   v36 = !v31;
-  v37 = [(MRRemoteControlGroupSession *)self delegate];
-  v38 = [(MRRemoteControlGroupSession *)self callbackQueue];
+  delegate = [(MRRemoteControlGroupSession *)self delegate];
+  callbackQueue = [(MRRemoteControlGroupSession *)self callbackQueue];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __73__MRRemoteControlGroupSession_updateParticipantsForOptimisticStateChange__block_invoke;
   v43[3] = &unk_1E76A3E80;
   v48 = v36;
-  v44 = v37;
-  v45 = self;
+  v44 = delegate;
+  selfCopy2 = self;
   v49 = v35;
   v46 = v30;
   v47 = v10;
   v39 = v10;
   v40 = v30;
-  v41 = v37;
-  dispatch_async(v38, v43);
+  v41 = delegate;
+  dispatch_async(callbackQueue, v43);
 
   v42 = *MEMORY[0x1E69E9840];
 }
@@ -1688,16 +1688,16 @@ uint64_t __73__MRRemoteControlGroupSession_updateParticipantsForOptimisticStateC
   return result;
 }
 
-- (void)session:(id)a3 didChangeState:(int64_t)a4
+- (void)session:(id)session didChangeState:(int64_t)state
 {
-  v6 = [(MRRemoteControlGroupSession *)self queue];
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__MRRemoteControlGroupSession_session_didChangeState___block_invoke;
   v7[3] = &unk_1E769C018;
   v7[4] = self;
-  v7[5] = a4;
-  dispatch_async(v6, v7);
+  v7[5] = state;
+  dispatch_async(queue, v7);
 }
 
 void __54__MRRemoteControlGroupSession_session_didChangeState___block_invoke(uint64_t a1)
@@ -1736,18 +1736,18 @@ void __54__MRRemoteControlGroupSession_session_didChangeState___block_invoke(uin
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)session:(id)a3 didUpdateParticipants:(id)a4
+- (void)session:(id)session didUpdateParticipants:(id)participants
 {
-  v5 = a4;
-  v6 = [(MRRemoteControlGroupSession *)self queue];
+  participantsCopy = participants;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__MRRemoteControlGroupSession_session_didUpdateParticipants___block_invoke;
   v8[3] = &unk_1E769A4A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = participantsCopy;
+  v7 = participantsCopy;
+  dispatch_async(queue, v8);
 }
 
 void __61__MRRemoteControlGroupSession_session_didUpdateParticipants___block_invoke(uint64_t a1)
@@ -1985,18 +1985,18 @@ uint64_t __61__MRRemoteControlGroupSession_session_didUpdateParticipants___block
   return result;
 }
 
-- (void)session:(id)a3 didUpdatePendingParticipants:(id)a4
+- (void)session:(id)session didUpdatePendingParticipants:(id)participants
 {
-  v5 = a4;
-  v6 = [(MRRemoteControlGroupSession *)self queue];
+  participantsCopy = participants;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__MRRemoteControlGroupSession_session_didUpdatePendingParticipants___block_invoke;
   v8[3] = &unk_1E769A4A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = participantsCopy;
+  v7 = participantsCopy;
+  dispatch_async(queue, v8);
 }
 
 void __68__MRRemoteControlGroupSession_session_didUpdatePendingParticipants___block_invoke(uint64_t a1)
@@ -2201,18 +2201,18 @@ uint64_t __68__MRRemoteControlGroupSession_session_didUpdatePendingParticipants_
   return result;
 }
 
-- (void)session:(id)a3 didUpdateMembers:(id)a4
+- (void)session:(id)session didUpdateMembers:(id)members
 {
-  v5 = a4;
-  v6 = [(MRRemoteControlGroupSession *)self queue];
+  membersCopy = members;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__MRRemoteControlGroupSession_session_didUpdateMembers___block_invoke;
   v8[3] = &unk_1E769A4A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = membersCopy;
+  v7 = membersCopy;
+  dispatch_async(queue, v8);
 }
 
 void __56__MRRemoteControlGroupSession_session_didUpdateMembers___block_invoke(uint64_t a1)
@@ -2289,18 +2289,18 @@ void __56__MRRemoteControlGroupSession_session_didUpdateMembers___block_invoke(u
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)session:(id)a3 didUpdateSynchronizedMetadata:(id)a4
+- (void)session:(id)session didUpdateSynchronizedMetadata:(id)metadata
 {
-  v5 = a4;
-  v6 = [(MRRemoteControlGroupSession *)self queue];
+  metadataCopy = metadata;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__MRRemoteControlGroupSession_session_didUpdateSynchronizedMetadata___block_invoke;
   v8[3] = &unk_1E769A4A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = metadataCopy;
+  v7 = metadataCopy;
+  dispatch_async(queue, v8);
 }
 
 void __69__MRRemoteControlGroupSession_session_didUpdateSynchronizedMetadata___block_invoke(uint64_t a1)
@@ -2336,18 +2336,18 @@ void __69__MRRemoteControlGroupSession_session_didUpdateSynchronizedMetadata___b
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(MRRemoteControlGroupSession *)self queue];
+  errorCopy = error;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__MRRemoteControlGroupSession_session_didInvalidateWithError___block_invoke;
   v8[3] = &unk_1E769A4A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  dispatch_async(queue, v8);
 }
 
 void __62__MRRemoteControlGroupSession_session_didInvalidateWithError___block_invoke(uint64_t a1)
@@ -2396,18 +2396,18 @@ void __62__MRRemoteControlGroupSession_session_didInvalidateWithError___block_in
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)session:(id)a3 didConnectWithInitialState:(id)a4
+- (void)session:(id)session didConnectWithInitialState:(id)state
 {
-  v5 = a4;
-  v6 = [(MRRemoteControlGroupSession *)self queue];
+  stateCopy = state;
+  queue = [(MRRemoteControlGroupSession *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__MRRemoteControlGroupSession_session_didConnectWithInitialState___block_invoke;
   v8[3] = &unk_1E769A4A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = stateCopy;
+  v7 = stateCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __66__MRRemoteControlGroupSession_session_didConnectWithInitialState___block_invoke(uint64_t a1)

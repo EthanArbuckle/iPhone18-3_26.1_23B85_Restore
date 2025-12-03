@@ -1,22 +1,22 @@
 @interface EBTextBox
-+ (id)edTextBoxFromXlGraphicsInfo:(void *)a3 edResources:(id)a4;
++ (id)edTextBoxFromXlGraphicsInfo:(void *)info edResources:(id)resources;
 @end
 
 @implementation EBTextBox
 
-+ (id)edTextBoxFromXlGraphicsInfo:(void *)a3 edResources:(id)a4
++ (id)edTextBoxFromXlGraphicsInfo:(void *)info edResources:(id)resources
 {
-  v5 = a4;
-  if (a3)
+  resourcesCopy = resources;
+  if (info)
   {
     v6 = +[EDTextBox textBox];
-    v7 = [EBAlignmentInfo edAlignmentInfoFromXlGraphicsInfo:a3];
+    v7 = [EBAlignmentInfo edAlignmentInfoFromXlGraphicsInfo:info];
     [v6 setAlignmentInfo:v7];
 
-    v8 = [EBProtection edProtectionFromXlGraphicsInfo:a3];
+    v8 = [EBProtection edProtectionFromXlGraphicsInfo:info];
     [v6 setProtection:v8];
 
-    v9 = [EBString edStringFromXlString:*(a3 + 7) edResources:v5];
+    v9 = [EBString edStringFromXlString:*(info + 7) edResources:resourcesCopy];
     [v6 setText:v9];
   }
 

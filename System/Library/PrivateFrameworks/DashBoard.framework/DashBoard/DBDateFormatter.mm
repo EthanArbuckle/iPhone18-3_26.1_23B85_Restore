@@ -2,22 +2,22 @@
 + (NSMutableDictionary)dateFormatters;
 + (NSMutableDictionary)dateIntervalFormatters;
 + (NSString)formattedNow;
-+ (id)_dateFormatterFromToken:(id)a3;
-+ (id)_dateIntervalFormatterFromToken:(id)a3;
-+ (id)_formatDate:(id)a3 withToken:(id)a4;
-+ (id)_formatIntervalFromDate:(id)a3 toDate:(id)a4 withToken:(id)a5;
-+ (id)dateFormatterForToken:(id)a3;
-+ (id)dateIntervalFormatterForToken:(id)a3;
-+ (id)formattedDate:(id)a3;
-+ (id)formattedDateTimeStamp:(id)a3;
-+ (id)formattedRange:(id)a3;
-+ (id)formattedRangeDateTimeStampStart:(id)a3 end:(id)a4;
-+ (id)formattedRangeDateTimestamp:(id)a3;
-+ (id)formattedRangeStart:(id)a3 end:(id)a4;
-+ (id)formattedRangeTimestamp:(id)a3;
-+ (id)formattedRangeTimestampStart:(id)a3 end:(id)a4;
-+ (id)formattedTime:(id)a3;
-+ (id)formattedTimeStamp:(id)a3;
++ (id)_dateFormatterFromToken:(id)token;
++ (id)_dateIntervalFormatterFromToken:(id)token;
++ (id)_formatDate:(id)date withToken:(id)token;
++ (id)_formatIntervalFromDate:(id)date toDate:(id)toDate withToken:(id)token;
++ (id)dateFormatterForToken:(id)token;
++ (id)dateIntervalFormatterForToken:(id)token;
++ (id)formattedDate:(id)date;
++ (id)formattedDateTimeStamp:(id)stamp;
++ (id)formattedRange:(id)range;
++ (id)formattedRangeDateTimeStampStart:(id)start end:(id)end;
++ (id)formattedRangeDateTimestamp:(id)timestamp;
++ (id)formattedRangeStart:(id)start end:(id)end;
++ (id)formattedRangeTimestamp:(id)timestamp;
++ (id)formattedRangeTimestampStart:(id)start end:(id)end;
++ (id)formattedTime:(id)time;
++ (id)formattedTimeStamp:(id)stamp;
 @end
 
 @implementation DBDateFormatter
@@ -43,45 +43,45 @@ uint64_t __33__DBDateFormatter_dateFormatters__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)dateFormatterForToken:(id)a3
++ (id)dateFormatterForToken:(id)token
 {
-  v4 = a3;
-  v5 = [a1 dateFormatters];
-  objc_sync_enter(v5);
-  v6 = [a1 dateFormatters];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  tokenCopy = token;
+  dateFormatters = [self dateFormatters];
+  objc_sync_enter(dateFormatters);
+  dateFormatters2 = [self dateFormatters];
+  v7 = [dateFormatters2 objectForKeyedSubscript:tokenCopy];
 
   if (!v7)
   {
-    v7 = [a1 _dateFormatterFromToken:v4];
-    v8 = [a1 dateFormatters];
-    [v8 setObject:v7 forKeyedSubscript:v4];
+    v7 = [self _dateFormatterFromToken:tokenCopy];
+    dateFormatters3 = [self dateFormatters];
+    [dateFormatters3 setObject:v7 forKeyedSubscript:tokenCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(dateFormatters);
 
   return v7;
 }
 
-+ (id)_dateFormatterFromToken:(id)a3
++ (id)_dateFormatterFromToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v5 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  [v4 setLocale:v5];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  [v4 setLocale:autoupdatingCurrentLocale];
 
-  v6 = [v3 formatString];
+  formatString = [tokenCopy formatString];
 
-  if (v6)
+  if (formatString)
   {
-    v7 = [v3 formatString];
-    [v4 setDateFormat:v7];
+    formatString2 = [tokenCopy formatString];
+    [v4 setDateFormat:formatString2];
   }
 
   else
   {
-    [v4 setDateStyle:{objc_msgSend(v3, "dateStyle")}];
-    [v4 setTimeStyle:{objc_msgSend(v3, "timeStyle")}];
+    [v4 setDateStyle:{objc_msgSend(tokenCopy, "dateStyle")}];
+    [v4 setTimeStyle:{objc_msgSend(tokenCopy, "timeStyle")}];
   }
 
   return v4;
@@ -108,45 +108,45 @@ uint64_t __41__DBDateFormatter_dateIntervalFormatters__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)dateIntervalFormatterForToken:(id)a3
++ (id)dateIntervalFormatterForToken:(id)token
 {
-  v4 = a3;
-  v5 = [a1 dateIntervalFormatters];
-  objc_sync_enter(v5);
-  v6 = [a1 dateIntervalFormatters];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  tokenCopy = token;
+  dateIntervalFormatters = [self dateIntervalFormatters];
+  objc_sync_enter(dateIntervalFormatters);
+  dateIntervalFormatters2 = [self dateIntervalFormatters];
+  v7 = [dateIntervalFormatters2 objectForKeyedSubscript:tokenCopy];
 
   if (!v7)
   {
-    v7 = [a1 _dateIntervalFormatterFromToken:v4];
-    v8 = [a1 dateIntervalFormatters];
-    [v8 setObject:v7 forKeyedSubscript:v4];
+    v7 = [self _dateIntervalFormatterFromToken:tokenCopy];
+    dateIntervalFormatters3 = [self dateIntervalFormatters];
+    [dateIntervalFormatters3 setObject:v7 forKeyedSubscript:tokenCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(dateIntervalFormatters);
 
   return v7;
 }
 
-+ (id)_dateIntervalFormatterFromToken:(id)a3
++ (id)_dateIntervalFormatterFromToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_alloc_init(MEMORY[0x277CCA978]);
-  v5 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  [v4 setLocale:v5];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  [v4 setLocale:autoupdatingCurrentLocale];
 
-  v6 = [v3 formatString];
+  formatString = [tokenCopy formatString];
 
-  if (v6)
+  if (formatString)
   {
-    v7 = [v3 formatString];
-    [v4 setDateTemplate:v7];
+    formatString2 = [tokenCopy formatString];
+    [v4 setDateTemplate:formatString2];
   }
 
   else
   {
-    [v4 setDateStyle:{objc_msgSend(v3, "dateStyle")}];
-    [v4 setTimeStyle:{objc_msgSend(v3, "timeStyle")}];
+    [v4 setDateStyle:{objc_msgSend(tokenCopy, "dateStyle")}];
+    [v4 setTimeStyle:{objc_msgSend(tokenCopy, "timeStyle")}];
   }
 
   return v4;
@@ -155,21 +155,21 @@ uint64_t __41__DBDateFormatter_dateIntervalFormatters__block_invoke()
 + (NSString)formattedNow
 {
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [a1 formattedDate:v3];
+  v4 = [self formattedDate:v3];
 
   return v4;
 }
 
-+ (id)formattedDate:(id)a3
++ (id)formattedDate:(id)date
 {
   v4 = formattedDate__onceToken;
-  v5 = a3;
+  dateCopy = date;
   if (v4 != -1)
   {
     +[DBDateFormatter formattedDate:];
   }
 
-  v6 = [a1 _formatDate:v5 withToken:formattedDate___formattedDateToken];
+  v6 = [self _formatDate:dateCopy withToken:formattedDate___formattedDateToken];
 
   return v6;
 }
@@ -183,16 +183,16 @@ uint64_t __33__DBDateFormatter_formattedDate___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)formattedDateTimeStamp:(id)a3
++ (id)formattedDateTimeStamp:(id)stamp
 {
   v4 = formattedDateTimeStamp__onceToken;
-  v5 = a3;
+  stampCopy = stamp;
   if (v4 != -1)
   {
     +[DBDateFormatter formattedDateTimeStamp:];
   }
 
-  v6 = [a1 _formatDate:v5 withToken:formattedDateTimeStamp___formattedDateTimeStampToken];
+  v6 = [self _formatDate:stampCopy withToken:formattedDateTimeStamp___formattedDateTimeStampToken];
 
   return v6;
 }
@@ -206,16 +206,16 @@ uint64_t __42__DBDateFormatter_formattedDateTimeStamp___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)formattedTime:(id)a3
++ (id)formattedTime:(id)time
 {
   v4 = formattedTime__onceToken;
-  v5 = a3;
+  timeCopy = time;
   if (v4 != -1)
   {
     +[DBDateFormatter formattedTime:];
   }
 
-  v6 = [a1 _formatDate:v5 withToken:formattedTime___formattedTimeToken];
+  v6 = [self _formatDate:timeCopy withToken:formattedTime___formattedTimeToken];
 
   return v6;
 }
@@ -229,16 +229,16 @@ uint64_t __33__DBDateFormatter_formattedTime___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)formattedTimeStamp:(id)a3
++ (id)formattedTimeStamp:(id)stamp
 {
   v4 = formattedTimeStamp__onceToken;
-  v5 = a3;
+  stampCopy = stamp;
   if (v4 != -1)
   {
     +[DBDateFormatter formattedTimeStamp:];
   }
 
-  v6 = [a1 _formatDate:v5 withToken:formattedTimeStamp___formattedTimeStampToken];
+  v6 = [self _formatDate:stampCopy withToken:formattedTimeStamp___formattedTimeStampToken];
 
   return v6;
 }
@@ -252,14 +252,14 @@ uint64_t __38__DBDateFormatter_formattedTimeStamp___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)_formatDate:(id)a3 withToken:(id)a4
++ (id)_formatDate:(id)date withToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dateCopy = date;
+  tokenCopy = token;
+  if (dateCopy)
   {
-    v7 = [MEMORY[0x277CBEAA8] distantFuture];
-    v8 = [DBComparison isValue:v5 equalTo:v7];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v8 = [DBComparison isValue:dateCopy equalTo:distantFuture];
 
     if (v8)
     {
@@ -268,8 +268,8 @@ uint64_t __38__DBDateFormatter_formattedTimeStamp___block_invoke()
 
     else
     {
-      v10 = [MEMORY[0x277CBEAA8] distantPast];
-      v11 = [DBComparison isValue:v5 equalTo:v10];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      v11 = [DBComparison isValue:dateCopy equalTo:distantPast];
 
       if (v11)
       {
@@ -278,9 +278,9 @@ uint64_t __38__DBDateFormatter_formattedTimeStamp___block_invoke()
 
       else
       {
-        v12 = [DBDateFormatter dateFormatterForToken:v6];
+        v12 = [DBDateFormatter dateFormatterForToken:tokenCopy];
         objc_sync_enter(v12);
-        v9 = [v12 stringFromDate:v5];
+        v9 = [v12 stringFromDate:dateCopy];
         objc_sync_exit(v12);
       }
     }
@@ -294,17 +294,17 @@ uint64_t __38__DBDateFormatter_formattedTimeStamp___block_invoke()
   return v9;
 }
 
-+ (id)formattedRangeStart:(id)a3 end:(id)a4
++ (id)formattedRangeStart:(id)start end:(id)end
 {
   v6 = formattedRangeStart_end__onceToken;
-  v7 = a4;
-  v8 = a3;
+  endCopy = end;
+  startCopy = start;
   if (v6 != -1)
   {
     +[DBDateFormatter formattedRangeStart:end:];
   }
 
-  v9 = [a1 _formatIntervalFromDate:v8 toDate:v7 withToken:formattedRangeStart_end___formattedRangeToken];
+  v9 = [self _formatIntervalFromDate:startCopy toDate:endCopy withToken:formattedRangeStart_end___formattedRangeToken];
 
   return v9;
 }
@@ -318,17 +318,17 @@ uint64_t __43__DBDateFormatter_formattedRangeStart_end___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)formattedRangeDateTimeStampStart:(id)a3 end:(id)a4
++ (id)formattedRangeDateTimeStampStart:(id)start end:(id)end
 {
   v6 = formattedRangeDateTimeStampStart_end__onceToken;
-  v7 = a4;
-  v8 = a3;
+  endCopy = end;
+  startCopy = start;
   if (v6 != -1)
   {
     +[DBDateFormatter formattedRangeDateTimeStampStart:end:];
   }
 
-  v9 = [a1 _formatIntervalFromDate:v8 toDate:v7 withToken:formattedRangeDateTimeStampStart_end___formattedRangeDateTimeStampToken];
+  v9 = [self _formatIntervalFromDate:startCopy toDate:endCopy withToken:formattedRangeDateTimeStampStart_end___formattedRangeDateTimeStampToken];
 
   return v9;
 }
@@ -342,17 +342,17 @@ uint64_t __56__DBDateFormatter_formattedRangeDateTimeStampStart_end___block_invo
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)formattedRangeTimestampStart:(id)a3 end:(id)a4
++ (id)formattedRangeTimestampStart:(id)start end:(id)end
 {
   v6 = formattedRangeTimestampStart_end__onceToken;
-  v7 = a4;
-  v8 = a3;
+  endCopy = end;
+  startCopy = start;
   if (v6 != -1)
   {
     +[DBDateFormatter formattedRangeTimestampStart:end:];
   }
 
-  v9 = [a1 _formatIntervalFromDate:v8 toDate:v7 withToken:formattedRangeTimestampStart_end___formattedRangeTimestampToken];
+  v9 = [self _formatIntervalFromDate:startCopy toDate:endCopy withToken:formattedRangeTimestampStart_end___formattedRangeTimestampToken];
 
   return v9;
 }
@@ -366,47 +366,47 @@ uint64_t __52__DBDateFormatter_formattedRangeTimestampStart_end___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)formattedRange:(id)a3
++ (id)formattedRange:(id)range
 {
-  v4 = a3;
-  v5 = [v4 start];
-  v6 = [v4 end];
+  rangeCopy = range;
+  start = [rangeCopy start];
+  v6 = [rangeCopy end];
 
-  v7 = [a1 formattedRangeStart:v5 end:v6];
+  v7 = [self formattedRangeStart:start end:v6];
 
   return v7;
 }
 
-+ (id)formattedRangeDateTimestamp:(id)a3
++ (id)formattedRangeDateTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [v4 start];
-  v6 = [v4 end];
+  timestampCopy = timestamp;
+  start = [timestampCopy start];
+  v6 = [timestampCopy end];
 
-  v7 = [a1 formattedRangeDateTimeStampStart:v5 end:v6];
+  v7 = [self formattedRangeDateTimeStampStart:start end:v6];
 
   return v7;
 }
 
-+ (id)formattedRangeTimestamp:(id)a3
++ (id)formattedRangeTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [v4 start];
-  v6 = [v4 end];
+  timestampCopy = timestamp;
+  start = [timestampCopy start];
+  v6 = [timestampCopy end];
 
-  v7 = [a1 formattedRangeTimestampStart:v5 end:v6];
+  v7 = [self formattedRangeTimestampStart:start end:v6];
 
   return v7;
 }
 
-+ (id)_formatIntervalFromDate:(id)a3 toDate:(id)a4 withToken:(id)a5
++ (id)_formatIntervalFromDate:(id)date toDate:(id)toDate withToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [DBDateFormatter dateIntervalFormatterForToken:v9];
+  dateCopy = date;
+  toDateCopy = toDate;
+  tokenCopy = token;
+  v10 = [DBDateFormatter dateIntervalFormatterForToken:tokenCopy];
   objc_sync_enter(v10);
-  v11 = [v10 stringFromDate:v7 toDate:v8];
+  v11 = [v10 stringFromDate:dateCopy toDate:toDateCopy];
   objc_sync_exit(v10);
 
   return v11;

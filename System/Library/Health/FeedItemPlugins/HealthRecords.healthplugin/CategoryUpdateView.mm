@@ -1,11 +1,11 @@
 @interface CategoryUpdateView
-- (_TtC13HealthRecords18CategoryUpdateView)initWithCoder:(id)a3;
+- (_TtC13HealthRecords18CategoryUpdateView)initWithCoder:(id)coder;
 - (void)tintColorDidChange;
 @end
 
 @implementation CategoryUpdateView
 
-- (_TtC13HealthRecords18CategoryUpdateView)initWithCoder:(id)a3
+- (_TtC13HealthRecords18CategoryUpdateView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13HealthRecords18CategoryUpdateView____lazy_storage___countLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13HealthRecords18CategoryUpdateView____lazy_storage___descriptionLabel) = 0;
@@ -26,7 +26,7 @@
   v2 = v5.receiver;
   [(CategoryUpdateView *)&v5 tintColorDidChange];
   v3 = sub_29D50D144();
-  v4 = [v2 tintColor];
+  tintColor = [v2 tintColor];
   [v3 setTextColor_];
 }
 

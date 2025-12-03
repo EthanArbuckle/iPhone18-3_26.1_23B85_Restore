@@ -1,15 +1,15 @@
 @interface APLazyRecordApplication
 - (APLazyRecordApplication)init;
-- (APLazyRecordApplication)initWithApplication:(id)a3;
+- (APLazyRecordApplication)initWithApplication:(id)application;
 - (NSString)bundleIdentifier;
 - (NSString)localizedName;
-- (id)loadRecordWithError:(id *)a3;
+- (id)loadRecordWithError:(id *)error;
 - (void)detach;
 @end
 
 @implementation APLazyRecordApplication
 
-- (APLazyRecordApplication)initWithApplication:(id)a3
+- (APLazyRecordApplication)initWithApplication:(id)application
 {
   v5 = OBJC_IVAR___APLazyRecordApplication_lazyRecord;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA8CCEF8, &qword_185B6C620);
@@ -18,17 +18,17 @@
   *(v6 + 16) = 0;
   *(v6 + 24) = 2;
   *(&self->super.isa + v5) = v6;
-  *(&self->super.isa + OBJC_IVAR___APLazyRecordApplication_application) = a3;
+  *(&self->super.isa + OBJC_IVAR___APLazyRecordApplication_application) = application;
   v9.receiver = self;
   v9.super_class = APLazyRecordApplication;
-  v7 = a3;
+  applicationCopy = application;
   return [(APLazyRecordApplication *)&v9 init];
 }
 
-- (id)loadRecordWithError:(id *)a3
+- (id)loadRecordWithError:(id *)error
 {
   v3 = *(&self->super.isa + OBJC_IVAR___APLazyRecordApplication_lazyRecord);
-  v4 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v3 + 7);
   sub_185AE8E78(&v3[4], &v7);
   os_unfair_lock_unlock(v3 + 7);
@@ -39,7 +39,7 @@
 
 - (NSString)localizedName
 {
-  v2 = self;
+  selfCopy = self;
   sub_185AE8A84();
 
   v3 = sub_185B67E1C();
@@ -49,22 +49,22 @@
 
 - (NSString)bundleIdentifier
 {
-  v2 = self;
-  v3 = [(APLazyRecordApplication *)v2 application];
-  v4 = [(APApplication *)v3 bundleIdentifier];
+  selfCopy = self;
+  application = [(APLazyRecordApplication *)selfCopy application];
+  bundleIdentifier = [(APApplication *)application bundleIdentifier];
 
-  if (!v4)
+  if (!bundleIdentifier)
   {
     sub_185B67E4C();
-    v4 = sub_185B67E1C();
+    bundleIdentifier = sub_185B67E1C();
   }
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (void)detach
 {
-  v2 = self;
+  selfCopy = self;
   sub_185AE8C38();
 }
 

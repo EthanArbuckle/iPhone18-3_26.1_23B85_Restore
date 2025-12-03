@@ -1,12 +1,12 @@
 @interface OAVStroke
-+ (char)readPresetDashStyle:(id)a3;
-+ (id)readFromManager:(id)a3;
-+ (id)readLineEndWithType:(id)a3 width:(id)a4 length:(id)a5;
-+ (id)targetFgColorWithManager:(id)a3;
++ (char)readPresetDashStyle:(id)style;
++ (id)readFromManager:(id)manager;
++ (id)readLineEndWithType:(id)type width:(id)width length:(id)length;
++ (id)targetFgColorWithManager:(id)manager;
 + (void)initialize;
-+ (void)readDashStyleFromManager:(id)a3 toStroke:(id)a4;
-+ (void)readFillStyleFromManager:(id)a3 toStroke:(id)a4;
-+ (void)readJoinStyleFromManager:(id)a3 toStroke:(id)a4;
++ (void)readDashStyleFromManager:(id)manager toStroke:(id)stroke;
++ (void)readFillStyleFromManager:(id)manager toStroke:(id)stroke;
++ (void)readJoinStyleFromManager:(id)manager toStroke:(id)stroke;
 @end
 
 @implementation OAVStroke
@@ -19,41 +19,41 @@
   }
 }
 
-+ (id)readFromManager:(id)a3
++ (id)readFromManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(OADStroke);
-  v6 = [a1 targetFgColorWithManager:v4];
+  v6 = [self targetFgColorWithManager:managerCopy];
   [(OADStroke *)v5 setColor:v6];
 
-  [a1 readFillStyleFromManager:v4 toStroke:v5];
-  [a1 readDashStyleFromManager:v4 toStroke:v5];
-  [a1 readJoinStyleFromManager:v4 toStroke:v5];
-  v7 = [v4 strokeStartArrowType];
-  v8 = [v4 strokeStartArrowWidth];
-  v9 = [v4 strokeStartArrowLength];
-  v10 = [a1 readLineEndWithType:v7 width:v8 length:v9];
+  [self readFillStyleFromManager:managerCopy toStroke:v5];
+  [self readDashStyleFromManager:managerCopy toStroke:v5];
+  [self readJoinStyleFromManager:managerCopy toStroke:v5];
+  strokeStartArrowType = [managerCopy strokeStartArrowType];
+  strokeStartArrowWidth = [managerCopy strokeStartArrowWidth];
+  strokeStartArrowLength = [managerCopy strokeStartArrowLength];
+  v10 = [self readLineEndWithType:strokeStartArrowType width:strokeStartArrowWidth length:strokeStartArrowLength];
   [(OADStroke *)v5 setTail:v10];
 
-  v11 = [v4 strokeEndArrowType];
-  v12 = [v4 strokeEndArrowWidth];
-  v13 = [v4 strokeEndArrowLength];
-  v14 = [a1 readLineEndWithType:v11 width:v12 length:v13];
+  strokeEndArrowType = [managerCopy strokeEndArrowType];
+  strokeEndArrowWidth = [managerCopy strokeEndArrowWidth];
+  strokeEndArrowLength = [managerCopy strokeEndArrowLength];
+  v14 = [self readLineEndWithType:strokeEndArrowType width:strokeEndArrowWidth length:strokeEndArrowLength];
   [(OADStroke *)v5 setHead:v14];
 
-  [v4 strokeWidth];
+  [managerCopy strokeWidth];
   [(OADStroke *)v5 setWidth:?];
-  v15 = [v4 strokeCapStyle];
-  -[OADStroke setCap:](v5, "setCap:", [a1 readCapStyle:v15]);
-  v16 = [v4 strokeCompoundType];
-  -[OADStroke setCompoundType:](v5, "setCompoundType:", [a1 readCompoundType:v16]);
+  strokeCapStyle = [managerCopy strokeCapStyle];
+  -[OADStroke setCap:](v5, "setCap:", [self readCapStyle:strokeCapStyle]);
+  strokeCompoundType = [managerCopy strokeCompoundType];
+  -[OADStroke setCompoundType:](v5, "setCompoundType:", [self readCompoundType:strokeCompoundType]);
 
   return v5;
 }
 
-+ (char)readPresetDashStyle:(id)a3
++ (char)readPresetDashStyle:(id)style
 {
-  v3 = [presetDashStyleEnumMap valueForString:a3];
+  v3 = [presetDashStyleEnumMap valueForString:style];
   if (v3 == 126)
   {
     return -1;
@@ -65,15 +65,15 @@
   }
 }
 
-+ (id)readLineEndWithType:(id)a3 width:(id)a4 length:(id)a5
++ (id)readLineEndWithType:(id)type width:(id)width length:(id)length
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  widthCopy = width;
+  lengthCopy = length;
   v11 = objc_alloc_init(OADLineEnd);
-  v12 = [a1 readLineEndType:v8];
-  v13 = [a1 readLineEndWidth:v9];
-  v14 = [a1 readLineEndLength:v10];
+  v12 = [self readLineEndType:typeCopy];
+  v13 = [self readLineEndWidth:widthCopy];
+  v14 = [self readLineEndLength:lengthCopy];
   [(OADLineEnd *)v11 setType:v12];
   [(OADLineEnd *)v11 setWidth:v13];
   [(OADLineEnd *)v11 setLength:v14];
@@ -81,14 +81,14 @@
   return v11;
 }
 
-+ (void)readDashStyleFromManager:(id)a3 toStroke:(id)a4
++ (void)readDashStyleFromManager:(id)manager toStroke:(id)stroke
 {
-  v20 = a4;
-  v6 = [a3 strokeDashStyle];
-  v7 = [a1 readPresetDashStyle:v6];
+  strokeCopy = stroke;
+  strokeDashStyle = [manager strokeDashStyle];
+  v7 = [self readPresetDashStyle:strokeDashStyle];
   if (v7 == -1)
   {
-    v9 = [v6 componentsSeparatedByString:@" "];
+    v9 = [strokeDashStyle componentsSeparatedByString:@" "];
     v10 = [v9 count];
     v8 = objc_alloc_init(OADCustomDash);
     v11 = v10 >> 1;
@@ -123,15 +123,15 @@
     [(OADCustomDash *)v8 setType:v7];
   }
 
-  [v20 setDash:v8];
+  [strokeCopy setDash:v8];
 }
 
-+ (void)readJoinStyleFromManager:(id)a3 toStroke:(id)a4
++ (void)readJoinStyleFromManager:(id)manager toStroke:(id)stroke
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v10 strokeJoinStyle];
-  if ([v6 isEqualToString:@"bevel"])
+  managerCopy = manager;
+  strokeCopy = stroke;
+  strokeJoinStyle = [managerCopy strokeJoinStyle];
+  if ([strokeJoinStyle isEqualToString:@"bevel"])
   {
     v7 = off_2799C5718;
 LABEL_3:
@@ -139,17 +139,17 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"miter"])
+  if ([strokeJoinStyle isEqualToString:@"miter"])
   {
     v9 = objc_alloc_init(OADMiterLineJoin);
-    [v10 strokeMiterLimit];
+    [managerCopy strokeMiterLimit];
     v8 = v9;
     [(OADMiterLineJoin *)v9 setLimit:?];
   }
 
   else
   {
-    if ([v6 isEqualToString:@"round"])
+    if ([strokeJoinStyle isEqualToString:@"round"])
     {
       v7 = off_2799C5750;
       goto LABEL_3;
@@ -159,32 +159,32 @@ LABEL_3:
   }
 
 LABEL_9:
-  [v5 setJoin:v8];
+  [strokeCopy setJoin:v8];
 }
 
-+ (id)targetFgColorWithManager:(id)a3
++ (id)targetFgColorWithManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 strokeFgColor];
-  [v3 strokeFgAlpha];
-  v5 = [OAVColor readColorFromAttribute:v4 alpha:v3 manager:?];
+  managerCopy = manager;
+  strokeFgColor = [managerCopy strokeFgColor];
+  [managerCopy strokeFgAlpha];
+  v5 = [OAVColor readColorFromAttribute:strokeFgColor alpha:managerCopy manager:?];
 
   return v5;
 }
 
-+ (void)readFillStyleFromManager:(id)a3 toStroke:(id)a4
++ (void)readFillStyleFromManager:(id)manager toStroke:(id)stroke
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 isStroked];
-  v8 = [v12 strokeFillType];
-  v9 = v8;
-  if (v7)
+  managerCopy = manager;
+  strokeCopy = stroke;
+  isStroked = [managerCopy isStroked];
+  strokeFillType = [managerCopy strokeFillType];
+  v9 = strokeFillType;
+  if (isStroked)
   {
-    if ([v8 isEqualToString:@"solid"])
+    if ([strokeFillType isEqualToString:@"solid"])
     {
       v10 = objc_alloc_init(OADSolidFill);
-      v11 = [a1 targetFgColorWithManager:v12];
+      v11 = [self targetFgColorWithManager:managerCopy];
       [(OADSolidFill *)v10 setColor:v11];
     }
 
@@ -199,7 +199,7 @@ LABEL_9:
     v10 = +[OADNullFill nullFill];
   }
 
-  [v6 setFill:v10];
+  [strokeCopy setFill:v10];
 }
 
 @end

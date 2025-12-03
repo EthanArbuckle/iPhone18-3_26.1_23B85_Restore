@@ -1,19 +1,19 @@
 @interface DeskCamSessionOptions
-- (DeskCamSessionOptions)initWithDeviceType:(int)a3;
-- (DeskCamSessionOptions)initWithPlist:(id)a3 deviceType:(int)a4;
-- (DeskCamSessionOptions)initWithPlistPath:(id)a3 deviceType:(int)a4;
+- (DeskCamSessionOptions)initWithDeviceType:(int)type;
+- (DeskCamSessionOptions)initWithPlist:(id)plist deviceType:(int)type;
+- (DeskCamSessionOptions)initWithPlistPath:(id)path deviceType:(int)type;
 - (id)asDictionary;
 @end
 
 @implementation DeskCamSessionOptions
 
-- (DeskCamSessionOptions)initWithDeviceType:(int)a3
+- (DeskCamSessionOptions)initWithDeviceType:(int)type
 {
   v18.receiver = self;
   v18.super_class = DeskCamSessionOptions;
   v4 = [(DeskCamSessionOptions *)&v18 init];
   v5 = v4;
-  if (v4 && (v6 = a3 - 1, (a3 - 1) <= 3))
+  if (v4 && (v6 = type - 1, (type - 1) <= 3))
   {
     v7 = dword_2434F7790[v6];
     v8 = dword_2434F77A0[v6];
@@ -52,17 +52,17 @@
   return v16;
 }
 
-- (DeskCamSessionOptions)initWithPlistPath:(id)a3 deviceType:(int)a4
+- (DeskCamSessionOptions)initWithPlistPath:(id)path deviceType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&type;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = DeskCamSessionOptions;
   v7 = [(DeskCamSessionOptions *)&v12 init];
   if (v7)
   {
     v8 = v7;
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v6];
+    v9 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:pathCopy];
     v10 = [(DeskCamSessionOptions *)v8 initWithPlist:v9 deviceType:v4];
   }
 
@@ -74,13 +74,13 @@
   return v10;
 }
 
-- (DeskCamSessionOptions)initWithPlist:(id)a3 deviceType:(int)a4
+- (DeskCamSessionOptions)initWithPlist:(id)plist deviceType:(int)type
 {
-  v6 = a3;
+  plistCopy = plist;
   v82.receiver = self;
   v82.super_class = DeskCamSessionOptions;
   v7 = [(DeskCamSessionOptions *)&v82 init];
-  if (v7 && (v8 = a4 - 1, (a4 - 1) <= 3))
+  if (v7 && (v8 = type - 1, (type - 1) <= 3))
   {
     v9 = *&dword_2434F7780[v8];
     v10 = *&dword_2434F7790[v8];
@@ -92,10 +92,10 @@
     v16 = *&dword_2434F7800[v8];
     v80 = *&dword_2434F7810[v8];
     v81 = *&aFfFffFffFff[4 * v8 + 16];
-    v17 = [v6 objectForKeyedSubscript:@"viewportScaleMultiplierLandscape"];
+    v17 = [plistCopy objectForKeyedSubscript:@"viewportScaleMultiplierLandscape"];
     if (v17)
     {
-      v18 = [v6 objectForKeyedSubscript:@"viewportScaleMultiplierLandscape"];
+      v18 = [plistCopy objectForKeyedSubscript:@"viewportScaleMultiplierLandscape"];
       [v18 floatValue];
       v7->_viewportScaleMultiplierLandscape = v19;
     }
@@ -105,10 +105,10 @@
       v7->_viewportScaleMultiplierLandscape = v9;
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"viewportScaleMultiplierPortrait"];
+    v21 = [plistCopy objectForKeyedSubscript:@"viewportScaleMultiplierPortrait"];
     if (v21)
     {
-      v22 = [v6 objectForKeyedSubscript:@"viewportScaleMultiplierPortrait"];
+      v22 = [plistCopy objectForKeyedSubscript:@"viewportScaleMultiplierPortrait"];
       [v22 floatValue];
       v7->_viewportScaleMultiplierPortrait = v23;
     }
@@ -118,10 +118,10 @@
       v7->_viewportScaleMultiplierPortrait = 0.65;
     }
 
-    v24 = [v6 objectForKeyedSubscript:@"viewportScaleMultiplierMin"];
+    v24 = [plistCopy objectForKeyedSubscript:@"viewportScaleMultiplierMin"];
     if (v24)
     {
-      v25 = [v6 objectForKeyedSubscript:@"viewportScaleMultiplierMin"];
+      v25 = [plistCopy objectForKeyedSubscript:@"viewportScaleMultiplierMin"];
       [v25 floatValue];
       v7->_viewportScaleMultiplierMin = v26;
     }
@@ -131,10 +131,10 @@
       v7->_viewportScaleMultiplierMin = v10;
     }
 
-    v27 = [v6 objectForKeyedSubscript:@"framingSpaceScalingFactor"];
+    v27 = [plistCopy objectForKeyedSubscript:@"framingSpaceScalingFactor"];
     if (v27)
     {
-      v28 = [v6 objectForKeyedSubscript:@"framingSpaceScalingFactor"];
+      v28 = [plistCopy objectForKeyedSubscript:@"framingSpaceScalingFactor"];
       [v28 floatValue];
       v7->_framingSpaceScalingFactor = v29;
     }
@@ -144,10 +144,10 @@
       v7->_framingSpaceScalingFactor = v11;
     }
 
-    v30 = [v6 objectForKeyedSubscript:@"framingSpaceExtendPercentage"];
+    v30 = [plistCopy objectForKeyedSubscript:@"framingSpaceExtendPercentage"];
     if (v30)
     {
-      v31 = [v6 objectForKeyedSubscript:@"framingSpaceExtendPercentage"];
+      v31 = [plistCopy objectForKeyedSubscript:@"framingSpaceExtendPercentage"];
       [v31 floatValue];
       v7->_framingSpaceExtendPercentage = v32;
     }
@@ -157,10 +157,10 @@
       v7->_framingSpaceExtendPercentage = v12;
     }
 
-    v33 = [v6 objectForKeyedSubscript:@"pitchDefaultAngleValue"];
+    v33 = [plistCopy objectForKeyedSubscript:@"pitchDefaultAngleValue"];
     if (v33)
     {
-      v34 = [v6 objectForKeyedSubscript:@"pitchDefaultAngleValue"];
+      v34 = [plistCopy objectForKeyedSubscript:@"pitchDefaultAngleValue"];
       [v34 floatValue];
       v7->_pitchDefaultAngleValue = v35;
     }
@@ -170,10 +170,10 @@
       v7->_pitchDefaultAngleValue = v13;
     }
 
-    v36 = [v6 objectForKeyedSubscript:@"pitchRefinementValue"];
+    v36 = [plistCopy objectForKeyedSubscript:@"pitchRefinementValue"];
     if (v36)
     {
-      v37 = [v6 objectForKeyedSubscript:@"pitchRefinementValue"];
+      v37 = [plistCopy objectForKeyedSubscript:@"pitchRefinementValue"];
       [v37 floatValue];
       v7->_pitchRefinementValue = v38;
     }
@@ -183,10 +183,10 @@
       v7->_pitchRefinementValue = v14;
     }
 
-    v39 = [v6 objectForKeyedSubscript:@"gravityVectorSmoothingAlpha"];
+    v39 = [plistCopy objectForKeyedSubscript:@"gravityVectorSmoothingAlpha"];
     if (v39)
     {
-      v40 = [v6 objectForKeyedSubscript:@"gravityVectorSmoothingAlpha"];
+      v40 = [plistCopy objectForKeyedSubscript:@"gravityVectorSmoothingAlpha"];
       [v40 floatValue];
       v7->_gravityVectorSmoothingAlpha = v41;
     }
@@ -196,10 +196,10 @@
       v7->_gravityVectorSmoothingAlpha = v15;
     }
 
-    v42 = [v6 objectForKeyedSubscript:@"pitchValueUpperThreshold"];
+    v42 = [plistCopy objectForKeyedSubscript:@"pitchValueUpperThreshold"];
     if (v42)
     {
-      v43 = [v6 objectForKeyedSubscript:@"pitchValueUpperThreshold"];
+      v43 = [plistCopy objectForKeyedSubscript:@"pitchValueUpperThreshold"];
       [v43 floatValue];
       v7->_pitchValueUpperThreshold = v44;
     }
@@ -209,10 +209,10 @@
       v7->_pitchValueUpperThreshold = -2.0;
     }
 
-    v45 = [v6 objectForKeyedSubscript:@"pitchValueLowerThreshold"];
+    v45 = [plistCopy objectForKeyedSubscript:@"pitchValueLowerThreshold"];
     if (v45)
     {
-      v46 = [v6 objectForKeyedSubscript:@"pitchValueLowerThreshold"];
+      v46 = [plistCopy objectForKeyedSubscript:@"pitchValueLowerThreshold"];
       [v46 floatValue];
       v7->_pitchValueLowerThreshold = v47;
     }
@@ -222,10 +222,10 @@
       v7->_pitchValueLowerThreshold = -110.0;
     }
 
-    v48 = [v6 objectForKeyedSubscript:@"imageBlendingRadiusUpscaler"];
+    v48 = [plistCopy objectForKeyedSubscript:@"imageBlendingRadiusUpscaler"];
     if (v48)
     {
-      v49 = [v6 objectForKeyedSubscript:@"imageBlendingRadiusUpscaler"];
+      v49 = [plistCopy objectForKeyedSubscript:@"imageBlendingRadiusUpscaler"];
       [v49 floatValue];
       v7->_imageBlendingRadiusUpscaler = v50;
     }
@@ -235,10 +235,10 @@
       v7->_imageBlendingRadiusUpscaler = v16;
     }
 
-    v51 = [v6 objectForKeyedSubscript:@"imageBlendingPercentage"];
+    v51 = [plistCopy objectForKeyedSubscript:@"imageBlendingPercentage"];
     if (v51)
     {
-      v52 = [v6 objectForKeyedSubscript:@"imageBlendingPercentage"];
+      v52 = [plistCopy objectForKeyedSubscript:@"imageBlendingPercentage"];
       [v52 floatValue];
       v7->_imageBlendingPercentage = v53;
     }
@@ -248,10 +248,10 @@
       v7->_imageBlendingPercentage = v80;
     }
 
-    v54 = [v6 objectForKeyedSubscript:@"imageBlurringEnabled"];
+    v54 = [plistCopy objectForKeyedSubscript:@"imageBlurringEnabled"];
     if (v54)
     {
-      v55 = [v6 objectForKeyedSubscript:@"imageBlurringEnabled"];
+      v55 = [plistCopy objectForKeyedSubscript:@"imageBlurringEnabled"];
       v7->_imageBlurringEnabled = [v55 BOOLValue];
     }
 
@@ -260,10 +260,10 @@
       v7->_imageBlurringEnabled = 1;
     }
 
-    v56 = [v6 objectForKeyedSubscript:@"imageBlurringKernelSize"];
+    v56 = [plistCopy objectForKeyedSubscript:@"imageBlurringKernelSize"];
     if (v56)
     {
-      v57 = [v6 objectForKeyedSubscript:@"imageBlurringKernelSize"];
+      v57 = [plistCopy objectForKeyedSubscript:@"imageBlurringKernelSize"];
       v7->_imageBlurringKernelSize = [v57 intValue];
     }
 
@@ -272,10 +272,10 @@
       v7->_imageBlurringKernelSize = 7;
     }
 
-    v58 = [v6 objectForKeyedSubscript:@"imageBlurringSigma"];
+    v58 = [plistCopy objectForKeyedSubscript:@"imageBlurringSigma"];
     if (v58)
     {
-      v59 = [v6 objectForKeyedSubscript:@"imageBlurringSigma"];
+      v59 = [plistCopy objectForKeyedSubscript:@"imageBlurringSigma"];
       [v59 floatValue];
       v7->_imageBlurringSigma = v60;
     }
@@ -285,10 +285,10 @@
       v7->_imageBlurringSigma = 6.0;
     }
 
-    v61 = [v6 objectForKeyedSubscript:@"imageSharpeningEnabled"];
+    v61 = [plistCopy objectForKeyedSubscript:@"imageSharpeningEnabled"];
     if (v61)
     {
-      v62 = [v6 objectForKeyedSubscript:@"imageSharpeningEnabled"];
+      v62 = [plistCopy objectForKeyedSubscript:@"imageSharpeningEnabled"];
       v7->_imageSharpeningEnabled = [v62 BOOLValue];
     }
 
@@ -297,10 +297,10 @@
       v7->_imageSharpeningEnabled = 1;
     }
 
-    v63 = [v6 objectForKeyedSubscript:@"imageSharpeningKernelSize"];
+    v63 = [plistCopy objectForKeyedSubscript:@"imageSharpeningKernelSize"];
     if (v63)
     {
-      v64 = [v6 objectForKeyedSubscript:@"imageSharpeningKernelSize"];
+      v64 = [plistCopy objectForKeyedSubscript:@"imageSharpeningKernelSize"];
       v7->_imageSharpeningKernelSize = [v64 intValue];
     }
 
@@ -309,10 +309,10 @@
       v7->_imageSharpeningKernelSize = 5;
     }
 
-    v65 = [v6 objectForKeyedSubscript:@"imageSharpeningSigma"];
+    v65 = [plistCopy objectForKeyedSubscript:@"imageSharpeningSigma"];
     if (v65)
     {
-      v66 = [v6 objectForKeyedSubscript:@"imageSharpeningSigma"];
+      v66 = [plistCopy objectForKeyedSubscript:@"imageSharpeningSigma"];
       [v66 floatValue];
       v7->_imageSharpeningSigma = v67;
     }
@@ -322,10 +322,10 @@
       v7->_imageSharpeningSigma = 5.0;
     }
 
-    v68 = [v6 objectForKeyedSubscript:@"imageSharpeningAmount"];
+    v68 = [plistCopy objectForKeyedSubscript:@"imageSharpeningAmount"];
     if (v68)
     {
-      v69 = [v6 objectForKeyedSubscript:@"imageSharpeningAmount"];
+      v69 = [plistCopy objectForKeyedSubscript:@"imageSharpeningAmount"];
       [v69 floatValue];
       v7->_imageSharpeningAmount = v70;
     }
@@ -335,10 +335,10 @@
       v7->_imageSharpeningAmount = v81;
     }
 
-    v71 = [v6 objectForKeyedSubscript:@"imageToneMappingEnabled"];
+    v71 = [plistCopy objectForKeyedSubscript:@"imageToneMappingEnabled"];
     if (v71)
     {
-      v72 = [v6 objectForKeyedSubscript:@"imageToneMappingEnabled"];
+      v72 = [plistCopy objectForKeyedSubscript:@"imageToneMappingEnabled"];
       v7->_imageToneMappingEnabled = [v72 BOOLValue];
     }
 
@@ -347,10 +347,10 @@
       v7->_imageToneMappingEnabled = 1;
     }
 
-    v73 = [v6 objectForKeyedSubscript:@"imageToneMappingExponent"];
+    v73 = [plistCopy objectForKeyedSubscript:@"imageToneMappingExponent"];
     if (v73)
     {
-      v74 = [v6 objectForKeyedSubscript:@"imageToneMappingExponent"];
+      v74 = [plistCopy objectForKeyedSubscript:@"imageToneMappingExponent"];
       [v74 floatValue];
       v7->_imageToneMappingExponent = v75;
     }
@@ -360,10 +360,10 @@
       v7->_imageToneMappingExponent = 1.8;
     }
 
-    v76 = [v6 objectForKeyedSubscript:@"imageToneMappingScaler"];
+    v76 = [plistCopy objectForKeyedSubscript:@"imageToneMappingScaler"];
     if (v76)
     {
-      v77 = [v6 objectForKeyedSubscript:@"imageToneMappingScaler"];
+      v77 = [plistCopy objectForKeyedSubscript:@"imageToneMappingScaler"];
       [v77 floatValue];
       v7->_imageToneMappingScaler = v78;
     }

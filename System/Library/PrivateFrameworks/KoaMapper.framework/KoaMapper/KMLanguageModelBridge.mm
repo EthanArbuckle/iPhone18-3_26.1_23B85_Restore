@@ -1,14 +1,14 @@
 @interface KMLanguageModelBridge
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (KMLanguageModelBridge)initWithLanguageCode:(id)a3;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
+- (KMLanguageModelBridge)initWithLanguageCode:(id)code;
 @end
 
 @implementation KMLanguageModelBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v43[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   languageCode = self->_languageCode;
   v7 = AFKeyboardLMLocaleOverride();
   v8 = *MEMORY[0x277D23078];
@@ -36,7 +36,7 @@
       v37 = __Block_byref_object_copy__857;
       v38 = __Block_byref_object_dispose__858;
       v39 = 0;
-      v26 = v5;
+      v26 = blockCopy;
       LMLanguageModelEnumerateDynamicTokensWithBlock();
       LMLanguageModelRelease();
       v11 = *(v28 + 24);
@@ -150,22 +150,22 @@ void __60__KMLanguageModelBridge_enumerateItemsWithError_usingBlock___block_invo
   }
 }
 
-- (KMLanguageModelBridge)initWithLanguageCode:(id)a3
+- (KMLanguageModelBridge)initWithLanguageCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   v12.receiver = self;
   v12.super_class = KMLanguageModelBridge;
   v6 = [(KMLanguageModelBridge *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!codeCopy)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_languageCode, a3);
+    objc_storeStrong(&v6->_languageCode, code);
     v8 = objc_alloc_init(MEMORY[0x277D22D28]);
     builder = v7->_builder;
     v7->_builder = v8;

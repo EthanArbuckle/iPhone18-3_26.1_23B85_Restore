@@ -1,27 +1,27 @@
 @interface NotesBackgroundView
 - (ICAccessibilityChildReparentingController)axChildReparentingController;
 - (ICAccessibilityChildReparentingProvider)elementForAccessibilityReparenting;
-- (NotesBackgroundView)initWithCoder:(id)a3;
-- (NotesBackgroundView)initWithFrame:(CGRect)a3;
+- (NotesBackgroundView)initWithCoder:(id)coder;
+- (NotesBackgroundView)initWithFrame:(CGRect)frame;
 - (NotesBackgroundViewAccessibilityElementReparentingDelegate)accessibilityElementReparentingDelegate;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityElements;
-- (id)scrollViewDescendantOfView:(id)a3;
+- (id)scrollViewDescendantOfView:(id)view;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)addConstraintsForSafeAreaLayoutGuide:(id)a3 bottomToolbar:(id)a4 toContainer:(id)a5;
-- (void)addConstraintsForSafeAreaLayoutGuide:(id)a3 toContainer:(id)a4;
-- (void)addSubview:(id)a3;
-- (void)addSubviewAboveAllViews:(id)a3;
-- (void)applyContentViewBezelsStandalone:(BOOL)a3;
+- (void)_setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)addConstraintsForSafeAreaLayoutGuide:(id)guide bottomToolbar:(id)toolbar toContainer:(id)container;
+- (void)addConstraintsForSafeAreaLayoutGuide:(id)guide toContainer:(id)container;
+- (void)addSubview:(id)subview;
+- (void)addSubviewAboveAllViews:(id)views;
+- (void)applyContentViewBezelsStandalone:(BOOL)standalone;
 - (void)commonInit;
-- (void)scrollView:(id)a3 didChangeContentOffset:(CGPoint)a4;
-- (void)setContentView:(id)a3;
-- (void)setContentView:(id)a3 useSafeAreaLayoutGuide:(BOOL)a4 standalone:(BOOL)a5 needsAdditionalBottomMargin:(BOOL)a6 needsAdditionalLeadingMargin:(BOOL)a7 force:(BOOL)a8;
-- (void)setContentView:(id)a3 useSafeAreaLayoutGuide:(BOOL)a4 topMargin:(double)a5 bottomMargin:(double)a6 leadingMargin:(double)a7 trailingMargin:(double)a8 standalone:(BOOL)a9 force:(BOOL)a10;
-- (void)setContentViewVisible:(BOOL)a3;
-- (void)setHasBarBlur:(BOOL)a3;
-- (void)updateContentViewBezelsStandalone:(BOOL)a3 needsAdditionalBottomMargin:(BOOL)a4 needsAdditionalLeadingMargin:(BOOL)a5 force:(BOOL)a6;
+- (void)scrollView:(id)view didChangeContentOffset:(CGPoint)offset;
+- (void)setContentView:(id)view;
+- (void)setContentView:(id)view useSafeAreaLayoutGuide:(BOOL)guide standalone:(BOOL)standalone needsAdditionalBottomMargin:(BOOL)margin needsAdditionalLeadingMargin:(BOOL)leadingMargin force:(BOOL)force;
+- (void)setContentView:(id)view useSafeAreaLayoutGuide:(BOOL)guide topMargin:(double)margin bottomMargin:(double)bottomMargin leadingMargin:(double)leadingMargin trailingMargin:(double)trailingMargin standalone:(BOOL)standalone force:(BOOL)self0;
+- (void)setContentViewVisible:(BOOL)visible;
+- (void)setHasBarBlur:(BOOL)blur;
+- (void)updateContentViewBezelsStandalone:(BOOL)standalone needsAdditionalBottomMargin:(BOOL)margin needsAdditionalLeadingMargin:(BOOL)leadingMargin force:(BOOL)force;
 @end
 
 @implementation NotesBackgroundView
@@ -37,8 +37,8 @@
 
     [(NotesBarBackgroundView *)self->_topBarView setClipsToBounds:1];
     [(NotesBarBackgroundView *)self->_topBarView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(NotesBarBackgroundView *)self->_topBarView setColor:v6];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(NotesBarBackgroundView *)self->_topBarView setColor:systemBackgroundColor];
 
     [(NotesBackgroundView *)self addSubview:self->_topBarView];
     v7 = _NSDictionaryOfVariableBindings(&cfstr_Topbarview.isa, self->_topBarView, 0);
@@ -57,11 +57,11 @@
   }
 }
 
-- (NotesBackgroundView)initWithCoder:(id)a3
+- (NotesBackgroundView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NotesBackgroundView;
-  v3 = [(NotesBackgroundView *)&v6 initWithCoder:a3];
+  v3 = [(NotesBackgroundView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -71,11 +71,11 @@
   return v4;
 }
 
-- (NotesBackgroundView)initWithFrame:(CGRect)a3
+- (NotesBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NotesBackgroundView;
-  v3 = [(NotesBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NotesBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -85,22 +85,22 @@
   return v4;
 }
 
-- (void)updateContentViewBezelsStandalone:(BOOL)a3 needsAdditionalBottomMargin:(BOOL)a4 needsAdditionalLeadingMargin:(BOOL)a5 force:(BOOL)a6
+- (void)updateContentViewBezelsStandalone:(BOOL)standalone needsAdditionalBottomMargin:(BOOL)margin needsAdditionalLeadingMargin:(BOOL)leadingMargin force:(BOOL)force
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v11 = [(NotesBackgroundView *)self contentView];
-  [(NotesBackgroundView *)self setContentView:v11 useSafeAreaLayoutGuide:1 standalone:v9 needsAdditionalBottomMargin:v8 needsAdditionalLeadingMargin:v7 force:v6];
+  forceCopy = force;
+  leadingMarginCopy = leadingMargin;
+  marginCopy = margin;
+  standaloneCopy = standalone;
+  contentView = [(NotesBackgroundView *)self contentView];
+  [(NotesBackgroundView *)self setContentView:contentView useSafeAreaLayoutGuide:1 standalone:standaloneCopy needsAdditionalBottomMargin:marginCopy needsAdditionalLeadingMargin:leadingMarginCopy force:forceCopy];
 }
 
-- (void)applyContentViewBezelsStandalone:(BOOL)a3
+- (void)applyContentViewBezelsStandalone:(BOOL)standalone
 {
-  v3 = a3;
+  standaloneCopy = standalone;
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
-    if (v3)
+    if (standaloneCopy)
     {
       v5 = 34.0;
     }
@@ -110,64 +110,64 @@
       v5 = 16.0;
     }
 
-    v6 = [(NotesBackgroundView *)self contentView];
-    [v6 ic_applyRoundedCornersWithTopLeadingRadius:16.0 topTrailingRadius:16.0 bottomLeadingRadius:v5 bottomTrailingRadius:34.0];
+    contentView = [(NotesBackgroundView *)self contentView];
+    [contentView ic_applyRoundedCornersWithTopLeadingRadius:16.0 topTrailingRadius:16.0 bottomLeadingRadius:v5 bottomTrailingRadius:34.0];
 
-    v8 = [(NotesBackgroundView *)self contentView];
-    v7 = [v8 layer];
-    [v7 setMasksToBounds:1];
+    contentView2 = [(NotesBackgroundView *)self contentView];
+    layer = [contentView2 layer];
+    [layer setMasksToBounds:1];
   }
 }
 
-- (void)setHasBarBlur:(BOOL)a3
+- (void)setHasBarBlur:(BOOL)blur
 {
-  v3 = a3;
-  self->_hasBarBlur = a3;
+  blurCopy = blur;
+  self->_hasBarBlur = blur;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
     topBarView = self->_topBarView;
 
-    [(NotesBarBackgroundView *)topBarView setHasBlur:v3];
+    [(NotesBarBackgroundView *)topBarView setHasBlur:blurCopy];
   }
 }
 
-- (void)_setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)_setOverrideUserInterfaceStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = NotesBackgroundView;
   [(NotesBackgroundView *)&v6 _setOverrideUserInterfaceStyle:?];
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v5 = [(NotesBackgroundView *)self topBarView];
-    [v5 _setOverrideUserInterfaceStyle:a3];
+    topBarView = [(NotesBackgroundView *)self topBarView];
+    [topBarView _setOverrideUserInterfaceStyle:style];
   }
 }
 
-- (void)addConstraintsForSafeAreaLayoutGuide:(id)a3 toContainer:(id)a4
+- (void)addConstraintsForSafeAreaLayoutGuide:(id)guide toContainer:(id)container
 {
-  v9 = a3;
+  guideCopy = guide;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v5 = [(NotesBackgroundView *)self topBarView];
-    v6 = [v5 bottomAnchor];
-    v7 = [v9 topAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    topBarView = [(NotesBackgroundView *)self topBarView];
+    bottomAnchor = [topBarView bottomAnchor];
+    topAnchor = [guideCopy topAnchor];
+    v8 = [bottomAnchor constraintEqualToAnchor:topAnchor];
 
     [v8 setActive:1];
   }
 }
 
-- (void)addConstraintsForSafeAreaLayoutGuide:(id)a3 bottomToolbar:(id)a4 toContainer:(id)a5
+- (void)addConstraintsForSafeAreaLayoutGuide:(id)guide bottomToolbar:(id)toolbar toContainer:(id)container
 {
-  v12 = a3;
-  v7 = a5;
+  guideCopy = guide;
+  containerCopy = container;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v8 = [(NotesBackgroundView *)self topBarView];
-    v9 = [v8 bottomAnchor];
-    v10 = [v12 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
-    [v7 addConstraint:v11];
+    topBarView = [(NotesBackgroundView *)self topBarView];
+    bottomAnchor = [topBarView bottomAnchor];
+    topAnchor = [guideCopy topAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:topAnchor];
+    [containerCopy addConstraint:v11];
   }
 }
 
@@ -178,36 +178,36 @@
   [(NotesBackgroundView *)&v7 _dynamicUserInterfaceTraitDidChange];
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v3 = [(UIView *)self ic_appearanceInfo];
-    [v3 navigationBarAlpha];
+    ic_appearanceInfo = [(UIView *)self ic_appearanceInfo];
+    [ic_appearanceInfo navigationBarAlpha];
     v5 = v4;
-    v6 = [(NotesBackgroundView *)self topBarView];
-    [v6 setAlpha:v5];
+    topBarView = [(NotesBackgroundView *)self topBarView];
+    [topBarView setAlpha:v5];
   }
 }
 
-- (void)scrollView:(id)a3 didChangeContentOffset:(CGPoint)a4
+- (void)scrollView:(id)view didChangeContentOffset:(CGPoint)offset
 {
-  y = a4.y;
+  y = offset.y;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v6 = [(NotesBackgroundView *)self topBarView];
-    [v6 frame];
+    topBarView = [(NotesBackgroundView *)self topBarView];
+    [topBarView frame];
     v8 = v7 + -15.0 > -y;
 
-    v9 = [(NotesBackgroundView *)self topBarView];
-    [v9 setHidden:v8];
+    topBarView2 = [(NotesBackgroundView *)self topBarView];
+    [topBarView2 setHidden:v8];
   }
 }
 
-- (id)scrollViewDescendantOfView:(id)a3
+- (id)scrollViewDescendantOfView:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -216,8 +216,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [viewCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -228,7 +228,7 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = [(NotesBackgroundView *)self scrollViewDescendantOfView:*(*(&v13 + 1) + 8 * i)];
@@ -240,7 +240,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -258,39 +258,39 @@ LABEL_13:
   return v5;
 }
 
-- (void)setContentViewVisible:(BOOL)a3
+- (void)setContentViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_contentViewVisible = a3;
-  v4 = [(NotesBackgroundView *)self contentView];
-  v6 = v4;
+  visibleCopy = visible;
+  self->_contentViewVisible = visible;
+  contentView = [(NotesBackgroundView *)self contentView];
+  v6 = contentView;
   v5 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     v5 = 1.0;
   }
 
-  [v4 setAlpha:v5];
+  [contentView setAlpha:v5];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v4 = MEMORY[0x1E69DC938];
-  v5 = a3;
-  -[NotesBackgroundView setContentView:useSafeAreaLayoutGuide:standalone:needsAdditionalBottomMargin:needsAdditionalLeadingMargin:force:](self, "setContentView:useSafeAreaLayoutGuide:standalone:needsAdditionalBottomMargin:needsAdditionalLeadingMargin:force:", v5, [v4 ic_isVision], -[UIView ic_hasCompactWidth](self, "ic_hasCompactWidth"), 1, 0, 0);
+  viewCopy = view;
+  -[NotesBackgroundView setContentView:useSafeAreaLayoutGuide:standalone:needsAdditionalBottomMargin:needsAdditionalLeadingMargin:force:](self, "setContentView:useSafeAreaLayoutGuide:standalone:needsAdditionalBottomMargin:needsAdditionalLeadingMargin:force:", viewCopy, [v4 ic_isVision], -[UIView ic_hasCompactWidth](self, "ic_hasCompactWidth"), 1, 0, 0);
 }
 
-- (void)setContentView:(id)a3 useSafeAreaLayoutGuide:(BOOL)a4 standalone:(BOOL)a5 needsAdditionalBottomMargin:(BOOL)a6 needsAdditionalLeadingMargin:(BOOL)a7 force:(BOOL)a8
+- (void)setContentView:(id)view useSafeAreaLayoutGuide:(BOOL)guide standalone:(BOOL)standalone needsAdditionalBottomMargin:(BOOL)margin needsAdditionalLeadingMargin:(BOOL)leadingMargin force:(BOOL)force
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  forceCopy = force;
+  leadingMarginCopy = leadingMargin;
+  marginCopy = margin;
+  standaloneCopy = standalone;
+  guideCopy = guide;
   v14 = MEMORY[0x1E69DC938];
-  v19 = a3;
-  v15 = [v14 ic_isVision];
-  if ((v11 || v9) & [MEMORY[0x1E69DC938] ic_isVision])
+  viewCopy = view;
+  ic_isVision = [v14 ic_isVision];
+  if ((standaloneCopy || leadingMarginCopy) & [MEMORY[0x1E69DC938] ic_isVision])
   {
     v16 = 12.0;
   }
@@ -300,7 +300,7 @@ LABEL_13:
     v16 = 0.0;
   }
 
-  if ((v15 & v10) != 0)
+  if ((ic_isVision & marginCopy) != 0)
   {
     v17 = 12.0;
   }
@@ -320,19 +320,19 @@ LABEL_13:
     v18 = 0.0;
   }
 
-  [(NotesBackgroundView *)self setContentView:v19 useSafeAreaLayoutGuide:v12 topMargin:v11 bottomMargin:v8 leadingMargin:0.0 trailingMargin:v17 standalone:v16 force:v18];
+  [(NotesBackgroundView *)self setContentView:viewCopy useSafeAreaLayoutGuide:guideCopy topMargin:standaloneCopy bottomMargin:forceCopy leadingMargin:0.0 trailingMargin:v17 standalone:v16 force:v18];
 }
 
-- (void)setContentView:(id)a3 useSafeAreaLayoutGuide:(BOOL)a4 topMargin:(double)a5 bottomMargin:(double)a6 leadingMargin:(double)a7 trailingMargin:(double)a8 standalone:(BOOL)a9 force:(BOOL)a10
+- (void)setContentView:(id)view useSafeAreaLayoutGuide:(BOOL)guide topMargin:(double)margin bottomMargin:(double)bottomMargin leadingMargin:(double)leadingMargin trailingMargin:(double)trailingMargin standalone:(BOOL)standalone force:(BOOL)self0
 {
-  v10 = a10;
-  v11 = a9;
-  v19 = a3;
+  forceCopy = force;
+  standaloneCopy = standalone;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v19 || v10)
+  if (contentView != viewCopy || forceCopy)
   {
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = self->_contentView;
     if (v22)
@@ -340,72 +340,72 @@ LABEL_13:
       [(NotesBackgroundView *)self insertSubview:v22 atIndex:0];
     }
 
-    v23 = [MEMORY[0x1E695DF70] array];
-    if (a4)
+    array = [MEMORY[0x1E695DF70] array];
+    if (guide)
     {
-      v24 = [(NotesBackgroundView *)self safeAreaLayoutGuide];
-      v25 = [v24 leadingAnchor];
+      safeAreaLayoutGuide = [(NotesBackgroundView *)self safeAreaLayoutGuide];
+      leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
     }
 
     else
     {
-      v25 = [(NotesBackgroundView *)self leadingAnchor];
+      leadingAnchor = [(NotesBackgroundView *)self leadingAnchor];
     }
 
-    v26 = [(UIView *)self->_contentView leadingAnchor];
-    v44 = v25;
-    v27 = [v26 constraintEqualToAnchor:v25 constant:a7];
+    leadingAnchor2 = [(UIView *)self->_contentView leadingAnchor];
+    v44 = leadingAnchor;
+    v27 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor constant:leadingMargin];
 
     v43 = v27;
-    [v23 addObject:v27];
-    if (a4)
+    [array addObject:v27];
+    if (guide)
     {
-      v28 = [(NotesBackgroundView *)self safeAreaLayoutGuide];
-      v29 = [v28 widthAnchor];
+      safeAreaLayoutGuide2 = [(NotesBackgroundView *)self safeAreaLayoutGuide];
+      widthAnchor = [safeAreaLayoutGuide2 widthAnchor];
     }
 
     else
     {
-      v29 = [(NotesBackgroundView *)self widthAnchor];
+      widthAnchor = [(NotesBackgroundView *)self widthAnchor];
     }
 
-    v30 = [(UIView *)self->_contentView widthAnchor];
-    v31 = [v30 constraintEqualToAnchor:v29 constant:-a7 - a8];
+    widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+    trailingMargin = [widthAnchor2 constraintEqualToAnchor:widthAnchor constant:-leadingMargin - trailingMargin];
 
-    [v23 addObject:v31];
-    if (a4)
+    [array addObject:trailingMargin];
+    if (guide)
     {
-      v32 = [(NotesBackgroundView *)self safeAreaLayoutGuide];
-      v33 = [v32 topAnchor];
+      safeAreaLayoutGuide3 = [(NotesBackgroundView *)self safeAreaLayoutGuide];
+      topAnchor = [safeAreaLayoutGuide3 topAnchor];
     }
 
     else
     {
-      v33 = [(NotesBackgroundView *)self topAnchor];
+      topAnchor = [(NotesBackgroundView *)self topAnchor];
     }
 
-    v34 = [(UIView *)self->_contentView topAnchor];
-    v35 = [v34 constraintEqualToAnchor:v33 constant:a5];
+    topAnchor2 = [(UIView *)self->_contentView topAnchor];
+    v35 = [topAnchor2 constraintEqualToAnchor:topAnchor constant:margin];
 
-    [v23 addObject:v35];
-    v42 = v11;
-    if (a4)
+    [array addObject:v35];
+    v42 = standaloneCopy;
+    if (guide)
     {
-      v36 = [(NotesBackgroundView *)self safeAreaLayoutGuide];
-      v37 = [v36 bottomAnchor];
+      safeAreaLayoutGuide4 = [(NotesBackgroundView *)self safeAreaLayoutGuide];
+      bottomAnchor = [safeAreaLayoutGuide4 bottomAnchor];
     }
 
     else
     {
-      v37 = [(NotesBackgroundView *)self bottomAnchor];
+      bottomAnchor = [(NotesBackgroundView *)self bottomAnchor];
     }
 
-    v38 = [(UIView *)self->_contentView bottomAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38 constant:a6];
+    bottomAnchor2 = [(UIView *)self->_contentView bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:bottomMargin];
 
-    [v23 addObject:v39];
+    [array addObject:v39];
     v40 = MEMORY[0x1E696ACD8];
-    v41 = [v23 copy];
+    v41 = [array copy];
     [v40 activateConstraints:v41];
 
     if ([MEMORY[0x1E69DC938] ic_isVision] && !-[NotesBackgroundView isPreviewing](self, "isPreviewing"))
@@ -417,96 +417,96 @@ LABEL_13:
   MEMORY[0x1EEE66BB8](contentView);
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [(NotesBackgroundView *)self contentView];
+  subviewCopy = subview;
+  contentView = [(NotesBackgroundView *)self contentView];
 
-  if (v5)
+  if (contentView)
   {
-    v6 = [(NotesBackgroundView *)self contentView];
-    [(NotesBackgroundView *)self insertSubview:v4 aboveSubview:v6];
+    contentView2 = [(NotesBackgroundView *)self contentView];
+    [(NotesBackgroundView *)self insertSubview:subviewCopy aboveSubview:contentView2];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = NotesBackgroundView;
-    [(NotesBackgroundView *)&v7 addSubview:v4];
+    [(NotesBackgroundView *)&v7 addSubview:subviewCopy];
   }
 }
 
-- (void)addSubviewAboveAllViews:(id)a3
+- (void)addSubviewAboveAllViews:(id)views
 {
   v3.receiver = self;
   v3.super_class = NotesBackgroundView;
-  [(NotesBackgroundView *)&v3 addSubview:a3];
+  [(NotesBackgroundView *)&v3 addSubview:views];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(NotesBackgroundView *)self axChildReparentingController];
-  v4 = [v3 allowsAccessibilityChildReparenting];
+  axChildReparentingController = [(NotesBackgroundView *)self axChildReparentingController];
+  allowsAccessibilityChildReparenting = [axChildReparentingController allowsAccessibilityChildReparenting];
 
-  if (v4)
+  if (allowsAccessibilityChildReparenting)
   {
-    v5 = [(NotesBackgroundView *)self elementForAccessibilityReparenting];
-    v6 = [v5 childElementsForAccessibilityReparenting];
+    elementForAccessibilityReparenting = [(NotesBackgroundView *)self elementForAccessibilityReparenting];
+    childElementsForAccessibilityReparenting = [elementForAccessibilityReparenting childElementsForAccessibilityReparenting];
 
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [(NotesBackgroundView *)self _accessibleSubviews];
-    [v7 addObjectsFromArray:v8];
+    array = [MEMORY[0x1E695DF70] array];
+    _accessibleSubviews = [(NotesBackgroundView *)self _accessibleSubviews];
+    [array addObjectsFromArray:_accessibleSubviews];
 
-    [v7 addObjectsFromArray:v6];
-    v9 = [(NotesBackgroundView *)self accessibilityElementReparentingDelegate];
-    v10 = [v9 icaxDateView];
+    [array addObjectsFromArray:childElementsForAccessibilityReparenting];
+    accessibilityElementReparentingDelegate = [(NotesBackgroundView *)self accessibilityElementReparentingDelegate];
+    icaxDateView = [accessibilityElementReparentingDelegate icaxDateView];
 
-    v11 = [(NotesBackgroundView *)self accessibilityElementReparentingDelegate];
-    v12 = [v11 icaxUserTitleView];
+    accessibilityElementReparentingDelegate2 = [(NotesBackgroundView *)self accessibilityElementReparentingDelegate];
+    icaxUserTitleView = [accessibilityElementReparentingDelegate2 icaxUserTitleView];
 
-    if (v10)
+    if (icaxDateView)
     {
-      [v7 removeObject:v10];
-      [v7 insertObject:v10 atIndex:0];
+      [array removeObject:icaxDateView];
+      [array insertObject:icaxDateView atIndex:0];
     }
 
-    if (v12)
+    if (icaxUserTitleView)
     {
-      [v7 removeObject:v12];
-      [v7 insertObject:v12 atIndex:0];
+      [array removeObject:icaxUserTitleView];
+      [array insertObject:icaxUserTitleView atIndex:0];
     }
 
-    v13 = [v7 copy];
+    accessibilityElements = [array copy];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = NotesBackgroundView;
-    v13 = [(NotesBackgroundView *)&v15 accessibilityElements];
+    accessibilityElements = [(NotesBackgroundView *)&v15 accessibilityElements];
   }
 
-  return v13;
+  return accessibilityElements;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(NotesBackgroundView *)self accessibilityElementReparentingDelegate];
-  v9 = [v8 icaxMiniPlayerView];
+  eventCopy = event;
+  accessibilityElementReparentingDelegate = [(NotesBackgroundView *)self accessibilityElementReparentingDelegate];
+  icaxMiniPlayerView = [accessibilityElementReparentingDelegate icaxMiniPlayerView];
 
-  if (v9)
+  if (icaxMiniPlayerView)
   {
-    v10 = [(NotesBackgroundView *)self window];
-    [(NotesBackgroundView *)self convertPoint:v10 toView:x, y];
+    window = [(NotesBackgroundView *)self window];
+    [(NotesBackgroundView *)self convertPoint:window toView:x, y];
     v12 = v11;
     v14 = v13;
 
-    v15 = [MEMORY[0x1E69DB5C8] defaultVoiceOverOptions];
-    v16 = [v9 _accessibilityLeafDescendantsWithOptions:v15];
+    defaultVoiceOverOptions = [MEMORY[0x1E69DB5C8] defaultVoiceOverOptions];
+    v16 = [icaxMiniPlayerView _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptions];
 
     v28 = 0u;
     v29 = 0u;
@@ -564,7 +564,7 @@ LABEL_10:
 
   v25.receiver = self;
   v25.super_class = NotesBackgroundView;
-  v23 = [(NotesBackgroundView *)&v25 _accessibilityHitTest:v7 withEvent:x, y];
+  v23 = [(NotesBackgroundView *)&v25 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_13:
 
   return v23;

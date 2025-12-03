@@ -1,19 +1,19 @@
 @interface NTKSwissMoonPhaseSevenDayView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKSwissMoonPhaseSevenDayView)initWithFrame:(CGRect)a3;
+- (NTKSwissMoonPhaseSevenDayView)initWithFrame:(CGRect)frame;
 - (int64_t)_labelFilterStyle;
 - (int64_t)_moonFilterStyle;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 @end
 
 @implementation NTKSwissMoonPhaseSevenDayView
 
-- (NTKSwissMoonPhaseSevenDayView)initWithFrame:(CGRect)a3
+- (NTKSwissMoonPhaseSevenDayView)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = NTKSwissMoonPhaseSevenDayView;
-  v3 = [(NTKSwissMoonPhaseSevenDayView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKSwissMoonPhaseSevenDayView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -24,21 +24,21 @@
     v3->_sevenDayLayoutView = v4;
 
     [(NTKSwissMoonPhaseSevenDayView *)v3 addSubview:v3->_sevenDayLayoutView];
-    v33 = [(UIStackView *)v3->_sevenDayLayoutView topAnchor];
-    v32 = [(NTKSwissMoonPhaseSevenDayView *)v3 topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    topAnchor = [(UIStackView *)v3->_sevenDayLayoutView topAnchor];
+    topAnchor2 = [(NTKSwissMoonPhaseSevenDayView *)v3 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v36[0] = v31;
-    v30 = [(NTKSwissMoonPhaseSevenDayView *)v3 bottomAnchor];
-    v29 = [(UIStackView *)v3->_sevenDayLayoutView bottomAnchor];
-    v6 = [v30 constraintEqualToAnchor:v29];
+    bottomAnchor = [(NTKSwissMoonPhaseSevenDayView *)v3 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v3->_sevenDayLayoutView bottomAnchor];
+    v6 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v36[1] = v6;
-    v7 = [(UIStackView *)v3->_sevenDayLayoutView leadingAnchor];
-    v8 = [(NTKSwissMoonPhaseSevenDayView *)v3 leadingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leadingAnchor = [(UIStackView *)v3->_sevenDayLayoutView leadingAnchor];
+    leadingAnchor2 = [(NTKSwissMoonPhaseSevenDayView *)v3 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v36[2] = v9;
-    v10 = [(NTKSwissMoonPhaseSevenDayView *)v3 trailingAnchor];
-    v11 = [(UIStackView *)v3->_sevenDayLayoutView trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor = [(NTKSwissMoonPhaseSevenDayView *)v3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v3->_sevenDayLayoutView trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v36[3] = v12;
     v13 = [NSArray arrayWithObjects:v36 count:4];
 
@@ -57,9 +57,9 @@
       v19 = objc_opt_new();
       [v18 addObject:v19];
       [(UIStackView *)v3->_sevenDayLayoutView addArrangedSubview:v19];
-      v20 = [v19 widthAnchor];
-      v21 = [(UIStackView *)v3->_sevenDayLayoutView widthAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21 multiplier:0.128571429];
+      widthAnchor = [v19 widthAnchor];
+      widthAnchor2 = [(UIStackView *)v3->_sevenDayLayoutView widthAnchor];
+      v22 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.128571429];
       [v16 addObject:v22];
 
       v23 = objc_opt_new();
@@ -84,34 +84,34 @@
   return v3;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
   v5 = qword_12018;
-  v6 = a3;
+  providerCopy = provider;
   if (v5 != -1)
   {
     sub_5660();
   }
 
-  v7 = [v6 metadata];
-  v8 = [v7 objectForKeyedSubscript:@"CurrentLocation"];
+  metadata = [providerCopy metadata];
+  v8 = [metadata objectForKeyedSubscript:@"CurrentLocation"];
 
-  v9 = [v6 metadata];
-  v10 = [v9 objectForKeyedSubscript:@"AnyLocation"];
+  metadata2 = [providerCopy metadata];
+  v10 = [metadata2 objectForKeyedSubscript:@"AnyLocation"];
 
   v11 = +[NSCalendar currentCalendar];
-  v12 = [v6 metadata];
-  v13 = [v12 objectForKeyedSubscript:@"CurrentEventDate"];
+  metadata3 = [providerCopy metadata];
+  v13 = [metadata3 objectForKeyedSubscript:@"CurrentEventDate"];
 
   v14 = [v11 components:60 fromDate:v13];
   v15 = [v14 day];
-  v16 = [v6 metadata];
+  metadata4 = [providerCopy metadata];
 
-  v17 = [v16 objectForKeyedSubscript:@"MoonViewOffsetDate"];
+  v17 = [metadata4 objectForKeyedSubscript:@"MoonViewOffsetDate"];
 
   v18 = [v11 components:60 fromDate:v17];
   v19 = [v18 day];
-  v20 = [(NTKSwissMoonPhaseSevenDayView *)self dailyViews];
+  dailyViews = [(NTKSwissMoonPhaseSevenDayView *)self dailyViews];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_38A0;
@@ -128,13 +128,13 @@
   v23 = v18;
   v24 = v11;
   v25 = v14;
-  [v20 enumerateObjectsUsingBlock:v26];
+  [dailyViews enumerateObjectsUsingBlock:v26];
 }
 
 - (int64_t)_moonFilterStyle
 {
-  v2 = [(NTKSwissMoonPhaseSevenDayView *)self filterProvider];
-  v3 = [v2 device];
+  filterProvider = [(NTKSwissMoonPhaseSevenDayView *)self filterProvider];
+  device = [filterProvider device];
   v4 = NTKShowGossamerUI();
 
   if (v4)
@@ -150,20 +150,20 @@
 
 - (int64_t)_labelFilterStyle
 {
-  v2 = [(NTKSwissMoonPhaseSevenDayView *)self filterProvider];
-  v3 = [v2 device];
+  filterProvider = [(NTKSwissMoonPhaseSevenDayView *)self filterProvider];
+  device = [filterProvider device];
   v4 = NTKShowGossamerUI();
 
   return v4 ^ 1u;
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   WeakRetained = objc_loadWeakRetained(&self->_filterProvider);
-  v6 = [WeakRetained filtersForView:self style:-[NTKSwissMoonPhaseSevenDayView _moonFilterStyle](self fraction:{"_moonFilterStyle"), a3}];
+  v6 = [WeakRetained filtersForView:self style:-[NTKSwissMoonPhaseSevenDayView _moonFilterStyle](self fraction:{"_moonFilterStyle"), fraction}];
 
   v7 = objc_loadWeakRetained(&self->_filterProvider);
-  v8 = [v7 filtersForView:self style:-[NTKSwissMoonPhaseSevenDayView _labelFilterStyle](self fraction:{"_labelFilterStyle"), a3}];
+  v8 = [v7 filtersForView:self style:-[NTKSwissMoonPhaseSevenDayView _labelFilterStyle](self fraction:{"_labelFilterStyle"), fraction}];
 
   if (v6)
   {

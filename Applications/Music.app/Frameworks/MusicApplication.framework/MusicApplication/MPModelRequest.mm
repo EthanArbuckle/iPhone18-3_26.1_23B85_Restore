@@ -6,7 +6,7 @@
 
 - (NSString)filterString
 {
-  v2 = self;
+  selfCopy = self;
   sub_3F2090();
   v4 = v3;
 

@@ -2,45 +2,45 @@
 + (BOOL)deviceSupportsButtons;
 - (APSubjectMonitorSubscription)appProtectionSubjectMonitorSubscription;
 - (BOOL)_prewarmingForCaptureExtensionLaunch;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (BOOL)hidesBackingShadow;
-- (BOOL)interpretsLocationAsBesideButtons:(CGPoint)a3 inView:(id)a4;
-- (BOOL)interpretsLocationAsContent:(CGPoint)a3 inView:(id)a4;
+- (BOOL)interpretsLocationAsBesideButtons:(CGPoint)buttons inView:(id)view;
+- (BOOL)interpretsLocationAsContent:(CGPoint)content inView:(id)view;
 - (BOOL)isCameraRestricted;
-- (BOOL)shouldTouchesBeginForClick:(id)a3;
-- (BOOL)systemQuickActionLaunchCaptureApplication:(id)a3;
+- (BOOL)shouldTouchesBeginForClick:(id)click;
+- (BOOL)systemQuickActionLaunchCaptureApplication:(id)application;
 - (CSApplicationInforming)applicationInformer;
 - (CSCoverSheetViewController)coverSheetViewController;
 - (CSQuickActionsViewController)init;
-- (CSQuickActionsViewController)initWithLockScreenDefaults:(id)a3 applicationInformer:(id)a4;
+- (CSQuickActionsViewController)initWithLockScreenDefaults:(id)defaults applicationInformer:(id)informer;
 - (double)_actionTimeoutDuration;
-- (id)_actionForSystemControl:(id)a3;
+- (id)_actionForSystemControl:(id)control;
 - (id)_actions;
-- (id)_configurationItemForAction:(id)a3 withIdentifier:(id)a4;
-- (id)_controlInstanceForSystemControl:(id)a3;
+- (id)_configurationItemForAction:(id)action withIdentifier:(id)identifier;
+- (id)_controlInstanceForSystemControl:(id)control;
 - (id)_newFlashlightAction;
-- (id)_quickActionForConfiguration:(id)a3;
-- (id)_validActionForAction:(id)a3;
-- (id)bestIconViewForApplicationBundleIdentifier:(id)a3;
+- (id)_quickActionForConfiguration:(id)configuration;
+- (id)_validActionForAction:(id)action;
+- (id)bestIconViewForApplicationBundleIdentifier:(id)identifier;
 - (void)_addStateCaptureHandlers;
 - (void)_resetIdleTimer;
 - (void)_updateControlHost;
 - (void)_updateForSensitiveUI;
 - (void)_validateActions;
 - (void)activateCameraView;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
-- (void)extensionsDidChangeForExtensionProvider:(id)a3;
-- (void)fireActionForButton:(id)a3;
-- (void)launchCameraCapture:(id)a3;
+- (void)extensionsDidChangeForExtensionProvider:(id)provider;
+- (void)fireActionForButton:(id)button;
+- (void)launchCameraCapture:(id)capture;
 - (void)loadView;
-- (void)setCameraPrewarmer:(id)a3;
-- (void)setHidesBackingShadow:(BOOL)a3;
-- (void)setQuickActionsConfiguration:(id)a3;
-- (void)touchBeganForButton:(id)a3;
-- (void)touchEndedForButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setCameraPrewarmer:(id)prewarmer;
+- (void)setHidesBackingShadow:(BOOL)shadow;
+- (void)setQuickActionsConfiguration:(id)configuration;
+- (void)touchBeganForButton:(id)button;
+- (void)touchEndedForButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CSQuickActionsViewController
@@ -48,16 +48,16 @@
 + (BOOL)deviceSupportsButtons
 {
   v2 = SBFEffectiveHomeButtonType();
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v4 & 0xFFFFFFFFFFFFFFFBLL) != 1 && v2 == 2;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && v2 == 2;
 }
 
 - (BOOL)isCameraRestricted
 {
-  v2 = [(CSCoverSheetViewControllerBase *)self activeBehavior];
-  v3 = [v2 areRestrictedCapabilities:4];
+  activeBehavior = [(CSCoverSheetViewControllerBase *)self activeBehavior];
+  v3 = [activeBehavior areRestrictedCapabilities:4];
 
   return v3;
 }
@@ -70,19 +70,19 @@
   return v4;
 }
 
-- (CSQuickActionsViewController)initWithLockScreenDefaults:(id)a3 applicationInformer:(id)a4
+- (CSQuickActionsViewController)initWithLockScreenDefaults:(id)defaults applicationInformer:(id)informer
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  informerCopy = informer;
   v30.receiver = self;
   v30.super_class = CSQuickActionsViewController;
   v9 = [(CSQuickActionsViewController *)&v30 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lockScreenDefaults, a3);
-    v11 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-    v12 = [v11 addMonitor:v10 subjectMask:1 subscriptionOptions:1];
+    objc_storeStrong(&v9->_lockScreenDefaults, defaults);
+    subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+    v12 = [subjectMonitorRegistry addMonitor:v10 subjectMask:1 subscriptionOptions:1];
     objc_storeWeak(&v10->_appProtectionSubjectMonitorSubscription, v12);
 
     v13 = +[CSLockScreenDomain rootSettings];
@@ -91,8 +91,8 @@
 
     [(PTSettings *)v10->_prototypeSettings addKeyObserver:v10];
     v15 = objc_alloc(MEMORY[0x277CFA3B8]);
-    v16 = [MEMORY[0x277CFA3C0] visibleControls];
-    v17 = [v15 initWithOptions:v16];
+    visibleControls = [MEMORY[0x277CFA3C0] visibleControls];
+    v17 = [v15 initWithOptions:visibleControls];
     extensionProvider = v10->_extensionProvider;
     v10->_extensionProvider = v17;
 
@@ -113,7 +113,7 @@
     objc_copyWeak(&v28, &location);
     v25 = [(SBMiscellaneousDefaults *)v21 observeDefault:v22 onQueue:v23 withBlock:v27];
 
-    objc_storeWeak(&v10->_applicationInformer, v8);
+    objc_storeWeak(&v10->_applicationInformer, informerCopy);
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
   }
@@ -130,53 +130,53 @@ void __79__CSQuickActionsViewController_initWithLockScreenDefaults_applicationIn
 - (void)loadView
 {
   v3 = [CSQuickActionsView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v7 = [(CSQuickActionsView *)v3 initWithFrame:self delegate:?];
 
   [(CSQuickActionsView *)v7 setUsesSensitiveUIAppearance:[(SBMiscellaneousDefaults *)self->_miscellaneousSettings sensitiveUIEnabled]^ 1];
   [(CSQuickActionsView *)v7 setDelegate:self];
-  v5 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-  v6 = [v5 legibilitySettings];
-  [(CSQuickActionsView *)v7 setLegibilitySettings:v6];
+  activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+  legibilitySettings = [activeAppearance legibilitySettings];
+  [(CSQuickActionsView *)v7 setLegibilitySettings:legibilitySettings];
 
   [(CSQuickActionsViewController *)self setView:v7];
   [(CSQuickActionsViewController *)self _addStateCaptureHandlers];
 }
 
-- (void)setHidesBackingShadow:(BOOL)a3
+- (void)setHidesBackingShadow:(BOOL)shadow
 {
-  v3 = a3;
-  v4 = [(CSQuickActionsViewController *)self quickActionsView];
-  [v4 setHidesBackingShadow:v3];
+  shadowCopy = shadow;
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  [quickActionsView setHidesBackingShadow:shadowCopy];
 }
 
 - (BOOL)hidesBackingShadow
 {
-  v2 = [(CSQuickActionsViewController *)self quickActionsView];
-  v3 = [v2 hidesBackingShadow];
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  hidesBackingShadow = [quickActionsView hidesBackingShadow];
 
-  return v3;
+  return hidesBackingShadow;
 }
 
-- (void)setQuickActionsConfiguration:(id)a3
+- (void)setQuickActionsConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_quickActionsConfiguration, a3);
-    v6 = [v5 controls];
-    v7 = [v6 count];
+    objc_storeStrong(&self->_quickActionsConfiguration, configuration);
+    controls = [configurationCopy controls];
+    v7 = [controls count];
 
     if (v7 >= 2)
     {
-      v8 = [v5 controls];
-      v9 = [v8 firstObject];
+      controls2 = [configurationCopy controls];
+      firstObject = [controls2 firstObject];
 
       if ((BSEqualObjects() & 1) == 0)
       {
-        objc_storeStrong(&self->_leadingConfiguration, v9);
+        objc_storeStrong(&self->_leadingConfiguration, firstObject);
         v10 = [(CSQuickActionsViewController *)self _quickActionForConfiguration:self->_leadingConfiguration];
         leadingAction = self->_leadingAction;
         self->_leadingAction = v10;
@@ -191,12 +191,12 @@ void __79__CSQuickActionsViewController_initWithLockScreenDefaults_applicationIn
         }
       }
 
-      v14 = [v5 controls];
-      v15 = [v14 lastObject];
+      controls3 = [configurationCopy controls];
+      lastObject = [controls3 lastObject];
 
       if ((BSEqualObjects() & 1) == 0)
       {
-        objc_storeStrong(&self->_trailingConfiguration, v15);
+        objc_storeStrong(&self->_trailingConfiguration, lastObject);
         v16 = [(CSQuickActionsViewController *)self _quickActionForConfiguration:self->_trailingConfiguration];
         trailingAction = self->_trailingAction;
         self->_trailingAction = v16;
@@ -216,44 +216,44 @@ void __79__CSQuickActionsViewController_initWithLockScreenDefaults_applicationIn
   }
 }
 
-- (id)_quickActionForConfiguration:(id)a3
+- (id)_quickActionForConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [v5 category];
-  if (v6 > 1)
+  configurationCopy = configuration;
+  category = [configurationCopy category];
+  if (category > 1)
   {
-    if (v6 == 2)
+    if (category == 2)
     {
-      v7 = self->_cameraAction;
+      _newFlashlightAction = self->_cameraAction;
     }
 
     else
     {
-      if (v6 != 3)
+      if (category != 3)
       {
         goto LABEL_11;
       }
 
-      v7 = [(CSQuickActionsViewController *)self _actionForSystemControl:v5];
+      _newFlashlightAction = [(CSQuickActionsViewController *)self _actionForSystemControl:configurationCopy];
     }
   }
 
-  else if (v6)
+  else if (category)
   {
-    if (v6 != 1)
+    if (category != 1)
     {
       goto LABEL_11;
     }
 
-    v7 = [(CSQuickActionsViewController *)self _newFlashlightAction];
+    _newFlashlightAction = [(CSQuickActionsViewController *)self _newFlashlightAction];
   }
 
   else
   {
-    v7 = objc_alloc_init(CSEmptyQuickAction);
+    _newFlashlightAction = objc_alloc_init(CSEmptyQuickAction);
   }
 
-  v3 = v7;
+  v3 = _newFlashlightAction;
 LABEL_11:
 
   return v3;
@@ -272,40 +272,40 @@ LABEL_11:
   return [(CSFlashlightQuickAction *)v3 initWithLockoutController:lockOutController];
 }
 
-- (id)_actionForSystemControl:(id)a3
+- (id)_actionForSystemControl:(id)control
 {
-  v4 = a3;
-  v5 = [(CSQuickActionsViewController *)self _controlInstanceForSystemControl:v4];
-  v6 = [v4 controlIdentity];
-  v7 = [v6 extensionIdentity];
-  v8 = [v7 containerBundleIdentifier];
+  controlCopy = control;
+  v5 = [(CSQuickActionsViewController *)self _controlInstanceForSystemControl:controlCopy];
+  controlIdentity = [controlCopy controlIdentity];
+  extensionIdentity = [controlIdentity extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
   v9 = BSEqualStrings();
 
   if (v9)
   {
-    v10 = [[CSCameraSystemQuickAction alloc] initWithQuickActionControlIdentity:v6 instance:v5 delegate:self prewarmer:self->_cameraPrewarmer prototypeSettings:self->_prototypeSettings defaults:self->_lockScreenDefaults];
+    _newFlashlightAction = [[CSCameraSystemQuickAction alloc] initWithQuickActionControlIdentity:controlIdentity instance:v5 delegate:self prewarmer:self->_cameraPrewarmer prototypeSettings:self->_prototypeSettings defaults:self->_lockScreenDefaults];
   }
 
   else
   {
-    v11 = [v4 controlIdentity];
-    v12 = [v11 kind];
+    controlIdentity2 = [controlCopy controlIdentity];
+    kind = [controlIdentity2 kind];
     v13 = BSEqualStrings();
 
     if (v13)
     {
-      v10 = [(CSQuickActionsViewController *)self _newFlashlightAction];
+      _newFlashlightAction = [(CSQuickActionsViewController *)self _newFlashlightAction];
     }
 
     else
     {
-      v14 = [v4 type];
-      if (v14 == 1)
+      type = [controlCopy type];
+      if (type == 1)
       {
         v15 = CSSystemToggleQuickAction;
       }
 
-      else if (v14 == 2)
+      else if (type == 2)
       {
         v15 = CSSystemButtonQuickAction;
       }
@@ -315,62 +315,62 @@ LABEL_11:
         v15 = CSSystemQuickAction;
       }
 
-      v10 = [[v15 alloc] initWithQuickActionControlIdentity:v6 instance:v5 delegate:self];
+      _newFlashlightAction = [[v15 alloc] initWithQuickActionControlIdentity:controlIdentity instance:v5 delegate:self];
     }
   }
 
-  v16 = v10;
+  v16 = _newFlashlightAction;
 
   return v16;
 }
 
-- (id)_configurationItemForAction:(id)a3 withIdentifier:(id)a4
+- (id)_configurationItemForAction:(id)action withIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [v7 controlIdentity];
+    v7 = actionCopy;
+    controlIdentity = [v7 controlIdentity];
 
-    if (v8)
+    if (controlIdentity)
     {
       v9 = objc_alloc(MEMORY[0x277CFA298]);
-      v10 = [v7 controlIdentity];
-      v8 = [v9 initWithUniqueIdentifier:v6 controlIdentity:v10 location:4];
+      controlIdentity2 = [v7 controlIdentity];
+      controlIdentity = [v9 initWithUniqueIdentifier:identifierCopy controlIdentity:controlIdentity2 location:4];
 
-      [v8 setPushPolicy:2];
-      [v8 setCanAppearInSecureEnvironment:1];
+      [controlIdentity setPushPolicy:2];
+      [controlIdentity setCanAppearInSecureEnvironment:1];
     }
   }
 
   else
   {
-    v8 = 0;
+    controlIdentity = 0;
   }
 
-  return v8;
+  return controlIdentity;
 }
 
-- (id)_controlInstanceForSystemControl:(id)a3
+- (id)_controlInstanceForSystemControl:(id)control
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 controlIdentity];
-  v6 = [v4 controlType];
-  v7 = [v4 position];
+  controlCopy = control;
+  controlIdentity = [controlCopy controlIdentity];
+  controlType = [controlCopy controlType];
+  position = [controlCopy position];
 
-  if (v7 == 1)
+  if (position == 1)
   {
     v8 = @"Quick-Action-Leading";
-    if (v5)
+    if (controlIdentity)
     {
 LABEL_4:
-      if (v6)
+      if (controlType)
       {
-        v9 = [objc_alloc(MEMORY[0x277CFA230]) initWithControl:v5 contentType:0 hostIdentifier:@"com.apple.springboard.Quick-Actions" configurationIdentifier:v8];
-        v10 = [MEMORY[0x277CFA528] instanceOfType:v6 instanceIdentity:v9];
+        v9 = [objc_alloc(MEMORY[0x277CFA230]) initWithControl:controlIdentity contentType:0 hostIdentifier:@"com.apple.springboard.Quick-Actions" configurationIdentifier:v8];
+        v10 = [MEMORY[0x277CFA528] instanceOfType:controlType instanceIdentity:v9];
         [v10 modifyConfiguration:&__block_literal_global];
         [v10 activate];
 
@@ -384,7 +384,7 @@ LABEL_4:
       }
 
       v22 = 138412290;
-      v23 = self;
+      selfCopy2 = self;
       v12 = "[Quick Action] failed to create controlInstance for %@ due to unknown control type";
       goto LABEL_14;
     }
@@ -392,7 +392,7 @@ LABEL_4:
 
   else
   {
-    if (v7 != 2)
+    if (position != 2)
     {
       v13 = SBLogDashBoard();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -404,7 +404,7 @@ LABEL_4:
     }
 
     v8 = @"Quick-Action-Trailing";
-    if (v5)
+    if (controlIdentity)
     {
       goto LABEL_4;
     }
@@ -414,7 +414,7 @@ LABEL_4:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412290;
-    v23 = self;
+    selfCopy2 = self;
     v12 = "[Quick Action] failed to create controlInstance for %@ due to nil controlIdentity";
 LABEL_14:
     _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, v12, &v22, 0xCu);
@@ -429,25 +429,25 @@ LABEL_17:
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CSQuickActionsViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewWillAppear:a3];
-  v4 = [(CSQuickActionsViewController *)self quickActionsView];
-  [v4 refreshSupportedButtons];
+  [(CSCoverSheetViewControllerBase *)&v6 viewWillAppear:appear];
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  [quickActionsView refreshSupportedButtons];
 
-  v5 = [(CSQuickActionsViewController *)self quickActionsView];
-  [v5 setActionsVisible:1];
+  quickActionsView2 = [(CSQuickActionsViewController *)self quickActionsView];
+  [quickActionsView2 setActionsVisible:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CSQuickActionsViewController;
-  [(CSCoverSheetViewControllerBase *)&v5 viewDidDisappear:a3];
-  v4 = [(CSQuickActionsViewController *)self quickActionsView];
-  [v4 setActionsVisible:0];
+  [(CSCoverSheetViewControllerBase *)&v5 viewDidDisappear:disappear];
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  [quickActionsView setActionsVisible:0];
 }
 
 - (void)dealloc
@@ -455,8 +455,8 @@ LABEL_17:
   WeakRetained = objc_loadWeakRetained(&self->_appProtectionSubjectMonitorSubscription);
   [WeakRetained invalidate];
 
-  v4 = [(CSQuickActionsViewController *)self controlHost];
-  [v4 invalidate];
+  controlHost = [(CSQuickActionsViewController *)self controlHost];
+  [controlHost invalidate];
 
   [(CHSWidgetExtensionProvider *)self->_extensionProvider unregisterObserver:self];
   [(CHSWidgetExtensionProvider *)self->_extensionProvider invalidate];
@@ -466,46 +466,46 @@ LABEL_17:
   [(CSCoverSheetViewControllerBase *)&v5 dealloc];
 }
 
-- (BOOL)interpretsLocationAsContent:(CGPoint)a3 inView:(id)a4
+- (BOOL)interpretsLocationAsContent:(CGPoint)content inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CSQuickActionsViewController *)self quickActionsView];
-  v9 = [v8 interpretsLocationAsContent:v7 inView:{x, y}];
+  y = content.y;
+  x = content.x;
+  viewCopy = view;
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  v9 = [quickActionsView interpretsLocationAsContent:viewCopy inView:{x, y}];
 
   return v9;
 }
 
-- (BOOL)interpretsLocationAsBesideButtons:(CGPoint)a3 inView:(id)a4
+- (BOOL)interpretsLocationAsBesideButtons:(CGPoint)buttons inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CSQuickActionsViewController *)self quickActionsView];
-  v9 = [v8 interpretsLocationAsBesideContent:v7 inView:{x, y}];
+  y = buttons.y;
+  x = buttons.x;
+  viewCopy = view;
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  v9 = [quickActionsView interpretsLocationAsBesideContent:viewCopy inView:{x, y}];
 
   return v9;
 }
 
-- (id)bestIconViewForApplicationBundleIdentifier:(id)a3
+- (id)bestIconViewForApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSQuickActionsViewController *)self quickActionsView];
-  v6 = [v5 buttonsForApplicationBundleIdentifier:v4];
+  identifierCopy = identifier;
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  v6 = [quickActionsView buttonsForApplicationBundleIdentifier:identifierCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_lastFiredQuickActionsButton);
   if ([v6 containsObject:WeakRetained])
   {
-    v8 = WeakRetained;
+    firstObject = WeakRetained;
   }
 
   else
   {
-    v8 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
-  v9 = v8;
+  v9 = firstObject;
 
   return v9;
 }
@@ -554,9 +554,9 @@ __CFString *__56__CSQuickActionsViewController__addStateCaptureHandlers__block_i
     if (BSEqualObjects())
     {
 LABEL_6:
-      v5 = [(CSQuickActionsViewController *)self quickActionsView];
-      v6 = [(CSQuickActionsViewController *)self _actions];
-      [v5 setButtonActions:v6];
+      quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+      _actions = [(CSQuickActionsViewController *)self _actions];
+      [quickActionsView setButtonActions:_actions];
 
       [(CSQuickActionsViewController *)self _updateControlHost];
       goto LABEL_7;
@@ -640,12 +640,12 @@ LABEL_7:
   }
 }
 
-- (id)_validActionForAction:(id)a3
+- (id)_validActionForAction:(id)action
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = actionCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -668,45 +668,45 @@ LABEL_7:
 
   if (v8)
   {
-    v9 = [v8 controlIdentity];
-    v10 = [v9 extensionIdentity];
-    v11 = [v10 containerBundleIdentifier];
-    v12 = [v9 kind];
+    controlIdentity = [v8 controlIdentity];
+    extensionIdentity = [controlIdentity extensionIdentity];
+    containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+    kind = [controlIdentity kind];
   }
 
   else
   {
-    v10 = objc_opt_class();
+    extensionIdentity = objc_opt_class();
     v13 = v6;
-    if (v10)
+    if (extensionIdentity)
     {
       if (objc_opt_isKindOfClass())
       {
-        v10 = v13;
+        extensionIdentity = v13;
       }
 
       else
       {
-        v10 = 0;
+        extensionIdentity = 0;
       }
     }
 
-    if (!v10)
+    if (!extensionIdentity)
     {
       v16 = v13;
-      v12 = 0;
-      v11 = 0;
-      v9 = 0;
+      kind = 0;
+      containerBundleIdentifier = 0;
+      controlIdentity = 0;
       goto LABEL_40;
     }
 
-    v11 = @"com.apple.camera";
-    v10 = [objc_alloc(MEMORY[0x277CFA258]) initWithExtensionBundleIdentifier:@"com.apple.camera.LauncherControlExtension" containerBundleIdentifier:v11 deviceIdentifier:0];
-    v12 = @"com.apple.camera.deeplink.button";
-    v9 = 0;
+    containerBundleIdentifier = @"com.apple.camera";
+    extensionIdentity = [objc_alloc(MEMORY[0x277CFA258]) initWithExtensionBundleIdentifier:@"com.apple.camera.LauncherControlExtension" containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
+    kind = @"com.apple.camera.deeplink.button";
+    controlIdentity = 0;
   }
 
-  v14 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v11];
+  v14 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:containerBundleIdentifier];
   if (([v14 isLocked] & 1) != 0 || objc_msgSend(v14, "isHidden"))
   {
     v15 = SBLogDashBoard();
@@ -715,7 +715,7 @@ LABEL_7:
       *buf = 138543618;
       v33 = v6;
       v34 = 2114;
-      v35 = v11;
+      v35 = containerBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEFAULT, "[Quick Action] removing button for %{public}@ with containerBundleIdentifier %{public}@ because app was hidden or locked", buf, 0x16u);
     }
 
@@ -724,19 +724,19 @@ LABEL_7:
   }
 
   extensionProvider = self->_extensionProvider;
-  if (!v9)
+  if (!controlIdentity)
   {
-    v19 = [v10 extensionBundleIdentifier];
-    v29 = [(CHSWidgetExtensionProvider *)extensionProvider widgetExtensionContainerForExtensionBundleIdentifier:v19];
+    extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+    v29 = [(CHSWidgetExtensionProvider *)extensionProvider widgetExtensionContainerForExtensionBundleIdentifier:extensionBundleIdentifier];
 
-    v28 = [v29 extensionForExtensionIdentity:v10];
-    v20 = [v28 orderedControlDescriptors];
+    v28 = [v29 extensionForExtensionIdentity:extensionIdentity];
+    orderedControlDescriptors = [v28 orderedControlDescriptors];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __54__CSQuickActionsViewController__validActionForAction___block_invoke;
     v30[3] = &unk_27838B8E8;
-    v31 = v12;
-    v18 = [v20 bs_firstObjectPassingTest:v30];
+    v31 = kind;
+    v18 = [orderedControlDescriptors bs_firstObjectPassingTest:v30];
 
     if (v18)
     {
@@ -750,7 +750,7 @@ LABEL_24:
       *buf = 138543618;
       v33 = v6;
       v34 = 2114;
-      v35 = v11;
+      v35 = containerBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v21, OS_LOG_TYPE_DEFAULT, "[Quick Action] no descriptor found for %{public}@ with containerBundleIdentifier %{public}@", buf, 0x16u);
     }
 
@@ -768,12 +768,12 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if (([v23 isInstallingApplicationWithBundleIdentifier:v11] & 1) != 0 || objc_msgSend(v23, "applicationExistsForBundleIdentifier:", v11))
+      if (([v23 isInstallingApplicationWithBundleIdentifier:containerBundleIdentifier] & 1) != 0 || objc_msgSend(v23, "applicationExistsForBundleIdentifier:", containerBundleIdentifier))
       {
         v24 = SBLogDashBoard();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          [(CSQuickActionsViewController *)v6 _validActionForAction:v11, v24];
+          [(CSQuickActionsViewController *)v6 _validActionForAction:containerBundleIdentifier, v24];
         }
 
         goto LABEL_33;
@@ -786,7 +786,7 @@ LABEL_37:
       *buf = 138543618;
       v33 = v6;
       v34 = 2114;
-      v35 = v11;
+      v35 = containerBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v26, OS_LOG_TYPE_DEFAULT, "[Quick Action] removing button for %{public}@ because no control descriptor found and could not find application with containerBundleIdentifier %{public}@", buf, 0x16u);
     }
 
@@ -794,7 +794,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v18 = [(CHSWidgetExtensionProvider *)self->_extensionProvider controlDescriptorForControl:v9];
+  v18 = [(CHSWidgetExtensionProvider *)self->_extensionProvider controlDescriptorForControl:controlIdentity];
   if (!v18)
   {
     goto LABEL_24;
@@ -820,87 +820,87 @@ uint64_t __54__CSQuickActionsViewController__validActionForAction___block_invoke
 
 - (void)_updateForSensitiveUI
 {
-  v3 = [(CSQuickActionsViewController *)self quickActionsView];
-  [v3 setUsesSensitiveUIAppearance:{-[SBMiscellaneousDefaults sensitiveUIEnabled](self->_miscellaneousSettings, "sensitiveUIEnabled") ^ 1}];
+  quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+  [quickActionsView setUsesSensitiveUIAppearance:{-[SBMiscellaneousDefaults sensitiveUIEnabled](self->_miscellaneousSettings, "sensitiveUIEnabled") ^ 1}];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = CSQuickActionsViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v16, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v16, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 > 23)
+    type = [eventCopy type];
+    isConsumable = 0;
+    if (type > 23)
     {
-      if (v6 == 24)
+      if (type == 24)
       {
-        v14 = [(CSQuickActionsViewController *)self quickActionsView];
-        [v14 setUserInteractionEnabled:1];
+        quickActionsView = [(CSQuickActionsViewController *)self quickActionsView];
+        [quickActionsView setUserInteractionEnabled:1];
 
-        v9 = [(CSQuickActionsViewController *)self quickActionsView];
-        v7 = v9;
+        quickActionsView2 = [(CSQuickActionsViewController *)self quickActionsView];
+        quickActionsView5 = quickActionsView2;
         v10 = 1;
       }
 
       else
       {
-        if (v6 != 25)
+        if (type != 25)
         {
           goto LABEL_16;
         }
 
-        v8 = [(CSQuickActionsViewController *)self quickActionsView];
-        [v8 setUserInteractionEnabled:0];
+        quickActionsView3 = [(CSQuickActionsViewController *)self quickActionsView];
+        [quickActionsView3 setUserInteractionEnabled:0];
 
-        v9 = [(CSQuickActionsViewController *)self quickActionsView];
-        v7 = v9;
+        quickActionsView2 = [(CSQuickActionsViewController *)self quickActionsView];
+        quickActionsView5 = quickActionsView2;
         v10 = 0;
       }
 
-      [v9 setActionsVisible:v10];
+      [quickActionsView2 setActionsVisible:v10];
     }
 
     else
     {
-      if (v6 == 1)
+      if (type == 1)
       {
-        v11 = [(CSQuickActionsViewController *)self quickActionsView];
-        v12 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-        v13 = [v12 legibilitySettings];
-        [v11 setLegibilitySettings:v13];
+        quickActionsView4 = [(CSQuickActionsViewController *)self quickActionsView];
+        activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+        legibilitySettings = [activeAppearance legibilitySettings];
+        [quickActionsView4 setLegibilitySettings:legibilitySettings];
 
 LABEL_15:
-        v5 = 0;
+        isConsumable = 0;
         goto LABEL_16;
       }
 
-      if (v6 != 2)
+      if (type != 2)
       {
         goto LABEL_16;
       }
 
-      v7 = [(CSQuickActionsViewController *)self quickActionsView];
-      [v7 refreshSupportedButtons];
+      quickActionsView5 = [(CSQuickActionsViewController *)self quickActionsView];
+      [quickActionsView5 refreshSupportedButtons];
     }
 
     goto LABEL_15;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_16:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)setCameraPrewarmer:(id)a3
+- (void)setCameraPrewarmer:(id)prewarmer
 {
-  v5 = a3;
-  if (self->_cameraPrewarmer != v5)
+  prewarmerCopy = prewarmer;
+  if (self->_cameraPrewarmer != prewarmerCopy)
   {
-    objc_storeStrong(&self->_cameraPrewarmer, a3);
+    objc_storeStrong(&self->_cameraPrewarmer, prewarmer);
     if (!self->_cameraAction)
     {
       v6 = [[CSCameraQuickAction alloc] initWithDelegate:self prewarmer:self->_cameraPrewarmer prototypeSettings:self->_prototypeSettings defaults:self->_lockScreenDefaults];
@@ -929,41 +929,41 @@ LABEL_16:
   [WeakRetained activateCameraViewAnimated:1 sendingActions:0 completion:0];
 }
 
-- (void)launchCameraCapture:(id)a3
+- (void)launchCameraCapture:(id)capture
 {
-  v4 = a3;
-  v6 = [(CSQuickActionsViewController *)self coverSheetViewController];
-  v5 = [v6 applicationLauncher];
-  [v5 launchCaptureApplication:v4];
+  captureCopy = capture;
+  coverSheetViewController = [(CSQuickActionsViewController *)self coverSheetViewController];
+  applicationLauncher = [coverSheetViewController applicationLauncher];
+  [applicationLauncher launchCaptureApplication:captureCopy];
 }
 
-- (BOOL)systemQuickActionLaunchCaptureApplication:(id)a3
+- (BOOL)systemQuickActionLaunchCaptureApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(CSQuickActionsViewController *)self coverSheetViewController];
-  v6 = [v5 applicationLauncher];
-  v7 = [v6 launchCaptureApplication:v4];
+  applicationCopy = application;
+  coverSheetViewController = [(CSQuickActionsViewController *)self coverSheetViewController];
+  applicationLauncher = [coverSheetViewController applicationLauncher];
+  v7 = [applicationLauncher launchCaptureApplication:applicationCopy];
 
   return v7;
 }
 
 - (BOOL)_prewarmingForCaptureExtensionLaunch
 {
-  v2 = [(CSQuickActionsViewController *)self _captureExtensionsEnabled];
-  if (v2)
+  _captureExtensionsEnabled = [(CSQuickActionsViewController *)self _captureExtensionsEnabled];
+  if (_captureExtensionsEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(_captureExtensionsEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return _captureExtensionsEnabled;
 }
 
-- (BOOL)shouldTouchesBeginForClick:(id)a3
+- (BOOL)shouldTouchesBeginForClick:(id)click
 {
-  v3 = [(CSQuickActionsViewController *)self coverSheetViewController];
-  v4 = [v3 activeBehavior];
-  v5 = [v4 areRestrictedCapabilities:0x2000000];
+  coverSheetViewController = [(CSQuickActionsViewController *)self coverSheetViewController];
+  activeBehavior = [coverSheetViewController activeBehavior];
+  v5 = [activeBehavior areRestrictedCapabilities:0x2000000];
 
   if (v5)
   {
@@ -978,9 +978,9 @@ LABEL_16:
   return v5 ^ 1;
 }
 
-- (void)touchBeganForButton:(id)a3
+- (void)touchBeganForButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(CSQuickActionsViewController *)self _actionTimeoutDuration];
   v6 = v5;
   if ((BSFloatIsZero() & 1) == 0)
@@ -1010,20 +1010,20 @@ LABEL_16:
     v11 = self->_buttonTouchTimer;
     self->_buttonTouchTimer = v10;
 
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     timerStartTime = self->_timerStartTime;
-    self->_timerStartTime = v12;
+    self->_timerStartTime = date;
 
-    v14 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v14 addTimer:self->_buttonTouchTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->_buttonTouchTimer forMode:*MEMORY[0x277CBE738]];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 
   self->_buttonActionAllowedForTimer = 1;
-  v15 = [v4 action];
-  [v15 touchBegan];
+  action = [buttonCopy action];
+  [action touchBegan];
 }
 
 void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint64_t a1)
@@ -1042,13 +1042,13 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
   *(WeakRetained + 144) = 0;
 }
 
-- (void)fireActionForButton:(id)a3
+- (void)fireActionForButton:(id)button
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSQuickActionsViewController *)self coverSheetViewController];
-  v6 = [v5 activeBehavior];
-  v7 = [v6 areRestrictedCapabilities:0x2000000];
+  buttonCopy = button;
+  coverSheetViewController = [(CSQuickActionsViewController *)self coverSheetViewController];
+  activeBehavior = [coverSheetViewController activeBehavior];
+  v7 = [activeBehavior areRestrictedCapabilities:0x2000000];
 
   if (v7)
   {
@@ -1059,14 +1059,14 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
       _os_log_impl(&dword_21EB05000, v8, OS_LOG_TYPE_DEFAULT, "[Quick Action] Firing dropped for restriction", buf, 2u);
     }
 
-    [v4 setSelected:0];
+    [buttonCopy setSelected:0];
   }
 
   else
   {
-    objc_storeWeak(&self->_lastFiredQuickActionsButton, v4);
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v9 timeIntervalSinceDate:self->_timerStartTime];
+    objc_storeWeak(&self->_lastFiredQuickActionsButton, buttonCopy);
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_timerStartTime];
     v11 = v10;
 
     [(CSQuickActionsViewController *)self _actionTimeoutDuration];
@@ -1086,14 +1086,14 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
       buttonActionAllowedForTimer = self->_buttonActionAllowedForTimer;
     }
 
-    v19 = [v4 action];
-    v20 = v19;
+    action = [buttonCopy action];
+    v20 = action;
     if (buttonActionAllowedForTimer || ((v16 ^ 1) & 1) != 0)
     {
-      [v19 fireAction];
+      [action fireAction];
       if (([v20 supportsSelection] & 1) == 0)
       {
-        [v4 setSelected:0];
+        [buttonCopy setSelected:0];
       }
 
       [(CSQuickActionsViewController *)self _resetIdleTimer];
@@ -1102,8 +1102,8 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v24 = MEMORY[0x277D65DD0];
       v25 = v23;
-      v26 = [v24 sharedInstance];
-      [v26 emitEvent:42 withPayload:v25];
+      sharedInstance = [v24 sharedInstance];
+      [sharedInstance emitEvent:42 withPayload:v25];
 
       v27 = [CSAction actionWithType:5];
       [(CSCoverSheetViewControllerBase *)self sendAction:v27];
@@ -1111,9 +1111,9 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
 
     else
     {
-      if ([v19 supportsSelection])
+      if ([action supportsSelection])
       {
-        v21 = [v4 isSelected] ^ 1;
+        v21 = [buttonCopy isSelected] ^ 1;
       }
 
       else
@@ -1121,7 +1121,7 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
         v21 = 0;
       }
 
-      [v4 setSelected:v21];
+      [buttonCopy setSelected:v21];
 
       v28 = SBLogDashBoard();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1139,8 +1139,8 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
       v31 = MEMORY[0x277D65DD0];
       v32 = v30;
-      v33 = [v31 sharedInstance];
-      [v33 emitEvent:43 withPayload:v32];
+      sharedInstance2 = [v31 sharedInstance];
+      [sharedInstance2 emitEvent:43 withPayload:v32];
 
       v34 = [CSAction actionWithType:6];
       [(CSCoverSheetViewControllerBase *)self sendAction:v34];
@@ -1148,10 +1148,10 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
   }
 }
 
-- (void)touchEndedForButton:(id)a3
+- (void)touchEndedForButton:(id)button
 {
-  v4 = [a3 action];
-  [v4 touchEnded];
+  action = [button action];
+  [action touchEnded];
 
   [(NSTimer *)self->_buttonTouchTimer invalidate];
   buttonTouchTimer = self->_buttonTouchTimer;
@@ -1169,8 +1169,8 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
 
 - (double)_actionTimeoutDuration
 {
-  v2 = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardQuickActionButtonSettings];
-  [v2 maximumTouchDuration];
+  dashBoardQuickActionButtonSettings = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardQuickActionButtonSettings];
+  [dashBoardQuickActionButtonSettings maximumTouchDuration];
   v4 = v3;
 
   return v4;
@@ -1211,15 +1211,15 @@ void __52__CSQuickActionsViewController_touchBeganForButton___block_invoke(uint6
 
     if (v9)
     {
-      v10 = self->_leadingAction;
+      _newFlashlightAction = self->_leadingAction;
     }
 
     else
     {
-      v10 = [(CSQuickActionsViewController *)self _newFlashlightAction];
+      _newFlashlightAction = [(CSQuickActionsViewController *)self _newFlashlightAction];
     }
 
-    v3 = v10;
+    v3 = _newFlashlightAction;
 
     v4 = self->_cameraAction;
     v11 = SBLogDashBoard();
@@ -1268,16 +1268,16 @@ LABEL_23:
   return v13;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a4;
+  subscriptionCopy = subscription;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__CSQuickActionsViewController_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v7[3] = &unk_27838B838;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = subscriptionCopy;
+  selfCopy = self;
+  v6 = subscriptionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1295,7 +1295,7 @@ void __77__CSQuickActionsViewController_appProtectionSubjectsChanged_forSubscrip
   }
 }
 
-- (void)extensionsDidChangeForExtensionProvider:(id)a3
+- (void)extensionsDidChangeForExtensionProvider:(id)provider
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

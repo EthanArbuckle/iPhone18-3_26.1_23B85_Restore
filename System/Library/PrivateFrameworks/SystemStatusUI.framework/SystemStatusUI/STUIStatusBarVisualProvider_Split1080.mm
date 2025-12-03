@@ -2,7 +2,7 @@
 + (CGSize)notchSize;
 - (CGSize)pillSize;
 - (CGSize)smallPillSize;
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4;
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed;
 @end
 
 @implementation STUIStatusBarVisualProvider_Split1080
@@ -34,20 +34,20 @@
   return result;
 }
 
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed
 {
   v4 = @"􀛳";
-  if (a3 != 9)
+  if (type != 9)
   {
     v4 = 0;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v4 = @"􀛲";
   }
 
-  if (a4)
+  if (condensed)
   {
     return v4;
   }

@@ -3,7 +3,7 @@
 - (BOOL)assetIsInOnboardingPreviewState;
 - (BOOL)assetIsInPhotosSuggestedPreviewState;
 - (BOOL)assetIsPublishedToLibraryScope;
-- (PHAssetLibraryScopeProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetLibraryScopeProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetLibraryScopeProperties
@@ -40,18 +40,18 @@
   return v4;
 }
 
-- (PHAssetLibraryScopeProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetLibraryScopeProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = PHAssetLibraryScopeProperties;
   v9 = [(PHAssetLibraryScopeProperties *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._asset, v8);
-    v11 = [v7 objectForKeyedSubscript:@"libraryScopeShareState"];
+    objc_storeWeak(&v9->super._asset, assetCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"libraryScopeShareState"];
     v10->_pl_shareState = [v11 integerValue];
   }
 

@@ -1,6 +1,6 @@
 @interface PLSortedAlbumListChangeNotification
-+ (id)notificationForDerivedObject:(id)a3 priorChangeState:(id)a4 forBackingObjectNotification:(id)a5;
-- (PLSortedAlbumListChangeNotification)initWithSortedAlbumList:(id)a3 albumListChangeNotification:(id)a4;
++ (id)notificationForDerivedObject:(id)object priorChangeState:(id)state forBackingObjectNotification:(id)notification;
+- (PLSortedAlbumListChangeNotification)initWithSortedAlbumList:(id)list albumListChangeNotification:(id)notification;
 - (id)description;
 @end
 
@@ -11,45 +11,45 @@
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696AD60];
   v5 = objc_opt_class();
-  v6 = [(PLSortedAlbumListChangeNotification *)self object];
-  v7 = [v4 stringWithFormat:@"<%@: %p> sorted album list: %p backing note: <%@: %p>", v5, self, v6, objc_opt_class(), self->_backingNotification];
+  object = [(PLSortedAlbumListChangeNotification *)self object];
+  v7 = [v4 stringWithFormat:@"<%@: %p> sorted album list: %p backing note: <%@: %p>", v5, self, object, objc_opt_class(), self->_backingNotification];
 
   objc_autoreleasePoolPop(v3);
 
   return v7;
 }
 
-- (PLSortedAlbumListChangeNotification)initWithSortedAlbumList:(id)a3 albumListChangeNotification:(id)a4
+- (PLSortedAlbumListChangeNotification)initWithSortedAlbumList:(id)list albumListChangeNotification:(id)notification
 {
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  notificationCopy = notification;
   v12.receiver = self;
   v12.super_class = PLSortedAlbumListChangeNotification;
-  v9 = [(PLContainerChangeNotification *)&v12 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(PLContainerChangeNotification *)&v12 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 12, a3);
-    objc_storeStrong(&v10->_backingNotification, a4);
+    objc_storeStrong(_init + 12, list);
+    objc_storeStrong(&v10->_backingNotification, notification);
   }
 
   return v10;
 }
 
-+ (id)notificationForDerivedObject:(id)a3 priorChangeState:(id)a4 forBackingObjectNotification:(id)a5
++ (id)notificationForDerivedObject:(id)object priorChangeState:(id)state forBackingObjectNotification:(id)notification
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  objectCopy = object;
+  stateCopy = state;
+  notificationCopy = notification;
+  if (!notificationCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v13 = 0;
   }
 
   else
   {
-    v11 = v8;
-    v12 = v10;
+    v11 = objectCopy;
+    v12 = notificationCopy;
     if (v11)
     {
       objc_opt_class();
@@ -58,7 +58,7 @@
 
     objc_opt_class();
     objc_opt_isKindOfClass();
-    v13 = [[a1 alloc] initWithSortedAlbumList:v11 albumListChangeNotification:v12];
+    v13 = [[self alloc] initWithSortedAlbumList:v11 albumListChangeNotification:v12];
   }
 
   return v13;

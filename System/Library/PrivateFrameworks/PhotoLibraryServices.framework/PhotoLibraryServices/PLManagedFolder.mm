@@ -1,48 +1,48 @@
 @interface PLManagedFolder
 + (BOOL)isProcessingOrderKeyCompliance;
-+ (id)insertNewFolderWithTitle:(id)a3 kind:(int)a4 intoLibrary:(id)a5;
-+ (id)sortDescriptorsForAlbumsInFolderWithSortKey:(unsigned int)a3 ascending:(BOOL)a4;
++ (id)insertNewFolderWithTitle:(id)title kind:(int)kind intoLibrary:(id)library;
++ (id)sortDescriptorsForAlbumsInFolderWithSortKey:(unsigned int)key ascending:(BOOL)ascending;
 + (id)validKindsForPersistence;
-+ (void)setIsProcessingOrderKeyCompliance:(BOOL)a3;
-- (BOOL)canPerformEditOperation:(unint64_t)a3;
++ (void)setIsProcessingOrderKeyCompliance:(BOOL)compliance;
+- (BOOL)canPerformEditOperation:(unint64_t)operation;
 - (BOOL)hasAtLeastOneAlbum;
 - (BOOL)isEmpty;
 - (BOOL)isValidForPersistence;
 - (id)descriptionOfChildCollectionOrderValues;
 - (id)listOfLastModifiedDateChangeProperties;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (unint64_t)albumsCount;
 - (unint64_t)approximateCount;
 - (unint64_t)containersCount;
 - (unint64_t)count;
-- (void)addChildCollections:(id)a3;
-- (void)addChildCollectionsObject:(id)a3;
+- (void)addChildCollections:(id)collections;
+- (void)addChildCollectionsObject:(id)object;
 - (void)didSave;
-- (void)enforceFixedOrderKeyComplianceWithOrderKeyManager:(id)a3;
-- (void)insertChildCollections:(id)a3 atIndexes:(id)a4;
-- (void)insertObject:(id)a3 inChildCollectionsAtIndex:(unint64_t)a4;
-- (void)moveChildCollectionsAtIndexes:(id)a3 toIndex:(unint64_t)a4;
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3;
-- (void)preheatAlbumsAtIndexes:(id)a3 forProperties:(id)a4 relationships:(id)a5;
+- (void)enforceFixedOrderKeyComplianceWithOrderKeyManager:(id)manager;
+- (void)insertChildCollections:(id)collections atIndexes:(id)indexes;
+- (void)insertObject:(id)object inChildCollectionsAtIndex:(unint64_t)index;
+- (void)moveChildCollectionsAtIndexes:(id)indexes toIndex:(unint64_t)index;
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager;
+- (void)preheatAlbumsAtIndexes:(id)indexes forProperties:(id)properties relationships:(id)relationships;
 - (void)prepareForDeletion;
-- (void)removeChildCollections:(id)a3;
-- (void)removeChildCollectionsAtIndexes:(id)a3;
-- (void)removeChildCollectionsObject:(id)a3;
-- (void)removeObjectFromChildCollectionsAtIndex:(unint64_t)a3;
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3;
-- (void)replaceChildCollectionsAtIndexes:(id)a3 withChildCollections:(id)a4;
-- (void)replaceObjectInChildCollectionsAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeChildCollections:(id)collections;
+- (void)removeChildCollectionsAtIndexes:(id)indexes;
+- (void)removeChildCollectionsObject:(id)object;
+- (void)removeObjectFromChildCollectionsAtIndex:(unint64_t)index;
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager;
+- (void)replaceChildCollectionsAtIndexes:(id)indexes withChildCollections:(id)collections;
+- (void)replaceObjectInChildCollectionsAtIndex:(unint64_t)index withObject:(id)object;
 - (void)willSave;
 @end
 
 @implementation PLManagedFolder
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLManagedFolder *)self isValidForPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLFolderJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLFolderJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
   }
 
   else
@@ -53,18 +53,18 @@
   return v5;
 }
 
-- (void)removeChildCollections:(id)a3
+- (void)removeChildCollections:(id)collections
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   [(PLManagedFolder *)self willAccessValueForKey:@"childCollections"];
-  v5 = [(PLManagedFolder *)self primitiveChildCollections];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = collectionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -80,7 +80,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v5 indexOfObject:{*(*(&v14 + 1) + 8 * v11), v14}];
+        v12 = [primitiveChildCollections indexOfObject:{*(*(&v14 + 1) + 8 * v11), v14}];
         if (v12 != 0x7FFFFFFFFFFFFFFFLL)
         {
           [v6 addIndex:v12];
@@ -100,157 +100,157 @@
   if ([v6 count])
   {
     [(PLManagedFolder *)self willChange:3 valuesAtIndexes:v6 forKey:@"childCollections"];
-    v13 = [(PLManagedFolder *)self primitiveChildCollections];
-    [v13 removeObjectsAtIndexes:v6];
+    primitiveChildCollections2 = [(PLManagedFolder *)self primitiveChildCollections];
+    [primitiveChildCollections2 removeObjectsAtIndexes:v6];
 
     [(PLManagedFolder *)self didChange:3 valuesAtIndexes:v6 forKey:@"childCollections"];
   }
 }
 
-- (void)addChildCollections:(id)a3
+- (void)addChildCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   [(PLManagedFolder *)self willAccessValueForKey:@"childCollections"];
   v5 = [(PLManagedFolder *)self primitiveValueForKey:@"childCollections"];
   v6 = [v5 count];
-  v7 = [v4 count];
+  v7 = [collectionsCopy count];
 
   v10 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v6, v7}];
   [(PLManagedFolder *)self didAccessValueForKey:@"childCollections"];
   [(PLManagedFolder *)self willChange:2 valuesAtIndexes:v10 forKey:@"childCollections"];
-  v8 = [(PLManagedFolder *)self primitiveChildCollections];
-  v9 = [v4 array];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  array = [collectionsCopy array];
 
-  [v8 insertObjects:v9 atIndexes:v10];
+  [primitiveChildCollections insertObjects:array atIndexes:v10];
   [(PLManagedFolder *)self didChange:2 valuesAtIndexes:v10 forKey:@"childCollections"];
 }
 
-- (void)removeChildCollectionsObject:(id)a3
+- (void)removeChildCollectionsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(PLManagedFolder *)self willAccessValueForKey:@"childCollections"];
-  v5 = [(PLManagedFolder *)self primitiveChildCollections];
-  v6 = [v5 indexOfObject:v4];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  v6 = [primitiveChildCollections indexOfObject:objectCopy];
 
   [(PLManagedFolder *)self didAccessValueForKey:@"childCollections"];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:v6];
     [(PLManagedFolder *)self willChange:3 valuesAtIndexes:v8 forKey:@"childCollections"];
-    v7 = [(PLManagedFolder *)self primitiveChildCollections];
-    [v7 removeObjectAtIndex:v6];
+    primitiveChildCollections2 = [(PLManagedFolder *)self primitiveChildCollections];
+    [primitiveChildCollections2 removeObjectAtIndex:v6];
 
     [(PLManagedFolder *)self didChange:3 valuesAtIndexes:v8 forKey:@"childCollections"];
   }
 }
 
-- (void)addChildCollectionsObject:(id)a3
+- (void)addChildCollectionsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(PLManagedFolder *)self willAccessValueForKey:@"childCollections"];
   v5 = objc_alloc(MEMORY[0x1E696AC90]);
-  v6 = [(PLManagedFolder *)self primitiveChildCollections];
-  v8 = [v5 initWithIndex:{objc_msgSend(v6, "count")}];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  v8 = [v5 initWithIndex:{objc_msgSend(primitiveChildCollections, "count")}];
 
   [(PLManagedFolder *)self didAccessValueForKey:@"childCollections"];
   [(PLManagedFolder *)self willChange:2 valuesAtIndexes:v8 forKey:@"childCollections"];
-  v7 = [(PLManagedFolder *)self primitiveChildCollections];
-  [v7 addObject:v4];
+  primitiveChildCollections2 = [(PLManagedFolder *)self primitiveChildCollections];
+  [primitiveChildCollections2 addObject:objectCopy];
 
   [(PLManagedFolder *)self didChange:2 valuesAtIndexes:v8 forKey:@"childCollections"];
 }
 
-- (void)moveChildCollectionsAtIndexes:(id)a3 toIndex:(unint64_t)a4
+- (void)moveChildCollectionsAtIndexes:(id)indexes toIndex:(unint64_t)index
 {
-  v6 = a3;
+  indexesCopy = indexes;
   [(PLManagedFolder *)self willAccessValueForKey:@"childCollections"];
-  v7 = [(PLManagedFolder *)self primitiveChildCollections];
-  v9 = [v7 objectsAtIndexes:v6];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  v9 = [primitiveChildCollections objectsAtIndexes:indexesCopy];
 
   [(PLManagedFolder *)self didAccessValueForKey:@"childCollections"];
-  [(PLManagedFolder *)self removeChildCollectionsAtIndexes:v6];
+  [(PLManagedFolder *)self removeChildCollectionsAtIndexes:indexesCopy];
 
-  v8 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{a4, objc_msgSend(v9, "count")}];
+  v8 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{index, objc_msgSend(v9, "count")}];
   [(PLManagedFolder *)self insertChildCollections:v9 atIndexes:v8];
 }
 
-- (void)replaceChildCollectionsAtIndexes:(id)a3 withChildCollections:(id)a4
+- (void)replaceChildCollectionsAtIndexes:(id)indexes withChildCollections:(id)collections
 {
-  v6 = a4;
-  v8 = a3;
-  [(PLManagedFolder *)self willChange:3 valuesAtIndexes:v8 forKey:@"childCollections"];
-  v7 = [(PLManagedFolder *)self primitiveChildCollections];
-  [v7 replaceObjectsAtIndexes:v8 withObjects:v6];
+  collectionsCopy = collections;
+  indexesCopy = indexes;
+  [(PLManagedFolder *)self willChange:3 valuesAtIndexes:indexesCopy forKey:@"childCollections"];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  [primitiveChildCollections replaceObjectsAtIndexes:indexesCopy withObjects:collectionsCopy];
 
-  [(PLManagedFolder *)self didChange:3 valuesAtIndexes:v8 forKey:@"childCollections"];
+  [(PLManagedFolder *)self didChange:3 valuesAtIndexes:indexesCopy forKey:@"childCollections"];
 }
 
-- (void)removeChildCollectionsAtIndexes:(id)a3
+- (void)removeChildCollectionsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  [(PLManagedFolder *)self willChange:3 valuesAtIndexes:v5 forKey:@"childCollections"];
-  v4 = [(PLManagedFolder *)self primitiveChildCollections];
-  [v4 removeObjectsAtIndexes:v5];
+  indexesCopy = indexes;
+  [(PLManagedFolder *)self willChange:3 valuesAtIndexes:indexesCopy forKey:@"childCollections"];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  [primitiveChildCollections removeObjectsAtIndexes:indexesCopy];
 
-  [(PLManagedFolder *)self didChange:3 valuesAtIndexes:v5 forKey:@"childCollections"];
+  [(PLManagedFolder *)self didChange:3 valuesAtIndexes:indexesCopy forKey:@"childCollections"];
 }
 
-- (void)insertChildCollections:(id)a3 atIndexes:(id)a4
+- (void)insertChildCollections:(id)collections atIndexes:(id)indexes
 {
-  v8 = a4;
-  v6 = a3;
-  [(PLManagedFolder *)self willChange:2 valuesAtIndexes:v8 forKey:@"childCollections"];
-  v7 = [(PLManagedFolder *)self primitiveChildCollections];
-  [v7 insertObjects:v6 atIndexes:v8];
+  indexesCopy = indexes;
+  collectionsCopy = collections;
+  [(PLManagedFolder *)self willChange:2 valuesAtIndexes:indexesCopy forKey:@"childCollections"];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  [primitiveChildCollections insertObjects:collectionsCopy atIndexes:indexesCopy];
 
-  [(PLManagedFolder *)self didChange:2 valuesAtIndexes:v8 forKey:@"childCollections"];
+  [(PLManagedFolder *)self didChange:2 valuesAtIndexes:indexesCopy forKey:@"childCollections"];
 }
 
-- (void)replaceObjectInChildCollectionsAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInChildCollectionsAtIndex:(unint64_t)index withObject:(id)object
 {
   v6 = MEMORY[0x1E696AC90];
-  v7 = a4;
-  v9 = [[v6 alloc] initWithIndex:a3];
+  objectCopy = object;
+  v9 = [[v6 alloc] initWithIndex:index];
   [(PLManagedFolder *)self willChange:4 valuesAtIndexes:v9 forKey:@"childCollections"];
-  v8 = [(PLManagedFolder *)self primitiveChildCollections];
-  [v8 replaceObjectAtIndex:a3 withObject:v7];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  [primitiveChildCollections replaceObjectAtIndex:index withObject:objectCopy];
 
   [(PLManagedFolder *)self didChange:4 valuesAtIndexes:v9 forKey:@"childCollections"];
 }
 
-- (void)removeObjectFromChildCollectionsAtIndex:(unint64_t)a3
+- (void)removeObjectFromChildCollectionsAtIndex:(unint64_t)index
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:a3];
+  v6 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:index];
   [(PLManagedFolder *)self willChange:3 valuesAtIndexes:v6 forKey:@"childCollections"];
-  v5 = [(PLManagedFolder *)self primitiveChildCollections];
-  [v5 removeObjectAtIndex:a3];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  [primitiveChildCollections removeObjectAtIndex:index];
 
   [(PLManagedFolder *)self didChange:3 valuesAtIndexes:v6 forKey:@"childCollections"];
 }
 
-- (void)insertObject:(id)a3 inChildCollectionsAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inChildCollectionsAtIndex:(unint64_t)index
 {
   v6 = MEMORY[0x1E696AC90];
-  v7 = a3;
-  v9 = [[v6 alloc] initWithIndex:a4];
+  objectCopy = object;
+  v9 = [[v6 alloc] initWithIndex:index];
   [(PLManagedFolder *)self willChange:2 valuesAtIndexes:v9 forKey:@"childCollections"];
-  v8 = [(PLManagedFolder *)self primitiveChildCollections];
-  [v8 insertObject:v7 atIndex:a4];
+  primitiveChildCollections = [(PLManagedFolder *)self primitiveChildCollections];
+  [primitiveChildCollections insertObject:objectCopy atIndex:index];
 
   [(PLManagedFolder *)self didChange:2 valuesAtIndexes:v9 forKey:@"childCollections"];
 }
 
-- (void)enforceFixedOrderKeyComplianceWithOrderKeyManager:(id)a3
+- (void)enforceFixedOrderKeyComplianceWithOrderKeyManager:(id)manager
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:441 description:{@"Invalid parameter not satisfying: %@", @"orderKeyManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:441 description:{@"Invalid parameter not satisfying: %@", @"orderKeyManager"}];
   }
 
-  if ([v3 inWriteStashedLocationMode])
+  if ([managerCopy inWriteStashedLocationMode])
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -264,11 +264,11 @@
     goto LABEL_34;
   }
 
-  v6 = [(PLManagedFolder *)self objectID];
-  v7 = [(PLManagedFolder *)self managedObjectContext];
-  v34 = v6;
-  v35 = v3;
-  v8 = [v3 objectIDsAndOrderValuesForRelationship:@"childCollections" onObjectWithID:v6 invalidateCache:1 inContext:v7];
+  objectID = [(PLManagedFolder *)self objectID];
+  managedObjectContext = [(PLManagedFolder *)self managedObjectContext];
+  v34 = objectID;
+  v35 = managerCopy;
+  v8 = [managerCopy objectIDsAndOrderValuesForRelationship:@"childCollections" onObjectWithID:objectID invalidateCache:1 inContext:managedObjectContext];
 
   v9 = [v8 objectAtIndexedSubscript:0];
   v33 = v8;
@@ -298,19 +298,19 @@
       }
 
       v15 = *(*(&v42 + 1) + 8 * i);
-      v16 = [v15 objectID];
-      v17 = [v9 indexOfObject:v16];
+      objectID2 = [v15 objectID];
+      v17 = [v9 indexOfObject:objectID2];
       if (v17 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v18 = PLBackendGetLog();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        managedObjectContext2 = PLBackendGetLog();
+        if (os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
         {
           v19 = NSStringFromSelector(a2);
           *buf = 138412546;
           v47 = v19;
           v48 = 2112;
-          v49 = v16;
-          _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "%@: unable to enforce order key compliance for %@, child object ID not found (ignoring)", buf, 0x16u);
+          v49 = objectID2;
+          _os_log_impl(&dword_19BF1F000, managedObjectContext2, OS_LOG_TYPE_ERROR, "%@: unable to enforce order key compliance for %@, child object ID not found (ignoring)", buf, 0x16u);
         }
 
         goto LABEL_23;
@@ -318,19 +318,19 @@
 
       v20 = v17;
       v21 = [v39 objectAtIndexedSubscript:v17];
-      v22 = [v21 longLongValue];
+      longLongValue = [v21 longLongValue];
 
       if (-[__objc2_class albumKindHasFixedOrder:](v13[52], "albumKindHasFixedOrder:", [v15 kindValue]))
       {
         v23 = -[__objc2_class priorityForAlbumKind:](v13[52], "priorityForAlbumKind:", [v15 kindValue]);
-        if (v22 != v23)
+        if (longLongValue != v23)
         {
           v24 = v23;
-          v18 = [(PLManagedFolder *)self managedObjectContext];
+          managedObjectContext2 = [(PLManagedFolder *)self managedObjectContext];
           v25 = v35;
           v26 = v24;
 LABEL_22:
-          [v25 stashFolderAlbumsLocationValue:v26 forAlbumWithID:v16 inFolderWithID:v34 atIndex:v20 usingContext:v18];
+          [v25 stashFolderAlbumsLocationValue:v26 forAlbumWithID:objectID2 inFolderWithID:v34 atIndex:v20 usingContext:managedObjectContext2];
           v13 = off_1E7560000;
 LABEL_23:
 
@@ -338,7 +338,7 @@ LABEL_23:
         }
       }
 
-      else if (v22 < v38)
+      else if (longLongValue < v38)
       {
         if (v38 == 1024)
         {
@@ -351,7 +351,7 @@ LABEL_23:
         }
 
         v38 = v27 + 1024;
-        v18 = [(PLManagedFolder *)self managedObjectContext];
+        managedObjectContext2 = [(PLManagedFolder *)self managedObjectContext];
         v25 = v35;
         v26 = v27;
         goto LABEL_22;
@@ -367,7 +367,7 @@ LABEL_25:
   while (v11);
 LABEL_27:
 
-  v3 = v35;
+  managerCopy = v35;
   if ([v35 hasStashedLocationValues])
   {
     v41 = 0;
@@ -392,38 +392,38 @@ LABEL_27:
 LABEL_34:
 }
 
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:433 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:433 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedFolderMetadata alloc] initWithPLManagedFolder:self pathManager:v8];
     [(PLPersistedFolderMetadata *)v6 removePersistedData];
   }
 }
 
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedFolderMetadata alloc] initWithPLManagedFolder:self pathManager:v8];
     [(PLPersistedFolderMetadata *)v6 writePersistedData];
@@ -432,54 +432,54 @@ LABEL_34:
 
 - (BOOL)isValidForPersistence
 {
-  v3 = [objc_opt_class() validKindsForPersistence];
-  v4 = [(PLManagedFolder *)self kind];
-  v5 = [v3 containsObject:v4];
+  validKindsForPersistence = [objc_opt_class() validKindsForPersistence];
+  kind = [(PLManagedFolder *)self kind];
+  v5 = [validKindsForPersistence containsObject:kind];
 
   return v5;
 }
 
-- (void)preheatAlbumsAtIndexes:(id)a3 forProperties:(id)a4 relationships:(id)a5
+- (void)preheatAlbumsAtIndexes:(id)indexes forProperties:(id)properties relationships:(id)relationships
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexesCopy = indexes;
+  propertiesCopy = properties;
+  relationshipsCopy = relationships;
   if ([(PLManagedFolder *)self hasFaultForRelationshipNamed:@"childCollections"])
   {
-    v11 = [(PLManagedFolder *)self childCollections];
-    v12 = [v11 array];
+    childCollections = [(PLManagedFolder *)self childCollections];
+    array = [childCollections array];
 
-    if (v8)
+    if (indexesCopy)
     {
-      v13 = [v12 objectsAtIndexes:v8];
+      v13 = [array objectsAtIndexes:indexesCopy];
 
-      v12 = v13;
+      array = v13;
     }
 
     v14 = objc_alloc(MEMORY[0x1E695D5E0]);
     v15 = +[PLGenericAlbum entityName];
     v16 = [v14 initWithEntityName:v15];
 
-    v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v12];
+    v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", array];
     [v16 setPredicate:v17];
 
     [v16 setIncludesPropertyValues:1];
     [v16 setReturnsObjectsAsFaults:0];
-    if (v9)
+    if (propertiesCopy)
     {
-      [v16 setPropertiesToFetch:v9];
+      [v16 setPropertiesToFetch:propertiesCopy];
     }
 
-    if (v10)
+    if (relationshipsCopy)
     {
-      [v16 setRelationshipKeyPathsForPrefetching:v10];
+      [v16 setRelationshipKeyPathsForPrefetching:relationshipsCopy];
     }
 
-    v18 = [(PLGenericAlbum *)self photoLibrary];
-    v19 = [v18 managedObjectContext];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    managedObjectContext = [photoLibrary managedObjectContext];
 
     v23 = 0;
-    v20 = [v19 executeFetchRequest:v16 error:&v23];
+    v20 = [managedObjectContext executeFetchRequest:v16 error:&v23];
     v21 = v23;
     v22 = v21;
     if (!v20)
@@ -491,45 +491,45 @@ LABEL_34:
 
 - (BOOL)hasAtLeastOneAlbum
 {
-  v2 = [(PLManagedFolder *)self childCollections];
-  v3 = [v2 count] != 0;
+  childCollections = [(PLManagedFolder *)self childCollections];
+  v3 = [childCollections count] != 0;
 
   return v3;
 }
 
 - (unint64_t)albumsCount
 {
-  v2 = [(PLManagedFolder *)self childCollections];
-  v3 = [v2 count];
+  childCollections = [(PLManagedFolder *)self childCollections];
+  v3 = [childCollections count];
 
   return v3;
 }
 
 - (unint64_t)containersCount
 {
-  v2 = [(PLManagedFolder *)self childCollections];
-  v3 = [v2 count];
+  childCollections = [(PLManagedFolder *)self childCollections];
+  v3 = [childCollections count];
 
   return v3;
 }
 
-- (BOOL)canPerformEditOperation:(unint64_t)a3
+- (BOOL)canPerformEditOperation:(unint64_t)operation
 {
-  v4 = [(PLGenericAlbum *)self kindValue];
-  v5 = a3 == 16;
-  v6 = (a3 & 0x61) == 0;
-  v7 = a3 ^ 1;
-  if (v4 != 4000)
+  kindValue = [(PLGenericAlbum *)self kindValue];
+  v5 = operation == 16;
+  v6 = (operation & 0x61) == 0;
+  v7 = operation ^ 1;
+  if (kindValue != 4000)
   {
     v7 = 0;
   }
 
-  if (v4 != 3999)
+  if (kindValue != 3999)
   {
     v6 = v7;
   }
 
-  if (v4 != 3998)
+  if (kindValue != 3998)
   {
     return v6;
   }
@@ -539,24 +539,24 @@ LABEL_34:
 
 - (BOOL)isEmpty
 {
-  v2 = [(PLManagedFolder *)self childCollections];
-  v3 = [v2 count] == 0;
+  childCollections = [(PLManagedFolder *)self childCollections];
+  v3 = [childCollections count] == 0;
 
   return v3;
 }
 
 - (unint64_t)count
 {
-  v2 = [(PLManagedFolder *)self childCollections];
-  v3 = [v2 count];
+  childCollections = [(PLManagedFolder *)self childCollections];
+  v3 = [childCollections count];
 
   return v3;
 }
 
 - (unint64_t)approximateCount
 {
-  v2 = [(PLManagedFolder *)self childCollections];
-  v3 = [v2 count];
+  childCollections = [(PLManagedFolder *)self childCollections];
+  v3 = [childCollections count];
 
   return v3;
 }
@@ -566,8 +566,8 @@ LABEL_34:
   v2 = MEMORY[0x1E695DFA8];
   v6.receiver = self;
   v6.super_class = PLManagedFolder;
-  v3 = [(PLGenericAlbum *)&v6 listOfLastModifiedDateChangeProperties];
-  v4 = [v2 setWithSet:v3];
+  listOfLastModifiedDateChangeProperties = [(PLGenericAlbum *)&v6 listOfLastModifiedDateChangeProperties];
+  v4 = [v2 setWithSet:listOfLastModifiedDateChangeProperties];
 
   [v4 addObject:@"childCollections"];
 
@@ -579,29 +579,29 @@ LABEL_34:
   v8.receiver = self;
   v8.super_class = PLManagedFolder;
   [(PLManagedFolder *)&v8 prepareForDeletion];
-  v3 = [(PLManagedFolder *)self managedObjectContext];
+  managedObjectContext = [(PLManagedFolder *)self managedObjectContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 mergingChanges] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([managedObjectContext mergingChanges] & 1) == 0)
   {
     if ([(PLGenericAlbum *)self kindValue]== 4000)
     {
-      [v3 recordCloudDeletionForObject:self];
+      [managedObjectContext recordCloudDeletionForObject:self];
     }
 
-    v4 = [(PLManagedFolder *)self uuid];
-    if (!v4 || ![(PLManagedFolder *)self isValidForPersistence]&& ![PLGenericAlbum is1WaySyncKind:[(PLGenericAlbum *)self kindValue]])
+    uuid = [(PLManagedFolder *)self uuid];
+    if (!uuid || ![(PLManagedFolder *)self isValidForPersistence]&& ![PLGenericAlbum is1WaySyncKind:[(PLGenericAlbum *)self kindValue]])
     {
       goto LABEL_10;
     }
 
-    v5 = [(PLManagedFolder *)self managedObjectContext];
-    v6 = [v5 isReadOnly];
+    managedObjectContext2 = [(PLManagedFolder *)self managedObjectContext];
+    isReadOnly = [managedObjectContext2 isReadOnly];
 
-    if ((v6 & 1) == 0)
+    if ((isReadOnly & 1) == 0)
     {
-      v4 = [(PLGenericAlbum *)self photoLibrary];
-      v7 = [v4 pathManager];
-      [(PLManagedFolder *)self removePersistedFileSystemDataWithPathManager:v7];
+      uuid = [(PLGenericAlbum *)self photoLibrary];
+      pathManager = [uuid pathManager];
+      [(PLManagedFolder *)self removePersistedFileSystemDataWithPathManager:pathManager];
 
 LABEL_10:
     }
@@ -615,29 +615,29 @@ LABEL_10:
   [(PLGenericAlbum *)&v17 didSave];
   if ([(PLManagedFolder *)self needsPersistenceUpdate])
   {
-    v4 = [(PLManagedFolder *)self uuid];
-    if (v4 && ([(PLManagedFolder *)self isDeleted]& 1) == 0)
+    uuid = [(PLManagedFolder *)self uuid];
+    if (uuid && ([(PLManagedFolder *)self isDeleted]& 1) == 0)
     {
-      v11 = [(PLManagedFolder *)self isValidForPersistence];
+      isValidForPersistence = [(PLManagedFolder *)self isValidForPersistence];
 
-      if (!v11)
+      if (!isValidForPersistence)
       {
         goto LABEL_5;
       }
 
-      v4 = [(PLManagedFolder *)self managedObjectContext];
+      uuid = [(PLManagedFolder *)self managedObjectContext];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:115 description:@"Must be PLManagedObjectContext"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedFolder.m" lineNumber:115 description:@"Must be PLManagedObjectContext"];
       }
 
-      if (([v4 isDatabaseCreationContext] & 1) == 0)
+      if (([uuid isDatabaseCreationContext] & 1) == 0)
       {
-        v12 = [(PLGenericAlbum *)self photoLibrary];
-        v13 = [v12 pathManager];
-        [(PLManagedFolder *)self persistMetadataToFileSystemWithPathManager:v13];
+        photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+        pathManager = [photoLibrary pathManager];
+        [(PLManagedFolder *)self persistMetadataToFileSystemWithPathManager:pathManager];
       }
     }
   }
@@ -646,17 +646,17 @@ LABEL_5:
   if ([(PLManagedFolder *)self needsFixedOrderKeysComplianceUpdate]&& ([(PLManagedFolder *)self isDeleted]& 1) == 0)
   {
     [(PLManagedFolder *)self setNeedsFixedOrderKeysComplianceUpdate:0];
-    v5 = [(PLGenericAlbum *)self photoLibrary];
-    v6 = [v5 libraryServicesManager];
-    v7 = [v6 databaseContext];
+    photoLibrary2 = [(PLGenericAlbum *)self photoLibrary];
+    libraryServicesManager = [photoLibrary2 libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
 
     v8 = [PLRelationshipOrderKeyManager alloc];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __26__PLManagedFolder_didSave__block_invoke;
     v15[3] = &unk_1E7574C88;
-    v16 = v7;
-    v9 = v7;
+    v16 = databaseContext;
+    v9 = databaseContext;
     v10 = [(PLRelationshipOrderKeyManager *)v8 initWithGenerateContextBlock:v15];
     [objc_opt_class() setIsProcessingOrderKeyCompliance:1];
     [(PLManagedFolder *)self enforceFixedOrderKeyComplianceWithOrderKeyManager:v10];
@@ -687,11 +687,11 @@ id __26__PLManagedFolder_didSave__block_invoke(uint64_t a1, uint64_t a2)
   v9.receiver = self;
   v9.super_class = PLManagedFolder;
   [(PLGenericAlbum *)&v9 willSave];
-  v3 = [(PLManagedFolder *)self changedValues];
-  v4 = [v3 objectForKeyedSubscript:@"childCollections"];
+  changedValues = [(PLManagedFolder *)self changedValues];
+  v4 = [changedValues objectForKeyedSubscript:@"childCollections"];
 
   [(PLManagedFolder *)self setNeedsPersistenceUpdate:0];
-  v5 = [(PLManagedFolder *)self managedObjectContext];
+  managedObjectContext = [(PLManagedFolder *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -702,14 +702,14 @@ id __26__PLManagedFolder_didSave__block_invoke(uint64_t a1, uint64_t a2)
   {
     if (([(PLManagedFolder *)self isInserted]& 1) == 0 && !v4)
     {
-      v6 = [v3 objectForKeyedSubscript:@"title"];
-      if (v6 || ([v3 objectForKeyedSubscript:@"trashedState"], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v3, "objectForKeyedSubscript:", @"isPinned"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v3, "objectForKeyedSubscript:", @"isPrototype"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+      v6 = [changedValues objectForKeyedSubscript:@"title"];
+      if (v6 || ([changedValues objectForKeyedSubscript:@"trashedState"], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"isPinned"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"isPrototype"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v8 = [v3 objectForKeyedSubscript:@"lastModifiedDate"];
+        v8 = [changedValues objectForKeyedSubscript:@"lastModifiedDate"];
 
         if (!v8)
         {
@@ -722,11 +722,11 @@ id __26__PLManagedFolder_didSave__block_invoke(uint64_t a1, uint64_t a2)
   }
 
 LABEL_11:
-  if ([(PLGenericAlbum *)self kindValue]== 3999 && v5)
+  if ([(PLGenericAlbum *)self kindValue]== 3999 && managedObjectContext)
   {
-    v7 = [PLManagedAlbumList albumListInManagedObjectContext:v5];
+    v7 = [PLManagedAlbumList albumListInManagedObjectContext:managedObjectContext];
     [PLManagedAlbumList pushChangesFromAlbumContainer:self toAlbumContainer:v7];
-    if (v4 && ([v5 isInitializingSingletons] & 1) == 0 && (objc_msgSend(objc_opt_class(), "isProcessingOrderKeyCompliance") & 1) == 0)
+    if (v4 && ([managedObjectContext isInitializingSingletons] & 1) == 0 && (objc_msgSend(objc_opt_class(), "isProcessingOrderKeyCompliance") & 1) == 0)
     {
       [(PLManagedFolder *)self setNeedsFixedOrderKeysComplianceUpdate:1];
     }
@@ -750,36 +750,36 @@ void __43__PLManagedFolder_validKindsForPersistence__block_invoke()
   validKindsForPersistence_pl_once_object_17 = v0;
 }
 
-+ (id)insertNewFolderWithTitle:(id)a3 kind:(int)a4 intoLibrary:(id)a5
++ (id)insertNewFolderWithTitle:(id)title kind:(int)kind intoLibrary:(id)library
 {
-  v5 = *&a4;
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 managedObjectContext];
-  v10 = [(PLManagedObject *)PLManagedFolder insertInManagedObjectContext:v9];
+  v5 = *&kind;
+  libraryCopy = library;
+  titleCopy = title;
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v10 = [(PLManagedObject *)PLManagedFolder insertInManagedObjectContext:managedObjectContext];
 
   [v10 setKindValue:v5];
-  [v10 setTitle:v8];
+  [v10 setTitle:titleCopy];
 
-  v11 = [PLManagedAlbumList albumListInPhotoLibrary:v7];
+  v11 = [PLManagedAlbumList albumListInPhotoLibrary:libraryCopy];
 
-  v12 = [v11 albums];
-  [v12 addObject:v10];
+  albums = [v11 albums];
+  [albums addObject:v10];
 
   return v10;
 }
 
-+ (id)sortDescriptorsForAlbumsInFolderWithSortKey:(unsigned int)a3 ascending:(BOOL)a4
++ (id)sortDescriptorsForAlbumsInFolderWithSortKey:(unsigned int)key ascending:(BOOL)ascending
 {
-  v4 = a4;
+  ascendingCopy = ascending;
   v18[1] = *MEMORY[0x1E69E9840];
-  if (a3 > 3)
+  if (key > 3)
   {
-    if (a3 <= 5)
+    if (key <= 5)
     {
-      if (a3 == 4)
+      if (key == 4)
       {
-        v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"trashedDate" ascending:a4];
+        v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"trashedDate" ascending:ascending];
         v17 = v6;
         v7 = MEMORY[0x1E695DEC8];
         v8 = &v17;
@@ -787,11 +787,11 @@ void __43__PLManagedFolder_validKindsForPersistence__block_invoke()
       }
     }
 
-    else if (a3 != 101)
+    else if (key != 101)
     {
-      if (a3 != 100)
+      if (key != 100)
       {
-        if (a3 != 6)
+        if (key != 6)
         {
           goto LABEL_19;
         }
@@ -802,20 +802,20 @@ void __43__PLManagedFolder_validKindsForPersistence__block_invoke()
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:a4 selector:sel_localizedCaseInsensitiveCompare_];
+    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:ascending selector:sel_localizedCaseInsensitiveCompare_];
     v16 = v6;
     v7 = MEMORY[0x1E695DEC8];
     v8 = &v16;
     goto LABEL_17;
   }
 
-  if (a3 > 1)
+  if (key > 1)
   {
-    if (a3 == 2)
+    if (key == 2)
     {
-      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastModifiedDate" ascending:a4];
+      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastModifiedDate" ascending:ascending];
       v15[0] = v6;
-      v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:v4 selector:sel_localizedCaseInsensitiveCompare_];
+      v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:ascendingCopy selector:sel_localizedCaseInsensitiveCompare_];
       v15[1] = v9;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
 
@@ -825,20 +825,20 @@ void __43__PLManagedFolder_validKindsForPersistence__block_invoke()
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!key)
   {
 LABEL_12:
-    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"parentFolder" ascending:a4];
+    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"parentFolder" ascending:ascending];
     v14 = v6;
     v7 = MEMORY[0x1E695DEC8];
     v8 = &v14;
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (key == 1)
   {
 LABEL_10:
-    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:a4];
+    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:ascending];
     v18[0] = v6;
     v7 = MEMORY[0x1E695DEC8];
     v8 = v18;
@@ -857,7 +857,7 @@ LABEL_19:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v13[0] = 67109120;
-    v13[1] = a3;
+    v13[1] = key;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Unexpected folder sort key value: %d", v13, 8u);
   }
 
@@ -867,47 +867,47 @@ LABEL_22:
   return v10;
 }
 
-+ (void)setIsProcessingOrderKeyCompliance:(BOOL)a3
++ (void)setIsProcessingOrderKeyCompliance:(BOOL)compliance
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v4 threadDictionary];
+  complianceCopy = compliance;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v6 setObject:v5 forKey:@"PLManagedFolderIsProcessingOrderKeyCompliance"];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:complianceCopy];
+  [threadDictionary setObject:v5 forKey:@"PLManagedFolderIsProcessingOrderKeyCompliance"];
 }
 
 + (BOOL)isProcessingOrderKeyCompliance
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKey:@"PLManagedFolderIsProcessingOrderKeyCompliance"];
-  v5 = [v4 BOOLValue];
+  v4 = [threadDictionary objectForKey:@"PLManagedFolderIsProcessingOrderKeyCompliance"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)descriptionOfChildCollectionOrderValues
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(PLManagedFolder *)self managedObjectContext];
-  v4 = [MEMORY[0x1E696AD60] string];
+  managedObjectContext = [(PLManagedFolder *)self managedObjectContext];
+  string = [MEMORY[0x1E696AD60] string];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLManagedFolder *)self objectID];
-  v7 = [v3 _orderKeysForRelationshipWithName__:@"childCollections" onObjectWithID:v6];
+  objectID = [(PLManagedFolder *)self objectID];
+  v7 = [managedObjectContext _orderKeysForRelationshipWithName__:@"childCollections" onObjectWithID:objectID];
 
   if ([v7 count] == 2)
   {
     v24 = v5;
-    v25 = v3;
+    v25 = managedObjectContext;
     v8 = [v7 objectAtIndexedSubscript:1];
-    v9 = [v8 objectEnumerator];
+    objectEnumerator = [v8 objectEnumerator];
 
-    v10 = [(PLManagedFolder *)self objectID];
-    v11 = [v10 URIRepresentation];
+    objectID2 = [(PLManagedFolder *)self objectID];
+    uRIRepresentation = [objectID2 URIRepresentation];
     v12 = [v7 objectAtIndexedSubscript:0];
-    [v4 appendFormat:@"FOLDER %@ [%d]\n", v11, objc_msgSend(v12, "count")];
+    [string appendFormat:@"FOLDER %@ [%d]\n", uRIRepresentation, objc_msgSend(v12, "count")];
 
     v28 = 0u;
     v29 = 0u;
@@ -929,9 +929,9 @@ LABEL_22:
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v9 nextObject];
-          v20 = [v18 URIRepresentation];
-          [v4 appendFormat:@"%@ -> %@\n", v19, v20];
+          nextObject = [objectEnumerator nextObject];
+          uRIRepresentation2 = [v18 URIRepresentation];
+          [string appendFormat:@"%@ -> %@\n", nextObject, uRIRepresentation2];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -941,19 +941,19 @@ LABEL_22:
     }
 
     v5 = v24;
-    v3 = v25;
+    managedObjectContext = v25;
   }
 
   else
   {
-    v21 = [(PLManagedFolder *)self objectID];
-    v22 = [v21 URIRepresentation];
-    [v4 appendFormat:@"FOLDER %@ [0 childCollections]\n", v22];
+    objectID3 = [(PLManagedFolder *)self objectID];
+    uRIRepresentation3 = [objectID3 URIRepresentation];
+    [string appendFormat:@"FOLDER %@ [0 childCollections]\n", uRIRepresentation3];
   }
 
   objc_autoreleasePoolPop(v5);
 
-  return v4;
+  return string;
 }
 
 @end

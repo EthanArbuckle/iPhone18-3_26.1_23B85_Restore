@@ -1,15 +1,15 @@
 @interface VUIOpenURLRouterDataSource
-+ (id)routerDataSourceWithDict:(id)a3 appContext:(id)a4;
++ (id)routerDataSourceWithDict:(id)dict appContext:(id)context;
 @end
 
 @implementation VUIOpenURLRouterDataSource
 
-+ (id)routerDataSourceWithDict:(id)a3 appContext:(id)a4
++ (id)routerDataSourceWithDict:(id)dict appContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 vui_arrayForKey:@"documentDataSources"];
+  dictCopy = dict;
+  contextCopy = context;
+  v7 = [dictCopy vui_arrayForKey:@"documentDataSources"];
   v28 = v7;
   if ([v7 count])
   {
@@ -52,17 +52,17 @@
     v8 = 0;
   }
 
-  v15 = [v5 vui_dictionaryForKey:@"actionDataSource"];
-  v16 = [VUIAction actionWithDictionary:v15 appContext:v6];
-  v17 = [v5 vui_dictionaryForKey:@"postActionDataSource"];
-  v29 = v6;
-  v30 = [VUIAction actionWithDictionary:v17 appContext:v6];
-  v31 = [v5 vui_stringForKey:@"tabIdentifier"];
-  v18 = [v5 vui_stringForKey:@"nativePageSource"];
-  v19 = [v5 vui_dictionaryForKey:@"localLibraryDataSource"];
+  v15 = [dictCopy vui_dictionaryForKey:@"actionDataSource"];
+  v16 = [VUIAction actionWithDictionary:v15 appContext:contextCopy];
+  v17 = [dictCopy vui_dictionaryForKey:@"postActionDataSource"];
+  v29 = contextCopy;
+  v30 = [VUIAction actionWithDictionary:v17 appContext:contextCopy];
+  v31 = [dictCopy vui_stringForKey:@"tabIdentifier"];
+  v18 = [dictCopy vui_stringForKey:@"nativePageSource"];
+  v19 = [dictCopy vui_dictionaryForKey:@"localLibraryDataSource"];
   if (_os_feature_enabled_impl())
   {
-    v27 = [v5 vui_dictionaryForKey:@"channelsResponse"];
+    v27 = [dictCopy vui_dictionaryForKey:@"channelsResponse"];
   }
 
   else
@@ -70,7 +70,7 @@
     v27 = 0;
   }
 
-  v20 = [v5 vui_BOOLForKey:@"actionFirst" defaultValue:0];
+  v20 = [dictCopy vui_BOOLForKey:@"actionFirst" defaultValue:0];
   if (v16 || [v8 count] || v31 || v19 || v18)
   {
     v21 = v17;

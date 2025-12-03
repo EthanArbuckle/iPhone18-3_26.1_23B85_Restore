@@ -7,7 +7,7 @@
 - (id)avt_MD5String
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   CC_MD5([v1 bytes], objc_msgSend(v1, "length"), md);
   v2 = [MEMORY[0x1E696AD60] stringWithCapacity:32];
   for (i = 0; i != 16; ++i)

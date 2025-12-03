@@ -1,8 +1,8 @@
 @interface SBiCloudPasscodeRequirementLockoutController
 - (BOOL)requiresLockout;
-- (SBiCloudPasscodeRequirementLockoutController)initWithLockScreenManager:(id)a3 mobileKeyBag:(id)a4;
+- (SBiCloudPasscodeRequirementLockoutController)initWithLockScreenManager:(id)manager mobileKeyBag:(id)bag;
 - (void)dealloc;
-- (void)noteAuthenticationSucceededWithPasscode:(id)a3;
+- (void)noteAuthenticationSucceededWithPasscode:(id)passcode;
 @end
 
 @implementation SBiCloudPasscodeRequirementLockoutController
@@ -23,21 +23,21 @@
   return v4;
 }
 
-- (SBiCloudPasscodeRequirementLockoutController)initWithLockScreenManager:(id)a3 mobileKeyBag:(id)a4
+- (SBiCloudPasscodeRequirementLockoutController)initWithLockScreenManager:(id)manager mobileKeyBag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = SBiCloudPasscodeRequirementLockoutController;
   v8 = [(SBiCloudPasscodeRequirementLockoutController *)&v12 init];
   if (v8)
   {
-    v9 = [[SBSoftLockoutController alloc] initWithBiometricLockoutState:7 lockScreenManager:v6];
+    v9 = [[SBSoftLockoutController alloc] initWithBiometricLockoutState:7 lockScreenManager:managerCopy];
     lockOutController = v8->_lockOutController;
     v8->_lockOutController = v9;
 
     [(SBSoftLockoutController *)v8->_lockOutController setDelegate:v8];
-    objc_storeStrong(&v8->_mobileKeybag, a4);
+    objc_storeStrong(&v8->_mobileKeybag, bag);
   }
 
   return v8;
@@ -51,21 +51,21 @@
   [(SBiCloudPasscodeRequirementLockoutController *)&v3 dealloc];
 }
 
-- (void)noteAuthenticationSucceededWithPasscode:(id)a3
+- (void)noteAuthenticationSucceededWithPasscode:(id)passcode
 {
   v4 = MEMORY[0x277CFB280];
-  v5 = a3;
+  passcodeCopy = passcode;
   v6 = objc_alloc_init(v4);
-  [v6 setPassphrase:v5];
+  [v6 setPassphrase:passcodeCopy];
 
   self->_providedPasscode = 1;
-  v7 = [(SBiCloudPasscodeRequirementLockoutController *)self _deviceHasComplexPasscode];
+  _deviceHasComplexPasscode = [(SBiCloudPasscodeRequirementLockoutController *)self _deviceHasComplexPasscode];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__SBiCloudPasscodeRequirementLockoutController_noteAuthenticationSucceededWithPasscode___block_invoke;
   v8[3] = &unk_2783B0F28;
   v8[4] = self;
-  [v6 prepareHSA2EscrowRecordContents:v7 reply:v8];
+  [v6 prepareHSA2EscrowRecordContents:_deviceHasComplexPasscode reply:v8];
 }
 
 void __88__SBiCloudPasscodeRequirementLockoutController_noteAuthenticationSucceededWithPasscode___block_invoke(uint64_t a1)

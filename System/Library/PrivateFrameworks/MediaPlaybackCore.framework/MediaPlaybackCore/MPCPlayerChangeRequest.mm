@@ -1,23 +1,23 @@
 @interface MPCPlayerChangeRequest
-+ (id)requestWithCommandRequests:(id)a3;
-+ (void)performRequest:(id)a3 completion:(id)a4;
-+ (void)performRequest:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-+ (void)performRequest:(id)a3 options:(unint64_t)a4 extendedStatusCompletion:(id)a5;
-- (MPCPlayerChangeRequest)initWithCommandRequests:(id)a3;
++ (id)requestWithCommandRequests:(id)requests;
++ (void)performRequest:(id)request completion:(id)completion;
++ (void)performRequest:(id)request options:(unint64_t)options completion:(id)completion;
++ (void)performRequest:(id)request options:(unint64_t)options extendedStatusCompletion:(id)completion;
+- (MPCPlayerChangeRequest)initWithCommandRequests:(id)requests;
 - (id)description;
-- (void)performWithCompletion:(id)a3;
-- (void)performWithExtendedStatusCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
+- (void)performWithExtendedStatusCompletion:(id)completion;
 @end
 
 @implementation MPCPlayerChangeRequest
 
-- (void)performWithExtendedStatusCompletion:(id)a3
+- (void)performWithExtendedStatusCompletion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   if ([(NSArray *)self->_commands count])
   {
-    v43 = v5;
+    v43 = completionCopy;
     v6 = os_log_create("com.apple.amp.mediaplaybackcore", "MediaRemote");
     v7 = os_signpost_id_make_with_pointer(v6, self);
 
@@ -53,24 +53,24 @@
           }
 
           v16 = *(*(&v57 + 1) + 8 * v15);
-          v17 = [v16 playerPath];
-          if (v17)
+          playerPath = [v16 playerPath];
+          if (playerPath)
           {
-            v18 = v17;
+            resolvedPlayerPath = playerPath;
             if (v13)
             {
               goto LABEL_16;
             }
 
 LABEL_15:
-            v13 = v18;
+            v13 = resolvedPlayerPath;
             goto LABEL_16;
           }
 
-          v19 = [v16 controller];
-          v18 = [v19 resolvedPlayerPath];
+          controller = [v16 controller];
+          resolvedPlayerPath = [controller resolvedPlayerPath];
 
-          if (v18)
+          if (resolvedPlayerPath)
           {
             if (v13)
             {
@@ -80,20 +80,20 @@ LABEL_15:
             goto LABEL_15;
           }
 
-          v21 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v21 handleFailureInMethod:a2 object:v46 file:@"MPCPlayerChangeRequest.m" lineNumber:143 description:{@"Cannot perform command request without a player path [not on request, or fallback from controller] request=%@", v16}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:v46 file:@"MPCPlayerChangeRequest.m" lineNumber:143 description:{@"Cannot perform command request without a player path [not on request, or fallback from controller] request=%@", v16}];
 
-          v18 = 0;
+          resolvedPlayerPath = 0;
           if (!v13)
           {
             goto LABEL_15;
           }
 
 LABEL_16:
-          if (([v13 isEqual:v18] & 1) == 0)
+          if (([v13 isEqual:resolvedPlayerPath] & 1) == 0)
           {
-            v20 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v20 handleFailureInMethod:a2 object:v46 file:@"MPCPlayerChangeRequest.m" lineNumber:146 description:@"All requests must have the same player path."];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:v46 file:@"MPCPlayerChangeRequest.m" lineNumber:146 description:@"All requests must have the same player path."];
           }
 
           ++v15;
@@ -112,11 +112,11 @@ LABEL_16:
     v13 = 0;
 LABEL_29:
 
-    v28 = [(MPCPlayerChangeRequest *)v46 options];
+    options = [(MPCPlayerChangeRequest *)v46 options];
     v29 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [v29 setQualityOfService:25];
-    v45 = v28;
-    if ((v28 & 0x100) != 0)
+    v45 = options;
+    if ((options & 0x100) != 0)
     {
       v30 = -1;
     }
@@ -190,7 +190,7 @@ LABEL_29:
     }
 
     [v34 addOperation:v35];
-    v5 = v43;
+    completionCopy = v43;
     goto LABEL_46;
   }
 
@@ -208,11 +208,11 @@ LABEL_29:
     _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_ERROR, "[PCR] performWithExtendedStatusCompletion: | failed to perform command [no commands provided] status=%{public}@", buf, 0xCu);
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v63 = v47;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
-    (*(v5 + 2))(v5, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
 LABEL_46:
   }
 }
@@ -243,15 +243,15 @@ void __62__MPCPlayerChangeRequest_performWithExtendedStatusCompletion___block_in
   dispatch_async(v6, block);
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__MPCPlayerChangeRequest_performWithCompletion___block_invoke;
   v6[3] = &unk_1E8238C08;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(MPCPlayerChangeRequest *)self performWithExtendedStatusCompletion:v6];
 }
 
@@ -315,15 +315,15 @@ BOOL __48__MPCPlayerChangeRequest_performWithCompletion___block_invoke_2(uint64_
   return v13;
 }
 
-- (MPCPlayerChangeRequest)initWithCommandRequests:(id)a3
+- (MPCPlayerChangeRequest)initWithCommandRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v9.receiver = self;
   v9.super_class = MPCPlayerChangeRequest;
   v5 = [(MPCPlayerChangeRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestsCopy copy];
     commands = v5->_commands;
     v5->_commands = v6;
   }
@@ -331,38 +331,38 @@ BOOL __48__MPCPlayerChangeRequest_performWithCompletion___block_invoke_2(uint64_
   return v5;
 }
 
-+ (id)requestWithCommandRequests:(id)a3
++ (id)requestWithCommandRequests:(id)requests
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCommandRequests:v4];
+  requestsCopy = requests;
+  v5 = [[self alloc] initWithCommandRequests:requestsCopy];
 
   return v5;
 }
 
-+ (void)performRequest:(id)a3 options:(unint64_t)a4 extendedStatusCompletion:(id)a5
++ (void)performRequest:(id)request options:(unint64_t)options extendedStatusCompletion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  requestCopy = request;
+  completionCopy = completion;
+  if (requestCopy)
   {
-    v15[0] = v8;
+    v15[0] = requestCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    v11 = [a1 requestWithCommandRequests:v10];
+    v11 = [self requestWithCommandRequests:v10];
   }
 
   else
   {
-    v11 = [a1 requestWithCommandRequests:MEMORY[0x1E695E0F0]];
+    v11 = [self requestWithCommandRequests:MEMORY[0x1E695E0F0]];
   }
 
-  [v11 setOptions:a4];
+  [v11 setOptions:options];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__MPCPlayerChangeRequest_performRequest_options_extendedStatusCompletion___block_invoke;
   v13[3] = &unk_1E8238C08;
-  v14 = v9;
-  v12 = v9;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v11 performWithExtendedStatusCompletion:v13];
 }
 
@@ -376,16 +376,16 @@ void __74__MPCPlayerChangeRequest_performRequest_options_extendedStatusCompletio
   }
 }
 
-+ (void)performRequest:(id)a3 options:(unint64_t)a4 completion:(id)a5
++ (void)performRequest:(id)request options:(unint64_t)options completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__MPCPlayerChangeRequest_performRequest_options_completion___block_invoke;
   v10[3] = &unk_1E8238BE0;
-  v11 = v8;
-  v9 = v8;
-  [a1 performRequest:a3 options:a4 extendedStatusCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [self performRequest:request options:options extendedStatusCompletion:v10];
 }
 
 void __60__MPCPlayerChangeRequest_performRequest_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -398,16 +398,16 @@ void __60__MPCPlayerChangeRequest_performRequest_options_completion___block_invo
   }
 }
 
-+ (void)performRequest:(id)a3 completion:(id)a4
++ (void)performRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__MPCPlayerChangeRequest_performRequest_completion___block_invoke;
   v8[3] = &unk_1E8238BE0;
-  v9 = v6;
-  v7 = v6;
-  [a1 performRequest:a3 options:0 extendedStatusCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [self performRequest:request options:0 extendedStatusCompletion:v8];
 }
 
 void __52__MPCPlayerChangeRequest_performRequest_completion___block_invoke(uint64_t a1, void *a2)

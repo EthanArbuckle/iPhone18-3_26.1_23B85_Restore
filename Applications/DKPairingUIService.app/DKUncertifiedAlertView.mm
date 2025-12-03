@@ -1,12 +1,12 @@
 @interface DKUncertifiedAlertView
-- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithCoder:(id)a3;
-- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithCoder:(id)coder;
+- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation DKUncertifiedAlertView
 
-- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithCoder:(id)a3
+- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18DKPairingUIService22DKUncertifiedAlertView_logger;
   Logger.init(subsystem:category:)();
@@ -29,7 +29,7 @@
   [(DKUncertifiedAlertView *)&v2 viewDidLoad];
 }
 
-- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18DKPairingUIService22DKUncertifiedAlertView)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

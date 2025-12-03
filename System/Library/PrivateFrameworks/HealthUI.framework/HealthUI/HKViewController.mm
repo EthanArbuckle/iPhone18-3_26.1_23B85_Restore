@@ -1,30 +1,30 @@
 @interface HKViewController
-- (void)setControlsHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated;
 @end
 
 @implementation HKViewController
 
-- (void)setControlsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v9 = [(HKViewController *)self navigationController];
-  v7 = [(HKViewController *)self tabBarController];
-  if (v9)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  navigationController = [(HKViewController *)self navigationController];
+  tabBarController = [(HKViewController *)self tabBarController];
+  if (navigationController)
   {
-    [v9 setNavigationBarHidden:v5 animated:v4];
+    [navigationController setNavigationBarHidden:hiddenCopy animated:animatedCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setTabBarControlsHidden:v5 animated:v4];
+    [tabBarController setTabBarControlsHidden:hiddenCopy animated:animatedCopy];
   }
 
   else
   {
-    v8 = [v7 tabBar];
-    [v8 setHidden:v5];
+    tabBar = [tabBarController tabBar];
+    [tabBar setHidden:hiddenCopy];
   }
 }
 

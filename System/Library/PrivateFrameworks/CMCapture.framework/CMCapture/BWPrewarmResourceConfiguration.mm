@@ -1,16 +1,16 @@
 @interface BWPrewarmResourceConfiguration
-+ (id)newResourceConfigWithSharedMetalAllocator:(id)a3;
++ (id)newResourceConfigWithSharedMetalAllocator:(id)allocator;
 - (void)dealloc;
-- (void)initWithSharedMetalAllocatorBackend:(void *)a1;
+- (void)initWithSharedMetalAllocatorBackend:(void *)backend;
 @end
 
 @implementation BWPrewarmResourceConfiguration
 
-+ (id)newResourceConfigWithSharedMetalAllocator:(id)a3
++ (id)newResourceConfigWithSharedMetalAllocator:(id)allocator
 {
   v4 = [BWPrewarmResourceConfiguration alloc];
 
-  return [(BWPrewarmResourceConfiguration *)v4 initWithSharedMetalAllocatorBackend:a3];
+  return [(BWPrewarmResourceConfiguration *)v4 initWithSharedMetalAllocatorBackend:allocator];
 }
 
 - (void)dealloc
@@ -20,14 +20,14 @@
   [(BWPrewarmResourceConfiguration *)&v3 dealloc];
 }
 
-- (void)initWithSharedMetalAllocatorBackend:(void *)a1
+- (void)initWithSharedMetalAllocatorBackend:(void *)backend
 {
-  if (!a1)
+  if (!backend)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = backend;
   v5.super_class = BWPrewarmResourceConfiguration;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)

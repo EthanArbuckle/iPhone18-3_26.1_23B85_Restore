@@ -1,5 +1,5 @@
 @interface MTLTextureDescriptor
-+ (MTLTextureDescriptor)allocWithZone:(_NSZone *)a3;
++ (MTLTextureDescriptor)allocWithZone:(_NSZone *)zone;
 + (MTLTextureDescriptor)texture2DDescriptorWithPixelFormat:(MTLPixelFormat)pixelFormat width:(NSUInteger)width height:(NSUInteger)height mipmapped:(BOOL)mipmapped;
 + (MTLTextureDescriptor)textureBufferDescriptorWithPixelFormat:(MTLPixelFormat)pixelFormat width:(NSUInteger)width resourceOptions:(MTLResourceOptions)resourceOptions usage:(MTLTextureUsage)usage;
 + (MTLTextureDescriptor)textureCubeDescriptorWithPixelFormat:(MTLPixelFormat)pixelFormat size:(NSUInteger)size mipmapped:(BOOL)mipmapped;
@@ -7,19 +7,19 @@
 
 @implementation MTLTextureDescriptor
 
-+ (MTLTextureDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLTextureDescriptor)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLTextureDescriptorInternal allocWithZone:a3];
+    return [MTLTextureDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLTextureDescriptor;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 

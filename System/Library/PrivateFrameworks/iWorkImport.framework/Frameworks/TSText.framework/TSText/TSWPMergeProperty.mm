@@ -1,16 +1,16 @@
 @interface TSWPMergeProperty
-- (BOOL)isEqual:(id)a3;
-- (TSWPMergeProperty)initWithMergeFieldType:(id)a3 stringValue:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSWPMergeProperty)initWithMergeFieldType:(id)type stringValue:(id)value;
 - (id)description;
 @end
 
 @implementation TSWPMergeProperty
 
-- (TSWPMergeProperty)initWithMergeFieldType:(id)a3 stringValue:(id)a4
+- (TSWPMergeProperty)initWithMergeFieldType:(id)type stringValue:(id)value
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  typeCopy = type;
+  valueCopy = value;
+  if (!typeCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPMergeProperty initWithMergeFieldType:stringValue:]");
@@ -25,11 +25,11 @@
   v18 = [(TSWPMergeProperty *)&v26 init];
   if (v18)
   {
-    v19 = objc_msgSend_copy(v6, v16, v17);
+    v19 = objc_msgSend_copy(typeCopy, v16, v17);
     mergeFieldType = v18->_mergeFieldType;
     v18->_mergeFieldType = v19;
 
-    v23 = objc_msgSend_copy(v8, v21, v22);
+    v23 = objc_msgSend_copy(valueCopy, v21, v22);
     stringValue = v18->_stringValue;
     v18->_stringValue = v23;
   }
@@ -37,10 +37,10 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     v5 = TSUDynamicCast();

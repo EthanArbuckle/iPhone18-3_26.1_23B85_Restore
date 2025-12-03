@@ -1,36 +1,36 @@
 @interface _PXUIScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsInFeedViewController;
 - (BOOL)_accessibilityOnlyComparesByXAxis;
 - (BOOL)_accessibilityScrollAcrossPageBoundaries;
 - (BOOL)_axUsesPhotosGridKit;
 - (BOOL)isAccessibilityOpaqueElementProvider;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilitySortedElementsWithin;
 - (id)accessibilityElements;
-- (int64_t)_axCompareView:(id)a3 toView:(id)a4;
-- (void)_axSetPXGScrollViewElements:(id)a3;
+- (int64_t)_axCompareView:(id)view toView:(id)toView;
+- (void)_axSetPXGScrollViewElements:(id)elements;
 @end
 
 @implementation _PXUIScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_PXUIScrollView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PXGView"];
-  [v3 validateClass:@"PXGView" hasInstanceMethod:@"rootLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGLayout" hasInstanceMethod:@"axGroup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXFeedViewController"];
-  [v3 validateClass:@"PXPhotosUIViewController" hasInstanceMethod:@"contentController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPhotosContentController" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPhotosViewModel" hasInstanceMethod:@"headerTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_PXUIScrollView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PXGView"];
+  [validationsCopy validateClass:@"PXGView" hasInstanceMethod:@"rootLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGLayout" hasInstanceMethod:@"axGroup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXFeedViewController"];
+  [validationsCopy validateClass:@"PXPhotosUIViewController" hasInstanceMethod:@"contentController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPhotosContentController" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPhotosViewModel" hasInstanceMethod:@"headerTitle" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityOpaqueElementProvider
 {
-  v3 = [(_PXUIScrollViewAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"AXPhotoDetailsScrollView"])
+  accessibilityIdentification = [(_PXUIScrollViewAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"AXPhotoDetailsScrollView"])
   {
 
     return 0;
@@ -38,16 +38,16 @@
 
   else
   {
-    v5 = [(_PXUIScrollViewAccessibility *)self _axUsesPhotosGridKit];
+    _axUsesPhotosGridKit = [(_PXUIScrollViewAccessibility *)self _axUsesPhotosGridKit];
 
-    return !v5;
+    return !_axUsesPhotosGridKit;
   }
 }
 
 - (id)_accessibilitySortedElementsWithin
 {
-  v3 = [(_PXUIScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXExplorerViewControllerScrollView"];
+  accessibilityIdentifier = [(_PXUIScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXExplorerViewControllerScrollView"];
 
   if (v4)
   {
@@ -61,34 +61,34 @@
     v10[2] = __66___PXUIScrollViewAccessibility__accessibilitySortedElementsWithin__block_invoke;
     v10[3] = &unk_29F2E5EA8;
     v10[4] = self;
-    v7 = [v6 sortedArrayUsingComparator:v10];
+    _accessibilitySortedElementsWithin = [v6 sortedArrayUsingComparator:v10];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _PXUIScrollViewAccessibility;
-    v7 = [(_PXUIScrollViewAccessibility *)&v9 _accessibilitySortedElementsWithin];
+    _accessibilitySortedElementsWithin = [(_PXUIScrollViewAccessibility *)&v9 _accessibilitySortedElementsWithin];
   }
 
-  return v7;
+  return _accessibilitySortedElementsWithin;
 }
 
-- (int64_t)_axCompareView:(id)a3 toView:(id)a4
+- (int64_t)_axCompareView:(id)view toView:(id)toView
 {
-  v6 = a4;
-  v7 = a3;
+  toViewCopy = toView;
+  viewCopy = view;
   v8 = [(_PXUIScrollViewAccessibility *)self safeValueForKey:@"subviews"];
   v9 = [v8 safeValueForKey:@"@firstObject"];
 
-  v10 = [v7 safeValueForKey:@"frame"];
+  v10 = [viewCopy safeValueForKey:@"frame"];
   [v10 CGRectValue];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [v7 safeValueForKey:@"superview"];
+  v19 = [viewCopy safeValueForKey:@"superview"];
 
   [v9 convertRect:v19 fromView:{v12, v14, v16, v18}];
   v21 = v20;
@@ -96,14 +96,14 @@
   v25 = v24;
   v27 = v26;
 
-  v28 = [v6 safeValueForKey:@"frame"];
+  v28 = [toViewCopy safeValueForKey:@"frame"];
   [v28 CGRectValue];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
 
-  v37 = [v6 safeValueForKey:@"superview"];
+  v37 = [toViewCopy safeValueForKey:@"superview"];
 
   [v9 convertRect:v37 fromView:{v30, v32, v34, v36}];
   v39 = v38;
@@ -154,16 +154,16 @@ LABEL_7:
 
 - (BOOL)_accessibilityOnlyComparesByXAxis
 {
-  v2 = [(_PXUIScrollViewAccessibility *)self accessibilityIdentification];
-  v3 = [v2 isEqualToString:@"AXMemoriesScrollView"];
+  accessibilityIdentification = [(_PXUIScrollViewAccessibility *)self accessibilityIdentification];
+  v3 = [accessibilityIdentification isEqualToString:@"AXMemoriesScrollView"];
 
   return v3;
 }
 
 - (BOOL)_accessibilityScrollAcrossPageBoundaries
 {
-  v3 = [(_PXUIScrollViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXMemoriesScrollView"];
+  accessibilityIdentification = [(_PXUIScrollViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXMemoriesScrollView"];
 
   if (v4)
   {
@@ -179,7 +179,7 @@ LABEL_7:
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 superview];
+  superview = [v2 superview];
   MEMORY[0x29C2E6930](@"PXGView");
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -190,25 +190,25 @@ LABEL_7:
 {
   if ([(_PXUIScrollViewAccessibility *)self _axUsesPhotosGridKit])
   {
-    v3 = [(_PXUIScrollViewAccessibility *)self _axPXGScrollViewElements];
-    if (!v3)
+    _axPXGScrollViewElements = [(_PXUIScrollViewAccessibility *)self _axPXGScrollViewElements];
+    if (!_axPXGScrollViewElements)
     {
       v18.receiver = self;
       v18.super_class = _PXUIScrollViewAccessibility;
-      v4 = [(_PXUIScrollViewAccessibility *)&v18 accessibilityElements];
-      v5 = [v4 mutableCopy];
+      accessibilityElements = [(_PXUIScrollViewAccessibility *)&v18 accessibilityElements];
+      v5 = [accessibilityElements mutableCopy];
       v6 = v5;
       if (v5)
       {
-        v7 = v5;
+        array = v5;
       }
 
       else
       {
-        v7 = [MEMORY[0x29EDB8DE8] array];
+        array = [MEMORY[0x29EDB8DE8] array];
       }
 
-      v3 = v7;
+      _axPXGScrollViewElements = array;
 
       v8 = [(_PXUIScrollViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_8 startWithSelf:1];
       v9 = [v8 safeValueForKey:@"rootLayout"];
@@ -222,8 +222,8 @@ LABEL_7:
       v15[3] = &unk_29F2E65D0;
       objc_copyWeak(&v16, &location);
       v12 = [(AXPhotosGroupAccessibilityElement *)v11 initWithAccessibilityContainer:self forGroup:v10 inView:v8 withAdditionalScrollViewElements:v15];
-      [v3 axSafelyAddObject:v12];
-      [(_PXUIScrollViewAccessibility *)self _axSetPXGScrollViewElements:v3];
+      [_axPXGScrollViewElements axSafelyAddObject:v12];
+      [(_PXUIScrollViewAccessibility *)self _axSetPXGScrollViewElements:_axPXGScrollViewElements];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -234,16 +234,16 @@ LABEL_7:
   {
     v14.receiver = self;
     v14.super_class = _PXUIScrollViewAccessibility;
-    v3 = [(_PXUIScrollViewAccessibility *)&v14 accessibilityElements];
+    _axPXGScrollViewElements = [(_PXUIScrollViewAccessibility *)&v14 accessibilityElements];
   }
 
-  return v3;
+  return _axPXGScrollViewElements;
 }
 
-- (void)_axSetPXGScrollViewElements:(id)a3
+- (void)_axSetPXGScrollViewElements:(id)elements
 {
   [(_PXUIScrollViewAccessibility *)self _setAXPXGScrollViewElements:?];
-  if (!a3)
+  if (!elements)
   {
     v4 = *MEMORY[0x29EDC7ED8];
 
@@ -254,20 +254,20 @@ LABEL_7:
 - (BOOL)_accessibilityIsInFeedViewController
 {
   v2 = [(_PXUIScrollViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_549 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
-  v4 = v3 != 0;
+  _accessibilityViewController = [v2 _accessibilityViewController];
+  v4 = _accessibilityViewController != 0;
 
   return v4;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(_PXUIScrollViewAccessibility *)self _accessibilityIsInFeedViewController])
   {
-    v8 = [(_PXUIScrollViewAccessibility *)self _accessibilityElements];
+    _accessibilityElements = [(_PXUIScrollViewAccessibility *)self _accessibilityElements];
     v12 = 0;
     v13 = &v12;
     v14 = 0x3032000000;
@@ -281,7 +281,7 @@ LABEL_7:
     v11[4] = &v12;
     *&v11[5] = x;
     *&v11[6] = y;
-    [v8 enumerateObjectsUsingBlock:v11];
+    [_accessibilityElements enumerateObjectsUsingBlock:v11];
     v9 = v13[5];
     _Block_object_dispose(&v12, 8);
   }
@@ -290,7 +290,7 @@ LABEL_7:
   {
     v18.receiver = self;
     v18.super_class = _PXUIScrollViewAccessibility;
-    v9 = [(_PXUIScrollViewAccessibility *)&v18 _accessibilityHitTest:v7 withEvent:x, y];
+    v9 = [(_PXUIScrollViewAccessibility *)&v18 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   return v9;

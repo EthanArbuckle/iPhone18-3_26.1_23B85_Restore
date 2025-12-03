@@ -7,7 +7,7 @@
 + (id)makePrototypeCellWithFrame:()VideosUI
 {
   v8 = objc_alloc_init(objc_opt_class());
-  [v8 setFrame:{a1, a2, a3, a4}];
+  [v8 setFrame:{self, a2, a3, a4}];
 
   return v8;
 }

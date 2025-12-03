@@ -1,121 +1,121 @@
 @interface MFMessageViewController
-- (BOOL)canSaveAllAttachmentsInContext:(int64_t)a3;
-- (BOOL)canSearchForContactFromContactCardInteractions:(id)a3;
+- (BOOL)canSaveAllAttachmentsInContext:(int64_t)context;
+- (BOOL)canSearchForContactFromContactCardInteractions:(id)interactions;
 - (BOOL)isCategorizationActionAllowed;
-- (BOOL)isShowingGroupedSenderMessageListForMessageContentView:(id)a3;
-- (BOOL)isSourceManagedForURL:(id)a3;
-- (BOOL)shouldShowTimeSensitiveBannerForMessageContentView:(id)a3 message:(id)a4;
+- (BOOL)isShowingGroupedSenderMessageListForMessageContentView:(id)view;
+- (BOOL)isSourceManagedForURL:(id)l;
+- (BOOL)shouldShowTimeSensitiveBannerForMessageContentView:(id)view message:(id)message;
 - (BOOL)showsBanners;
-- (CGRect)documentInteractionControllerRectForPreview:(id)a3;
+- (CGRect)documentInteractionControllerRectForPreview:(id)preview;
 - (ComposeCapable)scene;
-- (MFMessageViewController)initWithScene:(id)a3 accountsController:(id)a4;
+- (MFMessageViewController)initWithScene:(id)scene accountsController:(id)controller;
 - (MFMessageViewControllerDelegate)delegate;
 - (NSArray)mf_exclusionRegionsInBaseWindowCoordinateSpace;
 - (QLPreviewController)previewController;
 - (UIDocumentInteractionController)doc;
 - (id)_attachmentShowcase;
-- (id)_contactViewControllerForAddress:(id)a3 forAtomType:(unint64_t)a4;
-- (id)_delegateDisplayNameForEmailAddress:(id)a3 abbreviated:(BOOL)a4;
-- (id)_makeFileCopyOfEditedQuickLookFileToLocalContainer:(id)a3 preferredFileName:(id)a4;
-- (id)actualSenderFutureForConversationItemHeader:(id)a3;
-- (id)additionalActivitiesForDocumentInteractionController:(id)a3;
+- (id)_contactViewControllerForAddress:(id)address forAtomType:(unint64_t)type;
+- (id)_delegateDisplayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated;
+- (id)_makeFileCopyOfEditedQuickLookFileToLocalContainer:(id)container preferredFileName:(id)name;
+- (id)actualSenderFutureForConversationItemHeader:(id)header;
+- (id)additionalActivitiesForDocumentInteractionController:(id)controller;
 - (id)allMediaAttachmentFutures;
 - (id)assetViewerManager;
-- (id)contactStoreForAttachmentShowcase:(id)a3;
-- (id)conversationAttachmentURLsForConversationItemHeaderBlock:(id)a3;
-- (id)conversationItemHeader:(id)a3 displayNameForEmailAddress:(id)a4 abbreviated:(BOOL)a5;
-- (id)dismissActionsForPreviewController:(id)a3;
-- (id)documentInteractionControllerMarkupDismissActions:(id)a3;
-- (id)documentInteractionControllerViewForPreview:(id)a3;
-- (id)excludedActivityTypesForDocumentInteractionController:(id)a3;
+- (id)contactStoreForAttachmentShowcase:(id)showcase;
+- (id)conversationAttachmentURLsForConversationItemHeaderBlock:(id)block;
+- (id)conversationItemHeader:(id)header displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated;
+- (id)dismissActionsForPreviewController:(id)controller;
+- (id)documentInteractionControllerMarkupDismissActions:(id)actions;
+- (id)documentInteractionControllerViewForPreview:(id)preview;
+- (id)excludedActivityTypesForDocumentInteractionController:(id)controller;
 - (id)localizedTitleForSaveAllAttachmentsAction;
-- (id)mailProviderDisplayNameForConversationItemHeader:(id)a3;
-- (id)messageContentRepresentationRequestForScreenshotService:(id)a3;
-- (id)messageSourceMailboxObjectIDForMessageContentView:(id)a3;
-- (id)participantHeaderForContactStore:(id)a3;
-- (id)popoverManagerForForConversationItemHeader:(id)a3;
-- (id)presentingViewControllerForAttachmentShowcase:(id)a3;
-- (id)presentingViewControllerForMessageContentView:(id)a3;
-- (id)richLinksInConversationForConversationItemHeaderBlock:(id)a3;
+- (id)mailProviderDisplayNameForConversationItemHeader:(id)header;
+- (id)messageContentRepresentationRequestForScreenshotService:(id)service;
+- (id)messageSourceMailboxObjectIDForMessageContentView:(id)view;
+- (id)participantHeaderForContactStore:(id)store;
+- (id)popoverManagerForForConversationItemHeader:(id)header;
+- (id)presentingViewControllerForAttachmentShowcase:(id)showcase;
+- (id)presentingViewControllerForMessageContentView:(id)view;
+- (id)richLinksInConversationForConversationItemHeaderBlock:(id)block;
 - (id)viewControllerForPresentingSuggestions;
 - (int64_t)_dataOwnerForCopy;
 - (int64_t)_dataOwnerForPaste;
-- (int64_t)numberOfMessagesInConversationForConversationItemHeaderBlock:(id)a3;
-- (void)_appIntentUnsubscribed:(id)a3;
-- (void)_getNumberOfImages:(unint64_t *)a3 videos:(unint64_t *)a4 undownloaded:(unint64_t *)a5;
-- (void)_performMailAction:(int64_t)a3 withMarkedUpFileAttachments:(id)a4;
-- (void)_previewURL:(id)a3 withEditingEnabled:(BOOL)a4;
-- (void)_sceneMovedtoForeground:(id)a3;
-- (void)_setAttachmentOriginRect:(CGRect)a3 scale:(double)a4;
-- (void)_setupHeaderViewForContactViewController:(id)a3;
-- (void)_showSelectedContentRepresentation:(id)a3 exchangeEventUID:(int)a4 fromRect:(CGRect)a5 view:(id)a6;
-- (void)clearSuggestionsBannerAnimated:(BOOL)a3;
-- (void)contactCardInteractions:(id)a3 triggerSearchForDisplayName:(id)a4 emailAddresses:(id)a5;
-- (void)contactMessageInteraction:(id)a3 didUpdateHeaderView:(id)a4;
-- (void)conversationItemHeader:(id)a3 didSelectAddress:(id)a4 forAtomType:(unint64_t)a5;
-- (void)conversationItemHeader:(id)a3 didSelectAddressAtom:(id)a4 forAtomType:(unint64_t)a5;
-- (void)conversationItemHeader:(id)a3 didTapRevealActionsButton:(id)a4;
-- (void)conversationItemHeader:(id)a3 presentViewController:(id)a4;
-- (void)conversationItemHeader:(id)a3 searchForDisplayName:(id)a4 emailAddresses:(id)a5;
+- (int64_t)numberOfMessagesInConversationForConversationItemHeaderBlock:(id)block;
+- (void)_appIntentUnsubscribed:(id)unsubscribed;
+- (void)_getNumberOfImages:(unint64_t *)images videos:(unint64_t *)videos undownloaded:(unint64_t *)undownloaded;
+- (void)_performMailAction:(int64_t)action withMarkedUpFileAttachments:(id)attachments;
+- (void)_previewURL:(id)l withEditingEnabled:(BOOL)enabled;
+- (void)_sceneMovedtoForeground:(id)foreground;
+- (void)_setAttachmentOriginRect:(CGRect)rect scale:(double)scale;
+- (void)_setupHeaderViewForContactViewController:(id)controller;
+- (void)_showSelectedContentRepresentation:(id)representation exchangeEventUID:(int)d fromRect:(CGRect)rect view:(id)view;
+- (void)clearSuggestionsBannerAnimated:(BOOL)animated;
+- (void)contactCardInteractions:(id)interactions triggerSearchForDisplayName:(id)name emailAddresses:(id)addresses;
+- (void)contactMessageInteraction:(id)interaction didUpdateHeaderView:(id)view;
+- (void)conversationItemHeader:(id)header didSelectAddress:(id)address forAtomType:(unint64_t)type;
+- (void)conversationItemHeader:(id)header didSelectAddressAtom:(id)atom forAtomType:(unint64_t)type;
+- (void)conversationItemHeader:(id)header didTapRevealActionsButton:(id)button;
+- (void)conversationItemHeader:(id)header presentViewController:(id)controller;
+- (void)conversationItemHeader:(id)header searchForDisplayName:(id)name emailAddresses:(id)addresses;
 - (void)dealloc;
-- (void)didStartDownloadForContentItemWithProgress:(id)a3;
+- (void)didStartDownloadForContentItemWithProgress:(id)progress;
 - (void)dismissMarkupViewController;
 - (void)hideMenuForSelectedContentRepresentation;
 - (void)loadView;
-- (void)messageContentView:(id)a3 clearSuggestionsBannerAnimated:(BOOL)a4;
-- (void)messageContentView:(id)a3 clickedLinkInMessage:(id)a4 scheme:(id)a5;
-- (void)messageContentView:(id)a3 didChangeSelectedHTML:(id)a4;
-- (void)messageContentView:(id)a3 didEndZoomingMessageWithOffset:(CGPoint)a4;
-- (void)messageContentView:(id)a3 didFinishRenderingWithHeight:(double)a4;
-- (void)messageContentView:(id)a3 didLoadSecurityInformation:(id)a4;
-- (void)messageContentView:(id)a3 didTapRevealActionsButton:(id)a4;
-- (void)messageContentView:(id)a3 didTapUndoSendButton:(id)a4;
-- (void)messageContentView:(id)a3 expandQuoteAtCollapsedOffset:(CGPoint)a4 expandedOffset:(CGPoint)a5;
-- (void)messageContentView:(id)a3 handleContentRepresentation:(id)a4;
-- (void)messageContentView:(id)a3 loadingIndicatorDidChangeVisibility:(BOOL)a4;
-- (void)messageContentView:(id)a3 openPossibleStoreURL:(id)a4;
-- (void)messageContentView:(id)a3 scrollToRect:(CGRect)a4;
-- (void)messageContentView:(id)a3 viewedRemoteURLs:(id)a4;
-- (void)messageContentView:(id)a3 webViewDidTerminateWithReason:(int64_t)a4;
-- (void)messageContentViewContentLayerFinished:(id)a3;
-- (void)messageContentViewDidDisplayContent:(id)a3 success:(BOOL)a4;
-- (void)messageContentViewDidFinishFirstPaint:(id)a3;
-- (void)messageContentViewWillBeginZoomingMessage:(id)a3;
+- (void)messageContentView:(id)view clearSuggestionsBannerAnimated:(BOOL)animated;
+- (void)messageContentView:(id)view clickedLinkInMessage:(id)message scheme:(id)scheme;
+- (void)messageContentView:(id)view didChangeSelectedHTML:(id)l;
+- (void)messageContentView:(id)view didEndZoomingMessageWithOffset:(CGPoint)offset;
+- (void)messageContentView:(id)view didFinishRenderingWithHeight:(double)height;
+- (void)messageContentView:(id)view didLoadSecurityInformation:(id)information;
+- (void)messageContentView:(id)view didTapRevealActionsButton:(id)button;
+- (void)messageContentView:(id)view didTapUndoSendButton:(id)button;
+- (void)messageContentView:(id)view expandQuoteAtCollapsedOffset:(CGPoint)offset expandedOffset:(CGPoint)expandedOffset;
+- (void)messageContentView:(id)view handleContentRepresentation:(id)representation;
+- (void)messageContentView:(id)view loadingIndicatorDidChangeVisibility:(BOOL)visibility;
+- (void)messageContentView:(id)view openPossibleStoreURL:(id)l;
+- (void)messageContentView:(id)view scrollToRect:(CGRect)rect;
+- (void)messageContentView:(id)view viewedRemoteURLs:(id)ls;
+- (void)messageContentView:(id)view webViewDidTerminateWithReason:(int64_t)reason;
+- (void)messageContentViewContentLayerFinished:(id)finished;
+- (void)messageContentViewDidDisplayContent:(id)content success:(BOOL)success;
+- (void)messageContentViewDidFinishFirstPaint:(id)paint;
+- (void)messageContentViewWillBeginZoomingMessage:(id)message;
 - (void)messageViewControllerDidTapToExpand;
-- (void)prepareForQuickReplyAnimationWithContext:(id)a3;
+- (void)prepareForQuickReplyAnimationWithContext:(id)context;
 - (void)prepareForReuse;
-- (void)presentMarkupViewController:(id)a3;
-- (void)presentSuggestionViewController:(id)a3;
-- (void)setAutomaticallyCollapseQuotedContent:(BOOL)a3 reloadIfNeeded:(BOOL)a4;
-- (void)setConfiguredForSingleMessageDisplay:(BOOL)a3;
-- (void)setContentRequest:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)showMenuForSelectedContentRepresentation:(id)a3 fromRect:(CGRect)a4 view:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentMarkupViewController:(id)controller;
+- (void)presentSuggestionViewController:(id)controller;
+- (void)setAutomaticallyCollapseQuotedContent:(BOOL)content reloadIfNeeded:(BOOL)needed;
+- (void)setConfiguredForSingleMessageDisplay:(BOOL)display;
+- (void)setContentRequest:(id)request;
+- (void)setDelegate:(id)delegate;
+- (void)showMenuForSelectedContentRepresentation:(id)representation fromRect:(CGRect)rect view:(id)view;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation MFMessageViewController
 
-- (MFMessageViewController)initWithScene:(id)a3 accountsController:(id)a4
+- (MFMessageViewController)initWithScene:(id)scene accountsController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = MFMessageViewController;
   v8 = [(MFMessageViewController *)&v15 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_scene, v6);
-    v10 = [v7 mailboxProvider];
+    objc_storeWeak(&v8->_scene, sceneCopy);
+    mailboxProvider = [controllerCopy mailboxProvider];
     mailboxProvider = v9->_mailboxProvider;
-    v9->_mailboxProvider = v10;
+    v9->_mailboxProvider = mailboxProvider;
 
-    v12 = [v7 accountsProvider];
+    accountsProvider = [controllerCopy accountsProvider];
     accountsProvider = v9->_accountsProvider;
-    v9->_accountsProvider = v12;
+    v9->_accountsProvider = accountsProvider;
   }
 
   return v9;
@@ -131,46 +131,46 @@
 
 - (void)loadView
 {
-  v12 = [(MFMessageViewController *)self scene];
+  scene = [(MFMessageViewController *)self scene];
   v3 = [[MFMessageContentView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v3 setDelegate:self];
   [v3 setDataSource:self];
-  v4 = [(MFMessageViewController *)self mailboxProvider];
-  [v3 setMailboxProvider:v4];
+  mailboxProvider = [(MFMessageViewController *)self mailboxProvider];
+  [v3 setMailboxProvider:mailboxProvider];
 
-  v5 = [v12 daemonInterface];
-  [v3 setDaemonInterface:v5];
+  daemonInterface = [scene daemonInterface];
+  [v3 setDaemonInterface:daemonInterface];
 
-  v6 = [(MFMessageViewController *)self avatarGenerator];
-  [v3 setAvatarGenerator:v6];
+  avatarGenerator = [(MFMessageViewController *)self avatarGenerator];
+  [v3 setAvatarGenerator:avatarGenerator];
 
-  v7 = [(MFMessageViewController *)self contentRequest];
+  contentRequest = [(MFMessageViewController *)self contentRequest];
 
-  if (v7)
+  if (contentRequest)
   {
-    v8 = [(MFMessageViewController *)self contentRequest];
-    [v3 setContentRequest:v8];
+    contentRequest2 = [(MFMessageViewController *)self contentRequest];
+    [v3 setContentRequest:contentRequest2];
   }
 
   [v3 setAutomaticallyCollapseQuotedContent:{-[MFMessageViewController automaticallyCollapseQuotedContent](self, "automaticallyCollapseQuotedContent")}];
   [(MFMessageViewController *)self setMessageContentView:v3];
   [(MFMessageViewController *)self setView:v3];
   v9 = [MFSuggestionController alloc];
-  v10 = [v3 headerView];
-  v11 = [(MFSuggestionController *)v9 initWithDelegate:self headerView:v10];
+  headerView = [v3 headerView];
+  v11 = [(MFSuggestionController *)v9 initWithDelegate:self headerView:headerView];
   [(MFMessageViewController *)self setSuggestionController:v11];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = MFMessageViewController;
-  [(MFMessageViewController *)&v19 viewDidAppear:a3];
-  v4 = [(MFMessageViewController *)self view];
+  [(MFMessageViewController *)&v19 viewDidAppear:appear];
+  view = [(MFMessageViewController *)self view];
   if ((*(&self->_flags + 1) & 0x40) != 0)
   {
-    v6 = [(MFMessageViewController *)self delegate];
-    v5 = [v6 messageViewControllerMessageListMailboxScope:self];
+    delegate = [(MFMessageViewController *)self delegate];
+    v5 = [delegate messageViewControllerMessageListMailboxScope:self];
   }
 
   else
@@ -178,17 +178,17 @@
     v5 = 0;
   }
 
-  v7 = [(MFMessageViewController *)self scene];
-  v8 = [v7 daemonInterface];
-  v9 = [v8 interactionLogger];
-  v10 = [v4 contentRequest];
-  v11 = [v10 message];
-  [v9 viewingStartedForMessage:v11 messageListScope:v5];
+  scene = [(MFMessageViewController *)self scene];
+  daemonInterface = [scene daemonInterface];
+  interactionLogger = [daemonInterface interactionLogger];
+  contentRequest = [view contentRequest];
+  message = [contentRequest message];
+  [interactionLogger viewingStartedForMessage:message messageListScope:v5];
 
-  if ([v4 hasVisibleContent])
+  if ([view hasVisibleContent])
   {
     v12 = +[NSNotificationCenter defaultCenter];
-    [v12 postNotificationName:MFMessageContentViewDidAppear object:v4];
+    [v12 postNotificationName:MFMessageContentViewDidAppear object:view];
   }
 
   v13 = [[MFScreenshotService alloc] initWithDelegate:self];
@@ -196,8 +196,8 @@
   self->_screenshotService = v13;
 
   v15 = self->_screenshotService;
-  v16 = [v7 screenshotService];
-  [v16 setDelegate:v15];
+  screenshotService = [scene screenshotService];
+  [screenshotService setDelegate:v15];
 
   if ((+[EMServerConfiguration isCacheRecent]& 1) == 0)
   {
@@ -205,22 +205,22 @@
   }
 
   v17 = +[NSNotificationCenter defaultCenter];
-  [v17 addObserver:self selector:"_sceneMovedtoForeground:" name:UISceneWillEnterForegroundNotification object:v7];
+  [v17 addObserver:self selector:"_sceneMovedtoForeground:" name:UISceneWillEnterForegroundNotification object:scene];
 
   v18 = +[NSNotificationCenter defaultCenter];
   [v18 addObserver:self selector:"_appIntentUnsubscribed:" name:@"AppIntentUnsubscribed" object:0];
 }
 
-- (void)_appIntentUnsubscribed:(id)a3
+- (void)_appIntentUnsubscribed:(id)unsubscribed
 {
-  v4 = a3;
-  v7 = v4;
-  v8 = self;
+  unsubscribedCopy = unsubscribed;
+  v7 = unsubscribedCopy;
+  selfCopy = self;
   v5 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v5 performBlock:&v6];
 }
 
-- (void)_sceneMovedtoForeground:(id)a3
+- (void)_sceneMovedtoForeground:(id)foreground
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -233,8 +233,8 @@
 
 - (int64_t)_dataOwnerForPaste
 {
-  v2 = [(MFMessageViewController *)self messageContentView];
-  if ([v2 sourceIsManaged])
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  if ([messageContentView sourceIsManaged])
   {
     v3 = 2;
   }
@@ -249,8 +249,8 @@
 
 - (int64_t)_dataOwnerForCopy
 {
-  v2 = [(MFMessageViewController *)self messageContentView];
-  if ([v2 sourceIsManaged])
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  if ([messageContentView sourceIsManaged])
   {
     v3 = 2;
   }
@@ -263,47 +263,47 @@
   return v3;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v18.receiver = self;
   v18.super_class = MFMessageViewController;
-  [(MFMessageViewController *)&v18 viewDidDisappear:a3];
-  v4 = [(MFMessageViewController *)self messageContentView];
-  [v4 clearSelectedHTML];
-  [(MFMessageViewController *)self messageContentView:v4 didChangeSelectedHTML:0];
-  v5 = [v4 contentRequest];
-  v6 = [v5 message];
+  [(MFMessageViewController *)&v18 viewDidDisappear:disappear];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  [messageContentView clearSelectedHTML];
+  [(MFMessageViewController *)self messageContentView:messageContentView didChangeSelectedHTML:0];
+  contentRequest = [messageContentView contentRequest];
+  message = [contentRequest message];
 
-  v7 = [(MFMessageViewController *)self scene];
+  scene = [(MFMessageViewController *)self scene];
   v19 = kEMPayloadKeyCategorizationEnabled;
   v8 = [NSNumber numberWithBool:[(MFMessageViewController *)self isCategorizationActionAllowed]];
   v20 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 
-  v10 = [v7 daemonInterface];
-  v11 = [v10 interactionLogger];
-  [v11 viewingEndedForMessage:v6 data:v9];
+  daemonInterface = [scene daemonInterface];
+  interactionLogger = [daemonInterface interactionLogger];
+  [interactionLogger viewingEndedForMessage:message data:v9];
 
-  v12 = [v7 screenshotService];
-  v13 = [v12 delegate];
-  v14 = [v13 isEqual:self->_screenshotService];
+  screenshotService = [scene screenshotService];
+  delegate = [screenshotService delegate];
+  v14 = [delegate isEqual:self->_screenshotService];
 
   if (v14)
   {
     screenshotService = self->_screenshotService;
     self->_screenshotService = 0;
 
-    v16 = [v7 screenshotService];
-    [v16 setDelegate:0];
+    screenshotService2 = [scene screenshotService];
+    [screenshotService2 setDelegate:0];
   }
 
   v17 = +[NSNotificationCenter defaultCenter];
   [v17 removeObserver:self];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -491,44 +491,44 @@
   }
 }
 
-- (void)setAutomaticallyCollapseQuotedContent:(BOOL)a3 reloadIfNeeded:(BOOL)a4
+- (void)setAutomaticallyCollapseQuotedContent:(BOOL)content reloadIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = a3;
-  self->_automaticallyCollapseQuotedContent = a3;
-  v6 = [(MFMessageViewController *)self messageContentView];
-  [v6 setAutomaticallyCollapseQuotedContent:v5 reloadIfNeeded:v4];
+  neededCopy = needed;
+  contentCopy = content;
+  self->_automaticallyCollapseQuotedContent = content;
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  [messageContentView setAutomaticallyCollapseQuotedContent:contentCopy reloadIfNeeded:neededCopy];
 }
 
-- (void)setConfiguredForSingleMessageDisplay:(BOOL)a3
+- (void)setConfiguredForSingleMessageDisplay:(BOOL)display
 {
-  v3 = a3;
-  self->_configuredForSingleMessageDisplay = a3;
-  v5 = [(MFMessageViewController *)self traitCollection];
-  v6 = [v5 mf_hasCompactDimension];
+  displayCopy = display;
+  self->_configuredForSingleMessageDisplay = display;
+  traitCollection = [(MFMessageViewController *)self traitCollection];
+  mf_hasCompactDimension = [traitCollection mf_hasCompactDimension];
 
-  v7 = [(MFMessageViewController *)self messageContentView];
-  if (v6)
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  if (mf_hasCompactDimension)
   {
-    [v7 setShowMessageFooter:!v3];
+    [messageContentView setShowMessageFooter:!displayCopy];
   }
 
   else
   {
-    [v7 setShowMessageFooter:1];
+    [messageContentView setShowMessageFooter:1];
   }
 
-  if (v3)
+  if (displayCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(MFMessageViewController *)self messageContentView];
-    v9 = [v8 headerView];
-    v10 = [v9 headerBlocks];
+    messageContentView2 = [(MFMessageViewController *)self messageContentView];
+    headerView = [messageContentView2 headerView];
+    headerBlocks = [headerView headerBlocks];
 
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v11 = [headerBlocks countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = *v16;
@@ -539,7 +539,7 @@
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(headerBlocks);
           }
 
           v14 = *(*(&v15 + 1) + 8 * v13);
@@ -553,7 +553,7 @@
         }
 
         while (v11 != v13);
-        v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [headerBlocks countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -561,18 +561,18 @@
   }
 }
 
-- (void)prepareForQuickReplyAnimationWithContext:(id)a3
+- (void)prepareForQuickReplyAnimationWithContext:(id)context
 {
-  v5 = a3;
-  v4 = [(MFMessageViewController *)self messageContentView];
-  [v4 prepareForQuickReplyAnimationWithContext:v5];
+  contextCopy = context;
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  [messageContentView prepareForQuickReplyAnimationWithContext:contextCopy];
 }
 
-- (void)setContentRequest:(id)a3
+- (void)setContentRequest:(id)request
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_contentRequest == v5 && [(MessageContentRepresentationRequest *)v5 state]!= 3)
+  requestCopy = request;
+  v6 = requestCopy;
+  if (self->_contentRequest == requestCopy && [(MessageContentRepresentationRequest *)requestCopy state]!= 3)
   {
     if (self->_contentRequest == v6)
     {
@@ -598,10 +598,10 @@
 
   else
   {
-    objc_storeStrong(&self->_contentRequest, a3);
+    objc_storeStrong(&self->_contentRequest, request);
     [(MFMessageViewController *)self setDidCompleteFirstPaint:0];
-    v7 = [(MFMessageViewController *)self messageContentView];
-    [v7 setContentRequest:v6];
+    messageContentView = [(MFMessageViewController *)self messageContentView];
+    [messageContentView setContentRequest:v6];
 
     [(MFMessageViewController *)self setRetryMiddleware:0];
     if (v6)
@@ -622,19 +622,19 @@
   }
 }
 
-- (void)clearSuggestionsBannerAnimated:(BOOL)a3
+- (void)clearSuggestionsBannerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(MFMessageViewController *)self suggestionController];
-  [v4 clearSuggestionsBannerAnimated:v3];
+  animatedCopy = animated;
+  suggestionController = [(MFMessageViewController *)self suggestionController];
+  [suggestionController clearSuggestionsBannerAnimated:animatedCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MFMessageViewController;
-  [(MFMessageViewController *)&v5 traitCollectionDidChange:v4];
+  [(MFMessageViewController *)&v5 traitCollectionDidChange:changeCopy];
   [(MFMessageViewController *)self setConfiguredForSingleMessageDisplay:[(MFMessageViewController *)self configuredForSingleMessageDisplay]];
 }
 
@@ -644,29 +644,29 @@
   [v2 dismissMenuAnimated:1];
 }
 
-- (void)showMenuForSelectedContentRepresentation:(id)a3 fromRect:(CGRect)a4 view:(id)a5
+- (void)showMenuForSelectedContentRepresentation:(id)representation fromRect:(CGRect)rect view:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  v13 = [(MFMessageViewController *)self messageContentView];
-  v14 = [v13 scrollView];
-  [v14 zoomScale];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  representationCopy = representation;
+  viewCopy = view;
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  scrollView = [messageContentView scrollView];
+  [scrollView zoomScale];
   [(MFMessageViewController *)self _setAttachmentOriginRect:x scale:y, width, height, v15];
 
-  v16 = [(MFMessageViewController *)self _attachmentShowcase];
-  v17 = [v16 documentInteractionControllerForContentRepresentation:v11];
+  _attachmentShowcase = [(MFMessageViewController *)self _attachmentShowcase];
+  v17 = [_attachmentShowcase documentInteractionControllerForContentRepresentation:representationCopy];
 
   [v17 setDelegate:self];
-  v18 = [(MFMessageViewController *)self messageContentView];
-  [v17 setIsContentManaged:{objc_msgSend(v18, "sourceIsManaged")}];
+  messageContentView2 = [(MFMessageViewController *)self messageContentView];
+  [v17 setIsContentManaged:{objc_msgSend(messageContentView2, "sourceIsManaged")}];
 
   [(MFMessageViewController *)self setDoc:v17];
-  v19 = [v11 contentItem];
-  v20 = [v19 uniformTypeIdentifier];
+  contentItem = [representationCopy contentItem];
+  uniformTypeIdentifier = [contentItem uniformTypeIdentifier];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
@@ -680,13 +680,13 @@
   v27 = sub_1001F5BF4;
   v28 = &unk_100654F30;
   objc_copyWeak(&v32, &location);
-  v22 = v20;
+  v22 = uniformTypeIdentifier;
   v29 = v22;
-  v23 = v11;
+  v23 = representationCopy;
   v30 = v23;
   v31 = v34;
   [v21 _setCompletionWithItemsHandler:&v25];
-  if (([v21 presentOptionsMenuFromRect:v12 inView:1 animated:{x, y, width, height, v25, v26, v27, v28}] & 1) == 0)
+  if (([v21 presentOptionsMenuFromRect:viewCopy inView:1 animated:{x, y, width, height, v25, v26, v27, v28}] & 1) == 0)
   {
     v24 = MFLogGeneral();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -696,7 +696,7 @@
 
     if ([v22 ef_conformsToRFC822UTType])
     {
-      [(MFMessageViewController *)self showSelectedContentRepresentation:v23 fromRect:v12 view:x, y, width, height];
+      [(MFMessageViewController *)self showSelectedContentRepresentation:v23 fromRect:viewCopy view:x, y, width, height];
     }
   }
 
@@ -705,68 +705,68 @@
   _Block_object_dispose(v34, 8);
 }
 
-- (void)_showSelectedContentRepresentation:(id)a3 exchangeEventUID:(int)a4 fromRect:(CGRect)a5 view:(id)a6
+- (void)_showSelectedContentRepresentation:(id)representation exchangeEventUID:(int)d fromRect:(CGRect)rect view:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = *&a4;
-  v25 = a3;
-  v13 = a6;
-  v14 = [(MFMessageViewController *)self messageContentView];
-  v15 = [v14 scrollView];
-  [v15 zoomScale];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = *&d;
+  representationCopy = representation;
+  viewCopy = view;
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  scrollView = [messageContentView scrollView];
+  [scrollView zoomScale];
   [(MFMessageViewController *)self _setAttachmentOriginRect:x scale:y, width, height, v16];
 
   v17 = +[MFAttachmentShowcaseInformation showcaseInformation];
   [v17 setShouldAnimate:1];
-  v18 = [(MFMessageViewController *)self messageContentView];
-  [v17 setFromManagedAccount:{objc_msgSend(v18, "sourceIsManaged")}];
+  messageContentView2 = [(MFMessageViewController *)self messageContentView];
+  [v17 setFromManagedAccount:{objc_msgSend(messageContentView2, "sourceIsManaged")}];
 
   [v17 setOriginRect:{x, y, width, height}];
-  [v17 setOriginView:v13];
-  v19 = [(MFMessageViewController *)self contentRequest];
-  v20 = [v19 message];
-  [v17 setMessage:v20];
+  [v17 setOriginView:viewCopy];
+  contentRequest = [(MFMessageViewController *)self contentRequest];
+  message = [contentRequest message];
+  [v17 setMessage:message];
 
   if ((*(&self->_flags + 1) & 0x80) != 0)
   {
-    v21 = [(MFMessageViewController *)self delegate];
-    v22 = [v21 messageSourceMailboxObjectIDForMessageViewController:self];
+    delegate = [(MFMessageViewController *)self delegate];
+    v22 = [delegate messageSourceMailboxObjectIDForMessageViewController:self];
     [v17 setMailboxObjectID:v22];
   }
 
-  v23 = [(MFMessageViewController *)self _attachmentShowcase];
+  _attachmentShowcase = [(MFMessageViewController *)self _attachmentShowcase];
   if (v11)
   {
-    [v23 presentExchangeEventUID:v11 showcaseInfo:v17 delegate:self completion:0];
+    [_attachmentShowcase presentExchangeEventUID:v11 showcaseInfo:v17 delegate:self completion:0];
   }
 
   else
   {
-    v24 = [(MFMessageViewController *)self scene];
-    [v23 presentContentRepresentation:v25 scene:v24 showcaseInfo:v17 delegate:self completion:&stru_100654F50];
+    scene = [(MFMessageViewController *)self scene];
+    [_attachmentShowcase presentContentRepresentation:representationCopy scene:scene showcaseInfo:v17 delegate:self completion:&stru_100654F50];
   }
 }
 
-- (void)didStartDownloadForContentItemWithProgress:(id)a3
+- (void)didStartDownloadForContentItemWithProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   if ((*&self->_flags & 8) != 0)
   {
-    v4 = [(MFMessageViewController *)self delegate];
-    [v4 messageViewController:self didStartDownloadForContentItemWithProgress:v5];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self didStartDownloadForContentItemWithProgress:progressCopy];
   }
 }
 
-- (id)participantHeaderForContactStore:(id)a3
+- (id)participantHeaderForContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   participantHeader = self->_participantHeader;
-  if (!participantHeader || ([(MFConversationItemHeaderBlock *)participantHeader contactStore], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != v4))
+  if (!participantHeader || ([(MFConversationItemHeaderBlock *)participantHeader contactStore], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != storeCopy))
   {
-    v7 = [[MFConversationItemHeaderBlock alloc] initWithFrame:v4 contactStore:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+    v7 = [[MFConversationItemHeaderBlock alloc] initWithFrame:storeCopy contactStore:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     v8 = self->_participantHeader;
     self->_participantHeader = v7;
 
@@ -781,103 +781,103 @@
 
 - (NSArray)mf_exclusionRegionsInBaseWindowCoordinateSpace
 {
-  v2 = [(MFMessageViewController *)self messageContentView];
-  v3 = [v2 mf_exclusionRegionsInBaseWindowCoordinateSpace];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  mf_exclusionRegionsInBaseWindowCoordinateSpace = [messageContentView mf_exclusionRegionsInBaseWindowCoordinateSpace];
 
-  return v3;
+  return mf_exclusionRegionsInBaseWindowCoordinateSpace;
 }
 
-- (void)messageContentView:(id)a3 didFinishRenderingWithHeight:(double)a4
+- (void)messageContentView:(id)view didFinishRenderingWithHeight:(double)height
 {
   if (*&self->_flags)
   {
-    v6 = [(MFMessageViewController *)self delegate];
-    [v6 messageViewController:self didFinishRenderingWithHeight:a4];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self didFinishRenderingWithHeight:height];
   }
 }
 
-- (void)messageContentViewDidFinishFirstPaint:(id)a3
+- (void)messageContentViewDidFinishFirstPaint:(id)paint
 {
   [(MFMessageViewController *)self setDidCompleteFirstPaint:1];
   if ((*&self->_flags & 2) != 0)
   {
-    v4 = [(MFMessageViewController *)self delegate];
-    [v4 messageViewControllerDidFinishFirstPaint:self];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewControllerDidFinishFirstPaint:self];
   }
 }
 
-- (void)messageContentViewDidDisplayContent:(id)a3 success:(BOOL)a4
+- (void)messageContentViewDidDisplayContent:(id)content success:(BOOL)success
 {
   if ((*&self->_flags & 4) != 0)
   {
-    v4 = a4;
-    v6 = [(MFMessageViewController *)self delegate];
-    [v6 messageViewControllerDidDisplayContent:self success:v4];
+    successCopy = success;
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewControllerDidDisplayContent:self success:successCopy];
   }
 }
 
-- (void)messageContentView:(id)a3 expandQuoteAtCollapsedOffset:(CGPoint)a4 expandedOffset:(CGPoint)a5
+- (void)messageContentView:(id)view expandQuoteAtCollapsedOffset:(CGPoint)offset expandedOffset:(CGPoint)expandedOffset
 {
   if ((*&self->_flags & 0x10) != 0)
   {
-    y = a5.y;
-    x = a5.x;
-    v7 = a4.y;
-    v8 = a4.x;
-    v10 = [(MFMessageViewController *)self delegate];
-    [v10 messageViewController:self didTapShowMoreAtCollapsedOffset:v8 expandedOffset:{v7, x, y}];
+    y = expandedOffset.y;
+    x = expandedOffset.x;
+    v7 = offset.y;
+    v8 = offset.x;
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self didTapShowMoreAtCollapsedOffset:v8 expandedOffset:{v7, x, y}];
   }
 }
 
-- (void)messageContentView:(id)a3 didTapRevealActionsButton:(id)a4
+- (void)messageContentView:(id)view didTapRevealActionsButton:(id)button
 {
-  v6 = a4;
+  buttonCopy = button;
   if ((*&self->_flags & 0x80) != 0)
   {
-    v5 = [(MFMessageViewController *)self delegate];
-    [v5 messageViewController:self didTapRevealActionsButton:v6];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self didTapRevealActionsButton:buttonCopy];
   }
 }
 
-- (void)messageContentView:(id)a3 didTapUndoSendButton:(id)a4
+- (void)messageContentView:(id)view didTapUndoSendButton:(id)button
 {
-  v6 = a4;
+  buttonCopy = button;
   if (*(&self->_flags + 1))
   {
-    v5 = [(MFMessageViewController *)self delegate];
-    [v5 messageViewController:self didTapUndoSendButton:v6];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self didTapUndoSendButton:buttonCopy];
   }
 }
 
-- (void)messageContentViewWillBeginZoomingMessage:(id)a3
+- (void)messageContentViewWillBeginZoomingMessage:(id)message
 {
   if ((*&self->_flags & 0x20) != 0)
   {
-    v4 = [(MFMessageViewController *)self delegate];
-    [v4 messageViewControllerContentViewWillBeginZooming:self];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewControllerContentViewWillBeginZooming:self];
   }
 }
 
-- (void)messageContentView:(id)a3 didEndZoomingMessageWithOffset:(CGPoint)a4
+- (void)messageContentView:(id)view didEndZoomingMessageWithOffset:(CGPoint)offset
 {
   if ((*&self->_flags & 0x40) != 0)
   {
-    y = a4.y;
-    x = a4.x;
-    v7 = [(MFMessageViewController *)self delegate];
-    [v7 messageViewController:self contentViewDidEndZoomingMessageWithOffset:{x, y}];
+    y = offset.y;
+    x = offset.x;
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self contentViewDidEndZoomingMessageWithOffset:{x, y}];
   }
 }
 
-- (void)messageContentView:(id)a3 didChangeSelectedHTML:(id)a4
+- (void)messageContentView:(id)view didChangeSelectedHTML:(id)l
 {
-  v7 = a4;
+  lCopy = l;
   if ((*(&self->_flags + 1) & 0x10) != 0)
   {
-    v5 = [(MFMessageViewController *)self delegate];
-    if (v7)
+    delegate = [(MFMessageViewController *)self delegate];
+    if (lCopy)
     {
-      v6 = v7;
+      v6 = lCopy;
     }
 
     else
@@ -885,17 +885,17 @@
       v6 = &stru_100662A88;
     }
 
-    [v5 messageViewController:self didChangeSelectedHTML:v6];
+    [delegate messageViewController:self didChangeSelectedHTML:v6];
   }
 }
 
-- (void)messageContentView:(id)a3 loadingIndicatorDidChangeVisibility:(BOOL)a4
+- (void)messageContentView:(id)view loadingIndicatorDidChangeVisibility:(BOOL)visibility
 {
   if ((*(&self->_flags + 1) & 0x20) != 0)
   {
-    v4 = a4;
-    v6 = [(MFMessageViewController *)self delegate];
-    [v6 messageViewController:self loadingIndicatorDidChangeVisibility:v4];
+    visibilityCopy = visibility;
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self loadingIndicatorDidChangeVisibility:visibilityCopy];
   }
 }
 
@@ -903,135 +903,135 @@
 {
   if ((*(&self->_flags + 1) & 2) != 0)
   {
-    v3 = [(MFMessageViewController *)self delegate];
-    [v3 messageViewControllerDidTapToExpand:self];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewControllerDidTapToExpand:self];
   }
 }
 
-- (id)presentingViewControllerForMessageContentView:(id)a3
+- (id)presentingViewControllerForMessageContentView:(id)view
 {
-  v4 = [(MFMessageViewController *)self delegate];
-  v5 = [v4 presentingViewControllerForMessageViewController:self];
+  delegate = [(MFMessageViewController *)self delegate];
+  v5 = [delegate presentingViewControllerForMessageViewController:self];
 
   return v5;
 }
 
-- (void)messageContentView:(id)a3 scrollToRect:(CGRect)a4
+- (void)messageContentView:(id)view scrollToRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(MFMessageViewController *)self delegate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegate = [(MFMessageViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 messageViewController:self scrollToRect:{x, y, width, height}];
+    [delegate messageViewController:self scrollToRect:{x, y, width, height}];
   }
 }
 
-- (void)messageContentView:(id)a3 didLoadSecurityInformation:(id)a4
+- (void)messageContentView:(id)view didLoadSecurityInformation:(id)information
 {
-  v7 = a4;
+  informationCopy = information;
   [(MFMessageViewController *)self setSecurityInformation:?];
-  v5 = [(MFMessageViewController *)self contactInteraction];
+  contactInteraction = [(MFMessageViewController *)self contactInteraction];
 
-  if (v5)
+  if (contactInteraction)
   {
-    v6 = [(MFMessageViewController *)self contactInteraction];
-    [v6 updateWithSecurityInformation:v7];
+    contactInteraction2 = [(MFMessageViewController *)self contactInteraction];
+    [contactInteraction2 updateWithSecurityInformation:informationCopy];
   }
 }
 
-- (void)messageContentView:(id)a3 clickedLinkInMessage:(id)a4 scheme:(id)a5
+- (void)messageContentView:(id)view clickedLinkInMessage:(id)message scheme:(id)scheme
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(MFMessageViewController *)self scene];
-  v9 = [v8 daemonInterface];
-  v10 = [v9 interactionLogger];
-  [v10 clickedLinkInMessage:v11 scheme:v7];
+  messageCopy = message;
+  schemeCopy = scheme;
+  scene = [(MFMessageViewController *)self scene];
+  daemonInterface = [scene daemonInterface];
+  interactionLogger = [daemonInterface interactionLogger];
+  [interactionLogger clickedLinkInMessage:messageCopy scheme:schemeCopy];
 }
 
-- (void)messageContentView:(id)a3 openPossibleStoreURL:(id)a4
+- (void)messageContentView:(id)view openPossibleStoreURL:(id)l
 {
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1001F6BBC;
   v12 = &unk_100654F78;
-  v13 = self;
-  v5 = a4;
-  v14 = v5;
-  v6 = [MFURLRoutingRequest requestWithURL:v5 builderBlock:&v9];
+  selfCopy = self;
+  lCopy = l;
+  v14 = lCopy;
+  v6 = [MFURLRoutingRequest requestWithURL:lCopy builderBlock:&v9];
   v7 = [(MFMessageViewController *)self scene:v9];
-  v8 = [v7 urlRouter];
-  [v8 routeRequest:v6];
+  urlRouter = [v7 urlRouter];
+  [urlRouter routeRequest:v6];
 }
 
-- (void)messageContentViewContentLayerFinished:(id)a3
+- (void)messageContentViewContentLayerFinished:(id)finished
 {
   v3 = +[UIApplication sharedApplication];
   [v3 _messageContentLayerFinished];
 }
 
-- (void)messageContentView:(id)a3 handleContentRepresentation:(id)a4
+- (void)messageContentView:(id)view handleContentRepresentation:(id)representation
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(MFMessageViewController *)self contentRequest];
-  v8 = [v7 message];
-  v9 = [v8 mailboxes];
-  v10 = [v9 ef_any:&stru_100654F98];
+  viewCopy = view;
+  representationCopy = representation;
+  contentRequest = [(MFMessageViewController *)self contentRequest];
+  message = [contentRequest message];
+  mailboxes = [message mailboxes];
+  v10 = [mailboxes ef_any:&stru_100654F98];
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 getiCloudMailCleanupService];
-  LODWORD(v8) = [v12 shouldShowICloudUnsubscribe];
+  getiCloudMailCleanupService = [v11 getiCloudMailCleanupService];
+  LODWORD(message) = [getiCloudMailCleanupService shouldShowICloudUnsubscribe];
 
-  if ((+[MUIiCloudMailCleanupService isFeatureAvailable]& v10 & v8) == 1)
+  if ((+[MUIiCloudMailCleanupService isFeatureAvailable]& v10 & message) == 1)
   {
-    v13 = [(MFMessageViewController *)self suggestionController];
-    v14 = [v13 createAnalysisOperation];
-    [v14 handleContentRepresentation:v6 allowUnsubscribe:objc_msgSend(v15 shouldShowICloudUnsubscribe:{"hideSenderSpecificBanners") ^ 1, 1}];
+    suggestionController = [(MFMessageViewController *)self suggestionController];
+    createAnalysisOperation = [suggestionController createAnalysisOperation];
+    [createAnalysisOperation handleContentRepresentation:representationCopy allowUnsubscribe:objc_msgSend(viewCopy shouldShowICloudUnsubscribe:{"hideSenderSpecificBanners") ^ 1, 1}];
   }
 
   else
   {
-    v13 = [(MFMessageViewController *)self suggestionController];
-    v14 = [v13 createAnalysisOperation];
-    [v14 handleContentRepresentation:v6 allowUnsubscribe:{objc_msgSend(v15, "hideSenderSpecificBanners") ^ 1}];
+    suggestionController = [(MFMessageViewController *)self suggestionController];
+    createAnalysisOperation = [suggestionController createAnalysisOperation];
+    [createAnalysisOperation handleContentRepresentation:representationCopy allowUnsubscribe:{objc_msgSend(viewCopy, "hideSenderSpecificBanners") ^ 1}];
   }
 }
 
-- (void)messageContentView:(id)a3 clearSuggestionsBannerAnimated:(BOOL)a4
+- (void)messageContentView:(id)view clearSuggestionsBannerAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = [(MFMessageViewController *)self suggestionController];
-  [v5 clearSuggestionsBannerAnimated:v4];
+  animatedCopy = animated;
+  suggestionController = [(MFMessageViewController *)self suggestionController];
+  [suggestionController clearSuggestionsBannerAnimated:animatedCopy];
 }
 
-- (void)messageContentView:(id)a3 viewedRemoteURLs:(id)a4
+- (void)messageContentView:(id)view viewedRemoteURLs:(id)ls
 {
-  v8 = a4;
-  v5 = [(MFMessageViewController *)self scene];
-  v6 = [v5 daemonInterface];
-  v7 = [v6 messageRepository];
-  [v7 noteViewOfRemoteContentLinks:v8];
+  lsCopy = ls;
+  scene = [(MFMessageViewController *)self scene];
+  daemonInterface = [scene daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  [messageRepository noteViewOfRemoteContentLinks:lsCopy];
 }
 
-- (void)messageContentView:(id)a3 webViewDidTerminateWithReason:(int64_t)a4
+- (void)messageContentView:(id)view webViewDidTerminateWithReason:(int64_t)reason
 {
   if (*(&self->_flags + 2))
   {
-    v6 = [(MFMessageViewController *)self delegate];
-    [v6 messageViewController:self webViewDidTerminateWithReason:a4];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self webViewDidTerminateWithReason:reason];
   }
 }
 
-- (BOOL)isShowingGroupedSenderMessageListForMessageContentView:(id)a3
+- (BOOL)isShowingGroupedSenderMessageListForMessageContentView:(id)view
 {
-  v4 = [(MFMessageViewController *)self delegate];
+  delegate = [(MFMessageViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 isShowingGroupedSenderMessageListForMessageViewController:self];
+    v5 = [delegate isShowingGroupedSenderMessageListForMessageViewController:self];
   }
 
   else
@@ -1042,13 +1042,13 @@
   return v5;
 }
 
-- (BOOL)shouldShowTimeSensitiveBannerForMessageContentView:(id)a3 message:(id)a4
+- (BOOL)shouldShowTimeSensitiveBannerForMessageContentView:(id)view message:(id)message
 {
-  v5 = a4;
-  v6 = [(MFMessageViewController *)self delegate];
+  messageCopy = message;
+  delegate = [(MFMessageViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 shouldShowTimeSensitiveBannerForMessageViewController:self message:v5];
+    v7 = [delegate shouldShowTimeSensitiveBannerForMessageViewController:self message:messageCopy];
   }
 
   else
@@ -1061,10 +1061,10 @@
 
 - (BOOL)isCategorizationActionAllowed
 {
-  v3 = [(MFMessageViewController *)self delegate];
+  delegate = [(MFMessageViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isCategorizationActionAllowedForMessageViewController:self];
+    v4 = [delegate isCategorizationActionAllowedForMessageViewController:self];
   }
 
   else
@@ -1077,48 +1077,48 @@
 
 - (id)viewControllerForPresentingSuggestions
 {
-  v3 = [(MFMessageViewController *)self delegate];
-  v4 = [v3 presentingViewControllerForMessageViewController:self];
+  delegate = [(MFMessageViewController *)self delegate];
+  v4 = [delegate presentingViewControllerForMessageViewController:self];
 
   return v4;
 }
 
-- (void)presentSuggestionViewController:(id)a3
+- (void)presentSuggestionViewController:(id)controller
 {
-  v5 = a3;
-  v4 = [(MFMessageViewController *)self messageContentView];
-  [v4 _showModalViewController:v5 presentationSource:0];
+  controllerCopy = controller;
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  [messageContentView _showModalViewController:controllerCopy presentationSource:0];
 }
 
 - (BOOL)showsBanners
 {
-  v2 = [(MFMessageViewController *)self messageContentView];
-  v3 = [v2 showsBanners];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  showsBanners = [messageContentView showsBanners];
 
-  return v3;
+  return showsBanners;
 }
 
-- (id)presentingViewControllerForAttachmentShowcase:(id)a3
+- (id)presentingViewControllerForAttachmentShowcase:(id)showcase
 {
-  v4 = [(MFMessageViewController *)self delegate];
-  v5 = [v4 presentingViewControllerForMessageViewController:self];
+  delegate = [(MFMessageViewController *)self delegate];
+  v5 = [delegate presentingViewControllerForMessageViewController:self];
 
   return v5;
 }
 
-- (id)contactStoreForAttachmentShowcase:(id)a3
+- (id)contactStoreForAttachmentShowcase:(id)showcase
 {
-  v3 = [(MFMessageViewController *)self contactStore];
+  contactStore = [(MFMessageViewController *)self contactStore];
 
-  return v3;
+  return contactStore;
 }
 
-- (id)messageSourceMailboxObjectIDForMessageContentView:(id)a3
+- (id)messageSourceMailboxObjectIDForMessageContentView:(id)view
 {
   if ((*(&self->_flags + 1) & 0x80) != 0)
   {
-    v5 = [(MFMessageViewController *)self delegate];
-    v3 = [v5 messageSourceMailboxObjectIDForMessageViewController:self];
+    delegate = [(MFMessageViewController *)self delegate];
+    v3 = [delegate messageSourceMailboxObjectIDForMessageViewController:self];
   }
 
   else
@@ -1129,116 +1129,116 @@
   return v3;
 }
 
-- (void)conversationItemHeader:(id)a3 didSelectAddressAtom:(id)a4 forAtomType:(unint64_t)a5
+- (void)conversationItemHeader:(id)header didSelectAddressAtom:(id)atom forAtomType:(unint64_t)type
 {
-  v13 = a4;
-  v7 = [v13 fullAddress];
-  v8 = [(MFMessageViewController *)self _contactViewControllerForAddress:v7 forAtomType:a5];
+  atomCopy = atom;
+  fullAddress = [atomCopy fullAddress];
+  v8 = [(MFMessageViewController *)self _contactViewControllerForAddress:fullAddress forAtomType:type];
   [(MFMessageViewController *)self setContactViewController:v8];
 
-  v9 = [(MFMessageViewController *)self contactViewController];
-  if (v9)
+  contactViewController = [(MFMessageViewController *)self contactViewController];
+  if (contactViewController)
   {
     flags = self->_flags;
 
     if ((*&flags & 0x400) != 0)
     {
-      v11 = [(MFMessageViewController *)self delegate];
-      v12 = [(MFMessageViewController *)self contactViewController];
-      [v11 messageViewControllerDidTapAddressAtom:v13 contactViewController:v12];
+      delegate = [(MFMessageViewController *)self delegate];
+      contactViewController2 = [(MFMessageViewController *)self contactViewController];
+      [delegate messageViewControllerDidTapAddressAtom:atomCopy contactViewController:contactViewController2];
     }
   }
 }
 
-- (void)conversationItemHeader:(id)a3 didSelectAddress:(id)a4 forAtomType:(unint64_t)a5
+- (void)conversationItemHeader:(id)header didSelectAddress:(id)address forAtomType:(unint64_t)type
 {
-  v11 = a4;
+  addressCopy = address;
   v6 = [MFMessageViewController _contactViewControllerForAddress:"_contactViewControllerForAddress:forAtomType:" forAtomType:?];
   [(MFMessageViewController *)self setContactViewController:v6];
 
-  v7 = [(MFMessageViewController *)self delegate];
-  v8 = [(MFMessageViewController *)self contactViewController];
-  if (v8)
+  delegate = [(MFMessageViewController *)self delegate];
+  contactViewController = [(MFMessageViewController *)self contactViewController];
+  if (contactViewController)
   {
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(MFMessageViewController *)self contactViewController];
-      [v7 messageViewControllerDidChooseAddress:v11 contactViewController:v10];
+      contactViewController2 = [(MFMessageViewController *)self contactViewController];
+      [delegate messageViewControllerDidChooseAddress:addressCopy contactViewController:contactViewController2];
     }
   }
 }
 
-- (void)conversationItemHeader:(id)a3 searchForDisplayName:(id)a4 emailAddresses:(id)a5
+- (void)conversationItemHeader:(id)header searchForDisplayName:(id)name emailAddresses:(id)addresses
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(MFMessageViewController *)self delegate];
-  [v8 contactCardInteractions:0 triggerSearchForDisplayName:v9 emailAddresses:v7];
+  nameCopy = name;
+  addressesCopy = addresses;
+  delegate = [(MFMessageViewController *)self delegate];
+  [delegate contactCardInteractions:0 triggerSearchForDisplayName:nameCopy emailAddresses:addressesCopy];
 }
 
-- (id)conversationItemHeader:(id)a3 displayNameForEmailAddress:(id)a4 abbreviated:(BOOL)a5
+- (id)conversationItemHeader:(id)header displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated
 {
-  v5 = [(MFMessageViewController *)self _delegateDisplayNameForEmailAddress:a4 abbreviated:a5];
+  v5 = [(MFMessageViewController *)self _delegateDisplayNameForEmailAddress:address abbreviated:abbreviated];
 
   return v5;
 }
 
-- (id)popoverManagerForForConversationItemHeader:(id)a3
+- (id)popoverManagerForForConversationItemHeader:(id)header
 {
-  v3 = [(MFMessageViewController *)self scene];
-  v4 = [v3 popoverManager];
+  scene = [(MFMessageViewController *)self scene];
+  popoverManager = [scene popoverManager];
 
-  return v4;
+  return popoverManager;
 }
 
-- (void)conversationItemHeader:(id)a3 didTapRevealActionsButton:(id)a4
+- (void)conversationItemHeader:(id)header didTapRevealActionsButton:(id)button
 {
-  v6 = a4;
+  buttonCopy = button;
   if ((*&self->_flags & 0x80) != 0)
   {
-    v5 = [(MFMessageViewController *)self delegate];
-    [v5 messageViewController:self didTapRevealActionsButton:v6];
+    delegate = [(MFMessageViewController *)self delegate];
+    [delegate messageViewController:self didTapRevealActionsButton:buttonCopy];
   }
 }
 
-- (id)mailProviderDisplayNameForConversationItemHeader:(id)a3
+- (id)mailProviderDisplayNameForConversationItemHeader:(id)header
 {
-  v3 = [(MFMessageViewController *)self contentRequest];
-  v4 = [v3 message];
+  contentRequest = [(MFMessageViewController *)self contentRequest];
+  message = [contentRequest message];
 
-  v5 = [v4 mailProviderDisplayNameForBIMI];
+  mailProviderDisplayNameForBIMI = [message mailProviderDisplayNameForBIMI];
+
+  return mailProviderDisplayNameForBIMI;
+}
+
+- (id)actualSenderFutureForConversationItemHeader:(id)header
+{
+  contentRequest = [(MFMessageViewController *)self contentRequest];
+  contentRepresentationFuture = [contentRequest contentRepresentationFuture];
+  v5 = [contentRepresentationFuture then:&stru_100654FD8];
 
   return v5;
 }
 
-- (id)actualSenderFutureForConversationItemHeader:(id)a3
+- (void)conversationItemHeader:(id)header presentViewController:(id)controller
 {
-  v3 = [(MFMessageViewController *)self contentRequest];
-  v4 = [v3 contentRepresentationFuture];
-  v5 = [v4 then:&stru_100654FD8];
-
-  return v5;
-}
-
-- (void)conversationItemHeader:(id)a3 presentViewController:(id)a4
-{
-  v5 = a4;
-  v6 = [[UINavigationController alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[UINavigationController alloc] initWithRootViewController:controllerCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(MFMessageViewController *)self delegate];
-    [(MFMessageViewController *)self setDelegate:v5];
-    v8 = v5;
+    delegate = [(MFMessageViewController *)self delegate];
+    [(MFMessageViewController *)self setDelegate:controllerCopy];
+    v8 = controllerCopy;
     objc_initWeak(&location, self);
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1001F7C90;
     v10[3] = &unk_10064CC78;
     objc_copyWeak(&v12, &location);
-    v9 = v7;
+    v9 = delegate;
     v11 = v9;
     [v8 setViewDidDisappearBlock:v10];
 
@@ -1249,18 +1249,18 @@
   [(MFMessageViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (CGRect)documentInteractionControllerRectForPreview:(id)a3
+- (CGRect)documentInteractionControllerRectForPreview:(id)preview
 {
   x = self->_attachmentRect.origin.x;
   y = self->_attachmentRect.origin.y;
   width = self->_attachmentRect.size.width;
   height = self->_attachmentRect.size.height;
-  v7 = [a3 icons];
-  v8 = [v7 lastObject];
+  icons = [preview icons];
+  lastObject = [icons lastObject];
 
-  if (v8)
+  if (lastObject)
   {
-    [v8 size];
+    [lastObject size];
     x = x + (width + -74.0 + v9) * 0.5;
   }
 
@@ -1275,23 +1275,23 @@
   return result;
 }
 
-- (id)documentInteractionControllerViewForPreview:(id)a3
+- (id)documentInteractionControllerViewForPreview:(id)preview
 {
-  v3 = [(MFMessageViewController *)self view];
+  view = [(MFMessageViewController *)self view];
 
-  return v3;
+  return view;
 }
 
-- (id)excludedActivityTypesForDocumentInteractionController:(id)a3
+- (id)excludedActivityTypesForDocumentInteractionController:(id)controller
 {
   v9[0] = MFActivityTypeQuicklook;
   v9[1] = UIActivityTypeSaveToCameraRoll;
   v9[2] = UIActivityTypeMarkupAsPDF;
   v4 = [NSArray arrayWithObjects:v9 count:3];
-  v5 = [(MFMessageViewController *)self messageContentView];
-  v6 = [v5 mayShareToUnmanaged];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  mayShareToUnmanaged = [messageContentView mayShareToUnmanaged];
 
-  if ((v6 & 1) == 0)
+  if ((mayShareToUnmanaged & 1) == 0)
   {
     v7 = [v4 arrayByAddingObject:UIActivityTypeCopyToPasteboard];
 
@@ -1301,25 +1301,25 @@
   return v4;
 }
 
-- (id)additionalActivitiesForDocumentInteractionController:(id)a3
+- (id)additionalActivitiesForDocumentInteractionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[NSMutableArray array];
-  v6 = [v4 URL];
-  v7 = [v6 pathExtension];
-  v8 = [v7 lowercaseString];
+  v6 = [controllerCopy URL];
+  pathExtension = [v6 pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  if ([v8 length])
+  if ([lowercaseString length])
   {
-    v9 = [v8 ef_declaredUTTypeFromExtension];
+    ef_declaredUTTypeFromExtension = [lowercaseString ef_declaredUTTypeFromExtension];
   }
 
   else
   {
-    v9 = 0;
+    ef_declaredUTTypeFromExtension = 0;
   }
 
-  if ([v9 conformsToType:UTTypeMovie])
+  if ([ef_declaredUTTypeFromExtension conformsToType:UTTypeMovie])
   {
     v10 = [(MessageSaveToCameraRollActivity *)[MessageSaveVideoAttachmentActivity alloc] initWithAttachmentHandlingDelegate:self context:2];
     v11 = [(MessageSaveToCameraRollActivity *)[MessageSaveAllAttachmentsActivity alloc] initWithAttachmentHandlingDelegate:self context:2];
@@ -1335,7 +1335,7 @@
 
   [v5 addObject:v11];
 
-  v12 = [(MFMessageViewController *)self presentedViewController];
+  presentedViewController = [(MFMessageViewController *)self presentedViewController];
   sub_1001F829C();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1347,7 +1347,7 @@
       [v5 addObject:v14];
     }
 
-    if (([v9 conformsToType:UTTypePDF] & 1) == 0)
+    if (([ef_declaredUTTypeFromExtension conformsToType:UTTypePDF] & 1) == 0)
     {
       v15 = [objc_alloc(sub_1001F837C()) initWithURL:v6];
       v16 = [sub_1001F829C() printPageRendererForItem:v15];
@@ -1361,10 +1361,10 @@
 
   if ((isKindOfClass & 1) == 0)
   {
-    v18 = [v9 identifier];
-    v19 = [v18 ef_conformsToMarkupUTType];
+    identifier = [ef_declaredUTTypeFromExtension identifier];
+    ef_conformsToMarkupUTType = [identifier ef_conformsToMarkupUTType];
 
-    if (v19)
+    if (ef_conformsToMarkupUTType)
     {
       v20 = [[MessageMarkupDocumentActivity alloc] initWithAttachmentHandlingDelegate:self context:0];
       [v5 addObject:v20];
@@ -1374,16 +1374,16 @@
   return v5;
 }
 
-- (void)_getNumberOfImages:(unint64_t *)a3 videos:(unint64_t *)a4 undownloaded:(unint64_t *)a5
+- (void)_getNumberOfImages:(unint64_t *)images videos:(unint64_t *)videos undownloaded:(unint64_t *)undownloaded
 {
-  v5 = [(MFMessageViewController *)self messageContentView];
-  v6 = [v5 contentItems];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  contentItems = [messageContentView contentItems];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
+  obj = contentItems;
   v7 = 0;
   v8 = 0;
   v9 = 0;
@@ -1401,16 +1401,16 @@
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 isAvailableLocally];
-        v15 = [v13 type];
-        if ([v15 conformsToType:UTTypeMovie])
+        isAvailableLocally = [v13 isAvailableLocally];
+        type = [v13 type];
+        if ([type conformsToType:UTTypeMovie])
         {
           ++v8;
         }
 
         else
         {
-          v16 = [v15 conformsToType:UTTypeImage];
+          v16 = [type conformsToType:UTTypeImage];
           v9 += v16 & 1;
           if ((v16 & 1) == 0)
           {
@@ -1418,7 +1418,7 @@
           }
         }
 
-        v7 += v14 ^ 1;
+        v7 += isAvailableLocally ^ 1;
 LABEL_10:
       }
 
@@ -1428,26 +1428,26 @@ LABEL_10:
     while (v10);
   }
 
-  if (a3)
+  if (images)
   {
-    *a3 = v9;
+    *images = v9;
   }
 
-  if (a4)
+  if (videos)
   {
-    *a4 = v8;
+    *videos = v8;
   }
 
-  if (a5)
+  if (undownloaded)
   {
-    *a5 = v7;
+    *undownloaded = v7;
   }
 }
 
-- (BOOL)canSaveAllAttachmentsInContext:(int64_t)a3
+- (BOOL)canSaveAllAttachmentsInContext:(int64_t)context
 {
-  v5 = [(MFMessageViewController *)self messageContentView];
-  if (![v5 mayShareToUnmanaged])
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  if (![messageContentView mayShareToUnmanaged])
   {
 
     return 0;
@@ -1463,7 +1463,7 @@ LABEL_10:
   v8 = 0;
   v9 = 0;
   [(MFMessageViewController *)self _getNumberOfImages:&v9 videos:&v8 undownloaded:0];
-  if (a3 == 2)
+  if (context == 2)
   {
     if (v8)
     {
@@ -1471,7 +1471,7 @@ LABEL_10:
     }
   }
 
-  else if (a3 == 1)
+  else if (context == 1)
   {
     if (v9)
     {
@@ -1484,9 +1484,9 @@ LABEL_10:
 
 - (id)allMediaAttachmentFutures
 {
-  v3 = [(MFMessageViewController *)self messageContentView];
-  v4 = [v3 contentItems];
-  v5 = [v4 ef_filter:&stru_100654FF8];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  contentItems = [messageContentView contentItems];
+  v5 = [contentItems ef_filter:&stru_100654FF8];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -1565,22 +1565,22 @@ LABEL_16:
 
 - (id)assetViewerManager
 {
-  v2 = [(MFMessageViewController *)self scene];
-  v3 = [v2 assetViewerManager];
+  scene = [(MFMessageViewController *)self scene];
+  assetViewerManager = [scene assetViewerManager];
 
-  return v3;
+  return assetViewerManager;
 }
 
-- (id)dismissActionsForPreviewController:(id)a3
+- (id)dismissActionsForPreviewController:(id)controller
 {
   v4 = objc_opt_new();
-  v5 = [(MFMessageViewController *)self messageContentView];
-  v6 = [v5 contentRequest];
-  v7 = [v6 message];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  contentRequest = [messageContentView contentRequest];
+  message = [contentRequest message];
 
-  v8 = [v7 shouldShowReplyAll];
-  v9 = [(MFMessageViewController *)self contactStore];
-  v10 = [v7 senderDisplayNameUsingContactStore:v9];
+  shouldShowReplyAll = [message shouldShowReplyAll];
+  contactStore = [(MFMessageViewController *)self contactStore];
+  v10 = [message senderDisplayNameUsingContactStore:contactStore];
 
   objc_initWeak(location, self);
   if (v10)
@@ -1601,7 +1601,7 @@ LABEL_16:
     objc_destroyWeak(&v33);
   }
 
-  if (v8)
+  if (shouldShowReplyAll)
   {
     v17 = sub_1001F9140();
     v18 = +[NSBundle mainBundle];
@@ -1636,16 +1636,16 @@ LABEL_16:
   return v4;
 }
 
-- (id)documentInteractionControllerMarkupDismissActions:(id)a3
+- (id)documentInteractionControllerMarkupDismissActions:(id)actions
 {
   v4 = objc_opt_new();
-  v5 = [(MFMessageViewController *)self messageContentView];
-  v6 = [v5 contentRequest];
-  v7 = [v6 message];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  contentRequest = [messageContentView contentRequest];
+  message = [contentRequest message];
 
-  v8 = [v7 shouldShowReplyAll];
-  v9 = [(MFMessageViewController *)self contactStore];
-  v10 = [v7 senderDisplayNameUsingContactStore:v9];
+  shouldShowReplyAll = [message shouldShowReplyAll];
+  contactStore = [(MFMessageViewController *)self contactStore];
+  v10 = [message senderDisplayNameUsingContactStore:contactStore];
 
   objc_initWeak(location, self);
   if (v10)
@@ -1668,7 +1668,7 @@ LABEL_16:
     objc_destroyWeak(&v31);
   }
 
-  if (v8)
+  if (shouldShowReplyAll)
   {
     v16 = +[NSBundle mainBundle];
     v17 = [v16 localizedStringForKey:@"REPLY_ALL" value:&stru_100662A88 table:@"Main"];
@@ -1701,13 +1701,13 @@ LABEL_16:
   return v4;
 }
 
-- (id)_makeFileCopyOfEditedQuickLookFileToLocalContainer:(id)a3 preferredFileName:(id)a4
+- (id)_makeFileCopyOfEditedQuickLookFileToLocalContainer:(id)container preferredFileName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  containerCopy = container;
+  nameCopy = name;
   v7 = +[NSFileManager defaultManager];
   v13 = 0;
-  v8 = [v7 mf_copyFileAtURLToContainer:v5 securityScoped:1 preferredFileName:v6 error:&v13];
+  v8 = [v7 mf_copyFileAtURLToContainer:containerCopy securityScoped:1 preferredFileName:nameCopy error:&v13];
   v9 = v13;
 
   if (!v8)
@@ -1715,38 +1715,38 @@ LABEL_16:
     v10 = MFLogGeneral();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v9 ef_publicDescription];
-      sub_10048BDA4(v11, buf, v10);
+      ef_publicDescription = [v9 ef_publicDescription];
+      sub_10048BDA4(ef_publicDescription, buf, v10);
     }
   }
 
   return v8;
 }
 
-- (void)_performMailAction:(int64_t)a3 withMarkedUpFileAttachments:(id)a4
+- (void)_performMailAction:(int64_t)action withMarkedUpFileAttachments:(id)attachments
 {
-  v7 = a4;
-  if (a3 < 7 && ((0x71u >> a3) & 1) != 0)
+  attachmentsCopy = attachments;
+  if (action < 7 && ((0x71u >> action) & 1) != 0)
   {
-    v8 = qword_1004FC480[a3];
+    v8 = qword_1004FC480[action];
   }
 
   else
   {
     v9 = +[NSAssertionHandler currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MFMessageViewController.m" lineNumber:1029 description:{@"Message action value %lu is undefined.", a3}];
+    [v9 handleFailureInMethod:a2 object:self file:@"MFMessageViewController.m" lineNumber:1029 description:{@"Message action value %lu is undefined.", action}];
 
     v8 = 5;
   }
 
-  v10 = [(MFMessageViewController *)self messageContentView];
-  v11 = [v10 contentRequest];
-  v12 = [v11 message];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  contentRequest = [messageContentView contentRequest];
+  message = [contentRequest message];
 
-  v13 = [MFComposeMailMessage legacyMessageWithMessage:v12 mailboxUid:0 skipAttachmentDownload:1];
+  v13 = [MFComposeMailMessage legacyMessageWithMessage:message mailboxUid:0 skipAttachmentDownload:1];
   v14 = [_MFMailCompositionContext alloc];
-  v15 = [v13 emailMessageRepresentation];
-  v16 = [v14 initWithComposeType:v8 originalMessage:v15 legacyMessage:v13];
+  emailMessageRepresentation = [v13 emailMessageRepresentation];
+  v16 = [v14 initWithComposeType:v8 originalMessage:emailMessageRepresentation legacyMessage:v13];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -1754,30 +1754,30 @@ LABEL_16:
   v22[3] = &unk_1006550C0;
   v17 = v16;
   v23 = v17;
-  [v7 enumerateObjectsUsingBlock:v22];
+  [attachmentsCopy enumerateObjectsUsingBlock:v22];
   [v17 setOriginatingFromAttachmentMarkup:1];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = sub_1001F5BDC;
   v20[4] = sub_1001F5BEC;
-  v21 = self;
-  v18 = [(MFMessageViewController *)v21 scene];
+  selfCopy = self;
+  scene = [(MFMessageViewController *)selfCopy scene];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001FA674;
   v19[3] = &unk_100650760;
   v19[4] = v20;
-  [v18 showComposeWithContext:v17 animated:1 initialTitle:0 presentationSource:0 completionBlock:v19];
+  [scene showComposeWithContext:v17 animated:1 initialTitle:0 presentationSource:0 completionBlock:v19];
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)presentMarkupViewController:(id)a3
+- (void)presentMarkupViewController:(id)controller
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  controllerCopy = controller;
+  v7 = controllerCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performBlock:&v5];
 }
@@ -1810,15 +1810,15 @@ LABEL_16:
   return attachmentShowcase;
 }
 
-- (void)_setAttachmentOriginRect:(CGRect)a3 scale:(double)a4
+- (void)_setAttachmentOriginRect:(CGRect)rect scale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(MFMessageViewController *)self messageContentView:a3.origin.x];
-  v10 = [(MFMessageViewController *)self view];
-  [v10 convertRect:v9 fromView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [(MFMessageViewController *)self messageContentView:rect.origin.x];
+  view = [(MFMessageViewController *)self view];
+  [view convertRect:v9 fromView:{x, y, width, height}];
   self->_attachmentRect.origin.x = v11;
   self->_attachmentRect.origin.y = v12;
   self->_attachmentRect.size.width = v13;
@@ -1833,7 +1833,7 @@ LABEL_16:
     v16 = NSStringFromCGRect(v28);
     v17 = NSStringFromCGRect(self->_attachmentRect);
     v18 = 138413314;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = v16;
     v22 = 2114;
@@ -1841,16 +1841,16 @@ LABEL_16:
     v24 = 2114;
     v25 = v9;
     v26 = 2114;
-    v27 = v10;
+    v27 = view;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: Attachment origin rect=%{public}@, resulting in _attachmentRect=%{public}@,\tfromView=%{public}@ \ttoView=%{public}@", &v18, 0x34u);
   }
 }
 
-- (void)_previewURL:(id)a3 withEditingEnabled:(BOOL)a4
+- (void)_previewURL:(id)l withEditingEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(sub_1001F837C()) initWithURL:v6];
+  enabledCopy = enabled;
+  lCopy = l;
+  v7 = [objc_alloc(sub_1001F837C()) initWithURL:lCopy];
   if (v7)
   {
     v8 = objc_alloc(sub_1001F829C());
@@ -1858,10 +1858,10 @@ LABEL_16:
     v9 = [NSArray arrayWithObjects:&v17 count:1];
     v10 = [v8 initWithPreviewItems:v9];
 
-    v11 = [(MFMessageViewController *)self messageContentView];
-    [v10 setIsContentManaged:{objc_msgSend(v11, "sourceIsManaged")}];
+    messageContentView = [(MFMessageViewController *)self messageContentView];
+    [v10 setIsContentManaged:{objc_msgSend(messageContentView, "sourceIsManaged")}];
 
-    if (v4)
+    if (enabledCopy)
     {
       [v10 setAppearanceActions:4];
     }
@@ -1869,7 +1869,7 @@ LABEL_16:
     [v10 setDelegate:self];
     [(MFMessageViewController *)self setPreviewController:v10];
     [v10 setModalPresentationStyle:5];
-    v15 = self;
+    selfCopy = self;
     v12 = v10;
     v16 = v12;
     v13 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
@@ -1877,22 +1877,22 @@ LABEL_16:
   }
 }
 
-- (BOOL)isSourceManagedForURL:(id)a3
+- (BOOL)isSourceManagedForURL:(id)l
 {
-  v3 = [(MFMessageViewController *)self messageContentView];
-  v4 = [v3 sourceIsManaged];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  sourceIsManaged = [messageContentView sourceIsManaged];
 
-  return v4;
+  return sourceIsManaged;
 }
 
-- (id)_delegateDisplayNameForEmailAddress:(id)a3 abbreviated:(BOOL)a4
+- (id)_delegateDisplayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated
 {
-  v4 = a4;
-  v6 = a3;
+  abbreviatedCopy = abbreviated;
+  addressCopy = address;
   if ((*(&self->_flags + 1) & 8) != 0)
   {
-    v8 = [(MFMessageViewController *)self delegate];
-    v7 = [v8 messageViewController:self displayNameForEmailAddress:v6 abbreviated:v4];
+    delegate = [(MFMessageViewController *)self delegate];
+    v7 = [delegate messageViewController:self displayNameForEmailAddress:addressCopy abbreviated:abbreviatedCopy];
   }
 
   else
@@ -1907,7 +1907,7 @@ LABEL_16:
 
   else
   {
-    v9 = v6;
+    v9 = addressCopy;
   }
 
   v10 = v9;
@@ -1915,36 +1915,36 @@ LABEL_16:
   return v9;
 }
 
-- (id)_contactViewControllerForAddress:(id)a3 forAtomType:(unint64_t)a4
+- (id)_contactViewControllerForAddress:(id)address forAtomType:(unint64_t)type
 {
-  v75 = a3;
+  addressCopy = address;
   v78 = objc_alloc_init(CNContactStore);
-  v6 = [v75 stringValue];
+  stringValue = [addressCopy stringValue];
   v7 = +[CNContactViewController descriptorForRequiredKeys];
   v88 = v7;
   v8 = [NSArray arrayWithObjects:&v88 count:1];
-  v9 = [v78 em_fetchContactForEmailAddress:v6 keysToFetch:v8 createIfNeeded:1];
+  v9 = [v78 em_fetchContactForEmailAddress:stringValue keysToFetch:v8 createIfNeeded:1];
 
-  v10 = [(MFMessageViewController *)self contentRequest];
-  v11 = [v10 resultIfAvailable];
-  v12 = [v11 requestedHeaders];
-  v13 = [v12 firstHeaderForKey:ECMessageHeaderKeyHMEAddress];
+  contentRequest = [(MFMessageViewController *)self contentRequest];
+  resultIfAvailable = [contentRequest resultIfAvailable];
+  requestedHeaders = [resultIfAvailable requestedHeaders];
+  v13 = [requestedHeaders firstHeaderForKey:ECMessageHeaderKeyHMEAddress];
   v76 = [ECTagValueList tagValueListFromString:v13 error:0];
 
-  v14 = [v75 emailAddressValue];
-  v15 = [v14 simpleAddress];
+  emailAddressValue = [addressCopy emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
   v16 = [v76 objectForKeyedSubscript:EMHeaderTagHMEAddress];
-  v74 = [v15 isEqualToString:v16];
+  v74 = [simpleAddress isEqualToString:v16];
 
   if (v74)
   {
     v17 = +[EMHideMyEmail sharedInstance];
-    v18 = [v17 forwardingEmailForPrimaryAccount];
+    forwardingEmailForPrimaryAccount = [v17 forwardingEmailForPrimaryAccount];
 
     v19 = +[CNContactViewController descriptorForRequiredKeys];
     v87 = v19;
     v20 = [NSArray arrayWithObjects:&v87 count:1];
-    v21 = [v78 em_fetchContactForEmailAddress:v18 keysToFetch:v20 createIfNeeded:1];
+    v21 = [v78 em_fetchContactForEmailAddress:forwardingEmailForPrimaryAccount keysToFetch:v20 createIfNeeded:1];
 
     v22 = 0;
     v9 = v21;
@@ -1966,8 +1966,8 @@ LABEL_12:
       goto LABEL_32;
     }
 
-    v18 = +[CNContactViewController descriptorForRequiredKeys];
-    v86 = v18;
+    forwardingEmailForPrimaryAccount = +[CNContactViewController descriptorForRequiredKeys];
+    v86 = forwardingEmailForPrimaryAccount;
     v19 = [NSArray arrayWithObjects:&v86 count:1];
     [v78 em_fetchContactForEmailAddress:v22 keysToFetch:v19 createIfNeeded:1];
     v9 = v20 = v9;
@@ -1983,29 +1983,29 @@ LABEL_6:
   if ([v9 hasBeenPersisted] && +[MFContactsManager isAuthorizedToUseContacts](MFContactsManager, "isAuthorizedToUseContacts"))
   {
     v23 = [CNContactViewController viewControllerForContact:v9];
-    v24 = [v75 emailAddressValue];
-    v25 = [v24 simpleAddress];
-    v26 = [v25 emailAddressValue];
+    emailAddressValue2 = [addressCopy emailAddressValue];
+    simpleAddress2 = [emailAddressValue2 simpleAddress];
+    emailAddressValue3 = [simpleAddress2 emailAddressValue];
 
-    if (v26)
+    if (emailAddressValue3)
     {
-      v27 = [v9 emailAddresses];
+      emailAddresses = [v9 emailAddresses];
       v83[0] = _NSConcreteStackBlock;
       v83[1] = 3221225472;
       v83[2] = sub_1001FBD10;
       v83[3] = &unk_100654D20;
-      v84 = v26;
-      v28 = [v27 ef_firstObjectPassingTest:v83];
+      v84 = emailAddressValue3;
+      v28 = [emailAddresses ef_firstObjectPassingTest:v83];
 
-      v29 = [v28 identifier];
+      identifier = [v28 identifier];
     }
 
     else
     {
-      v29 = 0;
+      identifier = 0;
     }
 
-    [v23 highlightPropertyWithKey:CNContactEmailAddressesKey identifier:v29];
+    [v23 highlightPropertyWithKey:CNContactEmailAddressesKey identifier:identifier];
 
     v30 = v23;
   }
@@ -2021,74 +2021,74 @@ LABEL_6:
   }
 
   [v30 setContactStore:v78];
-  v31 = [(MFMessageViewController *)self contentRequest];
-  v73 = [v31 message];
+  contentRequest2 = [(MFMessageViewController *)self contentRequest];
+  message = [contentRequest2 message];
 
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v33 = [WeakRetained daemonInterface];
-  v34 = [v33 blockedSenderManager];
-  v35 = [MFContactCardInteractions contactCardInteractionWithViewController:v30 blockedSenderManager:v34];
+  daemonInterface = [WeakRetained daemonInterface];
+  blockedSenderManager = [daemonInterface blockedSenderManager];
+  v35 = [MFContactCardInteractions contactCardInteractionWithViewController:v30 blockedSenderManager:blockedSenderManager];
   [(MFMessageViewController *)self setContactCardInteractions:v35];
 
-  v36 = [(MFMessageViewController *)self contactCardInteractions];
-  [v36 configureInteractionsWithInteractionDelegate:self];
+  contactCardInteractions = [(MFMessageViewController *)self contactCardInteractions];
+  [contactCardInteractions configureInteractionsWithInteractionDelegate:self];
 
   [v30 _setDataOwnerForCopy:{-[MFMessageViewController _dataOwnerForCopy](self, "_dataOwnerForCopy")}];
   [v30 _setDataOwnerForPaste:{-[MFMessageViewController _dataOwnerForPaste](self, "_dataOwnerForPaste")}];
-  if (a4 == 1)
+  if (type == 1)
   {
-    v72 = objc_alloc_init(MFContactMessageInteraction);
+    replyToList = objc_alloc_init(MFContactMessageInteraction);
     [(MFMessageViewController *)self setContactInteraction:?];
-    v50 = [(MFMessageViewController *)self contactInteraction];
-    [v50 setDelegate:self];
+    contactInteraction = [(MFMessageViewController *)self contactInteraction];
+    [contactInteraction setDelegate:self];
 
-    v51 = [(MFMessageViewController *)self contactInteraction];
-    v52 = [(MFMessageViewController *)self securityInformation];
-    [v51 updateWithSecurityInformation:v52];
+    contactInteraction2 = [(MFMessageViewController *)self contactInteraction];
+    securityInformation = [(MFMessageViewController *)self securityInformation];
+    [contactInteraction2 updateWithSecurityInformation:securityInformation];
 
     [(MFMessageViewController *)self _setupHeaderViewForContactViewController:v30];
-    v53 = [(MFMessageViewController *)self scene];
-    v54 = [v53 brandIndicatorProvider];
-    v55 = [(MFMessageViewController *)self contentRequest];
-    v56 = [v55 message];
-    v57 = [v56 brandIndicatorLocation];
-    v58 = [(MFMessageViewController *)self view];
-    v59 = [v58 traitCollection];
-    [v59 displayScale];
-    v60 = [v54 brandIndicatorFutureForLocation:v57 scale:?];
+    scene = [(MFMessageViewController *)self scene];
+    brandIndicatorProvider = [scene brandIndicatorProvider];
+    contentRequest3 = [(MFMessageViewController *)self contentRequest];
+    message2 = [contentRequest3 message];
+    brandIndicatorLocation = [message2 brandIndicatorLocation];
+    view = [(MFMessageViewController *)self view];
+    traitCollection = [view traitCollection];
+    [traitCollection displayScale];
+    v60 = [brandIndicatorProvider brandIndicatorFutureForLocation:brandIndicatorLocation scale:?];
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
     v79[2] = sub_1001FBDD4;
     v79[3] = &unk_1006550E8;
     v80 = v77;
-    v81 = v73;
+    v81 = message;
     v82 = v30;
     [v60 addSuccessBlock:v79];
 
-    v40 = v80;
+    senderAddress = v80;
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v37 = [(MFMessageViewController *)self contentRequest];
-    v38 = [v37 contentRepresentationFuture];
-    v39 = [v38 result];
-    v72 = [v39 replyToList];
+    contentRequest4 = [(MFMessageViewController *)self contentRequest];
+    contentRepresentationFuture = [contentRequest4 contentRepresentationFuture];
+    result = [contentRepresentationFuture result];
+    replyToList = [result replyToList];
 
-    v40 = [v73 senderAddress];
-    v41 = [v73 senderAddress];
-    v85 = v41;
+    senderAddress = [message senderAddress];
+    senderAddress2 = [message senderAddress];
+    v85 = senderAddress2;
     v42 = [NSArray arrayWithObjects:&v85 count:1];
-    LODWORD(v38) = [MFAddressAtomStatusManager shouldDecorateAtomListForSender:v42 replyTo:v72];
+    LODWORD(contentRepresentationFuture) = [MFAddressAtomStatusManager shouldDecorateAtomListForSender:v42 replyTo:replyToList];
 
-    if (v38)
+    if (contentRepresentationFuture)
     {
       v43 = _EFLocalizedString();
       v44 = _EFLocalizedString();
-      v45 = [NSString stringWithFormat:v44, v40];
+      v45 = [NSString stringWithFormat:v44, senderAddress];
 
       if (MUISolariumFeatureEnabled())
       {
@@ -2125,20 +2125,20 @@ LABEL_26:
     if (MUISolariumFeatureEnabled())
     {
       v63 = [HideMyEmailContactHeaderViewModel alloc];
-      v64 = [v75 emailAddressValue];
-      v65 = [v64 simpleAddress];
-      v66 = [v63 initWithAddress:v65];
+      emailAddressValue4 = [addressCopy emailAddressValue];
+      simpleAddress3 = [emailAddressValue4 simpleAddress];
+      v66 = [v63 initWithAddress:simpleAddress3];
 
-      v67 = [v66 contactsCustomViewConfiguration];
-      [v30 setCustomViewConfiguration:v67];
+      contactsCustomViewConfiguration = [v66 contactsCustomViewConfiguration];
+      [v30 setCustomViewConfiguration:contactsCustomViewConfiguration];
     }
 
     else
     {
       v68 = [MFHideMyEmailHeaderView alloc];
-      v69 = [v75 emailAddressValue];
-      v70 = [v69 simpleAddress];
-      v66 = [v68 initWithFrame:v70 address:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+      emailAddressValue5 = [addressCopy emailAddressValue];
+      simpleAddress4 = [emailAddressValue5 simpleAddress];
+      v66 = [v68 initWithFrame:simpleAddress4 address:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
       [v30 setContactHeaderView:v66];
     }
@@ -2150,76 +2150,76 @@ LABEL_32:
   return v30;
 }
 
-- (void)_setupHeaderViewForContactViewController:(id)a3
+- (void)_setupHeaderViewForContactViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   if (MUISolariumFeatureEnabled())
   {
-    v4 = [(MFMessageViewController *)self contactInteraction];
-    v5 = [v4 headerViewConfiguration];
+    contactInteraction = [(MFMessageViewController *)self contactInteraction];
+    headerViewConfiguration = [contactInteraction headerViewConfiguration];
 
-    if (v5)
+    if (headerViewConfiguration)
     {
-      [v7 setCustomViewConfiguration:v5];
+      [controllerCopy setCustomViewConfiguration:headerViewConfiguration];
     }
   }
 
   else
   {
-    v6 = [(MFMessageViewController *)self contactInteraction];
-    v5 = [v6 headerView];
+    contactInteraction2 = [(MFMessageViewController *)self contactInteraction];
+    headerViewConfiguration = [contactInteraction2 headerView];
 
-    if (v5)
+    if (headerViewConfiguration)
     {
-      [v7 setContactHeaderView:v5];
+      [controllerCopy setContactHeaderView:headerViewConfiguration];
     }
   }
 }
 
-- (void)contactMessageInteraction:(id)a3 didUpdateHeaderView:(id)a4
+- (void)contactMessageInteraction:(id)interaction didUpdateHeaderView:(id)view
 {
-  v8 = a4;
-  v5 = [(MFMessageViewController *)self contactViewController];
-  v6 = v5;
-  if (v5)
+  viewCopy = view;
+  contactViewController = [(MFMessageViewController *)self contactViewController];
+  v6 = contactViewController;
+  if (contactViewController)
   {
-    v7 = [v5 contactHeaderView];
+    contactHeaderView = [contactViewController contactHeaderView];
 
-    if (v7 != v8)
+    if (contactHeaderView != viewCopy)
     {
       [(MFMessageViewController *)self _setupHeaderViewForContactViewController:v6];
     }
   }
 }
 
-- (BOOL)canSearchForContactFromContactCardInteractions:(id)a3
+- (BOOL)canSearchForContactFromContactCardInteractions:(id)interactions
 {
-  v4 = a3;
-  v5 = [(MFMessageViewController *)self delegate];
-  v6 = [v5 canSearchForContactFromContactCardInteractions:v4];
+  interactionsCopy = interactions;
+  delegate = [(MFMessageViewController *)self delegate];
+  v6 = [delegate canSearchForContactFromContactCardInteractions:interactionsCopy];
 
   return v6;
 }
 
-- (void)contactCardInteractions:(id)a3 triggerSearchForDisplayName:(id)a4 emailAddresses:(id)a5
+- (void)contactCardInteractions:(id)interactions triggerSearchForDisplayName:(id)name emailAddresses:(id)addresses
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MFMessageViewController *)self delegate];
-  [v10 contactCardInteractions:v11 triggerSearchForDisplayName:v8 emailAddresses:v9];
+  interactionsCopy = interactions;
+  nameCopy = name;
+  addressesCopy = addresses;
+  delegate = [(MFMessageViewController *)self delegate];
+  [delegate contactCardInteractions:interactionsCopy triggerSearchForDisplayName:nameCopy emailAddresses:addressesCopy];
 }
 
 - (void)prepareForReuse
 {
   [(MFConversationItemHeaderBlock *)self->_participantHeader prepareForReuse];
-  v3 = [(MFMessageViewController *)self messageContentView];
-  [v3 prepareForReuse];
+  messageContentView = [(MFMessageViewController *)self messageContentView];
+  [messageContentView prepareForReuse];
 
   [(MFMessageViewController *)self setDelegate:0];
-  v4 = [(MFMessageViewController *)self parentViewController];
+  parentViewController = [(MFMessageViewController *)self parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
     [(MFMessageViewController *)self willMoveToParentViewController:0];
 
@@ -2227,36 +2227,36 @@ LABEL_32:
   }
 }
 
-- (id)messageContentRepresentationRequestForScreenshotService:(id)a3
+- (id)messageContentRepresentationRequestForScreenshotService:(id)service
 {
-  v3 = [(MFMessageViewController *)self contentRequest];
+  contentRequest = [(MFMessageViewController *)self contentRequest];
 
-  return v3;
+  return contentRequest;
 }
 
-- (id)conversationAttachmentURLsForConversationItemHeaderBlock:(id)a3
+- (id)conversationAttachmentURLsForConversationItemHeaderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MFMessageViewController *)self delegate];
-  v6 = [v5 conversationAttachmentURLsForConversationItemHeaderBlock:v4];
+  blockCopy = block;
+  delegate = [(MFMessageViewController *)self delegate];
+  v6 = [delegate conversationAttachmentURLsForConversationItemHeaderBlock:blockCopy];
 
   return v6;
 }
 
-- (id)richLinksInConversationForConversationItemHeaderBlock:(id)a3
+- (id)richLinksInConversationForConversationItemHeaderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MFMessageViewController *)self delegate];
-  v6 = [v5 richLinksInConversationForConversationItemHeaderBlock:v4];
+  blockCopy = block;
+  delegate = [(MFMessageViewController *)self delegate];
+  v6 = [delegate richLinksInConversationForConversationItemHeaderBlock:blockCopy];
 
   return v6;
 }
 
-- (int64_t)numberOfMessagesInConversationForConversationItemHeaderBlock:(id)a3
+- (int64_t)numberOfMessagesInConversationForConversationItemHeaderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MFMessageViewController *)self delegate];
-  v6 = [v5 numberOfMessagesInConversationForConversationItemHeaderBlock:v4];
+  blockCopy = block;
+  delegate = [(MFMessageViewController *)self delegate];
+  v6 = [delegate numberOfMessagesInConversationForConversationItemHeaderBlock:blockCopy];
 
   return v6;
 }

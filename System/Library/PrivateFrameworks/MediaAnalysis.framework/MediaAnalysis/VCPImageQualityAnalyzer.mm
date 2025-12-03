@@ -1,19 +1,19 @@
 @interface VCPImageQualityAnalyzer
-- (int)analyzeImageQuality:(id)a3 irisPhotoOffsetSec:(float)a4 cancel:(id)a5;
+- (int)analyzeImageQuality:(id)quality irisPhotoOffsetSec:(float)sec cancel:(id)cancel;
 @end
 
 @implementation VCPImageQualityAnalyzer
 
-- (int)analyzeImageQuality:(id)a3 irisPhotoOffsetSec:(float)a4 cancel:(id)a5
+- (int)analyzeImageQuality:(id)quality irisPhotoOffsetSec:(float)sec cancel:(id)cancel
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v33 = a5;
-  v34 = [v7 objectForKeyedSubscript:@"BlurResults"];
-  v32 = [v7 objectForKeyedSubscript:@"ObstructionResults"];
+  qualityCopy = quality;
+  cancelCopy = cancel;
+  v34 = [qualityCopy objectForKeyedSubscript:@"BlurResults"];
+  v32 = [qualityCopy objectForKeyedSubscript:@"ObstructionResults"];
   if ([v34 count])
   {
-    if (v33 && (v33[2]() & 1) != 0)
+    if (cancelCopy && (cancelCopy[2]() & 1) != 0)
     {
       v8 = -128;
     }
@@ -55,7 +55,7 @@
         v16 = 0.0;
       }
 
-      v17 = [v7 objectForKeyedSubscript:@"ExposureResults"];
+      v17 = [qualityCopy objectForKeyedSubscript:@"ExposureResults"];
       v18 = [v17 objectAtIndexedSubscript:0];
       v19 = [v18 objectForKeyedSubscript:@"quality"];
       [v19 floatValue];
@@ -70,7 +70,7 @@
       if (v22)
       {
         v23 = *v39;
-        v24 = a4;
+        secCopy = sec;
         while (2)
         {
           for (j = 0; j != v22; ++j)
@@ -84,7 +84,7 @@
             memset(&v37, 0, sizeof(v37));
             CMTimeRangeMakeFromDictionary(&v37, v26);
             range = v37;
-            CMTimeMakeWithSeconds(&time, v24, 600);
+            CMTimeMakeWithSeconds(&time, secCopy, 600);
             if (CMTimeRangeContainsTime(&range, &time))
             {
               [(__CFDictionary *)v26 vcp_quality];

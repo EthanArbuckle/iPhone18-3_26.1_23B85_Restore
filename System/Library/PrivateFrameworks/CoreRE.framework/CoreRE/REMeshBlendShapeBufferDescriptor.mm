@@ -1,18 +1,18 @@
 @interface REMeshBlendShapeBufferDescriptor
-- (BOOL)validateWithPayloadSize:(const void *)a3 error:(id *)a4;
-- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeBufferPayload:(void *)a3 indexType:(unint64_t)a4 payloadBuilder:(void *)a5;
-- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeNames:(id)a3 floatDeltaBuffer:(id)a4 blendShapeConstantsBuffer:(id)a5 indexBuffer:(id)a6 floatSliceBuffer:(id)a7 coefficientIndexBuffer:(id)a8 renormalizationBuffer:(id)a9 hasNormals:(BOOL)a10 hasTangents:(BOOL)a11 hasBitangents:(BOOL)a12;
-- (REMeshBlendShapeBufferDescriptor)initWithCoder:(id)a3;
+- (BOOL)validateWithPayloadSize:(const void *)size error:(id *)error;
+- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeBufferPayload:(void *)payload indexType:(unint64_t)type payloadBuilder:(void *)builder;
+- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeNames:(id)names floatDeltaBuffer:(id)buffer blendShapeConstantsBuffer:(id)constantsBuffer indexBuffer:(id)indexBuffer floatSliceBuffer:(id)sliceBuffer coefficientIndexBuffer:(id)coefficientIndexBuffer renormalizationBuffer:(id)renormalizationBuffer hasNormals:(BOOL)self0 hasTangents:(BOOL)self1 hasBitangents:(BOOL)self2;
+- (REMeshBlendShapeBufferDescriptor)initWithCoder:(id)coder;
 - (unint64_t)estimateContainerSize;
-- (void)addToBlendShapeModelBuilder:(BlendShapeModelBuilder *)a3 blendShapeIndex:(unint64_t)a4 blendShapeGroupName:(const StringID *)a5 payloadBuffers:(const void *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)addToBlendShapeModelBuilder:(BlendShapeModelBuilder *)builder blendShapeIndex:(unint64_t)index blendShapeGroupName:(const StringID *)name payloadBuffers:(const void *)buffers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshBlendShapeBufferDescriptor
 
-- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeBufferPayload:(void *)a3 indexType:(unint64_t)a4 payloadBuilder:(void *)a5
+- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeBufferPayload:(void *)payload indexType:(unint64_t)type payloadBuilder:(void *)builder
 {
-  if (a4)
+  if (type)
   {
     v7 = 4;
   }
@@ -26,10 +26,10 @@
   v10 = v9 = objc_claimAutoreleasedReturnValue();
   v11 = objc_claimAutoreleasedReturnValue();
   v12 = objc_opt_new();
-  v13 = *(a3 + 3);
+  v13 = *(payload + 3);
   if (v13)
   {
-    v14 = (*(a3 + 4) + 8);
+    v14 = (*(payload + 4) + 8);
     v15 = 16 * v13;
     do
     {
@@ -43,14 +43,14 @@
     while (v15);
   }
 
-  BYTE2(v19) = *(a3 + 14);
-  LOWORD(v19) = *(a3 + 6);
+  BYTE2(v19) = *(payload + 14);
+  LOWORD(v19) = *(payload + 6);
   v17 = [REMeshBlendShapeBufferDescriptor initWithBlendShapeNames:"initWithBlendShapeNames:floatDeltaBuffer:blendShapeConstantsBuffer:indexBuffer:floatSliceBuffer:coefficientIndexBuffer:renormalizationBuffer:hasNormals:hasTangents:hasBitangents:" floatDeltaBuffer:v12 blendShapeConstantsBuffer:v20 indexBuffer:v21 floatSliceBuffer:v8 coefficientIndexBuffer:v9 renormalizationBuffer:v10 hasNormals:v11 hasTangents:v19 hasBitangents:?];
 
   return v17;
 }
 
-- (void)addToBlendShapeModelBuilder:(BlendShapeModelBuilder *)a3 blendShapeIndex:(unint64_t)a4 blendShapeGroupName:(const StringID *)a5 payloadBuffers:(const void *)a6
+- (void)addToBlendShapeModelBuilder:(BlendShapeModelBuilder *)builder blendShapeIndex:(unint64_t)index blendShapeGroupName:(const StringID *)name payloadBuffers:(const void *)buffers
 {
   v9 = 0;
   v52 = *MEMORY[0x1E69E9840];
@@ -64,20 +64,20 @@
   }
 
   while (v9 != 240);
-  v11 = [(REMeshBlendShapeBufferDescriptor *)self floatDeltaBuffer];
+  floatDeltaBuffer = [(REMeshBlendShapeBufferDescriptor *)self floatDeltaBuffer];
 
-  v12 = [(REMeshBlendShapeBufferDescriptor *)self blendShapeConstantsBuffer];
+  blendShapeConstantsBuffer = [(REMeshBlendShapeBufferDescriptor *)self blendShapeConstantsBuffer];
 
-  v13 = [(REMeshBlendShapeBufferDescriptor *)self indexBuffer];
+  indexBuffer = [(REMeshBlendShapeBufferDescriptor *)self indexBuffer];
 
-  v14 = [(REMeshBlendShapeBufferDescriptor *)self floatSliceBuffer];
+  floatSliceBuffer = [(REMeshBlendShapeBufferDescriptor *)self floatSliceBuffer];
 
-  v15 = [(REMeshBlendShapeBufferDescriptor *)self coefficientIndexBuffer];
+  coefficientIndexBuffer = [(REMeshBlendShapeBufferDescriptor *)self coefficientIndexBuffer];
 
-  v16 = [(REMeshBlendShapeBufferDescriptor *)self renormalizationBuffer];
+  renormalizationBuffer = [(REMeshBlendShapeBufferDescriptor *)self renormalizationBuffer];
 
-  v18 = [(REMeshBlendShapeBufferDescriptor *)self blendShapeNames];
-  v19 = [v18 count];
+  blendShapeNames = [(REMeshBlendShapeBufferDescriptor *)self blendShapeNames];
+  v19 = [blendShapeNames count];
   re::StringID::invalid(&v51);
   v38 = 0;
   v39 = 0;
@@ -89,18 +89,18 @@
     }
   }
 
-  v21 = [(REMeshBlendShapeBufferDescriptor *)self blendShapeNames];
-  v22 = [v21 count];
+  blendShapeNames2 = [(REMeshBlendShapeBufferDescriptor *)self blendShapeNames];
+  v22 = [blendShapeNames2 count];
 
   if (v22)
   {
     v23 = 0;
     for (i = 0; i != v22; ++i)
     {
-      v25 = [(REMeshBlendShapeBufferDescriptor *)self blendShapeNames];
-      v26 = [v25 objectAtIndexedSubscript:i];
+      blendShapeNames3 = [(REMeshBlendShapeBufferDescriptor *)self blendShapeNames];
+      v26 = [blendShapeNames3 objectAtIndexedSubscript:i];
       v27 = v26;
-      v28 = [v26 UTF8String];
+      uTF8String = [v26 UTF8String];
       v36 = 0;
       v37 = &str_67;
       v29 = v39;
@@ -137,7 +137,7 @@
     }
   }
 
-  re::BlendShapeModelBuilder::addBlendShapeGroup(a3, a4, v41, a5, &v38, [(REMeshBlendShapeBufferDescriptor *)self hasNormals], [(REMeshBlendShapeBufferDescriptor *)self hasTangents], [(REMeshBlendShapeBufferDescriptor *)self hasBitangents]);
+  re::BlendShapeModelBuilder::addBlendShapeGroup(builder, index, v41, name, &v38, [(REMeshBlendShapeBufferDescriptor *)self hasNormals], [(REMeshBlendShapeBufferDescriptor *)self hasTangents], [(REMeshBlendShapeBufferDescriptor *)self hasBitangents]);
   re::FixedArray<re::StringID>::deinit(&v38);
   for (j = 0; j != -240; j -= 40)
   {
@@ -152,96 +152,96 @@
   }
 }
 
-- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeNames:(id)a3 floatDeltaBuffer:(id)a4 blendShapeConstantsBuffer:(id)a5 indexBuffer:(id)a6 floatSliceBuffer:(id)a7 coefficientIndexBuffer:(id)a8 renormalizationBuffer:(id)a9 hasNormals:(BOOL)a10 hasTangents:(BOOL)a11 hasBitangents:(BOOL)a12
+- (REMeshBlendShapeBufferDescriptor)initWithBlendShapeNames:(id)names floatDeltaBuffer:(id)buffer blendShapeConstantsBuffer:(id)constantsBuffer indexBuffer:(id)indexBuffer floatSliceBuffer:(id)sliceBuffer coefficientIndexBuffer:(id)coefficientIndexBuffer renormalizationBuffer:(id)renormalizationBuffer hasNormals:(BOOL)self0 hasTangents:(BOOL)self1 hasBitangents:(BOOL)self2
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v18 = a8;
-  v19 = a9;
+  namesCopy = names;
+  bufferCopy = buffer;
+  constantsBufferCopy = constantsBuffer;
+  indexBufferCopy = indexBuffer;
+  sliceBufferCopy = sliceBuffer;
+  coefficientIndexBufferCopy = coefficientIndexBuffer;
+  renormalizationBufferCopy = renormalizationBuffer;
   v30.receiver = self;
   v30.super_class = REMeshBlendShapeBufferDescriptor;
   v20 = [(REMeshBlendShapeBufferDescriptor *)&v30 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_floatDeltaBuffer, a4);
-    objc_storeStrong(&v21->_blendShapeConstantsBuffer, a5);
-    objc_storeStrong(&v21->_indexBuffer, a6);
-    objc_storeStrong(&v21->_floatSliceBuffer, a7);
-    objc_storeStrong(&v21->_coefficientIndexBuffer, a8);
-    objc_storeStrong(&v21->_renormalizationBuffer, a9);
-    v22 = [v29 copy];
+    objc_storeStrong(&v20->_floatDeltaBuffer, buffer);
+    objc_storeStrong(&v21->_blendShapeConstantsBuffer, constantsBuffer);
+    objc_storeStrong(&v21->_indexBuffer, indexBuffer);
+    objc_storeStrong(&v21->_floatSliceBuffer, sliceBuffer);
+    objc_storeStrong(&v21->_coefficientIndexBuffer, coefficientIndexBuffer);
+    objc_storeStrong(&v21->_renormalizationBuffer, renormalizationBuffer);
+    v22 = [namesCopy copy];
     blendShapeNames = v21->_blendShapeNames;
     v21->_blendShapeNames = v22;
 
-    v21->_hasNormals = a10;
-    v21->_hasTangents = a11;
-    v21->_hasBitangents = a12;
+    v21->_hasNormals = normals;
+    v21->_hasTangents = tangents;
+    v21->_hasBitangents = bitangents;
   }
 
   return v21;
 }
 
-- (REMeshBlendShapeBufferDescriptor)initWithCoder:(id)a3
+- (REMeshBlendShapeBufferDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"floatDeltaBuffer"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"floatDeltaBuffer"];
   floatDeltaBuffer = self->_floatDeltaBuffer;
   self->_floatDeltaBuffer = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blendShapeConstantsBuffer"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blendShapeConstantsBuffer"];
   blendShapeConstantsBuffer = self->_blendShapeConstantsBuffer;
   self->_blendShapeConstantsBuffer = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"indexBuffer"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"indexBuffer"];
   indexBuffer = self->_indexBuffer;
   self->_indexBuffer = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"floatSliceBuffer"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"floatSliceBuffer"];
   floatSliceBuffer = self->_floatSliceBuffer;
   self->_floatSliceBuffer = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coefficientIndexBuffer"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coefficientIndexBuffer"];
   coefficientIndexBuffer = self->_coefficientIndexBuffer;
   self->_coefficientIndexBuffer = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renormalizationBuffer"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renormalizationBuffer"];
   renormalizationBuffer = self->_renormalizationBuffer;
   self->_renormalizationBuffer = v15;
 
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v4 decodeObjectOfClasses:v19 forKey:@"blendShapeNames"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"blendShapeNames"];
   blendShapeNames = self->_blendShapeNames;
   self->_blendShapeNames = v20;
 
-  self->_hasNormals = [v4 decodeBoolForKey:@"hasNormals"];
-  self->_hasTangents = [v4 decodeBoolForKey:@"hasTangents"];
-  self->_hasBitangents = [v4 decodeBoolForKey:@"hasBitangents"];
+  self->_hasNormals = [coderCopy decodeBoolForKey:@"hasNormals"];
+  self->_hasTangents = [coderCopy decodeBoolForKey:@"hasTangents"];
+  self->_hasBitangents = [coderCopy decodeBoolForKey:@"hasBitangents"];
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_hasNormals forKey:@"hasNormals"];
-  [v4 encodeBool:self->_hasTangents forKey:@"hasTangents"];
-  [v4 encodeBool:self->_hasBitangents forKey:@"hasBitangents"];
-  [v4 encodeObject:self->_floatDeltaBuffer forKey:@"floatDeltaBuffer"];
-  [v4 encodeObject:self->_blendShapeConstantsBuffer forKey:@"blendShapeConstantsBuffer"];
-  [v4 encodeObject:self->_indexBuffer forKey:@"indexBuffer"];
-  [v4 encodeObject:self->_floatSliceBuffer forKey:@"floatSliceBuffer"];
-  [v4 encodeObject:self->_coefficientIndexBuffer forKey:@"coefficientIndexBuffer"];
-  [v4 encodeObject:self->_renormalizationBuffer forKey:@"renormalizationBuffer"];
-  [v4 encodeObject:self->_blendShapeNames forKey:@"blendShapeNames"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_hasNormals forKey:@"hasNormals"];
+  [coderCopy encodeBool:self->_hasTangents forKey:@"hasTangents"];
+  [coderCopy encodeBool:self->_hasBitangents forKey:@"hasBitangents"];
+  [coderCopy encodeObject:self->_floatDeltaBuffer forKey:@"floatDeltaBuffer"];
+  [coderCopy encodeObject:self->_blendShapeConstantsBuffer forKey:@"blendShapeConstantsBuffer"];
+  [coderCopy encodeObject:self->_indexBuffer forKey:@"indexBuffer"];
+  [coderCopy encodeObject:self->_floatSliceBuffer forKey:@"floatSliceBuffer"];
+  [coderCopy encodeObject:self->_coefficientIndexBuffer forKey:@"coefficientIndexBuffer"];
+  [coderCopy encodeObject:self->_renormalizationBuffer forKey:@"renormalizationBuffer"];
+  [coderCopy encodeObject:self->_blendShapeNames forKey:@"blendShapeNames"];
 }
 
-- (BOOL)validateWithPayloadSize:(const void *)a3 error:(id *)a4
+- (BOOL)validateWithPayloadSize:(const void *)size error:(id *)error
 {
   floatDeltaBuffer = self->_floatDeltaBuffer;
   if (!floatDeltaBuffer)
@@ -264,67 +264,67 @@
   floatDeltaBuffer = self->_floatDeltaBuffer;
   if (floatDeltaBuffer)
   {
-    v5 = [(REAttributeDescriptor *)floatDeltaBuffer estimateContainerSize];
+    estimateContainerSize = [(REAttributeDescriptor *)floatDeltaBuffer estimateContainerSize];
   }
 
   else
   {
-    v5 = 0;
+    estimateContainerSize = 0;
   }
 
   blendShapeConstantsBuffer = self->_blendShapeConstantsBuffer;
   if (blendShapeConstantsBuffer)
   {
-    v7 = [(REAttributeDescriptor *)blendShapeConstantsBuffer estimateContainerSize];
+    estimateContainerSize2 = [(REAttributeDescriptor *)blendShapeConstantsBuffer estimateContainerSize];
   }
 
   else
   {
-    v7 = 0;
+    estimateContainerSize2 = 0;
   }
 
   indexBuffer = self->_indexBuffer;
   if (indexBuffer)
   {
-    v9 = [(REAttributeDescriptor *)indexBuffer estimateContainerSize];
+    estimateContainerSize3 = [(REAttributeDescriptor *)indexBuffer estimateContainerSize];
   }
 
   else
   {
-    v9 = 0;
+    estimateContainerSize3 = 0;
   }
 
   floatSliceBuffer = self->_floatSliceBuffer;
   if (floatSliceBuffer)
   {
-    v11 = [(REAttributeDescriptor *)floatSliceBuffer estimateContainerSize];
+    estimateContainerSize4 = [(REAttributeDescriptor *)floatSliceBuffer estimateContainerSize];
   }
 
   else
   {
-    v11 = 0;
+    estimateContainerSize4 = 0;
   }
 
   coefficientIndexBuffer = self->_coefficientIndexBuffer;
   if (coefficientIndexBuffer)
   {
-    v13 = [(REAttributeDescriptor *)coefficientIndexBuffer estimateContainerSize];
+    estimateContainerSize5 = [(REAttributeDescriptor *)coefficientIndexBuffer estimateContainerSize];
   }
 
   else
   {
-    v13 = 0;
+    estimateContainerSize5 = 0;
   }
 
   renormalizationBuffer = self->_renormalizationBuffer;
   if (renormalizationBuffer)
   {
-    v15 = [(REAttributeDescriptor *)renormalizationBuffer estimateContainerSize];
+    estimateContainerSize6 = [(REAttributeDescriptor *)renormalizationBuffer estimateContainerSize];
   }
 
   else
   {
-    v15 = 0;
+    estimateContainerSize6 = 0;
   }
 
   if (self->_blendShapeNames)
@@ -347,7 +347,7 @@
   v33 = 0u;
   v20 = self->_blendShapeNames;
   v21 = [(NSArray *)v20 countByEnumeratingWithState:&v30 objects:v34 count:16];
-  v22 = InstanceSize + 48 + v5 + v7 + v9 + v11 + v13 + v15 + v17 + 8 * v19;
+  v22 = InstanceSize + 48 + estimateContainerSize + estimateContainerSize2 + estimateContainerSize3 + estimateContainerSize4 + estimateContainerSize5 + estimateContainerSize6 + v17 + 8 * v19;
   if (v21)
   {
     v23 = *v31;

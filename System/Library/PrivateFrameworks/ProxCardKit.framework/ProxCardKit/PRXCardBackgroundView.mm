@@ -1,32 +1,32 @@
 @interface PRXCardBackgroundView
-- (PRXCardBackgroundView)initWithFrame:(CGRect)a3;
-- (PRXCardBackgroundView)initWithFrame:(CGRect)a3 containerLayoutMargins:(NSDirectionalEdgeInsets)a4;
+- (PRXCardBackgroundView)initWithFrame:(CGRect)frame;
+- (PRXCardBackgroundView)initWithFrame:(CGRect)frame containerLayoutMargins:(NSDirectionalEdgeInsets)margins;
 - (void)_updateCornerRadius;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PRXCardBackgroundView
 
-- (PRXCardBackgroundView)initWithFrame:(CGRect)a3
+- (PRXCardBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = PRXCardContainerDefaultLayoutMargins();
 
   return [(PRXCardBackgroundView *)self initWithFrame:x containerLayoutMargins:y, width, height, v11, v8, v9, v10];
 }
 
-- (PRXCardBackgroundView)initWithFrame:(CGRect)a3 containerLayoutMargins:(NSDirectionalEdgeInsets)a4
+- (PRXCardBackgroundView)initWithFrame:(CGRect)frame containerLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
   v13.receiver = self;
   v13.super_class = PRXCardBackgroundView;
-  v8 = [(PRXCardBackgroundView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(PRXCardBackgroundView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v9 = v8;
   if (v8)
   {
@@ -34,8 +34,8 @@
     v8->_containerLayoutMargins.leading = leading;
     v8->_containerLayoutMargins.bottom = bottom;
     v8->_containerLayoutMargins.trailing = trailing;
-    v10 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(PRXCardBackgroundView *)v9 setBackgroundColor:v10];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(PRXCardBackgroundView *)v9 setBackgroundColor:systemBackgroundColor];
 
     [(PRXCardBackgroundView *)v9 _updateCornerRadius];
     v11 = v9;
@@ -44,17 +44,17 @@
   return v9;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v14.receiver = self;
   v14.super_class = PRXCardBackgroundView;
-  v4 = a3;
-  [(PRXCardBackgroundView *)&v14 traitCollectionDidChange:v4];
-  [v4 displayCornerRadius];
+  changeCopy = change;
+  [(PRXCardBackgroundView *)&v14 traitCollectionDidChange:changeCopy];
+  [changeCopy displayCornerRadius];
   v6 = v5;
 
-  v7 = [(PRXCardBackgroundView *)self traitCollection];
-  [v7 displayCornerRadius];
+  traitCollection = [(PRXCardBackgroundView *)self traitCollection];
+  [traitCollection displayCornerRadius];
   v9 = v8;
 
   if (v6 != v9)
@@ -62,21 +62,21 @@
     [(PRXCardBackgroundView *)self _updateCornerRadius];
   }
 
-  v10 = [(PRXCardBackgroundView *)self traitCollection];
-  v11 = [v10 customBackgroundColor];
+  traitCollection2 = [(PRXCardBackgroundView *)self traitCollection];
+  customBackgroundColor = [traitCollection2 customBackgroundColor];
 
-  if (v11)
+  if (customBackgroundColor)
   {
-    v12 = [(PRXCardBackgroundView *)self traitCollection];
-    v13 = [v12 customBackgroundColor];
-    [(PRXCardBackgroundView *)self setBackgroundColor:v13];
+    traitCollection3 = [(PRXCardBackgroundView *)self traitCollection];
+    customBackgroundColor2 = [traitCollection3 customBackgroundColor];
+    [(PRXCardBackgroundView *)self setBackgroundColor:customBackgroundColor2];
   }
 }
 
 - (void)_updateCornerRadius
 {
-  v3 = [(PRXCardBackgroundView *)self traitCollection];
-  [v3 displayCornerRadius];
+  traitCollection = [(PRXCardBackgroundView *)self traitCollection];
+  [traitCollection displayCornerRadius];
   v5 = v4 - self->_containerLayoutMargins.bottom;
 
   v6 = fmax(13.0, v5);

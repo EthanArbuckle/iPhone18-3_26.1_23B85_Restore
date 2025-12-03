@@ -3,18 +3,18 @@
 - (UIImageView)deviceIcon;
 - (double)spaceFromSuperViewToLabel;
 - (void)awakeFromNib;
-- (void)configureSelected:(BOOL)a3;
+- (void)configureSelected:(BOOL)selected;
 - (void)layoutSubviews;
 - (void)updateNumberOfLines;
-- (void)updateWithDevice:(id)a3;
+- (void)updateWithDevice:(id)device;
 @end
 
 @implementation FBADeviceDisplayCell
 
 - (double)spaceFromSuperViewToLabel
 {
-  v2 = [(FBADeviceDisplayCell *)self nameLabel];
-  [v2 frame];
+  nameLabel = [(FBADeviceDisplayCell *)self nameLabel];
+  [nameLabel frame];
   v4 = v3;
 
   return v4;
@@ -25,19 +25,19 @@
   v9.receiver = self;
   v9.super_class = FBADeviceDisplayCell;
   [(FBADeviceDisplayCell *)&v9 awakeFromNib];
-  v3 = [(FBADeviceDisplayCell *)self nameLabel];
-  [v3 setText:&stru_1000E2210];
+  nameLabel = [(FBADeviceDisplayCell *)self nameLabel];
+  [nameLabel setText:&stru_1000E2210];
 
   v4 = +[UIColor labelColor];
-  v5 = [(FBADeviceDisplayCell *)self nameLabel];
-  [v5 setTextColor:v4];
+  nameLabel2 = [(FBADeviceDisplayCell *)self nameLabel];
+  [nameLabel2 setTextColor:v4];
 
-  v6 = [(FBADeviceDisplayCell *)self typeLabel];
-  [v6 setText:&stru_1000E2210];
+  typeLabel = [(FBADeviceDisplayCell *)self typeLabel];
+  [typeLabel setText:&stru_1000E2210];
 
   v7 = +[UIColor secondaryLabelColor];
-  v8 = [(FBADeviceDisplayCell *)self typeLabel];
-  [v8 setTextColor:v7];
+  typeLabel2 = [(FBADeviceDisplayCell *)self typeLabel];
+  [typeLabel2 setTextColor:v7];
 
   [(FBADeviceDisplayCell *)self setSelectionStyle:0];
 }
@@ -49,16 +49,16 @@
   return NSStringFromClass(v2);
 }
 
-- (void)updateWithDevice:(id)a3
+- (void)updateWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 displayName];
-  v6 = [(FBADeviceDisplayCell *)self nameLabel];
-  [v6 setText:v5];
+  deviceCopy = device;
+  displayName = [deviceCopy displayName];
+  nameLabel = [(FBADeviceDisplayCell *)self nameLabel];
+  [nameLabel setText:displayName];
 
-  v7 = [v4 displayType];
-  v8 = [(FBADeviceDisplayCell *)self typeLabel];
-  [v8 setText:v7];
+  displayType = [deviceCopy displayType];
+  typeLabel = [(FBADeviceDisplayCell *)self typeLabel];
+  [typeLabel setText:displayType];
 
   v9 = +[UIScreen mainScreen];
   [v9 scale];
@@ -68,14 +68,14 @@
   v11[2] = sub_10001D390;
   v11[3] = &unk_1000DEFF0;
   v11[4] = self;
-  [v4 fetchIconImageDataForScale:v11 completionCompletion:v10];
+  [deviceCopy fetchIconImageDataForScale:v11 completionCompletion:v10];
 
   [(FBADeviceDisplayCell *)self updateNumberOfLines];
 }
 
-- (void)configureSelected:(BOOL)a3
+- (void)configureSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 3;
   }
@@ -90,15 +90,15 @@
 
 - (void)updateNumberOfLines
 {
-  v3 = [(FBADeviceDisplayCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(FBADeviceDisplayCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v6 = [(FBADeviceDisplayCell *)self nameLabel];
-  [v6 setNumberOfLines:!IsAccessibilityCategory];
+  nameLabel = [(FBADeviceDisplayCell *)self nameLabel];
+  [nameLabel setNumberOfLines:!IsAccessibilityCategory];
 
-  v7 = [(FBADeviceDisplayCell *)self typeLabel];
-  [v7 setNumberOfLines:!IsAccessibilityCategory];
+  typeLabel = [(FBADeviceDisplayCell *)self typeLabel];
+  [typeLabel setNumberOfLines:!IsAccessibilityCategory];
 }
 
 - (void)layoutSubviews

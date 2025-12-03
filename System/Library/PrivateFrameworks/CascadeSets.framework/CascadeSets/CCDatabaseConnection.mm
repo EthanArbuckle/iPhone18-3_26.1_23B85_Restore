@@ -1,18 +1,18 @@
 @interface CCDatabaseConnection
-+ (id)readOnlyConnectionToDatabaseAtURL:(id)a3 accessAssertion:(id)a4;
-- (BOOL)_createTableWithRecordClass:(Class)a3 error:(id *)a4;
-- (BOOL)beginTransactionWithError:(id *)a3;
-- (BOOL)cleanup:(id *)a3;
-- (BOOL)commitTransactionWithError:(id *)a3;
-- (BOOL)enumerateRecordResultsOfSelect:(id)a3 recordClass:(Class)a4 error:(id *)a5 usingBlock:(id)a6;
-- (BOOL)enumerateRowResultsOfSelect:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)firstResultOfSelect:(id)a3 outNumberValue:(id *)a4 error:(id *)a5;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)rollbackTransactionWithError:(id *)a3;
++ (id)readOnlyConnectionToDatabaseAtURL:(id)l accessAssertion:(id)assertion;
+- (BOOL)_createTableWithRecordClass:(Class)class error:(id *)error;
+- (BOOL)beginTransactionWithError:(id *)error;
+- (BOOL)cleanup:(id *)cleanup;
+- (BOOL)commitTransactionWithError:(id *)error;
+- (BOOL)enumerateRecordResultsOfSelect:(id)select recordClass:(Class)class error:(id *)error usingBlock:(id)block;
+- (BOOL)enumerateRowResultsOfSelect:(id)select error:(id *)error usingBlock:(id)block;
+- (BOOL)firstResultOfSelect:(id)select outNumberValue:(id *)value error:(id *)error;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)rollbackTransactionWithError:(id *)error;
 - (CCDatabaseConnection)init;
-- (CCDatabaseConnection)initWithDatabase:(id)a3 accessAssertion:(id)a4;
-- (id)enumeratorForRowResultsOfSelect:(id)a3 error:(id *)a4;
+- (CCDatabaseConnection)initWithDatabase:(id)database accessAssertion:(id)assertion;
+- (id)enumeratorForRowResultsOfSelect:(id)select error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -32,24 +32,24 @@
   objc_exception_throw(v2);
 }
 
-+ (id)readOnlyConnectionToDatabaseAtURL:(id)a3 accessAssertion:(id)a4
++ (id)readOnlyConnectionToDatabaseAtURL:(id)l accessAssertion:(id)assertion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() connectionToDatabaseAtURL:v6 dataProtectionClass:0 openMode:1 accessAssertion:v5];
+  assertionCopy = assertion;
+  lCopy = l;
+  v7 = [objc_opt_class() connectionToDatabaseAtURL:lCopy dataProtectionClass:0 openMode:1 accessAssertion:assertionCopy];
 
   return v7;
 }
 
-- (CCDatabaseConnection)initWithDatabase:(id)a3 accessAssertion:(id)a4
+- (CCDatabaseConnection)initWithDatabase:(id)database accessAssertion:(id)assertion
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  assertionCopy = assertion;
   v14.receiver = self;
   v14.super_class = CCDatabaseConnection;
   v9 = [(CCDatabaseConnection *)&v14 init];
   v10 = v9;
-  if (v9 && (v9->_inTransaction = 0, objc_storeStrong(&v9->_db, a3), objc_storeStrong(&v10->_accessAssertion, a4), !v10->_db))
+  if (v9 && (v9->_inTransaction = 0, objc_storeStrong(&v9->_db, database), objc_storeStrong(&v10->_accessAssertion, assertion), !v10->_db))
   {
     v12 = __biome_log_for_category();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -68,13 +68,13 @@
   return v11;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA busy_timeout = %d", 500];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA cache_spill = %d", 800];
-  if ([(CCDatabase *)self->_db openWithError:a3]&& [(CCDatabase *)self->_db executeCommandString:v5 error:a3]&& [(CCDatabase *)self->_db executeCommandString:@"PRAGMA foreign_keys = ON;" error:a3])
+  if ([(CCDatabase *)self->_db openWithError:error]&& [(CCDatabase *)self->_db executeCommandString:v5 error:error]&& [(CCDatabase *)self->_db executeCommandString:@"PRAGMA foreign_keys = ON;" error:error])
   {
-    v7 = [(CCDatabase *)self->_db executeCommandString:v6 error:a3];
+    v7 = [(CCDatabase *)self->_db executeCommandString:v6 error:error];
   }
 
   else
@@ -85,9 +85,9 @@
   return v7;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
-  if ([(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:a3]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:a3]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:a3]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:a3]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:a3]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:a3])
+  if ([(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:error]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:error]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:error]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:error]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:error]&& [(CCDatabaseConnection *)self _createTableWithRecordClass:objc_opt_class() error:error])
   {
     return 1;
   }
@@ -101,15 +101,15 @@
   return 0;
 }
 
-- (BOOL)_createTableWithRecordClass:(Class)a3 error:(id *)a4
+- (BOOL)_createTableWithRecordClass:(Class)class error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(objc_class *)a3 genSQLCreateStatements];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  genSQLCreateStatements = [(objc_class *)class genSQLCreateStatements];
+  v7 = [genSQLCreateStatements countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -120,17 +120,17 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(genSQLCreateStatements);
         }
 
-        if (![(CCDatabase *)self->_db executeCommandString:*(*(&v14 + 1) + 8 * i) error:a4])
+        if (![(CCDatabase *)self->_db executeCommandString:*(*(&v14 + 1) + 8 * i) error:error])
         {
           v11 = 0;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [genSQLCreateStatements countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -147,7 +147,7 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)beginTransactionWithError:(id *)a3
+- (BOOL)beginTransactionWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   if (self->_inTransaction)
@@ -157,7 +157,7 @@ LABEL_11:
     v13[0] = @"Attempted to begin transaction when one is already active";
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v6 = [v4 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:11 userInfo:v5];
-    CCSetError(a3, v6);
+    CCSetError(error, v6);
 
     LOBYTE(v7) = 0;
   }
@@ -170,7 +170,7 @@ LABEL_11:
       [CCDatabaseConnection beginTransactionWithError:];
     }
 
-    v7 = [(CCDatabase *)self->_db beginTransactionWithError:a3];
+    v7 = [(CCDatabase *)self->_db beginTransactionWithError:error];
     if (v7)
     {
       LOBYTE(v7) = 1;
@@ -182,7 +182,7 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)commitTransactionWithError:(id *)a3
+- (BOOL)commitTransactionWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   if (self->_inTransaction)
@@ -193,7 +193,7 @@ LABEL_11:
       [CCDatabaseConnection commitTransactionWithError:];
     }
 
-    v6 = [(CCDatabase *)self->_db commitTransactionWithError:a3];
+    v6 = [(CCDatabase *)self->_db commitTransactionWithError:error];
     if (v6)
     {
       self->_inTransaction = 0;
@@ -208,7 +208,7 @@ LABEL_11:
     v13[0] = @"Attempted to commit transaction when none are active";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v9 = [v7 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:12 userInfo:v8];
-    CCSetError(a3, v9);
+    CCSetError(error, v9);
 
     LOBYTE(v6) = 0;
   }
@@ -217,7 +217,7 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)rollbackTransactionWithError:(id *)a3
+- (BOOL)rollbackTransactionWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   if (self->_inTransaction)
@@ -228,7 +228,7 @@ LABEL_11:
       [CCDatabaseConnection rollbackTransactionWithError:];
     }
 
-    v6 = [(CCDatabase *)self->_db rollbackTransactionWithError:a3];
+    v6 = [(CCDatabase *)self->_db rollbackTransactionWithError:error];
     if (v6)
     {
       self->_inTransaction = 0;
@@ -243,7 +243,7 @@ LABEL_11:
     v13[0] = @"Attempted to rollback transaction when none are active";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v9 = [v7 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:13 userInfo:v8];
-    CCSetError(a3, v9);
+    CCSetError(error, v9);
 
     LOBYTE(v6) = 0;
   }
@@ -252,7 +252,7 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)cleanup:(id *)a3
+- (BOOL)cleanup:(id *)cleanup
 {
   v12[1] = *MEMORY[0x1E69E9840];
   if (self->_inTransaction)
@@ -262,7 +262,7 @@ LABEL_11:
     v12[0] = @"Attempted to cleanup while transaction is active";
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v6 = [v4 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:16 userInfo:v5];
-    CCSetError(a3, v6);
+    CCSetError(cleanup, v6);
 
     result = 0;
   }
@@ -275,17 +275,17 @@ LABEL_11:
       [CCDatabaseConnection cleanup:];
     }
 
-    result = [(CCDatabase *)self->_db cleanup:a3];
+    result = [(CCDatabase *)self->_db cleanup:cleanup];
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)enumeratorForRowResultsOfSelect:(id)a3 error:(id *)a4
+- (id)enumeratorForRowResultsOfSelect:(id)select error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  selectCopy = select;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -293,32 +293,32 @@ LABEL_11:
     v25 = *MEMORY[0x1E696A278];
     v26[0] = @"Could not execute non-select command on read-only database connection";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    v8 = [v10 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:14 userInfo:v7];
-    CCSetError(a4, v8);
+    error = [v10 errorWithDomain:@"com.apple.CascadeSets.CCDatabase" code:14 userInfo:v7];
+    CCSetError(error, error);
 LABEL_7:
     v11 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(CCDatabase *)self->_db enumerateCommand:v6 options:2];
-  v8 = [v7 error];
-  if (v8)
+  v7 = [(CCDatabase *)self->_db enumerateCommand:selectCopy options:2];
+  error = [v7 error];
+  if (error)
   {
-    CCSetError(a4, v8);
+    CCSetError(error, error);
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 commandString];
-      v15 = [v6 parameters];
-      v16 = [(CCDatabase *)self->_db path];
+      commandString = [selectCopy commandString];
+      parameters = [selectCopy parameters];
+      path = [(CCDatabase *)self->_db path];
       v17 = 138413058;
-      v18 = v14;
+      v18 = commandString;
       v19 = 2112;
-      v20 = v15;
+      v20 = parameters;
       v21 = 2112;
-      v22 = v16;
+      v22 = path;
       v23 = 2112;
-      v24 = v8;
+      v24 = error;
       _os_log_error_impl(&dword_1B6DB2000, v9, OS_LOG_TYPE_ERROR, "Could not execute command=%@ with parameters=%@ in database file at %@, err=%@", &v17, 0x2Au);
     }
 
@@ -334,9 +334,9 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)firstResultOfSelect:(id)a3 outNumberValue:(id *)a4 error:(id *)a5
+- (BOOL)firstResultOfSelect:(id)select outNumberValue:(id *)value error:(id *)error
 {
-  v8 = a3;
+  selectCopy = select;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -348,9 +348,9 @@ LABEL_8:
   v13[2] = __65__CCDatabaseConnection_firstResultOfSelect_outNumberValue_error___block_invoke;
   v13[3] = &unk_1E7C8B668;
   v13[4] = &v14;
-  v9 = [(CCDatabaseConnection *)self enumerateRowResultsOfSelect:v8 error:a5 usingBlock:v13];
+  v9 = [(CCDatabaseConnection *)self enumerateRowResultsOfSelect:selectCopy error:error usingBlock:v13];
   v10 = v9;
-  if (a4)
+  if (value)
   {
     v11 = v9;
   }
@@ -362,7 +362,7 @@ LABEL_8:
 
   if (v11)
   {
-    *a4 = v15[5];
+    *value = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -401,24 +401,24 @@ BOOL __65__CCDatabaseConnection_firstResultOfSelect_outNumberValue_error___block
   return result;
 }
 
-- (BOOL)enumerateRowResultsOfSelect:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateRowResultsOfSelect:(id)select error:(id *)error usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CCDatabaseConnection *)self enumeratorForRowResultsOfSelect:v8 error:a4];
+  selectCopy = select;
+  blockCopy = block;
+  v10 = [(CCDatabaseConnection *)self enumeratorForRowResultsOfSelect:selectCopy error:error];
   v11 = v10;
   if (v10)
   {
     v24 = 0;
-    v12 = [v10 nextRow];
-    if (v12)
+    nextRow = [v10 nextRow];
+    if (nextRow)
     {
-      v13 = v12;
+      v13 = nextRow;
       while (1)
       {
         v14 = objc_autoreleasePoolPush();
         v23 = 0;
-        v15 = v9[2](v9, v13, &v23, &v24);
+        v15 = blockCopy[2](blockCopy, v13, &v23, &v24);
         v16 = v23;
         v17 = v16;
         if (!v15 || v24 == 1)
@@ -427,10 +427,10 @@ BOOL __65__CCDatabaseConnection_firstResultOfSelect_outNumberValue_error___block
         }
 
         objc_autoreleasePoolPop(v14);
-        v18 = [v11 nextRow];
+        nextRow2 = [v11 nextRow];
 
-        v13 = v18;
-        if (!v18)
+        v13 = nextRow2;
+        if (!nextRow2)
         {
           goto LABEL_7;
         }
@@ -446,11 +446,11 @@ LABEL_7:
       LOBYTE(v15) = 1;
     }
 
-    v19 = [v11 error];
-    v20 = v19;
-    if (v19)
+    error = [v11 error];
+    v20 = error;
+    if (error)
     {
-      v21 = v19;
+      v21 = error;
     }
 
     else
@@ -458,7 +458,7 @@ LABEL_7:
       v21 = v17;
     }
 
-    CCSetError(a4, v21);
+    CCSetError(error, v21);
   }
 
   else
@@ -469,19 +469,19 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)enumerateRecordResultsOfSelect:(id)a3 recordClass:(Class)a4 error:(id *)a5 usingBlock:(id)a6
+- (BOOL)enumerateRecordResultsOfSelect:(id)select recordClass:(Class)class error:(id *)error usingBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__CCDatabaseConnection_enumerateRecordResultsOfSelect_recordClass_error_usingBlock___block_invoke;
   v13[3] = &unk_1E7C8B690;
-  v14 = v10;
-  v15 = a4;
-  v11 = v10;
-  LOBYTE(a5) = [(CCDatabaseConnection *)self enumerateRowResultsOfSelect:a3 error:a5 usingBlock:v13];
+  v14 = blockCopy;
+  classCopy = class;
+  v11 = blockCopy;
+  LOBYTE(error) = [(CCDatabaseConnection *)self enumerateRowResultsOfSelect:select error:error usingBlock:v13];
 
-  return a5;
+  return error;
 }
 
 uint64_t __84__CCDatabaseConnection_enumerateRecordResultsOfSelect_recordClass_error_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)

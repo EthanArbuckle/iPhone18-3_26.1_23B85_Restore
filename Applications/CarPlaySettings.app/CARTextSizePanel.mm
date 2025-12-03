@@ -1,6 +1,6 @@
 @interface CARTextSizePanel
 - (CARSettingsCellSpecifier)textSizeSpecifier;
-- (CARTextSizePanel)initWithPanelController:(id)a3 textSizeSpecifier:(id)a4;
+- (CARTextSizePanel)initWithPanelController:(id)controller textSizeSpecifier:(id)specifier;
 - (id)cellSpecifier;
 - (id)cellSpecifiers;
 - (void)_updateSelectedIndex;
@@ -11,13 +11,13 @@
 
 @implementation CARTextSizePanel
 
-- (CARTextSizePanel)initWithPanelController:(id)a3 textSizeSpecifier:(id)a4
+- (CARTextSizePanel)initWithPanelController:(id)controller textSizeSpecifier:(id)specifier
 {
-  v6 = a3;
-  obj = a4;
+  controllerCopy = controller;
+  obj = specifier;
   v44.receiver = self;
   v44.super_class = CARTextSizePanel;
-  v7 = [(CARSettingsPanel *)&v44 initWithPanelController:v6];
+  v7 = [(CARSettingsPanel *)&v44 initWithPanelController:controllerCopy];
   if (v7)
   {
     objc_initWeak(&location, v7);
@@ -74,16 +74,16 @@
 
     for (i = 0; ; ++i)
     {
-      v31 = [(CARSettingsGroupCellSpecifier *)v7->_groupSpecifier groupSpecifiers];
-      v32 = i < [v31 count];
+      groupSpecifiers = [(CARSettingsGroupCellSpecifier *)v7->_groupSpecifier groupSpecifiers];
+      v32 = i < [groupSpecifiers count];
 
       if (!v32)
       {
         break;
       }
 
-      v33 = [(CARSettingsGroupCellSpecifier *)v7->_groupSpecifier groupSpecifiers];
-      v34 = [v33 objectAtIndexedSubscript:i];
+      groupSpecifiers2 = [(CARSettingsGroupCellSpecifier *)v7->_groupSpecifier groupSpecifiers];
+      v34 = [groupSpecifiers2 objectAtIndexedSubscript:i];
 
       v35 = [v21 objectAtIndexedSubscript:i];
       [v34 setOverrideTitleFont:v35];
@@ -141,9 +141,9 @@
   }
 
   v7 = [(CARTextSizePanel *)self groupSpecifier:v12];
-  v8 = [v7 selectedTitle];
-  v9 = [(CARTextSizePanel *)self textSizeSpecifier];
-  [v9 setDetail:v8];
+  selectedTitle = [v7 selectedTitle];
+  textSizeSpecifier = [(CARTextSizePanel *)self textSizeSpecifier];
+  [textSizeSpecifier setDetail:selectedTitle];
 
   v10 = self->_cellSpecifier;
 
@@ -152,10 +152,10 @@
 
 - (id)cellSpecifiers
 {
-  v2 = [(CARTextSizePanel *)self groupSpecifier];
-  v3 = [v2 groupSpecifiers];
+  groupSpecifier = [(CARTextSizePanel *)self groupSpecifier];
+  groupSpecifiers = [groupSpecifier groupSpecifiers];
 
-  return v3;
+  return groupSpecifiers;
 }
 
 - (void)viewDidLoad
@@ -168,21 +168,21 @@
 - (void)_updateSelectedIndex
 {
   v3 = +[CARPrototypePref contentSize];
-  v14 = [v3 value];
+  value = [v3 value];
 
-  if ([v14 isEqualToString:UIContentSizeCategoryLarge])
+  if ([value isEqualToString:UIContentSizeCategoryLarge])
   {
     v4 = 0;
     v5 = 1;
   }
 
-  else if ([v14 isEqualToString:UIContentSizeCategoryExtraLarge])
+  else if ([value isEqualToString:UIContentSizeCategoryExtraLarge])
   {
     v4 = 1;
     v5 = 2;
   }
 
-  else if ([v14 isEqualToString:UIContentSizeCategoryExtraExtraLarge])
+  else if ([value isEqualToString:UIContentSizeCategoryExtraExtraLarge])
   {
     v4 = 2;
     v5 = 3;
@@ -190,7 +190,7 @@
 
   else
   {
-    v6 = [v14 isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge];
+    v6 = [value isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge];
     if (v6)
     {
       v5 = 4;
@@ -212,22 +212,22 @@
     }
   }
 
-  v7 = [(CARTextSizePanel *)self groupSpecifier];
-  [v7 setSelectedIndex:v4];
+  groupSpecifier = [(CARTextSizePanel *)self groupSpecifier];
+  [groupSpecifier setSelectedIndex:v4];
 
-  v8 = [(CARTextSizePanel *)self groupSpecifier];
-  v9 = [v8 selectedTitle];
-  v10 = [(CARTextSizePanel *)self textSizeSpecifier];
-  [v10 setDetail:v9];
+  groupSpecifier2 = [(CARTextSizePanel *)self groupSpecifier];
+  selectedTitle = [groupSpecifier2 selectedTitle];
+  textSizeSpecifier = [(CARTextSizePanel *)self textSizeSpecifier];
+  [textSizeSpecifier setDetail:selectedTitle];
 
-  v11 = [(CARSettingsPanel *)self panelController];
-  v12 = [v11 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  if ([v12 textSizePreference] != v5)
+  if ([vehicle textSizePreference] != v5)
   {
-    [v12 setTextSizePreference:v5];
-    v13 = [(CARSettingsPanel *)self panelController];
-    [v13 saveVehicle:v12];
+    [vehicle setTextSizePreference:v5];
+    panelController2 = [(CARSettingsPanel *)self panelController];
+    [panelController2 saveVehicle:vehicle];
   }
 }
 

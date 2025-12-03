@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_MigrateProResPackedBadgeAttributes
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_MigrateProResPackedBadgeAttributes
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v95 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
@@ -27,7 +27,7 @@
 
   v11 = v51 + 5;
   obj = v51[5];
-  v12 = [v6 executeFetchRequest:v9 error:&obj];
+  v12 = [contextCopy executeFetchRequest:v9 error:&obj];
   objc_storeStrong(v11, obj);
   v13 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v12 count], 0);
   v14 = v13;
@@ -41,7 +41,7 @@
     v47 = &v50;
     v48 = &v56;
     v46 = v13;
-    v15 = [v6 enumerateWithIncrementalSaveUsingObjects:v12 withBlock:v45];
+    v15 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v12 withBlock:v45];
     if (v15)
     {
       if (!v51[5])
@@ -53,8 +53,8 @@
 
         if (v17)
         {
-          v18 = [(PLModelMigrationActionCore *)self logger];
-          v19 = v18 == 0;
+          logger = [(PLModelMigrationActionCore *)self logger];
+          v19 = logger == 0;
 
           if (v19)
           {
@@ -136,8 +136,8 @@
 
     if (v25)
     {
-      v26 = [(PLModelMigrationActionCore *)self logger];
-      v27 = v26 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v27 = logger2 == 0;
 
       if (v27)
       {
@@ -212,9 +212,9 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = v51[5];
+    *error = v51[5];
   }
 
   v41 = v57[3];

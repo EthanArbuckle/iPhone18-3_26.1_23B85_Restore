@@ -1,15 +1,15 @@
 @interface WFIsolatedShortcutRunner
 - (WFIsolatedShortcutRunner)init;
-- (void)extractVariableContentFromEncodedReference:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5;
-- (void)fetchDisplayValueForRequest:(id)a3 completionHandler:(id)a4;
-- (void)injectContentAsVariable:(id)a3 completionHandler:(id)a4;
-- (void)injectResolvedContent:(id)a3 asVariableWithName:(id)a4 completionHandler:(id)a5;
-- (void)performQuery:(id)a3 inValueSet:(id)a4 toolInvocation:(id)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)reindexToolKitDatabaseWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)resolveContent:(id)a3 completionHandler:(id)a4;
-- (void)resolveDeferredValueFromEncodedStorage:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5;
-- (void)runToolWithInvocation:(id)a3;
-- (void)transformAction:(id)a3 completionHandler:(id)a4;
+- (void)extractVariableContentFromEncodedReference:(id)reference withResolutionRequest:(id)request completionHandler:(id)handler;
+- (void)fetchDisplayValueForRequest:(id)request completionHandler:(id)handler;
+- (void)injectContentAsVariable:(id)variable completionHandler:(id)handler;
+- (void)injectResolvedContent:(id)content asVariableWithName:(id)name completionHandler:(id)handler;
+- (void)performQuery:(id)query inValueSet:(id)set toolInvocation:(id)invocation options:(id)options completionHandler:(id)handler;
+- (void)reindexToolKitDatabaseWithRequest:(id)request completionHandler:(id)handler;
+- (void)resolveContent:(id)content completionHandler:(id)handler;
+- (void)resolveDeferredValueFromEncodedStorage:(id)storage withResolutionRequest:(id)request completionHandler:(id)handler;
+- (void)runToolWithInvocation:(id)invocation;
+- (void)transformAction:(id)action completionHandler:(id)handler;
 - (void)unaliveProcess;
 @end
 
@@ -55,9 +55,9 @@
 
 - (void)unaliveProcess
 {
-  v3 = [(WFIsolatedShortcutRunner *)self sandboxExtensionReleaseBlock];
+  sandboxExtensionReleaseBlock = [(WFIsolatedShortcutRunner *)self sandboxExtensionReleaseBlock];
 
-  if (v3)
+  if (sandboxExtensionReleaseBlock)
   {
     v4 = getWFToolKitExecutionLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -67,8 +67,8 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Releasing sandbox extensions", buf, 0xCu);
     }
 
-    v5 = [(WFIsolatedShortcutRunner *)self sandboxExtensionReleaseBlock];
-    v5[2]();
+    sandboxExtensionReleaseBlock2 = [(WFIsolatedShortcutRunner *)self sandboxExtensionReleaseBlock];
+    sandboxExtensionReleaseBlock2[2]();
   }
 
   v6.receiver = self;
@@ -76,77 +76,77 @@
   [(WFIsolatedShortcutRunner *)&v6 unaliveProcess];
 }
 
-- (void)reindexToolKitDatabaseWithRequest:(id)a3 completionHandler:(id)a4
+- (void)reindexToolKitDatabaseWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFIsolatedShortcutRunner *)self stateMachine];
-  [v8 handlingRequestStateWithReason:@"incoming ToolKit indexing request"];
+  requestCopy = request;
+  handlerCopy = handler;
+  stateMachine = [(WFIsolatedShortcutRunner *)self stateMachine];
+  [stateMachine handlingRequestStateWithReason:@"incoming ToolKit indexing request"];
 
   v9 = +[WFShortcutRunnerSandboxExtensionManager sharedManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000865B8;
   v12[3] = &unk_10009FCE8;
-  v13 = v6;
-  v14 = v7;
+  v13 = requestCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = requestCopy;
+  v11 = handlerCopy;
   [v9 requestSandboxExtensionForToolKitIndexingWithCompletionHandler:v12];
 }
 
-- (void)transformAction:(id)a3 completionHandler:(id)a4
+- (void)transformAction:(id)action completionHandler:(id)handler
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [(WFIsolatedShortcutRunner *)self workflowController];
-  v9 = [v8 executionQueue];
+  actionCopy = action;
+  handlerCopy = handler;
+  workflowController = [(WFIsolatedShortcutRunner *)self workflowController];
+  executionQueue = [workflowController executionQueue];
 
-  if (!v9)
+  if (!executionQueue)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"WFIsolatedShortcutRunner.m" lineNumber:286 description:@"Missing workQueue for action transformation"];
   }
 
-  [WFToolKitHelper transformActionWithAction:v11 queue:v9 completionBlock:v7];
+  [WFToolKitHelper transformActionWithAction:actionCopy queue:executionQueue completionBlock:handlerCopy];
 }
 
-- (void)resolveDeferredValueFromEncodedStorage:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5
+- (void)resolveDeferredValueFromEncodedStorage:(id)storage withResolutionRequest:(id)request completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100086BA4;
   v8[3] = &unk_10009FBD0;
-  v9 = a5;
-  v7 = v9;
-  [WFToolKitHelper resolveDeferredValueForEncodedStorage:a3 encodedResolutionRequest:a4 completionBlock:v8];
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  [WFToolKitHelper resolveDeferredValueForEncodedStorage:storage encodedResolutionRequest:request completionBlock:v8];
 }
 
-- (void)fetchDisplayValueForRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchDisplayValueForRequest:(id)request completionHandler:(id)handler
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100086D00;
   v6[3] = &unk_10009FBD0;
-  v7 = a4;
-  v5 = v7;
-  [WFToolKitHelper produceEncodedDisplayRepresentationForRequest:a3 completionBlock:v6];
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  [WFToolKitHelper produceEncodedDisplayRepresentationForRequest:request completionBlock:v6];
 }
 
-- (void)performQuery:(id)a3 inValueSet:(id)a4 toolInvocation:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)performQuery:(id)query inValueSet:(id)set toolInvocation:(id)invocation options:(id)options completionHandler:(id)handler
 {
-  v66 = a3;
-  v13 = a4;
-  v65 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [WFToolKitHelper valueSetTypeForDefinition:v13];
-  v17 = [(WFIsolatedShortcutRunner *)self currentRunRequest];
-  v18 = [v17 runSource];
-  LODWORD(a5) = [v18 isEqualToString:WFWorkflowRunSourceSpotlightTool];
+  queryCopy = query;
+  setCopy = set;
+  invocationCopy = invocation;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v16 = [WFToolKitHelper valueSetTypeForDefinition:setCopy];
+  currentRunRequest = [(WFIsolatedShortcutRunner *)self currentRunRequest];
+  runSource = [currentRunRequest runSource];
+  LODWORD(invocation) = [runSource isEqualToString:WFWorkflowRunSourceSpotlightTool];
 
-  if (a5)
+  if (invocation)
   {
     v19 = v16 == 3;
   }
@@ -159,9 +159,9 @@
   if (v19)
   {
     v80 = 0;
-    v20 = [WFToolKitHelper linkQueryValueSetAsDynamicEnumeration:v13 error:&v80];
+    v20 = [WFToolKitHelper linkQueryValueSetAsDynamicEnumeration:setCopy error:&v80];
     v21 = v80;
-    v22 = v13;
+    v22 = setCopy;
     if (v20)
     {
       v23 = v20;
@@ -188,7 +188,7 @@
   {
     v20 = 0;
     v21 = 0;
-    v22 = v13;
+    v22 = setCopy;
   }
 
   if (v16 <= 1)
@@ -197,7 +197,7 @@
     {
       if (v16 == 1)
       {
-        v32 = v66;
+        v32 = queryCopy;
         if (v20)
         {
           v33 = v22;
@@ -211,7 +211,7 @@
 
           if (!v20)
           {
-            v15[2](v15, 0, v42);
+            handlerCopy[2](handlerCopy, 0, v42);
             v21 = v42;
             goto LABEL_29;
           }
@@ -224,13 +224,13 @@
         v74[1] = 3221225472;
         v74[2] = sub_10008760C;
         v74[3] = &unk_10009FC20;
-        v78 = v15;
+        v78 = handlerCopy;
         v20 = v20;
         v75 = v20;
-        v76 = v66;
-        v77 = v14;
-        v37 = v65;
-        [WFToolKitHelper createActionFromEncodedToolInvocation:v65 fetchingDefaultValues:1 completion:v74];
+        v76 = queryCopy;
+        v77 = optionsCopy;
+        v37 = invocationCopy;
+        [WFToolKitHelper createActionFromEncodedToolInvocation:invocationCopy fetchingDefaultValues:1 completion:v74];
 
         v22 = v33;
         goto LABEL_30;
@@ -244,7 +244,7 @@
     v27 = v25;
     v28 = @"Can't parse value set definition";
     v29 = a2;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 157;
     goto LABEL_27;
   }
@@ -253,17 +253,17 @@
   {
     if (v16 == 3)
     {
-      v32 = v66;
-      [WFToolKitHelper runLinkQuery:v66 valueSet:v22 encodedOptions:v14 completionBlock:v15];
+      v32 = queryCopy;
+      [WFToolKitHelper runLinkQuery:queryCopy valueSet:v22 encodedOptions:optionsCopy completionBlock:handlerCopy];
 LABEL_29:
-      v37 = v65;
+      v37 = invocationCopy;
       goto LABEL_30;
     }
 
     if (v16 != 4)
     {
 LABEL_28:
-      v32 = v66;
+      v32 = queryCopy;
       goto LABEL_29;
     }
 
@@ -272,13 +272,13 @@ LABEL_28:
     v27 = v25;
     v28 = @"Not yet implemented";
     v29 = a2;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 162;
 LABEL_27:
-    [v25 handleFailureInMethod:v29 object:v30 file:@"WFIsolatedShortcutRunner.m" lineNumber:v31 description:v28];
+    [v25 handleFailureInMethod:v29 object:selfCopy2 file:@"WFIsolatedShortcutRunner.m" lineNumber:v31 description:v28];
 
     v41 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v15[2](v15, 0, v41);
+    handlerCopy[2](handlerCopy, 0, v41);
 
     v22 = v26;
     goto LABEL_28;
@@ -290,24 +290,24 @@ LABEL_27:
 
   if (v34)
   {
-    v36 = [v34 contentItemClass];
-    v37 = v65;
-    if (v36)
+    contentItemClass = [v34 contentItemClass];
+    v37 = invocationCopy;
+    if (contentItemClass)
     {
-      v38 = v36;
+      v38 = contentItemClass;
       v39 = objc_opt_respondsToSelector();
       if (v39)
       {
-        v40 = [v38 allProperties];
+        allProperties = [v38 allProperties];
       }
 
       else
       {
-        v40 = 0;
+        allProperties = 0;
       }
 
       v47 = objc_opt_class();
-      v64 = sub_100087A20(v40, v47);
+      v64 = sub_100087A20(allProperties, v47);
       if (v39)
       {
       }
@@ -326,28 +326,28 @@ LABEL_27:
         v50 = v49;
         if (v49)
         {
-          v51 = [v49 possibleValues];
+          possibleValues = [v49 possibleValues];
           v67[0] = _NSConcreteStackBlock;
           v67[1] = 3221225472;
           v67[2] = sub_100087BE0;
           v67[3] = &unk_10009FC70;
           v68 = v50;
-          v69 = v14;
-          v70 = v15;
-          [v51 getValuesWithCompletionBlock:v67];
+          v69 = optionsCopy;
+          v70 = handlerCopy;
+          [possibleValues getValuesWithCompletionBlock:v67];
         }
 
         else
         {
           v81 = NSLocalizedDescriptionKey;
-          v61 = [v48 propertyName];
+          propertyName = [v48 propertyName];
           v57 = NSStringFromClass(v38);
-          v58 = [NSString stringWithFormat:@"%@ is not a content property on %@", v61, v57];
+          v58 = [NSString stringWithFormat:@"%@ is not a content property on %@", propertyName, v57];
           v82 = v58;
           v59 = [NSDictionary dictionaryWithObjects:&v82 forKeys:&v81 count:1];
           v60 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v59];
 
-          v15[2](v15, 0, v60);
+          handlerCopy[2](handlerCopy, 0, v60);
           v35 = v60;
         }
 
@@ -365,11 +365,11 @@ LABEL_27:
         v56 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v55];
 
         v22 = v54;
-        v15[2](v15, 0, v56);
+        handlerCopy[2](handlerCopy, 0, v56);
         v35 = v56;
       }
 
-      v32 = v66;
+      v32 = queryCopy;
       v34 = v63;
     }
 
@@ -382,53 +382,53 @@ LABEL_27:
       v45 = [NSDictionary dictionaryWithObjects:&v86 forKeys:&v85 count:1];
       v46 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v45];
 
-      v15[2](v15, 0, v46);
+      handlerCopy[2](handlerCopy, 0, v46);
       v35 = v46;
       v22 = v44;
       v34 = v43;
-      v32 = v66;
+      v32 = queryCopy;
     }
   }
 
   else
   {
-    v15[2](v15, 0, v35);
-    v37 = v65;
-    v32 = v66;
+    handlerCopy[2](handlerCopy, 0, v35);
+    v37 = invocationCopy;
+    v32 = queryCopy;
   }
 
   v21 = v35;
 LABEL_30:
 }
 
-- (void)extractVariableContentFromEncodedReference:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5
+- (void)extractVariableContentFromEncodedReference:(id)reference withResolutionRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFIsolatedShortcutRunner *)self accessSpecifier];
-  v12 = [v11 allowVariableInjection];
+  referenceCopy = reference;
+  requestCopy = request;
+  handlerCopy = handler;
+  accessSpecifier = [(WFIsolatedShortcutRunner *)self accessSpecifier];
+  allowVariableInjection = [accessSpecifier allowVariableInjection];
 
-  if (v12)
+  if (allowVariableInjection)
   {
     v19 = 0;
-    v13 = [WFToolKitHelper produceVariableFromEncodedReference:v8 error:&v19];
+    v13 = [WFToolKitHelper produceVariableFromEncodedReference:referenceCopy error:&v19];
     v14 = v19;
     if (v13)
     {
-      v15 = [(WFIsolatedShortcutRunner *)self workflowController];
+      workflowController = [(WFIsolatedShortcutRunner *)self workflowController];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100088020;
       v16[3] = &unk_10009FB80;
-      v18 = v10;
-      v17 = v9;
-      [v13 retrieveContentCollectionWithVariableSource:v15 completionHandler:v16];
+      v18 = handlerCopy;
+      v17 = requestCopy;
+      [v13 retrieveContentCollectionWithVariableSource:workflowController completionHandler:v16];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 
@@ -438,36 +438,36 @@ LABEL_30:
     v21 = @"You're not entitled to extract variables out of a workflow execution";
     v14 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v13 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:v14];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)injectResolvedContent:(id)a3 asVariableWithName:(id)a4 completionHandler:(id)a5
+- (void)injectResolvedContent:(id)content asVariableWithName:(id)name completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  contentCopy = content;
+  nameCopy = name;
+  handlerCopy = handler;
+  if (nameCopy)
   {
-    v11 = v9;
+    uUIDString = nameCopy;
   }
 
   else
   {
     v12 = +[NSUUID UUID];
-    v11 = [v12 UUIDString];
+    uUIDString = [v12 UUIDString];
   }
 
-  v13 = [[WFUserDefinedVariable alloc] initWithName:v11 variableProvider:0 aggrandizements:0];
-  v14 = [(WFIsolatedShortcutRunner *)self workflowController];
-  v15 = [v13 name];
-  v16 = [v14 setContent:v8 forVariableWithName:v15];
+  v13 = [[WFUserDefinedVariable alloc] initWithName:uUIDString variableProvider:0 aggrandizements:0];
+  workflowController = [(WFIsolatedShortcutRunner *)self workflowController];
+  name = [v13 name];
+  v16 = [workflowController setContent:contentCopy forVariableWithName:name];
 
   if (v16)
   {
-    v17 = [v13 serializedRepresentation];
-    v18 = [WFAnyPropertyListObject objectWithPropertyListObject:v17];
-    v10[2](v10, v18, 0);
+    serializedRepresentation = [v13 serializedRepresentation];
+    v18 = [WFAnyPropertyListObject objectWithPropertyListObject:serializedRepresentation];
+    handlerCopy[2](handlerCopy, v18, 0);
   }
 
   else
@@ -476,62 +476,62 @@ LABEL_30:
     v22 = @"Couldn't inject content to variable table";
     v19 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:88 userInfo:v19];
-    (v10)[2](v10, 0, v20);
+    (handlerCopy)[2](handlerCopy, 0, v20);
   }
 }
 
-- (void)resolveContent:(id)a3 completionHandler:(id)a4
+- (void)resolveContent:(id)content completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [a3 variableContent];
+  handlerCopy = handler;
+  variableContent = [content variableContent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(WFIsolatedShortcutRunner *)self workflowController];
+    workflowController = [(WFIsolatedShortcutRunner *)self workflowController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100088390;
     v11[3] = &unk_10009FB58;
-    v12 = v7;
-    [v8 resolveWithVariableSource:v9 completionHandler:v11];
+    v12 = handlerCopy;
+    [variableContent resolveWithVariableSource:workflowController completionHandler:v11];
   }
 
   else
   {
     v10 = +[NSAssertionHandler currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFIsolatedShortcutRunner.m" lineNumber:97 description:{@"Got contents that Shortcuts doesn't recognize: %@", v8}];
+    [v10 handleFailureInMethod:a2 object:self file:@"WFIsolatedShortcutRunner.m" lineNumber:97 description:{@"Got contents that Shortcuts doesn't recognize: %@", variableContent}];
   }
 }
 
-- (void)injectContentAsVariable:(id)a3 completionHandler:(id)a4
+- (void)injectContentAsVariable:(id)variable completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WFIsolatedShortcutRunner *)self accessSpecifier];
-  v10 = [v9 allowVariableInjection];
+  variableCopy = variable;
+  handlerCopy = handler;
+  accessSpecifier = [(WFIsolatedShortcutRunner *)self accessSpecifier];
+  allowVariableInjection = [accessSpecifier allowVariableInjection];
 
-  if (v10)
+  if (allowVariableInjection)
   {
-    v11 = [v7 variableContent];
+    variableContent = [variableCopy variableContent];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(WFIsolatedShortcutRunner *)self workflowController];
+      workflowController = [(WFIsolatedShortcutRunner *)self workflowController];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1000885D8;
       v15[3] = &unk_10009FB30;
-      v17 = v8;
+      v17 = handlerCopy;
       v15[4] = self;
-      v11 = v11;
-      v16 = v11;
-      [v11 resolveWithVariableSource:v12 completionHandler:v15];
+      variableContent = variableContent;
+      v16 = variableContent;
+      [variableContent resolveWithVariableSource:workflowController completionHandler:v15];
     }
 
     else
     {
       v14 = +[NSAssertionHandler currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"WFIsolatedShortcutRunner.m" lineNumber:81 description:{@"Got contents that Shortcuts doesn't recognize: %@", v11}];
+      [v14 handleFailureInMethod:a2 object:self file:@"WFIsolatedShortcutRunner.m" lineNumber:81 description:{@"Got contents that Shortcuts doesn't recognize: %@", variableContent}];
     }
   }
 
@@ -539,26 +539,26 @@ LABEL_30:
   {
     v18 = NSLocalizedDescriptionKey;
     v19 = @"You're not entitled to inject variables into a workflow execution";
-    v11 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    v13 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:v11];
-    (*(v8 + 2))(v8, 0, v13);
+    variableContent = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
+    v13 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:variableContent];
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)runToolWithInvocation:(id)a3
+- (void)runToolWithInvocation:(id)invocation
 {
-  v5 = a3;
-  v6 = [(WFIsolatedShortcutRunner *)self sandboxExtensionGroup];
-  v7 = [(WFIsolatedShortcutRunner *)self queue];
+  invocationCopy = invocation;
+  sandboxExtensionGroup = [(WFIsolatedShortcutRunner *)self sandboxExtensionGroup];
+  queue = [(WFIsolatedShortcutRunner *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008874C;
   block[3] = &unk_10009FB08;
-  v11 = self;
+  selfCopy = self;
   v12 = a2;
-  v10 = v5;
-  v8 = v5;
-  dispatch_group_notify(v6, v7, block);
+  v10 = invocationCopy;
+  v8 = invocationCopy;
+  dispatch_group_notify(sandboxExtensionGroup, queue, block);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface PSYRegistrySingleton
 + (id)registry;
-+ (void)addDelegate:(id)a3;
++ (void)addDelegate:(id)delegate;
 @end
 
 @implementation PSYRegistrySingleton
@@ -24,11 +24,11 @@ uint64_t __32__PSYRegistrySingleton_registry__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)addDelegate:(id)a3
++ (void)addDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[PSYRegistrySingleton registry];
-  [v4 addDelegate:v3];
+  [v4 addDelegate:delegateCopy];
 
   if (([v4 started] & 1) == 0)
   {

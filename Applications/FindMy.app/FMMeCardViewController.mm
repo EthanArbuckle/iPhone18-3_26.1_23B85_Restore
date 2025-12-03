@@ -1,13 +1,13 @@
 @interface FMMeCardViewController
-- (_TtC6FindMy22FMMeCardViewController)initWithCoder:(id)a3;
-- (_TtC6FindMy22FMMeCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC6FindMy22FMMeCardViewController)initWithCoder:(id)coder;
+- (_TtC6FindMy22FMMeCardViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMMeCardViewController
 
-- (_TtC6FindMy22FMMeCardViewController)initWithCoder:(id)a3
+- (_TtC6FindMy22FMMeCardViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy22FMMeCardViewController_selectionSubscription) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -15,19 +15,19 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10032EE70(a3);
+  selfCopy = self;
+  sub_10032EE70(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10032EFD0(a3);
+  selfCopy = self;
+  sub_10032EFD0(disappear);
 }
 
-- (_TtC6FindMy22FMMeCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy22FMMeCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

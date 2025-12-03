@@ -1,18 +1,18 @@
 @interface UIApplicationAccessibility__LoginUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityActiveKeyboard;
 - (id)_accessibilitySoftwareMimicKeyboard;
 @end
 
 @implementation UIApplicationAccessibility__LoginUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LUIUserLoginPasswordViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"LUIPasscodeView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"LUIPasscodeView" hasInstanceMethod:@"passCodeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBUIPasscodeLockViewWithKeypad" hasInstanceMethod:@"_numberPad" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LUIUserLoginPasswordViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"LUIPasscodeView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"LUIPasscodeView" hasInstanceMethod:@"passCodeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewWithKeypad" hasInstanceMethod:@"_numberPad" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySoftwareMimicKeyboard
@@ -43,28 +43,28 @@
 
   else
   {
-    v4 = [*MEMORY[0x29EDC8008] _accessibilityMainWindow];
-    v5 = [v4 rootViewController];
-    v6 = [v5 childViewControllers];
+    _accessibilityMainWindow = [*MEMORY[0x29EDC8008] _accessibilityMainWindow];
+    rootViewController = [_accessibilityMainWindow rootViewController];
+    childViewControllers = [rootViewController childViewControllers];
 
-    v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_314];
+    v7 = [childViewControllers indexOfObjectPassingTest:&__block_literal_global_314];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = v7;
       v29 = 0;
       objc_opt_class();
-      v9 = [v6 objectAtIndex:v8];
+      v9 = [childViewControllers objectAtIndex:v8];
       v10 = __UIAccessibilityCastAsClass();
 
-      v11 = [v10 view];
-      v12 = [v11 subviews];
-      v13 = [v12 indexOfObjectPassingTest:&__block_literal_global_318];
+      view = [v10 view];
+      subviews = [view subviews];
+      v13 = [subviews indexOfObjectPassingTest:&__block_literal_global_318];
 
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = [v10 view];
-        v15 = [v14 subviews];
-        v16 = [v15 objectAtIndex:v13];
+        view2 = [v10 view];
+        subviews2 = [view2 subviews];
+        v16 = [subviews2 objectAtIndex:v13];
 
         objc_opt_class();
         v28 = 0;
@@ -97,9 +97,9 @@ LABEL_17:
 
 - (id)_accessibilityActiveKeyboard
 {
-  v3 = [MEMORY[0x29EDC7AF8] activeKeyboard];
-  v4 = v3;
-  if (v3 && ([v3 window], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(*MEMORY[0x29EDC8008], "_accessibilityMainWindow"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
+  activeKeyboard = [MEMORY[0x29EDC7AF8] activeKeyboard];
+  v4 = activeKeyboard;
+  if (activeKeyboard && ([activeKeyboard window], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(*MEMORY[0x29EDC8008], "_accessibilityMainWindow"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
   {
     v7 = v4;
     v8 = v7;
@@ -114,16 +114,16 @@ LABEL_17:
         }
       }
 
-      v9 = [v8 superview];
+      superview = [v8 superview];
 
-      v8 = v9;
-      if (!v9)
+      v8 = superview;
+      if (!superview)
       {
         goto LABEL_7;
       }
     }
 
-    v10 = v7;
+    _accessibilityActiveKeyboard = v7;
   }
 
   else
@@ -131,10 +131,10 @@ LABEL_17:
 LABEL_7:
     v12.receiver = self;
     v12.super_class = UIApplicationAccessibility__LoginUI__UIKit;
-    v10 = [(UIApplicationAccessibility__LoginUI__UIKit *)&v12 _accessibilityActiveKeyboard];
+    _accessibilityActiveKeyboard = [(UIApplicationAccessibility__LoginUI__UIKit *)&v12 _accessibilityActiveKeyboard];
   }
 
-  return v10;
+  return _accessibilityActiveKeyboard;
 }
 
 @end

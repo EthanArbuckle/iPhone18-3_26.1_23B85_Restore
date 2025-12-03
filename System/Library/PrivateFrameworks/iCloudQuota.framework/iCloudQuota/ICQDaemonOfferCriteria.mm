@@ -1,13 +1,13 @@
 @interface ICQDaemonOfferCriteria
-- (BOOL)isSatisfiedByConditions:(id)a3;
-- (ICQDaemonOfferCriteria)initWithServerDictionary:(id)a3;
+- (BOOL)isSatisfiedByConditions:(id)conditions;
+- (ICQDaemonOfferCriteria)initWithServerDictionary:(id)dictionary;
 @end
 
 @implementation ICQDaemonOfferCriteria
 
-- (BOOL)isSatisfiedByConditions:(id)a3
+- (BOOL)isSatisfiedByConditions:(id)conditions
 {
-  v4 = a3;
+  conditionsCopy = conditions;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -21,7 +21,7 @@
   v9[2] = __50__ICQDaemonOfferCriteria_isSatisfiedByConditions___block_invoke;
   v9[3] = &unk_27A652DD8;
   v11 = &v12;
-  v7 = v4;
+  v7 = conditionsCopy;
   v10 = v7;
   [(NSDictionary *)v6 enumerateKeysAndObjectsUsingBlock:v9];
   LOBYTE(v6) = *(v13 + 24);
@@ -219,10 +219,10 @@ LABEL_19:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (ICQDaemonOfferCriteria)initWithServerDictionary:(id)a3
+- (ICQDaemonOfferCriteria)initWithServerDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ICQDaemonOfferCriteria;
   v5 = [(ICQDaemonOfferCriteria *)&v14 init];
@@ -231,14 +231,14 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 copy];
+      v6 = [dictionaryCopy copy];
     }
 
     else
     {
       v7 = _ICQGetLogSystem();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-      if (v4)
+      if (dictionaryCopy)
       {
         if (v8)
         {

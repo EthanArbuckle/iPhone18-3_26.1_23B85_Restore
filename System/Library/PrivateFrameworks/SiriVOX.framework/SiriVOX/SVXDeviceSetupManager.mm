@@ -1,27 +1,27 @@
 @interface SVXDeviceSetupManager
-- (SVXDeviceSetupManager)initWithModule:(id)a3;
-- (void)_prepareForSetupWithContext:(id)a3 completion:(id)a4;
-- (void)_setContext:(id)a3 forUUID:(id)a4;
-- (void)_setEffectiveContext:(id)a3;
+- (SVXDeviceSetupManager)initWithModule:(id)module;
+- (void)_prepareForSetupWithContext:(id)context completion:(id)completion;
+- (void)_setContext:(id)context forUUID:(id)d;
+- (void)_setEffectiveContext:(id)context;
 - (void)_updateEffectiveContext;
-- (void)addListener:(id)a3;
-- (void)getContextWithCompletion:(id)a3;
-- (void)prepareForSetupWithContext:(id)a3 completion:(id)a4;
-- (void)removeListener:(id)a3;
-- (void)sessionManager:(id)a3 didActivateWithContext:(id)a4;
-- (void)setContext:(id)a3 forUUID:(id)a4;
-- (void)startWithModuleInstanceProvider:(id)a3 platformDependencies:(id)a4;
-- (void)stopWithModuleInstanceProvider:(id)a3;
+- (void)addListener:(id)listener;
+- (void)getContextWithCompletion:(id)completion;
+- (void)prepareForSetupWithContext:(id)context completion:(id)completion;
+- (void)removeListener:(id)listener;
+- (void)sessionManager:(id)manager didActivateWithContext:(id)context;
+- (void)setContext:(id)context forUUID:(id)d;
+- (void)startWithModuleInstanceProvider:(id)provider platformDependencies:(id)dependencies;
+- (void)stopWithModuleInstanceProvider:(id)provider;
 @end
 
 @implementation SVXDeviceSetupManager
 
-- (void)_setEffectiveContext:(id)a3
+- (void)_setEffectiveContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = self->_effectiveContext;
-  v6 = v4;
+  v6 = contextCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -154,11 +154,11 @@ void __48__SVXDeviceSetupManager__updateEffectiveContext__block_invoke_13(uint64
   [v4 setEndDate:*(*(a1 + 32) + 64)];
 }
 
-- (void)_setContext:(id)a3 forUUID:(id)a4
+- (void)_setContext:(id)context forUUID:(id)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dCopy = d;
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -166,23 +166,23 @@ void __48__SVXDeviceSetupManager__updateEffectiveContext__block_invoke_13(uint64
     *buf = 136315650;
     v38 = "[SVXDeviceSetupManager _setContext:forUUID:]";
     v39 = 2112;
-    v40 = v6;
+    v40 = contextCopy;
     v41 = 2112;
-    v42 = v7;
+    v42 = dCopy;
     _os_log_impl(&dword_2695B9000, v9, OS_LOG_TYPE_INFO, "%s context = %@, uuid = %@", buf, 0x20u);
   }
 
   contextsByUUID = self->_contextsByUUID;
-  if (v6)
+  if (contextCopy)
   {
     if (![(NSMutableDictionary *)contextsByUUID count])
     {
       activatedDeviceSetupFlowScene = self->_activatedDeviceSetupFlowScene;
       self->_activatedDeviceSetupFlowScene = 0;
 
-      v12 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       beginDate = self->_beginDate;
-      self->_beginDate = v12;
+      self->_beginDate = date;
 
       endDate = self->_endDate;
       self->_endDate = 0;
@@ -206,25 +206,25 @@ void __48__SVXDeviceSetupManager__updateEffectiveContext__block_invoke_13(uint64
       }
     }
 
-    [(NSMutableDictionary *)self->_contextsByUUID setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_contextsByUUID setObject:contextCopy forKey:dCopy];
 LABEL_10:
     v19 = 1;
     goto LABEL_11;
   }
 
-  v22 = [(NSMutableDictionary *)contextsByUUID objectForKey:v7];
+  v22 = [(NSMutableDictionary *)contextsByUUID objectForKey:dCopy];
 
   if (v22)
   {
-    [(NSMutableDictionary *)self->_contextsByUUID removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_contextsByUUID removeObjectForKey:dCopy];
     if (![(NSMutableDictionary *)self->_contextsByUUID count])
     {
       v23 = self->_activatedDeviceSetupFlowScene;
       self->_activatedDeviceSetupFlowScene = 0;
 
-      v24 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v25 = self->_endDate;
-      self->_endDate = v24;
+      self->_endDate = date2;
 
       v26 = self->_contextsByUUID;
       self->_contextsByUUID = 0;
@@ -242,7 +242,7 @@ LABEL_10:
 
       v29 = self->_beginDate;
       v30 = self->_endDate;
-      v31 = [(SVXModule *)self->_module performer];
+      performer = [(SVXModule *)self->_module performer];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __45__SVXDeviceSetupManager__setContext_forUUID___block_invoke;
@@ -252,7 +252,7 @@ LABEL_10:
       v36 = v30;
       v32 = v30;
       v33 = v29;
-      [v31 performBlock:v34 afterDelay:60.0];
+      [performer performBlock:v34 afterDelay:60.0];
     }
 
     goto LABEL_10;
@@ -404,22 +404,22 @@ LABEL_22:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepareForSetupWithContext:(id)a3 completion:(id)a4
+- (void)_prepareForSetupWithContext:(id)context completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[SVXDeviceSetupManager _prepareForSetupWithContext:completion:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = contextCopy;
     _os_log_impl(&dword_2695B9000, v8, OS_LOG_TYPE_INFO, "%s context = %@", buf, 0x16u);
   }
 
-  v9 = [(SVXModule *)self->_module performer];
+  performer = [(SVXModule *)self->_module performer];
   v10 = dispatch_group_create();
   *buf = 0;
   *&buf[8] = buf;
@@ -431,11 +431,11 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __64__SVXDeviceSetupManager__prepareForSetupWithContext_completion___block_invoke;
   block[3] = &unk_279C68F20;
-  v16 = v7;
+  v16 = completionCopy;
   v17 = buf;
-  v15 = v9;
-  v11 = v7;
-  v12 = v9;
+  v15 = performer;
+  v11 = completionCopy;
+  v12 = performer;
   dispatch_group_notify(v10, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(buf, 8);
@@ -477,18 +477,18 @@ void __64__SVXDeviceSetupManager__prepareForSetupWithContext_completion___block_
   }
 }
 
-- (void)sessionManager:(id)a3 didActivateWithContext:(id)a4
+- (void)sessionManager:(id)manager didActivateWithContext:(id)context
 {
-  v5 = a4;
-  v6 = [(SVXModule *)self->_module performer];
+  contextCopy = context;
+  performer = [(SVXModule *)self->_module performer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__SVXDeviceSetupManager_sessionManager_didActivateWithContext___block_invoke;
   v8[3] = &unk_279C68FE8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 performBlock:v8];
+  v9 = contextCopy;
+  v7 = contextCopy;
+  [performer performBlock:v8];
 }
 
 void __63__SVXDeviceSetupManager_sessionManager_didActivateWithContext___block_invoke(uint64_t a1)
@@ -527,15 +527,15 @@ void __63__SVXDeviceSetupManager_sessionManager_didActivateWithContext___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopWithModuleInstanceProvider:(id)a3
+- (void)stopWithModuleInstanceProvider:(id)provider
 {
-  v4 = [(SVXModule *)self->_module performer];
+  performer = [(SVXModule *)self->_module performer];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__SVXDeviceSetupManager_stopWithModuleInstanceProvider___block_invoke;
   v5[3] = &unk_279C68FC0;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [performer performBlock:v5];
 }
 
 void __56__SVXDeviceSetupManager_stopWithModuleInstanceProvider___block_invoke(uint64_t a1)
@@ -550,18 +550,18 @@ void __56__SVXDeviceSetupManager_stopWithModuleInstanceProvider___block_invoke(u
   *(v4 + 24) = 0;
 }
 
-- (void)startWithModuleInstanceProvider:(id)a3 platformDependencies:(id)a4
+- (void)startWithModuleInstanceProvider:(id)provider platformDependencies:(id)dependencies
 {
-  v5 = a3;
-  v6 = [(SVXModule *)self->_module performer];
+  providerCopy = provider;
+  performer = [(SVXModule *)self->_module performer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__SVXDeviceSetupManager_startWithModuleInstanceProvider_platformDependencies___block_invoke;
   v8[3] = &unk_279C68FE8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 performBlock:v8];
+  v9 = providerCopy;
+  v7 = providerCopy;
+  [performer performBlock:v8];
 }
 
 uint64_t __78__SVXDeviceSetupManager_startWithModuleInstanceProvider_platformDependencies___block_invoke(uint64_t a1)
@@ -581,16 +581,16 @@ uint64_t __78__SVXDeviceSetupManager_startWithModuleInstanceProvider_platformDep
   return [v8 addActivationListener:?];
 }
 
-- (SVXDeviceSetupManager)initWithModule:(id)a3
+- (SVXDeviceSetupManager)initWithModule:(id)module
 {
-  v5 = a3;
+  moduleCopy = module;
   v13.receiver = self;
   v13.super_class = SVXDeviceSetupManager;
   v6 = [(SVXDeviceSetupManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_module, a3);
+    objc_storeStrong(&v6->_module, module);
     v8 = objc_alloc_init(SVXDeviceSetupAnnouncer);
     announcer = v7->_announcer;
     v7->_announcer = v8;
@@ -603,46 +603,46 @@ uint64_t __78__SVXDeviceSetupManager_startWithModuleInstanceProvider_platformDep
   return v7;
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(SVXModule *)self->_module performer];
+  listenerCopy = listener;
+  performer = [(SVXModule *)self->_module performer];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SVXDeviceSetupManager_removeListener___block_invoke;
   v7[3] = &unk_279C68FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  [performer performBlock:v7];
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(SVXModule *)self->_module performer];
+  listenerCopy = listener;
+  performer = [(SVXModule *)self->_module performer];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__SVXDeviceSetupManager_addListener___block_invoke;
   v7[3] = &unk_279C68FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  [performer performBlock:v7];
 }
 
-- (void)getContextWithCompletion:(id)a3
+- (void)getContextWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SVXModule *)self->_module performer];
+  completionCopy = completion;
+  performer = [(SVXModule *)self->_module performer];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SVXDeviceSetupManager_getContextWithCompletion___block_invoke;
   v7[3] = &unk_279C68EF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [performer performBlock:v7];
 }
 
 uint64_t __50__SVXDeviceSetupManager_getContextWithCompletion___block_invoke(uint64_t a1)
@@ -656,65 +656,65 @@ uint64_t __50__SVXDeviceSetupManager_getContextWithCompletion___block_invoke(uin
   return result;
 }
 
-- (void)setContext:(id)a3 forUUID:(id)a4
+- (void)setContext:(id)context forUUID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dCopy = d;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v17 = "[SVXDeviceSetupManager setContext:forUUID:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = contextCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = dCopy;
     _os_log_impl(&dword_2695B9000, v8, OS_LOG_TYPE_INFO, "%s context = %@, uuid = %@", buf, 0x20u);
   }
 
-  v9 = [(SVXModule *)self->_module performer];
+  performer = [(SVXModule *)self->_module performer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __44__SVXDeviceSetupManager_setContext_forUUID___block_invoke;
   v13[3] = &unk_279C68ED0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 performBlock:v13];
+  v14 = contextCopy;
+  v15 = dCopy;
+  v10 = dCopy;
+  v11 = contextCopy;
+  [performer performBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareForSetupWithContext:(id)a3 completion:(id)a4
+- (void)prepareForSetupWithContext:(id)context completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v17 = "[SVXDeviceSetupManager prepareForSetupWithContext:completion:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = contextCopy;
     _os_log_impl(&dword_2695B9000, v8, OS_LOG_TYPE_INFO, "%s context = %@", buf, 0x16u);
   }
 
   [(SVXAudioServicesUtils *)self->_audioServicesUtils audioServicesActivateWithTimeout];
-  v9 = [(SVXModule *)self->_module performer];
+  performer = [(SVXModule *)self->_module performer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__SVXDeviceSetupManager_prepareForSetupWithContext_completion___block_invoke;
   v13[3] = &unk_279C68EA8;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 performBlock:v13];
+  v14 = contextCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = contextCopy;
+  [performer performBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }

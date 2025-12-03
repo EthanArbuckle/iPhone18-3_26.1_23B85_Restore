@@ -1,11 +1,11 @@
 @interface BSServiceDomain
 - (BSServiceDomain)init;
 - (id)_activate;
-- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)a1;
-- (id)_initWithSpecification:(BSService *)a1;
-- (id)serviceWithIdentifier:(id *)a1;
+- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)prefix;
+- (id)_initWithSpecification:(BSService *)specification;
+- (id)serviceWithIdentifier:(id *)identifier;
 - (uint64_t)endpoint;
-- (void)_enforceListenerRegistrationForReason:(uint64_t)a1;
+- (void)_enforceListenerRegistrationForReason:(uint64_t)reason;
 - (void)_invalidate;
 @end
 
@@ -13,11 +13,11 @@
 
 - (id)_activate
 {
-  v1 = a1;
+  selfCopy = self;
   v46 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *&a1[2]._os_unfair_lock_opaque;
+    v2 = *&self[2]._os_unfair_lock_opaque;
     if (v2)
     {
       v3 = *(v2 + 72);
@@ -28,8 +28,8 @@
       v3 = 0;
     }
 
-    os_unfair_lock_lock(a1 + 12);
-    if (*(v1 + 53) == 1)
+    os_unfair_lock_lock(self + 12);
+    if (*(selfCopy + 53) == 1)
     {
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot manually activate an invalidated domain"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@
         v36 = 2114;
         v37 = v28;
         v38 = 2048;
-        v39 = v1;
+        v39 = selfCopy;
         v40 = 2114;
         v41 = @"BSServiceDomain.m";
         v42 = 1024;
@@ -59,22 +59,22 @@
       JUMPOUT(0x19A82C8FCLL);
     }
 
-    v4 = *(v1 + 40);
+    v4 = *(selfCopy + 40);
     if (v4)
     {
       if (v3 == 3)
       {
-        *(v1 + 40) = v4 + 1;
-        os_unfair_lock_unlock((v1 + 48));
+        *(selfCopy + 40) = v4 + 1;
+        os_unfair_lock_unlock((selfCopy + 48));
 LABEL_30:
-        objc_initWeak(buf, v1);
+        objc_initWeak(buf, selfCopy);
         v12 = objc_alloc(MEMORY[0x1E698E778]);
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __28__BSServiceDomain__activate__block_invoke_2;
         v30[3] = &unk_1E7520F30;
         objc_copyWeak(&v31, buf);
-        v1 = [v12 initWithIdentifier:@"com.apple.boardservices.domain" forReason:@"session" invalidationBlock:v30];
+        selfCopy = [v12 initWithIdentifier:@"com.apple.boardservices.domain" forReason:@"session" invalidationBlock:v30];
         objc_destroyWeak(&v31);
         objc_destroyWeak(buf);
         goto LABEL_36;
@@ -83,7 +83,7 @@ LABEL_30:
       goto LABEL_34;
     }
 
-    *(v1 + 40) = 1;
+    *(selfCopy + 40) = 1;
     if (v3)
     {
       if (v3 <= 2)
@@ -91,25 +91,25 @@ LABEL_30:
         v5 = BSServiceBootstrapLog();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [*(v1 + 8) identifier];
+          identifier = [*(selfCopy + 8) identifier];
           *buf = 138543362;
-          v35 = v6;
+          v35 = identifier;
           _os_log_impl(&dword_19A821000, v5, OS_LOG_TYPE_DEFAULT, "manually bootstrapping domain %{public}@", buf, 0xCu);
         }
 
         v7 = @"manual bootstrap activation";
 LABEL_26:
 
-        if (*(v1 + 52))
+        if (*(selfCopy + 52))
         {
           goto LABEL_29;
         }
 
-        [(BSServiceDomain *)v1 _enforceListenerRegistrationForReason:v7];
+        [(BSServiceDomain *)selfCopy _enforceListenerRegistrationForReason:v7];
 LABEL_28:
-        [(BSXPCServiceConnectionListener *)*(v1 + 16) resume];
+        [(BSXPCServiceConnectionListener *)*(selfCopy + 16) resume];
 LABEL_29:
-        os_unfair_lock_unlock((v1 + 48));
+        os_unfair_lock_unlock((selfCopy + 48));
         if (v3 == 3)
         {
           goto LABEL_30;
@@ -123,9 +123,9 @@ LABEL_29:
         v5 = BSServiceBootstrapLog();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [*(v1 + 8) identifier];
+          identifier2 = [*(selfCopy + 8) identifier];
           *buf = 138543362;
-          v35 = v11;
+          v35 = identifier2;
           _os_log_impl(&dword_19A821000, v5, OS_LOG_TYPE_DEFAULT, "initializing view-service domain %{public}@", buf, 0xCu);
         }
 
@@ -138,9 +138,9 @@ LABEL_29:
         if (v3 != 3)
         {
           v17 = MEMORY[0x1E696AEC0];
-          v18 = [*(v1 + 8) identifier];
+          identifier3 = [*(selfCopy + 8) identifier];
           v19 = NSStringFromBSServiceDomainStartType(v3);
-          v20 = [v17 stringWithFormat:@"cannot process domain %@ with unknown start type %@", v18, v19];
+          v20 = [v17 stringWithFormat:@"cannot process domain %@ with unknown start type %@", identifier3, v19];
 
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -152,7 +152,7 @@ LABEL_29:
             v36 = 2114;
             v37 = v23;
             v38 = 2048;
-            v39 = v1;
+            v39 = selfCopy;
             v40 = 2114;
             v41 = @"BSServiceDomain.m";
             v42 = 1024;
@@ -172,9 +172,9 @@ LABEL_29:
         v5 = BSServiceBootstrapLog();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [*(v1 + 8) identifier];
+          identifier4 = [*(selfCopy + 8) identifier];
           *buf = 138543362;
-          v35 = v10;
+          v35 = identifier4;
           _os_log_impl(&dword_19A821000, v5, OS_LOG_TYPE_DEFAULT, "manually activating session for domain %{public}@", buf, 0xCu);
         }
 
@@ -185,19 +185,19 @@ LABEL_29:
       v13 = BSServiceBootstrapLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [*(v1 + 8) identifier];
+        identifier5 = [*(selfCopy + 8) identifier];
         *buf = 138543362;
-        v35 = v14;
+        v35 = identifier5;
         _os_log_impl(&dword_19A821000, v13, OS_LOG_TYPE_DEFAULT, "initializing domain %{public}@", buf, 0xCu);
       }
 
-      if ((*(v1 + 52) & 1) == 0)
+      if ((*(selfCopy + 52) & 1) == 0)
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __28__BSServiceDomain__activate__block_invoke;
         block[3] = &unk_1E75209E8;
-        block[4] = v1;
+        block[4] = selfCopy;
         v33 = @"XPCService backstop";
         dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -210,39 +210,39 @@ LABEL_29:
       v8 = BSServiceBootstrapLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [*(v1 + 8) identifier];
+        identifier6 = [*(selfCopy + 8) identifier];
         *buf = 138543362;
-        v35 = v9;
+        v35 = identifier6;
         _os_log_impl(&dword_19A821000, v8, OS_LOG_TYPE_DEFAULT, "initializing automatic domain %{public}@", buf, 0xCu);
       }
 
-      if ((*(v1 + 52) & 1) == 0)
+      if ((*(selfCopy + 52) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
 LABEL_34:
-    os_unfair_lock_unlock((v1 + 48));
+    os_unfair_lock_unlock((selfCopy + 48));
 LABEL_35:
-    v1 = 0;
+    selfCopy = 0;
   }
 
 LABEL_36:
   v15 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)endpoint
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(BSXPCServiceConnectionListener *)a1[2] endpoint];
+    self = [(BSXPCServiceConnectionListener *)self[2] endpoint];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BSServiceDomain)init
@@ -259,7 +259,7 @@ LABEL_36:
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceDomain.m";
     v18 = 1024;
@@ -276,12 +276,12 @@ LABEL_36:
   return result;
 }
 
-- (id)_initWithSpecification:(BSService *)a1
+- (id)_initWithSpecification:(BSService *)specification
 {
   v81 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v57 = v3;
-  if (!a1)
+  if (!specification)
   {
     goto LABEL_22;
   }
@@ -302,7 +302,7 @@ LABEL_36:
       *&v72[12] = 2114;
       *&v72[14] = v49;
       v73 = 2048;
-      v74 = a1;
+      specificationCopy2 = specification;
       v75 = 2114;
       v76 = @"BSServiceDomain.m";
       v77 = 1024;
@@ -332,7 +332,7 @@ LABEL_36:
       *&v72[12] = 2114;
       *&v72[14] = v54;
       v73 = 2048;
-      v74 = a1;
+      specificationCopy2 = specification;
       v75 = 2114;
       v76 = @"BSServiceDomain.m";
       v77 = 1024;
@@ -349,7 +349,7 @@ LABEL_36:
     JUMPOUT(0x19A86496CLL);
   }
 
-  v70.receiver = a1;
+  v70.receiver = specification;
   v70.super_class = BSServiceDomain;
   v5 = [(BSService *)&v70 init];
   if (v5)
@@ -398,7 +398,7 @@ LABEL_36:
                 *&v72[12] = 2114;
                 *&v72[14] = v34;
                 v73 = 2048;
-                v74 = v10;
+                specificationCopy2 = v10;
                 v75 = 2114;
                 v76 = @"BSServiceDomain.m";
                 v77 = 1024;
@@ -428,7 +428,7 @@ LABEL_36:
                 *&v72[12] = 2114;
                 *&v72[14] = v39;
                 v73 = 2048;
-                v74 = v10;
+                specificationCopy2 = v10;
                 v75 = 2114;
                 v76 = @"BSServiceDomain.m";
                 v77 = 1024;
@@ -460,7 +460,7 @@ LABEL_36:
                 *&v72[12] = 2114;
                 *&v72[14] = v44;
                 v73 = 2048;
-                v74 = v10;
+                specificationCopy2 = v10;
                 v75 = 2114;
                 v76 = @"BSServiceDomain.m";
                 v77 = 1024;
@@ -490,15 +490,15 @@ LABEL_36:
               domainSpecification = v16->_domainSpecification;
               if ((!domainSpecification || !domainSpecification->_start) && ![(BSServiceSpecification *)v16->_specification isHiddenAtLaunch])
               {
-                v18 = [MEMORY[0x1E695DF70] array];
+                array = [MEMORY[0x1E695DF70] array];
                 lock_pendedConnections = v10->_lock_pendedConnections;
-                v10->_lock_pendedConnections = v18;
+                v10->_lock_pendedConnections = array;
               }
             }
           }
 
-          v20 = [v11 identifier];
-          [v61 setObject:v10 forKey:v20];
+          identifier = [v11 identifier];
+          [v61 setObject:v10 forKey:identifier];
 
           v4 = v62;
         }
@@ -901,15 +901,15 @@ void __42__BSServiceDomain__initWithSpecification___block_invoke_111(uint64_t a1
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)a1
+- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)prefix
 {
   v3 = a2;
-  if (a1)
+  if (prefix)
   {
-    v4 = [MEMORY[0x1E698E680] builderWithObject:a1];
-    os_unfair_lock_lock((a1 + 48));
-    v5 = [*(a1 + 24) allValues];
-    v6 = [v5 mutableCopy];
+    v4 = [MEMORY[0x1E698E680] builderWithObject:prefix];
+    os_unfair_lock_lock((prefix + 48));
+    allValues = [*(prefix + 24) allValues];
+    v6 = [allValues mutableCopy];
 
     [v6 sortUsingComparator:&__block_literal_global_145];
     v15[0] = MEMORY[0x1E69E9820];
@@ -918,43 +918,43 @@ void __42__BSServiceDomain__initWithSpecification___block_invoke_111(uint64_t a1
     v15[3] = &unk_1E75209E8;
     v7 = v4;
     v16 = v7;
-    v17 = a1;
+    prefixCopy = prefix;
     v8 = [v7 modifyProem:v15];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __56__BSServiceDomain__debugDescriptionWithMultilinePrefix___block_invoke_3;
     v12[3] = &unk_1E75205A8;
-    v12[4] = a1;
+    v12[4] = prefix;
     v9 = v7;
     v13 = v9;
     v10 = v6;
     v14 = v10;
     [v9 appendBodySectionWithName:0 multilinePrefix:v3 block:v12];
-    os_unfair_lock_unlock((a1 + 48));
-    a1 = [v9 build];
+    os_unfair_lock_unlock((prefix + 48));
+    prefix = [v9 build];
   }
 
-  return a1;
+  return prefix;
 }
 
-- (id)serviceWithIdentifier:(id *)a1
+- (id)serviceWithIdentifier:(id *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    a1 = [a1[3] objectForKey:v3];
+    identifier = [identifier[3] objectForKey:v3];
   }
 
-  return a1;
+  return identifier;
 }
 
-- (void)_enforceListenerRegistrationForReason:(uint64_t)a1
+- (void)_enforceListenerRegistrationForReason:(uint64_t)reason
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (reason)
   {
-    v5 = *(a1 + 24);
+    v5 = *(reason + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__BSServiceDomain__enforceListenerRegistrationForReason___block_invoke;
@@ -1163,26 +1163,26 @@ void __57__BSServiceDomain__enforceListenerRegistrationForReason___block_invoke(
 - (void)_invalidate
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 48));
-    if ((*(a1 + 53) & 1) == 0)
+    os_unfair_lock_lock((self + 48));
+    if ((*(self + 53) & 1) == 0)
     {
-      *(a1 + 53) = 1;
+      *(self + 53) = 1;
       v2 = BSServiceBootstrapLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
       {
-        v3 = [*(a1 + 8) identifier];
+        identifier = [*(self + 8) identifier];
         v5 = 138543362;
-        v6 = v3;
+        v6 = identifier;
         _os_log_impl(&dword_19A821000, v2, OS_LOG_TYPE_DEFAULT, "invalidating domain %{public}@", &v5, 0xCu);
       }
 
-      [*(a1 + 24) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_142];
-      [*(a1 + 16) invalidate];
+      [*(self + 24) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_142];
+      [*(self + 16) invalidate];
     }
 
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_unlock((self + 48));
   }
 
   v4 = *MEMORY[0x1E69E9840];

@@ -1,46 +1,46 @@
 @interface NSPPrivacyProxyProxyInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAlgorithm:(id)a3;
-- (int)StringAsProxyHop:(id)a3;
+- (int)StringAsAlgorithm:(id)algorithm;
+- (int)StringAsProxyHop:(id)hop;
 - (int)algorithm;
 - (unint64_t)hash;
-- (void)addAllowedNextHops:(id)a3;
-- (void)addBootstrapAddresses:(id)a3;
-- (void)addPreferredPathPatterns:(id)a3;
-- (void)addProxyKeyInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFallbackSupportsUDPProxying:(BOOL)a3;
-- (void)setHasProxyIndex:(BOOL)a3;
-- (void)setHasSupportsFallback:(BOOL)a3;
-- (void)setHasSupportsResumption:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllowedNextHops:(id)hops;
+- (void)addBootstrapAddresses:(id)addresses;
+- (void)addPreferredPathPatterns:(id)patterns;
+- (void)addProxyKeyInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFallbackSupportsUDPProxying:(BOOL)proxying;
+- (void)setHasProxyIndex:(BOOL)index;
+- (void)setHasSupportsFallback:(BOOL)fallback;
+- (void)setHasSupportsResumption:(BOOL)resumption;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyProxyInfo
 
-- (int)StringAsProxyHop:(id)a3
+- (int)StringAsProxyHop:(id)hop
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  hopCopy = hop;
+  if ([hopCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"INGRESS_ONLY"])
+  else if ([hopCopy isEqualToString:@"INGRESS_ONLY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EGRESS_ONLY"])
+  else if ([hopCopy isEqualToString:@"EGRESS_ONLY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ANY"])
+  else if ([hopCopy isEqualToString:@"ANY"])
   {
     v4 = 3;
   }
@@ -53,27 +53,27 @@
   return v4;
 }
 
-- (void)addProxyKeyInfo:(id)a3
+- (void)addProxyKeyInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   proxyKeyInfos = self->_proxyKeyInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!proxyKeyInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_proxyKeyInfos;
     self->_proxyKeyInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     proxyKeyInfos = self->_proxyKeyInfos;
   }
 
-  [(NSMutableArray *)proxyKeyInfos addObject:v4];
+  [(NSMutableArray *)proxyKeyInfos addObject:infoCopy];
 }
 
-- (void)setHasSupportsFallback:(BOOL)a3
+- (void)setHasSupportsFallback:(BOOL)fallback
 {
-  if (a3)
+  if (fallback)
   {
     v3 = 8;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSupportsResumption:(BOOL)a3
+- (void)setHasSupportsResumption:(BOOL)resumption
 {
-  if (a3)
+  if (resumption)
   {
     v3 = 16;
   }
@@ -101,63 +101,63 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addBootstrapAddresses:(id)a3
+- (void)addBootstrapAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   bootstrapAddresses = self->_bootstrapAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!bootstrapAddresses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_bootstrapAddresses;
     self->_bootstrapAddresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     bootstrapAddresses = self->_bootstrapAddresses;
   }
 
-  [(NSMutableArray *)bootstrapAddresses addObject:v4];
+  [(NSMutableArray *)bootstrapAddresses addObject:addressesCopy];
 }
 
-- (void)addAllowedNextHops:(id)a3
+- (void)addAllowedNextHops:(id)hops
 {
-  v4 = a3;
+  hopsCopy = hops;
   allowedNextHops = self->_allowedNextHops;
-  v8 = v4;
+  v8 = hopsCopy;
   if (!allowedNextHops)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_allowedNextHops;
     self->_allowedNextHops = v6;
 
-    v4 = v8;
+    hopsCopy = v8;
     allowedNextHops = self->_allowedNextHops;
   }
 
-  [(NSMutableArray *)allowedNextHops addObject:v4];
+  [(NSMutableArray *)allowedNextHops addObject:hopsCopy];
 }
 
-- (void)addPreferredPathPatterns:(id)a3
+- (void)addPreferredPathPatterns:(id)patterns
 {
-  v4 = a3;
+  patternsCopy = patterns;
   preferredPathPatterns = self->_preferredPathPatterns;
-  v8 = v4;
+  v8 = patternsCopy;
   if (!preferredPathPatterns)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_preferredPathPatterns;
     self->_preferredPathPatterns = v6;
 
-    v4 = v8;
+    patternsCopy = v8;
     preferredPathPatterns = self->_preferredPathPatterns;
   }
 
-  [(NSMutableArray *)preferredPathPatterns addObject:v4];
+  [(NSMutableArray *)preferredPathPatterns addObject:patternsCopy];
 }
 
-- (void)setHasFallbackSupportsUDPProxying:(BOOL)a3
+- (void)setHasFallbackSupportsUDPProxying:(BOOL)proxying
 {
-  if (a3)
+  if (proxying)
   {
     v3 = 4;
   }
@@ -183,25 +183,25 @@
   }
 }
 
-- (int)StringAsAlgorithm:(id)a3
+- (int)StringAsAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NOT_SET"])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"NOT_SET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"P384"])
+  else if ([algorithmCopy isEqualToString:@"P384"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"X25519"])
+  else if ([algorithmCopy isEqualToString:@"X25519"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"X25519_MLKEM768"])
+  else if ([algorithmCopy isEqualToString:@"X25519_MLKEM768"])
   {
     v4 = 3;
   }
@@ -214,9 +214,9 @@
   return v4;
 }
 
-- (void)setHasProxyIndex:(BOOL)a3
+- (void)setHasProxyIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -235,15 +235,15 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyProxyInfo;
   v4 = [(NSPPrivacyProxyProxyInfo *)&v8 description];
-  v5 = [(NSPPrivacyProxyProxyInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyProxyInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   proxyHop = self->_proxyHop;
   if (proxyHop >= 4)
   {
@@ -255,91 +255,91 @@
     v5 = off_1E7A306F0[proxyHop];
   }
 
-  [v3 setObject:v5 forKey:@"proxyHop"];
+  [dictionary setObject:v5 forKey:@"proxyHop"];
 
   proxyURL = self->_proxyURL;
   if (proxyURL)
   {
-    [v3 setObject:proxyURL forKey:@"proxyURL"];
+    [dictionary setObject:proxyURL forKey:@"proxyURL"];
   }
 
   proxyKeyInfos = self->_proxyKeyInfos;
   if (proxyKeyInfos)
   {
-    [v3 setObject:proxyKeyInfos forKey:@"proxyKeyInfo"];
+    [dictionary setObject:proxyKeyInfos forKey:@"proxyKeyInfo"];
   }
 
   tokenKeyInfo = self->_tokenKeyInfo;
   if (tokenKeyInfo)
   {
-    [v3 setObject:tokenKeyInfo forKey:@"tokenKeyInfo"];
+    [dictionary setObject:tokenKeyInfo forKey:@"tokenKeyInfo"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsFallback];
-    [v3 setObject:v9 forKey:@"supportsFallback"];
+    [dictionary setObject:v9 forKey:@"supportsFallback"];
   }
 
   vendor = self->_vendor;
   if (vendor)
   {
-    [v3 setObject:vendor forKey:@"vendor"];
+    [dictionary setObject:vendor forKey:@"vendor"];
   }
 
   tcpProxyFqdn = self->_tcpProxyFqdn;
   if (tcpProxyFqdn)
   {
-    [v3 setObject:tcpProxyFqdn forKey:@"tcpProxyFqdn"];
+    [dictionary setObject:tcpProxyFqdn forKey:@"tcpProxyFqdn"];
   }
 
   preferredPathConfigUri = self->_preferredPathConfigUri;
   if (preferredPathConfigUri)
   {
-    [v3 setObject:preferredPathConfigUri forKey:@"preferredPathConfigUri"];
+    [dictionary setObject:preferredPathConfigUri forKey:@"preferredPathConfigUri"];
   }
 
   proxyVersion = self->_proxyVersion;
   if (proxyVersion)
   {
-    [v3 setObject:proxyVersion forKey:@"proxyVersion"];
+    [dictionary setObject:proxyVersion forKey:@"proxyVersion"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsResumption];
-    [v3 setObject:v14 forKey:@"supportsResumption"];
+    [dictionary setObject:v14 forKey:@"supportsResumption"];
   }
 
   bootstrapAddresses = self->_bootstrapAddresses;
   if (bootstrapAddresses)
   {
-    [v3 setObject:bootstrapAddresses forKey:@"bootstrapAddresses"];
+    [dictionary setObject:bootstrapAddresses forKey:@"bootstrapAddresses"];
   }
 
   allowedNextHops = self->_allowedNextHops;
   if (allowedNextHops)
   {
-    [v3 setObject:allowedNextHops forKey:@"allowedNextHops"];
+    [dictionary setObject:allowedNextHops forKey:@"allowedNextHops"];
   }
 
   tokenChallenge = self->_tokenChallenge;
   if (tokenChallenge)
   {
-    [v3 setObject:tokenChallenge forKey:@"tokenChallenge"];
+    [dictionary setObject:tokenChallenge forKey:@"tokenChallenge"];
   }
 
   preferredPathPatterns = self->_preferredPathPatterns;
   if (preferredPathPatterns)
   {
-    [v3 setObject:preferredPathPatterns forKey:@"preferredPathPatterns"];
+    [dictionary setObject:preferredPathPatterns forKey:@"preferredPathPatterns"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:self->_fallbackSupportsUDPProxying];
-    [v3 setObject:v22 forKey:@"fallbackSupportsUDPProxying"];
+    [dictionary setObject:v22 forKey:@"fallbackSupportsUDPProxying"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -370,7 +370,7 @@ LABEL_32:
     v24 = off_1E7A30710[algorithm];
   }
 
-  [v3 setObject:v24 forKey:@"algorithm"];
+  [dictionary setObject:v24 forKey:@"algorithm"];
 
   if ((*&self->_has & 2) == 0)
   {
@@ -379,17 +379,17 @@ LABEL_32:
 
 LABEL_33:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_proxyIndex];
-  [v3 setObject:v20 forKey:@"proxyIndex"];
+  [dictionary setObject:v20 forKey:@"proxyIndex"];
 
 LABEL_34:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   proxyHop = self->_proxyHop;
   PBDataWriterWriteInt32Field();
   if (!self->_proxyURL)
@@ -597,19 +597,19 @@ LABEL_49:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[12] = self->_proxyHop;
-  v22 = v4;
-  [v4 setProxyURL:self->_proxyURL];
+  toCopy = to;
+  toCopy[12] = self->_proxyHop;
+  v22 = toCopy;
+  [toCopy setProxyURL:self->_proxyURL];
   if ([(NSPPrivacyProxyProxyInfo *)self proxyKeyInfosCount])
   {
     [v22 clearProxyKeyInfos];
-    v5 = [(NSPPrivacyProxyProxyInfo *)self proxyKeyInfosCount];
-    if (v5)
+    proxyKeyInfosCount = [(NSPPrivacyProxyProxyInfo *)self proxyKeyInfosCount];
+    if (proxyKeyInfosCount)
     {
-      v6 = v5;
+      v6 = proxyKeyInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSPPrivacyProxyProxyInfo *)self proxyKeyInfoAtIndex:i];
@@ -654,10 +654,10 @@ LABEL_49:
   if ([(NSPPrivacyProxyProxyInfo *)self bootstrapAddressesCount])
   {
     [v22 clearBootstrapAddresses];
-    v9 = [(NSPPrivacyProxyProxyInfo *)self bootstrapAddressesCount];
-    if (v9)
+    bootstrapAddressesCount = [(NSPPrivacyProxyProxyInfo *)self bootstrapAddressesCount];
+    if (bootstrapAddressesCount)
     {
-      v10 = v9;
+      v10 = bootstrapAddressesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NSPPrivacyProxyProxyInfo *)self bootstrapAddressesAtIndex:j];
@@ -669,10 +669,10 @@ LABEL_49:
   if ([(NSPPrivacyProxyProxyInfo *)self allowedNextHopsCount])
   {
     [v22 clearAllowedNextHops];
-    v13 = [(NSPPrivacyProxyProxyInfo *)self allowedNextHopsCount];
-    if (v13)
+    allowedNextHopsCount = [(NSPPrivacyProxyProxyInfo *)self allowedNextHopsCount];
+    if (allowedNextHopsCount)
     {
-      v14 = v13;
+      v14 = allowedNextHopsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(NSPPrivacyProxyProxyInfo *)self allowedNextHopsAtIndex:k];
@@ -689,10 +689,10 @@ LABEL_49:
   if ([(NSPPrivacyProxyProxyInfo *)self preferredPathPatternsCount])
   {
     [v22 clearPreferredPathPatterns];
-    v17 = [(NSPPrivacyProxyProxyInfo *)self preferredPathPatternsCount];
-    if (v17)
+    preferredPathPatternsCount = [(NSPPrivacyProxyProxyInfo *)self preferredPathPatternsCount];
+    if (preferredPathPatternsCount)
     {
-      v18 = v17;
+      v18 = preferredPathPatternsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(NSPPrivacyProxyProxyInfo *)self preferredPathPatternsAtIndex:m];
@@ -736,12 +736,12 @@ LABEL_34:
 LABEL_35:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 48) = self->_proxyHop;
-  v6 = [(NSString *)self->_proxyURL copyWithZone:a3];
+  v6 = [(NSString *)self->_proxyURL copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -764,7 +764,7 @@ LABEL_35:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v59 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v59 + 1) + 8 * i) copyWithZone:zone];
         [v5 addProxyKeyInfo:v13];
       }
 
@@ -774,7 +774,7 @@ LABEL_35:
     while (v10);
   }
 
-  v14 = [(NSData *)self->_tokenKeyInfo copyWithZone:a3];
+  v14 = [(NSData *)self->_tokenKeyInfo copyWithZone:zone];
   v15 = *(v5 + 96);
   *(v5 + 96) = v14;
 
@@ -784,19 +784,19 @@ LABEL_35:
     *(v5 + 116) |= 8u;
   }
 
-  v16 = [(NSString *)self->_vendor copyWithZone:a3];
+  v16 = [(NSString *)self->_vendor copyWithZone:zone];
   v17 = *(v5 + 104);
   *(v5 + 104) = v16;
 
-  v18 = [(NSString *)self->_tcpProxyFqdn copyWithZone:a3];
+  v18 = [(NSString *)self->_tcpProxyFqdn copyWithZone:zone];
   v19 = *(v5 + 80);
   *(v5 + 80) = v18;
 
-  v20 = [(NSString *)self->_preferredPathConfigUri copyWithZone:a3];
+  v20 = [(NSString *)self->_preferredPathConfigUri copyWithZone:zone];
   v21 = *(v5 + 32);
   *(v5 + 32) = v20;
 
-  v22 = [(NSString *)self->_proxyVersion copyWithZone:a3];
+  v22 = [(NSString *)self->_proxyVersion copyWithZone:zone];
   v23 = *(v5 + 72);
   *(v5 + 72) = v22;
 
@@ -825,7 +825,7 @@ LABEL_35:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v55 + 1) + 8 * j) copyWithZone:a3];
+        v29 = [*(*(&v55 + 1) + 8 * j) copyWithZone:zone];
         [v5 addBootstrapAddresses:v29];
       }
 
@@ -854,7 +854,7 @@ LABEL_35:
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v51 + 1) + 8 * k) copyWithZone:a3];
+        v35 = [*(*(&v51 + 1) + 8 * k) copyWithZone:zone];
         [v5 addAllowedNextHops:v35];
       }
 
@@ -864,7 +864,7 @@ LABEL_35:
     while (v32);
   }
 
-  v36 = [(NSData *)self->_tokenChallenge copyWithZone:a3];
+  v36 = [(NSData *)self->_tokenChallenge copyWithZone:zone];
   v37 = *(v5 + 88);
   *(v5 + 88) = v36;
 
@@ -887,7 +887,7 @@ LABEL_35:
           objc_enumerationMutation(v38);
         }
 
-        v43 = [*(*(&v47 + 1) + 8 * m) copyWithZone:{a3, v47}];
+        v43 = [*(*(&v47 + 1) + 8 * m) copyWithZone:{zone, v47}];
         [v5 addPreferredPathPatterns:v43];
       }
 
@@ -937,21 +937,21 @@ LABEL_37:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  if (self->_proxyHop != *(v4 + 12))
+  if (self->_proxyHop != *(equalCopy + 12))
   {
     goto LABEL_35;
   }
 
   proxyURL = self->_proxyURL;
-  if (proxyURL | *(v4 + 8))
+  if (proxyURL | *(equalCopy + 8))
   {
     if (![(NSString *)proxyURL isEqual:?])
     {
@@ -960,7 +960,7 @@ LABEL_37:
   }
 
   proxyKeyInfos = self->_proxyKeyInfos;
-  if (proxyKeyInfos | *(v4 + 7))
+  if (proxyKeyInfos | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)proxyKeyInfos isEqual:?])
     {
@@ -969,7 +969,7 @@ LABEL_37:
   }
 
   tokenKeyInfo = self->_tokenKeyInfo;
-  if (tokenKeyInfo | *(v4 + 12))
+  if (tokenKeyInfo | *(equalCopy + 12))
   {
     if (![(NSData *)tokenKeyInfo isEqual:?])
     {
@@ -977,42 +977,42 @@ LABEL_37:
     }
   }
 
-  v8 = *(v4 + 116);
+  v8 = *(equalCopy + 116);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 116) & 8) == 0)
+    if ((*(equalCopy + 116) & 8) == 0)
     {
       goto LABEL_35;
     }
 
-    v20 = *(v4 + 113);
+    v20 = *(equalCopy + 113);
     if (self->_supportsFallback)
     {
-      if ((*(v4 + 113) & 1) == 0)
+      if ((*(equalCopy + 113) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 113))
+    else if (*(equalCopy + 113))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 116) & 8) != 0)
+  else if ((*(equalCopy + 116) & 8) != 0)
   {
     goto LABEL_35;
   }
 
   vendor = self->_vendor;
-  if (vendor | *(v4 + 13) && ![(NSString *)vendor isEqual:?])
+  if (vendor | *(equalCopy + 13) && ![(NSString *)vendor isEqual:?])
   {
     goto LABEL_35;
   }
 
   tcpProxyFqdn = self->_tcpProxyFqdn;
-  if (tcpProxyFqdn | *(v4 + 10))
+  if (tcpProxyFqdn | *(equalCopy + 10))
   {
     if (![(NSString *)tcpProxyFqdn isEqual:?])
     {
@@ -1021,7 +1021,7 @@ LABEL_37:
   }
 
   preferredPathConfigUri = self->_preferredPathConfigUri;
-  if (preferredPathConfigUri | *(v4 + 4))
+  if (preferredPathConfigUri | *(equalCopy + 4))
   {
     if (![(NSString *)preferredPathConfigUri isEqual:?])
     {
@@ -1030,7 +1030,7 @@ LABEL_37:
   }
 
   proxyVersion = self->_proxyVersion;
-  if (proxyVersion | *(v4 + 9))
+  if (proxyVersion | *(equalCopy + 9))
   {
     if (![(NSString *)proxyVersion isEqual:?])
     {
@@ -1038,42 +1038,42 @@ LABEL_37:
     }
   }
 
-  v13 = *(v4 + 116);
+  v13 = *(equalCopy + 116);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 116) & 0x10) == 0)
+    if ((*(equalCopy + 116) & 0x10) == 0)
     {
       goto LABEL_35;
     }
 
-    v21 = *(v4 + 114);
+    v21 = *(equalCopy + 114);
     if (self->_supportsResumption)
     {
-      if ((*(v4 + 114) & 1) == 0)
+      if ((*(equalCopy + 114) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 114))
+    else if (*(equalCopy + 114))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 116) & 0x10) != 0)
+  else if ((*(equalCopy + 116) & 0x10) != 0)
   {
     goto LABEL_35;
   }
 
   bootstrapAddresses = self->_bootstrapAddresses;
-  if (bootstrapAddresses | *(v4 + 3) && ![(NSMutableArray *)bootstrapAddresses isEqual:?])
+  if (bootstrapAddresses | *(equalCopy + 3) && ![(NSMutableArray *)bootstrapAddresses isEqual:?])
   {
     goto LABEL_35;
   }
 
   allowedNextHops = self->_allowedNextHops;
-  if (allowedNextHops | *(v4 + 2))
+  if (allowedNextHops | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)allowedNextHops isEqual:?])
     {
@@ -1082,7 +1082,7 @@ LABEL_37:
   }
 
   tokenChallenge = self->_tokenChallenge;
-  if (tokenChallenge | *(v4 + 11))
+  if (tokenChallenge | *(equalCopy + 11))
   {
     if (![(NSData *)tokenChallenge isEqual:?])
     {
@@ -1091,7 +1091,7 @@ LABEL_37:
   }
 
   preferredPathPatterns = self->_preferredPathPatterns;
-  if (preferredPathPatterns | *(v4 + 5))
+  if (preferredPathPatterns | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)preferredPathPatterns isEqual:?])
     {
@@ -1101,51 +1101,51 @@ LABEL_37:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 116) & 4) == 0)
+    if ((*(equalCopy + 116) & 4) == 0)
     {
       goto LABEL_35;
     }
 
-    v22 = *(v4 + 112);
+    v22 = *(equalCopy + 112);
     if (self->_fallbackSupportsUDPProxying)
     {
-      if ((*(v4 + 112) & 1) == 0)
+      if ((*(equalCopy + 112) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 112))
+    else if (*(equalCopy + 112))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 116) & 4) != 0)
+  else if ((*(equalCopy + 116) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 116) & 1) == 0 || self->_algorithm != *(v4 + 2))
+    if ((*(equalCopy + 116) & 1) == 0 || self->_algorithm != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 116))
+  else if (*(equalCopy + 116))
   {
     goto LABEL_35;
   }
 
-  v18 = (*(v4 + 116) & 2) == 0;
+  v18 = (*(equalCopy + 116) & 2) == 0;
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_36;
   }
 
-  if ((*(v4 + 116) & 2) != 0 && self->_proxyIndex == *(v4 + 13))
+  if ((*(equalCopy + 116) & 2) != 0 && self->_proxyIndex == *(equalCopy + 13))
   {
     v18 = 1;
     goto LABEL_36;
@@ -1230,12 +1230,12 @@ LABEL_10:
   return v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ (2654435761 * proxyHop) ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_proxyHop = *(v4 + 12);
-  if (*(v4 + 8))
+  fromCopy = from;
+  self->_proxyHop = *(fromCopy + 12);
+  if (*(fromCopy + 8))
   {
     [(NSPPrivacyProxyProxyInfo *)self setProxyURL:?];
   }
@@ -1244,7 +1244,7 @@ LABEL_10:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = *(v4 + 7);
+  v5 = *(fromCopy + 7);
   v6 = [v5 countByEnumeratingWithState:&v39 objects:v46 count:16];
   if (v6)
   {
@@ -1268,40 +1268,40 @@ LABEL_10:
     while (v7);
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(NSPPrivacyProxyProxyInfo *)self setTokenKeyInfo:?];
   }
 
-  if ((*(v4 + 116) & 8) != 0)
+  if ((*(fromCopy + 116) & 8) != 0)
   {
-    self->_supportsFallback = *(v4 + 113);
+    self->_supportsFallback = *(fromCopy + 113);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(NSPPrivacyProxyProxyInfo *)self setVendor:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(NSPPrivacyProxyProxyInfo *)self setTcpProxyFqdn:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NSPPrivacyProxyProxyInfo *)self setPreferredPathConfigUri:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(NSPPrivacyProxyProxyInfo *)self setProxyVersion:?];
   }
 
-  if ((*(v4 + 116) & 0x10) != 0)
+  if ((*(fromCopy + 116) & 0x10) != 0)
   {
-    self->_supportsResumption = *(v4 + 114);
+    self->_supportsResumption = *(fromCopy + 114);
     *&self->_has |= 0x10u;
   }
 
@@ -1309,7 +1309,7 @@ LABEL_10:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v11)
   {
@@ -1337,7 +1337,7 @@ LABEL_10:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = *(v4 + 2);
+  v15 = *(fromCopy + 2);
   v16 = [v15 countByEnumeratingWithState:&v31 objects:v44 count:16];
   if (v16)
   {
@@ -1361,7 +1361,7 @@ LABEL_10:
     while (v17);
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(NSPPrivacyProxyProxyInfo *)self setTokenChallenge:?];
   }
@@ -1370,7 +1370,7 @@ LABEL_10:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = *(v4 + 5);
+  v20 = *(fromCopy + 5);
   v21 = [v20 countByEnumeratingWithState:&v27 objects:v43 count:16];
   if (v21)
   {
@@ -1394,18 +1394,18 @@ LABEL_10:
     while (v22);
   }
 
-  v25 = *(v4 + 116);
+  v25 = *(fromCopy + 116);
   if ((v25 & 4) == 0)
   {
-    if ((*(v4 + 116) & 1) == 0)
+    if ((*(fromCopy + 116) & 1) == 0)
     {
       goto LABEL_49;
     }
 
 LABEL_53:
-    self->_algorithm = *(v4 + 2);
+    self->_algorithm = *(fromCopy + 2);
     *&self->_has |= 1u;
-    if ((*(v4 + 116) & 2) == 0)
+    if ((*(fromCopy + 116) & 2) == 0)
     {
       goto LABEL_51;
     }
@@ -1413,9 +1413,9 @@ LABEL_53:
     goto LABEL_50;
   }
 
-  self->_fallbackSupportsUDPProxying = *(v4 + 112);
+  self->_fallbackSupportsUDPProxying = *(fromCopy + 112);
   *&self->_has |= 4u;
-  v25 = *(v4 + 116);
+  v25 = *(fromCopy + 116);
   if (v25)
   {
     goto LABEL_53;
@@ -1425,7 +1425,7 @@ LABEL_49:
   if ((v25 & 2) != 0)
   {
 LABEL_50:
-    self->_proxyIndex = *(v4 + 13);
+    self->_proxyIndex = *(fromCopy + 13);
     *&self->_has |= 2u;
   }
 

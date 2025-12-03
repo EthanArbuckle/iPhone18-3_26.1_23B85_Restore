@@ -1,11 +1,11 @@
 @interface LiveFSFPItemHelper
-+ (id)UTIForExtension:(id)a3 liType:(int)a4;
++ (id)UTIForExtension:(id)extension liType:(int)type;
 - (BOOL)_fetchXattrValues;
-- (BOOL)calcNumberOfChildren:(id *)a3;
-- (BOOL)ensureFileHandleOrError:(id *)a3;
+- (BOOL)calcNumberOfChildren:(id *)children;
+- (BOOL)ensureFileHandleOrError:(id *)error;
 - (BOOL)isDirectory;
 - (BOOL)isDocument;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHidden;
 - (BOOL)isSymlink;
 - (BOOL)isTrashed;
@@ -24,40 +24,40 @@
 - (NSString)fullPath;
 - (NSString)parentItemIdentifier;
 - (NSString)typeIdentifier;
-- (id)initItemForFH:(id)a3 withReference:(int)a4 name:(id)a5 parent:(id)a6 type:(int)a7 attrs:(id)a8 extension:(id)a9;
+- (id)initItemForFH:(id)h withReference:(int)reference name:(id)name parent:(id)parent type:(int)type attrs:(id)attrs extension:(id)extension;
 - (id)lastUsedTime;
 - (id)pathExtension;
-- (int)refreshAttrsHasAProblem:(id *)a3;
+- (int)refreshAttrsHasAProblem:(id *)problem;
 - (unint64_t)capabilities;
-- (void)_fetchFavoriteRank:(id)a3 completionHandler:(id)a4;
-- (void)_fetchLastUsedDateWithProxy:(id)a3 completionHandler:(id)a4;
-- (void)_fetchTagDataWithProxy:(id)a3 completionHandler:(id)a4;
-- (void)_fetchXattrNamed:(id)a3 proxy:(id)a4 completionHandler:(id)a5;
-- (void)afterRename:(id)a3 performBlock:(id)a4;
+- (void)_fetchFavoriteRank:(id)rank completionHandler:(id)handler;
+- (void)_fetchLastUsedDateWithProxy:(id)proxy completionHandler:(id)handler;
+- (void)_fetchTagDataWithProxy:(id)proxy completionHandler:(id)handler;
+- (void)_fetchXattrNamed:(id)named proxy:(id)proxy completionHandler:(id)handler;
+- (void)afterRename:(id)rename performBlock:(id)block;
 - (void)capabilities;
 - (void)childItemCount;
 - (void)contentModificationDate;
 - (void)creationDate;
 - (void)dealloc;
 - (void)doDealloc;
-- (void)dropAfterRenameBlockForName:(id)a3;
+- (void)dropAfterRenameBlockForName:(id)name;
 - (void)fullPath;
 - (void)isHidden;
 - (void)lastUsedTime;
 - (void)parentItemIdentifier;
 - (void)pathExtension;
-- (void)performBlocksForRename:(id)a3 onEHQueue:(BOOL)a4;
+- (void)performBlocksForRename:(id)rename onEHQueue:(BOOL)queue;
 - (void)recursivelyReparentChildren;
 - (void)recursivelySetChildrenDeleted;
 - (void)resetFileHandle;
-- (void)setAttributes:(id)a3 time:(int64_t)a4;
-- (void)setAttributesLocked:(id)a3 time:(int64_t)a4;
+- (void)setAttributes:(id)attributes time:(int64_t)time;
+- (void)setAttributesLocked:(id)locked time:(int64_t)time;
 - (void)setAttributesStale;
-- (void)setFavoriteRank:(id)a3;
+- (void)setFavoriteRank:(id)rank;
 - (void)setItemDeleted;
-- (void)setLastUsedDate:(id)a3;
-- (void)setNewParent:(id)a3 andName:(id)a4;
-- (void)setTagData:(id)a3;
+- (void)setLastUsedDate:(id)date;
+- (void)setNewParent:(id)parent andName:(id)name;
+- (void)setTagData:(id)data;
 - (void)typeIdentifier;
 @end
 
@@ -68,9 +68,9 @@
   fullPath = self->_fullPath;
   if (!fullPath)
   {
-    v4 = [(LiveFSFPExtensionHelper *)self->_extension mountPath];
-    v5 = [v4 path];
-    v6 = [v5 stringByAppendingPathComponent:self->_path];
+    mountPath = [(LiveFSFPExtensionHelper *)self->_extension mountPath];
+    path = [mountPath path];
+    v6 = [path stringByAppendingPathComponent:self->_path];
     v7 = self->_fullPath;
     self->_fullPath = v6;
 
@@ -90,14 +90,14 @@
   return fullPath;
 }
 
-- (id)initItemForFH:(id)a3 withReference:(int)a4 name:(id)a5 parent:(id)a6 type:(int)a7 attrs:(id)a8 extension:(id)a9
+- (id)initItemForFH:(id)h withReference:(int)reference name:(id)name parent:(id)parent type:(int)type attrs:(id)attrs extension:(id)extension
 {
   v59 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v51 = a8;
-  v50 = a9;
+  hCopy = h;
+  nameCopy = name;
+  parentCopy = parent;
+  attrsCopy = attrs;
+  extensionCopy = extension;
   v18 = livefs_std_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
@@ -107,19 +107,19 @@
   v52.receiver = self;
   v52.super_class = LiveFSFPItemHelper;
   v19 = [(LiveFSFPItemHelper *)&v52 init];
-  v20 = v16;
+  v20 = nameCopy;
   if (!v19)
   {
     goto LABEL_38;
   }
 
-  if (a7 != -1 || v51)
+  if (type != -1 || attrsCopy)
   {
-    v48 = [v50 idsPersist];
-    objc_storeStrong(&v19->_extension, a9);
-    if (a4)
+    idsPersist = [extensionCopy idsPersist];
+    objc_storeStrong(&v19->_extension, extension);
+    if (reference)
     {
-      v23 = v15;
+      v23 = hCopy;
     }
 
     else
@@ -128,19 +128,19 @@
     }
 
     objc_storeStrong(&v19->_fh, v23);
-    v19->_liType = a7;
-    objc_storeStrong(&v19->_parent, a6);
+    v19->_liType = type;
+    objc_storeStrong(&v19->_parent, parent);
     v19->numChildren = -1;
     fullPath = v19->_fullPath;
     v19->_fullPath = 0;
 
-    if (v17)
+    if (parentCopy)
     {
-      objc_storeStrong(&v19->_filename, a5);
-      v25 = [v17 itemIdentifier];
+      objc_storeStrong(&v19->_filename, name);
+      itemIdentifier = [parentCopy itemIdentifier];
       v26 = *MEMORY[0x277CC6348];
 
-      if (v25 == v26)
+      if (itemIdentifier == v26)
       {
         v33 = v20;
         path = v19->_path;
@@ -149,18 +149,18 @@
 
       else
       {
-        path = [v17 path];
+        path = [parentCopy path];
         v28 = [path stringByAppendingPathComponent:v20];
         v29 = v19->_path;
         v19->_path = v28;
       }
 
-      v32 = v48;
+      v32 = idsPersist;
 
-      v31 = v51;
-      if (v48)
+      v31 = attrsCopy;
+      if (idsPersist)
       {
-        [MEMORY[0x277D23D90] identifierForItem:0 name:v20 parentID:{objc_msgSend(v17, "inodeNum")}];
+        [MEMORY[0x277D23D90] identifierForItem:0 name:v20 parentID:{objc_msgSend(parentCopy, "inodeNum")}];
       }
 
       else
@@ -190,19 +190,19 @@
     else
     {
       objc_storeStrong(&v19->_itemIdentifier, *MEMORY[0x277CC6348]);
-      objc_storeStrong(&v19->_fh, a3);
-      objc_storeStrong(&v19->_filename, a5);
+      objc_storeStrong(&v19->_fh, h);
+      objc_storeStrong(&v19->_filename, name);
       v30 = v19->_path;
       v19->_path = &stru_286811DF0;
-      v31 = v51;
-      v32 = v48;
+      v31 = attrsCopy;
+      v32 = idsPersist;
     }
 
-    [v50 addItem:v19 identifier:v19->_itemIdentifier fileHandle:v19->_fh];
+    [extensionCopy addItem:v19 identifier:v19->_itemIdentifier fileHandle:v19->_fh];
     if (v31)
     {
       v19->_attr_load = time(0);
-      v39 = [v31 bytes];
+      bytes = [v31 bytes];
       v40 = [v31 length];
       if (v40 >= 0xB8)
       {
@@ -214,7 +214,7 @@
         v41 = v40;
       }
 
-      memcpy(&v19->attributes, v39, v41);
+      memcpy(&v19->attributes, bytes, v41);
       if (v32)
       {
         if ((v19->attributes.fa_validmask & 0x100) != 0)
@@ -259,9 +259,9 @@ LABEL_38:
     }
 
 LABEL_37:
-    v44 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     itemNameCache = v19->_itemNameCache;
-    v19->_itemNameCache = v44;
+    v19->_itemNameCache = strongToWeakObjectsMapTable;
 
     goto LABEL_38;
   }
@@ -282,8 +282,8 @@ LABEL_39:
 - (void)doDealloc
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 280);
-  v2 = *(a1 + 304);
+  v1 = *(self + 280);
+  v2 = *(self + 304);
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_4();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0x20u);
@@ -310,14 +310,14 @@ LABEL_39:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     itemIdentifier = self->_itemIdentifier;
-    v6 = [v4 itemIdentifier];
-    v7 = [(NSString *)itemIdentifier isEqualToString:v6];
+    itemIdentifier = [equalCopy itemIdentifier];
+    v7 = [(NSString *)itemIdentifier isEqualToString:itemIdentifier];
   }
 
   else
@@ -328,7 +328,7 @@ LABEL_39:
   return v7;
 }
 
-- (BOOL)ensureFileHandleOrError:(id *)a3
+- (BOOL)ensureFileHandleOrError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   if (!self->_fh)
@@ -341,13 +341,13 @@ LABEL_39:
     v29 = 0;
     if (self->_itemIdentifier == *MEMORY[0x277CC6348])
     {
-      v8 = [(LiveFSFPExtensionHelper *)self->_extension conn];
+      conn = [(LiveFSFPExtensionHelper *)self->_extension conn];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke;
       v24[3] = &unk_27981A740;
       v24[4] = &buf;
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v24];
+      v9 = [conn synchronousRemoteObjectProxyWithErrorHandler:v24];
 
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
@@ -359,9 +359,9 @@ LABEL_39:
       v10 = *(*(&buf + 1) + 40);
       if (v10)
       {
-        if (a3)
+        if (error)
         {
-          *a3 = v10;
+          *error = v10;
         }
 
         v4 = 1;
@@ -376,7 +376,7 @@ LABEL_39:
       v22[4] = self;
       v22[5] = &buf;
       [v9 fileAttributes:fh requestID:-1 reply:v22];
-      if (!a3)
+      if (!error)
       {
         if ([(LiveFSFPExtensionHelper *)self->_extension idsPersist])
         {
@@ -408,7 +408,7 @@ LABEL_39:
       {
       }
 
-      else if ([(LiveFSFPItemHelper *)self->_parent ensureFileHandleOrError:a3])
+      else if ([(LiveFSFPItemHelper *)self->_parent ensureFileHandleOrError:error])
       {
         v4 = 1;
 LABEL_22:
@@ -417,13 +417,13 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v11 = [(LiveFSFPExtensionHelper *)self->_extension conn];
+      conn2 = [(LiveFSFPExtensionHelper *)self->_extension conn];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke_16;
       v21[3] = &unk_27981A740;
       v21[4] = &buf;
-      v9 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v21];
+      v9 = [conn2 synchronousRemoteObjectProxyWithErrorHandler:v21];
 
       v12 = [(LiveFSFPItemHelper *)self->_parent fh];
       filename = self->_filename;
@@ -435,7 +435,7 @@ LABEL_22:
       v20[5] = &buf;
       [v9 lookupIn:v12 name:filename usingFlags:0 requestID:-1 reply:v20];
 
-      if (!a3)
+      if (!error)
       {
         v15 = self->_extension;
         objc_sync_enter(v15);
@@ -452,7 +452,7 @@ LABEL_21:
       v14 = *(*(&buf + 1) + 40);
     }
 
-    *a3 = v14;
+    *error = v14;
     goto LABEL_20;
   }
 
@@ -604,50 +604,50 @@ LABEL_12:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAttributesLocked:(id)a3 time:(int64_t)a4
+- (void)setAttributesLocked:(id)locked time:(int64_t)time
 {
-  v6 = a3;
-  v18 = v6;
-  if (!a4)
+  lockedCopy = locked;
+  v18 = lockedCopy;
+  if (!time)
   {
-    a4 = time(0);
-    v6 = v18;
+    time = time(0);
+    lockedCopy = v18;
   }
 
-  self->_attr_load = a4;
-  v7 = v6;
-  v8 = [v18 bytes];
-  v9 = *v8;
-  v10 = *(v8 + 16);
-  v11 = *(v8 + 32);
-  *&self->attributes.fa_size = *(v8 + 48);
+  self->_attr_load = time;
+  v7 = lockedCopy;
+  bytes = [v18 bytes];
+  v9 = *bytes;
+  v10 = *(bytes + 16);
+  v11 = *(bytes + 32);
+  *&self->attributes.fa_size = *(bytes + 48);
   *&self->attributes.fa_nlink = v11;
   *&self->attributes.fa_seqno = v10;
   *&self->attributes.__fa_rsvd0 = v9;
-  v12 = *(v8 + 64);
-  v13 = *(v8 + 80);
-  v14 = *(v8 + 96);
-  self->attributes.fa_ctime = *(v8 + 112);
+  v12 = *(bytes + 64);
+  v13 = *(bytes + 80);
+  v14 = *(bytes + 96);
+  self->attributes.fa_ctime = *(bytes + 112);
   self->attributes.fa_mtime = v14;
   self->attributes.fa_atime = v13;
   *&self->attributes.fa_fileid = v12;
-  v15 = *(v8 + 128);
-  v16 = *(v8 + 144);
-  v17 = *(v8 + 160);
-  *&self->attributes.fa_int_flags = *(v8 + 176);
+  v15 = *(bytes + 128);
+  v16 = *(bytes + 144);
+  v17 = *(bytes + 160);
+  *&self->attributes.fa_int_flags = *(bytes + 176);
   self->attributes.fa_addedtime = v17;
   self->attributes.fa_backuptime = v16;
   self->attributes.fa_birthtime = v15;
   self->numChildren = -1;
 }
 
-- (void)setAttributes:(id)a3 time:(int64_t)a4
+- (void)setAttributes:(id)attributes time:(int64_t)time
 {
-  v7 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(LiveFSFPItemHelper *)v6 setAttributesLocked:v7 time:a4];
-  objc_sync_exit(v6);
+  attributesCopy = attributes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(LiveFSFPItemHelper *)selfCopy setAttributesLocked:attributesCopy time:time];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)setAttributesStale
@@ -694,28 +694,28 @@ LABEL_12:
   if (liType == +[LiveFSFPItemHelper dt_dir])
   {
     v17 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    v4 = [v17 lastObject];
-    if (v4)
+    lastObject = [v17 lastObject];
+    if (lastObject)
     {
-      v5 = v4;
-      v6 = 0;
+      lastObject2 = lastObject;
+      objectEnumerator = 0;
       v7 = v17;
       do
       {
-        v8 = v6;
+        v8 = objectEnumerator;
         [v7 removeObjectAtIndex:0];
-        v9 = [v5 itemNameCache];
-        v6 = [v9 objectEnumerator];
+        itemNameCache = [lastObject2 itemNameCache];
+        objectEnumerator = [itemNameCache objectEnumerator];
 
-        if (v6)
+        if (objectEnumerator)
         {
-          v10 = [v6 nextObject];
-          if (v10)
+          nextObject = [objectEnumerator nextObject];
+          if (nextObject)
           {
-            v11 = v10;
+            nextObject2 = nextObject;
             do
             {
-              v12 = v11;
+              v12 = nextObject2;
               objc_sync_enter(v12);
               v13 = *(v12 + 66);
               if (v13 == +[LiveFSFPItemHelper dt_dir])
@@ -733,18 +733,18 @@ LABEL_12:
               *(v12 + 34) = 0;
 
               objc_sync_exit(v12);
-              v11 = [v6 nextObject];
+              nextObject2 = [objectEnumerator nextObject];
             }
 
-            while (v11);
+            while (nextObject2);
           }
         }
 
-        v5 = [v17 lastObject];
+        lastObject2 = [v17 lastObject];
         v7 = v17;
       }
 
-      while (v5);
+      while (lastObject2);
     }
 
     v16 = v17;
@@ -762,31 +762,31 @@ LABEL_12:
   if (liType == +[LiveFSFPItemHelper dt_dir])
   {
     v27 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    v4 = [v27 lastObject];
-    if (v4)
+    lastObject = [v27 lastObject];
+    if (lastObject)
     {
-      v5 = v4;
+      v5 = lastObject;
       v6 = 0;
-      v7 = 0;
+      objectEnumerator = 0;
       v8 = *MEMORY[0x277CC6348];
       v9 = v27;
       do
       {
-        v10 = v7;
+        v10 = objectEnumerator;
         [v9 removeObjectAtIndex:0];
-        v11 = [v5 itemNameCache];
-        v7 = [v11 objectEnumerator];
+        itemNameCache = [v5 itemNameCache];
+        objectEnumerator = [itemNameCache objectEnumerator];
 
-        if (v7)
+        if (objectEnumerator)
         {
-          v12 = [v7 nextObject];
-          if (v12)
+          nextObject = [objectEnumerator nextObject];
+          if (nextObject)
           {
-            v13 = v12;
+            nextObject2 = nextObject;
             v14 = v6;
             do
             {
-              v15 = v13;
+              v15 = nextObject2;
               objc_sync_enter(v15);
               v16 = *(v15 + 66);
               if (v16 == +[LiveFSFPItemHelper dt_dir])
@@ -794,19 +794,19 @@ LABEL_12:
                 [v27 insertObject:v15 atIndex:0];
               }
 
-              v17 = [v5 itemIdentifier];
+              itemIdentifier = [v5 itemIdentifier];
 
-              if (v17 == v8)
+              if (itemIdentifier == v8)
               {
                 v21 = v15[34];
-                v18 = v15[37];
+                path = v15[37];
                 v15[37] = v21;
               }
 
               else
               {
-                v18 = [v5 path];
-                v19 = [v18 stringByAppendingPathComponent:v15[34]];
+                path = [v5 path];
+                v19 = [path stringByAppendingPathComponent:v15[34]];
                 v20 = v15[37];
                 v15[37] = v19;
               }
@@ -831,22 +831,22 @@ LABEL_12:
               [(LiveFSFPExtensionHelper *)self->_extension reIDItem:v15 oldID:v6];
               objc_sync_exit(v15);
 
-              v13 = [v7 nextObject];
+              nextObject2 = [objectEnumerator nextObject];
 
               v14 = v6;
             }
 
-            while (v13);
+            while (nextObject2);
           }
         }
 
-        v25 = [v27 lastObject];
+        lastObject2 = [v27 lastObject];
 
         v9 = v27;
-        v5 = v25;
+        v5 = lastObject2;
       }
 
-      while (v25);
+      while (lastObject2);
     }
 
     v26 = v27;
@@ -858,14 +858,14 @@ LABEL_12:
   }
 }
 
-- (void)setNewParent:(id)a3 andName:(id)a4
+- (void)setNewParent:(id)parent andName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  if ([(NSString *)v9->_filename isEqualToString:v8]&& [(LiveFSFPItemHelper *)v9->_parent isEqual:v7])
+  parentCopy = parent;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSString *)selfCopy->_filename isEqualToString:nameCopy]&& [(LiveFSFPItemHelper *)selfCopy->_parent isEqual:parentCopy])
   {
     v10 = livefs_std_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -875,102 +875,102 @@ LABEL_12:
       _os_log_impl(&dword_255FE9000, v10, OS_LOG_TYPE_DEFAULT, "%s: reparenting to current values", &v22, 0xCu);
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v11 = [v7 itemIdentifier];
+    itemIdentifier = [parentCopy itemIdentifier];
     v12 = *MEMORY[0x277CC6348];
 
-    if (v11 == v12)
+    if (itemIdentifier == v12)
     {
-      v16 = v8;
-      path = v9->_path;
-      v9->_path = v16;
+      v16 = nameCopy;
+      path = selfCopy->_path;
+      selfCopy->_path = v16;
     }
 
     else
     {
-      path = [v7 path];
-      v14 = [path stringByAppendingPathComponent:v8];
-      v15 = v9->_path;
-      v9->_path = v14;
+      path = [parentCopy path];
+      v14 = [path stringByAppendingPathComponent:nameCopy];
+      v15 = selfCopy->_path;
+      selfCopy->_path = v14;
     }
 
-    fullPath = v9->_fullPath;
-    v9->_fullPath = 0;
+    fullPath = selfCopy->_fullPath;
+    selfCopy->_fullPath = 0;
 
-    v18 = v9->_itemIdentifier;
-    if ([(LiveFSFPExtensionHelper *)v9->_extension idsPersist])
+    v18 = selfCopy->_itemIdentifier;
+    if ([(LiveFSFPExtensionHelper *)selfCopy->_extension idsPersist])
     {
-      v19 = [MEMORY[0x277D23D90] identifierForItem:0 name:v8 parentID:v7[43]];
+      v19 = [MEMORY[0x277D23D90] identifierForItem:0 name:nameCopy parentID:parentCopy[43]];
     }
 
     else
     {
-      v19 = v9->_path;
+      v19 = selfCopy->_path;
     }
 
-    itemIdentifier = v9->_itemIdentifier;
-    v9->_itemIdentifier = v19;
+    itemIdentifier = selfCopy->_itemIdentifier;
+    selfCopy->_itemIdentifier = v19;
 
-    [(LiveFSFPExtensionHelper *)v9->_extension reparentItem:v9 oldID:v18 oldParent:v9->_parent oldName:v9->_filename newParent:v7 newName:v8];
-    objc_storeStrong(&v9->_filename, a4);
-    objc_storeStrong(&v9->_parent, a3);
-    objc_sync_exit(v9);
+    [(LiveFSFPExtensionHelper *)selfCopy->_extension reparentItem:selfCopy oldID:v18 oldParent:selfCopy->_parent oldName:selfCopy->_filename newParent:parentCopy newName:nameCopy];
+    objc_storeStrong(&selfCopy->_filename, name);
+    objc_storeStrong(&selfCopy->_parent, parent);
+    objc_sync_exit(selfCopy);
 
-    [(LiveFSFPItemHelper *)v9 recursivelyReparentChildren];
+    [(LiveFSFPItemHelper *)selfCopy recursivelyReparentChildren];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)afterRename:(id)a3 performBlock:(id)a4
+- (void)afterRename:(id)rename performBlock:(id)block
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  pendingRenameCompletionBlocks = v7->_pendingRenameCompletionBlocks;
+  renameCopy = rename;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingRenameCompletionBlocks = selfCopy->_pendingRenameCompletionBlocks;
   if (!pendingRenameCompletionBlocks)
   {
     v9 = objc_opt_new();
-    v10 = v7->_pendingRenameCompletionBlocks;
-    v7->_pendingRenameCompletionBlocks = v9;
+    v10 = selfCopy->_pendingRenameCompletionBlocks;
+    selfCopy->_pendingRenameCompletionBlocks = v9;
 
-    pendingRenameCompletionBlocks = v7->_pendingRenameCompletionBlocks;
+    pendingRenameCompletionBlocks = selfCopy->_pendingRenameCompletionBlocks;
   }
 
-  v11 = MEMORY[0x259C563F0](v6);
-  [(NSMutableDictionary *)pendingRenameCompletionBlocks setObject:v11 forKey:v12];
+  v11 = MEMORY[0x259C563F0](blockCopy);
+  [(NSMutableDictionary *)pendingRenameCompletionBlocks setObject:v11 forKey:renameCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)dropAfterRenameBlockForName:(id)a3
+- (void)dropAfterRenameBlockForName:(id)name
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  pendingRenameCompletionBlocks = v4->_pendingRenameCompletionBlocks;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingRenameCompletionBlocks = selfCopy->_pendingRenameCompletionBlocks;
   if (pendingRenameCompletionBlocks)
   {
-    [(NSMutableDictionary *)pendingRenameCompletionBlocks setValue:0 forKey:v6];
+    [(NSMutableDictionary *)pendingRenameCompletionBlocks setValue:0 forKey:nameCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)performBlocksForRename:(id)a3 onEHQueue:(BOOL)a4
+- (void)performBlocksForRename:(id)rename onEHQueue:(BOOL)queue
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  pendingRenameCompletionBlocks = v7->_pendingRenameCompletionBlocks;
+  renameCopy = rename;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingRenameCompletionBlocks = selfCopy->_pendingRenameCompletionBlocks;
   if (pendingRenameCompletionBlocks)
   {
-    if (v6)
+    if (renameCopy)
     {
       v9 = [(NSMutableDictionary *)pendingRenameCompletionBlocks mutableCopy];
     }
@@ -978,17 +978,17 @@ LABEL_12:
     else
     {
       v9 = pendingRenameCompletionBlocks;
-      v10 = v7->_pendingRenameCompletionBlocks;
-      v7->_pendingRenameCompletionBlocks = 0;
+      v10 = selfCopy->_pendingRenameCompletionBlocks;
+      selfCopy->_pendingRenameCompletionBlocks = 0;
     }
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__LiveFSFPItemHelper_performBlocksForRename_onEHQueue___block_invoke;
     v11[3] = &unk_27981AC00;
-    v14 = a4;
-    v12 = v6;
-    v13 = v7;
+    queueCopy = queue;
+    v12 = renameCopy;
+    v13 = selfCopy;
     [(NSMutableDictionary *)v9 enumerateKeysAndObjectsUsingBlock:v11];
   }
 
@@ -997,7 +997,7 @@ LABEL_12:
     v9 = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 void __55__LiveFSFPItemHelper_performBlocksForRename_onEHQueue___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -1017,32 +1017,32 @@ void __55__LiveFSFPItemHelper_performBlocksForRename_onEHQueue___block_invoke(ui
   }
 }
 
-- (void)setTagData:(id)a3
+- (void)setTagData:(id)data
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy)
   {
     if ([(LiveFSFPExtensionHelper *)self->_extension supportsTagging])
     {
-      v4 = [(NSData *)v6 copy];
+      dataCopy = [(NSData *)v6 copy];
     }
 
     else
     {
-      v4 = 0;
+      dataCopy = 0;
     }
   }
 
   tagData = self->_tagData;
-  self->_tagData = v4;
+  self->_tagData = dataCopy;
 }
 
-- (void)setFavoriteRank:(id)a3
+- (void)setFavoriteRank:(id)rank
 {
-  if (a3)
+  if (rank)
   {
-    v4 = [a3 copy];
+    v4 = [rank copy];
   }
 
   else
@@ -1056,11 +1056,11 @@ void __55__LiveFSFPItemHelper_performBlocksForRename_onEHQueue___block_invoke(ui
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setLastUsedDate:(id)a3
+- (void)setLastUsedDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = [a3 copy];
+    v4 = [date copy];
   }
 
   else
@@ -1074,7 +1074,7 @@ void __55__LiveFSFPItemHelper_performBlocksForRename_onEHQueue___block_invoke(ui
   MEMORY[0x2821F96F8]();
 }
 
-- (int)refreshAttrsHasAProblem:(id *)a3
+- (int)refreshAttrsHasAProblem:(id *)problem
 {
   v5 = livefs_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1082,26 +1082,26 @@ void __55__LiveFSFPItemHelper_performBlocksForRename_onEHQueue___block_invoke(ui
     [LiveFSFPItemHelper refreshAttrsHasAProblem:?];
   }
 
-  if (![(LiveFSFPExtensionHelper *)self->_extension _isLoggedInOrError:a3])
+  if (![(LiveFSFPExtensionHelper *)self->_extension _isLoggedInOrError:problem])
   {
     return 1;
   }
 
-  if (a3)
+  if (problem)
   {
-    *a3 = 0;
+    *problem = 0;
   }
 
   if (![(LiveFSFPExtensionHelper *)self->_extension isClusterMaster])
   {
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v8 = time(0);
-    if (v7->_attr_load + 3600 > v8)
+    if (selfCopy->_attr_load + 3600 > v8)
     {
       v6 = 0;
 LABEL_27:
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
 
       return v6;
     }
@@ -1118,15 +1118,15 @@ LABEL_27:
     v25 = __Block_byref_object_copy__1;
     v26 = __Block_byref_object_dispose__1;
     v27 = 0;
-    v9 = [(LiveFSFPExtensionHelper *)self->_extension conn];
+    conn = [(LiveFSFPExtensionHelper *)self->_extension conn];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __46__LiveFSFPItemHelper_refreshAttrsHasAProblem___block_invoke;
     v21[3] = &unk_27981A740;
     v21[4] = &v22;
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v21];
+    v10 = [conn synchronousRemoteObjectProxyWithErrorHandler:v21];
 
-    fh = v7->_fh;
+    fh = selfCopy->_fh;
     if (fh)
     {
       v19[0] = MEMORY[0x277D85DD0];
@@ -1139,7 +1139,7 @@ LABEL_27:
       v12 = v29[5];
       if (v12)
       {
-        [(LiveFSFPItemHelper *)v7 setAttributesLocked:v12 time:v8];
+        [(LiveFSFPItemHelper *)selfCopy setAttributesLocked:v12 time:v8];
 LABEL_18:
         v6 = 0;
 LABEL_26:
@@ -1167,7 +1167,7 @@ LABEL_22:
     {
       v13 = (v23 + 5);
       obj = v23[5];
-      v14 = [(LiveFSFPItemHelper *)v7 ensureFileHandleOrError:&obj];
+      v14 = [(LiveFSFPItemHelper *)selfCopy ensureFileHandleOrError:&obj];
       objc_storeStrong(v13, obj);
       if (!v14)
       {
@@ -1187,10 +1187,10 @@ LABEL_22:
       }
     }
 
-    if (a3)
+    if (problem)
     {
       v17 = v15;
-      *a3 = v15;
+      *problem = v15;
     }
 
     v6 = 1;
@@ -1230,30 +1230,30 @@ LABEL_6:
 
 - (BOOL)isDirectory
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_liType == 2;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_liType == 2;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isSymlink
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_liType == 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_liType == 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isDocument
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_liType == 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_liType == 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1301,39 +1301,39 @@ LABEL_6:
   v4 = *MEMORY[0x277CC6348];
   if ([(NSString *)self->_itemIdentifier isEqualToString:*MEMORY[0x277CC6348]])
   {
-    v5 = v4;
+    itemIdentifier = v4;
   }
 
   else
   {
-    v5 = [(LiveFSFPItemHelper *)self->_parent itemIdentifier];
+    itemIdentifier = [(LiveFSFPItemHelper *)self->_parent itemIdentifier];
   }
 
-  return v5;
+  return itemIdentifier;
 }
 
 - (NSString)fp_domainIdentifier
 {
-  v2 = [(NSFileProviderExtension *)self->_extension domain];
-  v3 = [v2 identifier];
+  domain = [(NSFileProviderExtension *)self->_extension domain];
+  identifier = [domain identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)fp_parentDomainIdentifier
 {
   if ([(LiveFSFPExtensionHelper *)self->_extension isClusterDomain]&& ![(LiveFSFPExtensionHelper *)self->_extension isClusterMaster]&& [(NSString *)self->_itemIdentifier isEqualToString:*MEMORY[0x277CC6348]])
   {
-    v3 = [(LiveFSFPExtensionHelper *)self->_extension clusterMasterID];
+    clusterMasterID = [(LiveFSFPExtensionHelper *)self->_extension clusterMasterID];
   }
 
   else
   {
-    v4 = [(NSFileProviderExtension *)self->_extension domain];
-    v3 = [v4 identifier];
+    domain = [(NSFileProviderExtension *)self->_extension domain];
+    clusterMasterID = [domain identifier];
   }
 
-  return v3;
+  return clusterMasterID;
 }
 
 - (unint64_t)capabilities
@@ -1347,18 +1347,18 @@ LABEL_6:
   {
     fa_mode = self->attributes.fa_mode;
     [(LiveFSFPItemHelper *)self isDirectory];
-    v7 = [(LiveFSFPItemHelper *)self extension];
-    v8 = [v7 idsPersist] ^ 1;
+    extension = [(LiveFSFPItemHelper *)self extension];
+    v8 = [extension idsPersist] ^ 1;
     parent = self->_parent;
-    v10 = [(LiveFSFPItemHelper *)self extension];
-    v11 = [v10 supportsTrash];
-    v12 = [(LiveFSFPItemHelper *)self extension];
-    v13 = [v12 supportsTagging];
-    v14 = [(LiveFSFPItemHelper *)self extension];
-    v15 = [v14 isReadOnlyVolume];
+    extension2 = [(LiveFSFPItemHelper *)self extension];
+    supportsTrash = [extension2 supportsTrash];
+    extension3 = [(LiveFSFPItemHelper *)self extension];
+    supportsTagging = [extension3 supportsTagging];
+    extension4 = [(LiveFSFPItemHelper *)self extension];
+    isReadOnlyVolume = [extension4 isReadOnlyVolume];
     if (parent)
     {
-      v16 = v15;
+      v16 = isReadOnlyVolume;
     }
 
     else
@@ -1379,7 +1379,7 @@ LABEL_6:
 
     if ((fa_mode & 0x80) != 0)
     {
-      v18 = v15;
+      v18 = isReadOnlyVolume;
     }
 
     else
@@ -1387,7 +1387,7 @@ LABEL_6:
       v18 = 1;
     }
 
-    v19 = v17 | v15;
+    v19 = v17 | isReadOnlyVolume;
     if (!parent)
     {
       v19 = 1;
@@ -1404,7 +1404,7 @@ LABEL_6:
     }
 
     v21 = v20 | 0x10;
-    if (!v11)
+    if (!supportsTrash)
     {
       v21 = v20;
     }
@@ -1420,7 +1420,7 @@ LABEL_6:
       v20 |= 2uLL;
     }
 
-    if (v15 | v13 ^ 1)
+    if (isReadOnlyVolume | supportsTagging ^ 1)
     {
       v23 = 0;
     }
@@ -1455,12 +1455,12 @@ LABEL_6:
     [(LiveFSFPItemHelper *)self pathExtension];
   }
 
-  v4 = [(LiveFSFPItemHelper *)self filename];
-  if (v4 && (v5 = v4, -[LiveFSFPItemHelper filename](self, "filename"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 length], v6, v5, v7) && (v8 = malloc_type_calloc(1uLL, 0x401uLL, 0x100004077774924uLL)) != 0)
+  filename = [(LiveFSFPItemHelper *)self filename];
+  if (filename && (v5 = filename, -[LiveFSFPItemHelper filename](self, "filename"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 length], v6, v5, v7) && (v8 = malloc_type_calloc(1uLL, 0x401uLL, 0x100004077774924uLL)) != 0)
   {
     v9 = v8;
-    v10 = [(LiveFSFPItemHelper *)self filename];
-    v11 = [v10 getFileSystemRepresentation:v9 maxLength:1025];
+    filename2 = [(LiveFSFPItemHelper *)self filename];
+    v11 = [filename2 getFileSystemRepresentation:v9 maxLength:1025];
 
     if (v11)
     {
@@ -1480,8 +1480,8 @@ LABEL_6:
       if (v15)
       {
         v16 = v15;
-        v17 = [MEMORY[0x277CCAA00] defaultManager];
-        v14 = [v17 stringWithFileSystemRepresentation:v14 length:v16];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v14 = [defaultManager stringWithFileSystemRepresentation:v14 length:v16];
       }
 
       else
@@ -1501,22 +1501,22 @@ LABEL_6:
   return v14;
 }
 
-+ (id)UTIForExtension:(id)a3 liType:(int)a4
++ (id)UTIForExtension:(id)extension liType:(int)type
 {
   v5 = UTIForExtension_liType__onceToken;
-  v6 = a3;
+  extensionCopy = extension;
   if (v5 != -1)
   {
     +[LiveFSFPItemHelper UTIForExtension:liType:];
   }
 
   v7 = MEMORY[0x277CC2058];
-  if (a4 != 2)
+  if (type != 2)
   {
     v7 = MEMORY[0x277CC2050];
   }
 
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], v6, *v7);
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], extensionCopy, *v7);
 
   return PreferredIdentifierForTag;
 }
@@ -1549,8 +1549,8 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v6 = [(LiveFSFPItemHelper *)self pathExtension];
-  if (!v6)
+  pathExtension = [(LiveFSFPItemHelper *)self pathExtension];
+  if (!pathExtension)
   {
     if (self->_liType == 2)
     {
@@ -1558,10 +1558,10 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v6 = &stru_286811DF0;
+    pathExtension = &stru_286811DF0;
   }
 
-  v5 = [objc_opt_class() UTIForExtension:v6 liType:self->_liType];
+  v5 = [objc_opt_class() UTIForExtension:pathExtension liType:self->_liType];
   [v5 hasPrefix:@"dyn."];
   v7 = livefs_std_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1585,8 +1585,8 @@ LABEL_13:
 
 - (BOOL)isTrashed
 {
-  v3 = [(LiveFSFPItemHelper *)self extension];
-  if ([v3 supportsTrash])
+  extension = [(LiveFSFPItemHelper *)self extension];
+  if ([extension supportsTrash])
   {
     v4 = [(NSString *)self->_path hasPrefix:@".Trashes/"];
   }
@@ -1604,27 +1604,27 @@ LABEL_13:
   v3 = 0;
   if (![(LiveFSFPItemHelper *)self refreshAttrsHasAProblem:0])
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    if (v4->attributes.fa_type == 2)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->attributes.fa_type == 2)
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v4->attributes.fa_size];
+      v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:selfCopy->attributes.fa_size];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   return v3;
 }
 
-- (BOOL)calcNumberOfChildren:(id *)a3
+- (BOOL)calcNumberOfChildren:(id *)children
 {
-  v27 = a3;
+  childrenCopy = children;
   v56 = *MEMORY[0x277D85DE8];
   v49 = 0;
   v50 = &v49;
@@ -1663,7 +1663,7 @@ LABEL_4:
   v50[3] = 0;
   v46[3] = 0;
   *(v33[0] + 24) = 0;
-  v7 = [(LiveFSFPExtensionHelper *)self->_extension conn:v27];
+  v7 = [(LiveFSFPExtensionHelper *)self->_extension conn:childrenCopy];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v31[0] = __43__LiveFSFPItemHelper_calcNumberOfChildren___block_invoke;
@@ -1722,10 +1722,10 @@ LABEL_4:
           }
         }
 
-        if (v27)
+        if (childrenCopy)
         {
           v17 = v15;
-          *v27 = v15;
+          *childrenCopy = v15;
         }
 
         goto LABEL_30;
@@ -1745,10 +1745,10 @@ LABEL_4:
         }
       }
 
-      if (v27)
+      if (childrenCopy)
       {
         v24 = v22;
-        *v27 = v22;
+        *childrenCopy = v22;
       }
 
       _Block_object_dispose(&buf, 8);
@@ -1875,10 +1875,10 @@ LABEL_21:
 
   if (![(LiveFSFPItemHelper *)self refreshAttrsHasAProblem:0]&& (self->attributes.fa_validmask & 0x800) != 0)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v6->attributes.fa_mtime.tv_sec + v6->attributes.fa_mtime.tv_nsec * 0.000000001];
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:selfCopy->attributes.fa_mtime.tv_sec + selfCopy->attributes.fa_mtime.tv_nsec * 0.000000001];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1899,10 +1899,10 @@ LABEL_21:
 
   if (![(LiveFSFPItemHelper *)self refreshAttrsHasAProblem:0]&& (self->attributes.fa_validmask & 0x2000) != 0)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v6->attributes.fa_birthtime.tv_sec + v6->attributes.fa_birthtime.tv_nsec * 0.000000001];
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:selfCopy->attributes.fa_birthtime.tv_sec + selfCopy->attributes.fa_birthtime.tv_nsec * 0.000000001];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1917,10 +1917,10 @@ LABEL_21:
 {
   if (![(LiveFSFPItemHelper *)self refreshAttrsHasAProblem:0]&& (self->attributes.fa_validmask & 0x800) != 0)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    tv_sec = v3->attributes.fa_mtime.tv_sec;
-    tv_nsec = v3->attributes.fa_mtime.tv_nsec;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    tv_sec = selfCopy->attributes.fa_mtime.tv_sec;
+    tv_nsec = selfCopy->attributes.fa_mtime.tv_nsec;
     v8 = livefs_std_log();
     v9 = tv_sec + tv_nsec * 0.000000001;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1929,13 +1929,13 @@ LABEL_21:
     }
 
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v3 = livefs_std_log();
-    if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEBUG))
+    selfCopy = livefs_std_log();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEBUG))
     {
       [LiveFSFPItemHelper lastUsedTime];
     }
@@ -1953,18 +1953,18 @@ LABEL_21:
     return 0;
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  isFetchingXattrValues = v4->_isFetchingXattrValues;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isFetchingXattrValues = selfCopy->_isFetchingXattrValues;
   if (isFetchingXattrValues)
   {
 LABEL_6:
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     return isFetchingXattrValues;
   }
 
-  lastXattrValuesFetchDate = v4->_lastXattrValuesFetchDate;
+  lastXattrValuesFetchDate = selfCopy->_lastXattrValuesFetchDate;
   if (lastXattrValuesFetchDate)
   {
     [(NSDate *)lastXattrValuesFetchDate timeIntervalSinceNow];
@@ -1976,32 +1976,32 @@ LABEL_6:
 
   else
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = v4->_lastXattrValuesFetchDate;
-    v4->_lastXattrValuesFetchDate = v7;
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = selfCopy->_lastXattrValuesFetchDate;
+    selfCopy->_lastXattrValuesFetchDate = date;
   }
 
-  [(LiveFSFPItemHelper *)v4 ensureFileHandleOrError:0];
-  v4->_isFetchingXattrValues = 1;
-  if (!v4->_xattrFetchGroup)
+  [(LiveFSFPItemHelper *)selfCopy ensureFileHandleOrError:0];
+  selfCopy->_isFetchingXattrValues = 1;
+  if (!selfCopy->_xattrFetchGroup)
   {
     v9 = dispatch_group_create();
-    xattrFetchGroup = v4->_xattrFetchGroup;
-    v4->_xattrFetchGroup = v9;
+    xattrFetchGroup = selfCopy->_xattrFetchGroup;
+    selfCopy->_xattrFetchGroup = v9;
   }
 
   v11 = 3;
   do
   {
-    dispatch_group_enter(v4->_xattrFetchGroup);
+    dispatch_group_enter(selfCopy->_xattrFetchGroup);
     --v11;
   }
 
   while (v11);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v12 = [(LiveFSFPExtensionHelper *)self->_extension conn];
-  v13 = [v12 remoteObjectProxy];
+  conn = [(LiveFSFPExtensionHelper *)self->_extension conn];
+  remoteObjectProxy = [conn remoteObjectProxy];
 
   v18[0] = 0;
   v18[1] = v18;
@@ -2011,23 +2011,23 @@ LABEL_6:
   v17[1] = 3221225472;
   v17[2] = __39__LiveFSFPItemHelper__fetchXattrValues__block_invoke;
   v17[3] = &unk_27981AC70;
-  v17[4] = v4;
+  v17[4] = selfCopy;
   v17[5] = v18;
-  [(LiveFSFPItemHelper *)v4 _fetchLastUsedDateWithProxy:v13 completionHandler:v17];
+  [(LiveFSFPItemHelper *)selfCopy _fetchLastUsedDateWithProxy:remoteObjectProxy completionHandler:v17];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __39__LiveFSFPItemHelper__fetchXattrValues__block_invoke_2;
   v16[3] = &unk_27981AC98;
-  v16[4] = v4;
+  v16[4] = selfCopy;
   v16[5] = v18;
-  [(LiveFSFPItemHelper *)v4 _fetchTagDataWithProxy:v13 completionHandler:v16];
+  [(LiveFSFPItemHelper *)selfCopy _fetchTagDataWithProxy:remoteObjectProxy completionHandler:v16];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __39__LiveFSFPItemHelper__fetchXattrValues__block_invoke_3;
   v15[3] = &unk_27981ACC0;
-  v15[4] = v4;
+  v15[4] = selfCopy;
   v15[5] = v18;
-  [(LiveFSFPItemHelper *)v4 _fetchFavoriteRank:v13 completionHandler:v15];
+  [(LiveFSFPItemHelper *)selfCopy _fetchFavoriteRank:remoteObjectProxy completionHandler:v15];
   _Block_object_dispose(v18, 8);
 
   return 1;
@@ -2093,27 +2093,27 @@ void __39__LiveFSFPItemHelper__fetchXattrValues__block_invoke_3(uint64_t a1, voi
   objc_sync_exit(v7);
 }
 
-- (void)_fetchXattrNamed:(id)a3 proxy:(id)a4 completionHandler:(id)a5
+- (void)_fetchXattrNamed:(id)named proxy:(id)proxy completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  namedCopy = named;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__LiveFSFPItemHelper__fetchXattrNamed_proxy_completionHandler___block_invoke;
   v20[3] = &unk_27981ACE8;
-  v10 = v8;
+  v10 = namedCopy;
   v21 = v10;
-  v22 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = handlerCopy;
   v23 = v11;
-  v12 = [a4 remoteObjectProxyWithErrorHandler:v20];
+  v12 = [proxy remoteObjectProxyWithErrorHandler:v20];
   fh = self->_fh;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__LiveFSFPItemHelper__fetchXattrNamed_proxy_completionHandler___block_invoke_46;
   v16[3] = &unk_27981AD10;
   v17 = v10;
-  v18 = self;
+  selfCopy2 = self;
   v19 = v11;
   v14 = v11;
   v15 = v10;
@@ -2159,10 +2159,10 @@ void __63__LiveFSFPItemHelper__fetchXattrNamed_proxy_completionHandler___block_i
   }
 }
 
-- (void)_fetchLastUsedDateWithProxy:(id)a3 completionHandler:(id)a4
+- (void)_fetchLastUsedDateWithProxy:(id)proxy completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   if ([(LiveFSFPItemHelper *)self isDocument])
   {
     v8 = *MEMORY[0x277CC62C0];
@@ -2170,13 +2170,13 @@ void __63__LiveFSFPItemHelper__fetchXattrNamed_proxy_completionHandler___block_i
     v9[1] = 3221225472;
     v9[2] = __68__LiveFSFPItemHelper__fetchLastUsedDateWithProxy_completionHandler___block_invoke;
     v9[3] = &unk_27981AD38;
-    v10 = v7;
-    [(LiveFSFPItemHelper *)self _fetchXattrNamed:v8 proxy:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [(LiveFSFPItemHelper *)self _fetchXattrNamed:v8 proxy:proxyCopy completionHandler:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -2188,23 +2188,23 @@ void __68__LiveFSFPItemHelper__fetchLastUsedDateWithProxy_completionHandler___bl
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)_fetchTagDataWithProxy:(id)a3 completionHandler:(id)a4
+- (void)_fetchTagDataWithProxy:(id)proxy completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = *MEMORY[0x277CC62D0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__LiveFSFPItemHelper__fetchTagDataWithProxy_completionHandler___block_invoke;
   v9[3] = &unk_27981AD38;
-  v10 = v6;
-  v8 = v6;
-  [(LiveFSFPItemHelper *)self _fetchXattrNamed:v7 proxy:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(LiveFSFPItemHelper *)self _fetchXattrNamed:v7 proxy:proxy completionHandler:v9];
 }
 
-- (void)_fetchFavoriteRank:(id)a3 completionHandler:(id)a4
+- (void)_fetchFavoriteRank:(id)rank completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  rankCopy = rank;
+  handlerCopy = handler;
   if ([(LiveFSFPItemHelper *)self isDirectory]&& ![(LiveFSFPExtensionHelper *)self->_extension isClusterMaster])
   {
     v8 = *MEMORY[0x277CC62A0];
@@ -2212,13 +2212,13 @@ void __68__LiveFSFPItemHelper__fetchLastUsedDateWithProxy_completionHandler___bl
     v9[1] = 3221225472;
     v9[2] = __59__LiveFSFPItemHelper__fetchFavoriteRank_completionHandler___block_invoke;
     v9[3] = &unk_27981AD38;
-    v10 = v7;
-    [(LiveFSFPItemHelper *)self _fetchXattrNamed:v8 proxy:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [(LiveFSFPItemHelper *)self _fetchXattrNamed:v8 proxy:rankCopy completionHandler:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -2237,10 +2237,10 @@ void __59__LiveFSFPItemHelper__fetchFavoriteRank_completionHandler___block_invok
     dispatch_group_wait(self->_xattrFetchGroup, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = v3->_lastUsedDate;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = selfCopy->_lastUsedDate;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -2252,10 +2252,10 @@ void __59__LiveFSFPItemHelper__fetchFavoriteRank_completionHandler___block_invok
     dispatch_group_wait(self->_xattrFetchGroup, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = v3->_tagData;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = selfCopy->_tagData;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -2267,10 +2267,10 @@ void __59__LiveFSFPItemHelper__fetchFavoriteRank_completionHandler___block_invok
     dispatch_group_wait(self->_xattrFetchGroup, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = v3->_favoriteRank;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = selfCopy->_favoriteRank;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -2279,9 +2279,9 @@ void __59__LiveFSFPItemHelper__fetchFavoriteRank_completionHandler___block_invok
 {
   if (![(LiveFSFPItemHelper *)self refreshAttrsHasAProblem:0]&& (self->attributes.fa_validmask & 0x800) != 0)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    v7 = v3->attributes.fa_mtime.tv_sec + v3->attributes.fa_mtime.tv_nsec * 0.000000001;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = selfCopy->attributes.fa_mtime.tv_sec + selfCopy->attributes.fa_mtime.tv_nsec * 0.000000001;
     v6 = livefs_std_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -2289,13 +2289,13 @@ void __59__LiveFSFPItemHelper__fetchFavoriteRank_completionHandler___block_invok
     }
 
     v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v7 length:8];
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v3 = livefs_std_log();
-    if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEBUG))
+    selfCopy = livefs_std_log();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEBUG))
     {
       [LiveFSFPItemHelper lastUsedTime];
     }
@@ -2316,7 +2316,7 @@ void __59__LiveFSFPItemHelper__fetchFavoriteRank_completionHandler___block_invok
 - (void)fullPath
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 280);
+  v2 = *(self + 280);
   v3 = *a2;
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_1_0();
@@ -2387,7 +2387,7 @@ void __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke_2_17_cold_2
 {
   OUTLINED_FUNCTION_7_0();
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [v1 filename];
+  filename = [v1 filename];
   v3 = *(v0 + 16);
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_6_0();
@@ -2402,8 +2402,8 @@ void __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke_2_17_cold_2
   v18 = *MEMORY[0x277D85DE8];
   v3 = *(v2 + 280);
   v4 = *(v2 + 320);
-  v5 = [v4 itemIdentifier];
-  v6 = [*(v1 + 320) filename];
+  itemIdentifier = [v4 itemIdentifier];
+  filename = [*(v1 + 320) filename];
   v8 = 136316162;
   v9 = "[LiveFSFPItemHelper parentItemIdentifier]";
   v10 = 2112;
@@ -2411,9 +2411,9 @@ void __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke_2_17_cold_2
   v12 = 2112;
   v13 = v4;
   v14 = 2112;
-  v15 = v5;
+  v15 = itemIdentifier;
   v16 = 2112;
-  v17 = v6;
+  v17 = filename;
   _os_log_debug_impl(&dword_255FE9000, v0, OS_LOG_TYPE_DEBUG, "%s: Item %@ parent %@ parent ID %@ parent name %@", &v8, 0x34u);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2423,7 +2423,7 @@ void __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke_2_17_cold_2
 {
   OUTLINED_FUNCTION_7_0();
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [v1 filename];
+  filename = [v1 filename];
   v3 = *(v0 + 16);
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_6_0();
@@ -2435,9 +2435,9 @@ void __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke_2_17_cold_2
 - (void)pathExtension
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 filename];
+  filename = [self filename];
   v5 = 134217984;
-  v6 = [v3 length];
+  v6 = [filename length];
   _os_log_debug_impl(&dword_255FE9000, a2, OS_LOG_TYPE_DEBUG, "start:%lu", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
@@ -2446,8 +2446,8 @@ void __46__LiveFSFPItemHelper_ensureFileHandleOrError___block_invoke_2_17_cold_2
 - (void)typeIdentifier
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = *(a1 + 264);
-  v8 = *(a1 + 272);
+  v7 = *(self + 264);
+  v8 = *(self + 272);
   OUTLINED_FUNCTION_4();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x1Cu);
   v6 = *MEMORY[0x277D85DE8];

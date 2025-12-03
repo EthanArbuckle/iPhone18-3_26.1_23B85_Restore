@@ -1,34 +1,34 @@
 @interface DNDSBehaviorSettingsRecord
-+ (id)_recordWithEncodedInfo:(id)a3 error:(id *)a4;
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_recordWithEncodedInfo:(id)info error:(id *)error;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithInterruptionBehaviorSetting:(id)a3;
-- (id)_initWithRecord:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithInterruptionBehaviorSetting:(id)setting;
+- (id)_initWithRecord:(id)record;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSBehaviorSettingsRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = [a3 interruptionBehaviorSetting];
-  v5 = [(DNDSBehaviorSettingsRecord *)self _initWithInterruptionBehaviorSetting:v4];
+  interruptionBehaviorSetting = [record interruptionBehaviorSetting];
+  v5 = [(DNDSBehaviorSettingsRecord *)self _initWithInterruptionBehaviorSetting:interruptionBehaviorSetting];
 
   return v5;
 }
 
-- (id)_initWithInterruptionBehaviorSetting:(id)a3
+- (id)_initWithInterruptionBehaviorSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   v10.receiver = self;
   v10.super_class = DNDSBehaviorSettingsRecord;
   v5 = [(DNDSBehaviorSettingsRecord *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [settingCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -48,16 +48,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
-  v3 = [v2 hash];
+  interruptionBehaviorSetting = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
+  v3 = [interruptionBehaviorSetting hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -67,25 +67,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
-      v7 = [(DNDSBehaviorSettingsRecord *)v5 interruptionBehaviorSetting];
-      if (v6 == v7)
+      v5 = equalCopy;
+      interruptionBehaviorSetting = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
+      interruptionBehaviorSetting2 = [(DNDSBehaviorSettingsRecord *)v5 interruptionBehaviorSetting];
+      if (interruptionBehaviorSetting == interruptionBehaviorSetting2)
       {
         v12 = 1;
       }
 
       else
       {
-        v8 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
-        if (v8)
+        interruptionBehaviorSetting3 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
+        if (interruptionBehaviorSetting3)
         {
-          v9 = [(DNDSBehaviorSettingsRecord *)v5 interruptionBehaviorSetting];
-          if (v9)
+          interruptionBehaviorSetting4 = [(DNDSBehaviorSettingsRecord *)v5 interruptionBehaviorSetting];
+          if (interruptionBehaviorSetting4)
           {
-            v10 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
-            v11 = [(DNDSBehaviorSettingsRecord *)v5 interruptionBehaviorSetting];
-            v12 = [v10 isEqual:v11];
+            interruptionBehaviorSetting5 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
+            interruptionBehaviorSetting6 = [(DNDSBehaviorSettingsRecord *)v5 interruptionBehaviorSetting];
+            v12 = [interruptionBehaviorSetting5 isEqual:interruptionBehaviorSetting6];
           }
 
           else
@@ -114,42 +114,42 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
-  v6 = [v3 stringWithFormat:@"<%@: %p interruptionBehaviorSetting: %@>", v4, self, v5];;
+  interruptionBehaviorSetting = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
+  v6 = [v3 stringWithFormat:@"<%@: %p interruptionBehaviorSetting: %@>", v4, self, interruptionBehaviorSetting];;
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableBehaviorSettingsRecord alloc];
 
   return [(DNDSBehaviorSettingsRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 bs_safeObjectForKey:@"interruptionBehaviorSetting" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v6 = [representationCopy bs_safeObjectForKey:@"interruptionBehaviorSetting" ofType:objc_opt_class()];
 
-  v7 = [[a1 alloc] _initWithInterruptionBehaviorSetting:v6];
+  v7 = [[self alloc] _initWithInterruptionBehaviorSetting:v6];
   return v7;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
-  [v4 setObject:v5 forKey:@"interruptionBehaviorSetting"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  interruptionBehaviorSetting = [(DNDSBehaviorSettingsRecord *)self interruptionBehaviorSetting];
+  [dictionary setObject:interruptionBehaviorSetting forKey:@"interruptionBehaviorSetting"];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)_recordWithEncodedInfo:(id)a3 error:(id *)a4
++ (id)_recordWithEncodedInfo:(id)info error:(id *)error
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(DNDSMutableBehaviorSettingsRecord);
-  v6 = [v4 bs_safeObjectForKey:@"effectiveWhileUnlocked" ofType:objc_opt_class()];
+  v6 = [infoCopy bs_safeObjectForKey:@"effectiveWhileUnlocked" ofType:objc_opt_class()];
 
   if ([v6 BOOLValue])
   {

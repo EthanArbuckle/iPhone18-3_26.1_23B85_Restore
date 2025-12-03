@@ -1,25 +1,25 @@
 @interface SBHIconImageAppearanceStoreImageEnumerator
 - (SBHIconImageAppearance)imageAppearance;
-- (SBHIconImageAppearanceStoreImageEnumerator)initWithImages:(id)a3 appearances:(id)a4;
+- (SBHIconImageAppearanceStoreImageEnumerator)initWithImages:(id)images appearances:(id)appearances;
 - (id)nextObject;
 @end
 
 @implementation SBHIconImageAppearanceStoreImageEnumerator
 
-- (SBHIconImageAppearanceStoreImageEnumerator)initWithImages:(id)a3 appearances:(id)a4
+- (SBHIconImageAppearanceStoreImageEnumerator)initWithImages:(id)images appearances:(id)appearances
 {
-  v6 = a3;
-  v7 = a4;
+  imagesCopy = images;
+  appearancesCopy = appearances;
   v14.receiver = self;
   v14.super_class = SBHIconImageAppearanceStoreImageEnumerator;
   v8 = [(SBHIconImageAppearanceStoreImageEnumerator *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [imagesCopy copy];
     images = v8->_images;
     v8->_images = v9;
 
-    v11 = [v7 copy];
+    v11 = [appearancesCopy copy];
     appearances = v8->_appearances;
     v8->_appearances = v11;
   }

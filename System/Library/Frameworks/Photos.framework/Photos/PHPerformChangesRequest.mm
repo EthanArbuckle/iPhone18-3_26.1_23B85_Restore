@@ -1,36 +1,36 @@
 @interface PHPerformChangesRequest
-- (BOOL)_isSupportedLimitedLibraryChangeRequest:(id)a3;
-- (BOOL)decodeWithService:(id)a3 clientAuthorization:(id)a4 error:(id *)a5;
+- (BOOL)_isSupportedLimitedLibraryChangeRequest:(id)request;
+- (BOOL)decodeWithService:(id)service clientAuthorization:(id)authorization error:(id *)error;
 - (BOOL)hasChangeRequests;
 - (BOOL)hasObjectChangeRequests;
 - (NSArray)requestSets;
 - (NSString)description;
 - (PHPerformChangesRequest)init;
-- (PHPerformChangesRequest)initWithCoder:(id)a3;
-- (PHPerformChangesRequest)initWithXPCCoder:(id)a3;
+- (PHPerformChangesRequest)initWithCoder:(id)coder;
+- (PHPerformChangesRequest)initWithXPCCoder:(id)coder;
 - (id)_allChangeRequests;
-- (id)_failureWithError:(id)a3;
+- (id)_failureWithError:(id)error;
 - (id)clientBundleID;
 - (id)clientDescription;
 - (id)clientDisplayName;
 - (id)libraryServicesManager;
 - (id)persistentStoreCoordinator;
-- (id)serviceHandlerForChanges:(id)a3 clientAuthorization:(id)a4;
+- (id)serviceHandlerForChanges:(id)changes clientAuthorization:(id)authorization;
 - (int64_t)accessLevel;
 - (int64_t)accessScopeOptionsRequiredForRequestedChanges;
 - (int64_t)determineAuthorizationStatusForChanges;
-- (void)didSendChangesToServiceWithResult:(BOOL)a3;
+- (void)didSendChangesToServiceWithResult:(BOOL)result;
 - (void)discardUnsupportedLimitedLibraryChangeRequests;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithLibraryServicesManager:(id)a3 libraryName:(const char *)a4 executionContext:(id)a5 reply:(id)a6;
-- (void)executeWithService:(id)a3 reply:(id)a4;
-- (void)notifyChangesTransactionFailedWithLazyPhotoLibrary:(id)a3 error:(id)a4;
-- (void)recordDeleteRequest:(id)a3;
-- (void)recordFailedOnDemandRequest:(id)a3;
-- (void)recordInsertRequest:(id)a3;
-- (void)recordOtherChangeRequest:(id)a3;
-- (void)recordUpdateRequest:(id)a3;
-- (void)setChangeRequest:(id)a3 forUUID:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithLibraryServicesManager:(id)manager libraryName:(const char *)name executionContext:(id)context reply:(id)reply;
+- (void)executeWithService:(id)service reply:(id)reply;
+- (void)notifyChangesTransactionFailedWithLazyPhotoLibrary:(id)library error:(id)error;
+- (void)recordDeleteRequest:(id)request;
+- (void)recordFailedOnDemandRequest:(id)request;
+- (void)recordInsertRequest:(id)request;
+- (void)recordOtherChangeRequest:(id)request;
+- (void)recordUpdateRequest:(id)request;
+- (void)setChangeRequest:(id)request forUUID:(id)d;
 @end
 
 @implementation PHPerformChangesRequest
@@ -50,33 +50,33 @@
   return v3;
 }
 
-- (id)_failureWithError:(id)a3
+- (id)_failureWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  errorCopy = error;
   v4 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = errorCopy;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_ERROR, "PHPerformChangesRequest failed to execute with error: %@", &v7, 0xCu);
   }
 
-  v5 = [PHChangeRequest sanitizedFailureWithError:v3];
+  v5 = [PHChangeRequest sanitizedFailureWithError:errorCopy];
 
   return v5;
 }
 
-- (void)executeWithLibraryServicesManager:(id)a3 libraryName:(const char *)a4 executionContext:(id)a5 reply:(id)a6
+- (void)executeWithLibraryServicesManager:(id)manager libraryName:(const char *)name executionContext:(id)context reply:(id)reply
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v35 = a5;
-  v11 = a6;
-  v12 = [v10 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:a4 libraryRole:{-[PHPerformChangesRequest libraryRole](self, "libraryRole")}];
+  managerCopy = manager;
+  contextCopy = context;
+  replyCopy = reply;
+  databaseContext = [managerCopy databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:name libraryRole:{-[PHPerformChangesRequest libraryRole](self, "libraryRole")}];
 
-  v14 = [v13 managedObjectContext];
+  managedObjectContext = [v13 managedObjectContext];
   if ([(PHPerformChangesRequest *)self hasObjectChangeRequests])
   {
     instrumentation = self->_instrumentation;
@@ -87,12 +87,12 @@
     }
 
     v17 = [PHChangeValidationController alloc];
-    v18 = [(PHPerformChangesRequest *)self inserts];
-    v19 = [(PHPerformChangesRequest *)self updates];
-    v20 = [(PHPerformChangesRequest *)self deletes];
-    v21 = [(PHChangeValidationController *)v17 initWithInsertRequests:v18 updateRequests:v19 deleteRequests:v20 context:v14 photoLibrary:v13];
+    inserts = [(PHPerformChangesRequest *)self inserts];
+    updates = [(PHPerformChangesRequest *)self updates];
+    deletes = [(PHPerformChangesRequest *)self deletes];
+    v21 = [(PHChangeValidationController *)v17 initWithInsertRequests:inserts updateRequests:updates deleteRequests:deletes context:managedObjectContext photoLibrary:v13];
 
-    v22 = [(PHChangeValidationController *)v21 validate];
+    validate = [(PHChangeValidationController *)v21 validate];
     v23 = self->_instrumentation;
     if (v23)
     {
@@ -100,21 +100,21 @@
       v23->_serviceDidValidateTimestamp = v24;
     }
 
-    if ([v22 isFailure])
+    if ([validate isFailure])
     {
       v25 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v22 error];
+        error = [validate error];
         *buf = 138412546;
         *&buf[4] = self;
         *&buf[12] = 2112;
-        *&buf[14] = v26;
+        *&buf[14] = error;
         _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_ERROR, "PhotoKit validation failed for %@ %@", buf, 0x16u);
       }
 
-      v27 = [v22 error];
-      v11[2](v11, 0, v27);
+      error2 = [validate error];
+      replyCopy[2](replyCopy, 0, error2);
 
       goto LABEL_16;
     }
@@ -126,20 +126,20 @@
   v53 = __Block_byref_object_copy__5518;
   v54 = __Block_byref_object_dispose__5519;
   v28 = MEMORY[0x1E69BF2D0];
-  v29 = [MEMORY[0x1E695DFB0] null];
-  v30 = [v28 successWithResult:v29];
+  null = [MEMORY[0x1E695DFB0] null];
+  v30 = [v28 successWithResult:null];
 
   v55 = v30;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__PHPerformChangesRequest_executeWithLibraryServicesManager_libraryName_executionContext_reply___block_invoke;
   aBlock[3] = &unk_1E75A4490;
-  v50 = v11;
+  v50 = replyCopy;
   v51 = buf;
   v31 = _Block_copy(aBlock);
   if ([(PHPerformChangesRequest *)self waitForDelayedSaveActions])
   {
-    [v14 setPostDelayedSaveActionsReply:v31];
+    [managedObjectContext setPostDelayedSaveActionsReply:v31];
   }
 
   v47[0] = 0;
@@ -158,10 +158,10 @@
   v41[2] = __96__PHPerformChangesRequest_executeWithLibraryServicesManager_libraryName_executionContext_reply___block_invoke_2;
   v41[3] = &unk_1E75A89A8;
   v41[4] = self;
-  v42 = v14;
+  v42 = managedObjectContext;
   v43 = v13;
   v45 = buf;
-  v44 = v10;
+  v44 = managerCopy;
   v46 = v47;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
@@ -173,7 +173,7 @@
   v40 = v47;
   v34 = v31;
   v38 = v34;
-  [v35 performTransactionOnLibrary:v37 transaction:v41 completionHandler:v36];
+  [contextCopy performTransactionOnLibrary:v37 transaction:v41 completionHandler:v36];
 
   _Block_object_dispose(v47, 8);
   _Block_object_dispose(buf, 8);
@@ -655,15 +655,15 @@ id __96__PHPerformChangesRequest_executeWithLibraryServicesManager_libraryName_e
   return v3;
 }
 
-- (void)executeWithService:(id)a3 reply:(id)a4
+- (void)executeWithService:(id)service reply:(id)reply
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_service, v6);
+  serviceCopy = service;
+  replyCopy = reply;
+  objc_storeWeak(&self->_service, serviceCopy);
   instrumentation = self->_instrumentation;
-  v9 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = serviceCopy;
   if (instrumentation)
   {
     v11 = PLPhotoKitGetLog();
@@ -674,17 +674,17 @@ id __96__PHPerformChangesRequest_executeWithLibraryServicesManager_libraryName_e
     if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       uuid = instrumentation->_uuid;
-      v16 = [v10 clientDescription];
+      clientDescription = [v10 clientDescription];
       qos_class_self();
       v17 = PLStringFromQoSClass();
       *buf = 138544130;
       v38 = uuid;
       v39 = 2114;
-      v40 = v16;
+      v40 = clientDescription;
       v41 = 2114;
       v42 = v17;
       v43 = 2114;
-      v44 = v9;
+      v44 = selfCopy;
       _os_signpost_emit_with_name_impl(&dword_19C86F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "PhotoKit request [service]", "PhotoKit changes: [%{public}@] Request received from client: %{public}@ at %{public}@, %{public}@", buf, 0x2Au);
     }
 
@@ -692,43 +692,43 @@ id __96__PHPerformChangesRequest_executeWithLibraryServicesManager_libraryName_e
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = instrumentation->_uuid;
-      v20 = [v10 clientDescription];
+      clientDescription2 = [v10 clientDescription];
       qos_class_self();
       v21 = PLStringFromQoSClass();
       *buf = 138544130;
       v38 = v19;
       v39 = 2114;
-      v40 = v20;
+      v40 = clientDescription2;
       v41 = 2114;
       v42 = v21;
       v43 = 2114;
-      v44 = v9;
+      v44 = selfCopy;
       _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEFAULT, "PhotoKit changes: [%{public}@] Request received from client: %{public}@ at %{public}@, %{public}@", buf, 0x2Au);
     }
   }
 
-  -[PHPerformChangesRequest setLibraryRole:](v9, "setLibraryRole:", [v10 libraryRole]);
+  -[PHPerformChangesRequest setLibraryRole:](selfCopy, "setLibraryRole:", [v10 libraryRole]);
   v22 = MEMORY[0x1E696AEC0];
-  v23 = [v10 clientBundleID];
-  v24 = [v10 clientDisplayName];
-  v25 = [v22 stringWithFormat:@"PhotoKit changes: %@ (%@)", v23, v24];
+  clientBundleID = [v10 clientBundleID];
+  clientDisplayName = [v10 clientDisplayName];
+  v25 = [v22 stringWithFormat:@"PhotoKit changes: %@ (%@)", clientBundleID, clientDisplayName];
 
   v26 = objc_alloc_init(MEMORY[0x1E69BE2A8]);
   v27 = [objc_alloc(MEMORY[0x1E69BE2F8]) initWithIdentifier:v25];
-  v28 = [v10 libraryServicesManager];
-  v29 = [v25 UTF8String];
+  libraryServicesManager = [v10 libraryServicesManager];
+  uTF8String = [v25 UTF8String];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __52__PHPerformChangesRequest_executeWithService_reply___block_invoke;
   v33[3] = &unk_1E75A4468;
-  v33[4] = v9;
+  v33[4] = selfCopy;
   v34 = v10;
   v35 = v27;
-  v36 = v7;
+  v36 = replyCopy;
   v30 = v27;
-  v31 = v7;
+  v31 = replyCopy;
   v32 = v10;
-  [(PHPerformChangesRequest *)v9 executeWithLibraryServicesManager:v28 libraryName:v29 executionContext:v26 reply:v33];
+  [(PHPerformChangesRequest *)selfCopy executeWithLibraryServicesManager:libraryServicesManager libraryName:uTF8String executionContext:v26 reply:v33];
 }
 
 id __52__PHPerformChangesRequest_executeWithService_reply___block_invoke(uint64_t a1, int a2, void *a3)
@@ -905,12 +905,12 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
   return v3 ^ 1u;
 }
 
-- (BOOL)_isSupportedLimitedLibraryChangeRequest:(id)a3
+- (BOOL)_isSupportedLimitedLibraryChangeRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[PHAsset managedEntityName];
-  v5 = [v3 managedEntityName];
-  v6 = [v4 isEqualToString:v5];
+  managedEntityName = [requestCopy managedEntityName];
+  v6 = [v4 isEqualToString:managedEntityName];
 
   if (v6)
   {
@@ -920,18 +920,18 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
   else
   {
     v8 = +[PHAlbum managedEntityName];
-    v9 = [v3 managedEntityName];
-    v7 = [v8 isEqualToString:v9];
+    managedEntityName2 = [requestCopy managedEntityName];
+    v7 = [v8 isEqualToString:managedEntityName2];
   }
 
   return v7;
 }
 
-- (BOOL)decodeWithService:(id)a3 clientAuthorization:(id)a4 error:(id *)a5
+- (BOOL)decodeWithService:(id)service clientAuthorization:(id)authorization error:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v55 = a4;
+  obj = service;
+  authorizationCopy = authorization;
   v6 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -939,8 +939,8 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
     _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEBUG, "PLPhotoKitChangeRequest queued", buf, 2u);
   }
 
-  v56 = [(PLXPCObject *)self object];
-  if (v56)
+  object = [(PLXPCObject *)self object];
+  if (object)
   {
     objc_storeWeak(&self->_service, obj);
     v52 = PLStringFromXPCDictionary();
@@ -973,9 +973,9 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
     while (1)
     {
       v15 = off_1E75A4400[v14];
-      v16 = self;
-      v17 = v56;
-      v18 = v55;
+      selfCopy = self;
+      v17 = object;
+      v18 = authorizationCopy;
       xdict = v17;
       v19 = xpc_dictionary_get_value(v17, v15);
       if (v19)
@@ -999,7 +999,7 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
         *&buf[8] = 3221225472;
         *&buf[16] = __createObjectChangeRequestsFromXPCObject_block_invoke;
         v66 = &unk_1E75A4620;
-        v67 = v16;
+        v67 = selfCopy;
         v68 = v18;
         v69 = v70;
         xpc_array_apply(v19, buf);
@@ -1044,12 +1044,12 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
         v31 = PLPhotosStatusGetLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [v18 trustedCallerBundleID];
-          v33 = [v18 clientProcessIdentifier];
+          trustedCallerBundleID = [v18 trustedCallerBundleID];
+          clientProcessIdentifier = [v18 clientProcessIdentifier];
           *buf = 138412546;
-          *&buf[4] = v32;
+          *&buf[4] = trustedCallerBundleID;
           *&buf[12] = 1024;
-          *&buf[14] = v33;
+          *&buf[14] = clientProcessIdentifier;
           _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_DEFAULT, "Deletion from PhotoKit triggered by %@ (%d)", buf, 0x12u);
         }
       }
@@ -1057,8 +1057,8 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
       v13 = v14++ > 1;
       if (v14 == 3)
       {
-        otherChanges = v16->_otherChanges;
-        v35 = v16;
+        otherChanges = selfCopy->_otherChanges;
+        v35 = selfCopy;
         v36 = otherChanges;
         v37 = v18;
         v54 = v36;
@@ -1134,13 +1134,13 @@ uint64_t __73__PHPerformChangesRequest_discardUnsupportedLimitedLibraryChangeReq
       }
     }
 
-    if (a5)
+    if (error)
     {
       v47 = v29;
-      *a5 = v30;
+      *error = v30;
     }
 
-    v16->_waitForDelayedSaveActions = 0;
+    selfCopy->_waitForDelayedSaveActions = 0;
 LABEL_50:
     objc_storeWeak(&self->_service, 0);
   }
@@ -1152,10 +1152,10 @@ LABEL_50:
     v60 = @"Change request XPC object is nil";
     v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
     v12 = [v11 errorWithDomain:@"PHPhotosErrorDomain" code:4103 userInfo:v52];
-    if (a5)
+    if (error)
     {
       v12 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     v13 = 0;
@@ -1164,15 +1164,15 @@ LABEL_50:
   return v13;
 }
 
-- (id)serviceHandlerForChanges:(id)a3 clientAuthorization:(id)a4
+- (id)serviceHandlerForChanges:(id)changes clientAuthorization:(id)authorization
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  changesCopy = changes;
+  authorizationCopy = authorization;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [objc_alloc(MEMORY[0x1E69BE678]) initWithPhotoLibraryAttributesChanges:v5 clientAuthorization:v6];
+    v7 = [objc_alloc(MEMORY[0x1E69BE678]) initWithPhotoLibraryAttributesChanges:changesCopy clientAuthorization:authorizationCopy];
   }
 
   else
@@ -1181,7 +1181,7 @@ LABEL_50:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       v10 = 138412546;
-      v11 = v5;
+      v11 = changesCopy;
       v12 = 2114;
       v13 = objc_opt_class();
       _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_FAULT, "Failed to resolve service handler for changes %@, unknown class %{public}@", &v10, 0x16u);
@@ -1196,48 +1196,48 @@ LABEL_50:
 - (id)clientDisplayName
 {
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  v3 = [WeakRetained clientDisplayName];
+  clientDisplayName = [WeakRetained clientDisplayName];
 
-  return v3;
+  return clientDisplayName;
 }
 
 - (id)clientBundleID
 {
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  v3 = [WeakRetained clientBundleID];
+  clientBundleID = [WeakRetained clientBundleID];
 
-  return v3;
+  return clientBundleID;
 }
 
 - (id)clientDescription
 {
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  v3 = [WeakRetained clientDescription];
+  clientDescription = [WeakRetained clientDescription];
 
-  return v3;
+  return clientDescription;
 }
 
 - (id)libraryServicesManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  v3 = [WeakRetained libraryServicesManager];
+  libraryServicesManager = [WeakRetained libraryServicesManager];
 
-  return v3;
+  return libraryServicesManager;
 }
 
 - (id)persistentStoreCoordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  v3 = [WeakRetained persistentStoreCoordinator];
+  persistentStoreCoordinator = [WeakRetained persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 - (int64_t)determineAuthorizationStatusForChanges
 {
-  v2 = [(PHPerformChangesRequest *)self accessScopeOptionsRequiredForRequestedChanges];
-  v3 = [MEMORY[0x1E69BF2B0] sharedInstance];
-  v4 = [v3 checkPhotosAccessAllowedWithScope:v2];
+  accessScopeOptionsRequiredForRequestedChanges = [(PHPerformChangesRequest *)self accessScopeOptionsRequiredForRequestedChanges];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
+  v4 = [mEMORY[0x1E69BF2B0] checkPhotosAccessAllowedWithScope:accessScopeOptionsRequiredForRequestedChanges];
 
   if (v4 > 4)
   {
@@ -1276,14 +1276,14 @@ LABEL_50:
   aBlock[3] = &unk_1E75A43E0;
   aBlock[4] = &v12;
   v3 = _Block_copy(aBlock);
-  v4 = [(PHPerformChangesRequest *)self inserts];
-  v3[2](v3, v4);
+  inserts = [(PHPerformChangesRequest *)self inserts];
+  v3[2](v3, inserts);
 
-  v5 = [(PHPerformChangesRequest *)self updates];
-  v3[2](v3, v5);
+  updates = [(PHPerformChangesRequest *)self updates];
+  v3[2](v3, updates);
 
-  v6 = [(PHPerformChangesRequest *)self deletes];
-  v3[2](v3, v6);
+  deletes = [(PHPerformChangesRequest *)self deletes];
+  v3[2](v3, deletes);
 
   if (self->_inService)
   {
@@ -1292,8 +1292,8 @@ LABEL_50:
 
   else
   {
-    v7 = [(PHPerformChangesRequest *)self otherChangeRequests];
-    v3[2](v3, v7);
+    otherChangeRequests = [(PHPerformChangesRequest *)self otherChangeRequests];
+    v3[2](v3, otherChangeRequests);
   }
 
   v8 = v13[3];
@@ -1303,7 +1303,7 @@ LABEL_50:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "No photos access scope requirements declared for changes %{public}@", buf, 0xCu);
     }
 
@@ -1350,12 +1350,12 @@ void __72__PHPerformChangesRequest_accessScopeOptionsRequiredForRequestedChanges
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
-  v43 = v4;
+  v43 = coderCopy;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"This object may only be encoded by an NSXPCCoder."];
@@ -1438,7 +1438,7 @@ void __72__PHPerformChangesRequest_accessScopeOptionsRequiredForRequestedChanges
     }
 
     v21 = instrumentation;
-    v22 = [v21 UUIDString];
+    uUIDString = [v21 UUIDString];
     PLXPCDictionarySetString();
 
     [v43 encodeXPCObject:v18 forKey:@"_xpcObject"];
@@ -1447,7 +1447,7 @@ void __72__PHPerformChangesRequest_accessScopeOptionsRequiredForRequestedChanges
     if ([(NSMutableOrderedSet *)v23 count])
     {
       v41 = v24;
-      v25 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
@@ -1472,17 +1472,17 @@ void __72__PHPerformChangesRequest_accessScopeOptionsRequiredForRequestedChanges
           }
 
           v31 = *(*(&v44 + 1) + 8 * i);
-          v32 = [v31 changesForServiceHandler];
-          if (![v32 hasChanges])
+          changesForServiceHandler = [v31 changesForServiceHandler];
+          if (![changesForServiceHandler hasChanges])
           {
             v34 = PLPhotoKitGetLog();
             v35 = os_log_type_enabled(v34, OS_LOG_TYPE_ERROR);
-            if (v32)
+            if (changesForServiceHandler)
             {
               if (v35)
               {
                 *v48 = 138412546;
-                v49 = v32;
+                v49 = changesForServiceHandler;
                 v50 = 2112;
                 v51 = v31;
                 v36 = v34;
@@ -1510,13 +1510,13 @@ LABEL_41:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
           {
             *v48 = 138412546;
-            v49 = v32;
+            v49 = changesForServiceHandler;
             v50 = 2112;
             v51 = v31;
             _os_log_impl(&dword_19C86F000, v33, OS_LOG_TYPE_DEBUG, "Adding changes %@ for change request %@", v48, 0x16u);
           }
 
-          [v25 addObject:v32];
+          [array addObject:changesForServiceHandler];
 LABEL_43:
         }
 
@@ -1525,7 +1525,7 @@ LABEL_43:
         {
 LABEL_45:
 
-          v39 = [MEMORY[0x1E695DEC8] arrayWithArray:v25];
+          v39 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
           v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"otherChanges"];
           v24 = v41;
           [v41 encodeObject:v39 forKey:v40];
@@ -1550,12 +1550,12 @@ LABEL_45:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __38__PHPerformChangesRequest_description__block_invoke;
   aBlock[3] = &unk_1E75A43B8;
-  v4 = v3;
+  v4 = string;
   v9 = v4;
   v5 = _Block_copy(aBlock);
   v5[2](v5, self->_deletes, @"deletes");
@@ -1661,16 +1661,16 @@ void __38__PHPerformChangesRequest_description__block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)didSendChangesToServiceWithResult:(BOOL)a3
+- (void)didSendChangesToServiceWithResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(PHPerformChangesRequest *)self _allChangeRequests];
+  _allChangeRequests = [(PHPerformChangesRequest *)self _allChangeRequests];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [_allChangeRequests countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1682,14 +1682,14 @@ void __38__PHPerformChangesRequest_description__block_invoke(uint64_t a1, void *
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allChangeRequests);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) didSendChangeToServiceHandlerWithResult:v3];
+        [*(*(&v9 + 1) + 8 * v8++) didSendChangeToServiceHandlerWithResult:resultCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_allChangeRequests countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1704,8 +1704,8 @@ void __38__PHPerformChangesRequest_description__block_invoke(uint64_t a1, void *
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PHPerformChangesRequest *)self requestSets];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  requestSets = [(PHPerformChangesRequest *)self requestSets];
+  v5 = [requestSets countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1716,14 +1716,14 @@ void __38__PHPerformChangesRequest_description__block_invoke(uint64_t a1, void *
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestSets);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) array];
-        [v3 addObjectsFromArray:v9];
+        array = [*(*(&v11 + 1) + 8 * i) array];
+        [v3 addObjectsFromArray:array];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [requestSets countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1732,20 +1732,20 @@ void __38__PHPerformChangesRequest_description__block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (void)notifyChangesTransactionFailedWithLazyPhotoLibrary:(id)a3 error:(id)a4
+- (void)notifyChangesTransactionFailedWithLazyPhotoLibrary:(id)library error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  errorCopy = error;
   failedOnDemandRequests = self->_failedOnDemandRequests;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLibrary_error___block_invoke;
   v11[3] = &unk_1E75A4390;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = libraryCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = libraryCopy;
   [(NSMutableOrderedSet *)failedOnDemandRequests enumerateObjectsUsingBlock:v11];
 }
 
@@ -1768,9 +1768,9 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
   }
 }
 
-- (void)recordFailedOnDemandRequest:(id)a3
+- (void)recordFailedOnDemandRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   if (objc_opt_respondsToSelector())
   {
     failedOnDemandRequests = self->_failedOnDemandRequests;
@@ -1783,14 +1783,14 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
       failedOnDemandRequests = self->_failedOnDemandRequests;
     }
 
-    [(NSMutableOrderedSet *)failedOnDemandRequests addObject:v7];
+    [(NSMutableOrderedSet *)failedOnDemandRequests addObject:requestCopy];
   }
 }
 
-- (void)setChangeRequest:(id)a3 forUUID:(id)a4
+- (void)setChangeRequest:(id)request forUUID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
+  requestCopy = request;
+  dCopy = d;
   changeRequestsByUUID = self->_changeRequestsByUUID;
   if (!changeRequestsByUUID)
   {
@@ -1801,55 +1801,55 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
     changeRequestsByUUID = self->_changeRequestsByUUID;
   }
 
-  [(NSMutableDictionary *)changeRequestsByUUID setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)changeRequestsByUUID setObject:requestCopy forKey:dCopy];
 }
 
-- (void)recordOtherChangeRequest:(id)a3
+- (void)recordOtherChangeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   otherChangeRequests = self->_otherChangeRequests;
-  v8 = v4;
+  v8 = requestCopy;
   if (!otherChangeRequests)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v7 = self->_otherChangeRequests;
     self->_otherChangeRequests = v6;
 
-    v4 = v8;
+    requestCopy = v8;
     otherChangeRequests = self->_otherChangeRequests;
   }
 
-  [(NSMutableOrderedSet *)otherChangeRequests addObject:v4];
+  [(NSMutableOrderedSet *)otherChangeRequests addObject:requestCopy];
   [(PHPerformChangesRequest *)self recordFailedOnDemandRequest:v8];
 }
 
-- (void)recordDeleteRequest:(id)a3
+- (void)recordDeleteRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   deletes = self->_deletes;
-  v8 = v4;
+  v8 = requestCopy;
   if (!deletes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v7 = self->_deletes;
     self->_deletes = v6;
 
-    v4 = v8;
+    requestCopy = v8;
     deletes = self->_deletes;
   }
 
-  [(NSMutableOrderedSet *)deletes addObject:v4];
+  [(NSMutableOrderedSet *)deletes addObject:requestCopy];
   [(NSMutableOrderedSet *)self->_inserts removeObject:v8];
   [(NSMutableOrderedSet *)self->_updates removeObject:v8];
   [(PHPerformChangesRequest *)self recordFailedOnDemandRequest:v8];
 }
 
-- (void)recordUpdateRequest:(id)a3
+- (void)recordUpdateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   inserts = self->_inserts;
-  v9 = v4;
-  if (!inserts || ([(NSMutableOrderedSet *)inserts containsObject:v4]& 1) == 0)
+  v9 = requestCopy;
+  if (!inserts || ([(NSMutableOrderedSet *)inserts containsObject:requestCopy]& 1) == 0)
   {
     updates = self->_updates;
     if (!updates)
@@ -1868,22 +1868,22 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)recordInsertRequest:(id)a3
+- (void)recordInsertRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   inserts = self->_inserts;
-  v8 = v4;
+  v8 = requestCopy;
   if (!inserts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v7 = self->_inserts;
     self->_inserts = v6;
 
-    v4 = v8;
+    requestCopy = v8;
     inserts = self->_inserts;
   }
 
-  [(NSMutableOrderedSet *)inserts addObject:v4];
+  [(NSMutableOrderedSet *)inserts addObject:requestCopy];
   [(NSMutableOrderedSet *)self->_updates removeObject:v8];
   [(PHPerformChangesRequest *)self recordFailedOnDemandRequest:v8];
 }
@@ -1938,10 +1938,10 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
   return v5 + [(NSMutableOrderedSet *)self->_otherChangeRequests count]!= 0;
 }
 
-- (PHPerformChangesRequest)initWithXPCCoder:(id)a3
+- (PHPerformChangesRequest)initWithXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeXPCObjectOfType:objc_msgSend(objc_opt_class() forKey:{"type"), @"_xpcObject"}];
+  coderCopy = coder;
+  v5 = [coderCopy decodeXPCObjectOfType:objc_msgSend(objc_opt_class() forKey:{"type"), @"_xpcObject"}];
   v6 = [(PLXPCObject *)self initWithXPCObject:v5];
   v7 = v6;
   if (v6)
@@ -1951,7 +1951,7 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"otherChanges"];
-    v12 = [v4 decodeObjectOfClasses:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClasses:v10 forKey:v11];
     otherChanges = v7->_otherChanges;
     v7->_otherChanges = v12;
 
@@ -1962,11 +1962,11 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
   return v7;
 }
 
-- (PHPerformChangesRequest)initWithCoder:(id)a3
+- (PHPerformChangesRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = coderCopy;
   if (!v6)
   {
     goto LABEL_7;
@@ -1985,9 +1985,9 @@ void __84__PHPerformChangesRequest_notifyChangesTransactionFailedWithLazyPhotoLi
   v8 = v7;
   if (!v8)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"id  _Nullable _PLAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nullable __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
 LABEL_7:
     v8 = 0;

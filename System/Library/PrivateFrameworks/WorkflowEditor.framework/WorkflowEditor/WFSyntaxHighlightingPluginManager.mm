@@ -1,22 +1,22 @@
 @interface WFSyntaxHighlightingPluginManager
-- (BOOL)didChangeLine:(unint64_t)a3 string:(id)a4;
+- (BOOL)didChangeLine:(unint64_t)line string:(id)string;
 - (UIColor)defaultBackgroundColor;
 - (UIColor)defaultForegroundColor;
 - (WFSyntaxHighlightingPluginManager)init;
-- (id)configurationFilesForAppearance:(unint64_t)a3;
-- (id)loadPluginUsingConfigWithModuleName:(id)a3 module:(id)a4;
+- (id)configurationFilesForAppearance:(unint64_t)appearance;
+- (id)loadPluginUsingConfigWithModuleName:(id)name module:(id)module;
 - (void)dealloc;
-- (void)didAddLineAtIndex:(unint64_t)a3;
-- (void)didRemoveLineAtIndex:(unint64_t)a3;
-- (void)discardManagedReferencesForLineNumber:(unint64_t)a3;
-- (void)highlightAllTokensWithCallback:(id)a3;
+- (void)didAddLineAtIndex:(unint64_t)index;
+- (void)didRemoveLineAtIndex:(unint64_t)index;
+- (void)discardManagedReferencesForLineNumber:(unint64_t)number;
+- (void)highlightAllTokensWithCallback:(id)callback;
 - (void)loadColorSchemePlugin;
 - (void)loadHighlightingPlugin;
 - (void)loadPlugins;
 - (void)loadSyntaxPlugin;
 - (void)reloadPlugins;
-- (void)setSyntaxHighlightingAppearance:(unint64_t)a3;
-- (void)setSyntaxHighlightingType:(unint64_t)a3;
+- (void)setSyntaxHighlightingAppearance:(unint64_t)appearance;
+- (void)setSyntaxHighlightingType:(unint64_t)type;
 - (void)unloadPlugins;
 @end
 
@@ -24,40 +24,40 @@
 
 - (UIColor)defaultForegroundColor
 {
-  v2 = [(JSManagedValue *)self->_colorScheme value];
-  v3 = [v2 objectForKeyedSubscript:@"defaultForegroundColor"];
+  value = [(JSManagedValue *)self->_colorScheme value];
+  v3 = [value objectForKeyedSubscript:@"defaultForegroundColor"];
 
   if ([v3 toBool])
   {
     v4 = [v3 callWithArguments:MEMORY[0x277CBEBF8]];
-    v5 = [v4 toObject];
+    toObject = [v4 toObject];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] blackColor];
+    toObject = [MEMORY[0x277D75348] blackColor];
   }
 
-  return v5;
+  return toObject;
 }
 
 - (UIColor)defaultBackgroundColor
 {
-  v2 = [(JSManagedValue *)self->_colorScheme value];
-  v3 = [v2 objectForKeyedSubscript:@"defaultBackgroundColor"];
+  value = [(JSManagedValue *)self->_colorScheme value];
+  v3 = [value objectForKeyedSubscript:@"defaultBackgroundColor"];
 
   if ([v3 toBool])
   {
     v4 = [v3 callWithArguments:MEMORY[0x277CBEBF8]];
-    v5 = [v4 toObject];
+    toObject = [v4 toObject];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    toObject = [MEMORY[0x277D75348] whiteColor];
   }
 
-  return v5;
+  return toObject;
 }
 
 - (void)loadSyntaxPlugin
@@ -70,8 +70,8 @@
     syntaxPlugin = self->_syntaxPlugin;
     self->_syntaxPlugin = v4;
 
-    v6 = [(JSContext *)self->_context virtualMachine];
-    [v6 addManagedReference:self->_syntaxPlugin withOwner:self];
+    virtualMachine = [(JSContext *)self->_context virtualMachine];
+    [virtualMachine addManagedReference:self->_syntaxPlugin withOwner:self];
 
     v3 = v7;
   }
@@ -87,8 +87,8 @@
     highlightingPlugin = self->_highlightingPlugin;
     self->_highlightingPlugin = v4;
 
-    v6 = [(JSContext *)self->_context virtualMachine];
-    [v6 addManagedReference:self->_highlightingPlugin withOwner:self];
+    virtualMachine = [(JSContext *)self->_context virtualMachine];
+    [virtualMachine addManagedReference:self->_highlightingPlugin withOwner:self];
 
     v3 = v7;
   }
@@ -138,44 +138,44 @@ id __58__WFSyntaxHighlightingPluginManager_loadColorSchemePlugin__block_invoke(u
   return v16;
 }
 
-- (id)loadPluginUsingConfigWithModuleName:(id)a3 module:(id)a4
+- (id)loadPluginUsingConfigWithModuleName:(id)name module:(id)module
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  moduleCopy = module;
+  nameCopy = name;
   v8 = [(WFSyntaxHighlightingPluginManager *)self configurationFilesForAppearance:[(WFSyntaxHighlightingPluginManager *)self syntaxHighlightingAppearance]];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:nameCopy];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v11 = [v9 stringByDeletingPathExtension];
-  v12 = [v9 pathExtension];
-  v13 = [v10 pathForResource:v11 ofType:v12];
+  stringByDeletingPathExtension = [v9 stringByDeletingPathExtension];
+  pathExtension = [v9 pathExtension];
+  v13 = [v10 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
 
   v14 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v13 encoding:4 error:0];
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"(function(%@) { %@ })", v7, v14];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"(function(%@) { %@ })", nameCopy, v14];
 
   v16 = [(JSContext *)self->_context evaluateScript:v15];
-  if (!v6)
+  if (!moduleCopy)
   {
-    v6 = [MEMORY[0x277CD4658] valueWithNewObjectInContext:self->_context];
+    moduleCopy = [MEMORY[0x277CD4658] valueWithNewObjectInContext:self->_context];
   }
 
-  v20[0] = v6;
+  v20[0] = moduleCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v18 = [v16 callWithArguments:v17];
 
-  return v6;
+  return moduleCopy;
 }
 
 - (void)unloadPlugins
 {
-  v3 = [(JSContext *)self->_context virtualMachine];
-  [v3 removeManagedReference:self->_colorScheme withOwner:self];
+  virtualMachine = [(JSContext *)self->_context virtualMachine];
+  [virtualMachine removeManagedReference:self->_colorScheme withOwner:self];
 
-  v4 = [(JSContext *)self->_context virtualMachine];
-  [v4 removeManagedReference:self->_highlightingPlugin withOwner:self];
+  virtualMachine2 = [(JSContext *)self->_context virtualMachine];
+  [virtualMachine2 removeManagedReference:self->_highlightingPlugin withOwner:self];
 
-  v5 = [(JSContext *)self->_context virtualMachine];
-  [v5 removeManagedReference:self->_syntaxPlugin withOwner:self];
+  virtualMachine3 = [(JSContext *)self->_context virtualMachine];
+  [virtualMachine3 removeManagedReference:self->_syntaxPlugin withOwner:self];
 }
 
 - (void)reloadPlugins
@@ -193,29 +193,29 @@ id __58__WFSyntaxHighlightingPluginManager_loadColorSchemePlugin__block_invoke(u
   [(WFSyntaxHighlightingPluginManager *)self loadHighlightingPlugin];
 }
 
-- (void)highlightAllTokensWithCallback:(id)a3
+- (void)highlightAllTokensWithCallback:(id)callback
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(JSManagedValue *)self->_highlightingPlugin value];
-  v6 = [v5 objectForKeyedSubscript:@"tokenAttributes"];
+  callbackCopy = callback;
+  value = [(JSManagedValue *)self->_highlightingPlugin value];
+  v6 = [value objectForKeyedSubscript:@"tokenAttributes"];
 
   if ([(NSMutableArray *)self->_tokenLines count])
   {
     v7 = 0;
-    v8 = v4 + 16;
+    v8 = callbackCopy + 16;
     v9 = 0x277CBE000uLL;
-    v22 = self;
-    v23 = v4;
+    selfCopy = self;
+    v23 = callbackCopy;
     do
     {
-      v10 = [(NSMutableArray *)self->_tokenLines objectAtIndex:v7, v22];
-      if ([v10 count])
+      selfCopy = [(NSMutableArray *)self->_tokenLines objectAtIndex:v7, selfCopy];
+      if ([selfCopy count])
       {
         v11 = 0;
         do
         {
-          v12 = [v10 objectAtIndex:v11];
+          v12 = [selfCopy objectAtIndex:v11];
           v24[0] = v12;
           [*(v9 + 2656) arrayWithObjects:v24 count:1];
           v13 = v7;
@@ -223,45 +223,45 @@ id __58__WFSyntaxHighlightingPluginManager_loadColorSchemePlugin__block_invoke(u
           [v6 callWithArguments:v15];
           v16 = v8;
           v18 = v17 = v6;
-          v19 = [v18 toDictionary];
+          toDictionary = [v18 toDictionary];
 
           v6 = v17;
           v8 = v16;
 
           v9 = v14;
           v7 = v13;
-          v4 = v23;
-          v20 = [v12 range];
-          (*(v4 + 2))(v4, v7, v20, v21, v19);
+          callbackCopy = v23;
+          range = [v12 range];
+          (*(callbackCopy + 2))(callbackCopy, v7, range, v21, toDictionary);
 
           ++v11;
         }
 
-        while (v11 < [v10 count]);
+        while (v11 < [selfCopy count]);
       }
 
       ++v7;
 
-      self = v22;
+      self = selfCopy;
     }
 
-    while (v7 < [(NSMutableArray *)v22->_tokenLines count]);
+    while (v7 < [(NSMutableArray *)selfCopy->_tokenLines count]);
   }
 
   *&self->_minimumChangedLine = xmmword_2746606E0;
 }
 
-- (void)discardManagedReferencesForLineNumber:(unint64_t)a3
+- (void)discardManagedReferencesForLineNumber:(unint64_t)number
 {
-  v7 = [(NSMutableArray *)self->_tokenLines objectAtIndex:a3];
+  v7 = [(NSMutableArray *)self->_tokenLines objectAtIndex:number];
   if ([v7 count])
   {
     v4 = 0;
     do
     {
       v5 = [v7 objectAtIndex:v4];
-      v6 = [(JSContext *)self->_context virtualMachine];
-      [v6 removeManagedReference:v5 withOwner:self];
+      virtualMachine = [(JSContext *)self->_context virtualMachine];
+      [virtualMachine removeManagedReference:v5 withOwner:self];
 
       ++v4;
     }
@@ -270,142 +270,142 @@ id __58__WFSyntaxHighlightingPluginManager_loadColorSchemePlugin__block_invoke(u
   }
 }
 
-- (BOOL)didChangeLine:(unint64_t)a3 string:(id)a4
+- (BOOL)didChangeLine:(unint64_t)line string:(id)string
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (self->_minimumChangedLine > a3)
+  stringCopy = string;
+  if (self->_minimumChangedLine > line)
   {
-    self->_minimumChangedLine = a3;
+    self->_minimumChangedLine = line;
   }
 
-  if (self->_maxChangedLine < a3)
+  if (self->_maxChangedLine < line)
   {
-    self->_maxChangedLine = a3;
+    self->_maxChangedLine = line;
   }
 
   v7 = 0;
-  v30 = a3;
-  v8 = a3 - 1;
+  lineCopy = line;
+  v8 = line - 1;
   while ((v8 & 0x8000000000000000) == 0)
   {
     v9 = [(NSMutableArray *)self->_tokenLines objectAtIndex:v8];
 
-    v10 = [v9 lastObject];
+    lastObject = [v9 lastObject];
     --v8;
     v7 = v9;
-    if (v10)
+    if (lastObject)
     {
-      v11 = v10;
+      null = lastObject;
       goto LABEL_10;
     }
   }
 
-  v11 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v9 = v7;
 LABEL_10:
-  v12 = [(JSManagedValue *)self->_syntaxPlugin value];
-  v32 = [v12 objectForKeyedSubscript:@"nextToken"];
+  value = [(JSManagedValue *)self->_syntaxPlugin value];
+  v32 = [value objectForKeyedSubscript:@"nextToken"];
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0;
-  for (i = 0; ; v11 = i)
+  for (i = 0; ; null = i)
   {
-    v33[0] = v6;
+    v33[0] = stringCopy;
     v16 = [MEMORY[0x277CCABB0] numberWithInt:v14];
     v33[1] = v16;
-    v33[2] = v11;
+    v33[2] = null;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:3];
     v18 = [v32 callWithArguments:v17];
-    v19 = [v18 toObject];
+    toObject = [v18 toObject];
 
-    if (!v19)
+    if (!toObject)
     {
       break;
     }
 
-    v20 = [v19 range];
-    v22 = [v6 substringWithRange:{v20, v21}];
-    [v19 setString:v22];
+    range = [toObject range];
+    v22 = [stringCopy substringWithRange:{range, v21}];
+    [toObject setString:v22];
 
-    [v13 addObject:v19];
-    v23 = [(JSContext *)self->_context virtualMachine];
-    [v23 addManagedReference:v19 withOwner:self];
+    [array addObject:toObject];
+    virtualMachine = [(JSContext *)self->_context virtualMachine];
+    [virtualMachine addManagedReference:toObject withOwner:self];
 
-    LODWORD(v23) = [v19 start];
-    v14 = [v19 length] + v23;
-    i = v19;
+    LODWORD(virtualMachine) = [toObject start];
+    v14 = [toObject length] + virtualMachine;
+    i = toObject;
   }
 
   v24 = [(NSMutableArray *)self->_tokenLines objectAtIndex:v31];
-  v25 = [v24 lastObject];
+  lastObject2 = [v24 lastObject];
   [(WFSyntaxHighlightingPluginManager *)self discardManagedReferencesForLineNumber:v31];
-  [(NSMutableArray *)self->_tokenLines setObject:v13 atIndexedSubscript:v31];
-  if (v11)
+  [(NSMutableArray *)self->_tokenLines setObject:array atIndexedSubscript:v31];
+  if (null)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
-    if (v11 == v26)
+    null2 = [MEMORY[0x277CBEB68] null];
+    if (null == null2)
     {
-      v28 = 0;
+      overflows = 0;
     }
 
-    else if (!v25 || (v27 = [v11 overflows], v27 == objc_msgSend(v25, "overflows")))
+    else if (!lastObject2 || (v27 = [null overflows], v27 == objc_msgSend(lastObject2, "overflows")))
     {
-      v28 = [v11 overflows];
+      overflows = [null overflows];
     }
 
     else
     {
-      v28 = 1;
+      overflows = 1;
     }
   }
 
   else
   {
-    v28 = 0;
+    overflows = 0;
   }
 
-  return v28;
+  return overflows;
 }
 
-- (void)didRemoveLineAtIndex:(unint64_t)a3
+- (void)didRemoveLineAtIndex:(unint64_t)index
 {
   [(WFSyntaxHighlightingPluginManager *)self discardManagedReferencesForLineNumber:?];
   tokenLines = self->_tokenLines;
 
-  [(NSMutableArray *)tokenLines removeObjectAtIndex:a3];
+  [(NSMutableArray *)tokenLines removeObjectAtIndex:index];
 }
 
-- (void)didAddLineAtIndex:(unint64_t)a3
+- (void)didAddLineAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableArray *)self->_tokenLines count];
   tokenLines = self->_tokenLines;
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (v5 <= a3)
+  array = [MEMORY[0x277CBEB18] array];
+  if (v5 <= index)
   {
-    [(NSMutableArray *)tokenLines addObject:v7];
+    [(NSMutableArray *)tokenLines addObject:array];
   }
 
   else
   {
-    [(NSMutableArray *)tokenLines insertObject:v7 atIndex:a3];
+    [(NSMutableArray *)tokenLines insertObject:array atIndex:index];
   }
 }
 
-- (void)setSyntaxHighlightingAppearance:(unint64_t)a3
+- (void)setSyntaxHighlightingAppearance:(unint64_t)appearance
 {
-  if (self->_syntaxHighlightingAppearance != a3)
+  if (self->_syntaxHighlightingAppearance != appearance)
   {
-    self->_syntaxHighlightingAppearance = a3;
+    self->_syntaxHighlightingAppearance = appearance;
     [(WFSyntaxHighlightingPluginManager *)self reloadPlugins];
   }
 }
 
-- (void)setSyntaxHighlightingType:(unint64_t)a3
+- (void)setSyntaxHighlightingType:(unint64_t)type
 {
-  if (self->_syntaxHighlightingType != a3)
+  if (self->_syntaxHighlightingType != type)
   {
-    self->_syntaxHighlightingType = a3;
+    self->_syntaxHighlightingType = type;
     [(WFSyntaxHighlightingPluginManager *)self reloadPlugins];
   }
 }
@@ -425,8 +425,8 @@ LABEL_10:
         do
         {
           v6 = [v4 objectAtIndex:v5];
-          v7 = [(JSContext *)self->_context virtualMachine];
-          [v7 removeManagedReference:v6 withOwner:self];
+          virtualMachine = [(JSContext *)self->_context virtualMachine];
+          [virtualMachine removeManagedReference:v6 withOwner:self];
 
           ++v5;
         }
@@ -454,9 +454,9 @@ LABEL_10:
   if (v2)
   {
     *&v2->_syntaxHighlightingType = xmmword_274653F30;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     tokenLines = v3->_tokenLines;
-    v3->_tokenLines = v4;
+    v3->_tokenLines = array;
 
     v3->_minimumChangedLine = -1;
     v6 = objc_alloc(MEMORY[0x277CD4640]);
@@ -514,9 +514,9 @@ void __41__WFSyntaxHighlightingPluginManager_init__block_invoke(uint64_t a1, uin
   }
 }
 
-- (id)configurationFilesForAppearance:(unint64_t)a3
+- (id)configurationFilesForAppearance:(unint64_t)appearance
 {
-  if (a3 == 1)
+  if (appearance == 1)
   {
     return &unk_288386A88;
   }

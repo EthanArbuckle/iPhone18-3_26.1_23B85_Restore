@@ -1,66 +1,66 @@
 @interface BKHIDDirectTouchEventProcessor
 + (NSArray)digitizerMatchingDictionaries;
-- (BKHIDDirectTouchEventProcessor)initWithContext:(id)a3;
+- (BKHIDDirectTouchEventProcessor)initWithContext:(id)context;
 - (BKIOHIDService)mainDisplayAOPDigitizerService;
 - (BKIOHIDService)mainDisplayDigitizerService;
 - (BKIOHIDService)mainDisplayPencilDigitizerService;
-- (BOOL)detachTouchIdentifiers:(unsigned int *)a3 count:(int64_t)a4 assignUserIdentifier:(unsigned int)a5 policy:(id)a6 offset:(CGPoint)a7;
-- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)a3;
+- (BOOL)detachTouchIdentifiers:(unsigned int *)identifiers count:(int64_t)count assignUserIdentifier:(unsigned int)identifier policy:(id)policy offset:(CGPoint)offset;
+- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)descriptor;
 - (BOOL)shouldIgnoreTouchesWhileObjectInProximity;
-- (id)_determineServiceForEvent:(__IOHIDEvent *)a3 sender:(id)a4 fromTouchPad:(BOOL *)a5;
+- (id)_determineServiceForEvent:(__IOHIDEvent *)event sender:(id)sender fromTouchPad:(BOOL *)pad;
 - (id)_persistentPropertyKeyDenylist;
-- (id)_queue_addDigitizerStateForService:(id)a3;
-- (id)_queue_applyCachedPropertiesToMultitouchService:(id)a3;
-- (id)_queue_digitizerStateForService:(id)a3;
-- (id)_queue_displayInfoForDisplay:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_queue_servicesMatchingSenderDescriptor:(id)a3;
-- (id)_queue_touchStreamInfoForDisplayUUID:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)authenticationSpecificationForSlotID:(unsigned int)a3 registrantEntitled:(BOOL *)a4;
-- (id)cancelAndSuppressTouchesOnDisplay:(id)a3 reason:(id)a4;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (int64_t)setPersistentProperties:(id)a3 forServicesMatchingDescriptor:(id)a4;
-- (unsigned)_queue_addTouchStreamClient:(id)a3 toDisplayUUID:(id)a4 versionedPID:(int64_t)a5;
-- (unsigned)addTouchStreamForContextID:(unsigned int)a3 display:(id)a4 versionedPID:(int64_t)a5 identifier:(unsigned int)a6 shouldSendAmbiguityRecommendations:(BOOL)a7;
-- (void)_handleDirectTouchEvent:(__IOHIDEvent *)a3 service:(id)a4;
-- (void)_queue_addServicesMatchingSenderDescriptor:(id)a3 inPerDisplayInfo:(id)a4 toArray:(id)a5;
-- (void)_queue_enumerateDigitizersForAllDisplaysUsingBlock:(id)a3;
-- (void)_queue_enumerateDigitizersForDisplay:(id)a3 usingBlock:(id)a4;
-- (void)_queue_enumerateTouchStreamsForAllDisplaysUsingBlock:(id)a3;
-- (void)_queue_invalidateTouchStreamClient:(id)a3 reason:(id)a4;
+- (id)_queue_addDigitizerStateForService:(id)service;
+- (id)_queue_applyCachedPropertiesToMultitouchService:(id)service;
+- (id)_queue_digitizerStateForService:(id)service;
+- (id)_queue_displayInfoForDisplay:(id)display createIfNeeded:(BOOL)needed;
+- (id)_queue_servicesMatchingSenderDescriptor:(id)descriptor;
+- (id)_queue_touchStreamInfoForDisplayUUID:(id)d createIfNeeded:(BOOL)needed;
+- (id)authenticationSpecificationForSlotID:(unsigned int)d registrantEntitled:(BOOL *)entitled;
+- (id)cancelAndSuppressTouchesOnDisplay:(id)display reason:(id)reason;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (int64_t)setPersistentProperties:(id)properties forServicesMatchingDescriptor:(id)descriptor;
+- (unsigned)_queue_addTouchStreamClient:(id)client toDisplayUUID:(id)d versionedPID:(int64_t)iD;
+- (unsigned)addTouchStreamForContextID:(unsigned int)d display:(id)display versionedPID:(int64_t)iD identifier:(unsigned int)identifier shouldSendAmbiguityRecommendations:(BOOL)recommendations;
+- (void)_handleDirectTouchEvent:(__IOHIDEvent *)event service:(id)service;
+- (void)_queue_addServicesMatchingSenderDescriptor:(id)descriptor inPerDisplayInfo:(id)info toArray:(id)array;
+- (void)_queue_enumerateDigitizersForAllDisplaysUsingBlock:(id)block;
+- (void)_queue_enumerateDigitizersForDisplay:(id)display usingBlock:(id)block;
+- (void)_queue_enumerateTouchStreamsForAllDisplaysUsingBlock:(id)block;
+- (void)_queue_invalidateTouchStreamClient:(id)client reason:(id)reason;
 - (void)_queue_resetTouchAuthenticationInitialSampleEvent;
-- (void)addTouchAuthenticationSpecifications:(id)a3 registrantEntitled:(BOOL)a4;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)a3 displayUUID:(id)a4 toPathAttributes:(id)a5 secureName:(unsigned int)a6 excludeContextIDs:(id)a7;
+- (void)addTouchAuthenticationSpecifications:(id)specifications registrantEntitled:(BOOL)entitled;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)coordinates displayUUID:(id)d toPathAttributes:(id)attributes secureName:(unsigned int)name excludeContextIDs:(id)ds;
 - (void)cancelTouchesOnAllDisplays;
-- (void)cancelTouchesOnDisplay:(id)a3;
-- (void)cancelTouchesWithIdentifiers:(id)a3;
+- (void)cancelTouchesOnDisplay:(id)display;
+- (void)cancelTouchesWithIdentifiers:(id)identifiers;
 - (void)dealloc;
-- (void)didInitializeRegistryWithContext:(id)a3;
-- (void)globalKeyboardModifiersDidChange:(int64_t)a3;
-- (void)invalidateTouchStreamReference:(unsigned int)a3;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
-- (void)postTouchAnnotations:(id)a3 sourcePID:(int)a4;
-- (void)serviceDidDisappear:(id)a3;
-- (void)setBuiltInDisplayInterfaceOrientation:(int64_t)a3;
-- (void)setEventDispatchMode:(unsigned __int8)a3 ambiguityRecommendation:(unsigned __int8)a4 lastTouchTimestamp:(double)a5 forTouchStreamIdentifier:(unsigned int)a6;
-- (void)setHitTestRegions:(id)a3 forDisplay:(id)a4;
-- (void)setOffset:(CGPoint)a3 forTouchesWithUserIdentifier:(unsigned int)a4;
-- (void)setRoutingPolicy:(id)a3 forTouchesWithUserIdentifier:(unsigned int)a4;
-- (void)setShouldIgnoreTouchesWhileObjectInProximity:(BOOL)a3;
-- (void)transferTouchIdentifiers:(unsigned int *)a3 count:(int64_t)a4 toContextID:(unsigned int)a5;
+- (void)didInitializeRegistryWithContext:(id)context;
+- (void)globalKeyboardModifiersDidChange:(int64_t)change;
+- (void)invalidateTouchStreamReference:(unsigned int)reference;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
+- (void)postTouchAnnotations:(id)annotations sourcePID:(int)d;
+- (void)serviceDidDisappear:(id)disappear;
+- (void)setBuiltInDisplayInterfaceOrientation:(int64_t)orientation;
+- (void)setEventDispatchMode:(unsigned __int8)mode ambiguityRecommendation:(unsigned __int8)recommendation lastTouchTimestamp:(double)timestamp forTouchStreamIdentifier:(unsigned int)identifier;
+- (void)setHitTestRegions:(id)regions forDisplay:(id)display;
+- (void)setOffset:(CGPoint)offset forTouchesWithUserIdentifier:(unsigned int)identifier;
+- (void)setRoutingPolicy:(id)policy forTouchesWithUserIdentifier:(unsigned int)identifier;
+- (void)setShouldIgnoreTouchesWhileObjectInProximity:(BOOL)proximity;
+- (void)transferTouchIdentifiers:(unsigned int *)identifiers count:(int64_t)count toContextID:(unsigned int)d;
 @end
 
 @implementation BKHIDDirectTouchEventProcessor
 
-- (id)_queue_servicesMatchingSenderDescriptor:(id)a3
+- (id)_queue_servicesMatchingSenderDescriptor:(id)descriptor
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [a3 associatedDisplay];
-  v7 = v6;
-  if (v6)
+  associatedDisplay = [descriptor associatedDisplay];
+  v7 = associatedDisplay;
+  if (associatedDisplay)
   {
-    if ([v6 _isNullDisplay])
+    if ([associatedDisplay _isNullDisplay])
     {
       v8 = BKLogTouchEvents();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -72,9 +72,9 @@
 
     else
     {
-      v13 = [v7 _hardwareIdentifier];
+      _hardwareIdentifier = [v7 _hardwareIdentifier];
       queue_perDisplayInfo = self->_queue_perDisplayInfo;
-      v15 = v13;
+      v15 = _hardwareIdentifier;
       v16 = [v15 length];
       v17 = BKSDisplayUUIDMainKey;
       if (v16)
@@ -86,7 +86,7 @@
 
       v19 = [(NSMutableDictionary *)queue_perDisplayInfo objectForKey:v18];
 
-      [(BKHIDDirectTouchEventProcessor *)self _queue_addServicesMatchingSenderDescriptor:a3 inPerDisplayInfo:v19 toArray:v5];
+      [(BKHIDDirectTouchEventProcessor *)self _queue_addServicesMatchingSenderDescriptor:descriptor inPerDisplayInfo:v19 toArray:v5];
     }
   }
 
@@ -110,7 +110,7 @@
             objc_enumerationMutation(v9);
           }
 
-          [(BKHIDDirectTouchEventProcessor *)self _queue_addServicesMatchingSenderDescriptor:a3 inPerDisplayInfo:*(*(&v22 + 1) + 8 * i) toArray:v5];
+          [(BKHIDDirectTouchEventProcessor *)self _queue_addServicesMatchingSenderDescriptor:descriptor inPerDisplayInfo:*(*(&v22 + 1) + 8 * i) toArray:v5];
         }
 
         v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -123,13 +123,13 @@
   return v5;
 }
 
-- (void)_queue_addServicesMatchingSenderDescriptor:(id)a3 inPerDisplayInfo:(id)a4 toArray:(id)a5
+- (void)_queue_addServicesMatchingSenderDescriptor:(id)descriptor inPerDisplayInfo:(id)info toArray:(id)array
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = sub_100002D14(a4);
+  v7 = sub_100002D14(info);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -151,10 +151,10 @@
         }
 
         v12 = v11;
-        v13 = [v12 senderDescriptor];
-        if ([v13 matchesDescriptor:a3 failureReason:0])
+        senderDescriptor = [v12 senderDescriptor];
+        if ([senderDescriptor matchesDescriptor:descriptor failureReason:0])
         {
-          [a5 addObject:v12];
+          [array addObject:v12];
         }
 
         v10 = v10 + 1;
@@ -168,18 +168,18 @@
   }
 }
 
-- (id)_determineServiceForEvent:(__IOHIDEvent *)a3 sender:(id)a4 fromTouchPad:(BOOL *)a5
+- (id)_determineServiceForEvent:(__IOHIDEvent *)event sender:(id)sender fromTouchPad:(BOOL *)pad
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v8 = a4) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v8 = sender) == 0)
   {
     v12 = objc_opt_class();
-    v13 = a4;
+    senderCopy = sender;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
       {
-        v14 = v13;
+        v14 = senderCopy;
       }
 
       else
@@ -193,7 +193,7 @@
       v14 = 0;
     }
 
-    v15 = v14;
+    mainDisplayPencilDigitizerService = v14;
 
     v9 = 0;
     v16 = 0;
@@ -201,30 +201,30 @@
   }
 
   v9 = v8;
-  v10 = [v8 displayUUID];
+  displayUUID = [v8 displayUUID];
 
-  if (v10)
+  if (displayUUID)
   {
     v11 = BKLogTouchEvents();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v9 displayUUID];
+      displayUUID2 = [v9 displayUUID];
       v20 = 138543362;
-      v21 = v19;
+      v21 = displayUUID2;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Not supported: accessibility digitizer for external display (%{public}@)", &v20, 0xCu);
     }
 
 LABEL_26:
 
     v16 = 0;
-    v15 = 0;
+    mainDisplayPencilDigitizerService = 0;
     goto LABEL_27;
   }
 
   if ([v9 isPencilDigitizer])
   {
-    v15 = [(BKHIDDirectTouchEventProcessor *)self mainDisplayPencilDigitizerService];
-    if (v15)
+    mainDisplayPencilDigitizerService = [(BKHIDDirectTouchEventProcessor *)self mainDisplayPencilDigitizerService];
+    if (mainDisplayPencilDigitizerService)
     {
       goto LABEL_19;
     }
@@ -237,12 +237,12 @@ LABEL_26:
     }
   }
 
-  v15 = [(BKHIDDirectTouchEventProcessor *)self mainDisplayDigitizerService];
+  mainDisplayPencilDigitizerService = [(BKHIDDirectTouchEventProcessor *)self mainDisplayDigitizerService];
 LABEL_19:
   if (IOHIDEventGetType() != 11)
   {
     v16 = 0;
-    if (v15)
+    if (mainDisplayPencilDigitizerService)
     {
       goto LABEL_27;
     }
@@ -251,7 +251,7 @@ LABEL_19:
   }
 
   v16 = IOHIDEventGetIntegerValue() == 0;
-  if (!v15)
+  if (!mainDisplayPencilDigitizerService)
   {
 LABEL_23:
     if (v16)
@@ -270,15 +270,15 @@ LABEL_23:
   }
 
 LABEL_27:
-  *a5 = v16;
+  *pad = v16;
 
-  return v15;
+  return mainDisplayPencilDigitizerService;
 }
 
-- (void)_handleDirectTouchEvent:(__IOHIDEvent *)a3 service:(id)a4
+- (void)_handleDirectTouchEvent:(__IOHIDEvent *)event service:(id)service
 {
   dispatch_assert_queue_not_V2(self->_queue);
-  if (!a4)
+  if (!service)
   {
     v9 = [NSString stringWithFormat:@"must have a service here"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -291,7 +291,7 @@ LABEL_27:
       v17 = 2114;
       v18 = v12;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"BKHIDDirectTouchEventProcessor.mm";
       v23 = 1024;
@@ -310,7 +310,7 @@ LABEL_27:
 
   if (byte_100125ED8 == 1)
   {
-    if (a3)
+    if (event)
     {
       IOHIDEventGetTimeStamp();
     }
@@ -324,12 +324,12 @@ LABEL_27:
   block[2] = sub_1000496B4;
   block[3] = &unk_1000FCA90;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = service;
+  block[6] = event;
   dispatch_sync(queue, block);
   if (byte_100125ED8 == 1)
   {
-    if (a3)
+    if (event)
     {
       IOHIDEventGetTimeStamp();
     }
@@ -338,64 +338,64 @@ LABEL_27:
   }
 }
 
-- (id)_queue_applyCachedPropertiesToMultitouchService:(id)a3
+- (id)_queue_applyCachedPropertiesToMultitouchService:(id)service
 {
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [a3 displayUUID];
-  if ([a3 primaryUsagePage] == 13 && objc_msgSend(a3, "primaryUsage") == 4)
+  displayUUID = [service displayUUID];
+  if ([service primaryUsagePage] == 13 && objc_msgSend(service, "primaryUsage") == 4)
   {
     v16 = 0x3FF0000000000000;
-    sub_100007090(v5, 0, 0, &v16, 0, 0);
+    sub_100007090(displayUUID, 0, 0, &v16, 0, 0);
     v6 = *&v16;
     v7 = BKLogTouchEvents();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [a3 senderID];
+      senderID = [service senderID];
       *buf = 134218240;
-      v18 = v8;
+      v18 = senderID;
       v19 = 1024;
       LODWORD(v20) = (v6 * 160.0);
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "service %llX setProperty:%d forKey:QuantizationDPI", buf, 0x12u);
     }
 
     v9 = [NSNumber numberWithInt:(v6 * 160.0)];
-    [a3 setProperty:v9 forKey:@"QuantizationDPI"];
+    [service setProperty:v9 forKey:@"QuantizationDPI"];
   }
 
   persistentPropertyController = self->_persistentPropertyController;
-  v11 = [a3 senderDescriptor];
-  v12 = [(BKIOHIDServicePersistentPropertyController *)persistentPropertyController allPersistentPropertiesForServicesMatchingDescriptor:v11];
+  senderDescriptor = [service senderDescriptor];
+  v12 = [(BKIOHIDServicePersistentPropertyController *)persistentPropertyController allPersistentPropertiesForServicesMatchingDescriptor:senderDescriptor];
 
   if ([v12 count])
   {
     v13 = BKLogTouchEvents();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [a3 senderID];
+      senderID2 = [service senderID];
       *buf = 134218242;
-      v18 = v14;
+      v18 = senderID2;
       v19 = 2114;
       v20 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "service %llX restore persistent props %{public}@", buf, 0x16u);
     }
 
-    [a3 setProperties:v12];
+    [service setProperties:v12];
   }
 
   return v12;
 }
 
-- (unsigned)_queue_addTouchStreamClient:(id)a3 toDisplayUUID:(id)a4 versionedPID:(int64_t)a5
+- (unsigned)_queue_addTouchStreamClient:(id)client toDisplayUUID:(id)d versionedPID:(int64_t)iD
 {
   dispatch_assert_queue_V2(self->_queue);
   v8 = self->_queue_previousVendedTouchStreamReference + 1;
   self->_queue_previousVendedTouchStreamReference = v8;
-  if (a3)
+  if (client)
   {
-    *(a3 + 4) = v8;
+    *(client + 4) = v8;
   }
 
-  v9 = [(BKHIDDirectTouchEventProcessor *)self _queue_touchStreamInfoForDisplayUUID:a4 createIfNeeded:1];
+  v9 = [(BKHIDDirectTouchEventProcessor *)self _queue_touchStreamInfoForDisplayUUID:d createIfNeeded:1];
   v10 = v9;
   if (v9)
   {
@@ -406,12 +406,12 @@ LABEL_27:
       v10[2] = v11;
     }
 
-    if (a3)
+    if (client)
     {
-      objc_storeWeak(a3 + 4, v10);
+      objc_storeWeak(client + 4, v10);
     }
 
-    [v10[2] addObject:a3];
+    [v10[2] addObject:client];
   }
 
   queue_referenceToTouchStreamClient = self->_queue_referenceToTouchStreamClient;
@@ -425,18 +425,18 @@ LABEL_27:
   }
 
   v16 = [NSNumber numberWithUnsignedInt:self->_queue_previousVendedTouchStreamReference];
-  [(NSMutableDictionary *)queue_referenceToTouchStreamClient setObject:a3 forKeyedSubscript:v16];
+  [(NSMutableDictionary *)queue_referenceToTouchStreamClient setObject:client forKeyedSubscript:v16];
 
   v17 = BKLogTouchEvents();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v34 = a3;
+    clientCopy = client;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "create touch stream %{public}@", buf, 0xCu);
   }
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, a3);
+  objc_initWeak(&from, client);
   queue = self->_queue;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
@@ -444,9 +444,9 @@ LABEL_27:
   v28[3] = &unk_1000FB678;
   objc_copyWeak(&v29, &from);
   objc_copyWeak(&v30, &location);
-  if (a3)
+  if (client)
   {
-    if (*(a3 + 7))
+    if (*(client + 7))
     {
       v23 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"_processDeathWatcher == nil"];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -455,11 +455,11 @@ LABEL_27:
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         *buf = 138544642;
-        v34 = v24;
+        clientCopy = v24;
         v35 = 2114;
         v36 = v26;
         v37 = 2048;
-        v38 = a3;
+        clientCopy2 = client;
         v39 = 2114;
         v40 = @"BKDigitizerTouchStreamClient.m";
         v41 = 1024;
@@ -476,9 +476,9 @@ LABEL_27:
       JUMPOUT(0x100049EBCLL);
     }
 
-    v19 = [[BSProcessDeathWatcher alloc] initWithPID:*(a3 + 10) queue:queue deathHandler:v28];
-    v20 = *(a3 + 7);
-    *(a3 + 7) = v19;
+    v19 = [[BSProcessDeathWatcher alloc] initWithPID:*(client + 10) queue:queue deathHandler:v28];
+    v20 = *(client + 7);
+    *(client + 7) = v19;
   }
 
   queue_previousVendedTouchStreamReference = self->_queue_previousVendedTouchStreamReference;
@@ -490,22 +490,22 @@ LABEL_27:
   return queue_previousVendedTouchStreamReference;
 }
 
-- (void)_queue_invalidateTouchStreamClient:(id)a3 reason:(id)a4
+- (void)_queue_invalidateTouchStreamClient:(id)client reason:(id)reason
 {
   dispatch_assert_queue_V2(self->_queue);
   v7 = BKLogTouchEvents();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = a4;
+    reasonCopy = reason;
     v18 = 2114;
-    v19 = a3;
+    clientCopy = client;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "invalidate touch stream (%{public}@) %{public}@", buf, 0x16u);
   }
 
-  if (a3)
+  if (client)
   {
-    WeakRetained = objc_loadWeakRetained(a3 + 4);
+    WeakRetained = objc_loadWeakRetained(client + 4);
     v9 = WeakRetained;
     if (WeakRetained)
     {
@@ -526,13 +526,13 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = sub_10004A158;
   v15[3] = &unk_1000FB410;
-  v15[4] = a3;
+  v15[4] = client;
   [(BKHIDDirectTouchEventProcessor *)self _queue_enumerateDigitizersForDisplay:v11 usingBlock:v15];
 
-  sub_100093058(a3);
-  if (a3)
+  sub_100093058(client);
+  if (client)
   {
-    v12 = *(a3 + 4);
+    v12 = *(client + 4);
   }
 
   else
@@ -545,16 +545,16 @@ LABEL_6:
   [(NSMutableDictionary *)queue_referenceToTouchStreamClient removeObjectForKey:v14];
 }
 
-- (id)_queue_touchStreamInfoForDisplayUUID:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_queue_touchStreamInfoForDisplayUUID:(id)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = a3;
-  v8 = [v7 length];
+  dCopy = d;
+  v8 = [dCopy length];
   v9 = BKSDisplayUUIDMainKey;
   if (v8)
   {
-    v9 = v7;
+    v9 = dCopy;
   }
 
   v10 = v9;
@@ -573,7 +573,7 @@ LABEL_6:
 
   v14 = v13;
   v15 = v14;
-  if (v4 && !v14)
+  if (neededCopy && !v14)
   {
     v16 = objc_alloc_init(BKDigitizerTouchStreamAggregate);
     v15 = v16;
@@ -591,15 +591,15 @@ LABEL_6:
   return v15;
 }
 
-- (id)_queue_digitizerStateForService:(id)a3
+- (id)_queue_digitizerStateForService:(id)service
 {
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [a3 displayUUID];
-  v6 = [v5 length];
+  displayUUID = [service displayUUID];
+  v6 = [displayUUID length];
   v7 = BKSDisplayUUIDMainKey;
   if (v6)
   {
-    v7 = v5;
+    v7 = displayUUID;
   }
 
   v8 = v7;
@@ -608,7 +608,7 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    v11 = [*(v9 + 48) objectForKeyedSubscript:a3];
+    v11 = [*(v9 + 48) objectForKeyedSubscript:service];
   }
 
   else
@@ -619,22 +619,22 @@ LABEL_6:
   return v11;
 }
 
-- (id)_queue_addDigitizerStateForService:(id)a3
+- (id)_queue_addDigitizerStateForService:(id)service
 {
   dispatch_assert_queue_V2(self->_queue);
-  v63 = [(BKHIDDirectTouchEventProcessor *)self _queue_applyCachedPropertiesToMultitouchService:a3];
-  v5 = [a3 displayUUID];
-  v6 = [v5 length];
+  v63 = [(BKHIDDirectTouchEventProcessor *)self _queue_applyCachedPropertiesToMultitouchService:service];
+  displayUUID = [service displayUUID];
+  v6 = [displayUUID length];
   v7 = BKSDisplayUUIDMainKey;
   if (v6)
   {
-    v7 = v5;
+    v7 = displayUUID;
   }
 
   v8 = v7;
 
   v9 = [BKTouchDeliveryStatisticsLoggingObserver alloc];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llX-%@", [a3 senderID], v8);
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llX-%@", [service senderID], v8);
   v64 = [(BKTouchDeliveryStatisticsLoggingObserver *)v9 initWithLabel:v10];
 
   v11 = [(BKHIDDirectTouchEventProcessor *)self _queue_displayInfoForDisplay:v8 createIfNeeded:1];
@@ -673,7 +673,7 @@ LABEL_6:
       JUMPOUT(0x10004AB28);
     }
 
-    objc_storeStrong(&v15->_queue, a3);
+    objc_storeStrong(&v15->_queue, service);
     objc_storeStrong(&v15->_touchEventServer, self);
     objc_storeStrong(&v15->_matchers, v11);
     objc_storeStrong(&v15->_pencilOpaqueTouchPersistentPropertySupport, dispatcher);
@@ -702,7 +702,7 @@ LABEL_6:
 
     v27 = [BKDirectTouchStateHitTester alloc];
     v28 = v15;
-    v29 = self;
+    selfCopy = self;
     v30 = v11;
     if (v27)
     {
@@ -757,7 +757,7 @@ LABEL_6:
       [v28[9] addObject:v12];
     }
 
-    *(v28 + 205) = [a3 primaryUsage] == 32;
+    *(v28 + 205) = [service primaryUsage] == 32;
     v39 = [(OS_dispatch_queue *)v15->_queue propertyForKey:@"MaxHoverHeight"];
     v40 = v39;
     if (v39)
@@ -783,7 +783,7 @@ LABEL_6:
   }
 
   v44 = v28;
-  v45 = a3;
+  serviceCopy = service;
   if (v11)
   {
     v46 = *(v11 + 48);
@@ -796,7 +796,7 @@ LABEL_6:
       v46 = *(v11 + 48);
     }
 
-    [v46 setObject:v44 forKeyedSubscript:v45];
+    [v46 setObject:v44 forKeyedSubscript:serviceCopy];
   }
 
   queue_interfaceOrientation = self->_queue_interfaceOrientation;
@@ -806,9 +806,9 @@ LABEL_6:
   }
 
   v50 = [v63 objectForKey:@"HoverDisabled"];
-  v51 = [v50 BOOLValue];
+  bOOLValue = [v50 BOOLValue];
 
-  if (v51)
+  if (bOOLValue)
   {
     if (!v44)
     {
@@ -840,25 +840,25 @@ LABEL_34:
   }
 
   v53 = +[BKSDefaults localDefaults];
-  v54 = [v53 digitizerVisualizeTouches];
+  digitizerVisualizeTouches = [v53 digitizerVisualizeTouches];
 
   v55 = +[BKSDefaults localDefaults];
-  v56 = [v55 digitizerVisualizeHitTestRegions];
+  digitizerVisualizeHitTestRegions = [v55 digitizerVisualizeHitTestRegions];
 
-  sub_100080620(v44, v54, v56);
-  [v45 addDisappearanceObserver:self queue:self->_queue];
+  sub_100080620(v44, digitizerVisualizeTouches, digitizerVisualizeHitTestRegions);
+  [serviceCopy addDisappearanceObserver:self queue:self->_queue];
 
   return v44;
 }
 
-- (id)_queue_displayInfoForDisplay:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_queue_displayInfoForDisplay:(id)display createIfNeeded:(BOOL)needed
 {
-  if (!a3)
+  if (!display)
   {
     __assert_rtn("[BKHIDDirectTouchEventProcessor _queue_displayInfoForDisplay:createIfNeeded:]", "BKHIDDirectTouchEventProcessor.mm", 967, "displayUUID");
   }
 
-  v4 = a4;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
   queue_perDisplayInfo = self->_queue_perDisplayInfo;
   if (!queue_perDisplayInfo)
@@ -870,7 +870,7 @@ LABEL_34:
     queue_perDisplayInfo = self->_queue_perDisplayInfo;
   }
 
-  v10 = [(NSMutableDictionary *)queue_perDisplayInfo objectForKeyedSubscript:a3];
+  v10 = [(NSMutableDictionary *)queue_perDisplayInfo objectForKeyedSubscript:display];
   if (v10)
   {
     v11 = 1;
@@ -878,20 +878,20 @@ LABEL_34:
 
   else
   {
-    v11 = !v4;
+    v11 = !neededCopy;
   }
 
   if (!v11)
   {
     v10 = objc_alloc_init(BKDirectTouchPerDisplayInfo);
-    if ([a3 isEqualToString:BKSDisplayUUIDMainKey])
+    if ([display isEqualToString:BKSDisplayUUIDMainKey])
     {
       +[BKSHIDEventDisplay builtinDisplay];
     }
 
     else
     {
-      [BKSHIDEventDisplay displayWithHardwareIdentifier:a3];
+      [BKSHIDEventDisplay displayWithHardwareIdentifier:display];
     }
     v12 = ;
     if (v10)
@@ -916,13 +916,13 @@ LABEL_34:
       objc_storeStrong(&v10->_displayController, v14);
     }
 
-    [(NSMutableDictionary *)self->_queue_perDisplayInfo setObject:v10 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_queue_perDisplayInfo setObject:v10 forKeyedSubscript:display];
   }
 
   return v10;
 }
 
-- (void)globalKeyboardModifiersDidChange:(int64_t)a3
+- (void)globalKeyboardModifiersDidChange:(int64_t)change
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -930,24 +930,24 @@ LABEL_34:
   v4[2] = sub_10004AE58;
   v4[3] = &unk_1000FCF78;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = change;
   dispatch_async(queue, v4);
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = BKLogTouchEvents();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134218240;
-    v19 = [a3 senderID];
+    senderID = [disappear senderID];
     v20 = 1024;
-    v21 = [a3 isBuiltIn];
+    isBuiltIn = [disappear isBuiltIn];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "digitizer detached (sender %llX) builtIn:%d", &v18, 0x12u);
   }
 
-  if (self->_queue_mainDisplayDigitizerService == a3)
+  if (self->_queue_mainDisplayDigitizerService == disappear)
   {
     v6 = BKLogTouchEvents();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -960,7 +960,7 @@ LABEL_34:
     self->_queue_mainDisplayDigitizerService = 0;
   }
 
-  if (self->_queue_mainDisplayPencilDigitizerService == a3)
+  if (self->_queue_mainDisplayPencilDigitizerService == disappear)
   {
     v8 = BKLogTouchEvents();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -973,22 +973,22 @@ LABEL_34:
     self->_queue_mainDisplayPencilDigitizerService = 0;
   }
 
-  v10 = [a3 displayUUID];
-  v11 = [v10 length];
+  displayUUID = [disappear displayUUID];
+  v11 = [displayUUID length];
   v12 = BKSDisplayUUIDMainKey;
   if (v11)
   {
-    v12 = v10;
+    v12 = displayUUID;
   }
 
   v13 = v12;
 
-  v14 = [(BKHIDDirectTouchEventProcessor *)self _queue_digitizerStateForService:a3];
+  v14 = [(BKHIDDirectTouchEventProcessor *)self _queue_digitizerStateForService:disappear];
   v15 = BKLogTouchEvents();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543362;
-    v19 = v14;
+    senderID = v14;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "cancel -- digitizer did disappear:%{public}@", &v18, 0xCu);
   }
 
@@ -997,24 +997,24 @@ LABEL_34:
   v17 = v16;
   if (v16)
   {
-    [*(v16 + 48) removeObjectForKey:a3];
+    [*(v16 + 48) removeObjectForKey:disappear];
   }
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
   dispatch_assert_queue_V2(self->_queue);
   v6 = +[BKHIDSystemInterface sharedInstance];
-  v7 = [v6 senderCache];
+  senderCache = [v6 senderCache];
 
-  v32 = v7;
-  [v7 addSenderInfo:a4];
+  v32 = senderCache;
+  [senderCache addSenderInfo:match];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = a4;
-  v9 = [v8 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  matchCopy = match;
+  v9 = [matchCopy countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v9)
   {
     v10 = *v34;
@@ -1024,26 +1024,26 @@ LABEL_34:
       {
         if (*v34 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(matchCopy);
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 isBuiltIn];
+        isBuiltIn = [v12 isBuiltIn];
         v14 = BKLogTouchEvents();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v12 senderID];
+          senderID = [v12 senderID];
           *buf = 134218242;
-          v38 = *&v15;
+          v38 = *&senderID;
           v39 = 2114;
           v40 = v12;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "digitizer attached (sender %llX) service:%{public}@", buf, 0x16u);
         }
 
-        if (v13)
+        if (isBuiltIn)
         {
-          v16 = [v12 primaryUsagePage];
-          v17 = [v12 primaryUsage] | (v16 << 16);
+          primaryUsagePage = [v12 primaryUsagePage];
+          v17 = [v12 primaryUsage] | (primaryUsagePage << 16);
           switch(v17)
           {
             case 0xD0001u:
@@ -1156,40 +1156,40 @@ LABEL_24:
         v31 = [(BKHIDDirectTouchEventProcessor *)self _queue_addDigitizerStateForService:v12];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v9 = [matchCopy countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v9);
   }
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = *a3;
+  v8 = *event;
   v24 = v8;
   v23 = 0;
-  v9 = [(BKHIDDirectTouchEventProcessor *)self _determineServiceForEvent:v8 sender:a4 fromTouchPad:&v23];
+  v9 = [(BKHIDDirectTouchEventProcessor *)self _determineServiceForEvent:v8 sender:sender fromTouchPad:&v23];
   v10 = v9;
   if (v9)
   {
-    v11 = [(__IOHIDEvent *)v9 displayUUID];
-    v12 = [(__IOHIDEvent *)v10 primaryUsagePage];
-    v13 = [(__IOHIDEvent *)v10 primaryUsage];
+    displayUUID = [(__IOHIDEvent *)v9 displayUUID];
+    primaryUsagePage = [(__IOHIDEvent *)v10 primaryUsagePage];
+    primaryUsage = [(__IOHIDEvent *)v10 primaryUsage];
     if (v23)
     {
 LABEL_3:
       v14 = +[BKTouchPadManager sharedInstance];
-      [v14 processEvent:&v24 sender:a4 dispatcher:a5];
+      [v14 processEvent:&v24 sender:sender dispatcher:dispatcher];
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    if (v12 == 13)
+    if (primaryUsagePage == 13)
     {
-      v15 = v13 == 12 || v13 == 5;
+      v15 = primaryUsage == 12 || primaryUsage == 5;
       v23 = v15;
-      if (v13 == 5 || v13 == 12)
+      if (primaryUsage == 5 || primaryUsage == 12)
       {
         goto LABEL_3;
       }
@@ -1200,12 +1200,12 @@ LABEL_19:
       v23 = 0;
     }
 
-    if ((v11 != 0) == [(__IOHIDEvent *)v10 isBuiltIn]|| (v16 = [(__IOHIDEvent *)v10 primaryUsagePage], v17 = ([(__IOHIDEvent *)v10 primaryUsage]| (v16 << 16)) - 851969, v17 > 0x1F) || ((1 << v17) & 0x80000009) == 0)
+    if ((displayUUID != 0) == [(__IOHIDEvent *)v10 isBuiltIn]|| (v16 = [(__IOHIDEvent *)v10 primaryUsagePage], v17 = ([(__IOHIDEvent *)v10 primaryUsage]| (v16 << 16)) - 851969, v17 > 0x1F) || ((1 << v17) & 0x80000009) == 0)
     {
       v14 = BKLogTouchEvents();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v19 = v11;
+        v19 = displayUUID;
         v20 = [v19 length];
         v21 = BKSDisplayUUIDMainKey;
         if (v20)
@@ -1216,7 +1216,7 @@ LABEL_19:
         v22 = v21;
 
         *buf = 138543874;
-        v26 = v22;
+        senderCopy = v22;
         v27 = 2114;
         v28 = v10;
         v29 = 2114;
@@ -1232,14 +1232,14 @@ LABEL_19:
 
   else
   {
-    v11 = BKLogTouchEvents();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    displayUUID = BKLogTouchEvents();
+    if (os_log_type_enabled(displayUUID, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v26 = a4;
+      senderCopy = sender;
       v27 = 2114;
       v28 = v8;
-      _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "ignoring digitizer event from non-digitizer sender (%{public}@):%{public}@", buf, 0x16u);
+      _os_log_error_impl(&_mh_execute_header, displayUUID, OS_LOG_TYPE_ERROR, "ignoring digitizer event from non-digitizer sender (%{public}@):%{public}@", buf, 0x16u);
     }
   }
 
@@ -1248,7 +1248,7 @@ LABEL_20:
   return 0;
 }
 
-- (int64_t)setPersistentProperties:(id)a3 forServicesMatchingDescriptor:(id)a4
+- (int64_t)setPersistentProperties:(id)properties forServicesMatchingDescriptor:(id)descriptor
 {
   [(BKHIDDirectTouchEventProcessor *)self _persistentPropertyKeyDenylist];
   v41 = 0;
@@ -1261,7 +1261,7 @@ LABEL_20:
   v39 = v38[3] = &unk_1000FB650;
   v40 = &v41;
   v22 = v39;
-  [a3 enumerateKeysAndObjectsUsingBlock:v38];
+  [properties enumerateKeysAndObjectsUsingBlock:v38];
   if (v42[3])
   {
     v7 = 1;
@@ -1269,7 +1269,7 @@ LABEL_20:
 
   else
   {
-    v23 = [a3 objectForKey:@"HoverDisabled"];
+    v23 = [properties objectForKey:@"HoverDisabled"];
     v8 = objc_opt_class();
     v9 = v23;
     if (v8)
@@ -1305,7 +1305,7 @@ LABEL_20:
     block[3] = &unk_1000FCBD0;
     v31 = &v32;
     block[4] = self;
-    block[5] = a4;
+    block[5] = descriptor;
     v13 = v11;
     v30 = v13;
     dispatch_sync(queue, block);
@@ -1334,15 +1334,15 @@ LABEL_20:
             v19 = BKLogTouchEvents();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [BSDescriptionStream descriptionForRootObject:a3];
+              v20 = [BSDescriptionStream descriptionForRootObject:properties];
               *buf = 138543618;
-              v46 = v20;
+              descriptorCopy = v20;
               v47 = 2114;
               v48 = v18;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "sending:%{public}@ to:%{public}@", buf, 0x16u);
             }
 
-            [v18 setProperties:a3];
+            [v18 setProperties:properties];
           }
 
           v15 = [v14 countByEnumeratingWithState:&v25 objects:v49 count:16];
@@ -1358,7 +1358,7 @@ LABEL_20:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v46 = a4;
+        descriptorCopy = descriptor;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "no currently matched services for %{public}@", buf, 0xCu);
       }
     }
@@ -1383,10 +1383,10 @@ LABEL_20:
   return v3;
 }
 
-- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)a3
+- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)descriptor
 {
-  v4 = [a3 primaryPage];
-  v5 = [a3 primaryUsage];
+  primaryPage = [descriptor primaryPage];
+  primaryUsage = [descriptor primaryUsage];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1407,13 +1407,13 @@ LABEL_20:
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [v9 objectForKey:@"DeviceUsagePage"];
-        v11 = [v10 unsignedIntValue];
+        unsignedIntValue = [v10 unsignedIntValue];
 
         v12 = [v9 objectForKey:@"DeviceUsage"];
         LODWORD(v10) = [v12 unsignedIntValue];
 
-        v13 = v5 == v10 || v5 == 0;
-        if (v4 == v11 && v13)
+        v13 = primaryUsage == v10 || primaryUsage == 0;
+        if (primaryPage == unsignedIntValue && v13)
         {
           v14 = 1;
           goto LABEL_15;
@@ -1436,7 +1436,7 @@ LABEL_15:
   return v14;
 }
 
-- (void)_queue_enumerateTouchStreamsForAllDisplaysUsingBlock:(id)a3
+- (void)_queue_enumerateTouchStreamsForAllDisplaysUsingBlock:(id)block
 {
   dispatch_assert_queue_V2(self->_queue);
   queue_perDisplayInfo = self->_queue_perDisplayInfo;
@@ -1444,11 +1444,11 @@ LABEL_15:
   v6[1] = 3221225472;
   v6[2] = sub_10004C6D0;
   v6[3] = &unk_1000FB608;
-  v6[4] = a3;
+  v6[4] = block;
   [(NSMutableDictionary *)queue_perDisplayInfo enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)_queue_enumerateDigitizersForAllDisplaysUsingBlock:(id)a3
+- (void)_queue_enumerateDigitizersForAllDisplaysUsingBlock:(id)block
 {
   dispatch_assert_queue_V2(self->_queue);
   queue_perDisplayInfo = self->_queue_perDisplayInfo;
@@ -1456,19 +1456,19 @@ LABEL_15:
   v6[1] = 3221225472;
   v6[2] = sub_10004C7E0;
   v6[3] = &unk_1000FB608;
-  v6[4] = a3;
+  v6[4] = block;
   [(NSMutableDictionary *)queue_perDisplayInfo enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)_queue_enumerateDigitizersForDisplay:(id)a3 usingBlock:(id)a4
+- (void)_queue_enumerateDigitizersForDisplay:(id)display usingBlock:(id)block
 {
   dispatch_assert_queue_V2(self->_queue);
-  v7 = a3;
-  v8 = [v7 length];
+  displayCopy = display;
+  v8 = [displayCopy length];
   v9 = BKSDisplayUUIDMainKey;
   if (v8)
   {
-    v9 = v7;
+    v9 = displayCopy;
   }
 
   v10 = v9;
@@ -1493,7 +1493,7 @@ LABEL_15:
           objc_enumerationMutation(v12);
         }
 
-        (*(a4 + 2))(a4, *(*(&v16 + 1) + 8 * v15));
+        (*(block + 2))(block, *(*(&v16 + 1) + 8 * v15));
         v15 = v15 + 1;
       }
 
@@ -1505,23 +1505,23 @@ LABEL_15:
   }
 }
 
-- (void)applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)a3 displayUUID:(id)a4 toPathAttributes:(id)a5 secureName:(unsigned int)a6 excludeContextIDs:(id)a7
+- (void)applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)coordinates displayUUID:(id)d toPathAttributes:(id)attributes secureName:(unsigned int)name excludeContextIDs:(id)ds
 {
-  y = a3.y;
-  x = a3.x;
+  y = coordinates.y;
+  x = coordinates.x;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004CC80;
   block[3] = &unk_1000FB5E0;
-  block[4] = a4;
+  block[4] = d;
   block[5] = self;
   *&block[8] = x;
   *&block[9] = y;
-  v16 = a6;
-  block[6] = a5;
-  block[7] = a7;
+  nameCopy = name;
+  block[6] = attributes;
+  block[7] = ds;
   dispatch_sync(queue, block);
 }
 
@@ -1584,7 +1584,7 @@ LABEL_15:
   }
 }
 
-- (void)addTouchAuthenticationSpecifications:(id)a3 registrantEntitled:(BOOL)a4
+- (void)addTouchAuthenticationSpecifications:(id)specifications registrantEntitled:(BOOL)entitled
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1592,15 +1592,15 @@ LABEL_15:
   block[2] = sub_10004D2B0;
   block[3] = &unk_1000FB5B8;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = specifications;
+  entitledCopy = entitled;
   dispatch_sync(queue, block);
 }
 
-- (id)authenticationSpecificationForSlotID:(unsigned int)a3 registrantEntitled:(BOOL *)a4
+- (id)authenticationSpecificationForSlotID:(unsigned int)d registrantEntitled:(BOOL *)entitled
 {
-  *a4 = 0;
-  if (a3)
+  *entitled = 0;
+  if (d)
   {
     v9 = 0;
     v10 = &v9;
@@ -1613,10 +1613,10 @@ LABEL_15:
     v7[1] = 3221225472;
     v7[2] = sub_10004D68C;
     v7[3] = &unk_1000FB590;
-    v8 = a3;
+    dCopy = d;
     v7[4] = self;
     v7[5] = &v9;
-    v7[6] = a4;
+    v7[6] = entitled;
     dispatch_sync(queue, v7);
     v5 = v10[5];
     _Block_object_dispose(&v9, 8);
@@ -1630,16 +1630,16 @@ LABEL_15:
   return v5;
 }
 
-- (void)setBuiltInDisplayInterfaceOrientation:(int64_t)a3
+- (void)setBuiltInDisplayInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) > 3)
+  if ((orientation - 1) > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = dword_1000BFA00[a3 - 1];
+    v5 = dword_1000BFA00[orientation - 1];
   }
 
   persistentPropertyController = self->_persistentPropertyController;
@@ -1656,14 +1656,14 @@ LABEL_15:
   block[2] = sub_10004D8E8;
   block[3] = &unk_1000FCF78;
   block[4] = self;
-  block[5] = a3;
+  block[5] = orientation;
   dispatch_async(queue, block);
 }
 
-- (void)setShouldIgnoreTouchesWhileObjectInProximity:(BOOL)a3
+- (void)setShouldIgnoreTouchesWhileObjectInProximity:(BOOL)proximity
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_shouldIgnoreTouchesWhileObjectInProximity = a3;
+  self->_lock_shouldIgnoreTouchesWhileObjectInProximity = proximity;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1676,7 +1676,7 @@ LABEL_15:
   return lock_shouldIgnoreTouchesWhileObjectInProximity;
 }
 
-- (void)postTouchAnnotations:(id)a3 sourcePID:(int)a4
+- (void)postTouchAnnotations:(id)annotations sourcePID:(int)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1684,14 +1684,14 @@ LABEL_15:
   block[2] = sub_10004DA68;
   block[3] = &unk_1000FD1A0;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = annotations;
+  dCopy = d;
   dispatch_async(queue, block);
 }
 
-- (void)setOffset:(CGPoint)a3 forTouchesWithUserIdentifier:(unsigned int)a4
+- (void)setOffset:(CGPoint)offset forTouchesWithUserIdentifier:(unsigned int)identifier
 {
-  if (a4)
+  if (identifier)
   {
     queue = self->_queue;
     v6[0] = _NSConcreteStackBlock;
@@ -1699,8 +1699,8 @@ LABEL_15:
     v6[2] = sub_10004DDCC;
     v6[3] = &unk_1000FB4D0;
     v6[4] = self;
-    v7 = a3;
-    v8 = a4;
+    offsetCopy = offset;
+    identifierCopy = identifier;
     dispatch_sync(queue, v6);
   }
 
@@ -1715,9 +1715,9 @@ LABEL_15:
   }
 }
 
-- (void)setRoutingPolicy:(id)a3 forTouchesWithUserIdentifier:(unsigned int)a4
+- (void)setRoutingPolicy:(id)policy forTouchesWithUserIdentifier:(unsigned int)identifier
 {
-  if (a4)
+  if (identifier)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -1725,8 +1725,8 @@ LABEL_15:
     block[2] = sub_10004E060;
     block[3] = &unk_1000FD1A0;
     block[4] = self;
-    block[5] = a3;
-    v7 = a4;
+    block[5] = policy;
+    identifierCopy = identifier;
     dispatch_sync(queue, block);
   }
 
@@ -1741,7 +1741,7 @@ LABEL_15:
   }
 }
 
-- (BOOL)detachTouchIdentifiers:(unsigned int *)a3 count:(int64_t)a4 assignUserIdentifier:(unsigned int)a5 policy:(id)a6 offset:(CGPoint)a7
+- (BOOL)detachTouchIdentifiers:(unsigned int *)identifiers count:(int64_t)count assignUserIdentifier:(unsigned int)identifier policy:(id)policy offset:(CGPoint)offset
 {
   v13 = 0;
   v14 = &v13;
@@ -1753,19 +1753,19 @@ LABEL_15:
   v10[2] = sub_10004E448;
   v10[3] = &unk_1000FB520;
   v10[6] = &v13;
-  v10[7] = a3;
-  v10[8] = a4;
-  v12 = a5;
+  v10[7] = identifiers;
+  v10[8] = count;
+  identifierCopy = identifier;
   v10[4] = self;
-  v10[5] = a6;
-  v11 = a7;
+  v10[5] = policy;
+  offsetCopy = offset;
   dispatch_sync(queue, v10);
   v8 = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
   return v8;
 }
 
-- (void)transferTouchIdentifiers:(unsigned int *)a3 count:(int64_t)a4 toContextID:(unsigned int)a5
+- (void)transferTouchIdentifiers:(unsigned int *)identifiers count:(int64_t)count toContextID:(unsigned int)d
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -1773,38 +1773,38 @@ LABEL_15:
   v6[2] = sub_10004E95C;
   v6[3] = &unk_1000FB4D0;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v7 = a5;
+  v6[5] = identifiers;
+  v6[6] = count;
+  dCopy = d;
   dispatch_sync(queue, v6);
 }
 
-- (void)setEventDispatchMode:(unsigned __int8)a3 ambiguityRecommendation:(unsigned __int8)a4 lastTouchTimestamp:(double)a5 forTouchStreamIdentifier:(unsigned int)a6
+- (void)setEventDispatchMode:(unsigned __int8)mode ambiguityRecommendation:(unsigned __int8)recommendation lastTouchTimestamp:(double)timestamp forTouchStreamIdentifier:(unsigned int)identifier
 {
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
-  v12 = a3;
+  modeCopy = mode;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
-  v10 = a4;
+  recommendationCopy = recommendation;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004F364;
   block[3] = &unk_1000FB488;
-  v8 = a6;
+  identifierCopy = identifier;
   block[4] = self;
   block[5] = v9;
   block[6] = v11;
-  *&block[7] = a5;
+  *&block[7] = timestamp;
   dispatch_async(queue, block);
   _Block_object_dispose(v9, 8);
   _Block_object_dispose(v11, 8);
 }
 
-- (void)invalidateTouchStreamReference:(unsigned int)a3
+- (void)invalidateTouchStreamReference:(unsigned int)reference
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -1812,11 +1812,11 @@ LABEL_15:
   v4[2] = sub_10004FB10;
   v4[3] = &unk_1000FCD68;
   v4[4] = self;
-  v5 = a3;
+  referenceCopy = reference;
   dispatch_async(queue, v4);
 }
 
-- (unsigned)addTouchStreamForContextID:(unsigned int)a3 display:(id)a4 versionedPID:(int64_t)a5 identifier:(unsigned int)a6 shouldSendAmbiguityRecommendations:(BOOL)a7
+- (unsigned)addTouchStreamForContextID:(unsigned int)d display:(id)display versionedPID:(int64_t)iD identifier:(unsigned int)identifier shouldSendAmbiguityRecommendations:(BOOL)recommendations
 {
   v14 = 0;
   v15 = &v14;
@@ -1828,19 +1828,19 @@ LABEL_15:
   v10[2] = sub_10004FC44;
   v10[3] = &unk_1000FB438;
   v10[4] = self;
-  v10[5] = a4;
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  v10[5] = display;
+  dCopy = d;
+  identifierCopy = identifier;
+  recommendationsCopy = recommendations;
   v10[6] = &v14;
-  v10[7] = a5;
+  v10[7] = iD;
   dispatch_sync(queue, v10);
   v8 = *(v15 + 6);
   _Block_object_dispose(&v14, 8);
   return v8;
 }
 
-- (void)setHitTestRegions:(id)a3 forDisplay:(id)a4
+- (void)setHitTestRegions:(id)regions forDisplay:(id)display
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1848,18 +1848,18 @@ LABEL_15:
   block[2] = sub_100050674;
   block[3] = &unk_1000FC068;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = display;
+  block[6] = regions;
   dispatch_async(queue, block);
 }
 
-- (id)cancelAndSuppressTouchesOnDisplay:(id)a3 reason:(id)a4
+- (id)cancelAndSuppressTouchesOnDisplay:(id)display reason:(id)reason
 {
   v7 = BKLogTouchEvents();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "canceling events for suppression reason: %{public}@", buf, 0xCu);
   }
 
@@ -1870,10 +1870,10 @@ LABEL_15:
   block[2] = sub_100050994;
   block[3] = &unk_1000FBA68;
   block[4] = self;
-  block[5] = a3;
+  block[5] = display;
   v10 = v8;
   v18 = v10;
-  v19 = a4;
+  reasonCopy2 = reason;
   dispatch_sync(queue, block);
   v11 = [BSSimpleAssertion alloc];
   v15[0] = _NSConcreteStackBlock;
@@ -1882,7 +1882,7 @@ LABEL_15:
   v15[3] = &unk_1000FB3E8;
   v12 = v10;
   v16 = v12;
-  v13 = [v11 initWithIdentifier:@"touch-suppression-cancel-array" forReason:a4 invalidationBlock:v15];
+  v13 = [v11 initWithIdentifier:@"touch-suppression-cancel-array" forReason:reason invalidationBlock:v15];
 
   return v13;
 }
@@ -1907,17 +1907,17 @@ LABEL_15:
   [v5 sendCancelEventForAllDisplays];
 }
 
-- (void)cancelTouchesOnDisplay:(id)a3
+- (void)cancelTouchesOnDisplay:(id)display
 {
   v5 = BKLogTouchEvents();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = a3;
-    v7 = [v6 length];
+    displayCopy = display;
+    v7 = [displayCopy length];
     v8 = BKSDisplayUUIDMainKey;
     if (v7)
     {
-      v8 = v6;
+      v8 = displayCopy;
     }
 
     v9 = v8;
@@ -1933,15 +1933,15 @@ LABEL_15:
   v12[2] = sub_100050E44;
   v12[3] = &unk_1000FD128;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = display;
   dispatch_async(queue, v12);
   v11 = +[BKTouchPadManager sharedInstance];
-  [v11 sendCancelEventForDisplay:a3];
+  [v11 sendCancelEventForDisplay:display];
 }
 
-- (void)cancelTouchesWithIdentifiers:(id)a3
+- (void)cancelTouchesWithIdentifiers:(id)identifiers
 {
-  v5 = [a3 count];
+  v5 = [identifiers count];
   v6 = BKLogTouchEvents();
   v7 = v6;
   if (v5 < 31)
@@ -1949,7 +1949,7 @@ LABEL_15:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = a3;
+      identifiersCopy = identifiers;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "cancel touches with identifiers: %{public}@", buf, 0xCu);
     }
 
@@ -1958,7 +1958,7 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = sub_100050FD0;
     block[3] = &unk_1000FCA90;
-    block[4] = a3;
+    block[4] = identifiers;
     block[5] = self;
     block[6] = v5;
     dispatch_async(queue, block);
@@ -1969,7 +1969,7 @@ LABEL_15:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      LODWORD(v11) = v5;
+      LODWORD(identifiersCopy) = v5;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "too many touch identifiers passed to CancelTouchesWithIdentifiers (%d)", buf, 8u);
     }
   }
@@ -2041,22 +2041,22 @@ LABEL_15:
   return v3;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000515A8;
   v6[3] = &unk_1000FD128;
-  v6[4] = a3;
+  v6[4] = formatter;
   v6[5] = self;
-  [a3 appendProem:self block:v6];
-  v5 = [a3 appendObject:self->_queue_perDisplayInfo withName:@"perDisplayInfo"];
+  [formatter appendProem:self block:v6];
+  v5 = [formatter appendObject:self->_queue_perDisplayInfo withName:@"perDisplayInfo"];
 }
 
-- (void)didInitializeRegistryWithContext:(id)a3
+- (void)didInitializeRegistryWithContext:(id)context
 {
-  v4 = [a3 eventProcessorRegistry];
-  v7 = [v4 eventProcessorOfClass:objc_opt_class()];
+  eventProcessorRegistry = [context eventProcessorRegistry];
+  v7 = [eventProcessorRegistry eventProcessorOfClass:objc_opt_class()];
 
   v5 = [v7 addGlobalKeyboardObserver:self];
   globalKeyboardObserver = self->_globalKeyboardObserver;
@@ -2071,7 +2071,7 @@ LABEL_15:
   [(BKHIDDirectTouchEventProcessor *)&v3 dealloc];
 }
 
-- (BKHIDDirectTouchEventProcessor)initWithContext:(id)a3
+- (BKHIDDirectTouchEventProcessor)initWithContext:(id)context
 {
   obj = objc_alloc_init(BKHIDEventHitTestDispatcher);
   v42 = sub_100008F48();
@@ -2085,10 +2085,10 @@ LABEL_15:
     queue = v6->_queue;
     v6->_queue = v7;
 
-    v9 = [a3 serviceMatcherDataProvider];
+    serviceMatcherDataProvider = [context serviceMatcherDataProvider];
     v10 = [BKIOHIDServiceSimplePersistentPropertySupport alloc];
     v11 = +[BKSHIDEventSenderDescriptor stylusOpaqueTouchDigitizer];
-    v12 = [v10 initWithSenderDescriptor:v11 matcherDataProvider:v9 persistentPropertyController:v44];
+    v12 = [v10 initWithSenderDescriptor:v11 matcherDataProvider:serviceMatcherDataProvider persistentPropertyController:v44];
     pencilOpaqueTouchPersistentPropertySupport = v6->_pencilOpaqueTouchPersistentPropertySupport;
     v6->_pencilOpaqueTouchPersistentPropertySupport = v12;
 
@@ -2113,7 +2113,7 @@ LABEL_15:
             objc_enumerationMutation(v15);
           }
 
-          v19 = [[BKIOHIDServiceMatcher alloc] initWithMatchingDictionary:*(*(&v59 + 1) + 8 * v18) dataProvider:v9];
+          v19 = [[BKIOHIDServiceMatcher alloc] initWithMatchingDictionary:*(*(&v59 + 1) + 8 * v18) dataProvider:serviceMatcherDataProvider];
           [v14 addObject:v19];
 
           v18 = v18 + 1;

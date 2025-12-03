@@ -1,28 +1,28 @@
 @interface MailDebugScene
-- (void)mailSceneDidConnectWithOptions:(id)a3;
+- (void)mailSceneDidConnectWithOptions:(id)options;
 @end
 
 @implementation MailDebugScene
 
-- (void)mailSceneDidConnectWithOptions:(id)a3
+- (void)mailSceneDidConnectWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = MailDebugScene;
-  [(MailScene *)&v10 mailSceneDidConnectWithOptions:v4];
+  [(MailScene *)&v10 mailSceneDidConnectWithOptions:optionsCopy];
   v5 = [[MFMailDebugMenuController alloc] initWithScene:self];
   [(MailDebugScene *)self setDebugMenu:v5];
 
-  v6 = [(MailDebugScene *)self debugMenu];
-  [v6 setPresenter:self];
+  debugMenu = [(MailDebugScene *)self debugMenu];
+  [debugMenu setPresenter:self];
 
   [(MailDebugScene *)self setTitle:@"Debugging"];
   v7 = [NSPredicate predicateWithFormat:@"self == %@", @"com.apple.mail.private.debugmenu"];
-  v8 = [(MailDebugScene *)self activationConditions];
-  [v8 setCanActivateForTargetContentIdentifierPredicate:v7];
+  activationConditions = [(MailDebugScene *)self activationConditions];
+  [activationConditions setCanActivateForTargetContentIdentifierPredicate:v7];
 
-  v9 = [(MailDebugScene *)self activationConditions];
-  [v9 setPrefersToActivateForTargetContentIdentifierPredicate:v7];
+  activationConditions2 = [(MailDebugScene *)self activationConditions];
+  [activationConditions2 setPrefersToActivateForTargetContentIdentifierPredicate:v7];
 }
 
 @end

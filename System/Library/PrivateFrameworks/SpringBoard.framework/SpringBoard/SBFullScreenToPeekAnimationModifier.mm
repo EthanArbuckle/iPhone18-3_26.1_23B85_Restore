@@ -1,81 +1,81 @@
 @interface SBFullScreenToPeekAnimationModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (SBFullScreenToPeekAnimationModifier)initWithDirection:(unint64_t)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (SBFullScreenToPeekAnimationModifier)initWithDirection:(unint64_t)direction;
 - (double)fadeInDelayForSplitViewHandles;
-- (id)animationAttributesForItem:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (id)animationAttributesForItem:(id)item;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBFullScreenToPeekAnimationModifier
 
-- (SBFullScreenToPeekAnimationModifier)initWithDirection:(unint64_t)a3
+- (SBFullScreenToPeekAnimationModifier)initWithDirection:(unint64_t)direction
 {
   v5.receiver = self;
   v5.super_class = SBFullScreenToPeekAnimationModifier;
   result = [(SBWindowingModifier *)&v5 init];
   if (result)
   {
-    result->_direction = a3;
+    result->_direction = direction;
   }
 
   return result;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 }
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBFullScreenToPeekAnimationModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBFullScreenToPeekAnimationModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
   v4 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
   [(SBSwitcherAnimationAttributes *)v4 setUpdateMode:3];
-  v5 = [(SBFullScreenToPeekAnimationModifier *)self switcherSettings];
-  v6 = [v5 windowingSettings];
-  v7 = [v6 appToPeekLayoutSettings];
-  [(SBSwitcherAnimationAttributes *)v4 setLayoutSettings:v7];
+  switcherSettings = [(SBFullScreenToPeekAnimationModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  appToPeekLayoutSettings = [windowingSettings appToPeekLayoutSettings];
+  [(SBSwitcherAnimationAttributes *)v4 setLayoutSettings:appToPeekLayoutSettings];
 
   return v4;
 }

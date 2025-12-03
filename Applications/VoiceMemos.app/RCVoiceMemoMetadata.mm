@@ -1,14 +1,14 @@
 @interface RCVoiceMemoMetadata
-- (id)initFromCloudRecording:(id)a3 withCodecs:(id)a4;
+- (id)initFromCloudRecording:(id)recording withCodecs:(id)codecs;
 @end
 
 @implementation RCVoiceMemoMetadata
 
-- (id)initFromCloudRecording:(id)a3 withCodecs:(id)a4
+- (id)initFromCloudRecording:(id)recording withCodecs:(id)codecs
 {
   type metadata accessor for RCAudioCodecName(0);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  return sub_1000EB694(a3, v5);
+  return sub_1000EB694(recording, v5);
 }
 
 @end

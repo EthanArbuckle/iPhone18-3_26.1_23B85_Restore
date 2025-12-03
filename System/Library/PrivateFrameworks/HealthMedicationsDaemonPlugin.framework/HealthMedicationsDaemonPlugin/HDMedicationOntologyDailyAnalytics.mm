@@ -1,8 +1,8 @@
 @interface HDMedicationOntologyDailyAnalytics
 - (HDMedicationOntologyDailyAnalytics)init;
-- (HDMedicationOntologyDailyAnalytics)initWithProfile:(id)a3;
+- (HDMedicationOntologyDailyAnalytics)initWithProfile:(id)profile;
 - (NSString)eventName;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 - (id)shardRegistry;
 @end
 
@@ -18,16 +18,16 @@
   return 0;
 }
 
-- (HDMedicationOntologyDailyAnalytics)initWithProfile:(id)a3
+- (HDMedicationOntologyDailyAnalytics)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDMedicationOntologyDailyAnalytics;
   v5 = [(HDMedicationOntologyDailyAnalytics *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
@@ -43,7 +43,7 @@
   return 0;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v30[4] = *MEMORY[0x277D85DE8];
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:&unk_2863C2E40];
@@ -63,7 +63,7 @@
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
   v17 = [v7 predicateMatchingAnyPredicates:v16];
 
-  v18 = [(HDMedicationOntologyDailyAnalytics *)self shardRegistry];
+  shardRegistry = [(HDMedicationOntologyDailyAnalytics *)self shardRegistry];
   v29 = 0;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -71,7 +71,7 @@
   v27[3] = &unk_2796CE878;
   v19 = v6;
   v28 = v19;
-  LOBYTE(v13) = [v18 enumerateEntriesWithPredicate:v17 orderingTerms:0 error:&v29 enumerationHandler:v27];
+  LOBYTE(v13) = [shardRegistry enumerateEntriesWithPredicate:v17 orderingTerms:0 error:&v29 enumerationHandler:v27];
   v20 = v29;
 
   if (v13)
@@ -91,10 +91,10 @@
     v23 = v20;
     if (v23)
     {
-      if (a4)
+      if (error)
       {
         v24 = v23;
-        *a4 = v23;
+        *error = v23;
       }
 
       else
@@ -176,11 +176,11 @@ LABEL_10:
 - (id)shardRegistry
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained daemon];
-  v4 = [v3 ontologyUpdateCoordinator];
-  v5 = [v4 shardRegistry];
+  daemon = [WeakRetained daemon];
+  ontologyUpdateCoordinator = [daemon ontologyUpdateCoordinator];
+  shardRegistry = [ontologyUpdateCoordinator shardRegistry];
 
-  return v5;
+  return shardRegistry;
 }
 
 - (void)makeUnrestrictedEventPayloadWithDataSource:(os_log_t)log error:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

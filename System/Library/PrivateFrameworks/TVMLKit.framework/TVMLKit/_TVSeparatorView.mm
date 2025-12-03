@@ -1,25 +1,25 @@
 @interface _TVSeparatorView
-+ (id)separatorViewWithElement:(id)a3 existingView:(id)a4;
++ (id)separatorViewWithElement:(id)element existingView:(id)view;
 - (BOOL)canBecomeFocused;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIView)separatorComponent;
 - (id)preferredFocusEnvironments;
 - (void)layoutSubviews;
-- (void)setSeparatorComponent:(id)a3;
+- (void)setSeparatorComponent:(id)component;
 @end
 
 @implementation _TVSeparatorView
 
-+ (id)separatorViewWithElement:(id)a3 existingView:(id)a4
++ (id)separatorViewWithElement:(id)element existingView:(id)view
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
-  v28 = v6;
+  v28 = viewCopy;
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -33,8 +33,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [v5 children];
-  v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  children = [elementCopy children];
+  v11 = [children countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -45,13 +45,13 @@
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(children);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
         v16 = +[TVInterfaceFactory sharedInterfaceFactory];
-        v17 = [(_TVSeparatorView *)v9 separatorComponent];
-        v18 = [v16 _viewFromElement:v15 existingView:v17];
+        separatorComponent = [(_TVSeparatorView *)v9 separatorComponent];
+        v18 = [v16 _viewFromElement:v15 existingView:separatorComponent];
 
         if (v18)
         {
@@ -61,7 +61,7 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v12 = [children countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v12)
       {
         continue;
@@ -73,24 +73,24 @@
 
 LABEL_14:
 
-  v19 = [v5 style];
-  v20 = [v19 tv_tintColor];
-  v21 = [v20 color];
+  style = [elementCopy style];
+  tv_tintColor = [style tv_tintColor];
+  color = [tv_tintColor color];
 
-  if (!v21)
+  if (!color)
   {
-    v21 = [MEMORY[0x277D75348] opaqueSeparatorColor];
+    color = [MEMORY[0x277D75348] opaqueSeparatorColor];
   }
 
-  [(_TVSeparatorView *)v9 setTintColor:v21];
-  v22 = [v5 style];
-  [v22 tv_height];
+  [(_TVSeparatorView *)v9 setTintColor:color];
+  style2 = [elementCopy style];
+  [style2 tv_height];
   v24 = v23;
 
   if (v24 <= 0.0)
   {
-    v25 = [MEMORY[0x277D759A0] mainScreen];
-    [v25 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v24 = 1.0 / v26;
   }
 
@@ -135,9 +135,9 @@ LABEL_14:
   return v5;
 }
 
-- (void)setSeparatorComponent:(id)a3
+- (void)setSeparatorComponent:(id)component
 {
-  obj = a3;
+  obj = component;
   WeakRetained = objc_loadWeakRetained(&self->_separatorComponent);
 
   if (WeakRetained != obj)
@@ -156,10 +156,10 @@ LABEL_14:
   [(_TVSeparatorView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIView *)self tv_padding];
   v7 = v6;
   v9 = v8;
@@ -223,9 +223,9 @@ LABEL_14:
   rect = v10;
   v69 = v16;
   v22 = objc_loadWeakRetained(&self->_separatorComponent);
-  v23 = [v22 tv_alignment];
+  tv_alignment = [v22 tv_alignment];
 
-  if ((v23 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((tv_alignment & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     [(UIView *)self->_line2 removeFromSuperview];
     v24 = self->_line2;
@@ -252,7 +252,7 @@ LABEL_14:
   v40 = v37 * 0.5;
   v64 = v38;
   v70 = v38 + floorf(v40);
-  if (v23 == 3)
+  if (tv_alignment == 3)
   {
     v62 = v32;
     v65 = v33;
@@ -269,7 +269,7 @@ LABEL_14:
 
   else
   {
-    if (v23 != 1)
+    if (tv_alignment != 1)
     {
       v61 = v37;
       v77.origin.x = v66;

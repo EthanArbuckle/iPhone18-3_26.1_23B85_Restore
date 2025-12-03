@@ -1,29 +1,29 @@
 @interface EQKitHBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)p_cacheErasableBounds;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitHBox
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = EQKitHBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  if (a3)
+  if (context)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(EQKitCompoundBox *)self childBoxes];
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v9 = [(NSArray *)childBoxes countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -34,16 +34,16 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(childBoxes);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          [v13 renderIntoContext:a3 offset:{x, y}];
+          [v13 renderIntoContext:context offset:{x, y}];
           [v13 width];
           x = x + v14;
         }
 
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v10 = [(NSArray *)childBoxes countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v10);
@@ -51,12 +51,12 @@
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = *(a3 + 6);
+  v8 = *(spec + 6);
   if (v8 == 2)
   {
     [(EQKitCompoundBox *)self width];
@@ -65,8 +65,8 @@
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v18 = [(NSArray *)[(EQKitCompoundBox *)self childBoxes] reverseObjectEnumerator];
-    v10 = [(NSEnumerator *)v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    reverseObjectEnumerator = [(NSArray *)[(EQKitCompoundBox *)self childBoxes] reverseObjectEnumerator];
+    v10 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v10)
     {
       v19 = v10;
@@ -78,20 +78,20 @@ LABEL_14:
       {
         if (*v27 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v23 = *(*(&v26 + 1) + 8 * v22);
         [v23 width];
         v20 = v20 - v24;
-        if ([v23 appendOpticalAlignToSpec:a3 offset:{v20, y}])
+        if ([v23 appendOpticalAlignToSpec:spec offset:{v20, y}])
         {
           goto LABEL_21;
         }
 
         if (v19 == ++v22)
         {
-          v19 = [(NSEnumerator *)v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          v19 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v34 count:16];
           LOBYTE(v10) = 0;
           if (v19)
           {
@@ -116,8 +116,8 @@ LABEL_14:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(EQKitCompoundBox *)self childBoxes];
-    v10 = [(NSArray *)v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v10 = [(NSArray *)childBoxes countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
@@ -128,11 +128,11 @@ LABEL_5:
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(childBoxes);
         }
 
         v14 = *(*(&v30 + 1) + 8 * v13);
-        if ([v14 appendOpticalAlignToSpec:a3 offset:{x, y}])
+        if ([v14 appendOpticalAlignToSpec:spec offset:{x, y}])
         {
           break;
         }
@@ -141,7 +141,7 @@ LABEL_5:
         x = x + v15;
         if (v11 == ++v13)
         {
-          v11 = [(NSArray *)v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v11 = [(NSArray *)childBoxes countByEnumeratingWithState:&v30 objects:v35 count:16];
           LOBYTE(v10) = 0;
           if (v11)
           {
@@ -160,10 +160,10 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a4 == self)
+  if (descendant == self)
   {
 LABEL_12:
     LOBYTE(v7) = 1;
@@ -175,8 +175,8 @@ LABEL_12:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(EQKitCompoundBox *)self childBoxes];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v7 = [(NSArray *)childBoxes countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -188,21 +188,21 @@ LABEL_12:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childBoxes);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          if ([v12 p_getTransform:a3 fromDescendant:a4])
+          if ([v12 p_getTransform:transform fromDescendant:descendant])
           {
-            v14 = *&a3->c;
-            *&v17.a = *&a3->a;
+            v14 = *&transform->c;
+            *&v17.a = *&transform->a;
             *&v17.c = v14;
-            *&v17.tx = *&a3->tx;
+            *&v17.tx = *&transform->tx;
             CGAffineTransformTranslate(&v18, &v17, v10, 0.0);
             v15 = *&v18.c;
-            *&a3->a = *&v18.a;
-            *&a3->c = v15;
-            *&a3->tx = *&v18.tx;
+            *&transform->a = *&v18.a;
+            *&transform->c = v15;
+            *&transform->tx = *&v18.tx;
             goto LABEL_12;
           }
 
@@ -210,7 +210,7 @@ LABEL_12:
           v10 = v10 + v13;
         }
 
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [(NSArray *)childBoxes countByEnumeratingWithState:&v19 objects:v23 count:16];
         LOBYTE(v7) = 0;
         if (v8)
         {
@@ -225,29 +225,29 @@ LABEL_12:
   return v7;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (!a3 && !a4 && !a5)
+  if (!height && !depth && !width)
   {
     return;
   }
 
-  if (a5)
+  if (width)
   {
-    *a5 = 0.0;
+    *width = 0.0;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(EQKitCompoundBox *)self childBoxes];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v9 = [(NSArray *)childBoxes countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v9)
   {
     v12 = 1;
-    if (a3)
+    if (height)
     {
       goto LABEL_34;
     }
@@ -265,7 +265,7 @@ LABEL_12:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(childBoxes);
       }
 
       v14 = *(*(&v24 + 1) + 8 * v13);
@@ -275,49 +275,49 @@ LABEL_12:
         goto LABEL_24;
       }
 
-      if (a3)
+      if (height)
       {
-        if ((v12 & 1) != 0 || (v16 = *a3, [v14 height], v16 <= v17))
+        if ((v12 & 1) != 0 || (v16 = *height, [v14 height], v16 <= v17))
         {
           [v14 height];
         }
 
         else
         {
-          v18 = *a3;
+          v18 = *height;
         }
 
-        *a3 = v18;
+        *height = v18;
       }
 
-      if (a4)
+      if (depth)
       {
-        if ((v12 & 1) != 0 || (v19 = *a4, [v14 depth], v19 <= v20))
+        if ((v12 & 1) != 0 || (v19 = *depth, [v14 depth], v19 <= v20))
         {
           [v14 depth];
         }
 
         else
         {
-          v21 = *a4;
+          v21 = *depth;
         }
 
         v12 = 0;
-        *a4 = v21;
+        *depth = v21;
 LABEL_24:
-        if (!a5)
+        if (!width)
         {
           goto LABEL_26;
         }
 
 LABEL_25:
         [v14 width];
-        *a5 = v22 + *a5;
+        *width = v22 + *width;
         goto LABEL_26;
       }
 
       v12 = 0;
-      if (a5)
+      if (width)
       {
         goto LABEL_25;
       }
@@ -327,12 +327,12 @@ LABEL_26:
     }
 
     while (v10 != v13);
-    v23 = [(NSArray *)v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v23 = [(NSArray *)childBoxes countByEnumeratingWithState:&v24 objects:v28 count:16];
     v10 = v23;
   }
 
   while (v23);
-  if (!a3)
+  if (!height)
   {
     goto LABEL_36;
   }
@@ -340,13 +340,13 @@ LABEL_26:
 LABEL_34:
   if (v12)
   {
-    *a3 = 0.0;
+    *height = 0.0;
   }
 
 LABEL_36:
-  if (((a4 != 0) & v12) == 1)
+  if (((depth != 0) & v12) == 1)
   {
-    *a4 = 0.0;
+    *depth = 0.0;
   }
 }
 
@@ -361,8 +361,8 @@ LABEL_36:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(EQKitCompoundBox *)self childBoxes];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v7 = [(NSArray *)childBoxes countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -374,7 +374,7 @@ LABEL_36:
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childBoxes);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -417,7 +417,7 @@ LABEL_36:
         v10 = v10 + v26;
       }
 
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [(NSArray *)childBoxes countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v8);

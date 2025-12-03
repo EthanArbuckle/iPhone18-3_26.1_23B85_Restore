@@ -1,18 +1,18 @@
 @interface MUPlaceCardImpressionsLogger
 - (MUPlaceCardImpressionsLogger)init;
-- (void)logImpressionElementDidEnter:(id)a3 onDate:(id)a4;
-- (void)logImpressionElementDidExit:(id)a3 usingEnterDate:(id)a4 exitDate:(id)a5;
+- (void)logImpressionElementDidEnter:(id)enter onDate:(id)date;
+- (void)logImpressionElementDidExit:(id)exit usingEnterDate:(id)date exitDate:(id)exitDate;
 @end
 
 @implementation MUPlaceCardImpressionsLogger
 
-- (void)logImpressionElementDidExit:(id)a3 usingEnterDate:(id)a4 exitDate:(id)a5
+- (void)logImpressionElementDidExit:(id)exit usingEnterDate:(id)date exitDate:(id)exitDate
 {
-  v8 = a3;
-  v9 = a5;
-  [a4 timeIntervalSinceReferenceDate];
+  exitCopy = exit;
+  exitDateCopy = exitDate;
+  [date timeIntervalSinceReferenceDate];
   v11 = v10;
-  [v9 timeIntervalSinceReferenceDate];
+  [exitDateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
 
   isolationQueue = self->_isolationQueue;
@@ -20,10 +20,10 @@
   block[1] = 3221225472;
   block[2] = __84__MUPlaceCardImpressionsLogger_logImpressionElementDidExit_usingEnterDate_exitDate___block_invoke;
   block[3] = &unk_1E821A898;
-  v17 = v8;
+  v17 = exitCopy;
   v18 = v11;
   v19 = v13;
-  v15 = v8;
+  v15 = exitCopy;
   dispatch_async(isolationQueue, block);
 }
 
@@ -60,19 +60,19 @@ void __84__MUPlaceCardImpressionsLogger_logImpressionElementDidExit_usingEnterDa
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logImpressionElementDidEnter:(id)a3 onDate:(id)a4
+- (void)logImpressionElementDidEnter:(id)enter onDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  enterCopy = enter;
+  dateCopy = date;
   isolationQueue = self->_isolationQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__MUPlaceCardImpressionsLogger_logImpressionElementDidEnter_onDate___block_invoke;
   v11[3] = &unk_1E821A870;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = enterCopy;
+  v13 = dateCopy;
+  v9 = dateCopy;
+  v10 = enterCopy;
   dispatch_async(isolationQueue, v11);
 }
 

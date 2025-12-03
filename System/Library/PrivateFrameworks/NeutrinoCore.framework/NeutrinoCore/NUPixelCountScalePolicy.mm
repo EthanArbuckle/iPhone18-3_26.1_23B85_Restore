@@ -1,15 +1,15 @@
 @interface NUPixelCountScalePolicy
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size;
 - (NUPixelCountScalePolicy)init;
-- (NUPixelCountScalePolicy)initWithTargetPixelCount:(int64_t)a3;
+- (NUPixelCountScalePolicy)initWithTargetPixelCount:(int64_t)count;
 @end
 
 @implementation NUPixelCountScalePolicy
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a3.var0 < 1 || a3.var1 <= 0)
+  if (size.var0 < 1 || size.var1 <= 0)
   {
     v19 = NUAssertLogger_27066();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v26;
         v37 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,7 +53,7 @@
   }
 
   totalPixelCount = self->_totalPixelCount;
-  v4 = a3.var0 / a3.var1;
+  v4 = size.var0 / size.var1;
   v5 = sqrt(totalPixelCount / v4);
   v6 = vcvtmd_s64_f64(v5);
   v7 = vcvtpd_s64_f64(v4 * floor(v5));
@@ -73,12 +73,12 @@
 
   if (v11 <= totalPixelCount)
   {
-    var0 = a3.var0;
+    var0 = size.var0;
   }
 
   else
   {
-    var0 = a3.var1;
+    var0 = size.var1;
   }
 
   v14 = v10 <= totalPixelCount;
@@ -94,12 +94,12 @@
 
   if (v14)
   {
-    var1 = a3.var1;
+    var1 = size.var1;
   }
 
   else
   {
-    var1 = a3.var0;
+    var1 = size.var0;
   }
 
   if (v10 < v11)
@@ -133,10 +133,10 @@
   return result;
 }
 
-- (NUPixelCountScalePolicy)initWithTargetPixelCount:(int64_t)a3
+- (NUPixelCountScalePolicy)initWithTargetPixelCount:(int64_t)count
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0)
+  if (count <= 0)
   {
     v5 = NUAssertLogger_27066();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -157,8 +157,8 @@
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v12;
         v24 = 2114;
@@ -169,8 +169,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -182,7 +182,7 @@
   v21.receiver = self;
   v21.super_class = NUPixelCountScalePolicy;
   result = [(NUPixelCountScalePolicy *)&v21 init];
-  result->_totalPixelCount = a3;
+  result->_totalPixelCount = count;
   return result;
 }
 
@@ -232,8 +232,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -249,8 +249,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

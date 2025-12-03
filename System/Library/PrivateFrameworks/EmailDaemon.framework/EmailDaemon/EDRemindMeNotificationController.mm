@@ -1,20 +1,20 @@
 @interface EDRemindMeNotificationController
 + (OS_os_log)log;
-- (EDRemindMeNotificationController)initWithHookRegistry:(id)a3 messagePersistence:(id)a4 alarmDateProvider:(id)a5 eventDelegate:(id)a6 alarmScheduler:(id)a7;
-- (EDRemindMeNotificationController)initWithHookRegistry:(id)a3 messagePersistence:(id)a4 alarmScheduler:(id)a5;
+- (EDRemindMeNotificationController)initWithHookRegistry:(id)registry messagePersistence:(id)persistence alarmDateProvider:(id)provider eventDelegate:(id)delegate alarmScheduler:(id)scheduler;
+- (EDRemindMeNotificationController)initWithHookRegistry:(id)registry messagePersistence:(id)persistence alarmScheduler:(id)scheduler;
 - (EDRemindMeNotificationControllerEventDelegate)eventDelegate;
-- (id)_fetchMessagesToNotifyWithStartDate:(id)a3 endDate:(id)a4;
-- (id)addRemindMeObserver:(id)a3;
+- (id)_fetchMessagesToNotifyWithStartDate:(id)date endDate:(id)endDate;
+- (id)addRemindMeObserver:(id)observer;
 - (id)nextAlarmDate;
 - (void)_alarmFired;
-- (void)_notify:(id)a3;
-- (void)_updateAlarmUpdatedMessages:(id)a3 readLaterDate:(id)a4 startDate:(id)a5 changeIsRemote:(BOOL)a6;
-- (void)controller:(id)a3 scheduleAlarmForMessage:(id)a4 date:(id)a5;
+- (void)_notify:(id)_notify;
+- (void)_updateAlarmUpdatedMessages:(id)messages readLaterDate:(id)date startDate:(id)startDate changeIsRemote:(BOOL)remote;
+- (void)controller:(id)controller scheduleAlarmForMessage:(id)message date:(id)date;
 - (void)performDelayedTasks;
-- (void)persistenceDidChangeReadLaterDate:(id)a3 messages:(id)a4 changeIsRemote:(BOOL)a5 generationWindow:(id)a6;
-- (void)removeRemindMeObserver:(id)a3;
+- (void)persistenceDidChangeReadLaterDate:(id)date messages:(id)messages changeIsRemote:(BOOL)remote generationWindow:(id)window;
+- (void)removeRemindMeObserver:(id)observer;
 - (void)resetRemindMeAlarmIfNeeded;
-- (void)setNextAlarmDate:(uint64_t)a1;
+- (void)setNextAlarmDate:(uint64_t)date;
 - (void)test_tearDown;
 - (void)test_waitForUpdates;
 @end
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __39__EDRemindMeNotificationController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_81 != -1)
   {
     dispatch_once(&log_onceToken_81, block);
@@ -46,36 +46,36 @@ void __39__EDRemindMeNotificationController_log__block_invoke(uint64_t a1)
   log_log_81 = v1;
 }
 
-- (EDRemindMeNotificationController)initWithHookRegistry:(id)a3 messagePersistence:(id)a4 alarmScheduler:(id)a5
+- (EDRemindMeNotificationController)initWithHookRegistry:(id)registry messagePersistence:(id)persistence alarmScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registryCopy = registry;
+  persistenceCopy = persistence;
+  schedulerCopy = scheduler;
   v11 = objc_alloc_init(DefaultEDRemindMeNotificationControllerAlarmDateProvider);
-  v12 = [(EDRemindMeNotificationController *)self initWithHookRegistry:v8 messagePersistence:v9 alarmDateProvider:v11 eventDelegate:self alarmScheduler:v10];
+  v12 = [(EDRemindMeNotificationController *)self initWithHookRegistry:registryCopy messagePersistence:persistenceCopy alarmDateProvider:v11 eventDelegate:self alarmScheduler:schedulerCopy];
 
   return v12;
 }
 
-- (EDRemindMeNotificationController)initWithHookRegistry:(id)a3 messagePersistence:(id)a4 alarmDateProvider:(id)a5 eventDelegate:(id)a6 alarmScheduler:(id)a7
+- (EDRemindMeNotificationController)initWithHookRegistry:(id)registry messagePersistence:(id)persistence alarmDateProvider:(id)provider eventDelegate:(id)delegate alarmScheduler:(id)scheduler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  registryCopy = registry;
+  persistenceCopy = persistence;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  schedulerCopy = scheduler;
   v39.receiver = self;
   v39.super_class = EDRemindMeNotificationController;
   v18 = [(EDRemindMeNotificationController *)&v39 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_hookRegistry, a3);
-    objc_storeStrong(&v19->_messagePersistence, a4);
-    objc_storeStrong(&v19->_alarmDateProvider, a5);
-    objc_storeWeak(&v19->_eventDelegate, v16);
-    v20 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    v21 = [objc_alloc(MEMORY[0x1E699B7F0]) initWithObject:v20];
+    objc_storeStrong(&v18->_hookRegistry, registry);
+    objc_storeStrong(&v19->_messagePersistence, persistence);
+    objc_storeStrong(&v19->_alarmDateProvider, provider);
+    objc_storeWeak(&v19->_eventDelegate, delegateCopy);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v21 = [objc_alloc(MEMORY[0x1E699B7F0]) initWithObject:weakObjectsHashTable];
     observers = v19->_observers;
     v19->_observers = v21;
 
@@ -84,7 +84,7 @@ void __39__EDRemindMeNotificationController_log__block_invoke(uint64_t a1)
     alarmQueue = v19->_alarmQueue;
     v19->_alarmQueue = v24;
 
-    v26 = [objc_alloc(MEMORY[0x1E699B998]) initWithScheduler:v17 eventName:@"EDRemindMeNotificationController.alarm" eventHandlerQueue:v19->_alarmQueue];
+    v26 = [objc_alloc(MEMORY[0x1E699B998]) initWithScheduler:schedulerCopy eventName:@"EDRemindMeNotificationController.alarm" eventHandlerQueue:v19->_alarmQueue];
     xpcAlarm = v19->_xpcAlarm;
     v19->_xpcAlarm = v26;
 
@@ -101,7 +101,7 @@ void __39__EDRemindMeNotificationController_log__block_invoke(uint64_t a1)
     readLaterQueryCreator = v19->_readLaterQueryCreator;
     v19->_readLaterQueryCreator = v30;
 
-    [v13 registerMessageChangeHookResponder:v19];
+    [registryCopy registerMessageChangeHookResponder:v19];
     objc_destroyWeak(&v37);
     objc_destroyWeak(&location);
   }
@@ -119,8 +119,8 @@ void __123__EDRemindMeNotificationController_initWithHookRegistry_messagePersist
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDRemindMeNotificationController.m" lineNumber:110 description:{@"%s can only be called from unit tests", "-[EDRemindMeNotificationController test_waitForUpdates]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDRemindMeNotificationController.m" lineNumber:110 description:{@"%s can only be called from unit tests", "-[EDRemindMeNotificationController test_waitForUpdates]"}];
   }
 
   alarmQueue = self->_alarmQueue;
@@ -132,8 +132,8 @@ void __123__EDRemindMeNotificationController_initWithHookRegistry_messagePersist
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EDRemindMeNotificationController.m" lineNumber:116 description:{@"%s can only be called from unit tests", "-[EDRemindMeNotificationController test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDRemindMeNotificationController.m" lineNumber:116 description:{@"%s can only be called from unit tests", "-[EDRemindMeNotificationController test_tearDown]"}];
   }
 
   [(EFXPCAlarm *)self->_xpcAlarm invalidate];
@@ -149,8 +149,8 @@ void __123__EDRemindMeNotificationController_initWithHookRegistry_messagePersist
   while (([v6 tryLockWhenCondition:1] & 1) == 0)
   {
     v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.001];
-    v8 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v8 runUntilDate:v7];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop runUntilDate:v7];
 
     [MEMORY[0x1E696AF00] sleepUntilDate:v7];
   }
@@ -158,15 +158,15 @@ void __123__EDRemindMeNotificationController_initWithHookRegistry_messagePersist
   [v6 unlock];
 }
 
-- (id)addRemindMeObserver:(id)a3
+- (id)addRemindMeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__EDRemindMeNotificationController_addRemindMeObserver___block_invoke;
   v15[3] = &unk_1E8256378;
-  v6 = v4;
+  v6 = observerCopy;
   v16 = v6;
   [(EFLocked *)observers performWhileLocked:v15];
   objc_initWeak(&location, self);
@@ -203,25 +203,25 @@ void __56__EDRemindMeNotificationController_addRemindMeObserver___block_invoke_2
   }
 }
 
-- (void)removeRemindMeObserver:(id)a3
+- (void)removeRemindMeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__EDRemindMeNotificationController_removeRemindMeObserver___block_invoke;
   v7[3] = &unk_1E8256378;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(EFLocked *)observers performWhileLocked:v7];
 }
 
-- (void)setNextAlarmDate:(uint64_t)a1
+- (void)setNextAlarmDate:(uint64_t)date
 {
   v3 = a2;
-  if (a1)
+  if (date)
   {
-    [*(a1 + 24) setNextDate:v3];
+    [*(date + 24) setNextDate:v3];
   }
 }
 
@@ -260,45 +260,45 @@ void __55__EDRemindMeNotificationController_performDelayedTasks__block_invoke(ui
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateAlarmUpdatedMessages:(id)a3 readLaterDate:(id)a4 startDate:(id)a5 changeIsRemote:(BOOL)a6
+- (void)_updateAlarmUpdatedMessages:(id)messages readLaterDate:(id)date startDate:(id)startDate changeIsRemote:(BOOL)remote
 {
-  v7 = a6;
+  remoteCopy = remote;
   v55 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  messagesCopy = messages;
+  dateCopy = date;
+  startDateCopy = startDate;
   dispatch_assert_queue_V2(self->_alarmQueue);
-  if (!v14)
+  if (!startDateCopy)
   {
-    v15 = [(EDRemindMeNotificationController *)&self->super.isa nextAlarmDate];
-    v16 = v15;
-    if (v15)
+    nextAlarmDate = [(EDRemindMeNotificationController *)&self->super.isa nextAlarmDate];
+    v16 = nextAlarmDate;
+    if (nextAlarmDate)
     {
-      v14 = v15;
+      startDateCopy = nextAlarmDate;
     }
 
     else
     {
       v17 = [MEMORY[0x1E695DF00] now];
-      v14 = [v17 ec_integerDate];
+      startDateCopy = [v17 ec_integerDate];
     }
   }
 
   aSelector = a2;
   v18 = self->_readLaterQueryCreator;
-  v19 = [(EDQueryCreator *)v18 queryWithStartDate:v14 endDate:0];
+  v19 = [(EDQueryCreator *)v18 queryWithStartDate:startDateCopy endDate:0];
 
   v20 = self->_messagePersistence;
   v21 = [(EDMessagePersistence *)v20 persistedMessagesMatchingQuery:v19 limit:1];
 
-  v22 = [v12 count];
-  if (!v13 && v22)
+  v22 = [messagesCopy count];
+  if (!dateCopy && v22)
   {
     v38 = MEMORY[0x1E69E9820];
     v39 = 3221225472;
     v40 = __103__EDRemindMeNotificationController__updateAlarmUpdatedMessages_readLaterDate_startDate_changeIsRemote___block_invoke;
     v41 = &unk_1E8251360;
-    v42 = v12;
+    v42 = messagesCopy;
     v23 = [v21 ef_filter:{&v38, aSelector}];
 
     v21 = v23;
@@ -306,11 +306,11 @@ void __55__EDRemindMeNotificationController_performDelayedTasks__block_invoke(ui
 
   if ([v21 count])
   {
-    v6 = [v21 firstObject];
-    v24 = [v6 readLater];
-    v25 = [v24 date];
+    firstObject = [v21 firstObject];
+    readLater = [firstObject readLater];
+    date = [readLater date];
 
-    if (!v7)
+    if (!remoteCopy)
     {
       goto LABEL_14;
     }
@@ -318,15 +318,15 @@ void __55__EDRemindMeNotificationController_performDelayedTasks__block_invoke(ui
 
   else
   {
-    v25 = 0;
-    if (!v7)
+    date = 0;
+    if (!remoteCopy)
     {
       goto LABEL_14;
     }
   }
 
-  v6 = [MEMORY[0x1E695DF00] now];
-  if (![v13 ef_isLaterThanDate:v6])
+  firstObject = [MEMORY[0x1E695DF00] now];
+  if (![dateCopy ef_isLaterThanDate:firstObject])
   {
 LABEL_27:
 
@@ -334,8 +334,8 @@ LABEL_27:
   }
 
 LABEL_14:
-  v26 = [v12 count];
-  if (v13)
+  v26 = [messagesCopy count];
+  if (dateCopy)
   {
     v27 = v26 == 0;
   }
@@ -346,7 +346,7 @@ LABEL_14:
   }
 
   v28 = !v27;
-  if (v7)
+  if (remoteCopy)
   {
 
     if ((v28 & 1) == 0)
@@ -360,13 +360,13 @@ LABEL_14:
     goto LABEL_28;
   }
 
-  if (!v25 || [v13 ef_isEarlierThanDate:v25])
+  if (!date || [dateCopy ef_isEarlierThanDate:date])
   {
-    v29 = v12;
+    v29 = messagesCopy;
 
-    v6 = v25;
+    firstObject = date;
     v21 = v29;
-    v25 = v13;
+    date = dateCopy;
     goto LABEL_27;
   }
 
@@ -375,35 +375,35 @@ LABEL_28:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     v31 = NSStringFromSelector(aSelectora);
-    v32 = [v12 count];
+    v32 = [messagesCopy count];
     *buf = 138544642;
     v44 = v31;
     v45 = 2048;
     v46 = v32;
     v47 = 2114;
-    v48 = v13;
+    v48 = dateCopy;
     v49 = 2114;
-    v50 = v14;
+    v50 = startDateCopy;
     v51 = 1024;
-    v52 = v7;
+    v52 = remoteCopy;
     v53 = 2114;
-    v54 = v25;
+    v54 = date;
     _os_log_impl(&dword_1C61EF000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ updatedMessages:%lu readLaterDate:%{public}@ startDate:%{public}@ changeIsRemote:%{BOOL}d firstMessageReadLaterDate:%{public}@", buf, 0x3Au);
   }
 
-  v33 = [(EDRemindMeNotificationController *)self eventDelegate];
-  if (v25)
+  eventDelegate = [(EDRemindMeNotificationController *)self eventDelegate];
+  if (date)
   {
-    v34 = [v21 firstObject];
+    firstObject2 = [v21 firstObject];
   }
 
   else
   {
-    v34 = 0;
+    firstObject2 = 0;
   }
 
-  [v33 controller:self scheduleAlarmForMessage:v34 date:v25];
-  [(EDRemindMeNotificationController *)self setNextAlarmDate:v25];
+  [eventDelegate controller:self scheduleAlarmForMessage:firstObject2 date:date];
+  [(EDRemindMeNotificationController *)self setNextAlarmDate:date];
 
   v35 = *MEMORY[0x1E69E9840];
 }
@@ -423,19 +423,19 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
 {
   v32 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_alarmQueue);
-  v4 = [(EDRemindMeNotificationController *)&self->super.isa nextAlarmDate];
+  nextAlarmDate = [(EDRemindMeNotificationController *)&self->super.isa nextAlarmDate];
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [v5 ec_integerDate];
+  ec_integerDate = [v5 ec_integerDate];
 
-  if ([v6 ef_isLaterThanDate:v4])
+  if ([ec_integerDate ef_isLaterThanDate:nextAlarmDate])
   {
-    v7 = v6;
+    ec_integerDate2 = ec_integerDate;
   }
 
   else
   {
-    v8 = [v4 dateByAddingTimeInterval:1.0];
-    v7 = [v8 ec_integerDate];
+    v8 = [nextAlarmDate dateByAddingTimeInterval:1.0];
+    ec_integerDate2 = [v8 ec_integerDate];
 
     v9 = +[EDRemindMeNotificationController log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -444,22 +444,22 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
       *buf = 138543618;
       v27 = v10;
       v28 = 2114;
-      v29 = v7;
+      v29 = ec_integerDate2;
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ update endDate to %{public}@ so it's after startDate", buf, 0x16u);
     }
   }
 
-  v11 = [(EDRemindMeNotificationController *)self _fetchMessagesToNotifyWithStartDate:v4 endDate:v7];
+  v11 = [(EDRemindMeNotificationController *)self _fetchMessagesToNotifyWithStartDate:nextAlarmDate endDate:ec_integerDate2];
   v12 = +[EDRemindMeNotificationController log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromSelector(a2);
-    v14 = [(EDRemindMeNotificationController *)&self->super.isa nextAlarmDate];
+    nextAlarmDate2 = [(EDRemindMeNotificationController *)&self->super.isa nextAlarmDate];
     v15 = [v11 count];
     *buf = 138543874;
     v27 = v13;
     v28 = 2114;
-    v29 = v14;
+    v29 = nextAlarmDate2;
     v30 = 2048;
     v31 = v15;
     _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ nextAlarmDate:%{public}@ messages to notify:%lu", buf, 0x20u);
@@ -494,23 +494,23 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
     while (v17);
   }
 
-  [(EDRemindMeNotificationController *)self _updateAlarmStartDate:v7];
+  [(EDRemindMeNotificationController *)self _updateAlarmStartDate:ec_integerDate2];
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notify:(id)a3
+- (void)_notify:(id)_notify
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _notifyCopy = _notify;
   dispatch_assert_queue_V2(self->_alarmQueue);
-  v5 = [(EDRemindMeNotificationController *)self observers];
-  v6 = [v5 allObjects];
+  observers = [(EDRemindMeNotificationController *)self observers];
+  allObjects = [observers allObjects];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -525,7 +525,7 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) controller:self messageTimerFired:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) controller:self messageTimerFired:{_notifyCopy, v12}];
       }
 
       while (v8 != v10);
@@ -552,38 +552,38 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
   }
 
   v4 = alarmDateProvider;
-  v5 = [(EDRemindMeNotificationControllerAlarmDateProvider *)v4 nextDate];
+  nextDate = [(EDRemindMeNotificationControllerAlarmDateProvider *)v4 nextDate];
 
   v6 = +[EDRemindMeNotificationController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v5;
+    v11 = nextDate;
     _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "Next alarm date from DefaultEDRemindMeNotificationControllerAlarmDateProvider: %{public}@.", &v10, 0xCu);
   }
 
-  if (v5)
+  if (nextDate)
   {
     v7 = +[EDRemindMeNotificationController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v5;
+      v11 = nextDate;
       _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Reset remind me later next alarm to %{public}@.", &v10, 0xCu);
     }
 
-    v8 = [(EDRemindMeNotificationController *)self xpcAlarm];
-    [v8 setNextFireDate:v5 isUserVisible:1];
+    xpcAlarm = [(EDRemindMeNotificationController *)self xpcAlarm];
+    [xpcAlarm setNextFireDate:nextDate isUserVisible:1];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)controller:(id)a3 scheduleAlarmForMessage:(id)a4 date:(id)a5
+- (void)controller:(id)controller scheduleAlarmForMessage:(id)message date:(id)date
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  dateCopy = date;
   v10 = +[EDRemindMeNotificationController log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -591,24 +591,24 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
     v14 = 138543874;
     v15 = v11;
     v16 = 2114;
-    v17 = v9;
+    v17 = dateCopy;
     v18 = 2048;
-    v19 = [v8 globalMessageID];
+    globalMessageID = [messageCopy globalMessageID];
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ date:%{public}@ message.globalMessageID:%lld", &v14, 0x20u);
   }
 
-  v12 = [(EDRemindMeNotificationController *)self xpcAlarm];
-  [v12 setNextFireDate:v9 isUserVisible:1];
+  xpcAlarm = [(EDRemindMeNotificationController *)self xpcAlarm];
+  [xpcAlarm setNextFireDate:dateCopy isUserVisible:1];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceDidChangeReadLaterDate:(id)a3 messages:(id)a4 changeIsRemote:(BOOL)a5 generationWindow:(id)a6
+- (void)persistenceDidChangeReadLaterDate:(id)date messages:(id)messages changeIsRemote:(BOOL)remote generationWindow:(id)window
 {
-  v6 = a5;
+  remoteCopy = remote;
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  dateCopy = date;
+  messagesCopy = messages;
   v12 = +[EDRemindMeNotificationController log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -616,9 +616,9 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
     *buf = 138543874;
     v23 = v13;
     v24 = 1024;
-    v25 = v6;
+    v25 = remoteCopy;
     v26 = 2114;
-    v27 = v10;
+    v27 = dateCopy;
     _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ changeIsRemote:%{BOOL}d readLaterDate:%{public}@", buf, 0x1Cu);
   }
 
@@ -628,11 +628,11 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
   v18[2] = __111__EDRemindMeNotificationController_persistenceDidChangeReadLaterDate_messages_changeIsRemote_generationWindow___block_invoke;
   v18[3] = &unk_1E8255940;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v6;
-  v15 = v11;
-  v16 = v10;
+  v19 = dateCopy;
+  v20 = messagesCopy;
+  v21 = remoteCopy;
+  v15 = messagesCopy;
+  v16 = dateCopy;
   dispatch_async(alarmQueue, v18);
 
   v17 = *MEMORY[0x1E69E9840];
@@ -647,20 +647,20 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
 
 - (id)nextAlarmDate
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[3] nextDate];
+    self = [self[3] nextDate];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_fetchMessagesToNotifyWithStartDate:(id)a3 endDate:(id)a4
+- (id)_fetchMessagesToNotifyWithStartDate:(id)date endDate:(id)endDate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (self)
   {
     readLaterQueryCreator = self->_readLaterQueryCreator;
@@ -671,7 +671,7 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
     readLaterQueryCreator = 0;
   }
 
-  v10 = [(EDQueryCreator *)readLaterQueryCreator queryWithStartDate:v7 endDate:v8];
+  v10 = [(EDQueryCreator *)readLaterQueryCreator queryWithStartDate:dateCopy endDate:endDateCopy];
   v11 = +[EDRemindMeNotificationController log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -679,9 +679,9 @@ uint64_t __80__EDRemindMeNotificationController__fetchMessagesToNotifyWithStartD
     v18 = 138543874;
     v19 = v12;
     v20 = 2114;
-    v21 = v7;
+    v21 = dateCopy;
     v22 = 2114;
-    v23 = v8;
+    v23 = endDateCopy;
     _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ startDate:%{public}@ endDate:%{public}@", &v18, 0x20u);
   }
 

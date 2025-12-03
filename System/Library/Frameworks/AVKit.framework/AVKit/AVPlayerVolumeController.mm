@@ -4,29 +4,29 @@
 - (BOOL)currentRouteHasVolumeControl;
 - (float)volume;
 - (void)dealloc;
-- (void)setTargetVolume:(float)a3;
+- (void)setTargetVolume:(float)volume;
 @end
 
 @implementation AVPlayerVolumeController
 
 - (BOOL)currentRouteHasVolumeControl
 {
-  v2 = [(AVPlayerVolumeController *)self playerController];
+  playerController = [(AVPlayerVolumeController *)self playerController];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
 }
 
-- (void)setTargetVolume:(float)a3
+- (void)setTargetVolume:(float)volume
 {
-  v4 = [(AVPlayerVolumeController *)self playerController];
-  [v4 setVolume:{fmin(fmax(a3, 0.0), 1.0)}];
+  playerController = [(AVPlayerVolumeController *)self playerController];
+  [playerController setVolume:{fmin(fmax(volume, 0.0), 1.0)}];
 }
 
 - (float)volume
 {
-  v2 = [(AVPlayerVolumeController *)self playerController];
-  [v2 volume];
+  playerController = [(AVPlayerVolumeController *)self playerController];
+  [playerController volume];
   v4 = v3;
 
   return v4;
@@ -67,7 +67,7 @@ void __32__AVPlayerVolumeController_init__block_invoke(uint64_t a1, void *a2)
 
 + (id)volumeController
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

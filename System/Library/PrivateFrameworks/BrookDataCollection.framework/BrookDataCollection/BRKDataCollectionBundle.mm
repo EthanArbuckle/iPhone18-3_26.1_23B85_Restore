@@ -1,17 +1,17 @@
 @interface BRKDataCollectionBundle
 + (id)defaultLogDirectory;
-- (BOOL)packageBundleToPath:(id *)a3 filePrioritization:(id)a4;
+- (BOOL)packageBundleToPath:(id *)path filePrioritization:(id)prioritization;
 - (BOOL)removeBundle;
-- (BRKDataCollectionBundle)initWithFolderNamed:(id)a3;
-- (id)_writerForClass:(Class)a3 file:(id)a4 configuration:(id)a5;
-- (id)accelerationWriterForFile:(id)a3;
-- (id)accelerationWriterForFile:(id)a3 valueCount:(unint64_t)a4;
-- (id)audioWriterForFile:(id)a3;
-- (id)logWriterForFile:(id)a3;
-- (void)_writeData:(id)a3 toFile:(id)a4 updateManifest:(BOOL)a5;
-- (void)closeWriterForFile:(id)a3;
+- (BRKDataCollectionBundle)initWithFolderNamed:(id)named;
+- (id)_writerForClass:(Class)class file:(id)file configuration:(id)configuration;
+- (id)accelerationWriterForFile:(id)file;
+- (id)accelerationWriterForFile:(id)file valueCount:(unint64_t)count;
+- (id)audioWriterForFile:(id)file;
+- (id)logWriterForFile:(id)file;
+- (void)_writeData:(id)data toFile:(id)file updateManifest:(BOOL)manifest;
+- (void)closeWriterForFile:(id)file;
 - (void)removeBundle;
-- (void)writeJSON:(id)a3 toFile:(id)a4;
+- (void)writeJSON:(id)n toFile:(id)file;
 @end
 
 @implementation BRKDataCollectionBundle
@@ -36,64 +36,64 @@ void __46__BRKDataCollectionBundle_defaultLogDirectory__block_invoke()
   defaultLogDirectory_LogDirectory = v0;
 }
 
-- (BRKDataCollectionBundle)initWithFolderNamed:(id)a3
+- (BRKDataCollectionBundle)initWithFolderNamed:(id)named
 {
-  v5 = a3;
+  namedCopy = named;
   v18.receiver = self;
   v18.super_class = BRKDataCollectionBundle;
   v6 = [(BRKDataCollectionBundle *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_folderName, a3);
-    v8 = [objc_opt_class() defaultLogDirectory];
-    v9 = [v8 stringByAppendingPathComponent:v5];
+    objc_storeStrong(&v6->_folderName, named);
+    defaultLogDirectory = [objc_opt_class() defaultLogDirectory];
+    v9 = [defaultLogDirectory stringByAppendingPathComponent:namedCopy];
     basePath = v7->_basePath;
     v7->_basePath = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     writers = v7->_writers;
-    v7->_writers = v11;
+    v7->_writers = dictionary;
 
     v13 = [MEMORY[0x277CBEB58] set];
     manifest = v7->_manifest;
     v7->_manifest = v13;
 
     v7->_writersLock._os_unfair_lock_opaque = 0;
-    v15 = [MEMORY[0x277CF3480] settingsForActiveDevice];
+    settingsForActiveDevice = [MEMORY[0x277CF3480] settingsForActiveDevice];
     settings = v7->_settings;
-    v7->_settings = v15;
+    v7->_settings = settingsForActiveDevice;
   }
 
   return v7;
 }
 
-- (void)writeJSON:(id)a3 toFile:(id)a4
+- (void)writeJSON:(id)n toFile:(id)file
 {
   v6 = MEMORY[0x277CCAAA0];
   v9 = 0;
-  v7 = a4;
-  v8 = [v6 dataWithJSONObject:a3 options:4 error:&v9];
-  [(BRKDataCollectionBundle *)self writeData:v8 toFile:v7];
+  fileCopy = file;
+  v8 = [v6 dataWithJSONObject:n options:4 error:&v9];
+  [(BRKDataCollectionBundle *)self writeData:v8 toFile:fileCopy];
 }
 
-- (void)_writeData:(id)a3 toFile:(id)a4 updateManifest:(BOOL)a5
+- (void)_writeData:(id)data toFile:(id)file updateManifest:(BOOL)manifest
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8 && [(BRKSettings *)self->_settings isDataCollectionEnabled])
+  manifestCopy = manifest;
+  dataCopy = data;
+  fileCopy = file;
+  if (dataCopy && [(BRKSettings *)self->_settings isDataCollectionEnabled])
   {
-    if (v5)
+    if (manifestCopy)
     {
-      [(NSMutableSet *)self->_manifest addObject:v9];
+      [(NSMutableSet *)self->_manifest addObject:fileCopy];
     }
 
-    v10 = [(NSString *)self->_basePath stringByAppendingPathComponent:v9];
-    v11 = [v10 stringByDeletingLastPathComponent];
+    v10 = [(NSString *)self->_basePath stringByAppendingPathComponent:fileCopy];
+    stringByDeletingLastPathComponent = [v10 stringByDeletingLastPathComponent];
     BRKCreateDirectory();
 
-    if (([v8 writeToFile:v10 atomically:1] & 1) == 0)
+    if (([dataCopy writeToFile:v10 atomically:1] & 1) == 0)
     {
       v12 = BRKLoggingObjectForDomain();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -104,50 +104,50 @@ void __46__BRKDataCollectionBundle_defaultLogDirectory__block_invoke()
   }
 }
 
-- (id)accelerationWriterForFile:(id)a3
+- (id)accelerationWriterForFile:(id)file
 {
-  v4 = a3;
-  v5 = [(BRKDataCollectionBundle *)self _writerForClass:objc_opt_class() file:v4 configuration:0];
+  fileCopy = file;
+  v5 = [(BRKDataCollectionBundle *)self _writerForClass:objc_opt_class() file:fileCopy configuration:0];
 
   return v5;
 }
 
-- (id)accelerationWriterForFile:(id)a3 valueCount:(unint64_t)a4
+- (id)accelerationWriterForFile:(id)file valueCount:(unint64_t)count
 {
-  v6 = a3;
+  fileCopy = file;
   v7 = objc_opt_class();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__BRKDataCollectionBundle_accelerationWriterForFile_valueCount___block_invoke;
   v10[3] = &__block_descriptor_40_e19_v16__0__BRKWriter_8l;
-  v10[4] = a4;
-  v8 = [(BRKDataCollectionBundle *)self _writerForClass:v7 file:v6 configuration:v10];
+  v10[4] = count;
+  v8 = [(BRKDataCollectionBundle *)self _writerForClass:v7 file:fileCopy configuration:v10];
 
   return v8;
 }
 
-- (id)audioWriterForFile:(id)a3
+- (id)audioWriterForFile:(id)file
 {
-  v4 = a3;
-  v5 = [(BRKDataCollectionBundle *)self _writerForClass:objc_opt_class() file:v4 configuration:0];
+  fileCopy = file;
+  v5 = [(BRKDataCollectionBundle *)self _writerForClass:objc_opt_class() file:fileCopy configuration:0];
 
   return v5;
 }
 
-- (id)logWriterForFile:(id)a3
+- (id)logWriterForFile:(id)file
 {
-  v4 = a3;
-  v5 = [(BRKDataCollectionBundle *)self _writerForClass:objc_opt_class() file:v4 configuration:0];
+  fileCopy = file;
+  v5 = [(BRKDataCollectionBundle *)self _writerForClass:objc_opt_class() file:fileCopy configuration:0];
 
   return v5;
 }
 
-- (id)_writerForClass:(Class)a3 file:(id)a4 configuration:(id)a5
+- (id)_writerForClass:(Class)class file:(id)file configuration:(id)configuration
 {
-  v8 = a4;
-  v9 = a5;
+  fileCopy = file;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_writersLock);
-  v10 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:fileCopy];
   os_unfair_lock_unlock(&self->_writersLock);
   if (v10)
   {
@@ -169,19 +169,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [(NSString *)self->_basePath stringByAppendingPathComponent:v8];
-  v13 = [v12 stringByDeletingLastPathComponent];
+  v12 = [(NSString *)self->_basePath stringByAppendingPathComponent:fileCopy];
+  stringByDeletingLastPathComponent = [v12 stringByDeletingLastPathComponent];
   BRKCreateDirectory();
 
-  [(NSMutableSet *)self->_manifest addObject:v8];
-  v14 = [[a3 alloc] initWithPath:v12];
-  if (v9)
+  [(NSMutableSet *)self->_manifest addObject:fileCopy];
+  v14 = [[class alloc] initWithPath:v12];
+  if (configurationCopy)
   {
-    v9[2](v9, v14);
+    configurationCopy[2](configurationCopy, v14);
   }
 
   os_unfair_lock_lock(&self->_writersLock);
-  [(NSMutableDictionary *)self->_writers setObject:v14 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_writers setObject:v14 forKeyedSubscript:fileCopy];
   os_unfair_lock_unlock(&self->_writersLock);
   v10 = v14;
 
@@ -191,12 +191,12 @@ LABEL_10:
   return v11;
 }
 
-- (void)closeWriterForFile:(id)a3
+- (void)closeWriterForFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   os_unfair_lock_lock(&self->_writersLock);
-  v5 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_writers setObject:0 forKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:fileCopy];
+  [(NSMutableDictionary *)self->_writers setObject:0 forKeyedSubscript:fileCopy];
 
   os_unfair_lock_unlock(&self->_writersLock);
   if (objc_opt_respondsToSelector())
@@ -205,17 +205,17 @@ LABEL_10:
   }
 }
 
-- (BOOL)packageBundleToPath:(id *)a3 filePrioritization:(id)a4
+- (BOOL)packageBundleToPath:(id *)path filePrioritization:(id)prioritization
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  prioritizationCopy = prioritization;
   if (![(BRKSettings *)self->_settings isDataCollectionEnabled])
   {
     v32 = 0;
     goto LABEL_31;
   }
 
-  v45 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_writersLock);
   v7 = [(NSMutableDictionary *)self->_writers copy];
   os_unfair_lock_unlock(&self->_writersLock);
@@ -238,7 +238,7 @@ LABEL_10:
           objc_enumerationMutation(v8);
         }
 
-        [(BRKDataCollectionBundle *)self closeWriterForFile:*(*(&v51 + 1) + 8 * i), v45];
+        [(BRKDataCollectionBundle *)self closeWriterForFile:*(*(&v51 + 1) + 8 * i), pathCopy];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v51 objects:v55 count:16];
@@ -247,14 +247,14 @@ LABEL_10:
     while (v10);
   }
 
-  v46 = v6;
-  v13 = [v6 mutableCopy];
+  v46 = prioritizationCopy;
+  v13 = [prioritizationCopy mutableCopy];
   for (j = 0; ; j = v48)
   {
-    v15 = [(NSMutableSet *)self->_manifest allObjects];
-    v16 = [v15 componentsJoinedByString:@"\n"];
+    allObjects = [(NSMutableSet *)self->_manifest allObjects];
+    path = [allObjects componentsJoinedByString:@"\n"];
 
-    v17 = [v16 dataUsingEncoding:4];
+    v17 = [path dataUsingEncoding:4];
     [(BRKDataCollectionBundle *)self _writeData:v17 toFile:@"manifest" updateManifest:0];
     v18 = MEMORY[0x277D051A8];
     v19 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_basePath];
@@ -272,7 +272,7 @@ LABEL_25:
 
       v32 = 0;
 LABEL_26:
-      v6 = v46;
+      prioritizationCopy = v46;
       goto LABEL_30;
     }
 
@@ -281,9 +281,9 @@ LABEL_26:
       break;
     }
 
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v50 = 0;
-    v22 = [v21 removeItemAtURL:v20 error:&v50];
+    v22 = [defaultManager removeItemAtURL:v20 error:&v50];
     v23 = v50;
 
     if ((v22 & 1) == 0)
@@ -304,15 +304,15 @@ LABEL_26:
 
     v24 = v13;
     v25 = v17;
-    v47 = v16;
+    v47 = path;
     v48 = v20;
-    v26 = [v24 lastObject];
+    lastObject = [v24 lastObject];
     v27 = v24;
     [v24 removeLastObject];
-    v28 = [(NSString *)self->_basePath stringByAppendingPathComponent:v26];
-    v29 = [MEMORY[0x277CCAA00] defaultManager];
+    v28 = [(NSString *)self->_basePath stringByAppendingPathComponent:lastObject];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v49 = v23;
-    v30 = [v29 removeItemAtPath:v28 error:&v49];
+    v30 = [defaultManager2 removeItemAtPath:v28 error:&v49];
     v31 = v49;
 
     if ((v30 & 1) == 0)
@@ -320,25 +320,25 @@ LABEL_26:
       v42 = BRKLoggingObjectForDomain();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
-        [(BRKDataCollectionBundle *)v26 packageBundleToPath:v31 filePrioritization:v42];
+        [(BRKDataCollectionBundle *)lastObject packageBundleToPath:v31 filePrioritization:v42];
       }
 
       v32 = 0;
-      v6 = v46;
-      v16 = v47;
+      prioritizationCopy = v46;
+      path = v47;
       v13 = v27;
       v20 = v48;
       goto LABEL_30;
     }
 
-    [(NSMutableSet *)self->_manifest removeObject:v26];
+    [(NSMutableSet *)self->_manifest removeObject:lastObject];
 
     v13 = v27;
   }
 
   BRKMarkFilePurgeable();
-  v16 = [v20 path];
-  v33 = [v16 length];
+  path = [v20 path];
+  v33 = [path length];
   v32 = v33 != 0;
   if (!v33)
   {
@@ -347,11 +347,11 @@ LABEL_26:
 
   v32 = 1;
   self->_isPackaged = 1;
-  v6 = v46;
-  if (v45)
+  prioritizationCopy = v46;
+  if (pathCopy)
   {
-    v34 = v16;
-    *v45 = v16;
+    v34 = path;
+    *pathCopy = path;
   }
 
 LABEL_30:
@@ -363,11 +363,11 @@ LABEL_31:
 
 - (BOOL)removeBundle
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   basePath = self->_basePath;
   p_basePath = &self->_basePath;
   v16 = 0;
-  v6 = [v3 removeItemAtPath:basePath error:&v16];
+  v6 = [defaultManager removeItemAtPath:basePath error:&v16];
   v7 = v16;
 
   if ((v6 & 1) == 0)
@@ -410,7 +410,7 @@ LABEL_31:
 - (void)removeBundle
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_0_0(&dword_241ED9000, a2, a3, "Unable to remove bundle path %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

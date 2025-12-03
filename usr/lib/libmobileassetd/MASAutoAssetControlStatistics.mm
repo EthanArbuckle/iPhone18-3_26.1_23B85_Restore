@@ -1,21 +1,21 @@
 @interface MASAutoAssetControlStatistics
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetControlStatistics
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (objc_opt_class())
     {
-      v4 = [v3 setByAddingObject:objc_opt_class()];
+      v4 = [classesCopy setByAddingObject:objc_opt_class()];
     }
 
     if (objc_opt_class())
@@ -48,227 +48,227 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetControlStatistics alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetControlStatistics alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
     v6 = objc_alloc_init(MAAutoAssetControlStatistics);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v3 totalClientRequests];
-      v8 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:v7];
+      totalClientRequests = [frameworkCopy totalClientRequests];
+      v8 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:totalClientRequests];
       [v6 setTotalClientRequests:v8];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v3 totalClientRepliesSuccess];
-      v10 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:v9];
+      totalClientRepliesSuccess = [frameworkCopy totalClientRepliesSuccess];
+      v10 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:totalClientRepliesSuccess];
       [v6 setTotalClientRepliesSuccess:v10];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v3 totalClientRepliesFailure];
-      v12 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:v11];
+      totalClientRepliesFailure = [frameworkCopy totalClientRepliesFailure];
+      v12 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:totalClientRepliesFailure];
       [v6 setTotalClientRepliesFailure:v12];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v3 totalQueuedClientRequests];
-      v14 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:v13];
+      totalQueuedClientRequests = [frameworkCopy totalQueuedClientRequests];
+      v14 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:totalQueuedClientRequests];
       [v6 setTotalQueuedClientRequests:v14];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v3 totalDequeuedClientRequests];
-      v16 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:v15];
+      totalDequeuedClientRequests = [frameworkCopy totalDequeuedClientRequests];
+      v16 = [MASAutoAssetControlStatisticsByCommand newShimmedToFramework:totalDequeuedClientRequests];
       [v6 setTotalDequeuedClientRequests:v16];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalAutoAssetJobsStarted:{objc_msgSend(v3, "totalAutoAssetJobsStarted")}];
+      [v6 setTotalAutoAssetJobsStarted:{objc_msgSend(frameworkCopy, "totalAutoAssetJobsStarted")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalAutoJobsFinished:{objc_msgSend(v3, "totalAutoJobsFinished")}];
+      [v6 setTotalAutoJobsFinished:{objc_msgSend(frameworkCopy, "totalAutoJobsFinished")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalStagerDetermineJobsStarted:{objc_msgSend(v3, "totalStagerDetermineJobsStarted")}];
+      [v6 setTotalStagerDetermineJobsStarted:{objc_msgSend(frameworkCopy, "totalStagerDetermineJobsStarted")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalStagerDetermineJobsFinished:{objc_msgSend(v3, "totalStagerDetermineJobsFinished")}];
+      [v6 setTotalStagerDetermineJobsFinished:{objc_msgSend(frameworkCopy, "totalStagerDetermineJobsFinished")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalStagerDownloadJobsStarted:{objc_msgSend(v3, "totalStagerDownloadJobsStarted")}];
+      [v6 setTotalStagerDownloadJobsStarted:{objc_msgSend(frameworkCopy, "totalStagerDownloadJobsStarted")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalStagerDownloadJobsFinished:{objc_msgSend(v3, "totalStagerDownloadJobsFinished")}];
+      [v6 setTotalStagerDownloadJobsFinished:{objc_msgSend(frameworkCopy, "totalStagerDownloadJobsFinished")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalResumedInFlightJobs:{objc_msgSend(v3, "totalResumedInFlightJobs")}];
+      [v6 setTotalResumedInFlightJobs:{objc_msgSend(frameworkCopy, "totalResumedInFlightJobs")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalSchedulerTriggeredJobs:{objc_msgSend(v3, "totalSchedulerTriggeredJobs")}];
+      [v6 setTotalSchedulerTriggeredJobs:{objc_msgSend(frameworkCopy, "totalSchedulerTriggeredJobs")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setTotalFailuresToStartJobs:{objc_msgSend(v3, "totalFailuresToStartJobs")}];
+      [v6 setTotalFailuresToStartJobs:{objc_msgSend(frameworkCopy, "totalFailuresToStartJobs")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v3 previouslyDownloaded];
-      v18 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:v17];
+      previouslyDownloaded = [frameworkCopy previouslyDownloaded];
+      v18 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:previouslyDownloaded];
       [v6 setPreviouslyDownloaded:v18];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v3 totalDownloaded];
-      v20 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:v19];
+      totalDownloaded = [frameworkCopy totalDownloaded];
+      v20 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:totalDownloaded];
       [v6 setTotalDownloaded:v20];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v3 totalStaged];
-      v22 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:v21];
+      totalStaged = [frameworkCopy totalStaged];
+      v22 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:totalStaged];
       [v6 setTotalStaged:v22];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v23 = [v3 totalUnstaged];
-      v24 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:v23];
+      totalUnstaged = [frameworkCopy totalUnstaged];
+      v24 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:totalUnstaged];
       [v6 setTotalUnstaged:v24];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v25 = [v3 totalPromoted];
-      v26 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:v25];
+      totalPromoted = [frameworkCopy totalPromoted];
+      v26 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:totalPromoted];
       [v6 setTotalPromoted:v26];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v27 = [v3 totalRemoved];
-      v28 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:v27];
+      totalRemoved = [frameworkCopy totalRemoved];
+      v28 = [MASAutoAssetControlStatisticsBySize newShimmedToFramework:totalRemoved];
       [v6 setTotalRemoved:v28];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setFinishedJobSchedulerNetworkFailure:{objc_msgSend(v3, "finishedJobSchedulerNetworkFailure")}];
+      [v6 setFinishedJobSchedulerNetworkFailure:{objc_msgSend(frameworkCopy, "finishedJobSchedulerNetworkFailure")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setFinishedJobSchedulerNotNetworkRelated:{objc_msgSend(v3, "finishedJobSchedulerNotNetworkRelated")}];
+      [v6 setFinishedJobSchedulerNotNetworkRelated:{objc_msgSend(frameworkCopy, "finishedJobSchedulerNotNetworkRelated")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setFinishedJobClientNetworkFailure:{objc_msgSend(v3, "finishedJobClientNetworkFailure")}];
+      [v6 setFinishedJobClientNetworkFailure:{objc_msgSend(frameworkCopy, "finishedJobClientNetworkFailure")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setFinishedJobClientNotNetworkRelated:{objc_msgSend(v3, "finishedJobClientNotNetworkRelated")}];
+      [v6 setFinishedJobClientNotNetworkRelated:{objc_msgSend(frameworkCopy, "finishedJobClientNotNetworkRelated")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionPerformed:{objc_msgSend(v3, "garbageCollectionPerformed")}];
+      [v6 setGarbageCollectionPerformed:{objc_msgSend(frameworkCopy, "garbageCollectionPerformed")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimSpace:{objc_msgSend(v3, "garbageCollectionReclaimSpace")}];
+      [v6 setGarbageCollectionReclaimSpace:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimSpace")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionTotalReclaimedSpace:{objc_msgSend(v3, "garbageCollectionTotalReclaimedSpace")}];
+      [v6 setGarbageCollectionTotalReclaimedSpace:{objc_msgSend(frameworkCopy, "garbageCollectionTotalReclaimedSpace")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedV2AssetCount:{objc_msgSend(v3, "garbageCollectionReclaimedV2AssetCount")}];
+      [v6 setGarbageCollectionReclaimedV2AssetCount:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedV2AssetCount")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedV2AssetSpace:{objc_msgSend(v3, "garbageCollectionReclaimedV2AssetSpace")}];
+      [v6 setGarbageCollectionReclaimedV2AssetSpace:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedV2AssetSpace")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedUnlockedCount:{objc_msgSend(v3, "garbageCollectionReclaimedUnlockedCount")}];
+      [v6 setGarbageCollectionReclaimedUnlockedCount:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedUnlockedCount")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedUnlockedSpace:{objc_msgSend(v3, "garbageCollectionReclaimedUnlockedSpace")}];
+      [v6 setGarbageCollectionReclaimedUnlockedSpace:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedUnlockedSpace")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedLockedOverridableCount:{objc_msgSend(v3, "garbageCollectionReclaimedLockedOverridableCount")}];
+      [v6 setGarbageCollectionReclaimedLockedOverridableCount:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedLockedOverridableCount")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedLockedOverridableSpace:{objc_msgSend(v3, "garbageCollectionReclaimedLockedOverridableSpace")}];
+      [v6 setGarbageCollectionReclaimedLockedOverridableSpace:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedLockedOverridableSpace")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedLockedNeverRemoveCount:{objc_msgSend(v3, "garbageCollectionReclaimedLockedNeverRemoveCount")}];
+      [v6 setGarbageCollectionReclaimedLockedNeverRemoveCount:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedLockedNeverRemoveCount")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedLockedNeverRemoveSpace:{objc_msgSend(v3, "garbageCollectionReclaimedLockedNeverRemoveSpace")}];
+      [v6 setGarbageCollectionReclaimedLockedNeverRemoveSpace:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedLockedNeverRemoveSpace")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedStagedCount:{objc_msgSend(v3, "garbageCollectionReclaimedStagedCount")}];
+      [v6 setGarbageCollectionReclaimedStagedCount:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedStagedCount")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedStagedSpace:{objc_msgSend(v3, "garbageCollectionReclaimedStagedSpace")}];
+      [v6 setGarbageCollectionReclaimedStagedSpace:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedStagedSpace")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedMetadataBlockedCount:{objc_msgSend(v3, "garbageCollectionReclaimedMetadataBlockedCount")}];
+      [v6 setGarbageCollectionReclaimedMetadataBlockedCount:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedMetadataBlockedCount")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setGarbageCollectionReclaimedMetadataBlockedSpace:{objc_msgSend(v3, "garbageCollectionReclaimedMetadataBlockedSpace")}];
+      [v6 setGarbageCollectionReclaimedMetadataBlockedSpace:{objc_msgSend(frameworkCopy, "garbageCollectionReclaimedMetadataBlockedSpace")}];
     }
 
     v29 = v6;
@@ -284,45 +284,45 @@
   return v30;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetControlStatistics alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetControlStatistics alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v7 = objc_alloc_init(MANAutoAssetControlStatistics);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 totalClientRequests];
-      v9 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:v8];
+      totalClientRequests = [v6 totalClientRequests];
+      v9 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:totalClientRequests];
       [(MANAutoAssetControlStatistics *)v7 setTotalClientRequests:v9];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v6 totalClientRepliesSuccess];
-      v11 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:v10];
+      totalClientRepliesSuccess = [v6 totalClientRepliesSuccess];
+      v11 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:totalClientRepliesSuccess];
       [(MANAutoAssetControlStatistics *)v7 setTotalClientRepliesSuccess:v11];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v6 totalClientRepliesFailure];
-      v13 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:v12];
+      totalClientRepliesFailure = [v6 totalClientRepliesFailure];
+      v13 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:totalClientRepliesFailure];
       [(MANAutoAssetControlStatistics *)v7 setTotalClientRepliesFailure:v13];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v6 totalQueuedClientRequests];
-      v15 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:v14];
+      totalQueuedClientRequests = [v6 totalQueuedClientRequests];
+      v15 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:totalQueuedClientRequests];
       [(MANAutoAssetControlStatistics *)v7 setTotalQueuedClientRequests:v15];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v6 totalDequeuedClientRequests];
-      v17 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:v16];
+      totalDequeuedClientRequests = [v6 totalDequeuedClientRequests];
+      v17 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:totalDequeuedClientRequests];
       [(MANAutoAssetControlStatistics *)v7 setTotalDequeuedClientRequests:v17];
     }
 
@@ -373,43 +373,43 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v6 previouslyDownloaded];
-      v19 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:v18];
+      previouslyDownloaded = [v6 previouslyDownloaded];
+      v19 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:previouslyDownloaded];
       [(MANAutoAssetControlStatistics *)v7 setPreviouslyDownloaded:v19];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v6 totalDownloaded];
-      v21 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:v20];
+      totalDownloaded = [v6 totalDownloaded];
+      v21 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:totalDownloaded];
       [(MANAutoAssetControlStatistics *)v7 setTotalDownloaded:v21];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v6 totalStaged];
-      v23 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:v22];
+      totalStaged = [v6 totalStaged];
+      v23 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:totalStaged];
       [(MANAutoAssetControlStatistics *)v7 setTotalStaged:v23];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v6 totalUnstaged];
-      v25 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:v24];
+      totalUnstaged = [v6 totalUnstaged];
+      v25 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:totalUnstaged];
       [(MANAutoAssetControlStatistics *)v7 setTotalUnstaged:v25];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v6 totalPromoted];
-      v27 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:v26];
+      totalPromoted = [v6 totalPromoted];
+      v27 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:totalPromoted];
       [(MANAutoAssetControlStatistics *)v7 setTotalPromoted:v27];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v28 = [v6 totalRemoved];
-      v29 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:v28];
+      totalRemoved = [v6 totalRemoved];
+      v29 = [MASAutoAssetControlStatisticsBySize newShimmedFromFramework:totalRemoved];
       [(MANAutoAssetControlStatistics *)v7 setTotalRemoved:v29];
     }
 
@@ -519,17 +519,17 @@
   return v30;
 }
 
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  messageCopy = message;
+  keyCopy = key;
+  v7 = keyCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (messageCopy && keyCopy)
   {
     if (objc_opt_class() && (v9 = [MAAutoAssetControlStatistics alloc], v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v5 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      v11 = [messageCopy safeObjectForKey:v7 ofClass:objc_opt_class()];
       v8 = [MASAutoAssetControlStatistics newShimmedFromFramework:v11];
     }
 

@@ -1,11 +1,11 @@
 @interface PlayClockFaceViewController
-- (_TtC11ClockPoster27PlayClockFaceViewController)initWithCoder:(id)a3;
+- (_TtC11ClockPoster27PlayClockFaceViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
 @implementation PlayClockFaceViewController
 
-- (_TtC11ClockPoster27PlayClockFaceViewController)initWithCoder:(id)a3
+- (_TtC11ClockPoster27PlayClockFaceViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11ClockPoster27PlayClockFaceViewController_clockFace;
   type metadata accessor for PlayClockFaceView();
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4960284();
 }
 

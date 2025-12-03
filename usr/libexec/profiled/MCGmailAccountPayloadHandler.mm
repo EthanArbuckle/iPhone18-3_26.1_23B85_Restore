@@ -1,9 +1,9 @@
 @interface MCGmailAccountPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (MCGmailAccountPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4;
+- (MCGmailAccountPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler;
 - (id)MCACAccountIdentifier;
-- (id)_installWithAccountDictionary:(id)a3;
+- (id)_installWithAccountDictionary:(id)dictionary;
 - (id)unhashedAccountIdentifier;
 - (void)_remove;
 - (void)remove;
@@ -13,20 +13,20 @@
 
 @implementation MCGmailAccountPayloadHandler
 
-- (MCGmailAccountPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4
+- (MCGmailAccountPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = MCGmailAccountPayloadHandler;
-  return [(MCNewPayloadHandler *)&v5 initWithPayload:a3 profileHandler:a4];
+  return [(MCNewPayloadHandler *)&v5 initWithPayload:payload profileHandler:handler];
 }
 
 - (id)unhashedAccountIdentifier
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 emailAddress];
-  if (v3)
+  payload = [(MCNewPayloadHandler *)self payload];
+  emailAddress = [payload emailAddress];
+  if (emailAddress)
   {
-    v4 = [NSString stringWithFormat:@"google|%@", v3];
+    v4 = [NSString stringWithFormat:@"google|%@", emailAddress];
   }
 
   else
@@ -39,55 +39,55 @@
 
 - (id)MCACAccountIdentifier
 {
-  v2 = [(MCGmailAccountPayloadHandler *)self unhashedAccountIdentifier];
-  v3 = [v2 MCHashedIdentifier];
+  unhashedAccountIdentifier = [(MCGmailAccountPayloadHandler *)self unhashedAccountIdentifier];
+  mCHashedIdentifier = [unhashedAccountIdentifier MCHashedIdentifier];
 
-  return v3;
+  return mCHashedIdentifier;
 }
 
-- (id)_installWithAccountDictionary:(id)a3
+- (id)_installWithAccountDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy copy];
   v6 = [GmailAccount newAccountWithDictionary:v5];
 
-  v7 = [v6 persistentAccount];
-  [v7 setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
-  v8 = [(MCNewPayloadHandler *)self payload];
-  v9 = [v8 friendlyName];
-  [v7 setManagingSourceName:v9];
+  persistentAccount = [v6 persistentAccount];
+  [persistentAccount setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
+  payload = [(MCNewPayloadHandler *)self payload];
+  friendlyName = [payload friendlyName];
+  [persistentAccount setManagingSourceName:friendlyName];
 
   v10 = +[MDMCloudConfiguration sharedConfiguration];
-  LODWORD(v9) = [v10 userMode];
+  LODWORD(friendlyName) = [v10 userMode];
 
-  if (v9 == 1)
+  if (friendlyName == 1)
   {
-    v11 = [(MCGmailAccountPayloadHandler *)self MCACAccountIdentifier];
-    if (v11)
+    mCACAccountIdentifier = [(MCGmailAccountPayloadHandler *)self MCACAccountIdentifier];
+    if (mCACAccountIdentifier)
     {
-      v12 = [v7 identifier];
-      [v7 setAccountProperty:v12 forKey:@"MCAccountIdentifer"];
+      identifier = [persistentAccount identifier];
+      [persistentAccount setAccountProperty:identifier forKey:@"MCAccountIdentifer"];
 
-      [v7 setIdentifier:v11];
+      [persistentAccount setIdentifier:mCACAccountIdentifier];
     }
   }
 
-  v13 = [(MCNewPayloadHandler *)self payload];
-  v14 = [v13 UUID];
-  [v7 setMcPayloadUUID:v14];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  uUID = [payload2 UUID];
+  [persistentAccount setMcPayloadUUID:uUID];
 
-  v15 = [(MCNewPayloadHandler *)self payload];
-  v16 = [v15 profile];
-  v17 = [v16 UUID];
-  [v7 setMcProfileUUID:v17];
+  payload3 = [(MCNewPayloadHandler *)self payload];
+  profile = [payload3 profile];
+  uUID2 = [profile UUID];
+  [persistentAccount setMcProfileUUID:uUID2];
 
-  v18 = [(MCNewPayloadHandler *)self payload];
-  v19 = [v18 profile];
-  v20 = [v19 identifier];
+  payload4 = [(MCNewPayloadHandler *)self payload];
+  profile2 = [payload4 profile];
+  identifier2 = [profile2 identifier];
 
-  if (v20)
+  if (identifier2)
   {
-    [v7 setMcConfigurationProfileIdentifier:v20];
+    [persistentAccount setMcConfigurationProfileIdentifier:identifier2];
   }
 
   else
@@ -100,7 +100,7 @@
     }
   }
 
-  [v7 setAccountProperty:&__kCFBooleanFalse forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
+  [persistentAccount setAccountProperty:&__kCFBooleanFalse forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
   if (v6)
   {
     [v6 savePersistentAccount];
@@ -109,46 +109,46 @@
 
   else
   {
-    v23 = [v4 objectForKey:MFMailAccountUsername];
+    v23 = [dictionaryCopy objectForKey:MFMailAccountUsername];
     v24 = MCGoogleErrorDomain;
     v25 = MCErrorArray();
     v22 = [NSError MCErrorWithDomain:v24 code:47000 descriptionArray:v25 errorType:MCErrorTypeFatal, v23, 0];
   }
 
-  v26 = [v6 persistentAccount];
-  v27 = [v26 identifier];
-  v28 = [(MCNewPayloadHandler *)self payload];
-  [v28 setAcAccountIdentifier:v27];
+  persistentAccount2 = [v6 persistentAccount];
+  identifier3 = [persistentAccount2 identifier];
+  payload5 = [(MCNewPayloadHandler *)self payload];
+  [payload5 setAcAccountIdentifier:identifier3];
 
   return v22;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v37 = a3;
-  v9 = a4;
-  v38 = a5;
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
   v46 = sub_100088DF8;
   v47 = sub_100088E08;
   v48 = 0;
-  v10 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-  v11 = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+  bOOLValue = [v10 BOOLValue];
 
-  if (!v11)
+  if (!bOOLValue)
   {
     v14 = 0;
     goto LABEL_5;
   }
 
   v12 = kMDMPersonaKey;
-  v13 = [v9 objectForKeyedSubscript:kMDMPersonaKey];
+  v13 = [optionsCopy objectForKeyedSubscript:kMDMPersonaKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v9 objectForKeyedSubscript:v12];
+    v14 = [optionsCopy objectForKeyedSubscript:v12];
   }
 
   else
@@ -157,34 +157,34 @@
   }
 
   v16 = kMCInstallProfileOptionManagingProfileIdentifier;
-  v17 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
+  v17 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = 0;
+    identifier = 0;
     goto LABEL_11;
   }
 
-  v18 = [v9 objectForKeyedSubscript:v16];
+  v18 = [optionsCopy objectForKeyedSubscript:v16];
 
   if (!v18)
   {
 LABEL_5:
-    v15 = 0;
+    identifier = 0;
     goto LABEL_12;
   }
 
   v19 = +[ACAccountStore defaultStore];
   v20 = [v19 dmc_remoteManagementAccountForManagementProfileIdentifier:v18];
 
-  v15 = [v20 identifier];
+  identifier = [v20 identifier];
 
   v17 = v18;
 LABEL_11:
 
 LABEL_12:
-  v21 = [(MCNewPayloadHandler *)self payload];
-  v22 = [(MCGmailAccountPayloadHandler *)self accountDictionaryWithIsInstalledByMDM:v11 personaID:v14 rmAccountIdentifier:v15];
+  payload = [(MCNewPayloadHandler *)self payload];
+  v22 = [(MCGmailAccountPayloadHandler *)self accountDictionaryWithIsInstalledByMDM:bOOLValue personaID:v14 rmAccountIdentifier:identifier];
   v39 = [v22 objectForKey:MailAccountManagedTag];
   if (v22)
   {
@@ -209,7 +209,7 @@ LABEL_12:
 
     if (!v44[5])
     {
-      [v21 setPersistentResourceID:v39];
+      [payload setPersistentResourceID:v39];
     }
   }
 
@@ -222,11 +222,11 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Could not create Google account description", buf, 2u);
     }
 
-    v25 = [v21 emailAddress];
+    emailAddress = [payload emailAddress];
     v26 = MCErrorArray();
-    v27 = [NSError MCErrorWithDomain:MCGoogleErrorDomain code:47000 descriptionArray:v26 errorType:MCErrorTypeFatal, v25, 0, v37];
+    installerCopy = [NSError MCErrorWithDomain:MCGoogleErrorDomain code:47000 descriptionArray:v26 errorType:MCErrorTypeFatal, emailAddress, 0, installerCopy];
     v28 = v44[5];
-    v44[5] = v27;
+    v44[5] = installerCopy;
   }
 
   v31 = v44[5];
@@ -235,13 +235,13 @@ LABEL_12:
     v32 = _MCLogObjects[0];
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = [(MCNewPayloadHandler *)self payload];
-      v34 = [v33 friendlyName];
-      v35 = [v44[5] MCVerboseDescription];
+      payload2 = [(MCNewPayloadHandler *)self payload];
+      friendlyName = [payload2 friendlyName];
+      mCVerboseDescription = [v44[5] MCVerboseDescription];
       *buf = 138543618;
-      v50 = v34;
+      v50 = friendlyName;
       v51 = 2114;
-      v52 = v35;
+      v52 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Could not install Google payload %{public}@. Error: %{public}@", buf, 0x16u);
     }
   }
@@ -252,10 +252,10 @@ LABEL_12:
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
-  if (v3)
+  if (persistentResourceID)
   {
     v4 = +[ACAccountStore defaultStore];
     v5 = [v4 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierGmail];
@@ -281,7 +281,7 @@ LABEL_12:
 
           v12 = [*(*(&v16 + 1) + 8 * i) accountPropertyForKey:{v10, v16}];
           v13 = v12;
-          if (v12 && ([v12 isEqualToString:v3] & 1) != 0)
+          if (v12 && ([v12 isEqualToString:persistentResourceID] & 1) != 0)
           {
 
             v14 = 1;
@@ -313,10 +313,10 @@ LABEL_14:
 
 - (void)_remove
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
-  if (v3)
+  if (persistentResourceID)
   {
     v4 = +[ACAccountStore defaultStore];
     [v4 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierGmail];
@@ -346,7 +346,7 @@ LABEL_14:
           v13 = *(*(&v42 + 1) + 8 * i);
           v14 = [v13 accountPropertyForKey:v11];
           v15 = v14;
-          if (v14 && [v14 isEqualToString:v3])
+          if (v14 && [v14 isEqualToString:persistentResourceID])
           {
             [v6 addObject:v13];
           }
@@ -358,7 +358,7 @@ LABEL_14:
       while (v9);
     }
 
-    v32 = v3;
+    v32 = persistentResourceID;
     v30 = v7;
 
     v16 = dispatch_group_create();
@@ -427,16 +427,16 @@ LABEL_14:
     }
 
     dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
-    v3 = v32;
+    persistentResourceID = v32;
   }
 }
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (v4)
+  if (isSetAside)
   {
     [(MCGmailAccountPayloadHandler *)self setSetAsideAccountDictionary:0];
   }
@@ -446,16 +446,16 @@ LABEL_14:
     [(MCGmailAccountPayloadHandler *)self _remove];
   }
 
-  v5 = [(MCNewPayloadHandler *)self payload];
-  [v5 setPersistentResourceID:0];
+  payload = [(MCNewPayloadHandler *)self payload];
+  [payload setPersistentResourceID:0];
 }
 
 - (void)setAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
-  if (v4)
+  if (persistentResourceID)
   {
     v5 = +[ACAccountStore defaultStore];
     v6 = [v5 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierGmail];
@@ -482,10 +482,10 @@ LABEL_14:
           v12 = *(*(&v20 + 1) + 8 * i);
           v13 = [v12 accountPropertyForKey:v10];
           v14 = v13;
-          if (v13 && [v13 isEqualToString:v4])
+          if (v13 && [v13 isEqualToString:persistentResourceID])
           {
             v17 = [v12 accountPropertyForKey:@"MCAccountIsManaged"];
-            v16 = [v17 BOOLValue];
+            bOOLValue = [v17 BOOLValue];
 
             v15 = [v12 accountPropertyForKey:ACAccountPropertyPersonaIdentifier];
             v8 = [v12 accountPropertyForKey:ACAccountPropertyRemoteManagingAccountIdentifier];
@@ -504,7 +504,7 @@ LABEL_14:
       }
 
       v15 = 0;
-      v16 = 0;
+      bOOLValue = 0;
 LABEL_13:
       v6 = v19;
     }
@@ -512,10 +512,10 @@ LABEL_13:
     else
     {
       v15 = 0;
-      v16 = 0;
+      bOOLValue = 0;
     }
 
-    v18 = [(MCGmailAccountPayloadHandler *)self accountDictionaryWithIsInstalledByMDM:v16 personaID:v15 rmAccountIdentifier:v8];
+    v18 = [(MCGmailAccountPayloadHandler *)self accountDictionaryWithIsInstalledByMDM:bOOLValue personaID:v15 rmAccountIdentifier:v8];
     [(MCGmailAccountPayloadHandler *)self setSetAsideAccountDictionary:v18];
 
     [(MCGmailAccountPayloadHandler *)self _remove];
@@ -524,12 +524,12 @@ LABEL_13:
 
 - (void)unsetAside
 {
-  v3 = [(MCGmailAccountPayloadHandler *)self setAsideAccountDictionary];
+  setAsideAccountDictionary = [(MCGmailAccountPayloadHandler *)self setAsideAccountDictionary];
 
-  if (v3)
+  if (setAsideAccountDictionary)
   {
-    v5 = [(MCGmailAccountPayloadHandler *)self setAsideAccountDictionary];
-    v4 = [(MCGmailAccountPayloadHandler *)self _installWithAccountDictionary:v5];
+    setAsideAccountDictionary2 = [(MCGmailAccountPayloadHandler *)self setAsideAccountDictionary];
+    v4 = [(MCGmailAccountPayloadHandler *)self _installWithAccountDictionary:setAsideAccountDictionary2];
   }
 }
 

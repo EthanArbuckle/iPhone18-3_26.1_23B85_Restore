@@ -1,14 +1,14 @@
 @interface SMAssetClient
 - (SMAssetClient)init;
-- (SMAssetClient)initWithDependenciesWrapper:(id)a3;
-- (void)fetchArtwork:(id)a3 size:(CGSize)a4 completion:(id)a5;
+- (SMAssetClient)initWithDependenciesWrapper:(id)wrapper;
+- (void)fetchArtwork:(id)artwork size:(CGSize)size completion:(id)completion;
 @end
 
 @implementation SMAssetClient
 
-- (SMAssetClient)initWithDependenciesWrapper:(id)a3
+- (SMAssetClient)initWithDependenciesWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s12SeymourMedia19ArtworkImageLoading_pMd);
   Dependencies.resolve<A>(failureHandler:)();
@@ -21,18 +21,18 @@
   return v5;
 }
 
-- (void)fetchArtwork:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)fetchArtwork:(id)artwork size:(CGSize)size completion:(id)completion
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s11SeymourCore7PromiseVySo7UIImageCGMd);
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR___SMAssetClient_artworkImageLoader), *&self->artworkImageLoader[OBJC_IVAR___SMAssetClient_artworkImageLoader + 16]);
-  v19 = a3;
-  v14 = self;
+  artworkCopy = artwork;
+  selfCopy = self;
   dispatch thunk of ArtworkImageLoading.fetchArtwork(_:size:)();
   v15 = swift_allocObject();
   *(v15 + 16) = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned UIImage?, @unowned NSError?) -> ();

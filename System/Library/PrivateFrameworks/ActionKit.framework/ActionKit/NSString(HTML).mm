@@ -15,14 +15,14 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v2 = objc_autoreleasePoolPush();
-  if ([a1 rangeOfString:@"<" options:2] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfString:@"<" options:2] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithString:a1];
+    stringByRemovingNewLinesAndWhitespace = [MEMORY[0x277CCACA8] stringWithString:self];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAC80] scannerWithString:a1];
+    v4 = [MEMORY[0x277CCAC80] scannerWithString:self];
     [v4 setCharactersToBeSkipped:0];
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v6 = 0;
@@ -43,7 +43,7 @@
     while (![v4 isAtEnd]);
     v18 = v6;
     v19 = v4;
-    v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:a1];
+    v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:self];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -78,13 +78,13 @@
       while (v11);
     }
 
-    v3 = [v8 stringByRemovingNewLinesAndWhitespace];
+    stringByRemovingNewLinesAndWhitespace = [v8 stringByRemovingNewLinesAndWhitespace];
   }
 
   objc_autoreleasePoolPop(v2);
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return stringByRemovingNewLinesAndWhitespace;
 }
 
 - (id)stringByLinkifyingURLs
@@ -93,28 +93,28 @@
   {
     v2 = objc_autoreleasePoolPush();
     v3 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(?<!= options:@?^=%%&amp:/~\\+#]*[\\w\\-\\@?^=%%&amp;/~\\+#])?)") error:{0, 0}];;
-    v4 = [v3 stringByReplacingMatchesInString:a1 options:0 range:0 withTemplate:{objc_msgSend(a1, "length"), @"<a href=$1 class=linkified>$1</a>"}];
+    selfCopy = [v3 stringByReplacingMatchesInString:self options:0 range:0 withTemplate:{objc_msgSend(self, "length"), @"<a href=$1 class=linkified>$1</a>"}];
 
     objc_autoreleasePoolPop(v2);
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)stringByRemovingNewLinesAndWhitespace
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:a1];
+  v3 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:self];
   [v3 setCharactersToBeSkipped:0];
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v5 = MEMORY[0x277CCA900];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@" \t\n\r%C%C%C%C", 133, 12, 8232, 8233];
-  v7 = [v5 characterSetWithCharactersInString:v6];
+  8233 = [MEMORY[0x277CCACA8] stringWithFormat:@" \t\n\r%C%C%C%C", 133, 12, 8232, 8233];
+  v7 = [v5 characterSetWithCharactersInString:8233];
 
   if (([v3 isAtEnd] & 1) == 0)
   {
@@ -149,12 +149,12 @@
 - (id)stringWithNewLinesAsBRs
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:a1];
+  v3 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:self];
   [v3 setCharactersToBeSkipped:0];
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v5 = MEMORY[0x277CCA900];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\r%C%C%C%C", 133, 12, 8232, 8233];
-  v7 = [v5 characterSetWithCharactersInString:v6];
+  8233 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\r%C%C%C%C", 133, 12, 8232, 8233];
+  v7 = [v5 characterSetWithCharactersInString:8233];
 
   v8 = 0;
   do
@@ -207,12 +207,12 @@
   v3 = MEMORY[0x277CCACA8];
   if (a3)
   {
-    [a1 gtm_stringByEscapingForHTML];
+    [self gtm_stringByEscapingForHTML];
   }
 
   else
   {
-    [a1 gtm_stringByEscapingForAsciiHTML];
+    [self gtm_stringByEscapingForAsciiHTML];
   }
   v4 = ;
   v5 = [v3 stringWithString:v4];
@@ -223,8 +223,8 @@
 - (id)stringByEncodingHTMLEntities
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 gtm_stringByEscapingForAsciiHTML];
-  v3 = [v1 stringWithString:v2];
+  gtm_stringByEscapingForAsciiHTML = [self gtm_stringByEscapingForAsciiHTML];
+  v3 = [v1 stringWithString:gtm_stringByEscapingForAsciiHTML];
 
   return v3;
 }
@@ -232,8 +232,8 @@
 - (id)stringByDecodingHTMLEntities
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 gtm_stringByUnescapingFromHTML];
-  v3 = [v1 stringWithString:v2];
+  gtm_stringByUnescapingFromHTML = [self gtm_stringByUnescapingFromHTML];
+  v3 = [v1 stringWithString:gtm_stringByUnescapingFromHTML];
 
   return v3;
 }
@@ -242,19 +242,19 @@
 {
   context = objc_autoreleasePoolPush();
   v2 = MEMORY[0x277CCA900];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"< \t\n\r%C%C%C%C", 133, 12, 8232, 8233];
-  v4 = [v2 characterSetWithCharactersInString:v3];
+  8233 = [MEMORY[0x277CCACA8] stringWithFormat:@"< \t\n\r%C%C%C%C", 133, 12, 8232, 8233];
+  v4 = [v2 characterSetWithCharactersInString:8233];
 
   v5 = MEMORY[0x277CCA900];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@" \t\n\r%C%C%C%C", 133, 12, 8232, 8233];
-  v7 = [v5 characterSetWithCharactersInString:v6];
+  82332 = [MEMORY[0x277CCACA8] stringWithFormat:@" \t\n\r%C%C%C%C", 133, 12, 8232, 8233];
+  v7 = [v5 characterSetWithCharactersInString:82332];
 
   v24 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"];
-  v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(a1, "length")}];
-  v9 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:a1];
+  v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(self, "length")}];
+  v9 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:self];
   [v9 setCharactersToBeSkipped:0];
   [v9 setCaseSensitive:1];
-  v10 = 0;
+  lowercaseString = 0;
   v11 = 0;
   do
   {
@@ -302,9 +302,9 @@ LABEL_32:
         v20 = v19;
         if (v18)
         {
-          v10 = [v19 lowercaseString];
+          lowercaseString = [v19 lowercaseString];
 
-          if ([v10 isEqualToString:@"a"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"b") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"i") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"q") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"span") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"em") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"strong") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"cite") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"abbr") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"acronym") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"label"))
+          if ([lowercaseString isEqualToString:@"a"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"b") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"i") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"q") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"span") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"em") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"strong") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"cite") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"abbr") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"acronym") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"label"))
           {
             goto LABEL_31;
           }
@@ -312,7 +312,7 @@ LABEL_32:
 
         else
         {
-          v10 = v19;
+          lowercaseString = v19;
         }
 
         if ([v8 length] && (objc_msgSend(v9, "isAtEnd") & 1) == 0)
@@ -334,11 +334,11 @@ LABEL_31:
   }
 
   while (![v9 isAtEnd]);
-  v21 = [v8 stringByDecodingHTMLEntities];
+  stringByDecodingHTMLEntities = [v8 stringByDecodingHTMLEntities];
 
   objc_autoreleasePoolPop(context);
 
-  return v21;
+  return stringByDecodingHTMLEntities;
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface TNRenderingExporter
-- (BOOL)drawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6;
-- (BOOL)exportToURL:(id)a3 pageNumber:(unint64_t)a4 delegate:(id)a5 error:(id *)a6;
+- (BOOL)drawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page;
+- (BOOL)exportToURL:(id)l pageNumber:(unint64_t)number delegate:(id)delegate error:(id *)error;
 - (BOOL)incrementPage;
-- (BOOL)isPageInPortraitOrientation:(unint64_t)a3;
+- (BOOL)isPageInPortraitOrientation:(unint64_t)orientation;
 - (BOOL)p_isActiveSheetForm;
-- (BOOL)preparePage:(unint64_t)a3;
+- (BOOL)preparePage:(unint64_t)page;
 - (BOOL)shouldPrintComments;
 - (BOOL)shouldSuppressBackgroundsForCurrentPage;
-- (CGAffineTransform)annotationPrintingHelper:(SEL)a3 inversePureTransformInRootForContentAtPageIndex:(id)a4;
+- (CGAffineTransform)annotationPrintingHelper:(SEL)helper inversePureTransformInRootForContentAtPageIndex:(id)index;
 - (CGRect)_unpaginatedBoundsRect;
-- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)a3;
+- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)helper;
 - (CGRect)boundsRect;
 - (CGRect)p_boundsRectForFirstPage;
-- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)a3;
+- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)helper;
 - (CGRect)unscaledClipRect;
 - (NSArray)addendumContentProvidersForCurrentSheet;
 - (NSArray)overlayContentProvidersForCurrentSheet;
 - (TNAnnotationPrintingHelper)annotationPrintingHelper;
-- (TNRenderingExporter)initWithDocumentRoot:(id)a3;
+- (TNRenderingExporter)initWithDocumentRoot:(id)root;
 - (UIEdgeInsets)_printMargins;
 - (double)totalProgess;
 - (id).cxx_construct;
 - (id)_pageCountCache;
 - (id)_printableInfos;
-- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)a3;
-- (id)annotationPrintingHelper:(id)a3 layoutsForPageIndex:(unint64_t)a4;
+- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)helper;
+- (id)annotationPrintingHelper:(id)helper layoutsForPageIndex:(unint64_t)index;
 - (id)currentInfos;
 - (id)p_activeSheet;
 - (id)p_canvasBasedSheets;
 - (int64_t)p_indexOfActiveSheet;
-- (int64_t)pageIndexFromQuickLookSheet:(id)a3;
+- (int64_t)pageIndexFromQuickLookSheet:(id)sheet;
 - (unint64_t)_addendumPageCountForCurrentSheet;
 - (unint64_t)addendumPageCount;
-- (unint64_t)inSheetPageIndexForPage:(unint64_t)a3;
+- (unint64_t)inSheetPageIndexForPage:(unint64_t)page;
 - (unint64_t)numberOfCanvasBasedSheets;
 - (unint64_t)pageCount;
-- (unint64_t)sheetIndexForPage:(unint64_t)a3;
+- (unint64_t)sheetIndexForPage:(unint64_t)page;
 - (vector<unsigned)p_pageCountArray;
 - (vector<unsigned)p_pageStartArray;
 - (void)_resetSheetDependentObjects;
 - (void)_updateExportState;
-- (void)annotationPrintingHelper:(id)a3 enumerateLayoutsByPageWithBlock:(id)a4;
+- (void)annotationPrintingHelper:(id)helper enumerateLayoutsByPageWithBlock:(id)block;
 - (void)dealloc;
-- (void)drawCurrentPageWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4;
-- (void)processHyperlinksForCanvas:(id)a3 withContext:(CGContext *)a4 andImager:(id)a5 isFitToSheet:(BOOL)a6;
-- (void)setSheetIndex:(unint64_t)a3 andPageIndex:(unint64_t)a4;
-- (void)setSheetIndex:(unint64_t)a3 pageIndex:(unint64_t)a4 addendumPageIndex:(unint64_t)a5;
+- (void)drawCurrentPageWithContext:(CGContext *)context returnSuccess:(BOOL *)success;
+- (void)processHyperlinksForCanvas:(id)canvas withContext:(CGContext *)context andImager:(id)imager isFitToSheet:(BOOL)sheet;
+- (void)setSheetIndex:(unint64_t)index andPageIndex:(unint64_t)pageIndex;
+- (void)setSheetIndex:(unint64_t)index pageIndex:(unint64_t)pageIndex addendumPageIndex:(unint64_t)addendumPageIndex;
 - (void)setup;
 - (void)teardown;
 @end
@@ -417,16 +417,16 @@ LABEL_17:
   return v6;
 }
 
-- (unint64_t)sheetIndexForPage:(unint64_t)a3
+- (unint64_t)sheetIndexForPage:(unint64_t)page
 {
-  if ((objc_msgSend_isRenderingAllSheets(self, a2, a3) & 1) != 0 || (mSheetIndex = self->mSheetIndex, mSheetIndex == 0x7FFFFFFFFFFFFFFFLL))
+  if ((objc_msgSend_isRenderingAllSheets(self, a2, page) & 1) != 0 || (mSheetIndex = self->mSheetIndex, mSheetIndex == 0x7FFFFFFFFFFFFFFFLL))
   {
     v8 = objc_msgSend_numberOfCanvasBasedSheets(self, v5, v6);
     objc_msgSend_p_pageStartArray(self, v9, v10);
     if (v8)
     {
       mSheetIndex = 0;
-      while (__p[mSheetIndex] <= a3)
+      while (__p[mSheetIndex] <= page)
       {
         if (v8 == ++mSheetIndex)
         {
@@ -449,44 +449,44 @@ LABEL_9:
   return mSheetIndex;
 }
 
-- (unint64_t)inSheetPageIndexForPage:(unint64_t)a3
+- (unint64_t)inSheetPageIndexForPage:(unint64_t)page
 {
-  v3 = a3;
-  if (!objc_msgSend_paginate(self, a2, a3))
+  pageCopy = page;
+  if (!objc_msgSend_paginate(self, a2, page))
   {
     return 0;
   }
 
   if (objc_msgSend_isRenderingAllSheets(self, v5, v6))
   {
-    v8 = objc_msgSend_sheetIndexForPage_(self, v7, v3);
+    v8 = objc_msgSend_sheetIndexForPage_(self, v7, pageCopy);
     if (v8)
     {
       v11 = v8;
       objc_msgSend_p_pageStartArray(self, v9, v10);
-      v3 -= *(__p + v11 - 1);
+      pageCopy -= *(__p + v11 - 1);
       v14 = __p;
       operator delete(__p);
     }
   }
 
-  return v3;
+  return pageCopy;
 }
 
-- (void)setSheetIndex:(unint64_t)a3 andPageIndex:(unint64_t)a4
+- (void)setSheetIndex:(unint64_t)index andPageIndex:(unint64_t)pageIndex
 {
-  v8 = objc_msgSend_addendumPageIndex(self, a2, a3);
+  v8 = objc_msgSend_addendumPageIndex(self, a2, index);
 
-  objc_msgSend_setSheetIndex_pageIndex_addendumPageIndex_(self, v7, a3, a4, v8);
+  objc_msgSend_setSheetIndex_pageIndex_addendumPageIndex_(self, v7, index, pageIndex, v8);
 }
 
-- (void)setSheetIndex:(unint64_t)a3 pageIndex:(unint64_t)a4 addendumPageIndex:(unint64_t)a5
+- (void)setSheetIndex:(unint64_t)index pageIndex:(unint64_t)pageIndex addendumPageIndex:(unint64_t)addendumPageIndex
 {
-  if (self->mSheetIndex != a3)
+  if (self->mSheetIndex != index)
   {
-    v9 = objc_msgSend_numberOfCanvasBasedSheets(self, a2, a3);
+    v9 = objc_msgSend_numberOfCanvasBasedSheets(self, a2, index);
     v12 = v9;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL && v9 <= a3)
+    if (index != 0x7FFFFFFFFFFFFFFFLL && v9 <= index)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TNRenderingExporter setSheetIndex:pageIndex:addendumPageIndex:]");
@@ -496,10 +496,10 @@ LABEL_9:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
     }
 
-    if (v12 > a3)
+    if (v12 > index)
     {
       v20 = objc_msgSend_p_canvasBasedSheets(self, v10, v11);
-      v22 = objc_msgSend_objectAtIndex_(v20, v21, a3);
+      v22 = objc_msgSend_objectAtIndex_(v20, v21, index);
       v25 = objc_msgSend_sheet(self->mPageController, v23, v24);
 
       if (v25 != v22)
@@ -508,19 +508,19 @@ LABEL_9:
       }
     }
 
-    self->mSheetIndex = a3;
+    self->mSheetIndex = index;
     objc_msgSend__resetSheetDependentObjects(self, v10, v11);
   }
 
-  if (self->mPageIndex != a4)
+  if (self->mPageIndex != pageIndex)
   {
-    self->mPageIndex = a4;
+    self->mPageIndex = pageIndex;
   }
 
-  if (objc_msgSend_addendumPageIndex(self, a2, a3) != a5)
+  if (objc_msgSend_addendumPageIndex(self, a2, index) != addendumPageIndex)
   {
     hasCompletedSetup = objc_msgSend_hasCompletedSetup(self, v27, v28);
-    if (a5 != 0x7FFFFFFFFFFFFFFFLL && hasCompletedSetup && objc_msgSend__addendumPageCountForCurrentSheet(self, v30, v31) <= a5)
+    if (addendumPageIndex != 0x7FFFFFFFFFFFFFFFLL && hasCompletedSetup && objc_msgSend__addendumPageCountForCurrentSheet(self, v30, v31) <= addendumPageIndex)
     {
       v32 = MEMORY[0x277D81150];
       v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v30, "[TNRenderingExporter setSheetIndex:pageIndex:addendumPageIndex:]");
@@ -530,15 +530,15 @@ LABEL_9:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v37, v38);
     }
 
-    objc_msgSend_setAddendumPageIndex_(self, v30, a5);
+    objc_msgSend_setAddendumPageIndex_(self, v30, addendumPageIndex);
   }
 }
 
-- (BOOL)preparePage:(unint64_t)a3
+- (BOOL)preparePage:(unint64_t)page
 {
-  if (a3 && objc_msgSend_pageCount(self, a2, a3) >= a3)
+  if (page && objc_msgSend_pageCount(self, a2, page) >= page)
   {
-    v13 = a3 - 1;
+    v13 = page - 1;
     v14 = objc_msgSend_sheetIndexForPage_(self, a2, v13);
     v18 = objc_msgSend_inSheetPageIndexForPage_(self, v15, v13);
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
@@ -611,12 +611,12 @@ LABEL_9:
       {
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v11 = self;
+          selfCopy3 = self;
           active = 0;
 LABEL_24:
           v34 = 0;
 LABEL_25:
-          objc_msgSend_setSheetIndex_pageIndex_addendumPageIndex_(v11, v8, active, v34, 0x7FFFFFFFFFFFFFFFLL);
+          objc_msgSend_setSheetIndex_pageIndex_addendumPageIndex_(selfCopy3, v8, active, v34, 0x7FFFFFFFFFFFFFFFLL);
           return 1;
         }
 
@@ -624,7 +624,7 @@ LABEL_25:
         {
           active = self->mSheetIndex + 1;
           v34 = self->mPageIndex + 1;
-          v11 = self;
+          selfCopy3 = self;
           goto LABEL_25;
         }
       }
@@ -632,7 +632,7 @@ LABEL_25:
       else if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
         active = objc_msgSend_p_indexOfActiveSheet(self, v8, v9);
-        v11 = self;
+        selfCopy3 = self;
         goto LABEL_24;
       }
 
@@ -646,7 +646,7 @@ LABEL_25:
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = self->mSheetIndex;
-      v15 = self;
+      selfCopy5 = self;
       goto LABEL_13;
     }
 
@@ -661,10 +661,10 @@ LABEL_25:
 
   if (self->mSheetIndex == 0x7FFFFFFFFFFFFFFFLL || self->mPageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = self;
+    selfCopy5 = self;
     v16 = 0;
 LABEL_13:
-    objc_msgSend_setSheetIndex_andPageIndex_(v15, v13, v16, 0);
+    objc_msgSend_setSheetIndex_andPageIndex_(selfCopy5, v13, v16, 0);
     return 1;
   }
 
@@ -708,23 +708,23 @@ LABEL_36:
   return shouldSuppressBackgroundsForPageIndex;
 }
 
-- (BOOL)exportToURL:(id)a3 pageNumber:(unint64_t)a4 delegate:(id)a5 error:(id *)a6
+- (BOOL)exportToURL:(id)l pageNumber:(unint64_t)number delegate:(id)delegate error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  objc_msgSend_setRenderingAllSheets_(self, v12, a4 == -1);
+  lCopy = l;
+  delegateCopy = delegate;
+  objc_msgSend_setRenderingAllSheets_(self, v12, number == -1);
   v14.receiver = self;
   v14.super_class = TNRenderingExporter;
-  LOBYTE(a6) = [(TSARenderingExporter *)&v14 exportToURL:v10 pageNumber:a4 delegate:v11 error:a6];
+  LOBYTE(error) = [(TSARenderingExporter *)&v14 exportToURL:lCopy pageNumber:number delegate:delegateCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (void)processHyperlinksForCanvas:(id)a3 withContext:(CGContext *)a4 andImager:(id)a5 isFitToSheet:(BOOL)a6
+- (void)processHyperlinksForCanvas:(id)canvas withContext:(CGContext *)context andImager:(id)imager isFitToSheet:(BOOL)sheet
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  canvasCopy = canvas;
+  imagerCopy = imager;
   mHyperlinkController = self->mHyperlinkController;
   objc_msgSend_unscaledClipRect(self, v12, v13);
   objc_msgSend_setCanvasRect_(mHyperlinkController, v14, v15);
@@ -732,7 +732,7 @@ LABEL_36:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v18 = objc_msgSend_allReps(v9, v16, v17, 0);
+  v18 = objc_msgSend_allReps(canvasCopy, v16, v17, 0);
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v27, v31, 16);
   if (v21)
   {
@@ -757,17 +757,17 @@ LABEL_36:
     while (v21);
   }
 
-  objc_msgSend_actualScaledClipRect(v10, v24, v25);
-  objc_msgSend_commitHyperlinksToPDF_targetRect_(self->mHyperlinkController, v26, a4, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+  objc_msgSend_actualScaledClipRect(imagerCopy, v24, v25);
+  objc_msgSend_commitHyperlinksToPDF_targetRect_(self->mHyperlinkController, v26, context, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
 }
 
-- (BOOL)drawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6
+- (BOOL)drawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  pageCopy = page;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_opt_class();
   v14 = TSUCheckedStaticCast();
   objc_msgSend_setShouldShowTextCommentHighlights_(v14, v15, 0);
@@ -836,7 +836,7 @@ LABEL_36:
       v81[3] = &unk_27A6A31C8;
       objc_copyWeak(&v83, &location);
       objc_copyWeak(v84, &from);
-      v84[1] = a3;
+      v84[1] = context;
       v82 = v69;
       v70 = v69;
       objc_msgSend_setPostRenderAction_(v14, v71, v81);
@@ -852,7 +852,7 @@ LABEL_36:
 LABEL_13:
     v77.receiver = self;
     v77.super_class = TNRenderingExporter;
-    v28 = [(TSARenderingExporter *)&v77 drawCurrentPageInContext:a3 viewScale:v6 unscaledClipRect:a4 createPage:x, y, width, height];
+    height = [(TSARenderingExporter *)&v77 drawCurrentPageInContext:context viewScale:pageCopy unscaledClipRect:scale createPage:x, y, width, height];
     objc_msgSend__updateExportState(self, v74, v75);
 
     goto LABEL_14;
@@ -865,10 +865,10 @@ LABEL_13:
 
   v87.receiver = self;
   v87.super_class = TNRenderingExporter;
-  v28 = [(TSARenderingExporter *)&v87 drawCurrentPageInContext:a3 viewScale:v6 unscaledClipRect:a4 createPage:x, y, width, height];
+  height = [(TSARenderingExporter *)&v87 drawCurrentPageInContext:context viewScale:pageCopy unscaledClipRect:scale createPage:x, y, width, height];
 LABEL_14:
 
-  return v28;
+  return height;
 }
 
 - (vector<unsigned)p_pageCountArray
@@ -1109,20 +1109,20 @@ LABEL_9:
   return sub_275F36048(retstr, begin, end, end - begin);
 }
 
-- (TNRenderingExporter)initWithDocumentRoot:(id)a3
+- (TNRenderingExporter)initWithDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v33.receiver = self;
   v33.super_class = TNRenderingExporter;
-  v5 = [(TSARenderingExporter *)&v33 initWithDocumentRoot:v4];
+  v5 = [(TSARenderingExporter *)&v33 initWithDocumentRoot:rootCopy];
   if (v5)
   {
     v6 = [TNPageController alloc];
-    v8 = objc_msgSend_initWithDocumentRoot_(v6, v7, v4);
+    v8 = objc_msgSend_initWithDocumentRoot_(v6, v7, rootCopy);
     mPageController = v5->mPageController;
     v5->mPageController = v8;
 
-    v12 = objc_msgSend_activeSheet(v4, v10, v11);
+    v12 = objc_msgSend_activeSheet(rootCopy, v10, v11);
     objc_msgSend_setInfoProvider_(v5->mPageController, v13, v12);
 
     v16 = objc_msgSend_sheet(v5->mPageController, v14, v15);
@@ -1141,7 +1141,7 @@ LABEL_9:
 
     *(&v5->super.super.isa + *MEMORY[0x277D7FFF8]) = 0;
     v24 = [TNPdfHyperlinkController alloc];
-    v26 = objc_msgSend_initWithDocumentRoot_(v24, v25, v4);
+    v26 = objc_msgSend_initWithDocumentRoot_(v24, v25, rootCopy);
     mHyperlinkController = v5->mHyperlinkController;
     v5->mHyperlinkController = v26;
 
@@ -1268,9 +1268,9 @@ LABEL_9:
   return v9;
 }
 
-- (void)drawCurrentPageWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4
+- (void)drawCurrentPageWithContext:(CGContext *)context returnSuccess:(BOOL *)success
 {
-  if (objc_msgSend_paginate(self, a2, a3))
+  if (objc_msgSend_paginate(self, a2, context))
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TNRenderingExporter drawCurrentPageWithContext:returnSuccess:]");
@@ -1299,7 +1299,7 @@ LABEL_9:
 
     v24.receiver = self;
     v24.super_class = TNRenderingExporter;
-    [(TSARenderingExporter *)&v24 drawCurrentPageWithContext:a3 returnSuccess:a4];
+    [(TSARenderingExporter *)&v24 drawCurrentPageWithContext:context returnSuccess:success];
   }
 }
 
@@ -1633,9 +1633,9 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isPageInPortraitOrientation:(unint64_t)a3
+- (BOOL)isPageInPortraitOrientation:(unint64_t)orientation
 {
-  v4 = objc_msgSend_sheetIndexForPage_(self, a2, a3 - 1);
+  v4 = objc_msgSend_sheetIndexForPage_(self, a2, orientation - 1);
   v7 = objc_msgSend_p_canvasBasedSheets(self, v5, v6);
   v9 = objc_msgSend_objectAtIndex_(v7, v8, v4);
   v12 = objc_msgSend_inPortraitPageOrientation(v9, v10, v11);
@@ -1643,9 +1643,9 @@ LABEL_9:
   return v12;
 }
 
-- (int64_t)pageIndexFromQuickLookSheet:(id)a3
+- (int64_t)pageIndexFromQuickLookSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   if (objc_msgSend_paginate(self, v5, v6))
   {
     v9 = MEMORY[0x277D81150];
@@ -1660,15 +1660,15 @@ LABEL_9:
   else
   {
     v17 = objc_msgSend_quickLookSheets(self, v7, v8);
-    v16 = objc_msgSend_indexOfObjectIdenticalTo_(v17, v18, v4);
+    v16 = objc_msgSend_indexOfObjectIdenticalTo_(v17, v18, sheetCopy);
   }
 
   return v16;
 }
 
-- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)a3
+- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)helper
 {
-  if (objc_msgSend_paginate(self, a2, a3))
+  if (objc_msgSend_paginate(self, a2, helper))
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TNRenderingExporter addendumPageTitleOfAnnotationPrintingHelper:]");
@@ -1730,9 +1730,9 @@ LABEL_9:
   return objc_msgSend_renderingComments(self, v4, v5) == 1;
 }
 
-- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)a3
+- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)helper
 {
-  if (objc_msgSend_renderingComments(self, a2, a3) == 2)
+  if (objc_msgSend_renderingComments(self, a2, helper) == 2)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TNRenderingExporter availableRectForAddendumContentOfAnnotationPrintingHelper:]");
@@ -1759,9 +1759,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)a3
+- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)helper
 {
-  objc_msgSend_unscaledClipRect(self, a2, a3);
+  objc_msgSend_unscaledClipRect(self, a2, helper);
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1865,17 +1865,17 @@ LABEL_9:
   return mPageCountCache;
 }
 
-- (void)annotationPrintingHelper:(id)a3 enumerateLayoutsByPageWithBlock:(id)a4
+- (void)annotationPrintingHelper:(id)helper enumerateLayoutsByPageWithBlock:(id)block
 {
-  v8 = a4;
-  v7 = objc_msgSend_annotationPrintingHelper_layoutsForPageIndex_(self, v6, a3, 0);
-  v8[2](v8, v7);
+  blockCopy = block;
+  v7 = objc_msgSend_annotationPrintingHelper_layoutsForPageIndex_(self, v6, helper, 0);
+  blockCopy[2](blockCopy, v7);
 }
 
-- (id)annotationPrintingHelper:(id)a3 layoutsForPageIndex:(unint64_t)a4
+- (id)annotationPrintingHelper:(id)helper layoutsForPageIndex:(unint64_t)index
 {
-  v8 = a3;
-  if (a4)
+  helperCopy = helper;
+  if (index)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TNRenderingExporter annotationPrintingHelper:layoutsForPageIndex:]");
@@ -1908,7 +1908,7 @@ LABEL_9:
   return v32;
 }
 
-- (CGAffineTransform)annotationPrintingHelper:(SEL)a3 inversePureTransformInRootForContentAtPageIndex:(id)a4
+- (CGAffineTransform)annotationPrintingHelper:(SEL)helper inversePureTransformInRootForContentAtPageIndex:(id)index
 {
   v5 = MEMORY[0x277CBF2C0];
   v6 = *(MEMORY[0x277CBF2C0] + 16);

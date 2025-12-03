@@ -1,67 +1,67 @@
 @interface _EARSpeechRecognizer
-+ (BOOL)compileRecognizerModels2WithConfiguration:(id)a3 error:(id *)a4;
-+ (id)rawTokenResultsFromRecognitionResults:(id)a3;
++ (BOOL)compileRecognizerModels2WithConfiguration:(id)configuration error:(id *)error;
++ (id)rawTokenResultsFromRecognitionResults:(id)results;
 + (void)initialize;
-+ (void)purgeCompiledRecognizerModelsWithConfiguration:(id)a3;
++ (void)purgeCompiledRecognizerModelsWithConfiguration:(id)configuration;
 - (BOOL)canCloneIsFinalAsLastNonFinal;
 - (BOOL)isContinuousListening;
-- (BOOL)isSpeakerCodeTrainingSupported:(id)a3;
-- (BOOL)isVadGatingSupported:(unint64_t)a3 task:(id)a4 device:(id)a5 farField:(BOOL)a6 atypicalSpeech:(BOOL)a7 aneContext:(id)a8 cpuContext:(id)a9 gpuContext:(id)a10;
-- (_EARSpeechRecognizer)initWithConfig:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6 activeConfiguration:(id)a7 modelLoadingOptions:(id)a8 enableSpeakerCodeTraining:(BOOL)a9 supportEmojiRecognition:(BOOL)a10 voiceCommandActiveSet:(id)a11 modelContextDelegate:(id)a12 enableItn:(BOOL)a13 error:(id *)a14;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 generalVoc:(id)a6 lexiconEnh:(id)a7 itnEnh:(id)a8 language:(id)a9;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 generalVoc:(id)a6 lexiconEnh:(id)a7 itnEnh:(id)a8 language:(id)a9 activeConfiguration:(id)a10 modelLoadingOptions:(id)a11 enableSpeakerCodeTraining:(BOOL)a12 supportEmojiRecognition:(BOOL)a13 voiceCommandActiveSet:(id)a14 modelContextDelegate:(id)a15;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6 activeConfiguration:(id)a7 modelLoadingOptions:(id)a8 enableSpeakerCodeTraining:(BOOL)a9 supportEmojiRecognition:(BOOL)a10 voiceCommandActiveSet:(id)a11 modelContextDelegate:(id)a12;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6 activeConfiguration:(id)a7 modelLoadingOptions:(id)a8 enableSpeakerCodeTraining:(BOOL)a9 supportEmojiRecognition:(BOOL)a10 voiceCommandActiveSet:(id)a11 modelContextDelegate:(id)a12 enableItn:(BOOL)a13;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 useQuasarFormatter:(BOOL)a4;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 useQuasarFormatter:(BOOL)a4 activeConfiguration:(id)a5;
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 withLanguage:(id)a4 withSdapiConfig:(id)a5;
+- (BOOL)isSpeakerCodeTrainingSupported:(id)supported;
+- (BOOL)isVadGatingSupported:(unint64_t)supported task:(id)task device:(id)device farField:(BOOL)field atypicalSpeech:(BOOL)speech aneContext:(id)context cpuContext:(id)cpuContext gpuContext:(id)self0;
+- (_EARSpeechRecognizer)initWithConfig:(id)config overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language activeConfiguration:(id)configuration modelLoadingOptions:(id)options enableSpeakerCodeTraining:(BOOL)training supportEmojiRecognition:(BOOL)self0 voiceCommandActiveSet:(id)self1 modelContextDelegate:(id)self2 enableItn:(BOOL)self3 error:(id *)self4;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files generalVoc:(id)voc lexiconEnh:(id)enh itnEnh:(id)itnEnh language:(id)language;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files generalVoc:(id)voc lexiconEnh:(id)enh itnEnh:(id)itnEnh language:(id)language activeConfiguration:(id)self0 modelLoadingOptions:(id)self1 enableSpeakerCodeTraining:(BOOL)self2 supportEmojiRecognition:(BOOL)self3 voiceCommandActiveSet:(id)self4 modelContextDelegate:(id)self5;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language activeConfiguration:(id)activeConfiguration modelLoadingOptions:(id)options enableSpeakerCodeTraining:(BOOL)training supportEmojiRecognition:(BOOL)self0 voiceCommandActiveSet:(id)self1 modelContextDelegate:(id)self2;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language activeConfiguration:(id)activeConfiguration modelLoadingOptions:(id)options enableSpeakerCodeTraining:(BOOL)training supportEmojiRecognition:(BOOL)self0 voiceCommandActiveSet:(id)self1 modelContextDelegate:(id)self2 enableItn:(BOOL)self3;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration useQuasarFormatter:(BOOL)formatter;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration useQuasarFormatter:(BOOL)formatter activeConfiguration:(id)activeConfiguration;
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration withLanguage:(id)language withSdapiConfig:(id)config;
 - (id).cxx_construct;
 - (id)_tokenizer;
-- (id)_unmaskMuxPackages:(id)a3;
+- (id)_unmaskMuxPackages:(id)packages;
 - (id)activeConfiguration;
-- (id)recognitionResultsWithAudioData:(id)a3 userProfileData:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7;
-- (id)recognitionResultsWithAudioData:(id)a3 userProfileData:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 extraLanguageModel:(id)a8;
+- (id)recognitionResultsWithAudioData:(id)data userProfileData:(id)profileData language:(id)language task:(id)task samplingRate:(unint64_t)rate;
+- (id)recognitionResultsWithAudioData:(id)data userProfileData:(id)profileData language:(id)language task:(id)task samplingRate:(unint64_t)rate extraLanguageModel:(id)model;
 - (id)recognitionStatistics;
 - (id)recognitionUtteranceInfos;
 - (id)recognitionUtterenceStatistics;
-- (id)runRecognitionWithResultStream:(id)a3;
-- (id)runRecognitionWithResultStream:(id)a3 language:(id)a4 task:(id)a5 samplingRate:(unint64_t)a6;
-- (id)runRecognitionWithResultStream:(id)a3 language:(id)a4 task:(id)a5 samplingRate:(unint64_t)a6 userProfileData:(id)a7 speakerCodeWriter:(id)a8;
-- (id)runRecognitionWithResultStream:(id)a3 speakerCodeWriter:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7;
-- (id)testFormattingWithOneBestResults:(id)a3 uttMillis:(id)a4;
-- (id)tokenizeText:(id)a3 fromEnd:(BOOL)a4 withLimit:(unint64_t)a5 outTokensInVocab:(id *)a6;
-- (shared_ptr<quasar::RecogAudioBufferBase>)_audioBufferWithLangauge:(id)a3 task:(id)a4 samplingRate:(unint64_t)a5 userProfileData:(id)a6 resultStream:(shared_ptr<quasar::RecogResultStreamBase>)a7;
+- (id)runRecognitionWithResultStream:(id)stream;
+- (id)runRecognitionWithResultStream:(id)stream language:(id)language task:(id)task samplingRate:(unint64_t)rate;
+- (id)runRecognitionWithResultStream:(id)stream language:(id)language task:(id)task samplingRate:(unint64_t)rate userProfileData:(id)data speakerCodeWriter:(id)writer;
+- (id)runRecognitionWithResultStream:(id)stream speakerCodeWriter:(id)writer language:(id)language task:(id)task samplingRate:(unint64_t)rate;
+- (id)testFormattingWithOneBestResults:(id)results uttMillis:(id)millis;
+- (id)tokenizeText:(id)text fromEnd:(BOOL)end withLimit:(unint64_t)limit outTokensInVocab:(id *)vocab;
+- (shared_ptr<quasar::RecogAudioBufferBase>)_audioBufferWithLangauge:(id)langauge task:(id)task samplingRate:(unint64_t)rate userProfileData:(id)data resultStream:(shared_ptr<quasar::RecogResultStreamBase>)stream;
 - (shared_ptr<quasar::SpeechRecognizer>)getRecognizer;
 - (shared_ptr<quasar::corrective_reranking::Parser>)getParser;
 - (unsigned)itnEnablingFlags;
-- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self isLeftContext:(SEL)a3 shouldTruncate:(id)a4 outTokensInVocab:(BOOL)a5;
-- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self outTokensInVocab:(SEL)a3 isLeftContext:(id)a4;
+- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self isLeftContext:(SEL)context shouldTruncate:(id)truncate outTokensInVocab:(BOOL)vocab;
+- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self outTokensInVocab:(SEL)vocab isLeftContext:(id)context;
 - (void)_restartActiveRecognition;
-- (void)_setProfileContainers:(id)a3 muxIds:(id)a4;
-- (void)_testGetMuxIdMask:(id *)a3 muxIdReverseMask:(id *)a4 maskedMuxIds:(id *)a5;
+- (void)_setProfileContainers:(id)containers muxIds:(id)ids;
+- (void)_testGetMuxIdMask:(id *)mask muxIdReverseMask:(id *)reverseMask maskedMuxIds:(id *)ids;
 - (void)_waitForAsyncRecogToFinish;
 - (void)cancelRecognition;
-- (void)getFormatterWithBlock:(id)a3;
+- (void)getFormatterWithBlock:(id)block;
 - (void)interruptTraining;
 - (void)loadParser;
-- (void)requestEagerResult:(id)a3;
-- (void)resumeRecognitionWithLeftContext:(id)a3 rightContext:(id)a4 selectedText:(id)a5;
-- (void)setActiveConfiguration:(id)a3;
-- (void)setAlternateRawRecognitionTokenSausage:(id)a3;
-- (void)setEnableVoiceCommands:(BOOL)a3;
-- (void)setHighPriority:(BOOL)a3;
-- (void)setJitProfileData:(id)a3;
-- (void)setLeftContext:(id)a3;
-- (void)setLeftContextForItn:(id)a3;
-- (void)setLeftContextText:(id)a3;
-- (void)setRightContext:(id)a3;
-- (void)setUserProfile:(id)a3;
-- (void)setUserProfileData:(id)a3;
-- (void)updateJitProfileData:(id)a3;
-- (void)updateUserProfileData:(id)a3;
-- (void)updateVoiceCommandContextWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5 disambiguationActive:(id)a6 cursorInVisibleText:(id)a7 favorCommandSuppression:(id)a8 abortCommandSuppression:(id)a9 undoEvent:(id)a10;
+- (void)requestEagerResult:(id)result;
+- (void)resumeRecognitionWithLeftContext:(id)context rightContext:(id)rightContext selectedText:(id)text;
+- (void)setActiveConfiguration:(id)configuration;
+- (void)setAlternateRawRecognitionTokenSausage:(id)sausage;
+- (void)setEnableVoiceCommands:(BOOL)commands;
+- (void)setHighPriority:(BOOL)priority;
+- (void)setJitProfileData:(id)data;
+- (void)setLeftContext:(id)context;
+- (void)setLeftContextForItn:(id)itn;
+- (void)setLeftContextText:(id)text;
+- (void)setRightContext:(id)context;
+- (void)setUserProfile:(id)profile;
+- (void)setUserProfileData:(id)data;
+- (void)updateJitProfileData:(id)data;
+- (void)updateUserProfileData:(id)data;
+- (void)updateVoiceCommandContextWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)suppression abortCommandSuppression:(id)commandSuppression undoEvent:(id)self0;
 - (void)writeRecordedStateAccesses;
 @end
 
@@ -84,59 +84,59 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  overridesCopy = overrides;
+  filesCopy = files;
   v11 = +[_EARSpeechRecognitionActiveConfiguration activeConfigurationForEverything];
-  v12 = [(_EARSpeechRecognizer *)self initWithConfiguration:v8 overrides:v9 overrideConfigFiles:v10 language:0 activeConfiguration:v11];
+  v12 = [(_EARSpeechRecognizer *)self initWithConfiguration:configurationCopy overrides:overridesCopy overrideConfigFiles:filesCopy language:0 activeConfiguration:v11];
 
   return v12;
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  overridesCopy = overrides;
+  filesCopy = files;
+  languageCopy = language;
   v14 = +[_EARSpeechRecognitionActiveConfiguration activeConfigurationForEverything];
-  v15 = [(_EARSpeechRecognizer *)self initWithConfiguration:v10 overrides:v11 overrideConfigFiles:v12 language:v13 activeConfiguration:v14];
+  v15 = [(_EARSpeechRecognizer *)self initWithConfiguration:configurationCopy overrides:overridesCopy overrideConfigFiles:filesCopy language:languageCopy activeConfiguration:v14];
 
   return v15;
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6 activeConfiguration:(id)a7 modelLoadingOptions:(id)a8 enableSpeakerCodeTraining:(BOOL)a9 supportEmojiRecognition:(BOOL)a10 voiceCommandActiveSet:(id)a11 modelContextDelegate:(id)a12
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language activeConfiguration:(id)activeConfiguration modelLoadingOptions:(id)options enableSpeakerCodeTraining:(BOOL)training supportEmojiRecognition:(BOOL)self0 voiceCommandActiveSet:(id)self1 modelContextDelegate:(id)self2
 {
   LOBYTE(v14) = 0;
-  LOWORD(v13) = __PAIR16__(a10, a9);
-  return [(_EARSpeechRecognizer *)self initWithConfiguration:a3 overrides:a4 overrideConfigFiles:a5 language:a6 activeConfiguration:a7 modelLoadingOptions:a8 enableSpeakerCodeTraining:v13 supportEmojiRecognition:a11 voiceCommandActiveSet:a12 modelContextDelegate:v14 enableItn:?];
+  LOWORD(v13) = __PAIR16__(recognition, training);
+  return [(_EARSpeechRecognizer *)self initWithConfiguration:configuration overrides:overrides overrideConfigFiles:files language:language activeConfiguration:activeConfiguration modelLoadingOptions:options enableSpeakerCodeTraining:v13 supportEmojiRecognition:set voiceCommandActiveSet:delegate modelContextDelegate:v14 enableItn:?];
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6 activeConfiguration:(id)a7 modelLoadingOptions:(id)a8 enableSpeakerCodeTraining:(BOOL)a9 supportEmojiRecognition:(BOOL)a10 voiceCommandActiveSet:(id)a11 modelContextDelegate:(id)a12 enableItn:(BOOL)a13
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language activeConfiguration:(id)activeConfiguration modelLoadingOptions:(id)options enableSpeakerCodeTraining:(BOOL)training supportEmojiRecognition:(BOOL)self0 voiceCommandActiveSet:(id)self1 modelContextDelegate:(id)self2 enableItn:(BOOL)self3
 {
-  LOBYTE(v15) = a13;
-  LOWORD(v14) = __PAIR16__(a10, a9);
-  return [(_EARSpeechRecognizer *)self initWithConfig:a3 overrides:a4 overrideConfigFiles:a5 language:a6 activeConfiguration:a7 modelLoadingOptions:a8 enableSpeakerCodeTraining:v14 supportEmojiRecognition:a11 voiceCommandActiveSet:a12 modelContextDelegate:v15 enableItn:0 error:?];
+  LOBYTE(v15) = itn;
+  LOWORD(v14) = __PAIR16__(recognition, training);
+  return [(_EARSpeechRecognizer *)self initWithConfig:configuration overrides:overrides overrideConfigFiles:files language:language activeConfiguration:activeConfiguration modelLoadingOptions:options enableSpeakerCodeTraining:v14 supportEmojiRecognition:set voiceCommandActiveSet:delegate modelContextDelegate:v15 enableItn:0 error:?];
 }
 
-- (_EARSpeechRecognizer)initWithConfig:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 language:(id)a6 activeConfiguration:(id)a7 modelLoadingOptions:(id)a8 enableSpeakerCodeTraining:(BOOL)a9 supportEmojiRecognition:(BOOL)a10 voiceCommandActiveSet:(id)a11 modelContextDelegate:(id)a12 enableItn:(BOOL)a13 error:(id *)a14
+- (_EARSpeechRecognizer)initWithConfig:(id)config overrides:(id)overrides overrideConfigFiles:(id)files language:(id)language activeConfiguration:(id)configuration modelLoadingOptions:(id)options enableSpeakerCodeTraining:(BOOL)training supportEmojiRecognition:(BOOL)self0 voiceCommandActiveSet:(id)self1 modelContextDelegate:(id)self2 enableItn:(BOOL)self3 error:(id *)self4
 {
-  v21 = a3;
-  v79 = a4;
-  v22 = a5;
-  v23 = a6;
-  v78 = a7;
-  v24 = a8;
-  v25 = a12;
+  configCopy = config;
+  overridesCopy = overrides;
+  filesCopy = files;
+  languageCopy = language;
+  configurationCopy = configuration;
+  optionsCopy = options;
+  delegateCopy = delegate;
   v108.receiver = self;
   v108.super_class = _EARSpeechRecognizer;
   v26 = [(_EARSpeechRecognizer *)&v108 init];
@@ -169,9 +169,9 @@
   v105[2] = __227___EARSpeechRecognizer_initWithConfig_overrides_overrideConfigFiles_language_activeConfiguration_modelLoadingOptions_enableSpeakerCodeTraining_supportEmojiRecognition_voiceCommandActiveSet_modelContextDelegate_enableItn_error___block_invoke;
   v105[3] = &unk_1E7C1A410;
   v105[4] = v106;
-  v77 = v23;
-  [v22 enumerateObjectsUsingBlock:v105];
-  v33 = [v21 copy];
+  v77 = languageCopy;
+  [filesCopy enumerateObjectsUsingBlock:v105];
+  v33 = [configCopy copy];
   configPath = v26->_configPath;
   v26->_configPath = v33;
 
@@ -200,7 +200,7 @@
   v26->_latitude = quasar::Location::getLatitude(&v102);
   v102 = v75;
   v26->_longitude = quasar::corrective_reranking::VoiceEditingWFST::Path::getWeight(&v102);
-  v26->_enableSpeakerCodeTraining = a9;
+  v26->_enableSpeakerCodeTraining = training;
   v26->_vadGatingLevel = 0;
   v26->_segmentationLatency = 2;
   taskBiasingSymbols = v26->_taskBiasingSymbols;
@@ -210,15 +210,15 @@
   v102.i64[1] = &v102;
   v103 = 0x2020000000;
   v104 = 0;
-  if (v25)
+  if (delegateCopy)
   {
     operator new();
   }
 
-  if (!v21)
+  if (!configCopy)
   {
-    v70 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v70 handleFailureInMethod:a2 object:v26 file:@"EARSpeechRecognizer.mm" lineNumber:4031 description:&stru_1F2D44B60];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v26 file:@"EARSpeechRecognizer.mm" lineNumber:4031 description:&stru_1F2D44B60];
   }
 
   v93[0] = MEMORY[0x1E69E9820];
@@ -227,22 +227,22 @@
   v93[3] = &unk_1E7C1A438;
   v42 = v26;
   v94 = v42;
-  v43 = v21;
+  v43 = configCopy;
   v101 = 86400;
   v95 = v43;
   v99 = v106;
-  v96 = v79;
+  v96 = overridesCopy;
   v100 = &v102;
-  v97 = v78;
-  v98 = v24;
+  v97 = configurationCopy;
+  v98 = optionsCopy;
   v44 = MEMORY[0x1B8C868A0](v93);
   v45 = v44;
-  if (a14)
+  if (error)
   {
     if ((ConvertCXXExceptionToNSError(v44) & 1) == 0)
     {
       v46 = 0;
-      v23 = v77;
+      languageCopy = v77;
       goto LABEL_36;
     }
   }
@@ -293,21 +293,21 @@
       speakerCodeInfo = v42->_speakerCodeInfo;
       v42->_speakerCodeInfo = v57;
 
-      v74 = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo trainingSpeakerCode];
-      if ([v74 length])
+      trainingSpeakerCode = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo trainingSpeakerCode];
+      if ([trainingSpeakerCode length])
       {
-        v73 = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo inferenceSpeakerCode];
-        if ([v73 length])
+        inferenceSpeakerCode = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo inferenceSpeakerCode];
+        if ([inferenceSpeakerCode length])
         {
-          v59 = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo accumulatedGradient];
-          v71 = [v59 length];
+          accumulatedGradient = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo accumulatedGradient];
+          v71 = [accumulatedGradient length];
 
           if (v71)
           {
-            v60 = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo trainingSpeakerCode];
-            if (v60)
+            trainingSpeakerCode2 = [(_EARSpeakerCodeInfo *)v42->_speakerCodeInfo trainingSpeakerCode];
+            if (trainingSpeakerCode2)
             {
-              [v60 ear_toString];
+              [trainingSpeakerCode2 ear_toString];
             }
 
             else
@@ -353,7 +353,7 @@ LABEL_31:
     gpuContext = v42->_gpuContext;
     v42->_gpuContext = &stru_1F2D44B60;
 
-    if (a13)
+    if (itn)
     {
       v64 = v42->_recognizer.__ptr_;
       if (v64)
@@ -367,8 +367,8 @@ LABEL_31:
         v85 = v65;
         v81 = v42;
         v82 = v43;
-        v83 = v22;
-        v86 = a10;
+        v83 = filesCopy;
+        recognitionCopy = recognition;
         v84 = v77;
         dispatch_async(v66, block);
       }
@@ -388,10 +388,10 @@ LABEL_31:
   }
 
   v50 = EARErrorWithCode(100, relevantTextContext);
-  EARSetError(a14, v50);
+  EARSetError(error, v50);
 
 LABEL_35:
-  v23 = v77;
+  languageCopy = v77;
   v46 = v76;
 LABEL_36:
 
@@ -412,12 +412,12 @@ LABEL_39:
   return v68;
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 withLanguage:(id)a4 withSdapiConfig:(id)a5
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration withLanguage:(id)language withSdapiConfig:(id)config
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_EARSpeechRecognizer *)self initWithConfiguration:v8];
+  configurationCopy = configuration;
+  languageCopy = language;
+  configCopy = config;
+  v11 = [(_EARSpeechRecognizer *)self initWithConfiguration:configurationCopy];
   v12 = v11;
   if (v11)
   {
@@ -427,72 +427,72 @@ LABEL_39:
     block[2] = __75___EARSpeechRecognizer_initWithConfiguration_withLanguage_withSdapiConfig___block_invoke;
     block[3] = &unk_1E7C1A488;
     v16 = v11;
-    v17 = v9;
-    v18 = v10;
+    v17 = languageCopy;
+    v18 = configCopy;
     dispatch_async(formatterQueue, block);
   }
 
   return v12;
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 generalVoc:(id)a6 lexiconEnh:(id)a7 itnEnh:(id)a8 language:(id)a9
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files generalVoc:(id)voc lexiconEnh:(id)enh itnEnh:(id)itnEnh language:(id)language
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  configurationCopy = configuration;
+  overridesCopy = overrides;
+  filesCopy = files;
+  vocCopy = voc;
+  enhCopy = enh;
+  itnEnhCopy = itnEnh;
+  languageCopy = language;
   v22 = +[_EARSpeechRecognitionActiveConfiguration activeConfigurationForEverything];
-  v23 = [(_EARSpeechRecognizer *)self initWithConfiguration:v15 overrides:v16 overrideConfigFiles:v17 generalVoc:v18 lexiconEnh:v19 itnEnh:v20 language:v21 activeConfiguration:v22];
+  v23 = [(_EARSpeechRecognizer *)self initWithConfiguration:configurationCopy overrides:overridesCopy overrideConfigFiles:filesCopy generalVoc:vocCopy lexiconEnh:enhCopy itnEnh:itnEnhCopy language:languageCopy activeConfiguration:v22];
 
   return v23;
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 overrides:(id)a4 overrideConfigFiles:(id)a5 generalVoc:(id)a6 lexiconEnh:(id)a7 itnEnh:(id)a8 language:(id)a9 activeConfiguration:(id)a10 modelLoadingOptions:(id)a11 enableSpeakerCodeTraining:(BOOL)a12 supportEmojiRecognition:(BOOL)a13 voiceCommandActiveSet:(id)a14 modelContextDelegate:(id)a15
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration overrides:(id)overrides overrideConfigFiles:(id)files generalVoc:(id)voc lexiconEnh:(id)enh itnEnh:(id)itnEnh language:(id)language activeConfiguration:(id)self0 modelLoadingOptions:(id)self1 enableSpeakerCodeTraining:(BOOL)self2 supportEmojiRecognition:(BOOL)self3 voiceCommandActiveSet:(id)self4 modelContextDelegate:(id)self5
 {
-  v20 = a3;
-  v21 = a4;
-  v36 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
-  v27 = a11;
-  v28 = a14;
-  v29 = a15;
-  v35 = v22;
-  if (v22 && v23 && v24)
+  configurationCopy = configuration;
+  overridesCopy = overrides;
+  filesCopy = files;
+  vocCopy = voc;
+  enhCopy = enh;
+  itnEnhCopy = itnEnh;
+  languageCopy = language;
+  activeConfigurationCopy = activeConfiguration;
+  optionsCopy = options;
+  setCopy = set;
+  delegateCopy = delegate;
+  v35 = vocCopy;
+  if (vocCopy && enhCopy && itnEnhCopy)
   {
-    v30 = [_EARQuasarTokenizer extractModelRootFromNcsResourcePaths:v22 lexiconEnh:v23 tokenEnh:0 itnEnh:v24];
+    v30 = [_EARQuasarTokenizer extractModelRootFromNcsResourcePaths:vocCopy lexiconEnh:enhCopy tokenEnh:0 itnEnh:itnEnhCopy];
   }
 
   LOBYTE(v34) = 1;
-  LOWORD(v33) = __PAIR16__(a13, a12);
-  v31 = [(_EARSpeechRecognizer *)self initWithConfiguration:v20 overrides:v21 overrideConfigFiles:v36 language:v25 activeConfiguration:v26 modelLoadingOptions:v27 enableSpeakerCodeTraining:v33 supportEmojiRecognition:v28 voiceCommandActiveSet:v29 modelContextDelegate:v34 enableItn:?];
+  LOWORD(v33) = __PAIR16__(recognition, training);
+  v31 = [(_EARSpeechRecognizer *)self initWithConfiguration:configurationCopy overrides:overridesCopy overrideConfigFiles:filesCopy language:languageCopy activeConfiguration:activeConfigurationCopy modelLoadingOptions:optionsCopy enableSpeakerCodeTraining:v33 supportEmojiRecognition:setCopy voiceCommandActiveSet:delegateCopy modelContextDelegate:v34 enableItn:?];
 
   return v31;
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 useQuasarFormatter:(BOOL)a4
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration useQuasarFormatter:(BOOL)formatter
 {
-  v4 = a4;
-  v6 = a3;
+  formatterCopy = formatter;
+  configurationCopy = configuration;
   v7 = +[_EARSpeechRecognitionActiveConfiguration activeConfigurationForEverything];
-  v8 = [(_EARSpeechRecognizer *)self initWithConfiguration:v6 useQuasarFormatter:v4 activeConfiguration:v7];
+  v8 = [(_EARSpeechRecognizer *)self initWithConfiguration:configurationCopy useQuasarFormatter:formatterCopy activeConfiguration:v7];
 
   return v8;
 }
 
-- (_EARSpeechRecognizer)initWithConfiguration:(id)a3 useQuasarFormatter:(BOOL)a4 activeConfiguration:(id)a5
+- (_EARSpeechRecognizer)initWithConfiguration:(id)configuration useQuasarFormatter:(BOOL)formatter activeConfiguration:(id)activeConfiguration
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_EARSpeechRecognizer *)self initWithConfiguration:v8 overrides:0 overrideConfigFiles:0 language:0 activeConfiguration:v9];
-  if (v10 && v6)
+  formatterCopy = formatter;
+  configurationCopy = configuration;
+  activeConfigurationCopy = activeConfiguration;
+  v10 = [(_EARSpeechRecognizer *)self initWithConfiguration:configurationCopy overrides:0 overrideConfigFiles:0 language:0 activeConfiguration:activeConfigurationCopy];
+  if (v10 && formatterCopy)
   {
     if (![objc_opt_class() supportedByQuasarConfig:v10->_configPath])
     {
@@ -528,9 +528,9 @@ LABEL_7:
   OUTLINED_FUNCTION_6(&dword_1B501D000, v1, v2, "Parser initialization std::bad_alloc: %s", v3, v4, v5, v6, v7);
 }
 
-- (void)setEnableVoiceCommands:(BOOL)a3
+- (void)setEnableVoiceCommands:(BOOL)commands
 {
-  if (a3)
+  if (commands)
   {
     SysConfig = quasar::SpeechRecognizer::getSysConfig(self->_recognizer.__ptr_);
     quasar::configSupportsVoiceCommands(SysConfig, v4);
@@ -560,10 +560,10 @@ LABEL_7:
   return tokenizer;
 }
 
-- (void)setHighPriority:(BOOL)a3
+- (void)setHighPriority:(BOOL)priority
 {
-  self->_highPriority = a3;
-  if (a3)
+  self->_highPriority = priority;
+  if (priority)
   {
     object = dispatch_workloop_create_inactive("com.apple._EARSpeechRecognizer.recognition.workloop");
     dispatch_workloop_set_scheduler_priority();
@@ -589,13 +589,13 @@ LABEL_7:
   }
 }
 
-- (void)setLeftContextText:(id)a3
+- (void)setLeftContextText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    [v4 ear_toStringOrNothing];
+    [textCopy ear_toStringOrNothing];
     if (BYTE8(v19))
     {
       v6 = v5;
@@ -620,21 +620,21 @@ LABEL_7:
     operator delete(__p[0]);
   }
 
-  v8 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v9 = [v7 componentsSeparatedByCharactersInSet:v8];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v9 = [v7 componentsSeparatedByCharactersInSet:newlineCharacterSet];
   if ([v9 count])
   {
-    v10 = [v9 lastObject];
+    lastObject = [v9 lastObject];
   }
 
   else
   {
-    v10 = &stru_1F2D44B60;
+    lastObject = &stru_1F2D44B60;
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
-  v17 = v11;
-  v12 = [(_EARSpeechRecognizer *)self tokenizeText:v10 fromEnd:1 withLimit:4 outTokensInVocab:&v17];
+  array = [MEMORY[0x1E695DF70] array];
+  v17 = array;
+  v12 = [(_EARSpeechRecognizer *)self tokenizeText:lastObject fromEnd:1 withLimit:4 outTokensInVocab:&v17];
   v13 = v17;
 
   leftContextForItn = self->_leftContextForItn;
@@ -656,32 +656,32 @@ LABEL_7:
   [(_EARSpeechRecognizer *)self setLeftContext:v16];
 }
 
-- (void)setLeftContext:(id)a3
+- (void)setLeftContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  contextCopy = context;
+  v4 = [contextCopy copy];
   leftContext = self->_leftContext;
   self->_leftContext = v4;
 
   [(_EARSpeechRecognizer *)self _restartActiveRecognition];
 }
 
-- (void)setLeftContextForItn:(id)a3
+- (void)setLeftContextForItn:(id)itn
 {
-  v5 = a3;
-  objc_storeStrong(&self->_leftContextForItn, a3);
+  itnCopy = itn;
+  objc_storeStrong(&self->_leftContextForItn, itn);
   [(_EARRelevantTextContext *)self->_relevantTextContext setLeftContext:0 preItnLeftContext:self->_leftContextForItn];
   [(_EARRelevantTextContext *)self->_relevantTextContext setLeftContextEndsWithAppendedAutoPunctuation:0];
   [(_EARSpeechRecognizer *)self _restartActiveRecognition];
 }
 
-- (void)setRightContext:(id)a3
+- (void)setRightContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
-    [v4 ear_toStringOrNothing];
+    [contextCopy ear_toStringOrNothing];
     if (BYTE8(v11))
     {
       v6 = v5;
@@ -722,31 +722,31 @@ LABEL_7:
   [(_EARSpeechRecognizer *)self _restartActiveRecognition];
 }
 
-- (void)setUserProfileData:(id)a3
+- (void)setUserProfileData:(id)data
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dataCopy = data;
+  v4 = [dataCopy copy];
   userProfileData = self->_userProfileData;
   self->_userProfileData = v4;
 
   [(_EARSpeechRecognizer *)self _restartActiveRecognition];
 }
 
-- (void)setJitProfileData:(id)a3
+- (void)setJitProfileData:(id)data
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dataCopy = data;
+  v4 = [dataCopy copy];
   jitProfileData = self->_jitProfileData;
   self->_jitProfileData = v4;
 
   [(_EARSpeechRecognizer *)self _restartActiveRecognition];
 }
 
-- (void)_setProfileContainers:(id)a3 muxIds:(id)a4
+- (void)_setProfileContainers:(id)containers muxIds:(id)ids
 {
   v78 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v56 = a4;
+  containersCopy = containers;
+  idsCopy = ids;
   muxIdMask = self->_muxIdMask;
   self->_muxIdMask = 0;
 
@@ -757,7 +757,7 @@ LABEL_7:
   self->_muxIds = 0;
 
   userProfiles = self->_userProfiles;
-  v57 = self;
+  selfCopy = self;
   self->_userProfiles = 0;
 
   v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -766,8 +766,8 @@ LABEL_7:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v6;
-  v11 = [obj countByEnumeratingWithState:&v71 objects:v77 count:{16, v6}];
+  obj = containersCopy;
+  v11 = [obj countByEnumeratingWithState:&v71 objects:v77 count:{16, containersCopy}];
   if (v11)
   {
     v12 = *v72;
@@ -783,8 +783,8 @@ LABEL_7:
         v14 = *(*(&v71 + 1) + 8 * i);
         if (v14)
         {
-          v15 = [*(*(&v71 + 1) + 8 * i) userId];
-          v16 = [v15 length] == 0;
+          userId = [*(*(&v71 + 1) + 8 * i) userId];
+          v16 = [userId length] == 0;
 
           if (v16)
           {
@@ -812,7 +812,7 @@ LABEL_7:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v20 = v56;
+  v20 = idsCopy;
   v21 = [v20 countByEnumeratingWithState:&v67 objects:v76 count:16];
   if (v21)
   {
@@ -840,8 +840,8 @@ LABEL_7:
     while (v21);
   }
 
-  v25 = [v18 allObjects];
-  v59 = EARHelpers::shuffledArray(v25, v26);
+  allObjects = [v18 allObjects];
+  v59 = EARHelpers::shuffledArray(allObjects, v26);
 
   v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v58 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -849,38 +849,38 @@ LABEL_7:
   {
     v29 = [v59 objectAtIndexedSubscript:k];
     v30 = [MEMORY[0x1E696AD98] numberWithInt:k];
-    v31 = [v30 stringValue];
+    stringValue = [v30 stringValue];
 
-    [v27 setObject:v31 forKeyedSubscript:v29];
-    [v58 setObject:v29 forKeyedSubscript:v31];
+    [v27 setObject:stringValue forKeyedSubscript:v29];
+    [v58 setObject:v29 forKeyedSubscript:stringValue];
   }
 
   v32 = [v27 copy];
-  v33 = v57->_muxIdMask;
-  v57->_muxIdMask = v32;
+  v33 = selfCopy->_muxIdMask;
+  selfCopy->_muxIdMask = v32;
 
   v34 = [v58 copy];
-  v35 = v57->_muxIdReverseMask;
-  v57->_muxIdReverseMask = v34;
+  v35 = selfCopy->_muxIdReverseMask;
+  selfCopy->_muxIdReverseMask = v34;
 
-  v36 = [(NSDictionary *)v57->_muxIdMask count];
-  if (v36 != [(NSDictionary *)v57->_muxIdReverseMask count])
+  v36 = [(NSDictionary *)selfCopy->_muxIdMask count];
+  if (v36 != [(NSDictionary *)selfCopy->_muxIdReverseMask count])
   {
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v51 handleFailureInMethod:a2 object:v57 file:@"EARSpeechRecognizer.mm" lineNumber:4667 description:@"Size mismatch"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"EARSpeechRecognizer.mm" lineNumber:4667 description:@"Size mismatch"];
   }
 
   v55 = EARHelpers::shuffledArray(v61, v37);
   v38 = [v55 arrayByAddingObjectsFromArray:v62];
-  v39 = v57->_userProfiles;
-  v57->_userProfiles = v38;
+  v39 = selfCopy->_userProfiles;
+  selfCopy->_userProfiles = v38;
 
-  v40 = [(NSArray *)v57->_userProfiles count];
+  v40 = [(NSArray *)selfCopy->_userProfiles count];
   v41 = [(EARHelpers *)v61 count];
   if (v40 != [(EARHelpers *)v62 count]+ v41)
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v52 handleFailureInMethod:a2 object:v57 file:@"EARSpeechRecognizer.mm" lineNumber:4673 description:@"Size mismatch"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"EARSpeechRecognizer.mm" lineNumber:4673 description:@"Size mismatch"];
   }
 
   v42 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -913,27 +913,27 @@ LABEL_7:
   }
 
   v48 = [v42 copy];
-  v49 = v57->_muxIds;
-  v57->_muxIds = v48;
+  v49 = selfCopy->_muxIds;
+  selfCopy->_muxIds = v48;
 
-  v50 = [(NSSet *)v57->_muxIds count];
+  v50 = [(NSSet *)selfCopy->_muxIds count];
   if (v50 != [v43 count])
   {
-    v53 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v53 handleFailureInMethod:a2 object:v57 file:@"EARSpeechRecognizer.mm" lineNumber:4681 description:@"Size mismatch"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"EARSpeechRecognizer.mm" lineNumber:4681 description:@"Size mismatch"];
   }
 
-  [(_EARSpeechRecognizer *)v57 _restartActiveRecognition];
+  [(_EARSpeechRecognizer *)selfCopy _restartActiveRecognition];
 }
 
-- (void)setUserProfile:(id)a3
+- (void)setUserProfile:(id)profile
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  profileCopy = profile;
+  v5 = profileCopy;
+  if (profileCopy)
   {
-    v7[0] = v4;
+    v7[0] = profileCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -948,34 +948,34 @@ LABEL_7:
   }
 }
 
-- (void)_testGetMuxIdMask:(id *)a3 muxIdReverseMask:(id *)a4 maskedMuxIds:(id *)a5
+- (void)_testGetMuxIdMask:(id *)mask muxIdReverseMask:(id *)reverseMask maskedMuxIds:(id *)ids
 {
-  if (a3)
+  if (mask)
   {
-    *a3 = [(NSDictionary *)self->_muxIdMask copy];
+    *mask = [(NSDictionary *)self->_muxIdMask copy];
   }
 
-  if (a4)
+  if (reverseMask)
   {
-    *a4 = [(NSDictionary *)self->_muxIdReverseMask copy];
+    *reverseMask = [(NSDictionary *)self->_muxIdReverseMask copy];
   }
 
-  if (a5)
+  if (ids)
   {
-    *a5 = [(NSSet *)self->_muxIds copy];
+    *ids = [(NSSet *)self->_muxIds copy];
   }
 }
 
-- (id)_unmaskMuxPackages:(id)a3
+- (id)_unmaskMuxPackages:(id)packages
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  packagesCopy = packages;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = packagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1006,20 +1006,20 @@ LABEL_7:
   return v13;
 }
 
-- (id)runRecognitionWithResultStream:(id)a3
+- (id)runRecognitionWithResultStream:(id)stream
 {
-  v3 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:a3 language:@"en_US" task:@"Dictation" samplingRate:16000];
+  v3 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:stream language:@"en_US" task:@"Dictation" samplingRate:16000];
 
   return v3;
 }
 
-- (void)updateUserProfileData:(id)a3
+- (void)updateUserProfileData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   quasar::LmeDataStreams::LmeDataStreams(&v13);
-  if (v4)
+  if (dataCopy)
   {
-    EARHelpers::createNSDataInputStream(v4, v5);
+    EARHelpers::createNSDataInputStream(dataCopy, v5);
   }
 
   addAotLmeStreams(&v13, self->_userProfiles, self->_muxIdMask);
@@ -1055,9 +1055,9 @@ LABEL_7:
   }
 }
 
-- (void)updateJitProfileData:(id)a3
+- (void)updateJitProfileData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   quasar::LmeDataStreams::LmeDataStreams(&v13);
   userProfileData = self->_userProfileData;
   if (userProfileData)
@@ -1066,9 +1066,9 @@ LABEL_7:
   }
 
   addAotLmeStreams(&v13, self->_userProfiles, self->_muxIdMask);
-  if (v4)
+  if (dataCopy)
   {
-    EARHelpers::createNSDataInputStream(v4, v7);
+    EARHelpers::createNSDataInputStream(dataCopy, v7);
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -1097,27 +1097,27 @@ LABEL_7:
   }
 }
 
-- (id)runRecognitionWithResultStream:(id)a3 language:(id)a4 task:(id)a5 samplingRate:(unint64_t)a6
+- (id)runRecognitionWithResultStream:(id)stream language:(id)language task:(id)task samplingRate:(unint64_t)rate
 {
-  v6 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:a3 language:a4 task:a5 samplingRate:a6 userProfileData:self->_userProfileData speakerCodeWriter:0];
+  v6 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:stream language:language task:task samplingRate:rate userProfileData:self->_userProfileData speakerCodeWriter:0];
 
   return v6;
 }
 
-- (id)runRecognitionWithResultStream:(id)a3 speakerCodeWriter:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7
+- (id)runRecognitionWithResultStream:(id)stream speakerCodeWriter:(id)writer language:(id)language task:(id)task samplingRate:(unint64_t)rate
 {
-  v7 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:a3 language:a5 task:a6 samplingRate:a7 userProfileData:self->_userProfileData speakerCodeWriter:a4];
+  v7 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:stream language:language task:task samplingRate:rate userProfileData:self->_userProfileData speakerCodeWriter:writer];
 
   return v7;
 }
 
-- (id)runRecognitionWithResultStream:(id)a3 language:(id)a4 task:(id)a5 samplingRate:(unint64_t)a6 userProfileData:(id)a7 speakerCodeWriter:(id)a8
+- (id)runRecognitionWithResultStream:(id)stream language:(id)language task:(id)task samplingRate:(unint64_t)rate userProfileData:(id)data speakerCodeWriter:(id)writer
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  streamCopy = stream;
+  languageCopy = language;
+  taskCopy = task;
+  dataCopy = data;
+  writerCopy = writer;
   WeakRetained = objc_loadWeakRetained(&self->_currentAudioBuffer);
   [WeakRetained _detachFromRecognizer];
 
@@ -1127,7 +1127,7 @@ LABEL_7:
   v39 = __Block_byref_object_copy__2;
   v40 = __Block_byref_object_dispose__2;
   v41 = 0;
-  v20 = [v15 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  v20 = [languageCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -1136,14 +1136,14 @@ LABEL_7:
   v28[4] = self;
   v21 = v20;
   v29 = v21;
-  v22 = v14;
+  v22 = streamCopy;
   v30 = v22;
-  v23 = v16;
+  v23 = taskCopy;
   v31 = v23;
-  v24 = v18;
+  v24 = writerCopy;
   v32 = v24;
-  v35 = a6;
-  v25 = v17;
+  rateCopy = rate;
+  v25 = dataCopy;
   v33 = v25;
   v34 = &v36;
   ConvertCXXExceptionToNSException(v28);
@@ -1156,9 +1156,9 @@ LABEL_7:
 
 - (BOOL)canCloneIsFinalAsLastNonFinal
 {
-  v3 = [(_EARSpeechRecognizer *)self hasUtteranceDetection];
+  hasUtteranceDetection = [(_EARSpeechRecognizer *)self hasUtteranceDetection];
   result = self->_concatenateUtterances;
-  if (!v3)
+  if (!hasUtteranceDetection)
   {
     return !self->_concatenateUtterances && self->_recognizeEagerCandidates;
   }
@@ -1176,12 +1176,12 @@ LABEL_7:
   }
 }
 
-- (shared_ptr<quasar::RecogAudioBufferBase>)_audioBufferWithLangauge:(id)a3 task:(id)a4 samplingRate:(unint64_t)a5 userProfileData:(id)a6 resultStream:(shared_ptr<quasar::RecogResultStreamBase>)a7
+- (shared_ptr<quasar::RecogAudioBufferBase>)_audioBufferWithLangauge:(id)langauge task:(id)task samplingRate:(unint64_t)rate userProfileData:(id)data resultStream:(shared_ptr<quasar::RecogResultStreamBase>)stream
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  a4;
-  v18 = a6;
+  langaugeCopy = langauge;
+  task;
+  dataCopy = data;
   v11 = [_EARRecognitionMetrics alloc];
   cntrl = self->_recognizer.__cntrl_;
   ptr = self->_recognizer.__ptr_;
@@ -1201,9 +1201,9 @@ LABEL_7:
   }
 
   quasar::LmeDataStreams::LmeDataStreams(&v19);
-  if (v18)
+  if (dataCopy)
   {
-    EARHelpers::createNSDataInputStream(v18, v15);
+    EARHelpers::createNSDataInputStream(dataCopy, v15);
   }
 
   addAotLmeStreams(&v19, self->_userProfiles, self->_muxIdMask);
@@ -1296,49 +1296,49 @@ LABEL_20:
 LABEL_21:
 }
 
-- (id)recognitionResultsWithAudioData:(id)a3 userProfileData:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7
+- (id)recognitionResultsWithAudioData:(id)data userProfileData:(id)profileData language:(id)language task:(id)task samplingRate:(unint64_t)rate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dataCopy = data;
+  profileDataCopy = profileData;
+  languageCopy = language;
+  taskCopy = task;
   v16 = objc_alloc_init(_EARSyncResultStreamHelper);
-  v17 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:v16 language:v14 task:v15 samplingRate:a7 userProfileData:v13 speakerCodeWriter:0];
-  [v17 addAudioSampleData:v12];
+  v17 = [(_EARSpeechRecognizer *)self runRecognitionWithResultStream:v16 language:languageCopy task:taskCopy samplingRate:rate userProfileData:profileDataCopy speakerCodeWriter:0];
+  [v17 addAudioSampleData:dataCopy];
   [v17 endAudio];
   [(_EARSyncResultStreamHelper *)v16 waitForCompletion];
   (*(*self->_recognizer.__ptr_ + 32))(self->_recognizer.__ptr_);
-  v18 = [(_EARSyncResultStreamHelper *)v16 error];
-  if (v18)
+  error = [(_EARSyncResultStreamHelper *)v16 error];
+  if (error)
   {
-    v19 = 0;
+    results = 0;
   }
 
   else
   {
-    v19 = [(_EARSyncResultStreamHelper *)v16 results];
+    results = [(_EARSyncResultStreamHelper *)v16 results];
   }
 
-  return v19;
+  return results;
 }
 
-- (id)recognitionResultsWithAudioData:(id)a3 userProfileData:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 extraLanguageModel:(id)a8
+- (id)recognitionResultsWithAudioData:(id)data userProfileData:(id)profileData language:(id)language task:(id)task samplingRate:(unint64_t)rate extraLanguageModel:(id)model
 {
-  v8 = [(_EARSpeechRecognizer *)self recognitionResultsWithAudioData:a3 userProfileData:a4 language:a5 task:a6 samplingRate:a7, a8];
+  model = [(_EARSpeechRecognizer *)self recognitionResultsWithAudioData:data userProfileData:profileData language:language task:task samplingRate:rate, model];
 
-  return v8;
+  return model;
 }
 
-- (id)testFormattingWithOneBestResults:(id)a3 uttMillis:(id)a4
+- (id)testFormattingWithOneBestResults:(id)results uttMillis:(id)millis
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v24 = a4;
-  v7 = [v6 count];
-  if (v7 != [v24 count])
+  resultsCopy = results;
+  millisCopy = millis;
+  v7 = [resultsCopy count];
+  if (v7 != [millisCopy count])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"EARSpeechRecognizer.mm" lineNumber:5134 description:@"Array sizes are not the same"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EARSpeechRecognizer.mm" lineNumber:5134 description:@"Array sizes are not the same"];
   }
 
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1361,16 +1361,16 @@ LABEL_21:
   v21 = v8;
   v35 = v21;
   ConvertCXXExceptionToNSException(v34);
-  for (i = 0; [v6 count] > i; ++i)
+  for (i = 0; [resultsCopy count] > i; ++i)
   {
-    v10 = [v6 objectAtIndex:i];
+    v10 = [resultsCopy objectAtIndex:i];
     v11 = [v10 count] == 0;
 
     if (!v11)
     {
       std::vector<double>::vector[abi:ne200100](&__p, 1uLL);
       memset(v32, 0, sizeof(v32));
-      v12 = [v6 objectAtIndex:i];
+      v12 = [resultsCopy objectAtIndex:i];
       v13 = [v12 subarrayWithRange:{0, 1}];
       EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(v13, buf);
       std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](v32, buf);
@@ -1387,8 +1387,8 @@ LABEL_21:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [(_EARSyncResultStreamHelper *)v21 taggedResults];
-  v15 = [v14 countByEnumeratingWithState:&v26 objects:v40 count:16];
+  taggedResults = [(_EARSyncResultStreamHelper *)v21 taggedResults];
+  v15 = [taggedResults countByEnumeratingWithState:&v26 objects:v40 count:16];
   if (v15)
   {
     v16 = *v27;
@@ -1398,14 +1398,14 @@ LABEL_21:
       {
         if (*v27 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(taggedResults);
         }
 
-        v18 = [*(*(&v26 + 1) + 8 * j) tokens];
-        [v25 addObject:v18];
+        tokens = [*(*(&v26 + 1) + 8 * j) tokens];
+        [v25 addObject:tokens];
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v26 objects:v40 count:16];
+      v15 = [taggedResults countByEnumeratingWithState:&v26 objects:v40 count:16];
     }
 
     while (v15);
@@ -1425,12 +1425,12 @@ LABEL_21:
 
 - (BOOL)isContinuousListening
 {
-  v3 = [(_EARSpeechRecognizer *)self hasUtteranceDetection];
+  hasUtteranceDetection = [(_EARSpeechRecognizer *)self hasUtteranceDetection];
   concatenateUtterances = self->_concatenateUtterances;
   allowUtteranceDelay = self->_allowUtteranceDelay;
   formatAcrossUtterances = self->_formatAcrossUtterances;
 
-  return quasar::isContinuousListening(v3, concatenateUtterances, allowUtteranceDelay, formatAcrossUtterances);
+  return quasar::isContinuousListening(hasUtteranceDetection, concatenateUtterances, allowUtteranceDelay, formatAcrossUtterances);
 }
 
 - (unsigned)itnEnablingFlags
@@ -1446,17 +1446,17 @@ LABEL_21:
   }
 }
 
-+ (id)rawTokenResultsFromRecognitionResults:(id)a3
++ (id)rawTokenResultsFromRecognitionResults:(id)results
 {
   v27 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  resultsCopy = results;
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v15;
-  v4 = [obj countByEnumeratingWithState:&v21 objects:v26 count:{16, v15}];
+  obj = resultsCopy;
+  v4 = [obj countByEnumeratingWithState:&v21 objects:v26 count:{16, resultsCopy}];
   if (v4)
   {
     v5 = *v22;
@@ -1475,8 +1475,8 @@ LABEL_21:
         v20 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v9 = [v7 tokens];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        tokens = [v7 tokens];
+        v10 = [tokens countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = *v18;
@@ -1486,14 +1486,14 @@ LABEL_21:
             {
               if (*v18 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(tokens);
               }
 
-              v13 = [*(*(&v17 + 1) + 8 * j) tokenName];
-              [v8 addObject:v13];
+              tokenName = [*(*(&v17 + 1) + 8 * j) tokenName];
+              [v8 addObject:tokenName];
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v10 = [tokens countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v10);
@@ -1511,21 +1511,21 @@ LABEL_21:
   return v3;
 }
 
-+ (BOOL)compileRecognizerModels2WithConfiguration:(id)a3 error:(id *)a4
++ (BOOL)compileRecognizerModels2WithConfiguration:(id)configuration error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v15 = 1;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:configurationCopy];
 
   if (v6)
   {
-    v8 = v4;
-    std::string::basic_string[abi:ne200100]<0>(buf, [v4 fileSystemRepresentation]);
+    v8 = configurationCopy;
+    std::string::basic_string[abi:ne200100]<0>(buf, [configurationCopy fileSystemRepresentation]);
     std::string::basic_string[abi:ne200100]<0>(&__p, ".mlmodelc");
     getModelFilesWithSuffix();
   }
@@ -1538,22 +1538,22 @@ LABEL_21:
   }
 
   v10 = EARErrorWithCode(100, @"Error file sent for compilation does not exist. Not compiling.");
-  EARSetError(a4, v10);
+  EARSetError(error, v10);
 
   _Block_object_dispose(v14, 8);
   return 0;
 }
 
-+ (void)purgeCompiledRecognizerModelsWithConfiguration:(id)a3
++ (void)purgeCompiledRecognizerModelsWithConfiguration:(id)configuration
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  configurationCopy = configuration;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:configurationCopy];
 
   if (v5)
   {
-    std::string::basic_string[abi:ne200100]<0>(buf, [v3 fileSystemRepresentation]);
+    std::string::basic_string[abi:ne200100]<0>(buf, [configurationCopy fileSystemRepresentation]);
     std::string::basic_string[abi:ne200100]<0>(&__p, ".mlmodelc");
     getModelFilesWithSuffix();
   }
@@ -1783,43 +1783,43 @@ LABEL_21:
   return v2;
 }
 
-- (void)getFormatterWithBlock:(id)a3
+- (void)getFormatterWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   formatterQueue = self->_formatterQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46___EARSpeechRecognizer_getFormatterWithBlock___block_invoke;
   v7[3] = &unk_1E7C1A578;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(formatterQueue, v7);
 }
 
-- (void)setActiveConfiguration:(id)a3
+- (void)setActiveConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47___EARSpeechRecognizer_setActiveConfiguration___block_invoke;
   v6[3] = &unk_1E7C1A5C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = configurationCopy;
+  v5 = configurationCopy;
   ConvertCXXExceptionToNSException(v6);
 }
 
-- (BOOL)isSpeakerCodeTrainingSupported:(id)a3
+- (BOOL)isSpeakerCodeTrainingSupported:(id)supported
 {
-  v4 = a3;
-  v5 = v4;
+  supportedCopy = supported;
+  v5 = supportedCopy;
   ptr = self->_training.__ptr_;
   if (ptr)
   {
-    if (v4)
+    if (supportedCopy)
     {
-      [v4 ear_toString];
+      [supportedCopy ear_toString];
     }
 
     else
@@ -1839,21 +1839,21 @@ LABEL_21:
   return ptr;
 }
 
-- (BOOL)isVadGatingSupported:(unint64_t)a3 task:(id)a4 device:(id)a5 farField:(BOOL)a6 atypicalSpeech:(BOOL)a7 aneContext:(id)a8 cpuContext:(id)a9 gpuContext:(id)a10
+- (BOOL)isVadGatingSupported:(unint64_t)supported task:(id)task device:(id)device farField:(BOOL)field atypicalSpeech:(BOOL)speech aneContext:(id)context cpuContext:(id)cpuContext gpuContext:(id)self0
 {
-  v11 = a7;
-  v12 = a6;
-  v14 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  speechCopy = speech;
+  fieldCopy = field;
+  supportedCopy = supported;
+  taskCopy = task;
+  deviceCopy = device;
+  contextCopy = context;
+  cpuContextCopy = cpuContext;
+  gpuContextCopy = gpuContext;
   ptr = self->_recognizer.__ptr_;
-  if (v16)
+  if (taskCopy)
   {
-    [v16 ear_toString];
-    if (v17)
+    [taskCopy ear_toString];
+    if (deviceCopy)
     {
       goto LABEL_3;
     }
@@ -1864,11 +1864,11 @@ LABEL_21:
     v28[0] = 0;
     v28[1] = 0;
     v29 = 0;
-    if (v17)
+    if (deviceCopy)
     {
 LABEL_3:
-      [v17 ear_toString];
-      if (v18)
+      [deviceCopy ear_toString];
+      if (contextCopy)
       {
         goto LABEL_4;
       }
@@ -1878,18 +1878,18 @@ LABEL_3:
   }
 
   memset(&v27, 0, sizeof(v27));
-  if (v18)
+  if (contextCopy)
   {
 LABEL_4:
-    [v18 ear_toString];
-    if (v19)
+    [contextCopy ear_toString];
+    if (cpuContextCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
     memset(&v25, 0, sizeof(v25));
-    if (v20)
+    if (gpuContextCopy)
     {
       goto LABEL_6;
     }
@@ -1899,24 +1899,24 @@ LABEL_10:
 
 LABEL_9:
   memset(&v26, 0, sizeof(v26));
-  if (!v19)
+  if (!cpuContextCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  [v19 ear_toString];
-  if (v20)
+  [cpuContextCopy ear_toString];
+  if (gpuContextCopy)
   {
 LABEL_6:
-    [v20 ear_toString];
+    [gpuContextCopy ear_toString];
     goto LABEL_12;
   }
 
 LABEL_11:
   memset(&__p, 0, sizeof(__p));
 LABEL_12:
-  isVadGatingSupported = quasar::SpeechRecognizer::isVadGatingSupported(ptr, v14, v28, &v27, v12, v11, &v26, &v25, &__p);
+  isVadGatingSupported = quasar::SpeechRecognizer::isVadGatingSupported(ptr, supportedCopy, v28, &v27, fieldCopy, speechCopy, &v26, &v25, &__p);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
     operator delete(__p.__r_.__value_.__l.__data_);
@@ -1966,7 +1966,7 @@ LABEL_12:
   return v2;
 }
 
-- (void)setAlternateRawRecognitionTokenSausage:(id)a3
+- (void)setAlternateRawRecognitionTokenSausage:(id)sausage
 {
   v51 = *MEMORY[0x1E69E9840];
   memset(v20, 0, sizeof(v20));
@@ -1974,7 +1974,7 @@ LABEL_12:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = sausage;
   v15 = [obj countByEnumeratingWithState:&v22 objects:v48 count:16];
   if (v15)
   {
@@ -2145,15 +2145,15 @@ LABEL_12:
   return result;
 }
 
-- (void)requestEagerResult:(id)a3
+- (void)requestEagerResult:(id)result
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  resultCopy = result;
+  v5 = [resultCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -2164,7 +2164,7 @@ LABEL_12:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resultCopy);
         }
 
         ptr = self->_recognizer.__ptr_;
@@ -2174,42 +2174,42 @@ LABEL_12:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [resultCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)resumeRecognitionWithLeftContext:(id)a3 rightContext:(id)a4 selectedText:(id)a5
+- (void)resumeRecognitionWithLeftContext:(id)context rightContext:(id)rightContext selectedText:(id)text
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || ([v8 ear_toStringOrNothing], (v39 & 1) == 0))
+  contextCopy = context;
+  rightContextCopy = rightContext;
+  textCopy = text;
+  if (!contextCopy || ([contextCopy ear_toStringOrNothing], (v39 & 1) == 0))
   {
-    [(_EARSpeechRecognizer *)self resumeRecognitionWithLeftContext:&stru_1F2D44B60 rightContext:v9 selectedText:v10];
+    [(_EARSpeechRecognizer *)self resumeRecognitionWithLeftContext:&stru_1F2D44B60 rightContext:rightContextCopy selectedText:textCopy];
     goto LABEL_25;
   }
 
   if (v38 < 0)
   {
     operator delete(__p[0]);
-    if (!v9)
+    if (!rightContextCopy)
     {
 LABEL_24:
-      [(_EARSpeechRecognizer *)self resumeRecognitionWithLeftContext:v8 rightContext:&stru_1F2D44B60 selectedText:v10];
+      [(_EARSpeechRecognizer *)self resumeRecognitionWithLeftContext:contextCopy rightContext:&stru_1F2D44B60 selectedText:textCopy];
       goto LABEL_25;
     }
   }
 
-  else if (!v9)
+  else if (!rightContextCopy)
   {
     goto LABEL_24;
   }
 
-  [v9 ear_toStringOrNothing];
+  [rightContextCopy ear_toStringOrNothing];
   if ((v39 & 1) == 0)
   {
     goto LABEL_24;
@@ -2228,12 +2228,12 @@ LABEL_24:
   block[3] = &unk_1E7C1A610;
   objc_copyWeak(&v29, &location);
   dispatch_async(formatterQueue, block);
-  v12 = [MEMORY[0x1E695DF70] array];
-  v26 = v12;
-  [(_EARSpeechRecognizer *)self splitWithTokenizer:v8 isLeftContext:1 shouldTruncate:1 outTokensInVocab:&v26];
+  array = [MEMORY[0x1E695DF70] array];
+  v26 = array;
+  [(_EARSpeechRecognizer *)self splitWithTokenizer:contextCopy isLeftContext:1 shouldTruncate:1 outTokensInVocab:&v26];
   v23 = v26;
 
-  [(_EARSpeechRecognizer *)self splitWithTokenizer:v9 isLeftContext:0 shouldTruncate:1 outTokensInVocab:0];
+  [(_EARSpeechRecognizer *)self splitWithTokenizer:rightContextCopy isLeftContext:0 shouldTruncate:1 outTokensInVocab:0];
   v13 = v23;
   memset(v24, 0, sizeof(v24));
   v33 = 0u;
@@ -2283,12 +2283,12 @@ LABEL_24:
   relevantTextContext = self->_relevantTextContext;
   v21 = EARHelpers::VectorToArray<std::string>(v27);
   v22 = EARHelpers::VectorToArray<std::string>(v25);
-  [(_EARRelevantTextContext *)relevantTextContext setLeftContext:v8 rightContext:v9 preItnLeftContext:v21 preItnRightContext:v22];
+  [(_EARRelevantTextContext *)relevantTextContext setLeftContext:contextCopy rightContext:rightContextCopy preItnLeftContext:v21 preItnRightContext:v22];
 
   [(_EARRelevantTextContext *)self->_relevantTextContext setLeftContextEndsWithAppendedAutoPunctuation:0];
   [(_EARRelevantTextContext *)self->_relevantTextContext setFavorCommandSuppression:0];
   [(_EARRelevantTextContext *)self->_relevantTextContext setAbortCommandSuppression:0];
-  -[_EARRelevantTextContext setUtteranceStartedWithSelectedText:](self->_relevantTextContext, "setUtteranceStartedWithSelectedText:", [v10 length] != 0);
+  -[_EARRelevantTextContext setUtteranceStartedWithSelectedText:](self->_relevantTextContext, "setUtteranceStartedWithSelectedText:", [textCopy length] != 0);
   quasar::SpeechRecognizer::resumeRecognition(self->_recognizer.__ptr_, v24, v27, v25, 0);
   __p[0] = v24;
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](__p);
@@ -2302,62 +2302,62 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)updateVoiceCommandContextWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5 disambiguationActive:(id)a6 cursorInVisibleText:(id)a7 favorCommandSuppression:(id)a8 abortCommandSuppression:(id)a9 undoEvent:(id)a10
+- (void)updateVoiceCommandContextWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)suppression abortCommandSuppression:(id)commandSuppression undoEvent:(id)self0
 {
-  v23 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (v18)
+  textCopy = text;
+  postfixTextCopy = postfixText;
+  selectedTextCopy = selectedText;
+  activeCopy = active;
+  visibleTextCopy = visibleText;
+  suppressionCopy = suppression;
+  commandSuppressionCopy = commandSuppression;
+  eventCopy = event;
+  if (activeCopy)
   {
-    -[_EARRelevantTextContext setDisambiguationActive:](self->_relevantTextContext, "setDisambiguationActive:", [v18 BOOLValue]);
+    -[_EARRelevantTextContext setDisambiguationActive:](self->_relevantTextContext, "setDisambiguationActive:", [activeCopy BOOLValue]);
   }
 
-  if (v19)
+  if (visibleTextCopy)
   {
-    -[_EARRelevantTextContext setCursorInVisibleText:](self->_relevantTextContext, "setCursorInVisibleText:", [v19 BOOLValue]);
+    -[_EARRelevantTextContext setCursorInVisibleText:](self->_relevantTextContext, "setCursorInVisibleText:", [visibleTextCopy BOOLValue]);
   }
 
-  if (v20)
+  if (suppressionCopy)
   {
-    -[_EARRelevantTextContext setFavorCommandSuppression:](self->_relevantTextContext, "setFavorCommandSuppression:", [v20 BOOLValue]);
+    -[_EARRelevantTextContext setFavorCommandSuppression:](self->_relevantTextContext, "setFavorCommandSuppression:", [suppressionCopy BOOLValue]);
   }
 
-  if (v21)
+  if (commandSuppressionCopy)
   {
-    -[_EARRelevantTextContext setAbortCommandSuppression:](self->_relevantTextContext, "setAbortCommandSuppression:", [v21 BOOLValue]);
-    if ([v21 BOOLValue])
+    -[_EARRelevantTextContext setAbortCommandSuppression:](self->_relevantTextContext, "setAbortCommandSuppression:", [commandSuppressionCopy BOOLValue]);
+    if ([commandSuppressionCopy BOOLValue])
     {
       [(_EARRelevantTextContext *)self->_relevantTextContext setFavorCommandSuppression:0];
     }
   }
 
-  if (v22 && [v22 BOOLValue])
+  if (eventCopy && [eventCopy BOOLValue])
   {
     [(_EARRelevantTextContext *)self->_relevantTextContext notifyUndoEventFromClient];
   }
 }
 
-- (id)tokenizeText:(id)a3 fromEnd:(BOOL)a4 withLimit:(unint64_t)a5 outTokensInVocab:(id *)a6
+- (id)tokenizeText:(id)text fromEnd:(BOOL)end withLimit:(unint64_t)limit outTokensInVocab:(id *)vocab
 {
-  v8 = a4;
+  endCopy = end;
   v77 = *MEMORY[0x1E69E9840];
-  v48 = a3;
+  textCopy = text;
   context = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x1E696AE30] processInfo];
-  [v10 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v12 = v11;
 
-  if ([v48 length])
+  if ([textCopy length])
   {
-    v13 = [(_EARSpeechRecognizer *)self _tokenizer];
-    v47 = [v13 tokenize:v48 limit:a5 fromEnd:v8];
+    _tokenizer = [(_EARSpeechRecognizer *)self _tokenizer];
+    v47 = [_tokenizer tokenize:textCopy limit:limit fromEnd:endCopy];
 
-    if (!a6)
+    if (!vocab)
     {
       goto LABEL_27;
     }
@@ -2366,7 +2366,7 @@ LABEL_25:
   else
   {
     v47 = 0;
-    if (!a6)
+    if (!vocab)
     {
       goto LABEL_27;
     }
@@ -2376,8 +2376,8 @@ LABEL_25:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v14 = [v47 reverseObjectEnumerator];
-  v15 = [v14 countByEnumeratingWithState:&v72 objects:v76 count:16];
+  reverseObjectEnumerator = [v47 reverseObjectEnumerator];
+  v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v72 objects:v76 count:16];
   if (v15)
   {
     v16 = *v73;
@@ -2387,7 +2387,7 @@ LABEL_25:
       {
         if (*v73 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v18 = *(*(&v72 + 1) + 8 * i);
@@ -2433,7 +2433,7 @@ LABEL_25:
           v21 = v52;
         }
 
-        v22 = *a6;
+        v22 = *vocab;
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v21];
         [v22 insertObject:v23 atIndex:0];
 
@@ -2443,7 +2443,7 @@ LABEL_25:
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v72 objects:v76 count:16];
+      v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v72 objects:v76 count:16];
       if (v15)
       {
         continue;
@@ -2456,8 +2456,8 @@ LABEL_25:
 LABEL_26:
 
 LABEL_27:
-  v24 = [MEMORY[0x1E696AE30] processInfo];
-  [v24 systemUptime];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo2 systemUptime];
   v26 = v25;
 
   v27 = quasar::gLogLevel;
@@ -2482,9 +2482,9 @@ LABEL_27:
     *v52 = 0u;
     kaldi::KaldiWarnMessage::KaldiWarnMessage(v52);
     v28 = std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(v52, "Tokenized text: ", 17);
-    if (v48)
+    if (textCopy)
     {
-      [v48 ear_toString];
+      [textCopy ear_toString];
       v29 = HIBYTE(v71);
       v31 = __p;
       v30 = v70;
@@ -2608,17 +2608,17 @@ LABEL_27:
   return v47;
 }
 
-- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self outTokensInVocab:(SEL)a3 isLeftContext:(id)a4
+- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self outTokensInVocab:(SEL)vocab isLeftContext:(id)context
 {
   v6 = a6;
   v26[16] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  contextCopy = context;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
   retstr->__begin_ = 0;
-  if ([v10 length])
+  if ([contextCopy length])
   {
-    [(_EARSpeechRecognizer *)self tokenizeText:v10 fromEnd:v6 withLimit:4 outTokensInVocab:a5];
+    [(_EARSpeechRecognizer *)self tokenizeText:contextCopy fromEnd:v6 withLimit:4 outTokensInVocab:a5];
     v19 = 0;
     v18 = 0uLL;
     v22 = 0u;
@@ -2676,20 +2676,20 @@ LABEL_27:
   return result;
 }
 
-- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self isLeftContext:(SEL)a3 shouldTruncate:(id)a4 outTokensInVocab:(BOOL)a5
+- (vector<std::string,)splitWithTokenizer:(_EARSpeechRecognizer *)self isLeftContext:(SEL)context shouldTruncate:(id)truncate outTokensInVocab:(BOOL)vocab
 {
   v8 = a6;
-  v9 = a5;
-  v11 = a4;
-  v16 = v11;
+  vocabCopy = vocab;
+  truncateCopy = truncate;
+  v16 = truncateCopy;
   if (v8)
   {
-    v12 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v13 = [v16 componentsSeparatedByCharactersInSet:v12];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v13 = [v16 componentsSeparatedByCharactersInSet:newlineCharacterSet];
     v14 = &stru_1F2D44B60;
     if ([v13 count])
     {
-      if (v9)
+      if (vocabCopy)
       {
         [v13 lastObject];
       }
@@ -2701,12 +2701,12 @@ LABEL_27:
       v14 = ;
     }
 
-    [(_EARSpeechRecognizer *)self splitWithTokenizer:v14 outTokensInVocab:a7 isLeftContext:v9];
+    [(_EARSpeechRecognizer *)self splitWithTokenizer:v14 outTokensInVocab:a7 isLeftContext:vocabCopy];
   }
 
   else
   {
-    [(_EARSpeechRecognizer *)self splitWithTokenizer:v11 outTokensInVocab:a7 isLeftContext:v9];
+    [(_EARSpeechRecognizer *)self splitWithTokenizer:truncateCopy outTokensInVocab:a7 isLeftContext:vocabCopy];
   }
 
   return result;

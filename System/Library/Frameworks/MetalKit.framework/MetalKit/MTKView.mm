@@ -1,8 +1,8 @@
 @interface MTKView
-- (BOOL)exportToTargaAtLocation:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 size:(unint64_t)a6 bytes:(void *)a7;
+- (BOOL)exportToTargaAtLocation:(id)location width:(unint64_t)width height:(unint64_t)height size:(unint64_t)size bytes:(void *)bytes;
 - (BOOL)framebufferOnly;
 - (BOOL)presentsWithTransaction;
-- (CGSize)_pixelSizeFromPointSize:(CGSize)a3;
+- (CGSize)_pixelSizeFromPointSize:(CGSize)size;
 - (CGSize)drawableSize;
 - (CGSize)preferredDrawableSize;
 - (MTKView)initWithCoder:(NSCoder *)coder;
@@ -10,7 +10,7 @@
 - (MTL4RenderPassDescriptor)currentMTL4RenderPassDescriptor;
 - (MTLClearColor)clearColor;
 - (MTLRenderPassDescriptor)currentRenderPassDescriptor;
-- (const)multisampleColorTexturesForceUpdate:(BOOL)a3;
+- (const)multisampleColorTexturesForceUpdate:(BOOL)update;
 - (id)currentDrawable;
 - (id)delegate;
 - (id)depthStencilTexture;
@@ -18,38 +18,38 @@
 - (id)preferredDevice;
 - (int64_t)_calculateRefeshesPerSecond;
 - (void)__initCommon;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_createDisplayLinkForScreen:(id)a3;
-- (void)_dumpFrameImageWithFilename:(id)a3;
-- (void)_dumpFramerate:(double)a3 withFilename:(id)a4;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_createDisplayLinkForScreen:(id)screen;
+- (void)_dumpFrameImageWithFilename:(id)filename;
+- (void)_dumpFramerate:(double)framerate withFilename:(id)filename;
 - (void)_resizeDrawable;
 - (void)_resizeMetalLayerDrawable;
 - (void)_updateToNativeScale;
-- (void)configureColorAttachments:(id)a3;
-- (void)configureDepthAttachment:(id)a3 stencilAttachment:(id)a4;
+- (void)configureColorAttachments:(id)attachments;
+- (void)configureDepthAttachment:(id)attachment stencilAttachment:(id)stencilAttachment;
 - (void)createDepthStencilTexture;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)displayLayer:(id)a3;
+- (void)displayLayer:(id)layer;
 - (void)draw;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)encodeWithCoder:(id)coder;
 - (void)getEnvironmentSettings;
 - (void)layoutSubviews;
 - (void)releaseDrawables;
-- (void)setColorPixelFormat:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setContentScaleFactor:(double)a3;
+- (void)setColorPixelFormat:(unint64_t)format atIndex:(unint64_t)index;
+- (void)setContentScaleFactor:(double)factor;
 - (void)setDepthStencilAttachmentTextureUsage:(MTLTextureUsage)depthStencilAttachmentTextureUsage;
 - (void)setDepthStencilPixelFormat:(MTLPixelFormat)depthStencilPixelFormat;
 - (void)setDepthStencilStorageMode:(MTLStorageMode)depthStencilStorageMode;
 - (void)setDevice:(id)device;
-- (void)setDrawableAttachmentIndex:(unint64_t)a3;
+- (void)setDrawableAttachmentIndex:(unint64_t)index;
 - (void)setDrawableSize:(CGSize)drawableSize;
 - (void)setEnableSetNeedsDisplay:(BOOL)enableSetNeedsDisplay;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 - (void)setMultisampleColorAttachmentTextureUsage:(MTLTextureUsage)multisampleColorAttachmentTextureUsage;
-- (void)setNilValueForKey:(id)a3;
+- (void)setNilValueForKey:(id)key;
 - (void)setPreferredFramesPerSecond:(NSInteger)preferredFramesPerSecond;
 - (void)setSampleCount:(NSUInteger)sampleCount;
 @end
@@ -64,8 +64,8 @@
   v8 = v5;
   if (self->_drawableSize.width != v6 || self->_drawableSize.height != v5)
   {
-    v10 = [(MTKView *)self delegate];
-    [v10 mtkView:self drawableSizeWillChange:{v7, v8}];
+    delegate = [(MTKView *)self delegate];
+    [delegate mtkView:self drawableSizeWillChange:{v7, v8}];
 
     self->_drawableSize.width = v7;
     self->_drawableSize.height = v8;
@@ -78,15 +78,15 @@
   [(MTKView *)self getEnvironmentSettings];
   if (self->_forceOrientation)
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_forceOrientation];
-    [v3 setValue:v4 forKey:@"orientation"];
+    [currentDevice setValue:v4 forKey:@"orientation"];
   }
 
   self->_pausedOnBackgrounding = 1;
   [(MTKView *)self setContentScaleFactor:0.0];
-  v5 = [(MTKView *)self layer];
-  objc_storeWeak(&self->_metalLayer, v5);
+  layer = [(MTKView *)self layer];
+  objc_storeWeak(&self->_metalLayer, layer);
 
   self->_sampleCount = 1;
   self->_paused = 0;
@@ -150,12 +150,12 @@
     }
   }
 
-  v19 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   [(MTKView *)self setOpaque:1];
   [(MTKView *)self setBackgroundColor:0];
   [(MTKView *)self setPreferredFramesPerSecond:60];
-  [v19 addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
-  [v19 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
   if (!_drawRectSuperIMP)
   {
     _drawRectSuperIMP = [MEMORY[0x1E69DD250] instanceMethodForSelector:sel_drawRect_];
@@ -190,45 +190,45 @@
 
 - (void)getEnvironmentSettings
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 environment];
-  v51 = [v4 objectForKey:@"MTK_TERMINATE_AFTER_FRAME"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  environment = [processInfo environment];
+  v51 = [environment objectForKey:@"MTK_TERMINATE_AFTER_FRAME"];
 
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 environment];
-  v50 = [v6 objectForKey:@"MTK_TERMINATE_AFTER_SECONDS"];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  environment2 = [processInfo2 environment];
+  v50 = [environment2 objectForKey:@"MTK_TERMINATE_AFTER_SECONDS"];
 
-  v7 = [MEMORY[0x1E696AE30] processInfo];
-  v8 = [v7 environment];
-  v9 = [v8 objectForKey:@"MTK_MEASURE_FRAMERATE_AFTER_FRAME"];
+  processInfo3 = [MEMORY[0x1E696AE30] processInfo];
+  environment3 = [processInfo3 environment];
+  v9 = [environment3 objectForKey:@"MTK_MEASURE_FRAMERATE_AFTER_FRAME"];
 
-  v10 = [MEMORY[0x1E696AE30] processInfo];
-  v11 = [v10 environment];
-  v12 = [v11 objectForKey:@"MTK_MEASURE_FRAMERATE_AFTER_SECONDS"];
+  processInfo4 = [MEMORY[0x1E696AE30] processInfo];
+  environment4 = [processInfo4 environment];
+  v12 = [environment4 objectForKey:@"MTK_MEASURE_FRAMERATE_AFTER_SECONDS"];
 
-  v13 = [MEMORY[0x1E696AE30] processInfo];
-  v14 = [v13 environment];
-  v49 = [v14 objectForKey:@"MTK_DUMP_PATH"];
+  processInfo5 = [MEMORY[0x1E696AE30] processInfo];
+  environment5 = [processInfo5 environment];
+  v49 = [environment5 objectForKey:@"MTK_DUMP_PATH"];
 
-  v15 = [MEMORY[0x1E696AE30] processInfo];
-  v16 = [v15 environment];
-  v17 = [v16 objectForKey:@"MTK_DUMP_FRAME_AFTER_FRAME"];
+  processInfo6 = [MEMORY[0x1E696AE30] processInfo];
+  environment6 = [processInfo6 environment];
+  v17 = [environment6 objectForKey:@"MTK_DUMP_FRAME_AFTER_FRAME"];
 
-  v18 = [MEMORY[0x1E696AE30] processInfo];
-  v19 = [v18 environment];
-  v20 = [v19 objectForKey:@"MTK_DUMP_FRAME_AFTER_SECONDS"];
+  processInfo7 = [MEMORY[0x1E696AE30] processInfo];
+  environment7 = [processInfo7 environment];
+  v20 = [environment7 objectForKey:@"MTK_DUMP_FRAME_AFTER_SECONDS"];
 
-  v21 = [MEMORY[0x1E696AE30] processInfo];
-  v22 = [v21 environment];
-  v23 = [v22 objectForKey:@"MTK_DUMP_FIRST_FRAME"];
+  processInfo8 = [MEMORY[0x1E696AE30] processInfo];
+  environment8 = [processInfo8 environment];
+  v23 = [environment8 objectForKey:@"MTK_DUMP_FIRST_FRAME"];
 
-  v24 = [MEMORY[0x1E696AE30] processInfo];
-  v25 = [v24 environment];
-  v26 = [v25 objectForKey:@"MTK_DRAW_OFFSCREEN"];
+  processInfo9 = [MEMORY[0x1E696AE30] processInfo];
+  environment9 = [processInfo9 environment];
+  v26 = [environment9 objectForKey:@"MTK_DRAW_OFFSCREEN"];
 
-  v27 = [MEMORY[0x1E696AE30] processInfo];
-  v28 = [v27 environment];
-  v29 = [v28 objectForKey:@"MTK_FORCE_ORIENTATION"];
+  processInfo10 = [MEMORY[0x1E696AE30] processInfo];
+  environment10 = [processInfo10 environment];
+  v29 = [environment10 objectForKey:@"MTK_FORCE_ORIENTATION"];
 
   v30 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v30 setNumberStyle:1];
@@ -343,13 +343,13 @@ LABEL_29:
 {
   if (self->_autoResizeDrawable)
   {
-    v3 = [(MTKView *)self window];
+    window = [(MTKView *)self window];
 
-    if (v3)
+    if (window)
     {
-      v4 = [(MTKView *)self window];
-      v5 = [v4 screen];
-      [v5 nativeScale];
+      window2 = [(MTKView *)self window];
+      screen = [window2 screen];
+      [screen nativeScale];
       v7 = v6;
 
       [(MTKView *)self setContentScaleFactor:v7];
@@ -375,14 +375,14 @@ LABEL_29:
 
 - (void)didMoveToWindow
 {
-  v3 = [(MTKView *)self window];
+  window = [(MTKView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MTKView *)self _updateToNativeScale];
     displayLink = [(MTKView *)self window];
-    v5 = [displayLink screen];
-    [(MTKView *)self _createDisplayLinkForScreen:v5];
+    screen = [displayLink screen];
+    [(MTKView *)self _createDisplayLinkForScreen:screen];
   }
 
   else
@@ -505,29 +505,29 @@ LABEL_29:
 
 - (MTLRenderPassDescriptor)currentRenderPassDescriptor
 {
-  v3 = [(MTKView *)self currentDrawable];
-  if (v3)
+  currentDrawable = [(MTKView *)self currentDrawable];
+  if (currentDrawable)
   {
-    v4 = [MEMORY[0x1E6974128] renderPassDescriptor];
-    v5 = [v4 colorAttachments];
-    [(MTKView *)self configureColorAttachments:v5];
+    renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
+    colorAttachments = [renderPassDescriptor colorAttachments];
+    [(MTKView *)self configureColorAttachments:colorAttachments];
 
-    v6 = [(MTKView *)self depthStencilTexture];
+    depthStencilTexture = [(MTKView *)self depthStencilTexture];
 
-    if (v6)
+    if (depthStencilTexture)
     {
-      v7 = [v4 depthAttachment];
-      v8 = [v4 stencilAttachment];
-      [(MTKView *)self configureDepthAttachment:v7 stencilAttachment:v8];
+      depthAttachment = [renderPassDescriptor depthAttachment];
+      stencilAttachment = [renderPassDescriptor stencilAttachment];
+      [(MTKView *)self configureDepthAttachment:depthAttachment stencilAttachment:stencilAttachment];
     }
   }
 
   else
   {
-    v4 = 0;
+    renderPassDescriptor = 0;
   }
 
-  return v4;
+  return renderPassDescriptor;
 }
 
 - (id)currentDrawable
@@ -548,9 +548,9 @@ LABEL_29:
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
-      v9 = [WeakRetained nextDrawable];
+      nextDrawable = [WeakRetained nextDrawable];
       v10 = self->_currentDrawable;
-      self->_currentDrawable = v9;
+      self->_currentDrawable = nextDrawable;
 
       if (self->_frameNum != 1 || self->_dumpFrameAtFrame || self->_dumpFrameAtSeconds || !self->_dumpFirstFrame || !self->_framebufferOnly)
       {
@@ -588,20 +588,20 @@ LABEL_3:
       goto LABEL_19;
     }
 
-    v7 = [(MTLTexture *)depthStencilTexture width];
+    width = [(MTLTexture *)depthStencilTexture width];
     WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
     [WeakRetained drawableSize];
-    if (v9 == v7)
+    if (v9 == width)
     {
-      v10 = [(MTLTexture *)*p_depthStencilTexture height];
+      height = [(MTLTexture *)*p_depthStencilTexture height];
       v11 = objc_loadWeakRetained(&self->_metalLayer);
       [v11 drawableSize];
-      if (v12 == v10 && [(MTLTexture *)*p_depthStencilTexture sampleCount]== self->_sampleCount && [(MTLTexture *)*p_depthStencilTexture pixelFormat]== self->_depthStencilPixelFormat && [(MTLTexture *)*p_depthStencilTexture usage]== self->_depthStencilTextureUsage)
+      if (v12 == height && [(MTLTexture *)*p_depthStencilTexture sampleCount]== self->_sampleCount && [(MTLTexture *)*p_depthStencilTexture pixelFormat]== self->_depthStencilPixelFormat && [(MTLTexture *)*p_depthStencilTexture usage]== self->_depthStencilTextureUsage)
       {
-        v13 = [(MTLTexture *)*p_depthStencilTexture storageMode];
+        storageMode = [(MTLTexture *)*p_depthStencilTexture storageMode];
         depthStencilStorageMode = self->_depthStencilStorageMode;
 
-        if (v13 == depthStencilStorageMode)
+        if (storageMode == depthStencilStorageMode)
         {
           goto LABEL_3;
         }
@@ -680,56 +680,56 @@ LABEL_4:
   self->_renderAttachmentDirtyState &= ~0x80000000;
 }
 
-- (BOOL)exportToTargaAtLocation:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 size:(unint64_t)a6 bytes:(void *)a7
+- (BOOL)exportToTargaAtLocation:(id)location width:(unint64_t)width height:(unint64_t)height size:(unint64_t)size bytes:(void *)bytes
 {
-  v9 = a5;
-  v10 = a4;
+  heightCopy = height;
+  widthCopy = width;
   v11 = MEMORY[0x1E695DF88];
-  v12 = a3;
+  locationCopy = location;
   v13 = [[v11 alloc] initWithLength:18];
-  v14 = [v13 mutableBytes];
-  *v14 = 0;
-  *(v14 + 2) = 2;
-  *(v14 + 3) = 0;
-  *(v14 + 11) = 0;
-  *(v14 + 12) = v10;
-  *(v14 + 14) = v9;
-  *(v14 + 16) = 32;
-  [v13 appendBytes:a7 length:a6];
+  mutableBytes = [v13 mutableBytes];
+  *mutableBytes = 0;
+  *(mutableBytes + 2) = 2;
+  *(mutableBytes + 3) = 0;
+  *(mutableBytes + 11) = 0;
+  *(mutableBytes + 12) = widthCopy;
+  *(mutableBytes + 14) = heightCopy;
+  *(mutableBytes + 16) = 32;
+  [v13 appendBytes:bytes length:size];
   v20 = 0;
-  v15 = [v13 writeToURL:v12 options:0 error:&v20];
+  v15 = [v13 writeToURL:locationCopy options:0 error:&v20];
 
   v16 = v20;
   v17 = v16;
   if ((v15 & 1) == 0)
   {
-    v18 = [v16 localizedDescription];
-    NSLog(&cfstr_CouldnTExportI.isa, v18);
+    localizedDescription = [v16 localizedDescription];
+    NSLog(&cfstr_CouldnTExportI.isa, localizedDescription);
   }
 
   return v15;
 }
 
-- (void)_dumpFramerate:(double)a3 withFilename:(id)a4
+- (void)_dumpFramerate:(double)framerate withFilename:(id)filename
 {
   dumpPath = self->_dumpPath;
-  v6 = a4;
+  filenameCopy = filename;
   v7 = [(NSString *)dumpPath copy];
   v8 = [v7 stringByAppendingString:@"/"];
 
-  v9 = [v8 stringByAppendingString:v6];
+  v9 = [v8 stringByAppendingString:filenameCopy];
 
   v13 = [v9 stringByAppendingString:@".txt"];
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&a3];
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&framerate];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = [v10 dataUsingEncoding:4];
-  [v11 createFileAtPath:v13 contents:v12 attributes:0];
+  [defaultManager createFileAtPath:v13 contents:v12 attributes:0];
 }
 
-- (void)_dumpFrameImageWithFilename:(id)a3
+- (void)_dumpFrameImageWithFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   v5 = self->_colorPixelFormats[self->_drawableAttachmentIndex];
   v6 = 4.0;
   if (v5 - 70 > 0x2D)
@@ -764,27 +764,27 @@ LABEL_7:
   v28 = self->_colorPixelFormats[self->_drawableAttachmentIndex];
   v30 = [[MTKTextureIOBufferAllocator alloc] initWithDevice:self->_device];
   v27 = [(MTKTextureIOBufferAllocator *)v30 newBufferWithLength:v8];
-  v29 = [(MTLDevice *)self->_device newCommandQueue];
-  v9 = [v29 commandBuffer];
-  v10 = [v9 blitCommandEncoder];
+  newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
+  commandBuffer = [newCommandQueue commandBuffer];
+  blitCommandEncoder = [commandBuffer blitCommandEncoder];
   width = self->_drawableSize.width;
   height = self->_drawableSize.height;
-  v13 = [(CAMetalDrawable *)self->_currentDrawable texture];
+  texture = [(CAMetalDrawable *)self->_currentDrawable texture];
   memset(v33, 0, 24);
-  v14 = [v27 buffer];
+  buffer = [v27 buffer];
   v32[0] = width;
   v32[1] = height;
-  v15 = v4;
+  v15 = filenameCopy;
   v32[2] = 1;
-  [v10 copyFromTexture:v13 sourceSlice:0 sourceLevel:0 sourceOrigin:v33 sourceSize:v32 toBuffer:v14 destinationOffset:0 destinationBytesPerRow:v26 destinationBytesPerImage:v8];
+  [blitCommandEncoder copyFromTexture:texture sourceSlice:0 sourceLevel:0 sourceOrigin:v33 sourceSize:v32 toBuffer:buffer destinationOffset:0 destinationBytesPerRow:v26 destinationBytesPerImage:v8];
 
-  [v10 endEncoding];
-  [v9 commit];
-  [v9 waitUntilCompleted];
+  [blitCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   v16 = [MEMORY[0x1E695DFF8] URLWithString:@"file:///"];
   v17 = [v16 URLByAppendingPathComponent:self->_dumpPath];
 
-  v18 = [v17 URLByAppendingPathComponent:v4];
+  v18 = [v17 URLByAppendingPathComponent:filenameCopy];
 
   v19 = [v18 URLByAppendingPathExtension:@"png"];
 
@@ -795,31 +795,31 @@ LABEL_7:
   v22 = v31;
   if ((v18 & 1) == 0)
   {
-    v23 = [v19 absoluteString];
-    v24 = [v23 UTF8String];
-    v25 = [v22 localizedDescription];
-    printf("Image Dump Error - %s: %s ", v24, [v25 UTF8String]);
+    absoluteString = [v19 absoluteString];
+    uTF8String = [absoluteString UTF8String];
+    localizedDescription = [v22 localizedDescription];
+    printf("Image Dump Error - %s: %s ", uTF8String, [localizedDescription UTF8String]);
   }
 }
 
-- (void)setColorPixelFormat:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorPixelFormat:(unint64_t)format atIndex:(unint64_t)index
 {
-  if (a4 <= 8)
+  if (index <= 8)
   {
-    v4 = a4;
+    indexCopy = index;
     colorPixelFormats = self->_colorPixelFormats;
-    self->_colorPixelFormats[a4] = a3;
+    self->_colorPixelFormats[index] = format;
     self->_renderAttachmentDirtyState |= 0x10001u;
-    if (self->_drawableAttachmentIndex == a4)
+    if (self->_drawableAttachmentIndex == index)
     {
       WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
-      [WeakRetained setPixelFormat:a3];
+      [WeakRetained setPixelFormat:format];
     }
 
     maxValidAttachmentIndex = self->_maxValidAttachmentIndex;
-    if (a3)
+    if (format)
     {
-      if (maxValidAttachmentIndex >= v4)
+      if (maxValidAttachmentIndex >= indexCopy)
       {
         return;
       }
@@ -827,33 +827,33 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    if (maxValidAttachmentIndex == v4)
+    if (maxValidAttachmentIndex == indexCopy)
     {
       for (i = 7; ; --i)
       {
-        v4 = i;
+        indexCopy = i;
         if (colorPixelFormats[i])
         {
           break;
         }
 
-        if (!v4)
+        if (!indexCopy)
         {
           return;
         }
       }
 
 LABEL_6:
-      self->_maxValidAttachmentIndex = v4;
+      self->_maxValidAttachmentIndex = indexCopy;
     }
   }
 }
 
-- (void)setDrawableAttachmentIndex:(unint64_t)a3
+- (void)setDrawableAttachmentIndex:(unint64_t)index
 {
   if (self->_drawableAttachmentIndex <= 7)
   {
-    self->_drawableAttachmentIndex = a3;
+    self->_drawableAttachmentIndex = index;
   }
 }
 
@@ -886,7 +886,7 @@ LABEL_6:
   }
 }
 
-- (const)multisampleColorTexturesForceUpdate:(BOOL)a3
+- (const)multisampleColorTexturesForceUpdate:(BOOL)update
 {
   [(MTKView *)self colorTextures];
   v5 = &OBJC_IVAR___MTKView__forceOrientation;
@@ -900,25 +900,25 @@ LABEL_6:
     v6 = 0;
     v35 = *MEMORY[0x1E695E8D0];
     v7 = &OBJC_IVAR___MTKView__forceOrientation;
-    v36 = a3;
+    updateCopy = update;
     do
     {
-      if (a3 || (v8 = self + v5[8], (v9 = *&v8[8 * v6]) == 0))
+      if (update || (v8 = self + v5[8], (v9 = *&v8[8 * v6]) == 0))
       {
         v16 = 0;
       }
 
       else
       {
-        v10 = [v9 width];
+        width = [v9 width];
         WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
         [WeakRetained drawableSize];
-        if (v12 == v10)
+        if (v12 == width)
         {
-          v13 = [*&v8[8 * v6] height];
+          height = [*&v8[8 * v6] height];
           v14 = objc_loadWeakRetained(&self->_metalLayer);
           [v14 drawableSize];
-          v16 = v15 == v13 && [*&v8[8 * v6] sampleCount] == *(&self->super.super.super.isa + v7[3]) && objc_msgSend(*&v8[8 * v6], "pixelFormat") == self->_colorPixelFormats[v6] && objc_msgSend(*&v8[8 * v6], "usage") == self->_multisampleColorTextureUsage;
+          v16 = v15 == height && [*&v8[8 * v6] sampleCount] == *(&self->super.super.super.isa + v7[3]) && objc_msgSend(*&v8[8 * v6], "pixelFormat") == self->_colorPixelFormats[v6] && objc_msgSend(*&v8[8 * v6], "usage") == self->_multisampleColorTextureUsage;
         }
 
         else
@@ -956,7 +956,7 @@ LABEL_6:
           v7 = v23;
           v30 = [v20 texture2DDescriptorWithPixelFormat:v21 width:v29 height:v28 mipmapped:0];
 
-          a3 = v36;
+          update = updateCopy;
           [v30 setTextureType:4];
           [v30 setSampleCount:*(&self->super.super.super.isa + v17)];
           [v30 setUsage:self->_multisampleColorTextureUsage];
@@ -1010,19 +1010,19 @@ LABEL_6:
 
 - (int64_t)_calculateRefeshesPerSecond
 {
-  v2 = [(MTKView *)self window];
-  v3 = [v2 screen];
-  v4 = v3;
-  if (v3)
+  window = [(MTKView *)self window];
+  screen = [window screen];
+  v4 = screen;
+  if (screen)
   {
-    [v3 _refreshRate];
+    [screen _refreshRate];
     v6 = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 _refreshRate];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _refreshRate];
     v6 = v8;
   }
 
@@ -1037,37 +1037,37 @@ LABEL_6:
   }
 }
 
-- (void)_createDisplayLinkForScreen:(id)a3
+- (void)_createDisplayLinkForScreen:(id)screen
 {
   displayLink = self->_displayLink;
-  v5 = a3;
+  screenCopy = screen;
   [(CADisplayLink *)displayLink invalidate];
   v10 = [[MTKViewDisplayLinkTarget alloc] initWithTarget:self];
-  v6 = [v5 displayLinkWithTarget:v10 selector:sel_draw];
+  v6 = [screenCopy displayLinkWithTarget:v10 selector:sel_draw];
 
   v7 = self->_displayLink;
   self->_displayLink = v6;
 
   v8 = self->_displayLink;
-  v9 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [(CADisplayLink *)v8 addToRunLoop:v9 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [(CADisplayLink *)v8 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
   [(CADisplayLink *)self->_displayLink setPaused:self->_paused];
   [(CADisplayLink *)self->_displayLink setPreferredFramesPerSecond:self->_preferredFramesPerSecond];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   if (!self->_pausedOnBackgrounding && self->_paused)
   {
-    v5 = v4;
+    v5 = foregroundCopy;
     [(MTKView *)self setPaused:0];
-    v4 = v5;
+    foregroundCopy = v5;
   }
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   [(MTKView *)self releaseDrawables];
   paused = self->_paused;
@@ -1088,11 +1088,11 @@ LABEL_6:
   v10 = device;
   v14.receiver = self;
   v14.super_class = MTKView;
-  v11 = [(MTKView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(MTKView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, device);
+    objc_storeStrong(&height->_device, device);
     [(MTKView *)v12 __initCommon];
   }
 
@@ -1161,8 +1161,8 @@ LABEL_6:
     if ([(NSCoder *)v4 containsValueForKey:@"MTKViewClearColorCoderKey"])
     {
       v12 = [(NSCoder *)v4 decodeObjectForKey:@"MTKViewClearColorCoderKey"];
-      v13 = [v12 bytes];
-      [(MTKView *)v6 setClearColor:*v13, v13[1], v13[2], v13[3]];
+      bytes = [v12 bytes];
+      [(MTKView *)v6 setClearColor:*bytes, bytes[1], bytes[2], bytes[3]];
     }
 
     if ([(NSCoder *)v4 containsValueForKey:@"MTKViewFramebufferOnlyCoderKey"])
@@ -1210,16 +1210,16 @@ LABEL_6:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = MTKView;
-  [(MTKView *)&v18 encodeWithCoder:v4];
+  [(MTKView *)&v18 encodeWithCoder:coderCopy];
   maxValidAttachmentIndex = self->_maxValidAttachmentIndex;
   v6 = maxValidAttachmentIndex + 1;
   v7 = maxValidAttachmentIndex == -1;
-  [v4 encodeInteger:maxValidAttachmentIndex + 1 forKey:@"MTKViewNumberColorPixelFormatsCoderKey"];
+  [coderCopy encodeInteger:maxValidAttachmentIndex + 1 forKey:@"MTKViewNumberColorPixelFormatsCoderKey"];
   v8 = 8 * v6;
   v9 = malloc_type_malloc(8 * v6, 0xA42A86C0uLL);
   v10 = v9;
@@ -1237,34 +1237,34 @@ LABEL_6:
     while (v6);
   }
 
-  [v4 encodeBytes:v9 length:v8 forKey:@"MTKViewColorPixelFormatArrayCoderKey"];
+  [coderCopy encodeBytes:v9 length:v8 forKey:@"MTKViewColorPixelFormatArrayCoderKey"];
   free(v10);
-  [v4 encodeInteger:-[MTKView drawableAttachmentIndex](self forKey:{"drawableAttachmentIndex"), @"MTKViewDrawableAttachmentIndexCoderKey"}];
-  [v4 encodeInteger:-[MTKView colorPixelFormat](self forKey:{"colorPixelFormat"), @"MTKViewColorPixelFormatCoderKey"}];
-  [v4 encodeInteger:self->_depthStencilPixelFormat forKey:@"MTKViewDepthStencilPixelFormatCoderKey"];
-  [v4 encodeInteger:self->_sampleCount forKey:@"MTKViewSampleCountCoderKey"];
+  [coderCopy encodeInteger:-[MTKView drawableAttachmentIndex](self forKey:{"drawableAttachmentIndex"), @"MTKViewDrawableAttachmentIndexCoderKey"}];
+  [coderCopy encodeInteger:-[MTKView colorPixelFormat](self forKey:{"colorPixelFormat"), @"MTKViewColorPixelFormatCoderKey"}];
+  [coderCopy encodeInteger:self->_depthStencilPixelFormat forKey:@"MTKViewDepthStencilPixelFormatCoderKey"];
+  [coderCopy encodeInteger:self->_sampleCount forKey:@"MTKViewSampleCountCoderKey"];
   v14 = [MEMORY[0x1E695DEF0] dataWithBytes:&self->_clearColor length:32];
-  [v4 encodeObject:v14 forKey:@"MTKViewClearColorCoderKey"];
+  [coderCopy encodeObject:v14 forKey:@"MTKViewClearColorCoderKey"];
   clearDepth = self->_clearDepth;
   *&clearDepth = clearDepth;
-  [v4 encodeFloat:@"MTKViewClearDepthCoderKey" forKey:clearDepth];
-  [v4 encodeInteger:self->_clearStencil forKey:@"MTKViewClearStencilCoderKey"];
-  [v4 encodeInteger:self->_preferredFramesPerSecond forKey:@"MTKViewPreferredFramesPerSecondCoderKey"];
-  [v4 encodeBool:self->_enableSetNeedsDisplay forKey:@"MTKViewEnableSetNeedsDisplayCoderKey"];
-  [v4 encodeBool:self->_paused forKey:@"MTKViewPausedCoderKey"];
+  [coderCopy encodeFloat:@"MTKViewClearDepthCoderKey" forKey:clearDepth];
+  [coderCopy encodeInteger:self->_clearStencil forKey:@"MTKViewClearStencilCoderKey"];
+  [coderCopy encodeInteger:self->_preferredFramesPerSecond forKey:@"MTKViewPreferredFramesPerSecondCoderKey"];
+  [coderCopy encodeBool:self->_enableSetNeedsDisplay forKey:@"MTKViewEnableSetNeedsDisplayCoderKey"];
+  [coderCopy encodeBool:self->_paused forKey:@"MTKViewPausedCoderKey"];
   WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
-  [v4 encodeBool:objc_msgSend(WeakRetained forKey:{"framebufferOnly"), @"MTKViewFramebufferOnlyCoderKey"}];
+  [coderCopy encodeBool:objc_msgSend(WeakRetained forKey:{"framebufferOnly"), @"MTKViewFramebufferOnlyCoderKey"}];
 
   v17 = objc_loadWeakRetained(&self->_metalLayer);
-  [v4 encodeBool:objc_msgSend(v17 forKey:{"presentsWithTransaction"), @"MTKViewPresentsWithTransactionCoderKey"}];
+  [coderCopy encodeBool:objc_msgSend(v17 forKey:{"presentsWithTransaction"), @"MTKViewPresentsWithTransactionCoderKey"}];
 
-  [v4 encodeBool:self->_autoResizeDrawable forKey:@"MTKViewAutoResizeDrawableCoderKey"];
+  [coderCopy encodeBool:self->_autoResizeDrawable forKey:@"MTKViewAutoResizeDrawableCoderKey"];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
   [(CADisplayLink *)self->_displayLink invalidate];
 
   v4.receiver = self;
@@ -1283,16 +1283,16 @@ LABEL_6:
   self->_renderAttachmentDirtyState |= 0x80010000;
 }
 
-- (void)configureColorAttachments:(id)a3
+- (void)configureColorAttachments:(id)attachments
 {
-  v8 = a3;
+  attachmentsCopy = attachments;
   if (self->_sampleCount < 2)
   {
     [(MTKView *)self colorTextures];
     v6 = 0;
     do
     {
-      v7 = [v8 objectAtIndexedSubscript:v6];
+      v7 = [attachmentsCopy objectAtIndexedSubscript:v6];
       [v7 setTexture:self->_colorTextures[v6]];
       [v7 setLoadAction:2];
       [v7 setClearColor:{self->_clearColor.red, self->_clearColor.green, self->_clearColor.blue, self->_clearColor.alpha}];
@@ -1309,7 +1309,7 @@ LABEL_6:
     v4 = 0;
     do
     {
-      v5 = [v8 objectAtIndexedSubscript:v4];
+      v5 = [attachmentsCopy objectAtIndexedSubscript:v4];
       [v5 setTexture:self->_multisampleColorTextures[v4]];
       [v5 setResolveTexture:self->_colorTextures[v4]];
       [v5 setStoreAction:2];
@@ -1323,58 +1323,58 @@ LABEL_6:
   }
 }
 
-- (void)configureDepthAttachment:(id)a3 stencilAttachment:(id)a4
+- (void)configureDepthAttachment:(id)attachment stencilAttachment:(id)stencilAttachment
 {
-  v10 = a3;
-  v6 = a4;
+  attachmentCopy = attachment;
+  stencilAttachmentCopy = stencilAttachment;
   if (self->_depthStencilPixelFormat == 253)
   {
-    [v10 setTexture:0];
+    [attachmentCopy setTexture:0];
   }
 
   else
   {
-    v7 = [(MTKView *)self depthStencilTexture];
-    [v10 setTexture:v7];
+    depthStencilTexture = [(MTKView *)self depthStencilTexture];
+    [attachmentCopy setTexture:depthStencilTexture];
 
-    [v10 setLoadAction:2];
-    [v10 setStoreAction:0];
-    [v10 setClearDepth:self->_clearDepth];
+    [attachmentCopy setLoadAction:2];
+    [attachmentCopy setStoreAction:0];
+    [attachmentCopy setClearDepth:self->_clearDepth];
   }
 
   depthStencilPixelFormat = self->_depthStencilPixelFormat;
   if (depthStencilPixelFormat == 252 || depthStencilPixelFormat == 250)
   {
-    [v6 setTexture:0];
+    [stencilAttachmentCopy setTexture:0];
   }
 
   else
   {
-    v9 = [(MTKView *)self depthStencilTexture];
-    [v6 setTexture:v9];
+    depthStencilTexture2 = [(MTKView *)self depthStencilTexture];
+    [stencilAttachmentCopy setTexture:depthStencilTexture2];
 
-    [v6 setLoadAction:2];
-    [v6 setStoreAction:0];
-    [v6 setClearStencil:self->_clearStencil];
+    [stencilAttachmentCopy setLoadAction:2];
+    [stencilAttachmentCopy setStoreAction:0];
+    [stencilAttachmentCopy setClearStencil:self->_clearStencil];
   }
 }
 
 - (MTL4RenderPassDescriptor)currentMTL4RenderPassDescriptor
 {
-  v3 = [(MTKView *)self currentDrawable];
-  if (v3)
+  currentDrawable = [(MTKView *)self currentDrawable];
+  if (currentDrawable)
   {
     v4 = objc_opt_new();
-    v5 = [v4 colorAttachments];
-    [(MTKView *)self configureColorAttachments:v5];
+    colorAttachments = [v4 colorAttachments];
+    [(MTKView *)self configureColorAttachments:colorAttachments];
 
-    v6 = [(MTKView *)self depthStencilTexture];
+    depthStencilTexture = [(MTKView *)self depthStencilTexture];
 
-    if (v6)
+    if (depthStencilTexture)
     {
-      v7 = [v4 depthAttachment];
-      v8 = [v4 stencilAttachment];
-      [(MTKView *)self configureDepthAttachment:v7 stencilAttachment:v8];
+      depthAttachment = [v4 depthAttachment];
+      stencilAttachment = [v4 stencilAttachment];
+      [(MTKView *)self configureDepthAttachment:depthAttachment stencilAttachment:stencilAttachment];
     }
   }
 
@@ -1386,32 +1386,32 @@ LABEL_6:
   return v4;
 }
 
-- (CGSize)_pixelSizeFromPointSize:(CGSize)a3
+- (CGSize)_pixelSizeFromPointSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MTKView *)self window];
-  v7 = [v6 screen];
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  window = [(MTKView *)self window];
+  screen = [window screen];
+  v8 = screen;
+  if (screen)
   {
-    v9 = v7;
+    mainScreen = screen;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
-  v10 = v9;
+  v10 = mainScreen;
 
   [v10 bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v10 fixedCoordinateSpace];
-  [(MTKView *)self convertRect:v19 toCoordinateSpace:v12, v14, v16, v18];
+  fixedCoordinateSpace = [v10 fixedCoordinateSpace];
+  [(MTKView *)self convertRect:fixedCoordinateSpace toCoordinateSpace:v12, v14, v16, v18];
   v42 = CGRectIntegral(v41);
   v20 = v42.size.width;
 
@@ -1420,8 +1420,8 @@ LABEL_6:
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v10 coordinateSpace];
-  [(MTKView *)self convertRect:v29 toCoordinateSpace:v22, v24, v26, v28];
+  coordinateSpace = [v10 coordinateSpace];
+  [(MTKView *)self convertRect:coordinateSpace toCoordinateSpace:v22, v24, v26, v28];
   v44 = CGRectIntegral(v43);
   v30 = v44.size.width;
 
@@ -1454,7 +1454,7 @@ LABEL_6:
   return result;
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   if (self->_enableSetNeedsDisplay)
   {
@@ -1462,11 +1462,11 @@ LABEL_6:
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   if (self->_enableSetNeedsDisplay)
   {
-    [(MTKView *)self displayLayer:a3, a4];
+    [(MTKView *)self displayLayer:layer, context];
   }
 }
 
@@ -1492,8 +1492,8 @@ LABEL_6:
     self->_drawableScaleFactor.width = 1.0;
     [(MTKView *)self contentScaleFactor];
     self->_drawableScaleFactor.height = height / v9 / v11;
-    v12 = [(MTKView *)self delegate];
-    [v12 mtkView:self drawableSizeWillChange:{width, height}];
+    delegate = [(MTKView *)self delegate];
+    [delegate mtkView:self drawableSizeWillChange:{width, height}];
 
     p_drawableSize->width = width;
     p_drawableSize->height = height;
@@ -1504,36 +1504,36 @@ LABEL_6:
 - (id)preferredDevice
 {
   WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
-  v3 = [WeakRetained preferredDevice];
+  preferredDevice = [WeakRetained preferredDevice];
 
-  return v3;
+  return preferredDevice;
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
-  v5 = [(MTKView *)self window];
-  v6 = [v5 screen];
-  v7 = v6;
-  if (v6)
+  window = [(MTKView *)self window];
+  screen = [window screen];
+  v7 = screen;
+  if (screen)
   {
-    v8 = v6;
+    mainScreen = screen;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
-  v9 = v8;
+  v9 = mainScreen;
 
   [v9 nativeScale];
   v11 = v10;
   [(MTKView *)self contentScaleFactor];
-  if (a3 != 0.0 && v12 == a3)
+  if (factor != 0.0 && v12 == factor)
   {
     v40.receiver = self;
     v40.super_class = MTKView;
-    [(MTKView *)&v40 setContentScaleFactor:a3];
+    [(MTKView *)&v40 setContentScaleFactor:factor];
     goto LABEL_18;
   }
 
@@ -1546,13 +1546,13 @@ LABEL_6:
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [v9 fixedCoordinateSpace];
-  [(MTKView *)self convertRect:v26 toCoordinateSpace:v19, v21, v23, v25];
+  fixedCoordinateSpace = [v9 fixedCoordinateSpace];
+  [(MTKView *)self convertRect:fixedCoordinateSpace toCoordinateSpace:v19, v21, v23, v25];
   v28 = v27;
   v30 = v29;
 
-  v31 = [MEMORY[0x1E696AE30] processInfo];
-  if (([v31 isMacCatalystApp] & 1) == 0)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  if (([processInfo isMacCatalystApp] & 1) == 0)
   {
 
 LABEL_11:
@@ -1575,10 +1575,10 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  v32 = [MEMORY[0x1E696AE30] processInfo];
-  v33 = [v32 isiOSAppOnMac];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  isiOSAppOnMac = [processInfo2 isiOSAppOnMac];
 
-  if (v33)
+  if (isiOSAppOnMac)
   {
     goto LABEL_11;
   }
@@ -1589,7 +1589,7 @@ LABEL_16:
   self->_drawableScaleFactor.height = v17 / v34 / v13;
   v40.receiver = self;
   v40.super_class = MTKView;
-  [(MTKView *)&v40 setContentScaleFactor:a3];
+  [(MTKView *)&v40 setContentScaleFactor:factor];
   [(MTKView *)self contentScaleFactor];
   if (v36 == 0.0)
   {
@@ -1605,36 +1605,36 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MTKView;
-  [(MTKView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MTKView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (self->_autoResizeDrawable)
   {
     [(MTKView *)self _resizeDrawable];
   }
 }
 
-- (void)setNilValueForKey:(id)a3
+- (void)setNilValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"clearColor"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"clearColor"])
   {
     [(MTKView *)self setClearColor:0.0, 0.0, 0.0, 1.0];
   }
 
-  else if ([v4 isEqualToString:@"sampleCount"])
+  else if ([keyCopy isEqualToString:@"sampleCount"])
   {
     [(MTKView *)self setSampleCount:1];
   }
 
-  else if ([v4 isEqualToString:@"clearDepth"])
+  else if ([keyCopy isEqualToString:@"clearDepth"])
   {
     [(MTKView *)self setClearDepth:1.0];
   }
 
-  else if ([v4 isEqualToString:@"clearStencil"])
+  else if ([keyCopy isEqualToString:@"clearStencil"])
   {
     [(MTKView *)self setClearStencil:0];
   }
@@ -1643,7 +1643,7 @@ LABEL_18:
   {
     v5.receiver = self;
     v5.super_class = MTKView;
-    [(MTKView *)&v5 setNilValueForKey:v4];
+    [(MTKView *)&v5 setNilValueForKey:keyCopy];
   }
 }
 
@@ -1710,17 +1710,17 @@ LABEL_18:
 {
   self->_framebufferOnly = 0;
   WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
-  v3 = [WeakRetained framebufferOnly];
+  framebufferOnly = [WeakRetained framebufferOnly];
 
-  return v3;
+  return framebufferOnly;
 }
 
 - (BOOL)presentsWithTransaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_metalLayer);
-  v3 = [WeakRetained presentsWithTransaction];
+  presentsWithTransaction = [WeakRetained presentsWithTransaction];
 
-  return v3;
+  return presentsWithTransaction;
 }
 
 - (MTLClearColor)clearColor

@@ -1,6 +1,6 @@
 @interface VCVirtualAVCaptureConnection
 - (BOOL)active;
-- (VCVirtualAVCaptureConnection)initWithInputPorts:(id)a3 output:(id)a4;
+- (VCVirtualAVCaptureConnection)initWithInputPorts:(id)ports output:(id)output;
 - (id)inputPorts;
 - (id)output;
 - (void)dealloc;
@@ -9,12 +9,12 @@
 
 @implementation VCVirtualAVCaptureConnection
 
-- (VCVirtualAVCaptureConnection)initWithInputPorts:(id)a3 output:(id)a4
+- (VCVirtualAVCaptureConnection)initWithInputPorts:(id)ports output:(id)output
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  self->_output = v7;
-  if (!v7)
+  outputCopy = output;
+  self->_output = outputCopy;
+  if (!outputCopy)
   {
     [VCVirtualAVCaptureConnection initWithInputPorts:v11 output:?];
 LABEL_9:
@@ -22,7 +22,7 @@ LABEL_9:
     return 0;
   }
 
-  v8 = [a3 copy];
+  v8 = [ports copy];
   self->_ports = v8;
   if (!v8)
   {
@@ -33,7 +33,7 @@ LABEL_9:
   self->_stateLock._os_unfair_lock_opaque = 0;
   v10.receiver = self;
   v10.super_class = VCVirtualAVCaptureConnection;
-  result = [(AVCaptureConnection *)&v10 initWithInputPorts:a3 output:a4];
+  result = [(AVCaptureConnection *)&v10 initWithInputPorts:ports output:output];
   if (!result)
   {
     [VCVirtualAVCaptureConnection initWithInputPorts:v11 output:?];

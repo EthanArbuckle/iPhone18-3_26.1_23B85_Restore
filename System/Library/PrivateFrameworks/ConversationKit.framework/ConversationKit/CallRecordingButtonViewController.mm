@@ -1,5 +1,5 @@
 @interface CallRecordingButtonViewController
-- (_TtC15ConversationKit33CallRecordingButtonViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit33CallRecordingButtonViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)buttonTapped;
 - (void)textSizeDidChange;
 - (void)viewDidLoad;
@@ -9,30 +9,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CallRecordingButtonViewController.viewDidLoad()();
 }
 
 - (void)buttonTapped
 {
-  v2 = self;
+  selfCopy = self;
   CallRecordingButtonViewController.buttonTapped()();
 }
 
 - (void)textSizeDidChange
 {
-  v2 = self;
+  selfCopy = self;
   CallRecordingButtonViewController.textSizeDidChange()();
 }
 
-- (_TtC15ConversationKit33CallRecordingButtonViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit33CallRecordingButtonViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CallRecordingButtonViewController.init(nibName:bundle:)();
 }
 

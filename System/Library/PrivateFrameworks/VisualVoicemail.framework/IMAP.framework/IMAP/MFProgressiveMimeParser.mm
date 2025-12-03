@@ -1,46 +1,46 @@
 @interface MFProgressiveMimeParser
-- (MFProgressiveMimeParser)initWithBodyData:(id)a3 topLevelHeaders:(id)a4 headersToPreserve:(id)a5 mambaID:(const char *)a6;
+- (MFProgressiveMimeParser)initWithBodyData:(id)data topLevelHeaders:(id)headers headersToPreserve:(id)preserve mambaID:(const char *)d;
 - (id)_currentBoundary;
 - (id)context;
 - (void)_continueParsing;
 - (void)_continueParsingBody;
 - (void)_continueParsingHeaders;
 - (void)_continueParsingStartOfPart;
-- (void)_initializeTopLevelPartWithHeaders:(id)a3;
-- (void)_reportError:(id)a3;
+- (void)_initializeTopLevelPartWithHeaders:(id)headers;
+- (void)_reportError:(id)error;
 - (void)dealloc;
-- (void)noteDataLengthChanged:(unsigned int)a3;
-- (void)setDelegate:(id)a3;
+- (void)noteDataLengthChanged:(unsigned int)changed;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MFProgressiveMimeParser
 
-- (MFProgressiveMimeParser)initWithBodyData:(id)a3 topLevelHeaders:(id)a4 headersToPreserve:(id)a5 mambaID:(const char *)a6
+- (MFProgressiveMimeParser)initWithBodyData:(id)data topLevelHeaders:(id)headers headersToPreserve:(id)preserve mambaID:(const char *)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dataCopy = data;
+  headersCopy = headers;
+  preserveCopy = preserve;
   v23.receiver = self;
   v23.super_class = MFProgressiveMimeParser;
   v14 = [(MFProgressiveMimeParser *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    if (v11 && v12)
+    if (dataCopy && headersCopy)
     {
-      objc_storeStrong(&v14->_data, a3);
-      v15->_lastLength = [v11 length];
-      objc_storeStrong(&v15->_preserveHeaders, a5);
-      v15->mambaID = a6;
-      [(MFProgressiveMimeParser *)v15 _initializeTopLevelPartWithHeaders:v12];
+      objc_storeStrong(&v14->_data, data);
+      v15->_lastLength = [dataCopy length];
+      objc_storeStrong(&v15->_preserveHeaders, preserve);
+      v15->mambaID = d;
+      [(MFProgressiveMimeParser *)v15 _initializeTopLevelPartWithHeaders:headersCopy];
       p_super = getLogger_2();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
         mambaID = v15->mambaID;
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [v11 length];
+        v20 = [dataCopy length];
         *buf = 136316162;
         v25 = mambaID;
         v26 = 2080;
@@ -80,7 +80,7 @@
     v12 = 2112;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v5 = v13;
     _os_log_impl(&dword_2720B1000, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p deleted", buf, 0x2Au);
   }
@@ -91,14 +91,14 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   p_delegate = &self->_delegate;
-  if (self->_delegate != v5)
+  if (self->_delegate != delegateCopy)
   {
-    v14 = v5;
-    objc_storeStrong(p_delegate, a3);
+    v14 = delegateCopy;
+    objc_storeStrong(p_delegate, delegate);
     delegate = self->_delegate;
     *&self->_parserFlags = *&self->_parserFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     v8 = self->_delegate;
@@ -127,7 +127,7 @@
     *&self->_parserFlags = *&self->_parserFlags & 0xFB | v11;
     v12 = self->_delegate;
     p_delegate = objc_opt_respondsToSelector();
-    v5 = v14;
+    delegateCopy = v14;
     if (p_delegate)
     {
       v13 = 8;
@@ -141,7 +141,7 @@
     *&self->_parserFlags = *&self->_parserFlags & 0xF7 | v13;
   }
 
-  MEMORY[0x2821F96F8](p_delegate, v5);
+  MEMORY[0x2821F96F8](p_delegate, delegateCopy);
 }
 
 - (id)context
@@ -151,14 +151,14 @@
   return WeakRetained;
 }
 
-- (void)noteDataLengthChanged:(unsigned int)a3
+- (void)noteDataLengthChanged:(unsigned int)changed
 {
-  if (self->_lastLength < a3)
+  if (self->_lastLength < changed)
   {
-    v4 = a3;
-    if ([(NSMutableData *)self->_data length]>= a3)
+    changedCopy = changed;
+    if ([(NSMutableData *)self->_data length]>= changed)
     {
-      self->_lastLength = v4;
+      self->_lastLength = changedCopy;
 
       [(MFProgressiveMimeParser *)self _continueParsing];
     }
@@ -171,15 +171,15 @@
   }
 }
 
-- (void)_initializeTopLevelPartWithHeaders:(id)a3
+- (void)_initializeTopLevelPartWithHeaders:(id)headers
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  headersCopy = headers;
   v5 = objc_alloc_init(MEMORY[0x277D24F68]);
   topLevelPart = self->_topLevelPart;
   self->_topLevelPart = v5;
 
-  v7 = [v4 objectForKey:*MEMORY[0x277D06F88]];
+  v7 = [headersCopy objectForKey:*MEMORY[0x277D06F88]];
   v8 = v7;
   if (v7)
   {
@@ -201,7 +201,7 @@
 
   [(MFProgressiveMimeParser *)self _reportError:v11];
 LABEL_6:
-  v12 = [v4 objectForKey:*MEMORY[0x277D06F80]];
+  v12 = [headersCopy objectForKey:*MEMORY[0x277D06F80]];
 
   if (v12)
   {
@@ -229,7 +229,7 @@ LABEL_6:
           objc_enumerationMutation(v13);
         }
 
-        v12 = [v4 objectForKey:{*(*(&v22 + 1) + 8 * v17), v22}];
+        v12 = [headersCopy objectForKey:{*(*(&v22 + 1) + 8 * v17), v22}];
 
         if (v12)
         {
@@ -263,9 +263,9 @@ LABEL_6:
 - (void)_continueParsingStartOfPart
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableData *)self->_data bytes];
+  bytes = [(NSMutableData *)self->_data bytes];
   cursor = self->_cursor;
-  v5 = *(v3 + cursor);
+  v5 = *(bytes + cursor);
   if ((v5 | 0x20) == 0x2D)
   {
     lastLength = self->_lastLength;
@@ -293,13 +293,13 @@ LABEL_6:
 
     if (v5 == 13)
     {
-      if (*(v3 + cursor + 1) == 10)
+      if (*(bytes + cursor + 1) == 10)
       {
         self->_cursor = cursor + 2;
       }
     }
 
-    else if (v5 == 45 && *(v3 + cursor + 1) == 45)
+    else if (v5 == 45 && *(bytes + cursor + 1) == 45)
     {
       self->_cursor = cursor + 2;
       if ((*&self->_parserFlags & 2) != 0)
@@ -309,9 +309,9 @@ LABEL_6:
         self->_currentBoundary = 0;
       }
 
-      v8 = [(MFMimePart *)self->_currentPart parentPart];
+      parentPart = [(MFMimePart *)self->_currentPart parentPart];
       currentPart = self->_currentPart;
-      self->_currentPart = v8;
+      self->_currentPart = parentPart;
 
       *&self->_parserFlags = *&self->_parserFlags & 0x8F | 0x40;
 LABEL_12:
@@ -350,12 +350,12 @@ LABEL_12:
       self->_cursor = v3 + v4;
       v27 = 0;
       v28 = 0;
-      v22 = [(NSMutableData *)self->_data bytes];
-      v5 = [(MFMimePart *)self->_currentPart range];
-      v6 = self->_cursor - v5;
-      if (MFMimeDataGetRangeOfHeader(&v27, 0, *MEMORY[0x277D06F88], self->_data, v5, v6))
+      bytes = [(NSMutableData *)self->_data bytes];
+      range = [(MFMimePart *)self->_currentPart range];
+      v6 = self->_cursor - range;
+      if (MFMimeDataGetRangeOfHeader(&v27, 0, *MEMORY[0x277D06F88], self->_data, range, v6))
       {
-        if (*(v22 + v27 + v28 - 1) == 13)
+        if (*(bytes + v27 + v28 - 1) == 13)
         {
           --v28;
         }
@@ -364,9 +364,9 @@ LABEL_12:
         MFMimePartParseContentTypeHeader();
       }
 
-      if (MFMimeDataGetRangeOfHeader(&v27, 0, *MEMORY[0x277D06F60], self->_data, v5, v6))
+      if (MFMimeDataGetRangeOfHeader(&v27, 0, *MEMORY[0x277D06F60], self->_data, range, v6))
       {
-        if (*(v22 + v27 + v28 - 1) == 13)
+        if (*(bytes + v27 + v28 - 1) == 13)
         {
           --v28;
         }
@@ -375,9 +375,9 @@ LABEL_12:
         MFMimePartParseContentDispositionHeader();
       }
 
-      if (MFMimeDataGetRangeOfHeader(&v27, 0, *MEMORY[0x277D06F80], self->_data, v5, v6))
+      if (MFMimeDataGetRangeOfHeader(&v27, 0, *MEMORY[0x277D06F80], self->_data, range, v6))
       {
-        if (*(v22 + v27 + v28 - 1) == 13)
+        if (*(bytes + v27 + v28 - 1) == 13)
         {
           --v28;
         }
@@ -406,9 +406,9 @@ LABEL_12:
               objc_enumerationMutation(v10);
             }
 
-            if (MFMimeDataGetRangeOfHeader(&v27, 0, *(*(&v23 + 1) + 8 * i), self->_data, v5, v6))
+            if (MFMimeDataGetRangeOfHeader(&v27, 0, *(*(&v23 + 1) + 8 * i), self->_data, range, v6))
             {
-              if (*(v22 + v27 + v28 - 1) == 13)
+              if (*(bytes + v27 + v28 - 1) == 13)
               {
                 --v28;
               }
@@ -434,8 +434,8 @@ LABEL_12:
 
       [(MFMimePart *)self->_currentPart setRange:self->_cursor, 0];
       *&self->_parserFlags = *&self->_parserFlags & 0x8F | 0x30;
-      v18 = [(MFMimePart *)self->_currentPart type];
-      v19 = [v18 isEqualToString:@"multipart"];
+      type = [(MFMimePart *)self->_currentPart type];
+      v19 = [type isEqualToString:@"multipart"];
 
       if (v19)
       {
@@ -482,9 +482,9 @@ LABEL_12:
 
     if (!self->_currentBoundary)
     {
-      v12 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       v13 = self->_currentBoundary;
-      self->_currentBoundary = v12;
+      self->_currentBoundary = null;
     }
 
     currentBoundary = self->_currentBoundary;
@@ -498,19 +498,19 @@ LABEL_12:
 - (void)_continueParsingBody
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(MFProgressiveMimeParser *)self _currentBoundary];
+  _currentBoundary = [(MFProgressiveMimeParser *)self _currentBoundary];
   cursor = self->_cursor;
   lastLength = self->_lastLength;
-  v6 = [(NSMutableData *)self->_data bytes];
-  if (!v3)
+  bytes = [(NSMutableData *)self->_data bytes];
+  if (!_currentBoundary)
   {
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = bytes;
   v8 = lastLength - cursor;
-  v9 = [MEMORY[0x277CBEB68] null];
-  v10 = [v3 isEqual:v9];
+  null = [MEMORY[0x277CBEB68] null];
+  v10 = [_currentBoundary isEqual:null];
 
   if (cursor || v8 < 3 || (v10 & 1) != 0)
   {
@@ -520,8 +520,8 @@ LABEL_12:
     }
 
 LABEL_18:
-    v22 = [(MFMimePart *)self->_currentPart range];
-    [(MFMimePart *)self->_currentPart setRange:v22, self->_cursor - v22];
+    range = [(MFMimePart *)self->_currentPart range];
+    [(MFMimePart *)self->_currentPart setRange:range, self->_cursor - range];
     parserFlags = self->_parserFlags;
     if ((parserFlags & 0x70) == 0x30)
     {
@@ -535,13 +535,13 @@ LABEL_18:
     goto LABEL_33;
   }
 
-  v11 = [v3 bytes];
-  v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v11 + 2 length:objc_msgSend(v3 freeWhenDone:{"length") - 2, 0}];
+  bytes2 = [_currentBoundary bytes];
+  v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:bytes2 + 2 length:objc_msgSend(_currentBoundary freeWhenDone:{"length") - 2, 0}];
 
-  v3 = v12;
+  _currentBoundary = v12;
 LABEL_7:
-  v13 = [v3 length];
-  if (v8 < v13 || (v14 = [(NSMutableData *)self->_data mf_rangeOfData:v3 options:0 range:cursor, lastLength - cursor], v14 == 0x7FFFFFFFFFFFFFFFLL))
+  v13 = [_currentBoundary length];
+  if (v8 < v13 || (v14 = [(NSMutableData *)self->_data mf_rangeOfData:_currentBoundary options:0 range:cursor, lastLength - cursor], v14 == 0x7FFFFFFFFFFFFFFFLL))
   {
     if (v13 >= v8)
     {
@@ -553,10 +553,10 @@ LABEL_7:
       v16 = v13;
     }
 
-    v17 = [v3 bytes];
+    bytes3 = [_currentBoundary bytes];
     if (-v16 < 0)
     {
-      v18 = v17;
+      v18 = bytes3;
       v19 = v7 + lastLength;
       v20 = (v7 + lastLength - v16);
       while (memcmp(v20, v18, v16))
@@ -584,7 +584,7 @@ LABEL_16:
 
   v24 = v14;
   v25 = v15;
-  v26 = [(MFMimePart *)self->_currentPart range];
+  range2 = [(MFMimePart *)self->_currentPart range];
   v27 = getLogger_2();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
@@ -603,7 +603,7 @@ LABEL_16:
 
   if (v24)
   {
-    v30 = v24 - v26;
+    v30 = v24 - range2;
   }
 
   else
@@ -611,14 +611,14 @@ LABEL_16:
     v30 = 0;
   }
 
-  [(MFMimePart *)self->_currentPart setRange:v26, v30];
+  [(MFMimePart *)self->_currentPart setRange:range2, v30];
   if ((*&self->_parserFlags & 0x74) == 0x34)
   {
     [self->_delegate progressiveMimeParser:self beganDataForMimePart:self->_currentPart];
   }
 
-  v31 = [(MFMimePart *)self->_currentPart type];
-  v32 = [v31 isEqualToString:@"multipart"];
+  type = [(MFMimePart *)self->_currentPart type];
+  v32 = [type isEqualToString:@"multipart"];
 
   if ((v32 & 1) == 0)
   {
@@ -627,9 +627,9 @@ LABEL_16:
       [self->_delegate progressiveMimeParser:self finishedMimePart:self->_currentPart];
     }
 
-    v33 = [(MFMimePart *)self->_currentPart parentPart];
+    parentPart = [(MFMimePart *)self->_currentPart parentPart];
     currentPart = self->_currentPart;
-    self->_currentPart = v33;
+    self->_currentPart = parentPart;
   }
 
   self->_cursor = v24 + v25;
@@ -679,12 +679,12 @@ LABEL_33:
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
   if ((*&self->_parserFlags & 8) != 0)
   {
     delegate = self->_delegate;
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ProgressiveMimeParseErrorDomain" code:-1 localizedDescription:a3];
+    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ProgressiveMimeParseErrorDomain" code:-1 localizedDescription:error];
     [delegate progressiveMimeParser:self failedWithError:v6];
   }
 }

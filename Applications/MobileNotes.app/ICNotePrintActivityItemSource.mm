@@ -1,57 +1,57 @@
 @interface ICNotePrintActivityItemSource
 - (CGSize)size;
 - (ICNote)note;
-- (ICNotePrintActivityItemSource)initWithNote:(id)a3 size:(CGSize)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (ICNotePrintActivityItemSource)initWithNote:(id)note size:(CGSize)size;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation ICNotePrintActivityItemSource
 
-- (ICNotePrintActivityItemSource)initWithNote:(id)a3 size:(CGSize)a4
+- (ICNotePrintActivityItemSource)initWithNote:(id)note size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  noteCopy = note;
   v11.receiver = self;
   v11.super_class = ICNotePrintActivityItemSource;
   v8 = [(ICNotePrintActivityItemSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ICNotePrintActivityItemSource *)v8 setNote:v7];
+    [(ICNotePrintActivityItemSource *)v8 setNote:noteCopy];
     [(ICNotePrintActivityItemSource *)v9 setSize:width, height];
   }
 
   return v9;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a3;
-  v6 = [(ICNotePrintActivityItemSource *)self note];
-  v7 = [v6 isSharable];
+  controllerCopy = controller;
+  note = [(ICNotePrintActivityItemSource *)self note];
+  isSharable = [note isSharable];
 
-  if (v7)
+  if (isSharable)
   {
-    v8 = [v5 traitCollection];
-    v9 = [v8 traitCollectionByModifyingTraits:&stru_10064AF30];
+    traitCollection = [controllerCopy traitCollection];
+    v9 = [traitCollection traitCollectionByModifyingTraits:&stru_10064AF30];
 
-    v10 = [(ICNotePrintActivityItemSource *)self note];
-    v11 = [v10 textStorage];
-    v12 = [v11 styler];
+    note2 = [(ICNotePrintActivityItemSource *)self note];
+    textStorage = [note2 textStorage];
+    styler = [textStorage styler];
 
-    if (!v12)
+    if (!styler)
     {
       v13 = objc_alloc_init(ICTextController);
-      v14 = [(ICNotePrintActivityItemSource *)self note];
+      note3 = [(ICNotePrintActivityItemSource *)self note];
       [(ICNotePrintActivityItemSource *)self size];
-      v15 = [ICTextViewController createTextViewUsingTextController:v13 stylingTextUsingSeparateTextStorageForRendering:0 note:v14 containerWidth:0 forManualRendering:0 scrollState:v9 traitCollection:?];
+      v15 = [ICTextViewController createTextViewUsingTextController:v13 stylingTextUsingSeparateTextStorageForRendering:0 note:note3 containerWidth:0 forManualRendering:0 scrollState:v9 traitCollection:?];
     }
 
-    v16 = [(ICNotePrintActivityItemSource *)self note];
+    note4 = [(ICNotePrintActivityItemSource *)self note];
     [(ICNotePrintActivityItemSource *)self size];
-    v17 = [ICTextViewController printFormatterForNote:v16 withSize:v9 traitCollection:?];
+    v17 = [ICTextViewController printFormatterForNote:note4 withSize:v9 traitCollection:?];
   }
 
   else
@@ -62,7 +62,7 @@
   return v17;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = objc_alloc_init(UIPrintFormatter);
 

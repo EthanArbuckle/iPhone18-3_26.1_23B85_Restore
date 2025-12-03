@@ -1,13 +1,13 @@
 @interface GDPersonIdentifier
-- (GDPersonIdentifier)initWithRelationshipIdTriplesIterator:(id)a3;
+- (GDPersonIdentifier)initWithRelationshipIdTriplesIterator:(id)iterator;
 @end
 
 @implementation GDPersonIdentifier
 
-- (GDPersonIdentifier)initWithRelationshipIdTriplesIterator:(id)a3
+- (GDPersonIdentifier)initWithRelationshipIdTriplesIterator:(id)iterator
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iteratorCopy = iterator;
   v28.receiver = self;
   v28.super_class = GDPersonIdentifier;
   v5 = [(GDPersonIdentifier *)&v28 init];
@@ -17,8 +17,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v22 = v4;
-    obj = v4;
+    v22 = iteratorCopy;
+    obj = iteratorCopy;
     v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v6)
     {
@@ -37,19 +37,19 @@
           if (!v5->_relationshipIdentifier)
           {
             v11 = [GDRelationshipIdentifier alloc];
-            v12 = [v10 relationshipId];
-            v13 = [(GDRelationshipIdentifier *)v11 initWithString:v12];
+            relationshipId = [v10 relationshipId];
+            v13 = [(GDRelationshipIdentifier *)v11 initWithString:relationshipId];
             relationshipIdentifier = v5->_relationshipIdentifier;
             v5->_relationshipIdentifier = v13;
           }
 
-          v15 = [v10 relationshipPredicate];
+          relationshipPredicate = [v10 relationshipPredicate];
           p_type = &v5->_type;
-          if ([v15 isEqual:@"PS396"] & 1) != 0 || (p_type = &v5->_identifier, (objc_msgSend(v15, "isEqual:", @"PS69")) || (p_type = &v5->_hasProfileImage, objc_msgSend(v15, "isEqual:", @"nm_hasProfileImage")))
+          if ([relationshipPredicate isEqual:@"PS396"] & 1) != 0 || (p_type = &v5->_identifier, (objc_msgSend(relationshipPredicate, "isEqual:", @"PS69")) || (p_type = &v5->_hasProfileImage, objc_msgSend(relationshipPredicate, "isEqual:", @"nm_hasProfileImage")))
           {
-            v17 = [v10 object];
+            object = [v10 object];
             v18 = *p_type;
-            *p_type = v17;
+            *p_type = object;
           }
         }
 
@@ -62,11 +62,11 @@
     if (!v5->_relationshipIdentifier || !v5->_type)
     {
       v19 = 0;
-      v4 = v22;
+      iteratorCopy = v22;
       goto LABEL_20;
     }
 
-    v4 = v22;
+    iteratorCopy = v22;
     if (!v5->_identifier)
     {
       v19 = 0;

@@ -1,32 +1,32 @@
 @interface BRSharingCopyShareTokenOperation
-- (BRSharingCopyShareTokenOperation)initWithItemID:(id)a3;
-- (BRSharingCopyShareTokenOperation)initWithURL:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRSharingCopyShareTokenOperation)initWithItemID:(id)d;
+- (BRSharingCopyShareTokenOperation)initWithURL:(id)l;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRSharingCopyShareTokenOperation
 
-- (BRSharingCopyShareTokenOperation)initWithURL:(id)a3
+- (BRSharingCopyShareTokenOperation)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BRSharingCopyShareTokenOperation;
-  v6 = [(BRShareOperation *)&v9 initWithURL:v5];
+  v6 = [(BRShareOperation *)&v9 initWithURL:lCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
   }
 
   return v7;
 }
 
-- (BRSharingCopyShareTokenOperation)initWithItemID:(id)a3
+- (BRSharingCopyShareTokenOperation)initWithItemID:(id)d
 {
   v7.receiver = self;
   v7.super_class = BRSharingCopyShareTokenOperation;
-  v3 = [(BRShareOperation *)&v7 initWithItemIdentifier:a3];
+  v3 = [(BRShareOperation *)&v7 initWithItemIdentifier:d];
   v4 = v3;
   if (v3)
   {
@@ -47,15 +47,15 @@
   v3 = MEMORY[0x1B26FEA90](v6, a2);
   if ([(BRShareOperation *)self shouldUseDirectConnection])
   {
-    v4 = [(BRShareOperation *)self directConnectionFPFSObject];
-    v5 = [(BRShareOperation *)self itemID];
-    [v4 startOperation:self toCopyParticipantTokenWithItemID:v5 reply:v3];
+    directConnectionFPFSObject = [(BRShareOperation *)self directConnectionFPFSObject];
+    itemID = [(BRShareOperation *)self itemID];
+    [directConnectionFPFSObject startOperation:self toCopyParticipantTokenWithItemID:itemID reply:v3];
   }
 
   else
   {
-    v4 = [(BRShareOperation *)self remoteFPFSObject];
-    [v4 startOperation:self toCopyParticipantTokenWithReply:v3];
+    directConnectionFPFSObject = [(BRShareOperation *)self remoteFPFSObject];
+    [directConnectionFPFSObject startOperation:self toCopyParticipantTokenWithReply:v3];
   }
 }
 
@@ -78,31 +78,31 @@ void __40__BRSharingCopyShareTokenOperation_main__block_invoke(uint64_t a1, void
   [*(a1 + 32) completedWithResult:v9 error:v8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"shareToken"];
-  v9 = [v6 objectForKeyedSubscript:@"baseToken"];
-  v10 = [(BRSharingCopyShareTokenOperation *)self shareTokenCompletionBlock];
-  v11 = v10;
-  if (v10)
+  resultCopy = result;
+  errorCopy = error;
+  v8 = [resultCopy objectForKeyedSubscript:@"shareToken"];
+  v9 = [resultCopy objectForKeyedSubscript:@"baseToken"];
+  shareTokenCompletionBlock = [(BRSharingCopyShareTokenOperation *)self shareTokenCompletionBlock];
+  v11 = shareTokenCompletionBlock;
+  if (shareTokenCompletionBlock)
   {
-    (*(v10 + 16))(v10, v8, v7);
+    (*(shareTokenCompletionBlock + 16))(shareTokenCompletionBlock, v8, errorCopy);
     [(BRSharingCopyShareTokenOperation *)self setShareTokenCompletionBlock:0];
   }
 
-  v12 = [(BRSharingCopyShareTokenOperation *)self shareAndBaseTokenCompletionBlock];
-  v13 = v12;
-  if (v12)
+  shareAndBaseTokenCompletionBlock = [(BRSharingCopyShareTokenOperation *)self shareAndBaseTokenCompletionBlock];
+  v13 = shareAndBaseTokenCompletionBlock;
+  if (shareAndBaseTokenCompletionBlock)
   {
-    (*(v12 + 16))(v12, v8, v9, v7);
+    (*(shareAndBaseTokenCompletionBlock + 16))(shareAndBaseTokenCompletionBlock, v8, v9, errorCopy);
     [(BRSharingCopyShareTokenOperation *)self setShareAndBaseTokenCompletionBlock:0];
   }
 
   v14.receiver = self;
   v14.super_class = BRSharingCopyShareTokenOperation;
-  [(BROperation *)&v14 finishWithResult:v6 error:v7];
+  [(BROperation *)&v14 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

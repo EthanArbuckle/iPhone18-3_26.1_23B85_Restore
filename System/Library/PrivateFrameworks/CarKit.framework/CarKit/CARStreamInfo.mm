@@ -1,6 +1,6 @@
 @interface CARStreamInfo
-- (CARStreamInfo)initWithDictionary:(id)a3;
-- (CARStreamInfo)initWithStreamInfoDictionary:(id)a3;
+- (CARStreamInfo)initWithDictionary:(id)dictionary;
+- (CARStreamInfo)initWithStreamInfoDictionary:(id)dictionary;
 - (CGPoint)origin;
 - (id)description;
 @end
@@ -16,9 +16,9 @@
   return result;
 }
 
-- (CARStreamInfo)initWithDictionary:(id)a3
+- (CARStreamInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CARStreamInfo;
   v5 = [(CARStreamInfo *)&v14 init];
@@ -28,13 +28,13 @@
     goto LABEL_14;
   }
 
-  if (!CROriginFromAirPlayDictionary(v4, &v5->_origin.x))
+  if (!CROriginFromAirPlayDictionary(dictionaryCopy, &v5->_origin.x))
   {
     goto LABEL_16;
   }
 
   objc_opt_class();
-  v7 = [v4 objectForKey:@"uuid"];
+  v7 = [dictionaryCopy objectForKey:@"uuid"];
   if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -52,7 +52,7 @@
     v6->_identifier = v9;
 
     objc_opt_class();
-    v11 = [v4 objectForKey:@"zIndex"];
+    v11 = [dictionaryCopy objectForKey:@"zIndex"];
     if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v12 = v11;
@@ -81,16 +81,16 @@ LABEL_17:
   return v8;
 }
 
-- (CARStreamInfo)initWithStreamInfoDictionary:(id)a3
+- (CARStreamInfo)initWithStreamInfoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CARStreamInfo;
   v5 = [(CARStreamInfo *)&v12 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"ScreenID"];
+    v6 = [dictionaryCopy objectForKey:@"ScreenID"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;

@@ -1,52 +1,52 @@
 @interface ARFrame
 - (ARBody2D)detectedBody;
-- (ARFrame)initWithCamera:(id)a3 timestamp:(double)a4;
-- (ARFrame)initWithCoder:(id)a3;
-- (ARFrame)initWithTimestamp:(double)a3 context:(id)a4;
-- (ARHitTestResult)_hitTestFromOrigin:(float32x4_t)a3 withDirection:(float32x4_t)a4 planeAlignment:(float32x4_t)a5 forPlanes:(float32x4_t)a6 referenceOriginTransform:(uint64_t)a7;
+- (ARFrame)initWithCamera:(id)camera timestamp:(double)timestamp;
+- (ARFrame)initWithCoder:(id)coder;
+- (ARFrame)initWithTimestamp:(double)timestamp context:(id)context;
+- (ARHitTestResult)_hitTestFromOrigin:(float32x4_t)origin withDirection:(float32x4_t)direction planeAlignment:(float32x4_t)alignment forPlanes:(float32x4_t)planes referenceOriginTransform:(uint64_t)transform;
 - (ARRaycastQuery)raycastQueryFromPoint:(CGPoint)point allowingTarget:(ARRaycastTarget)target alignment:(ARRaycastTargetAlignment)alignment;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)useHittestRaycasting;
-- (CGAffineTransform)displayTransformForOrientation:(SEL)a3 viewportSize:(UIInterfaceOrientation)orientation;
+- (CGAffineTransform)displayTransformForOrientation:(SEL)orientation viewportSize:(UIInterfaceOrientation)orientation;
 - (NSArray)hitTest:(CGPoint)point types:(ARHitTestResultType)types;
 - (__n128)gravityAlignedReferenceOriginTransform;
-- (__n128)setReferenceOriginDelta:(__n128)a3;
-- (__n128)setReferenceOriginTransform:(__n128)a3;
-- (__n128)setSessionOriginTransform:(__n128)a3;
-- (__n128)setWorldAlignmentTransform:(__n128)a3;
-- (double)transformPointToNDCSpace:(double)a3;
-- (id)_hitTestEstimatedPlanesFromOrigin:(ARFrame *)self withDirection:(SEL)a2 planeAlignment:(int64_t)a3;
-- (id)_hitTestFromOrigin:(ARFrame *)self withDirection:(SEL)a2 types:(unint64_t)a3;
-- (id)_horizontalPlaneEstimateFromFeaturePoint:(ARFrame *)self fromOrigin:(SEL)a2 withDirection:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (__n128)setReferenceOriginDelta:(__n128)delta;
+- (__n128)setReferenceOriginTransform:(__n128)transform;
+- (__n128)setSessionOriginTransform:(__n128)transform;
+- (__n128)setWorldAlignmentTransform:(__n128)transform;
+- (double)transformPointToNDCSpace:(double)space;
+- (id)_hitTestEstimatedPlanesFromOrigin:(ARFrame *)self withDirection:(SEL)direction planeAlignment:(int64_t)alignment;
+- (id)_hitTestFromOrigin:(ARFrame *)self withDirection:(SEL)direction types:(unint64_t)types;
+- (id)_horizontalPlaneEstimateFromFeaturePoint:(ARFrame *)self fromOrigin:(SEL)origin withDirection:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCapturedImage:(__CVBuffer *)a3;
-- (void)setDepthConfidenceData:(__CVBuffer *)a3;
-- (void)setDepthNormalData:(__CVBuffer *)a3;
-- (void)setDownSampledMattingPixelBuffer:(__CVBuffer *)a3;
-- (void)setEstimatedDepthData:(__CVBuffer *)a3;
-- (void)setMattingScaleImagePixelBuffer:(__CVBuffer *)a3;
-- (void)setReferenceOriginChanged:(BOOL)a3;
-- (void)setReferenceOriginTransformUpdated:(BOOL)a3;
-- (void)setSegmentationBuffer:(__CVBuffer *)a3;
-- (void)setSemanticSegmentationBuffer:(__CVBuffer *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCapturedImage:(__CVBuffer *)image;
+- (void)setDepthConfidenceData:(__CVBuffer *)data;
+- (void)setDepthNormalData:(__CVBuffer *)data;
+- (void)setDownSampledMattingPixelBuffer:(__CVBuffer *)buffer;
+- (void)setEstimatedDepthData:(__CVBuffer *)data;
+- (void)setMattingScaleImagePixelBuffer:(__CVBuffer *)buffer;
+- (void)setReferenceOriginChanged:(BOOL)changed;
+- (void)setReferenceOriginTransformUpdated:(BOOL)updated;
+- (void)setSegmentationBuffer:(__CVBuffer *)buffer;
+- (void)setSemanticSegmentationBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ARFrame
 
-- (ARFrame)initWithCamera:(id)a3 timestamp:(double)a4
+- (ARFrame)initWithCamera:(id)camera timestamp:(double)timestamp
 {
-  v7 = a3;
+  cameraCopy = camera;
   v21.receiver = self;
   v21.super_class = ARFrame;
   v8 = [(ARFrame *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    v8->_timestamp = a4;
-    objc_storeStrong(&v8->_camera, a3);
+    v8->_timestamp = timestamp;
+    objc_storeStrong(&v8->_camera, camera);
     anchors = v9->_anchors;
     v11 = MEMORY[0x1E695E0F0];
     v9->_anchors = MEMORY[0x1E695E0F0];
@@ -88,17 +88,17 @@
   return v9;
 }
 
-- (ARFrame)initWithTimestamp:(double)a3 context:(id)a4
+- (ARFrame)initWithTimestamp:(double)timestamp context:(id)context
 {
-  v6 = a4;
-  v7 = [v6 imageData];
-  v8 = [[ARCamera alloc] initFromImageData:v7];
-  v9 = [(ARFrame *)self initWithCamera:v8 timestamp:a3];
+  contextCopy = context;
+  imageData = [contextCopy imageData];
+  v8 = [[ARCamera alloc] initFromImageData:imageData];
+  v9 = [(ARFrame *)self initWithCamera:v8 timestamp:timestamp];
   if (v9)
   {
-    v9->_capturedImage = CVPixelBufferRetain([v7 pixelBuffer]);
-    v10 = [v7 exifData];
-    v11 = [v10 copy];
+    v9->_capturedImage = CVPixelBufferRetain([imageData pixelBuffer]);
+    exifData = [imageData exifData];
+    v11 = [exifData copy];
     v12 = v11;
     if (v11)
     {
@@ -112,57 +112,57 @@
 
     objc_storeStrong(&v9->_exifData, v13);
 
-    v14 = [v7 tiffData];
-    v15 = [v14 copy];
+    tiffData = [imageData tiffData];
+    v15 = [tiffData copy];
     tiffData = v9->_tiffData;
     v9->_tiffData = v15;
 
-    v9->_highResolution = [v7 isHighResolution];
-    v9->_deviceOrientation = [v7 deviceOrientation];
-    [v7 currentCaptureTimestamp];
+    v9->_highResolution = [imageData isHighResolution];
+    v9->_deviceOrientation = [imageData deviceOrientation];
+    [imageData currentCaptureTimestamp];
     v9->_currentCaptureTimestamp = v17;
-    v18 = [v7 captureDate];
+    captureDate = [imageData captureDate];
     captureDate = v9->_captureDate;
-    v9->_captureDate = v18;
+    v9->_captureDate = captureDate;
 
-    v20 = [v7 depthData];
+    depthData = [imageData depthData];
     capturedDepthData = v9->_capturedDepthData;
-    v9->_capturedDepthData = v20;
+    v9->_capturedDepthData = depthData;
 
-    v22 = [v7 pointCloud];
+    pointCloud = [imageData pointCloud];
     capturedPointCloudData = v9->_capturedPointCloudData;
-    v9->_capturedPointCloudData = v22;
+    v9->_capturedPointCloudData = pointCloud;
 
-    [v7 depthDataTimestamp];
+    [imageData depthDataTimestamp];
     v9->_capturedDepthDataTimestamp = v24;
-    v25 = [v7 faceData];
+    faceData = [imageData faceData];
     faceData = v9->_faceData;
-    v9->_faceData = v25;
+    v9->_faceData = faceData;
 
-    v9->_renderFramesPerSecond = [v7 captureFramesPerSecond];
-    v9->_worldAlignment = [v6 worldAlignment];
-    if ([v7 pixelBuffer] && (objc_msgSend(v7, "isHighResolution") & 1) == 0)
+    v9->_renderFramesPerSecond = [imageData captureFramesPerSecond];
+    v9->_worldAlignment = [contextCopy worldAlignment];
+    if ([imageData pixelBuffer] && (objc_msgSend(imageData, "isHighResolution") & 1) == 0)
     {
       [v8 imageResolution];
       v28 = v27;
       [v8 imageResolution];
-      v30 = +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:](ARImageNoiseTexture, "sharedInstanceForCameraPosition:longEdgeImageResolution:", [v7 cameraPosition], fmax(v28, v29));
-      [v7 signalToNoiseRatio];
+      v30 = +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:](ARImageNoiseTexture, "sharedInstanceForCameraPosition:longEdgeImageResolution:", [imageData cameraPosition], fmax(v28, v29));
+      [imageData signalToNoiseRatio];
       [v30 snrToNoiseIntensity:?];
       v9->_cameraGrainIntensity = v31;
-      v32 = [v30 texture];
+      texture = [v30 texture];
       cameraGrainTexture = v9->_cameraGrainTexture;
-      v9->_cameraGrainTexture = v32;
+      v9->_cameraGrainTexture = texture;
 
       v9->_imageNoiseIntensity = v9->_cameraGrainIntensity;
       objc_storeStrong(&v9->_imageNoiseTexture, v9->_cameraGrainTexture);
     }
 
-    v34 = [v7 latestUltraWideImage];
-    v35 = v34;
-    if (v34)
+    latestUltraWideImage = [imageData latestUltraWideImage];
+    v35 = latestUltraWideImage;
+    if (latestUltraWideImage)
     {
-      v9->_capturedUltraWideImage = CVPixelBufferRetain([v34 pixelBuffer]);
+      v9->_capturedUltraWideImage = CVPixelBufferRetain([latestUltraWideImage pixelBuffer]);
       [v35 timestamp];
       v9->_ultraWideImageTimestamp = v36;
       v37 = [[ARCamera alloc] initFromImageData:v35];
@@ -170,122 +170,122 @@
       v9->_ultraWideCamera = v37;
     }
 
-    if ([v7 visionDataWasDelivered])
+    if ([imageData visionDataWasDelivered])
     {
-      v39 = 1;
+      visionDataWasDelivered = 1;
     }
 
     else
     {
-      v39 = [v35 visionDataWasDelivered];
+      visionDataWasDelivered = [v35 visionDataWasDelivered];
     }
 
-    v9->_visionDataWasDelivered = v39;
+    v9->_visionDataWasDelivered = visionDataWasDelivered;
   }
 
   return v9;
 }
 
-- (void)setCapturedImage:(__CVBuffer *)a3
+- (void)setCapturedImage:(__CVBuffer *)image
 {
   capturedImage = self->_capturedImage;
-  if (capturedImage != a3)
+  if (capturedImage != image)
   {
     CVPixelBufferRelease(capturedImage);
-    self->_capturedImage = CVPixelBufferRetain(a3);
+    self->_capturedImage = CVPixelBufferRetain(image);
   }
 }
 
-- (void)setSegmentationBuffer:(__CVBuffer *)a3
+- (void)setSegmentationBuffer:(__CVBuffer *)buffer
 {
   segmentationBuffer = self->_segmentationBuffer;
-  if (segmentationBuffer != a3)
+  if (segmentationBuffer != buffer)
   {
     CVPixelBufferRelease(segmentationBuffer);
-    self->_segmentationBuffer = a3;
+    self->_segmentationBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setEstimatedDepthData:(__CVBuffer *)a3
+- (void)setEstimatedDepthData:(__CVBuffer *)data
 {
   estimatedDepthData = self->_estimatedDepthData;
-  if (estimatedDepthData != a3)
+  if (estimatedDepthData != data)
   {
     CVPixelBufferRelease(estimatedDepthData);
-    self->_estimatedDepthData = a3;
+    self->_estimatedDepthData = data;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(data);
   }
 }
 
-- (void)setDepthConfidenceData:(__CVBuffer *)a3
+- (void)setDepthConfidenceData:(__CVBuffer *)data
 {
   depthConfidenceData = self->_depthConfidenceData;
-  if (depthConfidenceData != a3)
+  if (depthConfidenceData != data)
   {
     CVPixelBufferRelease(depthConfidenceData);
-    self->_depthConfidenceData = a3;
+    self->_depthConfidenceData = data;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(data);
   }
 }
 
-- (void)setDepthNormalData:(__CVBuffer *)a3
+- (void)setDepthNormalData:(__CVBuffer *)data
 {
   depthNormalData = self->_depthNormalData;
-  if (depthNormalData != a3)
+  if (depthNormalData != data)
   {
     CVPixelBufferRelease(depthNormalData);
-    self->_depthNormalData = a3;
+    self->_depthNormalData = data;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(data);
   }
 }
 
-- (void)setSemanticSegmentationBuffer:(__CVBuffer *)a3
+- (void)setSemanticSegmentationBuffer:(__CVBuffer *)buffer
 {
   semanticSegmentationBuffer = self->_semanticSegmentationBuffer;
-  if (semanticSegmentationBuffer != a3)
+  if (semanticSegmentationBuffer != buffer)
   {
     CVPixelBufferRelease(semanticSegmentationBuffer);
-    self->_semanticSegmentationBuffer = a3;
+    self->_semanticSegmentationBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setDownSampledMattingPixelBuffer:(__CVBuffer *)a3
+- (void)setDownSampledMattingPixelBuffer:(__CVBuffer *)buffer
 {
   downSampledMattingPixelBuffer = self->_downSampledMattingPixelBuffer;
-  if (downSampledMattingPixelBuffer != a3)
+  if (downSampledMattingPixelBuffer != buffer)
   {
     CVPixelBufferRelease(downSampledMattingPixelBuffer);
-    self->_downSampledMattingPixelBuffer = a3;
+    self->_downSampledMattingPixelBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setMattingScaleImagePixelBuffer:(__CVBuffer *)a3
+- (void)setMattingScaleImagePixelBuffer:(__CVBuffer *)buffer
 {
   mattingScaleImagePixelBuffer = self->_mattingScaleImagePixelBuffer;
-  if (mattingScaleImagePixelBuffer != a3)
+  if (mattingScaleImagePixelBuffer != buffer)
   {
     CVPixelBufferRelease(mattingScaleImagePixelBuffer);
-    self->_mattingScaleImagePixelBuffer = a3;
+    self->_mattingScaleImagePixelBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
 - (ARBody2D)detectedBody
 {
-  v2 = [(ARFrame *)self detectedBodies];
-  v3 = [v2 firstObject];
+  detectedBodies = [(ARFrame *)self detectedBodies];
+  firstObject = [detectedBodies firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)dealloc
@@ -305,14 +305,14 @@
   [(ARFrame *)&v3 dealloc];
 }
 
-- (double)transformPointToNDCSpace:(double)a3
+- (double)transformPointToNDCSpace:(double)space
 {
   v3 = a2;
   v13 = (v3 * 2.0) + -1.0;
-  v4 = a3;
-  v12 = (v4 * -2.0) + 1.0;
-  v5 = [a1 camera];
-  [v5 projectionMatrix];
+  spaceCopy = space;
+  v12 = (spaceCopy * -2.0) + 1.0;
+  camera = [self camera];
+  [camera projectionMatrix];
   v15 = __invert_f4(v14);
   v8 = v15.columns[0];
   v9 = v15.columns[1];
@@ -327,11 +327,11 @@
 - (NSArray)hitTest:(CGPoint)point types:(ARHitTestResultType)types
 {
   [(ARFrame *)self transformPointToNDCSpace:point.x, point.y];
-  v6 = [(ARFrame *)self camera];
-  [v6 transform];
+  camera = [(ARFrame *)self camera];
+  [camera transform];
 
-  v7 = [(ARFrame *)self camera];
-  [v7 transform];
+  camera2 = [(ARFrame *)self camera];
+  [camera2 transform];
 
   return [ARFrame _hitTestFromOrigin:"_hitTestFromOrigin:withDirection:types:" withDirection:types types:?];
 }
@@ -340,12 +340,12 @@
 {
   [(ARFrame *)self transformPointToNDCSpace:point.x, point.y];
   v24 = v8;
-  v9 = [(ARFrame *)self camera];
-  [v9 transform];
+  camera = [(ARFrame *)self camera];
+  [camera transform];
   v25 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v10, v24.f32[0]), v11, *v24.f32, 1), v12, v24, 2), v13, v24, 3);
 
-  v14 = [(ARFrame *)self camera];
-  [v14 transform];
+  camera2 = [(ARFrame *)self camera];
+  [camera2 transform];
   v26 = vsubq_f32(v25, v15);
   v16 = vmulq_f32(v26, v26);
   *&v17 = v16.f32[2] + vaddv_f32(*v16.f32);
@@ -354,38 +354,38 @@
   LODWORD(v23) = vmul_f32(*v16.f32, vrsqrts_f32(v17, vmul_f32(*v16.f32, *v16.f32))).u32[0];
 
   v18 = [ARRaycastQuery alloc];
-  v19 = [(ARFrame *)self camera];
-  [v19 transform];
+  camera3 = [(ARFrame *)self camera];
+  [camera3 transform];
   v21 = [(ARRaycastQuery *)v18 initWithOrigin:target direction:alignment allowingTarget:v20 alignment:*vmulq_n_f32(v26, v23).i64];
 
   return v21;
 }
 
-- (CGAffineTransform)displayTransformForOrientation:(SEL)a3 viewportSize:(UIInterfaceOrientation)orientation
+- (CGAffineTransform)displayTransformForOrientation:(SEL)orientation viewportSize:(UIInterfaceOrientation)orientation
 {
   height = viewportSize.height;
   width = viewportSize.width;
-  v12 = [(ARFrame *)self camera];
-  [v12 imageResolution];
+  camera = [(ARFrame *)self camera];
+  [camera imageResolution];
   ARCameraImageToViewTransform(orientation, 0, retstr, v9, v10, width, height);
 
   return result;
 }
 
-- (__n128)setReferenceOriginTransform:(__n128)a3
+- (__n128)setReferenceOriginTransform:(__n128)transform
 {
   result[31] = a2;
-  result[32] = a3;
+  result[32] = transform;
   result[33] = a4;
   result[34] = a5;
   result[1].n128_u64[1] |= 1uLL;
   return result;
 }
 
-- (void)setReferenceOriginTransformUpdated:(BOOL)a3
+- (void)setReferenceOriginTransformUpdated:(BOOL)updated
 {
   v3 = 2;
-  if (!a3)
+  if (!updated)
   {
     v3 = 0;
   }
@@ -393,10 +393,10 @@
   self->_transformFlags = self->_transformFlags & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setReferenceOriginChanged:(BOOL)a3
+- (void)setReferenceOriginChanged:(BOOL)changed
 {
   v3 = 4;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -404,30 +404,30 @@
   self->_transformFlags = self->_transformFlags & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (__n128)setReferenceOriginDelta:(__n128)a3
+- (__n128)setReferenceOriginDelta:(__n128)delta
 {
   result[35] = a2;
-  result[36] = a3;
+  result[36] = delta;
   result[37] = a4;
   result[38] = a5;
   result[1].n128_u64[1] |= 8uLL;
   return result;
 }
 
-- (__n128)setSessionOriginTransform:(__n128)a3
+- (__n128)setSessionOriginTransform:(__n128)transform
 {
   result[39] = a2;
-  result[40] = a3;
+  result[40] = transform;
   result[41] = a4;
   result[42] = a5;
   result[1].n128_u64[1] |= 0x10uLL;
   return result;
 }
 
-- (__n128)setWorldAlignmentTransform:(__n128)a3
+- (__n128)setWorldAlignmentTransform:(__n128)transform
 {
   result[43] = a2;
-  result[44] = a3;
+  result[44] = transform;
   result[45] = a4;
   result[46] = a5;
   result[1].n128_u64[1] |= 0x20uLL;
@@ -436,14 +436,14 @@
 
 - (__n128)gravityAlignedReferenceOriginTransform
 {
-  if ([a1 sessionOriginTransformAvailable] && objc_msgSend(a1, "worldAlignmentTransformAvailable"))
+  if ([self sessionOriginTransformAvailable] && objc_msgSend(self, "worldAlignmentTransformAvailable"))
   {
-    v10 = __invert_f4(*(a1 + 688));
+    v10 = __invert_f4(*(self + 688));
     v2 = 0;
-    v3 = *(a1 + 624);
-    v4 = *(a1 + 640);
-    v5 = *(a1 + 656);
-    v6 = *(a1 + 672);
+    v3 = *(self + 624);
+    v4 = *(self + 640);
+    v5 = *(self + 656);
+    v6 = *(self + 672);
     v8 = v10;
     memset(v9, 0, sizeof(v9));
     do
@@ -456,14 +456,14 @@
     v10.columns[0].i64[0] = *&v9[0];
   }
 
-  else if ([a1 worldAlignmentTransformAvailable])
+  else if ([self worldAlignmentTransformAvailable])
   {
-    v10.columns[0].i64[0] = __invert_f4(*(a1 + 688));
+    v10.columns[0].i64[0] = __invert_f4(*(self + 688));
   }
 
-  else if ([a1 sessionOriginTransformAvailable])
+  else if ([self sessionOriginTransformAvailable])
   {
-    v10.columns[0] = *(a1 + 624);
+    v10.columns[0] = *(self + 624);
   }
 
   else
@@ -481,11 +481,11 @@
     return 0;
   }
 
-  v3 = [(ARFrame *)self capturedPointCloudData];
-  if (v3)
+  capturedPointCloudData = [(ARFrame *)self capturedPointCloudData];
+  if (capturedPointCloudData)
   {
-    v4 = [(ARFrame *)self capturedPointCloudData];
-    v5 = [v4 count] != 0;
+    capturedPointCloudData2 = [(ARFrame *)self capturedPointCloudData];
+    v5 = [capturedPointCloudData2 count] != 0;
   }
 
   else
@@ -496,23 +496,23 @@
   return v5;
 }
 
-- (id)_hitTestFromOrigin:(ARFrame *)self withDirection:(SEL)a2 types:(unint64_t)a3
+- (id)_hitTestFromOrigin:(ARFrame *)self withDirection:(SEL)direction types:(unint64_t)types
 {
   v67 = v3;
   v68 = v4;
   v80 = *MEMORY[0x1E69E9840];
   [(ARFrame *)self timestamp];
   kdebug_trace();
-  [ARSessionMetrics recordHitTest:a3];
+  [ARSessionMetrics recordHitTest:types];
   v7 = objc_opt_new();
-  if ((a3 & 0x38) != 0)
+  if ((types & 0x38) != 0)
   {
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v8 = [(ARFrame *)self anchors];
-    v9 = [v8 countByEnumeratingWithState:&v69 objects:v79 count:16];
+    anchors = [(ARFrame *)self anchors];
+    v9 = [anchors countByEnumeratingWithState:&v69 objects:v79 count:16];
     if (!v9)
     {
       goto LABEL_23;
@@ -526,14 +526,14 @@
       {
         if (*v70 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(anchors);
         }
 
         v13 = *(*(&v69 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ((a3 & 0x20) != 0)
+          if ((types & 0x20) != 0)
           {
             v14 = [v13 _hitTestFromOrigin:1 withDirection:1 usingExtent:v67 usingGeometry:v68];
             if (v14)
@@ -541,10 +541,10 @@
               [v7 addObject:v14];
             }
 
-            if ((a3 & 0x10) == 0)
+            if ((types & 0x10) == 0)
             {
 LABEL_10:
-              if ((a3 & 8) == 0)
+              if ((types & 8) == 0)
               {
                 continue;
               }
@@ -560,7 +560,7 @@ LABEL_18:
             }
           }
 
-          else if ((a3 & 0x10) == 0)
+          else if ((types & 0x10) == 0)
           {
             goto LABEL_10;
           }
@@ -571,14 +571,14 @@ LABEL_18:
             [v7 addObject:v15];
           }
 
-          if ((a3 & 8) != 0)
+          if ((types & 8) != 0)
           {
             goto LABEL_18;
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v69 objects:v79 count:16];
+      v10 = [anchors countByEnumeratingWithState:&v69 objects:v79 count:16];
       if (!v10)
       {
 LABEL_23:
@@ -588,14 +588,14 @@ LABEL_23:
     }
   }
 
-  v17 = [(ARFrame *)self featurePoints];
+  featurePoints = [(ARFrame *)self featurePoints];
 
-  if (v17)
+  if (featurePoints)
   {
     v18 = [v7 count];
-    if ((a3 & 2) != 0)
+    if ((types & 2) != 0)
     {
-      v19 = [(ARFrame *)self worldAlignment];
+      worldAlignment = [(ARFrame *)self worldAlignment];
       if (v18)
       {
         v20 = 0;
@@ -606,41 +606,41 @@ LABEL_23:
         v20 = *(&v68 + 1) <= -0.00000011921;
       }
 
-      v21 = a3 & 0xFD;
+      typesCopy = types & 0xFD;
       if (v20)
       {
-        v21 = a3;
+        typesCopy = types;
       }
 
-      if (v19 != 2)
+      if (worldAlignment != 2)
       {
-        LOBYTE(a3) = v21;
+        LOBYTE(types) = typesCopy;
       }
     }
 
-    if ((a3 & 1) == 0)
+    if ((types & 1) == 0)
     {
-      v22 = [(ARFrame *)self useHittestRaycasting];
+      useHittestRaycasting = [(ARFrame *)self useHittestRaycasting];
       v23 = 0;
-      if ((a3 & 2) == 0 || v22)
+      if ((types & 2) == 0 || useHittestRaycasting)
       {
         goto LABEL_47;
       }
     }
 
-    v24 = [(ARFrame *)self camera];
-    [v24 intrinsics];
+    camera = [(ARFrame *)self camera];
+    [camera intrinsics];
     v62 = v26;
     v64 = v25;
     v60 = v27;
-    v28 = [(ARFrame *)self camera];
-    [v28 imageResolution];
+    camera2 = [(ARFrame *)self camera];
+    [camera2 imageResolution];
     LODWORD(v65) = ARCameraFieldOfViewFromIntrinsics(v64, v62, v60, v29, v30).u32[0];
 
     if ([(ARFrame *)self useHittestRaycasting])
     {
-      v31 = [(ARFrame *)self camera];
-      [v31 transform];
+      camera3 = [(ARFrame *)self camera];
+      [camera3 transform];
       v36 = 0;
       v73[0] = xmmword_1C25C9230;
       v73[1] = xmmword_1C25C9240;
@@ -662,14 +662,14 @@ LABEL_23:
       v58 = v74;
       v59 = v75;
 
-      v37 = [(ARFrame *)self capturedPointCloudData];
+      capturedPointCloudData = [(ARFrame *)self capturedPointCloudData];
       v38 = v65 * 0.5;
       *&v39 = v65 * 0.5;
-      v23 = [v37 _hitTestPointFromOrigin:v67 withDirection:v68 maximumAngle:v39 cameraToWorldTransform:{*&v58, *&v59, v61, v63}];
+      v23 = [capturedPointCloudData _hitTestPointFromOrigin:v67 withDirection:v68 maximumAngle:v39 cameraToWorldTransform:{*&v58, *&v59, v61, v63}];
 
       if (v23)
       {
-        if ((a3 & 1) == 0)
+        if ((types & 1) == 0)
         {
           goto LABEL_47;
         }
@@ -687,10 +687,10 @@ LABEL_23:
     *&v41 = v38;
     v23 = [v40 _hitTestPointFromOrigin:v67 withDirection:v68 maximumAngle:v41 cameraToWorldTransform:{*MEMORY[0x1E69E9B18], *(MEMORY[0x1E69E9B18] + 16), *(MEMORY[0x1E69E9B18] + 32), *(MEMORY[0x1E69E9B18] + 48)}];
 
-    if ((a3 & 1) == 0)
+    if ((types & 1) == 0)
     {
 LABEL_47:
-      if ((a3 & 2) != 0)
+      if ((types & 2) != 0)
       {
         if ([(ARFrame *)self useHittestRaycasting])
         {
@@ -721,7 +721,7 @@ LABEL_47:
         }
       }
 
-      if (!v18 && (a3 & 4) != 0)
+      if (!v18 && (types & 4) != 0)
       {
         if ([(ARFrame *)self useHittestRaycasting])
         {
@@ -766,7 +766,7 @@ LABEL_63:
   return v7;
 }
 
-- (id)_horizontalPlaneEstimateFromFeaturePoint:(ARFrame *)self fromOrigin:(SEL)a2 withDirection:
+- (id)_horizontalPlaneEstimateFromFeaturePoint:(ARFrame *)self fromOrigin:(SEL)origin withDirection:
 {
   v36 = v4;
   v38 = v3;
@@ -871,14 +871,14 @@ LABEL_63:
   return v13;
 }
 
-- (ARHitTestResult)_hitTestFromOrigin:(float32x4_t)a3 withDirection:(float32x4_t)a4 planeAlignment:(float32x4_t)a5 forPlanes:(float32x4_t)a6 referenceOriginTransform:(uint64_t)a7
+- (ARHitTestResult)_hitTestFromOrigin:(float32x4_t)origin withDirection:(float32x4_t)direction planeAlignment:(float32x4_t)alignment forPlanes:(float32x4_t)planes referenceOriginTransform:(uint64_t)transform
 {
   v11 = a10;
   v12 = 0;
   if ([v11 count])
   {
     v13 = 0;
-    v14 = fabsf(a4.f32[1] + -1.0);
+    v14 = fabsf(direction.f32[1] + -1.0);
     v15 = 2;
     if (a9)
     {
@@ -905,7 +905,7 @@ LABEL_63:
         v55 = 0u;
         do
         {
-          *(&v52 + v19 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a3, COERCE_FLOAT(v51[v19])), a4, *&v51[v19], 1), a5, v51[v19], 2), a6, v51[v19], 3);
+          *(&v52 + v19 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(origin, COERCE_FLOAT(v51[v19])), direction, *&v51[v19], 1), alignment, v51[v19], 2), planes, v51[v19], 3);
           ++v19;
         }
 
@@ -923,7 +923,7 @@ LABEL_63:
           ARMatrix4x4FromRotationAndTranslation();
         }
 
-        v28 = vsubq_f32(v24, a1);
+        v28 = vsubq_f32(v24, self);
         v29 = vmulq_f32(v28, v28);
         *&v30 = v29.f32[2] + vaddv_f32(*v29.f32);
         v31 = vrsqrte_f32(v30);
@@ -937,10 +937,10 @@ LABEL_63:
           v41 = v25;
           v42 = v26;
           v35 = [ARPlaneAnchor alloc];
-          v36 = [v18 identifier];
-          v37 = [(ARPlaneAnchor *)v35 initWithIdentifier:v36 transform:a9 alignment:v41, v42, v43, v44];
+          identifier = [v18 identifier];
+          v37 = [(ARPlaneAnchor *)v35 initWithIdentifier:identifier transform:a9 alignment:v41, v42, v43, v44];
 
-          v38 = [(ARPlaneAnchor *)v37 _hitTestFromOrigin:0 withDirection:0 usingExtent:*a1.i64 usingGeometry:*a2.i64];
+          v38 = [(ARPlaneAnchor *)v37 _hitTestFromOrigin:0 withDirection:0 usingExtent:*self.i64 usingGeometry:*a2.i64];
           if (v38)
           {
             if (!v12)
@@ -968,19 +968,19 @@ LABEL_63:
   return v12;
 }
 
-- (id)_hitTestEstimatedPlanesFromOrigin:(ARFrame *)self withDirection:(SEL)a2 planeAlignment:(int64_t)a3
+- (id)_hitTestEstimatedPlanesFromOrigin:(ARFrame *)self withDirection:(SEL)direction planeAlignment:(int64_t)alignment
 {
   v18 = v3;
   v19 = v4;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (!a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!alignment)
   {
-    p_cachedHorizontalPlaneAnchors = &v6->_cachedHorizontalPlaneAnchors;
-    v8 = v6->_cachedHorizontalPlaneAnchors;
+    p_cachedHorizontalPlaneAnchors = &selfCopy->_cachedHorizontalPlaneAnchors;
+    v8 = selfCopy->_cachedHorizontalPlaneAnchors;
     if (!v8)
     {
-      v9 = [ARPlaneEstimationTechnique detectPlanes:1 withFrame:v6];
+      v9 = [ARPlaneEstimationTechnique detectPlanes:1 withFrame:selfCopy];
       goto LABEL_7;
     }
 
@@ -989,37 +989,37 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  p_cachedHorizontalPlaneAnchors = &v6->_cachedVerticalPlaneAnchors;
-  v8 = v6->_cachedVerticalPlaneAnchors;
+  p_cachedHorizontalPlaneAnchors = &selfCopy->_cachedVerticalPlaneAnchors;
+  v8 = selfCopy->_cachedVerticalPlaneAnchors;
   if (v8)
   {
     goto LABEL_5;
   }
 
-  v9 = [ARPlaneEstimationTechnique detectPlanes:2 withFrame:v6];
+  v9 = [ARPlaneEstimationTechnique detectPlanes:2 withFrame:selfCopy];
 LABEL_7:
   v10 = v9;
   v11 = *p_cachedHorizontalPlaneAnchors;
   *p_cachedHorizontalPlaneAnchors = v10;
 
 LABEL_8:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  [(ARFrame *)v6 referenceOriginTransform];
-  v16 = [(ARFrame *)v6 _hitTestFromOrigin:a3 withDirection:v10 planeAlignment:v18 forPlanes:v19 referenceOriginTransform:v12, v13, v14, v15];
+  [(ARFrame *)selfCopy referenceOriginTransform];
+  v16 = [(ARFrame *)selfCopy _hitTestFromOrigin:alignment withDirection:v10 planeAlignment:v18 forPlanes:v19 referenceOriginTransform:v12, v13, v14, v15];
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(ARFrame *)self timestamp];
     v6 = v5;
-    [v4 timestamp];
+    [equalCopy timestamp];
     v8 = v6 == v7;
   }
 
@@ -1041,14 +1041,14 @@ LABEL_8:
   [(ARFrame *)self timestamp];
   [v6 appendFormat:@" timestamp=%f", v7];
   [v6 appendFormat:@" capturedImage=%p", -[ARFrame capturedImage](self, "capturedImage")];
-  v8 = [(ARFrame *)self camera];
-  [v6 appendFormat:@" camera=%p", v8];
+  camera = [(ARFrame *)self camera];
+  [v6 appendFormat:@" camera=%p", camera];
 
-  v9 = [(ARFrame *)self lightEstimate];
-  [v6 appendFormat:@" lightEstimate=%p", v9];
+  lightEstimate = [(ARFrame *)self lightEstimate];
+  [v6 appendFormat:@" lightEstimate=%p", lightEstimate];
 
-  v10 = [(ARFrame *)self anchors];
-  if ([v10 count] == 1)
+  anchors = [(ARFrame *)self anchors];
+  if ([anchors count] == 1)
   {
     v11 = @"1 anchor";
   }
@@ -1056,76 +1056,76 @@ LABEL_8:
   else
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(ARFrame *)self anchors];
-    v11 = [v12 stringWithFormat:@"%d anchors", objc_msgSend(v13, "count")];
+    anchors2 = [(ARFrame *)self anchors];
+    v11 = [v12 stringWithFormat:@"%d anchors", objc_msgSend(anchors2, "count")];
   }
 
   [v6 appendFormat:@" | %@", v11];
-  v14 = [(ARFrame *)self featurePoints];
-  [v6 appendFormat:@", %d features", objc_msgSend(v14, "count")];
+  featurePoints = [(ARFrame *)self featurePoints];
+  [v6 appendFormat:@", %d features", objc_msgSend(featurePoints, "count")];
 
   [v6 appendString:@">"];
 
   return v6;
 }
 
-- (ARFrame)initWithCoder:(id)a3
+- (ARFrame)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = ARFrame;
   v5 = [(ARFrame *)&v49 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v6;
-    [v4 decodeDoubleForKey:@"currentCaptureTimestamp"];
+    [coderCopy decodeDoubleForKey:@"currentCaptureTimestamp"];
     v5->_currentCaptureTimestamp = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"camera"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"camera"];
     camera = v5->_camera;
     v5->_camera = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v10;
 
-    [v4 decodeDoubleForKey:@"heading"];
+    [coderCopy decodeDoubleForKey:@"heading"];
     v5->_heading = v12;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawLocation"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawLocation"];
     rawLocation = v5->_rawLocation;
     v5->_rawLocation = v13;
 
-    [v4 decodeDoubleForKey:@"rawHeading"];
+    [coderCopy decodeDoubleForKey:@"rawHeading"];
     v5->_rawHeading = v15;
-    [v4 decodeDoubleForKey:@"rawLocationTimestamp"];
+    [coderCopy decodeDoubleForKey:@"rawLocationTimestamp"];
     v5->_rawLocationTimestamp = v16;
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vlState"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vlState"];
     vlState = v5->_vlState;
     v5->_vlState = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geoTrackingStatus"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoTrackingStatus"];
     geoTrackingStatus = v5->_geoTrackingStatus;
     v5->_geoTrackingStatus = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vlDebugInfo"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vlDebugInfo"];
     vlDebugInfo = v5->_vlDebugInfo;
     v5->_vlDebugInfo = v21;
 
-    [v4 decodeDoubleForKey:@"undulation"];
+    [coderCopy decodeDoubleForKey:@"undulation"];
     v5->_undulation = v23;
-    [v4 decodeDoubleForKey:@"capturedDepthDataTimestamp"];
+    [coderCopy decodeDoubleForKey:@"capturedDepthDataTimestamp"];
     v5->_capturedDepthDataTimestamp = v24;
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"anchors"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"anchors"];
     anchors = v5->_anchors;
     v5->_anchors = v28;
 
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"privateAnchors"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"privateAnchors"];
     v34 = v33;
     if (v33)
     {
@@ -1139,106 +1139,106 @@ LABEL_8:
 
     objc_storeStrong(&v5->_privateAnchors, v35);
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lightEstimate"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lightEstimate"];
     lightEstimate = v5->_lightEstimate;
     v5->_lightEstimate = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featurePoints"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featurePoints"];
     featurePoints = v5->_featurePoints;
     v5->_featurePoints = v38;
 
-    v5->_renderFramesPerSecond = [v4 decodeIntegerForKey:@"renderFramesPerSecond"];
-    v5->_shouldRestrictFrameRate = [v4 decodeBoolForKey:@"shouldRestrictFrameRate"];
-    v5->_worldMappingStatus = [v4 decodeIntegerForKey:@"worldMappingStatus"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceData"];
+    v5->_renderFramesPerSecond = [coderCopy decodeIntegerForKey:@"renderFramesPerSecond"];
+    v5->_shouldRestrictFrameRate = [coderCopy decodeBoolForKey:@"shouldRestrictFrameRate"];
+    v5->_worldMappingStatus = [coderCopy decodeIntegerForKey:@"worldMappingStatus"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceData"];
     faceData = v5->_faceData;
     v5->_faceData = v40;
 
-    v5->_highResolution = [v4 decodeBoolForKey:@"highResolution"];
+    v5->_highResolution = [coderCopy decodeBoolForKey:@"highResolution"];
     v42 = MEMORY[0x1E695DFD8];
     v43 = objc_opt_class();
     v44 = objc_opt_class();
     v45 = objc_opt_class();
     v46 = [v42 setWithObjects:{v43, v44, v45, objc_opt_class(), 0}];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"exifData"];
+    v47 = [coderCopy decodeObjectOfClasses:v46 forKey:@"exifData"];
 
     if (v47)
     {
       objc_storeStrong(&v5->_exifData, v47);
     }
 
-    v5->_visionDataWasDelivered = [v4 decodeBoolForKey:@"visionDataWasDelivered"];
+    v5->_visionDataWasDelivered = [coderCopy decodeBoolForKey:@"visionDataWasDelivered"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 encodeDouble:@"currentCaptureTimestamp" forKey:self->_currentCaptureTimestamp];
-  [v5 encodeObject:self->_camera forKey:@"camera"];
-  [v5 encodeObject:self->_location forKey:@"location"];
-  [v5 encodeDouble:@"heading" forKey:self->_heading];
-  [v5 encodeObject:self->_rawLocation forKey:@"rawLocation"];
-  [v5 encodeDouble:@"rawHeading" forKey:self->_rawHeading];
-  [v5 encodeDouble:@"rawLocationTimestamp" forKey:self->_rawLocationTimestamp];
-  [v5 encodeObject:self->_vlState forKey:@"vlState"];
-  [v5 encodeObject:self->_geoTrackingStatus forKey:@"geoTrackingStatus"];
-  [v5 encodeObject:self->_vlDebugInfo forKey:@"vlDebugInfo"];
-  [v5 encodeDouble:@"undulation" forKey:self->_undulation];
-  [v5 encodeDouble:@"capturedDepthDataTimestamp" forKey:self->_capturedDepthDataTimestamp];
-  [v5 encodeObject:self->_anchors forKey:@"anchors"];
-  [v5 encodeObject:self->_privateAnchors forKey:@"privateAnchors"];
-  [v5 encodeObject:self->_lightEstimate forKey:@"lightEstimate"];
-  [v5 encodeObject:self->_featurePoints forKey:@"featurePoints"];
-  [v5 encodeInteger:self->_renderFramesPerSecond forKey:@"renderFramesPerSecond"];
-  [v5 encodeBool:self->_shouldRestrictFrameRate forKey:@"shouldRestrictFrameRate"];
-  [v5 encodeInteger:self->_worldMappingStatus forKey:@"worldMappingStatus"];
-  [v5 encodeObject:self->_faceData forKey:@"faceData"];
-  [v5 encodeBool:self->_highResolution forKey:@"highResolution"];
-  [v5 encodeObject:self->_exifData forKey:@"exifData"];
-  [v5 encodeBool:self->_visionDataWasDelivered forKey:@"visionDataWasDelivered"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy encodeDouble:@"currentCaptureTimestamp" forKey:self->_currentCaptureTimestamp];
+  [coderCopy encodeObject:self->_camera forKey:@"camera"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeDouble:@"heading" forKey:self->_heading];
+  [coderCopy encodeObject:self->_rawLocation forKey:@"rawLocation"];
+  [coderCopy encodeDouble:@"rawHeading" forKey:self->_rawHeading];
+  [coderCopy encodeDouble:@"rawLocationTimestamp" forKey:self->_rawLocationTimestamp];
+  [coderCopy encodeObject:self->_vlState forKey:@"vlState"];
+  [coderCopy encodeObject:self->_geoTrackingStatus forKey:@"geoTrackingStatus"];
+  [coderCopy encodeObject:self->_vlDebugInfo forKey:@"vlDebugInfo"];
+  [coderCopy encodeDouble:@"undulation" forKey:self->_undulation];
+  [coderCopy encodeDouble:@"capturedDepthDataTimestamp" forKey:self->_capturedDepthDataTimestamp];
+  [coderCopy encodeObject:self->_anchors forKey:@"anchors"];
+  [coderCopy encodeObject:self->_privateAnchors forKey:@"privateAnchors"];
+  [coderCopy encodeObject:self->_lightEstimate forKey:@"lightEstimate"];
+  [coderCopy encodeObject:self->_featurePoints forKey:@"featurePoints"];
+  [coderCopy encodeInteger:self->_renderFramesPerSecond forKey:@"renderFramesPerSecond"];
+  [coderCopy encodeBool:self->_shouldRestrictFrameRate forKey:@"shouldRestrictFrameRate"];
+  [coderCopy encodeInteger:self->_worldMappingStatus forKey:@"worldMappingStatus"];
+  [coderCopy encodeObject:self->_faceData forKey:@"faceData"];
+  [coderCopy encodeBool:self->_highResolution forKey:@"highResolution"];
+  [coderCopy encodeObject:self->_exifData forKey:@"exifData"];
+  [coderCopy encodeBool:self->_visionDataWasDelivered forKey:@"visionDataWasDelivered"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(ARCamera *)self->_camera copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(ARCamera *)self->_camera copyWithZone:zone];
   v7 = [v5 initWithCamera:v6 timestamp:self->_timestamp];
 
   if (v7)
   {
     *(v7 + 56) = CVPixelBufferRetain(self->_capturedImage);
     *(v7 + 33) = self->_highResolution;
-    v8 = [(CLLocation *)self->_location copyWithZone:a3];
+    v8 = [(CLLocation *)self->_location copyWithZone:zone];
     v9 = *(v7 + 376);
     *(v7 + 376) = v8;
 
     *(v7 + 384) = self->_heading;
-    v10 = [(CLLocation *)self->_rawLocation copyWithZone:a3];
+    v10 = [(CLLocation *)self->_rawLocation copyWithZone:zone];
     v11 = *(v7 + 392);
     *(v7 + 392) = v10;
 
     *(v7 + 400) = self->_rawHeading;
     *(v7 + 408) = self->_rawLocationTimestamp;
-    v12 = [(ARVLStateData *)self->_vlState copyWithZone:a3];
+    v12 = [(ARVLStateData *)self->_vlState copyWithZone:zone];
     v13 = *(v7 + 416);
     *(v7 + 416) = v12;
 
-    v14 = [(ARGeoTrackingStatus *)self->_geoTrackingStatus copyWithZone:a3];
+    v14 = [(ARGeoTrackingStatus *)self->_geoTrackingStatus copyWithZone:zone];
     v15 = *(v7 + 152);
     *(v7 + 152) = v14;
 
     objc_storeStrong((v7 + 424), self->_vlDebugInfo);
     *(v7 + 432) = self->_undulation;
-    v16 = [(NSArray *)self->_anchors copyWithZone:a3];
+    v16 = [(NSArray *)self->_anchors copyWithZone:zone];
     v17 = *(v7 + 120);
     *(v7 + 120) = v16;
 
-    v18 = [(NSArray *)self->_privateAnchors copyWithZone:a3];
+    v18 = [(NSArray *)self->_privateAnchors copyWithZone:zone];
     v19 = *(v7 + 184);
     *(v7 + 184) = v18;
 
@@ -1295,29 +1295,29 @@ LABEL_8:
     *(v7 + 144) = CVPixelBufferRetain(self->_estimatedDepthData);
     *(v7 + 296) = CVPixelBufferRetain(self->_downSampledMattingPixelBuffer);
     *(v7 + 304) = CVPixelBufferRetain(self->_mattingScaleImagePixelBuffer);
-    v33 = [(ARFrame *)self detectedBodies];
-    v34 = [v33 copyWithZone:a3];
+    detectedBodies = [(ARFrame *)self detectedBodies];
+    v34 = [detectedBodies copyWithZone:zone];
     v35 = *(v7 + 312);
     *(v7 + 312) = v34;
 
-    v36 = [(ARFrame *)self detectedPersonMetadata];
-    v37 = [v36 copyWithZone:a3];
+    detectedPersonMetadata = [(ARFrame *)self detectedPersonMetadata];
+    v37 = [detectedPersonMetadata copyWithZone:zone];
     v38 = *(v7 + 320);
     *(v7 + 320) = v37;
 
     *(v7 + 352) = CVPixelBufferRetain(self->_depthConfidenceData);
     *(v7 + 360) = CVPixelBufferRetain(self->_depthNormalData);
     *(v7 + 368) = CVPixelBufferRetain(self->_semanticSegmentationBuffer);
-    v39 = [(ARFrame *)self resultDatas];
-    v40 = [v39 copyWithZone:a3];
+    resultDatas = [(ARFrame *)self resultDatas];
+    v40 = [resultDatas copyWithZone:zone];
     v41 = *(v7 + 280);
     *(v7 + 280) = v40;
 
     *(v7 + 288) = self->_deviceOrientation;
     objc_storeStrong((v7 + 160), self->_sceneDepth);
     objc_storeStrong((v7 + 168), self->_smoothedSceneDepth);
-    v42 = [(ARFrame *)self exifData];
-    v43 = [v42 copyWithZone:a3];
+    exifData = [(ARFrame *)self exifData];
+    v43 = [exifData copyWithZone:zone];
     v44 = *(v7 + 88);
     *(v7 + 88) = v43;
 

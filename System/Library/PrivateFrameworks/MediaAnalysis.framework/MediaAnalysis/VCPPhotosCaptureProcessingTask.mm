@@ -1,35 +1,35 @@
 @interface VCPPhotosCaptureProcessingTask
 + (BOOL)_concurrentFaceProcessing;
-+ (id)taskWithPhotoLibraries:(id)a3 andCompletionHandler:(id)a4;
-- (BOOL)isAssetEligible:(id)a3;
-- (BOOL)run:(id *)a3;
-- (VCPPhotosCaptureProcessingTask)initWithPhotoLibraries:(id)a3 andCompletionHandler:(id)a4;
-- (int)faceProcessingForAssets:(id)a3 withManager:(id)a4 onDemandDetection:(BOOL)a5;
++ (id)taskWithPhotoLibraries:(id)libraries andCompletionHandler:(id)handler;
+- (BOOL)isAssetEligible:(id)eligible;
+- (BOOL)run:(id *)run;
+- (VCPPhotosCaptureProcessingTask)initWithPhotoLibraries:(id)libraries andCompletionHandler:(id)handler;
+- (int)faceProcessingForAssets:(id)assets withManager:(id)manager onDemandDetection:(BOOL)detection;
 - (int)run;
-- (void)_persistClassifiedFaces:(id)a3 withDetectedPersons:(id)a4;
+- (void)_persistClassifiedFaces:(id)faces withDetectedPersons:(id)persons;
 - (void)_reportEventPostCapturesProcessing;
 - (void)_resetFieldsPostCapturesProcessing;
 - (void)cancel;
 - (void)dealloc;
 - (void)interrupt;
-- (void)ocrProcessingForAssets:(id)a3;
+- (void)ocrProcessingForAssets:(id)assets;
 - (void)resetInterruption;
 @end
 
 @implementation VCPPhotosCaptureProcessingTask
 
-- (VCPPhotosCaptureProcessingTask)initWithPhotoLibraries:(id)a3 andCompletionHandler:(id)a4
+- (VCPPhotosCaptureProcessingTask)initWithPhotoLibraries:(id)libraries andCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  librariesCopy = libraries;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = VCPPhotosCaptureProcessingTask;
   v9 = [(VCPPhotosCaptureProcessingTask *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibraries, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_photoLibraries, libraries);
+    v11 = objc_retainBlock(handlerCopy);
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
 
@@ -46,11 +46,11 @@
   return v10;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 andCompletionHandler:(id)a4
++ (id)taskWithPhotoLibraries:(id)libraries andCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v5 andCompletionHandler:v6];
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy andCompletionHandler:handlerCopy];
 
   return v7;
 }
@@ -133,36 +133,36 @@
   return byte_1002B82B8;
 }
 
-- (BOOL)isAssetEligible:(id)a3
+- (BOOL)isAssetEligible:(id)eligible
 {
-  v3 = a3;
-  v4 = ![v3 deferredProcessingNeeded] || objc_msgSend(v3, "deferredProcessingNeeded") == 4 || objc_msgSend(v3, "deferredProcessingNeeded") == 8 || objc_msgSend(v3, "deferredProcessingNeeded") == 1;
+  eligibleCopy = eligible;
+  v4 = ![eligibleCopy deferredProcessingNeeded] || objc_msgSend(eligibleCopy, "deferredProcessingNeeded") == 4 || objc_msgSend(eligibleCopy, "deferredProcessingNeeded") == 8 || objc_msgSend(eligibleCopy, "deferredProcessingNeeded") == 1;
 
   return v4;
 }
 
-- (void)_persistClassifiedFaces:(id)a3 withDetectedPersons:(id)a4
+- (void)_persistClassifiedFaces:(id)faces withDetectedPersons:(id)persons
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  facesCopy = faces;
+  personsCopy = persons;
+  if ([facesCopy count])
   {
-    v7 = [v5 allKeys];
-    v8 = [v7 firstObject];
-    v9 = [v8 photoLibrary];
+    allKeys = [facesCopy allKeys];
+    firstObject = [allKeys firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v10 = [v9 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000A06E4;
     v17[3] = &unk_1002832A0;
-    v18 = v5;
-    v19 = v6;
-    v11 = v10;
+    v18 = facesCopy;
+    v19 = personsCopy;
+    v11 = librarySpecificFetchOptions;
     v20 = v11;
     v12 = objc_retainBlock(v17);
     v16 = 0;
-    v13 = [v9 performChangesAndWait:v12 error:&v16];
+    v13 = [photoLibrary performChangesAndWait:v12 error:&v16];
     v14 = v16;
     if ((v13 & 1) == 0 && MediaAnalysisLogLevel() >= 3)
     {
@@ -177,20 +177,20 @@
   }
 }
 
-- (int)faceProcessingForAssets:(id)a3 withManager:(id)a4 onDemandDetection:(BOOL)a5
+- (int)faceProcessingForAssets:(id)assets withManager:(id)manager onDemandDetection:(BOOL)detection
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (![v8 count])
+  detectionCopy = detection;
+  assetsCopy = assets;
+  managerCopy = manager;
+  if (![assetsCopy count])
   {
 LABEL_41:
-    v10 = 0;
+    loadPersonsModelAndInitializeFaceAnalyzerWrapper = 0;
     goto LABEL_42;
   }
 
-  v10 = [v9 loadPersonsModelAndInitializeFaceAnalyzerWrapper];
-  if (!v10)
+  loadPersonsModelAndInitializeFaceAnalyzerWrapper = [managerCopy loadPersonsModelAndInitializeFaceAnalyzerWrapper];
+  if (!loadPersonsModelAndInitializeFaceAnalyzerWrapper)
   {
     v44 = +[NSMutableDictionary dictionary];
     v12 = +[NSMutableDictionary dictionary];
@@ -198,8 +198,8 @@ LABEL_41:
     v60[1] = 3221225472;
     v60[2] = sub_1000A14D8;
     v60[3] = &unk_100285400;
-    v61 = v9;
-    v62 = self;
+    v61 = managerCopy;
+    selfCopy = self;
     v50 = v44;
     v63 = v50;
     v13 = v12;
@@ -224,14 +224,14 @@ LABEL_41:
     {
       v45 = v13;
       v43 = +[NSMutableArray array];
-      v18 = [v8 count];
+      v18 = [assetsCopy count];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000A1650;
       block[3] = &unk_100285428;
       block[4] = self;
-      v59 = v5;
-      v46 = v8;
+      v59 = detectionCopy;
+      v46 = assetsCopy;
       v56 = v46;
       v19 = v43;
       v57 = v19;
@@ -239,7 +239,7 @@ LABEL_41:
       v58 = v20;
       dispatch_apply(v18, 0, block);
       v21 = atomic_load(&self->_interrupt);
-      if (v21 & 1) != 0 || (v22 = atomic_load(&self->_cancel), (v22) && v5)
+      if (v21 & 1) != 0 || (v22 = atomic_load(&self->_cancel), (v22) && detectionCopy)
       {
         v23 = 6;
       }
@@ -252,7 +252,7 @@ LABEL_41:
         {
           v38 = objc_autoreleasePoolPush();
           v39 = atomic_load(&self->_interrupt);
-          if (v39 & 1) != 0 || (v40 = atomic_load(&self->_cancel), (v40) && v5)
+          if (v39 & 1) != 0 || (v40 = atomic_load(&self->_cancel), (v40) && detectionCopy)
           {
             v23 = 6;
           }
@@ -262,7 +262,7 @@ LABEL_41:
             v41 = [v46 objectAtIndexedSubscript:v37];
             if ([(VCPPhotosCaptureProcessingTask *)self isAssetEligible:v41])
             {
-              (*(v20 + 2))(v20, v41, v5);
+              (*(v20 + 2))(v20, v41, detectionCopy);
               v23 = 0;
             }
 
@@ -308,21 +308,21 @@ LABEL_40:
 
     else
     {
-      for (i = 0; i < [v8 count]; ++i)
+      for (i = 0; i < [assetsCopy count]; ++i)
       {
         v25 = objc_autoreleasePoolPush();
         v26 = atomic_load(&self->_interrupt);
-        if (v26 & 1) != 0 || (v27 = atomic_load(&self->_cancel), (v27) && v5)
+        if (v26 & 1) != 0 || (v27 = atomic_load(&self->_cancel), (v27) && detectionCopy)
         {
           v28 = 6;
         }
 
         else
         {
-          v29 = [v8 objectAtIndexedSubscript:i];
+          v29 = [assetsCopy objectAtIndexedSubscript:i];
           if ([(VCPPhotosCaptureProcessingTask *)self isAssetEligible:v29])
           {
-            (v51[2])(v51, v29, v5);
+            (v51[2])(v51, v29, detectionCopy);
             v28 = 0;
           }
 
@@ -390,12 +390,12 @@ LABEL_40:
 
 LABEL_42:
 
-  return v10;
+  return loadPersonsModelAndInitializeFaceAnalyzerWrapper;
 }
 
-- (void)ocrProcessingForAssets:(id)a3
+- (void)ocrProcessingForAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v31 = mach_absolute_time();
   v5 = VCPSignPostLog();
   v6 = os_signpost_id_generate(v5);
@@ -410,9 +410,9 @@ LABEL_42:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "VCPJIT_OCR_Batch", "", buf, 2u);
   }
 
-  v9 = [v4 firstObject];
-  v10 = [v9 photoLibrary];
-  v32 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v10];
+  firstObject = [assetsCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v32 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary];
 
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
@@ -424,7 +424,7 @@ LABEL_42:
   v12 = 0;
   v13 = VCPLogToOSLogType[7];
   type = VCPLogToOSLogType[6];
-  while (v12 < [v4 count])
+  while (v12 < [assetsCopy count])
   {
     v14 = objc_autoreleasePoolPush();
     v15 = atomic_load(&self->_interrupt);
@@ -435,41 +435,41 @@ LABEL_42:
 
     else
     {
-      v18 = [v4 objectAtIndexedSubscript:v12];
+      v18 = [assetsCopy objectAtIndexedSubscript:v12];
       if ([(VCPPhotosCaptureProcessingTask *)self isAssetEligible:v18])
       {
-        v19 = [v18 vcp_passedOCRGating];
-        if ([v19 BOOLValue])
+        vcp_passedOCRGating = [v18 vcp_passedOCRGating];
+        if ([vcp_passedOCRGating BOOLValue])
         {
           v20 = +[NSDate now];
           [v11 addPhotosAsset:v18 withPreviousStatus:0 attempts:0 andAttemptDate:v20];
         }
 
-        else if (v19)
+        else if (vcp_passedOCRGating)
         {
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v13))
           {
-            v22 = [v18 localIdentifier];
+            localIdentifier = [v18 localIdentifier];
             *buf = 138412290;
-            v36 = v22;
+            v36 = localIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[PhotosCapture][%@] OCR gating did not pass; skipping", buf, 0xCu);
           }
         }
 
         else if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, type))
         {
-          v23 = [v18 localIdentifier];
+          localIdentifier2 = [v18 localIdentifier];
           *buf = 138412290;
-          v36 = v23;
+          v36 = localIdentifier2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[PhotosCapture][%@] OCR gating not available; skipping", buf, 0xCu);
         }
       }
 
       else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v13))
       {
-        v21 = [v18 localIdentifier];
+        localIdentifier3 = [v18 localIdentifier];
         *buf = 138412290;
-        v36 = v21;
+        v36 = localIdentifier3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[PhotosCapture][%@] Asset not ready for OCR; skipping", buf, 0xCu);
       }
 
@@ -518,7 +518,7 @@ LABEL_42:
 LABEL_36:
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v82 = objc_autoreleasePoolPush();
   atomic_store(1u, &self->_started);
@@ -528,7 +528,7 @@ LABEL_36:
   v102 = 0u;
   obj = self->_photoLibraries;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v101 objects:v127 count:16];
-  v100 = self;
+  selfCopy = self;
   if (v5)
   {
     v92 = *v102;
@@ -546,10 +546,10 @@ LABEL_36:
 
         v94 = *(*(&v101 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v6 = atomic_load(&v100->_interrupt);
-        if (v6 & 1) != 0 || (v7 = atomic_load(&v100->_cancel), (v7))
+        v6 = atomic_load(&selfCopy->_interrupt);
+        if (v6 & 1) != 0 || (v7 = atomic_load(&selfCopy->_cancel), (v7))
         {
-          if (!a3)
+          if (!run)
           {
             v12 = 0;
             v3 = 0;
@@ -557,7 +557,7 @@ LABEL_36:
           }
 
           v125 = NSLocalizedDescriptionKey;
-          v8 = atomic_load(&v100->_interrupt);
+          v8 = atomic_load(&selfCopy->_interrupt);
           v9 = (v8 & 1) == 0;
           v10 = @"Canceled";
           if (!v9)
@@ -571,8 +571,8 @@ LABEL_36:
           v11 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:?];
           v12 = 0;
           v3 = 0;
-          v13 = *a3;
-          *a3 = v11;
+          fetchedObjects = *run;
+          *run = v11;
 LABEL_12:
 
           goto LABEL_13;
@@ -594,17 +594,17 @@ LABEL_12:
         }
 
         v17 = [PHAsset fetchAssetsFromCameraSinceDate:0 options:v96];
-        v13 = [v17 fetchedObjects];
+        fetchedObjects = [v17 fetchedObjects];
 
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
         {
-          v18 = [v13 count];
+          v18 = [fetchedObjects count];
           *buf = 134217984;
           v121 = v18;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[PhotosCapture] Quick Face ID: %lu captured assets; start fast track process", buf, 0xCu);
         }
 
-        v100->_numberOfNewCaptures = [v13 count];
+        selfCopy->_numberOfNewCaptures = [fetchedObjects count];
         v86 = mach_absolute_time();
         v19 = VCPSignPostLog();
         spid = os_signpost_id_generate(v19);
@@ -623,7 +623,7 @@ LABEL_12:
         while ((v22 & 1) == 0)
         {
           v25 = objc_autoreleasePoolPush();
-          v26 = [v13 count];
+          v26 = [fetchedObjects count];
           if (&v26[-v24] >= 0x32)
           {
             v27 = 50;
@@ -645,11 +645,11 @@ LABEL_12:
           }
 
           v28 = [NSIndexSet indexSetWithIndexesInRange:v24, v27];
-          v29 = [v13 objectsAtIndexes:v28];
-          v22 = [(VCPPhotosCaptureProcessingTask *)v100 faceProcessingForAssets:v29 withManager:v98 onDemandDetection:0];
+          v29 = [fetchedObjects objectsAtIndexes:v28];
+          v22 = [(VCPPhotosCaptureProcessingTask *)selfCopy faceProcessingForAssets:v29 withManager:v98 onDemandDetection:0];
           if (v22)
           {
-            if (!a3)
+            if (!run)
             {
               LOBYTE(v22) = 0;
               goto LABEL_41;
@@ -665,15 +665,15 @@ LABEL_12:
           }
 
           v24 += v27;
-          v22 = v24 >= [v13 count];
-          v33 = atomic_load(&v100->_interrupt);
+          v22 = v24 >= [fetchedObjects count];
+          v33 = atomic_load(&selfCopy->_interrupt);
           if ((v33 & 1) == 0)
           {
             v35 = 1;
             goto LABEL_42;
           }
 
-          if (a3)
+          if (run)
           {
             v116 = NSLocalizedDescriptionKey;
             v30 = [NSString stringWithFormat:@"[PhotosCapture] Interrupted with %lu fast track face job done", v24];
@@ -681,8 +681,8 @@ LABEL_12:
             v31 = [NSDictionary dictionaryWithObjects:&v117 forKeys:&v116 count:1];
             v32 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v31];
 LABEL_39:
-            v34 = *a3;
-            *a3 = v32;
+            v34 = *run;
+            *run = v32;
           }
 
 LABEL_41:
@@ -720,13 +720,13 @@ LABEL_42:
         }
 
 LABEL_54:
-        dispatch_group_wait(v100->_persistGroup, 0xFFFFFFFFFFFFFFFFLL);
+        dispatch_group_wait(selfCopy->_persistGroup, 0xFFFFFFFFFFFFFFFFLL);
         if (![objc_opt_class() _cameraFaceOnly])
         {
-          v38 = atomic_load(&v100->_interrupt);
-          if (v38 & 1) != 0 || (v39 = atomic_load(&v100->_cancel), (v39))
+          v38 = atomic_load(&selfCopy->_interrupt);
+          if (v38 & 1) != 0 || (v39 = atomic_load(&selfCopy->_cancel), (v39))
           {
-            if (!a3)
+            if (!run)
             {
               v12 = 0;
               v3 = 0;
@@ -734,7 +734,7 @@ LABEL_54:
             }
 
             v114 = NSLocalizedDescriptionKey;
-            v40 = atomic_load(&v100->_interrupt);
+            v40 = atomic_load(&selfCopy->_interrupt);
             v9 = (v40 & 1) == 0;
             v41 = @"Canceled";
             if (!v9)
@@ -748,8 +748,8 @@ LABEL_54:
             v42 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:?];
             v12 = 0;
             v3 = 0;
-            v43 = *a3;
-            *a3 = v42;
+            v43 = *run;
+            *run = v42;
           }
 
           else
@@ -816,18 +816,18 @@ LABEL_54:
 
                 v56 = [NSIndexSet indexSetWithIndexesInRange:v53, v55];
                 v57 = [v87 objectsAtIndexes:v56];
-                v58 = [(VCPPhotosCaptureProcessingTask *)v100 faceProcessingForAssets:v57 withManager:v98 onDemandDetection:1];
+                v58 = [(VCPPhotosCaptureProcessingTask *)selfCopy faceProcessingForAssets:v57 withManager:v98 onDemandDetection:1];
                 if (v58)
                 {
-                  if (a3)
+                  if (run)
                   {
                     v111 = NSLocalizedDescriptionKey;
                     v59 = [NSString stringWithFormat:@"[PhotosCapture] Error during face processing"];
                     v112 = v59;
                     v60 = [NSDictionary dictionaryWithObjects:&v112 forKeys:&v111 count:1];
                     v61 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v58 userInfo:v60];
-                    v62 = *a3;
-                    *a3 = v61;
+                    v62 = *run;
+                    *run = v61;
                   }
 
                   v3 = 0;
@@ -848,10 +848,10 @@ LABEL_54:
                 }
               }
 
-              v63 = atomic_load(&v100->_interrupt);
+              v63 = atomic_load(&selfCopy->_interrupt);
               if (v63)
               {
-                if (a3)
+                if (run)
                 {
                   v109 = NSLocalizedDescriptionKey;
                   v71 = [NSString stringWithFormat:@"[PhotosCapture] Interrupted with %lu face and %lu OCR job done", v53, v52];
@@ -897,7 +897,7 @@ LABEL_111:
 
                 v67 = [NSIndexSet indexSetWithIndexesInRange:v52, v66];
                 v68 = [spida objectsAtIndexes:v67];
-                [(VCPPhotosCaptureProcessingTask *)v100 ocrProcessingForAssets:v68];
+                [(VCPPhotosCaptureProcessingTask *)selfCopy ocrProcessingForAssets:v68];
 
                 v52 += v66;
                 v50 = v52 >= [spida count];
@@ -905,10 +905,10 @@ LABEL_111:
                 objc_autoreleasePoolPop(v64);
               }
 
-              v69 = atomic_load(&v100->_interrupt);
+              v69 = atomic_load(&selfCopy->_interrupt);
               if (v69)
               {
-                if (a3)
+                if (run)
                 {
                   v107 = NSLocalizedDescriptionKey;
                   v71 = [NSString stringWithFormat:@"[PhotosCapture] Interrupted with %lu face and %lu OCR job done", v53, v52];
@@ -916,17 +916,17 @@ LABEL_111:
                   v72 = [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
                   v73 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v72];
 LABEL_110:
-                  v76 = *a3;
-                  *a3 = v73;
+                  v76 = *run;
+                  *run = v73;
                 }
 
                 goto LABEL_111;
               }
 
-              v70 = atomic_load(&v100->_cancel);
+              v70 = atomic_load(&selfCopy->_cancel);
               if (v70)
               {
-                if (a3)
+                if (run)
                 {
                   v105 = NSLocalizedDescriptionKey;
                   v71 = [NSString stringWithFormat:@"[PhotosCapture] Canceled after screening %lu assets for face and %lu assets for OCR", v53, v52];
@@ -960,7 +960,7 @@ LABEL_112:
             v43 = spida;
           }
 
-          v13 = v87;
+          fetchedObjects = v87;
           goto LABEL_12;
         }
 
@@ -970,7 +970,7 @@ LABEL_112:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v93, "[PhotosCapture] Stop processing after camera faces are processed", buf, 2u);
         }
 
-        (*(v100->_completionHandler + 2))();
+        (*(selfCopy->_completionHandler + 2))();
         v12 = 0;
         v3 = 1;
 LABEL_13:
@@ -990,8 +990,8 @@ LABEL_15:
     while (v5);
   }
 
-  dispatch_group_wait(v100->_persistGroup, 0xFFFFFFFFFFFFFFFFLL);
-  (*(v100->_completionHandler + 2))();
+  dispatch_group_wait(selfCopy->_persistGroup, 0xFFFFFFFFFFFFFFFFLL);
+  (*(selfCopy->_completionHandler + 2))();
   v3 = 1;
 LABEL_118:
   objc_autoreleasePoolPop(v82);
@@ -1007,15 +1007,15 @@ LABEL_118:
 
 - (void)_reportEventPostCapturesProcessing
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  numberOfNewCaptures = v2->_numberOfNewCaptures;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  numberOfNewCaptures = selfCopy->_numberOfNewCaptures;
   if (numberOfNewCaptures)
   {
-    numberOfFaces = v2->_numberOfFaces;
+    numberOfFaces = selfCopy->_numberOfFaces;
     if (numberOfFaces)
     {
-      v5 = v2->_numberOfPositiveFaces / numberOfFaces;
+      v5 = selfCopy->_numberOfPositiveFaces / numberOfFaces;
     }
 
     else
@@ -1023,15 +1023,15 @@ LABEL_118:
       v5 = 0.0;
     }
 
-    numberOfNewCapturesProcessed = v2->_numberOfNewCapturesProcessed;
-    numberOfCapturesHaveFaces = v2->_numberOfCapturesHaveFaces;
-    numberOfNewCapturesWithFaceHaveFaceprintFromCamera = v2->_numberOfNewCapturesWithFaceHaveFaceprintFromCamera;
+    numberOfNewCapturesProcessed = selfCopy->_numberOfNewCapturesProcessed;
+    numberOfCapturesHaveFaces = selfCopy->_numberOfCapturesHaveFaces;
+    numberOfNewCapturesWithFaceHaveFaceprintFromCamera = selfCopy->_numberOfNewCapturesWithFaceHaveFaceprintFromCamera;
     v24 = +[VCPMADCoreAnalyticsManager sharedManager];
     v25[0] = @"NumberOfNewCaptures";
-    v23 = [NSNumber numberWithUnsignedInteger:v2->_numberOfNewCaptures];
+    v23 = [NSNumber numberWithUnsignedInteger:selfCopy->_numberOfNewCaptures];
     v26[0] = v23;
     v25[1] = @"NumberOfNewCapturesProcessed";
-    v9 = [NSNumber numberWithUnsignedInteger:v2->_numberOfNewCapturesProcessed];
+    v9 = [NSNumber numberWithUnsignedInteger:selfCopy->_numberOfNewCapturesProcessed];
     v10 = numberOfNewCaptures;
     *&v11 = numberOfNewCapturesProcessed / numberOfNewCaptures;
     v26[1] = v9;
@@ -1039,21 +1039,21 @@ LABEL_118:
     v12 = [NSNumber numberWithFloat:v11];
     v26[2] = v12;
     v25[3] = @"NumberOfCapturesHaveFace";
-    v13 = [NSNumber numberWithUnsignedInteger:v2->_numberOfCapturesHaveFaces];
+    v13 = [NSNumber numberWithUnsignedInteger:selfCopy->_numberOfCapturesHaveFaces];
     *&v14 = numberOfCapturesHaveFaces / v10;
     v26[3] = v13;
     v25[4] = @"PercentageOfCapturesHaveFace";
     v15 = [NSNumber numberWithFloat:v14];
     v26[4] = v15;
     v25[5] = @"NumberOfNewCapturesWithFaceFullFromCamera";
-    v16 = [NSNumber numberWithUnsignedInteger:v2->_numberOfNewCapturesWithFaceHaveFaceprintFromCamera];
+    v16 = [NSNumber numberWithUnsignedInteger:selfCopy->_numberOfNewCapturesWithFaceHaveFaceprintFromCamera];
     *&v17 = numberOfNewCapturesWithFaceHaveFaceprintFromCamera / v10;
     v26[5] = v16;
     v25[6] = @"PercentageOfNewCapturesWithFaceFullFromCamera";
     v18 = [NSNumber numberWithFloat:v17];
     v26[6] = v18;
     v25[7] = @"NumberOfPositiveFace";
-    v19 = [NSNumber numberWithUnsignedInteger:v2->_numberOfPositiveFaces];
+    v19 = [NSNumber numberWithUnsignedInteger:selfCopy->_numberOfPositiveFaces];
     v26[7] = v19;
     v25[8] = @"PercentageOfPositiveFaces";
     *&v20 = v5;
@@ -1062,15 +1062,15 @@ LABEL_118:
     v22 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:9];
     [v24 sendEvent:@"com.apple.mediaanalysisd.photos.postcapturefaceprocessing" withAnalytics:v22];
 
-    [(VCPPhotosCaptureProcessingTask *)v2 _resetFieldsPostCapturesProcessing];
+    [(VCPPhotosCaptureProcessingTask *)selfCopy _resetFieldsPostCapturesProcessing];
   }
 
   else
   {
-    [(VCPPhotosCaptureProcessingTask *)v2 _resetFieldsPostCapturesProcessing];
+    [(VCPPhotosCaptureProcessingTask *)selfCopy _resetFieldsPostCapturesProcessing];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (int)run
@@ -1131,16 +1131,16 @@ LABEL_12:
   if ((v10 & 1) == 0)
   {
     (*(self->_completionHandler + 2))();
-    v11 = [(__CFString *)v13 code];
+    code = [(__CFString *)v13 code];
     goto LABEL_16;
   }
 
 LABEL_14:
-  v11 = 0;
+  code = 0;
 LABEL_16:
   [(VCPPhotosCaptureProcessingTask *)self _reportEventPostCapturesProcessing];
 
-  return v11;
+  return code;
 }
 
 @end

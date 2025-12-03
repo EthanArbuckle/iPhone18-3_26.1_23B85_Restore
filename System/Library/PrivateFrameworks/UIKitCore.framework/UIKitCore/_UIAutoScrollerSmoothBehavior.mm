@@ -1,8 +1,8 @@
 @interface _UIAutoScrollerSmoothBehavior
-- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)a3 timeDelta:(id)a4;
+- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)scroller timeDelta:(id)delta;
 - (_UIAutoScrollerSmoothBehavior)init;
-- (double)beginDelayForAutoScroller:(id)a3;
-- (void)autoScrollStarted:(id)a3;
+- (double)beginDelayForAutoScroller:(id)scroller;
+- (void)autoScrollStarted:(id)started;
 @end
 
 @implementation _UIAutoScrollerSmoothBehavior
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (double)beginDelayForAutoScroller:(id)a3
+- (double)beginDelayForAutoScroller:(id)scroller
 {
-  v3 = [a3 _scrollContinuous];
+  _scrollContinuous = [scroller _scrollContinuous];
   result = 0.75;
-  if (v3)
+  if (_scrollContinuous)
   {
     return 0.0;
   }
@@ -40,16 +40,16 @@
   return result;
 }
 
-- (void)autoScrollStarted:(id)a3
+- (void)autoScrollStarted:(id)started
 {
   *&self->_behaviorFlags &= ~1u;
   *&self->_dynamicAutoScrollInsets.top = 0u;
   *&self->_dynamicAutoScrollInsets.bottom = 0u;
-  v4 = [a3 scrollView];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  scrollView = [started scrollView];
+  traitCollection = [scrollView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 1 || v6 == 6)
+  if (userInterfaceIdiom == 1 || userInterfaceIdiom == 6)
   {
     v7 = &_SmoothBehaviorDefaultStaticInsets;
   }
@@ -64,23 +64,23 @@
   *&self->_staticInsets.bottom = v8;
 }
 
-- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)a3 timeDelta:(id)a4
+- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)scroller timeDelta:(id)delta
 {
   retstr->var0.x = 0.0;
   retstr->var0.y = 0.0;
   retstr->var1 = 0;
-  v7 = a4;
-  [v7 point];
+  deltaCopy = delta;
+  [deltaCopy point];
   point = v8;
   v10 = v9;
-  v102 = [v7 scrollView];
-  v11 = [v7 allowedDirections];
-  [v102 adjustedContentInset];
+  scrollView = [deltaCopy scrollView];
+  allowedDirections = [deltaCopy allowedDirections];
+  [scrollView adjustedContentInset];
   v13 = fmax(v12, 0.0);
   v15 = fmax(v14, 0.0);
   v17 = fmax(v16, 0.0);
   v19 = fmax(v18, 0.0);
-  [v102 bounds];
+  [scrollView bounds];
   v21 = v15 + v20;
   v23 = v13 + v22;
   v90 = v19;
@@ -98,9 +98,9 @@
   point_8 = v32 - (v15 + v19);
   v33 = point_8 - (left + self->_staticInsets.right);
   v34 = v27 - (top + self->_staticInsets.bottom);
-  v35 = [v7 _scrollContinuous];
+  _scrollContinuous = [deltaCopy _scrollContinuous];
 
-  if (v35)
+  if (_scrollContinuous)
   {
     if ((*&self->_behaviorFlags & 1) == 0)
     {
@@ -126,7 +126,7 @@
         v124.size.height = v34;
         if (v10 >= CGRectGetMaxY(v124))
         {
-          [v102 bounds];
+          [scrollView bounds];
           v84 = CGRectGetMaxY(v127) - v10;
           if (self->_dynamicAutoScrollInsets.bottom < v84)
           {
@@ -142,7 +142,7 @@
           v125.size.height = v34;
           if (v10 < CGRectGetMinY(v125))
           {
-            [v102 bounds];
+            [scrollView bounds];
             v83 = v10 - CGRectGetMinY(v126);
             if (self->_dynamicAutoScrollInsets.top < v83)
             {
@@ -157,7 +157,7 @@
         v128.size.height = v34;
         if (point >= CGRectGetMaxX(v128))
         {
-          [v102 bounds];
+          [scrollView bounds];
           v86 = CGRectGetMaxX(v131) - point;
           if (self->_dynamicAutoScrollInsets.right < v86)
           {
@@ -173,7 +173,7 @@
           v129.size.height = v34;
           if (point < CGRectGetMinX(v129))
           {
-            [v102 bounds];
+            [scrollView bounds];
             v85 = point - CGRectGetMinX(v130);
             if (self->_dynamicAutoScrollInsets.left < v85)
             {
@@ -192,7 +192,7 @@
 
   if ((*&self->_behaviorFlags & 1) == 0)
   {
-    [v102 bounds];
+    [scrollView bounds];
     v37 = self->_dynamicAutoScrollInsets.top;
     v38 = self->_dynamicAutoScrollInsets.left;
     v30 = v39 + v38;
@@ -201,11 +201,11 @@
     v34 = v42 - (v37 + self->_dynamicAutoScrollInsets.bottom);
   }
 
-  [v102 contentSize];
+  [scrollView contentSize];
   v44 = v43;
   v95 = v45;
-  [(_UIAutoScrollerSmoothBehavior *)self _layoutAreaViewsWithCurrentNonScrollingArea:v102 inScrollView:v30, v31, v33, v34];
-  if ((v11 & 0x10) != 0 && (v106.origin.x = v30, v106.origin.y = v31, v106.size.width = v33, v106.size.height = v34, v10 > CGRectGetMaxY(v106)) && (v107.origin.x = v25, v107.origin.y = rect, v107.size.width = point_8, v107.size.height = v27, MaxY = CGRectGetMaxY(v107), v46 = v95, MaxY < v95))
+  [(_UIAutoScrollerSmoothBehavior *)self _layoutAreaViewsWithCurrentNonScrollingArea:scrollView inScrollView:v30, v31, v33, v34];
+  if ((allowedDirections & 0x10) != 0 && (v106.origin.x = v30, v106.origin.y = v31, v106.size.width = v33, v106.size.height = v34, v10 > CGRectGetMaxY(v106)) && (v107.origin.x = v25, v107.origin.y = rect, v107.size.width = point_8, v107.size.height = v27, MaxY = CGRectGetMaxY(v107), v46 = v95, MaxY < v95))
   {
     v48 = 16;
     retstr->var1 = 16;
@@ -222,7 +222,7 @@
   else
   {
     v97 = 0.0;
-    if ((v11 & 8) == 0 || (v109.origin.x = v30, v109.origin.y = v31, v109.size.width = v33, v109.size.height = v34, v10 >= CGRectGetMinY(v109)) || (v110.origin.x = v25, v110.origin.y = rect, v110.size.width = point_8, v110.size.height = v27, CGRectGetMinY(v110) <= 0.0))
+    if ((allowedDirections & 8) == 0 || (v109.origin.x = v30, v109.origin.y = v31, v109.size.width = v33, v109.size.height = v34, v10 >= CGRectGetMinY(v109)) || (v110.origin.x = v25, v110.origin.y = rect, v110.size.width = point_8, v110.size.height = v27, CGRectGetMinY(v110) <= 0.0))
     {
       v48 = 0;
       goto LABEL_18;
@@ -243,7 +243,7 @@
   v97 = v51;
 LABEL_18:
   v94 = v44;
-  if ((v11 & 4) != 0 && (v112.origin.x = v30, v112.origin.y = v31, v112.size.width = v33, v112.size.height = v34, MaxX = CGRectGetMaxX(v112), v46 = point, point > MaxX) && (v113.origin.x = v25, v113.origin.y = rect, v113.size.width = point_8, v113.size.height = v27, CGRectGetMaxX(v113) < v44))
+  if ((allowedDirections & 4) != 0 && (v112.origin.x = v30, v112.origin.y = v31, v112.size.width = v33, v112.size.height = v34, MaxX = CGRectGetMaxX(v112), v46 = point, point > MaxX) && (v113.origin.x = v25, v113.origin.y = rect, v113.size.width = point_8, v113.size.height = v27, CGRectGetMaxX(v113) < v44))
   {
     v55 = v27;
     v56 = point_8;
@@ -263,7 +263,7 @@ LABEL_18:
     v55 = v27;
     v56 = point_8;
     v59 = 0.0;
-    if ((v11 & 2) != 0)
+    if ((allowedDirections & 2) != 0)
     {
       v115.origin.x = v30;
       v115.origin.y = v31;
@@ -297,14 +297,14 @@ LABEL_18:
   {
     retstr->var1 = 1;
 LABEL_42:
-    v69 = v102;
+    v69 = scrollView;
     goto LABEL_67;
   }
 
-  if (![v102 isPagingEnabled])
+  if (![scrollView isPagingEnabled])
   {
     point_8b = a5 * 1200.0;
-    [v102 contentOffset];
+    [scrollView contentOffset];
     v72 = v71;
     v74 = v73;
     v120.origin.x = v25;
@@ -362,7 +362,7 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  [v102 contentOffset];
+  [scrollView contentOffset];
   v64 = v63;
   point_8a = v65;
   v118.origin.x = v25;
@@ -378,7 +378,7 @@ LABEL_42:
   if (v59 <= 0.0)
   {
     v68 = 0.0;
-    v69 = v102;
+    v69 = scrollView;
     v70 = point_8a;
     if (v59 < 0.0)
     {
@@ -397,7 +397,7 @@ LABEL_42:
   else
   {
     v68 = v66;
-    v69 = v102;
+    v69 = scrollView;
     v70 = point_8a;
     if (v64 + v66 + v66 > v94)
     {

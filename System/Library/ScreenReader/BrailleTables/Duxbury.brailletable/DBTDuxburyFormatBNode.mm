@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = DBTDuxburyFormatBNode;
-  v2 = [(DBTDuxburyFormatNode *)&v5 LaTeXRepresentation];
-  v3 = [NSString stringWithFormat:@"_{%@}", v2];
+  laTeXRepresentation = [(DBTDuxburyFormatNode *)&v5 LaTeXRepresentation];
+  v3 = [NSString stringWithFormat:@"_{%@}", laTeXRepresentation];
 
   return v3;
 }

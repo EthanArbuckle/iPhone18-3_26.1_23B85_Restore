@@ -1,16 +1,16 @@
 @interface COClusterMember
 + (id)memberForCurrentDevice;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMember:(id)a3;
-- (BOOL)isSameDeviceAsMember:(id)a3;
-- (COClusterMember)initWithCoder:(id)a3;
-- (COClusterMember)initWithHomeKitIdentifier:(id)a3;
-- (COClusterMember)initWithType:(unint64_t)a3 deviceMetadata:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMember:(id)member;
+- (BOOL)isSameDeviceAsMember:(id)member;
+- (COClusterMember)initWithCoder:(id)coder;
+- (COClusterMember)initWithHomeKitIdentifier:(id)identifier;
+- (COClusterMember)initWithType:(unint64_t)type deviceMetadata:(id)metadata;
 - (id)IDSIdentifier;
 - (id)description;
 - (id)homeKitIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COClusterMember
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (COClusterMember)initWithHomeKitIdentifier:(id)a3
+- (COClusterMember)initWithHomeKitIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = COClusterMember;
   v5 = [(COClusterMember *)&v12 init];
@@ -40,8 +40,8 @@
   {
     v5->_memberType = 3;
     v13 = @"accessory";
-    v7 = [v4 UUIDString];
-    v14[0] = v7;
+    uUIDString = [identifierCopy UUIDString];
+    v14[0] = uUIDString;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     deviceMetadata = v6->_deviceMetadata;
     v6->_deviceMetadata = v8;
@@ -51,17 +51,17 @@
   return v6;
 }
 
-- (COClusterMember)initWithType:(unint64_t)a3 deviceMetadata:(id)a4
+- (COClusterMember)initWithType:(unint64_t)type deviceMetadata:(id)metadata
 {
-  v6 = a4;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = COClusterMember;
   v7 = [(COClusterMember *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_memberType = a3;
-    v9 = [v6 copy];
+    v7->_memberType = type;
+    v9 = [metadataCopy copy];
     deviceMetadata = v8->_deviceMetadata;
     v8->_deviceMetadata = v9;
   }
@@ -71,11 +71,11 @@
 
 - (id)description
 {
-  v3 = [(COClusterMember *)self deviceMetadata];
-  v4 = [v3 description];
+  deviceMetadata = [(COClusterMember *)self deviceMetadata];
+  v4 = [deviceMetadata description];
 
-  v5 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v6 = [v4 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v7 = [v6 componentsJoinedByString:&stru_2857AE980];
   v8 = MEMORY[0x277CCACA8];
@@ -88,24 +88,24 @@
 
 - (id)IDSIdentifier
 {
-  v2 = [(COClusterMember *)self deviceMetadata];
-  v3 = [v2 objectForKey:@"IDS"];
+  deviceMetadata = [(COClusterMember *)self deviceMetadata];
+  v3 = [deviceMetadata objectForKey:@"IDS"];
 
   return v3;
 }
 
 - (id)homeKitIdentifier
 {
-  v2 = [(COClusterMember *)self deviceMetadata];
-  v3 = [v2 objectForKey:@"accessory"];
+  deviceMetadata = [(COClusterMember *)self deviceMetadata];
+  v3 = [deviceMetadata objectForKey:@"accessory"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -113,24 +113,24 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(COClusterMember *)self isEqualToMember:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(COClusterMember *)self isEqualToMember:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToMember:(id)a3
+- (BOOL)isEqualToMember:(id)member
 {
-  v4 = a3;
-  v5 = [(COClusterMember *)self memberType];
-  if (v5 == [v4 memberType])
+  memberCopy = member;
+  memberType = [(COClusterMember *)self memberType];
+  if (memberType == [memberCopy memberType])
   {
-    v6 = [(COClusterMember *)self deviceMetadata];
-    v7 = [v4 deviceMetadata];
-    if ([v6 isEqual:v7])
+    deviceMetadata = [(COClusterMember *)self deviceMetadata];
+    deviceMetadata2 = [memberCopy deviceMetadata];
+    if ([deviceMetadata isEqual:deviceMetadata2])
     {
-      v8 = [(COClusterMember *)self isStale];
-      v9 = v8 ^ [v4 isStale] ^ 1;
+      isStale = [(COClusterMember *)self isStale];
+      v9 = isStale ^ [memberCopy isStale] ^ 1;
     }
 
     else
@@ -147,35 +147,35 @@
   return v9;
 }
 
-- (BOOL)isSameDeviceAsMember:(id)a3
+- (BOOL)isSameDeviceAsMember:(id)member
 {
-  v4 = a3;
-  v5 = [(COClusterMember *)self deviceMetadata];
-  v6 = [v4 deviceMetadata];
+  memberCopy = member;
+  deviceMetadata = [(COClusterMember *)self deviceMetadata];
+  deviceMetadata2 = [memberCopy deviceMetadata];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(memberCopy) = [deviceMetadata isEqual:deviceMetadata2];
+  return memberCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(COClusterMember *)self deviceMetadata];
-  v3 = [v2 hash];
+  deviceMetadata = [(COClusterMember *)self deviceMetadata];
+  v3 = [deviceMetadata hash];
 
   return v3;
 }
 
-- (COClusterMember)initWithCoder:(id)a3
+- (COClusterMember)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  if ([v4 containsValueForKey:@"deviceMetadata"])
+  if ([coderCopy containsValueForKey:@"deviceMetadata"])
   {
-    [v4 decodeObjectOfClasses:v8 forKey:@"deviceMetadata"];
+    [coderCopy decodeObjectOfClasses:v8 forKey:@"deviceMetadata"];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -227,14 +227,14 @@
 
   else
   {
-    if (![v4 containsValueForKey:@"identifier"])
+    if (![coderCopy containsValueForKey:@"identifier"])
     {
       v16 = 0;
-      v18 = 0;
+      selfCopy = 0;
       goto LABEL_22;
     }
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v9 = v17;
     v13 = v17 != 0;
     if (v17)
@@ -251,34 +251,34 @@
     }
   }
 
-  v18 = 0;
+  selfCopy = 0;
   if (v13 && v16)
   {
     self = -[COClusterMember initWithType:deviceMetadata:](self, "initWithType:deviceMetadata:", [v5 unsignedIntegerValue], v16);
-    v18 = self;
+    selfCopy = self;
   }
 
 LABEL_22:
-  v19 = v18;
+  v19 = selfCopy;
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[COClusterMember memberType](self, "memberType")}];
-  [v8 encodeObject:v4 forKey:@"type"];
-  v5 = [(COClusterMember *)self deviceMetadata];
-  [v8 encodeObject:v5 forKey:@"deviceMetadata"];
+  [coderCopy encodeObject:v4 forKey:@"type"];
+  deviceMetadata = [(COClusterMember *)self deviceMetadata];
+  [coderCopy encodeObject:deviceMetadata forKey:@"deviceMetadata"];
 
-  v6 = [(COClusterMember *)self deviceMetadata];
-  v7 = [v6 objectForKey:@"legacyIdentifier"];
+  deviceMetadata2 = [(COClusterMember *)self deviceMetadata];
+  v7 = [deviceMetadata2 objectForKey:@"legacyIdentifier"];
 
   if (v7)
   {
-    [v8 encodeObject:v7 forKey:@"identifier"];
+    [coderCopy encodeObject:v7 forKey:@"identifier"];
   }
 }
 

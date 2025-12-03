@@ -1,10 +1,10 @@
 @interface MedicationSideEffectsItemCell
-- (_TtC19HealthMedicationsUI29MedicationSideEffectsItemCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI29MedicationSideEffectsItemCell)initWithCoder:(id)coder;
 @end
 
 @implementation MedicationSideEffectsItemCell
 
-- (_TtC19HealthMedicationsUI29MedicationSideEffectsItemCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI29MedicationSideEffectsItemCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI29MedicationSideEffectsItemCell_item;
   *v3 = 0u;

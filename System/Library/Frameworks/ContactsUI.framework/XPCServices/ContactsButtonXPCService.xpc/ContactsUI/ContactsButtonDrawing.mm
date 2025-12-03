@@ -1,7 +1,7 @@
 @interface ContactsButtonDrawing
 - (CGSize)drawingSize;
 - (_TtC24ContactsButtonXPCService21ContactsButtonDrawing)init;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation ContactsButtonDrawing
@@ -14,7 +14,7 @@
   v6 = v4[1];
   v7 = v4[2];
   v8 = v4[3];
-  v9 = self;
+  selfCopy = self;
   v18.origin.x = v5;
   v18.origin.y = v6;
   v18.size.width = v7;
@@ -31,13 +31,13 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  sub_10000DE94(v7, x, y);
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
+  selfCopy = self;
+  sub_10000DE94(contextCopy, x, y);
 }
 
 - (_TtC24ContactsButtonXPCService21ContactsButtonDrawing)init

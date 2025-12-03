@@ -1,9 +1,9 @@
 @interface BRFrameworkContainerHelper
 + (id)sharedHelper;
-- (id)fetchAllContainersByIDWithError:(id *)a3;
-- (id)fetchContainerForMangledID:(id)a3 personaID:(id)a4;
-- (unsigned)br_capabilityToMoveFromURL:(id)a3 toNewParent:(id)a4 error:(id *)a5;
-- (void)_resolveItemIdentifierAtURL:(id)a3 withHandler:(id)a4;
+- (id)fetchAllContainersByIDWithError:(id *)error;
+- (id)fetchContainerForMangledID:(id)d personaID:(id)iD;
+- (unsigned)br_capabilityToMoveFromURL:(id)l toNewParent:(id)parent error:(id *)error;
+- (void)_resolveItemIdentifierAtURL:(id)l withHandler:(id)handler;
 @end
 
 @implementation BRFrameworkContainerHelper
@@ -27,62 +27,62 @@ uint64_t __42__BRFrameworkContainerHelper_sharedHelper__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)fetchAllContainersByIDWithError:(id *)a3
+- (id)fetchAllContainersByIDWithError:(id *)error
 {
   v4 = +[BRDaemonConnection secondaryConnection];
-  v5 = [v4 newSyncProxy];
+  newSyncProxy = [v4 newSyncProxy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__BRFrameworkContainerHelper_fetchAllContainersByIDWithError___block_invoke;
   v10[3] = &unk_1E7A152E8;
-  v6 = v5;
+  v6 = newSyncProxy;
   v11 = v6;
   [v6 getContainersByID:v10];
-  if (a3)
+  if (error)
   {
-    *a3 = [v6 error];
+    *error = [v6 error];
   }
 
-  v7 = [v6 error];
-  if (v7)
+  error = [v6 error];
+  if (error)
   {
-    v8 = 0;
+    result = 0;
   }
 
   else
   {
-    v8 = [v6 result];
+    result = [v6 result];
   }
 
-  return v8;
+  return result;
 }
 
-- (id)fetchContainerForMangledID:(id)a3 personaID:(id)a4
+- (id)fetchContainerForMangledID:(id)d personaID:(id)iD
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = a4;
+    iDCopy = iD;
     v7 = +[BRDaemonConnection secondaryConnection];
-    v8 = [v7 newSyncProxy];
+    newSyncProxy = [v7 newSyncProxy];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __67__BRFrameworkContainerHelper_fetchContainerForMangledID_personaID___block_invoke;
     v20[3] = &unk_1E7A16778;
-    v9 = v8;
+    v9 = newSyncProxy;
     v21 = v9;
-    [v9 getContainerForMangledID:v5 personaID:v6 reply:v20];
+    [v9 getContainerForMangledID:dCopy personaID:iDCopy reply:v20];
 
-    v10 = [v9 result];
-    v11 = [v9 error];
-    if (v11)
+    result = [v9 result];
+    error = [v9 error];
+    if (error)
     {
-      v12 = v11;
-      v13 = [v9 error];
-      v14 = [v13 br_isCloudDocsErrorCode:2];
+      v12 = error;
+      error2 = [v9 error];
+      v14 = [error2 br_isCloudDocsErrorCode:2];
 
       if ((v14 & 1) == 0)
       {
@@ -90,11 +90,11 @@ uint64_t __42__BRFrameworkContainerHelper_sharedHelper__block_invoke()
         v16 = brc_default_log(0, 0);
         if (os_log_type_enabled(v16, 0x90u))
         {
-          v19 = [v9 error];
+          error3 = [v9 error];
           *buf = 138412802;
-          v23 = v5;
+          v23 = dCopy;
           v24 = 2112;
-          v25 = v19;
+          v25 = error3;
           v26 = 2112;
           v27 = v15;
           _os_log_error_impl(&dword_1AE2A9000, v16, 0x90u, "[ERROR] Failed getting container for MangledID: %@, error: %@%@", buf, 0x20u);
@@ -105,18 +105,18 @@ uint64_t __42__BRFrameworkContainerHelper_sharedHelper__block_invoke()
 
   else
   {
-    v10 = 0;
+    result = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return result;
 }
 
-- (void)_resolveItemIdentifierAtURL:(id)a3 withHandler:(id)a4
+- (void)_resolveItemIdentifierAtURL:(id)l withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -146,9 +146,9 @@ uint64_t __42__BRFrameworkContainerHelper_sharedHelper__block_invoke()
   v14 = &v21;
   v9 = v7;
   v11 = v9;
-  [v8 getIdentifierForUserVisibleFileAtURL:v5 completionHandler:v10];
+  [v8 getIdentifierForUserVisibleFileAtURL:lCopy completionHandler:v10];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  v6[2](v6, v28[5], v22[5], v16[5]);
+  handlerCopy[2](handlerCopy, v28[5], v22[5], v16[5]);
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
@@ -175,11 +175,11 @@ void __70__BRFrameworkContainerHelper__resolveItemIdentifierAtURL_withHandler___
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (unsigned)br_capabilityToMoveFromURL:(id)a3 toNewParent:(id)a4 error:(id *)a5
+- (unsigned)br_capabilityToMoveFromURL:(id)l toNewParent:(id)parent error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  parentCopy = parent;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -195,10 +195,10 @@ void __70__BRFrameworkContainerHelper__resolveItemIdentifierAtURL_withHandler___
   v19[2] = __75__BRFrameworkContainerHelper_br_capabilityToMoveFromURL_toNewParent_error___block_invoke;
   v19[3] = &unk_1E7A167C8;
   v21 = &v23;
-  v10 = v8;
+  v10 = lCopy;
   v20 = v10;
   v22 = &v27;
-  [(BRFrameworkContainerHelper *)self _resolveItemIdentifierAtURL:v9 withHandler:v19];
+  [(BRFrameworkContainerHelper *)self _resolveItemIdentifierAtURL:parentCopy withHandler:v19];
   v11 = v28[5];
   if (v11)
   {
@@ -210,7 +210,7 @@ void __70__BRFrameworkContainerHelper__resolveItemIdentifierAtURL_withHandler___
       *buf = 136315906;
       v34 = "[BRFrameworkContainerHelper br_capabilityToMoveFromURL:toNewParent:error:]";
       v35 = 2080;
-      if (!a5)
+      if (!error)
       {
         v18 = "(ignored by caller)";
       }
@@ -224,10 +224,10 @@ void __70__BRFrameworkContainerHelper__resolveItemIdentifierAtURL_withHandler___
     }
   }
 
-  if (a5)
+  if (error)
   {
     v14 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   v15 = *(v24 + 12);

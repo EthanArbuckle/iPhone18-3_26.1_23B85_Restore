@@ -1,12 +1,12 @@
 @interface SFExecuteToolCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFExecuteToolCommand)initWithCoder:(id)a3;
-- (SFExecuteToolCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFExecuteToolCommand)initWithCoder:(id)coder;
+- (SFExecuteToolCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFExecuteToolCommand
@@ -16,34 +16,34 @@
   v9.receiver = self;
   v9.super_class = SFExecuteToolCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFExecuteToolCommand *)self toolIdentifier];
-  v5 = [v4 hash];
-  v6 = [(SFExecuteToolCommand *)self toolInvocationData];
-  v7 = v5 ^ [v6 hash];
+  toolIdentifier = [(SFExecuteToolCommand *)self toolIdentifier];
+  v5 = [toolIdentifier hash];
+  toolInvocationData = [(SFExecuteToolCommand *)self toolInvocationData];
+  v7 = v5 ^ [toolInvocationData hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFExecuteToolCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFExecuteToolCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFExecuteToolCommand;
-      if ([(SFCommand *)&v22 isEqual:v5])
+      if ([(SFCommand *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFExecuteToolCommand *)self toolIdentifier];
-        v8 = [(SFExecuteToolCommand *)v6 toolIdentifier];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        toolIdentifier = [(SFExecuteToolCommand *)self toolIdentifier];
+        toolIdentifier2 = [(SFExecuteToolCommand *)v6 toolIdentifier];
+        if ((toolIdentifier != 0) == (toolIdentifier2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -51,12 +51,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFExecuteToolCommand *)self toolIdentifier];
-        if (v9)
+        toolIdentifier3 = [(SFExecuteToolCommand *)self toolIdentifier];
+        if (toolIdentifier3)
         {
-          v3 = [(SFExecuteToolCommand *)self toolIdentifier];
-          v10 = [(SFExecuteToolCommand *)v6 toolIdentifier];
-          if (![v3 isEqual:v10])
+          toolIdentifier4 = [(SFExecuteToolCommand *)self toolIdentifier];
+          toolIdentifier5 = [(SFExecuteToolCommand *)v6 toolIdentifier];
+          if (![toolIdentifier4 isEqual:toolIdentifier5])
           {
             v11 = 0;
 LABEL_18:
@@ -65,13 +65,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = toolIdentifier5;
         }
 
-        v12 = [(SFExecuteToolCommand *)self toolInvocationData];
-        v13 = [(SFExecuteToolCommand *)v6 toolInvocationData];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        toolInvocationData = [(SFExecuteToolCommand *)self toolInvocationData];
+        toolInvocationData2 = [(SFExecuteToolCommand *)v6 toolInvocationData];
+        v14 = toolInvocationData2;
+        if ((toolInvocationData != 0) == (toolInvocationData2 == 0))
         {
 
           v11 = 0;
@@ -79,16 +79,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFExecuteToolCommand *)self toolInvocationData];
-          if (v15)
+          toolInvocationData3 = [(SFExecuteToolCommand *)self toolInvocationData];
+          if (toolInvocationData3)
           {
-            v16 = v15;
-            v19 = [(SFExecuteToolCommand *)self toolInvocationData];
+            v16 = toolInvocationData3;
+            toolInvocationData4 = [(SFExecuteToolCommand *)self toolInvocationData];
             [(SFExecuteToolCommand *)v6 toolInvocationData];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = toolIdentifier4;
+            v11 = [toolInvocationData4 isEqual:v17];
 
-            v3 = v20;
+            toolIdentifier4 = v20;
           }
 
           else
@@ -98,8 +98,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        toolIdentifier5 = v21;
+        if (!toolIdentifier3)
         {
           goto LABEL_19;
         }
@@ -116,17 +116,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFExecuteToolCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFExecuteToolCommand *)self toolIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  toolIdentifier = [(SFExecuteToolCommand *)self toolIdentifier];
+  v6 = [toolIdentifier copy];
   [v4 setToolIdentifier:v6];
 
-  v7 = [(SFExecuteToolCommand *)self toolInvocationData];
-  v8 = [v7 copy];
+  toolInvocationData = [(SFExecuteToolCommand *)self toolInvocationData];
+  v8 = [toolInvocationData copy];
   [v4 setToolInvocationData:v8];
 
   return v4;
@@ -135,81 +135,81 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBExecuteToolCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBExecuteToolCommand *)v2 jsonData];
+  jsonData = [(_SFPBExecuteToolCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBExecuteToolCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBExecuteToolCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBExecuteToolCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFExecuteToolCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFExecuteToolCommand)initWithCoder:(id)a3
+- (SFExecuteToolCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFExecuteToolCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 toolIdentifier];
-    [(SFExecuteToolCommand *)v5 setToolIdentifier:v9];
+    toolIdentifier = [(SFCommand *)v8 toolIdentifier];
+    [(SFExecuteToolCommand *)v5 setToolIdentifier:toolIdentifier];
 
-    v10 = [(SFCommand *)v8 toolInvocationData];
-    [(SFExecuteToolCommand *)v5 setToolInvocationData:v10];
+    toolInvocationData = [(SFCommand *)v8 toolInvocationData];
+    [(SFExecuteToolCommand *)v5 setToolInvocationData:toolInvocationData];
 
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFExecuteToolCommand)initWithProtobuf:(id)a3
+- (SFExecuteToolCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFExecuteToolCommand;
   v5 = [(SFExecuteToolCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 toolIdentifier];
+    toolIdentifier = [protobufCopy toolIdentifier];
 
-    if (v6)
+    if (toolIdentifier)
     {
-      v7 = [v4 toolIdentifier];
-      [(SFExecuteToolCommand *)v5 setToolIdentifier:v7];
+      toolIdentifier2 = [protobufCopy toolIdentifier];
+      [(SFExecuteToolCommand *)v5 setToolIdentifier:toolIdentifier2];
     }
 
-    v8 = [v4 toolInvocationData];
+    toolInvocationData = [protobufCopy toolInvocationData];
 
-    if (v8)
+    if (toolInvocationData)
     {
-      v9 = [v4 toolInvocationData];
-      [(SFExecuteToolCommand *)v5 setToolInvocationData:v9];
+      toolInvocationData2 = [protobufCopy toolInvocationData];
+      [(SFExecuteToolCommand *)v5 setToolInvocationData:toolInvocationData2];
     }
 
     v10 = v5;

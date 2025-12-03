@@ -1,15 +1,15 @@
 @interface HDClinicalDeletedAccountEntity
-+ (BOOL)_insertOrUpdateTombstoneWithSyncIdentifier:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 syncProvenance:(int64_t)a6 syncIdentity:(int64_t)a7 database:(id)a8 error:(id *)a9;
-+ (BOOL)_insertTombstoneWithSyncIdentifier:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 syncProvenance:(int64_t)a6 syncIdentity:(int64_t)a7 database:(id)a8 error:(id *)a9;
-+ (BOOL)_validateCodableDeletedAccount:(id)a3 error:(id *)a4;
-+ (BOOL)insertTombstoneWithSyncIdentifierIfNotExists:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
-+ (id)_codableDeletedAccountWithSyncIdentifier:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 error:(id *)a6;
-+ (id)_codableWithRow:(HDSQLiteRow *)a3 error:(id *)a4;
-+ (id)_entityWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)_insertCodableDeletedAccounts:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_predicateForSyncIdentifier:(id)a3;
++ (BOOL)_insertOrUpdateTombstoneWithSyncIdentifier:(id)identifier deletionDate:(id)date deletionReason:(int64_t)reason syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity database:(id)database error:(id *)error;
++ (BOOL)_insertTombstoneWithSyncIdentifier:(id)identifier deletionDate:(id)date deletionReason:(int64_t)reason syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity database:(id)database error:(id *)error;
++ (BOOL)_validateCodableDeletedAccount:(id)account error:(id *)error;
++ (BOOL)insertTombstoneWithSyncIdentifierIfNotExists:(id)exists deletionDate:(id)date deletionReason:(int64_t)reason profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)_codableDeletedAccountWithSyncIdentifier:(id)identifier deletionDate:(id)date deletionReason:(int64_t)reason error:(id *)error;
++ (id)_codableWithRow:(HDSQLiteRow *)row error:(id *)error;
++ (id)_entityWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error;
++ (id)_insertCodableDeletedAccounts:(id)accounts syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (id)_predicateForSyncIdentifier:(id)identifier;
 + (id)_propertiesForEntity;
-+ (id)tombstoneExistsWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5;
++ (id)tombstoneExistsWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error;
 @end
 
 @implementation HDClinicalDeletedAccountEntity
@@ -26,7 +26,7 @@
   return v2;
 }
 
-+ (id)_predicateForSyncIdentifier:(id)a3
++ (id)_predicateForSyncIdentifier:(id)identifier
 {
   v3 = HDClinicalDeletedAccountEntityPropertySyncIdentifier;
   v4 = _HDSQLiteValueForUUID();
@@ -35,36 +35,36 @@
   return v5;
 }
 
-+ (id)_codableWithRow:(HDSQLiteRow *)a3 error:(id *)a4
++ (id)_codableWithRow:(HDSQLiteRow *)row error:(id *)error
 {
   v6 = HDSQLiteColumnWithNameAsUUID();
   v7 = HDSQLiteColumnWithNameAsDate();
-  v8 = [a1 _codableDeletedAccountWithSyncIdentifier:v6 deletionDate:v7 deletionReason:HDSQLiteColumnWithNameAsInt64() error:a4];
+  v8 = [self _codableDeletedAccountWithSyncIdentifier:v6 deletionDate:v7 deletionReason:HDSQLiteColumnWithNameAsInt64() error:error];
 
   return v8;
 }
 
-+ (id)_entityWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5
++ (id)_entityWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error
 {
-  v8 = a4;
-  v9 = [a1 _predicateForSyncIdentifier:a3];
-  v10 = [a1 anyInDatabase:v8 predicate:v9 error:a5];
+  databaseCopy = database;
+  v9 = [self _predicateForSyncIdentifier:identifier];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9 error:error];
 
   return v10;
 }
 
-+ (id)tombstoneExistsWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5
++ (id)tombstoneExistsWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error
 {
   v11 = 0;
-  v6 = [a1 _entityWithSyncIdentifier:a3 database:a4 error:&v11];
+  v6 = [self _entityWithSyncIdentifier:identifier database:database error:&v11];
   v7 = v11;
   if (v7)
   {
-    if (a5)
+    if (error)
     {
       v8 = v7;
       v9 = 0;
-      *a5 = v7;
+      *error = v7;
     }
 
     else
@@ -82,15 +82,15 @@
   return v9;
 }
 
-+ (BOOL)insertTombstoneWithSyncIdentifierIfNotExists:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)insertTombstoneWithSyncIdentifierIfNotExists:(id)exists deletionDate:(id)date deletionReason:(int64_t)reason profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = [v17 protectedDatabase];
+  existsCopy = exists;
+  dateCopy = date;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  protectedDatabase = [transactionCopy protectedDatabase];
   v26 = 0;
-  v19 = [a1 _entityWithSyncIdentifier:v14 database:v18 error:&v26];
+  v19 = [self _entityWithSyncIdentifier:existsCopy database:protectedDatabase error:&v26];
   v20 = v26;
 
   if (v19)
@@ -100,11 +100,11 @@
 
   else if (v20)
   {
-    if (a8)
+    if (error)
     {
       v23 = v20;
       v21 = 0;
-      *a8 = v20;
+      *error = v20;
     }
 
     else
@@ -116,43 +116,43 @@
 
   else
   {
-    v25 = [v16 currentSyncIdentityPersistentID];
-    v24 = [v17 protectedDatabase];
-    v21 = [a1 _insertTombstoneWithSyncIdentifier:v14 deletionDate:v15 deletionReason:a5 syncProvenance:0 syncIdentity:v25 database:v24 error:a8];
+    currentSyncIdentityPersistentID = [profileCopy currentSyncIdentityPersistentID];
+    protectedDatabase2 = [transactionCopy protectedDatabase];
+    v21 = [self _insertTombstoneWithSyncIdentifier:existsCopy deletionDate:dateCopy deletionReason:reason syncProvenance:0 syncIdentity:currentSyncIdentityPersistentID database:protectedDatabase2 error:error];
   }
 
   return v21;
 }
 
-+ (BOOL)_insertTombstoneWithSyncIdentifier:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 syncProvenance:(int64_t)a6 syncIdentity:(int64_t)a7 database:(id)a8 error:(id *)a9
++ (BOOL)_insertTombstoneWithSyncIdentifier:(id)identifier deletionDate:(id)date deletionReason:(int64_t)reason syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity database:(id)database error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  v18 = [a1 _propertiesForEntity];
+  identifierCopy = identifier;
+  dateCopy = date;
+  databaseCopy = database;
+  _propertiesForEntity = [self _propertiesForEntity];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_4B334;
   v23[3] = &unk_1077C0;
-  v24 = v15;
-  v25 = v16;
-  v26 = a5;
-  v27 = a6;
-  v28 = a7;
-  v19 = v16;
-  v20 = v15;
-  v21 = [a1 insertOrReplaceEntity:0 database:v17 properties:v18 error:a9 bindingHandler:v23];
+  v24 = identifierCopy;
+  v25 = dateCopy;
+  reasonCopy = reason;
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  v19 = dateCopy;
+  v20 = identifierCopy;
+  v21 = [self insertOrReplaceEntity:0 database:databaseCopy properties:_propertiesForEntity error:error bindingHandler:v23];
 
   return v21 != 0;
 }
 
-+ (BOOL)_insertOrUpdateTombstoneWithSyncIdentifier:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 syncProvenance:(int64_t)a6 syncIdentity:(int64_t)a7 database:(id)a8 error:(id *)a9
++ (BOOL)_insertOrUpdateTombstoneWithSyncIdentifier:(id)identifier deletionDate:(id)date deletionReason:(int64_t)reason syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity database:(id)database error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  identifierCopy = identifier;
+  dateCopy = date;
+  databaseCopy = database;
   v26 = 0;
-  v18 = [a1 _entityWithSyncIdentifier:v15 database:v17 error:&v26];
+  v18 = [self _entityWithSyncIdentifier:identifierCopy database:databaseCopy error:&v26];
   v19 = v26;
   if (!v19)
   {
@@ -161,22 +161,22 @@
       goto LABEL_10;
     }
 
-    v25 = a7;
-    v22 = [v18 dateForProperty:HDClinicalDeletedAccountEntityPropertyDeletionDate database:v17];
-    if ([v22 hk_isBeforeDate:v16])
+    identityCopy = identity;
+    v22 = [v18 dateForProperty:HDClinicalDeletedAccountEntityPropertyDeletionDate database:databaseCopy];
+    if ([v22 hk_isBeforeDate:dateCopy])
     {
 
       v21 = 1;
       goto LABEL_11;
     }
 
-    v24 = [v18 deleteFromDatabase:v17 error:a9];
+    v24 = [v18 deleteFromDatabase:databaseCopy error:error];
 
-    a7 = v25;
+    identity = identityCopy;
     if (v24)
     {
 LABEL_10:
-      v21 = [a1 _insertTombstoneWithSyncIdentifier:v15 deletionDate:v16 deletionReason:a5 syncProvenance:a6 syncIdentity:a7 database:v17 error:a9];
+      v21 = [self _insertTombstoneWithSyncIdentifier:identifierCopy deletionDate:dateCopy deletionReason:reason syncProvenance:provenance syncIdentity:identity database:databaseCopy error:error];
       goto LABEL_11;
     }
 
@@ -185,7 +185,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (!a9)
+  if (!error)
   {
     _HKLogDroppedError();
     goto LABEL_8;
@@ -193,43 +193,43 @@ LABEL_8:
 
   v20 = v19;
   v21 = 0;
-  *a9 = v19;
+  *error = v19;
 LABEL_11:
 
   return v21;
 }
 
-+ (id)_insertCodableDeletedAccounts:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)_insertCodableDeletedAccounts:(id)accounts syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  accountsCopy = accounts;
+  profileCopy = profile;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_4B738;
   v27[3] = &unk_1077E0;
-  v27[4] = a1;
-  v12 = [v10 hk_filter:v27];
+  v27[4] = self;
+  v12 = [accountsCopy hk_filter:v27];
   if ([v12 count])
   {
-    v13 = [v11 database];
+    database = [profileCopy database];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_4B7CC;
     v22[3] = &unk_1067D8;
-    v25 = a1;
+    selfCopy = self;
     v23 = v12;
-    v24 = v11;
-    v26 = a4;
+    v24 = profileCopy;
+    provenanceCopy = provenance;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_4BB84;
     v18[3] = &unk_106800;
-    v20 = v13;
-    v21 = a4;
-    v19 = v10;
-    v14 = v13;
+    v20 = database;
+    provenanceCopy2 = provenance;
+    v19 = accountsCopy;
+    v14 = database;
     v15 = v12;
-    if ([a1 performWriteTransactionWithHealthDatabase:v14 error:a6 block:v22 inaccessibilityHandler:v18])
+    if ([self performWriteTransactionWithHealthDatabase:v14 error:error block:v22 inaccessibilityHandler:v18])
     {
       v16 = v15;
     }
@@ -245,42 +245,42 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_codableDeletedAccountWithSyncIdentifier:(id)a3 deletionDate:(id)a4 deletionReason:(int64_t)a5 error:(id *)a6
++ (id)_codableDeletedAccountWithSyncIdentifier:(id)identifier deletionDate:(id)date deletionReason:(int64_t)reason error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v12 = objc_alloc_init(HDCodableClinicalDeletedAccount);
-  v13 = [a1 _currentCodableMessageVersion];
-  [v12 setMessageVersion:v13];
+  _currentCodableMessageVersion = [self _currentCodableMessageVersion];
+  [v12 setMessageVersion:_currentCodableMessageVersion];
 
-  if (a5 == 3)
+  if (reason == 3)
   {
-    v14 = [v12 messageVersion];
-    v15 = [v14 compatibilityVersion];
+    messageVersion = [v12 messageVersion];
+    compatibilityVersion = [messageVersion compatibilityVersion];
 
-    if (v15 <= 1)
+    if (compatibilityVersion <= 1)
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = v15;
+      v16 = compatibilityVersion;
     }
 
-    v17 = [v12 messageVersion];
-    [v17 setCompatibilityVersion:v16];
+    messageVersion2 = [v12 messageVersion];
+    [messageVersion2 setCompatibilityVersion:v16];
   }
 
-  v18 = [v10 hk_dataForUUIDBytes];
-  [v12 setSyncIdentifier:v18];
+  hk_dataForUUIDBytes = [identifierCopy hk_dataForUUIDBytes];
+  [v12 setSyncIdentifier:hk_dataForUUIDBytes];
 
-  [v11 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v20 = v19;
 
   [v12 setDeletionDate:v20];
-  [v12 setDeletionReason:a5];
-  if ([a1 _validateCodableDeletedAccount:v12 error:a6])
+  [v12 setDeletionReason:reason];
+  if ([self _validateCodableDeletedAccount:v12 error:error])
   {
     v21 = v12;
   }
@@ -293,38 +293,38 @@ LABEL_11:
   return v21;
 }
 
-+ (BOOL)_validateCodableDeletedAccount:(id)a3 error:(id *)a4
++ (BOOL)_validateCodableDeletedAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  if (![v5 hasMessageVersion] || (objc_msgSend(v5, "messageVersion"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "compatibilityVersion"), v6, v7 < 3))
+  accountCopy = account;
+  if (![accountCopy hasMessageVersion] || (objc_msgSend(accountCopy, "messageVersion"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "compatibilityVersion"), v6, v7 < 3))
   {
-    v8 = [v5 syncIdentifier];
-    v9 = [NSUUID hk_UUIDWithData:v8];
+    syncIdentifier = [accountCopy syncIdentifier];
+    v9 = [NSUUID hk_UUIDWithData:syncIdentifier];
 
     if (!v9)
     {
-      [NSError hk_assignError:a4 code:3 format:@"%@: invalid sync identifier", objc_opt_class()];
+      [NSError hk_assignError:error code:3 format:@"%@: invalid sync identifier", objc_opt_class()];
       goto LABEL_11;
     }
 
-    if (([v5 hasDeletionDate] & 1) == 0)
+    if (([accountCopy hasDeletionDate] & 1) == 0)
     {
-      [NSError hk_assignError:a4 code:3 format:@"%@: missing deletion date", objc_opt_class()];
+      [NSError hk_assignError:error code:3 format:@"%@: missing deletion date", objc_opt_class()];
       goto LABEL_11;
     }
 
-    v10 = [v5 messageVersion];
-    if ([v10 entityVersion] < 2)
+    messageVersion = [accountCopy messageVersion];
+    if ([messageVersion entityVersion] < 2)
     {
     }
 
     else
     {
-      v11 = [v5 hasDeletionReason];
+      hasDeletionReason = [accountCopy hasDeletionReason];
 
-      if ((v11 & 1) == 0)
+      if ((hasDeletionReason & 1) == 0)
       {
-        [NSError hk_assignError:a4 code:3 format:@"%@: missing deletion reason", objc_opt_class()];
+        [NSError hk_assignError:error code:3 format:@"%@: missing deletion reason", objc_opt_class()];
         goto LABEL_11;
       }
     }
@@ -333,7 +333,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [NSError hk_assignError:a4 code:3 description:@"Codable deleted account compatibilty version is higher than what we support"];
+  [NSError hk_assignError:error code:3 description:@"Codable deleted account compatibilty version is higher than what we support"];
 LABEL_11:
   v12 = 0;
 LABEL_12:

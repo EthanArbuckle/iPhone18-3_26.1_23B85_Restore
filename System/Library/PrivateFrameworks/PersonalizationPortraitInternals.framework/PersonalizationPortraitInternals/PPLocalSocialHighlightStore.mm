@@ -1,10 +1,10 @@
 @interface PPLocalSocialHighlightStore
 + (id)defaultStore;
-- (BOOL)feedbackForAttribution:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 error:(id *)a7;
-- (BOOL)feedbackForHighlight:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 error:(id *)a7;
+- (BOOL)feedbackForAttribution:(id)attribution type:(unint64_t)type client:(id)client variant:(id)variant error:(id *)error;
+- (BOOL)feedbackForHighlight:(id)highlight type:(unint64_t)type client:(id)client variant:(id)variant error:(id *)error;
 - (PPLocalSocialHighlightStore)init;
-- (PPLocalSocialHighlightStore)initWithStorage:(id)a3;
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3;
+- (PPLocalSocialHighlightStore)initWithStorage:(id)storage;
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request;
 @end
 
 @implementation PPLocalSocialHighlightStore
@@ -21,13 +21,13 @@
   return v3;
 }
 
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D3A698];
-  v6 = [v4 bundleIdentifier];
-  LODWORD(v5) = [v5 isEqual:v6];
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  LODWORD(v5) = [v5 isEqual:bundleIdentifier];
 
   if (v5)
   {
@@ -70,12 +70,12 @@
   else
   {
     v17 = *MEMORY[0x277D3A658];
-    v18 = [v4 bundleIdentifier];
-    LODWORD(v17) = [v17 isEqual:v18];
+    bundleIdentifier2 = [requestCopy bundleIdentifier];
+    LODWORD(v17) = [v17 isEqual:bundleIdentifier2];
 
     if (v17)
     {
-      [(PPSocialHighlightStorage *)self->_storage deleteDataDerivedFromContentMatchingRequest:v4];
+      [(PPSocialHighlightStorage *)self->_storage deleteDataDerivedFromContentMatchingRequest:requestCopy];
     }
   }
 
@@ -86,55 +86,55 @@
   return v19;
 }
 
-- (BOOL)feedbackForAttribution:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 error:(id *)a7
+- (BOOL)feedbackForAttribution:(id)attribution type:(unint64_t)type client:(id)client variant:(id)variant error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  attributionCopy = attribution;
+  clientCopy = client;
+  variantCopy = variant;
   v14 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v17 = 138413058;
-    v18 = v11;
+    v18 = attributionCopy;
     v19 = 2048;
-    v20 = a4;
+    typeCopy = type;
     v21 = 2112;
-    v22 = v12;
+    v22 = clientCopy;
     v23 = 2112;
-    v24 = v13;
+    v24 = variantCopy;
     _os_log_impl(&dword_23224A000, v14, OS_LOG_TYPE_INFO, "PPLocalSocialHighlightStore: feedbackForAttribution: %@ type: %lu client: '%@' variant: '%@'", &v17, 0x2Au);
   }
 
-  [PPSocialHighlightMetrics logFeedbackForAttribution:v11 type:a4 client:v12];
-  [(PPSocialHighlightStorage *)self->_storage saveAttributionFeedbackForAttributionIdentifier:v11 feedbackType:a4 client:v12 variant:v13];
+  [PPSocialHighlightMetrics logFeedbackForAttribution:attributionCopy type:type client:clientCopy];
+  [(PPSocialHighlightStorage *)self->_storage saveAttributionFeedbackForAttributionIdentifier:attributionCopy feedbackType:type client:clientCopy variant:variantCopy];
 
   v15 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)feedbackForHighlight:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 error:(id *)a7
+- (BOOL)feedbackForHighlight:(id)highlight type:(unint64_t)type client:(id)client variant:(id)variant error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  highlightCopy = highlight;
+  clientCopy = client;
+  variantCopy = variant;
   v14 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v17 = 138413058;
-    v18 = v11;
+    v18 = highlightCopy;
     v19 = 2048;
-    v20 = a4;
+    typeCopy = type;
     v21 = 2112;
-    v22 = v12;
+    v22 = clientCopy;
     v23 = 2112;
-    v24 = v13;
+    v24 = variantCopy;
     _os_log_impl(&dword_23224A000, v14, OS_LOG_TYPE_INFO, "PPLocalSocialHighlightStore: feedbackForHighlight: %@ type: %lu client: '%@' variant: '%@'", &v17, 0x2Au);
   }
 
-  [PPSocialHighlightMetrics logFeedbackForHighlight:v11 type:a4 client:v12];
-  [(PPSocialHighlightStorage *)self->_storage saveFeedbackForHighlightIdentifier:v11 feedbackType:a4 client:v12 variant:v13];
+  [PPSocialHighlightMetrics logFeedbackForHighlight:highlightCopy type:type client:clientCopy];
+  [(PPSocialHighlightStorage *)self->_storage saveFeedbackForHighlightIdentifier:highlightCopy feedbackType:type client:clientCopy variant:variantCopy];
 
   v15 = *MEMORY[0x277D85DE8];
   return 1;
@@ -146,32 +146,32 @@
   if (v3)
   {
     self = [(PPLocalSocialHighlightStore *)self initWithStorage:v3];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (PPLocalSocialHighlightStore)initWithStorage:(id)a3
+- (PPLocalSocialHighlightStore)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v10.receiver = self;
   v10.super_class = PPLocalSocialHighlightStore;
   v6 = [(PPLocalSocialHighlightStore *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277D41DE8] defaultCoordinator];
-    [v7 registerMessagesConsumer:v6 levelOfService:1];
+    defaultCoordinator = [MEMORY[0x277D41DE8] defaultCoordinator];
+    [defaultCoordinator registerMessagesConsumer:v6 levelOfService:1];
 
-    v8 = [MEMORY[0x277D41DE8] defaultCoordinator];
-    [v8 registerSafariConsumer:v6 levelOfService:1];
+    defaultCoordinator2 = [MEMORY[0x277D41DE8] defaultCoordinator];
+    [defaultCoordinator2 registerSafariConsumer:v6 levelOfService:1];
 
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
   }
 
   return v6;

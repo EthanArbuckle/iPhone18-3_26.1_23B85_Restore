@@ -1,19 +1,19 @@
 @interface WFEKParticipantContentItem
 + (id)coercions;
-+ (id)localizedFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)possibleRoles;
 + (id)possibleStatuses;
 + (id)possibleTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListSubtitle:(id)a3;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (BOOL)isCurrentUser;
 - (WFParticipant)participant;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 - (id)emailAddress;
 - (id)role;
 - (id)status;
@@ -22,47 +22,47 @@
 
 @implementation WFEKParticipantContentItem
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFEKParticipantContentItem *)self participant];
-  v6 = [v5 emailAddress];
+  subtitleCopy = subtitle;
+  participant = [(WFEKParticipantContentItem *)self participant];
+  emailAddress = [participant emailAddress];
 
-  v7 = [v6 length];
+  v7 = [emailAddress length];
   v8 = v7;
-  if (v4 && v7)
+  if (subtitleCopy && v7)
   {
-    v4[2](v4, v6);
+    subtitleCopy[2](subtitleCopy, emailAddress);
   }
 
   return v8 != 0;
 }
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfType];
-  v6 = [v5 conformsToClass:objc_opt_class()];
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v6 = [wfType conformsToClass:objc_opt_class()];
 
   if (v6)
   {
-    v7 = [v4 object];
+    object = [representationCopy object];
 
     v8 = objc_alloc(MEMORY[0x277CD3A58]);
     v9 = [v8 initWithBundleIdentifier:*MEMORY[0x277D7A220]];
-    v10 = [MEMORY[0x277CD3A88] sharedResolver];
-    v11 = [v10 resolvedAppMatchingDescriptor:v9];
+    mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+    v11 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v9];
 
-    v12 = [v7 sourceIdentifier];
-    v13 = [(WFContentItem *)self cachingIdentifier];
-    v14 = [WFContentAttributionSet attributionSetWithAccountBasedAppDescriptor:v11 accountIdentifier:v12 disclosureLevel:1 originalItemIdentifier:v13];
+    sourceIdentifier = [object sourceIdentifier];
+    cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+    v14 = [WFContentAttributionSet attributionSetWithAccountBasedAppDescriptor:v11 accountIdentifier:sourceIdentifier disclosureLevel:1 originalItemIdentifier:cachingIdentifier];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = WFEKParticipantContentItem;
-    v14 = [(WFContentItem *)&v16 defaultSourceForRepresentation:v4];
+    v14 = [(WFContentItem *)&v16 defaultSourceForRepresentation:representationCopy];
   }
 
   return v14;
@@ -70,12 +70,12 @@
 
 - (id)type
 {
-  v2 = [(WFEKParticipantContentItem *)self participant];
-  v3 = [v2 type];
+  participant = [(WFEKParticipantContentItem *)self participant];
+  type = [participant type];
 
-  if (v3 <= 4)
+  if (type <= 4)
   {
-    v4 = WFLocalizedContentPropertyPossibleValueMarker(off_2783452B8[v3]);
+    v4 = WFLocalizedContentPropertyPossibleValueMarker(off_2783452B8[type]);
   }
 
   return v4;
@@ -83,28 +83,28 @@
 
 - (BOOL)isCurrentUser
 {
-  v2 = [(WFEKParticipantContentItem *)self participant];
-  v3 = [v2 isCurrentUser];
+  participant = [(WFEKParticipantContentItem *)self participant];
+  isCurrentUser = [participant isCurrentUser];
 
-  return v3;
+  return isCurrentUser;
 }
 
 - (id)status
 {
-  v2 = [(WFEKParticipantContentItem *)self participant];
-  v3 = WFStatusPropertyValueForEKParticipantStatus([v2 status]);
+  participant = [(WFEKParticipantContentItem *)self participant];
+  v3 = WFStatusPropertyValueForEKParticipantStatus([participant status]);
 
   return v3;
 }
 
 - (id)role
 {
-  v2 = [(WFEKParticipantContentItem *)self participant];
-  v3 = [v2 role];
+  participant = [(WFEKParticipantContentItem *)self participant];
+  role = [participant role];
 
-  if (v3 <= 4)
+  if (role <= 4)
   {
-    v4 = WFLocalizedContentPropertyPossibleValueMarker(off_278345250[v3]);
+    v4 = WFLocalizedContentPropertyPossibleValueMarker(off_278345250[role]);
   }
 
   return v4;
@@ -112,12 +112,12 @@
 
 - (id)emailAddress
 {
-  v2 = [(WFEKParticipantContentItem *)self participant];
-  v3 = [v2 emailAddress];
+  participant = [(WFEKParticipantContentItem *)self participant];
+  emailAddress = [participant emailAddress];
 
-  if (v3)
+  if (emailAddress)
   {
-    v4 = [WFEmailAddress addressWithEmailAddress:v3];
+    v4 = [WFEmailAddress addressWithEmailAddress:emailAddress];
   }
 
   else
@@ -135,38 +135,38 @@
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3
++ (id)localizedPluralFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Event Attendees", @"Event Attendees");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedFilterDescriptionWithContext:(id)a3
++ (id)localizedFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Event Attendee", @"Event Attendee");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Event attendees", @"Event attendees");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Event attendee", @"Event attendee");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -242,7 +242,7 @@
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Name"];
+  v2 = [self propertyForName:@"Name"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -253,18 +253,18 @@
   v25[5] = *MEMORY[0x277D85DE8];
   v24 = WFLocalizedContentPropertyNameMarker(@"Status");
   v23 = [WFContentPropertyBuilder keyPath:@"status" name:v24 class:objc_opt_class()];
-  v22 = [objc_opt_class() possibleStatuses];
-  v21 = [v23 possibleValues:v22];
+  possibleStatuses = [objc_opt_class() possibleStatuses];
+  v21 = [v23 possibleValues:possibleStatuses];
   v25[0] = v21;
   v20 = WFLocalizedContentPropertyNameMarker(@"Role");
   v19 = [WFContentPropertyBuilder keyPath:@"role" name:v20 class:objc_opt_class()];
-  v18 = [objc_opt_class() possibleRoles];
-  v17 = [v19 possibleValues:v18];
+  possibleRoles = [objc_opt_class() possibleRoles];
+  v17 = [v19 possibleValues:possibleRoles];
   v25[1] = v17;
   v16 = WFLocalizedContentPropertyNameMarker(@"Type");
   v15 = [WFContentPropertyBuilder keyPath:@"type" name:v16 class:objc_opt_class()];
-  v14 = [objc_opt_class() possibleTypes];
-  v2 = [v15 possibleValues:v14];
+  possibleTypes = [objc_opt_class() possibleTypes];
+  v2 = [v15 possibleValues:possibleTypes];
   v25[2] = v2;
   v3 = WFLocalizedContentPropertyNameMarker(@"Is Me");
   v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
@@ -412,12 +412,12 @@ LABEL_6:
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [a1 contactCoercionHandler];
-  v5 = [WFCoercion coercionToClass:v3 handler:v4];
+  contactCoercionHandler = [self contactCoercionHandler];
+  v5 = [WFCoercion coercionToClass:v3 handler:contactCoercionHandler];
   v11[0] = v5;
   v6 = objc_opt_class();
-  v7 = [a1 emailAddressCoercionHandler];
-  v8 = [WFCoercion coercionToClass:v6 handler:v7];
+  emailAddressCoercionHandler = [self emailAddressCoercionHandler];
+  v8 = [WFCoercion coercionToClass:v6 handler:emailAddressCoercionHandler];
   v11[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
 

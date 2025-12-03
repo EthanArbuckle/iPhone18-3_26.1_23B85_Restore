@@ -1,12 +1,12 @@
 @interface PKProtobufAutomaticReloadPaymentRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufAutomaticReloadPaymentRequest
@@ -17,27 +17,27 @@
   v8.receiver = self;
   v8.super_class = PKProtobufAutomaticReloadPaymentRequest;
   v4 = [(PKProtobufAutomaticReloadPaymentRequest *)&v8 description];
-  v5 = [(PKProtobufAutomaticReloadPaymentRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufAutomaticReloadPaymentRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   paymentDescription = self->_paymentDescription;
   if (paymentDescription)
   {
-    [v3 setObject:paymentDescription forKey:@"paymentDescription"];
+    [dictionary setObject:paymentDescription forKey:@"paymentDescription"];
   }
 
   automaticPaymentBilling = self->_automaticPaymentBilling;
   if (automaticPaymentBilling)
   {
-    v7 = [(PKProtobufPaymentSummaryItem *)automaticPaymentBilling dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"automaticPaymentBilling"];
+    dictionaryRepresentation = [(PKProtobufPaymentSummaryItem *)automaticPaymentBilling dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"automaticPaymentBilling"];
   }
 
   billingAgreement = self->_billingAgreement;
@@ -61,109 +61,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_paymentDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_automaticPaymentBilling)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_billingAgreement)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_managementURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tokenNotificationURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_paymentDescription)
   {
-    [v4 setPaymentDescription:?];
-    v4 = v5;
+    [toCopy setPaymentDescription:?];
+    toCopy = v5;
   }
 
   if (self->_automaticPaymentBilling)
   {
     [v5 setAutomaticPaymentBilling:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_billingAgreement)
   {
     [v5 setBillingAgreement:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_managementURL)
   {
     [v5 setManagementURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tokenNotificationURL)
   {
     [v5 setTokenNotificationURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_paymentDescription copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_paymentDescription copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(PKProtobufPaymentSummaryItem *)self->_automaticPaymentBilling copyWithZone:a3];
+  v8 = [(PKProtobufPaymentSummaryItem *)self->_automaticPaymentBilling copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_billingAgreement copyWithZone:a3];
+  v10 = [(NSString *)self->_billingAgreement copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_managementURL copyWithZone:a3];
+  v12 = [(NSString *)self->_managementURL copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_tokenNotificationURL copyWithZone:a3];
+  v14 = [(NSString *)self->_tokenNotificationURL copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((paymentDescription = self->_paymentDescription, !(paymentDescription | v4[4])) || -[NSString isEqual:](paymentDescription, "isEqual:")) && ((automaticPaymentBilling = self->_automaticPaymentBilling, !(automaticPaymentBilling | v4[1])) || -[PKProtobufPaymentSummaryItem isEqual:](automaticPaymentBilling, "isEqual:")) && ((billingAgreement = self->_billingAgreement, !(billingAgreement | v4[2])) || -[NSString isEqual:](billingAgreement, "isEqual:")) && ((managementURL = self->_managementURL, !(managementURL | v4[3])) || -[NSString isEqual:](managementURL, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((paymentDescription = self->_paymentDescription, !(paymentDescription | equalCopy[4])) || -[NSString isEqual:](paymentDescription, "isEqual:")) && ((automaticPaymentBilling = self->_automaticPaymentBilling, !(automaticPaymentBilling | equalCopy[1])) || -[PKProtobufPaymentSummaryItem isEqual:](automaticPaymentBilling, "isEqual:")) && ((billingAgreement = self->_billingAgreement, !(billingAgreement | equalCopy[2])) || -[NSString isEqual:](billingAgreement, "isEqual:")) && ((managementURL = self->_managementURL, !(managementURL | equalCopy[3])) || -[NSString isEqual:](managementURL, "isEqual:")))
   {
     tokenNotificationURL = self->_tokenNotificationURL;
-    if (tokenNotificationURL | v4[5])
+    if (tokenNotificationURL | equalCopy[5])
     {
       v10 = [(NSString *)tokenNotificationURL isEqual:?];
     }
@@ -191,16 +191,16 @@
   return v6 ^ [(NSString *)self->_tokenNotificationURL hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v6 = a3;
-  if (v6[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(PKProtobufAutomaticReloadPaymentRequest *)self setPaymentDescription:?];
   }
 
   automaticPaymentBilling = self->_automaticPaymentBilling;
-  v5 = v6[1];
+  v5 = fromCopy[1];
   if (automaticPaymentBilling)
   {
     if (v5)
@@ -214,17 +214,17 @@
     [(PKProtobufAutomaticReloadPaymentRequest *)self setAutomaticPaymentBilling:?];
   }
 
-  if (v6[2])
+  if (fromCopy[2])
   {
     [(PKProtobufAutomaticReloadPaymentRequest *)self setBillingAgreement:?];
   }
 
-  if (v6[3])
+  if (fromCopy[3])
   {
     [(PKProtobufAutomaticReloadPaymentRequest *)self setManagementURL:?];
   }
 
-  if (v6[5])
+  if (fromCopy[5])
   {
     [(PKProtobufAutomaticReloadPaymentRequest *)self setTokenNotificationURL:?];
   }

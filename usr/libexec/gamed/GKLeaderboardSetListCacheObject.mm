@@ -1,17 +1,17 @@
 @interface GKLeaderboardSetListCacheObject
 - (BOOL)isValid;
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4;
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date;
 @end
 
 @implementation GKLeaderboardSetListCacheObject
 
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date
 {
   v8.receiver = self;
   v8.super_class = GKLeaderboardSetListCacheObject;
-  v6 = a3;
-  [(GKExpiringCacheObject *)&v8 updateWithServerRepresentation:v6 expirationDate:a4];
-  v7 = [v6 objectForKeyedSubscript:{@"results", v8.receiver, v8.super_class}];
+  representationCopy = representation;
+  [(GKExpiringCacheObject *)&v8 updateWithServerRepresentation:representationCopy expirationDate:date];
+  v7 = [representationCopy objectForKeyedSubscript:{@"results", v8.receiver, v8.super_class}];
 
   [(GKListCacheObject *)self updateEntriesWithRepresentations:v7 entryForRepresentation:&stru_100367B80 reuseEntriesByIndex:1];
 }
@@ -25,9 +25,9 @@
     return 0;
   }
 
-  v3 = [(GKLeaderboardSetListCacheObject *)self game];
-  v4 = [v3 name];
-  v5 = v4 != 0;
+  game = [(GKLeaderboardSetListCacheObject *)self game];
+  name = [game name];
+  v5 = name != 0;
 
   return v5;
 }

@@ -1,14 +1,14 @@
 @interface FMPFRingView
 + (Class)layerClass;
 - (NSString)description;
-- (_TtC11FMFindingUI12FMPFRingView)initWithCoder:(id)a3;
-- (_TtC11FMFindingUI12FMPFRingView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC11FMFindingUI12FMPFRingView)initWithCoder:(id)coder;
+- (_TtC11FMFindingUI12FMPFRingView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation FMPFRingView
 
-- (_TtC11FMFindingUI12FMPFRingView)initWithCoder:(id)a3
+- (_TtC11FMFindingUI12FMPFRingView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11FMFindingUI12FMPFRingView_style;
   if (qword_27EF4EA00 != -1)
@@ -39,7 +39,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5100E8();
 
   v3 = sub_24A62EBE4();
@@ -47,13 +47,13 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_24A59EA20();
 }
 
-- (_TtC11FMFindingUI12FMPFRingView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI12FMPFRingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

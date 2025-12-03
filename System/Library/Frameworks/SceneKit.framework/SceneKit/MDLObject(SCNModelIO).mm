@@ -7,7 +7,7 @@
 + (id)objectWithSCNNode:()SCNModelIO bufferAllocator:
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v7 = objc_opt_new();
   [v6 setTransform:v7];
 
@@ -44,22 +44,22 @@
   HIDWORD(v10) = v12;
   v18 = vextq_s8(v15, v16, 8uLL);
   v18.i32[0] = v14;
-  v19 = [v6 transform];
-  [v19 setMatrix:{v34, v31, v33, v32}];
+  transform = [v6 transform];
+  [transform setMatrix:{v34, v31, v33, v32}];
   [v6 setName:{objc_msgSend(a3, "name")}];
   objc_setAssociatedObject(v6, @"SCNSceneKitAssociatedObject", a3, 0x301);
   objc_setAssociatedObject(a3, @"SCNSceneKitAssociatedObject", v6, 0);
-  v20 = [a3 camera];
-  if (v20)
+  camera = [a3 camera];
+  if (camera)
   {
-    [v6 addChild:{objc_msgSend(MEMORY[0x277CD7AD8], "cameraWithSCNCamera:", v20)}];
+    [v6 addChild:{objc_msgSend(MEMORY[0x277CD7AD8], "cameraWithSCNCamera:", camera)}];
   }
 
-  v21 = [a3 light];
-  if (v21)
+  light = [a3 light];
+  if (light)
   {
-    v22 = v21;
-    if ([objc_msgSend(v21 "type")])
+    v22 = light;
+    if ([objc_msgSend(light "type")])
     {
       v23 = [MEMORY[0x277CD7AE8] lightProbeWithSCNLight:v22 node:a3];
     }
@@ -72,18 +72,18 @@
     [v6 addChild:v23];
   }
 
-  v24 = [a3 geometry];
-  if (v24)
+  geometry = [a3 geometry];
+  if (geometry)
   {
-    [v6 addChild:{objc_msgSend(MEMORY[0x277CD7B00], "meshWithSCNGeometry:bufferAllocator:", v24, a4)}];
+    [v6 addChild:{objc_msgSend(MEMORY[0x277CD7B00], "meshWithSCNGeometry:bufferAllocator:", geometry, a4)}];
   }
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v25 = [a3 childNodes];
-  v26 = [v25 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  childNodes = [a3 childNodes];
+  v26 = [childNodes countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v26)
   {
     v27 = v26;
@@ -94,13 +94,13 @@
       {
         if (*v36 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(childNodes);
         }
 
         [v6 addChild:{objc_msgSend(MEMORY[0x277CD7B18], "objectWithSCNNode:bufferAllocator:", *(*(&v35 + 1) + 8 * i), a4)}];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v27 = [childNodes countByEnumeratingWithState:&v35 objects:v43 count:16];
     }
 
     while (v27);

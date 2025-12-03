@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (_OSINotificationManager)init;
 - (void)postIBLMFirstTimeNotification;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation _OSINotificationManager
@@ -64,12 +64,12 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v4 title];
-    v12 = [v4 body];
+    title = [v4 title];
+    body = [v4 body];
     v17 = 138412546;
-    v18 = v11;
+    v18 = title;
     v19 = 2112;
-    v20 = v12;
+    v20 = body;
     _os_log_impl(&dword_25D171000, v10, OS_LOG_TYPE_DEFAULT, "Content title : %@, Body %@", &v17, 0x16u);
   }
 
@@ -92,37 +92,37 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v12 = log;
-    v13 = [v9 debugDescription];
-    v14 = [v9 actionIdentifier];
+    v13 = [responseCopy debugDescription];
+    actionIdentifier = [responseCopy actionIdentifier];
     v22 = 138412546;
     v23 = v13;
     v24 = 2112;
-    v25 = v14;
+    v25 = actionIdentifier;
     _os_log_impl(&dword_25D171000, v12, OS_LOG_TYPE_INFO, "notification request coming in for %@: %@", &v22, 0x16u);
   }
 
-  v15 = [v9 actionIdentifier];
+  actionIdentifier2 = [responseCopy actionIdentifier];
   v16 = *MEMORY[0x277CE20F0];
 
-  if (v15 == v16)
+  if (actionIdentifier2 == v16)
   {
     v19 = 1;
   }
 
   else
   {
-    v17 = [v9 actionIdentifier];
-    v18 = v17 == *MEMORY[0x277CE20E8];
+    actionIdentifier3 = [responseCopy actionIdentifier];
+    v18 = actionIdentifier3 == *MEMORY[0x277CE20E8];
 
     v19 = 2 * v18;
   }
@@ -130,7 +130,7 @@
   v20 = +[_OSIBLMAnalyticsHandler sharedInstance];
   [v20 recordIBLMFirstUserNotificationResponse:v19];
 
-  v10[2](v10);
+  handlerCopy[2](handlerCopy);
   v21 = *MEMORY[0x277D85DE8];
 }
 

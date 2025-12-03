@@ -1,6 +1,6 @@
 @interface QLItemViewController
 - (BOOL)canToggleFullScreen;
-- (BOOL)draggableViewShouldStartDragSession:(id)a3;
+- (BOOL)draggableViewShouldStartDragSession:(id)session;
 - (BOOL)navigationBarShouldBeChromeless;
 - (BOOL)toolbarShouldBeChromeless;
 - (CGRect)contentFrame;
@@ -11,50 +11,50 @@
 - (QLItemViewControllerPresentingDelegate)presentingDelegate;
 - (QLPreviewItemViewControllerDelegate)delegate;
 - (id)additionalItemViewControllerDescription;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
 - (void)_addDragInteractionIfNeeded;
-- (void)_scrollScrollViewByPercentualOffset:(double)a3;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)createEditedCopyForItem:(id)a3 outputType:(id)a4 directoryURL:(id)a5 completionHandler:(id)a6;
+- (void)_scrollScrollViewByPercentualOffset:(double)offset;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)createEditedCopyForItem:(id)item outputType:(id)type directoryURL:(id)l completionHandler:(id)handler;
 - (void)didFinishSavingEdits;
 - (void)didStartSavingEdits;
-- (void)editedCopyToSaveChangesWithOutputType:(id)a3 completionHandler:(id)a4;
-- (void)handlePerformedKeyCommandIfNeeded:(id)a3;
+- (void)editedCopyToSaveChangesWithOutputType:(id)type completionHandler:(id)handler;
+- (void)handlePerformedKeyCommandIfNeeded:(id)needed;
 - (void)hideSaveEditProgressIndicator;
-- (void)loadPreviewControllerIfNeededWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerIfNeededWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 - (void)notifyDelegateWantsChromelessBars;
-- (void)notifyDelegatesDidFailWithError:(id)a3;
-- (void)performCompletionBlocksWithError:(id)a3;
-- (void)performFirstTimeAppearanceActionsIfNeeded:(unint64_t)a3;
-- (void)prepareForInvalidationWithCompletionHandler:(id)a3;
-- (void)savePreviewEditedCopyWithCompletionHandler:(id)a3;
-- (void)setContentFrame:(CGRect)a3;
+- (void)notifyDelegatesDidFailWithError:(id)error;
+- (void)performCompletionBlocksWithError:(id)error;
+- (void)performFirstTimeAppearanceActionsIfNeeded:(unint64_t)needed;
+- (void)prepareForInvalidationWithCompletionHandler:(id)handler;
+- (void)savePreviewEditedCopyWithCompletionHandler:(id)handler;
+- (void)setContentFrame:(CGRect)frame;
 - (void)showSaveEditsProgressIndicatorAfterDelay;
 - (void)updateInterfaceAfterSavingEdits;
 - (void)updateInterfaceForSavingEdits;
-- (void)updateScrollViewContentOffset:(BOOL)a3 withPreviousAppearance:(id)a4;
+- (void)updateScrollViewContentOffset:(BOOL)offset withPreviousAppearance:(id)appearance;
 - (void)viewSafeAreaInsetsDidChange;
 @end
 
 @implementation QLItemViewController
 
-- (void)setContentFrame:(CGRect)a3
+- (void)setContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_contentFrame = &self->_contentFrame;
-  if (!CGRectEqualToRect(self->_contentFrame, a3))
+  if (!CGRectEqualToRect(self->_contentFrame, frame))
   {
     p_contentFrame->origin.x = x;
     p_contentFrame->origin.y = y;
     p_contentFrame->size.width = width;
     p_contentFrame->size.height = height;
     [(QLItemViewController *)self notifyDelegateWantsChromelessBars];
-    v9 = [(QLItemViewController *)self delegate];
-    [v9 previewItemViewControllerDidUpdateContentFrame:self];
+    delegate = [(QLItemViewController *)self delegate];
+    [delegate previewItemViewControllerDidUpdateContentFrame:self];
   }
 }
 
@@ -62,8 +62,8 @@
 {
   if (!CGRectIsEmpty(self->_contentFrame))
   {
-    v3 = [(QLItemViewController *)self view];
-    [v3 safeAreaInsets];
+    view = [(QLItemViewController *)self view];
+    [view safeAreaInsets];
     v7 = v6;
     if (v8 == *(MEMORY[0x277D768C8] + 8) && v4 == *MEMORY[0x277D768C8] && v5 == *(MEMORY[0x277D768C8] + 24))
     {
@@ -79,11 +79,11 @@
     {
     }
 
-    v12 = [(QLItemViewController *)self delegate];
-    [v12 previewItemViewController:self wantsChromelessNavigationBar:{-[QLItemViewController navigationBarShouldBeChromeless](self, "navigationBarShouldBeChromeless")}];
+    delegate = [(QLItemViewController *)self delegate];
+    [delegate previewItemViewController:self wantsChromelessNavigationBar:{-[QLItemViewController navigationBarShouldBeChromeless](self, "navigationBarShouldBeChromeless")}];
 
-    v13 = [(QLItemViewController *)self delegate];
-    [v13 previewItemViewController:self wantsChromelessToolbar:{-[QLItemViewController toolbarShouldBeChromeless](self, "toolbarShouldBeChromeless")}];
+    delegate2 = [(QLItemViewController *)self delegate];
+    [delegate2 previewItemViewController:self wantsChromelessToolbar:{-[QLItemViewController toolbarShouldBeChromeless](self, "toolbarShouldBeChromeless")}];
   }
 }
 
@@ -95,8 +95,8 @@
   }
 
   y = self->_contentFrame.origin.y;
-  v4 = [(QLItemViewController *)self view];
-  [v4 safeAreaInsets];
+  view = [(QLItemViewController *)self view];
+  [view safeAreaInsets];
   v6 = y >= v5;
 
   return v6;
@@ -110,11 +110,11 @@
   }
 
   v3 = self->_contentFrame.origin.y + self->_contentFrame.size.height;
-  v4 = [(QLItemViewController *)self view];
-  [v4 frame];
+  view = [(QLItemViewController *)self view];
+  [view frame];
   v6 = v5;
-  v7 = [(QLItemViewController *)self view];
-  [v7 safeAreaInsets];
+  view2 = [(QLItemViewController *)self view];
+  [view2 safeAreaInsets];
   v9 = v3 <= v6 - v8;
 
   return v9;
@@ -128,20 +128,20 @@
   [(QLItemViewController *)self notifyDelegateWantsChromelessBars];
 }
 
-- (void)updateScrollViewContentOffset:(BOOL)a3 withPreviousAppearance:(id)a4
+- (void)updateScrollViewContentOffset:(BOOL)offset withPreviousAppearance:(id)appearance
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(QLItemViewController *)self scrollView];
-  if (([(QLItemViewController *)self automaticallyUpdateScrollViewContentOffset]|| [(QLItemViewController *)self automaticallyUpdateScrollViewContentInset]) && v7)
+  offsetCopy = offset;
+  appearanceCopy = appearance;
+  scrollView = [(QLItemViewController *)self scrollView];
+  if (([(QLItemViewController *)self automaticallyUpdateScrollViewContentOffset]|| [(QLItemViewController *)self automaticallyUpdateScrollViewContentInset]) && scrollView)
   {
-    v8 = [(QLItemViewController *)self appearance];
-    [v8 peripheryInsets];
+    appearance = [(QLItemViewController *)self appearance];
+    [appearance peripheryInsets];
     v10 = v9;
 
-    [v6 topInset];
+    [appearanceCopy topInset];
     v12 = v11;
-    [v6 peripheryInsets];
+    [appearanceCopy peripheryInsets];
     if (v12 >= v13)
     {
       v14 = v12;
@@ -152,12 +152,12 @@
       v14 = v13;
     }
 
-    v15 = [(QLItemViewController *)self appearance];
-    [v15 topInset];
+    appearance2 = [(QLItemViewController *)self appearance];
+    [appearance2 topInset];
     v17 = v16;
 
-    v18 = [(QLItemViewController *)self appearance];
-    [v18 peripheryInsets];
+    appearance3 = [(QLItemViewController *)self appearance];
+    [appearance3 peripheryInsets];
     v20 = v19;
 
     if (v17 >= v20)
@@ -170,12 +170,12 @@
       v21 = v20;
     }
 
-    v22 = [(QLItemViewController *)self appearance];
-    [v22 bottomInset];
+    appearance4 = [(QLItemViewController *)self appearance];
+    [appearance4 bottomInset];
     v24 = v23;
 
-    v25 = [(QLItemViewController *)self appearance];
-    [v25 peripheryInsets];
+    appearance5 = [(QLItemViewController *)self appearance];
+    [appearance5 peripheryInsets];
     v27 = v26;
 
     if (v24 >= v27)
@@ -188,7 +188,7 @@
       v28 = v27;
     }
 
-    [v7 contentOffset];
+    [scrollView contentOffset];
     v31 = v30;
     v32 = v29;
     if (v21 <= 0.0 || v29 != -v14)
@@ -216,12 +216,12 @@ LABEL_22:
           v50 = v21;
           v51 = v28;
           v48[4] = self;
-          v49 = v7;
+          v49 = scrollView;
           v52 = v31;
           v53 = v39;
           v40 = MEMORY[0x266708AD0](v48);
           v41 = v40;
-          if (v4)
+          if (offsetCopy)
           {
             v42 = MEMORY[0x277D75D18];
             v43 = *MEMORY[0x277D76DA0];
@@ -238,23 +238,23 @@ LABEL_22:
             v40[2](v40);
           }
 
-          v44 = [(QLItemViewController *)self view];
-          v45 = [v44 window];
-          self->_lastScrollViewUpdateInterfaceOrientation = [v45 _windowInterfaceOrientation];
+          view = [(QLItemViewController *)self view];
+          window = [view window];
+          self->_lastScrollViewUpdateInterfaceOrientation = [window _windowInterfaceOrientation];
 
           goto LABEL_29;
         }
       }
 
-      if (!v6 || ([v6 topInset], v32 != -v34))
+      if (!appearanceCopy || ([appearanceCopy topInset], v32 != -v34))
       {
         lastScrollViewUpdateInterfaceOrientation = self->_lastScrollViewUpdateInterfaceOrientation;
-        v36 = [(QLItemViewController *)self view];
-        v37 = [v36 window];
-        v38 = [v37 _windowInterfaceOrientation];
+        view2 = [(QLItemViewController *)self view];
+        window2 = [view2 window];
+        _windowInterfaceOrientation = [window2 _windowInterfaceOrientation];
 
         v33 = v14 + v32 - v21;
-        if (lastScrollViewUpdateInterfaceOrientation == v38)
+        if (lastScrollViewUpdateInterfaceOrientation == _windowInterfaceOrientation)
         {
           v33 = v32;
         }
@@ -308,21 +308,21 @@ uint64_t __77__QLItemViewController_updateScrollViewContentOffset_withPreviousAp
   return [(QLItemViewController *)&v3 init];
 }
 
-- (void)loadPreviewControllerIfNeededWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerIfNeededWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
+  v12 = handlerCopy;
   if (self->_isLoaded)
   {
-    (*(v11 + 2))(v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   else if (self->_isLoading)
   {
     completionBlocks = self->_completionBlocks;
-    v14 = MEMORY[0x266708AD0](v11);
+    v14 = MEMORY[0x266708AD0](handlerCopy);
     [(NSMutableArray *)completionBlocks addObject:v14];
   }
 
@@ -330,8 +330,8 @@ uint64_t __77__QLItemViewController_updateScrollViewContentOffset_withPreviousAp
   {
     self->_isLoaded = 0;
     self->_isLoading = 1;
-    objc_storeStrong(&self->_contents, a3);
-    objc_storeStrong(&self->_context, a4);
+    objc_storeStrong(&self->_contents, contents);
+    objc_storeStrong(&self->_context, context);
     v15 = objc_opt_new();
     v16 = self->_completionBlocks;
     self->_completionBlocks = v15;
@@ -349,16 +349,16 @@ uint64_t __77__QLItemViewController_updateScrollViewContentOffset_withPreviousAp
     v23[2] = __92__QLItemViewController_loadPreviewControllerIfNeededWithContents_context_completionHandler___block_invoke;
     v23[3] = &unk_279AE1508;
     objc_copyWeak(&v25, &location);
-    v19 = v10;
+    v19 = contextCopy;
     v24 = v19;
-    [(QLItemViewController *)self loadPreviewControllerWithContents:v9 context:v19 completionHandler:v23];
-    v20 = [v19 backgroundColor];
+    [(QLItemViewController *)self loadPreviewControllerWithContents:contentsCopy context:v19 completionHandler:v23];
+    backgroundColor = [v19 backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
-      v21 = [v19 backgroundColor];
-      v22 = [(QLItemViewController *)self view];
-      [v22 setBackgroundColor:v21];
+      backgroundColor2 = [v19 backgroundColor];
+      view = [(QLItemViewController *)self view];
+      [view setBackgroundColor:backgroundColor2];
     }
 
     objc_destroyWeak(&v25);
@@ -409,10 +409,10 @@ void __92__QLItemViewController_loadPreviewControllerIfNeededWithContents_contex
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performCompletionBlocksWithError:(id)a3
+- (void)performCompletionBlocksWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -450,11 +450,11 @@ void __92__QLItemViewController_loadPreviewControllerIfNeededWithContents_contex
 
 - (BOOL)canToggleFullScreen
 {
-  v3 = [(QLItemViewController *)self scrollView];
-  if (v3)
+  scrollView = [(QLItemViewController *)self scrollView];
+  if (scrollView)
   {
-    v4 = [(QLItemViewController *)self scrollView];
-    v5 = [v4 isDecelerating] ^ 1;
+    scrollView2 = [(QLItemViewController *)self scrollView];
+    v5 = [scrollView2 isDecelerating] ^ 1;
   }
 
   else
@@ -465,32 +465,32 @@ void __92__QLItemViewController_loadPreviewControllerIfNeededWithContents_contex
   return v5;
 }
 
-- (void)prepareForInvalidationWithCompletionHandler:(id)a3
+- (void)prepareForInvalidationWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
 - (NSArray)registeredKeyCommands
 {
   v3 = objc_opt_new();
-  v4 = [(QLItemViewController *)self scrollView];
-  if (v4)
+  scrollView = [(QLItemViewController *)self scrollView];
+  if (scrollView)
   {
-    v5 = v4;
-    v6 = [(QLItemViewController *)self supportsScrollingUpAndDownUsingKeyCommands];
+    v5 = scrollView;
+    supportsScrollingUpAndDownUsingKeyCommands = [(QLItemViewController *)self supportsScrollingUpAndDownUsingKeyCommands];
 
-    if (v6)
+    if (supportsScrollingUpAndDownUsingKeyCommands)
     {
       v7 = [MEMORY[0x277D75650] keyCommandWithInput:*MEMORY[0x277D76AC0] modifierFlags:0 action:sel__scrollScrollViewDown];
       v8 = QLLocalizedString(@"Scroll Down");
@@ -511,47 +511,47 @@ void __92__QLItemViewController_loadPreviewControllerIfNeededWithContents_contex
   return v3;
 }
 
-- (void)handlePerformedKeyCommandIfNeeded:(id)a3
+- (void)handlePerformedKeyCommandIfNeeded:(id)needed
 {
-  v4 = a3;
-  if ([v4 keyCommandIdentifier] == 2)
+  neededCopy = needed;
+  if ([neededCopy keyCommandIdentifier] == 2)
   {
     [(QLItemViewController *)self _scrollScrollViewUp];
   }
 
-  else if ([v4 keyCommandIdentifier] == 3)
+  else if ([neededCopy keyCommandIdentifier] == 3)
   {
     [(QLItemViewController *)self _scrollScrollViewDown];
   }
 }
 
-- (void)_scrollScrollViewByPercentualOffset:(double)a3
+- (void)_scrollScrollViewByPercentualOffset:(double)offset
 {
-  v5 = [(QLItemViewController *)self scrollView];
+  scrollView = [(QLItemViewController *)self scrollView];
 
-  if (v5)
+  if (scrollView)
   {
-    v6 = [(QLItemViewController *)self scrollView];
-    [v6 contentInset];
+    scrollView2 = [(QLItemViewController *)self scrollView];
+    [scrollView2 contentInset];
     v8 = v7;
 
-    v9 = [(QLItemViewController *)self scrollView];
-    [v9 frame];
+    scrollView3 = [(QLItemViewController *)self scrollView];
+    [scrollView3 frame];
     Height = CGRectGetHeight(v27);
-    v11 = [(QLItemViewController *)self scrollView];
-    [v11 contentInset];
+    scrollView4 = [(QLItemViewController *)self scrollView];
+    [scrollView4 contentInset];
     v13 = Height - v12;
-    v14 = [(QLItemViewController *)self scrollView];
-    [v14 contentInset];
+    scrollView5 = [(QLItemViewController *)self scrollView];
+    [scrollView5 contentInset];
     v16 = v13 - v15;
 
-    v17 = [(QLItemViewController *)self scrollView];
-    [v17 contentSize];
+    scrollView6 = [(QLItemViewController *)self scrollView];
+    [scrollView6 contentSize];
     v19 = v18;
 
-    v20 = [(QLItemViewController *)self scrollView];
-    [v20 contentOffset];
-    v22 = v21 - v16 * a3;
+    scrollView7 = [(QLItemViewController *)self scrollView];
+    [scrollView7 contentOffset];
+    v22 = v21 - v16 * offset;
 
     v23 = v19 - v16 - v8;
     if (v22 < v23)
@@ -569,8 +569,8 @@ void __92__QLItemViewController_loadPreviewControllerIfNeededWithContents_contex
       v24 = -v8;
     }
 
-    v25 = [(QLItemViewController *)self scrollView];
-    [v25 flashScrollIndicators];
+    scrollView8 = [(QLItemViewController *)self scrollView];
+    [scrollView8 flashScrollIndicators];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -592,84 +592,84 @@ void __60__QLItemViewController__scrollScrollViewByPercentualOffset___block_invo
   [v5 setContentOffset:{v3, v4}];
 }
 
-- (void)performFirstTimeAppearanceActionsIfNeeded:(unint64_t)a3
+- (void)performFirstTimeAppearanceActionsIfNeeded:(unint64_t)needed
 {
-  if (a3 && [(QLItemViewController *)self canPerformFirstTimeAppearanceActions:?])
+  if (needed && [(QLItemViewController *)self canPerformFirstTimeAppearanceActions:?])
   {
 
-    [(QLItemViewController *)self performFirstTimeAppearanceActions:a3];
+    [(QLItemViewController *)self performFirstTimeAppearanceActions:needed];
   }
 }
 
-- (void)notifyDelegatesDidFailWithError:(id)a3
+- (void)notifyDelegatesDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(QLItemViewController *)self presentingDelegate];
-  [v5 previewItemViewController:self didFailWithError:v4];
+  errorCopy = error;
+  presentingDelegate = [(QLItemViewController *)self presentingDelegate];
+  [presentingDelegate previewItemViewController:self didFailWithError:errorCopy];
 
-  v6 = [(QLItemViewController *)self delegate];
-  [v6 previewItemViewController:self didFailWithError:v4];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self didFailWithError:errorCopy];
 }
 
-- (BOOL)draggableViewShouldStartDragSession:(id)a3
+- (BOOL)draggableViewShouldStartDragSession:(id)session
 {
-  v4 = [(QLItemViewController *)self draggableView];
-  if (v4)
+  draggableView = [(QLItemViewController *)self draggableView];
+  if (draggableView)
   {
-    v5 = [(QLItemViewController *)self context];
-    v6 = [v5 canBeShared];
+    context = [(QLItemViewController *)self context];
+    canBeShared = [context canBeShared];
   }
 
   else
   {
-    v6 = 0;
+    canBeShared = 0;
   }
 
-  return v6;
+  return canBeShared;
 }
 
 - (void)_addDragInteractionIfNeeded
 {
-  v3 = [(QLItemViewController *)self draggableView];
-  if (v3 && !self->_dragInteraction)
+  draggableView = [(QLItemViewController *)self draggableView];
+  if (draggableView && !self->_dragInteraction)
   {
-    v6 = v3;
+    v6 = draggableView;
     v4 = [objc_alloc(MEMORY[0x277D75468]) initWithDelegate:self];
     dragInteraction = self->_dragInteraction;
     self->_dragInteraction = v4;
 
     [v6 addInteraction:self->_dragInteraction];
-    v3 = v6;
+    draggableView = v6;
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  if ([(QLItemViewController *)self draggableViewShouldStartDragSession:a4])
+  if ([(QLItemViewController *)self draggableViewShouldStartDragSession:session])
   {
-    v5 = [(QLItemViewController *)self context];
-    v6 = [v5 item];
-    v7 = [v6 editedFileURL];
+    context = [(QLItemViewController *)self context];
+    item = [context item];
+    editedFileURL = [item editedFileURL];
 
-    if (v7 && ([MEMORY[0x277CCAA00] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "path"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "fileExistsAtPath:", v9), v9, v8, v10))
+    if (editedFileURL && ([MEMORY[0x277CCAA00] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(editedFileURL, "path"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "fileExistsAtPath:", v9), v9, v8, v10))
     {
-      v11 = [objc_alloc(MEMORY[0x277CCAA88]) initWithContentsOfURL:v7];
+      newItemProvider = [objc_alloc(MEMORY[0x277CCAA88]) initWithContentsOfURL:editedFileURL];
     }
 
     else
     {
-      v13 = [(QLItemViewController *)self context];
-      v14 = [v13 item];
-      v15 = [v14 fetcher];
-      v11 = [v15 newItemProvider];
+      context2 = [(QLItemViewController *)self context];
+      item2 = [context2 item];
+      fetcher = [item2 fetcher];
+      newItemProvider = [fetcher newItemProvider];
     }
 
-    v16 = [(QLItemViewController *)self context];
-    v17 = [v16 previewTitle];
-    [v11 setSuggestedName:v17];
+    context3 = [(QLItemViewController *)self context];
+    previewTitle = [context3 previewTitle];
+    [newItemProvider setSuggestedName:previewTitle];
 
-    v18 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v11];
+    v18 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:newItemProvider];
     v21[0] = v18;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   }
@@ -684,42 +684,42 @@ void __60__QLItemViewController__scrollScrollViewByPercentualOffset___block_invo
   return v12;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v5 = [(QLItemViewController *)self delegate:a3];
+  v5 = [(QLItemViewController *)self delegate:interaction];
   v6 = [v5 dragDataOwnerForPreviewItemViewController:self];
 
   return v6;
 }
 
-- (void)savePreviewEditedCopyWithCompletionHandler:(id)a3
+- (void)savePreviewEditedCopyWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)editedCopyToSaveChangesWithOutputType:(id)a3 completionHandler:(id)a4
+- (void)editedCopyToSaveChangesWithOutputType:(id)type completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(QLItemViewController *)self context];
-  v9 = [v8 item];
+  typeCopy = type;
+  handlerCopy = handler;
+  context = [(QLItemViewController *)self context];
+  item = [context item];
 
-  v10 = [(QLItemViewController *)self saveEditsQueue];
+  saveEditsQueue = [(QLItemViewController *)self saveEditsQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__QLItemViewController_editedCopyToSaveChangesWithOutputType_completionHandler___block_invoke;
   v14[3] = &unk_279AE15A8;
-  v15 = v9;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v11 = v6;
-  v12 = v7;
-  v13 = v9;
-  dispatch_async(v10, v14);
+  v15 = item;
+  v16 = typeCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = typeCopy;
+  v12 = handlerCopy;
+  v13 = item;
+  dispatch_async(saveEditsQueue, v14);
 }
 
 void __80__QLItemViewController_editedCopyToSaveChangesWithOutputType_completionHandler___block_invoke(uint64_t a1)
@@ -877,24 +877,24 @@ void __80__QLItemViewController_editedCopyToSaveChangesWithOutputType_completion
   [v2 createEditedCopyForItem:v3 outputType:v4 directoryURL:v5 completionHandler:*(a1 + 64)];
 }
 
-- (void)createEditedCopyForItem:(id)a3 outputType:(id)a4 directoryURL:(id)a5 completionHandler:(id)a6
+- (void)createEditedCopyForItem:(id)item outputType:(id)type directoryURL:(id)l completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v10;
-  v13 = a4;
-  v14 = [v9 shouldCreateTemporaryDirectoryInHost];
-  v15 = [v9 saveURL];
+  itemCopy = item;
+  lCopy = l;
+  handlerCopy = handler;
+  v12 = lCopy;
+  typeCopy = type;
+  shouldCreateTemporaryDirectoryInHost = [itemCopy shouldCreateTemporaryDirectoryInHost];
+  saveURL = [itemCopy saveURL];
 
   v16 = MEMORY[0x277CBEBC0];
-  if (v15)
+  if (saveURL)
   {
-    v17 = [v9 saveURL];
+    saveURL2 = [itemCopy saveURL];
     v29 = v12;
     v30 = 0;
-    v18 = [v9 uuid];
-    [v16 _QLTemporaryFileURLWithType:v13 forOriginalFileAtURL:v17 temporaryFileURL:&v30 temporaryDirectoryURL:&v29 fallbackUUID:v18];
+    uuid = [itemCopy uuid];
+    [v16 _QLTemporaryFileURLWithType:typeCopy forOriginalFileAtURL:saveURL2 temporaryFileURL:&v30 temporaryDirectoryURL:&v29 fallbackUUID:uuid];
 
     v19 = v30;
     v20 = v29;
@@ -907,15 +907,15 @@ void __80__QLItemViewController_editedCopyToSaveChangesWithOutputType_completion
     *v28 = 2;
     v21 = copyfile_state_alloc();
     copyfile_state_set(v21, 0x100u, v28);
-    v22 = [v9 saveURL];
-    copyfile([v22 fileSystemRepresentation], objc_msgSend(v19, "fileSystemRepresentation"), v21, 4u);
+    saveURL3 = [itemCopy saveURL];
+    copyfile([saveURL3 fileSystemRepresentation], objc_msgSend(v19, "fileSystemRepresentation"), v21, 4u);
 
     copyfile_state_free(v21);
     goto LABEL_5;
   }
 
-  v23 = [v9 uuid];
-  v19 = [v16 _QLTemporaryFileURLWithType:v13 uuid:v23];
+  uuid2 = [itemCopy uuid];
+  v19 = [v16 _QLTemporaryFileURLWithType:typeCopy uuid:uuid2];
 
   v20 = v12;
   if (v19)
@@ -923,7 +923,7 @@ void __80__QLItemViewController_editedCopyToSaveChangesWithOutputType_completion
 LABEL_5:
     if (v20)
     {
-      v24 = [[QLPreviewItemEditedCopy alloc] initWithEditedCopyURL:v19 containerTemporaryURL:v20 temporaryDirectoryCreatedInHost:v14];
+      v24 = [[QLPreviewItemEditedCopy alloc] initWithEditedCopyURL:v19 containerTemporaryURL:v20 temporaryDirectoryCreatedInHost:shouldCreateTemporaryDirectoryInHost];
       goto LABEL_9;
     }
   }
@@ -956,18 +956,18 @@ LABEL_10:
 
   v25 = 0;
 LABEL_15:
-  [v9 setEditedCopy:v25];
-  if (v14)
+  [itemCopy setEditedCopy:v25];
+  if (shouldCreateTemporaryDirectoryInHost)
   {
-    LODWORD(v14) = [v20 startAccessingSecurityScopedResource];
+    LODWORD(shouldCreateTemporaryDirectoryInHost) = [v20 startAccessingSecurityScopedResource];
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    v11[2](v11, v25, 0);
+    handlerCopy[2](handlerCopy, v25, 0);
   }
 
-  if (v14)
+  if (shouldCreateTemporaryDirectoryInHost)
   {
     [v20 stopAccessingSecurityScopedResource];
   }
@@ -1057,18 +1057,18 @@ void __53__QLItemViewController_hideSaveEditProgressIndicator__block_invoke(uint
 
 - (OS_dispatch_queue)saveEditsQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_saveEditsQueue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_saveEditsQueue)
   {
     v3 = dispatch_queue_create("com.apple.quicklook.editing.saveEditsQueue", 0);
-    saveEditsQueue = v2->_saveEditsQueue;
-    v2->_saveEditsQueue = v3;
+    saveEditsQueue = selfCopy->_saveEditsQueue;
+    selfCopy->_saveEditsQueue = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_saveEditsQueue;
+  v5 = selfCopy->_saveEditsQueue;
 
   return v5;
 }
@@ -1097,14 +1097,14 @@ void __53__QLItemViewController_hideSaveEditProgressIndicator__block_invoke(uint
 
 - (void)updateInterfaceForSavingEdits
 {
-  v2 = [(QLItemViewController *)self view];
-  [v2 setUserInteractionEnabled:0];
+  view = [(QLItemViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)updateInterfaceAfterSavingEdits
 {
-  v2 = [(QLItemViewController *)self view];
-  [v2 setUserInteractionEnabled:1];
+  view = [(QLItemViewController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (NSString)description
@@ -1113,8 +1113,8 @@ void __53__QLItemViewController_hideSaveEditProgressIndicator__block_invoke(uint
   v8.receiver = self;
   v8.super_class = QLItemViewController;
   v4 = [(QLItemViewController *)&v8 description];
-  v5 = [(QLItemViewController *)self additionalItemViewControllerDescription];
-  v6 = [v3 stringWithFormat:@"%@ {\n%@\n}", v4, v5];
+  additionalItemViewControllerDescription = [(QLItemViewController *)self additionalItemViewControllerDescription];
+  v6 = [v3 stringWithFormat:@"%@ {\n%@\n}", v4, additionalItemViewControllerDescription];
 
   return v6;
 }
@@ -1122,8 +1122,8 @@ void __53__QLItemViewController_hideSaveEditProgressIndicator__block_invoke(uint
 - (id)additionalItemViewControllerDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(QLItemViewController *)self contents];
-  v4 = [v2 stringWithFormat:@"\tContents: %@", v3];
+  contents = [(QLItemViewController *)self contents];
+  v4 = [v2 stringWithFormat:@"\tContents: %@", contents];
 
   return v4;
 }

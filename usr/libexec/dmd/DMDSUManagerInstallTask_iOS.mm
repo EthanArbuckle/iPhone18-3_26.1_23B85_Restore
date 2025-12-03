@@ -1,24 +1,24 @@
 @interface DMDSUManagerInstallTask_iOS
-+ (id)_dmfDownloadErrorFromSUDownloadError:(id)a3;
-+ (id)_dmfInstallErrorFromSUInstallError:(id)a3;
-+ (id)_dmfStatusErrorFromSUStatusError:(id)a3;
-- (BOOL)removeUpdateWithError:(id *)a3;
-- (BOOL)startDownloadWithError:(id *)a3;
-- (BOOL)startInstallWithError:(id *)a3;
++ (id)_dmfDownloadErrorFromSUDownloadError:(id)error;
++ (id)_dmfInstallErrorFromSUInstallError:(id)error;
++ (id)_dmfStatusErrorFromSUStatusError:(id)error;
+- (BOOL)removeUpdateWithError:(id *)error;
+- (BOOL)startDownloadWithError:(id *)error;
+- (BOOL)startInstallWithError:(id *)error;
 - (DMDSUManagerInstallTask_iOS)init;
-- (id)currentStatusWithError:(id *)a3;
+- (id)currentStatusWithError:(id *)error;
 @end
 
 @implementation DMDSUManagerInstallTask_iOS
 
-+ (id)_dmfDownloadErrorFromSUDownloadError:(id)a3
++ (id)_dmfDownloadErrorFromSUDownloadError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:SUErrorDomain];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:SUErrorDomain];
 
     if (v6)
     {
@@ -102,18 +102,18 @@ LABEL_16:
   return v8;
 }
 
-+ (id)_dmfInstallErrorFromSUInstallError:(id)a3
++ (id)_dmfInstallErrorFromSUInstallError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v9 = DMFErrorWithCodeAndUserInfo();
     goto LABEL_11;
   }
 
-  v5 = [v3 domain];
-  v6 = [v5 isEqualToString:SUErrorDomain];
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:SUErrorDomain];
 
   if ((v6 & 1) == 0)
   {
@@ -123,14 +123,14 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v7 = [v4 code];
-  if (v7 > 13)
+  code = [v4 code];
+  if (code > 13)
   {
-    if (v7 > 23)
+    if (code > 23)
     {
-      if (v7 != 24)
+      if (code != 24)
       {
-        if (v7 != 43)
+        if (code != 43)
         {
           goto LABEL_26;
         }
@@ -141,7 +141,7 @@ LABEL_16:
 
     else
     {
-      if (v7 == 14)
+      if (code == 14)
       {
         v19 = NSUnderlyingErrorKey;
         v20 = v4;
@@ -149,7 +149,7 @@ LABEL_16:
         goto LABEL_10;
       }
 
-      if (v7 != 15)
+      if (code != 15)
       {
         goto LABEL_26;
       }
@@ -161,11 +161,11 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (v7 > 5)
+  if (code > 5)
   {
-    if (v7 != 6)
+    if (code != 6)
     {
-      if (v7 == 11)
+      if (code == 11)
       {
         v21 = NSUnderlyingErrorKey;
         v22 = v4;
@@ -187,7 +187,7 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  if (v7 != 3 && v7 != 5)
+  if (code != 3 && code != 5)
   {
     goto LABEL_26;
   }
@@ -203,14 +203,14 @@ LABEL_11:
   return v9;
 }
 
-+ (id)_dmfStatusErrorFromSUStatusError:(id)a3
++ (id)_dmfStatusErrorFromSUStatusError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
     v8 = NSUnderlyingErrorKey;
-    v9 = v3;
+    v9 = errorCopy;
     v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
     v6 = DMFErrorWithCodeAndUserInfo();
   }
@@ -237,7 +237,7 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)removeUpdateWithError:(id *)a3
+- (BOOL)removeUpdateWithError:(id *)error
 {
   v5 = dispatch_semaphore_create(0);
   v27 = 0;
@@ -250,7 +250,7 @@ LABEL_11:
   v25[2] = sub_10007129C;
   v25[3] = sub_1000712AC;
   v26 = 0;
-  v6 = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
+  softwareUpdateServices = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_1000712B4;
@@ -259,15 +259,15 @@ LABEL_11:
   v23 = &v24;
   v7 = v5;
   v21 = v7;
-  [v6 purgeDownload:&v17];
+  [softwareUpdateServices purgeDownload:&v17];
 
   v8 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v7, v8))
   {
-    if (a3)
+    if (error)
     {
       DMFErrorWithCodeAndUserInfo();
-      *a3 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -297,7 +297,7 @@ LABEL_11:
           sub_1000878A0(v25);
         }
 
-        if (a3)
+        if (error)
         {
           v12 = *(v25[0] + 40);
           if (v12)
@@ -306,13 +306,13 @@ LABEL_11:
             v32 = v12;
             v13 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1, v17, v18, v19, v20];
             v14 = DMFErrorWithCodeAndUserInfo();
-            *a3 = v14;
+            *error = v14;
           }
 
           else
           {
             v15 = DMFErrorWithCodeAndUserInfo();
-            *a3 = v15;
+            *error = v15;
           }
         }
       }
@@ -324,9 +324,9 @@ LABEL_11:
           sub_100087928();
         }
 
-        if (a3)
+        if (error)
         {
-          *a3 = DMFErrorWithCodeAndUserInfo();
+          *error = DMFErrorWithCodeAndUserInfo();
         }
       }
     }
@@ -340,7 +340,7 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (BOOL)startDownloadWithError:(id *)a3
+- (BOOL)startDownloadWithError:(id *)error
 {
   v28 = 0;
   v29 = &v28;
@@ -359,10 +359,10 @@ LABEL_11:
   v7 = &_os_log_default;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 isAutoDownload];
-    v9 = [v5 isDownloadOnly];
+    isAutoDownload = [v5 isAutoDownload];
+    isDownloadOnly = [v5 isDownloadOnly];
     v10 = @"NO";
-    if (v8)
+    if (isAutoDownload)
     {
       v11 = @"YES";
     }
@@ -372,7 +372,7 @@ LABEL_11:
       v11 = @"NO";
     }
 
-    if (v9)
+    if (isDownloadOnly)
     {
       v10 = @"YES";
     }
@@ -384,7 +384,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "calling startDownloadWithMetadata:withResult:, autodownload is %{public}@, downloadOnly is %{public}@", buf, 0x16u);
   }
 
-  v12 = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
+  softwareUpdateServices = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100071BAC;
@@ -393,17 +393,17 @@ LABEL_11:
   v21 = &v22;
   v13 = v6;
   v19 = v13;
-  [v12 startDownloadWithMetadata:v5 withResult:v18];
+  [softwareUpdateServices startDownloadWithMetadata:v5 withResult:v18];
 
   v14 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v13, v14))
   {
-    if (a3)
+    if (error)
     {
       v15 = DMFErrorWithCodeAndUserInfo();
 LABEL_15:
       v16 = 0;
-      *a3 = v15;
+      *error = v15;
       goto LABEL_17;
     }
 
@@ -412,7 +412,7 @@ LABEL_15:
 
   if ((v29[3] & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
       v15 = [objc_opt_class() _dmfDownloadErrorFromSUDownloadError:v23[5]];
       goto LABEL_15;
@@ -431,7 +431,7 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)startInstallWithError:(id *)a3
+- (BOOL)startInstallWithError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -446,7 +446,7 @@ LABEL_17:
   v5 = dispatch_semaphore_create(0);
   v28 = kSUInstallOptionRequireUpdate;
   v6 = [NSArray arrayWithObjects:&v28 count:1];
-  v7 = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
+  softwareUpdateServices = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100071EAC;
@@ -455,7 +455,7 @@ LABEL_17:
   v17 = &v18;
   v8 = v5;
   v15 = v8;
-  [v7 installUpdateWithOptions:v6 withResult:v14];
+  [softwareUpdateServices installUpdateWithOptions:v6 withResult:v14];
 
   v9 = dispatch_time(0, 30000000000);
   if (!dispatch_semaphore_wait(v8, v9))
@@ -476,7 +476,7 @@ LABEL_17:
       goto LABEL_12;
     }
 
-    if (a3)
+    if (error)
     {
       v10 = [objc_opt_class() _dmfInstallErrorFromSUInstallError:v19[5]];
       goto LABEL_4;
@@ -487,7 +487,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -495,7 +495,7 @@ LABEL_11:
   v10 = DMFErrorWithCodeAndUserInfo();
 LABEL_4:
   v11 = 0;
-  *a3 = v10;
+  *error = v10;
 LABEL_12:
 
   _Block_object_dispose(&v18, 8);
@@ -503,7 +503,7 @@ LABEL_12:
   return v11;
 }
 
-- (id)currentStatusWithError:(id *)a3
+- (id)currentStatusWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -523,7 +523,7 @@ LABEL_12:
   v14 = sub_10007129C;
   v15 = sub_1000712AC;
   v16 = objc_opt_new();
-  v5 = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
+  softwareUpdateServices = [(DMDSUManagerInstallTask_iOS *)self softwareUpdateServices];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000721D0;
@@ -531,17 +531,17 @@ LABEL_12:
   v10[4] = &v11;
   v10[5] = &v17;
   v10[6] = &v20;
-  [v5 downloadAndInstallState:v10];
+  [softwareUpdateServices downloadAndInstallState:v10];
 
   v6 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v21[5], v6))
   {
-    if (a3)
+    if (error)
     {
       v7 = DMFErrorWithCodeAndUserInfo();
 LABEL_8:
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_12;
     }
 
@@ -557,13 +557,13 @@ LABEL_8:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000879B8(v18);
-    if (a3)
+    if (error)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_7:
     v7 = [objc_opt_class() _dmfStatusErrorFromSUStatusError:*(v18[0] + 40)];

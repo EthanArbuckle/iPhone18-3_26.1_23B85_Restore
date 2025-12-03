@@ -1,132 +1,132 @@
 @interface _BKRoutingWindowSceneDelegate
-- (id)stateRestorationActivityForScene:(id)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (id)stateRestorationActivityForScene:(id)scene;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation _BKRoutingWindowSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  optionsCopy = options;
+  sessionCopy = session;
+  sceneCopy = scene;
   v10 = +[BKAppDelegate sceneManager];
-  [v10 routeScene:v9 willConnectToSession:v8 options:v7];
+  [v10 routeScene:sceneCopy willConnectToSession:sessionCopy options:optionsCopy];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v5 sceneDidDisconnect:v4];
+  disconnectCopy = disconnect;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController sceneDidDisconnect:disconnectCopy];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v5 sceneDidBecomeActive:v4];
+  activeCopy = active;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController sceneDidBecomeActive:activeCopy];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v5 sceneWillResignActive:v4];
+  activeCopy = active;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController sceneWillResignActive:activeCopy];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v5 sceneWillEnterForeground:v4];
+  foregroundCopy = foreground;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController sceneWillEnterForeground:foregroundCopy];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v5 sceneDidEnterBackground:v4];
+  backgroundCopy = background;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController sceneDidEnterBackground:backgroundCopy];
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v13 windowScene:v12 didUpdateCoordinateSpace:v11 interfaceOrientation:a5 traitCollection:v10];
+  collectionCopy = collection;
+  spaceCopy = space;
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController windowScene:sceneCopy didUpdateCoordinateSpace:spaceCopy interfaceOrientation:orientation traitCollection:collectionCopy];
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v8 scene:v7 willContinueUserActivityWithType:v6];
+  typeCopy = type;
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController scene:sceneCopy willContinueUserActivityWithType:typeCopy];
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v8 scene:v7 continueUserActivity:v6];
+  activityCopy = activity;
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController scene:sceneCopy continueUserActivity:activityCopy];
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v11 scene:v10 didFailToContinueUserActivityWithType:v9 error:v8];
+  errorCopy = error;
+  typeCopy = type;
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController scene:sceneCopy didFailToContinueUserActivityWithType:typeCopy error:errorCopy];
 }
 
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v8 scene:v7 didUpdateUserActivity:v6];
+  activityCopy = activity;
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController scene:sceneCopy didUpdateUserActivity:activityCopy];
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  v6 = [v5 stateRestorationActivityForScene:v4];
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  v6 = [sceneController stateRestorationActivityForScene:sceneCopy];
 
   return v6;
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v8 scene:v7 openURLContexts:v6];
+  contextsCopy = contexts;
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController scene:sceneCopy openURLContexts:contextsCopy];
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_BKRoutingWindowSceneDelegate *)self sceneController];
-  [v11 windowScene:v10 performActionForShortcutItem:v9 completionHandler:v8];
+  handlerCopy = handler;
+  itemCopy = item;
+  sceneCopy = scene;
+  sceneController = [(_BKRoutingWindowSceneDelegate *)self sceneController];
+  [sceneController windowScene:sceneCopy performActionForShortcutItem:itemCopy completionHandler:handlerCopy];
 }
 
 @end

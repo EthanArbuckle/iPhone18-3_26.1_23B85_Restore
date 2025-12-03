@@ -1,22 +1,22 @@
 @interface CKBackgroundGalleryFetchRequest
-- (CKBackgroundGalleryFetchRequest)initWithPreferredSuggestionCount:(int64_t)a3 extensionIdentifiers:(id)a4 fallbackExtensionIdentifiers:(id)a5;
+- (CKBackgroundGalleryFetchRequest)initWithPreferredSuggestionCount:(int64_t)count extensionIdentifiers:(id)identifiers fallbackExtensionIdentifiers:(id)extensionIdentifiers;
 @end
 
 @implementation CKBackgroundGalleryFetchRequest
 
-- (CKBackgroundGalleryFetchRequest)initWithPreferredSuggestionCount:(int64_t)a3 extensionIdentifiers:(id)a4 fallbackExtensionIdentifiers:(id)a5
+- (CKBackgroundGalleryFetchRequest)initWithPreferredSuggestionCount:(int64_t)count extensionIdentifiers:(id)identifiers fallbackExtensionIdentifiers:(id)extensionIdentifiers
 {
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  extensionIdentifiersCopy = extensionIdentifiers;
   v13.receiver = self;
   v13.super_class = CKBackgroundGalleryFetchRequest;
   v10 = [(CKBackgroundGalleryFetchRequest *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(CKBackgroundGalleryFetchRequest *)v10 setPreferredSuggestionCount:a3];
-    [(CKBackgroundGalleryFetchRequest *)v11 setPrimaryExtensionIdentifiers:v8];
-    [(CKBackgroundGalleryFetchRequest *)v11 setFallbackExtensionIdentifiers:v9];
+    [(CKBackgroundGalleryFetchRequest *)v10 setPreferredSuggestionCount:count];
+    [(CKBackgroundGalleryFetchRequest *)v11 setPrimaryExtensionIdentifiers:identifiersCopy];
+    [(CKBackgroundGalleryFetchRequest *)v11 setFallbackExtensionIdentifiers:extensionIdentifiersCopy];
   }
 
   return v11;

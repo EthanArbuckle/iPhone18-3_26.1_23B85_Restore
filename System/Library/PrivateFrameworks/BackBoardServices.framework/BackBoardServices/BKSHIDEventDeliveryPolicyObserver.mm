@@ -8,24 +8,24 @@
 - (BOOL)canReceiveEvents;
 - (BOOL)finalStringTokenInChain;
 - (NSString)debugDescription;
-- (id)_initWithObserver:(id)a3;
+- (id)_initWithObserver:(id)observer;
 - (id)_lock_buildCurrentPolicy;
 - (id)_lock_description;
 - (id)_lock_effectivePolicyObservation;
-- (id)_lock_updatePolicyWithBlock:(id)a3;
+- (id)_lock_updatePolicyWithBlock:(id)block;
 - (int64_t)policyStatus;
-- (void)_lock_appendDescriptionToStream:(id)a3;
-- (void)_notifyAsyncObservers:(id)a3 didUpdatePolicy:(id)a4;
-- (void)_replacePolicySpecificationObject:(id)a3 withObject:(id)a4 replaceIvarBlock:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)_lock_appendDescriptionToStream:(id)stream;
+- (void)_notifyAsyncObservers:(id)observers didUpdatePolicy:(id)policy;
+- (void)_replacePolicySpecificationObject:(id)object withObject:(id)withObject replaceIvarBlock:(id)block;
+- (void)addObserver:(id)observer;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
 - (void)deferringResolutionsChanged;
-- (void)removeObserver:(id)a3;
-- (void)setDeferringEnvironment:(id)a3;
-- (void)setDeferringToken:(id)a3;
-- (void)setDisplay:(id)a3;
-- (void)setSelectionPathIdentifier:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setDeferringEnvironment:(id)environment;
+- (void)setDeferringToken:(id)token;
+- (void)setDisplay:(id)display;
+- (void)setSelectionPathIdentifier:(id)identifier;
 @end
 
 @implementation BKSHIDEventDeliveryPolicyObserver
@@ -78,7 +78,7 @@ void __64__BKSHIDEventDeliveryPolicyObserver_deferringResolutionsChanged__block_
         {
           v13 = objc_opt_class();
           *buf = 134218498;
-          v24 = self;
+          selfCopy = self;
           v25 = 2114;
           v26 = v13;
           v27 = 2048;
@@ -157,13 +157,13 @@ LABEL_3:
             {
               if (!self->_lock_selectionPathIdentifier || ([v9 selectionPath], v20 = objc_claimAutoreleasedReturnValue(), v21 = -[BKSHIDEventDeferringSelectionPathIdentifier isEqual:](self->_lock_selectionPathIdentifier, "isEqual:", v20), v20, v21))
               {
-                v22 = [v9 policyStatus];
-                if (v22 > [v6 policyStatus])
+                policyStatus = [v9 policyStatus];
+                if (policyStatus > [v6 policyStatus])
                 {
                   v23 = v9;
 
                   v6 = v23;
-                  if (v22 == 2)
+                  if (policyStatus == 2)
                   {
                     break;
                   }
@@ -203,8 +203,8 @@ LABEL_3:
   os_unfair_lock_assert_owner(&self->_lock);
   if ([(BKSHIDEventObserver *)self->_observer hasReceivedLatestDeferringObservationsFromServer])
   {
-    v3 = [(BKSHIDEventDeliveryPolicyObserver *)self _lock_effectivePolicyObservation];
-    v4 = [[BKSHIDEventDeliveryPolicy alloc] _initWithPolicyObservation:v3];
+    _lock_effectivePolicyObservation = [(BKSHIDEventDeliveryPolicyObserver *)self _lock_effectivePolicyObservation];
+    v4 = [[BKSHIDEventDeliveryPolicy alloc] _initWithPolicyObservation:_lock_effectivePolicyObservation];
   }
 
   else
@@ -232,7 +232,7 @@ LABEL_3:
       v15 = 2114;
       v16 = v12;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BKSHIDEventDeliveryPolicyObserver.m";
       v21 = 1024;
@@ -287,9 +287,9 @@ void __54__BKSHIDEventDeliveryPolicyObserver__lock_description__block_invoke_2(u
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDEventDeliveryPolicy *)self->_lock_currentPolicy deferringPolicyStatus];
+  deferringPolicyStatus = [(BKSHIDEventDeliveryPolicy *)self->_lock_currentPolicy deferringPolicyStatus];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return deferringPolicyStatus;
 }
 
 - (BOOL)canReceiveEvents
@@ -309,38 +309,38 @@ void __54__BKSHIDEventDeliveryPolicyObserver__lock_description__block_invoke_2(u
   [(BKSHIDEventDeliveryPolicyObserver *)&v3 dealloc];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v8 = a3;
-  v4 = [v8 style];
-  v5 = [v4 clientInformation];
-  v6 = [v5 containsObject:@"_BKSHIDEventDeliveryPolicyObserver_locked"];
+  streamCopy = stream;
+  style = [streamCopy style];
+  clientInformation = [style clientInformation];
+  v6 = [clientInformation containsObject:@"_BKSHIDEventDeliveryPolicyObserver_locked"];
 
   p_lock = &self->_lock;
   if (v6)
   {
     os_unfair_lock_assert_owner(p_lock);
-    [(BKSHIDEventDeliveryPolicyObserver *)self _lock_appendDescriptionToStream:v8];
+    [(BKSHIDEventDeliveryPolicyObserver *)self _lock_appendDescriptionToStream:streamCopy];
   }
 
   else
   {
     os_unfair_lock_lock(p_lock);
-    [(BKSHIDEventDeliveryPolicyObserver *)self _lock_appendDescriptionToStream:v8];
+    [(BKSHIDEventDeliveryPolicyObserver *)self _lock_appendDescriptionToStream:streamCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)_lock_appendDescriptionToStream:(id)a3
+- (void)_lock_appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___block_invoke;
   v8[3] = &unk_1E6F47C78;
   v8[4] = self;
-  v5 = v4;
+  v5 = streamCopy;
   v9 = v5;
   [v5 appendProem:self block:v8];
   if ([v5 hasDebugStyle])
@@ -437,17 +437,17 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
 
-- (id)_lock_updatePolicyWithBlock:(id)a3
+- (id)_lock_updatePolicyWithBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"block"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -460,7 +460,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
       v24 = 2114;
       v25 = v21;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2114;
       v29 = @"BKSHIDEventDeliveryPolicyObserver.m";
       v30 = 1024;
@@ -476,13 +476,13 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
     JUMPOUT(0x186369728);
   }
 
-  v6 = v5;
+  v6 = blockCopy;
   os_unfair_lock_assert_owner(&self->_lock);
   v7 = self->_lock_currentPolicy;
   v6[2](v6);
-  v8 = [(BKSHIDEventDeliveryPolicyObserver *)self _lock_buildCurrentPolicy];
+  _lock_buildCurrentPolicy = [(BKSHIDEventDeliveryPolicyObserver *)self _lock_buildCurrentPolicy];
   lock_currentPolicy = self->_lock_currentPolicy;
-  self->_lock_currentPolicy = v8;
+  self->_lock_currentPolicy = _lock_buildCurrentPolicy;
 
   v10 = self->_lock_currentPolicy;
   if (BSEqualObjects())
@@ -495,17 +495,17 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
     v12 = BKLogEventDelivery();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BKSHIDEventDeliveryPolicyObserver *)self _lock_description];
+      _lock_description = [(BKSHIDEventDeliveryPolicyObserver *)self _lock_description];
       v14 = NSStringFromBKSHIDEventDeferringPolicyStatus([(BKSHIDEventDeliveryPolicy *)v7 deferringPolicyStatus]);
       *buf = 138543618;
-      v23 = v13;
+      v23 = _lock_description;
       v24 = 2114;
       v25 = v14;
       _os_log_impl(&dword_186345000, v12, OS_LOG_TYPE_DEFAULT, "policyStatus:%{public}@ was:%{public}@", buf, 0x16u);
     }
 
-    v15 = [(NSHashTable *)self->_lock_observers allObjects];
-    v11 = [v15 copy];
+    allObjects = [(NSHashTable *)self->_lock_observers allObjects];
+    v11 = [allObjects copy];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -513,21 +513,21 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   return v11;
 }
 
-- (void)_notifyAsyncObservers:(id)a3 didUpdatePolicy:(id)a4
+- (void)_notifyAsyncObservers:(id)observers didUpdatePolicy:(id)policy
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observersCopy = observers;
+  policyCopy = policy;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  v8 = [observersCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v23;
-    v19 = v6;
+    v19 = observersCopy;
     do
     {
       v11 = 0;
@@ -535,7 +535,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observersCopy);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
@@ -544,17 +544,17 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
         {
           v15 = objc_opt_class();
           *buf = 134218498;
-          v27 = self;
+          selfCopy = self;
           v28 = 2114;
           v29 = v15;
           v30 = 2048;
           v31 = v12;
-          v16 = v7;
+          v16 = policyCopy;
           v17 = v15;
           _os_log_debug_impl(&dword_186345000, v13, OS_LOG_TYPE_DEBUG, "observerPolicyDidChange: %p -> <%{public}@: %p>", buf, 0x20u);
 
-          v7 = v16;
-          v6 = v19;
+          policyCopy = v16;
+          observersCopy = v19;
         }
 
         if (objc_opt_respondsToSelector())
@@ -566,7 +566,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
           block[3] = &unk_1E6F469E8;
           block[4] = v12;
           block[5] = self;
-          v21 = v7;
+          v21 = policyCopy;
           dispatch_async(asyncObserverCalloutQueue, block);
         }
 
@@ -574,7 +574,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v9 = [observersCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
     }
 
     while (v9);
@@ -583,11 +583,11 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_replacePolicySpecificationObject:(id)a3 withObject:(id)a4 replaceIvarBlock:(id)a5
+- (void)_replacePolicySpecificationObject:(id)object withObject:(id)withObject replaceIvarBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  withObjectCopy = withObject;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
   v11 = BSEqualObjects();
 
@@ -603,7 +603,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
     v14[2] = __99__BKSHIDEventDeliveryPolicyObserver__replacePolicySpecificationObject_withObject_replaceIvarBlock___block_invoke;
     v14[3] = &unk_1E6F469C0;
     v14[4] = self;
-    v15 = v8;
+    v15 = blockCopy;
     v12 = [(BKSHIDEventDeliveryPolicyObserver *)self _lock_updatePolicyWithBlock:v14];
   }
 
@@ -615,11 +615,11 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -632,7 +632,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
       v13 = 2114;
       v14 = v9;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BKSHIDEventDeliveryPolicyObserver.m";
       v19 = 1024;
@@ -650,16 +650,16 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v10];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -672,7 +672,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
       v17 = 2114;
       v18 = v13;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"BKSHIDEventDeliveryPolicyObserver.m";
       v23 = 1024;
@@ -688,7 +688,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
     JUMPOUT(0x186369E18);
   }
 
-  v6 = v5;
+  v6 = observerCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   [(NSHashTable *)self->_lock_observers addObject:v6];
@@ -707,28 +707,28 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
 - (BOOL)finalStringTokenInChain
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDEventDeliveryPolicy *)self->_lock_currentPolicy finalStringTokenInChain];
+  finalStringTokenInChain = [(BKSHIDEventDeliveryPolicy *)self->_lock_currentPolicy finalStringTokenInChain];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return finalStringTokenInChain;
 }
 
-- (void)setSelectionPathIdentifier:(id)a3
+- (void)setSelectionPathIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [v5 classForCoder];
-      if (!v10)
+      classForCoder = [identifierCopy classForCoder];
+      if (!classForCoder)
       {
-        v10 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v11 = NSStringFromClass(v10);
+      v11 = NSStringFromClass(classForCoder);
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = [v9 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"selectionPathIdentifier", v11, v13];
@@ -743,7 +743,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
         v22 = 2114;
         v23 = v17;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
         v27 = @"BKSHIDEventDeliveryPolicyObserver.m";
         v28 = 1024;
@@ -765,8 +765,8 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   v18[1] = 3221225472;
   v18[2] = __64__BKSHIDEventDeliveryPolicyObserver_setSelectionPathIdentifier___block_invoke;
   v18[3] = &unk_1E6F46998;
-  v19 = v5;
-  v7 = v5;
+  v19 = identifierCopy;
+  v7 = identifierCopy;
   [(BKSHIDEventDeliveryPolicyObserver *)self _replacePolicySpecificationObject:lock_selectionPathIdentifier withObject:v7 replaceIvarBlock:v18];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -791,23 +791,23 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   return v3;
 }
 
-- (void)setDeferringToken:(id)a3
+- (void)setDeferringToken:(id)token
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [v5 classForCoder];
-      if (!v10)
+      classForCoder = [tokenCopy classForCoder];
+      if (!classForCoder)
       {
-        v10 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v11 = NSStringFromClass(v10);
+      v11 = NSStringFromClass(classForCoder);
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = [v9 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"token", v11, v13];
@@ -822,7 +822,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
         v22 = 2114;
         v23 = v17;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
         v27 = @"BKSHIDEventDeliveryPolicyObserver.m";
         v28 = 1024;
@@ -844,8 +844,8 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   v18[1] = 3221225472;
   v18[2] = __55__BKSHIDEventDeliveryPolicyObserver_setDeferringToken___block_invoke;
   v18[3] = &unk_1E6F46998;
-  v19 = v5;
-  v7 = v5;
+  v19 = tokenCopy;
+  v7 = tokenCopy;
   [(BKSHIDEventDeliveryPolicyObserver *)self _replacePolicySpecificationObject:lock_token withObject:v7 replaceIvarBlock:v18];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -861,23 +861,23 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   return v3;
 }
 
-- (void)setDeferringEnvironment:(id)a3
+- (void)setDeferringEnvironment:(id)environment
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  environmentCopy = environment;
+  if (environmentCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [v5 classForCoder];
-      if (!v10)
+      classForCoder = [environmentCopy classForCoder];
+      if (!classForCoder)
       {
-        v10 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v11 = NSStringFromClass(v10);
+      v11 = NSStringFromClass(classForCoder);
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = [v9 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"environment", v11, v13];
@@ -892,7 +892,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
         v22 = 2114;
         v23 = v17;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
         v27 = @"BKSHIDEventDeliveryPolicyObserver.m";
         v28 = 1024;
@@ -914,8 +914,8 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   v18[1] = 3221225472;
   v18[2] = __61__BKSHIDEventDeliveryPolicyObserver_setDeferringEnvironment___block_invoke;
   v18[3] = &unk_1E6F46998;
-  v19 = v5;
-  v7 = v5;
+  v19 = environmentCopy;
+  v7 = environmentCopy;
   [(BKSHIDEventDeliveryPolicyObserver *)self _replacePolicySpecificationObject:lock_environment withObject:v7 replaceIvarBlock:v18];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -931,23 +931,23 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   return v3;
 }
 
-- (void)setDisplay:(id)a3
+- (void)setDisplay:(id)display
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  displayCopy = display;
+  if (displayCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [v5 classForCoder];
-      if (!v10)
+      classForCoder = [displayCopy classForCoder];
+      if (!classForCoder)
       {
-        v10 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v11 = NSStringFromClass(v10);
+      v11 = NSStringFromClass(classForCoder);
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = [v9 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v11, v13];
@@ -962,7 +962,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
         v22 = 2114;
         v23 = v17;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
         v27 = @"BKSHIDEventDeliveryPolicyObserver.m";
         v28 = 1024;
@@ -984,8 +984,8 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   v18[1] = 3221225472;
   v18[2] = __48__BKSHIDEventDeliveryPolicyObserver_setDisplay___block_invoke;
   v18[3] = &unk_1E6F46998;
-  v19 = v5;
-  v7 = v5;
+  v19 = displayCopy;
+  v7 = displayCopy;
   [(BKSHIDEventDeliveryPolicyObserver *)self _replacePolicySpecificationObject:lock_display withObject:v7 replaceIvarBlock:v18];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1001,11 +1001,11 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
   return v3;
 }
 
-- (id)_initWithObserver:(id)a3
+- (id)_initWithObserver:(id)observer
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1018,7 +1018,7 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
       v29 = 2114;
       v30 = v23;
       v31 = 2048;
-      v32 = self;
+      selfCopy = self;
       v33 = 2114;
       v34 = @"BKSHIDEventDeliveryPolicyObserver.m";
       v35 = 1024;
@@ -1034,14 +1034,14 @@ id __69__BKSHIDEventDeliveryPolicyObserver__lock_appendDescriptionToStream___blo
     JUMPOUT(0x18636ABF0);
   }
 
-  v7 = v6;
+  v7 = observerCopy;
   v26.receiver = self;
   v26.super_class = BKSHIDEventDeliveryPolicyObserver;
   v8 = [(BKSHIDEventDeliveryPolicyObserver *)&v26 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_observer, a3);
+    objc_storeStrong(&v8->_observer, observer);
     v9->_lock._os_unfair_lock_opaque = 0;
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BKSHIDEventDeliveryPolicyObserver <%p> - async callout", v9];
     Serial = BSDispatchQueueCreateSerial();

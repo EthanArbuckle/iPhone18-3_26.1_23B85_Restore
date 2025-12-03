@@ -1,43 +1,43 @@
 @interface CKDTokenRegistrationURLRequest
-- (CKDTokenRegistrationURLRequest)initWithOperation:(id)a3 apsToken:(id)a4 apsEnvironmentString:(id)a5 bundleID:(id)a6 skipBundleIDCheck:(BOOL)a7;
+- (CKDTokenRegistrationURLRequest)initWithOperation:(id)operation apsToken:(id)token apsEnvironmentString:(id)string bundleID:(id)d skipBundleIDCheck:(BOOL)check;
 - (id)generateRequestOperations;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
 @end
 
 @implementation CKDTokenRegistrationURLRequest
 
-- (CKDTokenRegistrationURLRequest)initWithOperation:(id)a3 apsToken:(id)a4 apsEnvironmentString:(id)a5 bundleID:(id)a6 skipBundleIDCheck:(BOOL)a7
+- (CKDTokenRegistrationURLRequest)initWithOperation:(id)operation apsToken:(id)token apsEnvironmentString:(id)string bundleID:(id)d skipBundleIDCheck:(BOOL)check
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  tokenCopy = token;
+  stringCopy = string;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = CKDTokenRegistrationURLRequest;
-  v16 = [(CKDURLRequest *)&v19 initWithOperation:a3];
+  v16 = [(CKDURLRequest *)&v19 initWithOperation:operation];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_apsToken, a4);
-    objc_storeStrong(&v17->_apsEnvironmentString, a5);
-    objc_storeStrong(&v17->_bundleID, a6);
-    v17->_skipBundleIDCheck = a7;
+    objc_storeStrong(&v16->_apsToken, token);
+    objc_storeStrong(&v17->_apsEnvironmentString, string);
+    objc_storeStrong(&v17->_bundleID, d);
+    v17->_skipBundleIDCheck = check;
   }
 
   return v17;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v13.receiver = self;
   v13.super_class = CKDTokenRegistrationURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_apsEnvironmentString(self, v5, v6, v13.receiver, v13.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"apsEnvironmentString");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"apsEnvironmentString");
 
   v11 = objc_msgSend_bundleID(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v12, v11, @"bundleID");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v12, v11, @"bundleID");
 }
 
 - (id)requestOperationClasses

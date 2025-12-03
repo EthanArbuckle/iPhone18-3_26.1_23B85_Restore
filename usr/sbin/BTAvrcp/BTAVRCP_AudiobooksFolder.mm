@@ -1,37 +1,37 @@
 @interface BTAVRCP_AudiobooksFolder
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4;
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds;
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds;
 - (unint64_t)childrenCount;
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4;
-- (unsigned)playItemWithUid:(unint64_t)a3;
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder;
+- (unsigned)playItemWithUid:(unint64_t)uid;
 @end
 
 @implementation BTAVRCP_AudiobooksFolder
 
 - (unint64_t)childrenCount
 {
-  v2 = [(BTAVRCP_VFSFolder *)self query];
-  v3 = [v2 collections];
-  v4 = [v3 count];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  collections = [query collections];
+  v4 = [collections count];
 
   return v4;
 }
 
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder
 {
-  v6 = [(BTAVRCP_VFSFolder *)self query];
-  v7 = [v6 collectionWithUid:a3 property:MPMediaItemPropertyAlbumPersistentID];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  v7 = [query collectionWithUid:uid property:MPMediaItemPropertyAlbumPersistentID];
 
   if (v7)
   {
-    v8 = [v7 representativeItem];
-    v9 = [v8 valueForProperty:MPMediaItemPropertyAlbumPersistentID];
+    representativeItem = [v7 representativeItem];
+    v9 = [representativeItem valueForProperty:MPMediaItemPropertyAlbumPersistentID];
 
-    v10 = [v7 representativeItem];
-    v11 = [v10 valueForProperty:MPMediaItemPropertyAlbumTitle];
+    representativeItem2 = [v7 representativeItem];
+    v11 = [representativeItem2 valueForProperty:MPMediaItemPropertyAlbumTitle];
 
     v12 = -[BTAVRCP_VFSFolder initWithName:uid:]([BTAVRCP_AudiobookItemsFolder alloc], "initWithName:uid:", v11, [v9 unsignedLongLongValue]);
-    *a4 = v12;
+    *folder = v12;
     v13 = [MPMediaPropertyPredicate predicateWithValue:v9 forProperty:MPMediaItemPropertyAlbumPersistentID];
     [(BTAVRCP_VFSFolder *)v12 storePredicate:v13];
 
@@ -46,17 +46,17 @@
   return v14;
 }
 
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds
 {
-  v6 = [(BTAVRCP_VFSFolder *)self query:a3];
-  v7 = [v6 collectionAtIndex:a3];
+  v6 = [(BTAVRCP_VFSFolder *)self query:index];
+  v7 = [v6 collectionAtIndex:index];
 
   if (v7)
   {
-    v8 = [v7 representativeItem];
-    v9 = [v8 valueForProperty:MPMediaItemPropertyAlbumPersistentID];
-    v10 = [v7 representativeItem];
-    v11 = [v10 valueForProperty:MPMediaItemPropertyAlbumTitle];
+    representativeItem = [v7 representativeItem];
+    v9 = [representativeItem valueForProperty:MPMediaItemPropertyAlbumPersistentID];
+    representativeItem2 = [v7 representativeItem];
+    v11 = [representativeItem2 valueForProperty:MPMediaItemPropertyAlbumTitle];
     v12 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:1 uid:v9 name:v11];
   }
 
@@ -68,10 +68,10 @@
   return v12;
 }
 
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds
 {
-  v5 = [(BTAVRCP_VFSFolder *)self query:a3];
-  v6 = [v5 collectionWithUid:a3 property:MPMediaItemPropertyAlbumPersistentID];
+  v5 = [(BTAVRCP_VFSFolder *)self query:uid];
+  v6 = [v5 collectionWithUid:uid property:MPMediaItemPropertyAlbumPersistentID];
 
   if (v6)
   {
@@ -84,10 +84,10 @@
   }
 }
 
-- (unsigned)playItemWithUid:(unint64_t)a3
+- (unsigned)playItemWithUid:(unint64_t)uid
 {
-  v4 = [(BTAVRCP_VFSFolder *)self query];
-  v5 = [v4 collectionWithUid:a3 property:MPMediaItemPropertyAlbumPersistentID];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  v5 = [query collectionWithUid:uid property:MPMediaItemPropertyAlbumPersistentID];
 
   if (v5)
   {

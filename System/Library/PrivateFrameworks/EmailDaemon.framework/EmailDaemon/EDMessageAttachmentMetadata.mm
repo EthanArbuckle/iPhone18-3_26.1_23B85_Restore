@@ -1,66 +1,66 @@
 @interface EDMessageAttachmentMetadata
-+ (id)messageMetadataFromRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (EDMessageAttachmentMetadata)initWithGlobalMessageID:(int64_t)a3 name:(id)a4 mimePart:(id)a5 attachmentID:(id)a6 remoteURL:(id)a7;
++ (id)messageMetadataFromRow:(id)row;
+- (BOOL)isEqual:(id)equal;
+- (EDMessageAttachmentMetadata)initWithGlobalMessageID:(int64_t)d name:(id)name mimePart:(id)part attachmentID:(id)iD remoteURL:(id)l;
 - (NSString)ef_publicDescription;
-- (void)setMimePartNumber:(id)a3;
+- (void)setMimePartNumber:(id)number;
 @end
 
 @implementation EDMessageAttachmentMetadata
 
-+ (id)messageMetadataFromRow:(id)a3
++ (id)messageMetadataFromRow:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [v3 objectForKeyedSubscript:@"remote_url"];
-  v6 = [v5 stringValue];
-  v18 = [v4 URLWithString:v6];
+  v5 = [rowCopy objectForKeyedSubscript:@"remote_url"];
+  stringValue = [v5 stringValue];
+  v18 = [v4 URLWithString:stringValue];
 
   v7 = [EDMessageAttachmentMetadata alloc];
-  v8 = [v3 objectForKeyedSubscript:@"global_message_id"];
-  v9 = [v8 databaseIDValue];
-  v10 = [v3 objectForKeyedSubscript:@"name"];
-  v11 = [v10 stringValue];
-  v12 = [v3 objectForKeyedSubscript:@"mime_part_number"];
-  v13 = [v12 stringValue];
-  v14 = [v3 objectForKeyedSubscript:@"attachment"];
-  v15 = [v14 numberValue];
-  v16 = [(EDMessageAttachmentMetadata *)v7 initWithGlobalMessageID:v9 name:v11 mimePart:v13 attachmentID:v15 remoteURL:v18];
+  v8 = [rowCopy objectForKeyedSubscript:@"global_message_id"];
+  databaseIDValue = [v8 databaseIDValue];
+  v10 = [rowCopy objectForKeyedSubscript:@"name"];
+  stringValue2 = [v10 stringValue];
+  v12 = [rowCopy objectForKeyedSubscript:@"mime_part_number"];
+  stringValue3 = [v12 stringValue];
+  v14 = [rowCopy objectForKeyedSubscript:@"attachment"];
+  numberValue = [v14 numberValue];
+  v16 = [(EDMessageAttachmentMetadata *)v7 initWithGlobalMessageID:databaseIDValue name:stringValue2 mimePart:stringValue3 attachmentID:numberValue remoteURL:v18];
 
   return v16;
 }
 
-- (EDMessageAttachmentMetadata)initWithGlobalMessageID:(int64_t)a3 name:(id)a4 mimePart:(id)a5 attachmentID:(id)a6 remoteURL:(id)a7
+- (EDMessageAttachmentMetadata)initWithGlobalMessageID:(int64_t)d name:(id)name mimePart:(id)part attachmentID:(id)iD remoteURL:(id)l
 {
   v25 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  partCopy = part;
+  iDCopy = iD;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = EDMessageAttachmentMetadata;
   v17 = [(EDMessageAttachmentMetadata *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    v17->_globalMessageID = a3;
-    objc_storeStrong(&v17->_name, a4);
-    if ([(__CFString *)v14 isEqualToString:&stru_1F45B4608])
+    v17->_globalMessageID = d;
+    objc_storeStrong(&v17->_name, name);
+    if ([(__CFString *)partCopy isEqualToString:&stru_1F45B4608])
     {
       v19 = EDAttachmentsLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v24 = a3;
+        dCopy = d;
         _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "Updating MIME part number to 1 for globalMessageID: %lld", buf, 0xCu);
       }
 
-      v14 = @"1";
+      partCopy = @"1";
     }
 
-    objc_storeStrong(&v18->_mimePartNumber, v14);
-    objc_storeStrong(&v18->_attachmentID, a6);
-    objc_storeStrong(&v18->_remoteURL, a7);
+    objc_storeStrong(&v18->_mimePartNumber, partCopy);
+    objc_storeStrong(&v18->_attachmentID, iD);
+    objc_storeStrong(&v18->_remoteURL, l);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -74,28 +74,28 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(EDMessageAttachmentMetadata *)self mimePartNumber];
-  v7 = [v5 stringWithFormat:@"mimePartNumber: %@", v6];
+  mimePartNumber = [(EDMessageAttachmentMetadata *)self mimePartNumber];
+  v7 = [v5 stringWithFormat:@"mimePartNumber: %@", mimePartNumber];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(EDMessageAttachmentMetadata *)self attachmentID];
-  v10 = [v8 stringWithFormat:@"attachmentID: %@", v9];
+  attachmentID = [(EDMessageAttachmentMetadata *)self attachmentID];
+  v10 = [v8 stringWithFormat:@"attachmentID: %@", attachmentID];
   [v3 addObject:v10];
 
-  v11 = [MEMORY[0x1E699B7B0] currentDevice];
-  LODWORD(v10) = [v11 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  LODWORD(v10) = [currentDevice isInternal];
 
   if (v10)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(EDMessageAttachmentMetadata *)self name];
-    v14 = [v12 stringWithFormat:@"name: %@", v13];
+    name = [(EDMessageAttachmentMetadata *)self name];
+    v14 = [v12 stringWithFormat:@"name: %@", name];
     [v3 addObject:v14];
 
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [(EDMessageAttachmentMetadata *)self remoteURL];
-    v17 = [v15 stringWithFormat:@"remoteURL: %@", v16];
+    remoteURL = [(EDMessageAttachmentMetadata *)self remoteURL];
+    v17 = [v15 stringWithFormat:@"remoteURL: %@", remoteURL];
     [v3 addObject:v17];
   }
 
@@ -104,30 +104,30 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 globalMessageID];
-    if (v6 == [(EDMessageAttachmentMetadata *)self globalMessageID])
+    v5 = equalCopy;
+    globalMessageID = [v5 globalMessageID];
+    if (globalMessageID == [(EDMessageAttachmentMetadata *)self globalMessageID])
     {
-      v7 = [v5 name];
-      v8 = [(EDMessageAttachmentMetadata *)self name];
+      name = [v5 name];
+      name2 = [(EDMessageAttachmentMetadata *)self name];
       if (EFStringsAreEqual())
       {
-        v9 = [v5 mimePartNumber];
-        v10 = [(EDMessageAttachmentMetadata *)self mimePartNumber];
+        mimePartNumber = [v5 mimePartNumber];
+        mimePartNumber2 = [(EDMessageAttachmentMetadata *)self mimePartNumber];
         if (EFStringsAreEqual())
         {
-          v16 = [v5 attachmentID];
-          v11 = [(EDMessageAttachmentMetadata *)self attachmentID];
+          attachmentID = [v5 attachmentID];
+          attachmentID2 = [(EDMessageAttachmentMetadata *)self attachmentID];
           if (EFObjectsAreEqual())
           {
-            v15 = [v5 remoteURL];
-            v12 = [(EDMessageAttachmentMetadata *)self remoteURL];
+            remoteURL = [v5 remoteURL];
+            remoteURL2 = [(EDMessageAttachmentMetadata *)self remoteURL];
             v13 = EFObjectsAreEqual();
           }
 
@@ -163,25 +163,25 @@
   return v13;
 }
 
-- (void)setMimePartNumber:(id)a3
+- (void)setMimePartNumber:(id)number
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(__CFString *)v4 isEqualToString:&stru_1F45B4608])
+  numberCopy = number;
+  if ([(__CFString *)numberCopy isEqualToString:&stru_1F45B4608])
   {
     v5 = EDAttachmentsLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = [(EDMessageAttachmentMetadata *)self globalMessageID];
+      globalMessageID = [(EDMessageAttachmentMetadata *)self globalMessageID];
       _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Updating MIME part number to 1 for globalMessageID: %lld", &v8, 0xCu);
     }
 
-    v4 = @"1";
+    numberCopy = @"1";
   }
 
   mimePartNumber = self->_mimePartNumber;
-  self->_mimePartNumber = &v4->isa;
+  self->_mimePartNumber = &numberCopy->isa;
 
   v7 = *MEMORY[0x1E69E9840];
 }

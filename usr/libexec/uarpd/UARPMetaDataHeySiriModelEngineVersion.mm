@@ -1,7 +1,7 @@
 @interface UARPMetaDataHeySiriModelEngineVersion
 - (UARPMetaDataHeySiriModelEngineVersion)init;
-- (UARPMetaDataHeySiriModelEngineVersion)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataHeySiriModelEngineVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataHeySiriModelEngineVersion)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataHeySiriModelEngineVersion)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,16 +25,16 @@
   return v3;
 }
 
-- (UARPMetaDataHeySiriModelEngineVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataHeySiriModelEngineVersion)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataHeySiriModelEngineVersion *)self init];
   v7 = v6;
   if (v6)
   {
     v13.receiver = v6;
     v13.super_class = UARPMetaDataHeySiriModelEngineVersion;
-    v8 = [(UARPMetaData *)&v13 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v13 stringFromPlistValue:valueCopy];
     if (v8 && (v9 = [[UARPComponentVersion alloc] initWithVersionString:v8], engineVersion = v7->_engineVersion, v7->_engineVersion = v9, engineVersion, v7->_engineVersion))
     {
       v11 = v7;
@@ -54,11 +54,11 @@
   return v11;
 }
 
-- (UARPMetaDataHeySiriModelEngineVersion)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataHeySiriModelEngineVersion)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataHeySiriModelEngineVersion *)self init];
   v7 = v6;
-  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataHeySiriModelEngineVersion, [(UARPMetaData *)&v12 componentVersionWithLength:a3 value:a4], v8 = objc_claimAutoreleasedReturnValue(), engineVersion = v7->_engineVersion, v7->_engineVersion = v8, engineVersion, v7->_engineVersion))
+  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataHeySiriModelEngineVersion, [(UARPMetaData *)&v12 componentVersionWithLength:length value:value], v8 = objc_claimAutoreleasedReturnValue(), engineVersion = v7->_engineVersion, v7->_engineVersion = v8, engineVersion, v7->_engineVersion))
   {
     v10 = v7;
   }
@@ -73,19 +73,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataHeySiriModelEngineVersion *)self engineVersion];
+  engineVersion = [(UARPMetaDataHeySiriModelEngineVersion *)self engineVersion];
   v6.receiver = self;
   v6.super_class = UARPMetaDataHeySiriModelEngineVersion;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:engineVersion];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataHeySiriModelEngineVersion *)self engineVersion];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  engineVersion = [(UARPMetaDataHeySiriModelEngineVersion *)self engineVersion];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, engineVersion];
 
   return v5;
 }

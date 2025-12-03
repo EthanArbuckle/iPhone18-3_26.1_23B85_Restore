@@ -1,23 +1,23 @@
 @interface HKFeatureAvailabilityRegionAvailabilityRequirement
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithFeatureIdentifier:(id)a3;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
-- (id)isSatisfiedWithRegionAvailability:(id)a3 dataSource:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithFeatureIdentifier:(id)identifier;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
+- (id)isSatisfiedWithRegionAvailability:(id)availability dataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
 @end
 
 @implementation HKFeatureAvailabilityRegionAvailabilityRequirement
 
-- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithFeatureIdentifier:(id)a3
+- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityRegionAvailabilityRequirement;
   v5 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     featureIdentifier = v5->_featureIdentifier;
     v5->_featureIdentifier = v6;
   }
@@ -25,13 +25,13 @@
   return v5;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 regionAvailabilityForFeatureWithIdentifier:self->_featureIdentifier error:a4];
+  sourceCopy = source;
+  v7 = [sourceCopy regionAvailabilityForFeatureWithIdentifier:self->_featureIdentifier error:error];
   if (v7)
   {
-    v8 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)self isSatisfiedWithRegionAvailability:v7 dataSource:v6 error:a4];
+    v8 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)self isSatisfiedWithRegionAvailability:v7 dataSource:sourceCopy error:error];
   }
 
   else
@@ -42,21 +42,21 @@
   return v8;
 }
 
-- (id)isSatisfiedWithRegionAvailability:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (id)isSatisfiedWithRegionAvailability:(id)availability dataSource:(id)source error:(id *)error
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"HKFeatureAvailabilityRegionAvailabilityRequirement.m" lineNumber:40 description:@"Subclasses must override this method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKFeatureAvailabilityRegionAvailabilityRequirement.m" lineNumber:40 description:@"Subclasses must override this method"];
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_featureIdentifier isEqual:v4[1]];
+    v5 = [(NSString *)self->_featureIdentifier isEqual:equalCopy[1]];
   }
 
   else
@@ -77,10 +77,10 @@
   return v6 ^ v5;
 }
 
-- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRegionAvailabilityRequirement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureIdentifier"];
 
   v6 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)self initWithFeatureIdentifier:v5];
   return v6;

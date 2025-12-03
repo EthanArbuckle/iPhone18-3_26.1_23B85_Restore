@@ -1,6 +1,6 @@
 @interface MTSearchSeeAllSection
 - (MTSearchSeeAllSection)init;
-- (MTSearchSeeAllSection)initWithContentType:(int64_t)a3 nextPage:(id)a4;
+- (MTSearchSeeAllSection)initWithContentType:(int64_t)type nextPage:(id)page;
 - (NSString)nextPage;
 @end
 
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (MTSearchSeeAllSection)initWithContentType:(int64_t)a3 nextPage:(id)a4
+- (MTSearchSeeAllSection)initWithContentType:(int64_t)type nextPage:(id)page
 {
-  if (a4)
+  if (page)
   {
     v6 = sub_1D917820C();
   }
@@ -37,7 +37,7 @@
     v7 = 0;
   }
 
-  *(self + OBJC_IVAR___MTSearchSeeAllSection_contentType) = a3;
+  *(self + OBJC_IVAR___MTSearchSeeAllSection_contentType) = type;
   v8 = (self + OBJC_IVAR___MTSearchSeeAllSection_nextPage);
   *v8 = v6;
   v8[1] = v7;

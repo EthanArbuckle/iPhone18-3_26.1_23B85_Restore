@@ -1,22 +1,22 @@
 @interface OrderedCollectionGroupedInsertion
-- (OrderedCollectionGroupedInsertion)initWithType:(int64_t)a3 insertions:(id)a4 associatedObject:(id)a5;
+- (OrderedCollectionGroupedInsertion)initWithType:(int64_t)type insertions:(id)insertions associatedObject:(id)object;
 @end
 
 @implementation OrderedCollectionGroupedInsertion
 
-- (OrderedCollectionGroupedInsertion)initWithType:(int64_t)a3 insertions:(id)a4 associatedObject:(id)a5
+- (OrderedCollectionGroupedInsertion)initWithType:(int64_t)type insertions:(id)insertions associatedObject:(id)object
 {
-  v9 = a4;
-  v10 = a5;
+  insertionsCopy = insertions;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = OrderedCollectionGroupedInsertion;
   v11 = [(OrderedCollectionGroupedInsertion *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_insertions, a4);
-    objc_storeStrong(&v12->_associatedObject, a5);
+    v11->_type = type;
+    objc_storeStrong(&v11->_insertions, insertions);
+    objc_storeStrong(&v12->_associatedObject, object);
   }
 
   return v12;

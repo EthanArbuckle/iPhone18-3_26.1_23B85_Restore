@@ -25,9 +25,9 @@
 
   if (v7)
   {
-    v8 = [a1 timerID];
-    v9 = [v7 timerID];
-    v10 = [v8 hmf_isEqualToUUID:v9];
+    timerID = [self timerID];
+    timerID2 = [v7 timerID];
+    v10 = [timerID hmf_isEqualToUUID:timerID2];
   }
 
   else
@@ -40,8 +40,8 @@
 
 - (uint64_t)hash
 {
-  v1 = [a1 timerID];
-  v2 = [v1 hash];
+  timerID = [self timerID];
+  v2 = [timerID hash];
 
   return v2;
 }
@@ -50,17 +50,17 @@
 {
   v40 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 siriContext];
-  v6 = [v5 objectForKey:*MEMORY[0x277CFD060]];
+  siriContext = [self siriContext];
+  v6 = [siriContext objectForKey:*MEMORY[0x277CFD060]];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CCACE0] componentsWithString:v6];
-    v8 = [v7 scheme];
-    if ([v8 isEqualToString:@"siri-hk-target"])
+    scheme = [v7 scheme];
+    if ([scheme isEqualToString:@"siri-hk-target"])
     {
-      v9 = [v7 path];
-      v10 = [v9 isEqualToString:@"accessory"];
+      path = [v7 path];
+      v10 = [path isEqualToString:@"accessory"];
 
       if (v10)
       {
@@ -68,8 +68,8 @@
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v11 = [v7 queryItems];
-        v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        queryItems = [v7 queryItems];
+        v12 = [queryItems countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v12)
         {
           v13 = v12;
@@ -81,19 +81,19 @@
             {
               if (*v32 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(queryItems);
               }
 
               v16 = *(*(&v31 + 1) + 8 * i);
-              v17 = [v16 name];
-              v18 = [@"identifier" isEqualToString:v17];
+              name = [v16 name];
+              v18 = [@"identifier" isEqualToString:name];
 
               if (v18)
               {
-                v19 = [v16 value];
-                if (v19)
+                value = [v16 value];
+                if (value)
                 {
-                  v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v19];
+                  v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
                   if (v20)
                   {
                     v21 = v20;
@@ -104,7 +104,7 @@
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+            v13 = [queryItems countByEnumeratingWithState:&v31 objects:v35 count:16];
             if (v13)
             {
               continue;
@@ -133,21 +133,21 @@ LABEL_24:
 
     v21 = 0;
 LABEL_27:
-    v24 = [v4 accessories];
+    accessories = [v4 accessories];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __49__MTTimer_HFAdditions__hf_targetAccessoryInHome___block_invoke;
     v29[3] = &unk_277DF3888;
     v30 = v21;
     v25 = v21;
-    v23 = [v24 na_firstObjectPassingTest:v29];
+    v23 = [accessories na_firstObjectPassingTest:v29];
 
     goto LABEL_28;
   }
 
-  v22 = [a1 siriContext];
+  siriContext2 = [self siriContext];
 
-  if (!v22)
+  if (!siriContext2)
   {
     v23 = 0;
     goto LABEL_29;
@@ -157,7 +157,7 @@ LABEL_27:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v37 = a1;
+    selfCopy = self;
     v38 = 2112;
     v39 = v4;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "No targetReference found for alarm: %@ in home: %@", buf, 0x16u);

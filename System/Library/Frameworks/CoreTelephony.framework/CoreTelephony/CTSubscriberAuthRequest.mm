@@ -1,26 +1,26 @@
 @interface CTSubscriberAuthRequest
-- (CTSubscriberAuthRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CTSubscriberAuthRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSubscriberAuthRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CTSubscriberAuthRequest *)self algorithm];
-  [v5 encodeObject:v4 forKey:@"algorithm"];
+  coderCopy = coder;
+  algorithm = [(CTSubscriberAuthRequest *)self algorithm];
+  [coderCopy encodeObject:algorithm forKey:@"algorithm"];
 }
 
-- (CTSubscriberAuthRequest)initWithCoder:(id)a3
+- (CTSubscriberAuthRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTSubscriberAuthRequest;
   v5 = [(CTSubscriberAuthRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
     algorithm = v5->_algorithm;
     v5->_algorithm = v6;
   }

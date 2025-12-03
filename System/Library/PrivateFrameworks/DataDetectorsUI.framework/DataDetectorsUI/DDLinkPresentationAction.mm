@@ -1,16 +1,16 @@
 @interface DDLinkPresentationAction
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
-+ (id)urlForURL:(id)a3 result:(__DDResult *)a4;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
++ (id)urlForURL:(id)l result:(__DDResult *)result;
 - (id)createViewController;
 - (id)menuActions;
-- (id)previewActionsWithValidatedURL:(id)a3;
+- (id)previewActionsWithValidatedURL:(id)l;
 @end
 
 @implementation DDLinkPresentationAction
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  v4 = [a1 urlForURL:a3 result:a4];
+  v4 = [self urlForURL:url result:result];
   isApple = [(NSURL *)v4 dd_isAppleStore];
 
   return isApple;
@@ -119,11 +119,11 @@ uint64_t __48__DDLinkPresentationAction_createViewController__block_invoke_2(uin
   return [v2 setPreferredContentSize:?];
 }
 
-+ (id)urlForURL:(id)a3 result:(__DDResult *)a4
++ (id)urlForURL:(id)l result:(__DDResult *)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  lCopy = l;
+  v6 = lCopy;
+  if (result)
   {
     v7 = DDResultCopyExtractedURL();
     if (v7)
@@ -140,16 +140,16 @@ uint64_t __48__DDLinkPresentationAction_createViewController__block_invoke_2(uin
   return v6;
 }
 
-- (id)previewActionsWithValidatedURL:(id)a3
+- (id)previewActionsWithValidatedURL:(id)l
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = self->super.super._result;
   context = self->super.super._context;
-  v6 = a3;
-  v7 = [(DDAction *)DDOpenURLAction actionsWithURL:v6 result:v4 context:context];
+  lCopy = l;
+  v7 = [(DDAction *)DDOpenURLAction actionsWithURL:lCopy result:v4 context:context];
   v8 = [[DDCopyAction alloc] initWithURL:self->super.super._url result:self->super.super._result context:self->super.super._context];
   v14[0] = v8;
-  v9 = [[DDShareAction alloc] initWithURL:v6 result:self->super.super._result context:self->super.super._context];
+  v9 = [[DDShareAction alloc] initWithURL:lCopy result:self->super.super._result context:self->super.super._context];
 
   v14[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];

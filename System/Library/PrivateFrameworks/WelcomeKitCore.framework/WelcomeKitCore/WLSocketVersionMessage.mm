@@ -1,10 +1,10 @@
 @interface WLSocketVersionMessage
-- (WLSocketVersionMessage)initWithVersion:(unint64_t)a3;
+- (WLSocketVersionMessage)initWithVersion:(unint64_t)version;
 @end
 
 @implementation WLSocketVersionMessage
 
-- (WLSocketVersionMessage)initWithVersion:(unint64_t)a3
+- (WLSocketVersionMessage)initWithVersion:(unint64_t)version
 {
   v7.receiver = self;
   v7.super_class = WLSocketVersionMessage;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    [(WLSocketVersionMessage *)v4 setVersion:a3];
+    [(WLSocketVersionMessage *)v4 setVersion:version];
   }
 
   return v5;

@@ -1,16 +1,16 @@
 @interface COSRemoteManagementInformationCell
-- (COSRemoteManagementInformationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (COSRemoteManagementInformationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (COSRemoteManagementInformationCellDelegate)delegate;
-- (void)learnMoreButtonPressed:(id)a3;
+- (void)learnMoreButtonPressed:(id)pressed;
 @end
 
 @implementation COSRemoteManagementInformationCell
 
-- (COSRemoteManagementInformationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (COSRemoteManagementInformationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v91.receiver = self;
   v91.super_class = COSRemoteManagementInformationCell;
-  v4 = [(COSRemoteManagementInformationCell *)&v91 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(COSRemoteManagementInformationCell *)&v91 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -24,8 +24,8 @@
     v5->_containerView = v10;
 
     [(UIView *)v5->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(COSRemoteManagementInformationCell *)v5 contentView];
-    [v12 addSubview:v5->_containerView];
+    contentView = [(COSRemoteManagementInformationCell *)v5 contentView];
+    [contentView addSubview:v5->_containerView];
 
     v13 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     iconView = v5->_iconView;
@@ -68,15 +68,15 @@
     v5->_learnMoreButton = v25;
 
     [(UIButton *)v5->_learnMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v27 = [(UIButton *)v5->_learnMoreButton titleLabel];
-    [v27 setNumberOfLines:0];
+    titleLabel = [(UIButton *)v5->_learnMoreButton titleLabel];
+    [titleLabel setNumberOfLines:0];
 
-    v28 = [(UIButton *)v5->_learnMoreButton titleLabel];
-    [v28 setTextAlignment:1];
+    titleLabel2 = [(UIButton *)v5->_learnMoreButton titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
     v29 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v30 = [(UIButton *)v5->_learnMoreButton titleLabel];
-    [v30 setFont:v29];
+    titleLabel3 = [(UIButton *)v5->_learnMoreButton titleLabel];
+    [titleLabel3 setFont:v29];
 
     v31 = v5->_learnMoreButton;
     v32 = +[NSBundle mainBundle];
@@ -89,71 +89,71 @@
 
     [(UIButton *)v5->_learnMoreButton addTarget:v5 action:"learnMoreButtonPressed:" forControlEvents:64];
     [(UIView *)v5->_containerView addSubview:v5->_learnMoreButton];
-    v87 = [(UIView *)v5->_containerView leadingAnchor];
-    v88 = [(COSRemoteManagementInformationCell *)v5 contentView];
-    v86 = [v88 layoutMarginsGuide];
-    v85 = [v86 leadingAnchor];
-    v84 = [v87 constraintEqualToAnchor:v85];
+    leadingAnchor = [(UIView *)v5->_containerView leadingAnchor];
+    contentView2 = [(COSRemoteManagementInformationCell *)v5 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v84 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v92[0] = v84;
-    v82 = [(UIView *)v5->_containerView trailingAnchor];
-    v83 = [(COSRemoteManagementInformationCell *)v5 contentView];
-    v81 = [v83 layoutMarginsGuide];
-    v80 = [v81 trailingAnchor];
-    v79 = [v82 constraintEqualToAnchor:v80];
+    trailingAnchor = [(UIView *)v5->_containerView trailingAnchor];
+    contentView3 = [(COSRemoteManagementInformationCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v79 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v92[1] = v79;
-    v77 = [(UIView *)v5->_containerView topAnchor];
-    v78 = [(COSRemoteManagementInformationCell *)v5 contentView];
-    v76 = [v78 layoutMarginsGuide];
-    v75 = [v76 topAnchor];
-    v74 = [v77 constraintEqualToAnchor:v75];
+    topAnchor = [(UIView *)v5->_containerView topAnchor];
+    contentView4 = [(COSRemoteManagementInformationCell *)v5 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v74 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v92[2] = v74;
-    v72 = [(UIView *)v5->_containerView bottomAnchor];
-    v73 = [(COSRemoteManagementInformationCell *)v5 contentView];
-    v71 = [v73 layoutMarginsGuide];
-    v70 = [v71 bottomAnchor];
-    v69 = [v72 constraintEqualToAnchor:v70];
+    bottomAnchor = [(UIView *)v5->_containerView bottomAnchor];
+    contentView5 = [(COSRemoteManagementInformationCell *)v5 contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v69 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v92[3] = v69;
-    v68 = [(UIView *)v5->_containerView topAnchor];
-    v67 = [(UIImageView *)v5->_iconView topAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    topAnchor3 = [(UIView *)v5->_containerView topAnchor];
+    topAnchor4 = [(UIImageView *)v5->_iconView topAnchor];
+    v66 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v92[4] = v66;
-    v65 = [(UIView *)v5->_containerView centerXAnchor];
-    v64 = [(UIImageView *)v5->_iconView centerXAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    centerXAnchor = [(UIView *)v5->_containerView centerXAnchor];
+    centerXAnchor2 = [(UIImageView *)v5->_iconView centerXAnchor];
+    v63 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v92[5] = v63;
-    v62 = [(UIImageView *)v5->_iconView heightAnchor];
-    v61 = [v62 constraintEqualToConstant:38.0];
+    heightAnchor = [(UIImageView *)v5->_iconView heightAnchor];
+    v61 = [heightAnchor constraintEqualToConstant:38.0];
     v92[6] = v61;
-    v60 = [(UIImageView *)v5->_iconView widthAnchor];
-    v59 = [v60 constraintEqualToConstant:80.0];
+    widthAnchor = [(UIImageView *)v5->_iconView widthAnchor];
+    v59 = [widthAnchor constraintEqualToConstant:80.0];
     v92[7] = v59;
-    v58 = [(UILabel *)v5->_descriptionView topAnchor];
-    v57 = [(UIImageView *)v5->_iconView bottomAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57 constant:10.0];
+    topAnchor5 = [(UILabel *)v5->_descriptionView topAnchor];
+    bottomAnchor3 = [(UIImageView *)v5->_iconView bottomAnchor];
+    v56 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:10.0];
     v92[8] = v56;
-    v55 = [(UILabel *)v5->_descriptionView leadingAnchor];
-    v54 = [(UIView *)v5->_containerView leadingAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    leadingAnchor3 = [(UILabel *)v5->_descriptionView leadingAnchor];
+    leadingAnchor4 = [(UIView *)v5->_containerView leadingAnchor];
+    v53 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v92[9] = v53;
-    v52 = [(UILabel *)v5->_descriptionView trailingAnchor];
-    v51 = [(UIView *)v5->_containerView trailingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    trailingAnchor3 = [(UILabel *)v5->_descriptionView trailingAnchor];
+    trailingAnchor4 = [(UIView *)v5->_containerView trailingAnchor];
+    v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v92[10] = v50;
-    v49 = [(UIButton *)v5->_learnMoreButton leadingAnchor];
-    v48 = [(UIView *)v5->_containerView leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    leadingAnchor5 = [(UIButton *)v5->_learnMoreButton leadingAnchor];
+    leadingAnchor6 = [(UIView *)v5->_containerView leadingAnchor];
+    v47 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v92[11] = v47;
-    v46 = [(UIButton *)v5->_learnMoreButton trailingAnchor];
-    v36 = [(UIView *)v5->_containerView trailingAnchor];
-    v37 = [v46 constraintEqualToAnchor:v36];
+    trailingAnchor5 = [(UIButton *)v5->_learnMoreButton trailingAnchor];
+    trailingAnchor6 = [(UIView *)v5->_containerView trailingAnchor];
+    v37 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v92[12] = v37;
-    v38 = [(UIButton *)v5->_learnMoreButton topAnchor];
-    v39 = [(UILabel *)v5->_descriptionView bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:10.0];
+    topAnchor6 = [(UIButton *)v5->_learnMoreButton topAnchor];
+    bottomAnchor4 = [(UILabel *)v5->_descriptionView bottomAnchor];
+    v40 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:10.0];
     v92[13] = v40;
-    v41 = [(UIButton *)v5->_learnMoreButton bottomAnchor];
-    v42 = [(UIView *)v5->_containerView bottomAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    bottomAnchor5 = [(UIButton *)v5->_learnMoreButton bottomAnchor];
+    bottomAnchor6 = [(UIView *)v5->_containerView bottomAnchor];
+    v43 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v92[14] = v43;
     v44 = [NSArray arrayWithObjects:v92 count:15];
     [NSLayoutConstraint activateConstraints:v44];
@@ -162,15 +162,15 @@
   return v5;
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
-  v6 = a3;
+  pressedCopy = pressed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    [v5 remoteManagementInformationCell:self buttonPressed:v6];
+    [v5 remoteManagementInformationCell:self buttonPressed:pressedCopy];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface TSWPTOCRep
 - (id)hyperlinkRegions;
-- (id)i_paragraphStyleAtPoint:(CGPoint)a3;
-- (id)paragraphStylesBetweenCharIndex:(unint64_t)a3 andCharIndex:(unint64_t)a4;
+- (id)i_paragraphStyleAtPoint:(CGPoint)point;
+- (id)paragraphStylesBetweenCharIndex:(unint64_t)index andCharIndex:(unint64_t)charIndex;
 - (id)tocInfo;
-- (unint64_t)charIndexAtPoint:(CGPoint)a3;
+- (unint64_t)charIndexAtPoint:(CGPoint)point;
 @end
 
 @implementation TSWPTOCRep
@@ -17,10 +17,10 @@
   return v6;
 }
 
-- (unint64_t)charIndexAtPoint:(CGPoint)a3
+- (unint64_t)charIndexAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_msgSend_containedRep(self, a2, v3);
   v9 = objc_msgSend_layout(v6, v7, v8);
   v11 = objc_msgSend_charIndexFromPoint_hitTestMode_isAtEndOfLine_leadingEdge_inLayoutTarget_(TSWPColumn, v10, 0, 0, 0, v9, x, y);
@@ -28,9 +28,9 @@
   return v11;
 }
 
-- (id)paragraphStylesBetweenCharIndex:(unint64_t)a3 andCharIndex:(unint64_t)a4
+- (id)paragraphStylesBetweenCharIndex:(unint64_t)index andCharIndex:(unint64_t)charIndex
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL || charIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
   }
@@ -39,27 +39,27 @@
   {
     v52 = v4;
     v53 = v5;
-    v12 = objc_msgSend_tocInfo(self, a2, a3);
+    v12 = objc_msgSend_tocInfo(self, a2, index);
     v15 = objc_msgSend_containedRep(self, v13, v14);
     v18 = v15;
-    if (a3 >= a4)
+    if (index >= charIndex)
     {
-      v19 = a4;
+      indexCopy = charIndex;
     }
 
     else
     {
-      v19 = a3;
+      indexCopy = index;
     }
 
-    if (a3 <= a4)
+    if (index <= charIndex)
     {
-      v20 = a4;
+      indexCopy2 = charIndex;
     }
 
     else
     {
-      v20 = a3;
+      indexCopy2 = index;
     }
 
     v50 = objc_msgSend_set(MEMORY[0x277CBEB58], v16, v17);
@@ -67,10 +67,10 @@
     {
       v51 = xmmword_276F98AE0;
       v23 = objc_msgSend_storage(v18, v21, v22);
-      v25 = objc_msgSend_paragraphIndexAtCharIndex_(v23, v24, v19);
+      v25 = objc_msgSend_paragraphIndexAtCharIndex_(v23, v24, indexCopy);
 
       v28 = objc_msgSend_storage(v18, v26, v27);
-      v30 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(v28, v29, v19, &v51);
+      v30 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(v28, v29, indexCopy, &v51);
 
       v33 = objc_msgSend_visibleTOCEntries(v12, v31, v32);
       if (v25 < objc_msgSend_count(v33, v34, v35))
@@ -84,7 +84,7 @@
       }
 
       v42 = *(&v51 + 1) + v51;
-      if (*(&v51 + 1) + v51 <= v19)
+      if (*(&v51 + 1) + v51 <= indexCopy)
       {
         v43 = MEMORY[0x277D81150];
         v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, "[TSWPTOCRep paragraphStylesBetweenCharIndex:andCharIndex:]");
@@ -95,18 +95,18 @@
         v42 = *(&v51 + 1) + v51;
       }
 
-      if (v19 + 1 > v42)
+      if (indexCopy + 1 > v42)
       {
-        ++v19;
+        ++indexCopy;
       }
 
       else
       {
-        v19 = v42;
+        indexCopy = v42;
       }
     }
 
-    while (v19 < v20);
+    while (indexCopy < indexCopy2);
 
     v7 = v50;
   }
@@ -141,10 +141,10 @@
   return v26;
 }
 
-- (id)i_paragraphStyleAtPoint:(CGPoint)a3
+- (id)i_paragraphStyleAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = objc_msgSend_containedRep(self, a2, v3);
   v10 = objc_msgSend_layout(v7, v8, v9);
   v12 = objc_msgSend_charIndexFromPoint_hitTestMode_isAtEndOfLine_leadingEdge_inLayoutTarget_(TSWPColumn, v11, 0, 0, 0, v10, x, y);

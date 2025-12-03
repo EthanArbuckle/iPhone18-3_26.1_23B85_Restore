@@ -1,10 +1,10 @@
 @interface _WGConcreteDataSource
 - (_WGConcreteDataSource)init;
-- (id)datumWithIdentifier:(id)a3;
-- (void)addObserver:(id)a3 completion:(id)a4;
-- (void)dataSource:(id)a3 removeDatumWithIdentifier:(id)a4 observerUpdateBlock:(id)a5;
-- (void)dataSource:(id)a3 replaceWithDatum:(id)a4 observerUpdateBlock:(id)a5;
-- (void)removeObserver:(id)a3 completion:(id)a4;
+- (id)datumWithIdentifier:(id)identifier;
+- (void)addObserver:(id)observer completion:(id)completion;
+- (void)dataSource:(id)source removeDatumWithIdentifier:(id)identifier observerUpdateBlock:(id)block;
+- (void)dataSource:(id)source replaceWithDatum:(id)datum observerUpdateBlock:(id)block;
+- (void)removeObserver:(id)observer completion:(id)completion;
 @end
 
 @implementation _WGConcreteDataSource
@@ -28,47 +28,47 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3 completion:(id)a4
+- (void)addObserver:(id)observer completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  observerCopy = observer;
+  completionCopy = completion;
+  if (observerCopy)
   {
-    [(NSMutableArray *)self->_observers addObject:v7];
+    [(NSMutableArray *)self->_observers addObject:observerCopy];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)removeObserver:(id)a3 completion:(id)a4
+- (void)removeObserver:(id)observer completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  observerCopy = observer;
+  completionCopy = completion;
+  if (observerCopy)
   {
-    [(NSMutableArray *)self->_observers removeObject:v7];
+    [(NSMutableArray *)self->_observers removeObject:observerCopy];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)dataSource:(id)a3 replaceWithDatum:(id)a4 observerUpdateBlock:(id)a5
+- (void)dataSource:(id)source replaceWithDatum:(id)datum observerUpdateBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7 && v8)
+  datumCopy = datum;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (datumCopy && blockCopy)
   {
     identifiersToData = self->_identifiersToData;
-    v11 = [v7 datumIdentifier];
-    [(NSMutableDictionary *)identifiersToData setObject:v7 forKey:v11];
+    datumIdentifier = [datumCopy datumIdentifier];
+    [(NSMutableDictionary *)identifiersToData setObject:datumCopy forKey:datumIdentifier];
 
     v19 = 0u;
     v20 = 0u;
@@ -90,7 +90,7 @@
             objc_enumerationMutation(v12);
           }
 
-          (v9)[2](v9, *(*(&v17 + 1) + 8 * v16++), v7);
+          (v9)[2](v9, *(*(&v17 + 1) + 8 * v16++), datumCopy);
         }
 
         while (v14 != v16);
@@ -102,18 +102,18 @@
   }
 }
 
-- (void)dataSource:(id)a3 removeDatumWithIdentifier:(id)a4 observerUpdateBlock:(id)a5
+- (void)dataSource:(id)source removeDatumWithIdentifier:(id)identifier observerUpdateBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 length];
-  if (v8 && v9)
+  identifierCopy = identifier;
+  blockCopy = block;
+  v9 = [identifierCopy length];
+  if (blockCopy && v9)
   {
-    v10 = [(NSMutableDictionary *)self->_identifiersToData objectForKey:v7];
+    v10 = [(NSMutableDictionary *)self->_identifiersToData objectForKey:identifierCopy];
     if (v10)
     {
-      [(NSMutableDictionary *)self->_identifiersToData removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_identifiersToData removeObjectForKey:identifierCopy];
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
@@ -134,7 +134,7 @@
               objc_enumerationMutation(v11);
             }
 
-            v8[2](v8, *(*(&v16 + 1) + 8 * v15++), v10);
+            blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v15++), v10);
           }
 
           while (v13 != v15);
@@ -147,12 +147,12 @@
   }
 }
 
-- (id)datumWithIdentifier:(id)a3
+- (id)datumWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_identifiersToData objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_identifiersToData objectForKey:identifierCopy];
   }
 
   else

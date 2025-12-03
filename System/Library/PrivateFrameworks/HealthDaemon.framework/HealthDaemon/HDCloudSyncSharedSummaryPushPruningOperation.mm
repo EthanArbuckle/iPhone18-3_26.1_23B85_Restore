@@ -1,33 +1,33 @@
 @interface HDCloudSyncSharedSummaryPushPruningOperation
-- (HDCloudSyncSharedSummaryPushPruningOperation)initWithConfiguration:(id)a3 allRecordsToSave:(id)a4 participantZoneIDsToPush:(id)a5 existingTransactionRecordsByZoneID:(id)a6;
-- (id)_filterRecordsThatExistInTheCloud:(id)a3;
-- (id)_recordIDsForTransactions:(id)a3;
-- (void)_findTransactionsToDelete:(id)a3 existingTransactionRecordsByZoneID:(id)a4 completion:(id)a5;
-- (void)_modifyRecordsAndFinish:(id)a3 recordIDsToDelete:(id)a4;
+- (HDCloudSyncSharedSummaryPushPruningOperation)initWithConfiguration:(id)configuration allRecordsToSave:(id)save participantZoneIDsToPush:(id)push existingTransactionRecordsByZoneID:(id)d;
+- (id)_filterRecordsThatExistInTheCloud:(id)cloud;
+- (id)_recordIDsForTransactions:(id)transactions;
+- (void)_findTransactionsToDelete:(id)delete existingTransactionRecordsByZoneID:(id)d completion:(id)completion;
+- (void)_modifyRecordsAndFinish:(id)finish recordIDsToDelete:(id)delete;
 - (void)main;
 @end
 
 @implementation HDCloudSyncSharedSummaryPushPruningOperation
 
-- (HDCloudSyncSharedSummaryPushPruningOperation)initWithConfiguration:(id)a3 allRecordsToSave:(id)a4 participantZoneIDsToPush:(id)a5 existingTransactionRecordsByZoneID:(id)a6
+- (HDCloudSyncSharedSummaryPushPruningOperation)initWithConfiguration:(id)configuration allRecordsToSave:(id)save participantZoneIDsToPush:(id)push existingTransactionRecordsByZoneID:(id)d
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  saveCopy = save;
+  pushCopy = push;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = HDCloudSyncSharedSummaryPushPruningOperation;
-  v13 = [(HDCloudSyncOperation *)&v21 initWithConfiguration:a3 cloudState:0];
+  v13 = [(HDCloudSyncOperation *)&v21 initWithConfiguration:configuration cloudState:0];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [saveCopy copy];
     allRecordsToSave = v13->_allRecordsToSave;
     v13->_allRecordsToSave = v14;
 
-    v16 = [v11 copy];
+    v16 = [pushCopy copy];
     participantZoneIDsWithNewTransactionsToPush = v13->_participantZoneIDsWithNewTransactionsToPush;
     v13->_participantZoneIDsWithNewTransactionsToPush = v16;
 
-    v18 = [v12 copy];
+    v18 = [dCopy copy];
     existingTransactionRecordsByZoneID = v13->_existingTransactionRecordsByZoneID;
     v13->_existingTransactionRecordsByZoneID = v18;
   }
@@ -83,11 +83,11 @@ void __52__HDCloudSyncSharedSummaryPushPruningOperation_main__block_invoke_2(uin
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_findTransactionsToDelete:(id)a3 existingTransactionRecordsByZoneID:(id)a4 completion:(id)a5
+- (void)_findTransactionsToDelete:(id)delete existingTransactionRecordsByZoneID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deleteCopy = delete;
+  dCopy = d;
+  completionCopy = completion;
   v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -95,26 +95,26 @@ void __52__HDCloudSyncSharedSummaryPushPruningOperation_main__block_invoke_2(uin
   v26[3] = &unk_278629BE0;
   v12 = v11;
   v27 = v12;
-  [v9 enumerateKeysAndObjectsUsingBlock:v26];
-  v13 = [(HDCloudSyncOperation *)self configuration];
-  v14 = [v13 repository];
-  v15 = [v14 cloudSyncShimProvider];
-  v16 = [v15 sharedSummariesShim];
+  [dCopy enumerateKeysAndObjectsUsingBlock:v26];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  cloudSyncShimProvider = [repository cloudSyncShimProvider];
+  sharedSummariesShim = [cloudSyncShimProvider sharedSummariesShim];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __120__HDCloudSyncSharedSummaryPushPruningOperation__findTransactionsToDelete_existingTransactionRecordsByZoneID_completion___block_invoke_5;
   v21[3] = &unk_278629C08;
-  v24 = v9;
-  v25 = v10;
+  v24 = dCopy;
+  v25 = completionCopy;
   v21[4] = self;
   v22 = v12;
-  v23 = v8;
-  v17 = v9;
-  v18 = v8;
+  v23 = deleteCopy;
+  v17 = dCopy;
+  v18 = deleteCopy;
   v19 = v12;
-  v20 = v10;
-  [v16 deviceIdentifierWithCompletion:v21];
+  v20 = completionCopy;
+  [sharedSummariesShim deviceIdentifierWithCompletion:v21];
 }
 
 void __120__HDCloudSyncSharedSummaryPushPruningOperation__findTransactionsToDelete_existingTransactionRecordsByZoneID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -380,16 +380,16 @@ uint64_t __120__HDCloudSyncSharedSummaryPushPruningOperation__findTransactionsTo
   return v7;
 }
 
-- (id)_recordIDsForTransactions:(id)a3
+- (id)_recordIDsForTransactions:(id)transactions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  transactionsCopy = transactions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = transactionsCopy;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -405,16 +405,16 @@ uint64_t __120__HDCloudSyncSharedSummaryPushPruningOperation__findTransactionsTo
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 summaryIdentifiers];
+        summaryIdentifiers = [v9 summaryIdentifiers];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __74__HDCloudSyncSharedSummaryPushPruningOperation__recordIDsForTransactions___block_invoke;
         v16[3] = &unk_278629C30;
         v16[4] = v9;
-        v11 = [v10 hk_map:v16];
+        v11 = [summaryIdentifiers hk_map:v16];
 
-        v12 = [v9 recordID];
-        [v4 addObject:v12];
+        recordID = [v9 recordID];
+        [v4 addObject:recordID];
 
         [v4 addObjectsFromArray:v11];
       }
@@ -441,14 +441,14 @@ id __74__HDCloudSyncSharedSummaryPushPruningOperation__recordIDsForTransactions_
   return v6;
 }
 
-- (id)_filterRecordsThatExistInTheCloud:(id)a3
+- (id)_filterRecordsThatExistInTheCloud:(id)cloud
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __82__HDCloudSyncSharedSummaryPushPruningOperation__filterRecordsThatExistInTheCloud___block_invoke;
   v5[3] = &unk_2786167D0;
   v5[4] = self;
-  v3 = [a3 hk_filter:v5];
+  v3 = [cloud hk_filter:v5];
 
   return v3;
 }
@@ -509,16 +509,16 @@ LABEL_7:
   return v21;
 }
 
-- (void)_modifyRecordsAndFinish:(id)a3 recordIDsToDelete:(id)a4
+- (void)_modifyRecordsAndFinish:(id)finish recordIDsToDelete:(id)delete
 {
-  v6 = a4;
-  v7 = a3;
+  deleteCopy = delete;
+  finishCopy = finish;
   v8 = [HDCloudSyncModifyRecordsOperation alloc];
-  v9 = [(HDCloudSyncOperation *)self configuration];
-  v10 = [(HDCloudSyncOperation *)self configuration];
-  v11 = [v10 repository];
-  v12 = [v11 primaryCKContainer];
-  v13 = [(HDCloudSyncModifyRecordsOperation *)v8 initWithConfiguration:v9 container:v12 recordsToSave:v7 recordIDsToDelete:v6];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  v13 = [(HDCloudSyncModifyRecordsOperation *)v8 initWithConfiguration:configuration container:primaryCKContainer recordsToSave:finishCopy recordIDsToDelete:deleteCopy];
 
   [(HDCloudSyncModifyRecordsOperation *)v13 setPermitNonAtomicZoneSaves:1];
   v15[0] = MEMORY[0x277D85DD0];

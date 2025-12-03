@@ -35,7 +35,7 @@
   v2 = *MEMORY[0x1E695E8E0];
   do
   {
-    result = [a1 runMode:v2 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantFuture")}];
+    result = [self runMode:v2 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantFuture")}];
   }
 
   while ((result & 1) != 0);
@@ -62,7 +62,7 @@
 
 - (__CFRunLoop)currentMode
 {
-  result = [a1 getCFRunLoop];
+  result = [self getCFRunLoop];
   if (result)
   {
     v2 = CFRunLoopCopyCurrentMode(result);
@@ -76,9 +76,9 @@
 - (id)dealloc
 {
   v4 = *MEMORY[0x1E69E9840];
-  [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:a1 object:@"NSPortDidBecomeInvalidNotification", 0];
-  [a1 _deallocHelper];
-  v3.receiver = a1;
+  [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:self object:@"NSPortDidBecomeInvalidNotification", 0];
+  [self _deallocHelper];
+  v3.receiver = self;
   v3.super_class = &off_1EEF96098;
   return objc_msgSendSuper2(&v3, sel_dealloc);
 }
@@ -91,8 +91,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a1 _info];
-  result = [v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  _info = [self _info];
+  result = [_info countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (result)
   {
     v6 = result;
@@ -106,7 +106,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_info);
         }
 
         if (v7)
@@ -128,7 +128,7 @@
       }
 
       while (v6 != v10);
-      result = [v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      result = [_info countByEnumeratingWithState:&v13 objects:v12 count:16];
       v6 = result;
     }
 
@@ -141,26 +141,26 @@
 - (uint64_t)_portInvalidated:()NSRunLoop
 {
   v18 = *MEMORY[0x1E69E9840];
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   _CFAutoreleasePoolPush();
-  v5 = [a3 object];
+  object = [a3 object];
   v6 = [MEMORY[0x1E695DFA8] set];
   v7 = +[(NSIndexSet *)NSMutableIndexSet];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __41__NSRunLoop_NSRunLoop___portInvalidated___block_invoke;
   v12[3] = &unk_1E69F5EA0;
-  v12[4] = v5;
+  v12[4] = object;
   v12[5] = v6;
   v12[6] = v7;
-  [a1 _enumerateInfoPairsWithBlock:v12];
-  [objc_msgSend(a1 "_info")];
-  while ([objc_msgSend(a1 "_ports")])
+  [self _enumerateInfoPairsWithBlock:v12];
+  [objc_msgSend(self "_info")];
+  while ([objc_msgSend(self "_ports")])
   {
-    [objc_msgSend(a1 "_ports")];
+    [objc_msgSend(self "_ports")];
   }
 
-  [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:a1 object:@"NSPortDidBecomeInvalidNotification", v5];
+  [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:self object:@"NSPortDidBecomeInvalidNotification", object];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -178,7 +178,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [v5 removeFromRunLoop:a1 forMode:*(*(&v14 + 1) + 8 * i)];
+        [object removeFromRunLoop:self forMode:*(*(&v14 + 1) + 8 * i)];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
@@ -188,7 +188,7 @@
   }
 
   _CFAutoreleasePoolPop();
-  return objc_sync_exit(a1);
+  return objc_sync_exit(self);
 }
 
 - (uint64_t)_containsPort:()NSRunLoop forMode:
@@ -198,7 +198,7 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__NSRunLoop_NSRunLoop___containsPort_forMode___block_invoke;
@@ -206,8 +206,8 @@
   v9[4] = a3;
   v9[5] = a4;
   v9[6] = &v10;
-  [a1 _enumerateInfoPairsWithBlock:v9];
-  objc_sync_exit(a1);
+  [self _enumerateInfoPairsWithBlock:v9];
+  objc_sync_exit(self);
   v7 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
   return v7;
@@ -252,7 +252,7 @@
 - (uint64_t)_removePort:()NSRunLoop forMode:
 {
   v20 = *MEMORY[0x1E69E9840];
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   _CFAutoreleasePoolPush();
   v7 = a3;
   v16 = 0;
@@ -271,29 +271,29 @@
   v11[5] = a4;
   v11[6] = &v16;
   v11[7] = &v12;
-  [a1 _enumerateInfoPairsWithBlock:v11];
+  [self _enumerateInfoPairsWithBlock:v11];
   if (v17[3] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [a1 _info];
-    [v8 removeObjectsInRange:{v17[3], 2}];
+    _info = [self _info];
+    [_info removeObjectsInRange:{v17[3], 2}];
   }
 
-  v9 = [a1 _ports];
-  [v9 removeObject:a3];
-  if (![v9 countForObject:a3])
+  _ports = [self _ports];
+  [_ports removeObject:a3];
+  if (![_ports countForObject:a3])
   {
-    [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:a1 object:@"NSPortDidBecomeInvalidNotification", a3];
+    [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:self object:@"NSPortDidBecomeInvalidNotification", a3];
   }
 
   if (*(v13 + 24) == 1)
   {
-    [a3 removeFromRunLoop:a1 forMode:a4];
+    [a3 removeFromRunLoop:self forMode:a4];
   }
 
   _CFAutoreleasePoolPop();
   _Block_object_dispose(&v12, 8);
   _Block_object_dispose(&v16, 8);
-  return objc_sync_exit(a1);
+  return objc_sync_exit(self);
 }
 
 + (id)_new:()NSRunLoop
@@ -311,17 +311,17 @@
 - (__CFString)description
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [a1 getCFRunLoop];
-  if (v2)
+  getCFRunLoop = [self getCFRunLoop];
+  if (getCFRunLoop)
   {
-    v3 = CFCopyDescription(v2);
+    v3 = CFCopyDescription(getCFRunLoop);
 
     return v3;
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &off_1EEF96098;
     return objc_msgSendSuper2(&v5, sel_description);
   }
@@ -332,7 +332,7 @@
   v4 = a4;
   if ((!a3 || !a4) && _CFExecutableLinkedOnOrAfter())
   {
-    v9 = _NSMethodExceptionProem(a1, a2);
+    v9 = _NSMethodExceptionProem(self, a2);
     v10 = "port";
     if (a3)
     {
@@ -343,7 +343,7 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v11 userInfo:0]);
   }
 
-  result = [(objc_class *)a1 getCFRunLoop];
+  result = [(objc_class *)self getCFRunLoop];
   if (result)
   {
     if ([v4 isEqual:@"NSDefaultRunLoopMode"])
@@ -356,7 +356,7 @@
       v4 = *MEMORY[0x1E695E8D0];
     }
 
-    return [(objc_class *)a1 _addPort:a3 forMode:v4];
+    return [(objc_class *)self _addPort:a3 forMode:v4];
   }
 
   return result;
@@ -367,11 +367,11 @@
   v4 = a4;
   if (!a4 && _CFExecutableLinkedOnOrAfter())
   {
-    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v9);
   }
 
-  result = [(objc_class *)a1 getCFRunLoop];
+  result = [(objc_class *)self getCFRunLoop];
   if (a3 && result)
   {
     if ([v4 isEqual:@"NSDefaultRunLoopMode"])
@@ -384,7 +384,7 @@
       v4 = *MEMORY[0x1E695E8D0];
     }
 
-    return [(objc_class *)a1 _removePort:a3 forMode:v4];
+    return [(objc_class *)self _removePort:a3 forMode:v4];
   }
 
   return result;
@@ -395,12 +395,12 @@
   v4 = a4;
   if (!a4 && _CFExecutableLinkedOnOrAfter())
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v10);
   }
 
-  v8 = [(objc_class *)a1 getCFRunLoop];
-  if (!a3 || !v8)
+  getCFRunLoop = [(objc_class *)self getCFRunLoop];
+  if (!a3 || !getCFRunLoop)
   {
     return 0;
   }
@@ -415,7 +415,7 @@
     v4 = *MEMORY[0x1E695E8D0];
   }
 
-  return [(objc_class *)a1 _containsPort:a3 forMode:v4];
+  return [(objc_class *)self _containsPort:a3 forMode:v4];
 }
 
 - (void)addTimer:()NSRunLoop forMode:
@@ -423,14 +423,14 @@
   v4 = a4;
   if (!a4 && _CFExecutableLinkedOnOrAfter())
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v10);
   }
 
-  v8 = [(objc_class *)a1 getCFRunLoop];
-  if (v8)
+  getCFRunLoop = [(objc_class *)self getCFRunLoop];
+  if (getCFRunLoop)
   {
-    v9 = v8;
+    v9 = getCFRunLoop;
     if ([(__CFString *)v4 isEqual:@"NSDefaultRunLoopMode"])
     {
       v4 = *MEMORY[0x1E695E8E0];
@@ -450,14 +450,14 @@
   v4 = a4;
   if (!a4 && _CFExecutableLinkedOnOrAfter())
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v10);
   }
 
-  v8 = [(objc_class *)a1 getCFRunLoop];
-  if (v8)
+  getCFRunLoop = [(objc_class *)self getCFRunLoop];
+  if (getCFRunLoop)
   {
-    v9 = v8;
+    v9 = getCFRunLoop;
     if ([(__CFString *)v4 isEqual:@"NSDefaultRunLoopMode"])
     {
       v4 = *MEMORY[0x1E695E8E0];
@@ -477,11 +477,11 @@
   v4 = a4;
   if (!a4 && _CFExecutableLinkedOnOrAfter())
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v10);
   }
 
-  result = [(objc_class *)a1 getCFRunLoop];
+  result = [(objc_class *)self getCFRunLoop];
   if (result)
   {
     v9 = result;
@@ -503,10 +503,10 @@
 
 - (CFArrayRef)allModes
 {
-  v1 = [a1 getCFRunLoop];
-  if (v1)
+  getCFRunLoop = [self getCFRunLoop];
+  if (getCFRunLoop)
   {
-    v2 = CFRunLoopCopyAllModes(v1);
+    v2 = CFRunLoopCopyAllModes(getCFRunLoop);
 
     return v2;
   }
@@ -524,17 +524,17 @@
   v3 = a3;
   if (!a3 && _CFExecutableLinkedOnOrAfter())
   {
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v11);
   }
 
-  v6 = [(objc_class *)a1 getCFRunLoop];
-  if (!v6)
+  getCFRunLoop = [(objc_class *)self getCFRunLoop];
+  if (!getCFRunLoop)
   {
     return 0;
   }
 
-  v7 = v6;
+  v7 = getCFRunLoop;
   if (!_CFRunLoopIsCurrent())
   {
     return 0;
@@ -568,11 +568,11 @@
 
 - (void)_wakeup
 {
-  v1 = [a1 getCFRunLoop];
-  if (v1)
+  getCFRunLoop = [self getCFRunLoop];
+  if (getCFRunLoop)
   {
-    v2 = v1;
-    CFRunLoopStop(v1);
+    v2 = getCFRunLoop;
+    CFRunLoopStop(getCFRunLoop);
 
     CFRunLoopWakeUp(v2);
   }
@@ -583,11 +583,11 @@
   v5 = a3;
   if (!a3 && _CFExecutableLinkedOnOrAfter())
   {
-    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v13);
   }
 
-  result = [(objc_class *)a1 getCFRunLoop];
+  result = [(objc_class *)self getCFRunLoop];
   if (result)
   {
     result = _CFRunLoopIsCurrent();
@@ -615,11 +615,11 @@
   v5 = a3;
   if (!a3 && _CFExecutableLinkedOnOrAfter())
   {
-    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v13);
   }
 
-  if (![(objc_class *)a1 getCFRunLoop]|| !_CFRunLoopIsCurrent())
+  if (![(objc_class *)self getCFRunLoop]|| !_CFRunLoopIsCurrent())
   {
     return 0;
   }
@@ -648,17 +648,17 @@
 {
   if (!a3 && _CFExecutableLinkedOnOrAfter())
   {
-    v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: mode argument cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v16);
   }
 
-  if (![(objc_class *)a1 getCFRunLoop])
+  if (![(objc_class *)self getCFRunLoop])
   {
     return 0;
   }
 
   v8 = a4;
-  if ([(objc_class *)a1 runMode:a3 beforeDate:a4])
+  if ([(objc_class *)self runMode:a3 beforeDate:a4])
   {
     [a4 timeIntervalSinceReferenceDate];
     v10 = v9;
@@ -672,7 +672,7 @@
     {
       do
       {
-        v12 = [(objc_class *)a1 runMode:a3 beforeDate:a4];
+        v12 = [(objc_class *)self runMode:a3 beforeDate:a4];
         if (!v12)
         {
           break;
@@ -709,7 +709,7 @@
   v5 = *MEMORY[0x1E695E8E0];
   do
   {
-    if (![a1 runMode:v5 beforeDate:a3])
+    if (![self runMode:v5 beforeDate:a3])
     {
       break;
     }
@@ -724,28 +724,28 @@
 {
   if (!a4)
   {
-    v9 = [NSString stringWithFormat:@"%@: block targets for run loops cannot be nil", _NSMethodExceptionProem(a1, a2)];
+    v9 = [NSString stringWithFormat:@"%@: block targets for run loops cannot be nil", _NSMethodExceptionProem(self, a2)];
 LABEL_9:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v9 userInfo:0]);
   }
 
   if (!a3 || ![a3 count])
   {
-    v9 = [NSString stringWithFormat:@"%@: modes for block performers on run loops cannot be nil or contain no elements", _NSMethodExceptionProem(a1, a2)];
+    v9 = [NSString stringWithFormat:@"%@: modes for block performers on run loops cannot be nil or contain no elements", _NSMethodExceptionProem(self, a2)];
     goto LABEL_9;
   }
 
-  v8 = [(objc_class *)a1 getCFRunLoop];
-  CFRunLoopPerformBlock(v8, a3, a4);
+  getCFRunLoop = [(objc_class *)self getCFRunLoop];
+  CFRunLoopPerformBlock(getCFRunLoop, a3, a4);
 
-  CFRunLoopWakeUp(v8);
+  CFRunLoopWakeUp(getCFRunLoop);
 }
 
 - (uint64_t)performBlock:()NSRunLoop
 {
   v4[1] = *MEMORY[0x1E69E9840];
   v4[0] = *MEMORY[0x1E695D918];
-  return [a1 performInModes:objc_msgSend(MEMORY[0x1E695DEC8] block:{"arrayWithObjects:count:", v4, 1), a3}];
+  return [self performInModes:objc_msgSend(MEMORY[0x1E695DEC8] block:{"arrayWithObjects:count:", v4, 1), a3}];
 }
 
 @end

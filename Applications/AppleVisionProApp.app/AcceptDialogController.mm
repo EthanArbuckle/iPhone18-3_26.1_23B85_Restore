@@ -1,10 +1,10 @@
 @interface AcceptDialogController
-- (void)handleDialogResponseWithNotification:(id)a3;
+- (void)handleDialogResponseWithNotification:(id)notification;
 @end
 
 @implementation AcceptDialogController
 
-- (void)handleDialogResponseWithNotification:(id)a3
+- (void)handleDialogResponseWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

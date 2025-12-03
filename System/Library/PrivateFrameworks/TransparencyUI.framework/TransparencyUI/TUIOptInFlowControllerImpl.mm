@@ -1,48 +1,48 @@
 @interface TUIOptInFlowControllerImpl
 - (TUIOptInFlowControllerDelegate)delegate;
-- (TUIOptInFlowControllerImpl)initWithPresentingNavigationController:(id)a3 parentViewController:(id)a4 accountManager:(id)a5 stateManager:(id)a6;
-- (void)_attemptToSetOptInWithState:(BOOL)a3;
-- (void)_beginIneligibleDevicesRemoteUIRequestWithCompletion:(id)a3;
+- (TUIOptInFlowControllerImpl)initWithPresentingNavigationController:(id)controller parentViewController:(id)viewController accountManager:(id)manager stateManager:(id)stateManager;
+- (void)_attemptToSetOptInWithState:(BOOL)state;
+- (void)_beginIneligibleDevicesRemoteUIRequestWithCompletion:(id)completion;
 - (void)_dismiss;
 - (void)_dismissIneligibleDevicesRemoteUI;
 - (void)_dismissOptOutFlow;
 - (void)_dismissWithoutStateChange;
 - (void)_openMessagesSettings;
-- (void)_openSettingsURL:(id)a3;
+- (void)_openSettingsURL:(id)l;
 - (void)_openTapToRadar;
 - (void)_openTrustedDeviceList;
-- (void)_showErrorAlertWithError:(id)a3 presentingViewController:(id)a4;
-- (void)_showOptInErrorForViewModel:(id)a3;
-- (void)_showOptInResultError:(BOOL)a3 error:(id)a4;
+- (void)_showErrorAlertWithError:(id)error presentingViewController:(id)controller;
+- (void)_showOptInErrorForViewModel:(id)model;
+- (void)_showOptInResultError:(BOOL)error error:(id)a4;
 - (void)_startFlowPressed;
-- (void)_verifyCDPWithCompletion:(id)a3;
-- (void)_verifyMessages:(id)a3;
+- (void)_verifyCDPWithCompletion:(id)completion;
+- (void)_verifyMessages:(id)messages;
 - (void)beginOptInFlow;
 - (void)beginOptOutFlow;
 - (void)dismissPendingPopupUI;
-- (void)dismissRemoteUIForViewController:(id)a3 error:(id)a4;
-- (void)performAccountChecksForFlow:(unint64_t)a3;
-- (void)remoteUIDidDismiss:(id)a3;
-- (void)remoteUIDidEndFlow:(id)a3;
-- (void)remoteUIDidPresentObjectModel:(id)a3 modally:(BOOL)a4;
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
-- (void)remoteUIWillLoadRequest:(id)a3;
-- (void)remoteUIWillPresentObjectModel:(id)a3 modally:(BOOL)a4;
-- (void)showActivityIndicatorForViewController:(id)a3;
-- (void)showAppleIDErrorForFlow:(unint64_t)a3 withViewModel:(id)a4;
+- (void)dismissRemoteUIForViewController:(id)controller error:(id)error;
+- (void)performAccountChecksForFlow:(unint64_t)flow;
+- (void)remoteUIDidDismiss:(id)dismiss;
+- (void)remoteUIDidEndFlow:(id)flow;
+- (void)remoteUIDidPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)remoteUIDidReceiveHTTPResponse:(id)response;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
+- (void)remoteUIWillLoadRequest:(id)request;
+- (void)remoteUIWillPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)showActivityIndicatorForViewController:(id)controller;
+- (void)showAppleIDErrorForFlow:(unint64_t)flow withViewModel:(id)model;
 - (void)showWelcomeScreen;
 @end
 
 @implementation TUIOptInFlowControllerImpl
 
-- (TUIOptInFlowControllerImpl)initWithPresentingNavigationController:(id)a3 parentViewController:(id)a4 accountManager:(id)a5 stateManager:(id)a6
+- (TUIOptInFlowControllerImpl)initWithPresentingNavigationController:(id)controller parentViewController:(id)viewController accountManager:(id)manager stateManager:(id)stateManager
 {
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  managerCopy = manager;
+  stateManagerCopy = stateManager;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl initWithPresentingNavigationController:parentViewController:accountManager:stateManager:];
@@ -54,15 +54,15 @@
     *buf = 136316418;
     v39 = "[TUIOptInFlowControllerImpl initWithPresentingNavigationController:parentViewController:accountManager:stateManager:]";
     v40 = 2114;
-    v41 = v11;
+    v41 = controllerCopy;
     v42 = 2114;
-    v43 = v12;
+    v43 = viewControllerCopy;
     v44 = 2114;
-    v45 = v13;
+    v45 = managerCopy;
     v46 = 2114;
-    v47 = v14;
+    v47 = stateManagerCopy;
     v48 = 2114;
-    v49 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_26F50B000, v15, OS_LOG_TYPE_DEBUG, "%s presentingNavigationController = %{public}@, parentViewController = %{public}@, accountManager = %{public}@, stateManager = %{public}@ on %{public}@", buf, 0x3Eu);
   }
 
@@ -72,18 +72,18 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_stateManager, a6);
-    objc_storeStrong(&v17->_accountManager, a5);
-    objc_storeStrong(&v17->_parentViewController, a4);
-    objc_storeStrong(&v17->_presentingNavigationController, a3);
+    objc_storeStrong(&v16->_stateManager, stateManager);
+    objc_storeStrong(&v17->_accountManager, manager);
+    objc_storeStrong(&v17->_parentViewController, viewController);
+    objc_storeStrong(&v17->_presentingNavigationController, controller);
     v18 = objc_alloc(MEMORY[0x277D73558]);
     v19 = [v18 initWithApplication:*MEMORY[0x277D735B0]];
     optInManager = v17->_optInManager;
     v17->_optInManager = v19;
 
-    v21 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     accountStore = v17->_accountStore;
-    v17->_accountStore = v21;
+    v17->_accountStore = defaultStore;
 
     v23 = [objc_alloc(MEMORY[0x277CED1E8]) initWithAccountStore:v17->_accountStore];
     serviceOwnersManager = v17->_serviceOwnersManager;
@@ -217,17 +217,17 @@ uint64_t __47__TUIOptInFlowControllerImpl_showWelcomeScreen__block_invoke_2()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)showActivityIndicatorForViewController:(id)a3
+- (void)showActivityIndicatorForViewController:(id)controller
 {
   v3 = MEMORY[0x277D750E8];
-  v4 = a3;
+  controllerCopy = controller;
   v7 = [[v3 alloc] initWithActivityIndicatorStyle:100];
   [v7 setHidesWhenStopped:1];
   [v7 startAnimating];
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v7];
-  v6 = [v4 navigationItem];
+  navigationItem = [controllerCopy navigationItem];
 
-  [v6 setRightBarButtonItem:v5];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
 - (void)dismissPendingPopupUI
@@ -347,7 +347,7 @@ uint64_t __47__TUIOptInFlowControllerImpl__startFlowPressed__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)performAccountChecksForFlow:(unint64_t)a3
+- (void)performAccountChecksForFlow:(unint64_t)flow
 {
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
@@ -361,14 +361,14 @@ uint64_t __47__TUIOptInFlowControllerImpl__startFlowPressed__block_invoke()
 
   if (self->_welcomeController)
   {
-    v5 = [(UINavigationController *)self->_presentingNavigationController topViewController];
-    [(TUIOptInFlowControllerImpl *)self showActivityIndicatorForViewController:v5];
+    topViewController = [(UINavigationController *)self->_presentingNavigationController topViewController];
+    [(TUIOptInFlowControllerImpl *)self showActivityIndicatorForViewController:topViewController];
 
-    v6 = [(TUIOBWelcomeController *)self->_welcomeController primaryButton];
-    [v6 setEnabled:0];
+    primaryButton = [(TUIOBWelcomeController *)self->_welcomeController primaryButton];
+    [primaryButton setEnabled:0];
 
-    v7 = [(TUIOBWelcomeController *)self->_welcomeController secondaryButton];
-    [v7 setEnabled:0];
+    secondaryButton = [(TUIOBWelcomeController *)self->_welcomeController secondaryButton];
+    [secondaryButton setEnabled:0];
   }
 
   [(TUIKTStateManager *)self->_stateManager setIsVerifyCDPRunning:1];
@@ -377,7 +377,7 @@ uint64_t __47__TUIOptInFlowControllerImpl__startFlowPressed__block_invoke()
   v8[2] = __58__TUIOptInFlowControllerImpl_performAccountChecksForFlow___block_invoke_78;
   v8[3] = &unk_279DDAB78;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = flow;
   [(TUIOptInFlowControllerImpl *)self _verifyCDPWithCompletion:v8];
 }
 
@@ -628,9 +628,9 @@ uint64_t __58__TUIOptInFlowControllerImpl_performAccountChecksForFlow___block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)showAppleIDErrorForFlow:(unint64_t)a3 withViewModel:(id)a4
+- (void)showAppleIDErrorForFlow:(unint64_t)flow withViewModel:(id)model
 {
-  v6 = a4;
+  modelCopy = model;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl showAppleIDErrorForFlow:withViewModel:];
@@ -647,9 +647,9 @@ uint64_t __58__TUIOptInFlowControllerImpl_performAccountChecksForFlow___block_in
   v8[2] = __68__TUIOptInFlowControllerImpl_showAppleIDErrorForFlow_withViewModel___block_invoke_103;
   v8[3] = &unk_279DDABA0;
   objc_copyWeak(v10, &location);
-  v9 = v6;
-  v10[1] = a3;
-  v7 = v6;
+  v9 = modelCopy;
+  v10[1] = flow;
+  v7 = modelCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   objc_destroyWeak(v10);
@@ -734,9 +734,9 @@ uint64_t __68__TUIOptInFlowControllerImpl_showAppleIDErrorForFlow_withViewModel_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_showOptInErrorForViewModel:(id)a3
+- (void)_showOptInErrorForViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl _showOptInErrorForViewModel:];
@@ -753,8 +753,8 @@ uint64_t __68__TUIOptInFlowControllerImpl_showAppleIDErrorForFlow_withViewModel_
   block[2] = __58__TUIOptInFlowControllerImpl__showOptInErrorForViewModel___block_invoke_112;
   block[3] = &unk_279DDA9E8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = modelCopy;
+  v5 = modelCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);
@@ -854,9 +854,9 @@ uint64_t __52__TUIOptInFlowControllerImpl__openTrustedDeviceList__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_openSettingsURL:(id)a3
+- (void)_openSettingsURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl _openSettingsURL:];
@@ -873,8 +873,8 @@ uint64_t __52__TUIOptInFlowControllerImpl__openTrustedDeviceList__block_invoke()
   block[2] = __47__TUIOptInFlowControllerImpl__openSettingsURL___block_invoke_131;
   block[3] = &unk_279DDA9E8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);
@@ -939,20 +939,20 @@ void __47__TUIOptInFlowControllerImpl__openSettingsURL___block_invoke_134(uint64
   [v2 openSensitiveURL:*(a1 + 32) withOptions:0];
 }
 
-- (void)dismissRemoteUIForViewController:(id)a3 error:(id)a4
+- (void)dismissRemoteUIForViewController:(id)controller error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__TUIOptInFlowControllerImpl_dismissRemoteUIForViewController_error___block_invoke;
   v10[3] = &unk_279DDABF0;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 
   objc_destroyWeak(&v13);
@@ -1091,9 +1091,9 @@ uint64_t __69__TUIOptInFlowControllerImpl_dismissRemoteUIForViewController_error
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_verifyCDPWithCompletion:(id)a3
+- (void)_verifyCDPWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl _verifyCDPWithCompletion:];
@@ -1104,8 +1104,8 @@ uint64_t __69__TUIOptInFlowControllerImpl_dismissRemoteUIForViewController_error
     [TUIOptInFlowControllerImpl _verifyCDPWithCompletion:];
   }
 
-  v5 = [(TUIOptInFlowControllerImpl *)self welcomeController];
-  if (v5)
+  welcomeController = [(TUIOptInFlowControllerImpl *)self welcomeController];
+  if (welcomeController)
   {
     [(TUIOptInFlowControllerImpl *)self presentingNavigationController];
   }
@@ -1117,9 +1117,9 @@ uint64_t __69__TUIOptInFlowControllerImpl_dismissRemoteUIForViewController_error
   v6 = ;
 
   v7 = objc_alloc(MEMORY[0x277CFDAE8]);
-  v8 = [MEMORY[0x277CFD480] sharedInstance];
-  v9 = [v8 primaryAccountAltDSID];
-  v10 = [v7 initWithAltDSID:v9];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountAltDSID = [mEMORY[0x277CFD480] primaryAccountAltDSID];
+  v10 = [v7 initWithAltDSID:primaryAccountAltDSID];
 
   [v10 setSecurityUpgradeContext:*MEMORY[0x277CF00A0]];
   [v10 setDeviceToDeviceEncryptionUpgradeUIStyle:1];
@@ -1141,7 +1141,7 @@ uint64_t __69__TUIOptInFlowControllerImpl_dismissRemoteUIForViewController_error
   v16[2] = __55__TUIOptInFlowControllerImpl__verifyCDPWithCompletion___block_invoke_162;
   v16[3] = &unk_279DDAC40;
   objc_copyWeak(&v20, &location);
-  v14 = v4;
+  v14 = completionCopy;
   v18 = v14;
   v19 = v22;
   v15 = v6;
@@ -1318,9 +1318,9 @@ uint64_t __55__TUIOptInFlowControllerImpl__verifyCDPWithCompletion___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_attemptToSetOptInWithState:(BOOL)a3
+- (void)_attemptToSetOptInWithState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl _attemptToSetOptInWithState:];
@@ -1329,13 +1329,13 @@ uint64_t __55__TUIOptInFlowControllerImpl__verifyCDPWithCompletion___block_invok
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_1, OS_LOG_TYPE_DEBUG))
   {
     [TUIOptInFlowControllerImpl _attemptToSetOptInWithState:];
-    if (v3)
+    if (stateCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v3)
+  else if (stateCopy)
   {
 LABEL_5:
     objc_initWeak(&location, self);
@@ -1344,7 +1344,7 @@ LABEL_5:
     v5[2] = __58__TUIOptInFlowControllerImpl__attemptToSetOptInWithState___block_invoke_179;
     v5[3] = &unk_279DDAC90;
     objc_copyWeak(&v6, &location);
-    v7 = v3;
+    v7 = stateCopy;
     [(TUIOptInFlowControllerImpl *)self _beginIneligibleDevicesRemoteUIRequestWithCompletion:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -1827,23 +1827,23 @@ uint64_t __66__TUIOptInFlowControllerImpl__continueAttemptToSetOptInWithState___
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_showOptInResultError:(BOOL)a3 error:(id)a4
+- (void)_showOptInResultError:(BOOL)error error:(id)a4
 {
-  v4 = a3;
+  errorCopy = error;
   v6 = a4;
-  if (!v4)
+  if (!errorCopy)
   {
 LABEL_10:
-    v7 = [(TUIOptInFlowControllerImpl *)self welcomeController];
-    if (v7)
+    welcomeController = [(TUIOptInFlowControllerImpl *)self welcomeController];
+    if (welcomeController)
     {
-      [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:v6 presentingViewController:v7];
+      [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:v6 presentingViewController:welcomeController];
     }
 
     else
     {
-      v8 = [(TUIOptInFlowControllerImpl *)self parentViewController];
-      [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:v6 presentingViewController:v8];
+      parentViewController = [(TUIOptInFlowControllerImpl *)self parentViewController];
+      [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:v6 presentingViewController:parentViewController];
     }
 
     goto LABEL_13;
@@ -1853,8 +1853,8 @@ LABEL_10:
   {
     if ([TUIUtils isMismatchedAccountError:v6])
     {
-      v7 = [[TUIOBMissingAppleIDViewModel alloc] initWithFlow:1];
-      [(TUIOptInFlowControllerImpl *)self showAppleIDErrorForFlow:1 withViewModel:v7];
+      welcomeController = [[TUIOBMissingAppleIDViewModel alloc] initWithFlow:1];
+      [(TUIOptInFlowControllerImpl *)self showAppleIDErrorForFlow:1 withViewModel:welcomeController];
       goto LABEL_13;
     }
 
@@ -1871,12 +1871,12 @@ LABEL_10:
     [TUIOptInFlowControllerImpl _showOptInResultError:error:];
   }
 
-  v7 = [[TUIOBUpdateDevicesViewModel alloc] initWithAccountManager:self->_accountManager devicesWithIssuesIdentifiers:self->_devicesWithIssuesIdentifiers];
-  [(TUIOptInFlowControllerImpl *)self _showOptInErrorForViewModel:v7];
+  welcomeController = [[TUIOBUpdateDevicesViewModel alloc] initWithAccountManager:self->_accountManager devicesWithIssuesIdentifiers:self->_devicesWithIssuesIdentifiers];
+  [(TUIOptInFlowControllerImpl *)self _showOptInErrorForViewModel:welcomeController];
 LABEL_13:
 
-  v9 = [(TUIOptInFlowControllerImpl *)self delegate];
-  [v9 optInFlowResultWithStateUpdate];
+  delegate = [(TUIOptInFlowControllerImpl *)self delegate];
+  [delegate optInFlowResultWithStateUpdate];
 }
 
 uint64_t __58__TUIOptInFlowControllerImpl__showOptInResultError_error___block_invoke()
@@ -1886,11 +1886,11 @@ uint64_t __58__TUIOptInFlowControllerImpl__showOptInResultError_error___block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_beginIneligibleDevicesRemoteUIRequestWithCompletion:(id)a3
+- (void)_beginIneligibleDevicesRemoteUIRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x277CF02F0] bagForAltDSID:0];
-  v6 = [v5 contactKeyVerificationIneligibleDevicesURL];
+  contactKeyVerificationIneligibleDevicesURL = [v5 contactKeyVerificationIneligibleDevicesURL];
 
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
@@ -1900,19 +1900,19 @@ uint64_t __58__TUIOptInFlowControllerImpl__showOptInResultError_error___block_in
   v7 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_1;
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_1, OS_LOG_TYPE_DEBUG))
   {
-    [(TUIOptInFlowControllerImpl *)v7 _beginIneligibleDevicesRemoteUIRequestWithCompletion:v6, self];
-    if (v6)
+    [(TUIOptInFlowControllerImpl *)v7 _beginIneligibleDevicesRemoteUIRequestWithCompletion:contactKeyVerificationIneligibleDevicesURL, self];
+    if (contactKeyVerificationIneligibleDevicesURL)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
     v12 = [MEMORY[0x277D735A0] errorWithDomain:*MEMORY[0x277D735F0] code:-120 description:@"no ineligible devices remote UI URL"];
-    v4[2](v4, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!contactKeyVerificationIneligibleDevicesURL)
   {
     goto LABEL_7;
   }
@@ -1925,7 +1925,7 @@ LABEL_5:
 
   [(AAUIGrandSlamRemoteUIPresenter *)self->_ineligibleDevicesRemoteUIPresenter setDelegate:self];
   v10 = objc_alloc_init(MEMORY[0x277CBAB50]);
-  [v10 setURL:v6];
+  [v10 setURL:contactKeyVerificationIneligibleDevicesURL];
   [v10 setHTTPMethod:@"GET"];
   objc_initWeak(&location, self);
   v11 = self->_ineligibleDevicesRemoteUIPresenter;
@@ -1934,7 +1934,7 @@ LABEL_5:
   v13[2] = __83__TUIOptInFlowControllerImpl__beginIneligibleDevicesRemoteUIRequestWithCompletion___block_invoke_245;
   v13[3] = &unk_279DDAD30;
   objc_copyWeak(&v16, &location);
-  v15 = v4;
+  v15 = completionCopy;
   v12 = v10;
   v14 = v12;
   [(AAUIGrandSlamRemoteUIPresenter *)v11 loadRequest:v12 completion:v13];
@@ -2212,10 +2212,10 @@ uint64_t __63__TUIOptInFlowControllerImpl__dismissIneligibleDevicesRemoteUI__blo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_showErrorAlertWithError:(id)a3 presentingViewController:(id)a4
+- (void)_showErrorAlertWithError:(id)error presentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  controllerCopy = controller;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl _showErrorAlertWithError:presentingViewController:];
@@ -2232,10 +2232,10 @@ uint64_t __63__TUIOptInFlowControllerImpl__dismissIneligibleDevicesRemoteUI__blo
   v10[2] = __80__TUIOptInFlowControllerImpl__showErrorAlertWithError_presentingViewController___block_invoke_270;
   v10[3] = &unk_279DDABF0;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = errorCopy;
+  v12 = controllerCopy;
+  v8 = controllerCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 
   objc_destroyWeak(&v13);
@@ -2391,9 +2391,9 @@ uint64_t __45__TUIOptInFlowControllerImpl__openTapToRadar__block_invoke_322()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_verifyMessages:(id)a3
+- (void)_verifyMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   if (([(IDSSignInController *)self->_idsSignInController isiMessageEnabled]& 1) == 0)
   {
     if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
@@ -2409,8 +2409,8 @@ uint64_t __45__TUIOptInFlowControllerImpl__openTapToRadar__block_invoke_322()
     goto LABEL_12;
   }
 
-  v5 = [(IDSService *)self->_idsService aliases];
-  v6 = [v5 count];
+  aliases = [(IDSService *)self->_idsService aliases];
+  v6 = [aliases count];
 
   if (!v6)
   {
@@ -2425,7 +2425,7 @@ uint64_t __45__TUIOptInFlowControllerImpl__openTapToRadar__block_invoke_322()
     }
 
 LABEL_12:
-    v4[2](v4, 0);
+    messagesCopy[2](messagesCopy, 0);
     goto LABEL_13;
   }
 
@@ -2435,7 +2435,7 @@ LABEL_12:
   v8[2] = __46__TUIOptInFlowControllerImpl__verifyMessages___block_invoke_330;
   v8[3] = &unk_279DDADF8;
   v8[4] = self;
-  v9 = v4;
+  v9 = messagesCopy;
   [(IDSSignInController *)idsSignInController statusOfUsersOnService:1 withCompletion:v8];
 
 LABEL_13:
@@ -2567,11 +2567,11 @@ uint64_t __46__TUIOptInFlowControllerImpl__verifyMessages___block_invoke_339()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl remoteUIRequestComplete:error:];
@@ -2583,37 +2583,37 @@ uint64_t __46__TUIOptInFlowControllerImpl__verifyMessages___block_invoke_339()
     v13 = 136315906;
     v14 = "[TUIOptInFlowControllerImpl remoteUIRequestComplete:error:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = completeCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = errorCopy;
     v19 = 2114;
-    v20 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_26F50B000, v8, OS_LOG_TYPE_DEBUG, "%s ineligible devices remote UI: request = %{public}@, error = %{public}@ on %{public}@", &v13, 0x2Au);
-    if (!v7)
+    if (!errorCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (!v7)
+  else if (!errorCopy)
   {
     goto LABEL_9;
   }
 
-  v9 = [(TUIOptInFlowControllerImpl *)self welcomeController];
-  if (v9)
+  welcomeController = [(TUIOptInFlowControllerImpl *)self welcomeController];
+  if (welcomeController)
   {
-    [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:v7 presentingViewController:v9];
+    [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:errorCopy presentingViewController:welcomeController];
   }
 
   else
   {
-    v10 = [(TUIOptInFlowControllerImpl *)self parentViewController];
-    [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:v7 presentingViewController:v10];
+    parentViewController = [(TUIOptInFlowControllerImpl *)self parentViewController];
+    [(TUIOptInFlowControllerImpl *)self _showErrorAlertWithError:errorCopy presentingViewController:parentViewController];
   }
 
-  v11 = [(TUIOptInFlowControllerImpl *)self delegate];
-  [v11 optInFlowResultWithStateUpdate];
+  delegate = [(TUIOptInFlowControllerImpl *)self delegate];
+  [delegate optInFlowResultWithStateUpdate];
 
 LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
@@ -2626,9 +2626,9 @@ uint64_t __60__TUIOptInFlowControllerImpl_remoteUIRequestComplete_error___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteUIWillLoadRequest:(id)a3
+- (void)remoteUIWillLoadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl remoteUIWillLoadRequest:];
@@ -2639,9 +2639,9 @@ uint64_t __60__TUIOptInFlowControllerImpl_remoteUIRequestComplete_error___block_
     [TUIOptInFlowControllerImpl remoteUIWillLoadRequest:];
   }
 
-  v5 = [v4 URL];
-  v6 = [v5 path];
-  v7 = [v6 hasSuffix:@"/cancel"];
+  v5 = [requestCopy URL];
+  path = [v5 path];
+  v7 = [path hasSuffix:@"/cancel"];
 
   if (v7)
   {
@@ -2656,9 +2656,9 @@ uint64_t __54__TUIOptInFlowControllerImpl_remoteUIWillLoadRequest___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteUIDidEndFlow:(id)a3
+- (void)remoteUIDidEndFlow:(id)flow
 {
-  v3 = a3;
+  flowCopy = flow;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl remoteUIDidEndFlow:];
@@ -2677,11 +2677,11 @@ uint64_t __49__TUIOptInFlowControllerImpl_remoteUIDidEndFlow___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteUIWillPresentObjectModel:(id)a3 modally:(BOOL)a4
+- (void)remoteUIWillPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v4 = a4;
+  modallyCopy = modally;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl remoteUIWillPresentObjectModel:modally:];
@@ -2693,11 +2693,11 @@ uint64_t __49__TUIOptInFlowControllerImpl_remoteUIDidEndFlow___block_invoke()
     v9 = 136315906;
     v10 = "[TUIOptInFlowControllerImpl remoteUIWillPresentObjectModel:modally:]";
     v11 = 2114;
-    v12 = v6;
+    v12 = modelCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = modallyCopy;
     v15 = 2114;
-    v16 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_26F50B000, v7, OS_LOG_TYPE_DEBUG, "%s ineligible devices remote UI: objectModel = %{public}@, isModal = %d on %{public}@", &v9, 0x26u);
   }
 
@@ -2711,9 +2711,9 @@ uint64_t __69__TUIOptInFlowControllerImpl_remoteUIWillPresentObjectModel_modally
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteUIDidDismiss:(id)a3
+- (void)remoteUIDidDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl remoteUIDidDismiss:];
@@ -2721,7 +2721,7 @@ uint64_t __69__TUIOptInFlowControllerImpl_remoteUIWillPresentObjectModel_modally
 
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_1, OS_LOG_TYPE_DEBUG))
   {
-    [(TUIOptInFlowControllerImpl *)v4 remoteUIDidDismiss:?];
+    [(TUIOptInFlowControllerImpl *)dismissCopy remoteUIDidDismiss:?];
   }
 
   if (self->_ineligibleDevicesRemoteUICanceled)
@@ -2796,9 +2796,9 @@ uint64_t __49__TUIOptInFlowControllerImpl_remoteUIDidDismiss___block_invoke_363(
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3
+- (void)remoteUIDidReceiveHTTPResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl remoteUIDidReceiveHTTPResponse:];
@@ -2817,11 +2817,11 @@ uint64_t __61__TUIOptInFlowControllerImpl_remoteUIDidReceiveHTTPResponse___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteUIDidPresentObjectModel:(id)a3 modally:(BOOL)a4
+- (void)remoteUIDidPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v4 = a4;
+  modallyCopy = modally;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_1 != -1)
   {
     [TUIOptInFlowControllerImpl remoteUIDidPresentObjectModel:modally:];
@@ -2833,11 +2833,11 @@ uint64_t __61__TUIOptInFlowControllerImpl_remoteUIDidReceiveHTTPResponse___block
     v9 = 136315906;
     v10 = "[TUIOptInFlowControllerImpl remoteUIDidPresentObjectModel:modally:]";
     v11 = 2114;
-    v12 = v6;
+    v12 = modelCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = modallyCopy;
     v15 = 2114;
-    v16 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_26F50B000, v7, OS_LOG_TYPE_DEBUG, "%s ineligible devices remote UI: objectModel = %{public}@, isModal = %d on %{public}@", &v9, 0x26u);
   }
 

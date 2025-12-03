@@ -1,8 +1,8 @@
 @interface CoreDAVDenyItem
 + (id)copyParseRules;
 - (id)description;
-- (void)addPrivilege:(id)a3;
-- (void)write:(id)a3;
+- (void)addPrivilege:(id)privilege;
+- (void)write:(id)write;
 @end
 
 @implementation CoreDAVDenyItem
@@ -15,26 +15,26 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVDenyItem *)self privileges];
-  [v3 appendFormat:@"\n  Number of privileges: [%lu]", objc_msgSend(v5, "count")];
+  privileges = [(CoreDAVDenyItem *)self privileges];
+  [v3 appendFormat:@"\n  Number of privileges: [%lu]", objc_msgSend(privileges, "count")];
 
   return v3;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CoreDAVItem *)self name];
-  v6 = [(CoreDAVItem *)self nameSpace];
-  [v4 startElement:v5 inNamespace:v6 withAttributeNamesAndValues:0];
+  writeCopy = write;
+  name = [(CoreDAVItem *)self name];
+  nameSpace = [(CoreDAVItem *)self nameSpace];
+  [writeCopy startElement:name inNamespace:nameSpace withAttributeNamesAndValues:0];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(CoreDAVDenyItem *)self privileges];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  privileges = [(CoreDAVDenyItem *)self privileges];
+  v8 = [privileges countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -46,22 +46,22 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(privileges);
         }
 
-        [*(*(&v15 + 1) + 8 * v11++) write:v4];
+        [*(*(&v15 + 1) + 8 * v11++) write:writeCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [privileges countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 
-  v12 = [(CoreDAVItem *)self name];
-  v13 = [(CoreDAVItem *)self nameSpace];
-  [v4 endElement:v12 inNamespace:v13];
+  name2 = [(CoreDAVItem *)self name];
+  nameSpace2 = [(CoreDAVItem *)self nameSpace];
+  [writeCopy endElement:name2 inNamespace:nameSpace2];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -69,7 +69,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -80,26 +80,26 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)addPrivilege:(id)a3
+- (void)addPrivilege:(id)privilege
 {
-  v4 = a3;
-  v5 = [(CoreDAVDenyItem *)self privileges];
+  privilegeCopy = privilege;
+  privileges = [(CoreDAVDenyItem *)self privileges];
 
-  if (!v5)
+  if (!privileges)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVDenyItem *)self setPrivileges:v6];
   }
 
-  v7 = [(CoreDAVDenyItem *)self privileges];
-  [v7 addObject:v4];
+  privileges2 = [(CoreDAVDenyItem *)self privileges];
+  [privileges2 addObject:privilegeCopy];
 }
 
 @end

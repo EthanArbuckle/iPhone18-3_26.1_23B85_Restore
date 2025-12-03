@@ -1,13 +1,13 @@
 @interface BLSBacklightChangeRequest
 + (id)validMetadataClasses;
-- (BLSBacklightChangeRequest)initWithCoder:(id)a3;
-- (BLSBacklightChangeRequest)initWithRequestedActivityState:(int64_t)a3 explanation:(id)a4 timestamp:(unint64_t)a5 sourceEvent:(int64_t)a6 sourceEventMetadata:(id)a7;
-- (BLSBacklightChangeRequest)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSBacklightChangeRequest)initWithCoder:(id)coder;
+- (BLSBacklightChangeRequest)initWithRequestedActivityState:(int64_t)state explanation:(id)explanation timestamp:(unint64_t)timestamp sourceEvent:(int64_t)event sourceEventMetadata:(id)metadata;
+- (BLSBacklightChangeRequest)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSBacklightChangeRequest
@@ -40,29 +40,29 @@
   [v4 appendString:v9 withName:@"source"];
 
   v10 = [v4 appendObject:self->_sourceEventMetadata withName:@"metadata" skipIfNil:1];
-  v11 = [v4 build];
+  build = [v4 build];
 
-  return v11;
+  return build;
 }
 
-- (BLSBacklightChangeRequest)initWithRequestedActivityState:(int64_t)a3 explanation:(id)a4 timestamp:(unint64_t)a5 sourceEvent:(int64_t)a6 sourceEventMetadata:(id)a7
+- (BLSBacklightChangeRequest)initWithRequestedActivityState:(int64_t)state explanation:(id)explanation timestamp:(unint64_t)timestamp sourceEvent:(int64_t)event sourceEventMetadata:(id)metadata
 {
-  v12 = a4;
-  v13 = a7;
+  explanationCopy = explanation;
+  metadataCopy = metadata;
   v19.receiver = self;
   v19.super_class = BLSBacklightChangeRequest;
   v14 = [(BLSBacklightChangeRequest *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_requestedActivityState = a3;
-    v14->_timestamp = a5;
-    v16 = [v12 copy];
+    v14->_requestedActivityState = state;
+    v14->_timestamp = timestamp;
+    v16 = [explanationCopy copy];
     explanation = v15->_explanation;
     v15->_explanation = v16;
 
-    v15->_sourceEvent = a6;
-    objc_storeStrong(&v15->_sourceEventMetadata, a7);
+    v15->_sourceEvent = event;
+    objc_storeStrong(&v15->_sourceEventMetadata, metadata);
   }
 
   return v15;
@@ -70,22 +70,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_requestedActivityState];
-  v5 = [v3 appendString:self->_explanation];
-  v6 = [v3 appendUnsignedInteger:self->_timestamp];
-  v7 = [v3 appendUnsignedInteger:HIDWORD(self->_timestamp)];
-  v8 = [v3 appendInteger:self->_sourceEvent];
-  v9 = [v3 appendObject:self->_sourceEventMetadata];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_requestedActivityState];
+  v5 = [builder appendString:self->_explanation];
+  v6 = [builder appendUnsignedInteger:self->_timestamp];
+  v7 = [builder appendUnsignedInteger:HIDWORD(self->_timestamp)];
+  v8 = [builder appendInteger:self->_sourceEvent];
+  v9 = [builder appendObject:self->_sourceEventMetadata];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -95,7 +95,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       requestedActivityState = self->_requestedActivityState;
       if (requestedActivityState != [(BLSBacklightChangeRequest *)v5 requestedActivityState]|| (timestamp = self->_timestamp, timestamp != [(BLSBacklightChangeRequest *)v5 timestamp]) || (sourceEvent = self->_sourceEvent, sourceEvent != [(BLSBacklightChangeRequest *)v5 sourceEvent]))
       {
@@ -106,8 +106,8 @@ LABEL_15:
       }
 
       explanation = self->_explanation;
-      v10 = [(BLSBacklightChangeRequest *)v5 explanation];
-      if ([explanation isEqual:v10])
+      explanation = [(BLSBacklightChangeRequest *)v5 explanation];
+      if ([explanation isEqual:explanation])
       {
         sourceEventMetadata = self->_sourceEventMetadata;
         v12 = sourceEventMetadata;
@@ -125,8 +125,8 @@ LABEL_19:
           v12 = self->_sourceEventMetadata;
         }
 
-        v13 = [(BLSBacklightChangeRequest *)v5 sourceEventMetadata];
-        v14 = [(BLSBacklightChangeSourceEventMetadata *)v12 isEqual:v13];
+        sourceEventMetadata = [(BLSBacklightChangeRequest *)v5 sourceEventMetadata];
+        v14 = [(BLSBacklightChangeSourceEventMetadata *)v12 isEqual:sourceEventMetadata];
 
         if (!sourceEventMetadata)
         {
@@ -152,16 +152,16 @@ LABEL_16:
   return v14;
 }
 
-- (BLSBacklightChangeRequest)initWithXPCDictionary:(id)a3
+- (BLSBacklightChangeRequest)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"requestedState" UTF8String];
-  v6 = [@"explanation" UTF8String];
-  v7 = [@"timestamp" UTF8String];
-  v8 = [@"source" UTF8String];
-  v9 = [@"metadata" UTF8String];
-  int64 = xpc_dictionary_get_int64(v4, v5);
-  string = xpc_dictionary_get_string(v4, v6);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"requestedState" UTF8String];
+  uTF8String2 = [@"explanation" UTF8String];
+  uTF8String3 = [@"timestamp" UTF8String];
+  uTF8String4 = [@"source" UTF8String];
+  uTF8String5 = [@"metadata" UTF8String];
+  int64 = xpc_dictionary_get_int64(dictionaryCopy, uTF8String);
+  string = xpc_dictionary_get_string(dictionaryCopy, uTF8String2);
   if (string)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
@@ -172,19 +172,19 @@ LABEL_16:
     v13 = bls_backlight_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [(BLSBacklightChangeRequest *)v4 initWithXPCDictionary:v13];
+      [(BLSBacklightChangeRequest *)dictionaryCopy initWithXPCDictionary:v13];
     }
 
     v12 = @"<NULL>";
   }
 
-  v14 = xpc_dictionary_get_int64(v4, v7);
-  v15 = xpc_dictionary_get_int64(v4, v8);
-  v16 = xpc_dictionary_get_string(v4, "metadataClass");
+  v14 = xpc_dictionary_get_int64(dictionaryCopy, uTF8String3);
+  v15 = xpc_dictionary_get_int64(dictionaryCopy, uTF8String4);
+  v16 = xpc_dictionary_get_string(dictionaryCopy, "metadataClass");
   if (v16)
   {
     v17 = v16;
-    v18 = xpc_dictionary_get_dictionary(v4, v9);
+    v18 = xpc_dictionary_get_dictionary(dictionaryCopy, uTF8String5);
     if (v18)
     {
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:v17];
@@ -255,18 +255,18 @@ LABEL_12:
   return v0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"requestedState" UTF8String];
-  v6 = [@"explanation" UTF8String];
-  v7 = [@"timestamp" UTF8String];
-  v8 = [@"source" UTF8String];
-  v9 = [@"metadata" UTF8String];
-  xpc_dictionary_set_int64(v4, v5, self->_requestedActivityState);
-  xpc_dictionary_set_string(v4, v6, [(NSString *)self->_explanation UTF8String]);
-  xpc_dictionary_set_int64(v4, v7, self->_timestamp);
-  xpc_dictionary_set_int64(v4, v8, self->_sourceEvent);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"requestedState" UTF8String];
+  uTF8String2 = [@"explanation" UTF8String];
+  uTF8String3 = [@"timestamp" UTF8String];
+  uTF8String4 = [@"source" UTF8String];
+  uTF8String5 = [@"metadata" UTF8String];
+  xpc_dictionary_set_int64(dictionaryCopy, uTF8String, self->_requestedActivityState);
+  xpc_dictionary_set_string(dictionaryCopy, uTF8String2, [(NSString *)self->_explanation UTF8String]);
+  xpc_dictionary_set_int64(dictionaryCopy, uTF8String3, self->_timestamp);
+  xpc_dictionary_set_int64(dictionaryCopy, uTF8String4, self->_sourceEvent);
   p_sourceEventMetadata = &self->_sourceEventMetadata;
   if (self->_sourceEventMetadata)
   {
@@ -279,10 +279,10 @@ LABEL_12:
       v14 = *p_sourceEventMetadata;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      xpc_dictionary_set_string(v4, "metadataClass", [v16 UTF8String]);
+      xpc_dictionary_set_string(dictionaryCopy, "metadataClass", [v16 UTF8String]);
       v17 = xpc_dictionary_create(0, 0, 0);
       [*p_sourceEventMetadata encodeWithXPCDictionary:v17];
-      xpc_dictionary_set_value(v4, v9, v17);
+      xpc_dictionary_set_value(dictionaryCopy, uTF8String5, v17);
     }
 
     else
@@ -312,34 +312,34 @@ void __49__BLSBacklightChangeRequest_validMetadataClasses__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BLSBacklightChangeRequest)initWithCoder:(id)a3
+- (BLSBacklightChangeRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"requestedState"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"explanation"];
-  v7 = [v4 decodeInt64ForKey:@"timestamp"];
-  v8 = [v4 decodeIntegerForKey:@"source"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"requestedState"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"explanation"];
+  v7 = [coderCopy decodeInt64ForKey:@"timestamp"];
+  v8 = [coderCopy decodeIntegerForKey:@"source"];
   v9 = +[BLSBacklightChangeRequest validMetadataClasses];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"metadata"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"metadata"];
 
   v11 = [(BLSBacklightChangeRequest *)self initWithRequestedActivityState:v5 explanation:v6 timestamp:v7 sourceEvent:v8 sourceEventMetadata:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:self->_requestedActivityState forKey:@"requestedState"];
-  [v7 encodeObject:self->_explanation forKey:@"explanation"];
-  [v7 encodeInt64:self->_timestamp forKey:@"timestamp"];
-  [v7 encodeInteger:self->_sourceEvent forKey:@"source"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_requestedActivityState forKey:@"requestedState"];
+  [coderCopy encodeObject:self->_explanation forKey:@"explanation"];
+  [coderCopy encodeInt64:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeInteger:self->_sourceEvent forKey:@"source"];
   v4 = +[BLSBacklightChangeRequest validMetadataClasses];
   sourceEventMetadata = self->_sourceEventMetadata;
   v6 = [v4 containsObject:objc_opt_class()];
 
   if (v6)
   {
-    [v7 encodeObject:self->_sourceEventMetadata forKey:@"metadata"];
+    [coderCopy encodeObject:self->_sourceEventMetadata forKey:@"metadata"];
   }
 }
 

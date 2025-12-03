@@ -1,11 +1,11 @@
 @interface ArtworkView
-- (_TtC9SeymourUI11ArtworkView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI11ArtworkView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ArtworkView
 
-- (_TtC9SeymourUI11ArtworkView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI11ArtworkView)initWithFrame:(CGRect)frame
 {
   v3 = objc_allocWithZone(type metadata accessor for ArtworkView());
   v4 = sub_20B91B5FC(0);
@@ -16,7 +16,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B91ADBC();
 }
 

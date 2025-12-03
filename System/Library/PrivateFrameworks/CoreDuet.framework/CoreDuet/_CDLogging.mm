@@ -4,8 +4,8 @@
 + (id)communicatorChannel;
 + (id)contextChannel;
 + (id)dataCollectionChannel;
-+ (id)descriptionOfArray:(id)a3 redacted:(BOOL)a4;
-+ (id)descriptionOfObject:(id)a3 redacted:(BOOL)a4;
++ (id)descriptionOfArray:(id)array redacted:(BOOL)redacted;
++ (id)descriptionOfObject:(id)object redacted:(BOOL)redacted;
 + (id)instrumentationChannel;
 + (id)interactionChannel;
 + (id)interactionSignpost;
@@ -187,27 +187,27 @@
   return v3;
 }
 
-+ (id)descriptionOfObject:(id)a3 redacted:(BOOL)a4
++ (id)descriptionOfObject:(id)object redacted:(BOOL)redacted
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (!objectCopy)
   {
     v8 = @"nil";
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!redacted)
   {
-    v7 = [v5 description];
+    redactedDescription = [objectCopy description];
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 redactedDescription];
+    redactedDescription = [v6 redactedDescription];
 LABEL_7:
-    v8 = v7;
+    v8 = redactedDescription;
     goto LABEL_9;
   }
 
@@ -217,14 +217,14 @@ LABEL_9:
   return v8;
 }
 
-+ (id)descriptionOfArray:(id)a3 redacted:(BOOL)a4
++ (id)descriptionOfArray:(id)array redacted:(BOOL)redacted
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  redactedCopy = redacted;
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v6 = v5;
-    if (v4 && [v5 count])
+    v6 = arrayCopy;
+    if (redactedCopy && [arrayCopy count])
     {
       v12 = 0;
       v13 = &v12;

@@ -1,17 +1,17 @@
 @interface NSCloudKitMirroringResetZoneRequest
-- (NSCloudKitMirroringResetZoneRequest)initWithOptions:(id)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSCloudKitMirroringResetZoneRequest)initWithOptions:(id)options completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setRecordZoneIDsToReset:(uint64_t)a1;
+- (void)setRecordZoneIDsToReset:(uint64_t)reset;
 @end
 
 @implementation NSCloudKitMirroringResetZoneRequest
 
-- (NSCloudKitMirroringResetZoneRequest)initWithOptions:(id)a3 completionBlock:(id)a4
+- (NSCloudKitMirroringResetZoneRequest)initWithOptions:(id)options completionBlock:(id)block
 {
   v8.receiver = self;
   v8.super_class = NSCloudKitMirroringResetZoneRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v8 initWithOptions:a3 completionBlock:a4];
+  v4 = [(NSCloudKitMirroringRequest *)&v8 initWithOptions:options completionBlock:block];
   if (v4)
   {
     v5 = objc_alloc(getCloudKitCKRecordZoneIDClass[0]());
@@ -30,33 +30,33 @@
   [(NSCloudKitMirroringRequest *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringResetZoneRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:a3];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:zone];
   v4[10] = self->_recordZoneIDsToReset;
   return v4;
 }
 
-- (void)setRecordZoneIDsToReset:(uint64_t)a1
+- (void)setRecordZoneIDsToReset:(uint64_t)reset
 {
-  if (a1)
+  if (reset)
   {
-    v4 = *(a1 + 80);
+    v4 = *(reset + 80);
     if (v4 != a2)
     {
 
       if (a2)
       {
-        *(a1 + 80) = a2;
+        *(reset + 80) = a2;
       }
 
       else
       {
         v5 = objc_alloc(getCloudKitCKRecordZoneIDClass[0]());
         v6 = [v5 initWithZoneName:@"com.apple.coredata.cloudkit.zone" ownerName:getCloudKitCKCurrentUserDefaultName()];
-        *(a1 + 80) = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v6, 0}];
+        *(reset + 80) = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v6, 0}];
       }
     }
   }

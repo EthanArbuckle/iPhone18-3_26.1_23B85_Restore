@@ -1,16 +1,16 @@
 @interface AMSAutoBugCaptureReportResponse
-- (AMSAutoBugCaptureReportResponse)initWithSessionID:(id)a3 groupID:(id)a4;
+- (AMSAutoBugCaptureReportResponse)initWithSessionID:(id)d groupID:(id)iD;
 @end
 
 @implementation AMSAutoBugCaptureReportResponse
 
-- (AMSAutoBugCaptureReportResponse)initWithSessionID:(id)a3 groupID:(id)a4
+- (AMSAutoBugCaptureReportResponse)initWithSessionID:(id)d groupID:(id)iD
 {
-  if (!a3)
+  if (!d)
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (iD)
     {
       goto LABEL_3;
     }
@@ -23,7 +23,7 @@ LABEL_5:
 
   v5 = sub_192F967CC();
   v7 = v6;
-  if (!a4)
+  if (!iD)
   {
     goto LABEL_5;
   }

@@ -1,24 +1,24 @@
 @interface TCCDSyncAccessAction
 - (NSString)description;
-- (TCCDSyncAccessAction)initWithCoder:(id)a3;
-- (TCCDSyncAccessAction)initWithServiceIdentifier:(id)a3;
+- (TCCDSyncAccessAction)initWithCoder:(id)coder;
+- (TCCDSyncAccessAction)initWithServiceIdentifier:(id)identifier;
 - (id)_description;
 - (id)syncId;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TCCDSyncAccessAction
 
-- (TCCDSyncAccessAction)initWithServiceIdentifier:(id)a3
+- (TCCDSyncAccessAction)initWithServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TCCDSyncAccessAction;
   v5 = [(TCCDSyncAccessAction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     serviceIdentifier = v5->_serviceIdentifier;
     v5->_serviceIdentifier = v6;
 
@@ -28,42 +28,42 @@
   return v5;
 }
 
-- (TCCDSyncAccessAction)initWithCoder:(id)a3
+- (TCCDSyncAccessAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TCCDSyncAccessAction;
   v5 = [(TCCDSyncAccessAction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TCCDSyncAccessActionServiceIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TCCDSyncAccessActionServiceIdentifierKey"];
     serviceIdentifier = v5->_serviceIdentifier;
     v5->_serviceIdentifier = v6;
 
-    v5->_versionNumber = [v4 decodeInt64ForKey:@"TCCDSyncAccessActionVersionNumberKey"];
-    if ([v4 containsValueForKey:@"TCCDSyncAccessActionChangeTypeKey"])
+    v5->_versionNumber = [coderCopy decodeInt64ForKey:@"TCCDSyncAccessActionVersionNumberKey"];
+    if ([coderCopy containsValueForKey:@"TCCDSyncAccessActionChangeTypeKey"])
     {
-      v5->_syncChangeType = [v4 decodeInt64ForKey:@"TCCDSyncAccessActionChangeTypeKey"];
+      v5->_syncChangeType = [coderCopy decodeInt64ForKey:@"TCCDSyncAccessActionChangeTypeKey"];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(TCCDSyncAccessAction *)self serviceIdentifier];
-  [v5 encodeObject:v4 forKey:@"TCCDSyncAccessActionServiceIdentifierKey"];
+  coderCopy = coder;
+  serviceIdentifier = [(TCCDSyncAccessAction *)self serviceIdentifier];
+  [coderCopy encodeObject:serviceIdentifier forKey:@"TCCDSyncAccessActionServiceIdentifierKey"];
 
-  [v5 encodeInt64:-[TCCDSyncAccessAction versionNumber](self forKey:{"versionNumber"), @"TCCDSyncAccessActionVersionNumberKey"}];
-  [v5 encodeInt64:-[TCCDSyncAccessAction syncChangeType](self forKey:{"syncChangeType"), @"TCCDSyncAccessActionChangeTypeKey"}];
+  [coderCopy encodeInt64:-[TCCDSyncAccessAction versionNumber](self forKey:{"versionNumber"), @"TCCDSyncAccessActionVersionNumberKey"}];
+  [coderCopy encodeInt64:-[TCCDSyncAccessAction syncChangeType](self forKey:{"syncChangeType"), @"TCCDSyncAccessActionChangeTypeKey"}];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TCCDSyncAccessAction *)self syncId];
-  v3 = [v2 hash];
+  syncId = [(TCCDSyncAccessAction *)self syncId];
+  v3 = [syncId hash];
 
   return v3;
 }
@@ -72,16 +72,16 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TCCDSyncAccessAction *)self serviceIdentifier];
-  v6 = [NSString stringWithFormat:@"%@(%p): service: %@", v4, self, v5];
+  serviceIdentifier = [(TCCDSyncAccessAction *)self serviceIdentifier];
+  v6 = [NSString stringWithFormat:@"%@(%p): service: %@", v4, self, serviceIdentifier];
 
   return v6;
 }
 
 - (NSString)description
 {
-  v2 = [(TCCDSyncAccessAction *)self _description];
-  v3 = [NSString stringWithFormat:@"{%@}", v2];
+  _description = [(TCCDSyncAccessAction *)self _description];
+  v3 = [NSString stringWithFormat:@"{%@}", _description];
 
   return v3;
 }
@@ -90,8 +90,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TCCDSyncAccessAction *)self serviceIdentifier];
-  v6 = [NSString stringWithFormat:@"%@-%@", v4, v5];
+  serviceIdentifier = [(TCCDSyncAccessAction *)self serviceIdentifier];
+  v6 = [NSString stringWithFormat:@"%@-%@", v4, serviceIdentifier];
 
   return v6;
 }

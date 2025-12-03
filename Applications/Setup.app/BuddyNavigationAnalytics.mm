@@ -1,14 +1,14 @@
 @interface BuddyNavigationAnalytics
 - (BuddyNavigationAnalytics)init;
-- (BuddyNavigationAnalytics)initWithNavigationController:(id)a3;
-- (void)_addEventForClass:(Class)a3 activeDuration:(double)a4 backgroundDuration:(double)a5;
+- (BuddyNavigationAnalytics)initWithNavigationController:(id)controller;
+- (void)_addEventForClass:(Class)class activeDuration:(double)duration backgroundDuration:(double)backgroundDuration;
 - (void)_addEventForCurrentViewController;
-- (void)addEventsUsingAnalyticsManager:(id)a3;
+- (void)addEventsUsingAnalyticsManager:(id)manager;
 - (void)didBecomeActive;
 - (void)didEnterBackground;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
 - (void)prepareEventForCurrentViewController;
-- (void)setCurrentViewController:(id)a3;
+- (void)setCurrentViewController:(id)controller;
 @end
 
 @implementation BuddyNavigationAnalytics
@@ -33,24 +33,24 @@
   return v4;
 }
 
-- (BuddyNavigationAnalytics)initWithNavigationController:(id)a3
+- (BuddyNavigationAnalytics)initWithNavigationController:(id)controller
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [v3 init];
-  objc_storeStrong(&v7, v7);
-  if (v7)
+  objc_storeStrong(location, controller);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [v3 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [location[0] addDelegateObserver:v7];
+    [location[0] addDelegateObserver:selfCopy];
   }
 
-  v4 = v7;
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
@@ -88,24 +88,24 @@
 
 - (void)prepareEventForCurrentViewController
 {
-  v2 = [(BuddyNavigationAnalytics *)self currentViewController];
+  currentViewController = [(BuddyNavigationAnalytics *)self currentViewController];
 
-  if (v2)
+  if (currentViewController)
   {
     [(BuddyNavigationAnalytics *)self _addEventForCurrentViewController];
     [(BuddyNavigationAnalytics *)self setCurrentViewController:0];
   }
 }
 
-- (void)addEventsUsingAnalyticsManager:(id)a3
+- (void)addEventsUsingAnalyticsManager:(id)manager
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   memset(__b, 0, sizeof(__b));
-  v3 = [(BuddyNavigationAnalytics *)v10 eventPayloads];
-  v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:__b objects:v11 count:16];
+  eventPayloads = [(BuddyNavigationAnalytics *)selfCopy eventPayloads];
+  v4 = [(NSMutableArray *)eventPayloads countByEnumeratingWithState:__b objects:v11 count:16];
   if (v4)
   {
     v5 = *__b[2];
@@ -115,14 +115,14 @@
       {
         if (*__b[2] != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(eventPayloads);
         }
 
         v8 = *(__b[1] + 8 * i);
         [location[0] addEvent:@"com.apple.setupassistant.ios.pane_duration" withPayload:v8 persist:1];
       }
 
-      v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:__b objects:v11 count:16];
+      v4 = [(NSMutableArray *)eventPayloads countByEnumeratingWithState:__b objects:v11 count:16];
     }
 
     while (v4);
@@ -131,27 +131,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setCurrentViewController:(id)a3
+- (void)setCurrentViewController:(id)controller
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v6->_currentViewController, location[0]);
-  if ([(BuddyNavigationAnalytics *)v6 activeStartTimestamp])
+  objc_storeStrong(location, controller);
+  objc_storeStrong(&selfCopy->_currentViewController, location[0]);
+  if ([(BuddyNavigationAnalytics *)selfCopy activeStartTimestamp])
   {
     v3 = +[BuddyTimestamp currentTimestamp];
-    [(BuddyNavigationAnalytics *)v6 setActiveStartTimestamp:v3];
+    [(BuddyNavigationAnalytics *)selfCopy setActiveStartTimestamp:v3];
   }
 
-  if ([(BuddyNavigationAnalytics *)v6 backgroundStartTimestamp])
+  if ([(BuddyNavigationAnalytics *)selfCopy backgroundStartTimestamp])
   {
     v4 = +[BuddyTimestamp currentTimestamp];
-    [(BuddyNavigationAnalytics *)v6 setBackgroundStartTimestamp:v4];
+    [(BuddyNavigationAnalytics *)selfCopy setBackgroundStartTimestamp:v4];
   }
 
-  [(BuddyNavigationAnalytics *)v6 setCurrentViewControllerActiveDuration:0.0];
-  [(BuddyNavigationAnalytics *)v6 setCurrentViewControllerBackgroundDuration:0.0];
+  [(BuddyNavigationAnalytics *)selfCopy setCurrentViewControllerActiveDuration:0.0];
+  [(BuddyNavigationAnalytics *)selfCopy setCurrentViewControllerBackgroundDuration:0.0];
   objc_storeStrong(location, 0);
 }
 
@@ -173,7 +173,7 @@
     [(BuddyNavigationAnalytics *)self setCurrentViewControllerBackgroundDuration:v7 + v6];
   }
 
-  v8 = [(BuddyNavigationAnalytics *)self currentViewController];
+  currentViewController = [(BuddyNavigationAnalytics *)self currentViewController];
   v9 = objc_opt_class();
   [(BuddyNavigationAnalytics *)self currentViewControllerActiveDuration];
   v11 = v10;
@@ -181,38 +181,38 @@
   [(BuddyNavigationAnalytics *)self _addEventForClass:v9 activeDuration:v11 backgroundDuration:v12];
 }
 
-- (void)_addEventForClass:(Class)a3 activeDuration:(double)a4 backgroundDuration:(double)a5
+- (void)_addEventForClass:(Class)class activeDuration:(double)duration backgroundDuration:(double)backgroundDuration
 {
-  v5 = [(BuddyNavigationAnalytics *)self eventPayloads];
+  eventPayloads = [(BuddyNavigationAnalytics *)self eventPayloads];
   v13[0] = @"class";
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(class);
   v14[0] = v6;
   v13[1] = @"activeDuration";
-  v7 = [NSNumber numberWithDouble:a4];
+  v7 = [NSNumber numberWithDouble:duration];
   v14[1] = v7;
   v13[2] = @"backgroundDuration";
-  v8 = [NSNumber numberWithDouble:a5];
+  v8 = [NSNumber numberWithDouble:backgroundDuration];
   v14[2] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
-  [(NSMutableArray *)v5 addObject:v9];
+  [(NSMutableArray *)eventPayloads addObject:v9];
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(BuddyNavigationAnalytics *)v10 currentViewController];
+  objc_storeStrong(&v8, viewController);
+  currentViewController = [(BuddyNavigationAnalytics *)selfCopy currentViewController];
 
-  if (v7)
+  if (currentViewController)
   {
-    [(BuddyNavigationAnalytics *)v10 _addEventForCurrentViewController];
+    [(BuddyNavigationAnalytics *)selfCopy _addEventForCurrentViewController];
   }
 
-  [(BuddyNavigationAnalytics *)v10 setCurrentViewController:v8];
+  [(BuddyNavigationAnalytics *)selfCopy setCurrentViewController:v8];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }

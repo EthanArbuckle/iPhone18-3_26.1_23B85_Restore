@@ -1,18 +1,18 @@
 @interface JavaUtilLinkedHashMap
-- (BOOL)containsValueWithId:(id)a3;
+- (BOOL)containsValueWithId:(id)id;
 - (JavaUtilLinkedHashMap)init;
 - (id)eldest;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)newEntryIterator;
 - (id)newKeyIterator;
 - (id)newValueIterator;
-- (unint64_t)enumerateEntriesWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addNewEntryForNullKeyWithId:(id)a3;
+- (unint64_t)enumerateEntriesWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addNewEntryForNullKeyWithId:(id)id;
 - (void)clear;
 - (void)dealloc;
 - (void)init__;
-- (void)postRemoveWithJavaUtilHashMap_HashMapEntry:(id)a3;
-- (void)preModifyWithJavaUtilHashMap_HashMapEntry:(id)a3;
+- (void)postRemoveWithJavaUtilHashMap_HashMapEntry:(id)entry;
+- (void)preModifyWithJavaUtilHashMap_HashMapEntry:(id)entry;
 @end
 
 @implementation JavaUtilLinkedHashMap
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (void)addNewEntryForNullKeyWithId:(id)a3
+- (void)addNewEntryForNullKeyWithId:(id)id
 {
   header = self->header_;
   Weak = objc_loadWeak(&header->nxt_);
@@ -64,17 +64,17 @@
   }
 
   v8 = objc_loadWeak(&header->prv_);
-  v9 = objc_storeWeak(&header->prv_, [[JavaUtilLinkedHashMap_LinkedEntry alloc] initWithId:0 withId:a3 withInt:0 withJavaUtilHashMap_HashMapEntry:0 withJavaUtilLinkedHashMap_LinkedEntry:header withJavaUtilLinkedHashMap_LinkedEntry:v8]);
+  v9 = objc_storeWeak(&header->prv_, [[JavaUtilLinkedHashMap_LinkedEntry alloc] initWithId:0 withId:id withInt:0 withJavaUtilHashMap_HashMapEntry:0 withJavaUtilLinkedHashMap_LinkedEntry:header withJavaUtilLinkedHashMap_LinkedEntry:v8]);
   v10 = objc_storeWeak(v8 + 5, v9);
 
   JreStrongAssignAndConsume(&self->super.entryForNullKey_, v10);
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v6 = JavaUtilCollections_secondaryHashWithId_(a3);
+    v6 = JavaUtilCollections_secondaryHashWithId_(id);
     table = self->super.table_;
     if (!table)
     {
@@ -92,7 +92,7 @@
     entryForNullKey = (&table->elementType_)[v10];
     if (entryForNullKey)
     {
-      while (entryForNullKey->key_ != a3 && (entryForNullKey->hash__ != v8 || ![a3 isEqual:?]))
+      while (entryForNullKey->key_ != id && (entryForNullKey->hash__ != v8 || ![id isEqual:?]))
       {
         entryForNullKey = entryForNullKey->next_;
         if (!entryForNullKey)
@@ -128,24 +128,24 @@ LABEL_15:
   return entryForNullKey->value_;
 }
 
-- (void)preModifyWithJavaUtilHashMap_HashMapEntry:(id)a3
+- (void)preModifyWithJavaUtilHashMap_HashMapEntry:(id)entry
 {
   if (self->accessOrder_)
   {
     objc_opt_class();
-    if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (entry && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
-    sub_1001739FC(self, a3);
+    sub_1001739FC(self, entry);
   }
 }
 
-- (void)postRemoveWithJavaUtilHashMap_HashMapEntry:(id)a3
+- (void)postRemoveWithJavaUtilHashMap_HashMapEntry:(id)entry
 {
   objc_opt_class();
-  if (!a3)
+  if (!entry)
   {
     objc_loadWeak(0x28);
     JreThrowNullPointerException();
@@ -156,23 +156,23 @@ LABEL_15:
     JreThrowClassCastException();
   }
 
-  Weak = objc_loadWeak(a3 + 5);
-  v5 = objc_loadWeak(a3 + 6);
-  if (!v5 || (objc_storeWeak(v5 + 5, Weak), v6 = objc_loadWeak(a3 + 6), (v7 = objc_loadWeak(a3 + 5)) == 0))
+  Weak = objc_loadWeak(entry + 5);
+  v5 = objc_loadWeak(entry + 6);
+  if (!v5 || (objc_storeWeak(v5 + 5, Weak), v6 = objc_loadWeak(entry + 6), (v7 = objc_loadWeak(entry + 5)) == 0))
   {
     JreThrowNullPointerException();
   }
 
   objc_storeWeak(v7 + 6, v6);
-  v8 = objc_storeWeak(a3 + 6, 0);
+  v8 = objc_storeWeak(entry + 6, 0);
 
-  objc_storeWeak(a3 + 5, v8);
+  objc_storeWeak(entry + 5, v8);
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
   header = self->header_;
-  if (a3)
+  if (id)
   {
     if (!header)
     {
@@ -185,7 +185,7 @@ LABEL_15:
       v6 = Weak;
       while (v6)
       {
-        v7 = [a3 isEqual:v6->super.value_];
+        v7 = [id isEqual:v6->super.value_];
         if ((v7 & 1) == 0)
         {
           v6 = objc_loadWeak(&v6->nxt_);
@@ -303,27 +303,27 @@ LABEL_6:
   [(JavaUtilHashMap *)&v3 dealloc];
 }
 
-- (unint64_t)enumerateEntriesWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)enumerateEntriesWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
-    Weak = a3->var3[0];
+    Weak = state->var3[0];
   }
 
   else
   {
-    a3->var0 = 1;
-    a3->var2 = &self->super.modCount_;
+    state->var0 = 1;
+    state->var2 = &self->super.modCount_;
     Weak = objc_loadWeak(&self->header_->nxt_);
   }
 
-  a3->var1 = a4;
-  for (i = 0; Weak != self->header_ && i < a5; Weak = objc_loadWeak(&Weak->nxt_))
+  state->var1 = objects;
+  for (i = 0; Weak != self->header_ && i < count; Weak = objc_loadWeak(&Weak->nxt_))
   {
-    a4[i++] = Weak;
+    objects[i++] = Weak;
   }
 
-  a3->var3[0] = Weak;
+  state->var3[0] = Weak;
   return i;
 }
 

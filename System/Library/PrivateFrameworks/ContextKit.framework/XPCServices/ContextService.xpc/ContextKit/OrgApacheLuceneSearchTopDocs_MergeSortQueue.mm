@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneSearchTopDocs_MergeSortQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopDocs_MergeSortQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
   shardHits = self->shardHits_;
-  if (!shardHits || !a3)
+  if (!shardHits || !id)
   {
     goto LABEL_41;
   }
 
-  v8 = *(a3 + 2);
+  v8 = *(id + 2);
   size = shardHits->super.size_;
   if (v8 < 0 || v8 >= size)
   {
@@ -26,7 +26,7 @@
     goto LABEL_41;
   }
 
-  v11 = *(a3 + 3);
+  v11 = *(id + 3);
   isa_low = LODWORD(v10[1].super.isa);
   if (v11 < 0 || v11 >= isa_low)
   {
@@ -41,14 +41,14 @@ LABEL_42:
     JreThrowClassCastException();
   }
 
-  if (!a4)
+  if (!withId)
   {
     goto LABEL_41;
   }
 
-  v38 = a3;
+  idCopy = id;
   v14 = self->shardHits_;
-  v15 = *(a4 + 2);
+  v15 = *(withId + 2);
   v16 = v14->super.size_;
   if (v15 < 0 || v15 >= v16)
   {
@@ -62,7 +62,7 @@ LABEL_41:
     JreThrowNullPointerException();
   }
 
-  v18 = *(a4 + 3);
+  v18 = *(withId + 3);
   v19 = LODWORD(v17[1].super.isa);
   if (v18 < 0 || v18 >= v19)
   {
@@ -76,7 +76,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v37 = a4;
+  withIdCopy = withId;
   comparators = self->comparators_;
   if (!comparators)
   {
@@ -149,9 +149,9 @@ LABEL_41:
     }
   }
 
-  v33 = v38[2];
-  v34 = v37[2];
-  LOBYTE(v35) = v33 < v34 || v33 <= v34 && v38[3] < v37[3];
+  v33 = idCopy[2];
+  v34 = withIdCopy[2];
+  LOBYTE(v35) = v33 < v34 || v33 <= v34 && idCopy[3] < withIdCopy[3];
   return v35;
 }
 

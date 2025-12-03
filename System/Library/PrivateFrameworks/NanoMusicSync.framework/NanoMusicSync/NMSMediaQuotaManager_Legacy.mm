@@ -1,30 +1,30 @@
 @interface NMSMediaQuotaManager_Legacy
-- (BOOL)isItemGroupWithinQuota:(id)a3;
-- (NMSMediaQuotaManager_Legacy)initWithGroupIterators:(id)a3 quota:(unint64_t)a4;
-- (id)_containerListForBundleIdentifier:(id)a3;
+- (BOOL)isItemGroupWithinQuota:(id)quota;
+- (NMSMediaQuotaManager_Legacy)initWithGroupIterators:(id)iterators quota:(unint64_t)quota;
+- (id)_containerListForBundleIdentifier:(id)identifier;
 - (id)downloadInfoWithinQuota;
-- (id)downloadInfoWithinQuotaForBundleIdentifier:(id)a3;
-- (id)groupIteratorForBundleIdentifier:(id)a3;
-- (unint64_t)sizeOfItemsWithinQuotaForBundleIdentifier:(id)a3;
-- (unint64_t)sizeOfNominatedItemsForBundleIdentifier:(id)a3;
+- (id)downloadInfoWithinQuotaForBundleIdentifier:(id)identifier;
+- (id)groupIteratorForBundleIdentifier:(id)identifier;
+- (unint64_t)sizeOfItemsWithinQuotaForBundleIdentifier:(id)identifier;
+- (unint64_t)sizeOfNominatedItemsForBundleIdentifier:(id)identifier;
 - (void)_evaluateAddedItemsIfNecessary;
 @end
 
 @implementation NMSMediaQuotaManager_Legacy
 
-- (NMSMediaQuotaManager_Legacy)initWithGroupIterators:(id)a3 quota:(unint64_t)a4
+- (NMSMediaQuotaManager_Legacy)initWithGroupIterators:(id)iterators quota:(unint64_t)quota
 {
-  v6 = a3;
+  iteratorsCopy = iterators;
   v15.receiver = self;
   v15.super_class = NMSMediaQuotaManager_Legacy;
   v7 = [(NMSMediaQuotaManager_Legacy *)&v15 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [iteratorsCopy copy];
     groupIterators = v7->_groupIterators;
     v7->_groupIterators = v8;
 
-    v7->_quota = a4;
+    v7->_quota = quota;
     v10 = [NMSMediaDownloadInfo alloc];
     v11 = objc_opt_new();
     v12 = [(NMSMediaDownloadInfo *)v10 initWithItems:v11];
@@ -38,12 +38,12 @@
   return v7;
 }
 
-- (id)groupIteratorForBundleIdentifier:(id)a3
+- (id)groupIteratorForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSDictionary *)self->_groupIterators objectForKey:v4];
+    v5 = [(NSDictionary *)self->_groupIterators objectForKey:identifierCopy];
   }
 
   else
@@ -62,52 +62,52 @@
   return downloadInfoWithinQuota;
 }
 
-- (id)downloadInfoWithinQuotaForBundleIdentifier:(id)a3
+- (id)downloadInfoWithinQuotaForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NMSMediaQuotaManager_Legacy *)self _evaluateAddedItemsIfNecessary];
-  v5 = [(NMSMediaQuotaManager_Legacy *)self _containerListForBundleIdentifier:v4];
+  v5 = [(NMSMediaQuotaManager_Legacy *)self _containerListForBundleIdentifier:identifierCopy];
 
-  v6 = [v5 downloadInfoWithinQuota];
+  downloadInfoWithinQuota = [v5 downloadInfoWithinQuota];
 
-  return v6;
+  return downloadInfoWithinQuota;
 }
 
-- (unint64_t)sizeOfItemsWithinQuotaForBundleIdentifier:(id)a3
+- (unint64_t)sizeOfItemsWithinQuotaForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NMSMediaQuotaManager_Legacy *)self _evaluateAddedItemsIfNecessary];
-  v5 = [(NMSMediaQuotaManager_Legacy *)self _containerListForBundleIdentifier:v4];
+  v5 = [(NMSMediaQuotaManager_Legacy *)self _containerListForBundleIdentifier:identifierCopy];
 
-  v6 = [v5 sizeForItemListWithinQuota];
-  return v6;
+  sizeForItemListWithinQuota = [v5 sizeForItemListWithinQuota];
+  return sizeForItemListWithinQuota;
 }
 
-- (unint64_t)sizeOfNominatedItemsForBundleIdentifier:(id)a3
+- (unint64_t)sizeOfNominatedItemsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NMSMediaQuotaManager_Legacy *)self _evaluateAddedItemsIfNecessary];
-  v5 = [(NMSMediaQuotaManager_Legacy *)self _containerListForBundleIdentifier:v4];
+  v5 = [(NMSMediaQuotaManager_Legacy *)self _containerListForBundleIdentifier:identifierCopy];
 
-  v6 = [v5 nominatedItemSize];
-  return v6;
+  nominatedItemSize = [v5 nominatedItemSize];
+  return nominatedItemSize;
 }
 
-- (BOOL)isItemGroupWithinQuota:(id)a3
+- (BOOL)isItemGroupWithinQuota:(id)quota
 {
   v46 = *MEMORY[0x277D85DE8];
-  v35 = a3;
+  quotaCopy = quota;
   [(NMSMediaQuotaManager_Legacy *)self _evaluateAddedItemsIfNecessary];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = [(NSDictionary *)self->_groupIterators allValues];
-  v30 = [v4 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  allValues = [(NSDictionary *)self->_groupIterators allValues];
+  v30 = [allValues countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v30)
   {
     v5 = *v41;
-    v32 = v4;
+    v32 = allValues;
     v29 = *v41;
     while (1)
     {
@@ -116,7 +116,7 @@
       {
         if (*v41 != v5)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v31 = v6;
@@ -125,8 +125,8 @@
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v8 = [v7 itemGroups];
-        v9 = [v8 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        itemGroups = [v7 itemGroups];
+        v9 = [itemGroups countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (!v9)
         {
           goto LABEL_24;
@@ -134,71 +134,71 @@
 
         v10 = v9;
         v11 = *v37;
-        v34 = v8;
+        v34 = itemGroups;
         while (2)
         {
           for (i = 0; i != v10; ++i)
           {
             if (*v37 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(itemGroups);
             }
 
             v13 = *(*(&v36 + 1) + 8 * i);
-            v14 = [v7 iteratingOrder];
-            if (v14 == 1)
+            iteratingOrder = [v7 iteratingOrder];
+            if (iteratingOrder == 1)
             {
-              v15 = [v13 quotaData];
-              if ([v15 numItemsAdded])
+              quotaData = [v13 quotaData];
+              if ([quotaData numItemsAdded])
               {
                 goto LABEL_21;
               }
 
-              v21 = [v13 quotaData];
-              if (([v21 hasItemsAboveQuota] & 1) == 0)
+              quotaData2 = [v13 quotaData];
+              if (([quotaData2 hasItemsAboveQuota] & 1) == 0)
               {
 
 LABEL_21:
                 continue;
               }
 
-              v22 = [v13 quotaData];
-              v23 = [v22 quotaRefObj];
-              v24 = [v35 quotaData];
-              v25 = [v24 quotaRefObj];
-              v33 = [v23 isEqual:v25];
+              quotaData3 = [v13 quotaData];
+              quotaRefObj = [quotaData3 quotaRefObj];
+              quotaData4 = [quotaCopy quotaData];
+              quotaRefObj2 = [quotaData4 quotaRefObj];
+              v33 = [quotaRefObj isEqual:quotaRefObj2];
 
-              v8 = v34;
+              itemGroups = v34;
               if (v33)
               {
 LABEL_27:
 
                 v26 = 0;
-                v4 = v32;
+                allValues = v32;
                 goto LABEL_29;
               }
             }
 
             else
             {
-              if (v14)
+              if (iteratingOrder)
               {
                 continue;
               }
 
-              v15 = [v13 quotaData];
-              if (![v15 hasItemsAboveQuota])
+              quotaData = [v13 quotaData];
+              if (![quotaData hasItemsAboveQuota])
               {
                 goto LABEL_21;
               }
 
-              v16 = [v13 quotaData];
-              v17 = [v16 quotaRefObj];
-              v18 = [v35 quotaData];
-              v19 = [v18 quotaRefObj];
-              v20 = [v17 isEqual:v19];
+              quotaData5 = [v13 quotaData];
+              quotaRefObj3 = [quotaData5 quotaRefObj];
+              quotaData6 = [quotaCopy quotaData];
+              quotaRefObj4 = [quotaData6 quotaRefObj];
+              v20 = [quotaRefObj3 isEqual:quotaRefObj4];
 
-              v8 = v34;
+              itemGroups = v34;
               if (v20)
               {
                 goto LABEL_27;
@@ -206,7 +206,7 @@ LABEL_27:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          v10 = [itemGroups countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v10)
           {
             continue;
@@ -218,7 +218,7 @@ LABEL_27:
 LABEL_24:
 
         v6 = v31 + 1;
-        v4 = v32;
+        allValues = v32;
         v5 = v29;
       }
 
@@ -239,11 +239,11 @@ LABEL_29:
   return v26;
 }
 
-- (id)_containerListForBundleIdentifier:(id)a3
+- (id)_containerListForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NMSMediaQuotaManager_Legacy *)self _evaluateAddedItemsIfNecessary];
-  v5 = [(NSDictionary *)self->_groupIterators objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_groupIterators objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
@@ -257,13 +257,13 @@ LABEL_29:
     v2 = NMLogForCategory(5);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       *buf = 138412802;
       *&buf[4] = @"[MediaQuota]";
       *&buf[12] = 2080;
       *&buf[14] = "[NMSMediaQuotaManager_Legacy _evaluateAddedItemsIfNecessary]";
       *&buf[22] = 2112;
-      v86 = v3;
+      v86 = date;
       _os_log_impl(&dword_25B27B000, v2, OS_LOG_TYPE_DEFAULT, "%@ %s ****** Started QuotaEvaluation %@!", buf, 0x20u);
     }
 
@@ -364,7 +364,7 @@ LABEL_29:
           v74 = v22;
           v78 = buf;
           v75 = v53;
-          v76 = self;
+          selfCopy = self;
           v77 = obja;
           [v19 enumerateKeysAndObjectsUsingBlock:v72];
           if (!*(*&buf[8] + 40))
@@ -397,9 +397,9 @@ LABEL_29:
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v26 = [v49 allValues];
+        allValues = [v49 allValues];
         v27 = 0;
-        v28 = [v26 countByEnumeratingWithState:&v66 objects:v84 count:16];
+        v28 = [allValues countByEnumeratingWithState:&v66 objects:v84 count:16];
         if (v28)
         {
           v29 = *v67;
@@ -409,13 +409,13 @@ LABEL_29:
             {
               if (*v67 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(allValues);
               }
 
               v27 += [*(*(&v66 + 1) + 8 * j) sizeForItemListWithinQuota];
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v66 objects:v84 count:16];
+            v28 = [allValues countByEnumeratingWithState:&v66 objects:v84 count:16];
           }
 
           while (v28);
@@ -450,8 +450,8 @@ LABEL_29:
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v36 = [v54 allValues];
-    v37 = [v36 countByEnumeratingWithState:&v57 objects:v83 count:16];
+    allValues2 = [v54 allValues];
+    v37 = [allValues2 countByEnumeratingWithState:&v57 objects:v83 count:16];
     if (v37)
     {
       v38 = *v58;
@@ -461,13 +461,13 @@ LABEL_29:
         {
           if (*v58 != v38)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v57 + 1) + 8 * k) flush];
         }
 
-        v37 = [v36 countByEnumeratingWithState:&v57 objects:v83 count:16];
+        v37 = [allValues2 countByEnumeratingWithState:&v57 objects:v83 count:16];
       }
 
       while (v37);
@@ -477,7 +477,7 @@ LABEL_29:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       v41 = self->_quota;
-      v42 = [(NMSMediaDownloadInfo *)self->_downloadInfoWithinQuota totalItemCount];
+      totalItemCount = [(NMSMediaDownloadInfo *)self->_downloadInfoWithinQuota totalItemCount];
       *buf = 138413058;
       *&buf[4] = @"[MediaQuota]";
       *&buf[12] = 2080;
@@ -485,7 +485,7 @@ LABEL_29:
       *&buf[22] = 2048;
       v86 = v41;
       LOWORD(v87) = 2048;
-      *(&v87 + 2) = v42;
+      *(&v87 + 2) = totalItemCount;
       _os_log_impl(&dword_25B27B000, v40, OS_LOG_TYPE_DEFAULT, "%@ %s QuotaEvaluation result: downloadInfoWithinQuota (quota: %llu) (count: %lu)", buf, 0x2Au);
     }
 
@@ -506,13 +506,13 @@ LABEL_29:
     v45 = NMLogForCategory(5);
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       *buf = 138412802;
       *&buf[4] = @"[MediaQuota]";
       *&buf[12] = 2080;
       *&buf[14] = "[NMSMediaQuotaManager_Legacy _evaluateAddedItemsIfNecessary]";
       *&buf[22] = 2112;
-      v86 = v46;
+      v86 = date2;
       _os_log_impl(&dword_25B27B000, v45, OS_LOG_TYPE_DEFAULT, "%@ %s ****** Finished QuotaEvaluation! %@", buf, 0x20u);
     }
 

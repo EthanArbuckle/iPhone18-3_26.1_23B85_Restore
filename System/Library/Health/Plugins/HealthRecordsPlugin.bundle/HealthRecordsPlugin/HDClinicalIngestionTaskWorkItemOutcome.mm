@@ -1,7 +1,7 @@
 @interface HDClinicalIngestionTaskWorkItemOutcome
 + (HDClinicalIngestionTaskWorkItemOutcome)new;
 - (HDClinicalIngestionTaskWorkItemOutcome)init;
-- (HDClinicalIngestionTaskWorkItemOutcome)initWithFetchSuccess:(BOOL)a3 saveableResources:(id)a4 followUpWorkItems:(id)a5;
+- (HDClinicalIngestionTaskWorkItemOutcome)initWithFetchSuccess:(BOOL)success saveableResources:(id)resources followUpWorkItems:(id)items;
 @end
 
 @implementation HDClinicalIngestionTaskWorkItemOutcome
@@ -22,22 +22,22 @@
   return 0;
 }
 
-- (HDClinicalIngestionTaskWorkItemOutcome)initWithFetchSuccess:(BOOL)a3 saveableResources:(id)a4 followUpWorkItems:(id)a5
+- (HDClinicalIngestionTaskWorkItemOutcome)initWithFetchSuccess:(BOOL)success saveableResources:(id)resources followUpWorkItems:(id)items
 {
-  v8 = a4;
-  v9 = a5;
+  resourcesCopy = resources;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = HDClinicalIngestionTaskWorkItemOutcome;
   v10 = [(HDClinicalIngestionTaskWorkItemOutcome *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_fetchSuccess = a3;
-    v12 = [v8 copy];
+    v10->_fetchSuccess = success;
+    v12 = [resourcesCopy copy];
     saveableResources = v11->_saveableResources;
     v11->_saveableResources = v12;
 
-    v14 = [v9 copy];
+    v14 = [itemsCopy copy];
     followUpWorkItems = v11->_followUpWorkItems;
     v11->_followUpWorkItems = v14;
   }

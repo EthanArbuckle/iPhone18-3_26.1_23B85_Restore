@@ -1,19 +1,19 @@
 @interface MBFileHandle
-- (BOOL)readFromPath:(id)a3 error:(id *)a4;
+- (BOOL)readFromPath:(id)path error:(id *)error;
 @end
 
 @implementation MBFileHandle
 
-- (BOOL)readFromPath:(id)a3 error:(id *)a4
+- (BOOL)readFromPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = open([v6 fileSystemRepresentation], 256);
+  pathCopy = path;
+  v7 = open([pathCopy fileSystemRepresentation], 256);
   if (v7 < 0)
   {
-    if (a4)
+    if (error)
     {
-      [MBError posixErrorWithPath:v6 format:@"open error"];
-      *a4 = v10 = 0;
+      [MBError posixErrorWithPath:pathCopy format:@"open error"];
+      *error = v10 = 0;
     }
 
     else
@@ -33,7 +33,7 @@
         break;
       }
 
-      if ([(MBFileHandle *)self writeWithBytes:v12 length:v9 error:a4]< 0)
+      if ([(MBFileHandle *)self writeWithBytes:v12 length:v9 error:error]< 0)
       {
         goto LABEL_5;
       }
@@ -41,15 +41,15 @@
 
     if (v9)
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_5:
         v10 = 0;
         goto LABEL_13;
       }
 
-      [MBError posixErrorWithPath:v6 format:@"read error"];
-      *a4 = v10 = 0;
+      [MBError posixErrorWithPath:pathCopy format:@"read error"];
+      *error = v10 = 0;
     }
 
     else

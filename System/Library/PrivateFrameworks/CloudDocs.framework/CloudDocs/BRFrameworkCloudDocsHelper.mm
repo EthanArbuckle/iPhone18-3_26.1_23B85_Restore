@@ -1,13 +1,13 @@
 @interface BRFrameworkCloudDocsHelper
-- (id)queryPathsForPersona:(id)a3 withError:(id *)a4;
+- (id)queryPathsForPersona:(id)persona withError:(id *)error;
 @end
 
 @implementation BRFrameworkCloudDocsHelper
 
-- (id)queryPathsForPersona:(id)a3 withError:(id *)a4
+- (id)queryPathsForPersona:(id)persona withError:(id *)error
 {
-  v5 = a3;
-  v6 = [BRCloudDocsHelper queryFastPathsForPrimaryPersona:v5];
+  personaCopy = persona;
+  v6 = [BRCloudDocsHelper queryFastPathsForPrimaryPersona:personaCopy];
   v7 = v6;
   if (v6)
   {
@@ -17,7 +17,7 @@
   else
   {
     v9 = +[BRDaemonConnection defaultConnection];
-    v10 = [v9 newSyncProxy];
+    newSyncProxy = [v9 newSyncProxy];
 
     v19 = 0;
     v20 = &v19;
@@ -37,10 +37,10 @@
     v12[3] = &unk_1E7A14B18;
     v12[4] = &v19;
     v12[5] = &v13;
-    [v10 queryPathsForPersona:v5 reply:v12];
-    if (a4)
+    [newSyncProxy queryPathsForPersona:personaCopy reply:v12];
+    if (error)
     {
-      *a4 = v14[5];
+      *error = v14[5];
     }
 
     v8 = v20[5];

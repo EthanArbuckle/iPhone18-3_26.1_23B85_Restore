@@ -8,7 +8,7 @@
 {
   v8 = a3;
   v9 = a4;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v10 = [SCNDisplayLink alloc];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;

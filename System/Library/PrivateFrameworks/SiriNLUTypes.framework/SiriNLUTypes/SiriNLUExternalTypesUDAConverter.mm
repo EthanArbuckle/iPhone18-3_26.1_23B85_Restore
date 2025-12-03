@@ -1,31 +1,31 @@
 @interface SiriNLUExternalTypesUDAConverter
-+ (id)convertFromDelegatedUserDialogAct:(id)a3;
-+ (id)convertFromReferenceContext:(id)a3;
-+ (id)convertFromRewriteMessage:(id)a3;
-+ (id)convertFromRewriteMessages:(id)a3;
-+ (id)convertFromUserAccepted:(id)a3;
-+ (id)convertFromUserAcknowledged:(id)a3;
-+ (id)convertFromUserCancelled:(id)a3;
-+ (id)convertFromUserDialogAct:(id)a3;
-+ (id)convertFromUserDialogActs:(id)a3;
-+ (id)convertFromUserRejected:(id)a3;
-+ (id)convertFromUserStatedTask:(id)a3;
-+ (id)convertFromUserWantedToPause:(id)a3;
-+ (id)convertFromUserWantedToProceed:(id)a3;
-+ (id)convertFromUserWantedToRepeat:(id)a3;
++ (id)convertFromDelegatedUserDialogAct:(id)act;
++ (id)convertFromReferenceContext:(id)context;
++ (id)convertFromRewriteMessage:(id)message;
++ (id)convertFromRewriteMessages:(id)messages;
++ (id)convertFromUserAccepted:(id)accepted;
++ (id)convertFromUserAcknowledged:(id)acknowledged;
++ (id)convertFromUserCancelled:(id)cancelled;
++ (id)convertFromUserDialogAct:(id)act;
++ (id)convertFromUserDialogActs:(id)acts;
++ (id)convertFromUserRejected:(id)rejected;
++ (id)convertFromUserStatedTask:(id)task;
++ (id)convertFromUserWantedToPause:(id)pause;
++ (id)convertFromUserWantedToProceed:(id)proceed;
++ (id)convertFromUserWantedToRepeat:(id)repeat;
 @end
 
 @implementation SiriNLUExternalTypesUDAConverter
 
-+ (id)convertFromUserStatedTask:(id)a3
++ (id)convertFromUserStatedTask:(id)task
 {
-  if (a3)
+  if (task)
   {
-    v3 = a3;
+    taskCopy = task;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserStatedTask);
-    v5 = [v3 task];
+    task = [taskCopy task];
 
-    v6 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v5];
+    v6 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:task];
     [(SIRINLUEXTERNALUserStatedTask *)v4 setTask:v6];
   }
 
@@ -37,31 +37,31 @@
   return v4;
 }
 
-+ (id)convertFromDelegatedUserDialogAct:(id)a3
++ (id)convertFromDelegatedUserDialogAct:(id)act
 {
-  if (a3)
+  if (act)
   {
-    v4 = a3;
+    actCopy = act;
     v5 = objc_alloc_init(SIRINLUEXTERNALDelegatedUserDialogAct);
-    -[SIRINLUEXTERNALDelegatedUserDialogAct setAsrHypothesisIndex:](v5, "setAsrHypothesisIndex:", [v4 asrHypothesisIndex]);
-    v6 = [v4 externalParserId];
-    [(SIRINLUEXTERNALDelegatedUserDialogAct *)v5 setExternalParserId:v6];
+    -[SIRINLUEXTERNALDelegatedUserDialogAct setAsrHypothesisIndex:](v5, "setAsrHypothesisIndex:", [actCopy asrHypothesisIndex]);
+    externalParserId = [actCopy externalParserId];
+    [(SIRINLUEXTERNALDelegatedUserDialogAct *)v5 setExternalParserId:externalParserId];
 
-    v7 = [v4 rewrittenUtterance];
-    v8 = [SiriNLUExternalTypesConverter convertFromString:v7];
+    rewrittenUtterance = [actCopy rewrittenUtterance];
+    v8 = [SiriNLUExternalTypesConverter convertFromString:rewrittenUtterance];
     [(SIRINLUEXTERNALDelegatedUserDialogAct *)v5 setRewrittenUtterance:v8];
 
-    v9 = [v4 spans];
-    v10 = [SiriNLUExternalTypesConverter convertFromMatchingSpans:v9];
+    spans = [actCopy spans];
+    v10 = [SiriNLUExternalTypesConverter convertFromMatchingSpans:spans];
     [(SIRINLUEXTERNALDelegatedUserDialogAct *)v5 setMatchingSpans:v10];
 
-    v11 = [v4 rewrite];
-    v12 = [a1 convertFromRewriteMessage:v11];
+    rewrite = [actCopy rewrite];
+    v12 = [self convertFromRewriteMessage:rewrite];
     [(SIRINLUEXTERNALDelegatedUserDialogAct *)v5 setRewrite:v12];
 
-    v13 = [v4 referenceContext];
+    referenceContext = [actCopy referenceContext];
 
-    v14 = [a1 convertFromReferenceContext:v13];
+    v14 = [self convertFromReferenceContext:referenceContext];
     [(SIRINLUEXTERNALDelegatedUserDialogAct *)v5 setReferenceContext:v14];
   }
 
@@ -73,16 +73,16 @@
   return v5;
 }
 
-+ (id)convertFromReferenceContext:(id)a3
++ (id)convertFromReferenceContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = a3;
+    contextCopy = context;
     v4 = objc_alloc_init(SIRINLUEXTERNALReferenceContext);
-    -[SIRINLUEXTERNALReferenceContext setContextualReference:](v4, "setContextualReference:", [v3 contextualReference]);
-    v5 = [v3 disambiguationNeeded];
+    -[SIRINLUEXTERNALReferenceContext setContextualReference:](v4, "setContextualReference:", [contextCopy contextualReference]);
+    disambiguationNeeded = [contextCopy disambiguationNeeded];
 
-    [(SIRINLUEXTERNALReferenceContext *)v4 setDisambiguationNeeded:v5];
+    [(SIRINLUEXTERNALReferenceContext *)v4 setDisambiguationNeeded:disambiguationNeeded];
   }
 
   else
@@ -93,16 +93,16 @@
   return v4;
 }
 
-+ (id)convertFromRewriteMessage:(id)a3
++ (id)convertFromRewriteMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
-    v3 = a3;
+    messageCopy = message;
     v4 = objc_alloc_init(SIRINLUEXTERNALRewriteMessage);
-    -[SIRINLUEXTERNALRewriteMessage setRewriteType:](v4, "setRewriteType:", [v3 rewriteType]);
-    v5 = [v3 rewrittenUtterance];
+    -[SIRINLUEXTERNALRewriteMessage setRewriteType:](v4, "setRewriteType:", [messageCopy rewriteType]);
+    rewrittenUtterance = [messageCopy rewrittenUtterance];
 
-    [(SIRINLUEXTERNALRewriteMessage *)v4 setRewrittenUtterance:v5];
+    [(SIRINLUEXTERNALRewriteMessage *)v4 setRewrittenUtterance:rewrittenUtterance];
   }
 
   else
@@ -113,18 +113,18 @@
   return v4;
 }
 
-+ (id)convertFromRewriteMessages:(id)a3
++ (id)convertFromRewriteMessages:(id)messages
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (messagesCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = messagesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -139,7 +139,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromRewriteMessage:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromRewriteMessage:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -155,19 +155,19 @@
   return v5;
 }
 
-+ (id)convertFromUserWantedToPause:(id)a3
++ (id)convertFromUserWantedToPause:(id)pause
 {
-  if (a3)
+  if (pause)
   {
-    v3 = a3;
+    pauseCopy = pause;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserWantedToPause);
-    v5 = [v3 taskId];
-    v6 = [SiriNLUExternalTypesConverter convertFromUUID:v5];
+    taskId = [pauseCopy taskId];
+    v6 = [SiriNLUExternalTypesConverter convertFromUUID:taskId];
     [(SIRINLUEXTERNALUserWantedToPause *)v4 setTaskId:v6];
 
-    v7 = [v3 reference];
+    reference = [pauseCopy reference];
 
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:reference];
     [(SIRINLUEXTERNALUserWantedToPause *)v4 setReference:v8];
   }
 
@@ -179,19 +179,19 @@
   return v4;
 }
 
-+ (id)convertFromUserWantedToProceed:(id)a3
++ (id)convertFromUserWantedToProceed:(id)proceed
 {
-  if (a3)
+  if (proceed)
   {
-    v3 = a3;
+    proceedCopy = proceed;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserWantedToProceed);
-    v5 = [v3 taskId];
-    v6 = [SiriNLUExternalTypesConverter convertFromUUID:v5];
+    taskId = [proceedCopy taskId];
+    v6 = [SiriNLUExternalTypesConverter convertFromUUID:taskId];
     [(SIRINLUEXTERNALUserWantedToProceed *)v4 setTaskId:v6];
 
-    v7 = [v3 reference];
+    reference = [proceedCopy reference];
 
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:reference];
     [(SIRINLUEXTERNALUserWantedToProceed *)v4 setReference:v8];
   }
 
@@ -203,19 +203,19 @@
   return v4;
 }
 
-+ (id)convertFromUserAcknowledged:(id)a3
++ (id)convertFromUserAcknowledged:(id)acknowledged
 {
-  if (a3)
+  if (acknowledged)
   {
-    v3 = a3;
+    acknowledgedCopy = acknowledged;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserAcknowledged);
-    v5 = [v3 systemDialogActId];
-    v6 = [SiriNLUExternalTypesConverter convertFromUUID:v5];
+    systemDialogActId = [acknowledgedCopy systemDialogActId];
+    v6 = [SiriNLUExternalTypesConverter convertFromUUID:systemDialogActId];
     [(SIRINLUEXTERNALUserAcknowledged *)v4 setSystemDialogActId:v6];
 
-    v7 = [v3 reference];
+    reference = [acknowledgedCopy reference];
 
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:reference];
     [(SIRINLUEXTERNALUserAcknowledged *)v4 setReference:v8];
   }
 
@@ -227,19 +227,19 @@
   return v4;
 }
 
-+ (id)convertFromUserWantedToRepeat:(id)a3
++ (id)convertFromUserWantedToRepeat:(id)repeat
 {
-  if (a3)
+  if (repeat)
   {
-    v3 = a3;
+    repeatCopy = repeat;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserWantedToRepeat);
-    v5 = [v3 systemDialogActId];
-    v6 = [SiriNLUExternalTypesConverter convertFromUUID:v5];
+    systemDialogActId = [repeatCopy systemDialogActId];
+    v6 = [SiriNLUExternalTypesConverter convertFromUUID:systemDialogActId];
     [(SIRINLUEXTERNALUserWantedToRepeat *)v4 setSystemDialogActId:v6];
 
-    v7 = [v3 reference];
+    reference = [repeatCopy reference];
 
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:reference];
     [(SIRINLUEXTERNALUserWantedToRepeat *)v4 setReference:v8];
   }
 
@@ -251,19 +251,19 @@
   return v4;
 }
 
-+ (id)convertFromUserCancelled:(id)a3
++ (id)convertFromUserCancelled:(id)cancelled
 {
-  if (a3)
+  if (cancelled)
   {
-    v3 = a3;
+    cancelledCopy = cancelled;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserCancelled);
-    v5 = [v3 taskId];
-    v6 = [SiriNLUExternalTypesConverter convertFromUUID:v5];
+    taskId = [cancelledCopy taskId];
+    v6 = [SiriNLUExternalTypesConverter convertFromUUID:taskId];
     [(SIRINLUEXTERNALUserCancelled *)v4 setTaskId:v6];
 
-    v7 = [v3 reference];
+    reference = [cancelledCopy reference];
 
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:reference];
     [(SIRINLUEXTERNALUserCancelled *)v4 setReference:v8];
   }
 
@@ -275,19 +275,19 @@
   return v4;
 }
 
-+ (id)convertFromUserRejected:(id)a3
++ (id)convertFromUserRejected:(id)rejected
 {
-  if (a3)
+  if (rejected)
   {
-    v3 = a3;
+    rejectedCopy = rejected;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserRejected);
-    v5 = [v3 offerId];
-    v6 = [SiriNLUExternalTypesConverter convertFromUUID:v5];
+    offerId = [rejectedCopy offerId];
+    v6 = [SiriNLUExternalTypesConverter convertFromUUID:offerId];
     [(SIRINLUEXTERNALUserRejected *)v4 setOfferId:v6];
 
-    v7 = [v3 reference];
+    reference = [rejectedCopy reference];
 
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:reference];
     [(SIRINLUEXTERNALUserRejected *)v4 setReference:v8];
   }
 
@@ -299,19 +299,19 @@
   return v4;
 }
 
-+ (id)convertFromUserAccepted:(id)a3
++ (id)convertFromUserAccepted:(id)accepted
 {
-  if (a3)
+  if (accepted)
   {
-    v3 = a3;
+    acceptedCopy = accepted;
     v4 = objc_alloc_init(SIRINLUEXTERNALUserAccepted);
-    v5 = [v3 offerId];
-    v6 = [SiriNLUExternalTypesConverter convertFromUUID:v5];
+    offerId = [acceptedCopy offerId];
+    v6 = [SiriNLUExternalTypesConverter convertFromUUID:offerId];
     [(SIRINLUEXTERNALUserAccepted *)v4 setOfferId:v6];
 
-    v7 = [v3 reference];
+    reference = [acceptedCopy reference];
 
-    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:v7];
+    v8 = [SiriNLUExternalTypesUsoGraphConverter convertFromUsoGraph:reference];
     [(SIRINLUEXTERNALUserAccepted *)v4 setReference:v8];
   }
 
@@ -323,18 +323,18 @@
   return v4;
 }
 
-+ (id)convertFromUserDialogActs:(id)a3
++ (id)convertFromUserDialogActs:(id)acts
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actsCopy = acts;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (actsCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = actsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -349,7 +349,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromUserDialogAct:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromUserDialogAct:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -365,10 +365,10 @@
   return v5;
 }
 
-+ (id)convertFromUserDialogAct:(id)a3
++ (id)convertFromUserDialogAct:(id)act
 {
-  v4 = a3;
-  if (!v4)
+  actCopy = act;
+  if (!actCopy)
   {
     v5 = 0;
     goto LABEL_22;
@@ -378,7 +378,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a1 convertFromDelegatedUserDialogAct:v4];
+    v6 = [self convertFromDelegatedUserDialogAct:actCopy];
     [(SIRINLUEXTERNALUserDialogAct *)v5 setDelegated:v6];
   }
 
@@ -387,7 +387,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [a1 convertFromUserAccepted:v4];
+      v6 = [self convertFromUserAccepted:actCopy];
       [(SIRINLUEXTERNALUserDialogAct *)v5 setAccepted:v6];
     }
 
@@ -396,7 +396,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [a1 convertFromUserAcknowledged:v4];
+        v6 = [self convertFromUserAcknowledged:actCopy];
         [(SIRINLUEXTERNALUserDialogAct *)v5 setAcknowledged:v6];
       }
 
@@ -405,7 +405,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [a1 convertFromUserCancelled:v4];
+          v6 = [self convertFromUserCancelled:actCopy];
           [(SIRINLUEXTERNALUserDialogAct *)v5 setCancelled:v6];
         }
 
@@ -414,7 +414,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v6 = [a1 convertFromUserRejected:v4];
+            v6 = [self convertFromUserRejected:actCopy];
             [(SIRINLUEXTERNALUserDialogAct *)v5 setRejected:v6];
           }
 
@@ -423,7 +423,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v6 = [a1 convertFromUserStatedTask:v4];
+              v6 = [self convertFromUserStatedTask:actCopy];
               [(SIRINLUEXTERNALUserDialogAct *)v5 setUserStatedTask:v6];
             }
 
@@ -432,7 +432,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v6 = [a1 convertFromUserWantedToPause:v4];
+                v6 = [self convertFromUserWantedToPause:actCopy];
                 [(SIRINLUEXTERNALUserDialogAct *)v5 setWantedToPause:v6];
               }
 
@@ -441,7 +441,7 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v6 = [a1 convertFromUserWantedToProceed:v4];
+                  v6 = [self convertFromUserWantedToProceed:actCopy];
                   [(SIRINLUEXTERNALUserDialogAct *)v5 setWantedToProceed:v6];
                 }
 
@@ -453,7 +453,7 @@
                     goto LABEL_22;
                   }
 
-                  v6 = [a1 convertFromUserWantedToRepeat:v4];
+                  v6 = [self convertFromUserWantedToRepeat:actCopy];
                   [(SIRINLUEXTERNALUserDialogAct *)v5 setWantedToRepeat:v6];
                 }
               }

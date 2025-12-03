@@ -1,52 +1,52 @@
 @interface _INPBSetDefrosterSettingsInCarIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetDefrosterSettingsInCarIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetDefrosterSettingsInCarIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsDefroster:(id)a3;
+- (int)StringAsDefroster:(id)defroster;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDefroster:(int)a3;
-- (void)setHasEnable:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDefroster:(int)defroster;
+- (void)setHasEnable:(BOOL)enable;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetDefrosterSettingsInCarIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"carName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  carName = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
+  dictionaryRepresentation = [carName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"carName"];
 
   if ([(_INPBSetDefrosterSettingsInCarIntent *)self hasDefroster])
   {
-    v6 = [(_INPBSetDefrosterSettingsInCarIntent *)self defroster];
-    if ((v6 - 1) >= 3)
+    defroster = [(_INPBSetDefrosterSettingsInCarIntent *)self defroster];
+    if ((defroster - 1) >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", defroster];
     }
 
     else
     {
-      v7 = off_1E727FE70[(v6 - 1)];
+      v7 = off_1E727FE70[(defroster - 1)];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"defroster"];
+    [dictionary setObject:v7 forKeyedSubscript:@"defroster"];
   }
 
   if ([(_INPBSetDefrosterSettingsInCarIntent *)self hasEnable])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetDefrosterSettingsInCarIntent enable](self, "enable")}];
-    [v3 setObject:v8 forKeyedSubscript:@"enable"];
+    [dictionary setObject:v8 forKeyedSubscript:@"enable"];
   }
 
-  v9 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
-  v10 = [v9 dictionaryRepresentation];
-  [v3 setObject:v10 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -75,28 +75,28 @@
   return v4 ^ v3 ^ v5 ^ [(_INPBIntentMetadata *)self->_intentMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
-  v6 = [v4 carName];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
+  carName2 = [equalCopy carName];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
-  if (v7)
+  carName3 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
+  if (carName3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
-    v10 = [v4 carName];
-    v11 = [v9 isEqual:v10];
+    v8 = carName3;
+    carName4 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
+    carName5 = [equalCopy carName];
+    v11 = [carName4 isEqual:carName5];
 
     if (!v11)
     {
@@ -108,48 +108,48 @@
   {
   }
 
-  v12 = [(_INPBSetDefrosterSettingsInCarIntent *)self hasDefroster];
-  if (v12 != [v4 hasDefroster])
+  hasDefroster = [(_INPBSetDefrosterSettingsInCarIntent *)self hasDefroster];
+  if (hasDefroster != [equalCopy hasDefroster])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBSetDefrosterSettingsInCarIntent *)self hasDefroster])
   {
-    if ([v4 hasDefroster])
+    if ([equalCopy hasDefroster])
     {
       defroster = self->_defroster;
-      if (defroster != [v4 defroster])
+      if (defroster != [equalCopy defroster])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v14 = [(_INPBSetDefrosterSettingsInCarIntent *)self hasEnable];
-  if (v14 != [v4 hasEnable])
+  hasEnable = [(_INPBSetDefrosterSettingsInCarIntent *)self hasEnable];
+  if (hasEnable != [equalCopy hasEnable])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBSetDefrosterSettingsInCarIntent *)self hasEnable])
   {
-    if ([v4 hasEnable])
+    if ([equalCopy hasEnable])
     {
       enable = self->_enable;
-      if (enable != [v4 enable])
+      if (enable != [equalCopy enable])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v5 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  carName = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
+  carName2 = [equalCopy intentMetadata];
+  if ((carName != 0) != (carName2 == 0))
   {
-    v16 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
-    if (!v16)
+    intentMetadata = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
+    if (!intentMetadata)
     {
 
 LABEL_23:
@@ -157,10 +157,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v17 = v16;
-    v18 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
-    v19 = [v4 intentMetadata];
-    v20 = [v18 isEqual:v19];
+    v17 = intentMetadata;
+    intentMetadata2 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v20 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (v20)
     {
@@ -180,10 +180,10 @@ LABEL_21:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetDefrosterSettingsInCarIntent allocWithZone:](_INPBSetDefrosterSettingsInCarIntent init];
-  v6 = [(_INPBDataString *)self->_carName copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_carName copyWithZone:zone];
   [(_INPBSetDefrosterSettingsInCarIntent *)v5 setCarName:v6];
 
   if ([(_INPBSetDefrosterSettingsInCarIntent *)self hasDefroster])
@@ -196,44 +196,44 @@ LABEL_21:
     [(_INPBSetDefrosterSettingsInCarIntent *)v5 setEnable:[(_INPBSetDefrosterSettingsInCarIntent *)self enable]];
   }
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetDefrosterSettingsInCarIntent *)v5 setIntentMetadata:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetDefrosterSettingsInCarIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetDefrosterSettingsInCarIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetDefrosterSettingsInCarIntent)initWithCoder:(id)a3
+- (_INPBSetDefrosterSettingsInCarIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetDefrosterSettingsInCarIntent *)self initWithData:v6];
+    self = [(_INPBSetDefrosterSettingsInCarIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
+  toCopy = to;
+  carName = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
 
-  if (v4)
+  if (carName)
   {
-    v5 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
+    carName2 = [(_INPBSetDefrosterSettingsInCarIntent *)self carName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -249,21 +249,21 @@ LABEL_21:
     PBDataWriterWriteBOOLField();
   }
 
-  v8 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (intentMetadata)
   {
-    v10 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetDefrosterSettingsInCarIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasEnable:(BOOL)a3
+- (void)setHasEnable:(BOOL)enable
 {
-  if (a3)
+  if (enable)
   {
     v3 = 2;
   }
@@ -276,20 +276,20 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsDefroster:(id)a3
+- (int)StringAsDefroster:(id)defroster
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FRONT"])
+  defrosterCopy = defroster;
+  if ([defrosterCopy isEqualToString:@"FRONT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REAR"])
+  else if ([defrosterCopy isEqualToString:@"REAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ALL"])
+  else if ([defrosterCopy isEqualToString:@"ALL"])
   {
     v4 = 3;
   }
@@ -302,10 +302,10 @@ LABEL_21:
   return v4;
 }
 
-- (void)setDefroster:(int)a3
+- (void)setDefroster:(int)defroster
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (defroster == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -313,7 +313,7 @@ LABEL_21:
   else
   {
     *&self->_has = has | 1;
-    self->_defroster = a3;
+    self->_defroster = defroster;
   }
 }
 

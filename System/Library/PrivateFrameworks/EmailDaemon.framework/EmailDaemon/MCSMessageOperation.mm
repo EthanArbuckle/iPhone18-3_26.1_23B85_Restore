@@ -1,14 +1,14 @@
 @interface MCSMessageOperation
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5;
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages;
 @end
 
 @implementation MCSMessageOperation
 
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messagesCopy = messages;
+  failuresCopy = failures;
+  newMessagesCopy = newMessages;
   [(MCSMessageOperation *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MCSMessageOperation commitToMessages:failures:newMessages:]", "MCSMessageOperation.m", 17, "0");
 }

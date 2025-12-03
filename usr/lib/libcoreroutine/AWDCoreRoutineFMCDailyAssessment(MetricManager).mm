@@ -8,7 +8,7 @@
 
 - (char)_init
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &off_284627078;
   result = objc_msgSendSuper2(&v2, sel_init);
   if (result)
@@ -29,7 +29,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -75,7 +75,7 @@ LABEL_9:
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 stringWithFormat:@"%@, duration %d, parking events %d, suppressedParkingEvents %d, assistances %d, assistedParkingEvents %d, engagements %d, engagedParkingEvents %d, locationType %d", v4, objc_msgSend(a1, "duration"), objc_msgSend(a1, "parkingEvents"), objc_msgSend(a1, "suppressedParkingEvents"), objc_msgSend(a1, "assistances"), objc_msgSend(a1, "assistedParkingEvents"), objc_msgSend(a1, "engagements"), objc_msgSend(a1, "engagedParkingEvents"), objc_msgSend(a1, "locationType")];
+  v5 = [v2 stringWithFormat:@"%@, duration %d, parking events %d, suppressedParkingEvents %d, assistances %d, assistedParkingEvents %d, engagements %d, engagedParkingEvents %d, locationType %d", v4, objc_msgSend(self, "duration"), objc_msgSend(self, "parkingEvents"), objc_msgSend(self, "suppressedParkingEvents"), objc_msgSend(self, "assistances"), objc_msgSend(self, "assistedParkingEvents"), objc_msgSend(self, "engagements"), objc_msgSend(self, "engagedParkingEvents"), objc_msgSend(self, "locationType")];
 
   return v5;
 }

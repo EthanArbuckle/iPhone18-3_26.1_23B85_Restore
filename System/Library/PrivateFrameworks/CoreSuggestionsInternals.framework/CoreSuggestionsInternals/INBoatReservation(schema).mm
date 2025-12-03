@@ -15,77 +15,77 @@
   [v5 setObject:@"http://schema.org/BoatReservation" forKeyedSubscript:@"@type"];
   v6 = objc_opt_new();
   [v6 setObject:@"http://schema.org/BoatTrip" forKeyedSubscript:@"@type"];
-  v7 = [v3 boatTrip];
-  v8 = [v7 tripDuration];
-  v9 = [v8 startDateComponents];
+  boatTrip = [v3 boatTrip];
+  tripDuration = [boatTrip tripDuration];
+  startDateComponents = [tripDuration startDateComponents];
 
-  if (v9)
+  if (startDateComponents)
   {
-    v10 = [v3 boatTrip];
-    v11 = [v10 tripDuration];
-    v12 = [v11 startDateComponents];
-    v13 = [v12 schema];
-    [v6 setObject:v13 forKeyedSubscript:@"departureTime"];
+    boatTrip2 = [v3 boatTrip];
+    tripDuration2 = [boatTrip2 tripDuration];
+    startDateComponents2 = [tripDuration2 startDateComponents];
+    schema = [startDateComponents2 schema];
+    [v6 setObject:schema forKeyedSubscript:@"departureTime"];
   }
 
-  v14 = [v3 boatTrip];
-  v15 = [v14 tripDuration];
-  v16 = [v15 endDateComponents];
+  boatTrip3 = [v3 boatTrip];
+  tripDuration3 = [boatTrip3 tripDuration];
+  endDateComponents = [tripDuration3 endDateComponents];
 
-  if (v16)
+  if (endDateComponents)
   {
-    v17 = [v3 boatTrip];
-    v18 = [v17 tripDuration];
-    v19 = [v18 endDateComponents];
-    v20 = [v19 schema];
-    [v6 setObject:v20 forKeyedSubscript:@"arrivalTime"];
+    boatTrip4 = [v3 boatTrip];
+    tripDuration4 = [boatTrip4 tripDuration];
+    endDateComponents2 = [tripDuration4 endDateComponents];
+    schema2 = [endDateComponents2 schema];
+    [v6 setObject:schema2 forKeyedSubscript:@"arrivalTime"];
   }
 
-  v21 = [v3 boatTrip];
-  v22 = [v21 boatName];
+  boatTrip5 = [v3 boatTrip];
+  boatName = [boatTrip5 boatName];
 
-  if (v22)
+  if (boatName)
   {
-    v23 = [v3 boatTrip];
-    v24 = [v23 boatName];
-    [v6 setObject:v24 forKeyedSubscript:@"name"];
+    boatTrip6 = [v3 boatTrip];
+    boatName2 = [boatTrip6 boatName];
+    [v6 setObject:boatName2 forKeyedSubscript:@"name"];
   }
 
-  v25 = [v3 boatTrip];
-  v26 = [v25 boatNumber];
+  boatTrip7 = [v3 boatTrip];
+  boatNumber = [boatTrip7 boatNumber];
 
-  if (v26)
+  if (boatNumber)
   {
-    v27 = [v3 boatTrip];
-    v28 = [v27 boatNumber];
-    [v6 setObject:v28 forKeyedSubscript:@"identifier"];
+    boatTrip8 = [v3 boatTrip];
+    boatNumber2 = [boatTrip8 boatNumber];
+    [v6 setObject:boatNumber2 forKeyedSubscript:@"identifier"];
   }
 
   v29 = objc_opt_new();
   [v29 setObject:@"http://schema.org/BoatTerminal" forKeyedSubscript:@"@type"];
-  v30 = [v3 boatTrip];
-  v31 = [v30 departureBoatTerminalLocation];
-  v32 = [v31 name];
+  boatTrip9 = [v3 boatTrip];
+  departureBoatTerminalLocation = [boatTrip9 departureBoatTerminalLocation];
+  name = [departureBoatTerminalLocation name];
 
-  if (v32)
+  if (name)
   {
-    v33 = [v3 boatTrip];
-    v34 = [v33 departureBoatTerminalLocation];
-    v35 = [v34 name];
-    [v29 setObject:v35 forKeyedSubscript:@"name"];
+    boatTrip10 = [v3 boatTrip];
+    departureBoatTerminalLocation2 = [boatTrip10 departureBoatTerminalLocation];
+    name2 = [departureBoatTerminalLocation2 name];
+    [v29 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v36 = [v3 boatTrip];
-  v37 = [v36 departureBoatTerminalLocation];
-  v38 = [v37 postalAddress];
+  boatTrip11 = [v3 boatTrip];
+  departureBoatTerminalLocation3 = [boatTrip11 departureBoatTerminalLocation];
+  postalAddress = [departureBoatTerminalLocation3 postalAddress];
 
-  if (v38)
+  if (postalAddress)
   {
-    v39 = [v3 boatTrip];
-    v40 = [v39 departureBoatTerminalLocation];
-    v41 = [v40 postalAddress];
-    v42 = [v41 schema];
-    [v29 setObject:v42 forKeyedSubscript:@"address"];
+    boatTrip12 = [v3 boatTrip];
+    departureBoatTerminalLocation4 = [boatTrip12 departureBoatTerminalLocation];
+    postalAddress2 = [departureBoatTerminalLocation4 postalAddress];
+    schema3 = [postalAddress2 schema];
+    [v29 setObject:schema3 forKeyedSubscript:@"address"];
   }
 
   if ([v29 count] >= 2)
@@ -95,29 +95,29 @@
 
   v43 = objc_opt_new();
   [v43 setObject:@"http://schema.org/BoatTerminal" forKeyedSubscript:@"@type"];
-  v44 = [v3 boatTrip];
-  v45 = [v44 arrivalBoatTerminalLocation];
-  v46 = [v45 name];
+  boatTrip13 = [v3 boatTrip];
+  arrivalBoatTerminalLocation = [boatTrip13 arrivalBoatTerminalLocation];
+  name3 = [arrivalBoatTerminalLocation name];
 
-  if (v46)
+  if (name3)
   {
-    v47 = [v3 boatTrip];
-    v48 = [v47 arrivalBoatTerminalLocation];
-    v49 = [v48 name];
-    [v43 setObject:v49 forKeyedSubscript:@"name"];
+    boatTrip14 = [v3 boatTrip];
+    arrivalBoatTerminalLocation2 = [boatTrip14 arrivalBoatTerminalLocation];
+    name4 = [arrivalBoatTerminalLocation2 name];
+    [v43 setObject:name4 forKeyedSubscript:@"name"];
   }
 
-  v50 = [v3 boatTrip];
-  v51 = [v50 arrivalBoatTerminalLocation];
-  v52 = [v51 postalAddress];
+  boatTrip15 = [v3 boatTrip];
+  arrivalBoatTerminalLocation3 = [boatTrip15 arrivalBoatTerminalLocation];
+  postalAddress3 = [arrivalBoatTerminalLocation3 postalAddress];
 
-  if (v52)
+  if (postalAddress3)
   {
-    v53 = [v3 boatTrip];
-    v54 = [v53 arrivalBoatTerminalLocation];
-    v55 = [v54 postalAddress];
-    v56 = [v55 schema];
-    [v43 setObject:v56 forKeyedSubscript:@"address"];
+    boatTrip16 = [v3 boatTrip];
+    arrivalBoatTerminalLocation4 = [boatTrip16 arrivalBoatTerminalLocation];
+    postalAddress4 = [arrivalBoatTerminalLocation4 postalAddress];
+    schema4 = [postalAddress4 schema];
+    [v43 setObject:schema4 forKeyedSubscript:@"address"];
   }
 
   if ([v43 count] >= 2)
@@ -125,17 +125,17 @@
     [v6 setObject:v43 forKeyedSubscript:@"arrivalBoatTerminal"];
   }
 
-  v57 = [v3 boatTrip];
-  v58 = [v57 provider];
+  boatTrip17 = [v3 boatTrip];
+  provider = [boatTrip17 provider];
 
-  if (v58)
+  if (provider)
   {
     v64[0] = @"@type";
     v64[1] = @"name";
     v65[0] = @"http://schema.org/Organization";
-    v59 = [v3 boatTrip];
-    v60 = [v59 provider];
-    v65[1] = v60;
+    boatTrip18 = [v3 boatTrip];
+    provider2 = [boatTrip18 provider];
+    v65[1] = provider2;
     v61 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:2];
     [v6 setObject:v61 forKeyedSubscript:@"provider"];
   }
@@ -181,8 +181,8 @@
 
   v18 = objc_alloc(MEMORY[0x277CD4188]);
   v19 = objc_opt_new();
-  v20 = [v19 UUIDString];
-  v21 = [v18 initWithVocabularyIdentifier:v20 spokenPhrase:@"Boat Trip" pronunciationHint:0];
+  uUIDString = [v19 UUIDString];
+  v21 = [v18 initWithVocabularyIdentifier:uUIDString spokenPhrase:@"Boat Trip" pronunciationHint:0];
 
   v22 = [objc_alloc(MEMORY[0x277CD3AA0]) initWithItemReference:v21 reservationNumber:v32 bookingTime:v31 reservationStatus:v30 reservationHolderName:v29 actions:0 URL:v28 reservedSeat:0 boatTrip:v26];
 

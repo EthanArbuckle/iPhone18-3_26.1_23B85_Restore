@@ -1,8 +1,8 @@
 @interface UIViewSpringAnimationBehavior
-+ (UIViewSpringAnimationBehavior)behaviorWithDampingRatio:(double)a3 response:(double)a4;
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
++ (UIViewSpringAnimationBehavior)behaviorWithDampingRatio:(double)ratio response:(double)response;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
 - (UIViewSpringAnimationBehavior)init;
-- (void)setTrackingDampingRatio:(double)a3 response:(double)a4 dampingRatioSmoothing:(double)a5 responseSmoothing:(double)a6;
+- (void)setTrackingDampingRatio:(double)ratio response:(double)response dampingRatioSmoothing:(double)smoothing responseSmoothing:(double)responseSmoothing;
 @end
 
 @implementation UIViewSpringAnimationBehavior
@@ -25,23 +25,23 @@
   return result;
 }
 
-+ (UIViewSpringAnimationBehavior)behaviorWithDampingRatio:(double)a3 response:(double)a4
++ (UIViewSpringAnimationBehavior)behaviorWithDampingRatio:(double)ratio response:(double)response
 {
   v6 = objc_opt_new();
-  [v6 setDampingRatio:a3 response:a4];
+  [v6 setDampingRatio:ratio response:response];
 
   return v6;
 }
 
-- (void)setTrackingDampingRatio:(double)a3 response:(double)a4 dampingRatioSmoothing:(double)a5 responseSmoothing:(double)a6
+- (void)setTrackingDampingRatio:(double)ratio response:(double)response dampingRatioSmoothing:(double)smoothing responseSmoothing:(double)responseSmoothing
 {
-  self->_trackingDampingRatio = a3;
-  self->_trackingResponse = a4;
-  self->_dampingRatioSmoothing = a5;
-  self->_responseSmoothing = a6;
+  self->_trackingDampingRatio = ratio;
+  self->_trackingResponse = response;
+  self->_dampingRatioSmoothing = smoothing;
+  self->_responseSmoothing = responseSmoothing;
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
   *&retstr->var7 = 0u;
   *&retstr->var9 = 0u;
@@ -50,7 +50,7 @@
   *&retstr->var0 = 0u;
   if (a5 == 1)
   {
-    if (!a4)
+    if (!toState)
     {
       *&retstr->var2 = 257;
       *&retstr->var4 = *&self->var6;
@@ -67,7 +67,7 @@
     *&retstr->var0 = *&self->var6;
     retstr->var6 = 0.0;
     retstr->var7 = 0.0;
-    if (a4 != 1)
+    if (toState != 1)
     {
       return self;
     }

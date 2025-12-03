@@ -1,43 +1,43 @@
 @interface NTKMargaritaFaceBundle
-- (id)_galleryEditOptionsForDevice:(id)a3;
-- (id)_galleryPigmentsForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)_galleryEditOptionsForDevice:(id)device;
+- (id)_galleryPigmentsForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKMargaritaFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKMargaritaFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKMargaritaFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
-    v6 = [(NTKMargaritaFaceBundle *)self _galleryEditOptionsForDevice:v4];
+    v6 = [(NTKMargaritaFaceBundle *)self _galleryEditOptionsForDevice:deviceCopy];
     v7 = [v6 objectForKeyedSubscript:&off_15B40];
     v8 = [v6 objectForKeyedSubscript:&off_15B58];
-    v9 = [(NTKMargaritaFaceBundle *)self _galleryPigmentsForDevice:v4];
+    v9 = [(NTKMargaritaFaceBundle *)self _galleryPigmentsForDevice:deviceCopy];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_5D44;
     v17[3] = &unk_14708;
     v17[4] = self;
-    v18 = v4;
+    v18 = deviceCopy;
     v19 = v8;
     v20 = v7;
     v21 = v5;
-    v10 = v4;
+    v10 = deviceCopy;
     v11 = v7;
     v12 = v8;
     [v9 enumerateObjectsUsingBlock:v17];
@@ -45,24 +45,24 @@
 
   else
   {
-    v6 = [NTKMargaritaStripeCountEditOption optionsRestrictedByDevice:v4];
+    v6 = [NTKMargaritaStripeCountEditOption optionsRestrictedByDevice:deviceCopy];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_60E0;
     v14[3] = &unk_14730;
     v14[4] = self;
-    v15 = v4;
+    v15 = deviceCopy;
     v16 = v5;
-    v9 = v4;
+    v9 = deviceCopy;
     [v6 enumerateObjectsUsingBlock:v14];
   }
 
   return v5;
 }
 
-- (id)_galleryEditOptionsForDevice:(id)a3
+- (id)_galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_15B40;
     v5[1] = &off_15B58;
@@ -79,9 +79,9 @@
   return v3;
 }
 
-- (id)_galleryPigmentsForDevice:(id)a3
+- (id)_galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v3 = ntk_margarita_lightBlue;
     v17[0] = ntk_margarita_lightBlue;
@@ -128,17 +128,17 @@
   return v10;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKMargaritaFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKMargaritaFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:200];
     v8 = v7;
     if (v7)

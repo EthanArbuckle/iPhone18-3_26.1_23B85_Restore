@@ -1,17 +1,17 @@
 @interface HWFallbackGenerator
-- (void)fallbackForData:(id)a3 inFileURL:(id)a4 completionBlock:(id)a5;
+- (void)fallbackForData:(id)data inFileURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation HWFallbackGenerator
 
-- (void)fallbackForData:(id)a3 inFileURL:(id)a4 completionBlock:(id)a5
+- (void)fallbackForData:(id)data inFileURL:(id)l completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [HWEncoding decodeHandwritingFromData:a3];
-  v10 = [v9 drawing];
+  blockCopy = block;
+  lCopy = l;
+  v9 = [HWEncoding decodeHandwritingFromData:data];
+  drawing = [v9 drawing];
   v11 = +[UIColor fallbackInkColor];
-  v12 = [DKInkThumbnailRenderer imageForDrawing:v10 fittingInSize:v11 backingScale:1 color:184.0 highFidelity:94.0, 3.0];
+  v12 = [DKInkThumbnailRenderer imageForDrawing:drawing fittingInSize:v11 backingScale:1 color:184.0 highFidelity:94.0, 3.0];
 
   [v12 size];
   v15 = v13 == v14;
@@ -64,7 +64,7 @@
   v28 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v29 = UIImageJPEGRepresentation(v28, 0.75);
-  v30 = [v8 URLByAppendingPathComponent:@"handwriting.jpg"];
+  v30 = [lCopy URLByAppendingPathComponent:@"handwriting.jpg"];
 
   v34 = 0;
   v31 = [v29 writeToURL:v30 options:1 error:&v34];
@@ -73,12 +73,12 @@
   {
     v35 = v30;
     v33 = [NSArray arrayWithObjects:&v35 count:1];
-    v7[2](v7, v33, 0, 1, 1);
+    blockCopy[2](blockCopy, v33, 0, 1, 1);
   }
 
   else
   {
-    (v7)[2](v7, 0, v32, 0, 1);
+    (blockCopy)[2](blockCopy, 0, v32, 0, 1);
   }
 }
 

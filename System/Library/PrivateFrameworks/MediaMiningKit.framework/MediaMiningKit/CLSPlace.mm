@@ -1,10 +1,10 @@
 @interface CLSPlace
 - (CLLocationCoordinate2D)coordinate;
-- (CLSPlace)initWithCoder:(id)a3;
-- (CLSPlace)initWithName:(id)a3 region:(id)a4 placemark:(id)a5;
-- (CLSPlace)initWithPlacemark:(id)a3;
+- (CLSPlace)initWithCoder:(id)coder;
+- (CLSPlace)initWithName:(id)name region:(id)region placemark:(id)placemark;
+- (CLSPlace)initWithPlacemark:(id)placemark;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSPlace
@@ -23,24 +23,24 @@
   return v8;
 }
 
-- (CLSPlace)initWithCoder:(id)a3
+- (CLSPlace)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
 
   v8 = [(CLSPlace *)self initWithName:v5 region:v6 placemark:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_region forKey:@"region"];
-  [v5 encodeObject:self->_placemark forKey:@"placemark"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_region forKey:@"region"];
+  [coderCopy encodeObject:self->_placemark forKey:@"placemark"];
 }
 
 - (CLLocationCoordinate2D)coordinate
@@ -51,44 +51,44 @@
   return result;
 }
 
-- (CLSPlace)initWithName:(id)a3 region:(id)a4 placemark:(id)a5
+- (CLSPlace)initWithName:(id)name region:(id)region placemark:(id)placemark
 {
-  v7 = a5;
+  placemarkCopy = placemark;
   v19.receiver = self;
   v19.super_class = CLSPlace;
   v8 = [(CLSPlace *)&v19 init];
   if (v8)
   {
-    v9 = [v7 location];
+    location = [placemarkCopy location];
     v10 = MEMORY[0x277CCACA8];
-    [v9 coordinate];
+    [location coordinate];
     v12 = v11;
-    [v9 coordinate];
+    [location coordinate];
     v14 = [v10 stringWithFormat:@"<+%f, %f>", v12, v13];
     name = v8->_name;
     v8->_name = v14;
 
-    v16 = [v7 region];
+    region = [placemarkCopy region];
     region = v8->_region;
-    v8->_region = v16;
+    v8->_region = region;
 
-    objc_storeStrong(&v8->_placemark, a5);
+    objc_storeStrong(&v8->_placemark, placemark);
   }
 
   return v8;
 }
 
-- (CLSPlace)initWithPlacemark:(id)a3
+- (CLSPlace)initWithPlacemark:(id)placemark
 {
-  v4 = a3;
-  v5 = [v4 location];
+  placemarkCopy = placemark;
+  location = [placemarkCopy location];
   v6 = MEMORY[0x277CCACA8];
-  [v5 coordinate];
+  [location coordinate];
   v8 = v7;
-  [v5 coordinate];
+  [location coordinate];
   v10 = [v6 stringWithFormat:@"<+%f, %f>", v8, v9];
-  v11 = [v4 region];
-  v12 = [(CLSPlace *)self initWithName:v10 region:v11 placemark:v4];
+  region = [placemarkCopy region];
+  v12 = [(CLSPlace *)self initWithName:v10 region:region placemark:placemarkCopy];
 
   return v12;
 }

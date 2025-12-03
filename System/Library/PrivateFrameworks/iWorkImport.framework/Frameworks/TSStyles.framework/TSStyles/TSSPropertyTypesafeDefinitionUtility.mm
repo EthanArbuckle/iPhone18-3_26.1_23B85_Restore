@@ -1,7 +1,7 @@
 @interface TSSPropertyTypesafeDefinitionUtility
 + (TSSPropertyTypesafeDefinitionUtility)shared;
 - (id)initPrivate;
-- (int)propertyAccessedDuringBlock:(id)a3;
+- (int)propertyAccessedDuringBlock:(id)block;
 @end
 
 @implementation TSSPropertyTypesafeDefinitionUtility
@@ -58,9 +58,9 @@
   return v3;
 }
 
-- (int)propertyAccessedDuringBlock:(id)a3
+- (int)propertyAccessedDuringBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -71,9 +71,9 @@
   block[2] = sub_276CBEDC8;
   block[3] = &unk_27A6EF380;
   block[4] = self;
-  v9 = v4;
+  v9 = blockCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = blockCopy;
   dispatch_sync(queue, block);
   LODWORD(queue) = *(v12 + 6);
 

@@ -9,12 +9,12 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSLock(HealthKit) *)a2 hk_withLock:a1];
+    [(NSLock(HealthKit) *)a2 hk_withLock:self];
   }
 
-  [a1 lock];
+  [self lock];
   v5[2]();
-  [a1 unlock];
+  [self unlock];
 }
 
 - (void)hk_withLock:()HealthKit .cold.1(uint64_t a1, uint64_t a2)

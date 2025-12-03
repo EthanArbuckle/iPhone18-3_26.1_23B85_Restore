@@ -1,35 +1,35 @@
 @interface LAAuthenticationMethod
-- (LAAuthenticationMethod)initWithConfiguration:(id)a3;
+- (LAAuthenticationMethod)initWithConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)forEachObserverWithProtocol:(id)a3 selector:(SEL)a4 invoke:(id)a5;
+- (void)forEachObserverWithProtocol:(id)protocol selector:(SEL)selector invoke:(id)invoke;
 - (void)terminate;
 @end
 
 @implementation LAAuthenticationMethod
 
-- (LAAuthenticationMethod)initWithConfiguration:(id)a3
+- (LAAuthenticationMethod)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = LAAuthenticationMethod;
   v6 = [(LAAuthenticationMethod *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v6->_configuration, configuration);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
   }
 
   return v7;
 }
 
-- (void)forEachObserverWithProtocol:(id)a3 selector:(SEL)a4 invoke:(id)a5
+- (void)forEachObserverWithProtocol:(id)protocol selector:(SEL)selector invoke:(id)invoke
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  protocolCopy = protocol;
+  invokeCopy = invoke;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -51,9 +51,9 @@
         }
 
         v15 = *(*(&v17 + 1) + 8 * v14);
-        if (!v8 || [*(*(&v17 + 1) + 8 * v14) conformsToProtocol:{v8, v17}]) && (!a4 || (objc_opt_respondsToSelector()))
+        if (!protocolCopy || [*(*(&v17 + 1) + 8 * v14) conformsToProtocol:{protocolCopy, v17}]) && (!selector || (objc_opt_respondsToSelector()))
         {
-          v9[2](v9, v15);
+          invokeCopy[2](invokeCopy, v15);
         }
 
         ++v14;

@@ -1,13 +1,13 @@
 @interface BKThumbnailBookViewConfiguration
-- (BKThumbnailBookViewConfiguration)initWithContext:(id)a3;
+- (BKThumbnailBookViewConfiguration)initWithContext:(id)context;
 - (BOOL)_isCompactHeight;
 - (IMFrameEnvironment)context;
 - (UIEdgeInsets)resumeButtonTitleEdgeInsets;
 - (UIEdgeInsets)tocButtonImageEdgeInsets;
-- (double)backgroundExtensionForWindow:(id)a3;
+- (double)backgroundExtensionForWindow:(id)window;
 - (double)sideContentInset;
 - (double)singlePagePadding;
-- (double)statusBarHeightForWindow:(id)a3;
+- (double)statusBarHeightForWindow:(id)window;
 - (double)tapToTurnWidth;
 - (id)libraryButtonTitle;
 - (void)_setupCompactWidth;
@@ -17,16 +17,16 @@
 
 @implementation BKThumbnailBookViewConfiguration
 
-- (BKThumbnailBookViewConfiguration)initWithContext:(id)a3
+- (BKThumbnailBookViewConfiguration)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = BKThumbnailBookViewConfiguration;
   v5 = [(BKThumbnailBookViewConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
     [(BKThumbnailBookViewConfiguration *)v6 _setupCompactWidth];
     [(BKThumbnailBookViewConfiguration *)v6 _setupRegularWidth];
     [(BKThumbnailBookViewConfiguration *)v6 _setupDefault];
@@ -37,8 +37,8 @@
 
 - (double)sideContentInset
 {
-  v3 = [(BKThumbnailBookViewConfiguration *)self context];
-  [(BKThumbnailBookViewConfiguration *)self floatForKey:@"sideContentInset" context:v3];
+  context = [(BKThumbnailBookViewConfiguration *)self context];
+  [(BKThumbnailBookViewConfiguration *)self floatForKey:@"sideContentInset" context:context];
   v5 = v4;
 
   return v5;
@@ -46,16 +46,16 @@
 
 - (id)libraryButtonTitle
 {
-  v3 = [(BKThumbnailBookViewConfiguration *)self context];
-  v4 = [(BKThumbnailBookViewConfiguration *)self stringForKey:@"libraryButtonTitle" context:v3];
+  context = [(BKThumbnailBookViewConfiguration *)self context];
+  v4 = [(BKThumbnailBookViewConfiguration *)self stringForKey:@"libraryButtonTitle" context:context];
 
   return v4;
 }
 
 - (UIEdgeInsets)tocButtonImageEdgeInsets
 {
-  v3 = [(BKThumbnailBookViewConfiguration *)self context];
-  [(BKThumbnailBookViewConfiguration *)self edgeInsetsForKey:@"tocButtonImageEdgeInsets" context:v3];
+  context = [(BKThumbnailBookViewConfiguration *)self context];
+  [(BKThumbnailBookViewConfiguration *)self edgeInsetsForKey:@"tocButtonImageEdgeInsets" context:context];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -74,8 +74,8 @@
 
 - (UIEdgeInsets)resumeButtonTitleEdgeInsets
 {
-  v3 = [(BKThumbnailBookViewConfiguration *)self context];
-  [(BKThumbnailBookViewConfiguration *)self edgeInsetsForKey:@"resumeButtonTitleEdgeInsets" context:v3];
+  context = [(BKThumbnailBookViewConfiguration *)self context];
+  [(BKThumbnailBookViewConfiguration *)self edgeInsetsForKey:@"resumeButtonTitleEdgeInsets" context:context];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -94,8 +94,8 @@
 
 - (double)tapToTurnWidth
 {
-  v3 = [(BKThumbnailBookViewConfiguration *)self context];
-  [(BKThumbnailBookViewConfiguration *)self floatForKey:@"tapToTurnWidth" context:v3];
+  context = [(BKThumbnailBookViewConfiguration *)self context];
+  [(BKThumbnailBookViewConfiguration *)self floatForKey:@"tapToTurnWidth" context:context];
   v5 = v4;
 
   return v5;
@@ -103,31 +103,31 @@
 
 - (double)singlePagePadding
 {
-  v3 = [(BKThumbnailBookViewConfiguration *)self context];
-  [(BKThumbnailBookViewConfiguration *)self floatForKey:@"singlePagePadding" context:v3];
+  context = [(BKThumbnailBookViewConfiguration *)self context];
+  [(BKThumbnailBookViewConfiguration *)self floatForKey:@"singlePagePadding" context:context];
   v5 = v4;
 
   return v5;
 }
 
-- (double)statusBarHeightForWindow:(id)a3
+- (double)statusBarHeightForWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v5 = 0.0;
   if (![(BKThumbnailBookViewConfiguration *)self _isCompactHeight])
   {
-    v6 = [v4 windowScene];
-    v7 = [v6 statusBarManager];
-    [v7 bc_defaultPortraitStatusBarHeight];
+    windowScene = [windowCopy windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager bc_defaultPortraitStatusBarHeight];
     v5 = v8;
   }
 
   return v5;
 }
 
-- (double)backgroundExtensionForWindow:(id)a3
+- (double)backgroundExtensionForWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v5 = 0.0;
   if (![(BKThumbnailBookViewConfiguration *)self _isCompactHeight])
   {
@@ -137,7 +137,7 @@
 
     if (fabs(v5) < 2.22044605e-16)
     {
-      [(BKThumbnailBookViewConfiguration *)self statusBarHeightForWindow:v4];
+      [(BKThumbnailBookViewConfiguration *)self statusBarHeightForWindow:windowCopy];
       v5 = v8;
     }
   }
@@ -147,9 +147,9 @@
 
 - (BOOL)_isCompactHeight
 {
-  v2 = [(BKThumbnailBookViewConfiguration *)self context];
-  v3 = [v2 traitCollection];
-  v4 = [v3 verticalSizeClass] == &dword_0 + 1;
+  context = [(BKThumbnailBookViewConfiguration *)self context];
+  traitCollection = [context traitCollection];
+  v4 = [traitCollection verticalSizeClass] == &dword_0 + 1;
 
   return v4;
 }

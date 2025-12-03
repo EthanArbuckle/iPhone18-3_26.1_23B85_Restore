@@ -1,25 +1,25 @@
 @interface BPSZipMany
 - (BOOL)completed;
-- (BPSZipMany)initWithPublishers:(id)a3;
+- (BPSZipMany)initWithPublishers:(id)publishers;
 - (id)_tryConstructResultArray;
 - (id)nextEvent;
 - (void)_resetBuffer;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSZipMany
 
-- (BPSZipMany)initWithPublishers:(id)a3
+- (BPSZipMany)initWithPublishers:(id)publishers
 {
-  v5 = a3;
+  publishersCopy = publishers;
   v9.receiver = self;
   v9.super_class = BPSZipMany;
   v6 = [(BPSZipMany *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_publishers, a3);
+    objc_storeStrong(&v6->_publishers, publishers);
     v7->_currentPublisher = 0;
     [(BPSZipMany *)v7 _resetBuffer];
   }
@@ -27,19 +27,19 @@
   return v7;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v11 = a3;
-  v4 = [(BPSZipMany *)self publishers];
-  v5 = [v4 count];
+  subscribeCopy = subscribe;
+  publishers = [(BPSZipMany *)self publishers];
+  v5 = [publishers count];
 
-  v6 = [(_BPSAbstractZip *)[_BPSZipManyInner alloc] initWithDownstream:v11 upstreamCount:v5];
+  v6 = [(_BPSAbstractZip *)[_BPSZipManyInner alloc] initWithDownstream:subscribeCopy upstreamCount:v5];
   if (v5 >= 1)
   {
     for (i = 0; i != v5; ++i)
     {
-      v8 = [(BPSZipMany *)self publishers];
-      v9 = [v8 objectAtIndexedSubscript:i];
+      publishers2 = [(BPSZipMany *)self publishers];
+      v9 = [publishers2 objectAtIndexedSubscript:i];
       v10 = [[_BPSAbstractZipSide alloc] initWithIndex:i zip:v6];
       [v9 subscribe:v10];
     }
@@ -49,26 +49,26 @@
 - (void)_resetBuffer
 {
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(BPSZipMany *)self publishers];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  publishers = [(BPSZipMany *)self publishers];
+  v5 = [v3 initWithCapacity:{objc_msgSend(publishers, "count")}];
   [(BPSZipMany *)self setBuffer:v5];
 
   [(BPSZipMany *)self setBufferResultCount:0];
-  v6 = [(BPSZipMany *)self publishers];
-  v7 = [v6 count];
+  publishers2 = [(BPSZipMany *)self publishers];
+  v7 = [publishers2 count];
 
   if (v7)
   {
     v8 = 0;
     do
     {
-      v9 = [(BPSZipMany *)self buffer];
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v9 addObject:v10];
+      buffer = [(BPSZipMany *)self buffer];
+      null = [MEMORY[0x1E695DFB0] null];
+      [buffer addObject:null];
 
       ++v8;
-      v11 = [(BPSZipMany *)self publishers];
-      v12 = [v11 count];
+      publishers3 = [(BPSZipMany *)self publishers];
+      v12 = [publishers3 count];
     }
 
     while (v8 < v12);
@@ -78,19 +78,19 @@
 - (id)_tryConstructResultArray
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(BPSZipMany *)self bufferResultCount];
-  v4 = [(BPSZipMany *)self publishers];
-  v5 = [v4 count];
+  bufferResultCount = [(BPSZipMany *)self bufferResultCount];
+  publishers = [(BPSZipMany *)self publishers];
+  v5 = [publishers count];
 
-  if (v3 == v5)
+  if (bufferResultCount == v5)
   {
     v6 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(BPSZipMany *)self buffer];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    buffer = [(BPSZipMany *)self buffer];
+    v8 = [buffer countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -101,12 +101,12 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(buffer);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [MEMORY[0x1E695DFB0] null];
-          v14 = [v12 isEqual:v13];
+          null = [MEMORY[0x1E695DFB0] null];
+          v14 = [v12 isEqual:null];
 
           if (v14)
           {
@@ -118,7 +118,7 @@
           [v6 addObject:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [buffer countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v9)
         {
           continue;
@@ -145,52 +145,52 @@ LABEL_13:
 
 - (id)nextEvent
 {
-  v3 = [(BPSZipMany *)self publishers];
-  [v3 count];
+  publishers = [(BPSZipMany *)self publishers];
+  [publishers count];
 
   v4 = 0;
   do
   {
-    v5 = [(BPSZipMany *)self currentPublisher];
+    currentPublisher = [(BPSZipMany *)self currentPublisher];
     v6 = [(BPSZipMany *)self currentPublisher]+ 1;
-    v7 = [(BPSZipMany *)self publishers];
-    -[BPSZipMany setCurrentPublisher:](self, "setCurrentPublisher:", v6 % [v7 count]);
+    publishers2 = [(BPSZipMany *)self publishers];
+    -[BPSZipMany setCurrentPublisher:](self, "setCurrentPublisher:", v6 % [publishers2 count]);
 
-    v8 = [(BPSZipMany *)self publishers];
-    v9 = [v8 objectAtIndexedSubscript:v5];
+    publishers3 = [(BPSZipMany *)self publishers];
+    v9 = [publishers3 objectAtIndexedSubscript:currentPublisher];
 
-    v10 = [(BPSZipMany *)self buffer];
-    v11 = [v10 objectAtIndexedSubscript:v5];
-    v12 = [MEMORY[0x1E695DFB0] null];
-    v13 = [v11 isEqual:v12];
+    buffer = [(BPSZipMany *)self buffer];
+    v11 = [buffer objectAtIndexedSubscript:currentPublisher];
+    null = [MEMORY[0x1E695DFB0] null];
+    v13 = [v11 isEqual:null];
 
     if (v13)
     {
-      v14 = [v9 nextEvent];
-      if (v14)
+      nextEvent = [v9 nextEvent];
+      if (nextEvent)
       {
-        v15 = [(BPSZipMany *)self buffer];
-        [v15 setObject:v14 atIndexedSubscript:v5];
+        buffer2 = [(BPSZipMany *)self buffer];
+        [buffer2 setObject:nextEvent atIndexedSubscript:currentPublisher];
 
         [(BPSZipMany *)self setBufferResultCount:[(BPSZipMany *)self bufferResultCount]+ 1];
       }
     }
 
-    v16 = [(BPSZipMany *)self _tryConstructResultArray];
+    _tryConstructResultArray = [(BPSZipMany *)self _tryConstructResultArray];
 
-    if (v16)
+    if (_tryConstructResultArray)
     {
       break;
     }
 
     ++v4;
-    v17 = [(BPSZipMany *)self publishers];
-    v18 = [v17 count];
+    publishers4 = [(BPSZipMany *)self publishers];
+    v18 = [publishers4 count];
   }
 
   while (v4 <= v18);
 
-  return v16;
+  return _tryConstructResultArray;
 }
 
 - (void)reset
@@ -209,8 +209,8 @@ LABEL_13:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(BPSZipMany *)self publishers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  publishers = [(BPSZipMany *)self publishers];
+  v3 = [publishers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -220,7 +220,7 @@ LABEL_13:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(publishers);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) completed])
@@ -230,7 +230,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [publishers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;

@@ -1,19 +1,19 @@
 @interface CLSAreaOfInterestQueryPerformer
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4;
-- (CLSAreaOfInterestQueryPerformer)initWithAOICache:(id)a3 locationCache:(id)a4;
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions;
+- (CLSAreaOfInterestQueryPerformer)initWithAOICache:(id)cache locationCache:(id)locationCache;
 @end
 
 @implementation CLSAreaOfInterestQueryPerformer
 
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  regionCopy = region;
   v18.receiver = self;
   v18.super_class = CLSAreaOfInterestQueryPerformer;
-  if ([(CLSBusinessItemGenericQueryPerformer *)&v18 shouldQueryItemsForRegion:v6 selectedRegions:a4])
+  if ([(CLSBusinessItemGenericQueryPerformer *)&v18 shouldQueryItemsForRegion:regionCopy selectedRegions:regions])
   {
-    [(CLSLocationCache *)self->super._locationCache placemarksForLocation:v6];
+    [(CLSLocationCache *)self->super._locationCache placemarksForLocation:regionCopy];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -31,8 +31,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) areasOfInterest];
-          v12 = [v11 count];
+          areasOfInterest = [*(*(&v14 + 1) + 8 * i) areasOfInterest];
+          v12 = [areasOfInterest count];
 
           if (v12)
           {
@@ -62,11 +62,11 @@ LABEL_13:
   return v8;
 }
 
-- (CLSAreaOfInterestQueryPerformer)initWithAOICache:(id)a3 locationCache:(id)a4
+- (CLSAreaOfInterestQueryPerformer)initWithAOICache:(id)cache locationCache:(id)locationCache
 {
   v5.receiver = self;
   v5.super_class = CLSAreaOfInterestQueryPerformer;
-  return [(CLSBusinessItemGenericQueryPerformer *)&v5 initWithBusinessCategoryCache:a3 locationCache:a4];
+  return [(CLSBusinessItemGenericQueryPerformer *)&v5 initWithBusinessCategoryCache:cache locationCache:locationCache];
 }
 
 @end

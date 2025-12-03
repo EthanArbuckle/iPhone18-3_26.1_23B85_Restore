@@ -12,16 +12,16 @@
     [NSEnumerator(RCAdditions) rc_firstObjectPassingTest:];
   }
 
-  v5 = 0;
+  nextObject = 0;
   do
   {
-    v6 = v5;
-    v5 = [a1 nextObject];
+    v6 = nextObject;
+    nextObject = [self nextObject];
   }
 
-  while (v5 && !v4[2](v4, v5));
+  while (nextObject && !v4[2](v4, nextObject));
 
-  return v5;
+  return nextObject;
 }
 
 - (void)rc_firstObjectPassingTest:()RCAdditions .cold.1()

@@ -7,16 +7,16 @@
 
 - (void)endAnimatingActivityIndicatorWithError:()MUActivityObserving
 {
-  v2 = [a1 configuration];
-  [v2 setShowsActivityIndicator:0];
-  [a1 setConfiguration:v2];
+  configuration = [self configuration];
+  [configuration setShowsActivityIndicator:0];
+  [self setConfiguration:configuration];
 }
 
 - (void)beginAnimatingActivityIndicator
 {
-  v2 = [a1 configuration];
-  [v2 setShowsActivityIndicator:1];
-  [a1 setConfiguration:v2];
+  configuration = [self configuration];
+  [configuration setShowsActivityIndicator:1];
+  [self setConfiguration:configuration];
 }
 
 @end

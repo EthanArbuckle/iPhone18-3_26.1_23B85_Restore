@@ -1,8 +1,8 @@
 @interface ScreenDimmingView
 - (ScreenDimmingView)init;
-- (void)drawRect:(CGRect)a3;
-- (void)setDimEnabled:(BOOL)a3;
-- (void)setDimLevel:(double)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setDimEnabled:(BOOL)enabled;
+- (void)setDimLevel:(double)level;
 @end
 
 @implementation ScreenDimmingView
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (void)setDimEnabled:(BOOL)a3
+- (void)setDimEnabled:(BOOL)enabled
 {
-  if (self->_dimEnabled != a3)
+  if (self->_dimEnabled != enabled)
   {
-    self->_dimEnabled = a3;
+    self->_dimEnabled = enabled;
     [(ScreenDimmingView *)self setNeedsDisplay];
     v4 = LACLogUI();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -43,21 +43,21 @@
   }
 }
 
-- (void)setDimLevel:(double)a3
+- (void)setDimLevel:(double)level
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (level < 0.0 || level > 1.0)
   {
     sub_10006B018();
   }
 
-  self->_dimLevel = a3;
+  self->_dimLevel = level;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v7.receiver = self;
   v7.super_class = ScreenDimmingView;
-  [(ScreenDimmingView *)&v7 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ScreenDimmingView *)&v7 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (self->_dimEnabled)
   {
     CurrentContext = UIGraphicsGetCurrentContext();

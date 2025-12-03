@@ -1,26 +1,26 @@
 @interface CLIndoorPositionProvider
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3;
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3 onServer:(id)a4;
-- (CLIndoorPositionProvider)initWithConnection:(id)a3;
+- (CLIndoorPositionProvider)initWithApiKey:(id)key;
+- (CLIndoorPositionProvider)initWithApiKey:(id)key onServer:(id)server;
+- (CLIndoorPositionProvider)initWithConnection:(id)connection;
 - (id)withinQueuePermanentShutdownReason;
-- (void)clVisionNotificationAvailable:(id)a3;
-- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)a3;
-- (void)gpsEstimateAvailable:(id)a3;
-- (void)gpsSignalQualityAvailable:(id)a3;
-- (void)outdoorLocationAvailable:(id)a3;
-- (void)playbackDatarun:(id)a3;
-- (void)setApiKey:(id)a3;
-- (void)setApiKey:(id)a3 onServer:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)startUpdatingLocationAtLocation:(id)a3;
+- (void)clVisionNotificationAvailable:(id)available;
+- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)available;
+- (void)gpsEstimateAvailable:(id)available;
+- (void)gpsSignalQualityAvailable:(id)available;
+- (void)outdoorLocationAvailable:(id)available;
+- (void)playbackDatarun:(id)datarun;
+- (void)setApiKey:(id)key;
+- (void)setApiKey:(id)key onServer:(id)server;
+- (void)setDelegate:(id)delegate;
+- (void)startUpdatingLocationAtLocation:(id)location;
 - (void)stopUpdatingLocation;
 - (void)withinQueueReinitializeRemoteState;
-- (void)withinQueueSetDelegate:(id)a3;
+- (void)withinQueueSetDelegate:(id)delegate;
 @end
 
 @implementation CLIndoorPositionProvider
 
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3
+- (CLIndoorPositionProvider)initWithApiKey:(id)key
 {
   v7.receiver = self;
   v7.super_class = CLIndoorPositionProvider;
@@ -48,11 +48,11 @@ LABEL_3:
   return v3;
 }
 
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3 onServer:(id)a4
+- (CLIndoorPositionProvider)initWithApiKey:(id)key onServer:(id)server
 {
   v8.receiver = self;
   v8.super_class = CLIndoorPositionProvider;
-  v4 = [(CLIndoorXPCProvider *)&v8 init:a3];
+  v4 = [(CLIndoorXPCProvider *)&v8 init:key];
   if (qword_28144B270 != -1)
   {
     sub_245A8E640();
@@ -76,12 +76,12 @@ LABEL_3:
   return v4;
 }
 
-- (CLIndoorPositionProvider)initWithConnection:(id)a3
+- (CLIndoorPositionProvider)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CLIndoorPositionProvider;
-  v5 = [(CLIndoorXPCProvider *)&v9 initWithConnection:v4];
+  v5 = [(CLIndoorXPCProvider *)&v9 initWithConnection:connectionCopy];
   if (v5)
   {
     v6 = objc_alloc_init(ServiceState);
@@ -121,25 +121,25 @@ LABEL_3:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   frameworkQueue = self->super._frameworkQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_245A75E78;
   v7[3] = &unk_278E8AA90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(frameworkQueue, v7);
 }
 
-- (void)withinQueueSetDelegate:(id)a3
+- (void)withinQueueSetDelegate:(id)delegate
 {
-  v42 = a3;
+  delegateCopy = delegate;
   v4 = [IndoorProtocolProxy alloc];
-  v9 = objc_msgSend_initWithDelegate_(v4, v5, v6, v7, v8, v42);
+  v9 = objc_msgSend_initWithDelegate_(v4, v5, v6, v7, v8, delegateCopy);
   v14 = objc_msgSend_state(self, v10, v11, v12, v13);
   objc_msgSend_setDelegateProxy_(v14, v15, v16, v17, v18, v9);
 
@@ -151,9 +151,9 @@ LABEL_3:
   objc_msgSend_setExportedObject_(self->super._connection, v38, v39, v40, v41, v37);
 }
 
-- (void)setApiKey:(id)a3
+- (void)setApiKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (qword_28144B270 != -1)
   {
     sub_245A8E668();
@@ -177,10 +177,10 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)setApiKey:(id)a3 onServer:(id)a4
+- (void)setApiKey:(id)key onServer:(id)server
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  serverCopy = server;
   if (qword_28144B270 != -1)
   {
     sub_245A8E668();
@@ -204,35 +204,35 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)playbackDatarun:(id)a3
+- (void)playbackDatarun:(id)datarun
 {
-  v4 = a3;
+  datarunCopy = datarun;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = sub_245A76210;
   v9[3] = &unk_28589FD58;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = datarunCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_async(frameworkQueue, v9);
 }
 
-- (void)startUpdatingLocationAtLocation:(id)a3
+- (void)startUpdatingLocationAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = sub_245A76488;
   v9[3] = &unk_28589FD88;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = locationCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_async(frameworkQueue, v9);
 }
 
@@ -243,88 +243,88 @@ LABEL_4:
   block[1] = 3321888768;
   block[2] = sub_245A768D8;
   block[3] = &unk_28589FDB8;
-  v5 = self;
-  v3 = v5;
+  selfCopy = self;
+  v3 = selfCopy;
   dispatch_async(frameworkQueue, block);
 }
 
-- (void)outdoorLocationAvailable:(id)a3
+- (void)outdoorLocationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = sub_245A76BF4;
   v9[3] = &unk_28589FDE8;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_async(frameworkQueue, v9);
 }
 
-- (void)gpsEstimateAvailable:(id)a3
+- (void)gpsEstimateAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = sub_245A77048;
   v9[3] = &unk_28589FE18;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 
-- (void)gpsSignalQualityAvailable:(id)a3
+- (void)gpsSignalQualityAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = sub_245A7729C;
   v9[3] = &unk_28589FE48;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 
-- (void)clVisionNotificationAvailable:(id)a3
+- (void)clVisionNotificationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = sub_245A774F0;
   v9[3] = &unk_28589FE78;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 
-- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)a3
+- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = sub_245A77744;
   v9[3] = &unk_28589FEA8;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 

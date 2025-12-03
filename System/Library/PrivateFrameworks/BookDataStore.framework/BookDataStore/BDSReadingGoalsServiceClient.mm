@@ -1,13 +1,13 @@
 @interface BDSReadingGoalsServiceClient
 + (id)sharedServiceProxy;
-+ (void)clearLocalCachedDataWithCompletionHandler:(id)a3;
++ (void)clearLocalCachedDataWithCompletionHandler:(id)handler;
 - (BDSReadingGoalsServiceClient)init;
-- (void)_handleOnRemoteChange:(id)a3;
-- (void)changeBooksFinishedGoalTo:(int64_t)a3 completionHandler:(id)a4;
-- (void)changeDailyGoalTo:(double)a3 completionHandler:(id)a4;
-- (void)clearDataWithCompletionHandler:(id)a3;
+- (void)_handleOnRemoteChange:(id)change;
+- (void)changeBooksFinishedGoalTo:(int64_t)to completionHandler:(id)handler;
+- (void)changeDailyGoalTo:(double)to completionHandler:(id)handler;
+- (void)clearDataWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)stateInfoWithCompletionHandler:(id)a3;
+- (void)stateInfoWithCompletionHandler:(id)handler;
 @end
 
 @implementation BDSReadingGoalsServiceClient
@@ -35,8 +35,8 @@
     serviceProxy = v2->_serviceProxy;
     v2->_serviceProxy = v3;
 
-    v5 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleOnRemoteChange_ name:@"com.apple.BDSService.ReadingGoalsService.onRemoteChange" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleOnRemoteChange_ name:@"com.apple.BDSService.ReadingGoalsService.onRemoteChange" object:0];
   }
 
   return v2;
@@ -44,50 +44,50 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.BDSService.ReadingGoalsService.onRemoteChange" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.BDSService.ReadingGoalsService.onRemoteChange" object:0];
 
   v4.receiver = self;
   v4.super_class = BDSReadingGoalsServiceClient;
   [(BDSReadingGoalsServiceClient *)&v4 dealloc];
 }
 
-- (void)changeBooksFinishedGoalTo:(int64_t)a3 completionHandler:(id)a4
+- (void)changeBooksFinishedGoalTo:(int64_t)to completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(BDSReadingGoalsServiceClient *)self serviceProxy];
-  [v7 readingGoalsChangeBooksFinishedGoalTo:a3 withCompletion:v6];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingGoalsServiceClient *)self serviceProxy];
+  [serviceProxy readingGoalsChangeBooksFinishedGoalTo:to withCompletion:handlerCopy];
 }
 
-- (void)changeDailyGoalTo:(double)a3 completionHandler:(id)a4
+- (void)changeDailyGoalTo:(double)to completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(BDSReadingGoalsServiceClient *)self serviceProxy];
-  [v7 readingGoalsChangeDailyGoalTo:v6 withCompletion:a3];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingGoalsServiceClient *)self serviceProxy];
+  [serviceProxy readingGoalsChangeDailyGoalTo:handlerCopy withCompletion:to];
 }
 
-- (void)clearDataWithCompletionHandler:(id)a3
+- (void)clearDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSReadingGoalsServiceClient *)self serviceProxy];
-  [v5 readingGoalsClearDataWithCompletion:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingGoalsServiceClient *)self serviceProxy];
+  [serviceProxy readingGoalsClearDataWithCompletion:handlerCopy];
 }
 
-- (void)stateInfoWithCompletionHandler:(id)a3
+- (void)stateInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSReadingGoalsServiceClient *)self serviceProxy];
-  [v5 readingGoalsStateInfoWithCompletion:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingGoalsServiceClient *)self serviceProxy];
+  [serviceProxy readingGoalsStateInfoWithCompletion:handlerCopy];
 }
 
-+ (void)clearLocalCachedDataWithCompletionHandler:(id)a3
++ (void)clearLocalCachedDataWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[BDSReadingGoalsServiceClient sharedServiceProxy];
-  [v4 readingGoalsClearLocalCachedDataWithCompletion:v3];
+  [v4 readingGoalsClearLocalCachedDataWithCompletion:handlerCopy];
 }
 
-- (void)_handleOnRemoteChange:(id)a3
+- (void)_handleOnRemoteChange:(id)change
 {
   v4 = BDSServiceLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -96,11 +96,11 @@
     _os_log_impl(&dword_1E45E0000, v4, OS_LOG_TYPE_DEFAULT, "BDSReadingGoalsServiceClient _handleOnRemoteChange", v7, 2u);
   }
 
-  v5 = [(BDSReadingGoalsServiceClient *)self onRemoteChange];
-  v6 = v5;
-  if (v5)
+  onRemoteChange = [(BDSReadingGoalsServiceClient *)self onRemoteChange];
+  v6 = onRemoteChange;
+  if (onRemoteChange)
   {
-    (*(v5 + 16))(v5);
+    (*(onRemoteChange + 16))(onRemoteChange);
   }
 }
 

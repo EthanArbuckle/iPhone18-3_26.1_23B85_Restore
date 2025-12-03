@@ -1,53 +1,53 @@
 @interface AABatteryMonitorDaemon
 + (id)sharedAABatteryMonitorDaemon;
 - (AABatteryMonitorDaemon)init;
-- (BOOL)_applyPrefsOverrideToDevice:(id)a3;
-- (BOOL)_applyPrefsOverrideToDevice:(id)a3 forBatteryType:(int64_t)a4;
+- (BOOL)_applyPrefsOverrideToDevice:(id)device;
+- (BOOL)_applyPrefsOverrideToDevice:(id)device forBatteryType:(int64_t)type;
 - (NSArray)devices;
-- (id)_deviceWithIdentifier:(id)a3;
+- (id)_deviceWithIdentifier:(id)identifier;
 - (id)_devices;
-- (id)_newDeviceWithIdentifier:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (id)deviceWithIdentifier:(id)a3;
+- (id)_newDeviceWithIdentifier:(id)identifier;
+- (id)descriptionWithLevel:(int)level;
+- (id)deviceWithIdentifier:(id)identifier;
 - (id)devicesMap;
 - (void)_aaControllerEnsureStarted;
 - (void)_aaControllerEnsureStopped;
-- (void)_aaDeviceBatteryInfoLost:(id)a3;
-- (void)_aaDeviceBatteryInfoUpdated:(id)a3;
+- (void)_aaDeviceBatteryInfoLost:(id)lost;
+- (void)_aaDeviceBatteryInfoUpdated:(id)updated;
 - (void)_aaPairedDeviceDiscoveryEnsureStarted;
 - (void)_aaPairedDeviceDiscoveryEnsureStopped;
-- (void)_accessoryBatteryInfoMessageReceivedWithData:(id)a3 identifier:(id)a4;
+- (void)_accessoryBatteryInfoMessageReceivedWithData:(id)data identifier:(id)identifier;
 - (void)_activate;
 - (void)_checkForExpiredBatteries;
 - (void)_connectedDeviceDiscoveryEnsureStarted;
 - (void)_connectedDeviceDiscoveryEnsureStopped;
-- (void)_connectedDeviceFound:(id)a3;
-- (void)_connectedDeviceLost:(id)a3;
-- (void)_handleExpiredBatteriesForDevice:(id)a3;
+- (void)_connectedDeviceFound:(id)found;
+- (void)_connectedDeviceLost:(id)lost;
+- (void)_handleExpiredBatteriesForDevice:(id)device;
 - (void)_invalidate;
 - (void)_loadPreferences;
 - (void)_nearbyDeviceDiscoveryEnsureStarted;
 - (void)_nearbyDeviceDiscoveryEnsureStopped;
-- (void)_nearbyDeviceLost:(id)a3;
-- (void)_nearbyDeviceUpdated:(id)a3;
-- (void)_notifySubscribersBatteryInfoLost:(id)a3;
-- (void)_notifySubscribersBatteryInfoUpdated:(id)a3;
+- (void)_nearbyDeviceLost:(id)lost;
+- (void)_nearbyDeviceUpdated:(id)updated;
+- (void)_notifySubscribersBatteryInfoLost:(id)lost;
+- (void)_notifySubscribersBatteryInfoUpdated:(id)updated;
 - (void)_notifySubscribersInvalidated;
-- (void)_publishPowerSourcesFor:(id)a3;
+- (void)_publishPowerSourcesFor:(id)for;
 - (void)_registerForSystemNotifications;
-- (void)_removeDeviceInMapWithIdentifier:(id)a3;
+- (void)_removeDeviceInMapWithIdentifier:(id)identifier;
 - (void)_scheduleExpirationCheck;
-- (void)_setDeviceInMap:(id)a3;
-- (void)_unpublishPowerSourcesFor:(id)a3;
+- (void)_setDeviceInMap:(id)map;
+- (void)_unpublishPowerSourcesFor:(id)for;
 - (void)_unregisterFromSystemNotifications;
 - (void)activate;
 - (void)invalidate;
-- (void)nearbyDeviceLost:(id)a3;
-- (void)nearbyDeviceUpdated:(id)a3;
-- (void)pairedDeviceLost:(id)a3;
-- (void)pairedDeviceUpdated:(id)a3;
-- (void)subscribeToBatteryInfoUpdates:(id)a3;
-- (void)unsubscribeFromBatteryInfoUpdates:(id)a3;
+- (void)nearbyDeviceLost:(id)lost;
+- (void)nearbyDeviceUpdated:(id)updated;
+- (void)pairedDeviceLost:(id)lost;
+- (void)pairedDeviceUpdated:(id)updated;
+- (void)subscribeToBatteryInfoUpdates:(id)updates;
+- (void)unsubscribeFromBatteryInfoUpdates:(id)updates;
 @end
 
 @implementation AABatteryMonitorDaemon
@@ -66,13 +66,13 @@
 
 - (NSArray)devices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_devicesMap)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_devicesMap)
   {
     v3 = [NSArray alloc];
-    v4 = [(NSMutableDictionary *)v2->_devicesMap allValues];
-    v5 = [v3 initWithArray:v4 copyItems:1];
+    allValues = [(NSMutableDictionary *)selfCopy->_devicesMap allValues];
+    v5 = [v3 initWithArray:allValues copyItems:1];
   }
 
   else
@@ -80,7 +80,7 @@
     v5 = &__NSArray0__struct;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -108,14 +108,14 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v23 = 0;
   NSAppendPrintF_safe();
   v4 = 0;
-  v5 = [(AABatteryMonitorDaemon *)self _devices];
+  _devices = [(AABatteryMonitorDaemon *)self _devices];
   v22 = v4;
-  v16 = [v5 count];
+  v16 = [_devices count];
   NSAppendPrintF();
   v6 = v4;
 
@@ -123,7 +123,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = _devices;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v24 count:{16, v16}];
   if (v8)
   {
@@ -166,22 +166,22 @@
 
 - (void)activate
 {
-  v3 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DC574;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_activate
 {
   if (![(AABatteryMonitorDaemon *)self activateCalled])
   {
-    v3 = [(AABatteryMonitorDaemon *)self servicesDaemon];
+    servicesDaemon = [(AABatteryMonitorDaemon *)self servicesDaemon];
 
-    if (!v3)
+    if (!servicesDaemon)
     {
       if (dword_1002F7670 <= 115 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
       {
@@ -209,13 +209,13 @@
 
 - (void)invalidate
 {
-  v3 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DC708;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_invalidate
@@ -236,12 +236,12 @@
 
 - (void)_aaControllerEnsureStarted
 {
-  v3 = [(AABatteryMonitorDaemon *)self aaController];
-  if (!v3)
+  aaController = [(AABatteryMonitorDaemon *)self aaController];
+  if (!aaController)
   {
     v4 = objc_alloc_init(AAController);
-    v5 = [(AABatteryMonitorDaemon *)self dispatchQueue];
-    [(AAController *)v4 setDispatchQueue:v5];
+    dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
+    [(AAController *)v4 setDispatchQueue:dispatchQueue];
 
     [(AABatteryMonitorDaemon *)self setAaController:v4];
     [(AAController *)v4 setInvalidationHandler:&stru_1002BB6B8];
@@ -251,7 +251,7 @@
     v10[3] = &unk_1002B6E38;
     v6 = v4;
     v11 = v6;
-    v12 = self;
+    selfCopy = self;
     [(AAController *)v6 setBatteryInfoMessageHandler:v10];
     if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
     {
@@ -262,21 +262,21 @@
     v7[1] = 3221225472;
     v7[2] = sub_1000DCA00;
     v7[3] = &unk_1002B68A8;
-    v3 = v6;
-    v8 = v3;
-    v9 = self;
-    [(AAController *)v3 activateWithCompletion:v7];
+    aaController = v6;
+    v8 = aaController;
+    selfCopy2 = self;
+    [(AAController *)aaController activateWithCompletion:v7];
   }
 }
 
 - (void)_aaControllerEnsureStopped
 {
-  v3 = [(AABatteryMonitorDaemon *)self aaController];
+  aaController = [(AABatteryMonitorDaemon *)self aaController];
 
-  if (v3)
+  if (aaController)
   {
-    v4 = [(AABatteryMonitorDaemon *)self aaController];
-    [v4 invalidate];
+    aaController2 = [(AABatteryMonitorDaemon *)self aaController];
+    [aaController2 invalidate];
 
     [(AABatteryMonitorDaemon *)self setAaController:0];
   }
@@ -284,56 +284,56 @@
 
 - (id)_devices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  devicesMap = v2->_devicesMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devicesMap = selfCopy->_devicesMap;
   if (devicesMap)
   {
-    v4 = [(NSMutableDictionary *)devicesMap allValues];
+    allValues = [(NSMutableDictionary *)devicesMap allValues];
   }
 
   else
   {
-    v4 = &__NSArray0__struct;
+    allValues = &__NSArray0__struct;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
 - (id)devicesMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_devicesMap;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_devicesMap;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)deviceWithIdentifier:(id)a3
+- (id)deviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(AABatteryMonitorDaemon *)v5 _deviceWithIdentifier:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(AABatteryMonitorDaemon *)selfCopy _deviceWithIdentifier:identifierCopy];
   v7 = [v6 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)_deviceWithIdentifier:(id)a3
+- (id)_deviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  devicesMap = v5->_devicesMap;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devicesMap = selfCopy->_devicesMap;
   if (devicesMap)
   {
-    v7 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -341,17 +341,17 @@
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)_newDeviceWithIdentifier:(id)a3
+- (id)_newDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[AADeviceBatteryInfo alloc] initWithIdentifier:v4];
-  v6 = [(AABatteryMonitorDaemon *)self pairedDeviceManager];
-  v7 = [v6 deviceWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[AADeviceBatteryInfo alloc] initWithIdentifier:identifierCopy];
+  pairedDeviceManager = [(AABatteryMonitorDaemon *)self pairedDeviceManager];
+  v7 = [pairedDeviceManager deviceWithIdentifier:identifierCopy];
 
   if (v7)
   {
@@ -362,93 +362,93 @@
 
   else
   {
-    sub_1001FC088(v4, &v10);
+    sub_1001FC088(identifierCopy, &v10);
     v8 = v10;
   }
 
   return v8;
 }
 
-- (void)_removeDeviceInMapWithIdentifier:(id)a3
+- (void)_removeDeviceInMapWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  devicesMap = v4->_devicesMap;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devicesMap = selfCopy->_devicesMap;
   if (devicesMap)
   {
-    [(NSMutableDictionary *)devicesMap setObject:0 forKeyedSubscript:v7];
-    if (![(NSMutableDictionary *)v4->_devicesMap count])
+    [(NSMutableDictionary *)devicesMap setObject:0 forKeyedSubscript:identifierCopy];
+    if (![(NSMutableDictionary *)selfCopy->_devicesMap count])
     {
-      v6 = v4->_devicesMap;
-      v4->_devicesMap = 0;
+      v6 = selfCopy->_devicesMap;
+      selfCopy->_devicesMap = 0;
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setDeviceInMap:(id)a3
+- (void)_setDeviceInMap:(id)map
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  devicesMap = v4->_devicesMap;
+  mapCopy = map;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devicesMap = selfCopy->_devicesMap;
   if (!devicesMap)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
-    v7 = v4->_devicesMap;
-    v4->_devicesMap = v6;
+    v7 = selfCopy->_devicesMap;
+    selfCopy->_devicesMap = v6;
 
-    devicesMap = v4->_devicesMap;
+    devicesMap = selfCopy->_devicesMap;
   }
 
-  v8 = [v9 identifier];
-  [(NSMutableDictionary *)devicesMap setObject:v9 forKeyedSubscript:v8];
+  identifier = [mapCopy identifier];
+  [(NSMutableDictionary *)devicesMap setObject:mapCopy forKeyedSubscript:identifier];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_aaDeviceBatteryInfoLost:(id)a3
+- (void)_aaDeviceBatteryInfoLost:(id)lost
 {
-  v4 = a3;
-  v7 = v4;
+  lostCopy = lost;
+  v7 = lostCopy;
   if (dword_1002F7670 <= 30)
   {
-    if (dword_1002F7670 != -1 || (v5 = _LogCategory_Initialize(), v4 = v7, v5))
+    if (dword_1002F7670 != -1 || (v5 = _LogCategory_Initialize(), lostCopy = v7, v5))
     {
       sub_1001FC10C();
-      v4 = v7;
+      lostCopy = v7;
     }
   }
 
-  [(AABatteryMonitorDaemon *)self _unpublishPowerSourcesFor:v4];
+  [(AABatteryMonitorDaemon *)self _unpublishPowerSourcesFor:lostCopy];
   v6 = [v7 copy];
   [(AABatteryMonitorDaemon *)self _notifySubscribersBatteryInfoLost:v6];
 }
 
-- (void)_aaDeviceBatteryInfoUpdated:(id)a3
+- (void)_aaDeviceBatteryInfoUpdated:(id)updated
 {
-  v7 = a3;
-  if ([v7 areAnyBatteriesAvailable])
+  updatedCopy = updated;
+  if ([updatedCopy areAnyBatteriesAvailable])
   {
-    if ([v7 productID])
+    if ([updatedCopy productID])
     {
-      v4 = [v7 bluetoothAddress];
+      bluetoothAddress = [updatedCopy bluetoothAddress];
 
-      if (v4)
+      if (bluetoothAddress)
       {
-        v5 = [v7 name];
+        name = [updatedCopy name];
 
-        if (v5)
+        if (name)
         {
           if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
           {
             sub_1001FC1C8();
           }
 
-          [(AABatteryMonitorDaemon *)self _publishPowerSourcesFor:v7];
-          v6 = [v7 copy];
+          [(AABatteryMonitorDaemon *)self _publishPowerSourcesFor:updatedCopy];
+          v6 = [updatedCopy copy];
           [(AABatteryMonitorDaemon *)self _notifySubscribersBatteryInfoUpdated:v6];
         }
 
@@ -476,19 +476,19 @@
   }
 }
 
-- (void)_notifySubscribersBatteryInfoUpdated:(id)a3
+- (void)_notifySubscribersBatteryInfoUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self subscribers];
+  updatedCopy = updated;
+  subscribers = [(AABatteryMonitorDaemon *)self subscribers];
 
-  if (v5)
+  if (subscribers)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(AABatteryMonitorDaemon *)self subscribers];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subscribers2 = [(AABatteryMonitorDaemon *)self subscribers];
+    v7 = [subscribers2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -500,15 +500,15 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subscribers2);
           }
 
-          [*(*(&v11 + 1) + 8 * v10) deviceBatteryInfoUpdated:v4];
+          [*(*(&v11 + 1) + 8 * v10) deviceBatteryInfoUpdated:updatedCopy];
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [subscribers2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -516,19 +516,19 @@
   }
 }
 
-- (void)_notifySubscribersBatteryInfoLost:(id)a3
+- (void)_notifySubscribersBatteryInfoLost:(id)lost
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self subscribers];
+  lostCopy = lost;
+  subscribers = [(AABatteryMonitorDaemon *)self subscribers];
 
-  if (v5)
+  if (subscribers)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(AABatteryMonitorDaemon *)self subscribers];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subscribers2 = [(AABatteryMonitorDaemon *)self subscribers];
+    v7 = [subscribers2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -540,15 +540,15 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subscribers2);
           }
 
-          [*(*(&v11 + 1) + 8 * v10) deviceBatteryInfoLost:v4];
+          [*(*(&v11 + 1) + 8 * v10) deviceBatteryInfoLost:lostCopy];
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [subscribers2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -558,16 +558,16 @@
 
 - (void)_notifySubscribersInvalidated
 {
-  v3 = [(AABatteryMonitorDaemon *)self subscribers];
+  subscribers = [(AABatteryMonitorDaemon *)self subscribers];
 
-  if (v3)
+  if (subscribers)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(AABatteryMonitorDaemon *)self subscribers];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    subscribers2 = [(AABatteryMonitorDaemon *)self subscribers];
+    v5 = [subscribers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -579,7 +579,7 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subscribers2);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
@@ -593,14 +593,14 @@
             [v9 batteryMonitorInvalidated];
           }
 
-          v10 = [(AABatteryMonitorDaemon *)self subscribers];
-          [v10 removeObject:v9];
+          subscribers3 = [(AABatteryMonitorDaemon *)self subscribers];
+          [subscribers3 removeObject:v9];
 
           v8 = v8 + 1;
         }
 
         while (v6 != v8);
-        v11 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v11 = [subscribers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
         v6 = v11;
       }
 
@@ -609,39 +609,39 @@
   }
 }
 
-- (void)subscribeToBatteryInfoUpdates:(id)a3
+- (void)subscribeToBatteryInfoUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  updatesCopy = updates;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DD5C0;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatesCopy;
+  v6 = updatesCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)unsubscribeFromBatteryInfoUpdates:(id)a3
+- (void)unsubscribeFromBatteryInfoUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  updatesCopy = updates;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DD820;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatesCopy;
+  v6 = updatesCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (void)_connectedDeviceDiscoveryEnsureStarted
 {
-  v3 = [(AABatteryMonitorDaemon *)self connectedDiscovery];
+  connectedDiscovery = [(AABatteryMonitorDaemon *)self connectedDiscovery];
 
-  if (!v3)
+  if (!connectedDiscovery)
   {
     if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
     {
@@ -649,11 +649,11 @@
     }
 
     v4 = objc_alloc_init(AADeviceManager);
-    v5 = [(AABatteryMonitorDaemon *)self servicesDaemon];
-    [v4 setInternalServicesDaemon:v5];
+    servicesDaemon = [(AABatteryMonitorDaemon *)self servicesDaemon];
+    [v4 setInternalServicesDaemon:servicesDaemon];
 
-    v6 = [(AABatteryMonitorDaemon *)self dispatchQueue];
-    [v4 setDispatchQueue:v6];
+    dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
+    [v4 setDispatchQueue:dispatchQueue];
 
     [v4 setInterruptionHandler:&stru_1002BB6D8];
     [v4 setInvalidationHandler:&stru_1002BB6F8];
@@ -670,7 +670,7 @@
     v11[4] = self;
     [v4 setDeviceLostHandler:v11];
     [(AABatteryMonitorDaemon *)self setConnectedDiscovery:v4];
-    v7 = [(AABatteryMonitorDaemon *)self connectedDiscovery];
+    connectedDiscovery2 = [(AABatteryMonitorDaemon *)self connectedDiscovery];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000DDC18;
@@ -678,7 +678,7 @@
     v9[4] = self;
     v10 = v4;
     v8 = v4;
-    [v7 activateWithCompletion:v9];
+    [connectedDiscovery2 activateWithCompletion:v9];
   }
 }
 
@@ -689,29 +689,29 @@
     sub_1001FC5A0();
   }
 
-  v3 = [(AABatteryMonitorDaemon *)self connectedDiscovery];
+  connectedDiscovery = [(AABatteryMonitorDaemon *)self connectedDiscovery];
 
-  if (v3)
+  if (connectedDiscovery)
   {
-    v4 = [(AABatteryMonitorDaemon *)self connectedDiscovery];
-    [v4 invalidate];
+    connectedDiscovery2 = [(AABatteryMonitorDaemon *)self connectedDiscovery];
+    [connectedDiscovery2 invalidate];
 
     [(AABatteryMonitorDaemon *)self setConnectedDiscovery:0];
   }
 }
 
-- (void)_connectedDeviceLost:(id)a3
+- (void)_connectedDeviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [(AABatteryMonitorDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  lostCopy = lost;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [v8 identifier];
-  v6 = [(AABatteryMonitorDaemon *)self _deviceWithIdentifier:v5];
+  identifier = [lostCopy identifier];
+  v6 = [(AABatteryMonitorDaemon *)self _deviceWithIdentifier:identifier];
   v7 = v6;
   if (v6)
   {
-    [v6 updateWithDisconnectedDevice:v8];
+    [v6 updateWithDisconnectedDevice:lostCopy];
     if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
     {
       sub_1001FC5BC();
@@ -726,62 +726,62 @@
   }
 }
 
-- (void)nearbyDeviceLost:(id)a3
+- (void)nearbyDeviceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  lostCopy = lost;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DDF4C;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = lostCopy;
+  v6 = lostCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_nearbyDeviceLost:(id)a3
+- (void)_nearbyDeviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [(AABatteryMonitorDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  lostCopy = lost;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  if ([v8 isCase])
+  if ([lostCopy isCase])
   {
-    [v8 primaryDeviceIdentifier];
+    [lostCopy primaryDeviceIdentifier];
   }
 
   else
   {
-    [v8 identifier];
+    [lostCopy identifier];
   }
   v5 = ;
   v6 = [(AABatteryMonitorDaemon *)self _deviceWithIdentifier:v5];
   v7 = v6;
   if (v6)
   {
-    [v6 updateWithLostAANearbyDevice:v8];
+    [v6 updateWithLostAANearbyDevice:lostCopy];
     if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001FC5FC(v8);
+      sub_1001FC5FC(lostCopy);
     }
 
     [(AABatteryMonitorDaemon *)self _scheduleExpirationCheck];
   }
 }
 
-- (void)nearbyDeviceUpdated:(id)a3
+- (void)nearbyDeviceUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  updatedCopy = updated;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DE10C;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatedCopy;
+  v6 = updatedCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (void)_nearbyDeviceDiscoveryEnsureStarted
@@ -791,31 +791,31 @@
     sub_1001FC664();
   }
 
-  v3 = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
+  nearbyDiscovery = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
 
-  if (!v3)
+  if (!nearbyDiscovery)
   {
     v4 = +[AANearbyDeviceManagerDaemon sharedAANearbyDeviceManagerDaemon];
     [(AABatteryMonitorDaemon *)self setNearbyDiscovery:v4];
   }
 
-  v5 = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
-  [v5 activate];
+  nearbyDiscovery2 = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
+  [nearbyDiscovery2 activate];
 }
 
 - (void)_nearbyDeviceDiscoveryEnsureStopped
 {
-  v3 = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
+  nearbyDiscovery = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
 
-  if (v3)
+  if (nearbyDiscovery)
   {
     if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
     {
       sub_1001FC680();
     }
 
-    v4 = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
-    [v4 invalidate];
+    nearbyDiscovery2 = [(AABatteryMonitorDaemon *)self nearbyDiscovery];
+    [nearbyDiscovery2 invalidate];
 
     [(AABatteryMonitorDaemon *)self setNearbyDiscovery:0];
   }
@@ -823,42 +823,42 @@
 
 - (void)_aaPairedDeviceDiscoveryEnsureStarted
 {
-  v3 = [(AABatteryMonitorDaemon *)self pairedDeviceManager];
-  [v3 subscribeToPairedDiscovery:self];
+  pairedDeviceManager = [(AABatteryMonitorDaemon *)self pairedDeviceManager];
+  [pairedDeviceManager subscribeToPairedDiscovery:self];
 }
 
 - (void)_aaPairedDeviceDiscoveryEnsureStopped
 {
-  v3 = [(AABatteryMonitorDaemon *)self pairedDeviceManager];
-  [v3 unsubscribeFromPairedDiscovery:self];
+  pairedDeviceManager = [(AABatteryMonitorDaemon *)self pairedDeviceManager];
+  [pairedDeviceManager unsubscribeFromPairedDiscovery:self];
 }
 
-- (void)pairedDeviceUpdated:(id)a3
+- (void)pairedDeviceUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  updatedCopy = updated;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001FBD38;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatedCopy;
+  selfCopy = self;
+  v6 = updatedCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)pairedDeviceLost:(id)a3
+- (void)pairedDeviceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  lostCopy = lost;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001FBDBC;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = lostCopy;
+  selfCopy = self;
+  v6 = lostCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (void)_scheduleExpirationCheck
@@ -872,8 +872,8 @@
     self->_expirationCheckTimer = 0;
   }
 
-  v6 = [(AABatteryMonitorDaemon *)self dispatchQueue];
-  v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v6);
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, dispatchQueue);
 
   v8 = self->_expirationCheckTimer;
   self->_expirationCheckTimer = v7;
@@ -897,8 +897,8 @@
     sub_1001FC69C();
   }
 
-  v3 = [(AABatteryMonitorDaemon *)self _devices];
-  v4 = [v3 copy];
+  _devices = [(AABatteryMonitorDaemon *)self _devices];
+  v4 = [_devices copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -932,8 +932,8 @@
     while (v7);
   }
 
-  v11 = [(AABatteryMonitorDaemon *)self _devices];
-  v12 = [v11 count];
+  _devices2 = [(AABatteryMonitorDaemon *)self _devices];
+  v12 = [_devices2 count];
 
   if (v12)
   {
@@ -941,15 +941,15 @@
   }
 }
 
-- (void)_handleExpiredBatteriesForDevice:(id)a3
+- (void)_handleExpiredBatteriesForDevice:(id)device
 {
-  v7 = a3;
-  v4 = [v7 batteries];
-  v5 = [v4 count];
+  deviceCopy = device;
+  batteries = [deviceCopy batteries];
+  v5 = [batteries count];
 
   if (v5)
   {
-    [(AABatteryMonitorDaemon *)self _aaDeviceBatteryInfoUpdated:v7];
+    [(AABatteryMonitorDaemon *)self _aaDeviceBatteryInfoUpdated:deviceCopy];
   }
 
   else
@@ -959,56 +959,56 @@
       sub_1001FC6B8();
     }
 
-    v6 = [v7 identifier];
-    [(AABatteryMonitorDaemon *)self _removeDeviceInMapWithIdentifier:v6];
+    identifier = [deviceCopy identifier];
+    [(AABatteryMonitorDaemon *)self _removeDeviceInMapWithIdentifier:identifier];
 
-    [(AABatteryMonitorDaemon *)self _aaDeviceBatteryInfoLost:v7];
+    [(AABatteryMonitorDaemon *)self _aaDeviceBatteryInfoLost:deviceCopy];
   }
 }
 
-- (void)_publishPowerSourcesFor:(id)a3
+- (void)_publishPowerSourcesFor:(id)for
 {
-  v11 = a3;
-  v4 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
+  forCopy = for;
+  powerSourcesMap = [(AABatteryMonitorDaemon *)self powerSourcesMap];
 
-  if (!v4)
+  if (!powerSourcesMap)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
     [(AABatteryMonitorDaemon *)self setPowerSourcesMap:v5];
   }
 
-  v6 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
-  v7 = [v11 identifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  powerSourcesMap2 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
+  identifier = [forCopy identifier];
+  v8 = [powerSourcesMap2 objectForKeyedSubscript:identifier];
 
   if (!v8)
   {
     v8 = objc_alloc_init(AADevicePowerSources);
-    v9 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
-    v10 = [v11 identifier];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    powerSourcesMap3 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
+    identifier2 = [forCopy identifier];
+    [powerSourcesMap3 setObject:v8 forKeyedSubscript:identifier2];
   }
 
-  [(AADevicePowerSources *)v8 publishWithUpdatedBatteryInfo:v11];
+  [(AADevicePowerSources *)v8 publishWithUpdatedBatteryInfo:forCopy];
 }
 
-- (void)_unpublishPowerSourcesFor:(id)a3
+- (void)_unpublishPowerSourcesFor:(id)for
 {
-  v10 = a3;
-  v4 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
+  forCopy = for;
+  powerSourcesMap = [(AABatteryMonitorDaemon *)self powerSourcesMap];
 
-  if (v4)
+  if (powerSourcesMap)
   {
-    v5 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
-    v6 = [v10 identifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    powerSourcesMap2 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
+    identifier = [forCopy identifier];
+    v7 = [powerSourcesMap2 objectForKeyedSubscript:identifier];
 
     if (v7)
     {
       [v7 unpublish];
-      v8 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
-      v9 = [v10 identifier];
-      [v8 setObject:0 forKeyedSubscript:v9];
+      powerSourcesMap3 = [(AABatteryMonitorDaemon *)self powerSourcesMap];
+      identifier2 = [forCopy identifier];
+      [powerSourcesMap3 setObject:0 forKeyedSubscript:identifier2];
     }
   }
 }
@@ -1024,8 +1024,8 @@
       sub_1001FC6F8();
     }
 
-    v4 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v4 setObject:v3 forKeyedSubscript:&off_1002CB8D0];
+    prefsBatteryOverrides = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides setObject:v3 forKeyedSubscript:&off_1002CB8D0];
   }
 
   else
@@ -1035,8 +1035,8 @@
       sub_1001FC738();
     }
 
-    v4 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v4 removeObjectForKey:&off_1002CB8D0];
+    prefsBatteryOverrides = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides removeObjectForKey:&off_1002CB8D0];
   }
 
   CFStringGetTypeID();
@@ -1049,8 +1049,8 @@
       sub_1001FC76C();
     }
 
-    v6 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v6 setObject:v5 forKeyedSubscript:&off_1002CB8E8];
+    prefsBatteryOverrides2 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides2 setObject:v5 forKeyedSubscript:&off_1002CB8E8];
   }
 
   else
@@ -1060,8 +1060,8 @@
       sub_1001FC7AC();
     }
 
-    v6 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v6 removeObjectForKey:&off_1002CB8E8];
+    prefsBatteryOverrides2 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides2 removeObjectForKey:&off_1002CB8E8];
   }
 
   CFStringGetTypeID();
@@ -1074,8 +1074,8 @@
       sub_1001FC7E0();
     }
 
-    v8 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v8 setObject:v7 forKeyedSubscript:&off_1002CB900];
+    prefsBatteryOverrides3 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides3 setObject:v7 forKeyedSubscript:&off_1002CB900];
   }
 
   else
@@ -1085,8 +1085,8 @@
       sub_1001FC820();
     }
 
-    v8 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v8 removeObjectForKey:&off_1002CB900];
+    prefsBatteryOverrides3 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides3 removeObjectForKey:&off_1002CB900];
   }
 
   CFStringGetTypeID();
@@ -1099,8 +1099,8 @@
       sub_1001FC854();
     }
 
-    v10 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v10 setObject:v9 forKeyedSubscript:&off_1002CB918];
+    prefsBatteryOverrides4 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides4 setObject:v9 forKeyedSubscript:&off_1002CB918];
   }
 
   else
@@ -1110,23 +1110,23 @@
       sub_1001FC894();
     }
 
-    v10 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-    [v10 removeObjectForKey:&off_1002CB918];
+    prefsBatteryOverrides4 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+    [prefsBatteryOverrides4 removeObjectForKey:&off_1002CB918];
   }
 }
 
-- (BOOL)_applyPrefsOverrideToDevice:(id)a3
+- (BOOL)_applyPrefsOverrideToDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-  v6 = [v5 count];
+  deviceCopy = device;
+  prefsBatteryOverrides = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+  v6 = [prefsBatteryOverrides count];
 
   if (v6)
   {
-    v7 = [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:v4 forBatteryType:1];
-    v8 = v7 | [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:v4 forBatteryType:2];
-    v9 = [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:v4 forBatteryType:4];
-    v10 = v8 | v9 | [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:v4 forBatteryType:3];
+    v7 = [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:deviceCopy forBatteryType:1];
+    v8 = v7 | [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:deviceCopy forBatteryType:2];
+    v9 = [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:deviceCopy forBatteryType:4];
+    v10 = v8 | v9 | [(AABatteryMonitorDaemon *)self _applyPrefsOverrideToDevice:deviceCopy forBatteryType:3];
   }
 
   else
@@ -1141,13 +1141,13 @@
 {
   if ([(AABatteryMonitorDaemon *)self prefsChangedNotifyToken]== -1)
   {
-    v3 = [(AABatteryMonitorDaemon *)self dispatchQueue];
+    dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000DEF58;
     handler[3] = &unk_1002B6DF0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.AudioAccessory.prefsChanged", &self->_prefsChangedNotifyToken, v3, handler);
+    notify_register_dispatch("com.apple.AudioAccessory.prefsChanged", &self->_prefsChangedNotifyToken, dispatchQueue, handler);
   }
 }
 
@@ -1161,40 +1161,40 @@
   }
 }
 
-- (void)_accessoryBatteryInfoMessageReceivedWithData:(id)a3 identifier:(id)a4
+- (void)_accessoryBatteryInfoMessageReceivedWithData:(id)data identifier:(id)identifier
 {
-  v13 = a3;
-  v6 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v7 = [sub_100072FBC() _deviceWithIdentifier:?];
   if (v7 || (v7 = [sub_100072FBC() _newDeviceWithIdentifier:?]) != 0)
   {
     v8 = v7;
-    v9 = [v7 updateWithAACPBatteryInfoData:v13];
+    v9 = [v7 updateWithAACPBatteryInfoData:dataCopy];
     v10 = [sub_1000DF278() _applyPrefsOverrideToDevice:?];
     if ((v9 & 1) != 0 || v10)
     {
       if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
       {
-        v11 = [v8 identifier];
-        v12 = v13;
+        identifier = [v8 identifier];
+        v12 = dataCopy;
         LogPrintF();
       }
 
       [sub_1000DF278() _aaDeviceBatteryInfoUpdated:?];
     }
 
-    [(AABatteryMonitorDaemon *)self _scheduleExpirationCheck:v11];
+    [(AABatteryMonitorDaemon *)self _scheduleExpirationCheck:identifier];
   }
 }
 
-- (void)_connectedDeviceFound:(id)a3
+- (void)_connectedDeviceFound:(id)found
 {
-  v8 = a3;
-  v4 = [(AABatteryMonitorDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  foundCopy = found;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [v8 identifier];
+  identifier = [foundCopy identifier];
   v6 = [sub_100072FBC() _deviceWithIdentifier:?];
   if (v6)
   {
@@ -1210,7 +1210,7 @@
     }
   }
 
-  if ([v7 updateWithConnectedDevice:v8])
+  if ([v7 updateWithConnectedDevice:foundCopy])
   {
     if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
     {
@@ -1223,41 +1223,41 @@
 LABEL_10:
 }
 
-- (void)_nearbyDeviceUpdated:(id)a3
+- (void)_nearbyDeviceUpdated:(id)updated
 {
-  v16 = a3;
-  v4 = [(AABatteryMonitorDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  updatedCopy = updated;
+  dispatchQueue = [(AABatteryMonitorDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [v16 paired];
-  v6 = v16;
-  if (v5)
+  paired = [updatedCopy paired];
+  v6 = updatedCopy;
+  if (paired)
   {
-    v7 = [v16 primaryDeviceIdentifier];
-    v8 = v7;
-    if (v7)
+    primaryDeviceIdentifier = [updatedCopy primaryDeviceIdentifier];
+    v8 = primaryDeviceIdentifier;
+    if (primaryDeviceIdentifier)
     {
-      v9 = v7;
+      identifier = primaryDeviceIdentifier;
     }
 
     else
     {
-      v9 = [v16 identifier];
+      identifier = [updatedCopy identifier];
     }
 
-    v10 = v9;
+    v10 = identifier;
 
     v11 = [sub_100072FBC() _deviceWithIdentifier:?];
     if (v11 || (v11 = [sub_100072FBC() _newDeviceWithIdentifier:?]) != 0)
     {
       v12 = v11;
-      v13 = [v11 updateWithAANearbyDevice:v16];
+      v13 = [v11 updateWithAANearbyDevice:updatedCopy];
       v14 = [sub_1000DF278() _applyPrefsOverrideToDevice:?];
       if ((v13 & 1) != 0 || v14)
       {
         if (dword_1002F7670 <= 30 && (dword_1002F7670 != -1 || _LogCategory_Initialize()))
         {
-          v15 = v16;
+          v15 = updatedCopy;
           LogPrintF();
         }
 
@@ -1267,18 +1267,18 @@ LABEL_10:
       [(AABatteryMonitorDaemon *)self _scheduleExpirationCheck];
     }
 
-    v6 = v16;
+    v6 = updatedCopy;
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(paired, v6);
 }
 
-- (BOOL)_applyPrefsOverrideToDevice:(id)a3 forBatteryType:(int64_t)a4
+- (BOOL)_applyPrefsOverrideToDevice:(id)device forBatteryType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
-  v8 = [NSNumber numberWithInteger:a4];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  deviceCopy = device;
+  prefsBatteryOverrides = [(AABatteryMonitorDaemon *)self prefsBatteryOverrides];
+  v8 = [NSNumber numberWithInteger:type];
+  v9 = [prefsBatteryOverrides objectForKeyedSubscript:v8];
 
   if (v9 && [v9 length])
   {

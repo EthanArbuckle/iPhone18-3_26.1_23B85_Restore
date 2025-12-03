@@ -1,10 +1,10 @@
 @interface InteractionNotificationsManager
-- (void)notificationTriggerDidPostWithNotification:(id)a3;
+- (void)notificationTriggerDidPostWithNotification:(id)notification;
 @end
 
 @implementation InteractionNotificationsManager
 
-- (void)notificationTriggerDidPostWithNotification:(id)a3
+- (void)notificationTriggerDidPostWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

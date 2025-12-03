@@ -1,13 +1,13 @@
 @interface LocalAudioRouteProvider
-- (void)callsChangedForCallCenterObserver:(id)a3;
+- (void)callsChangedForCallCenterObserver:(id)observer;
 @end
 
 @implementation LocalAudioRouteProvider
 
-- (void)callsChangedForCallCenterObserver:(id)a3
+- (void)callsChangedForCallCenterObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10002E090();
   swift_unknownObjectRelease();
 }

@@ -1,22 +1,22 @@
 @interface MSHistoryTransitItem
 + (Class)managedClass;
-- (MSHistoryTransitItem)initWithMuid:(unint64_t)a3 transitLineStorage:(id)a4;
-- (MSHistoryTransitItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSHistoryTransitItem)initWithStore:(id)a3 muid:(unint64_t)a4 transitLineStorage:(id)a5;
+- (MSHistoryTransitItem)initWithMuid:(unint64_t)muid transitLineStorage:(id)storage;
+- (MSHistoryTransitItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSHistoryTransitItem)initWithStore:(id)store muid:(unint64_t)muid transitLineStorage:(id)storage;
 - (NSData)transitLineStorage;
 - (unint64_t)muid;
-- (void)setMuid:(unint64_t)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setTransitLineStorage:(id)a3;
+- (void)setMuid:(unint64_t)muid;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setTransitLineStorage:(id)storage;
 @end
 
 @implementation MSHistoryTransitItem
 
-- (MSHistoryTransitItem)initWithMuid:(unint64_t)a3 transitLineStorage:(id)a4
+- (MSHistoryTransitItem)initWithMuid:(unint64_t)muid transitLineStorage:(id)storage
 {
-  if (a4)
+  if (storage)
   {
-    v6 = a4;
+    storageCopy = storage;
     v7 = sub_1B63BE924();
     v9 = v8;
   }
@@ -45,30 +45,30 @@
     sub_1B6284F64(v7, v9);
   }
 
-  v12 = [(MSHistoryTransitItem *)self initWithStore:v10 muid:a3 transitLineStorage:v11];
+  v12 = [(MSHistoryTransitItem *)self initWithStore:v10 muid:muid transitLineStorage:v11];
   sub_1B6284F64(v7, v9);
 
   return v12;
 }
 
-- (MSHistoryTransitItem)initWithStore:(id)a3 muid:(unint64_t)a4 transitLineStorage:(id)a5
+- (MSHistoryTransitItem)initWithStore:(id)store muid:(unint64_t)muid transitLineStorage:(id)storage
 {
-  v5 = a5;
-  if (a5)
+  storageCopy = storage;
+  if (storage)
   {
-    v8 = a3;
-    v9 = v5;
-    v5 = sub_1B63BE924();
+    storeCopy = store;
+    v9 = storageCopy;
+    storageCopy = sub_1B63BE924();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
+    storeCopy2 = store;
     v11 = 0xF000000000000000;
   }
 
-  return HistoryTransitItem.init(store:muid:transitLineStorage:)(a3, a4, v5, v11);
+  return HistoryTransitItem.init(store:muid:transitLineStorage:)(store, muid, storageCopy, v11);
 }
 
 + (Class)managedClass
@@ -78,34 +78,34 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B63075F4(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B63075F4(objectCopy, load);
 }
 
 - (unint64_t)muid
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.super.isa + OBJC_IVAR___MSHistoryTransitItem__muid);
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___MSHistoryTransitItem__muid);
   [*(&self->super.super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setMuid:(unint64_t)a3
+- (void)setMuid:(unint64_t)muid
 {
-  v4 = self;
-  sub_1B63069B8(a3);
+  selfCopy = self;
+  sub_1B63069B8(muid);
 }
 
 - (NSData)transitLineStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B6306CE4();
   v5 = v4;
 
@@ -124,35 +124,35 @@
   return v6;
 }
 
-- (void)setTransitLineStorage:(id)a3
+- (void)setTransitLineStorage:(id)storage
 {
-  v3 = a3;
-  if (a3)
+  storageCopy = storage;
+  if (storage)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B63BE924();
+    selfCopy = self;
+    v5 = storageCopy;
+    storageCopy = sub_1B63BE924();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B6307750(v3, v7);
-  sub_1B6284F64(v3, v7);
+  sub_1B6307750(storageCopy, v7);
+  sub_1B6284F64(storageCopy, v7);
 }
 
-- (MSHistoryTransitItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistoryTransitItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryTransitItem__muid) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryTransitItem__transitLineStorage) = xmmword_1B63C3E40;
-  v10 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
 @end

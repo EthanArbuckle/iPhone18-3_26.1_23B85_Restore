@@ -1,49 +1,49 @@
 @interface _SFPBRichText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRichText)initWithDictionary:(id)a3;
-- (_SFPBRichText)initWithFacade:(id)a3;
-- (_SFPBRichText)initWithJSON:(id)a3;
+- (_SFPBRichText)initWithDictionary:(id)dictionary;
+- (_SFPBRichText)initWithFacade:(id)facade;
+- (_SFPBRichText)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFormattedTextPieces:(id)a3;
-- (void)addIcons:(id)a3;
-- (void)setContentAdvisory:(id)a3;
-- (void)setFormattedTextPieces:(id)a3;
-- (void)setIcons:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFormattedTextPieces:(id)pieces;
+- (void)addIcons:(id)icons;
+- (void)setContentAdvisory:(id)advisory;
+- (void)setFormattedTextPieces:(id)pieces;
+- (void)setIcons:(id)icons;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRichText
 
-- (_SFPBRichText)initWithFacade:(id)a3
+- (_SFPBRichText)initWithFacade:(id)facade
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRichText *)self init];
   if (v5)
   {
-    v6 = [[_SFPBText alloc] initWithFacade:v4];
+    v6 = [[_SFPBText alloc] initWithFacade:facadeCopy];
     [(_SFPBRichText *)v5 setText:v6];
 
-    if ([v4 hasStarRating])
+    if ([facadeCopy hasStarRating])
     {
       v7 = [_SFPBGraphicalFloat alloc];
-      [v4 starRating];
+      [facadeCopy starRating];
       v8 = [(_SFPBGraphicalFloat *)v7 initWithCGFloat:?];
       [(_SFPBRichText *)v5 setStarRating:v8];
     }
 
-    v9 = [v4 contentAdvisory];
+    contentAdvisory = [facadeCopy contentAdvisory];
 
-    if (v9)
+    if (contentAdvisory)
     {
-      v10 = [v4 contentAdvisory];
-      [(_SFPBRichText *)v5 setContentAdvisory:v10];
+      contentAdvisory2 = [facadeCopy contentAdvisory];
+      [(_SFPBRichText *)v5 setContentAdvisory:contentAdvisory2];
     }
 
-    v11 = [v4 icons];
-    if (v11)
+    icons = [facadeCopy icons];
+    if (icons)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -57,8 +57,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [v4 icons];
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    icons2 = [facadeCopy icons];
+    v14 = [icons2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v14)
     {
       v15 = v14;
@@ -69,7 +69,7 @@
         {
           if (*v35 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(icons2);
           }
 
           v18 = [[_SFPBImage alloc] initWithFacade:*(*(&v34 + 1) + 8 * i)];
@@ -79,15 +79,15 @@
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v15 = [icons2 countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v15);
     }
 
     [(_SFPBRichText *)v5 setIcons:v12];
-    v19 = [v4 formattedTextPieces];
-    if (v19)
+    formattedTextPieces = [facadeCopy formattedTextPieces];
+    if (formattedTextPieces)
     {
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -101,8 +101,8 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v21 = [v4 formattedTextPieces];
-    v22 = [v21 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    formattedTextPieces2 = [facadeCopy formattedTextPieces];
+    v22 = [formattedTextPieces2 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v22)
     {
       v23 = v22;
@@ -113,7 +113,7 @@
         {
           if (*v31 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(formattedTextPieces2);
           }
 
           v26 = [[_SFPBFormattedText alloc] initWithFacade:*(*(&v30 + 1) + 8 * j)];
@@ -123,7 +123,7 @@
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v23 = [formattedTextPieces2 countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v23);
@@ -137,16 +137,16 @@
   return v5;
 }
 
-- (_SFPBRichText)initWithDictionary:(id)a3
+- (_SFPBRichText)initWithDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = _SFPBRichText;
   v5 = [(_SFPBRichText *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,7 +154,7 @@
       [(_SFPBRichText *)v5 setText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"starRating"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"starRating"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -162,7 +162,7 @@
       [(_SFPBRichText *)v5 setStarRating:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"contentAdvisory"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contentAdvisory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -173,7 +173,7 @@
       v6 = v11;
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"icons"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"icons"];
     objc_opt_class();
     v34 = v10;
     v35 = v8;
@@ -223,7 +223,7 @@
       v13 = v33;
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"formattedTextPieces"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"formattedTextPieces"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -279,30 +279,30 @@
   return v5;
 }
 
-- (_SFPBRichText)initWithJSON:(id)a3
+- (_SFPBRichText)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRichText *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRichText *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRichText *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -316,17 +316,17 @@
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contentAdvisory)
   {
-    v4 = [(_SFPBRichText *)self contentAdvisory];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"contentAdvisory"];
+    contentAdvisory = [(_SFPBRichText *)self contentAdvisory];
+    v5 = [contentAdvisory copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"contentAdvisory"];
   }
 
   if ([(NSArray *)self->_formattedTextPieces count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -346,16 +346,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -365,12 +365,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"formattedTextPieces"];
+    [dictionary setObject:array forKeyedSubscript:@"formattedTextPieces"];
   }
 
   if ([(NSArray *)self->_icons count])
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -390,16 +390,16 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
-          if (v20)
+          dictionaryRepresentation2 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v14 addObject:v20];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v21 = [MEMORY[0x1E695DFB0] null];
-            [v14 addObject:v21];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -409,44 +409,44 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"icons"];
+    [dictionary setObject:array2 forKeyedSubscript:@"icons"];
   }
 
   if (self->_starRating)
   {
-    v22 = [(_SFPBRichText *)self starRating];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    starRating = [(_SFPBRichText *)self starRating];
+    dictionaryRepresentation3 = [starRating dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"starRating"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"starRating"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"starRating"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"starRating"];
     }
   }
 
   if (self->_text)
   {
-    v25 = [(_SFPBRichText *)self text];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    text = [(_SFPBRichText *)self text];
+    dictionaryRepresentation4 = [text dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"text"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"text"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"text"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"text"];
     }
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -458,28 +458,28 @@
   return v6 ^ [(NSArray *)self->_formattedTextPieces hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_SFPBRichText *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRichText *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_SFPBRichText *)self text];
-  if (v7)
+  text3 = [(_SFPBRichText *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRichText *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBRichText *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -491,20 +491,20 @@
   {
   }
 
-  v5 = [(_SFPBRichText *)self starRating];
-  v6 = [v4 starRating];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRichText *)self starRating];
+  text2 = [equalCopy starRating];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_SFPBRichText *)self starRating];
-  if (v12)
+  starRating = [(_SFPBRichText *)self starRating];
+  if (starRating)
   {
-    v13 = v12;
-    v14 = [(_SFPBRichText *)self starRating];
-    v15 = [v4 starRating];
-    v16 = [v14 isEqual:v15];
+    v13 = starRating;
+    starRating2 = [(_SFPBRichText *)self starRating];
+    starRating3 = [equalCopy starRating];
+    v16 = [starRating2 isEqual:starRating3];
 
     if (!v16)
     {
@@ -516,20 +516,20 @@
   {
   }
 
-  v5 = [(_SFPBRichText *)self contentAdvisory];
-  v6 = [v4 contentAdvisory];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRichText *)self contentAdvisory];
+  text2 = [equalCopy contentAdvisory];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_SFPBRichText *)self contentAdvisory];
-  if (v17)
+  contentAdvisory = [(_SFPBRichText *)self contentAdvisory];
+  if (contentAdvisory)
   {
-    v18 = v17;
-    v19 = [(_SFPBRichText *)self contentAdvisory];
-    v20 = [v4 contentAdvisory];
-    v21 = [v19 isEqual:v20];
+    v18 = contentAdvisory;
+    contentAdvisory2 = [(_SFPBRichText *)self contentAdvisory];
+    contentAdvisory3 = [equalCopy contentAdvisory];
+    v21 = [contentAdvisory2 isEqual:contentAdvisory3];
 
     if (!v21)
     {
@@ -541,20 +541,20 @@
   {
   }
 
-  v5 = [(_SFPBRichText *)self icons];
-  v6 = [v4 icons];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRichText *)self icons];
+  text2 = [equalCopy icons];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_SFPBRichText *)self icons];
-  if (v22)
+  icons = [(_SFPBRichText *)self icons];
+  if (icons)
   {
-    v23 = v22;
-    v24 = [(_SFPBRichText *)self icons];
-    v25 = [v4 icons];
-    v26 = [v24 isEqual:v25];
+    v23 = icons;
+    icons2 = [(_SFPBRichText *)self icons];
+    icons3 = [equalCopy icons];
+    v26 = [icons2 isEqual:icons3];
 
     if (!v26)
     {
@@ -566,12 +566,12 @@
   {
   }
 
-  v5 = [(_SFPBRichText *)self formattedTextPieces];
-  v6 = [v4 formattedTextPieces];
-  if ((v5 != 0) != (v6 == 0))
+  text = [(_SFPBRichText *)self formattedTextPieces];
+  text2 = [equalCopy formattedTextPieces];
+  if ((text != 0) != (text2 == 0))
   {
-    v27 = [(_SFPBRichText *)self formattedTextPieces];
-    if (!v27)
+    formattedTextPieces = [(_SFPBRichText *)self formattedTextPieces];
+    if (!formattedTextPieces)
     {
 
 LABEL_30:
@@ -579,10 +579,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_SFPBRichText *)self formattedTextPieces];
-    v30 = [v4 formattedTextPieces];
-    v31 = [v29 isEqual:v30];
+    v28 = formattedTextPieces;
+    formattedTextPieces2 = [(_SFPBRichText *)self formattedTextPieces];
+    formattedTextPieces3 = [equalCopy formattedTextPieces];
+    v31 = [formattedTextPieces2 isEqual:formattedTextPieces3];
 
     if (v31)
     {
@@ -602,34 +602,34 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRichText *)self text];
-  if (v5)
+  toCopy = to;
+  text = [(_SFPBRichText *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRichText *)self starRating];
-  if (v6)
+  starRating = [(_SFPBRichText *)self starRating];
+  if (starRating)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBRichText *)self contentAdvisory];
-  if (v7)
+  contentAdvisory = [(_SFPBRichText *)self contentAdvisory];
+  if (contentAdvisory)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBRichText *)self icons];
+  icons = [(_SFPBRichText *)self icons];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v9 = [icons countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -641,7 +641,7 @@ LABEL_28:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(icons);
         }
 
         v13 = *(*(&v25 + 1) + 8 * v12);
@@ -650,18 +650,18 @@ LABEL_28:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v10 = [icons countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(_SFPBRichText *)self formattedTextPieces];
+  formattedTextPieces = [(_SFPBRichText *)self formattedTextPieces];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v15 = [formattedTextPieces countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v15)
   {
     v16 = v15;
@@ -673,7 +673,7 @@ LABEL_28:
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(formattedTextPieces);
         }
 
         v19 = *(*(&v21 + 1) + 8 * v18);
@@ -682,7 +682,7 @@ LABEL_28:
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v16 = [formattedTextPieces countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v16);
@@ -691,63 +691,63 @@ LABEL_28:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFormattedTextPieces:(id)a3
+- (void)addFormattedTextPieces:(id)pieces
 {
-  v4 = a3;
+  piecesCopy = pieces;
   formattedTextPieces = self->_formattedTextPieces;
-  v8 = v4;
+  v8 = piecesCopy;
   if (!formattedTextPieces)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_formattedTextPieces;
-    self->_formattedTextPieces = v6;
+    self->_formattedTextPieces = array;
 
-    v4 = v8;
+    piecesCopy = v8;
     formattedTextPieces = self->_formattedTextPieces;
   }
 
-  [(NSArray *)formattedTextPieces addObject:v4];
+  [(NSArray *)formattedTextPieces addObject:piecesCopy];
 }
 
-- (void)setFormattedTextPieces:(id)a3
+- (void)setFormattedTextPieces:(id)pieces
 {
-  v4 = [a3 copy];
+  v4 = [pieces copy];
   formattedTextPieces = self->_formattedTextPieces;
   self->_formattedTextPieces = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addIcons:(id)a3
+- (void)addIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   icons = self->_icons;
-  v8 = v4;
+  v8 = iconsCopy;
   if (!icons)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_icons;
-    self->_icons = v6;
+    self->_icons = array;
 
-    v4 = v8;
+    iconsCopy = v8;
     icons = self->_icons;
   }
 
-  [(NSArray *)icons addObject:v4];
+  [(NSArray *)icons addObject:iconsCopy];
 }
 
-- (void)setIcons:(id)a3
+- (void)setIcons:(id)icons
 {
-  v4 = [a3 copy];
+  v4 = [icons copy];
   icons = self->_icons;
   self->_icons = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setContentAdvisory:(id)a3
+- (void)setContentAdvisory:(id)advisory
 {
-  v4 = [a3 copy];
+  v4 = [advisory copy];
   contentAdvisory = self->_contentAdvisory;
   self->_contentAdvisory = v4;
 

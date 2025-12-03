@@ -1,6 +1,6 @@
 @interface CUIPSDLayerEffects
 - (CUIPSDLayerEffects)init;
-- (void)addLayerEffectComponent:(id)a3;
+- (void)addLayerEffectComponent:(id)component;
 - (void)dealloc;
 @end
 
@@ -15,13 +15,13 @@
   return v2;
 }
 
-- (void)addLayerEffectComponent:(id)a3
+- (void)addLayerEffectComponent:(id)component
 {
-  v5 = [a3 effectType];
+  effectType = [component effectType];
   effectList = self->_effectList;
-  v7 = [NSNumber numberWithUnsignedInt:v5];
+  v7 = [NSNumber numberWithUnsignedInt:effectType];
 
-  [(NSMutableDictionary *)effectList setObject:a3 forKey:v7];
+  [(NSMutableDictionary *)effectList setObject:component forKey:v7];
 }
 
 - (void)dealloc

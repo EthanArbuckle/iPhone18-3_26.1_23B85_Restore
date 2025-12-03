@@ -1,14 +1,14 @@
 @interface PKTextInputDebugLogEntry
-+ (id)_minimalReferenceString:(id)a3 rangeOfInterest:(_NSRange)a4 tokenSearchDistance:(int64_t)a5 localeIdentifier:(id)a6;
-+ (id)_mutableDictionaryRepresentationForResultQueryItem:(id)a3 detailLevel:(int64_t)a4;
-+ (id)_referenceSubstringForTargetContentInfo:(id)a3 resultAffectedRange:(_NSRange)a4 targetContentLevel:(int64_t)a5 localeIdentifier:(id)a6;
++ (id)_minimalReferenceString:(id)string rangeOfInterest:(_NSRange)interest tokenSearchDistance:(int64_t)distance localeIdentifier:(id)identifier;
++ (id)_mutableDictionaryRepresentationForResultQueryItem:(id)item detailLevel:(int64_t)level;
++ (id)_referenceSubstringForTargetContentInfo:(id)info resultAffectedRange:(_NSRange)range targetContentLevel:(int64_t)level localeIdentifier:(id)identifier;
 + (id)loggedDateFormatter;
-+ (id)mediumDescriptionForResultQueryItem:(id)a3;
++ (id)mediumDescriptionForResultQueryItem:(id)item;
 - (_NSRange)resultAffectedRange;
 - (id)description;
 - (id)mediumDescription;
 - (id)minimalDescription;
-- (id)referenceSubstringWithTargetContentLevel:(int64_t)a3;
+- (id)referenceSubstringWithTargetContentLevel:(int64_t)level;
 - (int64_t)resultType;
 @end
 
@@ -16,9 +16,9 @@
 
 - (id)description
 {
-  v3 = [(PKTextInputDebugLogEntry *)self inputDrawing];
-  v4 = [v3 strokes];
-  v5 = [v4 count];
+  inputDrawing = [(PKTextInputDebugLogEntry *)self inputDrawing];
+  strokes = [inputDrawing strokes];
+  v5 = [strokes count];
 
   if (v5 == 1)
   {
@@ -30,11 +30,11 @@
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld strokes", v5];
   }
 
-  v7 = [(PKTextInputDebugLogEntry *)self resultTopTranscription];
-  v8 = v7;
-  if (v7)
+  resultTopTranscription = [(PKTextInputDebugLogEntry *)self resultTopTranscription];
+  v8 = resultTopTranscription;
+  if (resultTopTranscription)
   {
-    v9 = v7;
+    v9 = resultTopTranscription;
   }
 
   else
@@ -44,11 +44,11 @@
 
   v10 = v9;
 
-  v11 = [(PKTextInputDebugLogEntry *)self resultCommittedText];
-  v12 = v11;
-  if (v11)
+  resultCommittedText = [(PKTextInputDebugLogEntry *)self resultCommittedText];
+  v12 = resultCommittedText;
+  if (resultCommittedText)
   {
-    v13 = v11;
+    v13 = resultCommittedText;
   }
 
   else
@@ -72,20 +72,20 @@
   v23.receiver = self;
   v23.super_class = PKTextInputDebugLogEntry;
   v16 = [(PKTextInputDebugLogEntry *)&v23 description];
-  v17 = [(PKTextInputDebugLogEntry *)self inputTargetContentInfo];
-  v18 = [v17 textInputTarget];
-  v19 = [v18 inputTargetIdentifier];
-  v20 = [(PKTextInputDebugLogEntry *)self resultTypeDescription];
-  v21 = [v16 stringByAppendingFormat:@" drawing: %@, targetID: %@, resultType: %@, affectedRange: %@, transcription: %@, committedText: %@", v6, v19, v20, v15, v10, v14];
+  inputTargetContentInfo = [(PKTextInputDebugLogEntry *)self inputTargetContentInfo];
+  textInputTarget = [inputTargetContentInfo textInputTarget];
+  inputTargetIdentifier = [textInputTarget inputTargetIdentifier];
+  resultTypeDescription = [(PKTextInputDebugLogEntry *)self resultTypeDescription];
+  v21 = [v16 stringByAppendingFormat:@" drawing: %@, targetID: %@, resultType: %@, affectedRange: %@, transcription: %@, committedText: %@", v6, inputTargetIdentifier, resultTypeDescription, v15, v10, v14];
 
   return v21;
 }
 
 - (id)minimalDescription
 {
-  v3 = [(PKTextInputDebugLogEntry *)self inputDrawing];
-  v4 = [v3 strokes];
-  v5 = [v4 count];
+  inputDrawing = [(PKTextInputDebugLogEntry *)self inputDrawing];
+  strokes = [inputDrawing strokes];
+  v5 = [strokes count];
 
   if (v5 == 1)
   {
@@ -110,73 +110,73 @@
 
   if ([(PKTextInputDebugLogEntry *)self resultType]== 1)
   {
-    v8 = [(PKTextInputDebugLogEntry *)self resultTopTranscription];
-    v9 = v8;
+    resultTopTranscription = [(PKTextInputDebugLogEntry *)self resultTopTranscription];
+    v9 = resultTopTranscription;
     v10 = &stru_1F476BD20;
-    if (v8)
+    if (resultTopTranscription)
     {
-      v10 = v8;
+      v10 = resultTopTranscription;
     }
 
     v11 = v10;
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Text: %@", v11];
+    resultTypeDescription = [MEMORY[0x1E696AEC0] stringWithFormat:@"Text: %@", v11];
   }
 
   else
   {
-    v12 = [(PKTextInputDebugLogEntry *)self resultTypeDescription];
+    resultTypeDescription = [(PKTextInputDebugLogEntry *)self resultTypeDescription];
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@, %@", v6, v7, v12];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@, %@", v6, v7, resultTypeDescription];
 
   return v13;
 }
 
 - (int64_t)resultType
 {
-  v2 = [(PKTextInputDebugLogEntry *)self resultTypeDescription];
-  if ([v2 isEqualToString:@"None"])
+  resultTypeDescription = [(PKTextInputDebugLogEntry *)self resultTypeDescription];
+  if ([resultTypeDescription isEqualToString:@"None"])
   {
     v3 = 0;
   }
 
-  else if ([v2 isEqualToString:@"Text"])
+  else if ([resultTypeDescription isEqualToString:@"Text"])
   {
     v3 = 1;
   }
 
-  else if ([v2 isEqualToString:@"Dot"])
+  else if ([resultTypeDescription isEqualToString:@"Dot"])
   {
     v3 = 2;
   }
 
-  else if ([v2 isEqualToString:@"Line"])
+  else if ([resultTypeDescription isEqualToString:@"Line"])
   {
     v3 = 3;
   }
 
-  else if ([v2 isEqualToString:@"Encircle"])
+  else if ([resultTypeDescription isEqualToString:@"Encircle"])
   {
     v3 = 4;
   }
 
-  else if ([v2 isEqualToString:@"Polygon"])
+  else if ([resultTypeDescription isEqualToString:@"Polygon"])
   {
     v3 = 5;
   }
 
-  else if ([v2 isEqualToString:@"Scribble"])
+  else if ([resultTypeDescription isEqualToString:@"Scribble"])
   {
     v3 = 6;
   }
 
-  else if ([v2 isEqualToString:@"SplitJoin"])
+  else if ([resultTypeDescription isEqualToString:@"SplitJoin"])
   {
     v3 = 7;
   }
 
-  else if ([v2 isEqualToString:@"InsertionCaret"])
+  else if ([resultTypeDescription isEqualToString:@"InsertionCaret"])
   {
     v3 = 8;
   }
@@ -197,53 +197,53 @@
   return v3;
 }
 
-+ (id)mediumDescriptionForResultQueryItem:(id)a3
++ (id)mediumDescriptionForResultQueryItem:(id)item
 {
-  v3 = [(PKTextInputDebugLogEntry *)PKTextInputDebugRecordingLogEntry _mutableDictionaryRepresentationForResultQueryItem:a3 detailLevel:0];
+  v3 = [(PKTextInputDebugLogEntry *)PKTextInputDebugRecordingLogEntry _mutableDictionaryRepresentationForResultQueryItem:item detailLevel:0];
   v4 = [v3 description];
 
   return v4;
 }
 
-- (id)referenceSubstringWithTargetContentLevel:(int64_t)a3
+- (id)referenceSubstringWithTargetContentLevel:(int64_t)level
 {
-  v5 = [(PKTextInputDebugLogEntry *)self inputTargetContentInfo];
-  v6 = [(PKTextInputDebugLogEntry *)self resultAffectedRange];
+  inputTargetContentInfo = [(PKTextInputDebugLogEntry *)self inputTargetContentInfo];
+  resultAffectedRange = [(PKTextInputDebugLogEntry *)self resultAffectedRange];
   v8 = v7;
   v9 = objc_opt_class();
-  v10 = [(PKTextInputDebugLogEntry *)self recognitionLocaleIdentifiers];
-  v11 = [v10 firstObject];
-  v12 = [v9 _referenceSubstringForTargetContentInfo:v5 resultAffectedRange:v6 targetContentLevel:v8 localeIdentifier:{a3, v11}];
+  recognitionLocaleIdentifiers = [(PKTextInputDebugLogEntry *)self recognitionLocaleIdentifiers];
+  firstObject = [recognitionLocaleIdentifiers firstObject];
+  v12 = [v9 _referenceSubstringForTargetContentInfo:inputTargetContentInfo resultAffectedRange:resultAffectedRange targetContentLevel:v8 localeIdentifier:{level, firstObject}];
 
   return v12;
 }
 
-+ (id)_referenceSubstringForTargetContentInfo:(id)a3 resultAffectedRange:(_NSRange)a4 targetContentLevel:(int64_t)a5 localeIdentifier:(id)a6
++ (id)_referenceSubstringForTargetContentInfo:(id)info resultAffectedRange:(_NSRange)range targetContentLevel:(int64_t)level localeIdentifier:(id)identifier
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a6;
-  v13 = [v11 referenceSubstring];
-  v14 = v13;
-  switch(a5)
+  length = range.length;
+  location = range.location;
+  infoCopy = info;
+  identifierCopy = identifier;
+  referenceSubstring = [infoCopy referenceSubstring];
+  v14 = referenceSubstring;
+  switch(level)
   {
     case 2:
-      v21 = v13;
+      v21 = referenceSubstring;
       goto LABEL_12;
     case 1:
       v20 = 0x7FFFFFFFFFFFFFFFLL;
-      if (location == 0x7FFFFFFFFFFFFFFFLL || [v11 referenceSubstringRange] == 0x7FFFFFFFFFFFFFFFLL || location < objc_msgSend(v11, "referenceSubstringRange"))
+      if (location == 0x7FFFFFFFFFFFFFFFLL || [infoCopy referenceSubstringRange] == 0x7FFFFFFFFFFFFFFFLL || location < objc_msgSend(infoCopy, "referenceSubstringRange"))
       {
         length = 0;
       }
 
       else
       {
-        v24 = [v11 referenceSubstringRange];
-        if (location + length <= v24 + v25)
+        referenceSubstringRange = [infoCopy referenceSubstringRange];
+        if (location + length <= referenceSubstringRange + v25)
         {
-          v20 = location - [v11 referenceSubstringRange];
+          v20 = location - [infoCopy referenceSubstringRange];
         }
 
         else
@@ -253,20 +253,20 @@
         }
       }
 
-      v15 = a1;
+      selfCopy2 = self;
       v16 = v14;
       v17 = v20;
       v18 = length;
       v19 = 10;
       goto LABEL_10;
     case 0:
-      v15 = a1;
+      selfCopy2 = self;
       v16 = v14;
       v17 = 0x7FFFFFFFFFFFFFFFLL;
       v18 = 0;
       v19 = 0;
 LABEL_10:
-      v21 = [v15 _minimalReferenceString:v16 rangeOfInterest:v17 tokenSearchDistance:v18 localeIdentifier:{v19, v12}];
+      v21 = [selfCopy2 _minimalReferenceString:v16 rangeOfInterest:v17 tokenSearchDistance:v18 localeIdentifier:{v19, identifierCopy}];
 LABEL_12:
       v22 = v21;
       goto LABEL_14;
@@ -278,57 +278,57 @@ LABEL_14:
   return v22;
 }
 
-+ (id)_mutableDictionaryRepresentationForResultQueryItem:(id)a3 detailLevel:(int64_t)a4
++ (id)_mutableDictionaryRepresentationForResultQueryItem:(id)item detailLevel:(int64_t)level
 {
   v77 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [v5 correctionResult];
-  v8 = [v7 textResult];
-  v9 = [v5 itemIdentifier];
-  [v6 setObject:v9 forKeyedSubscript:@"itemIdentifier"];
+  itemCopy = item;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  correctionResult = [itemCopy correctionResult];
+  textResult = [correctionResult textResult];
+  itemIdentifier = [itemCopy itemIdentifier];
+  [dictionary setObject:itemIdentifier forKeyedSubscript:@"itemIdentifier"];
 
-  v10 = [v5 itemStableIdentifier];
-  [v6 setObject:v10 forKeyedSubscript:@"itemStableIdentifier"];
+  itemStableIdentifier = [itemCopy itemStableIdentifier];
+  [dictionary setObject:itemStableIdentifier forKeyedSubscript:@"itemStableIdentifier"];
 
-  if (v7)
+  if (correctionResult)
   {
-    v11 = [v7 inputTarget];
-    v12 = [v11 inputTargetIdentifier];
-    [v6 setObject:v12 forKeyedSubscript:@"inputTargetIdentifier"];
+    inputTarget = [correctionResult inputTarget];
+    inputTargetIdentifier = [inputTarget inputTargetIdentifier];
+    [dictionary setObject:inputTargetIdentifier forKeyedSubscript:@"inputTargetIdentifier"];
 
-    v79.location = [v7 affectedRange];
+    v79.location = [correctionResult affectedRange];
     v13 = NSStringFromRange(v79);
-    [v6 setObject:v13 forKeyedSubscript:@"affectedRange"];
+    [dictionary setObject:v13 forKeyedSubscript:@"affectedRange"];
 
-    v14 = _PKDescriptionForCHCorrectionType([v7 resultType]);
-    [v6 setObject:v14 forKeyedSubscript:@"resultType"];
+    v14 = _PKDescriptionForCHCorrectionType([correctionResult resultType]);
+    [dictionary setObject:v14 forKeyedSubscript:@"resultType"];
 
-    v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "isCharacterLevel")}];
-    [v6 setObject:v15 forKeyedSubscript:@"isCharacterLevel"];
+    v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(correctionResult, "isCharacterLevel")}];
+    [dictionary setObject:v15 forKeyedSubscript:@"isCharacterLevel"];
 
-    v16 = [v8 recognizerDebugDescription];
-    [v6 setObject:v16 forKeyedSubscript:@"recognizerInfo"];
+    recognizerDebugDescription = [textResult recognizerDebugDescription];
+    [dictionary setObject:recognizerDebugDescription forKeyedSubscript:@"recognizerInfo"];
 
-    v17 = [v7 error];
+    error = [correctionResult error];
 
-    if (v17)
+    if (error)
     {
-      v18 = [v7 error];
-      v19 = [v18 localizedDescription];
-      [v6 setObject:v19 forKeyedSubscript:@"error"];
+      error2 = [correctionResult error];
+      localizedDescription = [error2 localizedDescription];
+      [dictionary setObject:localizedDescription forKeyedSubscript:@"error"];
     }
 
-    if (v8)
+    if (textResult)
     {
-      v55 = a4;
-      v56 = v7;
-      v57 = v5;
-      v20 = [v8 topTranscription];
-      v21 = v20;
-      if (v20)
+      levelCopy = level;
+      v56 = correctionResult;
+      v57 = itemCopy;
+      topTranscription = [textResult topTranscription];
+      v21 = topTranscription;
+      if (topTranscription)
       {
-        v22 = v20;
+        v22 = topTranscription;
       }
 
       else
@@ -336,24 +336,24 @@ LABEL_14:
         v22 = &stru_1F476BD20;
       }
 
-      v58 = v6;
-      [v6 setObject:v22 forKeyedSubscript:@"topTranscription"];
+      v58 = dictionary;
+      [dictionary setObject:v22 forKeyedSubscript:@"topTranscription"];
 
-      v61 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "tokenColumnCount")}];
-      v23 = [v8 transcriptionPaths];
-      v60 = [v23 firstObject];
+      v61 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(textResult, "tokenColumnCount")}];
+      transcriptionPaths = [textResult transcriptionPaths];
+      firstObject = [transcriptionPaths firstObject];
 
-      if ([v8 tokenColumnCount] >= 1)
+      if ([textResult tokenColumnCount] >= 1)
       {
         v24 = 0;
-        v59 = v8;
+        v59 = textResult;
         do
         {
-          v25 = v8;
-          [v8 tokenRowsAtColumnIndex:v24];
+          v25 = textResult;
+          [textResult tokenRowsAtColumnIndex:v24];
           v63 = v62 = v24;
-          v26 = [v63 objectAtIndexedSubscript:{objc_msgSend(v60, "indexAtPosition:", v24)}];
-          v27 = [MEMORY[0x1E696AD60] string];
+          v26 = [v63 objectAtIndexedSubscript:{objc_msgSend(firstObject, "indexAtPosition:", v24)}];
+          string = [MEMORY[0x1E696AD60] string];
           v68 = 0u;
           v69 = 0u;
           v70 = 0u;
@@ -387,11 +387,11 @@ LABEL_14:
                   v35 = [v25 precedingSeparatorForToken:*(*(&v68 + 1) + 8 * v33)];
                 }
 
-                v36 = [v34 string];
-                v37 = v36;
-                if (v36)
+                string2 = [v34 string];
+                v37 = string2;
+                if (string2)
                 {
-                  v38 = v36;
+                  v38 = string2;
                 }
 
                 else
@@ -401,7 +401,7 @@ LABEL_14:
 
                 v39 = v38;
 
-                [v27 appendFormat:@"%@%@", v35, v39];
+                [string appendFormat:@"%@%@", v35, v39];
                 ++v31;
 
                 ++v33;
@@ -416,10 +416,10 @@ LABEL_14:
           }
 
           v40 = [v63 count];
-          v41 = [v28 firstObject];
-          if (v41)
+          firstObject2 = [v28 firstObject];
+          if (firstObject2)
           {
-            v42 = [v25 precedingSeparatorForToken:v41];
+            v42 = [v25 precedingSeparatorForToken:firstObject2];
           }
 
           else
@@ -437,15 +437,15 @@ LABEL_14:
           v45 = v43;
 
           v46 = [v25 strokeIndexesForColumnsInRange:{v62, 1}];
-          v47 = [MEMORY[0x1E696AD60] string];
+          string3 = [MEMORY[0x1E696AD60] string];
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
           v66[2] = __91__PKTextInputDebugLogEntry__mutableDictionaryRepresentationForResultQueryItem_detailLevel___block_invoke;
           v66[3] = &unk_1E82DCBA8;
-          v67 = v47;
-          v48 = v47;
+          v67 = string3;
+          v48 = string3;
           [v46 enumerateRangesUsingBlock:v66];
-          v75[0] = v27;
+          v75[0] = string;
           v74[0] = @"topTranscription";
           v74[1] = @"candidatesCount";
           v49 = [MEMORY[0x1E696AD98] numberWithInteger:v44];
@@ -457,21 +457,21 @@ LABEL_14:
           v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:4];
           [v61 addObject:v50];
 
-          v8 = v59;
+          textResult = v59;
           v24 = v62 + 1;
         }
 
         while (v62 + 1 < [v59 tokenColumnCount]);
       }
 
-      v6 = v58;
+      dictionary = v58;
       [v58 setObject:v61 forKeyedSubscript:@"tokenColumns"];
-      v7 = v56;
-      v5 = v57;
-      if (v55 == 1)
+      correctionResult = v56;
+      itemCopy = v57;
+      if (levelCopy == 1)
       {
         v65 = 0;
-        v51 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v65];
+        v51 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:textResult requiringSecureCoding:1 error:&v65];
         v52 = v65;
         if (v51)
         {
@@ -492,7 +492,7 @@ LABEL_14:
     }
   }
 
-  return v6;
+  return dictionary;
 }
 
 void __91__PKTextInputDebugLogEntry__mutableDictionaryRepresentationForResultQueryItem_detailLevel___block_invoke(uint64_t a1, NSUInteger a2, NSUInteger a3)
@@ -515,36 +515,36 @@ void __91__PKTextInputDebugLogEntry__mutableDictionaryRepresentationForResultQue
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v2 setLocale:v3];
 
-  v4 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v2 setTimeZone:v4];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v2 setTimeZone:localTimeZone];
 
   [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS Z"];
 
   return v2;
 }
 
-+ (id)_minimalReferenceString:(id)a3 rangeOfInterest:(_NSRange)a4 tokenSearchDistance:(int64_t)a5 localeIdentifier:(id)a6
++ (id)_minimalReferenceString:(id)string rangeOfInterest:(_NSRange)interest tokenSearchDistance:(int64_t)distance localeIdentifier:(id)identifier
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a6;
-  if (location == 0x7FFFFFFFFFFFFFFFLL || ![(__CFString *)v10 length])
+  length = interest.length;
+  location = interest.location;
+  stringCopy = string;
+  identifierCopy = identifier;
+  if (location == 0x7FFFFFFFFFFFFFFFLL || ![(__CFString *)stringCopy length])
   {
-    v28 = [&stru_1F476BD20 stringByPaddingToLength:-[__CFString length](v10 withString:"length") startingAtIndex:{@"_", 0}];
+    v28 = [&stru_1F476BD20 stringByPaddingToLength:-[__CFString length](stringCopy withString:"length") startingAtIndex:{@"_", 0}];
   }
 
   else
   {
-    if (![v11 length] || (objc_msgSend(MEMORY[0x1E695DF58], "localeWithLocaleIdentifier:", v11), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![identifierCopy length] || (objc_msgSend(MEMORY[0x1E695DF58], "localeWithLocaleIdentifier:", identifierCopy), (currentLocale = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v12 = [MEMORY[0x1E695DF58] currentLocale];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     }
 
-    v13 = location - a5;
-    v14 = (location - a5) & ~((location - a5) >> 63);
-    v15 = location + length + a5;
-    v16 = [(__CFString *)v10 length];
+    v13 = location - distance;
+    v14 = (location - distance) & ~((location - distance) >> 63);
+    v15 = location + length + distance;
+    v16 = [(__CFString *)stringCopy length];
     if (v15 >= v16 - 1)
     {
       v17 = v16 - 1;
@@ -555,7 +555,7 @@ void __91__PKTextInputDebugLogEntry__mutableDictionaryRepresentationForResultQue
       v17 = v15;
     }
 
-    v18 = [(__CFString *)v10 length];
+    v18 = [(__CFString *)stringCopy length];
     if (v17 + 10 >= v18)
     {
       v19 = v18;
@@ -574,7 +574,7 @@ void __91__PKTextInputDebugLogEntry__mutableDictionaryRepresentationForResultQue
 
     v36.location = v20 - 10;
     v36.length = v19 - (v20 - 10);
-    v21 = CFStringTokenizerCreate(0, v10, v36, 4uLL, v12);
+    v21 = CFStringTokenizerCreate(0, stringCopy, v36, 4uLL, currentLocale);
     if (CFStringTokenizerGoToTokenAtIndex(v21, v14))
     {
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v21);
@@ -606,22 +606,22 @@ void __91__PKTextInputDebugLogEntry__mutableDictionaryRepresentationForResultQue
       CFRelease(v21);
     }
 
-    v26 = [(__CFString *)v10 length];
-    if (location == 0x7FFFFFFFFFFFFFFFLL || length + location > [(__CFString *)v10 length])
+    v26 = [(__CFString *)stringCopy length];
+    if (location == 0x7FFFFFFFFFFFFFFFLL || length + location > [(__CFString *)stringCopy length])
     {
       v27 = &stru_1F476BD20;
     }
 
     else
     {
-      v27 = [(__CFString *)v10 substringWithRange:location, length];
+      v27 = [(__CFString *)stringCopy substringWithRange:location, length];
       v26 = location;
     }
 
     v29 = [&stru_1F476BD20 stringByPaddingToLength:v26 withString:@"_" startingAtIndex:0];
     v30 = [v29 stringByAppendingString:v27];
 
-    v31 = [v30 stringByPaddingToLength:-[__CFString length](v10 withString:"length") startingAtIndex:{@"_", 0}];
+    v31 = [v30 stringByPaddingToLength:-[__CFString length](stringCopy withString:"length") startingAtIndex:{@"_", 0}];
 
     v28 = v31;
   }

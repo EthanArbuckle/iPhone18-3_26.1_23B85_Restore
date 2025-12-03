@@ -1,16 +1,16 @@
 @interface NFSettingsNotification
-- (id)_getLocalizedText:(id)a3 withBundle:(id)a4;
-- (void)_requestUserNotificationWithCompletion:(id)a3 popupInterval:(double)a4;
+- (id)_getLocalizedText:(id)text withBundle:(id)bundle;
+- (void)_requestUserNotificationWithCompletion:(id)completion popupInterval:(double)interval;
 @end
 
 @implementation NFSettingsNotification
 
-- (id)_getLocalizedText:(id)a3 withBundle:(id)a4
+- (id)_getLocalizedText:(id)text withBundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8)
+  textCopy = text;
+  bundleCopy = bundle;
+  v9 = bundleCopy;
+  if (!bundleCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -59,12 +59,12 @@
     goto LABEL_45;
   }
 
-  if (!v7)
+  if (!textCopy)
   {
-    v7 = @"NFC_RADIO_DISABLED_TITLE";
+    textCopy = @"NFC_RADIO_DISABLED_TITLE";
   }
 
-  v10 = [v8 localizedStringForKey:v7 value:@"Translation missing" table:@"LowPowerMode_NFC_Localizable"];
+  v10 = [bundleCopy localizedStringForKey:textCopy value:@"Translation missing" table:@"LowPowerMode_NFC_Localizable"];
   if ([v10 isEqualToString:@"Translation missing"])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -76,14 +76,14 @@
       v14 = class_isMetaClass(v13);
       v15 = object_getClassName(self);
       v16 = sel_getName(a2);
-      v17 = [v9 localizations];
+      localizations = [v9 localizations];
       v18 = 45;
       if (v14)
       {
         v18 = 43;
       }
 
-      v12(3, "%c[%{public}s %{public}s]:%i Available locs are  %@", v18, v15, v16, 54, v17);
+      v12(3, "%c[%{public}s %{public}s]:%i Available locs are  %@", v18, v15, v16, 54, localizations);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -103,7 +103,7 @@
 
       v22 = object_getClassName(self);
       v23 = sel_getName(a2);
-      v24 = [v9 localizations];
+      localizations2 = [v9 localizations];
       *buf = 67110146;
       v65 = v21;
       v66 = 2082;
@@ -113,7 +113,7 @@
       v70 = 1024;
       v71 = 54;
       v72 = 2112;
-      v73 = v24;
+      v73 = localizations2;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Available locs are  %@", buf, 0x2Cu);
     }
 
@@ -126,14 +126,14 @@
       v28 = class_isMetaClass(v27);
       v29 = object_getClassName(self);
       v30 = sel_getName(a2);
-      v31 = [v9 preferredLocalizations];
+      preferredLocalizations = [v9 preferredLocalizations];
       v32 = 45;
       if (v28)
       {
         v32 = 43;
       }
 
-      v26(3, "%c[%{public}s %{public}s]:%i Prefered loc is %@", v32, v29, v30, 55, v31);
+      v26(3, "%c[%{public}s %{public}s]:%i Prefered loc is %@", v32, v29, v30, 55, preferredLocalizations);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -153,7 +153,7 @@
 
       v36 = object_getClassName(self);
       v37 = sel_getName(a2);
-      v38 = [v9 preferredLocalizations];
+      preferredLocalizations2 = [v9 preferredLocalizations];
       *buf = 67110146;
       v65 = v35;
       v66 = 2082;
@@ -163,7 +163,7 @@
       v70 = 1024;
       v71 = 55;
       v72 = 2112;
-      v73 = v38;
+      v73 = preferredLocalizations2;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Prefered loc is %@", buf, 0x2Cu);
     }
 
@@ -221,16 +221,16 @@
   if (!v10)
   {
 LABEL_45:
-    v7 = v7;
-    v10 = v7;
+    textCopy = textCopy;
+    v10 = textCopy;
   }
 
   return v10;
 }
 
-- (void)_requestUserNotificationWithCompletion:(id)a3 popupInterval:(double)a4
+- (void)_requestUserNotificationWithCompletion:(id)completion popupInterval:(double)interval
 {
-  v7 = a3;
+  completionCopy = completion;
   error = 0;
   v8 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/NearField.framework"];
   [v8 load];
@@ -311,13 +311,13 @@ LABEL_45:
     v114 = v47;
     v48 = [NSDictionary dictionaryWithObjects:&v114 forKeys:&v113 count:1];
     v49 = [v45 initWithDomain:v46 code:34 userInfo:v48];
-    v7[2](v7, v49, 0);
+    completionCopy[2](completionCopy, v49, 0);
   }
 
   else
   {
     responseFlags = 0;
-    if (CFUserNotificationReceiveResponse(v15, a4, &responseFlags))
+    if (CFUserNotificationReceiveResponse(v15, interval, &responseFlags))
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v17 = NFLogGetLogger();
@@ -372,7 +372,7 @@ LABEL_45:
       v112 = v30;
       v31 = [NSDictionary dictionaryWithObjects:&v112 forKeys:&v111 count:1];
       v32 = [v28 initWithDomain:v29 code:34 userInfo:v31];
-      v7[2](v7, v32, 0);
+      completionCopy[2](completionCopy, v32, 0);
     }
 
     else
@@ -555,7 +555,7 @@ LABEL_45:
         v61 = 2;
       }
 
-      v7[2](v7, v29, v61);
+      completionCopy[2](completionCopy, v29, v61);
     }
   }
 }

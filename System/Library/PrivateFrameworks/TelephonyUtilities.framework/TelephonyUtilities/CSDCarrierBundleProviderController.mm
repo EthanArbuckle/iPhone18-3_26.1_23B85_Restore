@@ -3,13 +3,13 @@
 - (CSDCarrierBundleProviderControllerDelegate)delegate;
 - (NSArray)serviceProviders;
 - (NSArray)serviceProvidersWithCarrierNumbers;
-- (id)arrayOfStringsForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (id)carrierNumbersForSubscriptionContext:(id)a3;
+- (id)arrayOfStringsForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (id)carrierNumbersForSubscriptionContext:(id)context;
 - (id)fetchServiceProviders;
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (id)spamIdentifiersForSubscriptionUUID:(id)a3;
-- (void)carrierBundleChange:(id)a3;
-- (void)setServiceProviders:(id)a3;
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (id)spamIdentifiersForSubscriptionUUID:(id)d;
+- (void)carrierBundleChange:(id)change;
+- (void)setServiceProviders:(id)providers;
 - (void)subscriptionInfoDidChange;
 @end
 
@@ -52,14 +52,14 @@
   v10 = sub_100028624;
   v11 = sub_10003289C;
   v12 = 0;
-  v3 = [(CSDCarrierBundleProviderController *)self queue];
+  queue = [(CSDCarrierBundleProviderController *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000C08E4;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -75,14 +75,14 @@
   v10 = sub_100028624;
   v11 = sub_10003289C;
   v12 = 0;
-  v3 = [(CSDCarrierBundleProviderController *)self queue];
+  queue = [(CSDCarrierBundleProviderController *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000C0A14;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -90,45 +90,45 @@
   return v4;
 }
 
-- (void)setServiceProviders:(id)a3
+- (void)setServiceProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [(CSDCarrierBundleProviderController *)self queue];
+  providersCopy = providers;
+  queue = [(CSDCarrierBundleProviderController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C0B84;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providersCopy;
+  v6 = providersCopy;
+  dispatch_async(queue, v7);
 }
 
 - (id)fetchServiceProviders
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CSDCarrierBundleProviderController *)self telephonyClient];
+  telephonyClient = [(CSDCarrierBundleProviderController *)self telephonyClient];
   v34 = 0;
-  v5 = [v4 getSubscriptionInfoWithError:&v34];
+  v5 = [telephonyClient getSubscriptionInfoWithError:&v34];
   v6 = v34;
-  v7 = [v5 subscriptionsInUse];
+  subscriptionsInUse = [v5 subscriptionsInUse];
 
-  if (v7 || ([v6 domain], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
+  if (subscriptionsInUse || ([v6 domain], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v7;
+    obj = subscriptionsInUse;
     v8 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v8)
     {
       v9 = v8;
-      v26 = v7;
+      v26 = subscriptionsInUse;
       v27 = v6;
       v10 = *v31;
       p_vtable = &OBJC_METACLASS___CSDOrientationMonitor.vtable;
-      v28 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v9; i = i + 1)
@@ -139,10 +139,10 @@
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
-          v14 = [v13 uuid];
+          uuid = [v13 uuid];
           v15 = objc_alloc((p_vtable + 262));
           v16 = [(CSDCarrierBundleProviderController *)self carrierNumbersForSubscriptionContext:v13];
-          v17 = [v15 initWithUUID:v14 carrierPhoneNumbers:v16];
+          v17 = [v15 initWithUUID:uuid carrierPhoneNumbers:v16];
 
           [v3 addObject:v17];
           v18 = sub_100004778();
@@ -162,7 +162,7 @@
             v10 = v22;
             p_vtable = v20;
             v3 = v19;
-            self = v28;
+            self = selfCopy;
           }
         }
 
@@ -170,7 +170,7 @@
       }
 
       while (v9);
-      v7 = v26;
+      subscriptionsInUse = v26;
       v6 = v27;
     }
   }
@@ -187,20 +187,20 @@
   return v3;
 }
 
-- (id)spamIdentifiersForSubscriptionUUID:(id)a3
+- (id)spamIdentifiersForSubscriptionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDCarrierBundleProviderController *)self telephonyClient];
+  dCopy = d;
+  telephonyClient = [(CSDCarrierBundleProviderController *)self telephonyClient];
   v28 = 0;
-  v6 = [v5 getSubscriptionInfoWithError:&v28];
+  v6 = [telephonyClient getSubscriptionInfoWithError:&v28];
   v7 = v28;
-  v8 = [v6 subscriptionsInUse];
+  subscriptionsInUse = [v6 subscriptionsInUse];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v8;
+  v9 = subscriptionsInUse;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v10)
   {
@@ -216,8 +216,8 @@ LABEL_3:
       }
 
       v14 = *(*(&v24 + 1) + 8 * v13);
-      v15 = [v14 uuid];
-      v16 = [v15 isEqual:v4];
+      uuid = [v14 uuid];
+      v16 = [uuid isEqual:dCopy];
 
       if (v16)
       {
@@ -301,11 +301,11 @@ LABEL_21:
   return v17;
 }
 
-- (id)carrierNumbersForSubscriptionContext:(id)a3
+- (id)carrierNumbersForSubscriptionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
-  v5 = [(CSDCarrierBundleProviderController *)self arrayOfStringsForKeyHierarchy:&off_10063EE60 subscriptionContext:v4 error:&v11];
+  v5 = [(CSDCarrierBundleProviderController *)self arrayOfStringsForKeyHierarchy:&off_10063EE60 subscriptionContext:contextCopy error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5)
@@ -316,7 +316,7 @@ LABEL_21:
       *buf = 138412546;
       v13 = v5;
       v14 = 2112;
-      v15 = v4;
+      v15 = contextCopy;
       v9 = "Retrieved carrier phone number '%@' for subscription %@";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0x16u);
@@ -334,7 +334,7 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = v4;
+      v13 = contextCopy;
       v14 = 2112;
       v15 = v7;
       v9 = "Retrieving carrier phone number for subscription %@ failed with error %@";
@@ -347,20 +347,20 @@ LABEL_9:
   return v5;
 }
 
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  hierarchyCopy = hierarchy;
   v10 = [[CTBundle alloc] initWithBundleType:1];
-  v11 = [(CSDCarrierBundleProviderController *)self telephonyClient];
-  v12 = [v11 copyCarrierBundleValue:v8 keyHierarchy:v9 bundleType:v10 error:a5];
+  telephonyClient = [(CSDCarrierBundleProviderController *)self telephonyClient];
+  v12 = [telephonyClient copyCarrierBundleValue:contextCopy keyHierarchy:hierarchyCopy bundleType:v10 error:error];
 
   return v12;
 }
 
-- (id)arrayOfStringsForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)arrayOfStringsForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
-  v5 = [(CSDCarrierBundleProviderController *)self objectForKeyHierarchy:a3 subscriptionContext:a4 error:a5];
+  v5 = [(CSDCarrierBundleProviderController *)self objectForKeyHierarchy:hierarchy subscriptionContext:context error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -375,24 +375,24 @@ LABEL_9:
   return v6;
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Carrier bundle changed for subscription context %@.", buf, 0xCu);
   }
 
-  v6 = [(CSDCarrierBundleProviderController *)self queue];
+  queue = [(CSDCarrierBundleProviderController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C1594;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 - (void)subscriptionInfoDidChange
@@ -404,13 +404,13 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Subscription info changed", buf, 2u);
   }
 
-  v4 = [(CSDCarrierBundleProviderController *)self queue];
+  queue = [(CSDCarrierBundleProviderController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C16BC;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (CSDCarrierBundleProviderControllerDelegate)delegate

@@ -2,7 +2,7 @@
 - (void)finishAnimation;
 - (void)prepareAnimation;
 - (void)startAnimation;
-- (void)updateAnimationWithFactor:(double)a3;
+- (void)updateAnimationWithFactor:(double)factor;
 @end
 
 @implementation SXMoveInComponentAnimationHandler
@@ -12,10 +12,10 @@
   v45.receiver = self;
   v45.super_class = SXMoveInComponentAnimationHandler;
   [(SXComponentAnimationHandler *)&v45 prepareAnimation];
-  v3 = [(SXComponentAnimationHandler *)self component];
+  component = [(SXComponentAnimationHandler *)self component];
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsReduceMotionEnabled())
   {
-    v4 = [v3 layer];
+    layer = [component layer];
     v5 = *(MEMORY[0x1E69792E8] + 80);
     *&v44.m31 = *(MEMORY[0x1E69792E8] + 64);
     *&v44.m33 = v5;
@@ -28,12 +28,12 @@
     v8 = *(MEMORY[0x1E69792E8] + 48);
     *&v44.m21 = *(MEMORY[0x1E69792E8] + 32);
     *&v44.m23 = v8;
-    [v4 setTransform:&v44];
+    [layer setTransform:&v44];
     goto LABEL_4;
   }
 
-  v4 = [v3 viewport];
-  [v3 absoluteFrame];
+  layer = [component viewport];
+  [component absoluteFrame];
   x = v46.origin.x;
   y = v46.origin.y;
   width = v46.size.width;
@@ -69,7 +69,7 @@
   v52.size.width = width;
   v52.size.height = height;
   v41 = CGRectGetMinY(v52);
-  [v4 bounds];
+  [layer bounds];
   v15 = CGRectGetWidth(v53);
   v54.origin.x = x;
   v54.origin.y = y;
@@ -81,38 +81,38 @@
   v55.size.width = width;
   v55.size.height = height;
   v17 = CGRectGetHeight(v55);
-  v18 = [v3 presentationDelegate];
-  v19 = [v18 componentController];
-  v20 = [v19 componentsInRect:{0.0, MinY, v13, v14}];
+  presentationDelegate = [component presentationDelegate];
+  componentController = [presentationDelegate componentController];
+  v20 = [componentController componentsInRect:{0.0, MinY, v13, v14}];
   v21 = [v20 count];
 
-  v22 = [v3 presentationDelegate];
-  v23 = [v22 componentController];
-  v24 = [v23 componentsInRect:{MaxX, v41, v16, v17}];
+  presentationDelegate2 = [component presentationDelegate];
+  componentController2 = [presentationDelegate2 componentController];
+  v24 = [componentController2 componentsInRect:{MaxX, v41, v16, v17}];
   v25 = [v24 count];
 
-  v26 = [(SXComponentAnimationHandler *)self animation];
-  v27 = [v26 preferredStartingPosition];
+  animation = [(SXComponentAnimationHandler *)self animation];
+  preferredStartingPosition = [animation preferredStartingPosition];
 
-  if (!v21 && v27 == 1)
+  if (!v21 && preferredStartingPosition == 1)
   {
     goto LABEL_7;
   }
 
-  v29 = [(SXComponentAnimationHandler *)self animation];
-  v30 = [v29 preferredStartingPosition];
+  animation2 = [(SXComponentAnimationHandler *)self animation];
+  preferredStartingPosition2 = [animation2 preferredStartingPosition];
 
-  if (!v25 && v30 == 2)
+  if (!v25 && preferredStartingPosition2 == 2)
   {
     goto LABEL_28;
   }
 
-  v31 = [(SXComponentAnimationHandler *)self animation];
-  v32 = [v31 preferredStartingPosition];
+  animation3 = [(SXComponentAnimationHandler *)self animation];
+  preferredStartingPosition3 = [animation3 preferredStartingPosition];
 
-  if (v32 || !v21)
+  if (preferredStartingPosition3 || !v21)
   {
-    if (!v32)
+    if (!preferredStartingPosition3)
     {
 LABEL_7:
       v28 = -(v39 + MinX);
@@ -166,7 +166,7 @@ LABEL_25:
   }
 
 LABEL_28:
-  [v4 bounds];
+  [layer bounds];
   v36 = CGRectGetWidth(v56);
   v57.origin.x = x;
   v57.origin.y = y;
@@ -178,9 +178,9 @@ LABEL_29:
   {
     memset(&v44, 0, sizeof(v44));
     CATransform3DMakeTranslation(&v44, v28, 0.0, 0.0);
-    v37 = [v3 layer];
+    layer2 = [component layer];
     v43 = v44;
-    [v37 setTransform:&v43];
+    [layer2 setTransform:&v43];
 
     [(SXMoveInComponentAnimationHandler *)self setStartXOffset:v28];
   }
@@ -188,18 +188,18 @@ LABEL_29:
 LABEL_4:
 }
 
-- (void)updateAnimationWithFactor:(double)a3
+- (void)updateAnimationWithFactor:(double)factor
 {
   v10.receiver = self;
   v10.super_class = SXMoveInComponentAnimationHandler;
   [(SXComponentAnimationHandler *)&v10 updateAnimationWithFactor:?];
   [(SXMoveInComponentAnimationHandler *)self startXOffset];
   memset(&v9, 0, sizeof(v9));
-  CATransform3DMakeTranslation(&v9, (1.0 - a3) * v5, 0.0, 0.0);
-  v6 = [(SXComponentAnimationHandler *)self component];
-  v7 = [v6 layer];
+  CATransform3DMakeTranslation(&v9, (1.0 - factor) * v5, 0.0, 0.0);
+  component = [(SXComponentAnimationHandler *)self component];
+  layer = [component layer];
   v8 = v9;
-  [v7 setTransform:&v8];
+  [layer setTransform:&v8];
 }
 
 - (void)startAnimation
@@ -209,11 +209,11 @@ LABEL_4:
     v17.receiver = self;
     v17.super_class = SXMoveInComponentAnimationHandler;
     [(SXComponentAnimationHandler *)&v17 startAnimation];
-    v3 = [(SXComponentAnimationHandler *)self component];
-    v4 = [v3 layer];
-    v5 = [v4 presentationLayer];
+    component = [(SXComponentAnimationHandler *)self component];
+    layer = [component layer];
+    presentationLayer = [layer presentationLayer];
 
-    v6 = [v5 valueForKeyPath:@"transform"];
+    v6 = [presentationLayer valueForKeyPath:@"transform"];
     v7 = *(MEMORY[0x1E69792E8] + 80);
     v16[4] = *(MEMORY[0x1E69792E8] + 64);
     v16[5] = v7;
@@ -237,20 +237,20 @@ LABEL_4:
     [v12 setFillMode:*MEMORY[0x1E69797E8]];
     [v12 setRemovedOnCompletion:0];
     [v12 setDuration:0.6];
-    v14 = [(SXComponentAnimationHandler *)self component];
-    v15 = [v14 layer];
-    [v15 addAnimation:v12 forKey:@"moveIn"];
+    component2 = [(SXComponentAnimationHandler *)self component];
+    layer2 = [component2 layer];
+    [layer2 addAnimation:v12 forKey:@"moveIn"];
   }
 }
 
 - (void)finishAnimation
 {
-  v3 = [(SXComponentAnimationHandler *)self component];
-  v4 = [v3 layer];
-  [v4 removeAnimationForKey:@"moveIn"];
+  component = [(SXComponentAnimationHandler *)self component];
+  layer = [component layer];
+  [layer removeAnimationForKey:@"moveIn"];
 
-  v5 = [(SXComponentAnimationHandler *)self component];
-  v6 = [v5 layer];
+  component2 = [(SXComponentAnimationHandler *)self component];
+  layer2 = [component2 layer];
   v7 = *(MEMORY[0x1E69792E8] + 80);
   v12[4] = *(MEMORY[0x1E69792E8] + 64);
   v12[5] = v7;
@@ -263,7 +263,7 @@ LABEL_4:
   v10 = *(MEMORY[0x1E69792E8] + 48);
   v12[2] = *(MEMORY[0x1E69792E8] + 32);
   v12[3] = v10;
-  [v6 setTransform:v12];
+  [layer2 setTransform:v12];
 
   v11.receiver = self;
   v11.super_class = SXMoveInComponentAnimationHandler;

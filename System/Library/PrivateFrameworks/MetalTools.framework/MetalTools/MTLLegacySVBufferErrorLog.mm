@@ -19,7 +19,7 @@
 {
   if (self->_addressSpace == 3)
   {
-    v3 = 0;
+    label = 0;
   }
 
   else
@@ -27,17 +27,17 @@
     buffer = self->_buffer;
     if (buffer && (v5 = [(MTLBuffer *)buffer label], buffer = self->_buffer, v5))
     {
-      v3 = [(MTLBuffer *)buffer label];
+      label = [(MTLBuffer *)buffer label];
     }
 
     else if (buffer)
     {
-      v3 = @"<unnamed>";
+      label = @"<unnamed>";
     }
 
     else
     {
-      v3 = @"<nil>";
+      label = @"<nil>";
     }
   }
 
@@ -76,14 +76,14 @@
           v8 = @"Read Write";
           break;
         case 128:
-          v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu", v3, -[MTLBuffer length](v6, "length"), v22];
+          v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu", label, -[MTLBuffer length](v6, "length"), v22];
 LABEL_23:
-          v3 = v9;
+          label = v9;
           goto LABEL_24;
       }
     }
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu, resident:%@", v3, -[MTLBuffer length](v6, "length"), v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu, resident:%@", label, -[MTLBuffer length](v6, "length"), v8];
     goto LABEL_23;
   }
 
@@ -93,11 +93,11 @@ LABEL_24:
   operation = self->_operation;
   v14 = MTLGPUOperationString();
   offset = self->_offset;
-  v16 = [(MTLLegacySVGPULog *)self locationDescription];
+  locationDescription = [(MTLLegacySVGPULog *)self locationDescription];
   v17 = [(MTLArgument *)self->_argument formattedDescription:4];
-  if (v3)
+  if (label)
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"buffer: %@", v3];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"buffer: %@", label];
   }
 
   else
@@ -121,7 +121,7 @@ LABEL_24:
     v20 = @"device";
   }
 
-  return [v11 stringWithFormat:@"Invalid %@ %@ at offset %llu, executing %@ %@\n%@\n", v20, v14, offset, v16, v19, v18];
+  return [v11 stringWithFormat:@"Invalid %@ %@ at offset %llu, executing %@ %@\n%@\n", v20, v14, offset, locationDescription, v19, v18];
 }
 
 - (void)dealloc

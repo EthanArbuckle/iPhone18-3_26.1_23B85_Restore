@@ -1,10 +1,10 @@
 @interface MTShowsPreferencesDataStore
 + (id)sharedInstance;
-- (id)_stringForSortType:(int64_t)a3;
+- (id)_stringForSortType:(int64_t)type;
 - (id)sortDescriptors;
-- (int64_t)_sortTypeForString:(id)a3;
+- (int64_t)_sortTypeForString:(id)string;
 - (int64_t)sortOrder;
-- (void)setSortOrder:(int64_t)a3;
+- (void)setSortOrder:(int64_t)order;
 @end
 
 @implementation MTShowsPreferencesDataStore
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __45__MTShowsPreferencesDataStore_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -38,64 +38,64 @@ void __45__MTShowsPreferencesDataStore_sharedInstance__block_invoke(uint64_t a1)
 - (id)sortDescriptors
 {
   v2 = MEMORY[0x277D3DB38];
-  v3 = [(MTShowsPreferencesDataStore *)self sortOrder];
+  sortOrder = [(MTShowsPreferencesDataStore *)self sortOrder];
 
-  return [v2 sortDescriptorsForSortType:v3];
+  return [v2 sortDescriptorsForSortType:sortOrder];
 }
 
 - (int64_t)sortOrder
 {
-  v3 = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
-  v4 = [v3 stringForKey:*MEMORY[0x277D3DDA0]];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
+  v4 = [_applePodcastsFoundationSharedUserDefaults stringForKey:*MEMORY[0x277D3DDA0]];
 
   v5 = [(MTShowsPreferencesDataStore *)self _sortTypeForString:v4];
   return v5;
 }
 
-- (void)setSortOrder:(int64_t)a3
+- (void)setSortOrder:(int64_t)order
 {
-  v5 = [(MTShowsPreferencesDataStore *)self _stringForSortType:a3];
-  v3 = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
-  [v3 setObject:v5 forKey:*MEMORY[0x277D3DDA0]];
+  v5 = [(MTShowsPreferencesDataStore *)self _stringForSortType:order];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults setObject:v5 forKey:*MEMORY[0x277D3DDA0]];
 
-  v4 = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
-  [v4 synchronize];
+  _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x277CBEBD0] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults2 synchronize];
 }
 
-- (int64_t)_sortTypeForString:(id)a3
+- (int64_t)_sortTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"added"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"added"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"addedAscending"])
+  else if ([stringCopy isEqualToString:@"addedAscending"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"manual"])
+  else if ([stringCopy isEqualToString:@"manual"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"title"])
+  else if ([stringCopy isEqualToString:@"title"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"titleAscending"])
+  else if ([stringCopy isEqualToString:@"titleAscending"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"updated"])
+  else if ([stringCopy isEqualToString:@"updated"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"updatedAscending"])
+  else if ([stringCopy isEqualToString:@"updatedAscending"])
   {
     v4 = 6;
   }
@@ -108,16 +108,16 @@ void __45__MTShowsPreferencesDataStore_sharedInstance__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)_stringForSortType:(int64_t)a3
+- (id)_stringForSortType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return @"title";
   }
 
   else
   {
-    return off_279A44E50[a3];
+    return off_279A44E50[type];
   }
 }
 

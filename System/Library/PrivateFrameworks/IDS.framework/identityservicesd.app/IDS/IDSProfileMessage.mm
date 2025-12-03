@@ -1,13 +1,13 @@
 @interface IDSProfileMessage
-- (BOOL)hasRequiredKeys:(id *)a3;
+- (BOOL)hasRequiredKeys:(id *)keys;
 - (IDSProfileMessage)init;
 - (id)additionalMessageHeaders;
 - (id)additionalMessageHeadersForOutgoingPush;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handleResponseDictionary:(id)a3;
-- (void)setPushPrivateKey:(__SecKey *)a3;
-- (void)setPushPublicKey:(__SecKey *)a3;
+- (void)handleResponseDictionary:(id)dictionary;
+- (void)setPushPrivateKey:(__SecKey *)key;
+- (void)setPushPublicKey:(__SecKey *)key;
 @end
 
 @implementation IDSProfileMessage
@@ -21,8 +21,8 @@
   {
     IMGetConferenceSettings();
     v3 = 0;
-    v4 = [v3 lastObject];
-    [(IDSProfileMessage *)v2 setTopic:v4];
+    lastObject = [v3 lastObject];
+    [(IDSProfileMessage *)v2 setTopic:lastObject];
 
     [(IDSProfileMessage *)v2 setTimeout:60.0];
     [(IDSProfileMessage *)v2 setWantsResponse:1];
@@ -31,24 +31,24 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = IDSProfileMessage;
-  v4 = [(IDSProfileMessage *)&v10 copyWithZone:a3];
-  v5 = [(IDSProfileMessage *)self authToken];
-  [v4 setAuthToken:v5];
+  v4 = [(IDSProfileMessage *)&v10 copyWithZone:zone];
+  authToken = [(IDSProfileMessage *)self authToken];
+  [v4 setAuthToken:authToken];
 
-  v6 = [(IDSProfileMessage *)self profileID];
-  [v4 setProfileID:v6];
+  profileID = [(IDSProfileMessage *)self profileID];
+  [v4 setProfileID:profileID];
 
-  v7 = [(IDSProfileMessage *)self pushCertificate];
-  [v4 setPushCertificate:v7];
+  pushCertificate = [(IDSProfileMessage *)self pushCertificate];
+  [v4 setPushCertificate:pushCertificate];
 
   [v4 setPushPrivateKey:{-[IDSProfileMessage pushPrivateKey](self, "pushPrivateKey")}];
   [v4 setPushPublicKey:{-[IDSProfileMessage pushPublicKey](self, "pushPublicKey")}];
-  v8 = [(IDSProfileMessage *)self pushToken];
-  [v4 setPushToken:v8];
+  pushToken = [(IDSProfileMessage *)self pushToken];
+  [v4 setPushToken:pushToken];
 
   return v4;
 }
@@ -63,10 +63,10 @@
   [(IDSProfileMessage *)&v3 dealloc];
 }
 
-- (void)setPushPublicKey:(__SecKey *)a3
+- (void)setPushPublicKey:(__SecKey *)key
 {
   pushPublicKey = self->_pushPublicKey;
-  if (pushPublicKey != a3)
+  if (pushPublicKey != key)
   {
     if (pushPublicKey)
     {
@@ -74,19 +74,19 @@
       self->_pushPublicKey = 0;
     }
 
-    if (a3)
+    if (key)
     {
-      self->_pushPublicKey = a3;
+      self->_pushPublicKey = key;
 
-      CFRetain(a3);
+      CFRetain(key);
     }
   }
 }
 
-- (void)setPushPrivateKey:(__SecKey *)a3
+- (void)setPushPrivateKey:(__SecKey *)key
 {
   pushKey = self->_pushKey;
-  if (pushKey != a3)
+  if (pushKey != key)
   {
     if (pushKey)
     {
@@ -94,47 +94,47 @@
       self->_pushKey = 0;
     }
 
-    if (a3)
+    if (key)
     {
-      self->_pushKey = a3;
+      self->_pushKey = key;
 
-      CFRetain(a3);
+      CFRetain(key);
     }
   }
 }
 
-- (BOOL)hasRequiredKeys:(id *)a3
+- (BOOL)hasRequiredKeys:(id *)keys
 {
-  v5 = [(IDSProfileMessage *)self authToken];
-  v6 = [v5 length];
+  authToken = [(IDSProfileMessage *)self authToken];
+  v6 = [authToken length];
 
   if (v6)
   {
-    v7 = [(IDSProfileMessage *)self profileID];
-    v8 = [v7 length];
+    profileID = [(IDSProfileMessage *)self profileID];
+    v8 = [profileID length];
 
     if (v8)
     {
       v13.receiver = self;
       v13.super_class = IDSProfileMessage;
-      return [(IDSProfileMessage *)&v13 hasRequiredKeys:a3];
+      return [(IDSProfileMessage *)&v13 hasRequiredKeys:keys];
     }
 
-    if (a3)
+    if (keys)
     {
       v10 = @"profile-id";
       goto LABEL_8;
     }
   }
 
-  else if (a3)
+  else if (keys)
   {
     v10 = @"auth token";
 LABEL_8:
     v11 = [NSArray arrayWithObject:v10];
     v12 = v11;
     result = 0;
-    *a3 = v11;
+    *keys = v11;
     return result;
   }
 
@@ -145,18 +145,18 @@ LABEL_8:
 {
   v13.receiver = self;
   v13.super_class = IDSProfileMessage;
-  v3 = [(IDSProfileMessage *)&v13 additionalMessageHeaders];
-  v4 = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSProfileMessage *)&v13 additionalMessageHeaders];
+  v4 = [additionalMessageHeaders mutableCopy];
 
   if (!v4)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
   }
 
-  v5 = [(IDSProfileMessage *)self profileID];
-  if (v5)
+  profileID = [(IDSProfileMessage *)self profileID];
+  if (profileID)
   {
-    CFDictionarySetValue(v4, @"vp", v5);
+    CFDictionarySetValue(v4, @"vp", profileID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -164,12 +164,12 @@ LABEL_8:
     sub_10091BD08();
   }
 
-  v6 = [(IDSProfileMessage *)self authToken];
-  v7 = [v6 _FTDataFromHexString];
+  authToken = [(IDSProfileMessage *)self authToken];
+  _FTDataFromHexString = [authToken _FTDataFromHexString];
 
-  if (v7)
+  if (_FTDataFromHexString)
   {
-    CFDictionarySetValue(v4, @"va", v7);
+    CFDictionarySetValue(v4, @"va", _FTDataFromHexString);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -177,12 +177,12 @@ LABEL_8:
     sub_10091BD90();
   }
 
-  v8 = [(IDSProfileMessage *)self authToken];
-  v9 = [v8 _FTDataFromHexString];
+  authToken2 = [(IDSProfileMessage *)self authToken];
+  _FTDataFromHexString2 = [authToken2 _FTDataFromHexString];
 
-  if (v9)
+  if (_FTDataFromHexString2)
   {
-    CFDictionarySetValue(v4, @"xp", v9);
+    CFDictionarySetValue(v4, @"xp", _FTDataFromHexString2);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -190,10 +190,10 @@ LABEL_8:
     sub_10091BE18();
   }
 
-  v10 = [(IDSProfileMessage *)self dsAuthID];
-  if (v10)
+  dsAuthID = [(IDSProfileMessage *)self dsAuthID];
+  if (dsAuthID)
   {
-    CFDictionarySetValue(v4, @"x-ds-client-id", v10);
+    CFDictionarySetValue(v4, @"x-ds-client-id", dsAuthID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -219,18 +219,18 @@ LABEL_8:
 {
   v11.receiver = self;
   v11.super_class = IDSProfileMessage;
-  v3 = [(IDSProfileMessage *)&v11 additionalMessageHeaders];
-  v4 = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSProfileMessage *)&v11 additionalMessageHeaders];
+  v4 = [additionalMessageHeaders mutableCopy];
 
   if (!v4)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
   }
 
-  v5 = [(IDSProfileMessage *)self profileID];
-  if (v5)
+  profileID = [(IDSProfileMessage *)self profileID];
+  if (profileID)
   {
-    CFDictionarySetValue(v4, @"x-vc-profile-id", v5);
+    CFDictionarySetValue(v4, @"x-vc-profile-id", profileID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -238,10 +238,10 @@ LABEL_8:
     sub_10091BF28();
   }
 
-  v6 = [(IDSProfileMessage *)self authToken];
-  if (v6)
+  authToken = [(IDSProfileMessage *)self authToken];
+  if (authToken)
   {
-    CFDictionarySetValue(v4, @"x-vc-auth-token", v6);
+    CFDictionarySetValue(v4, @"x-vc-auth-token", authToken);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -249,10 +249,10 @@ LABEL_8:
     sub_10091BFB0();
   }
 
-  v7 = [(IDSProfileMessage *)self dsAuthID];
-  if (v7)
+  dsAuthID = [(IDSProfileMessage *)self dsAuthID];
+  if (dsAuthID)
   {
-    CFDictionarySetValue(v4, @"x-ds-client-id", v7);
+    CFDictionarySetValue(v4, @"x-ds-client-id", dsAuthID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -261,11 +261,11 @@ LABEL_8:
   }
 
   v8 = _IDSIDProtocolVersionNumber();
-  v9 = [v8 stringValue];
+  stringValue = [v8 stringValue];
 
-  if (v9)
+  if (stringValue)
   {
-    CFDictionarySetValue(v4, @"x-protocol-version", v9);
+    CFDictionarySetValue(v4, @"x-protocol-version", stringValue);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -276,9 +276,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"alert"];
+  v4 = [dictionary objectForKey:@"alert"];
   [(IDSProfileMessage *)self setResponseAlertInfo:v4];
 }
 

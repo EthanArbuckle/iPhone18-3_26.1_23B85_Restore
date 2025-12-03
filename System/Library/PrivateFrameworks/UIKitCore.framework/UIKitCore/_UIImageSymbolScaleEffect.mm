@@ -1,22 +1,22 @@
 @interface _UIImageSymbolScaleEffect
 + (id)effect;
-+ (id)effectWithScale:(int64_t)a3;
++ (id)effectWithScale:(int64_t)scale;
 - (BOOL)_isValidAnimationPreset;
-- (BOOL)isEqual:(id)a3;
-- (_UIImageSymbolScaleEffect)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIImageSymbolScaleEffect)initWithCoder:(id)coder;
 - (id)_nsSymbolEffectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_desiredScale;
 - (int64_t)_stateUpdateType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIImageSymbolScaleEffect
 
 + (id)effect
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS____UIImageSymbolScaleEffect;
   v2 = objc_msgSendSuper2(&v4, sel_effect);
   *(v2 + 24) = 0;
@@ -25,10 +25,10 @@
   return v2;
 }
 
-+ (id)effectWithScale:(int64_t)a3
++ (id)effectWithScale:(int64_t)scale
 {
-  result = [a1 effect];
-  *(result + 3) = a3;
+  result = [self effect];
+  *(result + 3) = scale;
   return result;
 }
 
@@ -96,12 +96,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIImageSymbolScaleEffect;
-  v5 = [(_UIImageSymbolEffect *)&v7 isEqual:v4]&& self->_scale == v4[3] && self->_byLayer == *(v4 + 16);
+  v5 = [(_UIImageSymbolEffect *)&v7 isEqual:equalCopy]&& self->_scale == equalCopy[3] && self->_byLayer == *(equalCopy + 16);
 
   return v5;
 }
@@ -113,36 +113,36 @@
   return self->_scale ^ [(_UIImageSymbolEffect *)&v3 hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIImageSymbolScaleEffect;
-  result = [(_UIImageSymbolEffect *)&v5 copyWithZone:a3];
+  result = [(_UIImageSymbolEffect *)&v5 copyWithZone:zone];
   *(result + 3) = self->_scale;
   *(result + 16) = self->_byLayer;
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scale = self->_scale;
-  v5 = a3;
-  [v5 encodeInteger:scale forKey:@"scale"];
-  [v5 encodeBool:self->_byLayer forKey:@"byLayer"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:scale forKey:@"scale"];
+  [coderCopy encodeBool:self->_byLayer forKey:@"byLayer"];
 }
 
-- (_UIImageSymbolScaleEffect)initWithCoder:(id)a3
+- (_UIImageSymbolScaleEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [objc_opt_class() effect];
+  coderCopy = coder;
+  effect = [objc_opt_class() effect];
 
-  if (v5)
+  if (effect)
   {
-    v5->_scale = [v4 decodeIntegerForKey:@"scale"];
-    v5->_byLayer = [v4 decodeBoolForKey:@"byLayer"];
+    effect->_scale = [coderCopy decodeIntegerForKey:@"scale"];
+    effect->_byLayer = [coderCopy decodeBoolForKey:@"byLayer"];
   }
 
-  return v5;
+  return effect;
 }
 
 @end

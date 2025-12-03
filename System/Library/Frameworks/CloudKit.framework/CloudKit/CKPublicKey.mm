@@ -1,35 +1,35 @@
 @interface CKPublicKey
 - (BOOL)hasExpired;
-- (CKPublicKey)initWithPublicKey:(id)a3 version:(int64_t)a4 expiration:(id)a5 certificateData:(id)a6 protectionSource:(id)a7;
+- (CKPublicKey)initWithPublicKey:(id)key version:(int64_t)version expiration:(id)expiration certificateData:(id)data protectionSource:(id)source;
 @end
 
 @implementation CKPublicKey
 
-- (CKPublicKey)initWithPublicKey:(id)a3 version:(int64_t)a4 expiration:(id)a5 certificateData:(id)a6 protectionSource:(id)a7
+- (CKPublicKey)initWithPublicKey:(id)key version:(int64_t)version expiration:(id)expiration certificateData:(id)data protectionSource:(id)source
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  keyCopy = key;
+  expirationCopy = expiration;
+  dataCopy = data;
+  sourceCopy = source;
   v34.receiver = self;
   v34.super_class = CKPublicKey;
   v18 = [(CKPublicKey *)&v34 init];
   if (v18)
   {
-    v19 = objc_msgSend_copy(v12, v16, v17);
+    v19 = objc_msgSend_copy(keyCopy, v16, v17);
     publicKey = v18->_publicKey;
     v18->_publicKey = v19;
 
-    v18->_version = a4;
-    v23 = objc_msgSend_copy(v13, v21, v22);
+    v18->_version = version;
+    v23 = objc_msgSend_copy(expirationCopy, v21, v22);
     expiration = v18->_expiration;
     v18->_expiration = v23;
 
-    v27 = objc_msgSend_copy(v14, v25, v26);
+    v27 = objc_msgSend_copy(dataCopy, v25, v26);
     certData = v18->_certData;
     v18->_certData = v27;
 
-    v31 = objc_msgSend_copy(v15, v29, v30);
+    v31 = objc_msgSend_copy(sourceCopy, v29, v30);
     protectionSource = v18->_protectionSource;
     v18->_protectionSource = v31;
   }

@@ -19,14 +19,14 @@
 
 - (uint64_t)saveInCurrentBlock
 {
-  if (![a1 hasChanges])
+  if (![self hasChanges])
   {
     v4 = 0;
     goto LABEL_5;
   }
 
   v7 = 0;
-  v2 = [a1 save:&v7];
+  v2 = [self save:&v7];
   v3 = v7;
   v4 = v3;
   if (v2)
@@ -50,16 +50,16 @@ LABEL_6:
   v6[1] = 3221225472;
   v6[2] = __67__NSManagedObjectContext_MTAdditions__performBlockAndWaitWithSave___block_invoke;
   v6[3] = &unk_1E8569228;
-  v6[4] = a1;
+  v6[4] = self;
   v7 = v4;
   v5 = v4;
-  [a1 performBlockAndWait:v6];
+  [self performBlockAndWait:v6];
 }
 
 - (id)executeFetchRequest:()MTAdditions
 {
   v7 = 0;
-  v3 = [a1 executeFetchRequest:a3 error:&v7];
+  v3 = [self executeFetchRequest:a3 error:&v7];
   v4 = v7;
   v5 = v4;
   if (v4)
@@ -72,10 +72,10 @@ LABEL_6:
 
 - (id)objectInEntity:()MTAdditions predicate:
 {
-  v4 = [a1 _objectsInEntity:a3 predicate:a4 sortDescriptors:MEMORY[0x1E695E0F0] resultType:0 returnsObjectsAsFaults:0 limit:1];
-  v5 = [v4 firstObject];
+  v4 = [self _objectsInEntity:a3 predicate:a4 sortDescriptors:MEMORY[0x1E695E0F0] resultType:0 returnsObjectsAsFaults:0 limit:1];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (id)objectForUuid:()MTAdditions entityName:returnsObjectAsFault:
@@ -83,19 +83,19 @@ LABEL_6:
   v8 = MEMORY[0x1E695D5E0];
   v9 = a3;
   v10 = [v8 fetchRequestWithEntityName:a4];
-  v11 = [a1 _predicateForUuid:v9];
+  v11 = [self _predicateForUuid:v9];
 
   [v10 setPredicate:v11];
   [v10 setReturnsObjectsAsFaults:a5];
   [v10 setFetchLimit:1];
   v16 = 0;
-  v12 = [a1 executeFetchRequest:v10 error:&v16];
+  v12 = [self executeFetchRequest:v10 error:&v16];
   v13 = v16;
-  v14 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
   [v13 logAndThrow:0];
 
-  return v14;
+  return firstObject;
 }
 
 - (id)_objectsInEntity:()MTAdditions predicate:sortDescriptors:resultType:returnsObjectsAsFaults:limit:propertiesToFetch:batchSize:
@@ -116,8 +116,8 @@ LABEL_6:
 
   else
   {
-    v21 = [MEMORY[0x1E695DEC8] array];
-    [v20 setSortDescriptors:v21];
+    array = [MEMORY[0x1E695DEC8] array];
+    [v20 setSortDescriptors:array];
   }
 
   [v20 setFetchLimit:a8];
@@ -133,7 +133,7 @@ LABEL_6:
   }
 
   v27 = 0;
-  v22 = [a1 executeFetchRequest:v20 error:&v27];
+  v22 = [self executeFetchRequest:v20 error:&v27];
   v23 = v27;
   v24 = v23;
   if (!v22)
@@ -155,8 +155,8 @@ LABEL_6:
   {
     v21 = objc_opt_new();
     [v21 setName:@"objectID"];
-    v22 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-    [v21 setExpression:v22];
+    expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+    [v21 setExpression:expressionForEvaluatedObject];
 
     [v21 setExpressionResultType:2000];
     v23 = [v19 arrayByAddingObject:v21];
@@ -187,7 +187,7 @@ LABEL_6:
   }
 
   v30 = 0;
-  v26 = [a1 executeFetchRequest:v24 error:&v30];
+  v26 = [self executeFetchRequest:v24 error:&v30];
   v27 = v30;
   v28 = v27;
   if (!v26)
@@ -202,12 +202,12 @@ LABEL_6:
 {
   v8 = a5;
   v9 = a4;
-  v10 = [a1 _predicateForUuid:a3];
-  v11 = [a1 objectDictionariesInEntity:v8 predicate:v10 sortDescriptors:0 propertiesToFetch:v9 includeObjectId:0];
+  v10 = [self _predicateForUuid:a3];
+  v11 = [self objectDictionariesInEntity:v8 predicate:v10 sortDescriptors:0 propertiesToFetch:v9 includeObjectId:0];
 
-  v12 = [v11 lastObject];
+  lastObject = [v11 lastObject];
 
-  return v12;
+  return lastObject;
 }
 
 - (id)valueForProperty:()MTAdditions objectUuid:entityName:
@@ -220,7 +220,7 @@ LABEL_6:
   {
     v16[0] = v8;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v12 = [a1 objectDictionaryForUuid:v9 propertiesToFetch:v11 entityName:v10];
+    v12 = [self objectDictionaryForUuid:v9 propertiesToFetch:v11 entityName:v10];
 
     v13 = [v12 objectForKeyedSubscript:v8];
   }
@@ -255,7 +255,7 @@ LABEL_6:
   if ([v10 length] && objc_msgSend(v11, "count"))
   {
     v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v11, "count")}];
-    v14 = [a1 objectForUuid:v10 entityName:v26];
+    v14 = [self objectForUuid:v10 entityName:v26];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -324,7 +324,7 @@ LABEL_6:
   [v8 setReturnsDistinctResults:1];
   [v8 setPropertiesToFetch:&unk_1F54BE0A8];
   v12 = 0;
-  v9 = [a1 countForFetchRequest:v8 error:&v12];
+  v9 = [self countForFetchRequest:v8 error:&v12];
   v10 = v12;
   [v10 logAndThrow:1];
 
@@ -342,7 +342,7 @@ LABEL_6:
   [v8 setPredicate:v7];
 
   v12 = 0;
-  v9 = [a1 countForFetchRequest:v8 error:&v12];
+  v9 = [self countForFetchRequest:v8 error:&v12];
   v10 = v12;
   [v10 logAndThrow:1];
 
@@ -372,10 +372,10 @@ LABEL_6:
   v15[2] = __73__NSManagedObjectContext_MTAdditions__titlesOfObjectsInEntity_predicate___block_invoke;
   v15[3] = &unk_1E856A0A0;
   v17 = &v18;
-  v15[4] = a1;
+  v15[4] = self;
   v11 = v8;
   v16 = v11;
-  [a1 performBlockAndWait:v15];
+  [self performBlockAndWait:v15];
   v12 = v19[5];
 
   _Block_object_dispose(&v18, 8);
@@ -393,7 +393,7 @@ LABEL_6:
 
   [v11 setPredicate:v7];
   v9 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v11];
-  v10 = [a1 executeRequest:v9 error:0];
+  v10 = [self executeRequest:v9 error:0];
 }
 
 @end

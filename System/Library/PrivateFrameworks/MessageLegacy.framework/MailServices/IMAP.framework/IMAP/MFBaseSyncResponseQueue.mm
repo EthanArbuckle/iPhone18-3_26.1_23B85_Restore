@@ -1,7 +1,7 @@
 @interface MFBaseSyncResponseQueue
-- (BOOL)handleItems:(id)a3;
+- (BOOL)handleItems:(id)items;
 - (MFBaseSyncResponseQueue)init;
-- (id)sequenceIdentifierForItem:(id)a3;
+- (id)sequenceIdentifierForItem:(id)item;
 - (void)dealloc;
 @end
 
@@ -14,10 +14,10 @@
   return [(MFBufferedQueue *)&v3 initWithMaximumSize:256 latency:1.0];
 }
 
-- (BOOL)handleItems:(id)a3
+- (BOOL)handleItems:(id)items
 {
   currentUID = self->_currentUID;
-  v6 = -[MFBaseSyncResponseQueue uidForItem:](self, "uidForItem:", [a3 lastObject]);
+  v6 = -[MFBaseSyncResponseQueue uidForItem:](self, "uidForItem:", [items lastObject]);
   self->_currentUID = v6;
   libraryDetails = self->_libraryDetails;
   if (!libraryDetails)
@@ -35,7 +35,7 @@
     libraryDetails = [-[MFLibraryStore library](self->_store "library")];
   }
 
-  v9 = [a3 count];
+  v9 = [items count];
   v10 = [(NSArray *)libraryDetails count];
   v11 = v10;
   v37 = v9;
@@ -52,7 +52,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [a3 objectAtIndex:0];
+  v12 = [items objectAtIndex:0];
   if (!v11)
   {
     goto LABEL_10;
@@ -68,7 +68,7 @@ LABEL_11:
     return 1;
   }
 
-  v35 = a3;
+  itemsCopy = items;
   v36 = libraryDetails;
   v16 = 0;
   v17 = 0;
@@ -102,8 +102,8 @@ LABEL_11:
         v26 = [(MFBaseSyncResponseQueue *)self sequenceIdentifierForItem:v12];
         if ([v26 length])
         {
-          v27 = [(MFLibraryStore *)self->_store library];
-          [v27 setSequenceIdentifier:v26 forMessageWithLibraryID:*(v13 + *MEMORY[0x277D28500])];
+          library = [(MFLibraryStore *)self->_store library];
+          [library setSequenceIdentifier:v26 forMessageWithLibraryID:*(v13 + *MEMORY[0x277D28500])];
         }
       }
 
@@ -114,7 +114,7 @@ LABEL_11:
 
       else
       {
-        v12 = [v35 objectAtIndex:v16];
+        v12 = [itemsCopy objectAtIndex:v16];
       }
 
       goto LABEL_39;
@@ -133,19 +133,19 @@ LABEL_42:
 LABEL_33:
       if (self->_shouldCompact)
       {
-        v29 = [(MFLibraryStore *)self->_store library];
-        v30 = [v29 messageWithLibraryID:*(v13 + *MEMORY[0x277D28500]) options:0 inMailbox:0];
+        library2 = [(MFLibraryStore *)self->_store library];
+        v30 = [library2 messageWithLibraryID:*(v13 + *MEMORY[0x277D28500]) options:0 inMailbox:0];
         if (v30)
         {
           v31 = v30;
-          v32 = v34;
+          array = v34;
           if (!v34)
           {
-            v32 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          v34 = v32;
-          [v32 addObject:v31];
+          v34 = array;
+          [array addObject:v31];
         }
       }
 
@@ -183,7 +183,7 @@ LABEL_39:
 
     else
     {
-      v12 = [v35 objectAtIndex:v16];
+      v12 = [itemsCopy objectAtIndex:v16];
     }
 
 LABEL_43:
@@ -208,7 +208,7 @@ uint64_t __39__MFBaseSyncResponseQueue_handleItems___block_invoke(uint64_t a1)
   return [v2 messageWithLibraryID:v3 options:399 inMailbox:0];
 }
 
-- (id)sequenceIdentifierForItem:(id)a3
+- (id)sequenceIdentifierForItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -221,7 +221,7 @@ uint64_t __39__MFBaseSyncResponseQueue_handleItems___block_invoke(uint64_t a1)
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  result = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  result = [item countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (result)
   {
     v5 = result;
@@ -233,21 +233,21 @@ uint64_t __39__MFBaseSyncResponseQueue_handleItems___block_invoke(uint64_t a1)
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(item);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         if ([v8 type] == 11)
         {
-          v9 = [v8 modSequenceNumber];
-          if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+          modSequenceNumber = [v8 modSequenceNumber];
+          if (modSequenceNumber == 0x7FFFFFFFFFFFFFFFLL)
           {
             result = 0;
           }
 
           else
           {
-            result = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", v9];
+            result = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", modSequenceNumber];
           }
 
           goto LABEL_14;
@@ -257,7 +257,7 @@ uint64_t __39__MFBaseSyncResponseQueue_handleItems___block_invoke(uint64_t a1)
       }
 
       while (v5 != v7);
-      result = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      result = [item countByEnumeratingWithState:&v11 objects:v15 count:16];
       v5 = result;
       if (result)
       {

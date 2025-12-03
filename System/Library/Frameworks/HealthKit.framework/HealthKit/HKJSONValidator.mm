@@ -1,34 +1,34 @@
 @interface HKJSONValidator
-+ (BOOL)validateJSONObject:(id)a3 withSchemaNamed:(id)a4 bundle:(id)a5 error:(id *)a6;
++ (BOOL)validateJSONObject:(id)object withSchemaNamed:(id)named bundle:(id)bundle error:(id *)error;
 + (NSArray)searchPaths;
-+ (void)registerSearchPath:(id)a3;
-- (BOOL)_validateArray:(id)a3 schema:(id)a4 keyStack:(id)a5;
-- (BOOL)_validateBoolean:(id)a3;
-- (BOOL)_validateDictionary:(id)a3 schema:(id)a4 keyStack:(id)a5;
-- (BOOL)_validateFingerprintSHA256:(id)a3;
-- (BOOL)_validateJSONObject:(id)a3 keyStack:(id)a4;
-- (BOOL)_validatePrimitive:(id)a3 schema:(id)a4 keyStack:(id)a5;
-- (BOOL)_validateTimezone:(id)a3;
-- (BOOL)_validateURL:(id)a3;
-- (BOOL)_validateValue:(id)a3 schema:(id)a4 keyStack:(id)a5 root:(BOOL)a6;
-- (BOOL)_validateValue:(id)a3 subschemaNamed:(id)a4 keyStack:(id)a5;
-- (BOOL)validateJSONObject:(id)a3 error:(id *)a4;
++ (void)registerSearchPath:(id)path;
+- (BOOL)_validateArray:(id)array schema:(id)schema keyStack:(id)stack;
+- (BOOL)_validateBoolean:(id)boolean;
+- (BOOL)_validateDictionary:(id)dictionary schema:(id)schema keyStack:(id)stack;
+- (BOOL)_validateFingerprintSHA256:(id)a256;
+- (BOOL)_validateJSONObject:(id)object keyStack:(id)stack;
+- (BOOL)_validatePrimitive:(id)primitive schema:(id)schema keyStack:(id)stack;
+- (BOOL)_validateTimezone:(id)timezone;
+- (BOOL)_validateURL:(id)l;
+- (BOOL)_validateValue:(id)value schema:(id)schema keyStack:(id)stack root:(BOOL)root;
+- (BOOL)_validateValue:(id)value subschemaNamed:(id)named keyStack:(id)stack;
+- (BOOL)validateJSONObject:(id)object error:(id *)error;
 - (HKJSONValidator)init;
-- (HKJSONValidator)initWithSchema:(id)a3;
-- (HKJSONValidator)initWithSchema:(id)a3 subschemaCache:(id)a4;
-- (HKJSONValidator)initWithSchemaNamed:(id)a3 bundle:(id)a4;
-- (id)_loadSubschemaNamed:(id)a3;
-- (id)_mismatchErrorFromKeyStack:(id)a3;
+- (HKJSONValidator)initWithSchema:(id)schema;
+- (HKJSONValidator)initWithSchema:(id)schema subschemaCache:(id)cache;
+- (HKJSONValidator)initWithSchemaNamed:(id)named bundle:(id)bundle;
+- (id)_loadSubschemaNamed:(id)named;
+- (id)_mismatchErrorFromKeyStack:(id)stack;
 @end
 
 @implementation HKJSONValidator
 
-+ (void)registerSearchPath:(id)a3
++ (void)registerSearchPath:(id)path
 {
-  v11 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = v11;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = pathCopy;
   v6 = _searchPaths;
   if (!_searchPaths)
   {
@@ -37,25 +37,25 @@
     _searchPaths = v7;
 
     v6 = _searchPaths;
-    v5 = v11;
+    v5 = pathCopy;
   }
 
   if (([v6 containsObject:v5] & 1) == 0)
   {
-    v9 = [_searchPaths arrayByAddingObject:v11];
+    v9 = [_searchPaths arrayByAddingObject:pathCopy];
     v10 = _searchPaths;
     _searchPaths = v9;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 + (NSArray)searchPaths
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _searchPaths;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -70,9 +70,9 @@
   return 0;
 }
 
-- (HKJSONValidator)initWithSchema:(id)a3
+- (HKJSONValidator)initWithSchema:(id)schema
 {
-  v4 = a3;
+  schemaCopy = schema;
   v10.receiver = self;
   v10.super_class = HKJSONValidator;
   v5 = [(HKJSONValidator *)&v10 init];
@@ -80,7 +80,7 @@
   if (v5)
   {
     v5->_ivarLock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copyWithZone:0];
+    v7 = [schemaCopy copyWithZone:0];
     schema = v6->_schema;
     v6->_schema = v7;
   }
@@ -88,13 +88,13 @@
   return v6;
 }
 
-- (HKJSONValidator)initWithSchema:(id)a3 subschemaCache:(id)a4
+- (HKJSONValidator)initWithSchema:(id)schema subschemaCache:(id)cache
 {
-  v6 = a4;
-  v7 = [(HKJSONValidator *)self initWithSchema:a3];
+  cacheCopy = cache;
+  v7 = [(HKJSONValidator *)self initWithSchema:schema];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [cacheCopy mutableCopy];
     subschemaCache = v7->_subschemaCache;
     v7->_subschemaCache = v8;
   }
@@ -102,12 +102,12 @@
   return v7;
 }
 
-- (HKJSONValidator)initWithSchemaNamed:(id)a3 bundle:(id)a4
+- (HKJSONValidator)initWithSchemaNamed:(id)named bundle:(id)bundle
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 URLForResource:v6 withExtension:@"json"];
+  namedCopy = named;
+  bundleCopy = bundle;
+  v8 = [bundleCopy URLForResource:namedCopy withExtension:@"json"];
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x1E695DF48]) initWithURL:v8];
@@ -122,7 +122,7 @@
       if (v11)
       {
         self = [(HKJSONValidator *)self initWithSchema:v11];
-        v13 = self;
+        selfCopy = self;
       }
 
       else
@@ -132,15 +132,15 @@
         if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v19 = v6;
+          v19 = namedCopy;
           v20 = 2114;
-          v21 = v7;
+          v21 = bundleCopy;
           v22 = 2114;
           v23 = v12;
           _os_log_error_impl(&dword_19197B000, v14, OS_LOG_TYPE_ERROR, "Failed to deserialize schema %{public}@ in bundle %{public}@: %{public}@", buf, 0x20u);
         }
 
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -152,7 +152,7 @@
         [HKJSONValidator initWithSchemaNamed:bundle:];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -164,19 +164,19 @@
       [HKJSONValidator initWithSchemaNamed:bundle:];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)validateJSONObject:(id)a3 error:(id *)a4
+- (BOOL)validateJSONObject:(id)object error:(id *)error
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  objectCopy = object;
   v8 = objc_alloc_init(v6);
-  v9 = [(HKJSONValidator *)self _validateJSONObject:v7 keyStack:v8];
+  v9 = [(HKJSONValidator *)self _validateJSONObject:objectCopy keyStack:v8];
 
   if (!v9)
   {
@@ -184,10 +184,10 @@
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -200,43 +200,43 @@
   return v9;
 }
 
-- (BOOL)_validateJSONObject:(id)a3 keyStack:(id)a4
+- (BOOL)_validateJSONObject:(id)object keyStack:(id)stack
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKJSONValidator *)self schema];
-  LOBYTE(self) = [(HKJSONValidator *)self _validateValue:v7 schema:v8 keyStack:v6 root:1];
+  stackCopy = stack;
+  objectCopy = object;
+  schema = [(HKJSONValidator *)self schema];
+  LOBYTE(self) = [(HKJSONValidator *)self _validateValue:objectCopy schema:schema keyStack:stackCopy root:1];
 
   return self;
 }
 
-+ (BOOL)validateJSONObject:(id)a3 withSchemaNamed:(id)a4 bundle:(id)a5 error:(id *)a6
++ (BOOL)validateJSONObject:(id)object withSchemaNamed:(id)named bundle:(id)bundle error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[HKJSONValidator alloc] initWithSchemaNamed:v10 bundle:v11];
+  objectCopy = object;
+  namedCopy = named;
+  bundleCopy = bundle;
+  v12 = [[HKJSONValidator alloc] initWithSchemaNamed:namedCopy bundle:bundleCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = [(HKJSONValidator *)v12 validateJSONObject:v9 error:a6];
+    v14 = [(HKJSONValidator *)v12 validateJSONObject:objectCopy error:error];
   }
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a6 code:100 format:{@"Unable to create JSON validator with schema %@ in bundle %@", v10, v11}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:100 format:{@"Unable to create JSON validator with schema %@ in bundle %@", namedCopy, bundleCopy}];
     v14 = 0;
   }
 
   return v14;
 }
 
-- (BOOL)_validateValue:(id)a3 schema:(id)a4 keyStack:(id)a5 root:(BOOL)a6
+- (BOOL)_validateValue:(id)value schema:(id)schema keyStack:(id)stack root:(BOOL)root
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  valueCopy = value;
+  schemaCopy = schema;
+  stackCopy = stack;
+  if (!valueCopy)
   {
     goto LABEL_10;
   }
@@ -247,16 +247,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(HKJSONValidator *)self _validateArray:v10 schema:v11 keyStack:v12];
+      v13 = [(HKJSONValidator *)self _validateArray:valueCopy schema:schemaCopy keyStack:stackCopy];
       goto LABEL_6;
     }
 
-    if (!a6)
+    if (!root)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [(HKJSONValidator *)self _validatePrimitive:v10 schema:v11 keyStack:v12];
+        v13 = [(HKJSONValidator *)self _validatePrimitive:valueCopy schema:schemaCopy keyStack:stackCopy];
         goto LABEL_6;
       }
     }
@@ -266,7 +266,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v13 = [(HKJSONValidator *)self _validateDictionary:v10 schema:v11 keyStack:v12];
+  v13 = [(HKJSONValidator *)self _validateDictionary:valueCopy schema:schemaCopy keyStack:stackCopy];
 LABEL_6:
   v14 = v13;
 LABEL_11:
@@ -274,12 +274,12 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_validateDictionary:(id)a3 schema:(id)a4 keyStack:(id)a5
+- (BOOL)_validateDictionary:(id)dictionary schema:(id)schema keyStack:(id)stack
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  schemaCopy = schema;
+  stackCopy = stack;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -287,7 +287,7 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if (![v8 count])
+  if (![schemaCopy count])
   {
     v19 = 1;
     goto LABEL_24;
@@ -297,7 +297,7 @@ LABEL_11:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v8;
+  v10 = schemaCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v11)
   {
@@ -307,7 +307,7 @@ LABEL_11:
 
   v12 = v11;
   v13 = *v25;
-  v22 = v8;
+  v22 = schemaCopy;
   while (2)
   {
     for (i = 0; i != v12; ++i)
@@ -328,7 +328,7 @@ LABEL_11:
       if ([v15 hasSuffix:@"?"])
       {
         v17 = [v15 substringToIndex:{objc_msgSend(v15, "length") - objc_msgSend(@"?", "length")}];
-        v18 = [v7 objectForKeyedSubscript:v17];
+        v18 = [dictionaryCopy objectForKeyedSubscript:v17];
 
         if (!v18)
         {
@@ -338,27 +338,27 @@ LABEL_11:
 
       else
       {
-        v18 = [v7 objectForKeyedSubscript:v15];
+        v18 = [dictionaryCopy objectForKeyedSubscript:v15];
       }
 
-      [v9 addObject:{v15, v22}];
-      if (![(HKJSONValidator *)self _validateValue:v18 schema:v16 keyStack:v9 root:0])
+      [stackCopy addObject:{v15, v22}];
+      if (![(HKJSONValidator *)self _validateValue:v18 schema:v16 keyStack:stackCopy root:0])
       {
 
 LABEL_22:
         v19 = 0;
-        v8 = v22;
+        schemaCopy = v22;
         goto LABEL_23;
       }
 
-      [v9 removeLastObject];
+      [stackCopy removeLastObject];
 
 LABEL_15:
     }
 
     v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
     v19 = 1;
-    v8 = v22;
+    schemaCopy = v22;
     if (v12)
     {
       continue;
@@ -374,23 +374,23 @@ LABEL_24:
   return v19;
 }
 
-- (BOOL)_validateArray:(id)a3 schema:(id)a4 keyStack:(id)a5
+- (BOOL)_validateArray:(id)array schema:(id)schema keyStack:(id)stack
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arrayCopy = array;
+  schemaCopy = schema;
+  stackCopy = stack;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v9 count])
+    if ([schemaCopy count])
     {
-      v11 = [v9 lastObject];
+      lastObject = [schemaCopy lastObject];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v12 = v8;
+      v12 = arrayCopy;
       v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v13)
       {
@@ -405,7 +405,7 @@ LABEL_24:
               objc_enumerationMutation(v12);
             }
 
-            if (![(HKJSONValidator *)self _validateValue:*(*(&v20 + 1) + 8 * i) schema:v11 keyStack:v10 root:0, v20])
+            if (![(HKJSONValidator *)self _validateValue:*(*(&v20 + 1) + 8 * i) schema:lastObject keyStack:stackCopy root:0, v20])
             {
               v17 = 0;
               goto LABEL_14;
@@ -441,15 +441,15 @@ LABEL_14:
   return v17;
 }
 
-- (BOOL)_validatePrimitive:(id)a3 schema:(id)a4 keyStack:(id)a5
+- (BOOL)_validatePrimitive:(id)primitive schema:(id)schema keyStack:(id)stack
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 addObject:v9];
-  if (![v9 isEqualToString:@"BOOLean"])
+  primitiveCopy = primitive;
+  schemaCopy = schema;
+  stackCopy = stack;
+  [stackCopy addObject:schemaCopy];
+  if (![schemaCopy isEqualToString:@"BOOLean"])
   {
-    if ([v9 isEqualToString:@"number"] || objc_msgSend(v9, "isEqualToString:", @"string"))
+    if ([schemaCopy isEqualToString:@"number"] || objc_msgSend(schemaCopy, "isEqualToString:", @"string"))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -460,9 +460,9 @@ LABEL_14:
 
     else
     {
-      if ([v9 isEqualToString:@"fingerprint:sha256"])
+      if ([schemaCopy isEqualToString:@"fingerprint:sha256"])
       {
-        if (![(HKJSONValidator *)self _validateFingerprintSHA256:v8])
+        if (![(HKJSONValidator *)self _validateFingerprintSHA256:primitiveCopy])
         {
           goto LABEL_20;
         }
@@ -470,9 +470,9 @@ LABEL_14:
         goto LABEL_7;
       }
 
-      if ([v9 isEqualToString:@"timezone"])
+      if ([schemaCopy isEqualToString:@"timezone"])
       {
-        if (![(HKJSONValidator *)self _validateTimezone:v8])
+        if (![(HKJSONValidator *)self _validateTimezone:primitiveCopy])
         {
           goto LABEL_20;
         }
@@ -480,9 +480,9 @@ LABEL_14:
         goto LABEL_7;
       }
 
-      if ([v9 isEqualToString:@"url"])
+      if ([schemaCopy isEqualToString:@"url"])
       {
-        if (![(HKJSONValidator *)self _validateURL:v8])
+        if (![(HKJSONValidator *)self _validateURL:primitiveCopy])
         {
           goto LABEL_20;
         }
@@ -490,10 +490,10 @@ LABEL_14:
         goto LABEL_7;
       }
 
-      if ([v9 hasPrefix:@"schema:"])
+      if ([schemaCopy hasPrefix:@"schema:"])
       {
-        v12 = [v9 substringFromIndex:{objc_msgSend(@"schema:", "length")}];
-        v11 = [(HKJSONValidator *)self _validateValue:v8 subschemaNamed:v12 keyStack:v10];
+        v12 = [schemaCopy substringFromIndex:{objc_msgSend(@"schema:", "length")}];
+        v11 = [(HKJSONValidator *)self _validateValue:primitiveCopy subschemaNamed:v12 keyStack:stackCopy];
 
         if (!v11)
         {
@@ -509,26 +509,26 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (![(HKJSONValidator *)self _validateBoolean:v8])
+  if (![(HKJSONValidator *)self _validateBoolean:primitiveCopy])
   {
     goto LABEL_20;
   }
 
 LABEL_7:
-  [v10 removeLastObject];
+  [stackCopy removeLastObject];
   LOBYTE(v11) = 1;
 LABEL_21:
 
   return v11;
 }
 
-- (BOOL)_validateBoolean:(id)a3
+- (BOOL)_validateBoolean:(id)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = CFGetTypeID(v3);
+    v4 = CFGetTypeID(booleanCopy);
     v5 = v4 == CFBooleanGetTypeID();
   }
 
@@ -540,13 +540,13 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)_validateFingerprintSHA256:(id)a3
+- (BOOL)_validateFingerprintSHA256:(id)a256
 {
-  v3 = a3;
+  a256Copy = a256;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x1E695DEF0] hk_dataWithSHA256Fingerprint:v3 error:0];
+    v4 = [MEMORY[0x1E695DEF0] hk_dataWithSHA256Fingerprint:a256Copy error:0];
     v5 = v4 != 0;
   }
 
@@ -558,30 +558,30 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)_validateTimezone:(id)a3
+- (BOOL)_validateTimezone:(id)timezone
 {
-  v3 = a3;
+  timezoneCopy = timezone;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)_validateURL:(id)a3
+- (BOOL)_validateURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v3];
+    v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 scheme];
-      if (v6)
+      scheme = [v4 scheme];
+      if (scheme)
       {
-        v7 = [v5 host];
-        v8 = v7 != 0;
+        host = [v5 host];
+        v8 = host != 0;
       }
 
       else
@@ -604,17 +604,17 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)_validateValue:(id)a3 subschemaNamed:(id)a4 keyStack:(id)a5
+- (BOOL)_validateValue:(id)value subschemaNamed:(id)named keyStack:(id)stack
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HKJSONValidator *)self _loadSubschemaNamed:a4];
+  valueCopy = value;
+  stackCopy = stack;
+  v10 = [(HKJSONValidator *)self _loadSubschemaNamed:named];
   if (v10)
   {
     os_unfair_lock_lock(&self->_ivarLock);
     v11 = [objc_alloc(objc_opt_class()) initWithSchema:v10 subschemaCache:self->_subschemaCache];
     os_unfair_lock_unlock(&self->_ivarLock);
-    v12 = [v11 _validateJSONObject:v8 keyStack:v9];
+    v12 = [v11 _validateJSONObject:valueCopy keyStack:stackCopy];
   }
 
   else
@@ -625,10 +625,10 @@ LABEL_21:
   return v12;
 }
 
-- (id)_loadSubschemaNamed:(id)a3
+- (id)_loadSubschemaNamed:(id)named
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namedCopy = named;
   os_unfair_lock_lock(&self->_ivarLock);
   subschemaCache = self->_subschemaCache;
   if (!subschemaCache)
@@ -640,7 +640,7 @@ LABEL_21:
     subschemaCache = self->_subschemaCache;
   }
 
-  v8 = [(NSMutableDictionary *)subschemaCache objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)subschemaCache objectForKeyedSubscript:namedCopy];
   os_unfair_lock_unlock(&self->_ivarLock);
   if (v8)
   {
@@ -649,13 +649,13 @@ LABEL_21:
 
   else
   {
-    v10 = [v4 stringByAppendingPathExtension:@"json"];
+    v10 = [namedCopy stringByAppendingPathExtension:@"json"];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [objc_opt_class() searchPaths];
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    searchPaths = [objc_opt_class() searchPaths];
+    v12 = [searchPaths countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
       v13 = v12;
@@ -666,7 +666,7 @@ LABEL_21:
         {
           if (*v27 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(searchPaths);
           }
 
           v16 = [*(*(&v26 + 1) + 8 * i) URLByAppendingPathComponent:v10];
@@ -690,7 +690,7 @@ LABEL_21:
             }
 
             os_unfair_lock_lock(&self->_ivarLock);
-            [(NSMutableDictionary *)self->_subschemaCache setObject:v20 forKeyedSubscript:v4];
+            [(NSMutableDictionary *)self->_subschemaCache setObject:v20 forKeyedSubscript:namedCopy];
             os_unfair_lock_unlock(&self->_ivarLock);
             v9 = v20;
 
@@ -698,7 +698,7 @@ LABEL_21:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v13 = [searchPaths countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v13)
         {
           continue;
@@ -712,7 +712,7 @@ LABEL_21:
     v18 = HKLogDefault;
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
     {
-      [(HKJSONValidator *)v4 _loadSubschemaNamed:v18];
+      [(HKJSONValidator *)namedCopy _loadSubschemaNamed:v18];
     }
 
     v9 = 0;
@@ -724,10 +724,10 @@ LABEL_20:
   return v9;
 }
 
-- (id)_mismatchErrorFromKeyStack:(id)a3
+- (id)_mismatchErrorFromKeyStack:(id)stack
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [a3 componentsJoinedByString:@"."];
+  v3 = [stack componentsJoinedByString:@"."];
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Schema mismatch at %@", v3];
   v5 = *MEMORY[0x1E696A578];
   v10[0] = @"HKJSONErrorKeyPathKey";

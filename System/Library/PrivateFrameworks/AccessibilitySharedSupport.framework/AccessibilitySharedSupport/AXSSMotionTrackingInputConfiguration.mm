@@ -1,40 +1,40 @@
 @interface AXSSMotionTrackingInputConfiguration
 - (AXSSMotionTrackingInputConfiguration)init;
-- (AXSSMotionTrackingInputConfiguration)initWithCoder:(id)a3;
-- (AXSSMotionTrackingInputConfiguration)initWithOrderedInputPreference:(id)a3 allowedTrackingTypes:(id)a4 allowSeparateInputForExpressions:(BOOL)a5;
-- (AXSSMotionTrackingInputConfiguration)initWithPlistDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMotionTrackingInputConfiguration:(id)a3;
-- (BOOL)supportsTrackingType:(unint64_t)a3;
+- (AXSSMotionTrackingInputConfiguration)initWithCoder:(id)coder;
+- (AXSSMotionTrackingInputConfiguration)initWithOrderedInputPreference:(id)preference allowedTrackingTypes:(id)types allowSeparateInputForExpressions:(BOOL)expressions;
+- (AXSSMotionTrackingInputConfiguration)initWithPlistDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMotionTrackingInputConfiguration:(id)configuration;
+- (BOOL)supportsTrackingType:(unint64_t)type;
 - (NSArray)orderedCameraInputPreference;
 - (NSDictionary)plistDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)plistDictionary;
 @end
 
 @implementation AXSSMotionTrackingInputConfiguration
 
-- (AXSSMotionTrackingInputConfiguration)initWithOrderedInputPreference:(id)a3 allowedTrackingTypes:(id)a4 allowSeparateInputForExpressions:(BOOL)a5
+- (AXSSMotionTrackingInputConfiguration)initWithOrderedInputPreference:(id)preference allowedTrackingTypes:(id)types allowSeparateInputForExpressions:(BOOL)expressions
 {
-  v8 = a3;
-  v9 = a4;
+  preferenceCopy = preference;
+  typesCopy = types;
   v16.receiver = self;
   v16.super_class = AXSSMotionTrackingInputConfiguration;
   v10 = [(AXSSMotionTrackingInputConfiguration *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [preferenceCopy copy];
     orderedInputPreference = v10->_orderedInputPreference;
     v10->_orderedInputPreference = v11;
 
-    v13 = [v9 copy];
+    v13 = [typesCopy copy];
     allowedTrackingTypes = v10->_allowedTrackingTypes;
     v10->_allowedTrackingTypes = v13;
 
-    v10->_allowSeparateInputForExpressions = a5;
+    v10->_allowSeparateInputForExpressions = expressions;
   }
 
   return v10;
@@ -47,10 +47,10 @@
   return [(AXSSMotionTrackingInputConfiguration *)&v3 init];
 }
 
-- (AXSSMotionTrackingInputConfiguration)initWithPlistDictionary:(id)a3
+- (AXSSMotionTrackingInputConfiguration)initWithPlistDictionary:(id)dictionary
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -67,7 +67,7 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = NSStringFromSelector(sel_orderedInputPreference);
-    v6 = [v4 objectForKeyedSubscript:v5];
+    v6 = [dictionaryCopy objectForKeyedSubscript:v5];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -81,7 +81,7 @@
     }
 
     v7 = NSStringFromSelector(sel_allowedTrackingTypes);
-    v8 = [v4 objectForKeyedSubscript:v7];
+    v8 = [dictionaryCopy objectForKeyedSubscript:v7];
 
     v9 = MEMORY[0x1E696ACD0];
     v10 = MEMORY[0x1E695DFD8];
@@ -115,23 +115,23 @@
     }
 
     v17 = NSStringFromSelector(sel_allowSeparateInputForExpressions);
-    v18 = [v4 objectForKeyedSubscript:v17];
+    v18 = [dictionaryCopy objectForKeyedSubscript:v17];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
     }
 
     else
     {
-      v19 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    bOOLValue = 0;
   }
 
   v27.receiver = self;
@@ -147,7 +147,7 @@
     allowedTrackingTypes = v20->_allowedTrackingTypes;
     v20->_allowedTrackingTypes = v23;
 
-    v20->_allowSeparateInputForExpressions = v19;
+    v20->_allowSeparateInputForExpressions = bOOLValue;
   }
 
   _Block_object_dispose(&v31, 8);
@@ -206,13 +206,13 @@ void __64__AXSSMotionTrackingInputConfiguration_initWithPlistDictionary___block_
   v27 = __Block_byref_object_copy__0;
   v28 = __Block_byref_object_dispose__0;
   v29 = 0;
-  v4 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
+  orderedInputPreference = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __55__AXSSMotionTrackingInputConfiguration_plistDictionary__block_invoke;
   v23[3] = &unk_1E8134DB0;
   v23[4] = &v24;
-  [v4 enumerateObjectsUsingBlock:v23];
+  [orderedInputPreference enumerateObjectsUsingBlock:v23];
 
   v5 = v25[5];
   if (v5)
@@ -222,15 +222,15 @@ void __64__AXSSMotionTrackingInputConfiguration_initWithPlistDictionary___block_
     [v3 setObject:v6 forKeyedSubscript:v7];
   }
 
-  v8 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
-  v9 = v8 == 0;
+  allowedTrackingTypes = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+  v9 = allowedTrackingTypes == 0;
 
   if (!v9)
   {
     v10 = MEMORY[0x1E696ACC8];
-    v11 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+    allowedTrackingTypes2 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
     v22 = 0;
-    v12 = [v10 archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v22];
+    v12 = [v10 archivedDataWithRootObject:allowedTrackingTypes2 requiringSecureCoding:1 error:&v22];
     v13 = v22;
     v14 = NSStringFromSelector(sel_allowedTrackingTypes);
     [v3 setObject:v12 forKeyedSubscript:v14];
@@ -240,8 +240,8 @@ void __64__AXSSMotionTrackingInputConfiguration_initWithPlistDictionary___block_
       v15 = AXSSLogForCategory(2);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
-        [(AXSSMotionTrackingInputConfiguration *)v16 plistDictionary:v13];
+        allowedTrackingTypes3 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+        [(AXSSMotionTrackingInputConfiguration *)allowedTrackingTypes3 plistDictionary:v13];
       }
     }
   }
@@ -286,8 +286,8 @@ uint64_t __55__AXSSMotionTrackingInputConfiguration_plistDictionary__block_invok
 
 - (NSArray)orderedCameraInputPreference
 {
-  v3 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
-  v4 = [v3 count];
+  orderedInputPreference = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
+  v4 = [orderedInputPreference count];
 
   if (v4)
   {
@@ -297,13 +297,13 @@ uint64_t __55__AXSSMotionTrackingInputConfiguration_plistDictionary__block_invok
     v12 = __Block_byref_object_copy__0;
     v13 = __Block_byref_object_dispose__0;
     v14 = 0;
-    v5 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
+    orderedInputPreference2 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__AXSSMotionTrackingInputConfiguration_orderedCameraInputPreference__block_invoke;
     v8[3] = &unk_1E8134DB0;
     v8[4] = &v9;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [orderedInputPreference2 enumerateObjectsUsingBlock:v8];
 
     v6 = v10[5];
     _Block_object_dispose(&v9, 8);
@@ -341,63 +341,63 @@ void __68__AXSSMotionTrackingInputConfiguration_orderedCameraInputPreference__bl
   v9.receiver = self;
   v9.super_class = AXSSMotionTrackingInputConfiguration;
   v4 = [(AXSSMotionTrackingInputConfiguration *)&v9 description];
-  v5 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
-  v6 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
-  v7 = [v3 stringWithFormat:@"%@ <orderedInputPreference %@ allowedTrackingTypes %@ allowSeparateInputForExpressions %d>", v4, v5, v6, -[AXSSMotionTrackingInputConfiguration allowSeparateInputForExpressions](self, "allowSeparateInputForExpressions")];
+  orderedInputPreference = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
+  allowedTrackingTypes = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+  v7 = [v3 stringWithFormat:@"%@ <orderedInputPreference %@ allowedTrackingTypes %@ allowSeparateInputForExpressions %d>", v4, orderedInputPreference, allowedTrackingTypes, -[AXSSMotionTrackingInputConfiguration allowSeparateInputForExpressions](self, "allowSeparateInputForExpressions")];
 
   return v7;
 }
 
-- (BOOL)supportsTrackingType:(unint64_t)a3
+- (BOOL)supportsTrackingType:(unint64_t)type
 {
-  v5 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+  allowedTrackingTypes = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
 
-  if (!v5)
+  if (!allowedTrackingTypes)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v6 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v8 = [v6 containsObject:v7];
+  allowedTrackingTypes2 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v8 = [allowedTrackingTypes2 containsObject:v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
+  coderCopy = coder;
+  orderedInputPreference = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
 
-  if (v4)
+  if (orderedInputPreference)
   {
-    v5 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
+    orderedInputPreference2 = [(AXSSMotionTrackingInputConfiguration *)self orderedInputPreference];
     v6 = NSStringFromSelector(sel_orderedInputPreference);
-    [v12 encodeObject:v5 forKey:v6];
+    [coderCopy encodeObject:orderedInputPreference2 forKey:v6];
   }
 
-  v7 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+  allowedTrackingTypes = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
 
-  if (v7)
+  if (allowedTrackingTypes)
   {
-    v8 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
+    allowedTrackingTypes2 = [(AXSSMotionTrackingInputConfiguration *)self allowedTrackingTypes];
     v9 = NSStringFromSelector(sel_allowedTrackingTypes);
-    [v12 encodeObject:v8 forKey:v9];
+    [coderCopy encodeObject:allowedTrackingTypes2 forKey:v9];
   }
 
-  v10 = [(AXSSMotionTrackingInputConfiguration *)self allowSeparateInputForExpressions];
+  allowSeparateInputForExpressions = [(AXSSMotionTrackingInputConfiguration *)self allowSeparateInputForExpressions];
   v11 = NSStringFromSelector(sel_allowSeparateInputForExpressions);
-  [v12 encodeBool:v10 forKey:v11];
+  [coderCopy encodeBool:allowSeparateInputForExpressions forKey:v11];
 }
 
-- (AXSSMotionTrackingInputConfiguration)initWithCoder:(id)a3
+- (AXSSMotionTrackingInputConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AXSSMotionTrackingInputConfiguration *)self init];
   if (v5)
   {
@@ -407,7 +407,7 @@ void __68__AXSSMotionTrackingInputConfiguration_orderedCameraInputPreference__bl
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
     v11 = NSStringFromSelector(sel_orderedInputPreference);
-    v12 = [v4 decodeObjectOfClasses:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClasses:v10 forKey:v11];
     orderedInputPreference = v5->_orderedInputPreference;
     v5->_orderedInputPreference = v12;
 
@@ -415,7 +415,7 @@ void __68__AXSSMotionTrackingInputConfiguration_orderedCameraInputPreference__bl
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
     v17 = NSStringFromSelector(sel_allowedTrackingTypes);
-    v18 = [v4 decodeObjectOfClasses:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClasses:v16 forKey:v17];
 
     if (v18)
     {
@@ -427,43 +427,43 @@ void __68__AXSSMotionTrackingInputConfiguration_orderedCameraInputPreference__bl
     v5->_allowedTrackingTypes = v20;
 
     v22 = NSStringFromSelector(sel_allowSeparateInputForExpressions);
-    v5->_allowSeparateInputForExpressions = [v4 decodeBoolForKey:v22];
+    v5->_allowSeparateInputForExpressions = [coderCopy decodeBoolForKey:v22];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(AXSSMotionTrackingInputConfiguration *)self plistDictionary];
-  v4 = [[AXSSMotionTrackingInputConfiguration alloc] initWithPlistDictionary:v3];
+  plistDictionary = [(AXSSMotionTrackingInputConfiguration *)self plistDictionary];
+  v4 = [[AXSSMotionTrackingInputConfiguration alloc] initWithPlistDictionary:plistDictionary];
 
   return v4;
 }
 
-- (BOOL)isEqualToMotionTrackingInputConfiguration:(id)a3
+- (BOOL)isEqualToMotionTrackingInputConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AXSSMotionTrackingInputConfiguration *)self plistDictionary];
-  v6 = [v4 plistDictionary];
+  configurationCopy = configuration;
+  plistDictionary = [(AXSSMotionTrackingInputConfiguration *)self plistDictionary];
+  plistDictionary2 = [configurationCopy plistDictionary];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(configurationCopy) = [plistDictionary isEqual:plistDictionary2];
+  return configurationCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AXSSMotionTrackingInputConfiguration *)self plistDictionary];
-  v3 = [v2 hash];
+  plistDictionary = [(AXSSMotionTrackingInputConfiguration *)self plistDictionary];
+  v3 = [plistDictionary hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSMotionTrackingInputConfiguration *)self isEqualToMotionTrackingInputConfiguration:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSMotionTrackingInputConfiguration *)self isEqualToMotionTrackingInputConfiguration:equalCopy];
 
   return v5;
 }
@@ -471,7 +471,7 @@ void __68__AXSSMotionTrackingInputConfiguration_orderedCameraInputPreference__bl
 - (void)plistDictionary
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = a2;
   _os_log_error_impl(&dword_1C0E8A000, log, OS_LOG_TYPE_ERROR, "ERROR: Couldn't encode object %@, encountered error: %@", buf, 0x16u);

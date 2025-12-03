@@ -1,16 +1,16 @@
 @interface PTInference
 + (id)ANEConfigForAsynchronousWork;
 + (id)ANEConfigForSynchronousWork;
-+ (int)espressoEngineForPlanPriority:(int)a3;
-+ (int)espressoPlanPriorityValidate:(int)a3;
++ (int)espressoEngineForPlanPriority:(int)priority;
++ (int)espressoPlanPriorityValidate:(int)validate;
 @end
 
 @implementation PTInference
 
-+ (int)espressoPlanPriorityValidate:(int)a3
++ (int)espressoPlanPriorityValidate:(int)validate
 {
-  result = a3;
-  if (a3 == 1)
+  result = validate;
+  if (validate == 1)
   {
     v8 = v3;
     v9 = v4;
@@ -35,9 +35,9 @@
   return result;
 }
 
-+ (int)espressoEngineForPlanPriority:(int)a3
++ (int)espressoEngineForPlanPriority:(int)priority
 {
-  if (a3 == 1)
+  if (priority == 1)
   {
     return 10006;
   }
@@ -50,16 +50,16 @@
 
 + (id)ANEConfigForSynchronousWork
 {
-  v3 = [a1 espressoPlanPriorityForSynchronousWork];
-  v4 = -[PTInferenceANEConfig initWithEspressoPlanPriority:espressoEngine:]([PTInferenceANEConfig alloc], "initWithEspressoPlanPriority:espressoEngine:", v3, [a1 espressoEngineForPlanPriority:v3]);
+  espressoPlanPriorityForSynchronousWork = [self espressoPlanPriorityForSynchronousWork];
+  v4 = -[PTInferenceANEConfig initWithEspressoPlanPriority:espressoEngine:]([PTInferenceANEConfig alloc], "initWithEspressoPlanPriority:espressoEngine:", espressoPlanPriorityForSynchronousWork, [self espressoEngineForPlanPriority:espressoPlanPriorityForSynchronousWork]);
 
   return v4;
 }
 
 + (id)ANEConfigForAsynchronousWork
 {
-  v3 = [a1 espressoPlanPriorityForAsynchronousWork];
-  v4 = -[PTInferenceANEConfig initWithEspressoPlanPriority:espressoEngine:]([PTInferenceANEConfig alloc], "initWithEspressoPlanPriority:espressoEngine:", v3, [a1 espressoEngineForPlanPriority:v3]);
+  espressoPlanPriorityForAsynchronousWork = [self espressoPlanPriorityForAsynchronousWork];
+  v4 = -[PTInferenceANEConfig initWithEspressoPlanPriority:espressoEngine:]([PTInferenceANEConfig alloc], "initWithEspressoPlanPriority:espressoEngine:", espressoPlanPriorityForAsynchronousWork, [self espressoEngineForPlanPriority:espressoPlanPriorityForAsynchronousWork]);
 
   return v4;
 }

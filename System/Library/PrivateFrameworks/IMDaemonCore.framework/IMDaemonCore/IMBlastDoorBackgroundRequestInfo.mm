@@ -1,19 +1,19 @@
 @interface IMBlastDoorBackgroundRequestInfo
-- (IMBlastDoorBackgroundRequestInfo)initWith:(id)a3;
+- (IMBlastDoorBackgroundRequestInfo)initWith:(id)with;
 @end
 
 @implementation IMBlastDoorBackgroundRequestInfo
 
-- (IMBlastDoorBackgroundRequestInfo)initWith:(id)a3
+- (IMBlastDoorBackgroundRequestInfo)initWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v9.receiver = self;
   v9.super_class = IMBlastDoorBackgroundRequestInfo;
   v5 = [(IMBlastDoorBackgroundRequestInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 chatId];
-    [(IMBlastDoorBackgroundRequestInfo *)v5 setChatId:v6];
+    chatId = [withCopy chatId];
+    [(IMBlastDoorBackgroundRequestInfo *)v5 setChatId:chatId];
 
     v7 = v5;
   }

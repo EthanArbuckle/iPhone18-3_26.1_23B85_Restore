@@ -1,26 +1,26 @@
 @interface AXStyleProviderUIAlert
-- (AXStyleProviderUIAlert)initWithType:(unint64_t)a3 text:(id)a4 subtitleText:(id)a5 iconImage:(id)a6 styleProvider:(id)a7 userInfo:(id)a8;
-- (void)_appendParagraphWithText:(id)a3 withImage:(id)a4 withTextColor:(id)a5 font:(id)a6 textAlignment:(int64_t)a7 lineSpacing:(double)a8 paragraphSpacingBefore:(double)a9 toAttributedString:(id)a10;
-- (void)_appendParagraphWithText:(id)a3 withTextColor:(id)a4 font:(id)a5 textAlignment:(int64_t)a6 lineSpacing:(double)a7 paragraphSpacingBefore:(double)a8 toAttributedString:(id)a9;
-- (void)_cancelDismissalWithPanGesture:(id)a3;
-- (void)_endDismissalWithPanGesture:(id)a3;
-- (void)_handlePanGestureRecognizer:(id)a3;
-- (void)_handleTapGestureRecognizer:(id)a3;
-- (void)_updateDismissalWithPanGesture:(id)a3;
-- (void)_updateViewForDismissalPercentage:(double)a3;
-- (void)addToContainerView:(id)a3;
+- (AXStyleProviderUIAlert)initWithType:(unint64_t)type text:(id)text subtitleText:(id)subtitleText iconImage:(id)image styleProvider:(id)provider userInfo:(id)info;
+- (void)_appendParagraphWithText:(id)text withImage:(id)image withTextColor:(id)color font:(id)font textAlignment:(int64_t)alignment lineSpacing:(double)spacing paragraphSpacingBefore:(double)before toAttributedString:(id)self0;
+- (void)_appendParagraphWithText:(id)text withTextColor:(id)color font:(id)font textAlignment:(int64_t)alignment lineSpacing:(double)spacing paragraphSpacingBefore:(double)before toAttributedString:(id)string;
+- (void)_cancelDismissalWithPanGesture:(id)gesture;
+- (void)_endDismissalWithPanGesture:(id)gesture;
+- (void)_handlePanGestureRecognizer:(id)recognizer;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
+- (void)_updateDismissalWithPanGesture:(id)gesture;
+- (void)_updateViewForDismissalPercentage:(double)percentage;
+- (void)addToContainerView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation AXStyleProviderUIAlert
 
-- (AXStyleProviderUIAlert)initWithType:(unint64_t)a3 text:(id)a4 subtitleText:(id)a5 iconImage:(id)a6 styleProvider:(id)a7 userInfo:(id)a8
+- (AXStyleProviderUIAlert)initWithType:(unint64_t)type text:(id)text subtitleText:(id)subtitleText iconImage:(id)image styleProvider:(id)provider userInfo:(id)info
 {
-  v14 = a4;
-  v198 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  textCopy = text;
+  subtitleTextCopy = subtitleText;
+  imageCopy = image;
+  providerCopy = provider;
+  infoCopy = info;
   v201.receiver = self;
   v201.super_class = AXStyleProviderUIAlert;
   v18 = [(AXStyleProviderUIAlert *)&v201 init];
@@ -30,13 +30,13 @@
     goto LABEL_144;
   }
 
-  v190 = v17;
-  [(AXUIAlert *)v18 setUserInfo:v17];
-  v20 = [v16 alertBackgroundStyleForType:a3];
+  v190 = infoCopy;
+  [(AXUIAlert *)v18 setUserInfo:infoCopy];
+  v20 = [providerCopy alertBackgroundStyleForType:type];
   v21 = v20;
   v22 = 0;
   v23 = 0x277D75000uLL;
-  v199 = v16;
+  v199 = providerCopy;
   if (v20 > 3)
   {
     if (v20 > 5)
@@ -50,19 +50,19 @@
           v24 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
           [v24 _setContinuousCornerRadius:47.0];
           [v22 addSubview:v24];
-          v36 = [v22 layer];
-          [v36 setShadowRadius:25.0];
+          layer = [v22 layer];
+          [layer setShadowRadius:25.0];
 
-          v37 = [v22 layer];
+          layer2 = [v22 layer];
           LODWORD(v38) = 1036831949;
-          [v37 setShadowOpacity:v38];
+          [layer2 setShadowOpacity:v38];
 
-          v39 = [v22 layer];
-          [v39 setShadowOffset:{0.0, 15.0}];
+          layer3 = [v22 layer];
+          [layer3 setShadowOffset:{0.0, 15.0}];
 
-          v40 = [v22 layer];
-          v41 = [MEMORY[0x277D75348] blackColor];
-          [v40 setShadowColor:{objc_msgSend(v41, "CGColor")}];
+          layer4 = [v22 layer];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [layer4 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
           v23 = 0x277D75000;
         }
@@ -72,11 +72,11 @@
 
       v22 = objc_alloc_init(MEMORY[0x277D75D18]);
       v52 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2030];
-      v53 = [(AXStyleProviderUIAlert *)v19 traitCollection];
-      v54 = [v53 userInterfaceStyle];
+      traitCollection = [(AXStyleProviderUIAlert *)v19 traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      v196 = v15;
-      if (v54 == 2)
+      v196 = imageCopy;
+      if (userInterfaceStyle == 2)
       {
         v29 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2030];
       }
@@ -113,11 +113,11 @@
 
       v22 = objc_alloc_init(MEMORY[0x277D75D18]);
       v26 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
-      v27 = [(AXStyleProviderUIAlert *)v19 traitCollection];
-      v28 = [v27 userInterfaceStyle];
+      traitCollection2 = [(AXStyleProviderUIAlert *)v19 traitCollection];
+      userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-      v196 = v15;
-      if (v28 == 2)
+      v196 = imageCopy;
+      if (userInterfaceStyle2 == 2)
       {
         v29 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2030];
       }
@@ -128,26 +128,26 @@
       }
 
       v57 = 30.0;
-      if (a3 == 3)
+      if (type == 3)
       {
         v57 = 10.0;
       }
     }
 
     [v29 _setContinuousCornerRadius:v57];
-    v58 = [v29 layer];
-    [v58 setShadowRadius:10.0];
+    layer5 = [v29 layer];
+    [layer5 setShadowRadius:10.0];
 
-    v59 = [v29 layer];
+    layer6 = [v29 layer];
     LODWORD(v60) = 1050253722;
-    [v59 setShadowOpacity:v60];
+    [layer6 setShadowOpacity:v60];
 
-    v61 = [v29 layer];
-    [v61 setShadowOffset:{0.0, 10.0}];
+    layer7 = [v29 layer];
+    [layer7 setShadowOffset:{0.0, 10.0}];
 
-    v62 = [v29 layer];
-    v63 = [MEMORY[0x277D75348] blackColor];
-    [v62 setShadowColor:{objc_msgSend(v63, "CGColor")}];
+    layer8 = [v29 layer];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [layer8 setShadowColor:{objc_msgSend(blackColor2, "CGColor")}];
 
     [v22 addSubview:v29];
     [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -162,7 +162,7 @@
     v69 = [v67 constraintsWithVisualFormat:@"V:|-[backdropView]-|" options:0 metrics:0 views:v68];
     [v22 addConstraints:v69];
 
-    v15 = v196;
+    imageCopy = v196;
 LABEL_34:
     v23 = 0x277D75000uLL;
     goto LABEL_35;
@@ -187,7 +187,7 @@ LABEL_34:
     [v22 addConstraints:v32];
 
     v33 = MEMORY[0x277CCAAD0];
-    v16 = v199;
+    providerCopy = v199;
     v34 = _NSDictionaryOfVariableBindings(&cfstr_Backdropview.isa, v24, 0);
     v35 = [v33 constraintsWithVisualFormat:@"V:|-[backdropView]-|" options:0 metrics:0 views:v34];
     [v22 addConstraints:v35];
@@ -211,8 +211,8 @@ LABEL_27:
 
   else
   {
-    v42 = [v16 alertBackgroundImageForType:a3];
-    [v16 alertBackgroundImageCapInsetsForType:a3];
+    v42 = [providerCopy alertBackgroundImageForType:type];
+    [providerCopy alertBackgroundImageCapInsetsForType:type];
     v44.f64[0] = v43;
     v44.f64[1] = v45;
     v47.f64[0] = v46;
@@ -235,7 +235,7 @@ LABEL_35:
   v71 = v70;
   if (objc_opt_respondsToSelector())
   {
-    [v16 alertBackgroundCornerRadiusForType:a3];
+    [providerCopy alertBackgroundCornerRadiusForType:type];
     v71 = v72;
     if (fabs(v72) >= 2.22044605e-16)
     {
@@ -243,12 +243,12 @@ LABEL_35:
     }
   }
 
-  v193 = v14;
+  v193 = textCopy;
   if (_UISolariumEnabled())
   {
     [v24 ax_setWantsGlassAppearance:1];
-    v73 = [v24 layer];
-    [v73 setCornerRadius:v71];
+    layer9 = [v24 layer];
+    [layer9 setCornerRadius:v71];
 
     [(AXStyleProviderUIAlert *)v19 setGlassView:v24];
   }
@@ -257,74 +257,74 @@ LABEL_35:
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
   v195 = v22;
   [(AXStyleProviderUIAlert *)v19 addSubview:v22];
-  v74 = [(AXStyleProviderUIAlert *)v19 layer];
-  [v74 setAllowsGroupOpacity:v21 == 0];
+  layer10 = [(AXStyleProviderUIAlert *)v19 layer];
+  [layer10 setAllowsGroupOpacity:v21 == 0];
 
   v75 = *(v23 + 3352);
   v76 = objc_opt_new();
   [v76 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(AXStyleProviderUIAlert *)v19 addSubview:v76];
-  v77 = v15 == 0;
+  v77 = imageCopy == 0;
   v78 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:&stru_284FF7328 attributes:0];
   v194 = v78;
-  if (a3 == 7)
+  if (type == 7)
   {
     v79 = [v199 alertTextColorForType:7];
     v80 = [v199 alertTextFontForType:7];
     [v199 alertTextLineHeightOffsetForType:7];
-    [AXStyleProviderUIAlert _appendParagraphWithText:v19 withImage:"_appendParagraphWithText:withImage:withTextColor:font:textAlignment:lineSpacing:paragraphSpacingBefore:toAttributedString:" withTextColor:v193 font:v15 textAlignment:v79 lineSpacing:v80 paragraphSpacingBefore:1 toAttributedString:v78];
+    [AXStyleProviderUIAlert _appendParagraphWithText:v19 withImage:"_appendParagraphWithText:withImage:withTextColor:font:textAlignment:lineSpacing:paragraphSpacingBefore:toAttributedString:" withTextColor:v193 font:imageCopy textAlignment:v79 lineSpacing:v80 paragraphSpacingBefore:1 toAttributedString:v78];
 
     v188 = 0;
-    v15 = 0;
+    imageCopy = 0;
 LABEL_45:
-    v200 = a3 == 7;
+    v200 = type == 7;
     goto LABEL_46;
   }
 
-  v81 = [v199 alertTextColorForType:a3];
-  v82 = [v199 alertTextFontForType:a3];
-  [v199 alertTextLineHeightOffsetForType:a3];
-  [AXStyleProviderUIAlert _appendParagraphWithText:v19 withTextColor:"_appendParagraphWithText:withTextColor:font:textAlignment:lineSpacing:paragraphSpacingBefore:toAttributedString:" font:v193 textAlignment:v81 lineSpacing:v82 paragraphSpacingBefore:v15 == 0 toAttributedString:v78];
+  v81 = [v199 alertTextColorForType:type];
+  v82 = [v199 alertTextFontForType:type];
+  [v199 alertTextLineHeightOffsetForType:type];
+  [AXStyleProviderUIAlert _appendParagraphWithText:v19 withTextColor:"_appendParagraphWithText:withTextColor:font:textAlignment:lineSpacing:paragraphSpacingBefore:toAttributedString:" font:v193 textAlignment:v81 lineSpacing:v82 paragraphSpacingBefore:imageCopy == 0 toAttributedString:v78];
 
-  v188 = a3 == 8;
+  v188 = type == 8;
   v200 = 1;
-  if (a3 != 6 && a3 != 8)
+  if (type != 6 && type != 8)
   {
     goto LABEL_45;
   }
 
 LABEL_46:
-  v197 = v15;
+  v197 = imageCopy;
   v83 = objc_opt_new();
   [v83 setTranslatesAutoresizingMaskIntoConstraints:0];
   v192 = v83;
-  if (v198)
+  if (subtitleTextCopy)
   {
     v84 = v200 ^ 1;
-    if (a3 == 3)
+    if (type == 3)
     {
       v84 = 0;
     }
 
     if (v84)
     {
-      v85 = [v199 alertSubtitleTextColorForType:a3];
-      v91 = [v199 alertSubtitleTextFontForType:a3];
-      [v199 alertSubtitleTextLineHeightOffsetForType:a3];
+      v85 = [v199 alertSubtitleTextColorForType:type];
+      v91 = [v199 alertSubtitleTextFontForType:type];
+      [v199 alertSubtitleTextLineHeightOffsetForType:type];
       v93 = v92;
-      [v199 alertSubtitleTextVerticalSpacingHeightWithTextForType:a3];
-      [(AXStyleProviderUIAlert *)v19 _appendParagraphWithText:v198 withTextColor:v85 font:v91 textAlignment:v77 lineSpacing:v194 paragraphSpacingBefore:v93 toAttributedString:v94];
+      [v199 alertSubtitleTextVerticalSpacingHeightWithTextForType:type];
+      [(AXStyleProviderUIAlert *)v19 _appendParagraphWithText:subtitleTextCopy withTextColor:v85 font:v91 textAlignment:v77 lineSpacing:v194 paragraphSpacingBefore:v93 toAttributedString:v94];
     }
 
     else
     {
       v85 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:&stru_284FF7328 attributes:0];
-      v86 = [v199 alertSubtitleTextColorForType:a3];
-      v87 = [v199 alertSubtitleTextFontForType:a3];
-      [v199 alertSubtitleTextLineHeightOffsetForType:a3];
+      v86 = [v199 alertSubtitleTextColorForType:type];
+      v87 = [v199 alertSubtitleTextFontForType:type];
+      [v199 alertSubtitleTextLineHeightOffsetForType:type];
       v89 = v88;
-      [v199 alertSubtitleTextVerticalSpacingHeightWithTextForType:a3];
-      [(AXStyleProviderUIAlert *)v19 _appendParagraphWithText:v198 withTextColor:v86 font:v87 textAlignment:v77 lineSpacing:v85 paragraphSpacingBefore:v89 toAttributedString:v90];
+      [v199 alertSubtitleTextVerticalSpacingHeightWithTextForType:type];
+      [(AXStyleProviderUIAlert *)v19 _appendParagraphWithText:subtitleTextCopy withTextColor:v86 font:v87 textAlignment:v77 lineSpacing:v85 paragraphSpacingBefore:v89 toAttributedString:v90];
 
       [v83 setNumberOfLines:2];
       [v83 setAttributedText:v85];
@@ -338,7 +338,7 @@ LABEL_46:
   [v95 setAttributedText:v194];
   [v95 setLineBreakMode:0];
   [v95 setTranslatesAutoresizingMaskIntoConstraints:0];
-  if (a3 == 3)
+  if (type == 3)
   {
     [v95 setNumberOfLines:1];
     if ((v200 & 1) == 0 && !_UISolariumEnabled())
@@ -352,24 +352,24 @@ LABEL_46:
 LABEL_59:
       [v100 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v76 addSubview:v100];
-      v101 = [v100 contentView];
-      [v101 addSubview:v95];
+      contentView = [v100 contentView];
+      [contentView addSubview:v95];
 
-      v102 = [v100 contentView];
+      contentView2 = [v100 contentView];
       v103 = MEMORY[0x277CCAAD0];
       _NSDictionaryOfVariableBindings(&cfstr_Label.isa, v95, 0);
       v105 = v104 = v100;
       v106 = [v103 constraintsWithVisualFormat:@"H:|[label]|" options:0 metrics:0 views:v105];
-      [v102 addConstraints:v106];
+      [contentView2 addConstraints:v106];
 
       v191 = v104;
-      v107 = [v104 contentView];
+      contentView3 = [v104 contentView];
       v108 = MEMORY[0x277CCAAD0];
       v109 = _NSDictionaryOfVariableBindings(&cfstr_Label.isa, v95, 0);
       v110 = [v108 constraintsWithVisualFormat:@"V:|[label]|" options:0 metrics:0 views:v109];
-      [v107 addConstraints:v110];
+      [contentView3 addConstraints:v110];
 
-      v16 = v199;
+      providerCopy = v199;
       v22 = v195;
       goto LABEL_61;
     }
@@ -379,7 +379,7 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  v16 = v199;
+  providerCopy = v199;
   if (v200)
   {
     goto LABEL_58;
@@ -388,11 +388,11 @@ LABEL_58:
   [v76 addSubview:v95];
   v191 = 0;
 LABEL_61:
-  v15 = v197;
-  v17 = v190;
+  imageCopy = v197;
+  infoCopy = v190;
   if (!v197)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v126 = 1;
     }
@@ -413,7 +413,7 @@ LABEL_61:
 
   v111 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v197];
   [v111 setTranslatesAutoresizingMaskIntoConstraints:0];
-  if (a3 == 3)
+  if (type == 3)
   {
     v112 = 1;
   }
@@ -451,11 +451,11 @@ LABEL_83:
     goto LABEL_84;
   }
 
-  v113 = [v111 layer];
-  [v113 setCornerRadius:4.0];
+  layer11 = [v111 layer];
+  [layer11 setCornerRadius:4.0];
 
-  v114 = [v111 layer];
-  [v114 setMasksToBounds:1];
+  layer12 = [v111 layer];
+  [layer12 setMasksToBounds:1];
 
   [v76 addSubview:v111];
   if (v111)
@@ -463,9 +463,9 @@ LABEL_83:
     v115 = [MEMORY[0x277CCAAD0] constraintWithItem:v191 attribute:5 relatedBy:0 toItem:v111 attribute:6 multiplier:1.0 constant:10.0];
     [v76 addConstraint:v115];
 
-    v116 = [MEMORY[0x277D75128] sharedApplication];
-    v117 = [v116 preferredContentSizeCategory];
-    v118 = UIContentSizeCategoryCompareToCategory(v117, *MEMORY[0x277D767F8]);
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    v118 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D767F8]);
 
     if (v118 == NSOrderedDescending)
     {
@@ -576,16 +576,16 @@ LABEL_88:
     [v76 addConstraint:v143];
   }
 
-  v15 = v197;
-  v16 = v199;
-  v17 = v190;
+  imageCopy = v197;
+  providerCopy = v199;
+  infoCopy = v190;
   if (v111)
   {
     [v111 ax_constrainLayoutAttribute:3 asEqualToValueOfView:v76 withOffset:13.0];
     v134 = 1;
     [v111 ax_constrainLayoutAttribute:1 asEqualToValueOfView:v76 withOffset:13.0];
 LABEL_101:
-    if (a3 == 7)
+    if (type == 7)
     {
       [v111 ax_constrainLayoutAttribute:3 asEqualToValueOfView:v76 withOffset:13.0];
       [v111 ax_constrainLayoutAttribute:1 asEqualToValueOfView:v76 withOffset:18.0];
@@ -593,7 +593,7 @@ LABEL_101:
 
     else
     {
-      [v16 alertIconImageEdgeInsetsForType:a3];
+      [providerCopy alertIconImageEdgeInsetsForType:type];
       v145 = v144;
       v147 = v146;
       v149 = v148;
@@ -608,13 +608,13 @@ LABEL_101:
       [v111 ax_constrainLayoutAttribute:4 asEqualToValueOfView:v76 withOffset:-v147 priority:v152];
     }
 
-    [v15 size];
+    [imageCopy size];
     v155 = v154;
     if (v134)
     {
-      v156 = [MEMORY[0x277D75128] sharedApplication];
-      v157 = [v156 preferredContentSizeCategory];
-      v158 = UIContentSizeCategoryCompareToCategory(v157, *MEMORY[0x277D767F8]);
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      preferredContentSizeCategory2 = [mEMORY[0x277D75128]2 preferredContentSizeCategory];
+      v158 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, *MEMORY[0x277D767F8]);
 
       if (v158 == NSOrderedDescending)
       {
@@ -623,16 +623,16 @@ LABEL_101:
 
       else
       {
-        v161 = [MEMORY[0x277D75128] sharedApplication];
-        v162 = [v161 preferredContentSizeCategory];
-        v163 = UIContentSizeCategoryCompareToCategory(v162, *MEMORY[0x277D76818]);
+        mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+        preferredContentSizeCategory3 = [mEMORY[0x277D75128]3 preferredContentSizeCategory];
+        v163 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory3, *MEMORY[0x277D76818]);
 
         v159 = 30.0;
         if (v163 != NSOrderedDescending)
         {
-          v164 = [MEMORY[0x277D75128] sharedApplication];
-          v165 = [v164 preferredContentSizeCategory];
-          v166 = UIContentSizeCategoryCompareToCategory(v165, *MEMORY[0x277D76828]);
+          mEMORY[0x277D75128]4 = [MEMORY[0x277D75128] sharedApplication];
+          preferredContentSizeCategory4 = [mEMORY[0x277D75128]4 preferredContentSizeCategory];
+          v166 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory4, *MEMORY[0x277D76828]);
 
           v159 = 20.0;
           if (v166 == NSOrderedDescending)
@@ -648,8 +648,8 @@ LABEL_101:
       }
 
       v160 = v155;
-      v15 = v197;
-      v16 = v199;
+      imageCopy = v197;
+      providerCopy = v199;
     }
 
     else
@@ -662,7 +662,7 @@ LABEL_101:
   }
 
 LABEL_115:
-  [v16 alertBackgroundSizeForType:a3];
+  [providerCopy alertBackgroundSizeForType:type];
   v169 = v167;
   v170 = v168;
   v171 = v167 > 0.0 && vabdd_f64(v167, *&AXUIAlertSizeMetricFitting) >= 2.22044605e-16 && vabdd_f64(v167, *&AXUIAlertSizeMetricFillingContainer) >= 2.22044605e-16;
@@ -690,7 +690,7 @@ LABEL_126:
     }
   }
 
-  if ([v16 alertShouldGrowInAxis:0 forType:a3])
+  if ([providerCopy alertShouldGrowInAxis:0 forType:type])
   {
     [v22 ax_constrainLayoutAttribute:7 asGreaterThanOrEqualToConstant:v169];
     goto LABEL_126;
@@ -700,19 +700,19 @@ LABEL_126:
   if (v172)
   {
 LABEL_127:
-    if ([v16 alertShouldGrowInAxis:1 forType:a3])
+    if ([providerCopy alertShouldGrowInAxis:1 forType:type])
     {
       [v22 ax_constrainLayoutAttribute:8 asGreaterThanOrEqualToConstant:v170];
     }
 
-    else if (a3 != 3 && v200 != a3)
+    else if (type != 3 && v200 != type)
     {
       [v22 ax_constrainLayoutAttribute:8 asEqualToConstant:v170];
     }
   }
 
 LABEL_134:
-  [v16 alertContentEdgeInsetsForType:a3];
+  [providerCopy alertContentEdgeInsetsForType:type];
   v174 = v173;
   v176 = v175;
   v178 = v177;
@@ -725,14 +725,14 @@ LABEL_134:
 
   else
   {
-    v180 = [v76 topAnchor];
-    v181 = [(AXStyleProviderUIAlert *)v19 safeAreaLayoutGuide];
-    v182 = [v181 topAnchor];
-    v183 = [v180 constraintEqualToAnchor:v182];
+    topAnchor = [v76 topAnchor];
+    safeAreaLayoutGuide = [(AXStyleProviderUIAlert *)v19 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v183 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v183 setActive:1];
 
-    v15 = v197;
-    v16 = v199;
+    imageCopy = v197;
+    providerCopy = v199;
   }
 
   [v76 ax_constrainLayoutAttribute:4 asEqualToValueOfView:v19 withOffset:-v176];
@@ -756,45 +756,45 @@ LABEL_134:
     [v22 ax_constrainLayoutAttribute:10 asEqualToValueOfView:v19];
   }
 
-  [(AXStyleProviderUIAlert *)v19 setAlertType:a3];
-  [(AXStyleProviderUIAlert *)v19 setStyleProvider:v16];
+  [(AXStyleProviderUIAlert *)v19 setAlertType:type];
+  [(AXStyleProviderUIAlert *)v19 setStyleProvider:providerCopy];
   v185 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v19 action:sel__handleTapGestureRecognizer_];
   [v76 addGestureRecognizer:v185];
   v186 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v19 action:sel__handlePanGestureRecognizer_];
   [v186 setMaximumNumberOfTouches:1];
   [v76 addGestureRecognizer:v186];
 
-  v14 = v193;
+  textCopy = v193;
 LABEL_144:
 
   return v19;
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  v11 = a3;
-  [v11 locationInView:self];
-  if (-[AXStyleProviderUIAlert pointInside:withEvent:](self, "pointInside:withEvent:", 0) && (!v11 || [v11 state] == 3))
+  recognizerCopy = recognizer;
+  [recognizerCopy locationInView:self];
+  if (-[AXStyleProviderUIAlert pointInside:withEvent:](self, "pointInside:withEvent:", 0) && (!recognizerCopy || [recognizerCopy state] == 3))
   {
-    v4 = [(AXUIAlert *)self context];
-    v5 = [v4 service];
-    if ([v5 conformsToProtocol:&unk_2850141E0])
+    context = [(AXUIAlert *)self context];
+    service = [context service];
+    if ([service conformsToProtocol:&unk_2850141E0])
     {
-      v6 = [(AXUIAlert *)self context];
-      v7 = [v6 service];
+      context2 = [(AXUIAlert *)self context];
+      service2 = [context2 service];
     }
 
     else
     {
-      v7 = 0;
+      service2 = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(AXUIAlert *)self context];
-      v9 = [v8 identifier];
-      v10 = [(AXUIAlert *)self userInfo];
-      [v7 alertWithIdentifierWasActivated:v9 userInfo:v10];
+      context3 = [(AXUIAlert *)self context];
+      identifier = [context3 identifier];
+      userInfo = [(AXUIAlert *)self userInfo];
+      [service2 alertWithIdentifierWasActivated:identifier userInfo:userInfo];
     }
 
     else
@@ -806,9 +806,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v8 = [(AXUIAlert *)self context];
-      v9 = [v8 identifier];
-      [v7 alertWithIdentifierWasActivated:v9];
+      context3 = [(AXUIAlert *)self context];
+      identifier = [context3 identifier];
+      [service2 alertWithIdentifierWasActivated:identifier];
     }
 
     goto LABEL_12;
@@ -819,15 +819,15 @@ LABEL_13:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_handlePanGestureRecognizer:(id)a3
+- (void)_handlePanGestureRecognizer:(id)recognizer
 {
-  v10 = a3;
-  v4 = [v10 state];
-  if (v4 <= 2)
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      [v10 locationInView:self];
+      [recognizerCopy locationInView:self];
       self->_dismissalGestureYOffset = v7;
       [(AXStyleProviderUIAlert *)self frame];
       self->_backgroundViewDismissalOrigin.x = v8;
@@ -836,40 +836,40 @@ LABEL_13:
 
     else
     {
-      v5 = v4 == 2;
-      v6 = v10;
+      v5 = state == 2;
+      v6 = recognizerCopy;
       if (!v5)
       {
         goto LABEL_13;
       }
     }
 
-    [(AXStyleProviderUIAlert *)self _updateDismissalWithPanGesture:v10];
+    [(AXStyleProviderUIAlert *)self _updateDismissalWithPanGesture:recognizerCopy];
 LABEL_12:
-    v6 = v10;
+    v6 = recognizerCopy;
     goto LABEL_13;
   }
 
-  if (v4 == 3)
+  if (state == 3)
   {
-    [(AXStyleProviderUIAlert *)self _endDismissalWithPanGesture:v10];
+    [(AXStyleProviderUIAlert *)self _endDismissalWithPanGesture:recognizerCopy];
     goto LABEL_12;
   }
 
-  v5 = v4 == 4;
-  v6 = v10;
+  v5 = state == 4;
+  v6 = recognizerCopy;
   if (v5)
   {
-    [(AXStyleProviderUIAlert *)self _cancelDismissalWithPanGesture:v10];
+    [(AXStyleProviderUIAlert *)self _cancelDismissalWithPanGesture:recognizerCopy];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)_updateDismissalWithPanGesture:(id)a3
+- (void)_updateDismissalWithPanGesture:(id)gesture
 {
-  [a3 translationInView:self];
+  [gesture translationInView:self];
   v5 = v4;
   [(AXStyleProviderUIAlert *)self frame];
   if (self->_backgroundViewDismissalOrigin.y >= v5 + self->_dismissalGestureYOffset)
@@ -884,9 +884,9 @@ LABEL_13:
   [(AXStyleProviderUIAlert *)self _updateViewForDismissalPercentage:v7];
 }
 
-- (void)_updateViewForDismissalPercentage:(double)a3
+- (void)_updateViewForDismissalPercentage:(double)percentage
 {
-  if (a3 <= 0.0)
+  if (percentage <= 0.0)
   {
     [(AXStyleProviderUIAlert *)self frame];
     x = self->_backgroundViewDismissalOrigin.x;
@@ -895,51 +895,51 @@ LABEL_13:
     [(AXStyleProviderUIAlert *)self setFrame:x, y];
   }
 
-  else if (a3 > 0.3)
+  else if (percentage > 0.3)
   {
 
     [(AXStyleProviderUIAlert *)self _endDismissalWithPanGesture:0];
   }
 }
 
-- (void)_endDismissalWithPanGesture:(id)a3
+- (void)_endDismissalWithPanGesture:(id)gesture
 {
-  v4 = a3;
-  [v4 translationInView:self];
+  gestureCopy = gesture;
+  [gestureCopy translationInView:self];
   v6 = v5;
-  [v4 velocityInView:self];
+  [gestureCopy velocityInView:self];
   v8 = v7;
 
   [(AXStyleProviderUIAlert *)self frame];
   Height = CGRectGetHeight(v24);
   if (v8 > 800.0 || (Height = -v6 / Height, Height > 0.3))
   {
-    v10 = [(AXUIAlert *)self context];
-    v11 = [v10 service];
-    if ([v11 conformsToProtocol:&unk_2850141E0])
+    context = [(AXUIAlert *)self context];
+    service = [context service];
+    if ([service conformsToProtocol:&unk_2850141E0])
     {
-      v12 = [(AXUIAlert *)self context];
-      v20 = [v12 service];
+      context2 = [(AXUIAlert *)self context];
+      service2 = [context2 service];
     }
 
     else
     {
-      v20 = 0;
+      service2 = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(AXUIAlert *)self context];
-      v14 = [v13 identifier];
-      [v20 alertWithIdentifierDidDisappear:v14];
+      context3 = [(AXUIAlert *)self context];
+      identifier = [context3 identifier];
+      [service2 alertWithIdentifierDidDisappear:identifier];
     }
 
     v15 = +[AXUIDisplayManager sharedDisplayManager];
-    v16 = [(AXUIAlert *)self context];
-    v17 = [v16 identifier];
-    v18 = [(AXUIAlert *)self context];
-    v19 = [v18 service];
-    [v15 hideAlertWithIdentifier:v17 forService:v19];
+    context4 = [(AXUIAlert *)self context];
+    identifier2 = [context4 identifier];
+    context5 = [(AXUIAlert *)self context];
+    service3 = [context5 service];
+    [v15 hideAlertWithIdentifier:identifier2 forService:service3];
   }
 
   else
@@ -953,7 +953,7 @@ LABEL_13:
   }
 }
 
-- (void)_cancelDismissalWithPanGesture:(id)a3
+- (void)_cancelDismissalWithPanGesture:(id)gesture
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -970,76 +970,76 @@ LABEL_13:
   [(AXStyleProviderUIAlert *)&v30 layoutSubviews];
   if (_UISolariumEnabled())
   {
-    v3 = [(AXStyleProviderUIAlert *)self glassView];
-    v4 = [v3 superview];
-    [v4 layoutIfNeeded];
+    glassView = [(AXStyleProviderUIAlert *)self glassView];
+    superview = [glassView superview];
+    [superview layoutIfNeeded];
 
     if ([(AXStyleProviderUIAlert *)self alertType]== 2 || [(AXStyleProviderUIAlert *)self alertType]== 4)
     {
-      v5 = [(AXStyleProviderUIAlert *)self window];
-      v6 = [v5 screen];
-      v7 = [v6 traitCollection];
-      [v7 displayCornerRadius];
+      window = [(AXStyleProviderUIAlert *)self window];
+      screen = [window screen];
+      traitCollection = [screen traitCollection];
+      [traitCollection displayCornerRadius];
       v9 = v8;
 
-      v10 = [(AXStyleProviderUIAlert *)self glassView];
-      v11 = [v10 layer];
+      glassView2 = [(AXStyleProviderUIAlert *)self glassView];
+      layer = [glassView2 layer];
       memset(v25, 0, sizeof(v25));
       v26 = v9;
       v27 = v9;
       v28 = v9;
       v29 = v9;
-      [v11 setCornerRadii:v25];
+      [layer setCornerRadii:v25];
     }
 
     else
     {
-      v12 = [(AXStyleProviderUIAlert *)self alertType];
-      v13 = [(AXStyleProviderUIAlert *)self glassView];
-      v14 = v13;
-      if (v12)
+      alertType = [(AXStyleProviderUIAlert *)self alertType];
+      glassView3 = [(AXStyleProviderUIAlert *)self glassView];
+      v14 = glassView3;
+      if (alertType)
       {
-        [v13 _continuousCornerRadius];
+        [glassView3 _continuousCornerRadius];
         v16 = v15;
-        v17 = [(AXStyleProviderUIAlert *)self glassView];
-        [v17 frame];
+        glassView4 = [(AXStyleProviderUIAlert *)self glassView];
+        [glassView4 frame];
         v19 = v18 * 0.5;
-        v20 = [(AXStyleProviderUIAlert *)self glassView];
-        [v20 frame];
+        glassView5 = [(AXStyleProviderUIAlert *)self glassView];
+        [glassView5 frame];
         v22 = fmin(v16, fmin(v19, v21 * 0.5));
       }
 
       else
       {
-        [v13 frame];
+        [glassView3 frame];
         AXCornerRadiusForBackgroundWithSize();
         v22 = v23;
       }
 
-      v24 = [(AXStyleProviderUIAlert *)self glassView];
-      [v24 _setContinuousCornerRadius:v22];
+      glassView6 = [(AXStyleProviderUIAlert *)self glassView];
+      [glassView6 _setContinuousCornerRadius:v22];
 
-      v10 = [(AXStyleProviderUIAlert *)self glassView];
-      v11 = [v10 layer];
-      [v11 setCornerRadius:v22];
+      glassView2 = [(AXStyleProviderUIAlert *)self glassView];
+      layer = [glassView2 layer];
+      [layer setCornerRadius:v22];
     }
   }
 }
 
-- (void)addToContainerView:(id)a3
+- (void)addToContainerView:(id)view
 {
-  v30 = a3;
+  viewCopy = view;
   [(AXStyleProviderUIAlert *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v30 addSubview:self];
-  v4 = [(AXStyleProviderUIAlert *)self styleProvider];
-  v5 = [(AXStyleProviderUIAlert *)self alertType];
-  [v4 alertEdgeInsetsForType:v5];
+  [viewCopy addSubview:self];
+  styleProvider = [(AXStyleProviderUIAlert *)self styleProvider];
+  alertType = [(AXStyleProviderUIAlert *)self alertType];
+  [styleProvider alertEdgeInsetsForType:alertType];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 alertPositionForType:v5];
-  [v4 alertBackgroundSizeForType:v5];
+  v14 = [styleProvider alertPositionForType:alertType];
+  [styleProvider alertBackgroundSizeForType:alertType];
   v16 = vabdd_f64(v15, *&AXUIAlertSizeMetricFillingContainer);
   v18 = vabdd_f64(v17, *&AXUIAlertSizeMetricFillingContainer);
   v19 = v14 - 1;
@@ -1099,10 +1099,10 @@ LABEL_13:
     v27 = 0;
   }
 
-  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:3 relatedBy:v26 toItem:v30 attribute:3 multiplier:1.0 constant:v7];
-  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:4 relatedBy:v27 toItem:v30 attribute:4 multiplier:1.0 constant:-v11];
-  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:1 relatedBy:v24 toItem:v30 attribute:1 multiplier:1.0 constant:v9];
-  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:2 relatedBy:v25 toItem:v30 attribute:2 multiplier:1.0 constant:-v13];
+  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:3 relatedBy:v26 toItem:viewCopy attribute:3 multiplier:1.0 constant:v7];
+  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:4 relatedBy:v27 toItem:viewCopy attribute:4 multiplier:1.0 constant:-v11];
+  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:1 relatedBy:v24 toItem:viewCopy attribute:1 multiplier:1.0 constant:v9];
+  [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:2 relatedBy:v25 toItem:viewCopy attribute:2 multiplier:1.0 constant:-v13];
   if (v24)
   {
     v28 = v25 == 0;
@@ -1115,7 +1115,7 @@ LABEL_13:
 
   if (!v28)
   {
-    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:9 asEqualToValueOfView:v30];
+    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:9 asEqualToValueOfView:viewCopy];
   }
 
   if (v26)
@@ -1130,65 +1130,65 @@ LABEL_13:
 
   if (!v29)
   {
-    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:10 asEqualToValueOfView:v30];
+    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:10 asEqualToValueOfView:viewCopy];
   }
 
   if (v16 < 2.22044605e-16)
   {
-    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:7 asEqualToValueOfView:v30 withOffset:-(v9 + v13)];
+    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:7 asEqualToValueOfView:viewCopy withOffset:-(v9 + v13)];
   }
 
   if (v18 < 2.22044605e-16)
   {
-    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:8 asEqualToValueOfView:v30 withOffset:-(v7 + v11)];
+    [(AXStyleProviderUIAlert *)self ax_constrainLayoutAttribute:8 asEqualToValueOfView:viewCopy withOffset:-(v7 + v11)];
   }
 }
 
-- (void)_appendParagraphWithText:(id)a3 withTextColor:(id)a4 font:(id)a5 textAlignment:(int64_t)a6 lineSpacing:(double)a7 paragraphSpacingBefore:(double)a8 toAttributedString:(id)a9
+- (void)_appendParagraphWithText:(id)text withTextColor:(id)color font:(id)font textAlignment:(int64_t)alignment lineSpacing:(double)spacing paragraphSpacingBefore:(double)before toAttributedString:(id)string
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a9;
-  v17 = a5;
-  v18 = a3;
-  v19 = [v16 length];
+  colorCopy = color;
+  stringCopy = string;
+  fontCopy = font;
+  textCopy = text;
+  v19 = [stringCopy length];
   v20 = MEMORY[0x277D74118];
   if (v19)
   {
-    v21 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v22 = [v21 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v22 = [defaultParagraphStyle mutableCopy];
 
     v23 = MEMORY[0x277D74300];
     [MEMORY[0x277D74300] labelFontSize];
     v24 = [v23 systemFontOfSize:?];
     [v24 lineHeight];
-    [v22 setParagraphSpacingBefore:a8 - v25];
+    [v22 setParagraphSpacingBefore:before - v25];
 
     v40 = *v20;
     v41[0] = v22;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     v27 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"\n\n" attributes:v26];
-    [v16 appendAttributedString:v27];
+    [stringCopy appendAttributedString:v27];
   }
 
-  v28 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v29 = [v28 mutableCopy];
+  defaultParagraphStyle2 = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v29 = [defaultParagraphStyle2 mutableCopy];
 
-  [v29 setAlignment:a6];
-  if (fabs(a7) >= 2.22044605e-16)
+  [v29 setAlignment:alignment];
+  if (fabs(spacing) >= 2.22044605e-16)
   {
-    [v29 setLineSpacing:a7];
+    [v29 setLineSpacing:spacing];
   }
 
-  v30 = v15;
+  v30 = colorCopy;
   v31 = v30;
   if (!v30)
   {
     v32 = v20;
-    v33 = [(AXStyleProviderUIAlert *)self traitCollection];
-    v34 = [v33 userInterfaceStyle];
+    traitCollection = [(AXStyleProviderUIAlert *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v34 == 2)
+    if (userInterfaceStyle == 2)
     {
       [MEMORY[0x277D75348] whiteColor];
     }
@@ -1202,39 +1202,39 @@ LABEL_13:
   }
 
   v35 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v36 = [v35 initWithObjectsAndKeys:{v29, *v20, v17, *MEMORY[0x277D740A8], v31, *MEMORY[0x277D740C0], 0}];
+  v36 = [v35 initWithObjectsAndKeys:{v29, *v20, fontCopy, *MEMORY[0x277D740A8], v31, *MEMORY[0x277D740C0], 0}];
 
-  v37 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v18 attributes:v36];
-  [v16 appendAttributedString:v37];
+  v37 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:textCopy attributes:v36];
+  [stringCopy appendAttributedString:v37];
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendParagraphWithText:(id)a3 withImage:(id)a4 withTextColor:(id)a5 font:(id)a6 textAlignment:(int64_t)a7 lineSpacing:(double)a8 paragraphSpacingBefore:(double)a9 toAttributedString:(id)a10
+- (void)_appendParagraphWithText:(id)text withImage:(id)image withTextColor:(id)color font:(id)font textAlignment:(int64_t)alignment lineSpacing:(double)spacing paragraphSpacingBefore:(double)before toAttributedString:(id)self0
 {
-  v17 = a5;
+  colorCopy = color;
   v18 = MEMORY[0x277D74248];
-  v19 = a10;
-  v20 = a6;
-  v21 = a4;
-  v22 = a3;
-  v23 = [v18 defaultParagraphStyle];
-  v24 = [v23 mutableCopy];
+  stringCopy = string;
+  fontCopy = font;
+  imageCopy = image;
+  textCopy = text;
+  defaultParagraphStyle = [v18 defaultParagraphStyle];
+  v24 = [defaultParagraphStyle mutableCopy];
 
-  [v24 setAlignment:a7];
-  if (fabs(a8) >= 2.22044605e-16)
+  [v24 setAlignment:alignment];
+  if (fabs(spacing) >= 2.22044605e-16)
   {
-    [v24 setLineSpacing:a8];
+    [v24 setLineSpacing:spacing];
   }
 
-  v25 = v17;
+  v25 = colorCopy;
   v34 = v25;
   if (!v25)
   {
-    v26 = [(AXStyleProviderUIAlert *)self traitCollection];
-    v27 = [v26 userInterfaceStyle];
+    traitCollection = [(AXStyleProviderUIAlert *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v27 == 2)
+    if (userInterfaceStyle == 2)
     {
       [MEMORY[0x277D75348] whiteColor];
     }
@@ -1247,19 +1247,19 @@ LABEL_13:
   }
 
   v28 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v29 = [v28 initWithObjectsAndKeys:{v24, *MEMORY[0x277D74118], v20, *MEMORY[0x277D740A8], v25, *MEMORY[0x277D740C0], 0}];
+  v29 = [v28 initWithObjectsAndKeys:{v24, *MEMORY[0x277D74118], fontCopy, *MEMORY[0x277D740A8], v25, *MEMORY[0x277D740C0], 0}];
 
-  v30 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v22 attributes:v29];
+  v30 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:textCopy attributes:v29];
   v31 = objc_alloc_init(MEMORY[0x277D74270]);
-  [v31 setImage:v21];
+  [v31 setImage:imageCopy];
 
   v32 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v31 attributes:v29];
-  [v19 appendAttributedString:v32];
+  [stringCopy appendAttributedString:v32];
 
   v33 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"  "];
-  [v19 appendAttributedString:v33];
+  [stringCopy appendAttributedString:v33];
 
-  [v19 appendAttributedString:v30];
+  [stringCopy appendAttributedString:v30];
 }
 
 @end

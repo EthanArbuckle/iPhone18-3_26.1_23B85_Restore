@@ -1,16 +1,16 @@
 @interface VNDetectorSyncTasksQueueCache
-+ (id)queueLabelWithUniqueAppendix:(id)a3;
++ (id)queueLabelWithUniqueAppendix:(id)appendix;
 + (id)sharedCache;
 @end
 
 @implementation VNDetectorSyncTasksQueueCache
 
-+ (id)queueLabelWithUniqueAppendix:(id)a3
++ (id)queueLabelWithUniqueAppendix:(id)appendix
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.VN.detectorSyncTasksQueue.%@", v3];
+  appendixCopy = appendix;
+  appendixCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.VN.detectorSyncTasksQueue.%@", appendixCopy];
 
-  return v4;
+  return appendixCopy;
 }
 
 + (id)sharedCache

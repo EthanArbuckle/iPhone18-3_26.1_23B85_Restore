@@ -1,8 +1,8 @@
 @interface PKEnterCurrencyAmountPassView
-- ($F81081627EB66BDA95705C9210F32B91)_amountPassViewSizeInfoForSize:(SEL)a3;
+- ($F81081627EB66BDA95705C9210F32B91)_amountPassViewSizeInfoForSize:(SEL)size;
 - (CGSize)_passViewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEnterCurrencyAmountPassView)initWithCurrenyAmount:(id)a3 pass:(id)a4 withdrawal:(BOOL)a5 keypadBottomView:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEnterCurrencyAmountPassView)initWithCurrenyAmount:(id)amount pass:(id)pass withdrawal:(BOOL)withdrawal keypadBottomView:(id)view;
 - (PKEnterCurrencyAmountPassViewDelegate)delegate;
 - (double)_newBalanceHorizontalPadding;
 - (void)layoutSubviews;
@@ -10,43 +10,43 @@
 
 @implementation PKEnterCurrencyAmountPassView
 
-- (PKEnterCurrencyAmountPassView)initWithCurrenyAmount:(id)a3 pass:(id)a4 withdrawal:(BOOL)a5 keypadBottomView:(id)a6
+- (PKEnterCurrencyAmountPassView)initWithCurrenyAmount:(id)amount pass:(id)pass withdrawal:(BOOL)withdrawal keypadBottomView:(id)view
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  withdrawalCopy = withdrawal;
+  amountCopy = amount;
+  passCopy = pass;
+  viewCopy = view;
   v48.receiver = self;
   v48.super_class = PKEnterCurrencyAmountPassView;
   v13 = [(PKEnterCurrencyAmountPassView *)&v48 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_pass, a4);
+    objc_storeStrong(&v13->_pass, pass);
     v15 = *MEMORY[0x1E69DB980];
     PKRoundedSystemFontOfSizeAndWeight(60.0, *MEMORY[0x1E69DB980]);
-    v44 = v7;
-    v17 = v16 = v11;
+    v44 = withdrawalCopy;
+    v17 = v16 = passCopy;
     PKRoundedSystemFontOfSizeAndWeight(36.0, v15);
-    v19 = v18 = v12;
+    v19 = v18 = viewCopy;
     v20 = [PKEnterCurrencyAmountView alloc];
-    v21 = [v10 currency];
-    v22 = [v10 amount];
-    v23 = [(PKEnterCurrencyAmountView *)v20 initWithCurrency:v21 amount:v22 bottomView:v18];
+    currency = [amountCopy currency];
+    amount = [amountCopy amount];
+    v23 = [(PKEnterCurrencyAmountView *)v20 initWithCurrency:currency amount:amount bottomView:v18];
     enterCurrencyAmountView = v14->_enterCurrencyAmountView;
     v14->_enterCurrencyAmountView = v23;
 
     [(PKEnterCurrencyAmountView *)v14->_enterCurrencyAmountView setShowsDecimalPointButton:1];
     v45 = v17;
     v25 = v17;
-    v11 = v16;
+    passCopy = v16;
     [(PKEnterCurrencyAmountView *)v14->_enterCurrencyAmountView setAmountFont:v25];
     [(PKEnterCurrencyAmountView *)v14->_enterCurrencyAmountView setCurrencySymbolFont:v19];
     [(PKEnterCurrencyAmountView *)v14->_enterCurrencyAmountView setKerning:&unk_1F3CC6BA8];
     [(PKEnterCurrencyAmountView *)v14->_enterCurrencyAmountView sizeToFit];
     v26 = [PKEnterValueNewBalanceView alloc];
-    v27 = [v10 currency];
-    v28 = [(PKEnterValueNewBalanceView *)v26 initWithCurrencyCode:v27];
+    currency2 = [amountCopy currency];
+    v28 = [(PKEnterValueNewBalanceView *)v26 initWithCurrencyCode:currency2];
     balanceView = v14->_balanceView;
     v14->_balanceView = v28;
 
@@ -88,7 +88,7 @@
       [v38 snapshotWithPass:v16 size:v46 completion:{v40, v42}];
     }
 
-    v12 = v18;
+    viewCopy = v18;
   }
 
   return v14;
@@ -119,10 +119,10 @@ uint64_t __88__PKEnterCurrencyAmountPassView_initWithCurrenyAmount_pass_withdraw
   return [v3 setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKEnterCurrencyAmountPassView *)self _newBalanceHorizontalPadding];
   [(PKEnterValueNewBalanceView *)self->_balanceView sizeThatFits:width + v6 * -2.0, 1.79769313e308];
   v8 = v7 + 0.0;
@@ -229,7 +229,7 @@ uint64_t __88__PKEnterCurrencyAmountPassView_initWithCurrenyAmount_pass_withdraw
   return result;
 }
 
-- ($F81081627EB66BDA95705C9210F32B91)_amountPassViewSizeInfoForSize:(SEL)a3
+- ($F81081627EB66BDA95705C9210F32B91)_amountPassViewSizeInfoForSize:(SEL)size
 {
   retstr->var3.height = 0.0;
   *&retstr->var0 = 0u;

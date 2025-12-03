@@ -2,18 +2,18 @@
 - (BOOL)getDigitizerFilterWindow;
 - (BOOL)getSupportsFloatLuxValue;
 - (BOOL)getUseProxForOcclusion;
-- (BOOL)handleALSEvent:(id)a3;
+- (BOOL)handleALSEvent:(id)event;
 - (BOOL)isColorSupported;
 - (BOOL)useCopyEventOnDisplayWake;
-- (CBALSNode)initWithALSServiceClient:(__IOHIDServiceClient *)a3;
+- (CBALSNode)initWithALSServiceClient:(__IOHIDServiceClient *)client;
 - (__IOHIDEvent)copyEvent;
 - (id)copyALSEvent;
-- (id)copyALSEventWithinTimeout:(float)a3;
+- (id)copyALSEventWithinTimeout:(float)timeout;
 - (id)copyHotspotLocation;
 - (int)getReportInterval;
 - (void)dealloc;
 - (void)initALSProperties;
-- (void)setReportInterval:(int)a3;
+- (void)setReportInterval:(int)interval;
 @end
 
 @implementation CBALSNode
@@ -37,13 +37,13 @@
 
 - (BOOL)getUseProxForOcclusion
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4 = 1;
   if (self->_alsIOService)
   {
     v3 = 0;
-    if (load_int_from_edt(v6->_alsIOService, @"use-prox-for-occlusion", &v3))
+    if (load_int_from_edt(selfCopy->_alsIOService, @"use-prox-for-occlusion", &v3))
     {
       return v3 != 0;
     }
@@ -55,10 +55,10 @@
 - (BOOL)getDigitizerFilterWindow
 {
   v16 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11 = 0;
-  v10 = 0x7FFFFFFF;
+  intValue = 0x7FFFFFFF;
   v9 = 0;
   v8 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.CoreBrightness"];
   if (v8)
@@ -69,9 +69,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v13->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          logHandle = v13->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -95,7 +95,7 @@
           _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Touch filter window type is overridden in Defaults %@ = %@ \n", v15, 0x16u);
         }
 
-        v10 = [v7 intValue];
+        intValue = [v7 intValue];
         v9 = 1;
       }
     }
@@ -103,18 +103,18 @@
     MEMORY[0x1E69E5920](v8);
   }
 
-  if ((v9 & 1) == 0 && v13->_alsIOService)
+  if ((v9 & 1) == 0 && selfCopy->_alsIOService)
   {
-    v9 = load_int_from_edt(v13->_alsIOService, @"digitizer-filter-window-type", &v10);
+    v9 = load_int_from_edt(selfCopy->_alsIOService, @"digitizer-filter-window-type", &intValue);
   }
 
   if (v9)
   {
-    if (v10 > 1)
+    if (intValue > 1)
     {
-      if (v13->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v4 = v13->_logHandle;
+        v4 = selfCopy->_logHandle;
       }
 
       else
@@ -134,14 +134,14 @@
 
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_0_1_4_0(v14, v10);
+        __os_log_helper_16_0_1_4_0(v14, intValue);
         _os_log_error_impl(&dword_1DE8E5000, v4, OS_LOG_TYPE_ERROR, "%d", v14, 8u);
       }
     }
 
     else
     {
-      v11 = v10;
+      v11 = intValue;
     }
   }
 
@@ -151,13 +151,13 @@
 
 - (BOOL)getSupportsFloatLuxValue
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4 = 0;
   if (self->_alsIOService)
   {
     v3 = 0;
-    if (load_int_from_edt(v6->_alsIOService, @"supports-float-lux", &v3))
+    if (load_int_from_edt(selfCopy->_alsIOService, @"supports-float-lux", &v3))
     {
       return v3 != 0;
     }
@@ -168,28 +168,28 @@
 
 - (void)initALSProperties
 {
-  v68 = self;
+  selfCopy = self;
   v67 = a2;
   self->_orientation = 0;
-  v68->_placement = 0;
-  v68->_location = 256;
-  v68->_sensorType = 0;
-  v68->_superFastIntegrationTime = 99000;
-  v68->_fastIntegrationTime = 100000;
-  v68->_slowIntegrationTime = 250000;
-  v68->_colorSupport = 0;
+  selfCopy->_placement = 0;
+  selfCopy->_location = 256;
+  selfCopy->_sensorType = 0;
+  selfCopy->_superFastIntegrationTime = 99000;
+  selfCopy->_fastIntegrationTime = 100000;
+  selfCopy->_slowIntegrationTime = 250000;
+  selfCopy->_colorSupport = 0;
   v66 = 0;
-  v66 = IOHIDServiceClientCopyProperty(v68->_alsService, @"Orientation");
+  v66 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"Orientation");
   if (v66 && (v39 = CFGetTypeID(v66), v39 == CFNumberGetTypeID()))
   {
-    CFNumberGetValue(v66, kCFNumberSInt32Type, &v68->_orientation);
+    CFNumberGetValue(v66, kCFNumberSInt32Type, &selfCopy->_orientation);
   }
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v68->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -224,28 +224,28 @@
   }
 
   v66 = 0;
-  v62 = IOHIDServiceClientCopyProperty(v68->_alsService, @"SensorLocation");
+  v62 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"SensorLocation");
   if (v62)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v68->_location = [v62 unsignedIntegerValue];
+      selfCopy->_location = [v62 unsignedIntegerValue];
     }
   }
 
   MEMORY[0x1E69E5920](v62);
-  v66 = IOHIDServiceClientCopyProperty(v68->_alsService, @"Placement");
+  v66 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"Placement");
   if (v66 && (v34 = CFGetTypeID(v66), v34 == CFNumberGetTypeID()))
   {
-    CFNumberGetValue(v66, kCFNumberSInt32Type, &v68->_placement);
+    CFNumberGetValue(v66, kCFNumberSInt32Type, &selfCopy->_placement);
   }
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v33 = v68->_logHandle;
+      v33 = selfCopy->_logHandle;
     }
 
     else
@@ -280,17 +280,17 @@
   }
 
   v66 = 0;
-  v66 = IOHIDServiceClientCopyProperty(v68->_alsService, @"ALSSensorType");
+  v66 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"ALSSensorType");
   if (v66 && (v29 = CFGetTypeID(v66), v29 == CFNumberGetTypeID()))
   {
-    CFNumberGetValue(v66, kCFNumberSInt32Type, &v68->_sensorType);
+    CFNumberGetValue(v66, kCFNumberSInt32Type, &selfCopy->_sensorType);
   }
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v28 = v68->_logHandle;
+      v28 = selfCopy->_logHandle;
     }
 
     else
@@ -325,17 +325,17 @@
   }
 
   v66 = 0;
-  v66 = IOHIDServiceClientCopyProperty(v68->_alsService, @"ALSFastIntegrationTime");
+  v66 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"ALSFastIntegrationTime");
   if (v66 && (v24 = CFGetTypeID(v66), v24 == CFNumberGetTypeID()))
   {
-    CFNumberGetValue(v66, kCFNumberSInt32Type, &v68->_fastIntegrationTime);
+    CFNumberGetValue(v66, kCFNumberSInt32Type, &selfCopy->_fastIntegrationTime);
   }
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v23 = v68->_logHandle;
+      v23 = selfCopy->_logHandle;
     }
 
     else
@@ -370,17 +370,17 @@
   }
 
   v66 = 0;
-  v66 = IOHIDServiceClientCopyProperty(v68->_alsService, @"ALSSuperFastIntegrationTime");
+  v66 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"ALSSuperFastIntegrationTime");
   if (v66 && (v19 = CFGetTypeID(v66), v19 == CFNumberGetTypeID()))
   {
-    CFNumberGetValue(v66, kCFNumberSInt32Type, &v68->_superFastIntegrationTime);
+    CFNumberGetValue(v66, kCFNumberSInt32Type, &selfCopy->_superFastIntegrationTime);
   }
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v18 = v68->_logHandle;
+      v18 = selfCopy->_logHandle;
     }
 
     else
@@ -415,17 +415,17 @@
   }
 
   v66 = 0;
-  v66 = IOHIDServiceClientCopyProperty(v68->_alsService, @"ALSSlowIntegrationTime");
+  v66 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"ALSSlowIntegrationTime");
   if (v66 && (v14 = CFGetTypeID(v66), v14 == CFNumberGetTypeID()))
   {
-    CFNumberGetValue(v66, kCFNumberSInt32Type, &v68->_slowIntegrationTime);
+    CFNumberGetValue(v66, kCFNumberSInt32Type, &selfCopy->_slowIntegrationTime);
   }
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v13 = v68->_logHandle;
+      v13 = selfCopy->_logHandle;
     }
 
     else
@@ -460,7 +460,7 @@
   }
 
   v66 = 0;
-  v66 = IOHIDServiceClientCopyProperty(v68->_alsService, @"Built-In");
+  v66 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"Built-In");
   if (v66 && ((v9 = CFGetTypeID(v66), v9 == CFBooleanGetTypeID()) || (v8 = CFGetTypeID(v66), v8 == CFNumberGetTypeID())))
   {
     v7 = CFGetTypeID(v66);
@@ -468,7 +468,7 @@
     {
       if (v66 == *MEMORY[0x1E695E4D0])
       {
-        v68->_builtIn = 1;
+        selfCopy->_builtIn = 1;
       }
     }
 
@@ -479,16 +479,16 @@
       {
         valuePtr = 0;
         CFNumberGetValue(v66, kCFNumberSInt32Type, &valuePtr);
-        v68->_builtIn = valuePtr != 0;
+        selfCopy->_builtIn = valuePtr != 0;
       }
     }
   }
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v5 = v68->_logHandle;
+      v5 = selfCopy->_logHandle;
     }
 
     else
@@ -523,37 +523,37 @@
   }
 
   v66 = 0;
-  v68->_colorMitigation = 0;
-  if (v68->_alsIOService)
+  selfCopy->_colorMitigation = 0;
+  if (selfCopy->_alsIOService)
   {
     v42 = 0;
-    v41 = load_uint_from_edt(v68->_alsIOService, @"ce-model", &v42);
-    fixed_float_from_edt = load_fixed_float_from_edt(v68->_alsIOService, @"ce-threshold");
+    v41 = load_uint_from_edt(selfCopy->_alsIOService, @"ce-model", &v42);
+    fixed_float_from_edt = load_fixed_float_from_edt(selfCopy->_alsIOService, @"ce-threshold");
     if (v41)
     {
-      v68->_ceModel = v42;
+      selfCopy->_ceModel = v42;
       v69 = fixed_float_from_edt;
-      v68->_ceThreshold = fixed_float_from_edt;
-      v68->_colorMitigation = 1;
+      selfCopy->_ceThreshold = fixed_float_from_edt;
+      selfCopy->_colorMitigation = 1;
     }
   }
 
-  v68->_overrideHotspot = [(CBALSNode *)v68 copyHotspotLocation];
-  v68->_useProxForOcclusion = [(CBALSNode *)v68 getUseProxForOcclusion];
-  v68->_digitizerFilterWindow = [(CBALSNode *)v68 getDigitizerFilterWindow];
-  v68->_supportsFloatLux = [(CBALSNode *)v68 getSupportsFloatLuxValue];
-  v68->_colorSupport = [(CBALSNode *)v68 isColorSupported];
+  selfCopy->_overrideHotspot = [(CBALSNode *)selfCopy copyHotspotLocation];
+  selfCopy->_useProxForOcclusion = [(CBALSNode *)selfCopy getUseProxForOcclusion];
+  selfCopy->_digitizerFilterWindow = [(CBALSNode *)selfCopy getDigitizerFilterWindow];
+  selfCopy->_supportsFloatLux = [(CBALSNode *)selfCopy getSupportsFloatLuxValue];
+  selfCopy->_colorSupport = [(CBALSNode *)selfCopy isColorSupported];
 }
 
 - (BOOL)isColorSupported
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   v17 = 0;
   if (IOHIDServiceClientConformsTo(self->_alsService, 0xFF00u, 4u))
   {
     v16 = 0;
-    v16 = IOHIDServiceClientCopyProperty(v19->_alsService, @"crgb");
+    v16 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"crgb");
     if (v16)
     {
       TypeID = CFNumberGetTypeID();
@@ -571,17 +571,17 @@
     }
   }
 
-  else if (IOHIDServiceClientConformsTo(v19->_alsService, 0x20u, 0x41u))
+  else if (IOHIDServiceClientConformsTo(selfCopy->_alsService, 0x20u, 0x41u))
   {
     v14 = 0;
-    v13 = 0;
-    v14 = IOHIDServiceClientCopyProperty(v19->_alsService, @"VendorID");
+    unsignedIntValue = 0;
+    v14 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"VendorID");
     if (v14)
     {
       v8 = CFGetTypeID(v14);
       if (v8 == CFNumberGetTypeID())
       {
-        v13 = [v14 unsignedIntValue];
+        unsignedIntValue = [v14 unsignedIntValue];
       }
     }
 
@@ -590,9 +590,9 @@
       CFRelease(v14);
     }
 
-    if (v13 == 1452)
+    if (unsignedIntValue == 1452)
     {
-      v14 = IOHIDServiceClientCopyProperty(v19->_alsService, @"ColorSupport");
+      v14 = IOHIDServiceClientCopyProperty(selfCopy->_alsService, @"ColorSupport");
       if (v14)
       {
         v7 = CFBooleanGetTypeID();
@@ -611,9 +611,9 @@
 
   else
   {
-    if (v19->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v19->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -647,48 +647,48 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = MEMORY[0x1E69E5920](self->_currentALSEvent).n128_u64[0];
-  if (v5->_alsService)
+  if (selfCopy->_alsService)
   {
-    CFRelease(v5->_alsService);
+    CFRelease(selfCopy->_alsService);
   }
 
-  if (v5->_alsIOService)
+  if (selfCopy->_alsIOService)
   {
-    IOObjectRelease(v5->_alsIOService);
+    IOObjectRelease(selfCopy->_alsIOService);
   }
 
-  if (v5->_overrideHotspot)
+  if (selfCopy->_overrideHotspot)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_overrideHotspot).n128_u64[0];
+    v2 = MEMORY[0x1E69E5920](selfCopy->_overrideHotspot).n128_u64[0];
   }
 
-  if (v5->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_logHandle).n128_u64[0];
-    v5->_logHandle = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_logHandle).n128_u64[0];
+    selfCopy->_logHandle = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBALSNode;
   [(CBALSNode *)&v3 dealloc];
 }
 
-- (CBALSNode)initWithALSServiceClient:(__IOHIDServiceClient *)a3
+- (CBALSNode)initWithALSServiceClient:(__IOHIDServiceClient *)client
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = CBALSNode;
-  v19 = [(CBALSNode *)&v16 init];
-  if (v19)
+  selfCopy = [(CBALSNode *)&v16 init];
+  if (selfCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.CBALSNode", "default");
-    v19->_logHandle = v3;
-    if (!v19->_logHandle)
+    selfCopy->_logHandle = v3;
+    if (!selfCopy->_logHandle)
     {
       v10 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v15 = v10;
@@ -702,11 +702,11 @@
       }
     }
 
-    v19->_alsService = v17;
-    CFRetain(v19->_alsService);
-    v19->_alsIOService = 0;
+    selfCopy->_alsService = clientCopy;
+    CFRetain(selfCopy->_alsService);
+    selfCopy->_alsIOService = 0;
     valuePtr = 0;
-    number = IOHIDServiceClientGetRegistryID(v19->_alsService);
+    number = IOHIDServiceClientGetRegistryID(selfCopy->_alsService);
     if (number)
     {
       CFNumberGetValue(number, kCFNumberSInt64Type, &valuePtr);
@@ -715,14 +715,14 @@
         mainPort = *MEMORY[0x1E696CD60];
         v4 = IORegistryEntryIDMatching(valuePtr);
         MatchingService = IOServiceGetMatchingService(mainPort, v4);
-        v19->_alsIOService = MatchingService;
+        selfCopy->_alsIOService = MatchingService;
       }
     }
 
-    [(CBALSNode *)v19 initALSProperties];
+    [(CBALSNode *)selfCopy initALSProperties];
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (BOOL)useCopyEventOnDisplayWake
@@ -736,11 +736,11 @@
   return v3;
 }
 
-- (BOOL)handleALSEvent:(id)a3
+- (BOOL)handleALSEvent:(id)event
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = 0;
-  if (a3 && [a3 service] == self->_alsService)
+  if (event && [event service] == self->_alsService)
   {
     if (self->_currentALSEvent)
     {
@@ -749,7 +749,7 @@
 
     else
     {
-      [a3 setFirstALSSample:1];
+      [event setFirstALSSample:1];
     }
 
     if (self->_logHandle)
@@ -774,11 +774,11 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v9, a3);
+      __os_log_helper_16_2_1_8_64(v9, event);
       _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "%@", v9, 0xCu);
     }
 
-    self->_currentALSEvent = MEMORY[0x1E69E5928](a3);
+    self->_currentALSEvent = MEMORY[0x1E69E5928](event);
     v6 = 1;
   }
 
@@ -852,17 +852,17 @@
   return v3;
 }
 
-- (id)copyALSEventWithinTimeout:(float)a3
+- (id)copyALSEventWithinTimeout:(float)timeout
 {
   v15 = *MEMORY[0x1E69E9840];
-  v10 = [(CBALSNode *)self copyEvent];
-  if (v10)
+  copyEvent = [(CBALSNode *)self copyEvent];
+  if (copyEvent)
   {
-    v9 = [[CBALSEvent alloc] initWithHIDEvent:v10 andNode:self];
-    CFRelease(v10);
+    v9 = [[CBALSEvent alloc] initWithHIDEvent:copyEvent andNode:self];
+    CFRelease(copyEvent);
     v8 = mach_time_now_in_seconds();
     [(CBHIDEvent *)v9 timestamp];
-    if (fabs((v3 - v8)) >= a3)
+    if (fabs((v3 - v8)) >= timeout)
     {
       if (self->_logHandle)
       {
@@ -907,15 +907,15 @@
   return v13;
 }
 
-- (void)setReportInterval:(int)a3
+- (void)setReportInterval:(int)interval
 {
   v10 = *MEMORY[0x1E69E9840];
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  valuePtr = a3;
+  valuePtr = interval;
   if (self->_logHandle)
   {
-    logHandle = v8->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -935,14 +935,14 @@
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_4_0_8_64(v9, valuePtr, v8);
+    __os_log_helper_16_2_2_4_0_8_64(v9, valuePtr, selfCopy);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Setting report interval to %d for ALS: %@", v9, 0x12u);
   }
 
   property = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt32Type, &valuePtr);
   if (property)
   {
-    IOHIDServiceClientSetProperty(v8->_alsService, @"ReportInterval", property);
+    IOHIDServiceClientSetProperty(selfCopy->_alsService, @"ReportInterval", property);
     CFRelease(property);
   }
 
@@ -954,16 +954,16 @@
   v4 = IOHIDServiceClientCopyProperty(self->_alsService, @"ReportInterval");
   if (v4)
   {
-    v3 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v3 = 0;
+    intValue = 0;
   }
 
   MEMORY[0x1E69E5920](v4);
-  return v3;
+  return intValue;
 }
 
 @end

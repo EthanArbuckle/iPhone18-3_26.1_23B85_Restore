@@ -1,7 +1,7 @@
 @interface CLSEventResult
-+ (id)eventResultWithEvent:(id)a3 andConfidence:(float)a4;
++ (id)eventResultWithEvent:(id)event andConfidence:(float)confidence;
 - (id)description;
-- (void)mergeWithResult:(id)a3;
+- (void)mergeWithResult:(id)result;
 @end
 
 @implementation CLSEventResult
@@ -9,30 +9,30 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CLSEvent *)self->_event title];
-  v5 = [v3 stringWithFormat:@"[%@] (%f)", v4, self->_confidence];
+  title = [(CLSEvent *)self->_event title];
+  v5 = [v3 stringWithFormat:@"[%@] (%f)", title, self->_confidence];
 
   return v5;
 }
 
-- (void)mergeWithResult:(id)a3
+- (void)mergeWithResult:(id)result
 {
-  v6 = a3;
-  [v6 confidence];
+  resultCopy = result;
+  [resultCopy confidence];
   if (v4 > self->_confidence)
   {
-    [v6 confidence];
+    [resultCopy confidence];
     self->_confidence = v5;
   }
 }
 
-+ (id)eventResultWithEvent:(id)a3 andConfidence:(float)a4
++ (id)eventResultWithEvent:(id)event andConfidence:(float)confidence
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = objc_alloc_init(CLSEventResult);
-  [(CLSEventResult *)v6 setEvent:v5];
+  [(CLSEventResult *)v6 setEvent:eventCopy];
 
-  *&v7 = a4;
+  *&v7 = confidence;
   [(CLSEventResult *)v6 setConfidence:v7];
 
   return v6;

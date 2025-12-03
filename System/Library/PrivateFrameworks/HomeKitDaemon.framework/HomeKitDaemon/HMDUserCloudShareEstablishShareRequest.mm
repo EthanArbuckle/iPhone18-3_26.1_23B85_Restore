@@ -1,7 +1,7 @@
 @interface HMDUserCloudShareEstablishShareRequest
 - (HMDUser)fromUser;
 - (HMDUser)toUser;
-- (HMDUserCloudShareEstablishShareRequest)initWithHome:(id)a3 fromUser:(id)a4 toUser:(id)a5 encodedShareURL:(id)a6 shareToken:(id)a7 containerID:(id)a8 currentDate:(id)a9 completion:(id)a10;
+- (HMDUserCloudShareEstablishShareRequest)initWithHome:(id)home fromUser:(id)user toUser:(id)toUser encodedShareURL:(id)l shareToken:(id)token containerID:(id)d currentDate:(id)date completion:(id)self0;
 - (id)description;
 @end
 
@@ -24,32 +24,32 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDUserCloudShareRequest *)self identifier];
-  v5 = [(HMDUserCloudShareRequest *)self containerID];
-  v6 = [(HMDUserCloudShareRequest *)self startDate];
-  v7 = [v3 stringWithFormat:@"<HMDUserCloudShareEstablishShareRequest id = %@, container = %@, startDate = %@>", v4, v5, v6];
+  identifier = [(HMDUserCloudShareRequest *)self identifier];
+  containerID = [(HMDUserCloudShareRequest *)self containerID];
+  startDate = [(HMDUserCloudShareRequest *)self startDate];
+  v7 = [v3 stringWithFormat:@"<HMDUserCloudShareEstablishShareRequest id = %@, container = %@, startDate = %@>", identifier, containerID, startDate];
 
   return v7;
 }
 
-- (HMDUserCloudShareEstablishShareRequest)initWithHome:(id)a3 fromUser:(id)a4 toUser:(id)a5 encodedShareURL:(id)a6 shareToken:(id)a7 containerID:(id)a8 currentDate:(id)a9 completion:(id)a10
+- (HMDUserCloudShareEstablishShareRequest)initWithHome:(id)home fromUser:(id)user toUser:(id)toUser encodedShareURL:(id)l shareToken:(id)token containerID:(id)d currentDate:(id)date completion:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v25 = a6;
-  v18 = a7;
-  v19 = a10;
+  userCopy = user;
+  toUserCopy = toUser;
+  lCopy = l;
+  tokenCopy = token;
+  completionCopy = completion;
   v26.receiver = self;
   v26.super_class = HMDUserCloudShareEstablishShareRequest;
-  v20 = [(HMDUserCloudShareRequest *)&v26 initWithStartDate:a9 containerID:a8 home:a3];
+  v20 = [(HMDUserCloudShareRequest *)&v26 initWithStartDate:date containerID:d home:home];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_fromUser, v16);
-    objc_storeWeak(&v21->_toUser, v17);
-    objc_storeStrong(&v21->_encodedShareURL, a6);
-    objc_storeStrong(&v21->_shareToken, a7);
-    v22 = [v19 copy];
+    objc_storeWeak(&v20->_fromUser, userCopy);
+    objc_storeWeak(&v21->_toUser, toUserCopy);
+    objc_storeStrong(&v21->_encodedShareURL, l);
+    objc_storeStrong(&v21->_shareToken, token);
+    v22 = [completionCopy copy];
     completion = v21->_completion;
     v21->_completion = v22;
   }

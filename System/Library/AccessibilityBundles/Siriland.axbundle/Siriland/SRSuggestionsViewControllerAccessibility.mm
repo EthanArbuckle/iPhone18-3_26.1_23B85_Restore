@@ -1,22 +1,22 @@
 @interface SRSuggestionsViewControllerAccessibility
-- (void)didShowSuggestionsForSuggestionsView:(id)a3;
+- (void)didShowSuggestionsForSuggestionsView:(id)view;
 @end
 
 @implementation SRSuggestionsViewControllerAccessibility
 
-- (void)didShowSuggestionsForSuggestionsView:(id)a3
+- (void)didShowSuggestionsForSuggestionsView:(id)view
 {
   v21.receiver = self;
   v21.super_class = SRSuggestionsViewControllerAccessibility;
-  v3 = a3;
-  [(SRSuggestionsViewControllerAccessibility *)&v21 didShowSuggestionsForSuggestionsView:v3];
-  v4 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v4 bounds];
+  viewCopy = view;
+  [(SRSuggestionsViewControllerAccessibility *)&v21 didShowSuggestionsForSuggestionsView:viewCopy];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v3 accessibilityFrame];
+  [viewCopy accessibilityFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -30,9 +30,9 @@
   v23.origin.y = v16;
   v23.size.width = v18;
   v23.size.height = v20;
-  LODWORD(v3) = CGRectIntersectsRect(v22, v23);
+  LODWORD(viewCopy) = CGRectIntersectsRect(v22, v23);
 
-  if (v3)
+  if (viewCopy)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }

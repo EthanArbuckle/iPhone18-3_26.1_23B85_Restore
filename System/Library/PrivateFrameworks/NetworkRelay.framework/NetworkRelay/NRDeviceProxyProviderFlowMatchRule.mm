@@ -2,18 +2,18 @@
 + (id)copyMatchRulesForCellularSlicing;
 - (BOOL)hasMatchRulesExcludingEntitlements;
 - (BOOL)hasMatchRulesWithTokens;
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceProxyProviderFlowMatchRule)initWithCoder:(id)a3;
-- (NRDeviceProxyProviderFlowMatchRule)initWithReceivedData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceProxyProviderFlowMatchRule)initWithCoder:(id)coder;
+- (NRDeviceProxyProviderFlowMatchRule)initWithReceivedData:(id)data;
 - (id)copyExcludedBundleIdentifiers;
 - (id)copyMatchTokens;
 - (id)copySendData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addMatchRuleForClientsWithEntitlement:(id)a3 entitlementValue:(id)a4;
-- (void)addMatchToken:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)excludeBundleIdentifier:(id)a3;
+- (void)addMatchRuleForClientsWithEntitlement:(id)entitlement entitlementValue:(id)value;
+- (void)addMatchToken:(id)token;
+- (void)encodeWithCoder:(id)coder;
+- (void)excludeBundleIdentifier:(id)identifier;
 @end
 
 @implementation NRDeviceProxyProviderFlowMatchRule
@@ -35,22 +35,22 @@
     return 1;
   }
 
-  v4 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
-  v5 = v4 != 0;
+  domain = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+  v5 = domain != 0;
 
   return v5;
 }
 
-- (void)excludeBundleIdentifier:(id)a3
+- (void)excludeBundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [v10 length];
-  v5 = v10;
+  identifierCopy = identifier;
+  v4 = [identifierCopy length];
+  v5 = identifierCopy;
   if (v4)
   {
     v6 = self ? self->_excludedBundleIdentifiers : 0;
-    v4 = [(NSArray *)v6 containsObject:v10];
-    v5 = v10;
+    v4 = [(NSArray *)v6 containsObject:identifierCopy];
+    v5 = identifierCopy;
     if ((v4 & 1) == 0)
     {
       v7 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -65,13 +65,13 @@
       }
 
       v9 = [v7 initWithArray:excludedBundleIdentifiers];
-      [v9 addObject:v10];
+      [v9 addObject:identifierCopy];
       if (self)
       {
         objc_storeStrong(&self->_excludedBundleIdentifiers, v9);
       }
 
-      v5 = v10;
+      v5 = identifierCopy;
     }
   }
 
@@ -88,16 +88,16 @@
   return self;
 }
 
-- (void)addMatchToken:(id)a3
+- (void)addMatchToken:(id)token
 {
-  v10 = a3;
-  v4 = [v10 length];
-  v5 = v10;
+  tokenCopy = token;
+  v4 = [tokenCopy length];
+  v5 = tokenCopy;
   if (v4)
   {
     v6 = self ? self->_matchTokens : 0;
-    v4 = [(NSArray *)v6 containsObject:v10];
-    v5 = v10;
+    v4 = [(NSArray *)v6 containsObject:tokenCopy];
+    v5 = tokenCopy;
     if ((v4 & 1) == 0)
     {
       v7 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -112,13 +112,13 @@
       }
 
       v9 = [v7 initWithArray:matchTokens];
-      [v9 addObject:v10];
+      [v9 addObject:tokenCopy];
       if (self)
       {
         objc_storeStrong(&self->_matchTokens, v9);
       }
 
-      v5 = v10;
+      v5 = tokenCopy;
     }
   }
 
@@ -135,11 +135,11 @@
   return self;
 }
 
-- (void)addMatchRuleForClientsWithEntitlement:(id)a3 entitlementValue:(id)a4
+- (void)addMatchRuleForClientsWithEntitlement:(id)entitlement entitlementValue:(id)value
 {
-  v26 = a3;
-  v6 = a4;
-  if (!v26)
+  entitlementCopy = entitlement;
+  valueCopy = value;
+  if (!entitlementCopy)
   {
     v10 = nrCopyLogObj_672();
     if (sNRCopyLogToStdErr == 1)
@@ -162,13 +162,13 @@
     goto LABEL_4;
   }
 
-  if (v6)
+  if (valueCopy)
   {
     v7 = objc_alloc(MEMORY[0x277CBEB38]);
-    v8 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-    v9 = [v7 initWithDictionary:v8];
+    entitlements = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+    v9 = [v7 initWithDictionary:entitlements];
 
-    [v9 setObject:v6 forKeyedSubscript:v26];
+    [v9 setObject:valueCopy forKeyedSubscript:entitlementCopy];
     [(NRDeviceProxyProviderFlowMatchRule *)self setEntitlements:v9];
 LABEL_4:
 
@@ -196,41 +196,41 @@ LABEL_15:
 LABEL_5:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeInt32:-[NRDeviceProxyProviderFlowMatchRule trafficClass](self forKey:{"trafficClass"), @"trafficClass"}];
-  [v9 encodeInt32:-[NRDeviceProxyProviderFlowMatchRule transportProtocol](self forKey:{"transportProtocol"), @"transportProtocol"}];
-  v4 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
-  [v9 encodeObject:v4 forKey:@"domain"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[NRDeviceProxyProviderFlowMatchRule trafficClass](self forKey:{"trafficClass"), @"trafficClass"}];
+  [coderCopy encodeInt32:-[NRDeviceProxyProviderFlowMatchRule transportProtocol](self forKey:{"transportProtocol"), @"transportProtocol"}];
+  domain = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+  [coderCopy encodeObject:domain forKey:@"domain"];
 
-  v5 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-  [v9 encodeObject:v5 forKey:@"entitlements"];
+  entitlements = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+  [coderCopy encodeObject:entitlements forKey:@"entitlements"];
 
   if (self)
   {
-    [v9 encodeObject:self->_matchTokens forKey:@"matchTokens"];
+    [coderCopy encodeObject:self->_matchTokens forKey:@"matchTokens"];
     excludedBundleIdentifiers = self->_excludedBundleIdentifiers;
   }
 
   else
   {
-    [v9 encodeObject:0 forKey:@"matchTokens"];
+    [coderCopy encodeObject:0 forKey:@"matchTokens"];
     excludedBundleIdentifiers = 0;
   }
 
-  [v9 encodeObject:excludedBundleIdentifiers forKey:@"excludedBundleIdentifiers"];
-  v7 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
-  [v9 encodeObject:v7 forKey:@"matchResultAccountID"];
+  [coderCopy encodeObject:excludedBundleIdentifiers forKey:@"excludedBundleIdentifiers"];
+  matchResultAccountID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
+  [coderCopy encodeObject:matchResultAccountID forKey:@"matchResultAccountID"];
 
-  v8 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
-  [v9 encodeObject:v8 forKey:@"matchResultBundleID"];
+  matchResultBundleID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
+  [coderCopy encodeObject:matchResultBundleID forKey:@"matchResultBundleID"];
 }
 
-- (NRDeviceProxyProviderFlowMatchRule)initWithCoder:(id)a3
+- (NRDeviceProxyProviderFlowMatchRule)initWithCoder:(id)coder
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = NRDeviceProxyProviderFlowMatchRule;
   v5 = [(NRDeviceProxyProviderFlowMatchRule *)&v32 init];
@@ -267,44 +267,44 @@ LABEL_7:
   }
 
   v6 = v5;
-  -[NRDeviceProxyProviderFlowMatchRule setTrafficClass:](v5, "setTrafficClass:", [v4 decodeInt32ForKey:@"trafficClass"]);
-  -[NRDeviceProxyProviderFlowMatchRule setTransportProtocol:](v6, "setTransportProtocol:", [v4 decodeInt32ForKey:@"transportProtocol"]);
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  -[NRDeviceProxyProviderFlowMatchRule setTrafficClass:](v5, "setTrafficClass:", [coderCopy decodeInt32ForKey:@"trafficClass"]);
+  -[NRDeviceProxyProviderFlowMatchRule setTransportProtocol:](v6, "setTransportProtocol:", [coderCopy decodeInt32ForKey:@"transportProtocol"]);
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
   [(NRDeviceProxyProviderFlowMatchRule *)v6 setDomain:v7];
 
   v8 = objc_opt_class();
-  v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"entitlements"];
+  v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"entitlements"];
   [(NRDeviceProxyProviderFlowMatchRule *)v6 setEntitlements:v9];
 
-  v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"matchTokens"];
+  v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"matchTokens"];
   matchTokens = v6->_matchTokens;
   v6->_matchTokens = v10;
 
-  v12 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"excludedBundleIdentifiers"];
+  v12 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"excludedBundleIdentifiers"];
   excludedBundleIdentifiers = v6->_excludedBundleIdentifiers;
   v6->_excludedBundleIdentifiers = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchResultAccountID"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchResultAccountID"];
   [(NRDeviceProxyProviderFlowMatchRule *)v6 setMatchResultAccountID:v14];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchResultBundleID"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchResultBundleID"];
   [(NRDeviceProxyProviderFlowMatchRule *)v6 setMatchResultBundleID:v15];
 
   v16 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setTrafficClass:{-[NRDeviceProxyProviderFlowMatchRule trafficClass](self, "trafficClass")}];
   [v4 setTransportProtocol:{-[NRDeviceProxyProviderFlowMatchRule transportProtocol](self, "transportProtocol")}];
-  v5 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
-  v6 = [v5 copy];
+  domain = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+  v6 = [domain copy];
   [v4 setDomain:v6];
 
-  v7 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-  v8 = [v7 copy];
+  entitlements = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+  v8 = [entitlements copy];
   [v4 setEntitlements:v8];
 
   if (self)
@@ -341,56 +341,56 @@ LABEL_7:
     objc_storeStrong(v4 + 4, v14);
   }
 
-  v15 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
-  v16 = [v15 copy];
+  matchResultAccountID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
+  v16 = [matchResultAccountID copy];
   [v4 setMatchResultAccountID:v16];
 
-  v17 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
-  v18 = [v17 copy];
+  matchResultBundleID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
+  v18 = [matchResultBundleID copy];
   [v4 setMatchResultBundleID:v18];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NRDeviceProxyProviderFlowMatchRule *)self trafficClass];
-      if (v6 != [v5 trafficClass])
+      v5 = equalCopy;
+      trafficClass = [(NRDeviceProxyProviderFlowMatchRule *)self trafficClass];
+      if (trafficClass != [v5 trafficClass])
       {
         goto LABEL_35;
       }
 
-      v7 = [(NRDeviceProxyProviderFlowMatchRule *)self transportProtocol];
-      if (v7 != [v5 transportProtocol])
+      transportProtocol = [(NRDeviceProxyProviderFlowMatchRule *)self transportProtocol];
+      if (transportProtocol != [v5 transportProtocol])
       {
         goto LABEL_35;
       }
 
-      v8 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
-      if (v8)
+      domain = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+      if (domain)
       {
       }
 
       else
       {
-        v10 = [v5 domain];
+        domain2 = [v5 domain];
 
-        if (!v10)
+        if (!domain2)
         {
           goto LABEL_10;
         }
       }
 
-      v11 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
-      v12 = [v5 domain];
-      v13 = [v11 isEqual:v12];
+      domain3 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+      domain4 = [v5 domain];
+      v13 = [domain3 isEqual:domain4];
 
       if (!v13)
       {
@@ -398,24 +398,24 @@ LABEL_7:
       }
 
 LABEL_10:
-      v14 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-      if (v14)
+      entitlements = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+      if (entitlements)
       {
       }
 
       else
       {
-        v15 = [v5 entitlements];
+        entitlements2 = [v5 entitlements];
 
-        if (!v15)
+        if (!entitlements2)
         {
           goto LABEL_14;
         }
       }
 
-      v16 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-      v17 = [v5 entitlements];
-      v18 = [v16 isEqual:v17];
+      entitlements3 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+      entitlements4 = [v5 entitlements];
+      v18 = [entitlements3 isEqual:entitlements4];
 
       if (!v18)
       {
@@ -504,28 +504,28 @@ LABEL_25:
       }
 
 LABEL_26:
-      v29 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
-      if (v29)
+      matchResultAccountID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
+      if (matchResultAccountID)
       {
       }
 
       else
       {
-        v30 = [v5 matchResultAccountID];
+        matchResultAccountID2 = [v5 matchResultAccountID];
 
-        if (!v30)
+        if (!matchResultAccountID2)
         {
 LABEL_30:
-          v34 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
-          if (v34)
+          matchResultBundleID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
+          if (matchResultBundleID)
           {
           }
 
           else
           {
-            v35 = [v5 matchResultBundleID];
+            matchResultBundleID2 = [v5 matchResultBundleID];
 
-            if (!v35)
+            if (!matchResultBundleID2)
             {
 LABEL_34:
               v9 = 1;
@@ -535,9 +535,9 @@ LABEL_36:
             }
           }
 
-          v36 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
-          v37 = [v5 matchResultBundleID];
-          v38 = [v36 isEqual:v37];
+          matchResultBundleID3 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
+          matchResultBundleID4 = [v5 matchResultBundleID];
+          v38 = [matchResultBundleID3 isEqual:matchResultBundleID4];
 
           if (v38)
           {
@@ -550,9 +550,9 @@ LABEL_35:
         }
       }
 
-      v31 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
-      v32 = [v5 matchResultAccountID];
-      v33 = [v31 isEqual:v32];
+      matchResultAccountID3 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
+      matchResultAccountID4 = [v5 matchResultAccountID];
+      v33 = [matchResultAccountID3 isEqual:matchResultAccountID4];
 
       if (!v33)
       {
@@ -579,21 +579,21 @@ LABEL_37:
     [v3 appendFormat:@", proto: %u", -[NRDeviceProxyProviderFlowMatchRule transportProtocol](self, "transportProtocol")];
   }
 
-  v4 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+  domain = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
 
-  if (v4)
+  if (domain)
   {
-    v5 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
-    [v3 appendFormat:@", domain: %@", v5];
+    domain2 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+    [v3 appendFormat:@", domain: %@", domain2];
   }
 
-  v6 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-  v7 = [v6 count];
+  entitlements = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+  v7 = [entitlements count];
 
   if (v7)
   {
-    v8 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-    [v3 appendFormat:@", entitlements: %@", v8];
+    entitlements2 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+    [v3 appendFormat:@", entitlements: %@", entitlements2];
   }
 
   if (self)
@@ -646,22 +646,22 @@ LABEL_12:
 
   [v3 appendFormat:@", excl-bndl: %@", excludedBundleIdentifiers];
 LABEL_17:
-  v11 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
-  v12 = [v11 length];
+  matchResultAccountID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
+  v12 = [matchResultAccountID length];
 
   if (v12)
   {
-    v13 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
-    [v3 appendFormat:@", res-acc-id: %@", v13];
+    matchResultAccountID2 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultAccountID];
+    [v3 appendFormat:@", res-acc-id: %@", matchResultAccountID2];
   }
 
-  v14 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
-  v15 = [v14 length];
+  matchResultBundleID = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
+  v15 = [matchResultBundleID length];
 
   if (v15)
   {
-    v16 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
-    [v3 appendFormat:@", res-bndl-id: %@", v16];
+    matchResultBundleID2 = [(NRDeviceProxyProviderFlowMatchRule *)self matchResultBundleID];
+    [v3 appendFormat:@", res-bndl-id: %@", matchResultBundleID2];
   }
 
   [v3 appendString:@"]"];
@@ -675,18 +675,18 @@ LABEL_17:
   v3 = objc_alloc_init(MEMORY[0x277CBEB28]);
   if ([(NRDeviceProxyProviderFlowMatchRule *)self trafficClass])
   {
-    v4 = [(NRDeviceProxyProviderFlowMatchRule *)self trafficClass];
-    if (v4 > 499)
+    trafficClass = [(NRDeviceProxyProviderFlowMatchRule *)self trafficClass];
+    if (trafficClass > 499)
     {
-      if (v4 <= 699)
+      if (trafficClass <= 699)
       {
-        if (v4 == 500)
+        if (trafficClass == 500)
         {
           v10 = 5;
           goto LABEL_30;
         }
 
-        if (v4 == 600)
+        if (trafficClass == 600)
         {
           v10 = 6;
           goto LABEL_30;
@@ -695,7 +695,7 @@ LABEL_17:
 
       else
       {
-        switch(v4)
+        switch(trafficClass)
         {
           case 700:
             v10 = 7;
@@ -710,16 +710,16 @@ LABEL_17:
       }
     }
 
-    else if (v4 <= 199)
+    else if (trafficClass <= 199)
     {
-      if (!v4)
+      if (!trafficClass)
       {
 LABEL_29:
         v10 = 0;
         goto LABEL_30;
       }
 
-      if (v4 == 100)
+      if (trafficClass == 100)
       {
         v10 = 1;
         goto LABEL_30;
@@ -728,7 +728,7 @@ LABEL_29:
 
     else
     {
-      switch(v4)
+      switch(trafficClass)
       {
         case 200:
           v10 = 2;
@@ -764,27 +764,27 @@ LABEL_31:
     NRTLVAdd(v3, 2, 1u, &self->_transportProtocol);
   }
 
-  v11 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+  domain = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
 
-  if (v11)
+  if (domain)
   {
-    v12 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
-    v13 = [v12 dataUsingEncoding:4];
+    domain2 = [(NRDeviceProxyProviderFlowMatchRule *)self domain];
+    v13 = [domain2 dataUsingEncoding:4];
 
     v14 = v13;
     v15 = v3;
     NRTLVAdd(v15, 3, [v14 length], objc_msgSend(v14, "bytes"));
   }
 
-  v16 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
-  v17 = [v16 count];
+  entitlements = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+  v17 = [entitlements count];
 
   if (v17)
   {
     v18 = MEMORY[0x277CCAC58];
-    v19 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
+    entitlements2 = [(NRDeviceProxyProviderFlowMatchRule *)self entitlements];
     v49 = 0;
-    v20 = [v18 dataWithPropertyList:v19 format:200 options:0 error:&v49];
+    v20 = [v18 dataWithPropertyList:entitlements2 format:200 options:0 error:&v49];
 
     v21 = v20;
     v22 = v3;
@@ -903,10 +903,10 @@ LABEL_61:
   return v3;
 }
 
-- (NRDeviceProxyProviderFlowMatchRule)initWithReceivedData:(id)a3
+- (NRDeviceProxyProviderFlowMatchRule)initWithReceivedData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = NRDeviceProxyProviderFlowMatchRule;
   v5 = [(NRDeviceProxyProviderFlowMatchRule *)&v31 init];
@@ -953,7 +953,7 @@ LABEL_10:
   v26 = &v27;
   v6 = v5;
   v25 = v6;
-  NRTLVParse(v4, v24);
+  NRTLVParse(dataCopy, v24);
   if (v28[3])
   {
     v7 = v6;

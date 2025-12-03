@@ -1,31 +1,31 @@
 @interface W5PeerSensingResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerSensingResponsePayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerSensingResponsePayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerSensingResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerSensingResponsePayload)initWithRequest:(id)a3
+- (W5PeerSensingResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = W5PeerSensingResponsePayload;
   v5 = [(W5PeerSensingResponsePayload *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"result"];
+    v6 = [requestCopy objectForKeyedSubscript:@"result"];
     v5->_result = [v6 BOOLValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"error"];
+    v7 = [requestCopy objectForKeyedSubscript:@"error"];
     errorStr = v5->_errorStr;
     v5->_errorStr = v7;
   }
@@ -52,17 +52,17 @@
 
 - (id)encode
 {
-  v3 = [(W5PeerSensingResponsePayload *)self errorStr];
-  if (!v3)
+  errorStr = [(W5PeerSensingResponsePayload *)self errorStr];
+  if (!errorStr)
   {
     if ([(W5PeerSensingResponsePayload *)self result])
     {
-      v3 = 0;
+      errorStr = 0;
     }
 
     else
     {
-      v3 = @"unknown error";
+      errorStr = @"unknown error";
     }
   }
 
@@ -70,7 +70,7 @@
   v4 = [NSNumber numberWithBool:[(W5PeerSensingResponsePayload *)self result]];
   v7[1] = @"error";
   v8[0] = v4;
-  v8[1] = v3;
+  v8[1] = errorStr;
   v5 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;

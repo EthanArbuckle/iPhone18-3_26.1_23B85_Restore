@@ -1,19 +1,19 @@
 @interface HTDisplayParser
-+ ($2825F4736939C4A6D3AD43837233062D)displayStateBeforeOrAtTime:(unint64_t)a3 timestamps:(id)a4 states:(id)a5;
-+ (DisplayStateChangeEvent)displayStateBeforeHangStartTimestamp:(unint64_t)a3 displayTimestamps:(id)a4 displayStates:(id)a5;
-+ (id)displayEventStatesFromDisplayInfo:(id)a3;
-+ (id)displayEventTimestampsFromDisplayInfo:(id)a3;
-+ (id)displayInfoForSpindump:(id)a3 startAbsoluteTime:(unint64_t)a4 endAbsoluteTime:(unint64_t)a5;
-+ (id)displayOnIntervalsForDisplayTimestamps:(id)a3 displayStates:(id)a4 startTimestamp:(unint64_t)a5 endTimestamp:(unint64_t)a6 startState:(id *)a7 endState:(id *)a8;
++ ($2825F4736939C4A6D3AD43837233062D)displayStateBeforeOrAtTime:(unint64_t)time timestamps:(id)timestamps states:(id)states;
++ (DisplayStateChangeEvent)displayStateBeforeHangStartTimestamp:(unint64_t)timestamp displayTimestamps:(id)timestamps displayStates:(id)states;
++ (id)displayEventStatesFromDisplayInfo:(id)info;
++ (id)displayEventTimestampsFromDisplayInfo:(id)info;
++ (id)displayInfoForSpindump:(id)spindump startAbsoluteTime:(unint64_t)time endAbsoluteTime:(unint64_t)absoluteTime;
++ (id)displayOnIntervalsForDisplayTimestamps:(id)timestamps displayStates:(id)states startTimestamp:(unint64_t)timestamp endTimestamp:(unint64_t)endTimestamp startState:(id *)state endState:(id *)endState;
 @end
 
 @implementation HTDisplayParser
 
-+ (id)displayEventTimestampsFromDisplayInfo:(id)a3
++ (id)displayEventTimestampsFromDisplayInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(NSMutableArray);
-  if ([v3 count])
+  if ([infoCopy count])
   {
     v6 = 0;
     *&v5 = 134217984;
@@ -23,20 +23,20 @@
       v7 = sub_100001684();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [v3 objectAtIndexedSubscript:v6];
-        v10 = [v9 unsignedLongLongValue];
+        v9 = [infoCopy objectAtIndexedSubscript:v6];
+        unsignedLongLongValue = [v9 unsignedLongLongValue];
         *buf = v13;
-        v15 = v10;
+        v15 = unsignedLongLongValue;
         _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "display event timestamp: %llu", buf, 0xCu);
       }
 
-      v8 = [v3 objectAtIndexedSubscript:v6];
+      v8 = [infoCopy objectAtIndexedSubscript:v6];
       [v4 addObject:v8];
 
       v6 += 2;
     }
 
-    while ([v3 count] > v6);
+    while ([infoCopy count] > v6);
   }
 
   v11 = [v4 copy];
@@ -44,11 +44,11 @@
   return v11;
 }
 
-+ (id)displayEventStatesFromDisplayInfo:(id)a3
++ (id)displayEventStatesFromDisplayInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(NSMutableArray);
-  if ([v3 count])
+  if ([infoCopy count])
   {
     v6 = 1;
     *&v5 = 134217984;
@@ -58,20 +58,20 @@
       v7 = sub_100001684();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [v3 objectAtIndexedSubscript:v6];
-        v10 = [v9 unsignedLongLongValue];
+        v9 = [infoCopy objectAtIndexedSubscript:v6];
+        unsignedLongLongValue = [v9 unsignedLongLongValue];
         *buf = v13;
-        v15 = v10;
+        v15 = unsignedLongLongValue;
         _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "display event state: %llu", buf, 0xCu);
       }
 
-      v8 = [v3 objectAtIndexedSubscript:v6];
+      v8 = [infoCopy objectAtIndexedSubscript:v6];
       [v4 addObject:v8];
 
       v6 += 2;
     }
 
-    while ([v3 count] >= v6);
+    while ([infoCopy count] >= v6);
   }
 
   v11 = [v4 copy];
@@ -79,24 +79,24 @@
   return v11;
 }
 
-+ ($2825F4736939C4A6D3AD43837233062D)displayStateBeforeOrAtTime:(unint64_t)a3 timestamps:(id)a4 states:(id)a5
++ ($2825F4736939C4A6D3AD43837233062D)displayStateBeforeOrAtTime:(unint64_t)time timestamps:(id)timestamps states:(id)states
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 count])
+  timestampsCopy = timestamps;
+  statesCopy = states;
+  if ([timestampsCopy count])
   {
     v9 = 0;
     LODWORD(v10) = -1;
     LODWORD(v11) = -1;
     do
     {
-      v12 = [v7 objectAtIndexedSubscript:v9];
-      v13 = [v12 unsignedLongLongValue];
+      v12 = [timestampsCopy objectAtIndexedSubscript:v9];
+      unsignedLongLongValue = [v12 unsignedLongLongValue];
 
-      v14 = [v8 objectAtIndexedSubscript:v9];
-      v15 = [v14 intValue];
+      v14 = [statesCopy objectAtIndexedSubscript:v9];
+      intValue = [v14 intValue];
 
-      if (v13 <= a3)
+      if (unsignedLongLongValue <= time)
       {
         v11 = v9;
       }
@@ -106,9 +106,9 @@
         v11 = v11;
       }
 
-      if (v13 <= a3)
+      if (unsignedLongLongValue <= time)
       {
-        v10 = v15;
+        v10 = intValue;
       }
 
       else
@@ -119,7 +119,7 @@
       ++v9;
     }
 
-    while ([v7 count] > v9);
+    while ([timestampsCopy count] > v9);
     v16 = v10 << 32;
   }
 
@@ -132,10 +132,10 @@
   return (v16 | v11);
 }
 
-+ (DisplayStateChangeEvent)displayStateBeforeHangStartTimestamp:(unint64_t)a3 displayTimestamps:(id)a4 displayStates:(id)a5
++ (DisplayStateChangeEvent)displayStateBeforeHangStartTimestamp:(unint64_t)timestamp displayTimestamps:(id)timestamps displayStates:(id)states
 {
-  v7 = a4;
-  v8 = a5;
+  timestampsCopy = timestamps;
+  statesCopy = states;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3010000000;
@@ -146,8 +146,8 @@
   v13[2] = sub_1000147B8;
   v13[3] = &unk_100085628;
   v13[4] = &v14;
-  v13[5] = a3;
-  [v7 enumerateObjectsWithOptions:2 usingBlock:v13];
+  v13[5] = timestamp;
+  [timestampsCopy enumerateObjectsWithOptions:2 usingBlock:v13];
   v9 = v15[4];
   v10 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -159,25 +159,25 @@
   return result;
 }
 
-+ (id)displayOnIntervalsForDisplayTimestamps:(id)a3 displayStates:(id)a4 startTimestamp:(unint64_t)a5 endTimestamp:(unint64_t)a6 startState:(id *)a7 endState:(id *)a8
++ (id)displayOnIntervalsForDisplayTimestamps:(id)timestamps displayStates:(id)states startTimestamp:(unint64_t)timestamp endTimestamp:(unint64_t)endTimestamp startState:(id *)state endState:(id *)endState
 {
-  v13 = a3;
-  v14 = a4;
-  *a7 = [HTDisplayParser displayStateBeforeOrAtTime:a5 timestamps:v13 states:v14];
-  *a8 = [HTDisplayParser displayStateBeforeOrAtTime:a6 timestamps:v13 states:v14];
+  timestampsCopy = timestamps;
+  statesCopy = states;
+  *state = [HTDisplayParser displayStateBeforeOrAtTime:timestamp timestamps:timestampsCopy states:statesCopy];
+  *endState = [HTDisplayParser displayStateBeforeOrAtTime:endTimestamp timestamps:timestampsCopy states:statesCopy];
   v15 = sub_100001684();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    sub_10003F454(a7);
+    sub_10003F454(state);
   }
 
   v16 = sub_100001684();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    sub_10003F4CC(a8);
+    sub_10003F4CC(endState);
   }
 
-  if (a7->var0 == -1)
+  if (state->var0 == -1)
   {
     v17 = sub_100001684();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -185,19 +185,19 @@
       sub_10003F544(v17);
     }
 
-    a7->var0 = 0;
+    state->var0 = 0;
   }
 
-  v35 = v13;
-  v18 = [v13 mutableCopy];
-  v19 = [v14 mutableCopy];
-  v20 = [NSNumber numberWithUnsignedLongLong:a5];
-  [v18 setObject:v20 atIndexedSubscript:a7->var0];
+  v35 = timestampsCopy;
+  v18 = [timestampsCopy mutableCopy];
+  v19 = [statesCopy mutableCopy];
+  v20 = [NSNumber numberWithUnsignedLongLong:timestamp];
+  [v18 setObject:v20 atIndexedSubscript:state->var0];
 
-  v21 = [NSNumber numberWithUnsignedLongLong:a6];
-  [v18 insertObject:v21 atIndex:a8->var0 + 1];
+  v21 = [NSNumber numberWithUnsignedLongLong:endTimestamp];
+  [v18 insertObject:v21 atIndex:endState->var0 + 1];
 
-  var1 = a8->var1;
+  var1 = endState->var1;
   v23 = &off_10008AA50;
   if (!var1)
   {
@@ -214,10 +214,10 @@
     v24 = v23;
   }
 
-  [v19 insertObject:v24 atIndex:a8->var0 + 1];
+  [v19 insertObject:v24 atIndex:endState->var0 + 1];
   v25 = +[NSMutableArray array];
-  var0 = a7->var0;
-  if (var0 <= a8->var0)
+  var0 = state->var0;
+  if (var0 <= endState->var0)
   {
     do
     {
@@ -226,9 +226,9 @@
       {
         v28 = var0 + 1;
         v29 = [v19 objectAtIndexedSubscript:var0 + 1];
-        v30 = [v29 intValue];
+        intValue = [v29 intValue];
 
-        if (!v30)
+        if (!intValue)
         {
           v31 = [v18 objectAtIndexedSubscript:var0];
           [v25 addObject:v31];
@@ -244,7 +244,7 @@
         v28 = var0 + 1;
       }
 
-      v33 = var0 < a8->var0;
+      v33 = var0 < endState->var0;
       var0 = v28;
     }
 
@@ -254,20 +254,20 @@
   return v25;
 }
 
-+ (id)displayInfoForSpindump:(id)a3 startAbsoluteTime:(unint64_t)a4 endAbsoluteTime:(unint64_t)a5
++ (id)displayInfoForSpindump:(id)spindump startAbsoluteTime:(unint64_t)time endAbsoluteTime:(unint64_t)absoluteTime
 {
-  v8 = [a3 objectForKeyedSubscript:@"DisplayData"];
+  v8 = [spindump objectForKeyedSubscript:@"DisplayData"];
   if ([v8 count])
   {
     v42 = -1;
     *buf = -1;
-    v9 = [a1 displayEventTimestampsFromDisplayInfo:v8];
-    v10 = [a1 displayEventStatesFromDisplayInfo:v8];
-    v11 = [HTDisplayParser displayStateBeforeHangStartTimestamp:a4 displayTimestamps:v9 displayStates:v10];
-    v12 = [HTDisplayParser displayOnIntervalsForDisplayTimestamps:v9 displayStates:v10 startTimestamp:a4 endTimestamp:a5 startState:buf endState:&v42];
+    v9 = [self displayEventTimestampsFromDisplayInfo:v8];
+    v10 = [self displayEventStatesFromDisplayInfo:v8];
+    v11 = [HTDisplayParser displayStateBeforeHangStartTimestamp:time displayTimestamps:v9 displayStates:v10];
+    v12 = [HTDisplayParser displayOnIntervalsForDisplayTimestamps:v9 displayStates:v10 startTimestamp:time endTimestamp:absoluteTime startState:buf endState:&v42];
     v13 = [v12 mutableCopy];
-    v14 = sub_10000B548(a4);
-    v15 = sub_10000B548(a5);
+    v14 = sub_10000B548(time);
+    v15 = sub_10000B548(absoluteTime);
     if ([v12 count])
     {
       v16 = v15 - v14;
@@ -326,7 +326,7 @@
     [v31 setObject:v13 forKeyedSubscript:@"displayOnIntervals"];
     if (v11)
     {
-      v34 = [NSNumber numberWithDouble:sub_10000B590(a4 - v11)];
+      v34 = [NSNumber numberWithDouble:sub_10000B590(time - v11)];
       [v31 setObject:v34 forKeyedSubscript:@"secondsSinceDisplayStateBeforeHangStart"];
     }
 

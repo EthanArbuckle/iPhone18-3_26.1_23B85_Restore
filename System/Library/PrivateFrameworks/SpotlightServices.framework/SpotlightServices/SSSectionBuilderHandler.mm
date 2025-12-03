@@ -1,33 +1,33 @@
 @interface SSSectionBuilderHandler
-+ (Class)sectionBuilderClassForSection:(id)a3 withQueryContext:(id)a4;
-+ (id)buildSectionsWithSections:(id)a3 queryContext:(id)a4 searchInAppInfo:(id)a5 renderState:(unint64_t)a6;
-+ (id)cachedValueForKey:(id)a3 cache:(id)a4 computeHandler:(id)a5;
-+ (id)findDistinctPathIdentifiersForSections:(id)a3;
-+ (void)filterResultsFromSections:(id)a3 queryContext:(id)a4;
-+ (void)injectRecentsOptionsIntoResult:(id)a3;
++ (Class)sectionBuilderClassForSection:(id)section withQueryContext:(id)context;
++ (id)buildSectionsWithSections:(id)sections queryContext:(id)context searchInAppInfo:(id)info renderState:(unint64_t)state;
++ (id)cachedValueForKey:(id)key cache:(id)cache computeHandler:(id)handler;
++ (id)findDistinctPathIdentifiersForSections:(id)sections;
++ (void)filterResultsFromSections:(id)sections queryContext:(id)context;
++ (void)injectRecentsOptionsIntoResult:(id)result;
 - (NSSet)bundleIdentifiersForHiddenSections;
 - (SPSearchContactEntity)contactEntity;
 - (SPSearchEntity)searchEntity;
 - (id)buildSections;
-- (void)insertDummySectionsIntoSections:(id)a3;
+- (void)insertDummySectionsIntoSections:(id)sections;
 @end
 
 @implementation SSSectionBuilderHandler
 
-+ (id)cachedValueForKey:(id)a3 cache:(id)a4 computeHandler:(id)a5
++ (id)cachedValueForKey:(id)key cache:(id)cache computeHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  keyCopy = key;
+  cacheCopy = cache;
+  handlerCopy = handler;
+  if (keyCopy)
   {
-    v10 = [v8 objectForKey:v7];
+    v10 = [cacheCopy objectForKey:keyCopy];
     if (!v10)
     {
-      v10 = v9[2](v9);
+      v10 = handlerCopy[2](handlerCopy);
       if (v10)
       {
-        [v8 setObject:v10 forKey:v7];
+        [cacheCopy setObject:v10 forKey:keyCopy];
       }
     }
   }
@@ -40,38 +40,38 @@
   return v10;
 }
 
-+ (void)filterResultsFromSections:(id)a3 queryContext:(id)a4
++ (void)filterResultsFromSections:(id)sections queryContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  sectionsCopy = sections;
+  contextCopy = context;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v6 searchEntities];
-  v10 = [v9 firstObject];
+  searchEntities = [contextCopy searchEntities];
+  firstObject = [searchEntities firstObject];
 
-  v11 = [v5 firstObject];
+  firstObject2 = [sectionsCopy firstObject];
   v12 = objc_opt_new();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     +[SPSearchAppEntity metadataSpecialCasedAppEntityBundles];
     v13 = v24 = v7;
-    v14 = [v10 effectiveBundleIdentifier];
-    v15 = [v13 containsObject:v14];
+    effectiveBundleIdentifier = [firstObject effectiveBundleIdentifier];
+    v15 = [v13 containsObject:effectiveBundleIdentifier];
 
     v7 = v24;
     if ((v15 & 1) == 0)
     {
-      v16 = [v10 appURL];
-      v23 = [v16 path];
+      appURL = [firstObject appURL];
+      path = [appURL path];
 
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v17 = [v11 resultSet];
-      v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      resultSet = [firstObject2 resultSet];
+      v18 = [resultSet countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v18)
       {
         v19 = v18;
@@ -83,20 +83,20 @@
           {
             if (*v26 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(resultSet);
             }
 
-            [v12 addObject:{*(*(&v25 + 1) + 8 * v21++), v23}];
+            [v12 addObject:{*(*(&v25 + 1) + 8 * v21++), path}];
           }
 
           while (v19 != v21);
-          v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v19 = [resultSet countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v19);
       }
 
-      [v11 setResults:v12];
+      [firstObject2 setResults:v12];
       v7 = v24;
     }
   }
@@ -104,29 +104,29 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)buildSectionsWithSections:(id)a3 queryContext:(id)a4 searchInAppInfo:(id)a5 renderState:(unint64_t)a6
++ (id)buildSectionsWithSections:(id)sections queryContext:(id)context searchInAppInfo:(id)info renderState:(unint64_t)state
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  [a1 filterResultsFromSections:v12 queryContext:v11];
+  infoCopy = info;
+  contextCopy = context;
+  sectionsCopy = sections;
+  [self filterResultsFromSections:sectionsCopy queryContext:contextCopy];
   v13 = objc_opt_new();
-  [v13 setSections:v12];
+  [v13 setSections:sectionsCopy];
 
-  [v13 setQueryContext:v11];
-  [v13 setSearchInAppInfo:v10];
+  [v13 setQueryContext:contextCopy];
+  [v13 setSearchInAppInfo:infoCopy];
 
-  [v13 setRenderState:a6];
-  v14 = [v13 buildSections];
+  [v13 setRenderState:state];
+  buildSections = [v13 buildSections];
 
-  return v14;
+  return buildSections;
 }
 
-+ (Class)sectionBuilderClassForSection:(id)a3 withQueryContext:(id)a4
++ (Class)sectionBuilderClassForSection:(id)section withQueryContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  contextCopy = context;
   if (sectionBuilderClassForSection_withQueryContext__onceToken != -1)
   {
     +[SSSectionBuilderHandler sectionBuilderClassForSection:withQueryContext:];
@@ -152,7 +152,7 @@ LABEL_5:
       }
 
       v12 = *(*(&v20 + 1) + 8 * v11);
-      if ([v12 supportsSection:v5 queryContext:{v6, v20}])
+      if ([v12 supportsSection:sectionCopy queryContext:{contextCopy, v20}])
       {
         break;
       }
@@ -180,8 +180,8 @@ LABEL_5:
 LABEL_11:
   }
 
-  v13 = [v6 searchEntities];
-  v14 = [v13 count];
+  searchEntities = [contextCopy searchEntities];
+  v14 = [searchEntities count];
   v15 = off_1E85936D0;
   if (v14)
   {
@@ -225,85 +225,85 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)injectRecentsOptionsIntoResult:(id)a3
++ (void)injectRecentsOptionsIntoResult:(id)result
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 shouldUseCompactDisplay] && (objc_msgSend(v4, "compactCard"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  resultCopy = result;
+  if ([resultCopy shouldUseCompactDisplay] && (objc_msgSend(resultCopy, "compactCard"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v4 compactCard];
+    compactCard = [resultCopy compactCard];
   }
 
   else
   {
-    v7 = [v4 inlineCard];
+    compactCard = [resultCopy inlineCard];
   }
 
-  v8 = [v7 cardSections];
-  v9 = [v8 firstObject];
+  cardSections = [compactCard cardSections];
+  firstObject = [cardSections firstObject];
 
-  v10 = [v4 sectionBundleIdentifier];
-  if ([a1 isZKWRecentBundle:v10])
+  sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+  if ([self isZKWRecentBundle:sectionBundleIdentifier])
   {
-    v11 = [a1 makeClearProactiveCategoryButtonItemWithCategory:1 shouldClearWholeSection:1 result:v4];
-    v12 = [a1 makeClearProactiveCategoryButtonItemWithCategory:1 shouldClearWholeSection:0 result:v4];
-    v13 = [v9 previewButtonItems];
-    if (v13)
+    v11 = [self makeClearProactiveCategoryButtonItemWithCategory:1 shouldClearWholeSection:1 result:resultCopy];
+    v12 = [self makeClearProactiveCategoryButtonItemWithCategory:1 shouldClearWholeSection:0 result:resultCopy];
+    previewButtonItems = [firstObject previewButtonItems];
+    if (previewButtonItems)
     {
-      v14 = [v9 previewButtonItems];
-      v15 = [v14 arrayByAddingObject:v11];
-      [v9 setPreviewButtonItems:v15];
+      previewButtonItems2 = [firstObject previewButtonItems];
+      v15 = [previewButtonItems2 arrayByAddingObject:v11];
+      [firstObject setPreviewButtonItems:v15];
     }
 
     else
     {
       v21[0] = v11;
-      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-      [v9 setPreviewButtonItems:v14];
+      previewButtonItems2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
+      [firstObject setPreviewButtonItems:previewButtonItems2];
     }
 
-    v16 = [v9 trailingSwipeButtonItems];
-    if (v16)
+    trailingSwipeButtonItems = [firstObject trailingSwipeButtonItems];
+    if (trailingSwipeButtonItems)
     {
-      v17 = [v9 trailingSwipeButtonItems];
-      v18 = [v17 arrayByAddingObject:v12];
-      [v9 setTrailingSwipeButtonItems:v18];
+      trailingSwipeButtonItems2 = [firstObject trailingSwipeButtonItems];
+      v18 = [trailingSwipeButtonItems2 arrayByAddingObject:v12];
+      [firstObject setTrailingSwipeButtonItems:v18];
     }
 
     else
     {
       v20 = v12;
-      v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-      [v9 setTrailingSwipeButtonItems:v17];
+      trailingSwipeButtonItems2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
+      [firstObject setTrailingSwipeButtonItems:trailingSwipeButtonItems2];
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)findDistinctPathIdentifiersForSections:(id)a3
++ (id)findDistinctPathIdentifiersForSections:(id)sections
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
 
   return v3;
 }
 
-- (void)insertDummySectionsIntoSections:(id)a3
+- (void)insertDummySectionsIntoSections:(id)sections
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SSSectionBuilderHandler *)self searchEntity];
-  if (([v5 isFolderSearch] & 1) == 0)
+  sectionsCopy = sections;
+  searchEntity = [(SSSectionBuilderHandler *)self searchEntity];
+  if (([searchEntity isFolderSearch] & 1) == 0)
   {
     v6 = [SFMutableResultSection mutableSectionWithBundleId:@"com.apple.spotlight.contactHeader"];
-    [v4 insertObject:v6 atIndex:0];
+    [sectionsCopy insertObject:v6 atIndex:0];
 
-    v7 = [v4 lastObject];
-    v8 = [v7 bundleIdentifier];
-    if ([v8 isEqualToString:?])
+    lastObject = [sectionsCopy lastObject];
+    bundleIdentifier = [lastObject bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:?])
     {
-      v9 = v7;
+      v9 = lastObject;
     }
 
     else
@@ -314,24 +314,24 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
     v10 = v9;
 
     v11 = isMacOS();
-    if (!v5 && (v11 & 1) == 0)
+    if (!searchEntity && (v11 & 1) == 0)
     {
-      v12 = [(SSSectionBuilderHandler *)self bundleIdentifiersForHiddenSections];
-      v13 = [v12 count];
+      bundleIdentifiersForHiddenSections = [(SSSectionBuilderHandler *)self bundleIdentifiersForHiddenSections];
+      v13 = [bundleIdentifiersForHiddenSections count];
 
       if (v13)
       {
-        v14 = [v4 count] - (v10 != 0);
+        v14 = [sectionsCopy count] - (v10 != 0);
         v15 = [SFMutableResultSection mutableSectionWithBundleId:@"com.apple.other:show_more"];
-        [v4 insertObject:v15 atIndex:v14];
+        [sectionsCopy insertObject:v15 atIndex:v14];
       }
     }
 
     v30 = v10;
-    v16 = [v7 bundleIdentifier];
-    v17 = [v16 isEqualToString:@"com.apple.spotlight.related_search"];
+    bundleIdentifier2 = [lastObject bundleIdentifier];
+    v17 = [bundleIdentifier2 isEqualToString:@"com.apple.spotlight.related_search"];
 
-    if (v7)
+    if (lastObject)
     {
       v18 = v17;
     }
@@ -341,7 +341,7 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
       v18 = 0;
     }
 
-    v19 = [v4 count];
+    v19 = [sectionsCopy count];
     v31[0] = @"com.apple.MobileAddressBook.SocialMedia";
     v31[1] = @"com.apple.spotlight.contactInfo";
     v31[2] = @"com.apple.searchd.searchThroughSuggestions";
@@ -355,7 +355,7 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
       {
         v24 = [v20 objectAtIndexedSubscript:v22];
         v25 = [SFMutableResultSection mutableSectionWithBundleId:v24];
-        [v4 insertObject:v25 atIndex:v23];
+        [sectionsCopy insertObject:v25 atIndex:v23];
 
         --v22;
       }
@@ -365,10 +365,10 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
 
     if ((isMacOS() & 1) == 0)
     {
-      v26 = [(SSSectionBuilderHandler *)self queryContext];
-      if (([v26 queryKind] - 5) >= 4)
+      queryContext = [(SSSectionBuilderHandler *)self queryContext];
+      if (([queryContext queryKind] - 5) >= 4)
       {
-        v27 = [v5 isContactEntitySearch] ^ 1;
+        v27 = [searchEntity isContactEntitySearch] ^ 1;
       }
 
       else
@@ -379,7 +379,7 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
       if ((v27 & 1) == 0 && !v30)
       {
         v28 = [SFMutableResultSection mutableSectionWithBundleId:@"com.apple.parsec.related_search"];
-        [v4 addObject:v28];
+        [sectionsCopy addObject:v28];
       }
     }
   }
@@ -409,8 +409,8 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v8 = [(SSSectionBuilderHandler *)self sections];
-  v9 = [v8 countByEnumeratingWithState:&v58 objects:v65 count:16];
+  sections = [(SSSectionBuilderHandler *)self sections];
+  v9 = [sections countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v9)
   {
     v10 = v9;
@@ -421,12 +421,12 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
       {
         if (*v59 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sections);
         }
 
         v13 = *(*(&v58 + 1) + 8 * i);
-        v14 = [v13 results];
-        v15 = [v14 count];
+        results = [v13 results];
+        v15 = [results count];
 
         if (v15)
         {
@@ -434,32 +434,32 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v58 objects:v65 count:16];
+      v10 = [sections countByEnumeratingWithState:&v58 objects:v65 count:16];
     }
 
     while (v10);
   }
 
-  v16 = [(SSSectionBuilderHandler *)self queryContext];
+  queryContext = [(SSSectionBuilderHandler *)self queryContext];
   if ([(SSSectionBuilderHandler *)self renderState]!= 1)
   {
     [(SSSectionBuilderHandler *)self insertDummySectionsIntoSections:v7];
   }
 
-  v17 = [(SSSectionBuilderHandler *)self contactEntity];
-  v46 = v17;
-  if (v17)
+  contactEntity = [(SSSectionBuilderHandler *)self contactEntity];
+  v46 = contactEntity;
+  if (contactEntity)
   {
-    v18 = v17;
+    v18 = contactEntity;
     v19 = [SSContactResultBuilder alloc];
-    v20 = [v18 contact];
-    v21 = [v20 mutableCopy];
+    contact = [v18 contact];
+    v21 = [contact mutableCopy];
     v22 = v18;
     v23 = v21;
     v24 = [(SSContactResultBuilder *)v19 initWithResult:0 contactEntity:v22 contact:v21];
 
     v48 = v24;
-    [(SSResultBuilder *)v24 setQueryContext:v16];
+    [(SSResultBuilder *)v24 setQueryContext:queryContext];
   }
 
   else
@@ -488,13 +488,13 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
         }
 
         v27 = *(*(&v54 + 1) + 8 * j);
-        v28 = [objc_opt_class() sectionBuilderClassForSection:v27 withQueryContext:v16];
+        v28 = [objc_opt_class() sectionBuilderClassForSection:v27 withQueryContext:queryContext];
         v29 = objc_opt_new();
-        [v29 setQueryContext:v16];
+        [v29 setQueryContext:queryContext];
         [v29 setSection:v27];
         [v29 setRenderState:{-[SSSectionBuilderHandler renderState](self, "renderState")}];
-        v30 = [v27 bundleIdentifier];
-        [v29 setIsTopHitSection:{objc_msgSend(v30, "isEqualToString:", @"com.apple.spotlight.tophits"}];
+        bundleIdentifier = [v27 bundleIdentifier];
+        [v29 setIsTopHitSection:{objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.spotlight.tophits"}];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -507,11 +507,11 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v31 = [(SSSectionBuilderHandler *)self bundleIdentifiersForHiddenSections];
-            [v29 setBundleIdentifiersForHiddenSections:v31];
+            bundleIdentifiersForHiddenSections = [(SSSectionBuilderHandler *)self bundleIdentifiersForHiddenSections];
+            [v29 setBundleIdentifiersForHiddenSections:bundleIdentifiersForHiddenSections];
 
-            v32 = [(SSSectionBuilderHandler *)self searchInAppInfo];
-            [v29 setSearchInAppInfo:v32];
+            searchInAppInfo = [(SSSectionBuilderHandler *)self searchInAppInfo];
+            [v29 setSearchInAppInfo:searchInAppInfo];
           }
         }
 
@@ -525,7 +525,7 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
           _os_signpost_emit_with_name_impl(&dword_1D9F69000, v35, OS_SIGNPOST_INTERVAL_BEGIN, v33, "SSSectionBuilder: buildSection", "%@", buf, 0xCu);
         }
 
-        v36 = [v29 buildSection];
+        buildSection = [v29 buildSection];
         v37 = v35;
         v38 = v37;
         if (v33 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v37))
@@ -535,12 +535,12 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
           _os_signpost_emit_with_name_impl(&dword_1D9F69000, v38, OS_SIGNPOST_INTERVAL_END, v33, "SSSectionBuilder: buildSection", "%@", buf, 0xCu);
         }
 
-        v39 = [v36 results];
-        v40 = [v39 count];
+        results2 = [buildSection results];
+        v40 = [results2 count];
 
         if (v40)
         {
-          [v50 addObject:v36];
+          [v50 addObject:buildSection];
         }
       }
 
@@ -576,8 +576,8 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(SSSectionBuilderHandler *)self sections];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    sections = [(SSSectionBuilderHandler *)self sections];
+    v6 = [sections countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -588,18 +588,18 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sections);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
           if ([v10 isInitiallyHidden])
           {
-            v11 = [v10 bundleIdentifier];
-            [(NSSet *)v4 addObject:v11];
+            bundleIdentifier = [v10 bundleIdentifier];
+            [(NSSet *)v4 addObject:bundleIdentifier];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [sections countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -621,11 +621,11 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
   searchEntity = self->_searchEntity;
   if (!searchEntity)
   {
-    v4 = [(SSSectionBuilderHandler *)self queryContext];
-    v5 = [v4 searchEntities];
-    v6 = [v5 firstObject];
+    queryContext = [(SSSectionBuilderHandler *)self queryContext];
+    searchEntities = [queryContext searchEntities];
+    firstObject = [searchEntities firstObject];
     v7 = self->_searchEntity;
-    self->_searchEntity = v6;
+    self->_searchEntity = firstObject;
 
     searchEntity = self->_searchEntity;
   }
@@ -639,23 +639,23 @@ void __74__SSSectionBuilderHandler_sectionBuilderClassForSection_withQueryContex
   contactEntity = self->_contactEntity;
   if (!contactEntity)
   {
-    v5 = [(SSSectionBuilderHandler *)self searchEntity];
-    v6 = v5;
-    if (v5)
+    searchEntity = [(SSSectionBuilderHandler *)self searchEntity];
+    v6 = searchEntity;
+    if (searchEntity)
     {
-      v7 = v5;
+      firstObject = searchEntity;
     }
 
     else
     {
-      v8 = [(SSSectionBuilderHandler *)self queryContext];
-      v9 = [v8 searchEntities];
-      v7 = [v9 firstObject];
+      queryContext = [(SSSectionBuilderHandler *)self queryContext];
+      searchEntities = [queryContext searchEntities];
+      firstObject = [searchEntities firstObject];
     }
 
-    if ([v7 isContactEntitySearch])
+    if ([firstObject isContactEntitySearch])
     {
-      v10 = v7;
+      v10 = firstObject;
     }
 
     else

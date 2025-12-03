@@ -1,6 +1,6 @@
 @interface _MFActivityMonitorMultiTarget
-- (BOOL)addActivityTarget:(id)a3;
-- (BOOL)removeActivityTarget:(id)a3;
+- (BOOL)addActivityTarget:(id)target;
+- (BOOL)removeActivityTarget:(id)target;
 - (id)displayName;
 - (void)dealloc;
 @end
@@ -14,9 +14,9 @@
   [(_MFActivityMonitorMultiTarget *)&v2 dealloc];
 }
 
-- (BOOL)addActivityTarget:(id)a3
+- (BOOL)addActivityTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   allTargets = self->_allTargets;
   if (!allTargets)
   {
@@ -27,23 +27,23 @@
     allTargets = self->_allTargets;
   }
 
-  v8 = [(NSMutableSet *)allTargets containsObject:v4];
+  v8 = [(NSMutableSet *)allTargets containsObject:targetCopy];
   if ((v8 & 1) == 0)
   {
-    [(NSMutableSet *)self->_allTargets addObject:v4];
+    [(NSMutableSet *)self->_allTargets addObject:targetCopy];
   }
 
   return v8 ^ 1;
 }
 
-- (BOOL)removeActivityTarget:(id)a3
+- (BOOL)removeActivityTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   allTargets = self->_allTargets;
-  if (allTargets && [(NSMutableSet *)allTargets containsObject:v4])
+  if (allTargets && [(NSMutableSet *)allTargets containsObject:targetCopy])
   {
-    [(NSMutableSet *)self->_allTargets removeObject:v4];
-    if (self->_primaryTarget == v4)
+    [(NSMutableSet *)self->_allTargets removeObject:targetCopy];
+    if (self->_primaryTarget == targetCopy)
     {
       [(_MFActivityMonitorMultiTarget *)self setPrimaryTarget:0];
     }

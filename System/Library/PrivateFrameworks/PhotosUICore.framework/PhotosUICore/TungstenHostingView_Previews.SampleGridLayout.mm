@@ -1,6 +1,6 @@
 @interface TungstenHostingView_Previews.SampleGridLayout
 - (_TtCV12PhotosUICore28TungstenHostingView_PreviewsP33_548AEEF075E30F02ECF115384DCAC70916SampleGridLayout)init;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
 @end
 
 @implementation TungstenHostingView_Previews.SampleGridLayout
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = [objc_opt_self() purpleColor];
+  purpleColor = [objc_opt_self() purpleColor];
 
-  return v4;
+  return purpleColor;
 }
 
 @end

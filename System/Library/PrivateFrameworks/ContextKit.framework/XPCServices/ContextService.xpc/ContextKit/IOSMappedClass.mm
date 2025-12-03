@@ -1,5 +1,5 @@
 @interface IOSMappedClass
-- (IOSMappedClass)initWithClass:(Class)a3 package:(id)a4 name:(id)a5;
+- (IOSMappedClass)initWithClass:(Class)class package:(id)package name:(id)name;
 - (id)getConstructors;
 - (id)getDeclaredConstructors;
 - (id)getPackage;
@@ -7,15 +7,15 @@
 
 @implementation IOSMappedClass
 
-- (IOSMappedClass)initWithClass:(Class)a3 package:(id)a4 name:(id)a5
+- (IOSMappedClass)initWithClass:(Class)class package:(id)package name:(id)name
 {
   v9.receiver = self;
   v9.super_class = IOSMappedClass;
-  v7 = [(IOSConcreteClass *)&v9 initWithClass:a3];
+  v7 = [(IOSConcreteClass *)&v9 initWithClass:class];
   if (v7)
   {
-    v7->package_ = a4;
-    v7->name_ = a5;
+    v7->package_ = package;
+    v7->name_ = name;
   }
 
   return v7;
@@ -32,20 +32,20 @@
 {
   v3 = +[NSMutableDictionary dictionary];
   sub_100280AC0(self, v3, 0, 1);
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
   v5 = JavaLangReflectMethod_class_();
 
-  return [IOSObjectArray arrayWithNSArray:v4 type:v5];
+  return [IOSObjectArray arrayWithNSArray:allValues type:v5];
 }
 
 - (id)getConstructors
 {
   v3 = +[NSMutableDictionary dictionary];
   sub_100280AC0(self, v3, 1, 1);
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
   v5 = JavaLangReflectMethod_class_();
 
-  return [IOSObjectArray arrayWithNSArray:v4 type:v5];
+  return [IOSObjectArray arrayWithNSArray:allValues type:v5];
 }
 
 @end

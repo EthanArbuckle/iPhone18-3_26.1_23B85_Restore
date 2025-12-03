@@ -1,19 +1,19 @@
 @interface MPStoreLibraryPersonalizationCollectionDataSource
-+ (id)_completePersonalizedObjectWithLibraryObject:(id)a3 personalizationProperties:(id)a4 overrideLibraryAddedStatus:(int64_t)a5;
-+ (id)_lightweightPersonalizedLyricsWithUnpersonalizedLyrics:(id)a3 libraryLyrics:(id)a4 identifiers:(id)a5 personalizationProperties:(id)a6;
-+ (id)_lightweightPersonalizedObjectWithUnpersonalizedObject:(id)a3 libraryObject:(id)a4 personalizationProperties:(id)a5 overrideLibraryAddedStatus:(int64_t)a6;
-+ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)a3 identifiers:(id)a4 personalizationProperties:(id)a5;
-+ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)a3 libraryPlaybackPosition:(id)a4 personalizationProperties:(id)a5;
-+ (id)_lightweightPersonalizedStoreAssetWithUnpersonalizedAsset:(id)a3 libraryAsset:(id)a4 personalizationProperties:(id)a5;
++ (id)_completePersonalizedObjectWithLibraryObject:(id)object personalizationProperties:(id)properties overrideLibraryAddedStatus:(int64_t)status;
++ (id)_lightweightPersonalizedLyricsWithUnpersonalizedLyrics:(id)lyrics libraryLyrics:(id)libraryLyrics identifiers:(id)identifiers personalizationProperties:(id)properties;
++ (id)_lightweightPersonalizedObjectWithUnpersonalizedObject:(id)object libraryObject:(id)libraryObject personalizationProperties:(id)properties overrideLibraryAddedStatus:(int64_t)status;
++ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)position identifiers:(id)identifiers personalizationProperties:(id)properties;
++ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)position libraryPlaybackPosition:(id)playbackPosition personalizationProperties:(id)properties;
++ (id)_lightweightPersonalizedStoreAssetWithUnpersonalizedAsset:(id)asset libraryAsset:(id)libraryAsset personalizationProperties:(id)properties;
 - (MPStoreLibraryPersonalizationCollectionDataSource)init;
 - (id).cxx_construct;
-- (id)_libraryObjectWithRelativeModelClass:(Class)a3 identifierSet:(id)a4 propertySet:(id)a5;
-- (id)identifiersForItemAtIndexPath:(id)a3;
-- (id)identifiersForSectionAtIndex:(int64_t)a3;
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (shared_ptr<mlcore::EntityCache>)_entityCacheForEntityClass:(void *)a3 propertiesToFetch:(vector<mlcore:(std::allocator<mlcore::ModelPropertyBase *>> *)a4 :ModelPropertyBase *);
+- (id)_libraryObjectWithRelativeModelClass:(Class)class identifierSet:(id)set propertySet:(id)propertySet;
+- (id)identifiersForItemAtIndexPath:(id)path;
+- (id)identifiersForSectionAtIndex:(int64_t)index;
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set;
+- (id)itemAtIndexPath:(id)path;
+- (id)sectionAtIndex:(unint64_t)index;
+- (shared_ptr<mlcore::EntityCache>)_entityCacheForEntityClass:(void *)class propertiesToFetch:(vector<mlcore:(std::allocator<mlcore::ModelPropertyBase *>> *)fetch :ModelPropertyBase *);
 @end
 
 @implementation MPStoreLibraryPersonalizationCollectionDataSource
@@ -26,7 +26,7 @@
   return self;
 }
 
-- (shared_ptr<mlcore::EntityCache>)_entityCacheForEntityClass:(void *)a3 propertiesToFetch:(vector<mlcore:(std::allocator<mlcore::ModelPropertyBase *>> *)a4 :ModelPropertyBase *)
+- (shared_ptr<mlcore::EntityCache>)_entityCacheForEntityClass:(void *)class propertiesToFetch:(vector<mlcore:(std::allocator<mlcore::ModelPropertyBase *>> *)fetch :ModelPropertyBase *)
 {
   v7 = v4;
   os_unfair_lock_assert_owner(&self->_lock);
@@ -49,9 +49,9 @@
     v13 = mlcore::EntityCache::propertiesToFetchForEntityClass();
     v12 = *v13;
     v14 = *(v13 + 8) - *v13;
-    if (v14 == a4->var1 - a4->var0)
+    if (v14 == fetch->var1 - fetch->var0)
     {
-      v15 = memcmp(v12, a4->var0, v14);
+      v15 = memcmp(v12, fetch->var0, v14);
       if (!v15)
       {
         break;
@@ -86,21 +86,21 @@ LABEL_10:
   return result;
 }
 
-- (id)_libraryObjectWithRelativeModelClass:(Class)a3 identifierSet:(id)a4 propertySet:(id)a5
+- (id)_libraryObjectWithRelativeModelClass:(Class)class identifierSet:(id)set propertySet:(id)propertySet
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 library];
-  v11 = [v10 persistentID];
+  setCopy = set;
+  propertySetCopy = propertySet;
+  library = [setCopy library];
+  persistentID = [library persistentID];
 
   v12 = 0;
-  if (v9 && v11)
+  if (propertySetCopy && persistentID)
   {
-    v13 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:a3];
-    v14 = [v13 entityClass];
+    v13 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:class];
+    entityClass = [v13 entityClass];
     if (v13)
     {
-      [v13 MLCorePropertiesForPropertySet:v9];
+      [v13 MLCorePropertiesForPropertySet:propertySetCopy];
     }
 
     else
@@ -114,7 +114,7 @@ LABEL_10:
     v45 = 0;
     v43 = 0;
     std::vector<mlcore::ModelPropertyBase *>::__init_with_size[abi:ne200100]<mlcore::ModelPropertyBase **,mlcore::ModelPropertyBase **>(&v43, __p, v24, (v24 - __p) >> 3);
-    [(MPStoreLibraryPersonalizationCollectionDataSource *)self _entityCacheForEntityClass:v14 propertiesToFetch:&v43];
+    [(MPStoreLibraryPersonalizationCollectionDataSource *)self _entityCacheForEntityClass:entityClass propertiesToFetch:&v43];
     if (v43)
     {
       v44 = v43;
@@ -146,23 +146,23 @@ LABEL_10:
     if (v41)
     {
       v15 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
-      v16 = [(MPMediaLibraryView *)self->_libraryView library];
-      [(MPMediaLibraryEntityTranslationContext *)v15 setMediaLibrary:v16];
+      library2 = [(MPMediaLibraryView *)self->_libraryView library];
+      [(MPMediaLibraryEntityTranslationContext *)v15 setMediaLibrary:library2];
 
-      v17 = [MPModelKind kindWithModelClass:a3];
+      v17 = [MPModelKind kindWithModelClass:class];
       [(MPMediaLibraryEntityTranslationContext *)v15 setModelKind:v17];
 
       [(MPMediaLibraryEntityTranslationContext *)v15 setIdentifierSourcePrefix:@"PersonalizedDataSource-"];
       if ([MEMORY[0x1E69E4688] canAccessAccountStore])
       {
-        v18 = [(MPMediaLibraryView *)self->_libraryView library];
-        v19 = [v18 userIdentity];
-        v20 = [v19 accountDSID];
-        [(MPMediaLibraryEntityTranslationContext *)v15 setPersonID:v20];
+        library3 = [(MPMediaLibraryView *)self->_libraryView library];
+        userIdentity = [library3 userIdentity];
+        accountDSID = [userIdentity accountDSID];
+        [(MPMediaLibraryEntityTranslationContext *)v15 setPersonID:accountDSID];
       }
 
       v21 = (*(*v41 + 48))(v41);
-      v12 = [v13 objectForPropertySet:v9 entityClass:v21 propertyCache:mlcore::Entity::propertyCache(v41) context:v15];
+      v12 = [v13 objectForPropertySet:propertySetCopy entityClass:v21 propertyCache:mlcore::Entity::propertyCache(v41) context:v15];
     }
 
     else
@@ -190,9 +190,9 @@ LABEL_10:
   return v12;
 }
 
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -204,10 +204,10 @@ LABEL_10:
   v9[1] = 3221225472;
   v9[2] = __100__MPStoreLibraryPersonalizationCollectionDataSource_indexPathForItemWithIdentifiersIntersectingSet___block_invoke;
   v9[3] = &unk_1E767B768;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = setCopy;
+  v6 = setCopy;
   [(MPSectionedCollection *)unpersonalizedContentDescriptors enumerateItemsUsingBlock:v9];
   v7 = v14[5];
 
@@ -278,49 +278,49 @@ void __100__MPStoreLibraryPersonalizationCollectionDataSource_indexPathForItemWi
 LABEL_15:
 }
 
-- (id)identifiersForSectionAtIndex:(int64_t)a3
+- (id)identifiersForSectionAtIndex:(int64_t)index
 {
-  v4 = [(MPSectionedCollection *)self->_unpersonalizedContentDescriptors sectionAtIndex:a3];
+  v4 = [(MPSectionedCollection *)self->_unpersonalizedContentDescriptors sectionAtIndex:index];
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [v4 model];
-    v8 = [v7 relativeModelObjectForStoreLibraryPersonalization];
+    model = [v4 model];
+    relativeModelObjectForStoreLibraryPersonalization = [model relativeModelObjectForStoreLibraryPersonalization];
     v9 = objc_opt_class();
     if (v9)
     {
       v10 = [(NSMapTable *)self->_relativeModelClassToMappingResponse objectForKey:v9];
-      v11 = [v8 identifiers];
-      v12 = [v10 libraryIdentifierSetForIdentifierSet:v11];
+      identifiers = [relativeModelObjectForStoreLibraryPersonalization identifiers];
+      v12 = [v10 libraryIdentifierSetForIdentifierSet:identifiers];
 
-      v13 = [v8 identifiers];
-      v14 = [v12 unionSet:v13];
+      identifiers2 = [relativeModelObjectForStoreLibraryPersonalization identifiers];
+      v14 = [v12 unionSet:identifiers2];
       v15 = v14;
       if (v14)
       {
-        v16 = v14;
+        identifiers3 = v14;
       }
 
       else
       {
-        v16 = [v8 identifiers];
+        identifiers3 = [relativeModelObjectForStoreLibraryPersonalization identifiers];
       }
 
-      v6 = v16;
+      identifiers5 = identifiers3;
     }
 
     else
     {
-      v17 = [v8 identifiers];
-      if (v17)
+      identifiers4 = [relativeModelObjectForStoreLibraryPersonalization identifiers];
+      if (identifiers4)
       {
-        v10 = v17;
-        v6 = v10;
+        v10 = identifiers4;
+        identifiers5 = v10;
       }
 
       else
       {
-        v6 = [v7 identifiers];
+        identifiers5 = [model identifiers];
         v10 = 0;
       }
     }
@@ -328,45 +328,45 @@ LABEL_15:
 
   else
   {
-    v6 = [v4 identifiers];
+    identifiers5 = [v4 identifiers];
   }
 
-  return v6;
+  return identifiers5;
 }
 
-- (id)identifiersForItemAtIndexPath:(id)a3
+- (id)identifiersForItemAtIndexPath:(id)path
 {
   v72[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPSectionedCollection *)self->_unpersonalizedContentDescriptors itemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(MPSectionedCollection *)self->_unpersonalizedContentDescriptors itemAtIndexPath:pathCopy];
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
     v8 = v5;
-    v15 = [v8 model];
+    model = [v8 model];
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && [v15 type] == 5)
+    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && [model type] == 5)
     {
 
-      v7 = [v15 identifiers];
+      identifiers = [model identifiers];
     }
 
     else
     {
 
-      v53 = [v15 relativeModelObjectForStoreLibraryPersonalization];
+      relativeModelObjectForStoreLibraryPersonalization = [model relativeModelObjectForStoreLibraryPersonalization];
       v16 = objc_opt_class();
       if (v16)
       {
-        v17 = [v53 identifiers];
-        if (v17)
+        identifiers2 = [relativeModelObjectForStoreLibraryPersonalization identifiers];
+        if (identifiers2)
         {
           v52 = [(NSMapTable *)self->_relativeModelClassToMappingResponse objectForKey:v16];
-          v18 = [v52 libraryIdentifierSetForIdentifierSet:v17];
+          v18 = [v52 libraryIdentifierSetForIdentifierSet:identifiers2];
           v19 = v18;
           if (v18)
           {
-            v20 = [v18 unionSet:v17];
+            v20 = [v18 unionSet:identifiers2];
             v21 = v20;
             if (v20)
             {
@@ -379,18 +379,18 @@ LABEL_15:
               if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134218754;
-                v61 = self;
+                selfCopy4 = self;
                 v62 = 2114;
-                v63 = v4;
+                v63 = pathCopy;
                 v64 = 2114;
                 v65 = v19;
                 v66 = 2114;
-                v67 = v17;
+                v67 = identifiers2;
                 _os_log_impl(&dword_1A238D000, v40, OS_LOG_TYPE_ERROR, "MPStoreLibraryPersonalizationCollectionDataSource %p: identifiersForItemAtIndexPath returning MPIdentifierSet.emptyIdentifierSet [libraryIdentifiers unionSet: failed] indexPath=%{public}@ libraryIdentifiers=%{public}@ originalIdentifiers=%{public}@", buf, 0x2Au);
               }
 
               v41 = MEMORY[0x1E69B13D8];
-              v58[0] = v4;
+              v58[0] = pathCopy;
               v57[0] = @"indexPath";
               v57[1] = @"libraryIdentifiers";
               v42 = [v19 description];
@@ -408,7 +408,7 @@ LABEL_15:
 
               v58[1] = v43;
               v57[2] = @"originalIdentifiers";
-              v44 = [v17 description];
+              v44 = [identifiers2 description];
               v45 = v44;
               if (v44)
               {
@@ -429,12 +429,12 @@ LABEL_15:
               v22 = +[MPIdentifierSet emptyIdentifierSet];
             }
 
-            v7 = v22;
+            identifiers = v22;
           }
 
           else
           {
-            v7 = v17;
+            identifiers = identifiers2;
           }
         }
 
@@ -444,19 +444,19 @@ LABEL_15:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218498;
-            v61 = self;
+            selfCopy4 = self;
             v62 = 2114;
-            v63 = v4;
+            v63 = pathCopy;
             v64 = 2114;
-            v65 = v53;
+            v65 = relativeModelObjectForStoreLibraryPersonalization;
             _os_log_impl(&dword_1A238D000, v30, OS_LOG_TYPE_ERROR, "MPStoreLibraryPersonalizationCollectionDataSource %p: identifiersForItemAtIndexPath returning MPIdentifierSet.emptyIdentifierSet [effectiveOriginalObject has no identifiers] indexPath=%{public}@ effectiveOriginalObject=%{public}@", buf, 0x20u);
           }
 
           v31 = MEMORY[0x1E69B13D8];
-          v69[0] = v4;
+          v69[0] = pathCopy;
           v68[0] = @"indexPath";
           v68[1] = @"originalObject";
-          v32 = [v15 description];
+          v32 = [model description];
           v33 = v32;
           if (v32)
           {
@@ -470,7 +470,7 @@ LABEL_15:
 
           v69[1] = v34;
           v68[2] = @"effectiveOriginalObject";
-          v35 = [v53 description];
+          v35 = [relativeModelObjectForStoreLibraryPersonalization description];
           v36 = v35;
           if (v35)
           {
@@ -488,32 +488,32 @@ LABEL_15:
           v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v70 count:1];
           [v31 snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"Tracklisting-LazySectionedCollectionDataSource-InvalidStateBug" context:@"-[MPStoreLibraryPersonalizationCollectionDataSource identifiersForItemAtIndexPath:] (effectiveOriginalObject has no identifiers)" triggerThresholdValues:0 events:v39 completion:0];
 
-          v7 = +[MPIdentifierSet emptyIdentifierSet];
+          identifiers = +[MPIdentifierSet emptyIdentifierSet];
         }
       }
 
       else
       {
-        v7 = [v15 identifiers];
-        if (!v7)
+        identifiers = [model identifiers];
+        if (!identifiers)
         {
           v23 = _MPLogCategoryDefault();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218498;
-            v61 = self;
+            selfCopy4 = self;
             v62 = 2114;
-            v63 = v4;
+            v63 = pathCopy;
             v64 = 2114;
-            v65 = v15;
+            v65 = model;
             _os_log_impl(&dword_1A238D000, v23, OS_LOG_TYPE_ERROR, "MPStoreLibraryPersonalizationCollectionDataSource %p: identifiersForItemAtIndexPath returning MPIdentifierSet.emptyIdentifierSet [originalObject has no identifiers] indexPath=%{public}@ originalObject=%{public}@", buf, 0x20u);
           }
 
           v24 = MEMORY[0x1E69B13D8];
           v54[0] = @"indexPath";
           v54[1] = @"originalObject";
-          v55[0] = v4;
-          v25 = [v15 description];
+          v55[0] = pathCopy;
+          v25 = [model description];
           v26 = v25;
           v27 = @"@";
           if (v25)
@@ -527,7 +527,7 @@ LABEL_15:
           v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
           [v24 snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"Tracklisting-LazySectionedCollectionDataSource-InvalidStateBug" context:@"-[MPStoreLibraryPersonalizationCollectionDataSource identifiersForItemAtIndexPath:] (originalObject has no identifiers)" triggerThresholdValues:0 events:v29 completion:0];
 
-          v7 = +[MPIdentifierSet emptyIdentifierSet];
+          identifiers = +[MPIdentifierSet emptyIdentifierSet];
         }
       }
     }
@@ -535,8 +535,8 @@ LABEL_15:
 
   else
   {
-    v7 = [v5 identifiers];
-    if (v7)
+    identifiers = [v5 identifiers];
+    if (identifiers)
     {
       goto LABEL_50;
     }
@@ -544,7 +544,7 @@ LABEL_15:
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     v71[0] = @"indexPath";
     v71[1] = @"possibleObject";
-    v72[0] = v4;
+    v72[0] = pathCopy;
     v9 = [v5 description];
     v10 = v9;
     v11 = @"@";
@@ -567,27 +567,27 @@ LABEL_15:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v61 = self;
+      selfCopy4 = self;
       v62 = 2114;
-      v63 = v4;
+      v63 = pathCopy;
       v64 = 2114;
       v65 = v5;
       _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_ERROR, "MPStoreLibraryPersonalizationCollectionDataSource %p: identifiersForItemAtIndexPath returning MPIdentifierSet.emptyIdentifierSet [unpersonalizedContentDescriptors did not contain MPStoreLibraryPersonalizationContentDescriptor] indexPath=%{public}@ possibleObject=%{public}@", buf, 0x20u);
     }
 
     [MEMORY[0x1E69B13D8] snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"Tracklisting-LazySectionedCollectionDataSource-InvalidStateBug" context:@"-[MPStoreLibraryPersonalizationCollectionDataSource identifiersForItemAtIndexPath:] (unpersonalizedContentDescriptors did not contain MPStoreLibraryPersonalizationContentDescriptor)" triggerThresholdValues:0 events:v8 completion:0];
-    v7 = +[MPIdentifierSet emptyIdentifierSet];
+    identifiers = +[MPIdentifierSet emptyIdentifierSet];
   }
 
 LABEL_50:
 
-  return v7;
+  return identifiers;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MPSectionedCollection *)self->_unpersonalizedContentDescriptors itemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(MPSectionedCollection *)self->_unpersonalizedContentDescriptors itemAtIndexPath:pathCopy];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = v5;
@@ -595,10 +595,10 @@ LABEL_50:
   v10 = v8;
   if (v6 == v7)
   {
-    v11 = [v8 model];
-    v12 = [v11 relativeModelObjectForStoreLibraryPersonalization];
+    model = [v8 model];
+    relativeModelObjectForStoreLibraryPersonalization = [model relativeModelObjectForStoreLibraryPersonalization];
     v13 = objc_opt_class();
-    v10 = v11;
+    v10 = model;
     if (!v13)
     {
 LABEL_30:
@@ -607,20 +607,20 @@ LABEL_30:
     }
 
     v47 = [(NSMapTable *)self->_relativeModelClassToMappingResponse objectForKey:v13];
-    v14 = [v12 identifiers];
-    v15 = [v47 libraryIdentifierSetForIdentifierSet:v14];
+    identifiers = [relativeModelObjectForStoreLibraryPersonalization identifiers];
+    v15 = [v47 libraryIdentifierSetForIdentifierSet:identifiers];
     v16 = v15;
     if (v15)
     {
-      v46 = v15;
+      identifiers2 = v15;
     }
 
     else
     {
-      v46 = [v12 identifiers];
+      identifiers2 = [relativeModelObjectForStoreLibraryPersonalization identifiers];
     }
 
-    v17 = [(NSDictionary *)self->_itemIndexPathToOverridePropertySet objectForKey:v4];
+    v17 = [(NSDictionary *)self->_itemIndexPathToOverridePropertySet objectForKey:pathCopy];
     itemProperties = v17;
     if (!v17)
     {
@@ -629,12 +629,12 @@ LABEL_30:
 
     v19 = itemProperties;
 
-    v20 = [v9 personalizationStyle];
-    if ((v20 - 1) < 2)
+    personalizationStyle = [v9 personalizationStyle];
+    if ((personalizationStyle - 1) < 2)
     {
-      v42 = v12;
+      v42 = relativeModelObjectForStoreLibraryPersonalization;
       v43 = v19;
-      v27 = [v11 personalizationScopedPropertiesForProperties:v19];
+      v27 = [model personalizationScopedPropertiesForProperties:v19];
       v28 = v27;
       if (!v27)
       {
@@ -648,12 +648,12 @@ LABEL_30:
       {
       }
 
-      v12 = v42;
-      v30 = [v13 requiredStoreLibraryPersonalizationProperties];
-      v31 = v30;
-      if (v30)
+      relativeModelObjectForStoreLibraryPersonalization = v42;
+      requiredStoreLibraryPersonalizationProperties = [v13 requiredStoreLibraryPersonalizationProperties];
+      v31 = requiredStoreLibraryPersonalizationProperties;
+      if (requiredStoreLibraryPersonalizationProperties)
       {
-        v32 = v30;
+        v32 = requiredStoreLibraryPersonalizationProperties;
       }
 
       else
@@ -671,18 +671,18 @@ LABEL_30:
       v37 = [MPStoreLibraryPersonalizationContentDescriptor requiredLightweightPersonalizationPropertiesForModelClass:v13 requestedProperties:v35];
       v23 = [v36 propertySetByCombiningWithPropertySet:v37];
 
-      v25 = [(MPStoreLibraryPersonalizationCollectionDataSource *)self _libraryObjectWithRelativeModelClass:v13 identifierSet:v46 propertySet:v23];
+      v25 = [(MPStoreLibraryPersonalizationCollectionDataSource *)self _libraryObjectWithRelativeModelClass:v13 identifierSet:identifiers2 propertySet:v23];
       v26 = [objc_opt_class() _lightweightPersonalizedObjectWithUnpersonalizedObject:v42 libraryObject:v25 personalizationProperties:v23 overrideLibraryAddedStatus:0];
       if (v26 == v42)
       {
-        v10 = v11;
+        v10 = model;
       }
 
       else
       {
-        v38 = [v11 objectWithStoreLibraryPersonalizationRelativeModelObject:v26];
+        v38 = [model objectWithStoreLibraryPersonalizationRelativeModelObject:v26];
         v39 = v38;
-        v10 = v11;
+        v10 = model;
         if (v38)
         {
           v10 = v38;
@@ -692,39 +692,39 @@ LABEL_30:
 
     else
     {
-      v10 = v11;
-      if ((v20 - 3) >= 2)
+      v10 = model;
+      if ((personalizationStyle - 3) >= 2)
       {
 LABEL_29:
 
         goto LABEL_30;
       }
 
-      v21 = [v11 personalizationScopedPropertiesForProperties:v19];
-      v22 = [(MPStoreLibraryPersonalizationCollectionDataSource *)self _libraryObjectWithRelativeModelClass:v13 identifierSet:v46 propertySet:v21];
+      v21 = [model personalizationScopedPropertiesForProperties:v19];
+      v22 = [(MPStoreLibraryPersonalizationCollectionDataSource *)self _libraryObjectWithRelativeModelClass:v13 identifierSet:identifiers2 propertySet:v21];
       v45 = v21;
       if (!v22)
       {
         v33 = 0;
-        v10 = v11;
+        v10 = model;
 LABEL_28:
 
         goto LABEL_29;
       }
 
       v23 = [objc_opt_class() _completePersonalizedObjectWithLibraryObject:v22 personalizationProperties:v21 overrideLibraryAddedStatus:0];
-      v24 = [v11 objectWithStoreLibraryPersonalizationRelativeModelObject:v23];
+      v24 = [model objectWithStoreLibraryPersonalizationRelativeModelObject:v23];
       v44 = v22;
       if (!v24)
       {
         v25 = 0;
-        v10 = v11;
+        v10 = model;
         goto LABEL_27;
       }
 
       v43 = v19;
       v25 = v24;
-      v26 = v11;
+      v26 = model;
       v10 = v25;
     }
 
@@ -740,7 +740,7 @@ LABEL_31:
   return v10;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
   v5 = [(MPSectionedCollection *)self->_unpersonalizedContentDescriptors sectionAtIndex:?];
   v6 = objc_opt_class();
@@ -750,10 +750,10 @@ LABEL_31:
   v10 = v8;
   if (v6 == v7)
   {
-    v11 = [v8 model];
-    v12 = [v11 relativeModelObjectForStoreLibraryPersonalization];
+    model = [v8 model];
+    relativeModelObjectForStoreLibraryPersonalization = [model relativeModelObjectForStoreLibraryPersonalization];
     v13 = objc_opt_class();
-    v10 = v11;
+    v10 = model;
     if (!v13)
     {
 LABEL_30:
@@ -762,11 +762,11 @@ LABEL_30:
     }
 
     v41 = [(NSMapTable *)self->_relativeModelClassToMappingResponse objectForKey:v13];
-    v14 = [v12 identifiers];
-    v43 = [v41 libraryIdentifierSetForIdentifierSet:v14];
+    identifiers = [relativeModelObjectForStoreLibraryPersonalization identifiers];
+    v43 = [v41 libraryIdentifierSetForIdentifierSet:identifiers];
 
     sectionToLibraryAddedOverride = self->_sectionToLibraryAddedOverride;
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     v17 = [(NSMutableDictionary *)sectionToLibraryAddedOverride objectForKey:v16];
 
     v40 = v17;
@@ -788,39 +788,39 @@ LABEL_30:
       v18 = 0;
     }
 
-    v19 = [v9 personalizationStyle];
-    if ((v19 - 3) < 2)
+    personalizationStyle = [v9 personalizationStyle];
+    if ((personalizationStyle - 3) < 2)
     {
-      v42 = v12;
-      v27 = [v11 personalizationScopedPropertiesForProperties:self->_sectionProperties];
+      v42 = relativeModelObjectForStoreLibraryPersonalization;
+      v27 = [model personalizationScopedPropertiesForProperties:self->_sectionProperties];
       v28 = [(MPStoreLibraryPersonalizationCollectionDataSource *)self _libraryObjectWithRelativeModelClass:v13 identifierSet:v43 propertySet:v27];
       if (!v28)
       {
-        v10 = v11;
+        v10 = model;
 LABEL_28:
 
-        v12 = v42;
+        relativeModelObjectForStoreLibraryPersonalization = v42;
         goto LABEL_29;
       }
 
       v29 = [objc_opt_class() _completePersonalizedObjectWithLibraryObject:v28 personalizationProperties:v27 overrideLibraryAddedStatus:v18];
-      v30 = [v11 objectWithStoreLibraryPersonalizationRelativeModelObject:v29];
+      v30 = [model objectWithStoreLibraryPersonalizationRelativeModelObject:v29];
       if (!v30)
       {
         v31 = 0;
-        v10 = v11;
+        v10 = model;
         goto LABEL_27;
       }
 
       v31 = v30;
-      v32 = v11;
+      v32 = model;
       v10 = v31;
     }
 
     else
     {
-      v10 = v11;
-      if ((v19 - 1) > 1)
+      v10 = model;
+      if ((personalizationStyle - 1) > 1)
       {
 LABEL_29:
 
@@ -828,8 +828,8 @@ LABEL_29:
       }
 
       v38 = v18;
-      v42 = v12;
-      v20 = [v11 personalizationScopedPropertiesForProperties:self->_sectionProperties];
+      v42 = relativeModelObjectForStoreLibraryPersonalization;
+      v20 = [model personalizationScopedPropertiesForProperties:self->_sectionProperties];
       v21 = v20;
       if (!v20)
       {
@@ -843,11 +843,11 @@ LABEL_29:
       {
       }
 
-      v24 = [v13 requiredStoreLibraryPersonalizationProperties];
-      v25 = v24;
-      if (v24)
+      requiredStoreLibraryPersonalizationProperties = [v13 requiredStoreLibraryPersonalizationProperties];
+      v25 = requiredStoreLibraryPersonalizationProperties;
+      if (requiredStoreLibraryPersonalizationProperties)
       {
-        v26 = v24;
+        v26 = requiredStoreLibraryPersonalizationProperties;
       }
 
       else
@@ -868,14 +868,14 @@ LABEL_29:
       v32 = [objc_opt_class() _lightweightPersonalizedObjectWithUnpersonalizedObject:v42 libraryObject:v31 personalizationProperties:v29 overrideLibraryAddedStatus:v38];
       if (v32 == v42)
       {
-        v10 = v11;
+        v10 = model;
       }
 
       else
       {
-        v35 = [v11 objectWithStoreLibraryPersonalizationRelativeModelObject:v32];
+        v35 = [model objectWithStoreLibraryPersonalizationRelativeModelObject:v32];
         v36 = v35;
-        v10 = v11;
+        v10 = model;
         if (v35)
         {
           v10 = v35;
@@ -905,86 +905,86 @@ LABEL_31:
   return result;
 }
 
-+ (id)_completePersonalizedObjectWithLibraryObject:(id)a3 personalizationProperties:(id)a4 overrideLibraryAddedStatus:(int64_t)a5
++ (id)_completePersonalizedObjectWithLibraryObject:(id)object personalizationProperties:(id)properties overrideLibraryAddedStatus:(int64_t)status
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  v10 = [v8 properties];
+  objectCopy = object;
+  propertiesCopy = properties;
+  v9 = objectCopy;
+  properties = [propertiesCopy properties];
   v11 = objc_opt_class();
   if ([v11 isSubclassOfClass:objc_opt_class()])
   {
     v12 = v9;
-    v13 = [v12 identifiers];
+    identifiers = [v12 identifiers];
     v14 = v37;
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonalizedObjectWithLibraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke;
     v37[3] = &unk_1E767B8F0;
-    v37[4] = v10;
-    v39 = a5;
+    v37[4] = properties;
+    statusCopy = status;
     v38 = v12;
-    v15 = [v38 copyWithIdentifiers:v13 block:v37];
+    v15 = [v38 copyWithIdentifiers:identifiers block:v37];
   }
 
   else if ([v11 isSubclassOfClass:objc_opt_class()])
   {
     v16 = v9;
-    v13 = [v16 identifiers];
+    identifiers = [v16 identifiers];
     v14 = v34;
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonalizedObjectWithLibraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_2;
     v34[3] = &unk_1E767B918;
-    v34[4] = v10;
-    v36 = a5;
+    v34[4] = properties;
+    statusCopy2 = status;
     v35 = v16;
-    v15 = [v35 copyWithIdentifiers:v13 block:v34];
+    v15 = [v35 copyWithIdentifiers:identifiers block:v34];
   }
 
   else if ([v11 isSubclassOfClass:objc_opt_class()])
   {
     v17 = v9;
-    v13 = [v17 identifiers];
+    identifiers = [v17 identifiers];
     v14 = v31;
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonalizedObjectWithLibraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_3;
     v31[3] = &unk_1E767B940;
-    v31[4] = v10;
-    v33 = a5;
+    v31[4] = properties;
+    statusCopy3 = status;
     v32 = v17;
-    v15 = [v32 copyWithIdentifiers:v13 block:v31];
+    v15 = [v32 copyWithIdentifiers:identifiers block:v31];
   }
 
   else if ([v11 isSubclassOfClass:objc_opt_class()])
   {
     v18 = v9;
-    v13 = [v18 identifiers];
+    identifiers = [v18 identifiers];
     v14 = v28;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonalizedObjectWithLibraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_4;
     v28[3] = &unk_1E767B8A0;
-    v28[4] = v10;
-    v30 = a5;
+    v28[4] = properties;
+    statusCopy4 = status;
     v29 = v18;
-    v15 = [v29 copyWithIdentifiers:v13 block:v28];
+    v15 = [v29 copyWithIdentifiers:identifiers block:v28];
   }
 
   else if ([v11 isSubclassOfClass:objc_opt_class()])
   {
     v19 = v9;
-    v13 = [v19 identifiers];
+    identifiers = [v19 identifiers];
     v14 = v25;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonalizedObjectWithLibraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_5;
     v25[3] = &unk_1E767B8C8;
-    v25[4] = v10;
-    v27 = a5;
+    v25[4] = properties;
+    statusCopy5 = status;
     v26 = v19;
-    v15 = [v26 copyWithIdentifiers:v13 block:v25];
+    v15 = [v26 copyWithIdentifiers:identifiers block:v25];
   }
 
   else
@@ -996,15 +996,15 @@ LABEL_31:
     }
 
     v21 = v9;
-    v13 = [v21 identifiers];
+    identifiers = [v21 identifiers];
     v14 = v23;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonalizedObjectWithLibraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_6;
     v23[3] = &unk_1E767EE78;
-    v23[4] = v10;
+    v23[4] = properties;
     v24 = v21;
-    v15 = [v24 copyWithIdentifiers:v13 block:v23];
+    v15 = [v24 copyWithIdentifiers:identifiers block:v23];
   }
 
   v20 = v15;
@@ -1218,25 +1218,25 @@ void __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonali
   }
 }
 
-+ (id)_lightweightPersonalizedObjectWithUnpersonalizedObject:(id)a3 libraryObject:(id)a4 personalizationProperties:(id)a5 overrideLibraryAddedStatus:(int64_t)a6
++ (id)_lightweightPersonalizedObjectWithUnpersonalizedObject:(id)object libraryObject:(id)libraryObject personalizationProperties:(id)properties overrideLibraryAddedStatus:(int64_t)status
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v10;
-  v75 = v12;
-  v77 = [v13 identifiers];
-  v76 = [v12 properties];
-  v78 = [v12 relationships];
+  objectCopy = object;
+  libraryObjectCopy = libraryObject;
+  propertiesCopy = properties;
+  v13 = objectCopy;
+  v75 = propertiesCopy;
+  identifiers = [v13 identifiers];
+  properties = [propertiesCopy properties];
+  relationships = [propertiesCopy relationships];
   v14 = objc_opt_class();
   if ([v14 isSubclassOfClass:objc_opt_class()])
   {
     v15 = v13;
-    if (v11)
+    if (libraryObjectCopy)
     {
-      v16 = v11;
-      v17 = [v16 identifiers];
-      v18 = [v17 unionSet:v77];
+      v16 = libraryObjectCopy;
+      identifiers2 = [v16 identifiers];
+      v18 = [identifiers2 unionSet:identifiers];
       v19 = v18;
       if (v18)
       {
@@ -1245,7 +1245,7 @@ void __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonali
 
       else
       {
-        v20 = v77;
+        v20 = identifiers;
       }
 
       v21 = v20;
@@ -1254,12 +1254,12 @@ void __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonali
       v110[1] = 3221225472;
       v110[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke;
       v110[3] = &unk_1E767B7B8;
-      v111 = v76;
-      v115 = a6;
+      v111 = properties;
+      statusCopy = status;
       v22 = v16;
       v112 = v22;
-      v113 = v78;
-      v116 = a1;
+      v113 = relationships;
+      selfCopy = self;
       v23 = v15;
       v114 = v23;
       v24 = [v23 copyWithIdentifiers:v21 block:v110];
@@ -1269,66 +1269,66 @@ void __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonali
 
     else
     {
-      v22 = [v78 objectForKey:@"MPModelRelationshipSongPlaybackPosition"];
+      v22 = [relationships objectForKey:@"MPModelRelationshipSongPlaybackPosition"];
       v24 = v15;
       if (v22)
       {
         if ([v15 hasLoadedValueForKey:@"MPModelRelationshipSongPlaybackPosition"])
         {
-          v38 = [v15 playbackPosition];
+          playbackPosition = [v15 playbackPosition];
         }
 
         else
         {
-          v38 = 0;
+          playbackPosition = 0;
         }
 
-        if (![v38 hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"] || (v24 = v15, objc_msgSend(v38, "shouldRememberBookmarkTime")))
+        if (![playbackPosition hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"] || (v24 = v15, objc_msgSend(playbackPosition, "shouldRememberBookmarkTime")))
         {
-          v52 = [v15 identifiers];
-          v53 = [a1 _lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:v38 identifiers:v52 personalizationProperties:v22];
+          identifiers3 = [v15 identifiers];
+          v53 = [self _lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:playbackPosition identifiers:identifiers3 personalizationProperties:v22];
 
           v24 = v15;
-          if (v38 != v53)
+          if (playbackPosition != v53)
           {
-            v54 = [v15 identifiers];
+            identifiers4 = [v15 identifiers];
             v108[0] = MEMORY[0x1E69E9820];
             v108[1] = 3221225472;
             v108[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_2;
             v108[3] = &unk_1E767D0F0;
             v109 = v53;
-            v24 = [v15 copyWithIdentifiers:v54 block:v108];
+            v24 = [v15 copyWithIdentifiers:identifiers4 block:v108];
           }
         }
       }
 
-      v55 = [v78 objectForKey:@"MPModelRelationshipSongLyrics"];
+      v55 = [relationships objectForKey:@"MPModelRelationshipSongLyrics"];
       if (v55)
       {
         if ([v15 hasLoadedValueForKey:@"MPModelRelationshipSongLyrics"])
         {
-          v56 = [v15 lyrics];
+          lyrics = [v15 lyrics];
         }
 
         else
         {
-          v56 = 0;
+          lyrics = 0;
         }
 
-        v57 = [v56 identifiers];
-        v58 = [v56 copyWithIdentifiers:v57 block:&__block_literal_global_32326];
+        identifiers5 = [lyrics identifiers];
+        v58 = [lyrics copyWithIdentifiers:identifiers5 block:&__block_literal_global_32326];
 
-        v59 = [v15 identifiers];
+        identifiers6 = [v15 identifiers];
         v106[0] = MEMORY[0x1E69E9820];
         v106[1] = 3221225472;
         v106[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_4;
         v106[3] = &unk_1E767D0F0;
         v60 = v58;
         v107 = v60;
-        v61 = [v15 copyWithIdentifiers:v59 block:v106];
+        v61 = [v15 copyWithIdentifiers:identifiers6 block:v106];
 
         v24 = v61;
-        v11 = 0;
+        libraryObjectCopy = 0;
       }
     }
 
@@ -1338,11 +1338,11 @@ void __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonali
   if ([v14 isSubclassOfClass:objc_opt_class()])
   {
     v15 = v13;
-    if (v11)
+    if (libraryObjectCopy)
     {
-      v25 = v11;
-      v26 = [v25 identifiers];
-      v27 = [v26 unionSet:v77];
+      v25 = libraryObjectCopy;
+      identifiers7 = [v25 identifiers];
+      v27 = [identifiers7 unionSet:identifiers];
       v28 = v27;
       if (v27)
       {
@@ -1351,7 +1351,7 @@ void __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonali
 
       else
       {
-        v29 = v77;
+        v29 = identifiers;
       }
 
       v30 = v29;
@@ -1360,12 +1360,12 @@ void __151__MPStoreLibraryPersonalizationCollectionDataSource__completePersonali
       v100[1] = 3221225472;
       v100[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_5;
       v100[3] = &unk_1E767B800;
-      v101 = v76;
-      v104 = a6;
+      v101 = properties;
+      statusCopy2 = status;
       v22 = v25;
       v102 = v22;
-      v103 = v78;
-      v105 = a1;
+      v103 = relationships;
+      selfCopy2 = self;
       v24 = [v15 copyWithIdentifiers:v30 block:v100];
 
       v31 = v101;
@@ -1374,33 +1374,33 @@ LABEL_19:
       goto LABEL_71;
     }
 
-    v22 = [v78 objectForKey:@"MPModelRelationshipTVEpisodePlaybackPosition"];
+    v22 = [relationships objectForKey:@"MPModelRelationshipTVEpisodePlaybackPosition"];
     if (v22)
     {
       if ([v15 hasLoadedValueForKey:@"MPModelRelationshipTVEpisodePlaybackPosition"])
       {
-        v45 = [v15 playbackPosition];
+        playbackPosition2 = [v15 playbackPosition];
       }
 
       else
       {
-        v45 = 0;
+        playbackPosition2 = 0;
       }
 
-      if ([v45 hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"])
+      if ([playbackPosition2 hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"])
       {
         v24 = v15;
-        if (![v45 shouldRememberBookmarkTime])
+        if (![playbackPosition2 shouldRememberBookmarkTime])
         {
           goto LABEL_70;
         }
       }
 
-      v68 = [v15 identifiers];
-      v69 = [a1 _lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:v45 identifiers:v68 personalizationProperties:v22];
+      identifiers8 = [v15 identifiers];
+      v69 = [self _lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:playbackPosition2 identifiers:identifiers8 personalizationProperties:v22];
 
       v24 = v15;
-      if (v45 == v69)
+      if (playbackPosition2 == v69)
       {
 LABEL_69:
 
@@ -1408,13 +1408,13 @@ LABEL_70:
         goto LABEL_71;
       }
 
-      v70 = [v15 identifiers];
+      identifiers9 = [v15 identifiers];
       v98[0] = MEMORY[0x1E69E9820];
       v98[1] = 3221225472;
       v98[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_6;
       v98[3] = &unk_1E767B828;
       v99 = v69;
-      v24 = [v15 copyWithIdentifiers:v70 block:v98];
+      v24 = [v15 copyWithIdentifiers:identifiers9 block:v98];
 
       v71 = v99;
 LABEL_68:
@@ -1428,11 +1428,11 @@ LABEL_68:
   if ([v14 isSubclassOfClass:objc_opt_class()])
   {
     v15 = v13;
-    if (v11)
+    if (libraryObjectCopy)
     {
-      v32 = v11;
-      v33 = [v32 identifiers];
-      v34 = [v33 unionSet:v77];
+      v32 = libraryObjectCopy;
+      identifiers10 = [v32 identifiers];
+      v34 = [identifiers10 unionSet:identifiers];
       v35 = v34;
       if (v34)
       {
@@ -1441,7 +1441,7 @@ LABEL_68:
 
       else
       {
-        v36 = v77;
+        v36 = identifiers;
       }
 
       v37 = v36;
@@ -1450,56 +1450,56 @@ LABEL_68:
       v92[1] = 3221225472;
       v92[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_7;
       v92[3] = &unk_1E767B850;
-      v93 = v76;
-      v96 = a6;
+      v93 = properties;
+      statusCopy3 = status;
       v22 = v32;
       v94 = v22;
-      v95 = v78;
-      v97 = a1;
+      v95 = relationships;
+      selfCopy3 = self;
       v24 = [v15 copyWithIdentifiers:v37 block:v92];
 
       v31 = v93;
       goto LABEL_19;
     }
 
-    v22 = [v78 objectForKey:@"MPModelRelationshipMoviePlaybackPosition"];
+    v22 = [relationships objectForKey:@"MPModelRelationshipMoviePlaybackPosition"];
     if (v22)
     {
       if ([v15 hasLoadedValueForKey:@"MPModelRelationshipMoviePlaybackPosition"])
       {
-        v45 = [v15 playbackPosition];
+        playbackPosition2 = [v15 playbackPosition];
       }
 
       else
       {
-        v45 = 0;
+        playbackPosition2 = 0;
       }
 
-      if ([v45 hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"])
+      if ([playbackPosition2 hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"])
       {
         v24 = v15;
-        if (![v45 shouldRememberBookmarkTime])
+        if (![playbackPosition2 shouldRememberBookmarkTime])
         {
           goto LABEL_70;
         }
       }
 
-      v72 = [v15 identifiers];
-      v69 = [a1 _lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:v45 identifiers:v72 personalizationProperties:v22];
+      identifiers11 = [v15 identifiers];
+      v69 = [self _lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:playbackPosition2 identifiers:identifiers11 personalizationProperties:v22];
 
       v24 = v15;
-      if (v45 == v69)
+      if (playbackPosition2 == v69)
       {
         goto LABEL_69;
       }
 
-      v73 = [v15 identifiers];
+      identifiers12 = [v15 identifiers];
       v90[0] = MEMORY[0x1E69E9820];
       v90[1] = 3221225472;
       v90[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_8;
       v90[3] = &unk_1E767B878;
       v91 = v69;
-      v24 = [v15 copyWithIdentifiers:v73 block:v90];
+      v24 = [v15 copyWithIdentifiers:identifiers12 block:v90];
 
       v71 = v91;
       goto LABEL_68;
@@ -1512,9 +1512,9 @@ LABEL_52:
 
   if ([v14 isSubclassOfClass:objc_opt_class()])
   {
-    v39 = v11;
-    v40 = [v39 identifiers];
-    v41 = [v40 unionSet:v77];
+    v39 = libraryObjectCopy;
+    identifiers13 = [v39 identifiers];
+    v41 = [identifiers13 unionSet:identifiers];
     v42 = v41;
     if (v41)
     {
@@ -1523,7 +1523,7 @@ LABEL_52:
 
     else
     {
-      v43 = v77;
+      v43 = identifiers;
     }
 
     v44 = v43;
@@ -1532,8 +1532,8 @@ LABEL_52:
     v86[1] = 3221225472;
     v86[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_9;
     v86[3] = &unk_1E767B8A0;
-    v87 = v76;
-    v89 = a6;
+    v87 = properties;
+    statusCopy4 = status;
     v15 = v39;
     v88 = v15;
     v24 = [v13 copyWithIdentifiers:v44 block:v86];
@@ -1543,9 +1543,9 @@ LABEL_52:
 
   else if ([v14 isSubclassOfClass:objc_opt_class()])
   {
-    v46 = v11;
-    v47 = [v46 identifiers];
-    v48 = [v47 unionSet:v77];
+    v46 = libraryObjectCopy;
+    identifiers14 = [v46 identifiers];
+    v48 = [identifiers14 unionSet:identifiers];
     v49 = v48;
     if (v48)
     {
@@ -1554,7 +1554,7 @@ LABEL_52:
 
     else
     {
-      v50 = v77;
+      v50 = identifiers;
     }
 
     v51 = v50;
@@ -1563,8 +1563,8 @@ LABEL_52:
     v82[1] = 3221225472;
     v82[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_11;
     v82[3] = &unk_1E767B8C8;
-    v83 = v76;
-    v85 = a6;
+    v83 = properties;
+    statusCopy5 = status;
     v15 = v46;
     v84 = v15;
     v24 = [v13 copyWithIdentifiers:v51 block:v82];
@@ -1580,9 +1580,9 @@ LABEL_52:
       goto LABEL_72;
     }
 
-    v62 = v11;
-    v63 = [v62 identifiers];
-    v64 = [v63 unionSet:v77];
+    v62 = libraryObjectCopy;
+    identifiers15 = [v62 identifiers];
+    v64 = [identifiers15 unionSet:identifiers];
     v65 = v64;
     if (v64)
     {
@@ -1591,7 +1591,7 @@ LABEL_52:
 
     else
     {
-      v66 = v77;
+      v66 = identifiers;
     }
 
     v67 = v66;
@@ -1600,7 +1600,7 @@ LABEL_52:
     v79[1] = 3221225472;
     v79[2] = __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedObjectWithUnpersonalizedObject_libraryObject_personalizationProperties_overrideLibraryAddedStatus___block_invoke_12;
     v79[3] = &unk_1E767EE78;
-    v80 = v76;
+    v80 = properties;
     v15 = v62;
     v81 = v15;
     v24 = [v13 copyWithIdentifiers:v67 block:v79];
@@ -2355,24 +2355,24 @@ uint64_t __175__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPe
   return [v2 setLibraryAddEligible:v3];
 }
 
-+ (id)_lightweightPersonalizedStoreAssetWithUnpersonalizedAsset:(id)a3 libraryAsset:(id)a4 personalizationProperties:(id)a5
++ (id)_lightweightPersonalizedStoreAssetWithUnpersonalizedAsset:(id)asset libraryAsset:(id)libraryAsset personalizationProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 properties];
-  v11 = [v7 identifiers];
+  assetCopy = asset;
+  libraryAssetCopy = libraryAsset;
+  propertiesCopy = properties;
+  properties = [propertiesCopy properties];
+  identifiers = [assetCopy identifiers];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __150__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedStoreAssetWithUnpersonalizedAsset_libraryAsset_personalizationProperties___block_invoke;
   v17[3] = &unk_1E767B790;
-  v12 = v10;
+  v12 = properties;
   v18 = v12;
-  v13 = v8;
+  v13 = libraryAssetCopy;
   v19 = v13;
-  v14 = v7;
+  v14 = assetCopy;
   v20 = v14;
-  v15 = [v14 copyWithIdentifiers:v11 block:v17];
+  v15 = [v14 copyWithIdentifiers:identifiers block:v17];
 
   return v15;
 }
@@ -2444,21 +2444,21 @@ void __150__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPerson
   }
 }
 
-+ (id)_lightweightPersonalizedLyricsWithUnpersonalizedLyrics:(id)a3 libraryLyrics:(id)a4 identifiers:(id)a5 personalizationProperties:(id)a6
++ (id)_lightweightPersonalizedLyricsWithUnpersonalizedLyrics:(id)lyrics libraryLyrics:(id)libraryLyrics identifiers:(id)identifiers personalizationProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [v8 identifiers];
+  lyricsCopy = lyrics;
+  libraryLyricsCopy = libraryLyrics;
+  propertiesCopy = properties;
+  identifiers = [lyricsCopy identifiers];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __160__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedLyricsWithUnpersonalizedLyrics_libraryLyrics_identifiers_personalizationProperties___block_invoke;
   v16[3] = &unk_1E767EEF0;
-  v12 = v10;
+  v12 = propertiesCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = libraryLyricsCopy;
   v18 = v13;
-  v14 = [v8 copyWithIdentifiers:v11 block:v16];
+  v14 = [lyricsCopy copyWithIdentifiers:identifiers block:v16];
 
   return v14;
 }
@@ -2502,37 +2502,37 @@ void __160__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPerson
   }
 }
 
-+ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)a3 identifiers:(id)a4 personalizationProperties:(id)a5
++ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)position identifiers:(id)identifiers personalizationProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a5;
-  if ([v6 hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionStoreUbiquitousIdentifier"] && (objc_msgSend(v6, "storeUbiquitousIdentifier"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  positionCopy = position;
+  propertiesCopy = properties;
+  if ([positionCopy hasLoadedValueForKey:@"MPModelPropertyPlaybackPositionStoreUbiquitousIdentifier"] && (objc_msgSend(positionCopy, "storeUbiquitousIdentifier"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = [v7 properties];
+    properties = [propertiesCopy properties];
     v10 = +[MPUbiquitousPlaybackPositionController sharedUbiquitousPlaybackPositionController];
     v11 = [v10 playbackPositionForLocalEntityIdentifier:v8];
 
     if (v11)
     {
-      v12 = [v6 identifiers];
+      identifiers = [positionCopy identifiers];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __166__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition_identifiers_personalizationProperties___block_invoke;
       v15[3] = &unk_1E767E980;
-      v16 = v9;
+      v16 = properties;
       v17 = v11;
-      v13 = [v6 copyWithIdentifiers:v12 block:v15];
+      v13 = [positionCopy copyWithIdentifiers:identifiers block:v15];
     }
 
     else
     {
-      v13 = v6;
+      v13 = positionCopy;
     }
   }
 
   else
   {
-    v13 = v6;
+    v13 = positionCopy;
   }
 
   return v13;
@@ -2591,22 +2591,22 @@ void __166__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPerson
   }
 }
 
-+ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)a3 libraryPlaybackPosition:(id)a4 personalizationProperties:(id)a5
++ (id)_lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition:(id)position libraryPlaybackPosition:(id)playbackPosition personalizationProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 properties];
-  v11 = [v7 identifiers];
+  positionCopy = position;
+  playbackPositionCopy = playbackPosition;
+  propertiesCopy = properties;
+  properties = [propertiesCopy properties];
+  identifiers = [positionCopy identifiers];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __178__MPStoreLibraryPersonalizationCollectionDataSource__lightweightPersonalizedPlaybackPositionWithUnpersonalizedPlaybackPosition_libraryPlaybackPosition_personalizationProperties___block_invoke;
   v16[3] = &unk_1E767E980;
-  v12 = v10;
+  v12 = properties;
   v17 = v12;
-  v13 = v8;
+  v13 = playbackPositionCopy;
   v18 = v13;
-  v14 = [v7 copyWithIdentifiers:v11 block:v16];
+  v14 = [positionCopy copyWithIdentifiers:identifiers block:v16];
 
   return v14;
 }

@@ -1,22 +1,22 @@
 @interface PHAssetIconicScoreProperties
 + (id)propertiesToFetch;
-- (PHAssetIconicScoreProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetIconicScoreProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetIconicScoreProperties
 
-- (PHAssetIconicScoreProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetIconicScoreProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = PHAssetIconicScoreProperties;
   v9 = [(PHAssetIconicScoreProperties *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._asset, v8);
-    v11 = [v7 objectForKeyedSubscript:@"iconicScore"];
+    objc_storeWeak(&v9->super._asset, assetCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"iconicScore"];
     [v11 doubleValue];
     v10->_iconicScore = v12;
   }

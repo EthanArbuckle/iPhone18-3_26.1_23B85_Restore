@@ -2,7 +2,7 @@
 - (_TtC9PassKitUI27PaymentRequestViewInterface)init;
 - (id)serviceDelegate;
 - (void)invalidate;
-- (void)setServiceDelegate:(id)a3;
+- (void)setServiceDelegate:(id)delegate;
 @end
 
 @implementation PaymentRequestViewInterface
@@ -15,11 +15,11 @@
   return v2;
 }
 
-- (void)setServiceDelegate:(id)a3
+- (void)setServiceDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC9PassKitUI27PaymentRequestViewInterface_serviceDelegate;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -31,7 +31,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 32);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
 }
 

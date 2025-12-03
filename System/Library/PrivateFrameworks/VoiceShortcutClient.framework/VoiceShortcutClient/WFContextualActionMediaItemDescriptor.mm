@@ -1,27 +1,27 @@
 @interface WFContextualActionMediaItemDescriptor
-- (BOOL)isEqual:(id)a3;
-- (WFContextualActionMediaItemDescriptor)initWithCoder:(id)a3;
-- (WFContextualActionMediaItemDescriptor)initWithPlaybackStoreId:(id)a3 name:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WFContextualActionMediaItemDescriptor)initWithCoder:(id)coder;
+- (WFContextualActionMediaItemDescriptor)initWithPlaybackStoreId:(id)id name:(id)name;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContextualActionMediaItemDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   playbackStoreId = self->_playbackStoreId;
-  v5 = a3;
-  [v5 encodeObject:playbackStoreId forKey:@"playbackStoreId"];
-  [v5 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:playbackStoreId forKey:@"playbackStoreId"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
 }
 
-- (WFContextualActionMediaItemDescriptor)initWithCoder:(id)a3
+- (WFContextualActionMediaItemDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playbackStoreId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playbackStoreId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
 
   if (v5)
   {
@@ -35,25 +35,25 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(WFContextualActionMediaItemDescriptor *)self initWithPlaybackStoreId:v5 name:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -62,10 +62,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(WFContextualActionMediaItemDescriptor *)v6 playbackStoreId];
-    v8 = [(WFContextualActionMediaItemDescriptor *)self playbackStoreId];
-    v9 = v7;
-    v10 = v8;
+    playbackStoreId = [(WFContextualActionMediaItemDescriptor *)v6 playbackStoreId];
+    playbackStoreId2 = [(WFContextualActionMediaItemDescriptor *)self playbackStoreId];
+    v9 = playbackStoreId;
+    v10 = playbackStoreId2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -92,10 +92,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(WFContextualActionMediaItemDescriptor *)v6 name];
-    v16 = [(WFContextualActionMediaItemDescriptor *)self name];
-    v14 = v15;
-    v17 = v16;
+    name = [(WFContextualActionMediaItemDescriptor *)v6 name];
+    name2 = [(WFContextualActionMediaItemDescriptor *)self name];
+    v14 = name;
+    v17 = name2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -123,11 +123,11 @@ LABEL_21:
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFContextualActionMediaItemDescriptor *)self playbackStoreId];
-  v5 = [v3 combineContentsOfPropertyListObject:v4];
+  playbackStoreId = [(WFContextualActionMediaItemDescriptor *)self playbackStoreId];
+  v5 = [v3 combineContentsOfPropertyListObject:playbackStoreId];
 
-  v6 = [(WFContextualActionMediaItemDescriptor *)self name];
-  v7 = [v3 combineContentsOfPropertyListObject:v6];
+  name = [(WFContextualActionMediaItemDescriptor *)self name];
+  v7 = [v3 combineContentsOfPropertyListObject:name];
 
   v8 = [v3 finalize];
   return v8;
@@ -138,21 +138,21 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFContextualActionMediaItemDescriptor *)self name];
-  v7 = [(WFContextualActionMediaItemDescriptor *)self playbackStoreId];
-  v8 = [v3 stringWithFormat:@"<%@ %p> Name: %@, Playback Store ID: %@", v5, self, v6, v7];
+  name = [(WFContextualActionMediaItemDescriptor *)self name];
+  playbackStoreId = [(WFContextualActionMediaItemDescriptor *)self playbackStoreId];
+  v8 = [v3 stringWithFormat:@"<%@ %p> Name: %@, Playback Store ID: %@", v5, self, name, playbackStoreId];
 
   return v8;
 }
 
-- (WFContextualActionMediaItemDescriptor)initWithPlaybackStoreId:(id)a3 name:(id)a4
+- (WFContextualActionMediaItemDescriptor)initWithPlaybackStoreId:(id)id name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  idCopy = id;
+  nameCopy = name;
+  v10 = nameCopy;
+  if (idCopy)
   {
-    if (v9)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -160,8 +160,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFContextualActionMediaItemDescriptor.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"playbackStoreId"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContextualActionMediaItemDescriptor.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"playbackStoreId"}];
 
     if (v10)
     {
@@ -169,8 +169,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"WFContextualActionMediaItemDescriptor.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFContextualActionMediaItemDescriptor.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -179,7 +179,7 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_playbackStoreId, a3);
+    objc_storeStrong(&v11->_playbackStoreId, id);
     v13 = [v10 copy];
     name = v12->_name;
     v12->_name = v13;

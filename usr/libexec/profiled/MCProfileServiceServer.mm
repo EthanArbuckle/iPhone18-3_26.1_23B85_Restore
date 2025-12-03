@@ -1,120 +1,120 @@
 @interface MCProfileServiceServer
-+ (id)_descriptionForServiceSubscriptionContext:(id)a3;
-+ (id)_optionsForCarrierProfileInstallationForCarrierIdentifier:(id)a3 name:(id)a4;
++ (id)_descriptionForServiceSubscriptionContext:(id)context;
++ (id)_optionsForCarrierProfileInstallationForCarrierIdentifier:(id)identifier name:(id)name;
 + (id)sharedServer;
 - (BOOL)_hasCompletedPostLoginWork;
-- (BOOL)_isValidProvisioningProfileData:(id)a3;
-- (BOOL)isBundleBlocked:(id)a3 outHash:(id *)a4 outHashType:(id *)a5;
+- (BOOL)_isValidProvisioningProfileData:(id)data;
+- (BOOL)isBundleBlocked:(id)blocked outHash:(id *)hash outHashType:(id *)type;
 - (BOOL)isOpenInRestrictionInEffect;
 - (BOOL)mayOpenFromManagedToUnmanaged;
 - (BOOL)mayOpenFromUnmanagedToManaged;
-- (BOOL)shouldApplyFilterForBundleID:(id)a3 sourceAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6;
-- (BOOL)storeCloudConfigurationDetails:(id)a3 outError:(id *)a4;
+- (BOOL)shouldApplyFilterForBundleID:(id)d sourceAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts;
+- (BOOL)storeCloudConfigurationDetails:(id)details outError:(id *)error;
 - (MCProfileServiceServer)init;
-- (id)URLForInstallingProfileInSettingsApp:(id)a3 returningToBundleID:(id)a4;
+- (id)URLForInstallingProfileInSettingsApp:(id)app returningToBundleID:(id)d;
 - (id)_badProvisioningProfileError;
-- (id)_carrierNameFromContext:(id)a3;
+- (id)_carrierNameFromContext:(id)context;
 - (id)_localProvisioningProfileError;
-- (id)bookmarkDictsFromBookmarks:(id)a3;
-- (id)bookmarksFromBookmarkDicts:(id)a3;
-- (id)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)a3;
-- (void)_debug_scheduleBackgroundTask:(id)a3 interval:(double)a4 tolerance:(double)a5 completion:(id)a6;
-- (void)_handleSettingsJumpWithProfileData:(id)a3 targetDeviceType:(unint64_t)a4 bundleID:(id)a5;
+- (id)bookmarkDictsFromBookmarks:(id)bookmarks;
+- (id)bookmarksFromBookmarkDicts:(id)dicts;
+- (id)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)info;
+- (void)_debug_scheduleBackgroundTask:(id)task interval:(double)interval tolerance:(double)tolerance completion:(id)completion;
+- (void)_handleSettingsJumpWithProfileData:(id)data targetDeviceType:(unint64_t)type bundleID:(id)d;
 - (void)_markPostUserLoginWorkCompleted;
 - (void)_sendEffectiveSettingsChangedNotification;
 - (void)_sendRestrictionChangedNotification;
-- (void)_workerQueueCheckCarrierProfileForCarrierIdentifier:(id)a3 name:(id)a4 atPath:(id)a5 forceReinstallation:(BOOL)a6;
+- (void)_workerQueueCheckCarrierProfileForCarrierIdentifier:(id)identifier name:(id)name atPath:(id)path forceReinstallation:(BOOL)reinstallation;
 - (void)_workerQueueCheckCarrierProfileOnUnlockSometimes;
 - (void)_workerQueueForceCheckOfCarrierProfileOnNextUnlock;
 - (void)_workerQueuePrepareForService;
 - (void)_workerQueueRemoveAllCarrierProfiles;
-- (void)_workerQueueSignIntoFaceTimeWithUsername:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applyPairingWatchMDMEnrollmentData:(id)a3 source:(id)a4 completion:(id)a5;
-- (void)applyRestrictionDictionary:(id)a3 toSystem:(BOOL)a4 overrideRestrictions:(BOOL)a5 appsAndOptions:(id)a6 clientType:(id)a7 clientUUID:(id)a8 sender:(id)a9 localizedClientDescription:(id)a10 localizedWarningMessage:(id)a11 completion:(id)a12;
-- (void)changePasscodeWithOldPasscodeContext:(id)a3 newPasscodeContext:(id)a4 isRecovery:(BOOL)a5 skipRecovery:(BOOL)a6 senderBundleID:(id)a7 completion:(id)a8;
-- (void)checkCarrierProfileAndForceReinstallation:(BOOL)a3 completion:(id)a4;
-- (void)checkInWithCompletion:(id)a3;
-- (void)clearPasscodeWithEscrowKeybagData:(id)a3 secretContext:(id)a4 senderBundleID:(id)a5 completion:(id)a6;
-- (void)clearRecoveryPasscodeWithSenderBundleID:(id)a3 completion:(id)a4;
-- (void)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)a3 completion:(id)a4;
-- (void)cloudConfigurationStoreDetails:(id)a3 completion:(id)a4;
-- (void)cloudConfigurationStoreDetailsForPendingMigration:(id)a3 completion:(id)a4;
-- (void)createActivationLockBypassCodeWithCompletion:(id)a3;
-- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)a3 completion:(id)a4;
-- (void)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)effectiveBoolValueForWatchSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6;
-- (void)effectiveValueForWatchSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6;
-- (void)effectiveValuesForWatchIntersectionSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6;
-- (void)effectiveValuesForWatchUnionSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6;
-- (void)fetchConfigurationWithCompletionBlock:(id)a3;
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3;
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)a3 completion:(id)a4;
-- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)a3;
-- (void)installProfileData:(id)a3 interactionClient:(id)a4 options:(id)a5 source:(id)a6 completion:(id)a7;
-- (void)installProvisioningProfileData:(id)a3 managingProfileIdentifier:(id)a4 completion:(id)a5;
-- (void)isPasscodeCompliantWithNamedPolicy:(id)a3 completion:(id)a4;
+- (void)_workerQueueSignIntoFaceTimeWithUsername:(id)username;
+- (void)applicationsDidInstall:(id)install;
+- (void)applyPairingWatchMDMEnrollmentData:(id)data source:(id)source completion:(id)completion;
+- (void)applyRestrictionDictionary:(id)dictionary toSystem:(BOOL)system overrideRestrictions:(BOOL)restrictions appsAndOptions:(id)options clientType:(id)type clientUUID:(id)d sender:(id)sender localizedClientDescription:(id)self0 localizedWarningMessage:(id)self1 completion:(id)self2;
+- (void)changePasscodeWithOldPasscodeContext:(id)context newPasscodeContext:(id)passcodeContext isRecovery:(BOOL)recovery skipRecovery:(BOOL)skipRecovery senderBundleID:(id)d completion:(id)completion;
+- (void)checkCarrierProfileAndForceReinstallation:(BOOL)reinstallation completion:(id)completion;
+- (void)checkInWithCompletion:(id)completion;
+- (void)clearPasscodeWithEscrowKeybagData:(id)data secretContext:(id)context senderBundleID:(id)d completion:(id)completion;
+- (void)clearRecoveryPasscodeWithSenderBundleID:(id)d completion:(id)completion;
+- (void)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)info completion:(id)completion;
+- (void)cloudConfigurationStoreDetails:(id)details completion:(id)completion;
+- (void)cloudConfigurationStoreDetailsForPendingMigration:(id)migration completion:(id)completion;
+- (void)createActivationLockBypassCodeWithCompletion:(id)completion;
+- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)context completion:(id)completion;
+- (void)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)effectiveBoolValueForWatchSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion;
+- (void)effectiveValueForWatchSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion;
+- (void)effectiveValuesForWatchIntersectionSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion;
+- (void)effectiveValuesForWatchUnionSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion;
+- (void)fetchConfigurationWithCompletionBlock:(id)block;
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion;
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)token completion:(id)completion;
+- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)completion;
+- (void)installProfileData:(id)data interactionClient:(id)client options:(id)options source:(id)source completion:(id)completion;
+- (void)installProvisioningProfileData:(id)data managingProfileIdentifier:(id)identifier completion:(id)completion;
+- (void)isPasscodeCompliantWithNamedPolicy:(id)policy completion:(id)completion;
 - (void)localeChanged;
-- (void)managedSystemConfigurationServiceIDsWithCompletion:(id)a3;
-- (void)managedWiFiNetworkNamesWithCompletion:(id)a3;
-- (void)managingOrganizationInformationWithCompletion:(id)a3;
-- (void)markStoredProfileAsInstalledWithCompletion:(id)a3;
-- (void)mayShareToWhitelistedSourceUnmanagedTargetAppWithServiceName:(id)a3 originatingAppBundleID:(id)a4 originatingAccountIsManaged:(BOOL)a5 completion:(id)a6;
-- (void)migrateCleanupMigratorWithContext:(int)a3 completion:(id)a4;
-- (void)migrateWithContext:(int)a3 passcodeWasSetInBackup:(BOOL)a4 completion:(id)a5;
-- (void)monitorEnrollmentStateForClient:(id)a3 personaID:(id)a4;
+- (void)managedSystemConfigurationServiceIDsWithCompletion:(id)completion;
+- (void)managedWiFiNetworkNamesWithCompletion:(id)completion;
+- (void)managingOrganizationInformationWithCompletion:(id)completion;
+- (void)markStoredProfileAsInstalledWithCompletion:(id)completion;
+- (void)mayShareToWhitelistedSourceUnmanagedTargetAppWithServiceName:(id)name originatingAppBundleID:(id)d originatingAccountIsManaged:(BOOL)managed completion:(id)completion;
+- (void)migrateCleanupMigratorWithContext:(int)context completion:(id)completion;
+- (void)migrateWithContext:(int)context passcodeWasSetInBackup:(BOOL)backup completion:(id)completion;
+- (void)monitorEnrollmentStateForClient:(id)client personaID:(id)d;
 - (void)notifyBatterySaverModeChanged;
-- (void)notifyDeviceUnlockedAndPasscodeRequiredWithCompletion:(id)a3;
-- (void)notifyDeviceUnlockedWithCompletion:(id)a3;
+- (void)notifyDeviceUnlockedAndPasscodeRequiredWithCompletion:(id)completion;
+- (void)notifyDeviceUnlockedWithCompletion:(id)completion;
 - (void)notifyFirstUnlock;
-- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)a3 completion:(id)a4;
+- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)date completion:(id)completion;
 - (void)notifyMementoEffaced;
 - (void)notifyProvisioningProfilesChanged;
-- (void)notifyStartComplianceTimer:(id)a3 completion:(id)a4;
+- (void)notifyStartComplianceTimer:(id)timer completion:(id)completion;
 - (void)notifyUserLoggedIn;
-- (void)openSensitiveURL:(id)a3 unlock:(BOOL)a4 completion:(id)a5;
-- (void)openSettingsAppForProfileInstallation:(id)a3 bundleID:(id)a4;
-- (void)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)a3 withCompletion:(id)a4;
-- (void)popProfileDataFromHeadOfInstallationQueueWithCompletion:(id)a3;
-- (void)provisiongProfileUUIDsForSignerIdentity:(id)a3 completion:(id)a4;
-- (void)queueProfileDataForInstallation:(id)a3 originalFileName:(id)a4 originatingBundleID:(id)a5 transitionToUI:(BOOL)a6 completion:(id)a7;
-- (void)reapplyAppEnforcedRestrictionsWithAssertion:(id)a3;
-- (void)recomputePerClientUserComplianceWithCompletion:(id)a3;
-- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)a3;
-- (void)recomputeUserComplianceWarningWithCompletion:(id)a3;
-- (void)reducedMachineInfoDataWithCompletion:(id)a3;
-- (void)removeBoolSetting:(id)a3 sender:(id)a4 completion:(id)a5;
-- (void)removeExpiredProfilesWithCompletion:(id)a3;
-- (void)removeOrphanedClientRestrictionsWithCompletion:(id)a3;
-- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)a3;
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 source:(id)a5 completion:(id)a6;
-- (void)removeProvisioningProfileWithUUID:(id)a3 managingProfileIdentifier:(id)a4 sender:(id)a5 completion:(id)a6;
-- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)a3;
-- (void)removeUninstalledProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 targetDeviceType:(unint64_t)a5 completion:(id)a6;
-- (void)removeValueSetting:(id)a3 sender:(id)a4 completion:(id)a5;
-- (void)rereadManagedAppAttributesWithCompletion:(id)a3;
-- (void)resetAllSettingsToDefaultsIsUserInitiated:(BOOL)a3 sender:(id)a4 completion:(id)a5;
-- (void)resetPasscodeMetadataWithCompletion:(id)a3;
-- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)a3;
-- (void)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 senderPID:(int)a8 sender:(id)a9 completion:(id)a10;
-- (void)setURLsFromUserBookmarkDictsAsSettings:(id)a3 sender:(id)a4;
-- (void)setUserInfo:(id)a3 forClientUUID:(id)a4 sender:(id)a5 completion:(id)a6;
-- (void)signerIdentityForBundleID:(id)a3 completion:(id)a4;
+- (void)openSensitiveURL:(id)l unlock:(BOOL)unlock completion:(id)completion;
+- (void)openSettingsAppForProfileInstallation:(id)installation bundleID:(id)d;
+- (void)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)type withCompletion:(id)completion;
+- (void)popProfileDataFromHeadOfInstallationQueueWithCompletion:(id)completion;
+- (void)provisiongProfileUUIDsForSignerIdentity:(id)identity completion:(id)completion;
+- (void)queueProfileDataForInstallation:(id)installation originalFileName:(id)name originatingBundleID:(id)d transitionToUI:(BOOL)i completion:(id)completion;
+- (void)reapplyAppEnforcedRestrictionsWithAssertion:(id)assertion;
+- (void)recomputePerClientUserComplianceWithCompletion:(id)completion;
+- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)block;
+- (void)recomputeUserComplianceWarningWithCompletion:(id)completion;
+- (void)reducedMachineInfoDataWithCompletion:(id)completion;
+- (void)removeBoolSetting:(id)setting sender:(id)sender completion:(id)completion;
+- (void)removeExpiredProfilesWithCompletion:(id)completion;
+- (void)removeOrphanedClientRestrictionsWithCompletion:(id)completion;
+- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)completion;
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type source:(id)source completion:(id)completion;
+- (void)removeProvisioningProfileWithUUID:(id)d managingProfileIdentifier:(id)identifier sender:(id)sender completion:(id)completion;
+- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)completion;
+- (void)removeUninstalledProfileWithIdentifier:(id)identifier installationType:(int64_t)type targetDeviceType:(unint64_t)deviceType completion:(id)completion;
+- (void)removeValueSetting:(id)setting sender:(id)sender completion:(id)completion;
+- (void)rereadManagedAppAttributesWithCompletion:(id)completion;
+- (void)resetAllSettingsToDefaultsIsUserInitiated:(BOOL)initiated sender:(id)sender completion:(id)completion;
+- (void)resetPasscodeMetadataWithCompletion:(id)completion;
+- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)completion;
+- (void)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set senderPID:(int)iD sender:(id)sender completion:(id)self0;
+- (void)setURLsFromUserBookmarkDictsAsSettings:(id)settings sender:(id)sender;
+- (void)setUserInfo:(id)info forClientUUID:(id)d sender:(id)sender completion:(id)completion;
+- (void)signerIdentityForBundleID:(id)d completion:(id)completion;
 - (void)start;
-- (void)storeActivationRecord:(id)a3 completion:(id)a4;
-- (void)storeCertificateData:(id)a3 forIPCUIdentifier:(id)a4 completion:(id)a5;
-- (void)storeProfileData:(id)a3 completion:(id)a4;
-- (void)storedProfileDataWithCompletion:(id)a3;
-- (void)syncTrustedCodeSigningIdentitiesWithCompletion:(id)a3;
-- (void)trustedCodeSigningIdentitiesWithCompletion:(id)a3;
-- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)a3;
-- (void)updateMDMEnrollmentInfoForPairingWatch:(id)a3 completion:(id)a4;
-- (void)updateProfileIdentifier:(id)a3 interactionClient:(id)a4 source:(id)a5 completion:(id)a6;
-- (void)validateAppBundleIDs:(id)a3 completion:(id)a4;
-- (void)verifiedMDMProfileIdentifierWithCompletion:(id)a3;
-- (void)waitForMigrationIncludingPostRestoreMigration:(BOOL)a3 completion:(id)a4;
+- (void)storeActivationRecord:(id)record completion:(id)completion;
+- (void)storeCertificateData:(id)data forIPCUIdentifier:(id)identifier completion:(id)completion;
+- (void)storeProfileData:(id)data completion:(id)completion;
+- (void)storedProfileDataWithCompletion:(id)completion;
+- (void)syncTrustedCodeSigningIdentitiesWithCompletion:(id)completion;
+- (void)trustedCodeSigningIdentitiesWithCompletion:(id)completion;
+- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)completion;
+- (void)updateMDMEnrollmentInfoForPairingWatch:(id)watch completion:(id)completion;
+- (void)updateProfileIdentifier:(id)identifier interactionClient:(id)client source:(id)source completion:(id)completion;
+- (void)validateAppBundleIDs:(id)ds completion:(id)completion;
+- (void)verifiedMDMProfileIdentifierWithCompletion:(id)completion;
+- (void)waitForMigrationIncludingPostRestoreMigration:(BOOL)migration completion:(id)completion;
 - (void)workerQueueCheckForAutoInstallProfiles;
-- (void)workerQueueDidRecomputeNagMessageWithResult:(BOOL)a3;
+- (void)workerQueueDidRecomputeNagMessageWithResult:(BOOL)result;
 - (void)workerQueueNotifyDeviceUnlockedAndPasscodeRequired;
 - (void)workerQueueNotifyUserLoggedIn;
 - (void)workerQueueReadBiometricState;
@@ -212,8 +212,8 @@
 
 - (void)notifyBatterySaverModeChanged
 {
-  v2 = [(MCProfileServiceServer *)self clientRestrictionQueue];
-  dispatch_async(v2, &stru_10011B7B8);
+  clientRestrictionQueue = [(MCProfileServiceServer *)self clientRestrictionQueue];
+  dispatch_async(clientRestrictionQueue, &stru_10011B7B8);
 }
 
 - (void)localeChanged
@@ -229,17 +229,17 @@
   [(MCProfileServiceServer *)self reapplyAppEnforcedRestrictionsWithAssertion:v3];
 }
 
-- (void)reapplyAppEnforcedRestrictionsWithAssertion:(id)a3
+- (void)reapplyAppEnforcedRestrictionsWithAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [(MCProfileServiceServer *)self clientRestrictionQueue];
+  assertionCopy = assertion;
+  clientRestrictionQueue = [(MCProfileServiceServer *)self clientRestrictionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004030;
   block[3] = &unk_10011B688;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = assertionCopy;
+  v6 = assertionCopy;
+  dispatch_async(clientRestrictionQueue, block);
 }
 
 - (void)_workerQueuePrepareForService
@@ -252,13 +252,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Performing startup checks.", buf, 2u);
   }
 
-  v5 = [(MCProfileServiceServer *)self memberQueue];
+  memberQueue = [(MCProfileServiceServer *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000048A4;
   block[3] = &unk_10011B688;
   block[4] = self;
-  dispatch_barrier_async(v5, block);
+  dispatch_barrier_async(memberQueue, block);
 
   v6 = +[NSFileManager defaultManager];
   v7 = MCCrashDetectionFilePath();
@@ -285,9 +285,9 @@
   }
 
   v14 = +[MCPasscodeManager sharedManager];
-  v15 = [v14 isPasscodeSet];
+  isPasscodeSet = [v14 isPasscodeSet];
 
-  if ((v15 & 1) == 0)
+  if ((isPasscodeSet & 1) == 0)
   {
     [(MCProfileServiceServer *)self workerQueueNotifyDeviceUnlocked];
   }
@@ -399,18 +399,18 @@ LABEL_27:
   }
 }
 
-- (void)workerQueueDidRecomputeNagMessageWithResult:(BOOL)a3
+- (void)workerQueueDidRecomputeNagMessageWithResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
+    v10[1] = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Finished recomputing nag message. Success: %d", v10, 8u);
   }
 
-  if (v3)
+  if (resultCopy)
   {
     v6 = +[NSFileManager defaultManager];
     v7 = MCOutstandingNagComputationFilePath();
@@ -437,9 +437,9 @@ LABEL_27:
   }
 
   v4 = +[MCRestrictionManagerWriter sharedManager];
-  v5 = [v4 recomputeNagMetadata];
+  recomputeNagMetadata = [v4 recomputeNagMetadata];
 
-  [(MCProfileServiceServer *)self workerQueueDidRecomputeNagMessageWithResult:v5];
+  [(MCProfileServiceServer *)self workerQueueDidRecomputeNagMessageWithResult:recomputeNagMetadata];
 }
 
 - (void)workerQueueCheckForAutoInstallProfiles
@@ -461,9 +461,9 @@ LABEL_27:
   if (v6)
   {
     v7 = +[MCPasscodeManager sharedManager];
-    v8 = [v7 isDeviceLocked];
+    isDeviceLocked = [v7 isDeviceLocked];
 
-    if (v8)
+    if (isDeviceLocked)
     {
       v9 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
@@ -477,7 +477,7 @@ LABEL_27:
     {
       v40 = v3;
       v41 = v4;
-      v42 = self;
+      selfCopy = self;
       v10 = +[NSMutableArray array];
       v50 = 0u;
       v51 = 0u;
@@ -545,8 +545,8 @@ LABEL_27:
 
             v25 = *(*(&v46 + 1) + 8 * j);
             v26 = objc_autoreleasePoolPush();
-            v27 = [v25 pathExtension];
-            v28 = [v27 isEqualToString:@"mobileconfig"];
+            pathExtension = [v25 pathExtension];
+            v28 = [pathExtension isEqualToString:@"mobileconfig"];
 
             if (v28)
             {
@@ -576,9 +576,9 @@ LABEL_27:
                   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
                   {
                     v37 = v36;
-                    v38 = [v35 MCVerboseDescription];
+                    mCVerboseDescription = [v35 MCVerboseDescription];
                     *buf = 138543362;
-                    v58 = v38;
+                    v58 = mCVerboseDescription;
                     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Installation failed. Error: %{public}@", buf, 0xCu);
                   }
                 }
@@ -597,11 +597,11 @@ LABEL_27:
       CFPreferencesSetAppValue(v40, kCFBooleanTrue, v41);
       CFPreferencesAppSynchronize(v41);
 
-      self = v42;
+      self = selfCopy;
     }
 
-    v39 = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
-    [v39 scheduleProfileJanitorTask];
+    workerQueueBackgroundTaskManager = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
+    [workerQueueBackgroundTaskManager scheduleProfileJanitorTask];
   }
 }
 
@@ -632,9 +632,9 @@ LABEL_27:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, MCEffectiveSettingsChangedNotification, 0, 0, 1u);
 }
 
-- (void)checkInWithCompletion:(id)a3
+- (void)checkInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _MCLogObjects[2];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -643,9 +643,9 @@ LABEL_27:
   }
 
   os_unfair_lock_lock(&self->_checkInLock);
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v6 = _MCLogObjects[2];
@@ -658,74 +658,74 @@ LABEL_27:
   os_unfair_lock_unlock(&self->_checkInLock);
 }
 
-- (void)verifiedMDMProfileIdentifierWithCompletion:(id)a3
+- (void)verifiedMDMProfileIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000052F0;
   block[3] = &unk_10011B800;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)popProfileDataFromHeadOfInstallationQueueWithCompletion:(id)a3
+- (void)popProfileDataFromHeadOfInstallationQueueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000541C;
   block[3] = &unk_10011B800;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)a3 withCompletion:(id)a4
+- (void)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)type withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100005548;
   v9[3] = &unk_10011B828;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  typeCopy = type;
+  v8 = completionCopy;
   dispatch_async(workerQueue, v9);
 }
 
-- (void)queueProfileDataForInstallation:(id)a3 originalFileName:(id)a4 originatingBundleID:(id)a5 transitionToUI:(BOOL)a6 completion:(id)a7
+- (void)queueProfileDataForInstallation:(id)installation originalFileName:(id)name originatingBundleID:(id)d transitionToUI:(BOOL)i completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  installationCopy = installation;
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100005700;
   v21[3] = &unk_10011B878;
-  v27 = a6;
-  v25 = self;
-  v26 = v15;
-  v22 = v14;
-  v23 = v12;
-  v24 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  v20 = v14;
+  iCopy = i;
+  selfCopy = self;
+  v26 = completionCopy;
+  v22 = dCopy;
+  v23 = installationCopy;
+  v24 = nameCopy;
+  v17 = nameCopy;
+  v18 = installationCopy;
+  v19 = completionCopy;
+  v20 = dCopy;
   dispatch_async(workerQueue, v21);
 }
 
-- (BOOL)_isValidProvisioningProfileData:(id)a3
+- (BOOL)_isValidProvisioningProfileData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = MISProfileCreateWithData();
     if (v4)
@@ -756,124 +756,124 @@ LABEL_27:
   return v4;
 }
 
-- (void)installProfileData:(id)a3 interactionClient:(id)a4 options:(id)a5 source:(id)a6 completion:(id)a7
+- (void)installProfileData:(id)data interactionClient:(id)client options:(id)options source:(id)source completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  clientCopy = client;
+  optionsCopy = options;
+  sourceCopy = source;
+  completionCopy = completion;
   v17 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-InstallProfile"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005D48;
   block[3] = &unk_10011B8C8;
-  v26 = v12;
-  v27 = v14;
-  v28 = v13;
-  v29 = v15;
+  v26 = dataCopy;
+  v27 = optionsCopy;
+  v28 = clientCopy;
+  v29 = sourceCopy;
   v31 = v17;
-  v32 = v16;
-  v30 = self;
+  v32 = completionCopy;
+  selfCopy = self;
   v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v13;
-  v23 = v14;
-  v24 = v12;
+  v20 = completionCopy;
+  v21 = sourceCopy;
+  v22 = clientCopy;
+  v23 = optionsCopy;
+  v24 = dataCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)updateProfileIdentifier:(id)a3 interactionClient:(id)a4 source:(id)a5 completion:(id)a6
+- (void)updateProfileIdentifier:(id)identifier interactionClient:(id)client source:(id)source completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  clientCopy = client;
+  sourceCopy = source;
+  completionCopy = completion;
   v14 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-UpdateProfileID"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000604C;
   block[3] = &unk_10011B8F0;
-  v22 = v10;
-  v23 = v11;
+  v22 = identifierCopy;
+  v23 = clientCopy;
   v25 = v14;
-  v26 = v13;
-  v24 = v12;
+  v26 = completionCopy;
+  v24 = sourceCopy;
   v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v17 = completionCopy;
+  v18 = sourceCopy;
+  v19 = clientCopy;
+  v20 = identifierCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 source:(id)a5 completion:(id)a6
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type source:(id)source completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  completionCopy = completion;
   v13 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-RemoveProfile"];
   workerQueue = self->_workerQueue;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100006238;
   v19[3] = &unk_10011B940;
-  v20 = v10;
-  v21 = v11;
-  v24 = v12;
-  v25 = a4;
-  v22 = self;
+  v20 = identifierCopy;
+  v21 = sourceCopy;
+  v24 = completionCopy;
+  typeCopy = type;
+  selfCopy = self;
   v23 = v13;
   v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v16 = completionCopy;
+  v17 = sourceCopy;
+  v18 = identifierCopy;
   dispatch_async(workerQueue, v19);
 }
 
-- (void)removeUninstalledProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 targetDeviceType:(unint64_t)a5 completion:(id)a6
+- (void)removeUninstalledProfileWithIdentifier:(id)identifier installationType:(int64_t)type targetDeviceType:(unint64_t)deviceType completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v12 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-RemoveUninstalledProfile"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000647C;
   block[3] = &unk_10011B968;
-  v21 = a4;
-  v22 = a5;
+  typeCopy = type;
+  deviceTypeCopy = deviceType;
   v19 = v12;
-  v20 = v11;
-  v18 = v10;
+  v20 = completionCopy;
+  v18 = identifierCopy;
   v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v15 = completionCopy;
+  v16 = identifierCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)applyRestrictionDictionary:(id)a3 toSystem:(BOOL)a4 overrideRestrictions:(BOOL)a5 appsAndOptions:(id)a6 clientType:(id)a7 clientUUID:(id)a8 sender:(id)a9 localizedClientDescription:(id)a10 localizedWarningMessage:(id)a11 completion:(id)a12
+- (void)applyRestrictionDictionary:(id)dictionary toSystem:(BOOL)system overrideRestrictions:(BOOL)restrictions appsAndOptions:(id)options clientType:(id)type clientUUID:(id)d sender:(id)sender localizedClientDescription:(id)self0 localizedWarningMessage:(id)self1 completion:(id)self2
 {
-  v29 = a5;
-  v30 = a4;
-  v31 = a12;
-  v16 = a11;
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a3;
+  restrictionsCopy = restrictions;
+  systemCopy = system;
+  completionCopy = completion;
+  messageCopy = message;
+  descriptionCopy = description;
+  senderCopy = sender;
+  dCopy = d;
+  typeCopy = type;
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
   v23 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-ApplyRestrictions"];
   v34 = 0;
   v33 = 0;
   v24 = +[MCRestrictionManagerWriter sharedManager];
   v32 = 0;
   LOBYTE(v27) = 1;
-  [v24 setClientRestrictions:v22 overrideRestrictions:v29 appsAndOptions:v21 system:v30 clientType:v20 clientUUID:v19 sender:v18 localizedClientDescription:v17 localizedWarning:v16 shouldRecomputeNag:v27 outRestrictionsChanged:&v34 + 1 outEffectiveSettingsChanged:&v34 outRecomputedNag:&v33 outError:&v32];
+  [v24 setClientRestrictions:dictionaryCopy overrideRestrictions:restrictionsCopy appsAndOptions:optionsCopy system:systemCopy clientType:typeCopy clientUUID:dCopy sender:senderCopy localizedClientDescription:descriptionCopy localizedWarning:messageCopy shouldRecomputeNag:v27 outRestrictionsChanged:&v34 + 1 outEffectiveSettingsChanged:&v34 outRecomputedNag:&v33 outError:&v32];
 
   v25 = v32;
   [(MCProfileServiceServer *)self workerQueueDidRecomputeNagMessageWithResult:v33];
@@ -893,38 +893,38 @@ LABEL_27:
     v26 = 0;
   }
 
-  (*(v31 + 2))(v31, HIBYTE(v34), v26 & 1, v25);
+  (*(completionCopy + 2))(completionCopy, HIBYTE(v34), v26 & 1, v25);
 }
 
-- (void)removeOrphanedClientRestrictionsWithCompletion:(id)a3
+- (void)removeOrphanedClientRestrictionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000067F8;
   block[3] = &unk_10011B800;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)setUserInfo:(id)a3 forClientUUID:(id)a4 sender:(id)a5 completion:(id)a6
+- (void)setUserInfo:(id)info forClientUUID:(id)d sender:(id)sender completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  senderCopy = sender;
+  dCopy = d;
+  infoCopy = info;
   v14 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-SetUserInfo"];
   v13 = +[MCRestrictionManagerWriter sharedManager];
-  [v13 setUserInfo:v12 forClientUUID:v11 sender:v10];
+  [v13 setUserInfo:infoCopy forClientUUID:dCopy sender:senderCopy];
 
-  v9[2](v9, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)waitForMigrationIncludingPostRestoreMigration:(BOOL)a3 completion:(id)a4
+- (void)waitForMigrationIncludingPostRestoreMigration:(BOOL)migration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -933,7 +933,7 @@ LABEL_27:
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = [(MCProfileServiceServer *)self memberQueue];
+  memberQueue = [(MCProfileServiceServer *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006BDC;
@@ -941,9 +941,9 @@ LABEL_27:
   block[4] = self;
   block[5] = &v20;
   block[6] = &v16;
-  dispatch_sync(v7, block);
+  dispatch_sync(memberQueue, block);
 
-  if (a3)
+  if (migration)
   {
 LABEL_2:
     workerQueue = self->_workerQueue;
@@ -951,7 +951,7 @@ LABEL_2:
     v12[1] = 3221225472;
     v12[2] = sub_100006C24;
     v12[3] = &unk_10011B800;
-    v13 = v6;
+    v13 = completionCopy;
     dispatch_async_and_wait(workerQueue, v12);
 
     goto LABEL_3;
@@ -994,9 +994,9 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Allowing client to proceed.", buf, 2u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_3:
@@ -1033,27 +1033,27 @@ LABEL_3:
   return v3;
 }
 
-- (void)mayShareToWhitelistedSourceUnmanagedTargetAppWithServiceName:(id)a3 originatingAppBundleID:(id)a4 originatingAccountIsManaged:(BOOL)a5 completion:(id)a6
+- (void)mayShareToWhitelistedSourceUnmanagedTargetAppWithServiceName:(id)name originatingAppBundleID:(id)d originatingAccountIsManaged:(BOOL)managed completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  managedCopy = managed;
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
   v13 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v19 = 138543874;
-    v20 = v10;
+    v20 = nameCopy;
     v21 = 2114;
-    v22 = v11;
+    v22 = dCopy;
     v23 = 1024;
-    v24 = v7;
+    v24 = managedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Checking if app is allowed to share to %{public}@. App bundle ID: %{public}@, account is managed: %d.", &v19, 0x1Cu);
   }
 
   v14 = +[MDMManagedMediaReader attributesByAppID];
-  v15 = [v14 allKeys];
-  v16 = [NSSet setWithArray:v15];
+  allKeys = [v14 allKeys];
+  v16 = [NSSet setWithArray:allKeys];
 
   if (![(MCProfileServiceServer *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromOpenInSourceRestrictions() & 1) != 0)
   {
@@ -1062,38 +1062,38 @@ LABEL_3:
 
   if (MCIsAppAccountBasedSourceForOpenIn())
   {
-    if (v7)
+    if (managedCopy)
     {
       goto LABEL_13;
     }
 
 LABEL_5:
-    v17 = 1;
+    mayOpenFromManagedToUnmanaged = 1;
     goto LABEL_6;
   }
 
-  if (([v16 containsObject:v11] & 1) == 0)
+  if (([v16 containsObject:dCopy] & 1) == 0)
   {
     goto LABEL_5;
   }
 
 LABEL_13:
-  v17 = [(MCProfileServiceServer *)self mayOpenFromManagedToUnmanaged];
+  mayOpenFromManagedToUnmanaged = [(MCProfileServiceServer *)self mayOpenFromManagedToUnmanaged];
 LABEL_6:
   v18 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v19 = 67109120;
-    LODWORD(v20) = v17;
+    LODWORD(v20) = mayOpenFromManagedToUnmanaged;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Result: %d", &v19, 8u);
   }
 
-  v12[2](v12, v17, 0);
+  completionCopy[2](completionCopy, mayOpenFromManagedToUnmanaged, 0);
 }
 
-- (BOOL)shouldApplyFilterForBundleID:(id)a3 sourceAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6
+- (BOOL)shouldApplyFilterForBundleID:(id)d sourceAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts
 {
-  v10 = a3;
+  dCopy = d;
   if (![(MCProfileServiceServer *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromOpenInSourceRestrictions() & 1) != 0)
   {
     goto LABEL_3;
@@ -1102,61 +1102,61 @@ LABEL_6:
   if (!MCIsAppAccountBasedSourceForOpenIn())
   {
     v15 = +[MDMManagedMediaReader attributesByAppID];
-    v16 = [v15 allKeys];
-    v17 = [NSSet setWithArray:v16];
+    allKeys = [v15 allKeys];
+    v17 = [NSSet setWithArray:allKeys];
 
-    LODWORD(v15) = [v17 containsObject:v10];
+    LODWORD(v15) = [v17 containsObject:dCopy];
     if (v15)
     {
       goto LABEL_11;
     }
 
 LABEL_12:
-    v13 = [(MCProfileServiceServer *)self mayOpenFromUnmanagedToManaged];
+    mayOpenFromUnmanagedToManaged = [(MCProfileServiceServer *)self mayOpenFromUnmanagedToManaged];
     v11 = 1;
-    v12 = 1;
+    mayOpenFromManagedToUnmanaged = 1;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (management == 1)
   {
     goto LABEL_12;
   }
 
-  if (a4 == 2)
+  if (management == 2)
   {
 LABEL_11:
-    v12 = [(MCProfileServiceServer *)self mayOpenFromManagedToUnmanaged];
+    mayOpenFromManagedToUnmanaged = [(MCProfileServiceServer *)self mayOpenFromManagedToUnmanaged];
     v11 = 1;
     goto LABEL_4;
   }
 
 LABEL_3:
   v11 = 0;
-  v12 = 1;
+  mayOpenFromManagedToUnmanaged = 1;
 LABEL_4:
-  v13 = 1;
+  mayOpenFromUnmanagedToManaged = 1;
 LABEL_5:
-  *a5 = v13;
-  *a6 = v12;
+  *accounts = mayOpenFromUnmanagedToManaged;
+  *unmanagedAccounts = mayOpenFromManagedToUnmanaged;
 
   return v11;
 }
 
-- (void)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v7 = [MCCommunicationServiceRulesUtilities defaultAppBundleIDForCommunicationServiceType:a3 forAccountWithIdentifier:a4];
-  if (v8)
+  completionCopy = completion;
+  v7 = [MCCommunicationServiceRulesUtilities defaultAppBundleIDForCommunicationServiceType:type forAccountWithIdentifier:identifier];
+  if (completionCopy)
   {
-    v8[2](v8, v7, 0);
+    completionCopy[2](completionCopy, v7, 0);
   }
 }
 
-- (void)notifyStartComplianceTimer:(id)a3 completion:(id)a4
+- (void)notifyStartComplianceTimer:(id)timer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-StartComplianceTimer"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1164,18 +1164,18 @@ LABEL_5:
   block[2] = sub_100008B68;
   block[3] = &unk_10011BB08;
   v15 = v8;
-  v16 = v7;
-  v14 = v6;
+  v16 = completionCopy;
+  v14 = timerCopy;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = completionCopy;
+  v12 = timerCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)a3 completion:(id)a4
+- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   v8 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-HaveSeenComplianceMessage"];
   if (os_log_type_enabled(_MCLogObjects[2], OS_LOG_TYPE_DEBUG))
   {
@@ -1188,17 +1188,17 @@ LABEL_5:
   block[2] = sub_100008DE4;
   block[3] = &unk_10011BB08;
   v15 = v8;
-  v16 = v7;
-  v14 = v6;
+  v16 = completionCopy;
+  v14 = dateCopy;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = completionCopy;
+  v12 = dateCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)recomputeUserComplianceWarningWithCompletion:(id)a3
+- (void)recomputeUserComplianceWarningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-RecomputeUserComplianceWarning"];
   if (os_log_type_enabled(_MCLogObjects[2], OS_LOG_TYPE_DEBUG))
   {
@@ -1211,16 +1211,16 @@ LABEL_5:
   block[2] = sub_100008F84;
   block[3] = &unk_10011BB08;
   v10 = v5;
-  v11 = v4;
+  v11 = completionCopy;
   block[4] = self;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)recomputePerClientUserComplianceWithCompletion:(id)a3
+- (void)recomputePerClientUserComplianceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-RecomputePerClientUserCompliance"];
   if (os_log_type_enabled(_MCLogObjects[2], OS_LOG_TYPE_DEBUG))
   {
@@ -1233,16 +1233,16 @@ LABEL_5:
   v9[2] = sub_1000090C8;
   v9[3] = &unk_10011B918;
   v10 = v5;
-  v11 = v4;
+  v11 = completionCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   dispatch_async(workerQueue, v9);
 }
 
-- (void)clearRecoveryPasscodeWithSenderBundleID:(id)a3 completion:(id)a4
+- (void)clearRecoveryPasscodeWithSenderBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-clearRecoveryPasscode"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1250,45 +1250,45 @@ LABEL_5:
   block[2] = sub_100009218;
   block[3] = &unk_10011BB08;
   v15 = v8;
-  v16 = v7;
-  v14 = v6;
+  v16 = completionCopy;
+  v14 = dCopy;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = completionCopy;
+  v12 = dCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)changePasscodeWithOldPasscodeContext:(id)a3 newPasscodeContext:(id)a4 isRecovery:(BOOL)a5 skipRecovery:(BOOL)a6 senderBundleID:(id)a7 completion:(id)a8
+- (void)changePasscodeWithOldPasscodeContext:(id)context newPasscodeContext:(id)passcodeContext isRecovery:(BOOL)recovery skipRecovery:(BOOL)skipRecovery senderBundleID:(id)d completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  contextCopy = context;
+  passcodeContextCopy = passcodeContext;
+  dCopy = d;
+  completionCopy = completion;
   v18 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-ChangePasscode"];
   workerQueue = self->_workerQueue;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000094B0;
   v25[3] = &unk_10011BB30;
-  v31 = a5;
-  v26 = v16;
-  v27 = v14;
-  v32 = a6;
+  recoveryCopy = recovery;
+  v26 = dCopy;
+  v27 = contextCopy;
+  skipRecoveryCopy = skipRecovery;
   v29 = v18;
-  v30 = v17;
-  v28 = v15;
+  v30 = completionCopy;
+  v28 = passcodeContextCopy;
   v20 = v18;
-  v21 = v17;
-  v22 = v15;
-  v23 = v14;
-  v24 = v16;
+  v21 = completionCopy;
+  v22 = passcodeContextCopy;
+  v23 = contextCopy;
+  v24 = dCopy;
   dispatch_async(workerQueue, v25);
 }
 
-- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)a3 completion:(id)a4
+- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-CreateMDMUnlockToken"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1296,59 +1296,59 @@ LABEL_5:
   block[2] = sub_100009838;
   block[3] = &unk_10011BB08;
   v15 = v8;
-  v16 = v7;
-  v14 = v6;
+  v16 = completionCopy;
+  v14 = contextCopy;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = completionCopy;
+  v12 = contextCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)clearPasscodeWithEscrowKeybagData:(id)a3 secretContext:(id)a4 senderBundleID:(id)a5 completion:(id)a6
+- (void)clearPasscodeWithEscrowKeybagData:(id)data secretContext:(id)context senderBundleID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
   v14 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-ClearPasscode"];
   workerQueue = self->_workerQueue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100009A88;
   v21[3] = &unk_10011BB58;
-  v22 = v12;
-  v23 = v10;
-  v24 = v11;
-  v25 = self;
+  v22 = dCopy;
+  v23 = dataCopy;
+  v24 = contextCopy;
+  selfCopy = self;
   v26 = v14;
-  v27 = v13;
+  v27 = completionCopy;
   v16 = v14;
-  v17 = v13;
-  v18 = v11;
-  v19 = v10;
-  v20 = v12;
+  v17 = completionCopy;
+  v18 = contextCopy;
+  v19 = dataCopy;
+  v20 = dCopy;
   dispatch_async(workerQueue, v21);
 }
 
-- (void)isPasscodeCompliantWithNamedPolicy:(id)a3 completion:(id)a4
+- (void)isPasscodeCompliantWithNamedPolicy:(id)policy completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100009C70;
   v11[3] = &unk_10011BB80;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = policyCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = policyCopy;
   dispatch_async(workerQueue, v11);
 }
 
-- (void)resetPasscodeMetadataWithCompletion:(id)a3
+- (void)resetPasscodeMetadataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-ResetPasscodeMetadata"];
   workerQueue = self->_workerQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -1356,76 +1356,76 @@ LABEL_5:
   v9[2] = sub_100009DEC;
   v9[3] = &unk_10011B918;
   v10 = v5;
-  v11 = v4;
+  v11 = completionCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   dispatch_async(workerQueue, v9);
 }
 
-- (void)managedSystemConfigurationServiceIDsWithCompletion:(id)a3
+- (void)managedSystemConfigurationServiceIDsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[(MCVPNPayloadHandlerBase *)MCNewVPNPayloadHandler];
-  v3[2](v3, v4, 0);
+  completionCopy[2](completionCopy, v4, 0);
 }
 
-- (void)managedWiFiNetworkNamesWithCompletion:(id)a3
+- (void)managedWiFiNetworkNamesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MCNewWiFiPayloadHandler managedWiFiNetworkNames];
-  v3[2](v3, v4, 0);
+  completionCopy[2](completionCopy, v4, 0);
 }
 
-- (void)migrateWithContext:(int)a3 passcodeWasSetInBackup:(BOOL)a4 completion:(id)a5
+- (void)migrateWithContext:(int)context passcodeWasSetInBackup:(BOOL)backup completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-MigrateWithContext"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A02C;
   block[3] = &unk_10011BBA8;
-  v16 = a3;
-  v17 = a4;
+  contextCopy = context;
+  backupCopy = backup;
   v14 = v9;
-  v15 = v8;
+  v15 = completionCopy;
   v11 = v9;
-  v12 = v8;
+  v12 = completionCopy;
   dispatch_async_and_wait(workerQueue, block);
 }
 
-- (void)migrateCleanupMigratorWithContext:(int)a3 completion:(id)a4
+- (void)migrateCleanupMigratorWithContext:(int)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-MigrationCleanupWithContext"];
   workerQueue = self->_workerQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000A184;
   v11[3] = &unk_10011BBD0;
-  v14 = a3;
+  contextCopy = context;
   v12 = v7;
-  v13 = v6;
+  v13 = completionCopy;
   v11[4] = self;
   v9 = v7;
-  v10 = v6;
+  v10 = completionCopy;
   dispatch_async_and_wait(workerQueue, v11);
 }
 
-- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)a3
+- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[MCInstaller sharedInstaller];
-  [v4 recomputeProfileRestrictionsWithCompletionBlock:v3];
+  [v4 recomputeProfileRestrictionsWithCompletionBlock:blockCopy];
 }
 
-- (void)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 senderPID:(int)a8 sender:(id)a9 completion:(id)a10
+- (void)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set senderPID:(int)iD sender:(id)sender completion:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
+  typeCopy = type;
+  dCopy = d;
+  setCopy = set;
+  senderCopy = sender;
+  completionCopy = completion;
   v20 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-SetParameterForSettings"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1433,88 +1433,88 @@ LABEL_5:
   block[2] = sub_10000A434;
   block[3] = &unk_10011BBF8;
   block[4] = self;
-  v30 = v15;
-  v37 = a5;
-  v38 = a6;
-  v31 = v16;
-  v32 = v17;
-  v36 = a8;
-  v33 = v18;
+  v30 = typeCopy;
+  systemCopy = system;
+  userCopy = user;
+  v31 = dCopy;
+  v32 = setCopy;
+  iDCopy = iD;
+  v33 = senderCopy;
   v34 = v20;
-  v35 = v19;
-  v22 = v19;
+  v35 = completionCopy;
+  v22 = completionCopy;
   v23 = v20;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = v15;
+  v24 = senderCopy;
+  v25 = setCopy;
+  v26 = dCopy;
+  v27 = typeCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)removeBoolSetting:(id)a3 sender:(id)a4 completion:(id)a5
+- (void)removeBoolSetting:(id)setting sender:(id)sender completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingCopy = setting;
+  senderCopy = sender;
+  completionCopy = completion;
   v11 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-RemoveBoolSetting"];
   workerQueue = self->_workerQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000A6E8;
   v17[3] = &unk_10011BC20;
-  v18 = v8;
-  v19 = v9;
+  v18 = settingCopy;
+  v19 = senderCopy;
   v20 = v11;
-  v21 = v10;
+  v21 = completionCopy;
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = completionCopy;
+  v15 = senderCopy;
+  v16 = settingCopy;
   dispatch_async(workerQueue, v17);
 }
 
-- (void)removeValueSetting:(id)a3 sender:(id)a4 completion:(id)a5
+- (void)removeValueSetting:(id)setting sender:(id)sender completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingCopy = setting;
+  senderCopy = sender;
+  completionCopy = completion;
   v11 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-RemoveValueForSetting"];
   workerQueue = self->_workerQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000A880;
   v17[3] = &unk_10011BC20;
-  v18 = v8;
-  v19 = v9;
+  v18 = settingCopy;
+  v19 = senderCopy;
   v20 = v11;
-  v21 = v10;
+  v21 = completionCopy;
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = completionCopy;
+  v15 = senderCopy;
+  v16 = settingCopy;
   dispatch_async(workerQueue, v17);
 }
 
-- (void)openSensitiveURL:(id)a3 unlock:(BOOL)a4 completion:(id)a5
+- (void)openSensitiveURL:(id)l unlock:(BOOL)unlock completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A9C4;
   block[3] = &unk_10011BC48;
-  v16 = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  unlockCopy = unlock;
+  v14 = lCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = lCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)a3
+- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NSFileManager defaultManager];
   v5 = MCPostSetupAutoInstallSetAsideProfilePath();
   if ([v4 fileExistsAtPath:v5])
@@ -1543,15 +1543,15 @@ LABEL_5:
     v9 = 0;
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, v9);
+    completionCopy[2](completionCopy, v9);
   }
 }
 
-- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)a3
+- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NSFileManager defaultManager];
   v5 = MCCloudConfigurationSetAsideDetailsFilePath();
   if ([v4 fileExistsAtPath:v5])
@@ -1580,25 +1580,25 @@ LABEL_5:
     v9 = 0;
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, v9);
+    completionCopy[2](completionCopy, v9);
   }
 }
 
-- (void)_handleSettingsJumpWithProfileData:(id)a3 targetDeviceType:(unint64_t)a4 bundleID:(id)a5
+- (void)_handleSettingsJumpWithProfileData:(id)data targetDeviceType:(unint64_t)type bundleID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 > 2)
+  dataCopy = data;
+  dCopy = d;
+  if (type > 2)
   {
-    if (a4 == 3)
+    if (type == 3)
     {
       v10 = &kMCHomeURLProfilesInstallation;
       goto LABEL_11;
     }
 
-    if (a4 != 4)
+    if (type != 4)
     {
       goto LABEL_8;
     }
@@ -1608,16 +1608,16 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     goto LABEL_7;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v10 = &kMCBridgeURLProfilesInstallation;
 LABEL_11:
-    [(MCProfileServiceServer *)self openSettingsAppForProfileInstallation:*v10 bundleID:v9];
+    [(MCProfileServiceServer *)self openSettingsAppForProfileInstallation:*v10 bundleID:dCopy];
     goto LABEL_12;
   }
 
@@ -1626,37 +1626,37 @@ LABEL_8:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v12 = 134217984;
-    v13 = a4;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Profile Settings Jump is not supported for target device type: %lu", &v12, 0xCu);
   }
 
 LABEL_12:
 }
 
-- (id)URLForInstallingProfileInSettingsApp:(id)a3 returningToBundleID:(id)a4
+- (id)URLForInstallingProfileInSettingsApp:(id)app returningToBundleID:(id)d
 {
-  v4 = @"com.apple.springboard";
-  if (a4)
+  dCopy = @"com.apple.springboard";
+  if (d)
   {
-    v4 = a4;
+    dCopy = d;
   }
 
-  v5 = [NSString stringWithFormat:@"%@&sender=%@", a3, v4];
-  v6 = [NSURL URLWithString:v5];
+  dCopy = [NSString stringWithFormat:@"%@&sender=%@", app, dCopy];
+  v6 = [NSURL URLWithString:dCopy];
 
   return v6;
 }
 
-- (void)openSettingsAppForProfileInstallation:(id)a3 bundleID:(id)a4
+- (void)openSettingsAppForProfileInstallation:(id)installation bundleID:(id)d
 {
-  v4 = @"com.apple.springboard";
-  if (a4)
+  dCopy = @"com.apple.springboard";
+  if (d)
   {
-    v4 = a4;
+    dCopy = d;
   }
 
-  v5 = [NSMutableString stringWithFormat:@"%@&sender=%@", a3, v4];
-  v6 = [[NSURL alloc] initWithString:v5];
+  dCopy = [NSMutableString stringWithFormat:@"%@&sender=%@", installation, dCopy];
+  v6 = [[NSURL alloc] initWithString:dCopy];
   v7 = +[LSApplicationWorkspace defaultWorkspace];
   v9 = MCSBSApplicationLaunchFromURLOptionUnlockDeviceKey();
   v10 = &__kCFBooleanTrue;
@@ -1666,9 +1666,9 @@ LABEL_12:
   notify_post([MCProfileWasQueuedNotification UTF8String]);
 }
 
-- (void)_workerQueueSignIntoFaceTimeWithUsername:(id)a3
+- (void)_workerQueueSignIntoFaceTimeWithUsername:(id)username
 {
-  v3 = a3;
+  usernameCopy = username;
   v4 = _MCLogObjects[2];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1693,7 +1693,7 @@ LABEL_12:
   }
 
   v10 = objc_alloc_init(AKAppleIDAuthenticationContext);
-  [v10 setUsername:v3];
+  [v10 setUsername:usernameCopy];
   [v10 _setPassword:v5];
   [v10 setIsUsernameEditable:0];
   [v10 setServiceType:5];
@@ -1713,8 +1713,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Removing all carrier profiles.", buf, 2u);
   }
 
-  v4 = [(MCProfileServiceServer *)self workerQueue];
-  dispatch_assert_queue_V2(v4);
+  workerQueue = [(MCProfileServiceServer *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
   v5 = +[MCManifest sharedManifest];
   v6 = [v5 identifiersOfProfilesWithFilterFlags:2];
@@ -1750,15 +1750,15 @@ LABEL_12:
   }
 }
 
-+ (id)_descriptionForServiceSubscriptionContext:(id)a3
++ (id)_descriptionForServiceSubscriptionContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = a3;
-    v4 = [v3 uuid];
-    [v3 slotID];
+    contextCopy = context;
+    uuid = [contextCopy uuid];
+    [contextCopy slotID];
 
-    v5 = [NSString stringWithFormat:@"[%@, %s]", v4, CTSubscriptionSlotAsString()];
+    v5 = [NSString stringWithFormat:@"[%@, %s]", uuid, CTSubscriptionSlotAsString()];
   }
 
   else
@@ -1769,21 +1769,21 @@ LABEL_12:
   return v5;
 }
 
-- (void)_workerQueueCheckCarrierProfileForCarrierIdentifier:(id)a3 name:(id)a4 atPath:(id)a5 forceReinstallation:(BOOL)a6
+- (void)_workerQueueCheckCarrierProfileForCarrierIdentifier:(id)identifier name:(id)name atPath:(id)path forceReinstallation:(BOOL)reinstallation
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MCProfileServiceServer *)self workerQueue];
-  dispatch_assert_queue_V2(v13);
+  identifierCopy = identifier;
+  nameCopy = name;
+  pathCopy = path;
+  workerQueue = [(MCProfileServiceServer *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
   v14 = _MCLogObjects[2];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = @"<nil>";
-    if (v12)
+    if (pathCopy)
     {
-      v15 = v12;
+      v15 = pathCopy;
     }
 
     *buf = 138543362;
@@ -1791,16 +1791,16 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "CheckCarrierProfile: (wq) Evaluating carrier profile at path: %{public}@", buf, 0xCu);
   }
 
-  if (v12)
+  if (pathCopy)
   {
-    v54 = v11;
-    v16 = +[MCManifest sharedManifest];
-    v17 = [v16 identifiersOfProfilesWithFilterFlags:2];
+    v54 = nameCopy;
+    workerQueueBackgroundTaskManager2 = +[MCManifest sharedManifest];
+    v17 = [workerQueueBackgroundTaskManager2 identifiersOfProfilesWithFilterFlags:2];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 lastObject];
-      v20 = [MCManifest installedProfileWithIdentifier:v19];
+      lastObject = [v17 lastObject];
+      v20 = [MCManifest installedProfileWithIdentifier:lastObject];
     }
 
     else
@@ -1809,7 +1809,7 @@ LABEL_12:
     }
 
     v22 = +[NSFileManager defaultManager];
-    v23 = [v22 fileExistsAtPath:v12];
+    v23 = [v22 fileExistsAtPath:pathCopy];
 
     if (!v23)
     {
@@ -1821,7 +1821,7 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "CheckCarrierProfile: No configuration profile found in carrier bundle.", buf, 2u);
       }
 
-      v11 = v54;
+      nameCopy = v54;
       if ([v18 count])
       {
         v34 = _MCLogObjects[2];
@@ -1837,13 +1837,13 @@ LABEL_12:
       goto LABEL_53;
     }
 
-    v24 = [NSData dataWithContentsOfFile:v12];
+    v24 = [NSData dataWithContentsOfFile:pathCopy];
     v25 = _MCLogObjects[2];
     v26 = v20;
     v53 = v24;
     if (!v24)
     {
-      v11 = v54;
+      nameCopy = v54;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -1853,7 +1853,7 @@ LABEL_12:
       goto LABEL_52;
     }
 
-    v52 = v10;
+    v52 = identifierCopy;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -1861,20 +1861,20 @@ LABEL_12:
     }
 
     v56 = 0;
-    v27 = [MCProfile profileWithData:v53 outError:&v56];
+    domain = [MCProfile profileWithData:v53 outError:&v56];
     v28 = v56;
     if (!v28)
     {
-      if (!a6 && v20)
+      if (!reinstallation && v20)
       {
-        v29 = [v27 identifier];
-        v30 = [v20 identifier];
-        if ([v29 isEqualToString:v30])
+        identifier = [domain identifier];
+        identifier2 = [v20 identifier];
+        if ([identifier isEqualToString:identifier2])
         {
-          v50 = [v27 UUID];
+          uUID = [domain UUID];
           [v20 UUID];
-          v31 = v49 = v29;
-          v48 = [v50 isEqualToString:v31];
+          v31 = v49 = identifier;
+          v48 = [uUID isEqualToString:v31];
 
           if (v48)
           {
@@ -1913,7 +1913,7 @@ LABEL_12:
         }
 
         v28 = 0;
-        v11 = v54;
+        nameCopy = v54;
         v26 = v51;
         goto LABEL_50;
       }
@@ -1925,51 +1925,51 @@ LABEL_12:
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       v39 = v38;
-      v40 = [v28 MCVerboseDescription];
+      mCVerboseDescription = [v28 MCVerboseDescription];
       *buf = 138543362;
-      v58 = v40;
+      v58 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "CheckCarrierProfile: Error installing carrier profile: %{public}@", buf, 0xCu);
     }
 
     [(MCProfileServiceServer *)self _workerQueueRemoveAllCarrierProfiles];
-    v27 = [v28 domain];
+    domain = [v28 domain];
     v41 = MCInstallationErrorDomain;
-    if ([v27 isEqual:MCInstallationErrorDomain])
+    if ([domain isEqual:MCInstallationErrorDomain])
     {
-      v42 = [v28 code];
+      code = [v28 code];
 
-      if (v42 != 4001)
+      if (code != 4001)
       {
         v26 = v20;
-        v11 = v54;
+        nameCopy = v54;
 LABEL_51:
 
-        v10 = v52;
+        identifierCopy = v52;
 LABEL_52:
 
 LABEL_53:
-        v47 = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
-        [v47 scheduleProfileJanitorTask];
+        workerQueueBackgroundTaskManager = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
+        [workerQueueBackgroundTaskManager scheduleProfileJanitorTask];
 
         goto LABEL_54;
       }
 
-      v43 = [v28 userInfo];
-      v27 = [v43 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo = [v28 userInfo];
+      domain = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-      if (v27)
+      if (domain)
       {
         objc_opt_class();
         v26 = v20;
         if (objc_opt_isKindOfClass())
         {
-          v44 = [v27 domain];
-          v11 = v54;
-          if ([v44 isEqual:v41])
+          v27Domain = [domain domain];
+          nameCopy = v54;
+          if ([v27Domain isEqual:v41])
           {
-            v45 = [v27 code];
+            code2 = [domain code];
 
-            if (v45 == 4009)
+            if (code2 == 4009)
             {
               [(MCProfileServiceServer *)self _workerQueueForceCheckOfCarrierProfileOnNextUnlock];
             }
@@ -1990,7 +1990,7 @@ LABEL_53:
     }
 
 LABEL_49:
-    v11 = v54;
+    nameCopy = v54;
 LABEL_50:
 
     goto LABEL_51;
@@ -2004,25 +2004,25 @@ LABEL_50:
   }
 
   [(MCProfileServiceServer *)self _workerQueueRemoveAllCarrierProfiles];
-  v16 = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
-  [v16 scheduleProfileJanitorTask];
+  workerQueueBackgroundTaskManager2 = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
+  [workerQueueBackgroundTaskManager2 scheduleProfileJanitorTask];
 LABEL_54:
 }
 
-+ (id)_optionsForCarrierProfileInstallationForCarrierIdentifier:(id)a3 name:(id)a4
++ (id)_optionsForCarrierProfileInstallationForCarrierIdentifier:(id)identifier name:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v7 = objc_opt_new();
   [v7 setValue:&off_1001270F0 forKey:kMCInstallProfileOptionFilterFlag];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setValue:v5 forKey:kMCInstallProfileOptionCarrierIdentifier];
+    [v7 setValue:identifierCopy forKey:kMCInstallProfileOptionCarrierIdentifier];
   }
 
-  if (v6)
+  if (nameCopy)
   {
-    [v7 setValue:v6 forKey:kMCInstallProfileOptionCarrierName];
+    [v7 setValue:nameCopy forKey:kMCInstallProfileOptionCarrierName];
   }
 
   v8 = [v7 copy];
@@ -2030,9 +2030,9 @@ LABEL_54:
   return v8;
 }
 
-- (void)checkCarrierProfileAndForceReinstallation:(BOOL)a3 completion:(id)a4
+- (void)checkCarrierProfileAndForceReinstallation:(BOOL)reinstallation completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _MCLogObjects[2];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2045,20 +2045,20 @@ LABEL_54:
   v10[1] = 3221225472;
   v10[2] = sub_10000C0A0;
   v10[3] = &unk_10011BD68;
-  v12 = a3;
+  reinstallationCopy = reinstallation;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(CoreTelephonyClient *)coreTelephonyClient getPreferredDataSubscriptionContext:v10];
 }
 
-- (id)_carrierNameFromContext:(id)a3
+- (id)_carrierNameFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [[CTBundle alloc] initWithBundleType:1];
   coreTelephonyClient = self->_coreTelephonyClient;
   v15 = 0;
-  v7 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:v4 key:@"CarrierName" bundleType:v5 error:&v15];
+  v7 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:contextCopy key:@"CarrierName" bundleType:v5 error:&v15];
 
   v8 = v15;
   if (v7)
@@ -2084,9 +2084,9 @@ LABEL_54:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = [v8 MCVerboseDescription];
+      mCVerboseDescription = [v8 MCVerboseDescription];
       *buf = 138543362;
-      v17 = v12;
+      v17 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "CheckCarrierProfile: Could not get carrier name: %{public}@", buf, 0xCu);
     }
   }
@@ -2106,8 +2106,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CheckCarrierProfile: Forcing check of carrier profile on next unlock.", v5, 2u);
   }
 
-  v4 = [(MCProfileServiceServer *)self workerQueue];
-  dispatch_assert_queue_V2(v4);
+  workerQueue = [(MCProfileServiceServer *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
   [(MCProfileServiceServer *)self setWorkerQueueLastCarrierProfileCheckTime:0];
 }
@@ -2121,14 +2121,14 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CheckCarrierProfile: Device was unlocked, determining if we should check.", buf, 2u);
   }
 
-  v5 = [(MCProfileServiceServer *)self workerQueue];
-  dispatch_assert_queue_V2(v5);
+  workerQueue = [(MCProfileServiceServer *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10000CE18;
   v17 = &unk_10011BD90;
-  v18 = self;
+  selfCopy = self;
   v19 = a2;
   if (qword_100136A78 != -1)
   {
@@ -2148,7 +2148,7 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  v7 = [(MCProfileServiceServer *)self workerQueueLastCarrierProfileCheckTime];
+  workerQueueLastCarrierProfileCheckTime = [(MCProfileServiceServer *)self workerQueueLastCarrierProfileCheckTime];
   if (byte_100136A70)
   {
     v8 = 86400;
@@ -2160,7 +2160,7 @@ LABEL_9:
   }
 
   v9 = _MCLogObjects[0];
-  v10 = (v6 - v7) * dword_100136A60 / qword_100136A68;
+  v10 = (v6 - workerQueueLastCarrierProfileCheckTime) * dword_100136A60 / qword_100136A68;
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"will not";
@@ -2199,8 +2199,8 @@ LABEL_17:
   if (v2)
   {
     v3 = +[MCRestrictionManagerWriter sharedManager];
-    v4 = [v2 BOOLValue];
-    [v3 setBoolValue:v4 forSetting:MCFeatureFingerprintUnlockAllowed sender:@"MCProfileServiceServer.workerQueueReadBiometricState"];
+    bOOLValue = [v2 BOOLValue];
+    [v3 setBoolValue:bOOLValue forSetting:MCFeatureFingerprintUnlockAllowed sender:@"MCProfileServiceServer.workerQueueReadBiometricState"];
   }
 
   else
@@ -2221,9 +2221,9 @@ LABEL_17:
   [(MCProfileServiceServer *)self workerQueueCheckForAutoInstallProfiles];
 }
 
-- (void)notifyDeviceUnlockedAndPasscodeRequiredWithCompletion:(id)a3
+- (void)notifyDeviceUnlockedAndPasscodeRequiredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -2237,14 +2237,14 @@ LABEL_17:
   v8[2] = sub_10000D0D8;
   v8[3] = &unk_10011BB80;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(workerQueue, v8);
 }
 
-- (void)notifyDeviceUnlockedWithCompletion:(id)a3
+- (void)notifyDeviceUnlockedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -2258,8 +2258,8 @@ LABEL_17:
   v8[2] = sub_10000D218;
   v8[3] = &unk_10011BB80;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(workerQueue, v8);
 }
 
@@ -2339,7 +2339,7 @@ LABEL_17:
   if (+[DMCMultiUserModeUtilities isSharediPad]&& ![(MCProfileServiceServer *)self _hasCompletedPostLoginWork])
   {
     v3 = +[MCInstaller sharedInstaller];
-    v4 = [v3 verifiedMDMProfileIdentifierWithCleanUp];
+    verifiedMDMProfileIdentifierWithCleanUp = [v3 verifiedMDMProfileIdentifierWithCleanUp];
 
     v5 = +[MDMClient sharedClient];
     [v5 scheduleTokenUpdateIfNecessary];
@@ -2353,8 +2353,8 @@ LABEL_17:
     [(MCProfileServiceServer *)self _markPostUserLoginWorkCompleted];
   }
 
-  v8 = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
-  [v8 scheduleProfileJanitorTask];
+  workerQueueBackgroundTaskManager = [(MCProfileServiceServer *)self workerQueueBackgroundTaskManager];
+  [workerQueueBackgroundTaskManager scheduleProfileJanitorTask];
 }
 
 - (void)notifyMementoEffaced
@@ -2375,38 +2375,38 @@ LABEL_17:
   dispatch_async(workerQueue, block);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D93C;
   block[3] = &unk_10011B688;
-  v8 = v4;
-  v6 = v4;
+  v8 = installCopy;
+  v6 = installCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)storeCertificateData:(id)a3 forIPCUIdentifier:(id)a4 completion:(id)a5
+- (void)storeCertificateData:(id)data forIPCUIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-StoreCertificate"];
   workerQueue = self->_workerQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000DC4C;
   v17[3] = &unk_10011BC20;
-  v18 = v8;
-  v19 = v9;
+  v18 = dataCopy;
+  v19 = identifierCopy;
   v20 = v11;
-  v21 = v10;
+  v21 = completionCopy;
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = completionCopy;
+  v15 = identifierCopy;
+  v16 = dataCopy;
   dispatch_async(workerQueue, v17);
 }
 
@@ -2428,101 +2428,101 @@ LABEL_17:
   return v4;
 }
 
-- (void)installProvisioningProfileData:(id)a3 managingProfileIdentifier:(id)a4 completion:(id)a5
+- (void)installProvisioningProfileData:(id)data managingProfileIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-InstallProvisioningProfile"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000DF7C;
   block[3] = &unk_10011B8F0;
-  v18 = v8;
-  v19 = self;
+  v18 = dataCopy;
+  selfCopy = self;
   v21 = v11;
-  v22 = v10;
-  v20 = v9;
+  v22 = completionCopy;
+  v20 = identifierCopy;
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = completionCopy;
+  v15 = identifierCopy;
+  v16 = dataCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)removeProvisioningProfileWithUUID:(id)a3 managingProfileIdentifier:(id)a4 sender:(id)a5 completion:(id)a6
+- (void)removeProvisioningProfileWithUUID:(id)d managingProfileIdentifier:(id)identifier sender:(id)sender completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  senderCopy = sender;
+  completionCopy = completion;
   v14 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-RemoveProvisioningProfile"];
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000E36C;
   block[3] = &unk_10011B8F0;
-  v22 = v10;
-  v23 = v12;
+  v22 = dCopy;
+  v23 = senderCopy;
   v25 = v14;
-  v26 = v13;
-  v24 = v11;
+  v26 = completionCopy;
+  v24 = identifierCopy;
   v16 = v14;
-  v17 = v13;
-  v18 = v11;
-  v19 = v12;
-  v20 = v10;
+  v17 = completionCopy;
+  v18 = identifierCopy;
+  v19 = senderCopy;
+  v20 = dCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)trustedCodeSigningIdentitiesWithCompletion:(id)a3
+- (void)trustedCodeSigningIdentitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[MDMProvisioningProfileTrust allTrustedSignerIdentities];
-  (*(a3 + 2))(v4, v5, 0);
+  (*(completion + 2))(completionCopy, v5, 0);
 }
 
-- (void)syncTrustedCodeSigningIdentitiesWithCompletion:(id)a3
+- (void)syncTrustedCodeSigningIdentitiesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MCProvisioningProfileJanitor sharedJanitor];
-  [v4 updateMISTrustAndValidateApps:0 validateManagedApps:0 completion:v3];
+  [v4 updateMISTrustAndValidateApps:0 validateManagedApps:0 completion:completionCopy];
 }
 
-- (void)provisiongProfileUUIDsForSignerIdentity:(id)a3 completion:(id)a4
+- (void)provisiongProfileUUIDsForSignerIdentity:(id)identity completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MDMProvisioningProfileTrust provisioningProfileUUIDsForSignerIdentity:a3];
-  (*(a4 + 2))(v6, v7, 0);
+  completionCopy = completion;
+  v7 = [MDMProvisioningProfileTrust provisioningProfileUUIDsForSignerIdentity:identity];
+  (*(completion + 2))(completionCopy, v7, 0);
 }
 
-- (void)signerIdentityForBundleID:(id)a3 completion:(id)a4
+- (void)signerIdentityForBundleID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MDMProvisioningProfileTrust appSignerIdentityForBundleID:a3];
-  (*(a4 + 2))(v6, v7, 0);
+  completionCopy = completion;
+  v7 = [MDMProvisioningProfileTrust appSignerIdentityForBundleID:d];
+  (*(completion + 2))(completionCopy, v7, 0);
 }
 
-- (BOOL)isBundleBlocked:(id)a3 outHash:(id *)a4 outHashType:(id *)a5
+- (BOOL)isBundleBlocked:(id)blocked outHash:(id *)hash outHashType:(id *)type
 {
-  v6 = a3;
-  if (v6)
+  blockedCopy = blocked;
+  if (blockedCopy)
   {
     v7 = MISQueryBlacklistForBundle();
     v8 = _MCLogObjects[2];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v11 = v6;
+      v11 = blockedCopy;
       v12 = 1026;
       v13 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "MCProfileServiceServer asked MIS if bundle '%{public}@' is blocked: %{public}d", buf, 0x12u);
     }
 
-    if (a5)
+    if (type)
     {
-      *a5 = [NSNumber numberWithInt:?];
+      *type = [NSNumber numberWithInt:?];
     }
   }
 
@@ -2534,9 +2534,9 @@ LABEL_17:
   return v7;
 }
 
-- (void)removeExpiredProfilesWithCompletion:(id)a3
+- (void)removeExpiredProfilesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2544,25 +2544,25 @@ LABEL_17:
   block[3] = &unk_10011B688;
   block[4] = self;
   dispatch_async(workerQueue, block);
-  if (v4)
+  if (completionCopy)
   {
     v6 = dispatch_get_global_queue(0, 0);
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10000EA18;
     v7[3] = &unk_10011B800;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(v6, v7);
   }
 }
 
-- (void)storeProfileData:(id)a3 completion:(id)a4
+- (void)storeProfileData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = _MCLogObjects[2];
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!dataCopy)
   {
     if (v9)
     {
@@ -2579,7 +2579,7 @@ LABEL_17:
     [v16 removeItemAtPath:v17 error:0];
 
     v11 = 0;
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_16;
     }
@@ -2595,7 +2595,7 @@ LABEL_17:
 
   v10 = MCPostSetupAutoInstallProfilePathNF();
   v25 = 0;
-  [v6 writeToFile:v10 options:0 error:&v25];
+  [dataCopy writeToFile:v10 options:0 error:&v25];
   v11 = v25;
 
   if (v11)
@@ -2614,7 +2614,7 @@ LABEL_17:
 
   v18 = MCPostSetupAutoInstallSetAsideProfilePath();
   v24 = 0;
-  [v6 writeToFile:v18 options:0 error:&v24];
+  [dataCopy writeToFile:v18 options:0 error:&v24];
   v11 = v24;
 
   if (!v11)
@@ -2623,14 +2623,14 @@ LABEL_17:
     MCSetSkipBackupAttributeToItemAtPath();
 
     v20 = +[MDMCloudConfiguration sharedConfiguration];
-    v21 = [v20 details];
-    v22 = [v21 mutableCopy];
+    details = [v20 details];
+    v22 = [details mutableCopy];
 
     v23 = 0;
     [(MCProfileServiceServer *)self storeCloudConfigurationDetails:v22 outError:&v23];
     v11 = v23;
 
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_17;
     }
@@ -2649,18 +2649,18 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (v7)
+  if (completionCopy)
   {
 LABEL_16:
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
 LABEL_17:
 }
 
-- (void)storedProfileDataWithCompletion:(id)a3
+- (void)storedProfileDataWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   v3 = +[NSFileManager defaultManager];
   v4 = MCPostSetupAutoInstallProfilePathNF();
   v5 = [v3 fileExistsAtPath:v4];
@@ -2676,12 +2676,12 @@ LABEL_17:
     v7 = 0;
   }
 
-  v8[2](v8, v7, 0);
+  completionCopy[2](completionCopy, v7, 0);
 }
 
-- (void)markStoredProfileAsInstalledWithCompletion:(id)a3
+- (void)markStoredProfileAsInstalledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MCCloudConfigurationDetailsFilePath();
   v6 = [NSMutableDictionary dictionaryWithContentsOfFile:v5];
 
@@ -2698,51 +2698,51 @@ LABEL_17:
     v7 = 0;
   }
 
-  v4[2](v4, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)resetAllSettingsToDefaultsIsUserInitiated:(BOOL)a3 sender:(id)a4 completion:(id)a5
+- (void)resetAllSettingsToDefaultsIsUserInitiated:(BOOL)initiated sender:(id)sender completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  senderCopy = sender;
+  completionCopy = completion;
   v10 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-ResetSettingsToDefault"];
   workerQueue = self->_workerQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000EFB4;
   v15[3] = &unk_10011BE18;
-  v19 = a3;
+  initiatedCopy = initiated;
   v17 = v10;
-  v18 = v9;
-  v16 = v8;
+  v18 = completionCopy;
+  v16 = senderCopy;
   v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v13 = completionCopy;
+  v14 = senderCopy;
   dispatch_async(workerQueue, v15);
 }
 
-- (void)rereadManagedAppAttributesWithCompletion:(id)a3
+- (void)rereadManagedAppAttributesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F0F4;
   block[3] = &unk_10011B800;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)fetchConfigurationWithCompletionBlock:(id)a3
+- (void)fetchConfigurationWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, 1, 0, 0);
+    (*(block + 2))(block, 1, 0, 0);
   }
 }
 
-- (void)reducedMachineInfoDataWithCompletion:(id)a3
+- (void)reducedMachineInfoDataWithCompletion:(id)completion
 {
   v6 = @"PRODUCT";
   v7 = @"VERSION";
@@ -2751,13 +2751,13 @@ LABEL_17:
   v10 = @"SUPPLEMENTAL_BUILD_VERSION";
   v11 = @"SUPPLEMENTAL_OS_VERSION_EXTRA";
   v12 = @"SOFTWARE_UPDATE_DEVICE_ID";
-  v3 = a3;
+  completionCopy = completion;
   v4 = [NSArray arrayWithObjects:&v6 count:7];
   v5 = [MCMachineInfo machineInfoWithKeys:v4 outError:0, v6, v7, v8, v9, v10, v11, v12];
-  v3[2](v3, v5, 0);
+  completionCopy[2](completionCopy, v5, 0);
 }
 
-- (id)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)a3
+- (id)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)info
 {
   v7 = @"UDID";
   v8 = @"SERIAL";
@@ -2770,36 +2770,36 @@ LABEL_17:
   v15 = @"SUPPLEMENTAL_BUILD_VERSION";
   v16 = @"SUPPLEMENTAL_OS_VERSION_EXTRA";
   v17 = @"SOFTWARE_UPDATE_DEVICE_ID";
-  v3 = a3;
+  infoCopy = info;
   v4 = [NSArray arrayWithObjects:&v7 count:11];
-  v5 = [MCMachineInfo machineInfoWithKeys:v4 challenge:0 identity:0 additionalInfo:v3 outError:0, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17];
+  v5 = [MCMachineInfo machineInfoWithKeys:v4 challenge:0 identity:0 additionalInfo:infoCopy outError:0, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17];
 
   return v5;
 }
 
-- (void)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)a3 completion:(id)a4
+- (void)cloudConfigurationMachineInfoDataWithAdditionalInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(MCProfileServiceServer *)self cloudConfigurationMachineInfoDataWithAdditionalInfo:a3];
-  v6[2](v6, v7, 0);
+  completionCopy = completion;
+  v7 = [(MCProfileServiceServer *)self cloudConfigurationMachineInfoDataWithAdditionalInfo:info];
+  completionCopy[2](completionCopy, v7, 0);
 }
 
-- (BOOL)storeCloudConfigurationDetails:(id)a3 outError:(id *)a4
+- (BOOL)storeCloudConfigurationDetails:(id)details outError:(id *)error
 {
-  v5 = a3;
+  detailsCopy = details;
   v6 = +[MCCloudConfigurationWriter sharedInstance];
-  LOBYTE(a4) = [v6 saveCloudConfigurationDetails:v5 outError:a4];
+  LOBYTE(error) = [v6 saveCloudConfigurationDetails:detailsCopy outError:error];
 
-  return a4;
+  return error;
 }
 
-- (void)cloudConfigurationStoreDetails:(id)a3 completion:(id)a4
+- (void)cloudConfigurationStoreDetails:(id)details completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  detailsCopy = details;
   v8 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-CloudConfigStoreDetails"];
   v18 = 0;
-  [(MCProfileServiceServer *)self storeCloudConfigurationDetails:v7 outError:&v18];
+  [(MCProfileServiceServer *)self storeCloudConfigurationDetails:detailsCopy outError:&v18];
 
   v9 = v18;
   v10 = dispatch_get_global_queue(0, 0);
@@ -2808,22 +2808,22 @@ LABEL_17:
   v14[2] = sub_10000F65C;
   v14[3] = &unk_10011BAE0;
   v16 = v8;
-  v17 = v6;
+  v17 = completionCopy;
   v15 = v9;
   v11 = v8;
   v12 = v9;
-  v13 = v6;
+  v13 = completionCopy;
   dispatch_async(v10, v14);
 }
 
-- (void)cloudConfigurationStoreDetailsForPendingMigration:(id)a3 completion:(id)a4
+- (void)cloudConfigurationStoreDetailsForPendingMigration:(id)migration completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  migrationCopy = migration;
   v7 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-CloudConfigStoreDetailsForMigration"];
   v8 = +[MCCloudConfigurationWriter sharedInstance];
   v18 = 0;
-  [v8 saveCloudConfigurationDetailsForPendingMigration:v6 outError:&v18];
+  [v8 saveCloudConfigurationDetailsForPendingMigration:migrationCopy outError:&v18];
 
   v9 = v18;
   v10 = dispatch_get_global_queue(0, 0);
@@ -2832,17 +2832,17 @@ LABEL_17:
   v14[2] = sub_10000F7C0;
   v14[3] = &unk_10011BAE0;
   v16 = v7;
-  v17 = v5;
+  v17 = completionCopy;
   v15 = v9;
   v11 = v7;
   v12 = v9;
-  v13 = v5;
+  v13 = completionCopy;
   dispatch_async(v10, v14);
 }
 
-- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)a3
+- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _MCLogObjects[2];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -2950,20 +2950,20 @@ LABEL_24:
   }
 
 LABEL_25:
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, v12);
+    completionCopy[2](completionCopy, v12);
   }
 }
 
-- (void)createActivationLockBypassCodeWithCompletion:(id)a3
+- (void)createActivationLockBypassCodeWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-CreateActivationLockBypass"];
   v5 = +[MDMCloudConfiguration sharedConfiguration];
-  v6 = [v5 isSupervised];
+  isSupervised = [v5 isSupervised];
 
-  if (v6)
+  if (isSupervised)
   {
     v7 = +[MCCrypto createAndStoreNewActivationLockBypassCodeAndHashIfNeeded];
   }
@@ -2971,18 +2971,18 @@ LABEL_25:
   v10 = 0;
   v8 = [MCCrypto storedActivationLockBypassCodeWithOutError:&v10];
   v9 = v10;
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, v8, v9);
+    completionCopy[2](completionCopy, v8, v9);
   }
 }
 
-- (void)storeActivationRecord:(id)a3 completion:(id)a4
+- (void)storeActivationRecord:(id)record completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  recordCopy = record;
   v8 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-StoreActivationRecord"];
-  v9 = [v7 objectForKeyedSubscript:kDMCActivationRecordDeviceFlagsKey];
+  v9 = [recordCopy objectForKeyedSubscript:kDMCActivationRecordDeviceFlagsKey];
 
   v10 = [DMCFeatureOverrides activationRecordFlagsWithFlags:v9];
 
@@ -2990,9 +2990,9 @@ LABEL_25:
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 intValue];
+      intValue = [v10 intValue];
       v12 = &kCFBooleanTrue;
-      if ((v11 & 1) == 0)
+      if ((intValue & 1) == 0)
       {
         v12 = &kCFBooleanFalse;
       }
@@ -3015,13 +3015,13 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Saved activation configuration.", buf, 2u);
       }
 
-      v16 = [(MCProfileServiceServer *)self memberQueue];
+      memberQueue = [(MCProfileServiceServer *)self memberQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000FF98;
       block[3] = &unk_10011B688;
       block[4] = self;
-      dispatch_barrier_async(v16, block);
+      dispatch_barrier_async(memberQueue, block);
 
       workerQueue = self->_workerQueue;
       v23[0] = _NSConcreteStackBlock;
@@ -3064,28 +3064,28 @@ LABEL_25:
 
 LABEL_16:
   MCSendActivationRecordStoredNotification();
-  v6[2](v6, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)setURLsFromUserBookmarkDictsAsSettings:(id)a3 sender:(id)a4
+- (void)setURLsFromUserBookmarkDictsAsSettings:(id)settings sender:(id)sender
 {
-  v5 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  senderCopy = sender;
   v7 = +[NSMutableDictionary dictionary];
   v8 = +[NSMutableDictionary dictionary];
   [v7 setObject:v8 forKeyedSubscript:MCIntersectionKey];
   v9 = +[NSMutableDictionary dictionary];
   [v8 setObject:v9 forKeyedSubscript:MCFeatureWebContentFilterWhitelistedURLs];
-  if (v5)
+  if (settingsCopy)
   {
-    v20 = v6;
-    v10 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v5 count]);
+    v20 = senderCopy;
+    v10 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [settingsCopy count]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v5;
-    v11 = v5;
+    v21 = settingsCopy;
+    v11 = settingsCopy;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -3118,24 +3118,24 @@ LABEL_16:
       while (v13);
     }
 
-    v18 = [v10 allObjects];
-    [v9 setObject:v18 forKeyedSubscript:MCSettingParameterValuesKey];
+    allObjects = [v10 allObjects];
+    [v9 setObject:allObjects forKeyedSubscript:MCSettingParameterValuesKey];
 
-    v6 = v20;
-    v5 = v21;
+    senderCopy = v20;
+    settingsCopy = v21;
   }
 
   v19 = +[MCRestrictionManagerWriter sharedManager];
-  [v19 setParametersForSettingsByType:v7 sender:v6];
+  [v19 setParametersForSettingsByType:v7 sender:senderCopy];
 }
 
-- (id)bookmarksFromBookmarkDicts:(id)a3
+- (id)bookmarksFromBookmarkDicts:(id)dicts
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictsCopy = dicts;
+  v4 = dictsCopy;
+  if (dictsCopy)
   {
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictsCopy count]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -3179,13 +3179,13 @@ LABEL_16:
   return v5;
 }
 
-- (id)bookmarkDictsFromBookmarks:(id)a3
+- (id)bookmarkDictsFromBookmarks:(id)bookmarks
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  bookmarksCopy = bookmarks;
+  v4 = bookmarksCopy;
+  if (bookmarksCopy)
   {
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [bookmarksCopy count]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -3205,10 +3205,10 @@ LABEL_16:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) serializableDictionary];
-          if (v11)
+          serializableDictionary = [*(*(&v13 + 1) + 8 * i) serializableDictionary];
+          if (serializableDictionary)
           {
-            [v5 addObject:v11];
+            [v5 addObject:serializableDictionary];
           }
         }
 
@@ -3227,53 +3227,53 @@ LABEL_16:
   return v5;
 }
 
-- (void)validateAppBundleIDs:(id)a3 completion:(id)a4
+- (void)validateAppBundleIDs:(id)ds completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   v7 = +[MCProvisioningProfileJanitor sharedJanitor];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100010758;
   v9[3] = &unk_10011BE40;
-  v10 = v5;
-  v8 = v5;
-  [v7 updateMISTrustAndValidateApps:v6 validateManagedApps:1 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 updateMISTrustAndValidateApps:dsCopy validateManagedApps:1 completion:v9];
 }
 
-- (void)monitorEnrollmentStateForClient:(id)a3 personaID:(id)a4
+- (void)monitorEnrollmentStateForClient:(id)client personaID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  dCopy = d;
   monitorQueue = self->_monitorQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100010830;
   v11[3] = &unk_10011B798;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = clientCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = clientCopy;
   dispatch_async(monitorQueue, v11);
 }
 
-- (void)managingOrganizationInformationWithCompletion:(id)a3
+- (void)managingOrganizationInformationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MDMConfiguration sharedConfiguration];
   [v4 refreshDetailsFromDisk];
-  v5 = [v4 organizationInfo];
-  if (v5)
+  organizationInfo = [v4 organizationInfo];
+  if (organizationInfo)
   {
-    v6 = v5;
+    v6 = organizationInfo;
     goto LABEL_3;
   }
 
   v7 = +[MDMCloudConfiguration sharedConfiguration];
-  v8 = [v7 details];
+  details = [v7 details];
 
   v9 = kCCOrganizationNameKey;
-  v10 = [v8 objectForKeyedSubscript:kCCOrganizationNameKey];
+  v10 = [details objectForKeyedSubscript:kCCOrganizationNameKey];
 
   if (v10)
   {
@@ -3314,11 +3314,11 @@ LABEL_16:
           }
 
           v16 = *(*(&v29 + 1) + 8 * i);
-          v17 = [v8 objectForKeyedSubscript:v16];
+          v17 = [details objectForKeyedSubscript:v16];
 
           if (v17)
           {
-            v18 = [v8 objectForKeyedSubscript:v16];
+            v18 = [details objectForKeyedSubscript:v16];
             [v6 setObject:v18 forKeyedSubscript:v16];
           }
         }
@@ -3341,16 +3341,16 @@ LABEL_16:
   }
 
   v19 = +[MCManifest sharedManifest];
-  v20 = [v4 managingProfileIdentifier];
-  v21 = [v19 installedProfileWithIdentifier:v20];
+  managingProfileIdentifier = [v4 managingProfileIdentifier];
+  v21 = [v19 installedProfileWithIdentifier:managingProfileIdentifier];
 
-  v22 = [v21 organization];
+  organization = [v21 organization];
 
-  if (v22)
+  if (organization)
   {
     v35 = v9;
-    v23 = [v21 organization];
-    v36 = v23;
+    organization2 = [v21 organization];
+    v36 = organization2;
     v6 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
     if (v6)
@@ -3363,15 +3363,15 @@ LABEL_16:
   {
   }
 
-  v24 = [v4 serverURL];
-  v25 = [v24 host];
+  serverURL = [v4 serverURL];
+  host = [serverURL host];
 
-  if (v25)
+  if (host)
   {
     v33 = v9;
-    v26 = [v4 serverURL];
-    v27 = [v26 host];
-    v34 = v27;
+    serverURL2 = [v4 serverURL];
+    host2 = [serverURL2 host];
+    v34 = host2;
     v6 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
   }
 
@@ -3381,67 +3381,67 @@ LABEL_16:
   }
 
 LABEL_3:
-  v3[2](v3, v6, 0);
+  completionCopy[2](completionCopy, v6, 0);
 }
 
-- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)a3
+- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_new();
-  [v4 unstageMDMEnrollmentInfoForPairingWatchWithCompletion:v3];
+  [v4 unstageMDMEnrollmentInfoForPairingWatchWithCompletion:completionCopy];
 }
 
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_new();
-  [v4 fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:v3];
+  [v4 fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:completionCopy];
 }
 
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)a3 completion:(id)a4
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)token completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
   v7 = objc_opt_new();
-  [v7 fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:v6 completion:v5];
+  [v7 fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:tokenCopy completion:completionCopy];
 }
 
-- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)a3
+- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_new();
-  [v4 fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:v3];
+  [v4 fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:completionCopy];
 }
 
-- (void)applyPairingWatchMDMEnrollmentData:(id)a3 source:(id)a4 completion:(id)a5
+- (void)applyPairingWatchMDMEnrollmentData:(id)data source:(id)source completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  sourceCopy = source;
+  dataCopy = data;
   v13 = objc_opt_new();
   v11 = +[MDMCloudConfiguration sharedConfiguration];
   v12 = +[MCCloudConfigurationWriter sharedInstance];
-  [v13 applyPairingWatchMDMEnrollmentData:v10 source:v9 usingProfileInstaller:self cloudConfigReader:v11 cloudConfigWriter:v12 completion:v8];
+  [v13 applyPairingWatchMDMEnrollmentData:dataCopy source:sourceCopy usingProfileInstaller:self cloudConfigReader:v11 cloudConfigWriter:v12 completion:completionCopy];
 }
 
-- (void)updateMDMEnrollmentInfoForPairingWatch:(id)a3 completion:(id)a4
+- (void)updateMDMEnrollmentInfoForPairingWatch:(id)watch completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  watchCopy = watch;
   v7 = objc_opt_new();
-  [v7 updateMDMEnrollmentInfoForPairingWatch:v6 completion:v5];
+  [v7 updateMDMEnrollmentInfoForPairingWatch:watchCopy completion:completionCopy];
 }
 
-- (void)effectiveBoolValueForWatchSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6
+- (void)effectiveBoolValueForWatchSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion
 {
-  v16 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  storeCopy = store;
+  dCopy = d;
+  settingCopy = setting;
   v12 = +[MCWatchSettingsMirror sharedMirror];
-  v13 = [v12 effectiveBoolValueForSetting:v11 pairingID:v10 pairingDataStore:v9];
+  v13 = [v12 effectiveBoolValueForSetting:settingCopy pairingID:dCopy pairingDataStore:storeCopy];
 
-  if (v16)
+  if (completionCopy)
   {
     v14 = &__kCFBooleanTrue;
     if (v13 != 1)
@@ -3459,59 +3459,59 @@ LABEL_3:
       v15 = v14;
     }
 
-    v16[2](v16, v15, 0);
+    completionCopy[2](completionCopy, v15, 0);
   }
 }
 
-- (void)effectiveValueForWatchSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6
+- (void)effectiveValueForWatchSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion
 {
-  v14 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  storeCopy = store;
+  dCopy = d;
+  settingCopy = setting;
   v12 = +[MCWatchSettingsMirror sharedMirror];
-  v13 = [v12 effectiveValueForSetting:v11 pairingID:v10 pairingDataStore:v9];
+  v13 = [v12 effectiveValueForSetting:settingCopy pairingID:dCopy pairingDataStore:storeCopy];
 
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 }
 
-- (void)effectiveValuesForWatchIntersectionSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6
+- (void)effectiveValuesForWatchIntersectionSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion
 {
-  v14 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  storeCopy = store;
+  dCopy = d;
+  settingCopy = setting;
   v12 = +[MCWatchSettingsMirror sharedMirror];
-  v13 = [v12 effectiveIntersectionValuesForSetting:v11 pairingID:v10 pairingDataStore:v9];
+  v13 = [v12 effectiveIntersectionValuesForSetting:settingCopy pairingID:dCopy pairingDataStore:storeCopy];
 
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 }
 
-- (void)effectiveValuesForWatchUnionSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5 completion:(id)a6
+- (void)effectiveValuesForWatchUnionSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store completion:(id)completion
 {
-  v14 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  storeCopy = store;
+  dCopy = d;
+  settingCopy = setting;
   v12 = +[MCWatchSettingsMirror sharedMirror];
-  v13 = [v12 effectiveUnionValuesForSetting:v11 pairingID:v10 pairingDataStore:v9];
+  v13 = [v12 effectiveUnionValuesForSetting:settingCopy pairingID:dCopy pairingDataStore:storeCopy];
 
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 }
 
-- (void)_debug_scheduleBackgroundTask:(id)a3 interval:(double)a4 tolerance:(double)a5 completion:(id)a6
+- (void)_debug_scheduleBackgroundTask:(id)task interval:(double)interval tolerance:(double)tolerance completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  taskCopy = task;
+  completionCopy = completion;
   v12 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-DebugScheduleBackgroundTask"];
   workerQueue = self->_workerQueue;
   v17[0] = _NSConcreteStackBlock;
@@ -3519,14 +3519,14 @@ LABEL_3:
   v17[2] = sub_100011494;
   v17[3] = &unk_10011BE68;
   v17[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v22 = a5;
+  v18 = taskCopy;
+  intervalCopy = interval;
+  toleranceCopy = tolerance;
   v19 = v12;
-  v20 = v11;
+  v20 = completionCopy;
   v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v15 = completionCopy;
+  v16 = taskCopy;
   dispatch_async(workerQueue, v17);
 }
 

@@ -2,21 +2,21 @@
 + (id)defaultOptions;
 + (id)modalAnchorOptions;
 - (TUIVisibilityOptions)init;
-- (TUIVisibilityOptions)initWithOther:(id)a3;
+- (TUIVisibilityOptions)initWithOther:(id)other;
 @end
 
 @implementation TUIVisibilityOptions
 
 + (id)defaultOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (id)modalAnchorOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   *(v2 + 8) = xmmword_24CAC0;
   *(v2 + 3) = 1;
 
@@ -37,19 +37,19 @@
   return result;
 }
 
-- (TUIVisibilityOptions)initWithOther:(id)a3
+- (TUIVisibilityOptions)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v9.receiver = self;
   v9.super_class = TUIVisibilityOptions;
   v5 = [(TUIVisibilityOptions *)&v9 init];
   if (v5)
   {
-    [v4 fraction];
+    [otherCopy fraction];
     v5->_fraction = v6;
-    [v4 duration];
+    [otherCopy duration];
     v5->_duration = v7;
-    v5->_flags = [v4 flags];
+    v5->_flags = [otherCopy flags];
   }
 
   return v5;

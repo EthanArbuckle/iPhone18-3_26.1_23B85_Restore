@@ -1,14 +1,14 @@
 @interface APRKResourceLoaderHelper
 - (APRKResourceLoaderHelper)init;
 - (APRKResourceLoaderHelperDelegate)delegate;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForResponseToAuthenticationChallenge:(id)a4;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (BOOL)resourceLoader:(id)loader shouldWaitForResponseToAuthenticationChallenge:(id)challenge;
 - (void)forgetAllActiveResourceLoadingRequests;
-- (void)processUnhandledURLResponseWithDictionary:(id)a3 error:(id *)a4;
-- (void)registerAVURLAsset:(id)a3;
-- (void)resourceLoader:(id)a3 didCancelAuthenticationChallenge:(id)a4;
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4;
-- (void)unregisterAVURLAsset:(id)a3;
+- (void)processUnhandledURLResponseWithDictionary:(id)dictionary error:(id *)error;
+- (void)registerAVURLAsset:(id)asset;
+- (void)resourceLoader:(id)loader didCancelAuthenticationChallenge:(id)challenge;
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request;
+- (void)unregisterAVURLAsset:(id)asset;
 @end
 
 @implementation APRKResourceLoaderHelper
@@ -48,51 +48,51 @@
   return v2;
 }
 
-- (void)registerAVURLAsset:(id)a3
+- (void)registerAVURLAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    v10 = v4;
+    v10 = assetCopy;
     if (gLogCategory_AirPlayReceiverKit <= 30)
     {
       if (gLogCategory_AirPlayReceiverKit != -1 || (v6 = _LogCategory_Initialize(), v5 = v10, v6))
       {
         v8 = v5;
-        v9 = self;
+        selfCopy = self;
         LogPrintF();
         v5 = v10;
       }
     }
 
-    v7 = [v5 resourceLoader];
-    [v7 setDelegate:self queue:self->_resourceLoaderQueue];
+    resourceLoader = [v5 resourceLoader];
+    [resourceLoader setDelegate:self queue:self->_resourceLoaderQueue];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)unregisterAVURLAsset:(id)a3
+- (void)unregisterAVURLAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    v10 = v4;
+    v10 = assetCopy;
     if (gLogCategory_AirPlayReceiverKit <= 30)
     {
       if (gLogCategory_AirPlayReceiverKit != -1 || (v6 = _LogCategory_Initialize(), v5 = v10, v6))
       {
         v8 = v5;
-        v9 = self;
+        selfCopy = self;
         LogPrintF();
         v5 = v10;
       }
     }
 
-    v7 = [v5 resourceLoader];
-    [v7 setDelegate:0 queue:self->_resourceLoaderQueue];
+    resourceLoader = [v5 resourceLoader];
+    [resourceLoader setDelegate:0 queue:self->_resourceLoaderQueue];
   }
 
   MEMORY[0x2821F96F8]();
@@ -111,17 +111,17 @@
   objc_sync_exit(obj);
 }
 
-- (void)processUnhandledURLResponseWithDictionary:(id)a3 error:(id *)a4
+- (void)processUnhandledURLResponseWithDictionary:(id)dictionary error:(id *)error
 {
-  v45 = a3;
-  v6 = [v45 objectForKey:*MEMORY[0x277CC0950]];
-  v7 = [v45 objectForKey:*MEMORY[0x277CC0958]];
-  v8 = [v7 integerValue];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0950]];
+  v7 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0958]];
+  integerValue = [v7 integerValue];
 
-  v9 = [v45 objectForKey:*MEMORY[0x277CC0960]];
-  v10 = [v45 objectForKey:*MEMORY[0x277CC0938]];
-  v11 = [v45 objectForKey:*MEMORY[0x277CC0928]];
-  v12 = [v45 objectForKey:*MEMORY[0x277CC0930]];
+  v9 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0960]];
+  v10 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0938]];
+  v11 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0928]];
+  v12 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0930]];
   if (gLogCategory_AirPlayReceiverKit > 30 || gLogCategory_AirPlayReceiverKit == -1 && !_LogCategory_Initialize())
   {
     if (v6)
@@ -152,15 +152,15 @@ LABEL_5:
 
   else
   {
-    v13 = v8 == 0;
+    v13 = integerValue == 0;
   }
 
   if (!v13)
   {
-    v14 = self;
-    objc_sync_enter(v14);
-    v15 = [(NSMutableDictionary *)v14->_activeResourceLoadingRequests objectForKey:v6];
-    objc_sync_exit(v14);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v15 = [(NSMutableDictionary *)selfCopy->_activeResourceLoadingRequests objectForKey:v6];
+    objc_sync_exit(selfCopy);
 
     if (v15)
     {
@@ -178,11 +178,11 @@ LABEL_15:
   v20 = v19;
   if (v19)
   {
-    if (a4)
+    if (error)
     {
       v21 = v19;
       v15 = 0;
-      *a4 = v20;
+      *error = v20;
     }
 
     else
@@ -195,7 +195,7 @@ LABEL_15:
 
   v15 = 0;
 LABEL_19:
-  if ((v8 - 301) > 4 || v8 == 304)
+  if ((integerValue - 301) > 4 || integerValue == 304)
   {
     if (v12)
     {
@@ -204,15 +204,15 @@ LABEL_19:
       v36 = v11;
       v37 = objc_alloc(MEMORY[0x277CBAB48]);
       [MEMORY[0x277CBEBC0] URLWithString:v9];
-      v38 = self;
+      selfCopy2 = self;
       v40 = v39 = v9;
-      v23 = [v37 initWithURL:v40 statusCode:v8 HTTPVersion:@"HTTP/1.1" headerFields:v35];
+      v23 = [v37 initWithURL:v40 statusCode:integerValue HTTPVersion:@"HTTP/1.1" headerFields:v35];
 
       v9 = v39;
-      self = v38;
+      self = selfCopy2;
       [v15 setResponse:v23];
-      v41 = [v15 dataRequest];
-      [v41 respondWithData:v44];
+      dataRequest = [v15 dataRequest];
+      [dataRequest respondWithData:v44];
 
       v11 = v36;
       v10 = v35;
@@ -222,7 +222,7 @@ LABEL_19:
 
     else
     {
-      v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:v8 userInfo:0];
+      v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:integerValue userInfo:0];
       [v15 finishLoadingWithError:v23];
     }
   }
@@ -242,15 +242,15 @@ LABEL_19:
 
       v29 = objc_alloc(MEMORY[0x277CBAB48]);
       v30 = [MEMORY[0x277CBEBC0] URLWithString:v42];
-      v31 = [v29 initWithURL:v30 statusCode:v8 HTTPVersion:@"HTTP/1.1" headerFields:v25];
+      v31 = [v29 initWithURL:v30 statusCode:integerValue HTTPVersion:@"HTTP/1.1" headerFields:v25];
 
       [v15 setResponse:v31];
       [v15 setRedirect:v28];
-      v32 = [v15 contentInformationRequest];
-      [v32 setRenewalDate:v26];
+      contentInformationRequest = [v15 contentInformationRequest];
+      [contentInformationRequest setRenewalDate:v26];
 
-      v33 = [v15 dataRequest];
-      [v33 respondWithData:v43];
+      dataRequest2 = [v15 dataRequest];
+      [dataRequest2 respondWithData:v43];
 
       v11 = v26;
       v10 = v25;
@@ -262,39 +262,39 @@ LABEL_19:
 
     else
     {
-      v28 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:v8 userInfo:0];
+      v28 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:integerValue userInfo:0];
       [v15 finishLoadingWithError:v28];
     }
   }
 
   if (v6)
   {
-    v34 = self;
-    objc_sync_enter(v34);
-    [(NSMutableDictionary *)v34->_activeResourceLoadingRequests removeObjectForKey:v6];
-    objc_sync_exit(v34);
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    [(NSMutableDictionary *)selfCopy3->_activeResourceLoadingRequests removeObjectForKey:v6];
+    objc_sync_exit(selfCopy3);
   }
 
   v20 = 0;
 LABEL_31:
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serializableRepresentation];
+  loaderCopy = loader;
+  resourceCopy = resource;
+  serializableRepresentation = [resourceCopy serializableRepresentation];
   v9 = *MEMORY[0x277CC0940];
-  v10 = [v8 objectForKey:*MEMORY[0x277CC0940]];
-  v11 = [v10 BOOLValue];
+  v10 = [serializableRepresentation objectForKey:*MEMORY[0x277CC0940]];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [v7 contentInformationRequest];
-    [v12 setContentType:*MEMORY[0x277CE6180]];
+    contentInformationRequest = [resourceCopy contentInformationRequest];
+    [contentInformationRequest setContentType:*MEMORY[0x277CE6180]];
 
-    [v7 finishLoading];
+    [resourceCopy finishLoading];
   }
 
   else
@@ -302,54 +302,54 @@ LABEL_31:
     v13 = MEMORY[0x277CCABB0];
     ++self->_requestIDCnt;
     v14 = [v13 numberWithLongLong:?];
-    v15 = self;
-    objc_sync_enter(v15);
-    [(NSMutableDictionary *)v15->_activeResourceLoadingRequests setObject:v7 forKey:v14];
-    objc_sync_exit(v15);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_activeResourceLoadingRequests setObject:resourceCopy forKey:v14];
+    objc_sync_exit(selfCopy);
 
     v24[0] = *MEMORY[0x277CC0960];
-    v16 = [v7 request];
-    v17 = [v16 URL];
-    v18 = [v17 absoluteString];
-    v25[0] = v18;
+    request = [resourceCopy request];
+    v17 = [request URL];
+    absoluteString = [v17 absoluteString];
+    v25[0] = absoluteString;
     v25[1] = MEMORY[0x277CBEC28];
     v19 = *MEMORY[0x277CC0950];
     v24[1] = v9;
     v24[2] = v19;
     v24[3] = *MEMORY[0x277CC0938];
-    headersDictionary = v15->_headersDictionary;
+    headersDictionary = selfCopy->_headersDictionary;
     v25[2] = v14;
     v25[3] = headersDictionary;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
 
     if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
     {
-      [(APRKResourceLoaderHelper *)v8 resourceLoader:v19 shouldWaitForLoadingOfRequestedResource:v7];
+      [(APRKResourceLoaderHelper *)serializableRepresentation resourceLoader:v19 shouldWaitForLoadingOfRequestedResource:resourceCopy];
     }
 
-    v22 = [(APRKResourceLoaderHelper *)v15 delegate];
-    [v22 resourceLoaderHelper:v15 wantsToPerformUnhandledURLRequestWithDictionary:v21 forRequestID:v14];
+    delegate = [(APRKResourceLoaderHelper *)selfCopy delegate];
+    [delegate resourceLoaderHelper:selfCopy wantsToPerformUnhandledURLRequestWithDictionary:v21 forRequestID:v14];
   }
 
   return 1;
 }
 
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_activeResourceLoadingRequests allKeysForObject:v6];
-  [(NSMutableDictionary *)v7->_activeResourceLoadingRequests removeObjectsForKeys:v8];
+  loaderCopy = loader;
+  requestCopy = request;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_activeResourceLoadingRequests allKeysForObject:requestCopy];
+  [(NSMutableDictionary *)selfCopy->_activeResourceLoadingRequests removeObjectsForKeys:v8];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForResponseToAuthenticationChallenge:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForResponseToAuthenticationChallenge:(id)challenge
 {
-  v5 = a3;
-  v6 = a4;
+  loaderCopy = loader;
+  challengeCopy = challenge;
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKResourceLoaderHelper resourceLoader:shouldWaitForResponseToAuthenticationChallenge:];
@@ -358,10 +358,10 @@ LABEL_31:
   return 0;
 }
 
-- (void)resourceLoader:(id)a3 didCancelAuthenticationChallenge:(id)a4
+- (void)resourceLoader:(id)loader didCancelAuthenticationChallenge:(id)challenge
 {
-  v6 = a3;
-  v5 = a4;
+  loaderCopy = loader;
+  challengeCopy = challenge;
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKResourceLoaderHelper resourceLoader:didCancelAuthenticationChallenge:];

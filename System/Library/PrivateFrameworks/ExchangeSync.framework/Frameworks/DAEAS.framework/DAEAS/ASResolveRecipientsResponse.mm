@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)addResponse:(id)a3;
+- (void)addResponse:(id)response;
 @end
 
 @implementation ASResolveRecipientsResponse
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_183 = v2;
     acceptsTopLevelLeaves___haveChecked_182 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_185 = v2;
     parsingLeafNode___haveChecked_184 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_187 = v2;
     parsingWithSubItems___haveChecked_186 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_189 = v2;
     frontingBasicTypes___haveChecked_188 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_191 = v2;
     notifyOfUnknownTokens___haveChecked_190 = 1;
   }
@@ -96,25 +96,25 @@
   return v2 & 1;
 }
 
-- (void)addResponse:(id)a3
+- (void)addResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(ASResolveRecipientsResponse *)self mResponses];
+  responseCopy = response;
+  mResponses = [(ASResolveRecipientsResponse *)self mResponses];
 
-  if (!v5)
+  if (!mResponses)
   {
     v6 = objc_opt_new();
     [(ASResolveRecipientsResponse *)self setMResponses:v6];
   }
 
-  v7 = [(ASResolveRecipientsResponse *)self mResponses];
-  [v7 addObject:v4];
+  mResponses2 = [(ASResolveRecipientsResponse *)self mResponses];
+  [mResponses2 addObject:responseCopy];
 }
 
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -127,7 +127,7 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
@@ -140,9 +140,9 @@
   v9.receiver = self;
   v9.super_class = ASResolveRecipientsResponse;
   v4 = [(ASResolveRecipientsResponse *)&v9 description];
-  v5 = [(ASResolveRecipientsResponse *)self easStatus];
-  v6 = [(ASResolveRecipientsResponse *)self responses];
-  v7 = [v3 stringWithFormat:@"%@: easStatus %@ responses %@", v4, v5, v6];
+  easStatus = [(ASResolveRecipientsResponse *)self easStatus];
+  responses = [(ASResolveRecipientsResponse *)self responses];
+  v7 = [v3 stringWithFormat:@"%@: easStatus %@ responses %@", v4, easStatus, responses];
 
   return v7;
 }

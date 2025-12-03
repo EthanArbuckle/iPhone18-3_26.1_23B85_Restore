@@ -1,11 +1,11 @@
 @interface PXStoryDummyClip
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)a3;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)duration;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)videoTimeRange;
-- (BOOL)isEqualToClip:(id)a3;
-- (BOOL)isVisuallyEqualToClip:(id)a3;
+- (BOOL)isEqualToClip:(id)clip;
+- (BOOL)isVisuallyEqualToClip:(id)clip;
 - (PXStoryDummyClip)init;
-- (PXStoryDummyClip)initWithInfo:(id *)a3 resource:(id)a4 resourceOccurrenceIndex:(int64_t)a5;
-- (id)copyWithInfo:(id *)a3;
+- (PXStoryDummyClip)initWithInfo:(id *)info resource:(id)resource resourceOccurrenceIndex:(int64_t)index;
+- (id)copyWithInfo:(id *)info;
 - (unint64_t)hash;
 @end
 
@@ -20,18 +20,18 @@
   return self;
 }
 
-- (id)copyWithInfo:(id *)a3
+- (id)copyWithInfo:(id *)info
 {
   v5 = [PXStoryDummyClip alloc];
-  v6 = [(PXStoryDummyClip *)self resource];
-  v7 = [(PXStoryDummyClip *)self resourceOccurrenceIndex];
-  memcpy(v10, a3, sizeof(v10));
-  v8 = [(PXStoryDummyClip *)v5 initWithInfo:v10 resource:v6 resourceOccurrenceIndex:v7];
+  resource = [(PXStoryDummyClip *)self resource];
+  resourceOccurrenceIndex = [(PXStoryDummyClip *)self resourceOccurrenceIndex];
+  memcpy(v10, info, sizeof(v10));
+  v8 = [(PXStoryDummyClip *)v5 initWithInfo:v10 resource:resource resourceOccurrenceIndex:resourceOccurrenceIndex];
 
   return v8;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)duration
 {
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
@@ -39,10 +39,10 @@
   return self;
 }
 
-- (BOOL)isVisuallyEqualToClip:(id)a3
+- (BOOL)isVisuallyEqualToClip:(id)clip
 {
-  v4 = a3;
-  if (v4 == self)
+  clipCopy = clip;
+  if (clipCopy == self)
   {
     v7 = 1;
     goto LABEL_15;
@@ -55,7 +55,7 @@
     goto LABEL_15;
   }
 
-  v5 = v4;
+  v5 = clipCopy;
   if ([(PXStoryDummyClip *)self isEqualToClip:v5]&& self->_info.playbackStyle == v5->_info.playbackStyle)
   {
     v6 = self->_info.clipSize.width == v5->_info.clipSize.width && self->_info.clipSize.height == v5->_info.clipSize.height;
@@ -140,16 +140,16 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(PXStoryDummyClip *)self resourceIdentifier];
-  v3 = [v2 hash];
+  resourceIdentifier = [(PXStoryDummyClip *)self resourceIdentifier];
+  v3 = [resourceIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToClip:(id)a3
+- (BOOL)isEqualToClip:(id)clip
 {
-  v4 = a3;
-  if (v4 == self)
+  clipCopy = clip;
+  if (clipCopy == self)
   {
     v9 = 1;
   }
@@ -159,13 +159,13 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryDummyClip *)self resourceIdentifier];
-      v7 = [(PXStoryDummyClip *)v5 resourceIdentifier];
-      if ([v6 isEqual:v7])
+      v5 = clipCopy;
+      resourceIdentifier = [(PXStoryDummyClip *)self resourceIdentifier];
+      resourceIdentifier2 = [(PXStoryDummyClip *)v5 resourceIdentifier];
+      if ([resourceIdentifier isEqual:resourceIdentifier2])
       {
-        v8 = [(PXStoryDummyClip *)self resourceOccurrenceIndex];
-        v9 = v8 == [(PXStoryDummyClip *)v5 resourceOccurrenceIndex];
+        resourceOccurrenceIndex = [(PXStoryDummyClip *)self resourceOccurrenceIndex];
+        v9 = resourceOccurrenceIndex == [(PXStoryDummyClip *)v5 resourceOccurrenceIndex];
       }
 
       else
@@ -183,23 +183,23 @@ LABEL_15:
   return v9;
 }
 
-- (PXStoryDummyClip)initWithInfo:(id *)a3 resource:(id)a4 resourceOccurrenceIndex:(int64_t)a5
+- (PXStoryDummyClip)initWithInfo:(id *)info resource:(id)resource resourceOccurrenceIndex:(int64_t)index
 {
-  v9 = a4;
+  resourceCopy = resource;
   v16.receiver = self;
   v16.super_class = PXStoryDummyClip;
   v10 = [(PXStoryDummyClip *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    v10->_identifier = a3->var0;
-    memcpy(&v10->_info, a3, 0x300uLL);
-    objc_storeStrong(&v11->_resource, a4);
-    v12 = [(PXStoryResource *)v11->_resource px_storyResourceIdentifier];
+    v10->_identifier = info->var0;
+    memcpy(&v10->_info, info, 0x300uLL);
+    objc_storeStrong(&v11->_resource, resource);
+    px_storyResourceIdentifier = [(PXStoryResource *)v11->_resource px_storyResourceIdentifier];
     resourceIdentifier = v11->_resourceIdentifier;
-    v11->_resourceIdentifier = v12;
+    v11->_resourceIdentifier = px_storyResourceIdentifier;
 
-    v11->_resourceOccurrenceIndex = a5;
+    v11->_resourceOccurrenceIndex = index;
     *&v11->_videoTimeRange.start.value = 0u;
     *&v11->_videoTimeRange.start.epoch = 0u;
     *&v11->_videoTimeRange.duration.timescale = 0u;
@@ -212,8 +212,8 @@ LABEL_15:
 
 - (PXStoryDummyClip)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryDummyClip.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PXStoryDummyClip init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyClip.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PXStoryDummyClip init]"}];
 
   abort();
 }

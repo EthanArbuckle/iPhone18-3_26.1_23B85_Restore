@@ -1,35 +1,35 @@
 @interface PIPosterSettlingEffectLoader
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_livePhotoKeyFrameTimeForResource:(SEL)a3;
-+ (BOOL)_canLoadVideoAtURL:(id)a3;
-+ (BOOL)adjustCropRect:(CGRect *)a3 forEditedLivePhotoResource:(id)a4 error:(id *)a5;
-+ (BOOL)adjustCropRect:(CGRect)a3 outputRect:(CGRect *)a4 outputExtent:(CGRect *)a5 forComposition:(id)a6 applyOrientation:(BOOL)a7 error:(id *)a8;
-+ (BOOL)canHandleEditedLivePhotoResource:(id)a3 error:(id *)a4;
-+ (BOOL)extractCropRect:(CGRect *)a3 fromStabilizationResultAttributes:(id)a4 error:(id *)a5;
-+ (CGRect)effectiveCropRect:(CGRect)a3 forResource:(id)a4 error:(id *)a5;
-+ (id)_resolveOptions:(id)a3 forResource:(id)a4;
-+ (id)adjustedCompositionForResource:(id)a3 videoURL:(id)a4 cropRect:(CGRect)a5 error:(id *)a6;
-+ (id)originalCompositionForResource:(id)a3 error:(id *)a4;
-+ (id)temporaryAdjustedVideoURLForURL:(id)a3;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_livePhotoKeyFrameTimeForResource:(SEL)resource;
++ (BOOL)_canLoadVideoAtURL:(id)l;
++ (BOOL)adjustCropRect:(CGRect *)rect forEditedLivePhotoResource:(id)resource error:(id *)error;
++ (BOOL)adjustCropRect:(CGRect)rect outputRect:(CGRect *)outputRect outputExtent:(CGRect *)extent forComposition:(id)composition applyOrientation:(BOOL)orientation error:(id *)error;
++ (BOOL)canHandleEditedLivePhotoResource:(id)resource error:(id *)error;
++ (BOOL)extractCropRect:(CGRect *)rect fromStabilizationResultAttributes:(id)attributes error:(id *)error;
++ (CGRect)effectiveCropRect:(CGRect)rect forResource:(id)resource error:(id *)error;
++ (id)_resolveOptions:(id)options forResource:(id)resource;
++ (id)adjustedCompositionForResource:(id)resource videoURL:(id)l cropRect:(CGRect)rect error:(id *)error;
++ (id)originalCompositionForResource:(id)resource error:(id *)error;
++ (id)temporaryAdjustedVideoURLForURL:(id)l;
 + (id)temporaryDirectory;
-+ (int)loadCropRectWithResource:(id)a3 options:(id)a4 completion:(id)a5;
-+ (int)loadVideoWithResource:(id)a3 options:(id)a4 completion:(id)a5;
-+ (unint64_t)_gatingFlagsFromMADStatus:(id)a3;
-+ (void)adjustVideo:(id)a3 cropRect:(CGRect)a4 forResource:(id)a5 completion:(id)a6;
-+ (void)cancelRequest:(int)a3;
++ (int)loadCropRectWithResource:(id)resource options:(id)options completion:(id)completion;
++ (int)loadVideoWithResource:(id)resource options:(id)options completion:(id)completion;
++ (unint64_t)_gatingFlagsFromMADStatus:(id)status;
++ (void)adjustVideo:(id)video cropRect:(CGRect)rect forResource:(id)resource completion:(id)completion;
++ (void)cancelRequest:(int)request;
 @end
 
 @implementation PIPosterSettlingEffectLoader
 
-+ (id)adjustedCompositionForResource:(id)a3 videoURL:(id)a4 cropRect:(CGRect)a5 error:(id *)a6
++ (id)adjustedCompositionForResource:(id)resource videoURL:(id)l cropRect:(CGRect)rect error:(id *)error
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v67 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  if (!v12)
+  resourceCopy = resource;
+  lCopy = l;
+  if (!resourceCopy)
   {
     v29 = NUAssertLogger_9605();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_9605();
     v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -48,11 +48,11 @@
     {
       if (v34)
       {
-        v47 = dispatch_get_specific(*v31);
+        v47 = dispatch_get_specific(*callStackSymbols);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v31 = [v48 callStackSymbols];
-        v50 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v48 callStackSymbols];
+        v50 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v64 = v47;
         v65 = 2114;
@@ -63,10 +63,10 @@
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v64 = v31;
+      v64 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -74,8 +74,8 @@
     goto LABEL_27;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = lCopy;
+  if (!lCopy)
   {
     v36 = NUAssertLogger_9605();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -86,7 +86,7 @@
       _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v38 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_9605();
     v39 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -94,10 +94,10 @@
     {
       if (v39)
       {
-        v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v64 = v31;
+        v64 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -110,11 +110,11 @@ LABEL_29:
 LABEL_27:
     if (v39)
     {
-      v51 = dispatch_get_specific(*v31);
+      v51 = dispatch_get_specific(*callStackSymbols);
       v52 = MEMORY[0x1E696AF00];
       v53 = v51;
-      v31 = [v52 callStackSymbols];
-      v54 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v52 callStackSymbols];
+      v54 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v64 = v51;
       v65 = 2114;
@@ -125,9 +125,9 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  v15 = [v12 adjustmentData];
+  adjustmentData = [resourceCopy adjustmentData];
 
-  if (!v15)
+  if (!adjustmentData)
   {
     v41 = NUAssertLogger_9605();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -138,7 +138,7 @@ LABEL_27:
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v43 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_9605();
     v44 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -146,8 +146,8 @@ LABEL_27:
     {
       if (v44)
       {
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v46 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v64 = v46;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -159,11 +159,11 @@ LABEL_27:
 LABEL_30:
     if (v44)
     {
-      v55 = dispatch_get_specific(*v31);
+      v55 = dispatch_get_specific(*callStackSymbols);
       v56 = MEMORY[0x1E696AF00];
       v57 = v55;
-      v58 = [v56 callStackSymbols];
-      v59 = [v58 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v56 callStackSymbols];
+      v59 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v64 = v55;
       v65 = 2114;
@@ -176,16 +176,16 @@ LABEL_32:
     _NUAssertFailHandler();
   }
 
-  v16 = [v12 adjustmentData];
-  v17 = [v12 adjustmentFormat];
-  v18 = [v12 adjustmentVersion];
-  v19 = [PICompositionSerializer deserializeCompositionFromData:v16 formatIdentifier:v17 formatVersion:v18 error:a6];
+  adjustmentData2 = [resourceCopy adjustmentData];
+  adjustmentFormat = [resourceCopy adjustmentFormat];
+  adjustmentVersion = [resourceCopy adjustmentVersion];
+  v19 = [PICompositionSerializer deserializeCompositionFromData:adjustmentData2 formatIdentifier:adjustmentFormat formatVersion:adjustmentVersion error:error];
 
   if (v19)
   {
-    v20 = [v12 imageFileURL];
-    v21 = [v12 fileType];
-    v22 = [PIPhotoEditHelper imageSourceWithURL:v20 type:v21 useEmbeddedPreview:0];
+    imageFileURL = [resourceCopy imageFileURL];
+    fileType = [resourceCopy fileType];
+    v22 = [PIPhotoEditHelper imageSourceWithURL:imageFileURL type:fileType useEmbeddedPreview:0];
 
     v23 = [PIPhotoEditHelper videoSourceWithURL:v14];
     v61 = @"appliedCropRect";
@@ -196,8 +196,8 @@ LABEL_32:
     v24 = [MEMORY[0x1E696B098] valueWithBytes:v60 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     v62 = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-    v26 = [v23 definition];
-    [v26 setSourceOptions:v25];
+    definition = [v23 definition];
+    [definition setSourceOptions:v25];
 
     v27 = [PIPhotoEditHelper livePhotoSourceWithPhotoSource:v22 videoSource:v23];
     [v19 setObject:v27 forKeyedSubscript:@"source"];
@@ -207,11 +207,11 @@ LABEL_32:
   return v19;
 }
 
-+ (id)originalCompositionForResource:(id)a3 error:(id *)a4
++ (id)originalCompositionForResource:(id)resource error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  resourceCopy = resource;
+  if (!resourceCopy)
   {
     v18 = NUAssertLogger_9605();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -222,7 +222,7 @@ LABEL_32:
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_9605();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -230,11 +230,11 @@ LABEL_32:
     {
       if (v23)
       {
-        v31 = dispatch_get_specific(*v20);
+        v31 = dispatch_get_specific(*callStackSymbols);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v20 = [v32 callStackSymbols];
-        v34 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v31;
         v42 = 2114;
@@ -245,10 +245,10 @@ LABEL_32:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v41 = v20;
+      v41 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -256,8 +256,8 @@ LABEL_32:
     goto LABEL_21;
   }
 
-  v6 = v5;
-  if ([v5 type] != 6)
+  v6 = resourceCopy;
+  if ([resourceCopy type] != 6)
   {
     v25 = NUAssertLogger_9605();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -268,7 +268,7 @@ LABEL_32:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v27 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_9605();
     v28 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -276,8 +276,8 @@ LABEL_32:
     {
       if (v28)
       {
-        v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v30 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v41 = v30;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -289,11 +289,11 @@ LABEL_32:
 LABEL_21:
     if (v28)
     {
-      v35 = dispatch_get_specific(*v20);
+      v35 = dispatch_get_specific(*callStackSymbols);
       v36 = MEMORY[0x1E696AF00];
       v37 = v35;
-      v38 = [v36 callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v36 callStackSymbols];
+      v39 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v41 = v35;
       v42 = 2114;
@@ -306,19 +306,19 @@ LABEL_23:
     _NUAssertFailHandler();
   }
 
-  v7 = [v6 adjustmentData];
-  v8 = [v6 adjustmentFormat];
-  v9 = [v6 adjustmentVersion];
-  v10 = [PICompositionSerializer deserializeCompositionFromData:v7 formatIdentifier:v8 formatVersion:v9 error:a4];
+  adjustmentData = [v6 adjustmentData];
+  adjustmentFormat = [v6 adjustmentFormat];
+  adjustmentVersion = [v6 adjustmentVersion];
+  v10 = [PICompositionSerializer deserializeCompositionFromData:adjustmentData formatIdentifier:adjustmentFormat formatVersion:adjustmentVersion error:error];
 
   if (v10)
   {
-    v11 = [v6 imageFileURL];
-    v12 = [v6 fileType];
-    v13 = [PIPhotoEditHelper imageSourceWithURL:v11 type:v12 useEmbeddedPreview:0];
+    imageFileURL = [v6 imageFileURL];
+    fileType = [v6 fileType];
+    v13 = [PIPhotoEditHelper imageSourceWithURL:imageFileURL type:fileType useEmbeddedPreview:0];
 
-    v14 = [v6 videoFileURL];
-    v15 = [PIPhotoEditHelper videoSourceWithURL:v14];
+    videoFileURL = [v6 videoFileURL];
+    v15 = [PIPhotoEditHelper videoSourceWithURL:videoFileURL];
 
     v16 = [PIPhotoEditHelper livePhotoSourceWithPhotoSource:v13 videoSource:v15];
     [v10 setObject:v16 forKeyedSubscript:@"source"];
@@ -328,45 +328,45 @@ LABEL_23:
   return v10;
 }
 
-+ (id)temporaryAdjustedVideoURLForURL:(id)a3
++ (id)temporaryAdjustedVideoURLForURL:(id)l
 {
-  v4 = [a3 lastPathComponent];
-  v5 = [@"adj-" stringByAppendingString:v4];
+  lastPathComponent = [l lastPathComponent];
+  v5 = [@"adj-" stringByAppendingString:lastPathComponent];
 
-  v6 = [a1 temporaryDirectory];
-  v7 = [v6 URLByAppendingPathComponent:v5];
+  temporaryDirectory = [self temporaryDirectory];
+  v7 = [temporaryDirectory URLByAppendingPathComponent:v5];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  [v8 removeItemAtURL:v7 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:v7 error:0];
 
   return v7;
 }
 
 + (id)temporaryDirectory
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
-  v5 = [v4 bundleIdentifier];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [MEMORY[0x1E696AAE8] bundleForClass:self];
+  bundleIdentifier = [v4 bundleIdentifier];
 
-  v6 = [v3 temporaryDirectory];
-  v7 = [v6 URLByAppendingPathComponent:v5];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v7 = [temporaryDirectory URLByAppendingPathComponent:bundleIdentifier];
 
-  [v3 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
+  [defaultManager createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v7;
 }
 
-+ (void)adjustVideo:(id)a3 cropRect:(CGRect)a4 forResource:(id)a5 completion:(id)a6
++ (void)adjustVideo:(id)video cropRect:(CGRect)rect forResource:(id)resource completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  videoCopy = video;
+  resourceCopy = resource;
+  completionCopy = completion;
   v55 = 0;
-  [a1 effectiveCropRect:v14 forResource:&v55 error:{x, y, width, height}];
+  [self effectiveCropRect:resourceCopy forResource:&v55 error:{x, y, width, height}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -378,13 +378,13 @@ LABEL_23:
   v56.size.height = v23;
   if (CGRectIsNull(v56))
   {
-    v15[2](v15, 0, v24);
+    completionCopy[2](completionCopy, 0, v24);
   }
 
   else
   {
     v54 = 0;
-    v25 = [a1 adjustedCompositionForResource:v14 videoURL:v13 cropRect:&v54 error:{v17, v19, v21, v23}];
+    v25 = [self adjustedCompositionForResource:resourceCopy videoURL:videoCopy cropRect:&v54 error:{v17, v19, v21, v23}];
     v26 = v54;
 
     if (v25)
@@ -393,7 +393,7 @@ LABEL_23:
       v53 = 0u;
       memset(v51, 0, sizeof(v51));
       v50 = 0;
-      v27 = [a1 adjustCropRect:v51 outputRect:&v52 outputExtent:v25 forComposition:0 applyOrientation:&v50 error:{x, y, width, height}];
+      v27 = [self adjustCropRect:v51 outputRect:&v52 outputExtent:v25 forComposition:0 applyOrientation:&v50 error:{x, y, width, height}];
       v28 = v50;
 
       if (v27)
@@ -417,26 +417,26 @@ LABEL_23:
         v44 = 0u;
         v45 = 0u;
         [v29 modifyAdjustmentWithKey:@"cropStraighten" modificationBlock:v39];
-        v30 = [a1 temporaryAdjustedVideoURLForURL:v13];
+        v30 = [self temporaryAdjustedVideoURLForURL:videoCopy];
         v31 = objc_alloc(MEMORY[0x1E69B3D10]);
-        v32 = [v29 composition];
-        v33 = [v31 initWithComposition:v32 destinationURL:v30];
+        composition = [v29 composition];
+        v33 = [v31 initWithComposition:composition destinationURL:v30];
 
         v36[0] = MEMORY[0x1E69E9820];
         v36[1] = 3221225472;
         v36[2] = __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_completion___block_invoke_2;
         v36[3] = &unk_1E82ACC00;
         v37 = v30;
-        v38 = v15;
+        v38 = completionCopy;
         v34 = v30;
         [v33 submit:v36];
       }
 
       else
       {
-        v35 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to adjust stabilization crop rect" object:v14 underlyingError:v28];
+        v35 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to adjust stabilization crop rect" object:resourceCopy underlyingError:v28];
 
-        v15[2](v15, 0, v35);
+        completionCopy[2](completionCopy, 0, v35);
         v28 = v35;
       }
 
@@ -445,7 +445,7 @@ LABEL_23:
 
     else
     {
-      v15[2](v15, 0, v26);
+      completionCopy[2](completionCopy, 0, v26);
     }
 
     v24 = v26;
@@ -681,15 +681,15 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
   [v6 removeItemAtURL:*(a1 + 32) error:0];
 }
 
-+ (CGRect)effectiveCropRect:(CGRect)a3 forResource:(id)a4 error:(id *)a5
++ (CGRect)effectiveCropRect:(CGRect)rect forResource:(id)resource error:(id *)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v49[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  if (!a5)
+  resourceCopy = resource;
+  if (!error)
   {
     v33 = NUAssertLogger_9605();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -711,8 +711,8 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
         v41 = dispatch_get_specific(*v35);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v42 callStackSymbols];
+        v45 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v41;
         *&buf[12] = 2114;
@@ -723,8 +723,8 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
 
     else if (v38)
     {
-      v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v40 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v40;
       _os_log_error_impl(&dword_1C7694000, v37, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -733,15 +733,15 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
     _NUAssertFailHandler();
   }
 
-  v12 = v11;
+  v12 = resourceCopy;
   v47 = 0;
-  v13 = [a1 originalCompositionForResource:v11 error:&v47];
+  v13 = [self originalCompositionForResource:resourceCopy error:&v47];
   v14 = v47;
   if (v13)
   {
     v15 = [PIPhotoEditHelper newCompositionControllerWithComposition:v13];
-    v16 = [v15 livePhotoKeyFrameAdjustmentController];
-    if (v16)
+    livePhotoKeyFrameAdjustmentController = [v15 livePhotoKeyFrameAdjustmentController];
+    if (livePhotoKeyFrameAdjustmentController)
     {
       v17 = [objc_alloc(MEMORY[0x1E69B3D28]) initWithComposition:v13];
       v18 = +[PIPipelineFilters noGeometryFilter];
@@ -753,13 +753,13 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
       v20 = [v17 submitSynchronous:&v46];
       v21 = v46;
 
-      v22 = [v20 properties];
+      properties = [v20 properties];
 
-      if (v22)
+      if (properties)
       {
         memset(buf, 0, sizeof(buf));
-        [v22 cleanAperture];
-        [v22 size];
+        [properties cleanAperture];
+        [properties size];
         NUPixelRectNormalize();
         x = x - v26;
         v27 = 0.0;
@@ -780,7 +780,7 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
 
       else
       {
-        *a5 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get video properties" object:v13 underlyingError:v21];
+        *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get video properties" object:v13 underlyingError:v21];
         x = *MEMORY[0x1E695F050];
         y = *(MEMORY[0x1E695F050] + 8);
         v28 = *(MEMORY[0x1E695F050] + 16);
@@ -799,7 +799,7 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
 
   else
   {
-    *a5 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load original composition for resource" object:v12 underlyingError:v14];
+    *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load original composition for resource" object:v12 underlyingError:v14];
     x = *MEMORY[0x1E695F050];
     y = *(MEMORY[0x1E695F050] + 8);
     v28 = *(MEMORY[0x1E695F050] + 16);
@@ -817,17 +817,17 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
   return result;
 }
 
-+ (BOOL)adjustCropRect:(CGRect)a3 outputRect:(CGRect *)a4 outputExtent:(CGRect *)a5 forComposition:(id)a6 applyOrientation:(BOOL)a7 error:(id *)a8
++ (BOOL)adjustCropRect:(CGRect)rect outputRect:(CGRect *)outputRect outputExtent:(CGRect *)extent forComposition:(id)composition applyOrientation:(BOOL)orientation error:(id *)error
 {
-  v13 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  orientationCopy = orientation;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v20 = buf;
   v115[1] = *MEMORY[0x1E69E9840];
-  v21 = a6;
-  if (!a4)
+  compositionCopy = composition;
+  if (!outputRect)
   {
     v70 = NUAssertLogger_9605();
     v27 = "outCropRect != NULL";
@@ -839,7 +839,7 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
       _os_log_error_impl(&dword_1C7694000, v70, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v28 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_9605();
     v72 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -847,15 +847,15 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
     {
       if (v72)
       {
-        specific = dispatch_get_specific(*v28);
+        specific = dispatch_get_specific(*callStackSymbols);
         v76 = MEMORY[0x1E696AF00];
         v77 = specific;
-        v28 = [v76 callStackSymbols];
-        a4 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v76 callStackSymbols];
+        outputRect = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v107 = specific;
         v108 = 2114;
-        v109 = a4;
+        outputRectCopy2 = outputRect;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
@@ -863,9 +863,9 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
     else if (v72)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v107 = v28;
+      v107 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -873,8 +873,8 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
     goto LABEL_36;
   }
 
-  v22 = v21;
-  if (!v21)
+  v22 = compositionCopy;
+  if (!compositionCopy)
   {
     v73 = NUAssertLogger_9605();
     v27 = "composition != nil";
@@ -886,7 +886,7 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
       _os_log_error_impl(&dword_1C7694000, v73, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v28 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_9605();
     v75 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -895,9 +895,9 @@ void __76__PIPosterSettlingEffectLoader_adjustVideo_cropRect_forResource_complet
       if (v75)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [specific componentsJoinedByString:@"\n"];
+        callStackSymbols = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v107 = v28;
+        v107 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -910,23 +910,23 @@ LABEL_38:
 LABEL_36:
     if (v75)
     {
-      specific = dispatch_get_specific(*v28);
+      specific = dispatch_get_specific(*callStackSymbols);
       v78 = MEMORY[0x1E696AF00];
       v79 = specific;
-      v28 = [v78 callStackSymbols];
-      a4 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v78 callStackSymbols];
+      outputRect = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v107 = specific;
       v108 = 2114;
-      v109 = a4;
+      outputRectCopy2 = outputRect;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_38;
   }
 
-  v98 = v13;
-  specific = [objc_alloc(MEMORY[0x1E69B3AA8]) initWithComposition:v21];
+  v98 = orientationCopy;
+  specific = [objc_alloc(MEMORY[0x1E69B3AA8]) initWithComposition:compositionCopy];
   v24 = +[PIPipelineFilters noOrientationFilter];
   v115[0] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v115 count:1];
@@ -935,11 +935,11 @@ LABEL_36:
   v105 = 0;
   v26 = [specific submitSynchronous:&v105];
   v27 = v105;
-  v28 = [v26 geometry];
+  callStackSymbols = [v26 geometry];
 
-  if (v28)
+  if (callStackSymbols)
   {
-    v97 = a8;
+    errorCopy = error;
     v29 = +[PIPipelineFilters noGeometryFilter];
     v114 = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v114 count:1];
@@ -949,12 +949,12 @@ LABEL_36:
     v31 = [specific submitSynchronous:&v104];
     v32 = v104;
 
-    v8 = [v31 geometry];
+    geometry = [v31 geometry];
 
-    if (!v8)
+    if (!geometry)
     {
       [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get input image geometry" object:v22 underlyingError:v32];
-      *v97 = LOBYTE(v56) = 0;
+      *errorCopy = LOBYTE(v56) = 0;
       v27 = v32;
 LABEL_21:
 
@@ -965,26 +965,26 @@ LABEL_21:
     v92 = y;
     v94 = width;
     v96 = height;
-    [v8 extent];
+    [geometry extent];
     NUPixelRectToCGRect();
     v10 = v33;
     y = v34;
     x = v35;
     v11 = v36;
-    [v28 extent];
+    [callStackSymbols extent];
     NUPixelRectToCGRect();
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v103 = 0;
-    v20 = [v28 transformWithSourceSpace:@"/pre-Geometry" destinationSpace:@"/pre-Orientation" error:&v103];
+    v20 = [callStackSymbols transformWithSourceSpace:@"/pre-Geometry" destinationSpace:@"/pre-Orientation" error:&v103];
     v27 = v103;
 
     if (!v20)
     {
-      [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get image geometry transform" object:v28 underlyingError:v27];
-      *v97 = LOBYTE(v56) = 0;
+      [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get image geometry transform" object:callStackSymbols underlyingError:v27];
+      *errorCopy = LOBYTE(v56) = 0;
       goto LABEL_20;
     }
 
@@ -1020,7 +1020,7 @@ LABEL_7:
         *&v102[2] = log;
         *&v102[3] = v80;
         loga = v49;
-        v85 = a5;
+        extentCopy = extent;
         v81 = [v50 valueWithBytes:v102 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
         *v101 = v10;
         *&v101[1] = y;
@@ -1041,14 +1041,14 @@ LABEL_7:
         *buf = 138413058;
         v107 = v81;
         v108 = 2112;
-        v109 = v51;
+        outputRectCopy2 = v51;
         v110 = 2112;
         v111 = v52;
         v112 = 2112;
         v113 = v53;
         _os_log_impl(&dword_1C7694000, loga, OS_LOG_TYPE_DEFAULT, "Adjust FRC crop rect: %@ [%@], output rect: %@ [%@]", buf, 0x2Au);
 
-        a5 = v85;
+        extent = extentCopy;
         v20 = v87;
       }
 
@@ -1060,17 +1060,17 @@ LABEL_7:
         v60 = v88;
 LABEL_16:
         NURectNormalize();
-        a4->origin.x = v65;
-        a4->origin.y = v66;
-        a4->size.width = v67;
-        a4->size.height = v68;
-        if (a5)
+        outputRect->origin.x = v65;
+        outputRect->origin.y = v66;
+        outputRect->size.width = v67;
+        outputRect->size.height = v68;
+        if (extent)
         {
-          a5->origin.x = v58;
-          a5->origin.y = v60;
+          extent->origin.x = v58;
+          extent->origin.y = v60;
           LOBYTE(v56) = 1;
-          a5->size.width = v62;
-          a5->size.height = v64;
+          extent->size.width = v62;
+          extent->size.height = v64;
         }
 
         else
@@ -1082,14 +1082,14 @@ LABEL_16:
       }
 
       v54 = [PIPhotoEditHelper newCompositionControllerWithComposition:v22];
-      v55 = [v54 orientationAdjustmentController];
-      v56 = v55;
-      if (v55)
+      orientationAdjustmentController = [v54 orientationAdjustmentController];
+      v56 = orientationAdjustmentController;
+      if (orientationAdjustmentController)
       {
-        [v55 orientation];
-        [v28 size];
+        [orientationAdjustmentController orientation];
+        [callStackSymbols size];
         NUOrientationTransformRect();
-        [v28 size];
+        [callStackSymbols size];
         NUOrientationTransformRect();
         v58 = v57;
         v60 = v59;
@@ -1099,7 +1099,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      *v97 = [MEMORY[0x1E69B3A48] failureError:@"Missing orientation adjustment" object:v22];
+      *errorCopy = [MEMORY[0x1E69B3A48] failureError:@"Missing orientation adjustment" object:v22];
 
 LABEL_20:
       goto LABEL_21;
@@ -1111,17 +1111,17 @@ LABEL_39:
   }
 
   [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get output image geometry" object:v22 underlyingError:v27];
-  *a8 = LOBYTE(v56) = 0;
+  *error = LOBYTE(v56) = 0;
 LABEL_22:
 
   return v56;
 }
 
-+ (BOOL)adjustCropRect:(CGRect *)a3 forEditedLivePhotoResource:(id)a4 error:(id *)a5
++ (BOOL)adjustCropRect:(CGRect *)rect forEditedLivePhotoResource:(id)resource error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!a3)
+  resourceCopy = resource;
+  if (!rect)
   {
     v15 = NUAssertLogger_9605();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1132,7 +1132,7 @@ LABEL_22:
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_9605();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -1140,11 +1140,11 @@ LABEL_22:
     {
       if (v20)
       {
-        v38 = dispatch_get_specific(*v17);
+        v38 = dispatch_get_specific(*callStackSymbols);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v17 = [v39 callStackSymbols];
-        v41 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v57 = v38;
         v58 = 2114;
@@ -1155,10 +1155,10 @@ LABEL_22:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v57 = v17;
+      v57 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1166,8 +1166,8 @@ LABEL_22:
     goto LABEL_32;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = resourceCopy;
+  if (!resourceCopy)
   {
     v22 = NUAssertLogger_9605();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1178,7 +1178,7 @@ LABEL_22:
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v24 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_9605();
     v25 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -1186,10 +1186,10 @@ LABEL_22:
     {
       if (v25)
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v17 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v57 = v17;
+        v57 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1202,11 +1202,11 @@ LABEL_34:
 LABEL_32:
     if (v25)
     {
-      v42 = dispatch_get_specific(*v17);
+      v42 = dispatch_get_specific(*callStackSymbols);
       v43 = MEMORY[0x1E696AF00];
       v44 = v42;
-      v17 = [v43 callStackSymbols];
-      v45 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v43 callStackSymbols];
+      v45 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v57 = v42;
       v58 = 2114;
@@ -1217,7 +1217,7 @@ LABEL_32:
     goto LABEL_34;
   }
 
-  if ([v8 type] != 6)
+  if ([resourceCopy type] != 6)
   {
     v27 = NUAssertLogger_9605();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1228,7 +1228,7 @@ LABEL_32:
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v29 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_9605();
     v30 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -1236,10 +1236,10 @@ LABEL_32:
     {
       if (v30)
       {
-        v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v17 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v57 = v17;
+        v57 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1252,11 +1252,11 @@ LABEL_37:
 LABEL_35:
     if (v30)
     {
-      v46 = dispatch_get_specific(*v17);
+      v46 = dispatch_get_specific(*callStackSymbols);
       v47 = MEMORY[0x1E696AF00];
       v48 = v46;
-      v17 = [v47 callStackSymbols];
-      v49 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v47 callStackSymbols];
+      v49 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v57 = v46;
       v58 = 2114;
@@ -1267,9 +1267,9 @@ LABEL_35:
     goto LABEL_37;
   }
 
-  v10 = [v9 adjustmentData];
+  adjustmentData = [v9 adjustmentData];
 
-  if (!v10)
+  if (!adjustmentData)
   {
     v32 = NUAssertLogger_9605();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1280,7 +1280,7 @@ LABEL_35:
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v34 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_9605();
     v35 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -1288,8 +1288,8 @@ LABEL_35:
     {
       if (v35)
       {
-        v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v37 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v57 = v37;
         _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1301,11 +1301,11 @@ LABEL_35:
 LABEL_38:
     if (v35)
     {
-      v50 = dispatch_get_specific(*v17);
+      v50 = dispatch_get_specific(*callStackSymbols);
       v51 = MEMORY[0x1E696AF00];
       v52 = v50;
-      v53 = [v51 callStackSymbols];
-      v54 = [v53 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v51 callStackSymbols];
+      v54 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v57 = v50;
       v58 = 2114;
@@ -1319,52 +1319,52 @@ LABEL_40:
   }
 
   v55 = 0;
-  v11 = [a1 originalCompositionForResource:v9 error:&v55];
+  v11 = [self originalCompositionForResource:v9 error:&v55];
   v12 = v55;
   if (v11)
   {
-    v13 = [a1 adjustCropRect:a3 outputRect:0 outputExtent:v11 forComposition:1 applyOrientation:a5 error:{a3->origin.x, a3->origin.y, a3->size.width, a3->size.height}];
+    v13 = [self adjustCropRect:rect outputRect:0 outputExtent:v11 forComposition:1 applyOrientation:error error:{rect->origin.x, rect->origin.y, rect->size.width, rect->size.height}];
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get original composition for live photo resource" object:v9 underlyingError:v12];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   return v13;
 }
 
-+ (BOOL)canHandleEditedLivePhotoResource:(id)a3 error:(id *)a4
++ (BOOL)canHandleEditedLivePhotoResource:(id)resource error:(id *)error
 {
-  v6 = a3;
+  resourceCopy = resource;
   v18 = 0;
-  v7 = [a1 originalCompositionForResource:v6 error:&v18];
+  v7 = [self originalCompositionForResource:resourceCopy error:&v18];
   v8 = v18;
   if (v7)
   {
     v9 = [[PICompositionController alloc] initWithComposition:v7];
-    v10 = [(PICompositionController *)v9 autoLoopAdjustmentController];
-    v11 = [v10 enabled];
+    autoLoopAdjustmentController = [(PICompositionController *)v9 autoLoopAdjustmentController];
+    enabled = [autoLoopAdjustmentController enabled];
 
-    if (v11)
+    if (enabled)
     {
       v12 = @"AutoLoop adjustment is not supported";
     }
 
     else
     {
-      v14 = [(PICompositionController *)v9 portraitAdjustmentController];
-      if ([v14 enabled])
+      portraitAdjustmentController = [(PICompositionController *)v9 portraitAdjustmentController];
+      if ([portraitAdjustmentController enabled])
       {
       }
 
       else
       {
-        v15 = [(PICompositionController *)v9 depthAdjustmentController];
-        v16 = [v15 enabled];
+        depthAdjustmentController = [(PICompositionController *)v9 depthAdjustmentController];
+        enabled2 = [depthAdjustmentController enabled];
 
-        if (!v16)
+        if (!enabled2)
         {
           v13 = 1;
           goto LABEL_10;
@@ -1375,77 +1375,77 @@ LABEL_40:
     }
 
     [MEMORY[0x1E69B3A48] unsupportedError:v12 object:v7];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get original composition for live photo resource" object:v6 underlyingError:v8];
-  *a4 = v13 = 0;
+  [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get original composition for live photo resource" object:resourceCopy underlyingError:v8];
+  *error = v13 = 0;
 LABEL_11:
 
   return v13;
 }
 
-+ (void)cancelRequest:(int)a3
++ (void)cancelRequest:(int)request
 {
-  v3 = *&a3;
-  v4 = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
-  [v4 cancelRequest:v3];
+  v3 = *&request;
+  sharedAnalysisService = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
+  [sharedAnalysisService cancelRequest:v3];
 }
 
-+ (BOOL)_canLoadVideoAtURL:(id)a3
++ (BOOL)_canLoadVideoAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3];
+  lCopy = l;
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
   v5 = [MEMORY[0x1E6987E28] assetWithData:v4 contentType:*MEMORY[0x1E69874C0] options:MEMORY[0x1E695E0F8]];
 
   return 1;
 }
 
-+ (int)loadVideoWithResource:(id)a3 options:(id)a4 completion:(id)a5
++ (int)loadVideoWithResource:(id)resource options:(id)options completion:(id)completion
 {
   v42[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 imageFileURL];
-  if (v11 && (v12 = v11, [v8 videoFileURL], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  resourceCopy = resource;
+  optionsCopy = options;
+  completionCopy = completion;
+  imageFileURL = [resourceCopy imageFileURL];
+  if (imageFileURL && (v12 = imageFileURL, [resourceCopy videoFileURL], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
-    v14 = [v8 adjustmentData];
+    adjustmentData = [resourceCopy adjustmentData];
 
-    if (v14)
+    if (adjustmentData)
     {
       v41 = 0;
-      if (([a1 canHandleEditedLivePhotoResource:v8 error:&v41] & 1) == 0)
+      if (([self canHandleEditedLivePhotoResource:resourceCopy error:&v41] & 1) == 0)
       {
-        v10[2](v10, 0, 1, 256, v41);
+        completionCopy[2](completionCopy, 0, 1, 256, v41);
         goto LABEL_13;
       }
     }
 
     v15 = +[PIGlobalSettings globalSettings];
-    v16 = [v15 disableMADForSettlingEffect];
+    disableMADForSettlingEffect = [v15 disableMADForSettlingEffect];
 
-    if (!v16)
+    if (!disableMADForSettlingEffect)
     {
-      v30 = [a1 _resolveOptions:v9 forResource:v8];
-      v31 = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
-      v32 = [v8 imageFileURL];
-      v42[0] = v32;
-      v33 = [v8 videoFileURL];
-      v42[1] = v33;
+      v30 = [self _resolveOptions:optionsCopy forResource:resourceCopy];
+      sharedAnalysisService = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
+      imageFileURL2 = [resourceCopy imageFileURL];
+      v42[0] = imageFileURL2;
+      videoFileURL = [resourceCopy videoFileURL];
+      v42[1] = videoFileURL;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __73__PIPosterSettlingEffectLoader_loadVideoWithResource_options_completion___block_invoke;
       v35[3] = &unk_1E82AA9F8;
-      v36 = v8;
-      v38 = v10;
-      v39 = a1;
-      v37 = v9;
-      v28 = [v31 requestAnalysisTypes:0x4000000000 forAssetWithResourceURLs:v34 withOptions:v30 progressHandler:0 andCompletionHandler:v35];
+      v36 = resourceCopy;
+      v38 = completionCopy;
+      selfCopy = self;
+      v37 = optionsCopy;
+      v28 = [sharedAnalysisService requestAnalysisTypes:0x4000000000 forAssetWithResourceURLs:v34 withOptions:v30 progressHandler:0 andCompletionHandler:v35];
 
       goto LABEL_14;
     }
@@ -1454,19 +1454,19 @@ LABEL_11:
     v18 = NSTemporaryDirectory();
     v19 = [v17 initFileURLWithPath:v18 isDirectory:1];
 
-    v20 = [v8 videoFileURL];
-    v21 = [v20 lastPathComponent];
-    v22 = [v19 URLByAppendingPathComponent:v21];
+    videoFileURL2 = [resourceCopy videoFileURL];
+    lastPathComponent = [videoFileURL2 lastPathComponent];
+    v22 = [v19 URLByAppendingPathComponent:lastPathComponent];
 
-    v23 = [MEMORY[0x1E696AC08] defaultManager];
-    v24 = [v8 videoFileURL];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    videoFileURL3 = [resourceCopy videoFileURL];
     v40 = 0;
-    v25 = [v23 copyItemAtURL:v24 toURL:v22 error:&v40];
+    v25 = [defaultManager copyItemAtURL:videoFileURL3 toURL:v22 error:&v40];
     v26 = v40;
 
     if (v25)
     {
-      if ([v9 isInteractiveRequest])
+      if ([optionsCopy isInteractiveRequest])
       {
         v27 = 3;
       }
@@ -1476,19 +1476,19 @@ LABEL_11:
         v27 = 5;
       }
 
-      (v10)[2](v10, v22, v27, 0, 0);
+      (completionCopy)[2](completionCopy, v22, v27, 0, 0);
     }
 
     else
     {
-      v10[2](v10, 0, 1, 512, v26);
+      completionCopy[2](completionCopy, 0, 1, 512, v26);
     }
   }
 
   else
   {
-    v22 = [MEMORY[0x1E69B3A48] missingError:@"Resource is missing image and/or video URLs" object:v8];
-    v10[2](v10, 0, 1, 128, v22);
+    v22 = [MEMORY[0x1E69B3A48] missingError:@"Resource is missing image and/or video URLs" object:resourceCopy];
+    completionCopy[2](completionCopy, 0, 1, 128, v22);
   }
 
 LABEL_13:
@@ -1782,11 +1782,11 @@ void __73__PIPosterSettlingEffectLoader_loadVideoWithResource_options_completion
   }
 }
 
-+ (BOOL)extractCropRect:(CGRect *)a3 fromStabilizationResultAttributes:(id)a4 error:(id *)a5
++ (BOOL)extractCropRect:(CGRect *)rect fromStabilizationResultAttributes:(id)attributes error:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  attributesCopy = attributes;
+  if (!rect)
   {
     v30 = NUAssertLogger_9605();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1797,10 +1797,10 @@ void __73__PIPosterSettlingEffectLoader_loadVideoWithResource_options_completion
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &rect, 0xCu);
     }
 
-    a3 = MEMORY[0x1E69B38E8];
+    rect = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v33 = NUAssertLogger_9605();
-    v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
+    currentHandler = NUAssertLogger_9605();
+    v34 = os_log_type_enabled(currentHandler, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       goto LABEL_39;
@@ -1808,18 +1808,18 @@ void __73__PIPosterSettlingEffectLoader_loadVideoWithResource_options_completion
 
     if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      a3 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      rect = [callStackSymbols componentsJoinedByString:@"\n"];
       LODWORD(rect.origin.x) = 138543362;
-      *(&rect.origin.x + 4) = a3;
-      _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &rect, 0xCu);
+      *(&rect.origin.x + 4) = rect;
+      _os_log_error_impl(&dword_1C7694000, currentHandler, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &rect, 0xCu);
     }
 
     goto LABEL_41;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = attributesCopy;
+  if (!attributesCopy)
   {
     v36 = NUAssertLogger_9605();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -1830,24 +1830,24 @@ void __73__PIPosterSettlingEffectLoader_loadVideoWithResource_options_completion
       _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &rect, 0xCu);
     }
 
-    a3 = MEMORY[0x1E69B38E8];
+    rect = MEMORY[0x1E69B38E8];
     v38 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v33 = NUAssertLogger_9605();
-    v39 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
+    currentHandler = NUAssertLogger_9605();
+    v39 = os_log_type_enabled(currentHandler, OS_LOG_TYPE_ERROR);
     if (v38)
     {
       if (v39)
       {
-        v50 = dispatch_get_specific(*&a3->origin.x);
+        v50 = dispatch_get_specific(*&rect->origin.x);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        a3 = [v51 callStackSymbols];
-        v53 = [(CGRect *)a3 componentsJoinedByString:@"\n"];
+        rect = [v51 callStackSymbols];
+        v53 = [(CGRect *)rect componentsJoinedByString:@"\n"];
         LODWORD(rect.origin.x) = 138543618;
         *(&rect.origin.x + 4) = v50;
         WORD2(rect.origin.y) = 2114;
         *(&rect.origin.y + 6) = v53;
-        _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &rect, 0x16u);
+        _os_log_error_impl(&dword_1C7694000, currentHandler, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &rect, 0x16u);
       }
 
       goto LABEL_44;
@@ -1856,11 +1856,11 @@ void __73__PIPosterSettlingEffectLoader_loadVideoWithResource_options_completion
     if (v39)
     {
 LABEL_31:
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      a3 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      rect = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(rect.origin.x) = 138543362;
-      *(&rect.origin.x + 4) = a3;
-      _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &rect, 0xCu);
+      *(&rect.origin.x + 4) = rect;
+      _os_log_error_impl(&dword_1C7694000, currentHandler, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &rect, 0xCu);
     }
 
 LABEL_44:
@@ -1869,7 +1869,7 @@ LABEL_44:
     goto LABEL_38;
   }
 
-  if (!a5)
+  if (!error)
   {
     v41 = NUAssertLogger_9605();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -1880,24 +1880,24 @@ LABEL_44:
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &rect, 0xCu);
     }
 
-    a3 = MEMORY[0x1E69B38E8];
+    rect = MEMORY[0x1E69B38E8];
     v43 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v33 = NUAssertLogger_9605();
-    v44 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
+    currentHandler = NUAssertLogger_9605();
+    v44 = os_log_type_enabled(currentHandler, OS_LOG_TYPE_ERROR);
     if (v43)
     {
       if (v44)
       {
-        v54 = dispatch_get_specific(*&a3->origin.x);
+        v54 = dispatch_get_specific(*&rect->origin.x);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        a3 = [v55 callStackSymbols];
-        v57 = [(CGRect *)a3 componentsJoinedByString:@"\n"];
+        rect = [v55 callStackSymbols];
+        v57 = [(CGRect *)rect componentsJoinedByString:@"\n"];
         LODWORD(rect.origin.x) = 138543618;
         *(&rect.origin.x + 4) = v54;
         WORD2(rect.origin.y) = 2114;
         *(&rect.origin.y + 6) = v57;
-        _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &rect, 0x16u);
+        _os_log_error_impl(&dword_1C7694000, currentHandler, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &rect, 0x16u);
       }
 
       goto LABEL_44;
@@ -1933,9 +1933,9 @@ LABEL_44:
   _Block_object_dispose(&size, 8);
   if (!v9)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMediaAnalysisResultsStabilizationCropAttributeKey(void)"];
-    [v33 handleFailureInFunction:v45 file:@"PIPosterSettlingEffectLoader.m" lineNumber:42 description:@"%s", dlerror()];
+    [currentHandler handleFailureInFunction:v45 file:@"PIPosterSettlingEffectLoader.m" lineNumber:42 description:@"%s", dlerror()];
 
     while (1)
     {
@@ -1944,16 +1944,16 @@ LABEL_38:
 LABEL_39:
       if (v34)
       {
-        v46 = dispatch_get_specific(*&a3->origin.x);
+        v46 = dispatch_get_specific(*&rect->origin.x);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        a3 = [v47 callStackSymbols];
-        v49 = [(CGRect *)a3 componentsJoinedByString:@"\n"];
+        rect = [v47 callStackSymbols];
+        v49 = [(CGRect *)rect componentsJoinedByString:@"\n"];
         LODWORD(rect.origin.x) = 138543618;
         *(&rect.origin.x + 4) = v46;
         WORD2(rect.origin.y) = 2114;
         *(&rect.origin.y + 6) = v49;
-        _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &rect, 0x16u);
+        _os_log_error_impl(&dword_1C7694000, currentHandler, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &rect, 0x16u);
       }
 
 LABEL_41:
@@ -1982,7 +1982,7 @@ LABEL_17:
     v28 = [MEMORY[0x1E69B3A48] invalidError:@"Invalid settling effect stabilization crop rect" object:v15];
 LABEL_18:
     v27 = 0;
-    *a5 = v28;
+    *error = v28;
     goto LABEL_19;
   }
 
@@ -2013,55 +2013,55 @@ LABEL_21:
   v21 = vmulq_f64(rect.size, v20);
   __asm { FMOV            V3.2D, #0.5 }
 
-  a3->origin = vmlaq_f64(_Q3, v20, rect.origin);
-  a3->size = v21;
+  rect->origin = vmlaq_f64(_Q3, v20, rect.origin);
+  rect->size = v21;
   v27 = 1;
 LABEL_19:
 
   return v27;
 }
 
-+ (int)loadCropRectWithResource:(id)a3 options:(id)a4 completion:(id)a5
++ (int)loadCropRectWithResource:(id)resource options:(id)options completion:(id)completion
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 imageFileURL];
-  if (v11 && (v12 = v11, [v8 videoFileURL], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  resourceCopy = resource;
+  optionsCopy = options;
+  completionCopy = completion;
+  imageFileURL = [resourceCopy imageFileURL];
+  if (imageFileURL && (v12 = imageFileURL, [resourceCopy videoFileURL], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
-    v14 = [v8 adjustmentData];
+    adjustmentData = [resourceCopy adjustmentData];
 
-    if (v14)
+    if (adjustmentData)
     {
       v36 = 0;
-      if (([a1 canHandleEditedLivePhotoResource:v8 error:&v36] & 1) == 0)
+      if (([self canHandleEditedLivePhotoResource:resourceCopy error:&v36] & 1) == 0)
       {
-        v10[2](v10, 1, 256, v36, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+        completionCopy[2](completionCopy, 1, 256, v36, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
         goto LABEL_13;
       }
     }
 
     v15 = +[PIGlobalSettings globalSettings];
-    v16 = [v15 disableMADForSettlingEffect];
+    disableMADForSettlingEffect = [v15 disableMADForSettlingEffect];
 
-    if (!v16)
+    if (!disableMADForSettlingEffect)
     {
-      v24 = [a1 _resolveOptions:v9 forResource:v8];
-      v25 = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
-      v26 = [v8 imageFileURL];
-      v37[0] = v26;
-      v27 = [v8 videoFileURL];
-      v37[1] = v27;
+      v24 = [self _resolveOptions:optionsCopy forResource:resourceCopy];
+      sharedAnalysisService = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
+      imageFileURL2 = [resourceCopy imageFileURL];
+      v37[0] = imageFileURL2;
+      videoFileURL = [resourceCopy videoFileURL];
+      v37[1] = videoFileURL;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __76__PIPosterSettlingEffectLoader_loadCropRectWithResource_options_completion___block_invoke_2;
       v29[3] = &unk_1E82AA9A8;
-      v30 = v8;
-      v31 = v10;
-      v32 = a1;
-      v22 = [v25 requestAnalysisTypes:0x10000000000 forAssetWithResourceURLs:v28 withOptions:v24 progressHandler:0 andCompletionHandler:v29];
+      v30 = resourceCopy;
+      v31 = completionCopy;
+      selfCopy = self;
+      v22 = [sharedAnalysisService requestAnalysisTypes:0x10000000000 forAssetWithResourceURLs:v28 withOptions:v24 progressHandler:0 andCompletionHandler:v29];
 
       goto LABEL_14;
     }
@@ -2079,8 +2079,8 @@ LABEL_19:
     }
 
     v18 = +[PIPhotoEditHelper newComposition];
-    v19 = [v8 videoFileURL];
-    v20 = [PIPhotoEditHelper videoSourceWithURL:v19];
+    videoFileURL2 = [resourceCopy videoFileURL];
+    v20 = [PIPhotoEditHelper videoSourceWithURL:videoFileURL2];
 
     [v18 setObject:v20 forKeyedSubscript:@"source"];
     [v18 setMediaType:2];
@@ -2089,14 +2089,14 @@ LABEL_19:
     v33[1] = 3221225472;
     v33[2] = __76__PIPosterSettlingEffectLoader_loadCropRectWithResource_options_completion___block_invoke;
     v33[3] = &unk_1E82ACA08;
-    v34 = v10;
+    v34 = completionCopy;
     [v21 submit:v33];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E69B3A48] missingError:@"Resource is missing image and/or video URLs" object:v8];
-    (v10)[2](v10, 1, 128, v18, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+    v18 = [MEMORY[0x1E69B3A48] missingError:@"Resource is missing image and/or video URLs" object:resourceCopy];
+    (completionCopy)[2](completionCopy, 1, 128, v18, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
   }
 
 LABEL_13:
@@ -2269,10 +2269,10 @@ LABEL_17:
 LABEL_18:
 }
 
-+ (unint64_t)_gatingFlagsFromMADStatus:(id)a3
++ (unint64_t)_gatingFlagsFromMADStatus:(id)status
 {
   v55[8] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  statusCopy = status;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -2294,9 +2294,9 @@ LABEL_18:
   _Block_object_dispose(&v47, 8);
   if (!v4)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMediaAnalysisResultSettlingEffectMissingMetadataKey(void)"];
-    [v27 handleFailureInFunction:v28 file:@"PIPosterSettlingEffectLoader.m" lineNumber:46 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v28 file:@"PIPosterSettlingEffectLoader.m" lineNumber:46 description:{@"%s", dlerror()}];
 
     goto LABEL_26;
   }
@@ -2325,9 +2325,9 @@ LABEL_18:
   _Block_object_dispose(&v47, 8);
   if (!v7)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMediaAnalysisResultSettlingEffectStabilizationFailureKey(void)"];
-    [v29 handleFailureInFunction:v30 file:@"PIPosterSettlingEffectLoader.m" lineNumber:47 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v30 file:@"PIPosterSettlingEffectLoader.m" lineNumber:47 description:{@"%s", dlerror()}];
 
     goto LABEL_26;
   }
@@ -2356,9 +2356,9 @@ LABEL_18:
   _Block_object_dispose(&v47, 8);
   if (!v10)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMediaAnalysisResultSettlingEffectVideoQualityGatingFailureKey(void)"];
-    [v31 handleFailureInFunction:v32 file:@"PIPosterSettlingEffectLoader.m" lineNumber:48 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v32 file:@"PIPosterSettlingEffectLoader.m" lineNumber:48 description:{@"%s", dlerror()}];
 
     goto LABEL_26;
   }
@@ -2387,9 +2387,9 @@ LABEL_18:
   _Block_object_dispose(&v47, 8);
   if (!v13)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMediaAnalysisResultSettlingEffectMetadataIntegrityFailureKey(void)"];
-    [v33 handleFailureInFunction:v34 file:@"PIPosterSettlingEffectLoader.m" lineNumber:49 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v34 file:@"PIPosterSettlingEffectLoader.m" lineNumber:49 description:{@"%s", dlerror()}];
 
     goto LABEL_26;
   }
@@ -2418,9 +2418,9 @@ LABEL_18:
   _Block_object_dispose(&v47, 8);
   if (!v16)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMediaAnalysisResultSettlingEffectFRCGatingFailureKey(void)"];
-    [v35 handleFailureInFunction:v36 file:@"PIPosterSettlingEffectLoader.m" lineNumber:50 description:{@"%s", dlerror()}];
+    [currentHandler5 handleFailureInFunction:v36 file:@"PIPosterSettlingEffectLoader.m" lineNumber:50 description:{@"%s", dlerror()}];
 
     goto LABEL_26;
   }
@@ -2449,9 +2449,9 @@ LABEL_18:
   _Block_object_dispose(&v47, 8);
   if (!v19)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMediaAnalysisResultSettlingEffectStillTransitionGatingFailureKey(void)"];
-    [v37 handleFailureInFunction:v38 file:@"PIPosterSettlingEffectLoader.m" lineNumber:51 description:{@"%s", dlerror()}];
+    [currentHandler6 handleFailureInFunction:v38 file:@"PIPosterSettlingEffectLoader.m" lineNumber:51 description:{@"%s", dlerror()}];
 
 LABEL_26:
     __break(1u);
@@ -2478,7 +2478,7 @@ LABEL_26:
   v24 = v23;
   v40 = v24;
   v41 = &v42;
-  [v3 enumerateKeysAndObjectsUsingBlock:v39];
+  [statusCopy enumerateKeysAndObjectsUsingBlock:v39];
   v25 = *(v43 + 24);
 
   _Block_object_dispose(&v42, 8);
@@ -2499,13 +2499,13 @@ void __58__PIPosterSettlingEffectLoader__gatingFlagsFromMADStatus___block_invoke
   }
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_livePhotoKeyFrameTimeForResource:(SEL)a3
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_livePhotoKeyFrameTimeForResource:(SEL)resource
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [v6 adjustmentData];
+  adjustmentData = [v6 adjustmentData];
 
-  if (v7)
+  if (adjustmentData)
   {
     v18 = 0;
     v8 = [a2 originalCompositionForResource:v6 error:&v18];
@@ -2513,14 +2513,14 @@ void __58__PIPosterSettlingEffectLoader__gatingFlagsFromMADStatus___block_invoke
     if (v8)
     {
       v10 = [[PICompositionController alloc] initWithComposition:v8];
-      v11 = [(PICompositionController *)v10 livePhotoKeyFrameAdjustmentController];
-      v12 = v11;
-      if (v11)
+      livePhotoKeyFrameAdjustmentController = [(PICompositionController *)v10 livePhotoKeyFrameAdjustmentController];
+      v12 = livePhotoKeyFrameAdjustmentController;
+      if (livePhotoKeyFrameAdjustmentController)
       {
         retstr->var0 = 0;
         *&retstr->var1 = 0;
         retstr->var3 = 0;
-        [v11 keyFrameTime];
+        [livePhotoKeyFrameAdjustmentController keyFrameTime];
       }
 
       else
@@ -2562,12 +2562,12 @@ void __58__PIPosterSettlingEffectLoader__gatingFlagsFromMADStatus___block_invoke
   return result;
 }
 
-+ (id)_resolveOptions:(id)a3 forResource:(id)a4
++ (id)_resolveOptions:(id)options forResource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  resourceCopy = resource;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "needsInProcessHandling")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(optionsCopy, "needsInProcessHandling")}];
   time.value = 0;
   *&time.timescale = &time;
   time.epoch = 0x2020000000;
@@ -2588,9 +2588,9 @@ void __58__PIPosterSettlingEffectLoader__gatingFlagsFromMADStatus___block_invoke
   _Block_object_dispose(&time, 8);
   if (!v10)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getVCPMediaAnalysisService_InProcessOption(void)"];
-    [v20 handleFailureInFunction:v21 file:@"PIPosterSettlingEffectLoader.m" lineNumber:53 description:{@"%s", dlerror(), v22, v23, v24}];
+    [currentHandler handleFailureInFunction:v21 file:@"PIPosterSettlingEffectLoader.m" lineNumber:53 description:{@"%s", dlerror(), v22, v23, v24}];
 LABEL_18:
 
     __break(1u);
@@ -2599,7 +2599,7 @@ LABEL_18:
 
   [v8 setObject:v9 forKeyedSubscript:*v10];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "isInteractiveRequest")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(optionsCopy, "isInteractiveRequest")}];
   time.value = 0;
   *&time.timescale = &time;
   time.epoch = 0x2020000000;
@@ -2620,9 +2620,9 @@ LABEL_18:
   _Block_object_dispose(&time, 8);
   if (!v13)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getVCPMediaAnalysisService_UserInitiatedModeOption(void)"];
-    [v20 handleFailureInFunction:v21 file:@"PIPosterSettlingEffectLoader.m" lineNumber:54 description:{@"%s", dlerror(), v22, v23, v24}];
+    [currentHandler handleFailureInFunction:v21 file:@"PIPosterSettlingEffectLoader.m" lineNumber:54 description:{@"%s", dlerror(), v22, v23, v24}];
     goto LABEL_18;
   }
 
@@ -2648,14 +2648,14 @@ LABEL_18:
   _Block_object_dispose(&time, 8);
   if (!v15)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getVCPMediaAnalysisService_AllowOnDemandOption(void)"];
-    [v20 handleFailureInFunction:v21 file:@"PIPosterSettlingEffectLoader.m" lineNumber:52 description:{@"%s", dlerror(), v22, v23, v24}];
+    [currentHandler handleFailureInFunction:v21 file:@"PIPosterSettlingEffectLoader.m" lineNumber:52 description:{@"%s", dlerror(), v22, v23, v24}];
     goto LABEL_18;
   }
 
   [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*v15];
-  [a1 _livePhotoKeyFrameTimeForResource:v7];
+  [self _livePhotoKeyFrameTimeForResource:resourceCopy];
   if (0 >> 96)
   {
     v17 = *MEMORY[0x1E695E480];

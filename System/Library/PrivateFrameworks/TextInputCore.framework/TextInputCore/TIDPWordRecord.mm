@@ -1,5 +1,5 @@
 @interface TIDPWordRecord
-+ (id)word:(id)a3 atPosition:(id)a4 coder:(id)a5;
++ (id)word:(id)word atPosition:(id)position coder:(id)coder;
 - (NSNumber)codedWord;
 - (NSString)cleanedWord;
 - (NSString)codedWordAsString;
@@ -11,8 +11,8 @@
 
 - (id)toDPWordRecord
 {
-  v3 = [(TIDPWordRecord *)self coder];
-  if (v3)
+  coder = [(TIDPWordRecord *)self coder];
+  if (coder)
   {
     [(TIDPWordRecord *)self codedWordAsString];
   }
@@ -30,21 +30,21 @@
 
 - (NSUUID)coderVersion
 {
-  v2 = [(TIDPWordRecord *)self coder];
-  v3 = [v2 versionUUID];
+  coder = [(TIDPWordRecord *)self coder];
+  versionUUID = [coder versionUUID];
 
-  return v3;
+  return versionUUID;
 }
 
 - (NSString)codedWordAsString
 {
-  v3 = [(TIDPWordRecord *)self coder];
+  coder = [(TIDPWordRecord *)self coder];
 
-  if (v3)
+  if (coder)
   {
-    v4 = [(TIDPWordRecord *)self coder];
-    v5 = [(TIDPWordRecord *)self cleanedWord];
-    v6 = [v4 stringCodeForKey:v5];
+    coder2 = [(TIDPWordRecord *)self coder];
+    cleanedWord = [(TIDPWordRecord *)self cleanedWord];
+    v6 = [coder2 stringCodeForKey:cleanedWord];
   }
 
   else
@@ -57,13 +57,13 @@
 
 - (NSNumber)codedWord
 {
-  v3 = [(TIDPWordRecord *)self coder];
+  coder = [(TIDPWordRecord *)self coder];
 
-  if (v3)
+  if (coder)
   {
-    v4 = [(TIDPWordRecord *)self coder];
-    v5 = [(TIDPWordRecord *)self cleanedWord];
-    v6 = [v4 codeForKey:v5];
+    coder2 = [(TIDPWordRecord *)self coder];
+    cleanedWord = [(TIDPWordRecord *)self cleanedWord];
+    v6 = [coder2 codeForKey:cleanedWord];
   }
 
   else
@@ -76,26 +76,26 @@
 
 - (NSString)cleanedWord
 {
-  v2 = [(TIDPWordRecord *)self word];
-  v3 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  word = [(TIDPWordRecord *)self word];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v4 = [word stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v4;
 }
 
-+ (id)word:(id)a3 atPosition:(id)a4 coder:(id)a5
++ (id)word:(id)word atPosition:(id)position coder:(id)coder
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  coderCopy = coder;
+  positionCopy = position;
+  wordCopy = word;
   v10 = objc_alloc_init(TIDPWordRecord);
-  v11 = [v9 copy];
+  v11 = [wordCopy copy];
 
   [(TIDPWordRecord *)v10 setWord:v11];
-  v12 = [v8 copy];
+  v12 = [positionCopy copy];
 
   [(TIDPWordRecord *)v10 setWordPosition:v12];
-  [(TIDPWordRecord *)v10 setCoder:v7];
+  [(TIDPWordRecord *)v10 setCoder:coderCopy];
 
   return v10;
 }

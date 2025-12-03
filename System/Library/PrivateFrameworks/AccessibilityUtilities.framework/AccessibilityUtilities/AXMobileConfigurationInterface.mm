@@ -8,9 +8,9 @@
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = +[AXBackBoardServer server];
-  v4 = [v3 isGuidedAccessUnmanagedSelfLocked];
+  isGuidedAccessUnmanagedSelfLocked = [v3 isGuidedAccessUnmanagedSelfLocked];
 
-  if (v4)
+  if (isGuidedAccessUnmanagedSelfLocked)
   {
     [v2 addObject:@"com.apple.accessibility.unmanaged.asam.uuid"];
   }

@@ -35,8 +35,8 @@ void __42__WhiteboardFilter_whiteboardFilterKernel__block_invoke()
 - (id)outputImage
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = [(WhiteboardFilter *)self inputImage];
-  [v3 extent];
+  inputImage = [(WhiteboardFilter *)self inputImage];
+  [inputImage extent];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -48,13 +48,13 @@ void __42__WhiteboardFilter_whiteboardFilterKernel__block_invoke()
   v19[3] = &unk_278F93970;
   v19[4] = self;
   v12 = _Block_copy(v19);
-  v13 = [(WhiteboardFilter *)self whiteboardFilterKernel];
-  v14 = [(WhiteboardFilter *)self inputImage];
-  v20[0] = v14;
-  v15 = [(WhiteboardFilter *)self stride];
-  v20[1] = v15;
+  whiteboardFilterKernel = [(WhiteboardFilter *)self whiteboardFilterKernel];
+  inputImage2 = [(WhiteboardFilter *)self inputImage];
+  v20[0] = inputImage2;
+  stride = [(WhiteboardFilter *)self stride];
+  v20[1] = stride;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-  v17 = [v13 applyWithExtent:v12 roiCallback:v16 arguments:{v5, v7, v9, v11}];
+  v17 = [whiteboardFilterKernel applyWithExtent:v12 roiCallback:v16 arguments:{v5, v7, v9, v11}];
 
   return v17;
 }

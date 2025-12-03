@@ -1,6 +1,6 @@
 @interface SiriPunchoutRequest
 - (SiriPunchoutRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SiriPunchoutRequest
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SiriPunchoutRequest);
-  v5 = [(SiriPunchoutRequest *)self bundleIdentifier];
-  [(SiriPunchoutRequest *)v4 setBundleIdentifier:v5];
+  bundleIdentifier = [(SiriPunchoutRequest *)self bundleIdentifier];
+  [(SiriPunchoutRequest *)v4 setBundleIdentifier:bundleIdentifier];
 
   v6 = [(SiriPunchoutRequest *)self url];
   [(SiriPunchoutRequest *)v4 setUrl:v6];

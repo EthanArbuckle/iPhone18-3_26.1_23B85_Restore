@@ -2,83 +2,83 @@
 - (BOOL)hasPresentableData;
 - (UIEdgeInsets)separatorInset;
 - (id)_cell;
-- (id)initInEditMode:(BOOL)a3;
-- (void)setData:(id)a3;
+- (id)initInEditMode:(BOOL)mode;
+- (void)setData:(id)data;
 @end
 
 @implementation HKEmergencyCardSummaryTableItem
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
-  v3 = a3;
-  if (a3)
+  modeCopy = mode;
+  if (mode)
   {
     [(HKEmergencyCardSummaryTableItem *)a2 initInEditMode:?];
   }
 
   v6.receiver = self;
   v6.super_class = HKEmergencyCardSummaryTableItem;
-  return [(HKEmergencyCardTableItem *)&v6 initInEditMode:v3];
+  return [(HKEmergencyCardTableItem *)&v6 initInEditMode:modeCopy];
 }
 
 - (BOOL)hasPresentableData
 {
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  v4 = [v3 pictureData];
-  if (v4)
+  data = [(HKEmergencyCardTableItem *)self data];
+  pictureData = [data pictureData];
+  if (pictureData)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(HKEmergencyCardTableItem *)self data];
-    v7 = [v6 name];
-    if (v7)
+    data2 = [(HKEmergencyCardTableItem *)self data];
+    name = [data2 name];
+    if (name)
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [(HKEmergencyCardTableItem *)self data];
-      v9 = [v8 gregorianBirthday];
-      if (v9)
+      data3 = [(HKEmergencyCardTableItem *)self data];
+      gregorianBirthday = [data3 gregorianBirthday];
+      if (gregorianBirthday)
       {
         v5 = 1;
       }
 
       else
       {
-        v10 = [(HKEmergencyCardTableItem *)self data];
-        v11 = [v10 height];
-        if (v11)
+        data4 = [(HKEmergencyCardTableItem *)self data];
+        height = [data4 height];
+        if (height)
         {
           v5 = 1;
         }
 
         else
         {
-          v17 = [(HKEmergencyCardTableItem *)self data];
-          v12 = [v17 weight];
-          if (v12)
+          data5 = [(HKEmergencyCardTableItem *)self data];
+          weight = [data5 weight];
+          if (weight)
           {
             v5 = 1;
           }
 
           else
           {
-            v16 = [(HKEmergencyCardTableItem *)self data];
-            if ([v16 bloodType])
+            data6 = [(HKEmergencyCardTableItem *)self data];
+            if ([data6 bloodType])
             {
               v5 = 1;
             }
 
             else
             {
-              v15 = [(HKEmergencyCardTableItem *)self data];
-              v13 = [v15 isOrganDonor];
-              v5 = v13 != 0;
+              data7 = [(HKEmergencyCardTableItem *)self data];
+              isOrganDonor = [data7 isOrganDonor];
+              v5 = isOrganDonor != 0;
             }
           }
         }
@@ -105,31 +105,31 @@
   return cell;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   v13.receiver = self;
   v13.super_class = HKEmergencyCardSummaryTableItem;
-  v4 = a3;
-  [(HKEmergencyCardTableItem *)&v13 setData:v4];
+  dataCopy = data;
+  [(HKEmergencyCardTableItem *)&v13 setData:dataCopy];
   v5 = [(HKEmergencyCardSummaryTableItem *)self _cell:v13.receiver];
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [v4 pictureData];
-  v8 = [v6 imageWithData:v7];
+  pictureData = [dataCopy pictureData];
+  v8 = [v6 imageWithData:pictureData];
   [v5 setPicture:v8];
 
-  v9 = [v4 name];
-  [v5 setName:v9];
+  name = [dataCopy name];
+  [v5 setName:name];
 
-  v10 = [v4 gregorianBirthday];
-  [v5 setGregorianBirthday:v10];
+  gregorianBirthday = [dataCopy gregorianBirthday];
+  [v5 setGregorianBirthday:gregorianBirthday];
 
-  v11 = [v4 isOrganDonor];
-  [v5 setOrganDonationStatus:v11];
+  isOrganDonor = [dataCopy isOrganDonor];
+  [v5 setOrganDonationStatus:isOrganDonor];
 
-  [v5 setShareOnLockScreen:{objc_msgSend(v4, "isDisabled") ^ 1}];
-  v12 = [v4 shareDuringEmergency];
+  [v5 setShareOnLockScreen:{objc_msgSend(dataCopy, "isDisabled") ^ 1}];
+  shareDuringEmergency = [dataCopy shareDuringEmergency];
 
-  [v5 setShareDuringEmergencyCalls:v12];
+  [v5 setShareDuringEmergencyCalls:shareDuringEmergency];
   [v5 updateSubviewsFromData];
 }
 

@@ -1,14 +1,14 @@
 @interface HMUserActionPrediction
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3 ignoreScore:(BOOL)a4 ignoreGroupProperties:(BOOL)a5;
-- (HMUserActionPrediction)initWithCoder:(id)a3;
-- (HMUserActionPrediction)initWithPredictionTargetUUID:(id)a3 targetServiceUUID:(id)a4 targetGroupUUID:(id)a5 targetGroupType:(unint64_t)a6 predictionType:(unint64_t)a7 predictionScore:(double)a8;
+- (BOOL)isEqual:(id)equal ignoreScore:(BOOL)score ignoreGroupProperties:(BOOL)properties;
+- (HMUserActionPrediction)initWithCoder:(id)coder;
+- (HMUserActionPrediction)initWithPredictionTargetUUID:(id)d targetServiceUUID:(id)iD targetGroupUUID:(id)uID targetGroupType:(unint64_t)type predictionType:(unint64_t)predictionType predictionScore:(double)score;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)copyRemovingGroup;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMUserActionPrediction
@@ -18,19 +18,19 @@
   v31[6] = *MEMORY[0x1E69E9840];
   v26 = MEMORY[0x1E695DF70];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v30 = [(HMUserActionPrediction *)self predictionTargetUUID];
-  v29 = [MEMORY[0x1E69A2A48] defaultFormatter];
-  v28 = [v3 initWithName:@"predictionTargetUUID" value:v30 options:0 formatter:v29];
+  predictionTargetUUID = [(HMUserActionPrediction *)self predictionTargetUUID];
+  defaultFormatter = [MEMORY[0x1E69A2A48] defaultFormatter];
+  v28 = [v3 initWithName:@"predictionTargetUUID" value:predictionTargetUUID options:0 formatter:defaultFormatter];
   v31[0] = v28;
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v27 = [(HMUserActionPrediction *)self targetServiceUUID];
-  v25 = [MEMORY[0x1E69A2A48] defaultFormatter];
-  v24 = [v4 initWithName:@"targetServiceUUID" value:v27 options:0 formatter:v25];
+  targetServiceUUID = [(HMUserActionPrediction *)self targetServiceUUID];
+  defaultFormatter2 = [MEMORY[0x1E69A2A48] defaultFormatter];
+  v24 = [v4 initWithName:@"targetServiceUUID" value:targetServiceUUID options:0 formatter:defaultFormatter2];
   v31[1] = v24;
   v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v23 = [(HMUserActionPrediction *)self targetGroupUUID];
-  v6 = [MEMORY[0x1E69A2A48] defaultFormatter];
-  v7 = [v5 initWithName:@"targetGroupUUID" value:v23 options:0 formatter:v6];
+  targetGroupUUID = [(HMUserActionPrediction *)self targetGroupUUID];
+  defaultFormatter3 = [MEMORY[0x1E69A2A48] defaultFormatter];
+  v7 = [v5 initWithName:@"targetGroupUUID" value:targetGroupUUID options:0 formatter:defaultFormatter3];
   v31[2] = v7;
   v8 = objc_alloc(MEMORY[0x1E69A29C8]);
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMUserActionPrediction predictionType](self, "predictionType")}];
@@ -62,60 +62,60 @@
   return [v2 shortDescription];
 }
 
-- (HMUserActionPrediction)initWithCoder:(id)a3
+- (HMUserActionPrediction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.pt"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.ts"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.tsg"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.pty"];
-  v9 = [v8 unsignedIntValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.pt"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.ts"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.tsg"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.pty"];
+  unsignedIntValue = [v8 unsignedIntValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.tgt"];
-  v11 = [v10 unsignedIntValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.tgt"];
+  unsignedIntValue2 = [v10 unsignedIntValue];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.ps"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.UAPT.ck.ps"];
 
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [(HMUserActionPrediction *)self initWithPredictionTargetUUID:v5 targetServiceUUID:v6 targetGroupUUID:v7 targetGroupType:v11 predictionType:v9 predictionScore:v14];
+  v15 = [(HMUserActionPrediction *)self initWithPredictionTargetUUID:v5 targetServiceUUID:v6 targetGroupUUID:v7 targetGroupType:unsignedIntValue2 predictionType:unsignedIntValue predictionScore:v14];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMUserActionPrediction *)self predictionTargetUUID];
-  [v4 encodeObject:v5 forKey:@"HM.UAPT.ck.pt"];
+  coderCopy = coder;
+  predictionTargetUUID = [(HMUserActionPrediction *)self predictionTargetUUID];
+  [coderCopy encodeObject:predictionTargetUUID forKey:@"HM.UAPT.ck.pt"];
 
-  v6 = [(HMUserActionPrediction *)self targetServiceUUID];
-  [v4 encodeObject:v6 forKey:@"HM.UAPT.ck.ts"];
+  targetServiceUUID = [(HMUserActionPrediction *)self targetServiceUUID];
+  [coderCopy encodeObject:targetServiceUUID forKey:@"HM.UAPT.ck.ts"];
 
-  v7 = [(HMUserActionPrediction *)self targetGroupUUID];
-  [v4 encodeObject:v7 forKey:@"HM.UAPT.ck.tsg"];
+  targetGroupUUID = [(HMUserActionPrediction *)self targetGroupUUID];
+  [coderCopy encodeObject:targetGroupUUID forKey:@"HM.UAPT.ck.tsg"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMUserActionPrediction predictionType](self, "predictionType")}];
-  [v4 encodeObject:v8 forKey:@"HM.UAPT.ck.pty"];
+  [coderCopy encodeObject:v8 forKey:@"HM.UAPT.ck.pty"];
 
   v9 = MEMORY[0x1E696AD98];
   [(HMUserActionPrediction *)self predictionScore];
   v10 = [v9 numberWithDouble:?];
-  [v4 encodeObject:v10 forKey:@"HM.UAPT.ck.ps"];
+  [coderCopy encodeObject:v10 forKey:@"HM.UAPT.ck.ps"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMUserActionPrediction targetGroupType](self, "targetGroupType")}];
-  [v4 encodeObject:v11 forKey:@"HM.UAPT.ck.tgt"];
+  [coderCopy encodeObject:v11 forKey:@"HM.UAPT.ck.tgt"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMUserActionPrediction *)self predictionTargetUUID];
-  v4 = [v3 hash];
+  predictionTargetUUID = [(HMUserActionPrediction *)self predictionTargetUUID];
+  v4 = [predictionTargetUUID hash];
   v5 = [(HMUserActionPrediction *)self predictionType]^ v4;
-  v6 = [(HMUserActionPrediction *)self targetServiceUUID];
-  v7 = [v6 hash];
-  v8 = [(HMUserActionPrediction *)self targetGroupUUID];
-  v9 = v5 ^ v7 ^ [v8 hash];
+  targetServiceUUID = [(HMUserActionPrediction *)self targetServiceUUID];
+  v7 = [targetServiceUUID hash];
+  targetGroupUUID = [(HMUserActionPrediction *)self targetGroupUUID];
+  v9 = v5 ^ v7 ^ [targetGroupUUID hash];
   v10 = v9 ^ [(HMUserActionPrediction *)self targetGroupType];
   v11 = MEMORY[0x1E696AD98];
   [(HMUserActionPrediction *)self predictionScore];
@@ -125,11 +125,11 @@
   return v10 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3 ignoreScore:(BOOL)a4 ignoreGroupProperties:(BOOL)a5
+- (BOOL)isEqual:(id)equal ignoreScore:(BOOL)score ignoreGroupProperties:(BOOL)properties
 {
-  v5 = a5;
-  v8 = a3;
-  if (v8 == self)
+  propertiesCopy = properties;
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -139,7 +139,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = equalCopy;
     }
 
     else
@@ -153,14 +153,14 @@
       goto LABEL_16;
     }
 
-    v11 = [(HMUserActionPrediction *)self targetGroupUUID];
-    v12 = [(HMUserActionPrediction *)v10 targetGroupUUID];
+    targetGroupUUID = [(HMUserActionPrediction *)self targetGroupUUID];
+    targetGroupUUID2 = [(HMUserActionPrediction *)v10 targetGroupUUID];
     v13 = HMFEqualObjects();
 
     if (v13)
     {
-      v14 = [(HMUserActionPrediction *)self targetGroupType];
-      v15 = v14 == [(HMUserActionPrediction *)v10 targetGroupType];
+      targetGroupType = [(HMUserActionPrediction *)self targetGroupType];
+      v15 = targetGroupType == [(HMUserActionPrediction *)v10 targetGroupType];
     }
 
     else
@@ -168,25 +168,25 @@
       v15 = 0;
     }
 
-    v17 = [(HMUserActionPrediction *)self predictionTargetUUID];
-    v18 = [(HMUserActionPrediction *)v10 predictionTargetUUID];
+    predictionTargetUUID = [(HMUserActionPrediction *)self predictionTargetUUID];
+    predictionTargetUUID2 = [(HMUserActionPrediction *)v10 predictionTargetUUID];
     v19 = HMFEqualObjects();
 
     if (v19)
     {
-      v20 = [(HMUserActionPrediction *)self targetServiceUUID];
-      v21 = [(HMUserActionPrediction *)v10 targetServiceUUID];
+      targetServiceUUID = [(HMUserActionPrediction *)self targetServiceUUID];
+      targetServiceUUID2 = [(HMUserActionPrediction *)v10 targetServiceUUID];
       v22 = HMFEqualObjects();
 
       v16 = 0;
       if (v22)
       {
-        if (v5 || v15)
+        if (propertiesCopy || v15)
         {
-          v23 = [(HMUserActionPrediction *)self predictionType];
-          v24 = [(HMUserActionPrediction *)v10 predictionType];
-          v16 = v23 == v24;
-          if (v23 == v24 && !a4)
+          predictionType = [(HMUserActionPrediction *)self predictionType];
+          predictionType2 = [(HMUserActionPrediction *)v10 predictionType];
+          v16 = predictionType == predictionType2;
+          if (predictionType == predictionType2 && !score)
           {
             [(HMUserActionPrediction *)self predictionScore];
             v26 = v25;
@@ -210,40 +210,40 @@ LABEL_16:
 - (id)copyRemovingGroup
 {
   v3 = [HMUserActionPrediction alloc];
-  v4 = [(HMUserActionPrediction *)self predictionTargetUUID];
-  v5 = [(HMUserActionPrediction *)self targetServiceUUID];
-  v6 = [(HMUserActionPrediction *)self predictionType];
+  predictionTargetUUID = [(HMUserActionPrediction *)self predictionTargetUUID];
+  targetServiceUUID = [(HMUserActionPrediction *)self targetServiceUUID];
+  predictionType = [(HMUserActionPrediction *)self predictionType];
   [(HMUserActionPrediction *)self predictionScore];
-  v7 = [(HMUserActionPrediction *)v3 initWithPredictionTargetUUID:v4 targetServiceUUID:v5 predictionType:v6 predictionScore:?];
+  v7 = [(HMUserActionPrediction *)v3 initWithPredictionTargetUUID:predictionTargetUUID targetServiceUUID:targetServiceUUID predictionType:predictionType predictionScore:?];
 
   return v7;
 }
 
-- (HMUserActionPrediction)initWithPredictionTargetUUID:(id)a3 targetServiceUUID:(id)a4 targetGroupUUID:(id)a5 targetGroupType:(unint64_t)a6 predictionType:(unint64_t)a7 predictionScore:(double)a8
+- (HMUserActionPrediction)initWithPredictionTargetUUID:(id)d targetServiceUUID:(id)iD targetGroupUUID:(id)uID targetGroupType:(unint64_t)type predictionType:(unint64_t)predictionType predictionScore:(double)score
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
   v25.receiver = self;
   v25.super_class = HMUserActionPrediction;
   v17 = [(HMUserActionPrediction *)&v25 init];
   if (v17)
   {
-    v18 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v14];
+    v18 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:dCopy];
     predictionTargetUUID = v17->_predictionTargetUUID;
     v17->_predictionTargetUUID = v18;
 
-    v17->_predictionType = a7;
-    v20 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v15];
+    v17->_predictionType = predictionType;
+    v20 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:iDCopy];
     targetServiceUUID = v17->_targetServiceUUID;
     v17->_targetServiceUUID = v20;
 
-    v22 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v16];
+    v22 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:uIDCopy];
     targetGroupUUID = v17->_targetGroupUUID;
     v17->_targetGroupUUID = v22;
 
-    v17->_targetGroupType = a6;
-    v17->_predictionScore = a8;
+    v17->_targetGroupType = type;
+    v17->_predictionScore = score;
   }
 
   return v17;

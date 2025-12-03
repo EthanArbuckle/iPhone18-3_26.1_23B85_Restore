@@ -1,18 +1,18 @@
 @interface LACUINavigationController
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3;
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller;
 @end
 
 @implementation LACUINavigationController
 
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5.receiver = self;
   v5.super_class = LACUINavigationController;
-  [(LACUINavigationController *)&v5 _preferredContentSizeDidChangeForChildViewController:v4];
+  [(LACUINavigationController *)&v5 _preferredContentSizeDidChangeForChildViewController:controllerCopy];
   if ([(LACUINavigationController *)self shouldTrackPreferredContentSize])
   {
-    [v4 preferredContentSize];
+    [controllerCopy preferredContentSize];
     [(LACUINavigationController *)self setPreferredContentSize:?];
   }
 }

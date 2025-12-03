@@ -1,24 +1,24 @@
 @interface IMTypingIndicatorProcessingPipelineComponent
-- (id)createMessageItemWithInput:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)createMessageItemWithInput:(id)input;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMTypingIndicatorProcessingPipelineComponent
 
-- (id)createMessageItemWithInput:(id)a3
+- (id)createMessageItemWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:v4]| 8;
-  if (![v4 isFinished])
+  inputCopy = input;
+  v5 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:inputCopy]| 8;
+  if (![inputCopy isFinished])
   {
     v5 &= ~1uLL;
   }
 
-  v6 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  if ([v6 isGroupTypingIndicatorsEnabled])
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  if ([mEMORY[0x277D1A9B8] isGroupTypingIndicatorsEnabled])
   {
-    v7 = [v4 participantIdentifiers];
-    v8 = [v7 count];
+    participantIdentifiers = [inputCopy participantIdentifiers];
+    v8 = [participantIdentifiers count];
 
     if (v8 > 2)
     {
@@ -31,32 +31,32 @@
   }
 
   v9 = objc_alloc(MEMORY[0x277D1AA70]);
-  v10 = [v4 fromIdentifier];
-  v11 = [v10 _stripFZIDPrefix];
+  fromIdentifier = [inputCopy fromIdentifier];
+  _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
   v12 = MEMORY[0x277CBEAA8];
-  v13 = [v4 timestamp];
-  v14 = [v12 __im_iMessageDateFromTimeStamp:v13];
-  v15 = [v4 GUID];
-  v16 = [v4 threadIdentifierGUID];
-  v17 = [v9 initWithSender:v11 time:v14 body:0 attributes:0 fileTransferGUIDs:0 flags:v5 error:0 guid:v15 threadIdentifier:v16];
+  timestamp = [inputCopy timestamp];
+  v14 = [v12 __im_iMessageDateFromTimeStamp:timestamp];
+  gUID = [inputCopy GUID];
+  threadIdentifierGUID = [inputCopy threadIdentifierGUID];
+  v17 = [v9 initWithSender:_stripFZIDPrefix time:v14 body:0 attributes:0 fileTransferGUIDs:0 flags:v5 error:0 guid:gUID threadIdentifier:threadIdentifierGUID];
 
-  v18 = [v4 balloonPluginBundleID];
-  [v17 setBalloonBundleID:v18];
+  balloonPluginBundleID = [inputCopy balloonPluginBundleID];
+  [v17 setBalloonBundleID:balloonPluginBundleID];
 
-  v19 = [v4 typingIndicatorIconData];
-  [v17 setTypingIndicatorIcon:v19];
+  typingIndicatorIconData = [inputCopy typingIndicatorIconData];
+  [v17 setTypingIndicatorIcon:typingIndicatorIconData];
 
-  v20 = [v4 replicatedFallbackGUIDs];
-  [v17 setReplicatedFallbackGUIDs:v20];
+  replicatedFallbackGUIDs = [inputCopy replicatedFallbackGUIDs];
+  [v17 setReplicatedFallbackGUIDs:replicatedFallbackGUIDs];
 
   return v17;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v5.receiver = self;
   v5.super_class = IMTypingIndicatorProcessingPipelineComponent;
-  v3 = [(IMTextMessageProcessingPipelineComponent *)&v5 runIndividuallyWithInput:a3];
+  v3 = [(IMTextMessageProcessingPipelineComponent *)&v5 runIndividuallyWithInput:input];
 
   return v3;
 }

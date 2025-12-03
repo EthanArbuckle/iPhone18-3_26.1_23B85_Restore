@@ -1,32 +1,32 @@
 @interface LAStorage
 + (id)secureDomainStorage;
-- (BOOL)BOOLForKey:(int64_t)a3 error:(id *)a4;
-- (BOOL)setData:(id)a3 forKey:(int64_t)a4 error:(id *)a5;
-- (BOOL)setDictionary:(id)a3 forKey:(int64_t)a4 error:(id *)a5;
-- (BOOL)setObject:(id)a3 forKey:(int64_t)a4 withOptions:(id)a5 error:(id *)a6;
-- (LAStorage)initWithDomain:(int64_t)a3 authenticationContext:(id)a4;
-- (__SecAccessControl)accessControlForKey:(int64_t)a3 error:(id *)a4;
-- (id)dataForKey:(int64_t)a3 error:(id *)a4;
+- (BOOL)BOOLForKey:(int64_t)key error:(id *)error;
+- (BOOL)setData:(id)data forKey:(int64_t)key error:(id *)error;
+- (BOOL)setDictionary:(id)dictionary forKey:(int64_t)key error:(id *)error;
+- (BOOL)setObject:(id)object forKey:(int64_t)key withOptions:(id)options error:(id *)error;
+- (LAStorage)initWithDomain:(int64_t)domain authenticationContext:(id)context;
+- (__SecAccessControl)accessControlForKey:(int64_t)key error:(id *)error;
+- (id)dataForKey:(int64_t)key error:(id *)error;
 - (id)description;
-- (id)dictionaryForKey:(int64_t)a3 error:(id *)a4;
-- (id)exchangeData:(id)a3 forKey:(int64_t)a4 error:(id *)a5;
-- (id)numberForKey:(int64_t)a3 error:(id *)a4;
-- (void)BOOLForKey:(int64_t)a3 completionHandler:(id)a4;
-- (void)_bootstrapServiceType:(id)a3 completionHandler:(id)a4;
-- (void)_bootstrapServiceWithAuthenticationPolicy:(int64_t)a3 proxyBlock:(id)a4 completionHandler:(id)a5;
-- (void)_callProxyBlock:(id)a3 authenticationPolicy:(int64_t)a4 completionHandler:(id)a5;
-- (void)_class:(Class)a3 forKey:(int64_t)a4 completionHandler:(id)a5;
-- (void)_connectToEndpoint:(id)a3;
+- (id)dictionaryForKey:(int64_t)key error:(id *)error;
+- (id)exchangeData:(id)data forKey:(int64_t)key error:(id *)error;
+- (id)numberForKey:(int64_t)key error:(id *)error;
+- (void)BOOLForKey:(int64_t)key completionHandler:(id)handler;
+- (void)_bootstrapServiceType:(id)type completionHandler:(id)handler;
+- (void)_bootstrapServiceWithAuthenticationPolicy:(int64_t)policy proxyBlock:(id)block completionHandler:(id)handler;
+- (void)_callProxyBlock:(id)block authenticationPolicy:(int64_t)policy completionHandler:(id)handler;
+- (void)_class:(Class)_class forKey:(int64_t)key completionHandler:(id)handler;
+- (void)_connectToEndpoint:(id)endpoint;
 - (void)_resetConnection;
-- (void)dataForKey:(int64_t)a3 completionHandler:(id)a4;
+- (void)dataForKey:(int64_t)key completionHandler:(id)handler;
 - (void)dealloc;
-- (void)dictionaryForKey:(int64_t)a3 completionHandler:(id)a4;
-- (void)exchangeData:(id)a3 forKey:(int64_t)a4 completionHandler:(id)a5;
-- (void)numberForKey:(int64_t)a3 completionHandler:(id)a4;
-- (void)objectForKey:(int64_t)a3 completionHandler:(id)a4;
-- (void)processError:(id)a3 completionHandler:(id)a4;
-- (void)removeObjectForKey:(int64_t)a3 completionHandler:(id)a4;
-- (void)setObject:(id)a3 forKey:(int64_t)a4 withOptions:(id)a5 completionHandler:(id)a6;
+- (void)dictionaryForKey:(int64_t)key completionHandler:(id)handler;
+- (void)exchangeData:(id)data forKey:(int64_t)key completionHandler:(id)handler;
+- (void)numberForKey:(int64_t)key completionHandler:(id)handler;
+- (void)objectForKey:(int64_t)key completionHandler:(id)handler;
+- (void)processError:(id)error completionHandler:(id)handler;
+- (void)removeObjectForKey:(int64_t)key completionHandler:(id)handler;
+- (void)setObject:(id)object forKey:(int64_t)key withOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation LAStorage
@@ -38,17 +38,17 @@
   return v2;
 }
 
-- (LAStorage)initWithDomain:(int64_t)a3 authenticationContext:(id)a4
+- (LAStorage)initWithDomain:(int64_t)domain authenticationContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = LAStorage;
   v8 = [(LAStorage *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_domain = a3;
-    objc_storeStrong(&v8->_authenticationContext, a4);
+    v8->_domain = domain;
+    objc_storeStrong(&v8->_authenticationContext, context);
     v9->_instanceId = +[LAStorage newInstanceId];
     v10 = LA_LOG_3();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -63,8 +63,8 @@
 
 - (void)dealloc
 {
-  v3 = [(LAStorage *)self connection];
-  [v3 invalidate];
+  connection = [(LAStorage *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = LAStorage;
@@ -73,36 +73,36 @@
 
 - (id)description
 {
-  v3 = [(LAStorage *)self authenticationContext];
+  authenticationContext = [(LAStorage *)self authenticationContext];
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(LAStorage *)self instanceId];
-  v6 = v5;
-  if (v3)
+  instanceId = [(LAStorage *)self instanceId];
+  v6 = instanceId;
+  if (authenticationContext)
   {
-    v7 = [(LAStorage *)self authenticationContext];
-    v8 = [v4 stringWithFormat:@"LAStorage[%u] bound with %@", v6, v7];
+    authenticationContext2 = [(LAStorage *)self authenticationContext];
+    v8 = [v4 stringWithFormat:@"LAStorage[%u] bound with %@", v6, authenticationContext2];
   }
 
   else
   {
-    v8 = [v4 stringWithFormat:@"LAStorage[%u]", v5];
+    v8 = [v4 stringWithFormat:@"LAStorage[%u]", instanceId];
   }
 
   return v8;
 }
 
-- (void)setObject:(id)a3 forKey:(int64_t)a4 withOptions:(id)a5 completionHandler:(id)a6
+- (void)setObject:(id)object forKey:(int64_t)key withOptions:(id)options completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  objectCopy = object;
+  optionsCopy = options;
+  handlerCopy = handler;
   v13 = LA_LOG_3();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v37 = a4;
+    keyCopy = key;
     _os_log_impl(&dword_1A784E000, v13, OS_LOG_TYPE_INFO, "setObject forKey:%d", buf, 8u);
   }
 
@@ -110,17 +110,17 @@
   v33[1] = 3221225472;
   v33[2] = __60__LAStorage_setObject_forKey_withOptions_completionHandler___block_invoke;
   v33[3] = &unk_1E77CC100;
-  v35 = a4;
-  v14 = v12;
+  keyCopy2 = key;
+  v14 = handlerCopy;
   v34 = v14;
   v15 = MEMORY[0x1AC55C260](v33);
-  v16 = [MEMORY[0x1E69AD2B0] classForKey:a4];
+  v16 = [MEMORY[0x1E69AD2B0] classForKey:key];
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v10;
+      v17 = objectCopy;
     }
 
     else
@@ -128,7 +128,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        buf[0] = [v10 BOOLValue];
+        buf[0] = [objectCopy BOOLValue];
         v17 = [MEMORY[0x1E695DEF0] dataWithBytes:buf length:1];
       }
 
@@ -142,24 +142,24 @@
           goto LABEL_12;
         }
 
-        v17 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
+        v17 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:0];
       }
     }
 
     v23 = v17;
     v24 = MEMORY[0x1E696EE88];
-    v25 = [MEMORY[0x1E69AD298] checkStorageOptions:v11];
+    v25 = [MEMORY[0x1E69AD298] checkStorageOptions:optionsCopy];
     [v24 raiseExceptionOnError:v25];
 
-    v26 = [MEMORY[0x1E69AD2B0] policyForKey:a4 operation:2 value:v10];
+    v26 = [MEMORY[0x1E69AD2B0] policyForKey:key operation:2 value:objectCopy];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __60__LAStorage_setObject_forKey_withOptions_completionHandler___block_invoke_21;
     v28[3] = &unk_1E77CC128;
     v29 = v23;
-    v30 = self;
-    v32 = a4;
-    v31 = v11;
+    selfCopy = self;
+    keyCopy3 = key;
+    v31 = optionsCopy;
     v20 = v23;
     [(LAStorage *)self _bootstrapServiceWithAuthenticationPolicy:v26 proxyBlock:v28 completionHandler:v15];
   }
@@ -234,15 +234,15 @@ void __60__LAStorage_setObject_forKey_withOptions_completionHandler___block_invo
   }
 }
 
-- (void)objectForKey:(int64_t)a3 completionHandler:(id)a4
+- (void)objectForKey:(int64_t)key completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = LA_LOG_3();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v17 = a3;
+    keyCopy = key;
     _os_log_impl(&dword_1A784E000, v7, OS_LOG_TYPE_INFO, "objectForKey:%d", buf, 8u);
   }
 
@@ -250,17 +250,17 @@ void __60__LAStorage_setObject_forKey_withOptions_completionHandler___block_invo
   v13[1] = 3221225472;
   v13[2] = __44__LAStorage_objectForKey_completionHandler___block_invoke;
   v13[3] = &unk_1E77CC100;
-  v14 = v6;
-  v15 = a3;
-  v8 = v6;
+  v14 = handlerCopy;
+  keyCopy2 = key;
+  v8 = handlerCopy;
   v9 = MEMORY[0x1AC55C260](v13);
-  v10 = [MEMORY[0x1E69AD2B0] policyForKey:a3 operation:1 value:0];
+  v10 = [MEMORY[0x1E69AD2B0] policyForKey:key operation:1 value:0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__LAStorage_objectForKey_completionHandler___block_invoke_23;
   v12[3] = &unk_1E77CC150;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = key;
   [(LAStorage *)self _bootstrapServiceWithAuthenticationPolicy:v10 proxyBlock:v12 completionHandler:v9];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -304,15 +304,15 @@ void __44__LAStorage_objectForKey_completionHandler___block_invoke_23(uint64_t a
   [v7 objectForKey:v4 contextUUID:v8 connection:0 completionHandler:v6];
 }
 
-- (void)removeObjectForKey:(int64_t)a3 completionHandler:(id)a4
+- (void)removeObjectForKey:(int64_t)key completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = LA_LOG_3();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v17 = a3;
+    keyCopy = key;
     _os_log_impl(&dword_1A784E000, v7, OS_LOG_TYPE_INFO, "removeObjectForKey:%d", buf, 8u);
   }
 
@@ -320,17 +320,17 @@ void __44__LAStorage_objectForKey_completionHandler___block_invoke_23(uint64_t a
   v13[1] = 3221225472;
   v13[2] = __50__LAStorage_removeObjectForKey_completionHandler___block_invoke;
   v13[3] = &unk_1E77CC100;
-  v14 = v6;
-  v15 = a3;
-  v8 = v6;
+  v14 = handlerCopy;
+  keyCopy2 = key;
+  v8 = handlerCopy;
   v9 = MEMORY[0x1AC55C260](v13);
-  v10 = [MEMORY[0x1E69AD2B0] policyForKey:a3 operation:3 value:0];
+  v10 = [MEMORY[0x1E69AD2B0] policyForKey:key operation:3 value:0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__LAStorage_removeObjectForKey_completionHandler___block_invoke_24;
   v12[3] = &unk_1E77CC150;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = key;
   [(LAStorage *)self _bootstrapServiceWithAuthenticationPolicy:v10 proxyBlock:v12 completionHandler:v9];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -373,16 +373,16 @@ void __50__LAStorage_removeObjectForKey_completionHandler___block_invoke_24(uint
   [v7 removeObjectForKey:v4 contextUUID:v8 connection:0 completionHandler:v6];
 }
 
-- (void)exchangeData:(id)a3 forKey:(int64_t)a4 completionHandler:(id)a5
+- (void)exchangeData:(id)data forKey:(int64_t)key completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = LA_LOG_3();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = a4;
+    HIDWORD(buf) = key;
     _os_log_impl(&dword_1A784E000, v10, OS_LOG_TYPE_INFO, "exchangeData forKey:%d", &buf, 8u);
   }
 
@@ -390,21 +390,21 @@ void __50__LAStorage_removeObjectForKey_completionHandler___block_invoke_24(uint
   v19[1] = 3221225472;
   v19[2] = __51__LAStorage_exchangeData_forKey_completionHandler___block_invoke;
   v19[3] = &unk_1E77CC100;
-  v21 = a4;
-  v11 = v9;
+  keyCopy = key;
+  v11 = handlerCopy;
   v20 = v11;
   v12 = MEMORY[0x1AC55C260](v19);
-  if ([MEMORY[0x1E69AD2B0] isKeyAvailable:a4 operation:*MEMORY[0x1E69AD200]])
+  if ([MEMORY[0x1E69AD2B0] isKeyAvailable:key operation:*MEMORY[0x1E69AD200]])
   {
-    v13 = [MEMORY[0x1E69AD2B0] policyForKey:a4 operation:4 value:v8];
+    v13 = [MEMORY[0x1E69AD2B0] policyForKey:key operation:4 value:dataCopy];
     objc_initWeak(&buf, self);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __51__LAStorage_exchangeData_forKey_completionHandler___block_invoke_28;
     v16[3] = &unk_1E77CC178;
     objc_copyWeak(v18, &buf);
-    v17 = v8;
-    v18[1] = a4;
+    v17 = dataCopy;
+    v18[1] = key;
     [(LAStorage *)self _bootstrapServiceWithAuthenticationPolicy:v13 proxyBlock:v16 completionHandler:v12];
 
     objc_destroyWeak(v18);
@@ -479,7 +479,7 @@ void __51__LAStorage_exchangeData_forKey_completionHandler___block_invoke_28(uin
   }
 }
 
-- (__SecAccessControl)accessControlForKey:(int64_t)a3 error:(id *)a4
+- (__SecAccessControl)accessControlForKey:(int64_t)key error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -498,7 +498,7 @@ void __51__LAStorage_exchangeData_forKey_completionHandler___block_invoke_28(uin
   v10[2] = __39__LAStorage_accessControlForKey_error___block_invoke;
   v10[3] = &unk_1E77CC150;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = key;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__LAStorage_accessControlForKey_error___block_invoke_2;
@@ -509,7 +509,7 @@ void __51__LAStorage_exchangeData_forKey_completionHandler___block_invoke_28(uin
   if (!v18[5])
   {
     v6 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -525,10 +525,10 @@ void __51__LAStorage_exchangeData_forKey_completionHandler___block_invoke_28(uin
     v12[5] = 0;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_5:
-    *a4 = v12[5];
+    *error = v12[5];
   }
 
 LABEL_6:
@@ -563,10 +563,10 @@ void __39__LAStorage_accessControlForKey_error___block_invoke_2(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (void)processError:(id)a3 completionHandler:(id)a4
+- (void)processError:(id)error completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   v8 = LA_LOG_3();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -578,20 +578,20 @@ void __39__LAStorage_accessControlForKey_error___block_invoke_2(uint64_t a1, voi
   v16[1] = 3221225472;
   v16[2] = __44__LAStorage_processError_completionHandler___block_invoke;
   v16[3] = &unk_1E77CBFB0;
-  v17 = v7;
-  v9 = v7;
+  v17 = handlerCopy;
+  v9 = handlerCopy;
   v13 = MEMORY[0x1AC55C260](v16);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __44__LAStorage_processError_completionHandler___block_invoke_30;
   v14[3] = &unk_1E77CC1A0;
-  v15 = v6;
+  v15 = errorCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__LAStorage_processError_completionHandler___block_invoke_3;
   v12[3] = &unk_1E77CBCE0;
   v10 = v13;
-  v11 = v6;
+  v11 = errorCopy;
   [(LAStorage *)self _bootstrapServiceWithAuthenticationPolicy:0 proxyBlock:v14 completionHandler:v12];
 }
 
@@ -650,17 +650,17 @@ uint64_t __44__LAStorage_processError_completionHandler___block_invoke_2(uint64_
   return (*(v3 + 16))(v3, v4, a2);
 }
 
-- (void)BOOLForKey:(int64_t)a3 completionHandler:(id)a4
+- (void)BOOLForKey:(int64_t)key completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_opt_class();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__LAStorage_BOOLForKey_completionHandler___block_invoke;
   v9[3] = &unk_1E77CC1C8;
-  v10 = v6;
-  v8 = v6;
-  [(LAStorage *)self _class:v7 forKey:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(LAStorage *)self _class:v7 forKey:key completionHandler:v9];
 }
 
 void __42__LAStorage_BOOLForKey_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -670,29 +670,29 @@ void __42__LAStorage_BOOLForKey_completionHandler___block_invoke(uint64_t a1, vo
   (*(v4 + 16))(v4, [a2 BOOLValue], v5);
 }
 
-- (void)dataForKey:(int64_t)a3 completionHandler:(id)a4
+- (void)dataForKey:(int64_t)key completionHandler:(id)handler
 {
-  v6 = a4;
-  [(LAStorage *)self _class:objc_opt_class() forKey:a3 completionHandler:v6];
+  handlerCopy = handler;
+  [(LAStorage *)self _class:objc_opt_class() forKey:key completionHandler:handlerCopy];
 }
 
-- (void)dictionaryForKey:(int64_t)a3 completionHandler:(id)a4
+- (void)dictionaryForKey:(int64_t)key completionHandler:(id)handler
 {
-  v6 = a4;
-  [(LAStorage *)self _class:objc_opt_class() forKey:a3 completionHandler:v6];
+  handlerCopy = handler;
+  [(LAStorage *)self _class:objc_opt_class() forKey:key completionHandler:handlerCopy];
 }
 
-- (void)_class:(Class)a3 forKey:(int64_t)a4 completionHandler:(id)a5
+- (void)_class:(Class)_class forKey:(int64_t)key completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__LAStorage__class_forKey_completionHandler___block_invoke;
   v10[3] = &unk_1E77CC1F0;
-  v11 = v8;
-  v12 = a3;
-  v9 = v8;
-  [(LAStorage *)self objectForKey:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  _classCopy = _class;
+  v9 = handlerCopy;
+  [(LAStorage *)self objectForKey:key completionHandler:v10];
 }
 
 void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -722,10 +722,10 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)setObject:(id)a3 forKey:(int64_t)a4 withOptions:(id)a5 error:(id *)a6
+- (BOOL)setObject:(id)object forKey:(int64_t)key withOptions:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  objectCopy = object;
+  optionsCopy = options;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -737,10 +737,10 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   v14[2] = __48__LAStorage_setObject_forKey_withOptions_error___block_invoke;
   v14[3] = &unk_1E77CC218;
   v14[4] = &v15;
-  [(LAStorage *)self setObject:v10 forKey:a4 withOptions:v11 completionHandler:v14];
-  if (a6)
+  [(LAStorage *)self setObject:objectCopy forKey:key withOptions:optionsCopy completionHandler:v14];
+  if (error)
   {
-    *a6 = v16[5];
+    *error = v16[5];
   }
 
   v12 = v16[5] == 0;
@@ -749,9 +749,9 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   return v12;
 }
 
-- (BOOL)setData:(id)a3 forKey:(int64_t)a4 error:(id *)a5
+- (BOOL)setData:(id)data forKey:(int64_t)key error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -763,10 +763,10 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   v11[2] = __34__LAStorage_setData_forKey_error___block_invoke;
   v11[3] = &unk_1E77CC218;
   v11[4] = &v12;
-  [(LAStorage *)self setData:v8 forKey:a4 completionHandler:v11];
-  if (a5)
+  [(LAStorage *)self setData:dataCopy forKey:key completionHandler:v11];
+  if (error)
   {
-    *a5 = v13[5];
+    *error = v13[5];
   }
 
   v9 = v13[5] == 0;
@@ -775,9 +775,9 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   return v9;
 }
 
-- (BOOL)setDictionary:(id)a3 forKey:(int64_t)a4 error:(id *)a5
+- (BOOL)setDictionary:(id)dictionary forKey:(int64_t)key error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -789,10 +789,10 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   v11[2] = __40__LAStorage_setDictionary_forKey_error___block_invoke;
   v11[3] = &unk_1E77CC218;
   v11[4] = &v12;
-  [(LAStorage *)self setDictionary:v8 forKey:a4 completionHandler:v11];
-  if (a5)
+  [(LAStorage *)self setDictionary:dictionaryCopy forKey:key completionHandler:v11];
+  if (error)
   {
-    *a5 = v13[5];
+    *error = v13[5];
   }
 
   v9 = v13[5] == 0;
@@ -801,7 +801,7 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   return v9;
 }
 
-- (BOOL)BOOLForKey:(int64_t)a3 error:(id *)a4
+- (BOOL)BOOLForKey:(int64_t)key error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -819,10 +819,10 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   v7[3] = &unk_1E77CBF60;
   v7[4] = &v14;
   v7[5] = &v8;
-  [(LAStorage *)self BOOLForKey:a3 completionHandler:v7];
-  if (a4)
+  [(LAStorage *)self BOOLForKey:key completionHandler:v7];
+  if (error)
   {
-    *a4 = v9[5];
+    *error = v9[5];
   }
 
   v5 = *(v15 + 24);
@@ -832,7 +832,7 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (id)dataForKey:(int64_t)a3 error:(id *)a4
+- (id)dataForKey:(int64_t)key error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -852,10 +852,10 @@ void __45__LAStorage__class_forKey_completionHandler___block_invoke(uint64_t a1,
   v7[3] = &unk_1E77CBF88;
   v7[4] = &v14;
   v7[5] = &v8;
-  [(LAStorage *)self dataForKey:a3 completionHandler:v7];
-  if (a4)
+  [(LAStorage *)self dataForKey:key completionHandler:v7];
+  if (error)
   {
-    *a4 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -880,13 +880,13 @@ void __30__LAStorage_dataForKey_error___block_invoke(uint64_t a1, void *a2, void
   *(v9 + 40) = v6;
 }
 
-- (void)numberForKey:(int64_t)a3 completionHandler:(id)a4
+- (void)numberForKey:(int64_t)key completionHandler:(id)handler
 {
-  v6 = a4;
-  [(LAStorage *)self _class:objc_opt_class() forKey:a3 completionHandler:v6];
+  handlerCopy = handler;
+  [(LAStorage *)self _class:objc_opt_class() forKey:key completionHandler:handlerCopy];
 }
 
-- (id)numberForKey:(int64_t)a3 error:(id *)a4
+- (id)numberForKey:(int64_t)key error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -906,10 +906,10 @@ void __30__LAStorage_dataForKey_error___block_invoke(uint64_t a1, void *a2, void
   v7[3] = &unk_1E77CC240;
   v7[4] = &v14;
   v7[5] = &v8;
-  [(LAStorage *)self numberForKey:a3 completionHandler:v7];
-  if (a4)
+  [(LAStorage *)self numberForKey:key completionHandler:v7];
+  if (error)
   {
-    *a4 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -934,7 +934,7 @@ void __32__LAStorage_numberForKey_error___block_invoke(uint64_t a1, void *a2, vo
   *(v9 + 40) = v6;
 }
 
-- (id)dictionaryForKey:(int64_t)a3 error:(id *)a4
+- (id)dictionaryForKey:(int64_t)key error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -954,10 +954,10 @@ void __32__LAStorage_numberForKey_error___block_invoke(uint64_t a1, void *a2, vo
   v7[3] = &unk_1E77CC268;
   v7[4] = &v14;
   v7[5] = &v8;
-  [(LAStorage *)self dictionaryForKey:a3 completionHandler:v7];
-  if (a4)
+  [(LAStorage *)self dictionaryForKey:key completionHandler:v7];
+  if (error)
   {
-    *a4 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -982,9 +982,9 @@ void __36__LAStorage_dictionaryForKey_error___block_invoke(uint64_t a1, void *a2
   *(v9 + 40) = v6;
 }
 
-- (id)exchangeData:(id)a3 forKey:(int64_t)a4 error:(id *)a5
+- (id)exchangeData:(id)data forKey:(int64_t)key error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -1003,10 +1003,10 @@ void __36__LAStorage_dictionaryForKey_error___block_invoke(uint64_t a1, void *a2
   v11[3] = &unk_1E77CBF88;
   v11[4] = &v18;
   v11[5] = &v12;
-  [(LAStorage *)self exchangeData:v8 forKey:a4 completionHandler:v11];
-  if (a5)
+  [(LAStorage *)self exchangeData:dataCopy forKey:key completionHandler:v11];
+  if (error)
   {
-    *a5 = v13[5];
+    *error = v13[5];
   }
 
   v9 = v19[5];
@@ -1031,15 +1031,15 @@ void __39__LAStorage_exchangeData_forKey_error___block_invoke(uint64_t a1, void 
   *(v9 + 40) = v6;
 }
 
-- (void)_bootstrapServiceWithAuthenticationPolicy:(int64_t)a3 proxyBlock:(id)a4 completionHandler:(id)a5
+- (void)_bootstrapServiceWithAuthenticationPolicy:(int64_t)policy proxyBlock:(id)block completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(LAStorage *)self remoteObjectProxy];
+  blockCopy = block;
+  handlerCopy = handler;
+  remoteObjectProxy = [(LAStorage *)self remoteObjectProxy];
 
-  if (v10)
+  if (remoteObjectProxy)
   {
-    [(LAStorage *)self _callProxyBlock:v8 authenticationPolicy:a3 completionHandler:v9];
+    [(LAStorage *)self _callProxyBlock:blockCopy authenticationPolicy:policy completionHandler:handlerCopy];
   }
 
   else
@@ -1049,9 +1049,9 @@ void __39__LAStorage_exchangeData_forKey_error___block_invoke(uint64_t a1, void 
     v11[2] = __84__LAStorage__bootstrapServiceWithAuthenticationPolicy_proxyBlock_completionHandler___block_invoke;
     v11[3] = &unk_1E77CC290;
     v11[4] = self;
-    v12 = v8;
-    v14 = a3;
-    v13 = v9;
+    v12 = blockCopy;
+    policyCopy = policy;
+    v13 = handlerCopy;
     [(LAStorage *)self _bootstrapServiceType:@"kLAServiceTypeSecureStorage" completionHandler:v11];
   }
 }
@@ -1078,16 +1078,16 @@ uint64_t __84__LAStorage__bootstrapServiceWithAuthenticationPolicy_proxyBlock_co
   }
 }
 
-- (void)_connectToEndpoint:(id)a3
+- (void)_connectToEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
   connection = self->_connection;
   self->_connection = v5;
 
   v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1A78CF0];
-  v8 = [(LAStorage *)self connection];
-  [v8 setRemoteObjectInterface:v7];
+  connection = [(LAStorage *)self connection];
+  [connection setRemoteObjectInterface:v7];
 
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x1E69E9820];
@@ -1095,27 +1095,27 @@ uint64_t __84__LAStorage__bootstrapServiceWithAuthenticationPolicy_proxyBlock_co
   v19[2] = __32__LAStorage__connectToEndpoint___block_invoke;
   v19[3] = &unk_1E77CB1F8;
   objc_copyWeak(&v20, &location);
-  v9 = [(LAStorage *)self connection];
-  [v9 setInterruptionHandler:v19];
+  connection2 = [(LAStorage *)self connection];
+  [connection2 setInterruptionHandler:v19];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __32__LAStorage__connectToEndpoint___block_invoke_2;
   v17[3] = &unk_1E77CB1F8;
   objc_copyWeak(&v18, &location);
-  v10 = [(LAStorage *)self connection];
-  [v10 setInvalidationHandler:v17];
+  connection3 = [(LAStorage *)self connection];
+  [connection3 setInvalidationHandler:v17];
 
-  v11 = [(LAStorage *)self connection];
-  [v11 resume];
+  connection4 = [(LAStorage *)self connection];
+  [connection4 resume];
 
-  v12 = [(LAStorage *)self connection];
+  connection5 = [(LAStorage *)self connection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __32__LAStorage__connectToEndpoint___block_invoke_3;
   v15[3] = &unk_1E77CC2B8;
   objc_copyWeak(&v16, &location);
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v13 = [connection5 synchronousRemoteObjectProxyWithErrorHandler:v15];
   remoteObjectProxy = self->_remoteObjectProxy;
   self->_remoteObjectProxy = v13;
 
@@ -1157,12 +1157,12 @@ void __32__LAStorage__connectToEndpoint___block_invoke_3(uint64_t a1, void *a2)
   self->_remoteObjectProxy = 0;
 }
 
-- (void)_bootstrapServiceType:(id)a3 completionHandler:(id)a4
+- (void)_bootstrapServiceType:(id)type completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LAStorage *)self authenticationContext];
-  if (v8)
+  handlerCopy = handler;
+  typeCopy = type;
+  authenticationContext = [(LAStorage *)self authenticationContext];
+  if (authenticationContext)
   {
     v9 = 0;
   }
@@ -1172,15 +1172,15 @@ void __32__LAStorage__connectToEndpoint___block_invoke_3(uint64_t a1, void *a2)
     v9 = objc_opt_new();
   }
 
-  v10 = [(LAStorage *)self authenticationContext];
-  v11 = v10;
+  authenticationContext2 = [(LAStorage *)self authenticationContext];
+  v11 = authenticationContext2;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__LAStorage__bootstrapServiceType_completionHandler___block_invoke;
   v15[3] = &unk_1E77CC2E0;
-  if (v10)
+  if (authenticationContext2)
   {
-    v12 = v10;
+    v12 = authenticationContext2;
   }
 
   else
@@ -1189,10 +1189,10 @@ void __32__LAStorage__connectToEndpoint___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v16 = v9;
-  v17 = v6;
+  v17 = handlerCopy;
   v13 = v9;
-  v14 = v6;
-  [v12 bootstrapServiceType:v7 completionHandler:v15];
+  v14 = handlerCopy;
+  [v12 bootstrapServiceType:typeCopy completionHandler:v15];
 }
 
 uint64_t __53__LAStorage__bootstrapServiceType_completionHandler___block_invoke(uint64_t a1)
@@ -1203,23 +1203,23 @@ uint64_t __53__LAStorage__bootstrapServiceType_completionHandler___block_invoke(
   return [v2 invalidate];
 }
 
-- (void)_callProxyBlock:(id)a3 authenticationPolicy:(int64_t)a4 completionHandler:(id)a5
+- (void)_callProxyBlock:(id)block authenticationPolicy:(int64_t)policy completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(LAStorage *)self remoteObjectProxy];
+  blockCopy = block;
+  handlerCopy = handler;
+  remoteObjectProxy = [(LAStorage *)self remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__LAStorage__callProxyBlock_authenticationPolicy_completionHandler___block_invoke;
   v14[3] = &unk_1E77CC330;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = a4;
-  v11 = v8[2];
-  v12 = v8;
-  v13 = v9;
-  v11(v12, v10, v14);
+  v15 = handlerCopy;
+  v16 = blockCopy;
+  policyCopy = policy;
+  v11 = blockCopy[2];
+  v12 = blockCopy;
+  v13 = handlerCopy;
+  v11(v12, remoteObjectProxy, v14);
 }
 
 void __68__LAStorage__callProxyBlock_authenticationPolicy_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

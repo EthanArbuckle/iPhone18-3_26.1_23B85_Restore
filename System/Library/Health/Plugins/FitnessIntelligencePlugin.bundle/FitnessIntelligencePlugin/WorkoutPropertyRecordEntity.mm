@@ -1,16 +1,16 @@
 @interface WorkoutPropertyRecordEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
 + (HDSyncEntityIdentifier)syncEntityIdentifier;
-+ (id)createTableSQLWithBehavior:(id)a3;
++ (id)createTableSQLWithBehavior:(id)behavior;
 + (id)databaseTable;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)indicesWithBehavior:(id)a3;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)indicesWithBehavior:(id)behavior;
 + (id)propertyForSyncIdentity;
 + (id)propertyForSyncProvenance;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 - (_TtC25FitnessIntelligencePlugin27WorkoutPropertyRecordEntity)init;
-- (_TtC25FitnessIntelligencePlugin27WorkoutPropertyRecordEntity)initWithPersistentID:(int64_t)a3;
+- (_TtC25FitnessIntelligencePlugin27WorkoutPropertyRecordEntity)initWithPersistentID:(int64_t)d;
 @end
 
 @implementation WorkoutPropertyRecordEntity
@@ -24,48 +24,48 @@
   return v4;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   swift_getObjCClassMetadata();
-  v12 = a3;
-  v13 = a5;
+  sessionCopy = session;
+  profileCopy = profile;
   swift_unknownObjectRetain();
-  static WorkoutPropertyRecordEntity.generateSyncObjects(for:syncAnchorRange:profile:messageHandler:)(v12, var0, var1, v13, a6);
+  static WorkoutPropertyRecordEntity.generateSyncObjects(for:syncAnchorRange:profile:messageHandler:)(sessionCopy, var0, var1, profileCopy, handler);
   swift_unknownObjectRelease();
 
   return 1;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
   swift_getObjCClassMetadata();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v11 = a3;
-  v12 = a5;
-  v13 = [v12 database];
-  v14 = [ObjCClassFromMetadata nextSyncAnchorWithStartAnchor:a4 predicate:0 syncEntityClass:ObjCClassFromMetadata session:v11 orderingTerms:0 limit:0 healthDatabase:v13 error:a6];
+  sessionCopy = session;
+  profileCopy = profile;
+  database = [profileCopy database];
+  v14 = [ObjCClassFromMetadata nextSyncAnchorWithStartAnchor:anchor predicate:0 syncEntityClass:ObjCClassFromMetadata session:sessionCopy orderingTerms:0 limit:0 healthDatabase:database error:error];
 
   return v14;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   sub_38F8(&qword_8EB00, &qword_79B18);
   v8 = sub_75688();
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  v9 = a6;
+  profileCopy = profile;
   v10 = _s25FitnessIntelligencePlugin27WorkoutPropertyRecordEntityC18receiveSyncObjects_7version9syncStore7profile5errorSo013HDSyncReceiveJ6ResultVSaySo0P7Codable_pG_So0P12VersionRangeaSo0pM0_pSo9HDProfileCSAySo7NSErrorCSgGSgtFZ_0(v8);
   swift_unknownObjectRelease();
 
   return v10;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_748C8();
   v6 = v5;
 
@@ -88,7 +88,7 @@
   return v2;
 }
 
-+ (id)createTableSQLWithBehavior:(id)a3
++ (id)createTableSQLWithBehavior:(id)behavior
 {
   _s25FitnessIntelligencePlugin27WorkoutPropertyRecordEntityC14createTableSQL4withSSSgSo11_HKBehaviorC_tFZ_0();
   if (v3)
@@ -104,10 +104,10 @@
   return v4;
 }
 
-+ (id)indicesWithBehavior:(id)a3
++ (id)indicesWithBehavior:(id)behavior
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
+  behaviorCopy = behavior;
   static WorkoutPropertyRecordEntity.indices(with:)();
 
   sub_7688(0, &unk_8F270, HDSQLiteEntityIndex_ptr);
@@ -130,11 +130,11 @@
   return v2;
 }
 
-- (_TtC25FitnessIntelligencePlugin27WorkoutPropertyRecordEntity)initWithPersistentID:(int64_t)a3
+- (_TtC25FitnessIntelligencePlugin27WorkoutPropertyRecordEntity)initWithPersistentID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for WorkoutPropertyRecordEntity();
-  return [(WorkoutPropertyRecordEntity *)&v5 initWithPersistentID:a3];
+  return [(WorkoutPropertyRecordEntity *)&v5 initWithPersistentID:d];
 }
 
 - (_TtC25FitnessIntelligencePlugin27WorkoutPropertyRecordEntity)init

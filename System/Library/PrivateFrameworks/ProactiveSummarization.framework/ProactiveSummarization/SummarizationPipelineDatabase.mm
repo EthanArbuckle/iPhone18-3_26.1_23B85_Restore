@@ -1,14 +1,14 @@
 @interface SummarizationPipelineDatabase
 - (id)databaseHandle;
 - (id)migrations;
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3;
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version;
 @end
 
 @implementation SummarizationPipelineDatabase
 
 - (id)migrations
 {
-  v2 = self;
+  selfCopy = self;
   sub_231D499D8();
 
   sub_231CC1784(0, &qword_2814CBD70, 0x277CCABB0);
@@ -19,9 +19,9 @@
   return v3;
 }
 
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version
 {
-  sub_231D49C20(a3);
+  sub_231D49C20(version);
   v3 = sub_231E11850();
 
   return v3;

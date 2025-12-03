@@ -1,24 +1,24 @@
 @interface NTKBlackcombFaceView
 - (BOOL)_backgroundViewShouldUseLongSideTicks;
 - (BOOL)_isBlackColor;
-- (NTKBlackcombFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_keylineViewForComplicationSlot:(id)a3;
-- (id)_platterTextColorForEditMode:(int64_t)a3 color:(id)a4;
-- (id)_renderBackgroundViewSwatchImageForBlackcombDialColor:(unint64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (NTKBlackcombFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_keylineViewForComplicationSlot:(id)slot;
+- (id)_platterTextColorForEditMode:(int64_t)mode color:(id)color;
+- (id)_renderBackgroundViewSwatchImageForBlackcombDialColor:(unint64_t)color;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (int64_t)_editMode;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyComplicationTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 force:(BOOL)a6;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyComplicationTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette force:(BOOL)force;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
 - (void)_forceUpdateColors;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
@@ -29,21 +29,21 @@
 - (void)_updateHandsColors;
 - (void)_updateTickLengths;
 - (void)layoutSubviews;
-- (void)updateBlackcombDialColorStyle:(unint64_t)a3;
-- (void)updateWithColorPalette:(id)a3;
+- (void)updateBlackcombDialColorStyle:(unint64_t)style;
+- (void)updateWithColorPalette:(id)palette;
 @end
 
 @implementation NTKBlackcombFaceView
 
-- (NTKBlackcombFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKBlackcombFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKBlackcombFaceView;
-  v9 = [(NTKAnalogFaceView *)&v13 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKAnalogFaceView *)&v13 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    v10 = [[NTKFullscreenSubdialComplicationFactory alloc] initForDevice:v8];
+    v10 = [[NTKFullscreenSubdialComplicationFactory alloc] initForDevice:deviceCopy];
     complicationFactory = v9->_complicationFactory;
     v9->_complicationFactory = v10;
   }
@@ -62,17 +62,17 @@
   return v5;
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v7.receiver = self;
   v7.super_class = NTKBlackcombFaceView;
-  v4 = a3;
-  [(NTKAnalogFaceView *)&v7 _configureTimeView:v4];
+  viewCopy = view;
+  [(NTKAnalogFaceView *)&v7 _configureTimeView:viewCopy];
   [(NTKBlackcombFaceView *)self _updateHandsColors:v7.receiver];
-  v5 = [v4 secondHandView];
+  secondHandView = [viewCopy secondHandView];
 
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [v5 setHandDotColor:v6];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [secondHandView setHandDotColor:blackColor];
 }
 
 - (void)_setupBackgroundView
@@ -83,25 +83,25 @@
     backgroundContainerView = self->_backgroundContainerView;
     self->_backgroundContainerView = v3;
 
-    v5 = [(NTKFaceView *)self contentView];
+    contentView = [(NTKFaceView *)self contentView];
     v6 = self->_backgroundContainerView;
-    v7 = [(NTKFaceView *)self complicationContainerView];
-    [v5 insertSubview:v6 belowSubview:v7];
+    complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+    [contentView insertSubview:v6 belowSubview:complicationContainerView];
 
     v8 = [NTKBlackcombBackgroundView alloc];
-    v9 = [(NTKFaceView *)self device];
-    v10 = [(NTKBlackcombBackgroundView *)v8 initForDevice:v9];
+    device = [(NTKFaceView *)self device];
+    v10 = [(NTKBlackcombBackgroundView *)v8 initForDevice:device];
     backgroundView = self->_backgroundView;
     self->_backgroundView = v10;
 
     [(UIView *)self->_backgroundContainerView addSubview:self->_backgroundView];
-    v12 = [(UIView *)self->_backgroundContainerView layer];
-    v13 = [(NTKFaceView *)self device];
-    [v13 screenCornerRadius];
-    [v12 setCornerRadius:?];
+    layer = [(UIView *)self->_backgroundContainerView layer];
+    device2 = [(NTKFaceView *)self device];
+    [device2 screenCornerRadius];
+    [layer setCornerRadius:?];
 
-    v14 = [(UIView *)self->_backgroundContainerView layer];
-    [v14 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [(UIView *)self->_backgroundContainerView layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
   }
 }
 
@@ -135,12 +135,12 @@
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKFaceView *)self switcherSnapshotView];
-    [(NTKBlackcombFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKFaceView *)self switcherSnapshotView];
+    [(NTKBlackcombFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
@@ -166,16 +166,16 @@
   v8.super_class = NTKBlackcombFaceView;
   [(NTKAnalogFaceView *)&v8 _prepareForEditing];
   [(NTKBlackcombBackgroundView *)self->_backgroundView setUsesLongSideTicks:0];
-  v3 = [(UIView *)self->_backgroundContainerView layer];
-  [v3 setAllowsGroupOpacity:1];
+  layer = [(UIView *)self->_backgroundContainerView layer];
+  [layer setAllowsGroupOpacity:1];
 
-  v4 = [(NTKFaceView *)self complicationContainerView];
-  v5 = [v4 layer];
-  [v5 setAllowsGroupOpacity:1];
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  layer2 = [complicationContainerView layer];
+  [layer2 setAllowsGroupOpacity:1];
 
-  v6 = [(NTKFaceView *)self timeView];
-  v7 = [v6 layer];
-  [v7 setAllowsGroupOpacity:1];
+  timeView = [(NTKFaceView *)self timeView];
+  layer3 = [timeView layer];
+  [layer3 setAllowsGroupOpacity:1];
 }
 
 - (void)_cleanupAfterEditing
@@ -184,53 +184,53 @@
   v9.super_class = NTKBlackcombFaceView;
   [(NTKAnalogFaceView *)&v9 _cleanupAfterEditing];
   [(NTKBlackcombFaceView *)self _updateTickLengths];
-  v3 = [(UIView *)self->_backgroundContainerView layer];
-  [v3 setAllowsGroupOpacity:0];
+  layer = [(UIView *)self->_backgroundContainerView layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v4 = [(NTKFaceView *)self complicationContainerView];
-  v5 = [v4 layer];
-  [v5 setAllowsGroupOpacity:0];
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  layer2 = [complicationContainerView layer];
+  [layer2 setAllowsGroupOpacity:0];
 
-  v6 = [(NTKFaceView *)self timeView];
-  v7 = [v6 layer];
-  [v7 setAllowsGroupOpacity:0];
+  timeView = [(NTKFaceView *)self timeView];
+  layer3 = [timeView layer];
+  [layer3 setAllowsGroupOpacity:0];
 
-  v8 = [(NTKFaceView *)self delegate];
-  [v8 faceViewDidChangeWantsStatusBarIconShadow];
+  delegate = [(NTKFaceView *)self delegate];
+  [delegate faceViewDidChangeWantsStatusBarIconShadow];
 }
 
 - (void)_updateTickLengths
 {
-  v3 = [(NTKBlackcombFaceView *)self _backgroundViewShouldUseLongSideTicks];
+  _backgroundViewShouldUseLongSideTicks = [(NTKBlackcombFaceView *)self _backgroundViewShouldUseLongSideTicks];
   backgroundView = self->_backgroundView;
 
-  [(NTKBlackcombBackgroundView *)backgroundView setUsesLongSideTicks:v3];
+  [(NTKBlackcombBackgroundView *)backgroundView setUsesLongSideTicks:_backgroundViewShouldUseLongSideTicks];
 }
 
 - (BOOL)_backgroundViewShouldUseLongSideTicks
 {
-  v3 = [(NTKFaceView *)self delegate];
-  v4 = [v3 faceViewComplicationForSlot:@"subdial-left"];
-  v5 = [v4 complicationType];
+  delegate = [(NTKFaceView *)self delegate];
+  v4 = [delegate faceViewComplicationForSlot:@"subdial-left"];
+  complicationType = [v4 complicationType];
 
-  v6 = [(NTKFaceView *)self delegate];
-  v7 = [v6 faceViewComplicationForSlot:@"subdial-right"];
-  v8 = v5 | [v7 complicationType];
+  delegate2 = [(NTKFaceView *)self delegate];
+  v7 = [delegate2 faceViewComplicationForSlot:@"subdial-right"];
+  v8 = complicationType | [v7 complicationType];
 
   return v8 == 0;
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v19.receiver = self;
   v19.super_class = NTKBlackcombFaceView;
   [(NTKAnalogFaceView *)&v19 _configureForEditMode:?];
-  if (a3 > 0xF || (v5 = 1.0, ((1 << a3) & 0x8401) == 0))
+  if (mode > 0xF || (v5 = 1.0, ((1 << mode) & 0x8401) == 0))
   {
     v5 = 0.2;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
     v6 = 0.2;
   }
@@ -240,7 +240,7 @@
     v6 = 1.0;
   }
 
-  if (a3 == 15 || a3 == 0)
+  if (mode == 15 || mode == 0)
   {
     v8 = 1.0;
   }
@@ -251,9 +251,9 @@
   }
 
   [(UIView *)self->_backgroundContainerView setAlpha:v5];
-  v9 = [(NTKFaceView *)self complicationContainerView];
-  v10 = v9;
-  if (a3)
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  v10 = complicationContainerView;
+  if (mode)
   {
     v11 = v6;
   }
@@ -263,26 +263,26 @@
     v11 = 1.0;
   }
 
-  [v9 setAlpha:v11];
+  [complicationContainerView setAlpha:v11];
 
-  v12 = [(NTKFaceView *)self timeView];
-  [v12 setAlpha:v8];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setAlpha:v8];
 
   v13 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:@"subdial-top"];
-  v14 = [v13 display];
+  display = [v13 display];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     blackcombPalette = self->_blackcombPalette;
-    v16 = v14;
-    v17 = [(NTKBlackcombColorPalette *)blackcombPalette platterText];
-    v18 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:a3 color:v17];
+    v16 = display;
+    platterText = [(NTKBlackcombColorPalette *)blackcombPalette platterText];
+    v18 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:mode color:platterText];
     [v16 setForegroundColor:v18];
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v20.receiver = self;
   v20.super_class = NTKBlackcombFaceView;
@@ -290,82 +290,82 @@
   backgroundContainerView = self->_backgroundContainerView;
   CLKInterpolateBetweenFloatsClipped();
   [(UIView *)backgroundContainerView setAlpha:?];
-  v9 = [(NTKFaceView *)self complicationContainerView];
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
   CLKInterpolateBetweenFloatsClipped();
-  [v9 setAlpha:?];
+  [complicationContainerView setAlpha:?];
 
-  v10 = [(NTKFaceView *)self timeView];
+  timeView = [(NTKFaceView *)self timeView];
   CLKInterpolateBetweenFloatsClipped();
-  [v10 setAlpha:?];
+  [timeView setAlpha:?];
 
   v11 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:@"subdial-top"];
-  v12 = [v11 display];
+  display = [v11 display];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     blackcombPalette = self->_blackcombPalette;
-    v14 = v12;
-    v15 = [(NTKBlackcombColorPalette *)blackcombPalette platterText];
-    v16 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:a4 color:v15];
-    v17 = [(NTKBlackcombColorPalette *)self->_blackcombPalette platterText];
-    v18 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:a5 color:v17];
+    v14 = display;
+    platterText = [(NTKBlackcombColorPalette *)blackcombPalette platterText];
+    v16 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:mode color:platterText];
+    platterText2 = [(NTKBlackcombColorPalette *)self->_blackcombPalette platterText];
+    v18 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:editMode color:platterText2];
     v19 = NTKInterpolateBetweenColors();
 
     [v14 setForegroundColor:v19];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v10 = a3;
-  v8 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
     [(NTKBlackcombFaceView *)self updateWithColorPalette:self->_blackcombPalette];
   }
 
-  else if (a4 == 15)
+  else if (mode == 15)
   {
-    -[NTKBlackcombFaceView updateBlackcombDialColorStyle:](self, "updateBlackcombDialColorStyle:", [v10 blackcombDialColor]);
-    v9 = [(NTKFaceView *)self delegate];
-    [v9 faceViewDidChangeWantsStatusBarIconShadow];
+    -[NTKBlackcombFaceView updateBlackcombDialColorStyle:](self, "updateBlackcombDialColorStyle:", [optionCopy blackcombDialColor]);
+    delegate = [(NTKFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v18 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v14 = [(NTKFaceView *)self interpolatedColorPalette];
-    v15 = [v14 fromPalette];
-    v16 = [(NTKFaceView *)self interpolatedColorPalette];
-    v17 = [v16 toPalette];
-    [(NTKBlackcombFaceView *)self _applyTransitionFraction:v15 fromColorPalette:v17 toColorPalette:a3];
+    interpolatedColorPalette = [(NTKFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    interpolatedColorPalette2 = [(NTKFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
+    [(NTKBlackcombFaceView *)self _applyTransitionFraction:fromPalette fromColorPalette:toPalette toColorPalette:fraction];
   }
 
   else
   {
-    if (a6 != 15)
+    if (mode != 15)
     {
       goto LABEL_6;
     }
 
-    v14 = -[NTKBlackcombColorPalette transitionalPaletteFromDialColor:toDialColor:](self->_blackcombPalette, "transitionalPaletteFromDialColor:toDialColor:", [v18 blackcombDialColor], objc_msgSend(v12, "blackcombDialColor"));
-    v15 = [v14 fromPalette];
-    v16 = [v14 toPalette];
-    [(NTKBlackcombFaceView *)self _applyTransitionFraction:v15 fromColorPalette:v16 toColorPalette:a3];
+    interpolatedColorPalette = -[NTKBlackcombColorPalette transitionalPaletteFromDialColor:toDialColor:](self->_blackcombPalette, "transitionalPaletteFromDialColor:toDialColor:", [optionCopy blackcombDialColor], objc_msgSend(toOptionCopy, "blackcombDialColor"));
+    fromPalette = [interpolatedColorPalette fromPalette];
+    interpolatedColorPalette2 = [interpolatedColorPalette toPalette];
+    [(NTKBlackcombFaceView *)self _applyTransitionFraction:fromPalette fromColorPalette:interpolatedColorPalette2 toColorPalette:fraction];
   }
 
 LABEL_6:
 }
 
-- (void)updateWithColorPalette:(id)a3
+- (void)updateWithColorPalette:(id)palette
 {
-  v6 = a3;
+  paletteCopy = palette;
   if (self->_dialColorStyleTransitionPalette)
   {
     v4 = [[NTKInterpolatedColorPalette alloc] initWithColorPalette:self->_blackcombPalette];
@@ -373,15 +373,15 @@ LABEL_6:
     self->_dialColorStyleTransitionPalette = v4;
   }
 
-  [(NTKBlackcombFaceView *)self _applyTransitionFraction:v6 fromColorPalette:v6 toColorPalette:1 force:0.0];
+  [(NTKBlackcombFaceView *)self _applyTransitionFraction:paletteCopy fromColorPalette:paletteCopy toColorPalette:1 force:0.0];
   [(NTKBlackcombFaceView *)self _updateHandsColors];
 }
 
-- (void)updateBlackcombDialColorStyle:(unint64_t)a3
+- (void)updateBlackcombDialColorStyle:(unint64_t)style
 {
-  if ([(NTKBlackcombColorPalette *)self->_blackcombPalette dialColorStyle]!= a3)
+  if ([(NTKBlackcombColorPalette *)self->_blackcombPalette dialColorStyle]!= style)
   {
-    [(NTKBlackcombColorPalette *)self->_blackcombPalette setDialColorStyle:a3];
+    [(NTKBlackcombColorPalette *)self->_blackcombPalette setDialColorStyle:style];
     blackcombPalette = self->_blackcombPalette;
 
     [(NTKBlackcombFaceView *)self updateWithColorPalette:blackcombPalette];
@@ -396,31 +396,31 @@ LABEL_6:
   [(NTKBlackcombFaceView *)self _updateHandsColors];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 force:(BOOL)a6
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette force:(BOOL)force
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 complication];
-  v13 = [v11 complication];
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  complication = [paletteCopy complication];
+  complication2 = [colorPaletteCopy complication];
   v14 = NTKInterpolateBetweenColors();
   [(NTKFaceView *)self setInterpolatedComplicationColor:v14];
-  if (a6)
+  if (force)
   {
     v15 = 1;
   }
 
   else
   {
-    v16 = [v10 configuration];
-    v17 = [v11 configuration];
-    v15 = [v16 isEqual:v17] ^ 1;
+    configuration = [paletteCopy configuration];
+    configuration2 = [colorPaletteCopy configuration];
+    v15 = [configuration isEqual:configuration2] ^ 1;
   }
 
-  if (([v10 isMulticolor] & 1) != 0 || objc_msgSend(v11, "isMulticolor"))
+  if (([paletteCopy isMulticolor] & 1) != 0 || objc_msgSend(colorPaletteCopy, "isMulticolor"))
   {
-    if ([v11 isMulticolor] && !objc_msgSend(v10, "isMulticolor"))
+    if ([colorPaletteCopy isMulticolor] && !objc_msgSend(paletteCopy, "isMulticolor"))
     {
-      a3 = 1.0 - a3;
+      fraction = 1.0 - fraction;
     }
 
     v18 = 1;
@@ -431,14 +431,14 @@ LABEL_6:
     v18 = 0;
   }
 
-  if ([v11 isMulticolor])
+  if ([colorPaletteCopy isMulticolor])
   {
-    v19 = v12;
+    v19 = complication;
   }
 
   else
   {
-    v19 = v13;
+    v19 = complication2;
   }
 
   [(NTKFaceView *)self setComplicationColor:v19];
@@ -450,18 +450,18 @@ LABEL_6:
     v24[3] = &unk_2787874B0;
     v24[4] = self;
     v25 = v18;
-    *&v24[5] = a3;
+    *&v24[5] = fraction;
     [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v24];
   }
 
-  v20 = [(NTKBlackcombFaceView *)self _secondHandColor];
-  v21 = [(NTKBlackcombFaceView *)self _secondHandColor];
+  _secondHandColor = [(NTKBlackcombFaceView *)self _secondHandColor];
+  _secondHandColor2 = [(NTKBlackcombFaceView *)self _secondHandColor];
   v22 = NTKInterpolateBetweenColors();
-  v23 = [(NTKFaceView *)self timeView];
-  [v23 applySecondHandColor:v22];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView applySecondHandColor:v22];
 
-  [(NTKBlackcombBackgroundView *)self->_backgroundView applyTransitionFraction:v10 fromPalette:v11 toPalette:a3];
-  [(NTKBlackcombFaceView *)self _applyComplicationTransitionFraction:v10 fromColorPalette:v11 toColorPalette:a3];
+  [(NTKBlackcombBackgroundView *)self->_backgroundView applyTransitionFraction:paletteCopy fromPalette:colorPaletteCopy toPalette:fraction];
+  [(NTKBlackcombFaceView *)self _applyComplicationTransitionFraction:paletteCopy fromColorPalette:colorPaletteCopy toColorPalette:fraction];
 }
 
 void __87__NTKBlackcombFaceView__applyTransitionFraction_fromColorPalette_toColorPalette_force___block_invoke(uint64_t a1, uint64_t a2)
@@ -490,38 +490,38 @@ void __87__NTKBlackcombFaceView__applyTransitionFraction_fromColorPalette_toColo
   }
 }
 
-- (void)_applyComplicationTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5
+- (void)_applyComplicationTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette
 {
-  v8 = a4;
-  v9 = a5;
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPalette_toColorPalette___block_invoke;
   v23[3] = &unk_2787874D8;
-  v10 = v8;
+  v10 = paletteCopy;
   v24 = v10;
-  v11 = v9;
+  v11 = colorPaletteCopy;
   v25 = v11;
-  v26 = a3;
+  fractionCopy = fraction;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v23];
   v12 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:@"subdial-top"];
-  v13 = [v12 display];
+  display = [v12 display];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [(NTKBlackcombFaceView *)self _editMode];
-    v16 = [v10 platterText];
-    v17 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:v15 color:v16];
+    _editMode = [(NTKBlackcombFaceView *)self _editMode];
+    platterText = [v10 platterText];
+    v17 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:_editMode color:platterText];
 
-    v18 = [(NTKBlackcombFaceView *)self _editMode];
-    v19 = [v11 platterText];
-    v20 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:v18 color:v19];
+    _editMode2 = [(NTKBlackcombFaceView *)self _editMode];
+    platterText2 = [v11 platterText];
+    v20 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:_editMode2 color:platterText2];
 
     v21 = NTKInterpolateBetweenColors();
-    v22 = [v12 display];
-    [v22 setForegroundColor:v21];
+    display2 = [v12 display];
+    [display2 setForegroundColor:v21];
   }
 }
 
@@ -541,124 +541,124 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
 
 - (void)_updateHandsColors
 {
-  v7 = [(NTKBlackcombFaceView *)self _secondHandColor];
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 applySecondHandColor:v7];
+  _secondHandColor = [(NTKBlackcombFaceView *)self _secondHandColor];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView applySecondHandColor:_secondHandColor];
 
-  v4 = [(NTKFaceView *)self timeView];
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [v4 applyHourMinuteHandsStrokeColor:v5 fillColor:v6];
+  timeView2 = [(NTKFaceView *)self timeView];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [timeView2 applyHourMinuteHandsStrokeColor:whiteColor fillColor:blackColor];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v18.receiver = self;
   v18.super_class = NTKBlackcombFaceView;
-  [(NTKFaceView *)&v18 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  v8 = NTKScaleForRubberBandingFraction(a3);
+  [(NTKFaceView *)&v18 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  v8 = NTKScaleForRubberBandingFraction(fraction);
   memset(&v17, 0, sizeof(v17));
   CGAffineTransformMakeScale(&v17, v8, v8);
-  v9 = NTKAlphaForRubberBandingFraction(a3);
-  if (a4 == 10)
+  v9 = NTKAlphaForRubberBandingFraction(fraction);
+  if (mode == 10)
   {
-    v14 = [(NTKFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKFaceView *)self complicationContainerView];
     v16 = v17;
-    [v14 setTransform:&v16];
+    [complicationContainerView setTransform:&v16];
 
-    v13 = [(NTKFaceView *)self complicationContainerView];
+    complicationContainerView2 = [(NTKFaceView *)self complicationContainerView];
   }
 
   else
   {
-    if (a4 != 15)
+    if (mode != 15)
     {
       return;
     }
 
-    v10 = [(NTKFaceView *)self contentView];
+    contentView = [(NTKFaceView *)self contentView];
     v16 = v17;
-    [v10 setTransform:&v16];
+    [contentView setTransform:&v16];
 
-    v11 = [(NTKFaceView *)self contentView];
-    [v11 setAlpha:v9];
+    contentView2 = [(NTKFaceView *)self contentView];
+    [contentView2 setAlpha:v9];
 
-    v12 = [(NTKFaceView *)self timeView];
+    timeView = [(NTKFaceView *)self timeView];
     v16 = v17;
-    [v12 setTransform:&v16];
+    [timeView setTransform:&v16];
 
-    v13 = [(NTKFaceView *)self timeView];
+    complicationContainerView2 = [(NTKFaceView *)self timeView];
   }
 
-  v15 = v13;
-  [v13 setAlpha:v9];
+  v15 = complicationContainerView2;
+  [complicationContainerView2 setAlpha:v9];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v14.receiver = self;
   v14.super_class = NTKBlackcombFaceView;
-  [(NTKFaceView *)&v14 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  v8 = NTKLargeElementScaleForBreathingFraction(a3);
+  [(NTKFaceView *)&v14 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  v8 = NTKLargeElementScaleForBreathingFraction(fraction);
   memset(&v13, 0, sizeof(v13));
   CGAffineTransformMakeScale(&v13, v8, v8);
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v10 = [(NTKFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKFaceView *)self complicationContainerView];
   }
 
   else
   {
-    if (a4 != 15)
+    if (mode != 15)
     {
       return;
     }
 
-    v9 = [(NTKFaceView *)self contentView];
+    contentView = [(NTKFaceView *)self contentView];
     v12 = v13;
-    [v9 setTransform:&v12];
+    [contentView setTransform:&v12];
 
-    v10 = [(NTKFaceView *)self timeView];
+    complicationContainerView = [(NTKFaceView *)self timeView];
   }
 
-  v11 = v10;
+  v11 = complicationContainerView;
   v12 = v13;
-  [v10 setTransform:&v12];
+  [complicationContainerView setTransform:&v12];
 }
 
-- (id)_platterTextColorForEditMode:(int64_t)a3 color:(id)a4
+- (id)_platterTextColorForEditMode:(int64_t)mode color:(id)color
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 != 15 && a3)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (mode != 15 && mode)
   {
-    v7 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
   else
   {
-    v7 = v5;
+    whiteColor = colorCopy;
   }
 
-  v8 = v7;
+  v8 = whiteColor;
 
   return v8;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v12 = a3;
-  v6 = a4;
-  [(NTKFullscreenSubdialComplicationFactory *)self->_complicationFactory configureComplicationView:v12 forSlot:v6 faceView:self];
+  viewCopy = view;
+  slotCopy = slot;
+  [(NTKFullscreenSubdialComplicationFactory *)self->_complicationFactory configureComplicationView:viewCopy forSlot:slotCopy faceView:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v12;
-    if ([v6 isEqualToString:@"subdial-top"])
+    v7 = viewCopy;
+    if ([slotCopy isEqualToString:@"subdial-top"])
     {
-      v8 = [(NTKBlackcombFaceView *)self _editMode];
-      v9 = [(NTKBlackcombColorPalette *)self->_blackcombPalette platterText];
-      v10 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:v8 color:v9];
+      _editMode = [(NTKBlackcombFaceView *)self _editMode];
+      platterText = [(NTKBlackcombColorPalette *)self->_blackcombPalette platterText];
+      v10 = [(NTKBlackcombFaceView *)self _platterTextColorForEditMode:_editMode color:platterText];
       [v7 setForegroundColor:v10];
     }
 
@@ -672,15 +672,15 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
       [v7 updateMonochromeColor];
     }
 
-    v11 = [(NTKBlackcombColorPalette *)self->_blackcombPalette richComplicationViewTheme];
-    [v7 transitThemeFromTheme:v11 toTheme:v11 fraction:1.0];
+    richComplicationViewTheme = [(NTKBlackcombColorPalette *)self->_blackcombPalette richComplicationViewTheme];
+    [v7 transitThemeFromTheme:richComplicationViewTheme toTheme:richComplicationViewTheme fraction:1.0];
   }
 }
 
-- (id)_keylineViewForComplicationSlot:(id)a3
+- (id)_keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFullscreenSubdialComplicationFactory *)self->_complicationFactory keylineViewForComplicationSlot:v4];
+  slotCopy = slot;
+  v5 = [(NTKFullscreenSubdialComplicationFactory *)self->_complicationFactory keylineViewForComplicationSlot:slotCopy];
   v6 = v5;
   if (v5)
   {
@@ -691,7 +691,7 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
   {
     v10.receiver = self;
     v10.super_class = NTKBlackcombFaceView;
-    v7 = [(NTKFaceView *)&v10 _keylineViewForComplicationSlot:v4];
+    v7 = [(NTKFaceView *)&v10 _keylineViewForComplicationSlot:slotCopy];
   }
 
   v8 = v7;
@@ -704,8 +704,8 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
   v12.receiver = self;
   v12.super_class = NTKBlackcombFaceView;
   [(NTKAnalogFaceView *)&v12 layoutSubviews];
-  v3 = [(NTKFaceView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKFaceView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -727,11 +727,11 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
   return v3;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  optionsCopy = options;
+  if (mode == 15)
   {
     if (!_swatchImageForEditOption_mode_withSelectedOptions__cache)
     {
@@ -740,14 +740,14 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
       _swatchImageForEditOption_mode_withSelectedOptions__cache = v10;
     }
 
-    v12 = [v8 blackcombDialColor];
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
+    blackcombDialColor = [optionCopy blackcombDialColor];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:blackcombDialColor];
     v14 = [v13 description];
 
     v15 = [_swatchImageForEditOption_mode_withSelectedOptions__cache objectForKey:v14];
     if (!v15)
     {
-      v15 = [(NTKBlackcombFaceView *)self _renderBackgroundViewSwatchImageForBlackcombDialColor:v12];
+      v15 = [(NTKBlackcombFaceView *)self _renderBackgroundViewSwatchImageForBlackcombDialColor:blackcombDialColor];
       [_swatchImageForEditOption_mode_withSelectedOptions__cache setObject:v15 forKey:v14];
     }
   }
@@ -756,24 +756,24 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
   {
     v17.receiver = self;
     v17.super_class = NTKBlackcombFaceView;
-    v15 = [(NTKFaceView *)&v17 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v15 = [(NTKFaceView *)&v17 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v15;
 }
 
-- (id)_renderBackgroundViewSwatchImageForBlackcombDialColor:(unint64_t)a3
+- (id)_renderBackgroundViewSwatchImageForBlackcombDialColor:(unint64_t)color
 {
-  v5 = [(NTKFaceView *)self timeView];
+  timeView = [(NTKFaceView *)self timeView];
 
-  if (!v5)
+  if (!timeView)
   {
     [(NTKBlackcombFaceView *)self _loadSnapshotContentViews];
   }
 
-  v6 = [(NTKBlackcombColorPalette *)self->_blackcombPalette dialColorStyle];
-  v7 = [(NTKBlackcombBackgroundView *)self->_backgroundView usesLongSideTicks];
-  [(NTKBlackcombFaceView *)self updateBlackcombDialColorStyle:a3];
+  dialColorStyle = [(NTKBlackcombColorPalette *)self->_blackcombPalette dialColorStyle];
+  usesLongSideTicks = [(NTKBlackcombBackgroundView *)self->_backgroundView usesLongSideTicks];
+  [(NTKBlackcombFaceView *)self updateBlackcombDialColorStyle:color];
   [(NTKBlackcombFaceView *)self layoutIfNeeded];
   [(NTKBlackcombBackgroundView *)self->_backgroundView setUsesLongSideTicks:1];
   [(UIView *)self->_backgroundContainerView bounds];
@@ -785,8 +785,8 @@ void __93__NTKBlackcombFaceView__applyComplicationTransitionFraction_fromColorPa
   v18 = &unk_278787500;
   objc_copyWeak(&v19, &location);
   v13 = [v12 imageWithActions:&v15];
-  [(NTKBlackcombFaceView *)self updateBlackcombDialColorStyle:v6, v15, v16, v17, v18];
-  [(NTKBlackcombBackgroundView *)self->_backgroundView setUsesLongSideTicks:v7];
+  [(NTKBlackcombFaceView *)self updateBlackcombDialColorStyle:dialColorStyle, v15, v16, v17, v18];
+  [(NTKBlackcombBackgroundView *)self->_backgroundView setUsesLongSideTicks:usesLongSideTicks];
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 

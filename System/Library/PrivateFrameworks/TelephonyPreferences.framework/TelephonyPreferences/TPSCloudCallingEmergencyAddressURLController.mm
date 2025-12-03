@@ -1,22 +1,22 @@
 @interface TPSCloudCallingEmergencyAddressURLController
 - (BOOL)isCapabilityEnabled;
 - (BOOL)isCapabilityProvisioningURLInvalid;
-- (TPSCloudCallingEmergencyAddressURLController)initWithSubscriptionContext:(id)a3;
+- (TPSCloudCallingEmergencyAddressURLController)initWithSubscriptionContext:(id)context;
 - (id)capabilityProvisioningPostData;
 - (id)capabilityProvisioningURL;
 - (int)capabilityProvisioningStatus;
-- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)a3;
+- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)d;
 - (void)enableCapability;
 - (void)webSheetCompletion;
 @end
 
 @implementation TPSCloudCallingEmergencyAddressURLController
 
-- (TPSCloudCallingEmergencyAddressURLController)initWithSubscriptionContext:(id)a3
+- (TPSCloudCallingEmergencyAddressURLController)initWithSubscriptionContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = TPSCloudCallingEmergencyAddressURLController;
-  v3 = [(TPSCloudCallingURLController *)&v5 initWithSubscriptionContext:a3];
+  v3 = [(TPSCloudCallingURLController *)&v5 initWithSubscriptionContext:context];
   if (v3)
   {
     [MEMORY[0x277D6EDE8] addDelegate:v3 queue:MEMORY[0x277D85CD0]];
@@ -34,8 +34,8 @@
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "Enabling Wi-Fi calling", v5, 2u);
   }
 
-  v4 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  [v4 setWiFiCallingEnabled:1];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  [subscriptionCapabilities setWiFiCallingEnabled:1];
 }
 
 - (void)webSheetCompletion
@@ -48,57 +48,57 @@
   }
 
   [(TPSCloudCallingEmergencyAddressURLController *)self enableCapability];
-  v4 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  [v4 invalidateAndRefreshWiFiCallingProvisioningURL];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  [subscriptionCapabilities invalidateAndRefreshWiFiCallingProvisioningURL];
 }
 
 - (BOOL)isCapabilityEnabled
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 isWiFiCallingEnabled];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  isWiFiCallingEnabled = [subscriptionCapabilities isWiFiCallingEnabled];
 
-  return v3;
+  return isWiFiCallingEnabled;
 }
 
 - (int)capabilityProvisioningStatus
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 wiFiCallingProvisioningStatus];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  wiFiCallingProvisioningStatus = [subscriptionCapabilities wiFiCallingProvisioningStatus];
 
-  return v3;
+  return wiFiCallingProvisioningStatus;
 }
 
 - (id)capabilityProvisioningURL
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 wiFiCallingProvisioningURL];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  wiFiCallingProvisioningURL = [subscriptionCapabilities wiFiCallingProvisioningURL];
 
-  return v3;
+  return wiFiCallingProvisioningURL;
 }
 
 - (BOOL)isCapabilityProvisioningURLInvalid
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 isWiFiCallingProvisioningURLInvalid];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  isWiFiCallingProvisioningURLInvalid = [subscriptionCapabilities isWiFiCallingProvisioningURLInvalid];
 
-  return v3;
+  return isWiFiCallingProvisioningURLInvalid;
 }
 
 - (id)capabilityProvisioningPostData
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 wiFiCallingProvisioningPostData];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  wiFiCallingProvisioningPostData = [subscriptionCapabilities wiFiCallingProvisioningPostData];
 
-  return v3;
+  return wiFiCallingProvisioningPostData;
 }
 
-- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)a3
+- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSCloudCallingURLController *)self subscriptionContext];
-  v6 = [v5 uuid];
-  v7 = [v4 isEqual:v6];
+  dCopy = d;
+  subscriptionContext = [(TPSCloudCallingURLController *)self subscriptionContext];
+  uuid = [subscriptionContext uuid];
+  v7 = [dCopy isEqual:uuid];
 
   if (v7)
   {
@@ -106,7 +106,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&dword_21B8E9000, v8, OS_LOG_TYPE_DEFAULT, "WiFi calling provisioning URL changed for sender identity with UUID %@.", &v10, 0xCu);
     }
 

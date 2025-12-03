@@ -1,8 +1,8 @@
 @interface AVMetricPlayerItemPlaybackSummaryEvent
-- (AVMetricPlayerItemPlaybackSummaryEvent)initWithCoder:(id)a3;
-- (AVMetricPlayerItemPlaybackSummaryEvent)initWithDate:(id)a3 mediaTime:(id *)a4 sessionID:(id)a5 errorEvent:(id)a6 recoverableErrorCount:(int64_t)a7 stallCount:(int64_t)a8 variantSwitchCount:(int64_t)a9 playbackDuration:(int64_t)a10 mediaResourceRequestCount:(int64_t)a11 timeSpentRecoveringFromStall:(double)a12 timeSpentInInitialStartup:(double)a13 timeWeightedAverageBitrate:(int64_t)a14 timeWeightedPeakBitrate:(int64_t)a15;
+- (AVMetricPlayerItemPlaybackSummaryEvent)initWithCoder:(id)coder;
+- (AVMetricPlayerItemPlaybackSummaryEvent)initWithDate:(id)date mediaTime:(id *)time sessionID:(id)d errorEvent:(id)event recoverableErrorCount:(int64_t)count stallCount:(int64_t)stallCount variantSwitchCount:(int64_t)switchCount playbackDuration:(int64_t)self0 mediaResourceRequestCount:(int64_t)self1 timeSpentRecoveringFromStall:(double)self2 timeSpentInInitialStartup:(double)self3 timeWeightedAverageBitrate:(int64_t)self4 timeWeightedPeakBitrate:(int64_t)self5;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVMetricPlayerItemPlaybackSummaryEvent
@@ -14,32 +14,32 @@
   [(AVMetricEvent *)&v3 dealloc];
 }
 
-- (AVMetricPlayerItemPlaybackSummaryEvent)initWithDate:(id)a3 mediaTime:(id *)a4 sessionID:(id)a5 errorEvent:(id)a6 recoverableErrorCount:(int64_t)a7 stallCount:(int64_t)a8 variantSwitchCount:(int64_t)a9 playbackDuration:(int64_t)a10 mediaResourceRequestCount:(int64_t)a11 timeSpentRecoveringFromStall:(double)a12 timeSpentInInitialStartup:(double)a13 timeWeightedAverageBitrate:(int64_t)a14 timeWeightedPeakBitrate:(int64_t)a15
+- (AVMetricPlayerItemPlaybackSummaryEvent)initWithDate:(id)date mediaTime:(id *)time sessionID:(id)d errorEvent:(id)event recoverableErrorCount:(int64_t)count stallCount:(int64_t)stallCount variantSwitchCount:(int64_t)switchCount playbackDuration:(int64_t)self0 mediaResourceRequestCount:(int64_t)self1 timeSpentRecoveringFromStall:(double)self2 timeSpentInInitialStartup:(double)self3 timeWeightedAverageBitrate:(int64_t)self4 timeWeightedPeakBitrate:(int64_t)self5
 {
   v23.receiver = self;
   v23.super_class = AVMetricPlayerItemPlaybackSummaryEvent;
-  v22 = *a4;
-  v20 = [(AVMetricEvent *)&v23 initWithDate:a3 mediaTime:&v22 sessionID:a5];
+  v22 = *time;
+  v20 = [(AVMetricEvent *)&v23 initWithDate:date mediaTime:&v22 sessionID:d];
   if (v20)
   {
-    v20->_errorEvent = a6;
-    v20->_recoverableErrorCount = a7;
-    v20->_stallCount = a8;
-    v20->_variantSwitchCount = a9;
-    v20->_playbackDuration = a10;
-    v20->_mediaResourceRequestCount = a11;
-    v20->_timeSpentRecoveringFromStall = a12;
-    v20->_timeSpentInInitialStartup = a13;
-    v20->_timeWeightedAverageBitrate = a14;
-    v20->_timeWeightedPeakBitrate = a15;
+    v20->_errorEvent = event;
+    v20->_recoverableErrorCount = count;
+    v20->_stallCount = stallCount;
+    v20->_variantSwitchCount = switchCount;
+    v20->_playbackDuration = duration;
+    v20->_mediaResourceRequestCount = requestCount;
+    v20->_timeSpentRecoveringFromStall = stall;
+    v20->_timeSpentInInitialStartup = startup;
+    v20->_timeWeightedAverageBitrate = bitrate;
+    v20->_timeWeightedPeakBitrate = peakBitrate;
   }
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"supports only keyed archivers", v6, v7, v8, v9, v10, v12.receiver), 0}];
     objc_exception_throw(v11);
@@ -47,38 +47,38 @@
 
   v12.receiver = self;
   v12.super_class = AVMetricPlayerItemPlaybackSummaryEvent;
-  [(AVMetricEvent *)&v12 encodeWithCoder:a3];
-  [a3 encodeObject:self->_errorEvent forKey:@"errorEvent"];
-  [a3 encodeInteger:self->_recoverableErrorCount forKey:@"recoverableErrorCount"];
-  [a3 encodeInteger:self->_stallCount forKey:@"stallCount"];
-  [a3 encodeInteger:self->_variantSwitchCount forKey:@"variantSwitchCount"];
-  [a3 encodeInteger:self->_playbackDuration forKey:@"playbackDuration"];
-  [a3 encodeInteger:self->_mediaResourceRequestCount forKey:@"mediaResourceRequestCount"];
-  [a3 encodeDouble:@"timeSpentRecoveringFromStall" forKey:self->_timeSpentRecoveringFromStall];
-  [a3 encodeDouble:@"timeSpentInInitialStartup" forKey:self->_timeSpentInInitialStartup];
-  [a3 encodeInteger:self->_timeWeightedAverageBitrate forKey:@"timeWeightedAverageBitrate"];
-  [a3 encodeInteger:self->_timeWeightedPeakBitrate forKey:@"timeWeightedPeakBitrate"];
+  [(AVMetricEvent *)&v12 encodeWithCoder:coder];
+  [coder encodeObject:self->_errorEvent forKey:@"errorEvent"];
+  [coder encodeInteger:self->_recoverableErrorCount forKey:@"recoverableErrorCount"];
+  [coder encodeInteger:self->_stallCount forKey:@"stallCount"];
+  [coder encodeInteger:self->_variantSwitchCount forKey:@"variantSwitchCount"];
+  [coder encodeInteger:self->_playbackDuration forKey:@"playbackDuration"];
+  [coder encodeInteger:self->_mediaResourceRequestCount forKey:@"mediaResourceRequestCount"];
+  [coder encodeDouble:@"timeSpentRecoveringFromStall" forKey:self->_timeSpentRecoveringFromStall];
+  [coder encodeDouble:@"timeSpentInInitialStartup" forKey:self->_timeSpentInInitialStartup];
+  [coder encodeInteger:self->_timeWeightedAverageBitrate forKey:@"timeWeightedAverageBitrate"];
+  [coder encodeInteger:self->_timeWeightedPeakBitrate forKey:@"timeWeightedPeakBitrate"];
 }
 
-- (AVMetricPlayerItemPlaybackSummaryEvent)initWithCoder:(id)a3
+- (AVMetricPlayerItemPlaybackSummaryEvent)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = AVMetricPlayerItemPlaybackSummaryEvent;
   v4 = [(AVMetricEvent *)&v8 initWithCoder:?];
   if (v4)
   {
-    v4->_errorEvent = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"errorEvent"];
-    v4->_recoverableErrorCount = [a3 decodeIntegerForKey:@"recoverableErrorCount"];
-    v4->_stallCount = [a3 decodeIntegerForKey:@"stallCount"];
-    v4->_variantSwitchCount = [a3 decodeIntegerForKey:@"variantSwitchCount"];
-    v4->_playbackDuration = [a3 decodeIntegerForKey:@"playbackDuration"];
-    v4->_mediaResourceRequestCount = [a3 decodeIntegerForKey:@"mediaResourceRequestCount"];
-    [a3 decodeDoubleForKey:@"timeSpentRecoveringFromStall"];
+    v4->_errorEvent = [coder decodeObjectOfClass:objc_opt_class() forKey:@"errorEvent"];
+    v4->_recoverableErrorCount = [coder decodeIntegerForKey:@"recoverableErrorCount"];
+    v4->_stallCount = [coder decodeIntegerForKey:@"stallCount"];
+    v4->_variantSwitchCount = [coder decodeIntegerForKey:@"variantSwitchCount"];
+    v4->_playbackDuration = [coder decodeIntegerForKey:@"playbackDuration"];
+    v4->_mediaResourceRequestCount = [coder decodeIntegerForKey:@"mediaResourceRequestCount"];
+    [coder decodeDoubleForKey:@"timeSpentRecoveringFromStall"];
     v4->_timeSpentRecoveringFromStall = v5;
-    [a3 decodeDoubleForKey:@"timeSpentInInitialStartup"];
+    [coder decodeDoubleForKey:@"timeSpentInInitialStartup"];
     v4->_timeSpentInInitialStartup = v6;
-    v4->_timeWeightedAverageBitrate = [a3 decodeIntegerForKey:@"timeWeightedAverageBitrate"];
-    v4->_timeWeightedPeakBitrate = [a3 decodeIntegerForKey:@"timeWeightedPeakBitrate"];
+    v4->_timeWeightedAverageBitrate = [coder decodeIntegerForKey:@"timeWeightedAverageBitrate"];
+    v4->_timeWeightedPeakBitrate = [coder decodeIntegerForKey:@"timeWeightedPeakBitrate"];
   }
 
   return v4;

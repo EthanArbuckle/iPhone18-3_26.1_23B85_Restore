@@ -1,8 +1,8 @@
 @interface LNQueryOutput
-- (LNQueryOutput)initWithCoder:(id)a3;
-- (LNQueryOutput)initWithIdentifier:(id)a3 value:(id)a4;
+- (LNQueryOutput)initWithCoder:(id)coder;
+- (LNQueryOutput)initWithIdentifier:(id)identifier value:(id)value;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryOutput
@@ -12,42 +12,42 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNQueryOutput *)self identifier];
-  v7 = [(LNQueryOutput *)self value];
-  v8 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, value: %@>", v5, self, v6, v7];
+  identifier = [(LNQueryOutput *)self identifier];
+  value = [(LNQueryOutput *)self value];
+  v8 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, value: %@>", v5, self, identifier, value];
 
   return v8;
 }
 
-- (LNQueryOutput)initWithCoder:(id)a3
+- (LNQueryOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"value"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"value"];
 
   v8 = [(LNQueryOutput *)self initWithIdentifier:v5 value:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNQueryOutput *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNQueryOutput *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNQueryOutput *)self value];
-  [v4 encodeObject:v6 forKey:@"value"];
+  value = [(LNQueryOutput *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
-- (LNQueryOutput)initWithIdentifier:(id)a3 value:(id)a4
+- (LNQueryOutput)initWithIdentifier:(id)identifier value:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  valueCopy = value;
+  v10 = valueCopy;
+  if (identifierCopy)
   {
-    if (v9)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -55,8 +55,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"LNQueryOutput.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryOutput.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v10)
     {
@@ -64,8 +64,8 @@
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"LNQueryOutput.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNQueryOutput.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"value"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -74,8 +74,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_value, a4);
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_value, value);
     v13 = v12;
   }
 

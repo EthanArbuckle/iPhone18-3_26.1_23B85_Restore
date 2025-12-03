@@ -1,63 +1,63 @@
 @interface STStatusBarDataAdditionsStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STStatusBarDataAdditionsStatusDomainDataDiff)init;
-- (STStatusBarDataAdditionsStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (STStatusBarDataAdditionsStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithChanges:(void *)a3 entryDictionaryDataDiff:;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithChanges:(void *)changes entryDictionaryDataDiff:;
 @end
 
 @implementation STStatusBarDataAdditionsStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
   v5 = MEMORY[0x1E698E700];
-  v6 = a4;
-  v7 = a3;
+  toDataCopy = toData;
+  dataCopy = data;
   v8 = objc_alloc_init(v5);
-  v9 = [v7 entryDictionaryData];
+  entryDictionaryData = [dataCopy entryDictionaryData];
 
-  v10 = [v6 entryDictionaryData];
+  entryDictionaryData2 = [toDataCopy entryDictionaryData];
 
-  v11 = [STDictionaryDataDiff diffFromDictionaryData:v9 toDictionaryData:v10];
+  v11 = [STDictionaryDataDiff diffFromDictionaryData:entryDictionaryData toDictionaryData:entryDictionaryData2];
 
   v12 = [[STStatusBarDataAdditionsStatusDomainDataDiff alloc] initWithChanges:v8 entryDictionaryDataDiff:v11];
 
   return v12;
 }
 
-- (void)initWithChanges:(void *)a3 entryDictionaryDataDiff:
+- (void)initWithChanges:(void *)changes entryDictionaryDataDiff:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  changesCopy = changes;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = STStatusBarDataAdditionsStatusDomainDataDiff;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      v9 = [v6 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [changesCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (STStatusBarDataAdditionsStatusDomainDataDiff)init
@@ -69,15 +69,15 @@
   return v5;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STStatusBarDataAdditionsStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
   if (self)
   {
@@ -90,7 +90,7 @@
   }
 
   v10 = changes;
-  v6 = a3;
+  dataCopy = data;
   [(BSSettings *)v10 isEmpty];
   if (self)
   {
@@ -103,9 +103,9 @@
   }
 
   v8 = entryDictionaryDataDiff;
-  v9 = [v6 entryDictionaryData];
+  entryDictionaryData = [dataCopy entryDictionaryData];
 
-  [(STDictionaryDataDiff *)v8 applyToMutableDictionaryData:v9];
+  [(STDictionaryDataDiff *)v8 applyToMutableDictionaryData:entryDictionaryData];
 }
 
 - (BOOL)isEmpty
@@ -133,24 +133,24 @@
       entryDictionaryDataDiff = 0;
     }
 
-    v6 = [(STDictionaryDataDiff *)entryDictionaryDataDiff isEmpty];
+    isEmpty = [(STDictionaryDataDiff *)entryDictionaryDataDiff isEmpty];
   }
 
   else
   {
-    v6 = 0;
+    isEmpty = 0;
   }
 
-  return v6;
+  return isEmpty;
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = diffCopy;
     if (self)
     {
       changes = self->_changes;
@@ -209,27 +209,27 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STStatusBarDataAdditionsStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   if (self)
   {
     changes = self->_changes;
@@ -294,17 +294,17 @@ id __56__STStatusBarDataAdditionsStatusDomainDataDiff_isEqual___block_invoke_2(u
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
-    v5 = [v3 appendObject:self->_changes];
+    v5 = [builder appendObject:self->_changes];
     entryDictionaryDataDiff = self->_entryDictionaryDataDiff;
   }
 
   else
   {
-    v10 = [v3 appendObject:0];
+    v10 = [builder appendObject:0];
     entryDictionaryDataDiff = 0;
   }
 
@@ -314,28 +314,28 @@ id __56__STStatusBarDataAdditionsStatusDomainDataDiff_isEqual___block_invoke_2(u
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_changes forKey:@"changes"];
+    [coder encodeObject:self->_changes forKey:@"changes"];
     entryDictionaryDataDiff = self->_entryDictionaryDataDiff;
   }
 
   else
   {
-    [a3 encodeObject:0 forKey:@"changes"];
+    [coder encodeObject:0 forKey:@"changes"];
     entryDictionaryDataDiff = 0;
   }
 
-  [a3 encodeObject:entryDictionaryDataDiff forKey:@"entryDictionaryDataDiff"];
+  [coder encodeObject:entryDictionaryDataDiff forKey:@"entryDictionaryDataDiff"];
 }
 
-- (STStatusBarDataAdditionsStatusDomainDataDiff)initWithCoder:(id)a3
+- (STStatusBarDataAdditionsStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryDictionaryDataDiff"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryDictionaryDataDiff"];
 
   v7 = [(STStatusBarDataAdditionsStatusDomainDataDiff *)self initWithChanges:v5 entryDictionaryDataDiff:v6];
   return v7;
@@ -343,52 +343,52 @@ id __56__STStatusBarDataAdditionsStatusDomainDataDiff_isEqual___block_invoke_2(u
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusBarDataAdditionsStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarDataAdditionsStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusBarDataAdditionsStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarDataAdditionsStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusBarDataAdditionsStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = [v6 activeMultilinePrefix];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __96__STStatusBarDataAdditionsStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v8 = v6;
+    v8 = succinctDescriptionBuilder;
     v11 = v8;
-    v12 = v3;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v7 block:v10];
+    v12 = selfCopy;
+    [v8 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v10];
 
-    v3 = v8;
+    selfCopy = v8;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

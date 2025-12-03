@@ -1,36 +1,36 @@
 @interface ASVTurntableGestureRecognizer
-- (ASVTurntableGestureRecognizer)initWithTurntableDelegate:(id)a3 feedbackGenerator:(id)a4;
+- (ASVTurntableGestureRecognizer)initWithTurntableDelegate:(id)delegate feedbackGenerator:(id)generator;
 - (ASVTurntableGestureRecognizerDelegate)turntableDelegate;
 - (BOOL)isDecelerating;
 - (float)decelerationPitchDelta;
 - (float)decelerationYawDelta;
 - (float)maximumObjectScale;
 - (float)minimumObjectScale;
-- (id)singleFingerGestureForTouch:(id)a3 dataSource:(id)a4 enabledGestureTypes:(unint64_t)a5;
-- (id)twoFingerGestureForFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5;
+- (id)singleFingerGestureForTouch:(id)touch dataSource:(id)source enabledGestureTypes:(unint64_t)types;
+- (id)twoFingerGestureForFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source;
 - (void)cancelDeceleration;
-- (void)gesture:(id)a3 beganPanningAtScreenPoint:;
-- (void)gesture:(id)a3 pannedToScreenPoint:;
-- (void)gestureEndedPanning:(id)a3;
-- (void)pitchRangeWithMinPitch:(float *)a3 maxPitch:(float *)a4;
-- (void)setEnabledGestureTypes:(unint64_t)a3;
+- (void)gesture:(id)gesture beganPanningAtScreenPoint:;
+- (void)gesture:(id)gesture pannedToScreenPoint:;
+- (void)gestureEndedPanning:(id)panning;
+- (void)pitchRangeWithMinPitch:(float *)pitch maxPitch:(float *)maxPitch;
+- (void)setEnabledGestureTypes:(unint64_t)types;
 - (void)startSnappingPitch;
-- (void)startSpinningPitchWithInitialVelocity:(float)a3;
-- (void)startSpinningYawWithInitialVelocity:(float)a3;
+- (void)startSpinningPitchWithInitialVelocity:(float)velocity;
+- (void)startSpinningYawWithInitialVelocity:(float)velocity;
 @end
 
 @implementation ASVTurntableGestureRecognizer
 
-- (ASVTurntableGestureRecognizer)initWithTurntableDelegate:(id)a3 feedbackGenerator:(id)a4
+- (ASVTurntableGestureRecognizer)initWithTurntableDelegate:(id)delegate feedbackGenerator:(id)generator
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = ASVTurntableGestureRecognizer;
-  v7 = [(ASVUnifiedGestureRecognizer *)&v24 initWithDelegate:v6 feedbackGenerator:a4];
+  v7 = [(ASVUnifiedGestureRecognizer *)&v24 initWithDelegate:delegateCopy feedbackGenerator:generator];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_turntableDelegate, v6);
+    objc_storeWeak(&v7->_turntableDelegate, delegateCopy);
     *v8->_initialPanLocation = 0;
     *v8->_lastPanLocation = 0;
     v8->_lastPanTime = 0.0;
@@ -64,31 +64,31 @@
   return v8;
 }
 
-- (void)setEnabledGestureTypes:(unint64_t)a3
+- (void)setEnabledGestureTypes:(unint64_t)types
 {
   v4.receiver = self;
   v4.super_class = ASVTurntableGestureRecognizer;
-  [(ASVUnifiedGestureRecognizer *)&v4 setEnabledGestureTypes:a3];
+  [(ASVUnifiedGestureRecognizer *)&v4 setEnabledGestureTypes:types];
   [(ASVTurntableGestureRecognizer *)self cancelDeceleration];
 }
 
-- (id)singleFingerGestureForTouch:(id)a3 dataSource:(id)a4 enabledGestureTypes:(unint64_t)a5
+- (id)singleFingerGestureForTouch:(id)touch dataSource:(id)source enabledGestureTypes:(unint64_t)types
 {
-  v7 = a3;
+  touchCopy = touch;
   v8 = [ASVTurntableSingleFingerGesture alloc];
-  v9 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-  v10 = [(ASVTurntableSingleFingerGesture *)v8 initWithTouch:v7 dataSource:v9 turntableDelegate:self enabledGestureTypes:a5];
+  dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+  v10 = [(ASVTurntableSingleFingerGesture *)v8 initWithTouch:touchCopy dataSource:dataSource turntableDelegate:self enabledGestureTypes:types];
 
   return v10;
 }
 
-- (id)twoFingerGestureForFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5
+- (id)twoFingerGestureForFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source
 {
-  v7 = a4;
-  v8 = a3;
+  secondTouchCopy = secondTouch;
+  touchCopy = touch;
   v9 = [ASVTurntableTwoFingerGesture alloc];
-  v10 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-  v11 = [(ASVTurntableTwoFingerGesture *)v9 initWithFirstTouch:v8 secondTouch:v7 dataSource:v10 turntableDelegate:self];
+  dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+  v11 = [(ASVTurntableTwoFingerGesture *)v9 initWithFirstTouch:touchCopy secondTouch:secondTouchCopy dataSource:dataSource turntableDelegate:self];
 
   return v11;
 }
@@ -127,9 +127,9 @@
   return result;
 }
 
-- (void)startSpinningYawWithInitialVelocity:(float)a3
+- (void)startSpinningYawWithInitialVelocity:(float)velocity
 {
-  v5 = fabsf(a3);
+  v5 = fabsf(velocity);
   [ASVSettings floatForKey:@"ASVSettingMinimumVelocityToBeginYawSpinDeceleration"];
   if (v5 > v6)
   {
@@ -138,30 +138,30 @@
     v9 = v8;
     [ASVSettings floatForKey:@"ASVSettingTurntableYawSpinDecelerationRate"];
     LODWORD(v11) = v10;
-    *&v12 = a3;
+    *&v12 = velocity;
     LODWORD(v13) = v9;
     v14 = [(ASVDampingDeceleration *)v7 initWithVelocity:v12 minEndDelta:v13 decelerationRate:v11];
     [(ASVTurntableGestureRecognizer *)self setYawDeceleration:v14];
   }
 }
 
-- (void)startSpinningPitchWithInitialVelocity:(float)a3
+- (void)startSpinningPitchWithInitialVelocity:(float)velocity
 {
-  v5 = fabsf(a3);
+  v5 = fabsf(velocity);
   [ASVSettings floatForKey:@"ASVSettingMinimumVelocityToBeginPitchSpinDeceleration"];
   if (v5 > v6)
   {
     [ASVSettings floatForKey:@"ASVSettingTurntablePitchDecelerationRubberBandUndershoot"];
     v8 = v7;
     v9 = [ASVRubberBand alloc];
-    v10 = [(ASVTurntableGestureRecognizer *)self rubberBand];
-    [v10 rubberBandFactor];
+    rubberBand = [(ASVTurntableGestureRecognizer *)self rubberBand];
+    [rubberBand rubberBandFactor];
     v12 = v11;
-    v13 = [(ASVTurntableGestureRecognizer *)self rubberBand];
-    [v13 minOffset];
+    rubberBand2 = [(ASVTurntableGestureRecognizer *)self rubberBand];
+    [rubberBand2 minOffset];
     v15 = v8 + v14;
-    v16 = [(ASVTurntableGestureRecognizer *)self rubberBand];
-    [v16 maxOffset];
+    rubberBand3 = [(ASVTurntableGestureRecognizer *)self rubberBand];
+    [rubberBand3 maxOffset];
     *&v18 = v17 - v8;
     LODWORD(v19) = v12;
     *&v20 = v15;
@@ -171,12 +171,12 @@
     v22 = [ASVRubberBandedSpinDeceleration alloc];
     [ASVSettings floatForKey:@"ASVSettingMinimumDeltaToEndSpinDeceleration"];
     v24 = v23;
-    v25 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-    [v25 assetPitch];
+    dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+    [dataSource assetPitch];
     v27 = v26;
     [ASVSettings floatForKey:@"ASVSettingTurntablePitchSpinDecelerationRate"];
     LODWORD(v29) = v28;
-    *&v30 = a3;
+    *&v30 = velocity;
     LODWORD(v31) = v24;
     LODWORD(v32) = v27;
     v33 = [(ASVRubberBandedSpinDeceleration *)v22 initWithVelocity:v34 minEndDelta:v30 startingOffset:v31 decelerationRate:v32 rubberBand:v29];
@@ -189,14 +189,14 @@
   v3 = [ASVSnapDeceleration alloc];
   [ASVSettings floatForKey:@"ASVSettingMinimumDeltaToEndSnapDeceleration"];
   v5 = v4;
-  v18 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-  [v18 assetPitch];
+  dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+  [dataSource assetPitch];
   v7 = v6;
-  v8 = [(ASVTurntableGestureRecognizer *)self rubberBand];
-  [v8 minOffset];
+  rubberBand = [(ASVTurntableGestureRecognizer *)self rubberBand];
+  [rubberBand minOffset];
   v10 = v9;
-  v11 = [(ASVTurntableGestureRecognizer *)self rubberBand];
-  [v11 maxOffset];
+  rubberBand2 = [(ASVTurntableGestureRecognizer *)self rubberBand];
+  [rubberBand2 maxOffset];
   LODWORD(v13) = v12;
   LODWORD(v14) = v5;
   LODWORD(v15) = v7;
@@ -207,52 +207,52 @@
 
 - (BOOL)isDecelerating
 {
-  v4 = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
-  if (v4)
+  yawDeceleration = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
+  if (yawDeceleration)
   {
-    v2 = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
-    if ([v2 isDecelerating])
+    yawDeceleration2 = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
+    if ([yawDeceleration2 isDecelerating])
     {
-      v5 = 1;
+      isDecelerating = 1;
 LABEL_8:
 
       goto LABEL_9;
     }
   }
 
-  v6 = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
-  if (v6)
+  pitchDeceleration = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
+  if (pitchDeceleration)
   {
-    v7 = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
-    v5 = [v7 isDecelerating];
+    pitchDeceleration2 = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
+    isDecelerating = [pitchDeceleration2 isDecelerating];
   }
 
   else
   {
-    v5 = 0;
+    isDecelerating = 0;
   }
 
-  if (v4)
+  if (yawDeceleration)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  return v5;
+  return isDecelerating;
 }
 
 - (float)decelerationYawDelta
 {
-  v3 = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
+  yawDeceleration = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
 
-  if (!v3)
+  if (!yawDeceleration)
   {
     return 0.0;
   }
 
-  v4 = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
-  [v4 decelerationDelta];
+  yawDeceleration2 = [(ASVTurntableGestureRecognizer *)self yawDeceleration];
+  [yawDeceleration2 decelerationDelta];
   v6 = v5;
 
   return v6;
@@ -260,15 +260,15 @@ LABEL_9:
 
 - (float)decelerationPitchDelta
 {
-  v3 = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
+  pitchDeceleration = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
 
-  if (!v3)
+  if (!pitchDeceleration)
   {
     return 0.0;
   }
 
-  v4 = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
-  [v4 decelerationDelta];
+  pitchDeceleration2 = [(ASVTurntableGestureRecognizer *)self pitchDeceleration];
+  [pitchDeceleration2 decelerationDelta];
   v6 = v5;
 
   return v6;
@@ -281,17 +281,17 @@ LABEL_9:
   [(ASVTurntableGestureRecognizer *)self setPitchDeceleration:0];
 }
 
-- (void)pitchRangeWithMinPitch:(float *)a3 maxPitch:(float *)a4
+- (void)pitchRangeWithMinPitch:(float *)pitch maxPitch:(float *)maxPitch
 {
   [ASVSettings floatForKey:@"ASVSettingTurntablePitchLimit"];
-  *a3 = -v6;
-  *a4 = v6;
+  *pitch = -v6;
+  *maxPitch = v6;
 }
 
-- (void)gesture:(id)a3 beganPanningAtScreenPoint:
+- (void)gesture:(id)gesture beganPanningAtScreenPoint:
 {
   v4 = v3;
-  [(ASVTurntableGestureRecognizer *)self setInitialPanLocation:a3];
+  [(ASVTurntableGestureRecognizer *)self setInitialPanLocation:gesture];
   [(ASVTurntableGestureRecognizer *)self setPanThresholdPassed:0];
   [(ASVTurntableGestureRecognizer *)self setYawThresholdPassed:0];
   [(ASVTurntableGestureRecognizer *)self setPitchThresholdPassed:0];
@@ -305,7 +305,7 @@ LABEL_9:
   [(ASVTurntableGestureRecognizer *)self setLastPanTime:v6];
 }
 
-- (void)gesture:(id)a3 pannedToScreenPoint:
+- (void)gesture:(id)gesture pannedToScreenPoint:
 {
   v4 = v3;
   if (![(ASVTurntableGestureRecognizer *)self panThresholdPassed])
@@ -323,8 +323,8 @@ LABEL_9:
   }
 
   v10 = CACurrentMediaTime();
-  v11 = [(ASVTurntableGestureRecognizer *)self velocitySample];
-  [(ASVTurntableGestureRecognizer *)self setPreviousVelocitySample:v11];
+  velocitySample = [(ASVTurntableGestureRecognizer *)self velocitySample];
+  [(ASVTurntableGestureRecognizer *)self setPreviousVelocitySample:velocitySample];
 
   v12 = [ASVVelocitySample2D alloc];
   [(ASVTurntableGestureRecognizer *)self lastPanLocation];
@@ -402,8 +402,8 @@ LABEL_9:
       {
         [(ASVTurntableGestureRecognizer *)self setPitchThresholdPassed:1];
         [(ASVTurntableGestureRecognizer *)self setPitchThresholdLocation:v4];
-        v36 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-        [v36 assetPitch];
+        dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+        [dataSource assetPitch];
         [(ASVTurntableGestureRecognizer *)self setInitialAssetPitch:?];
 
         [(ASVTurntableGestureRecognizer *)self initialAssetPitch];
@@ -433,9 +433,9 @@ LABEL_9:
     v45 = vmuls_lane_f32(v44, v60, 1);
     [(ASVTurntableGestureRecognizer *)self initialAssetPitch];
     v47 = v46 + v45;
-    v48 = [(ASVTurntableGestureRecognizer *)self rubberBand];
+    rubberBand = [(ASVTurntableGestureRecognizer *)self rubberBand];
     *&v49 = v47;
-    [v48 rubberBandOffsetForOffset:v49];
+    [rubberBand rubberBandOffsetForOffset:v49];
     v51 = v50;
 
     [(ASVTurntableGestureRecognizer *)self lastRubberBandedPitch];
@@ -446,10 +446,10 @@ LABEL_9:
 
   if (v38 != 0.0 || v37 != 0.0)
   {
-    v54 = [(ASVTurntableGestureRecognizer *)self turntableDelegate];
+    turntableDelegate = [(ASVTurntableGestureRecognizer *)self turntableDelegate];
     *&v55 = v38;
     *&v56 = v37;
-    [v54 turntableGestureRecognizer:self rotatedAssetByDeltaYaw:v55 deltaPitch:v56];
+    [turntableDelegate turntableGestureRecognizer:self rotatedAssetByDeltaYaw:v55 deltaPitch:v56];
   }
 
   [(ASVTurntableGestureRecognizer *)self setLastPanLocation:v4];
@@ -457,15 +457,15 @@ LABEL_9:
   [(ASVTurntableGestureRecognizer *)self setLastPanTime:v10];
 }
 
-- (void)gestureEndedPanning:(id)a3
+- (void)gestureEndedPanning:(id)panning
 {
-  v4 = a3;
+  panningCopy = panning;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [(ASVTurntableGestureRecognizer *)self velocitySample];
-  v7 = [(ASVTurntableGestureRecognizer *)self previousVelocitySample];
-  [v6 calcFinalVelocityFromPreviousSample:v7];
+  velocitySample = [(ASVTurntableGestureRecognizer *)self velocitySample];
+  previousVelocitySample = [(ASVTurntableGestureRecognizer *)self previousVelocitySample];
+  [velocitySample calcFinalVelocityFromPreviousSample:previousVelocitySample];
   v21 = v8;
 
   [ASVSettings floatForKey:@"ASVSettingTurntableYawRadiansPerPoint"];
@@ -479,13 +479,13 @@ LABEL_9:
     [(ASVTurntableGestureRecognizer *)self startSpinningYawWithInitialVelocity:v13];
   }
 
-  v14 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-  [v14 assetPitch];
+  dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+  [dataSource assetPitch];
   v16 = v15;
 
-  v17 = [(ASVTurntableGestureRecognizer *)self rubberBand];
+  rubberBand = [(ASVTurntableGestureRecognizer *)self rubberBand];
   LODWORD(v18) = v16;
-  v19 = [v17 offsetIsWithinRubberBandedRange:v18];
+  v19 = [rubberBand offsetIsWithinRubberBandedRange:v18];
 
   if (v19)
   {

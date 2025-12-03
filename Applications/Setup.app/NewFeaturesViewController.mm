@@ -1,34 +1,34 @@
 @interface NewFeaturesViewController
-- (_TtC5Setup25NewFeaturesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)backButtonTappedWithSender:(id)a3;
-- (void)handlePanGesture:(id)a3;
-- (void)pageControlValueDidChangeWithSender:(id)a3;
-- (void)skipButtonTappedWithSender:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC5Setup25NewFeaturesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)backButtonTappedWithSender:(id)sender;
+- (void)handlePanGesture:(id)gesture;
+- (void)pageControlValueDidChangeWithSender:(id)sender;
+- (void)skipButtonTappedWithSender:(id)sender;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NewFeaturesViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002E710();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
   v8 = type metadata accessor for NewFeaturesViewController();
   v14.receiver = self;
   v14.super_class = v8;
-  v9 = self;
-  [(NewFeaturesViewController *)&v14 viewWillAppear:v3];
-  v10 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC5Setup25NewFeaturesViewController_viewModel);
+  selfCopy = self;
+  [(NewFeaturesViewController *)&v14 viewWillAppear:appearCopy];
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Setup25NewFeaturesViewController_viewModel);
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
   type metadata accessor for MainActor();
@@ -43,19 +43,19 @@
   sub_1000313F8(1);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
   v8 = type metadata accessor for NewFeaturesViewController();
   v14.receiver = self;
   v14.super_class = v8;
-  v9 = self;
-  [(NewFeaturesViewController *)&v14 viewDidDisappear:v3];
+  selfCopy = self;
+  [(NewFeaturesViewController *)&v14 viewDidDisappear:disappearCopy];
   sub_1000313F8(0);
-  v10 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC5Setup25NewFeaturesViewController_viewModel);
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Setup25NewFeaturesViewController_viewModel);
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
   type metadata accessor for MainActor();
@@ -68,34 +68,34 @@
   sub_100022A78(0, 0, v7, &unk_100298758, v13);
 }
 
-- (void)pageControlValueDidChangeWithSender:(id)a3
+- (void)pageControlValueDidChangeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_100030E5C(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100030E5C(senderCopy);
 }
 
-- (void)backButtonTappedWithSender:(id)a3
+- (void)backButtonTappedWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_100031098();
 }
 
-- (void)skipButtonTappedWithSender:(id)a3
+- (void)skipButtonTappedWithSender:(id)sender
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Setup25NewFeaturesViewController_completion);
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_100031220(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_100031220(gestureCopy);
 }
 
-- (_TtC5Setup25NewFeaturesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Setup25NewFeaturesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

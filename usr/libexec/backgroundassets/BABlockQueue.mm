@@ -1,28 +1,28 @@
 @interface BABlockQueue
-- (BABlockQueue)initWithIdentifier:(id)a3;
-- (BOOL)consumeToken:(id)a3;
-- (BOOL)drainSpecificWithToken:(id)a3;
-- (id)__enqueue:(id)a3;
+- (BABlockQueue)initWithIdentifier:(id)identifier;
+- (BOOL)consumeToken:(id)token;
+- (BOOL)drainSpecificWithToken:(id)token;
+- (id)__enqueue:(id)__enqueue;
 - (void)_decrement;
 - (void)_dequeueNext;
 - (void)dealloc;
 - (void)drain;
-- (void)enqueue:(id)a3;
-- (void)enqueue:(id)a3 waitLimitDate:(id)a4;
+- (void)enqueue:(id)enqueue;
+- (void)enqueue:(id)enqueue waitLimitDate:(id)date;
 @end
 
 @implementation BABlockQueue
 
-- (BABlockQueue)initWithIdentifier:(id)a3
+- (BABlockQueue)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = BABlockQueue;
   v6 = [(BABlockQueue *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = objc_opt_new();
     blockQueue = v7->_blockQueue;
     v7->_blockQueue = v8;
@@ -45,49 +45,49 @@
   [(BABlockQueue *)&v3 dealloc];
 }
 
-- (id)__enqueue:(id)a3
+- (id)__enqueue:(id)__enqueue
 {
-  v4 = a3;
+  __enqueueCopy = __enqueue;
   v5 = 0;
   do
   {
     v6 = v5;
     v7 = [BABlock alloc];
     v8 = +[NSUUID UUID];
-    v5 = [(BABlock *)v7 initWithToken:v8 block:v4];
+    v5 = [(BABlock *)v7 initWithToken:v8 block:__enqueueCopy];
 
-    v9 = [(BABlockQueue *)self blockQueue];
-    LOBYTE(v6) = [v9 containsObject:v5];
+    blockQueue = [(BABlockQueue *)self blockQueue];
+    LOBYTE(v6) = [blockQueue containsObject:v5];
   }
 
   while ((v6 & 1) != 0);
-  v10 = [(BABlockQueue *)self blockQueue];
-  [v10 addObject:v5];
+  blockQueue2 = [(BABlockQueue *)self blockQueue];
+  [blockQueue2 addObject:v5];
 
   return v5;
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v7 = a3;
-  v4 = [(BABlockQueue *)self blockQueueLock];
-  [v4 lock];
+  enqueueCopy = enqueue;
+  blockQueueLock = [(BABlockQueue *)self blockQueueLock];
+  [blockQueueLock lock];
 
-  v5 = [(BABlockQueue *)self __enqueue:v7];
-  v6 = [(BABlockQueue *)self blockQueueLock];
-  [v6 unlock];
+  v5 = [(BABlockQueue *)self __enqueue:enqueueCopy];
+  blockQueueLock2 = [(BABlockQueue *)self blockQueueLock];
+  [blockQueueLock2 unlock];
 
   [(BABlockQueue *)self _dequeueNext];
 }
 
-- (void)enqueue:(id)a3 waitLimitDate:(id)a4
+- (void)enqueue:(id)enqueue waitLimitDate:(id)date
 {
-  v6 = a3;
-  [a4 timeIntervalSinceNow];
+  enqueueCopy = enqueue;
+  [date timeIntervalSinceNow];
   if (v7 <= 0.0)
   {
     v18 = +[NSUUID UUID];
-    v6[2](v6, 0, v18);
+    enqueueCopy[2](enqueueCopy, 0, v18);
   }
 
   else
@@ -97,14 +97,14 @@
     v10 = dispatch_get_global_queue(v9, 0);
     v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v10);
 
-    v12 = [(BABlockQueue *)self blockQueueLock];
-    [v12 lock];
+    blockQueueLock = [(BABlockQueue *)self blockQueueLock];
+    [blockQueueLock lock];
 
-    v13 = [(BABlockQueue *)self __enqueue:v6];
+    v13 = [(BABlockQueue *)self __enqueue:enqueueCopy];
 
     [v13 setFireByTimer:v11];
-    v14 = [(BABlockQueue *)self blockQueueLock];
-    [v14 unlock];
+    blockQueueLock2 = [(BABlockQueue *)self blockQueueLock];
+    [blockQueueLock2 unlock];
 
     v15 = dispatch_time(0, (v8 * 1000000000.0));
     dispatch_source_set_timer(v11, v15, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
@@ -125,24 +125,24 @@
 
 - (void)_dequeueNext
 {
-  v3 = [(BABlockQueue *)self blockQueueLock];
-  [v3 lock];
+  blockQueueLock = [(BABlockQueue *)self blockQueueLock];
+  [blockQueueLock lock];
 
   if ([(BABlockQueue *)self awaitingBlockCompletion])
   {
     goto LABEL_5;
   }
 
-  v4 = [(BABlockQueue *)self blockQueue];
-  v5 = [v4 count];
+  blockQueue = [(BABlockQueue *)self blockQueue];
+  v5 = [blockQueue count];
 
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [(BABlockQueue *)self blockQueue];
-  v8 = [v6 objectAtIndex:0];
+  blockQueue2 = [(BABlockQueue *)self blockQueue];
+  v8 = [blockQueue2 objectAtIndex:0];
 
   if (v8)
   {
@@ -156,13 +156,13 @@ LABEL_5:
     v8 = 0;
   }
 
-  v7 = [(BABlockQueue *)self blockQueueLock];
-  [v7 unlock];
+  blockQueueLock2 = [(BABlockQueue *)self blockQueueLock];
+  [blockQueueLock2 unlock];
 }
 
-- (BOOL)consumeToken:(id)a3
+- (BOOL)consumeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -172,17 +172,17 @@ LABEL_5:
     v20 = sub_1000111E4;
     v21 = sub_1000111F4;
     v22 = 0;
-    v5 = [(BABlockQueue *)self blockQueueLock];
-    [v5 lock];
+    blockQueueLock = [(BABlockQueue *)self blockQueueLock];
+    [blockQueueLock lock];
 
-    v6 = [(BABlockQueue *)self blockQueue];
+    blockQueue = [(BABlockQueue *)self blockQueue];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000111FC;
     v14 = &unk_100079748;
-    v15 = v4;
+    v15 = tokenCopy;
     v16 = &v17;
-    [v6 enumerateObjectsUsingBlock:&v11];
+    [blockQueue enumerateObjectsUsingBlock:&v11];
 
     if (v18[5])
     {
@@ -195,8 +195,8 @@ LABEL_5:
       [(BABlockQueue *)self setAwaitingBlockCompletion:0];
     }
 
-    v8 = [(BABlockQueue *)self blockQueueLock];
-    [v8 unlock];
+    blockQueueLock2 = [(BABlockQueue *)self blockQueueLock];
+    [blockQueueLock2 unlock];
 
     [(BABlockQueue *)self _dequeueNext];
     v9 = v18[5] != 0;
@@ -213,9 +213,9 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)drainSpecificWithToken:(id)a3
+- (BOOL)drainSpecificWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -225,17 +225,17 @@ LABEL_5:
     v21 = sub_1000111E4;
     v22 = sub_1000111F4;
     v23 = 0;
-    v5 = [(BABlockQueue *)self blockQueueLock];
-    [v5 lock];
+    blockQueueLock = [(BABlockQueue *)self blockQueueLock];
+    [blockQueueLock lock];
 
-    v6 = [(BABlockQueue *)self blockQueue];
+    blockQueue = [(BABlockQueue *)self blockQueue];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_100011484;
     v15 = &unk_100079748;
-    v16 = v4;
+    v16 = tokenCopy;
     v17 = &v18;
-    [v6 enumerateObjectsUsingBlock:&v12];
+    [blockQueue enumerateObjectsUsingBlock:&v12];
 
     v7 = v19[5];
     v8 = v7 != 0;
@@ -250,14 +250,14 @@ LABEL_5:
       }
 
       [v19[5] executeWithSuccessfulDequeue:0];
-      v10 = [(BABlockQueue *)self blockQueueLock];
-      [v10 unlock];
+      blockQueueLock2 = [(BABlockQueue *)self blockQueueLock];
+      [blockQueueLock2 unlock];
     }
 
     else
     {
-      v10 = [(BABlockQueue *)self blockQueueLock:v12];
-      [v10 unlock];
+      blockQueueLock2 = [(BABlockQueue *)self blockQueueLock:v12];
+      [blockQueueLock2 unlock];
     }
 
     [(BABlockQueue *)self _dequeueNext];
@@ -274,18 +274,18 @@ LABEL_5:
 
 - (void)drain
 {
-  v3 = [(BABlockQueue *)self blockQueueLock];
-  [v3 lock];
+  blockQueueLock = [(BABlockQueue *)self blockQueueLock];
+  [blockQueueLock lock];
 
-  v4 = [(BABlockQueue *)self blockQueue];
-  [v4 enumerateObjectsUsingBlock:&stru_100079788];
+  blockQueue = [(BABlockQueue *)self blockQueue];
+  [blockQueue enumerateObjectsUsingBlock:&stru_100079788];
 
   [(BABlockQueue *)self setAwaitingBlockCompletion:0];
-  v5 = [(BABlockQueue *)self blockQueue];
-  [v5 removeAllObjects];
+  blockQueue2 = [(BABlockQueue *)self blockQueue];
+  [blockQueue2 removeAllObjects];
 
-  v6 = [(BABlockQueue *)self blockQueueLock];
-  [v6 unlock];
+  blockQueueLock2 = [(BABlockQueue *)self blockQueueLock];
+  [blockQueueLock2 unlock];
 }
 
 - (void)_decrement

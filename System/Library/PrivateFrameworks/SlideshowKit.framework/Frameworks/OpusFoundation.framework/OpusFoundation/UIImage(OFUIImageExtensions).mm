@@ -49,7 +49,7 @@
 - (UIImage)imageWithSize:()OFUIImageExtensions opaque:scale:
 {
   UIGraphicsBeginImageContextWithOptions(*&a4, opaque, a6);
-  [a1 drawInRect:{0.0, 0.0, a4, a5}];
+  [self drawInRect:{0.0, 0.0, a4, a5}];
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return ImageFromCurrentImageContext;
@@ -58,14 +58,14 @@
 - (UIImage)centerImageWithSize:()OFUIImageExtensions
 {
   UIGraphicsBeginImageContext(*&a2);
-  [a1 size];
+  [self size];
   v7 = (a2 - v6) * 0.5;
-  [a1 size];
+  [self size];
   v9 = (a3 - v8) * 0.5;
-  [a1 size];
+  [self size];
   v11 = v10;
-  [a1 size];
-  [a1 drawInRect:{v7, v9, v11, v12}];
+  [self size];
+  [self drawInRect:{v7, v9, v11, v12}];
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return ImageFromCurrentImageContext;
@@ -74,15 +74,15 @@
 - (UIImage)imageWithSize:()OFUIImageExtensions andCropRect:
 {
   UIGraphicsBeginImageContext(*&a2);
-  [a1 drawInRect:{0.0, 0.0, a2, a3}];
+  [self drawInRect:{0.0, 0.0, a2, a3}];
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v15 = [(UIImage *)ImageFromCurrentImageContext CGImage];
+  cGImage = [(UIImage *)ImageFromCurrentImageContext CGImage];
   v19.origin.x = a4;
   v19.origin.y = a5;
   v19.size.width = a6;
   v19.size.height = a7;
-  v16 = CGImageCreateWithImageInRect(v15, v19);
+  v16 = CGImageCreateWithImageInRect(cGImage, v19);
   if (v16)
   {
     v17 = v16;
@@ -95,9 +95,9 @@
 
 - (UIImage)imageWithAdjustedOrientation:()OFUIImageExtensions andResolution:
 {
-  v6 = [a1 CGImage];
-  Width = CGImageGetWidth(v6);
-  Height = CGImageGetHeight(v6);
+  cGImage = [self CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v9 = Height;
   v33 = *(MEMORY[0x277CBF2C0] + 16);
   v34 = *MEMORY[0x277CBF2C0];
@@ -126,8 +126,8 @@
   }
 
   v15 = v13 / Width;
-  v16 = CGImageGetWidth(v6);
-  v17 = CGImageGetHeight(v6);
+  v16 = CGImageGetWidth(cGImage);
+  v17 = CGImageGetHeight(cGImage);
   if (a3 > 3)
   {
     if (a3 <= 5)
@@ -251,7 +251,7 @@ LABEL_32:
   v38.origin.y = 0.0;
   v38.size.width = Width;
   v38.size.height = v9;
-  CGContextDrawImage(v29, v38, v6);
+  CGContextDrawImage(v29, v38, cGImage);
   v30 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return v30;
@@ -260,17 +260,17 @@ LABEL_32:
 - (CGImageRef)newBorderMask:()OFUIImageExtensions size:
 {
   DeviceGray = CGColorSpaceCreateDeviceGray();
-  v9 = CGBitmapContextCreate(0, a1, a2, 8uLL, 0, DeviceGray, 0);
+  v9 = CGBitmapContextCreate(0, self, a2, 8uLL, 0, DeviceGray, 0);
   CGContextSetFillColorWithColor(v9, [objc_msgSend(MEMORY[0x277D75348] "blackColor")]);
   v13.origin.x = 0.0;
   v13.origin.y = 0.0;
-  v13.size.width = a1;
+  v13.size.width = self;
   v13.size.height = a2;
   CGContextFillRect(v9, v13);
   CGContextSetFillColorWithColor(v9, [objc_msgSend(MEMORY[0x277D75348] "whiteColor")]);
   v14.origin.x = a5;
   v10 = (2 * a5);
-  v14.size.width = a1 - v10;
+  v14.size.width = self - v10;
   v14.size.height = a2 - v10;
   v14.origin.y = a5;
   CGContextFillRect(v9, v14);
@@ -282,22 +282,22 @@ LABEL_32:
 
 - (uint64_t)imageWithTransparentInset:()OFUIImageExtensions
 {
-  [a1 size];
+  [self size];
   v5 = v4 + a2 * 2.0;
-  [a1 size];
+  [self size];
   v7 = (v6 + a2 * 2.0);
-  ColorSpace = CGImageGetColorSpace([a1 CGImage]);
+  ColorSpace = CGImageGetColorSpace([self CGImage]);
   v9 = CGBitmapContextCreate(0, v5, v7, 8uLL, 0, ColorSpace, 2u);
-  [a1 size];
+  [self size];
   v11 = v10;
-  [a1 size];
+  [self size];
   v13 = v12;
-  v14 = [a1 CGImage];
+  cGImage = [self CGImage];
   v18.origin.x = a2;
   v18.origin.y = a2;
   v18.size.width = v11;
   v18.size.height = v13;
-  CGContextDrawImage(v9, v18, v14);
+  CGContextDrawImage(v9, v18, cGImage);
   Image = CGBitmapContextCreateImage(v9);
   v16 = [MEMORY[0x277D755B8] imageWithCGImage:Image];
   CGContextRelease(v9);
@@ -323,16 +323,16 @@ LABEL_32:
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v14 = MEMORY[0x277D755B8];
-  v15 = [(UIImage *)ImageFromCurrentImageContext CGImage];
+  cGImage = [(UIImage *)ImageFromCurrentImageContext CGImage];
 
-  return [v14 imageWithCGImage:v15 scale:a6 orientation:a4];
+  return [v14 imageWithCGImage:cGImage scale:a6 orientation:a4];
 }
 
 - (uint64_t)decompressedDeviceImage:()OFUIImageExtensions
 {
-  Width = CGImageGetWidth([a1 CGImage]);
-  Height = CGImageGetHeight([a1 CGImage]);
-  [a1 scale];
+  Width = CGImageGetWidth([self CGImage]);
+  Height = CGImageGetHeight([self CGImage]);
+  [self scale];
   v8 = v7;
   v19.width = Width;
   v19.height = Height;
@@ -340,21 +340,21 @@ LABEL_32:
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextTranslateCTM(CurrentContext, 0.0, Height);
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-  v10 = [a1 CGImage];
+  cGImage = [self CGImage];
   v20.origin.x = 0.0;
   v20.origin.y = 0.0;
   v20.size.width = Width;
   v20.size.height = Height;
-  CGContextDrawImage(CurrentContext, v20, v10);
+  CGContextDrawImage(CurrentContext, v20, cGImage);
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v12 = MEMORY[0x277D755B8];
-  v13 = [(UIImage *)ImageFromCurrentImageContext CGImage];
-  [a1 scale];
+  cGImage2 = [(UIImage *)ImageFromCurrentImageContext CGImage];
+  [self scale];
   v15 = v14;
-  v16 = [a1 imageOrientation];
+  imageOrientation = [self imageOrientation];
 
-  return [v12 imageWithCGImage:v13 scale:v16 orientation:v15];
+  return [v12 imageWithCGImage:cGImage2 scale:imageOrientation orientation:v15];
 }
 
 + (uint64_t)animatedImageAtURL:()OFUIImageExtensions
@@ -437,21 +437,21 @@ LABEL_32:
 {
   v2 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.3];
 
-  return [a1 applyBlurWithRadius:v2 tintColor:0 saturationDeltaFactor:30.0 maskImage:1.8];
+  return [self applyBlurWithRadius:v2 tintColor:0 saturationDeltaFactor:30.0 maskImage:1.8];
 }
 
 - (uint64_t)applyBlurExtraLightEffect
 {
   v2 = [MEMORY[0x277D75348] colorWithWhite:0.97 alpha:0.82];
 
-  return [a1 applyBlurWithRadius:v2 tintColor:0 saturationDeltaFactor:20.0 maskImage:1.8];
+  return [self applyBlurWithRadius:v2 tintColor:0 saturationDeltaFactor:20.0 maskImage:1.8];
 }
 
 - (uint64_t)applyBlurDarkEffect
 {
   v2 = [MEMORY[0x277D75348] colorWithWhite:0.11 alpha:0.73];
 
-  return [a1 applyBlurWithRadius:v2 tintColor:0 saturationDeltaFactor:20.0 maskImage:1.8];
+  return [self applyBlurWithRadius:v2 tintColor:0 saturationDeltaFactor:20.0 maskImage:1.8];
 }
 
 - (uint64_t)applyBlurTintEffectWithColor:()OFUIImageExtensions
@@ -480,26 +480,26 @@ LABEL_6:
     }
   }
 
-  return [a1 applyBlurWithRadius:v3 tintColor:0 saturationDeltaFactor:10.0 maskImage:-1.0];
+  return [self applyBlurWithRadius:v3 tintColor:0 saturationDeltaFactor:10.0 maskImage:-1.0];
 }
 
 - (UIImage)applyBlurWithRadius:()OFUIImageExtensions tintColor:saturationDeltaFactor:maskImage:
 {
   v61 = a3;
   v76 = *MEMORY[0x277D85DE8];
-  [(UIImage *)a1 size];
-  if (v10 < 1.0 || ([(UIImage *)a1 size], v11 < 1.0))
+  [(UIImage *)self size];
+  if (v10 < 1.0 || ([(UIImage *)self size], v11 < 1.0))
   {
-    [(UIImage *)a1 size];
+    [(UIImage *)self size];
     v13 = v12;
-    [(UIImage *)a1 size];
-    NSLog(&cfstr_ErrorInvalidSi.isa, v13, v14, a1);
+    [(UIImage *)self size];
+    NSLog(&cfstr_ErrorInvalidSi.isa, v13, v14, self);
     return 0;
   }
 
-  if (![(UIImage *)a1 CGImage])
+  if (![(UIImage *)self CGImage])
   {
-    NSLog(&cfstr_ErrorImageMust.isa, a1);
+    NSLog(&cfstr_ErrorImageMust.isa, self);
     return 0;
   }
 
@@ -511,13 +511,13 @@ LABEL_6:
 
   v17 = *MEMORY[0x277CBF348];
   v18 = *(MEMORY[0x277CBF348] + 8);
-  [(UIImage *)a1 size];
+  [(UIImage *)self size];
   v20 = v19;
   v22 = v21;
   v23 = fabs(v61.n128_f64[0] + -1.0);
   if (a2 > 0.00000011920929 || v23 > 0.00000011920929)
   {
-    [(UIImage *)a1 size];
+    [(UIImage *)self size];
     v26 = v25;
     v28 = v27;
     [objc_msgSend(MEMORY[0x277D759A0] "mainScreen")];
@@ -527,19 +527,19 @@ LABEL_6:
     UIGraphicsBeginImageContextWithOptions(v77, 0, v30);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-    [(UIImage *)a1 size];
+    [(UIImage *)self size];
     CGContextTranslateCTM(CurrentContext, 0.0, -v32);
-    v33 = [(UIImage *)a1 CGImage];
+    cGImage = [(UIImage *)self CGImage];
     v80.origin.x = v17;
     v80.origin.y = v18;
     v80.size.width = v20;
     v80.size.height = v22;
-    CGContextDrawImage(CurrentContext, v80, v33);
+    CGContextDrawImage(CurrentContext, v80, cGImage);
     src.data = CGBitmapContextGetData(CurrentContext);
     src.width = CGBitmapContextGetWidth(CurrentContext);
     src.height = CGBitmapContextGetHeight(CurrentContext);
     src.rowBytes = CGBitmapContextGetBytesPerRow(CurrentContext);
-    [(UIImage *)a1 size];
+    [(UIImage *)self size];
     v35 = v34;
     v37 = v36;
     [objc_msgSend(MEMORY[0x277D759A0] "mainScreen")];
@@ -607,9 +607,9 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  ImageFromCurrentImageContext = a1;
+  ImageFromCurrentImageContext = self;
 LABEL_25:
-  [(UIImage *)a1 size];
+  [(UIImage *)self size];
   v50 = v49;
   v52 = v51;
   [objc_msgSend(MEMORY[0x277D759A0] "mainScreen")];
@@ -619,33 +619,33 @@ LABEL_25:
   UIGraphicsBeginImageContextWithOptions(v79, 0, v54);
   v55 = UIGraphicsGetCurrentContext();
   CGContextScaleCTM(v55, 1.0, -1.0);
-  [(UIImage *)a1 size];
+  [(UIImage *)self size];
   CGContextTranslateCTM(v55, 0.0, -v56);
-  v57 = [(UIImage *)a1 CGImage];
+  cGImage2 = [(UIImage *)self CGImage];
   v81.origin.x = v17;
   v81.origin.y = v18;
   v81.size.width = v20;
   v81.size.height = v22;
-  CGContextDrawImage(v55, v81, v57);
+  CGContextDrawImage(v55, v81, cGImage2);
   if (a2 > 0.00000011920929)
   {
     CGContextSaveGState(v55);
     if (a6)
     {
-      v58 = [a6 CGImage];
+      cGImage3 = [a6 CGImage];
       v82.origin.x = v17;
       v82.origin.y = v18;
       v82.size.width = v20;
       v82.size.height = v22;
-      CGContextClipToMask(v55, v82, v58);
+      CGContextClipToMask(v55, v82, cGImage3);
     }
 
-    v59 = [(UIImage *)ImageFromCurrentImageContext CGImage];
+    cGImage4 = [(UIImage *)ImageFromCurrentImageContext CGImage];
     v83.origin.x = v17;
     v83.origin.y = v18;
     v83.size.width = v20;
     v83.size.height = v22;
-    CGContextDrawImage(v55, v83, v59);
+    CGContextDrawImage(v55, v83, cGImage4);
     CGContextRestoreGState(v55);
   }
 

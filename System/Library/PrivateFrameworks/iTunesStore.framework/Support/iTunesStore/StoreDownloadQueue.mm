@@ -1,49 +1,49 @@
 @interface StoreDownloadQueue
 + (id)sharedDownloadQueue;
-+ (void)cancelRedownloadsWithMessage:(id)a3 connection:(id)a4;
-+ (void)getAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-+ (void)reloadFromServerWithMessage:(id)a3 connection:(id)a4;
-+ (void)setAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4;
-+ (void)synchronizeAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4;
-+ (void)triggerDownloadsWithMessage:(id)a3 connection:(id)a4;
++ (void)cancelRedownloadsWithMessage:(id)message connection:(id)connection;
++ (void)getAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
++ (void)reloadFromServerWithMessage:(id)message connection:(id)connection;
++ (void)setAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection;
++ (void)synchronizeAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection;
++ (void)triggerDownloadsWithMessage:(id)message connection:(id)connection;
 - (BOOL)_ignoreVideos;
 - (BOOL)cancelAllRedownloads;
-- (BOOL)checkQueuesWithReason:(id)a3 accountID:(id)a4;
+- (BOOL)checkQueuesWithReason:(id)reason accountID:(id)d;
 - (NSSet)automaticDownloadKinds;
 - (NSSet)downloadKindsBeingChecked;
 - (NSSet)enabledDownloadKinds;
 - (StoreDownloadQueue)init;
-- (id)_automaticDownloadsQueryWithDatabase:(id)a3 accountID:(id)a4;
-- (id)_downloadQueryWithQueueRequest:(id)a3 database:(id)a4;
-- (id)_newCheckQueueOperationForQueueRequest:(id)a3;
-- (id)_newLoadQueueOperationForQueueRequest:(id)a3;
-- (id)_newOperationByCommitingAutomaticDownloadKinds:(id)a3 account:(id)a4;
-- (id)_newQueueRequestsWithReason:(id)a3 accountID:(id)a4 session:(id)a5;
-- (id)_newSetAutomaticDownloadKindsOperationWithDownloadKinds:(id)a3 account:(id)a4;
-- (id)_restorableDownloadsQueryInDatabase:(id)a3;
+- (id)_automaticDownloadsQueryWithDatabase:(id)database accountID:(id)d;
+- (id)_downloadQueryWithQueueRequest:(id)request database:(id)database;
+- (id)_newCheckQueueOperationForQueueRequest:(id)request;
+- (id)_newLoadQueueOperationForQueueRequest:(id)request;
+- (id)_newOperationByCommitingAutomaticDownloadKinds:(id)kinds account:(id)account;
+- (id)_newQueueRequestsWithReason:(id)reason accountID:(id)d session:(id)session;
+- (id)_newSetAutomaticDownloadKindsOperationWithDownloadKinds:(id)kinds account:(id)account;
+- (id)_restorableDownloadsQueryInDatabase:(id)database;
 - (id)_validQueueIdentifiersForDaemon;
 - (id)_validQueueIdentifiersForPlatform;
-- (void)_accountAuthenticatedNotification:(id)a3;
-- (void)_accountStoreChangedNotification:(id)a3;
-- (void)_addOperationsForRequests:(id)a3 reason:(id)a4;
-- (void)_checkAutomaticDownloadQueue:(id)a3;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5;
-- (void)_networkTypeChangedNotification:(id)a3;
+- (void)_accountAuthenticatedNotification:(id)notification;
+- (void)_accountStoreChangedNotification:(id)notification;
+- (void)_addOperationsForRequests:(id)requests reason:(id)reason;
+- (void)_checkAutomaticDownloadQueue:(id)queue;
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block;
+- (void)_networkTypeChangedNotification:(id)notification;
 - (void)_retryCanceledRestoreDownloads;
 - (void)_retrySoftFailedRestoreDownloads;
-- (void)_setLastCheckedAccountID:(id)a3;
-- (void)_synchronizeAutomaticDownloadKinds:(id)a3;
+- (void)_setLastCheckedAccountID:(id)d;
+- (void)_synchronizeAutomaticDownloadKinds:(id)kinds;
 - (void)checkAutomaticDownloadQueue;
-- (void)checkQueuesWithRequest:(id)a3;
-- (void)commitAutomaticDownloadKinds:(id)a3 markAsDirty:(BOOL)a4;
+- (void)checkQueuesWithRequest:(id)request;
+- (void)commitAutomaticDownloadKinds:(id)kinds markAsDirty:(BOOL)dirty;
 - (void)dealloc;
-- (void)disableAutomaticDownloadsWithReason:(id)a3;
-- (void)enableAutomaticDownloadsWithReason:(id)a3;
-- (void)restoreAllRestorableDownloadsWithReason:(id)a3;
-- (void)restoreDownloadsWithIdentifiers:(id)a3 reason:(id)a4;
-- (void)setAutomaticDownloadKinds:(id)a3;
-- (void)setAutomaticDownloadKinds:(id)a3 account:(id)a4;
+- (void)disableAutomaticDownloadsWithReason:(id)reason;
+- (void)enableAutomaticDownloadsWithReason:(id)reason;
+- (void)restoreAllRestorableDownloadsWithReason:(id)reason;
+- (void)restoreDownloadsWithIdentifiers:(id)identifiers reason:(id)reason;
+- (void)setAutomaticDownloadKinds:(id)kinds;
+- (void)setAutomaticDownloadKinds:(id)kinds account:(id)account;
 @end
 
 @implementation StoreDownloadQueue
@@ -66,10 +66,10 @@
     v3->_activeRestoreIDs = v6;
 
     v8 = +[SSAccountStore defaultStore];
-    v9 = [v8 activeAccount];
-    v10 = [v9 uniqueIdentifier];
+    activeAccount = [v8 activeAccount];
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
     lastCheckedAccountID = v3->_lastCheckedAccountID;
-    v3->_lastCheckedAccountID = v10;
+    v3->_lastCheckedAccountID = uniqueIdentifier;
 
     v12 = objc_alloc_init(NSMutableSet);
     storeQueueRequests = v3->_storeQueueRequests;
@@ -157,12 +157,12 @@
 - (NSSet)automaticDownloadKinds
 {
   v2 = +[SSAccountStore defaultStore];
-  v3 = [v2 activeAccount];
+  activeAccount = [v2 activeAccount];
 
-  v4 = [v3 automaticDownloadKinds];
-  if (v4)
+  automaticDownloadKinds = [activeAccount automaticDownloadKinds];
+  if (automaticDownloadKinds)
   {
-    [NSSet setWithArray:v4];
+    [NSSet setWithArray:automaticDownloadKinds];
   }
 
   else
@@ -204,10 +204,10 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)checkQueuesWithReason:(id)a3 accountID:(id)a4
+- (BOOL)checkQueuesWithReason:(id)reason accountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -221,9 +221,9 @@
   v16[3] = &unk_100329440;
   v19 = &v20;
   v16[4] = self;
-  v9 = v6;
+  v9 = reasonCopy;
   v17 = v9;
-  v10 = v7;
+  v10 = dCopy;
   v18 = v10;
   [v8 readUsingTransactionBlock:v16];
 
@@ -244,48 +244,48 @@
   return 1;
 }
 
-- (void)checkQueuesWithRequest:(id)a3
+- (void)checkQueuesWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100127084;
   v7[3] = &unk_100327238;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)commitAutomaticDownloadKinds:(id)a3 markAsDirty:(BOOL)a4
+- (void)commitAutomaticDownloadKinds:(id)kinds markAsDirty:(BOOL)dirty
 {
-  v4 = a4;
-  v5 = a3;
+  dirtyCopy = dirty;
+  kindsCopy = kinds;
   v6 = +[SSAccountStore defaultStore];
-  v7 = [v6 activeAccount];
+  activeAccount = [v6 activeAccount];
   v8 = +[SSLogConfig sharedDaemonConfig];
   v9 = v8;
-  if (!v7)
+  if (!activeAccount)
   {
     if (!v8)
     {
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v29 = v28 | 2;
+      v29 = shouldLog | 2;
     }
 
     else
     {
-      v29 = v28;
+      v29 = shouldLog;
     }
 
-    v30 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v29 &= 2u;
     }
@@ -303,7 +303,7 @@
         goto LABEL_42;
       }
 
-      v30 = [NSString stringWithCString:v32 encoding:4, &v36, v34];
+      oSLogObject = [NSString stringWithCString:v32 encoding:4, &v36, v34];
       free(v32);
       SSFileLog();
     }
@@ -316,19 +316,19 @@
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog2 = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog2 | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog2;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v9 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v11 &= 2u;
   }
@@ -338,7 +338,7 @@
     v36 = 138412546;
     v37 = objc_opt_class();
     v38 = 2112;
-    v39 = v5;
+    v39 = kindsCopy;
     v13 = v37;
     LODWORD(v34) = 22;
     v33 = &v36;
@@ -349,26 +349,26 @@
       goto LABEL_13;
     }
 
-    v12 = [NSString stringWithCString:v14 encoding:4, &v36, v34];
+    oSLogObject2 = [NSString stringWithCString:v14 encoding:4, &v36, v34];
     free(v14);
-    v33 = v12;
+    v33 = oSLogObject2;
     SSFileLog();
   }
 
 LABEL_13:
   v15 = &kCFBooleanTrue;
-  if (!v4)
+  if (!dirtyCopy)
   {
     v15 = &kCFBooleanFalse;
   }
 
   v16 = kSSUserDefaultsIdentifier;
   CFPreferencesSetAppValue(@"DirtyAutoDownloadKinds", *v15, kSSUserDefaultsIdentifier);
-  v17 = [v5 allObjects];
-  [v7 setAutomaticDownloadKinds:v17];
+  allObjects = [kindsCopy allObjects];
+  [activeAccount setAutomaticDownloadKinds:allObjects];
 
   v35 = 0;
-  v18 = [v6 saveAccount:v7 verifyCredentials:0 error:&v35];
+  v18 = [v6 saveAccount:activeAccount verifyCredentials:0 error:&v35];
   v9 = v35;
   if (v18)
   {
@@ -381,19 +381,19 @@ LABEL_13:
     v19 = +[SSLogConfig sharedConfig];
   }
 
-  v20 = [v19 shouldLog];
+  shouldLog3 = [v19 shouldLog];
   if ([v19 shouldLogToDisk])
   {
-    v21 = v20 | 2;
+    v21 = shouldLog3 | 2;
   }
 
   else
   {
-    v21 = v20;
+    v21 = shouldLog3;
   }
 
-  v22 = [v19 OSLogObject];
-  if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [v19 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v21 &= 2u;
   }
@@ -415,15 +415,15 @@ LABEL_13:
 
   if (v25)
   {
-    v22 = [NSString stringWithCString:v25 encoding:4, &v36, v34];
+    oSLogObject3 = [NSString stringWithCString:v25 encoding:4, &v36, v34];
     free(v25);
-    v33 = v22;
+    v33 = oSLogObject3;
     SSFileLog();
 LABEL_26:
   }
 
 LABEL_28:
-  if ([v5 count])
+  if ([kindsCopy count])
   {
     [SSDevice setPromptWithIdentifier:SSDevicePromptIdentifierAutomaticDownloadsAvailable needsDisplay:0];
   }
@@ -456,31 +456,31 @@ LABEL_42:
   return v5;
 }
 
-- (void)disableAutomaticDownloadsWithReason:(id)a3
+- (void)disableAutomaticDownloadsWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100127888;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)enableAutomaticDownloadsWithReason:(id)a3
+- (void)enableAutomaticDownloadsWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100127ABC;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -491,8 +491,8 @@ LABEL_42:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(StoreDownloadQueue *)self automaticDownloadKinds];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  automaticDownloadKinds = [(StoreDownloadQueue *)self automaticDownloadKinds];
+  v5 = [automaticDownloadKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -504,7 +504,7 @@ LABEL_42:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(automaticDownloadKinds);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -514,7 +514,7 @@ LABEL_42:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [automaticDownloadKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -525,54 +525,54 @@ LABEL_42:
   return v11;
 }
 
-- (void)restoreAllRestorableDownloadsWithReason:(id)a3
+- (void)restoreAllRestorableDownloadsWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_alloc_init(NSMutableOrderedSet);
   v6 = +[DownloadsDatabase downloadsDatabase];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100127EF0;
   v11 = &unk_100329490;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
   v13 = v7;
   [v6 readUsingTransactionBlock:&v8];
 
   if ([v7 count])
   {
-    [(StoreDownloadQueue *)self restoreDownloadsWithIdentifiers:v7 reason:v4];
+    [(StoreDownloadQueue *)self restoreDownloadsWithIdentifiers:v7 reason:reasonCopy];
   }
 }
 
-- (void)restoreDownloadsWithIdentifiers:(id)a3 reason:(id)a4
+- (void)restoreDownloadsWithIdentifiers:(id)identifiers reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  reasonCopy = reason;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001280DC;
   block[3] = &unk_1003281A0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = reasonCopy;
+  v9 = reasonCopy;
+  v10 = identifiersCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)setAutomaticDownloadKinds:(id)a3
+- (void)setAutomaticDownloadKinds:(id)kinds
 {
-  v4 = a3;
+  kindsCopy = kinds;
   v6 = +[SSAccountStore defaultStore];
-  v5 = [v6 activeAccount];
-  [(StoreDownloadQueue *)self setAutomaticDownloadKinds:v4 account:v5];
+  activeAccount = [v6 activeAccount];
+  [(StoreDownloadQueue *)self setAutomaticDownloadKinds:kindsCopy account:activeAccount];
 }
 
-- (void)setAutomaticDownloadKinds:(id)a3 account:(id)a4
+- (void)setAutomaticDownloadKinds:(id)kinds account:(id)account
 {
-  v4 = [(StoreDownloadQueue *)self _newOperationByCommitingAutomaticDownloadKinds:a3 account:a4];
+  v4 = [(StoreDownloadQueue *)self _newOperationByCommitingAutomaticDownloadKinds:kinds account:account];
   if (v4)
   {
     v6 = v4;
@@ -583,116 +583,116 @@ LABEL_42:
   }
 }
 
-+ (void)cancelRedownloadsWithMessage:(id)a3 connection:(id)a4
++ (void)cancelRedownloadsWithMessage:(id)message connection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
+  connectionCopy = connection;
+  messageCopy = message;
   +[StoreDownloadQueue sharedDownloadQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001287F4;
   v9 = v8[3] = &unk_100327110;
   v7 = v9;
-  [v7 _handleMessage:v6 connection:v5 usingBlock:v8];
+  [v7 _handleMessage:messageCopy connection:connectionCopy usingBlock:v8];
 }
 
-+ (void)getAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4
++ (void)getAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   +[StoreDownloadQueue sharedDownloadQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001288EC;
   v10[3] = &unk_1003281A0;
-  v12 = v11 = v5;
-  v13 = v6;
-  v7 = v6;
+  v12 = v11 = messageCopy;
+  v13 = connectionCopy;
+  v7 = connectionCopy;
   v8 = v12;
-  v9 = v5;
+  v9 = messageCopy;
   [v8 _handleMessage:v9 connection:v7 usingBlock:v10];
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  v4 = a3;
-  [v4 addObserver:a1 selector:"cancelRedownloadsWithMessage:connection:" forMessage:187];
-  [v4 addObserver:a1 selector:"getAutomaticDownloadKindsWithMessage:connection:" forMessage:74];
-  [v4 addObserver:a1 selector:"reloadFromServerWithMessage:connection:" forMessage:5];
-  [v4 addObserver:a1 selector:"setAutomaticDownloadKindsWithMessage:connection:" forMessage:75];
-  [v4 addObserver:a1 selector:"synchronizeAutomaticDownloadKindsWithMessage:connection:" forMessage:76];
-  [v4 addObserver:a1 selector:"triggerDownloadsWithMessage:connection:" forMessage:41];
+  serverCopy = server;
+  [serverCopy addObserver:self selector:"cancelRedownloadsWithMessage:connection:" forMessage:187];
+  [serverCopy addObserver:self selector:"getAutomaticDownloadKindsWithMessage:connection:" forMessage:74];
+  [serverCopy addObserver:self selector:"reloadFromServerWithMessage:connection:" forMessage:5];
+  [serverCopy addObserver:self selector:"setAutomaticDownloadKindsWithMessage:connection:" forMessage:75];
+  [serverCopy addObserver:self selector:"synchronizeAutomaticDownloadKindsWithMessage:connection:" forMessage:76];
+  [serverCopy addObserver:self selector:"triggerDownloadsWithMessage:connection:" forMessage:41];
 }
 
-+ (void)reloadFromServerWithMessage:(id)a3 connection:(id)a4
++ (void)reloadFromServerWithMessage:(id)message connection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
+  connectionCopy = connection;
+  messageCopy = message;
   v7 = +[StoreDownloadQueue sharedDownloadQueue];
   v8 = +[SSAccountStore defaultStore];
-  v9 = [v8 activeAccount];
-  v10 = [v9 uniqueIdentifier];
+  activeAccount = [v8 activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100128B5C;
   v13[3] = &unk_100327238;
   v14 = v7;
-  v15 = v10;
-  v11 = v10;
+  v15 = uniqueIdentifier;
+  v11 = uniqueIdentifier;
   v12 = v7;
-  [v12 _handleMessage:v6 connection:v5 usingBlock:v13];
+  [v12 _handleMessage:messageCopy connection:connectionCopy usingBlock:v13];
 }
 
-+ (void)setAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4
++ (void)setAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   +[StoreDownloadQueue sharedDownloadQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100128ED8;
   v11[3] = &unk_100329530;
-  v13 = v12 = v6;
-  v14 = v7;
-  v15 = a1;
-  v8 = v7;
+  v13 = v12 = messageCopy;
+  v14 = connectionCopy;
+  selfCopy = self;
+  v8 = connectionCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = messageCopy;
   [v9 _handleMessage:v10 connection:v8 usingBlock:v11];
 }
 
-+ (void)synchronizeAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4
++ (void)synchronizeAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection
 {
-  v5 = a4;
-  message = xpc_dictionary_create_reply(a3);
+  connectionCopy = connection;
+  message = xpc_dictionary_create_reply(message);
   v6 = +[StoreDownloadQueue sharedDownloadQueue];
   [v6 synchronizeAutomaticDownloadKinds];
 
-  xpc_connection_send_message(v5, message);
+  xpc_connection_send_message(connectionCopy, message);
 }
 
-+ (void)triggerDownloadsWithMessage:(id)a3 connection:(id)a4
++ (void)triggerDownloadsWithMessage:(id)message connection:(id)connection
 {
-  v4 = [SSLogConfig sharedDaemonConfig:a3];
+  v4 = [SSLogConfig sharedDaemonConfig:message];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 &= 2u;
   }
@@ -710,26 +710,26 @@ LABEL_42:
 
   if (v9)
   {
-    v7 = [NSString stringWithCString:v9 encoding:4, &v15, v14, v15];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v15, v14, v15];
     free(v9);
     SSFileLog();
 LABEL_11:
   }
 
   v10 = +[SSAccountStore defaultStore];
-  v11 = [v10 activeAccount];
-  v12 = [v11 uniqueIdentifier];
+  activeAccount = [v10 activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
 
   v13 = +[StoreDownloadQueue sharedDownloadQueue];
-  [v13 checkQueuesWithReason:@"trigger-download" accountID:v12];
+  [v13 checkQueuesWithReason:@"trigger-download" accountID:uniqueIdentifier];
 }
 
-- (void)_accountAuthenticatedNotification:(id)a3
+- (void)_accountAuthenticatedNotification:(id)notification
 {
   v4 = +[SSAccountStore defaultStore];
-  v5 = [v4 activeAccount];
+  activeAccount = [v4 activeAccount];
 
-  if ([v5 isAuthenticated] && CFPreferencesGetAppBooleanValue(@"DirtyAutoDownloadKinds", kSSUserDefaultsIdentifier, 0))
+  if ([activeAccount isAuthenticated] && CFPreferencesGetAppBooleanValue(@"DirtyAutoDownloadKinds", kSSUserDefaultsIdentifier, 0))
   {
     v6 = +[SSLogConfig sharedDaemonConfig];
     if (!v6)
@@ -737,19 +737,19 @@ LABEL_11:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v8 &= 2u;
     }
@@ -766,8 +766,8 @@ LABEL_11:
       {
 LABEL_14:
 
-        v12 = [(StoreDownloadQueue *)self automaticDownloadKinds];
-        v13 = [(StoreDownloadQueue *)self _newSetAutomaticDownloadKindsOperationWithDownloadKinds:v12 account:v5];
+        automaticDownloadKinds = [(StoreDownloadQueue *)self automaticDownloadKinds];
+        v13 = [(StoreDownloadQueue *)self _newSetAutomaticDownloadKindsOperationWithDownloadKinds:automaticDownloadKinds account:activeAccount];
 
         [v13 setRunsOnlyIfKindsAreDirty:1];
         v14 = +[ISOperationQueue mainQueue];
@@ -776,7 +776,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v9 = [NSString stringWithCString:v11 encoding:4, &v16, v15, v16];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, &v16, v15, v16];
       free(v11);
       SSFileLog();
     }
@@ -787,7 +787,7 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_accountStoreChangedNotification:(id)a3
+- (void)_accountStoreChangedNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -798,10 +798,10 @@ LABEL_15:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_networkTypeChangedNotification:(id)a3
+- (void)_networkTypeChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:NSKeyValueChangeOldKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:NSKeyValueChangeOldKey];
 
   if (![v5 integerValue])
   {
@@ -815,13 +815,13 @@ LABEL_15:
   }
 }
 
-- (void)_addOperationsForRequests:(id)a3 reason:(id)a4
+- (void)_addOperationsForRequests:(id)requests reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
-  v10 = [(StoreDownloadQueue *)self _validQueueIdentifiersForDaemon];
+  requestsCopy = requests;
+  reasonCopy = reason;
+  v8 = requestsCopy;
+  v9 = reasonCopy;
+  _validQueueIdentifiersForDaemon = [(StoreDownloadQueue *)self _validQueueIdentifiersForDaemon];
   [v8 minusSet:self->_storeQueueRequests];
   [(NSMutableSet *)self->_storeQueueRequests unionSet:v8];
   v53 = v9;
@@ -836,19 +836,19 @@ LABEL_15:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [v13 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v15;
     }
@@ -877,9 +877,9 @@ LABEL_15:
         goto LABEL_14;
       }
 
-      v16 = [NSString stringWithCString:v20 encoding:4, &v64, v51];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v64, v51];
       free(v20);
-      v50 = v16;
+      v50 = oSLogObject;
       SSFileLog();
     }
 
@@ -904,8 +904,8 @@ LABEL_14:
           }
 
           v26 = *(*(&v58 + 1) + 8 * i);
-          v27 = [v26 queueIdentifier];
-          v28 = [v10 containsObject:v27];
+          queueIdentifier = [v26 queueIdentifier];
+          v28 = [_validQueueIdentifiersForDaemon containsObject:queueIdentifier];
 
           if (v28)
           {
@@ -915,8 +915,8 @@ LABEL_14:
 
           else
           {
-            v30 = [v26 queueIdentifier];
-            v31 = [v30 isEqualToString:@"apps"];
+            queueIdentifier2 = [v26 queueIdentifier];
+            v31 = [queueIdentifier2 isEqualToString:@"apps"];
 
             if (v31)
             {
@@ -940,19 +940,19 @@ LABEL_14:
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v32 = [v13 shouldLog];
+  shouldLog2 = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v33 = v32 | 2;
+    v33 = shouldLog2 | 2;
   }
 
   else
   {
-    v33 = v32;
+    v33 = shouldLog2;
   }
 
-  v34 = [v13 OSLogObject];
-  if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v35 = v33;
   }
@@ -981,9 +981,9 @@ LABEL_14:
       goto LABEL_38;
     }
 
-    v34 = [NSString stringWithCString:v38 encoding:4, &v64, v51];
+    oSLogObject2 = [NSString stringWithCString:v38 encoding:4, &v64, v51];
     free(v38);
-    v50 = v34;
+    v50 = oSLogObject2;
     SSFileLog();
   }
 
@@ -1008,8 +1008,8 @@ LABEL_38:
         }
 
         v44 = *(*(&v54 + 1) + 8 * j);
-        v45 = [v44 queueIdentifier];
-        v46 = [v10 containsObject:v45];
+        queueIdentifier3 = [v44 queueIdentifier];
+        v46 = [_validQueueIdentifiersForDaemon containsObject:queueIdentifier3];
 
         if (v46)
         {
@@ -1019,8 +1019,8 @@ LABEL_38:
 
         else
         {
-          v48 = [v44 queueIdentifier];
-          v49 = [v48 isEqualToString:@"apps"];
+          queueIdentifier4 = [v44 queueIdentifier];
+          v49 = [queueIdentifier4 isEqualToString:@"apps"];
 
           if (v49)
           {
@@ -1039,49 +1039,49 @@ LABEL_38:
 LABEL_49:
 }
 
-- (id)_automaticDownloadsQueryWithDatabase:(id)a3 accountID:(id)a4
+- (id)_automaticDownloadsQueryWithDatabase:(id)database accountID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  databaseCopy = database;
   v7 = [SSSQLiteComparisonPredicate predicateWithProperty:@"is_automatic" equalToLongLong:1];
   v8 = [SSSQLiteComparisonPredicate predicateWithProperty:@"is_from_store" equalToLongLong:1];
-  v9 = [SSSQLiteComparisonPredicate predicateWithProperty:@"store_account_id" equalToValue:v5];
+  v9 = [SSSQLiteComparisonPredicate predicateWithProperty:@"store_account_id" equalToValue:dCopy];
 
   v10 = [NSArray arrayWithObjects:v7, v8, v9, 0];
   v11 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:v10];
 
-  v12 = [DownloadEntity queryWithDatabase:v6 predicate:v11];
+  v12 = [DownloadEntity queryWithDatabase:databaseCopy predicate:v11];
 
   return v12;
 }
 
-- (id)_downloadQueryWithQueueRequest:(id)a3 database:(id)a4
+- (id)_downloadQueryWithQueueRequest:(id)request database:(id)database
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 queueIdentifier];
-  v8 = sub_10012E540(v7);
+  databaseCopy = database;
+  requestCopy = request;
+  queueIdentifier = [requestCopy queueIdentifier];
+  v8 = sub_10012E540(queueIdentifier);
 
   v9 = [SSSQLiteCompoundPredicate predicateWithProperty:@"kind" values:v8 comparisonType:1];
-  v10 = [v6 accountIdentifier];
+  accountIdentifier = [requestCopy accountIdentifier];
 
-  v11 = [SSSQLiteComparisonPredicate predicateWithProperty:@"store_account_id" equalToValue:v10];
+  v11 = [SSSQLiteComparisonPredicate predicateWithProperty:@"store_account_id" equalToValue:accountIdentifier];
 
   v12 = [SSSQLiteComparisonPredicate predicateWithProperty:@"is_store_queued" equalToLongLong:1];
   v13 = [SSSQLiteComparisonPredicate predicateWithProperty:@"IFNULL(download_state.phase value:SSDownloadPhaseWaiting)" comparisonType:SSDownloadPhaseFinished, 2];
   v14 = [NSArray arrayWithObjects:v12, v11, v13, v9, 0];
   v15 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:v14];
 
-  v16 = [DownloadEntity queryWithDatabase:v5 predicate:v15];
+  v16 = [DownloadEntity queryWithDatabase:databaseCopy predicate:v15];
 
   return v16;
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  connectionCopy = connection;
+  blockCopy = block;
   if (SSXPCConnectionHasEntitlement())
   {
     v11 = +[Daemon daemon];
@@ -1092,42 +1092,42 @@ LABEL_49:
     block[1] = 3221225472;
     block[2] = sub_10012A714;
     block[3] = &unk_100327198;
-    v15 = v10;
+    v15 = blockCopy;
     dispatch_async(dispatchQueue, block);
   }
 
   else
   {
-    reply = xpc_dictionary_create_reply(v8);
+    reply = xpc_dictionary_create_reply(messageCopy);
     if (reply)
     {
-      xpc_connection_send_message(v9, reply);
+      xpc_connection_send_message(connectionCopy, reply);
     }
   }
 }
 
-- (void)_checkAutomaticDownloadQueue:(id)a3
+- (void)_checkAutomaticDownloadQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -1153,7 +1153,7 @@ LABEL_49:
   }
 
   v12 = +[LoadDownloadQueueOperation newLoadAutomaticDownloadQueueOperation];
-  [v12 setAccountIdentifier:v4];
+  [v12 setAccountIdentifier:queueCopy];
   objc_initWeak(location, v12);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -1161,7 +1161,7 @@ LABEL_49:
   v15[3] = &unk_1003295A8;
   v15[4] = self;
   objc_copyWeak(&v17, location);
-  v13 = v4;
+  v13 = queueCopy;
   v16 = v13;
   [v12 setCompletionBlock:v15];
   objc_storeStrong(&self->_loadAutomaticDownloadQueueOperation, v12);
@@ -1175,11 +1175,11 @@ LABEL_49:
 {
   v2 = objc_autoreleasePoolPush();
   v3 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.tv"];
-  v4 = [v3 applicationType];
-  if ([v4 isEqualToString:LSSystemApplicationType])
+  applicationType = [v3 applicationType];
+  if ([applicationType isEqualToString:LSSystemApplicationType])
   {
-    v5 = [v3 appState];
-    v6 = [v5 isInstalled] ^ 1;
+    appState = [v3 appState];
+    v6 = [appState isInstalled] ^ 1;
   }
 
   else
@@ -1191,19 +1191,19 @@ LABEL_49:
   return (v3 != 0) & v6;
 }
 
-- (id)_newCheckQueueOperationForQueueRequest:(id)a3
+- (id)_newCheckQueueOperationForQueueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[CheckDownloadQueueOperation alloc] initWithDownloadQueueRequest:v4];
+  requestCopy = request;
+  v5 = [[CheckDownloadQueueOperation alloc] initWithDownloadQueueRequest:requestCopy];
   objc_initWeak(&location, v5);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10012B3D4;
   v8[3] = &unk_100329508;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = requestCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   [(CheckDownloadQueueOperation *)v5 setCompletionBlock:v8];
 
   objc_destroyWeak(&v11);
@@ -1212,16 +1212,16 @@ LABEL_49:
   return v5;
 }
 
-- (id)_newLoadQueueOperationForQueueRequest:(id)a3
+- (id)_newLoadQueueOperationForQueueRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(SSMutableURLRequestProperties);
-  v6 = [v4 queueContentsURLBagKey];
-  [v5 setURLBagKey:v6];
+  queueContentsURLBagKey = [requestCopy queueContentsURLBagKey];
+  [v5 setURLBagKey:queueContentsURLBagKey];
 
   v7 = [[LoadDownloadQueueOperation alloc] initWithRequestProperties:v5];
-  v8 = [v4 accountIdentifier];
-  [(LoadDownloadQueueOperation *)v7 setAccountIdentifier:v8];
+  accountIdentifier = [requestCopy accountIdentifier];
+  [(LoadDownloadQueueOperation *)v7 setAccountIdentifier:accountIdentifier];
 
   [(LoadDownloadQueueOperation *)v7 setNeedsAuthentication:0];
   objc_initWeak(&location, v7);
@@ -1230,7 +1230,7 @@ LABEL_49:
   v11[2] = sub_10012BFF8;
   v11[3] = &unk_100329648;
   v11[4] = self;
-  v9 = v4;
+  v9 = requestCopy;
   v12 = v9;
   objc_copyWeak(&v13, &location);
   [(LoadDownloadQueueOperation *)v7 setCompletionBlock:v11];
@@ -1240,37 +1240,37 @@ LABEL_49:
   return v7;
 }
 
-- (id)_newOperationByCommitingAutomaticDownloadKinds:(id)a3 account:(id)a4
+- (id)_newOperationByCommitingAutomaticDownloadKinds:(id)kinds account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(StoreDownloadQueue *)self automaticDownloadKinds];
-  if ([v6 isEqualToSet:v8])
+  kindsCopy = kinds;
+  accountCopy = account;
+  automaticDownloadKinds = [(StoreDownloadQueue *)self automaticDownloadKinds];
+  if ([kindsCopy isEqualToSet:automaticDownloadKinds])
   {
     v9 = 0;
   }
 
   else
   {
-    [(StoreDownloadQueue *)self commitAutomaticDownloadKinds:v6 markAsDirty:1];
-    v9 = [(StoreDownloadQueue *)self _newSetAutomaticDownloadKindsOperationWithDownloadKinds:v6 account:v7];
-    [v9 setPreviousDownloadKinds:v8];
+    [(StoreDownloadQueue *)self commitAutomaticDownloadKinds:kindsCopy markAsDirty:1];
+    v9 = [(StoreDownloadQueue *)self _newSetAutomaticDownloadKindsOperationWithDownloadKinds:kindsCopy account:accountCopy];
+    [v9 setPreviousDownloadKinds:automaticDownloadKinds];
   }
 
   return v9;
 }
 
-- (id)_newQueueRequestsWithReason:(id)a3 accountID:(id)a4 session:(id)a5
+- (id)_newQueueRequestsWithReason:(id)reason accountID:(id)d session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  dCopy = d;
+  sessionCopy = session;
   v11 = objc_alloc_init(NSMutableSet);
-  v35 = v10;
-  if (([v8 isEqualToString:@"account-change"] & 1) == 0)
+  v35 = sessionCopy;
+  if (([reasonCopy isEqualToString:@"account-change"] & 1) == 0)
   {
-    v34 = self;
-    v31 = [(StoreDownloadQueue *)self _validQueueIdentifiersForDaemon];
+    selfCopy = self;
+    _validQueueIdentifiersForDaemon = [(StoreDownloadQueue *)self _validQueueIdentifiersForDaemon];
     v12 = objc_alloc_init(SSSQLiteQueryDescriptor);
     [v12 setEntityClass:objc_opt_class()];
     [v12 setReturnsDistinctEntities:1];
@@ -1284,8 +1284,8 @@ LABEL_49:
 
     [v12 setPredicate:v17];
     v18 = [SSSQLiteQuery alloc];
-    v19 = [v10 database];
-    v20 = [v18 initWithDatabase:v19 descriptor:v12];
+    database = [sessionCopy database];
+    v20 = [v18 initWithDatabase:database descriptor:v12];
 
     v45[0] = @"kind";
     v45[1] = @"store_account_id";
@@ -1293,9 +1293,9 @@ LABEL_49:
     v40[1] = 3221225472;
     v40[2] = sub_10012CD68;
     v40[3] = &unk_100328990;
-    v21 = v31;
+    v21 = _validQueueIdentifiersForDaemon;
     v41 = v21;
-    v42 = v8;
+    v42 = reasonCopy;
     v43 = v11;
     [v20 enumeratePersistentIDsAndProperties:v45 count:2 usingBlock:v40];
 
@@ -1303,17 +1303,17 @@ LABEL_49:
     {
     }
 
-    self = v34;
+    self = selfCopy;
   }
 
-  if (v9)
+  if (dCopy)
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v23 = [(StoreDownloadQueue *)self _validQueueIdentifiersForPlatform];
-    v24 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    _validQueueIdentifiersForPlatform = [(StoreDownloadQueue *)self _validQueueIdentifiersForPlatform];
+    v24 = [_validQueueIdentifiersForPlatform countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v24)
     {
       v25 = v24;
@@ -1324,36 +1324,36 @@ LABEL_49:
         {
           if (*v37 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(_validQueueIdentifiersForPlatform);
           }
 
           v28 = *(*(&v36 + 1) + 8 * j);
           v29 = objc_alloc_init(StoreDownloadQueueRequest);
-          [(StoreDownloadQueueRequest *)v29 setAccountIdentifier:v9];
+          [(StoreDownloadQueueRequest *)v29 setAccountIdentifier:dCopy];
           [(StoreDownloadQueueRequest *)v29 setQueueIdentifier:v28];
-          [(StoreDownloadQueueRequest *)v29 setReason:v8];
+          [(StoreDownloadQueueRequest *)v29 setReason:reasonCopy];
           [v11 addObject:v29];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v25 = [_validQueueIdentifiersForPlatform countByEnumeratingWithState:&v36 objects:v44 count:16];
       }
 
       while (v25);
     }
 
-    v10 = v35;
+    sessionCopy = v35;
   }
 
   return v11;
 }
 
-- (id)_newSetAutomaticDownloadKindsOperationWithDownloadKinds:(id)a3 account:(id)a4
+- (id)_newSetAutomaticDownloadKindsOperationWithDownloadKinds:(id)kinds account:(id)account
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SetAutomaticDownloadKindsOperation alloc] initWithDownloadKinds:v6];
+  accountCopy = account;
+  kindsCopy = kinds;
+  v7 = [[SetAutomaticDownloadKindsOperation alloc] initWithDownloadKinds:kindsCopy];
 
-  v8 = [[SSAuthenticationContext alloc] initWithAccount:v5];
+  v8 = [[SSAuthenticationContext alloc] initWithAccount:accountCopy];
   [(SetAutomaticDownloadKindsOperation *)v7 setAuthenticationContext:v8];
 
   return v7;
@@ -1367,19 +1367,19 @@ LABEL_49:
     v2 = +[SSLogConfig sharedConfig];
   }
 
-  v3 = [v2 shouldLog];
+  shouldLog = [v2 shouldLog];
   if ([v2 shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  v5 = [v2 OSLogObject];
-  if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  oSLogObject = [v2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v4 &= 2u;
   }
@@ -1397,7 +1397,7 @@ LABEL_49:
 
   if (v7)
   {
-    v5 = [NSString stringWithCString:v7 encoding:4, &v11, v10, v11];
+    oSLogObject = [NSString stringWithCString:v7 encoding:4, &v11, v10, v11];
     free(v7);
     SSFileLog();
 LABEL_11:
@@ -1416,19 +1416,19 @@ LABEL_11:
     v2 = +[SSLogConfig sharedConfig];
   }
 
-  v3 = [v2 shouldLog];
+  shouldLog = [v2 shouldLog];
   if ([v2 shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  v5 = [v2 OSLogObject];
-  if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  oSLogObject = [v2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v4 &= 2u;
   }
@@ -1446,7 +1446,7 @@ LABEL_11:
 
   if (v7)
   {
-    v5 = [NSString stringWithCString:v7 encoding:4, &v11, v10, v11];
+    oSLogObject = [NSString stringWithCString:v7 encoding:4, &v11, v10, v11];
     free(v7);
     SSFileLog();
 LABEL_11:
@@ -1457,9 +1457,9 @@ LABEL_11:
   v9 = [v8 modifyUsingTransactionBlock:&stru_1003296A8];
 }
 
-- (id)_restorableDownloadsQueryInDatabase:(id)a3
+- (id)_restorableDownloadsQueryInDatabase:(id)database
 {
-  v3 = a3;
+  databaseCopy = database;
   v4 = [SSSQLiteComparisonPredicate predicateWithProperty:@"is_restore" equalToLongLong:1];
   v5 = [NSNumber numberWithInteger:0];
   v6 = [SSSQLiteComparisonPredicate predicateWithProperty:@"IFNULL(download.store_item_id value:0)" comparisonType:v5, 2];
@@ -1471,28 +1471,28 @@ LABEL_11:
   v11 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:v10];
 
   v12 = [NSArray arrayWithObject:@"order_key"];
-  v13 = [DownloadEntity queryWithDatabase:v3 predicate:v11 orderingProperties:v12];
+  v13 = [DownloadEntity queryWithDatabase:databaseCopy predicate:v11 orderingProperties:v12];
 
   return v13;
 }
 
-- (void)_setLastCheckedAccountID:(id)a3
+- (void)_setLastCheckedAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012D58C;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
-- (void)_synchronizeAutomaticDownloadKinds:(id)a3
+- (void)_synchronizeAutomaticDownloadKinds:(id)kinds
 {
-  v4 = a3;
+  kindsCopy = kinds;
   v5 = objc_alloc_init(GetAutomaticDownloadKindsOperation);
   objc_initWeak(&location, v5);
   v11 = _NSConcreteStackBlock;
@@ -1500,14 +1500,14 @@ LABEL_11:
   v13 = sub_10012D720;
   v14 = &unk_1003296D0;
   objc_copyWeak(&v17, &location);
-  v15 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = kindsCopy;
   v16 = v6;
   [(GetAutomaticDownloadKindsOperation *)v5 setCompletionBlock:&v11];
   v7 = [SSAuthenticationContext alloc];
   v8 = [SSAccountStore defaultStore:v11];
-  v9 = [v8 activeAccount];
-  v10 = [v7 initWithAccount:v9];
+  activeAccount = [v8 activeAccount];
+  v10 = [v7 initWithAccount:activeAccount];
 
   [(GetAutomaticDownloadKindsOperation *)v5 setAuthenticationContext:v10];
   [(ISOperationQueue *)self->_operationQueue addOperation:v5];
@@ -1523,8 +1523,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(StoreDownloadQueue *)self _validQueueIdentifiersForPlatform];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _validQueueIdentifiersForPlatform = [(StoreDownloadQueue *)self _validQueueIdentifiersForPlatform];
+  v5 = [_validQueueIdentifiersForPlatform countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1535,7 +1535,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_validQueueIdentifiersForPlatform);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -1545,7 +1545,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_validQueueIdentifiersForPlatform countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

@@ -18,8 +18,8 @@
 - (id)elementName
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [a1 typeaheadQueryString];
-  v3 = [v2 length];
+  typeaheadQueryString = [self typeaheadQueryString];
+  v3 = [typeaheadQueryString length];
 
   if (v3)
   {
@@ -27,8 +27,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [a1 userInputLabels];
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    userInputLabels = [self userInputLabels];
+    v5 = [userInputLabels countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
       v6 = v5;
@@ -39,23 +39,23 @@
         {
           if (*v19 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(userInputLabels);
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v10 = [v9 lowercaseString];
-          v11 = [a1 typeaheadQueryString];
-          v12 = [v11 lowercaseString];
-          v13 = [v10 containsString:v12];
+          lowercaseString = [v9 lowercaseString];
+          typeaheadQueryString2 = [self typeaheadQueryString];
+          lowercaseString2 = [typeaheadQueryString2 lowercaseString];
+          v13 = [lowercaseString containsString:lowercaseString2];
 
           if (v13)
           {
-            v14 = v9;
+            firstObject = v9;
             goto LABEL_13;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v6 = [userInputLabels countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v6)
         {
           continue;
@@ -66,10 +66,10 @@
     }
   }
 
-  v4 = [a1 userInputLabels];
-  v14 = [v4 firstObject];
+  userInputLabels = [self userInputLabels];
+  firstObject = [userInputLabels firstObject];
 LABEL_13:
-  v15 = v14;
+  v15 = firstObject;
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -85,27 +85,27 @@ LABEL_13:
 
 - (uint64_t)hasRemoteFocusSystem
 {
-  v1 = [a1 uiElement];
-  v2 = [v1 BOOLWithAXAttribute:12008];
+  uiElement = [self uiElement];
+  v2 = [uiElement BOOLWithAXAttribute:12008];
 
   return v2;
 }
 
 - (uint64_t)applicationIsExtension
 {
-  v1 = [a1 uiElement];
-  v2 = [v1 BOOLWithAXAttribute:3047];
+  uiElement = [self uiElement];
+  v2 = [uiElement BOOLWithAXAttribute:3047];
 
   return v2;
 }
 
 - (id)elementForRemoteFocusSystem
 {
-  if ([a1 hasRemoteFocusSystem])
+  if ([self hasRemoteFocusSystem])
   {
-    v2 = [a1 remoteSceneID];
-    v3 = [a1 uiElement];
-    v4 = [v3 numberWithAXAttribute:12009];
+    remoteSceneID = [self remoteSceneID];
+    uiElement = [self uiElement];
+    v4 = [uiElement numberWithAXAttribute:12009];
     [v4 intValue];
 
     AppElementWithPid = _AXUIElementCreateAppElementWithPid();
@@ -115,7 +115,7 @@ LABEL_13:
       CFRelease(AppElementWithPid);
     }
 
-    v7 = [v6 elementForAttribute:95256 parameter:v2];
+    v7 = [v6 elementForAttribute:95256 parameter:remoteSceneID];
     v8 = [v6 focusContainersForCurrentSceneIdentifier:0];
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v15[0] = MEMORY[0x277D85DD0];
@@ -127,9 +127,9 @@ LABEL_13:
     [v8 enumerateKeysAndObjectsUsingBlock:v15];
     if ([v10 count] == 1)
     {
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 
-      v7 = v11;
+      v7 = firstObject;
     }
 
     if (v7)
@@ -155,11 +155,11 @@ LABEL_13:
 
 - (id)applicationForHostFocusSystem
 {
-  v1 = [a1 uiElement];
-  v2 = [v1 numberWithAXAttribute:12010];
-  v3 = [v2 intValue];
+  uiElement = [self uiElement];
+  v2 = [uiElement numberWithAXAttribute:12010];
+  intValue = [v2 intValue];
 
-  if (v3 < 1)
+  if (intValue < 1)
   {
     v5 = 0;
   }
@@ -179,10 +179,10 @@ LABEL_13:
 
 - (id)remoteSceneID
 {
-  if ([a1 hasRemoteFocusSystem])
+  if ([self hasRemoteFocusSystem])
   {
-    v2 = [a1 uiElement];
-    v3 = [v2 objectWithAXAttribute:12014];
+    uiElement = [self uiElement];
+    v3 = [uiElement objectWithAXAttribute:12014];
   }
 
   else
@@ -195,22 +195,22 @@ LABEL_13:
 
 - (void)focusOnRemoteSceneID
 {
-  v2 = [a1 remoteSceneID];
-  if (v2)
+  remoteSceneID = [self remoteSceneID];
+  if (remoteSceneID)
   {
-    v5 = v2;
-    v3 = [a1 elementForRemoteFocusSystem];
-    v4 = [v3 application];
-    [v4 performAction:5310 withValue:v5];
+    v5 = remoteSceneID;
+    elementForRemoteFocusSystem = [self elementForRemoteFocusSystem];
+    application = [elementForRemoteFocusSystem application];
+    [application performAction:5310 withValue:v5];
 
-    v2 = v5;
+    remoteSceneID = v5;
   }
 }
 
 - (void)didFocus
 {
-  v1 = [a1 uiElement];
-  [v1 performAXAction:5307];
+  uiElement = [self uiElement];
+  [uiElement performAXAction:5307];
 }
 
 - (uint64_t)moveFocusWithHeading:()AXFocusEngine byGroup:
@@ -221,7 +221,7 @@ LABEL_13:
   v7 = [MEMORY[0x277CCABB0] numberWithBool:a4];
   v12[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
-  v9 = [a1 performAction:5300 withValue:v8];
+  v9 = [self performAction:5300 withValue:v8];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
@@ -237,15 +237,15 @@ LABEL_13:
   v13[1] = v7;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
-  v10 = [a1 performAction:5304 withValue:v9];
+  v10 = [self performAction:5304 withValue:v9];
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
 - (uint64_t)hasNativeFocusElements
 {
-  v1 = [a1 uiElement];
-  v2 = [v1 BOOLWithAXAttribute:3048];
+  uiElement = [self uiElement];
+  v2 = [uiElement BOOLWithAXAttribute:3048];
 
   return v2;
 }

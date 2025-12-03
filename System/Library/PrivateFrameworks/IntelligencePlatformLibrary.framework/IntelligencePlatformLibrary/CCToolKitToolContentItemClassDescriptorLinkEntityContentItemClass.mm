@@ -1,26 +1,26 @@
 @interface CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithBundleIdentifier:(id)a3 identifier:(id)a4 error:(id *)a5;
-- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithBundleIdentifier:(id)identifier identifier:(id)a4 error:(id *)error;
+- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)bundleIdentifier;
 - (NSString)identifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass
 
-- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"identifier"];
-    v11 = [[CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass alloc] initWithBundleIdentifier:v9 identifier:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
+    v11 = [[CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass alloc] initWithBundleIdentifier:v9 identifier:v10 error:error];
   }
 
   else
@@ -37,14 +37,14 @@
   v3 = objc_opt_new();
   if (self->_bundleIdentifier)
   {
-    v4 = [(CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass *)self bundleIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass *)self bundleIdentifier];
+    [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_identifier)
   {
-    v5 = [(CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass *)self identifier];
-    [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+    identifier = [(CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass *)self identifier];
+    [v3 setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   v6 = [v3 copy];
@@ -52,20 +52,20 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_bundleIdentifier)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_bundleIdentifier];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_identifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 stringValue:self->_identifier];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -83,10 +83,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -236,12 +236,12 @@ LABEL_38:
   return v31;
 }
 
-- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithBundleIdentifier:(id)a3 identifier:(id)a4 error:(id *)a5
+- (CCToolKitToolContentItemClassDescriptorLinkEntityContentItemClass)initWithBundleIdentifier:(id)identifier identifier:(id)a4 error:(id *)error
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = a4;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = 0;
     if (!v9)
@@ -258,7 +258,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -274,7 +274,7 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -285,13 +285,13 @@ LABEL_6:
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

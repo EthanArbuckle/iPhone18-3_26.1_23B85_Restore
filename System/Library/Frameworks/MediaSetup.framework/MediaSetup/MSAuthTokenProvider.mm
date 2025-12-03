@@ -1,45 +1,45 @@
 @interface MSAuthTokenProvider
-+ (void)fetchAuthTokensForMediaService:(id)a3 networkActivity:(id)a4 completion:(id)a5;
-+ (void)validateConfigurationResourceForMediaService:(id)a3 networkActivity:(id)a4 completion:(id)a5;
++ (void)fetchAuthTokensForMediaService:(id)service networkActivity:(id)activity completion:(id)completion;
++ (void)validateConfigurationResourceForMediaService:(id)service networkActivity:(id)activity completion:(id)completion;
 @end
 
 @implementation MSAuthTokenProvider
 
-+ (void)fetchAuthTokensForMediaService:(id)a3 networkActivity:(id)a4 completion:(id)a5
++ (void)fetchAuthTokensForMediaService:(id)service networkActivity:(id)activity completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 authConfiguration];
+  serviceCopy = service;
+  activityCopy = activity;
+  completionCopy = completion;
+  authConfiguration = [serviceCopy authConfiguration];
 
-  if (v11)
+  if (authConfiguration)
   {
-    v12 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-    v13 = [v8 bundleIdentifier];
-    [v12 set_sourceApplicationBundleIdentifier:v13];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    bundleIdentifier = [serviceCopy bundleIdentifier];
+    [ephemeralSessionConfiguration set_sourceApplicationBundleIdentifier:bundleIdentifier];
 
     v14 = _MSLogingFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v8 bundleIdentifier];
+      bundleIdentifier2 = [serviceCopy bundleIdentifier];
       *buf = 138412290;
-      v26 = v15;
+      v26 = bundleIdentifier2;
       _os_log_impl(&dword_23986C000, v14, OS_LOG_TYPE_INFO, "AuthFetch: Setting sourceApplicationBundleID to %@", buf, 0xCu);
     }
 
-    v16 = [v8 authConfiguration];
-    v17 = [v8 authCredential];
-    v18 = [MSOAuthTokenHandler tokenHandlerWithConfiguration:v16 existingCredential:v17 URLSessionConfiguration:v12 parentNetworkActivity:v9];
+    authConfiguration2 = [serviceCopy authConfiguration];
+    authCredential = [serviceCopy authCredential];
+    v18 = [MSOAuthTokenHandler tokenHandlerWithConfiguration:authConfiguration2 existingCredential:authCredential URLSessionConfiguration:ephemeralSessionConfiguration parentNetworkActivity:activityCopy];
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, self);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __81__MSAuthTokenProvider_fetchAuthTokensForMediaService_networkActivity_completion___block_invoke;
     v21[3] = &unk_278AA2B20;
     objc_copyWeak(&v24, buf);
-    v23 = v10;
-    v22 = v8;
+    v23 = completionCopy;
+    v22 = serviceCopy;
     [v18 fetchTokens:v21];
 
     objc_destroyWeak(&v24);
@@ -51,11 +51,11 @@
     v19 = _MSLogingFacility();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [MSAuthTokenProvider fetchAuthTokensForMediaService:v8 networkActivity:v19 completion:?];
+      [MSAuthTokenProvider fetchAuthTokensForMediaService:serviceCopy networkActivity:v19 completion:?];
     }
 
-    v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:9 userInfo:0];
-    (*(v10 + 2))(v10, v12);
+    ephemeralSessionConfiguration = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.mediasetup.errorDomain" code:9 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, ephemeralSessionConfiguration);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -126,65 +126,65 @@ void __81__MSAuthTokenProvider_fetchAuthTokensForMediaService_networkActivity_co
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)validateConfigurationResourceForMediaService:(id)a3 networkActivity:(id)a4 completion:(id)a5
++ (void)validateConfigurationResourceForMediaService:(id)service networkActivity:(id)activity completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  v8 = [v6 authCredential];
-  v9 = [v8 authToken];
+  serviceCopy = service;
+  completionCopy = completion;
+  authCredential = [serviceCopy authCredential];
+  authToken = [authCredential authToken];
 
-  if (v9)
+  if (authToken)
   {
-    v10 = [v6 authCredential];
-    v28 = [v10 authHeader];
+    authCredential2 = [serviceCopy authCredential];
+    authHeader = [authCredential2 authHeader];
   }
 
   else
   {
-    v28 = 0;
+    authHeader = 0;
   }
 
   v11 = _MSLogingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 bundleIdentifier];
-    v13 = [v6 configPublicKey];
+    bundleIdentifier = [serviceCopy bundleIdentifier];
+    configPublicKey = [serviceCopy configPublicKey];
     *buf = 138412546;
-    v32 = v12;
+    v32 = bundleIdentifier;
     v33 = 2112;
-    v34 = v13;
+    v34 = configPublicKey;
     _os_log_impl(&dword_23986C000, v11, OS_LOG_TYPE_DEFAULT, "Validating mediaService for %@ with public key: %@", buf, 0x16u);
   }
 
-  v14 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-  v15 = [v6 bundleIdentifier];
-  v27 = v14;
-  [v14 set_sourceApplicationBundleIdentifier:v15];
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+  bundleIdentifier2 = [serviceCopy bundleIdentifier];
+  v27 = ephemeralSessionConfiguration;
+  [ephemeralSessionConfiguration set_sourceApplicationBundleIdentifier:bundleIdentifier2];
 
   v16 = _MSLogingFacility();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v6 bundleIdentifier];
+    bundleIdentifier3 = [serviceCopy bundleIdentifier];
     *buf = 138412290;
-    v32 = v17;
+    v32 = bundleIdentifier3;
     _os_log_impl(&dword_23986C000, v16, OS_LOG_TYPE_INFO, "ConfigFetch: Setting sourceApplicationBundleID to %@", buf, 0xCu);
   }
 
   v26 = MEMORY[0x277CFB098];
-  v18 = [v6 configURL];
-  v19 = [MEMORY[0x277CCAD78] UUID];
-  v20 = [v19 UUIDString];
-  v21 = [v6 bundleIdentifier];
-  v22 = [v6 configPublicKey];
+  configURL = [serviceCopy configURL];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  bundleIdentifier4 = [serviceCopy bundleIdentifier];
+  configPublicKey2 = [serviceCopy configPublicKey];
   v23 = CMSCloudExtensionLanguageCode();
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __95__MSAuthTokenProvider_validateConfigurationResourceForMediaService_networkActivity_completion___block_invoke;
   v29[3] = &unk_278AA2B48;
-  v30 = v7;
-  v24 = v7;
-  [v26 configurationFromURL:v18 forSession:v20 usingAuth:v28 authProvider:0 parentNetworkActivity:0 keyID:v21 publicKey:v22 URLSessionConfiguration:v27 languageCode:v23 completion:v29];
+  v30 = completionCopy;
+  v24 = completionCopy;
+  [v26 configurationFromURL:configURL forSession:uUIDString usingAuth:authHeader authProvider:0 parentNetworkActivity:0 keyID:bundleIdentifier4 publicKey:configPublicKey2 URLSessionConfiguration:v27 languageCode:v23 completion:v29];
 
   v25 = *MEMORY[0x277D85DE8];
 }

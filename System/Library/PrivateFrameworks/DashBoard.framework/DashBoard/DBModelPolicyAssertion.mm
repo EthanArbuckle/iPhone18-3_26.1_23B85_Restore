@@ -1,7 +1,7 @@
 @interface DBModelPolicyAssertion
 - (_TtC9DashBoard22DBModelPolicyAssertion)init;
-- (void)acquireAssertionWithCompletionHandler:(id)a3;
-- (void)invalidateWithCompletionHandler:(id)a3;
+- (void)acquireAssertionWithCompletionHandler:(id)handler;
+- (void)invalidateWithCompletionHandler:(id)handler;
 @end
 
 @implementation DBModelPolicyAssertion
@@ -14,12 +14,12 @@
   return [(DBModelPolicyAssertion *)&v3 init];
 }
 
-- (void)acquireAssertionWithCompletionHandler:(id)a3
+- (void)acquireAssertionWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE90480);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -35,16 +35,16 @@
   v12[3] = 0;
   v12[4] = &unk_2483A2DB8;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_248376ED4(0, 0, v7, &unk_2483A2DC0, v12);
 }
 
-- (void)invalidateWithCompletionHandler:(id)a3
+- (void)invalidateWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE90480);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -60,7 +60,7 @@
   v12[3] = 0;
   v12[4] = &unk_2483A2D78;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_248376ED4(0, 0, v7, &unk_2483A2D88, v12);
 }
 

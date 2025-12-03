@@ -1,30 +1,30 @@
 @interface DSRapportDevice
-- (DSRapportDevice)initWithRapportDevice:(id)a3 queue:(id)a4;
-- (void)_activateSessionClientWithForceL2CAP:(BOOL)a3;
+- (DSRapportDevice)initWithRapportDevice:(id)device queue:(id)queue;
+- (void)_activateSessionClientWithForceL2CAP:(BOOL)p;
 - (void)_forceBLEDiscoverytoSendRequestID;
 - (void)_startDiscoveryExitTimer;
 - (void)_startResponseTimeoutTimer;
-- (void)addRequestToQueue:(id)a3;
+- (void)addRequestToQueue:(id)queue;
 - (void)invalidate;
 - (void)sendNextRequest;
 @end
 
 @implementation DSRapportDevice
 
-- (DSRapportDevice)initWithRapportDevice:(id)a3 queue:(id)a4
+- (DSRapportDevice)initWithRapportDevice:(id)device queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = DSRapportDevice;
   v9 = [(DSRapportDevice *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rpDevice, a3);
-    v11 = [v7 identifier];
+    objc_storeStrong(&v9->_rpDevice, device);
+    identifier = [deviceCopy identifier];
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = identifier;
 
     v10->_deviceType = 1;
     sessionClient = v10->_sessionClient;
@@ -33,11 +33,11 @@
     screenOffDiscoveryClient = v10->_screenOffDiscoveryClient;
     v10->_screenOffDiscoveryClient = 0;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingRequests = v10->_pendingRequests;
-    v10->_pendingRequests = v15;
+    v10->_pendingRequests = array;
 
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v10->_queue, queue);
     *&v10->_isTryingForceDiscovery = 0;
     discoveryExitTimer = v10->_discoveryExitTimer;
     v10->_discoveryExitTimer = 0;
@@ -98,23 +98,23 @@
   }
 }
 
-- (void)addRequestToQueue:(id)a3
+- (void)addRequestToQueue:(id)queue
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  pendingRequests = v4->_pendingRequests;
-  v6 = [v7 mutableCopy];
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingRequests = selfCopy->_pendingRequests;
+  v6 = [queueCopy mutableCopy];
   [(NSMutableArray *)pendingRequests addObject:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)sendNextRequest
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_249027000, a2, OS_LOG_TYPE_ERROR, "[DSRapportDevice] Invalid request %@\n", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -273,32 +273,32 @@ LABEL_24:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_activateSessionClientWithForceL2CAP:(BOOL)a3
+- (void)_activateSessionClientWithForceL2CAP:(BOOL)p
 {
-  v3 = a3;
+  pCopy = p;
   v25 = *MEMORY[0x277D85DE8];
   v5 = +[DSLogging sharedInstance];
-  v6 = [v5 dsLogger];
+  dsLogger = [v5 dsLogger];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(DSRapportDevice *)self rpDevice];
+    rpDevice = [(DSRapportDevice *)self rpDevice];
     *buf = 138412290;
-    v24 = v7;
-    _os_log_impl(&dword_249027000, v6, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Creating a session client to device %@\n", buf, 0xCu);
+    v24 = rpDevice;
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Creating a session client to device %@\n", buf, 0xCu);
   }
 
   if (self->_isTryingForceDiscovery)
   {
     v8 = +[DSLogging sharedInstance];
-    v9 = [v8 dsLogger];
+    dsLogger2 = [v8 dsLogger];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(DSRapportDevice *)self rpDevice];
+      rpDevice2 = [(DSRapportDevice *)self rpDevice];
       *buf = 138412290;
-      v24 = v10;
-      _os_log_impl(&dword_249027000, v9, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Session can't be activated, Trying a force discovery for %@\n", buf, 0xCu);
+      v24 = rpDevice2;
+      _os_log_impl(&dword_249027000, dsLogger2, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Session can't be activated, Trying a force discovery for %@\n", buf, 0xCu);
     }
 
 LABEL_6:
@@ -309,14 +309,14 @@ LABEL_6:
   if (self->_sessionClient)
   {
     v11 = +[DSLogging sharedInstance];
-    v9 = [v11 dsLogger];
+    dsLogger2 = [v11 dsLogger];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(DSRapportDevice *)self rpDevice];
+      rpDevice3 = [(DSRapportDevice *)self rpDevice];
       *buf = 138412290;
-      v24 = v12;
-      _os_log_impl(&dword_249027000, v9, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Session already exists for device %@\n", buf, 0xCu);
+      v24 = rpDevice3;
+      _os_log_impl(&dword_249027000, dsLogger2, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Session already exists for device %@\n", buf, 0xCu);
     }
 
     goto LABEL_6;
@@ -328,17 +328,17 @@ LABEL_6:
 
   [(RPCompanionLinkClient *)self->_sessionClient setDestinationDevice:self->_rpDevice];
   [(RPCompanionLinkClient *)self->_sessionClient setControlFlags:14];
-  if (v3)
+  if (pCopy)
   {
     v15 = +[DSLogging sharedInstance];
-    v16 = [v15 dsLogger];
+    dsLogger3 = [v15 dsLogger];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger3, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(DSRapportDevice *)self rpDevice];
+      rpDevice4 = [(DSRapportDevice *)self rpDevice];
       *buf = 138412290;
-      v24 = v17;
-      _os_log_impl(&dword_249027000, v16, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Forcing an L2CAP session for %@\n", buf, 0xCu);
+      v24 = rpDevice4;
+      _os_log_impl(&dword_249027000, dsLogger3, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Forcing an L2CAP session for %@\n", buf, 0xCu);
     }
 
     [(RPCompanionLinkClient *)self->_sessionClient setControlFlags:[(RPCompanionLinkClient *)self->_sessionClient controlFlags]| 0x100];
@@ -353,7 +353,7 @@ LABEL_6:
   v20[2] = __56__DSRapportDevice__activateSessionClientWithForceL2CAP___block_invoke;
   v20[3] = &unk_278F85BB0;
   objc_copyWeak(&v21, buf);
-  v22 = v3;
+  v22 = pCopy;
   [(RPCompanionLinkClient *)v18 activateWithCompletion:v20];
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);
@@ -450,23 +450,23 @@ void __56__DSRapportDevice__activateSessionClientWithForceL2CAP___block_invoke(u
 - (void)_forceBLEDiscoverytoSendRequestID
 {
   v3 = +[DSLogging sharedInstance];
-  v4 = [v3 dsLogger];
+  dsLogger = [v3 dsLogger];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf[0]) = 0;
-    _os_log_impl(&dword_249027000, v4, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] starting force BLE screen off discover\n", buf, 2u);
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] starting force BLE screen off discover\n", buf, 2u);
   }
 
   self->_isTryingForceDiscovery = 1;
   if (self->_screenOffDiscoveryClient)
   {
     v5 = +[DSLogging sharedInstance];
-    v6 = [v5 dsLogger];
+    dsLogger2 = [v5 dsLogger];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_ERROR))
     {
-      [(DSRapportDevice *)v6 _forceBLEDiscoverytoSendRequestID];
+      [(DSRapportDevice *)dsLogger2 _forceBLEDiscoverytoSendRequestID];
     }
   }
 
@@ -626,12 +626,12 @@ void __52__DSRapportDevice__forceBLEDiscoverytoSendRequestID__block_invoke_55(ui
 - (void)_startResponseTimeoutTimer
 {
   v3 = +[DSLogging sharedInstance];
-  v4 = [v3 dsLogger];
+  dsLogger = [v3 dsLogger];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf[0]) = 0;
-    _os_log_impl(&dword_249027000, v4, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Starting Response Timeout Timer\n", buf, 2u);
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Starting Response Timeout Timer\n", buf, 2u);
   }
 
   objc_initWeak(buf, self);
@@ -697,16 +697,16 @@ void __45__DSRapportDevice__startResponseTimeoutTimer__block_invoke(uint64_t a1)
 - (void)_startDiscoveryExitTimer
 {
   v3 = +[DSLogging sharedInstance];
-  v4 = [v3 dsLogger];
+  dsLogger = [v3 dsLogger];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_249027000, v4, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Starting Discovery Timer\n", buf, 2u);
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSRapportDevice] Starting Discovery Timer\n", buf, 2u);
   }
 
   queue = self->_queue;
-  v6 = self;
+  selfCopy = self;
   v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
   v8 = dispatch_time(0xFFFFFFFFFFFFFFFELL, 30000000000);
   dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -716,14 +716,14 @@ void __45__DSRapportDevice__startResponseTimeoutTimer__block_invoke(uint64_t a1)
   handler[3] = &unk_278F85C28;
   v9 = v7;
   v13 = v9;
-  v14 = v6;
-  v15 = v6;
+  v14 = selfCopy;
+  v15 = selfCopy;
   dispatch_source_set_event_handler(v9, handler);
-  discoveryExitTimer = v6->_discoveryExitTimer;
-  v6->_discoveryExitTimer = v9;
+  discoveryExitTimer = selfCopy->_discoveryExitTimer;
+  selfCopy->_discoveryExitTimer = v9;
   v11 = v9;
 
-  dispatch_resume(v6->_discoveryExitTimer);
+  dispatch_resume(selfCopy->_discoveryExitTimer);
 }
 
 void __43__DSRapportDevice__startDiscoveryExitTimer__block_invoke(uint64_t a1)

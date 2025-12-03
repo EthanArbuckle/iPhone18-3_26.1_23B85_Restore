@@ -1,35 +1,35 @@
 @interface PGMemoryGeneratorUtils
-+ (BOOL)isImportedAsset:(id)a3;
++ (BOOL)isImportedAsset:(id)asset;
 + (id)_outdoorROITypes;
-+ (id)babyAndChildPersonNodesAtHomeOrFrequentLocationInGraph:(id)a3;
-+ (id)filterImportedAssets:(id)a3 byOverlapWithRelevantAssets:(id)a4 withGraph:(id)a5;
-+ (id)filterImportedAssetsWithoutLocationAndWithoutSceneOrPersonOverlapFromAllAssets:(id)a3 withGraph:(id)a4;
-+ (id)momentNodesAtHomeOrWorkOrFrequentLocationInGraph:(id)a3;
-+ (id)outdoorROIMomentNodesNotAtHomeOrFrequentLocationInGraph:(id)a3 useMomentFeatureEdges:(BOOL)a4;
-+ (id)outdoorROINodesInGraph:(id)a3;
-+ (id)personAndPetLocalIdentifiersInAssets:(id)a3;
++ (id)babyAndChildPersonNodesAtHomeOrFrequentLocationInGraph:(id)graph;
++ (id)filterImportedAssets:(id)assets byOverlapWithRelevantAssets:(id)relevantAssets withGraph:(id)graph;
++ (id)filterImportedAssetsWithoutLocationAndWithoutSceneOrPersonOverlapFromAllAssets:(id)assets withGraph:(id)graph;
++ (id)momentNodesAtHomeOrWorkOrFrequentLocationInGraph:(id)graph;
++ (id)outdoorROIMomentNodesNotAtHomeOrFrequentLocationInGraph:(id)graph useMomentFeatureEdges:(BOOL)edges;
++ (id)outdoorROINodesInGraph:(id)graph;
++ (id)personAndPetLocalIdentifiersInAssets:(id)assets;
 @end
 
 @implementation PGMemoryGeneratorUtils
 
-+ (BOOL)isImportedAsset:(id)a3
++ (BOOL)isImportedAsset:(id)asset
 {
-  v3 = [a3 importProperties];
-  v4 = [v3 importedBy];
+  importProperties = [asset importProperties];
+  importedBy = [importProperties importedBy];
 
-  return (v4 < 0x10) & (0xAFF8u >> v4);
+  return (importedBy < 0x10) & (0xAFF8u >> importedBy);
 }
 
-+ (id)personAndPetLocalIdentifiersInAssets:(id)a3
++ (id)personAndPetLocalIdentifiersInAssets:(id)assets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -44,8 +44,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) clsPersonAndPetLocalIdentifiers];
-        [v4 addObjectsFromArray:v10];
+        clsPersonAndPetLocalIdentifiers = [*(*(&v13 + 1) + 8 * i) clsPersonAndPetLocalIdentifiers];
+        [v4 addObjectsFromArray:clsPersonAndPetLocalIdentifiers];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -59,27 +59,27 @@
   return v4;
 }
 
-+ (id)filterImportedAssets:(id)a3 byOverlapWithRelevantAssets:(id)a4 withGraph:(id)a5
++ (id)filterImportedAssets:(id)assets byOverlapWithRelevantAssets:(id)relevantAssets withGraph:(id)graph
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  relevantAssetsCopy = relevantAssets;
+  graphCopy = graph;
   v11 = objc_alloc(MEMORY[0x277CBEB58]);
-  v39 = v9;
-  v12 = [a1 personAndPetLocalIdentifiersInAssets:v9];
+  v39 = relevantAssetsCopy;
+  v12 = [self personAndPetLocalIdentifiersInAssets:relevantAssetsCopy];
   v13 = [v11 initWithSet:v12];
 
-  v36 = v10;
-  v14 = [v10 meNode];
-  v15 = [v14 localIdentifier];
+  v36 = graphCopy;
+  meNode = [graphCopy meNode];
+  localIdentifier = [meNode localIdentifier];
 
-  if (v15)
+  if (localIdentifier)
   {
-    [v13 addObject:v15];
+    [v13 addObject:localIdentifier];
   }
 
-  v35 = v15;
+  v35 = localIdentifier;
   v38 = v13;
   v16 = [objc_alloc(MEMORY[0x277D277B8]) initWithSimilarityModelClass:objc_opt_class()];
   v40 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -87,7 +87,7 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v8;
+  obj = assetsCopy;
   v17 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v17)
   {
@@ -104,8 +104,8 @@
 
         v20 = *(*(&v46 + 1) + 8 * i);
         v21 = objc_alloc(MEMORY[0x277CBEB98]);
-        v22 = [v20 clsPersonAndPetLocalIdentifiers];
-        v23 = [v21 initWithArray:v22];
+        clsPersonAndPetLocalIdentifiers = [v20 clsPersonAndPetLocalIdentifiers];
+        v23 = [v21 initWithArray:clsPersonAndPetLocalIdentifiers];
 
         if ([v23 count] && objc_msgSend(v23, "isSubsetOfSet:", v38))
         {
@@ -114,7 +114,7 @@
 
         else
         {
-          v24 = [v20 clsSimilarityModelVersion];
+          clsSimilarityModelVersion = [v20 clsSimilarityModelVersion];
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
@@ -136,7 +136,7 @@
 
                 [v16 distanceBetweenItem:v20 andItem:*(*(&v42 + 1) + 8 * j)];
                 v31 = v30;
-                [v16 distanceThresholdForSimilarity:2 withSimilarityModelVersion:v24];
+                [v16 distanceThresholdForSimilarity:2 withSimilarityModelVersion:clsSimilarityModelVersion];
                 if (v31 < v32)
                 {
                   [v40 addObject:v20];
@@ -169,17 +169,17 @@ LABEL_21:
   return v40;
 }
 
-+ (id)filterImportedAssetsWithoutLocationAndWithoutSceneOrPersonOverlapFromAllAssets:(id)a3 withGraph:(id)a4
++ (id)filterImportedAssetsWithoutLocationAndWithoutSceneOrPersonOverlapFromAllAssets:(id)assets withGraph:(id)graph
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  graphCopy = graph;
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -197,7 +197,7 @@ LABEL_21:
         v14 = *(*(&v23 + 1) + 8 * i);
         v15 = MEMORY[0x277D3ACD0];
         [v14 locationCoordinate];
-        if (([v15 canUseCoordinate:?] & 1) == 0 && objc_msgSend(a1, "isImportedAsset:", v14))
+        if (([v15 canUseCoordinate:?] & 1) == 0 && objc_msgSend(self, "isImportedAsset:", v14))
         {
           [v8 addObject:v14];
         }
@@ -222,7 +222,7 @@ LABEL_21:
 
     else
     {
-      v19 = [a1 filterImportedAssets:v8 byOverlapWithRelevantAssets:v18 withGraph:v7];
+      v19 = [self filterImportedAssets:v8 byOverlapWithRelevantAssets:v18 withGraph:graphCopy];
       [v18 unionSet:v19];
       v20 = v18;
     }
@@ -238,17 +238,17 @@ LABEL_21:
   return v20;
 }
 
-+ (id)momentNodesAtHomeOrWorkOrFrequentLocationInGraph:(id)a3
++ (id)momentNodesAtHomeOrWorkOrFrequentLocationInGraph:(id)graph
 {
-  v3 = a3;
-  v4 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v3];
-  v5 = [v4 momentNodes];
-  v6 = [(PGGraphNodeCollection *)PGGraphHomeWorkNodeCollection nodesInGraph:v3];
+  graphCopy = graph;
+  v4 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy];
+  momentNodes = [v4 momentNodes];
+  v6 = [(PGGraphNodeCollection *)PGGraphHomeWorkNodeCollection nodesInGraph:graphCopy];
 
-  v7 = [v6 addressNodes];
-  v8 = [v7 momentNodes];
+  addressNodes = [v6 addressNodes];
+  momentNodes2 = [addressNodes momentNodes];
 
-  v9 = [v5 collectionByFormingUnionWith:v8];
+  v9 = [momentNodes collectionByFormingUnionWith:momentNodes2];
 
   return v9;
 }
@@ -264,70 +264,70 @@ LABEL_21:
   return v2;
 }
 
-+ (id)outdoorROIMomentNodesNotAtHomeOrFrequentLocationInGraph:(id)a3 useMomentFeatureEdges:(BOOL)a4
++ (id)outdoorROIMomentNodesNotAtHomeOrFrequentLocationInGraph:(id)graph useMomentFeatureEdges:(BOOL)edges
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PGGraphNodeCollection *)PGGraphHomeWorkNodeCollection nodesInGraph:v6];
-  v8 = [v7 addressNodes];
-  v9 = [v8 momentNodes];
+  edgesCopy = edges;
+  graphCopy = graph;
+  v7 = [(PGGraphNodeCollection *)PGGraphHomeWorkNodeCollection nodesInGraph:graphCopy];
+  addressNodes = [v7 addressNodes];
+  momentNodes = [addressNodes momentNodes];
 
-  v10 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v6];
-  v11 = [v10 momentNodes];
-  v12 = [v9 collectionByFormingUnionWith:v11];
-  v13 = [a1 outdoorROINodesInGraph:v6];
+  v10 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy];
+  momentNodes2 = [v10 momentNodes];
+  v12 = [momentNodes collectionByFormingUnionWith:momentNodes2];
+  v13 = [self outdoorROINodesInGraph:graphCopy];
 
-  if (v4)
+  if (edgesCopy)
   {
-    v14 = [v13 featureNodeCollection];
-    v15 = [v14 momentNodes];
+    featureNodeCollection = [v13 featureNodeCollection];
+    momentNodes3 = [featureNodeCollection momentNodes];
   }
 
   else
   {
-    v15 = [v13 momentNodes];
+    momentNodes3 = [v13 momentNodes];
   }
 
-  v16 = [v15 collectionBySubtracting:v12];
+  v16 = [momentNodes3 collectionBySubtracting:v12];
 
   return v16;
 }
 
-+ (id)outdoorROINodesInGraph:(id)a3
++ (id)outdoorROINodesInGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [a1 _outdoorROITypes];
-  v6 = [PGGraphROINodeCollection roiNodesOfTypes:v5 inGraph:v4];
+  graphCopy = graph;
+  _outdoorROITypes = [self _outdoorROITypes];
+  v6 = [PGGraphROINodeCollection roiNodesOfTypes:_outdoorROITypes inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)babyAndChildPersonNodesAtHomeOrFrequentLocationInGraph:(id)a3
++ (id)babyAndChildPersonNodesAtHomeOrFrequentLocationInGraph:(id)graph
 {
-  v3 = a3;
-  v4 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_284485B98 includingMe:0 inGraph:v3];
+  graphCopy = graph;
+  v4 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_284485B98 includingMe:0 inGraph:graphCopy];
   if ([v4 count])
   {
-    v5 = [v3 meNodeCollection];
-    v6 = [v5 homeNodes];
-    v7 = [v6 addressNodes];
-    v8 = [v7 momentNodes];
-    v9 = [v8 personNodes];
+    meNodeCollection = [graphCopy meNodeCollection];
+    homeNodes = [meNodeCollection homeNodes];
+    addressNodes = [homeNodes addressNodes];
+    momentNodes = [addressNodes momentNodes];
+    personNodes = [momentNodes personNodes];
 
-    v10 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v3];
+    v10 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy];
 
-    v11 = [v10 momentNodes];
-    v12 = [v11 personNodes];
+    momentNodes2 = [v10 momentNodes];
+    personNodes2 = [momentNodes2 personNodes];
 
-    v13 = [v9 collectionByFormingUnionWith:v12];
+    v13 = [personNodes collectionByFormingUnionWith:personNodes2];
     v14 = [v13 collectionByIntersecting:v4];
 
-    v3 = v9;
+    graphCopy = personNodes;
   }
 
   else
   {
-    v14 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:v3];
+    v14 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:graphCopy];
   }
 
   return v14;

@@ -1,22 +1,22 @@
 @interface DTKPKDebugCodeWithName
-- (BOOL)isEqual:(id)a3;
-- (DTKPKDebugCodeWithName)initWithCoder:(id)a3;
-- (DTKPKDebugCodeWithName)initWithValue:(unsigned int)a3 name:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DTKPKDebugCodeWithName)initWithCoder:(id)coder;
+- (DTKPKDebugCodeWithName)initWithValue:(unsigned int)value name:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DTKPKDebugCodeWithName
 
-- (DTKPKDebugCodeWithName)initWithCoder:(id)a3
+- (DTKPKDebugCodeWithName)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DTKPKDebugCodeWithName;
   v5 = [(DTKPKDebugCodeWithName *)&v9 init];
   if (v5)
   {
-    v5->_kdebugCode.value = [v4 decodeInt32ForKey:@"_kdebugCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v5->_kdebugCode.value = [coderCopy decodeInt32ForKey:@"_kdebugCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -24,40 +24,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_kdebugCode.value;
-  v5 = a3;
-  [v5 encodeInt32:value forKey:@"_kdebugCode"];
-  [v5 encodeObject:self->_name forKey:@"_name"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:value forKey:@"_kdebugCode"];
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
 }
 
-- (DTKPKDebugCodeWithName)initWithValue:(unsigned int)a3 name:(id)a4
+- (DTKPKDebugCodeWithName)initWithValue:(unsigned int)value name:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = DTKPKDebugCodeWithName;
   v8 = [(DTKPKDebugCodeWithName *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_kdebugCode.value = a3;
-    objc_storeStrong(&v8->_name, a4);
+    v8->_kdebugCode.value = value;
+    objc_storeStrong(&v8->_name, name);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(DTKPKDebugCodeWithName *)self name];
-    v7 = [v5 name];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    name = [(DTKPKDebugCodeWithName *)self name];
+    name2 = [v5 name];
+    if ([name isEqualToString:name2])
     {
       v8.var0 = [(DTKPKDebugCodeWithName *)self kdebugCode];
       v9 = v8.var0 == [v5 kdebugCode];

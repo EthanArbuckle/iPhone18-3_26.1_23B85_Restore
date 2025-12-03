@@ -1,25 +1,25 @@
 @interface RTLocationOfInterestTransition
-- (BOOL)isEqual:(id)a3;
-- (RTLocationOfInterestTransition)initWithCoder:(id)a3;
-- (RTLocationOfInterestTransition)initWithIdentifier:(id)a3 startDate:(id)a4 stopDate:(id)a5 visitIdentifierOrigin:(id)a6 visitIdentifierDestination:(id)a7 modeOfTransportation:(int64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (RTLocationOfInterestTransition)initWithCoder:(id)coder;
+- (RTLocationOfInterestTransition)initWithIdentifier:(id)identifier startDate:(id)date stopDate:(id)stopDate visitIdentifierOrigin:(id)origin visitIdentifierDestination:(id)destination modeOfTransportation:(int64_t)transportation;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLocationOfInterestTransition
 
-- (RTLocationOfInterestTransition)initWithIdentifier:(id)a3 startDate:(id)a4 stopDate:(id)a5 visitIdentifierOrigin:(id)a6 visitIdentifierDestination:(id)a7 modeOfTransportation:(int64_t)a8
+- (RTLocationOfInterestTransition)initWithIdentifier:(id)identifier startDate:(id)date stopDate:(id)stopDate visitIdentifierOrigin:(id)origin visitIdentifierDestination:(id)destination modeOfTransportation:(int64_t)transportation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v14)
+  identifierCopy = identifier;
+  dateCopy = date;
+  stopDateCopy = stopDate;
+  originCopy = origin;
+  destinationCopy = destination;
+  if (identifierCopy)
   {
-    if (v15)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -37,10 +37,10 @@
       _os_log_error_impl(&dword_1BF1C4000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier (in %s:%d)", buf, 0x12u);
     }
 
-    if (v15)
+    if (dateCopy)
     {
 LABEL_3:
-      if (v16)
+      if (stopDateCopy)
       {
         goto LABEL_4;
       }
@@ -59,10 +59,10 @@ LABEL_3:
     _os_log_error_impl(&dword_1BF1C4000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (v16)
+  if (stopDateCopy)
   {
 LABEL_4:
-    if (v17)
+    if (originCopy)
     {
       goto LABEL_5;
     }
@@ -78,7 +78,7 @@ LABEL_22:
       _os_log_error_impl(&dword_1BF1C4000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visitIdentifierOrigin (in %s:%d)", buf, 0x12u);
     }
 
-    if (v18)
+    if (destinationCopy)
     {
       goto LABEL_6;
     }
@@ -97,17 +97,17 @@ LABEL_19:
     _os_log_error_impl(&dword_1BF1C4000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: stopDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v17)
+  if (!originCopy)
   {
     goto LABEL_22;
   }
 
 LABEL_5:
-  if (v18)
+  if (destinationCopy)
   {
 LABEL_6:
-    v19 = 0;
-    if (v14 && v15 && v16 && v17)
+    selfCopy = 0;
+    if (identifierCopy && dateCopy && stopDateCopy && originCopy)
     {
       v34.receiver = self;
       v34.super_class = RTLocationOfInterestTransition;
@@ -115,22 +115,22 @@ LABEL_6:
       v21 = v20;
       if (v20)
       {
-        objc_storeStrong(&v20->_identifier, a3);
-        v22 = [v15 copy];
+        objc_storeStrong(&v20->_identifier, identifier);
+        v22 = [dateCopy copy];
         startDate = v21->_startDate;
         v21->_startDate = v22;
 
-        v24 = [v16 copy];
+        v24 = [stopDateCopy copy];
         stopDate = v21->_stopDate;
         v21->_stopDate = v24;
 
-        objc_storeStrong(&v21->_visitIdentifierOrigin, a6);
-        objc_storeStrong(&v21->_visitIdentifierDestination, a7);
-        v21->_modeOfTransportation = a8;
+        objc_storeStrong(&v21->_visitIdentifierOrigin, origin);
+        objc_storeStrong(&v21->_visitIdentifierDestination, destination);
+        v21->_modeOfTransportation = transportation;
       }
 
       self = v21;
-      v19 = self;
+      selfCopy = self;
     }
 
     goto LABEL_28;
@@ -147,94 +147,94 @@ LABEL_25:
     _os_log_error_impl(&dword_1BF1C4000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visitIdentifierDestination (in %s:%d)", buf, 0x12u);
   }
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_28:
 
   v31 = *MEMORY[0x1E69E9840];
-  return v19;
+  return selfCopy;
 }
 
 - (id)description
 {
   v14 = MEMORY[0x1E696AD60];
-  v16 = [(RTLocationOfInterestTransition *)self identifier];
-  v3 = [v16 UUIDString];
-  v15 = [(RTLocationOfInterestTransition *)self startDate];
-  v4 = [v15 stringFromDate];
-  v5 = [(RTLocationOfInterestTransition *)self stopDate];
-  v6 = [v5 stringFromDate];
-  v7 = [(RTLocationOfInterestTransition *)self visitIdentifierOrigin];
-  v8 = [v7 UUIDString];
-  v9 = [(RTLocationOfInterestTransition *)self visitIdentifierDestination];
-  v10 = [v9 UUIDString];
+  identifier = [(RTLocationOfInterestTransition *)self identifier];
+  uUIDString = [identifier UUIDString];
+  startDate = [(RTLocationOfInterestTransition *)self startDate];
+  stringFromDate = [startDate stringFromDate];
+  stopDate = [(RTLocationOfInterestTransition *)self stopDate];
+  stringFromDate2 = [stopDate stringFromDate];
+  visitIdentifierOrigin = [(RTLocationOfInterestTransition *)self visitIdentifierOrigin];
+  uUIDString2 = [visitIdentifierOrigin UUIDString];
+  visitIdentifierDestination = [(RTLocationOfInterestTransition *)self visitIdentifierDestination];
+  uUIDString3 = [visitIdentifierDestination UUIDString];
   v11 = [RTRoutineManager modeOfTransportationToString:[(RTLocationOfInterestTransition *)self modeOfTransportation]];
-  v12 = [v14 stringWithFormat:@"identifier, %@, startDate, %@, stopDate, %@, origin, %@, destination, %@, modeOfTransportation, %@", v3, v4, v6, v8, v10, v11];
+  v12 = [v14 stringWithFormat:@"identifier, %@, startDate, %@, stopDate, %@, origin, %@, destination, %@, modeOfTransportation, %@", uUIDString, stringFromDate, stringFromDate2, uUIDString2, uUIDString3, v11];
 
   return v12;
 }
 
-- (RTLocationOfInterestTransition)initWithCoder:(id)a3
+- (RTLocationOfInterestTransition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = RTLocationOfInterestTransition;
   v5 = [(RTLocationOfInterestTransition *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stopDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stopDate"];
     stopDate = v5->_stopDate;
     v5->_stopDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifierOrigin"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifierOrigin"];
     visitIdentifierOrigin = v5->_visitIdentifierOrigin;
     v5->_visitIdentifierOrigin = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifierDestination"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifierDestination"];
     visitIdentifierDestination = v5->_visitIdentifierDestination;
     v5->_visitIdentifierDestination = v14;
 
-    v5->_modeOfTransportation = [v4 decodeIntegerForKey:@"modeOfTransportation"];
+    v5->_modeOfTransportation = [coderCopy decodeIntegerForKey:@"modeOfTransportation"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_stopDate forKey:@"stopDate"];
-  [v5 encodeObject:self->_visitIdentifierOrigin forKey:@"visitIdentifierOrigin"];
-  [v5 encodeObject:self->_visitIdentifierDestination forKey:@"visitIdentifierDestination"];
-  [v5 encodeInteger:self->_modeOfTransportation forKey:@"modeOfTransportation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_stopDate forKey:@"stopDate"];
+  [coderCopy encodeObject:self->_visitIdentifierOrigin forKey:@"visitIdentifierOrigin"];
+  [coderCopy encodeObject:self->_visitIdentifierDestination forKey:@"visitIdentifierDestination"];
+  [coderCopy encodeInteger:self->_modeOfTransportation forKey:@"modeOfTransportation"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(RTLocationOfInterestTransition *)self identifier];
-    v8 = [(RTLocationOfInterestTransition *)v6 identifier];
+    identifier = [(RTLocationOfInterestTransition *)self identifier];
+    identifier2 = [(RTLocationOfInterestTransition *)v6 identifier];
 
-    v9 = [v7 isEqual:v8];
+    v9 = [identifier isEqual:identifier2];
   }
 
   else
@@ -247,8 +247,8 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v2 = [(RTLocationOfInterestTransition *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(RTLocationOfInterestTransition *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

@@ -1,24 +1,24 @@
 @interface SISchemaHardwareInterfaceIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaHardwareInterfaceIdentifier)initWithDictionary:(id)a3;
-- (SISchemaHardwareInterfaceIdentifier)initWithJSON:(id)a3;
+- (SISchemaHardwareInterfaceIdentifier)initWithDictionary:(id)dictionary;
+- (SISchemaHardwareInterfaceIdentifier)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaHardwareInterfaceIdentifier
 
-- (SISchemaHardwareInterfaceIdentifier)initWithDictionary:(id)a3
+- (SISchemaHardwareInterfaceIdentifier)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaHardwareInterfaceIdentifier;
   v5 = [(SISchemaHardwareInterfaceIdentifier *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"interfaceVendorID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"interfaceVendorID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       [(SISchemaHardwareInterfaceIdentifier *)v5 setInterfaceVendorID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"interfaceProductID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"interfaceProductID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SISchemaHardwareInterfaceIdentifier)initWithJSON:(id)a3
+- (SISchemaHardwareInterfaceIdentifier)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaHardwareInterfaceIdentifier *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaHardwareInterfaceIdentifier *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaHardwareInterfaceIdentifier *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,48 +76,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_interfaceProductID)
   {
-    v4 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"interfaceProductID"];
+    interfaceProductID = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
+    v5 = [interfaceProductID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"interfaceProductID"];
   }
 
   if (self->_interfaceVendorID)
   {
-    v6 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"interfaceVendorID"];
+    interfaceVendorID = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
+    v7 = [interfaceVendorID copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"interfaceVendorID"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
-  v6 = [v4 interfaceVendorID];
-  if ((v5 != 0) == (v6 == 0))
+  interfaceVendorID = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
+  interfaceVendorID2 = [equalCopy interfaceVendorID];
+  if ((interfaceVendorID != 0) == (interfaceVendorID2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
-  if (v7)
+  interfaceVendorID3 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
+  if (interfaceVendorID3)
   {
-    v8 = v7;
-    v9 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
-    v10 = [v4 interfaceVendorID];
-    v11 = [v9 isEqual:v10];
+    v8 = interfaceVendorID3;
+    interfaceVendorID4 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
+    interfaceVendorID5 = [equalCopy interfaceVendorID];
+    v11 = [interfaceVendorID4 isEqual:interfaceVendorID5];
 
     if (!v11)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
-  v6 = [v4 interfaceProductID];
-  if ((v5 != 0) != (v6 == 0))
+  interfaceVendorID = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
+  interfaceVendorID2 = [equalCopy interfaceProductID];
+  if ((interfaceVendorID != 0) != (interfaceVendorID2 == 0))
   {
-    v12 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
-    if (!v12)
+    interfaceProductID = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
+    if (!interfaceProductID)
     {
 
 LABEL_15:
@@ -142,10 +142,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
-    v15 = [v4 interfaceProductID];
-    v16 = [v14 isEqual:v15];
+    v13 = interfaceProductID;
+    interfaceProductID2 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
+    interfaceProductID3 = [equalCopy interfaceProductID];
+    v16 = [interfaceProductID2 isEqual:interfaceProductID3];
 
     if (v16)
     {
@@ -165,19 +165,19 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
+  toCopy = to;
+  interfaceVendorID = [(SISchemaHardwareInterfaceIdentifier *)self interfaceVendorID];
 
-  if (v4)
+  if (interfaceVendorID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
+  interfaceProductID = [(SISchemaHardwareInterfaceIdentifier *)self interfaceProductID];
 
-  if (v5)
+  if (interfaceProductID)
   {
     PBDataWriterWriteStringField();
   }

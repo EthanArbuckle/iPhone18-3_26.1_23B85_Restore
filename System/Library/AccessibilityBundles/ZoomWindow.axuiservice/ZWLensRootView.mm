@@ -1,40 +1,40 @@
 @interface ZWLensRootView
-- (ZWLensRootView)initWithDelegate:(id)a3;
+- (ZWLensRootView)initWithDelegate:(id)delegate;
 - (ZWLensRootViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation ZWLensRootView
 
-- (ZWLensRootView)initWithDelegate:(id)a3
+- (ZWLensRootView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ZWLensRootView;
   v5 = [(ZWLensRootView *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    [(ZWLensRootView *)v5 setDelegate:v4];
+    [(ZWLensRootView *)v5 setDelegate:delegateCopy];
     [(ZWLensRootView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   return v6;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(ZWLensRootView *)self delegate];
-  v9 = [v8 zoomRootview:self viewForHitTestAtPoint:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  delegate = [(ZWLensRootView *)self delegate];
+  v9 = [delegate zoomRootview:self viewForHitTestAtPoint:{x, y}];
 
   if (!v9)
   {
     v11.receiver = self;
     v11.super_class = ZWLensRootView;
-    v9 = [(ZWLensRootView *)&v11 hitTest:v7 withEvent:x, y];
+    v9 = [(ZWLensRootView *)&v11 hitTest:eventCopy withEvent:x, y];
   }
 
   return v9;

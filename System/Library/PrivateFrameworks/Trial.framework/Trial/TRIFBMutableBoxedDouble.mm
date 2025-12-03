@@ -1,12 +1,12 @@
 @interface TRIFBMutableBoxedDouble
-- (TRIFBMutableBoxedDouble)initWithVal:(double)a3;
+- (TRIFBMutableBoxedDouble)initWithVal:(double)val;
 - (void)dealloc;
-- (void)setVal:(double)a3;
+- (void)setVal:(double)val;
 @end
 
 @implementation TRIFBMutableBoxedDouble
 
-- (void)setVal:(double)a3
+- (void)setVal:(double)val
 {
   if (self && !self->_allowMutation)
   {
@@ -18,7 +18,7 @@
     objc_exception_throw(v7);
   }
 
-  self->_ptr->var0 = a3;
+  self->_ptr->var0 = val;
 }
 
 - (void)dealloc
@@ -37,13 +37,13 @@
   [(TRIFBMutableBoxedDouble *)&v4 dealloc];
 }
 
-- (TRIFBMutableBoxedDouble)initWithVal:(double)a3
+- (TRIFBMutableBoxedDouble)initWithVal:(double)val
 {
   v4 = [(TRIFBMutableBoxedDouble *)self init];
   v5 = v4;
   if (v4)
   {
-    [(TRIFBMutableBoxedDouble *)v4 setVal:a3];
+    [(TRIFBMutableBoxedDouble *)v4 setVal:val];
   }
 
   return v5;

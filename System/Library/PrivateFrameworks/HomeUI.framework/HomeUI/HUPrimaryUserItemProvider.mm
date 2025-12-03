@@ -1,7 +1,7 @@
 @interface HUPrimaryUserItemProvider
 - (HUPrimaryUserItemProvider)init;
-- (HUPrimaryUserItemProvider)initWithHome:(id)a3 mediaProfileContainer:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUPrimaryUserItemProvider)initWithHome:(id)home mediaProfileContainer:(id)container;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -10,25 +10,25 @@
 
 - (HUPrimaryUserItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItemProvider.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HUPrimaryUserItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItemProvider.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HUPrimaryUserItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HUPrimaryUserItemProvider)initWithHome:(id)a3 mediaProfileContainer:(id)a4
+- (HUPrimaryUserItemProvider)initWithHome:(id)home mediaProfileContainer:(id)container
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  containerCopy = container;
   v14.receiver = self;
   v14.super_class = HUPrimaryUserItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_mediaProfileContainer, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_mediaProfileContainer, container);
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
     userItems = v10->_userItems;
     v10->_userItems = v11;
@@ -37,12 +37,12 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUPrimaryUserItemProvider *)self home];
-  v6 = [(HUPrimaryUserItemProvider *)self mediaProfileContainer];
-  v7 = [v4 initWithHome:v5 mediaProfileContainer:v6];
+  home = [(HUPrimaryUserItemProvider *)self home];
+  mediaProfileContainer = [(HUPrimaryUserItemProvider *)self mediaProfileContainer];
+  v7 = [v4 initWithHome:home mediaProfileContainer:mediaProfileContainer];
 
   return v7;
 }
@@ -55,11 +55,11 @@
   aBlock[3] = &unk_277DBCDF8;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(HUPrimaryUserItemProvider *)self home];
-  v5 = [v4 hf_allUsersIncludingCurrentUser];
+  home = [(HUPrimaryUserItemProvider *)self home];
+  hf_allUsersIncludingCurrentUser = [home hf_allUsersIncludingCurrentUser];
 
   objc_initWeak(&location, self);
-  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:0 itemMap:v3];
+  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:hf_allUsersIncludingCurrentUser filter:0 itemMap:v3];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__HUPrimaryUserItemProvider_reloadItems__block_invoke_2;
@@ -120,12 +120,12 @@ id __40__HUPrimaryUserItemProvider_reloadItems__block_invoke_2(uint64_t a1, void
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUPrimaryUserItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B28];
   v8[0] = *MEMORY[0x277D13B88];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }

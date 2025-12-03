@@ -1,8 +1,8 @@
 @interface SKDLocationProcessor
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4;
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d;
 - (SKDLocationProcessor)init;
-- (SKDLocationProcessor)initWithDataDetector:(id)a3 listener:(id)a4;
-- (id)processRecord:(id)a3 bundleID:(id)a4;
+- (SKDLocationProcessor)initWithDataDetector:(id)detector listener:(id)listener;
+- (id)processRecord:(id)record bundleID:(id)d;
 - (id)processedAttributes;
 - (id)requiredAttributes;
 - (unint64_t)maxEntityCount;
@@ -13,24 +13,24 @@
 - (SKDLocationProcessor)init
 {
   v3 = +[SKGDataDetector sharedDetector];
-  v4 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v5 = [(SKDLocationProcessor *)self initWithDataDetector:v3 listener:v4];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  v5 = [(SKDLocationProcessor *)self initWithDataDetector:v3 listener:mEMORY[0x277D657A8]];
 
   return v5;
 }
 
-- (SKDLocationProcessor)initWithDataDetector:(id)a3 listener:(id)a4
+- (SKDLocationProcessor)initWithDataDetector:(id)detector listener:(id)listener
 {
-  v7 = a3;
-  v8 = a4;
+  detectorCopy = detector;
+  listenerCopy = listener;
   v12.receiver = self;
   v12.super_class = SKDLocationProcessor;
   v9 = [(SKDRecordProcessor *)&v12 initWithName:@"location"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_detector, a3);
-    objc_storeStrong(&v10->_listener, a4);
+    objc_storeStrong(&v9->_detector, detector);
+    objc_storeStrong(&v10->_listener, listener);
   }
 
   return v10;
@@ -38,10 +38,10 @@
 
 - (unint64_t)maxEntityCount
 {
-  v2 = [MEMORY[0x277D657A0] sharedContext];
-  v3 = [v2 maxEntityCount];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  maxEntityCount = [mEMORY[0x277D657A0] maxEntityCount];
 
-  return v3;
+  return maxEntityCount;
 }
 
 - (id)requiredAttributes
@@ -92,45 +92,45 @@ void __43__SKDLocationProcessor_processedAttributes__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d
 {
   v5.receiver = self;
   v5.super_class = SKDLocationProcessor;
-  return [(SKDRecordProcessor *)&v5 willProcessRecord:a3 bundleID:a4];
+  return [(SKDRecordProcessor *)&v5 willProcessRecord:record bundleID:d];
 }
 
-- (id)processRecord:(id)a3 bundleID:(id)a4
+- (id)processRecord:(id)record bundleID:(id)d
 {
   v143 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v8 = [SKDRecordUpdate alloc];
   v9 = [objc_opt_class() description];
-  v10 = [(SKDRecordUpdate *)v8 initWithStatus:0 identifier:v9 bundleID:v7];
+  v10 = [(SKDRecordUpdate *)v8 initWithStatus:0 identifier:v9 bundleID:dCopy];
 
-  v11 = [(SKDRecordProcessor *)self name];
-  [(SKDItemUpdate *)v10 setPipeline:v11];
+  name = [(SKDRecordProcessor *)self name];
+  [(SKDItemUpdate *)v10 setPipeline:name];
 
-  v12 = [v6 objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
+  v12 = [recordCopy objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
   if (v12)
   {
-    v13 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v12];
+    currentLocale = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v12];
     v14 = v12;
   }
 
   else
   {
-    v13 = 0;
+    currentLocale = 0;
     v14 = @"und";
   }
 
   [(SKDItemUpdate *)v10 setTextContentLanguage:v14];
   v110 = objc_alloc_init(SKGEntityRanker);
   v104 = *MEMORY[0x277CC2A90];
-  v15 = [v6 objectForKeyedSubscript:?];
+  v15 = [recordCopy objectForKeyedSubscript:?];
   if ([v15 count])
   {
-    v16 = v13 == 0;
+    v16 = currentLocale == 0;
   }
 
   else
@@ -138,7 +138,7 @@ void __43__SKDLocationProcessor_processedAttributes__block_invoke()
     v16 = 1;
   }
 
-  v111 = self;
+  selfCopy = self;
   if (v16)
   {
     v17 = 1;
@@ -146,8 +146,8 @@ void __43__SKDLocationProcessor_processedAttributes__block_invoke()
 
   else
   {
-    v18 = [(SKDRecordProcessor *)self logger];
-    v113 = [v18 trackingEventBeginWithName:@"resolve-locations" event:v10];
+    logger = [(SKDRecordProcessor *)self logger];
+    v113 = [logger trackingEventBeginWithName:@"resolve-locations" event:v10];
 
     v138 = 0u;
     v139 = 0u;
@@ -160,7 +160,7 @@ void __43__SKDLocationProcessor_processedAttributes__block_invoke()
       v20 = v19;
       v106 = v15;
       v108 = v10;
-      v102 = v7;
+      v102 = dCopy;
       v117 = *v137;
       while (2)
       {
@@ -172,38 +172,38 @@ void __43__SKDLocationProcessor_processedAttributes__block_invoke()
           }
 
           v22 = *(*(&v136 + 1) + 8 * i);
-          v23 = [(SKDRecordProcessor *)self logger];
-          v24 = [v23 trackingEventBeginWithName:@"resolve-location" event:v108];
+          logger2 = [(SKDRecordProcessor *)self logger];
+          v24 = [logger2 trackingEventBeginWithName:@"resolve-location" event:v108];
 
-          v25 = [(SKDLocationProcessor *)self detector];
-          v26 = [v22 label];
+          detector = [(SKDLocationProcessor *)self detector];
+          label = [v22 label];
           v133[0] = MEMORY[0x277D85DD0];
           v133[1] = 3221225472;
           v133[2] = __47__SKDLocationProcessor_processRecord_bundleID___block_invoke;
           v133[3] = &unk_27893E338;
           v134 = v110;
-          v135 = self;
+          selfCopy2 = self;
           v132[0] = MEMORY[0x277D85DD0];
           v132[1] = 3221225472;
           v132[2] = __47__SKDLocationProcessor_processRecord_bundleID___block_invoke_2;
           v132[3] = &unk_27893E3D8;
           v132[4] = self;
-          v27 = v13;
-          v28 = [v25 enumerateDetectedDataInString:v26 locale:v13 referenceDate:0 referenceTimezone:0 entityBlock:v133 rangeBlock:v132];
+          v27 = currentLocale;
+          v28 = [detector enumerateDetectedDataInString:label locale:currentLocale referenceDate:0 referenceTimezone:0 entityBlock:v133 rangeBlock:v132];
 
-          v29 = [(SKDRecordProcessor *)self logger];
-          [v29 trackingEventEnd:v24];
+          logger3 = [(SKDRecordProcessor *)self logger];
+          [logger3 trackingEventEnd:v24];
 
           if (!v28)
           {
             v17 = 0;
-            v7 = v102;
+            dCopy = v102;
             v10 = v108;
-            v13 = v27;
+            currentLocale = v27;
             goto LABEL_20;
           }
 
-          v13 = v27;
+          currentLocale = v27;
         }
 
         v20 = [obj countByEnumeratingWithState:&v136 objects:v142 count:16];
@@ -216,7 +216,7 @@ void __43__SKDLocationProcessor_processedAttributes__block_invoke()
       }
 
       v17 = 1;
-      v7 = v102;
+      dCopy = v102;
       v10 = v108;
 LABEL_20:
       v15 = v106;
@@ -227,8 +227,8 @@ LABEL_20:
       v17 = 1;
     }
 
-    v30 = [(SKDRecordProcessor *)self logger];
-    [v30 trackingEventEnd:v113];
+    logger4 = [(SKDRecordProcessor *)self logger];
+    [logger4 trackingEventEnd:v113];
   }
 
   if ([(SKDRecordProcessor *)self suspended]|| !v17)
@@ -244,27 +244,27 @@ LABEL_20:
     }
 
     [(SKDEvent *)v10 updateStatus:v44];
-    v45 = [(SKDRecordProcessor *)self logger];
-    [v45 logEvent:v10 level:6];
+    logger5 = [(SKDRecordProcessor *)self logger];
+    [logger5 logEvent:v10 level:6];
 
     v46 = v10;
   }
 
   else
   {
-    v31 = [v6 objectForKeyedSubscript:*MEMORY[0x277CC2DD0]];
-    v32 = [v6 objectForKeyedSubscript:*MEMORY[0x277CC2D18]];
-    v33 = [v6 objectForKeyedSubscript:*MEMORY[0x277CC2D50]];
+    v31 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277CC2DD0]];
+    v32 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277CC2D18]];
+    v33 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277CC2D50]];
     v105 = v31;
     v107 = v15;
     v99 = v33;
     v100 = v32;
     if (v31)
     {
-      if (!v13)
+      if (!currentLocale)
       {
-        v34 = [(SKDLocationProcessor *)v111 listener];
-        v13 = [v34 currentLocale];
+        listener = [(SKDLocationProcessor *)selfCopy listener];
+        currentLocale = [listener currentLocale];
       }
 
       if (v32 && v33)
@@ -273,53 +273,53 @@ LABEL_20:
         v36 = v35;
         [v33 doubleValue];
         v38 = v37;
-        v39 = [(SKDRecordProcessor *)v111 logger];
-        v40 = [v39 trackingEventBeginWithName:@"resolve-location" event:v10];
+        logger6 = [(SKDRecordProcessor *)selfCopy logger];
+        v40 = [logger6 trackingEventBeginWithName:@"resolve-location" event:v10];
 
-        v41 = [(SKDLocationProcessor *)v111 detector];
+        detector2 = [(SKDLocationProcessor *)selfCopy detector];
         v130[0] = MEMORY[0x277D85DD0];
         v130[1] = 3221225472;
         v130[2] = __47__SKDLocationProcessor_processRecord_bundleID___block_invoke_3;
         v130[3] = &unk_27893E338;
         v42 = v131;
         v131[0] = v110;
-        v131[1] = v111;
-        v43 = [v41 enumerateLocationsInString:v105 locale:v13 latitude:v130 longitude:v36 entityBlock:v38];
+        v131[1] = selfCopy;
+        v43 = [detector2 enumerateLocationsInString:v105 locale:currentLocale latitude:v130 longitude:v36 entityBlock:v38];
       }
 
       else
       {
-        v47 = [(SKDRecordProcessor *)v111 logger];
-        v40 = [v47 trackingEventBeginWithName:@"resolve-location" event:v10];
+        logger7 = [(SKDRecordProcessor *)selfCopy logger];
+        v40 = [logger7 trackingEventBeginWithName:@"resolve-location" event:v10];
 
-        v41 = [(SKDLocationProcessor *)v111 detector];
+        detector2 = [(SKDLocationProcessor *)selfCopy detector];
         v128[0] = MEMORY[0x277D85DD0];
         v128[1] = 3221225472;
         v128[2] = __47__SKDLocationProcessor_processRecord_bundleID___block_invoke_4;
         v128[3] = &unk_27893E338;
         v42 = v129;
         v129[0] = v110;
-        v129[1] = v111;
+        v129[1] = selfCopy;
         v127[0] = MEMORY[0x277D85DD0];
         v127[1] = 3221225472;
         v127[2] = __47__SKDLocationProcessor_processRecord_bundleID___block_invoke_5;
         v127[3] = &unk_27893E3D8;
-        v127[4] = v111;
-        v43 = [v41 enumerateDetectedLocationsInString:v105 locale:v13 entityBlock:v128 rangeBlock:v127];
+        v127[4] = selfCopy;
+        v43 = [detector2 enumerateDetectedLocationsInString:v105 locale:currentLocale entityBlock:v128 rangeBlock:v127];
       }
 
       v17 = v43;
 
-      v48 = [(SKDRecordProcessor *)v111 logger];
-      [v48 trackingEventEnd:v40];
+      logger8 = [(SKDRecordProcessor *)selfCopy logger];
+      [logger8 trackingEventEnd:v40];
 
       v33 = v99;
       v32 = v100;
     }
 
-    if ([(SKDRecordProcessor *)v111 suspended]|| !v17)
+    if ([(SKDRecordProcessor *)selfCopy suspended]|| !v17)
     {
-      if ([(SKDRecordProcessor *)v111 suspended])
+      if ([(SKDRecordProcessor *)selfCopy suspended])
       {
         v58 = 3;
       }
@@ -330,23 +330,23 @@ LABEL_20:
       }
 
       [(SKDEvent *)v10 updateStatus:v58];
-      v59 = [(SKDRecordProcessor *)v111 logger];
-      [v59 logEvent:v10 level:6];
+      logger9 = [(SKDRecordProcessor *)selfCopy logger];
+      [logger9 logEvent:v10 level:6];
 
       v60 = v10;
     }
 
     else
     {
-      v97 = [v6 objectForKeyedSubscript:@"_SKGTestLocation"];
-      v103 = v7;
+      v97 = [recordCopy objectForKeyedSubscript:@"_SKGTestLocation"];
+      v103 = dCopy;
       if (v97)
       {
-        v49 = v111;
-        if (!v13)
+        v49 = selfCopy;
+        if (!currentLocale)
         {
-          v50 = [(SKDLocationProcessor *)v111 listener];
-          v13 = [v50 currentLocale];
+          listener2 = [(SKDLocationProcessor *)selfCopy listener];
+          currentLocale = [listener2 currentLocale];
         }
 
         v51 = [v97 componentsSeparatedByString:{@", "}];
@@ -363,34 +363,34 @@ LABEL_20:
           v55 = [v51 objectAtIndexedSubscript:2];
           [(SKGAddress *)v52 setCountry:v55];
 
-          v56 = [(SKDLocationProcessor *)v111 detector];
-          v57 = [v56 locationFromAddress:v52 locale:v13];
+          detector3 = [(SKDLocationProcessor *)selfCopy detector];
+          v57 = [detector3 locationFromAddress:v52 locale:currentLocale];
 
           [(SKGEntityRanker *)v110 addEntity:v57];
         }
 
-        v94 = v13;
+        v94 = currentLocale;
       }
 
       else
       {
-        v94 = v13;
-        v49 = v111;
+        v94 = currentLocale;
+        v49 = selfCopy;
       }
 
       v101 = v12;
       v109 = v10;
       v118 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v61 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v96 = [(SKGEntityRanker *)v110 locations];
-      if ([v96 count])
+      locations = [(SKGEntityRanker *)v110 locations];
+      if ([locations count])
       {
-        v98 = v6;
+        v98 = recordCopy;
         v125 = 0u;
         v126 = 0u;
         v123 = 0u;
         v124 = 0u;
-        v114 = v96;
+        v114 = locations;
         v62 = [v114 countByEnumeratingWithState:&v123 objects:v141 count:16];
         if (v62)
         {
@@ -408,17 +408,17 @@ LABEL_20:
               }
 
               v66 = *(*(&v123 + 1) + 8 * v65);
-              v67 = [v66 address];
+              address = [v66 address];
 
-              if (v67)
+              if (address)
               {
-                v68 = [v66 address];
-                v69 = [v68 address];
+                address2 = [v66 address];
+                v68Address = [address2 address];
 
-                if (([v61 containsObject:v69] & 1) == 0)
+                if (([v61 containsObject:v68Address] & 1) == 0)
                 {
                   obja = objc_alloc(MEMORY[0x277CC3398]);
-                  v70 = [v66 expansions];
+                  expansions = [v66 expansions];
                   v71 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v66, "type")}];
                   v72 = MEMORY[0x277CCABB0];
                   [v66 lat];
@@ -429,14 +429,14 @@ LABEL_20:
                   [v66 lng];
                   v77 = [v76 numberWithDouble:?];
                   [v66 score];
-                  v78 = [obja initWithAddress:v69 synonyms:v70 type:v71 lat:v73 lng:v77 confidence:?];
+                  v78 = [obja initWithAddress:v68Address synonyms:expansions type:v71 lat:v73 lng:v77 confidence:?];
 
                   v64 = v75;
                   v61 = v74;
 
                   v63 = v112;
                   [v118 addObject:v78];
-                  [v74 addObject:v69];
+                  [v74 addObject:v68Address];
                 }
               }
 
@@ -450,8 +450,8 @@ LABEL_20:
           while (v63);
         }
 
-        v6 = v98;
-        v49 = v111;
+        recordCopy = v98;
+        v49 = selfCopy;
       }
 
       v121 = 0u;
@@ -474,8 +474,8 @@ LABEL_20:
             }
 
             v84 = *(*(&v119 + 1) + 8 * j);
-            v85 = [v84 label];
-            v86 = [v61 containsObject:v85];
+            label2 = [v84 label];
+            v86 = [v61 containsObject:label2];
 
             if ((v86 & 1) == 0)
             {
@@ -489,33 +489,33 @@ LABEL_20:
         while (v81);
       }
 
-      v87 = [(SKDLocationProcessor *)v49 maxEntityCount];
+      maxEntityCount = [(SKDLocationProcessor *)v49 maxEntityCount];
       v12 = v101;
-      v7 = v103;
+      dCopy = v103;
       v10 = v109;
       v33 = v99;
       v32 = v100;
       if ([v118 count])
       {
         [v118 sortUsingComparator:&__block_literal_global_40];
-        if ([v118 count] < v87)
+        if ([v118 count] < maxEntityCount)
         {
-          v87 = [v118 count];
+          maxEntityCount = [v118 count];
         }
 
-        v88 = [v118 subarrayWithRange:{0, v87, v94}];
+        v88 = [v118 subarrayWithRange:{0, maxEntityCount, v94}];
         [(SKDItemUpdate *)v109 addAttribute:v104 value:v88];
       }
 
-      v89 = [(SKDRecordProcessor *)v49 marker];
-      [(SKDItemUpdate *)v109 addAttribute:v89 value:MEMORY[0x277CBEC38]];
+      marker = [(SKDRecordProcessor *)v49 marker];
+      [(SKDItemUpdate *)v109 addAttribute:marker value:MEMORY[0x277CBEC38]];
 
       [(SKDEvent *)v109 updateStatus:2];
-      v90 = [(SKDRecordProcessor *)v49 logger];
-      [v90 logEvent:v109 level:6];
+      logger10 = [(SKDRecordProcessor *)v49 logger];
+      [logger10 logEvent:v109 level:6];
 
       v91 = v109;
-      v13 = v95;
+      currentLocale = v95;
       v15 = v107;
     }
   }

@@ -1,31 +1,31 @@
 @interface TSWPEditingController
-+ (id)_targetedDragPreviewForSelection:(id)a3 interactiveCanvasController:(id)a4 reps:(id)a5 applyScale:(BOOL)a6 imageFrameUnion:(CGRect *)a7;
-+ (id)dragItemForHitRepWithDragInteraction:(id)a3 session:(id)a4 canvasView:(id)a5 icc:(id)a6 withTouchPoint:(CGPoint)a7;
-+ (id)dropProposalForSession:(id)a3;
-+ (id)previewForDragItem:(id)a3;
-+ (id)retargetedDragItem:(id)a3 withDefault:(id)a4 canvasView:(id)a5 icc:(id)a6;
++ (id)_targetedDragPreviewForSelection:(id)selection interactiveCanvasController:(id)controller reps:(id)reps applyScale:(BOOL)scale imageFrameUnion:(CGRect *)union;
++ (id)dragItemForHitRepWithDragInteraction:(id)interaction session:(id)session canvasView:(id)view icc:(id)icc withTouchPoint:(CGPoint)point;
++ (id)dropProposalForSession:(id)session;
++ (id)previewForDragItem:(id)item;
++ (id)retargetedDragItem:(id)item withDefault:(id)default canvasView:(id)view icc:(id)icc;
 - (BOOL)allowAutomaticTextEditingToBeginWithDifferentEditor;
 - (BOOL)canAddOrShowComment;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)canHandleSwipeGestureForGestureRecognizer:(id)a3 outDelta:(int64_t *)a4 outTextDirection:(int64_t *)a5 outLayoutDirection:(int64_t *)a6;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)canHandleSwipeGestureForGestureRecognizer:(id)recognizer outDelta:(int64_t *)delta outTextDirection:(int64_t *)direction outLayoutDirection:(int64_t *)layoutDirection;
 - (BOOL)canHighlightCurrentSelection;
 - (BOOL)canRemoveHighlightForCurrentSelection;
-- (BOOL)canSetWritingDirection:(int)a3;
-- (BOOL)canShowCommentForCurrentSelectionGetHighlight:(id *)a3 range:(_NSRange *)a4;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canSetWritingDirection:(int)direction;
+- (BOOL)canShowCommentForCurrentSelectionGetHighlight:(id *)highlight range:(_NSRange *)range;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isDisplayingPhoneticsHUD;
-- (BOOL)isParagraphModeWithSelection:(id)a3 onStorage:(id)a4;
+- (BOOL)isParagraphModeWithSelection:(id)selection onStorage:(id)storage;
 - (BOOL)isSelectionSingleAnchoredDrawableAttachment;
-- (BOOL)isUnscaledPointInTextSelection:(CGPoint)a3;
-- (BOOL)pIsSelectionPlaceHolderTextWithSelection:(id)a3;
+- (BOOL)isUnscaledPointInTextSelection:(CGPoint)selection;
+- (BOOL)pIsSelectionPlaceHolderTextWithSelection:(id)selection;
 - (BOOL)p_canEditTextString;
 - (BOOL)p_canInsertBreak;
-- (BOOL)p_canSelectAllWithSender:(id)a3;
-- (BOOL)p_hitListLabelAtCharIndex:(unint64_t)a3 atNaturalPoint:(CGPoint)a4 inRep:(id)a5;
-- (BOOL)p_isCharIndex:(unint64_t)a3 withEolAffinity:(BOOL)a4 atBoundary:(int)a5 inDirection:(int64_t)a6;
-- (BOOL)p_isCharIndex:(unint64_t)a3 withinTextUnit:(int)a4 inDirection:(int64_t)a5;
+- (BOOL)p_canSelectAllWithSender:(id)sender;
+- (BOOL)p_hitListLabelAtCharIndex:(unint64_t)index atNaturalPoint:(CGPoint)point inRep:(id)rep;
+- (BOOL)p_isCharIndex:(unint64_t)index withEolAffinity:(BOOL)affinity atBoundary:(int)boundary inDirection:(int64_t)direction;
+- (BOOL)p_isCharIndex:(unint64_t)index withinTextUnit:(int)unit inDirection:(int64_t)direction;
 - (BOOL)p_isIgnoringKeyboardInput;
-- (BOOL)p_isLayoutLeftToRightAtCharIndex:(unint64_t)a3;
+- (BOOL)p_isLayoutLeftToRightAtCharIndex:(unint64_t)index;
 - (BOOL)p_keyboardShouldShowOnscreen;
 - (BOOL)p_respondsToHyperlinkGestures;
 - (BOOL)p_respondsToListGestures;
@@ -34,173 +34,173 @@
 - (BOOL)selectionIsOnEmptyParagraph;
 - (BOOL)shouldShowEditMenu;
 - (BOOL)swipeableParagraphIsSelected;
-- (BOOL)textIsVerticalAtCharIndex:(unint64_t)a3;
-- (BOOL)textStorage:(id)a3 hasWhitespaceBoundedWordAtSelection:(id)a4;
+- (BOOL)textIsVerticalAtCharIndex:(unint64_t)index;
+- (BOOL)textStorage:(id)storage hasWhitespaceBoundedWordAtSelection:(id)selection;
 - (BOOL)trackingKnobInParagraphMode;
 - (BOOL)wantsCaret;
 - (CGPoint)autoscrollPoint;
 - (CGPoint)knobTrackingDragPoint;
-- (CGPoint)p_clampPointToLine:(CGPoint)a3 trackingRep:(id)a4;
-- (CGRect)firstRectForRange:(_NSRange)a3;
-- (CGRect)overrideCaretRectForSelection:(id)a3;
-- (CGRect)p_adjustedPopoverTargetRectForRange:(_NSRange)a3;
-- (CGRect)p_firstRectForRange:(_NSRange)a3 actualRange:(_NSRange *)a4;
-- (CGRect)p_targetRectForSelection:(id)a3;
-- (TSWPEditingController)initWithStorage:(id)a3 interactiveCanvasController:(id)a4;
+- (CGPoint)p_clampPointToLine:(CGPoint)line trackingRep:(id)rep;
+- (CGRect)firstRectForRange:(_NSRange)range;
+- (CGRect)overrideCaretRectForSelection:(id)selection;
+- (CGRect)p_adjustedPopoverTargetRectForRange:(_NSRange)range;
+- (CGRect)p_firstRectForRange:(_NSRange)range actualRange:(_NSRange *)actualRange;
+- (CGRect)p_targetRectForSelection:(id)selection;
+- (TSWPEditingController)initWithStorage:(id)storage interactiveCanvasController:(id)controller;
 - (TSWPSelection)selection;
 - (UIView)inputAccessoryView;
 - (UIView)inputView;
 - (_NSRange)editRange;
 - (_NSRange)markedRange;
-- (_NSRange)p_adjustVisualSelection:(id)a3 withOtherSelection:(id)a4;
-- (_NSRange)p_expandParagraphRangeForEnumerator:(TSWPParagraphEnumerator *)a3;
-- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)a3 backward:(BOOL)a4;
-- (_NSRange)smartDeletionSelection:(id)a3 isVisual:(BOOL *)a4;
-- (_NSRange)tsax_rangeOfLineFragmentAtCharIndex:(unint64_t)a3;
-- (__CFStringTokenizer)p_createTokenizerForCharIndex:(unint64_t)a3 outTokenizerRange:(_NSRange *)a4;
-- (const)p_lastVisibleLineFragmentForCharIndex:(unint64_t)a3 eol:(BOOL)a4;
-- (const)p_lineFragmentForCharIndex:(unint64_t)a3 column:(id *)a4 eol:(BOOL)a5;
-- (const)p_lineFragmentWithCaretInfo:(id *)a3 forSelection:(id)a4;
-- (const)p_nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)a3 xPos:(double)a4 inColumn:(id)a5;
+- (_NSRange)p_adjustVisualSelection:(id)selection withOtherSelection:(id)otherSelection;
+- (_NSRange)p_expandParagraphRangeForEnumerator:(TSWPParagraphEnumerator *)enumerator;
+- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)index backward:(BOOL)backward;
+- (_NSRange)smartDeletionSelection:(id)selection isVisual:(BOOL *)visual;
+- (_NSRange)tsax_rangeOfLineFragmentAtCharIndex:(unint64_t)index;
+- (__CFStringTokenizer)p_createTokenizerForCharIndex:(unint64_t)index outTokenizerRange:(_NSRange *)range;
+- (const)p_lastVisibleLineFragmentForCharIndex:(unint64_t)index eol:(BOOL)eol;
+- (const)p_lineFragmentForCharIndex:(unint64_t)index column:(id *)column eol:(BOOL)eol;
+- (const)p_lineFragmentWithCaretInfo:(id *)info forSelection:(id)selection;
+- (const)p_nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)as xPos:(double)pos inColumn:(id)column;
 - (double)p_effectiveFontSizeForCurrentSelection;
-- (double)viewScaleForSelectionWithTargetPointSize:(double)a3;
-- (id)_addSelectionRectsForLayout:(id)a3 selection:(id)a4;
-- (id)_repsForStorage:(id)a3 selection:(id)a4;
-- (id)calculateVisualRunsFromSelection:(id)a3 updateControllerSelection:(BOOL)a4;
-- (id)characterStyleForDeletedRange:(_NSRange)a3;
+- (double)viewScaleForSelectionWithTargetPointSize:(double)size;
+- (id)_addSelectionRectsForLayout:(id)layout selection:(id)selection;
+- (id)_repsForStorage:(id)storage selection:(id)selection;
+- (id)calculateVisualRunsFromSelection:(id)selection updateControllerSelection:(BOOL)controllerSelection;
+- (id)characterStyleForDeletedRange:(_NSRange)range;
 - (id)currentFontColor;
-- (id)dictationInterpretationsAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)dragItemForCurrentSelectionWithDragInteraction:(id)a3 session:(id)a4 withTouchPoint:(CGPoint)a5;
+- (id)dictationInterpretationsAtCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)dragItemForCurrentSelectionWithDragInteraction:(id)interaction session:(id)session withTouchPoint:(CGPoint)point;
 - (id)editingReps;
 - (id)editingSearchReference;
-- (id)extendSelectionToParagraphs:(id)a3;
+- (id)extendSelectionToParagraphs:(id)paragraphs;
 - (id)extraMenuItems;
-- (id)logicalToVisualSelection:(id)a3;
-- (id)p_columnForCharIndex:(unint64_t)a3;
-- (id)p_columnForCharIndex:(unint64_t)a3 withStorage:(id)a4;
+- (id)logicalToVisualSelection:(id)selection;
+- (id)p_columnForCharIndex:(unint64_t)index;
+- (id)p_columnForCharIndex:(unint64_t)index withStorage:(id)storage;
 - (id)p_containingShapeRep;
 - (id)p_documentViewController;
-- (id)p_editingRepForCharIndex:(unint64_t)a3;
-- (id)p_extendSelectionToIncludeSmartFields:(id)a3;
-- (id)p_highlightSelectionForSelection:(id)a3;
-- (id)p_hitRepWithPoint:(CGPoint)a3 keyboardAdjustmentDelta:(double)a4;
-- (id)p_layoutTargetForCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4;
-- (id)p_previousAutocorrectionForWordAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)p_repForSwipeAtUnscaledLocation:(CGPoint)a3;
-- (id)p_selectionForRep:(id)a3 point:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7 includeListLabels:(BOOL)a8 allowPastBreak:(BOOL)a9 selectsEntireLink:(BOOL)a10;
-- (id)p_selectionFromUnscaledCanvasPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 isTapHold:(BOOL)a5 allowPastBreak:(BOOL)a6 selectsEntireLink:(BOOL)a7;
+- (id)p_editingRepForCharIndex:(unint64_t)index;
+- (id)p_extendSelectionToIncludeSmartFields:(id)fields;
+- (id)p_highlightSelectionForSelection:(id)selection;
+- (id)p_hitRepWithPoint:(CGPoint)point keyboardAdjustmentDelta:(double)delta;
+- (id)p_layoutTargetForCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity;
+- (id)p_previousAutocorrectionForWordAtCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)p_repForSwipeAtUnscaledLocation:(CGPoint)location;
+- (id)p_selectionForRep:(id)rep point:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold precise:(BOOL)precise includeListLabels:(BOOL)labels allowPastBreak:(BOOL)break selectsEntireLink:(BOOL)self0;
+- (id)p_selectionFromUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break selectsEntireLink:(BOOL)link;
 - (id)p_viewControllerForPresenting;
-- (id)p_wordRangesForRange:(_NSRange)a3;
+- (id)p_wordRangesForRange:(_NSRange)range;
 - (id)pasteboardController;
-- (id)selectionFromUnscaledCanvasPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 isTapHold:(BOOL)a5 allowPastBreak:(BOOL)a6 selectsEntireLink:(BOOL)a7;
-- (id)selectionRectsForRange:(_NSRange)a3;
-- (id)selectionWithRange:(_NSRange)a3;
+- (id)selectionFromUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break selectsEntireLink:(BOOL)link;
+- (id)selectionRectsForRange:(_NSRange)range;
+- (id)selectionWithRange:(_NSRange)range;
 - (id)stringFromSelection;
 - (id)styleProvider;
-- (id)textColorAtCharIndex:(unint64_t)a3;
-- (id)textFontAtCharIndex:(unint64_t)a3;
-- (id)textInRange:(_NSRange)a3;
-- (id)tsax_listItemLabelForCharIndex:(unint64_t)a3 textIsLiteral:(BOOL *)a4;
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (int)p_moveFromCharIndex:(unint64_t *)a3 tokenizerRef:(__CFStringTokenizer *)a4 tokenizerRange:(_NSRange *)a5 direction:(int64_t)a6 currentWordRange:(_NSRange)a7 newWordRange:(_NSRange *)a8 reasonToStop:(unsigned int)a9;
-- (int)p_writingDirectionForCharAtIndex:(unint64_t)a3;
-- (int)valueForWritingDirectionPropertyForInspector:(id)a3;
+- (id)textColorAtCharIndex:(unint64_t)index;
+- (id)textFontAtCharIndex:(unint64_t)index;
+- (id)textInRange:(_NSRange)range;
+- (id)tsax_listItemLabelForCharIndex:(unint64_t)index textIsLiteral:(BOOL *)literal;
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (int)p_moveFromCharIndex:(unint64_t *)index tokenizerRef:(__CFStringTokenizer *)ref tokenizerRange:(_NSRange *)range direction:(int64_t)direction currentWordRange:(_NSRange)wordRange newWordRange:(_NSRange *)newWordRange reasonToStop:(unsigned int)stop;
+- (int)p_writingDirectionForCharAtIndex:(unint64_t)index;
+- (int)valueForWritingDirectionPropertyForInspector:(id)inspector;
 - (int64_t)returnKeyType;
-- (int64_t)writingDirectionForCharIndex:(unint64_t)a3;
-- (unint64_t)charIndexByMovingPosition:(id)a3 toBoundary:(int64_t)a4 inDirection:(int64_t)a5 preferPosition:(double *)a6;
-- (unint64_t)charIndexMovingByCharacterFromCharIndex:(unint64_t)a3 leadingEdge:(BOOL *)a4 inDirection:(int64_t)a5;
-- (unint64_t)charIndexMovingByWordFromCharIndex:(unint64_t)a3 inDirection:(int64_t)a4;
-- (unint64_t)closestCharIndexToPoint:(CGPoint)a3 isAtEndOfLine:(BOOL *)a4;
+- (int64_t)writingDirectionForCharIndex:(unint64_t)index;
+- (unint64_t)charIndexByMovingPosition:(id)position toBoundary:(int64_t)boundary inDirection:(int64_t)direction preferPosition:(double *)preferPosition;
+- (unint64_t)charIndexMovingByCharacterFromCharIndex:(unint64_t)index leadingEdge:(BOOL *)edge inDirection:(int64_t)direction;
+- (unint64_t)charIndexMovingByWordFromCharIndex:(unint64_t)index inDirection:(int64_t)direction;
+- (unint64_t)closestCharIndexToPoint:(CGPoint)point isAtEndOfLine:(BOOL *)line;
 - (unint64_t)countOfHyperlinksInUserSelection;
 - (unint64_t)insertionPoint;
-- (unint64_t)p_LeftCharForInsertion:(id *)a3;
-- (unint64_t)p_MoveByLineRange:(_NSRange)a3 up:(BOOL)a4;
-- (unint64_t)p_adjustedCharIndexForWordTestingFromCharIndex:(unint64_t)a3 forDirection:(int64_t)a4;
-- (unint64_t)p_caretCharIndexForLayoutOrderCharIndex:(unint64_t)a3 inDirection:(int64_t)a4;
-- (unint64_t)p_charIndexAtPoint:(CGPoint)a3 isAtEndOfLine:(BOOL *)a4;
-- (unint64_t)p_charIndexByMovingCharIndex:(unint64_t)a3 withEolAffinity:(BOOL *)a4 toBoundary:(int)a5 inDirection:(int64_t)a6 preferPosition:(double *)a7 isLeadingEdge:(BOOL *)a8;
-- (unint64_t)p_getVisualDeletionIndexForSelection:(id)a3 backward:(BOOL *)a4;
-- (unint64_t)p_getVisualInsertionPointIndexForString:(id)a3 selection:(id)a4;
-- (unint64_t)p_layoutOrderCharIndexForCaretCharIndex:(unint64_t)a3 inDirection:(int64_t)a4;
-- (unint64_t)p_leftEdgeForSelection:(id)a3 withLeadingEdge:(BOOL *)a4;
-- (unint64_t)p_lineIndexForCharIndex:(unint64_t)a3 column:(id *)a4 eol:(BOOL)a5;
-- (unint64_t)p_rightEdgeForSelection:(id)a3 withLeadingEdge:(BOOL *)a4;
-- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)a3;
+- (unint64_t)p_LeftCharForInsertion:(id *)insertion;
+- (unint64_t)p_MoveByLineRange:(_NSRange)range up:(BOOL)up;
+- (unint64_t)p_adjustedCharIndexForWordTestingFromCharIndex:(unint64_t)index forDirection:(int64_t)direction;
+- (unint64_t)p_caretCharIndexForLayoutOrderCharIndex:(unint64_t)index inDirection:(int64_t)direction;
+- (unint64_t)p_charIndexAtPoint:(CGPoint)point isAtEndOfLine:(BOOL *)line;
+- (unint64_t)p_charIndexByMovingCharIndex:(unint64_t)index withEolAffinity:(BOOL *)affinity toBoundary:(int)boundary inDirection:(int64_t)direction preferPosition:(double *)position isLeadingEdge:(BOOL *)edge;
+- (unint64_t)p_getVisualDeletionIndexForSelection:(id)selection backward:(BOOL *)backward;
+- (unint64_t)p_getVisualInsertionPointIndexForString:(id)string selection:(id)selection;
+- (unint64_t)p_layoutOrderCharIndexForCaretCharIndex:(unint64_t)index inDirection:(int64_t)direction;
+- (unint64_t)p_leftEdgeForSelection:(id)selection withLeadingEdge:(BOOL *)edge;
+- (unint64_t)p_lineIndexForCharIndex:(unint64_t)index column:(id *)column eol:(BOOL)eol;
+- (unint64_t)p_rightEdgeForSelection:(id)selection withLeadingEdge:(BOOL *)edge;
+- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)count;
 - (void)abandonMarkedText;
-- (void)addAllDictationInterpretationRangesInRange:(_NSRange)a3 toRanges:(void *)a4;
-- (void)asyncProcessChanges:(id)a3 forChangeSource:(id)a4;
+- (void)addAllDictationInterpretationRangesInRange:(_NSRange)range toRanges:(void *)ranges;
+- (void)asyncProcessChanges:(id)changes forChangeSource:(id)source;
 - (void)autoscrollWillNotStart;
-- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)a3;
+- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)point;
 - (void)cancelKnobTrackingAndMagnifying;
 - (void)clearMarkedRange;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)dealloc;
-- (void)definitionAction:(id)a3;
+- (void)definitionAction:(id)action;
 - (void)didBecomeCurrentEditor;
 - (void)didBecomeTextInputEditor;
 - (void)didEnterBackground;
 - (void)dismissActivePopovers;
 - (void)endEditing;
-- (void)endEditingAndSelectParent:(id)a3;
+- (void)endEditingAndSelectParent:(id)parent;
 - (void)extendSelectionLeft;
 - (void)extendSelectionRight;
 - (void)gestureSequenceDidEnd;
 - (void)invalidateSelectionVisualRuns;
-- (void)p_addCommonEditItemsIntoMenu:(id)a3;
-- (void)p_addInsertItemsIntoMenu:(id)a3;
-- (void)p_adjustSelection:(id)a3 withOtherSelection:(id)a4 textSelectionGranularity:(unint64_t)a5;
-- (void)p_adjustSelection:(id)a3 withUnscaledCanvasPoint:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 allowPastBreak:(BOOL)a7;
-- (void)p_beginKnobTrackingSelection:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5;
-- (void)p_beginMagnification:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5;
+- (void)p_addCommonEditItemsIntoMenu:(id)menu;
+- (void)p_addInsertItemsIntoMenu:(id)menu;
+- (void)p_adjustSelection:(id)selection withOtherSelection:(id)otherSelection textSelectionGranularity:(unint64_t)granularity;
+- (void)p_adjustSelection:(id)selection withUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break;
+- (void)p_beginKnobTrackingSelection:(id)selection forRep:(id)rep atPoint:(CGPoint)point;
+- (void)p_beginMagnification:(id)magnification forRep:(id)rep atPoint:(CGPoint)point;
 - (void)p_beginOperationAndTakeControl;
-- (void)p_beginTapAndLongPress:(id)a3;
+- (void)p_beginTapAndLongPress:(id)press;
 - (void)p_cancelDelayedSelectors;
 - (void)p_cancelTapAndLongPressPreviousSelector;
 - (void)p_clearSecondaryHighlight;
-- (void)p_createKnobTracker:(id)a3 forRep:(id)a4 tapCount:(unint64_t)a5;
+- (void)p_createKnobTracker:(id)tracker forRep:(id)rep tapCount:(unint64_t)count;
 - (void)p_dismissDefinitionPopover;
 - (void)p_endAutoscroll;
-- (void)p_handleKnobDragGestureRecognizer:(id)a3;
-- (void)p_handleLongPressGesture:(id)a3;
-- (void)p_handleSwipeMoveCaretWithTextGranularity:(int64_t)a3 textDirection:(int64_t)a4 layoutDirection:(int64_t)a5;
-- (void)p_handleTapAndTouchGesture:(id)a3;
-- (void)p_handleTapGestures:(id)a3;
-- (void)p_highlightRubyTextWithRange:(_NSRange)a3;
-- (void)p_inputLanguageDidChangeNotification:(id)a3;
+- (void)p_handleKnobDragGestureRecognizer:(id)recognizer;
+- (void)p_handleLongPressGesture:(id)gesture;
+- (void)p_handleSwipeMoveCaretWithTextGranularity:(int64_t)granularity textDirection:(int64_t)direction layoutDirection:(int64_t)layoutDirection;
+- (void)p_handleTapAndTouchGesture:(id)gesture;
+- (void)p_handleTapGestures:(id)gestures;
+- (void)p_highlightRubyTextWithRange:(_NSRange)range;
+- (void)p_inputLanguageDidChangeNotification:(id)notification;
 - (void)p_postSelectionContentsChangedNotification;
 - (void)p_postWillStyleTextNotification;
-- (void)p_removeAutocorrectionAtCharIndex:(unint64_t)a3;
+- (void)p_removeAutocorrectionAtCharIndex:(unint64_t)index;
 - (void)p_rescheduleDelayedUpdateHUDState;
-- (void)p_selection:(id)a3 toGlyphRange:(id *)a4;
+- (void)p_selection:(id)p_selection toGlyphRange:(id *)range;
 - (void)p_sendHandleTapNotification;
-- (void)p_setInsertionStyle:(id)a3;
-- (void)p_setRevertibleSelection:(id)a3;
-- (void)p_setSelection:(id)a3 withFlags:(unint64_t)a4 force:(BOOL)a5;
-- (void)p_setSelectionFromPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 includeListLabels:(BOOL)a5;
-- (void)p_setTappedSelection:(id)a3;
-- (void)p_suppressSelectionHighlight:(BOOL)a3;
+- (void)p_setInsertionStyle:(id)style;
+- (void)p_setRevertibleSelection:(id)selection;
+- (void)p_setSelection:(id)selection withFlags:(unint64_t)flags force:(BOOL)force;
+- (void)p_setSelectionFromPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity includeListLabels:(BOOL)labels;
+- (void)p_setTappedSelection:(id)selection;
+- (void)p_suppressSelectionHighlight:(BOOL)highlight;
 - (void)p_switchToReplaceSelection;
 - (void)p_updateHUDState;
-- (void)popoverControllerDidDismissPopoverBasedViewController:(id)a3;
-- (void)referenceLibrarayViewControllerWasDismissed:(id)a3;
+- (void)popoverControllerDidDismissPopoverBasedViewController:(id)controller;
+- (void)referenceLibrarayViewControllerWasDismissed:(id)dismissed;
 - (void)revertLastSelectionChangeIfElapsedTimeIsUnderPinFidgetThreshold;
-- (void)select:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)selectionChangedWithFlags:(unint64_t)a3 wpFlags:(unint64_t)a4;
-- (void)setAutoscroll:(id)a3;
-- (void)setInsertionPoint:(unint64_t)a3 withFlags:(unint64_t)a4;
-- (void)setKnobTracking:(BOOL)a3;
-- (void)setSelectionWithRange:(_NSRange)a3 endOfLine:(BOOL)a4;
-- (void)setSelectionWithRange:(_NSRange)a3 leadingEdge:(BOOL)a4 endOfLine:(BOOL)a5;
-- (void)styleAction:(id)a3;
-- (void)tappedInRep:(id)a3 point:(CGPoint)a4 tapCount:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7;
-- (void)tappedOnKnob:(id)a3;
+- (void)select:(id)select;
+- (void)selectAll:(id)all;
+- (void)selectionChangedWithFlags:(unint64_t)flags wpFlags:(unint64_t)wpFlags;
+- (void)setAutoscroll:(id)autoscroll;
+- (void)setInsertionPoint:(unint64_t)point withFlags:(unint64_t)flags;
+- (void)setKnobTracking:(BOOL)tracking;
+- (void)setSelectionWithRange:(_NSRange)range endOfLine:(BOOL)line;
+- (void)setSelectionWithRange:(_NSRange)range leadingEdge:(BOOL)edge endOfLine:(BOOL)line;
+- (void)styleAction:(id)action;
+- (void)tappedInRep:(id)rep point:(CGPoint)point tapCount:(unint64_t)count isTapHold:(BOOL)hold precise:(BOOL)precise;
+- (void)tappedOnKnob:(id)knob;
 - (void)teardown;
-- (void)updateAfterAutoscroll:(id)a3;
+- (void)updateAfterAutoscroll:(id)autoscroll;
 - (void)updateHUDState;
 - (void)willEnterForeground;
 - (void)willResignCurrentEditor;
-- (void)willResignTextInputEditorAndDeselect:(BOOL)a3;
+- (void)willResignTextInputEditorAndDeselect:(BOOL)deselect;
 @end
 
 @implementation TSWPEditingController
@@ -213,9 +213,9 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v3 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController selection]"];
-      [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 489, @"Bad selection class - returning nil."}];
+      [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 489, @"Bad selection class - returning nil."}];
       return 0;
     }
   }
@@ -223,15 +223,15 @@
   return selection;
 }
 
-- (TSWPEditingController)initWithStorage:(id)a3 interactiveCanvasController:(id)a4
+- (TSWPEditingController)initWithStorage:(id)storage interactiveCanvasController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = TSWPEditingController;
   v6 = [(TSWPEditingController *)&v10 init];
   if (v6)
   {
-    *(v6 + 1) = a3;
-    *(v6 + 3) = a4;
+    *(v6 + 1) = storage;
+    *(v6 + 3) = controller;
     v7 = *MEMORY[0x277D6C268];
     *(v6 + 72) = *MEMORY[0x277D6C268];
     *(v6 + 13) = 0x7FFFFFFFFFFFFFFFLL;
@@ -239,10 +239,10 @@
     v6[360] = 0;
     *(v6 + 152) = v7;
     [v6 setShouldDisplayKeyboard:1];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel_p_inputLanguageDidChangeNotification_ name:*MEMORY[0x277D77200] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_p_inputLanguageDidChangeNotification_ name:*MEMORY[0x277D77200] object:0];
     [v6 setSupportsDataDetectors:1];
-    [v6 setSuppressPhonetics:{objc_msgSend(a3, "allowsElementKind:", 4096) ^ 1}];
+    [v6 setSuppressPhonetics:{objc_msgSend(storage, "allowsElementKind:", 4096) ^ 1}];
   }
 
   return v6;
@@ -252,23 +252,23 @@
 {
   if (self->_knobTracking)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 597, @"-dealloc called while tracking"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 597, @"-dealloc called while tracking"}];
   }
 
   if (self->_definitionPopoverController)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController dealloc]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 599, @"expected nil value for '%s'", "_definitionPopoverController"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 599, @"expected nil value for '%s'", "_definitionPopoverController"}];
   }
 
   if ((TSUSupportsTextInteraction() & 1) == 0 && self->_definitionViewController)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController dealloc]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 602, @"expected nil value for '%s'", "_definitionViewController"}];
+    [currentHandler3 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 602, @"expected nil value for '%s'", "_definitionViewController"}];
   }
 
   self->_inputViewForHidingKeyboard = 0;
@@ -301,17 +301,17 @@
 {
   [(TSWPEditingController *)self p_cancelDelayedSelectors];
   self->_interactiveCanvasController = 0;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v3 removeObserver:self];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)setKnobTracking:(BOOL)a3
+- (void)setKnobTracking:(BOOL)tracking
 {
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
   v5 = TSUProtocolCast();
-  self->_knobTracking = a3;
-  if (a3)
+  self->_knobTracking = tracking;
+  if (tracking)
   {
     v6 = objc_alloc_init(TSKFidgetResolver);
     self->_fidgetResolver = v6;
@@ -409,12 +409,12 @@
   return TSUDynamicCast();
 }
 
-- (void)willResignTextInputEditorAndDeselect:(BOOL)a3
+- (void)willResignTextInputEditorAndDeselect:(BOOL)deselect
 {
   v11[1] = *MEMORY[0x277D85DE8];
   if (self->_storage)
   {
-    v4 = a3;
+    deselectCopy = deselect;
     if (![(TSWPInteractiveCanvasController *)self->_interactiveCanvasController isTearingDown])
     {
       v5 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController repsForInfo:[(TSWPEditingController *)self storage]];
@@ -433,7 +433,7 @@
         }
       }
 
-      if (v4)
+      if (deselectCopy)
       {
         [(TSWPEditingController *)self setSelection:[TSWPSelection selectionWithRange:*MEMORY[0x277D6C268], *(MEMORY[0x277D6C268] + 8)]];
       }
@@ -575,15 +575,15 @@ uint64_t __62__TSWPEditingController_willResignTextInputEditorAndDeselect___bloc
   return v3;
 }
 
-- (id)p_editingRepForCharIndex:(unint64_t)a3
+- (id)p_editingRepForCharIndex:(unint64_t)index
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(TSWPEditingController *)self editingReps];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  editingReps = [(TSWPEditingController *)self editingReps];
+  v5 = [editingReps countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v5)
   {
     goto LABEL_16;
@@ -591,26 +591,26 @@ uint64_t __62__TSWPEditingController_willResignTextInputEditorAndDeselect___bloc
 
   v6 = v5;
   v7 = *v18;
-  v8 = a3 ? a3 - 1 : 0;
+  v8 = index ? index - 1 : 0;
 LABEL_5:
   v9 = 0;
   while (1)
   {
     if (*v18 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(editingReps);
     }
 
     v10 = *(*(&v17 + 1) + 8 * v9);
-    v11 = [v10 range];
-    if (v8 >= v11 && v8 - v11 < v12)
+    range = [v10 range];
+    if (v8 >= range && v8 - range < v12)
     {
       break;
     }
 
     if (v6 == ++v9)
     {
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [editingReps countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v6)
       {
         goto LABEL_5;
@@ -623,25 +623,25 @@ LABEL_5:
   if (!v10)
   {
 LABEL_16:
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_editingRepForCharIndex:]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 1270, @"No valid rep for given char index"}];
+    [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 1270, @"No valid rep for given char index"}];
     return 0;
   }
 
   return v10;
 }
 
-- (void)p_suppressSelectionHighlight:(BOOL)a3
+- (void)p_suppressSelectionHighlight:(BOOL)highlight
 {
-  v3 = a3;
+  highlightCopy = highlight;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(TSWPEditingController *)self editingReps];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  editingReps = [(TSWPEditingController *)self editingReps];
+  v5 = [editingReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -652,25 +652,25 @@ LABEL_16:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(editingReps);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
-        if ([v9 isSelectionHighlightSuppressed] != v3)
+        if ([v9 isSelectionHighlightSuppressed] != highlightCopy)
         {
-          [v9 setSuppressSelectionHighlight:v3];
+          [v9 setSuppressSelectionHighlight:highlightCopy];
           [v9 invalidateKnobs];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [editingReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (CGRect)p_targetRectForSelection:(id)a3
+- (CGRect)p_targetRectForSelection:(id)selection
 {
   v73 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBF398];
@@ -678,10 +678,10 @@ LABEL_16:
   v7 = *(MEMORY[0x277CBF398] + 8);
   v8 = *(MEMORY[0x277CBF398] + 16);
   v9 = *(MEMORY[0x277CBF398] + 24);
-  v10 = [(TSWPEditingController *)self editingReps];
-  if (v10)
+  editingReps = [(TSWPEditingController *)self editingReps];
+  if (editingReps)
   {
-    v11 = v10;
+    v11 = editingReps;
     v62 = v9;
     v63 = v8;
     v64 = v7;
@@ -690,14 +690,14 @@ LABEL_16:
     v13 = v5[1];
     v14 = v5[2];
     v15 = v5[3];
-    v16 = [(TSWPEditingController *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
     [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] visibleBoundsRectClippedToWindow];
-    [(TSDInteractiveCanvasController *)v16 convertBoundsToUnscaledRect:?];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledRect:?];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [a3 isInsertionPoint];
+    isInsertionPoint = [selection isInsertionPoint];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
@@ -723,14 +723,14 @@ LABEL_16:
           v67.size.height = v15;
           v67.origin.x = v12;
           v67.origin.y = v13;
-          if (v25)
+          if (isInsertionPoint)
           {
-            [v30 caretRectForSelection:a3];
+            [v30 caretRectForSelection:selection];
           }
 
           else
           {
-            [v30 rectForSelection:a3];
+            [v30 rectForSelection:selection];
           }
 
           [v30 convertNaturalRectToUnscaledCanvas:?];
@@ -738,16 +738,16 @@ LABEL_16:
           v34 = v33;
           v36 = v35;
           v38 = v37;
-          v39 = [v30 parentRep];
+          parentRep = [v30 parentRep];
           v40 = v66;
           v41 = v20;
           v42 = v22;
           v43 = v24;
-          if (v39)
+          if (parentRep)
           {
-            v44 = [v30 parentRep];
+            parentRep2 = [v30 parentRep];
             [objc_msgSend(v30 "parentRep")];
-            [v44 convertNaturalRectToUnscaledCanvas:?];
+            [parentRep2 convertNaturalRectToUnscaledCanvas:?];
             v81.origin.x = v45;
             v81.origin.y = v46;
             v81.size.width = v47;
@@ -896,10 +896,10 @@ LABEL_17:
     return 0;
   }
 
-  v8 = [(TSWPEditingController *)self selection];
-  if ([(TSWPSelection *)v8 isValid]&& [(TSWPSelection *)v8 type]!= 2)
+  selection = [(TSWPEditingController *)self selection];
+  if ([(TSWPSelection *)selection isValid]&& [(TSWPSelection *)selection type]!= 2)
   {
-    [(TSWPSelection *)v8 range];
+    [(TSWPSelection *)selection range];
     v9 = v10 != 0;
   }
 
@@ -932,20 +932,20 @@ LABEL_17:
 
 - (BOOL)isSelectionSingleAnchoredDrawableAttachment
 {
-  v3 = [(TSWPEditingController *)self selection];
-  if (![(TSWPSelection *)v3 isRange])
+  selection = [(TSWPEditingController *)self selection];
+  if (![(TSWPSelection *)selection isRange])
   {
     return 0;
   }
 
-  [(TSWPSelection *)v3 range];
+  [(TSWPSelection *)selection range];
   if (v4 != 1)
   {
     return 0;
   }
 
   objc_opt_class();
-  [(TSWPStorage *)[(TSWPEditingController *)self storage] attachmentAtCharIndex:[(TSWPSelection *)v3 range]];
+  [(TSWPStorage *)[(TSWPEditingController *)self storage] attachmentAtCharIndex:[(TSWPSelection *)selection range]];
   v5 = TSUDynamicCast();
 
   return [v5 isAnchored];
@@ -967,8 +967,8 @@ LABEL_17:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v3 = [(TSWPEditingController *)self editingReps];
-    v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    editingReps = [(TSWPEditingController *)self editingReps];
+    v4 = [editingReps countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v4)
     {
       v5 = v4;
@@ -979,7 +979,7 @@ LABEL_4:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(editingReps);
         }
 
         if (![objc_msgSend(*(*(&v17 + 1) + 8 * v7) "layout")])
@@ -989,7 +989,7 @@ LABEL_4:
 
         if (v5 == ++v7)
         {
-          v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v5 = [editingReps countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v5)
           {
             goto LABEL_4;
@@ -1017,14 +1017,14 @@ LABEL_11:
     {
       [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
       v12 = TSUProtocolCast();
-      v13 = [(TSWPEditingController *)self selection];
+      selection = [(TSWPEditingController *)self selection];
       +[TSWPEditMenuController hideEditMenu];
       self->_editMenuIsVisible = 0;
       if (objc_opt_respondsToSelector())
       {
         storage = self->_storage;
-        v15 = [(TSWPSelection *)v13 range];
-        [v12 showCustomEditMenuForStorage:storage range:{v15, v16}];
+        range = [(TSWPSelection *)selection range];
+        [v12 showCustomEditMenuForStorage:storage range:{range, v16}];
       }
     }
   }
@@ -1064,12 +1064,12 @@ LABEL_11:
     {
       v6 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:[(TSWPSelection *)self->_selection start]];
       v8 = v7;
-      v9 = [(TSWPSelection *)self->_selection range];
-      if (v6 > v9 || v6 + v8 < v9 + v10)
+      range = [(TSWPSelection *)self->_selection range];
+      if (v6 > range || v6 + v8 < range + v10)
       {
-        v12 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController editRange]"];
-        [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 1906, @"Bad range from selectionRangeForCharIndex."}];
+        [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 1906, @"Bad range from selectionRangeForCharIndex."}];
       }
 
       goto LABEL_13;
@@ -1079,7 +1079,7 @@ LABEL_12:
     v6 = 0;
     v8 = 0;
 LABEL_13:
-    v4 = v6;
+    range2 = v6;
     v5 = v8;
     goto LABEL_14;
   }
@@ -1090,19 +1090,19 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v4 = [(TSWPStorage *)storage range];
+  range2 = [(TSWPStorage *)storage range];
 LABEL_14:
   result.length = v5;
-  result.location = v4;
+  result.location = range2;
   return result;
 }
 
 - (double)p_effectiveFontSizeForCurrentSelection
 {
   v6[3] = *MEMORY[0x277D85DE8];
-  v3 = [(TSWPSelection *)self->_selection isValid];
+  isValid = [(TSWPSelection *)self->_selection isValid];
   result = 0.0;
-  if (v3)
+  if (isValid)
   {
     v5 = [(TSWPSelection *)self->_selection range:0.0];
     v6[1] = [(TSWPStorage *)self->_storage characterStyleAtCharIndex:v5 - ((v5 != 0) & ~[(TSWPSelection *)self->_selection isRange]) effectiveRange:0];
@@ -1113,10 +1113,10 @@ LABEL_14:
   return result;
 }
 
-- (double)viewScaleForSelectionWithTargetPointSize:(double)a3
+- (double)viewScaleForSelectionWithTargetPointSize:(double)size
 {
   [(TSWPEditingController *)self p_effectiveFontSizeForCurrentSelection];
-  v5 = a3 / v4;
+  v5 = size / v4;
   v6 = v4 <= 0.0;
   result = 0.0;
   if (!v6)
@@ -1127,17 +1127,17 @@ LABEL_14:
   return result;
 }
 
-- (void)p_highlightRubyTextWithRange:(_NSRange)a3
+- (void)p_highlightRubyTextWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(TSWPEditingController *)self editingReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  editingReps = [(TSWPEditingController *)self editingReps];
+  v6 = [editingReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1149,14 +1149,14 @@ LABEL_14:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(editingReps);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) setSecondaryHighlightRange:location color:length pathStyle:{objc_msgSend(objc_msgSend(MEMORY[0x277D6C2A8], "colorWithRed:green:blue:alpha:", 0.0, 0.330000013, 0.649999976, 0.200000003), "CGColor"), 1}];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [editingReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -1170,8 +1170,8 @@ LABEL_14:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(TSWPEditingController *)self editingReps];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  editingReps = [(TSWPEditingController *)self editingReps];
+  v3 = [editingReps countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1183,36 +1183,36 @@ LABEL_14:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(editingReps);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) clearSecondaryHighlight];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [editingReps countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)p_wordRangesForRange:(_NSRange)a3
+- (id)p_wordRangesForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [(TSWPStorage *)self->_storage string];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x277CBEB18] array];
+  string = [(TSWPStorage *)self->_storage string];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__TSWPEditingController_p_wordRangesForRange___block_invoke;
   v10[3] = &unk_279D49A38;
-  v10[4] = v6;
+  v10[4] = array;
   v11.location = location;
   v11.length = length;
-  TSWPEnumerateWordsInStringWithBlock(v7, v11, v8, v10);
-  return v6;
+  TSWPEnumerateWordsInStringWithBlock(string, v11, currentLocale, v10);
+  return array;
 }
 
 uint64_t __46__TSWPEditingController_p_wordRangesForRange___block_invoke(uint64_t a1, CFStringTokenizerRef tokenizer)
@@ -1237,16 +1237,16 @@ uint64_t __46__TSWPEditingController_p_wordRangesForRange___block_invoke(uint64_
   return [v2 viewControllerForPresenting];
 }
 
-- (CGRect)p_adjustedPopoverTargetRectForRange:(_NSRange)a3
+- (CGRect)p_adjustedPopoverTargetRectForRange:(_NSRange)range
 {
-  [(TSWPEditingController *)self p_targetRectForSelection:[TSWPSelection selectionWithRange:a3.location, a3.length]];
+  [(TSWPEditingController *)self p_targetRectForSelection:[TSWPSelection selectionWithRange:range.location, range.length]];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layerHost] canvasView];
-  v13 = [objc_msgSend(objc_msgSend(v12 "window")];
-  [v12 convertRect:v13 toView:{v5, v7, v9, v11}];
+  canvasView = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layerHost] canvasView];
+  v13 = [objc_msgSend(objc_msgSend(canvasView "window")];
+  [canvasView convertRect:v13 toView:{v5, v7, v9, v11}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1282,7 +1282,7 @@ uint64_t __46__TSWPEditingController_p_wordRangesForRange___block_invoke(uint64_
   v19 = v19 - v25;
 LABEL_7:
 
-  [v12 convertRect:v13 fromView:{v15, v17, v19, v21}];
+  [canvasView convertRect:v13 fromView:{v15, v17, v19, v21}];
   result.size.height = v29;
   result.size.width = v28;
   result.origin.y = v27;
@@ -1295,24 +1295,24 @@ LABEL_7:
   v2 = [-[TSWPEditingController documentRoot](self "documentRoot")];
   if (!v2)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_documentViewController]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 2146, @"invalid nil value for '%s'", "dvc"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 2146, @"invalid nil value for '%s'", "dvc"}];
   }
 
   return v2;
 }
 
-- (BOOL)isUnscaledPointInTextSelection:(CGPoint)a3
+- (BOOL)isUnscaledPointInTextSelection:(CGPoint)selection
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSWPEditingController *)self selection];
+  y = selection.y;
+  x = selection.x;
+  selection = [(TSWPEditingController *)self selection];
   objc_opt_class();
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController hitRep:x, y];
   v7 = TSUDynamicCast();
   v8 = [v7 canEditWithEditor:self];
-  if (![(TSWPSelection *)v6 isValid]|| !v8)
+  if (![(TSWPSelection *)selection isValid]|| !v8)
   {
     return 0;
   }
@@ -1358,21 +1358,21 @@ LABEL_7:
   return [v2 editorAllowsRubyInteraction];
 }
 
-- (id)p_repForSwipeAtUnscaledLocation:(CGPoint)a3
+- (id)p_repForSwipeAtUnscaledLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v37 = *MEMORY[0x277D85DE8];
-  v6 = [(TSWPEditingController *)self interactiveCanvasController];
-  v7 = [(TSWPEditingController *)self selection];
-  [(TSDInteractiveCanvasController *)v6 convertBoundsToUnscaledSize:50.0, 50.0];
+  interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
+  selection = [(TSWPEditingController *)self selection];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledSize:50.0, 50.0];
   v9 = v8;
   v11 = v10;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = [(TSDInteractiveCanvasController *)v6 hitRepsAtPoint:x withSlop:y, v8, v10, 0];
+  v12 = [(TSDInteractiveCanvasController *)interactiveCanvasController hitRepsAtPoint:x withSlop:y, v8, v10, 0];
   v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v13)
   {
@@ -1396,17 +1396,17 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [(TSWPEditingController *)self storage];
-      if (v20 == [v19 storage])
+      storage = [(TSWPEditingController *)self storage];
+      if (storage == [v19 storage])
       {
-        if ([(TSWPSelection *)v7 isInsertionPoint])
+        if ([(TSWPSelection *)selection isInsertionPoint])
         {
           [v19 caretRect];
         }
 
         else
         {
-          [v19 rectForSelection:v7];
+          [v19 rectForSelection:selection];
         }
 
         v39 = CGRectInset(*&v21, v16, v17);
@@ -1441,35 +1441,35 @@ LABEL_3:
   }
 }
 
-- (BOOL)canHandleSwipeGestureForGestureRecognizer:(id)a3 outDelta:(int64_t *)a4 outTextDirection:(int64_t *)a5 outLayoutDirection:(int64_t *)a6
+- (BOOL)canHandleSwipeGestureForGestureRecognizer:(id)recognizer outDelta:(int64_t *)delta outTextDirection:(int64_t *)direction outLayoutDirection:(int64_t *)layoutDirection
 {
-  v11 = [a3 direction];
+  direction = [recognizer direction];
   v12 = [(TSWPEditingController *)self textIsVerticalAtCharIndex:0];
   if (v12)
   {
-    if (a5)
+    if (direction)
     {
       v13 = 3;
-      if (v11 != 4)
+      if (direction != 4)
       {
         v13 = 0;
       }
 
-      if (v11 == 8)
+      if (direction == 8)
       {
         v13 = 2;
       }
 
-      *a5 = v13;
+      *direction = v13;
     }
 
-    if (a6)
+    if (layoutDirection)
     {
-      *a6 = v11 == 4;
+      *layoutDirection = direction == 4;
     }
 
-    v14 = v11 == 4;
-    if (v11 == 8)
+    v14 = direction == 4;
+    if (direction == 8)
     {
       goto LABEL_22;
     }
@@ -1477,29 +1477,29 @@ LABEL_3:
 
   else
   {
-    if (a5)
+    if (direction)
     {
       v15 = 3;
-      if (v11 != 2)
+      if (direction != 2)
       {
         v15 = 0;
       }
 
-      if (v11 == 1)
+      if (direction == 1)
       {
         v15 = 2;
       }
 
-      *a5 = v15;
+      *direction = v15;
     }
 
-    if (a6)
+    if (layoutDirection)
     {
-      *a6 = v11 == 2;
+      *layoutDirection = direction == 2;
     }
 
-    v14 = v11 == 2;
-    if (v11 == 1)
+    v14 = direction == 2;
+    if (direction == 1)
     {
       goto LABEL_22;
     }
@@ -1511,14 +1511,14 @@ LABEL_3:
   }
 
 LABEL_22:
-  if ([a3 gestureKind] == @"TSWPOneFingerSwipe" && (v12 | !-[TSWPEditingController swipeableParagraphIsSelected](self, "swipeableParagraphIsSelected")) != 1 || -[TSWPEditingController isInParagraphMode](self, "isInParagraphMode"))
+  if ([recognizer gestureKind] == @"TSWPOneFingerSwipe" && (v12 | !-[TSWPEditingController swipeableParagraphIsSelected](self, "swipeableParagraphIsSelected")) != 1 || -[TSWPEditingController isInParagraphMode](self, "isInParagraphMode"))
   {
     return 0;
   }
 
-  if (a4)
+  if (delta)
   {
-    *a4 = 0;
+    *delta = 0;
   }
 
   return 1;
@@ -1526,36 +1526,36 @@ LABEL_22:
 
 - (BOOL)swipeableParagraphIsSelected
 {
-  v3 = [(TSWPSelection *)self->_selection isValid];
-  if (v3)
+  isValid = [(TSWPSelection *)self->_selection isValid];
+  if (isValid)
   {
-    v3 = [(TSWPEditingController *)self p_respondsToListGestures];
-    if (v3)
+    isValid = [(TSWPEditingController *)self p_respondsToListGestures];
+    if (isValid)
     {
       v4 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:[(TSWPSelection *)self->_selection range]];
       v6 = v5;
       v7 = [(TSWPStorage *)self->_storage paragraphHasListLabelAtCharIndex:[(TSWPSelection *)self->_selection range]];
       if ([(TSWPSelection *)self->_selection isInsertionPoint]&& v6 <= 1 && v7 || [(TSWPSelection *)self->_selection type]== 2 || [(TSWPSelection *)self->_selection range]== v4 && ([(TSWPSelection *)self->_selection range], v8 == v6 && v7))
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(isValid) = 1;
       }
 
       else
       {
 
-        LOBYTE(v3) = [(TSWPEditingController *)self isInParagraphMode];
+        LOBYTE(isValid) = [(TSWPEditingController *)self isInParagraphMode];
       }
     }
   }
 
-  return v3;
+  return isValid;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
-  [a3 unscaledLocationForICC:{-[TSWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
+  [gesture unscaledLocationForICC:{-[TSWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
   v7 = v6;
   v9 = v8;
   objc_opt_class();
@@ -1578,9 +1578,9 @@ LABEL_22:
     v11 &= v14;
   }
 
-  v16 = [a3 gestureKind];
-  v17 = v16;
-  if ((v16 == @"TSWPOneFingerSwipe" || v16 == @"TSWPTwoFingerSwipe" || v16 == @"TSWPThreeFingerSwipe") && [(TSWPSelection *)self->_selection isValid])
+  gestureKind = [gesture gestureKind];
+  v17 = gestureKind;
+  if ((gestureKind == @"TSWPOneFingerSwipe" || gestureKind == @"TSWPTwoFingerSwipe" || gestureKind == @"TSWPThreeFingerSwipe") && [(TSWPSelection *)self->_selection isValid])
   {
     v15 = [(TSWPEditingController *)self canHandleSwipeGestureForGestureRecognizer:v5 outDelta:0 outTextDirection:0 outLayoutDirection:0];
     goto LABEL_26;
@@ -1618,42 +1618,42 @@ LABEL_26:
   return v15 == 1;
 }
 
-- (void)p_handleSwipeMoveCaretWithTextGranularity:(int64_t)a3 textDirection:(int64_t)a4 layoutDirection:(int64_t)a5
+- (void)p_handleSwipeMoveCaretWithTextGranularity:(int64_t)granularity textDirection:(int64_t)direction layoutDirection:(int64_t)layoutDirection
 {
   if (![(TSWPSelection *)self->_selection isValid])
   {
     return;
   }
 
-  v9 = [(TSWPEditingController *)self insertionPoint];
+  insertionPoint = [(TSWPEditingController *)self insertionPoint];
   if ([(TSWPSelection *)self->_selection isRange])
   {
-    if (a5)
+    if (layoutDirection)
     {
-      if (!a3)
+      if (!granularity)
       {
-        ++v9;
+        ++insertionPoint;
       }
     }
 
     else
     {
-      v10 = [(TSWPSelection *)self->_selection range];
-      v9 = ((__PAIR128__(v11, a3) - 1) >> 64) + v10;
+      range = [(TSWPSelection *)self->_selection range];
+      insertionPoint = ((__PAIR128__(v11, granularity) - 1) >> 64) + range;
     }
   }
 
   v12 = [(TSWPSelection *)self->_selection caretAffinity]== 1;
   LODWORD(v13) = 2143289344;
-  v14 = [(TSWPEditingController *)self charIndexByMovingPosition:[TSDTextPosition textPositionWithCharIndex:0 eolAffinity:v13 preferredPosition:? isPreferredStart:?], a3, a4, 0];
-  if (a3 == 1)
+  v14 = [(TSWPEditingController *)self charIndexByMovingPosition:[TSDTextPosition textPositionWithCharIndex:0 eolAffinity:v13 preferredPosition:? isPreferredStart:?], granularity, direction, 0];
+  if (granularity == 1)
   {
-    v15 = [(TSWPEditingController *)self rangeOfWordEnclosingCharIndex:v9 backward:a5 == 0];
+    v15 = [(TSWPEditingController *)self rangeOfWordEnclosingCharIndex:insertionPoint backward:layoutDirection == 0];
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (a4 != 3)
+      if (direction != 3)
       {
-        if (a4 != 2 || v9 != v15 + v16)
+        if (direction != 2 || insertionPoint != v15 + v16)
         {
           goto LABEL_14;
         }
@@ -1661,40 +1661,40 @@ LABEL_26:
         goto LABEL_13;
       }
 
-      if (v9 == v15)
+      if (insertionPoint == v15)
       {
 LABEL_13:
         v17 = [(TSWPSelection *)self->_selection caretAffinity]== 1;
         LODWORD(v18) = 2143289344;
-        v14 = [(TSWPEditingController *)self charIndexByMovingPosition:[TSDTextPosition textPositionWithCharIndex:0 eolAffinity:v18 preferredPosition:? isPreferredStart:?], 1, a4, 0];
+        v14 = [(TSWPEditingController *)self charIndexByMovingPosition:[TSDTextPosition textPositionWithCharIndex:0 eolAffinity:v18 preferredPosition:? isPreferredStart:?], 1, direction, 0];
       }
     }
   }
 
 LABEL_14:
-  v19 = [(TSWPStorage *)self->_storage range];
-  if (v14 <= v19 + v20 && v14 >= [(TSWPStorage *)self->_storage range]|| (v21 = [(TSWPStorage *)self->_storage range], v9 <= v21 + v22) && (v14 = v9, v9 >= [(TSWPStorage *)self->_storage range]))
+  range2 = [(TSWPStorage *)self->_storage range];
+  if (v14 <= range2 + v20 && v14 >= [(TSWPStorage *)self->_storage range]|| (v21 = [(TSWPStorage *)self->_storage range], insertionPoint <= v21 + v22) && (v14 = insertionPoint, insertionPoint >= [(TSWPStorage *)self->_storage range]))
   {
     if (v14 != [(TSWPSelection *)self->_selection range]|| v26)
     {
-      v27 = [[TSWPSelection alloc] initWithType:0 range:v14 styleInsertionBehavior:0 caretAffinity:0, a4 == 2];
+      v27 = [[TSWPSelection alloc] initWithType:0 range:v14 styleInsertionBehavior:0 caretAffinity:0, direction == 2];
       [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setSelection:v27 onModel:self->_storage withFlags:80];
     }
   }
 
   else
   {
-    v23 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_handleSwipeMoveCaretWithTextGranularity:textDirection:layoutDirection:]"];
     v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
 
-    [v23 handleFailureInFunction:v24 file:v25 lineNumber:2939 description:@"Swipe gesture tried to set invalid insertion point"];
+    [currentHandler handleFailureInFunction:v24 file:v25 lineNumber:2939 description:@"Swipe gesture tried to set invalid insertion point"];
   }
 }
 
-- (void)p_handleLongPressGesture:(id)a3
+- (void)p_handleLongPressGesture:(id)gesture
 {
-  [a3 locationInView:{objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController, "layerHost"), "asiOSCVC"), "view")}];
+  [gesture locationInView:{objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController, "layerHost"), "asiOSCVC"), "view")}];
   v6 = v5;
   v8 = v7;
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:?];
@@ -1702,11 +1702,11 @@ LABEL_14:
   v12 = v11;
   v30 = 0;
   v13 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController hitKnobAtPoint:&v30 returningRep:?];
-  v14 = [a3 state];
-  if ((v14 - 3) < 2)
+  state = [gesture state];
+  if ((state - 3) < 2)
   {
     objc_opt_class();
-    [a3 targetRep];
+    [gesture targetRep];
     v17 = TSUDynamicCast();
     if (v17)
     {
@@ -1727,7 +1727,7 @@ LABEL_14:
         [(TSWPEditingController *)self tappedOnKnob:v13];
       }
 
-      [(TSWPEditingController *)self p_handleKnobDragGestureRecognizer:a3];
+      [(TSWPEditingController *)self p_handleKnobDragGestureRecognizer:gesture];
 
       self->_knobTracker = 0;
     }
@@ -1737,7 +1737,7 @@ LABEL_14:
       [(TSWPEditingController *)self p_endAutoscroll];
       [(TSWPEditingController *)self revertLastSelectionChangeIfElapsedTimeIsUnderPinFidgetThreshold];
       [(TSWPEditingController *)self protectedStopMagnification];
-      if ([a3 state] == 3)
+      if ([gesture state] == 3)
       {
         self->_shouldShowEditMenuForInsertionPoint = 1;
         [-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](-[TSWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
@@ -1745,12 +1745,12 @@ LABEL_14:
     }
   }
 
-  else if (v14 == 2)
+  else if (state == 2)
   {
     if (self->_knobTracker)
     {
 LABEL_25:
-      [(TSWPEditingController *)self p_handleKnobDragGestureRecognizer:a3];
+      [(TSWPEditingController *)self p_handleKnobDragGestureRecognizer:gesture];
       return;
     }
 
@@ -1767,14 +1767,14 @@ LABEL_25:
 
   else
   {
-    if (v14 != 1)
+    if (state != 1)
     {
       return;
     }
 
     [(TSWPEditingController *)self p_clearEditMenuFlags];
     objc_opt_class();
-    [a3 targetRep];
+    [gesture targetRep];
     v15 = TSUDynamicCast();
     if (v15)
     {
@@ -1798,7 +1798,7 @@ LABEL_25:
       v22 = v21;
       v24 = v23;
       v25 = [(TSWPEditingController *)self icc];
-      [a3 locationInView:{objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](-[TSWPEditingController icc](self, "icc"), "layerHost"), "asiOSCVC"), "view")}];
+      [gesture locationInView:{objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](-[TSWPEditingController icc](self, "icc"), "layerHost"), "asiOSCVC"), "view")}];
       [(TSDInteractiveCanvasController *)v25 convertBoundsToUnscaledPoint:?];
       self->_knobToTouchOffset.x = TSDSubtractPoints(v22, v24, v26);
       self->_knobToTouchOffset.y = v27;
@@ -1810,24 +1810,24 @@ LABEL_25:
 
     [(TSWPEditingController *)self tappedInRep:v16 point:2 tapCount:1 isTapHold:0 precise:?];
     self->_initialPressTextSelectionGranularity = 1;
-    v28 = [(TSWPEditingController *)self selection];
-    v29 = [(TSWPSelection *)v28 type];
-    if (![(TSWPEditingController *)self pIsSelectionPlaceHolderTextWithSelection:v28]&& v29 != 2)
+    selection = [(TSWPEditingController *)self selection];
+    type = [(TSWPSelection *)selection type];
+    if (![(TSWPEditingController *)self pIsSelectionPlaceHolderTextWithSelection:selection]&& type != 2)
     {
-      [(TSWPEditingController *)self p_beginMagnification:v28 forRep:v16 atPoint:v6, v8];
+      [(TSWPEditingController *)self p_beginMagnification:selection forRep:v16 atPoint:v6, v8];
     }
   }
 }
 
-- (CGPoint)p_clampPointToLine:(CGPoint)a3 trackingRep:(id)a4
+- (CGPoint)p_clampPointToLine:(CGPoint)line trackingRep:(id)rep
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 convertNaturalPointFromUnscaledCanvas:?];
-  [a4 pinToNaturalBounds:1 andLastLineFragment:?];
-  if (a4)
+  y = line.y;
+  x = line.x;
+  [rep convertNaturalPointFromUnscaledCanvas:?];
+  [rep pinToNaturalBounds:1 andLastLineFragment:?];
+  if (rep)
   {
-    [a4 lineMetricsAtPoint:?];
+    [rep lineMetricsAtPoint:?];
     v8 = 0;
     v7 = 0;
     v10 = 0;
@@ -1844,7 +1844,7 @@ LABEL_25:
 
   if (!CGRectIsEmpty(*&v7))
   {
-    [a4 convertNaturalRectToUnscaledCanvas:{0, 0}];
+    [rep convertNaturalRectToUnscaledCanvas:{0, 0}];
     y = CGRectGetMidY(v14);
   }
 
@@ -1855,15 +1855,15 @@ LABEL_25:
   return result;
 }
 
-- (void)p_handleTapAndTouchGesture:(id)a3
+- (void)p_handleTapAndTouchGesture:(id)gesture
 {
   v41[2] = *MEMORY[0x277D85DE8];
   self->_ignoreFutureImmediatePresses = 1;
-  [a3 unscaledLocationForICC:{-[TSWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
+  [gesture unscaledLocationForICC:{-[TSWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
   v6 = v5;
   v8 = v7;
   objc_opt_class();
-  [a3 targetRep];
+  [gesture targetRep];
   v9 = TSUDynamicCast();
   if (!v9)
   {
@@ -1876,12 +1876,12 @@ LABEL_25:
   [v9 convertNaturalPointFromUnscaledCanvas:{v6, v8}];
   v12 = v11;
   v14 = v13;
-  v15 = [a3 numberOfTapsRequired];
-  if (!v10 || (v16 = v15, [(TSWPSelection *)self->_selection type]== 3) || [(TSWPSelection *)self->_selection type]== 5)
+  numberOfTapsRequired = [gesture numberOfTapsRequired];
+  if (!v10 || (v16 = numberOfTapsRequired, [(TSWPSelection *)self->_selection type]== 3) || [(TSWPSelection *)self->_selection type]== 5)
   {
     [(TSWPEditingController *)self p_endAutoscroll];
     [(TSWPEditingController *)self p_cancelTapAndLongPressPreviousSelector];
-    if ([a3 gestureState] == 3 || objc_msgSend(a3, "gestureState") == 4)
+    if ([gesture gestureState] == 3 || objc_msgSend(gesture, "gestureState") == 4)
     {
       if (self->_knobTracker)
       {
@@ -1889,9 +1889,9 @@ LABEL_25:
         v17 = TSUDynamicCast();
         if (!v17)
         {
-          v18 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_handleTapAndTouchGesture:]"];
-          [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3427, @"invalid nil value for '%s'", "gr"}];
+          [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3427, @"invalid nil value for '%s'", "gr"}];
         }
 
         [(TSWPEditingController *)self p_handleKnobDragGestureRecognizer:v17];
@@ -1922,7 +1922,7 @@ LABEL_25:
   else
   {
     v21 = v16 + 1;
-    if ([a3 gestureState] == 1)
+    if ([gesture gestureState] == 1)
     {
       [(TSWPEditingController *)self p_clearEditMenuFlags];
       if (![(TSWPInteractiveCanvasController *)self->_interactiveCanvasController suppressDoubleTapForSelection])
@@ -1941,7 +1941,7 @@ LABEL_25:
       [(TSWPEditingController *)self performSelector:sel_p_beginTapAndLongPress_ withObject:v22 afterDelay:0.2];
     }
 
-    else if ([a3 gestureState] == 2)
+    else if ([gesture gestureState] == 2)
     {
       if ([(TSWPSelection *)self->_selection type]!= 2)
       {
@@ -1987,9 +1987,9 @@ LABEL_25:
           v35 = TSUDynamicCast();
           if (!v35)
           {
-            v36 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_handleTapAndTouchGesture:]"];
-            [v36 handleFailureInFunction:v37 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3354, @"invalid nil value for '%s'", "gr"}];
+            [currentHandler2 handleFailureInFunction:v37 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3354, @"invalid nil value for '%s'", "gr"}];
           }
 
           [(TSWPEditingController *)self p_handleKnobDragGestureRecognizer:v35];
@@ -2012,9 +2012,9 @@ LABEL_25:
         v28 = TSUDynamicCast();
         if (!v28)
         {
-          v29 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_handleTapAndTouchGesture:]"];
-          [v29 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3395, @"invalid nil value for '%s'", "gr"}];
+          [currentHandler3 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3395, @"invalid nil value for '%s'", "gr"}];
         }
 
         [(TSWPEditingController *)self p_handleKnobDragGestureRecognizer:v28];
@@ -2027,7 +2027,7 @@ LABEL_25:
         [(TSWPEditingController *)self protectedStopMagnification];
       }
 
-      if ([a3 gestureState] != 5 && -[TSWPSelection isValid](-[TSWPEditingController selection](self, "selection"), "isValid"))
+      if ([gesture gestureState] != 5 && -[TSWPSelection isValid](-[TSWPEditingController selection](self, "selection"), "isValid"))
       {
         if (v21 == 2)
         {
@@ -2045,20 +2045,20 @@ LABEL_25:
   }
 }
 
-- (void)p_beginTapAndLongPress:(id)a3
+- (void)p_beginTapAndLongPress:(id)press
 {
   if (!self->_tapAndLongPressIsPossible)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_beginTapAndLongPress:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3463, @"_tapAndLongPressIsPossible should be YES"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3463, @"_tapAndLongPressIsPossible should be YES"}];
   }
 
   self->_tapAndLongPressIsPossible = 0;
   if ([(TSWPSelection *)self->_selection type]!= 2)
   {
-    v7 = [a3 objectForKeyedSubscript:@"TSWPEditingControllerTextRepKey"];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TSWPEditingControllerRepPointKey", "CGPointValue"}];
+    v7 = [press objectForKeyedSubscript:@"TSWPEditingControllerTextRepKey"];
+    [objc_msgSend(press objectForKeyedSubscript:{@"TSWPEditingControllerRepPointKey", "CGPointValue"}];
     v9 = v8;
     v11 = v10;
     if ([(TSWPInteractiveCanvasController *)self->_interactiveCanvasController suppressDoubleTapForSelection])
@@ -2066,9 +2066,9 @@ LABEL_25:
       [(TSWPEditingController *)self tappedInRep:v7 point:2 tapCount:1 isTapHold:0 precise:v9, v11];
     }
 
-    v12 = [(TSWPEditingController *)self selection];
-    v13 = v12;
-    if (!self->_knobTracker && [(TSWPSelection *)v12 isValid]&& [(TSWPSelection *)v13 isRange])
+    selection = [(TSWPEditingController *)self selection];
+    v13 = selection;
+    if (!self->_knobTracker && [(TSWPSelection *)selection isValid]&& [(TSWPSelection *)v13 isRange])
     {
       [(TSWPEditingController *)self p_beginKnobTrackingSelection:v13 forRep:v7 atPoint:v9, v11];
     }
@@ -2109,13 +2109,13 @@ LABEL_25:
   }
 }
 
-- (void)p_beginKnobTrackingSelection:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5
+- (void)p_beginKnobTrackingSelection:(id)selection forRep:(id)rep atPoint:(CGPoint)point
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = [(TSWPEditingController *)self charIndexInRep:a4 fromPoint:0 allowPastBreak:0 isAtEndOfLine:0 leadingEdge:a5.x, a5.y];
-  v9 = [a3 range];
-  [a3 range];
-  if (v8 >= v9 + (v10 >> 1))
+  v8 = [(TSWPEditingController *)self charIndexInRep:rep fromPoint:0 allowPastBreak:0 isAtEndOfLine:0 leadingEdge:point.x, point.y];
+  range = [selection range];
+  [selection range];
+  if (v8 >= range + (v10 >> 1))
   {
     v11 = 10;
   }
@@ -2125,11 +2125,11 @@ LABEL_25:
     v11 = 11;
   }
 
-  v12 = [a4 knobForTag:v11];
+  v12 = [rep knobForTag:v11];
   if (v12)
   {
 LABEL_5:
-    [(TSWPEditingController *)self p_createKnobTracker:v12 forRep:a4 tapCount:2];
+    [(TSWPEditingController *)self p_createKnobTracker:v12 forRep:rep tapCount:2];
     [(TSWPEditingController *)self p_beginOperationAndTakeControl];
     return;
   }
@@ -2138,8 +2138,8 @@ LABEL_5:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v13 = [a4 siblings];
-  v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  siblings = [rep siblings];
+  v14 = [siblings countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
     v15 = v14;
@@ -2150,7 +2150,7 @@ LABEL_9:
     {
       if (*v19 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(siblings);
       }
 
       v12 = [*(*(&v18 + 1) + 8 * v17) knobForTag:v11];
@@ -2161,7 +2161,7 @@ LABEL_9:
 
       if (v15 == ++v17)
       {
-        v15 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v15 = [siblings countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v15)
         {
           goto LABEL_9;
@@ -2173,24 +2173,24 @@ LABEL_9:
   }
 }
 
-- (void)p_createKnobTracker:(id)a3 forRep:(id)a4 tapCount:(unint64_t)a5
+- (void)p_createKnobTracker:(id)tracker forRep:(id)rep tapCount:(unint64_t)count
 {
   if (!self->_knobTracker || (v9 = [MEMORY[0x277D6C290] currentHandler], v10 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSWPEditingController p_createKnobTracker:forRep:tapCount:]"), objc_msgSend(v9, "handleFailureInFunction:file:lineNumber:description:", v10, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3548, @"expected nil value for '%s'", "_knobTracker"), !self->_knobTracker))
   {
-    [(TSWPEditingController *)self setKnobTrackingTapCount:a5];
-    v11 = [a4 newTrackerForKnob:a3];
+    [(TSWPEditingController *)self setKnobTrackingTapCount:count];
+    v11 = [rep newTrackerForKnob:tracker];
     self->_knobTracker = v11;
   }
 }
 
-- (void)p_handleTapGestures:(id)a3
+- (void)p_handleTapGestures:(id)gestures
 {
-  v5 = [a3 gestureKind];
-  [a3 unscaledLocationForICC:{-[TSWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
+  gestureKind = [gestures gestureKind];
+  [gestures unscaledLocationForICC:{-[TSWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
   v7 = v6;
   v9 = v8;
   objc_opt_class();
-  [a3 targetRep];
+  [gestures targetRep];
   v10 = TSUDynamicCast();
   if (!v10)
   {
@@ -2203,13 +2203,13 @@ LABEL_9:
   [v10 convertNaturalPointFromUnscaledCanvas:{v7, v9}];
   v13 = v12;
   v15 = v14;
-  if (v5 == @"TSWPImmediateSingleTap")
+  if (gestureKind == @"TSWPImmediateSingleTap")
   {
     if (!v11)
     {
-      v24 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_handleTapGestures:]"];
-      [v24 handleFailureInFunction:v25 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3588, @"we should have gotten a valid textRep by now"}];
+      [currentHandler handleFailureInFunction:v25 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3588, @"we should have gotten a valid textRep by now"}];
     }
 
     v26 = MEMORY[0x277D6C268];
@@ -2217,19 +2217,19 @@ LABEL_9:
     [(TSWPEditingController *)self p_clearEditMenuFlags];
     if (!self->_editMenuIsVisible)
     {
-      v27 = [(TSWPEditingController *)self selection];
-      if ([(TSWPSelection *)v27 isValid])
+      selection = [(TSWPEditingController *)self selection];
+      if ([(TSWPSelection *)selection isValid])
       {
-        v28 = [(TSWPSelection *)v27 range];
+        range = [(TSWPSelection *)selection range];
       }
 
       else
       {
-        v28 = *v26;
+        range = *v26;
         v29 = v26[1];
       }
 
-      self->_originalSelectionRange.location = v28;
+      self->_originalSelectionRange.location = range;
       self->_originalSelectionRange.length = v29;
     }
 
@@ -2239,21 +2239,21 @@ LABEL_9:
     goto LABEL_26;
   }
 
-  if (v5 != @"TSWPSecondarySingleTap" && (v5 == @"TSWPImmediateDoubleTap" || v5 == @"TSWPTwoFingerTap"))
+  if (gestureKind != @"TSWPSecondarySingleTap" && (gestureKind == @"TSWPImmediateDoubleTap" || gestureKind == @"TSWPTwoFingerTap"))
   {
-    v17 = v5 == @"TSWPImmediateDoubleTap" ? 2 : 4 * (v5 == @"TSWPTwoFingerTap");
+    v17 = gestureKind == @"TSWPImmediateDoubleTap" ? 2 : 4 * (gestureKind == @"TSWPTwoFingerTap");
     if (!v11)
     {
-      v18 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_handleTapGestures:]"];
-      [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3763, @"we should have gotten a valid textRep by now"}];
+      [currentHandler2 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3763, @"we should have gotten a valid textRep by now"}];
     }
 
     [(TSWPEditingController *)self tappedInRep:v11 point:v17 tapCount:0 isTapHold:0 precise:v13, v15];
-    v20 = [(TSWPEditingController *)self selection];
-    if (v20)
+    selection2 = [(TSWPEditingController *)self selection];
+    if (selection2)
     {
-      [(TSWPSelection *)v20 range];
+      [(TSWPSelection *)selection2 range];
       if (!v21)
       {
         v22 = 1;
@@ -2265,14 +2265,14 @@ LABEL_26:
   }
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  self->_mostRecentGestureKind = v5;
+  gestureKind = [gesture gestureKind];
+  self->_mostRecentGestureKind = gestureKind;
   objc_opt_class();
   [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layerHost];
   [TSUDynamicCast() cancelDelayedTapAction];
-  v7 = v5 == @"TSWPOneFingerSwipe" || v5 == @"TSWPTwoFingerSwipe" || v5 == @"TSWPThreeFingerSwipe";
+  v7 = gestureKind == @"TSWPOneFingerSwipe" || gestureKind == @"TSWPTwoFingerSwipe" || gestureKind == @"TSWPThreeFingerSwipe";
   if (v7 && [(TSWPSelection *)self->_selection isValid])
   {
     v20 = 2;
@@ -2284,35 +2284,35 @@ LABEL_26:
     {
       if (!v21)
       {
-        if (v5 == @"TSWPOneFingerSwipe")
+        if (gestureKind == @"TSWPOneFingerSwipe")
         {
           v10 = v19;
           v9 = v20;
-          v11 = self;
+          selfCopy2 = self;
           v12 = 0;
         }
 
         else
         {
-          if (v5 == @"TSWPTwoFingerSwipe")
+          if (gestureKind == @"TSWPTwoFingerSwipe")
           {
             v17 = 1;
             [(TSWPEditingController *)self p_handleSwipeMoveCaretWithTextGranularity:1 textDirection:v20 layoutDirection:v19];
             return v17;
           }
 
-          if (v5 != @"TSWPThreeFingerSwipe")
+          if (gestureKind != @"TSWPThreeFingerSwipe")
           {
             return 1;
           }
 
           v10 = v19;
           v9 = v20;
-          v11 = self;
+          selfCopy2 = self;
           v12 = 4;
         }
 
-        [(TSWPEditingController *)v11 p_handleSwipeMoveCaretWithTextGranularity:v12 textDirection:v9 layoutDirection:v10];
+        [(TSWPEditingController *)selfCopy2 p_handleSwipeMoveCaretWithTextGranularity:v12 textDirection:v9 layoutDirection:v10];
       }
 
       return 1;
@@ -2321,27 +2321,27 @@ LABEL_26:
 
   else
   {
-    if (v5 == @"TSWPLongPress" || v5 == @"TSWPImmediatePress")
+    if (gestureKind == @"TSWPLongPress" || gestureKind == @"TSWPImmediatePress")
     {
-      [(TSWPEditingController *)self p_handleLongPressGesture:a3];
+      [(TSWPEditingController *)self p_handleLongPressGesture:gesture];
       return 1;
     }
 
-    if (v5 == @"TSWPTapAndTouch" || v5 == @"TSWPDoubleTapAndTouch")
+    if (gestureKind == @"TSWPTapAndTouch" || gestureKind == @"TSWPDoubleTapAndTouch")
     {
       [(TSWPEditingController *)self p_handleTapAndTouchGesture:TSUProtocolCast()];
       return 1;
     }
 
-    if (v5 == @"TSWPImmediateSingleTap" || v5 == @"TSWPTwoFingerTap" || v5 == @"TSWPSecondarySingleTap" || v5 == @"TSWPImmediateDoubleTap")
+    if (gestureKind == @"TSWPImmediateSingleTap" || gestureKind == @"TSWPTwoFingerTap" || gestureKind == @"TSWPSecondarySingleTap" || gestureKind == @"TSWPImmediateDoubleTap")
     {
-      [(TSWPEditingController *)self p_handleTapGestures:a3];
+      [(TSWPEditingController *)self p_handleTapGestures:gesture];
       return 1;
     }
 
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController handleGesture:]"];
-    [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3869, @"TSWPEditingController can't handle a gesture of kind %@", v5}];
+    [currentHandler handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 3869, @"TSWPEditingController can't handle a gesture of kind %@", gestureKind}];
   }
 
   return 0;
@@ -2359,8 +2359,8 @@ LABEL_26:
     goto LABEL_21;
   }
 
-  v4 = [(TSWPEditingController *)self selection];
-  if (!v4)
+  selection = [(TSWPEditingController *)self selection];
+  if (!selection)
   {
     goto LABEL_21;
   }
@@ -2373,7 +2373,7 @@ LABEL_26:
       goto LABEL_21;
     }
 
-    [(TSWPSelection *)v4 range];
+    [(TSWPSelection *)selection range];
     if (v6)
     {
       goto LABEL_21;
@@ -2382,10 +2382,10 @@ LABEL_26:
     goto LABEL_19;
   }
 
-  v7 = [(TSWPSelection *)v4 range];
+  range = [(TSWPSelection *)selection range];
   location = self->_originalSelectionRange.location;
   length = self->_originalSelectionRange.length;
-  if ((location != *MEMORY[0x277D6C268] || length != *(MEMORY[0x277D6C268] + 8)) && v7 == location && v8 == length)
+  if ((location != *MEMORY[0x277D6C268] || length != *(MEMORY[0x277D6C268] + 8)) && range == location && v8 == length)
   {
 LABEL_19:
     if (!self->_gestureBeganWhenEditingBegan)
@@ -2398,43 +2398,43 @@ LABEL_21:
   self->_gestureBeganWhenEditingBegan = 0;
 }
 
-- (void)setAutoscroll:(id)a3
+- (void)setAutoscroll:(id)autoscroll
 {
   autoscroll = self->_autoscroll;
-  if (autoscroll != a3)
+  if (autoscroll != autoscroll)
   {
 
     self->_autoscroll = 0;
-    self->_autoscroll = a3;
+    self->_autoscroll = autoscroll;
   }
 }
 
 - (void)p_beginOperationAndTakeControl
 {
-  v3 = [(TSWPEditingController *)self interactiveCanvasController];
-  if ([(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)v3 dynamicOperationController] isInOperation])
+  interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
+  if ([(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)interactiveCanvasController dynamicOperationController] isInOperation])
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_beginOperationAndTakeControl]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4332, @"beginning WP operation in DOC when already in an operation"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4332, @"beginning WP operation in DOC when already in an operation"}];
   }
 
-  [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)v3 tmCoordinator] registerTrackerManipulator:self];
-  if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)v3 tmCoordinator] takeControlWithTrackerManipulator:self])
+  [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)interactiveCanvasController tmCoordinator] registerTrackerManipulator:self];
+  if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)interactiveCanvasController tmCoordinator] takeControlWithTrackerManipulator:self])
   {
-    v6 = [(TSDInteractiveCanvasController *)v3 dynamicOperationController];
+    dynamicOperationController = [(TSDInteractiveCanvasController *)interactiveCanvasController dynamicOperationController];
 
-    [(TSDDynamicOperationController *)v6 beginOperation];
+    [(TSDDynamicOperationController *)dynamicOperationController beginOperation];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_beginOperationAndTakeControl]"];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
-    [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)v3 tmCoordinator] controllingTM];
+    [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)interactiveCanvasController tmCoordinator] controllingTM];
     v10 = objc_opt_class();
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:4341 description:{@"could not take control with WP Editing Controller. Controlling TM is %@", NSStringFromClass(v10)}];
+    [currentHandler2 handleFailureInFunction:v8 file:v9 lineNumber:4341 description:{@"could not take control with WP Editing Controller. Controlling TM is %@", NSStringFromClass(v10)}];
   }
 }
 
@@ -2445,24 +2445,24 @@ LABEL_21:
   [(TSWPEditingController *)self setAutoscroll:0];
 }
 
-- (void)p_handleKnobDragGestureRecognizer:(id)a3
+- (void)p_handleKnobDragGestureRecognizer:(id)recognizer
 {
-  v5 = [a3 state] == 3 || objc_msgSend(a3, "state") == 4;
+  v5 = [recognizer state] == 3 || objc_msgSend(recognizer, "state") == 4;
   self->_readyToEnd = v5;
   if (!self->_knobTracker)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_handleKnobDragGestureRecognizer:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4355, @"invalid nil value for '%s'", "_knobTracker"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4355, @"invalid nil value for '%s'", "_knobTracker"}];
   }
 
-  if ([a3 state] == 3 || objc_msgSend(a3, "state") == 1)
+  if ([recognizer state] == 3 || objc_msgSend(recognizer, "state") == 1)
   {
     [(TSWPTextKnobTracker *)self->_knobTracker setIgnoreNextCall:1];
   }
 
   v8 = [(TSWPEditingController *)self icc];
-  [a3 locationInView:{objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](-[TSWPEditingController icc](self, "icc"), "layerHost"), "asiOSCVC"), "view")}];
+  [recognizer locationInView:{objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](-[TSWPEditingController icc](self, "icc"), "layerHost"), "asiOSCVC"), "view")}];
   [(TSDInteractiveCanvasController *)v8 convertBoundsToUnscaledPoint:?];
   v9 = TSDRoundedPoint();
   v11 = v10;
@@ -2477,9 +2477,9 @@ LABEL_21:
     [TSDAutoscroll startAutoscroll:self unscaledPoint:v9, v11];
   }
 
-  v12 = [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] dynamicOperationController];
+  dynamicOperationController = [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] dynamicOperationController];
 
-  [(TSDDynamicOperationController *)v12 handleTrackerManipulator:self];
+  [(TSDDynamicOperationController *)dynamicOperationController handleTrackerManipulator:self];
 }
 
 - (unint64_t)insertionPoint
@@ -2494,85 +2494,85 @@ LABEL_21:
   return [(TSWPSelection *)selection start];
 }
 
-- (void)setInsertionPoint:(unint64_t)a3 withFlags:(unint64_t)a4
+- (void)setInsertionPoint:(unint64_t)point withFlags:(unint64_t)flags
 {
-  v6 = [[TSWPSelection alloc] initWithRange:a3, 0];
-  [(TSWPEditingController *)self setSelection:v6 withFlags:a4];
+  v6 = [[TSWPSelection alloc] initWithRange:point, 0];
+  [(TSWPEditingController *)self setSelection:v6 withFlags:flags];
 }
 
-- (void)p_setRevertibleSelection:(id)a3
+- (void)p_setRevertibleSelection:(id)selection
 {
   [(TSKFidgetResolver *)self->_fidgetResolver pushValue:?];
-  if ([a3 isValid])
+  if ([selection isValid])
   {
-    v5 = [a3 end];
+    v5 = [selection end];
     if (v5 > [(TSWPStorage *)self->_storage length])
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setRevertibleSelection:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4421, @"Selection extends past end of storage"}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4421, @"Selection extends past end of storage"}];
     }
 
-    if ([a3 isInsertionPoint])
+    if ([selection isInsertionPoint])
     {
-      v8 = [a3 range];
-      if (v8 < -[TSWPStorage length](self->_storage, "length") && (-[TSWPStorage characterAtIndex:](self->_storage, "characterAtIndex:", [a3 range]) & 0xFC00) == 0xDC00)
+      range = [selection range];
+      if (range < -[TSWPStorage length](self->_storage, "length") && (-[TSWPStorage characterAtIndex:](self->_storage, "characterAtIndex:", [selection range]) & 0xFC00) == 0xDC00)
       {
-        v9 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setRevertibleSelection:]"];
-        [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4427, @"Insertion point is before the wrong half of a surrogate pair"}];
-        a3 = [a3 copyWithNewRange:{objc_msgSend(a3, "range") + 1, 0}];
+        [currentHandler2 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4427, @"Insertion point is before the wrong half of a surrogate pair"}];
+        selection = [selection copyWithNewRange:{objc_msgSend(selection, "range") + 1, 0}];
       }
     }
 
     else
     {
-      v11 = [a3 start];
-      if (v11 <= [(TSWPStorage *)self->_storage length])
+      start = [selection start];
+      if (start <= [(TSWPStorage *)self->_storage length])
       {
-        v12 = [a3 start];
-        if (v12 != -[TSWPStorage length](self->_storage, "length") && (-[TSWPStorage characterAtIndex:](self->_storage, "characterAtIndex:", [a3 start]) & 0xFC00) == 0xDC00)
+        start2 = [selection start];
+        if (start2 != -[TSWPStorage length](self->_storage, "length") && (-[TSWPStorage characterAtIndex:](self->_storage, "characterAtIndex:", [selection start]) & 0xFC00) == 0xDC00)
         {
-          v13 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setRevertibleSelection:]"];
-          [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4436, @"Selection covers half of a surrogate pair"}];
+          [currentHandler3 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4436, @"Selection covers half of a surrogate pair"}];
         }
       }
 
-      v15 = [a3 end];
+      v15 = [selection end];
       if (v15 <= [(TSWPStorage *)self->_storage length])
       {
-        v16 = [a3 end];
-        if (v16 != -[TSWPStorage length](self->_storage, "length") && (-[TSWPStorage characterAtIndex:](self->_storage, "characterAtIndex:", [a3 end]) & 0xFC00) == 0xDC00)
+        v16 = [selection end];
+        if (v16 != -[TSWPStorage length](self->_storage, "length") && (-[TSWPStorage characterAtIndex:](self->_storage, "characterAtIndex:", [selection end]) & 0xFC00) == 0xDC00)
         {
-          v17 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
           v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setRevertibleSelection:]"];
-          [v17 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4441, @"Selection covers half of a surrogate pair"}];
+          [currentHandler4 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4441, @"Selection covers half of a surrogate pair"}];
         }
       }
     }
   }
 
-  v19 = a3;
+  selectionCopy = selection;
 
-  self->_selection = a3;
+  self->_selection = selection;
 }
 
-- (void)p_setSelection:(id)a3 withFlags:(unint64_t)a4 force:(BOOL)a5
+- (void)p_setSelection:(id)selection withFlags:(unint64_t)flags force:(BOOL)force
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (selection)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = objc_opt_class();
-      [v9 handleFailureInFunction:v10 file:v11 lineNumber:4478 description:{@"[TSWPEditingController setSelection:] expected %@, got %@", v13, NSStringFromClass(v14)}];
+      [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:4478 description:{@"[TSWPEditingController setSelection:] expected %@, got %@", v13, NSStringFromClass(v14)}];
     }
   }
 
@@ -2583,13 +2583,13 @@ LABEL_21:
     v16 = [(TSWPSelection *)v15 end];
     if (v16 > [(TSWPStorage *)self->_storage length])
     {
-      v17 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
-      [v17 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4480, @"Bad selection range"}];
+      [currentHandler2 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4480, @"Bad selection range"}];
     }
   }
 
-  if (!a3)
+  if (!selection)
   {
     v50 = @"TSDEditorControllerEditorKey";
     v51[0] = self;
@@ -2618,7 +2618,7 @@ LABEL_21:
   [(TSWPEditingController *)self setCoalescingText:0];
   [(TSWPEditingController *)self p_clearEditMenuFlags];
   v22 = TSUSupportsTextInteraction();
-  if ((a4 & 0x20) == 0 && (v22 & 1) == 0)
+  if ((flags & 0x20) == 0 && (v22 & 1) == 0)
   {
     if ([(TSWPEditingController *)self pIsSelectionPlaceHolderTextWithSelection:v15])
     {
@@ -2638,7 +2638,7 @@ LABEL_21:
     v15 = [(TSWPEditingController *)self extendSelectionToParagraphs:v15];
   }
 
-  if (a5 || (selection = self->_selection, selection != v15) && ![(TSWPSelection *)selection isEqual:v15])
+  if (force || (selection = self->_selection, selection != v15) && ![(TSWPSelection *)selection isEqual:v15])
   {
     if (![(TSWPSelection *)self->_selection isEquivalentForInsertionStyle:v15])
     {
@@ -2652,23 +2652,23 @@ LABEL_21:
       goto LABEL_46;
     }
 
-    v25 = [(TSWPSelection *)v15 type];
-    if (v25 <= 7)
+    type = [(TSWPSelection *)v15 type];
+    if (type <= 7)
     {
-      if (((1 << v25) & 0xD0) != 0)
+      if (((1 << type) & 0xD0) != 0)
       {
         goto LABEL_46;
       }
 
-      if (((1 << v25) & 0x28) != 0)
+      if (((1 << type) & 0x28) != 0)
       {
         if (![(TSWPSelection *)v15 isRange])
         {
-          v26 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
           v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
           v29 = @"replace selection isn't a insertion range";
-          v30 = v26;
+          v30 = currentHandler3;
           v31 = v27;
           v32 = 4576;
 LABEL_45:
@@ -2679,51 +2679,51 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      if (v25 == 2)
+      if (type == 2)
       {
         if (![(TSWPSelection *)v15 isRange])
         {
-          v33 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
           v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
-          [v33 handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4583, @"topic selection isn't a range"}];
+          [currentHandler4 handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4583, @"topic selection isn't a range"}];
         }
 
-        v35 = [(TSWPSelection *)v15 range];
+        range = [(TSWPSelection *)v15 range];
         v37 = v36;
-        if (v35 != [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:v35])
+        if (range != [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:range])
         {
-          v38 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
           v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
-          [v38 handleFailureInFunction:v39 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4585, @"Topic selection doesn't start at paragraph boundary"}];
+          [currentHandler5 handleFailureInFunction:v39 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 4585, @"Topic selection doesn't start at paragraph boundary"}];
         }
 
-        v40 = v35 + v37;
+        v40 = range + v37;
         v41 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:v40 - 1];
         if (v40 == v41 + v42)
         {
           goto LABEL_46;
         }
 
-        v43 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler6 = [MEMORY[0x277D6C290] currentHandler];
         v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
         v29 = @"Topic selection doesn't end at paragraph boundary";
-        v30 = v43;
+        v30 = currentHandler6;
         v31 = v44;
         v32 = 4586;
         goto LABEL_45;
       }
     }
 
-    if (v25)
+    if (type)
     {
-      if (v25 != 1)
+      if (type != 1)
       {
-        v47 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler7 = [MEMORY[0x277D6C290] currentHandler];
         v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
         v29 = @"illegal selection type";
-        v30 = v47;
+        v30 = currentHandler7;
         v31 = v48;
         v32 = 4566;
         goto LABEL_45;
@@ -2731,11 +2731,11 @@ LABEL_45:
 
       if (![(TSWPSelection *)v15 isInsertionPoint])
       {
-        v45 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler8 = [MEMORY[0x277D6C290] currentHandler];
         v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_setSelection:withFlags:force:]"];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
         v29 = @"label selection isn't an insertion point";
-        v30 = v45;
+        v30 = currentHandler8;
         v31 = v46;
         v32 = 4579;
         goto LABEL_45;
@@ -2744,9 +2744,9 @@ LABEL_45:
 
 LABEL_46:
     *&self->_selectionLastModifiedWithKnob = self->_knobTracking;
-    self->_currentSelectionFlags = a4;
+    self->_currentSelectionFlags = flags;
     [(TSWPEditingController *)self p_setRevertibleSelection:v15];
-    [(TSWPEditingController *)self selectionChangedWithFlags:a4 wpFlags:0];
+    [(TSWPEditingController *)self selectionChangedWithFlags:flags wpFlags:0];
   }
 
   v49 = self->_selection;
@@ -2765,10 +2765,10 @@ LABEL_46:
 
 - (void)revertLastSelectionChangeIfElapsedTimeIsUnderPinFidgetThreshold
 {
-  v3 = [(TSKFidgetResolver *)self->_fidgetResolver nonFidgetValue];
-  if (v3)
+  nonFidgetValue = [(TSKFidgetResolver *)self->_fidgetResolver nonFidgetValue];
+  if (nonFidgetValue)
   {
-    v4 = v3;
+    v4 = nonFidgetValue;
 
     self->_selection = v4;
     currentSelectionFlags = self->_currentSelectionFlags;
@@ -2777,11 +2777,11 @@ LABEL_46:
   }
 }
 
-- (void)p_beginMagnification:(id)a3 forRep:(id)a4 atPoint:(CGPoint)a5
+- (void)p_beginMagnification:(id)magnification forRep:(id)rep atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate:a3];
+  y = point.y;
+  x = point.x;
+  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate:magnification];
   v8 = TSUProtocolCast();
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
   v10 = v9;
@@ -2812,26 +2812,26 @@ LABEL_46:
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
 
-- (void)selectionChangedWithFlags:(unint64_t)a3 wpFlags:(unint64_t)a4
+- (void)selectionChangedWithFlags:(unint64_t)flags wpFlags:(unint64_t)wpFlags
 {
   v9[2] = *MEMORY[0x277D85DE8];
   if (self->_storage)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8[0] = @"TSWPEditingControllerEditor";
     v8[1] = @"TSWPEditingControllerSelectionFlagsKey";
     v9[0] = self;
-    v9[1] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v6 postNotificationName:@"TSWPEditingControllerSelectionChanged" object:self->_storage userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
+    v9[1] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:flags];
+    [defaultCenter postNotificationName:@"TSWPEditingControllerSelectionChanged" object:self->_storage userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
     [(TSWPEditingController *)self p_postSelectionContentsChangedNotification];
   }
 
-  [(TSWPEditingController *)self dismissActivePopovers:a3];
-  v7 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController editorController];
+  [(TSWPEditingController *)self dismissActivePopovers:flags];
+  editorController = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController editorController];
   if (![(TSWPEditingController *)self trackingKnobInParagraphMode])
   {
-    [(TSDEditorController *)v7 editorDidChangeSelection:self withSelectionFlags:a3];
-    if ((a3 & 0x10000) == 0)
+    [(TSDEditorController *)editorController editorDidChangeSelection:self withSelectionFlags:flags];
+    if ((flags & 0x10000) == 0)
     {
       goto LABEL_8;
     }
@@ -2839,15 +2839,15 @@ LABEL_46:
     goto LABEL_7;
   }
 
-  [(TSDEditorController *)v7 editorDidChangeSelectionAndWantsKeyboard:self withSelectionFlags:a3];
-  if ((a3 & 0x10000) != 0)
+  [(TSDEditorController *)editorController editorDidChangeSelectionAndWantsKeyboard:self withSelectionFlags:flags];
+  if ((flags & 0x10000) != 0)
   {
 LABEL_7:
     [(TSWPEditingController *)self p_clearEditMenuFlags];
   }
 
 LABEL_8:
-  self->_suppressEditMenu = (a3 & 0x20000) != 0;
+  self->_suppressEditMenu = (flags & 0x20000) != 0;
   if (self->_magnifying)
   {
     if ([+[TSWPTextMagnifierHorizontalRanged sharedRangedMagnifier](TSWPTextMagnifierHorizontalRanged "sharedRangedMagnifier")])
@@ -2857,22 +2857,22 @@ LABEL_8:
   }
 }
 
-- (id)extendSelectionToParagraphs:(id)a3
+- (id)extendSelectionToParagraphs:(id)paragraphs
 {
-  v5 = [(TSWPEditingController *)self storage];
-  v6 = [a3 range];
-  [(TSWPStorage *)self->_storage selectionRangeForCharIndex:[(TSWPStorage *)v5 textRangeForParagraphsInCharRange:v6, v7]];
+  storage = [(TSWPEditingController *)self storage];
+  range = [paragraphs range];
+  [(TSWPStorage *)self->_storage selectionRangeForCharIndex:[(TSWPStorage *)storage textRangeForParagraphsInCharRange:range, v7]];
   v8 = NSIntersectionRangeInclusive();
-  v10 = [a3 copyWithNewRange:{v8, v9}];
+  v10 = [paragraphs copyWithNewRange:{v8, v9}];
   v11 = v10;
 
   return [(TSWPEditingController *)self p_extendSelectionToIncludeSmartFields:v10];
 }
 
-- (id)p_columnForCharIndex:(unint64_t)a3 withStorage:(id)a4
+- (id)p_columnForCharIndex:(unint64_t)index withStorage:(id)storage
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layoutsForModel:a4 withSelection:[TSWPSelection selectionWithRange:a3, 1]];
+  v5 = [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layoutsForModel:storage withSelection:[TSWPSelection selectionWithRange:index, 1]];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -2902,8 +2902,8 @@ LABEL_8:
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v13 = [v12 columns];
-      v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      columns = [v12 columns];
+      v14 = [columns countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v14)
       {
         v15 = v14;
@@ -2914,19 +2914,19 @@ LABEL_8:
         {
           if (*v25 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(columns);
           }
 
           v18 = *(*(&v24 + 1) + 8 * v17);
-          v19 = [v18 range];
-          if (a3 >= v19 && a3 - v19 < v20)
+          range = [v18 range];
+          if (index >= range && index - range < v20)
           {
             return v18;
           }
 
           if (v15 == ++v17)
           {
-            v15 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v15 = [columns countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v15)
             {
               goto LABEL_8;
@@ -2952,52 +2952,52 @@ LABEL_8:
   }
 }
 
-- (BOOL)isParagraphModeWithSelection:(id)a3 onStorage:(id)a4
+- (BOOL)isParagraphModeWithSelection:(id)selection onStorage:(id)storage
 {
-  if (!-[TSWPEditingController p_canEditTextString](self, "p_canEditTextString") || (-[TSDInteractiveCanvasController delegate](self->_interactiveCanvasController, "delegate"), v7 = TSUProtocolCast(), [a3 isValid]) && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v7, "editorShouldAlwaysBeInParagraphMode") & 1) != 0)
+  if (!-[TSWPEditingController p_canEditTextString](self, "p_canEditTextString") || (-[TSDInteractiveCanvasController delegate](self->_interactiveCanvasController, "delegate"), v7 = TSUProtocolCast(), [selection isValid]) && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v7, "editorShouldAlwaysBeInParagraphMode") & 1) != 0)
   {
-    LOBYTE(v8) = 1;
+    LOBYTE(isRange) = 1;
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) == 0 || (v8 = [v7 editorAllowsParagraphMode]) != 0)
+  else if ((objc_opt_respondsToSelector() & 1) == 0 || (isRange = [v7 editorAllowsParagraphMode]) != 0)
   {
-    v8 = [a3 isRange];
-    if (v8)
+    isRange = [selection isRange];
+    if (isRange)
     {
-      v9 = [a3 range];
+      range = [selection range];
       v11 = v10;
-      v12 = [a4 selectedParagraphBreakCount:{v9, v10}];
-      v13 = [a4 emptyParagraphCount:{v9, v11}];
+      v12 = [storage selectedParagraphBreakCount:{range, v10}];
+      v13 = [storage emptyParagraphCount:{range, v11}];
       v14 = v13 != 0;
-      [a4 paragraphIndexRangeForCharRange:{v9, v11}];
-      LOBYTE(v8) = 0;
-      if (a4)
+      [storage paragraphIndexRangeForCharRange:{range, v11}];
+      LOBYTE(isRange) = 0;
+      if (storage)
       {
         if (v15 >= 2 && v12 != v14)
         {
-          if ([a3 type] == 3)
+          if ([selection type] == 3)
           {
-            LOBYTE(v8) = 0;
+            LOBYTE(isRange) = 0;
           }
 
           else
           {
-            v8 = [(TSWPSelection *)self->_selection type];
-            v16 = v8 == 5;
-            LOBYTE(v8) = v8 != 5;
+            isRange = [(TSWPSelection *)self->_selection type];
+            v16 = isRange == 5;
+            LOBYTE(isRange) = isRange != 5;
             if (!v16 && v12 - v14 == 1)
             {
-              v17 = v11 + v9 - 1;
-              v18 = [(TSWPEditingController *)self p_columnForCharIndex:v9 withStorage:a4];
-              v19 = [(TSWPEditingController *)self p_columnForCharIndex:v17 withStorage:a4];
-              v20 = [v18 lineIndexForCharIndex:v9 eol:0];
+              v17 = v11 + range - 1;
+              v18 = [(TSWPEditingController *)self p_columnForCharIndex:range withStorage:storage];
+              v19 = [(TSWPEditingController *)self p_columnForCharIndex:v17 withStorage:storage];
+              v20 = [v18 lineIndexForCharIndex:range eol:0];
               v21 = [v19 lineIndexForCharIndex:v17 eol:0] - v20;
               if (!v13)
               {
                 ++v21;
               }
 
-              LOBYTE(v8) = v18 != v19 || v21 > 2;
+              LOBYTE(isRange) = v18 != v19 || v21 > 2;
             }
           }
         }
@@ -3005,19 +3005,19 @@ LABEL_8:
     }
   }
 
-  return v8;
+  return isRange;
 }
 
 - (BOOL)trackingKnobInParagraphMode
 {
-  v3 = [(TSWPEditingController *)self knobTracking];
-  if (v3)
+  knobTracking = [(TSWPEditingController *)self knobTracking];
+  if (knobTracking)
   {
 
-    LOBYTE(v3) = [(TSWPEditingController *)self isInParagraphMode];
+    LOBYTE(knobTracking) = [(TSWPEditingController *)self isInParagraphMode];
   }
 
-  return v3;
+  return knobTracking;
 }
 
 - (_NSRange)markedRange
@@ -3053,13 +3053,13 @@ LABEL_8:
   if ([(TSWPSelection *)self->_selection isValid])
   {
     storage = self->_storage;
-    v4 = [(TSWPSelection *)self->_selection range];
+    range = [(TSWPSelection *)self->_selection range];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__TSWPEditingController_countOfHyperlinksInUserSelection__block_invoke;
     v8[3] = &unk_279D49A60;
     v8[4] = &v9;
-    [(TSWPStorage *)storage enumerateSmartFieldsWithAttributeKind:6 inRange:v4 usingBlock:v5, v8];
+    [(TSWPStorage *)storage enumerateSmartFieldsWithAttributeKind:6 inRange:range usingBlock:v5, v8];
   }
 
   v6 = v10[3];
@@ -3078,10 +3078,10 @@ uint64_t __57__TSWPEditingController_countOfHyperlinksInUserSelection__block_inv
   return result;
 }
 
-- (id)p_hitRepWithPoint:(CGPoint)a3 keyboardAdjustmentDelta:(double)a4
+- (id)p_hitRepWithPoint:(CGPoint)point keyboardAdjustmentDelta:(double)delta
 {
   v23 = *MEMORY[0x277D85DE8];
-  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:a3.x, a3.y + a4];
+  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:point.x, point.y + delta];
   v6 = v5;
   v8 = v7;
   objc_opt_class();
@@ -3138,30 +3138,30 @@ LABEL_4:
   return v9;
 }
 
-- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)a3
+- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)count
 {
-  if (a3 - 2 >= 3)
+  if (count - 2 >= 3)
   {
-    return 4 * (a3 == 5);
+    return 4 * (count == 5);
   }
 
   else
   {
-    return a3 - 1;
+    return count - 1;
   }
 }
 
-- (void)tappedInRep:(id)a3 point:(CGPoint)a4 tapCount:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7
+- (void)tappedInRep:(id)rep point:(CGPoint)point tapCount:(unint64_t)count isTapHold:(BOOL)hold precise:(BOOL)precise
 {
-  v7 = a7;
-  v8 = a6;
-  y = a4.y;
-  x = a4.x;
+  preciseCopy = precise;
+  holdCopy = hold;
+  y = point.y;
+  x = point.x;
   [(TSWPEditingController *)self p_sendHandleTapNotification];
-  v14 = [(TSWPEditingController *)self textSelectionGranularityForTapCount:a5];
-  if (a5)
+  v14 = [(TSWPEditingController *)self textSelectionGranularityForTapCount:count];
+  if (count)
   {
-    v15 = v8;
+    v15 = holdCopy;
   }
 
   else
@@ -3170,34 +3170,34 @@ LABEL_4:
   }
 
   LOBYTE(v17) = 0;
-  [(TSWPEditingController *)self p_setTappedSelection:[(TSWPEditingController *)self p_selectionForRep:a3 point:v14 textSelectionGranularity:v8 isTapHold:v7 precise:v15 includeListLabels:0 allowPastBreak:x selectsEntireLink:y, v17]];
-  if (v8)
+  [(TSWPEditingController *)self p_setTappedSelection:[(TSWPEditingController *)self p_selectionForRep:rep point:v14 textSelectionGranularity:holdCopy isTapHold:preciseCopy precise:v15 includeListLabels:0 allowPastBreak:x selectsEntireLink:y, v17]];
+  if (holdCopy)
   {
     [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] delegate];
     v16 = TSUProtocolCast();
     if (objc_opt_respondsToSelector())
     {
 
-      [v16 didSetTappedSelectionWithWPEditor:self onWPRep:a3];
+      [v16 didSetTappedSelectionWithWPEditor:self onWPRep:rep];
     }
   }
 }
 
-- (void)tappedOnKnob:(id)a3
+- (void)tappedOnKnob:(id)knob
 {
-  v4 = [a3 tag];
+  v4 = [knob tag];
   selection = self->_selection;
   if (v4 == 11)
   {
-    v6 = [(TSWPSelection *)selection start];
+    start = [(TSWPSelection *)selection start];
   }
 
   else
   {
-    v6 = [(TSWPSelection *)selection end];
+    start = [(TSWPSelection *)selection end];
   }
 
-  v7 = v6;
+  v7 = start;
   [(TSWPEditingController *)self p_sendHandleTapNotification];
   v8 = [[TSWPSelection alloc] initWithRange:v7, 0];
   [(TSWPEditingController *)self p_setTappedSelection:v8];
@@ -3212,7 +3212,7 @@ LABEL_4:
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
 
-- (void)p_setTappedSelection:(id)a3
+- (void)p_setTappedSelection:(id)selection
 {
   if ([(TSWPEditingController *)self pIsSelectionPlaceHolderTextWithSelection:?])
   {
@@ -3227,24 +3227,24 @@ LABEL_4:
   interactiveCanvasController = self->_interactiveCanvasController;
   storage = self->_storage;
 
-  [(TSDInteractiveCanvasController *)interactiveCanvasController setSelection:a3 onModel:storage withFlags:v5];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController setSelection:selection onModel:storage withFlags:v5];
 }
 
-- (BOOL)p_hitListLabelAtCharIndex:(unint64_t)a3 atNaturalPoint:(CGPoint)a4 inRep:(id)a5
+- (BOOL)p_hitListLabelAtCharIndex:(unint64_t)index atNaturalPoint:(CGPoint)point inRep:(id)rep
 {
-  if (!a5)
+  if (!rep)
   {
     return 0;
   }
 
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   if (![(TSWPEditingController *)self p_respondsToListGestures])
   {
     return 0;
   }
 
-  [a5 labelRectForCharIndex:a3];
+  [rep labelRectForCharIndex:index];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -3261,12 +3261,12 @@ LABEL_4:
   return CGRectIntersectsRect(*&v24, *&v17);
 }
 
-- (id)p_selectionFromUnscaledCanvasPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 isTapHold:(BOOL)a5 allowPastBreak:(BOOL)a6 selectsEntireLink:(BOOL)a7
+- (id)p_selectionFromUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break selectsEntireLink:(BOOL)link
 {
-  v8 = a6;
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
+  breakCopy = break;
+  holdCopy = hold;
+  y = point.y;
+  x = point.x;
   objc_opt_class();
   [(TSWPInteractiveCanvasController *)self->_interactiveCanvasController closestRepToPoint:self->_storage forStorage:x, y];
   v14 = TSUDynamicCast();
@@ -3277,16 +3277,16 @@ LABEL_4:
 
   [v14 convertNaturalPointFromUnscaledCanvas:{x, y}];
   [v14 pinToClosestColumn:?];
-  LOBYTE(v16) = a7;
-  return [(TSWPEditingController *)self p_selectionForRep:v14 point:a4 textSelectionGranularity:v9 isTapHold:1 precise:0 includeListLabels:v8 allowPastBreak:v16 selectsEntireLink:?];
+  LOBYTE(v16) = link;
+  return [(TSWPEditingController *)self p_selectionForRep:v14 point:granularity textSelectionGranularity:holdCopy isTapHold:1 precise:0 includeListLabels:breakCopy allowPastBreak:v16 selectsEntireLink:?];
 }
 
-- (id)p_selectionForRep:(id)a3 point:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 precise:(BOOL)a7 includeListLabels:(BOOL)a8 allowPastBreak:(BOOL)a9 selectsEntireLink:(BOOL)a10
+- (id)p_selectionForRep:(id)rep point:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold precise:(BOOL)precise includeListLabels:(BOOL)labels allowPastBreak:(BOOL)break selectsEntireLink:(BOOL)self0
 {
-  v10 = a9;
-  v11 = a8;
-  y = a4.y;
-  x = a4.x;
+  breakCopy = break;
+  labelsCopy = labels;
+  y = point.y;
+  x = point.x;
   objc_opt_class();
   v17 = TSUDynamicCast();
   if (!v17)
@@ -3300,15 +3300,15 @@ LABEL_4:
   storage = self->_storage;
   if (storage == [v17 storage])
   {
-    v20 = [(TSWPEditingController *)self charIndexInRep:v18 fromPoint:v10 allowPastBreak:&v123 isAtEndOfLine:v124 leadingEdge:x, y];
+    v20 = [(TSWPEditingController *)self charIndexInRep:v18 fromPoint:breakCopy allowPastBreak:&v123 isAtEndOfLine:v124 leadingEdge:x, y];
   }
 
   else
   {
     v20 = [(TSWPStorage *)self->_storage length];
-    v21 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_selectionForRep:point:textSelectionGranularity:isTapHold:precise:includeListLabels:allowPastBreak:selectsEntireLink:]"];
-    [v21 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5299, @"The selection for the rep's storage is not the same as the editor's storage."}];
+    [currentHandler handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5299, @"The selection for the rep's storage is not the same as the editor's storage."}];
   }
 
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
@@ -3334,12 +3334,12 @@ LABEL_4:
   v29 = [(TSWPFilteredStorage *)v25 initWithStorage:v26 subRange:v27, v28];
   v30 = [(TSWPFilteredStorage *)v29 charIndexMappedFromStorage:v24];
   v31 = 8;
-  if (a5 > 1)
+  if (granularity > 1)
   {
-    if (a5 == 2)
+    if (granularity == 2)
     {
       v32 = v29;
-      if ([(TSWPEditingController *)self charIndexInRep:v18 fromPoint:v10 allowPastBreak:0 allowNotFound:&v123 isAtEndOfLine:x, y]!= 0x7FFFFFFFFFFFFFFFLL)
+      if ([(TSWPEditingController *)self charIndexInRep:v18 fromPoint:breakCopy allowPastBreak:0 allowNotFound:&v123 isAtEndOfLine:x, y]!= 0x7FFFFFFFFFFFFFFFLL)
       {
         LOBYTE(rect.size.width) = 0;
         HIBYTE(rect.origin.y) = 0;
@@ -3354,10 +3354,10 @@ LABEL_4:
     else
     {
       v32 = v29;
-      if (a5 != 3)
+      if (granularity != 3)
       {
         width = v119;
-        if (a5 != 4)
+        if (granularity != 4)
         {
           goto LABEL_120;
         }
@@ -3366,7 +3366,7 @@ LABEL_4:
         goto LABEL_65;
       }
 
-      if ([(TSWPEditingController *)self charIndexInRep:v18 fromPoint:v10 allowPastBreak:0 allowNotFound:&v123 isAtEndOfLine:x, y]!= 0x7FFFFFFFFFFFFFFFLL)
+      if ([(TSWPEditingController *)self charIndexInRep:v18 fromPoint:breakCopy allowPastBreak:0 allowNotFound:&v123 isAtEndOfLine:x, y]!= 0x7FFFFFFFFFFFFFFFLL)
       {
         v56 = self->_storage;
         if (v56)
@@ -3392,21 +3392,21 @@ LABEL_65:
     goto LABEL_120;
   }
 
-  if (a5)
+  if (granularity)
   {
-    if (a5 == 1)
+    if (granularity == 1)
     {
-      v34 = [(TSWPEditingController *)self charIndexInRep:v18 fromPoint:v10 allowPastBreak:1 allowNotFound:1 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
-      v35 = [(TSWPEditingController *)self charIndexInRep:v18 fromPoint:v10 allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
-      if (v11 && [(TSWPSelection *)self->_selection isValid]&& [(TSWPSelection *)self->_selection type]== 2 && [(TSWPEditingController *)self p_hitListLabelAtCharIndex:v24 atNaturalPoint:v18 inRep:x, y])
+      v34 = [(TSWPEditingController *)self charIndexInRep:v18 fromPoint:breakCopy allowPastBreak:1 allowNotFound:1 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
+      v35 = [(TSWPEditingController *)self charIndexInRep:v18 fromPoint:breakCopy allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:x, y];
+      if (labelsCopy && [(TSWPSelection *)self->_selection isValid]&& [(TSWPSelection *)self->_selection type]== 2 && [(TSWPEditingController *)self p_hitListLabelAtCharIndex:v24 atNaturalPoint:v18 inRep:x, y])
       {
         width = COERCE_DOUBLE([(TSWPSelection *)self->_selection range]);
         length = v36;
         v38 = self->_storage;
-        v39 = [(TSWPSelection *)self->_selection start];
+        start = [(TSWPSelection *)self->_selection start];
         if (v38)
         {
-          [(TSWPStorage *)v38 paragraphEnumeratorAtCharIndex:v39 styleProvider:0];
+          [(TSWPStorage *)v38 paragraphEnumeratorAtCharIndex:start styleProvider:0];
         }
 
         else
@@ -3493,7 +3493,7 @@ LABEL_65:
 
   v40 = v30;
   v41 = rect.origin.x;
-  if (v11)
+  if (labelsCopy)
   {
     v42 = v30;
     v43 = [(TSWPEditingController *)self p_hitListLabelAtCharIndex:*&rect.origin.x atNaturalPoint:v18 inRep:x, y];
@@ -3514,17 +3514,17 @@ LABEL_65:
       width = COERCE_DOUBLE(TSWPParagraphEnumerator::paragraphTextRange(&v122));
       v65 = v64;
       v66 = v64 != 0;
-      v67 = [(TSWPEditingController *)self selection];
+      selection = [(TSWPEditingController *)self selection];
       v32 = v29;
       if (v65)
       {
-        v68 = v67;
-        if ([(TSWPSelection *)v67 isValid])
+        v68 = selection;
+        if ([(TSWPSelection *)selection isValid])
         {
           if ([(TSWPSelection *)v68 type]== 2)
           {
-            v69 = [(TSWPSelection *)v68 range];
-            if (v69 <= *&width && v69 + v70 >= *&width + v65)
+            range = [(TSWPSelection *)v68 range];
+            if (range <= *&width && range + v70 >= *&width + v65)
             {
               width = COERCE_DOUBLE([(TSWPSelection *)v68 range]);
             }
@@ -3543,20 +3543,20 @@ LABEL_65:
   v47 = [(TSWPFilteredStorage *)v29 smartFieldAtCharIndex:v40 attributeKind:6 effectiveRange:&v122];
   v122.var0 = [(TSWPFilteredStorage *)v29 charRangeMappedToStorage:v122.var0, v122.var1];
   v122.var1 = v48;
-  if (a7 || v47)
+  if (precise || v47)
   {
     objc_opt_class();
     if (TSUDynamicCast())
     {
-      v61 = a10;
+      linkCopy = link;
     }
 
     else
     {
-      v61 = 1;
+      linkCopy = 1;
     }
 
-    if (v61)
+    if (linkCopy)
     {
       v31 = 7;
     }
@@ -3566,7 +3566,7 @@ LABEL_65:
       v31 = 0;
     }
 
-    if (v61)
+    if (linkCopy)
     {
       width = rect.origin.x;
     }
@@ -3603,10 +3603,10 @@ LABEL_65:
         goto LABEL_120;
       }
 
-      v62 = [(TSWPSelection *)self->_selection range];
+      range2 = [(TSWPSelection *)self->_selection range];
       width = rect.size.width;
       v31 = 5;
-      if (v62 != *&rect.size.width || v63 != *&rect.size.height)
+      if (range2 != *&rect.size.width || v63 != *&rect.size.height)
       {
         goto LABEL_120;
       }
@@ -3749,9 +3749,9 @@ LABEL_90:
 LABEL_117:
       if (*&v74 == NAN)
       {
-        v102 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v103 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_selectionForRep:point:textSelectionGranularity:isTapHold:precise:includeListLabels:allowPastBreak:selectsEntireLink:]"];
-        [v102 handleFailureInFunction:v103 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5465, @"invalid charIndex for visual selection"}];
+        [currentHandler2 handleFailureInFunction:v103 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5465, @"invalid charIndex for visual selection"}];
         width = NAN;
         v31 = 7;
       }
@@ -3794,10 +3794,10 @@ LABEL_120:
   return v23;
 }
 
-- (void)asyncProcessChanges:(id)a3 forChangeSource:(id)a4
+- (void)asyncProcessChanges:(id)changes forChangeSource:(id)source
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (self->_storage == a4)
+  if (self->_storage == source)
   {
     if ([(TSWPSelection *)[(TSWPEditingController *)self selection] isValid])
     {
@@ -3805,7 +3805,7 @@ LABEL_120:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v6 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [changes countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v6)
       {
         v7 = v6;
@@ -3816,7 +3816,7 @@ LABEL_120:
           {
             if (*v22 != v8)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(changes);
             }
 
             v10 = *(*(&v21 + 1) + 8 * i);
@@ -3827,7 +3827,7 @@ LABEL_120:
               if (objc_opt_isKindOfClass())
               {
                 v11 = [objc_msgSend(v10 "details")];
-                v12 = [v11 range];
+                range = [v11 range];
                 v14 = v13;
                 if ([objc_msgSend(objc_msgSend(v10 "details")])
                 {
@@ -3836,12 +3836,12 @@ LABEL_120:
 
                 else
                 {
-                  v15 = [(TSWPStorage *)self->_storage range];
+                  range2 = [(TSWPStorage *)self->_storage range];
                   v17 = v16;
-                  v18 = [(TSWPSelection *)[(TSWPEditingController *)self selection] range];
-                  if (v15 <= v18 && v15 + v17 >= v18 + v19)
+                  range3 = [(TSWPSelection *)[(TSWPEditingController *)self selection] range];
+                  if (range2 <= range3 && range2 + v17 >= range3 + v19)
                   {
-                    if ([(TSWPSelection *)[(TSWPEditingController *)self selection] intersectsRange:v12, v14]|| [(TSWPSelection *)[(TSWPEditingController *)self selection] isInsertionPoint]&& (v20 = [(TSWPSelection *)[(TSWPEditingController *)self selection] start], v20 == [(TSWPStorage *)self->_storage length]) && v12 + v14 == [(TSWPStorage *)self->_storage length])
+                    if ([(TSWPSelection *)[(TSWPEditingController *)self selection] intersectsRange:range, v14]|| [(TSWPSelection *)[(TSWPEditingController *)self selection] isInsertionPoint]&& (v20 = [(TSWPSelection *)[(TSWPEditingController *)self selection] start], v20 == [(TSWPStorage *)self->_storage length]) && range + v14 == [(TSWPStorage *)self->_storage length])
                     {
                       [(TSWPEditingController *)self p_postSelectionContentsChangedNotification];
                       return;
@@ -3852,7 +3852,7 @@ LABEL_120:
             }
           }
 
-          v7 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v7 = [changes countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v7)
           {
             continue;
@@ -3865,7 +3865,7 @@ LABEL_120:
   }
 }
 
-- (void)updateAfterAutoscroll:(id)a3
+- (void)updateAfterAutoscroll:(id)autoscroll
 {
   interactiveCanvasController = self->_interactiveCanvasController;
   [-[TSDCanvasLayerHosting canvasView](-[TSDInteractiveCanvasController layerHost](interactiveCanvasController "layerHost")];
@@ -3879,13 +3879,13 @@ LABEL_120:
     x = self->_autoscrollPoint.x;
     y = self->_autoscrollPoint.y;
 
-    [(TSWPTextKnobTracker *)knobTracker updateAfterAutoscroll:a3 atPoint:x, y];
+    [(TSWPTextKnobTracker *)knobTracker updateAfterAutoscroll:autoscroll atPoint:x, y];
   }
 
   else
   {
     v13 = +[TSWPTextMagnifierHorizontalRanged sharedRangedMagnifier];
-    [v13 setAutoscrollDirections:{objc_msgSend(a3, "directions")}];
+    [v13 setAutoscrollDirections:{objc_msgSend(autoscroll, "directions")}];
     if ([(TSWPSelection *)[(TSWPEditingController *)self selection] isInsertionPoint])
     {
       [(TSWPEditingController *)self p_setSelectionFromPoint:0 textSelectionGranularity:0 includeListLabels:v7, v9];
@@ -3905,37 +3905,37 @@ LABEL_120:
 
 - (id)pasteboardController
 {
-  v2 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController documentRoot];
+  documentRoot = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController documentRoot];
 
-  return [(TSKDocumentRoot *)v2 pasteboardController];
+  return [(TSKDocumentRoot *)documentRoot pasteboardController];
 }
 
-- (_NSRange)smartDeletionSelection:(id)a3 isVisual:(BOOL *)a4
+- (_NSRange)smartDeletionSelection:(id)selection isVisual:(BOOL *)visual
 {
-  v7 = [a3 range];
+  range = [selection range];
   v9 = v8;
-  if (a4)
+  if (visual)
   {
-    *a4 = [a3 isVisual];
+    *visual = [selection isVisual];
   }
 
-  if ([a3 visualRangeCount] <= 1 && objc_msgSend(a3, "isRange"))
+  if ([selection visualRangeCount] <= 1 && objc_msgSend(selection, "isRange"))
   {
-    v7 = [a3 superRange];
+    range = [selection superRange];
     v9 = v10;
-    if (a4)
+    if (visual)
     {
-      *a4 = 0;
+      *visual = 0;
     }
 
     v11 = [(TSWPStorage *)self->_storage length];
     v36 = 0;
     v37 = 0;
-    [(TSWPStorage *)self->_storage smartFieldAtCharIndex:v7 attributeKind:6 effectiveRange:&v36];
-    v12 = v7 + v9;
-    if (v7)
+    [(TSWPStorage *)self->_storage smartFieldAtCharIndex:range attributeKind:6 effectiveRange:&v36];
+    v12 = range + v9;
+    if (range)
     {
-      v13 = v36 == v7;
+      v13 = v36 == range;
     }
 
     else
@@ -3954,7 +3954,7 @@ LABEL_120:
     v17 = v15 == v12 || v12 == v11;
     if (v14)
     {
-      v18 = [(TSWPStorage *)self->_storage characterAtIndex:v7 - 1];
+      v18 = [(TSWPStorage *)self->_storage characterAtIndex:range - 1];
       if ([objc_msgSend(MEMORY[0x277CCA900] "whitespaceAndNewlineCharacterSet")])
       {
         v19 = 0;
@@ -3966,7 +3966,7 @@ LABEL_120:
         }
 
 LABEL_38:
-        v29 = [(TSWPStorage *)self->_storage characterAtIndex:v7 + v9];
+        v29 = [(TSWPStorage *)self->_storage characterAtIndex:range + v9];
         if (([objc_msgSend(MEMORY[0x277CCA900] "whitespaceAndNewlineCharacterSet")] & 1) == 0)
         {
           if ((v20 & [objc_msgSend(MEMORY[0x277CCA900] "postSmartSet")]) != 1)
@@ -4012,7 +4012,7 @@ LABEL_36:
         }
 
 LABEL_46:
-        --v7;
+        --range;
         goto LABEL_47;
       }
 
@@ -4036,25 +4036,25 @@ LABEL_46:
     goto LABEL_38;
   }
 
-  if ([a3 isRange] && objc_msgSend(a3, "isVisual") && -[TSWPEditingController textStorage:hasWhitespaceBoundedWordAtSelection:](self, "textStorage:hasWhitespaceBoundedWordAtSelection:", -[TSWPEditingController storage](self, "storage"), a3))
+  if ([selection isRange] && objc_msgSend(selection, "isVisual") && -[TSWPEditingController textStorage:hasWhitespaceBoundedWordAtSelection:](self, "textStorage:hasWhitespaceBoundedWordAtSelection:", -[TSWPEditingController storage](self, "storage"), selection))
   {
     LOBYTE(v36) = 0;
-    v22 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:[(TSWPEditingController *)self p_leftEdgeForSelection:a3 withLeadingEdge:&v36] inDirection:3];
+    v22 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:[(TSWPEditingController *)self p_leftEdgeForSelection:selection withLeadingEdge:&v36] inDirection:3];
     if (IsWhitespaceCharacter([(TSWPStorage *)[(TSWPEditingController *)self storage] characterAtIndex:v22]))
     {
-      v23 = [a3 superRange];
-      if (v22 >= v23 && v22 - v23 < v24)
+      superRange = [selection superRange];
+      if (v22 >= superRange && v22 - superRange < v24)
       {
         goto LABEL_49;
       }
     }
 
-    v25 = [(TSWPEditingController *)self p_rightEdgeForSelection:a3 withLeadingEdge:&v36];
+    v25 = [(TSWPEditingController *)self p_rightEdgeForSelection:selection withLeadingEdge:&v36];
     if (v25 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v26 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController smartDeletionSelection:isVisual:]"];
-      [v26 handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5914, @"Invalid index for right edge of selection"}];
+      [currentHandler handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5914, @"Invalid index for right edge of selection"}];
       goto LABEL_50;
     }
 
@@ -4064,9 +4064,9 @@ LABEL_46:
 LABEL_49:
       if (v22 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v7 = [(TSWPEditingController *)self p_adjustVisualSelection:a3 withOtherSelection:[(TSWPEditingController *)self logicalToVisualSelection:[TSWPSelection selectionWithRange:v22, 1]]];
+        range = [(TSWPEditingController *)self p_adjustVisualSelection:selection withOtherSelection:[(TSWPEditingController *)self logicalToVisualSelection:[TSWPSelection selectionWithRange:v22, 1]]];
         v9 = v35;
-        if (!a4)
+        if (!visual)
         {
           goto LABEL_52;
         }
@@ -4076,27 +4076,27 @@ LABEL_49:
     }
 
 LABEL_50:
-    v31 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController smartDeletionSelection:isVisual:]"];
-    [v31 handleFailureInFunction:v32 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5927, @"A spaceCharIndexToRemove to remove should always be found"}];
-    if (!a4)
+    [currentHandler2 handleFailureInFunction:v32 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5927, @"A spaceCharIndexToRemove to remove should always be found"}];
+    if (!visual)
     {
       goto LABEL_52;
     }
 
 LABEL_51:
-    *a4 = 1;
+    *visual = 1;
   }
 
 LABEL_52:
-  v33 = v7;
+  v33 = range;
   v34 = v9;
   result.length = v34;
   result.location = v33;
   return result;
 }
 
-- (CGRect)overrideCaretRectForSelection:(id)a3
+- (CGRect)overrideCaretRectForSelection:(id)selection
 {
   v3 = *MEMORY[0x277CBF398];
   v4 = *(MEMORY[0x277CBF398] + 8);
@@ -4109,21 +4109,21 @@ LABEL_52:
   return result;
 }
 
-- (BOOL)textStorage:(id)a3 hasWhitespaceBoundedWordAtSelection:(id)a4
+- (BOOL)textStorage:(id)storage hasWhitespaceBoundedWordAtSelection:(id)selection
 {
   v30 = 0;
-  if ([a4 isVisual])
+  if ([selection isVisual])
   {
-    v7 = [(TSWPEditingController *)self p_leftEdgeForSelection:a4 withLeadingEdge:&v30];
+    v7 = [(TSWPEditingController *)self p_leftEdgeForSelection:selection withLeadingEdge:&v30];
     v8 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:v7 inDirection:3];
-    if ((IsWhitespaceCharacter([a3 characterAtIndex:v7]) & 1) != 0 || (v8 == objc_msgSend(a3, "length") || IsWhitespaceCharacter(objc_msgSend(a3, "characterAtIndex:", v8))) && TSWPCJKLanguageForInputLanguageString(objc_msgSend(a3, "languageForTextRange:useStringTokenizer:useCreationLanguage:", v7, 1, 1, 0)) == 6)
+    if ((IsWhitespaceCharacter([storage characterAtIndex:v7]) & 1) != 0 || (v8 == objc_msgSend(storage, "length") || IsWhitespaceCharacter(objc_msgSend(storage, "characterAtIndex:", v8))) && TSWPCJKLanguageForInputLanguageString(objc_msgSend(storage, "languageForTextRange:useStringTokenizer:useCreationLanguage:", v7, 1, 1, 0)) == 6)
     {
-      v9 = [(TSWPEditingController *)self p_rightEdgeForSelection:a4 withLeadingEdge:&v30];
+      v9 = [(TSWPEditingController *)self p_rightEdgeForSelection:selection withLeadingEdge:&v30];
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v10 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController textStorage:hasWhitespaceBoundedWordAtSelection:]"];
-        [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5987, @"Invalid index for right edge of selection"}];
+        [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 5987, @"Invalid index for right edge of selection"}];
 LABEL_15:
         LOBYTE(v21) = 0;
         v22 = 1;
@@ -4131,7 +4131,7 @@ LABEL_15:
       }
 
       v19 = v9;
-      v20 = [a3 characterAtIndex:v9];
+      v20 = [storage characterAtIndex:v9];
       if (IsParagraphBreakingCharacter(v20))
       {
         goto LABEL_15;
@@ -4143,7 +4143,7 @@ LABEL_15:
       }
 
       v23 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:v19 inDirection:2];
-      if (v23 != [a3 length] && !IsWhitespaceCharacter(objc_msgSend(a3, "characterAtIndex:", v23)))
+      if (v23 != [storage length] && !IsWhitespaceCharacter(objc_msgSend(storage, "characterAtIndex:", v23)))
       {
         goto LABEL_15;
       }
@@ -4151,11 +4151,11 @@ LABEL_15:
       v24 = v19 <= v23 ? v23 : v19;
       v25 = v19 >= v23 ? v23 : v19;
       v22 = 1;
-      if (TSWPCJKLanguageForInputLanguageString([a3 languageForTextRange:v25 useStringTokenizer:v24 - v25 useCreationLanguage:{1, 0}]) == 6)
+      if (TSWPCJKLanguageForInputLanguageString([storage languageForTextRange:v25 useStringTokenizer:v24 - v25 useCreationLanguage:{1, 0}]) == 6)
       {
 LABEL_26:
-        v17 = [a4 range];
-        v16 = a3;
+        range = [selection range];
+        storageCopy2 = storage;
         v18 = v26;
         goto LABEL_27;
       }
@@ -4171,24 +4171,24 @@ LABEL_30:
     return v21 & v22;
   }
 
-  if (![a4 isValid])
+  if (![selection isValid])
   {
     goto LABEL_30;
   }
 
-  if (![a4 isRange])
+  if (![selection isRange])
   {
     goto LABEL_30;
   }
 
-  v12 = [a4 range];
+  range2 = [selection range];
   v14 = v13;
-  if (([objc_msgSend(MEMORY[0x277CCA900] "preSmartSet")] & 1) == 0 && (objc_msgSend(a3, "wordAtCharIndex:includePreviousWord:", v12, 0) != v12 || TSWPCJKLanguageForInputLanguageString(objc_msgSend(a3, "languageForTextRange:useStringTokenizer:useCreationLanguage:", v12, 1, 1, 0)) != 6))
+  if (([objc_msgSend(MEMORY[0x277CCA900] "preSmartSet")] & 1) == 0 && (objc_msgSend(storage, "wordAtCharIndex:includePreviousWord:", range2, 0) != range2 || TSWPCJKLanguageForInputLanguageString(objc_msgSend(storage, "languageForTextRange:useStringTokenizer:useCreationLanguage:", range2, 1, 1, 0)) != 6))
   {
     goto LABEL_30;
   }
 
-  v15 = [a3 characterAtIndex:v12 + v14 - 1];
+  v15 = [storage characterAtIndex:range2 + v14 - 1];
   if (IsParagraphBreakingCharacter(v15))
   {
     goto LABEL_15;
@@ -4197,22 +4197,22 @@ LABEL_30:
   if ([objc_msgSend(MEMORY[0x277CCA900] "postSmartSet")])
   {
 LABEL_13:
-    v16 = a3;
-    v17 = v12;
+    storageCopy2 = storage;
+    range = range2;
     v18 = v14;
 LABEL_27:
-    v21 = [v16 isAllWhitespaceInRange:{v17, v18}] ^ 1;
+    v21 = [storageCopy2 isAllWhitespaceInRange:{range, v18}] ^ 1;
     v22 = v21;
     return v21 & v22;
   }
 
   v22 = 1;
-  v28 = [a3 wordAtCharIndex:v12 + v14 includePreviousWord:1];
+  v28 = [storage wordAtCharIndex:range2 + v14 includePreviousWord:1];
   LOBYTE(v21) = 0;
-  if (v29 && v28 + v29 == v12 + v14)
+  if (v29 && v28 + v29 == range2 + v14)
   {
     v22 = 1;
-    if (TSWPCJKLanguageForInputLanguageString([a3 languageForTextRange:v12 + v14 - 1 useStringTokenizer:1 useCreationLanguage:{1, 0}]) != 6)
+    if (TSWPCJKLanguageForInputLanguageString([storage languageForTextRange:range2 + v14 - 1 useStringTokenizer:1 useCreationLanguage:{1, 0}]) != 6)
     {
       goto LABEL_35;
     }
@@ -4225,24 +4225,24 @@ LABEL_27:
 
 - (BOOL)p_selectionIsSimpleInsertionPoint
 {
-  v3 = [(TSWPSelection *)self->_selection isInsertionPoint];
-  if (v3)
+  isInsertionPoint = [(TSWPSelection *)self->_selection isInsertionPoint];
+  if (isInsertionPoint)
   {
-    LOBYTE(v3) = [(TSWPSelection *)self->_selection type]!= 3 && [(TSWPSelection *)self->_selection type]!= 5 && [(TSWPSelection *)self->_selection type]!= 4 && [(TSWPStorage *)self->_storage length]!= 0;
+    LOBYTE(isInsertionPoint) = [(TSWPSelection *)self->_selection type]!= 3 && [(TSWPSelection *)self->_selection type]!= 5 && [(TSWPSelection *)self->_selection type]!= 4 && [(TSWPStorage *)self->_storage length]!= 0;
   }
 
-  return v3;
+  return isInsertionPoint;
 }
 
-- (BOOL)p_canSelectAllWithSender:(id)a3
+- (BOOL)p_canSelectAllWithSender:(id)sender
 {
-  if ([TSDCanvasEditor physicalKeyboardIsSender:a3])
+  if ([TSDCanvasEditor physicalKeyboardIsSender:sender])
   {
     if ([(TSWPSelection *)self->_selection isValid])
     {
-      v4 = [(TSWPSelection *)self->_selection range];
+      range = [(TSWPSelection *)self->_selection range];
       v6 = v5;
-      if (v4 != [(TSWPStorage *)self->_storage range]|| v6 != v7)
+      if (range != [(TSWPStorage *)self->_storage range]|| v6 != v7)
       {
         return 1;
       }
@@ -4275,15 +4275,15 @@ LABEL_27:
   return 1;
 }
 
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v7 = [TSDCanvasEditor physicalKeyboardIsSender:a4];
+  v7 = [TSDCanvasEditor physicalKeyboardIsSender:sender];
   if ([(TSWPEditingController *)self p_canEditTextString])
   {
-    v8 = [(TSWPSelection *)self->_selection isValid];
-    if (sel_deleteObject_ == a3)
+    isValid = [(TSWPSelection *)self->_selection isValid];
+    if (sel_deleteObject_ == action)
     {
-      if (!v8)
+      if (!isValid)
       {
         return -1;
       }
@@ -4291,9 +4291,9 @@ LABEL_27:
 LABEL_25:
       if ([(TSWPSelection *)self->_selection type]!= 4)
       {
-        v8 = [(TSWPSelection *)self->_selection isRange];
+        isValid = [(TSWPSelection *)self->_selection isRange];
 LABEL_38:
-        v11 = !v8;
+        v11 = !isValid;
 LABEL_39:
         if (v11)
         {
@@ -4312,17 +4312,17 @@ LABEL_39:
 
   else
   {
-    if (sel_deleteObject_ == a3)
+    if (sel_deleteObject_ == action)
     {
       return -1;
     }
 
-    v8 = 0;
+    isValid = 0;
   }
 
-  if (sel_delete_ == a3)
+  if (sel_delete_ == action)
   {
-    if (!v8 || !v7)
+    if (!isValid || !v7)
     {
       return -1;
     }
@@ -4330,7 +4330,7 @@ LABEL_39:
     goto LABEL_25;
   }
 
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
     if (![(TSWPSelection *)self->_selection isValid]|| [(TSWPSelection *)self->_selection type]== 3 || [(TSWPSelection *)self->_selection type]== 5 || [(TSWPSelection *)self->_selection type]== 4 || [(TSWPSelection *)self->_selection isInsertionPoint])
     {
@@ -4346,7 +4346,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (sel_select_ == a3)
+  if (sel_select_ == action)
   {
     if (!v7)
     {
@@ -4354,16 +4354,16 @@ LABEL_39:
     }
 
 LABEL_35:
-    v8 = [(TSWPEditingController *)self p_selectionIsSimpleInsertionPoint];
+    isValid = [(TSWPEditingController *)self p_selectionIsSimpleInsertionPoint];
     goto LABEL_38;
   }
 
-  if (sel_customSelect_ == a3)
+  if (sel_customSelect_ == action)
   {
     goto LABEL_35;
   }
 
-  if (sel_selectAll_ == a3)
+  if (sel_selectAll_ == action)
   {
     if (!v7)
     {
@@ -4371,25 +4371,25 @@ LABEL_35:
     }
 
 LABEL_37:
-    v8 = [(TSWPEditingController *)self p_canSelectAllWithSender:a4];
+    isValid = [(TSWPEditingController *)self p_canSelectAllWithSender:sender];
     goto LABEL_38;
   }
 
-  if (sel_customSelectAll_ == a3)
+  if (sel_customSelectAll_ == action)
   {
     goto LABEL_37;
   }
 
-  if (sel_replaceWithSuggestion0_ == a3 || sel_replaceWithSuggestion1_ == a3 || sel_replaceWithSuggestion2_ == a3 || sel_replaceWithSuggestion3_ == a3 || sel_replaceWithSuggestion4_ == a3 || sel_noReplacementsFound_ == a3)
+  if (sel_replaceWithSuggestion0_ == action || sel_replaceWithSuggestion1_ == action || sel_replaceWithSuggestion2_ == action || sel_replaceWithSuggestion3_ == action || sel_replaceWithSuggestion4_ == action || sel_noReplacementsFound_ == action)
   {
     goto LABEL_38;
   }
 
-  if (sel_definitionAction_ == a3)
+  if (sel_definitionAction_ == action)
   {
     storage = self->_storage;
-    v13 = [(TSWPSelection *)self->_selection range];
-    if ([(TSWPStorage *)storage hasSmartFieldsInRange:v13, v14])
+    range = [(TSWPSelection *)self->_selection range];
+    if ([(TSWPStorage *)storage hasSmartFieldsInRange:range, v14])
     {
       return -1;
     }
@@ -4401,13 +4401,13 @@ LABEL_37:
 
     v15 = [(TSWPEditingController *)self rangeOfWordEnclosingCharIndex:[(TSWPSelection *)self->_selection range] backward:0];
     v17 = v16;
-    v18 = [(TSWPSelection *)self->_selection range];
-    if (v15 > v18)
+    range2 = [(TSWPSelection *)self->_selection range];
+    if (v15 > range2)
     {
       return -1;
     }
 
-    if (v15 + v17 >= v18 + v19)
+    if (v15 + v17 >= range2 + v19)
     {
       return 1;
     }
@@ -4418,7 +4418,7 @@ LABEL_37:
     }
   }
 
-  else if (sel_endEditingAndSelectParent_ == a3)
+  else if (sel_endEditingAndSelectParent_ == action)
   {
     return ([(TSWPStorage *)self->_storage wpKind]& 0xFFFFFFFE) == 2;
   }
@@ -4426,7 +4426,7 @@ LABEL_37:
   else
   {
 
-    return [(TSWPEditingController *)self p_canPerformOptInEditorAction:a3 withSender:a4];
+    return [(TSWPEditingController *)self p_canPerformOptInEditorAction:action withSender:sender];
   }
 }
 
@@ -4452,14 +4452,14 @@ LABEL_37:
 - (id)stringFromSelection
 {
   storage = self->_storage;
-  v4 = [(TSWPSelection *)self->_selection superRange];
+  superRange = [(TSWPSelection *)self->_selection superRange];
   v6 = v5;
-  v7 = [(TSWPEditingController *)self currentLayoutParent];
+  currentLayoutParent = [(TSWPEditingController *)self currentLayoutParent];
 
-  return [(TSWPStorage *)storage stringEquivalentFromRange:v4 withLayoutParent:v6, v7];
+  return [(TSWPStorage *)storage stringEquivalentFromRange:superRange withLayoutParent:v6, currentLayoutParent];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v11[1] = *MEMORY[0x277D85DE8];
   if ([(TSWPSelection *)self->_selection isRange])
@@ -4467,8 +4467,8 @@ LABEL_37:
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     if ([(TSWPStorage *)self->_storage stylesheet])
     {
-      v5 = [(TSWPSelection *)self->_selection range];
-      v7 = [(TSWPStorage *)self->_storage nsAttributedSubstringFromRange:v5 scale:v6, 1.0];
+      range = [(TSWPSelection *)self->_selection range];
+      v7 = [(TSWPStorage *)self->_storage nsAttributedSubstringFromRange:range scale:v6, 1.0];
       v8 = [v7 tsu_RTFFromRange:0 documentAttributes:{objc_msgSend(v7, "length"), 0}];
       if (v8)
       {
@@ -4486,43 +4486,43 @@ LABEL_37:
 
 - (BOOL)selectionIsOnEmptyParagraph
 {
-  v3 = [(TSWPSelection *)self->_selection isValid];
-  if (v3)
+  isValid = [(TSWPSelection *)self->_selection isValid];
+  if (isValid)
   {
     [(TSWPSelection *)self->_selection range];
     if (v4)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isValid) = 0;
     }
 
     else
     {
       v5 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:[(TSWPSelection *)self->_selection start]];
-      LOBYTE(v3) = v6 == (v5 + v6 != [(TSWPStorage *)self->_storage length]);
+      LOBYTE(isValid) = v6 == (v5 + v6 != [(TSWPStorage *)self->_storage length]);
     }
   }
 
-  return v3;
+  return isValid;
 }
 
-- (BOOL)canSetWritingDirection:(int)a3
+- (BOOL)canSetWritingDirection:(int)direction
 {
-  v5 = [(TSWPEditingController *)self p_canEditTextString];
-  if (!v5)
+  p_canEditTextString = [(TSWPEditingController *)self p_canEditTextString];
+  if (!p_canEditTextString)
   {
-    return v5;
+    return p_canEditTextString;
   }
 
-  v5 = [(TSWPSelection *)self->_selection isValid];
-  if (!v5)
+  p_canEditTextString = [(TSWPSelection *)self->_selection isValid];
+  if (!p_canEditTextString)
   {
-    return v5;
+    return p_canEditTextString;
   }
 
-  v5 = [+[TSKApplicationDelegate sharedDelegate](TSKApplicationDelegate "sharedDelegate")];
-  if (!v5)
+  p_canEditTextString = [+[TSKApplicationDelegate sharedDelegate](TSKApplicationDelegate "sharedDelegate")];
+  if (!p_canEditTextString)
   {
-    return v5;
+    return p_canEditTextString;
   }
 
   if ([(TSWPSelection *)self->_selection type]== 3 || [(TSWPSelection *)self->_selection type]== 5 || [(TSWPSelection *)self->_selection type]== 4)
@@ -4530,62 +4530,62 @@ LABEL_37:
     goto LABEL_14;
   }
 
-  if ((a3 + 1) > 2)
+  if ((direction + 1) > 2)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController canSetWritingDirection:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 7859, @"Unknown writing direction."}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 7859, @"Unknown writing direction."}];
     goto LABEL_14;
   }
 
-  v6 = [(TSWPSelection *)self->_selection start];
-  if (v6 > [(TSWPStorage *)self->_storage length])
+  start = [(TSWPSelection *)self->_selection start];
+  if (start > [(TSWPStorage *)self->_storage length])
   {
 LABEL_14:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(p_canEditTextString) = 0;
+    return p_canEditTextString;
   }
 
-  v5 = [TSWPResolvePropertyForStyles(0 -[TSWPStorage paragraphStyleAtCharIndex:"paragraphStyleAtCharIndex:effectiveRange:" effectiveRange:{v6, 0), 44, 0), "intValue"}](self->_storage];
-  if (v5 == -1)
+  p_canEditTextString = [TSWPResolvePropertyForStyles(0 -[TSWPStorage paragraphStyleAtCharIndex:"paragraphStyleAtCharIndex:effectiveRange:" effectiveRange:{start, 0), 44, 0), "intValue"}](self->_storage];
+  if (p_canEditTextString == -1)
   {
-    v5 = [(TSWPStorage *)self->_storage writingDirectionForParagraphAtCharIndex:v6];
-    if (v5 == -1)
+    p_canEditTextString = [(TSWPStorage *)self->_storage writingDirectionForParagraphAtCharIndex:start];
+    if (p_canEditTextString == -1)
     {
-      v5 = [-[TSWPStorage documentRoot](self->_storage "documentRoot")];
+      p_canEditTextString = [-[TSWPStorage documentRoot](self->_storage "documentRoot")];
     }
   }
 
-  LOBYTE(v5) = v5 != a3;
-  return v5;
+  LOBYTE(p_canEditTextString) = p_canEditTextString != direction;
+  return p_canEditTextString;
 }
 
-- (int64_t)writingDirectionForCharIndex:(unint64_t)a3
+- (int64_t)writingDirectionForCharIndex:(unint64_t)index
 {
-  if ([(TSWPStorage *)self->_storage length]< a3)
+  if ([(TSWPStorage *)self->_storage length]< index)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController writingDirectionForCharIndex:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 7956, @"Bad char index into storage."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 7956, @"Bad char index into storage."}];
   }
 
-  if ([(TSWPStorage *)self->_storage length]>= a3)
+  if ([(TSWPStorage *)self->_storage length]>= index)
   {
-    v7 = [(TSWPStorage *)self->_storage writingDirectionForParagraphAtCharIndex:a3]+ 1;
+    v7 = [(TSWPStorage *)self->_storage writingDirectionForParagraphAtCharIndex:index]+ 1;
     if (v7 < 3)
     {
       return v7 - 1;
     }
 
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController writingDirectionForCharIndex:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 7973, @"Unknown writing direction."}];
+    [currentHandler2 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 7973, @"Unknown writing direction."}];
   }
 
   return -1;
 }
 
-- (void)referenceLibrarayViewControllerWasDismissed:(id)a3
+- (void)referenceLibrarayViewControllerWasDismissed:(id)dismissed
 {
   if ((TSUSupportsTextInteraction() & 1) == 0)
   {
@@ -4598,12 +4598,12 @@ LABEL_14:
   }
 }
 
-- (void)popoverControllerDidDismissPopoverBasedViewController:(id)a3
+- (void)popoverControllerDidDismissPopoverBasedViewController:(id)controller
 {
-  v3 = self;
+  selfCopy = self;
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
   v4 = [(TSWPStorage *)self->_storage rangeForSelectionWithInsertionSelection:self->_selection];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
@@ -4631,7 +4631,7 @@ LABEL_14:
   [(TSWPEditingController *)self setSelection:[(TSWPEditingController *)self logicalToVisualSelection:[(TSWPEditingController *)self p_extendSelectionToIncludeSmartFields:v8]] withFlags:65792];
 }
 
-- (void)p_addInsertItemsIntoMenu:(id)a3
+- (void)p_addInsertItemsIntoMenu:(id)menu
 {
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
   TSUProtocolCast();
@@ -4640,10 +4640,10 @@ LABEL_14:
     return;
   }
 
-  v5 = [(TSWPEditingController *)self acceptsTabs];
-  v6 = [(TSWPEditingController *)self acceptsLineBreaks]+ v5;
-  v7 = [(TSWPEditingController *)self acceptsColumnBreaks];
-  v8 = v6 + v7 + [(TSWPEditingController *)self acceptsPageBreaks];
+  acceptsTabs = [(TSWPEditingController *)self acceptsTabs];
+  v6 = [(TSWPEditingController *)self acceptsLineBreaks]+ acceptsTabs;
+  acceptsColumnBreaks = [(TSWPEditingController *)self acceptsColumnBreaks];
+  v8 = v6 + acceptsColumnBreaks + [(TSWPEditingController *)self acceptsPageBreaks];
   if (v8 >= 2)
   {
     v9 = MEMORY[0x277D75728];
@@ -4652,7 +4652,7 @@ LABEL_14:
 LABEL_5:
     v12 = [v9 menuItemWithTitle:v10 action:v11];
 
-    [a3 addObject:v12];
+    [menu addObject:v12];
     return;
   }
 
@@ -4660,17 +4660,17 @@ LABEL_5:
   {
     if ([(TSWPEditingController *)self acceptsTabs])
     {
-      [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Tab", &stru_287D36338, @"TSTextPlatform", sel_insertTab_)}];
+      [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Tab", &stru_287D36338, @"TSTextPlatform", sel_insertTab_)}];
     }
 
     if ([(TSWPEditingController *)self acceptsLineBreaks])
     {
-      [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Line Break", &stru_287D36338, @"TSTextPlatform", sel_insertLineBreak_)}];
+      [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Line Break", &stru_287D36338, @"TSTextPlatform", sel_insertLineBreak_)}];
     }
 
     if ([(TSWPEditingController *)self acceptsColumnBreaks])
     {
-      [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Column Break", &stru_287D36338, @"TSTextPlatform", sel_insertColumnBreak_)}];
+      [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Column Break", &stru_287D36338, @"TSTextPlatform", sel_insertColumnBreak_)}];
     }
 
     if ([(TSWPEditingController *)self acceptsPageBreaks])
@@ -4683,39 +4683,39 @@ LABEL_5:
   }
 }
 
-- (void)p_addCommonEditItemsIntoMenu:(id)a3
+- (void)p_addCommonEditItemsIntoMenu:(id)menu
 {
-  [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Select", &stru_287D36338, @"TSTextPlatform", sel_customSelect_)}];
-  [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Select All", &stru_287D36338, @"TSTextPlatform", sel_customSelectAll_)}];
-  [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Cut", &stru_287D36338, @"TSTextPlatform", sel_cutObject_)}];
-  [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Copy", &stru_287D36338, @"TSTextPlatform", sel_copyObject_)}];
-  [a3 addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Paste", &stru_287D36338, @"TSTextPlatform", sel_pasteObject_)}];
+  [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Select", &stru_287D36338, @"TSTextPlatform", sel_customSelect_)}];
+  [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Select All", &stru_287D36338, @"TSTextPlatform", sel_customSelectAll_)}];
+  [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Cut", &stru_287D36338, @"TSTextPlatform", sel_cutObject_)}];
+  [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Copy", &stru_287D36338, @"TSTextPlatform", sel_copyObject_)}];
+  [menu addObject:{objc_msgSend(MEMORY[0x277D75728], "menuItemWithTitle:action:", objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Paste", &stru_287D36338, @"TSTextPlatform", sel_pasteObject_)}];
   v4 = [MEMORY[0x277D75728] menuItemWithTitle:objc_msgSend(TSWPBundle() action:{"localizedStringForKey:value:table:", @"Delete", &stru_287D36338, @"TSTextPlatform", sel_deleteObject_}];
 
-  [a3 addObject:v4];
+  [menu addObject:v4];
 }
 
 - (id)extraMenuItems
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
 
   self->_suggestions = 0;
   if (![(TSWPSelection *)self->_selection isValid]|| [(TSWPSelection *)self->_selection type]!= 3 && [(TSWPSelection *)self->_selection type]!= 5 || [(TSWPEditingController *)self pIsSelectionPlaceHolderText])
   {
     [(TSWPStorage *)[(TSWPEditingController *)self storage] wpKind];
-    [(TSWPEditingController *)self p_addCommonEditItemsIntoMenu:v3];
+    [(TSWPEditingController *)self p_addCommonEditItemsIntoMenu:array];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)definitionAction:(id)a3
+- (void)definitionAction:(id)action
 {
   if ((TSUSupportsTextInteraction() & 1) == 0)
   {
     storage = self->_storage;
-    v5 = [(TSWPSelection *)self->_selection range];
-    v7 = [(TSWPStorage *)storage substringWithRange:v5, v6];
+    range = [(TSWPSelection *)self->_selection range];
+    v7 = [(TSWPStorage *)storage substringWithRange:range, v6];
 
     self->_definitionViewController = 0;
     v8 = [(UIReferenceLibraryViewController *)[TSWPReferenceLibraryViewController alloc] initWithTerm:v7];
@@ -4724,15 +4724,15 @@ LABEL_5:
     if (TSUPhoneUI())
     {
       [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:1];
-      v9 = [(TSWPEditingController *)self p_viewControllerForPresenting];
-      if (!v9)
+      p_viewControllerForPresenting = [(TSWPEditingController *)self p_viewControllerForPresenting];
+      if (!p_viewControllerForPresenting)
       {
-        v9 = [objc_msgSend(objc_msgSend(-[TSWPEditingController p_documentViewController](self "p_documentViewController")];
+        p_viewControllerForPresenting = [objc_msgSend(objc_msgSend(-[TSWPEditingController p_documentViewController](self "p_documentViewController")];
       }
 
       definitionViewController = self->_definitionViewController;
 
-      [v9 presentViewController:definitionViewController animated:1 completion:0];
+      [p_viewControllerForPresenting presentViewController:definitionViewController animated:1 completion:0];
     }
 
     else
@@ -4741,8 +4741,8 @@ LABEL_5:
       self->_definitionPopoverController = 0;
       v11 = [objc_alloc(MEMORY[0x277D758A0]) initWithContentViewController:self->_definitionViewController];
       self->_definitionPopoverController = v11;
-      v12 = [(TSWPSelection *)[(TSWPEditingController *)self selection] range];
-      [(TSWPEditingController *)self p_firstRectForRange:v12 actualRange:v13, 0];
+      range2 = [(TSWPSelection *)[(TSWPEditingController *)self selection] range];
+      [(TSWPEditingController *)self p_firstRectForRange:range2 actualRange:v13, 0];
       v21 = CGRectIntegral(v20);
       x = v21.origin.x;
       y = v21.origin.y;
@@ -4755,11 +4755,11 @@ LABEL_5:
   }
 }
 
-- (void)styleAction:(id)a3
+- (void)styleAction:(id)action
 {
   v4 = [TSWPSelection alloc];
-  v5 = [(TSWPSelection *)self->_selection superRange];
-  v7 = [(TSWPSelection *)v4 initWithType:4 range:v5 styleInsertionBehavior:v6 caretAffinity:[(TSWPSelection *)self->_selection styleInsertionBehavior], [(TSWPSelection *)self->_selection caretAffinity]];
+  superRange = [(TSWPSelection *)self->_selection superRange];
+  v7 = [(TSWPSelection *)v4 initWithType:4 range:superRange styleInsertionBehavior:v6 caretAffinity:[(TSWPSelection *)self->_selection styleInsertionBehavior], [(TSWPSelection *)self->_selection caretAffinity]];
   [(TSWPEditingController *)self setSelection:v7];
 
   [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layoutInvalidated];
@@ -4770,9 +4770,9 @@ LABEL_5:
 {
   if (![(TSWPSelection *)self->_selection isRange])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_switchToReplaceSelection]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 8589, @"shouldn't change an insertion point to a replacement selection"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 8589, @"shouldn't change an insertion point to a replacement selection"}];
   }
 
   v5 = [(TSWPEditingController *)self rangeOfWordEnclosingCharIndex:[(TSWPSelection *)self->_selection range] backward:0];
@@ -4783,23 +4783,23 @@ LABEL_5:
   }
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   v5 = [TSWPSelection alloc];
   storage = self->_storage;
   if ([(TSWPSelection *)self->_selection isValid])
   {
-    v7 = [(TSWPSelection *)self->_selection start];
+    start = [(TSWPSelection *)self->_selection start];
   }
 
   else
   {
-    v7 = 0;
+    start = 0;
   }
 
-  v8 = [(TSWPStorage *)storage selectionRangeForCharIndex:v7];
+  v8 = [(TSWPStorage *)storage selectionRangeForCharIndex:start];
   v11 = [(TSWPSelection *)v5 initWithRange:v8, v9];
-  if ([TSDCanvasEditor physicalKeyboardIsSender:a3])
+  if ([TSDCanvasEditor physicalKeyboardIsSender:all])
   {
     v10 = 0;
   }
@@ -4817,16 +4817,16 @@ LABEL_5:
   v7[3] = *MEMORY[0x277D85DE8];
   if ([(TSWPSelection *)self->_selection isValid])
   {
-    v3 = [(TSWPSelection *)self->_selection start];
+    start = [(TSWPSelection *)self->_selection start];
   }
 
   else
   {
-    v3 = 0;
+    start = 0;
   }
 
-  v4 = [(TSWPStorage *)self->_storage characterStyleAtCharIndex:v3 left:[(TSWPSelection *)self->_selection isInsertionPoint] effectiveRange:0];
-  v5 = [(TSWPStorage *)self->_storage paragraphStyleAtCharIndex:v3 effectiveRange:0];
+  v4 = [(TSWPStorage *)self->_storage characterStyleAtCharIndex:start left:[(TSWPSelection *)self->_selection isInsertionPoint] effectiveRange:0];
+  v5 = [(TSWPStorage *)self->_storage paragraphStyleAtCharIndex:start effectiveRange:0];
   v7[0] = self->_insertionStyle;
   v7[1] = v4;
   v7[2] = v5;
@@ -4835,7 +4835,7 @@ LABEL_5:
 
 - (BOOL)canHighlightCurrentSelection
 {
-  v3 = [(TSWPEditingController *)self p_canEditTextString];
+  p_canEditTextString = [(TSWPEditingController *)self p_canEditTextString];
   v4 = [(TSWPEditingController *)self canShowCommentForCurrentSelectionGetHighlight:0 range:0];
   if ([(TSWPSelection *)self->_selection isValid])
   {
@@ -4848,11 +4848,11 @@ LABEL_5:
     v6 = 0;
   }
 
-  v7 = v3 & v6 & [(TSWPStorage *)[(TSWPEditingController *)self storage] highlightsAllowed];
+  v7 = p_canEditTextString & v6 & [(TSWPStorage *)[(TSWPEditingController *)self storage] highlightsAllowed];
   return !self->_hostEditor && v7;
 }
 
-- (BOOL)canShowCommentForCurrentSelectionGetHighlight:(id *)a3 range:(_NSRange *)a4
+- (BOOL)canShowCommentForCurrentSelectionGetHighlight:(id *)highlight range:(_NSRange *)range
 {
   LODWORD(v7) = [(TSWPEditingController *)self p_canEditTextString];
   if (v7)
@@ -4864,23 +4864,23 @@ LABEL_5:
       if (v7)
       {
         storage = self->_storage;
-        v9 = [(TSWPSelection *)self->_selection superRange];
-        v7 = [(TSWPStorage *)storage firstHighlightForSelectionRange:v9 outRange:v10, &v16];
+        superRange = [(TSWPSelection *)self->_selection superRange];
+        v7 = [(TSWPStorage *)storage firstHighlightForSelectionRange:superRange outRange:v10, &v16];
         if (v7)
         {
           v11 = v7;
           v12 = v16;
-          v13 = [(TSWPSelection *)self->_selection superRange];
-          if (v12.location <= v13 && v12.length + v12.location >= v13 + v14)
+          superRange2 = [(TSWPSelection *)self->_selection superRange];
+          if (v12.location <= superRange2 && v12.length + v12.location >= superRange2 + v14)
           {
-            if (a3)
+            if (highlight)
             {
-              *a3 = v11;
+              *highlight = v11;
             }
 
-            if (a4)
+            if (range)
             {
-              *a4 = v16;
+              *range = v16;
             }
 
             LOBYTE(v7) = 1;
@@ -4900,71 +4900,71 @@ LABEL_5:
 
 - (BOOL)canRemoveHighlightForCurrentSelection
 {
-  v3 = [(TSWPEditingController *)self p_canEditTextString];
-  if (v3)
+  p_canEditTextString = [(TSWPEditingController *)self p_canEditTextString];
+  if (p_canEditTextString)
   {
-    v3 = [(TSWPSelection *)self->_selection isValid];
-    if (v3)
+    p_canEditTextString = [(TSWPSelection *)self->_selection isValid];
+    if (p_canEditTextString)
     {
-      v3 = [(TSWPStorage *)[(TSWPEditingController *)self storage] highlightsAllowed];
-      if (v3)
+      p_canEditTextString = [(TSWPStorage *)[(TSWPEditingController *)self storage] highlightsAllowed];
+      if (p_canEditTextString)
       {
         storage = self->_storage;
-        v5 = [(TSWPSelection *)self->_selection superRange];
-        LOBYTE(v3) = [(TSWPStorage *)storage firstHighlightForSelectionRange:v5 outRange:v6, 0]!= 0;
+        superRange = [(TSWPSelection *)self->_selection superRange];
+        LOBYTE(p_canEditTextString) = [(TSWPStorage *)storage firstHighlightForSelectionRange:superRange outRange:v6, 0]!= 0;
       }
     }
   }
 
-  return v3;
+  return p_canEditTextString;
 }
 
 - (BOOL)canAddOrShowComment
 {
-  v3 = [(TSWPSelection *)self->_selection isValid];
-  if (v3)
+  isValid = [(TSWPSelection *)self->_selection isValid];
+  if (isValid)
   {
     if ([(TSWPEditingController *)self canRemoveHighlightForCurrentSelection])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isValid) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(TSWPEditingController *)self canHighlightCurrentSelection];
+      LOBYTE(isValid) = [(TSWPEditingController *)self canHighlightCurrentSelection];
     }
   }
 
-  return v3;
+  return isValid;
 }
 
-- (id)p_highlightSelectionForSelection:(id)a3
+- (id)p_highlightSelectionForSelection:(id)selection
 {
-  if ([a3 isInsertionPoint])
+  if ([selection isInsertionPoint])
   {
-    v5 = [(TSWPStorage *)self->_storage rangeForSelectionWithInsertionSelection:a3];
+    superRange = [(TSWPStorage *)self->_storage rangeForSelectionWithInsertionSelection:selection];
   }
 
   else
   {
-    v5 = [a3 superRange];
+    superRange = [selection superRange];
   }
 
-  return [TSWPSelection selectionWithRange:v5, v6];
+  return [TSWPSelection selectionWithRange:superRange, v6];
 }
 
-- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)a3
+- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(TSWPEditingController *)self interactiveCanvasController];
-  [(TSDInteractiveCanvasController *)v5 convertBoundsToUnscaledPoint:x, y];
-  v6 = [(TSDInteractiveCanvasController *)v5 hitRep:0 withGesture:&__block_literal_global_783 passingTest:?];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
+  v6 = [(TSDInteractiveCanvasController *)interactiveCanvasController hitRep:0 withGesture:&__block_literal_global_783 passingTest:?];
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 isEditing] & 1) == 0)
   {
 
-    [(TSDInteractiveCanvasController *)v5 beginEditingRep:v6];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController beginEditingRep:v6];
   }
 }
 
@@ -4980,9 +4980,9 @@ LABEL_5:
   return [(TSWPSelection *)selection isInsertionPoint];
 }
 
-- (unint64_t)closestCharIndexToPoint:(CGPoint)a3 isAtEndOfLine:(BOOL *)a4
+- (unint64_t)closestCharIndexToPoint:(CGPoint)point isAtEndOfLine:(BOOL *)line
 {
-  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:a3.x, a3.y];
+  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:point.x, point.y];
   v7 = v6;
   v9 = v8;
   objc_opt_class();
@@ -4990,12 +4990,12 @@ LABEL_5:
   v10 = TSUDynamicCast();
   [v10 convertNaturalPointFromUnscaledCanvas:{v7, v9}];
 
-  return [(TSWPEditingController *)self charIndexInRep:v10 fromPoint:1 allowPastBreak:a4 isAtEndOfLine:0 leadingEdge:?];
+  return [(TSWPEditingController *)self charIndexInRep:v10 fromPoint:1 allowPastBreak:line isAtEndOfLine:0 leadingEdge:?];
 }
 
-- (unint64_t)p_charIndexAtPoint:(CGPoint)a3 isAtEndOfLine:(BOOL *)a4
+- (unint64_t)p_charIndexAtPoint:(CGPoint)point isAtEndOfLine:(BOOL *)line
 {
-  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:a3.x, a3.y];
+  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:point.x, point.y];
   v7 = v6;
   v9 = v8;
   objc_opt_class();
@@ -5003,18 +5003,18 @@ LABEL_5:
   v10 = TSUDynamicCast();
   [v10 convertNaturalPointFromUnscaledCanvas:{v7, v9}];
 
-  return [(TSWPEditingController *)self charIndexInRep:v10 fromPoint:0 allowPastBreak:1 allowNotFound:a4 isAtEndOfLine:?];
+  return [(TSWPEditingController *)self charIndexInRep:v10 fromPoint:0 allowPastBreak:1 allowNotFound:line isAtEndOfLine:?];
 }
 
-- (BOOL)p_isCharIndex:(unint64_t)a3 withEolAffinity:(BOOL)a4 atBoundary:(int)a5 inDirection:(int64_t)a6
+- (BOOL)p_isCharIndex:(unint64_t)index withEolAffinity:(BOOL)affinity atBoundary:(int)boundary inDirection:(int64_t)direction
 {
-  v8 = a4;
+  affinityCopy = affinity;
   v57 = *MEMORY[0x277D85DE8];
   v11 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:?];
   v13 = v11 + v12;
-  if (a3)
+  if (index)
   {
-    v14 = a3 - (v11 + v12 == a3);
+    v14 = index - (v11 + v12 == index);
   }
 
   else
@@ -5030,17 +5030,17 @@ LABEL_5:
   v15 = v11;
   v16 = v12;
   v51 = v11;
-  if (a5 <= 1)
+  if (boundary <= 1)
   {
-    if (a5)
+    if (boundary)
     {
-      v49 = a6;
-      if (a5 != 1)
+      directionCopy2 = direction;
+      if (boundary != 1)
       {
         goto LABEL_51;
       }
 
-      if (a6 > 1)
+      if (direction > 1)
       {
         v41 = [(TSWPEditingController *)self p_writingDirectionForCharAtIndex:v14];
         v42 = 2;
@@ -5049,12 +5049,12 @@ LABEL_5:
           v42 = 3;
         }
 
-        v25 = v42 == a6;
+        v25 = v42 == direction;
       }
 
       else
       {
-        v25 = a6 == 0;
+        v25 = direction == 0;
       }
 
       v43 = v25;
@@ -5071,14 +5071,14 @@ LABEL_5:
     goto LABEL_56;
   }
 
-  if (a5 == 2)
+  if (boundary == 2)
   {
-    v26 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:a3];
+    v26 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:index];
     location = v26;
     length = v28;
-    if (a3 && v26 == a3)
+    if (index && v26 == index)
     {
-      v59.location = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:a3 - 1];
+      v59.location = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:index - 1];
       v59.length = v30;
       v58.location = location;
       v58.length = length;
@@ -5088,11 +5088,11 @@ LABEL_5:
     }
 
     v32 = *MEMORY[0x277CBECE8];
-    v33 = [(TSWPStorage *)self->_storage string];
+    string = [(TSWPStorage *)self->_storage string];
     v60.location = location;
     v60.length = length;
-    v34 = CFStringTokenizerCreate(v32, v33, v60, 1uLL, 0);
-    if (CFStringTokenizerGoToTokenAtIndex(v34, a3))
+    v34 = CFStringTokenizerCreate(v32, string, v60, 1uLL, 0);
+    if (CFStringTokenizerGoToTokenAtIndex(v34, index))
     {
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v34);
       v15 = CurrentTokenRange.location;
@@ -5109,9 +5109,9 @@ LABEL_5:
     goto LABEL_56;
   }
 
-  if (a5 == 3)
+  if (boundary == 3)
   {
-    v15 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:a3];
+    v15 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:index];
     if (v36)
     {
       v16 = v36 - IsParagraphBreakingCharacter([(TSWPStorage *)self->_storage characterAtIndex:v36 + v15 - 1]);
@@ -5125,14 +5125,14 @@ LABEL_5:
     goto LABEL_56;
   }
 
-  v49 = a6;
-  if (a5 == 4)
+  directionCopy2 = direction;
+  if (boundary == 4)
   {
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = [-[TSWPEditingController p_layoutTargetForCharIndex:eolAffinity:](self p_layoutTargetForCharIndex:a3 eolAffinity:{v8), "columns"}];
+    obj = [-[TSWPEditingController p_layoutTargetForCharIndex:eolAffinity:](self p_layoutTargetForCharIndex:index eolAffinity:{affinityCopy), "columns"}];
     v17 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (!v17)
     {
@@ -5153,11 +5153,11 @@ LABEL_5:
         }
 
         v21 = *(*(&v52 + 1) + 8 * i);
-        v22 = [v21 range];
-        v24 = v14 < v22 || v14 - v22 >= v23;
-        if (!v24 || v8 && v14 == v22 + v23)
+        range = [v21 range];
+        v24 = v14 < range || v14 - range >= v23;
+        if (!v24 || affinityCopy && v14 == range + v23)
         {
-          v39 = [v21 lineIndexForCharIndex:v14 eol:v8];
+          v39 = [v21 lineIndexForCharIndex:v14 eol:affinityCopy];
           if (v39 > 0x7FFFFFFFFFFFFFFELL)
           {
             v16 = 0;
@@ -5188,10 +5188,10 @@ LABEL_5:
   }
 
 LABEL_51:
-  a6 = v49;
-  if (a5 == 5)
+  direction = directionCopy2;
+  if (boundary == 5)
   {
-    if (v51 == a3 && v49 <= 4 && ((1 << v49) & 0x1A) != 0)
+    if (v51 == index && directionCopy2 <= 4 && ((1 << directionCopy2) & 0x1A) != 0)
     {
       LOBYTE(v44) = 1;
     }
@@ -5199,9 +5199,9 @@ LABEL_51:
     else
     {
       LOBYTE(v44) = 0;
-      if (v13 == a3 && v49 < 6)
+      if (v13 == index && directionCopy2 < 6)
       {
-        LODWORD(v44) = 0x25u >> v49;
+        LODWORD(v44) = 0x25u >> directionCopy2;
       }
     }
 
@@ -5209,17 +5209,17 @@ LABEL_51:
   }
 
 LABEL_56:
-  if (v15 != a3 && v15 + v16 != a3)
+  if (v15 != index && v15 + v16 != index)
   {
     goto LABEL_97;
   }
 
   LOBYTE(v44) = 0;
-  if (a5 <= 1)
+  if (boundary <= 1)
   {
-    if (a5)
+    if (boundary)
     {
-      if (a5 != 1)
+      if (boundary != 1)
       {
         return v44 & 1;
       }
@@ -5228,17 +5228,17 @@ LABEL_56:
     }
 
 LABEL_71:
-    if (a6 == 1)
+    if (direction == 1)
     {
-      if (v13 != a3)
+      if (v13 != index)
       {
 LABEL_99:
-        LOBYTE(v44) = (a6 - 6) < 0xFFFFFFFFFFFFFFFELL;
+        LOBYTE(v44) = (direction - 6) < 0xFFFFFFFFFFFFFFFELL;
         return v44 & 1;
       }
     }
 
-    else if (a6 || v51 != a3)
+    else if (direction || v51 != index)
     {
       goto LABEL_99;
     }
@@ -5248,64 +5248,64 @@ LABEL_97:
     return v44 & 1;
   }
 
-  if (a5 == 2)
+  if (boundary == 2)
   {
     goto LABEL_71;
   }
 
-  if (a5 != 3)
+  if (boundary != 3)
   {
-    if (a5 != 4)
+    if (boundary != 4)
     {
       return v44 & 1;
     }
 
 LABEL_68:
-    if (a6 > 1)
+    if (direction > 1)
     {
-      v46 = [(TSWPEditingController *)self p_writingDirectionForCharAtIndex:a3];
+      v46 = [(TSWPEditingController *)self p_writingDirectionForCharAtIndex:index];
       v44 = 2;
       if (v46 == 1)
       {
         v44 = 3;
       }
 
-      if (v15 == a3)
+      if (v15 == index)
       {
-        LOBYTE(v44) = (a6 & 0xFFFFFFFFFFFFFFFELL) == 2 && v44 != a6;
+        LOBYTE(v44) = (direction & 0xFFFFFFFFFFFFFFFELL) == 2 && v44 != direction;
       }
 
       else
       {
-        LOBYTE(v44) = v44 == a6;
+        LOBYTE(v44) = v44 == direction;
       }
     }
 
     else
     {
-      LOBYTE(v44) = a6 == 1;
-      if (v15 != a3)
+      LOBYTE(v44) = direction == 1;
+      if (v15 != index)
       {
-        LOBYTE(v44) = a6 ^ 1;
+        LOBYTE(v44) = direction ^ 1;
       }
     }
 
     return v44 & 1;
   }
 
-  if (v51 == a3 && a6 <= 5 && ((1 << a6) & 0x25) != 0 || v13 == a3 && a6 <= 4 && ((1 << a6) & 0x1A) != 0)
+  if (v51 == index && direction <= 5 && ((1 << direction) & 0x25) != 0 || v13 == index && direction <= 4 && ((1 << direction) & 0x1A) != 0)
   {
     goto LABEL_97;
   }
 
-  if ((a6 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((direction & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    LOBYTE(v44) = v15 == a3;
+    LOBYTE(v44) = v15 == index;
     return v44 & 1;
   }
 
-  LOBYTE(v44) = v15 + v16 == a3;
-  if ((a6 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  LOBYTE(v44) = v15 + v16 == index;
+  if ((direction & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     goto LABEL_97;
   }
@@ -5313,23 +5313,23 @@ LABEL_68:
   return v44 & 1;
 }
 
-- (id)p_layoutTargetForCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4
+- (id)p_layoutTargetForCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity
 {
-  v5 = [[TSWPSelection alloc] initWithType:0 range:a3 styleInsertionBehavior:0 caretAffinity:0, a4];
+  affinity = [[TSWPSelection alloc] initWithType:0 range:index styleInsertionBehavior:0 caretAffinity:0, affinity];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3052000000;
   v14 = __Block_byref_object_copy__20;
   v15 = __Block_byref_object_dispose__20;
   v16 = 0;
-  v6 = [(TSWPEditingController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
   storage = self->_storage;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__TSWPEditingController_p_layoutTargetForCharIndex_eolAffinity___block_invoke;
   v10[3] = &unk_279D48548;
   v10[4] = &v11;
-  [(TSWPInteractiveCanvasController *)v6 withLayoutForModel:storage withSelection:v5 performBlock:v10];
+  [(TSWPInteractiveCanvasController *)interactiveCanvasController withLayoutForModel:storage withSelection:affinity performBlock:v10];
 
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -5343,13 +5343,13 @@ id __64__TSWPEditingController_p_layoutTargetForCharIndex_eolAffinity___block_in
   return result;
 }
 
-- (unint64_t)p_MoveByLineRange:(_NSRange)a3 up:(BOOL)a4
+- (unint64_t)p_MoveByLineRange:(_NSRange)range up:(BOOL)up
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
+  upCopy = up;
+  length = range.length;
+  location = range.location;
   v8 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:?];
-  if (v4)
+  if (upCopy)
   {
     v10 = location;
     if (location > v8)
@@ -5391,18 +5391,18 @@ id __64__TSWPEditingController_p_layoutTargetForCharIndex_eolAffinity___block_in
   return v10;
 }
 
-- (unint64_t)p_lineIndexForCharIndex:(unint64_t)a3 column:(id *)a4 eol:(BOOL)a5
+- (unint64_t)p_lineIndexForCharIndex:(unint64_t)index column:(id *)column eol:(BOOL)eol
 {
-  v5 = a5;
+  eolCopy = eol;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = [(TSWPEditingController *)self p_layoutTargetForCharIndex:a3 eolAffinity:a5];
-  *a4 = 0;
+  v8 = [(TSWPEditingController *)self p_layoutTargetForCharIndex:index eolAffinity:eol];
+  *column = 0;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v8 columns];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  columns = [v8 columns];
+  v10 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -5413,23 +5413,23 @@ id __64__TSWPEditingController_p_layoutTargetForCharIndex_eolAffinity___block_in
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(columns);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 range];
-        if (a3 - v15 < v16 && a3 >= v15 || v15 + v16 == a3)
+        range = [v14 range];
+        if (index - range < v16 && index >= range || range + v16 == index)
         {
-          result = [v14 lineIndexForCharIndex:a3 eol:v5];
+          result = [v14 lineIndexForCharIndex:index eol:eolCopy];
           if (result <= 0x7FFFFFFFFFFFFFFELL)
           {
-            *a4 = v14;
+            *column = v14;
             return result;
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v11)
       {
         continue;
@@ -5446,12 +5446,12 @@ id __64__TSWPEditingController_p_layoutTargetForCharIndex_eolAffinity___block_in
 {
   if ([(TSWPSelection *)self->_selection isVisual]&& [(TSWPSelection *)self->_selection validVisualRanges])
   {
-    v3 = [(TSWPSelection *)self->_selection visualRangeCount];
+    visualRangeCount = [(TSWPSelection *)self->_selection visualRangeCount];
     selection = self->_selection;
-    if (v3 < 2)
+    if (visualRangeCount < 2)
     {
-      v7 = [(TSWPSelection *)self->_selection superRange];
-      v5 = [(TSWPSelection *)selection copyWithNewType:0 range:v7, v8];
+      superRange = [(TSWPSelection *)self->_selection superRange];
+      v5 = [(TSWPSelection *)selection copyWithNewType:0 range:superRange, v8];
       v6 = 0x800000;
     }
 
@@ -5467,53 +5467,53 @@ id __64__TSWPEditingController_p_layoutTargetForCharIndex_eolAffinity___block_in
   }
 }
 
-- (id)calculateVisualRunsFromSelection:(id)a3 updateControllerSelection:(BOOL)a4
+- (id)calculateVisualRunsFromSelection:(id)selection updateControllerSelection:(BOOL)controllerSelection
 {
-  v4 = a4;
-  v5 = a3;
-  if (([a3 validVisualRanges] & 1) != 0 || -[TSWPSelection isInsertionPoint](v5, "isInsertionPoint"))
+  controllerSelectionCopy = controllerSelection;
+  selectionCopy = selection;
+  if (([selection validVisualRanges] & 1) != 0 || -[TSWPSelection isInsertionPoint](selectionCopy, "isInsertionPoint"))
   {
-    return v5;
+    return selectionCopy;
   }
 
   v94[0] = 0;
-  v7 = [(TSWPSelection *)v5 start];
-  if (v7 <= [(TSWPStorage *)self->_storage range])
+  start = [(TSWPSelection *)selectionCopy start];
+  if (start <= [(TSWPStorage *)self->_storage range])
   {
-    v8 = [(TSWPStorage *)self->_storage range];
+    range = [(TSWPStorage *)self->_storage range];
   }
 
   else
   {
-    v8 = [(TSWPSelection *)v5 start];
+    range = [(TSWPSelection *)selectionCopy start];
   }
 
-  v9 = v8;
+  v9 = range;
   storage = self->_storage;
-  v11 = [(TSWPSelection *)v5 end];
+  v11 = [(TSWPSelection *)selectionCopy end];
   if (v11 >= [(TSWPStorage *)self->_storage characterCount])
   {
-    v12 = [(TSWPStorage *)self->_storage characterCount];
+    characterCount = [(TSWPStorage *)self->_storage characterCount];
   }
 
   else
   {
-    v12 = [(TSWPSelection *)v5 end];
+    characterCount = [(TSWPSelection *)selectionCopy end];
   }
 
-  v13 = [(TSWPStorage *)storage previousCharacterIndex:v12];
+  v13 = [(TSWPStorage *)storage previousCharacterIndex:characterCount];
   memset(&v93, 0, sizeof(v93));
   v14 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v9 column:v94 eol:0];
   v15 = 0;
-  if ([(TSWPSelection *)v5 type]== 7 && v14)
+  if ([(TSWPSelection *)selectionCopy type]== 7 && v14)
   {
-    if ([(TSWPSelection *)v5 isRange])
+    if ([(TSWPSelection *)selectionCopy isRange])
     {
       v16 = TSWPLineFragment::visualIndexForCharIndex(v14, v9);
-      [(TSWPSelection *)v5 range];
+      [(TSWPSelection *)selectionCopy range];
       if (!v17)
       {
-        v13 = [(TSWPSelection *)v5 end];
+        v13 = [(TSWPSelection *)selectionCopy end];
         v85 = v9;
         v15 = v14;
         goto LABEL_150;
@@ -5530,7 +5530,7 @@ id __64__TSWPEditingController_p_layoutTargetForCharIndex_eolAffinity___block_in
         TSWPLineFragment::fillWritingDirectionRuns(v14, &__p);
         v20 = __p;
         v21 = v91;
-        v79 = v4;
+        v79 = controllerSelectionCopy;
         if (__p == v91)
         {
           v21 = __p;
@@ -6007,7 +6007,7 @@ LABEL_145:
           operator delete(__p);
         }
 
-        v4 = v79;
+        controllerSelectionCopy = v79;
         v14 = v82;
         v15 = v83;
         goto LABEL_150;
@@ -6024,58 +6024,58 @@ LABEL_145:
 LABEL_150:
   if (v93.__end_ == v93.__begin_)
   {
-    if ([(TSWPSelection *)v5 isVisual]&& [(TSWPSelection *)v5 isRange])
+    if ([(TSWPSelection *)selectionCopy isVisual]&& [(TSWPSelection *)selectionCopy isRange])
     {
-      v75 = [(TSWPSelection *)v5 copyWithNewType:0];
+      v75 = [(TSWPSelection *)selectionCopy copyWithNewType:0];
     }
 
     else
     {
-      v75 = v5;
+      v75 = selectionCopy;
     }
   }
 
   else
   {
-    v75 = [(TSWPSelection *)v5 copyWithVisualRanges:&v93 startChar:v85 endChar:v13 rightToLeft:[(TSWPStorage *)self->_storage isWritingDirectionRightToLeftForParagraphAtCharIndex:[(TSWPSelection *)v5 start]] sameLine:v14 == v15];
+    v75 = [(TSWPSelection *)selectionCopy copyWithVisualRanges:&v93 startChar:v85 endChar:v13 rightToLeft:[(TSWPStorage *)self->_storage isWritingDirectionRightToLeftForParagraphAtCharIndex:[(TSWPSelection *)selectionCopy start]] sameLine:v14 == v15];
   }
 
-  v5 = v75;
-  if (v4 && [(TSWPSelection *)self->_selection isEqual:v75])
+  selectionCopy = v75;
+  if (controllerSelectionCopy && [(TSWPSelection *)self->_selection isEqual:v75])
   {
-    v76 = v5;
+    v76 = selectionCopy;
 
-    self->_selection = v5;
+    self->_selection = selectionCopy;
   }
 
-  v77 = v5;
+  v77 = selectionCopy;
   if (v93.__begin_)
   {
     v93.__end_ = v93.__begin_;
     operator delete(v93.__begin_);
   }
 
-  return v5;
+  return selectionCopy;
 }
 
-- (id)logicalToVisualSelection:(id)a3
+- (id)logicalToVisualSelection:(id)selection
 {
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutIfNeeded];
   v46 = 0;
   v47 = 0;
-  v5 = [a3 start];
-  v6 = [a3 end];
-  v42 = self;
-  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", v5, &v47, [a3 caretAffinity] == 1);
-  if ([a3 type] || !v7)
+  start = [selection start];
+  v6 = [selection end];
+  selfCopy = self;
+  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", start, &v47, [selection caretAffinity] == 1);
+  if ([selection type] || !v7)
   {
     goto LABEL_60;
   }
 
-  [a3 range];
+  [selection range];
   if (!v8)
   {
-    a3 = [a3 copyWithNewType:7];
+    selection = [selection copyWithNewType:7];
     goto LABEL_60;
   }
 
@@ -6087,7 +6087,7 @@ LABEL_150:
   }
 
   v11 = v10;
-  v12 = [a3 range];
+  range = [selection range];
   v14 = v13;
   __p = 0;
   v44 = 0;
@@ -6106,7 +6106,7 @@ LABEL_150:
     v25 = 1;
     while (1)
     {
-      v49.location = v12;
+      v49.location = range;
       v49.length = v14;
       v26 = NSIntersectionRange(*&v22[40 * v23 + 16], v49);
       v22 = __p;
@@ -6114,7 +6114,7 @@ LABEL_150:
       {
         if (*(__p + 40 * v23 + 32) != 1)
         {
-          v5 = [(TSWPStorage *)v42->_storage previousCharacterIndex:v26.location + v26.length];
+          start = [(TSWPStorage *)selfCopy->_storage previousCharacterIndex:v26.location + v26.length];
           v24 = 1;
           v22 = __p;
 LABEL_23:
@@ -6122,7 +6122,7 @@ LABEL_23:
           {
             if (v22[40 * v23 + 32] == 1)
             {
-              location = [(TSWPStorage *)v42->_storage previousCharacterIndex:v26.location + v26.length];
+              location = [(TSWPStorage *)selfCopy->_storage previousCharacterIndex:v26.location + v26.length];
               v22 = __p;
             }
 
@@ -6136,7 +6136,7 @@ LABEL_23:
         }
 
         v24 = 1;
-        v5 = v26.location;
+        start = v26.location;
       }
 
       if (v24)
@@ -6167,7 +6167,7 @@ LABEL_28:
   v18 = 1;
   while (1)
   {
-    v48.location = v12;
+    v48.location = range;
     v48.length = v14;
     v20 = NSIntersectionRange(*&v15[40 * v16 + 16], v48);
     v19 = v20.location;
@@ -6191,21 +6191,21 @@ LABEL_13:
   {
     if (*(__p + 40 * v16 + 32))
     {
-      v19 = [(TSWPStorage *)v42->_storage previousCharacterIndex:v20.location + v20.length];
+      v19 = [(TSWPStorage *)selfCopy->_storage previousCharacterIndex:v20.location + v20.length];
     }
 
-    v5 = v19;
+    start = v19;
     goto LABEL_13;
   }
 
   if (*(__p + 40 * v16 + 32))
   {
-    v5 = v20.location;
+    start = v20.location;
   }
 
   else
   {
-    v5 = [(TSWPStorage *)v42->_storage previousCharacterIndex:v20.location + v20.length];
+    start = [(TSWPStorage *)selfCopy->_storage previousCharacterIndex:v20.location + v20.length];
     v15 = __p;
   }
 
@@ -6223,7 +6223,7 @@ LABEL_33:
   v30 = 1;
   while (2)
   {
-    v50.location = v12;
+    v50.location = range;
     v50.length = v14;
     v32 = NSIntersectionRange(*&v27[40 * v28 + 16], v50);
     v31 = v32.location;
@@ -6248,7 +6248,7 @@ LABEL_40:
   {
     if (*(__p + 40 * v28 + 32))
     {
-      v31 = [(TSWPStorage *)v42->_storage previousCharacterIndex:v32.location + v32.length];
+      v31 = [(TSWPStorage *)selfCopy->_storage previousCharacterIndex:v32.location + v32.length];
     }
 
     location = v31;
@@ -6257,39 +6257,39 @@ LABEL_40:
 
   if (!*(__p + 40 * v28 + 32))
   {
-    v31 = [(TSWPStorage *)v42->_storage previousCharacterIndex:v32.location + v32.length];
+    v31 = [(TSWPStorage *)selfCopy->_storage previousCharacterIndex:v32.location + v32.length];
   }
 
   location = v31;
 LABEL_45:
-  storage = v42->_storage;
-  if (v5 <= location)
+  storage = selfCopy->_storage;
+  if (start <= location)
   {
     v37 = [(TSWPStorage *)storage nextCharacterIndex:location];
-    if (v5 <= v37)
+    if (start <= v37)
     {
       v35 = v37;
     }
 
     else
     {
-      v35 = v5;
+      v35 = start;
     }
 
-    if (v5 >= v37)
+    if (start >= v37)
     {
       v36 = v37;
     }
 
     else
     {
-      v36 = v5;
+      v36 = start;
     }
   }
 
   else
   {
-    v34 = [(TSWPStorage *)storage nextCharacterIndex:v5];
+    v34 = [(TSWPStorage *)storage nextCharacterIndex:start];
     if (location <= v34)
     {
       v35 = v34;
@@ -6311,7 +6311,7 @@ LABEL_45:
     }
   }
 
-  a3 = [a3 copyWithNewVisualTypeRange:v36 head:v35 - v36 tail:{v5, location}];
+  selection = [selection copyWithNewVisualTypeRange:v36 head:v35 - v36 tail:{start, location}];
   if (__p)
   {
     v44 = __p;
@@ -6319,20 +6319,20 @@ LABEL_45:
   }
 
 LABEL_60:
-  if (!a3)
+  if (!selection)
   {
-    v38 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController logicalToVisualSelection:]"];
-    [v38 handleFailureInFunction:v39 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12066, @"invalid nil value for '%s'", "result"}];
+    [currentHandler handleFailureInFunction:v39 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12066, @"invalid nil value for '%s'", "result"}];
   }
 
-  return a3;
+  return selection;
 }
 
-- (const)p_lineFragmentForCharIndex:(unint64_t)a3 column:(id *)a4 eol:(BOOL)a5
+- (const)p_lineFragmentForCharIndex:(unint64_t)index column:(id *)column eol:(BOOL)eol
 {
-  v6 = [(TSWPEditingController *)self p_lineIndexForCharIndex:a3 column:a4 eol:a5];
-  if ([*a4 countLines])
+  v6 = [(TSWPEditingController *)self p_lineIndexForCharIndex:index column:column eol:eol];
+  if ([*column countLines])
   {
     v7 = 1;
   }
@@ -6344,25 +6344,25 @@ LABEL_60:
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_lineFragmentForCharIndex:column:eol:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12073, @"Empty column returned from p_lineIndexForCharIndex"}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12073, @"Empty column returned from p_lineIndexForCharIndex"}];
   }
 
-  if (v6 >= [*a4 countLines])
+  if (v6 >= [*column countLines])
   {
     return 0;
   }
 
-  v10 = *a4;
+  v10 = *column;
 
   return [v10 lineFragmentAtIndex:v6];
 }
 
-- (const)p_lastVisibleLineFragmentForCharIndex:(unint64_t)a3 eol:(BOOL)a4
+- (const)p_lastVisibleLineFragmentForCharIndex:(unint64_t)index eol:(BOOL)eol
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(-[TSWPEditingController p_layoutTargetForCharIndex:eolAffinity:](self p_layoutTargetForCharIndex:a3 eolAffinity:{a4), "columns"), "reverseObjectEnumerator"}];
+  v4 = [objc_msgSend(-[TSWPEditingController p_layoutTargetForCharIndex:eolAffinity:](self p_layoutTargetForCharIndex:index eolAffinity:{eol), "columns"), "reverseObjectEnumerator"}];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -6406,32 +6406,32 @@ LABEL_60:
   return result;
 }
 
-- (const)p_nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)a3 xPos:(double)a4 inColumn:(id)a5
+- (const)p_nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)as xPos:(double)pos inColumn:(id)column
 {
-  [a5 boundsOfLineFragmentAtIndex:?];
+  [column boundsOfLineFragmentAtIndex:?];
   MinY = CGRectGetMinY(v22);
   do
   {
-    v9 = a3;
-    if (!a3)
+    asCopy = as;
+    if (!as)
     {
       break;
     }
 
-    --a3;
-    [a5 boundsOfLineFragmentAtIndex:v9 - 1];
+    --as;
+    [column boundsOfLineFragmentAtIndex:asCopy - 1];
   }
 
   while (CGRectGetMinY(v23) >= MinY);
-  v10 = [a5 countLines];
-  if (v9 < v10)
+  countLines = [column countLines];
+  if (asCopy < countLines)
   {
-    v11 = v10;
+    v11 = countLines;
     v12 = INFINITY;
-    v13 = v9;
+    v13 = asCopy;
     do
     {
-      [a5 boundsOfLineFragmentAtIndex:v13];
+      [column boundsOfLineFragmentAtIndex:v13];
       x = v24.origin.x;
       y = v24.origin.y;
       width = v24.size.width;
@@ -6445,12 +6445,12 @@ LABEL_60:
       v25.origin.y = y;
       v25.size.width = width;
       v25.size.height = height;
-      v18 = vabdd_f64(a4, CGRectGetMinX(v25));
+      v18 = vabdd_f64(pos, CGRectGetMinX(v25));
       v26.origin.x = x;
       v26.origin.y = y;
       v26.size.width = width;
       v26.size.height = height;
-      v19 = vabdd_f64(a4, CGRectGetMaxX(v26));
+      v19 = vabdd_f64(pos, CGRectGetMaxX(v26));
       if (v19 >= v18)
       {
         v19 = v18;
@@ -6459,7 +6459,7 @@ LABEL_60:
       if (v19 < v12)
       {
         v12 = v19;
-        v9 = v13;
+        asCopy = v13;
       }
 
       ++v13;
@@ -6468,61 +6468,61 @@ LABEL_60:
     while (v13 < v11);
   }
 
-  return [a5 lineFragmentAtIndex:v9];
+  return [column lineFragmentAtIndex:asCopy];
 }
 
-- (unint64_t)charIndexByMovingPosition:(id)a3 toBoundary:(int64_t)a4 inDirection:(int64_t)a5 preferPosition:(double *)a6
+- (unint64_t)charIndexByMovingPosition:(id)position toBoundary:(int64_t)boundary inDirection:(int64_t)direction preferPosition:(double *)preferPosition
 {
-  v11 = [a3 charIndex];
-  if (a6)
+  charIndex = [position charIndex];
+  if (preferPosition)
   {
-    [a3 preferredPosition];
-    *a6 = v12;
+    [position preferredPosition];
+    *preferPosition = v12;
   }
 
   v21 = 0;
-  v13 = [a3 charIndex];
-  v22 = [a3 endOfLineAffinity];
-  v14 = [(TSWPEditingController *)self p_charIndexByMovingCharIndex:v13 withEolAffinity:&v22 toBoundary:a4 inDirection:a5 preferPosition:a6 isLeadingEdge:&v21];
+  charIndex2 = [position charIndex];
+  endOfLineAffinity = [position endOfLineAffinity];
+  v14 = [(TSWPEditingController *)self p_charIndexByMovingCharIndex:charIndex2 withEolAffinity:&endOfLineAffinity toBoundary:boundary inDirection:direction preferPosition:preferPosition isLeadingEdge:&v21];
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = v14;
     v16 = [TSWPSelection alloc];
-    v17 = [a3 endOfLineAffinity];
+    endOfLineAffinity2 = [position endOfLineAffinity];
     LOBYTE(v20) = v21;
-    v18 = [(TSWPSelection *)v16 initWithType:7 range:v15 styleInsertionBehavior:0 caretAffinity:0 smartFieldRange:v17 leadingEdge:*MEMORY[0x277D6C268] storage:*(MEMORY[0x277D6C268] + 8), v20, self->_storage];
-    v11 = [(TSWPSelection *)v18 leadingCharIndex];
+    v18 = [(TSWPSelection *)v16 initWithType:7 range:v15 styleInsertionBehavior:0 caretAffinity:0 smartFieldRange:endOfLineAffinity2 leadingEdge:*MEMORY[0x277D6C268] storage:*(MEMORY[0x277D6C268] + 8), v20, self->_storage];
+    charIndex = [(TSWPSelection *)v18 leadingCharIndex];
   }
 
-  return v11;
+  return charIndex;
 }
 
-- (unint64_t)p_charIndexByMovingCharIndex:(unint64_t)a3 withEolAffinity:(BOOL *)a4 toBoundary:(int)a5 inDirection:(int64_t)a6 preferPosition:(double *)a7 isLeadingEdge:(BOOL *)a8
+- (unint64_t)p_charIndexByMovingCharIndex:(unint64_t)index withEolAffinity:(BOOL *)affinity toBoundary:(int)boundary inDirection:(int64_t)direction preferPosition:(double *)position isLeadingEdge:(BOOL *)edge
 {
   v14 = *MEMORY[0x277D6C268];
   v15 = *(MEMORY[0x277D6C268] + 8);
   v16 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:?];
   v18 = v16 + v17;
-  if (a8)
+  if (edge)
   {
-    *a8 = 1;
+    *edge = 1;
   }
 
-  if (v18 < a3)
+  if (v18 < index)
   {
     goto LABEL_4;
   }
 
-  if (a5 <= 2)
+  if (boundary <= 2)
   {
-    if (a5)
+    if (boundary)
     {
-      if (a5 != 1)
+      if (boundary != 1)
       {
-        if (a5 == 2)
+        if (boundary == 2)
         {
-          v24 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:a3];
-          v26 = a6 & 0xFFFFFFFFFFFFFFFDLL;
+          v24 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:index];
+          v26 = direction & 0xFFFFFFFFFFFFFFFDLL;
           if (v24 <= v18)
           {
             v27 = v18;
@@ -6582,11 +6582,11 @@ LABEL_60:
           }
 
           v35 = *MEMORY[0x277CBECE8];
-          v36 = [(TSWPStorage *)self->_storage string];
+          string = [(TSWPStorage *)self->_storage string];
           v117.location = v33;
           v117.length = v34;
-          v37 = CFStringTokenizerCreate(v35, v36, v117, 1uLL, 0);
-          if (CFStringTokenizerGoToTokenAtIndex(v37, a3))
+          v37 = CFStringTokenizerCreate(v35, string, v117, 1uLL, 0);
+          if (CFStringTokenizerGoToTokenAtIndex(v37, index))
           {
             CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v37);
             if (v26)
@@ -6596,7 +6596,7 @@ LABEL_60:
                 v40 = CFStringTokenizerGetCurrentTokenRange(v37);
                 length = v40.length;
                 location = v40.location;
-                if (a3 > LODWORD(v40.location))
+                if (index > LODWORD(v40.location))
                 {
                   goto LABEL_111;
                 }
@@ -6623,7 +6623,7 @@ LABEL_115:
 
             location = CurrentTokenRange.location;
             v72 = CurrentTokenRange.length;
-            if (CurrentTokenRange.location + CurrentTokenRange.length != a3)
+            if (CurrentTokenRange.location + CurrentTokenRange.length != index)
             {
               goto LABEL_110;
             }
@@ -6636,17 +6636,17 @@ LABEL_115:
               if (v26 == 1)
               {
 LABEL_100:
-                v69 = a3;
+                indexCopy = index;
                 do
                 {
-                  v70 = v69 - 1;
-                  if (v69 <= v16)
+                  v70 = indexCopy - 1;
+                  if (indexCopy <= v16)
                   {
                     break;
                   }
 
-                  v71 = CFStringTokenizerGoToTokenAtIndex(v37, v69 - 1);
-                  v69 = v70;
+                  v71 = CFStringTokenizerGoToTokenAtIndex(v37, indexCopy - 1);
+                  indexCopy = v70;
                 }
 
                 while (!v71);
@@ -6676,7 +6676,7 @@ LABEL_118:
           }
 
 LABEL_113:
-          if (v18 == a3)
+          if (v18 == index)
           {
             v14 = v18;
             v15 = 0;
@@ -6686,11 +6686,11 @@ LABEL_113:
         }
 
 LABEL_64:
-        v51 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_charIndexByMovingCharIndex:withEolAffinity:toBoundary:inDirection:preferPosition:isLeadingEdge:]"];
         v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
         v54 = @"Unsupported granularity";
-        v55 = v51;
+        v55 = currentHandler;
         v56 = v52;
         v57 = 12485;
 LABEL_65:
@@ -6698,29 +6698,29 @@ LABEL_65:
         goto LABEL_4;
       }
 
-      v46 = a6;
-      v47 = [(TSWPEditingController *)self charIndexMovingByWordFromCharIndex:[(TSWPEditingController *)self p_layoutOrderCharIndexForCaretCharIndex:a3 inDirection:a6] inDirection:a6];
+      directionCopy2 = direction;
+      v47 = [(TSWPEditingController *)self charIndexMovingByWordFromCharIndex:[(TSWPEditingController *)self p_layoutOrderCharIndexForCaretCharIndex:index inDirection:direction] inDirection:direction];
     }
 
     else
     {
-      v46 = a6;
-      v47 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:[(TSWPEditingController *)self p_layoutOrderCharIndexForCaretCharIndex:a3 inDirection:a6] inDirection:a6];
+      directionCopy2 = direction;
+      v47 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:[(TSWPEditingController *)self p_layoutOrderCharIndexForCaretCharIndex:index inDirection:direction] inDirection:direction];
     }
 
-    v58 = [(TSWPEditingController *)self p_caretCharIndexForLayoutOrderCharIndex:v47 inDirection:v46];
+    v58 = [(TSWPEditingController *)self p_caretCharIndexForLayoutOrderCharIndex:v47 inDirection:directionCopy2];
 LABEL_68:
     v19 = v58;
     goto LABEL_5;
   }
 
-  if (a5 != 3)
+  if (boundary != 3)
   {
-    if (a5 != 4)
+    if (boundary != 4)
     {
-      if (a5 == 5)
+      if (boundary == 5)
       {
-        v14 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:a3];
+        v14 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:index];
         v15 = v42;
 LABEL_4:
         v19 = 0x7FFFFFFFFFFFFFFFLL;
@@ -6733,10 +6733,10 @@ LABEL_5:
     }
 
     [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutIfNeeded];
-    if (a6 < 4)
+    if (direction < 4)
     {
       v116 = 0;
-      v59 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:a3 column:&v116 eol:*a4];
+      v59 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:index column:&v116 eol:*affinity];
       v19 = v18;
       if (!v59)
       {
@@ -6744,14 +6744,14 @@ LABEL_5:
       }
 
       v60 = v59;
-      switch(a6)
+      switch(direction)
       {
         case 1:
           v19 = *v59;
           goto LABEL_5;
         case 2:
           v19 = TSWPLineFragment::rightMostCharIndex(v59);
-          if (a8)
+          if (edge)
           {
             if (!TSWPLineFragment::writingDirectionForCharIndex(v60, v19) && v19 < [(TSWPStorage *)self->_storage length])
             {
@@ -6760,7 +6760,7 @@ LABEL_5:
               v82 = IsParagraphBreakingCharacter(v80);
               if (v81 != 8232 && (v82 & 1) == 0)
               {
-                *a8 = 0;
+                *edge = 0;
               }
             }
           }
@@ -6769,7 +6769,7 @@ LABEL_5:
           break;
         case 3:
           v19 = TSWPLineFragment::leftMostCharIndex(v59);
-          if (a8)
+          if (edge)
           {
             if (TSWPLineFragment::writingDirectionForCharIndex(v60, v19) == 1 && v19 < [(TSWPStorage *)self->_storage length])
             {
@@ -6778,7 +6778,7 @@ LABEL_5:
               v63 = IsParagraphBreakingCharacter(v61);
               if (v62 != 8232 && (v63 & 1) == 0)
               {
-                *a8 = 0;
+                *edge = 0;
               }
             }
           }
@@ -6793,7 +6793,7 @@ LABEL_5:
             goto LABEL_5;
           }
 
-          if (v83 <= a3)
+          if (v83 <= index)
           {
             goto LABEL_5;
           }
@@ -6810,25 +6810,25 @@ LABEL_5:
           goto LABEL_68;
       }
 
-      *a4 = v64;
+      *affinity = v64;
       goto LABEL_5;
     }
 
-    if ((a6 - 4) > 1)
+    if ((direction - 4) > 1)
     {
-      v73 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_charIndexByMovingCharIndex:withEolAffinity:toBoundary:inDirection:preferPosition:isLeadingEdge:]"];
       v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
       v54 = @"Unsupported horizontal line direction";
-      v55 = v73;
+      v55 = currentHandler2;
       v56 = v74;
       v57 = 12364;
       goto LABEL_65;
     }
 
-    if (a7)
+    if (position)
     {
-      v65 = *a7;
+      v65 = *position;
     }
 
     else
@@ -6837,24 +6837,24 @@ LABEL_5:
     }
 
     v116 = 0;
-    v76 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:a3 column:&v116 eol:*a4];
+    v76 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:index column:&v116 eol:*affinity];
     v77 = v76;
     if (v76)
     {
       v113 = v76;
-      v78 = [(TSWPEditingController *)self p_MoveByLineRange:*v76 up:*(v76 + 1), a6 == 4];
+      v78 = [(TSWPEditingController *)self p_MoveByLineRange:*v76 up:*(v76 + 1), direction == 4];
       v77 = v113;
     }
 
-    else if (a6 == 4)
+    else if (direction == 4)
     {
-      v79 = [(TSWPEditingController *)self p_lastVisibleLineFragmentForCharIndex:a3 eol:*a4];
+      v79 = [(TSWPEditingController *)self p_lastVisibleLineFragmentForCharIndex:index eol:*affinity];
       if (!v79)
       {
         v78 = 0;
 LABEL_153:
         v115 = 0;
-        v87 = [(TSWPEditingController *)self p_lineIndexForCharIndex:v78 column:&v115 eol:a6 == 4];
+        v87 = [(TSWPEditingController *)self p_lineIndexForCharIndex:v78 column:&v115 eol:direction == 4];
         if (v87 <= 0x7FFFFFFFFFFFFFFELL)
         {
           v88 = v87;
@@ -6869,8 +6869,8 @@ LABEL_153:
                 break;
               }
 
-              v78 = [(TSWPEditingController *)self p_MoveByLineRange:*v89 up:*(v89 + 8), a6 == 4];
-              v88 = [(TSWPEditingController *)self p_lineIndexForCharIndex:v78 column:&v115 eol:a6 == 4];
+              v78 = [(TSWPEditingController *)self p_MoveByLineRange:*v89 up:*(v89 + 8), direction == 4];
+              v88 = [(TSWPEditingController *)self p_lineIndexForCharIndex:v78 column:&v115 eol:direction == 4];
               v89 = [v115 lineFragmentAtIndex:v88];
               v90 = v115;
               v91 = v78 == v18 || v78 == v16;
@@ -6882,7 +6882,7 @@ LABEL_153:
           v93 = v88 > 0x7FFFFFFFFFFFFFFELL || v90 == 0;
           if (v93 || ([v90 frameBounds], v95 = v65 + v94, (v96 = -[TSWPEditingController p_nearestLineFragmentWithSameVerticalPositionAs:xPos:inColumn:](self, "p_nearestLineFragmentWithSameVerticalPositionAs:xPos:inColumn:", v88, v115, v95)) == 0))
           {
-            if (v78 <= a3 || a6 == 4)
+            if (v78 <= index || direction == 4)
             {
               v19 = 0x7FFFFFFFFFFFFFFFLL;
             }
@@ -6898,7 +6898,7 @@ LABEL_153:
           v97 = v96;
           if (v96 != v77 && (v115 != v116 || v77 && *(v77 + 7) != *(v96 + 7)))
           {
-            if (*a4)
+            if (*affinity)
             {
               v98 = *v96;
               v99 = *(v96 + 1);
@@ -6986,7 +6986,7 @@ LABEL_153:
     goto LABEL_153;
   }
 
-  v49 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:a3];
+  v49 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:index];
   if (v48)
   {
     v50 = v48 - IsParagraphBreakingCharacter([(TSWPStorage *)self->_storage characterAtIndex:v49 + v48 - 1]);
@@ -6997,21 +6997,21 @@ LABEL_153:
     v50 = 0;
   }
 
-  v66 = a6;
-  if (a6 > 1)
+  directionCopy5 = direction;
+  if (direction > 1)
   {
-    if (a6 != 2)
+    if (direction != 2)
     {
-      if (a6 != 3)
+      if (direction != 3)
       {
         goto LABEL_141;
       }
 
 LABEL_91:
-      if (v49 == a3 && v49 > v16)
+      if (v49 == index && v49 > v16)
       {
-        v49 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:a3 - 1];
-        v66 = a6;
+        v49 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:index - 1];
+        directionCopy5 = direction;
         v50 = v67 - 1;
       }
 
@@ -7019,9 +7019,9 @@ LABEL_91:
     }
   }
 
-  else if (a6)
+  else if (direction)
   {
-    if (a6 != 1)
+    if (direction != 1)
     {
       goto LABEL_141;
     }
@@ -7029,9 +7029,9 @@ LABEL_91:
     goto LABEL_91;
   }
 
-  if (v50 + v49 == a3 && v50 + v49 < v18)
+  if (v50 + v49 == index && v50 + v49 < v18)
   {
-    v49 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:a3 + 1];
+    v49 = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:index + 1];
     if (v68)
     {
       v50 = v68 - IsParagraphBreakingCharacter([(TSWPStorage *)self->_storage characterAtIndex:v68 + v49 - 1]);
@@ -7042,7 +7042,7 @@ LABEL_91:
       v50 = 0;
     }
 
-    v66 = a6;
+    directionCopy5 = direction;
   }
 
 LABEL_141:
@@ -7050,11 +7050,11 @@ LABEL_141:
   v20 = MEMORY[0x277D6C268];
   if (v49 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v66 <= 1)
+    if (directionCopy5 <= 1)
     {
-      if (v66)
+      if (directionCopy5)
       {
-        if (v66 != 1)
+        if (directionCopy5 != 1)
         {
           goto LABEL_150;
         }
@@ -7067,12 +7067,12 @@ LABEL_149:
       goto LABEL_150;
     }
 
-    if (v66 == 2)
+    if (directionCopy5 == 2)
     {
       goto LABEL_149;
     }
 
-    if (v66 == 3)
+    if (directionCopy5 == 3)
     {
 LABEL_148:
       v19 = v49;
@@ -7087,11 +7087,11 @@ LABEL_6:
   v22 = v20[1];
   if (v14 != v21 || v15 != v22)
   {
-    if (a6 > 1)
+    if (direction > 1)
     {
-      if (a6 != 2)
+      if (direction != 2)
       {
-        if (a6 != 3)
+        if (direction != 3)
         {
           goto LABEL_53;
         }
@@ -7100,15 +7100,15 @@ LABEL_6:
       }
     }
 
-    else if (a6)
+    else if (direction)
     {
-      if (a6 != 1)
+      if (direction != 1)
       {
         goto LABEL_53;
       }
 
 LABEL_42:
-      if (v15 + v14 >= a3)
+      if (v15 + v14 >= index)
       {
         v19 = v14;
       }
@@ -7121,7 +7121,7 @@ LABEL_42:
       goto LABEL_53;
     }
 
-    if (v14 <= a3)
+    if (v14 <= index)
     {
       v43 = v15;
     }
@@ -7161,22 +7161,22 @@ LABEL_53:
   }
 }
 
-- (BOOL)p_isCharIndex:(unint64_t)a3 withinTextUnit:(int)a4 inDirection:(int64_t)a5
+- (BOOL)p_isCharIndex:(unint64_t)index withinTextUnit:(int)unit inDirection:(int64_t)direction
 {
-  if (a4 != 1)
+  if (unit != 1)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_isCharIndex:withinTextUnit:inDirection:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12566, @"unexpected granularity"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12566, @"unexpected granularity"}];
     return 0;
   }
 
-  if (a5 > 5)
+  if (direction > 5)
   {
     return 0;
   }
 
-  v6 = [(TSWPEditingController *)self p_adjustedCharIndexForWordTestingFromCharIndex:a3 forDirection:a5];
+  v6 = [(TSWPEditingController *)self p_adjustedCharIndexForWordTestingFromCharIndex:index forDirection:direction];
   if (v6 > [(TSWPStorage *)self->_storage length])
   {
     return 0;
@@ -7186,16 +7186,16 @@ LABEL_53:
   return v6 >= v7 && v6 - v7 < v8;
 }
 
-- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)a3 backward:(BOOL)a4
+- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)index backward:(BOOL)backward
 {
-  v4 = a4;
+  backwardCopy = backward;
   v7 = MEMORY[0x277D6C268];
   v8 = *MEMORY[0x277D6C268];
   v9 = *(MEMORY[0x277D6C268] + 8);
-  if ([(TSWPStorage *)self->_storage length]>= a3)
+  if ([(TSWPStorage *)self->_storage length]>= index)
   {
-    v10 = [(TSWPStorage *)self->_storage wordAtCharIndex:a3 includePreviousWord:v4];
-    if (v10 != a3 || !v4)
+    v10 = [(TSWPStorage *)self->_storage wordAtCharIndex:index includePreviousWord:backwardCopy];
+    if (v10 != index || !backwardCopy)
     {
       v8 = v10;
       v9 = v11;
@@ -7228,8 +7228,8 @@ LABEL_53:
 
 - (BOOL)p_isIgnoringKeyboardInput
 {
-  v3 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![(TSDInteractiveCanvasControllerDelegate *)v3 editorAllowsKeyboard])
+  delegate = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![(TSDInteractiveCanvasControllerDelegate *)delegate editorAllowsKeyboard])
   {
     return 1;
   }
@@ -7242,32 +7242,32 @@ LABEL_53:
 
 - (BOOL)wantsCaret
 {
-  v3 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
-  v4 = [(TSWPEditingController *)self p_canEditTextString];
-  if (v4)
+  delegate = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
+  p_canEditTextString = [(TSWPEditingController *)self p_canEditTextString];
+  if (p_canEditTextString)
   {
     if (objc_opt_respondsToSelector())
     {
 
-      LOBYTE(v4) = [(TSDInteractiveCanvasControllerDelegate *)v3 editorAllowsCaret];
+      LOBYTE(p_canEditTextString) = [(TSDInteractiveCanvasControllerDelegate *)delegate editorAllowsCaret];
     }
 
     else
     {
-      LOBYTE(v4) = 1;
+      LOBYTE(p_canEditTextString) = 1;
     }
   }
 
-  return v4;
+  return p_canEditTextString;
 }
 
 - (BOOL)p_keyboardShouldShowOnscreen
 {
-  v3 = [(TSWPEditingController *)self selection];
-  v4 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
+  selection = [(TSWPEditingController *)self selection];
+  delegate = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(TSDInteractiveCanvasControllerDelegate *)v4 willChangeContentOffsetIfKeyboardHidden]^ 1;
+    v5 = [(TSDInteractiveCanvasControllerDelegate *)delegate willChangeContentOffsetIfKeyboardHidden]^ 1;
   }
 
   else
@@ -7277,7 +7277,7 @@ LABEL_53:
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(TSDInteractiveCanvasControllerDelegate *)v4 editorAllowsKeyboard]^ 1;
+    v6 = [(TSDInteractiveCanvasControllerDelegate *)delegate editorAllowsKeyboard]^ 1;
   }
 
   else
@@ -7285,16 +7285,16 @@ LABEL_53:
     v6 = 0;
   }
 
-  v7 = [(TSKDocumentRoot *)[(TSDInteractiveCanvasController *)self->_interactiveCanvasController documentRoot] isFindActive];
-  v8 = [(TSWPEditingController *)self shouldDisplayKeyboard];
-  v9 = [(TSWPSelection *)v3 isValid];
-  v10 = [(TSWPEditingController *)self isBecomingActive];
-  v11 = [(TSWPEditingController *)self isDisplayingPhoneticsHUD];
-  v12 = [(TSWPEditingController *)self isInParagraphMode];
+  isFindActive = [(TSKDocumentRoot *)[(TSDInteractiveCanvasController *)self->_interactiveCanvasController documentRoot] isFindActive];
+  shouldDisplayKeyboard = [(TSWPEditingController *)self shouldDisplayKeyboard];
+  isValid = [(TSWPSelection *)selection isValid];
+  isBecomingActive = [(TSWPEditingController *)self isBecomingActive];
+  isDisplayingPhoneticsHUD = [(TSWPEditingController *)self isDisplayingPhoneticsHUD];
+  isInParagraphMode = [(TSWPEditingController *)self isInParagraphMode];
   v13 = 0;
-  if (v8 && (v6 & 1) == 0 && !v7 && (v9 || v10) && !v11 && (self->_knobTracking & v12 & v5 & 1) == 0)
+  if (shouldDisplayKeyboard && (v6 & 1) == 0 && !isFindActive && (isValid || isBecomingActive) && !isDisplayingPhoneticsHUD && (self->_knobTracking & isInParagraphMode & v5 & 1) == 0)
   {
-    if ((TSUPhoneUI() & v12 & v5) == 1)
+    if ((TSUPhoneUI() & isInParagraphMode & v5) == 1)
     {
       return (self->_currentSelectionFlags & 0x10000) == 0 && !self->_selectionLastModifiedWithKnob;
     }
@@ -7310,47 +7310,47 @@ LABEL_53:
 
 - (void)abandonMarkedText
 {
-  v2 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController textInputResponder];
+  textInputResponder = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController textInputResponder];
 
-  [(TSDTextInputResponder *)v2 acceptAutocorrection];
+  [(TSDTextInputResponder *)textInputResponder acceptAutocorrection];
 }
 
 - (void)endEditing
 {
   [(TSWPEditingController *)self dismissActivePopovers];
   [(TSWPEditingController *)self p_cancelDelayedSelectors];
-  v3 = [(TSWPEditingController *)self p_containingShapeRep];
-  v4 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController editorController];
-  v5 = v4;
-  if (v3)
+  p_containingShapeRep = [(TSWPEditingController *)self p_containingShapeRep];
+  editorController = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController editorController];
+  v5 = editorController;
+  if (p_containingShapeRep)
   {
-    [(TSDEditorController *)v4 popEditor:self];
+    [(TSDEditorController *)editorController popEditor:self];
     v6 = [(TSDEditorController *)v5 mostSpecificCurrentEditorOfClass:0];
 
     [v6 setSelection:0];
   }
 
-  else if ([-[TSDEditorController currentEditorsOfClass:](v4 currentEditorsOfClass:{objc_opt_class()), "containsObject:", self}])
+  else if ([-[TSDEditorController currentEditorsOfClass:](editorController currentEditorsOfClass:{objc_opt_class()), "containsObject:", self}])
   {
 
     [(TSDEditorController *)v5 popEditor:self];
   }
 }
 
-- (void)endEditingAndSelectParent:(id)a3
+- (void)endEditingAndSelectParent:(id)parent
 {
-  v4 = [(TSWPStorage *)self->_storage wpKind];
-  if (v4 == 2)
+  wpKind = [(TSWPStorage *)self->_storage wpKind];
+  if (wpKind == 2)
   {
     v8 = [(TSDContainerInfo *)[(TSWPStorage *)self->_storage parentInfo] findCharIndexForFootnoteAttachment:[(TSWPStorage *)self->_storage owningAttachment]];
     [(TSDInteractiveCanvasController *)self->_interactiveCanvasController endEditing];
     v9 = [TSWPSelection selectionWithRange:v8 + 1, 0];
-    v10 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvasEditor];
+    canvasEditor = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvasEditor];
 
-    [(TSDCanvasEditor *)v10 setSelection:v9];
+    [(TSDCanvasEditor *)canvasEditor setSelection:v9];
   }
 
-  else if (v4 == 3)
+  else if (wpKind == 3)
   {
     objc_opt_class();
     [(TSWPStorage *)self->_storage parentInfo];
@@ -7359,21 +7359,21 @@ LABEL_53:
     {
       v6 = v5;
       [(TSDInteractiveCanvasController *)self->_interactiveCanvasController endEditing];
-      v7 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvasEditor];
+      canvasEditor2 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvasEditor];
 
-      [(TSDCanvasEditor *)v7 setSelectionToInfo:v6];
+      [(TSDCanvasEditor *)canvasEditor2 setSelectionToInfo:v6];
     }
   }
 }
 
-- (BOOL)textIsVerticalAtCharIndex:(unint64_t)a3
+- (BOOL)textIsVerticalAtCharIndex:(unint64_t)index
 {
   [(TSWPStorage *)self->_storage parentInfo];
   v4 = TSUProtocolCast();
   storage = self->_storage;
   if (v4)
   {
-    v6 = [(TSWPStorage *)storage parentInfo];
+    parentInfo = [(TSWPStorage *)storage parentInfo];
   }
 
   else
@@ -7384,10 +7384,10 @@ LABEL_53:
     }
 
     [(TSWPStorage *)self->_storage documentRoot];
-    v6 = TSUProtocolCast();
+    parentInfo = TSUProtocolCast();
   }
 
-  return [(TSDContainerInfo *)v6 textIsVertical];
+  return [(TSDContainerInfo *)parentInfo textIsVertical];
 }
 
 - (int64_t)returnKeyType
@@ -7403,36 +7403,36 @@ LABEL_53:
   }
 }
 
-- (id)textInRange:(_NSRange)a3
+- (id)textInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v30 = *MEMORY[0x277D85DE8];
-  v6 = [(TSWPStorage *)self->_storage string];
-  if (location + length > [v6 length])
+  string = [(TSWPStorage *)self->_storage string];
+  if (location + length > [string length])
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController textInRange:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12933, @"bad text range"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12933, @"bad text range"}];
   }
 
-  v9 = [v6 length];
-  v10 = &stru_287D36338;
+  v9 = [string length];
+  string2 = &stru_287D36338;
   if (length && location + length <= v9)
   {
     if ([(TSWPStorage *)self->_storage hasTrackedChanges])
     {
       v11 = [[TSWPFilteredStorage alloc] initWithStorage:self->_storage subRange:location removeRanges:length, [(TSWPStorage *)self->_storage deletedRangesInRange:location, length]];
-      v10 = [(TSWPFilteredStorage *)v11 string];
-      if (![(__CFString *)v10 length])
+      string2 = [(TSWPFilteredStorage *)v11 string];
+      if (![(__CFString *)string2 length])
       {
-        v10 = @" ";
+        string2 = @" ";
       }
     }
 
     else
     {
-      v10 = [v6 substringWithRange:{location, length}];
+      string2 = [string substringWithRange:{location, length}];
     }
 
     if (![TSWPEditingController textInRange:]::sSeparatorSet)
@@ -7450,16 +7450,16 @@ LABEL_53:
 
       else
       {
-        v15 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController textInRange:]"];
-        [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12970, @"invalid nil value for '%s'", "setStr"}];
+        [currentHandler2 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 12970, @"invalid nil value for '%s'", "setStr"}];
       }
     }
 
-    if ([(__CFString *)v10 rangeOfCharacterFromSet:?]<= 0x7FFFFFFFFFFFFFFELL)
+    if ([(__CFString *)string2 rangeOfCharacterFromSet:?]<= 0x7FFFFFFFFFFFFFFELL)
     {
-      v17 = [(__CFString *)v10 componentsSeparatedByCharactersInSet:[TSWPEditingController textInRange:]::sSeparatorSet];
-      v10 = [MEMORY[0x277CCAB68] stringWithCapacity:{-[__CFString length](v10, "length")}];
+      v17 = [(__CFString *)string2 componentsSeparatedByCharactersInSet:[TSWPEditingController textInRange:]::sSeparatorSet];
+      string2 = [MEMORY[0x277CCAB68] stringWithCapacity:{-[__CFString length](string2, "length")}];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -7481,12 +7481,12 @@ LABEL_53:
 
             if (v21)
             {
-              [(__CFString *)v10 appendString:*(*(&v24 + 1) + 8 * i)];
+              [(__CFString *)string2 appendString:*(*(&v24 + 1) + 8 * i)];
             }
 
             else
             {
-              [(__CFString *)v10 appendFormat:@"\n%@", *(*(&v24 + 1) + 8 * i)];
+              [(__CFString *)string2 appendFormat:@"\n%@", *(*(&v24 + 1) + 8 * i)];
             }
 
             v21 = 0;
@@ -7501,13 +7501,13 @@ LABEL_53:
     }
   }
 
-  return v10;
+  return string2;
 }
 
-- (CGRect)firstRectForRange:(_NSRange)a3
+- (CGRect)firstRectForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ([(TSWPStorage *)self->_storage hasTrackedChanges])
   {
     v6 = [[TSWPFilteredStorage alloc] initWithStorage:self->_storage subRange:location removeRanges:length, [(TSWPStorage *)self->_storage deletedRangesInRange:location, length]];
@@ -7524,25 +7524,25 @@ LABEL_53:
   return result;
 }
 
-- (void)p_setInsertionStyle:(id)a3
+- (void)p_setInsertionStyle:(id)style
 {
-  if (self->_insertionStyle != a3)
+  if (self->_insertionStyle != style)
   {
-    v6 = a3;
+    styleCopy = style;
 
-    self->_insertionStyle = a3;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    self->_insertionStyle = style;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     storage = self->_storage;
 
-    [v7 postNotificationName:@"TSWPEditingControllerInsertionStyleChanged" object:storage userInfo:0];
+    [defaultCenter postNotificationName:@"TSWPEditingControllerInsertionStyleChanged" object:storage userInfo:0];
   }
 }
 
-- (id)characterStyleForDeletedRange:(_NSRange)a3
+- (id)characterStyleForDeletedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  [(TSWPStorage *)self->_storage smartFieldAtCharIndex:a3.location attributeKind:6 effectiveRange:&v14];
+  length = range.length;
+  location = range.location;
+  [(TSWPStorage *)self->_storage smartFieldAtCharIndex:range.location attributeKind:6 effectiveRange:&v14];
   objc_opt_class();
   v6 = TSUDynamicCast();
   v7 = v14;
@@ -7572,14 +7572,14 @@ LABEL_53:
 
 - (void)extendSelectionLeft
 {
-  v3 = [(TSWPSelection *)[(TSWPEditingController *)self selection] range];
+  range = [(TSWPSelection *)[(TSWPEditingController *)self selection] range];
   v5 = v4;
-  v6 = [(TSWPStorage *)self->_storage selectionRangeMinForCharIndex:v3];
-  if (v3 > v6)
+  v6 = [(TSWPStorage *)self->_storage selectionRangeMinForCharIndex:range];
+  if (range > v6)
   {
     v7 = v6;
     storage = self->_storage;
-    for (i = v3; ; i = v10)
+    for (i = range; ; i = v10)
     {
       v10 = [(TSWPStorage *)storage previousCharacterIndex:i];
       if (v10 <= v7 || ![(TSWPStorage *)self->_storage anchoredDrawableAttachmentCharacterAtCharIndex:v10])
@@ -7590,26 +7590,26 @@ LABEL_53:
       storage = self->_storage;
     }
 
-    v11 = [[TSWPSelection alloc] initWithRange:v10, v5 + v3 - v10];
+    v11 = [[TSWPSelection alloc] initWithRange:v10, v5 + range - v10];
     [(TSWPEditingController *)self setSelection:v11];
   }
 }
 
 - (void)extendSelectionRight
 {
-  v3 = [(TSWPEditingController *)self selection];
-  if (![(TSWPSelection *)v3 isValid])
+  selection = [(TSWPEditingController *)self selection];
+  if (![(TSWPSelection *)selection isValid])
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController extendSelectionRight]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14569, @"Invalid selection"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14569, @"Invalid selection"}];
   }
 
-  if ([(TSWPSelection *)v3 isValid])
+  if ([(TSWPSelection *)selection isValid])
   {
-    v6 = [(TSWPSelection *)v3 range];
-    v8 = v6 + v7;
-    v9 = [(TSWPStorage *)self->_storage selectionRangeMaxForCharIndex:v6 + v7];
+    range = [(TSWPSelection *)selection range];
+    v8 = range + v7;
+    v9 = [(TSWPStorage *)self->_storage selectionRangeMaxForCharIndex:range + v7];
     if (v8 < v9)
     {
       v10 = v9;
@@ -7619,16 +7619,16 @@ LABEL_53:
       }
 
       while (v8 < v10 && [(TSWPStorage *)self->_storage anchoredDrawableAttachmentCharacterAtCharIndex:v8]);
-      v11 = [[TSWPSelection alloc] initWithRange:v6, v8 - v6];
+      v11 = [[TSWPSelection alloc] initWithRange:range, v8 - range];
       [(TSWPEditingController *)self setSelection:v11];
     }
   }
 }
 
-- (CGRect)p_firstRectForRange:(_NSRange)a3 actualRange:(_NSRange *)a4
+- (CGRect)p_firstRectForRange:(_NSRange)range actualRange:(_NSRange *)actualRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v46 = *MEMORY[0x277D85DE8];
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutIfNeeded];
   v7 = MEMORY[0x277CBF398];
@@ -7640,13 +7640,13 @@ LABEL_53:
   v13 = *(MEMORY[0x277D6C268] + 8);
   range1[0] = location;
   v14 = [[TSWPSelection alloc] initWithRange:location, length];
-  v39 = self;
+  selfCopy = self;
   v15 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutForModel:self->_storage withSelection:v14];
   if (!v15)
   {
-    v16 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController p_firstRectForRange:actualRange:]"];
-    [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14664, @"failed to find a layout, can't present autocorrection UI"}];
+    [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14664, @"failed to find a layout, can't present autocorrection UI"}];
   }
 
   x = *v7;
@@ -7657,8 +7657,8 @@ LABEL_53:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v22 = [v15 columns];
-  v23 = [v22 countByEnumeratingWithState:&range1[1] objects:v45 count:16];
+  columns = [v15 columns];
+  v23 = [columns countByEnumeratingWithState:&range1[1] objects:v45 count:16];
   if (v23)
   {
     v24 = v23;
@@ -7669,7 +7669,7 @@ LABEL_5:
     {
       if (*v42 != v25)
       {
-        objc_enumerationMutation(v22);
+        objc_enumerationMutation(columns);
       }
 
       v27 = *(range1[2] + 8 * v26);
@@ -7732,7 +7732,7 @@ LABEL_5:
 
       if (v24 == ++v26)
       {
-        v24 = [v22 countByEnumeratingWithState:&range1[1] objects:v45 count:16];
+        v24 = [columns countByEnumeratingWithState:&range1[1] objects:v45 count:16];
         if (v24)
         {
           goto LABEL_5;
@@ -7750,7 +7750,7 @@ LABEL_5:
   if (!CGRectIsNull(v53))
   {
     [v38 rectInRoot:{x, y, width, height}];
-    [(TSDInteractiveCanvasController *)v39->_interactiveCanvasController convertUnscaledToBoundsRect:?];
+    [(TSDInteractiveCanvasController *)selfCopy->_interactiveCanvasController convertUnscaledToBoundsRect:?];
     v8 = v30;
     v9 = v31;
     v10 = v32;
@@ -7769,10 +7769,10 @@ LABEL_5:
     v11 = *(MEMORY[0x277CBF3A0] + 24);
   }
 
-  if (a4)
+  if (actualRange)
   {
-    a4->location = v12;
-    a4->length = v13;
+    actualRange->location = v12;
+    actualRange->length = v13;
   }
 
   v34 = v8;
@@ -7786,10 +7786,10 @@ LABEL_5:
   return result;
 }
 
-- (id)_repsForStorage:(id)a3 selection:(id)a4
+- (id)_repsForStorage:(id)storage selection:(id)selection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(TSWPInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] _repsForStorage:a3];
+  v5 = [(TSWPInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] _repsForStorage:storage];
   v6 = [MEMORY[0x277CBEB58] set];
   v17 = 0u;
   v18 = 0u;
@@ -7811,11 +7811,11 @@ LABEL_5:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [a4 range];
+        range = [selection range];
         v14 = v13;
         v24.location = [v11 range];
         v24.length = v15;
-        v23.location = v12;
+        v23.location = range;
         v23.length = v14;
         if (NSIntersectionRange(v23, v24).length)
         {
@@ -7835,24 +7835,24 @@ LABEL_5:
   return v6;
 }
 
-- (id)_addSelectionRectsForLayout:(id)a3 selection:(id)a4
+- (id)_addSelectionRectsForLayout:(id)layout selection:(id)selection
 {
-  v4 = a4;
+  selectionCopy = selection;
   v82 = *MEMORY[0x277D85DE8];
-  v62 = [a4 range];
+  range = [selection range];
   v58 = v7;
   v63 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v61 = a3;
-  obj = [a3 columns];
+  layoutCopy = layout;
+  obj = [layout columns];
   v57 = [obj countByEnumeratingWithState:&v75 objects:v81 count:16];
   if (v57)
   {
     v56 = *v76;
-    v64 = v4;
+    v64 = selectionCopy;
     do
     {
       for (i = 0; i != v57; ++i)
@@ -7863,21 +7863,21 @@ LABEL_5:
         }
 
         v9 = *(*(&v75 + 1) + 8 * i);
-        v65 = [v9 textIsVertical];
+        textIsVertical = [v9 textIsVertical];
         if (v58)
         {
-          v74 = 0;
+          visualRangesArray = 0;
           v59 = i;
-          if ([v4 isVisual])
+          if ([selectionCopy isVisual])
           {
-            v74 = [v4 visualRangesArray];
+            visualRangesArray = [selectionCopy visualRangesArray];
             v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
             v70 = 0u;
             v71 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v60 = v74;
-            v11 = [v74 countByEnumeratingWithState:&v70 objects:v80 count:16];
+            v60 = visualRangesArray;
+            v11 = [visualRangesArray countByEnumeratingWithState:&v70 objects:v80 count:16];
             if (v11)
             {
               v12 = v11;
@@ -7891,13 +7891,13 @@ LABEL_5:
                     objc_enumerationMutation(v60);
                   }
 
-                  v15 = [*(*(&v70 + 1) + 8 * j) rangeValue];
-                  v17 = [v9 rectsForSelectionRange:v15 selectionType:{v16, objc_msgSend(v64, "type")}];
+                  rangeValue = [*(*(&v70 + 1) + 8 * j) rangeValue];
+                  v17 = [v9 rectsForSelectionRange:rangeValue selectionType:{v16, objc_msgSend(v64, "type")}];
                   if ([v17 count] != 1)
                   {
-                    v18 = [MEMORY[0x277D6C290] currentHandler];
+                    currentHandler = [MEMORY[0x277D6C290] currentHandler];
                     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController _addSelectionRectsForLayout:selection:]"];
-                    [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14766, @"A visual selection should only return one rect"}];
+                    [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14766, @"A visual selection should only return one rect"}];
                   }
 
                   [v10 addObject:{objc_msgSend(v17, "objectAtIndex:", 0)}];
@@ -7912,17 +7912,17 @@ LABEL_5:
 
           else
           {
-            v10 = [v9 rectsForSelection:v4 ranges:&v74];
+            v10 = [v9 rectsForSelection:selectionCopy ranges:&visualRangesArray];
           }
 
           v24 = [v10 count];
-          if (v24 != [v74 count])
+          if (v24 != [visualRangesArray count])
           {
-            v25 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController _addSelectionRectsForLayout:selection:]"];
             v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"];
             v28 = [v10 count];
-            [v25 handleFailureInFunction:v26 file:v27 lineNumber:14775 description:{@"rect/range count mismatch: %lu v %lu", v28, objc_msgSend(v74, "count")}];
+            [currentHandler2 handleFailureInFunction:v26 file:v27 lineNumber:14775 description:{@"rect/range count mismatch: %lu v %lu", v28, objc_msgSend(visualRangesArray, "count")}];
           }
 
           v68 = 0u;
@@ -7951,14 +7951,14 @@ LABEL_5:
                 height = v84.size.height;
                 if (!CGRectIsEmpty(v84))
                 {
-                  [v61 rectInRoot:{x, y, width, height}];
+                  [layoutCopy rectInRoot:{x, y, width, height}];
                   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertUnscaledToBoundsRect:?];
                   v39 = v38;
                   v41 = v40;
                   v43 = v42;
                   v45 = v44;
-                  v46 = [objc_msgSend(v74 objectAtIndexedSubscript:{v31), "rangeValue"}];
-                  v48 = [[TSDTextSelectionRect alloc] initWithRect:[(TSWPEditingController *)self writingDirectionForCharIndex:v46] direction:[TSDTextRange textRangeWithRange:?]isVertical:v46 == v62, v46 + v47 == v62 + v58, v65, v39, v41, v43, v45];
+                  v46 = [objc_msgSend(visualRangesArray objectAtIndexedSubscript:{v31), "rangeValue"}];
+                  v48 = [[TSDTextSelectionRect alloc] initWithRect:[(TSWPEditingController *)self writingDirectionForCharIndex:v46] direction:[TSDTextRange textRangeWithRange:?]isVertical:v46 == range, v46 + v47 == range + v58, textIsVertical, v39, v41, v43, v45];
                   [v63 addObject:v48];
                 }
 
@@ -7971,22 +7971,22 @@ LABEL_5:
             while (v30);
           }
 
-          v4 = v64;
+          selectionCopy = v64;
           i = v59;
         }
 
         else
         {
-          [v9 caretRectForSelection:v4];
+          [v9 caretRectForSelection:selectionCopy];
           v20 = v83.origin.x;
           v21 = v83.origin.y;
           v22 = v83.size.width;
           v23 = v83.size.height;
           if (!CGRectIsNull(v83))
           {
-            [v61 rectInRoot:{v20, v21, v22, v23}];
+            [layoutCopy rectInRoot:{v20, v21, v22, v23}];
             [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertUnscaledToBoundsRect:?];
-            v53 = [[TSDTextSelectionRect alloc] initWithRect:[(TSWPEditingController *)self writingDirectionForCharIndex:v62] direction:[TSDTextRange textRangeWithRange:?]isVertical:1, 1, v65, v49, v50, v51, v52];
+            v53 = [[TSDTextSelectionRect alloc] initWithRect:[(TSWPEditingController *)self writingDirectionForCharIndex:range] direction:[TSDTextRange textRangeWithRange:?]isVertical:1, 1, textIsVertical, v49, v50, v51, v52];
             [v63 addObject:v53];
 
             return v63;
@@ -8003,16 +8003,16 @@ LABEL_5:
   return v63;
 }
 
-- (id)selectionRectsForRange:(_NSRange)a3
+- (id)selectionRectsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = [(TSWPEditingController *)self interactiveCanvasController];
-  [(TSDInteractiveCanvasController *)v6 delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSDInteractiveCanvasControllerDelegate *)[(TSDInteractiveCanvasController *)v6 delegate] selectableWordLimit])
+  interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSDInteractiveCanvasControllerDelegate *)[(TSDInteractiveCanvasController *)interactiveCanvasController delegate] selectableWordLimit])
   {
-    location = [TSDRangeClamper clampSelectedRange:location inFullString:length toWordLimit:[(TSWPEditingController *)self unfilteredText], [(TSDInteractiveCanvasControllerDelegate *)[(TSDInteractiveCanvasController *)v6 delegate] selectableWordLimit]];
+    location = [TSDRangeClamper clampSelectedRange:location inFullString:length toWordLimit:[(TSWPEditingController *)self unfilteredText], [(TSDInteractiveCanvasControllerDelegate *)[(TSDInteractiveCanvasController *)interactiveCanvasController delegate] selectableWordLimit]];
     length = v7;
   }
 
@@ -8055,9 +8055,9 @@ LABEL_5:
     v15 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutsForModel:self->_storage withSelection:v9];
     if (![v15 count])
     {
-      v16 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController selectionRectsForRange:]"];
-      [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14861, @"failed to find a layout"}];
+      [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController.mm"), 14861, @"failed to find a layout"}];
     }
 
     v25 = 0u;
@@ -8091,10 +8091,10 @@ LABEL_5:
   return v8;
 }
 
-- (id)textColorAtCharIndex:(unint64_t)a3
+- (id)textColorAtCharIndex:(unint64_t)index
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v5 = [(TSWPStorage *)self->_storage characterStyleAtCharIndex:a3 effectiveRange:0];
+  v5 = [(TSWPStorage *)self->_storage characterStyleAtCharIndex:index effectiveRange:0];
   v6 = [-[TSWPEditingController styleProvider](self "styleProvider")];
   v8[0] = self->_insertionStyle;
   v8[1] = v5;
@@ -8102,17 +8102,17 @@ LABEL_5:
   return [TSWPResolvePropertyForStyles(v8 3uLL];
 }
 
-- (id)p_columnForCharIndex:(unint64_t)a3
+- (id)p_columnForCharIndex:(unint64_t)index
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [TSWPSelection selectionWithRange:a3, 0];
+  v4 = [TSWPSelection selectionWithRange:index, 0];
   v5 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutForModel:self->_storage withSelection:v4];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 columns];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  columns = [v5 columns];
+  v7 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v7)
   {
     return 0;
@@ -8126,7 +8126,7 @@ LABEL_3:
   {
     if (*v15 != v9)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(columns);
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
@@ -8138,7 +8138,7 @@ LABEL_3:
 
     if (v8 == ++v10)
     {
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         goto LABEL_3;
@@ -8149,10 +8149,10 @@ LABEL_3:
   }
 }
 
-- (id)textFontAtCharIndex:(unint64_t)a3
+- (id)textFontAtCharIndex:(unint64_t)index
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v5 = [(TSWPStorage *)self->_storage characterStyleAtCharIndex:a3 effectiveRange:0];
+  v5 = [(TSWPStorage *)self->_storage characterStyleAtCharIndex:index effectiveRange:0];
   v6 = [-[TSWPEditingController styleProvider](self "styleProvider")];
   v15[0] = self->_insertionStyle;
   v15[1] = v5;
@@ -8164,7 +8164,7 @@ LABEL_3:
   v10 = v9;
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController viewScale];
   v12 = v10 * v11;
-  v13 = [(TSWPEditingController *)self p_columnForCharIndex:a3];
+  v13 = [(TSWPEditingController *)self p_columnForCharIndex:index];
   if (v13)
   {
     v12 = v12 * ([v13 scaleTextPercent] / 100.0);
@@ -8173,19 +8173,19 @@ LABEL_3:
   return [(__CTFont *)v8 fontWithSize:v12];
 }
 
-- (id)selectionWithRange:(_NSRange)a3
+- (id)selectionWithRange:(_NSRange)range
 {
-  v4 = [[TSWPSelection alloc] initWithRange:a3.location, a3.length];
+  v4 = [[TSWPSelection alloc] initWithRange:range.location, range.length];
 
   return [(TSWPEditingController *)self p_extendSelectionToIncludeSmartFields:v4];
 }
 
-- (void)setSelectionWithRange:(_NSRange)a3 endOfLine:(BOOL)a4
+- (void)setSelectionWithRange:(_NSRange)range endOfLine:(BOOL)line
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
-  if ([(TSWPSelection *)[(TSWPEditingController *)self selection] range]== a3.location)
+  lineCopy = line;
+  length = range.length;
+  location = range.location;
+  if ([(TSWPSelection *)[(TSWPEditingController *)self selection] range]== range.location)
   {
     v8 = 168000;
   }
@@ -8195,22 +8195,22 @@ LABEL_3:
     v8 = 135232;
   }
 
-  v9 = [[TSWPSelection alloc] initWithType:0 range:location styleInsertionBehavior:length caretAffinity:0, v4];
-  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setSelection:v9 onModel:self->_storage withFlags:v8];
+  lineCopy = [[TSWPSelection alloc] initWithType:0 range:location styleInsertionBehavior:length caretAffinity:0, lineCopy];
+  [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setSelection:lineCopy onModel:self->_storage withFlags:v8];
 
   self->_selectionLastModifiedWithKeyboard = 1;
 
   [(TSWPEditingController *)self p_clearEditMenuFlags];
 }
 
-- (void)setSelectionWithRange:(_NSRange)a3 leadingEdge:(BOOL)a4 endOfLine:(BOOL)a5
+- (void)setSelectionWithRange:(_NSRange)range leadingEdge:(BOOL)edge endOfLine:(BOOL)line
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
+  lineCopy = line;
+  length = range.length;
+  location = range.location;
   v10 = [TSWPSelection alloc];
-  LOBYTE(v13) = a4;
-  v11 = [(TSWPSelection *)v10 initWithType:7 range:location styleInsertionBehavior:length caretAffinity:0 smartFieldRange:v5 leadingEdge:*MEMORY[0x277D6C268] storage:*(MEMORY[0x277D6C268] + 8), v13, self->_storage];
+  LOBYTE(v13) = edge;
+  v11 = [(TSWPSelection *)v10 initWithType:7 range:location styleInsertionBehavior:length caretAffinity:0 smartFieldRange:lineCopy leadingEdge:*MEMORY[0x277D6C268] storage:*(MEMORY[0x277D6C268] + 8), v13, self->_storage];
   if ([(TSWPSelection *)[(TSWPEditingController *)self selection] range]== location)
   {
     v12 = 168000;
@@ -8231,19 +8231,19 @@ LABEL_3:
 - (id)editingSearchReference
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(TSWPEditingController *)self selection];
-  v4 = v3;
-  if (v3)
+  selection = [(TSWPEditingController *)self selection];
+  v4 = selection;
+  if (selection)
   {
-    if ([(TSWPSelection *)v3 isValid])
+    if ([(TSWPSelection *)selection isValid])
     {
       v4 = [TSWPSearchReference searchReferenceWithStorage:self->_storage selection:v4];
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [(TSWPEditingController *)self editingReps];
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      editingReps = [(TSWPEditingController *)self editingReps];
+      v6 = [editingReps countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         v7 = v6;
@@ -8254,7 +8254,7 @@ LABEL_3:
           {
             if (*v13 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(editingReps);
             }
 
             [objc_msgSend(*(*(&v12 + 1) + 8 * i) "layout")];
@@ -8265,7 +8265,7 @@ LABEL_3:
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v7 = [editingReps countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v7)
           {
             continue;
@@ -8285,11 +8285,11 @@ LABEL_3:
   return v4;
 }
 
-- (id)p_extendSelectionToIncludeSmartFields:(id)a3
+- (id)p_extendSelectionToIncludeSmartFields:(id)fields
 {
-  v5 = [a3 type];
-  result = [(TSWPStorage *)self->_storage extendSelectionToIncludeSmartFields:a3];
-  if (v5 == 7)
+  type = [fields type];
+  result = [(TSWPStorage *)self->_storage extendSelectionToIncludeSmartFields:fields];
+  if (type == 7)
   {
 
     return [(TSWPEditingController *)self logicalToVisualSelection:result];
@@ -8298,11 +8298,11 @@ LABEL_3:
   return result;
 }
 
-- (void)p_setSelectionFromPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 includeListLabels:(BOOL)a5
+- (void)p_setSelectionFromPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity includeListLabels:(BOOL)labels
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  labelsCopy = labels;
+  y = point.y;
+  x = point.x;
   objc_opt_class();
   [(TSWPInteractiveCanvasController *)self->_interactiveCanvasController closestRepToPoint:self->_storage forStorage:x, y];
   v10 = TSUDynamicCast();
@@ -8314,7 +8314,7 @@ LABEL_3:
       [v11 convertNaturalPointFromUnscaledCanvas:{x, y}];
       [v11 pinToClosestColumn:?];
       LOBYTE(v19) = 0;
-      v12 = [(TSWPEditingController *)self p_selectionForRep:v11 point:a4 textSelectionGranularity:0 isTapHold:1 precise:v5 includeListLabels:0 allowPastBreak:v19 selectsEntireLink:?];
+      v12 = [(TSWPEditingController *)self p_selectionForRep:v11 point:granularity textSelectionGranularity:0 isTapHold:1 precise:labelsCopy includeListLabels:0 allowPastBreak:v19 selectsEntireLink:?];
       if (([v12 isEqual:{-[TSWPEditingController selection](self, "selection")}] & 1) == 0)
       {
         if ([(TSWPEditingController *)self pIsSelectionPlaceHolderTextWithSelection:v12])
@@ -8350,12 +8350,12 @@ LABEL_3:
   }
 }
 
-- (id)selectionFromUnscaledCanvasPoint:(CGPoint)a3 textSelectionGranularity:(unint64_t)a4 isTapHold:(BOOL)a5 allowPastBreak:(BOOL)a6 selectsEntireLink:(BOOL)a7
+- (id)selectionFromUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break selectsEntireLink:(BOOL)link
 {
-  v8 = a6;
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
+  breakCopy = break;
+  holdCopy = hold;
+  y = point.y;
+  x = point.x;
   objc_opt_class();
   [(TSWPInteractiveCanvasController *)self->_interactiveCanvasController closestRepToPoint:self->_storage forStorage:x, y];
   v14 = TSUDynamicCast();
@@ -8366,25 +8366,25 @@ LABEL_3:
 
   [v14 convertNaturalPointFromUnscaledCanvas:{x, y}];
   [v14 pinToClosestColumn:?];
-  LOBYTE(v16) = a7;
-  return [(TSWPEditingController *)self p_selectionForRep:v14 point:a4 textSelectionGranularity:v9 isTapHold:1 precise:0 includeListLabels:v8 allowPastBreak:v16 selectsEntireLink:?];
+  LOBYTE(v16) = link;
+  return [(TSWPEditingController *)self p_selectionForRep:v14 point:granularity textSelectionGranularity:holdCopy isTapHold:1 precise:0 includeListLabels:breakCopy allowPastBreak:v16 selectsEntireLink:?];
 }
 
-- (void)p_adjustSelection:(id)a3 withUnscaledCanvasPoint:(CGPoint)a4 textSelectionGranularity:(unint64_t)a5 isTapHold:(BOOL)a6 allowPastBreak:(BOOL)a7
+- (void)p_adjustSelection:(id)selection withUnscaledCanvasPoint:(CGPoint)point textSelectionGranularity:(unint64_t)granularity isTapHold:(BOOL)hold allowPastBreak:(BOOL)break
 {
-  v7 = a7;
-  v8 = a6;
+  breakCopy = break;
+  holdCopy = hold;
   [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] visibleUnscaledRect];
   CGRectInset(v14, 1.0, 1.0);
-  v12 = [(TSWPEditingController *)self p_selectionFromUnscaledCanvasPoint:a5 textSelectionGranularity:v8 isTapHold:v7 allowPastBreak:1 selectsEntireLink:TSDClampPointInRect()];
+  v12 = [(TSWPEditingController *)self p_selectionFromUnscaledCanvasPoint:granularity textSelectionGranularity:holdCopy isTapHold:breakCopy allowPastBreak:1 selectsEntireLink:TSDClampPointInRect()];
   if (v12)
   {
 
-    [(TSWPEditingController *)self p_adjustSelection:a3 withOtherSelection:v12 textSelectionGranularity:a5];
+    [(TSWPEditingController *)self p_adjustSelection:selection withOtherSelection:v12 textSelectionGranularity:granularity];
   }
 }
 
-- (void)p_inputLanguageDidChangeNotification:(id)a3
+- (void)p_inputLanguageDidChangeNotification:(id)notification
 {
   if (![(TSWPSelection *)self->_selection isValid])
   {
@@ -8443,23 +8443,23 @@ LABEL_11:
   }
 }
 
-- (void)p_adjustSelection:(id)a3 withOtherSelection:(id)a4 textSelectionGranularity:(unint64_t)a5
+- (void)p_adjustSelection:(id)selection withOtherSelection:(id)otherSelection textSelectionGranularity:(unint64_t)granularity
 {
-  v6 = a3;
-  if (![a3 isValid] || !objc_msgSend(a4, "isValid"))
+  selectionCopy = selection;
+  if (![selection isValid] || !objc_msgSend(otherSelection, "isValid"))
   {
     return;
   }
 
-  [v6 superRange];
-  if ([a4 type] == 7 && (!objc_msgSend(v6, "type") || objc_msgSend(v6, "type") == 7))
+  [selectionCopy superRange];
+  if ([otherSelection type] == 7 && (!objc_msgSend(selectionCopy, "type") || objc_msgSend(selectionCopy, "type") == 7))
   {
-    if ([v6 type] != 7)
+    if ([selectionCopy type] != 7)
     {
-      v6 = [(TSWPEditingController *)self logicalToVisualSelection:v6];
+      selectionCopy = [(TSWPEditingController *)self logicalToVisualSelection:selectionCopy];
     }
 
-    v8 = [(TSWPEditingController *)self p_adjustVisualSelection:v6 withOtherSelection:a4];
+    v8 = [(TSWPEditingController *)self p_adjustVisualSelection:selectionCopy withOtherSelection:otherSelection];
     v10 = v9;
     if (![(TSWPSelection *)[(TSWPEditingController *)self selection] isValid]|| [(TSWPSelection *)[(TSWPEditingController *)self selection] range]!= v8 || v11 != v10)
     {
@@ -8474,14 +8474,14 @@ LABEL_28:
 
   else
   {
-    v14 = [v6 range];
-    if (v14 >= [a4 range] || (v15 = objc_msgSend(a4, "range"), v17 = v15 + v16, v18 = objc_msgSend(v6, "range"), v17 >= v18 + v19))
+    range = [selectionCopy range];
+    if (range >= [otherSelection range] || (v15 = objc_msgSend(otherSelection, "range"), v17 = v15 + v16, v18 = objc_msgSend(selectionCopy, "range"), v17 >= v18 + v19))
     {
-      v28 = [v6 range];
+      range2 = [selectionCopy range];
       v30 = v29;
-      v41.location = [a4 range];
+      v41.location = [otherSelection range];
       v41.length = v31;
-      v40.location = v28;
+      v40.location = range2;
       v40.length = v30;
       v32 = NSUnionRange(v40, v41);
       location = v32.location;
@@ -8490,15 +8490,15 @@ LABEL_28:
 
     else
     {
-      v20 = [a4 range];
-      v21 = [v6 range];
-      if (v20 <= v21 + (v22 >> 1))
+      range3 = [otherSelection range];
+      range4 = [selectionCopy range];
+      if (range3 <= range4 + (v22 >> 1))
       {
-        location = [a4 range];
-        v34 = [v6 range];
-        if (location <= v34 + v35)
+        location = [otherSelection range];
+        range5 = [selectionCopy range];
+        if (location <= range5 + v35)
         {
-          v36 = v34 + v35;
+          v36 = range5 + v35;
         }
 
         else
@@ -8506,9 +8506,9 @@ LABEL_28:
           v36 = location;
         }
 
-        if (location >= v34 + v35)
+        if (location >= range5 + v35)
         {
-          location = v34 + v35;
+          location = range5 + v35;
         }
 
         length = v36 - location;
@@ -8516,26 +8516,26 @@ LABEL_28:
 
       else
       {
-        v23 = [v6 range];
-        v24 = [a4 range];
-        if (v23 <= v24)
+        range6 = [selectionCopy range];
+        range7 = [otherSelection range];
+        if (range6 <= range7)
         {
-          v25 = v24;
+          v25 = range7;
         }
 
         else
         {
-          v25 = v23;
+          v25 = range6;
         }
 
-        if (v23 >= v24)
+        if (range6 >= range7)
         {
-          location = v24;
+          location = range7;
         }
 
         else
         {
-          location = v23;
+          location = range6;
         }
 
         length = v25 - location;
@@ -8585,14 +8585,14 @@ LABEL_28:
   return [v3 formatBarAccessoryView];
 }
 
-- (id)p_previousAutocorrectionForWordAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)p_previousAutocorrectionForWordAtCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  if (a4)
+  if (range)
   {
-    *a4 = *MEMORY[0x277D6C268];
+    *range = *MEMORY[0x277D6C268];
   }
 
-  v6 = [(TSWPStorage *)self->_storage wordAtCharIndex:a3 includePreviousWord:1];
+  v6 = [(TSWPStorage *)self->_storage wordAtCharIndex:index includePreviousWord:1];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -8602,11 +8602,11 @@ LABEL_28:
   if (result)
   {
     result = [(NSMutableDictionary *)self->_autocorrectedEntries objectForKeyedSubscript:result];
-    if (a4)
+    if (range)
     {
       if (result)
       {
-        *a4 = v8;
+        *range = v8;
       }
     }
   }
@@ -8614,20 +8614,20 @@ LABEL_28:
   return result;
 }
 
-- (int)valueForWritingDirectionPropertyForInspector:(id)a3
+- (int)valueForWritingDirectionPropertyForInspector:(id)inspector
 {
-  v4 = [(TSWPEditingController *)self selection];
-  if (![(TSWPSelection *)v4 isValid])
+  selection = [(TSWPEditingController *)self selection];
+  if (![(TSWPSelection *)selection isValid])
   {
     return -1;
   }
 
-  v5 = [(TSWPSelection *)v4 start];
+  start = [(TSWPSelection *)selection start];
   storage = self->_storage;
-  v7 = [(TSWPEditingController *)self styleProvider];
+  styleProvider = [(TSWPEditingController *)self styleProvider];
   if (storage)
   {
-    [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:v5 styleProvider:v7];
+    [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:start styleProvider:styleProvider];
   }
 
   else
@@ -8638,9 +8638,9 @@ LABEL_28:
   v8 = [TSWPParagraphEnumerator::paragraphStyle(&v12 0)];
   if (v8 == -1)
   {
-    v9 = [(TSWPEditingController *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
     objc_opt_class();
-    [(TSDInteractiveCanvasController *)v9 layoutForInfo:self->_storage];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController layoutForInfo:self->_storage];
     v10 = TSUDynamicCast();
     if (!v10 || (v8 = [v10 naturalDirection], v8 == -1))
     {
@@ -8652,9 +8652,9 @@ LABEL_28:
   return v8;
 }
 
-- (void)p_removeAutocorrectionAtCharIndex:(unint64_t)a3
+- (void)p_removeAutocorrectionAtCharIndex:(unint64_t)index
 {
-  v4 = [(TSWPStorage *)self->_storage dictationAndAutocorrectionKeyAtCharIndex:a3 effectiveRange:0];
+  v4 = [(TSWPStorage *)self->_storage dictationAndAutocorrectionKeyAtCharIndex:index effectiveRange:0];
   if (v4)
   {
     v5 = v4;
@@ -8664,22 +8664,22 @@ LABEL_28:
   }
 }
 
-- (id)dictationInterpretationsAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)dictationInterpretationsAtCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  if (a4)
+  if (range)
   {
-    *a4 = *MEMORY[0x277D6C268];
+    *range = *MEMORY[0x277D6C268];
   }
 
-  result = [(TSWPStorage *)self->_storage dictationAndAutocorrectionKeyAtCharIndex:a3 effectiveRange:&v7];
+  result = [(TSWPStorage *)self->_storage dictationAndAutocorrectionKeyAtCharIndex:index effectiveRange:&v7];
   if (result)
   {
     result = [(NSMutableDictionary *)self->_dictationInterpretations objectForKeyedSubscript:result];
-    if (a4)
+    if (range)
     {
       if (result)
       {
-        *a4 = v7;
+        *range = v7;
       }
     }
   }
@@ -8687,12 +8687,12 @@ LABEL_28:
   return result;
 }
 
-- (void)addAllDictationInterpretationRangesInRange:(_NSRange)a3 toRanges:(void *)a4
+- (void)addAllDictationInterpretationRangesInRange:(_NSRange)range toRanges:(void *)ranges
 {
   __p = 0;
   v20 = 0;
   v21 = 0;
-  [(TSWPStorage *)self->_storage addAllDictationAndAutocorrectionKeyRangesInRange:a3.location toRanges:a3.length, &__p];
+  [(TSWPStorage *)self->_storage addAllDictationAndAutocorrectionKeyRangesInRange:range.location toRanges:range.length, &__p];
   v6 = __p;
   if (self->_dictationInterpretations)
   {
@@ -8703,18 +8703,18 @@ LABEL_28:
       {
         if ([(NSMutableDictionary *)self->_dictationInterpretations objectForKeyedSubscript:[(TSWPStorage *)self->_storage dictationAndAutocorrectionKeyAtCharIndex:*v6 effectiveRange:0]])
         {
-          v9 = *(a4 + 1);
-          v8 = *(a4 + 2);
+          v9 = *(ranges + 1);
+          v8 = *(ranges + 2);
           if (v9 >= v8)
           {
-            v11 = (v9 - *a4) >> 4;
+            v11 = (v9 - *ranges) >> 4;
             v12 = v11 + 1;
             if ((v11 + 1) >> 60)
             {
               std::string::__throw_length_error[abi:nn200100]();
             }
 
-            v13 = v8 - *a4;
+            v13 = v8 - *ranges;
             if (v13 >> 3 > v12)
             {
               v12 = v13 >> 3;
@@ -8732,19 +8732,19 @@ LABEL_28:
 
             if (v14)
             {
-              std::__allocate_at_least[abi:nn200100]<std::allocator<CGPoint>>(a4, v14);
+              std::__allocate_at_least[abi:nn200100]<std::allocator<CGPoint>>(ranges, v14);
             }
 
             v15 = (16 * v11);
             *v15 = *v6;
             v10 = 16 * v11 + 16;
-            v16 = *(a4 + 1) - *a4;
+            v16 = *(ranges + 1) - *ranges;
             v17 = 16 * v11 - v16;
-            memcpy(v15 - v16, *a4, v16);
-            v18 = *a4;
-            *a4 = v17;
-            *(a4 + 1) = v10;
-            *(a4 + 2) = 0;
+            memcpy(v15 - v16, *ranges, v16);
+            v18 = *ranges;
+            *ranges = v17;
+            *(ranges + 1) = v10;
+            *(ranges + 2) = 0;
             if (v18)
             {
               operator delete(v18);
@@ -8757,7 +8757,7 @@ LABEL_28:
             v10 = (v9 + 1);
           }
 
-          *(a4 + 1) = v10;
+          *(ranges + 1) = v10;
         }
 
         v6 += 2;
@@ -8793,12 +8793,12 @@ LABEL_28:
   return result;
 }
 
-- (id)tsax_listItemLabelForCharIndex:(unint64_t)a3 textIsLiteral:(BOOL *)a4
+- (id)tsax_listItemLabelForCharIndex:(unint64_t)index textIsLiteral:(BOOL *)literal
 {
-  *a4 = 1;
+  *literal = 1;
   [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layoutIfNeeded];
   v10 = 0;
-  result = [(TSWPEditingController *)self p_lineFragmentForCharIndex:a3 column:&v10 eol:1];
+  result = [(TSWPEditingController *)self p_lineFragmentForCharIndex:index column:&v10 eol:1];
   if (result)
   {
     v8 = *(result + 22);
@@ -8816,7 +8816,7 @@ LABEL_28:
     if (v9 == 1)
     {
       result = [TSWPBundle() localizedStringForKey:@"Image bullet" value:&stru_287D36338 table:@"TSText"];
-      *a4 = 0;
+      *literal = 0;
     }
 
     else
@@ -8828,11 +8828,11 @@ LABEL_28:
   return result;
 }
 
-- (_NSRange)tsax_rangeOfLineFragmentAtCharIndex:(unint64_t)a3
+- (_NSRange)tsax_rangeOfLineFragmentAtCharIndex:(unint64_t)index
 {
   [(TSDInteractiveCanvasController *)[(TSWPEditingController *)self interactiveCanvasController] layoutIfNeeded];
   v9 = 0;
-  v5 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:a3 column:&v9 eol:1];
+  v5 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:index column:&v9 eol:1];
   v6 = MEMORY[0x277D6C268];
   if (v5)
   {
@@ -8846,26 +8846,26 @@ LABEL_28:
   return result;
 }
 
-- (id)dragItemForCurrentSelectionWithDragInteraction:(id)a3 session:(id)a4 withTouchPoint:(CGPoint)a5
+- (id)dragItemForCurrentSelectionWithDragInteraction:(id)interaction session:(id)session withTouchPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = [(TSWPEditingController *)self interactiveCanvasController];
-  v11 = [(TSWPEditingController *)self storage];
-  v12 = [(TSWPEditingController *)self selection];
-  v13 = [(TSWPEditingController *)self stringFromSelection];
-  [(TSDInteractiveCanvasController *)v10 convertBoundsToUnscaledPoint:x, y];
-  if (v11 && (v16 = v14, v17 = v15, -[TSWPSelection range](v12, "range"), v18) && [v13 length] && -[TSWPEditingController isUnscaledPointInTextSelection:](self, "isUnscaledPointInTextSelection:", v16, v17))
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(TSWPEditingController *)self interactiveCanvasController];
+  storage = [(TSWPEditingController *)self storage];
+  selection = [(TSWPEditingController *)self selection];
+  stringFromSelection = [(TSWPEditingController *)self stringFromSelection];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
+  if (storage && (v16 = v14, v17 = v15, -[TSWPSelection range](selection, "range"), v18) && [stringFromSelection length] && -[TSWPEditingController isUnscaledPointInTextSelection:](self, "isUnscaledPointInTextSelection:", v16, v17))
   {
     v28 = 0;
-    [(TSDInteractiveCanvasController *)v10 hitKnobAtPoint:&v28 returningRep:v16, v17];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController hitKnobAtPoint:&v28 returningRep:v16, v17];
     v19 = 0;
     if (!v28)
     {
       v26 = 0u;
       v27 = 0u;
-      v20 = [TSWPEditingController _targetedDragPreviewForSelection:v12 interactiveCanvasController:v10 reps:[(TSWPEditingController *)self _repsForStorage:v11 selection:v12] applyScale:0 imageFrameUnion:&v26];
-      v21 = [TSWPStorageItemProvider storageItemProviderWithString:v13];
+      v20 = [TSWPEditingController _targetedDragPreviewForSelection:selection interactiveCanvasController:interactiveCanvasController reps:[(TSWPEditingController *)self _repsForStorage:storage selection:selection] applyScale:0 imageFrameUnion:&v26];
+      v21 = [TSWPStorageItemProvider storageItemProviderWithString:stringFromSelection];
       v22 = [objc_alloc(MEMORY[0x277CCAA88]) initWithObject:v21];
       v23 = [TSWPDragItem alloc];
       v24 = [(TSWPDragItem *)v23 initWithDragPreview:v20 canvasRect:v26, v27];
@@ -8876,19 +8876,19 @@ LABEL_28:
 
   else
   {
-    v19 = [objc_opt_class() dragItemForHitRepWithDragInteraction:a3 session:a4 canvasView:objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](-[TSWPEditingController interactiveCanvasController](self icc:"interactiveCanvasController") withTouchPoint:{"layerHost"), "asiOSCVC"), "view"), self->_interactiveCanvasController, x, y}];
+    v19 = [objc_opt_class() dragItemForHitRepWithDragInteraction:interaction session:session canvasView:objc_msgSend(-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](-[TSWPEditingController interactiveCanvasController](self icc:"interactiveCanvasController") withTouchPoint:{"layerHost"), "asiOSCVC"), "view"), self->_interactiveCanvasController, x, y}];
   }
 
   return v19;
 }
 
-+ (id)dragItemForHitRepWithDragInteraction:(id)a3 session:(id)a4 canvasView:(id)a5 icc:(id)a6 withTouchPoint:(CGPoint)a7
++ (id)dragItemForHitRepWithDragInteraction:(id)interaction session:(id)session canvasView:(id)view icc:(id)icc withTouchPoint:(CGPoint)point
 {
-  [a6 convertBoundsToUnscaledPoint:{a7.x, a7.y}];
+  [icc convertBoundsToUnscaledPoint:{point.x, point.y}];
   v12 = v11;
   v14 = v13;
   objc_opt_class();
-  [a6 hitRep:{v12, v14}];
+  [icc hitRep:{v12, v14}];
   v15 = TSUDynamicCast();
   [v15 convertNaturalPointFromUnscaledCanvas:{v12, v14}];
   v17 = v16;
@@ -8903,12 +8903,12 @@ LABEL_28:
   }
 
   v21 = v20;
-  [a6 delegate];
+  [icc delegate];
   v22 = objc_opt_respondsToSelector();
-  v23 = [a6 delegate];
+  delegate = [icc delegate];
   if (v22)
   {
-    v24 = [v23 interactiveCanvasController:a6 dragItemForSmartField:v21 interaction:a3 session:a4];
+    v24 = [delegate interactiveCanvasController:icc dragItemForSmartField:v21 interaction:interaction session:session];
     if (!v24)
     {
       goto LABEL_16;
@@ -8919,7 +8919,7 @@ LABEL_28:
 
   if (objc_opt_respondsToSelector())
   {
-    v25 = [objc_msgSend(a6 "delegate")] ^ 1;
+    v25 = [objc_msgSend(icc "delegate")] ^ 1;
   }
 
   else
@@ -8932,20 +8932,20 @@ LABEL_28:
   v24 = 0;
   if ([v26 url] && (v25 & 1) == 0)
   {
-    v27 = [v26 displayText];
-    if (!v27)
+    displayText = [v26 displayText];
+    if (!displayText)
     {
-      v27 = [objc_msgSend(v26 "url")];
+      displayText = [objc_msgSend(v26 "url")];
     }
 
-    v28 = [v26 range];
-    [v15 rectForSelection:{+[TSWPSelection selectionWithRange:](TSWPSelection, "selectionWithRange:", v28, v29)}];
+    range = [v26 range];
+    [v15 rectForSelection:{+[TSWPSelection selectionWithRange:](TSWPSelection, "selectionWithRange:", range, v29)}];
     [v15 convertNaturalRectToUnscaledCanvas:?];
-    [a6 convertUnscaledToBoundsPoint:{TSDCenterOfRect(v30, v31, v32, v33)}];
-    v36 = [objc_alloc(MEMORY[0x277D75488]) initWithContainer:a5 center:{v34, v35}];
-    v37 = [MEMORY[0x277D75B88] previewForURL:objc_msgSend(v26 title:"url") target:{v27, v36}];
+    [icc convertUnscaledToBoundsPoint:{TSDCenterOfRect(v30, v31, v32, v33)}];
+    v36 = [objc_alloc(MEMORY[0x277D75488]) initWithContainer:view center:{v34, v35}];
+    v37 = [MEMORY[0x277D75B88] previewForURL:objc_msgSend(v26 title:"url") target:{displayText, v36}];
 
-    v38 = [MEMORY[0x277CCAA88] itemProviderWithURL:objc_msgSend(v26 title:{"url"), v27}];
+    v38 = [MEMORY[0x277CCAA88] itemProviderWithURL:objc_msgSend(v26 title:{"url"), displayText}];
     v24 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v38];
     [v24 setLocalObject:v37];
 
@@ -8956,17 +8956,17 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v39 = [v21 range];
-        [v15 rectForSelection:{+[TSWPSelection selectionWithRange:](TSWPSelection, "selectionWithRange:", v39, v40)}];
+        range2 = [v21 range];
+        [v15 rectForSelection:{+[TSWPSelection selectionWithRange:](TSWPSelection, "selectionWithRange:", range2, v40)}];
         [v15 convertNaturalRectToUnscaledCanvas:?];
         v42 = v41;
         v44 = v43;
         v46 = v45;
         v48 = v47;
-        v49 = [v24 localObject];
+        localObject = [v24 localObject];
         v50 = [TSWPURLDragItem alloc];
-        v51 = [v21 range];
-        v53 = [(TSWPURLDragItem *)v50 initWithDragPreview:v49 canvasRect:v51 canvasDragPoint:v52 range:v42, v44, v46, v48, v12, v14];
+        range3 = [v21 range];
+        v53 = [(TSWPURLDragItem *)v50 initWithDragPreview:localObject canvasRect:range3 canvasDragPoint:v52 range:v42, v44, v46, v48, v12, v14];
         [v24 setLocalObject:v53];
       }
     }
@@ -8977,15 +8977,15 @@ LABEL_16:
   return v24;
 }
 
-+ (id)previewForDragItem:(id)a3
++ (id)previewForDragItem:(id)item
 {
-  [a3 localObject];
+  [item localObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = [a3 localObject];
+  localObject = [item localObject];
   if (isKindOfClass)
   {
-    return v5;
+    return localObject;
   }
 
   objc_opt_class();
@@ -8994,38 +8994,38 @@ LABEL_16:
     return 0;
   }
 
-  v6 = [a3 localObject];
+  localObject2 = [item localObject];
 
-  return [v6 targetedDragPreview];
+  return [localObject2 targetedDragPreview];
 }
 
-+ (id)retargetedDragItem:(id)a3 withDefault:(id)a4 canvasView:(id)a5 icc:(id)a6
++ (id)retargetedDragItem:(id)item withDefault:(id)default canvasView:(id)view icc:(id)icc
 {
-  [a3 localObject];
+  [item localObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v10 = [a3 localObject];
-  [v10 canvasRect];
+  localObject = [item localObject];
+  [localObject canvasRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [a5 superview];
-  [a6 convertUnscaledToBoundsRect:{v12, v14, v16, v18}];
+  superview = [view superview];
+  [icc convertUnscaledToBoundsRect:{v12, v14, v16, v18}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  [objc_msgSend(v19 "superview")];
+  [objc_msgSend(superview "superview")];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  [v19 frame];
+  [superview frame];
   v42.origin.x = TSDRectWithSize();
   v42.origin.y = v36;
   v42.size.width = v37;
@@ -9039,20 +9039,20 @@ LABEL_16:
     return 0;
   }
 
-  v39 = [v10 retargetedDragPreviewForDefaultTargetedDragPreview:a4 icc:a6 canvasView:a5 boundsRect:{v21, v23, v25, v27}];
+  v39 = [localObject retargetedDragPreviewForDefaultTargetedDragPreview:default icc:icc canvasView:view boundsRect:{v21, v23, v25, v27}];
   [objc_msgSend(objc_msgSend(v39 "view")];
   return v39;
 }
 
-+ (id)dropProposalForSession:(id)a3
++ (id)dropProposalForSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 items];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [session items];
+  v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -9064,7 +9064,7 @@ LABEL_16:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         [*(*(&v9 + 1) + 8 * v7) localObject];
@@ -9079,7 +9079,7 @@ LABEL_16:
       }
 
       while (v5 != v7);
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
       v5 = v4;
       if (v4)
       {
@@ -9093,22 +9093,22 @@ LABEL_16:
   return v4;
 }
 
-+ (id)_targetedDragPreviewForSelection:(id)a3 interactiveCanvasController:(id)a4 reps:(id)a5 applyScale:(BOOL)a6 imageFrameUnion:(CGRect *)a7
++ (id)_targetedDragPreviewForSelection:(id)selection interactiveCanvasController:(id)controller reps:(id)reps applyScale:(BOOL)scale imageFrameUnion:(CGRect *)union
 {
-  v64 = a6;
+  scaleCopy = scale;
   v94 = *MEMORY[0x277D85DE8];
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
   height = *(MEMORY[0x277CBF398] + 24);
-  v71 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a5, "count")}];
+  v71 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(reps, "count")}];
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  obj = a5;
-  v13 = [a5 countByEnumeratingWithState:&v86 objects:v93 count:16];
+  obj = reps;
+  v13 = [reps countByEnumeratingWithState:&v86 objects:v93 count:16];
   if (v13)
   {
     v14 = v13;
@@ -9127,7 +9127,7 @@ LABEL_16:
         v17 = *(*(&v86 + 1) + 8 * i);
         *&v73.a = v69;
         *&v73.c = v68;
-        v18 = [v17 textImageForSelection:a3 frame:&v73 usingGlyphRect:0 drawBackground:0 shouldPulsate:0 suppressInvisibles:1];
+        v18 = [v17 textImageForSelection:selection frame:&v73 usingGlyphRect:0 drawBackground:0 shouldPulsate:0 suppressInvisibles:1];
         [v17 convertNaturalRectToUnscaledCanvas:{v73.a, v73.b, v73.c, v73.d}];
         v20 = v19;
         v22 = v21;
@@ -9170,8 +9170,8 @@ LABEL_16:
         v85 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v28 = [v17 selectionRects];
-        v29 = [v28 countByEnumeratingWithState:&v82 objects:v92 count:16];
+        selectionRects = [v17 selectionRects];
+        v29 = [selectionRects countByEnumeratingWithState:&v82 objects:v92 count:16];
         if (v29)
         {
           v30 = v29;
@@ -9182,7 +9182,7 @@ LABEL_16:
             {
               if (*v83 != v31)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(selectionRects);
               }
 
               [*(*(&v82 + 1) + 8 * j) CGRectValue];
@@ -9190,7 +9190,7 @@ LABEL_16:
               [v12 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGRect:")}];
             }
 
-            v30 = [v28 countByEnumeratingWithState:&v82 objects:v92 count:16];
+            v30 = [selectionRects countByEnumeratingWithState:&v82 objects:v92 count:16];
           }
 
           while (v30);
@@ -9203,9 +9203,9 @@ LABEL_16:
     while (v14);
   }
 
-  v33 = [objc_msgSend(a4 "layerHost")];
-  v34 = [v33 view];
-  [a4 convertUnscaledToBoundsPoint:{TSDCenterOfRect(x, y, width, height)}];
+  v33 = [objc_msgSend(controller "layerHost")];
+  view = [v33 view];
+  [controller convertUnscaledToBoundsPoint:{TSDCenterOfRect(x, y, width, height)}];
   v36 = v35;
   v38 = v37;
   v39 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{TSDRectWithCenterAndSize(v35, v37, width)}];
@@ -9269,11 +9269,11 @@ LABEL_16:
   }
 
   memset(&v73, 0, sizeof(v73));
-  if (v64)
+  if (scaleCopy)
   {
-    [a4 viewScale];
+    [controller viewScale];
     v55 = v54;
-    [a4 viewScale];
+    [controller viewScale];
     CGAffineTransformMakeScale(&v73, v55, v56);
   }
 
@@ -9287,44 +9287,44 @@ LABEL_16:
 
   v58 = objc_alloc(MEMORY[0x277D75488]);
   v72 = v73;
-  v59 = [v58 initWithContainer:v34 center:&v72 transform:{v36, v38}];
+  v59 = [v58 initWithContainer:view center:&v72 transform:{v36, v38}];
   v60 = [objc_alloc(MEMORY[0x277D75480]) initWithTextLineRects:v47];
 
-  v61 = [v33 delegate];
+  delegate = [v33 delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v60 setBackgroundColor:{objc_msgSend(v61, "backgroundColorForDragUIPlatter")}];
+    [v60 setBackgroundColor:{objc_msgSend(delegate, "backgroundColorForDragUIPlatter")}];
   }
 
   v62 = [objc_alloc(MEMORY[0x277D75B88]) initWithView:v39 parameters:v60 target:v59];
 
-  if (a7)
+  if (union)
   {
-    a7->origin.x = x;
-    a7->origin.y = y;
-    a7->size.width = width;
-    a7->size.height = height;
+    union->origin.x = x;
+    union->origin.y = y;
+    union->size.width = width;
+    union->size.height = height;
   }
 
   return v62;
 }
 
-- (BOOL)pIsSelectionPlaceHolderTextWithSelection:(id)a3
+- (BOOL)pIsSelectionPlaceHolderTextWithSelection:(id)selection
 {
-  v5 = [a3 isValid];
-  if (v5)
+  isValid = [selection isValid];
+  if (isValid)
   {
-    v6 = [a3 range];
+    range = [selection range];
     if (!v7)
     {
 LABEL_8:
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(isValid) = 0;
+      return isValid;
     }
 
-    v8 = v6;
-    v9 = v6 + v7;
-    if (v6 < v6 + v7)
+    v8 = range;
+    v9 = range + v7;
+    if (range < range + v7)
     {
       do
       {
@@ -9340,40 +9340,40 @@ LABEL_8:
       while (v13 + v12 < v9);
     }
 
-    LOBYTE(v5) = 1;
+    LOBYTE(isValid) = 1;
   }
 
-  return v5;
+  return isValid;
 }
 
-- (unint64_t)p_caretCharIndexForLayoutOrderCharIndex:(unint64_t)a3 inDirection:(int64_t)a4
+- (unint64_t)p_caretCharIndexForLayoutOrderCharIndex:(unint64_t)index inDirection:(int64_t)direction
 {
-  v4 = a3;
-  if (a4 >= 2)
+  indexCopy = index;
+  if (direction >= 2)
   {
-    if ((a4 - 2) > 1)
+    if ((direction - 2) > 1)
     {
-      v13 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_caretCharIndexForLayoutOrderCharIndex:inDirection:]"];
-      [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 107, @"Unsupported vertical character direction"}];
+      [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 107, @"Unsupported vertical character direction"}];
     }
 
     else
     {
       result = 0x7FFFFFFFFFFFFFFFLL;
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+      if (index == 0x7FFFFFFFFFFFFFFFLL)
       {
         return result;
       }
 
-      v7 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:a3];
+      v7 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:index];
       v9 = v8;
       [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutIfNeeded];
       v15 = 0;
-      v10 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v4 column:&v15 eol:0];
+      v10 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:indexCopy column:&v15 eol:0];
       if (v10)
       {
-        v11 = TSWPLineFragment::caretCharIndexForLayoutOrderCharIndex(v10, v4, self->_storage);
+        v11 = TSWPLineFragment::caretCharIndexForLayoutOrderCharIndex(v10, indexCopy, self->_storage);
         if (v11 <= v7 + v9 && v11 >= v7)
         {
           return v11;
@@ -9382,37 +9382,37 @@ LABEL_8:
     }
   }
 
-  return v4;
+  return indexCopy;
 }
 
-- (unint64_t)p_layoutOrderCharIndexForCaretCharIndex:(unint64_t)a3 inDirection:(int64_t)a4
+- (unint64_t)p_layoutOrderCharIndexForCaretCharIndex:(unint64_t)index inDirection:(int64_t)direction
 {
-  v4 = a3;
-  if (a4 >= 2)
+  indexCopy = index;
+  if (direction >= 2)
   {
-    if ((a4 - 2) > 1)
+    if ((direction - 2) > 1)
     {
-      v13 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_layoutOrderCharIndexForCaretCharIndex:inDirection:]"];
-      [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 151, @"Unsupported vertical character direction"}];
+      [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 151, @"Unsupported vertical character direction"}];
     }
 
     else
     {
       result = 0x7FFFFFFFFFFFFFFFLL;
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+      if (index == 0x7FFFFFFFFFFFFFFFLL)
       {
         return result;
       }
 
-      v7 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:a3];
+      v7 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:index];
       v9 = v8;
       [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutIfNeeded];
       v15 = 0;
-      v10 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v4 column:&v15 eol:0];
+      v10 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:indexCopy column:&v15 eol:0];
       if (v10)
       {
-        v11 = TSWPLineFragment::layoutOrderCharIndexForCaretCharIndex(v10, v4, self->_storage);
+        v11 = TSWPLineFragment::layoutOrderCharIndexForCaretCharIndex(v10, indexCopy, self->_storage);
         if (v11 <= v7 + v9 && v11 >= v7)
         {
           return v11;
@@ -9421,27 +9421,27 @@ LABEL_8:
     }
   }
 
-  return v4;
+  return indexCopy;
 }
 
-- (_NSRange)p_expandParagraphRangeForEnumerator:(TSWPParagraphEnumerator *)a3
+- (_NSRange)p_expandParagraphRangeForEnumerator:(TSWPParagraphEnumerator *)enumerator
 {
-  location = TSWPParagraphEnumerator::paragraphTextRange(a3);
+  location = TSWPParagraphEnumerator::paragraphTextRange(enumerator);
   length = v5;
-  if (!TSWPParagraphEnumerator::isFirstParagraph(a3))
+  if (!TSWPParagraphEnumerator::isFirstParagraph(enumerator))
   {
-    TSWPParagraphEnumerator::operator--(a3);
-    v18.location = TSWPParagraphEnumerator::paragraphTextRange(a3);
+    TSWPParagraphEnumerator::operator--(enumerator);
+    v18.location = TSWPParagraphEnumerator::paragraphTextRange(enumerator);
     v18.length = v7;
     v16.location = location;
     v16.length = length;
     v8 = NSUnionRange(v16, v18);
     location = v8.location;
     length = v8.length;
-    TSWPParagraphEnumerator::operator++(a3);
+    TSWPParagraphEnumerator::operator++(enumerator);
   }
 
-  if (TSWPParagraphEnumerator::isLastParagraph(a3))
+  if (TSWPParagraphEnumerator::isLastParagraph(enumerator))
   {
     v9 = location;
     v10 = length;
@@ -9449,8 +9449,8 @@ LABEL_8:
 
   else
   {
-    TSWPParagraphEnumerator::operator++(a3);
-    v12.location = TSWPParagraphEnumerator::paragraphTextRange(a3);
+    TSWPParagraphEnumerator::operator++(enumerator);
+    v12.location = TSWPParagraphEnumerator::paragraphTextRange(enumerator);
     v12.length = v11;
     v13.location = location;
     v13.length = length;
@@ -9465,14 +9465,14 @@ LABEL_8:
   return result;
 }
 
-- (unint64_t)charIndexMovingByCharacterFromCharIndex:(unint64_t)a3 leadingEdge:(BOOL *)a4 inDirection:(int64_t)a5
+- (unint64_t)charIndexMovingByCharacterFromCharIndex:(unint64_t)index leadingEdge:(BOOL *)edge inDirection:(int64_t)direction
 {
   v8 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:?];
   v10 = v9;
   storage = self->_storage;
   if (storage)
   {
-    [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:a3 styleProvider:0];
+    [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:index styleProvider:0];
   }
 
   else
@@ -9483,25 +9483,25 @@ LABEL_8:
   v12 = [(TSWPEditingController *)self p_expandParagraphRangeForEnumerator:&v56];
   v14 = [(TSWPStorage *)[(TSWPEditingController *)self storage] textSourceForLayoutInRange:v12, v13];
   v15 = v8 + v10;
-  if (a5 <= 1)
+  if (direction <= 1)
   {
-    if (a5)
+    if (direction)
     {
-      if (a5 == 1)
+      if (direction == 1)
       {
         do
         {
-          v16 = a3;
-          if (a3 <= v8)
+          indexCopy2 = index;
+          if (index <= v8)
           {
             break;
           }
 
-          --a3;
+          --index;
         }
 
-        while ([(TSWPStorage *)self->_storage anchoredDrawableAttachmentCharacterAtCharIndex:v16 - 1]);
-        v17 = [v14 charIndexMappedFromStorage:v16];
+        while ([(TSWPStorage *)self->_storage anchoredDrawableAttachmentCharacterAtCharIndex:indexCopy2 - 1]);
+        v17 = [v14 charIndexMappedFromStorage:indexCopy2];
         if (v17 > [v14 charIndexMappedFromStorage:v8])
         {
           v18 = [v14 charIndexMappedToStorage:v17 - 1];
@@ -9517,7 +9517,7 @@ LABEL_8:
             v21 = [-[TSWPStorage string](v20 "string")];
           }
 
-          v16 = v21;
+          indexCopy2 = v21;
         }
 
         v48 = [v14 charIndexMappedToStorage:v17];
@@ -9536,9 +9536,9 @@ LABEL_8:
             v52 = [-[TSWPStorage string](v51 "string")];
           }
 
-          if (v52 < v16)
+          if (v52 < indexCopy2)
           {
-            v16 = v52;
+            indexCopy2 = v52;
           }
         }
 
@@ -9546,35 +9546,35 @@ LABEL_8:
       }
 
 LABEL_15:
-      v23 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) charIndexMovingByCharacterFromCharIndex:leadingEdge:inDirection:]"];
-      [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 346, @"Unsupported vertical character direction"}];
-      v16 = 0x7FFFFFFFFFFFFFFFLL;
+      [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 346, @"Unsupported vertical character direction"}];
+      indexCopy2 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_83;
     }
 
-    if (v15 > a3)
+    if (v15 > index)
     {
-      while ([(TSWPStorage *)self->_storage anchoredDrawableAttachmentCharacterAtCharIndex:a3])
+      while ([(TSWPStorage *)self->_storage anchoredDrawableAttachmentCharacterAtCharIndex:index])
       {
-        if (v15 == ++a3)
+        if (v15 == ++index)
         {
-          a3 = v15;
+          index = v15;
           break;
         }
       }
     }
 
-    v25 = [v14 charIndexMappedFromStorage:a3];
+    v25 = [v14 charIndexMappedFromStorage:index];
     if (v25 < [v14 charIndexMappedFromStorage:v15])
     {
       v26 = [-[TSWPStorage string](self->_storage "string")];
-      v16 = v26 + v27;
+      indexCopy2 = v26 + v27;
       if (v26 + v27 > v15)
       {
-        v28 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) charIndexMovingByCharacterFromCharIndex:leadingEdge:inDirection:]"];
-        [v28 handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 237, @"composed character extends past storage boundary"}];
+        [currentHandler2 handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 237, @"composed character extends past storage boundary"}];
       }
 
       goto LABEL_83;
@@ -9582,18 +9582,18 @@ LABEL_15:
 
     v47 = [v14 charIndexRemappedFromStorage:v15];
 LABEL_74:
-    v16 = v47;
+    indexCopy2 = v47;
     goto LABEL_83;
   }
 
-  if (a5 == 2)
+  if (direction == 2)
   {
     v22 = 1;
   }
 
   else
   {
-    if (a5 != 3)
+    if (direction != 3)
     {
       goto LABEL_15;
     }
@@ -9603,7 +9603,7 @@ LABEL_74:
 
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutIfNeeded];
   v55 = 0;
-  v30 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:a3 column:&v55 eol:0];
+  v30 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:index column:&v55 eol:0];
   v31 = v30;
   if (v30)
   {
@@ -9617,17 +9617,17 @@ LABEL_74:
       v32 = 3;
     }
 
-    v33 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(v30, a3, v32, self->_storage);
-    v16 = v33;
+    v33 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(v30, index, v32, self->_storage);
+    indexCopy2 = v33;
     if (v33 != 0x7FFFFFFFFFFFFFFFLL && v33 >= v8 && v33 <= v15)
     {
-      if (a4)
+      if (edge)
       {
-        v39 = *a4;
+        v39 = *edge;
         v40 = TSWPLineFragment::writingDirectionForCharIndex(v31, v33);
-        if (v40 == TSWPLineFragment::writingDirectionForCharIndex(v31, a3))
+        if (v40 == TSWPLineFragment::writingDirectionForCharIndex(v31, index))
         {
-          if (*a4)
+          if (*edge)
           {
             goto LABEL_83;
           }
@@ -9635,33 +9635,33 @@ LABEL_74:
 
         else
         {
-          *a4 = !v39;
+          *edge = !v39;
           if (!v39)
           {
             goto LABEL_83;
           }
         }
 
-        if (v16 == *(v31 + 1) + *v31)
+        if (indexCopy2 == *(v31 + 1) + *v31)
         {
-          *a4 = 1;
+          *edge = 1;
         }
       }
 
       goto LABEL_83;
     }
 
-    if (a4)
+    if (edge)
     {
-      if (*(v31 + 1) + *v31 > a3)
+      if (*(v31 + 1) + *v31 > index)
       {
-        v36 = *a4;
-        if (v22 != (v36 == (TSWPLineFragment::writingDirectionForCharIndex(v31, a3) == 1)) && (IsParagraphBreakingCharacter([(TSWPStorage *)self->_storage characterAtIndex:a3]) & 1) == 0)
+        v36 = *edge;
+        if (v22 != (v36 == (TSWPLineFragment::writingDirectionForCharIndex(v31, index) == 1)) && (IsParagraphBreakingCharacter([(TSWPStorage *)self->_storage characterAtIndex:index]) & 1) == 0)
         {
-          *a4 = !v36;
-          if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+          *edge = !v36;
+          if (index != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v16 = a3;
+            indexCopy2 = index;
             goto LABEL_83;
           }
         }
@@ -9671,13 +9671,13 @@ LABEL_74:
 
   else
   {
-    v16 = 0x7FFFFFFFFFFFFFFFLL;
+    indexCopy2 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v37 = v22 ^ [(TSWPStorage *)self->_storage isWritingDirectionRightToLeftForParagraphAtCharIndex:a3];
+  v37 = v22 ^ [(TSWPStorage *)self->_storage isWritingDirectionRightToLeftForParagraphAtCharIndex:index];
   if (v31)
   {
-    v38 = *v31;
+    indexCopy3 = *v31;
     v31 = *(v31 + 1);
     if (v37)
     {
@@ -9687,20 +9687,20 @@ LABEL_74:
 
   else
   {
-    v38 = a3;
+    indexCopy3 = index;
     if (v37)
     {
 LABEL_45:
-      if (v31 + v38 < v15)
+      if (v31 + indexCopy3 < v15)
       {
         if (v31)
         {
-          v16 = v31 + v38;
+          indexCopy2 = v31 + indexCopy3;
         }
 
         else
         {
-          v16 = v38 + 1;
+          indexCopy2 = indexCopy3 + 1;
         }
       }
 
@@ -9708,13 +9708,13 @@ LABEL_45:
     }
   }
 
-  if (v38 > v8)
+  if (indexCopy3 > v8)
   {
-    v16 = v38 - 1;
+    indexCopy2 = indexCopy3 - 1;
   }
 
 LABEL_56:
-  if (v16 == 0x7FFFFFFFFFFFFFFFLL || (v41 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v16 column:&v55 eol:0], (v42 = v41) == 0))
+  if (indexCopy2 == 0x7FFFFFFFFFFFFFFFLL || (v41 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:indexCopy2 column:&v55 eol:0], (v42 = v41) == 0))
   {
     if (v37)
     {
@@ -9726,7 +9726,7 @@ LABEL_56:
       v44 = 0;
     }
 
-    v16 = v44 + v38;
+    indexCopy2 = v44 + indexCopy3;
   }
 
   else
@@ -9741,55 +9741,55 @@ LABEL_56:
       v43 = TSWPLineFragment::rightMostCharIndex(v41);
     }
 
-    v16 = v43;
-    if (a4 && (*(v42 + 6) & 0x4800) == 0x4000)
+    indexCopy2 = v43;
+    if (edge && (*(v42 + 6) & 0x4800) == 0x4000)
     {
-      *a4 = 1;
+      *edge = 1;
     }
   }
 
-  if (v16 == 0x7FFFFFFFFFFFFFFFLL || v16 < v8 || v16 > v15)
+  if (indexCopy2 == 0x7FFFFFFFFFFFFFFFLL || indexCopy2 < v8 || indexCopy2 > v15)
   {
-    v47 = [v14 charIndexRemappedFromStorage:a3];
+    v47 = [v14 charIndexRemappedFromStorage:index];
     goto LABEL_74;
   }
 
 LABEL_83:
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v56);
-  return v16;
+  return indexCopy2;
 }
 
-- (BOOL)p_isLayoutLeftToRightAtCharIndex:(unint64_t)a3
+- (BOOL)p_isLayoutLeftToRightAtCharIndex:(unint64_t)index
 {
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController layoutIfNeeded];
   v7 = 0;
-  v5 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:a3 column:&v7 eol:0];
-  return !v5 || TSWPLineFragment::writingDirectionForCharIndex(v5, a3) == 0;
+  v5 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:index column:&v7 eol:0];
+  return !v5 || TSWPLineFragment::writingDirectionForCharIndex(v5, index) == 0;
 }
 
-- (unint64_t)p_adjustedCharIndexForWordTestingFromCharIndex:(unint64_t)a3 forDirection:(int64_t)a4
+- (unint64_t)p_adjustedCharIndexForWordTestingFromCharIndex:(unint64_t)index forDirection:(int64_t)direction
 {
-  if (a4 >= 4)
+  if (direction >= 4)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_adjustedCharIndexForWordTestingFromCharIndex:forDirection:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 375, @"Bad input direction."}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 375, @"Bad input direction."}];
   }
 
-  if (a4 > 1)
+  if (direction > 1)
   {
-    if (a4 == 2)
+    if (direction == 2)
     {
-      if (![(TSWPEditingController *)self p_isLayoutLeftToRightAtCharIndex:a3])
+      if (![(TSWPEditingController *)self p_isLayoutLeftToRightAtCharIndex:index])
       {
-        v20 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:a3 inDirection:2];
-        a3 = v20 == a3 ? 0x7FFFFFFFFFFFFFFFLL : v20;
+        v20 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:index inDirection:2];
+        index = v20 == index ? 0x7FFFFFFFFFFFFFFFLL : v20;
         if (v20 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v21 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_adjustedCharIndexForWordTestingFromCharIndex:forDirection:]"];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"];
-          v13 = v21;
+          v13 = currentHandler2;
           v14 = v22;
           v15 = 410;
           goto LABEL_27;
@@ -9797,16 +9797,16 @@ LABEL_83:
       }
     }
 
-    else if (a4 == 3 && [(TSWPEditingController *)self p_isLayoutLeftToRightAtCharIndex:a3])
+    else if (direction == 3 && [(TSWPEditingController *)self p_isLayoutLeftToRightAtCharIndex:index])
     {
-      v16 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:a3 inDirection:3];
-      a3 = v16 == a3 ? 0x7FFFFFFFFFFFFFFFLL : v16;
+      v16 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:index inDirection:3];
+      index = v16 == index ? 0x7FFFFFFFFFFFFFFFLL : v16;
       if (v16 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_adjustedCharIndexForWordTestingFromCharIndex:forDirection:]"];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"];
-        v13 = v17;
+        v13 = currentHandler3;
         v14 = v18;
         v15 = 389;
         goto LABEL_27;
@@ -9814,18 +9814,18 @@ LABEL_83:
     }
   }
 
-  else if (a4)
+  else if (direction)
   {
-    if (a4 == 1)
+    if (direction == 1)
     {
-      v9 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:a3 inDirection:1];
-      a3 = v9 == a3 ? 0x7FFFFFFFFFFFFFFFLL : v9;
+      v9 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:index inDirection:1];
+      index = v9 == index ? 0x7FFFFFFFFFFFFFFFLL : v9;
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v10 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_adjustedCharIndexForWordTestingFromCharIndex:forDirection:]"];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"];
-        v13 = v10;
+        v13 = currentHandler4;
         v14 = v11;
         v15 = 424;
 LABEL_27:
@@ -9840,7 +9840,7 @@ LABEL_27:
     storage = self->_storage;
     if (storage)
     {
-      [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:a3 styleProvider:0];
+      [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:index styleProvider:0];
     }
 
     else
@@ -9849,30 +9849,30 @@ LABEL_27:
     }
 
     v23 = [(TSWPEditingController *)self p_expandParagraphRangeForEnumerator:&v26];
-    a3 = [-[TSWPStorage textSourceForLayoutInRange:](-[TSWPEditingController storage](self "storage")];
+    index = [-[TSWPStorage textSourceForLayoutInRange:](-[TSWPEditingController storage](self "storage")];
     TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v26);
   }
 
-  return a3;
+  return index;
 }
 
-- (__CFStringTokenizer)p_createTokenizerForCharIndex:(unint64_t)a3 outTokenizerRange:(_NSRange *)a4
+- (__CFStringTokenizer)p_createTokenizerForCharIndex:(unint64_t)index outTokenizerRange:(_NSRange *)range
 {
-  a4->location = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:?];
-  a4->length = v7;
-  v8 = CFStringTokenizerCreate(0, [(TSWPStorage *)self->_storage string], *a4, 0, 0);
-  CFStringTokenizerGoToTokenAtIndex(v8, a3);
+  range->location = [(TSWPStorage *)self->_storage textRangeForParagraphAtCharIndex:?];
+  range->length = v7;
+  v8 = CFStringTokenizerCreate(0, [(TSWPStorage *)self->_storage string], *range, 0, 0);
+  CFStringTokenizerGoToTokenAtIndex(v8, index);
   return v8;
 }
 
-- (int)p_moveFromCharIndex:(unint64_t *)a3 tokenizerRef:(__CFStringTokenizer *)a4 tokenizerRange:(_NSRange *)a5 direction:(int64_t)a6 currentWordRange:(_NSRange)a7 newWordRange:(_NSRange *)a8 reasonToStop:(unsigned int)a9
+- (int)p_moveFromCharIndex:(unint64_t *)index tokenizerRef:(__CFStringTokenizer *)ref tokenizerRange:(_NSRange *)range direction:(int64_t)direction currentWordRange:(_NSRange)wordRange newWordRange:(_NSRange *)newWordRange reasonToStop:(unsigned int)stop
 {
-  length = a7.length;
-  location = a7.location;
+  length = wordRange.length;
+  location = wordRange.location;
   storage = self->_storage;
   if (storage)
   {
-    [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:*a3 styleProvider:0];
+    [(TSWPStorage *)storage paragraphEnumeratorAtCharIndex:*index styleProvider:0];
   }
 
   else
@@ -9883,33 +9883,33 @@ LABEL_27:
   v13 = [(TSWPEditingController *)self p_expandParagraphRangeForEnumerator:&v42];
   v37 = [(TSWPStorage *)[(TSWPEditingController *)self storage] textSourceForLayoutInRange:v13, v14];
   [v37 charRangeMappedFromStorage:{location, length}];
-  v36 = a8;
-  v15 = *a3;
+  newWordRangeCopy = newWordRange;
+  v15 = *index;
   while (1)
   {
-    v16 = [(TSWPEditingController *)self p_adjustedCharIndexForWordTestingFromCharIndex:v15 forDirection:a6, v36];
-    if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+    newWordRangeCopy = [(TSWPEditingController *)self p_adjustedCharIndexForWordTestingFromCharIndex:v15 forDirection:direction, newWordRangeCopy];
+    if (newWordRangeCopy == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_38;
     }
 
-    v17 = *a4;
-    if (!*a4)
+    v17 = *ref;
+    if (!*ref)
     {
       goto LABEL_13;
     }
 
-    if (v16 < a5->location || v16 - a5->location >= a5->length)
+    if (newWordRangeCopy < range->location || newWordRangeCopy - range->location >= range->length)
     {
       CFRelease(v17);
-      *a4 = 0;
+      *ref = 0;
 LABEL_13:
-      v17 = [(TSWPEditingController *)self p_createTokenizerForCharIndex:v16 outTokenizerRange:a5];
-      *a4 = v17;
+      v17 = [(TSWPEditingController *)self p_createTokenizerForCharIndex:newWordRangeCopy outTokenizerRange:range];
+      *ref = v17;
     }
 
-    v19 = CFStringTokenizerGoToTokenAtIndex(v17, v16);
-    if ((a9 & 2) != 0 && !v19)
+    v19 = CFStringTokenizerGoToTokenAtIndex(v17, newWordRangeCopy);
+    if ((stop & 2) != 0 && !v19)
     {
       v31 = 2;
       goto LABEL_42;
@@ -9922,14 +9922,14 @@ LABEL_13:
 
     v20 = location == *MEMORY[0x277D6C268] && length == *(MEMORY[0x277D6C268] + 8);
     v21 = v20;
-    if ((a9 & 4) != 0 && !v21)
+    if ((stop & 4) != 0 && !v21)
     {
       break;
     }
 
-    if ((a9 & 8) != 0)
+    if ((stop & 8) != 0)
     {
-      CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(*a4);
+      CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(*ref);
       v23 = CurrentTokenRange.location;
       v24 = CurrentTokenRange.length;
       v31 = 8;
@@ -9937,15 +9937,15 @@ LABEL_13:
     }
 
 LABEL_32:
-    v30 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:*a3 inDirection:a6];
+    v30 = [(TSWPEditingController *)self charIndexMovingByCharacterFromCharIndex:*index inDirection:direction];
     v15 = v30;
-    if (v30 == 0x7FFFFFFFFFFFFFFFLL || v30 == *a3)
+    if (v30 == 0x7FFFFFFFFFFFFFFFLL || v30 == *index)
     {
       if (v30 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v32 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_moveFromCharIndex:tokenizerRef:tokenizerRange:direction:currentWordRange:newWordRange:reasonToStop:]"];
-        [v32 handleFailureInFunction:v33 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 533, @"Should not have received NSNotFound."}];
+        [currentHandler handleFailureInFunction:v33 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 533, @"Should not have received NSNotFound."}];
       }
 
 LABEL_38:
@@ -9953,10 +9953,10 @@ LABEL_38:
       goto LABEL_42;
     }
 
-    *a3 = v30;
+    *index = v30;
   }
 
-  v22 = CFStringTokenizerGetCurrentTokenRange(*a4);
+  v22 = CFStringTokenizerGetCurrentTokenRange(*ref);
   v23 = v22.location;
   v24 = v22.length;
   [v37 charRangeMappedFromStorage:{v22.location, v22.length}];
@@ -9970,30 +9970,30 @@ LABEL_38:
 
   v31 = 4;
 LABEL_41:
-  v36->location = v23;
-  v36->length = v24;
+  newWordRangeCopy->location = v23;
+  newWordRangeCopy->length = v24;
 LABEL_42:
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v42);
   return v31;
 }
 
-- (unint64_t)charIndexMovingByWordFromCharIndex:(unint64_t)a3 inDirection:(int64_t)a4
+- (unint64_t)charIndexMovingByWordFromCharIndex:(unint64_t)index inDirection:(int64_t)direction
 {
-  if (a4 > 3)
+  if (direction > 3)
   {
-    v19 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) charIndexMovingByWordFromCharIndex:inDirection:]"];
-    [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 646, @"Unsupported direction"}];
+    [currentHandler handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 646, @"Unsupported direction"}];
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = a3;
+  indexCopy = index;
   v7 = [(TSWPStorage *)self->_storage selectionRangeForCharIndex:?];
   v9 = v8;
-  v29 = v5;
+  v29 = indexCopy;
   v10 = MEMORY[0x277D6C268];
   v28 = *MEMORY[0x277D6C268];
-  v11 = [(TSWPEditingController *)self p_adjustedCharIndexForWordTestingFromCharIndex:v5 forDirection:a4];
+  v11 = [(TSWPEditingController *)self p_adjustedCharIndexForWordTestingFromCharIndex:indexCopy forDirection:direction];
   result = 0x7FFFFFFFFFFFFFFFLL;
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -10004,9 +10004,9 @@ LABEL_42:
   cf = [(TSWPEditingController *)self p_createTokenizerForCharIndex:v11 outTokenizerRange:&v27];
   CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(cf);
   LODWORD(v24) = 7;
-  v14 = [(TSWPEditingController *)self p_moveFromCharIndex:&v29 tokenizerRef:&cf tokenizerRange:&v27 direction:a4 currentWordRange:CurrentTokenRange.location newWordRange:CurrentTokenRange.length reasonToStop:&v28, v24];
+  v14 = [(TSWPEditingController *)self p_moveFromCharIndex:&v29 tokenizerRef:&cf tokenizerRange:&v27 direction:direction currentWordRange:CurrentTokenRange.location newWordRange:CurrentTokenRange.length reasonToStop:&v28, v24];
   v15 = CurrentTokenRange.location == *v10 && CurrentTokenRange.length == *(v10 + 1);
-  if (v15 || (v16 = v29, v29 == v5))
+  if (v15 || (v16 = v29, v29 == indexCopy))
   {
     if (v14 == 4 || v14 == 1)
     {
@@ -10020,7 +10020,7 @@ LABEL_42:
   }
 
   LODWORD(v25) = 8;
-  [(TSWPEditingController *)self p_moveFromCharIndex:&v29 tokenizerRef:&cf tokenizerRange:&v27 direction:a4 currentWordRange:&v28 newWordRange:v25 reasonToStop:?];
+  [(TSWPEditingController *)self p_moveFromCharIndex:&v29 tokenizerRef:&cf tokenizerRange:&v27 direction:direction currentWordRange:&v28 newWordRange:v25 reasonToStop:?];
 LABEL_11:
   v16 = v29;
 LABEL_12:
@@ -10035,34 +10035,34 @@ LABEL_12:
     if (v16 >= v7)
     {
       v21 = v7 + v9;
-      v5 = v16;
+      indexCopy = v16;
       if (v16 > v21)
       {
-        v22 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) charIndexMovingByWordFromCharIndex:inDirection:]"];
-        [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 637, @"Result beyond selection range max."}];
+        [currentHandler2 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 637, @"Result beyond selection range max."}];
         return v21;
       }
     }
 
     else
     {
-      v17 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) charIndexMovingByWordFromCharIndex:inDirection:]"];
-      [v17 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 632, @"Result beyond selection range min."}];
+      [currentHandler3 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 632, @"Result beyond selection range min."}];
       return v7;
     }
   }
 
-  return v5;
+  return indexCopy;
 }
 
-- (_NSRange)p_adjustVisualSelection:(id)a3 withOtherSelection:(id)a4
+- (_NSRange)p_adjustVisualSelection:(id)selection withOtherSelection:(id)otherSelection
 {
-  v6 = *MEMORY[0x277D6C268];
+  range = *MEMORY[0x277D6C268];
   v7 = *(MEMORY[0x277D6C268] + 8);
-  v8 = [(TSWPEditingController *)self calculateVisualRunsFromSelection:a3 updateControllerSelection:0];
-  v9 = [(TSWPEditingController *)self calculateVisualRunsFromSelection:a4 updateControllerSelection:0];
+  v8 = [(TSWPEditingController *)self calculateVisualRunsFromSelection:selection updateControllerSelection:0];
+  v9 = [(TSWPEditingController *)self calculateVisualRunsFromSelection:otherSelection updateControllerSelection:0];
   [(TSWPEditingController *)self p_selection:v8 toGlyphRange:&v50];
   [(TSWPEditingController *)self p_selection:v9 toGlyphRange:&v43];
   if (vmaxv_u16(vmovn_s32(vuzp1q_s32(vceqzq_s64(v50), vceqzq_s64(v43)))))
@@ -10072,17 +10072,17 @@ LABEL_12:
 
   if (v52 == v45 && v54 == v47 && v55 == v49)
   {
-    v6 = [v8 range];
+    range = [v8 range];
     v7 = v10;
     goto LABEL_96;
   }
 
   if ([v8 isInsertionPoint])
   {
-    v11 = [v9 isInsertionPoint];
+    isInsertionPoint = [v9 isInsertionPoint];
     v12 = v50.i64[0];
     v13 = v43.i64[0];
-    if (!v11)
+    if (!isInsertionPoint)
     {
       if (v50.i64[0] == v43.i64[0])
       {
@@ -10229,8 +10229,8 @@ LABEL_82:
     goto LABEL_88;
   }
 
-  v16 = [v8 visualRanges];
-  if (!TSWPRangeVector::containsCharacterAtIndex(v16, v45, 0) || (v17 = [v8 visualRanges], !TSWPRangeVector::containsCharacterAtIndex(v17, v47, 0)))
+  visualRanges = [v8 visualRanges];
+  if (!TSWPRangeVector::containsCharacterAtIndex(visualRanges, v45, 0) || (v17 = [v8 visualRanges], !TSWPRangeVector::containsCharacterAtIndex(v17, v47, 0)))
   {
     if (v43.i64[0] == v50.i64[0])
     {
@@ -10302,12 +10302,12 @@ LABEL_47:
 LABEL_66:
     if (v23 >= v30)
     {
-      v6 = v30;
+      range = v30;
     }
 
     else
     {
-      v6 = v23;
+      range = v23;
     }
 
     if (v23 <= v30)
@@ -10323,27 +10323,27 @@ LABEL_66:
     v34 = self->_storage;
 LABEL_73:
     v35 = [(TSWPStorage *)v34 nextCharacterIndex:v22];
-    if (v6 <= v35)
+    if (range <= v35)
     {
       v36 = v35;
     }
 
     else
     {
-      v36 = v6;
+      v36 = range;
     }
 
-    if (v6 >= v35)
+    if (range >= v35)
     {
-      v6 = v35;
+      range = v35;
     }
 
     goto LABEL_95;
   }
 
   v18 = v45;
-  v19 = [v8 superRange];
-  if (v18 <= v19 + (v20 >> 1))
+  superRange = [v8 superRange];
+  if (v18 <= superRange + (v20 >> 1))
   {
     v14 = v45;
     storage = self->_storage;
@@ -10362,22 +10362,22 @@ LABEL_89:
 
     if (v14 >= v39)
     {
-      v6 = v39;
+      range = v39;
     }
 
     else
     {
-      v6 = v14;
+      range = v14;
     }
 
 LABEL_95:
-    v7 = v36 - v6;
+    v7 = v36 - range;
     goto LABEL_96;
   }
 
   if (v43.i64[0] != v50.i64[0])
   {
-    v6 = v52;
+    range = v52;
     v21 = self->_storage;
     if (*v50.i64[0] <= *v43.i64[0])
     {
@@ -10422,31 +10422,31 @@ LABEL_95:
 
   if (v52 >= v38)
   {
-    v6 = v38;
+    range = v38;
   }
 
   else
   {
-    v6 = v52;
+    range = v52;
   }
 
-  v7 = v42 - v6;
+  v7 = v42 - range;
 LABEL_96:
-  v40 = v6;
+  v40 = range;
   v41 = v7;
   result.length = v41;
   result.location = v40;
   return result;
 }
 
-- (unint64_t)p_LeftCharForInsertion:(id *)a3
+- (unint64_t)p_LeftCharForInsertion:(id *)insertion
 {
-  var0 = a3->var0;
-  var3 = a3->var3;
+  var0 = insertion->var0;
+  var3 = insertion->var3;
   v6 = var3;
-  if (!a3->var7)
+  if (!insertion->var7)
   {
-    v6 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(a3->var0, a3->var3, 3, self->_storage);
+    v6 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(insertion->var0, insertion->var3, 3, self->_storage);
   }
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
@@ -10473,45 +10473,45 @@ LABEL_9:
   return [(TSWPStorage *)storage previousCharacterIndex:v8];
 }
 
-- (unint64_t)p_rightEdgeForSelection:(id)a3 withLeadingEdge:(BOOL *)a4
+- (unint64_t)p_rightEdgeForSelection:(id)selection withLeadingEdge:(BOOL *)edge
 {
   v21 = 0;
-  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", [a3 start], &v21, 0);
+  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", [selection start], &v21, 0);
   if (!v7)
   {
-    return [a3 insertionChar];
+    return [selection insertionChar];
   }
 
   v8 = v7;
-  if ([a3 isRange])
+  if ([selection isRange])
   {
-    if ([a3 isVisual])
+    if ([selection isVisual])
     {
       v9 = *v8;
       v10 = v8[1];
-      v11 = [a3 range];
-      if (v9 <= v11 && v10 + v9 >= v11 + v12)
+      range = [selection range];
+      if (v9 <= range && v10 + v9 >= range + v12)
       {
         if ((*(v8 + 25) & 0x10) != 0)
         {
-          v19 = [a3 headChar];
+          headChar = [selection headChar];
         }
 
         else
         {
-          v19 = [a3 tailChar];
+          headChar = [selection tailChar];
         }
 
-        v13 = v19;
-        v16 = TSWPLineFragment::writingDirectionForCharIndex(v8, v19);
+        headChar2 = headChar;
+        v16 = TSWPLineFragment::writingDirectionForCharIndex(v8, headChar);
         goto LABEL_25;
       }
 
       if ((*(v8 + 25) & 0x10) != 0)
       {
-        v13 = [a3 headChar];
+        headChar2 = [selection headChar];
         v18 = *(v8 + 6);
-        v16 = [(TSWPEditingController *)self p_writingDirectionForCharAtIndex:v13];
+        v16 = [(TSWPEditingController *)self p_writingDirectionForCharAtIndex:headChar2];
         if ((v18 & 0x1000) != 0)
         {
 LABEL_25:
@@ -10522,12 +10522,12 @@ LABEL_25:
         goto LABEL_20;
       }
 
-      v13 = [a3 tailChar];
-      v14 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v13 column:&v21 eol:0];
+      headChar2 = [selection tailChar];
+      v14 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:headChar2 column:&v21 eol:0];
       if (v14)
       {
         v15 = v14[6];
-        v16 = [(TSWPEditingController *)self p_writingDirectionForCharAtIndex:v13];
+        v16 = [(TSWPEditingController *)self p_writingDirectionForCharAtIndex:headChar2];
         if ((v15 & 0x1000) == 0)
         {
           goto LABEL_25;
@@ -10538,16 +10538,16 @@ LABEL_20:
         goto LABEL_26;
       }
 
-      return [a3 insertionChar];
+      return [selection insertionChar];
     }
 
-    if ([a3 isValid])
+    if ([selection isValid])
     {
-      v13 = [a3 end];
+      headChar2 = [selection end];
       v17 = 1;
 LABEL_26:
-      *a4 = v17;
-      return v13;
+      *edge = v17;
+      return headChar2;
     }
 
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -10555,57 +10555,57 @@ LABEL_26:
 
   else
   {
-    v13 = [a3 insertionChar];
-    if ([a3 type] != 7 && v13 == v8[1] + *v8 && *a4 && v13)
+    headChar2 = [selection insertionChar];
+    if ([selection type] != 7 && headChar2 == v8[1] + *v8 && *edge && headChar2)
     {
-      v13 = [(TSWPStorage *)self->_storage previousCharacterIndex:v13];
-      *a4 = 0;
+      headChar2 = [(TSWPStorage *)self->_storage previousCharacterIndex:headChar2];
+      *edge = 0;
     }
   }
 
-  return v13;
+  return headChar2;
 }
 
-- (unint64_t)p_leftEdgeForSelection:(id)a3 withLeadingEdge:(BOOL *)a4
+- (unint64_t)p_leftEdgeForSelection:(id)selection withLeadingEdge:(BOOL *)edge
 {
   v22 = 0;
-  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", [a3 start], &v22, 0);
+  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", [selection start], &v22, 0);
   if (!v7)
   {
-    return [a3 insertionChar];
+    return [selection insertionChar];
   }
 
   v8 = v7;
-  if ([a3 isVisual] && objc_msgSend(a3, "isRange"))
+  if ([selection isVisual] && objc_msgSend(selection, "isRange"))
   {
     v9 = *v8;
     v10 = v8[1];
-    v11 = [a3 range];
-    if (v9 <= v11 && v10 + v9 >= v11 + v12)
+    range = [selection range];
+    if (v9 <= range && v10 + v9 >= range + v12)
     {
       if ((*(v8 + 25) & 0x10) != 0)
       {
-        v20 = [a3 tailChar];
+        tailChar = [selection tailChar];
       }
 
       else
       {
-        v20 = [a3 headChar];
+        tailChar = [selection headChar];
       }
 
-      v13 = v20;
-      v16 = TSWPLineFragment::writingDirectionForCharIndex(v8, v20);
+      tailChar2 = tailChar;
+      v16 = TSWPLineFragment::writingDirectionForCharIndex(v8, tailChar);
       goto LABEL_23;
     }
 
     if ((*(v8 + 25) & 0x10) != 0)
     {
-      v13 = [a3 tailChar];
-      v17 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v13 column:&v22 eol:0];
+      tailChar2 = [selection tailChar];
+      v17 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:tailChar2 column:&v22 eol:0];
       if (v17)
       {
         v18 = *(v17 + 6);
-        v16 = TSWPLineFragment::writingDirectionForCharIndex(v17, v13);
+        v16 = TSWPLineFragment::writingDirectionForCharIndex(v17, tailChar2);
         if ((v18 & 0x1000) != 0)
         {
 LABEL_23:
@@ -10616,19 +10616,19 @@ LABEL_23:
 LABEL_17:
         v19 = v16 == 1;
 LABEL_24:
-        *a4 = v19;
-        return v13;
+        *edge = v19;
+        return tailChar2;
       }
     }
 
     else
     {
-      v13 = [a3 headChar];
-      v14 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v13 column:&v22 eol:0];
+      tailChar2 = [selection headChar];
+      v14 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:tailChar2 column:&v22 eol:0];
       if (v14)
       {
         v15 = *(v14 + 6);
-        v16 = TSWPLineFragment::writingDirectionForCharIndex(v14, v13);
+        v16 = TSWPLineFragment::writingDirectionForCharIndex(v14, tailChar2);
         if ((v15 & 0x1000) == 0)
         {
           goto LABEL_23;
@@ -10638,77 +10638,77 @@ LABEL_24:
       }
     }
 
-    return [a3 insertionChar];
+    return [selection insertionChar];
   }
 
-  v13 = [a3 insertionChar];
-  if ([a3 type] != 7 && v13 == v8[1] + *v8 && *a4 && v13)
+  tailChar2 = [selection insertionChar];
+  if ([selection type] != 7 && tailChar2 == v8[1] + *v8 && *edge && tailChar2)
   {
-    v13 = [(TSWPStorage *)self->_storage previousCharacterIndex:v13];
-    *a4 = 0;
+    tailChar2 = [(TSWPStorage *)self->_storage previousCharacterIndex:tailChar2];
+    *edge = 0;
   }
 
-  return v13;
+  return tailChar2;
 }
 
-- (void)p_selection:(id)a3 toGlyphRange:(id *)a4
+- (void)p_selection:(id)p_selection toGlyphRange:(id *)range
 {
-  a4->var6 = [a3 isInsertionPoint];
-  v7 = [a3 rawRange];
-  v8 = v7;
-  if (a4->var6)
+  range->var6 = [p_selection isInsertionPoint];
+  rawRange = [p_selection rawRange];
+  v8 = rawRange;
+  if (range->var6)
   {
-    a4->var7 = 0;
+    range->var7 = 0;
     v21 = 0;
     v22 = 0;
-    v9 = v7;
+    v9 = rawRange;
   }
 
   else
   {
-    v10 = [a3 end];
-    var6 = a4->var6;
+    v10 = [p_selection end];
+    var6 = range->var6;
     v9 = v10 - 1;
-    a4->var7 = 0;
+    range->var7 = 0;
     v21 = 0;
     v22 = 0;
     if (!var6)
     {
 LABEL_6:
-      v12 = 0;
+      leadingEdge = 0;
       goto LABEL_7;
     }
   }
 
-  if ([a3 caretAffinity] != 1)
+  if ([p_selection caretAffinity] != 1)
   {
     goto LABEL_6;
   }
 
-  v12 = [a3 leadingEdge];
+  leadingEdge = [p_selection leadingEdge];
 LABEL_7:
-  var0 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v8 column:&v22 eol:v12, v21];
-  a4->var0 = var0;
-  if (v12 && !var0)
+  var0 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v8 column:&v22 eol:leadingEdge, v21];
+  range->var0 = var0;
+  if (leadingEdge && !var0)
   {
     var0 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:v8 - 1 column:&v22 eol:1];
-    a4->var0 = var0;
+    range->var0 = var0;
   }
 
   v14 = var0;
-  if (!a4->var6)
+  if (!range->var6)
   {
-    v14 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", v9, &v21, [a3 caretAffinity] == 1);
-    var0 = a4->var0;
+    v14 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", v9, &v21, [p_selection caretAffinity] == 1);
+    var0 = range->var0;
   }
 
-  a4->var1 = v14;
+  range->var1 = v14;
   if (var0)
   {
     v15 = *(var0 + 1);
     if (v15)
     {
-      if (a4->var6)
+      if (range->var6)
       {
         if (v8 == *var0 + v15)
         {
@@ -10720,40 +10720,40 @@ LABEL_7:
           v16 = TSWPLineFragment::writingDirectionForCharIndex(var0, v8) == 1;
         }
 
-        if (v16 == [a3 leadingEdge])
+        if (v16 == [p_selection leadingEdge])
         {
-          v8 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(a4->var0, v8, 2, self->_storage);
+          v8 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(range->var0, v8, 2, self->_storage);
         }
 
         if (v8 == 0x7FFFFFFFFFFFFFFFLL || v8 == [(TSWPStorage *)self->_storage length])
         {
-          v8 = TSWPLineFragment::rightMostCharIndex(a4->var0);
-          a4->var7 = 1;
+          v8 = TSWPLineFragment::rightMostCharIndex(range->var0);
+          range->var7 = 1;
         }
 
-        v20 = TSWPLineFragment::visualIndexForCharIndex(a4->var0, v8);
-        a4->var2 = v20;
-        a4->var3 = v8;
-        a4->var4 = v20;
-        a4->var5 = v8;
+        v20 = TSWPLineFragment::visualIndexForCharIndex(range->var0, v8);
+        range->var2 = v20;
+        range->var3 = v8;
+        range->var4 = v20;
+        range->var5 = v8;
       }
 
       else if (v14)
       {
-        a4->var2 = TSWPLineFragment::visualIndexForCharIndex(var0, v8);
-        v18 = TSWPLineFragment::visualIndexForCharIndex(a4->var1, v9);
-        a4->var3 = v8;
-        a4->var4 = v18;
-        a4->var5 = v9;
-        if (a4->var0 == a4->var1)
+        range->var2 = TSWPLineFragment::visualIndexForCharIndex(var0, v8);
+        v18 = TSWPLineFragment::visualIndexForCharIndex(range->var1, v9);
+        range->var3 = v8;
+        range->var4 = v18;
+        range->var5 = v9;
+        if (range->var0 == range->var1)
         {
-          var2 = a4->var2;
-          if (var2 >= v18 != (*(a4->var0 + 25) & 0x10) >> 4)
+          var2 = range->var2;
+          if (var2 >= v18 != (*(range->var0 + 25) & 0x10) >> 4)
           {
-            a4->var2 = v18;
-            a4->var3 = v9;
-            a4->var4 = var2;
-            a4->var5 = v8;
+            range->var2 = v18;
+            range->var3 = v9;
+            range->var4 = var2;
+            range->var5 = v8;
           }
         }
       }
@@ -10771,17 +10771,17 @@ LABEL_7:
         v17 = v8;
       }
 
-      a4->var2 = 0;
-      a4->var3 = v17;
-      a4->var4 = 0;
-      a4->var5 = v8 - 1;
+      range->var2 = 0;
+      range->var3 = v17;
+      range->var4 = 0;
+      range->var5 = v8 - 1;
     }
   }
 }
 
-- (int)p_writingDirectionForCharAtIndex:(unint64_t)a3
+- (int)p_writingDirectionForCharAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -1;
   }
@@ -10789,32 +10789,32 @@ LABEL_7:
   v10[5] = v3;
   v10[6] = v4;
   v10[0] = 0;
-  v7 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:a3 column:v10 eol:0];
+  v7 = [(TSWPEditingController *)self p_lineFragmentForCharIndex:index column:v10 eol:0];
   if (v7)
   {
-    return TSWPLineFragment::writingDirectionForCharIndex(v7, a3 - (*(v7 + 1) + *v7 == a3));
+    return TSWPLineFragment::writingDirectionForCharIndex(v7, index - (*(v7 + 1) + *v7 == index));
   }
 
-  v8 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_writingDirectionForCharAtIndex:]"];
-  [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 1119, @"invalid nil value for '%s'", "lineFragment"}];
+  [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 1119, @"invalid nil value for '%s'", "lineFragment"}];
   return -1;
 }
 
-- (const)p_lineFragmentWithCaretInfo:(id *)a3 forSelection:(id)a4
+- (const)p_lineFragmentWithCaretInfo:(id *)info forSelection:(id)selection
 {
   v35 = 0;
-  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", [a4 range], &v35, objc_msgSend(a4, "isAtEndOfLine"));
+  v7 = -[TSWPEditingController p_lineFragmentForCharIndex:column:eol:](self, "p_lineFragmentForCharIndex:column:eol:", [selection range], &v35, objc_msgSend(selection, "isAtEndOfLine"));
   v8 = v7;
   if (v7)
   {
     v9 = v7[6];
-    v10 = [a4 insertionChar];
-    v11 = TSWPLineFragment::writingDirectionForCharIndex(v8, v10);
+    insertionChar = [selection insertionChar];
+    v11 = TSWPLineFragment::writingDirectionForCharIndex(v8, insertionChar);
     v12 = v11 == 1;
     v30 = v9;
     v33 = (v9 & 0x1000) >> 12;
-    v34 = [a4 leadingEdge];
+    leadingEdge = [selection leadingEdge];
     if ((v9 & 0x1000) != 0)
     {
       v13 = 2;
@@ -10827,18 +10827,18 @@ LABEL_7:
 
     v14 = [(TSWPStorage *)self->_storage length];
     v15 = v13;
-    if (v10 < v14)
+    if (insertionChar < v14)
     {
-      TSWPComposedCharacterAtIndexForTextSource(v10, self->_storage);
+      TSWPComposedCharacterAtIndexForTextSource(insertionChar, self->_storage);
       v15 = TSWPGetBidiClass();
     }
 
     v32 = v15;
-    if (([a4 isVisual] & 1) != 0 || v10 <= *v8 || (v11 == 1) == -[TSWPEditingController editorKeyboardLanguageIsRTL](self, "editorKeyboardLanguageIsRTL"))
+    if (([selection isVisual] & 1) != 0 || insertionChar <= *v8 || (v11 == 1) == -[TSWPEditingController editorKeyboardLanguageIsRTL](self, "editorKeyboardLanguageIsRTL"))
     {
       v16 = v11 == 1;
       v31 = v11 == 1;
-      if (v31 != v34)
+      if (v31 != leadingEdge)
       {
         goto LABEL_13;
       }
@@ -10846,15 +10846,15 @@ LABEL_7:
 
     else
     {
-      v10 = -[TSWPStorage previousCharacterIndex:](self->_storage, "previousCharacterIndex:", [a4 insertionChar]);
+      insertionChar = -[TSWPStorage previousCharacterIndex:](self->_storage, "previousCharacterIndex:", [selection insertionChar]);
       v16 = 0;
-      LOBYTE(v34) = 0;
-      if (TSWPLineFragment::writingDirectionForCharIndex(v8, v10) == 1)
+      LOBYTE(leadingEdge) = 0;
+      if (TSWPLineFragment::writingDirectionForCharIndex(v8, insertionChar) == 1)
       {
         LOBYTE(v31) = 1;
         v12 = 1;
 LABEL_13:
-        v17 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(v8, v10, 3, self->_storage);
+        v17 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(v8, insertionChar, 3, self->_storage);
         if (v17 == *(v8 + 8) + *v8)
         {
           v18 = 0x7FFFFFFFFFFFFFFFLL;
@@ -10872,12 +10872,12 @@ LABEL_13:
           v13 = TSWPGetBidiClass();
         }
 
-        if (v10 == TSWPLineFragment::rightMostCharIndex(v8))
+        if (insertionChar == TSWPLineFragment::rightMostCharIndex(v8))
         {
           v19 = 0x7FFFFFFFFFFFFFFFLL;
           if ((v30 & 0x1000) != 0)
           {
-            v19 = v10;
+            v19 = insertionChar;
             v20 = v12;
           }
 
@@ -10905,7 +10905,7 @@ LABEL_13:
 
           else
           {
-            v23 = v10;
+            v23 = insertionChar;
           }
 
           if ((*(v8 + 25) & 8) != 0)
@@ -10930,28 +10930,28 @@ LABEL_13:
           v21 = v32;
           v16 = v33;
           v24 = v13;
-          v23 = v10;
+          v23 = insertionChar;
           v13 = v32;
         }
 
 LABEL_54:
-        a3->var4 = v18;
-        a3->var5 = v16;
-        a3->var2 = v34;
-        a3->var6 = v24;
-        a3->var7 = v23;
-        a3->var8 = v12;
-        a3->var9 = v13;
-        a3->var0 = v10;
-        a3->var1 = v31;
-        a3->var3 = v21;
+        info->var4 = v18;
+        info->var5 = v16;
+        info->var2 = leadingEdge;
+        info->var6 = v24;
+        info->var7 = v23;
+        info->var8 = v12;
+        info->var9 = v13;
+        info->var0 = insertionChar;
+        info->var1 = v31;
+        info->var3 = v21;
         return v8;
       }
 
       LOBYTE(v31) = 0;
     }
 
-    v25 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(v8, v10, 2, self->_storage);
+    v25 = TSWPLineFragment::nextOrPreviousCharIndexForDirection(v8, insertionChar, 2, self->_storage);
     if (v25 == *(v8 + 8) + *v8)
     {
       v23 = 0x7FFFFFFFFFFFFFFFLL;
@@ -10970,7 +10970,7 @@ LABEL_54:
       v13 = TSWPGetBidiClass();
     }
 
-    if (v10 == TSWPLineFragment::leftMostCharIndex(v8))
+    if (insertionChar == TSWPLineFragment::leftMostCharIndex(v8))
     {
       v26 = 0x7FFFFFFFFFFFFFFFLL;
       if ((v30 & 0x1000) != 0)
@@ -10980,7 +10980,7 @@ LABEL_54:
 
       else
       {
-        v26 = v10;
+        v26 = insertionChar;
         v27 = v16;
       }
 
@@ -11002,7 +11002,7 @@ LABEL_54:
 
       else
       {
-        v18 = v10;
+        v18 = insertionChar;
       }
 
       if ((*(v8 + 25) & 8) != 0)
@@ -11019,7 +11019,7 @@ LABEL_54:
 
     else
     {
-      v18 = v10;
+      v18 = insertionChar;
       v21 = v32;
       v24 = v32;
     }
@@ -11030,37 +11030,37 @@ LABEL_54:
   return v8;
 }
 
-- (unint64_t)p_getVisualDeletionIndexForSelection:(id)a3 backward:(BOOL *)a4
+- (unint64_t)p_getVisualDeletionIndexForSelection:(id)selection backward:(BOOL *)backward
 {
-  v7 = [a3 range];
-  if (([a3 isInsertionPoint] & 1) == 0)
+  range = [selection range];
+  if (([selection isInsertionPoint] & 1) == 0)
   {
-    [a3 range];
-    if (!v8 || *a4)
+    [selection range];
+    if (!v8 || *backward)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_getVisualDeletionIndexForSelection:backward:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 1270, @"invalid selection type"}];
+      [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 1270, @"invalid selection type"}];
     }
   }
 
-  v11 = [(TSWPEditingController *)self p_lineFragmentWithCaretInfo:&v19 forSelection:a3];
+  v11 = [(TSWPEditingController *)self p_lineFragmentWithCaretInfo:&v19 forSelection:selection];
   if (v11)
   {
     v12 = v11;
     if (v11[1])
     {
-      if ([a3 isVisual])
+      if ([selection isVisual])
       {
-        if (([a3 isInsertionPoint] & 1) != 0 || (objc_msgSend(a3, "range"), v13) && !*a4)
+        if (([selection isInsertionPoint] & 1) != 0 || (objc_msgSend(selection, "range"), v13) && !*backward)
         {
           v14 = *v12;
           v15 = v12[1] + ((*(v12 + 6) << 20) >> 31);
           if (v21 == v24 || v22 == 3 || v25 == 3)
           {
-            if (v21 == v24 || ![a3 isVisual])
+            if (v21 == v24 || ![selection isVisual])
             {
-              return v7;
+              return range;
             }
 
             if (v21 == 1)
@@ -11077,10 +11077,10 @@ LABEL_54:
             }
 
             v16 = v23;
-            v7 = v14;
+            range = v14;
             if (v23 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              return v7;
+              return range;
             }
           }
 
@@ -11088,36 +11088,36 @@ LABEL_54:
           {
             if (v21)
             {
-              *a4 = 0;
+              *backward = 0;
               if ([(TSWPEditingController *)self editorKeyboardLanguageIsRTL])
               {
-                v7 = v20;
+                range = v20;
               }
 
               else
               {
-                v7 = v23;
+                range = v23;
               }
 
-              if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+              if (range == 0x7FFFFFFFFFFFFFFFLL)
               {
-                *a4 = 1;
+                *backward = 1;
                 return v15 + v14;
               }
 
-              return v7;
+              return range;
             }
 
-            *a4 = 1;
+            *backward = 1;
             if ([(TSWPEditingController *)self editorKeyboardLanguageIsRTL])
             {
               v16 = v23;
               if (v23 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v7 = v14;
+                range = v14;
                 if (v21)
                 {
-                  return v7;
+                  return range;
                 }
 
                 storage = self->_storage;
@@ -11131,10 +11131,10 @@ LABEL_54:
               v16 = v20;
               if (v20 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v7 = v14;
+                range = v14;
                 if (v24 != 1)
                 {
-                  return v7;
+                  return range;
                 }
 
                 storage = self->_storage;
@@ -11151,35 +11151,35 @@ LABEL_54:
     }
   }
 
-  return v7;
+  return range;
 }
 
-- (unint64_t)p_getVisualInsertionPointIndexForString:(id)a3 selection:(id)a4
+- (unint64_t)p_getVisualInsertionPointIndexForString:(id)string selection:(id)selection
 {
-  if (![a4 isInsertionPoint] || (objc_msgSend(a4, "isVisual") & 1) == 0)
+  if (![selection isInsertionPoint] || (objc_msgSend(selection, "isVisual") & 1) == 0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEditingController(Internal) p_getVisualInsertionPointIndexForString:selection:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 1384, @"invalid selection type"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEditingController_Internal.mm"), 1384, @"invalid selection type"}];
   }
 
-  v9 = [a4 range];
-  v10 = [(TSWPEditingController *)self p_lineFragmentWithCaretInfo:v40 forSelection:a4];
+  range = [selection range];
+  v10 = [(TSWPEditingController *)self p_lineFragmentWithCaretInfo:v40 forSelection:selection];
   if (v10)
   {
     v11 = v10;
-    if ([a4 isInsertionPoint])
+    if ([selection isInsertionPoint])
     {
-      if ([a4 isVisual])
+      if ([selection isVisual])
       {
         v12 = v11[6];
         if ((v12 & 0x4000) == 0)
         {
           v13 = *v11;
           v14 = *(v11 + 1);
-          if ([a3 length])
+          if ([string length])
           {
-            [a3 utf32CharacterAtIndex:0];
+            [string utf32CharacterAtIndex:0];
             v15 = TSWPGetBidiClass();
           }
 
@@ -11193,7 +11193,7 @@ LABEL_54:
             v16 = v14 + (v12 << 20 >> 31);
             if (v15 == v43)
             {
-              v9 = v41;
+              range = v41;
               if (v41 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 if ((v12 & 0x1000) != 0)
@@ -11211,15 +11211,15 @@ LABEL_54:
 
               if (v42)
               {
-                return v9;
+                return range;
               }
 
-              return [(TSWPStorage *)self->_storage nextCharacterIndex:v9];
+              return [(TSWPStorage *)self->_storage nextCharacterIndex:range];
             }
 
             if (v15 == v46)
             {
-              v9 = v44;
+              range = v44;
               if (v44 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 if ((v12 & 0x1000) != 0)
@@ -11237,10 +11237,10 @@ LABEL_54:
 
               if (v45 != 1)
               {
-                return v9;
+                return range;
               }
 
-              return [(TSWPStorage *)self->_storage nextCharacterIndex:v9];
+              return [(TSWPStorage *)self->_storage nextCharacterIndex:range];
             }
 
             if ((v15 & 0xFFFFFFFD) == 1 || v15 == 2)
@@ -11309,7 +11309,7 @@ LABEL_54:
             {
               v32 = [(TSWPStorage *)self->_storage nextCharacterIndex:*(v28 + 1)];
 LABEL_83:
-              v9 = v32;
+              range = v32;
               goto LABEL_84;
             }
 
@@ -11341,12 +11341,12 @@ LABEL_52:
                   v34 = v33 + v13;
                   if (v44 == 0x7FFFFFFFFFFFFFFFLL)
                   {
-                    v9 = v34;
+                    range = v34;
                   }
 
                   else
                   {
-                    v9 = v44;
+                    range = v44;
                   }
                 }
 
@@ -11389,12 +11389,12 @@ LABEL_56:
               v31 = v30 + v13;
               if (v41 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v9 = v31;
+                range = v31;
               }
 
               else
               {
-                v9 = v41;
+                range = v41;
               }
 
               goto LABEL_84;
@@ -11409,7 +11409,7 @@ LABEL_84:
                 operator delete(__p);
               }
 
-              return v9;
+              return range;
             }
 
             if (v44 == 0x7FFFFFFFFFFFFFFFLL)
@@ -11425,7 +11425,7 @@ LABEL_84:
               }
 
 LABEL_81:
-              v9 = v35 + v13;
+              range = v35 + v13;
               goto LABEL_84;
             }
 
@@ -11436,7 +11436,7 @@ LABEL_81:
     }
   }
 
-  return v9;
+  return range;
 }
 
 @end

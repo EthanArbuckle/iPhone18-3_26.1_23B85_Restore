@@ -1,43 +1,43 @@
 @interface APStorageManager
-+ (BOOL)_removeStorageForSubdirectory:(id)a3;
++ (BOOL)_removeStorageForSubdirectory:(id)subdirectory;
 + (BOOL)areThereStoredItems;
 + (BOOL)removeStorage;
-+ (id)_applicationSupportSubdirectory:(id)a3;
-+ (id)_validatedPath:(id)a3 error:(id *)a4;
++ (id)_applicationSupportSubdirectory:(id)subdirectory;
++ (id)_validatedPath:(id)path error:(id *)error;
 + (void)cleanupOldStorage;
-+ (void)sendAnalyticError:(id)a3 domain:(id)a4 code:(int64_t)a5;
++ (void)sendAnalyticError:(id)error domain:(id)domain code:(int64_t)code;
 - (APStorageManager)init;
-- (APStorageManager)initWithPathPrefix:(id)a3 rootPath:(id)a4;
-- (BOOL)_createDirectoriesForURL:(id)a3 error:(id *)a4;
-- (BOOL)_fileExistsAtPath:(id)a3 isDirectory:(BOOL *)a4 error:(id *)a5;
-- (BOOL)directoryExistsAtPath:(id)a3 error:(id *)a4;
-- (BOOL)fileExistsAtPath:(id)a3 error:(id *)a4;
-- (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 error:(id *)a5;
-- (BOOL)removeObjectAtPath:(id)a3 error:(id *)a4;
-- (BOOL)storeData:(id)a3 atPath:(id)a4 error:(id *)a5;
-- (BOOL)storeObject:(id)a3 atPath:(id)a4 error:(id *)a5;
-- (BOOL)touchFileAtPath:(id)a3 error:(id *)a4;
-- (id)_makeApplicationSupportSubdirectory:(id)a3;
+- (APStorageManager)initWithPathPrefix:(id)prefix rootPath:(id)path;
+- (BOOL)_createDirectoriesForURL:(id)l error:(id *)error;
+- (BOOL)_fileExistsAtPath:(id)path isDirectory:(BOOL *)directory error:(id *)error;
+- (BOOL)directoryExistsAtPath:(id)path error:(id *)error;
+- (BOOL)fileExistsAtPath:(id)path error:(id *)error;
+- (BOOL)moveItemAtPath:(id)path toPath:(id)toPath error:(id *)error;
+- (BOOL)removeObjectAtPath:(id)path error:(id *)error;
+- (BOOL)storeData:(id)data atPath:(id)path error:(id *)error;
+- (BOOL)storeObject:(id)object atPath:(id)path error:(id *)error;
+- (BOOL)touchFileAtPath:(id)path error:(id *)error;
+- (id)_makeApplicationSupportSubdirectory:(id)subdirectory;
 - (id)_rootURL;
-- (id)_validatedFullPathForPath:(id)a3 error:(id *)a4;
-- (id)_validatedFullURLForPath:(id)a3 error:(id *)a4;
-- (id)_validatedPath:(id)a3 error:(id *)a4;
-- (id)addedToDirectoryDateForFileAtPath:(id)a3 error:(id *)a4;
-- (id)contentsOfDirectoryAtPath:(id)a3 error:(id *)a4;
-- (id)createdDateForFileAtPath:(id)a3 error:(id *)a4;
-- (id)dataStoredAtPath:(id)a3 error:(id *)a4;
-- (id)fileAtKeyPath:(id)a3 forMode:(int64_t)a4 error:(id *)a5;
-- (id)fileForAppendingAtKeyPath:(id)a3 error:(id *)a4;
-- (id)fileForReadingAtKeyPath:(id)a3 error:(id *)a4;
-- (id)fileForWritingAtKeyPath:(id)a3 error:(id *)a4;
-- (id)iterateObjectsIncludingFolders:(BOOL)a3;
-- (id)lastModifiedDateForFileAtPath:(id)a3 error:(id *)a4;
-- (id)objectStoredAtPath:(id)a3 error:(id *)a4;
-- (id)subpathsOfDirectoryAtPath:(id)a3 error:(id *)a4;
-- (void)_initWithPathPrefix:(id)a3 rootPath:(id)a4;
-- (void)_initWithSubdirectory:(id)a3;
-- (void)dfsWithStartPath:(id)a3 nodeCallback:(id)a4;
-- (void)getStorageSize:(unint64_t *)a3 allocatedSize:(unint64_t *)a4 files:(unint64_t *)a5;
+- (id)_validatedFullPathForPath:(id)path error:(id *)error;
+- (id)_validatedFullURLForPath:(id)path error:(id *)error;
+- (id)_validatedPath:(id)path error:(id *)error;
+- (id)addedToDirectoryDateForFileAtPath:(id)path error:(id *)error;
+- (id)contentsOfDirectoryAtPath:(id)path error:(id *)error;
+- (id)createdDateForFileAtPath:(id)path error:(id *)error;
+- (id)dataStoredAtPath:(id)path error:(id *)error;
+- (id)fileAtKeyPath:(id)path forMode:(int64_t)mode error:(id *)error;
+- (id)fileForAppendingAtKeyPath:(id)path error:(id *)error;
+- (id)fileForReadingAtKeyPath:(id)path error:(id *)error;
+- (id)fileForWritingAtKeyPath:(id)path error:(id *)error;
+- (id)iterateObjectsIncludingFolders:(BOOL)folders;
+- (id)lastModifiedDateForFileAtPath:(id)path error:(id *)error;
+- (id)objectStoredAtPath:(id)path error:(id *)error;
+- (id)subpathsOfDirectoryAtPath:(id)path error:(id *)error;
+- (void)_initWithPathPrefix:(id)prefix rootPath:(id)path;
+- (void)_initWithSubdirectory:(id)subdirectory;
+- (void)dfsWithStartPath:(id)path nodeCallback:(id)callback;
+- (void)getStorageSize:(unint64_t *)size allocatedSize:(unint64_t *)allocatedSize files:(unint64_t *)files;
 @end
 
 @implementation APStorageManager
@@ -99,24 +99,24 @@
   }
 }
 
-- (void)_initWithSubdirectory:(id)a3
+- (void)_initWithSubdirectory:(id)subdirectory
 {
   v4 = MEMORY[0x1E696AC08];
-  v5 = a3;
+  subdirectoryCopy = subdirectory;
   v6 = objc_alloc_init(v4);
   fileManager = self->_fileManager;
   self->_fileManager = v6;
 
-  v10 = objc_msgSend__makeApplicationSupportSubdirectory_(self, v8, v5, v9);
+  v10 = objc_msgSend__makeApplicationSupportSubdirectory_(self, v8, subdirectoryCopy, v9);
 
   rootPath = self->_rootPath;
   self->_rootPath = v10;
 }
 
-- (APStorageManager)initWithPathPrefix:(id)a3 rootPath:(id)a4
+- (APStorageManager)initWithPathPrefix:(id)prefix rootPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  prefixCopy = prefix;
+  pathCopy = path;
   v11 = objc_msgSend__rootSubdirectory(APStorageManager, v8, v9, v10);
   v18.receiver = self;
   v18.super_class = APStorageManager;
@@ -125,26 +125,26 @@
   if (v12)
   {
     objc_msgSend__initWithSubdirectory_(v12, v13, v11, v14);
-    objc_msgSend__initWithPathPrefix_rootPath_(v15, v16, v6, v7);
+    objc_msgSend__initWithPathPrefix_rootPath_(v15, v16, prefixCopy, pathCopy);
   }
 
   return v15;
 }
 
-- (void)_initWithPathPrefix:(id)a3 rootPath:(id)a4
+- (void)_initWithPathPrefix:(id)prefix rootPath:(id)path
 {
-  v17 = a3;
-  v7 = a4;
+  prefixCopy = prefix;
+  pathCopy = path;
   v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
   fileManager = self->_fileManager;
   self->_fileManager = v8;
 
-  objc_storeStrong(&self->_pathPrefix, a3);
-  v13 = objc_msgSend_length(v7, v10, v11, v12);
-  v16 = v7;
+  objc_storeStrong(&self->_pathPrefix, prefix);
+  v13 = objc_msgSend_length(pathCopy, v10, v11, v12);
+  v16 = pathCopy;
   if (!v13)
   {
-    if (!objc_msgSend_length(qword_1EBC37090, v7, v14, v15))
+    if (!objc_msgSend_length(qword_1EBC37090, pathCopy, v14, v15))
     {
       goto LABEL_5;
     }
@@ -156,13 +156,13 @@
 LABEL_5:
 }
 
-- (BOOL)storeObject:(id)a3 atPath:(id)a4 error:(id *)a5
+- (BOOL)storeObject:(id)object atPath:(id)path error:(id *)error
 {
-  v8 = a4;
-  v11 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v9, a3, 1, a5);
+  pathCopy = path;
+  v11 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v9, object, 1, error);
   if (v11)
   {
-    v12 = objc_msgSend_storeData_atPath_error_(self, v10, v11, v8, a5);
+    v12 = objc_msgSend_storeData_atPath_error_(self, v10, v11, pathCopy, error);
   }
 
   else
@@ -173,13 +173,13 @@ LABEL_5:
   return v12;
 }
 
-- (id)objectStoredAtPath:(id)a3 error:(id *)a4
+- (id)objectStoredAtPath:(id)path error:(id *)error
 {
-  v8 = objc_msgSend_dataStoredAtPath_error_(self, a2, a3, a4);
+  v8 = objc_msgSend_dataStoredAtPath_error_(self, a2, path, error);
   if (v8)
   {
     v9 = objc_msgSend_classes(APSupportedSecureEncodedClass, v5, v6, v7);
-    v11 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(MEMORY[0x1E696ACD0], v10, v9, v8, a4);
+    v11 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(MEMORY[0x1E696ACD0], v10, v9, v8, error);
   }
 
   else
@@ -190,14 +190,14 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)storeData:(id)a3 atPath:(id)a4 error:(id *)a5
+- (BOOL)storeData:(id)data atPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v10 = objc_msgSend_fileForWritingAtKeyPath_error_(self, v9, a4, a5);
+  dataCopy = data;
+  v10 = objc_msgSend_fileForWritingAtKeyPath_error_(self, v9, path, error);
   v12 = v10;
   if (v10)
   {
-    v13 = objc_msgSend_addData_error_(v10, v11, v8, a5);
+    v13 = objc_msgSend_addData_error_(v10, v11, dataCopy, error);
     objc_msgSend_close(v12, v14, v15, v16);
   }
 
@@ -209,13 +209,13 @@ LABEL_5:
   return v13;
 }
 
-- (id)dataStoredAtPath:(id)a3 error:(id *)a4
+- (id)dataStoredAtPath:(id)path error:(id *)error
 {
-  v5 = objc_msgSend_fileForReadingAtKeyPath_error_(self, a2, a3, a4);
+  v5 = objc_msgSend_fileForReadingAtKeyPath_error_(self, a2, path, error);
   v9 = v5;
-  if (a4)
+  if (error)
   {
-    if (*a4)
+    if (*error)
     {
       v10 = 1;
     }
@@ -248,21 +248,21 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)fileExistsAtPath:(id)a3 error:(id *)a4
+- (BOOL)fileExistsAtPath:(id)path error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v19 = 0;
-  isDirectory_error = objc_msgSend__fileExistsAtPath_isDirectory_error_(self, v7, v6, &v19, a4);
+  isDirectory_error = objc_msgSend__fileExistsAtPath_isDirectory_error_(self, v7, pathCopy, &v19, error);
   v11 = v19;
-  if (isDirectory_error && a4 && (v19 & 1) != 0 && !*a4)
+  if (isDirectory_error && error && (v19 & 1) != 0 && !*error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v20 = @"reason";
-    v13 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"A directory exists at the path (%@)!", v9, v6);
+    v13 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"A directory exists at the path (%@)!", v9, pathCopy);
     v21[0] = v13;
     v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v14, v21, &v20, 1);
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v12, v16, @"com.apple.ap.StorageFileSystem", 1025, v15);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v12, v16, @"com.apple.ap.StorageFileSystem", 1025, v15);
 
     v11 = v19;
   }
@@ -276,12 +276,12 @@ LABEL_10:
   return isDirectory_error;
 }
 
-- (BOOL)directoryExistsAtPath:(id)a3 error:(id *)a4
+- (BOOL)directoryExistsAtPath:(id)path error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v19 = 0;
-  if (!objc_msgSend__fileExistsAtPath_isDirectory_error_(self, v7, v6, &v19, a4))
+  if (!objc_msgSend__fileExistsAtPath_isDirectory_error_(self, v7, pathCopy, &v19, error))
   {
 LABEL_5:
     v10 = 0;
@@ -289,17 +289,17 @@ LABEL_5:
   }
 
   v10 = v19;
-  if (a4 && !v19)
+  if (error && !v19)
   {
-    if (!*a4)
+    if (!*error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v14 = kSFSErrorDeterminingIfPathIsDirectory;
       v20 = @"reason";
-      v15 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"A file exists at path (%@) but it is not a directory!", v9, v6);
+      v15 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"A file exists at path (%@) but it is not a directory!", v9, pathCopy);
       v21[0] = v15;
       v17 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v16, v21, &v20, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v18, @"com.apple.ap.StorageFileSystem", v14, v17);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v18, @"com.apple.ap.StorageFileSystem", v14, v17);
 
       v10 = v19;
       goto LABEL_6;
@@ -314,12 +314,12 @@ LABEL_6:
   return v10 & 1;
 }
 
-- (BOOL)_fileExistsAtPath:(id)a3 isDirectory:(BOOL *)a4 error:(id *)a5
+- (BOOL)_fileExistsAtPath:(id)path isDirectory:(BOOL *)directory error:(id *)error
 {
-  v8 = objc_msgSend__validatedFullPathForPath_error_(self, a2, a3, a5);
+  v8 = objc_msgSend__validatedFullPathForPath_error_(self, a2, path, error);
   if (v8)
   {
-    isDirectory = objc_msgSend_fileExistsAtPath_isDirectory_(self->_fileManager, v7, v8, a4);
+    isDirectory = objc_msgSend_fileExistsAtPath_isDirectory_(self->_fileManager, v7, v8, directory);
   }
 
   else
@@ -330,12 +330,12 @@ LABEL_6:
   return isDirectory;
 }
 
-- (BOOL)removeObjectAtPath:(id)a3 error:(id *)a4
+- (BOOL)removeObjectAtPath:(id)path error:(id *)error
 {
-  v7 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v7 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   if (v7)
   {
-    v8 = objc_msgSend_removeItemAtURL_error_(self->_fileManager, v6, v7, a4);
+    v8 = objc_msgSend_removeItemAtURL_error_(self->_fileManager, v6, v7, error);
   }
 
   else
@@ -346,20 +346,20 @@ LABEL_6:
   return v8;
 }
 
-- (id)fileForReadingAtKeyPath:(id)a3 error:(id *)a4
+- (id)fileForReadingAtKeyPath:(id)path error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v11 = objc_msgSend__validatedFullURLForPath_error_(self, v7, v6, a4);
+  pathCopy = path;
+  v11 = objc_msgSend__validatedFullURLForPath_error_(self, v7, pathCopy, error);
   if (v11)
   {
     v12 = objc_alloc(objc_msgSend__classForEncryptedFile(self, v8, v9, v10));
     v15 = objc_msgSend_initForReadingAtURL_(v12, v13, v11, v14);
     v17 = v15;
-    if (a4 && !v15)
+    if (error && !v15)
     {
       v34 = 0;
-      if (objc_msgSend__fileExistsAtPath_isDirectory_error_(self, v16, v6, &v34, 0))
+      if (objc_msgSend__fileExistsAtPath_isDirectory_error_(self, v16, pathCopy, &v34, 0))
       {
         v19 = APLogForCategory(0x33uLL);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -387,7 +387,7 @@ LABEL_6:
         v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v18, v40, &v39, 1);
         objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, v30, 260, v27);
       }
-      *a4 = ;
+      *error = ;
     }
   }
 
@@ -401,23 +401,23 @@ LABEL_6:
   return v17;
 }
 
-- (id)fileForWritingAtKeyPath:(id)a3 error:(id *)a4
+- (id)fileForWritingAtKeyPath:(id)path error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v9 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   if (v9)
   {
     v10 = objc_alloc(objc_msgSend__classForEncryptedFile(self, v6, v7, v8));
     v13 = objc_msgSend_initForWritingAtURL_(v10, v11, v9, v12);
     v15 = v13;
-    if (a4 && !v13)
+    if (error && !v13)
     {
       v16 = MEMORY[0x1E696ABC0];
       v17 = kSFSCouldNotConstructFile;
       v22 = @"reason";
       v23[0] = @"Could not construct StorageFile for writing.";
       v18 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v14, v23, &v22, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v16, v19, @"com.apple.ap.StorageFileSystem", v17, v18);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v16, v19, @"com.apple.ap.StorageFileSystem", v17, v18);
     }
   }
 
@@ -431,23 +431,23 @@ LABEL_6:
   return v15;
 }
 
-- (id)fileForAppendingAtKeyPath:(id)a3 error:(id *)a4
+- (id)fileForAppendingAtKeyPath:(id)path error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v9 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   if (v9)
   {
     v10 = objc_alloc(objc_msgSend__classForEncryptedFile(self, v6, v7, v8));
     v13 = objc_msgSend_initForAppendingAtURL_(v10, v11, v9, v12);
     v15 = v13;
-    if (a4 && !v13)
+    if (error && !v13)
     {
       v16 = MEMORY[0x1E696ABC0];
       v17 = kSFSCouldNotConstructFile;
       v22 = @"reason";
       v23[0] = @"Could not construct StorageFile for appending.";
       v18 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v14, v23, &v22, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v16, v19, @"com.apple.ap.StorageFileSystem", v17, v18);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v16, v19, @"com.apple.ap.StorageFileSystem", v17, v18);
     }
   }
 
@@ -461,13 +461,13 @@ LABEL_6:
   return v15;
 }
 
-- (id)fileAtKeyPath:(id)a3 forMode:(int64_t)a4 error:(id *)a5
+- (id)fileAtKeyPath:(id)path forMode:(int64_t)mode error:(id *)error
 {
-  v10 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a5);
+  v10 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   if (v10)
   {
     v11 = objc_alloc(objc_msgSend__classForEncryptedFile(self, v7, v8, v9));
-    v13 = objc_msgSend_initForMode_atURL_(v11, v12, a4, v10);
+    v13 = objc_msgSend_initForMode_atURL_(v11, v12, mode, v10);
   }
 
   else
@@ -478,14 +478,14 @@ LABEL_6:
   return v13;
 }
 
-- (id)lastModifiedDateForFileAtPath:(id)a3 error:(id *)a4
+- (id)lastModifiedDateForFileAtPath:(id)path error:(id *)error
 {
-  v5 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v5 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   v7 = v5;
   if (v5)
   {
     v10 = 0;
-    objc_msgSend_getResourceValue_forKey_error_(v5, v6, &v10, *MEMORY[0x1E695DA98], a4);
+    objc_msgSend_getResourceValue_forKey_error_(v5, v6, &v10, *MEMORY[0x1E695DA98], error);
     v8 = v10;
   }
 
@@ -497,14 +497,14 @@ LABEL_6:
   return v8;
 }
 
-- (id)createdDateForFileAtPath:(id)a3 error:(id *)a4
+- (id)createdDateForFileAtPath:(id)path error:(id *)error
 {
-  v5 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v5 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   v7 = v5;
   if (v5)
   {
     v10 = 0;
-    objc_msgSend_getResourceValue_forKey_error_(v5, v6, &v10, *MEMORY[0x1E695DAA8], a4);
+    objc_msgSend_getResourceValue_forKey_error_(v5, v6, &v10, *MEMORY[0x1E695DAA8], error);
     v8 = v10;
   }
 
@@ -516,14 +516,14 @@ LABEL_6:
   return v8;
 }
 
-- (id)addedToDirectoryDateForFileAtPath:(id)a3 error:(id *)a4
+- (id)addedToDirectoryDateForFileAtPath:(id)path error:(id *)error
 {
-  v5 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v5 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   v7 = v5;
   if (v5)
   {
     v10 = 0;
-    objc_msgSend_getResourceValue_forKey_error_(v5, v6, &v10, *MEMORY[0x1E695DA78], a4);
+    objc_msgSend_getResourceValue_forKey_error_(v5, v6, &v10, *MEMORY[0x1E695DA78], error);
     v8 = v10;
   }
 
@@ -535,13 +535,13 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)touchFileAtPath:(id)a3 error:(id *)a4
+- (BOOL)touchFileAtPath:(id)path error:(id *)error
 {
-  v8 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v8 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   if (v8)
   {
     v9 = objc_msgSend_now(MEMORY[0x1E695DF00], v5, v6, v7);
-    v11 = objc_msgSend_setResourceValue_forKey_error_(v8, v10, v9, *MEMORY[0x1E695DA98], a4);
+    v11 = objc_msgSend_setResourceValue_forKey_error_(v8, v10, v9, *MEMORY[0x1E695DA98], error);
   }
 
   else
@@ -552,14 +552,14 @@ LABEL_6:
   return v11;
 }
 
-- (id)iterateObjectsIncludingFolders:(BOOL)a3
+- (id)iterateObjectsIncludingFolders:(BOOL)folders
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v5 = objc_msgSend__validatedFullURLForPath_error_(self, a2, &stru_1F38FD5F0, 0);
   v9 = v5;
   if (v5 && (objc_msgSend_absoluteString(v5, v6, v7, v8), v10 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_length(v10, v11, v12, v13), v10, v14))
   {
-    if (a3)
+    if (folders)
     {
       v16 = 0;
       objc_msgSend_enumeratorAtURL_includingPropertiesForKeys_options_errorHandler_(self->_fileManager, v15, v9, 0, 16, &unk_1F38F48E0);
@@ -577,7 +577,7 @@ LABEL_6:
     v24[2] = sub_1BAF17B70;
     v24[3] = &unk_1E7F1D120;
     v25 = v19;
-    v26 = a3;
+    foldersCopy = folders;
     v20 = v19;
     v21 = _Block_copy(v24);
     v17 = _Block_copy(v21);
@@ -593,14 +593,14 @@ LABEL_6:
   return v17;
 }
 
-- (void)getStorageSize:(unint64_t *)a3 allocatedSize:(unint64_t *)a4 files:(unint64_t *)a5
+- (void)getStorageSize:(unint64_t *)size allocatedSize:(unint64_t *)allocatedSize files:(unint64_t *)files
 {
   v72[3] = *MEMORY[0x1E69E9840];
-  if (a3 && a4 && a5)
+  if (size && allocatedSize && files)
   {
-    *a3 = 0;
-    *a4 = 0;
-    *a5 = 0;
+    *size = 0;
+    *allocatedSize = 0;
+    *files = 0;
     v9 = objc_msgSend__validatedFullURLForPath_error_(self, a2, &stru_1F38FD5F0, 0);
     v13 = v9;
     if (v9)
@@ -610,9 +610,9 @@ LABEL_6:
 
       if (v18)
       {
-        v54 = a3;
-        v56 = a4;
-        v57 = a5;
+        sizeCopy = size;
+        allocatedSizeCopy = allocatedSize;
+        filesCopy = files;
         v20 = *MEMORY[0x1E695DBB8];
         v21 = *MEMORY[0x1E695DAC0];
         v72[0] = *MEMORY[0x1E695DBB8];
@@ -710,9 +710,9 @@ LABEL_6:
           v28 = 0;
         }
 
-        *v54 = v61;
-        *v56 = v60;
-        *v57 = v59;
+        *sizeCopy = v61;
+        *allocatedSizeCopy = v60;
+        *filesCopy = v59;
 
         v13 = v55;
       }
@@ -722,13 +722,13 @@ LABEL_6:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dfsWithStartPath:(id)a3 nodeCallback:(id)a4
+- (void)dfsWithStartPath:(id)path nodeCallback:(id)callback
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_stringByDeletingLastPathComponent(v6, v8, v9, v10);
-  v72 = self;
+  pathCopy = path;
+  callbackCopy = callback;
+  v11 = objc_msgSend_stringByDeletingLastPathComponent(pathCopy, v8, v9, v10);
+  selfCopy = self;
   v13 = objc_msgSend__validatedFullURLForPath_error_(self, v12, v11, 0);
 
   if (v13)
@@ -739,7 +739,7 @@ LABEL_6:
     if (v21)
     {
       v24 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v22, 15, v23);
-      v28 = objc_msgSend_lastPathComponent(v6, v25, v26, v27);
+      v28 = objc_msgSend_lastPathComponent(pathCopy, v25, v26, v27);
       v79[0] = v28;
       v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v29, v79, 1);
       objc_msgSend_addObject_(v24, v31, v30, v32);
@@ -749,7 +749,7 @@ LABEL_6:
       {
         v39 = 0;
         v71 = v13;
-        v70 = v6;
+        v70 = pathCopy;
         do
         {
           v40 = v39;
@@ -757,12 +757,12 @@ LABEL_6:
           v39 = objc_msgSend_lastObject(v24, v36, v37, v38, v70);
 
           objc_msgSend_removeLastObject(v24, v41, v42, v43);
-          v7[2](v7, v39, &v77);
+          callbackCopy[2](callbackCopy, v39, &v77);
           if ((v77 & 1) == 0)
           {
             v47 = objc_msgSend_pathWithComponents_(MEMORY[0x1E696AEC0], v44, v39, v46);
             v50 = objc_msgSend_URLByAppendingPathComponent_(v13, v48, v47, v49);
-            fileManager = v72->_fileManager;
+            fileManager = selfCopy->_fileManager;
             v55 = objc_msgSend_path(v50, v52, v53, v54);
             v57 = objc_msgSend_contentsOfDirectoryAtPath_error_(fileManager, v56, v55, 0);
 
@@ -801,7 +801,7 @@ LABEL_6:
 
         while (objc_msgSend_count(v24, v44, v45, v46));
 
-        v6 = v70;
+        pathCopy = v70;
       }
     }
   }
@@ -809,13 +809,13 @@ LABEL_6:
   v69 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_validatedPath:(id)a3 error:(id *)a4
+- (id)_validatedPath:(id)path error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v8 = objc_msgSend__validatedPath_error_(APStorageManager, v6, v7, a4);
+    v8 = objc_msgSend__validatedPath_error_(APStorageManager, v6, pathCopy, error);
     v11 = v8;
     if (v8)
     {
@@ -830,46 +830,46 @@ LABEL_6:
       }
 
       v18 = v12;
-      a4 = objc_msgSend__validatedPath_error_(APStorageManager, v13, v12, a4);
+      error = objc_msgSend__validatedPath_error_(APStorageManager, v13, v12, error);
     }
 
     else
     {
-      a4 = 0;
+      error = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v14 = MEMORY[0x1E696ABC0];
     v15 = kSFSMissingPathError;
     v21 = @"reason";
     v22[0] = @"path was nil.";
     v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v6, v22, &v21, 1);
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v14, v17, @"com.apple.ap.StorageFileSystem", v15, v16);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v14, v17, @"com.apple.ap.StorageFileSystem", v15, v16);
 
-    a4 = 0;
+    error = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-+ (id)_validatedPath:(id)a3 error:(id *)a4
++ (id)_validatedPath:(id)path error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ((objc_msgSend_hasPrefix_(v5, v6, @"/", v7) & 1) != 0 || (objc_msgSend_hasPrefix_(v5, v8, @"..", v9) & 1) != 0 || (objc_msgSend_hasPrefix_(v5, v8, @".", v10) & 1) != 0 || (objc_msgSend_hasPrefix_(v5, v8, @"~", v11) & 1) != 0 || (objc_msgSend_containsString_(v5, v8, @"/../", v12) & 1) != 0 || objc_msgSend_containsString_(v5, v8, @"/./", v13))
+  pathCopy = path;
+  if ((objc_msgSend_hasPrefix_(pathCopy, v6, @"/", v7) & 1) != 0 || (objc_msgSend_hasPrefix_(pathCopy, v8, @"..", v9) & 1) != 0 || (objc_msgSend_hasPrefix_(pathCopy, v8, @".", v10) & 1) != 0 || (objc_msgSend_hasPrefix_(pathCopy, v8, @"~", v11) & 1) != 0 || (objc_msgSend_containsString_(pathCopy, v8, @"/../", v12) & 1) != 0 || objc_msgSend_containsString_(pathCopy, v8, @"/./", v13))
   {
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v15 = kSFSInvalidPathError;
       v23 = @"reason";
       v24[0] = @"Invalid path for SFS.";
       v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v8, v24, &v23, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v14, v17, @"com.apple.ap.StorageFileSystem", v15, v16);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v14, v17, @"com.apple.ap.StorageFileSystem", v15, v16);
     }
 
     v18 = APLogForCategory(0x33uLL);
@@ -884,7 +884,7 @@ LABEL_6:
 
   else
   {
-    v19 = v5;
+    v19 = pathCopy;
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -892,9 +892,9 @@ LABEL_6:
   return v19;
 }
 
-- (id)_validatedFullPathForPath:(id)a3 error:(id *)a4
+- (id)_validatedFullPathForPath:(id)path error:(id *)error
 {
-  v4 = objc_msgSend__validatedFullURLForPath_error_(self, a2, a3, a4);
+  v4 = objc_msgSend__validatedFullURLForPath_error_(self, a2, path, error);
   v8 = v4;
   if (v4)
   {
@@ -924,16 +924,16 @@ LABEL_6:
   return v9;
 }
 
-- (id)_validatedFullURLForPath:(id)a3 error:(id *)a4
+- (id)_validatedFullURLForPath:(id)path error:(id *)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend__validatedPath_error_(self, a2, a3, a4);
+  v9 = objc_msgSend__validatedPath_error_(self, a2, path, error);
   if (v9)
   {
     v10 = objc_msgSend__rootURL(self, v6, v7, v8);
     v13 = objc_msgSend_URLByAppendingPathComponent_(v10, v11, v9, v12);
     v15 = v13;
-    if (a4 && !v13)
+    if (error && !v13)
     {
       v16 = MEMORY[0x1E696ABC0];
       v17 = kSFSCouldNotAppendPathError;
@@ -942,7 +942,7 @@ LABEL_6:
       v23[0] = v9;
       v23[1] = @"Could not append path";
       v18 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v14, v23, v22, 2);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v16, v19, @"com.apple.ap.StorageFileSystem", v17, v18);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v16, v19, @"com.apple.ap.StorageFileSystem", v17, v18);
     }
   }
 
@@ -956,12 +956,12 @@ LABEL_6:
   return v15;
 }
 
-- (id)subpathsOfDirectoryAtPath:(id)a3 error:(id *)a4
+- (id)subpathsOfDirectoryAtPath:(id)path error:(id *)error
 {
-  v7 = objc_msgSend__validatedFullPathForPath_error_(self, a2, a3, a4);
+  v7 = objc_msgSend__validatedFullPathForPath_error_(self, a2, path, error);
   if (v7)
   {
-    v8 = objc_msgSend_subpathsOfDirectoryAtPath_error_(self->_fileManager, v6, v7, a4);
+    v8 = objc_msgSend_subpathsOfDirectoryAtPath_error_(self->_fileManager, v6, v7, error);
   }
 
   else
@@ -972,12 +972,12 @@ LABEL_6:
   return v8;
 }
 
-- (id)contentsOfDirectoryAtPath:(id)a3 error:(id *)a4
+- (id)contentsOfDirectoryAtPath:(id)path error:(id *)error
 {
-  v7 = objc_msgSend__validatedFullPathForPath_error_(self, a2, a3, a4);
+  v7 = objc_msgSend__validatedFullPathForPath_error_(self, a2, path, error);
   if (v7)
   {
-    v8 = objc_msgSend_contentsOfDirectoryAtPath_error_(self->_fileManager, v6, v7, a4);
+    v8 = objc_msgSend_contentsOfDirectoryAtPath_error_(self->_fileManager, v6, v7, error);
   }
 
   else
@@ -988,16 +988,16 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 error:(id *)a5
+- (BOOL)moveItemAtPath:(id)path toPath:(id)toPath error:(id *)error
 {
-  v8 = a4;
-  v11 = objc_msgSend__validatedFullURLForPath_error_(self, v9, a3, a5);
+  toPathCopy = toPath;
+  v11 = objc_msgSend__validatedFullURLForPath_error_(self, v9, path, error);
   if (v11)
   {
-    v13 = objc_msgSend__validatedFullURLForPath_error_(self, v10, v8, a5);
-    if (v13 && objc_msgSend__createDirectoriesForURL_error_(self, v12, v13, a5))
+    v13 = objc_msgSend__validatedFullURLForPath_error_(self, v10, toPathCopy, error);
+    if (v13 && objc_msgSend__createDirectoriesForURL_error_(self, v12, v13, error))
     {
-      v15 = objc_msgSend_moveItemAtURL_toURL_error_(self->_fileManager, v14, v11, v13, a5);
+      v15 = objc_msgSend_moveItemAtURL_toURL_error_(self->_fileManager, v14, v11, v13, error);
     }
 
     else
@@ -1014,10 +1014,10 @@ LABEL_6:
   return v15;
 }
 
-+ (id)_applicationSupportSubdirectory:(id)a3
++ (id)_applicationSupportSubdirectory:(id)subdirectory
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  subdirectoryCopy = subdirectory;
   v4 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 1uLL, 1);
   v8 = objc_msgSend_lastObject(v4, v5, v6, v7);
 
@@ -1027,9 +1027,9 @@ LABEL_6:
   v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v10, v19, 2);
   v14 = objc_msgSend_fileURLWithPathComponents_(v9, v12, v11, v13);
 
-  if (v3)
+  if (subdirectoryCopy)
   {
-    v16 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v14, v15, v3, 1);
+    v16 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v14, v15, subdirectoryCopy, 1);
 
     v14 = v16;
   }
@@ -1039,10 +1039,10 @@ LABEL_6:
   return v14;
 }
 
-- (id)_makeApplicationSupportSubdirectory:(id)a3
+- (id)_makeApplicationSupportSubdirectory:(id)subdirectory
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend__applicationSupportSubdirectory_(APStorageManager, a2, a3, v3);
+  v5 = objc_msgSend__applicationSupportSubdirectory_(APStorageManager, a2, subdirectory, v3);
   fileManager = self->_fileManager;
   v26 = 0;
   v8 = objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(fileManager, v7, v5, 1, 0, &v26);
@@ -1077,17 +1077,17 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)_createDirectoriesForURL:(id)a3 error:(id *)a4
+- (BOOL)_createDirectoriesForURL:(id)l error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_URLByDeletingLastPathComponent(a3, a2, a3, a4);
-  DirectoryAtURL_withIntermediateDirectories_attributes_error = objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(self->_fileManager, v7, v6, 1, 0, a4);
+  v6 = objc_msgSend_URLByDeletingLastPathComponent(l, a2, l, error);
+  DirectoryAtURL_withIntermediateDirectories_attributes_error = objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(self->_fileManager, v7, v6, 1, 0, error);
   if ((DirectoryAtURL_withIntermediateDirectories_attributes_error & 1) == 0)
   {
     v9 = APLogForCategory(0x33uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = *a4;
+      v10 = *error;
       v13 = 138543362;
       v14 = v10;
       _os_log_impl(&dword_1BADC1000, v9, OS_LOG_TYPE_ERROR, "Failed to create directory, %{public}@", &v13, 0xCu);
@@ -1101,7 +1101,7 @@ LABEL_6:
 + (BOOL)areThereStoredItems
 {
   v5 = objc_msgSend__rootSubdirectory(APStorageManager, a2, v2, v3);
-  v8 = objc_msgSend__applicationSupportSubdirectory_(a1, v6, v5, v7);
+  v8 = objc_msgSend__applicationSupportSubdirectory_(self, v6, v5, v7);
   v12 = objc_msgSend_path(v8, v9, v10, v11);
 
   v16 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v13, v14, v15);
@@ -1124,15 +1124,15 @@ LABEL_6:
 + (BOOL)removeStorage
 {
   v5 = objc_msgSend__rootSubdirectory(APStorageManager, a2, v2, v3);
-  LOBYTE(a1) = objc_msgSend__removeStorageForSubdirectory_(a1, v6, v5, v7);
+  LOBYTE(self) = objc_msgSend__removeStorageForSubdirectory_(self, v6, v5, v7);
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)_removeStorageForSubdirectory:(id)a3
++ (BOOL)_removeStorageForSubdirectory:(id)subdirectory
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend__applicationSupportSubdirectory_(a1, a2, a3, v3);
+  v4 = objc_msgSend__applicationSupportSubdirectory_(self, a2, subdirectory, v3);
   v8 = objc_msgSend_path(v4, v5, v6, v7);
 
   v12 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v9, v10, v11);
@@ -1213,18 +1213,18 @@ LABEL_15:
   return v35;
 }
 
-+ (void)sendAnalyticError:(id)a3 domain:(id)a4 code:(int64_t)a5
++ (void)sendAnalyticError:(id)error domain:(id)domain code:(int64_t)code
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v25 = @"code";
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  v9 = a3;
-  v12 = objc_msgSend_numberWithInteger_(v7, v10, a5, v11);
+  domainCopy = domain;
+  errorCopy = error;
+  v12 = objc_msgSend_numberWithInteger_(v7, v10, code, v11);
   v26[0] = v12;
   v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v13, v26, &v25, 1);
 
-  v17 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"%@%@", v16, v8, v9);
+  v17 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"%@%@", v16, domainCopy, errorCopy);
 
   v18 = APLogForCategory(0x33uLL);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))

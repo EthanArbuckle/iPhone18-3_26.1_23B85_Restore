@@ -1,5 +1,5 @@
 @interface FindBaseServiceProvider
-- (BOOL)enqueueRequest:(id)a3;
+- (BOOL)enqueueRequest:(id)request;
 - (BOOL)isProviderEnabledForLocations;
 - (FindBaseServiceProvider)init;
 - (NSMutableDictionary)fullDeviceInfo;
@@ -14,29 +14,29 @@
 - (id)_constructVolatileFullDeviceInfo;
 - (id)_nonEssentialRegisterDigestPrefKey;
 - (id)_registerDigestPrefKey;
-- (id)alertActionInfoForAction:(id)a3 andURL:(id)a4;
-- (id)copyHandlerForCommand:(id)a3 params:(id)a4;
-- (id)formattedURLForTemplate:(id)a3;
-- (id)substituteStandardURLPlaceholders:(id)a3;
+- (id)alertActionInfoForAction:(id)action andURL:(id)l;
+- (id)copyHandlerForCommand:(id)command params:(id)params;
+- (id)formattedURLForTemplate:(id)template;
+- (id)substituteStandardURLPlaceholders:(id)placeholders;
 - (unsigned)authInvalidError;
 - (unsigned)essentialServerInfoMissingError;
 - (void)_beginXPCTransaction;
 - (void)_endXPCTransaction;
-- (void)_registerDeviceWithCause:(id)a3 includeKeys:(unint64_t)a4;
-- (void)ackLocateCommand:(id)a3 withStatusCode:(int64_t)a4 andStatusMessage:(id)a5 withCompletion:(id)a6;
-- (void)ackRegisterCommand:(id)a3 withCompletion:(id)a4;
-- (void)appInstallStateChanged:(id)a3;
+- (void)_registerDeviceWithCause:(id)cause includeKeys:(unint64_t)keys;
+- (void)ackLocateCommand:(id)command withStatusCode:(int64_t)code andStatusMessage:(id)message withCompletion:(id)completion;
+- (void)ackRegisterCommand:(id)command withCompletion:(id)completion;
+- (void)appInstallStateChanged:(id)changed;
 - (void)dealloc;
 - (void)deinitializeProvider;
 - (void)deleteRegisterDigest;
 - (void)deregisterCommonNotifications;
-- (void)didCancelRequest:(id)a3;
-- (void)didReceiveResponseFor:(id)a3;
-- (void)handleQueueCheckResponseWithStatus:(int64_t)a3 andBody:(id)a4;
+- (void)didCancelRequest:(id)request;
+- (void)didReceiveResponseFor:(id)for;
+- (void)handleQueueCheckResponseWithStatus:(int64_t)status andBody:(id)body;
 - (void)registerCommonNotifications;
-- (void)registerDeviceWithCause:(id)a3 force:(BOOL)a4 includeKeys:(unint64_t)a5;
-- (void)sendQueueCheckRequest:(id)a3 withReasons:(id)a4;
-- (void)showAlertFromServerResponse:(id)a3;
+- (void)registerDeviceWithCause:(id)cause force:(BOOL)force includeKeys:(unint64_t)keys;
+- (void)sendQueueCheckRequest:(id)request withReasons:(id)reasons;
+- (void)showAlertFromServerResponse:(id)response;
 - (void)tryToFetchAuthToken;
 - (void)unregisterDevice;
 @end
@@ -45,8 +45,8 @@
 
 - (void)dealloc
 {
-  v3 = [(FindBaseServiceProvider *)self standardLocator];
-  [v3 stopLocator];
+  standardLocator = [(FindBaseServiceProvider *)self standardLocator];
+  [standardLocator stopLocator];
 
   v4.receiver = self;
   v4.super_class = FindBaseServiceProvider;
@@ -95,26 +95,26 @@
 
 - (void)deleteRegisterDigest
 {
-  v5 = [(FindBaseServiceProvider *)self _registerDigestPrefKey];
-  [FMPreferencesUtil removeKey:v5 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
-  v3 = [(FindBaseServiceProvider *)self _nonEssentialRegisterDigestPrefKey];
-  [FMPreferencesUtil removeKey:v3 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
-  v4 = [(FindBaseServiceProvider *)self lastForcedRegisterTimePrefKey];
-  [FMPreferencesUtil removeKey:v4 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
+  _registerDigestPrefKey = [(FindBaseServiceProvider *)self _registerDigestPrefKey];
+  [FMPreferencesUtil removeKey:_registerDigestPrefKey inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
+  _nonEssentialRegisterDigestPrefKey = [(FindBaseServiceProvider *)self _nonEssentialRegisterDigestPrefKey];
+  [FMPreferencesUtil removeKey:_nonEssentialRegisterDigestPrefKey inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
+  lastForcedRegisterTimePrefKey = [(FindBaseServiceProvider *)self lastForcedRegisterTimePrefKey];
+  [FMPreferencesUtil removeKey:lastForcedRegisterTimePrefKey inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
 }
 
 - (void)deinitializeProvider
 {
-  v2 = self;
+  selfCopy = self;
   v30.receiver = self;
   v30.super_class = FindBaseServiceProvider;
   [(ServiceProvider *)&v30 deinitializeProvider];
   v3 = sub_100002830();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(FindBaseServiceProvider *)v2 fm_logID];
+    fm_logID = [(FindBaseServiceProvider *)selfCopy fm_logID];
     *buf = 138412290;
-    v32 = v4;
+    v32 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ Deinitializing...", buf, 0xCu);
   }
 
@@ -122,8 +122,8 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(FindBaseServiceProvider *)v2 requests];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v35 count:16];
+  requests = [(FindBaseServiceProvider *)selfCopy requests];
+  v6 = [requests countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v6)
   {
     v8 = v6;
@@ -137,23 +137,23 @@
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requests);
         }
 
         v11 = *(*(&v26 + 1) + 8 * v10);
         v12 = sub_100002830();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          [(FindBaseServiceProvider *)v2 fm_logID];
-          v14 = v13 = v2;
-          v15 = [v11 fm_logID];
+          [(FindBaseServiceProvider *)selfCopy fm_logID];
+          v14 = v13 = selfCopy;
+          fm_logID2 = [v11 fm_logID];
           *buf = v25;
           v32 = v14;
           v33 = 2112;
-          v34 = v15;
+          v34 = fm_logID2;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@ cancelling request %@", buf, 0x16u);
 
-          v2 = v13;
+          selfCopy = v13;
         }
 
         [v11 setDelegate:0];
@@ -162,23 +162,23 @@
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v26 objects:v35 count:16];
+      v8 = [requests countByEnumeratingWithState:&v26 objects:v35 count:16];
     }
 
     while (v8);
   }
 
   v16 = +[NSMutableArray array];
-  [(FindBaseServiceProvider *)v2 setRequests:v16];
+  [(FindBaseServiceProvider *)selfCopy setRequests:v16];
 
-  v17 = [(FindBaseServiceProvider *)v2 standardLocator];
-  if (v17)
+  standardLocator = [(FindBaseServiceProvider *)selfCopy standardLocator];
+  if (standardLocator)
   {
-    v18 = v17;
-    v19 = [(FindBaseServiceProvider *)v2 standardLocator];
-    v20 = [v19 locatorRunning];
+    v18 = standardLocator;
+    standardLocator2 = [(FindBaseServiceProvider *)selfCopy standardLocator];
+    locatorRunning = [standardLocator2 locatorRunning];
 
-    if (v20)
+    if (locatorRunning)
     {
       v21 = sub_100002830();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -187,24 +187,24 @@
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Stopping standard locate...", buf, 2u);
       }
 
-      v22 = [(FindBaseServiceProvider *)v2 standardLocator];
-      [v22 stopLocator];
+      standardLocator3 = [(FindBaseServiceProvider *)selfCopy standardLocator];
+      [standardLocator3 stopLocator];
 
-      v23 = [(FindBaseServiceProvider *)v2 standardLocator];
-      [v23 setReceivedLocationBlock:0];
+      standardLocator4 = [(FindBaseServiceProvider *)selfCopy standardLocator];
+      [standardLocator4 setReceivedLocationBlock:0];
 
-      v24 = [(FindBaseServiceProvider *)v2 standardLocator];
-      [v24 setStoppedLocatorBlock:0];
+      standardLocator5 = [(FindBaseServiceProvider *)selfCopy standardLocator];
+      [standardLocator5 setStoppedLocatorBlock:0];
     }
   }
 
-  [(FindBaseServiceProvider *)v2 setStandardLocator:0, v25];
+  [(FindBaseServiceProvider *)selfCopy setStandardLocator:0, v25];
 }
 
-- (id)formattedURLForTemplate:(id)a3
+- (id)formattedURLForTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [(FindBaseServiceProvider *)self substituteStandardURLPlaceholders:v4];
+  templateCopy = template;
+  v5 = [(FindBaseServiceProvider *)self substituteStandardURLPlaceholders:templateCopy];
   v6 = [[NSURL alloc] initWithString:v5];
   if (!v6)
   {
@@ -214,7 +214,7 @@
       v9 = 138412546;
       v10 = v5;
       v11 = 2112;
-      v12 = v4;
+      v12 = templateCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Could not create an NSURL from the url string %@ for the template %@", &v9, 0x16u);
     }
   }
@@ -222,117 +222,117 @@
   return v6;
 }
 
-- (id)substituteStandardURLPlaceholders:(id)a3
+- (id)substituteStandardURLPlaceholders:(id)placeholders
 {
-  v4 = a3;
+  placeholdersCopy = placeholders;
   v5 = +[PreferencesMgr sharedInstance];
-  v6 = [v5 hostportOverride];
+  hostportOverride = [v5 hostportOverride];
 
-  if ([v6 length])
+  if ([hostportOverride length])
   {
-    v7 = [v4 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v6];
+    v7 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:hostportOverride];
   }
 
   else
   {
-    v8 = [(ServiceProvider *)self account];
-    v9 = [v8 serverHost];
+    account = [(ServiceProvider *)self account];
+    serverHost = [account serverHost];
 
-    if (!v9)
+    if (!serverHost)
     {
       goto LABEL_6;
     }
 
-    v10 = [(ServiceProvider *)self account];
-    v11 = [v10 serverHost];
-    v7 = [v4 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v11];
+    account2 = [(ServiceProvider *)self account];
+    serverHost2 = [account2 serverHost];
+    v7 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:serverHost2];
 
-    v4 = v10;
+    placeholdersCopy = account2;
   }
 
-  v4 = v7;
+  placeholdersCopy = v7;
 LABEL_6:
   v12 = +[PreferencesMgr sharedInstance];
-  v13 = [v12 protocolSchemeOverride];
+  protocolSchemeOverride = [v12 protocolSchemeOverride];
 
-  if ([v13 length])
+  if ([protocolSchemeOverride length])
   {
-    v14 = [v4 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v13];
+    v14 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:protocolSchemeOverride];
   }
 
   else
   {
-    v15 = [(ServiceProvider *)self account];
-    v16 = [v15 serverProtocolScheme];
+    account3 = [(ServiceProvider *)self account];
+    serverProtocolScheme = [account3 serverProtocolScheme];
 
-    if (!v16)
+    if (!serverProtocolScheme)
     {
       goto LABEL_11;
     }
 
-    v17 = [(ServiceProvider *)self account];
-    v18 = [v17 serverProtocolScheme];
-    v14 = [v4 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v18];
+    account4 = [(ServiceProvider *)self account];
+    serverProtocolScheme2 = [account4 serverProtocolScheme];
+    v14 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:serverProtocolScheme2];
 
-    v4 = v17;
+    placeholdersCopy = account4;
   }
 
-  v4 = v14;
+  placeholdersCopy = v14;
 LABEL_11:
-  v19 = [(FindBaseServiceProvider *)self serviceIdentifierInURL];
+  serviceIdentifierInURL = [(FindBaseServiceProvider *)self serviceIdentifierInURL];
 
-  if (v19)
+  if (serviceIdentifierInURL)
   {
-    v20 = [(FindBaseServiceProvider *)self serviceIdentifierInURL];
-    v21 = [v4 stringByReplacingOccurrencesOfString:@"${service}" withString:v20];
+    serviceIdentifierInURL2 = [(FindBaseServiceProvider *)self serviceIdentifierInURL];
+    v21 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${service}" withString:serviceIdentifierInURL2];
 
-    v4 = v21;
+    placeholdersCopy = v21;
   }
 
-  v22 = [(ServiceProvider *)self account];
-  v23 = [v22 authId];
+  account5 = [(ServiceProvider *)self account];
+  authId = [account5 authId];
 
-  if (v23)
+  if (authId)
   {
-    v24 = [(ServiceProvider *)self account];
-    v25 = [v24 authId];
-    v26 = [v4 stringByReplacingOccurrencesOfString:@"${dsid}" withString:v25];
+    account6 = [(ServiceProvider *)self account];
+    authId2 = [account6 authId];
+    v26 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${dsid}" withString:authId2];
 
-    v4 = v26;
+    placeholdersCopy = v26;
   }
 
   v27 = +[SystemConfig sharedInstance];
-  v28 = [v27 deviceUDID];
+  deviceUDID = [v27 deviceUDID];
 
-  if (v28)
+  if (deviceUDID)
   {
-    v29 = [v4 stringByReplacingOccurrencesOfString:@"${udid}" withString:v28];
+    v29 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${udid}" withString:deviceUDID];
 
-    v4 = v29;
+    placeholdersCopy = v29;
   }
 
-  return v4;
+  return placeholdersCopy;
 }
 
 - (NSMutableDictionary)fullDeviceInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
   v4 = objc_autoreleasePoolPush();
-  v5 = [(FindBaseServiceProvider *)self _constructNonVolatileFullDeviceInfo];
-  [v3 addEntriesFromDictionary:v5];
+  _constructNonVolatileFullDeviceInfo = [(FindBaseServiceProvider *)self _constructNonVolatileFullDeviceInfo];
+  [v3 addEntriesFromDictionary:_constructNonVolatileFullDeviceInfo];
 
-  v6 = [(FindBaseServiceProvider *)self _constructVolatileFullDeviceInfo];
-  [v3 addEntriesFromDictionary:v6];
+  _constructVolatileFullDeviceInfo = [(FindBaseServiceProvider *)self _constructVolatileFullDeviceInfo];
+  [v3 addEntriesFromDictionary:_constructVolatileFullDeviceInfo];
 
-  v7 = [(FindBaseServiceProvider *)self _constructNonCriticalFullDeviceInfo];
-  [v3 addEntriesFromDictionary:v7];
+  _constructNonCriticalFullDeviceInfo = [(FindBaseServiceProvider *)self _constructNonCriticalFullDeviceInfo];
+  [v3 addEntriesFromDictionary:_constructNonCriticalFullDeviceInfo];
 
   v8 = +[PreferencesMgr sharedInstance];
-  v9 = [v8 deviceInfoOverrides];
+  deviceInfoOverrides = [v8 deviceInfoOverrides];
 
-  if (v9)
+  if (deviceInfoOverrides)
   {
-    [v3 addEntriesFromDictionary:v9];
+    [v3 addEntriesFromDictionary:deviceInfoOverrides];
   }
 
   objc_autoreleasePoolPop(v4);
@@ -342,36 +342,36 @@ LABEL_11:
 
 - (NSMutableDictionary)locationDeviceInfo
 {
-  v3 = [(FindBaseServiceProvider *)self _constructLocationDeviceInfo];
-  v4 = [(FindBaseServiceProvider *)self _constructNonVolatileFullDeviceInfo];
-  [v3 addEntriesFromDictionary:v4];
+  _constructLocationDeviceInfo = [(FindBaseServiceProvider *)self _constructLocationDeviceInfo];
+  _constructNonVolatileFullDeviceInfo = [(FindBaseServiceProvider *)self _constructNonVolatileFullDeviceInfo];
+  [_constructLocationDeviceInfo addEntriesFromDictionary:_constructNonVolatileFullDeviceInfo];
 
-  v5 = [(FindBaseServiceProvider *)self _constructVolatileFullDeviceInfo];
-  [v3 addEntriesFromDictionary:v5];
+  _constructVolatileFullDeviceInfo = [(FindBaseServiceProvider *)self _constructVolatileFullDeviceInfo];
+  [_constructLocationDeviceInfo addEntriesFromDictionary:_constructVolatileFullDeviceInfo];
 
-  v6 = [(FindBaseServiceProvider *)self _constructNonCriticalFullDeviceInfo];
-  [v3 addEntriesFromDictionary:v6];
+  _constructNonCriticalFullDeviceInfo = [(FindBaseServiceProvider *)self _constructNonCriticalFullDeviceInfo];
+  [_constructLocationDeviceInfo addEntriesFromDictionary:_constructNonCriticalFullDeviceInfo];
 
   v7 = +[PreferencesMgr sharedInstance];
-  v8 = [v7 locationDeviceInfoOverrides];
+  locationDeviceInfoOverrides = [v7 locationDeviceInfoOverrides];
 
-  if (v8)
+  if (locationDeviceInfoOverrides)
   {
-    [v3 addEntriesFromDictionary:v8];
+    [_constructLocationDeviceInfo addEntriesFromDictionary:locationDeviceInfoOverrides];
   }
 
-  return v3;
+  return _constructLocationDeviceInfo;
 }
 
 - (id)_constructStandardDeviceContext
 {
   v2 = objc_alloc_init(NSMutableDictionary);
   v3 = +[NSDate date];
-  v4 = [v3 stringValueForServer];
+  stringValueForServer = [v3 stringValueForServer];
 
-  if (v4)
+  if (stringValueForServer)
   {
-    [v2 setObject:v4 forKeyedSubscript:@"deviceTS"];
+    [v2 setObject:stringValueForServer forKeyedSubscript:@"deviceTS"];
   }
 
   return v2;
@@ -409,30 +409,30 @@ LABEL_11:
   }
 
   v8 = +[SystemConfig sharedInstance];
-  v9 = [v8 deviceName];
-  [v3 fm_safelyMapKey:@"deviceName" toObject:v9];
+  deviceName = [v8 deviceName];
+  [v3 fm_safelyMapKey:@"deviceName" toObject:deviceName];
 
   v10 = +[SystemConfig sharedInstance];
-  v11 = [v10 timezone];
-  [v3 fm_safelyMapKey:@"timezone" toObject:v11];
+  timezone = [v10 timezone];
+  [v3 fm_safelyMapKey:@"timezone" toObject:timezone];
 
   v12 = +[SystemConfig sharedInstance];
-  v13 = [v12 locale];
-  [v3 fm_safelyMapKey:@"locale" toObject:v13];
+  locale = [v12 locale];
+  [v3 fm_safelyMapKey:@"locale" toObject:locale];
 
   v14 = +[SystemConfig sharedInstance];
   v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v14 processIdentifier]);
-  v16 = [v15 stringValue];
-  [v3 fm_safelyMapKey:@"processId" toObject:v16];
+  stringValue = [v15 stringValue];
+  [v3 fm_safelyMapKey:@"processId" toObject:stringValue];
 
   v17 = +[SystemConfig sharedInstance];
   v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 unlockState]);
   [v3 setObject:v18 forKeyedSubscript:@"unlockState"];
 
   v19 = +[SystemConfig sharedInstance];
-  v20 = [v19 isFMFAppRemoved];
+  isFMFAppRemoved = [v19 isFMFAppRemoved];
 
-  v21 = [NSNumber numberWithBool:v20];
+  v21 = [NSNumber numberWithBool:isFMFAppRemoved];
   [v3 fm_safelyMapKey:@"isFMFAppRemoved" toObject:v21];
 
   v22 = objc_alloc_init(FMDGainsboroughPairedDeviceSimulation);
@@ -441,8 +441,8 @@ LABEL_11:
     [v3 fm_safelyMapKey:@"deviceName" toObject:@"Gainsborough's iPhone"];
   }
 
-  v23 = [(FindBaseServiceProvider *)self _constructPairedDevicesInfo];
-  [v3 setObject:v23 forKeyedSubscript:@"otherDevices"];
+  _constructPairedDevicesInfo = [(FindBaseServiceProvider *)self _constructPairedDevicesInfo];
+  [v3 setObject:_constructPairedDevicesInfo forKeyedSubscript:@"otherDevices"];
 
   return v3;
 }
@@ -451,8 +451,8 @@ LABEL_11:
 {
   v3 = objc_alloc_init(NSMutableDictionary);
   v4 = +[SystemConfig sharedInstance];
-  v5 = [v4 deviceUDID];
-  [v3 fm_safelyMapKey:@"udid" toObject:v5];
+  deviceUDID = [v4 deviceUDID];
+  [v3 fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
   v6 = +[SystemConfig sharedInstance];
   LODWORD(v4) = [v6 canRegisterWithIDSID];
@@ -460,50 +460,50 @@ LABEL_11:
   if (v4)
   {
     v7 = +[SystemConfig sharedInstance];
-    v8 = [v7 idsDeviceID];
-    [v3 fm_safelyMapKey:@"idsDeviceId" toObject:v8];
+    idsDeviceID = [v7 idsDeviceID];
+    [v3 fm_safelyMapKey:@"idsDeviceId" toObject:idsDeviceID];
   }
 
   v9 = +[SystemConfig sharedInstance];
-  v10 = [v9 deviceClassString];
-  [v3 fm_safelyMapKey:@"deviceClass" toObject:v10];
+  deviceClassString = [v9 deviceClassString];
+  [v3 fm_safelyMapKey:@"deviceClass" toObject:deviceClassString];
 
   v11 = +[SystemConfig sharedInstance];
-  v12 = [v11 productType];
-  [v3 fm_safelyMapKey:@"productType" toObject:v12];
+  productType = [v11 productType];
+  [v3 fm_safelyMapKey:@"productType" toObject:productType];
 
   v13 = +[SystemConfig sharedInstance];
-  v14 = [v13 buildVersion];
-  [v3 fm_safelyMapKey:@"buildVersion" toObject:v14];
+  buildVersion = [v13 buildVersion];
+  [v3 fm_safelyMapKey:@"buildVersion" toObject:buildVersion];
 
   v15 = +[SystemConfig sharedInstance];
-  v16 = [v15 productVersion];
-  [v3 fm_safelyMapKey:@"productVersion" toObject:v16];
+  productVersion = [v15 productVersion];
+  [v3 fm_safelyMapKey:@"productVersion" toObject:productVersion];
 
   v17 = +[SystemConfig sharedInstance];
-  v18 = [v17 platform];
-  [v3 fm_safelyMapKey:@"platform" toObject:v18];
+  platform = [v17 platform];
+  [v3 fm_safelyMapKey:@"platform" toObject:platform];
 
   v19 = +[FMSystemInfo sharedInstance];
   v20 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v19 isInternalBuild]);
   [v3 fm_safelyMapKey:@"isInternal" toObject:v20];
 
   v21 = +[SystemConfig sharedInstance];
-  v22 = [v21 serialNumber];
-  [v3 fm_safelyMapKey:@"serialNumber" toObject:v22];
+  serialNumber = [v21 serialNumber];
+  [v3 fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
 
-  v23 = [(ServiceProvider *)self account];
-  v24 = [v23 versionHistory];
-  v25 = [v24 componentsJoinedByString:{@", "}];
+  account = [(ServiceProvider *)self account];
+  versionHistory = [account versionHistory];
+  v25 = [versionHistory componentsJoinedByString:{@", "}];
   [v3 fm_safelyMapKey:@"versionHistory" toObject:v25];
 
   v26 = +[SystemConfig sharedInstance];
-  v27 = [v26 deviceColor];
-  [v3 fm_safelyMapKey:@"deviceColor" toObject:v27];
+  deviceColor = [v26 deviceColor];
+  [v3 fm_safelyMapKey:@"deviceColor" toObject:deviceColor];
 
   v28 = +[SystemConfig sharedInstance];
-  v29 = [v28 deviceEnclosureColor];
-  [v3 fm_safelyMapKey:@"enclosureColor" toObject:v29];
+  deviceEnclosureColor = [v28 deviceEnclosureColor];
+  [v3 fm_safelyMapKey:@"enclosureColor" toObject:deviceEnclosureColor];
 
   v30 = +[SystemConfig sharedInstance];
   v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v30 forceTouchAvailable]);
@@ -541,8 +541,8 @@ LABEL_11:
 {
   v2 = objc_alloc_init(NSMutableDictionary);
   v3 = +[SystemConfig sharedInstance];
-  v4 = [v3 deviceUDID];
-  [v2 fm_safelyMapKey:@"udid" toObject:v4];
+  deviceUDID = [v3 deviceUDID];
+  [v2 fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
   v5 = +[SystemConfig sharedInstance];
   v6 = v5;
@@ -556,33 +556,33 @@ LABEL_11:
 
 - (id)_registerDigestPrefKey
 {
-  v3 = [(ServiceProvider *)self account];
+  account = [(ServiceProvider *)self account];
   v4 = objc_opt_class();
-  v5 = [(ServiceProvider *)self account];
-  v6 = [v5 uniqueId];
-  v7 = [NSString stringWithFormat:@"RegisterDigest-%@-%@", v4, v6];
+  account2 = [(ServiceProvider *)self account];
+  uniqueId = [account2 uniqueId];
+  v7 = [NSString stringWithFormat:@"RegisterDigest-%@-%@", v4, uniqueId];
 
   return v7;
 }
 
 - (id)_nonEssentialRegisterDigestPrefKey
 {
-  v3 = [(ServiceProvider *)self account];
+  account = [(ServiceProvider *)self account];
   v4 = objc_opt_class();
-  v5 = [(ServiceProvider *)self account];
-  v6 = [v5 uniqueId];
-  v7 = [NSString stringWithFormat:@"RegisterDigestNonEssential-%@-%@", v4, v6];
+  account2 = [(ServiceProvider *)self account];
+  uniqueId = [account2 uniqueId];
+  v7 = [NSString stringWithFormat:@"RegisterDigestNonEssential-%@-%@", v4, uniqueId];
 
   return v7;
 }
 
 - (NSString)lastForcedRegisterTimePrefKey
 {
-  v3 = [(ServiceProvider *)self account];
+  account = [(ServiceProvider *)self account];
   v4 = objc_opt_class();
-  v5 = [(ServiceProvider *)self account];
-  v6 = [v5 uniqueId];
-  v7 = [NSString stringWithFormat:@"LastForcedRegisterTime-%@-%@", v4, v6];
+  account2 = [(ServiceProvider *)self account];
+  uniqueId = [account2 uniqueId];
+  v7 = [NSString stringWithFormat:@"LastForcedRegisterTime-%@-%@", v4, uniqueId];
 
   return v7;
 }
@@ -592,13 +592,13 @@ LABEL_11:
   v35 = +[NSMutableArray array];
   context = objc_autoreleasePoolPush();
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getPairedDevices];
+  getPairedDevices = [v2 getPairedDevices];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v3;
+  obj = getPairedDevices;
   v4 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v4)
   {
@@ -622,12 +622,12 @@ LABEL_11:
 
         v10 = *(*(&v37 + 1) + 8 * i);
         v11 = [v10 valueForProperty:v7];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
         v13 = [v10 valueForProperty:v8];
-        v14 = [v13 BOOLValue];
+        bOOLValue2 = [v13 BOOLValue];
 
-        if (v12 && (v14 & 1) == 0)
+        if (bOOLValue && (bOOLValue2 & 1) == 0)
         {
           v15 = +[NSMutableDictionary dictionary];
           v16 = [v10 valueForProperty:v32];
@@ -649,8 +649,8 @@ LABEL_11:
           [v15 fm_safelyMapKey:@"connectionStatus" toObject:v19];
 
           v20 = [(FindBaseServiceProvider *)self pairingIdForNRDevice:v10];
-          v21 = [v20 UUIDString];
-          [v15 fm_safelyMapKey:@"pairingId" toObject:v21];
+          uUIDString = [v20 UUIDString];
+          [v15 fm_safelyMapKey:@"pairingId" toObject:uUIDString];
 
           v22 = [v10 valueForProperty:v31];
           [v15 fm_safelyMapKey:@"udid" toObject:v22];
@@ -676,68 +676,68 @@ LABEL_11:
   v25 = objc_alloc_init(FMDGainsboroughPairedDeviceSimulation);
   if ([(FMDGainsboroughPairedDeviceSimulation *)v25 isPairedDeviceSimulationActive])
   {
-    v26 = [(FMDGainsboroughPairedDeviceSimulation *)v25 pairedDeviceInfo];
-    [v35 addObjectsFromArray:v26];
+    pairedDeviceInfo = [(FMDGainsboroughPairedDeviceSimulation *)v25 pairedDeviceInfo];
+    [v35 addObjectsFromArray:pairedDeviceInfo];
   }
 
   return v35;
 }
 
-- (void)registerDeviceWithCause:(id)a3 force:(BOOL)a4 includeKeys:(unint64_t)a5
+- (void)registerDeviceWithCause:(id)cause force:(BOOL)force includeKeys:(unint64_t)keys
 {
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = sub_10000EFDC;
   v16[4] = sub_10000EFEC;
-  v8 = a3;
-  v17 = v8;
-  v9 = [(FindBaseServiceProvider *)self registerQueue];
+  causeCopy = cause;
+  v17 = causeCopy;
+  registerQueue = [(FindBaseServiceProvider *)self registerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EFF4;
   block[3] = &unk_10005D690;
   block[4] = self;
-  v12 = v8;
-  v15 = a4;
+  v12 = causeCopy;
+  forceCopy = force;
   v13 = v16;
-  v14 = a5;
-  v10 = v8;
-  dispatch_async(v9, block);
+  keysCopy = keys;
+  v10 = causeCopy;
+  dispatch_async(registerQueue, block);
 
   _Block_object_dispose(v16, 8);
 }
 
-- (void)_registerDeviceWithCause:(id)a3 includeKeys:(unint64_t)a4
+- (void)_registerDeviceWithCause:(id)cause includeKeys:(unint64_t)keys
 {
-  v5 = a3;
-  v6 = [(FindBaseServiceProvider *)self essentialServerInfoMissingError];
-  if (v6 == 1196379972)
+  causeCopy = cause;
+  essentialServerInfoMissingError = [(FindBaseServiceProvider *)self essentialServerInfoMissingError];
+  if (essentialServerInfoMissingError == 1196379972)
   {
-    v7 = [[FMRequestRegister alloc] initWithProvider:self andCause:v5];
-    v8 = [(FMRequestRegister *)v7 registrationInformationDigestIncludingKeys];
-    v9 = [(FindBaseServiceProvider *)self _registerDigestPrefKey];
-    if (qword_100070128 && [qword_100070128 isEqualToData:v8])
+    v7 = [[FMRequestRegister alloc] initWithProvider:self andCause:causeCopy];
+    registrationInformationDigestIncludingKeys = [(FMRequestRegister *)v7 registrationInformationDigestIncludingKeys];
+    _registerDigestPrefKey = [(FindBaseServiceProvider *)self _registerDigestPrefKey];
+    if (qword_100070128 && [qword_100070128 isEqualToData:registrationInformationDigestIncludingKeys])
     {
       v10 = sub_100002830();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(FindBaseServiceProvider *)self fm_logID];
+        fm_logID = [(FindBaseServiceProvider *)self fm_logID];
         *buf = 138412546;
-        v45 = v11;
+        v45 = fm_logID;
         v46 = 2112;
-        v47 = v5;
+        v47 = causeCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ Not sending register with cause %@ because there is already another register with the same registration information in-progress", buf, 0x16u);
       }
     }
 
     else
     {
-      v21 = [FMPreferencesUtil dataForKey:v9 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
+      v21 = [FMPreferencesUtil dataForKey:_registerDigestPrefKey inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
       v10 = v21;
       if (v21)
       {
-        v22 = [v21 isEqualToData:v8];
+        v22 = [v21 isEqualToData:registrationInformationDigestIncludingKeys];
       }
 
       else
@@ -763,7 +763,7 @@ LABEL_11:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v45 = v5;
+              v45 = causeCopy;
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "Reg-info unchanged. Ignoring register %@", buf, 0xCu);
             }
 
@@ -775,7 +775,7 @@ LABEL_11:
           {
             v31 = +[StartupRegisterManager sharedInstance];
             *buf = 138412546;
-            v45 = v5;
+            v45 = causeCopy;
             v46 = 2112;
             v47 = v31;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Reg-info unchanged but forcing register %@ due to %@", buf, 0x16u);
@@ -788,7 +788,7 @@ LABEL_11:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v45 = v5;
+            v45 = causeCopy;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Reg-info unchanged but forcing register %@", buf, 0xCu);
           }
         }
@@ -797,11 +797,11 @@ LABEL_11:
       v32 = sub_100002830();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(FindBaseServiceProvider *)self fm_logID];
+        fm_logID2 = [(FindBaseServiceProvider *)self fm_logID];
         *buf = 138412546;
-        v45 = v33;
+        v45 = fm_logID2;
         v46 = 2112;
-        v47 = v5;
+        v47 = causeCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%@ Sending register with cause %@ because registration information has changed", buf, 0x16u);
       }
 
@@ -810,7 +810,7 @@ LABEL_11:
       v42[1] = 3221225472;
       v42[2] = sub_10000F90C;
       v42[3] = &unk_10005D498;
-      v34 = v8;
+      v34 = registrationInformationDigestIncludingKeys;
       v43 = v34;
       [(FMRequest *)v7 setWillSendHandler:v42];
       v37[0] = _NSConcreteStackBlock;
@@ -819,8 +819,8 @@ LABEL_11:
       v37[3] = &unk_10005D6B8;
       objc_copyWeak(&v41, buf);
       v38 = v34;
-      v39 = v9;
-      v40 = self;
+      v39 = _registerDigestPrefKey;
+      selfCopy = self;
       [(FMRequest *)v7 setCompletionHandler:v37];
       if (![(FindBaseServiceProvider *)self enqueueRequest:v7])
       {
@@ -837,16 +837,16 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v12 = v6;
+  v12 = essentialServerInfoMissingError;
   v13 = sub_100002830();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(FindBaseServiceProvider *)self fm_logID];
+    fm_logID3 = [(FindBaseServiceProvider *)self fm_logID];
     v15 = [CommonUtil stringForFourCC:v12];
     *buf = 138412802;
-    v45 = v14;
+    v45 = fm_logID3;
     v46 = 2112;
-    v47 = v5;
+    v47 = causeCopy;
     v48 = 2112;
     v49 = v15;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@: Not sending register with cause %@ to server since some essential server info is missing - '%@'", buf, 0x20u);
@@ -854,18 +854,18 @@ LABEL_41:
 
   v16 = v12 == 1480675411;
   v17 = +[FMSystemInfo sharedInstance];
-  v18 = [v17 isInternalBuild];
+  isInternalBuild = [v17 isInternalBuild];
 
   if (v16)
   {
-    if (v18)
+    if (isInternalBuild)
     {
       v19 = sub_100002830();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(FindBaseServiceProvider *)self serviceName];
+        serviceName = [(FindBaseServiceProvider *)self serviceName];
         *buf = 138412290;
-        v45 = v20;
+        v45 = serviceName;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@ is not functional as an APS token is not available.", buf, 0xCu);
       }
     }
@@ -873,14 +873,14 @@ LABEL_41:
 
   else
   {
-    if (v18)
+    if (isInternalBuild)
     {
       v23 = sub_100002830();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(FindBaseServiceProvider *)self serviceName];
+        serviceName2 = [(FindBaseServiceProvider *)self serviceName];
         *buf = 138412290;
-        v45 = v24;
+        v45 = serviceName2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%@ is not functional as authentication credentials are not available.", buf, 0xCu);
       }
     }
@@ -903,11 +903,11 @@ LABEL_42:
   [(FindBaseServiceProvider *)self enqueueRequest:v3];
 }
 
-- (void)sendQueueCheckRequest:(id)a3 withReasons:(id)a4
+- (void)sendQueueCheckRequest:(id)request withReasons:(id)reasons
 {
-  v5 = a3;
+  requestCopy = request;
   [(FindBaseServiceProvider *)self _beginXPCTransaction];
-  v6 = [[FMRequestQueueCheck alloc] initWithProvider:self andServerContext:v5];
+  v6 = [[FMRequestQueueCheck alloc] initWithProvider:self andServerContext:requestCopy];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -920,23 +920,23 @@ LABEL_42:
   [(FindBaseServiceProvider *)self _endXPCTransaction];
 }
 
-- (void)ackRegisterCommand:(id)a3 withCompletion:(id)a4
+- (void)ackRegisterCommand:(id)command withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"ackURL"];
+  commandCopy = command;
+  completionCopy = completion;
+  v8 = [commandCopy objectForKeyedSubscript:@"ackURL"];
   if (v8)
   {
     v9 = [NSURL URLWithString:v8];
-    v10 = [[FMRequestAckRegister alloc] initWithProvider:self registerCommand:v6 ackURL:v9];
+    v10 = [[FMRequestAckRegister alloc] initWithProvider:self registerCommand:commandCopy ackURL:v9];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_1000108FC;
     v15 = &unk_10005D4C0;
-    v16 = self;
-    v17 = v7;
+    selfCopy = self;
+    v17 = completionCopy;
     [(FMRequest *)v10 setCompletionHandler:&v12];
-    [(FindBaseServiceProvider *)self enqueueRequest:v10, v12, v13, v14, v15, v16];
+    [(FindBaseServiceProvider *)self enqueueRequest:v10, v12, v13, v14, v15, selfCopy];
   }
 
   else
@@ -944,32 +944,32 @@ LABEL_42:
     v9 = sub_100002830();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v11 = [(FindBaseServiceProvider *)self serviceName];
+      serviceName = [(FindBaseServiceProvider *)self serviceName];
       *buf = 138412290;
-      v19 = v11;
+      v19 = serviceName;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@: Not acking the register command because there is no ack URL", buf, 0xCu);
     }
   }
 }
 
-- (void)ackLocateCommand:(id)a3 withStatusCode:(int64_t)a4 andStatusMessage:(id)a5 withCompletion:(id)a6
+- (void)ackLocateCommand:(id)command withStatusCode:(int64_t)code andStatusMessage:(id)message withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 objectForKeyedSubscript:@"ackURL"];
+  commandCopy = command;
+  messageCopy = message;
+  completionCopy = completion;
+  v13 = [commandCopy objectForKeyedSubscript:@"ackURL"];
   if (v13)
   {
     v14 = [NSURL URLWithString:v13];
-    v15 = [[FMRequestAckLocate alloc] initWithProvider:self locateCommand:v10 ackURL:v14 cmdStatusCode:a4 cmdStatusMessage:v11];
+    v15 = [[FMRequestAckLocate alloc] initWithProvider:self locateCommand:commandCopy ackURL:v14 cmdStatusCode:code cmdStatusMessage:messageCopy];
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = sub_100010CBC;
     v20 = &unk_10005D4C0;
-    v21 = self;
-    v22 = v12;
+    selfCopy = self;
+    v22 = completionCopy;
     [(FMRequest *)v15 setCompletionHandler:&v17];
-    [(FindBaseServiceProvider *)self enqueueRequest:v15, v17, v18, v19, v20, v21];
+    [(FindBaseServiceProvider *)self enqueueRequest:v15, v17, v18, v19, v20, selfCopy];
   }
 
   else
@@ -977,27 +977,27 @@ LABEL_42:
     v14 = sub_100002830();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v16 = [(FindBaseServiceProvider *)self serviceName];
+      serviceName = [(FindBaseServiceProvider *)self serviceName];
       *buf = 138412290;
-      v24 = v16;
+      v24 = serviceName;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@: Not acking the locate command because there is no ack URL", buf, 0xCu);
     }
   }
 }
 
-- (void)handleQueueCheckResponseWithStatus:(int64_t)a3 andBody:(id)a4
+- (void)handleQueueCheckResponseWithStatus:(int64_t)status andBody:(id)body
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 count])
+  bodyCopy = body;
+  v7 = bodyCopy;
+  if (bodyCopy && [bodyCopy count])
   {
     v8 = [v7 objectForKeyedSubscript:@"cmd"];
     v9 = sub_100002830();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(FindBaseServiceProvider *)self serviceName];
+      serviceName = [(FindBaseServiceProvider *)self serviceName];
       v22 = 138412546;
-      v23 = v10;
+      v23 = serviceName;
       v24 = 2112;
       v25 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Command Received: %@", &v22, 0x16u);
@@ -1011,9 +1011,9 @@ LABEL_42:
       v13 = sub_100002830();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(FindBaseServiceProvider *)self serviceName];
+        serviceName2 = [(FindBaseServiceProvider *)self serviceName];
         v22 = 138412546;
-        v23 = v14;
+        v23 = serviceName2;
         v24 = 2112;
         v25 = v8;
         v15 = "%@: Successfully finished command %@";
@@ -1027,9 +1027,9 @@ LABEL_11:
       v13 = sub_100002830();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(FindBaseServiceProvider *)self serviceName];
+        serviceName2 = [(FindBaseServiceProvider *)self serviceName];
         v22 = 138412546;
-        v23 = v14;
+        v23 = serviceName2;
         v24 = 2112;
         v25 = v8;
         v15 = "%@: No handler found for command %@";
@@ -1040,14 +1040,14 @@ LABEL_11:
     v16 = +[StartupRegisterManager sharedInstance];
     [v16 eventDidOccur:8];
 
-    if (a3 == 210 || a3 == 204)
+    if (status == 210 || status == 204)
     {
       v17 = sub_100002830();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v20 = [(FindBaseServiceProvider *)self serviceName];
+        serviceName3 = [(FindBaseServiceProvider *)self serviceName];
         v22 = 138412290;
-        v23 = v20;
+        v23 = serviceName3;
         v21 = "%@: No more pending messages on the server...";
 LABEL_21:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, v21, &v22, 0xCu);
@@ -1056,7 +1056,7 @@ LABEL_21:
 
     else
     {
-      if (a3 != 200)
+      if (status != 200)
       {
 LABEL_23:
 
@@ -1069,9 +1069,9 @@ LABEL_23:
       {
         if (v18)
         {
-          v19 = [(FindBaseServiceProvider *)self serviceName];
+          serviceName4 = [(FindBaseServiceProvider *)self serviceName];
           v22 = 138412290;
-          v23 = v19;
+          v23 = serviceName4;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@: More messages pending - checking now...", &v22, 0xCu);
         }
 
@@ -1081,9 +1081,9 @@ LABEL_23:
 
       if (v18)
       {
-        v20 = [(FindBaseServiceProvider *)self serviceName];
+        serviceName3 = [(FindBaseServiceProvider *)self serviceName];
         v22 = 138412290;
-        v23 = v20;
+        v23 = serviceName3;
         v21 = "%@: Not checking for new messages - previous command was not successful or duplicate";
         goto LABEL_21;
       }
@@ -1102,9 +1102,9 @@ LABEL_24:
   v3 = sub_100002830();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FindBaseServiceProvider *)self fm_logID];
+    fm_logID = [(FindBaseServiceProvider *)self fm_logID];
     v6 = 138412290;
-    v7 = v4;
+    v7 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ isProviderEnabledForLocations should be handled in a subclass", &v6, 0xCu);
   }
 
@@ -1113,59 +1113,59 @@ LABEL_24:
 
 - (unsigned)essentialServerInfoMissingError
 {
-  v3 = [(FindBaseServiceProvider *)self authInvalidError];
-  if (v3 == 1196379972)
+  authInvalidError = [(FindBaseServiceProvider *)self authInvalidError];
+  if (authInvalidError == 1196379972)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(FindBaseServiceProvider *)v4 apsToken];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    apsToken = [(FindBaseServiceProvider *)selfCopy apsToken];
 
-    if (v5)
+    if (apsToken)
     {
-      v3 = 1196379972;
+      authInvalidError = 1196379972;
     }
 
     else
     {
-      v3 = 1480675411;
+      authInvalidError = 1480675411;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
-  return v3;
+  return authInvalidError;
 }
 
 - (unsigned)authInvalidError
 {
-  v3 = [(ServiceProvider *)self account];
+  account = [(ServiceProvider *)self account];
 
-  if (!v3)
+  if (!account)
   {
     return 1480672067;
   }
 
-  v4 = [(ServiceProvider *)self account];
-  v5 = [v4 username];
-  v6 = [v5 length];
+  account2 = [(ServiceProvider *)self account];
+  username = [account2 username];
+  v6 = [username length];
 
   if (!v6)
   {
     return 1481986898;
   }
 
-  v7 = [(ServiceProvider *)self account];
-  v8 = [v7 authToken];
-  v9 = [v8 length];
+  account3 = [(ServiceProvider *)self account];
+  authToken = [account3 authToken];
+  v9 = [authToken length];
 
   if (!v9)
   {
     return 1481920331;
   }
 
-  v10 = [(ServiceProvider *)self account];
-  v11 = [v10 authId];
-  v12 = [v11 length];
+  account4 = [(ServiceProvider *)self account];
+  authId = [account4 authId];
+  v12 = [authId length];
 
   if (v12)
   {
@@ -1180,12 +1180,12 @@ LABEL_24:
 
 - (void)tryToFetchAuthToken
 {
-  v3 = [(ServiceProvider *)self account];
-  v2 = [v3 authToken];
-  [v2 length];
+  account = [(ServiceProvider *)self account];
+  authToken = [account authToken];
+  [authToken length];
 }
 
-- (id)copyHandlerForCommand:(id)a3 params:(id)a4
+- (id)copyHandlerForCommand:(id)command params:(id)params
 {
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1197,24 +1197,24 @@ LABEL_24:
   return 0;
 }
 
-- (void)showAlertFromServerResponse:(id)a3
+- (void)showAlertFromServerResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100036F9C(v3, v4);
+    sub_100036F9C(responseCopy, v4);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"title"];
-  v29 = [v3 objectForKeyedSubscript:@"text"];
-  v28 = [v3 objectForKeyedSubscript:@"okButtonTitle"];
-  v6 = [v3 objectForKeyedSubscript:@"okButtonURL"];
-  v7 = [v3 objectForKeyedSubscript:@"okButtonAction"];
-  v8 = [v3 objectForKeyedSubscript:@"cancelButtonTitle"];
-  v9 = [v3 objectForKeyedSubscript:@"cancelButtonURL"];
-  v10 = [v3 objectForKeyedSubscript:@"cancelButtonAction"];
-  v11 = [v3 objectForKeyedSubscript:@"delay"];
+  v5 = [responseCopy objectForKeyedSubscript:@"title"];
+  v29 = [responseCopy objectForKeyedSubscript:@"text"];
+  v28 = [responseCopy objectForKeyedSubscript:@"okButtonTitle"];
+  v6 = [responseCopy objectForKeyedSubscript:@"okButtonURL"];
+  v7 = [responseCopy objectForKeyedSubscript:@"okButtonAction"];
+  v8 = [responseCopy objectForKeyedSubscript:@"cancelButtonTitle"];
+  v9 = [responseCopy objectForKeyedSubscript:@"cancelButtonURL"];
+  v10 = [responseCopy objectForKeyedSubscript:@"cancelButtonAction"];
+  v11 = [responseCopy objectForKeyedSubscript:@"delay"];
   [v11 doubleValue];
   v13 = v12;
 
@@ -1286,16 +1286,16 @@ LABEL_24:
       [v14 setAlternateButtonAction:v32];
     }
 
-    v21 = [v14 defaultButtonTitle];
-    if (v21)
+    defaultButtonTitle = [v14 defaultButtonTitle];
+    if (defaultButtonTitle)
     {
     }
 
     else
     {
-      v22 = [v14 alternateButtonTitle];
+      alternateButtonTitle = [v14 alternateButtonTitle];
 
-      if (!v22)
+      if (!alternateButtonTitle)
       {
         v25 = sub_100002830();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -1340,14 +1340,14 @@ LABEL_26:
   }
 }
 
-- (id)alertActionInfoForAction:(id)a3 andURL:(id)a4
+- (id)alertActionInfoForAction:(id)action andURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"appleid"])
+  actionCopy = action;
+  lCopy = l;
+  if ([actionCopy isEqualToString:@"appleid"])
   {
 
-    v6 = @"prefs:root=APPLE_ACCOUNT";
+    lCopy = @"prefs:root=APPLE_ACCOUNT";
     v7 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT"];
     v19[0] = @"url";
     v19[1] = @"sensitive";
@@ -1361,10 +1361,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"settings"])
+  if ([actionCopy isEqualToString:@"settings"])
   {
 
-    v6 = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE";
+    lCopy = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE";
     v7 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE"];
     v17[0] = @"url";
     v17[1] = @"sensitive";
@@ -1375,10 +1375,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if ([v5 isEqualToString:@"sml-settings"])
+  if ([actionCopy isEqualToString:@"sml-settings"])
   {
 
-    v6 = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/LOCATION_SHARING";
+    lCopy = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/LOCATION_SHARING";
     v7 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/LOCATION_SHARING"];
     v15[0] = @"url";
     v15[1] = @"sensitive";
@@ -1389,11 +1389,11 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v5 isEqualToString:@"open-url"];
+  v10 = [actionCopy isEqualToString:@"open-url"];
   v11 = 0;
-  if (v6 && v10)
+  if (lCopy && v10)
   {
-    v7 = [NSURL URLWithString:v6];
+    v7 = [NSURL URLWithString:lCopy];
     v13[0] = @"url";
     v13[1] = @"sensitive";
     v14[0] = v7;
@@ -1408,7 +1408,7 @@ LABEL_11:
   return v11;
 }
 
-- (void)appInstallStateChanged:(id)a3
+- (void)appInstallStateChanged:(id)changed
 {
   v4 = sub_10001BB68();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1420,36 +1420,36 @@ LABEL_11:
   [(FindBaseServiceProvider *)self registerDeviceWithCause:@"AppStateChanged"];
 }
 
-- (BOOL)enqueueRequest:(id)a3
+- (BOOL)enqueueRequest:(id)request
 {
-  v31 = a3;
-  v29 = [(FindBaseServiceProvider *)self allowServerRequests];
-  if (v29)
+  requestCopy = request;
+  allowServerRequests = [(FindBaseServiceProvider *)self allowServerRequests];
+  if (allowServerRequests)
   {
-    v30 = self;
-    v4 = [(FindBaseServiceProvider *)self requestModifierLock];
-    [v4 lock];
+    selfCopy = self;
+    requestModifierLock = [(FindBaseServiceProvider *)self requestModifierLock];
+    [requestModifierLock lock];
 
     v5 = sub_100002830();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FindBaseServiceProvider *)v30 fm_logID];
-      v7 = [v31 fm_logID];
+      fm_logID = [(FindBaseServiceProvider *)selfCopy fm_logID];
+      fm_logID2 = [requestCopy fm_logID];
       *buf = 138412546;
-      v41 = v6;
+      v41 = fm_logID;
       v42 = 2112;
-      v43 = v7;
+      v43 = fm_logID2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ Enqueueing request %@", buf, 0x16u);
     }
 
-    [v31 setDelegate:v30];
+    [requestCopy setDelegate:selfCopy];
     v8 = +[NSMutableArray array];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v9 = [(FindBaseServiceProvider *)v30 requests];
-    v10 = [v9 countByEnumeratingWithState:&v36 objects:v47 count:16];
+    requests = [(FindBaseServiceProvider *)selfCopy requests];
+    v10 = [requests countByEnumeratingWithState:&v36 objects:v47 count:16];
     if (v10)
     {
       v11 = *v37;
@@ -1459,17 +1459,17 @@ LABEL_11:
         {
           if (*v37 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(requests);
           }
 
           v13 = *(*(&v36 + 1) + 8 * i);
-          if ([v31 canReplace:v13])
+          if ([requestCopy canReplace:v13])
           {
             [v8 addObject:v13];
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v36 objects:v47 count:16];
+        v10 = [requests countByEnumeratingWithState:&v36 objects:v47 count:16];
       }
 
       while (v10);
@@ -1497,15 +1497,15 @@ LABEL_11:
           v19 = sub_100002830();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
-            v20 = [(FindBaseServiceProvider *)v30 fm_logID];
-            v21 = [v18 fm_logID];
-            v22 = [v31 fm_logID];
+            fm_logID3 = [(FindBaseServiceProvider *)selfCopy fm_logID];
+            fm_logID4 = [v18 fm_logID];
+            fm_logID5 = [requestCopy fm_logID];
             *buf = 138412802;
-            v41 = v20;
+            v41 = fm_logID3;
             v42 = 2112;
-            v43 = v21;
+            v43 = fm_logID4;
             v44 = 2112;
-            v45 = v22;
+            v45 = fm_logID5;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%@ Discarding %@ because a newer request %@ can replace this one", buf, 0x20u);
           }
 
@@ -1518,12 +1518,12 @@ LABEL_11:
       while (v15);
     }
 
-    v23 = [(FindBaseServiceProvider *)v30 requests];
-    [v23 addObject:v31];
+    requests2 = [(FindBaseServiceProvider *)selfCopy requests];
+    [requests2 addObject:requestCopy];
 
-    [v31 send];
-    v24 = [(FindBaseServiceProvider *)v30 requestModifierLock];
-    [v24 unlock];
+    [requestCopy send];
+    requestModifierLock2 = [(FindBaseServiceProvider *)selfCopy requestModifierLock];
+    [requestModifierLock2 unlock];
   }
 
   else
@@ -1531,85 +1531,85 @@ LABEL_11:
     v25 = sub_100002830();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v26 = [(FindBaseServiceProvider *)self fm_logID];
-      v27 = [v31 fm_logID];
+      fm_logID6 = [(FindBaseServiceProvider *)self fm_logID];
+      fm_logID7 = [requestCopy fm_logID];
       *buf = 138412546;
-      v41 = v26;
+      v41 = fm_logID6;
       v42 = 2112;
-      v43 = v27;
+      v43 = fm_logID7;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%@: Not sending request %@ to server since the provider is not allowing server requests", buf, 0x16u);
     }
   }
 
-  return v29;
+  return allowServerRequests;
 }
 
-- (void)didReceiveResponseFor:(id)a3
+- (void)didReceiveResponseFor:(id)for
 {
-  v4 = a3;
-  if ([v4 responseErrorType] == 257)
+  forCopy = for;
+  if ([forCopy responseErrorType] == 257)
   {
-    [(FindBaseServiceProvider *)self didReceiveAuthFailureForRequest:v4];
+    [(FindBaseServiceProvider *)self didReceiveAuthFailureForRequest:forCopy];
   }
 
-  v5 = [v4 alertFromServerResponse];
+  alertFromServerResponse = [forCopy alertFromServerResponse];
 
-  if (v5)
+  if (alertFromServerResponse)
   {
-    v6 = [v4 alertFromServerResponse];
-    [(FindBaseServiceProvider *)self showAlertFromServerResponse:v6];
+    alertFromServerResponse2 = [forCopy alertFromServerResponse];
+    [(FindBaseServiceProvider *)self showAlertFromServerResponse:alertFromServerResponse2];
   }
 
-  if (([v4 willRetry] & 1) == 0)
+  if (([forCopy willRetry] & 1) == 0)
   {
     v7 = sub_100002830();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(FindBaseServiceProvider *)self fm_logID];
-      v9 = [v4 fm_logID];
+      fm_logID = [(FindBaseServiceProvider *)self fm_logID];
+      fm_logID2 = [forCopy fm_logID];
       v13 = 138412546;
-      v14 = v8;
+      v14 = fm_logID;
       v15 = 2112;
-      v16 = v9;
+      v16 = fm_logID2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ Removing request %@ from the queue as it was completed or it exhausted its retries", &v13, 0x16u);
     }
 
-    v10 = [(FindBaseServiceProvider *)self requestModifierLock];
-    [v10 lock];
+    requestModifierLock = [(FindBaseServiceProvider *)self requestModifierLock];
+    [requestModifierLock lock];
 
-    [v4 deinitializeRequest];
-    v11 = [(FindBaseServiceProvider *)self requests];
-    [v11 removeObject:v4];
+    [forCopy deinitializeRequest];
+    requests = [(FindBaseServiceProvider *)self requests];
+    [requests removeObject:forCopy];
 
-    v12 = [(FindBaseServiceProvider *)self requestModifierLock];
-    [v12 unlock];
+    requestModifierLock2 = [(FindBaseServiceProvider *)self requestModifierLock];
+    [requestModifierLock2 unlock];
   }
 }
 
-- (void)didCancelRequest:(id)a3
+- (void)didCancelRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_100002830();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(FindBaseServiceProvider *)self fm_logID];
-    v7 = [v4 fm_logID];
+    fm_logID = [(FindBaseServiceProvider *)self fm_logID];
+    fm_logID2 = [requestCopy fm_logID];
     v11 = 138412546;
-    v12 = v6;
+    v12 = fm_logID;
     v13 = 2112;
-    v14 = v7;
+    v14 = fm_logID2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ Removing request %@ from the queue as it was cancelled", &v11, 0x16u);
   }
 
-  v8 = [(FindBaseServiceProvider *)self requestModifierLock];
-  [v8 lock];
+  requestModifierLock = [(FindBaseServiceProvider *)self requestModifierLock];
+  [requestModifierLock lock];
 
-  [v4 deinitializeRequest];
-  v9 = [(FindBaseServiceProvider *)self requests];
-  [v9 removeObject:v4];
+  [requestCopy deinitializeRequest];
+  requests = [(FindBaseServiceProvider *)self requests];
+  [requests removeObject:requestCopy];
 
-  v10 = [(FindBaseServiceProvider *)self requestModifierLock];
-  [v10 unlock];
+  requestModifierLock2 = [(FindBaseServiceProvider *)self requestModifierLock];
+  [requestModifierLock2 unlock];
 }
 
 - (void)_beginXPCTransaction

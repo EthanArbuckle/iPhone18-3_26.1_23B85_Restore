@@ -1,35 +1,35 @@
 @interface ATMessageLinkProxyListener
-- (ATMessageLinkProxyListener)initWithMessageLink:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (ATMessageLinkProxyListener)initWithMessageLink:(id)link;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ATMessageLinkProxyListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 processIdentifier];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
   v9 = _ATLogCategoryXPC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 1024;
-    v28 = v8;
+    v28 = processIdentifier;
     _os_log_impl(&dword_22392A000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Got connection from pid %i", buf, 0x12u);
   }
 
-  v10 = [[ATMessageLinkProxyConnection alloc] initWithMessageLink:self->_messageLink connection:v7];
+  v10 = [[ATMessageLinkProxyConnection alloc] initWithMessageLink:self->_messageLink connection:connectionCopy];
   v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283700858];
-  [v7 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  [v7 setExportedObject:v10];
+  [connectionCopy setExportedObject:v10];
   v12 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283702DF8];
-  [v7 setRemoteObjectInterface:v12];
+  [connectionCopy setRemoteObjectInterface:v12];
 
   objc_initWeak(buf, v10);
   v22[0] = MEMORY[0x277D85DD0];
@@ -37,18 +37,18 @@
   v22[2] = __65__ATMessageLinkProxyListener_listener_shouldAcceptNewConnection___block_invoke;
   v22[3] = &unk_2784E93E8;
   v22[4] = self;
-  v24 = v8;
+  v24 = processIdentifier;
   objc_copyWeak(&v23, buf);
-  [v7 setInterruptionHandler:v22];
+  [connectionCopy setInterruptionHandler:v22];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __65__ATMessageLinkProxyListener_listener_shouldAcceptNewConnection___block_invoke_69;
   v18 = &unk_2784E93E8;
-  v19 = self;
-  v21 = v8;
+  selfCopy2 = self;
+  v21 = processIdentifier;
   objc_copyWeak(&v20, buf);
-  [v7 setInvalidationHandler:&v15];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:&v15];
+  [connectionCopy resume];
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -106,7 +106,7 @@ void __65__ATMessageLinkProxyListener_listener_shouldAcceptNewConnection___block
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping", &v8, 0xCu);
   }
 
@@ -132,29 +132,29 @@ void __65__ATMessageLinkProxyListener_listener_shouldAcceptNewConnection___block
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting", &v7, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAE98] anonymousListener];
+  anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
   listener = self->_listener;
-  self->_listener = v4;
+  self->_listener = anonymousListener;
 
   [(NSXPCListener *)self->_listener setDelegate:self];
   [(NSXPCListener *)self->_listener resume];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (ATMessageLinkProxyListener)initWithMessageLink:(id)a3
+- (ATMessageLinkProxyListener)initWithMessageLink:(id)link
 {
-  v5 = a3;
+  linkCopy = link;
   v9.receiver = self;
   v9.super_class = ATMessageLinkProxyListener;
   v6 = [(ATMessageLinkProxyListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageLink, a3);
+    objc_storeStrong(&v6->_messageLink, link);
   }
 
   return v7;

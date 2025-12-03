@@ -9,10 +9,10 @@
 - (uint64_t)replaceNetworkProfile:()WFNetworkProfile
 {
   v4 = a3;
-  v5 = [a1 _equivalentExistingNetworkProfile:v4];
+  v5 = [self _equivalentExistingNetworkProfile:v4];
   if (v5)
   {
-    [a1 removeObject:v5];
+    [self removeObject:v5];
   }
 
   else
@@ -20,7 +20,7 @@
     [NSMutableSet(WFNetworkProfile) replaceNetworkProfile:v4];
   }
 
-  [a1 addObject:v4];
+  [self addObject:v4];
 
   return 1;
 }
@@ -29,10 +29,10 @@
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 _equivalentExistingNetworkProfile:v4];
+  v5 = [self _equivalentExistingNetworkProfile:v4];
   if (v5)
   {
-    [a1 removeObject:v5];
+    [self removeObject:v5];
   }
 
   else
@@ -69,7 +69,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);

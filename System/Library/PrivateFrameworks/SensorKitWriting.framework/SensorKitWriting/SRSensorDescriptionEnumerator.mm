@@ -53,21 +53,21 @@
     }
 
     v9 = [Property objectAtIndexedSubscript:self->_currentSensorDirectoryIndex];
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v6 = *MEMORY[0x277CBE868];
     v26[0] = *MEMORY[0x277CBE868];
-    v11 = [v10 enumeratorAtURL:v9 includingPropertiesForKeys:objc_msgSend(MEMORY[0x277CBEA60] options:"arrayWithObjects:count:" errorHandler:{v26, 1), 4, 0}];
+    v11 = [defaultManager enumeratorAtURL:v9 includingPropertiesForKeys:objc_msgSend(MEMORY[0x277CBEA60] options:"arrayWithObjects:count:" errorHandler:{v26, 1), 4, 0}];
     objc_setProperty_atomic(self, v12, v11, 24);
   }
 
   while (1)
   {
-    v13 = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
+    nextObject = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
     v25[0] = 0;
-    [v13 getResourceValue:v25 forKey:v6 error:0];
-    v15 = [v25[0] BOOLValue];
+    [nextObject getResourceValue:v25 forKey:v6 error:0];
+    bOOLValue = [v25[0] BOOLValue];
     result = 0;
-    if ((v15 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       break;
     }
@@ -79,7 +79,7 @@ LABEL_20:
     }
   }
 
-  if (v13)
+  if (nextObject)
   {
     goto LABEL_19;
   }
@@ -103,11 +103,11 @@ LABEL_20:
     v21 = [v20 objectAtIndexedSubscript:self->_currentSensorDirectoryIndex];
     v22 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
     objc_setProperty_atomic(self, v23, v22, 24);
-    v13 = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
-    if (v13)
+    nextObject = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
+    if (nextObject)
     {
 LABEL_19:
-      result = -[SRSensorsCache descriptionForSensor:](self->_sensorsCache, [objc_msgSend(v13 "URLByDeletingPathExtension")]);
+      result = -[SRSensorsCache descriptionForSensor:](self->_sensorsCache, [objc_msgSend(nextObject "URLByDeletingPathExtension")]);
       goto LABEL_20;
     }
   }

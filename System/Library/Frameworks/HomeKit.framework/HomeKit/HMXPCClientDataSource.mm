@@ -1,27 +1,27 @@
 @interface HMXPCClientDataSource
 - (HMDarwinNotificationProvider)darwinNotificationProvider;
-- (id)createXPCClientConnectionProxyWithUserInfo:(id)a3 refreshHandler:(id)a4;
-- (id)createXPCConnectionWithMachServiceName:(id)a3;
+- (id)createXPCClientConnectionProxyWithUserInfo:(id)info refreshHandler:(id)handler;
+- (id)createXPCConnectionWithMachServiceName:(id)name;
 @end
 
 @implementation HMXPCClientDataSource
 
-- (id)createXPCConnectionWithMachServiceName:(id)a3
+- (id)createXPCConnectionWithMachServiceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [HMXPCConnection alloc];
-  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v3 options:0];
+  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:0];
 
   v6 = [(HMXPCConnection *)v4 initWithXPCConnection:v5];
 
   return v6;
 }
 
-- (id)createXPCClientConnectionProxyWithUserInfo:(id)a3 refreshHandler:(id)a4
+- (id)createXPCClientConnectionProxyWithUserInfo:(id)info refreshHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMXPCClientConnectionProxy alloc] initWithUserInfo:v6 refreshHandler:v5];
+  handlerCopy = handler;
+  infoCopy = info;
+  v7 = [[HMXPCClientConnectionProxy alloc] initWithUserInfo:infoCopy refreshHandler:handlerCopy];
 
   return v7;
 }

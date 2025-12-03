@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneCodecsTermVectorsReader
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OrgApacheLuceneCodecsTermVectorsReader
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneCodecsTermVectorsReader *)self clone];
+  clone = [(OrgApacheLuceneCodecsTermVectorsReader *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

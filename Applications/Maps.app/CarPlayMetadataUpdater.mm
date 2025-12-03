@@ -1,12 +1,12 @@
 @interface CarPlayMetadataUpdater
 + (NSString)mapsExternalNavigationOwnershipUpdatedNotification;
 - (BOOL)externalAccessoryIsNavigating;
-- (void)navigationListener:(id)a3 didRerouteWithReason:(unsigned __int8)a4 routeInfo:(id)a5;
-- (void)navigationListener:(id)a3 didStartNavigationWithRouteInfo:(id)a4;
-- (void)navigationListener:(id)a3 didUpdatePreconditioningInfo:(id)a4;
-- (void)navigationListener:(id)a3 didUpdateRouteGuidance:(id)a4;
-- (void)navigationListener:(id)a3 didUpdateRouteLine:(id)a4;
-- (void)navigationListenerDidStopNavigation:(id)a3;
+- (void)navigationListener:(id)listener didRerouteWithReason:(unsigned __int8)reason routeInfo:(id)info;
+- (void)navigationListener:(id)listener didStartNavigationWithRouteInfo:(id)info;
+- (void)navigationListener:(id)listener didUpdatePreconditioningInfo:(id)info;
+- (void)navigationListener:(id)listener didUpdateRouteGuidance:(id)guidance;
+- (void)navigationListener:(id)listener didUpdateRouteLine:(id)line;
+- (void)navigationListenerDidStopNavigation:(id)navigation;
 @end
 
 @implementation CarPlayMetadataUpdater
@@ -25,58 +25,58 @@
 
 - (BOOL)externalAccessoryIsNavigating
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100541910();
-  v4 = [v3 owner];
+  owner = [v3 owner];
 
-  return v4 == 2;
+  return owner == 2;
 }
 
-- (void)navigationListener:(id)a3 didStartNavigationWithRouteInfo:(id)a4
+- (void)navigationListener:(id)listener didStartNavigationWithRouteInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100542B04(v7, "Calling startNavigation with routeInfo: %@", &selRef_startNavigationWithRouteInfo_);
+  listenerCopy = listener;
+  infoCopy = info;
+  selfCopy = self;
+  sub_100542B04(infoCopy, "Calling startNavigation with routeInfo: %@", &selRef_startNavigationWithRouteInfo_);
 }
 
-- (void)navigationListener:(id)a3 didUpdateRouteLine:(id)a4
+- (void)navigationListener:(id)listener didUpdateRouteLine:(id)line
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100542B04(v7, "Setting routeLine: %@", &selRef_setRouteLine_);
+  listenerCopy = listener;
+  lineCopy = line;
+  selfCopy = self;
+  sub_100542B04(lineCopy, "Setting routeLine: %@", &selRef_setRouteLine_);
 }
 
-- (void)navigationListener:(id)a3 didRerouteWithReason:(unsigned __int8)a4 routeInfo:(id)a5
+- (void)navigationListener:(id)listener didRerouteWithReason:(unsigned __int8)reason routeInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_100542C88(a4, v9);
+  listenerCopy = listener;
+  infoCopy = info;
+  selfCopy = self;
+  sub_100542C88(reason, infoCopy);
 }
 
-- (void)navigationListenerDidStopNavigation:(id)a3
+- (void)navigationListenerDidStopNavigation:(id)navigation
 {
-  v4 = a3;
-  v5 = self;
+  navigationCopy = navigation;
+  selfCopy = self;
   sub_100542E20();
 }
 
-- (void)navigationListener:(id)a3 didUpdateRouteGuidance:(id)a4
+- (void)navigationListener:(id)listener didUpdateRouteGuidance:(id)guidance
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100542F30(v7);
+  listenerCopy = listener;
+  guidanceCopy = guidance;
+  selfCopy = self;
+  sub_100542F30(guidanceCopy);
 }
 
-- (void)navigationListener:(id)a3 didUpdatePreconditioningInfo:(id)a4
+- (void)navigationListener:(id)listener didUpdatePreconditioningInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100543130(a4);
+  listenerCopy = listener;
+  infoCopy = info;
+  selfCopy = self;
+  sub_100543130(info);
 }
 
 @end

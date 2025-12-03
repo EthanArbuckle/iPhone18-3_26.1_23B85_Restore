@@ -1,23 +1,23 @@
 @interface PXStoryRelatedResult
-- (PXStoryRelatedResult)initWithStoryConfigurations:(id)a3 debugInfo:(id)a4;
+- (PXStoryRelatedResult)initWithStoryConfigurations:(id)configurations debugInfo:(id)info;
 @end
 
 @implementation PXStoryRelatedResult
 
-- (PXStoryRelatedResult)initWithStoryConfigurations:(id)a3 debugInfo:(id)a4
+- (PXStoryRelatedResult)initWithStoryConfigurations:(id)configurations debugInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  configurationsCopy = configurations;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = PXStoryRelatedResult;
   v8 = [(PXStoryRelatedResult *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationsCopy copy];
     storyConfigurations = v8->_storyConfigurations;
     v8->_storyConfigurations = v9;
 
-    objc_storeStrong(&v8->_debugInfo, a4);
+    objc_storeStrong(&v8->_debugInfo, info);
   }
 
   return v8;

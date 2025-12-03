@@ -1,15 +1,15 @@
 @interface AFClockItemStorage
-- (AFClockItemStorage)initWithIdentifier:(id)a3 delegate:(id)a4;
-- (id)itemWithID:(id)a3;
+- (AFClockItemStorage)initWithIdentifier:(id)identifier delegate:(id)delegate;
+- (id)itemWithID:(id)d;
 - (void)beginGrouping;
 - (void)deleteAllItems;
-- (void)deleteItemsWithIDs:(id)a3;
-- (void)endGroupingWithOptions:(unint64_t)a3;
-- (void)insertOrUpdateItems:(id)a3;
+- (void)deleteItemsWithIDs:(id)ds;
+- (void)endGroupingWithOptions:(unint64_t)options;
+- (void)insertOrUpdateItems:(id)items;
 - (void)invalidate;
-- (void)setDate:(id)a3;
-- (void)setGeneration:(unint64_t)a3;
-- (void)setItemsByID:(id)a3;
+- (void)setDate:(id)date;
+- (void)setGeneration:(unint64_t)generation;
+- (void)setItemsByID:(id)d;
 @end
 
 @implementation AFClockItemStorage
@@ -50,52 +50,52 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteItemsWithIDs:(id)a3
+- (void)deleteItemsWithIDs:(id)ds
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[AFClockItemStorage deleteItemsWithIDs:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = dsCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s itemIDs = %@", &v7, 0x16u);
   }
 
-  if ([v4 count])
+  if ([dsCopy count])
   {
     [(AFClockItemStorage *)self beginGrouping];
-    [(NSMutableDictionary *)self->_workingItemsByID removeObjectsForKeys:v4];
+    [(NSMutableDictionary *)self->_workingItemsByID removeObjectsForKeys:dsCopy];
     [(AFClockItemStorage *)self endGroupingWithOptions:0];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertOrUpdateItems:(id)a3
+- (void)insertOrUpdateItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v20 = "[AFClockItemStorage insertOrUpdateItems:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = itemsCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s items = %@", buf, 0x16u);
   }
 
-  if ([v4 count])
+  if ([itemsCopy count])
   {
     [(AFClockItemStorage *)self beginGrouping];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -111,10 +111,10 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 itemID];
-          if (v12)
+          itemID = [v11 itemID];
+          if (itemID)
           {
-            [(NSMutableDictionary *)self->_workingItemsByID setObject:v11 forKey:v12];
+            [(NSMutableDictionary *)self->_workingItemsByID setObject:v11 forKey:itemID];
           }
         }
 
@@ -130,7 +130,7 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)itemWithID:(id)a3
+- (id)itemWithID:(id)d
 {
   v3 = 72;
   if (self->_groupingDepth > 0)
@@ -138,12 +138,12 @@
     v3 = 40;
   }
 
-  v4 = [*(&self->super.isa + v3) objectForKey:a3];
+  v4 = [*(&self->super.isa + v3) objectForKey:d];
 
   return v4;
 }
 
-- (void)endGroupingWithOptions:(unint64_t)a3
+- (void)endGroupingWithOptions:(unint64_t)options
 {
   v129 = *MEMORY[0x1E69E9840];
   groupingDepth = self->_groupingDepth;
@@ -161,7 +161,7 @@
 
   else
   {
-    v5 = a3;
+    optionsCopy = options;
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
@@ -178,7 +178,7 @@
     if (groupingDepth == 1)
     {
       itemsByID = self->_itemsByID;
-      v106 = v5;
+      v106 = optionsCopy;
       if (itemsByID == self->_workingItemsByID || ([(NSMutableDictionary *)itemsByID isEqualToDictionary:?]& 1) != 0)
       {
         v9 = 0;
@@ -229,12 +229,12 @@
       _os_log_impl(&dword_1912FE000, v18, OS_LOG_TYPE_INFO, v17, buf, v19);
 LABEL_16:
       v20 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v21 = [(NSDictionary *)self->_itemsByID allKeys];
-      v22 = v21;
+      allKeys = [(NSDictionary *)self->_itemsByID allKeys];
+      v22 = allKeys;
       v23 = MEMORY[0x1E695E0F0];
-      if (v21)
+      if (allKeys)
       {
-        v24 = v21;
+        v24 = allKeys;
       }
 
       else
@@ -245,11 +245,11 @@ LABEL_16:
       v25 = [v20 initWithArray:v24];
 
       v26 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v27 = [(NSMutableDictionary *)self->_workingItemsByID allKeys];
-      v28 = v27;
-      if (v27)
+      allKeys2 = [(NSMutableDictionary *)self->_workingItemsByID allKeys];
+      v28 = allKeys2;
+      if (allKeys2)
       {
-        v29 = v27;
+        v29 = allKeys2;
       }
 
       else
@@ -613,7 +613,7 @@ LABEL_107:
 
           else
           {
-            v89 = [MEMORY[0x1E695DF00] date];
+            date = [MEMORY[0x1E695DF00] date];
             v90 = p_superclass[285];
             if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
             {
@@ -623,11 +623,11 @@ LABEL_107:
               v125 = 2112;
               v126 = v91;
               v127 = 2112;
-              v128 = v89;
+              v128 = date;
               _os_log_impl(&dword_1912FE000, v90, OS_LOG_TYPE_INFO, "%s date: %@ -> %@", buf, 0x20u);
             }
 
-            v92 = [v89 copy];
+            v92 = [date copy];
             v93 = self->_date;
             self->_date = v92;
           }
@@ -715,11 +715,11 @@ LABEL_108:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setItemsByID:(id)a3
+- (void)setItemsByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(AFClockItemStorage *)self beginGrouping];
-  v5 = [v4 mutableCopy];
+  v5 = [dCopy mutableCopy];
 
   workingItemsByID = self->_workingItemsByID;
   self->_workingItemsByID = v5;
@@ -727,11 +727,11 @@ LABEL_108:
   [(AFClockItemStorage *)self endGroupingWithOptions:0];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(AFClockItemStorage *)self beginGrouping];
-  v5 = [v4 copy];
+  v5 = [dateCopy copy];
 
   workingDate = self->_workingDate;
   self->_workingDate = v5;
@@ -739,28 +739,28 @@ LABEL_108:
   [(AFClockItemStorage *)self endGroupingWithOptions:0];
 }
 
-- (void)setGeneration:(unint64_t)a3
+- (void)setGeneration:(unint64_t)generation
 {
   [(AFClockItemStorage *)self beginGrouping];
-  self->_workingGeneration = a3;
+  self->_workingGeneration = generation;
 
   [(AFClockItemStorage *)self endGroupingWithOptions:0];
 }
 
-- (AFClockItemStorage)initWithIdentifier:(id)a3 delegate:(id)a4
+- (AFClockItemStorage)initWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = AFClockItemStorage;
   v8 = [(AFClockItemStorage *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
   }
 
   return v8;

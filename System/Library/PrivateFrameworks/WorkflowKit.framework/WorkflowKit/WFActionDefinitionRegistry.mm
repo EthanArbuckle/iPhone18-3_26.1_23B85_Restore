@@ -2,7 +2,7 @@
 + (id)registeredDefinitions;
 + (void)initialize;
 + (void)rediscoverDefinitionsIfNeeded;
-+ (void)registerDefinitionForKey:(id)a3 definition:(id)a4;
++ (void)registerDefinitionForKey:(id)key definition:(id)definition;
 @end
 
 @implementation WFActionDefinitionRegistry
@@ -16,7 +16,7 @@
 
   v3 = rediscoverDefinitionsIfNeeded_calledDefinitionVendingSelectors;
 
-  MEMORY[0x1EEDF81D0](a1, @"actionDefinitionFor", &rediscoverDefinitionsIfNeeded_lock, WFShouldRediscoverActionDefinitions, v3);
+  MEMORY[0x1EEDF81D0](self, @"actionDefinitionFor", &rediscoverDefinitionsIfNeeded_lock, WFShouldRediscoverActionDefinitions, v3);
 }
 
 uint64_t __59__WFActionDefinitionRegistry_rediscoverDefinitionsIfNeeded__block_invoke()
@@ -32,7 +32,7 @@ uint64_t __59__WFActionDefinitionRegistry_rediscoverDefinitionsIfNeeded__block_i
 
 + (id)registeredDefinitions
 {
-  [a1 rediscoverDefinitionsIfNeeded];
+  [self rediscoverDefinitionsIfNeeded];
   v2 = [_mutableRegisteredDefinitions copy];
   v3 = v2;
   if (v2)
@@ -50,17 +50,17 @@ uint64_t __59__WFActionDefinitionRegistry_rediscoverDefinitionsIfNeeded__block_i
   return v5;
 }
 
-+ (void)registerDefinitionForKey:(id)a3 definition:(id)a4
++ (void)registerDefinitionForKey:(id)key definition:(id)definition
 {
   v5 = _mutableRegisteredDefinitions;
-  v6 = a3;
-  v7 = _Block_copy(a4);
-  [v5 setObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = _Block_copy(definition);
+  [v5 setObject:v7 forKey:keyCopy];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_new();
     v3 = _mutableRegisteredDefinitions;

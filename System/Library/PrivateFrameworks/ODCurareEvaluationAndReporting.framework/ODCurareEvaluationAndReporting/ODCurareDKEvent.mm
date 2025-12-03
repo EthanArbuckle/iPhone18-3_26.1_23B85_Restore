@@ -1,32 +1,32 @@
 @interface ODCurareDKEvent
-- (ODCurareDKEvent)initWithDKEvent:(id)a3;
+- (ODCurareDKEvent)initWithDKEvent:(id)event;
 @end
 
 @implementation ODCurareDKEvent
 
-- (ODCurareDKEvent)initWithDKEvent:(id)a3
+- (ODCurareDKEvent)initWithDKEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = ODCurareDKEvent;
   v5 = [(ODCurareDKEvent *)&v17 init];
   if (v5)
   {
-    v6 = [v4 startDate];
+    startDate = [eventCopy startDate];
     startDate = v5->_startDate;
-    v5->_startDate = v6;
+    v5->_startDate = startDate;
 
-    v8 = [v4 endDate];
+    endDate = [eventCopy endDate];
     endDate = v5->_endDate;
-    v5->_endDate = v8;
+    v5->_endDate = endDate;
 
-    v10 = [v4 value];
-    v11 = [v10 stringValue];
+    value = [eventCopy value];
+    stringValue = [value stringValue];
     identifier = v5->_identifier;
-    v5->_identifier = v11;
+    v5->_identifier = stringValue;
 
-    v13 = [v4 metadata];
-    v14 = [v13 objectForKeyedSubscript:@"ODCurareEvaluationAndReporting-MetadataDataKey"];
+    metadata = [eventCopy metadata];
+    v14 = [metadata objectForKeyedSubscript:@"ODCurareEvaluationAndReporting-MetadataDataKey"];
     metadata = v5->_metadata;
     v5->_metadata = v14;
   }

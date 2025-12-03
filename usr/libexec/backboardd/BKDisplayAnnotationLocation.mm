@@ -1,13 +1,13 @@
 @interface BKDisplayAnnotationLocation
-+ (id)centerAtPoint:(CGPoint)a3;
++ (id)centerAtPoint:(CGPoint)point;
 + (id)controlledBySupernode;
-+ (id)relativeToBottomLeftOfSuper:(CGPoint)a3;
-+ (id)relativeToBottomMiddleOfSuper:(CGPoint)a3;
-+ (id)relativeToTopLeftOfSuper:(CGPoint)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)relativeToBottomLeftOfSuper:(CGPoint)super;
++ (id)relativeToBottomMiddleOfSuper:(CGPoint)super;
++ (id)relativeToTopLeftOfSuper:(CGPoint)super;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)point;
 - (CGPoint)superBias;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BKDisplayAnnotationLocation
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (!v4)
+  equalCopy = equal;
+  if (!equalCopy)
   {
     goto LABEL_11;
   }
@@ -45,25 +45,25 @@
   }
 
   shouldAutoposition = self->_shouldAutoposition;
-  if (shouldAutoposition != [v4 shouldAutoposition])
+  if (shouldAutoposition != [equalCopy shouldAutoposition])
   {
     goto LABEL_11;
   }
 
   inhibitRotation = self->_inhibitRotation;
-  if (inhibitRotation != [v4 inhibitRotation])
+  if (inhibitRotation != [equalCopy inhibitRotation])
   {
     goto LABEL_11;
   }
 
-  [v4 superBias];
+  [equalCopy superBias];
   v8 = 0;
   if (self->_superBias.x == v9 && self->_superBias.y == v7)
   {
     definedInReferenceSpace = self->_definedInReferenceSpace;
-    if (definedInReferenceSpace == [v4 definedInReferenceSpace])
+    if (definedInReferenceSpace == [equalCopy definedInReferenceSpace])
     {
-      [v4 point];
+      [equalCopy point];
       v8 = self->_point.y == v12 && self->_point.x == v11;
       goto LABEL_12;
     }
@@ -77,7 +77,7 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(BKDisplayAnnotationLocation);
   *(result + 8) = self->_inhibitRotation;
@@ -88,10 +88,10 @@ LABEL_12:
   return result;
 }
 
-+ (id)relativeToBottomMiddleOfSuper:(CGPoint)a3
++ (id)relativeToBottomMiddleOfSuper:(CGPoint)super
 {
-  y = a3.y;
-  x = a3.x;
+  y = super.y;
+  x = super.x;
   v5 = objc_alloc_init(BKDisplayAnnotationLocation);
   [(BKDisplayAnnotationLocation *)v5 setShouldAutoposition:1];
   [(BKDisplayAnnotationLocation *)v5 setSuperBias:0.5, 1.0];
@@ -100,10 +100,10 @@ LABEL_12:
   return v5;
 }
 
-+ (id)relativeToBottomLeftOfSuper:(CGPoint)a3
++ (id)relativeToBottomLeftOfSuper:(CGPoint)super
 {
-  y = a3.y;
-  x = a3.x;
+  y = super.y;
+  x = super.x;
   v5 = objc_alloc_init(BKDisplayAnnotationLocation);
   [(BKDisplayAnnotationLocation *)v5 setShouldAutoposition:1];
   [(BKDisplayAnnotationLocation *)v5 setSuperBias:0.0, 1.0];
@@ -112,10 +112,10 @@ LABEL_12:
   return v5;
 }
 
-+ (id)relativeToTopLeftOfSuper:(CGPoint)a3
++ (id)relativeToTopLeftOfSuper:(CGPoint)super
 {
-  y = a3.y;
-  x = a3.x;
+  y = super.y;
+  x = super.x;
   v5 = objc_alloc_init(BKDisplayAnnotationLocation);
   [(BKDisplayAnnotationLocation *)v5 setShouldAutoposition:1];
   [(BKDisplayAnnotationLocation *)v5 setSuperBias:0.0, 0.0];
@@ -124,10 +124,10 @@ LABEL_12:
   return v5;
 }
 
-+ (id)centerAtPoint:(CGPoint)a3
++ (id)centerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = objc_alloc_init(BKDisplayAnnotationLocation);
   [(BKDisplayAnnotationLocation *)v5 setSuperBias:0.5, 0.5];
   [(BKDisplayAnnotationLocation *)v5 setPoint:ceil(x), ceil(y)];

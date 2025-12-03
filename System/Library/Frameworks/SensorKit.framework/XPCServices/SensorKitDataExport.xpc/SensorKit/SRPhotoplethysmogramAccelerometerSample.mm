@@ -9,10 +9,10 @@
   v16[0] = @"nanosecondsSinceStart";
   v17[0] = [NSNumber numberWithLongLong:[(SRPhotoplethysmogramAccelerometerSample *)self nanosecondsSinceStart]];
   v16[1] = @"frequency";
-  v3 = [(SRPhotoplethysmogramAccelerometerSample *)self samplingFrequency];
-  if (v3)
+  samplingFrequency = [(SRPhotoplethysmogramAccelerometerSample *)self samplingFrequency];
+  if (samplingFrequency)
   {
-    [v3 doubleValue];
+    [samplingFrequency doubleValue];
     if (fabs(v4) == INFINITY)
     {
       v5 = @"INF";

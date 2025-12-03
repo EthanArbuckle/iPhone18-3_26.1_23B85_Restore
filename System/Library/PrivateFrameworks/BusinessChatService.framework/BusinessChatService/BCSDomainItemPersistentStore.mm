@@ -1,12 +1,12 @@
 @interface BCSDomainItemPersistentStore
-- (BOOL)executeDeleteDomainDomainItemSQLQuery:(id)a3;
+- (BOOL)executeDeleteDomainDomainItemSQLQuery:(id)query;
 - (id)databasePath;
-- (id)domainItemMatching:(id)a3;
+- (id)domainItemMatching:(id)matching;
 - (void)deleteAllDomainItems;
 - (void)deleteAllExpiredDomainItems;
-- (void)deleteDomainItemMatching:(id)a3;
-- (void)updateDomainItem:(id)a3 withDomainItemIdentifier:(id)a4;
-- (void)updateDomainItemsForDomainShard:(id)a3;
+- (void)deleteDomainItemMatching:(id)matching;
+- (void)updateDomainItem:(id)item withDomainItemIdentifier:(id)identifier;
+- (void)updateDomainItemsForDomainShard:(id)shard;
 @end
 
 @implementation BCSDomainItemPersistentStore
@@ -16,10 +16,10 @@
   if (![databasePath_databasePath_0 length])
   {
     v2 = +[BCSPathProvider sharedInstance];
-    v3 = [v2 documentsURL];
-    v4 = [v3 path];
+    documentsURL = [v2 documentsURL];
+    path = [documentsURL path];
 
-    v5 = [v4 stringByAppendingPathComponent:@"domain_shard_items.db"];
+    v5 = [path stringByAppendingPathComponent:@"domain_shard_items.db"];
     v6 = databasePath_databasePath_0;
     databasePath_databasePath_0 = v5;
   }
@@ -29,17 +29,17 @@
   return v7;
 }
 
-- (id)domainItemMatching:(id)a3
+- (id)domainItemMatching:(id)matching
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [a3 domain];
-  v6 = [v4 stringWithFormat:@"select * from domain_shard_items where domain=%@", v5];
-  v7 = [v6 UTF8String];
+  domain = [matching domain];
+  v6 = [v4 stringWithFormat:@"select * from domain_shard_items where domain=%@", domain];
+  uTF8String = [v6 UTF8String];
 
   [(BCSPersistentStore *)self beginBatch];
   ppStmt = 0;
   v8 = 0;
-  if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v7, -1, &ppStmt, 0))
+  if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], uTF8String, -1, &ppStmt, 0))
   {
     if (sqlite3_step(ppStmt) == 100)
     {
@@ -71,27 +71,27 @@
   return v8;
 }
 
-- (void)updateDomainItemsForDomainShard:(id)a3
+- (void)updateDomainItemsForDomainShard:(id)shard
 {
-  v17 = a3;
+  shardCopy = shard;
   v4 = [BCSLineReader alloc];
-  v5 = [v17 fileURL];
-  v6 = [(BCSLineReader *)v4 initWithFileURL:v5];
+  fileURL = [shardCopy fileURL];
+  v6 = [(BCSLineReader *)v4 initWithFileURL:fileURL];
 
-  v7 = [(BCSLineReader *)v6 readLine];
+  readLine = [(BCSLineReader *)v6 readLine];
   v8 = objc_autoreleasePoolPush();
-  v9 = [(BCSLineReader *)v6 readLine];
-  if (v9)
+  readLine2 = [(BCSLineReader *)v6 readLine];
+  if (readLine2)
   {
-    v10 = v9;
+    readLine3 = readLine2;
     do
     {
       v11 = [BCSDomainItem alloc];
-      v12 = [v17 expirationDate];
-      v13 = [(BCSDomainItem *)v11 initWithBase64EncodedShardString:v10 expirationDate:v12];
+      expirationDate = [shardCopy expirationDate];
+      v13 = [(BCSDomainItem *)v11 initWithBase64EncodedShardString:readLine3 expirationDate:expirationDate];
 
-      v14 = [(BCSDomainItem *)v13 domain];
-      v15 = [BCSDomainItemIdentifier identifierWithType:3 domain:v14];
+      domain = [(BCSDomainItem *)v13 domain];
+      v15 = [BCSDomainItemIdentifier identifierWithType:3 domain:domain];
 
       v16 = [(BCSDomainItemPersistentStore *)self domainItemMatching:v15];
 
@@ -104,34 +104,34 @@
 
       objc_autoreleasePoolPop(v8);
       v8 = objc_autoreleasePoolPush();
-      v10 = [(BCSLineReader *)v6 readLine];
+      readLine3 = [(BCSLineReader *)v6 readLine];
     }
 
-    while (v10);
+    while (readLine3);
   }
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)updateDomainItem:(id)a3 withDomainItemIdentifier:(id)a4
+- (void)updateDomainItem:(id)item withDomainItemIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   [(BCSPersistentStore *)self beginBatch];
   ppStmt = 0;
   if (!sqlite3_prepare_v2(-[BCSPersistentStore openedDatabase](self, "openedDatabase"), [@""insert into domain_shard_items (domain shard_item], -1, &ppStmt, 0)
   {
     v6 = ppStmt;
-    v7 = [v5 domain];
-    sqlite3_bind_text(v6, 1, [v7 UTF8String], -1, 0);
+    domain = [itemCopy domain];
+    sqlite3_bind_text(v6, 1, [domain UTF8String], -1, 0);
 
     v8 = ppStmt;
-    v9 = [v5 base64EncodedShardString];
-    sqlite3_bind_text(v8, 2, [v9 UTF8String], -1, 0);
+    base64EncodedShardString = [itemCopy base64EncodedShardString];
+    sqlite3_bind_text(v8, 2, [base64EncodedShardString UTF8String], -1, 0);
 
     v10 = ppStmt;
-    v11 = [v5 expirationDate];
-    [v11 timeIntervalSince1970];
+    expirationDate = [itemCopy expirationDate];
+    [expirationDate timeIntervalSince1970];
     sqlite3_bind_double(v10, 3, v12);
 
     v13 = sqlite3_step(ppStmt);
@@ -156,11 +156,11 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteDomainItemMatching:(id)a3
+- (void)deleteDomainItemMatching:(id)matching
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [a3 domain];
-  v6 = [v4 stringWithFormat:@"delete from domain_shard_items where domain=%@", v5];
+  domain = [matching domain];
+  v6 = [v4 stringWithFormat:@"delete from domain_shard_items where domain=%@", domain];
 
   [(BCSDomainItemPersistentStore *)self executeDeleteDomainDomainItemSQLQuery:v6];
 }
@@ -174,22 +174,22 @@
 - (void)deleteAllExpiredDomainItems
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v6 = [v3 stringWithFormat:@"delete from domain_shard_items where expiration_date <= %f", v5];
 
   [(BCSDomainItemPersistentStore *)self executeDeleteDomainDomainItemSQLQuery:v6];
 }
 
-- (BOOL)executeDeleteDomainDomainItemSQLQuery:(id)a3
+- (BOOL)executeDeleteDomainDomainItemSQLQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   [(BCSPersistentStore *)self beginBatch];
   ppStmt = 0;
-  v5 = [(BCSPersistentStore *)self openedDatabase];
-  v6 = [v4 UTF8String];
+  openedDatabase = [(BCSPersistentStore *)self openedDatabase];
+  uTF8String = [queryCopy UTF8String];
 
-  if (sqlite3_prepare_v2(v5, v6, -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(openedDatabase, uTF8String, -1, &ppStmt, 0))
   {
     v7 = 0;
   }

@@ -1,17 +1,17 @@
 @interface PBPresentationReaderState
-- (PBPresentationReaderState)initWithReader:(void *)a3 tgtPresentation:(id)a4;
-- (PBReaderMasterStyleInfo)currentSourceMasterStyleInfoOfType:(int)a3;
-- (id)fontEntityAtIndex:(unint64_t)a3;
-- (id)hyperlinkInfoWithId:(unsigned int)a3 createIfAbsent:(BOOL)a4;
-- (id)masterStyles:(id)a3;
-- (id)sourceTextBoxContainerHolderForTargetShape:(id)a3;
-- (unint64_t)getSlideIndexAt:(unint64_t)a3;
-- (void)addFontEntity:(id)a3 charSet:(int)a4 type:(int)a5 family:(int)a6;
-- (void)addSlideIndex:(unint64_t)a3;
+- (PBPresentationReaderState)initWithReader:(void *)reader tgtPresentation:(id)presentation;
+- (PBReaderMasterStyleInfo)currentSourceMasterStyleInfoOfType:(int)type;
+- (id)fontEntityAtIndex:(unint64_t)index;
+- (id)hyperlinkInfoWithId:(unsigned int)id createIfAbsent:(BOOL)absent;
+- (id)masterStyles:(id)styles;
+- (id)sourceTextBoxContainerHolderForTargetShape:(id)shape;
+- (unint64_t)getSlideIndexAt:(unint64_t)at;
+- (void)addFontEntity:(id)entity charSet:(int)set type:(int)type family:(int)family;
+- (void)addSlideIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setCurrentBulletStyle:(id)a3 macCharStyle:(id)a4;
-- (void)setCurrentTextType:(int)a3 placeholderIndex:(unsigned int)a4;
-- (void)setSourceTextBoxContainerHolder:(id)a3 forTargetShape:(id)a4;
+- (void)setCurrentBulletStyle:(id)style macCharStyle:(id)charStyle;
+- (void)setCurrentTextType:(int)type placeholderIndex:(unsigned int)index;
+- (void)setSourceTextBoxContainerHolder:(id)holder forTargetShape:(id)shape;
 @end
 
 @implementation PBPresentationReaderState
@@ -52,50 +52,50 @@
   [(PBPresentationReaderState *)&v7 dealloc];
 }
 
-- (PBPresentationReaderState)initWithReader:(void *)a3 tgtPresentation:(id)a4
+- (PBPresentationReaderState)initWithReader:(void *)reader tgtPresentation:(id)presentation
 {
-  v7 = a4;
+  presentationCopy = presentation;
   v10.receiver = self;
   v10.super_class = PBPresentationReaderState;
   v8 = [(PBPresentationReaderState *)&v10 init];
   if (v8)
   {
-    v8->mPptBinaryReader = a3;
-    objc_storeStrong(&v8->mTgtPresentation, a4);
+    v8->mPptBinaryReader = reader;
+    objc_storeStrong(&v8->mTgtPresentation, presentation);
     operator new();
   }
 
   return 0;
 }
 
-- (void)addSlideIndex:(unint64_t)a3
+- (void)addSlideIndex:(unint64_t)index
 {
   mSlideIndexes = self->mSlideIndexes;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   [(NSMutableArray *)mSlideIndexes addObject:?];
 }
 
-- (unint64_t)getSlideIndexAt:(unint64_t)a3
+- (unint64_t)getSlideIndexAt:(unint64_t)at
 {
-  v3 = [(NSMutableArray *)self->mSlideIndexes objectAtIndex:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSMutableArray *)self->mSlideIndexes objectAtIndex:at];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)addFontEntity:(id)a3 charSet:(int)a4 type:(int)a5 family:(int)a6
+- (void)addFontEntity:(id)entity charSet:(int)set type:(int)type family:(int)family
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  v11 = a3;
-  v10 = [[PBFontEntity alloc] initWithName:v11 charSet:v8 type:v7 family:v6];
+  v6 = *&family;
+  v7 = *&type;
+  v8 = *&set;
+  entityCopy = entity;
+  v10 = [[PBFontEntity alloc] initWithName:entityCopy charSet:v8 type:v7 family:v6];
   [(NSMutableArray *)self->mFontEntities addObject:v10];
 }
 
-- (id)fontEntityAtIndex:(unint64_t)a3
+- (id)fontEntityAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mFontEntities count]<= a3)
+  if ([(NSMutableArray *)self->mFontEntities count]<= index)
   {
     v6 = [PBPresentationReaderState fontEntityAtIndex:]::defaultFontEntity;
     if (![PBPresentationReaderState fontEntityAtIndex:]::defaultFontEntity)
@@ -112,41 +112,41 @@
 
   else
   {
-    v5 = [(NSMutableArray *)self->mFontEntities objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mFontEntities objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (void)setCurrentTextType:(int)a3 placeholderIndex:(unsigned int)a4
+- (void)setCurrentTextType:(int)type placeholderIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v8 = [(PBOutlineBulletDictionary *)self->mPlaceholderBulletStyles objectForSlideId:self->mSrcSlideId textType:*&a3 placeholderIndex:*&a4];
+  v4 = *&index;
+  v5 = *&type;
+  v8 = [(PBOutlineBulletDictionary *)self->mPlaceholderBulletStyles objectForSlideId:self->mSrcSlideId textType:*&type placeholderIndex:*&index];
   v7 = [(PBOutlineBulletDictionary *)self->mPlaceholderMacCharStyles objectForSlideId:self->mSrcSlideId textType:v5 placeholderIndex:v4];
   [(PBPresentationReaderState *)self setCurrentBulletStyle:v8 macCharStyle:v7];
 }
 
-- (void)setCurrentBulletStyle:(id)a3 macCharStyle:(id)a4
+- (void)setCurrentBulletStyle:(id)style macCharStyle:(id)charStyle
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  charStyleCopy = charStyle;
   mCurrentBulletStyle = self->mCurrentBulletStyle;
-  self->mCurrentBulletStyle = v6;
-  v10 = v6;
+  self->mCurrentBulletStyle = styleCopy;
+  v10 = styleCopy;
 
   mCurrentMacCharStyle = self->mCurrentMacCharStyle;
-  self->mCurrentMacCharStyle = v7;
+  self->mCurrentMacCharStyle = charStyleCopy;
 }
 
-- (id)masterStyles:(id)a3
+- (id)masterStyles:(id)styles
 {
-  v3 = [(OITSUNoCopyDictionary *)self->mSlideMasterToMasterStyles objectForKey:a3];
+  v3 = [(OITSUNoCopyDictionary *)self->mSlideMasterToMasterStyles objectForKey:styles];
 
   return v3;
 }
 
-- (PBReaderMasterStyleInfo)currentSourceMasterStyleInfoOfType:(int)a3
+- (PBReaderMasterStyleInfo)currentSourceMasterStyleInfoOfType:(int)type
 {
   mSrcCurrentMasterStyleInfoVector = self->mSrcCurrentMasterStyleInfoVector;
   if (!mSrcCurrentMasterStyleInfoVector)
@@ -154,14 +154,14 @@
     mSrcCurrentMasterStyleInfoVector = self->mSrcDocMasterStyleInfoVector;
   }
 
-  return (*mSrcCurrentMasterStyleInfoVector + 16 * a3);
+  return (*mSrcCurrentMasterStyleInfoVector + 16 * type);
 }
 
-- (id)hyperlinkInfoWithId:(unsigned int)a3 createIfAbsent:(BOOL)a4
+- (id)hyperlinkInfoWithId:(unsigned int)id createIfAbsent:(BOOL)absent
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = CFDictionaryGetValue(self->mHyperlinkMap, a3);
+  absentCopy = absent;
+  idCopy = id;
+  v7 = CFDictionaryGetValue(self->mHyperlinkMap, id);
   if (v7)
   {
     v8 = 1;
@@ -169,34 +169,34 @@
 
   else
   {
-    v8 = !v4;
+    v8 = !absentCopy;
   }
 
   if (!v8)
   {
     v7 = objc_alloc_init(PBReaderHyperlinkInfo);
-    CFDictionarySetValue(self->mHyperlinkMap, v6, v7);
+    CFDictionarySetValue(self->mHyperlinkMap, idCopy, v7);
   }
 
   return v7;
 }
 
-- (id)sourceTextBoxContainerHolderForTargetShape:(id)a3
+- (id)sourceTextBoxContainerHolderForTargetShape:(id)shape
 {
   mTargetShapeToSourceTextBoxContainerHolderMap = self->mTargetShapeToSourceTextBoxContainerHolderMap;
-  v4 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:a3];
+  v4 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:shape];
   v5 = [(NSMutableDictionary *)mTargetShapeToSourceTextBoxContainerHolderMap objectForKey:v4];
-  v6 = [v5 nonretainedObjectValue];
+  nonretainedObjectValue = [v5 nonretainedObjectValue];
 
-  return v6;
+  return nonretainedObjectValue;
 }
 
-- (void)setSourceTextBoxContainerHolder:(id)a3 forTargetShape:(id)a4
+- (void)setSourceTextBoxContainerHolder:(id)holder forTargetShape:(id)shape
 {
-  v9 = a4;
+  shapeCopy = shape;
   mTargetShapeToSourceTextBoxContainerHolderMap = self->mTargetShapeToSourceTextBoxContainerHolderMap;
-  v7 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:a3];
-  v8 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v9];
+  v7 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:holder];
+  v8 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:shapeCopy];
   [(NSMutableDictionary *)mTargetShapeToSourceTextBoxContainerHolderMap setObject:v7 forKey:v8];
 }
 

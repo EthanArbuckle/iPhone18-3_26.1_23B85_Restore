@@ -1,15 +1,15 @@
 @interface DMCSystemAlertManager
-+ (void)displayAlert:(id)a3;
++ (void)displayAlert:(id)alert;
 - (DMCSystemAlertManager)init;
 @end
 
 @implementation DMCSystemAlertManager
 
-+ (void)displayAlert:(id)a3
++ (void)displayAlert:(id)alert
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  static DMCSystemAlertManager.display(_:)(v4);
+  alertCopy = alert;
+  static DMCSystemAlertManager.display(_:)(alertCopy);
 }
 
 - (DMCSystemAlertManager)init

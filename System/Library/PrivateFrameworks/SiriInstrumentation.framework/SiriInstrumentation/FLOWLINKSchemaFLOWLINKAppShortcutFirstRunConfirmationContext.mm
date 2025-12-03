@@ -1,31 +1,31 @@
 @interface FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithDictionary:(id)a3;
-- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithDictionary:(id)dictionary;
+- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithJSON:(id)n;
 - (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationEnded)ended;
 - (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationStarted)startedOrChanged;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteEnded;
 - (void)deleteStartedOrChanged;
-- (void)setEnded:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext
 
-- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithDictionary:(id)a3
+- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext;
   v5 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithJSON:(id)a3
+- (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v7 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    startedOrChanged = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
+    dictionaryRepresentation2 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"startedOrChanged"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_13;
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
+  startedOrChanged2 = [equalCopy ended];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v13 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
-    if (!v13)
+    ended = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
+    if (!ended)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
+    startedOrChanged2 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
+  ended = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
+    ended2 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,15 +241,15 @@ LABEL_14:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -277,37 +277,37 @@ LABEL_14:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext *)self deleteEnded];
   }

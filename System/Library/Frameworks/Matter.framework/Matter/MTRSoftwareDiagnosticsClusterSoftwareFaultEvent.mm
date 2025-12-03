@@ -1,6 +1,6 @@
 @interface MTRSoftwareDiagnosticsClusterSoftwareFaultEvent
 - (MTRSoftwareDiagnosticsClusterSoftwareFaultEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent);
   v5 = [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)self id];
   [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)v4 setId:v5];
 
-  v6 = [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)self name];
-  [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)v4 setName:v6];
+  name = [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)self name];
+  [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)v4 setName:name];
 
-  v7 = [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)self faultRecording];
-  [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)v4 setFaultRecording:v7];
+  faultRecording = [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)self faultRecording];
+  [(MTRSoftwareDiagnosticsClusterSoftwareFaultEvent *)v4 setFaultRecording:faultRecording];
 
   return v4;
 }

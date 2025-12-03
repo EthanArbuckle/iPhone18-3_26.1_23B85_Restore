@@ -87,8 +87,8 @@ void __48__ACHDataStoreActivityProperties_dictionaryKeys__block_invoke()
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [(ACHDataStoreActivityProperties *)self dictionaryKeys];
-  v4 = [(ACHDataStoreActivityProperties *)self dictionaryWithValuesForKeys:v3];
+  dictionaryKeys = [(ACHDataStoreActivityProperties *)self dictionaryKeys];
+  v4 = [(ACHDataStoreActivityProperties *)self dictionaryWithValuesForKeys:dictionaryKeys];
 
   return v4;
 }

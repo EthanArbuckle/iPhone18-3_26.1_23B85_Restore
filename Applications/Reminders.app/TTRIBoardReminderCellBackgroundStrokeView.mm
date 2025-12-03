@@ -1,6 +1,6 @@
 @interface TTRIBoardReminderCellBackgroundStrokeView
-- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithCoder:(id)a3;
-- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithFrame:(CGRect)a3;
+- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithCoder:(id)coder;
+- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,12 +15,12 @@
   sub_1004B33A0();
 }
 
-- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithFrame:(CGRect)a3
+- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView_strokeWidth) = 0;
   v9 = OBJC_IVAR____TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView_strokeColor;
@@ -30,17 +30,17 @@
   return [(TTRIBoardReminderCellBackgroundStrokeView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithCoder:(id)a3
+- (_TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView_strokeWidth) = 0;
   v6 = OBJC_IVAR____TtC9Reminders41TTRIBoardReminderCellBackgroundStrokeView_strokeColor;
   v7 = objc_opt_self();
-  v8 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v6) = [v7 tintColor];
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(TTRIBoardReminderCellBackgroundStrokeView *)&v11 initWithCoder:v8];
+  v9 = [(TTRIBoardReminderCellBackgroundStrokeView *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

@@ -1,19 +1,19 @@
 @interface FCNewsTabiRecommendedTagsContextConfiguration
-- (FCNewsTabiRecommendedTagsContextConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiRecommendedTagsContextConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsTabiRecommendedTagsContextConfiguration
 
-- (FCNewsTabiRecommendedTagsContextConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecommendedTagsContextConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = FCNewsTabiRecommendedTagsContextConfiguration;
   v5 = [(FCNewsTabiRecommendedTagsContextConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = FCAppConfigurationNumberValue(v4, @"maximumTagCount", &unk_1F2E6FD80);
+    v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"maximumTagCount", &unk_1F2E6FD80);
     v5->_maximumTagCount = [v6 integerValue];
   }
 

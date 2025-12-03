@@ -1,5 +1,5 @@
 @interface _UIInterfaceActionLabelsPropertyView
-- (_UIInterfaceActionLabelsPropertyView)initWithAction:(id)a3;
+- (_UIInterfaceActionLabelsPropertyView)initWithAction:(id)action;
 - (id)_classificationLabelIfVisible;
 - (id)_interfaceActionViewState;
 - (id)_newLabel;
@@ -8,29 +8,29 @@
 - (void)_reloadContentClassificationLabelDisplayProperties;
 - (void)_reloadContentForTitleDisplayProperties;
 - (void)dealloc;
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4;
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties;
 @end
 
 @implementation _UIInterfaceActionLabelsPropertyView
 
-- (_UIInterfaceActionLabelsPropertyView)initWithAction:(id)a3
+- (_UIInterfaceActionLabelsPropertyView)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = _UIInterfaceActionLabelsPropertyView;
   v6 = [(UIView *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
     [(UIInterfaceAction *)v7->_action _addActionDisplayPropertyObserver:v7];
     [(_UIInterfaceActionLabelsPropertyView *)v7 interfaceAction:v7->_action reloadDisplayedContentActionProperties:0];
     action = v7->_action;
-    v9 = [(UIInterfaceAction *)action _visualStyle];
-    [(_UIInterfaceActionLabelsPropertyView *)v7 interfaceAction:action reloadDisplayedContentVisualStyle:v9];
+    _visualStyle = [(UIInterfaceAction *)action _visualStyle];
+    [(_UIInterfaceActionLabelsPropertyView *)v7 interfaceAction:action reloadDisplayedContentVisualStyle:_visualStyle];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__contentSizeCategoryDidChangeNotification_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__contentSizeCategoryDidChangeNotification_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
   }
 
   return v7;
@@ -44,23 +44,23 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties
 {
-  v5 = a4;
+  propertiesCopy = properties;
   [(_UIInterfaceActionLabelsPropertyView *)self _reloadContentForTitleDisplayProperties];
   [(_UIInterfaceActionLabelsPropertyView *)self _reloadContentClassificationLabelDisplayProperties];
-  v39 = [(_UIInterfaceActionLabelsPropertyView *)self _visualStyle];
-  v6 = [v39 actionPropertiesAffectingLabelStyling];
-  v7 = [UIInterfaceAction changedProperties:v5 containsAny:v6];
+  _visualStyle = [(_UIInterfaceActionLabelsPropertyView *)self _visualStyle];
+  actionPropertiesAffectingLabelStyling = [_visualStyle actionPropertiesAffectingLabelStyling];
+  v7 = [UIInterfaceAction changedProperties:propertiesCopy containsAny:actionPropertiesAffectingLabelStyling];
 
   if (v7)
   {
     [(_UIInterfaceActionLabelsPropertyView *)self _applyVisualStyleToLabels];
   }
 
-  v8 = [(_UIInterfaceActionLabelsPropertyView *)self _classificationLabelIfVisible];
-  titleLabel = v8;
-  if (!v8)
+  _classificationLabelIfVisible = [(_UIInterfaceActionLabelsPropertyView *)self _classificationLabelIfVisible];
+  titleLabel = _classificationLabelIfVisible;
+  if (!_classificationLabelIfVisible)
   {
     titleLabel = self->_titleLabel;
   }
@@ -68,48 +68,48 @@
   v10 = titleLabel;
 
   v11 = self->_titleLabel;
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [(UIView *)self heightAnchor];
-  v14 = [(UIView *)self->_titleLabel heightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:4.0];
-  [(NSArray *)v12 addObject:v15];
+  array = [MEMORY[0x1E695DF70] array];
+  heightAnchor = [(UIView *)self heightAnchor];
+  heightAnchor2 = [(UIView *)self->_titleLabel heightAnchor];
+  v15 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:4.0];
+  [(NSArray *)array addObject:v15];
 
-  v16 = [(NSArray *)v12 lastObject];
+  lastObject = [(NSArray *)array lastObject];
   LODWORD(v17) = 1148837888;
-  [v16 setPriority:v17];
+  [lastObject setPriority:v17];
 
-  v18 = [(NSArray *)v12 lastObject];
-  [v18 setIdentifier:@"labelsView-heightPlusMargin"];
+  lastObject2 = [(NSArray *)array lastObject];
+  [lastObject2 setIdentifier:@"labelsView-heightPlusMargin"];
 
-  v19 = [(UIView *)v10 leadingAnchor];
-  v20 = [(UIView *)self leadingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
-  [(NSArray *)v12 addObject:v21];
+  leadingAnchor = [(UIView *)v10 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [(NSArray *)array addObject:v21];
   leadingLabelLeadingConstraint = self->_leadingLabelLeadingConstraint;
   self->_leadingLabelLeadingConstraint = v21;
 
   [(NSLayoutConstraint *)self->_leadingLabelLeadingConstraint setIdentifier:@"labelsView-leadingLabel-leading"];
-  v23 = [(UIView *)v10 centerYAnchor];
-  v24 = [(UIView *)self centerYAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
-  [(NSArray *)v12 addObject:v25];
+  centerYAnchor = [(UIView *)v10 centerYAnchor];
+  centerYAnchor2 = [(UIView *)self centerYAnchor];
+  v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [(NSArray *)array addObject:v25];
   leadingLabelVerticalPositionConstraint = self->_leadingLabelVerticalPositionConstraint;
   self->_leadingLabelVerticalPositionConstraint = v25;
 
-  v27 = @"labelsView-leadingLabel-verticalPosition";
+  trailingAnchor3 = @"labelsView-leadingLabel-verticalPosition";
   [(NSLayoutConstraint *)self->_leadingLabelVerticalPositionConstraint setIdentifier:@"labelsView-leadingLabel-verticalPosition"];
-  v28 = [(UIView *)v11 trailingAnchor];
-  v29 = [(UIView *)self trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
-  [(NSArray *)v12 addObject:v30];
+  trailingAnchor = [(UIView *)v11 trailingAnchor];
+  trailingAnchor2 = [(UIView *)self trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [(NSArray *)array addObject:v30];
   trailingLabelTrailingConstraint = self->_trailingLabelTrailingConstraint;
   self->_trailingLabelTrailingConstraint = v30;
 
   [(NSLayoutConstraint *)self->_trailingLabelTrailingConstraint setIdentifier:@"labelsView-trailingLabel-trailing"];
-  v32 = [(UIView *)v11 centerYAnchor];
-  v33 = [(UIView *)self centerYAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
-  [(NSArray *)v12 addObject:v34];
+  centerYAnchor3 = [(UIView *)v11 centerYAnchor];
+  centerYAnchor4 = [(UIView *)self centerYAnchor];
+  v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+  [(NSArray *)array addObject:v34];
   v35 = self->_leadingLabelVerticalPositionConstraint;
   self->_leadingLabelVerticalPositionConstraint = v34;
 
@@ -121,10 +121,10 @@
 
   else
   {
-    v27 = [(UIView *)v10 trailingAnchor];
-    v32 = [(UIView *)v11 leadingAnchor];
-    v36 = [(__CFString *)v27 constraintEqualToAnchor:v32];
-    [(NSArray *)v12 addObject:v36];
+    trailingAnchor3 = [(UIView *)v10 trailingAnchor];
+    centerYAnchor3 = [(UIView *)v11 leadingAnchor];
+    v36 = [(__CFString *)trailingAnchor3 constraintEqualToAnchor:centerYAnchor3];
+    [(NSArray *)array addObject:v36];
   }
 
   objc_storeStrong(&self->_interLabelSpacingConstraint, v36);
@@ -135,20 +135,20 @@
   [(NSLayoutConstraint *)self->_interLabelSpacingConstraint setIdentifier:@"labelsView-inter-label-spacing"];
   [MEMORY[0x1E69977A0] deactivateConstraints:self->_labelConstraints];
   labelConstraints = self->_labelConstraints;
-  self->_labelConstraints = v12;
-  v38 = v12;
+  self->_labelConstraints = array;
+  v38 = array;
 
   [MEMORY[0x1E69977A0] activateConstraints:self->_labelConstraints];
 }
 
 - (void)_applyVisualStyle
 {
-  v3 = [(_UIInterfaceActionLabelsPropertyView *)self _visualStyle];
-  if (v3)
+  _visualStyle = [(_UIInterfaceActionLabelsPropertyView *)self _visualStyle];
+  if (_visualStyle)
   {
-    v4 = v3;
+    v4 = _visualStyle;
     [(_UIInterfaceActionLabelsPropertyView *)self _applyVisualStyleToLabels];
-    v3 = v4;
+    _visualStyle = v4;
   }
 }
 
@@ -165,16 +165,16 @@
   }
 
   v4 = classificationLabel;
-  v7 = [(_UIInterfaceActionLabelsPropertyView *)self _visualStyle];
+  _visualStyle = [(_UIInterfaceActionLabelsPropertyView *)self _visualStyle];
   titleLabel = self->_titleLabel;
-  v6 = [(_UIInterfaceActionLabelsPropertyView *)self _interfaceActionViewState];
-  [v7 configureAttributesForTitleLabel:titleLabel classificationLabel:v4 actionViewState:v6];
+  _interfaceActionViewState = [(_UIInterfaceActionLabelsPropertyView *)self _interfaceActionViewState];
+  [_visualStyle configureAttributesForTitleLabel:titleLabel classificationLabel:v4 actionViewState:_interfaceActionViewState];
 }
 
 - (id)_interfaceActionViewState
 {
-  v3 = [(_UIInterfaceActionLabelsPropertyView *)self action];
-  v4 = [UIInterfaceActionViewState viewStateForActionRepresentationViewDescendantView:self action:v3];
+  action = [(_UIInterfaceActionLabelsPropertyView *)self action];
+  v4 = [UIInterfaceActionViewState viewStateForActionRepresentationViewDescendantView:self action:action];
 
   return v4;
 }
@@ -184,43 +184,43 @@
   titleLabel = self->_titleLabel;
   if (!titleLabel)
   {
-    v4 = [(_UIInterfaceActionLabelsPropertyView *)self _newLabel];
+    _newLabel = [(_UIInterfaceActionLabelsPropertyView *)self _newLabel];
     v5 = self->_titleLabel;
-    self->_titleLabel = v4;
+    self->_titleLabel = _newLabel;
 
     [(UIView *)self->_titleLabel _setLayoutDebuggingIdentifier:@"titleLabel"];
     titleLabel = self->_titleLabel;
   }
 
-  v6 = [(_UIInterfaceActionLabelsPropertyView *)self action];
-  v7 = [v6 title];
-  [(UILabel *)titleLabel setText:v7];
+  action = [(_UIInterfaceActionLabelsPropertyView *)self action];
+  title = [action title];
+  [(UILabel *)titleLabel setText:title];
 
   v8 = self->_titleLabel;
-  v9 = [(_UIInterfaceActionLabelsPropertyView *)self action];
-  -[UILabel setTextAlignment:](v8, "setTextAlignment:", [v9 titleAlignment]);
+  action2 = [(_UIInterfaceActionLabelsPropertyView *)self action];
+  -[UILabel setTextAlignment:](v8, "setTextAlignment:", [action2 titleAlignment]);
 }
 
 - (void)_reloadContentClassificationLabelDisplayProperties
 {
-  v3 = [(_UIInterfaceActionLabelsPropertyView *)self _classificationLabelIfVisible];
+  _classificationLabelIfVisible = [(_UIInterfaceActionLabelsPropertyView *)self _classificationLabelIfVisible];
 
   classificationLabel = self->_classificationLabel;
-  if (v3)
+  if (_classificationLabelIfVisible)
   {
     if (!classificationLabel)
     {
-      v5 = [(_UIInterfaceActionLabelsPropertyView *)self _newLabel];
+      _newLabel = [(_UIInterfaceActionLabelsPropertyView *)self _newLabel];
       v6 = self->_classificationLabel;
-      self->_classificationLabel = v5;
+      self->_classificationLabel = _newLabel;
 
       [(UIView *)self->_titleLabel _setLayoutDebuggingIdentifier:@"classificationLabel"];
       classificationLabel = self->_classificationLabel;
     }
 
-    v7 = [(_UIInterfaceActionLabelsPropertyView *)self action];
-    v8 = [v7 classificationTitle];
-    [(UILabel *)classificationLabel setText:v8];
+    action = [(_UIInterfaceActionLabelsPropertyView *)self action];
+    classificationTitle = [action classificationTitle];
+    [(UILabel *)classificationLabel setText:classificationTitle];
 
     v9 = self->_classificationLabel;
     v10 = 0;

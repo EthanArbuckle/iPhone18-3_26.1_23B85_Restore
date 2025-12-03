@@ -1,39 +1,39 @@
 @interface NCToggleControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axPerformPreviewInteractionAction;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (void)clickInteractionPresenterDidDismiss:(id)a3;
-- (void)clickInteractionPresenterDidPresent:(id)a3;
+- (void)clickInteractionPresenterDidDismiss:(id)dismiss;
+- (void)clickInteractionPresenterDidPresent:(id)present;
 @end
 
 @implementation NCToggleControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SBFTouchPassThroughView"];
-    [v3 validateClass:@"CSCoverSheetViewBase"];
+    [validationsCopy validateClass:@"SBFTouchPassThroughView"];
+    [validationsCopy validateClass:@"CSCoverSheetViewBase"];
   }
 
-  [v3 validateClass:@"NCNotificationListCoalescingControlsView"];
-  [v3 validateClass:@"NCToggleControl" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCToggleControl" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCToggleControl" hasInstanceMethod:@"_previewInteractionPlatterPresenter" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCToggleControl" hasInstanceMethod:@"clickInteractionPresenterDidPresent:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NCToggleControl" hasInstanceMethod:@"clickInteractionPresenterDidDismiss:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NCClickInteractionPresenter" hasInstanceMethod:@"_presentedControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCClickInteractionPresenter" hasInstanceMethod:@"_containerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCClickInteractionPresentedControl" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"NCNotificationListCoalescingHeaderCell" hasInstanceMethod:@"handlerDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCoalescingControlsCell" hasInstanceMethod:@"handlerDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationGroupList" hasInstanceMethod:@"leadingNotificationRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRequest" hasInstanceMethod:@"content" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationContent" hasInstanceMethod:@"header" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCoalescingControlsView"];
+  [validationsCopy validateClass:@"NCToggleControl" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCToggleControl" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCToggleControl" hasInstanceMethod:@"_previewInteractionPlatterPresenter" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCToggleControl" hasInstanceMethod:@"clickInteractionPresenterDidPresent:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NCToggleControl" hasInstanceMethod:@"clickInteractionPresenterDidDismiss:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NCClickInteractionPresenter" hasInstanceMethod:@"_presentedControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCClickInteractionPresenter" hasInstanceMethod:@"_containerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCClickInteractionPresentedControl" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"NCNotificationListCoalescingHeaderCell" hasInstanceMethod:@"handlerDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCoalescingControlsCell" hasInstanceMethod:@"handlerDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationGroupList" hasInstanceMethod:@"leadingNotificationRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequest" hasInstanceMethod:@"content" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationContent" hasInstanceMethod:@"header" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityActivate
@@ -58,17 +58,17 @@
       goto LABEL_7;
     }
 
-    v7 = v3;
+    accessibilityLabel = v3;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NCToggleControlAccessibility;
-    v7 = [(NCToggleControlAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel = [(NCToggleControlAccessibility *)&v9 accessibilityLabel];
   }
 
-  v6 = v7;
+  v6 = accessibilityLabel;
 LABEL_7:
 
   return v6;
@@ -93,11 +93,11 @@ LABEL_7:
   v10[1] = *MEMORY[0x29EDCA608];
   v3 = [(NCToggleControlAccessibility *)self safeValueForKey:@"_previewInteractionPlatterPresenter"];
   v4 = [v3 safeValueForKey:@"_presentedControl"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  if (v5)
+  if (accessibilityLabel)
   {
-    v6 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v5 target:self selector:sel__axPerformPreviewInteractionAction];
+    v6 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityLabel target:self selector:sel__axPerformPreviewInteractionAction];
     v10[0] = v6;
     v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
@@ -142,25 +142,25 @@ uint64_t __71__NCToggleControlAccessibility__axSetPreviewInteractionAncestorsMod
   return v3 & 1;
 }
 
-- (void)clickInteractionPresenterDidPresent:(id)a3
+- (void)clickInteractionPresenterDidPresent:(id)present
 {
-  v3 = self;
+  selfCopy = self;
   v6.receiver = self;
   v6.super_class = NCToggleControlAccessibility;
-  v4 = a3;
-  [(NCToggleControlAccessibility *)&v6 clickInteractionPresenterDidPresent:v4];
-  [(NCToggleControlAccessibility *)v3 _axSetPreviewInteractionAncestorsModal:1, v6.receiver, v6.super_class];
-  LODWORD(v3) = *MEMORY[0x29EDC7ED8];
-  v5 = [v4 safeValueForKey:@"_presentedControl"];
+  presentCopy = present;
+  [(NCToggleControlAccessibility *)&v6 clickInteractionPresenterDidPresent:presentCopy];
+  [(NCToggleControlAccessibility *)selfCopy _axSetPreviewInteractionAncestorsModal:1, v6.receiver, v6.super_class];
+  LODWORD(selfCopy) = *MEMORY[0x29EDC7ED8];
+  v5 = [presentCopy safeValueForKey:@"_presentedControl"];
 
-  UIAccessibilityPostNotification(v3, v5);
+  UIAccessibilityPostNotification(selfCopy, v5);
 }
 
-- (void)clickInteractionPresenterDidDismiss:(id)a3
+- (void)clickInteractionPresenterDidDismiss:(id)dismiss
 {
   v4.receiver = self;
   v4.super_class = NCToggleControlAccessibility;
-  [(NCToggleControlAccessibility *)&v4 clickInteractionPresenterDidDismiss:a3];
+  [(NCToggleControlAccessibility *)&v4 clickInteractionPresenterDidDismiss:dismiss];
   [(NCToggleControlAccessibility *)self _axSetPreviewInteractionAncestorsModal:0];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
 }

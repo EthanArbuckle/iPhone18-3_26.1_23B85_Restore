@@ -1,16 +1,16 @@
 @interface SXVideoComponentSizer
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXVideoComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v5 = [(SXComponentSizer *)self component];
-  [v5 aspectRatio];
+  component = [(SXComponentSizer *)self component];
+  [component aspectRatio];
   v7 = v6;
 
-  result = a3 / v7;
+  result = width / v7;
   if (v7 == 1.79769313e308)
   {
     return 0.0;

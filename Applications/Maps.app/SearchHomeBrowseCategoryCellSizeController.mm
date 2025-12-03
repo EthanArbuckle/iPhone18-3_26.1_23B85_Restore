@@ -1,16 +1,16 @@
 @interface SearchHomeBrowseCategoryCellSizeController
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)imageSize;
-- (SearchHomeBrowseCategoryCellSizeController)initWithStrings:(id)a3 traitCollection:(id)a4 availableWidth:(double)a5 wantsOneColumnLayout:(BOOL)a6 isSearchAlongRoute:(BOOL)a7 supportsFullTextSearch:(BOOL)a8;
-- (double)imageToLabelPaddingWithContentSizeCategory:(id)a3;
-- (double)labelTopAndBottomPaddingWithContentSizeCategory:(id)a3;
-- (double)longestLabelWidthWithStrings:(id)a3 titleLabelFont:(id)a4 imageToLabelPadding:(double)a5 imageSize:(CGSize)a6;
+- (SearchHomeBrowseCategoryCellSizeController)initWithStrings:(id)strings traitCollection:(id)collection availableWidth:(double)width wantsOneColumnLayout:(BOOL)layout isSearchAlongRoute:(BOOL)route supportsFullTextSearch:(BOOL)search;
+- (double)imageToLabelPaddingWithContentSizeCategory:(id)category;
+- (double)labelTopAndBottomPaddingWithContentSizeCategory:(id)category;
+- (double)longestLabelWidthWithStrings:(id)strings titleLabelFont:(id)font imageToLabelPadding:(double)padding imageSize:(CGSize)size;
 - (double)singleColumnLeadingPadding;
-- (id)columnWidthsWithTraitCollection:(id)a3 strings:(id)a4 availableWidth:(double)a5 numberOfColumns:(unint64_t)a6;
-- (id)stringsInColumnAtIndex:(unint64_t)a3 withStrings:(id)a4;
-- (id)titleLabelFontWithTraitCollection:(id)a3;
+- (id)columnWidthsWithTraitCollection:(id)collection strings:(id)strings availableWidth:(double)width numberOfColumns:(unint64_t)columns;
+- (id)stringsInColumnAtIndex:(unint64_t)index withStrings:(id)strings;
+- (id)titleLabelFontWithTraitCollection:(id)collection;
 - (unint64_t)hash;
-- (unint64_t)numberOfColumnWithContentSizeCategory:(id)a3 numberOfItems:(unint64_t)a4;
+- (unint64_t)numberOfColumnWithContentSizeCategory:(id)category numberOfItems:(unint64_t)items;
 - (unint64_t)numberOfColumns;
 @end
 
@@ -25,21 +25,21 @@
   return result;
 }
 
-- (double)longestLabelWidthWithStrings:(id)a3 titleLabelFont:(id)a4 imageToLabelPadding:(double)a5 imageSize:(CGSize)a6
+- (double)longestLabelWidthWithStrings:(id)strings titleLabelFont:(id)font imageToLabelPadding:(double)padding imageSize:(CGSize)size
 {
-  width = a6.width;
-  v9 = a3;
-  v10 = a4;
+  width = size.width;
+  stringsCopy = strings;
+  fontCopy = font;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v11 = [stringsCopy countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v23;
-    v14 = width + a5;
+    v14 = width + padding;
     v15 = 0.0;
     do
     {
@@ -47,12 +47,12 @@
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(stringsCopy);
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
         v26 = NSFontAttributeName;
-        v27 = v10;
+        v27 = fontCopy;
         v18 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
         [v17 sizeWithAttributes:v18];
         v20 = ceil(v19);
@@ -60,7 +60,7 @@
         v15 = fmax(v15, v14 + v20);
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v12 = [stringsCopy countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v12);
@@ -74,19 +74,19 @@
   return v15;
 }
 
-- (id)stringsInColumnAtIndex:(unint64_t)a3 withStrings:(id)a4
+- (id)stringsInColumnAtIndex:(unint64_t)index withStrings:(id)strings
 {
-  v6 = a4;
+  stringsCopy = strings;
   v7 = [[NSMutableArray alloc] initWithCapacity:{-[SearchHomeBrowseCategoryCellSizeController numberOfRows](self, "numberOfRows")}];
-  v8 = [(SearchHomeBrowseCategoryCellSizeController *)self numberOfRows]* a3;
+  v8 = [(SearchHomeBrowseCategoryCellSizeController *)self numberOfRows]* index;
   if (v8 < [(SearchHomeBrowseCategoryCellSizeController *)self numberOfRows]+ v8)
   {
     v9 = v8;
     do
     {
-      if (v9 < [v6 count])
+      if (v9 < [stringsCopy count])
       {
-        v10 = [v6 objectAtIndex:v9];
+        v10 = [stringsCopy objectAtIndex:v9];
         [v7 addObject:v10];
       }
 
@@ -101,28 +101,28 @@
   return v11;
 }
 
-- (id)columnWidthsWithTraitCollection:(id)a3 strings:(id)a4 availableWidth:(double)a5 numberOfColumns:(unint64_t)a6
+- (id)columnWidthsWithTraitCollection:(id)collection strings:(id)strings availableWidth:(double)width numberOfColumns:(unint64_t)columns
 {
-  v10 = a3;
-  v11 = a4;
+  collectionCopy = collection;
+  stringsCopy = strings;
   v12 = [[NSMutableArray alloc] initWithCapacity:{-[SearchHomeBrowseCategoryCellSizeController numberOfColumns](self, "numberOfColumns")}];
-  v13 = [(SearchHomeBrowseCategoryCellSizeController *)self effectiveTraitCollectionWithTraitCollection:v10];
+  v13 = [(SearchHomeBrowseCategoryCellSizeController *)self effectiveTraitCollectionWithTraitCollection:collectionCopy];
   [UIFont _maps_bodyScaledValueForValue:v13 compatibleWithTraitCollection:166.0];
   v15 = v14;
 
-  if (a6)
+  if (columns)
   {
     v16 = 0;
-    v17 = a5 * 0.9;
+    v17 = width * 0.9;
     do
     {
-      v18 = [(SearchHomeBrowseCategoryCellSizeController *)self stringsInColumnAtIndex:v16 withStrings:v11];
+      v18 = [(SearchHomeBrowseCategoryCellSizeController *)self stringsInColumnAtIndex:v16 withStrings:stringsCopy];
       v19 = [v18 copy];
-      v20 = [(SearchHomeBrowseCategoryCellSizeController *)self titleLabelFont];
+      titleLabelFont = [(SearchHomeBrowseCategoryCellSizeController *)self titleLabelFont];
       [(SearchHomeBrowseCategoryCellSizeController *)self imageToLabelPadding];
       v22 = v21;
       [(SearchHomeBrowseCategoryCellSizeController *)self imageSize];
-      [(SearchHomeBrowseCategoryCellSizeController *)self longestLabelWidthWithStrings:v19 titleLabelFont:v20 imageToLabelPadding:v22 imageSize:v23, v24];
+      [(SearchHomeBrowseCategoryCellSizeController *)self longestLabelWidthWithStrings:v19 titleLabelFont:titleLabelFont imageToLabelPadding:v22 imageSize:v23, v24];
       v26 = v25;
 
       v27 = [NSNumber numberWithDouble:fmin(fmax(v15, v26), v17)];
@@ -131,7 +131,7 @@
       ++v16;
     }
 
-    while (a6 != v16);
+    while (columns != v16);
   }
 
   v28 = [v12 copy];
@@ -139,13 +139,13 @@
   return v28;
 }
 
-- (unint64_t)numberOfColumnWithContentSizeCategory:(id)a3 numberOfItems:(unint64_t)a4
+- (unint64_t)numberOfColumnWithContentSizeCategory:(id)category numberOfItems:(unint64_t)items
 {
-  v6 = a3;
+  categoryCopy = category;
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  if (v8 == 5)
+  if (userInterfaceIdiom == 5)
   {
     goto LABEL_5;
   }
@@ -155,7 +155,7 @@
     dispatch_once(&qword_10195EFC8, &stru_101651060);
   }
 
-  if ([qword_10195EFC0 containsObject:v6])
+  if ([qword_10195EFC0 containsObject:categoryCopy])
   {
 LABEL_5:
     v9 = 1;
@@ -167,7 +167,7 @@ LABEL_5:
   {
 
 LABEL_9:
-    v9 = a4 - (a4 >> 1);
+    v9 = items - (items >> 1);
     goto LABEL_10;
   }
 
@@ -178,14 +178,14 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (a4 % 5)
+  if (items % 5)
   {
-    v9 = a4 / 5 + 1;
+    v9 = items / 5 + 1;
   }
 
   else
   {
-    v9 = a4 / 5;
+    v9 = items / 5;
   }
 
 LABEL_10:
@@ -193,24 +193,24 @@ LABEL_10:
   return v9;
 }
 
-- (id)titleLabelFontWithTraitCollection:(id)a3
+- (id)titleLabelFontWithTraitCollection:(id)collection
 {
-  v3 = [(SearchHomeBrowseCategoryCellSizeController *)self effectiveTraitCollectionWithTraitCollection:a3];
+  v3 = [(SearchHomeBrowseCategoryCellSizeController *)self effectiveTraitCollectionWithTraitCollection:collection];
   v4 = [UIFont system17CompatibleWithTraitCollection:v3];
 
   return v4;
 }
 
-- (double)labelTopAndBottomPaddingWithContentSizeCategory:(id)a3
+- (double)labelTopAndBottomPaddingWithContentSizeCategory:(id)category
 {
   v3 = qword_10195EFB8;
-  v4 = a3;
+  categoryCopy = category;
   if (v3 != -1)
   {
     dispatch_once(&qword_10195EFB8, &stru_101651040);
   }
 
-  v5 = [qword_10195EFB0 containsObject:v4];
+  v5 = [qword_10195EFB0 containsObject:categoryCopy];
 
   result = 10.0;
   if (v5)
@@ -221,16 +221,16 @@ LABEL_10:
   return result;
 }
 
-- (double)imageToLabelPaddingWithContentSizeCategory:(id)a3
+- (double)imageToLabelPaddingWithContentSizeCategory:(id)category
 {
   v3 = qword_10195EFA8;
-  v4 = a3;
+  categoryCopy = category;
   if (v3 != -1)
   {
     dispatch_once(&qword_10195EFA8, &stru_101651020);
   }
 
-  v5 = [qword_10195EFA0 containsObject:v4];
+  v5 = [qword_10195EFA0 containsObject:categoryCopy];
 
   result = 12.0;
   if (v5)
@@ -251,8 +251,8 @@ LABEL_10:
 
 - (unint64_t)numberOfColumns
 {
-  v2 = [(SearchHomeBrowseCategoryCellSizeController *)self columnWidths];
-  v3 = [v2 count];
+  columnWidths = [(SearchHomeBrowseCategoryCellSizeController *)self columnWidths];
+  v3 = [columnWidths count];
 
   return v3;
 }
@@ -370,11 +370,11 @@ LABEL_10:
     v41 = v39;
   }
 
-  v42 = [(SearchHomeBrowseCategoryCellSizeController *)self titleLabelFont];
-  v43 = [v42 hash];
-  v44 = [(SearchHomeBrowseCategoryCellSizeController *)self numberOfRows];
-  v45 = [(SearchHomeBrowseCategoryCellSizeController *)self columnWidths];
-  v46 = [v45 hash];
+  titleLabelFont = [(SearchHomeBrowseCategoryCellSizeController *)self titleLabelFont];
+  v43 = [titleLabelFont hash];
+  numberOfRows = [(SearchHomeBrowseCategoryCellSizeController *)self numberOfRows];
+  columnWidths = [(SearchHomeBrowseCategoryCellSizeController *)self columnWidths];
+  v46 = [columnWidths hash];
   [(SearchHomeBrowseCategoryCellSizeController *)self paddingBetweenCells];
   *&v47 = v47;
   *&v47 = fabsf(*&v47);
@@ -394,16 +394,16 @@ LABEL_10:
     v53 = v51;
   }
 
-  v54 = v57 ^ v58 ^ v25 ^ v33 ^ v41 ^ v43 ^ (2654435761u * v44);
+  v54 = v57 ^ v58 ^ v25 ^ v33 ^ v41 ^ v43 ^ (2654435761u * numberOfRows);
   v55 = v46 ^ v53;
 
   return v54 ^ v55;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -413,7 +413,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(SearchHomeBrowseCategoryCellSizeController *)self imageToLabelPadding];
       v7 = v6;
       [(SearchHomeBrowseCategoryCellSizeController *)v5 imageToLabelPadding];
@@ -439,13 +439,13 @@ LABEL_10:
           [(SearchHomeBrowseCategoryCellSizeController *)v5 labelTopAndBottomPadding];
           if (v20 == v21)
           {
-            v22 = [(SearchHomeBrowseCategoryCellSizeController *)self titleLabelFont];
-            v23 = [(SearchHomeBrowseCategoryCellSizeController *)v5 titleLabelFont];
-            if ([v22 isEqual:v23] && (v24 = -[SearchHomeBrowseCategoryCellSizeController numberOfRows](self, "numberOfRows"), v24 == -[SearchHomeBrowseCategoryCellSizeController numberOfRows](v5, "numberOfRows")))
+            titleLabelFont = [(SearchHomeBrowseCategoryCellSizeController *)self titleLabelFont];
+            titleLabelFont2 = [(SearchHomeBrowseCategoryCellSizeController *)v5 titleLabelFont];
+            if ([titleLabelFont isEqual:titleLabelFont2] && (v24 = -[SearchHomeBrowseCategoryCellSizeController numberOfRows](self, "numberOfRows"), v24 == -[SearchHomeBrowseCategoryCellSizeController numberOfRows](v5, "numberOfRows")))
             {
-              v25 = [(SearchHomeBrowseCategoryCellSizeController *)self columnWidths];
-              v26 = [(SearchHomeBrowseCategoryCellSizeController *)v5 columnWidths];
-              if ([v25 isEqualToArray:v26])
+              columnWidths = [(SearchHomeBrowseCategoryCellSizeController *)self columnWidths];
+              columnWidths2 = [(SearchHomeBrowseCategoryCellSizeController *)v5 columnWidths];
+              if ([columnWidths isEqualToArray:columnWidths2])
               {
                 [(SearchHomeBrowseCategoryCellSizeController *)self paddingBetweenCells];
                 v28 = v27;
@@ -483,50 +483,50 @@ LABEL_16:
   return v17;
 }
 
-- (SearchHomeBrowseCategoryCellSizeController)initWithStrings:(id)a3 traitCollection:(id)a4 availableWidth:(double)a5 wantsOneColumnLayout:(BOOL)a6 isSearchAlongRoute:(BOOL)a7 supportsFullTextSearch:(BOOL)a8
+- (SearchHomeBrowseCategoryCellSizeController)initWithStrings:(id)strings traitCollection:(id)collection availableWidth:(double)width wantsOneColumnLayout:(BOOL)layout isSearchAlongRoute:(BOOL)route supportsFullTextSearch:(BOOL)search
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
+  routeCopy = route;
+  stringsCopy = strings;
+  collectionCopy = collection;
   v45.receiver = self;
   v45.super_class = SearchHomeBrowseCategoryCellSizeController;
   v16 = [(SearchHomeBrowseCategoryCellSizeController *)&v45 init];
   v17 = v16;
   if (v16)
   {
-    v16->_searchAlongRoute = v9;
-    v16->_supportsFullTextSearch = a8;
-    if (v9)
+    v16->_searchAlongRoute = routeCopy;
+    v16->_supportsFullTextSearch = search;
+    if (routeCopy)
     {
-      v18 = [v15 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:UIContentSizeCategoryExtraLarge maximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraExtraLarge];
+      v18 = [collectionCopy _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:UIContentSizeCategoryExtraLarge maximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraExtraLarge];
 
-      v15 = v18;
+      collectionCopy = v18;
     }
 
-    v19 = [v15 preferredContentSizeCategory];
-    [(SearchHomeBrowseCategoryCellSizeController *)v17 imageToLabelPaddingWithContentSizeCategory:v19];
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    [(SearchHomeBrowseCategoryCellSizeController *)v17 imageToLabelPaddingWithContentSizeCategory:preferredContentSizeCategory];
     v17->_imageToLabelPadding = v20;
 
     v17->_paddingBetweenCells = 8.0;
-    v21 = [(SearchHomeBrowseCategoryCellSizeController *)v17 titleLabelFontWithTraitCollection:v15];
+    v21 = [(SearchHomeBrowseCategoryCellSizeController *)v17 titleLabelFontWithTraitCollection:collectionCopy];
     titleLabelFont = v17->_titleLabelFont;
     v17->_titleLabelFont = v21;
 
-    if (a6)
+    if (layout)
     {
       v23 = 1;
     }
 
     else
     {
-      v24 = [v15 preferredContentSizeCategory];
-      v23 = -[SearchHomeBrowseCategoryCellSizeController numberOfColumnWithContentSizeCategory:numberOfItems:](v17, "numberOfColumnWithContentSizeCategory:numberOfItems:", v24, [v14 count]);
+      preferredContentSizeCategory2 = [collectionCopy preferredContentSizeCategory];
+      v23 = -[SearchHomeBrowseCategoryCellSizeController numberOfColumnWithContentSizeCategory:numberOfItems:](v17, "numberOfColumnWithContentSizeCategory:numberOfItems:", preferredContentSizeCategory2, [stringsCopy count]);
     }
 
     v25 = +[UIDevice currentDevice];
-    v26 = [v25 userInterfaceIdiom];
+    userInterfaceIdiom = [v25 userInterfaceIdiom];
 
-    if (v26 == 5)
+    if (userInterfaceIdiom == 5)
     {
       __asm { FMOV            V0.2D, #24.0 }
 
@@ -537,15 +537,15 @@ LABEL_16:
     else
     {
       v32 = 45.0;
-      if (!v9)
+      if (!routeCopy)
       {
         v32 = 30.0;
       }
 
       v17->_imageSize.width = v32;
       v17->_imageSize.height = v32;
-      v33 = [v15 preferredContentSizeCategory];
-      [(SearchHomeBrowseCategoryCellSizeController *)v17 labelTopAndBottomPaddingWithContentSizeCategory:v33];
+      preferredContentSizeCategory3 = [collectionCopy preferredContentSizeCategory];
+      [(SearchHomeBrowseCategoryCellSizeController *)v17 labelTopAndBottomPaddingWithContentSizeCategory:preferredContentSizeCategory3];
       v17->_labelTopAndBottomPadding = v34;
     }
 
@@ -553,8 +553,8 @@ LABEL_16:
     {
       [(SearchHomeBrowseCategoryCellSizeController *)v17 singleColumnLeadingPadding];
       v17->_imageLeadingPadding = v35;
-      v17->_numberOfRows = [v14 count];
-      v36 = [NSNumber numberWithDouble:a5];
+      v17->_numberOfRows = [stringsCopy count];
+      v36 = [NSNumber numberWithDouble:width];
       v46 = v36;
       v37 = [NSArray arrayWithObjects:&v46 count:1];
       columnWidths = v17->_columnWidths;
@@ -565,15 +565,15 @@ LABEL_16:
     {
       v17->_imageLeadingPadding = 0.0;
       v39 = +[MapsOfflineUIHelper sharedHelper];
-      v40 = [v39 isUsingOfflineMaps];
+      isUsingOfflineMaps = [v39 isUsingOfflineMaps];
 
       v41 = 2;
-      if (v40 && !v9)
+      if (isUsingOfflineMaps && !routeCopy)
       {
         if (v17->_supportsFullTextSearch)
         {
-          v42 = [v14 count];
-          v41 = ([v14 count] & 1) + (v42 >> 1);
+          v42 = [stringsCopy count];
+          v41 = ([stringsCopy count] & 1) + (v42 >> 1);
         }
 
         else
@@ -583,7 +583,7 @@ LABEL_16:
       }
 
       v17->_numberOfRows = v41;
-      v43 = [(SearchHomeBrowseCategoryCellSizeController *)v17 columnWidthsWithTraitCollection:v15 strings:v14 availableWidth:v23 numberOfColumns:a5];
+      v43 = [(SearchHomeBrowseCategoryCellSizeController *)v17 columnWidthsWithTraitCollection:collectionCopy strings:stringsCopy availableWidth:v23 numberOfColumns:width];
       v36 = v17->_columnWidths;
       v17->_columnWidths = v43;
     }

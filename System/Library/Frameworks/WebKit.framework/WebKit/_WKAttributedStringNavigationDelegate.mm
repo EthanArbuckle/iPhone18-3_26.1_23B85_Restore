@@ -1,10 +1,10 @@
 @interface _WKAttributedStringNavigationDelegate
 - (void)dealloc;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation _WKAttributedStringNavigationDelegate
@@ -23,53 +23,53 @@
   [(_WKAttributedStringNavigationDelegate *)&v3 dealloc];
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
   webContentProcessDidTerminate = self->_webContentProcessDidTerminate;
   if (webContentProcessDidTerminate)
   {
-    webContentProcessDidTerminate[2](webContentProcessDidTerminate, a3);
+    webContentProcessDidTerminate[2](webContentProcessDidTerminate, terminate);
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   decidePolicyForNavigationAction = self->_decidePolicyForNavigationAction;
   if (decidePolicyForNavigationAction)
   {
-    decidePolicyForNavigationAction[2](decidePolicyForNavigationAction, a4, a5);
+    decidePolicyForNavigationAction[2](decidePolicyForNavigationAction, action, handler);
   }
 
   else
   {
-    (*(a5 + 2))(a5, 1);
+    (*(handler + 2))(handler, 1);
   }
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
   didFailProvisionalNavigation = self->_didFailProvisionalNavigation;
   if (didFailProvisionalNavigation)
   {
-    didFailProvisionalNavigation[2](didFailProvisionalNavigation, a3, a4, a5);
+    didFailProvisionalNavigation[2](didFailProvisionalNavigation, view, navigation, error);
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
   didFailNavigation = self->_didFailNavigation;
   if (didFailNavigation)
   {
-    didFailNavigation[2](didFailNavigation, a3, a4, a5);
+    didFailNavigation[2](didFailNavigation, view, navigation, error);
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   didFinishNavigation = self->_didFinishNavigation;
   if (didFinishNavigation)
   {
-    didFinishNavigation[2](didFinishNavigation, a3, a4);
+    didFinishNavigation[2](didFinishNavigation, view, navigation);
   }
 }
 

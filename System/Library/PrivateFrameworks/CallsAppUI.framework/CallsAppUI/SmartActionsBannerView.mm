@@ -1,11 +1,11 @@
 @interface SmartActionsBannerView
 - (CGSize)intrinsicContentSize;
-- (_TtC10CallsAppUI22SmartActionsBannerView)initWithCoder:(id)a3;
+- (_TtC10CallsAppUI22SmartActionsBannerView)initWithCoder:(id)coder;
 @end
 
 @implementation SmartActionsBannerView
 
-- (_TtC10CallsAppUI22SmartActionsBannerView)initWithCoder:(id)a3
+- (_TtC10CallsAppUI22SmartActionsBannerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10CallsAppUI22SmartActionsBannerView_banner;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E6999338]) init];

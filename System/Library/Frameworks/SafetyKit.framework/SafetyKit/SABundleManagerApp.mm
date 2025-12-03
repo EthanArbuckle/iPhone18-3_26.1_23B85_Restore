@@ -1,23 +1,23 @@
 @interface SABundleManagerApp
-- (SABundleManagerApp)initWithBundleId:(id)a3 deviceType:(int64_t)a4;
+- (SABundleManagerApp)initWithBundleId:(id)id deviceType:(int64_t)type;
 - (id)getLocalizedName;
 - (void)getLocalizedName;
-- (void)getLocalizedNameForPairedDeviceWithCompletion:(id)a3;
+- (void)getLocalizedNameForPairedDeviceWithCompletion:(id)completion;
 @end
 
 @implementation SABundleManagerApp
 
-- (SABundleManagerApp)initWithBundleId:(id)a3 deviceType:(int64_t)a4
+- (SABundleManagerApp)initWithBundleId:(id)id deviceType:(int64_t)type
 {
-  v6 = a3;
+  idCopy = id;
   v10.receiver = self;
   v10.super_class = SABundleManagerApp;
   v7 = [(SABundleManagerApp *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(SABundleManagerApp *)v7 setBundleId:v6];
-    [(SABundleManagerApp *)v8 setDeviceType:a4];
+    [(SABundleManagerApp *)v7 setBundleId:idCopy];
+    [(SABundleManagerApp *)v8 setDeviceType:type];
   }
 
   return v8;
@@ -25,13 +25,13 @@
 
 - (id)getLocalizedName
 {
-  v3 = [(SABundleManagerApp *)self bundleId];
+  bundleId = [(SABundleManagerApp *)self bundleId];
 
-  if (v3)
+  if (bundleId)
   {
     v4 = MEMORY[0x277CCA8D8];
-    v5 = [(SABundleManagerApp *)self bundleId];
-    v6 = [v4 bundleWithIdentifier:v5];
+    bundleId2 = [(SABundleManagerApp *)self bundleId];
+    v6 = [v4 bundleWithIdentifier:bundleId2];
 
     if (!v6)
     {
@@ -42,18 +42,18 @@
       }
     }
 
-    v3 = [v6 objectForInfoDictionaryKey:@"CFBundleName"];
+    bundleId = [v6 objectForInfoDictionaryKey:@"CFBundleName"];
   }
 
-  return v3;
+  return bundleId;
 }
 
-- (void)getLocalizedNameForPairedDeviceWithCompletion:(id)a3
+- (void)getLocalizedNameForPairedDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SABundleManagerApp *)self name];
+  completionCopy = completion;
+  name = [(SABundleManagerApp *)self name];
 
-  if (!v5)
+  if (!name)
   {
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
@@ -61,33 +61,33 @@
     v16[2] = __68__SABundleManagerApp_getLocalizedNameForPairedDeviceWithCompletion___block_invoke;
     v16[3] = &unk_278B67D68;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
+    v17 = completionCopy;
     v7 = MEMORY[0x23EE91E30](v16);
-    v8 = [(SABundleManagerApp *)self bundleId];
+    bundleId = [(SABundleManagerApp *)self bundleId];
 
-    if (v8)
+    if (bundleId)
     {
-      v9 = [(SABundleManagerApp *)self deviceType];
-      if (!v9)
+      deviceType = [(SABundleManagerApp *)self deviceType];
+      if (!deviceType)
       {
-        v11 = [(SABundleManagerApp *)self bundleId];
-        v12 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+        bundleId2 = [(SABundleManagerApp *)self bundleId];
+        mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __68__SABundleManagerApp_getLocalizedNameForPairedDeviceWithCompletion___block_invoke_2;
         v13[3] = &unk_278B67D90;
-        v10 = v11;
-        v14 = v10;
+        bundleId3 = bundleId2;
+        v14 = bundleId3;
         v15 = v7;
-        [v12 fetchWatchAppBundleIDForCompanionAppBundleID:v10 completion:v13];
+        [mEMORY[0x277CEAF80] fetchWatchAppBundleIDForCompanionAppBundleID:bundleId3 completion:v13];
 
         goto LABEL_9;
       }
 
-      if (v9 == 1)
+      if (deviceType == 1)
       {
-        v10 = [(SABundleManagerApp *)self bundleId];
-        [SABundleManager getRemoteApplicationNameWithBundleId:v10 withCompletion:v7];
+        bundleId3 = [(SABundleManagerApp *)self bundleId];
+        [SABundleManager getRemoteApplicationNameWithBundleId:bundleId3 withCompletion:v7];
 LABEL_9:
       }
     }
@@ -102,8 +102,8 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v6 = [(SABundleManagerApp *)self name];
-  (*(v4 + 2))(v4, v6);
+  name2 = [(SABundleManagerApp *)self name];
+  (*(completionCopy + 2))(completionCopy, name2);
 
 LABEL_11:
 }

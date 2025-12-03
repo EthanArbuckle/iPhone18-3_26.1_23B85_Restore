@@ -1,21 +1,21 @@
 @interface PGSemanticalDeduper
-- (id)deduplicatedItemsWithItems:(id)a3 debugInfo:(id)a4 progressBlock:(id)a5;
-- (id)itemsNeedingSceneprintInTimeClusters:(id)a3;
-- (id)sceneprintByItemIdentifierWithItems:(id)a3;
+- (id)deduplicatedItemsWithItems:(id)items debugInfo:(id)info progressBlock:(id)block;
+- (id)itemsNeedingSceneprintInTimeClusters:(id)clusters;
+- (id)sceneprintByItemIdentifierWithItems:(id)items;
 @end
 
 @implementation PGSemanticalDeduper
 
-- (id)itemsNeedingSceneprintInTimeClusters:(id)a3
+- (id)itemsNeedingSceneprintInTimeClusters:(id)clusters
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  clustersCopy = clusters;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = clustersCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -30,11 +30,11 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) objects];
-        if ([v10 count] >= 2)
+        objects = [*(*(&v15 + 1) + 8 * i) objects];
+        if ([objects count] >= 2)
         {
           v11 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_45];
-          v12 = [v10 filteredArrayUsingPredicate:v11];
+          v12 = [objects filteredArrayUsingPredicate:v11];
 
           if ([v12 count] >= 2)
           {
@@ -54,12 +54,12 @@
   return v4;
 }
 
-- (id)deduplicatedItemsWithItems:(id)a3 debugInfo:(id)a4 progressBlock:(id)a5
+- (id)deduplicatedItemsWithItems:(id)items debugInfo:(id)info progressBlock:(id)block
 {
   v149 = *MEMORY[0x277D85DE8];
-  v77 = a3;
-  v88 = a4;
-  v74 = a5;
+  itemsCopy = items;
+  infoCopy = info;
+  blockCopy = block;
   v137 = 0;
   v138 = &v137;
   v139 = 0x2020000000;
@@ -68,7 +68,7 @@
   v134 = &v133;
   v135 = 0x2020000000;
   v136 = 0;
-  v81 = _Block_copy(v74);
+  v81 = _Block_copy(blockCopy);
   if (v81 && (v7 = CFAbsoluteTimeGetCurrent(), v7 - v134[3] >= 0.01) && (v134[3] = v7, v132 = 0, (*(v81 + 2))(v81, &v132, 0.0), v8 = *(v138 + 24) | v132, *(v138 + 24) = v8, (v8 & 1) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -85,7 +85,7 @@
 
   else
   {
-    v86 = [v77 count];
+    v86 = [itemsCopy count];
     v10 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:&__block_literal_global_38698];
     [v10 setMaximumDistance:90.0];
     [v10 setMinimumNumberOfObjects:1];
@@ -99,7 +99,7 @@
     v131 = 0x3F847AE147AE147BLL;
     v130 = &v137;
     v73 = v10;
-    v76 = [v10 performWithDataset:v77 progressBlock:v127];
+    v76 = [v10 performWithDataset:itemsCopy progressBlock:v127];
     if (*(v138 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -169,8 +169,8 @@
 
               v19 = *(*(&v121 + 1) + 8 * v84);
               v82 = objc_autoreleasePoolPush();
-              v83 = [v19 objects];
-              v20 = [v83 count];
+              objects = [v19 objects];
+              v20 = [objects count];
               if (v20 >= 2)
               {
                 v114[0] = MEMORY[0x277D85DD0];
@@ -184,7 +184,7 @@
                 v120 = v17;
                 v118 = 0x3F847AE147AE147BLL;
                 v117 = &v137;
-                v22 = [v85 stackSimilarItems:v83 withSimilarity:2 timestampSupport:0 progressBlock:v114];
+                v22 = [v85 stackSimilarItems:objects withSimilarity:2 timestampSupport:0 progressBlock:v114];
                 v23 = MEMORY[0x277D86220];
                 v24 = v22;
                 if (*(v138 + 24) == 1)
@@ -352,7 +352,7 @@ LABEL_53:
                         _os_log_impl(&dword_22F0FC000, v45, OS_LOG_TYPE_INFO, "Semantically deduped %lu items to %lu because %@ required", buf, 0x20u);
                       }
 
-                      [v88 dedupItems:v41 toRequiredItems:v43 withDedupingType:2];
+                      [infoCopy dedupItems:v41 toRequiredItems:v43 withDedupingType:2];
                     }
 
 LABEL_84:
@@ -365,7 +365,7 @@ LABEL_84:
                       {
 LABEL_86:
 
-                        v25 = v115;
+                        firstObject2 = v115;
 LABEL_87:
 
                         goto LABEL_88;
@@ -383,8 +383,8 @@ LABEL_87:
                 v47 = v93;
                 if (v42 < 2)
                 {
-                  v51 = [v41 firstObject];
-                  if (v51)
+                  firstObject = [v41 firstObject];
+                  if (firstObject)
                   {
                     goto LABEL_82;
                   }
@@ -402,7 +402,7 @@ LABEL_87:
                   if (v49)
                   {
                     v50 = 0;
-                    v51 = 0;
+                    firstObject = 0;
                     v52 = *v96;
                     v53 = -1.79769313e308;
                     do
@@ -417,15 +417,15 @@ LABEL_87:
                         v55 = *(*(&v95 + 1) + 8 * i);
                         [v55 clsContentScore];
                         v57 = v56;
-                        v58 = [v55 isFavorite];
-                        v59 = v58;
-                        if (!v51 || v57 > v53 && ((v50 ^ 1 | v58) & 1) != 0)
+                        isFavorite = [v55 isFavorite];
+                        v59 = isFavorite;
+                        if (!firstObject || v57 > v53 && ((v50 ^ 1 | isFavorite) & 1) != 0)
                         {
                           v60 = v55;
 
                           v50 = v59;
                           v53 = v57;
-                          v51 = v60;
+                          firstObject = v60;
                         }
                       }
 
@@ -437,7 +437,7 @@ LABEL_87:
 
                   else
                   {
-                    v51 = 0;
+                    firstObject = 0;
                   }
 
                   v61 = MEMORY[0x277D86220];
@@ -449,11 +449,11 @@ LABEL_87:
                   }
 
                   v47 = v93;
-                  if (v51)
+                  if (firstObject)
                   {
-                    [v88 dedupItems:v48 toItem:v51 withDedupingType:2];
+                    [infoCopy dedupItems:v48 toItem:firstObject withDedupingType:2];
 LABEL_82:
-                    [v47 addObject:v51];
+                    [v47 addObject:firstObject];
                   }
                 }
 
@@ -462,8 +462,8 @@ LABEL_82:
 
               if (v20 == 1)
               {
-                v25 = [v83 firstObject];
-                [v93 addObject:v25];
+                firstObject2 = [objects firstObject];
+                [v93 addObject:firstObject2];
                 goto LABEL_87;
               }
 
@@ -627,16 +627,16 @@ double __74__PGSemanticalDeduper_deduplicatedItemsWithItems_debugInfo_progressBl
   return v8;
 }
 
-- (id)sceneprintByItemIdentifierWithItems:(id)a3
+- (id)sceneprintByItemIdentifierWithItems:(id)items
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  itemsCopy = items;
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -653,11 +653,11 @@ double __74__PGSemanticalDeduper_deduplicatedItemsWithItems_debugInfo_progressBl
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 clsSceneprint];
-        if (v12)
+        clsSceneprint = [v10 clsSceneprint];
+        if (clsSceneprint)
         {
-          v13 = [v10 clsIdentifier];
-          [v4 setObject:v12 forKeyedSubscript:v13];
+          clsIdentifier = [v10 clsIdentifier];
+          [v4 setObject:clsSceneprint forKeyedSubscript:clsIdentifier];
         }
 
         objc_autoreleasePoolPop(v11);

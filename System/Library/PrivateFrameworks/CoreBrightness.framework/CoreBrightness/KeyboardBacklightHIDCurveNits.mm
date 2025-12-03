@@ -1,30 +1,30 @@
 @interface KeyboardBacklightHIDCurveNits
-- (KeyboardBacklightHIDCurveNits)initWithQueue:(id)a3 device:(id)a4;
+- (KeyboardBacklightHIDCurveNits)initWithQueue:(id)queue device:(id)device;
 - (float)brightness;
-- (float)convertNitsToLevelPercentage:(float)a3;
+- (float)convertNitsToLevelPercentage:(float)percentage;
 - (float)level;
 - (float)minCapableNits;
 - (void)dealloc;
-- (void)setBrightness:(float)a3;
-- (void)setBrightness:(float)a3 withFadeSpeed:(int)a4 commit:(BOOL)a5;
+- (void)setBrightness:(float)brightness;
+- (void)setBrightness:(float)brightness withFadeSpeed:(int)speed commit:(BOOL)commit;
 @end
 
 @implementation KeyboardBacklightHIDCurveNits
 
-- (KeyboardBacklightHIDCurveNits)initWithQueue:(id)a3 device:(id)a4
+- (KeyboardBacklightHIDCurveNits)initWithQueue:(id)queue device:(id)device
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  deviceCopy = device;
   v5.receiver = self;
   v5.super_class = KeyboardBacklightHIDCurveNits;
-  return [(KeyboardBacklightHIDCurve *)&v5 initWithQueue:a3 device:a4];
+  return [(KeyboardBacklightHIDCurve *)&v5 initWithQueue:queue device:device];
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = KeyboardBacklightHIDCurveNits;
@@ -100,15 +100,15 @@
   return v14;
 }
 
-- (void)setBrightness:(float)a3
+- (void)setBrightness:(float)brightness
 {
   v33 = *MEMORY[0x1E69E9840];
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  brightnessCopy = brightness;
   if (self->super.super.super._logHandle)
   {
-    logHandle = v30->super.super.super._logHandle;
+    logHandle = selfCopy->super.super.super._logHandle;
   }
 
   else
@@ -130,16 +130,16 @@
   v26 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_2_8_0_4_0(v32, COERCE__INT64(v28), [(KeyboardBacklight *)v30 manualAdjust]);
+    __os_log_helper_16_0_2_8_0_4_0(v32, COERCE__INT64(brightnessCopy), [(KeyboardBacklight *)selfCopy manualAdjust]);
     _os_log_debug_impl(&dword_1DE8E5000, v27, v26, "requested brightness %f manualAdjust %d", v32, 0x12u);
   }
 
-  if ([(KeyboardBacklight *)v30 manualAdjust])
+  if ([(KeyboardBacklight *)selfCopy manualAdjust])
   {
     v24 = 0.0;
-    *&v3 = LODWORD(v28);
-    v23 = v28;
-    if (v28 <= 0.0)
+    *&v3 = LODWORD(brightnessCopy);
+    v23 = brightnessCopy;
+    if (brightnessCopy <= 0.0)
     {
       v12 = v24;
     }
@@ -163,23 +163,23 @@
     }
 
     v20 = v11;
-    v28 = v11;
+    brightnessCopy = v11;
     *&v3 = v11;
-    [(KeyboardBacklight *)v30 setLevelPercentage:v3];
-    [(KeyboardBacklight *)v30 setSaturated:0];
-    [(KeyboardBacklight *)v30 levelPercentage];
-    [(KeyboardBacklight *)v30 setMuted:v4 == 0.0];
-    if ([(KeyboardBacklight *)v30 autoAdjust])
+    [(KeyboardBacklight *)selfCopy setLevelPercentage:v3];
+    [(KeyboardBacklight *)selfCopy setSaturated:0];
+    [(KeyboardBacklight *)selfCopy levelPercentage];
+    [(KeyboardBacklight *)selfCopy setMuted:v4 == 0.0];
+    if ([(KeyboardBacklight *)selfCopy autoAdjust])
     {
-      [(KeyboardBacklightHIDCurve *)v30 updateLuxToNitsCurve];
+      [(KeyboardBacklightHIDCurve *)selfCopy updateLuxToNitsCurve];
     }
 
-    [(KeyboardBacklight *)v30 levelPercentage];
+    [(KeyboardBacklight *)selfCopy levelPercentage];
     [CBKeyboardPreferencesManager setFloatPreference:@"KeyboardBacklightManualBrightness" forKey:?];
-    [(KeyboardBacklight *)v30 updateBacklightDeviceWithReason:1];
-    if (v30->super.super.super._logHandle)
+    [(KeyboardBacklight *)selfCopy updateBacklightDeviceWithReason:1];
+    if (selfCopy->super.super.super._logHandle)
     {
-      v10 = v30->super.super.super._logHandle;
+      v10 = selfCopy->super.super.super._logHandle;
     }
 
     else
@@ -201,16 +201,16 @@
     v18 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v31, v30);
+      __os_log_helper_16_2_1_8_64(v31, selfCopy);
       _os_log_debug_impl(&dword_1DE8E5000, v19, v18, "%@", v31, 0xCu);
     }
   }
 
   else
   {
-    if (v30->super.super.super._logHandle)
+    if (selfCopy->super.super.super._logHandle)
     {
-      v8 = v30->super.super.super._logHandle;
+      v8 = selfCopy->super.super.super._logHandle;
     }
 
     else
@@ -242,17 +242,17 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setBrightness:(float)a3 withFadeSpeed:(int)a4 commit:(BOOL)a5
+- (void)setBrightness:(float)brightness withFadeSpeed:(int)speed commit:(BOOL)commit
 {
   v37 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
+  brightnessCopy = brightness;
+  speedCopy = speed;
+  commitCopy = commit;
   if (self->super.super.super._logHandle)
   {
-    logHandle = v34->super.super.super._logHandle;
+    logHandle = selfCopy->super.super.super._logHandle;
   }
 
   else
@@ -274,16 +274,16 @@
   v28 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_4_8_0_4_0_4_0_4_0(v36, COERCE__INT64(v32), [(KeyboardBacklight *)v34 manualAdjust], v31, v30);
+    __os_log_helper_16_0_4_8_0_4_0_4_0_4_0(v36, COERCE__INT64(brightnessCopy), [(KeyboardBacklight *)selfCopy manualAdjust], speedCopy, commitCopy);
     _os_log_debug_impl(&dword_1DE8E5000, v29, v28, "Requested keyboard brightness %f, manualAdjust %d, fade speed %d, commit %d", v36, 0x1Eu);
   }
 
-  if ([(KeyboardBacklight *)v34 manualAdjust])
+  if ([(KeyboardBacklight *)selfCopy manualAdjust])
   {
     v26 = 0.0;
-    *&v5 = LODWORD(v32);
-    v25 = v32;
-    if (v32 <= 0.0)
+    *&v5 = LODWORD(brightnessCopy);
+    v25 = brightnessCopy;
+    if (brightnessCopy <= 0.0)
     {
       v14 = v26;
     }
@@ -307,27 +307,27 @@
     }
 
     v22 = v13;
-    v32 = v13;
+    brightnessCopy = v13;
     *&v5 = v13;
-    [(KeyboardBacklight *)v34 setLevelPercentage:v5];
-    [(KeyboardBacklight *)v34 setSaturated:0];
-    [(KeyboardBacklight *)v34 levelPercentage];
-    [(KeyboardBacklight *)v34 setMuted:v6 == 0.0];
-    if (v30)
+    [(KeyboardBacklight *)selfCopy setLevelPercentage:v5];
+    [(KeyboardBacklight *)selfCopy setSaturated:0];
+    [(KeyboardBacklight *)selfCopy levelPercentage];
+    [(KeyboardBacklight *)selfCopy setMuted:v6 == 0.0];
+    if (commitCopy)
     {
-      if ([(KeyboardBacklight *)v34 autoAdjust])
+      if ([(KeyboardBacklight *)selfCopy autoAdjust])
       {
-        [(KeyboardBacklightHIDCurve *)v34 updateLuxToNitsCurve];
+        [(KeyboardBacklightHIDCurve *)selfCopy updateLuxToNitsCurve];
       }
 
-      [(KeyboardBacklight *)v34 levelPercentage];
+      [(KeyboardBacklight *)selfCopy levelPercentage];
       [CBKeyboardPreferencesManager setFloatPreference:@"KeyboardBacklightManualBrightness" forKey:?];
     }
 
-    [(KeyboardBacklight *)v34 updateBacklightDeviceWithFadeSpeed:v31 commit:v30 reason:1];
-    if (v34->super.super.super._logHandle)
+    [(KeyboardBacklight *)selfCopy updateBacklightDeviceWithFadeSpeed:speedCopy commit:commitCopy reason:1];
+    if (selfCopy->super.super.super._logHandle)
     {
-      v12 = v34->super.super.super._logHandle;
+      v12 = selfCopy->super.super.super._logHandle;
     }
 
     else
@@ -349,16 +349,16 @@
     v20 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v35, v34);
+      __os_log_helper_16_2_1_8_64(v35, selfCopy);
       _os_log_debug_impl(&dword_1DE8E5000, v21, v20, "%@", v35, 0xCu);
     }
   }
 
   else
   {
-    if (v34->super.super.super._logHandle)
+    if (selfCopy->super.super.super._logHandle)
     {
-      v10 = v34->super.super.super._logHandle;
+      v10 = selfCopy->super.super.super._logHandle;
     }
 
     else
@@ -390,7 +390,7 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (float)convertNitsToLevelPercentage:(float)a3
+- (float)convertNitsToLevelPercentage:(float)percentage
 {
   v18 = *MEMORY[0x1E69E9840];
   v14 = 0.0;
@@ -398,7 +398,7 @@
   if (v3 != 0.0)
   {
     [(KeyboardBacklight *)self levelMax];
-    v14 = a3 / v4;
+    v14 = percentage / v4;
   }
 
   [(KeyboardBacklightHIDCurveNits *)self maxLevelPercentage];
@@ -447,7 +447,7 @@
     [(KeyboardBacklight *)self levelMax];
     *&v9 = v6;
     [(KeyboardBacklight *)self levelMin];
-    __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v17, COERCE__INT64(a3), COERCE__INT64(v12), v9, COERCE__INT64(v7));
+    __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v17, COERCE__INT64(percentage), COERCE__INT64(v12), v9, COERCE__INT64(v7));
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "nits = %f -> level percentage = %f, max = %f, min = %f", v17, 0x2Au);
   }
 

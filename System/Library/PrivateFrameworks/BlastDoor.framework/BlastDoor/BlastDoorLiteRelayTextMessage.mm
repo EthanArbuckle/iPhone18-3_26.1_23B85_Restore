@@ -7,7 +7,7 @@
 
 - (BlastDoorLiteTapback)tapback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21455FDF8();
 
   return v3;

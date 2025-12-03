@@ -1,19 +1,19 @@
 @interface PowerUIChargingController
 + (PowerUIChargingController)sharedInstance;
-- (BOOL)setChargeLimitTo:(int64_t)a3 forLimitType:(unint64_t)a4 setNoChargeToFull:(BOOL)a5;
+- (BOOL)setChargeLimitTo:(int64_t)to forLimitType:(unint64_t)type setNoChargeToFull:(BOOL)full;
 - (PowerUIChargingController)init;
-- (__CFString)loadChargeLimitTokenForPreferenceKey:(id)a3 forReason:(id)a4 verbose:(BOOL)a5;
-- (__CFString)registerNewTokenForPreferenceKey:(id)a3 forReason:(id)a4;
-- (id)readNumberForPreferenceKey:(id)a3;
+- (__CFString)loadChargeLimitTokenForPreferenceKey:(id)key forReason:(id)reason verbose:(BOOL)verbose;
+- (__CFString)registerNewTokenForPreferenceKey:(id)key forReason:(id)reason;
+- (id)readNumberForPreferenceKey:(id)key;
 - (void)clearAllChargeLimits;
-- (void)clearChargeLimitForLimitType:(unint64_t)a3;
+- (void)clearChargeLimitForLimitType:(unint64_t)type;
 @end
 
 @implementation PowerUIChargingController
 
-- (id)readNumberForPreferenceKey:(id)a3
+- (id)readNumberForPreferenceKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.smartcharging.topoffprotection");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.smartcharging.topoffprotection");
 
   return v3;
 }
@@ -29,9 +29,9 @@
     log = v2->_log;
     v2->_log = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     tokenDict = v2->_tokenDict;
-    v2->_tokenDict = v5;
+    v2->_tokenDict = dictionary;
 
     v7 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     chargeLimitLock = v2->_chargeLimitLock;
@@ -63,17 +63,17 @@ void __43__PowerUIChargingController_sharedInstance__block_invoke()
   }
 }
 
-- (__CFString)loadChargeLimitTokenForPreferenceKey:(id)a3 forReason:(id)a4 verbose:(BOOL)a5
+- (__CFString)loadChargeLimitTokenForPreferenceKey:(id)key forReason:(id)reason verbose:(BOOL)verbose
 {
-  v5 = a5;
+  verboseCopy = verbose;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_tokenDict objectForKeyedSubscript:v9];
+  keyCopy = key;
+  reasonCopy = reason;
+  v10 = [(NSMutableDictionary *)self->_tokenDict objectForKeyedSubscript:reasonCopy];
 
   if (v10)
   {
-    if (v5)
+    if (verboseCopy)
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -87,11 +87,11 @@ void __43__PowerUIChargingController_sharedInstance__block_invoke()
 
   else
   {
-    v10 = [PowerUISmartChargeUtilities readStringForPreferenceKey:v8 inDomain:@"com.apple.smartcharging.topoffprotection"];
+    v10 = [PowerUISmartChargeUtilities readStringForPreferenceKey:keyCopy inDomain:@"com.apple.smartcharging.topoffprotection"];
     if (v10)
     {
-      v24 = v5;
-      v25 = v8;
+      v24 = verboseCopy;
+      v25 = keyCopy;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
@@ -112,12 +112,12 @@ void __43__PowerUIChargingController_sharedInstance__block_invoke()
             }
 
             v17 = [*(*(&v26 + 1) + 8 * i) objectForKeyedSubscript:@"chargeSocLimitReason"];
-            v18 = [v17 isEqualToString:v9];
+            v18 = [v17 isEqualToString:reasonCopy];
 
             if (v18)
             {
 
-              [(NSMutableDictionary *)self->_tokenDict setObject:v10 forKeyedSubscript:v9];
+              [(NSMutableDictionary *)self->_tokenDict setObject:v10 forKeyedSubscript:reasonCopy];
               if (v24)
               {
                 v20 = self->_log;
@@ -129,7 +129,7 @@ void __43__PowerUIChargingController_sharedInstance__block_invoke()
                 }
               }
 
-              v8 = v25;
+              keyCopy = v25;
               goto LABEL_26;
             }
           }
@@ -155,16 +155,16 @@ void __43__PowerUIChargingController_sharedInstance__block_invoke()
         }
       }
 
-      v8 = v25;
+      keyCopy = v25;
     }
 
-    else if (v5)
+    else if (verboseCopy)
     {
       v21 = self->_log;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v32 = v8;
+        v32 = keyCopy;
         _os_log_impl(&dword_21B766000, v21, OS_LOG_TYPE_DEFAULT, "Did not get string value for key %@", buf, 0xCu);
       }
     }
@@ -178,11 +178,11 @@ LABEL_26:
   return v10;
 }
 
-- (__CFString)registerNewTokenForPreferenceKey:(id)a3 forReason:(id)a4
+- (__CFString)registerNewTokenForPreferenceKey:(id)key forReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  reasonCopy = reason;
   v8 = IOPSLimitBatteryLevelRegister();
   if (v8)
   {
@@ -202,16 +202,16 @@ LABEL_26:
 
   else
   {
-    [(NSMutableDictionary *)self->_tokenDict setObject:0 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_tokenDict setObject:0 forKeyedSubscript:reasonCopy];
 
-    [PowerUISmartChargeUtilities setString:0 forPreferenceKey:v6 inDomain:@"com.apple.smartcharging.topoffprotection"];
+    [PowerUISmartChargeUtilities setString:0 forPreferenceKey:keyCopy inDomain:@"com.apple.smartcharging.topoffprotection"];
     v12 = self->_log;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v16 = 0;
       v17 = 2112;
-      v18 = v7;
+      v18 = reasonCopy;
       _os_log_impl(&dword_21B766000, v12, OS_LOG_TYPE_DEFAULT, "Created new charge limit token: %@ for reason: %@", buf, 0x16u);
     }
   }
@@ -220,12 +220,12 @@ LABEL_26:
   return 0;
 }
 
-- (void)clearChargeLimitForLimitType:(unint64_t)a3
+- (void)clearChargeLimitForLimitType:(unint64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   [(NSLock *)self->_chargeLimitLock lock];
-  v5 = a3 - 1;
-  if (a3 - 1 >= 5)
+  v5 = type - 1;
+  if (type - 1 >= 5)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -281,13 +281,13 @@ LABEL_26:
   [(PowerUIChargingController *)self clearChargeLimitForLimitType:5];
 }
 
-- (BOOL)setChargeLimitTo:(int64_t)a3 forLimitType:(unint64_t)a4 setNoChargeToFull:(BOOL)a5
+- (BOOL)setChargeLimitTo:(int64_t)to forLimitType:(unint64_t)type setNoChargeToFull:(BOOL)full
 {
-  v5 = a5;
+  fullCopy = full;
   v27 = *MEMORY[0x277D85DE8];
   [(NSLock *)self->_chargeLimitLock lock];
-  v9 = a4 - 1;
-  if (a4 - 1 >= 5)
+  v9 = type - 1;
+  if (type - 1 >= 5)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -300,7 +300,7 @@ LABEL_26:
     v10 = qword_21B848440[v9];
     v11 = off_2782D43C0[v9];
     v12 = off_2782D43E8[v9];
-    if (v5)
+    if (fullCopy)
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -322,7 +322,7 @@ LABEL_26:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *v26 = 134218242;
-          *&v26[4] = a3;
+          *&v26[4] = to;
           *&v26[12] = 2112;
           *&v26[14] = v11;
           v18 = "Continue limiting to %lu%% for reason '%@'";
@@ -345,7 +345,7 @@ LABEL_14:
       }
 
       [(NSLock *)self->_chargeLimitLock unlock];
-      [(PowerUIChargingController *)self clearChargeLimitForLimitType:a4];
+      [(PowerUIChargingController *)self clearChargeLimitForLimitType:type];
       goto LABEL_17;
     }
 
@@ -358,7 +358,7 @@ LABEL_14:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *v26 = 134218242;
-          *&v26[4] = a3;
+          *&v26[4] = to;
           *&v26[12] = 2112;
           *&v26[14] = v11;
           v18 = "Limited charging to %lu%% for reason '%@'";

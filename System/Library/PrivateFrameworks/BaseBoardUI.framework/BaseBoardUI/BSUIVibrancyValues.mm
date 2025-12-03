@@ -1,6 +1,6 @@
 @interface BSUIVibrancyValues
 - (BSUIVibrancyValues)init;
-- (BSUIVibrancyValues)initWithConfiguration:(id)a3;
+- (BSUIVibrancyValues)initWithConfiguration:(id)configuration;
 @end
 
 @implementation BSUIVibrancyValues
@@ -13,16 +13,16 @@
   return v4;
 }
 
-- (BSUIVibrancyValues)initWithConfiguration:(id)a3
+- (BSUIVibrancyValues)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = BSUIVibrancyValues;
   v5 = [(BSUIVibrancyValues *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BSUIVibrancyValues *)v5 calculateValuesForConfiguration:v4];
+    [(BSUIVibrancyValues *)v5 calculateValuesForConfiguration:configurationCopy];
   }
 
   return v6;

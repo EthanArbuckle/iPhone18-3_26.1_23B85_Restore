@@ -1,19 +1,19 @@
 @interface TBPersistenceManager
-+ (BOOL)isStoreCompatibleAtURL:(id)a3 withModel:(id)a4;
-- (TBPersistenceManager)initWithManagedObjectModel:(id)a3 storeDescriptor:(id)a4;
-- (void)addPersistentStorage:(id)a3 completionHandler:(id)a4;
++ (BOOL)isStoreCompatibleAtURL:(id)l withModel:(id)model;
+- (TBPersistenceManager)initWithManagedObjectModel:(id)model storeDescriptor:(id)descriptor;
+- (void)addPersistentStorage:(id)storage completionHandler:(id)handler;
 @end
 
 @implementation TBPersistenceManager
 
-- (TBPersistenceManager)initWithManagedObjectModel:(id)a3 storeDescriptor:(id)a4
+- (TBPersistenceManager)initWithManagedObjectModel:(id)model storeDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  descriptorCopy = descriptor;
   v36.receiver = self;
   v36.super_class = TBPersistenceManager;
   v9 = [(TBPersistenceManager *)&v36 init];
-  objc_storeStrong(&v9->_managedObjectModel, a3);
+  objc_storeStrong(&v9->_managedObjectModel, model);
   if (!v9->_managedObjectModel)
   {
     NSLog(&cfstr_SNsmanagedobje.isa, "[TBPersistenceManager initWithManagedObjectModel:storeDescriptor:]");
@@ -24,30 +24,30 @@
   persistenceCoordinator = v9->_persistenceCoordinator;
   v9->_persistenceCoordinator = v10;
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v8 storeURL];
-  v14 = [v13 path];
-  if ([v12 fileExistsAtPath:v14])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  storeURL = [descriptorCopy storeURL];
+  path = [storeURL path];
+  if ([defaultManager fileExistsAtPath:path])
   {
     v15 = objc_opt_class();
-    v16 = [v8 storeURL];
-    LOBYTE(v15) = [v15 isStoreCompatibleAtURL:v16 withModel:v9->_managedObjectModel];
+    storeURL2 = [descriptorCopy storeURL];
+    LOBYTE(v15) = [v15 isStoreCompatibleAtURL:storeURL2 withModel:v9->_managedObjectModel];
 
     if (v15)
     {
       goto LABEL_9;
     }
 
-    v17 = [v8 storeURL];
-    NSLog(&cfstr_SRemovingIncom.isa, "[TBPersistenceManager initWithManagedObjectModel:storeDescriptor:]", v17);
+    storeURL3 = [descriptorCopy storeURL];
+    NSLog(&cfstr_SRemovingIncom.isa, "[TBPersistenceManager initWithManagedObjectModel:storeDescriptor:]", storeURL3);
 
     v18 = v9->_persistenceCoordinator;
-    v19 = [v8 storeURL];
-    v20 = [v8 storeDescription];
-    v21 = [v20 type];
-    v22 = [v8 storeOptions];
+    storeURL4 = [descriptorCopy storeURL];
+    storeDescription = [descriptorCopy storeDescription];
+    type = [storeDescription type];
+    storeOptions = [descriptorCopy storeOptions];
     v35 = 0;
-    [(NSPersistentStoreCoordinator *)v18 destroyPersistentStoreAtURL:v19 withType:v21 options:v22 error:&v35];
+    [(NSPersistentStoreCoordinator *)v18 destroyPersistentStoreAtURL:storeURL4 withType:type options:storeOptions error:&v35];
     v23 = v35;
 
     if (!v23)
@@ -55,8 +55,8 @@
       goto LABEL_9;
     }
 
-    v12 = [v8 storeURL];
-    NSLog(&cfstr_SFailedToStore.isa, "[TBPersistenceManager initWithManagedObjectModel:storeDescriptor:]", v12);
+    defaultManager = [descriptorCopy storeURL];
+    NSLog(&cfstr_SFailedToStore.isa, "[TBPersistenceManager initWithManagedObjectModel:storeDescriptor:]", defaultManager);
   }
 
   else
@@ -65,22 +65,22 @@
 
 LABEL_9:
   v24 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-  v25 = [MEMORY[0x277CBE460] mergeByPropertyObjectTrumpMergePolicy];
-  [v24 setMergePolicy:v25];
+  mergeByPropertyObjectTrumpMergePolicy = [MEMORY[0x277CBE460] mergeByPropertyObjectTrumpMergePolicy];
+  [v24 setMergePolicy:mergeByPropertyObjectTrumpMergePolicy];
 
   [v24 setPersistentStoreCoordinator:v9->_persistenceCoordinator];
-  v26 = [MEMORY[0x277CCAC38] processInfo];
-  v27 = [v26 processName];
-  [v24 setTransactionAuthor:v27];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  [v24 setTransactionAuthor:processName];
 
   objc_storeStrong(&v9->_persistenceContext, v24);
-  if (![v8 type])
+  if (![descriptorCopy type])
   {
     v28 = [TBPersistenceRemoteStoreServer alloc];
-    v29 = [v8 storeURL];
-    v30 = [v8 modelURL];
-    v31 = [v8 storeOptions];
-    v32 = [(TBPersistenceRemoteStoreServer *)v28 initWithStoreURL:v29 modelURL:v30 options:v31];
+    storeURL5 = [descriptorCopy storeURL];
+    modelURL = [descriptorCopy modelURL];
+    storeOptions2 = [descriptorCopy storeOptions];
+    v32 = [(TBPersistenceRemoteStoreServer *)v28 initWithStoreURL:storeURL5 modelURL:modelURL options:storeOptions2];
     remoteStoreServer = v9->_remoteStoreServer;
     v9->_remoteStoreServer = v32;
 
@@ -92,18 +92,18 @@ LABEL_12:
   return v9;
 }
 
-- (void)addPersistentStorage:(id)a3 completionHandler:(id)a4
+- (void)addPersistentStorage:(id)storage completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   persistenceCoordinator = self->_persistenceCoordinator;
-  v8 = [a3 storeDescription];
+  storeDescription = [storage storeDescription];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__TBPersistenceManager_addPersistentStorage_completionHandler___block_invoke;
   v10[3] = &unk_2789C7E58;
-  v11 = v6;
-  v9 = v6;
-  [(NSPersistentStoreCoordinator *)persistenceCoordinator addPersistentStoreWithDescription:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(NSPersistentStoreCoordinator *)persistenceCoordinator addPersistentStoreWithDescription:storeDescription completionHandler:v10];
 }
 
 void __63__TBPersistenceManager_addPersistentStorage_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -134,12 +134,12 @@ void __63__TBPersistenceManager_addPersistentStorage_completionHandler___block_i
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isStoreCompatibleAtURL:(id)a3 withModel:(id)a4
++ (BOOL)isStoreCompatibleAtURL:(id)l withModel:(id)model
 {
-  v5 = a4;
+  modelCopy = model;
   v6 = *MEMORY[0x277CBE2E8];
   v12 = 0;
-  v7 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v6 URL:a3 options:0 error:&v12];
+  v7 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v6 URL:l options:0 error:&v12];
   v8 = v12;
   v9 = v8;
   if (v8)
@@ -156,7 +156,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v10 = [v5 isConfiguration:0 compatibleWithStoreMetadata:v7];
+  v10 = [modelCopy isConfiguration:0 compatibleWithStoreMetadata:v7];
 LABEL_4:
 
   return v10;

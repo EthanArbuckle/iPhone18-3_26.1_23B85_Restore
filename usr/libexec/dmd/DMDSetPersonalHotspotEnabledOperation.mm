@@ -1,6 +1,6 @@
 @interface DMDSetPersonalHotspotEnabledOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,9 +20,9 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = [a3 enabled];
+  enabled = [request enabled];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = MCStringForBool();
@@ -32,7 +32,7 @@
   }
 
   v6 = +[DMDPersonalHotspotManager sharedManager];
-  [v6 setEnabled:v4];
+  [v6 setEnabled:enabled];
 
   [(DMDSetPersonalHotspotEnabledOperation *)self endOperationWithResultObject:0];
 }

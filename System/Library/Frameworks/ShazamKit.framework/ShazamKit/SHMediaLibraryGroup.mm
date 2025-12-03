@@ -1,61 +1,61 @@
 @interface SHMediaLibraryGroup
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualGroup:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualGroup:(id)group;
 - (NSArray)tracksToSave;
-- (SHMediaLibraryGroup)initWithCoder:(id)a3;
-- (SHMediaLibraryGroup)initWithGroupMetadata:(id)a3 groupSyncID:(id)a4;
-- (id)_initWithIdentifier:(id)a3 metadata:(id)a4 tracksToSave:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SHMediaLibraryGroup)initWithCoder:(id)coder;
+- (SHMediaLibraryGroup)initWithGroupMetadata:(id)metadata groupSyncID:(id)d;
+- (id)_initWithIdentifier:(id)identifier metadata:(id)metadata tracksToSave:(id)save;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addTracks:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeTracks:(id)a3;
+- (void)addTracks:(id)tracks;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeTracks:(id)tracks;
 @end
 
 @implementation SHMediaLibraryGroup
 
-- (SHMediaLibraryGroup)initWithGroupMetadata:(id)a3 groupSyncID:(id)a4
+- (SHMediaLibraryGroup)initWithGroupMetadata:(id)metadata groupSyncID:(id)d
 {
-  v6 = a4;
-  if (a3)
+  dCopy = d;
+  if (metadata)
   {
-    v7 = a3;
-    a3 = [[SHMediaLibraryItemMetadata alloc] initWithEncodedSystemData:v7];
+    metadataCopy = metadata;
+    metadata = [[SHMediaLibraryItemMetadata alloc] initWithEncodedSystemData:metadataCopy];
   }
 
-  v8 = [(SHMediaLibraryGroup *)self _initWithIdentifier:v6 metadata:a3 tracksToSave:MEMORY[0x277CBEBF8]];
+  v8 = [(SHMediaLibraryGroup *)self _initWithIdentifier:dCopy metadata:metadata tracksToSave:MEMORY[0x277CBEBF8]];
 
   return v8;
 }
 
-- (id)_initWithIdentifier:(id)a3 metadata:(id)a4 tracksToSave:(id)a5
+- (id)_initWithIdentifier:(id)identifier metadata:(id)metadata tracksToSave:(id)save
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  saveCopy = save;
   v23.receiver = self;
   v23.super_class = SHMediaLibraryGroup;
   v11 = [(SHMediaLibraryGroup *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    if (![(SHMediaLibraryGroup *)v11 validIdentifier:v8])
+    if (![(SHMediaLibraryGroup *)v11 validIdentifier:identifierCopy])
     {
       v18 = MEMORY[0x277CBEAD8];
       v19 = *MEMORY[0x277CBE660];
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is not a valid identifier.", v8];
-      v21 = [v18 exceptionWithName:v19 reason:v20 userInfo:0];
+      identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is not a valid identifier.", identifierCopy];
+      v21 = [v18 exceptionWithName:v19 reason:identifierCopy userInfo:0];
       v22 = v21;
 
       objc_exception_throw(v21);
     }
 
-    v13 = [v8 precomposedStringWithCanonicalMapping];
+    precomposedStringWithCanonicalMapping = [identifierCopy precomposedStringWithCanonicalMapping];
     identifier = v12->_identifier;
-    v12->_identifier = v13;
+    v12->_identifier = precomposedStringWithCanonicalMapping;
 
-    objc_storeStrong(&v12->_metadata, a4);
-    v15 = [v10 mutableCopy];
+    objc_storeStrong(&v12->_metadata, metadata);
+    v15 = [saveCopy mutableCopy];
     mutableTracksToSave = v12->_mutableTracksToSave;
     v12->_mutableTracksToSave = v15;
   }
@@ -65,21 +65,21 @@
 
 - (NSArray)tracksToSave
 {
-  v2 = [(SHMediaLibraryGroup *)self mutableTracksToSave];
-  v3 = [v2 copy];
+  mutableTracksToSave = [(SHMediaLibraryGroup *)self mutableTracksToSave];
+  v3 = [mutableTracksToSave copy];
 
   return v3;
 }
 
-- (void)addTracks:(id)a3
+- (void)addTracks:(id)tracks
 {
   v28 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  tracksCopy = tracks;
+  v5 = [tracksCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -90,35 +90,35 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tracksCopy);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 associatedGroupIdentifier];
+        associatedGroupIdentifier = [v9 associatedGroupIdentifier];
 
-        if (v10)
+        if (associatedGroupIdentifier)
         {
           v15 = MEMORY[0x277CBEAD8];
           v16 = *MEMORY[0x277CBE660];
           v17 = MEMORY[0x277CCACA8];
-          v18 = [v9 identifier];
-          v19 = [v9 associatedGroupIdentifier];
-          v20 = [v17 stringWithFormat:@"Track with identifier %@ is already associated to a group (%@), try removing it first.", v18, v19, v23];
+          identifier = [v9 identifier];
+          associatedGroupIdentifier2 = [v9 associatedGroupIdentifier];
+          v20 = [v17 stringWithFormat:@"Track with identifier %@ is already associated to a group (%@), try removing it first.", identifier, associatedGroupIdentifier2, v23];
           v21 = [v15 exceptionWithName:v16 reason:v20 userInfo:0];
           v22 = v21;
 
           objc_exception_throw(v21);
         }
 
-        v11 = [(SHMediaLibraryGroup *)self identifier];
-        [v9 setAssociatedGroupIdentifier:v11];
+        identifier2 = [(SHMediaLibraryGroup *)self identifier];
+        [v9 setAssociatedGroupIdentifier:identifier2];
 
-        v12 = [(SHMediaLibraryGroup *)self mutableTracksToSave];
+        mutableTracksToSave = [(SHMediaLibraryGroup *)self mutableTracksToSave];
         v13 = [v9 copy];
-        [v12 addObject:v13];
+        [mutableTracksToSave addObject:v13];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [tracksCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
@@ -127,15 +127,15 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeTracks:(id)a3
+- (void)removeTracks:(id)tracks
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  tracksCopy = tracks;
+  v5 = [tracksCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -146,19 +146,19 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tracksCopy);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 associatedGroupIdentifier];
+        associatedGroupIdentifier = [v9 associatedGroupIdentifier];
 
-        if (!v10)
+        if (!associatedGroupIdentifier)
         {
           v14 = MEMORY[0x277CBEAD8];
           v15 = *MEMORY[0x277CBE660];
           v16 = MEMORY[0x277CCACA8];
-          v17 = [v9 identifier];
-          v18 = [v16 stringWithFormat:@"Track with identifier %@ cannot be removed, try adding it first.", v17];
+          identifier = [v9 identifier];
+          v18 = [v16 stringWithFormat:@"Track with identifier %@ cannot be removed, try adding it first.", identifier];
           v19 = [v14 exceptionWithName:v15 reason:v18 userInfo:0];
           v20 = v19;
 
@@ -166,12 +166,12 @@
         }
 
         [v9 setAssociatedGroupIdentifier:0];
-        v11 = [(SHMediaLibraryGroup *)self mutableTracksToSave];
+        mutableTracksToSave = [(SHMediaLibraryGroup *)self mutableTracksToSave];
         v12 = [v9 copy];
-        [v11 addObject:v12];
+        [mutableTracksToSave addObject:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [tracksCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
@@ -180,20 +180,20 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (SHMediaLibraryGroup)initWithCoder:(id)a3
+- (SHMediaLibraryGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = SHMediaLibraryGroup;
   v5 = [(SHMediaLibraryGroup *)&v19 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryGroupIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryGroupIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryGroupMetadata"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryGroupMetadata"];
     if (v9)
     {
       v10 = [[SHMediaLibraryItemMetadata alloc] initWithEncodedSystemData:v9];
@@ -204,7 +204,7 @@
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"SHMediaLibraryGroupTracksToSave"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"SHMediaLibraryGroupTracksToSave"];
     v16 = [v15 mutableCopy];
     mutableTracksToSave = v5->_mutableTracksToSave;
     v5->_mutableTracksToSave = v16;
@@ -215,38 +215,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v7 encodeObject:self->_identifier forKey:@"SHLibraryGroupIdentifier"];
-  v5 = [(SHMediaLibraryItemMetadata *)self->_metadata encodedSystemData];
-  [v7 encodeObject:v5 forKey:@"SHLibraryGroupMetadata"];
+  [coderCopy encodeObject:self->_identifier forKey:@"SHLibraryGroupIdentifier"];
+  encodedSystemData = [(SHMediaLibraryItemMetadata *)self->_metadata encodedSystemData];
+  [coderCopy encodeObject:encodedSystemData forKey:@"SHLibraryGroupMetadata"];
 
-  v6 = [(SHMediaLibraryGroup *)self tracksToSave];
-  [v7 encodeObject:v6 forKey:@"SHMediaLibraryGroupTracksToSave"];
+  tracksToSave = [(SHMediaLibraryGroup *)self tracksToSave];
+  [coderCopy encodeObject:tracksToSave forKey:@"SHMediaLibraryGroupTracksToSave"];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHMediaLibraryGroup allocWithZone:?];
-  v6 = [(SHMediaLibraryGroup *)self identifier];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(SHMediaLibraryGroup *)self metadata];
-  v9 = [v8 copyWithZone:a3];
-  v10 = [(SHMediaLibraryGroup *)self tracksToSave];
-  v11 = [v10 copyWithZone:a3];
+  identifier = [(SHMediaLibraryGroup *)self identifier];
+  v7 = [identifier copyWithZone:zone];
+  metadata = [(SHMediaLibraryGroup *)self metadata];
+  v9 = [metadata copyWithZone:zone];
+  tracksToSave = [(SHMediaLibraryGroup *)self tracksToSave];
+  v11 = [tracksToSave copyWithZone:zone];
   v12 = [(SHMediaLibraryGroup *)v5 _initWithIdentifier:v7 metadata:v9 tracksToSave:v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -254,26 +254,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaLibraryGroup *)self isEqualGroup:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaLibraryGroup *)self isEqualGroup:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualGroup:(id)a3
+- (BOOL)isEqualGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(SHMediaLibraryGroup *)self identifier];
-  v6 = [v4 identifier];
+  groupCopy = group;
+  identifier = [(SHMediaLibraryGroup *)self identifier];
+  identifier2 = [groupCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(groupCopy) = [identifier isEqualToString:identifier2];
+  return groupCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SHMediaLibraryGroup *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SHMediaLibraryGroup *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

@@ -1,14 +1,14 @@
 @interface MSWorkoutItem
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSWorkoutItem
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_22C9E9C50(v6);
 
   sub_22C9D05CC(v6, v6[3]);
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_22C9E9E1C();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22C9EC220();
 
   v3 = sub_22CA20E10();

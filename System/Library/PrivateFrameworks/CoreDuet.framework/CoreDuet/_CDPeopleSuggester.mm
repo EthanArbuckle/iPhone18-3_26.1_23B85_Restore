@@ -1,16 +1,16 @@
 @interface _CDPeopleSuggester
-+ (id)createAdvisorSettingsFromContext:(id)a3 settings:(id)a4;
++ (id)createAdvisorSettingsFromContext:(id)context settings:(id)settings;
 + (id)peopleSuggesterUsingDaemon;
 + (id)peopleSuggesterWithDirectDBAccess;
-+ (id)restrictedPrefixForPrefix:(id)a3;
++ (id)restrictedPrefixForPrefix:(id)prefix;
 - (BOOL)enableCaching;
 - (_CDPeopleSuggester)init;
-- (_CDPeopleSuggester)initWithAdvisor:(id)a3;
-- (id)suggestPeopleWithError:(id *)a3;
+- (_CDPeopleSuggester)initWithAdvisor:(id)advisor;
+- (id)suggestPeopleWithError:(id *)error;
 - (void)dealloc;
 - (void)invalidateCache;
-- (void)setEnableCaching:(BOOL)a3;
-- (void)suggestPeopleWithCompletionHandler:(id)a3;
+- (void)setEnableCaching:(BOOL)caching;
+- (void)suggestPeopleWithCompletionHandler:(id)handler;
 - (void)updateSettings;
 @end
 
@@ -26,10 +26,10 @@
 
   v3 = +[_CDInteractionStore defaultDatabaseDirectory];
   v4 = [_CDInteractionStore storeWithDirectory:v3 readOnly:1];
-  v5 = [v4 openAndCheckIfReadable];
+  openAndCheckIfReadable = [v4 openAndCheckIfReadable];
   v6 = +[_CDLogging interactionChannel];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (openAndCheckIfReadable)
   {
     if (v7)
     {
@@ -69,9 +69,9 @@
   return v4;
 }
 
-- (_CDPeopleSuggester)initWithAdvisor:(id)a3
+- (_CDPeopleSuggester)initWithAdvisor:(id)advisor
 {
-  v5 = a3;
+  advisorCopy = advisor;
   v23.receiver = self;
   v23.super_class = _CDPeopleSuggester;
   v6 = [(_CDPeopleSuggester *)&v23 init];
@@ -82,7 +82,7 @@
     v9 = *(v6 + 2);
     *(v6 + 2) = v8;
 
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(v6 + 1, advisor);
     v10 = +[_CDPeopleSuggesterContext currentContext];
     v11 = *(v6 + 6);
     *(v6 + 6) = v10;
@@ -102,14 +102,14 @@
 
     [v6 updateSettings];
     objc_initWeak(&location, v6);
-    v17 = [@"com.apple.coreduet.CDPeopleSettingsDidChange" UTF8String];
+    uTF8String = [@"com.apple.coreduet.CDPeopleSettingsDidChange" UTF8String];
     v18 = *(v6 + 2);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __38___CDPeopleSuggester_initWithAdvisor___block_invoke;
     v20[3] = &unk_1E7368E78;
     objc_copyWeak(&v21, &location);
-    notify_register_dispatch(v17, v6 + 10, v18, v20);
+    notify_register_dispatch(uTF8String, v6 + 10, v18, v20);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
@@ -137,20 +137,20 @@
 
 - (BOOL)enableCaching
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  enableCaching = v2->_enableCaching;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  enableCaching = selfCopy->_enableCaching;
+  objc_sync_exit(selfCopy);
 
   return enableCaching;
 }
 
-- (void)setEnableCaching:(BOOL)a3
+- (void)setEnableCaching:(BOOL)caching
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_enableCaching = a3;
-  if (!a3)
+  obj->_enableCaching = caching;
+  if (!caching)
   {
     [(_CDPeopleSuggester *)obj invalidateCache];
   }
@@ -165,23 +165,23 @@
   v4 = v3;
   if (v3 && ([v3 BOOLValue] & 1) == 0)
   {
-    v5 = [(_CDPeopleSuggester *)self context];
-    [v5 setNearbyPeople:0];
+    context = [(_CDPeopleSuggester *)self context];
+    [context setNearbyPeople:0];
   }
 
   v6 = [v9 valueForKey:@"com.apple.coreduet.peoplePrediction.heuristic.activeInteraction"];
   v7 = v6;
   if (v6 && ([v6 BOOLValue] & 1) == 0)
   {
-    v8 = [(_CDPeopleSuggester *)self context];
-    [v8 setActiveInteraction:0];
+    context2 = [(_CDPeopleSuggester *)self context];
+    [context2 setActiveInteraction:0];
   }
 }
 
-- (void)suggestPeopleWithCompletionHandler:(id)a3
+- (void)suggestPeopleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = _os_activity_create(&dword_191750000, "CoreDuet: suggestPeople async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
@@ -202,7 +202,7 @@
     v12[2] = __57___CDPeopleSuggester_suggestPeopleWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E73674E0;
     v12[4] = self;
-    v13 = v4;
+    v13 = handlerCopy;
     v8 = v12;
     v9 = queue;
     v10 = os_transaction_create();
@@ -217,7 +217,7 @@
   }
 }
 
-- (id)suggestPeopleWithError:(id *)a3
+- (id)suggestPeopleWithError:(id *)error
 {
   v131 = *MEMORY[0x1E69E9840];
   v4 = _os_activity_create(&dword_191750000, "CoreDuet: suggestPeople sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -232,15 +232,15 @@
     [(_CDPeopleSuggester *)self suggestPeopleWithError:v5];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v94 = v6;
-  if (v6->_enableCaching)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v94 = selfCopy;
+  if (selfCopy->_enableCaching)
   {
-    cache = v6->_cache;
+    cache = selfCopy->_cache;
     if (cache)
     {
-      if ([(_CDCachedPeopleSuggestion *)cache isValidForContext:v6->_context settings:v6->_settings timeoutSeconds:v6->_cacheTimeoutSeconds])
+      if ([(_CDCachedPeopleSuggestion *)cache isValidForContext:selfCopy->_context settings:selfCopy->_settings timeoutSeconds:selfCopy->_cacheTimeoutSeconds])
       {
         v8 = +[_CDLogging interactionChannel];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -255,7 +255,7 @@
           _os_signpost_emit_with_name_impl(&dword_191750000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "PeopleSuggester", "Early-out: Cache hit enableTelemetry=YES ", &state, 2u);
         }
 
-        v10 = [(_CDCachedPeopleSuggestion *)v94->_cache suggestions];
+        suggestions = [(_CDCachedPeopleSuggestion *)v94->_cache suggestions];
         goto LABEL_88;
       }
 
@@ -281,35 +281,35 @@
     _os_signpost_emit_with_name_impl(&dword_191750000, v13, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SuggestPeople", " enableTelemetry=YES ", &state, 2u);
   }
 
-  v93 = [(_CDPeopleSuggester *)v94 context];
-  v96 = [(_CDPeopleSuggester *)v94 settings];
-  v91 = [objc_opt_class() createAdvisorSettingsFromContext:v93 settings:v96];
+  context = [(_CDPeopleSuggester *)v94 context];
+  settings = [(_CDPeopleSuggester *)v94 settings];
+  v91 = [objc_opt_class() createAdvisorSettingsFromContext:context settings:settings];
   v14 = [(_CDInteractionAdvising *)v94->_advisor adviseInteractionsUsingSettings:?];
   v15 = [v14 mutableCopy];
 
   v16 = objc_opt_new();
   v99 = objc_opt_new();
   v98 = v16;
-  v17 = [(_CDPeopleSuggester *)v94 context];
-  v18 = [v17 activeInteraction];
+  context2 = [(_CDPeopleSuggester *)v94 context];
+  activeInteraction = [context2 activeInteraction];
 
-  if (v18)
+  if (activeInteraction)
   {
     v19 = objc_alloc_init(_CDAdvisedInteraction);
-    v20 = [(_CDPeopleSuggester *)v94 context];
-    v21 = [v20 activeInteraction];
+    context3 = [(_CDPeopleSuggester *)v94 context];
+    activeInteraction2 = [context3 activeInteraction];
 
-    v22 = [v21 recipients];
-    v23 = [v22 firstObject];
-    [(_CDAdvisedInteraction *)v19 setContact:v23];
+    recipients = [activeInteraction2 recipients];
+    firstObject = [recipients firstObject];
+    [(_CDAdvisedInteraction *)v19 setContact:firstObject];
 
-    v24 = [v21 account];
-    [(_CDAdvisedInteraction *)v19 setAccount:v24];
+    account = [activeInteraction2 account];
+    [(_CDAdvisedInteraction *)v19 setAccount:account];
 
-    v25 = [v21 bundleId];
-    [(_CDAdvisedInteraction *)v19 setBundleId:v25];
+    bundleId = [activeInteraction2 bundleId];
+    [(_CDAdvisedInteraction *)v19 setBundleId:bundleId];
 
-    -[_CDAdvisedInteraction setMechanism:](v19, "setMechanism:", [v21 mechanism]);
+    -[_CDAdvisedInteraction setMechanism:](v19, "setMechanism:", [activeInteraction2 mechanism]);
     [(_CDAdvisedInteraction *)v19 setScore:INFINITY];
     [(_CDAdvisedInteraction *)v19 addReason:9];
     [v15 insertObject:v19 atIndex:0];
@@ -347,8 +347,8 @@
         }
 
         v32 = *(*(&v119 + 1) + 8 * i);
-        v33 = [v32 contact];
-        v34 = [v99 containsObject:v33];
+        contact = [v32 contact];
+        v34 = [v99 containsObject:contact];
 
         if ((v34 & 1) == 0)
         {
@@ -360,18 +360,18 @@
           v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v128 count:1];
           [(_CDSuggestedPerson *)v35 setInteractions:v36];
 
-          v37 = [v32 contact];
-          [(_CDSuggestedPerson *)v35 setContact:v37];
+          contact2 = [v32 contact];
+          [(_CDSuggestedPerson *)v35 setContact:contact2];
 
-          v38 = [v32 bundleId];
-          [(_CDSuggestedPerson *)v35 setInteractionBundleID:v38];
+          bundleId2 = [v32 bundleId];
+          [(_CDSuggestedPerson *)v35 setInteractionBundleID:bundleId2];
 
           [v98 addObject:v35];
-          v39 = [(_CDSuggestedPerson *)v35 contact];
-          [v99 addObject:v39];
+          contact3 = [(_CDSuggestedPerson *)v35 contact];
+          [v99 addObject:contact3];
 
           v40 = [v98 count];
-          LOBYTE(v40) = v40 == [v96 maxNumberOfPeopleSuggested];
+          LOBYTE(v40) = v40 == [settings maxNumberOfPeopleSuggested];
 
           if (v40)
           {
@@ -391,15 +391,15 @@
 LABEL_33:
 
   v102 = objc_opt_new();
-  v41 = [(_CDPeopleSuggester *)v94 context];
-  v42 = [v41 nearbyPeople];
-  v43 = [v42 count];
+  context4 = [(_CDPeopleSuggester *)v94 context];
+  nearbyPeople = [context4 nearbyPeople];
+  v43 = [nearbyPeople count];
 
   if (v43)
   {
-    v44 = [(_CDPeopleSuggester *)v94 context];
-    v45 = [v44 nearbyPeople];
-    v100 = [v45 mutableCopy];
+    context5 = [(_CDPeopleSuggester *)v94 context];
+    nearbyPeople2 = [context5 nearbyPeople];
+    v100 = [nearbyPeople2 mutableCopy];
 
     v95 = [v100 mutableCopy];
     v46 = v98;
@@ -426,23 +426,23 @@ LABEL_33:
             }
 
             v51 = *(*(&v115 + 1) + 8 * j);
-            v52 = [v51 contact];
-            v53 = [v95 containsObject:v52];
+            contact4 = [v51 contact];
+            v53 = [v95 containsObject:contact4];
 
             if (!v53)
             {
               goto LABEL_50;
             }
 
-            v54 = [v51 contact];
-            [v95 removeObject:v54];
+            contact5 = [v51 contact];
+            [v95 removeObject:contact5];
 
             v113 = 0u;
             v114 = 0u;
             v111 = 0u;
             v112 = 0u;
-            v55 = [v51 interactions];
-            v56 = [v55 countByEnumeratingWithState:&v111 objects:v126 count:16];
+            interactions = [v51 interactions];
+            v56 = [interactions countByEnumeratingWithState:&v111 objects:v126 count:16];
             if (v56)
             {
               v57 = *v112;
@@ -452,13 +452,13 @@ LABEL_33:
                 {
                   if (*v112 != v57)
                   {
-                    objc_enumerationMutation(v55);
+                    objc_enumerationMutation(interactions);
                   }
 
                   [*(*(&v111 + 1) + 8 * k) addReason:10];
                 }
 
-                v56 = [v55 countByEnumeratingWithState:&v111 objects:v126 count:16];
+                v56 = [interactions countByEnumeratingWithState:&v111 objects:v126 count:16];
               }
 
               while (v56);
@@ -546,8 +546,8 @@ LABEL_58:
             [(_CDSuggestedPerson *)v67 setInteractionBundleID:0];
             v68 = objc_alloc_init(_CDAdvisedInteraction);
             [(_CDAdvisedInteraction *)v68 setContact:v66];
-            v69 = [(_CDSuggestedPerson *)v67 interactionBundleID];
-            [(_CDAdvisedInteraction *)v68 setBundleId:v69];
+            interactionBundleID = [(_CDSuggestedPerson *)v67 interactionBundleID];
+            [(_CDAdvisedInteraction *)v68 setBundleId:interactionBundleID];
 
             [(_CDSuggestedPerson *)v67 score];
             [(_CDAdvisedInteraction *)v68 setScore:?];
@@ -573,10 +573,10 @@ LABEL_58:
     {
 LABEL_71:
       v71 = [v102 count];
-      v72 = [v96 maxNumberOfPeopleSuggested];
-      if (v71 >= v72)
+      maxNumberOfPeopleSuggested = [settings maxNumberOfPeopleSuggested];
+      if (v71 >= maxNumberOfPeopleSuggested)
       {
-        v73 = v72;
+        v73 = maxNumberOfPeopleSuggested;
       }
 
       else
@@ -623,7 +623,7 @@ LABEL_71:
 
   v81 = v98;
 LABEL_83:
-  v10 = [v81 copy];
+  suggestions = [v81 copy];
 
   if (v94->_enableCaching)
   {
@@ -631,22 +631,22 @@ LABEL_83:
     v83 = v94->_cache;
     v94->_cache = v82;
 
-    v84 = [MEMORY[0x1E695DF00] date];
-    [(_CDCachedPeopleSuggestion *)v94->_cache setDate:v84];
+    date = [MEMORY[0x1E695DF00] date];
+    [(_CDCachedPeopleSuggestion *)v94->_cache setDate:date];
 
-    v85 = [v93 copy];
+    v85 = [context copy];
     [(_CDCachedPeopleSuggestion *)v94->_cache setContext:v85];
 
-    v86 = [v96 copy];
+    v86 = [settings copy];
     [(_CDCachedPeopleSuggestion *)v94->_cache setSettings:v86];
 
-    [(_CDCachedPeopleSuggestion *)v94->_cache setSuggestions:v10];
+    [(_CDCachedPeopleSuggestion *)v94->_cache setSuggestions:suggestions];
   }
 
   v87 = +[_CDLogging interactionSignpost];
   if (os_signpost_enabled(v87))
   {
-    v88 = [v10 count];
+    v88 = [suggestions count];
     LODWORD(state.opaque[0]) = 134349056;
     *(state.opaque + 4) = v88;
     _os_signpost_emit_with_name_impl(&dword_191750000, v87, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SuggestPeople", "SuggestionsCount=%{signpost.telemetry:number1,public}lu", &state, 0xCu);
@@ -657,79 +657,79 @@ LABEL_88:
 
   v89 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return suggestions;
 }
 
-+ (id)restrictedPrefixForPrefix:(id)a3
++ (id)restrictedPrefixForPrefix:(id)prefix
 {
-  v3 = a3;
-  v4 = [v3 substringToIndex:{objc_msgSend(v3, "length") != 0}];
+  prefixCopy = prefix;
+  v4 = [prefixCopy substringToIndex:{objc_msgSend(prefixCopy, "length") != 0}];
 
   return v4;
 }
 
-+ (id)createAdvisorSettingsFromContext:(id)a3 settings:(id)a4
++ (id)createAdvisorSettingsFromContext:(id)context settings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  settingsCopy = settings;
   v8 = +[_CDInteractionAdvisorSettings interactionAdvisorSettingsDefault];
-  v9 = [v6 date];
-  [v8 setInteractionDate:v9];
+  date = [contextCopy date];
+  [v8 setInteractionDate:date];
 
-  v10 = [v6 title];
-  [v8 setInteractionTitle:v10];
+  title = [contextCopy title];
+  [v8 setInteractionTitle:title];
 
-  v11 = [v6 seedContactIdentifiers];
-  [v8 setSeedIdentifiers:v11];
+  seedContactIdentifiers = [contextCopy seedContactIdentifiers];
+  [v8 setSeedIdentifiers:seedContactIdentifiers];
 
-  v12 = [v6 locationUUID];
-  [v8 setInteractionLocationUUID:v12];
+  locationUUID = [contextCopy locationUUID];
+  [v8 setInteractionLocationUUID:locationUUID];
 
-  v13 = [v6 contactPrefix];
-  v14 = [a1 restrictedPrefixForPrefix:v13];
+  contactPrefix = [contextCopy contactPrefix];
+  v14 = [self restrictedPrefixForPrefix:contactPrefix];
   [v8 setContactPrefix:v14];
 
-  v15 = [v7 constrainMechanisms];
-  [v8 setConstrainMechanisms:v15];
+  constrainMechanisms = [settingsCopy constrainMechanisms];
+  [v8 setConstrainMechanisms:constrainMechanisms];
 
-  v16 = [v7 constrainAccounts];
-  [v8 setConstrainAccounts:v16];
+  constrainAccounts = [settingsCopy constrainAccounts];
+  [v8 setConstrainAccounts:constrainAccounts];
 
-  v17 = [v7 constrainBundleIds];
-  [v8 setConstrainBundleIds:v17];
+  constrainBundleIds = [settingsCopy constrainBundleIds];
+  [v8 setConstrainBundleIds:constrainBundleIds];
 
-  v18 = [v7 constrainDomainIdentifiers];
-  [v8 setConstrainDomainIdentifiers:v18];
+  constrainDomainIdentifiers = [settingsCopy constrainDomainIdentifiers];
+  [v8 setConstrainDomainIdentifiers:constrainDomainIdentifiers];
 
-  [v8 setResultLimit:{objc_msgSend(v7, "maxNumberOfPeopleSuggested")}];
-  v19 = [v7 constrainIdentifiers];
-  [v8 setConstrainIdentifiers:v19];
+  [v8 setResultLimit:{objc_msgSend(settingsCopy, "maxNumberOfPeopleSuggested")}];
+  constrainIdentifiers = [settingsCopy constrainIdentifiers];
+  [v8 setConstrainIdentifiers:constrainIdentifiers];
 
-  v20 = [v7 constrainPersonIds];
-  [v8 setConstrainPersonIds:v20];
+  constrainPersonIds = [settingsCopy constrainPersonIds];
+  [v8 setConstrainPersonIds:constrainPersonIds];
 
-  v21 = [v7 constrainPersonIdType];
-  [v8 setConstrainPersonIdType:v21];
+  constrainPersonIdType = [settingsCopy constrainPersonIdType];
+  [v8 setConstrainPersonIdType:constrainPersonIdType];
 
-  v22 = [v7 ignoreContactIdentifiers];
-  [v8 setIgnoreContactIdentifiers:v22];
+  ignoreContactIdentifiers = [settingsCopy ignoreContactIdentifiers];
+  [v8 setIgnoreContactIdentifiers:ignoreContactIdentifiers];
 
-  [v8 setUseFuture:{objc_msgSend(v7, "useFuture")}];
-  [v8 setAggregateByIdentifier:{objc_msgSend(v7, "aggregateByIdentifier")}];
-  [v8 setRequireOutgoingInteraction:{objc_msgSend(v7, "requireOutgoingInteraction")}];
-  [v8 setConstrainMaxRecipientCount:{objc_msgSend(v7, "constrainMaxRecipientCount")}];
-  v23 = [v6 consumerIdentifier];
-  [v8 setConsumerIdentifier:v23];
+  [v8 setUseFuture:{objc_msgSend(settingsCopy, "useFuture")}];
+  [v8 setAggregateByIdentifier:{objc_msgSend(settingsCopy, "aggregateByIdentifier")}];
+  [v8 setRequireOutgoingInteraction:{objc_msgSend(settingsCopy, "requireOutgoingInteraction")}];
+  [v8 setConstrainMaxRecipientCount:{objc_msgSend(settingsCopy, "constrainMaxRecipientCount")}];
+  consumerIdentifier = [contextCopy consumerIdentifier];
+  [v8 setConsumerIdentifier:consumerIdentifier];
 
-  LODWORD(v23) = [v7 useTitleToContrainKeywords];
-  if (v23)
+  LODWORD(consumerIdentifier) = [settingsCopy useTitleToContrainKeywords];
+  if (consumerIdentifier)
   {
-    v24 = [v6 title];
+    title2 = [contextCopy title];
 
-    if (v24)
+    if (title2)
     {
-      v25 = [v6 title];
-      v26 = [_CDStringTokenizer extractNormalizedKeywords:v25];
+      title3 = [contextCopy title];
+      v26 = [_CDStringTokenizer extractNormalizedKeywords:title3];
       [v8 setConstrainKeywords:v26];
     }
   }

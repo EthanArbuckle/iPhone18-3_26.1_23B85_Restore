@@ -1,32 +1,32 @@
 @interface CRLWPHighlightArrayController
 - (CGAffineTransform)transform;
-- (CRLWPHighlightArrayController)initWithZOrder:(double)a3 delegate:(id)a4;
+- (CRLWPHighlightArrayController)initWithZOrder:(double)order delegate:(id)delegate;
 - (id)anySuperlayer;
-- (id)buildHighlightsForSearchReferences:(id)a3 contentsScaleForLayers:(double)a4 shouldCreateBackground:(BOOL)a5 backgroundColor:(CGColor *)a6;
-- (unint64_t)pulseAnimationStyle:(id)a3;
+- (id)buildHighlightsForSearchReferences:(id)references contentsScaleForLayers:(double)layers shouldCreateBackground:(BOOL)background backgroundColor:(CGColor *)color;
+- (unint64_t)pulseAnimationStyle:(id)style;
 - (void)dealloc;
 - (void)disconnect;
-- (void)pulseAnimationDidStopForPulse:(id)a3;
+- (void)pulseAnimationDidStopForPulse:(id)pulse;
 - (void)removeLayersFromSuperlayer;
 - (void)reset;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setTransform:(CGAffineTransform *)transform;
 - (void)startAnimating;
 - (void)stop;
 @end
 
 @implementation CRLWPHighlightArrayController
 
-- (CRLWPHighlightArrayController)initWithZOrder:(double)a3 delegate:(id)a4
+- (CRLWPHighlightArrayController)initWithZOrder:(double)order delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = CRLWPHighlightArrayController;
   v7 = [(CRLWPHighlightArrayController *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_zOrder = a3;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_zOrder = order;
     v9 = *&CGAffineTransformIdentity.c;
     *&v8->_transform.a = *&CGAffineTransformIdentity.a;
     *&v8->_transform.c = v9;
@@ -76,14 +76,14 @@
   }
 }
 
-- (void)pulseAnimationDidStopForPulse:(id)a3
+- (void)pulseAnimationDidStopForPulse:(id)pulse
 {
   self->_pulsating = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained pulseAnimationDidStop:self];
 }
 
-- (unint64_t)pulseAnimationStyle:(id)a3
+- (unint64_t)pulseAnimationStyle:(id)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -117,15 +117,15 @@
   self->_layers = 0;
 }
 
-- (id)buildHighlightsForSearchReferences:(id)a3 contentsScaleForLayers:(double)a4 shouldCreateBackground:(BOOL)a5 backgroundColor:(CGColor *)a6
+- (id)buildHighlightsForSearchReferences:(id)references contentsScaleForLayers:(double)layers shouldCreateBackground:(BOOL)background backgroundColor:(CGColor *)color
 {
-  v7 = a5;
-  v10 = a3;
-  v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  backgroundCopy = background;
+  referencesCopy = references;
+  v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [referencesCopy count]);
   os_unfair_lock_lock(&self->_layerCreationLock);
   if (!self->_layers)
   {
-    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(referencesCopy, "count")}];
     layers = self->_layers;
     self->_layers = v11;
   }
@@ -135,7 +135,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v10;
+  obj = referencesCopy;
   v13 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v13)
   {
@@ -162,8 +162,8 @@
         }
 
         v19 = v18;
-        [(CRLHighlightController *)v18 setShouldCreateBackground:v7];
-        [(CRLHighlightController *)v19 setBackgroundColor:a6];
+        [(CRLHighlightController *)v18 setShouldCreateBackground:backgroundCopy];
+        [(CRLHighlightController *)v19 setBackgroundColor:color];
         [v30 addObject:v19];
         if (self->_shouldPulsate)
         {
@@ -189,11 +189,11 @@
               v22 = objc_loadWeakRetained(&self->_delegate);
               v23 = [v22 imageForSearchReference:v17 forPath:v21 shouldPulsate:self->_shouldPulsate];
 
-              [(CRLHighlightController *)v19 createLayerWithZOrder:self->_zOrder contentsScaleForLayers:a4];
+              [(CRLHighlightController *)v19 createLayerWithZOrder:self->_zOrder contentsScaleForLayers:layers];
               [(CRLHighlightController *)v19 buildLayersForPath:v21 withImage:v23];
-              v24 = [(CRLHighlightController *)v19 layer];
+              layer = [(CRLHighlightController *)v19 layer];
               os_unfair_lock_lock(&self->_layerCreationLock);
-              [(NSMutableArray *)self->_layers addObject:v24];
+              [(NSMutableArray *)self->_layers addObject:layer];
               os_unfair_lock_unlock(&self->_layerCreationLock);
             }
           }
@@ -272,15 +272,15 @@ LABEL_24:
   if ([(NSMutableArray *)self->_layers count])
   {
     v3 = [(NSMutableArray *)self->_layers objectAtIndexedSubscript:0];
-    v4 = [v3 superlayer];
+    superlayer = [v3 superlayer];
   }
 
   else
   {
-    v4 = 0;
+    superlayer = 0;
   }
 
-  return v4;
+  return superlayer;
 }
 
 - (CGAffineTransform)transform
@@ -292,11 +292,11 @@ LABEL_24:
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_transform.c = *&transform->c;
   *&self->_transform.tx = v4;
   *&self->_transform.a = v3;
 }

@@ -1,22 +1,22 @@
 @interface PGWallpaperSuggestionUtilities
-+ (BOOL)foundDominantPeopleSceneInAsset:(id)a3 withConfidenceThresholdHelper:(id)a4;
-+ (id)assetFetchPropertySetsIncludingGating:(BOOL)a3;
++ (BOOL)foundDominantPeopleSceneInAsset:(id)asset withConfidenceThresholdHelper:(id)helper;
++ (id)assetFetchPropertySetsIncludingGating:(BOOL)gating;
 + (id)peopleSceneConfidenceThresholdHelper;
-+ (id)peopleShuffleDescriptorTitleWithCount:(unint64_t)a3;
-+ (unint64_t)computeQuantizedPenalty:(double)a3 minScore:(double)a4 cutOff:(double)a5;
++ (id)peopleShuffleDescriptorTitleWithCount:(unint64_t)count;
++ (unint64_t)computeQuantizedPenalty:(double)penalty minScore:(double)score cutOff:(double)off;
 @end
 
 @implementation PGWallpaperSuggestionUtilities
 
-+ (unint64_t)computeQuantizedPenalty:(double)a3 minScore:(double)a4 cutOff:(double)a5
++ (unint64_t)computeQuantizedPenalty:(double)penalty minScore:(double)score cutOff:(double)off
 {
-  v5 = a5 - a4;
+  v5 = off - score;
   if (v5 <= 0.0)
   {
     return 0;
   }
 
-  v6 = a5 - a3;
+  v6 = off - penalty;
   if (v6 <= 0.0)
   {
     return 0;
@@ -35,33 +35,33 @@
   }
 }
 
-+ (id)peopleShuffleDescriptorTitleWithCount:(unint64_t)a3
++ (id)peopleShuffleDescriptorTitleWithCount:(unint64_t)count
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"PGWallpaperPeopleShuffleWithCount %lu" value:@"PGWallpaperPeopleShuffleWithCount %lu" table:@"Localizable"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  v7 = [v4 localizedStringWithFormat:v6, count];
 
   return v7;
 }
 
-+ (BOOL)foundDominantPeopleSceneInAsset:(id)a3 withConfidenceThresholdHelper:(id)a4
++ (BOOL)foundDominantPeopleSceneInAsset:(id)asset withConfidenceThresholdHelper:(id)helper
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 curationModel];
-  v8 = [v6 confidenceThresholdBySceneIdentifierWithCurationModel:v7];
+  assetCopy = asset;
+  helperCopy = helper;
+  curationModel = [assetCopy curationModel];
+  v8 = [helperCopy confidenceThresholdBySceneIdentifierWithCurationModel:curationModel];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v5 clsSceneClassifications];
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  clsSceneClassifications = [assetCopy clsSceneClassifications];
+  v10 = [clsSceneClassifications countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v10)
   {
-    v29 = v6;
+    v29 = helperCopy;
     v11 = *v31;
     v12 = *MEMORY[0x277CBF3A8];
     v13 = *(MEMORY[0x277CBF3A8] + 8);
@@ -71,7 +71,7 @@
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(clsSceneClassifications);
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
@@ -106,7 +106,7 @@
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v10 = [clsSceneClassifications countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v10)
       {
         continue;
@@ -116,7 +116,7 @@
     }
 
 LABEL_18:
-    v6 = v29;
+    helperCopy = v29;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -130,20 +130,20 @@ LABEL_18:
   return v2;
 }
 
-+ (id)assetFetchPropertySetsIncludingGating:(BOOL)a3
++ (id)assetFetchPropertySetsIncludingGating:(BOOL)gating
 {
-  v3 = a3;
-  v4 = +[PGCurationManager assetPropertySetsForCuration];
-  if (v3)
+  gatingCopy = gating;
+  allObjects = +[PGCurationManager assetPropertySetsForCuration];
+  if (gatingCopy)
   {
     v5 = +[PGWallpaperSuggestionAssetGater assetFetchPropertySetsForGating];
-    v6 = [v4 arrayByAddingObjectsFromArray:v5];
+    v6 = [allObjects arrayByAddingObjectsFromArray:v5];
 
     v7 = [MEMORY[0x277CBEB98] setWithArray:v6];
-    v4 = [v7 allObjects];
+    allObjects = [v7 allObjects];
   }
 
-  return v4;
+  return allObjects;
 }
 
 @end

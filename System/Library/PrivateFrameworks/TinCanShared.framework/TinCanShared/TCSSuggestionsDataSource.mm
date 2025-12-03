@@ -2,32 +2,32 @@
 + (id)descriptorForRequiredKeys;
 - (BOOL)hasSuggestions;
 - (NSArray)suggestedContacts;
-- (TCSSuggestionsDataSource)initWithSuggestions:(id)a3;
+- (TCSSuggestionsDataSource)initWithSuggestions:(id)suggestions;
 - (TCSSuggestionsDataSourceDelegate)delegate;
-- (id)_sortedContactsArrayFromArray:(id)a3;
+- (id)_sortedContactsArrayFromArray:(id)array;
 - (void)_handleDeviceFirstUnlock;
 - (void)_handlePersonNamePreferencesChangeNotification;
 - (void)_invalidate;
 - (void)_notifyDelegateSuggestionsChanged;
 - (void)dealloc;
-- (void)suggestionsDidChange:(id)a3;
+- (void)suggestionsDidChange:(id)change;
 @end
 
 @implementation TCSSuggestionsDataSource
 
-- (TCSSuggestionsDataSource)initWithSuggestions:(id)a3
+- (TCSSuggestionsDataSource)initWithSuggestions:(id)suggestions
 {
-  v5 = a3;
+  suggestionsCopy = suggestions;
   v14.receiver = self;
   v14.super_class = TCSSuggestionsDataSource;
   v6 = [(TCSSuggestionsDataSource *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestions, a3);
+    objc_storeStrong(&v6->_suggestions, suggestions);
     [(TCSSuggestions *)v7->_suggestions addObserver:v7];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__handleContactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleContactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v7, _TCSSuggestionsDataSourcePersonNamePreferencesChangeHandler, *MEMORY[0x277D218C0], 0, 0);
     if (!+[TCSBehavior isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot])
@@ -41,7 +41,7 @@
       }
 
       v11 = +[TCSBehavior sharedBehavior];
-      [v8 addObserver:v7 selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v11];
+      [defaultCenter addObserver:v7 selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v11];
     }
   }
 
@@ -51,8 +51,8 @@
 - (void)dealloc
 {
   [(TCSSuggestions *)self->_suggestions removeObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -63,23 +63,23 @@
 
 - (BOOL)hasSuggestions
 {
-  v2 = [(TCSSuggestionsDataSource *)self suggestedContacts];
-  v3 = [v2 count] != 0;
+  suggestedContacts = [(TCSSuggestionsDataSource *)self suggestedContacts];
+  v3 = [suggestedContacts count] != 0;
 
   return v3;
 }
 
 - (NSArray)suggestedContacts
 {
-  v2 = self;
+  selfCopy = self;
   v66 = *MEMORY[0x277D85DE8];
   suggestedContacts = self->_suggestedContacts;
   if (!suggestedContacts)
   {
-    v4 = [(TCSSuggestions *)v2->_suggestions suggestedDestinations];
-    v5 = [v4 copy];
+    suggestedDestinations = [(TCSSuggestions *)selfCopy->_suggestions suggestedDestinations];
+    v5 = [suggestedDestinations copy];
 
-    v49 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
@@ -100,20 +100,20 @@
           }
 
           v10 = *(*(&v56 + 1) + 8 * i);
-          v11 = v2;
-          v12 = [(TCSSuggestions *)v2->_suggestions contactStore];
+          v11 = selfCopy;
+          contactStore = [(TCSSuggestions *)selfCopy->_suggestions contactStore];
           v13 = +[TCSSuggestionsDataSource descriptorForRequiredKeys];
           v64 = v13;
           v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
-          v15 = [TCSContacts _unifiedContactWithIdentifier:0 orDestination:v10 usingContactStore:v12 keysToFetch:v14];
+          v15 = [TCSContacts _unifiedContactWithIdentifier:0 orDestination:v10 usingContactStore:contactStore keysToFetch:v14];
 
           if (v15)
           {
-            v16 = [v15 identifier];
-            [v49 setValue:v15 forKey:v16];
+            identifier = [v15 identifier];
+            [dictionary setValue:v15 forKey:identifier];
           }
 
-          v2 = v11;
+          selfCopy = v11;
         }
 
         v7 = [obj countByEnumeratingWithState:&v56 objects:v65 count:16];
@@ -123,28 +123,28 @@
     }
 
     v17 = MEMORY[0x277CBEB58];
-    v18 = [v49 allValues];
-    v19 = [v17 setWithArray:v18];
+    allValues = [dictionary allValues];
+    v19 = [v17 setWithArray:allValues];
 
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __45__TCSSuggestionsDataSource_suggestedContacts__block_invoke;
     v55[3] = &unk_279DC1E40;
-    v55[4] = v2;
+    v55[4] = selfCopy;
     v47 = [v19 objectsPassingTest:v55];
     [v19 minusSet:?];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __45__TCSSuggestionsDataSource_suggestedContacts__block_invoke_2;
     v54[3] = &unk_279DC1E40;
-    v54[4] = v2;
+    v54[4] = selfCopy;
     v20 = [v19 objectsPassingTest:v54];
     [v19 minusSet:v20];
-    v21 = [(TCSSuggestions *)v2->_suggestions contactStore];
+    contactStore2 = [(TCSSuggestions *)selfCopy->_suggestions contactStore];
     v22 = +[TCSSuggestionsDataSource descriptorForRequiredKeys];
     v63 = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-    v24 = [TCSContacts _unifiedMeContactFromContactStore:v21 keysToFetch:v23];
+    v24 = [TCSContacts _unifiedMeContactFromContactStore:contactStore2 keysToFetch:v23];
 
     if ([v19 containsObject:v24])
     {
@@ -159,12 +159,12 @@
       [v19 removeObject:v24];
     }
 
-    v26 = [v19 allObjects];
-    v27 = [(TCSSuggestionsDataSource *)v2 _sortedContactsArrayFromArray:v26];
-    v28 = v2->_suggestedContacts;
-    v2->_suggestedContacts = v27;
+    allObjects = [v19 allObjects];
+    v27 = [(TCSSuggestionsDataSource *)selfCopy _sortedContactsArrayFromArray:allObjects];
+    v28 = selfCopy->_suggestedContacts;
+    selfCopy->_suggestedContacts = v27;
 
-    v29 = [(NSArray *)v2->_suggestedContacts count];
+    v29 = [(NSArray *)selfCopy->_suggestedContacts count];
     _TCSInitializeLogging();
     v30 = TCSLogDefault;
     v31 = os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_DEFAULT);
@@ -183,8 +183,8 @@
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v46 = v2;
-      v32 = v2->_suggestedContacts;
+      v46 = selfCopy;
+      v32 = selfCopy->_suggestedContacts;
       v33 = [(NSArray *)v32 countByEnumeratingWithState:&v50 objects:v62 count:16];
       if (v33)
       {
@@ -219,7 +219,7 @@
       }
 
       v19 = v45;
-      v2 = v46;
+      selfCopy = v46;
       v24 = v43;
       v20 = v44;
     }
@@ -230,7 +230,7 @@
       _os_log_impl(&dword_26F110000, v30, OS_LOG_TYPE_DEFAULT, "TCSSuggestionsDataSource has no suggested contacts to display.", buf, 2u);
     }
 
-    suggestedContacts = v2->_suggestedContacts;
+    suggestedContacts = selfCopy->_suggestedContacts;
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -290,7 +290,7 @@ void __53__TCSSuggestionsDataSource_descriptorForRequiredKeys__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suggestionsDidChange:(id)a3
+- (void)suggestionsDidChange:(id)change
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -320,15 +320,15 @@ void __53__TCSSuggestionsDataSource_descriptorForRequiredKeys__block_invoke()
   }
 }
 
-- (id)_sortedContactsArrayFromArray:(id)a3
+- (id)_sortedContactsArrayFromArray:(id)array
 {
   v3 = MEMORY[0x277CBDAD0];
-  v4 = a3;
-  v5 = [v3 sharedDefaults];
-  v6 = [v5 sortOrder];
+  arrayCopy = array;
+  sharedDefaults = [v3 sharedDefaults];
+  sortOrder = [sharedDefaults sortOrder];
 
-  v7 = [MEMORY[0x277CBDA58] comparatorForNameSortOrder:v6];
-  v8 = [v4 sortedArrayUsingComparator:v7];
+  v7 = [MEMORY[0x277CBDA58] comparatorForNameSortOrder:sortOrder];
+  v8 = [arrayCopy sortedArrayUsingComparator:v7];
 
   return v8;
 }

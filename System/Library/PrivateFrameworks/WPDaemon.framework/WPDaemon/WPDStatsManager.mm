@@ -1,6 +1,6 @@
 @interface WPDStatsManager
-+ (id)getStringFromActivity:(unint64_t)a3;
-- (WPDStatsManager)initWithServer:(id)a3;
++ (id)getStringFromActivity:(unint64_t)activity;
+- (WPDStatsManager)initWithServer:(id)server;
 - (WPDaemonServer)server;
 - (id)description;
 - (id)generateStateDumpStrings;
@@ -8,15 +8,15 @@
 - (void)dealloc;
 - (void)generateStateDump;
 - (void)reportPLStats;
-- (void)resetActivity:(unint64_t)a3 forType:(unsigned __int8)a4;
-- (void)resetActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4;
-- (void)startActivity:(unint64_t)a3 forType:(unsigned __int8)a4 scanRate:(int64_t)a5;
-- (void)startActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4;
-- (void)startActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4 scanRate:(int64_t)a5;
-- (void)stopActivity:(unint64_t)a3;
-- (void)stopActivity:(unint64_t)a3 forType:(unsigned __int8)a4;
-- (void)stopActivityAsync:(unint64_t)a3;
-- (void)stopActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4;
+- (void)resetActivity:(unint64_t)activity forType:(unsigned __int8)type;
+- (void)resetActivityAsync:(unint64_t)async forType:(unsigned __int8)type;
+- (void)startActivity:(unint64_t)activity forType:(unsigned __int8)type scanRate:(int64_t)rate;
+- (void)startActivityAsync:(unint64_t)async forType:(unsigned __int8)type;
+- (void)startActivityAsync:(unint64_t)async forType:(unsigned __int8)type scanRate:(int64_t)rate;
+- (void)stopActivity:(unint64_t)activity;
+- (void)stopActivity:(unint64_t)activity forType:(unsigned __int8)type;
+- (void)stopActivityAsync:(unint64_t)async;
+- (void)stopActivityAsync:(unint64_t)async forType:(unsigned __int8)type;
 @end
 
 @implementation WPDStatsManager
@@ -116,10 +116,10 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
   }
 }
 
-- (WPDStatsManager)initWithServer:(id)a3
+- (WPDStatsManager)initWithServer:(id)server
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   v30.receiver = self;
   v30.super_class = WPDStatsManager;
   v5 = [(WPDStatsManager *)&v30 init];
@@ -129,7 +129,7 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
     name = v5->_name;
     v5->_name = @"StatsManager";
 
-    objc_storeWeak(&v6->_server, v4);
+    objc_storeWeak(&v6->_server, serverCopy);
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:28];
     regularScanArray = v6->_regularScanArray;
     v6->_regularScanArray = v8;
@@ -221,14 +221,14 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(WPDStatsManager *)self generateStateDumpStrings];
-  v5 = [v4 count] - 1;
+  generateStateDumpStrings = [(WPDStatsManager *)self generateStateDumpStrings];
+  v5 = [generateStateDumpStrings count] - 1;
   v6 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@\n", self->_name];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v4 subarrayWithRange:{1, v5}];
+  v7 = [generateStateDumpStrings subarrayWithRange:{1, v5}];
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -262,9 +262,9 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
 
 - (id)generateStateDumpStrings
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCAB68] stringWithFormat:@"========= %@ =========\n", self->_name];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   if (self->_PLLogAvailable)
   {
@@ -282,15 +282,15 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
       [v5 stringWithFormat:@"Last pushed to PL log (%@) - %f seconds ago"], @"WirelessProximity", Current - v8 + 1200.0);
     }
     v9 = ;
-    [v3 addObject:v9];
+    [array addObject:v9];
   }
 
   else
   {
-    [v3 addObject:@"Push to PL log is not supported"];
+    [array addObject:@"Push to PL log is not supported"];
   }
 
-  v10 = [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  v10 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   return v10;
 }
@@ -302,8 +302,8 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(WPDStatsManager *)self generateStateDumpStrings];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  generateStateDumpStrings = [(WPDStatsManager *)self generateStateDumpStrings];
+  v3 = [generateStateDumpStrings countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -315,7 +315,7 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(generateStateDumpStrings);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
@@ -336,7 +336,7 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v4 = [generateStateDumpStrings countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v4);
@@ -345,31 +345,31 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startActivity:(unint64_t)a3 forType:(unsigned __int8)a4 scanRate:(int64_t)a5
+- (void)startActivity:(unint64_t)activity forType:(unsigned __int8)type scanRate:(int64_t)rate
 {
-  v5 = a4;
-  if (a4 < 0x1Cu)
+  typeCopy = type;
+  if (type < 0x1Cu)
   {
-    v7 = a4;
-    if (a3)
+    typeCopy2 = type;
+    if (activity)
     {
-      v8 = [(NSMutableArray *)self->_advertisingArray objectAtIndexedSubscript:a4];
+      v8 = [(NSMutableArray *)self->_advertisingArray objectAtIndexedSubscript:type];
     }
 
     else
     {
-      v11 = [(WPDStatsManager *)self regularScanArray];
-      v12 = [v11 objectAtIndexedSubscript:v7];
+      regularScanArray = [(WPDStatsManager *)self regularScanArray];
+      v12 = [regularScanArray objectAtIndexedSubscript:typeCopy2];
       [v12 stopTime];
 
-      v13 = [(WPDStatsManager *)self aggressiveScanArray];
-      v14 = [v13 objectAtIndexedSubscript:v7];
+      aggressiveScanArray = [(WPDStatsManager *)self aggressiveScanArray];
+      v14 = [aggressiveScanArray objectAtIndexedSubscript:typeCopy2];
       [v14 stopTime];
 
       scanArray = self->_scanArray;
-      v16 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+      v16 = [MEMORY[0x277CCABB0] numberWithInteger:rate];
       v17 = [(NSDictionary *)scanArray objectForKeyedSubscript:v16];
-      v18 = [v17 objectAtIndexedSubscript:v7];
+      v18 = [v17 objectAtIndexedSubscript:typeCopy2];
 
       v8 = v18;
     }
@@ -380,7 +380,7 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
 
   else if (+[WPDaemonServer isInternalBuild])
   {
-    [MEMORY[0x277CBEAD8] raise:@"WPClientType beyond bounds" format:{@"Trying to start activity for type %ld when WPClientMax is %ld", v5, 28}];
+    [MEMORY[0x277CBEAD8] raise:@"WPClientType beyond bounds" format:{@"Trying to start activity for type %ld when WPClientMax is %ld", typeCopy, 28}];
   }
 
   else
@@ -393,64 +393,64 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
     v9 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [WPDStatsManager startActivity:v5 forType:v9 scanRate:?];
+      [WPDStatsManager startActivity:typeCopy forType:v9 scanRate:?];
     }
   }
 }
 
-- (void)stopActivity:(unint64_t)a3 forType:(unsigned __int8)a4
+- (void)stopActivity:(unint64_t)activity forType:(unsigned __int8)type
 {
-  v5 = a4;
-  if (a3)
+  typeCopy = type;
+  if (activity)
   {
     [(WPDStatsManager *)self advertisingArray];
   }
 
   else
   {
-    v6 = [(WPDStatsManager *)self regularScanArray];
-    v7 = [v6 objectAtIndexedSubscript:v5];
+    regularScanArray = [(WPDStatsManager *)self regularScanArray];
+    v7 = [regularScanArray objectAtIndexedSubscript:typeCopy];
     [v7 stopTime];
 
     [(WPDStatsManager *)self aggressiveScanArray];
   }
   v9 = ;
-  v8 = [v9 objectAtIndexedSubscript:v5];
+  v8 = [v9 objectAtIndexedSubscript:typeCopy];
   [v8 stopTime];
 }
 
-- (void)stopActivity:(unint64_t)a3
+- (void)stopActivity:(unint64_t)activity
 {
-  if (a3)
+  if (activity)
   {
-    v4 = [(WPDStatsManager *)self advertisingArray];
+    advertisingArray = [(WPDStatsManager *)self advertisingArray];
     v5 = &__block_literal_global_187_4;
   }
 
   else
   {
-    v6 = [(WPDStatsManager *)self regularScanArray];
-    [v6 enumerateObjectsUsingBlock:&__block_literal_global_183_0];
+    regularScanArray = [(WPDStatsManager *)self regularScanArray];
+    [regularScanArray enumerateObjectsUsingBlock:&__block_literal_global_183_0];
 
-    v4 = [(WPDStatsManager *)self aggressiveScanArray];
+    advertisingArray = [(WPDStatsManager *)self aggressiveScanArray];
     v5 = &__block_literal_global_185_0;
   }
 
-  v7 = v4;
-  [v4 enumerateObjectsUsingBlock:v5];
+  v7 = advertisingArray;
+  [advertisingArray enumerateObjectsUsingBlock:v5];
 }
 
-- (void)resetActivity:(unint64_t)a3 forType:(unsigned __int8)a4
+- (void)resetActivity:(unint64_t)activity forType:(unsigned __int8)type
 {
-  v4 = a4;
-  if (a3)
+  typeCopy = type;
+  if (activity)
   {
     if (![(WPDStatsManager *)self resetAdvertisingArray])
     {
       return;
     }
 
-    v6 = [(WPDStatsManager *)self resetAdvertisingArray];
+    resetAdvertisingArray = [(WPDStatsManager *)self resetAdvertisingArray];
   }
 
   else
@@ -460,26 +460,26 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
       return;
     }
 
-    v6 = [(WPDStatsManager *)self resetScanArray];
+    resetAdvertisingArray = [(WPDStatsManager *)self resetScanArray];
   }
 
-  ++v6[v4];
+  ++resetAdvertisingArray[typeCopy];
 }
 
 - (id)getStatsDictionary
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
   v4 = objc_autoreleasePoolPush();
-  v5 = [(WPDStatsManager *)self regularScanArray];
-  v6 = timeArrayFromArray(v5);
+  regularScanArray = [(WPDStatsManager *)self regularScanArray];
+  v6 = timeArrayFromArray(regularScanArray);
   [v3 setObject:v6 forKeyedSubscript:@"Scan"];
 
-  v7 = [(WPDStatsManager *)self advertisingArray];
-  v8 = timeArrayFromArray(v7);
+  advertisingArray = [(WPDStatsManager *)self advertisingArray];
+  v8 = timeArrayFromArray(advertisingArray);
   [v3 setObject:v8 forKeyedSubscript:@"Advertise"];
 
-  v9 = [(WPDStatsManager *)self aggressiveScanArray];
-  v10 = timeArrayFromArray(v9);
+  aggressiveScanArray = [(WPDStatsManager *)self aggressiveScanArray];
+  v10 = timeArrayFromArray(aggressiveScanArray);
   [v3 setObject:v10 forKeyedSubscript:@"AggressiveScan"];
 
   v11 = counterArrayFromCounters([(WPDStatsManager *)self resetScanArray]);
@@ -493,9 +493,9 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)getStringFromActivity:(unint64_t)a3
++ (id)getStringFromActivity:(unint64_t)activity
 {
-  if (a3)
+  if (activity)
   {
     return @"WPDStatActivityAdvertise";
   }
@@ -506,20 +506,20 @@ void __32__WPDStatsManager_reportPLStats__block_invoke(uint64_t a1)
   }
 }
 
-- (void)startActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4 scanRate:(int64_t)a5
+- (void)startActivityAsync:(unint64_t)async forType:(unsigned __int8)type scanRate:(int64_t)rate
 {
   objc_initWeak(&location, self);
-  v9 = [(WPDStatsManager *)self server];
-  v10 = [v9 serverQueue];
+  server = [(WPDStatsManager *)self server];
+  serverQueue = [server serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__WPDStatsManager_startActivityAsync_forType_scanRate___block_invoke;
   block[3] = &unk_279E59D80;
   objc_copyWeak(v12, &location);
-  v13 = a4;
-  v12[1] = a3;
-  v12[2] = a5;
-  dispatch_async(v10, block);
+  typeCopy = type;
+  v12[1] = async;
+  v12[2] = rate;
+  dispatch_async(serverQueue, block);
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -536,19 +536,19 @@ void __55__WPDStatsManager_startActivityAsync_forType_scanRate___block_invoke(ui
   }
 }
 
-- (void)startActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4
+- (void)startActivityAsync:(unint64_t)async forType:(unsigned __int8)type
 {
   objc_initWeak(&location, self);
-  v7 = [(WPDStatsManager *)self server];
-  v8 = [v7 serverQueue];
+  server = [(WPDStatsManager *)self server];
+  serverQueue = [server serverQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__WPDStatsManager_startActivityAsync_forType___block_invoke;
   v9[3] = &unk_279E59DA8;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v11 = a4;
-  dispatch_async(v8, v9);
+  v10[1] = async;
+  typeCopy = type;
+  dispatch_async(serverQueue, v9);
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -565,19 +565,19 @@ void __46__WPDStatsManager_startActivityAsync_forType___block_invoke(uint64_t a1
   }
 }
 
-- (void)stopActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4
+- (void)stopActivityAsync:(unint64_t)async forType:(unsigned __int8)type
 {
   objc_initWeak(&location, self);
-  v7 = [(WPDStatsManager *)self server];
-  v8 = [v7 serverQueue];
+  server = [(WPDStatsManager *)self server];
+  serverQueue = [server serverQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__WPDStatsManager_stopActivityAsync_forType___block_invoke;
   v9[3] = &unk_279E59DA8;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v11 = a4;
-  dispatch_async(v8, v9);
+  v10[1] = async;
+  typeCopy = type;
+  dispatch_async(serverQueue, v9);
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -594,18 +594,18 @@ void __45__WPDStatsManager_stopActivityAsync_forType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopActivityAsync:(unint64_t)a3
+- (void)stopActivityAsync:(unint64_t)async
 {
   objc_initWeak(&location, self);
-  v5 = [(WPDStatsManager *)self server];
-  v6 = [v5 serverQueue];
+  server = [(WPDStatsManager *)self server];
+  serverQueue = [server serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__WPDStatsManager_stopActivityAsync___block_invoke;
   block[3] = &unk_279E59DD0;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
-  dispatch_async(v6, block);
+  v8[1] = async;
+  dispatch_async(serverQueue, block);
 
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -622,19 +622,19 @@ void __37__WPDStatsManager_stopActivityAsync___block_invoke(uint64_t a1)
   }
 }
 
-- (void)resetActivityAsync:(unint64_t)a3 forType:(unsigned __int8)a4
+- (void)resetActivityAsync:(unint64_t)async forType:(unsigned __int8)type
 {
   objc_initWeak(&location, self);
-  v7 = [(WPDStatsManager *)self server];
-  v8 = [v7 serverQueue];
+  server = [(WPDStatsManager *)self server];
+  serverQueue = [server serverQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__WPDStatsManager_resetActivityAsync_forType___block_invoke;
   v9[3] = &unk_279E59DA8;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v11 = a4;
-  dispatch_async(v8, v9);
+  v10[1] = async;
+  typeCopy = type;
+  dispatch_async(serverQueue, v9);
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);

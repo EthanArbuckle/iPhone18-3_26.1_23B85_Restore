@@ -1,23 +1,23 @@
 @interface SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMatchingSpans:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchingSpans:(id)spans;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (requestId)
   {
     if (v6)
@@ -32,7 +32,7 @@
   }
 
   tokenisedUtterance = self->_tokenisedUtterance;
-  v8 = *(v4 + 6);
+  v8 = *(fromCopy + 6);
   if (tokenisedUtterance)
   {
     if (v8)
@@ -47,7 +47,7 @@
   }
 
   embeddings = self->_embeddings;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   if (embeddings)
   {
     if (v10)
@@ -65,7 +65,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -90,7 +90,7 @@
   }
 
   turnInput = self->_turnInput;
-  v17 = *(v4 + 7);
+  v17 = *(fromCopy + 7);
   if (turnInput)
   {
     if (v17)
@@ -104,14 +104,14 @@
     [(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)self setTurnInput:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_maxNumParses = *(v4 + 1);
+    self->_maxNumParses = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   nluRequestId = self->_nluRequestId;
-  v19 = *(v4 + 4);
+  v19 = *(fromCopy + 4);
   if (nluRequestId)
   {
     if (v19)
@@ -148,16 +148,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(SIRINLUEXTERNALRequestID *)self->_nluRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   requestId = self->_requestId;
-  if (requestId | *(v4 + 5))
+  if (requestId | *(equalCopy + 5))
   {
     if (![(SIRINLUEXTERNALUUID *)requestId isEqual:?])
     {
@@ -166,7 +166,7 @@
   }
 
   tokenisedUtterance = self->_tokenisedUtterance;
-  if (tokenisedUtterance | *(v4 + 6))
+  if (tokenisedUtterance | *(equalCopy + 6))
   {
     if (![(SIRINLUINTERNALNLV4_PARSERTokenisation *)tokenisedUtterance isEqual:?])
     {
@@ -175,7 +175,7 @@
   }
 
   embeddings = self->_embeddings;
-  if (embeddings | *(v4 + 2))
+  if (embeddings | *(equalCopy + 2))
   {
     if (![(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddings isEqual:?])
     {
@@ -184,7 +184,7 @@
   }
 
   matchingSpans = self->_matchingSpans;
-  if (matchingSpans | *(v4 + 3))
+  if (matchingSpans | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)matchingSpans isEqual:?])
     {
@@ -193,7 +193,7 @@
   }
 
   turnInput = self->_turnInput;
-  if (turnInput | *(v4 + 7))
+  if (turnInput | *(equalCopy + 7))
   {
     if (![(SIRINLUEXTERNALTurnInput *)turnInput isEqual:?])
     {
@@ -201,16 +201,16 @@
     }
   }
 
-  v10 = *(v4 + 64);
+  v10 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_maxNumParses != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_maxNumParses != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -218,7 +218,7 @@ LABEL_19:
   }
 
   nluRequestId = self->_nluRequestId;
-  if (nluRequestId | *(v4 + 4))
+  if (nluRequestId | *(equalCopy + 4))
   {
     v12 = [(SIRINLUEXTERNALRequestID *)nluRequestId isEqual:?];
   }
@@ -233,19 +233,19 @@ LABEL_20:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(SIRINLUINTERNALNLV4_PARSERTokenisation *)self->_tokenisedUtterance copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALNLV4_PARSERTokenisation *)self->_tokenisedUtterance copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_embeddings copyWithZone:a3];
+  v10 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_embeddings copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -269,7 +269,7 @@ LABEL_20:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v24 + 1) + 8 * v16) copyWithZone:{a3, v24}];
+        v17 = [*(*(&v24 + 1) + 8 * v16) copyWithZone:{zone, v24}];
         [v5 addMatchingSpans:v17];
 
         ++v16;
@@ -282,7 +282,7 @@ LABEL_20:
     while (v14);
   }
 
-  v18 = [(SIRINLUEXTERNALTurnInput *)self->_turnInput copyWithZone:a3];
+  v18 = [(SIRINLUEXTERNALTurnInput *)self->_turnInput copyWithZone:zone];
   v19 = *(v5 + 56);
   *(v5 + 56) = v18;
 
@@ -292,7 +292,7 @@ LABEL_20:
     *(v5 + 64) |= 1u;
   }
 
-  v20 = [(SIRINLUEXTERNALRequestID *)self->_nluRequestId copyWithZone:a3, v24];
+  v20 = [(SIRINLUEXTERNALRequestID *)self->_nluRequestId copyWithZone:zone, v24];
   v21 = *(v5 + 32);
   *(v5 + 32) = v20;
 
@@ -300,62 +300,62 @@ LABEL_20:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
-    [v9 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
   if (self->_tokenisedUtterance)
   {
-    [v9 setTokenisedUtterance:?];
+    [toCopy setTokenisedUtterance:?];
   }
 
   if (self->_embeddings)
   {
-    [v9 setEmbeddings:?];
+    [toCopy setEmbeddings:?];
   }
 
   if ([(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)self matchingSpansCount])
   {
-    [v9 clearMatchingSpans];
-    v4 = [(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)self matchingSpansCount];
-    if (v4)
+    [toCopy clearMatchingSpans];
+    matchingSpansCount = [(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)self matchingSpansCount];
+    if (matchingSpansCount)
     {
-      v5 = v4;
+      v5 = matchingSpansCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)self matchingSpansAtIndex:i];
-        [v9 addMatchingSpans:v7];
+        [toCopy addMatchingSpans:v7];
       }
     }
   }
 
   if (self->_turnInput)
   {
-    [v9 setTurnInput:?];
+    [toCopy setTurnInput:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (*&self->_has)
   {
-    *(v9 + 1) = self->_maxNumParses;
-    *(v9 + 64) |= 1u;
+    *(toCopy + 1) = self->_maxNumParses;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_nluRequestId)
   {
-    [v9 setNluRequestId:?];
-    v8 = v9;
+    [toCopy setNluRequestId:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
@@ -425,26 +425,26 @@ LABEL_20:
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   tokenisedUtterance = self->_tokenisedUtterance;
   if (tokenisedUtterance)
   {
-    v7 = [(SIRINLUINTERNALNLV4_PARSERTokenisation *)tokenisedUtterance dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"tokenised_utterance"];
+    dictionaryRepresentation2 = [(SIRINLUINTERNALNLV4_PARSERTokenisation *)tokenisedUtterance dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"tokenised_utterance"];
   }
 
   embeddings = self->_embeddings;
   if (embeddings)
   {
-    v9 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddings dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"embeddings"];
+    dictionaryRepresentation3 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddings dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"embeddings"];
   }
 
   if ([(NSMutableArray *)self->_matchingSpans count])
@@ -469,8 +469,8 @@ LABEL_20:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation4 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation4];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -479,32 +479,32 @@ LABEL_20:
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"matching_spans"];
+    [dictionary setObject:v10 forKey:@"matching_spans"];
   }
 
   turnInput = self->_turnInput;
   if (turnInput)
   {
-    v18 = [(SIRINLUEXTERNALTurnInput *)turnInput dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"turn_input"];
+    dictionaryRepresentation5 = [(SIRINLUEXTERNALTurnInput *)turnInput dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"turn_input"];
   }
 
   if (*&self->_has)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_maxNumParses];
-    [v3 setObject:v19 forKey:@"max_num_parses"];
+    [dictionary setObject:v19 forKey:@"max_num_parses"];
   }
 
   nluRequestId = self->_nluRequestId;
   if (nluRequestId)
   {
-    v21 = [(SIRINLUEXTERNALRequestID *)nluRequestId dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"nlu_request_id"];
+    dictionaryRepresentation6 = [(SIRINLUEXTERNALRequestID *)nluRequestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"nlu_request_id"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -513,28 +513,28 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest;
   v4 = [(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)&v8 description];
-  v5 = [(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALNLV4_PARSERNLv4ParserRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMatchingSpans:(id)a3
+- (void)addMatchingSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   matchingSpans = self->_matchingSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!matchingSpans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_matchingSpans;
     self->_matchingSpans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     matchingSpans = self->_matchingSpans;
   }
 
-  [(NSMutableArray *)matchingSpans addObject:v4];
+  [(NSMutableArray *)matchingSpans addObject:spansCopy];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface CKMessageEntrySolidColorBackgroundView
 - (void)_updateBackgroundView;
-- (void)setEntryViewTraitCollection:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setEntryViewTraitCollection:(id)collection;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation CKMessageEntrySolidColorBackgroundView
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(CKMessageEntrySolidColorBackgroundView *)self _updateBackgroundView];
   }
 }
 
-- (void)setEntryViewTraitCollection:(id)a3
+- (void)setEntryViewTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if (([(UITraitCollection *)self->_entryViewTraitCollection isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_entryViewTraitCollection, a3);
+    objc_storeStrong(&self->_entryViewTraitCollection, collection);
     [(CKMessageEntrySolidColorBackgroundView *)self _updateBackgroundView];
   }
 }
 
 - (void)_updateBackgroundView
 {
-  v3 = [(CKMessageEntrySolidColorBackgroundView *)self style];
-  v6 = [(CKMessageEntrySolidColorBackgroundView *)self entryViewTraitCollection];
-  if (CKMessageEntryViewStyleIsForDarkFullscreenMoment(v3))
+  style = [(CKMessageEntrySolidColorBackgroundView *)self style];
+  entryViewTraitCollection = [(CKMessageEntrySolidColorBackgroundView *)self entryViewTraitCollection];
+  if (CKMessageEntryViewStyleIsForDarkFullscreenMoment(style))
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -39,7 +39,7 @@
     [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
   v4 = ;
-  v5 = [v4 resolvedColorForTraitCollection:v6];
+  v5 = [v4 resolvedColorForTraitCollection:entryViewTraitCollection];
 
   [(CKMessageEntrySolidColorBackgroundView *)self setBackgroundColor:v5];
 }

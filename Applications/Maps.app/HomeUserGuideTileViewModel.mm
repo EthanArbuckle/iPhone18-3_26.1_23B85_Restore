@@ -9,9 +9,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps26HomeUserGuideTileViewModel_collectionHandlerCellModel);
-  v5 = self;
-  [v4 removeObserver:v5];
-  v6.receiver = v5;
+  selfCopy = self;
+  [v4 removeObserver:selfCopy];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(HomeUserGuideTileViewModel *)&v6 dealloc];
 }

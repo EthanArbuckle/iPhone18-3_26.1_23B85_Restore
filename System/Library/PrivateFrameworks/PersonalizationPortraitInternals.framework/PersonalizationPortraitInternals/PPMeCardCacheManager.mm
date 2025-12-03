@@ -1,26 +1,26 @@
 @interface PPMeCardCacheManager
-- (PPMeCardCacheManager)initWithPath:(id)a3;
-- (void)accessCacheWithBlock:(id)a3;
+- (PPMeCardCacheManager)initWithPath:(id)path;
+- (void)accessCacheWithBlock:(id)block;
 @end
 
 @implementation PPMeCardCacheManager
 
-- (void)accessCacheWithBlock:(id)a3
+- (void)accessCacheWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__PPMeCardCacheManager_accessCacheWithBlock___block_invoke;
   v7[3] = &unk_278972C00;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (PPMeCardCacheManager)initWithPath:(id)a3
+- (PPMeCardCacheManager)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (initWithPath___pasOnceToken11 != -1)
   {
     dispatch_once(&initWithPath___pasOnceToken11, &__block_literal_global_4496);
@@ -38,10 +38,10 @@
   v12[2] = __37__PPMeCardCacheManager_initWithPath___block_invoke_52;
   v12[3] = &unk_278974EA0;
   v15 = &v16;
-  v6 = v4;
+  v6 = pathCopy;
   v13 = v6;
-  v7 = self;
-  v14 = v7;
+  selfCopy = self;
+  v14 = selfCopy;
   [v5 runWithLockAcquired:v12];
   v8 = v17[5];
 

@@ -1,12 +1,12 @@
 @interface RMModelAppMarketplaceDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 distributorID:(id)a4 marketplaceURL:(id)a5;
-+ (id)buildWithIdentifier:(id)a3 distributorID:(id)a4 marketplaceURL:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier distributorID:(id)d marketplaceURL:(id)l;
++ (id)buildWithIdentifier:(id)identifier distributorID:(id)d marketplaceURL:(id)l;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAppMarketplaceDeclaration
@@ -32,55 +32,55 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 distributorID:(id)a4 marketplaceURL:(id)a5
++ (id)buildWithIdentifier:(id)identifier distributorID:(id)d marketplaceURL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
+  dCopy = d;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.app.marketplace"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadDistributorID:v9];
+  [v10 setPayloadDistributorID:dCopy];
 
-  [v10 setPayloadMarketplaceURL:v8];
+  [v10 setPayloadMarketplaceURL:lCopy];
   [v10 updateServerToken];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 distributorID:(id)a4 marketplaceURL:(id)a5
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier distributorID:(id)d marketplaceURL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
+  dCopy = d;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.app.marketplace"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadDistributorID:v9];
+  [v10 setPayloadDistributorID:dCopy];
 
-  [v10 setPayloadMarketplaceURL:v8];
+  [v10 setPayloadMarketplaceURL:lCopy];
   [v10 updateServerToken];
 
   return v10;
@@ -114,12 +114,12 @@
   return v10;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAppMarketplaceDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -127,9 +127,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"DistributorID" forKeyPath:@"payloadDistributorID" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DistributorID" forKeyPath:@"payloadDistributorID" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"MarketplaceURL" forKeyPath:@"payloadMarketplaceURL" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"MarketplaceURL" forKeyPath:@"payloadMarketplaceURL" isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -140,25 +140,25 @@
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAppMarketplaceDeclaration *)self payloadDistributorID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DistributorID" value:v5 isRequired:1 defaultValue:0];
+  payloadDistributorID = [(RMModelAppMarketplaceDeclaration *)self payloadDistributorID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DistributorID" value:payloadDistributorID isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAppMarketplaceDeclaration *)self payloadMarketplaceURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"MarketplaceURL" value:v6 isRequired:1 defaultValue:0];
+  payloadMarketplaceURL = [(RMModelAppMarketplaceDeclaration *)self payloadMarketplaceURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"MarketplaceURL" value:payloadMarketplaceURL isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelAppMarketplaceDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadDistributorID copy];
   v6 = v4[6];
   v4[6] = v5;

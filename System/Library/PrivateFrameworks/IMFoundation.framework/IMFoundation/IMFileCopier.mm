@@ -1,9 +1,9 @@
 @interface IMFileCopier
-- (IMFileCopier)initWithInputURL:(id)a3 outputURL:(id)a4 identifier:(id)a5 operation:(unint64_t)a6 completionBlock:(id)a7 queue:(id)a8;
-- (IMFileCopier)initWithInputURL:(id)a3 outputURL:(id)a4 identifier:(id)a5 operation:(unint64_t)a6 delegate:(id)a7;
+- (IMFileCopier)initWithInputURL:(id)l outputURL:(id)rL identifier:(id)identifier operation:(unint64_t)operation completionBlock:(id)block queue:(id)queue;
+- (IMFileCopier)initWithInputURL:(id)l outputURL:(id)rL identifier:(id)identifier operation:(unint64_t)operation delegate:(id)delegate;
 - (id)_temporaryCopierPath;
 - (void)_fillOutputURLFromInputURL;
-- (void)_main_copierFinishedWithResult:(id)a3;
+- (void)_main_copierFinishedWithResult:(id)result;
 - (void)_worker_doCopy;
 - (void)cancel;
 - (void)cleanup;
@@ -13,72 +13,72 @@
 
 @implementation IMFileCopier
 
-- (IMFileCopier)initWithInputURL:(id)a3 outputURL:(id)a4 identifier:(id)a5 operation:(unint64_t)a6 delegate:(id)a7
+- (IMFileCopier)initWithInputURL:(id)l outputURL:(id)rL identifier:(id)identifier operation:(unint64_t)operation delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = IMFileCopier;
   v18 = [(IMFileCopier *)&v28 init];
   if (v18)
   {
-    v19 = objc_msgSend_copy(v12, v16, v17);
+    v19 = objc_msgSend_copy(lCopy, v16, v17);
     inputURL = v18->_inputURL;
     v18->_inputURL = v19;
 
-    v23 = objc_msgSend_copy(v13, v21, v22);
+    v23 = objc_msgSend_copy(rLCopy, v21, v22);
     outputURL = v18->_outputURL;
     v18->_outputURL = v23;
 
-    objc_storeStrong(&v18->_identifier, a5);
+    objc_storeStrong(&v18->_identifier, identifier);
     if (!v18->_outputURL)
     {
       objc_msgSend__fillOutputURLFromInputURL(v18, v25, v26);
     }
 
-    v18->_operation = a6;
-    v18->_delegate = v15;
+    v18->_operation = operation;
+    v18->_delegate = delegateCopy;
   }
 
   return v18;
 }
 
-- (IMFileCopier)initWithInputURL:(id)a3 outputURL:(id)a4 identifier:(id)a5 operation:(unint64_t)a6 completionBlock:(id)a7 queue:(id)a8
+- (IMFileCopier)initWithInputURL:(id)l outputURL:(id)rL identifier:(id)identifier operation:(unint64_t)operation completionBlock:(id)block queue:(id)queue
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  rLCopy = rL;
+  identifierCopy = identifier;
+  blockCopy = block;
+  queueCopy = queue;
   v37.receiver = self;
   v37.super_class = IMFileCopier;
   v21 = [(IMFileCopier *)&v37 init];
   if (v21)
   {
-    v22 = objc_msgSend_copy(v14, v19, v20);
+    v22 = objc_msgSend_copy(lCopy, v19, v20);
     inputURL = v21->_inputURL;
     v21->_inputURL = v22;
 
-    v26 = objc_msgSend_copy(v15, v24, v25);
+    v26 = objc_msgSend_copy(rLCopy, v24, v25);
     outputURL = v21->_outputURL;
     v21->_outputURL = v26;
 
-    objc_storeStrong(&v21->_identifier, a5);
+    objc_storeStrong(&v21->_identifier, identifier);
     if (!v21->_outputURL)
     {
       objc_msgSend__fillOutputURLFromInputURL(v21, v28, v29);
     }
 
-    v21->_operation = a6;
-    v30 = objc_msgSend_copy(v17, v28, v29);
+    v21->_operation = operation;
+    v30 = objc_msgSend_copy(blockCopy, v28, v29);
     callback = v21->_callback;
     v21->_callback = v30;
 
-    if (v18)
+    if (queueCopy)
     {
-      v32 = v18;
+      v32 = queueCopy;
       queue = v21->_queue;
       v21->_queue = v32;
     }
@@ -198,9 +198,9 @@
       {
         if (qword_1EAED9070 != -1)
         {
-          v5 = self;
+          selfCopy = self;
           sub_1959D55E0();
-          self = v5;
+          self = selfCopy;
         }
 
         v3 = off_1EAED9068;
@@ -234,9 +234,9 @@
   }
 }
 
-- (void)_main_copierFinishedWithResult:(id)a3
+- (void)_main_copierFinishedWithResult:(id)result
 {
-  v4 = objc_msgSend_BOOLValue(a3, a2, a3);
+  v4 = objc_msgSend_BOOLValue(result, a2, result);
   shouldCancel = self->_shouldCancel;
   if (!v4)
   {

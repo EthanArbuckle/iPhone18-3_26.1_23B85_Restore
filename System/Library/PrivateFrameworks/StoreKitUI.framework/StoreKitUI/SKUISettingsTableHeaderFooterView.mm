@@ -1,14 +1,14 @@
 @interface SKUISettingsTableHeaderFooterView
-- (void)displaySettingsHeaderFooterDescriptionView:(id)a3;
+- (void)displaySettingsHeaderFooterDescriptionView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SKUISettingsTableHeaderFooterView
 
-- (void)displaySettingsHeaderFooterDescriptionView:(id)a3
+- (void)displaySettingsHeaderFooterDescriptionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -22,11 +22,11 @@
   }
 
   settingsHeaderFooterDescriptionView = self->_settingsHeaderFooterDescriptionView;
-  self->_settingsHeaderFooterDescriptionView = v4;
-  v14 = v4;
+  self->_settingsHeaderFooterDescriptionView = viewCopy;
+  v14 = viewCopy;
 
-  v15 = [(SKUISettingsTableHeaderFooterView *)self contentView];
-  [v15 addSubview:self->_settingsHeaderFooterDescriptionView];
+  contentView = [(SKUISettingsTableHeaderFooterView *)self contentView];
+  [contentView addSubview:self->_settingsHeaderFooterDescriptionView];
 
   [(SKUISettingsTableHeaderFooterView *)self setNeedsLayout];
 }
@@ -67,8 +67,8 @@
   v20.receiver = self;
   v20.super_class = SKUISettingsTableHeaderFooterView;
   [(SKUISettingsTableHeaderFooterView *)&v20 layoutSubviews];
-  v11 = [(SKUISettingsTableHeaderFooterView *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUISettingsTableHeaderFooterView *)self contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;

@@ -1,6 +1,6 @@
 @interface PGGraphDateNodeCollection
-+ (id)dateNodesForDateComponents:(id)a3 inGraph:(id)a4;
-+ (id)dateNodesForLocalDates:(id)a3 inGraph:(id)a4;
++ (id)dateNodesForDateComponents:(id)components inGraph:(id)graph;
++ (id)dateNodesForLocalDates:(id)dates inGraph:(id)graph;
 - (NSArray)dateNames;
 - (NSDateInterval)localDateInterval;
 - (PGGraphDayNodeCollection)dayNodes;
@@ -33,16 +33,16 @@
 - (NSDateInterval)localDateInterval
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(MAElementCollection *)self array];
-  if ([v2 count])
+  array = [(MAElementCollection *)self array];
+  if ([array count])
   {
-    v3 = [MEMORY[0x277CBEAA8] distantFuture];
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v2;
+    v5 = array;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -51,8 +51,8 @@
       do
       {
         v9 = 0;
-        v10 = v4;
-        v11 = v3;
+        v10 = distantPast;
+        v11 = distantFuture;
         do
         {
           if (*v17 != v8)
@@ -60,14 +60,14 @@
             objc_enumerationMutation(v5);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * v9) localDate];
-          v3 = [v11 earlierDate:v12];
+          localDate = [*(*(&v16 + 1) + 8 * v9) localDate];
+          distantFuture = [v11 earlierDate:localDate];
 
-          v4 = [v10 laterDate:v12];
+          distantPast = [v10 laterDate:localDate];
 
           ++v9;
-          v10 = v4;
-          v11 = v3;
+          v10 = distantPast;
+          v11 = distantFuture;
         }
 
         while (v7 != v9);
@@ -77,7 +77,7 @@
       while (v7);
     }
 
-    v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v3 endDate:v4];
+    v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:distantFuture endDate:distantPast];
   }
 
   else
@@ -162,17 +162,17 @@
   return v4;
 }
 
-+ (id)dateNodesForDateComponents:(id)a3 inGraph:(id)a4
++ (id)dateNodesForDateComponents:(id)components inGraph:(id)graph
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  componentsCopy = components;
+  graphCopy = graph;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = componentsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -187,7 +187,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 dateNodeNameWithDateComponents:{*(*(&v18 + 1) + 8 * i), v18}];
+        v13 = [graphCopy dateNodeNameWithDateComponents:{*(*(&v18 + 1) + 8 * i), v18}];
         if (v13)
         {
           [v7 addObject:v13];
@@ -201,24 +201,24 @@
   }
 
   v14 = [PGGraphDateNode filterWithDateNames:v7];
-  v15 = [(MANodeCollection *)PGGraphDateNodeCollection nodesMatchingFilter:v14 inGraph:v6];
+  v15 = [(MANodeCollection *)PGGraphDateNodeCollection nodesMatchingFilter:v14 inGraph:graphCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-+ (id)dateNodesForLocalDates:(id)a3 inGraph:(id)a4
++ (id)dateNodesForLocalDates:(id)dates inGraph:(id)graph
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  datesCopy = dates;
+  graphCopy = graph;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = datesCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -233,7 +233,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 dateNodeNameWithLocalDate:{*(*(&v18 + 1) + 8 * i), v18}];
+        v13 = [graphCopy dateNodeNameWithLocalDate:{*(*(&v18 + 1) + 8 * i), v18}];
         [v7 addObject:v13];
       }
 
@@ -244,7 +244,7 @@
   }
 
   v14 = [PGGraphDateNode filterWithDateNames:v7];
-  v15 = [(MANodeCollection *)PGGraphDateNodeCollection nodesMatchingFilter:v14 inGraph:v6];
+  v15 = [(MANodeCollection *)PGGraphDateNodeCollection nodesMatchingFilter:v14 inGraph:graphCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 

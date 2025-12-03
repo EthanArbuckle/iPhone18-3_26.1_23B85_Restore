@@ -1,8 +1,8 @@
 @interface WFTriggerTypeCell
-- (WFTriggerTypeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFTriggerTypeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setTrigger:(id)a3;
-- (void)setTriggerTypeClass:(Class)a3;
+- (void)setTrigger:(id)trigger;
+- (void)setTriggerTypeClass:(Class)class;
 - (void)updateUI;
 @end
 
@@ -10,79 +10,79 @@
 
 - (void)updateUI
 {
-  v3 = [(WFTriggerTypeCell *)self trigger];
+  trigger = [(WFTriggerTypeCell *)self trigger];
 
-  if (v3)
+  if (trigger)
   {
-    v4 = [(WFTriggerTypeCell *)self trigger];
-    v5 = [v4 localizedDisplayName];
-    v6 = [(WFTriggerTypeCell *)self triggerTitleLabel];
-    [v6 setText:v5];
+    trigger2 = [(WFTriggerTypeCell *)self trigger];
+    localizedDisplayName = [trigger2 localizedDisplayName];
+    triggerTitleLabel = [(WFTriggerTypeCell *)self triggerTitleLabel];
+    [triggerTitleLabel setText:localizedDisplayName];
 
-    v7 = [(WFTriggerTypeCell *)self trigger];
-    v8 = [v7 localizedDisplayExplanation];
-    v9 = [(WFTriggerTypeCell *)self triggerDescriptionLabel];
-    [v9 setText:v8];
+    trigger3 = [(WFTriggerTypeCell *)self trigger];
+    localizedDisplayExplanation = [trigger3 localizedDisplayExplanation];
+    triggerDescriptionLabel = [(WFTriggerTypeCell *)self triggerDescriptionLabel];
+    [triggerDescriptionLabel setText:localizedDisplayExplanation];
 
-    v10 = [(WFTriggerTypeCell *)self trigger];
-    v11 = [v10 displayGlyph];
-    v12 = [v11 platformImage];
-    v13 = [(WFTriggerTypeCell *)self triggerIconView];
-    [v13 setImage:v12];
+    trigger4 = [(WFTriggerTypeCell *)self trigger];
+    displayGlyph = [trigger4 displayGlyph];
+    platformImage = [displayGlyph platformImage];
+    triggerIconView = [(WFTriggerTypeCell *)self triggerIconView];
+    [triggerIconView setImage:platformImage];
 
-    v14 = [(WFTriggerTypeCell *)self trigger];
-    [v14 displayGlyphCornerRadius];
+    trigger5 = [(WFTriggerTypeCell *)self trigger];
+    [trigger5 displayGlyphCornerRadius];
     v16 = v15;
 
-    v17 = [(WFTriggerTypeCell *)self triggerIconView];
-    v18 = v17;
+    triggerIconView2 = [(WFTriggerTypeCell *)self triggerIconView];
+    trigger6 = triggerIconView2;
     if (v16 <= 0.0)
     {
-      [v17 setClipsToBounds:0];
+      [triggerIconView2 setClipsToBounds:0];
     }
 
     else
     {
-      [v17 setClipsToBounds:1];
+      [triggerIconView2 setClipsToBounds:1];
 
-      v18 = [(WFTriggerTypeCell *)self trigger];
-      [v18 displayGlyphCornerRadius];
+      trigger6 = [(WFTriggerTypeCell *)self trigger];
+      [trigger6 displayGlyphCornerRadius];
       v20 = v19;
-      v21 = [(WFTriggerTypeCell *)self triggerIconView];
-      v22 = [v21 layer];
-      [v22 setCornerRadius:v20];
+      triggerIconView3 = [(WFTriggerTypeCell *)self triggerIconView];
+      layer = [triggerIconView3 layer];
+      [layer setCornerRadius:v20];
     }
 
-    v28 = [(WFTriggerTypeCell *)self trigger];
-    v25 = [v28 displayGlyphTintColor];
-    v26 = [v25 UIColor];
-    v27 = [(WFTriggerTypeCell *)self triggerIconView];
-    [v27 setTintColor:v26];
+    trigger7 = [(WFTriggerTypeCell *)self trigger];
+    displayGlyphTintColor = [trigger7 displayGlyphTintColor];
+    uIColor = [displayGlyphTintColor UIColor];
+    triggerIconView4 = [(WFTriggerTypeCell *)self triggerIconView];
+    [triggerIconView4 setTintColor:uIColor];
   }
 
   else
   {
-    v23 = [(WFTriggerTypeCell *)self triggerTitleLabel];
-    [v23 setText:0];
+    triggerTitleLabel2 = [(WFTriggerTypeCell *)self triggerTitleLabel];
+    [triggerTitleLabel2 setText:0];
 
-    v24 = [(WFTriggerTypeCell *)self triggerDescriptionLabel];
-    [v24 setText:0];
+    triggerDescriptionLabel2 = [(WFTriggerTypeCell *)self triggerDescriptionLabel];
+    [triggerDescriptionLabel2 setText:0];
 
-    v28 = [(WFTriggerTypeCell *)self triggerIconView];
-    [v28 setImage:0];
+    trigger7 = [(WFTriggerTypeCell *)self triggerIconView];
+    [trigger7 setImage:0];
   }
 }
 
-- (void)setTrigger:(id)a3
+- (void)setTrigger:(id)trigger
 {
-  objc_storeStrong(&self->_trigger, a3);
+  objc_storeStrong(&self->_trigger, trigger);
 
   [(WFTriggerTypeCell *)self updateUI];
 }
 
-- (void)setTriggerTypeClass:(Class)a3
+- (void)setTriggerTypeClass:(Class)class
 {
-  objc_storeStrong(&self->_triggerTypeClass, a3);
+  objc_storeStrong(&self->_triggerTypeClass, class);
   v4 = objc_opt_new();
   [(WFTriggerTypeCell *)self setTrigger:v4];
 }
@@ -96,12 +96,12 @@
   [(WFTriggerTypeCell *)self setTrigger:0];
 }
 
-- (WFTriggerTypeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFTriggerTypeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v56[9] = *MEMORY[0x277D85DE8];
   v55.receiver = self;
   v55.super_class = WFTriggerTypeCell;
-  v4 = [(WFTriggerTypeCell *)&v55 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(WFTriggerTypeCell *)&v55 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -109,8 +109,8 @@
     v4->_triggerIconView = v5;
 
     [(UIImageView *)v4->_triggerIconView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(WFTriggerTypeCell *)v4 contentView];
-    [v7 addSubview:v4->_triggerIconView];
+    contentView = [(WFTriggerTypeCell *)v4 contentView];
+    [contentView addSubview:v4->_triggerIconView];
 
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     triggerTitleLabel = v4->_triggerTitleLabel;
@@ -120,12 +120,12 @@
     v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v4->_triggerTitleLabel setFont:v10];
 
-    v11 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v4->_triggerTitleLabel setTextColor:v11];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v4->_triggerTitleLabel setTextColor:labelColor];
 
     [(UILabel *)v4->_triggerTitleLabel setNumberOfLines:1];
-    v12 = [(WFTriggerTypeCell *)v4 contentView];
-    [v12 addSubview:v4->_triggerTitleLabel];
+    contentView2 = [(WFTriggerTypeCell *)v4 contentView];
+    [contentView2 addSubview:v4->_triggerTitleLabel];
 
     v13 = objc_alloc_init(MEMORY[0x277D756B8]);
     triggerDescriptionLabel = v4->_triggerDescriptionLabel;
@@ -135,56 +135,56 @@
     v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
     [(UILabel *)v4->_triggerDescriptionLabel setFont:v15];
 
-    v16 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v4->_triggerDescriptionLabel setTextColor:v16];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v4->_triggerDescriptionLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_triggerDescriptionLabel setLineBreakMode:0];
     [(UILabel *)v4->_triggerDescriptionLabel setNumberOfLines:3];
-    v17 = [(WFTriggerTypeCell *)v4 contentView];
-    [v17 addSubview:v4->_triggerDescriptionLabel];
+    contentView3 = [(WFTriggerTypeCell *)v4 contentView];
+    [contentView3 addSubview:v4->_triggerDescriptionLabel];
 
     v42 = MEMORY[0x277CCAAD0];
-    v53 = [(UIImageView *)v4->_triggerIconView centerYAnchor];
-    v54 = [(WFTriggerTypeCell *)v4 contentView];
-    v52 = [v54 centerYAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    centerYAnchor = [(UIImageView *)v4->_triggerIconView centerYAnchor];
+    contentView4 = [(WFTriggerTypeCell *)v4 contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v56[0] = v51;
-    v49 = [(UIImageView *)v4->_triggerIconView centerXAnchor];
-    v50 = [(WFTriggerTypeCell *)v4 contentView];
-    v48 = [v50 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:28.0];
+    centerXAnchor = [(UIImageView *)v4->_triggerIconView centerXAnchor];
+    contentView5 = [(WFTriggerTypeCell *)v4 contentView];
+    leadingAnchor = [contentView5 leadingAnchor];
+    v47 = [centerXAnchor constraintEqualToAnchor:leadingAnchor constant:28.0];
     v56[1] = v47;
-    v45 = [(UILabel *)v4->_triggerTitleLabel leadingAnchor];
-    v46 = [(WFTriggerTypeCell *)v4 contentView];
-    v44 = [v46 leadingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:57.0];
+    leadingAnchor2 = [(UILabel *)v4->_triggerTitleLabel leadingAnchor];
+    contentView6 = [(WFTriggerTypeCell *)v4 contentView];
+    leadingAnchor3 = [contentView6 leadingAnchor];
+    v43 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:57.0];
     v56[2] = v43;
-    v40 = [(UILabel *)v4->_triggerTitleLabel trailingAnchor];
-    v41 = [(WFTriggerTypeCell *)v4 contentView];
-    v39 = [v41 trailingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:-8.0];
+    trailingAnchor = [(UILabel *)v4->_triggerTitleLabel trailingAnchor];
+    contentView7 = [(WFTriggerTypeCell *)v4 contentView];
+    trailingAnchor2 = [contentView7 trailingAnchor];
+    v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
     v56[3] = v38;
-    v37 = [(UILabel *)v4->_triggerDescriptionLabel leadingAnchor];
-    v36 = [(UILabel *)v4->_triggerTitleLabel leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    leadingAnchor4 = [(UILabel *)v4->_triggerDescriptionLabel leadingAnchor];
+    leadingAnchor5 = [(UILabel *)v4->_triggerTitleLabel leadingAnchor];
+    v35 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v56[4] = v35;
-    v34 = [(UILabel *)v4->_triggerDescriptionLabel trailingAnchor];
-    v33 = [(UILabel *)v4->_triggerTitleLabel trailingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    trailingAnchor3 = [(UILabel *)v4->_triggerDescriptionLabel trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v4->_triggerTitleLabel trailingAnchor];
+    v32 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v56[5] = v32;
-    v30 = [(UILabel *)v4->_triggerTitleLabel topAnchor];
-    v31 = [(WFTriggerTypeCell *)v4 contentView];
-    v29 = [v31 topAnchor];
-    v18 = [v30 constraintEqualToAnchor:v29 constant:10.0];
+    topAnchor = [(UILabel *)v4->_triggerTitleLabel topAnchor];
+    contentView8 = [(WFTriggerTypeCell *)v4 contentView];
+    topAnchor2 = [contentView8 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v56[6] = v18;
-    v19 = [(UILabel *)v4->_triggerDescriptionLabel topAnchor];
-    v20 = [(UILabel *)v4->_triggerTitleLabel bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:4.0];
+    topAnchor3 = [(UILabel *)v4->_triggerDescriptionLabel topAnchor];
+    bottomAnchor = [(UILabel *)v4->_triggerTitleLabel bottomAnchor];
+    v21 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:4.0];
     v56[7] = v21;
-    v22 = [(UILabel *)v4->_triggerDescriptionLabel bottomAnchor];
-    v23 = [(WFTriggerTypeCell *)v4 contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:-12.0];
+    bottomAnchor2 = [(UILabel *)v4->_triggerDescriptionLabel bottomAnchor];
+    contentView9 = [(WFTriggerTypeCell *)v4 contentView];
+    bottomAnchor3 = [contentView9 bottomAnchor];
+    v25 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-12.0];
     v56[8] = v25;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:9];
     [v42 activateConstraints:v26];

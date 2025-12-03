@@ -10,7 +10,7 @@
 {
   v3 = OBJC_IVAR____TtC32NTKEsterbrookFaceBundleCompanion14SpriteAnimator_displayLink;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC32NTKEsterbrookFaceBundleCompanion14SpriteAnimator_displayLink);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 invalidate];
@@ -25,7 +25,7 @@
 
 - (void)displayLinkFired
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BE0F0B4();
 }
 

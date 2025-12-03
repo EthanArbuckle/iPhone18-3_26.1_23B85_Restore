@@ -1,12 +1,12 @@
 @interface GKBulletinAction
 - (GKBulletinAction)init;
-- (GKBulletinAction)initWithCoder:(id)a3;
-- (GKBulletinAction)initWithDictionary:(id)a3;
+- (GKBulletinAction)initWithCoder:(id)coder;
+- (GKBulletinAction)initWithDictionary:(id)dictionary;
 - (NSDictionary)actionDictionary;
 - (id)appLaunchTrampolineURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKBulletinAction
@@ -24,28 +24,28 @@
   return result;
 }
 
-- (GKBulletinAction)initWithDictionary:(id)a3
+- (GKBulletinAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(GKBulletinAction *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"type"];
+    v6 = [dictionaryCopy objectForKey:@"type"];
     v5->_type = [v6 integerValue];
 
-    v7 = [v4 objectForKey:@"info"];
+    v7 = [dictionaryCopy objectForKey:@"info"];
     info = v5->_info;
     v5->_info = v7;
 
-    v9 = [v4 objectForKey:@"adamID"];
+    v9 = [dictionaryCopy objectForKey:@"adamID"];
     adamID = v5->_adamID;
     v5->_adamID = v9;
 
-    v11 = [v4 objectForKey:@"bundleID"];
+    v11 = [dictionaryCopy objectForKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v11;
 
-    v13 = [v4 objectForKey:@"playerID"];
+    v13 = [dictionaryCopy objectForKey:@"playerID"];
     playerID = v5->_playerID;
     v5->_playerID = v13;
   }
@@ -53,9 +53,9 @@
   return v5;
 }
 
-- (GKBulletinAction)initWithCoder:(id)a3
+- (GKBulletinAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -73,45 +73,45 @@
   v7 = [(GKBulletinAction *)&v23 init];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v7->_type = [v8 integerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v7->_title;
     v7->_title = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"info"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"info"];
     info = v7->_info;
     v7->_info = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
     adamID = v7->_adamID;
     v7->_adamID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v7->_bundleID;
     v7->_bundleID = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
     playerID = v7->_playerID;
     v7->_playerID = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isDestructive"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isDestructive"];
     v7->_isDestructive = [v19 BOOLValue];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inAlertView"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inAlertView"];
     v7->_inAlertView = [v20 BOOLValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inBannerView"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inBannerView"];
     v7->_inBannerView = [v21 BOOLValue];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -125,34 +125,34 @@
   }
 
   v7 = [NSNumber numberWithInteger:[(GKBulletinAction *)self type]];
-  [v4 encodeObject:v7 forKey:@"type"];
+  [coderCopy encodeObject:v7 forKey:@"type"];
 
-  v8 = [(GKBulletinAction *)self title];
-  [v4 encodeObject:v8 forKey:@"title"];
+  title = [(GKBulletinAction *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v9 = [(GKBulletinAction *)self info];
-  [v4 encodeObject:v9 forKey:@"info"];
+  info = [(GKBulletinAction *)self info];
+  [coderCopy encodeObject:info forKey:@"info"];
 
-  v10 = [(GKBulletinAction *)self adamID];
-  [v4 encodeObject:v10 forKey:@"adamID"];
+  adamID = [(GKBulletinAction *)self adamID];
+  [coderCopy encodeObject:adamID forKey:@"adamID"];
 
-  v11 = [(GKBulletinAction *)self bundleID];
-  [v4 encodeObject:v11 forKey:@"bundleID"];
+  bundleID = [(GKBulletinAction *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  v12 = [(GKBulletinAction *)self playerID];
-  [v4 encodeObject:v12 forKey:@"playerID"];
+  playerID = [(GKBulletinAction *)self playerID];
+  [coderCopy encodeObject:playerID forKey:@"playerID"];
 
   v13 = [NSNumber numberWithBool:[(GKBulletinAction *)self isDestructive]];
-  [v4 encodeObject:v13 forKey:@"isDestructive"];
+  [coderCopy encodeObject:v13 forKey:@"isDestructive"];
 
   v14 = [NSNumber numberWithBool:[(GKBulletinAction *)self inAlertView]];
-  [v4 encodeObject:v14 forKey:@"inAlertView"];
+  [coderCopy encodeObject:v14 forKey:@"inAlertView"];
 
   v15 = [NSNumber numberWithBool:[(GKBulletinAction *)self inBannerView]];
-  [v4 encodeObject:v15 forKey:@"inBannerView"];
+  [coderCopy encodeObject:v15 forKey:@"inBannerView"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[GKBulletinAction allocWithZone:?]];
   v4->_type = self->_type;
@@ -185,36 +185,36 @@
   v6 = [NSNumber numberWithLong:[(GKBulletinAction *)self type]];
   [v5 setObject:v6 forKey:@"type"];
 
-  v7 = [(GKBulletinAction *)self info];
+  info = [(GKBulletinAction *)self info];
 
-  if (v7)
+  if (info)
   {
-    v8 = [(GKBulletinAction *)self info];
-    [v5 setObject:v8 forKey:@"info"];
+    info2 = [(GKBulletinAction *)self info];
+    [v5 setObject:info2 forKey:@"info"];
   }
 
-  v9 = [(GKBulletinAction *)self adamID];
+  adamID = [(GKBulletinAction *)self adamID];
 
-  if (v9)
+  if (adamID)
   {
-    v10 = [(GKBulletinAction *)self adamID];
-    [v5 setObject:v10 forKey:@"adamID"];
+    adamID2 = [(GKBulletinAction *)self adamID];
+    [v5 setObject:adamID2 forKey:@"adamID"];
   }
 
-  v11 = [(GKBulletinAction *)self bundleID];
+  bundleID = [(GKBulletinAction *)self bundleID];
 
-  if (v11)
+  if (bundleID)
   {
-    v12 = [(GKBulletinAction *)self bundleID];
-    [v5 setObject:v12 forKey:@"bundleID"];
+    bundleID2 = [(GKBulletinAction *)self bundleID];
+    [v5 setObject:bundleID2 forKey:@"bundleID"];
   }
 
-  v13 = [(GKBulletinAction *)self playerID];
+  playerID = [(GKBulletinAction *)self playerID];
 
-  if (v13)
+  if (playerID)
   {
-    v14 = [(GKBulletinAction *)self playerID];
-    [v5 setObject:v14 forKey:@"playerID"];
+    playerID2 = [(GKBulletinAction *)self playerID];
+    [v5 setObject:playerID2 forKey:@"playerID"];
   }
 
   return v5;
@@ -222,14 +222,14 @@
 
 - (id)description
 {
-  v3 = [(GKBulletinAction *)self type];
+  type = [(GKBulletinAction *)self type];
   v4 = @"NO TYPE";
-  if (!v3)
+  if (!type)
   {
     v4 = @"NoAction";
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
     v5 = @"LaunchTrampoline";
   }
@@ -242,8 +242,8 @@
   v14.receiver = self;
   v14.super_class = GKBulletinAction;
   v6 = [(GKBulletinAction *)&v14 description];
-  v7 = [(GKBulletinAction *)self title];
-  v8 = [(GKBulletinAction *)self info];
+  title = [(GKBulletinAction *)self title];
+  info = [(GKBulletinAction *)self info];
   if ([(GKBulletinAction *)self isDestructive])
   {
     v9 = @"YES";
@@ -274,22 +274,22 @@
     v11 = @"NO";
   }
 
-  v12 = [v6 stringByAppendingFormat:@"\n\ttitle:%@\n\ttype:%@\n\tinfo:%@\n\tisDestructive:%@\n\tinBannerView:%@\n\tinAlertView:%@", v7, v5, v8, v9, v10, v11];
+  v12 = [v6 stringByAppendingFormat:@"\n\ttitle:%@\n\ttype:%@\n\tinfo:%@\n\tisDestructive:%@\n\tinBannerView:%@\n\tinAlertView:%@", title, v5, info, v9, v10, v11];
 
   return v12;
 }
 
 - (id)appLaunchTrampolineURL
 {
-  v3 = [(GKBulletinAction *)self adamID];
-  if (v3 && (v4 = v3, [(GKBulletinAction *)self bundleID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  adamID = [(GKBulletinAction *)self adamID];
+  if (adamID && (v4 = adamID, [(GKBulletinAction *)self bundleID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(GKBulletinAction *)self adamID];
-    v7 = [v6 stringValue];
-    v8 = [(GKBulletinAction *)self bundleID];
+    adamID2 = [(GKBulletinAction *)self adamID];
+    stringValue = [adamID2 stringValue];
+    bundleID = [(GKBulletinAction *)self bundleID];
     v9 = +[NSBundle mainBundle];
-    v10 = [v9 bundleIdentifier];
-    v11 = [ASCAppLaunchTrampolineURL URLWithAdamId:v7 bundleId:v8 localizedName:0 sourceApplication:v10 topic:0];
+    bundleIdentifier = [v9 bundleIdentifier];
+    v11 = [ASCAppLaunchTrampolineURL URLWithAdamId:stringValue bundleId:bundleID localizedName:0 sourceApplication:bundleIdentifier topic:0];
   }
 
   else

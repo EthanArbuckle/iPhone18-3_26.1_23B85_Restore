@@ -1,24 +1,24 @@
 @interface FCTodayFeedConfigCKResult
-- (FCTodayFeedConfigCKResult)initWithRecordsByType:(id)a3;
+- (FCTodayFeedConfigCKResult)initWithRecordsByType:(id)type;
 @end
 
 @implementation FCTodayFeedConfigCKResult
 
-- (FCTodayFeedConfigCKResult)initWithRecordsByType:(id)a3
+- (FCTodayFeedConfigCKResult)initWithRecordsByType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = FCTodayFeedConfigCKResult;
   v6 = [(FCTodayFeedConfigCKResult *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recordsByType, a3);
-    v8 = [v5 objectForKeyedSubscript:&unk_1F2E70410];
-    v9 = [v8 onlyRecord];
+    objc_storeStrong(&v6->_recordsByType, type);
+    v8 = [typeCopy objectForKeyedSubscript:&unk_1F2E70410];
+    onlyRecord = [v8 onlyRecord];
 
-    v10 = [v9 todayFeedConfiguration];
-    v11 = [v10 dataUsingEncoding:4];
+    todayFeedConfiguration = [onlyRecord todayFeedConfiguration];
+    v11 = [todayFeedConfiguration dataUsingEncoding:4];
     configData = v7->_configData;
     v7->_configData = v11;
   }

@@ -1,10 +1,10 @@
 @interface VSACAccount
 + (id)sharedInstance;
 - (BOOL)hasAccount;
-- (VSACAccount)initWithManualPasswordOption:(unint64_t)a3;
+- (VSACAccount)initWithManualPasswordOption:(unint64_t)option;
 - (id)account;
 - (id)username;
-- (unint64_t)convertedAMSAccountPasswordPromptSettingWithPaid:(BOOL)a3;
+- (unint64_t)convertedAMSAccountPasswordPromptSettingWithPaid:(BOOL)paid;
 - (unint64_t)freeAppPasswordPromptSetting;
 - (unint64_t)paidAppPasswordPromptSetting;
 @end
@@ -30,7 +30,7 @@ uint64_t __29__VSACAccount_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (VSACAccount)initWithManualPasswordOption:(unint64_t)a3
+- (VSACAccount)initWithManualPasswordOption:(unint64_t)option
 {
   if (!self)
   {
@@ -40,7 +40,7 @@ uint64_t __29__VSACAccount_sharedInstance__block_invoke()
   v6.receiver = self;
   v6.super_class = VSACAccount;
   v4 = [(VSACAccount *)&v6 init];
-  [(VSACAccount *)v4 setOverridingPasswordOption:a3];
+  [(VSACAccount *)v4 setOverridingPasswordOption:option];
   return v4;
 }
 
@@ -51,8 +51,8 @@ uint64_t __29__VSACAccount_sharedInstance__block_invoke()
     return 1;
   }
 
-  v4 = [(VSACAccount *)self account];
-  v3 = v4 != 0;
+  account = [(VSACAccount *)self account];
+  v3 = account != 0;
 
   return v3;
 }
@@ -99,41 +99,41 @@ uint64_t __29__VSACAccount_sharedInstance__block_invoke()
 
 - (id)account
 {
-  v2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
 - (id)username
 {
-  v2 = [(VSACAccount *)self account];
-  v3 = [v2 username];
+  account = [(VSACAccount *)self account];
+  username = [account username];
 
-  return v3;
+  return username;
 }
 
-- (unint64_t)convertedAMSAccountPasswordPromptSettingWithPaid:(BOOL)a3
+- (unint64_t)convertedAMSAccountPasswordPromptSettingWithPaid:(BOOL)paid
 {
-  v3 = a3;
-  v4 = [(VSACAccount *)self account];
-  v5 = v4;
-  if (v4)
+  paidCopy = paid;
+  account = [(VSACAccount *)self account];
+  v5 = account;
+  if (account)
   {
-    v6 = v4;
+    v6 = account;
     v7 = v6;
-    if (v3)
+    if (paidCopy)
     {
-      v8 = [v6 ams_paidPasswordPromptSetting];
+      ams_paidPasswordPromptSetting = [v6 ams_paidPasswordPromptSetting];
     }
 
     else
     {
-      v8 = [v6 ams_freePasswordPromptSetting];
+      ams_paidPasswordPromptSetting = [v6 ams_freePasswordPromptSetting];
     }
 
-    v9 = v8;
-    if (v8 >= 4)
+    v9 = ams_paidPasswordPromptSetting;
+    if (ams_paidPasswordPromptSetting >= 4)
     {
       v10 = VSErrorLogObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))

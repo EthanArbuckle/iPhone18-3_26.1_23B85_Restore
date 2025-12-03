@@ -1,26 +1,26 @@
 @interface _UIColorSampler
 - (_UIColorSampler)init;
-- (_UIColorSampler)initWithSettings:(id)a3;
+- (_UIColorSampler)initWithSettings:(id)settings;
 - (void)_createServerProxyIfNeeded;
 - (void)dismissEyedropper;
-- (void)eyedropperDidSelectColor:(id)a3;
+- (void)eyedropperDidSelectColor:(id)color;
 - (void)floatEyedropper;
 - (void)invokeEyedropper;
-- (void)showSamplerWithSelectionHandler:(id)a3;
+- (void)showSamplerWithSelectionHandler:(id)handler;
 @end
 
 @implementation _UIColorSampler
 
-- (_UIColorSampler)initWithSettings:(id)a3
+- (_UIColorSampler)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = _UIColorSampler;
   v6 = [(_UIColorSampler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v7->_floatEyedropperOnStart = 1;
   }
 
@@ -35,14 +35,14 @@
   return v4;
 }
 
-- (void)showSamplerWithSelectionHandler:(id)a3
+- (void)showSamplerWithSelectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51___UIColorSampler_showSamplerWithSelectionHandler___block_invoke;
   aBlock[3] = &unk_1E7123098;
-  v5 = v4;
+  v5 = handlerCopy;
   v9 = v5;
   v6 = _Block_copy(aBlock);
   eyeDropperSelectionBlock = self->_eyeDropperSelectionBlock;
@@ -96,10 +96,10 @@
 {
   [(_UIColorSampler *)self _createServerProxyIfNeeded];
   eyeDropperServerProxy = self->_eyeDropperServerProxy;
-  v6 = [objc_opt_self() mainScreen];
-  v4 = [v6 displayConfiguration];
-  v5 = [v4 hardwareIdentifier];
-  [(EDServiceServer *)eyeDropperServerProxy beginShowingEyeDropper:v5 settings:self->_settings];
+  mainScreen = [objc_opt_self() mainScreen];
+  displayConfiguration = [mainScreen displayConfiguration];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+  [(EDServiceServer *)eyeDropperServerProxy beginShowingEyeDropper:hardwareIdentifier settings:self->_settings];
 }
 
 - (void)floatEyedropper
@@ -118,12 +118,12 @@
   [(EDServiceServer *)eyeDropperServerProxy cancelShowingEyeDropper];
 }
 
-- (void)eyedropperDidSelectColor:(id)a3
+- (void)eyedropperDidSelectColor:(id)color
 {
   eyeDropperSelectionBlock = self->_eyeDropperSelectionBlock;
   if (eyeDropperSelectionBlock)
   {
-    eyeDropperSelectionBlock[2](eyeDropperSelectionBlock, a3);
+    eyeDropperSelectionBlock[2](eyeDropperSelectionBlock, color);
   }
 }
 

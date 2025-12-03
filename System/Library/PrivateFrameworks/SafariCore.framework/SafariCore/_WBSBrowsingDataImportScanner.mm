@@ -1,9 +1,9 @@
 @interface _WBSBrowsingDataImportScanner
-- (BOOL)_isArchiveFileURL:(id)a3;
+- (BOOL)_isArchiveFileURL:(id)l;
 - (_WBSBrowsingDataImportScanner)init;
-- (id)_createSandboxExtensionForURL:(id)a3;
-- (void)_processFileForURL:(id)a3 isInUnarchivedFolder:(BOOL)a4 completionHandler:(id)a5;
-- (void)scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5;
+- (id)_createSandboxExtensionForURL:(id)l;
+- (void)_processFileForURL:(id)l isInUnarchivedFolder:(BOOL)folder completionHandler:(id)handler;
+- (void)scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler;
 @end
 
 @implementation _WBSBrowsingDataImportScanner
@@ -17,9 +17,9 @@
   if (v2)
   {
     v2->_resultLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     fileManager = v3->_fileManager;
-    v3->_fileManager = v4;
+    v3->_fileManager = defaultManager;
 
     v6 = dispatch_group_create();
     scannerGroup = v3->_scannerGroup;
@@ -53,17 +53,17 @@
   return v3;
 }
 
-- (void)scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5
+- (void)scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 count])
+  lsCopy = ls;
+  handlerCopy = handler;
+  if ([lsCopy count])
   {
     fileManager = self->_fileManager;
-    v10 = [v7 firstObject];
+    firstObject = [lsCopy firstObject];
     v38 = 0;
-    v11 = [(NSFileManager *)fileManager safari_createTemporaryDirectoryAppropriateForURL:v10 error:&v38];
+    v11 = [(NSFileManager *)fileManager safari_createTemporaryDirectoryAppropriateForURL:firstObject error:&v38];
     v12 = v38;
     temporaryUnarchiveDestinationFolder = self->_temporaryUnarchiveDestinationFolder;
     self->_temporaryUnarchiveDestinationFolder = v11;
@@ -84,16 +84,16 @@
         temporaryUnarchiveDestinationFolderSandboxExtension = self->_temporaryUnarchiveDestinationFolderSandboxExtension;
         self->_temporaryUnarchiveDestinationFolderSandboxExtension = v18;
 
-        v20 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         results = self->_results;
-        self->_results = v20;
+        self->_results = dictionary;
 
         dispatch_group_enter(self->_scannerGroup);
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v22 = v7;
+        v22 = lsCopy;
         v23 = [v22 countByEnumeratingWithState:&v33 objects:v39 count:16];
         if (v23)
         {
@@ -125,7 +125,7 @@
         v31[2] = __84___WBSBrowsingDataImportScanner_scanImportURLs_sandboxExtensions_completionHandler___block_invoke;
         v31[3] = &unk_1E7CF16B8;
         v31[4] = self;
-        v32 = v8;
+        v32 = handlerCopy;
         dispatch_group_notify(scannerGroup, MEMORY[0x1E69E96A0], v31);
         dispatch_group_leave(self->_scannerGroup);
       }
@@ -138,7 +138,7 @@
           [_WBSBrowsingDataImportScanner scanImportURLs:v29 sandboxExtensions:? completionHandler:?];
         }
 
-        (*(v8 + 2))(v8, MEMORY[0x1E695E0F8], v16);
+        (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], v16);
       }
 
       v12 = v16;
@@ -152,41 +152,41 @@
         [_WBSBrowsingDataImportScanner scanImportURLs:v28 sandboxExtensions:? completionHandler:?];
       }
 
-      (*(v8 + 2))(v8, MEMORY[0x1E695E0F8], v12);
+      (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], v12);
     }
   }
 
   else
   {
-    (*(v8 + 2))(v8, MEMORY[0x1E695E0F8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], 0);
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isArchiveFileURL:(id)a3
+- (BOOL)_isArchiveFileURL:(id)l
 {
   v3 = _isArchiveFileURL__onceToken;
-  v4 = a3;
+  lCopy = l;
   if (v3 != -1)
   {
     [_WBSBrowsingDataImportScanner _isArchiveFileURL:];
   }
 
   v5 = _isArchiveFileURL__archiveExtensions;
-  v6 = [v4 pathExtension];
+  pathExtension = [lCopy pathExtension];
 
-  v7 = [v6 lowercaseString];
-  LOBYTE(v5) = [v5 containsObject:v7];
+  lowercaseString = [pathExtension lowercaseString];
+  LOBYTE(v5) = [v5 containsObject:lowercaseString];
 
   return v5;
 }
 
-- (id)_createSandboxExtensionForURL:(id)a3
+- (id)_createSandboxExtensionForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = *MEMORY[0x1E69E9BB0];
-  [v3 fileSystemRepresentation];
+  [lCopy fileSystemRepresentation];
   v5 = sandbox_extension_issue_file();
   if (v5)
   {
@@ -198,7 +198,7 @@
     v7 = WBS_LOG_CHANNEL_PREFIXImport();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(_WBSBrowsingDataImportScanner *)v3 _createSandboxExtensionForURL:v7];
+      [(_WBSBrowsingDataImportScanner *)lCopy _createSandboxExtensionForURL:v7];
     }
 
     v6 = 0;
@@ -207,30 +207,30 @@
   return v6;
 }
 
-- (void)_processFileForURL:(id)a3 isInUnarchivedFolder:(BOOL)a4 completionHandler:(id)a5
+- (void)_processFileForURL:(id)l isInUnarchivedFolder:(BOOL)folder completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91___WBSBrowsingDataImportScanner__processFileForURL_isInUnarchivedFolder_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7CF5158;
-  v30 = a4;
+  folderCopy = folder;
   aBlock[4] = self;
-  v10 = v9;
+  v10 = handlerCopy;
   v29 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = [v8 pathExtension];
-  if ([v13 isEqualToString:@"html"])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  pathExtension = [lCopy pathExtension];
+  if ([pathExtension isEqualToString:@"html"])
   {
-    v14 = [WBSNetscapeBookmarkFileReader looksLikeBookmarkFile:v8];
+    v14 = [WBSNetscapeBookmarkFileReader looksLikeBookmarkFile:lCopy];
 
     if (v14)
     {
-      [v12 setObject:@"bookmark" forKeyedSubscript:@"data_type"];
+      [dictionary setObject:@"bookmark" forKeyedSubscript:@"data_type"];
 LABEL_11:
-      v11[2](v11, v12);
+      v11[2](v11, dictionary);
       goto LABEL_15;
     }
   }
@@ -239,22 +239,22 @@ LABEL_11:
   {
   }
 
-  v15 = [v8 pathExtension];
-  v16 = [v15 isEqualToString:@"json"];
+  pathExtension2 = [lCopy pathExtension];
+  v16 = [pathExtension2 isEqualToString:@"json"];
 
   if (v16)
   {
-    v17 = WBSLoadMetadataDictionaryFromURL(v8, 0);
+    v17 = WBSLoadMetadataDictionaryFromURL(lCopy, 0);
     v18 = [v17 mutableCopy];
 
     v11[2](v11, v18);
-    v12 = v18;
+    dictionary = v18;
   }
 
   else
   {
-    v19 = [v8 pathExtension];
-    v20 = [v19 isEqualToString:@"csv"];
+    pathExtension3 = [lCopy pathExtension];
+    v20 = [pathExtension3 isEqualToString:@"csv"];
 
     if (v20)
     {
@@ -267,26 +267,26 @@ LABEL_11:
         block[2] = __91___WBSBrowsingDataImportScanner__processFileForURL_isInUnarchivedFolder_completionHandler___block_invoke_2;
         block[3] = &unk_1E7CF4970;
         v24 = v21;
-        v25 = v8;
-        v26 = v12;
+        v25 = lCopy;
+        v26 = dictionary;
         v27 = v11;
         dispatch_async(MEMORY[0x1E69E96A0], block);
       }
 
       else
       {
-        v11[2](v11, v12);
+        v11[2](v11, dictionary);
       }
     }
 
     else
     {
-      if ([v12 count])
+      if ([dictionary count])
       {
         goto LABEL_11;
       }
 
-      (*(v10 + 2))(v10, v12);
+      (*(v10 + 2))(v10, dictionary);
     }
   }
 

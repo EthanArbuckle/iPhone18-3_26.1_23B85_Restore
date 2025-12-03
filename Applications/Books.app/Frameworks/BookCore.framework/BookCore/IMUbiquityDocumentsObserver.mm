@@ -1,56 +1,56 @@
 @interface IMUbiquityDocumentsObserver
 - (BCICloudIdentityToken)identity;
-- (IMUbiquityDocumentsObserver)initWithDelegate:(id)a3 ubquityStatusMonitor:(id)a4 directoriesSubpath:(id)a5;
+- (IMUbiquityDocumentsObserver)initWithDelegate:(id)delegate ubquityStatusMonitor:(id)monitor directoriesSubpath:(id)subpath;
 - (IMUbiquityDocumentsObserverDelegate)delegate;
 - (IMUbiquityStatusMonitor)ubiquityStatusMonitor;
 - (NSString)description;
 - (id)_dataURL;
 - (id)_documentsURL;
 - (id)_identityData;
-- (id)_itemsForMetadataItems:(id)a3;
+- (id)_itemsForMetadataItems:(id)items;
 - (id)_noSyncURL;
-- (id)_replacementObjectForResultObject:(id)a3;
+- (id)_replacementObjectForResultObject:(id)object;
 - (void)dealloc;
-- (void)documentsURL:(id)a3;
-- (void)mq_queryDidFinish:(id)a3;
-- (void)mq_queryDidStart:(id)a3;
-- (void)mq_queryDidUpdate:(id)a3;
-- (void)mq_setupQuery:(id)a3;
+- (void)documentsURL:(id)l;
+- (void)mq_queryDidFinish:(id)finish;
+- (void)mq_queryDidStart:(id)start;
+- (void)mq_queryDidUpdate:(id)update;
+- (void)mq_setupQuery:(id)query;
 - (void)mq_tearDownQuery;
 - (void)q_createSubpathDirectories;
 - (void)restartQuery;
 - (void)tearDownQuery;
-- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)a3 oldIdentity:(id)a4;
+- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)identity oldIdentity:(id)oldIdentity;
 @end
 
 @implementation IMUbiquityDocumentsObserver
 
-- (IMUbiquityDocumentsObserver)initWithDelegate:(id)a3 ubquityStatusMonitor:(id)a4 directoriesSubpath:(id)a5
+- (IMUbiquityDocumentsObserver)initWithDelegate:(id)delegate ubquityStatusMonitor:(id)monitor directoriesSubpath:(id)subpath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  monitorCopy = monitor;
+  subpathCopy = subpath;
   v20.receiver = self;
   v20.super_class = IMUbiquityDocumentsObserver;
   v11 = [(IMUbiquityDocumentsObserver *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeWeak(&v12->_ubiquityStatusMonitor, v9);
-    objc_storeStrong(&v12->_directoriesSubpath, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeWeak(&v12->_ubiquityStatusMonitor, monitorCopy);
+    objc_storeStrong(&v12->_directoriesSubpath, subpath);
     v13 = dispatch_queue_create("com.apple.iBooks.IMUbiquityDocumentsObserver", &_dispatch_queue_attr_concurrent);
     queue = v12->_queue;
     v12->_queue = v13;
 
-    [v9 addObserver:v12];
+    [monitorCopy addObserver:v12];
     v15 = v12->_queue;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_15520C;
     v17[3] = &unk_2C7BE8;
     v18 = v12;
-    v19 = v9;
+    v19 = monitorCopy;
     dispatch_barrier_async(v15, v17);
   }
 
@@ -73,18 +73,18 @@
   [(IMUbiquityDocumentsObserver *)&v4 dealloc];
 }
 
-- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)a3 oldIdentity:(id)a4
+- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)identity oldIdentity:(id)oldIdentity
 {
-  v5 = a3;
-  v6 = [(IMUbiquityDocumentsObserver *)self queue];
+  identityCopy = identity;
+  queue = [(IMUbiquityDocumentsObserver *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_155500;
   v8[3] = &unk_2C7BE8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_barrier_async(v6, v8);
+  v9 = identityCopy;
+  v7 = identityCopy;
+  dispatch_barrier_async(queue, v8);
 }
 
 - (void)restartQuery
@@ -121,9 +121,9 @@
   if (!identity)
   {
     WeakRetained = objc_loadWeakRetained(&self->_ubiquityStatusMonitor);
-    v5 = [WeakRetained ubiquityIdentityToken];
+    ubiquityIdentityToken = [WeakRetained ubiquityIdentityToken];
     v6 = self->_identity;
-    self->_identity = v5;
+    self->_identity = ubiquityIdentityToken;
 
     identity = self->_identity;
   }
@@ -131,25 +131,25 @@
   return identity;
 }
 
-- (void)documentsURL:(id)a3
+- (void)documentsURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [(IMUbiquityDocumentsObserver *)self queue];
+    queue = [(IMUbiquityDocumentsObserver *)self queue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_155A38;
     v6[3] = &unk_2C8790;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = lCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)mq_setupQuery:(id)a3
+- (void)mq_setupQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = BKLibraryDataSourceUbiquityLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -166,17 +166,17 @@
     }
   }
 
-  [(IMUbiquityDocumentsObserver *)self setQuery:v4];
+  [(IMUbiquityDocumentsObserver *)self setQuery:queryCopy];
   v7 = +[NSNotificationCenter defaultCenter];
-  [v7 addObserver:self selector:"mq_queryDidStart:" name:NSMetadataQueryDidStartGatheringNotification object:v4];
+  [v7 addObserver:self selector:"mq_queryDidStart:" name:NSMetadataQueryDidStartGatheringNotification object:queryCopy];
 
   v8 = +[NSNotificationCenter defaultCenter];
-  [v8 addObserver:self selector:"mq_queryDidFinish:" name:NSMetadataQueryDidFinishGatheringNotification object:v4];
+  [v8 addObserver:self selector:"mq_queryDidFinish:" name:NSMetadataQueryDidFinishGatheringNotification object:queryCopy];
 
   v9 = +[NSNotificationCenter defaultCenter];
-  [v9 addObserver:self selector:"mq_queryDidUpdate:" name:NSMetadataQueryDidUpdateNotification object:v4];
+  [v9 addObserver:self selector:"mq_queryDidUpdate:" name:NSMetadataQueryDidUpdateNotification object:queryCopy];
 
-  [v4 startQuery];
+  [queryCopy startQuery];
 }
 
 - (void)mq_tearDownQuery
@@ -190,8 +190,8 @@
     }
   }
 
-  v4 = [(IMUbiquityDocumentsObserver *)self query];
-  if (v4)
+  query = [(IMUbiquityDocumentsObserver *)self query];
+  if (query)
   {
     v5 = BKLibraryDataSourceUbiquityLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -200,19 +200,19 @@
     }
 
     [(IMUbiquityDocumentsObserver *)self setQuery:0];
-    [v4 stopQuery];
+    [query stopQuery];
     v6 = +[NSNotificationCenter defaultCenter];
-    [v6 removeObserver:self name:NSMetadataQueryDidStartGatheringNotification object:v4];
+    [v6 removeObserver:self name:NSMetadataQueryDidStartGatheringNotification object:query];
 
     v7 = +[NSNotificationCenter defaultCenter];
-    [v7 removeObserver:self name:NSMetadataQueryDidFinishGatheringNotification object:v4];
+    [v7 removeObserver:self name:NSMetadataQueryDidFinishGatheringNotification object:query];
 
     v8 = +[NSNotificationCenter defaultCenter];
-    [v8 removeObserver:self name:NSMetadataQueryDidUpdateNotification object:v4];
+    [v8 removeObserver:self name:NSMetadataQueryDidUpdateNotification object:query];
   }
 }
 
-- (void)mq_queryDidStart:(id)a3
+- (void)mq_queryDidStart:(id)start
 {
   v3 = BKLibraryDataSourceUbiquityLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -222,7 +222,7 @@
   }
 }
 
-- (void)mq_queryDidFinish:(id)a3
+- (void)mq_queryDidFinish:(id)finish
 {
   v4 = BKLibraryDataSourceUbiquityLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -231,19 +231,19 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Query did finish", buf, 2u);
   }
 
-  v5 = [(IMUbiquityDocumentsObserver *)self query];
-  [v5 disableUpdates];
+  query = [(IMUbiquityDocumentsObserver *)self query];
+  [query disableUpdates];
 
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [(IMUbiquityDocumentsObserver *)self query];
+  query2 = [(IMUbiquityDocumentsObserver *)self query];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_155F84;
   v16 = &unk_2CE578;
   v8 = v6;
   v17 = v8;
-  v18 = self;
-  [v7 enumerateResultsUsingBlock:&v13];
+  selfCopy = self;
+  [query2 enumerateResultsUsingBlock:&v13];
 
   v9 = BKLibraryDataSourceUbiquityLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -256,32 +256,32 @@
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Found %lu downloaded items:%@", buf, 0x16u);
   }
 
-  v11 = [(IMUbiquityDocumentsObserver *)self delegate];
-  [v11 ubiquityDocumentsObserver:self didLoadWithItems:v8];
+  delegate = [(IMUbiquityDocumentsObserver *)self delegate];
+  [delegate ubiquityDocumentsObserver:self didLoadWithItems:v8];
 
-  v12 = [(IMUbiquityDocumentsObserver *)self query];
-  [v12 enableUpdates];
+  query3 = [(IMUbiquityDocumentsObserver *)self query];
+  [query3 enableUpdates];
 }
 
-- (void)mq_queryDidUpdate:(id)a3
+- (void)mq_queryDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = BKLibraryDataSourceUbiquityLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = updateCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "mq_queryDidUpdate %@", &v18, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:NSMetadataQueryUpdateAddedItemsKey];
+  userInfo = [updateCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:NSMetadataQueryUpdateAddedItemsKey];
   v8 = [(IMUbiquityDocumentsObserver *)self _itemsForMetadataItems:v7];
 
-  v9 = [v6 objectForKeyedSubscript:NSMetadataQueryUpdateChangedItemsKey];
+  v9 = [userInfo objectForKeyedSubscript:NSMetadataQueryUpdateChangedItemsKey];
   v10 = [(IMUbiquityDocumentsObserver *)self _itemsForMetadataItems:v9];
 
-  v11 = [v6 objectForKeyedSubscript:NSMetadataQueryUpdateRemovedItemsKey];
+  v11 = [userInfo objectForKeyedSubscript:NSMetadataQueryUpdateRemovedItemsKey];
   v12 = [(IMUbiquityDocumentsObserver *)self _itemsForMetadataItems:v11];
 
   v13 = BKLibraryDataSourceUbiquityLog();
@@ -305,29 +305,29 @@
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "mq_queryDidUpdate added %lu:(%@) changed %lu:(%@) removed %lu:(%@)", &v18, 0x3Eu);
   }
 
-  v17 = [(IMUbiquityDocumentsObserver *)self delegate];
+  delegate = [(IMUbiquityDocumentsObserver *)self delegate];
   if ([v8 count])
   {
-    [v17 ubiquityDocumentsObserver:self itemsDidBecomeAvailable:v8];
+    [delegate ubiquityDocumentsObserver:self itemsDidBecomeAvailable:v8];
   }
 
   if ([v12 count])
   {
-    [v17 ubiquityDocumentsObserver:self itemsDidBecomeUnavailable:v12];
+    [delegate ubiquityDocumentsObserver:self itemsDidBecomeUnavailable:v12];
   }
 
   if ([v10 count])
   {
-    [v17 ubiquityDocumentsObserver:self itemsDidChange:v10];
+    [delegate ubiquityDocumentsObserver:self itemsDidChange:v10];
   }
 }
 
 - (id)_identityData
 {
-  v2 = [(IMUbiquityDocumentsObserver *)self identity];
-  if (v2)
+  identity = [(IMUbiquityDocumentsObserver *)self identity];
+  if (identity)
   {
-    v3 = [NSKeyedArchiver archivedDataWithRootObject:v2 requiringSecureCoding:1 error:0];
+    v3 = [NSKeyedArchiver archivedDataWithRootObject:identity requiringSecureCoding:1 error:0];
   }
 
   else
@@ -340,15 +340,15 @@
 
 - (id)_documentsURL
 {
-  v3 = [(IMUbiquityDocumentsObserver *)self containerURL];
-  v4 = [v3 URLByAppendingPathComponent:@"Documents"];
+  containerURL = [(IMUbiquityDocumentsObserver *)self containerURL];
+  v4 = [containerURL URLByAppendingPathComponent:@"Documents"];
 
-  v5 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
+  directoriesSubpath = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
 
-  if (v5)
+  if (directoriesSubpath)
   {
-    v6 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
-    v7 = [v4 URLByAppendingPathComponent:v6];
+    directoriesSubpath2 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
+    v7 = [v4 URLByAppendingPathComponent:directoriesSubpath2];
 
     v4 = v7;
   }
@@ -358,15 +358,15 @@
 
 - (id)_dataURL
 {
-  v3 = [(IMUbiquityDocumentsObserver *)self containerURL];
-  v4 = [v3 URLByAppendingPathComponent:@"Data"];
+  containerURL = [(IMUbiquityDocumentsObserver *)self containerURL];
+  v4 = [containerURL URLByAppendingPathComponent:@"Data"];
 
-  v5 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
+  directoriesSubpath = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
 
-  if (v5)
+  if (directoriesSubpath)
   {
-    v6 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
-    v7 = [v4 URLByAppendingPathComponent:v6];
+    directoriesSubpath2 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
+    v7 = [v4 URLByAppendingPathComponent:directoriesSubpath2];
 
     v4 = v7;
   }
@@ -379,14 +379,14 @@
   noSyncURL = self->_noSyncURL;
   if (!noSyncURL)
   {
-    v4 = [(IMUbiquityDocumentsObserver *)self containerURL];
-    v5 = v4;
-    if (v4)
+    containerURL = [(IMUbiquityDocumentsObserver *)self containerURL];
+    v5 = containerURL;
+    if (containerURL)
     {
-      v6 = [v4 URLByAppendingPathComponent:@"metadata.nosync"];
+      v6 = [containerURL URLByAppendingPathComponent:@"metadata.nosync"];
       v7 = +[NSFileManager defaultManager];
-      v8 = [v6 path];
-      v9 = [v7 fileExistsAtPath:v8];
+      path = [v6 path];
+      v9 = [v7 fileExistsAtPath:path];
 
       if (v9)
       {
@@ -431,12 +431,12 @@
   }
 
   v17 = noSyncURL;
-  v18 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
+  directoriesSubpath = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
 
-  if (v18)
+  if (directoriesSubpath)
   {
-    v19 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
-    v20 = [(NSURL *)v17 URLByAppendingPathComponent:v19];
+    directoriesSubpath2 = [(IMUbiquityDocumentsObserver *)self directoriesSubpath];
+    v20 = [(NSURL *)v17 URLByAppendingPathComponent:directoriesSubpath2];
 
     v17 = v20;
   }
@@ -446,9 +446,9 @@
 
 - (void)q_createSubpathDirectories
 {
-  v3 = [(IMUbiquityDocumentsObserver *)self _documentsURL];
-  v4 = [(IMUbiquityDocumentsObserver *)self _dataURL];
-  v5 = [(IMUbiquityDocumentsObserver *)self _noSyncURL];
+  _documentsURL = [(IMUbiquityDocumentsObserver *)self _documentsURL];
+  _dataURL = [(IMUbiquityDocumentsObserver *)self _dataURL];
+  _noSyncURL = [(IMUbiquityDocumentsObserver *)self _noSyncURL];
   +[NSFileManager defaultManager];
   v11[0] = 0;
   v11[1] = v11;
@@ -461,38 +461,38 @@
   v9 = v6;
   v10 = v11;
   v7 = objc_retainBlock(v8);
-  (v7[2])(v7, v3);
-  (v7[2])(v7, v4);
-  (v7[2])(v7, v5);
+  (v7[2])(v7, _documentsURL);
+  (v7[2])(v7, _dataURL);
+  (v7[2])(v7, _noSyncURL);
 
   _Block_object_dispose(v11, 8);
 }
 
-- (id)_itemsForMetadataItems:(id)a3
+- (id)_itemsForMetadataItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   +[NSMutableArray array];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_156924;
   v12 = v11 = &unk_2CE578;
-  v13 = self;
+  selfCopy = self;
   v5 = v12;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [itemsCopy enumerateObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)_replacementObjectForResultObject:(id)a3
+- (id)_replacementObjectForResultObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
-  v5 = [v3 valueForAttribute:NSMetadataItemURLKey];
+  v5 = [objectCopy valueForAttribute:NSMetadataItemURLKey];
   [v4 setUrl:v5];
 
-  v6 = [v3 valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey];
+  v6 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey];
   if ([v6 isEqualToString:NSMetadataUbiquitousItemDownloadingStatusCurrent])
   {
     v7 = 1;
@@ -513,20 +513,20 @@
 
   else
   {
-    v9 = [v3 valueForAttribute:NSMetadataUbiquitousItemIsDownloadingKey];
-    v10 = [v9 BOOLValue];
+    v9 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemIsDownloadingKey];
+    bOOLValue = [v9 BOOLValue];
 
-    [v4 setIsDownloading:v10];
-    if (v10)
+    [v4 setIsDownloading:bOOLValue];
+    if (bOOLValue)
     {
-      v11 = [v3 valueForAttribute:NSMetadataUbiquitousItemPercentDownloadedKey];
+      v11 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemPercentDownloadedKey];
       [v4 setDownloadingPercent:v11];
     }
   }
 
-  v12 = [v3 valueForAttribute:NSMetadataUbiquitousItemUploadingErrorKey];
-  v13 = [v3 valueForAttribute:NSMetadataUbiquitousItemIsUploadingKey];
-  v14 = [v3 valueForAttribute:NSMetadataUbiquitousItemIsUploadedKey];
+  v12 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemUploadingErrorKey];
+  v13 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemIsUploadingKey];
+  v14 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemIsUploadedKey];
   if (![v13 BOOLValue] || v12)
   {
     if ([v14 BOOLValue])
@@ -543,26 +543,26 @@
   else
   {
     [v4 setIsUploading:1];
-    v15 = [v3 valueForAttribute:NSMetadataUbiquitousItemPercentUploadedKey];
+    v15 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemPercentUploadedKey];
     [v4 setUploadingPercent:v15];
   }
 
   objc_opt_class();
-  v16 = [v3 valueForAttribute:@"kMDItemFSContentChangeDate"];
+  v16 = [objectCopy valueForAttribute:@"kMDItemFSContentChangeDate"];
   v17 = BUDynamicCast();
   [v4 setContentChangedDate:v17];
 
   objc_opt_class();
-  v18 = [v3 valueForAttribute:@"kMDItemFSCreationDate"];
+  v18 = [objectCopy valueForAttribute:@"kMDItemFSCreationDate"];
   v19 = BUDynamicCast();
   [v4 setContentCreationDate:v19];
 
   objc_opt_class();
-  v20 = [v3 valueForAttribute:@"kMDItemFSSize"];
+  v20 = [objectCopy valueForAttribute:@"kMDItemFSSize"];
   v21 = BUDynamicCast();
   [v4 setContentFileSize:v21];
 
-  v22 = [v3 valueForAttribute:NSMetadataUbiquitousItemHasUnresolvedConflictsKey];
+  v22 = [objectCopy valueForAttribute:NSMetadataUbiquitousItemHasUnresolvedConflictsKey];
   [v4 setUnresolvedConflict:v22];
 
   return v4;
@@ -572,11 +572,11 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(IMUbiquityDocumentsObserver *)self identity];
-  v6 = [(IMUbiquityDocumentsObserver *)self containerURL];
-  v7 = [(IMUbiquityDocumentsObserver *)self noSyncURL];
-  v8 = [(IMUbiquityDocumentsObserver *)self ubiquityStatusMonitor];
-  v9 = [NSString stringWithFormat:@"<%@(%p) identity='%@' containerURL='%@' noSyncURL='%@'>\n\tubiquityStatusMonitor = %@", v4, self, v5, v6, v7, v8];
+  identity = [(IMUbiquityDocumentsObserver *)self identity];
+  containerURL = [(IMUbiquityDocumentsObserver *)self containerURL];
+  noSyncURL = [(IMUbiquityDocumentsObserver *)self noSyncURL];
+  ubiquityStatusMonitor = [(IMUbiquityDocumentsObserver *)self ubiquityStatusMonitor];
+  v9 = [NSString stringWithFormat:@"<%@(%p) identity='%@' containerURL='%@' noSyncURL='%@'>\n\tubiquityStatusMonitor = %@", v4, self, identity, containerURL, noSyncURL, ubiquityStatusMonitor];
 
   return v9;
 }

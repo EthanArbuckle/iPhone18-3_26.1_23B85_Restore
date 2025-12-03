@@ -1,9 +1,9 @@
 @interface SearchUIDescriptionCardSectionView
-+ (id)dragSubtitleForCardSection:(id)a3;
++ (id)dragSubtitleForCardSection:(id)section;
 - (id)setupContentView;
 - (void)didPressFootnoteButton;
 - (void)didPressMoreButton;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIDescriptionCardSectionView
@@ -16,28 +16,28 @@
   return v3;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 cardSection];
-  v6 = [(SearchUICardSectionView *)self section];
-  v7 = v6 == v5 && [(SearchUIDescriptionCardSectionView *)self expanded];
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
+  section = [(SearchUICardSectionView *)self section];
+  v7 = section == cardSection && [(SearchUIDescriptionCardSectionView *)self expanded];
   [(SearchUIDescriptionCardSectionView *)self setExpanded:v7];
 
   v15.receiver = self;
   v15.super_class = SearchUIDescriptionCardSectionView;
-  [(SearchUICardSectionView *)&v15 updateWithRowModel:v4];
+  [(SearchUICardSectionView *)&v15 updateWithRowModel:modelCopy];
 
-  v8 = [(SearchUICardSectionView *)self contentView];
+  contentView = [(SearchUICardSectionView *)self contentView];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__SearchUIDescriptionCardSectionView_updateWithRowModel___block_invoke;
   v11[3] = &unk_1E85B26A8;
-  v12 = v8;
-  v13 = v5;
-  v14 = self;
-  v9 = v5;
-  v10 = v8;
+  v12 = contentView;
+  v13 = cardSection;
+  selfCopy = self;
+  v9 = cardSection;
+  v10 = contentView;
   [v10 performBatchUpdates:v11];
 }
 
@@ -142,12 +142,12 @@ LABEL_14:
   [a1[4] setTrailingFootnoteButtonText:v23];
 }
 
-+ (id)dragSubtitleForCardSection:(id)a3
++ (id)dragSubtitleForCardSection:(id)section
 {
-  v3 = [a3 descriptionText];
-  v4 = [v3 text];
+  descriptionText = [section descriptionText];
+  text = [descriptionText text];
 
-  return v4;
+  return text;
 }
 
 - (void)didPressMoreButton
@@ -156,10 +156,10 @@ LABEL_14:
   v3 = objc_opt_new();
   [v8 setCommand:v3];
 
-  v4 = [(SearchUICardSectionView *)self rowModel];
-  v5 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v6 = [SearchUIUtilities environmentForDelegate:v5];
-  v7 = [SearchUICommandHandler handlerForButton:v8 rowModel:v4 environment:v6];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  v6 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
+  v7 = [SearchUICommandHandler handlerForButton:v8 rowModel:rowModel environment:v6];
   [v7 wasPerformedWithTriggerEvent:2];
 
   [(SearchUICardSectionView *)self didInvalidateSizeAnimate:1];
@@ -168,12 +168,12 @@ LABEL_14:
 
 - (void)didPressFootnoteButton
 {
-  v3 = [(SearchUICardSectionView *)self rowModel];
-  v7 = [v3 cardSection];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
   v4 = MEMORY[0x1E69CA320];
-  v5 = [v7 attributionURL];
-  v6 = [v4 punchoutWithURL:v5];
+  attributionURL = [cardSection attributionURL];
+  v6 = [v4 punchoutWithURL:attributionURL];
   [(SearchUICardSectionView *)self openPunchout:v6 triggerEvent:2];
 }
 

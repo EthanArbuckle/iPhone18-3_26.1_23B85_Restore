@@ -1,12 +1,12 @@
 @interface HUCCCompactModuleContentViewController
 - (BOOL)shouldBeginTransitionToExpandedContentModule;
-- (BOOL)shouldExpandModuleOnTouch:(id)a3;
+- (BOOL)shouldExpandModuleOnTouch:(id)touch;
 - (CGRect)_expandedContentFrame;
 - (CGRect)_iconViewInHomeGridCellFrame;
 - (CGRect)_iconViewInNavigationHeaderViewFrame;
 - (CGRect)transitionCompressedAnimationStartFrame;
 - (CGSize)preferredExpandedSize;
-- (HUCCCompactModuleContentViewController)initWithDelegate:(id)a3;
+- (HUCCCompactModuleContentViewController)initWithDelegate:(id)delegate;
 - (HUCCCompactModuleContentViewControllerDelegate)delegate;
 - (double)preferredExpandedContinuousCornerRadius;
 - (id)customAnimator;
@@ -14,28 +14,28 @@
 - (void)_setUpHomeControlService;
 - (void)_tearDownHomeControlService;
 - (void)dealloc;
-- (void)propertyAnimatorDidStartAnimating:(id)a3;
-- (void)quickControlsPresentationDidUpdate:(BOOL)a3;
-- (void)remoteDashboard:(id)a3 viewServiceDidTerminateWithError:(id)a4;
-- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)a3;
+- (void)propertyAnimatorDidStartAnimating:(id)animating;
+- (void)quickControlsPresentationDidUpdate:(BOOL)update;
+- (void)remoteDashboard:(id)dashboard viewServiceDidTerminateWithError:(id)error;
+- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)handler;
 - (void)requestDismissal;
 - (void)resetToInitialState;
-- (void)setExpandedView:(id)a3;
+- (void)setExpandedView:(id)view;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCCCompactModuleContentViewController
 
-- (HUCCCompactModuleContentViewController)initWithDelegate:(id)a3
+- (HUCCCompactModuleContentViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HUCCCompactModuleContentViewController;
   v5 = [(CCUIButtonModuleViewController *)&v12 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [MEMORY[0x29EDC7AD0] configurationWithPointSize:4 weight:32.0];
     v8 = [MEMORY[0x29EDC7AC8] systemImageNamed:@"homekit"];
     v9 = [v8 imageWithConfiguration:v7];
@@ -51,9 +51,9 @@
   v6.receiver = self;
   v6.super_class = HUCCCompactModuleContentViewController;
   [(CCUIButtonModuleViewController *)&v6 viewDidLoad];
-  v3 = [MEMORY[0x29EDC7A00] systemWhiteColor];
-  v4 = [(HUCCCompactModuleContentViewController *)self view];
-  [v4 setTintColor:v3];
+  systemWhiteColor = [MEMORY[0x29EDC7A00] systemWhiteColor];
+  view = [(HUCCCompactModuleContentViewController *)self view];
+  [view setTintColor:systemWhiteColor];
 
   MGGetFloat32Answer();
   [(HUCCCompactModuleContentViewController *)self setTransitionDeviceCornerRadius:v5];
@@ -67,90 +67,90 @@
   [(HUCCCompactModuleContentViewController *)&v3 dealloc];
 }
 
-- (void)setExpandedView:(id)a3
+- (void)setExpandedView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   expandedView = self->_expandedView;
   if (expandedView)
   {
     [(UIView *)expandedView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_expandedView, a3);
+  objc_storeStrong(&self->_expandedView, view);
   v6 = self->_expandedView;
   if (v6)
   {
     [(UIView *)v6 setAlpha:0.0];
-    v7 = [(HUCCCompactModuleContentViewController *)self view];
-    [v7 addSubview:self->_expandedView];
+    view = [(HUCCCompactModuleContentViewController *)self view];
+    [view addSubview:self->_expandedView];
   }
 }
 
 - (void)resetToInitialState
 {
-  v3 = [(HUCCCompactModuleContentViewController *)self expandedView];
-  [v3 setAlpha:0.0];
+  expandedView = [(HUCCCompactModuleContentViewController *)self expandedView];
+  [expandedView setAlpha:0.0];
 
   [(HUCCCompactModuleContentViewController *)self setExpandedView:0];
-  v4 = [(CCUIButtonModuleViewController *)self buttonView];
-  [v4 setAlpha:1.0];
+  buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+  [buttonView setAlpha:1.0];
 
-  v5 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-  [v5 removeFromParentViewController];
+  dashboardContainerViewController = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+  [dashboardContainerViewController removeFromParentViewController];
 
   [(HUCCCompactModuleContentViewController *)self setDashboardContainerViewController:0];
 }
 
 - (void)_setUpHomeControlService
 {
-  v3 = [(HUCCCompactModuleContentViewController *)self activeAssertion];
-  if (!v3)
+  activeAssertion = [(HUCCCompactModuleContentViewController *)self activeAssertion];
+  if (!activeAssertion)
   {
     if (_os_feature_enabled_impl())
     {
       return;
     }
 
-    v4 = [MEMORY[0x29EDC5390] sharedDispatcher];
-    v5 = [v4 homeManager];
-    v6 = [v5 _beginActiveAssertionWithReason:@"HUCCCompactModuleVisible"];
+    mEMORY[0x29EDC5390] = [MEMORY[0x29EDC5390] sharedDispatcher];
+    homeManager = [mEMORY[0x29EDC5390] homeManager];
+    v6 = [homeManager _beginActiveAssertionWithReason:@"HUCCCompactModuleVisible"];
     [(HUCCCompactModuleContentViewController *)self setActiveAssertion:v6];
 
-    v7 = [(HUCCCompactModuleContentViewController *)self activeAssertion];
+    activeAssertion2 = [(HUCCCompactModuleContentViewController *)self activeAssertion];
 
-    if (!v7)
+    if (!activeAssertion2)
     {
       return;
     }
 
-    v8 = [MEMORY[0x29EDC54D8] sharedInstance];
-    [v8 launchServiceSuspendedWithUserInfo:MEMORY[0x29EDB8EA0]];
+    mEMORY[0x29EDC54D8] = [MEMORY[0x29EDC54D8] sharedInstance];
+    [mEMORY[0x29EDC54D8] launchServiceSuspendedWithUserInfo:MEMORY[0x29EDB8EA0]];
 
     v9 = [[HUCCDashboardContainerViewController alloc] initWithDelegate:self];
     [(HUCCCompactModuleContentViewController *)self setDashboardContainerViewController:v9];
 
-    v10 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-    v11 = [v10 view];
-    [(HUCCCompactModuleContentViewController *)self setExpandedView:v11];
+    dashboardContainerViewController = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+    view = [dashboardContainerViewController view];
+    [(HUCCCompactModuleContentViewController *)self setExpandedView:view];
 
-    v12 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-    [(HUCCCompactModuleContentViewController *)self addChildViewController:v12];
+    dashboardContainerViewController2 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+    [(HUCCCompactModuleContentViewController *)self addChildViewController:dashboardContainerViewController2];
 
-    v13 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-    [v13 didMoveToParentViewController:self];
-    v3 = v13;
+    dashboardContainerViewController3 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+    [dashboardContainerViewController3 didMoveToParentViewController:self];
+    activeAssertion = dashboardContainerViewController3;
   }
 }
 
 - (void)_tearDownHomeControlService
 {
-  v3 = [(HUCCCompactModuleContentViewController *)self activeAssertion];
+  activeAssertion = [(HUCCCompactModuleContentViewController *)self activeAssertion];
 
-  if (v3)
+  if (activeAssertion)
   {
     [(CCUIButtonModuleViewController *)self setExpanded:0];
-    v4 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-    [v4 stopRemoteViewController];
+    dashboardContainerViewController = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+    [dashboardContainerViewController stopRemoteViewController];
 
     [(HUCCCompactModuleContentViewController *)self resetToInitialState];
     v5 = HFLogForCategory();
@@ -160,25 +160,25 @@
       _os_log_impl(&dword_29C988000, v5, OS_LOG_TYPE_DEFAULT, "Terminating HomeControlService", v10, 2u);
     }
 
-    v6 = [MEMORY[0x29EDC54D8] sharedInstance];
-    [v6 dismissService];
+    mEMORY[0x29EDC54D8] = [MEMORY[0x29EDC54D8] sharedInstance];
+    [mEMORY[0x29EDC54D8] dismissService];
 
-    v7 = [MEMORY[0x29EDC5390] sharedDispatcher];
-    v8 = [v7 homeManager];
-    v9 = [(HUCCCompactModuleContentViewController *)self activeAssertion];
-    [v8 _endActiveAssertion:v9];
+    mEMORY[0x29EDC5390] = [MEMORY[0x29EDC5390] sharedDispatcher];
+    homeManager = [mEMORY[0x29EDC5390] homeManager];
+    activeAssertion2 = [(HUCCCompactModuleContentViewController *)self activeAssertion];
+    [homeManager _endActiveAssertion:activeAssertion2];
 
     [(HUCCCompactModuleContentViewController *)self setActiveAssertion:0];
   }
 }
 
-- (BOOL)shouldExpandModuleOnTouch:(id)a3
+- (BOOL)shouldExpandModuleOnTouch:(id)touch
 {
-  v4 = [(HUCCCompactModuleContentViewController *)self accessAllowedForCurrentLockState];
-  if (v4)
+  accessAllowedForCurrentLockState = [(HUCCCompactModuleContentViewController *)self accessAllowedForCurrentLockState];
+  if (accessAllowedForCurrentLockState)
   {
-    v5 = [(HUCCCompactModuleContentViewController *)self expandedView];
-    [v5 setAlpha:1.0];
+    expandedView = [(HUCCCompactModuleContentViewController *)self expandedView];
+    [expandedView setAlpha:1.0];
   }
 
   else
@@ -191,15 +191,15 @@
     [(HUCCCompactModuleContentViewController *)self requestAuthenticationIfLockedWithCompletionHandler:v7];
   }
 
-  return v4;
+  return accessAllowedForCurrentLockState;
 }
 
 - (BOOL)shouldBeginTransitionToExpandedContentModule
 {
-  v3 = [MEMORY[0x29EDC5390] sharedDispatcher];
-  v4 = [v3 home];
+  mEMORY[0x29EDC5390] = [MEMORY[0x29EDC5390] sharedDispatcher];
+  home = [mEMORY[0x29EDC5390] home];
 
-  if ((_os_feature_enabled_impl() & 1) != 0 || ([v4 hf_hasVisibleAccessories] & 1) == 0)
+  if ((_os_feature_enabled_impl() & 1) != 0 || ([home hf_hasVisibleAccessories] & 1) == 0)
   {
     [(HUCCCompactModuleContentViewController *)self _openHomeApp];
     v5 = 0;
@@ -218,26 +218,26 @@
   v3 = [(UIViewPropertyAnimator *)[HUCCCompactModulePropertyAnimator alloc] initWithDuration:0 curve:0 animations:0.4];
   [(HUCCCompactModulePropertyAnimator *)v3 setDelegate:self];
   v4 = [objc_alloc(MEMORY[0x29EDC7DB0]) initWithDuration:0 curve:0 animations:0.1];
-  v5 = [(HUCCCompactModuleContentViewController *)self transitionIconView];
+  transitionIconView = [(HUCCCompactModuleContentViewController *)self transitionIconView];
 
-  if (!v5)
+  if (!transitionIconView)
   {
-    v6 = [(CCUIButtonModuleViewController *)self buttonView];
-    v7 = [v6 snapshotViewAfterScreenUpdates:0];
+    buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+    v7 = [buttonView snapshotViewAfterScreenUpdates:0];
     [(HUCCCompactModuleContentViewController *)self setTransitionIconView:v7];
 
-    v8 = [(HUCCCompactModuleContentViewController *)self transitionIconView];
-    [v8 setContentMode:4];
+    transitionIconView2 = [(HUCCCompactModuleContentViewController *)self transitionIconView];
+    [transitionIconView2 setContentMode:4];
 
-    v9 = [(HUCCCompactModuleContentViewController *)self view];
-    v10 = [(HUCCCompactModuleContentViewController *)self transitionIconView];
-    [v9 addSubview:v10];
+    view = [(HUCCCompactModuleContentViewController *)self view];
+    transitionIconView3 = [(HUCCCompactModuleContentViewController *)self transitionIconView];
+    [view addSubview:transitionIconView3];
   }
 
   if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
-    v11 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v11 setAlpha:0.0];
+    buttonView2 = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView2 setAlpha:0.0];
 
     v18[0] = MEMORY[0x29EDCA5F8];
     v18[1] = 3221225472;
@@ -282,12 +282,12 @@
 
 - (CGRect)_iconViewInNavigationHeaderViewFrame
 {
-  v4 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-  v5 = [v4 transitionSubviewFrames];
+  dashboardContainerViewController = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+  transitionSubviewFrames = [dashboardContainerViewController transitionSubviewFrames];
 
-  if ([v5 count])
+  if ([transitionSubviewFrames count])
   {
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x29EDC5448]];
+    v6 = [transitionSubviewFrames objectForKeyedSubscript:*MEMORY[0x29EDC5448]];
     [v6 CGRectValue];
     v8 = v7;
     v10 = v9;
@@ -356,18 +356,18 @@
 
 - (CGSize)preferredExpandedSize
 {
-  v3 = [MEMORY[0x29EDC7A58] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v5 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-    v6 = [v5 view];
-    [v6 frame];
+    dashboardContainerViewController = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+    view = [dashboardContainerViewController view];
+    [view frame];
     Width = v7;
-    v9 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-    v10 = [v9 view];
-    [v10 frame];
+    dashboardContainerViewController2 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+    view2 = [dashboardContainerViewController2 view];
+    [view2 frame];
     Height = v11;
   }
 
@@ -399,65 +399,65 @@
   objc_destroyWeak(&location);
 }
 
-- (void)propertyAnimatorDidStartAnimating:(id)a3
+- (void)propertyAnimatorDidStartAnimating:(id)animating
 {
-  v4 = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
-  [v4 willBeginTransition:-[CCUIButtonModuleViewController isExpanded](self forCompactModule:{"isExpanded"), 1}];
+  dashboardContainerViewController = [(HUCCCompactModuleContentViewController *)self dashboardContainerViewController];
+  [dashboardContainerViewController willBeginTransition:-[CCUIButtonModuleViewController isExpanded](self forCompactModule:{"isExpanded"), 1}];
 }
 
-- (void)remoteDashboard:(id)a3 viewServiceDidTerminateWithError:(id)a4
+- (void)remoteDashboard:(id)dashboard viewServiceDidTerminateWithError:(id)error
 {
-  v5 = [(HUCCCompactModuleContentViewController *)self delegate:a3];
-  v4 = [v5 contentModuleContext];
-  [v4 setHomeGestureDismissalAllowed:1];
+  v5 = [(HUCCCompactModuleContentViewController *)self delegate:dashboard];
+  contentModuleContext = [v5 contentModuleContext];
+  [contentModuleContext setHomeGestureDismissalAllowed:1];
 }
 
-- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)a3
+- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HUCCCompactModuleContentViewController *)self delegate];
-  v6 = [v5 isDeviceUnlockedForModuleContentViewController:self];
+  handlerCopy = handler;
+  delegate = [(HUCCCompactModuleContentViewController *)self delegate];
+  v6 = [delegate isDeviceUnlockedForModuleContentViewController:self];
 
   if (v6)
   {
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
   {
-    v7 = [(HUCCCompactModuleContentViewController *)self delegate];
-    v8 = [v7 contentModuleContext];
+    delegate2 = [(HUCCCompactModuleContentViewController *)self delegate];
+    contentModuleContext = [delegate2 contentModuleContext];
 
-    if (v8)
+    if (contentModuleContext)
     {
       v9[0] = MEMORY[0x29EDCA5F8];
       v9[1] = 3221225472;
       v9[2] = sub_29C98AF08;
       v9[3] = &unk_29F339B70;
-      v10 = v4;
-      [v8 requestAuthenticationWithCompletionHandler:v9];
+      v10 = handlerCopy;
+      [contentModuleContext requestAuthenticationWithCompletionHandler:v9];
     }
 
     else
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
 
 - (void)requestDismissal
 {
-  v3 = [(HUCCCompactModuleContentViewController *)self delegate];
-  v2 = [v3 contentModuleContext];
-  [v2 dismissModule];
+  delegate = [(HUCCCompactModuleContentViewController *)self delegate];
+  contentModuleContext = [delegate contentModuleContext];
+  [contentModuleContext dismissModule];
 }
 
-- (void)quickControlsPresentationDidUpdate:(BOOL)a3
+- (void)quickControlsPresentationDidUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(HUCCCompactModuleContentViewController *)self delegate];
-  v4 = [v5 contentModuleContext];
-  [v4 setHomeGestureDismissalAllowed:!v3];
+  updateCopy = update;
+  delegate = [(HUCCCompactModuleContentViewController *)self delegate];
+  contentModuleContext = [delegate contentModuleContext];
+  [contentModuleContext setHomeGestureDismissalAllowed:!updateCopy];
 }
 
 - (HUCCCompactModuleContentViewControllerDelegate)delegate

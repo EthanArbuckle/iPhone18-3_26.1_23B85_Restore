@@ -1,14 +1,14 @@
 @interface FootnoteCollectionViewCell
 - (BOOL)isHighlighted;
-- (_TtC20ProductPageExtension26FootnoteCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension26FootnoteCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation FootnoteCollectionViewCell
 
-- (_TtC20ProductPageExtension26FootnoteCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension26FootnoteCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension26FootnoteCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -23,7 +23,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002E9C00();
 }
 
@@ -34,7 +34,7 @@
   v2 = v13.receiver;
   [(FootnoteCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC20ProductPageExtension26FootnoteCollectionViewCell_footnoteView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_1000ACA5C();
   sub_10076422C();
   v6 = v5;
@@ -52,10 +52,10 @@
   return [(FootnoteCollectionViewCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1002EA0A8(a3);
+  selfCopy = self;
+  sub_1002EA0A8(highlighted);
 }
 
 @end

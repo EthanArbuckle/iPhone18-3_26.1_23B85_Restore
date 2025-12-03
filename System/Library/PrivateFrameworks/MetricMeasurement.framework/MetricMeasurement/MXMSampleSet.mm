@@ -6,23 +6,23 @@
 - (MXMSample)relativeStandardDeviation;
 - (MXMSample)standardDeviation;
 - (MXMSample)sum;
-- (MXMSampleSet)initWithCoder:(id)a3;
-- (MXMSampleSet)initWithTag:(id)a3 unit:(id)a4 attributes:(id)a5;
-- (MXMSampleSet)initWithTime:(id)a3 tag:(id)a4 unit:(id)a5 attributes:(id)a6 values:(void *)a7 length:(unint64_t)a8 valueSize:(unint64_t)a9;
+- (MXMSampleSet)initWithCoder:(id)coder;
+- (MXMSampleSet)initWithTag:(id)tag unit:(id)unit attributes:(id)attributes;
+- (MXMSampleSet)initWithTime:(id)time tag:(id)tag unit:(id)unit attributes:(id)attributes values:(void *)values length:(unint64_t)length valueSize:(unint64_t)size;
 - (MXMSampleSet)range;
 - (NSArray)samples;
 - (NSSet)attributes;
-- (id)attributeWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)_appendAttribute:(id)a3;
-- (void)_appendDoubleValue:(double)a3 timestamp:(unint64_t)a4;
-- (void)_appendSample:(id)a3;
-- (void)_appendSet:(id)a3;
-- (void)_prepareUnderlyingBufferSizeWithAdditionalBytes:(unint64_t)a3;
+- (id)attributeWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)_appendAttribute:(id)attribute;
+- (void)_appendDoubleValue:(double)value timestamp:(unint64_t)timestamp;
+- (void)_appendSample:(id)sample;
+- (void)_appendSet:(id)set;
+- (void)_prepareUnderlyingBufferSizeWithAdditionalBytes:(unint64_t)bytes;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXMSampleSet
@@ -35,10 +35,10 @@
     vDSP_minvD([(MXMSampleSet *)self doubleValues], 1, &__C, [(MXMSampleSet *)self length]);
     v3 = [MXMSample alloc];
     v4 = [(MXMSampleSet *)self tag];
-    v5 = [(MXMSampleSet *)self attributes];
+    attributes = [(MXMSampleSet *)self attributes];
     v6 = __C;
-    v7 = [(MXMSampleSet *)self unit];
-    v8 = [(MXMSample *)v3 initWithTag:v4 attributes:v5 doubleValue:v7 unit:v6];
+    unit = [(MXMSampleSet *)self unit];
+    v8 = [(MXMSample *)v3 initWithTag:v4 attributes:attributes doubleValue:unit unit:v6];
   }
 
   else
@@ -57,10 +57,10 @@
     vDSP_maxvD([(MXMSampleSet *)self doubleValues], 1, &__C, [(MXMSampleSet *)self length]);
     v3 = [MXMSample alloc];
     v4 = [(MXMSampleSet *)self tag];
-    v5 = [(MXMSampleSet *)self attributes];
+    attributes = [(MXMSampleSet *)self attributes];
     v6 = __C;
-    v7 = [(MXMSampleSet *)self unit];
-    v8 = [(MXMSample *)v3 initWithTag:v4 attributes:v5 doubleValue:v7 unit:v6];
+    unit = [(MXMSampleSet *)self unit];
+    v8 = [(MXMSample *)v3 initWithTag:v4 attributes:attributes doubleValue:unit unit:v6];
   }
 
   else
@@ -75,20 +75,20 @@
 {
   if ([(MXMSampleSet *)self length]== 2)
   {
-    v4 = [(MXMSampleSet *)self firstDoubleValue];
-    v5 = [(MXMSampleSet *)self lastDoubleValue];
-    v6 = v5;
-    if (!v4 || !v5)
+    firstDoubleValue = [(MXMSampleSet *)self firstDoubleValue];
+    lastDoubleValue = [(MXMSampleSet *)self lastDoubleValue];
+    v6 = lastDoubleValue;
+    if (!firstDoubleValue || !lastDoubleValue)
     {
       [(MXMSampleSet(Stats) *)a2 distance];
     }
 
-    v7 = vabdd_f64(*v4, *v6);
+    v7 = vabdd_f64(*firstDoubleValue, *v6);
     v8 = [MXMSample alloc];
     v9 = [(MXMSampleSet *)self tag];
-    v10 = [(MXMSampleSet *)self attributes];
-    v11 = [(MXMSampleSet *)self unit];
-    v12 = [(MXMSample *)v8 initWithTag:v9 attributes:v10 doubleValue:v11 unit:v7];
+    attributes = [(MXMSampleSet *)self attributes];
+    unit = [(MXMSampleSet *)self unit];
+    v12 = [(MXMSample *)v8 initWithTag:v9 attributes:attributes doubleValue:unit unit:v7];
   }
 
   else
@@ -115,11 +115,11 @@
     v17[0] = v5;
     v17[1] = v8;
     v9 = [MXMSampleSet alloc];
-    v10 = [(MXMSampleSet *)self timeIndex];
+    timeIndex = [(MXMSampleSet *)self timeIndex];
     v11 = [(MXMSampleSet *)self tag];
-    v12 = [(MXMSampleSet *)self unit];
-    v13 = [(MXMSampleSet *)self attributes];
-    v14 = [(MXMSampleSet *)v9 initWithTime:v10 tag:v11 unit:v12 attributes:v13 doubleValues:v17 length:2];
+    unit = [(MXMSampleSet *)self unit];
+    attributes = [(MXMSampleSet *)self attributes];
+    v14 = [(MXMSampleSet *)v9 initWithTime:timeIndex tag:v11 unit:unit attributes:attributes doubleValues:v17 length:2];
   }
 
   else
@@ -138,10 +138,10 @@
   vDSP_normalizeD([(MXMSampleSet *)self doubleValues], 1, 0, 0, &__Mean, &v10, [(MXMSampleSet *)self length]);
   v3 = [MXMSample alloc];
   v4 = [(MXMSampleSet *)self tag];
-  v5 = [(MXMSampleSet *)self attributes];
+  attributes = [(MXMSampleSet *)self attributes];
   v6 = __Mean;
-  v7 = [(MXMSampleSet *)self unit];
-  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:v5 doubleValue:v7 unit:v6];
+  unit = [(MXMSampleSet *)self unit];
+  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:attributes doubleValue:unit unit:v6];
 
   return v8;
 }
@@ -153,10 +153,10 @@
   vDSP_normalizeD([(MXMSampleSet *)self doubleValues], 1, 0, 0, &__Mean, &v10, [(MXMSampleSet *)self length]);
   v3 = [MXMSample alloc];
   v4 = [(MXMSampleSet *)self tag];
-  v5 = [(MXMSampleSet *)self attributes];
+  attributes = [(MXMSampleSet *)self attributes];
   v6 = v10;
-  v7 = [(MXMSampleSet *)self unit];
-  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:v5 doubleValue:v7 unit:v6];
+  unit = [(MXMSampleSet *)self unit];
+  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:attributes doubleValue:unit unit:v6];
 
   return v8;
 }
@@ -168,10 +168,10 @@
   vDSP_normalizeD([(MXMSampleSet *)self doubleValues], 1, 0, 0, &__Mean, &v10, [(MXMSampleSet *)self length]);
   v3 = [MXMSample alloc];
   v4 = [(MXMSampleSet *)self tag];
-  v5 = [(MXMSampleSet *)self attributes];
+  attributes = [(MXMSampleSet *)self attributes];
   v6 = v10 / __Mean;
-  v7 = [(MXMSampleSet *)self unit];
-  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:v5 doubleValue:v7 unit:v6];
+  unit = [(MXMSampleSet *)self unit];
+  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:attributes doubleValue:unit unit:v6];
 
   return v8;
 }
@@ -182,19 +182,19 @@
   vDSP_sveD([(MXMSampleSet *)self doubleValues], 1, &__C, [(MXMSampleSet *)self length]);
   v3 = [MXMSample alloc];
   v4 = [(MXMSampleSet *)self tag];
-  v5 = [(MXMSampleSet *)self attributes];
+  attributes = [(MXMSampleSet *)self attributes];
   v6 = __C;
-  v7 = [(MXMSampleSet *)self unit];
-  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:v5 doubleValue:v7 unit:v6];
+  unit = [(MXMSampleSet *)self unit];
+  v8 = [(MXMSample *)v3 initWithTag:v4 attributes:attributes doubleValue:unit unit:v6];
 
   return v8;
 }
 
 - (NSArray)samples
 {
-  v3 = [(MXMSampleSet *)self cachedSamples];
+  cachedSamples = [(MXMSampleSet *)self cachedSamples];
 
-  if (v3)
+  if (cachedSamples)
   {
     p_cachedSamples = &self->_cachedSamples;
   }
@@ -214,11 +214,11 @@
         v8 = self->_cachedSamples;
         v9 = [MXMSample alloc];
         v10 = [(MXMSampleSet *)self tag];
-        v11 = [(MXMSampleSet *)self attributes];
+        attributes = [(MXMSampleSet *)self attributes];
         v12 = [(MXMSampleSet *)self doubleValues][8 * v7];
-        v13 = [(MXMSampleSet *)self unit];
-        v14 = [(MXMSampleSet *)self timeIndex];
-        v15 = -[MXMSample initWithTag:attributes:doubleValue:unit:timestamp:](v9, "initWithTag:attributes:doubleValue:unit:timestamp:", v10, v11, v13, *([v14 doubleValues] + 8 * v7), v12);
+        unit = [(MXMSampleSet *)self unit];
+        timeIndex = [(MXMSampleSet *)self timeIndex];
+        v15 = -[MXMSample initWithTag:attributes:doubleValue:unit:timestamp:](v9, "initWithTag:attributes:doubleValue:unit:timestamp:", v10, attributes, unit, *([timeIndex doubleValues] + 8 * v7), v12);
         [(NSArray *)v8 addObject:v15];
 
         ++v7;
@@ -236,68 +236,68 @@
 - (NSSet)attributes
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(MXMSampleSet *)self attributesMap];
-  v4 = [v3 allValues];
-  v5 = [v2 setWithArray:v4];
+  attributesMap = [(MXMSampleSet *)self attributesMap];
+  allValues = [attributesMap allValues];
+  v5 = [v2 setWithArray:allValues];
 
   return v5;
 }
 
-- (id)attributeWithName:(id)a3
+- (id)attributeWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MXMSampleSet *)self attributesMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  attributesMap = [(MXMSampleSet *)self attributesMap];
+  v6 = [attributesMap objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (MXMSampleSet)initWithTag:(id)a3 unit:(id)a4 attributes:(id)a5
+- (MXMSampleSet)initWithTag:(id)tag unit:(id)unit attributes:(id)attributes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  attributesCopy = attributes;
+  unitCopy = unit;
+  tagCopy = tag;
   v11 = objc_alloc_init(MXMSampleTimeSeries);
-  v12 = [(MXMSampleSet *)self initWithTime:v11 tag:v10 unit:v9 attributes:v8];
+  v12 = [(MXMSampleSet *)self initWithTime:v11 tag:tagCopy unit:unitCopy attributes:attributesCopy];
 
   return v12;
 }
 
-- (MXMSampleSet)initWithTime:(id)a3 tag:(id)a4 unit:(id)a5 attributes:(id)a6 values:(void *)a7 length:(unint64_t)a8 valueSize:(unint64_t)a9
+- (MXMSampleSet)initWithTime:(id)time tag:(id)tag unit:(id)unit attributes:(id)attributes values:(void *)values length:(unint64_t)length valueSize:(unint64_t)size
 {
   v51 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  timeCopy = time;
+  tagCopy = tag;
+  unitCopy = unit;
+  attributesCopy = attributes;
   v49.receiver = self;
   v49.super_class = MXMSampleSet;
   v20 = [(MXMSampleSet *)&v49 init];
   v21 = v20;
   if (v20)
   {
-    __src = a7;
-    v44 = v16;
-    objc_storeStrong(&v20->_timeIndex, a3);
-    v42 = v17;
-    v22 = [v17 copy];
+    __src = values;
+    v44 = timeCopy;
+    objc_storeStrong(&v20->_timeIndex, time);
+    v42 = tagCopy;
+    v22 = [tagCopy copy];
     tag = v21->_tag;
     v21->_tag = v22;
 
-    v41 = v18;
-    v24 = [v18 copy];
+    v41 = unitCopy;
+    v24 = [unitCopy copy];
     unit = v21->_unit;
     v21->_unit = v24;
 
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     attributesMap = v21->_attributesMap;
-    v21->_attributesMap = v26;
+    v21->_attributesMap = dictionary;
 
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v28 = v19;
+    v28 = attributesCopy;
     v29 = [v28 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v29)
     {
@@ -315,8 +315,8 @@
           v33 = *(*(&v45 + 1) + 8 * i);
           v34 = [v33 copy];
           v35 = v21->_attributesMap;
-          v36 = [v33 name];
-          [(NSMutableDictionary *)v35 setObject:v34 forKeyedSubscript:v36];
+          name = [v33 name];
+          [(NSMutableDictionary *)v35 setObject:v34 forKeyedSubscript:name];
         }
 
         v30 = [v28 countByEnumeratingWithState:&v45 objects:v50 count:16];
@@ -327,70 +327,70 @@
 
     v37 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
     v21->_index = v37;
-    v37->var0 = a9;
-    v37->var1 = a8;
-    v21->_underlyingBufferLength = a9 * a8;
-    v38 = malloc_type_malloc(a9 * a8, 0xF7BB96BuLL);
+    v37->var0 = size;
+    v37->var1 = length;
+    v21->_underlyingBufferLength = size * length;
+    v38 = malloc_type_malloc(size * length, 0xF7BB96BuLL);
     v21->_underlyingBuffer = v38;
-    memcpy(v38, __src, v21->_index->var0 * a8);
-    v16 = v44;
-    v18 = v41;
-    v17 = v42;
+    memcpy(v38, __src, v21->_index->var0 * length);
+    timeCopy = v44;
+    unitCopy = v41;
+    tagCopy = v42;
   }
 
   v39 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(MXMSampleSet *)self samples];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  samples = [(MXMSampleSet *)self samples];
+  v9 = [samples countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(MXMSampleSet *)self timeIndex];
+  coderCopy = coder;
+  timeIndex = [(MXMSampleSet *)self timeIndex];
 
-  if (v4 != self)
+  if (timeIndex != self)
   {
-    [v5 encodeObject:self->_timeIndex forKey:@"_timeIndex"];
+    [coderCopy encodeObject:self->_timeIndex forKey:@"_timeIndex"];
   }
 
-  [v5 encodeObject:self->_tag forKey:@"_tag"];
-  [v5 encodeObject:self->_unit forKey:@"_unit"];
-  [v5 encodeBytes:self->_index length:16 forKey:@"_index"];
-  [v5 encodeBytes:self->_underlyingBuffer length:self->_index->var1 * self->_index->var0 forKey:@"_underlyingBuffer"];
-  [v5 encodeObject:self->_attributesMap forKey:@"_attributesMap"];
+  [coderCopy encodeObject:self->_tag forKey:@"_tag"];
+  [coderCopy encodeObject:self->_unit forKey:@"_unit"];
+  [coderCopy encodeBytes:self->_index length:16 forKey:@"_index"];
+  [coderCopy encodeBytes:self->_underlyingBuffer length:self->_index->var1 * self->_index->var0 forKey:@"_underlyingBuffer"];
+  [coderCopy encodeObject:self->_attributesMap forKey:@"_attributesMap"];
 }
 
-- (MXMSampleSet)initWithCoder:(id)a3
+- (MXMSampleSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = MXMSampleSet;
   v5 = [(MXMSampleSet *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeIndex"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeIndex"];
     timeIndex = v5->_timeIndex;
     v5->_timeIndex = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tag"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tag"];
     tag = v5->_tag;
     v5->_tag = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_unit"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_unit"];
     unit = v5->_unit;
     v5->_unit = v10;
 
     v5->_index = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
     v26 = 0;
-    v12 = [v4 decodeBytesForKey:@"_index" returnedLength:&v26];
-    if (v26 < 0x10 || (*v5->_index = *v12, var0 = v5->_index->var0, var1 = v5->_index->var1, !is_mul_ok(var1, var0)) || (v15 = var1 * var0, v5->_underlyingBuffer = malloc_type_malloc(var1 * var0, 0x64F765A8uLL), v25 = 0, v16 = [v4 decodeBytesForKey:@"_underlyingBuffer" returnedLength:&v25], v15 != v25))
+    v12 = [coderCopy decodeBytesForKey:@"_index" returnedLength:&v26];
+    if (v26 < 0x10 || (*v5->_index = *v12, var0 = v5->_index->var0, var1 = v5->_index->var1, !is_mul_ok(var1, var0)) || (v15 = var1 * var0, v5->_underlyingBuffer = malloc_type_malloc(var1 * var0, 0x64F765A8uLL), v25 = 0, v16 = [coderCopy decodeBytesForKey:@"_underlyingBuffer" returnedLength:&v25], v15 != v25))
     {
       v23 = 0;
       goto LABEL_8;
@@ -402,7 +402,7 @@
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v17 setWithObjects:{v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"_attributesMap"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"_attributesMap"];
     attributesMap = v5->_attributesMap;
     v5->_attributesMap = v21;
   }
@@ -413,26 +413,26 @@ LABEL_8:
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MXMSampleSet alloc];
-  v5 = [(MXMSampleSet *)self timeIndex];
+  timeIndex = [(MXMSampleSet *)self timeIndex];
   v6 = [(MXMSampleSet *)self tag];
-  v7 = [(MXMSampleSet *)self unit];
-  v8 = [(MXMSampleSet *)self attributes];
-  v9 = [(MXMSampleSet *)v4 initWithTime:v5 tag:v6 unit:v7 attributes:v8 values:self->_underlyingBuffer length:self->_index->var1 valueSize:self->_index->var0];
+  unit = [(MXMSampleSet *)self unit];
+  attributes = [(MXMSampleSet *)self attributes];
+  v9 = [(MXMSampleSet *)v4 initWithTime:timeIndex tag:v6 unit:unit attributes:attributes values:self->_underlyingBuffer length:self->_index->var1 valueSize:self->_index->var0];
 
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [MXMMutableSampleSet alloc];
-  v5 = [(MXMSampleSet *)self timeIndex];
+  timeIndex = [(MXMSampleSet *)self timeIndex];
   v6 = [(MXMSampleSet *)self tag];
-  v7 = [(MXMSampleSet *)self unit];
-  v8 = [(MXMSampleSet *)self attributes];
-  v9 = [(MXMSampleSet *)v4 initWithTime:v5 tag:v6 unit:v7 attributes:v8 values:self->_underlyingBuffer length:self->_index->var1 valueSize:self->_index->var0];
+  unit = [(MXMSampleSet *)self unit];
+  attributes = [(MXMSampleSet *)self attributes];
+  v9 = [(MXMSampleSet *)v4 initWithTime:timeIndex tag:v6 unit:unit attributes:attributes values:self->_underlyingBuffer length:self->_index->var1 valueSize:self->_index->var0];
 
   return v9;
 }
@@ -446,14 +446,14 @@ LABEL_8:
   [(MXMSampleSet *)&v3 dealloc];
 }
 
-- (void)_prepareUnderlyingBufferSizeWithAdditionalBytes:(unint64_t)a3
+- (void)_prepareUnderlyingBufferSizeWithAdditionalBytes:(unint64_t)bytes
 {
   obj = self;
   objc_sync_enter(obj);
   v4 = obj;
   index = obj->_index;
   var0 = index->var0;
-  v7 = a3 + index->var1 * index->var0;
+  v7 = bytes + index->var1 * index->var0;
   if (v7 > obj->_underlyingBufferLength)
   {
     v8 = v7 + 10 * var0;
@@ -472,12 +472,12 @@ LABEL_8:
   objc_sync_exit(v4);
 }
 
-- (void)_appendAttribute:(id)a3
+- (void)_appendAttribute:(id)attribute
 {
   attributesMap = self->_attributesMap;
-  v6 = a3;
-  v7 = [v6 name];
-  v8 = [(NSMutableDictionary *)attributesMap objectForKeyedSubscript:v7];
+  attributeCopy = attribute;
+  name = [attributeCopy name];
+  v8 = [(NSMutableDictionary *)attributesMap objectForKeyedSubscript:name];
 
   if (v8)
   {
@@ -485,38 +485,38 @@ LABEL_8:
   }
 
   v9 = self->_attributesMap;
-  v10 = [v6 name];
-  [(NSMutableDictionary *)v9 setObject:v6 forKeyedSubscript:v10];
+  name2 = [attributeCopy name];
+  [(NSMutableDictionary *)v9 setObject:attributeCopy forKeyedSubscript:name2];
 
   [(MXMSampleSet *)self setCachedSamples:0];
 }
 
-- (void)_appendDoubleValue:(double)a3 timestamp:(unint64_t)a4
+- (void)_appendDoubleValue:(double)value timestamp:(unint64_t)timestamp
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  [(MXMSampleSet *)v6 _prepareUnderlyingBufferSizeWithAdditionalBytes:8];
-  v7 = [(MXMSampleSet *)v6 timeIndex];
-  [v7 _appendAbsoluteTime:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MXMSampleSet *)selfCopy _prepareUnderlyingBufferSizeWithAdditionalBytes:8];
+  timeIndex = [(MXMSampleSet *)selfCopy timeIndex];
+  [timeIndex _appendAbsoluteTime:timestamp];
 
-  index = v6->_index;
+  index = selfCopy->_index;
   var1 = index->var1;
-  *(v6->_underlyingBuffer + var1) = a3;
+  *(selfCopy->_underlyingBuffer + var1) = value;
   index->var1 = var1 + 1;
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  [(MXMSampleSet *)v6 setCachedSamples:0];
+  [(MXMSampleSet *)selfCopy setCachedSamples:0];
 }
 
-- (void)_appendSet:(id)a3
+- (void)_appendSet:(id)set
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [setCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -528,14 +528,14 @@ LABEL_8:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setCopy);
         }
 
         [(MXMSampleSet *)self _appendSample:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [setCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -544,17 +544,17 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendSample:(id)a3
+- (void)_appendSample:(id)sample
 {
-  v6 = a3;
-  if ([v6 valueType])
+  sampleCopy = sample;
+  if ([sampleCopy valueType])
   {
     v5 = [MEMORY[0x277CBEAD8] exceptionWithName:@"Not implemented" reason:@"Not implemented" userInfo:0];
     objc_exception_throw(v5);
   }
 
-  [v6 floatValue];
-  -[MXMSampleSet _appendDoubleValue:timestamp:](self, "_appendDoubleValue:timestamp:", [v6 timestamp], v4);
+  [sampleCopy floatValue];
+  -[MXMSampleSet _appendDoubleValue:timestamp:](self, "_appendDoubleValue:timestamp:", [sampleCopy timestamp], v4);
 }
 
 - (void)_appendAttribute:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

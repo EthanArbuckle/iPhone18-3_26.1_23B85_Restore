@@ -1,42 +1,42 @@
 @interface SBSystemApertureSecureElementCompositeDescription
-- (BOOL)isSequenceDelayed:(id)a3 toState:(id)a4;
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4;
-- (BOOL)validateContainerAndContentDescriptionStateNames:(id *)a3;
+- (BOOL)isSequenceDelayed:(id)delayed toState:(id)state;
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state;
+- (BOOL)validateContainerAndContentDescriptionStateNames:(id *)names;
 - (CGRect)captureBounds;
 - (NSString)initialState;
-- (SBSystemApertureSecureElementCompositeDescription)initWithContainerDescription:(id)a3 contentDescription:(id)a4 name:(id)a5 captureContainer:(id)a6 captureBoundsDefiningView:(id)a7;
-- (double)maximumLatencyToExitLoopingState:(id)a3;
-- (id)_composeSequencesWithContainerDescription:(id)a3 contentDescription:(id)a4;
+- (SBSystemApertureSecureElementCompositeDescription)initWithContainerDescription:(id)description contentDescription:(id)contentDescription name:(id)name captureContainer:(id)container captureBoundsDefiningView:(id)view;
+- (double)maximumLatencyToExitLoopingState:(id)state;
+- (id)_composeSequencesWithContainerDescription:(id)description contentDescription:(id)contentDescription;
 - (id)_composedSequences;
 - (id)_composedStates;
-- (id)allowedNextStatesForState:(id)a3;
-- (void)_completeTransitionToContainerState:(id)a3 contentState:(id)a4 completionBlock:(id)a5;
-- (void)_decomposeState:(id)a3 toContainerState:(id *)a4 contentState:(id *)a5;
-- (void)_keepContentInLoopingTransitionToState:(id)a3 completionBlock:(id)a4;
-- (void)resetToState:(id)a3 completion:(id)a4;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (id)allowedNextStatesForState:(id)state;
+- (void)_completeTransitionToContainerState:(id)state contentState:(id)contentState completionBlock:(id)block;
+- (void)_decomposeState:(id)state toContainerState:(id *)containerState contentState:(id *)contentState;
+- (void)_keepContentInLoopingTransitionToState:(id)state completionBlock:(id)block;
+- (void)resetToState:(id)state completion:(id)completion;
+- (void)transitionToState:(id)state completion:(id)completion;
 @end
 
 @implementation SBSystemApertureSecureElementCompositeDescription
 
-- (SBSystemApertureSecureElementCompositeDescription)initWithContainerDescription:(id)a3 contentDescription:(id)a4 name:(id)a5 captureContainer:(id)a6 captureBoundsDefiningView:(id)a7
+- (SBSystemApertureSecureElementCompositeDescription)initWithContainerDescription:(id)description contentDescription:(id)contentDescription name:(id)name captureContainer:(id)container captureBoundsDefiningView:(id)view
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  descriptionCopy = description;
+  contentDescriptionCopy = contentDescription;
+  nameCopy = name;
+  containerCopy = container;
+  viewCopy = view;
   v21.receiver = self;
   v21.super_class = SBSystemApertureSecureElementCompositeDescription;
   v17 = [(SBSystemApertureSecureElementCompositeDescription *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_containerDescription, a3);
-    objc_storeStrong(&v18->_contentDescription, a4);
-    objc_storeStrong(&v18->_name, a5);
-    objc_storeStrong(&v18->_captureContainer, a6);
-    objc_storeStrong(&v18->_captureBoundsDefiningViewWrapper, a7);
+    objc_storeStrong(&v17->_containerDescription, description);
+    objc_storeStrong(&v18->_contentDescription, contentDescription);
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v18->_captureContainer, container);
+    objc_storeStrong(&v18->_captureBoundsDefiningViewWrapper, view);
     *&v18->_containerInTransition = 0;
     v18->_shouldKeepContentInLoopingTransition = 0;
   }
@@ -44,7 +44,7 @@
   return v18;
 }
 
-- (BOOL)validateContainerAndContentDescriptionStateNames:(id *)a3
+- (BOOL)validateContainerAndContentDescriptionStateNames:(id *)names
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"."];
@@ -52,8 +52,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(SFUSecureFlipBookCaptureDescription *)self->_containerDescription states];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  states = [(SFUSecureFlipBookCaptureDescription *)self->_containerDescription states];
+  v7 = [states countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -63,7 +63,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(states);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -74,10 +74,10 @@
           v19 = v12;
           v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-          if (a3)
+          if (names)
           {
             [MEMORY[0x277CCA9B8] errorWithDomain:@"SBSecureFlipBookElementErrorDomain" code:4 userInfo:v7];
-            *a3 = v11 = 0;
+            *names = v11 = 0;
           }
 
           else
@@ -89,7 +89,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v7 = [states countByEnumeratingWithState:&v14 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -108,14 +108,14 @@ LABEL_13:
 - (NSString)initialState
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SFUSecureFlipBookCaptureDescription *)self->_containerDescription initialState];
-  v5 = [(SFUNestableSecureFlipBookCaptureDescription *)self->_contentDescription initialState];
-  v6 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+  initialState = [(SFUSecureFlipBookCaptureDescription *)self->_containerDescription initialState];
+  initialState2 = [(SFUNestableSecureFlipBookCaptureDescription *)self->_contentDescription initialState];
+  v6 = [v3 stringWithFormat:@"%@.%@", initialState, initialState2];
 
-  v7 = [(SBSystemApertureSecureElementCompositeDescription *)self _composedStates];
-  LOBYTE(v4) = [v7 containsObject:v6];
+  _composedStates = [(SBSystemApertureSecureElementCompositeDescription *)self _composedStates];
+  LOBYTE(initialState) = [_composedStates containsObject:v6];
 
-  if ((v4 & 1) == 0)
+  if ((initialState & 1) == 0)
   {
     v8 = SBLogSystemApertureSecureFlipBookElements();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -129,17 +129,17 @@ LABEL_13:
   return v6;
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  stateCopy = state;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(SBSystemApertureSecureElementCompositeDescription *)self _composedSequences];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _composedSequences = [(SBSystemApertureSecureElementCompositeDescription *)self _composedSequences];
+  v7 = [_composedSequences countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -150,40 +150,40 @@ LABEL_13:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_composedSequences);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 objectAtIndexedSubscript:0];
-        v13 = [v4 isEqualToString:v12];
+        v13 = [stateCopy isEqualToString:v12];
 
         if (v13)
         {
           v14 = [v11 objectAtIndexedSubscript:1];
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [_composedSequences countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (BOOL)isSequenceDelayed:(id)a3 toState:(id)a4
+- (BOOL)isSequenceDelayed:(id)delayed toState:(id)state
 {
   v15 = 0;
   v16 = 0;
-  v6 = a4;
-  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:a3 toContainerState:&v16 contentState:&v15];
+  stateCopy = state;
+  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:delayed toContainerState:&v16 contentState:&v15];
   v7 = v16;
   v8 = v15;
   v13 = 0;
   v14 = 0;
-  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:v6 toContainerState:&v14 contentState:&v13];
+  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:stateCopy toContainerState:&v14 contentState:&v13];
 
   v9 = v14;
   v10 = v13;
@@ -200,17 +200,17 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state
 {
   v15 = 0;
   v16 = 0;
-  v6 = a4;
-  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:a3 toContainerState:&v16 contentState:&v15];
+  stateCopy = state;
+  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:secure toContainerState:&v16 contentState:&v15];
   v7 = v16;
   v8 = v15;
   v13 = 0;
   v14 = 0;
-  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:v6 toContainerState:&v14 contentState:&v13];
+  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:stateCopy toContainerState:&v14 contentState:&v13];
 
   v9 = v14;
   v10 = v13;
@@ -237,11 +237,11 @@ LABEL_13:
   return result;
 }
 
-- (double)maximumLatencyToExitLoopingState:(id)a3
+- (double)maximumLatencyToExitLoopingState:(id)state
 {
   v11 = 0;
   v12 = 0;
-  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:a3 toContainerState:&v12 contentState:&v11];
+  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:state toContainerState:&v12 contentState:&v11];
   v4 = v12;
   v5 = v11;
   [(SFUSecureFlipBookCaptureDescription *)self->_containerDescription maximumLatencyToExitLoopingState:v4];
@@ -262,26 +262,26 @@ LABEL_13:
   return v7;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = SBLogSystemApertureSecureFlipBookElements();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v6;
+    v26 = stateCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "composite (begin) resetToState: %@", buf, 0xCu);
   }
 
   captureBoundsDefiningViewWrapper = self->_captureBoundsDefiningViewWrapper;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"resetToState: %@", v6];
-  [(SBSystemApertureSecureElementCaptureBoundsView *)captureBoundsDefiningViewWrapper setDebugString:v10];
+  stateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"resetToState: %@", stateCopy];
+  [(SBSystemApertureSecureElementCaptureBoundsView *)captureBoundsDefiningViewWrapper setDebugString:stateCopy];
 
   v23 = 0;
   v24 = 0;
-  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:v6 toContainerState:&v24 contentState:&v23];
+  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:stateCopy toContainerState:&v24 contentState:&v23];
   v11 = v24;
   v12 = v23;
   v13 = MEMORY[0x277D65DA0];
@@ -290,14 +290,14 @@ LABEL_13:
   v19[2] = __77__SBSystemApertureSecureElementCompositeDescription_resetToState_completion___block_invoke;
   v19[3] = &unk_2783AE908;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v22 = v12;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__SBSystemApertureSecureElementCompositeDescription_resetToState_completion___block_invoke_31;
   v17[3] = &unk_2783AE778;
-  v18 = v7;
-  v14 = v7;
+  v18 = completionCopy;
+  v14 = completionCopy;
   v15 = v12;
   v16 = v11;
   [v13 perform:v19 finalCompletion:v17];
@@ -379,36 +379,36 @@ uint64_t __77__SBSystemApertureSecureElementCompositeDescription_resetToState_co
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   if (self->_containerInTransition)
   {
-    [(SBSystemApertureSecureElementCompositeDescription *)a2 transitionToState:v7 completion:?];
+    [(SBSystemApertureSecureElementCompositeDescription *)a2 transitionToState:stateCopy completion:?];
   }
 
   if (self->_contentInTransition)
   {
-    [(SBSystemApertureSecureElementCompositeDescription *)a2 transitionToState:v7 completion:?];
+    [(SBSystemApertureSecureElementCompositeDescription *)a2 transitionToState:stateCopy completion:?];
   }
 
   v9 = SBLogSystemApertureSecureFlipBookElements();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v37 = v7;
+    v37 = stateCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "composite (begin) transitionToState: %@", buf, 0xCu);
   }
 
   captureBoundsDefiningViewWrapper = self->_captureBoundsDefiningViewWrapper;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"transitionToState: %@", v7];
-  [(SBSystemApertureSecureElementCaptureBoundsView *)captureBoundsDefiningViewWrapper setDebugString:v11];
+  stateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"transitionToState: %@", stateCopy];
+  [(SBSystemApertureSecureElementCaptureBoundsView *)captureBoundsDefiningViewWrapper setDebugString:stateCopy];
 
   v35 = 0;
   v34 = 0;
-  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:v7 toContainerState:&v35 contentState:&v34];
+  [(SBSystemApertureSecureElementCompositeDescription *)self _decomposeState:stateCopy toContainerState:&v35 contentState:&v34];
   v12 = v35;
   v13 = v34;
   v14 = SBLogSystemApertureSecureFlipBookElements();
@@ -427,10 +427,10 @@ uint64_t __77__SBSystemApertureSecureElementCompositeDescription_resetToState_co
   v29[3] = &unk_2783A8EB0;
   v16 = v12;
   v30 = v16;
-  v31 = self;
+  selfCopy = self;
   v17 = v13;
   v32 = v17;
-  v18 = v8;
+  v18 = completionCopy;
   v33 = v18;
   [(SFUSecureFlipBookCaptureDescription *)containerDescription transitionToState:v16 completion:v29];
   v19 = SBLogSystemApertureSecureFlipBookElements();
@@ -447,7 +447,7 @@ uint64_t __77__SBSystemApertureSecureElementCompositeDescription_resetToState_co
   v24[2] = __82__SBSystemApertureSecureElementCompositeDescription_transitionToState_completion___block_invoke_46;
   v24[3] = &unk_2783A8EB0;
   v25 = v17;
-  v26 = self;
+  selfCopy2 = self;
   v27 = v16;
   v28 = v18;
   v21 = v18;
@@ -514,8 +514,8 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(SBSystemApertureSecureElementCompositeDescription *)self _composedSequences];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    _composedSequences = [(SBSystemApertureSecureElementCompositeDescription *)self _composedSequences];
+    v6 = [_composedSequences countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -526,7 +526,7 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_composedSequences);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
@@ -537,15 +537,15 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
           [v4 addObject:v12];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [_composedSequences countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
     }
 
-    v13 = [v4 allObjects];
+    allObjects = [v4 allObjects];
     v14 = self->_cachedComposedStates;
-    self->_cachedComposedStates = v13;
+    self->_cachedComposedStates = allObjects;
 
     cachedComposedStates = self->_cachedComposedStates;
   }
@@ -553,23 +553,23 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
   return cachedComposedStates;
 }
 
-- (id)_composeSequencesWithContainerDescription:(id)a3 contentDescription:(id)a4
+- (id)_composeSequencesWithContainerDescription:(id)description contentDescription:(id)contentDescription
 {
   v100 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v59 = v5;
-  v7 = [v5 states];
-  v66 = v6;
-  v63 = [v6 states];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v65 = [MEMORY[0x277CBEB18] array];
-  v62 = [MEMORY[0x277CBEB18] array];
+  descriptionCopy = description;
+  contentDescriptionCopy = contentDescription;
+  v59 = descriptionCopy;
+  states = [descriptionCopy states];
+  v66 = contentDescriptionCopy;
+  states2 = [contentDescriptionCopy states];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  obj = v7;
+  obj = states;
   v9 = [obj countByEnumeratingWithState:&v87 objects:v99 count:16];
   if (v9)
   {
@@ -608,7 +608,7 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
               v97[0] = v13;
               v97[1] = v19;
               v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v97 count:2];
-              [v8 addObject:v20];
+              [array addObject:v20];
             }
 
             v16 = [v14 countByEnumeratingWithState:&v83 objects:v98 count:16];
@@ -628,7 +628,7 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v56 = v63;
+  v56 = states2;
   v21 = [v56 countByEnumeratingWithState:&v79 objects:v96 count:16];
   if (v21)
   {
@@ -667,7 +667,7 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
               v94[0] = v25;
               v94[1] = v31;
               v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:2];
-              [v65 addObject:v32];
+              [array2 addObject:v32];
             }
 
             v28 = [v26 countByEnumeratingWithState:&v75 objects:v95 count:16];
@@ -687,7 +687,7 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v55 = v8;
+  v55 = array;
   v60 = [v55 countByEnumeratingWithState:&v71 objects:v93 count:16];
   if (v60)
   {
@@ -708,7 +708,7 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v64 = v65;
+        v64 = array2;
         v35 = [v64 countByEnumeratingWithState:&v67 objects:v92 count:16];
         if (v35)
         {
@@ -745,7 +745,7 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
                 v91[0] = v48;
                 v91[1] = v52;
                 v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:2];
-                [v62 addObject:v53];
+                [array3 addObject:v53];
               }
             }
 
@@ -765,32 +765,32 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
     while (v60);
   }
 
-  return v62;
+  return array3;
 }
 
-- (void)_decomposeState:(id)a3 toContainerState:(id *)a4 contentState:(id *)a5
+- (void)_decomposeState:(id)state toContainerState:(id *)containerState contentState:(id *)contentState
 {
-  v7 = [a3 componentsSeparatedByString:@"."];
+  v7 = [state componentsSeparatedByString:@"."];
   v8 = [v7 mutableCopy];
 
-  if (a4)
+  if (containerState)
   {
-    *a4 = [v8 objectAtIndexedSubscript:0];
+    *containerState = [v8 objectAtIndexedSubscript:0];
   }
 
   [v8 removeObjectAtIndex:0];
-  if (a5)
+  if (contentState)
   {
-    *a5 = [v8 componentsJoinedByString:@"."];
+    *contentState = [v8 componentsJoinedByString:@"."];
   }
 }
 
-- (void)_completeTransitionToContainerState:(id)a3 contentState:(id)a4 completionBlock:(id)a5
+- (void)_completeTransitionToContainerState:(id)state contentState:(id)contentState completionBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  contentStateCopy = contentState;
+  blockCopy = block;
   if (self->_contentInTransition)
   {
     if (!self->_containerInTransition)
@@ -804,12 +804,12 @@ uint64_t __82__SBSystemApertureSecureElementCompositeDescription_transitionToSta
   if (self->_containerInTransition)
   {
 LABEL_5:
-    v12 = [(SFUNestableSecureFlipBookCaptureDescription *)self->_contentDescription allowedNextStatesForState:v10];
-    v13 = [v12 containsObject:v10];
+    v12 = [(SFUNestableSecureFlipBookCaptureDescription *)self->_contentDescription allowedNextStatesForState:contentStateCopy];
+    v13 = [v12 containsObject:contentStateCopy];
 
     if ((v13 & 1) == 0)
     {
-      [(SBSystemApertureSecureElementCompositeDescription *)a2 _completeTransitionToContainerState:v10 contentState:v9 completionBlock:?];
+      [(SBSystemApertureSecureElementCompositeDescription *)a2 _completeTransitionToContainerState:contentStateCopy contentState:stateCopy completionBlock:?];
     }
 
     v14 = CACurrentMediaTime();
@@ -821,9 +821,9 @@ LABEL_5:
     v18[3] = &unk_2783BC598;
     v18[4] = self;
     v22 = v14;
-    v19 = v10;
-    v21 = v11;
-    v20 = v9;
+    v19 = contentStateCopy;
+    v21 = blockCopy;
+    v20 = stateCopy;
     [(SFUNestableSecureFlipBookCaptureDescription *)contentDescription transitionToState:v19 completion:v18];
 
     goto LABEL_8;
@@ -839,13 +839,13 @@ LABEL_5:
     v16 = SBLogSystemApertureSecureFlipBookElements();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v9, v10];
+      contentStateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", stateCopy, contentStateCopy];
       *buf = 138412290;
-      v24 = v17;
+      v24 = contentStateCopy;
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "composite (a) (end) transitionToState: %@", buf, 0xCu);
     }
 
-    v11[2](v11);
+    blockCopy[2](blockCopy);
   }
 
 LABEL_8:
@@ -888,20 +888,20 @@ void __118__SBSystemApertureSecureElementCompositeDescription__completeTransitio
   }
 }
 
-- (void)_keepContentInLoopingTransitionToState:(id)a3 completionBlock:(id)a4
+- (void)_keepContentInLoopingTransitionToState:(id)state completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  blockCopy = block;
   contentDescription = self->_contentDescription;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __108__SBSystemApertureSecureElementCompositeDescription__keepContentInLoopingTransitionToState_completionBlock___block_invoke;
   v11[3] = &unk_2783AA1E8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = stateCopy;
   [(SFUNestableSecureFlipBookCaptureDescription *)contentDescription transitionToState:v10 completion:v11];
 }
 

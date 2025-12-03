@@ -1,9 +1,9 @@
 @interface CLSCurationContext
 + (double)mergeCandidateConfidenceThreshold;
-- (CLSCurationContext)initWithPhotoLibrary:(id)a3;
-- (CLSCurationContext)initWithPhotoLibrary:(id)a3 curationSession:(id)a4;
-- (CLSCurationContext)initWithUserFeedbackCalculator:(id)a3 curationSession:(id)a4;
-- (id)_mergeCandidateUUIDsForPerson:(id)a3;
+- (CLSCurationContext)initWithPhotoLibrary:(id)library;
+- (CLSCurationContext)initWithPhotoLibrary:(id)library curationSession:(id)session;
+- (CLSCurationContext)initWithUserFeedbackCalculator:(id)calculator curationSession:(id)session;
+- (id)_mergeCandidateUUIDsForPerson:(id)person;
 - (id)description;
 - (id)hiddenOrBlockedPersonUUIDs;
 - (id)nonPetFacedPersonLocalIdentifiers;
@@ -15,21 +15,21 @@
 
 @implementation CLSCurationContext
 
-- (id)_mergeCandidateUUIDsForPerson:(id)a3
+- (id)_mergeCandidateUUIDsForPerson:(id)person
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  personCopy = person;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  photoLibrary = [personCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v6 setIncludeOnlyPersonsWithVisibleKeyFaces:1];
+  [librarySpecificFetchOptions setIncludeOnlyPersonsWithVisibleKeyFaces:1];
   v7 = MEMORY[0x1E696AE18];
   [objc_opt_class() mergeCandidateConfidenceThreshold];
   v9 = [v7 predicateWithFormat:@"%K == %d && %K >= %f", @"verifiedType", 0, @"mergeCandidateConfidence", v8];
-  [v6 setPredicate:v9];
+  [librarySpecificFetchOptions setPredicate:v9];
 
-  v10 = [MEMORY[0x1E6978980] fetchMergeCandidateWithConfidencePersonsForPerson:v3 options:v6];
+  v10 = [MEMORY[0x1E6978980] fetchMergeCandidateWithConfidencePersonsForPerson:personCopy options:librarySpecificFetchOptions];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -48,8 +48,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) uuid];
-        [v4 addObject:v15];
+        uuid = [*(*(&v17 + 1) + 8 * i) uuid];
+        [v4 addObject:uuid];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -80,14 +80,14 @@
   spid = v5;
 
   v24 = mach_absolute_time();
-  v8 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v8 setMinimumVerifiedFaceCount:1];
-  [v8 setMinimumUnverifiedFaceCount:1];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setMinimumVerifiedFaceCount:1];
+  [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:1];
   v30[0] = *MEMORY[0x1E6978F30];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-  [v8 setFetchPropertySets:v9];
+  [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-  v10 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v8];
+  v10 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:librarySpecificFetchOptions];
   v11 = [v10 count];
   v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v11];
   if (v11)
@@ -96,8 +96,8 @@
     {
       v14 = objc_autoreleasePoolPush();
       v15 = [v10 objectAtIndexedSubscript:i];
-      v16 = [v15 localIdentifier];
-      [(NSSet *)v12 addObject:v16];
+      localIdentifier = [v15 localIdentifier];
+      [(NSSet *)v12 addObject:localIdentifier];
 
       objc_autoreleasePoolPop(v14);
     }
@@ -109,7 +109,7 @@
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Finished loading %@", buf, 0xCu);
   }
 
@@ -128,7 +128,7 @@
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
-    v27 = "LoadNonPetFacedPersonLocalIdentifiers";
+    selfCopy = "LoadNonPetFacedPersonLocalIdentifiers";
     v28 = 2048;
     v29 = ((((v18 - v24) * numer) / denom) / 1000000.0);
     _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
@@ -154,15 +154,15 @@
   spid = v5;
 
   v36 = mach_absolute_time();
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v7 setPersonContext:1];
-  v38 = v7;
-  v8 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v7];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  v38 = librarySpecificFetchOptions;
+  v8 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:librarySpecificFetchOptions];
   v42 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v9 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v10 = [(CLSCurationContext *)self userFeedbackCalculator];
-  v11 = [v10 personUUIDsWithNegativeFeedback];
-  v41 = [v9 initWithSet:v11];
+  userFeedbackCalculator = [(CLSCurationContext *)self userFeedbackCalculator];
+  personUUIDsWithNegativeFeedback = [userFeedbackCalculator personUUIDsWithNegativeFeedback];
+  v41 = [v9 initWithSet:personUUIDsWithNegativeFeedback];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = objc_alloc_init(MEMORY[0x1E696AB50]);
@@ -186,7 +186,7 @@
 
         v15 = *(*(&v49 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v16 = [v15 uuid];
+        uuid = [v15 uuid];
         if ([v15 type] == -1)
         {
           v17 = v41;
@@ -197,8 +197,8 @@
           v17 = v42;
         }
 
-        [(NSSet *)v17 addObject:v16];
-        v18 = self;
+        [(NSSet *)v17 addObject:uuid];
+        selfCopy = self;
         v19 = [(CLSCurationContext *)self _mergeCandidateUUIDsForPerson:v15];
         v45 = 0u;
         v46 = 0u;
@@ -222,7 +222,7 @@
               [v13 addObject:v24];
               if ([v13 countForObject:v24] == 1)
               {
-                [(NSDictionary *)v12 setObject:v16 forKeyedSubscript:v24];
+                [(NSDictionary *)v12 setObject:uuid forKeyedSubscript:v24];
               }
 
               else
@@ -238,7 +238,7 @@
         }
 
         objc_autoreleasePoolPop(context);
-        self = v18;
+        self = selfCopy;
       }
 
       v43 = [obj countByEnumeratingWithState:&v49 objects:v59 count:16];
@@ -261,7 +261,7 @@
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v55 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Finished loading %@", buf, 0xCu);
   }
 
@@ -280,7 +280,7 @@
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
-    v55 = "LoadPersonAndMergeCandidateUUIDs";
+    selfCopy2 = "LoadPersonAndMergeCandidateUUIDs";
     v56 = 2048;
     v57 = ((((v30 - v36) * numer) / denom) / 1000000.0);
     _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
@@ -289,64 +289,64 @@
 
 - (id)personUUIDByMergeCandidateUUID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_personUUIDByMergeCandidateUUID)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_personUUIDByMergeCandidateUUID)
   {
-    [(CLSCurationContext *)v2 _loadPersonAndMergeCandidateUUIDs];
+    [(CLSCurationContext *)selfCopy _loadPersonAndMergeCandidateUUIDs];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  personUUIDByMergeCandidateUUID = v2->_personUUIDByMergeCandidateUUID;
+  personUUIDByMergeCandidateUUID = selfCopy->_personUUIDByMergeCandidateUUID;
 
   return personUUIDByMergeCandidateUUID;
 }
 
 - (id)nonPetFacedPersonLocalIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_nonPetFacedPersonLocalIdentifiers)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_nonPetFacedPersonLocalIdentifiers)
   {
-    [(CLSCurationContext *)v2 _loadNonPetFacedPersonLocalIdentifiers];
+    [(CLSCurationContext *)selfCopy _loadNonPetFacedPersonLocalIdentifiers];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  nonPetFacedPersonLocalIdentifiers = v2->_nonPetFacedPersonLocalIdentifiers;
+  nonPetFacedPersonLocalIdentifiers = selfCopy->_nonPetFacedPersonLocalIdentifiers;
 
   return nonPetFacedPersonLocalIdentifiers;
 }
 
 - (id)hiddenOrBlockedPersonUUIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_hiddenOrBlockedPersonUUIDs)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_hiddenOrBlockedPersonUUIDs)
   {
-    [(CLSCurationContext *)v2 _loadPersonAndMergeCandidateUUIDs];
+    [(CLSCurationContext *)selfCopy _loadPersonAndMergeCandidateUUIDs];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  hiddenOrBlockedPersonUUIDs = v2->_hiddenOrBlockedPersonUUIDs;
+  hiddenOrBlockedPersonUUIDs = selfCopy->_hiddenOrBlockedPersonUUIDs;
 
   return hiddenOrBlockedPersonUUIDs;
 }
 
 - (id)verifiedPersonUUIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_verifiedPersonUUIDs)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_verifiedPersonUUIDs)
   {
-    [(CLSCurationContext *)v2 _loadPersonAndMergeCandidateUUIDs];
+    [(CLSCurationContext *)selfCopy _loadPersonAndMergeCandidateUUIDs];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  verifiedPersonUUIDs = v2->_verifiedPersonUUIDs;
+  verifiedPersonUUIDs = selfCopy->_verifiedPersonUUIDs;
 
   return verifiedPersonUUIDs;
 }
@@ -362,11 +362,11 @@
   return v5;
 }
 
-- (CLSCurationContext)initWithPhotoLibrary:(id)a3
+- (CLSCurationContext)initWithPhotoLibrary:(id)library
 {
   v4 = MEMORY[0x1E6978B08];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithPhotoLibrary:v5];
+  libraryCopy = library;
+  v6 = [[v4 alloc] initWithPhotoLibrary:libraryCopy];
 
   v7 = objc_alloc_init(CLSCurationSession);
   v8 = [(CLSCurationContext *)self initWithUserFeedbackCalculator:v6 curationSession:v7];
@@ -374,46 +374,46 @@
   return v8;
 }
 
-- (CLSCurationContext)initWithUserFeedbackCalculator:(id)a3 curationSession:(id)a4
+- (CLSCurationContext)initWithUserFeedbackCalculator:(id)calculator curationSession:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  calculatorCopy = calculator;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = CLSCurationContext;
   v9 = [(CLSCurationContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userFeedbackCalculator, a3);
-    v11 = [v7 photoLibrary];
+    objc_storeStrong(&v9->_userFeedbackCalculator, calculator);
+    photoLibrary = [calculatorCopy photoLibrary];
     photoLibrary = v10->_photoLibrary;
-    v10->_photoLibrary = v11;
+    v10->_photoLibrary = photoLibrary;
 
-    objc_storeStrong(&v10->_curationSession, a4);
+    objc_storeStrong(&v10->_curationSession, session);
   }
 
   return v10;
 }
 
-- (CLSCurationContext)initWithPhotoLibrary:(id)a3 curationSession:(id)a4
+- (CLSCurationContext)initWithPhotoLibrary:(id)library curationSession:(id)session
 {
   v6 = MEMORY[0x1E6978B08];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithPhotoLibrary:v8];
+  sessionCopy = session;
+  libraryCopy = library;
+  v9 = [[v6 alloc] initWithPhotoLibrary:libraryCopy];
 
-  v10 = [(CLSCurationContext *)self initWithUserFeedbackCalculator:v9 curationSession:v7];
+  v10 = [(CLSCurationContext *)self initWithUserFeedbackCalculator:v9 curationSession:sessionCopy];
   return v10;
 }
 
 + (double)mergeCandidateConfidenceThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"CLSCurationContextMergeCandidateConfidenceUserDefaults"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"CLSCurationContextMergeCandidateConfidenceUserDefaults"];
 
   if (v3)
   {
-    [v2 doubleForKey:@"CLSCurationContextMergeCandidateConfidenceUserDefaults"];
+    [standardUserDefaults doubleForKey:@"CLSCurationContextMergeCandidateConfidenceUserDefaults"];
     v5 = v4;
   }
 

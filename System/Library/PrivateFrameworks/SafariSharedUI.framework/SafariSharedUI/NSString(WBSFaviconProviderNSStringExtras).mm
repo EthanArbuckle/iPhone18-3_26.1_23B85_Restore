@@ -12,14 +12,14 @@
 
 - (id)safari_urlStringVariantsForFaviconDatabase
 {
-  v2 = [a1 _safari_variantsOfURLStringInFaviconFormat:1];
+  v2 = [self _safari_variantsOfURLStringInFaviconFormat:1];
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 safari_stringByFormattingForFaviconDatabase];
-  [v3 addObject:v4];
+  safari_stringByFormattingForFaviconDatabase = [self safari_stringByFormattingForFaviconDatabase];
+  [v3 addObject:safari_stringByFormattingForFaviconDatabase];
 
-  v5 = [v3 allObjects];
-  v6 = [v5 mutableCopy];
+  allObjects = [v3 allObjects];
+  v6 = [allObjects mutableCopy];
 
   [v6 sortUsingComparator:&__block_literal_global_11];
 
@@ -28,54 +28,54 @@
 
 - (id)safari_domainFaviconURLStringVariantsForFaviconDatabase
 {
-  v1 = [a1 safari_domainURLStringPrefixVariantsForFaviconDatabase];
-  v2 = [v1 safari_mapObjectsUsingBlock:&__block_literal_global_3];
+  safari_domainURLStringPrefixVariantsForFaviconDatabase = [self safari_domainURLStringPrefixVariantsForFaviconDatabase];
+  v2 = [safari_domainURLStringPrefixVariantsForFaviconDatabase safari_mapObjectsUsingBlock:&__block_literal_global_3];
 
   return v2;
 }
 
 - (id)safari_domainURLStringPrefixVariantsForFaviconDatabase
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://%@", a1];
-  v4 = [v3 safari_stringByFormattingForFaviconDatabase];
-  [v2 addObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://%@", self];
+  safari_stringByFormattingForFaviconDatabase = [v3 safari_stringByFormattingForFaviconDatabase];
+  [array addObject:safari_stringByFormattingForFaviconDatabase];
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://www.%@", a1];
-  v6 = [v5 safari_stringByFormattingForFaviconDatabase];
-  [v2 addObject:v6];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://www.%@", self];
+  safari_stringByFormattingForFaviconDatabase2 = [v5 safari_stringByFormattingForFaviconDatabase];
+  [array addObject:safari_stringByFormattingForFaviconDatabase2];
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"http://%@", a1];
-  v8 = [v7 safari_stringByFormattingForFaviconDatabase];
-  [v2 addObject:v8];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"http://%@", self];
+  safari_stringByFormattingForFaviconDatabase3 = [v7 safari_stringByFormattingForFaviconDatabase];
+  [array addObject:safari_stringByFormattingForFaviconDatabase3];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"http://www.%@", a1];
-  v10 = [v9 safari_stringByFormattingForFaviconDatabase];
-  [v2 addObject:v10];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"http://www.%@", self];
+  safari_stringByFormattingForFaviconDatabase4 = [v9 safari_stringByFormattingForFaviconDatabase];
+  [array addObject:safari_stringByFormattingForFaviconDatabase4];
 
-  return v2;
+  return array;
 }
 
 - (id)safari_urlStringVariantsForIconControllerDatabase
 {
-  v2 = [a1 _safari_variantsOfURLStringInFaviconFormat:0];
+  v2 = [self _safari_variantsOfURLStringInFaviconFormat:0];
   v3 = [v2 mutableCopy];
 
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a1];
-  v5 = [v4 path];
-  if ([v5 length])
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:self];
+  path = [v4 path];
+  if ([path length])
   {
-    [v3 addObject:a1];
+    [v3 addObject:self];
   }
 
   else
   {
-    v6 = [a1 safari_stringByFormattingForIconControllerDatabase];
-    [v3 addObject:v6];
+    safari_stringByFormattingForIconControllerDatabase = [self safari_stringByFormattingForIconControllerDatabase];
+    [v3 addObject:safari_stringByFormattingForIconControllerDatabase];
   }
 
-  v7 = [v3 allObjects];
-  v8 = [v7 mutableCopy];
+  allObjects = [v3 allObjects];
+  v8 = [allObjects mutableCopy];
 
   [v8 sortUsingComparator:&__block_literal_global_20];
 
@@ -84,14 +84,14 @@
 
 - (id)safari_stringByFormattingForFaviconDatabase
 {
-  v1 = a1;
-  if ([v1 hasSuffix:@"/"])
+  selfCopy = self;
+  if ([selfCopy hasSuffix:@"/"])
   {
     do
     {
-      v2 = [v1 substringToIndex:{objc_msgSend(v1, "length") - 1}];
+      v2 = [selfCopy substringToIndex:{objc_msgSend(selfCopy, "length") - 1}];
 
-      v1 = v2;
+      selfCopy = v2;
     }
 
     while (([v2 hasSuffix:@"/"] & 1) != 0);
@@ -99,7 +99,7 @@
 
   else
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   return v2;
@@ -107,23 +107,23 @@
 
 - (id)safari_stringByFormattingForIconControllerDatabase
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 stringByAppendingString:@"/"];
+    selfCopy = [self stringByAppendingString:@"/"];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_safari_variantsOfURLStringInFaviconFormat:()WBSFaviconProviderNSStringExtras
 {
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E695DFF8] URLWithString:a1];
+  v6 = [MEMORY[0x1E695DFF8] URLWithString:self];
   v7 = v6;
   if (!v6)
   {
@@ -137,12 +137,12 @@ LABEL_10:
   {
     if (a3)
     {
-      [a1 safari_stringByFormattingForFaviconDatabase];
+      [self safari_stringByFormattingForFaviconDatabase];
     }
 
     else
     {
-      [a1 safari_stringByFormattingForIconControllerDatabase];
+      [self safari_stringByFormattingForIconControllerDatabase];
     }
     v12 = ;
     [v5 addObject:v12];
@@ -151,70 +151,70 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [v7 safari_URLByRemovingUserPasswordPathQueryAndFragment];
-  v10 = [v9 absoluteString];
-  v11 = v10;
+  safari_URLByRemovingUserPasswordPathQueryAndFragment = [v7 safari_URLByRemovingUserPasswordPathQueryAndFragment];
+  absoluteString = [safari_URLByRemovingUserPasswordPathQueryAndFragment absoluteString];
+  v11 = absoluteString;
   if (a3)
   {
-    [v10 safari_stringByFormattingForFaviconDatabase];
+    [absoluteString safari_stringByFormattingForFaviconDatabase];
   }
 
   else
   {
-    [v10 safari_stringByFormattingForIconControllerDatabase];
+    [absoluteString safari_stringByFormattingForIconControllerDatabase];
   }
   v14 = ;
   [v5 addObject:v14];
 
-  v15 = [v9 host];
-  v16 = [v15 safari_highLevelDomainFromHost];
+  host = [safari_URLByRemovingUserPasswordPathQueryAndFragment host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-  if (v16)
+  if (safari_highLevelDomainFromHost)
   {
-    v17 = v9;
-    v18 = [v17 host];
+    v17 = safari_URLByRemovingUserPasswordPathQueryAndFragment;
+    host2 = [v17 host];
     v19 = v17;
-    if (v18)
+    if (host2)
     {
-      v20 = v18;
+      host3 = host2;
       v36 = v17;
       v19 = v17;
       while (1)
       {
-        if ([v20 isEqualToString:{v16, v36}])
+        if ([host3 isEqualToString:{safari_highLevelDomainFromHost, v36}])
         {
           goto LABEL_24;
         }
 
-        v21 = [v20 rangeOfString:@"."];
+        v21 = [host3 rangeOfString:@"."];
         if (v21 == 0x7FFFFFFFFFFFFFFFLL)
         {
           break;
         }
 
-        v22 = [v20 substringFromIndex:v21 + 1];
+        v22 = [host3 substringFromIndex:v21 + 1];
         v23 = [v19 safari_URLByReplacingHostWithString:v22];
 
-        v24 = [v23 absoluteString];
-        v25 = v24;
-        if (v24)
+        absoluteString2 = [v23 absoluteString];
+        v25 = absoluteString2;
+        if (absoluteString2)
         {
           if (a3)
           {
-            [v24 safari_stringByFormattingForFaviconDatabase];
+            [absoluteString2 safari_stringByFormattingForFaviconDatabase];
           }
 
           else
           {
-            [v24 safari_stringByFormattingForIconControllerDatabase];
+            [absoluteString2 safari_stringByFormattingForIconControllerDatabase];
           }
           v26 = ;
           [v5 addObject:v26];
         }
 
-        v20 = [v23 host];
+        host3 = [v23 host];
         v19 = v23;
-        if (!v20)
+        if (!host3)
         {
           v19 = v23;
 LABEL_24:
@@ -230,23 +230,23 @@ LABEL_24:
     else
     {
 LABEL_25:
-      if (([v16 safari_hasCaseInsensitivePrefix:@"www."] & 1) == 0)
+      if (([safari_highLevelDomainFromHost safari_hasCaseInsensitivePrefix:@"www."] & 1) == 0)
       {
-        v27 = [@"www." stringByAppendingString:v16];
+        v27 = [@"www." stringByAppendingString:safari_highLevelDomainFromHost];
         v28 = [v17 safari_URLByReplacingHostWithString:v27];
 
-        v29 = [v28 absoluteString];
-        v30 = v29;
-        if (v29)
+        absoluteString3 = [v28 absoluteString];
+        v30 = absoluteString3;
+        if (absoluteString3)
         {
           if (a3)
           {
-            [v29 safari_stringByFormattingForFaviconDatabase];
+            [absoluteString3 safari_stringByFormattingForFaviconDatabase];
           }
 
           else
           {
-            [v29 safari_stringByFormattingForIconControllerDatabase];
+            [absoluteString3 safari_stringByFormattingForIconControllerDatabase];
           }
           v33 = ;
           [v5 addObject:v33];

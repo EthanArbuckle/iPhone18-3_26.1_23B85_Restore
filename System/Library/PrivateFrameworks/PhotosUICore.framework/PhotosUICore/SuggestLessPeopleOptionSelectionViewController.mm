@@ -1,28 +1,28 @@
 @interface SuggestLessPeopleOptionSelectionViewController
-- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithPeople:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
+- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithPeople:(id)people delegate:(id)delegate completionHandler:(id)handler;
 - (void)setupOptionSelectionView;
 - (void)viewDidLoad;
 @end
 
 @implementation SuggestLessPeopleOptionSelectionViewController
 
-- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithPeople:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithPeople:(id)people delegate:(id)delegate completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   sub_1A3C52C70(0, &qword_1EB1265C0);
   v7 = sub_1A524CA34();
   v8 = swift_allocObject();
   *(v8 + 16) = v6;
   swift_unknownObjectRetain();
-  v9 = sub_1A442FE98(v7, a4, sub_1A3D7A9AC, v8);
+  v9 = sub_1A442FE98(v7, delegate, sub_1A3D7A9AC, v8);
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithCoder:(id)a3
+- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController_completionHandler);
@@ -44,11 +44,11 @@
 
 - (void)setupOptionSelectionView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A442B354();
 }
 
-- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

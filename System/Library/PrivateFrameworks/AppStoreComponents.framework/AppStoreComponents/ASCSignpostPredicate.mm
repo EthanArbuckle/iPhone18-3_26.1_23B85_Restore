@@ -1,34 +1,34 @@
 @interface ASCSignpostPredicate
 - (ASCSignpostPredicate)init;
-- (ASCSignpostPredicate)initWithCoder:(id)a3;
-- (ASCSignpostPredicate)initWithSpans:(id)a3;
-- (ASCSignpostPredicate)initWithTags:(id)a3 dateRanges:(id)a4;
+- (ASCSignpostPredicate)initWithCoder:(id)coder;
+- (ASCSignpostPredicate)initWithSpans:(id)spans;
+- (ASCSignpostPredicate)initWithTags:(id)tags dateRanges:(id)ranges;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)predicateByAddingDateRange:(id)a3;
-- (id)predicateByAddingTag:(unint64_t)a3;
+- (id)predicateByAddingDateRange:(id)range;
+- (id)predicateByAddingTag:(unint64_t)tag;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCSignpostPredicate
 
-- (ASCSignpostPredicate)initWithTags:(id)a3 dateRanges:(id)a4
+- (ASCSignpostPredicate)initWithTags:(id)tags dateRanges:(id)ranges
 {
-  v6 = a3;
-  v7 = a4;
+  tagsCopy = tags;
+  rangesCopy = ranges;
   +[ASCEligibility assertCurrentProcessEligibility];
   v14.receiver = self;
   v14.super_class = ASCSignpostPredicate;
   v8 = [(ASCSignpostPredicate *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [tagsCopy copy];
     tags = v8->_tags;
     v8->_tags = v9;
 
-    v11 = [v7 copy];
+    v11 = [rangesCopy copy];
     dateRanges = v8->_dateRanges;
     v8->_dateRanges = v11;
   }
@@ -36,17 +36,17 @@
   return v8;
 }
 
-- (ASCSignpostPredicate)initWithSpans:(id)a3
+- (ASCSignpostPredicate)initWithSpans:(id)spans
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  spansCopy = spans;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v3;
+  v6 = spansCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
@@ -62,16 +62,16 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 dateRange];
-        if (v12)
+        dateRange = [v11 dateRange];
+        if (dateRange)
         {
           v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "primaryTag")}];
           [v4 addObject:v13];
 
-          v14 = [v11 supplementaryTags];
-          [v4 unionSet:v14];
+          supplementaryTags = [v11 supplementaryTags];
+          [v4 unionSet:supplementaryTags];
 
-          [v5 addObject:v12];
+          [v5 addObject:dateRange];
         }
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -98,23 +98,23 @@
   return v4;
 }
 
-- (ASCSignpostPredicate)initWithCoder:(id)a3
+- (ASCSignpostPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v6 = objc_opt_class();
   v7 = [v5 initWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"tags"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"tags"];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CBEB98]);
     v10 = objc_opt_class();
     v11 = [v9 initWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"dateRanges"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"dateRanges"];
     if (v12)
     {
       self = [(ASCSignpostPredicate *)self initWithTags:v8 dateRanges:v12];
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -124,7 +124,7 @@
         [ASCSignpostPredicate initWithCoder:];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -135,40 +135,40 @@
       [ASCSignpostPredicate initWithCoder:];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCSignpostPredicate *)self tags];
-  [v4 encodeObject:v5 forKey:@"tags"];
+  coderCopy = coder;
+  tags = [(ASCSignpostPredicate *)self tags];
+  [coderCopy encodeObject:tags forKey:@"tags"];
 
-  v6 = [(ASCSignpostPredicate *)self dateRanges];
-  [v4 encodeObject:v6 forKey:@"dateRanges"];
+  dateRanges = [(ASCSignpostPredicate *)self dateRanges];
+  [coderCopy encodeObject:dateRanges forKey:@"dateRanges"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCSignpostPredicate *)self tags];
-  [(ASCHasher *)v3 combineObject:v4];
+  tags = [(ASCSignpostPredicate *)self tags];
+  [(ASCHasher *)v3 combineObject:tags];
 
-  v5 = [(ASCSignpostPredicate *)self dateRanges];
-  [(ASCHasher *)v3 combineObject:v5];
+  dateRanges = [(ASCSignpostPredicate *)self dateRanges];
+  [(ASCHasher *)v3 combineObject:dateRanges];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -191,31 +191,31 @@
 
   if (v7)
   {
-    v8 = [(ASCSignpostPredicate *)self tags];
-    v9 = [v7 tags];
-    v10 = v9;
-    if (v8 && v9)
+    tags = [(ASCSignpostPredicate *)self tags];
+    tags2 = [v7 tags];
+    v10 = tags2;
+    if (tags && tags2)
     {
-      if ([v8 isEqual:v9])
+      if ([tags isEqual:tags2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (tags == tags2)
     {
 LABEL_10:
-      v11 = [(ASCSignpostPredicate *)self dateRanges];
-      v12 = [v7 dateRanges];
-      v13 = v12;
-      if (v11 && v12)
+      dateRanges = [(ASCSignpostPredicate *)self dateRanges];
+      dateRanges2 = [v7 dateRanges];
+      v13 = dateRanges2;
+      if (dateRanges && dateRanges2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [dateRanges isEqual:dateRanges2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = dateRanges == dateRanges2;
       }
 
       goto LABEL_18;
@@ -236,24 +236,24 @@ LABEL_19:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCSignpostPredicate *)self tags];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"tags"];
+  tags = [(ASCSignpostPredicate *)self tags];
+  [(ASCDescriber *)v3 addObject:tags withName:@"tags"];
 
-  v5 = [(ASCSignpostPredicate *)self dateRanges];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"dateRanges"];
+  dateRanges = [(ASCSignpostPredicate *)self dateRanges];
+  [(ASCDescriber *)v3 addObject:dateRanges withName:@"dateRanges"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 - (BOOL)isEmpty
 {
-  v3 = [(ASCSignpostPredicate *)self tags];
-  if ([v3 count])
+  tags = [(ASCSignpostPredicate *)self tags];
+  if ([tags count])
   {
-    v4 = [(ASCSignpostPredicate *)self dateRanges];
-    v5 = [v4 count] == 0;
+    dateRanges = [(ASCSignpostPredicate *)self dateRanges];
+    v5 = [dateRanges count] == 0;
   }
 
   else
@@ -264,28 +264,28 @@ LABEL_19:
   return v5;
 }
 
-- (id)predicateByAddingTag:(unint64_t)a3
+- (id)predicateByAddingTag:(unint64_t)tag
 {
-  v5 = [(ASCSignpostPredicate *)self tags];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v7 = [v5 setByAddingObject:v6];
+  tags = [(ASCSignpostPredicate *)self tags];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:tag];
+  v7 = [tags setByAddingObject:v6];
 
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(ASCSignpostPredicate *)self dateRanges];
-  v10 = [v8 initWithTags:v7 dateRanges:v9];
+  dateRanges = [(ASCSignpostPredicate *)self dateRanges];
+  v10 = [v8 initWithTags:v7 dateRanges:dateRanges];
 
   return v10;
 }
 
-- (id)predicateByAddingDateRange:(id)a3
+- (id)predicateByAddingDateRange:(id)range
 {
-  v4 = a3;
-  v5 = [(ASCSignpostPredicate *)self dateRanges];
-  v6 = [v5 arrayByAddingObject:v4];
+  rangeCopy = range;
+  dateRanges = [(ASCSignpostPredicate *)self dateRanges];
+  v6 = [dateRanges arrayByAddingObject:rangeCopy];
 
   v7 = objc_alloc(objc_opt_class());
-  v8 = [(ASCSignpostPredicate *)self tags];
-  v9 = [v7 initWithTags:v8 dateRanges:v6];
+  tags = [(ASCSignpostPredicate *)self tags];
+  v9 = [v7 initWithTags:tags dateRanges:v6];
 
   return v9;
 }

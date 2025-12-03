@@ -1,14 +1,14 @@
 @interface CRLFreehandDrawingToolMarqueeInput
 - (CGPoint)unscaledTapPoint;
-- (CRLFreehandDrawingToolMarqueeInput)initWithUnscaledTapPoint:(CGPoint)a3 inputType:(int64_t)a4;
+- (CRLFreehandDrawingToolMarqueeInput)initWithUnscaledTapPoint:(CGPoint)point inputType:(int64_t)type;
 @end
 
 @implementation CRLFreehandDrawingToolMarqueeInput
 
-- (CRLFreehandDrawingToolMarqueeInput)initWithUnscaledTapPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (CRLFreehandDrawingToolMarqueeInput)initWithUnscaledTapPoint:(CGPoint)point inputType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8.receiver = self;
   v8.super_class = CRLFreehandDrawingToolMarqueeInput;
   result = [(CRLFreehandDrawingToolMarqueeInput *)&v8 init];
@@ -16,7 +16,7 @@
   {
     result->_unscaledTapPoint.x = x;
     result->_unscaledTapPoint.y = y;
-    result->_inputType = a4;
+    result->_inputType = type;
   }
 
   return result;

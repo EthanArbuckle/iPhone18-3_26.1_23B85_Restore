@@ -1,20 +1,20 @@
 @interface UAFAssetSetExperiment
-- (BOOL)isEqual:(id)a3;
-- (UAFAssetSetExperiment)initWithCoder:(id)a3;
-- (UAFAssetSetExperiment)initWithConfiguration:(id)a3 uuid:(id)a4;
-- (UAFAssetSetExperiment)initWithExperimentId:(id)a3 assetSpecifiers:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (UAFAssetSetExperiment)initWithCoder:(id)coder;
+- (UAFAssetSetExperiment)initWithConfiguration:(id)configuration uuid:(id)uuid;
+- (UAFAssetSetExperiment)initWithExperimentId:(id)id assetSpecifiers:(id)specifiers;
 - (id)description;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UAFAssetSetExperiment
 
-- (UAFAssetSetExperiment)initWithExperimentId:(id)a3 assetSpecifiers:(id)a4
+- (UAFAssetSetExperiment)initWithExperimentId:(id)id assetSpecifiers:(id)specifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  specifiersCopy = specifiers;
   if (!+[UAFCommonUtilities isTrialAvailable])
   {
     v12 = UAFGetLogCategory(&UAFLogContextClient);
@@ -35,8 +35,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_experimentId, a3);
-    v11 = v8;
+    objc_storeStrong(&v9->_experimentId, id);
+    v11 = specifiersCopy;
     self = v10->_assetSpecifiers;
     v10->_assetSpecifiers = v11;
 LABEL_7:
@@ -46,46 +46,46 @@ LABEL_7:
   return v10;
 }
 
-- (UAFAssetSetExperiment)initWithConfiguration:(id)a3 uuid:(id)a4
+- (UAFAssetSetExperiment)initWithConfiguration:(id)configuration uuid:(id)uuid
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  uuidCopy = uuid;
   v8 = [(UAFAssetSetExperiment *)self initWithExperimentId:0 assetSpecifiers:0];
   if (!v8)
   {
     goto LABEL_20;
   }
 
-  v9 = [v6 trialProject];
-  if (!v9)
+  trialProject = [configurationCopy trialProject];
+  if (!trialProject)
   {
     goto LABEL_21;
   }
 
-  v10 = [v6 trialNamespace];
-  if (!v10)
+  trialNamespace = [configurationCopy trialNamespace];
+  if (!trialNamespace)
   {
 
     goto LABEL_20;
   }
 
-  v11 = v10;
-  v12 = [v6 trialFactor];
+  v11 = trialNamespace;
+  trialFactor = [configurationCopy trialFactor];
 
-  if (!v12)
+  if (!trialFactor)
   {
 LABEL_20:
-    v9 = 0;
+    trialProject = 0;
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v8->_uuid, a4);
-  if (!v7)
+  objc_storeStrong(&v8->_uuid, uuid);
+  if (!uuidCopy)
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v8->_uuid;
-    v8->_uuid = v13;
+    v8->_uuid = uUID;
   }
 
   v15 = UAFGetLogCategory(&UAFLogContextClient);
@@ -102,14 +102,14 @@ LABEL_20:
     _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "Experiment AutoAssets", "%{public}@", buf, 0xCu);
   }
 
-  v21 = [v6 trialProject];
-  v22 = [UAFCommonUtilities trialClientWithProject:v21];
+  trialProject2 = [configurationCopy trialProject];
+  v22 = [UAFCommonUtilities trialClientWithProject:trialProject2];
 
   if (v22)
   {
-    v23 = [v6 trialNamespace];
-    v24 = [v6 trialFactor];
-    v25 = [UAFCommonUtilities getDirectoryPath:v22 trialNamespace:v23 trialFactor:v24];
+    trialNamespace2 = [configurationCopy trialNamespace];
+    trialFactor2 = [configurationCopy trialFactor];
+    v25 = [UAFCommonUtilities getDirectoryPath:v22 trialNamespace:trialNamespace2 trialFactor:trialFactor2];
 
     if (v25)
     {
@@ -144,23 +144,23 @@ LABEL_20:
           _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v32, OS_SIGNPOST_INTERVAL_END, v16, "Experiment AutoAssets", "%{public}@", buf, 0xCu);
         }
 
-        v9 = 0;
+        trialProject = 0;
       }
 
       else
       {
         v55 = v28;
         v56 = v27;
-        v42 = [v28 assetSpecifiers];
+        assetSpecifiers = [v28 assetSpecifiers];
         assetSpecifiers = v8->_assetSpecifiers;
-        v8->_assetSpecifiers = v42;
+        v8->_assetSpecifiers = assetSpecifiers;
 
-        v44 = [v6 trialNamespace];
-        v32 = [UAFCommonUtilities experimentIdentifiersTrialClient:v22 trialNamespace:v44];
+        trialNamespace3 = [configurationCopy trialNamespace];
+        v32 = [UAFCommonUtilities experimentIdentifiersTrialClient:v22 trialNamespace:trialNamespace3];
 
-        v45 = [v32 experimentId];
+        experimentId = [v32 experimentId];
         experimentId = v8->_experimentId;
-        v8->_experimentId = v45;
+        v8->_experimentId = experimentId;
 
         v47 = v8->_experimentId;
         v48 = UAFGetLogCategory(&UAFLogContextClient);
@@ -175,7 +175,7 @@ LABEL_20:
             _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v49, OS_SIGNPOST_INTERVAL_END, v16, "Experiment AutoAssets", "%{public}@", buf, 0xCu);
           }
 
-          v9 = v8;
+          trialProject = v8;
           v27 = v56;
         }
 
@@ -201,7 +201,7 @@ LABEL_20:
             _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v52, OS_SIGNPOST_INTERVAL_END, v16, "Experiment AutoAssets", "%{public}@", buf, 0xCu);
           }
 
-          v9 = 0;
+          trialProject = 0;
         }
 
         v29 = v55;
@@ -220,7 +220,7 @@ LABEL_20:
         _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v40, OS_SIGNPOST_INTERVAL_END, v16, "Experiment AutoAssets", "%{public}@", buf, 0xCu);
       }
 
-      v9 = v8;
+      trialProject = v8;
       v25 = 0;
     }
   }
@@ -230,11 +230,11 @@ LABEL_20:
     v36 = UAFGetLogCategory(&UAFLogContextClient);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      v54 = [v6 trialProject];
+      trialProject3 = [configurationCopy trialProject];
       *buf = 136315394;
       v60 = "[UAFAssetSetExperiment initWithConfiguration:uuid:]";
       v61 = 2114;
-      v62 = v54;
+      v62 = trialProject3;
       _os_log_error_impl(&dword_1BCF2C000, v36, OS_LOG_TYPE_ERROR, "%s Could not create trial client for project %{public}@", buf, 0x16u);
     }
 
@@ -248,42 +248,42 @@ LABEL_20:
       _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v25, OS_SIGNPOST_INTERVAL_END, v16, "Experiment AutoAssets", "%{public}@", buf, 0xCu);
     }
 
-    v9 = 0;
+    trialProject = 0;
   }
 
 LABEL_21:
   v34 = *MEMORY[0x1E69E9840];
-  return v9;
+  return trialProject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   experimentId = self->_experimentId;
-  v5 = a3;
-  [v5 encodeObject:experimentId forKey:@"experimentId"];
-  [v5 encodeObject:self->_assetSpecifiers forKey:@"assetSpecifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:experimentId forKey:@"experimentId"];
+  [coderCopy encodeObject:self->_assetSpecifiers forKey:@"assetSpecifiers"];
 }
 
-- (UAFAssetSetExperiment)initWithCoder:(id)a3
+- (UAFAssetSetExperiment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"assetSpecifiers"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"assetSpecifiers"];
 
   v10 = [(UAFAssetSetExperiment *)self initWithExperimentId:v5 assetSpecifiers:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v6)
+    if (self == equalCopy)
     {
       v12 = 1;
       goto LABEL_35;
@@ -293,13 +293,13 @@ LABEL_21:
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
-      v9 = [(UAFAssetSetExperiment *)v8 experimentId];
-      if (!v9)
+      experimentId = [(UAFAssetSetExperiment *)v8 experimentId];
+      if (!experimentId)
       {
-        v13 = [(UAFAssetSetExperiment *)self experimentId];
-        if (v13)
+        experimentId2 = [(UAFAssetSetExperiment *)self experimentId];
+        if (experimentId2)
         {
-          v14 = v13;
+          experimentId5 = experimentId2;
           v12 = 0;
 LABEL_33:
 
@@ -307,22 +307,22 @@ LABEL_33:
         }
       }
 
-      v10 = [(UAFAssetSetExperiment *)v8 experimentId];
-      if (v10)
+      experimentId3 = [(UAFAssetSetExperiment *)v8 experimentId];
+      if (experimentId3)
       {
-        v3 = v10;
-        v11 = [(UAFAssetSetExperiment *)self experimentId];
+        experimentId6 = experimentId3;
+        experimentId4 = [(UAFAssetSetExperiment *)self experimentId];
 
-        if (v9)
+        if (experimentId)
         {
 
-          if (!v11)
+          if (!experimentId4)
           {
             goto LABEL_21;
           }
         }
 
-        else if (!v11)
+        else if (!experimentId4)
         {
 LABEL_21:
           v12 = 0;
@@ -332,22 +332,22 @@ LABEL_34:
         }
       }
 
-      else if (v9)
+      else if (experimentId)
       {
       }
 
-      v14 = [(UAFAssetSetExperiment *)v8 experimentId];
-      if (v14 || ([(UAFAssetSetExperiment *)self experimentId], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+      experimentId5 = [(UAFAssetSetExperiment *)v8 experimentId];
+      if (experimentId5 || ([(UAFAssetSetExperiment *)self experimentId], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v3 = [(UAFAssetSetExperiment *)v8 experimentId];
-        v4 = [(UAFAssetSetExperiment *)self experimentId];
-        if (![v3 isEqualToString:v4])
+        experimentId6 = [(UAFAssetSetExperiment *)v8 experimentId];
+        experimentId7 = [(UAFAssetSetExperiment *)self experimentId];
+        if (![experimentId6 isEqualToString:experimentId7])
         {
           v12 = 0;
 LABEL_30:
 
 LABEL_31:
-          if (!v14)
+          if (!experimentId5)
           {
           }
 
@@ -363,14 +363,14 @@ LABEL_31:
         v15 = 0;
       }
 
-      v16 = [(UAFAssetSetExperiment *)v8 assetSpecifiers];
-      if (v16 || ([(UAFAssetSetExperiment *)self assetSpecifiers], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+      assetSpecifiers = [(UAFAssetSetExperiment *)v8 assetSpecifiers];
+      if (assetSpecifiers || ([(UAFAssetSetExperiment *)self assetSpecifiers], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v17 = [(UAFAssetSetExperiment *)v8 assetSpecifiers:v20];
-        v18 = [(UAFAssetSetExperiment *)self assetSpecifiers];
-        v12 = [v17 isEqual:v18];
+        assetSpecifiers2 = [(UAFAssetSetExperiment *)self assetSpecifiers];
+        v12 = [v17 isEqual:assetSpecifiers2];
 
-        if (v16)
+        if (assetSpecifiers)
         {
           goto LABEL_29;
         }
@@ -401,9 +401,9 @@ LABEL_35:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UAFAssetSetExperiment *)self experimentId];
-  v5 = [(UAFAssetSetExperiment *)self assetSpecifiers];
-  v6 = [v3 stringWithFormat:@"Experiment '%@' with assetSpecifiers %@", v4, v5];
+  experimentId = [(UAFAssetSetExperiment *)self experimentId];
+  assetSpecifiers = [(UAFAssetSetExperiment *)self assetSpecifiers];
+  v6 = [v3 stringWithFormat:@"Experiment '%@' with assetSpecifiers %@", experimentId, assetSpecifiers];
 
   return v6;
 }

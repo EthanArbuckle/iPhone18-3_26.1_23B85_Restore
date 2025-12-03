@@ -1,12 +1,12 @@
 @interface MechanismAssertionClientProcessVisible
-- (MechanismAssertionClientProcessVisible)initWithMechanism:(id)a3 trackedBundleID:(id)a4 trackedPID:(int)a5;
-- (id)_assertInStateWithProcessState:(id)a3;
+- (MechanismAssertionClientProcessVisible)initWithMechanism:(id)mechanism trackedBundleID:(id)d trackedPID:(int)iD;
+- (id)_assertInStateWithProcessState:(id)state;
 - (id)_callerName;
-- (id)_rbsProcessHandleWithError:(id *)a3;
+- (id)_rbsProcessHandleWithError:(id *)error;
 - (id)_rbsStateDescriptor;
 - (id)assertInState;
-- (void)_configureMonitor:(id)a3;
-- (void)_handleStateUpdate:(id)a3 monitor:(id)a4 process:(id)a5;
+- (void)_configureMonitor:(id)monitor;
+- (void)_handleStateUpdate:(id)update monitor:(id)monitor process:(id)process;
 - (void)_setupProcessHandle;
 - (void)assertInState;
 - (void)startMonitoring;
@@ -15,17 +15,17 @@
 
 @implementation MechanismAssertionClientProcessVisible
 
-- (MechanismAssertionClientProcessVisible)initWithMechanism:(id)a3 trackedBundleID:(id)a4 trackedPID:(int)a5
+- (MechanismAssertionClientProcessVisible)initWithMechanism:(id)mechanism trackedBundleID:(id)d trackedPID:(int)iD
 {
-  v9 = a4;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = MechanismAssertionClientProcessVisible;
-  v10 = [(MechanismAssertion *)&v13 initWithMechanism:a3];
+  v10 = [(MechanismAssertion *)&v13 initWithMechanism:mechanism];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundleID, a4);
-    v11->_pid = a5;
+    objc_storeStrong(&v10->_bundleID, d);
+    v11->_pid = iD;
     if (v11->_bundleID)
     {
       [(MechanismAssertionClientProcessVisible *)v11 _setupProcessHandle];
@@ -38,7 +38,7 @@
 - (void)_setupProcessHandle
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138543618;
   v6 = v3;
   v7 = 2114;
@@ -47,7 +47,7 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_rbsProcessHandleWithError:(id *)a3
+- (id)_rbsProcessHandleWithError:(id *)error
 {
   v5 = MEMORY[0x277D46F40];
   v6 = [MEMORY[0x277D46F98] predicateMatchingBundleIdentifier:self->_bundleID];
@@ -66,10 +66,10 @@
     v8 = v11;
   }
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   return v7;
@@ -77,10 +77,10 @@
 
 - (id)_rbsStateDescriptor
 {
-  v2 = [MEMORY[0x277D46FB8] descriptor];
-  [v2 setEndowmentNamespaces:&unk_284B78AC0];
+  descriptor = [MEMORY[0x277D46FB8] descriptor];
+  [descriptor setEndowmentNamespaces:&unk_284B78AC0];
 
-  return v2;
+  return descriptor;
 }
 
 - (id)assertInState
@@ -91,8 +91,8 @@
     processHandle = self->_processHandle;
     if (processHandle)
     {
-      v4 = [(RBSProcessHandle *)processHandle currentState];
-      v5 = [(MechanismAssertionClientProcessVisible *)self _assertInStateWithProcessState:v4];
+      currentState = [(RBSProcessHandle *)processHandle currentState];
+      v5 = [(MechanismAssertionClientProcessVisible *)self _assertInStateWithProcessState:currentState];
 
       goto LABEL_9;
     }
@@ -109,11 +109,11 @@
     v6 = [(MechanismAssertion *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(MechanismAssertionClientProcessVisible *)self _callerName];
+      _callerName = [(MechanismAssertionClientProcessVisible *)self _callerName];
       v10 = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v7;
+      v13 = _callerName;
       _os_log_impl(&dword_238B95000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ successfully asserted a bundle-less caller (%{public}@)", &v10, 0x16u);
     }
   }
@@ -125,11 +125,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)_assertInStateWithProcessState:(id)a3
+- (id)_assertInStateWithProcessState:(id)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 taskState] != 4)
+  stateCopy = state;
+  if ([stateCopy taskState] != 4)
   {
     v11 = [(MechanismAssertion *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -142,8 +142,8 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v5 = [v4 endowmentNamespaces];
-  v6 = [v5 containsObject:@"com.apple.frontboard.visibility"];
+  endowmentNamespaces = [stateCopy endowmentNamespaces];
+  v6 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
   v7 = [(MechanismAssertion *)self log];
   v8 = v7;
@@ -163,11 +163,11 @@ LABEL_12:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v9 = [(MechanismAssertionClientProcessVisible *)self _callerName];
+    _callerName = [(MechanismAssertionClientProcessVisible *)self _callerName];
     v16 = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v9;
+    v19 = _callerName;
     _os_log_impl(&dword_238B95000, v8, OS_LOG_TYPE_INFO, "%{public}@ successfully asserted %{public}@ (confirmed task scheduled and visible)", &v16, 0x16u);
   }
 
@@ -187,11 +187,11 @@ LABEL_13:
     v3 = [(MechanismAssertion *)self log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(MechanismAssertionClientProcessVisible *)self _callerName];
+      _callerName = [(MechanismAssertionClientProcessVisible *)self _callerName];
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = _callerName;
       _os_log_impl(&dword_238B95000, v3, OS_LOG_TYPE_INFO, "%{public}@ started monitoring %{public}@ for state changes", buf, 0x16u);
     }
 
@@ -224,21 +224,21 @@ void __57__MechanismAssertionClientProcessVisible_startMonitoring__block_invoke(
   [WeakRetained _configureMonitor:v3];
 }
 
-- (void)_configureMonitor:(id)a3
+- (void)_configureMonitor:(id)monitor
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  monitorCopy = monitor;
   processHandle = self->_processHandle;
   if (processHandle)
   {
-    v6 = [(RBSProcessHandle *)processHandle processPredicate];
-    v13[0] = v6;
+    processPredicate = [(RBSProcessHandle *)processHandle processPredicate];
+    v13[0] = processPredicate;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v4 setPredicates:v7];
+    [monitorCopy setPredicates:v7];
   }
 
-  v8 = [(MechanismAssertionClientProcessVisible *)self _rbsStateDescriptor];
-  [v4 setStateDescriptor:v8];
+  _rbsStateDescriptor = [(MechanismAssertionClientProcessVisible *)self _rbsStateDescriptor];
+  [monitorCopy setStateDescriptor:_rbsStateDescriptor];
 
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
@@ -246,7 +246,7 @@ void __57__MechanismAssertionClientProcessVisible_startMonitoring__block_invoke(
   v10[2] = __60__MechanismAssertionClientProcessVisible__configureMonitor___block_invoke;
   v10[3] = &unk_278A62F00;
   objc_copyWeak(&v11, &location);
-  [v4 setUpdateHandler:v10];
+  [monitorCopy setUpdateHandler:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 
@@ -281,51 +281,51 @@ void __60__MechanismAssertionClientProcessVisible__configureMonitor___block_invo
   [WeakRetained _handleStateUpdate:*(a1 + 32) monitor:*(a1 + 40) process:*(a1 + 48)];
 }
 
-- (void)_handleStateUpdate:(id)a3 monitor:(id)a4 process:(id)a5
+- (void)_handleStateUpdate:(id)update monitor:(id)monitor process:(id)process
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  monitorCopy = monitor;
+  processCopy = process;
   v11 = [(MechanismAssertion *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v8;
+    v22 = updateCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = monitorCopy;
     v25 = 2112;
-    v26 = v10;
+    v26 = processCopy;
     _os_log_impl(&dword_238B95000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ received update:%@ monitor:%@ process: %@", buf, 0x2Au);
   }
 
-  if (self->_monitor != v9)
+  if (self->_monitor != monitorCopy)
   {
     [MechanismAssertionClientProcessVisible _handleStateUpdate:monitor:process:];
   }
 
-  if (([v10 matchesProcess:self->_processHandle] & 1) == 0)
+  if (([processCopy matchesProcess:self->_processHandle] & 1) == 0)
   {
     [MechanismAssertionClientProcessVisible _handleStateUpdate:monitor:process:];
   }
 
-  v12 = [v8 state];
-  v13 = [(MechanismAssertionClientProcessVisible *)self _assertInStateWithProcessState:v12];
+  state = [updateCopy state];
+  v13 = [(MechanismAssertionClientProcessVisible *)self _assertInStateWithProcessState:state];
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(MechanismAssertionClientProcessVisible *)self _callerName];
-  v16 = v15;
+  _callerName = [(MechanismAssertionClientProcessVisible *)self _callerName];
+  v16 = _callerName;
   if (v13)
   {
-    v17 = [v14 stringWithFormat:@"%@ is no longer visible", v15];
+    v17 = [v14 stringWithFormat:@"%@ is no longer visible", _callerName];
     [(MechanismAssertion *)self handleAssertionFailureWithReason:v17 error:v13];
   }
 
   else
   {
-    v17 = [v14 stringWithFormat:@"%@ was confirmed visible", v15];
+    v17 = [v14 stringWithFormat:@"%@ was confirmed visible", _callerName];
     [(MechanismAssertion *)self handleAssertionSuccessWithReason:v17];
   }
 
@@ -356,11 +356,11 @@ void __60__MechanismAssertionClientProcessVisible__configureMonitor___block_invo
   v3 = [(MechanismAssertion *)self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(MechanismAssertionClientProcessVisible *)self _callerName];
+    _callerName = [(MechanismAssertionClientProcessVisible *)self _callerName];
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v4;
+    v9 = _callerName;
     _os_log_impl(&dword_238B95000, v3, OS_LOG_TYPE_INFO, "%{public}@ stopped monitoring %{public}@ for state changes", &v6, 0x16u);
   }
 
@@ -371,8 +371,8 @@ void __60__MechanismAssertionClientProcessVisible__configureMonitor___block_invo
 - (void)assertInState
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = [a1 _callerName];
-  v9 = a1[9];
+  _callerName = [self _callerName];
+  v9 = self[9];
   OUTLINED_FUNCTION_0_3();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x20u);
 

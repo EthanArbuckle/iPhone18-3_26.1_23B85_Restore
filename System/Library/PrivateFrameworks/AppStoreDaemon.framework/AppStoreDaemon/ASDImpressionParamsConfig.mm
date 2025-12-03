@@ -1,81 +1,81 @@
 @interface ASDImpressionParamsConfig
-- (ASDImpressionParamsConfig)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDImpressionParamsConfig)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDImpressionParamsConfig
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appAdamId = self->_appAdamId;
-  v5 = a3;
-  [v5 encodeObject:appAdamId forKey:@"1"];
-  [v5 encodeObject:self->_adNetworkId forKey:@"2"];
-  [v5 encodeObject:self->_campaignId forKey:@"3"];
-  [v5 encodeObject:self->_impressionId forKey:@"4"];
-  [v5 encodeObject:self->_sourceAppAdamId forKey:@"5"];
-  [v5 encodeObject:self->_attributionSignature forKey:@"6"];
-  [v5 encodeObject:self->_sourceAppBundleId forKey:@"7"];
-  [v5 encodeObject:self->_version forKey:@"8"];
-  [v5 encodeObject:self->_timestamp forKey:@"9"];
-  [v5 encodeObject:self->_fidelityType forKey:@"10"];
-  [v5 encodeObject:self->_processName forKey:@"11"];
-  [v5 encodeObject:self->_sourceIdentifier forKey:@"12"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appAdamId forKey:@"1"];
+  [coderCopy encodeObject:self->_adNetworkId forKey:@"2"];
+  [coderCopy encodeObject:self->_campaignId forKey:@"3"];
+  [coderCopy encodeObject:self->_impressionId forKey:@"4"];
+  [coderCopy encodeObject:self->_sourceAppAdamId forKey:@"5"];
+  [coderCopy encodeObject:self->_attributionSignature forKey:@"6"];
+  [coderCopy encodeObject:self->_sourceAppBundleId forKey:@"7"];
+  [coderCopy encodeObject:self->_version forKey:@"8"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"9"];
+  [coderCopy encodeObject:self->_fidelityType forKey:@"10"];
+  [coderCopy encodeObject:self->_processName forKey:@"11"];
+  [coderCopy encodeObject:self->_sourceIdentifier forKey:@"12"];
 }
 
-- (ASDImpressionParamsConfig)initWithCoder:(id)a3
+- (ASDImpressionParamsConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = ASDImpressionParamsConfig;
   v5 = [(ASDImpressionParamsConfig *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"1"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"1"];
     appAdamId = v5->_appAdamId;
     v5->_appAdamId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"2"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"2"];
     adNetworkId = v5->_adNetworkId;
     v5->_adNetworkId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"3"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"3"];
     campaignId = v5->_campaignId;
     v5->_campaignId = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"4"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"4"];
     impressionId = v5->_impressionId;
     v5->_impressionId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"5"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"5"];
     sourceAppAdamId = v5->_sourceAppAdamId;
     v5->_sourceAppAdamId = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"6"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"6"];
     attributionSignature = v5->_attributionSignature;
     v5->_attributionSignature = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"7"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"7"];
     sourceAppBundleId = v5->_sourceAppBundleId;
     v5->_sourceAppBundleId = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"8"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"8"];
     version = v5->_version;
     v5->_version = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"9"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"9"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"10"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"10"];
     fidelityType = v5->_fidelityType;
     v5->_fidelityType = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"11"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"11"];
     processName = v5->_processName;
     v5->_processName = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"12"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"12"];
     sourceIdentifier = v5->_sourceIdentifier;
     v5->_sourceIdentifier = v28;
   }

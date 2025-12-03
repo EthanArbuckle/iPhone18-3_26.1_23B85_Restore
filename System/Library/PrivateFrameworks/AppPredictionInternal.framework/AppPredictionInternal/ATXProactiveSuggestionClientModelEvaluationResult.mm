@@ -1,14 +1,14 @@
 @interface ATXProactiveSuggestionClientModelEvaluationResult
-+ (int64_t)rankOfEngagedSuggestion:(id)a3 inSuggestions:(id)a4;
-- (ATXProactiveSuggestionClientModelEvaluationResult)initWithSessionType:(unint64_t)a3 executableType:(int64_t)a4 removeDockedApps:(BOOL)a5;
++ (int64_t)rankOfEngagedSuggestion:(id)suggestion inSuggestions:(id)suggestions;
+- (ATXProactiveSuggestionClientModelEvaluationResult)initWithSessionType:(unint64_t)type executableType:(int64_t)executableType removeDockedApps:(BOOL)apps;
 - (id)description;
-- (id)filteredSuggestions:(id)a3 removeDockedApps:(BOOL)a4;
-- (void)updateCountsForSessionsWithShownSuggestions:(id)a3 engagedSuggestions:(id)a4 rejectedSuggestions:(id)a5;
+- (id)filteredSuggestions:(id)suggestions removeDockedApps:(BOOL)apps;
+- (void)updateCountsForSessionsWithShownSuggestions:(id)suggestions engagedSuggestions:(id)engagedSuggestions rejectedSuggestions:(id)rejectedSuggestions;
 @end
 
 @implementation ATXProactiveSuggestionClientModelEvaluationResult
 
-- (ATXProactiveSuggestionClientModelEvaluationResult)initWithSessionType:(unint64_t)a3 executableType:(int64_t)a4 removeDockedApps:(BOOL)a5
+- (ATXProactiveSuggestionClientModelEvaluationResult)initWithSessionType:(unint64_t)type executableType:(int64_t)executableType removeDockedApps:(BOOL)apps
 {
   v22.receiver = self;
   v22.super_class = ATXProactiveSuggestionClientModelEvaluationResult;
@@ -16,13 +16,13 @@
   v9 = v8;
   if (v8)
   {
-    v8->_sessionType = a3;
-    v8->_executableType = a4;
-    v8->_removeDockedApps = a5;
+    v8->_sessionType = type;
+    v8->_executableType = executableType;
+    v8->_removeDockedApps = apps;
     v10 = +[_ATXAppIconState sharedInstance];
-    v11 = [v10 allDockedApps];
+    allDockedApps = [v10 allDockedApps];
     dockedApps = v9->_dockedApps;
-    v9->_dockedApps = v11;
+    v9->_dockedApps = allDockedApps;
 
     v13 = objc_opt_new();
     engagedInTop4PerCandidate = v9->_engagedInTop4PerCandidate;
@@ -44,13 +44,13 @@
   return v9;
 }
 
-- (void)updateCountsForSessionsWithShownSuggestions:(id)a3 engagedSuggestions:(id)a4 rejectedSuggestions:(id)a5
+- (void)updateCountsForSessionsWithShownSuggestions:(id)suggestions engagedSuggestions:(id)engagedSuggestions rejectedSuggestions:(id)rejectedSuggestions
 {
-  v47 = a3;
-  v7 = a4;
-  if ([v7 count])
+  suggestionsCopy = suggestions;
+  engagedSuggestionsCopy = engagedSuggestions;
+  if ([engagedSuggestionsCopy count])
   {
-    v8 = [v7 objectAtIndexedSubscript:0];
+    v8 = [engagedSuggestionsCopy objectAtIndexedSubscript:0];
     if ([v8 executableType] != self->_executableType || self->_removeDockedApps && (dockedApps = self->_dockedApps, objc_msgSend(v8, "executableIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), LOBYTE(dockedApps) = -[NSSet containsObject:](dockedApps, "containsObject:", v10), v10, (dockedApps & 1) != 0))
     {
 LABEL_30:
@@ -59,7 +59,7 @@ LABEL_30:
     }
 
     v11 = [MEMORY[0x277CEBCF0] consumerTypeForSubType:{objc_msgSend(v8, "consumerSubType")}] == 14 && self->_executableType == 1;
-    v12 = [(ATXProactiveSuggestionClientModelEvaluationResult *)self filteredSuggestions:v47 removeDockedApps:self->_removeDockedApps || v11];
+    v12 = [(ATXProactiveSuggestionClientModelEvaluationResult *)self filteredSuggestions:suggestionsCopy removeDockedApps:self->_removeDockedApps || v11];
     v13 = [objc_opt_class() rankOfEngagedSuggestion:v8 inSuggestions:v12];
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -96,22 +96,22 @@ LABEL_30:
       {
         v18 = MEMORY[0x277CCABB0];
         engagedInTop4PerCandidate = self->_engagedInTop4PerCandidate;
-        v20 = [v8 executableIdentifier];
-        v21 = [(NSMutableDictionary *)engagedInTop4PerCandidate objectForKeyedSubscript:v20];
+        executableIdentifier = [v8 executableIdentifier];
+        v21 = [(NSMutableDictionary *)engagedInTop4PerCandidate objectForKeyedSubscript:executableIdentifier];
         v22 = [v18 numberWithInt:{objc_msgSend(v21, "intValue") + 1}];
         v23 = self->_engagedInTop4PerCandidate;
-        v24 = [v8 executableIdentifier];
-        [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
+        executableIdentifier2 = [v8 executableIdentifier];
+        [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:executableIdentifier2];
 
 LABEL_20:
         v25 = MEMORY[0x277CCABB0];
         engagedInTop8PerCandidate = self->_engagedInTop8PerCandidate;
-        v27 = [v8 executableIdentifier];
-        v28 = [(NSMutableDictionary *)engagedInTop8PerCandidate objectForKeyedSubscript:v27];
+        executableIdentifier3 = [v8 executableIdentifier];
+        v28 = [(NSMutableDictionary *)engagedInTop8PerCandidate objectForKeyedSubscript:executableIdentifier3];
         v29 = [v25 numberWithInt:{objc_msgSend(v28, "intValue") + 1}];
         v30 = self->_engagedInTop8PerCandidate;
-        v31 = [v8 executableIdentifier];
-        [(NSMutableDictionary *)v30 setObject:v29 forKeyedSubscript:v31];
+        executableIdentifier4 = [v8 executableIdentifier];
+        [(NSMutableDictionary *)v30 setObject:v29 forKeyedSubscript:executableIdentifier4];
 
         goto LABEL_21;
       }
@@ -125,12 +125,12 @@ LABEL_20:
 LABEL_21:
     v32 = MEMORY[0x277CCABB0];
     engagedPerCandidate = self->_engagedPerCandidate;
-    v34 = [v8 executableIdentifier];
-    v35 = [(NSMutableDictionary *)engagedPerCandidate objectForKeyedSubscript:v34];
+    executableIdentifier5 = [v8 executableIdentifier];
+    v35 = [(NSMutableDictionary *)engagedPerCandidate objectForKeyedSubscript:executableIdentifier5];
     v36 = [v32 numberWithInt:{objc_msgSend(v35, "intValue") + 1}];
     v37 = self->_engagedPerCandidate;
-    v38 = [v8 executableIdentifier];
-    [(NSMutableDictionary *)v37 setObject:v36 forKeyedSubscript:v38];
+    executableIdentifier6 = [v8 executableIdentifier];
+    [(NSMutableDictionary *)v37 setObject:v36 forKeyedSubscript:executableIdentifier6];
 
     if ([v12 count])
     {
@@ -138,12 +138,12 @@ LABEL_21:
       do
       {
         v40 = [v12 objectAtIndexedSubscript:v39];
-        v41 = [v40 executableIdentifier];
+        executableIdentifier7 = [v40 executableIdentifier];
 
         v42 = MEMORY[0x277CCABB0];
-        v43 = [(NSMutableDictionary *)self->_shownInTop8PerCandidate objectForKeyedSubscript:v41];
+        v43 = [(NSMutableDictionary *)self->_shownInTop8PerCandidate objectForKeyedSubscript:executableIdentifier7];
         v44 = [v42 numberWithInt:{objc_msgSend(v43, "intValue") + 1}];
-        [(NSMutableDictionary *)self->_shownInTop8PerCandidate setObject:v44 forKeyedSubscript:v41];
+        [(NSMutableDictionary *)self->_shownInTop8PerCandidate setObject:v44 forKeyedSubscript:executableIdentifier7];
 
         ++v39;
         v45 = [v12 count];
@@ -174,11 +174,11 @@ LABEL_21:
 LABEL_31:
 }
 
-+ (int64_t)rankOfEngagedSuggestion:(id)a3 inSuggestions:(id)a4
++ (int64_t)rankOfEngagedSuggestion:(id)suggestion inSuggestions:(id)suggestions
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count])
+  suggestionCopy = suggestion;
+  suggestionsCopy = suggestions;
+  if (![suggestionsCopy count])
   {
 LABEL_8:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
@@ -188,26 +188,26 @@ LABEL_8:
   v7 = 0;
   while (1)
   {
-    v8 = [v6 objectAtIndexedSubscript:v7];
-    v9 = [v8 executableIdentifier];
-    v10 = [v5 executableIdentifier];
-    if (![v9 isEqualToString:v10])
+    v8 = [suggestionsCopy objectAtIndexedSubscript:v7];
+    executableIdentifier = [v8 executableIdentifier];
+    executableIdentifier2 = [suggestionCopy executableIdentifier];
+    if (![executableIdentifier isEqualToString:executableIdentifier2])
     {
 
       goto LABEL_7;
     }
 
-    v11 = [v5 executableType];
-    v12 = [v8 executableType];
+    executableType = [suggestionCopy executableType];
+    executableType2 = [v8 executableType];
 
-    if (v11 == v12)
+    if (executableType == executableType2)
     {
       break;
     }
 
 LABEL_7:
 
-    if (++v7 >= [v6 count])
+    if (++v7 >= [suggestionsCopy count])
     {
       goto LABEL_8;
     }
@@ -217,17 +217,17 @@ LABEL_9:
   return v7;
 }
 
-- (id)filteredSuggestions:(id)a3 removeDockedApps:(BOOL)a4
+- (id)filteredSuggestions:(id)suggestions removeDockedApps:(BOOL)apps
 {
-  v4 = a4;
+  appsCopy = apps;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  suggestionsCopy = suggestions;
   v7 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -243,11 +243,11 @@ LABEL_9:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        if (v4)
+        if (appsCopy)
         {
           dockedApps = self->_dockedApps;
-          v15 = [*(*(&v19 + 1) + 8 * i) executableIdentifier];
-          v16 = [(NSSet *)dockedApps containsObject:v15];
+          executableIdentifier = [*(*(&v19 + 1) + 8 * i) executableIdentifier];
+          v16 = [(NSSet *)dockedApps containsObject:executableIdentifier];
         }
 
         else

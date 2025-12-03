@@ -1,26 +1,26 @@
 @interface ICSServiceAuthHandler
 - (AIDAServiceOwnerProtocol)serviceOwnersManager;
-- (BOOL)accountMatchesPrimaryAccount:(id)a3 service:(id)a4;
-- (ICSServiceAuthHandler)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (BOOL)accountMatchesPrimaryAccount:(id)account service:(id)service;
+- (ICSServiceAuthHandler)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (id)account;
-- (void)signInAccountForService:(id)a3 completion:(id)a4;
-- (void)signOutAccountForService:(id)a3 completion:(id)a4;
+- (void)signInAccountForService:(id)service completion:(id)completion;
+- (void)signOutAccountForService:(id)service completion:(id)completion;
 @end
 
 @implementation ICSServiceAuthHandler
 
-- (ICSServiceAuthHandler)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICSServiceAuthHandler)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = ICSServiceAuthHandler;
   v9 = [(ICSServiceAuthHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_listController, v8);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_listController, presenterCopy);
   }
 
   return v10;
@@ -28,8 +28,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -40,8 +40,8 @@
   if (!serviceOwnersManager)
   {
     v4 = objc_alloc(MEMORY[0x277CED1E8]);
-    v5 = [(AIDAAccountManager *)self->_accountManager accountStore];
-    v6 = [v4 initWithAccountStore:v5];
+    accountStore = [(AIDAAccountManager *)self->_accountManager accountStore];
+    v6 = [v4 initWithAccountStore:accountStore];
     v7 = self->_serviceOwnersManager;
     self->_serviceOwnersManager = v6;
 
@@ -51,16 +51,16 @@
   return serviceOwnersManager;
 }
 
-- (void)signInAccountForService:(id)a3 completion:(id)a4
+- (void)signInAccountForService:(id)service completion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__ICSServiceAuthHandler_signInAccountForService_completion___block_invoke;
   aBlock[3] = &unk_27A666868;
-  v8 = v7;
+  v8 = completionCopy;
   v44 = v8;
   v9 = _Block_copy(aBlock);
   v40[0] = MEMORY[0x277D85DD0];
@@ -68,7 +68,7 @@
   v40[2] = __60__ICSServiceAuthHandler_signInAccountForService_completion___block_invoke_3;
   v40[3] = &unk_27A6668E0;
   v40[4] = self;
-  v10 = v6;
+  v10 = serviceCopy;
   v41 = v10;
   v11 = v9;
   v42 = v11;
@@ -106,10 +106,10 @@
       v33 = MEMORY[0x277CCACA8];
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"ICLOUD_SERVICE_SWAP_ACCOUNT_MESSAGE" value:&stru_288487370 table:@"Localizable-AppleID"];
-      v20 = [(ICSServiceAuthHandler *)self account];
-      v21 = [v20 username];
-      v22 = [v13 username];
-      v34 = [v33 stringWithFormat:v19, v17, v21, v22];
+      account = [(ICSServiceAuthHandler *)self account];
+      username = [account username];
+      username2 = [v13 username];
+      v34 = [v33 stringWithFormat:v19, v17, username, username2];
 
       v23 = MEMORY[0x277CCACA8];
       v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -333,11 +333,11 @@ uint64_t __60__ICSServiceAuthHandler_signInAccountForService_completion___block_
   return (*(*(a1 + v6) + 16))();
 }
 
-- (void)signOutAccountForService:(id)a3 completion:(id)a4
+- (void)signOutAccountForService:(id)service completion:(id)completion
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -353,7 +353,7 @@ uint64_t __60__ICSServiceAuthHandler_signInAccountForService_completion___block_
   aBlock[2] = __61__ICSServiceAuthHandler_signOutAccountForService_completion___block_invoke;
   aBlock[3] = &unk_27A666930;
   v29 = &v30;
-  v10 = v7;
+  v10 = completionCopy;
   v28 = v10;
   v11 = _Block_copy(aBlock);
   v12 = objc_alloc_init(MEMORY[0x277CED1D8]);
@@ -362,7 +362,7 @@ uint64_t __60__ICSServiceAuthHandler_signInAccountForService_completion___block_
 
   v14 = *MEMORY[0x277CED1B0];
   v15 = *MEMORY[0x277CED1A0];
-  if (*MEMORY[0x277CED1B0] == v6)
+  if (*MEMORY[0x277CED1B0] == serviceCopy)
   {
     v18 = v31[5];
     v40[0] = *MEMORY[0x277CED1A0];
@@ -386,7 +386,7 @@ uint64_t __60__ICSServiceAuthHandler_signInAccountForService_completion___block_
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v37 = v6;
+    v37 = serviceCopy;
     _os_log_impl(&dword_275819000, v19, OS_LOG_TYPE_DEFAULT, "Attempting sign out for service: %{public}@", buf, 0xCu);
   }
 
@@ -395,7 +395,7 @@ uint64_t __60__ICSServiceAuthHandler_signInAccountForService_completion___block_
   v24[1] = 3221225472;
   v24[2] = __61__ICSServiceAuthHandler_signOutAccountForService_completion___block_invoke_96;
   v24[3] = &unk_27A666890;
-  v21 = v6;
+  v21 = serviceCopy;
   v25 = v21;
   v22 = v11;
   v26 = v22;
@@ -447,38 +447,38 @@ void __61__ICSServiceAuthHandler_signOutAccountForService_completion___block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)accountMatchesPrimaryAccount:(id)a3 service:(id)a4
+- (BOOL)accountMatchesPrimaryAccount:(id)account service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AIDAServiceOwnerProtocol *)self->_serviceOwnersManager altDSIDForAccount:v6 service:v7];
+  accountCopy = account;
+  serviceCopy = service;
+  v8 = [(AIDAServiceOwnerProtocol *)self->_serviceOwnersManager altDSIDForAccount:accountCopy service:serviceCopy];
   if (v8)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(ICSServiceAuthHandler *)self account];
-    v11 = [v10 aa_altDSID];
-    v12 = [v9 numberWithBool:{objc_msgSend(v11, "isEqualToString:", v8)}];
-    v13 = v12;
+    account = [(ICSServiceAuthHandler *)self account];
+    aa_altDSID = [account aa_altDSID];
+    aa_personID = [v9 numberWithBool:{objc_msgSend(aa_altDSID, "isEqualToString:", v8)}];
+    v13 = aa_personID;
   }
 
   else
   {
-    v10 = [(AIDAServiceOwnerProtocol *)self->_serviceOwnersManager DSIDForAccount:v6 service:v7];
+    account = [(AIDAServiceOwnerProtocol *)self->_serviceOwnersManager DSIDForAccount:accountCopy service:serviceCopy];
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(ICSServiceAuthHandler *)self account];
-    v11 = v15;
-    if (v10)
+    account2 = [(ICSServiceAuthHandler *)self account];
+    aa_altDSID = account2;
+    if (account)
     {
-      v12 = [v15 aa_personID];
-      v16 = [v14 numberWithBool:{objc_msgSend(v12, "isEqualToString:", v10)}];
-      v13 = v16;
+      aa_personID = [account2 aa_personID];
+      username = [v14 numberWithBool:{objc_msgSend(aa_personID, "isEqualToString:", account)}];
+      v13 = username;
     }
 
     else
     {
-      v12 = [v15 username];
-      v16 = [v6 username];
-      v13 = [v14 numberWithBool:{objc_msgSend(v12, "isEqualToString:", v16)}];
+      aa_personID = [account2 username];
+      username = [accountCopy username];
+      v13 = [v14 numberWithBool:{objc_msgSend(aa_personID, "isEqualToString:", username)}];
     }
   }
 

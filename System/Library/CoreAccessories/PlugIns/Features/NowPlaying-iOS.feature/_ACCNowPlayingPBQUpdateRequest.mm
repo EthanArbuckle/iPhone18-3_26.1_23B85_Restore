@@ -1,26 +1,26 @@
 @interface _ACCNowPlayingPBQUpdateRequest
-- (_ACCNowPlayingPBQUpdateRequest)initWithID:(id)a3 startIndex:(unsigned int)a4 upToCount:(unsigned int)a5 infoMask:(unsigned int)a6 allowNonLibrary:(BOOL)a7;
+- (_ACCNowPlayingPBQUpdateRequest)initWithID:(id)d startIndex:(unsigned int)index upToCount:(unsigned int)count infoMask:(unsigned int)mask allowNonLibrary:(BOOL)library;
 - (void)dealloc;
 @end
 
 @implementation _ACCNowPlayingPBQUpdateRequest
 
-- (_ACCNowPlayingPBQUpdateRequest)initWithID:(id)a3 startIndex:(unsigned int)a4 upToCount:(unsigned int)a5 infoMask:(unsigned int)a6 allowNonLibrary:(BOOL)a7
+- (_ACCNowPlayingPBQUpdateRequest)initWithID:(id)d startIndex:(unsigned int)index upToCount:(unsigned int)count infoMask:(unsigned int)mask allowNonLibrary:(BOOL)library
 {
-  v13 = a3;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = _ACCNowPlayingPBQUpdateRequest;
   v14 = [(_ACCNowPlayingPBQUpdateRequest *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_requestID, a3);
-    v15->_startIndex = a4;
-    v15->_upToCount = a5;
-    v15->_infoMask = a6;
-    v15->_allowNonLibrary = a7;
+    objc_storeStrong(&v14->_requestID, d);
+    v15->_startIndex = index;
+    v15->_upToCount = count;
+    v15->_infoMask = mask;
+    v15->_allowNonLibrary = library;
     v15->_startTimeMs = 0;
-    if (!a6)
+    if (!mask)
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {

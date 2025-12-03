@@ -2,7 +2,7 @@
 + (MTCarPlayMigrationBridge)sharedInstance;
 - (BOOL)isMigrating;
 - (MTCarPlayMigrationBridge)init;
-- (void)setIsMigrating:(BOOL)a3;
+- (void)setIsMigrating:(BOOL)migrating;
 @end
 
 @implementation MTCarPlayMigrationBridge
@@ -23,17 +23,17 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setIsMigrating:(BOOL)a3
+- (void)setIsMigrating:(BOOL)migrating
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 

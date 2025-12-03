@@ -1,23 +1,23 @@
 @interface ATWorkspaceObserver
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4;
-- (void)applicationInstallsDidCancel:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
-- (void)applicationInstallsDidPrioritize:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused;
+- (void)applicationInstallsDidCancel:(id)cancel;
+- (void)applicationInstallsDidChange:(id)change;
+- (void)applicationInstallsDidPrioritize:(id)prioritize;
+- (void)applicationsDidInstall:(id)install;
 - (void)startObserving;
 - (void)stopObserving;
 @end
 
 @implementation ATWorkspaceObserver
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
+    v6 = [changeCopy count];
     delegate = self->_delegate;
     v8[0] = 67109378;
     v8[1] = v6;
@@ -26,17 +26,17 @@
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "ATWorkspaceObserver -- Installs changed [Applications: %d] [Delegate: %{public}@]", v8, 0x12u);
   }
 
-  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsDidChange:v4];
+  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsDidChange:changeCopy];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
+    v6 = [installCopy count];
     delegate = self->_delegate;
     v8[0] = 67109378;
     v8[1] = v6;
@@ -45,17 +45,17 @@
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "ATWorkspaceObserver -- Installs completed [Applications: %d] [Delegate: %{public}@]", v8, 0x12u);
   }
 
-  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsDidInstall:v4];
+  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsDidInstall:installCopy];
 }
 
-- (void)applicationInstallsDidCancel:(id)a3
+- (void)applicationInstallsDidCancel:(id)cancel
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
+    v6 = [cancelCopy count];
     delegate = self->_delegate;
     v8[0] = 67109378;
     v8[1] = v6;
@@ -64,19 +64,19 @@
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "ATWorkspaceObserver -- Installs canceled [Applications: %d] [Delegate: %{public}@]", v8, 0x12u);
   }
 
-  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsDidCancel:v4];
+  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsDidCancel:cancelCopy];
 }
 
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  prioritizedCopy = prioritized;
+  pausedCopy = paused;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 count];
-    v10 = [v7 count];
+    v9 = [prioritizedCopy count];
+    v10 = [pausedCopy count];
     delegate = self->_delegate;
     v12[0] = 67109634;
     v12[1] = v9;
@@ -87,17 +87,17 @@
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "ATWorkspaceObserver -- Prioritization notification arrived [Ordered: %d] [Paused: %d] [Delegate: %{public}@]", v12, 0x18u);
   }
 
-  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsArePrioritized:v6 arePaused:v7];
+  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsArePrioritized:prioritizedCopy arePaused:pausedCopy];
 }
 
-- (void)applicationInstallsDidPrioritize:(id)a3
+- (void)applicationInstallsDidPrioritize:(id)prioritize
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prioritizeCopy = prioritize;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
+    v6 = [prioritizeCopy count];
     delegate = self->_delegate;
     v8[0] = 67109378;
     v8[1] = v6;
@@ -106,7 +106,7 @@
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "ATWorkspaceObserver -- Prioritization Changed [Ordered: %d] [Delegate: %{public}@]", v8, 0x12u);
   }
 
-  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsDidPrioritize:v4];
+  [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationInstallsDidPrioritize:prioritizeCopy];
 }
 
 - (void)stopObserving
@@ -118,8 +118,8 @@
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "ATWorkspaceObserver -- stop observing", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v4 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 }
 
 - (void)startObserving
@@ -131,8 +131,8 @@
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "ATWorkspaceObserver -- start observing", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v4 addObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 }
 
 @end

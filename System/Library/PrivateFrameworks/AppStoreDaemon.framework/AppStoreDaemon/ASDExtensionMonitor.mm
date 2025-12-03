@@ -1,23 +1,23 @@
 @interface ASDExtensionMonitor
-- (ASDExtensionMonitor)initWithAttributes:(id)a3;
+- (ASDExtensionMonitor)initWithAttributes:(id)attributes;
 - (NSArray)extensions;
 - (id)updateHandler;
 - (void)dealloc;
-- (void)setUpdateHandler:(id)a3;
+- (void)setUpdateHandler:(id)handler;
 @end
 
 @implementation ASDExtensionMonitor
 
-- (ASDExtensionMonitor)initWithAttributes:(id)a3
+- (ASDExtensionMonitor)initWithAttributes:(id)attributes
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v18.receiver = self;
   v18.super_class = ASDExtensionMonitor;
   v5 = [(ASDExtensionMonitor *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributesCopy copy];
     extensionAttributes = v5->_extensionAttributes;
     v5->_extensionAttributes = v6;
 
@@ -92,11 +92,11 @@
   return v4;
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   updateHandler = self->_updateHandler;
   self->_updateHandler = v5;

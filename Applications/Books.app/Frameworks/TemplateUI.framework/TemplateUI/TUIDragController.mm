@@ -1,22 +1,22 @@
 @interface TUIDragController
-+ (BOOL)viewSupportsDrag:(id)a3;
++ (BOOL)viewSupportsDrag:(id)drag;
 + (id)sharedInstance;
-- (BOOL)_dragInteraction:(id)a3 sessionSupportsSystemDrag:(id)a4;
-- (BOOL)_dragSession:(id)a3 containsView:(id)a4;
+- (BOOL)_dragInteraction:(id)interaction sessionSupportsSystemDrag:(id)drag;
+- (BOOL)_dragSession:(id)session containsView:(id)view;
 - (TUIDragController)init;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dragInteractionWithActionHandlerDelegate:(id)a3 dragDelegate:(id)a4;
-- (void)_notifyDelegateOfViewDraggingStateForSession:(id)a3 interaction:(id)a4 dropOperation:(unint64_t)a5;
-- (void)_notifyObserversWithSession:(id)a3;
-- (void)_setAlpha:(double)a3 forSessionDragItems:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)removeObserver:(id)a3;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dragInteractionWithActionHandlerDelegate:(id)delegate dragDelegate:(id)dragDelegate;
+- (void)_notifyDelegateOfViewDraggingStateForSession:(id)session interaction:(id)interaction dropOperation:(unint64_t)operation;
+- (void)_notifyObserversWithSession:(id)session;
+- (void)_setAlpha:(double)alpha forSessionDragItems:(id)items;
+- (void)addObserver:(id)observer;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation TUIDragController
@@ -50,32 +50,32 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableArray *)self->_observers addObject:v4];
+  [(NSMutableArray *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableArray *)self->_observers removeObject:v4];
+  [(NSMutableArray *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)_setAlpha:(double)a3 forSessionDragItems:(id)a4
+- (void)_setAlpha:(double)alpha forSessionDragItems:(id)items
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a4 items];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  items = [items items];
+  v6 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -87,43 +87,43 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         v11 = objc_opt_class();
-        v12 = [v10 _privateLocalContext];
-        v13 = TUIDynamicCast(v11, v12);
+        _privateLocalContext = [v10 _privateLocalContext];
+        v13 = TUIDynamicCast(v11, _privateLocalContext);
 
-        v14 = [v13 view];
-        [v14 setAlpha:a3];
+        view = [v13 view];
+        [view setAlpha:alpha];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)dragInteractionWithActionHandlerDelegate:(id)a3 dragDelegate:(id)a4
+- (id)dragInteractionWithActionHandlerDelegate:(id)delegate dragDelegate:(id)dragDelegate
 {
-  v6 = a4;
-  v7 = a3;
+  dragDelegateCopy = dragDelegate;
+  delegateCopy = delegate;
   v8 = [[_TUIDragInteraction alloc] initWithDelegate:self];
-  [(_TUIDragInteraction *)v8 setActionHandlerDelegate:v7];
+  [(_TUIDragInteraction *)v8 setActionHandlerDelegate:delegateCopy];
 
-  [(_TUIDragInteraction *)v8 setDragDelegate:v6];
+  [(_TUIDragInteraction *)v8 setDragDelegate:dragDelegateCopy];
 
   return v8;
 }
 
-- (void)_notifyObserversWithSession:(id)a3
+- (void)_notifyObserversWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_accessLock);
   v5 = [(NSMutableArray *)self->_observers copy];
   os_unfair_lock_unlock(&self->_accessLock);
@@ -147,7 +147,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) dragController:self dragSessionDidEnd:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v10) dragController:self dragSessionDidEnd:{sessionCopy, v11}];
         v10 = v10 + 1;
       }
 
@@ -159,21 +159,21 @@
   }
 }
 
-- (void)_notifyDelegateOfViewDraggingStateForSession:(id)a3 interaction:(id)a4 dropOperation:(unint64_t)a5
+- (void)_notifyDelegateOfViewDraggingStateForSession:(id)session interaction:(id)interaction dropOperation:(unint64_t)operation
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  interactionCopy = interaction;
   v9 = objc_opt_class();
-  v22 = v8;
-  v21 = TUIDynamicCast(v9, v8);
-  v10 = [v21 actionHandlerDelegate];
+  v22 = interactionCopy;
+  v21 = TUIDynamicCast(v9, interactionCopy);
+  actionHandlerDelegate = [v21 actionHandlerDelegate];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v24 = v7;
-  v11 = [v7 items];
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v24 = sessionCopy;
+  items = [sessionCopy items];
+  v12 = [items countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -184,45 +184,45 @@
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(items);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
         v17 = objc_opt_class();
-        v18 = [v16 _privateLocalContext];
-        v19 = TUIDynamicCast(v17, v18);
+        _privateLocalContext = [v16 _privateLocalContext];
+        v19 = TUIDynamicCast(v17, _privateLocalContext);
 
-        LODWORD(v18) = self->_isDragging;
-        v20 = [v19 view];
-        if (v18 == 1)
+        LODWORD(_privateLocalContext) = self->_isDragging;
+        view = [v19 view];
+        if (_privateLocalContext == 1)
         {
-          [v10 didBeginDraggingView:v20];
+          [actionHandlerDelegate didBeginDraggingView:view];
         }
 
         else
         {
-          [v10 didEndDraggingView:v20];
+          [actionHandlerDelegate didEndDraggingView:view];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v13 = [items countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v13);
   }
 
-  [v10 didEndDragSession:v24 dropOperation:a5];
+  [actionHandlerDelegate didEndDragSession:v24 dropOperation:operation];
 }
 
-- (BOOL)_dragSession:(id)a3 containsView:(id)a4
+- (BOOL)_dragSession:(id)session containsView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a3 items];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  items = [session items];
+  v7 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -232,24 +232,24 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = objc_opt_class();
-        v12 = [v10 _privateLocalContext];
-        v13 = TUIDynamicCast(v11, v12);
+        _privateLocalContext = [v10 _privateLocalContext];
+        v13 = TUIDynamicCast(v11, _privateLocalContext);
 
-        v14 = [v13 view];
+        view = [v13 view];
 
-        if (v14 == v5)
+        if (view == viewCopy)
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -264,98 +264,98 @@ LABEL_11:
   return v7;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 view];
-  [v6 locationInView:v8];
-  v9 = [(TUIDragController *)self dragInteraction:v7 itemsForAddingToSession:v6 withTouchAtPoint:?];
+  sessionCopy = session;
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  [sessionCopy locationInView:view];
+  v9 = [(TUIDragController *)self dragInteraction:interactionCopy itemsForAddingToSession:sessionCopy withTouchAtPoint:?];
 
   return v9;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a4;
-  v8 = a3;
+  itemCopy = item;
+  interactionCopy = interaction;
   v9 = objc_opt_class();
-  v10 = [v7 _privateLocalContext];
-  v11 = TUIDynamicCast(v9, v10);
+  _privateLocalContext = [itemCopy _privateLocalContext];
+  v11 = TUIDynamicCast(v9, _privateLocalContext);
 
-  v12 = [v11 view];
+  view = [v11 view];
   objc_opt_class();
-  v13 = TUIPlatformAncestorOfClass(v12);
-  v14 = [v13 feedControllerHost];
-  v15 = [v14 hostingContainerView];
+  v13 = TUIPlatformAncestorOfClass(view);
+  feedControllerHost = [v13 feedControllerHost];
+  hostingContainerView = [feedControllerHost hostingContainerView];
 
-  v16 = [v12 superview];
-  [v12 center];
-  [v16 convertPoint:v15 toView:?];
+  superview = [view superview];
+  [view center];
+  [superview convertPoint:hostingContainerView toView:?];
   v18 = v17;
   v20 = v19;
 
   dragBackgroundColor = self->_dragBackgroundColor;
-  v22 = [v8 view];
+  view2 = [interactionCopy view];
 
-  v23 = [v22 traitCollection];
-  v24 = [(UIColor *)dragBackgroundColor resolvedColorWithTraitCollection:v23];
+  traitCollection = [view2 traitCollection];
+  v24 = [(UIColor *)dragBackgroundColor resolvedColorWithTraitCollection:traitCollection];
 
-  v25 = sub_13248C(v7, v15, v24, v18, v20);
+  v25 = sub_13248C(itemCopy, hostingContainerView, v24, v18, v20);
 
   return v25;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v8 = a4;
-  v9 = a3;
-  [(TUIDragController *)self _notifyObserversWithSession:v8];
+  sessionCopy = session;
+  interactionCopy = interaction;
+  [(TUIDragController *)self _notifyObserversWithSession:sessionCopy];
   [(TUIDragController *)self _updateDraggingState:0];
-  [(TUIDragController *)self _setAlpha:v8 forSessionDragItems:1.0];
-  [(TUIDragController *)self _notifyDelegateOfViewDraggingStateForSession:v8 interaction:v9 dropOperation:a5];
+  [(TUIDragController *)self _setAlpha:sessionCopy forSessionDragItems:1.0];
+  [(TUIDragController *)self _notifyDelegateOfViewDraggingStateForSession:sessionCopy interaction:interactionCopy dropOperation:operation];
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 view];
-  v12 = [v11 hitTest:0 withEvent:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  view = [interactionCopy view];
+  v12 = [view hitTest:0 withEvent:{x, y}];
 
   v13 = objc_opt_class();
   v14 = TUIPlatformAncestorOfClassAndProtocol(v12, v13, &OBJC_PROTOCOL___TUIReusableRenderView);
   if (v14)
   {
     v15 = v14;
-    v45 = self;
+    selfCopy = self;
     v46 = v12;
-    v47 = v10;
-    v48 = v9;
+    v47 = sessionCopy;
+    v48 = interactionCopy;
     while (1)
     {
       v16 = v15;
       v17 = objc_opt_class();
-      v18 = [v16 layoutAttributes];
+      layoutAttributes = [v16 layoutAttributes];
 
-      v19 = TUIDynamicCast(v17, v18);
+      v19 = TUIDynamicCast(v17, layoutAttributes);
 
       v20 = objc_opt_class();
-      v21 = [v19 renderModel];
-      v22 = TUIDynamicCast(v20, v21);
+      renderModel = [v19 renderModel];
+      v22 = TUIDynamicCast(v20, renderModel);
 
       v23 = v22;
       v24 = sub_133198(v23);
       if (v24)
       {
         v25 = [_TUIDragTriggerInfo alloc];
-        v26 = [v23 actionHandler];
-        v27 = [v26 actionObject];
-        v28 = [v24 behavior];
-        v29 = [v24 arguments];
-        v30 = [(_TUIDragTriggerInfo *)v25 initWithActionObject:v27 behavior:v28 arguments:v29];
+        actionHandler = [v23 actionHandler];
+        actionObject = [actionHandler actionObject];
+        behavior = [v24 behavior];
+        arguments = [v24 arguments];
+        v30 = [(_TUIDragTriggerInfo *)v25 initWithActionObject:actionObject behavior:behavior arguments:arguments];
       }
 
       else
@@ -363,15 +363,15 @@ LABEL_11:
         v30 = 0;
       }
 
-      v31 = [(_TUIDragTriggerInfo *)v30 behavior];
-      if (v31)
+      behavior2 = [(_TUIDragTriggerInfo *)v30 behavior];
+      if (behavior2)
       {
         break;
       }
 
-      v32 = [v16 superview];
+      superview = [v16 superview];
       v33 = objc_opt_class();
-      v15 = TUIPlatformAncestorOfClassAndProtocol(v32, v33, &OBJC_PROTOCOL___TUIReusableRenderView);
+      v15 = TUIPlatformAncestorOfClassAndProtocol(superview, v33, &OBJC_PROTOCOL___TUIReusableRenderView);
 
       if (!v15)
       {
@@ -382,27 +382,27 @@ LABEL_11:
       }
     }
 
-    v36 = v31;
-    v10 = v47;
-    if ([(TUIDragController *)v45 _dragSession:v47 containsView:v16])
+    v36 = behavior2;
+    sessionCopy = v47;
+    if ([(TUIDragController *)selfCopy _dragSession:v47 containsView:v16])
     {
 
       v34 = 0;
       v35 = 0;
-      v9 = v48;
+      interactionCopy = v48;
       goto LABEL_16;
     }
 
     v37 = objc_opt_class();
     v38 = TUIDynamicCast(v37, v48);
-    v39 = [v38 actionHandlerDelegate];
+    actionHandlerDelegate = [v38 actionHandlerDelegate];
 
-    [v39 didBeginDraggingView:v16];
+    [actionHandlerDelegate didBeginDraggingView:v16];
     v35 = [[_TUIDragPreviewInfo alloc] initWithDragInfo:v30 view:v16];
-    v40 = [(_TUIDragTriggerInfo *)v30 actionObject];
-    v41 = [(_TUIDragTriggerInfo *)v30 behavior];
-    v42 = [(_TUIDragTriggerInfo *)v30 arguments];
-    v43 = [v39 dragItemForObject:v40 withName:v41 arguments:v42];
+    actionObject2 = [(_TUIDragTriggerInfo *)v30 actionObject];
+    behavior3 = [(_TUIDragTriggerInfo *)v30 behavior];
+    arguments2 = [(_TUIDragTriggerInfo *)v30 arguments];
+    v43 = [actionHandlerDelegate dragItemForObject:actionObject2 withName:behavior3 arguments:arguments2];
 
     [v43 _setPrivateLocalContext:v35];
     if (v43)
@@ -417,8 +417,8 @@ LABEL_11:
     }
 
 LABEL_15:
-    v10 = v47;
-    v9 = v48;
+    sessionCopy = v47;
+    interactionCopy = v48;
 LABEL_16:
     v12 = v46;
   }
@@ -433,128 +433,128 @@ LABEL_16:
   return v34;
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   v9 = objc_opt_class();
-  v10 = TUIDynamicCast(v9, v7);
-  v11 = [v10 dragDelegate];
-  v12 = [v11 layoutDirection];
+  v10 = TUIDynamicCast(v9, interactionCopy);
+  dragDelegate = [v10 dragDelegate];
+  layoutDirection = [dragDelegate layoutDirection];
 
-  if (v12 == &dword_0 + 2)
+  if (layoutDirection == &dword_0 + 2)
   {
     v13 = objc_opt_class();
-    v14 = [v8 _privateLocalContext];
-    v15 = TUIDynamicCast(v13, v14);
+    _privateLocalContext = [itemCopy _privateLocalContext];
+    v15 = TUIDynamicCast(v13, _privateLocalContext);
 
-    v16 = [v15 view];
-    v17 = [v16 window];
-    v18 = [v16 superview];
-    [v16 center];
-    [v18 convertPoint:v17 toView:?];
+    view = [v15 view];
+    window = [view window];
+    superview = [view superview];
+    [view center];
+    [superview convertPoint:window toView:?];
     x = v19;
     y = v21;
   }
 
   else
   {
-    v17 = 0;
+    window = 0;
     x = CGPointZero.x;
     y = CGPointZero.y;
   }
 
   dragBackgroundColor = self->_dragBackgroundColor;
-  v24 = [v7 view];
-  v25 = [v24 traitCollection];
-  v26 = [(UIColor *)dragBackgroundColor resolvedColorWithTraitCollection:v25];
+  view2 = [interactionCopy view];
+  traitCollection = [view2 traitCollection];
+  v26 = [(UIColor *)dragBackgroundColor resolvedColorWithTraitCollection:traitCollection];
 
-  v27 = sub_13248C(v8, v17, v26, x, y);
+  v27 = sub_13248C(itemCopy, window, v26, x, y);
 
   return v27;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  animatorCopy = animator;
   [(TUIDragController *)self _updateDraggingState:1];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_132DC4;
   v13[3] = &unk_262538;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
-  [v10 addCompletion:v13];
+  v14 = sessionCopy;
+  v15 = interactionCopy;
+  v11 = interactionCopy;
+  v12 = sessionCopy;
+  [animatorCopy addCompletion:v13];
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  animatorCopy = animator;
+  itemCopy = item;
+  interactionCopy = interaction;
   v10 = objc_opt_class();
-  v11 = [v8 _privateLocalContext];
+  _privateLocalContext = [itemCopy _privateLocalContext];
 
-  v12 = TUIDynamicCast(v10, v11);
+  v12 = TUIDynamicCast(v10, _privateLocalContext);
 
-  v13 = [v12 view];
+  view = [v12 view];
   v14 = objc_opt_class();
-  v15 = TUIDynamicCast(v14, v9);
+  v15 = TUIDynamicCast(v14, interactionCopy);
 
-  v16 = [v15 dragDelegate];
-  if ([v16 layoutDirection] == &dword_0 + 2)
+  dragDelegate = [v15 dragDelegate];
+  if ([dragDelegate layoutDirection] == &dword_0 + 2)
   {
-    v17 = [v13 window];
+    window = [view window];
   }
 
   else
   {
-    v17 = 0;
+    window = 0;
   }
 
-  [v17 setUserInteractionEnabled:0];
+  [window setUserInteractionEnabled:0];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_132FD8;
   v20[3] = &unk_2614B8;
-  v21 = v13;
-  v22 = v17;
-  v18 = v17;
-  v19 = v13;
-  [v7 addCompletion:v20];
+  v21 = view;
+  v22 = window;
+  v18 = window;
+  v19 = view;
+  [animatorCopy addCompletion:v20];
 }
 
-- (BOOL)_dragInteraction:(id)a3 sessionSupportsSystemDrag:(id)a4
+- (BOOL)_dragInteraction:(id)interaction sessionSupportsSystemDrag:(id)drag
 {
   v8 = kUINSUserActivityInternalType;
-  v4 = a4;
+  dragCopy = drag;
   v5 = [NSArray arrayWithObjects:&v8 count:1];
-  v6 = [v4 hasItemsConformingToTypeIdentifiers:{v5, v8}];
+  v6 = [dragCopy hasItemsConformingToTypeIdentifiers:{v5, v8}];
 
   return v6;
 }
 
-+ (BOOL)viewSupportsDrag:(id)a3
++ (BOOL)viewSupportsDrag:(id)drag
 {
-  v3 = a3;
+  dragCopy = drag;
   v4 = objc_opt_class();
-  v5 = [v3 layoutAttributes];
+  layoutAttributes = [dragCopy layoutAttributes];
 
-  v6 = TUIDynamicCast(v4, v5);
+  v6 = TUIDynamicCast(v4, layoutAttributes);
 
   v7 = objc_opt_class();
-  v8 = [v6 renderModel];
-  v9 = TUIDynamicCast(v7, v8);
+  renderModel = [v6 renderModel];
+  v9 = TUIDynamicCast(v7, renderModel);
 
   v10 = sub_133198(v9);
-  LOBYTE(v8) = v10 != 0;
+  LOBYTE(renderModel) = v10 != 0;
 
-  return v8;
+  return renderModel;
 }
 
 @end

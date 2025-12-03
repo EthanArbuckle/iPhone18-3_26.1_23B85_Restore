@@ -5,13 +5,13 @@
 - (BOOL)_omitsInlineTitle;
 - (UIImage)image;
 - (UIMenuElement)initWithCoder:(NSCoder *)coder;
-- (UIMenuElement)initWithTitle:(id)a3 image:(id)a4 imageName:(id)a5;
+- (UIMenuElement)initWithTitle:(id)title image:(id)image imageName:(id)name;
 - (id)_customContentView;
 - (id)_safeCopy;
-- (void)_setImage:(id)a3;
-- (void)_setSubtitle:(id)a3;
-- (void)_setTitle:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setImage:(id)image;
+- (void)_setSubtitle:(id)subtitle;
+- (void)_setTitle:(id)title;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIMenuElement
@@ -19,10 +19,10 @@
 - (UIImage)image
 {
   p_imageOrName = &self->__imageOrName;
-  v3 = [(_UIMenuImageOrName *)self->__imageOrName _asMenuElementImageName];
-  if (v3)
+  _asMenuElementImageName = [(_UIMenuImageOrName *)self->__imageOrName _asMenuElementImageName];
+  if (_asMenuElementImageName)
   {
-    v4 = [UIImage _systemImageNamed:v3];
+    v4 = [UIImage _systemImageNamed:_asMenuElementImageName];
     v5 = v4;
     if (v4)
     {
@@ -31,20 +31,20 @@
 
     else
     {
-      v6 = _UIImageWithName(v3);
+      v6 = _UIImageWithName(_asMenuElementImageName);
     }
 
-    v7 = v6;
+    _asMenuElementImage = v6;
 
-    objc_storeStrong(p_imageOrName, v7);
+    objc_storeStrong(p_imageOrName, _asMenuElementImage);
   }
 
   else
   {
-    v7 = [(_UIMenuImageOrName *)*p_imageOrName _asMenuElementImage];
+    _asMenuElementImage = [(_UIMenuImageOrName *)*p_imageOrName _asMenuElementImage];
   }
 
-  return v7;
+  return _asMenuElementImage;
 }
 
 - (BOOL)_isVisible
@@ -55,13 +55,13 @@
     return ([(UIMenuElement *)self attributes]& 4) == 0;
   }
 
-  v4 = self;
+  selfCopy = self;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(UIMenuElement *)v4 children];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  children = [(UIMenuElement *)selfCopy children];
+  v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -72,7 +72,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) _isVisible])
@@ -82,7 +82,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -92,8 +92,8 @@
     }
   }
 
-  v5 = [(UIMenuElement *)v4 headerView];
-  v3 = v5 != 0;
+  children = [(UIMenuElement *)selfCopy headerView];
+  v3 = children != 0;
 LABEL_13:
 
   return v3;
@@ -114,13 +114,13 @@ LABEL_13:
 
 - (BOOL)_omitsInlineTitle
 {
-  v3 = [(UIMenuElement *)self _isInlineGroup];
-  if (v3)
+  _isInlineGroup = [(UIMenuElement *)self _isInlineGroup];
+  if (_isInlineGroup)
   {
-    LOBYTE(v3) = [(UIMenuElement *)self behaviorOptions]& 1;
+    LOBYTE(_isInlineGroup) = [(UIMenuElement *)self behaviorOptions]& 1;
   }
 
-  return v3;
+  return _isInlineGroup;
 }
 
 - (id)_customContentView
@@ -128,15 +128,15 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIMenuElement *)self contentView];
+    contentView = [(UIMenuElement *)self contentView];
   }
 
   else
   {
-    v3 = 0;
+    contentView = 0;
   }
 
-  return v3;
+  return contentView;
 }
 
 - (BOOL)_canBeHighlighted
@@ -152,8 +152,8 @@ LABEL_13:
     return ([(UIMenuElement *)self attributes]& 1) == 0;
   }
 
-  v3 = [(UIMenuElement *)self primaryActionHandler];
-  v4 = v3 != 0;
+  primaryActionHandler = [(UIMenuElement *)self primaryActionHandler];
+  v4 = primaryActionHandler != 0;
 
   return v4;
 }
@@ -220,30 +220,30 @@ LABEL_13:
     else
     {
       internalIdentifier = [MEMORY[0x1E696AFB0] UUID];
-      v23 = [internalIdentifier UUIDString];
+      uUIDString = [internalIdentifier UUIDString];
       v24 = v5->__internalIdentifier;
-      v5->__internalIdentifier = v23;
+      v5->__internalIdentifier = uUIDString;
     }
   }
 
   return v5;
 }
 
-- (UIMenuElement)initWithTitle:(id)a3 image:(id)a4 imageName:(id)a5
+- (UIMenuElement)initWithTitle:(id)title image:(id)image imageName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  imageCopy = image;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = UIMenuElement;
   v11 = [(UIMenuElement *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     v15 = v14;
     if (v14)
     {
@@ -252,100 +252,100 @@ LABEL_13:
 
     else
     {
-      v16 = v9;
+      v16 = imageCopy;
     }
 
     objc_storeStrong(&v11->__imageOrName, v16);
 
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     internalIdentifier = v11->__internalIdentifier;
-    v11->__internalIdentifier = v18;
+    v11->__internalIdentifier = uUIDString;
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  [v12 encodeObject:self->_title forKey:@"title"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_title forKey:@"title"];
   attributedTitle = self->_attributedTitle;
   if (attributedTitle)
   {
-    [v12 encodeObject:attributedTitle forKey:@"attributedTitle"];
+    [coderCopy encodeObject:attributedTitle forKey:@"attributedTitle"];
   }
 
   subtitle = self->_subtitle;
   if (subtitle)
   {
-    [v12 encodeObject:subtitle forKey:@"subtitle"];
+    [coderCopy encodeObject:subtitle forKey:@"subtitle"];
   }
 
-  v6 = [(_UIMenuImageOrName *)self->__imageOrName _asMenuElementImageName];
-  v7 = [(_UIMenuImageOrName *)self->__imageOrName _asMenuElementImage];
-  if (v6)
+  _asMenuElementImageName = [(_UIMenuImageOrName *)self->__imageOrName _asMenuElementImageName];
+  _asMenuElementImage = [(_UIMenuImageOrName *)self->__imageOrName _asMenuElementImage];
+  if (_asMenuElementImageName)
   {
     v8 = @"imageName";
-    v9 = v12;
-    v10 = v6;
+    v9 = coderCopy;
+    v10 = _asMenuElementImageName;
   }
 
   else
   {
-    v11 = v12;
-    if (!v7)
+    v11 = coderCopy;
+    if (!_asMenuElementImage)
     {
       goto LABEL_10;
     }
 
     v8 = @"image";
-    v9 = v12;
-    v10 = v7;
+    v9 = coderCopy;
+    v10 = _asMenuElementImage;
   }
 
   [v9 encodeObject:v10 forKey:v8];
-  v11 = v12;
+  v11 = coderCopy;
 LABEL_10:
   [v11 encodeObject:self->_accessibilityIdentifier forKey:@"accessibilityIdentifier"];
-  [v12 encodeInteger:self->__preferredDisplayMode forKey:@"preferredDisplayMode"];
+  [coderCopy encodeInteger:self->__preferredDisplayMode forKey:@"preferredDisplayMode"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [v12 encodeObject:self->__internalIdentifier forKey:@"internalIdentifier"];
+    [coderCopy encodeObject:self->__internalIdentifier forKey:@"internalIdentifier"];
   }
 }
 
-- (void)_setTitle:(id)a3
+- (void)_setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     title = self->_title;
     self->_title = v5;
   }
 }
 
-- (void)_setSubtitle:(id)a3
+- (void)_setSubtitle:(id)subtitle
 {
-  if (self->_subtitle != a3)
+  if (self->_subtitle != subtitle)
   {
-    v5 = [a3 copy];
+    v5 = [subtitle copy];
     subtitle = self->_subtitle;
     self->_subtitle = v5;
   }
 }
 
-- (void)_setImage:(id)a3
+- (void)_setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   imageOrName = self->__imageOrName;
   p_imageOrName = &self->__imageOrName;
-  if (imageOrName != v5)
+  if (imageOrName != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_imageOrName, a3);
-    v5 = v8;
+    v8 = imageCopy;
+    objc_storeStrong(p_imageOrName, image);
+    imageCopy = v8;
   }
 }
 

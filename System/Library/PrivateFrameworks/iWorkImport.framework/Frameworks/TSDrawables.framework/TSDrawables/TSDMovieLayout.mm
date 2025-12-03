@@ -1,23 +1,23 @@
 @interface TSDMovieLayout
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
 - (TSDMovieInfo)movieInfo;
-- (TSDMovieLayout)initWithInfo:(id)a3;
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4;
+- (TSDMovieLayout)initWithInfo:(id)info;
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform;
 - (id)computeLayoutGeometry;
 - (id)i_computeWrapPath;
 - (id)layoutGeometryFromInfo;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)processChangedProperty:(int)a3;
+- (void)processChangedProperty:(int)property;
 @end
 
 @implementation TSDMovieLayout
 
-- (TSDMovieLayout)initWithInfo:(id)a3
+- (TSDMovieLayout)initWithInfo:(id)info
 {
   v8.receiver = self;
   v8.super_class = TSDMovieLayout;
-  v3 = [(TSDMediaLayout *)&v8 initWithInfo:a3];
+  v3 = [(TSDMediaLayout *)&v8 initWithInfo:info];
   v6 = v3;
   if (v3)
   {
@@ -27,12 +27,12 @@
   return v6;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v7.receiver = self;
   v7.super_class = TSDMovieLayout;
   [(TSDMediaLayout *)&v7 processChangedProperty:?];
-  if (a3 == 517)
+  if (property == 517)
   {
     objc_msgSend_invalidateExteriorWrap(self, v5, v6);
   }
@@ -54,17 +54,17 @@
   if (self->_dynamicInfoGeometry)
   {
     v3 = [TSDLayoutGeometry alloc];
-    v5 = objc_msgSend_initWithInfoGeometry_(v3, v4, self->_dynamicInfoGeometry);
+    layoutGeometryFromInfo = objc_msgSend_initWithInfoGeometry_(v3, v4, self->_dynamicInfoGeometry);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = TSDMovieLayout;
-    v5 = [(TSDLayout *)&v7 layoutGeometryFromInfo];
+    layoutGeometryFromInfo = [(TSDLayout *)&v7 layoutGeometryFromInfo];
   }
 
-  return v5;
+  return layoutGeometryFromInfo;
 }
 
 - (TSDMovieInfo)movieInfo
@@ -211,27 +211,27 @@ LABEL_24:
   return v65;
 }
 
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = [TSDBezierPathSource alloc];
   v11 = objc_msgSend_initWithNaturalSize_(v8, v9, v10, width, height);
-  v12 = *&a4->c;
-  v17[0] = *&a4->a;
+  v12 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v12;
-  v17[2] = *&a4->tx;
+  v17[2] = *&transform->tx;
   objc_msgSend_scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform_withStartingPathSource_(self, v13, v17, v11);
   v15 = v14;
 
   return v15;
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   memset(&v21, 0, sizeof(v21));
-  v5 = objc_msgSend_geometry(self, a2, a3);
+  v5 = objc_msgSend_geometry(self, a2, root);
   v8 = v5;
   if (v5)
   {
@@ -243,7 +243,7 @@ LABEL_24:
     memset(&v21, 0, sizeof(v21));
   }
 
-  if (v3)
+  if (rootCopy)
   {
     v11 = objc_msgSend_parent(self, v9, v10);
 

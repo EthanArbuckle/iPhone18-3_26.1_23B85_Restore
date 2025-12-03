@@ -1,12 +1,12 @@
 @interface FigCaptureImageMotionDetector
 - ($5D018791884760D46230C39DEE7E58E3)motionStatistics;
 - (FigCaptureImageMotionDetector)init;
-- (FigCaptureImageMotionDetector)initWithWidth:(int)a3 height:(int)a4 maximumSearchRange:(int)a5 frameRingSize:(int)a6;
-- (int)setCentralROIAndGetRect:(CGRect *)a3;
-- (int)setRoi:(CGRect)a3 actualROI:(CGRect *)a4;
-- (uint64_t)_allocateArrays:(int)a3 height:(size_t)count frameRingSize:;
+- (FigCaptureImageMotionDetector)initWithWidth:(int)width height:(int)height maximumSearchRange:(int)range frameRingSize:(int)size;
+- (int)setCentralROIAndGetRect:(CGRect *)rect;
+- (int)setRoi:(CGRect)roi actualROI:(CGRect *)i;
+- (uint64_t)_allocateArrays:(int)arrays height:(size_t)count frameRingSize:;
 - (uint64_t)_computeStatistics;
-- (uint64_t)processPixelBuffer:(void *)a3 metadataDictionary:;
+- (uint64_t)processPixelBuffer:(void *)buffer metadataDictionary:;
 - (void)_freeAllocatedArrays;
 - (void)dealloc;
 - (void)resetProcessingState;
@@ -38,37 +38,37 @@
   return v3;
 }
 
-- (FigCaptureImageMotionDetector)initWithWidth:(int)a3 height:(int)a4 maximumSearchRange:(int)a5 frameRingSize:(int)a6
+- (FigCaptureImageMotionDetector)initWithWidth:(int)width height:(int)height maximumSearchRange:(int)range frameRingSize:(int)size
 {
-  v6 = self;
-  if (a3 < 2 || a4 <= 1)
+  selfCopy = self;
+  if (width < 2 || height <= 1)
   {
     [FigCaptureImageMotionDetector initWithWidth:height:maximumSearchRange:frameRingSize:];
     goto LABEL_12;
   }
 
-  if (a5 < 0)
+  if (range < 0)
   {
     [FigCaptureImageMotionDetector initWithWidth:height:maximumSearchRange:frameRingSize:];
     goto LABEL_12;
   }
 
-  v9 = *&a6;
+  v9 = *&size;
   v11 = [(FigCaptureImageMotionDetector *)self init];
-  v6 = v11;
+  selfCopy = v11;
   if (v11)
   {
-    v11->_width = a3;
-    v11->_height = a4;
-    v11->_maximumSearchRange = a5;
-    if ([(FigCaptureImageMotionDetector *)v11 _allocateArrays:a3 height:a4 frameRingSize:v9])
+    v11->_width = width;
+    v11->_height = height;
+    v11->_maximumSearchRange = range;
+    if ([(FigCaptureImageMotionDetector *)v11 _allocateArrays:width height:height frameRingSize:v9])
     {
       [FigCaptureImageMotionDetector initWithWidth:height:maximumSearchRange:frameRingSize:];
     }
 
     else
     {
-      if (![(FigCaptureImageMotionDetector *)v6 setCentralROIAndGetRect:0])
+      if (![(FigCaptureImageMotionDetector *)selfCopy setCentralROIAndGetRect:0])
       {
         goto LABEL_5;
       }
@@ -82,14 +82,14 @@ LABEL_12:
   }
 
 LABEL_5:
-  v6 = v6;
-  v12 = v6;
+  selfCopy = selfCopy;
+  v12 = selfCopy;
 LABEL_6:
 
   return v12;
 }
 
-- (int)setRoi:(CGRect)a3 actualROI:(CGRect *)a4
+- (int)setRoi:(CGRect)roi actualROI:(CGRect *)i
 {
   if (self->_imgProj.count)
   {
@@ -97,7 +97,7 @@ LABEL_6:
     return -12782;
   }
 
-  v6 = pixelSumComputeCompatibleROI(self->_width, a3.origin.x);
+  v6 = pixelSumComputeCompatibleROI(self->_width, roi.origin.x);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -177,12 +177,12 @@ LABEL_14:
     return -12782;
   }
 
-  if (a4)
+  if (i)
   {
-    a4->origin.x = v6;
-    a4->origin.y = v8;
-    a4->size.width = v10;
-    a4->size.height = v12;
+    i->origin.x = v6;
+    i->origin.y = v8;
+    i->size.width = v10;
+    i->size.height = v12;
   }
 
   result = 0;
@@ -195,9 +195,9 @@ LABEL_14:
   return result;
 }
 
-- (int)setCentralROIAndGetRect:(CGRect *)a3
+- (int)setCentralROIAndGetRect:(CGRect *)rect
 {
-  v3 = [(FigCaptureImageMotionDetector *)self setRoi:a3 actualROI:pixelSumComputeCompatibleROI(self->_width, vcvts_n_f32_s32(self->_width, 2uLL))];
+  v3 = [(FigCaptureImageMotionDetector *)self setRoi:rect actualROI:pixelSumComputeCompatibleROI(self->_width, vcvts_n_f32_s32(self->_width, 2uLL))];
   if (v3)
   {
     [FigCaptureImageMotionDetector setCentralROIAndGetRect:];
@@ -240,13 +240,13 @@ LABEL_14:
   return self;
 }
 
-- (uint64_t)_allocateArrays:(int)a3 height:(size_t)count frameRingSize:
+- (uint64_t)_allocateArrays:(int)arrays height:(size_t)count frameRingSize:
 {
   if (result)
   {
     v6 = result;
     *(result + 88) = 0;
-    *(result + 92) = a3;
+    *(result + 92) = arrays;
     *(result + 96) = 0;
     *(result + 100) = a2;
     *(result + 56) = count;
@@ -264,7 +264,7 @@ LABEL_14:
       goto LABEL_19;
     }
 
-    v9 = 8 * a3;
+    v9 = 8 * arrays;
     v10 = 8 * a2;
     if (*(v6 + 56))
     {
@@ -287,7 +287,7 @@ LABEL_14:
       while (++v11 < *(v6 + 56));
     }
 
-    v12 = v10 <= v9 ? 8 * a3 : 8 * a2;
+    v12 = v10 <= v9 ? 8 * arrays : 8 * a2;
     v13 = v12;
     *(v6 + 64) = malloc_type_malloc(v12, 0x100004000313F17uLL);
     v14 = malloc_type_malloc(v13, 0x100004000313F17uLL);
@@ -307,17 +307,17 @@ LABEL_19:
   return result;
 }
 
-- (uint64_t)processPixelBuffer:(void *)a3 metadataDictionary:
+- (uint64_t)processPixelBuffer:(void *)buffer metadataDictionary:
 {
-  v5 = a3;
-  if (!a1)
+  bufferCopy = buffer;
+  if (!self)
   {
     v39 = 0;
     goto LABEL_24;
   }
 
-  v43 = *(a1 + 52);
-  if (!a2 || (Width = CVPixelBufferGetWidth(a2), Height = CVPixelBufferGetHeight(a2), *(a1 + 8) != Width) || *(a1 + 12) != Height)
+  v43 = *(self + 52);
+  if (!a2 || (Width = CVPixelBufferGetWidth(a2), Height = CVPixelBufferGetHeight(a2), *(self + 8) != Width) || *(self + 12) != Height)
   {
     OUTLINED_FUNCTION_9_1();
     OUTLINED_FUNCTION_4_78();
@@ -327,21 +327,21 @@ LABEL_19:
     if (v39)
     {
 LABEL_34:
-      *(a1 + 52) = v43;
-      *(a1 + 209) = 0;
+      *(self + 52) = v43;
+      *(self + 209) = 0;
       goto LABEL_24;
     }
 
     goto LABEL_23;
   }
 
-  if (pixelSumForROI(a2, *(a1 + 16), *(a1 + 24), *(a1 + 112), *(a1 + 120), *(a1 + 128), *(a1 + 136)))
+  if (pixelSumForROI(a2, *(self + 16), *(self + 24), *(self + 112), *(self + 120), *(self + 128), *(self + 136)))
   {
-    v8 = *(a1 + 24);
-    if (v8 && (v9 = *(a1 + 16)) != 0 && (v10 = *(a1 + 88), v10 > 0) && (v11 = *(a1 + 96), v11 > 0))
+    v8 = *(self + 24);
+    if (v8 && (v9 = *(self + 16)) != 0 && (v10 = *(self + 88), v10 > 0) && (v11 = *(self + 96), v11 > 0))
     {
-      v13 = *(a1 + 112);
-      v12 = *(a1 + 120);
+      v13 = *(self + 112);
+      v12 = *(self + 120);
       v14 = CVPixelBufferLockBaseAddress(a2, 1uLL);
       if (v14)
       {
@@ -374,14 +374,14 @@ LABEL_34:
           BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(v21, v22);
           pixelBuffer = a2;
           v24 = OUTLINED_FUNCTION_2_2();
-          v26 = v5;
+          v26 = bufferCopy;
           BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(v24, v25);
           bzero(v8, 4 * v11);
           bzero(v9, 4 * v10);
           v28 = 0;
           v29 = v11 & 0x7FFFFFFC;
           v30 = &BaseAddressOfPlane[v13 + BytesPerRowOfPlane * v12];
-          v5 = v26;
+          bufferCopy = v26;
           v31 = v30 + 3;
           do
           {
@@ -448,20 +448,20 @@ LABEL_34:
   }
 
 LABEL_20:
-  vDSP_vflt32D(*(a1 + 16), 1, *(*(a1 + 32) + 8 * *(a1 + 48)), 1, *(a1 + 88));
-  vDSP_vflt32D(*(a1 + 24), 1, *(*(a1 + 40) + 8 * *(a1 + 48)), 1, *(a1 + 96));
-  v40 = *(a1 + 52);
-  if (v40 < *(a1 + 56))
+  vDSP_vflt32D(*(self + 16), 1, *(*(self + 32) + 8 * *(self + 48)), 1, *(self + 88));
+  vDSP_vflt32D(*(self + 24), 1, *(*(self + 40) + 8 * *(self + 48)), 1, *(self + 96));
+  v40 = *(self + 52);
+  if (v40 < *(self + 56))
   {
-    *(a1 + 52) = ++v40;
+    *(self + 52) = ++v40;
   }
 
   if (v40 >= 2)
   {
-    v42 = [(FigCaptureImageMotionDetector *)a1 _computeStatistics];
-    if (v42)
+    _computeStatistics = [(FigCaptureImageMotionDetector *)self _computeStatistics];
+    if (_computeStatistics)
     {
-      v39 = v42;
+      v39 = _computeStatistics;
       fig_log_get_emitter();
       OUTLINED_FUNCTION_7_62();
       OUTLINED_FUNCTION_1_8();
@@ -473,7 +473,7 @@ LABEL_33:
 
 LABEL_23:
   v39 = 0;
-  *(a1 + 48) = (*(a1 + 48) + 1) % *(a1 + 56);
+  *(self + 48) = (*(self + 48) + 1) % *(self + 56);
 LABEL_24:
 
   return v39;
@@ -683,14 +683,14 @@ LABEL_38:
 
 - (void)_freeAllocatedArrays
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 56))
+    if (*(self + 56))
     {
       v2 = 0;
       do
       {
-        v3 = *(a1 + 32);
+        v3 = *(self + 32);
         if (v3)
         {
           v4 = *(v3 + 8 * v2);
@@ -701,7 +701,7 @@ LABEL_38:
           }
         }
 
-        v5 = *(a1 + 40);
+        v5 = *(self + 40);
         if (v5)
         {
           v6 = *(v5 + 8 * v2);
@@ -715,55 +715,55 @@ LABEL_38:
         ++v2;
       }
 
-      while (v2 < *(a1 + 56));
+      while (v2 < *(self + 56));
     }
 
-    v7 = *(a1 + 32);
+    v7 = *(self + 32);
     if (v7)
     {
-      *(a1 + 32) = 0;
+      *(self + 32) = 0;
       free(v7);
     }
 
-    v8 = *(a1 + 40);
+    v8 = *(self + 40);
     if (v8)
     {
-      *(a1 + 40) = 0;
+      *(self + 40) = 0;
       free(v8);
     }
 
-    v9 = *(a1 + 16);
+    v9 = *(self + 16);
     if (v9)
     {
-      *(a1 + 16) = 0;
+      *(self + 16) = 0;
       free(v9);
     }
 
-    v10 = *(a1 + 24);
+    v10 = *(self + 24);
     if (v10)
     {
-      *(a1 + 24) = 0;
+      *(self + 24) = 0;
       free(v10);
     }
 
-    v11 = *(a1 + 64);
+    v11 = *(self + 64);
     if (v11)
     {
-      *(a1 + 64) = 0;
+      *(self + 64) = 0;
       free(v11);
     }
 
-    v12 = *(a1 + 72);
+    v12 = *(self + 72);
     if (v12)
     {
-      *(a1 + 72) = 0;
+      *(self + 72) = 0;
       free(v12);
     }
 
-    v13 = *(a1 + 80);
+    v13 = *(self + 80);
     if (v13)
     {
-      *(a1 + 80) = 0;
+      *(self + 80) = 0;
 
       free(v13);
     }

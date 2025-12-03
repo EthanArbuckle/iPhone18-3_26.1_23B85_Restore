@@ -1,25 +1,25 @@
 @interface PKLinedPaperLayer
-- (PKLinedPaperLayer)initWithLinedPaperLayerDelegate:(id)a3;
+- (PKLinedPaperLayer)initWithLinedPaperLayerDelegate:(id)delegate;
 - (PKLinedPaperLayerDelegate)linedPaperLayerDelegate;
 - (id)_attachmentContainerView;
 - (id)_linedPaper;
 - (id)_traitCollection;
-- (void)updateLinesFromAttachmentBounds:(CGRect)a3;
-- (void)updateSublayersFromAttachmentBounds:(CGRect)a3;
+- (void)updateLinesFromAttachmentBounds:(CGRect)bounds;
+- (void)updateSublayersFromAttachmentBounds:(CGRect)bounds;
 @end
 
 @implementation PKLinedPaperLayer
 
-- (PKLinedPaperLayer)initWithLinedPaperLayerDelegate:(id)a3
+- (PKLinedPaperLayer)initWithLinedPaperLayerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKLinedPaperLayer;
   v5 = [(PKLinedPaperLayer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_linedPaperLayerDelegate, v4);
+    objc_storeWeak(&v5->_linedPaperLayerDelegate, delegateCopy);
   }
 
   return v6;
@@ -27,21 +27,21 @@
 
 - (id)_traitCollection
 {
-  v3 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
-  v4 = [v3 linedPaperLayerTraitCollection:self];
+  linedPaperLayerDelegate = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
+  v4 = [linedPaperLayerDelegate linedPaperLayerTraitCollection:self];
 
   return v4;
 }
 
 - (id)_attachmentContainerView
 {
-  v3 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
+  linedPaperLayerDelegate = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
-    v6 = [v5 linedPaperLayerAttachmentContainerView:self];
+    linedPaperLayerDelegate2 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
+    v6 = [linedPaperLayerDelegate2 linedPaperLayerAttachmentContainerView:self];
   }
 
   else
@@ -54,13 +54,13 @@
 
 - (id)_linedPaper
 {
-  v3 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
+  linedPaperLayerDelegate = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
-    v6 = [v5 linedPaperLayerLinedPaper:self];
+    linedPaperLayerDelegate2 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
+    v6 = [linedPaperLayerDelegate2 linedPaperLayerLinedPaper:self];
   }
 
   else
@@ -71,19 +71,19 @@
   return v6;
 }
 
-- (void)updateLinesFromAttachmentBounds:(CGRect)a3
+- (void)updateLinesFromAttachmentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v5 = [(PKLinedPaperLayer *)self _linedPaper];
+  _linedPaper = [(PKLinedPaperLayer *)self _linedPaper];
   memset(&v25, 0, sizeof(v25));
-  v6 = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
-  v7 = v6;
-  if (v6)
+  linedPaperLayerDelegate = [(PKLinedPaperLayer *)self linedPaperLayerDelegate];
+  v7 = linedPaperLayerDelegate;
+  if (linedPaperLayerDelegate)
   {
-    [v6 drawingTransform];
+    [linedPaperLayerDelegate drawingTransform];
   }
 
   else
@@ -102,7 +102,7 @@
   y = v27.origin.y;
   v11 = v27.size.width;
   v12 = v27.size.height;
-  [v5 horizontalInset];
+  [_linedPaper horizontalInset];
   v14 = v8 * v13;
   v23 = x;
   v28.origin.x = x;
@@ -114,7 +114,7 @@
   v16 = v29.origin.y;
   v17 = v29.size.width;
   v18 = v29.size.height;
-  [v5 lineSpacing];
+  [_linedPaper lineSpacing];
   v20 = v8 * v19;
   if (v8 * v19 > 0.0)
   {
@@ -128,40 +128,40 @@
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)updateSublayersFromAttachmentBounds:(CGRect)a3
+- (void)updateSublayersFromAttachmentBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v80 = *MEMORY[0x1E69E9840];
-  v5 = [(PKLinedPaperLayer *)self _linedPaper:a3.origin.x];
-  v61 = [(PKLinedPaperLayer *)self _attachmentContainerView];
-  if (v5 && v61)
+  v5 = [(PKLinedPaperLayer *)self _linedPaper:bounds.origin.x];
+  _attachmentContainerView = [(PKLinedPaperLayer *)self _attachmentContainerView];
+  if (v5 && _attachmentContainerView)
   {
     [(PKLinedPaperLayer *)self bounds];
     v7 = v6;
     [(PKLinedPaperLayer *)self bounds];
     v9 = v8;
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v12 = v11;
 
     [v5 lineSpacing];
     v59 = v13;
     v60 = v14;
-    v15 = [(PKLinedPaperLayer *)self sublayers];
-    v16 = [v15 count];
+    sublayers = [(PKLinedPaperLayer *)self sublayers];
+    v16 = [sublayers count];
 
     [(PKLinedPaperLayer *)self bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [v61 layer];
-    [(PKLinedPaperLayer *)self convertRect:v25 toLayer:v18, v20, v22, v24];
+    layer = [_attachmentContainerView layer];
+    [(PKLinedPaperLayer *)self convertRect:layer toLayer:v18, v20, v22, v24];
     v27 = v26;
     v29 = v28;
 
-    v30 = [(PKLinedPaperLayer *)self _traitCollection];
-    if ([v30 userInterfaceStyle] == 2)
+    _traitCollection = [(PKLinedPaperLayer *)self _traitCollection];
+    if ([_traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x1E69DC888] pk_linedPaperLineColor_dark];
     }
@@ -227,8 +227,8 @@
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v51 = [(PKLinedPaperLayer *)self sublayers];
-    v52 = [v51 countByEnumeratingWithState:&v62 objects:v78 count:16];
+    sublayers2 = [(PKLinedPaperLayer *)self sublayers];
+    v52 = [sublayers2 countByEnumeratingWithState:&v62 objects:v78 count:16];
     if (v52)
     {
       v53 = *v63;
@@ -238,7 +238,7 @@
         {
           if (*v63 != v53)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(sublayers2);
           }
 
           v55 = *(*(&v62 + 1) + 8 * i);
@@ -246,7 +246,7 @@
           [v55 setBackgroundColor:{objc_msgSend(v32, "CGColor")}];
         }
 
-        v52 = [v51 countByEnumeratingWithState:&v62 objects:v78 count:16];
+        v52 = [sublayers2 countByEnumeratingWithState:&v62 objects:v78 count:16];
       }
 
       while (v52);
@@ -254,8 +254,8 @@
 
     while (v16 > v71[3])
     {
-      v57 = [(PKLinedPaperLayer *)self sublayers];
-      v58 = [v57 objectAtIndexedSubscript:--v16];
+      sublayers3 = [(PKLinedPaperLayer *)self sublayers];
+      v58 = [sublayers3 objectAtIndexedSubscript:--v16];
       [v58 removeFromSuperlayer];
     }
 
@@ -268,8 +268,8 @@
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v31 = [(PKLinedPaperLayer *)self sublayers];
-    v32 = [v31 copy];
+    sublayers4 = [(PKLinedPaperLayer *)self sublayers];
+    v32 = [sublayers4 copy];
 
     v33 = [v32 countByEnumeratingWithState:&v74 objects:v79 count:16];
     if (v33)

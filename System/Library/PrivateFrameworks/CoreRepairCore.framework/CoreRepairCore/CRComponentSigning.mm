@@ -1,7 +1,7 @@
 @interface CRComponentSigning
 + (id)sharedInstance;
-- (void)prpcSign:(__CFData *)a3 outSignature:(const __CFData *)a4 outDeviceNonce:(const __CFData *)a5 outError:(int *)a6;
-- (void)vcrtSign:(__CFData *)a3 outSignature:(const __CFData *)a4 outDeviceNonce:(const __CFData *)a5 outError:(int *)a6;
+- (void)prpcSign:(__CFData *)sign outSignature:(const __CFData *)signature outDeviceNonce:(const __CFData *)nonce outError:(int *)error;
+- (void)vcrtSign:(__CFData *)sign outSignature:(const __CFData *)signature outDeviceNonce:(const __CFData *)nonce outError:(int *)error;
 @end
 
 @implementation CRComponentSigning
@@ -25,7 +25,7 @@ uint64_t __36__CRComponentSigning_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)vcrtSign:(__CFData *)a3 outSignature:(const __CFData *)a4 outDeviceNonce:(const __CFData *)a5 outError:(int *)a6
+- (void)vcrtSign:(__CFData *)sign outSignature:(const __CFData *)signature outDeviceNonce:(const __CFData *)nonce outError:(int *)error
 {
   v49 = 0;
   v50 = &v49;
@@ -46,7 +46,7 @@ uint64_t __36__CRComponentSigning_sharedInstance__block_invoke()
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = dispatch_semaphore_create(0);
-  if (!a4)
+  if (!signature)
   {
     v23 = handleForCategory(0);
     [CRComponentSigning vcrtSign:v23 outSignature:? outDeviceNonce:? outError:?];
@@ -55,14 +55,14 @@ LABEL_19:
     goto LABEL_28;
   }
 
-  if (!a5)
+  if (!nonce)
   {
     v24 = handleForCategory(0);
     [CRComponentSigning vcrtSign:v24 outSignature:? outDeviceNonce:? outError:?];
     goto LABEL_19;
   }
 
-  v10 = [MEMORY[0x1E6997730] sharedManager];
+  mEMORY[0x1E6997730] = [MEMORY[0x1E6997730] sharedManager];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __signVeridian_block_invoke;
@@ -71,7 +71,7 @@ LABEL_19:
   v33[5] = &v49;
   v33[6] = &v45;
   v33[7] = &v34;
-  [v10 signVeridianChallenge:a3 completionHandler:v33];
+  [mEMORY[0x1E6997730] signVeridianChallenge:sign completionHandler:v33];
 
   v11 = v35[5];
   v12 = dispatch_time(0, 30000000000);
@@ -84,9 +84,9 @@ LABEL_19:
   else
   {
     v13 = *(v42 + 6);
-    if (a6)
+    if (error)
     {
-      *a6 = v13;
+      *error = v13;
     }
 
     if (v13)
@@ -113,14 +113,14 @@ LABEL_19:
           else
           {
             v17 = CFDataCreateWithBytesNoCopy(0, *&length[1], length[0], *MEMORY[0x1E695E488]);
-            *a4 = v17;
+            *signature = v17;
             if (v17)
             {
               *&length[1] = 0;
               v18 = CFDataGetBytePtr(v46[3]);
               v19 = CFDataGetLength(v46[3]);
               v20 = CFDataCreate(0, v18, v19);
-              *a5 = v20;
+              *nonce = v20;
               if (v20)
               {
                 goto LABEL_12;
@@ -176,7 +176,7 @@ LABEL_12:
   _Block_object_dispose(&v49, 8);
 }
 
-- (void)prpcSign:(__CFData *)a3 outSignature:(const __CFData *)a4 outDeviceNonce:(const __CFData *)a5 outError:(int *)a6
+- (void)prpcSign:(__CFData *)sign outSignature:(const __CFData *)signature outDeviceNonce:(const __CFData *)nonce outError:(int *)error
 {
   v81 = *MEMORY[0x1E69E9840];
   v9 = handleForCategory(0);
@@ -191,7 +191,7 @@ LABEL_12:
   v77 = 0;
   v76 = 0;
   v75 = 0;
-  if (!a4)
+  if (!signature)
   {
     v46 = handleForCategory(0);
     [CRComponentSigning prpcSign:v46 outSignature:? outDeviceNonce:? outError:?];
@@ -202,14 +202,14 @@ LABEL_70:
     goto LABEL_64;
   }
 
-  if (!a5)
+  if (!nonce)
   {
     v47 = handleForCategory(0);
     [CRComponentSigning prpcSign:v47 outSignature:? outDeviceNonce:? outError:?];
     goto LABEL_70;
   }
 
-  if (!a3)
+  if (!sign)
   {
     v48 = handleForCategory(0);
     [CRComponentSigning prpcSign:v48 outSignature:? outDeviceNonce:? outError:?];
@@ -219,7 +219,7 @@ LABEL_70:
   v10 = handleForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [CRComponentSigning prpcSign:a3 outSignature:v10 outDeviceNonce:? outError:?];
+    [CRComponentSigning prpcSign:sign outSignature:v10 outDeviceNonce:? outError:?];
   }
 
   v67 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:@"/private/preboot/active" encoding:1 error:0];
@@ -272,7 +272,7 @@ LABEL_70:
     [CRComponentSigning prpcSign:v63 outSignature:v13 outDeviceNonce:v11 outError:?];
 LABEL_64:
     v38 = 1;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_55;
     }
@@ -309,7 +309,7 @@ LABEL_18:
   CFDictionarySetValue(theDict, *MEMORY[0x1E69E9FC0], value);
   CFDictionarySetValue(theDict, *MEMORY[0x1E69E9FB8], *MEMORY[0x1E695E4C0]);
   CFDictionarySetValue(theDict, @"PreflightContext", @"Limited");
-  CFDictionarySetValue(theDict, @"AuthChallengeOption", a3);
+  CFDictionarySetValue(theDict, @"AuthChallengeOption", sign);
   CFDictionarySetValue(theDict, @"PersonalizedFirmwareRootPath", @"/private/var/tmp/usr/standalone/firmware/Savage/");
   CFDictionarySetValue(Mutable, *MEMORY[0x1E69E9FE8], *MEMORY[0x1E695E4D0]);
   CFDictionarySetValue(theDict, *MEMORY[0x1E69E9FE0], Mutable);
@@ -474,7 +474,7 @@ LABEL_63:
   }
 
   v34 = CFDataCreateWithBytesNoCopy(0, v77, v76, *MEMORY[0x1E695E488]);
-  *a4 = v34;
+  *signature = v34;
   if (!v34)
   {
     v60 = handleForCategory(0);
@@ -485,7 +485,7 @@ LABEL_63:
   v35 = CFDataGetBytePtr(v31);
   v36 = CFDataGetLength(v31);
   v37 = CFDataCreate(0, v35, v36);
-  *a5 = v37;
+  *nonce = v37;
   if (!v37)
   {
     v61 = handleForCategory(0);
@@ -494,13 +494,13 @@ LABEL_63:
   }
 
   v38 = 0;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_55;
   }
 
 LABEL_54:
-  *a6 = v38;
+  *error = v38;
 LABEL_55:
   AMSupportSafeRelease();
   AMSupportSafeRelease();

@@ -4,11 +4,11 @@
 - (AVAudioEngine)engine;
 - (AVAudioFormat)inputFormatForBus:(AVAudioNodeBus)bus;
 - (AVAudioFormat)outputFormatForBus:(AVAudioNodeBus)bus;
-- (AVAudioNode)initWithImpl:(void *)a3;
+- (AVAudioNode)initWithImpl:(void *)impl;
 - (AVAudioTime)lastRenderTime;
-- (BOOL)resetImpl:(void *)a3;
-- (BOOL)setInputFormat:(id)a3 forBus:(unint64_t)a4;
-- (BOOL)setOutputFormat:(id)a3 forBus:(unint64_t)a4;
+- (BOOL)resetImpl:(void *)impl;
+- (BOOL)setInputFormat:(id)format forBus:(unint64_t)bus;
+- (BOOL)setOutputFormat:(id)format forBus:(unint64_t)bus;
 - (NSTimeInterval)latency;
 - (NSTimeInterval)outputPresentationLatency;
 - (NSUInteger)numberOfInputs;
@@ -21,25 +21,25 @@
 - (float)reverbBlend;
 - (float)volume;
 - (id)clock;
-- (id)destinationForMixer:(id)a3 bus:(unint64_t)a4;
+- (id)destinationForMixer:(id)mixer bus:(unint64_t)bus;
 - (int64_t)pointSourceInHeadMode;
 - (int64_t)renderingAlgorithm;
 - (int64_t)sourceMode;
 - (void)dealloc;
-- (void)didAttachToEngine:(id)a3;
-- (void)didDetachFromEngine:(id)a3 error:(id *)a4;
+- (void)didAttachToEngine:(id)engine;
+- (void)didDetachFromEngine:(id)engine error:(id *)error;
 - (void)removeTapOnBus:(AVAudioNodeBus)bus;
 - (void)reset;
-- (void)setObstruction:(float)a3;
-- (void)setOcclusion:(float)a3;
-- (void)setPan:(float)a3;
-- (void)setPointSourceInHeadMode:(int64_t)a3;
-- (void)setPosition:(AVAudio3DPoint)a3;
-- (void)setRate:(float)a3;
-- (void)setRenderingAlgorithm:(int64_t)a3;
-- (void)setReverbBlend:(float)a3;
-- (void)setSourceMode:(int64_t)a3;
-- (void)setVolume:(float)a3;
+- (void)setObstruction:(float)obstruction;
+- (void)setOcclusion:(float)occlusion;
+- (void)setPan:(float)pan;
+- (void)setPointSourceInHeadMode:(int64_t)mode;
+- (void)setPosition:(AVAudio3DPoint)position;
+- (void)setRate:(float)rate;
+- (void)setRenderingAlgorithm:(int64_t)algorithm;
+- (void)setReverbBlend:(float)blend;
+- (void)setSourceMode:(int64_t)mode;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation AVAudioNode
@@ -61,11 +61,11 @@
   return v3;
 }
 
-- (void)setOcclusion:(float)a3
+- (void)setOcclusion:(float)occlusion
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v15, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 104))(MixingImpl, a3);
+  (*(*MixingImpl + 104))(MixingImpl, occlusion);
   v7 = *(self->_impl + 8);
   if (v7)
   {
@@ -76,7 +76,7 @@
     {
       do
       {
-        *&v6 = a3;
+        *&v6 = occlusion;
         [v9[6] setOcclusion:v6];
         v11 = v9[1];
         if (v11)
@@ -139,11 +139,11 @@
   return v3;
 }
 
-- (void)setObstruction:(float)a3
+- (void)setObstruction:(float)obstruction
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v15, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 96))(MixingImpl, a3);
+  (*(*MixingImpl + 96))(MixingImpl, obstruction);
   v7 = *(self->_impl + 8);
   if (v7)
   {
@@ -154,7 +154,7 @@
     {
       do
       {
-        *&v6 = a3;
+        *&v6 = obstruction;
         [v9[6] setObstruction:v6];
         v11 = v9[1];
         if (v11)
@@ -226,11 +226,11 @@
   return result;
 }
 
-- (void)setPosition:(AVAudio3DPoint)a3
+- (void)setPosition:(AVAudio3DPoint)position
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = position.z;
+  y = position.y;
+  x = position.x;
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v19, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
   (*(*MixingImpl + 88))(MixingImpl, x, y, z);
@@ -309,11 +309,11 @@
   return v3;
 }
 
-- (void)setReverbBlend:(float)a3
+- (void)setReverbBlend:(float)blend
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v15, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 80))(MixingImpl, a3);
+  (*(*MixingImpl + 80))(MixingImpl, blend);
   v7 = *(self->_impl + 8);
   if (v7)
   {
@@ -324,7 +324,7 @@
     {
       do
       {
-        *&v6 = a3;
+        *&v6 = blend;
         [v9[6] setReverbBlend:v6];
         v11 = v9[1];
         if (v11)
@@ -387,11 +387,11 @@
   return v3;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v15, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 72))(MixingImpl, a3);
+  (*(*MixingImpl + 72))(MixingImpl, rate);
   v7 = *(self->_impl + 8);
   if (v7)
   {
@@ -402,7 +402,7 @@
     {
       do
       {
-        *&v6 = a3;
+        *&v6 = rate;
         [v9[6] setRate:v6];
         v11 = v9[1];
         if (v11)
@@ -465,11 +465,11 @@
   return v3;
 }
 
-- (void)setPointSourceInHeadMode:(int64_t)a3
+- (void)setPointSourceInHeadMode:(int64_t)mode
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v14, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 64))(MixingImpl, a3);
+  (*(*MixingImpl + 64))(MixingImpl, mode);
   v6 = *(self->_impl + 8);
   if (v6)
   {
@@ -480,7 +480,7 @@
     {
       do
       {
-        [v8[6] setPointSourceInHeadMode:a3];
+        [v8[6] setPointSourceInHeadMode:mode];
         v10 = v8[1];
         if (v10)
         {
@@ -542,11 +542,11 @@
   return v3;
 }
 
-- (void)setSourceMode:(int64_t)a3
+- (void)setSourceMode:(int64_t)mode
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v14, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 56))(MixingImpl, a3);
+  (*(*MixingImpl + 56))(MixingImpl, mode);
   v6 = *(self->_impl + 8);
   if (v6)
   {
@@ -557,7 +557,7 @@
     {
       do
       {
-        [v8[6] setSourceMode:a3];
+        [v8[6] setSourceMode:mode];
         v10 = v8[1];
         if (v10)
         {
@@ -619,11 +619,11 @@
   return v3;
 }
 
-- (void)setRenderingAlgorithm:(int64_t)a3
+- (void)setRenderingAlgorithm:(int64_t)algorithm
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v14, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 48))(MixingImpl, a3);
+  (*(*MixingImpl + 48))(MixingImpl, algorithm);
   v6 = *(self->_impl + 8);
   if (v6)
   {
@@ -634,7 +634,7 @@
     {
       do
       {
-        [v8[6] setRenderingAlgorithm:a3];
+        [v8[6] setRenderingAlgorithm:algorithm];
         v10 = v8[1];
         if (v10)
         {
@@ -696,11 +696,11 @@
   return v3;
 }
 
-- (void)setPan:(float)a3
+- (void)setPan:(float)pan
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v15, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 40))(MixingImpl, a3);
+  (*(*MixingImpl + 40))(MixingImpl, pan);
   v7 = *(self->_impl + 8);
   if (v7)
   {
@@ -711,7 +711,7 @@
     {
       do
       {
-        *&v6 = a3;
+        *&v6 = pan;
         [v9[6] setPan:v6];
         v11 = v9[1];
         if (v11)
@@ -774,11 +774,11 @@
   return v3;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v15, self->_impl);
   MixingImpl = AVAudioNodeImplBase::GetMixingImpl(self->_impl);
-  (*(*MixingImpl + 32))(MixingImpl, a3);
+  (*(*MixingImpl + 32))(MixingImpl, volume);
   v7 = *(self->_impl + 8);
   if (v7)
   {
@@ -789,7 +789,7 @@
     {
       do
       {
-        *&v6 = a3;
+        *&v6 = volume;
         [v9[6] setVolume:v6];
         v11 = v9[1];
         if (v11)
@@ -835,11 +835,11 @@
   }
 }
 
-- (id)destinationForMixer:(id)a3 bus:(unint64_t)a4
+- (id)destinationForMixer:(id)mixer bus:(unint64_t)bus
 {
   v30 = *MEMORY[0x1E69E9840];
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v14, self->_impl);
-  if (!a3)
+  if (!mixer)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -868,9 +868,9 @@
   }
 
   impl = self->_impl;
-  v9 = [a3 impl];
-  v10 = (*(*v9 + 240))(v9, a4);
-  MixingDestination = AVAudioNodeImplBase::GetMixingDestination(impl, a3, v10);
+  impl = [mixer impl];
+  v10 = (*(*impl + 240))(impl, bus);
+  MixingDestination = AVAudioNodeImplBase::GetMixingDestination(impl, mixer, v10);
   if (v17 == 1)
   {
     std::recursive_mutex::unlock(v16);
@@ -923,8 +923,8 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v8, self->_impl);
-  v5 = [(AVAudioNode *)self engine];
-  if (!v5)
+  engine = [(AVAudioNode *)self engine];
+  if (!engine)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -952,7 +952,7 @@
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "NULL != engine"}];
   }
 
-  AVAudioEngineImpl::RemoveTapOnNode([(AVAudioEngine *)v5 implementation], self, bus);
+  AVAudioEngineImpl::RemoveTapOnNode([(AVAudioEngine *)engine implementation], self, bus);
   if (v11 == 1)
   {
     std::recursive_mutex::unlock(v10);
@@ -1099,35 +1099,35 @@
   }
 }
 
-- (void)didDetachFromEngine:(id)a3 error:(id *)a4
+- (void)didDetachFromEngine:(id)engine error:(id *)error
 {
-  v7 = [a3 implementation];
+  implementation = [engine implementation];
   impl = self->_impl;
-  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (v7 + 112));
-  v9 = AVAudioEngineGraph::RemoveNode(*(v7 + 8), self, a4);
-  _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioEngine.mm", 1530, "DestroyGraphNode", "_graph->RemoveNode(inNode, outErr)", v9, a4);
-  (*(*self->_impl + 24))(self->_impl, a3);
+  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (implementation + 112));
+  v9 = AVAudioEngineGraph::RemoveNode(*(implementation + 8), self, error);
+  _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioEngine.mm", 1530, "DestroyGraphNode", "_graph->RemoveNode(inNode, outErr)", v9, error);
+  (*(*self->_impl + 24))(self->_impl, engine);
   std::recursive_mutex::unlock((impl + 96));
 
-  std::recursive_mutex::unlock((v7 + 112));
+  std::recursive_mutex::unlock((implementation + 112));
 }
 
-- (void)didAttachToEngine:(id)a3
+- (void)didAttachToEngine:(id)engine
 {
-  v5 = [a3 implementation];
+  implementation = [engine implementation];
   impl = self->_impl;
-  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (v5 + 112));
-  AVAudioEngineGraph::AddNode(*(v5 + 8), self);
-  (*(*self->_impl + 16))(self->_impl, a3);
+  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (implementation + 112));
+  AVAudioEngineGraph::AddNode(*(implementation + 8), self);
+  (*(*self->_impl + 16))(self->_impl, engine);
   std::recursive_mutex::unlock((impl + 96));
 
-  std::recursive_mutex::unlock((v5 + 112));
+  std::recursive_mutex::unlock((implementation + 112));
 }
 
-- (BOOL)setInputFormat:(id)a3 forBus:(unint64_t)a4
+- (BOOL)setInputFormat:(id)format forBus:(unint64_t)bus
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v9, self->_impl);
-  v7 = (*(*self->_impl + 80))(self->_impl, a4, a3);
+  v7 = (*(*self->_impl + 80))(self->_impl, bus, format);
   if (v12 == 1)
   {
     std::recursive_mutex::unlock(v11);
@@ -1158,10 +1158,10 @@
   return v5;
 }
 
-- (BOOL)setOutputFormat:(id)a3 forBus:(unint64_t)a4
+- (BOOL)setOutputFormat:(id)format forBus:(unint64_t)bus
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v9, self->_impl);
-  v7 = (*(*self->_impl + 64))(self->_impl, a4, a3);
+  v7 = (*(*self->_impl + 64))(self->_impl, bus, format);
   if (v12 == 1)
   {
     std::recursive_mutex::unlock(v11);
@@ -1205,39 +1205,39 @@
   [(AVAudioNode *)&v4 dealloc];
 }
 
-- (BOOL)resetImpl:(void *)a3
+- (BOOL)resetImpl:(void *)impl
 {
-  if (a3)
+  if (impl)
   {
     impl = self->_impl;
-    if (impl != a3)
+    if (impl != impl)
     {
       if (impl)
       {
         (*(*impl + 8))(impl, a2);
       }
 
-      self->_impl = a3;
+      self->_impl = impl;
     }
   }
 
-  return a3 != 0;
+  return impl != 0;
 }
 
-- (AVAudioNode)initWithImpl:(void *)a3
+- (AVAudioNode)initWithImpl:(void *)impl
 {
-  if (a3)
+  if (impl)
   {
     v5.receiver = self;
     v5.super_class = AVAudioNode;
     result = [(AVAudioNode *)&v5 init];
     if (result)
     {
-      result->_impl = a3;
+      result->_impl = impl;
       return result;
     }
 
-    (*(*a3 + 8))(a3);
+    (*(*impl + 8))(impl);
   }
 
   else

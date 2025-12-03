@@ -1,36 +1,36 @@
 @interface ML3DAAPImportOperation
-- (BOOL)_importDAAPPayloadFromFile:(id)a3;
-- (BOOL)_importDAAPPayloadFromFile:(id)a3 entityType:(int)a4;
-- (BOOL)_preprocessDAAPPayloadFromFile:(id)a3 entityType:(int)a4;
-- (BOOL)_processAlbumArtistFromArtistElement:(shared_ptr<ML3CPP::Element>)a3;
-- (BOOL)_processAlbumCount:(int)a3;
-- (BOOL)_processAlbumFromAlbumElement:(shared_ptr<ML3CPP::Element>)a3;
-- (BOOL)_processAlbumFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)a4 :(int64_t)a5 Element>)a3 importItem:albumArtistPersistentID:;
-- (BOOL)_processArtistCount:(int)a3;
-- (BOOL)_processArtistFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)a4 :(int64_t *)a5 Element>)a3 importItem:albumArtistPersistentID:;
-- (BOOL)_processContainerElement:(shared_ptr<ML3CPP:(vector<long)long :(std:()vector<std:(std::allocator<std::unordered_set<std::string>>> *)a5 :unordered_set<std::string> :allocator<long long>> *)a4 Element>)a3 withTrackIds:trackPersonIdentifiers:;
-- (BOOL)_processContainerItemCount:(int)a3;
-- (BOOL)_processDeletedAlbumId:(const void *)a3;
-- (BOOL)_processDeletedArtistId:(const void *)a3;
-- (BOOL)_processDeletedContainerId:(int64_t)a3;
-- (BOOL)_processDeletedTrackId:(int64_t)a3;
-- (BOOL)_processLibraryPinElement:(shared_ptr<ML3CPP::Element>)a3;
-- (BOOL)_processMaxPinCount:(int)a3;
-- (BOOL)_processPersonElement:(shared_ptr<ML3CPP::Element>)a3;
-- (BOOL)_processPinCount:(int)a3;
-- (BOOL)_processTrackElement:(shared_ptr<ML3CPP::Element>)a3;
-- (BOOL)_processTrackImportItem:(shared_ptr<ML3DAAPImportItem>)a3;
-- (BOOL)_processTrackItemCount:(int)a3;
+- (BOOL)_importDAAPPayloadFromFile:(id)file;
+- (BOOL)_importDAAPPayloadFromFile:(id)file entityType:(int)type;
+- (BOOL)_preprocessDAAPPayloadFromFile:(id)file entityType:(int)type;
+- (BOOL)_processAlbumArtistFromArtistElement:(shared_ptr<ML3CPP::Element>)element;
+- (BOOL)_processAlbumCount:(int)count;
+- (BOOL)_processAlbumFromAlbumElement:(shared_ptr<ML3CPP::Element>)element;
+- (BOOL)_processAlbumFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)element :(int64_t)a5 Element>)a3 importItem:albumArtistPersistentID:;
+- (BOOL)_processArtistCount:(int)count;
+- (BOOL)_processArtistFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)element :(int64_t *)a5 Element>)a3 importItem:albumArtistPersistentID:;
+- (BOOL)_processContainerElement:(shared_ptr<ML3CPP:(vector<long)long :(std:()vector<std:(std::allocator<std::unordered_set<std::string>>> *)std :unordered_set<std::string> :allocator<long long>> *)a4 Element>)a3 withTrackIds:trackPersonIdentifiers:;
+- (BOOL)_processContainerItemCount:(int)count;
+- (BOOL)_processDeletedAlbumId:(const void *)id;
+- (BOOL)_processDeletedArtistId:(const void *)id;
+- (BOOL)_processDeletedContainerId:(int64_t)id;
+- (BOOL)_processDeletedTrackId:(int64_t)id;
+- (BOOL)_processLibraryPinElement:(shared_ptr<ML3CPP::Element>)element;
+- (BOOL)_processMaxPinCount:(int)count;
+- (BOOL)_processPersonElement:(shared_ptr<ML3CPP::Element>)element;
+- (BOOL)_processPinCount:(int)count;
+- (BOOL)_processTrackElement:(shared_ptr<ML3CPP::Element>)element;
+- (BOOL)_processTrackImportItem:(shared_ptr<ML3DAAPImportItem>)item;
+- (BOOL)_processTrackItemCount:(int)count;
 - (BOOL)_startImportSessionIfNeeded;
-- (BOOL)performImportOfSourceType:(int)a3 usingConnection:(id)a4;
+- (BOOL)performImportOfSourceType:(int)type usingConnection:(id)connection;
 - (id).cxx_construct;
-- (shared_ptr<ML3DAAPDeleteImportItem>)albumArtistItemFromDeletedDAAPArtistEntity:(const void *)a3;
-- (shared_ptr<ML3DAAPDeleteImportItem>)albumItemFromDeletedDAAPAlbumEntity:(const void *)a3;
-- (shared_ptr<ML3DAAPImportItem>)_trackImportItemWithTrackElement:(shared_ptr<ML3CPP::Element>)a3;
-- (shared_ptr<ML3DAAPImportItem>)albumArtistImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)a3;
-- (shared_ptr<ML3DAAPImportItem>)albumImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)a3;
-- (shared_ptr<ML3DAAPImportItem>)libraryPinImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)a3;
-- (void)_finishParsingWithError:(id)a3;
+- (shared_ptr<ML3DAAPDeleteImportItem>)albumArtistItemFromDeletedDAAPArtistEntity:(const void *)entity;
+- (shared_ptr<ML3DAAPDeleteImportItem>)albumItemFromDeletedDAAPAlbumEntity:(const void *)entity;
+- (shared_ptr<ML3DAAPImportItem>)_trackImportItemWithTrackElement:(shared_ptr<ML3CPP::Element>)element;
+- (shared_ptr<ML3DAAPImportItem>)albumArtistImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)element;
+- (shared_ptr<ML3DAAPImportItem>)albumImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)element;
+- (shared_ptr<ML3DAAPImportItem>)libraryPinImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)element;
+- (void)_finishParsingWithError:(id)error;
 - (void)dealloc;
 @end
 
@@ -43,17 +43,17 @@
   return self;
 }
 
-- (shared_ptr<ML3DAAPImportItem>)_trackImportItemWithTrackElement:(shared_ptr<ML3CPP::Element>)a3
+- (shared_ptr<ML3DAAPImportItem>)_trackImportItemWithTrackElement:(shared_ptr<ML3CPP::Element>)element
 {
-  v3 = *(a3.var0 + 1);
-  v6 = *a3.var0;
+  v3 = *(element.var0 + 1);
+  v6 = *element.var0;
   v7 = v3;
   if (v3)
   {
     atomic_fetch_add_explicit(&v3->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  [(ML3DAAPImportOperation *)self importItemFromDAAPElement:&v6, a3.var1];
+  [(ML3DAAPImportOperation *)self importItemFromDAAPElement:&v6, element.var1];
   v5 = v7;
   if (v7)
   {
@@ -65,9 +65,9 @@
   return result;
 }
 
-- (BOOL)_processArtistFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)a4 :(int64_t *)a5 Element>)a3 importItem:albumArtistPersistentID:
+- (BOOL)_processArtistFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)element :(int64_t *)a5 Element>)a3 importItem:albumArtistPersistentID:
 {
-  var0 = a4.var0;
+  var0 = element.var0;
   var1 = a3.var1;
   v7 = a3.var0;
   v57 = *MEMORY[0x277D85DE8];
@@ -352,7 +352,7 @@ LABEL_57:
   }
 }
 
-- (BOOL)_processAlbumFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)a4 :(int64_t)a5 Element>)a3 importItem:albumArtistPersistentID:
+- (BOOL)_processAlbumFromTrackElement:(shared_ptr<ML3CPP:(shared_ptr<ML3DAAPImportItem>)element :(int64_t)a5 Element>)a3 importItem:albumArtistPersistentID:
 {
   var1 = a3.var1;
   var0 = a3.var0;
@@ -877,10 +877,10 @@ LABEL_53:
   return v13;
 }
 
-- (BOOL)_processAlbumFromAlbumElement:(shared_ptr<ML3CPP::Element>)a3
+- (BOOL)_processAlbumFromAlbumElement:(shared_ptr<ML3CPP::Element>)element
 {
-  var0 = a3.var0;
-  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:a3.var0])
+  var0 = element.var0;
+  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:element.var0])
   {
     v5 = *(var0 + 1);
     v17 = *var0;
@@ -953,10 +953,10 @@ LABEL_53:
   return v8;
 }
 
-- (BOOL)_processAlbumArtistFromArtistElement:(shared_ptr<ML3CPP::Element>)a3
+- (BOOL)_processAlbumArtistFromArtistElement:(shared_ptr<ML3CPP::Element>)element
 {
-  var0 = a3.var0;
-  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:a3.var0])
+  var0 = element.var0;
+  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:element.var0])
   {
     v5 = *(var0 + 1);
     v17 = *var0;
@@ -1029,11 +1029,11 @@ LABEL_53:
   return v8;
 }
 
-- (BOOL)_processLibraryPinElement:(shared_ptr<ML3CPP::Element>)a3
+- (BOOL)_processLibraryPinElement:(shared_ptr<ML3CPP::Element>)element
 {
-  var0 = a3.var0;
+  var0 = element.var0;
   v24 = *MEMORY[0x277D85DE8];
-  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:a3.var0])
+  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:element.var0])
   {
     v5 = *(var0 + 1);
     v18 = *var0;
@@ -1111,10 +1111,10 @@ LABEL_53:
   return v8;
 }
 
-- (BOOL)_processMaxPinCount:(int)a3
+- (BOOL)_processMaxPinCount:(int)count
 {
   v30 = *MEMORY[0x277D85DE8];
-  self->_maxLibraryPinsCount = a3;
+  self->_maxLibraryPinsCount = count;
   v4 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1153,10 +1153,10 @@ LABEL_53:
   return 1;
 }
 
-- (BOOL)_processPinCount:(int)a3
+- (BOOL)_processPinCount:(int)count
 {
   v30 = *MEMORY[0x277D85DE8];
-  self->_totalLibraryPinsCount += a3;
+  self->_totalLibraryPinsCount += count;
   v4 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1195,10 +1195,10 @@ LABEL_53:
   return 1;
 }
 
-- (BOOL)_processArtistCount:(int)a3
+- (BOOL)_processArtistCount:(int)count
 {
   v30 = *MEMORY[0x277D85DE8];
-  self->_totalArtistCount += a3;
+  self->_totalArtistCount += count;
   v4 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1237,10 +1237,10 @@ LABEL_53:
   return 1;
 }
 
-- (BOOL)_processAlbumCount:(int)a3
+- (BOOL)_processAlbumCount:(int)count
 {
   v30 = *MEMORY[0x277D85DE8];
-  self->_totalAlbumCount += a3;
+  self->_totalAlbumCount += count;
   v4 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1319,12 +1319,12 @@ LABEL_53:
   return result;
 }
 
-- (BOOL)_processDeletedArtistId:(const void *)a3
+- (BOOL)_processDeletedArtistId:(const void *)id
 {
   v19 = *MEMORY[0x277D85DE8];
   if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded])
   {
-    [(ML3DAAPImportOperation *)self albumArtistItemFromDeletedDAAPArtistEntity:a3];
+    [(ML3DAAPImportOperation *)self albumArtistItemFromDeletedDAAPArtistEntity:id];
     if ((*(*v15 + 16))(v15))
     {
       importSession = self->_importSession;
@@ -1383,12 +1383,12 @@ LABEL_53:
   return v7;
 }
 
-- (BOOL)_processDeletedAlbumId:(const void *)a3
+- (BOOL)_processDeletedAlbumId:(const void *)id
 {
   v29 = *MEMORY[0x277D85DE8];
   if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded])
   {
-    [(ML3DAAPImportOperation *)self albumItemFromDeletedDAAPAlbumEntity:a3];
+    [(ML3DAAPImportOperation *)self albumItemFromDeletedDAAPAlbumEntity:id];
     if (!(*(*v20 + 16))())
     {
       v13 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -1526,10 +1526,10 @@ LABEL_46:
   return 0;
 }
 
-- (BOOL)_processPersonElement:(shared_ptr<ML3CPP::Element>)a3
+- (BOOL)_processPersonElement:(shared_ptr<ML3CPP::Element>)element
 {
-  var0 = a3.var0;
-  v5 = [(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:a3.var0];
+  var0 = element.var0;
+  v5 = [(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:element.var0];
   if (v5)
   {
     v6 = *(var0 + 1);
@@ -1579,7 +1579,7 @@ LABEL_46:
   return v5;
 }
 
-- (BOOL)_processDeletedContainerId:(int64_t)a3
+- (BOOL)_processDeletedContainerId:(int64_t)id
 {
   if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded])
   {
@@ -1596,7 +1596,7 @@ LABEL_46:
   return 0;
 }
 
-- (BOOL)_processContainerElement:(shared_ptr<ML3CPP:(vector<long)long :(std:()vector<std:(std::allocator<std::unordered_set<std::string>>> *)a5 :unordered_set<std::string> :allocator<long long>> *)a4 Element>)a3 withTrackIds:trackPersonIdentifiers:
+- (BOOL)_processContainerElement:(shared_ptr<ML3CPP:(vector<long)long :(std:()vector<std:(std::allocator<std::unordered_set<std::string>>> *)std :unordered_set<std::string> :allocator<long long>> *)a4 Element>)a3 withTrackIds:trackPersonIdentifiers:
 {
   var1 = a3.var1;
   var0 = a3.var0;
@@ -1685,10 +1685,10 @@ LABEL_46:
   return v12;
 }
 
-- (BOOL)_processContainerItemCount:(int)a3
+- (BOOL)_processContainerItemCount:(int)count
 {
   v30 = *MEMORY[0x277D85DE8];
-  self->_totalContainerCount += a3;
+  self->_totalContainerCount += count;
   v4 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1727,7 +1727,7 @@ LABEL_46:
   return 1;
 }
 
-- (BOOL)_processDeletedTrackId:(int64_t)a3
+- (BOOL)_processDeletedTrackId:(int64_t)id
 {
   if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded])
   {
@@ -1744,10 +1744,10 @@ LABEL_46:
   return 0;
 }
 
-- (BOOL)_processTrackImportItem:(shared_ptr<ML3DAAPImportItem>)a3
+- (BOOL)_processTrackImportItem:(shared_ptr<ML3DAAPImportItem>)item
 {
-  var0 = a3.var0;
-  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:a3.var0])
+  var0 = item.var0;
+  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:item.var0])
   {
     if ((*(**var0 + 16))())
     {
@@ -1800,10 +1800,10 @@ LABEL_46:
   return v7;
 }
 
-- (BOOL)_processTrackElement:(shared_ptr<ML3CPP::Element>)a3
+- (BOOL)_processTrackElement:(shared_ptr<ML3CPP::Element>)element
 {
-  var0 = a3.var0;
-  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:a3.var0])
+  var0 = element.var0;
+  if ([(ML3DAAPImportOperation *)self _startImportSessionIfNeeded:element.var0])
   {
     v5 = *(var0 + 1);
     v16 = *var0;
@@ -1874,10 +1874,10 @@ LABEL_46:
   return v8;
 }
 
-- (BOOL)_processTrackItemCount:(int)a3
+- (BOOL)_processTrackItemCount:(int)count
 {
   v30 = *MEMORY[0x277D85DE8];
-  self->_totalTrackCount += a3;
+  self->_totalTrackCount += count;
   v4 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1916,49 +1916,49 @@ LABEL_46:
   return 1;
 }
 
-- (void)_finishParsingWithError:(id)a3
+- (void)_finishParsingWithError:(id)error
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = errorCopy;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "parsing finished. error=%{public}@", &v7, 0xCu);
   }
 
   importError = self->_importError;
-  self->_importError = v4;
+  self->_importError = errorCopy;
 }
 
-- (BOOL)_importDAAPPayloadFromFile:(id)a3
+- (BOOL)_importDAAPPayloadFromFile:(id)file
 {
   v4[72] = *MEMORY[0x277D85DE8];
-  [a3 fileSystemRepresentation];
+  [file fileSystemRepresentation];
   std::ifstream::basic_ifstream(v4);
   operator new();
 }
 
-- (BOOL)_importDAAPPayloadFromFile:(id)a3 entityType:(int)a4
+- (BOOL)_importDAAPPayloadFromFile:(id)file entityType:(int)type
 {
   v6[72] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  [a3 fileSystemRepresentation];
+  typeCopy = type;
+  [file fileSystemRepresentation];
   std::ifstream::basic_ifstream(v6);
   operator new();
 }
 
-- (BOOL)_preprocessDAAPPayloadFromFile:(id)a3 entityType:(int)a4
+- (BOOL)_preprocessDAAPPayloadFromFile:(id)file entityType:(int)type
 {
   v6[72] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  [a3 fileSystemRepresentation];
+  typeCopy = type;
+  [file fileSystemRepresentation];
   std::ifstream::basic_ifstream(v6);
   operator new();
 }
 
-- (shared_ptr<ML3DAAPDeleteImportItem>)albumItemFromDeletedDAAPAlbumEntity:(const void *)a3
+- (shared_ptr<ML3DAAPDeleteImportItem>)albumItemFromDeletedDAAPAlbumEntity:(const void *)entity
 {
   *v3 = 0;
   v3[1] = 0;
@@ -1967,7 +1967,7 @@ LABEL_46:
   return result;
 }
 
-- (shared_ptr<ML3DAAPDeleteImportItem>)albumArtistItemFromDeletedDAAPArtistEntity:(const void *)a3
+- (shared_ptr<ML3DAAPDeleteImportItem>)albumArtistItemFromDeletedDAAPArtistEntity:(const void *)entity
 {
   *v3 = 0;
   v3[1] = 0;
@@ -1976,7 +1976,7 @@ LABEL_46:
   return result;
 }
 
-- (shared_ptr<ML3DAAPImportItem>)libraryPinImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)a3
+- (shared_ptr<ML3DAAPImportItem>)libraryPinImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)element
 {
   *v3 = 0;
   v3[1] = 0;
@@ -1985,7 +1985,7 @@ LABEL_46:
   return result;
 }
 
-- (shared_ptr<ML3DAAPImportItem>)albumArtistImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)a3
+- (shared_ptr<ML3DAAPImportItem>)albumArtistImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)element
 {
   *v3 = 0;
   v3[1] = 0;
@@ -1994,7 +1994,7 @@ LABEL_46:
   return result;
 }
 
-- (shared_ptr<ML3DAAPImportItem>)albumImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)a3
+- (shared_ptr<ML3DAAPImportItem>)albumImportItemFromDAAPElement:(shared_ptr<ML3CPP::Element>)element
 {
   *v3 = 0;
   v3[1] = 0;
@@ -2003,18 +2003,18 @@ LABEL_46:
   return result;
 }
 
-- (BOOL)performImportOfSourceType:(int)a3 usingConnection:(id)a4
+- (BOOL)performImportOfSourceType:(int)type usingConnection:(id)connection
 {
   v134 = *MEMORY[0x277D85DE8];
-  v87 = a4;
-  self->_sourceType = a3;
+  connectionCopy = connection;
+  self->_sourceType = type;
   self->_clientInitiatedReset = 0;
   self->_updateType = -1;
-  v6 = [(ML3ImportOperation *)self import];
-  v90 = v6;
-  v88 = [v6 library];
-  v99 = [MEMORY[0x277CCAA00] defaultManager];
-  v100 = self;
+  import = [(ML3ImportOperation *)self import];
+  v90 = import;
+  library = [import library];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  selfCopy = self;
   if (self->_sourceType != 2)
   {
     v18 = 0;
@@ -2026,11 +2026,11 @@ LABEL_46:
     goto LABEL_8;
   }
 
-  v7 = [(ML3ImportOperation *)self import];
-  self->_clientInitiatedReset = [v7 clientInitiatedReset];
+  import2 = [(ML3ImportOperation *)self import];
+  self->_clientInitiatedReset = [import2 clientInitiatedReset];
 
-  v8 = [v6 albumData];
-  v9 = [v8 length];
+  albumData = [import albumData];
+  v9 = [albumData length];
 
   if (!v9)
   {
@@ -2056,21 +2056,21 @@ LABEL_49:
           }
 
           v53 = *(*(&v120 + 1) + 8 * i);
-          v54 = [v99 attributesOfItemAtPath:v53 error:0];
-          v55 = [v54 fileSize];
+          v54 = [defaultManager attributesOfItemAtPath:v53 error:0];
+          fileSize = [v54 fileSize];
 
           v56 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v130 = v55;
+            v130 = fileSize;
             v131 = 2114;
             v132 = v53;
             _os_log_impl(&dword_22D2FA000, v56, OS_LOG_TYPE_DEFAULT, "Importing %llu bytes of album data from: %{public}@", buf, 0x16u);
           }
 
-          [(ML3DAAPImportOperation *)v100 _preprocessDAAPPayloadFromFile:v53 entityType:0];
-          v97 |= v55 != 0;
+          [(ML3DAAPImportOperation *)selfCopy _preprocessDAAPPayloadFromFile:v53 entityType:0];
+          v97 |= fileSize != 0;
         }
 
         v50 = [v92 countByEnumeratingWithState:&v120 objects:v133 count:16];
@@ -2084,8 +2084,8 @@ LABEL_49:
       v97 = 0;
     }
 
-    v57 = [v6 albumArtistData];
-    v58 = [v57 length] == 0;
+    albumArtistData = [import albumArtistData];
+    v58 = [albumArtistData length] == 0;
 
     if (v58)
     {
@@ -2095,9 +2095,9 @@ LABEL_49:
     else
     {
       v59 = MEMORY[0x277CCAC58];
-      v60 = [v6 albumArtistData];
+      albumArtistData2 = [import albumArtistData];
       v119 = 0;
-      v16 = [v59 propertyListWithData:v60 options:0 format:0 error:&v119];
+      v16 = [v59 propertyListWithData:albumArtistData2 options:0 format:0 error:&v119];
       v61 = v119;
 
       if (v61)
@@ -2138,21 +2138,21 @@ LABEL_49:
           }
 
           v66 = *(*(&v115 + 1) + 8 * j);
-          v67 = [v99 attributesOfItemAtPath:v66 error:0];
-          v68 = [v67 fileSize];
+          v67 = [defaultManager attributesOfItemAtPath:v66 error:0];
+          fileSize2 = [v67 fileSize];
 
           v69 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v130 = v68;
+            v130 = fileSize2;
             v131 = 2114;
             v132 = v66;
             _os_log_impl(&dword_22D2FA000, v69, OS_LOG_TYPE_DEFAULT, "Importing %llu bytes of artist data from: %{public}@", buf, 0x16u);
           }
 
-          [(ML3DAAPImportOperation *)v100 _preprocessDAAPPayloadFromFile:v66 entityType:1];
-          v95 |= v68 != 0;
+          [(ML3DAAPImportOperation *)selfCopy _preprocessDAAPPayloadFromFile:v66 entityType:1];
+          v95 |= fileSize2 != 0;
         }
 
         v63 = [v91 countByEnumeratingWithState:&v115 objects:v128 count:16];
@@ -2166,8 +2166,8 @@ LABEL_49:
       v95 = 0;
     }
 
-    v70 = [v6 libraryPinsData];
-    v71 = [v70 length] == 0;
+    libraryPinsData = [import libraryPinsData];
+    v71 = [libraryPinsData length] == 0;
 
     if (v71)
     {
@@ -2177,9 +2177,9 @@ LABEL_49:
     else
     {
       v72 = MEMORY[0x277CCAC58];
-      v73 = [v6 libraryPinsData];
+      libraryPinsData2 = [import libraryPinsData];
       v114 = 0;
-      v89 = [v72 propertyListWithData:v73 options:0 format:0 error:&v114];
+      v89 = [v72 propertyListWithData:libraryPinsData2 options:0 format:0 error:&v114];
       v74 = v114;
 
       if (v74)
@@ -2226,21 +2226,21 @@ LABEL_83:
           }
 
           v82 = *(*(&v110 + 1) + 8 * k);
-          v83 = [v99 attributesOfItemAtPath:v82 error:0];
-          v84 = [v83 fileSize];
+          v83 = [defaultManager attributesOfItemAtPath:v82 error:0];
+          fileSize3 = [v83 fileSize];
 
           v85 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v130 = v84;
+            v130 = fileSize3;
             v131 = 2114;
             v132 = v82;
             _os_log_impl(&dword_22D2FA000, v85, OS_LOG_TYPE_DEFAULT, "Importing %llu bytes of library pins data from: %{public}@", buf, 0x16u);
           }
 
-          [(ML3DAAPImportOperation *)v100 _preprocessDAAPPayloadFromFile:v82 entityType:4];
-          v93 |= v84 != 0;
+          [(ML3DAAPImportOperation *)selfCopy _preprocessDAAPPayloadFromFile:v82 entityType:4];
+          v93 |= fileSize3 != 0;
         }
 
         v78 = v18;
@@ -2256,9 +2256,9 @@ LABEL_83:
     }
 
 LABEL_8:
-    v19 = [v6 trackData];
+    trackData = [import trackData];
     v89 = v18;
-    v20 = [v19 length] == 0;
+    v20 = [trackData length] == 0;
 
     if (v20)
     {
@@ -2269,9 +2269,9 @@ LABEL_8:
     else
     {
       v21 = MEMORY[0x277CCAC58];
-      v22 = [v6 trackData];
+      trackData2 = [import trackData];
       v109 = 0;
-      v23 = [v21 propertyListWithData:v22 options:0 format:0 error:&v109];
+      v23 = [v21 propertyListWithData:trackData2 options:0 format:0 error:&v109];
       v24 = v109;
 
       v86 = v24 == 0;
@@ -2308,21 +2308,21 @@ LABEL_8:
           }
 
           v31 = *(*(&v105 + 1) + 8 * m);
-          v32 = [v99 attributesOfItemAtPath:v31 error:0];
-          v33 = [v32 fileSize];
+          v32 = [defaultManager attributesOfItemAtPath:v31 error:0];
+          fileSize4 = [v32 fileSize];
 
           v34 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v130 = v33;
+            v130 = fileSize4;
             v131 = 2114;
             v132 = v31;
             _os_log_impl(&dword_22D2FA000, v34, OS_LOG_TYPE_DEFAULT, "Importing %llu bytes of track data from: %{public}@", buf, 0x16u);
           }
 
-          [(ML3DAAPImportOperation *)v100 _preprocessDAAPPayloadFromFile:v31 entityType:2];
-          v28 |= v33 != 0;
+          [(ML3DAAPImportOperation *)selfCopy _preprocessDAAPPayloadFromFile:v31 entityType:2];
+          v28 |= fileSize4 != 0;
           v26 = v98;
         }
 
@@ -2340,8 +2340,8 @@ LABEL_8:
     else
     {
       v37 = MEMORY[0x277CCAC58];
-      v38 = [v90 playlistData];
-      v39 = [v37 propertyListWithData:v38 options:0 format:0 error:0];
+      playlistData = [v90 playlistData];
+      v39 = [v37 propertyListWithData:playlistData options:0 format:0 error:0];
     }
 
     v103 = 0u;
@@ -2377,21 +2377,21 @@ LABEL_8:
 
           else
           {
-            v46 = [v99 attributesOfItemAtPath:v44 error:0];
-            v47 = [v46 fileSize];
+            v46 = [defaultManager attributesOfItemAtPath:v44 error:0];
+            fileSize5 = [v46 fileSize];
 
             v48 = os_log_create("com.apple.amp.medialibrary", "Default");
             if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v130 = v47;
+              v130 = fileSize5;
               v131 = 2114;
               v132 = v44;
               _os_log_impl(&dword_22D2FA000, v48, OS_LOG_TYPE_DEFAULT, "Importing %llu bytes of playlist data from: %{public}@", buf, 0x16u);
             }
 
-            [(ML3DAAPImportOperation *)v100 _preprocessDAAPPayloadFromFile:v44 entityType:3];
-            v40 |= v47 != 0;
+            [(ML3DAAPImportOperation *)selfCopy _preprocessDAAPPayloadFromFile:v44 entityType:3];
+            v40 |= fileSize5 != 0;
           }
         }
 
@@ -2424,9 +2424,9 @@ LABEL_8:
   }
 
   v10 = MEMORY[0x277CCAC58];
-  v11 = [v6 albumData];
+  albumData2 = [import albumData];
   v124 = 0;
-  v96 = [v10 propertyListWithData:v11 options:0 format:0 error:&v124];
+  v96 = [v10 propertyListWithData:albumData2 options:0 format:0 error:&v124];
   v12 = v124;
 
   if (!v12)

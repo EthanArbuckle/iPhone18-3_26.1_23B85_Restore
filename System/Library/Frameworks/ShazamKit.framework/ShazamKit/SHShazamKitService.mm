@@ -11,29 +11,29 @@
 - (SHPrivacyDisclosureManager)privacyDisclosureManager;
 - (SHServiceDelegate)serviceDelegate;
 - (SHShazamKitClient)delegate;
-- (SHShazamKitService)initWithClientCredentials:(id)a3;
-- (SHShazamKitService)initWithClientCredentials:(id)a3 audioTapProvider:(id)a4 eventSignaller:(id)a5 privacyDisclosureManager:(id)a6;
-- (void)_libraryInfoWithCompletionHandler:(id)a3;
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4;
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4;
+- (SHShazamKitService)initWithClientCredentials:(id)credentials;
+- (SHShazamKitService)initWithClientCredentials:(id)credentials audioTapProvider:(id)provider eventSignaller:(id)signaller privacyDisclosureManager:(id)manager;
+- (void)_libraryInfoWithCompletionHandler:(id)handler;
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler;
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition;
 - (void)dealloc;
 - (void)disableSpectralOutputNotification;
-- (void)finishedWorker:(id)a3;
-- (void)hapticsForMediaItems:(id)a3 completionHandler:(id)a4;
-- (void)isHapticTrackAvailableForMediaItem:(id)a3 completionHandler:(id)a4;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
-- (void)mediaItemsForShazamIDs:(id)a3 completionHandler:(id)a4;
-- (void)prepareMatcherForRequestID:(id)a3 completionHandler:(id)a4;
-- (void)registerMatcherController:(id)a3 forRequest:(id)a4 completionHandler:(id)a5;
+- (void)finishedWorker:(id)worker;
+- (void)hapticsForMediaItems:(id)items completionHandler:(id)handler;
+- (void)isHapticTrackAvailableForMediaItem:(id)item completionHandler:(id)handler;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
+- (void)mediaItemsForShazamIDs:(id)ds completionHandler:(id)handler;
+- (void)prepareMatcherForRequestID:(id)d completionHandler:(id)handler;
+- (void)registerMatcherController:(id)controller forRequest:(id)request completionHandler:(id)handler;
 - (void)setUpSpectralOutputNotification;
 - (void)shutdownService;
-- (void)startRecognitionForRequest:(id)a3;
-- (void)startRecognitionForRequest:(id)a3 completionHandler:(id)a4;
-- (void)startUpdatingLocationForRequest:(id)a3;
+- (void)startRecognitionForRequest:(id)request;
+- (void)startRecognitionForRequest:(id)request completionHandler:(id)handler;
+- (void)startUpdatingLocationForRequest:(id)request;
 - (void)stopRecognition;
-- (void)stopRecognitionForRequestID:(id)a3;
-- (void)synchronizeSnapshot:(id)a3 startCondition:(id)a4 completionHandler:(id)a5;
-- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)stopRecognitionForRequestID:(id)d;
+- (void)synchronizeSnapshot:(id)snapshot startCondition:(id)condition completionHandler:(id)handler;
+- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation SHShazamKitService
@@ -61,33 +61,33 @@
   [(SHShazamKitService *)&v4 dealloc];
 }
 
-- (SHShazamKitService)initWithClientCredentials:(id)a3
+- (SHShazamKitService)initWithClientCredentials:(id)credentials
 {
-  v5 = a3;
+  credentialsCopy = credentials;
   v9.receiver = self;
   v9.super_class = SHShazamKitService;
   v6 = [(SHShazamKitService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientCredentials, a3);
+    objc_storeStrong(&v6->_clientCredentials, credentials);
   }
 
   return v7;
 }
 
-- (SHShazamKitService)initWithClientCredentials:(id)a3 audioTapProvider:(id)a4 eventSignaller:(id)a5 privacyDisclosureManager:(id)a6
+- (SHShazamKitService)initWithClientCredentials:(id)credentials audioTapProvider:(id)provider eventSignaller:(id)signaller privacyDisclosureManager:(id)manager
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SHShazamKitService *)self initWithClientCredentials:a3];
+  providerCopy = provider;
+  signallerCopy = signaller;
+  managerCopy = manager;
+  v14 = [(SHShazamKitService *)self initWithClientCredentials:credentials];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_audioTapProvider, a4);
-    objc_storeStrong(&v15->_eventSignaller, a5);
-    objc_storeStrong(&v15->_privacyDisclosureManager, a6);
+    objc_storeStrong(&v14->_audioTapProvider, provider);
+    objc_storeStrong(&v15->_eventSignaller, signaller);
+    objc_storeStrong(&v15->_privacyDisclosureManager, manager);
   }
 
   return v15;
@@ -95,10 +95,10 @@
 
 - (void)setUpSpectralOutputNotification
 {
-  v3 = [(SHShazamKitService *)self clientCredentials];
-  v4 = [v3 canEnableSpectralOutput];
+  clientCredentials = [(SHShazamKitService *)self clientCredentials];
+  canEnableSpectralOutput = [clientCredentials canEnableSpectralOutput];
 
-  if (v4)
+  if (canEnableSpectralOutput)
   {
     v5 = sh_log_object();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -138,25 +138,25 @@
   [v4 removeObserver:self name:SHNotificationNameDaemonSpectralOutput object:0];
 }
 
-- (void)prepareMatcherForRequestID:(id)a3 completionHandler:(id)a4
+- (void)prepareMatcherForRequestID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = [SHPreRecordingWorker alloc];
-  v9 = [(SHShazamKitService *)self audioTapProvider];
-  v10 = [(SHPreRecordingWorker *)v8 initWithRequestID:v6 audioTapProvider:v9];
+  audioTapProvider = [(SHShazamKitService *)self audioTapProvider];
+  v10 = [(SHPreRecordingWorker *)v8 initWithRequestID:dCopy audioTapProvider:audioTapProvider];
 
   if (v10)
   {
-    v11 = [(SHShazamKitService *)self serviceDelegate];
+    serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
     v16 = 0;
-    v12 = [v11 service:self registerWorker:v10 watchdogTimeout:&v16 error:120.0];
+    v12 = [serviceDelegate service:self registerWorker:v10 watchdogTimeout:&v16 error:120.0];
     v13 = v16;
 
     if (v12)
     {
       [(SHPreRecordingWorker *)v10 setWorkerDelegate:self];
-      [(SHPreRecordingWorker *)v10 startRecordingWithCompletionHandler:v7];
+      [(SHPreRecordingWorker *)v10 startRecordingWithCompletionHandler:handlerCopy];
     }
 
     else
@@ -167,15 +167,15 @@
         *buf = 138412802;
         v18 = v10;
         v19 = 2112;
-        v20 = v6;
+        v20 = dCopy;
         v21 = 2112;
         v22 = v13;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Unable to start prerecording for worker %@ - the pre recording is already running with the same worker id %@ running - %@", buf, 0x20u);
       }
 
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
     }
   }
@@ -189,71 +189,71 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Unable to start pre recording - it is likely some required entitlements are missing", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
   v3 = NSStringFromSelector(a2);
   [NSException raise:NSInternalInconsistencyException format:@"%@ is not supported by shazamd, please use startRecognitionForRequest:completionHandler", v3];
 }
 
-- (void)startRecognitionForRequest:(id)a3 completionHandler:(id)a4
+- (void)startRecognitionForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHShazamKitService *)self serviceDelegate];
-  v9 = [(SHShazamKitService *)self matcherControllerProvider];
-  [v9 setDelegate:v8];
+  requestCopy = request;
+  handlerCopy = handler;
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  matcherControllerProvider = [(SHShazamKitService *)self matcherControllerProvider];
+  [matcherControllerProvider setDelegate:serviceDelegate];
 
-  if ([v6 type] == 3 && (-[SHShazamKitService privacyDisclosureManager](self, "privacyDisclosureManager"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "privacyDisclosureAcknowledgementRequired"), v10, v11))
+  if ([requestCopy type] == 3 && (-[SHShazamKitService privacyDisclosureManager](self, "privacyDisclosureManager"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "privacyDisclosureAcknowledgementRequired"), v10, v11))
   {
     v12 = sh_log_object();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v30 = 138412290;
-      v31 = v6;
+      v31 = requestCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Unable to create matcher for request %@ as privacy disclosure acknowledgement is required", &v30, 0xCu);
     }
 
     v13 = [SHError privateErrorWithCode:204 underlyingError:0];
-    v14 = [(SHShazamKitService *)self delegate];
-    v15 = [v6 signature];
-    v16 = v15;
-    if (!v15)
+    delegate = [(SHShazamKitService *)self delegate];
+    signature = [requestCopy signature];
+    v16 = signature;
+    if (!signature)
     {
       v16 = objc_opt_new();
     }
 
     v17 = [SHMatcherResponse errorResponseForSignature:v16 error:v13];
-    [v14 matcher:self didProduceResponse:v17];
+    [delegate matcher:self didProduceResponse:v17];
 
-    if (!v15)
+    if (!signature)
     {
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    v18 = [(SHShazamKitService *)self matcherControllerProvider];
-    v13 = [v18 matcherControllerForRequest:v6];
+    matcherControllerProvider2 = [(SHShazamKitService *)self matcherControllerProvider];
+    v13 = [matcherControllerProvider2 matcherControllerForRequest:requestCopy];
 
-    if ([v6 type] == 2 || objc_msgSend(v6, "type") == 3)
+    if ([requestCopy type] == 2 || objc_msgSend(requestCopy, "type") == 3)
     {
       v19 = sh_log_object();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         v30 = 138412290;
-        v31 = v6;
+        v31 = requestCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Enabling spectral output for matcher request %@", &v30, 0xCu);
       }
 
@@ -262,7 +262,7 @@
 
     if (v13)
     {
-      if ([v6 type] == 2)
+      if ([requestCopy type] == 2)
       {
         v20 = sh_log_object();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -271,20 +271,20 @@
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Request type is record, starting location updates", &v30, 2u);
         }
 
-        [(SHShazamKitService *)self startUpdatingLocationForRequest:v6];
+        [(SHShazamKitService *)self startUpdatingLocationForRequest:requestCopy];
       }
 
-      v21 = [(SHShazamKitService *)self clientCredentials];
-      v22 = [v21 attribution];
-      v23 = [v22 bundleIdentifier];
+      clientCredentials = [(SHShazamKitService *)self clientCredentials];
+      attribution = [clientCredentials attribution];
+      bundleIdentifier = [attribution bundleIdentifier];
 
-      if (([v23 isEqualToString:@"com.apple.springboard"] & 1) != 0 || objc_msgSend(v23, "isEqualToString:", @"com.apple.musicrecognition.MusicRecognitionControls"))
+      if (([bundleIdentifier isEqualToString:@"com.apple.springboard"] & 1) != 0 || objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.musicrecognition.MusicRecognitionControls"))
       {
-        v24 = [(SHShazamKitService *)self eventSignaller];
-        [v24 sendEventSignal:@"com.apple.musicrecognition.recognition-activated"];
+        eventSignaller = [(SHShazamKitService *)self eventSignaller];
+        [eventSignaller sendEventSignal:@"com.apple.musicrecognition.recognition-activated"];
       }
 
-      [(SHShazamKitService *)self registerMatcherController:v13 forRequest:v6 completionHandler:v7];
+      [(SHShazamKitService *)self registerMatcherController:v13 forRequest:requestCopy completionHandler:handlerCopy];
     }
 
     else
@@ -296,45 +296,45 @@
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Unable to fetch matcher controller - it is likely some required entitlements are missing", &v30, 2u);
       }
 
-      v23 = [SHCoreError errorWithCode:102 underlyingError:0];
-      v26 = [(SHShazamKitService *)self delegate];
-      v27 = [v6 signature];
-      v28 = v27;
-      if (!v27)
+      bundleIdentifier = [SHCoreError errorWithCode:102 underlyingError:0];
+      delegate2 = [(SHShazamKitService *)self delegate];
+      signature2 = [requestCopy signature];
+      v28 = signature2;
+      if (!signature2)
       {
         v28 = objc_opt_new();
       }
 
-      v29 = [SHMatcherResponse errorResponseForSignature:v28 error:v23];
-      [v26 matcher:self didProduceResponse:v29];
+      v29 = [SHMatcherResponse errorResponseForSignature:v28 error:bundleIdentifier];
+      [delegate2 matcher:self didProduceResponse:v29];
 
-      if (!v27)
+      if (!signature2)
       {
       }
 
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
     }
   }
 }
 
-- (void)startUpdatingLocationForRequest:(id)a3
+- (void)startUpdatingLocationForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requestID];
-  v6 = [v5 UUIDString];
-  v7 = [(SHShazamKitService *)self clientCredentials];
-  v8 = +[SHLocationProvider locationProviderForRequestIdentifier:clientType:](SHLocationProvider, "locationProviderForRequestIdentifier:clientType:", v6, [v7 clientType]);
+  requestCopy = request;
+  requestID = [requestCopy requestID];
+  uUIDString = [requestID UUIDString];
+  clientCredentials = [(SHShazamKitService *)self clientCredentials];
+  v8 = +[SHLocationProvider locationProviderForRequestIdentifier:clientType:](SHLocationProvider, "locationProviderForRequestIdentifier:clientType:", uUIDString, [clientCredentials clientType]);
 
   [v8 setWorkerDelegate:self];
   if (v8)
   {
-    v9 = [(SHShazamKitService *)self serviceDelegate];
-    [v4 watchdogTimeout];
+    serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+    [requestCopy watchdogTimeout];
     v14 = 0;
-    v10 = [v9 service:self registerWorker:v8 watchdogTimeout:&v14 error:?];
+    v10 = [serviceDelegate service:self registerWorker:v8 watchdogTimeout:&v14 error:?];
     v11 = v14;
 
     v12 = sh_log_object();
@@ -363,25 +363,25 @@
   }
 }
 
-- (void)registerMatcherController:(id)a3 forRequest:(id)a4 completionHandler:(id)a5
+- (void)registerMatcherController:(id)controller forRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SHShazamKitService *)self serviceDelegate];
-  [v9 watchdogTimeout];
+  controllerCopy = controller;
+  requestCopy = request;
+  handlerCopy = handler;
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  [requestCopy watchdogTimeout];
   v21 = 0;
-  v12 = [v11 service:self registerWorker:v8 watchdogTimeout:&v21 error:?];
+  v12 = [serviceDelegate service:self registerWorker:controllerCopy watchdogTimeout:&v21 error:?];
   v13 = v21;
 
   if (v12)
   {
-    [v8 setWorkerDelegate:self];
-    v14 = [(SHShazamKitService *)self delegate];
-    [v8 setDelegate:v14];
+    [controllerCopy setWorkerDelegate:self];
+    delegate = [(SHShazamKitService *)self delegate];
+    [controllerCopy setDelegate:delegate];
 
-    [v8 setCompletionHandler:v10];
-    [v8 startRecognitionForRequest:v9];
+    [controllerCopy setCompletionHandler:handlerCopy];
+    [controllerCopy startRecognitionForRequest:requestCopy];
   }
 
   else
@@ -389,141 +389,141 @@
     v15 = sh_log_object();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v8 workerID];
+      workerID = [controllerCopy workerID];
       *buf = 138412546;
-      v23 = v8;
+      v23 = controllerCopy;
       v24 = 2112;
-      v25 = v16;
+      v25 = workerID;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Unable to register worker %@ - the matcher is already running with the same worker id %@ running", buf, 0x16u);
     }
 
-    v17 = [(SHShazamKitService *)self delegate];
-    v18 = [v9 signature];
-    v19 = v18;
-    if (!v18)
+    delegate2 = [(SHShazamKitService *)self delegate];
+    signature = [requestCopy signature];
+    v19 = signature;
+    if (!signature)
     {
       v19 = objc_opt_new();
     }
 
     v20 = [SHMatcherResponse errorResponseForSignature:v19 error:v13];
-    [v17 matcher:self didProduceResponse:v20];
+    [delegate2 matcher:self didProduceResponse:v20];
 
-    if (!v18)
+    if (!signature)
     {
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition
 {
   v4 = NSStringFromSelector(a2);
   [NSException raise:NSInternalInconsistencyException format:@"%@ is not supported by shazamd, please use synchronizeSnapshot:startCondition:completionHandler", v4];
 }
 
-- (void)synchronizeSnapshot:(id)a3 startCondition:(id)a4 completionHandler:(id)a5
+- (void)synchronizeSnapshot:(id)snapshot startCondition:(id)condition completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  conditionCopy = condition;
+  snapshotCopy = snapshot;
   v11 = [SHMediaLibrarySyncManager alloc];
-  v12 = [(SHShazamKitService *)self libraryClient];
-  v15 = [(SHMediaLibrarySyncManager *)v11 initWithClient:v12 completionHandler:v8];
+  libraryClient = [(SHShazamKitService *)self libraryClient];
+  v15 = [(SHMediaLibrarySyncManager *)v11 initWithClient:libraryClient completionHandler:handlerCopy];
 
   [(SHMediaLibrarySyncManager *)v15 setWorkerDelegate:self];
-  v13 = [(SHShazamKitService *)self delegate];
-  [(SHMediaLibrarySyncManager *)v15 setDelegate:v13];
+  delegate = [(SHShazamKitService *)self delegate];
+  [(SHMediaLibrarySyncManager *)v15 setDelegate:delegate];
 
-  v14 = [(SHShazamKitService *)self serviceDelegate];
-  [v14 service:self registerWorker:v15 watchdogTimeout:0 error:500.0];
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  [serviceDelegate service:self registerWorker:v15 watchdogTimeout:0 error:500.0];
 
-  [(SHMediaLibrarySyncManager *)v15 _synchronizeSnapshot:v10 startCondition:v9];
+  [(SHMediaLibrarySyncManager *)v15 _synchronizeSnapshot:snapshotCopy startCondition:conditionCopy];
 }
 
-- (void)_libraryInfoWithCompletionHandler:(id)a3
+- (void)_libraryInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHShazamKitService *)self libraryQueryManager];
-  [v5 _libraryInfoWithCompletionHandler:v4];
+  handlerCopy = handler;
+  libraryQueryManager = [(SHShazamKitService *)self libraryQueryManager];
+  [libraryQueryManager _libraryInfoWithCompletionHandler:handlerCopy];
 }
 
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHShazamKitService *)self libraryQueryManager];
-  [v8 _queryLibraryWithParameters:v7 completionHandler:v6];
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  libraryQueryManager = [(SHShazamKitService *)self libraryQueryManager];
+  [libraryQueryManager _queryLibraryWithParameters:parametersCopy completionHandler:handlerCopy];
 }
 
-- (void)mediaItemsForShazamIDs:(id)a3 completionHandler:(id)a4
+- (void)mediaItemsForShazamIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHShazamKitService *)self mediaItemFetcher];
+  handlerCopy = handler;
+  dsCopy = ds;
+  mediaItemFetcher = [(SHShazamKitService *)self mediaItemFetcher];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100014DBC;
   v10[3] = &unk_10007D3A0;
-  v11 = v6;
-  v9 = v6;
-  [v8 mediaItemsForShazamIDs:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [mediaItemFetcher mediaItemsForShazamIDs:dsCopy completionHandler:v10];
 }
 
-- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)a3 completionHandler:(id)a4
+- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHShazamKitService *)self libraryQueryManager];
-  v9 = [v8 rawSongResponseDataForMediaItemIdentifier:v7];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  libraryQueryManager = [(SHShazamKitService *)self libraryQueryManager];
+  v9 = [libraryQueryManager rawSongResponseDataForMediaItemIdentifier:identifierCopy];
 
-  v6[2](v6, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)hapticsForMediaItems:(id)a3 completionHandler:(id)a4
+- (void)hapticsForMediaItems:(id)items completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHShazamKitService *)self hapticsFetcher];
+  handlerCopy = handler;
+  itemsCopy = items;
+  hapticsFetcher = [(SHShazamKitService *)self hapticsFetcher];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100014FA4;
   v10[3] = &unk_10007D3A0;
-  v11 = v6;
-  v9 = v6;
-  [v8 hapticsForMediaItems:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [hapticsFetcher hapticsForMediaItems:itemsCopy completionHandler:v10];
 }
 
-- (void)isHapticTrackAvailableForMediaItem:(id)a3 completionHandler:(id)a4
+- (void)isHapticTrackAvailableForMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHShazamKitService *)self hapticsFetcher];
+  handlerCopy = handler;
+  itemCopy = item;
+  hapticsFetcher = [(SHShazamKitService *)self hapticsFetcher];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000150F4;
   v10[3] = &unk_10007D3C8;
-  v11 = v6;
-  v9 = v6;
-  [v8 hasHapticTrackForMediaItem:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [hapticsFetcher hasHapticTrackForMediaItem:itemCopy completionHandler:v10];
 }
 
-- (void)finishedWorker:(id)a3
+- (void)finishedWorker:(id)worker
 {
-  v4 = a3;
+  workerCopy = worker;
   v5 = sh_log_object();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = workerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Worker %@ stopped running", &v7, 0xCu);
   }
 
-  v6 = [(SHShazamKitService *)self serviceDelegate];
-  [v6 service:self unregisterWorker:v4];
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  [serviceDelegate service:self unregisterWorker:workerCopy];
 }
 
 - (SHMediaLibraryQueryManager)libraryQueryManager
@@ -532,8 +532,8 @@
   if (!libraryQueryManager)
   {
     v4 = [SHMediaLibraryQueryManager alloc];
-    v5 = [(SHShazamKitService *)self libraryClient];
-    v6 = [(SHMediaLibraryQueryManager *)v4 initWithClient:v5];
+    libraryClient = [(SHShazamKitService *)self libraryClient];
+    v6 = [(SHMediaLibraryQueryManager *)v4 initWithClient:libraryClient];
     v7 = self->_libraryQueryManager;
     self->_libraryQueryManager = v6;
 
@@ -549,11 +549,11 @@
   if (!mediaItemFetcher)
   {
     v4 = [SHMediaItemFetcher alloc];
-    v5 = [(SHShazamKitService *)self clientCredentials];
-    v6 = [v5 attribution];
-    v7 = [v6 containingAppBundleIdentifier];
-    v8 = [(SHShazamKitService *)self clientCredentials];
-    v9 = -[SHMediaItemFetcher initWithBundleIdentifier:clientType:](v4, "initWithBundleIdentifier:clientType:", v7, [v8 clientType]);
+    clientCredentials = [(SHShazamKitService *)self clientCredentials];
+    attribution = [clientCredentials attribution];
+    containingAppBundleIdentifier = [attribution containingAppBundleIdentifier];
+    clientCredentials2 = [(SHShazamKitService *)self clientCredentials];
+    v9 = -[SHMediaItemFetcher initWithBundleIdentifier:clientType:](v4, "initWithBundleIdentifier:clientType:", containingAppBundleIdentifier, [clientCredentials2 clientType]);
     v10 = self->_mediaItemFetcher;
     self->_mediaItemFetcher = v9;
 
@@ -585,9 +585,9 @@
   {
     v4 = [SHAudioTapProvider alloc];
     v5 = +[SHAudioManager sharedInstance];
-    v6 = [v5 audioRecordingManager];
-    v7 = [(SHShazamKitService *)self clientCredentials];
-    v8 = [(SHAudioTapProvider *)v4 initWithAudioRecordingManager:v6 clientCredentials:v7];
+    audioRecordingManager = [v5 audioRecordingManager];
+    clientCredentials = [(SHShazamKitService *)self clientCredentials];
+    v8 = [(SHAudioTapProvider *)v4 initWithAudioRecordingManager:audioRecordingManager clientCredentials:clientCredentials];
     v9 = self->_audioTapProvider;
     self->_audioTapProvider = v8;
 
@@ -618,8 +618,8 @@
   if (!libraryClient)
   {
     v4 = [SHMediaLibraryClient alloc];
-    v5 = [(SHShazamKitService *)self clientCredentials];
-    v6 = [(SHMediaLibraryClient *)v4 initWithCredentials:v5];
+    clientCredentials = [(SHShazamKitService *)self clientCredentials];
+    v6 = [(SHMediaLibraryClient *)v4 initWithCredentials:clientCredentials];
     v7 = self->_libraryClient;
     self->_libraryClient = v6;
 
@@ -650,10 +650,10 @@
   if (!musicalFeaturesProvider)
   {
     v4 = [SHMusicalFeaturesConfigurationProvider alloc];
-    v5 = [(SHShazamKitService *)self clientCredentials];
-    v6 = [v5 attribution];
-    v7 = [v6 bundleIdentifier];
-    v8 = [(SHMusicalFeaturesConfigurationProvider *)v4 initWithSourceBundleIdentifier:v7];
+    clientCredentials = [(SHShazamKitService *)self clientCredentials];
+    attribution = [clientCredentials attribution];
+    bundleIdentifier = [attribution bundleIdentifier];
+    v8 = [(SHMusicalFeaturesConfigurationProvider *)v4 initWithSourceBundleIdentifier:bundleIdentifier];
     v9 = self->_musicalFeaturesProvider;
     self->_musicalFeaturesProvider = v8;
 
@@ -669,14 +669,14 @@
   if (!matcherControllerProvider)
   {
     v4 = [SHMatcherControllerProvider alloc];
-    v5 = [(SHShazamKitService *)self audioTapProvider];
-    v6 = [(SHShazamKitService *)self clientCredentials];
-    v7 = [v6 attribution];
-    v8 = [(SHShazamKitService *)self clientCredentials];
-    v9 = [v8 clientType];
-    v10 = [(SHShazamKitService *)self musicalFeaturesProvider];
-    v11 = [v10 musicalFeaturesConfiguration];
-    v12 = [(SHMatcherControllerProvider *)v4 initWithAudioTapProvider:v5 attribution:v7 clientType:v9 musicalFeaturesConfiguration:v11];
+    audioTapProvider = [(SHShazamKitService *)self audioTapProvider];
+    clientCredentials = [(SHShazamKitService *)self clientCredentials];
+    attribution = [clientCredentials attribution];
+    clientCredentials2 = [(SHShazamKitService *)self clientCredentials];
+    clientType = [clientCredentials2 clientType];
+    musicalFeaturesProvider = [(SHShazamKitService *)self musicalFeaturesProvider];
+    musicalFeaturesConfiguration = [musicalFeaturesProvider musicalFeaturesConfiguration];
+    v12 = [(SHMatcherControllerProvider *)v4 initWithAudioTapProvider:audioTapProvider attribution:attribution clientType:clientType musicalFeaturesConfiguration:musicalFeaturesConfiguration];
     v13 = self->_matcherControllerProvider;
     self->_matcherControllerProvider = v12;
 
@@ -686,12 +686,12 @@
   return matcherControllerProvider;
 }
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = [(SHShazamKitService *)self serviceDelegate];
-  v8 = [v7 allWorkersForService:self];
+  matcherCopy = matcher;
+  responseCopy = response;
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  v8 = [serviceDelegate allWorkersForService:self];
 
   v28 = 0u;
   v29 = 0u;
@@ -713,16 +713,16 @@
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 taskID];
-        v16 = [v6 runningAssociatedRequestID];
-        if ([v15 isEqual:v16])
+        taskID = [v14 taskID];
+        runningAssociatedRequestID = [responseCopy runningAssociatedRequestID];
+        if ([taskID isEqual:runningAssociatedRequestID])
         {
           v17 = [v14 conformsToProtocol:&OBJC_PROTOCOL___SHMatcherDelegate];
 
           if (v17)
           {
-            v23 = v25;
-            [v14 matcher:v25 didProduceResponse:v6];
+            v23 = matcherCopy;
+            [v14 matcher:matcherCopy didProduceResponse:responseCopy];
             v24 = v9;
             goto LABEL_15;
           }
@@ -742,19 +742,19 @@
   v18 = sh_log_object();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v6 runningAssociatedRequestID];
+    runningAssociatedRequestID2 = [responseCopy runningAssociatedRequestID];
     *buf = 138412290;
-    v31 = v19;
+    v31 = runningAssociatedRequestID2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Tried to return response ID %@ but could not find a running worker", buf, 0xCu);
   }
 
   v24 = [SHError errorWithCode:500 underlyingError:0];
-  v20 = [(SHShazamKitService *)self delegate];
-  v21 = [v6 signature];
-  v22 = [SHMatcherResponse errorResponseForSignature:v21 error:v24];
-  [v20 matcher:self didProduceResponse:v22];
+  delegate = [(SHShazamKitService *)self delegate];
+  signature = [responseCopy signature];
+  v22 = [SHMatcherResponse errorResponseForSignature:signature error:v24];
+  [delegate matcher:self didProduceResponse:v22];
 
-  v23 = v25;
+  v23 = matcherCopy;
 LABEL_15:
 }
 
@@ -767,8 +767,8 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Shazam service stopRecognition called", buf, 2u);
   }
 
-  v4 = [(SHShazamKitService *)self serviceDelegate];
-  v5 = [v4 allWorkersForService:self];
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  v5 = [serviceDelegate allWorkersForService:self];
 
   v14 = 0u;
   v15 = 0u;
@@ -803,21 +803,21 @@ LABEL_15:
   }
 }
 
-- (void)stopRecognitionForRequestID:(id)a3
+- (void)stopRecognitionForRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sh_log_object();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = v4;
+    v30 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%@] stopRecognition called for worker with task ID %@", buf, 0x16u);
   }
 
-  v6 = [(SHShazamKitService *)self serviceDelegate];
-  v7 = [v6 allWorkersForService:self];
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  v7 = [serviceDelegate allWorkersForService:self];
 
   v24 = 0u;
   v25 = 0u;
@@ -841,8 +841,8 @@ LABEL_15:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 taskID];
-        if ([v15 isEqual:v4])
+        taskID = [v14 taskID];
+        if ([taskID isEqual:dCopy])
         {
           v16 = [v14 conformsToProtocol:&OBJC_PROTOCOL___SHMatcher];
 
@@ -851,15 +851,15 @@ LABEL_15:
             v17 = sh_log_object();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
-              v18 = [v14 workerID];
+              workerID = [v14 workerID];
               *buf = 138412546;
-              v28 = v18;
+              selfCopy = workerID;
               v29 = 2112;
-              v30 = v4;
+              v30 = dCopy;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Worker with worker ID %@ stopping task ID %@", buf, 0x16u);
             }
 
-            [v14 stopRecognitionForRequestID:v4];
+            [v14 stopRecognitionForRequestID:dCopy];
             continue;
           }
         }
@@ -880,9 +880,9 @@ LABEL_15:
           v19 = sh_log_object();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v20 = [v14 workerID];
+            workerID2 = [v14 workerID];
             *buf = v21;
-            v28 = v20;
+            selfCopy = workerID2;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Worker of type SHLocationProvider shutting down with worker ID %@", buf, 0xCu);
           }
         }
@@ -906,8 +906,8 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Shazam service stop called", buf, 2u);
   }
 
-  v4 = [(SHShazamKitService *)self serviceDelegate];
-  v5 = [v4 allWorkersForService:self];
+  serviceDelegate = [(SHShazamKitService *)self serviceDelegate];
+  v5 = [serviceDelegate allWorkersForService:self];
 
   v13 = 0u;
   v14 = 0u;

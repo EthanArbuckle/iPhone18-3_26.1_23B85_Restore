@@ -1,7 +1,7 @@
 @interface RTVehicleEventMO
-+ (id)managedObjectWithVehicleEvent:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithVehicleEvent:(id)event inManagedObjectContext:(id)context;
 - (id)mapItem;
-- (void)setMapItem:(id)a3;
+- (void)setMapItem:(id)item;
 @end
 
 @implementation RTVehicleEventMO
@@ -10,13 +10,13 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   [(RTVehicleEventMO *)self willAccessValueForKey:@"mapItem"];
-  v3 = [(RTVehicleEventMO *)self cachedMapItem];
+  cachedMapItem = [(RTVehicleEventMO *)self cachedMapItem];
 
-  if (!v3)
+  if (!cachedMapItem)
   {
-    v4 = [(RTVehicleEventMO *)self mapItemIdentifier];
+    mapItemIdentifier = [(RTVehicleEventMO *)self mapItemIdentifier];
     v10 = 0;
-    v5 = [RTMapItemMO mapItemForIdentifier:v4 error:&v10];
+    v5 = [RTMapItemMO mapItemForIdentifier:mapItemIdentifier error:&v10];
     v6 = v10;
     [(RTVehicleEventMO *)self setCachedMapItem:v5];
 
@@ -33,87 +33,87 @@
   }
 
   [(RTVehicleEventMO *)self didAccessValueForKey:@"mapItem"];
-  v8 = [(RTVehicleEventMO *)self cachedMapItem];
+  cachedMapItem2 = [(RTVehicleEventMO *)self cachedMapItem];
 
-  return v8;
+  return cachedMapItem2;
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(RTVehicleEventMO *)self willChangeValueForKey:@"mapItem"];
-  v5 = [v4 identifier];
-  [(RTVehicleEventMO *)self setMapItemIdentifier:v5];
+  identifier = [itemCopy identifier];
+  [(RTVehicleEventMO *)self setMapItemIdentifier:identifier];
 
-  [(RTVehicleEventMO *)self setCachedMapItem:v4];
+  [(RTVehicleEventMO *)self setCachedMapItem:itemCopy];
 
   [(RTVehicleEventMO *)self didChangeValueForKey:@"mapItem"];
 }
 
-+ (id)managedObjectWithVehicleEvent:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithVehicleEvent:(id)event inManagedObjectContext:(id)context
 {
   v5 = MEMORY[0x277CBE408];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  eventCopy = event;
   v8 = +[(NSManagedObject *)RTVehicleEventMO];
-  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:v6];
+  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:contextCopy];
 
-  v10 = [v7 date];
-  [v9 setDate:v10];
+  date = [eventCopy date];
+  [v9 setDate:date];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v7 location];
-  [v12 latitude];
+  location = [eventCopy location];
+  [location latitude];
   v13 = [v11 numberWithDouble:?];
   [v9 setLocLatitude:v13];
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v7 location];
-  [v15 longitude];
+  location2 = [eventCopy location];
+  [location2 longitude];
   v16 = [v14 numberWithDouble:?];
   [v9 setLocLongitude:v16];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v7 location];
-  [v18 horizontalUncertainty];
+  location3 = [eventCopy location];
+  [location3 horizontalUncertainty];
   v19 = [v17 numberWithDouble:?];
   [v9 setLocUncertainty:v19];
 
-  v20 = [v7 location];
-  v21 = [v20 date];
-  [v9 setLocDate:v21];
+  location4 = [eventCopy location];
+  date2 = [location4 date];
+  [v9 setLocDate:date2];
 
   v22 = MEMORY[0x277CCABB0];
-  v23 = [v7 location];
-  v24 = [v22 numberWithUnsignedInt:{objc_msgSend(v23, "referenceFrame")}];
+  location5 = [eventCopy location];
+  v24 = [v22 numberWithUnsignedInt:{objc_msgSend(location5, "referenceFrame")}];
   [v9 setLocReferenceFrame:v24];
 
-  v25 = [v7 vehicleIdentifier];
-  [v9 setVehicleIdentifier:v25];
+  vehicleIdentifier = [eventCopy vehicleIdentifier];
+  [v9 setVehicleIdentifier:vehicleIdentifier];
 
-  v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "userSetLocation")}];
+  v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(eventCopy, "userSetLocation")}];
   [v9 setUserSetLocation:v26];
 
-  v27 = [v7 notes];
-  [v9 setNotes:v27];
+  notes = [eventCopy notes];
+  [v9 setNotes:notes];
 
-  v28 = [v7 identifier];
-  v29 = [v28 UUIDString];
-  [v9 setIdentifier:v29];
+  identifier = [eventCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [v9 setIdentifier:uUIDString];
 
-  v30 = [v7 photo];
-  [v9 setPhotoData:v30];
+  photo = [eventCopy photo];
+  [v9 setPhotoData:photo];
 
-  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "locationQuality")}];
+  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "locationQuality")}];
   [v9 setLocationQuality:v31];
 
-  v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "usualLocation")}];
+  v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(eventCopy, "usualLocation")}];
   [v9 setUsualLocation:v32];
 
-  v33 = [v7 mapItem];
+  mapItem = [eventCopy mapItem];
 
-  v34 = [v33 identifier];
-  [v9 setMapItemIdentifier:v34];
+  identifier2 = [mapItem identifier];
+  [v9 setMapItemIdentifier:identifier2];
 
   return v9;
 }

@@ -1,31 +1,31 @@
 @interface NWURLLoader
 - (OS_nw_connection)underlyingConnection;
-- (id)initWithRequest:(void *)a3 configuration:(void *)a4 queue:(void *)a5 client:(void *)a6 protocolClass:;
+- (id)initWithRequest:(void *)request configuration:(void *)configuration queue:(void *)queue client:(void *)client protocolClass:;
 - (id)takeCachedResponse;
-- (void)URLProtocol:(id)a3 cachedResponseIsValid:(id)a4;
-- (void)URLProtocol:(id)a3 didFailWithError:(id)a4;
-- (void)URLProtocol:(id)a3 didLoadData:(id)a4;
-- (void)URLProtocol:(id)a3 didReceiveAuthenticationChallenge:(id)a4;
-- (void)URLProtocol:(id)a3 didReceiveResponse:(id)a4 cacheStoragePolicy:(unint64_t)a5;
-- (void)URLProtocol:(id)a3 wasRedirectedToRequest:(id)a4 redirectResponse:(id)a5;
-- (void)URLProtocolDidFinishLoading:(id)a3;
-- (void)afterCacheLookup:(uint64_t)a1;
-- (void)fulfillData:(int)a3 complete:;
-- (void)fulfillError:(uint64_t)a1;
-- (void)fulfillResponse:(uint64_t)a1;
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
-- (void)readResponse:(id)a3;
-- (void)start:(id)a3;
+- (void)URLProtocol:(id)protocol cachedResponseIsValid:(id)valid;
+- (void)URLProtocol:(id)protocol didFailWithError:(id)error;
+- (void)URLProtocol:(id)protocol didLoadData:(id)data;
+- (void)URLProtocol:(id)protocol didReceiveAuthenticationChallenge:(id)challenge;
+- (void)URLProtocol:(id)protocol didReceiveResponse:(id)response cacheStoragePolicy:(unint64_t)policy;
+- (void)URLProtocol:(id)protocol wasRedirectedToRequest:(id)request redirectResponse:(id)response;
+- (void)URLProtocolDidFinishLoading:(id)loading;
+- (void)afterCacheLookup:(uint64_t)lookup;
+- (void)fulfillData:(int)data complete:;
+- (void)fulfillError:(uint64_t)error;
+- (void)fulfillResponse:(uint64_t)response;
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
+- (void)readResponse:(id)response;
+- (void)start:(id)start;
 - (void)stop;
-- (void)updateClient:(id)a3;
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5;
+- (void)updateClient:(id)client;
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler;
 @end
 
 @implementation NWURLLoader
 
-- (void)URLProtocol:(id)a3 didReceiveAuthenticationChallenge:(id)a4
+- (void)URLProtocol:(id)protocol didReceiveAuthenticationChallenge:(id)challenge
 {
-  v5 = a4;
+  challengeCopy = challenge;
   if (self)
   {
     queue = self->_queue;
@@ -41,8 +41,8 @@
   v8[2] = __61__NWURLLoader_URLProtocol_didReceiveAuthenticationChallenge___block_invoke;
   v8[3] = &unk_1E6A3D760;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = challengeCopy;
+  v7 = challengeCopy;
   dispatch_async(queue, v8);
 }
 
@@ -146,9 +146,9 @@ void __61__NWURLLoader_URLProtocol_didReceiveAuthenticationChallenge___block_inv
   }
 }
 
-- (void)URLProtocol:(id)a3 didFailWithError:(id)a4
+- (void)URLProtocol:(id)protocol didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (self)
   {
     queue = self->_queue;
@@ -164,8 +164,8 @@ void __61__NWURLLoader_URLProtocol_didReceiveAuthenticationChallenge___block_inv
   v8[2] = __44__NWURLLoader_URLProtocol_didFailWithError___block_invoke;
   v8[3] = &unk_1E6A3D760;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
@@ -203,31 +203,31 @@ void __44__NWURLLoader_URLProtocol_didFailWithError___block_invoke(uint64_t a1)
   [(NWURLLoader *)*(a1 + 32) fulfillError:v10];
 }
 
-- (void)fulfillError:(uint64_t)a1
+- (void)fulfillError:(uint64_t)error
 {
   v4 = a2;
-  if (a1)
+  if (error)
   {
     v8 = v4;
-    if ((*(a1 + 8) & 1) == 0 && !*(a1 + 128))
+    if ((*(error + 8) & 1) == 0 && !*(error + 128))
     {
-      objc_storeStrong((a1 + 128), a2);
+      objc_storeStrong((error + 128), a2);
     }
 
-    v5 = *(a1 + 104);
+    v5 = *(error + 104);
     if (v5)
     {
       v6 = v5;
-      objc_setProperty_nonatomic_copy(a1, v7, 0, 104);
+      objc_setProperty_nonatomic_copy(error, v7, 0, 104);
       v6[2](v6, 0, v8);
     }
 
-    [(NWURLSessionReadRequest *)*(a1 + 120) putError:v8];
+    [(NWURLSessionReadRequest *)*(error + 120) putError:v8];
     v4 = v8;
   }
 }
 
-- (void)URLProtocolDidFinishLoading:(id)a3
+- (void)URLProtocolDidFinishLoading:(id)loading
 {
   if (self)
   {
@@ -247,12 +247,12 @@ void __44__NWURLLoader_URLProtocol_didFailWithError___block_invoke(uint64_t a1)
   dispatch_async(queue, block);
 }
 
-- (void)fulfillData:(int)a3 complete:
+- (void)fulfillData:(int)data complete:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 80);
+    v6 = *(self + 80);
     data2 = v5;
     if (v5)
     {
@@ -260,43 +260,43 @@ void __44__NWURLLoader_URLProtocol_didFailWithError___block_invoke(uint64_t a1)
       {
         v7 = v6;
         concat = dispatch_data_create_concat(v7, data2);
-        v9 = *(a1 + 80);
-        *(a1 + 80) = concat;
+        v9 = *(self + 80);
+        *(self + 80) = concat;
 
-        v6 = *(a1 + 80);
-        if (dispatch_data_get_size(v6) > *(a1 + 96))
+        v6 = *(self + 80);
+        if (dispatch_data_get_size(v6) > *(self + 96))
         {
-          *(a1 + 80) = 0;
+          *(self + 80) = 0;
 
-          v6 = *(a1 + 80);
+          v6 = *(self + 80);
         }
       }
     }
 
-    if (v6 && a3)
+    if (v6 && data)
     {
       v10 = objc_alloc(MEMORY[0x1E695ABF0]);
-      v11 = *(a1 + 112);
-      v12 = *(a1 + 72);
-      v13 = *(a1 + 80);
+      v11 = *(self + 112);
+      v12 = *(self + 72);
+      v13 = *(self + 80);
       v14 = v11;
       v15 = [v10 initWithResponse:v14 data:v13 userInfo:0 storagePolicy:v12];
-      v16 = *(a1 + 88);
-      *(a1 + 88) = v15;
+      v16 = *(self + 88);
+      *(self + 88) = v15;
 
-      v17 = *(a1 + 80);
-      *(a1 + 80) = 0;
+      v17 = *(self + 80);
+      *(self + 80) = 0;
     }
 
-    *(a1 + 8) = a3;
-    [(NWURLSessionReadRequest *)*(a1 + 120) putData:a3 complete:?];
+    *(self + 8) = data;
+    [(NWURLSessionReadRequest *)*(self + 120) putData:data complete:?];
     v5 = data2;
   }
 }
 
-- (void)URLProtocol:(id)a3 didLoadData:(id)a4
+- (void)URLProtocol:(id)protocol didLoadData:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   if (self)
   {
     queue = self->_queue;
@@ -312,8 +312,8 @@ void __44__NWURLLoader_URLProtocol_didFailWithError___block_invoke(uint64_t a1)
   v8[2] = __39__NWURLLoader_URLProtocol_didLoadData___block_invoke;
   v8[3] = &unk_1E6A3D760;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = dataCopy;
+  v7 = dataCopy;
   dispatch_async(queue, v8);
 }
 
@@ -324,9 +324,9 @@ void __39__NWURLLoader_URLProtocol_didLoadData___block_invoke(uint64_t a1)
   [(NWURLLoader *)v1 fulfillData:v2 complete:0];
 }
 
-- (void)URLProtocol:(id)a3 didReceiveResponse:(id)a4 cacheStoragePolicy:(unint64_t)a5
+- (void)URLProtocol:(id)protocol didReceiveResponse:(id)response cacheStoragePolicy:(unint64_t)policy
 {
-  v7 = a4;
+  responseCopy = response;
   if (self)
   {
     client = self->_client;
@@ -337,17 +337,17 @@ void __39__NWURLLoader_URLProtocol_didLoadData___block_invoke(uint64_t a1)
     client = 0;
   }
 
-  v9 = [(NWURLLoaderClient *)client loaderDataTask];
+  loaderDataTask = [(NWURLLoaderClient *)client loaderDataTask];
 
-  if (v9)
+  if (loaderDataTask)
   {
-    v10 = a5;
-    if (!a5)
+    policyCopy = policy;
+    if (!policy)
     {
       goto LABEL_11;
     }
 
-    if (a5 == 1)
+    if (policy == 1)
     {
       if (self)
       {
@@ -360,7 +360,7 @@ void __39__NWURLLoader_URLProtocol_didLoadData___block_invoke(uint64_t a1)
       }
 
       v12 = cache;
-      v13 = [(NSURLCache *)v12 memoryCapacity];
+      memoryCapacity = [(NSURLCache *)v12 memoryCapacity];
       if (self)
       {
         v14 = self->_cache;
@@ -372,7 +372,7 @@ void __39__NWURLLoader_URLProtocol_didLoadData___block_invoke(uint64_t a1)
       }
 
       [(NSURLCache *)v14 _maxCacheableEntrySizeRatio];
-      v10 = (v15 * v13);
+      policyCopy = (v15 * memoryCapacity);
 
 LABEL_11:
       if (self)
@@ -386,7 +386,7 @@ LABEL_11:
       }
 
       v17 = v16;
-      v18 = [(NSURLCache *)v17 diskCapacity];
+      diskCapacity = [(NSURLCache *)v17 diskCapacity];
       if (self)
       {
         v19 = self->_cache;
@@ -398,16 +398,16 @@ LABEL_11:
       }
 
       [(NSURLCache *)v19 _maxCacheableEntrySizeRatio];
-      v21 = (v20 * v18);
+      v21 = (v20 * diskCapacity);
 
-      if (v10 <= v21)
+      if (policyCopy <= v21)
       {
         v22 = v21;
       }
 
       else
       {
-        v22 = v10;
+        v22 = policyCopy;
       }
 
       if (self)
@@ -434,11 +434,11 @@ LABEL_20:
   v25[1] = 3221225472;
   v25[2] = __65__NWURLLoader_URLProtocol_didReceiveResponse_cacheStoragePolicy___block_invoke;
   v25[3] = &unk_1E6A35A40;
-  v26 = v7;
-  v27 = self;
+  v26 = responseCopy;
+  selfCopy = self;
   v28 = v22;
-  v29 = a5;
-  v24 = v7;
+  policyCopy2 = policy;
+  v24 = responseCopy;
   dispatch_async(queue, v25);
 }
 
@@ -472,26 +472,26 @@ void __65__NWURLLoader_URLProtocol_didReceiveResponse_cacheStoragePolicy___block
   [(NWURLLoader *)v5 fulfillResponse:v6];
 }
 
-- (void)fulfillResponse:(uint64_t)a1
+- (void)fulfillResponse:(uint64_t)response
 {
   v7 = a2;
-  if (a1)
+  if (response)
   {
-    v4 = *(a1 + 104);
+    v4 = *(response + 104);
     if (v4)
     {
       v5 = v4;
-      objc_setProperty_nonatomic_copy(a1, v6, 0, 104);
+      objc_setProperty_nonatomic_copy(response, v6, 0, 104);
       v5[2](v5, v7, 0);
     }
 
-    objc_storeStrong((a1 + 112), a2);
+    objc_storeStrong((response + 112), a2);
   }
 }
 
-- (void)URLProtocol:(id)a3 cachedResponseIsValid:(id)a4
+- (void)URLProtocol:(id)protocol cachedResponseIsValid:(id)valid
 {
-  v5 = a4;
+  validCopy = valid;
   if (self)
   {
     queue = self->_queue;
@@ -507,8 +507,8 @@ void __65__NWURLLoader_URLProtocol_didReceiveResponse_cacheStoragePolicy___block
   v8[2] = __49__NWURLLoader_URLProtocol_cachedResponseIsValid___block_invoke;
   v8[3] = &unk_1E6A3D760;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = validCopy;
+  v7 = validCopy;
   dispatch_async(queue, v8);
 }
 
@@ -543,11 +543,11 @@ void __49__NWURLLoader_URLProtocol_cachedResponseIsValid___block_invoke(uint64_t
   [(NWURLLoader *)v7 fulfillData:v9 complete:1];
 }
 
-- (void)URLProtocol:(id)a3 wasRedirectedToRequest:(id)a4 redirectResponse:(id)a5
+- (void)URLProtocol:(id)protocol wasRedirectedToRequest:(id)request redirectResponse:(id)response
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
+  requestCopy = request;
+  responseCopy = response;
+  v9 = responseCopy;
   if (self)
   {
     queue = self->_queue;
@@ -563,9 +563,9 @@ void __49__NWURLLoader_URLProtocol_cachedResponseIsValid___block_invoke(uint64_t
   block[2] = __67__NWURLLoader_URLProtocol_wasRedirectedToRequest_redirectResponse___block_invoke;
   block[3] = &unk_1E6A3B4E0;
   block[4] = self;
-  v14 = v8;
-  v15 = v7;
-  v11 = v7;
+  v14 = responseCopy;
+  v15 = requestCopy;
+  v11 = requestCopy;
   v12 = v9;
   dispatch_async(queue, block);
 }
@@ -618,10 +618,10 @@ void __67__NWURLLoader_URLProtocol_wasRedirectedToRequest_redirectResponse___blo
   return result;
 }
 
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   _os_crash();
   __break(1u);
 }
@@ -643,30 +643,30 @@ void __67__NWURLLoader_URLProtocol_wasRedirectedToRequest_redirectResponse___blo
   return v3;
 }
 
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
   if (self)
   {
     readRequest = self->_readRequest;
     if (readRequest)
     {
-      readRequest->_minimumLength = a3;
-      readRequest->_maximumLength = a4;
-      objc_setProperty_nonatomic_copy(readRequest, a2, a5, 32);
+      readRequest->_minimumLength = length;
+      readRequest->_maximumLength = maximumLength;
+      objc_setProperty_nonatomic_copy(readRequest, a2, handler, 32);
 
       [(NWURLSessionReadRequest *)readRequest tryFulfillRequest];
     }
   }
 }
 
-- (void)readResponse:(id)a3
+- (void)readResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if (self)
   {
     if (self->_error)
     {
-      v4[2](v4, 0);
+      responseCopy[2](responseCopy, 0);
     }
 
     else
@@ -674,12 +674,12 @@ void __67__NWURLLoader_URLProtocol_wasRedirectedToRequest_redirectResponse___blo
       response = self->_response;
       if (response)
       {
-        (v4[2])(v4, response, 0);
+        (responseCopy[2])(responseCopy, response, 0);
       }
 
       else
       {
-        objc_setProperty_nonatomic_copy(self, 0, v4, 104);
+        objc_setProperty_nonatomic_copy(self, 0, responseCopy, 104);
       }
     }
   }
@@ -687,12 +687,12 @@ void __67__NWURLLoader_URLProtocol_wasRedirectedToRequest_redirectResponse___blo
   MEMORY[0x1EEE66C30]();
 }
 
-- (void)updateClient:(id)a3
+- (void)updateClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   if (self)
   {
-    objc_storeStrong(&self->_client, a3);
+    objc_storeStrong(&self->_client, client);
   }
 }
 
@@ -701,20 +701,20 @@ void __67__NWURLLoader_URLProtocol_wasRedirectedToRequest_redirectResponse___blo
   if (self)
   {
     v3 = [NWURLError alloc];
-    v4 = [(NWURLLoaderClient *)self->_client loaderTask];
-    v5 = self;
-    v6 = v4;
+    loaderTask = [(NWURLLoaderClient *)self->_client loaderTask];
+    selfCopy = self;
+    v6 = loaderTask;
     if (v3)
     {
       v7 = [(NWURLError *)v3 initWithErrorCode:-999];
       v3 = v7;
       if (v7)
       {
-        [(NWURLError *)v7 fillErrorForLoader:v5 andTask:v6];
+        [(NWURLError *)v7 fillErrorForLoader:selfCopy andTask:v6];
       }
     }
 
-    [(NWURLLoader *)v5 fulfillError:v3];
+    [(NWURLLoader *)selfCopy fulfillError:v3];
     client = self->_client;
   }
 
@@ -758,24 +758,24 @@ void __19__NWURLLoader_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = objc_alloc_init(NWURLSessionReadRequest);
   if (self)
   {
     readRequest = self->_readRequest;
     self->_readRequest = v5;
 
-    v7 = self->_configuration;
-    v8 = v7;
-    if (v7)
+    uRLCache = self->_configuration;
+    v8 = uRLCache;
+    if (uRLCache)
     {
-      v7 = [(NSURLSessionConfiguration *)v7->_configuration URLCache];
+      uRLCache = [(NSURLSessionConfiguration *)uRLCache->_configuration URLCache];
     }
 
     cache = self->_cache;
-    self->_cache = v7;
+    self->_cache = uRLCache;
 
     client = self->_client;
   }
@@ -787,9 +787,9 @@ void __19__NWURLLoader_stop__block_invoke(uint64_t a1)
   }
 
   v11 = client;
-  v12 = [(NWURLLoaderClient *)v11 loaderDataTask];
+  loaderDataTask = [(NWURLLoaderClient *)v11 loaderDataTask];
 
-  if (self && (v13 = self->_cache) != 0 && v12)
+  if (self && (v13 = self->_cache) != 0 && loaderDataTask)
   {
     v14 = v13;
     v15 = self->_client;
@@ -798,8 +798,8 @@ void __19__NWURLLoader_stop__block_invoke(uint64_t a1)
     v17[2] = __21__NWURLLoader_start___block_invoke;
     v17[3] = &unk_1E6A3B4E0;
     v18 = v14;
-    v19 = v12;
-    v20 = self;
+    v19 = loaderDataTask;
+    selfCopy = self;
     v16 = v14;
     [(NWURLLoaderClient *)v15 loaderRunDelegateBlock:v17];
   }
@@ -809,7 +809,7 @@ void __19__NWURLLoader_stop__block_invoke(uint64_t a1)
     [(NWURLLoader *)self afterCacheLookup:?];
   }
 
-  v4[2](v4);
+  startCopy[2](startCopy);
 }
 
 uint64_t __21__NWURLLoader_start___block_invoke(void *a1)
@@ -824,23 +824,23 @@ uint64_t __21__NWURLLoader_start___block_invoke(void *a1)
   return [v2 getCachedResponseForDataTask:v1 completionHandler:v4];
 }
 
-- (void)afterCacheLookup:(uint64_t)a1
+- (void)afterCacheLookup:(uint64_t)lookup
 {
   v3 = a2;
-  if (a1 && !*(a1 + 128))
+  if (lookup && !*(lookup + 128))
   {
-    v4 = *(a1 + 32);
-    v5 = [v4 loaderTask];
+    v4 = *(lookup + 32);
+    loaderTask = [v4 loaderTask];
 
-    v6 = *(a1 + 32);
+    v6 = *(lookup + 32);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __32__NWURLLoader_afterCacheLookup___block_invoke;
     v8[3] = &unk_1E6A3B4E0;
-    v8[4] = a1;
-    v9 = v5;
+    v8[4] = lookup;
+    v9 = loaderTask;
     v10 = v3;
-    v7 = v5;
+    v7 = loaderTask;
     [v6 loaderCallCustomURLProtocol:v8];
   }
 }
@@ -953,31 +953,31 @@ void __21__NWURLLoader_start___block_invoke_2(uint64_t a1, void *a2)
   dispatch_async(v5, v7);
 }
 
-- (id)initWithRequest:(void *)a3 configuration:(void *)a4 queue:(void *)a5 client:(void *)a6 protocolClass:
+- (id)initWithRequest:(void *)request configuration:(void *)configuration queue:(void *)queue client:(void *)client protocolClass:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a1)
+  requestCopy = request;
+  configurationCopy = configuration;
+  queueCopy = queue;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = NWURLLoader;
-    a1 = objc_msgSendSuper2(&v18, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v18, sel_init);
+    if (self)
     {
-      v15 = [a6 canonicalRequestForRequest:v11];
-      v16 = a1[2];
-      a1[2] = v15;
+      v15 = [client canonicalRequestForRequest:v11];
+      v16 = self[2];
+      self[2] = v15;
 
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a5);
-      objc_storeStrong(a1 + 5, a4);
-      objc_storeStrong(a1 + 6, a6);
+      objc_storeStrong(self + 3, request);
+      objc_storeStrong(self + 4, queue);
+      objc_storeStrong(self + 5, configuration);
+      objc_storeStrong(self + 6, client);
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __111__NWURLLoader_makeLoaderForRequest_bodyKnownSize_configuration_queue_client_protocolClasses_completionHandler___block_invoke(id *a1)

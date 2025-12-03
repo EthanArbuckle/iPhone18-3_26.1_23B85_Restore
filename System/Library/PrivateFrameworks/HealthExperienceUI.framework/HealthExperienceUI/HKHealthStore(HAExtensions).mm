@@ -15,7 +15,7 @@
   v10 = a3;
   v11 = [objc_opt_class() queryForMostRecentSampleOfType:v10 predicate:v9 completion:v8];
 
-  [a1 executeQuery:v11];
+  [self executeQuery:v11];
 }
 
 - (void)mostRecentQuantitySampleOfType:()HAExtensions predicate:completion:
@@ -27,7 +27,7 @@
   v10[3] = &unk_1E7EEB2F8;
   v11 = v8;
   v9 = v8;
-  [a1 mostRecentSampleOfType:a3 predicate:a4 completion:v10];
+  [self mostRecentSampleOfType:a3 predicate:a4 completion:v10];
 }
 
 - (void)mostRecentCategorySampleOfType:()HAExtensions predicate:completion:
@@ -39,7 +39,7 @@
   v10[3] = &unk_1E7EEB2F8;
   v11 = v8;
   v9 = v8;
-  [a1 mostRecentSampleOfType:a3 predicate:a4 completion:v10];
+  [self mostRecentSampleOfType:a3 predicate:a4 completion:v10];
 }
 
 - (void)averageQuantityForType:()HAExtensions unit:predicate:completion:
@@ -60,7 +60,7 @@
   v17 = v11;
   v18 = [v15 initWithQuantityType:v14 quantitySamplePredicate:v13 options:2 completionHandler:&v19];
 
-  [a1 executeQuery:{v18, v19, v20, v21, v22}];
+  [self executeQuery:{v18, v19, v20, v21, v22}];
 }
 
 - (void)calculateBMIWithCompletion:()HAExtensions
@@ -96,7 +96,7 @@
   v16 = v24;
   v8 = v6;
   v15 = v8;
-  [a1 mostRecentQuantitySampleOfType:v7 predicate:0 completion:v14];
+  [self mostRecentQuantitySampleOfType:v7 predicate:0 completion:v14];
 
   v9 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BC98]];
   v11[0] = MEMORY[0x1E69E9820];
@@ -106,7 +106,7 @@
   v13 = v23;
   v10 = v8;
   v12 = v10;
-  [a1 mostRecentQuantitySampleOfType:v9 predicate:0 completion:v11];
+  [self mostRecentQuantitySampleOfType:v9 predicate:0 completion:v11];
 
   _Block_object_dispose(v22, 8);
   _Block_object_dispose(v23, 8);

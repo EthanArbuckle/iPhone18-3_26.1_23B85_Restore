@@ -1,15 +1,15 @@
 @interface B389MapViewController
-- (_TtC18SharingViewService21B389MapViewController)initWithCoder:(id)a3;
-- (_TtC18SharingViewService21B389MapViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (_TtC18SharingViewService21B389MapViewController)initWithCoder:(id)coder;
+- (_TtC18SharingViewService21B389MapViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewTapped:(id)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewTapped:(id)tapped;
 @end
 
 @implementation B389MapViewController
 
-- (_TtC18SharingViewService21B389MapViewController)initWithCoder:(id)a3
+- (_TtC18SharingViewService21B389MapViewController)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC18SharingViewService21B389MapViewController_tapHandler);
   *v4 = 0;
@@ -25,51 +25,51 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000AB3C0();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for B389MapViewController();
   v4 = v7.receiver;
-  [(B389MapViewController *)&v7 viewDidAppear:v3];
+  [(B389MapViewController *)&v7 viewDidAppear:appearCopy];
   v5 = OBJC_IVAR____TtC18SharingViewService21B389MapViewController_mapView;
   v6 = OBJC_IVAR____TtC18SharingViewService21B389MapViewController_mapAnnotation;
   [*&v4[OBJC_IVAR____TtC18SharingViewService21B389MapViewController_mapView] addAnnotation:{*&v4[OBJC_IVAR____TtC18SharingViewService21B389MapViewController_mapAnnotation], v7.receiver, v7.super_class}];
-  [*&v4[v5] selectAnnotation:*&v4[v6] animated:v3];
+  [*&v4[v5] selectAnnotation:*&v4[v6] animated:appearCopy];
 }
 
-- (void)viewTapped:(id)a3
+- (void)viewTapped:(id)tapped
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18SharingViewService21B389MapViewController_tapHandler);
   if (v3)
   {
     v5 = *&self->mapAnnotation[OBJC_IVAR____TtC18SharingViewService21B389MapViewController_tapHandler];
-    v7 = a3;
-    v8 = self;
+    tappedCopy = tapped;
+    selfCopy = self;
     sub_100024138(v3);
-    v3(a3);
+    v3(tapped);
 
     sub_100025EF4(v3, v5);
   }
 }
 
-- (_TtC18SharingViewService21B389MapViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18SharingViewService21B389MapViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_1000AB854(v5);
+  selfCopy = self;
+  v7 = sub_1000AB854(viewCopy);
 
   swift_unknownObjectRelease();
 

@@ -1,7 +1,7 @@
 @interface MessageFilterManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC38com_apple_IdentityLookup_MessageFilter20MessageFilterManager)init;
-- (void)performClassificationReportRequest:(id)a3;
+- (void)performClassificationReportRequest:(id)request;
 @end
 
 @implementation MessageFilterManager
@@ -13,23 +13,23 @@
   return [(MessageFilterManager *)&v3 init];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = self;
-  [v5 setExportedObject:v6];
-  v7 = [objc_opt_self() il_messageFilterHostInterface];
-  [v5 setExportedInterface:v7];
+  connectionCopy = connection;
+  selfCopy = self;
+  [connectionCopy setExportedObject:selfCopy];
+  il_messageFilterHostInterface = [objc_opt_self() il_messageFilterHostInterface];
+  [connectionCopy setExportedInterface:il_messageFilterHostInterface];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (void)performClassificationReportRequest:(id)a3
+- (void)performClassificationReportRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_100015F50(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_100015F50(requestCopy);
 }
 
 @end

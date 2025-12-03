@@ -37,8 +37,8 @@
 
 - (BOOL)isMigrationNeeded
 {
-  v2 = [(STDefaultsMigrator *)self screenTimeDefaults];
-  v3 = [v2 valueForKey:@"ScreenTimeEnabled"];
+  screenTimeDefaults = [(STDefaultsMigrator *)self screenTimeDefaults];
+  v3 = [screenTimeDefaults valueForKey:@"ScreenTimeEnabled"];
   v4 = v3 == 0;
 
   return v4;
@@ -46,14 +46,14 @@
 
 - (void)migrateUserDefaults
 {
-  v3 = [(STDefaultsMigrator *)self screenTimeDefaults];
-  v4 = [(STDefaultsMigrator *)self remotemanagementdDefaults];
-  v5 = [(STDefaultsMigrator *)self oldToNewKeyNames];
+  screenTimeDefaults = [(STDefaultsMigrator *)self screenTimeDefaults];
+  remotemanagementdDefaults = [(STDefaultsMigrator *)self remotemanagementdDefaults];
+  oldToNewKeyNames = [(STDefaultsMigrator *)self oldToNewKeyNames];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  v6 = [oldToNewKeyNames countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -65,27 +65,27 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(oldToNewKeyNames);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
-        v13 = [v3 valueForKey:v12];
+        v12 = [oldToNewKeyNames objectForKeyedSubscript:v11];
+        v13 = [screenTimeDefaults valueForKey:v12];
 
         if (!v13)
         {
-          v14 = [v3 valueForKey:v11];
-          if (v14 || ([v4 valueForKey:v11], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+          v14 = [screenTimeDefaults valueForKey:v11];
+          if (v14 || ([remotemanagementdDefaults valueForKey:v11], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v15 = v14;
-            [v3 setValue:v14 forKey:v12];
-            [v3 setValue:0 forKey:v11];
+            [screenTimeDefaults setValue:v14 forKey:v12];
+            [screenTimeDefaults setValue:0 forKey:v11];
             ++v8;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v7 = [oldToNewKeyNames countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v7);

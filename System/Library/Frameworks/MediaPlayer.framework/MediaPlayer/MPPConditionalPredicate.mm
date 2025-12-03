@@ -1,12 +1,12 @@
 @interface MPPConditionalPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPConditionalPredicate
@@ -18,13 +18,13 @@
   return v4 ^ [(MPPMediaPredicate *)self->_elsePredicate hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((conditionalPredicate = self->_conditionalPredicate, !(conditionalPredicate | v4[1])) || -[MPPMediaPredicate isEqual:](conditionalPredicate, "isEqual:")) && ((thenPredicate = self->_thenPredicate, !(thenPredicate | v4[3])) || -[MPPMediaPredicate isEqual:](thenPredicate, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((conditionalPredicate = self->_conditionalPredicate, !(conditionalPredicate | equalCopy[1])) || -[MPPMediaPredicate isEqual:](conditionalPredicate, "isEqual:")) && ((thenPredicate = self->_thenPredicate, !(thenPredicate | equalCopy[3])) || -[MPPMediaPredicate isEqual:](thenPredicate, "isEqual:")))
   {
     elsePredicate = self->_elsePredicate;
-    if (elsePredicate | v4[2])
+    if (elsePredicate | equalCopy[2])
     {
       v8 = [(MPPMediaPredicate *)elsePredicate isEqual:?];
     }
@@ -43,102 +43,102 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MPPMediaPredicate *)self->_conditionalPredicate copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MPPMediaPredicate *)self->_conditionalPredicate copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(MPPMediaPredicate *)self->_thenPredicate copyWithZone:a3];
+  v8 = [(MPPMediaPredicate *)self->_thenPredicate copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(MPPMediaPredicate *)self->_elsePredicate copyWithZone:a3];
+  v10 = [(MPPMediaPredicate *)self->_elsePredicate copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(MPPConditionalPredicate *)self hasConditionalPredicate])
   {
-    v4 = [(MPPConditionalPredicate *)self conditionalPredicate];
-    [v7 setConditionalPredicate:v4];
+    conditionalPredicate = [(MPPConditionalPredicate *)self conditionalPredicate];
+    [toCopy setConditionalPredicate:conditionalPredicate];
   }
 
   if ([(MPPConditionalPredicate *)self hasThenPredicate])
   {
-    v5 = [(MPPConditionalPredicate *)self thenPredicate];
-    [v7 setThenPredicate:v5];
+    thenPredicate = [(MPPConditionalPredicate *)self thenPredicate];
+    [toCopy setThenPredicate:thenPredicate];
   }
 
   if ([(MPPConditionalPredicate *)self hasElsePredicate])
   {
-    v6 = [(MPPConditionalPredicate *)self elsePredicate];
-    [v7 setElsePredicate:v6];
+    elsePredicate = [(MPPConditionalPredicate *)self elsePredicate];
+    [toCopy setElsePredicate:elsePredicate];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if (self->_conditionalPredicate)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPMediaPredicate *)self->_conditionalPredicate writeTo:v4];
-    v5 = [v4 data];
-    [v11 writeData:v5 forTag:1];
+    data = [v4 data];
+    [toCopy writeData:data forTag:1];
   }
 
   if (self->_thenPredicate)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPMediaPredicate *)self->_thenPredicate writeTo:v6];
-    v7 = [v6 data];
-    [v11 writeData:v7 forTag:2];
+    data2 = [v6 data];
+    [toCopy writeData:data2 forTag:2];
   }
 
-  v8 = v11;
+  v8 = toCopy;
   if (self->_elsePredicate)
   {
     v9 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPMediaPredicate *)self->_elsePredicate writeTo:v9];
-    v10 = [v9 data];
-    [v11 writeData:v10 forTag:3];
+    data3 = [v9 data];
+    [toCopy writeData:data3 forTag:3];
 
-    v8 = v11;
+    v8 = toCopy;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   conditionalPredicate = self->_conditionalPredicate;
   if (conditionalPredicate)
   {
-    v5 = [(MPPMediaPredicate *)conditionalPredicate dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"conditionalPredicate"];
+    dictionaryRepresentation = [(MPPMediaPredicate *)conditionalPredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"conditionalPredicate"];
   }
 
   thenPredicate = self->_thenPredicate;
   if (thenPredicate)
   {
-    v7 = [(MPPMediaPredicate *)thenPredicate dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"thenPredicate"];
+    dictionaryRepresentation2 = [(MPPMediaPredicate *)thenPredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"thenPredicate"];
   }
 
   elsePredicate = self->_elsePredicate;
   if (elsePredicate)
   {
-    v9 = [(MPPMediaPredicate *)elsePredicate dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"elsePredicate"];
+    dictionaryRepresentation3 = [(MPPMediaPredicate *)elsePredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"elsePredicate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -147,8 +147,8 @@
   v8.receiver = self;
   v8.super_class = MPPConditionalPredicate;
   v4 = [(MPPConditionalPredicate *)&v8 description];
-  v5 = [(MPPConditionalPredicate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPConditionalPredicate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

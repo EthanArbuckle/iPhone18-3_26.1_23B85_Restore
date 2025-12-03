@@ -1,5 +1,5 @@
 @interface IPFeatureSentenceFragment
-+ (id)fragmentWithRange:(_NSRange)a3 clusterType:(unint64_t)a4;
++ (id)fragmentWithRange:(_NSRange)range clusterType:(unint64_t)type;
 - (_NSRange)range;
 - (id)description;
 - (unint64_t)mainPolarity;
@@ -7,13 +7,13 @@
 
 @implementation IPFeatureSentenceFragment
 
-+ (id)fragmentWithRange:(_NSRange)a3 clusterType:(unint64_t)a4
++ (id)fragmentWithRange:(_NSRange)range clusterType:(unint64_t)type
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = objc_alloc_init(IPFeatureSentenceFragment);
   [(IPFeatureSentenceFragment *)v7 setRange:location, length];
-  [(IPFeatureSentenceFragment *)v7 setClusterType:a4];
+  [(IPFeatureSentenceFragment *)v7 setClusterType:type];
 
   return v7;
 }

@@ -1,43 +1,43 @@
 @interface NTKColorSliderThumbView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (NTKColorSliderThumbView)initWithFrame:(CGRect)a3;
+- (NTKColorSliderThumbView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation NTKColorSliderThumbView
 
-- (NTKColorSliderThumbView)initWithFrame:(CGRect)a3
+- (NTKColorSliderThumbView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = NTKColorSliderThumbView;
-  v3 = [(NTKColorSliderThumbView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKColorSliderThumbView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
     border = v3->_border;
     v3->_border = v4;
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v3->_border setBackgroundColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v3->_border setBackgroundColor:whiteColor];
 
-    v7 = [MEMORY[0x277D75348] blackColor];
-    v8 = [v7 CGColor];
-    v9 = [(UIView *)v3->_border layer];
-    [v9 setShadowColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(UIView *)v3->_border layer];
+    [layer setShadowColor:cGColor];
 
-    v10 = [(UIView *)v3->_border layer];
+    layer2 = [(UIView *)v3->_border layer];
     LODWORD(v11) = 0.5;
-    [v10 setShadowOpacity:v11];
+    [layer2 setShadowOpacity:v11];
 
     v12 = *MEMORY[0x277CBF3A8];
     v13 = *(MEMORY[0x277CBF3A8] + 8);
-    v14 = [(UIView *)v3->_border layer];
-    [v14 setShadowOffset:{v12, v13}];
+    layer3 = [(UIView *)v3->_border layer];
+    [layer3 setShadowOffset:{v12, v13}];
 
-    v15 = [(UIView *)v3->_border layer];
-    [v15 setShadowRadius:10.0];
+    layer4 = [(UIView *)v3->_border layer];
+    [layer4 setShadowRadius:10.0];
 
     [(NTKColorSliderThumbView *)v3 addSubview:v3->_border];
     v16 = objc_opt_new();
@@ -66,13 +66,13 @@
   v23.size.width = v8;
   v23.size.height = v10;
   v11 = CGRectGetWidth(v23) * 0.5;
-  v12 = [(UIView *)self->_border layer];
-  [v12 setCornerRadius:v11];
+  layer = [(UIView *)self->_border layer];
+  [layer setCornerRadius:v11];
 
   v13 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v4, v6, v8, v10}];
-  v14 = [v13 CGPath];
-  v15 = [(UIView *)self->_border layer];
-  [v15 setShadowPath:v14];
+  cGPath = [v13 CGPath];
+  layer2 = [(UIView *)self->_border layer];
+  [layer2 setShadowPath:cGPath];
 
   v24.origin.x = v4;
   v24.origin.y = v6;
@@ -89,8 +89,8 @@
   v26.size.width = width;
   v26.size.height = height;
   v20 = CGRectGetWidth(v26) * 0.5;
-  v21 = [(UIView *)self->_content layer];
-  [v21 setCornerRadius:v20];
+  layer3 = [(UIView *)self->_content layer];
+  [layer3 setCornerRadius:v20];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result
@@ -105,28 +105,28 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  if (a3.size.width >= a3.size.height)
+  if (frame.size.width >= frame.size.height)
   {
-    a3.size.width = a3.size.height;
+    frame.size.width = frame.size.height;
   }
 
   v3.receiver = self;
   v3.super_class = NTKColorSliderThumbView;
-  [(NTKColorSliderThumbView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.width];
+  [(NTKColorSliderThumbView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.width];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  if (a3.size.width >= a3.size.height)
+  if (bounds.size.width >= bounds.size.height)
   {
-    a3.size.width = a3.size.height;
+    bounds.size.width = bounds.size.height;
   }
 
   v3.receiver = self;
   v3.super_class = NTKColorSliderThumbView;
-  [(NTKColorSliderThumbView *)&v3 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.width];
+  [(NTKColorSliderThumbView *)&v3 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.width];
 }
 
 @end

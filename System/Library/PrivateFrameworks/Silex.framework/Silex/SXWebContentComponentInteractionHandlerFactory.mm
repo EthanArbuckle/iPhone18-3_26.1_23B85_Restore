@@ -1,15 +1,15 @@
 @interface SXWebContentComponentInteractionHandlerFactory
-- (id)componentInteractionHandlerForInteraction:(id)a3;
+- (id)componentInteractionHandlerForInteraction:(id)interaction;
 @end
 
 @implementation SXWebContentComponentInteractionHandlerFactory
 
-- (id)componentInteractionHandlerForInteraction:(id)a3
+- (id)componentInteractionHandlerForInteraction:(id)interaction
 {
-  if (a3)
+  if (interaction)
   {
-    v3 = a3;
-    v4 = [[SXWebContentComponentInteractionHandler alloc] initWithInteraction:v3];
+    interactionCopy = interaction;
+    v4 = [[SXWebContentComponentInteractionHandler alloc] initWithInteraction:interactionCopy];
   }
 
   else

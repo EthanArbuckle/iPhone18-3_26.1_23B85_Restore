@@ -1,9 +1,9 @@
 @interface ASPasskeyConfigurationSubscriberAdapter
-- (BOOL)applyConfiguration:(id)a3 scope:(int64_t)a4 returningReasons:(id *)a5 error:(id *)a6;
-- (BOOL)removeDeclarationKey:(id)a3 scope:(int64_t)a4 error:(id *)a5;
+- (BOOL)applyConfiguration:(id)configuration scope:(int64_t)scope returningReasons:(id *)reasons error:(id *)error;
+- (BOOL)removeDeclarationKey:(id)key scope:(int64_t)scope error:(id *)error;
 - (id)allDeclarationKeys;
 - (id)configurationClasses;
-- (id)declarationKeyForConfiguration:(id)a3;
+- (id)declarationKeyForConfiguration:(id)configuration;
 @end
 
 @implementation ASPasskeyConfigurationSubscriberAdapter
@@ -36,7 +36,7 @@
     v4 = OBJC_IVAR____TtC26AuthenticationServicesCore22ASManagedConfiguration_declarationKeyToPasskeyAttestationConfigurationKey;
     swift_beginAccess();
     v5 = *(v3 + v4);
-    v6 = self;
+    selfCopy = self;
 
     v8 = sub_1C214A74C(v7);
     v9 = sub_1C214FBB4(v8);
@@ -44,7 +44,7 @@
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
     v9 = MEMORY[0x1E69E7CC0];
   }
 
@@ -57,30 +57,30 @@
   return v11;
 }
 
-- (BOOL)applyConfiguration:(id)a3 scope:(int64_t)a4 returningReasons:(id *)a5 error:(id *)a6
+- (BOOL)applyConfiguration:(id)configuration scope:(int64_t)scope returningReasons:(id *)reasons error:(id *)error
 {
-  v8 = a3;
-  v9 = self;
-  sub_1C2151008(v8, a4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1C2151008(configurationCopy, scope);
 
   return 1;
 }
 
-- (BOOL)removeDeclarationKey:(id)a3 scope:(int64_t)a4 error:(id *)a5
+- (BOOL)removeDeclarationKey:(id)key scope:(int64_t)scope error:(id *)error
 {
-  v7 = a3;
-  v8 = self;
-  sub_1C2150430(v7, a4);
+  keyCopy = key;
+  selfCopy = self;
+  sub_1C2150430(keyCopy, scope);
 
   return 1;
 }
 
-- (id)declarationKeyForConfiguration:(id)a3
+- (id)declarationKeyForConfiguration:(id)configuration
 {
   v4 = objc_opt_self();
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = sub_1C21708F4();
-  v7 = [v4 newDeclarationKeyWithSubscriberIdentifier:v6 reference:v5];
+  v7 = [v4 newDeclarationKeyWithSubscriberIdentifier:v6 reference:configurationCopy];
 
   return v7;
 }

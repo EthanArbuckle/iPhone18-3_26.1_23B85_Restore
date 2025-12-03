@@ -33,15 +33,15 @@
 
 - (void)clearLegacyDefaults
 {
-  v5 = [(BSAbstractDefaultDomain *)self _store];
-  v3 = [v5 objectForKey:@"iconState"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v3 = [_store objectForKey:@"iconState"];
   if (v3)
   {
   }
 
   else
   {
-    v4 = [v5 objectForKey:@"iconState2"];
+    v4 = [_store objectForKey:@"iconState2"];
 
     if (!v4)
     {
@@ -49,8 +49,8 @@
     }
   }
 
-  [v5 removeObjectForKey:@"iconState"];
-  [v5 removeObjectForKey:@"iconState2"];
+  [_store removeObjectForKey:@"iconState"];
+  [_store removeObjectForKey:@"iconState2"];
   [(BSAbstractDefaultDomain *)self synchronizeDefaults];
 LABEL_5:
 }

@@ -1,8 +1,8 @@
 @interface ATXCandidateRelevanceModelDataStoreDatasetMetadataTracker
-+ (id)yearMonthDayComponentsForDate:(id)a3;
++ (id)yearMonthDayComponentsForDate:(id)date;
 - (ATXCandidateRelevanceModelDataStoreDatasetMetadataTracker)init;
 - (id)currentMetadata;
-- (void)observeDataPoint:(id)a3;
+- (void)observeDataPoint:(id)point;
 @end
 
 @implementation ATXCandidateRelevanceModelDataStoreDatasetMetadataTracker
@@ -35,17 +35,17 @@
   return v3;
 }
 
-- (void)observeDataPoint:(id)a3
+- (void)observeDataPoint:(id)point
 {
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 timeContext];
-  obj = [v6 date];
+  pointCopy = point;
+  context = [pointCopy context];
+  timeContext = [context timeContext];
+  obj = [timeContext date];
 
   v7 = [objc_opt_class() yearMonthDayComponentsForDate:obj];
-  LODWORD(v6) = [v4 engaged];
+  LODWORD(timeContext) = [pointCopy engaged];
 
-  if (v6)
+  if (timeContext)
   {
     seenDatesWithPositiveSamples = self->_seenDatesWithPositiveSamples;
     ++self->_numberOfPositiveSamples;
@@ -71,12 +71,12 @@
   }
 }
 
-+ (id)yearMonthDayComponentsForDate:(id)a3
++ (id)yearMonthDayComponentsForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:28 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:28 fromDate:dateCopy];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface APVersionData
 - (APVersionData)init;
-- (id)subdirectoriesAtURL:(id)a3;
+- (id)subdirectoriesAtURL:(id)l;
 @end
 
 @implementation APVersionData
@@ -20,12 +20,12 @@
   return v4;
 }
 
-- (id)subdirectoriesAtURL:(id)a3
+- (id)subdirectoriesAtURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v7 = objc_msgSend_fileManager(self, v5, v6);
-  v9 = objc_msgSend_enumeratorAtURL_includingPropertiesForKeys_options_errorHandler_(v7, v8, v4, 0, 1, 0);
+  v9 = objc_msgSend_enumeratorAtURL_includingPropertiesForKeys_options_errorHandler_(v7, v8, lCopy, 0, 1, 0);
 
   if (v9)
   {

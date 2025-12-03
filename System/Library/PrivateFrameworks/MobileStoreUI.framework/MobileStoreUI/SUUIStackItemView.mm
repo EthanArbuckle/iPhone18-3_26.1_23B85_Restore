@@ -1,40 +1,40 @@
 @interface SUUIStackItemView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5 numberOfLines:(unint64_t *)a6;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_textViewLayoutWithWidth:(double)a3 string:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context numberOfLines:(unint64_t *)lines;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_textViewLayoutWithWidth:(double)width string:(id)string;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentInset;
 - (unint64_t)numberOfLines;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIStackItemView
 
 - (unint64_t)numberOfLines
 {
-  v2 = [(SUUIStackItemView *)self textView];
-  v3 = [v2 layout];
-  v4 = [v3 numberOfLines];
+  textView = [(SUUIStackItemView *)self textView];
+  layout = [textView layout];
+  numberOfLines = [layout numberOfLines];
 
-  return v4;
+  return numberOfLines;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a3 children];
+  contextCopy = context;
+  children = [element children];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -46,13 +46,13 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
-        v11 |= [v7 prefetchResourcesForViewElement:*(*(&v15 + 1) + 8 * i) reason:a4];
+        v11 |= [contextCopy prefetchResourcesForViewElement:*(*(&v15 + 1) + 8 * i) reason:reason];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -66,7 +66,7 @@
   return v11 & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -75,53 +75,53 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v12 = a5;
-  v8 = a3;
-  v9 = [v12 labelLayoutCache];
-  v10 = [v8 textElement];
+  contextCopy = context;
+  elementCopy = element;
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  textElement = [elementCopy textElement];
 
-  if (v10)
+  if (textElement)
   {
-    v11 = [a1 _attributedStringForLabel:v10 context:v12];
-    [v9 requestLayoutForLabel:v10 attributedString:v11 width:a4];
+    v11 = [self _attributedStringForLabel:textElement context:contextCopy];
+    [labelLayoutCache requestLayoutForLabel:textElement attributedString:v11 width:width];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [a1 sizeThatFitsWidth:a4 viewElement:a5 context:0 numberOfLines:a3];
+  [self sizeThatFitsWidth:element viewElement:context context:0 numberOfLines:width];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5 numberOfLines:(unint64_t *)a6
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context numberOfLines:(unint64_t *)lines
 {
-  v10 = a4;
-  v11 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3010000000;
   v31 = "";
   v32 = *MEMORY[0x277CBF3A8];
-  v12 = [v10 imageElements];
+  imageElements = [elementCopy imageElements];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __73__SUUIStackItemView_sizeThatFitsWidth_viewElement_context_numberOfLines___block_invoke;
   v27[3] = &unk_2798F81F0;
   v27[4] = &v28;
-  [v12 enumerateObjectsUsingBlock:v27];
+  [imageElements enumerateObjectsUsingBlock:v27];
 
   v29[4] = v29[4] + -4.0;
-  v13 = [v10 textElement];
-  if (v13)
+  textElement = [elementCopy textElement];
+  if (textElement)
   {
     v14 = v29[4] + 7.0;
     v29[4] = v14;
-    v15 = [a1 _attributedStringForLabel:v13 context:v11];
-    v16 = [a1 _textViewLayoutWithWidth:v15 string:a3 - v14];
+    v15 = [self _attributedStringForLabel:textElement context:contextCopy];
+    v16 = [self _textViewLayoutWithWidth:v15 string:width - v14];
 
     v17 = v29[4];
     [v16 boundingSize];
@@ -140,9 +140,9 @@
     }
 
     v29[5] = v22;
-    if (a6)
+    if (lines)
     {
-      *a6 = [v16 numberOfLines];
+      *lines = [v16 numberOfLines];
     }
   }
 
@@ -179,23 +179,23 @@ void __73__SUUIStackItemView_sizeThatFitsWidth_viewElement_context_numberOfLines
   *(*(*(a1 + 32) + 8) + 40) = v8;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SUUIStackItemView *)self imageViewToImageResourceCacheKey];
-  [v10 removeAllObjects];
+  elementCopy = element;
+  contextCopy = context;
+  imageViewToImageResourceCacheKey = [(SUUIStackItemView *)self imageViewToImageResourceCacheKey];
+  [imageViewToImageResourceCacheKey removeAllObjects];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __57__SUUIStackItemView_reloadWithViewElement_width_context___block_invoke;
   v16 = &unk_2798F5EF0;
-  v17 = v8;
-  v18 = self;
-  v20 = a4;
-  v19 = v9;
-  v11 = v9;
-  v12 = v8;
+  v17 = elementCopy;
+  selfCopy = self;
+  widthCopy = width;
+  v19 = contextCopy;
+  v11 = contextCopy;
+  v12 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:&v13];
   [(SUUIStackItemView *)self setViewElement:v12, v13, v14, v15, v16];
   [(SUUIStackItemView *)self setLastContext:v11];
@@ -254,22 +254,22 @@ void __57__SUUIStackItemView_reloadWithViewElement_width_context___block_invoke_
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [(SUUIStackItemView *)self imageViewToImageResourceCacheKey];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  imageViewToImageResourceCacheKey = [(SUUIStackItemView *)self imageViewToImageResourceCacheKey];
+  v12 = [imageViewToImageResourceCacheKey countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
-    v23 = v8;
+    v23 = imageCopy;
     v14 = *v25;
     while (2)
     {
@@ -277,18 +277,18 @@ void __57__SUUIStackItemView_reloadWithViewElement_width_context___block_invoke_
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(imageViewToImageResourceCacheKey);
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [(SUUIStackItemView *)self imageViewToImageResourceCacheKey];
-        v18 = [v17 objectForKey:v16];
+        imageViewToImageResourceCacheKey2 = [(SUUIStackItemView *)self imageViewToImageResourceCacheKey];
+        v18 = [imageViewToImageResourceCacheKey2 objectForKey:v16];
 
-        v19 = [v9 requestIdentifierForResourceCacheKey:v18];
+        v19 = [contextCopy requestIdentifierForResourceCacheKey:v18];
         v20 = v19;
-        if (v19 && [v19 unsignedIntegerValue] == v10)
+        if (v19 && [v19 unsignedIntegerValue] == requestIdentifier)
         {
-          v8 = v23;
+          imageCopy = v23;
           [v16 setImage:v23];
 
           v21 = 1;
@@ -296,7 +296,7 @@ void __57__SUUIStackItemView_reloadWithViewElement_width_context___block_invoke_
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v13 = [imageViewToImageResourceCacheKey countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v13)
       {
         continue;
@@ -306,7 +306,7 @@ void __57__SUUIStackItemView_reloadWithViewElement_width_context___block_invoke_
     }
 
     v21 = 0;
-    v8 = v23;
+    imageCopy = v23;
   }
 
   else
@@ -319,10 +319,10 @@ LABEL_13:
   return v21;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SUUIStackItemView *)self contentInset:a3.width];
+  width = fits.width;
+  [(SUUIStackItemView *)self contentInset:fits.width];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -332,14 +332,14 @@ LABEL_13:
   v36 = "";
   v37 = v5;
   v38 = v11;
-  v12 = [(SUUIStackItemView *)self imageViews];
+  imageViews = [(SUUIStackItemView *)self imageViews];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __34__SUUIStackItemView_sizeThatFits___block_invoke;
   v32[3] = &unk_2798F8240;
   v32[4] = &v33;
   *&v32[5] = width - v6 - v10;
-  [v12 enumerateObjectsUsingBlock:v32];
+  [imageViews enumerateObjectsUsingBlock:v32];
 
   v40.size.width = *(MEMORY[0x277CBF3A0] + 16);
   v40.size.height = *(MEMORY[0x277CBF3A0] + 24);
@@ -349,16 +349,16 @@ LABEL_13:
   v40.origin.y = v13;
   MinX = CGRectGetMinX(v40);
   v16 = objc_opt_class();
-  v17 = [(SUUIStackItemView *)self textView];
-  v18 = [v17 layout];
-  v19 = [v18 attributedString];
+  textView = [(SUUIStackItemView *)self textView];
+  layout = [textView layout];
+  attributedString = [layout attributedString];
   v20 = width - MinX - v10;
-  v21 = [v16 _textViewLayoutWithWidth:v19 string:v20];
-  v22 = [(SUUIStackItemView *)self textView];
-  [v22 setLayout:v21];
+  v21 = [v16 _textViewLayoutWithWidth:attributedString string:v20];
+  textView2 = [(SUUIStackItemView *)self textView];
+  [textView2 setLayout:v21];
 
-  v23 = [(SUUIStackItemView *)self textView];
-  [v23 sizeThatFits:{v20, 1.79769313e308}];
+  textView3 = [(SUUIStackItemView *)self textView];
+  [textView3 sizeThatFits:{v20, 1.79769313e308}];
   v25 = v24;
   v27 = v26;
 
@@ -422,7 +422,7 @@ CGFloat __34__SUUIStackItemView_sizeThatFits___block_invoke(uint64_t a1, void *a
   v52 = v14;
   v53 = v12;
   v45 = v12;
-  v19 = [(SUUIStackItemView *)self imageViews];
+  imageViews = [(SUUIStackItemView *)self imageViews];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __35__SUUIStackItemView_layoutSubviews__block_invoke;
@@ -430,7 +430,7 @@ CGFloat __34__SUUIStackItemView_sizeThatFits___block_invoke(uint64_t a1, void *a
   v20 = Width - v14 - v17;
   v47[4] = &v48;
   *&v47[5] = v20;
-  [v19 enumerateObjectsUsingBlock:v47];
+  [imageViews enumerateObjectsUsingBlock:v47];
 
   v21 = v49[4];
   v22 = v49[5];
@@ -448,23 +448,23 @@ CGFloat __34__SUUIStackItemView_sizeThatFits___block_invoke(uint64_t a1, void *a
   v57.size.width = v20 - v21;
   v57.size.height = v27;
   v28 = CGRectGetWidth(v57);
-  v29 = [(SUUIStackItemView *)self textView];
-  v30 = [v29 layout];
-  v31 = [v30 attributedString];
-  v32 = [v24 _textViewLayoutWithWidth:v31 string:v28];
-  v33 = [(SUUIStackItemView *)self textView];
-  [v33 setLayout:v32];
+  textView = [(SUUIStackItemView *)self textView];
+  layout = [textView layout];
+  attributedString = [layout attributedString];
+  v32 = [v24 _textViewLayoutWithWidth:attributedString string:v28];
+  textView2 = [(SUUIStackItemView *)self textView];
+  [textView2 setLayout:v32];
 
   if ([(SUUIStackItemView *)self numberOfLines]< 2)
   {
-    v36 = [(SUUIStackItemView *)self textView];
-    v37 = [v36 layout];
-    [v37 boundingSize];
+    textView3 = [(SUUIStackItemView *)self textView];
+    layout2 = [textView3 layout];
+    [layout2 boundingSize];
     v39 = v38;
 
-    v35 = [(SUUIStackItemView *)self textView];
-    v40 = [v35 layout];
-    [v40 boundingSize];
+    textView4 = [(SUUIStackItemView *)self textView];
+    layout3 = [textView4 layout];
+    [layout3 boundingSize];
     v42 = v41;
     v22 = (v27 - v39) * 0.5;
 
@@ -478,22 +478,22 @@ CGFloat __34__SUUIStackItemView_sizeThatFits___block_invoke(uint64_t a1, void *a
     v58.size.width = v20 - v21;
     v58.size.height = v27;
     MidY = CGRectGetMidY(v58);
-    v35 = [(SUUIStackItemView *)self imageViews];
+    textView4 = [(SUUIStackItemView *)self imageViews];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __35__SUUIStackItemView_layoutSubviews__block_invoke_2;
     v46[3] = &__block_descriptor_40_e23_v32__0__UIView_8Q16_B24l;
     *&v46[4] = MidY;
-    [v35 enumerateObjectsUsingBlock:v46];
+    [textView4 enumerateObjectsUsingBlock:v46];
   }
 
-  v43 = [(SUUIStackItemView *)self textView];
+  textView5 = [(SUUIStackItemView *)self textView];
   v59.origin.x = v25;
   v59.origin.y = v22;
   v59.size.width = v26;
   v59.size.height = v27;
   v60 = CGRectIntegral(v59);
-  [v43 setFrame:{v60.origin.x, v60.origin.y, v60.size.width, v60.size.height}];
+  [textView5 setFrame:{v60.origin.x, v60.origin.y, v60.size.width, v60.size.height}];
 
   _Block_object_dispose(&v48, 8);
 }
@@ -538,40 +538,40 @@ void __35__SUUIStackItemView_layoutSubviews__block_invoke_2(uint64_t a1, void *a
   [v13 setFrame:{v17.origin.x, v17.origin.y, v17.size.width, v17.size.height}];
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SUUIFontPreferredFontForTextStyle(5);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
-    v11 = [v5 labelViewStyle] == 5;
+    v11 = [labelCopy labelViewStyle] == 5;
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:dbl_259FCB020[v11]];
   }
 
-  v12 = [v5 text];
-  v13 = [v12 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v13 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 style:style];
 
   return v13;
 }
 
-+ (id)_textViewLayoutWithWidth:(double)a3 string:(id)a4
++ (id)_textViewLayoutWithWidth:(double)width string:(id)string
 {
-  v5 = [a4 mutableCopy];
+  v5 = [string mutableCopy];
   v6 = objc_alloc_init(MEMORY[0x277D74240]);
   [v6 setLineSpacing:-2.0];
   [v5 addAttribute:*MEMORY[0x277D74118] value:v6 range:{0, objc_msgSend(v5, "length")}];
   v7 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:v5];
-  [(SUUIAttributedStringLayoutRequest *)v7 setWidth:a3];
+  [(SUUIAttributedStringLayoutRequest *)v7 setWidth:width];
   v8 = [[SUUIAttributedStringLayout alloc] initWithLayoutRequest:v7];
 
   return v8;

@@ -3,7 +3,7 @@
 - (VCPDefaultPhotoLibraryManager)init;
 - (id)defaultPhotoLibrary;
 - (void)closedefaultPhotoLibrary;
-- (void)photoLibraryDidBecomeUnavailable:(id)a3;
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable;
 @end
 
 @implementation VCPDefaultPhotoLibraryManager
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __46__VCPDefaultPhotoLibraryManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -43,16 +43,16 @@
     v6[4] = self;
     v6[5] = &v7;
     dispatch_sync(queue, v6);
-    v4 = v8[5];
+    mEMORY[0x1E69789B0] = v8[5];
     _Block_object_dispose(&v7, 8);
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69789B0] sharedPhotoLibrary];
+    mEMORY[0x1E69789B0] = [MEMORY[0x1E69789B0] sharedPhotoLibrary];
   }
 
-  return v4;
+  return mEMORY[0x1E69789B0];
 }
 
 void __52__VCPDefaultPhotoLibraryManager_defaultPhotoLibrary__block_invoke(uint64_t a1)
@@ -161,14 +161,14 @@ void __46__VCPDefaultPhotoLibraryManager_sharedManager__block_invoke()
   }
 }
 
-- (void)photoLibraryDidBecomeUnavailable:(id)a3
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  unavailableCopy = unavailable;
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = unavailableCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Photo Library unavailable (%@); closing Photo Library...", buf, 0xCu);
   }
 

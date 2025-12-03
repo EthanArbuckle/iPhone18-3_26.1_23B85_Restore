@@ -4,10 +4,10 @@
 - (MRDTimingEvent)request;
 - (MRDTimingEvent)whaConnect;
 - (NSNumber)joinMode;
-- (void)setJoinMode:(id)a3;
-- (void)setRecon:(id)a3;
-- (void)setRequest:(id)a3;
-- (void)setWhaConnect:(id)a3;
+- (void)setJoinMode:(id)mode;
+- (void)setRecon:(id)recon;
+- (void)setRequest:(id)request;
+- (void)setWhaConnect:(id)connect;
 @end
 
 @implementation MRDGroupSessionJoinAttemptAnalytics
@@ -19,58 +19,58 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setJoinMode:(id)a3
+- (void)setJoinMode:(id)mode
 {
   v5 = OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics_joinMode;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = mode;
+  modeCopy = mode;
 }
 
 - (MRDTimingEvent)request
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10003D968(&OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___request);
 
   return v3;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
   v4 = *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___request);
-  *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___request) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___request) = request;
+  requestCopy = request;
 }
 
 - (MRDTimingEvent)recon
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022DD2C();
 
   return v3;
 }
 
-- (void)setRecon:(id)a3
+- (void)setRecon:(id)recon
 {
   v4 = *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___recon);
-  *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___recon) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___recon) = recon;
+  reconCopy = recon;
 }
 
 - (MRDTimingEvent)whaConnect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022DDB4();
 
   return v3;
 }
 
-- (void)setWhaConnect:(id)a3
+- (void)setWhaConnect:(id)connect
 {
   v4 = *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___whaConnect);
-  *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___whaConnect) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___MRDGroupSessionJoinAttemptAnalytics____lazy_storage___whaConnect) = connect;
+  connectCopy = connect;
 }
 
 - (MRDGroupSessionJoinAttemptAnalytics)init

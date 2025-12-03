@@ -1,51 +1,51 @@
 @interface DVPLensFlareMitigationParameters
-+ (BOOL)getMotionShiftFromOpticalCenters:(CGPoint *)a3 opticalCenterArrayLen:(unint64_t)a4 opticalCenterMotionShifts:(double *)a5;
++ (BOOL)getMotionShiftFromOpticalCenters:(CGPoint *)centers opticalCenterArrayLen:(unint64_t)len opticalCenterMotionShifts:(double *)shifts;
 - (CGPoint)nextFrameOpticalCenter;
 - (CGPoint)sourceFrameOpticalCenter;
-- (DVPLensFlareMitigationParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 sourceFrameOpticalCenter:(CGPoint)a6 nextFrameOpticalCenter:(CGPoint)a7 opticalCenterShift:(double)a8 previousOutputFrame:(id)a9 previousPreviousOutputFrame:(id)a10 submissionMode:(int64_t)a11 destinationFrame:(id)a12;
+- (DVPLensFlareMitigationParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow sourceFrameOpticalCenter:(CGPoint)center nextFrameOpticalCenter:(CGPoint)opticalCenter opticalCenterShift:(double)shift previousOutputFrame:(id)outputFrame previousPreviousOutputFrame:(id)self0 submissionMode:(int64_t)self1 destinationFrame:(id)self2;
 @end
 
 @implementation DVPLensFlareMitigationParameters
 
-- (DVPLensFlareMitigationParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 sourceFrameOpticalCenter:(CGPoint)a6 nextFrameOpticalCenter:(CGPoint)a7 opticalCenterShift:(double)a8 previousOutputFrame:(id)a9 previousPreviousOutputFrame:(id)a10 submissionMode:(int64_t)a11 destinationFrame:(id)a12
+- (DVPLensFlareMitigationParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow sourceFrameOpticalCenter:(CGPoint)center nextFrameOpticalCenter:(CGPoint)opticalCenter opticalCenterShift:(double)shift previousOutputFrame:(id)outputFrame previousPreviousOutputFrame:(id)self0 submissionMode:(int64_t)self1 destinationFrame:(id)self2
 {
-  y = a7.y;
-  x = a7.x;
-  v17 = a6.y;
-  v18 = a6.x;
-  v23 = a3;
-  v24 = a4;
-  v33 = a5;
-  v32 = a9;
-  v31 = a10;
-  v25 = a12;
+  y = opticalCenter.y;
+  x = opticalCenter.x;
+  v17 = center.y;
+  v18 = center.x;
+  frameCopy = frame;
+  nextFrameCopy = nextFrame;
+  flowCopy = flow;
+  outputFrameCopy = outputFrame;
+  previousOutputFrameCopy = previousOutputFrame;
+  destinationFrameCopy = destinationFrame;
   v34.receiver = self;
   v34.super_class = DVPLensFlareMitigationParameters;
   v26 = [(DVPLensFlareMitigationParameters *)&v34 init];
   v27 = v26;
   if (!v26)
   {
-    NSLog(&cfstr_FailToInitiali.isa, a11);
+    NSLog(&cfstr_FailToInitiali.isa, mode);
 LABEL_7:
     v28 = 0;
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v26->_sourceFrame, a3);
-  objc_storeStrong(&v27->_nextFrame, a4);
-  objc_storeStrong(&v27->_opticalFlow, a5);
-  objc_storeStrong(&v27->_destinationFrame, a12);
+  objc_storeStrong(&v26->_sourceFrame, frame);
+  objc_storeStrong(&v27->_nextFrame, nextFrame);
+  objc_storeStrong(&v27->_opticalFlow, flow);
+  objc_storeStrong(&v27->_destinationFrame, destinationFrame);
   v27->_sourceFrameOpticalCenter.x = v18;
   v27->_sourceFrameOpticalCenter.y = v17;
   v27->_nextFrameOpticalCenter.x = x;
   v27->_nextFrameOpticalCenter.y = y;
-  v27->_opticalCenterShift = a8;
-  objc_storeStrong(&v27->_previousOutputFrame, a9);
-  objc_storeStrong(&v27->_previousPreviousOutputFrame, a10);
-  v27->_submissionMode = a11;
-  if (!isSameFormat([v23 buffer], objc_msgSend(v24, "buffer")))
+  v27->_opticalCenterShift = shift;
+  objc_storeStrong(&v27->_previousOutputFrame, outputFrame);
+  objc_storeStrong(&v27->_previousPreviousOutputFrame, previousOutputFrame);
+  v27->_submissionMode = mode;
+  if (!isSameFormat([frameCopy buffer], objc_msgSend(nextFrameCopy, "buffer")))
   {
-    NSLog(&cfstr_FailToToInitia.isa, a11);
+    NSLog(&cfstr_FailToToInitia.isa, mode);
     goto LABEL_7;
   }
 
@@ -55,27 +55,27 @@ LABEL_4:
   return v28;
 }
 
-+ (BOOL)getMotionShiftFromOpticalCenters:(CGPoint *)a3 opticalCenterArrayLen:(unint64_t)a4 opticalCenterMotionShifts:(double *)a5
++ (BOOL)getMotionShiftFromOpticalCenters:(CGPoint *)centers opticalCenterArrayLen:(unint64_t)len opticalCenterMotionShifts:(double *)shifts
 {
-  v5 = a4;
+  lenCopy = len;
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = (v11 - ((4 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
-  if (a4)
+  v6 = (v11 - ((4 * len + 15) & 0xFFFFFFFFFFFFFFF0));
+  if (len)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != len; ++i)
     {
-      *(&v11[i] - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0)) = vcvt_f32_f64(a3[i]);
+      *(&v11[i] - ((8 * len + 15) & 0xFFFFFFFFFFFFFFF0)) = vcvt_f32_f64(centers[i]);
     }
 
     getOpticalCenterMvShift();
     do
     {
       v9 = *v6++;
-      *a5++ = v9;
-      --v5;
+      *shifts++ = v9;
+      --lenCopy;
     }
 
-    while (v5);
+    while (lenCopy);
   }
 
   else

@@ -1,26 +1,26 @@
 @interface PGMeaningfulEventSceneCollectionTrait
-- (PGMeaningfulEventSceneCollectionTrait)initWithNodes:(id)a3 negativeNodes:(id)a4;
-- (id)debugDescriptionWithMomentNode:(id)a3;
+- (PGMeaningfulEventSceneCollectionTrait)initWithNodes:(id)nodes negativeNodes:(id)negativeNodes;
+- (id)debugDescriptionWithMomentNode:(id)node;
 @end
 
 @implementation PGMeaningfulEventSceneCollectionTrait
 
-- (id)debugDescriptionWithMomentNode:(id)a3
+- (id)debugDescriptionWithMomentNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   aBlock = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __72__PGMeaningfulEventSceneCollectionTrait_debugDescriptionWithMomentNode___block_invoke;
   v25 = &unk_278887D48;
-  v26 = v4;
-  v5 = v4;
+  v26 = nodeCopy;
+  v5 = nodeCopy;
   v6 = _Block_copy(&aBlock);
-  v7 = [(PGMeaningfulEventCollectionTrait *)self nodes];
-  v8 = [v7 set];
+  nodes = [(PGMeaningfulEventCollectionTrait *)self nodes];
+  v8 = [nodes set];
   v9 = v6[2](v6, v8);
 
-  v10 = [(PGMeaningfulEventCollectionTrait *)self negativeNodes];
-  v11 = [v10 set];
+  negativeNodes = [(PGMeaningfulEventCollectionTrait *)self negativeNodes];
+  v11 = [negativeNodes set];
   v12 = v6[2](v6, v11);
 
   v13 = [(__CFString *)v12 count];
@@ -107,11 +107,11 @@ id __72__PGMeaningfulEventSceneCollectionTrait_debugDescriptionWithMomentNode___
   return v21;
 }
 
-- (PGMeaningfulEventSceneCollectionTrait)initWithNodes:(id)a3 negativeNodes:(id)a4
+- (PGMeaningfulEventSceneCollectionTrait)initWithNodes:(id)nodes negativeNodes:(id)negativeNodes
 {
   v5.receiver = self;
   v5.super_class = PGMeaningfulEventSceneCollectionTrait;
-  result = [(PGMeaningfulEventCollectionTrait *)&v5 initWithNodes:a3 negativeNodes:a4];
+  result = [(PGMeaningfulEventCollectionTrait *)&v5 initWithNodes:nodes negativeNodes:negativeNodes];
   if (result)
   {
     result->_minimumNumberOfHighConfidenceAssets = 1;

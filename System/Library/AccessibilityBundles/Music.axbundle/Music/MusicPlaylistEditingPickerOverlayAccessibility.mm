@@ -8,13 +8,13 @@
 {
   v5.receiver = self;
   v5.super_class = MusicPlaylistEditingPickerOverlayAccessibility;
-  v2 = [(MusicPlaylistEditingPickerOverlayAccessibility *)&v5 newAccessoryView];
-  [v2 setIsAccessibilityElement:1];
-  [v2 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+  newAccessoryView = [(MusicPlaylistEditingPickerOverlayAccessibility *)&v5 newAccessoryView];
+  [newAccessoryView setIsAccessibilityElement:1];
+  [newAccessoryView setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
   v3 = accessibilityMusicLocalizedString(@"add.to.playlist");
-  [v2 setAccessibilityLabel:v3];
+  [newAccessoryView setAccessibilityLabel:v3];
 
-  return v2;
+  return newAccessoryView;
 }
 
 @end

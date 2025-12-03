@@ -1,8 +1,8 @@
 @interface KeychainDataclassOwner
 + (id)dataclasses;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6 withError:(id *)a7;
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass withError:(id *)error;
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
 @end
 
 @implementation KeychainDataclassOwner
@@ -15,10 +15,10 @@
   return v2;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6 withError:(id *)a7
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass withError:(id *)error
 {
-  v7 = a3;
-  if ([v7 type] == &dword_0 + 3 || objc_msgSend(v7, "type") == &dword_4 + 2)
+  actionCopy = action;
+  if ([actionCopy type] == &dword_0 + 3 || objc_msgSend(actionCopy, "type") == &dword_4 + 2)
   {
     if (SecDeleteItemsOnSignOut())
     {
@@ -43,7 +43,7 @@
     }
   }
 
-  if ([v7 type] == &dword_4 + 1)
+  if ([actionCopy type] == &dword_4 + 1)
   {
     v10 = secLogObjForScope();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -56,10 +56,10 @@
   return 1;
 }
 
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v4 = a4;
-  if (_os_feature_enabled_impl() && [v4 isEqual:kAccountDataclassKeychainSync])
+  dataclassCopy = dataclass;
+  if (_os_feature_enabled_impl() && [dataclassCopy isEqual:kAccountDataclassKeychainSync])
   {
     v5 = [ACDataclassAction actionWithType:5];
     v6 = [ACDataclassAction actionWithType:6];
@@ -76,9 +76,9 @@
   return v7;
 }
 
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass
 {
-  if ([a4 isEqual:kAccountDataclassKeychainSync])
+  if ([dataclass isEqual:kAccountDataclassKeychainSync])
   {
     v4 = [ACDataclassAction actionWithType:0];
     v5 = [ACDataclassAction actionWithType:3];

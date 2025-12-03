@@ -12,22 +12,22 @@
 - (NSHashTable)videoOutputs;
 - (NSString)description;
 - (PUBrowsingVideoPlayer)init;
-- (PUBrowsingVideoPlayer)initWithAsset:(id)a3 mediaProvider:(id)a4;
+- (PUBrowsingVideoPlayer)initWithAsset:(id)asset mediaProvider:(id)provider;
 - (PUBrowsingVideoPlayerChange)currentChange;
 - (int64_t)_videoSessionDesiredPlayState;
 - (int64_t)playState;
-- (void)_handleSeekCompletion:(id)a3 finished:(BOOL)a4;
-- (void)_handleShouldReloadAssetMediaNotification:(id)a3;
+- (void)_handleSeekCompletion:(id)completion finished:(BOOL)finished;
+- (void)_handleShouldReloadAssetMediaNotification:(id)notification;
 - (void)_performPendingSeekIfNeeded;
 - (void)_requestNewRenderIfNeeded;
-- (void)_setAudioStatus:(int64_t)a3;
-- (void)_setError:(id)a3;
-- (void)_setPlayerItem:(id)a3 timeRangeMapper:(id)a4;
-- (void)_setPlayerLoadingAllowed:(BOOL)a3;
-- (void)_setVideoSessionVolume:(id)a3;
+- (void)_setAudioStatus:(int64_t)status;
+- (void)_setError:(id)error;
+- (void)_setPlayerItem:(id)item timeRangeMapper:(id)mapper;
+- (void)_setPlayerLoadingAllowed:(BOOL)allowed;
+- (void)_setVideoSessionVolume:(id)volume;
 - (void)_updateMuteState;
 - (void)_updatePlayerItem;
-- (void)_updatePlayerLoadingAllowedWithUpdateID:(unint64_t)a3;
+- (void)_updatePlayerLoadingAllowedWithUpdateID:(unint64_t)d;
 - (void)_updatePlayerVolume;
 - (void)_updateVideoDuration;
 - (void)_updateVideoSession;
@@ -35,33 +35,33 @@
 - (void)assetContentDidChange;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)registerChangeObserver:(id)a3;
-- (void)registerTimeObserver:(id)a3;
-- (void)registerVideoOutput:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)registerChangeObserver:(id)observer;
+- (void)registerTimeObserver:(id)observer;
+- (void)registerVideoOutput:(id)output;
 - (void)rewindExistingPlayer;
-- (void)seekToTime:(id *)a3 completionHandler:(id)a4;
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6;
-- (void)setActivated:(BOOL)a3;
-- (void)setAsset:(id)a3;
-- (void)setDesiredPlayState:(int64_t)a3 reason:(id)a4;
-- (void)setDesiredSeekTime:(id *)a3;
-- (void)setDesiredTargetSize:(CGSize)a3;
-- (void)setDuration:(id *)a3;
-- (void)setIsMuted:(BOOL)a3;
-- (void)setIsUserScrubbing:(BOOL)a3;
-- (void)setLoopingEnabledForAllVideos:(BOOL)a3;
-- (void)setPlaybackStartTime:(id *)a3;
-- (void)setShouldLoadVideoSession:(BOOL)a3;
-- (void)setShouldPreloadVideoContent:(BOOL)a3;
-- (void)setVideoSession:(id)a3;
-- (void)setVolume:(float)a3;
-- (void)testing_setVideoSession:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
-- (void)unregisterTimeObserver:(id)a3;
-- (void)unregisterVideoOutput:(id)a3;
-- (void)videoSessionAudioSessionOutputVolumeDidChange:(id)a3 fromVolume:(float)a4 toVolume:(float)a5;
-- (void)videoSessionDidPlayToEnd:(id)a3;
+- (void)seekToTime:(id *)time completionHandler:(id)handler;
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
+- (void)setActivated:(BOOL)activated;
+- (void)setAsset:(id)asset;
+- (void)setDesiredPlayState:(int64_t)state reason:(id)reason;
+- (void)setDesiredSeekTime:(id *)time;
+- (void)setDesiredTargetSize:(CGSize)size;
+- (void)setDuration:(id *)duration;
+- (void)setIsMuted:(BOOL)muted;
+- (void)setIsUserScrubbing:(BOOL)scrubbing;
+- (void)setLoopingEnabledForAllVideos:(BOOL)videos;
+- (void)setPlaybackStartTime:(id *)time;
+- (void)setShouldLoadVideoSession:(BOOL)session;
+- (void)setShouldPreloadVideoContent:(BOOL)content;
+- (void)setVideoSession:(id)session;
+- (void)setVolume:(float)volume;
+- (void)testing_setVideoSession:(id)session;
+- (void)unregisterChangeObserver:(id)observer;
+- (void)unregisterTimeObserver:(id)observer;
+- (void)unregisterVideoOutput:(id)output;
+- (void)videoSessionAudioSessionOutputVolumeDidChange:(id)change fromVolume:(float)volume toVolume:(float)toVolume;
+- (void)videoSessionDidPlayToEnd:(id)end;
 @end
 
 @implementation PUBrowsingVideoPlayer
@@ -78,11 +78,11 @@
 - (void)_updateVideoDuration
 {
   memset(&v9, 0, sizeof(v9));
-  v3 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v4 = v3;
-  if (v3)
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  v4 = videoSession;
+  if (videoSession)
   {
-    [v3 videoDuration];
+    [videoSession videoDuration];
   }
 
   else
@@ -92,8 +92,8 @@
 
   if ((v9.flags & 0x1D) != 1)
   {
-    v5 = [(PUBrowsingVideoPlayer *)self asset];
-    [v5 duration];
+    asset = [(PUBrowsingVideoPlayer *)self asset];
+    [asset duration];
     v7 = v6;
 
     CMTimeMakeWithSeconds(&v8, v7, 60);
@@ -104,11 +104,11 @@
   [(PUBrowsingVideoPlayer *)self setDuration:&v8];
 }
 
-- (void)_setVideoSessionVolume:(id)a3
+- (void)_setVideoSessionVolume:(id)volume
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUBrowsingVideoPlayer *)self shouldFadeNextVolumeChange];
+  volumeCopy = volume;
+  shouldFadeNextVolumeChange = [(PUBrowsingVideoPlayer *)self shouldFadeNextVolumeChange];
   [(PUBrowsingVideoPlayer *)self setShouldFadeNextVolumeChange:0];
   v6 = 0.0;
   if (![(PUBrowsingVideoPlayer *)self isMuted])
@@ -123,24 +123,24 @@
     v10 = 134218242;
     v11 = v6;
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "Browsing Video Player setting player volume to %f: %@", &v10, 0x16u);
   }
 
   *&v9 = v6;
-  [v4 setVolume:v5 withFade:v9];
+  [volumeCopy setVolume:shouldFadeNextVolumeChange withFade:v9];
 }
 
 - (void)_performPendingSeekIfNeeded
 {
-  v3 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v4 = v3;
-  if (v3)
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  v4 = videoSession;
+  if (videoSession)
   {
     p_pendingSeekTime = &self->_pendingSeekTime;
     if ((self->_pendingSeekTime.flags & 0x1D) == 1)
     {
-      if ([v3 isReadyForSeeking])
+      if ([videoSession isReadyForSeeking])
       {
         pendingSeekCompletionHandler = self->_pendingSeekCompletionHandler;
         v9 = *&p_pendingSeekTime->value;
@@ -159,34 +159,34 @@
 
 - (void)_updatePlayerVolume
 {
-  v3 = [(PUBrowsingVideoPlayer *)self videoSession];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__PUBrowsingVideoPlayer__updatePlayerVolume__block_invoke;
   v4[3] = &unk_1E7B75DE0;
   v4[4] = self;
-  [v3 performChanges:v4 withPresentationContext:1 presenter:self->_videoSessionPresenter];
+  [videoSession performChanges:v4 withPresentationContext:1 presenter:self->_videoSessionPresenter];
 }
 
 - (void)_updateVideoSessionDesiredPlayState
 {
-  v3 = [(PUBrowsingVideoPlayer *)self _videoSessionDesiredPlayState];
-  v4 = [(PUBrowsingVideoPlayer *)self videoSession];
+  _videoSessionDesiredPlayState = [(PUBrowsingVideoPlayer *)self _videoSessionDesiredPlayState];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__PUBrowsingVideoPlayer__updateVideoSessionDesiredPlayState__block_invoke;
   v5[3] = &__block_descriptor_40_e33_v16__0___PXMutableVideoSession__8l;
-  v5[4] = v3;
-  [v4 performChanges:v5 withPresentationContext:1 presenter:self->_videoSessionPresenter];
+  v5[4] = _videoSessionDesiredPlayState;
+  [videoSession performChanges:v5 withPresentationContext:1 presenter:self->_videoSessionPresenter];
 }
 
 - (int64_t)_videoSessionDesiredPlayState
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PUBrowsingVideoPlayer *)self isPlaybackDesired];
-  v4 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v5 = v4;
-  if (!v3 || !v4)
+  isPlaybackDesired = [(PUBrowsingVideoPlayer *)self isPlaybackDesired];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  v5 = videoSession;
+  if (!isPlaybackDesired || !videoSession)
   {
 LABEL_7:
     [v5 desiredPlayState];
@@ -200,21 +200,21 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543362;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "[PUBrowsingVideoPlayer] %{public}@ will remain paused while user is scrubbing.", &v20, 0xCu);
     }
 
     goto LABEL_7;
   }
 
-  v13 = [MEMORY[0x1E69C3358] sharedState];
-  v14 = [v13 visibilityState];
+  mEMORY[0x1E69C3358] = [MEMORY[0x1E69C3358] sharedState];
+  visibilityState = [mEMORY[0x1E69C3358] visibilityState];
 
-  v15 = [v5 desiredPlayState];
-  v7 = v14 == 1;
-  if (v14 == 1 && v15 != 1)
+  desiredPlayState = [v5 desiredPlayState];
+  v7 = visibilityState == 1;
+  if (visibilityState == 1 && desiredPlayState != 1)
   {
-    v16 = [(PUBrowsingVideoPlayer *)self videoOutputs];
+    videoOutputs = [(PUBrowsingVideoPlayer *)self videoOutputs];
     v17 = PXFilter();
 
     v18 = [(PUBrowsingVideoPlayer *)v17 count];
@@ -225,53 +225,53 @@ LABEL_7:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543618;
-        v21 = v17;
+        selfCopy = v17;
         v22 = 2114;
-        v23 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_DEFAULT, "[PUBrowsingVideoPlayer] Unable to start video session playback because one or more video outputs is not ready for display:\n\t%{public}@\n\t%{public}@", &v20, 0x16u);
       }
     }
   }
 
 LABEL_8:
-  v8 = [(PUBrowsingVideoPlayer *)self asset];
+  asset = [(PUBrowsingVideoPlayer *)self asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(PUBrowsingVideoPlayer *)self asset];
-    if ([v9 needsDeferredProcessing])
+    asset2 = [(PUBrowsingVideoPlayer *)self asset];
+    if ([asset2 needsDeferredProcessing])
     {
       v10 = +[PUPhotoEditProtoSettings sharedInstance];
-      v11 = [v10 enableLiveVideoRender];
+      enableLiveVideoRender = [v10 enableLiveVideoRender];
     }
 
     else
     {
-      v11 = 1;
+      enableLiveVideoRender = 1;
     }
   }
 
   else
   {
-    v11 = 1;
+    enableLiveVideoRender = 1;
   }
 
-  return v7 & v11;
+  return v7 & enableLiveVideoRender;
 }
 
 - (void)_updateVideoSession
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUBrowsingVideoPlayer *)self asset];
+  asset = [(PUBrowsingVideoPlayer *)self asset];
   v4 = [PUWrappingPXMediaProvider alloc];
-  v5 = [(PUBrowsingVideoPlayer *)self mediaProvider];
-  v6 = [(PUWrappingPXMediaProvider *)v4 initWithWrappedMediaProvider:v5];
+  mediaProvider = [(PUBrowsingVideoPlayer *)self mediaProvider];
+  v6 = [(PUWrappingPXMediaProvider *)v4 initWithWrappedMediaProvider:mediaProvider];
 
-  v7 = [(PUBrowsingVideoPlayer *)self videoSession];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
   if ([(PUBrowsingVideoPlayer *)self isPlayerLoadingAllowed])
   {
-    v8 = [(PUBrowsingVideoPlayer *)self shouldLoadVideoSession];
-    if (v7)
+    shouldLoadVideoSession = [(PUBrowsingVideoPlayer *)self shouldLoadVideoSession];
+    if (videoSession)
     {
       goto LABEL_14;
     }
@@ -279,17 +279,17 @@ LABEL_8:
 
   else
   {
-    v8 = 0;
-    if (v7)
+    shouldLoadVideoSession = 0;
+    if (videoSession)
     {
       goto LABEL_14;
     }
   }
 
-  if (v3 && v6)
+  if (asset && v6)
   {
-    v9 = [(PUBrowsingVideoPlayer *)self asset];
-    if ([v9 playbackStyle] == 5)
+    asset2 = [(PUBrowsingVideoPlayer *)self asset];
+    if ([asset2 playbackStyle] == 5)
     {
       v10 = 1;
     }
@@ -310,7 +310,7 @@ LABEL_8:
       v12 = objc_alloc(MEMORY[0x1E69C3860]);
       v34[0] = v11;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-      v14 = [v12 initWithAsset:v3 mediaProvider:v6 deliveryStrategies:v13 audioSessionKind:v10 requestURLOnly:0];
+      v14 = [v12 initWithAsset:asset mediaProvider:v6 deliveryStrategies:v13 audioSessionKind:v10 requestURLOnly:0];
     }
 
     else
@@ -318,26 +318,26 @@ LABEL_8:
       v15 = objc_alloc(MEMORY[0x1E69C3470]);
       v33 = v11;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
-      v14 = [v15 initWithAsset:v3 mediaProvider:v6 deliveryStrategies:v16 audioSessionKind:v10 requestURLOnly:0];
+      v14 = [v15 initWithAsset:asset mediaProvider:v6 deliveryStrategies:v16 audioSessionKind:v10 requestURLOnly:0];
 
       [v14 makeUniqueContentIdentifier];
     }
 
-    v17 = [MEMORY[0x1E69C3C70] sharedInstance];
-    v7 = [v17 checkOutSessionWithContentProvider:v14];
+    mEMORY[0x1E69C3C70] = [MEMORY[0x1E69C3C70] sharedInstance];
+    videoSession = [mEMORY[0x1E69C3C70] checkOutSessionWithContentProvider:v14];
 
-    [(PUBrowsingVideoPlayer *)self setVideoSession:v7];
+    [(PUBrowsingVideoPlayer *)self setVideoSession:videoSession];
   }
 
 LABEL_14:
-  if (v8)
+  if (shouldLoadVideoSession)
   {
-    v18 = [(PUBrowsingVideoPlayer *)self isActivated];
-    v19 = [(PUBrowsingVideoPlayer *)self asset];
-    v20 = [v19 playbackStyle] == 5;
+    isActivated = [(PUBrowsingVideoPlayer *)self isActivated];
+    asset3 = [(PUBrowsingVideoPlayer *)self asset];
+    v20 = [asset3 playbackStyle] == 5;
 
-    v21 = v20 || v18;
-    if (v20 || v18)
+    v21 = v20 || isActivated;
+    if (v20 || isActivated)
     {
       v22 = 3;
     }
@@ -347,20 +347,20 @@ LABEL_14:
       v22 = 2;
     }
 
-    if (!v21 && [v7 playState] == 5 && (objc_msgSend(v7, "contentProvider"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "loadingResult"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "priority"), v24, v23, v25 == 2))
+    if (!v21 && [videoSession playState] == 5 && (objc_msgSend(videoSession, "contentProvider"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "loadingResult"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "priority"), v24, v23, v25 == 2))
     {
       v26 = PLVideoPlaybackGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v32 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1B36F3000, v26, OS_LOG_TYPE_DEFAULT, "[PUBrowsingVideoPlayer] Declining to trigger autoplay video because it has already failed for %@", buf, 0xCu);
       }
     }
 
     else
     {
-      [v7 loadIfNeededWithPriority:v22];
+      [videoSession loadIfNeededWithPriority:v22];
     }
   }
 
@@ -369,10 +369,10 @@ LABEL_14:
   v29[2] = __44__PUBrowsingVideoPlayer__updateVideoSession__block_invoke;
   v29[3] = &unk_1E7B75D78;
   v29[4] = self;
-  v30 = v3;
+  v30 = asset;
   videoSessionPresenter = self->_videoSessionPresenter;
-  v28 = v3;
-  [v7 performChanges:v29 withPresentationContext:1 presenter:videoSessionPresenter];
+  v28 = asset;
+  [videoSession performChanges:v29 withPresentationContext:1 presenter:videoSessionPresenter];
 }
 
 void __44__PUBrowsingVideoPlayer__updateVideoSession__block_invoke(uint64_t a1, void *a2)
@@ -435,8 +435,8 @@ void __44__PUBrowsingVideoPlayer__updateVideoSession__block_invoke(uint64_t a1, 
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(PUBrowsingVideoPlayer *)self videoOutputs];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    videoOutputs = [(PUBrowsingVideoPlayer *)self videoOutputs];
+    v4 = [videoOutputs countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -448,14 +448,14 @@ void __44__PUBrowsingVideoPlayer__updateVideoSession__block_invoke(uint64_t a1, 
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(videoOutputs);
           }
 
           [*(*(&v9 + 1) + 8 * v7++) prepareForVideoResolutionChange];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [videoOutputs countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -495,12 +495,12 @@ uint64_t __50__PUBrowsingVideoPlayer__requestNewRenderIfNeeded__block_invoke(uin
   return [*(*(a1 + 32) + 64) setNeedsUpdateOf:sel__updateVideoSession];
 }
 
-- (void)_updatePlayerLoadingAllowedWithUpdateID:(unint64_t)a3
+- (void)_updatePlayerLoadingAllowedWithUpdateID:(unint64_t)d
 {
-  if ([(PUBrowsingVideoPlayer *)self nextPlayerLoadingEnabledUpdateID]== a3)
+  if ([(PUBrowsingVideoPlayer *)self nextPlayerLoadingEnabledUpdateID]== d)
   {
-    v4 = [(PUBrowsingVideoPlayer *)self _playerLoadingDisablingReasons];
-    v5 = [v4 count] == 0;
+    _playerLoadingDisablingReasons = [(PUBrowsingVideoPlayer *)self _playerLoadingDisablingReasons];
+    v5 = [_playerLoadingDisablingReasons count] == 0;
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -516,8 +516,8 @@ uint64_t __50__PUBrowsingVideoPlayer__requestNewRenderIfNeeded__block_invoke(uin
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:744 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer videoOutputs]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:744 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer videoOutputs]"}];
   }
 
   videoOutputs = self->_videoOutputs;
@@ -537,8 +537,8 @@ uint64_t __50__PUBrowsingVideoPlayer__requestNewRenderIfNeeded__block_invoke(uin
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:734 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer timeObservers]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:734 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer timeObservers]"}];
   }
 
   timeObservers = self->_timeObservers;
@@ -554,18 +554,18 @@ uint64_t __50__PUBrowsingVideoPlayer__requestNewRenderIfNeeded__block_invoke(uin
   return timeObservers;
 }
 
-- (void)_handleShouldReloadAssetMediaNotification:(id)a3
+- (void)_handleShouldReloadAssetMediaNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(PUBrowsingVideoPlayer *)self asset];
-  v6 = [v4 object];
+  notificationCopy = notification;
+  asset = [(PUBrowsingVideoPlayer *)self asset];
+  object = [notificationCopy object];
 
-  if ([v6 conformsToProtocol:&unk_1F2BDF190])
+  if ([object conformsToProtocol:&unk_1F2BDF190])
   {
-    v7 = v6;
-    v8 = [v5 uuid];
-    v9 = [v7 uuid];
-    v10 = [v8 isEqualToString:v9];
+    v7 = object;
+    uuid = [asset uuid];
+    uuid2 = [v7 uuid];
+    v10 = [uuid isEqualToString:uuid2];
 
     if (v10)
     {
@@ -579,70 +579,70 @@ uint64_t __50__PUBrowsingVideoPlayer__requestNewRenderIfNeeded__block_invoke(uin
   }
 }
 
-- (void)setVideoSession:(id)a3
+- (void)setVideoSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   videoSession = self->_videoSession;
-  if (videoSession != v5)
+  if (videoSession != sessionCopy)
   {
-    v11 = v5;
+    v11 = sessionCopy;
     [(PXVideoSession *)videoSession unregisterChangeObserver:self context:videoSessionObservationContext];
-    v7 = [(PXVideoSession *)self->_videoSession delegate];
+    delegate = [(PXVideoSession *)self->_videoSession delegate];
 
-    if (v7 == self)
+    if (delegate == self)
     {
       [(PXVideoSession *)self->_videoSession setDelegate:0];
     }
 
     [(PXVideoSession *)self->_videoSession leavePresentationContext:1 presenter:self->_videoSessionPresenter];
-    v8 = [MEMORY[0x1E69C3C70] sharedInstance];
-    [v8 checkInVideoSession:self->_videoSession];
+    mEMORY[0x1E69C3C70] = [MEMORY[0x1E69C3C70] sharedInstance];
+    [mEMORY[0x1E69C3C70] checkInVideoSession:self->_videoSession];
 
-    objc_storeStrong(&self->_videoSession, a3);
+    objc_storeStrong(&self->_videoSession, session);
     [(PXVideoSession *)v11 setDelegate:self];
     [(PUBrowsingVideoPlayer *)self _updatePlayerItem];
     [(PUBrowsingVideoPlayer *)self _updateVideoDuration];
     [(PUBrowsingVideoPlayer *)self _setAudioStatus:[(PXVideoSession *)v11 audioStatus]];
-    v9 = [(PXVideoSession *)v11 error];
-    [(PUBrowsingVideoPlayer *)self _setError:v9];
+    error = [(PXVideoSession *)v11 error];
+    [(PUBrowsingVideoPlayer *)self _setError:error];
 
     [(PXVideoSession *)self->_videoSession registerChangeObserver:self context:videoSessionObservationContext];
     [(PXVideoSession *)self->_videoSession enterPresentationContext:1 presenter:self->_videoSessionPresenter];
-    v10 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v10 _setAVPlayerDidChange:1];
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange _setAVPlayerDidChange:1];
 
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSessionDesiredPlayState];
     videoSession = [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlayerVolume];
-    v5 = v11;
+    sessionCopy = v11;
   }
 
-  MEMORY[0x1EEE66BB8](videoSession, v5);
+  MEMORY[0x1EEE66BB8](videoSession, sessionCopy);
 }
 
-- (void)testing_setVideoSession:(id)a3
+- (void)testing_setVideoSession:(id)session
 {
-  v8 = a3;
+  sessionCopy = session;
   if ((PFProcessIsLaunchedToExecuteTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = NSStringFromSelector(a2);
-    v7 = [MEMORY[0x1E696AF00] callStackSymbols];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:684 description:{@"%@ should only be called as part of a unit test, but it was called from: \n%@", v6, v7}];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:684 description:{@"%@ should only be called as part of a unit test, but it was called from: \n%@", v6, callStackSymbols}];
   }
 
-  [(PUBrowsingVideoPlayer *)self setVideoSession:v8];
+  [(PUBrowsingVideoPlayer *)self setVideoSession:sessionCopy];
 }
 
-- (void)_setPlayerLoadingAllowed:(BOOL)a3
+- (void)_setPlayerLoadingAllowed:(BOOL)allowed
 {
-  if (self->_isPlayerLoadingAllowed != a3)
+  if (self->_isPlayerLoadingAllowed != allowed)
   {
-    v3 = a3;
-    self->_isPlayerLoadingAllowed = a3;
-    v5 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v5 _setPlayerLoadingAllowedDidChange:1];
+    allowedCopy = allowed;
+    self->_isPlayerLoadingAllowed = allowed;
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange _setPlayerLoadingAllowedDidChange:1];
 
-    if (v3)
+    if (allowedCopy)
     {
       updater = self->_updater;
 
@@ -651,48 +651,48 @@ uint64_t __50__PUBrowsingVideoPlayer__requestNewRenderIfNeeded__block_invoke(uin
   }
 }
 
-- (void)_setAudioStatus:(int64_t)a3
+- (void)_setAudioStatus:(int64_t)status
 {
-  if (self->_audioStatus != a3)
+  if (self->_audioStatus != status)
   {
-    self->_audioStatus = a3;
-    v4 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v4 _setAudioStatusDidChange:1];
+    self->_audioStatus = status;
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange _setAudioStatusDidChange:1];
   }
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
-  v5 = a3;
-  if (self->_error != v5)
+  errorCopy = error;
+  if (self->_error != errorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_error, a3);
-    v6 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v6 _setErrorDidChange:1];
+    v7 = errorCopy;
+    objc_storeStrong(&self->_error, error);
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange _setErrorDidChange:1];
 
-    v5 = v7;
+    errorCopy = v7;
   }
 }
 
-- (void)_setPlayerItem:(id)a3 timeRangeMapper:(id)a4
+- (void)_setPlayerItem:(id)item timeRangeMapper:(id)mapper
 {
-  v9 = a3;
-  v7 = a4;
-  if (*&self->_timeRangeMapper != __PAIR128__(v9, v7))
+  itemCopy = item;
+  mapperCopy = mapper;
+  if (*&self->_timeRangeMapper != __PAIR128__(itemCopy, mapperCopy))
   {
-    objc_storeStrong(&self->_playerItem, a3);
-    objc_storeStrong(&self->_timeRangeMapper, a4);
-    v8 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v8 _setPlayerItemDidChange:1];
+    objc_storeStrong(&self->_playerItem, item);
+    objc_storeStrong(&self->_timeRangeMapper, mapper);
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange _setPlayerItemDidChange:1];
   }
 }
 
 - (BOOL)isAutoPlayingVideo
 {
   v3 = +[PUOneUpSettings sharedInstance];
-  v4 = [(PUBrowsingVideoPlayer *)self asset];
-  v5 = [v3 allowAutoplayVideoForAsset:v4];
+  asset = [(PUBrowsingVideoPlayer *)self asset];
+  v5 = [v3 allowAutoplayVideoForAsset:asset];
 
   return v5;
 }
@@ -725,16 +725,16 @@ void __41__PUBrowsingVideoPlayer__updateMuteState__block_invoke(uint64_t a1)
 
 - (BOOL)shouldLoopCurrentVideo
 {
-  v3 = [(PUBrowsingVideoPlayer *)self asset];
-  if ([v3 playbackStyle] == 5)
+  asset = [(PUBrowsingVideoPlayer *)self asset];
+  if ([asset playbackStyle] == 5)
   {
     v4 = 1;
   }
 
   else if ([(PUBrowsingVideoPlayer *)self loopingEnabledForAllVideos])
   {
-    v5 = [(PUBrowsingVideoPlayer *)self asset];
-    [v5 duration];
+    asset2 = [(PUBrowsingVideoPlayer *)self asset];
+    [asset2 duration];
     v7 = v6;
     [(PUBrowsingVideoPlayer *)self minimumDurationForLooping];
     v4 = v7 >= v8;
@@ -748,9 +748,9 @@ void __41__PUBrowsingVideoPlayer__updateMuteState__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)videoSessionAudioSessionOutputVolumeDidChange:(id)a3 fromVolume:(float)a4 toVolume:(float)a5
+- (void)videoSessionAudioSessionOutputVolumeDidChange:(id)change fromVolume:(float)volume toVolume:(float)toVolume
 {
-  if (a4 < a5)
+  if (volume < toVolume)
   {
     px_dispatch_on_main_queue();
   }
@@ -773,40 +773,40 @@ void __91__PUBrowsingVideoPlayer_videoSessionAudioSessionOutputVolumeDidChange_f
   [v1 _setAudioSessionVolumeIncreaseDidOccur:1];
 }
 
-- (void)videoSessionDidPlayToEnd:(id)a3
+- (void)videoSessionDidPlayToEnd:(id)end
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:PUBrowsingVideoPlayerDidPlayToEndTimeNotification object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:PUBrowsingVideoPlayerDidPlayToEndTimeNotification object:self];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (VideoMuteControllerContext == a5)
+  observableCopy = observable;
+  if (VideoMuteControllerContext == context)
   {
-    if (a4)
+    if (change)
     {
       [(PUBrowsingVideoPlayer *)self _updateMuteState];
     }
   }
 
-  else if (videoSessionObservationContext == a5)
+  else if (videoSessionObservationContext == context)
   {
     v11[5] = MEMORY[0x1E69E9820];
     v11[6] = 3221225472;
     v11[7] = __54__PUBrowsingVideoPlayer_observable_didChange_context___block_invoke;
     v11[8] = &unk_1E7B7FF70;
     v11[9] = self;
-    v11[10] = a4;
+    v11[10] = change;
     px_dispatch_on_main_queue();
   }
 
   else
   {
-    if (ApplicationStateContext != a5)
+    if (ApplicationStateContext != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:601 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:601 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -1061,27 +1061,27 @@ LABEL_30:
 
 - (void)_updatePlayerItem
 {
-  v5 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v3 = [v5 playerItem];
-  v4 = [v5 timeRangeMapper];
-  [(PUBrowsingVideoPlayer *)self _setPlayerItem:v3 timeRangeMapper:v4];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  playerItem = [videoSession playerItem];
+  timeRangeMapper = [videoSession timeRangeMapper];
+  [(PUBrowsingVideoPlayer *)self _setPlayerItem:playerItem timeRangeMapper:timeRangeMapper];
 }
 
-- (void)unregisterVideoOutput:(id)a3
+- (void)unregisterVideoOutput:(id)output
 {
   v5 = MEMORY[0x1E696AF00];
-  v6 = a3;
+  outputCopy = output;
   if (([v5 isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:517 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer unregisterVideoOutput:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:517 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer unregisterVideoOutput:]"}];
   }
 
-  v7 = objc_getAssociatedObject(v6, VideoOutputPlayerReferenceKey);
+  v7 = objc_getAssociatedObject(outputCopy, VideoOutputPlayerReferenceKey);
   [v7 setPlayer:0];
-  [v6 setReadyForDisplayChangeHandler:0];
-  v8 = [(PUBrowsingVideoPlayer *)self videoOutputs];
-  [v8 removeObject:v6];
+  [outputCopy setReadyForDisplayChangeHandler:0];
+  videoOutputs = [(PUBrowsingVideoPlayer *)self videoOutputs];
+  [videoOutputs removeObject:outputCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -1091,31 +1091,31 @@ LABEL_30:
   [(PUViewModel *)self performChanges:v10];
 }
 
-- (void)registerVideoOutput:(id)a3
+- (void)registerVideoOutput:(id)output
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  outputCopy = output;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:498 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer registerVideoOutput:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:498 description:{@"%s must be called on the main thread", "-[PUBrowsingVideoPlayer registerVideoOutput:]"}];
   }
 
-  v6 = objc_getAssociatedObject(v5, VideoOutputPlayerReferenceKey);
-  v7 = [(_PUBrowsingVideoOutputPlayerReference *)v6 player];
+  v6 = objc_getAssociatedObject(outputCopy, VideoOutputPlayerReferenceKey);
+  player = [(_PUBrowsingVideoOutputPlayerReference *)v6 player];
 
-  if (v7)
+  if (player)
   {
     v8 = PXAssertGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(_PUBrowsingVideoOutputPlayerReference *)v6 player];
+      player2 = [(_PUBrowsingVideoOutputPlayerReference *)v6 player];
       *location = 138412802;
-      *&location[4] = v5;
+      *&location[4] = outputCopy;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v10;
+      v19 = player2;
       _os_log_error_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "[PUBrowsingVideoPlayer] Attempted to register output %@ with %@, but it is already registered with %@", location, 0x20u);
     }
   }
@@ -1123,12 +1123,12 @@ LABEL_30:
   if (!v6)
   {
     v6 = objc_alloc_init(_PUBrowsingVideoOutputPlayerReference);
-    objc_setAssociatedObject(v5, VideoOutputPlayerReferenceKey, v6, 1);
+    objc_setAssociatedObject(outputCopy, VideoOutputPlayerReferenceKey, v6, 1);
   }
 
   [(_PUBrowsingVideoOutputPlayerReference *)v6 setPlayer:self];
-  v9 = [(PUBrowsingVideoPlayer *)self videoOutputs];
-  [v9 addObject:v5];
+  videoOutputs = [(PUBrowsingVideoPlayer *)self videoOutputs];
+  [videoOutputs addObject:outputCopy];
 
   objc_initWeak(location, self);
   v13[0] = MEMORY[0x1E69E9820];
@@ -1136,7 +1136,7 @@ LABEL_30:
   v13[2] = __45__PUBrowsingVideoPlayer_registerVideoOutput___block_invoke;
   v13[3] = &unk_1E7B80638;
   objc_copyWeak(&v14, location);
-  [v5 setReadyForDisplayChangeHandler:v13];
+  [outputCopy setReadyForDisplayChangeHandler:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __45__PUBrowsingVideoPlayer_registerVideoOutput___block_invoke_2;
@@ -1153,51 +1153,51 @@ void __45__PUBrowsingVideoPlayer_registerVideoOutput___block_invoke(uint64_t a1)
   [WeakRetained _updateVideoSessionDesiredPlayState];
 }
 
-- (void)unregisterTimeObserver:(id)a3
+- (void)unregisterTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUBrowsingVideoPlayer *)self timeObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  timeObservers = [(PUBrowsingVideoPlayer *)self timeObservers];
+  [timeObservers removeObject:observerCopy];
 }
 
-- (void)registerTimeObserver:(id)a3
+- (void)registerTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUBrowsingVideoPlayer *)self timeObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  timeObservers = [(PUBrowsingVideoPlayer *)self timeObservers];
+  [timeObservers addObject:observerCopy];
 }
 
-- (void)setPlaybackStartTime:(id *)a3
+- (void)setPlaybackStartTime:(id *)time
 {
   p_playbackStartTime = &self->_playbackStartTime;
-  time1 = *a3;
+  time1 = *time;
   playbackStartTime = self->_playbackStartTime;
   if (CMTimeCompare(&time1, &playbackStartTime))
   {
-    v6 = *&a3->var0;
-    p_playbackStartTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_playbackStartTime->epoch = time->var3;
     *&p_playbackStartTime->value = v6;
     [(PUBrowsingVideoPlayer *)self _updateVideoSession];
   }
 }
 
-- (void)setDesiredSeekTime:(id *)a3
+- (void)setDesiredSeekTime:(id *)time
 {
   v20 = *MEMORY[0x1E69E9840];
   p_desiredSeekTime = &self->_desiredSeekTime;
-  time1 = *a3;
+  time1 = *time;
   time2 = self->_desiredSeekTime;
   if (CMTimeCompare(&time1, &time2))
   {
-    v6 = *&a3->var0;
-    p_desiredSeekTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_desiredSeekTime->epoch = time->var3;
     *&p_desiredSeekTime->value = v6;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(PUBrowsingVideoPlayer *)self timeObservers];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v19 count:16];
+    timeObservers = [(PUBrowsingVideoPlayer *)self timeObservers];
+    v8 = [timeObservers countByEnumeratingWithState:&v13 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1209,17 +1209,17 @@ void __45__PUBrowsingVideoPlayer_registerVideoOutput___block_invoke(uint64_t a1)
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(timeObservers);
           }
 
           v12 = *(*(&v13 + 1) + 8 * v11);
-          time1 = *a3;
+          time1 = *time;
           [v12 videoPlayer:self desiredSeekTimeDidChange:&time1];
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v19 count:16];
+        v9 = [timeObservers countByEnumeratingWithState:&v13 objects:v19 count:16];
       }
 
       while (v9);
@@ -1238,11 +1238,11 @@ void __45__PUBrowsingVideoPlayer_registerVideoOutput___block_invoke(uint64_t a1)
   retstr->var0 = 0;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
-  v5 = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self videoSession];
-  v6 = v5;
-  if (v5)
+  videoSession = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self videoSession];
+  v6 = videoSession;
+  if (videoSession)
   {
-    [v5 currentTime];
+    [videoSession currentTime];
   }
 
   else
@@ -1265,16 +1265,16 @@ LABEL_7:
 
 - (void)rewindExistingPlayer
 {
-  v2 = [(PUBrowsingVideoPlayer *)self videoSession];
-  [v2 seekToPlaybackStartTime];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  [videoSession seekToPlaybackStartTime];
 }
 
-- (void)setShouldPreloadVideoContent:(BOOL)a3
+- (void)setShouldPreloadVideoContent:(BOOL)content
 {
-  if (self->_shouldPreloadVideoContent != a3)
+  if (self->_shouldPreloadVideoContent != content)
   {
-    self->_shouldPreloadVideoContent = a3;
-    if (a3)
+    self->_shouldPreloadVideoContent = content;
+    if (content)
     {
       [(PUBrowsingVideoPlayer *)self setShouldLoadVideoSession:1];
     }
@@ -1285,47 +1285,47 @@ LABEL_7:
   }
 }
 
-- (void)setActivated:(BOOL)a3
+- (void)setActivated:(BOOL)activated
 {
-  if (self->_isActivated != a3)
+  if (self->_isActivated != activated)
   {
-    self->_isActivated = a3;
-    if (a3)
+    self->_isActivated = activated;
+    if (activated)
     {
       [(PUBrowsingVideoPlayer *)self setShouldLoadVideoSession:1];
     }
 
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSession];
-    v5 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v5 _setActivatedDidChange:1];
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange _setActivatedDidChange:1];
   }
 }
 
-- (void)_handleSeekCompletion:(id)a3 finished:(BOOL)a4
+- (void)_handleSeekCompletion:(id)completion finished:(BOOL)finished
 {
-  v4 = a4;
-  v7 = a3;
+  finishedCopy = finished;
+  completionCopy = completion;
   [(PUBrowsingVideoPlayer *)self setIsSeeking:0];
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, v4);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy, finishedCopy);
+    v6 = completionCopy;
   }
 
-  if (v4)
+  if (finishedCopy)
   {
     [(PUBrowsingVideoPlayer *)self _performPendingSeekIfNeeded];
-    v6 = v7;
+    v6 = completionCopy;
   }
 }
 
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v12 = v11;
-  if (v11 && [v11 isReadyForSeeking] && !self->_isSeeking)
+  handlerCopy = handler;
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  v12 = videoSession;
+  if (videoSession && [videoSession isReadyForSeeking] && !self->_isSeeking)
   {
     self->_isSeeking = 1;
     objc_initWeak(&location, self);
@@ -1334,13 +1334,13 @@ LABEL_7:
     v23[2] = __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_completionHandler___block_invoke;
     v23[3] = &unk_1E7B75D50;
     objc_copyWeak(&v25, &location);
-    v24 = v10;
-    v21 = *&a3->var0;
-    var3 = a3->var3;
-    v19 = *&a4->var0;
-    v20 = a4->var3;
-    v17 = *&a5->var0;
-    v18 = a5->var3;
+    v24 = handlerCopy;
+    v21 = *&time->var0;
+    var3 = time->var3;
+    v19 = *&before->var0;
+    v20 = before->var3;
+    v17 = *&after->var0;
+    v18 = after->var3;
     [v12 seekToTime:&v21 toleranceBefore:&v19 toleranceAfter:&v17 completionHandler:v23];
 
     objc_destroyWeak(&v25);
@@ -1349,10 +1349,10 @@ LABEL_7:
 
   else
   {
-    v13 = a3->var3;
-    *&self->_pendingSeekTime.value = *&a3->var0;
+    v13 = time->var3;
+    *&self->_pendingSeekTime.value = *&time->var0;
     self->_pendingSeekTime.epoch = v13;
-    v14 = [v10 copy];
+    v14 = [handlerCopy copy];
     pendingSeekCompletionHandler = self->_pendingSeekCompletionHandler;
     self->_pendingSeekCompletionHandler = v14;
 
@@ -1385,144 +1385,144 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
   [WeakRetained _handleSeekCompletion:*(a1 + 32) finished:*(a1 + 48)];
 }
 
-- (void)seekToTime:(id *)a3 completionHandler:(id)a4
+- (void)seekToTime:(id *)time completionHandler:(id)handler
 {
-  v8 = *a3;
+  v8 = *time;
   v6 = *MEMORY[0x1E6960C88];
   v7 = *(MEMORY[0x1E6960C88] + 16);
   v4 = v6;
   v5 = v7;
-  [(PUBrowsingVideoPlayer *)self seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:a4];
+  [(PUBrowsingVideoPlayer *)self seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:handler];
 }
 
 - (BOOL)isStalled
 {
-  v3 = [(PUBrowsingVideoPlayer *)self videoSession];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
 
-  if (!v3)
+  if (!videoSession)
   {
     return 0;
   }
 
-  v4 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v5 = [v4 isStalled];
+  videoSession2 = [(PUBrowsingVideoPlayer *)self videoSession];
+  isStalled = [videoSession2 isStalled];
 
-  return v5;
+  return isStalled;
 }
 
 - (int64_t)playState
 {
-  v2 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v3 = v2;
-  if (v2)
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  v3 = videoSession;
+  if (videoSession)
   {
-    v4 = [v2 playState];
+    playState = [videoSession playState];
   }
 
   else
   {
-    v4 = 0;
+    playState = 0;
   }
 
-  return v4;
+  return playState;
 }
 
 - (BOOL)isPlayable
 {
-  v3 = [(PUBrowsingVideoPlayer *)self videoSession];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
 
-  if (!v3)
+  if (!videoSession)
   {
     return 1;
   }
 
-  v4 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v5 = [v4 isPlayable];
+  videoSession2 = [(PUBrowsingVideoPlayer *)self videoSession];
+  isPlayable = [videoSession2 isPlayable];
 
-  return v5;
+  return isPlayable;
 }
 
 - (BOOL)isAtEnd
 {
-  v3 = [(PUBrowsingVideoPlayer *)self videoSession];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
 
-  if (!v3)
+  if (!videoSession)
   {
     return 0;
   }
 
-  v4 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v5 = [v4 isAtEnd];
+  videoSession2 = [(PUBrowsingVideoPlayer *)self videoSession];
+  isAtEnd = [videoSession2 isAtEnd];
 
-  return v5;
+  return isAtEnd;
 }
 
 - (BOOL)isAtBeginning
 {
-  v3 = [(PUBrowsingVideoPlayer *)self videoSession];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
 
-  if (!v3)
+  if (!videoSession)
   {
     return 1;
   }
 
-  v4 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v5 = [v4 isAtBeginning];
+  videoSession2 = [(PUBrowsingVideoPlayer *)self videoSession];
+  isAtBeginning = [videoSession2 isAtBeginning];
 
-  return v5;
+  return isAtBeginning;
 }
 
-- (void)setLoopingEnabledForAllVideos:(BOOL)a3
+- (void)setLoopingEnabledForAllVideos:(BOOL)videos
 {
-  if (self->_loopingEnabledForAllVideos != a3)
+  if (self->_loopingEnabledForAllVideos != videos)
   {
-    self->_loopingEnabledForAllVideos = a3;
+    self->_loopingEnabledForAllVideos = videos;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSession];
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
+    self->_volume = volume;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlayerVolume];
   }
 }
 
-- (void)setShouldLoadVideoSession:(BOOL)a3
+- (void)setShouldLoadVideoSession:(BOOL)session
 {
-  if (self->_shouldLoadVideoSession != a3)
+  if (self->_shouldLoadVideoSession != session)
   {
-    self->_shouldLoadVideoSession = a3;
+    self->_shouldLoadVideoSession = session;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSession];
   }
 }
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
   p_duration = &self->_duration;
-  time1 = *a3;
+  time1 = *duration;
   duration = self->_duration;
   if (CMTimeCompare(&time1, &duration))
   {
-    v6 = *&a3->var0;
-    p_duration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_duration->epoch = duration->var3;
     *&p_duration->value = v6;
-    v7 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v7 setDurationDidChange:1];
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange setDurationDidChange:1];
   }
 }
 
-- (void)setDesiredTargetSize:(CGSize)a3
+- (void)setDesiredTargetSize:(CGSize)size
 {
   PXSizeMin();
   v5 = v4;
   v7 = v6;
   v8 = +[PUPhotoEditProtoSettings sharedInstance];
-  v9 = [v8 enableDynamicVideoScaling];
+  enableDynamicVideoScaling = [v8 enableDynamicVideoScaling];
 
-  if (v9 && (PXSizeApproximatelyEqualOrBiggerThanSize() & 1) == 0)
+  if (enableDynamicVideoScaling && (PXSizeApproximatelyEqualOrBiggerThanSize() & 1) == 0)
   {
     [(PUBrowsingVideoPlayer *)self setShouldRequestNewRender:1];
     [(PUBrowsingVideoPlayer *)self _setTargetSize:v5, v7];
@@ -1531,27 +1531,27 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
   }
 }
 
-- (void)setIsUserScrubbing:(BOOL)a3
+- (void)setIsUserScrubbing:(BOOL)scrubbing
 {
-  if (self->_isUserScrubbing != a3)
+  if (self->_isUserScrubbing != scrubbing)
   {
-    self->_isUserScrubbing = a3;
+    self->_isUserScrubbing = scrubbing;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSessionDesiredPlayState];
   }
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->_isMuted != a3)
+  if (self->_isMuted != muted)
   {
-    self->_isMuted = a3;
+    self->_isMuted = muted;
     [(PUBrowsingVideoPlayer *)self setShouldFadeNextVolumeChange:1];
     v4 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "Browsing Video Player detected mute state change. Will update player volume. %@", &v5, 0xCu);
     }
 
@@ -1559,29 +1559,29 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
   }
 }
 
-- (void)setDesiredPlayState:(int64_t)a3 reason:(id)a4
+- (void)setDesiredPlayState:(int64_t)state reason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_desiredPlayState != a3)
+  reasonCopy = reason;
+  if (self->_desiredPlayState != state)
   {
     v7 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = PUBrowsingVideoDesiredPlayStateDescription(self->_desiredPlayState);
-      v9 = PUBrowsingVideoDesiredPlayStateDescription(a3);
+      v9 = PUBrowsingVideoDesiredPlayStateDescription(state);
       v11 = 138413058;
       v12 = v8;
       v13 = 2112;
       v14 = v9;
       v15 = 2112;
-      v16 = v6;
+      v16 = reasonCopy;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Desired play state changing from %@ to %@ with reason: %@\n\t%@", &v11, 0x2Au);
     }
 
-    self->_desiredPlayState = a3;
+    self->_desiredPlayState = state;
     if ([(PUBrowsingVideoPlayer *)self isPlaybackDesired])
     {
       [(PUBrowsingVideoPlayer *)self setShouldLoadVideoSession:1];
@@ -1590,29 +1590,29 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
     [(PUBrowsingVideoPlayer *)self _requestNewRenderIfNeeded];
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSessionDesiredPlayState];
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSession];
-    v10 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v10 _setDesiredPlayStateDidChange:1];
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange _setDesiredPlayStateDidChange:1];
   }
 }
 
 - (ISWrappedAVPlayer)avPlayer
 {
-  v2 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v3 = [v2 videoPlayer];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  videoPlayer = [videoSession videoPlayer];
 
-  return v3;
+  return videoPlayer;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v13 = v5;
+    v13 = assetCopy;
     if (setAsset__onceToken != -1)
     {
       dispatch_once(&setAsset__onceToken, &__block_literal_global_15794);
-      v5 = v13;
+      assetCopy = v13;
     }
 
     if (setAsset__CAMTransientAssetClass)
@@ -1627,7 +1627,7 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
         isKindOfClass = 1;
       }
 
-      v5 = v13;
+      assetCopy = v13;
     }
 
     else
@@ -1636,19 +1636,19 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
     }
 
     asset = self->_asset;
-    v8 = v5;
-    v9 = asset;
-    if (v9 == v8)
+    v8 = assetCopy;
+    assetCopy2 = asset;
+    if (assetCopy2 == v8)
     {
       v11 = 0;
     }
 
     else
     {
-      v10 = [(PUDisplayAsset *)v8 isContentEqualTo:v9];
+      v10 = [(PUDisplayAsset *)v8 isContentEqualTo:assetCopy2];
       if (!v10)
       {
-        v10 = [(PUDisplayAsset *)v9 isContentEqualTo:v8];
+        v10 = [(PUDisplayAsset *)assetCopy2 isContentEqualTo:v8];
       }
 
       v11 = v10 != 2;
@@ -1659,9 +1659,9 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
       v11 = ![(PUBrowsingVideoPlayer *)self isActivated];
     }
 
-    objc_storeStrong(&self->_asset, a3);
-    v12 = [(PUBrowsingVideoPlayer *)self currentChange];
-    [v12 setHasChanges];
+    objc_storeStrong(&self->_asset, asset);
+    currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+    [currentChange setHasChanges];
 
     if (v11)
     {
@@ -1674,7 +1674,7 @@ void __85__PUBrowsingVideoPlayer_seekToTime_toleranceBefore_toleranceAfter_compl
     }
 
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSession];
-    v5 = v13;
+    assetCopy = v13;
   }
 }
 
@@ -1687,8 +1687,8 @@ Class __34__PUBrowsingVideoPlayer_setAsset___block_invoke()
 
 - (void)assetContentDidChange
 {
-  v3 = [(PUBrowsingVideoPlayer *)self currentChange];
-  [v3 setHasChanges];
+  currentChange = [(PUBrowsingVideoPlayer *)self currentChange];
+  [currentChange setHasChanges];
 
   [(PUBrowsingVideoPlayer *)self setVideoSession:0];
   [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateVideoSession];
@@ -1698,27 +1698,27 @@ Class __34__PUBrowsingVideoPlayer_setAsset___block_invoke()
   [(PXUpdater *)updater setNeedsUpdateOf:sel__updateVideoSessionDesiredPlayState];
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUBrowsingVideoPlayer;
-  [(PUViewModel *)&v3 unregisterChangeObserver:a3];
+  [(PUViewModel *)&v3 unregisterChangeObserver:observer];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUBrowsingVideoPlayer;
-  [(PUViewModel *)&v3 registerChangeObserver:a3];
+  [(PUViewModel *)&v3 registerChangeObserver:observer];
 }
 
 - (PUBrowsingVideoPlayerChange)currentChange
 {
   v4.receiver = self;
   v4.super_class = PUBrowsingVideoPlayer;
-  v2 = [(PUViewModel *)&v4 currentChange];
+  currentChange = [(PUViewModel *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
 - (void)didPerformChanges
@@ -1736,14 +1736,14 @@ Class __34__PUBrowsingVideoPlayer_setAsset___block_invoke()
   v3 = [(PUBrowsingVideoPlayer *)&v11 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PUBrowsingVideoPlayer *)self asset];
-  [v4 appendFormat:@"\n\tAsset : %@", v5];
+  asset = [(PUBrowsingVideoPlayer *)self asset];
+  [v4 appendFormat:@"\n\tAsset : %@", asset];
 
   v6 = PUBrowsingVideoDesiredPlayStateDescription([(PUBrowsingVideoPlayer *)self desiredPlayState]);
   [v4 appendFormat:@"\n\tDesired State : %@", v6];
 
-  v7 = [(PUBrowsingVideoPlayer *)self videoSession];
-  v8 = [v7 description];
+  videoSession = [(PUBrowsingVideoPlayer *)self videoSession];
+  v8 = [videoSession description];
   [v4 appendFormat:@"\n\tVideoSession : %@", v8];
 
   v9 = [v4 copy];
@@ -1754,11 +1754,11 @@ Class __34__PUBrowsingVideoPlayer_setAsset___block_invoke()
 - (void)dealloc
 {
   [(PXVideoSession *)self->_videoSession leavePresentationContext:1 presenter:self->_videoSessionPresenter];
-  v3 = [MEMORY[0x1E69C3C70] sharedInstance];
-  [v3 checkInVideoSession:self->_videoSession];
+  mEMORY[0x1E69C3C70] = [MEMORY[0x1E69C3C70] sharedInstance];
+  [mEMORY[0x1E69C3C70] checkInVideoSession:self->_videoSession];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = PUBrowsingVideoPlayer;
@@ -1767,20 +1767,20 @@ Class __34__PUBrowsingVideoPlayer_setAsset___block_invoke()
 
 - (PUBrowsingVideoPlayer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:154 description:{@"%s is not available as initializer", "-[PUBrowsingVideoPlayer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:154 description:{@"%s is not available as initializer", "-[PUBrowsingVideoPlayer init]"}];
 
   abort();
 }
 
-- (PUBrowsingVideoPlayer)initWithAsset:(id)a3 mediaProvider:(id)a4
+- (PUBrowsingVideoPlayer)initWithAsset:(id)asset mediaProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  assetCopy = asset;
+  providerCopy = provider;
+  v10 = providerCopy;
+  if (assetCopy)
   {
-    if (v9)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -1788,8 +1788,8 @@ Class __34__PUBrowsingVideoPlayer_setAsset___block_invoke()
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
     if (v10)
     {
@@ -1797,8 +1797,8 @@ Class __34__PUBrowsingVideoPlayer_setAsset___block_invoke()
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUBrowsingVideoPlayer.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider"}];
 
 LABEL_3:
   v28.receiver = self;
@@ -1807,8 +1807,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_asset, a3);
-    objc_storeStrong(&v12->_mediaProvider, a4);
+    objc_storeStrong(&v11->_asset, asset);
+    objc_storeStrong(&v12->_mediaProvider, provider);
     v13 = [objc_alloc(MEMORY[0x1E69C4600]) initWithTarget:v12];
     updater = v12->_updater;
     v12->_updater = v13;
@@ -1817,15 +1817,15 @@ LABEL_3:
     [(PXUpdater *)v12->_updater addUpdateSelector:sel__updatePlayerVolume];
     [(PXUpdater *)v12->_updater addUpdateSelector:sel__updateVideoSessionDesiredPlayState];
     [(PXUpdater *)v12->_updater setNeedsUpdateSelector:sel_assertInsideChangesBlock];
-    v15 = [MEMORY[0x1E69C3C48] sharedController];
-    [v15 registerChangeObserver:v12 context:VideoMuteControllerContext];
+    mEMORY[0x1E69C3C48] = [MEMORY[0x1E69C3C48] sharedController];
+    [mEMORY[0x1E69C3C48] registerChangeObserver:v12 context:VideoMuteControllerContext];
 
     v12->_desiredPlayState = 0;
     v12->_isPlayerLoadingAllowed = 1;
     v12->_volume = 1.0;
     [(PUBrowsingVideoPlayer *)v12 _updateMuteState];
-    v16 = [(PUBrowsingVideoPlayer *)v12 asset];
-    [v16 duration];
+    asset = [(PUBrowsingVideoPlayer *)v12 asset];
+    [asset duration];
     v18 = v17;
 
     CMTimeMakeWithSeconds(&v27, v18, 600);
@@ -1835,18 +1835,18 @@ LABEL_3:
     v12->_videoSessionPresenter = &v12->_videoSessionPresenter;
     v12->_targetSize = PUBrowsingVideoDefaultSize;
     v20 = +[PUPhotoEditProtoSettings sharedInstance];
-    v21 = [v20 enableLiveVideoRenderAtSetSize];
+    enableLiveVideoRenderAtSetSize = [v20 enableLiveVideoRenderAtSetSize];
 
-    if (v21)
+    if (enableLiveVideoRenderAtSetSize)
     {
       v12->_targetSize = PUBrowsingVideoMaxSize;
     }
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v12 selector:sel__handleShouldReloadAssetMediaNotification_ name:@"PUShouldReloadAssetMediaNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__handleShouldReloadAssetMediaNotification_ name:@"PUShouldReloadAssetMediaNotification" object:0];
 
-    v23 = [MEMORY[0x1E69C3358] sharedState];
-    [v23 registerChangeObserver:v12 context:ApplicationStateContext];
+    mEMORY[0x1E69C3358] = [MEMORY[0x1E69C3358] sharedState];
+    [mEMORY[0x1E69C3358] registerChangeObserver:v12 context:ApplicationStateContext];
   }
 
   return v12;

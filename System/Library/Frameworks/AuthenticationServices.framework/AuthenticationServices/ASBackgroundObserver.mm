@@ -1,62 +1,62 @@
 @interface ASBackgroundObserver
-- (ASBackgroundObserver)initWithViewController:(id)a3 block:(id)a4;
+- (ASBackgroundObserver)initWithViewController:(id)controller block:(id)block;
 - (UIViewController)viewController;
-- (void)_hostDidEnterBackground:(id)a3;
-- (void)_sceneDidEnterBackground:(id)a3;
+- (void)_hostDidEnterBackground:(id)background;
+- (void)_sceneDidEnterBackground:(id)background;
 - (void)dealloc;
 @end
 
 @implementation ASBackgroundObserver
 
-- (ASBackgroundObserver)initWithViewController:(id)a3 block:(id)a4
+- (ASBackgroundObserver)initWithViewController:(id)controller block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  controllerCopy = controller;
   v8 = [(ASBackgroundObserver *)self init];
-  objc_storeWeak(&v8->_viewController, v7);
+  objc_storeWeak(&v8->_viewController, controllerCopy);
 
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(blockCopy);
   block = v8->_block;
   v8->_block = v9;
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:v8 selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
-  [v11 addObserver:v8 selector:sel__hostDidEnterBackground_ name:@"_UIViewServiceHostDidEnterBackgroundNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v8 selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+  [defaultCenter addObserver:v8 selector:sel__hostDidEnterBackground_ name:@"_UIViewServiceHostDidEnterBackgroundNotification" object:0];
 
   return v8;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASBackgroundObserver;
   [(ASBackgroundObserver *)&v4 dealloc];
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v9 = a3;
+  backgroundCopy = background;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v5 = [WeakRetained viewIfLoaded];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
+  viewIfLoaded = [WeakRetained viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (!v7 || ([v9 object], v8 = objc_claimAutoreleasedReturnValue(), v8, v7 == v8))
+  if (!windowScene || ([backgroundCopy object], v8 = objc_claimAutoreleasedReturnValue(), v8, windowScene == v8))
   {
     (*(self->_block + 2))();
   }
 }
 
-- (void)_hostDidEnterBackground:(id)a3
+- (void)_hostDidEnterBackground:(id)background
 {
-  v4 = [a3 object];
-  v10 = [v4 parentViewController];
+  object = [background object];
+  parentViewController = [object parentViewController];
 
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  if (WeakRetained == v10)
+  if (WeakRetained == parentViewController)
   {
     v9 = WeakRetained;
   }
@@ -65,31 +65,31 @@
   {
     do
     {
-      v6 = [WeakRetained parentViewController];
+      parentViewController2 = [WeakRetained parentViewController];
 
-      if (v6)
+      if (parentViewController2)
       {
-        v7 = [WeakRetained parentViewController];
+        parentViewController3 = [WeakRetained parentViewController];
       }
 
       else
       {
-        v8 = [WeakRetained presentingViewController];
+        presentingViewController = [WeakRetained presentingViewController];
 
-        if (!v8)
+        if (!presentingViewController)
         {
           goto LABEL_10;
         }
 
-        v7 = [WeakRetained presentingViewController];
+        parentViewController3 = [WeakRetained presentingViewController];
       }
 
-      v9 = v7;
+      v9 = parentViewController3;
 
       WeakRetained = v9;
     }
 
-    while (v9 != v10);
+    while (v9 != parentViewController);
   }
 
   (*(self->_block + 2))();

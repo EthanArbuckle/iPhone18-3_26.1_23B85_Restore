@@ -1,12 +1,12 @@
 @interface CSDMessagingConversationActivitySceneAssociationBehavior
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationActivitySceneAssociationBehavior
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationActivitySceneAssociationBehavior;
   v3 = [(CSDMessagingConversationActivitySceneAssociationBehavior *)&v7 description];
-  v4 = [(CSDMessagingConversationActivitySceneAssociationBehavior *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationActivitySceneAssociationBehavior *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -47,57 +47,57 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_targetContentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     shouldAssociateScene = self->_shouldAssociateScene;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_preferredSceneSessionRole)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_targetContentIdentifier)
   {
-    [v4 setTargetContentIdentifier:?];
-    v4 = v5;
+    [toCopy setTargetContentIdentifier:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_shouldAssociateScene;
-    v4[28] |= 1u;
+    toCopy[24] = self->_shouldAssociateScene;
+    toCopy[28] |= 1u;
   }
 
   if (self->_preferredSceneSessionRole)
   {
     [v5 setPreferredSceneSessionRole:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_targetContentIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_targetContentIdentifier copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -107,23 +107,23 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(NSString *)self->_preferredSceneSessionRole copyWithZone:a3];
+  v8 = [(NSString *)self->_preferredSceneSessionRole copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   targetContentIdentifier = self->_targetContentIdentifier;
-  if (targetContentIdentifier | *(v4 + 2))
+  if (targetContentIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)targetContentIdentifier isEqual:?])
     {
@@ -131,18 +131,18 @@
     }
   }
 
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (!self->_shouldAssociateScene)
   {
 LABEL_5:
@@ -156,14 +156,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((*(v4 + 24) & 1) == 0)
+  if ((*(equalCopy + 24) & 1) == 0)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
   preferredSceneSessionRole = self->_preferredSceneSessionRole;
-  if (preferredSceneSessionRole | *(v4 + 1))
+  if (preferredSceneSessionRole | *(equalCopy + 1))
   {
     v8 = [(NSString *)preferredSceneSessionRole isEqual:?];
   }
@@ -194,26 +194,26 @@ LABEL_10:
   return v4 ^ v3 ^ [(NSString *)self->_preferredSceneSessionRole hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(CSDMessagingConversationActivitySceneAssociationBehavior *)self setTargetContentIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_shouldAssociateScene = v4[24];
+    self->_shouldAssociateScene = fromCopy[24];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(CSDMessagingConversationActivitySceneAssociationBehavior *)self setPreferredSceneSessionRole:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

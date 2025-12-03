@@ -1,15 +1,15 @@
 @interface TSDMediaStyle
-+ (BOOL)validateFloatValue:(float *)a3 forProperty:(int)a4;
-+ (float)defaultFloatValueForProperty:(int)a3;
-+ (id)defaultValueForProperty:(int)a3;
++ (BOOL)validateFloatValue:(float *)value forProperty:(int)property;
++ (float)defaultFloatValueForProperty:(int)property;
++ (id)defaultValueForProperty:(int)property;
 + (id)p_magicMoveProperties;
 + (id)properties;
 + (id)propertiesAllowingNSNull;
 + (void)initialize;
 - (NSString)presetKind;
-- (id)boxedValueForProperty:(int)a3 oldBoxedValue:(id)a4 transformedByTransform:(CGAffineTransform *)a5;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)boxedValueForProperty:(int)property oldBoxedValue:(id)value transformedByTransform:(CGAffineTransform *)transform;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object;
 @end
 
 @implementation TSDMediaStyle
@@ -34,10 +34,10 @@
   return result;
 }
 
-+ (float)defaultFloatValueForProperty:(int)a3
++ (float)defaultFloatValueForProperty:(int)property
 {
   result = INFINITY;
-  if (a3 == 518)
+  if (property == 518)
   {
     return 1.0;
   }
@@ -45,14 +45,14 @@
   return result;
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  if (a3 == 520 || a3 == 519)
+  if (property == 520 || property == 519)
   {
     return [MEMORY[0x277CBEB68] null];
   }
 
-  if (a3 == 517)
+  if (property == 517)
   {
     return sDefaultStroke_0;
   }
@@ -65,7 +65,7 @@
   result = propertiesAllowingNSNull_s_nullProperties;
   if (!propertiesAllowingNSNull_s_nullProperties)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!propertiesAllowingNSNull_s_nullProperties)
     {
       v4 = [[TSSPropertySet alloc] initWithProperties:519, 520, 0];
@@ -73,41 +73,41 @@
       propertiesAllowingNSNull_s_nullProperties = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDMediaStyle propertiesAllowingNSNull]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaStyle.m"), 135, @"Couldn't initialize lazy variable %s", "s_nullProperties"}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaStyle.m"), 135, @"Couldn't initialize lazy variable %s", "s_nullProperties"}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return propertiesAllowingNSNull_s_nullProperties;
   }
 
   return result;
 }
 
-+ (BOOL)validateFloatValue:(float *)a3 forProperty:(int)a4
++ (BOOL)validateFloatValue:(float *)value forProperty:(int)property
 {
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS___TSDMediaStyle;
   v6 = objc_msgSendSuper2(&v18, sel_validateFloatValue_forProperty_);
   v8 = v6;
-  if (a4 == 518 && v6)
+  if (property == 518 && v6)
   {
-    *&v7 = *a3;
-    if (*a3 < 0.0)
+    *&v7 = *value;
+    if (*value < 0.0)
     {
       v9 = 0.0;
       v10 = 147;
 LABEL_7:
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDMediaStyle validateFloatValue:forProperty:]"];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaStyle.m"];
-      v14 = *a3;
+      v14 = *value;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      [v11 handleFailureInFunction:v12 file:v13 lineNumber:v10 description:{@"Unexpected float value %g for %@ property %@ out of range [0.0, 1.0].", *&v14, v16, String(518)}];
-      *a3 = v9;
+      [currentHandler handleFailureInFunction:v12 file:v13 lineNumber:v10 description:{@"Unexpected float value %g for %@ property %@ out of range [0.0, 1.0].", *&v14, v16, String(518)}];
+      *value = v9;
       return v8;
     }
 
@@ -124,14 +124,14 @@ LABEL_7:
 
 - (NSString)presetKind
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String;
   if (![(TSSStyle *)self styleIdentifier])
   {
-    v2 = [(TSSStyle *)v2 firstIdentifiedAncestor];
+    selfCopy = [(TSSStyle *)selfCopy firstIdentifiedAncestor];
   }
 
-  v4 = String([(TSSStyle *)v2 styleIdentifier]);
+  v4 = String([(TSSStyle *)selfCopy styleIdentifier]);
   if ([v4 isEqualToString:@"image"])
   {
     return String;
@@ -142,9 +142,9 @@ LABEL_7:
     return String;
   }
 
-  v5 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMediaStyle presetKind]"];
-  [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaStyle.m"), 180, @"Could not compute presetKind because of a bad packageString: %@", v4}];
+  [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaStyle.m"), 180, @"Could not compute presetKind because of a bad packageString: %@", v4}];
   return v3;
 }
 
@@ -153,7 +153,7 @@ LABEL_7:
   result = p_magicMoveProperties_s_magicMoveProperties_0;
   if (!p_magicMoveProperties_s_magicMoveProperties_0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!p_magicMoveProperties_s_magicMoveProperties_0)
     {
       v4 = [TSSPropertySet propertySetWithProperties:512, 513, 515, 517, 518, 519, 520, 528, 529, 0];
@@ -161,28 +161,28 @@ LABEL_7:
       p_magicMoveProperties_s_magicMoveProperties_0 = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDMediaStyle p_magicMoveProperties]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaStyle.m"), 211, @"Couldn't initialize lazy variable %s", "s_magicMoveProperties"}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaStyle.m"), 211, @"Couldn't initialize lazy variable %s", "s_magicMoveProperties"}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return p_magicMoveProperties_s_magicMoveProperties_0;
   }
 
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __38__TSDMediaStyle_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __38__TSDMediaStyle_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -239,16 +239,16 @@ uint64_t __38__TSDMediaStyle_mixingTypeWithObject___block_invoke_2(uint64_t a1, 
   return result;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__TSDMediaStyle_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 id __50__TSDMediaStyle_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -288,45 +288,45 @@ uint64_t __50__TSDMediaStyle_mixedObjectWithFraction_ofObject___block_invoke_2(u
   return result;
 }
 
-- (id)boxedValueForProperty:(int)a3 oldBoxedValue:(id)a4 transformedByTransform:(CGAffineTransform *)a5
+- (id)boxedValueForProperty:(int)property oldBoxedValue:(id)value transformedByTransform:(CGAffineTransform *)transform
 {
-  v6 = a4;
-  if (a3 == 517)
+  valueCopy = value;
+  if (property == 517)
   {
-    if (a4 && [MEMORY[0x277CBEB68] null] != a4)
+    if (value && [MEMORY[0x277CBEB68] null] != value)
     {
-      v9 = *&a5->c;
-      v13 = *&a5->a;
+      v9 = *&transform->c;
+      v13 = *&transform->a;
       v14 = v9;
-      v15 = *&a5->tx;
-      return [v6 strokeByTransformingByTransform:&v13];
+      v15 = *&transform->tx;
+      return [valueCopy strokeByTransformingByTransform:&v13];
     }
   }
 
   else
   {
-    if (a3 != 520)
+    if (property != 520)
     {
       v12.receiver = self;
       v12.super_class = TSDMediaStyle;
-      v10 = *&a5->c;
-      v13 = *&a5->a;
+      v10 = *&transform->c;
+      v13 = *&transform->a;
       v14 = v10;
-      v15 = *&a5->tx;
-      return [(TSSStyle *)&v12 boxedValueForProperty:*&a3 oldBoxedValue:a4 transformedByTransform:&v13];
+      v15 = *&transform->tx;
+      return [(TSSStyle *)&v12 boxedValueForProperty:*&property oldBoxedValue:value transformedByTransform:&v13];
     }
 
-    if (a4 && [MEMORY[0x277CBEB68] null] != a4)
+    if (value && [MEMORY[0x277CBEB68] null] != value)
     {
-      v7 = *&a5->c;
-      v13 = *&a5->a;
+      v7 = *&transform->c;
+      v13 = *&transform->a;
       v14 = v7;
-      v15 = *&a5->tx;
-      return [v6 shadowByTransformingByTransform:&v13];
+      v15 = *&transform->tx;
+      return [valueCopy shadowByTransformingByTransform:&v13];
     }
   }
 
-  return v6;
+  return valueCopy;
 }
 
 @end

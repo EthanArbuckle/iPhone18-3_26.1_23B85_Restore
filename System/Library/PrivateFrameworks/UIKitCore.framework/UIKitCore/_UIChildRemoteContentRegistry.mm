@@ -1,28 +1,28 @@
 @interface _UIChildRemoteContentRegistry
 - (BOOL)parentSettingsAvailable;
 - (FBSSceneSettings)parentSettings;
-- (_UIChildRemoteContentRegistry)initWithParentScene:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_UIChildRemoteContentRegistry)initWithParentScene:(id)scene;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)addChildScene:(id)a3;
-- (void)addChildViewService:(id)a3;
-- (void)executeWhenParentSettingsAreAvailable:(id)a3 forChildScene:(id)a4;
-- (void)removeChildScene:(id)a3;
-- (void)removeChildViewService:(id)a3;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)addChildScene:(id)scene;
+- (void)addChildViewService:(id)service;
+- (void)executeWhenParentSettingsAreAvailable:(id)available forChildScene:(id)scene;
+- (void)removeChildScene:(id)scene;
+- (void)removeChildViewService:(id)service;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UIChildRemoteContentRegistry
 
 - (id)succinctDescription
 {
-  v2 = [(_UIChildRemoteContentRegistry *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIChildRemoteContentRegistry *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -51,9 +51,9 @@
 
 - (BOOL)parentSettingsAvailable
 {
-  v2 = [(_UIChildRemoteContentRegistry *)self parentSettings];
-  v3 = [v2 displayConfiguration];
-  v4 = v3 != 0;
+  parentSettings = [(_UIChildRemoteContentRegistry *)self parentSettings];
+  displayConfiguration = [parentSettings displayConfiguration];
+  v4 = displayConfiguration != 0;
 
   return v4;
 }
@@ -61,18 +61,18 @@
 - (FBSSceneSettings)parentSettings
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentScene);
-  v3 = [WeakRetained settings];
+  settings = [WeakRetained settings];
 
-  return v3;
+  return settings;
 }
 
-- (_UIChildRemoteContentRegistry)initWithParentScene:(id)a3
+- (_UIChildRemoteContentRegistry)initWithParentScene:(id)scene
 {
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIChildRemoteContentRegistry.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"parentScene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIChildRemoteContentRegistry.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"parentScene"}];
   }
 
   v11.receiver = self;
@@ -81,36 +81,36 @@
   v7 = v6;
   if (v6)
   {
-    v8 = objc_storeWeak(&v6->_parentScene, v5);
-    [v5 addObserver:v7];
+    v8 = objc_storeWeak(&v6->_parentScene, sceneCopy);
+    [sceneCopy addObserver:v7];
   }
 
   return v7;
 }
 
-- (void)addChildScene:(id)a3
+- (void)addChildScene:(id)scene
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneCopy = scene;
   childScenes = self->_childScenes;
   if (!childScenes)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_childScenes;
-    self->_childScenes = v6;
+    self->_childScenes = weakObjectsHashTable;
 
     childScenes = self->_childScenes;
   }
 
-  [(NSHashTable *)childScenes addObject:v4];
+  [(NSHashTable *)childScenes addObject:sceneCopy];
   WeakRetained = objc_loadWeakRetained(&self->_parentScene);
-  [v4 setParentScene:WeakRetained];
+  [sceneCopy setParentScene:WeakRetained];
 
   v9 = *(__UILogGetCategoryCachedImpl("_UIChildRemoteContentRegistry", &addChildScene____s_category) + 8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(_UIChildRemoteContentRegistry *)self succinctDescription];
-    v11 = v4;
+    succinctDescription = [(_UIChildRemoteContentRegistry *)self succinctDescription];
+    v11 = sceneCopy;
     if (v11)
     {
       v12 = MEMORY[0x1E696AEC0];
@@ -125,7 +125,7 @@
     }
 
     *buf = 138412546;
-    v19 = v10;
+    v19 = succinctDescription;
     v20 = 2112;
     v21 = v15;
     _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "%@ Registry is now tracking child scene %@", buf, 0x16u);
@@ -141,25 +141,25 @@
   }
 }
 
-- (void)removeChildScene:(id)a3
+- (void)removeChildScene:(id)scene
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 parentScene];
+  sceneCopy = scene;
+  parentScene = [sceneCopy parentScene];
   WeakRetained = objc_loadWeakRetained(&self->_parentScene);
-  v7 = [v5 isEqual:WeakRetained];
+  v7 = [parentScene isEqual:WeakRetained];
 
   if (v7)
   {
-    [v4 setParentScene:0];
+    [sceneCopy setParentScene:0];
   }
 
-  [(NSHashTable *)self->_childScenes removeObject:v4];
+  [(NSHashTable *)self->_childScenes removeObject:sceneCopy];
   v8 = *(__UILogGetCategoryCachedImpl("_UIChildRemoteContentRegistry", &removeChildScene____s_category) + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(_UIChildRemoteContentRegistry *)self succinctDescription];
-    v10 = v4;
+    succinctDescription = [(_UIChildRemoteContentRegistry *)self succinctDescription];
+    v10 = sceneCopy;
     if (v10)
     {
       v11 = MEMORY[0x1E696AEC0];
@@ -174,38 +174,38 @@
     }
 
     *buf = 138412546;
-    v19 = v9;
+    v19 = succinctDescription;
     v20 = 2112;
     v21 = v14;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "%@ Registry is no longer tracking child scene %@", buf, 0x16u);
   }
 
   enqueuedSettingsAvailabilityBlocks = self->_enqueuedSettingsAvailabilityBlocks;
-  v16 = [v4 identityToken];
-  v17 = [v16 stringRepresentation];
-  [(NSMutableDictionary *)enqueuedSettingsAvailabilityBlocks removeObjectForKey:v17];
+  identityToken = [sceneCopy identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
+  [(NSMutableDictionary *)enqueuedSettingsAvailabilityBlocks removeObjectForKey:stringRepresentation];
 }
 
-- (void)addChildViewService:(id)a3
+- (void)addChildViewService:(id)service
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   childViewServices = self->_childViewServices;
   if (!childViewServices)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_childViewServices;
-    self->_childViewServices = v6;
+    self->_childViewServices = weakObjectsHashTable;
 
     childViewServices = self->_childViewServices;
   }
 
-  [(NSHashTable *)childViewServices addObject:v4];
+  [(NSHashTable *)childViewServices addObject:serviceCopy];
   v8 = *(__UILogGetCategoryCachedImpl("_UIChildRemoteContentRegistry", &addChildViewService____s_category) + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(_UIChildRemoteContentRegistry *)self succinctDescription];
-    v10 = v4;
+    succinctDescription = [(_UIChildRemoteContentRegistry *)self succinctDescription];
+    v10 = serviceCopy;
     if (v10)
     {
       v11 = MEMORY[0x1E696AEC0];
@@ -220,27 +220,27 @@
     }
 
     *buf = 138412546;
-    v18 = v9;
+    v18 = succinctDescription;
     v19 = 2112;
     v20 = v14;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "%@ Registry is now tracking child view service %@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_parentScene);
-  v16 = [WeakRetained settings];
-  [v4 _movedToParentSceneWithSettings:v16];
+  settings = [WeakRetained settings];
+  [serviceCopy _movedToParentSceneWithSettings:settings];
 }
 
-- (void)removeChildViewService:(id)a3
+- (void)removeChildViewService:(id)service
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSHashTable *)self->_childViewServices removeObject:v4];
+  serviceCopy = service;
+  [(NSHashTable *)self->_childViewServices removeObject:serviceCopy];
   v5 = *(__UILogGetCategoryCachedImpl("_UIChildRemoteContentRegistry", &removeChildViewService____s_category) + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(_UIChildRemoteContentRegistry *)self succinctDescription];
-    v7 = v4;
+    succinctDescription = [(_UIChildRemoteContentRegistry *)self succinctDescription];
+    v7 = serviceCopy;
     if (v7)
     {
       v8 = MEMORY[0x1E696AEC0];
@@ -255,27 +255,27 @@
     }
 
     *buf = 138412546;
-    v13 = v6;
+    v13 = succinctDescription;
     v14 = 2112;
     v15 = v11;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%@ Registry is no longer tracking child view service %@", buf, 0x16u);
   }
 }
 
-- (void)executeWhenParentSettingsAreAvailable:(id)a3 forChildScene:(id)a4
+- (void)executeWhenParentSettingsAreAvailable:(id)available forChildScene:(id)scene
 {
-  aBlock = a3;
-  v7 = a4;
+  aBlock = available;
+  sceneCopy = scene;
   if ([(_UIChildRemoteContentRegistry *)self parentSettingsAvailable])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIChildRemoteContentRegistry.m" lineNumber:115 description:@"Unable to enqueue a parent scene setting availability block when parent scene settings are currently available"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIChildRemoteContentRegistry.m" lineNumber:115 description:@"Unable to enqueue a parent scene setting availability block when parent scene settings are currently available"];
   }
 
-  if (![(NSHashTable *)self->_childScenes containsObject:v7])
+  if (![(NSHashTable *)self->_childScenes containsObject:sceneCopy])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIChildRemoteContentRegistry.m" lineNumber:116 description:@"Unable to enqueue a parent scene availability block for a child that is not being tracked by this registry"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIChildRemoteContentRegistry.m" lineNumber:116 description:@"Unable to enqueue a parent scene availability block for a child that is not being tracked by this registry"];
   }
 
   enqueuedSettingsAvailabilityBlocks = self->_enqueuedSettingsAvailabilityBlocks;
@@ -289,21 +289,21 @@
   }
 
   v11 = _Block_copy(aBlock);
-  v12 = [v7 identityToken];
-  v13 = [v12 stringRepresentation];
-  [(NSMutableDictionary *)enqueuedSettingsAvailabilityBlocks setValue:v11 forKey:v13];
+  identityToken = [sceneCopy identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
+  [(NSMutableDictionary *)enqueuedSettingsAvailabilityBlocks setValue:v11 forKey:stringRepresentation];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  settingsCopy = settings;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSHashTable *)self->_childViewServices allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allObjects = [(NSHashTable *)self->_childViewServices allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -315,18 +315,18 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
-        v12 = [v5 settingsDiff];
-        [v11 _parentSceneDidUpdateWithDiff:v12];
+        settingsDiff = [settingsCopy settingsDiff];
+        [v11 _parentSceneDidUpdateWithDiff:settingsDiff];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -335,36 +335,36 @@
   enqueuedSettingsAvailabilityBlocks = self->_enqueuedSettingsAvailabilityBlocks;
   if (enqueuedSettingsAvailabilityBlocks)
   {
-    v14 = [(NSMutableDictionary *)enqueuedSettingsAvailabilityBlocks allValues];
-    [v14 enumerateObjectsUsingBlock:&__block_literal_global_700];
+    allValues = [(NSMutableDictionary *)enqueuedSettingsAvailabilityBlocks allValues];
+    [allValues enumerateObjectsUsingBlock:&__block_literal_global_700];
 
     v15 = self->_enqueuedSettingsAvailabilityBlocks;
     self->_enqueuedSettingsAvailabilityBlocks = 0;
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIChildRemoteContentRegistry *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIChildRemoteContentRegistry *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIChildRemoteContentRegistry *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIChildRemoteContentRegistry *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v5];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
   v7 = objc_loadWeakRetained(&self->_parentScene);
   if (v7)
@@ -388,7 +388,7 @@
     v16[2] = __71___UIChildRemoteContentRegistry_descriptionBuilderWithMultilinePrefix___block_invoke;
     v16[3] = &unk_1E70F35B8;
     v17 = v6;
-    v18 = self;
+    selfCopy = self;
     v13 = [v17 modifyBody:v16];
   }
 

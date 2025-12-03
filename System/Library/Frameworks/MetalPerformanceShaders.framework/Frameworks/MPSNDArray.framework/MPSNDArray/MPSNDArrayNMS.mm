@@ -1,14 +1,14 @@
 @interface MPSNDArrayNMS
-- (MPSNDArrayNMS)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayNMS)initWithDevice:(id)a3 scoreThreshold:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSNDArrayNMS)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayNMS)initWithDevice:(id)device scoreThreshold:(float)threshold;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayNMS
 
-- (MPSNDArrayNMS)initWithDevice:(id)a3 scoreThreshold:(float)a4
+- (MPSNDArrayNMS)initWithDevice:(id)device scoreThreshold:(float)threshold
 {
   v10.receiver = self;
   v10.super_class = MPSNDArrayNMS;
@@ -18,13 +18,13 @@
   {
     v6->super.super._encode = EncodeNMS;
     v6->super.super.super._encodeData = v6;
-    v6->_scoreThreshold = a4;
+    v6->_scoreThreshold = threshold;
     v6->_IOUThreshold = 0.0;
     v6->_maxBoxes = -1;
-    v6->_reduceArgMaxKernel = [[MPSNDArrayReduction alloc] initWithDevice:a3 axis:0 operation:7];
-    v7->_reduceMaxKernel = [[MPSNDArrayReduction alloc] initWithDevice:a3 axis:0 operation:1];
-    v7->_argSortKernel = [[MPSNDArrayArgSort alloc] initWithDevice:a3 axis:1 descending:1];
-    v8 = [[MPSNDArrayGatherND alloc] initWithDevice:a3];
+    v6->_reduceArgMaxKernel = [[MPSNDArrayReduction alloc] initWithDevice:device axis:0 operation:7];
+    v7->_reduceMaxKernel = [[MPSNDArrayReduction alloc] initWithDevice:device axis:0 operation:1];
+    v7->_argSortKernel = [[MPSNDArrayArgSort alloc] initWithDevice:device axis:1 descending:1];
+    v8 = [[MPSNDArrayGatherND alloc] initWithDevice:device];
     v7->_gatherKernel = v8;
     [(MPSNDArrayGatherND *)v8 setBatchDimensions:1];
   }
@@ -32,21 +32,21 @@
   return v7;
 }
 
-- (MPSNDArrayNMS)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayNMS)initWithCoder:(id)coder device:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSNDArrayNMS;
-  result = [(MPSNDArrayBinaryKernel *)&v10 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayBinaryKernel *)&v10 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeNMS;
     result->super.super.super._encodeData = result;
     v6 = result;
-    [a3 decodeFloatForKey:@"MPSNDArrayNMS.scoreThreshold"];
+    [coder decodeFloatForKey:@"MPSNDArrayNMS.scoreThreshold"];
     v6->_scoreThreshold = v7;
-    [a3 decodeFloatForKey:@"MPSNDArrayNMS.IOUThreshold"];
+    [coder decodeFloatForKey:@"MPSNDArrayNMS.IOUThreshold"];
     v6->_IOUThreshold = v8;
-    v9 = [a3 decodeIntegerForKey:@"MPSNDArrayNMS.maxBoxes"];
+    v9 = [coder decodeIntegerForKey:@"MPSNDArrayNMS.maxBoxes"];
     result = v6;
     v6->_maxBoxes = v9;
   }
@@ -54,23 +54,23 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = MPSNDArrayNMS;
   [(MPSNDArrayMultiaryBase *)&v7 encodeWithCoder:?];
   *&v5 = self->_scoreThreshold;
-  [a3 encodeFloat:@"MPSNDArrayNMS.scoreThreshold" forKey:v5];
+  [coder encodeFloat:@"MPSNDArrayNMS.scoreThreshold" forKey:v5];
   *&v6 = self->_IOUThreshold;
-  [a3 encodeFloat:@"MPSNDArrayNMS.IOUThreshold" forKey:v6];
-  [a3 encodeInteger:self->_maxBoxes forKey:@"MPSNDArrayNMS.maxBoxes"];
-  [(MPSNDArrayReduction *)self->_reduceArgMaxKernel encodeWithCoder:a3];
-  [(MPSNDArrayReduction *)self->_reduceMaxKernel encodeWithCoder:a3];
-  [(MPSNDArrayMultiaryBase *)self->_argSortKernel encodeWithCoder:a3];
-  [(MPSNDArrayGatherND *)self->_gatherKernel encodeWithCoder:a3];
+  [coder encodeFloat:@"MPSNDArrayNMS.IOUThreshold" forKey:v6];
+  [coder encodeInteger:self->_maxBoxes forKey:@"MPSNDArrayNMS.maxBoxes"];
+  [(MPSNDArrayReduction *)self->_reduceArgMaxKernel encodeWithCoder:coder];
+  [(MPSNDArrayReduction *)self->_reduceMaxKernel encodeWithCoder:coder];
+  [(MPSNDArrayMultiaryBase *)self->_argSortKernel encodeWithCoder:coder];
+  [(MPSNDArrayGatherND *)self->_gatherKernel encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSNDArrayNMS;
@@ -81,10 +81,10 @@
     *(result + 37) = LODWORD(self->_IOUThreshold);
     *(result + 19) = self->_maxBoxes;
     v8 = result;
-    *(result + 20) = [(MPSNDArrayReduction *)self->_reduceArgMaxKernel copyWithZone:a3 device:a4];
-    v8[21] = [(MPSNDArrayReduction *)self->_reduceMaxKernel copyWithZone:a3 device:a4];
-    v8[22] = [(MPSNDArrayMultiaryKernel *)self->_argSortKernel copyWithZone:a3 device:a4];
-    v9 = [(MPSNDArrayGatherND *)self->_gatherKernel copyWithZone:a3 device:a4];
+    *(result + 20) = [(MPSNDArrayReduction *)self->_reduceArgMaxKernel copyWithZone:zone device:device];
+    v8[21] = [(MPSNDArrayReduction *)self->_reduceMaxKernel copyWithZone:zone device:device];
+    v8[22] = [(MPSNDArrayMultiaryKernel *)self->_argSortKernel copyWithZone:zone device:device];
+    v9 = [(MPSNDArrayGatherND *)self->_gatherKernel copyWithZone:zone device:device];
     result = v8;
     v8[23] = v9;
   }

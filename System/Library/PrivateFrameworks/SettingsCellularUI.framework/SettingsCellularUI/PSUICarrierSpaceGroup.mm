@@ -2,62 +2,62 @@
 - (PSListController)listController;
 - (PSSpecifier)groupSpecifier;
 - (PSSpecifier)parentSpecifier;
-- (PSUICarrierSpaceGroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5 ctClient:(id)a6;
+- (PSUICarrierSpaceGroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier ctClient:(id)client;
 - (id)carrierServicesSpecifier;
 - (id)cellularPlansSpecifier;
-- (id)descriptionForPlans:(id)a3;
-- (id)descriptionForUsage:(id)a3;
+- (id)descriptionForPlans:(id)plans;
+- (id)descriptionForUsage:(id)usage;
 - (id)usageSpecifier;
 - (void)agreePressed;
 - (void)carrierSpaceChanged;
 - (void)disagreeOrCancelPressed;
 - (void)newCarrierNotification;
-- (void)openURLWithSpecifier:(id)a3;
+- (void)openURLWithSpecifier:(id)specifier;
 - (void)prepareSpecifiers;
 - (void)refreshSpecifiers;
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4;
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4;
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response;
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController;
 - (void)setIsSubscriptionDataPreferred;
-- (void)showConsentFlow:(id)a3;
-- (void)showTermsAndConditions:(id)a3 consentFlowInfo:(id)a4;
+- (void)showConsentFlow:(id)flow;
+- (void)showTermsAndConditions:(id)conditions consentFlowInfo:(id)info;
 @end
 
 @implementation PSUICarrierSpaceGroup
 
-- (PSUICarrierSpaceGroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5 ctClient:(id)a6
+- (PSUICarrierSpaceGroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier ctClient:(id)client
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  specifierCopy = specifier;
+  parentSpecifierCopy = parentSpecifier;
+  clientCopy = client;
   v26.receiver = self;
   v26.super_class = PSUICarrierSpaceGroup;
   v14 = [(PSUICarrierSpaceGroup *)&v26 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_listController, v10);
-    objc_storeWeak(&v15->_groupSpecifier, v11);
-    v16 = objc_storeWeak(&v15->_parentSpecifier, v12);
-    v17 = [v12 propertyForKey:*MEMORY[0x277D40128]];
+    objc_storeWeak(&v14->_listController, controllerCopy);
+    objc_storeWeak(&v15->_groupSpecifier, specifierCopy);
+    v16 = objc_storeWeak(&v15->_parentSpecifier, parentSpecifierCopy);
+    v17 = [parentSpecifierCopy propertyForKey:*MEMORY[0x277D40128]];
     subscriptionContext = v15->_subscriptionContext;
     v15->_subscriptionContext = v17;
 
     v19 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v15->_subscriptionContext];
-    v20 = [v19 instance];
-    v21 = [v20 stringValue];
+    instance = [v19 instance];
+    stringValue = [instance stringValue];
     instance = v15->_instance;
-    v15->_instance = v21;
+    v15->_instance = stringValue;
 
-    objc_storeStrong(&v15->_ctClient, a6);
+    objc_storeStrong(&v15->_ctClient, client);
     [(CoreTelephonyClient *)v15->_ctClient setDelegate:v15];
     [(PSUICarrierSpaceGroup *)v15 setIsSubscriptionDataPreferred];
     [(PSUICarrierSpaceGroup *)v15 prepareSpecifiers];
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v15 selector:sel_carrierSpaceChanged name:0x287737B98 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel_carrierSpaceChanged name:0x287737B98 object:0];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v15 selector:sel_newCarrierNotification name:@"PSNewCarrierNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v15 selector:sel_newCarrierNotification name:@"PSNewCarrierNotification" object:0];
   }
 
   return v15;
@@ -86,30 +86,30 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
   specifersByID = self->_specifersByID;
   self->_specifersByID = v3;
 
-  v15 = [(PSUICarrierSpaceGroup *)self cellularPlansSpecifier];
-  if (v15)
+  cellularPlansSpecifier = [(PSUICarrierSpaceGroup *)self cellularPlansSpecifier];
+  if (cellularPlansSpecifier)
   {
     v5 = self->_specifersByID;
-    v6 = [v15 identifier];
-    [(NSDictionary *)v5 setValue:v15 forKey:v6];
+    identifier = [cellularPlansSpecifier identifier];
+    [(NSDictionary *)v5 setValue:cellularPlansSpecifier forKey:identifier];
   }
 
-  v7 = [(PSUICarrierSpaceGroup *)self usageSpecifier];
-  v8 = v7;
-  if (v7)
+  usageSpecifier = [(PSUICarrierSpaceGroup *)self usageSpecifier];
+  v8 = usageSpecifier;
+  if (usageSpecifier)
   {
     v9 = self->_specifersByID;
-    v10 = [v7 identifier];
-    [(NSDictionary *)v9 setValue:v8 forKey:v10];
+    identifier2 = [usageSpecifier identifier];
+    [(NSDictionary *)v9 setValue:v8 forKey:identifier2];
   }
 
-  v11 = [(PSUICarrierSpaceGroup *)self carrierServicesSpecifier];
-  v12 = v11;
-  if (v11)
+  carrierServicesSpecifier = [(PSUICarrierSpaceGroup *)self carrierServicesSpecifier];
+  v12 = carrierServicesSpecifier;
+  if (carrierServicesSpecifier)
   {
     v13 = self->_specifersByID;
-    v14 = [v11 identifier];
-    [(NSDictionary *)v13 setValue:v12 forKey:v14];
+    identifier3 = [carrierServicesSpecifier identifier];
+    [(NSDictionary *)v13 setValue:v12 forKey:identifier3];
   }
 }
 
@@ -117,13 +117,13 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
 {
   if (self->_isSubscriptionDataPreferred)
   {
-    v3 = [(PSUICarrierSpaceGroup *)self capabilities];
-    if ([v3 supportsApplications])
+    capabilities = [(PSUICarrierSpaceGroup *)self capabilities];
+    if ([capabilities supportsApplications])
     {
       v4 = +[PSUICarrierSpaceManager sharedManager];
-      v5 = [v4 appsInfo];
-      v6 = [v5 appsList];
-      v7 = [v6 count] != 0;
+      appsInfo = [v4 appsInfo];
+      appsList = [appsInfo appsList];
+      v7 = [appsList count] != 0;
     }
 
     else
@@ -160,11 +160,11 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
 
     if (v20)
     {
-      v21 = [(PSUICarrierSpaceGroup *)self getLogger];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
       {
         *v34 = 0;
-        _os_log_impl(&dword_2658DE000, v21, OS_LOG_TYPE_DEFAULT, "My account specifier found. Returning My Account Specifier for Carrier Services.", v34, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "My account specifier found. Returning My Account Specifier for Carrier Services.", v34, 2u);
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_listController);
@@ -183,14 +183,14 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
       v25 = +[PSUICarrierServicesSpecifierCache sharedInstance];
       v16 = [v25 mmsInfoSpecifierWithTarget:self context:self->_subscriptionContext];
 
-      v26 = [(PSUICarrierSpaceGroup *)self getLogger];
-      v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
+      getLogger2 = [(PSUICarrierSpaceGroup *)self getLogger];
+      v27 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
       if (v16)
       {
         if (v27)
         {
           *v33 = 0;
-          _os_log_impl(&dword_2658DE000, v26, OS_LOG_TYPE_DEFAULT, "MMS Info Specifier found. Returning MMS Info specifier for Carrier Services.", v33, 2u);
+          _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "MMS Info Specifier found. Returning MMS Info specifier for Carrier Services.", v33, 2u);
         }
 
         v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -206,7 +206,7 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
         if (v27)
         {
           *v32 = 0;
-          _os_log_impl(&dword_2658DE000, v26, OS_LOG_TYPE_DEFAULT, "No specifier found for Carrier Services.", v32, 2u);
+          _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "No specifier found for Carrier Services.", v32, 2u);
         }
       }
     }
@@ -214,11 +214,11 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
 
   else
   {
-    v12 = [(PSUICarrierSpaceGroup *)self getLogger];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    getLogger3 = [(PSUICarrierSpaceGroup *)self getLogger];
+    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v12, OS_LOG_TYPE_DEFAULT, "Carrier services or apps available. Returning PSLinkListCell specifier for Carrier Services.", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "Carrier services or apps available. Returning PSLinkListCell specifier for Carrier Services.", buf, 2u);
     }
 
     v13 = MEMORY[0x277D3FAD8];
@@ -242,18 +242,18 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
   }
 
   v3 = +[PSUICarrierSpaceManager sharedManager];
-  v4 = [v3 capabilities];
-  [(PSUICarrierSpaceGroup *)self setCapabilities:v4];
+  capabilities = [v3 capabilities];
+  [(PSUICarrierSpaceGroup *)self setCapabilities:capabilities];
 
-  v5 = [v3 hasUserConsent];
-  v6 = [(PSUICarrierSpaceGroup *)self capabilities];
-  if ([v6 supportsPlans])
+  hasUserConsent = [v3 hasUserConsent];
+  capabilities2 = [(PSUICarrierSpaceGroup *)self capabilities];
+  if ([capabilities2 supportsPlans])
   {
-    if (v5)
+    if (hasUserConsent)
     {
-      v7 = [v3 plansInfo];
-      v8 = [v7 planGroupsList];
-      v9 = [v8 count];
+      plansInfo = [v3 plansInfo];
+      planGroupsList = [plansInfo planGroupsList];
+      v9 = [planGroupsList count];
 
       if (!v9)
       {
@@ -265,14 +265,14 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
     {
     }
 
-    v11 = [v3 planChangeIsRestricted];
+    planChangeIsRestricted = [v3 planChangeIsRestricted];
     v12 = [(PSUICarrierSpaceGroup *)self descriptionForPlans:0];
     v13 = [v12 length];
 
-    if (!v11 || v13)
+    if (!planChangeIsRestricted || v13)
     {
-      v14 = v11 | ~v5;
-      if (v11)
+      v14 = planChangeIsRestricted | ~hasUserConsent;
+      if (planChangeIsRestricted)
       {
         v15 = 4;
       }
@@ -298,7 +298,7 @@ void __42__PSUICarrierSpaceGroup_refreshSpecifiers__block_invoke(uint64_t a1)
       v19 = [v18 localizedStringForKey:@"PLANS" value:&stru_287733598 table:@"CarrierSpace"];
       v10 = [v17 preferenceSpecifierNamed:v19 target:self set:0 get:sel_descriptionForPlans_ detail:v16 cell:v15 edit:0];
 
-      if ((v5 & 1) == 0)
+      if ((hasUserConsent & 1) == 0)
       {
         [v10 setButtonAction:sel_showConsentFlow_];
         [v10 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
@@ -331,23 +331,23 @@ LABEL_22:
   }
 
   v3 = +[PSUICarrierSpaceManager sharedManager];
-  v4 = [v3 capabilities];
-  [(PSUICarrierSpaceGroup *)self setCapabilities:v4];
+  capabilities = [v3 capabilities];
+  [(PSUICarrierSpaceGroup *)self setCapabilities:capabilities];
 
-  v5 = [v3 hasUserConsent];
-  v6 = [(PSUICarrierSpaceGroup *)self capabilities];
-  if ([v6 supportsUsage])
+  hasUserConsent = [v3 hasUserConsent];
+  capabilities2 = [(PSUICarrierSpaceGroup *)self capabilities];
+  if ([capabilities2 supportsUsage])
   {
-    if ((v5 & 1) == 0)
+    if ((hasUserConsent & 1) == 0)
     {
 
       v10 = 0;
       goto LABEL_10;
     }
 
-    v7 = [v3 usageInfo];
-    v8 = [v7 accountMetrics];
-    v9 = [v8 count];
+    usageInfo = [v3 usageInfo];
+    accountMetrics = [usageInfo accountMetrics];
+    v9 = [accountMetrics count];
 
     if (v9)
     {
@@ -358,7 +358,7 @@ LABEL_10:
       v14 = [v13 localizedStringForKey:@"USAGE" value:&stru_287733598 table:@"CarrierSpace"];
       v11 = [v12 preferenceSpecifierNamed:v14 target:self set:0 get:sel_descriptionForUsage_ detail:v10 cell:2 edit:0];
 
-      if ((v5 & 1) == 0)
+      if ((hasUserConsent & 1) == 0)
       {
         [v11 setButtonAction:sel_showConsentFlow_];
         [v11 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
@@ -383,45 +383,45 @@ LABEL_14:
 
 - (void)setIsSubscriptionDataPreferred
 {
-  v3 = [MEMORY[0x277D4D868] sharedInstance];
-  v4 = [v3 activeDataSubscriptionContext];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  activeDataSubscriptionContext = [mEMORY[0x277D4D868] activeDataSubscriptionContext];
 
   if (!self->_subscriptionContext)
   {
-    v8 = [(PSUICarrierSpaceGroup *)self getLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2658DE000, v8, OS_LOG_TYPE_ERROR, "Subscription is not set", buf, 2u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Subscription is not set", buf, 2u);
     }
 
     goto LABEL_11;
   }
 
-  if (v4)
+  if (activeDataSubscriptionContext)
   {
-    v5 = [v4 uuid];
-    v6 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
-    v7 = [v5 isEqual:v6];
+    uuid = [activeDataSubscriptionContext uuid];
+    uuid2 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
+    v7 = [uuid isEqual:uuid2];
 
     if (v7)
     {
       self->_isSubscriptionDataPreferred = 1;
-      v8 = [(PSUICarrierSpaceGroup *)self getLogger];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 0;
         v9 = "Subscription is data preferred";
         v10 = &v12;
 LABEL_10:
-        _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, v9, v10, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, v9, v10, 2u);
       }
     }
 
     else
     {
-      v8 = [(PSUICarrierSpaceGroup *)self getLogger];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 0;
         v9 = "Subscription is not data preferred";
@@ -437,84 +437,84 @@ LABEL_11:
 - (void)newCarrierNotification
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICarrierSpaceGroup *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315138;
     v6 = "[PSUICarrierSpaceGroup newCarrierNotification]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s reloading specifiers", &v5, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s reloading specifiers", &v5, 0xCu);
   }
 
   [(PSUICarrierSpaceGroup *)self refreshSpecifiers];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)descriptionForPlans:(id)a3
+- (id)descriptionForPlans:(id)plans
 {
   v3 = +[PSUICarrierSpaceManager sharedManager];
-  v4 = [v3 hasUserConsent];
+  hasUserConsent = [v3 hasUserConsent];
 
-  if (!v4)
+  if (!hasUserConsent)
   {
-    v9 = &stru_287733598;
+    planLabel = &stru_287733598;
     goto LABEL_13;
   }
 
   v5 = +[PSUICarrierSpaceManager sharedManager];
-  v6 = [v5 subscribedPlanOptions];
-  v7 = [v5 subscribedDomesticPlanOptions];
-  if ([v6 count])
+  subscribedPlanOptions = [v5 subscribedPlanOptions];
+  subscribedDomesticPlanOptions = [v5 subscribedDomesticPlanOptions];
+  if ([subscribedPlanOptions count])
   {
-    if ([v6 count] == 1)
+    if ([subscribedPlanOptions count] == 1)
     {
-      v8 = v6;
+      v8 = subscribedPlanOptions;
     }
 
     else
     {
-      if ([v7 count] != 1)
+      if ([subscribedDomesticPlanOptions count] != 1)
       {
         v11 = MEMORY[0x277CCACA8];
         v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v12 = [v10 localizedStringForKey:@"%@_PLANS" value:&stru_287733598 table:@"CarrierSpace"];
         v13 = MEMORY[0x277CCABB8];
-        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(subscribedPlanOptions, "count")}];
         v15 = [v13 localizedStringFromNumber:v14 numberStyle:1];
-        v9 = [v11 stringWithFormat:v12, v15];
+        planLabel = [v11 stringWithFormat:v12, v15];
 
         goto LABEL_11;
       }
 
-      v8 = v7;
+      v8 = subscribedDomesticPlanOptions;
     }
 
     v10 = [v8 objectAtIndexedSubscript:0];
-    v9 = [v10 planLabel];
+    planLabel = [v10 planLabel];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v9 = &stru_287733598;
+  planLabel = &stru_287733598;
 LABEL_12:
 
 LABEL_13:
 
-  return v9;
+  return planLabel;
 }
 
-- (id)descriptionForUsage:(id)a3
+- (id)descriptionForUsage:(id)usage
 {
   v3 = +[PSUICarrierSpaceManager sharedManager];
-  v4 = [v3 hasUserConsent];
+  hasUserConsent = [v3 hasUserConsent];
 
-  if (v4)
+  if (hasUserConsent)
   {
     v5 = +[PSUICarrierSpaceManager sharedManager];
-    v6 = [v5 planMetrics];
-    if ([v6 count] == 1)
+    planMetrics = [v5 planMetrics];
+    if ([planMetrics count] == 1)
     {
-      v7 = [v6 objectAtIndexedSubscript:0];
+      v7 = [planMetrics objectAtIndexedSubscript:0];
       v8 = [v5 descriptionForPlanMetrics:v7];
     }
 
@@ -535,33 +535,33 @@ LABEL_13:
 - (void)carrierSpaceChanged
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICarrierSpaceGroup *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315138;
     v6 = "[PSUICarrierSpaceGroup carrierSpaceChanged]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s reloading specifiers", &v5, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s reloading specifiers", &v5, 0xCu);
   }
 
   [(PSUICarrierSpaceGroup *)self refreshSpecifiers];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showConsentFlow:(id)a3
+- (void)showConsentFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(PSUICarrierSpaceGroup *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  flowCopy = flow;
+  getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf[0]) = 0;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Showing carrier space consent flow", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Showing carrier space consent flow", buf, 2u);
   }
 
   v6 = +[PSUICarrierSpaceManager sharedManager];
-  v7 = [v6 userConsentFlowInfo];
+  userConsentFlowInfo = [v6 userConsentFlowInfo];
 
-  v8 = [v7 webURL];
-  if ([v8 length])
+  webURL = [userConsentFlowInfo webURL];
+  if ([webURL length])
   {
     v9 = [PSUICarrierSpaceOptInSplashScreen alloc];
     WeakRetained = objc_loadWeakRetained(&self->_listController);
@@ -577,7 +577,7 @@ LABEL_13:
     v17 = &unk_279BAA2F8;
     objc_copyWeak(&v19, buf);
     objc_copyWeak(&v20, &location);
-    v18 = v7;
+    v18 = userConsentFlowInfo;
     [(PSUICarrierSpaceOptInSplashScreen *)self->_optInSplashScreen setContinueButtonAction:&v14];
     v13 = objc_loadWeakRetained(&self->_listController);
     [v13 showController:self->_optInSplashScreen animate:{1, v14, v15, v16, v17}];
@@ -596,21 +596,21 @@ void __41__PSUICarrierSpaceGroup_showConsentFlow___block_invoke(uint64_t a1)
   [WeakRetained showTermsAndConditions:v2 consentFlowInfo:*(a1 + 32)];
 }
 
-- (void)showTermsAndConditions:(id)a3 consentFlowInfo:(id)a4
+- (void)showTermsAndConditions:(id)conditions consentFlowInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICarrierSpaceGroup *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  conditionsCopy = conditions;
+  infoCopy = info;
+  getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Showing carrier terms and conditions", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Showing carrier terms and conditions", buf, 2u);
   }
 
-  v9 = [v7 webURL];
-  if ([v9 length])
+  webURL = [infoCopy webURL];
+  if ([webURL length])
   {
-    v10 = [MEMORY[0x277CBEBC0] URLWithString:v9];
+    v10 = [MEMORY[0x277CBEBC0] URLWithString:webURL];
     v36 = 0;
     v37 = &v36;
     v38 = 0x2050000000;
@@ -634,18 +634,18 @@ void __41__PSUICarrierSpaceGroup_showConsentFlow___block_invoke(uint64_t a1)
     self->_remoteUIController = v13;
 
     [(RemoteUIController *)self->_remoteUIController setDelegate:self];
-    [(RemoteUIController *)self->_remoteUIController setHostViewController:v6];
+    [(RemoteUIController *)self->_remoteUIController setHostViewController:conditionsCopy];
     v15 = self->_remoteUIController;
     v16 = +[PSUICarrierSpaceManager getNSURLSessionConfiguration];
     [(RemoteUIController *)v15 setSessionConfiguration:v16];
 
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    LODWORD(v16) = [v17 sf_isInternalInstall];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    LODWORD(v16) = [currentDevice sf_isInternalInstall];
 
     if (v16)
     {
-      v18 = [(RemoteUIController *)self->_remoteUIController loader];
-      [v18 setAllowNonSecureHTTP:1];
+      loader = [(RemoteUIController *)self->_remoteUIController loader];
+      [loader setAllowNonSecureHTTP:1];
     }
 
     objc_initWeak(buf, self);
@@ -666,16 +666,16 @@ void __41__PSUICarrierSpaceGroup_showConsentFlow___block_invoke(uint64_t a1)
     objc_copyWeak(&v28, buf);
     [(RemoteUIController *)v20 setHandlerForElementName:@"disagree" handler:v27];
     v21 = self->_remoteUIController;
-    v22 = [v7 postData];
-    v23 = [v22 dataUsingEncoding:4];
+    postData = [infoCopy postData];
+    v23 = [postData dataUsingEncoding:4];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __64__PSUICarrierSpaceGroup_showTermsAndConditions_consentFlowInfo___block_invoke_66;
     v25[3] = &unk_279BAA348;
     v25[4] = self;
-    v24 = v10;
-    v26 = v24;
-    [(RemoteUIController *)v21 loadURL:v24 postBody:v23 completion:v25];
+    getLogger2 = v10;
+    v26 = getLogger2;
+    [(RemoteUIController *)v21 loadURL:getLogger2 postBody:v23 completion:v25];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v30);
@@ -684,11 +684,11 @@ void __41__PSUICarrierSpaceGroup_showConsentFlow___block_invoke(uint64_t a1)
 
   else
   {
-    v24 = [(PSUICarrierSpaceGroup *)self getLogger];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICarrierSpaceGroup *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v24, OS_LOG_TYPE_DEFAULT, "No carrier space consent url", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "No carrier space consent url", buf, 2u);
     }
   }
 }
@@ -749,10 +749,10 @@ void __64__PSUICarrierSpaceGroup_showTermsAndConditions_consentFlowInfo___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openURLWithSpecifier:(id)a3
+- (void)openURLWithSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [a3 propertyForKey:@"url"];
+  v4 = [specifier propertyForKey:@"url"];
   v5 = [v3 URLWithString:v4];
 
   [*MEMORY[0x277D76620] openURL:v5 options:MEMORY[0x277CBEC10] completionHandler:0];
@@ -760,50 +760,50 @@ void __64__PSUICarrierSpaceGroup_showTermsAndConditions_consentFlowInfo___block_
 
 - (void)agreePressed
 {
-  v3 = [(PSUICarrierSpaceGroup *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Agree pressed", v9, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Agree pressed", v9, 2u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v5 = [WeakRetained navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
   v6 = objc_loadWeakRetained(&self->_listController);
-  v7 = [v6 navigationController];
-  v8 = [v7 popViewControllerAnimated:0];
+  navigationController2 = [v6 navigationController];
+  v8 = [navigationController2 popViewControllerAnimated:0];
 }
 
 - (void)disagreeOrCancelPressed
 {
-  v3 = [(PSUICarrierSpaceGroup *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpaceGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Disagree or cancel pressed", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Disagree or cancel pressed", v6, 2u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v5 = [WeakRetained navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController
 {
   v5 = MEMORY[0x277D751E0];
-  v6 = a4;
+  navigationControllerCopy = navigationController;
   v9 = [[v5 alloc] initWithBarButtonSystemItem:1 target:self action:sel_disagreeOrCancelPressed];
-  v7 = [v6 topViewController];
+  topViewController = [navigationControllerCopy topViewController];
 
-  v8 = [v7 navigationItem];
-  [v8 setLeftBarButtonItem:v9 animated:0];
+  navigationItem = [topViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v9 animated:0];
 }
 
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response
 {
-  v4 = [a4 statusCode] == 200;
+  v4 = [response statusCode] == 200;
   v5 = +[PSUICarrierSpaceManager sharedManager];
   [v5 userConsentAcknowledged:v4];
 }

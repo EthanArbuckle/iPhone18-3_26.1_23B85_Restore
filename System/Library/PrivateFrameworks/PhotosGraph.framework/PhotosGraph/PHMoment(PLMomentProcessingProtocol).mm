@@ -6,11 +6,11 @@
 
 - (double)pl_coordinate
 {
-  v1 = [a1 pl_location];
-  v2 = v1;
-  if (v1)
+  pl_location = [self pl_location];
+  v2 = pl_location;
+  if (pl_location)
   {
-    [v1 coordinate];
+    [pl_location coordinate];
     v4 = v3;
   }
 

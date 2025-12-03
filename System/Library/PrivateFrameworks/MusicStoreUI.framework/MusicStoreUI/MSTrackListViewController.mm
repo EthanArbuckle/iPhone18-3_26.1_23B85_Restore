@@ -4,17 +4,17 @@
 - (id)_headerArtworkItemImage;
 - (id)_newImageDataProvider;
 - (id)_newPlaceholderImage;
-- (id)purchasableItemsForHeaderView:(id)a3;
+- (id)purchasableItemsForHeaderView:(id)view;
 - (void)_delayedReloadForWebViews;
 - (void)_reloadFooterView;
 - (void)_reloadHeaderView;
-- (void)_restrictionsChangedNotification:(id)a3;
-- (void)_webViewsLoaded:(id)a3;
+- (void)_restrictionsChangedNotification:(id)notification;
+- (void)_webViewsLoaded:(id)loaded;
 - (void)dealloc;
 - (void)loadView;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
 - (void)reloadData;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MSTrackListViewController
@@ -28,9 +28,9 @@
   {
     [(SUStructuredPageViewController *)v2 setDataSourceClass:objc_opt_class()];
     [(SUTableViewController *)v2 setTableViewStyle:0];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
-    [v3 addObserver:v2 selector:sel__webViewsLoaded_ name:*MEMORY[0x277D7FF20] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__webViewsLoaded_ name:*MEMORY[0x277D7FF20] object:0];
   }
 
   return v2;
@@ -38,9 +38,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF20] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF20] object:0];
   [(MSTrackListHeaderView *)self->_headerView setDelegate:0];
 
   self->_headerView = 0;
@@ -54,33 +54,33 @@
   v9.receiver = self;
   v9.super_class = MSTrackListViewController;
   [(SUTableViewController *)&v9 loadView];
-  v3 = [(SUTableViewController *)self tableView];
-  [(UITableView *)v3 setBackgroundColor:MSGetTrackListOddRowColor()];
-  [(UITableView *)v3 setSeparatorColor:MSGetTrackListBorderColor()];
-  [(UITableView *)v3 setSeparatorStyle:0];
+  tableView = [(SUTableViewController *)self tableView];
+  [(UITableView *)tableView setBackgroundColor:MSGetTrackListOddRowColor()];
+  [(UITableView *)tableView setSeparatorColor:MSGetTrackListBorderColor()];
+  [(UITableView *)tableView setSeparatorStyle:0];
   headerView = self->_headerView;
   if (headerView)
   {
     [(MSTrackListHeaderView *)headerView frame];
     v6 = v5;
     v8 = v7;
-    [(UITableView *)v3 frame];
+    [(UITableView *)tableView frame];
     [(MSTrackListHeaderView *)self->_headerView setFrame:v6, v8];
-    [(UITableView *)v3 setTableHeaderView:self->_headerView];
+    [(UITableView *)tableView setTableHeaderView:self->_headerView];
   }
 }
 
 - (void)reloadData
 {
   v3 = [objc_msgSend(*(&self->super.super.super.super.super.super.super.super.super.isa + *MEMORY[0x277D7FF08]) "structuredPage")];
-  v4 = [[(SUStructuredPageViewController *)self structuredPage] item];
-  v5 = [v4 firstItemLinkForType:9];
+  item = [[(SUStructuredPageViewController *)self structuredPage] item];
+  v5 = [item firstItemLinkForType:9];
   if ([v5 URL])
   {
     v6 = objc_alloc_init(MEMORY[0x277D7FDE8]);
     [v6 setItemDisplayType:10000];
     [v6 setItemType:3];
-    [v6 setReviewStatistics:{objc_msgSend(v4, "reviewStatistics")}];
+    [v6 setReviewStatistics:{objc_msgSend(item, "reviewStatistics")}];
     v7 = [v5 copy];
     [v7 setLinkType:0];
     [v6 setItemLinks:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v7)}];
@@ -106,20 +106,20 @@
   [(MSTrackListViewController *)self _reloadFooterView];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedReloadForWebViews object:0];
   v5.receiver = self;
   v5.super_class = MSTrackListViewController;
-  [(MSStructuredPageViewController *)&v5 viewWillDisappear:v3];
+  [(MSStructuredPageViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
   if ([objc_msgSend(-[MSTrackListViewController _headerArtworkItemImage](self "_headerArtworkItemImage")])
   {
-    [(MSTrackListHeaderView *)self->_headerView setArtworkImage:a4];
+    [(MSTrackListHeaderView *)self->_headerView setArtworkImage:output];
     headerView = self->_headerView;
 
     [(MSTrackListHeaderView *)headerView reloadView];
@@ -129,11 +129,11 @@
   {
     v8.receiver = self;
     v8.super_class = MSTrackListViewController;
-    [(SUStructuredPageViewController *)&v8 operation:a3 finishedWithOutput:a4];
+    [(SUStructuredPageViewController *)&v8 operation:operation finishedWithOutput:output];
   }
 }
 
-- (id)purchasableItemsForHeaderView:(id)a3
+- (id)purchasableItemsForHeaderView:(id)view
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -179,14 +179,14 @@
   [(MSTrackListViewController *)self reloadData];
 }
 
-- (void)_restrictionsChangedNotification:(id)a3
+- (void)_restrictionsChangedNotification:(id)notification
 {
-  v3 = [(MSTrackListViewController *)self mainThreadProxy];
+  mainThreadProxy = [(MSTrackListViewController *)self mainThreadProxy];
 
-  [v3 reloadData];
+  [mainThreadProxy reloadData];
 }
 
-- (void)_webViewsLoaded:(id)a3
+- (void)_webViewsLoaded:(id)loaded
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedReloadForWebViews object:0];
 
@@ -195,34 +195,34 @@
 
 - (id)_headerArtworkImage
 {
-  v3 = [(MSTrackListHeaderView *)self->_headerView artworkImage];
-  v4 = [(MSTrackListViewController *)self _headerArtworkItemImage];
-  if (v3)
+  artworkImage = [(MSTrackListHeaderView *)self->_headerView artworkImage];
+  _headerArtworkItemImage = [(MSTrackListViewController *)self _headerArtworkItemImage];
+  if (artworkImage)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = v4 == 0;
+    v5 = _headerArtworkItemImage == 0;
   }
 
   if (v5)
   {
-    if (v3)
+    if (artworkImage)
     {
-      return v3;
+      return artworkImage;
     }
   }
 
   else
   {
-    v7 = v4;
+    v7 = _headerArtworkItemImage;
     v8 = objc_alloc_init(MEMORY[0x277D7FD48]);
-    v9 = [(MSTrackListViewController *)self _newImageDataProvider];
+    _newImageDataProvider = [(MSTrackListViewController *)self _newImageDataProvider];
     [v7 imageScale];
-    [v9 setInputImageScale:?];
-    [v8 setDataProvider:v9];
+    [_newImageDataProvider setInputImageScale:?];
+    [v8 setDataProvider:_newImageDataProvider];
     v10 = [objc_alloc(MEMORY[0x277D69CA0]) initWithURL:{objc_msgSend(v7, "URL")}];
     [v8 setRequestProperties:v10];
 
@@ -230,9 +230,9 @@
     [objc_msgSend(objc_msgSend(MEMORY[0x277D7FDB8] "sharedController")];
   }
 
-  v11 = [(MSTrackListViewController *)self _newPlaceholderImage];
+  _newPlaceholderImage = [(MSTrackListViewController *)self _newPlaceholderImage];
 
-  return v11;
+  return _newPlaceholderImage;
 }
 
 - (id)_headerArtworkItemImage
@@ -262,17 +262,17 @@
 
 - (id)_newPlaceholderImage
 {
-  v2 = [(MSTrackListViewController *)self _newImageDataProvider];
-  v3 = [v2 newImageFromImage:{objc_msgSend(MEMORY[0x277D755B8], "imageNamed:inBundle:", @"PlaceholderBig.png", objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()))}];
+  _newImageDataProvider = [(MSTrackListViewController *)self _newImageDataProvider];
+  v3 = [_newImageDataProvider newImageFromImage:{objc_msgSend(MEMORY[0x277D755B8], "imageNamed:inBundle:", @"PlaceholderBig.png", objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()))}];
 
   return v3;
 }
 
 - (void)_reloadFooterView
 {
-  v3 = [(SUStructuredPageViewController *)self structuredPage];
-  v4 = [-[SUStructuredPage item](v3 "item")];
-  if (v4 || (v4 = [-[SUStructuredPage protocol](v3 "protocol")]) != 0)
+  structuredPage = [(SUStructuredPageViewController *)self structuredPage];
+  v4 = [-[SUStructuredPage item](structuredPage "item")];
+  if (v4 || (v4 = [-[SUStructuredPage protocol](structuredPage "protocol")]) != 0)
   {
     v5 = v4;
     v6 = [MSTrackListCopyrightFooterView alloc];
@@ -286,18 +286,18 @@
 
   else
   {
-    v7 = [(SUTableViewController *)self tableView];
+    tableView = [(SUTableViewController *)self tableView];
 
-    [(UITableView *)v7 setTableFooterView:0];
+    [(UITableView *)tableView setTableFooterView:0];
   }
 }
 
 - (void)_reloadHeaderView
 {
-  v3 = [[(SUStructuredPageViewController *)self structuredPage] item];
-  v4 = [(SUTableViewController *)self tableView];
+  item = [[(SUStructuredPageViewController *)self structuredPage] item];
+  tableView = [(SUTableViewController *)self tableView];
   headerView = self->_headerView;
-  if (v3)
+  if (item)
   {
     if (headerView)
     {
@@ -305,9 +305,9 @@
     }
 
     v6 = [MSTrackListHeaderView alloc];
-    if (v4)
+    if (tableView)
     {
-      [(UITableView *)v4 bounds];
+      [(UITableView *)tableView bounds];
     }
 
     else
@@ -328,7 +328,7 @@
     {
 LABEL_16:
       [(MSTrackListHeaderView *)self->_headerView setArtworkImage:[(MSTrackListViewController *)self _headerArtworkImage]];
-      [(MSTrackListHeaderView *)self->_headerView setItem:v3];
+      [(MSTrackListHeaderView *)self->_headerView setItem:item];
       [(MSTrackListHeaderView *)self->_headerView reloadView];
       [(MSTrackListHeaderView *)self->_headerView sizeToFit];
       v12 = self->_headerView;
@@ -346,7 +346,7 @@ LABEL_16:
     self->_headerView = 0;
   }
 
-  [(UITableView *)v4 tableHeaderView];
+  [(UITableView *)tableView tableHeaderView];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -356,7 +356,7 @@ LABEL_16:
   v12 = self->_headerView;
 LABEL_11:
 
-  [(UITableView *)v4 setTableHeaderView:v12];
+  [(UITableView *)tableView setTableHeaderView:v12];
 }
 
 @end

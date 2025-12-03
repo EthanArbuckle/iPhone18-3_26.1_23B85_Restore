@@ -1,5 +1,5 @@
 @interface PKBoardingPassSemanticTileSupplier
-+ (id)createSupplierForPass:(id)a3 passState:(id)a4;
++ (id)createSupplierForPass:(id)pass passState:(id)state;
 - (CLLocation)destinationLocation;
 - (MKLocalSearchRequest)mapsSearchRequest;
 - (NSString)departureAirportCode;
@@ -10,18 +10,18 @@
 - (NSString)destinationCityName;
 - (NSString)mapsTileTitle;
 - (NSString)transitProviderName;
-- (PKBoardingPassSemanticTileSupplier)initWithPass:(id)a3 passState:(id)a4;
+- (PKBoardingPassSemanticTileSupplier)initWithPass:(id)pass passState:(id)state;
 - (PKImage)transitProviderIcon;
 - (id)departureLocation;
 @end
 
 @implementation PKBoardingPassSemanticTileSupplier
 
-+ (id)createSupplierForPass:(id)a3 passState:(id)a4
++ (id)createSupplierForPass:(id)pass passState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  result = [v5 style];
+  passCopy = pass;
+  stateCopy = state;
+  result = [passCopy style];
   if (result >= 0xA)
   {
     if (result == 13)
@@ -30,7 +30,7 @@
       return result;
     }
 
-    v8 = [[PKBoardingPassSemanticTileSupplier alloc] initWithPass:v5 passState:v6];
+    v8 = [[PKBoardingPassSemanticTileSupplier alloc] initWithPass:passCopy passState:stateCopy];
   }
 
   else
@@ -41,20 +41,20 @@
   return v8;
 }
 
-- (PKBoardingPassSemanticTileSupplier)initWithPass:(id)a3 passState:(id)a4
+- (PKBoardingPassSemanticTileSupplier)initWithPass:(id)pass passState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  stateCopy = state;
   v16.receiver = self;
   v16.super_class = PKBoardingPassSemanticTileSupplier;
   v9 = [(PKBoardingPassSemanticTileSupplier *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pass, a3);
-    v11 = [v8 flight];
+    objc_storeStrong(&v9->_pass, pass);
+    flight = [stateCopy flight];
     flight = v10->_flight;
-    v10->_flight = v11;
+    v10->_flight = flight;
 
     v13 = PKResolvedBoardingPassSemantics();
     resolvedSemantics = v10->_resolvedSemantics;
@@ -66,19 +66,19 @@
 
 - (NSString)mapsTileTitle
 {
-  v3 = [(PKBoardingPassSemanticTileSupplier *)self departureAirportName];
-  v4 = v3;
-  if (v3)
+  departureAirportName = [(PKBoardingPassSemanticTileSupplier *)self departureAirportName];
+  v4 = departureAirportName;
+  if (departureAirportName)
   {
-    v5 = v3;
+    departureAirportCode = departureAirportName;
   }
 
   else
   {
-    v5 = [(PKBoardingPassSemanticTileSupplier *)self departureAirportCode];
+    departureAirportCode = [(PKBoardingPassSemanticTileSupplier *)self departureAirportCode];
   }
 
-  v6 = v5;
+  v6 = departureAirportCode;
 
   v7 = PKLocalizedFlightString(&cfstr_PassDashboardF.isa, &stru_1F3BD5BF0.isa, v6);
 
@@ -88,17 +88,17 @@
 - (MKLocalSearchRequest)mapsSearchRequest
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKBoardingPassSemanticTileSupplier *)self departureAirportName];
-  if (v3 || ([(PKBoardingPassSemanticTileSupplier *)self departureAirportCode], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  departureAirportName = [(PKBoardingPassSemanticTileSupplier *)self departureAirportName];
+  if (departureAirportName || ([(PKBoardingPassSemanticTileSupplier *)self departureAirportCode], (departureAirportName = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
+    v4 = departureAirportName;
     v5 = objc_alloc_init(MEMORY[0x1E696F260]);
     [v5 setNaturalLanguageQuery:v4];
-    v6 = [(PKBoardingPassSemanticTileSupplier *)self departureLocation];
-    v7 = v6;
-    if (v6)
+    departureLocation = [(PKBoardingPassSemanticTileSupplier *)self departureLocation];
+    v7 = departureLocation;
+    if (departureLocation)
     {
-      MEMORY[0x1BFB41730]([v6 coordinate]);
+      MEMORY[0x1BFB41730]([departureLocation coordinate]);
       [v5 setRegion:?];
       [v5 setRegionPriority:1];
     }
@@ -133,91 +133,91 @@ BOOL __60__PKBoardingPassSemanticTileSupplier_filteredItemFromItems___block_invo
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    organizationName = v3;
   }
 
   else
   {
-    v5 = [(PKPass *)self->_pass organizationName];
+    organizationName = [(PKPass *)self->_pass organizationName];
   }
 
-  v6 = v5;
+  v6 = organizationName;
 
   return v6;
 }
 
 - (PKImage)transitProviderIcon
 {
-  v2 = [(PKPass *)self->_pass iconImage];
-  [v2 orientation];
+  iconImage = [(PKPass *)self->_pass iconImage];
+  [iconImage orientation];
 
-  return v2;
+  return iconImage;
 }
 
 - (NSString)departureAirportCode
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD88]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)departureAirportName
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD90]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (id)departureLocation
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBCC0]];
-  v3 = [v2 locationValue];
-  v4 = [v3 CLLocation];
+  locationValue = [v2 locationValue];
+  cLLocation = [locationValue CLLocation];
 
-  return v4;
+  return cLLocation;
 }
 
 - (NSString)departureTerminal
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKeyedSubscript:*MEMORY[0x1E69BBDC0]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)destinationAirportCode
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKeyedSubscript:*MEMORY[0x1E69BBDC8]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)destinationAirportName
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKeyedSubscript:*MEMORY[0x1E69BBDD0]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)destinationCityName
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKeyedSubscript:*MEMORY[0x1E69BBDD8]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CLLocation)destinationLocation
 {
   v2 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBCC8]];
-  v3 = [v2 locationValue];
-  v4 = [v3 CLLocation];
+  locationValue = [v2 locationValue];
+  cLLocation = [locationValue CLLocation];
 
-  return v4;
+  return cLLocation;
 }
 
 @end

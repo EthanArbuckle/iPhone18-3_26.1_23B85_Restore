@@ -1,54 +1,54 @@
 @interface CameraModel
 - (_TtC9CarCamera11CameraModel)init;
-- (void)cameraButtonService:(id)a3 didUpdateChildrenIdentifiers:(id)a4;
-- (void)cameraButtonService:(id)a3 didUpdateHidden:(BOOL)a4;
-- (void)cameraButtonService:(id)a3 didUpdateSelectedEntryIndex:(unsigned __int8)a4;
-- (void)cameraButtonService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4;
-- (void)cameraGeneralService:(id)a3 didUpdateOn:(BOOL)a4;
-- (void)cameraGeneralService:(id)a3 didUpdateUserDismissible:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
+- (void)cameraButtonService:(id)service didUpdateChildrenIdentifiers:(id)identifiers;
+- (void)cameraButtonService:(id)service didUpdateHidden:(BOOL)hidden;
+- (void)cameraButtonService:(id)service didUpdateSelectedEntryIndex:(unsigned __int8)index;
+- (void)cameraButtonService:(id)service didUpdateSortOrder:(unsigned __int8)order;
+- (void)cameraGeneralService:(id)service didUpdateOn:(BOOL)on;
+- (void)cameraGeneralService:(id)service didUpdateUserDismissible:(BOOL)dismissible;
+- (void)carDidUpdateAccessories:(id)accessories;
 @end
 
 @implementation CameraModel
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
+  accessoriesCopy = accessories;
+  selfCopy = self;
   sub_100011000();
 }
 
-- (void)cameraGeneralService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)cameraGeneralService:(id)service didUpdateOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000111B0(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1000111B0(serviceCopy, on);
 }
 
-- (void)cameraGeneralService:(id)a3 didUpdateUserDismissible:(BOOL)a4
+- (void)cameraGeneralService:(id)service didUpdateUserDismissible:(BOOL)dismissible
 {
-  v6 = a3;
-  v7 = self;
-  sub_10000C744(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10000C744(serviceCopy, dismissible);
 }
 
-- (void)cameraButtonService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4
+- (void)cameraButtonService:(id)service didUpdateSortOrder:(unsigned __int8)order
 {
-  v6 = a3;
-  v7 = self;
-  sub_10001131C(a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10001131C(order);
 }
 
-- (void)cameraButtonService:(id)a3 didUpdateHidden:(BOOL)a4
+- (void)cameraButtonService:(id)service didUpdateHidden:(BOOL)hidden
 {
-  v6 = a3;
-  v7 = self;
-  sub_10000CBCC(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10000CBCC(serviceCopy, hidden);
 }
 
-- (void)cameraButtonService:(id)a3 didUpdateChildrenIdentifiers:(id)a4
+- (void)cameraButtonService:(id)service didUpdateChildrenIdentifiers:(id)identifiers
 {
-  if (a4)
+  if (identifiers)
   {
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -58,16 +58,16 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_10000CDB4(v7, v6);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10000CDB4(serviceCopy, v6);
 }
 
-- (void)cameraButtonService:(id)a3 didUpdateSelectedEntryIndex:(unsigned __int8)a4
+- (void)cameraButtonService:(id)service didUpdateSelectedEntryIndex:(unsigned __int8)index
 {
-  v6 = a3;
-  v7 = self;
-  sub_10000D578(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10000D578(serviceCopy, index);
 }
 
 - (_TtC9CarCamera11CameraModel)init

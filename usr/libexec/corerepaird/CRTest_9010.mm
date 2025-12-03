@@ -1,8 +1,8 @@
 @interface CRTest_9010
-- (BOOL)shouldRun:(id)a3;
+- (BOOL)shouldRun:(id)run;
 - (CRTest_9010)init;
-- (void)run:(id)a3 withContext:(id)a4;
-- (void)update:(id)a3 testIndex:(int64_t)a4 testResult:(id)a5;
+- (void)run:(id)run withContext:(id)context;
+- (void)update:(id)update testIndex:(int64_t)index testResult:(id)result;
 @end
 
 @implementation CRTest_9010
@@ -20,8 +20,8 @@
     if (os_variant_has_internal_content())
     {
       v4 = [[CRUserDefaults alloc] initWithSuiteName:@"com.apple.corerepaird.test"];
-      v5 = [(CRTest *)v3 name];
-      v6 = [v4 dictionaryForKey:v5];
+      name = [(CRTest *)v3 name];
+      v6 = [v4 dictionaryForKey:name];
       [(CRTest *)v3 setOverrides:v6];
     }
   }
@@ -29,102 +29,102 @@
   return v3;
 }
 
-- (BOOL)shouldRun:(id)a3
+- (BOOL)shouldRun:(id)run
 {
-  v4 = [(CRTest *)self overrides];
+  overrides = [(CRTest *)self overrides];
 
-  if (!v4)
+  if (!overrides)
   {
     return 1;
   }
 
-  v5 = [(CRTest *)self overrides];
-  v6 = [v5 objectForKeyedSubscript:@"enabled"];
+  overrides2 = [(CRTest *)self overrides];
+  v6 = [overrides2 objectForKeyedSubscript:@"enabled"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)run:(id)a3 withContext:(id)a4
+- (void)run:(id)run withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  runCopy = run;
   v8 = objc_opt_new();
-  v9 = [v6 lastTestStatusCode];
+  lastTestStatusCode = [contextCopy lastTestStatusCode];
 
-  if (v9)
+  if (lastTestStatusCode)
   {
-    v10 = [v6 lastTestStatusCode];
-    [v8 setObject:v10 forKeyedSubscript:@"testStatusCode"];
+    lastTestStatusCode2 = [contextCopy lastTestStatusCode];
+    [v8 setObject:lastTestStatusCode2 forKeyedSubscript:@"testStatusCode"];
   }
 
-  v11 = [v6 lastRunTestId];
+  lastRunTestId = [contextCopy lastRunTestId];
 
-  if (v11)
+  if (lastRunTestId)
   {
-    v12 = [v6 lastRunTestId];
-    [v8 setObject:v12 forKeyedSubscript:@"testIdentifier"];
+    lastRunTestId2 = [contextCopy lastRunTestId];
+    [v8 setObject:lastRunTestId2 forKeyedSubscript:@"testIdentifier"];
   }
 
-  v13 = [v6 removedPartSPC];
+  removedPartSPC = [contextCopy removedPartSPC];
 
-  if (v13)
+  if (removedPartSPC)
   {
-    v14 = [v6 removedPartSPC];
-    v15 = [v14 allObjects];
-    [v8 setObject:v15 forKeyedSubscript:@"removedPartSPC"];
+    removedPartSPC2 = [contextCopy removedPartSPC];
+    allObjects = [removedPartSPC2 allObjects];
+    [v8 setObject:allObjects forKeyedSubscript:@"removedPartSPC"];
   }
 
   v18 = @"parameters";
   v19 = v8;
   v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  v17 = [(CRTest *)self testId];
-  [v7 startTest:v17 parameters:v16];
+  testId = [(CRTest *)self testId];
+  [runCopy startTest:testId parameters:v16];
 }
 
-- (void)update:(id)a3 testIndex:(int64_t)a4 testResult:(id)a5
+- (void)update:(id)update testIndex:(int64_t)index testResult:(id)result
 {
-  v8 = a3;
-  if (v8 && a5)
+  updateCopy = update;
+  if (updateCopy && result)
   {
-    v15 = v8;
-    v9 = a5;
-    v10 = [v9 statusCode];
-    [(CRTest *)self setStatusCode:v10];
+    v15 = updateCopy;
+    resultCopy = result;
+    statusCode = [resultCopy statusCode];
+    [(CRTest *)self setStatusCode:statusCode];
 
-    v11 = [v9 data];
+    data = [resultCopy data];
 
-    [(CRTest *)self setResultData:v11];
-    v12 = [(CRTest *)self statusCode];
-    LODWORD(v11) = [v12 isEqual:&off_100011300];
+    [(CRTest *)self setResultData:data];
+    statusCode2 = [(CRTest *)self statusCode];
+    LODWORD(data) = [statusCode2 isEqual:&off_100011300];
 
-    if (v11)
+    if (data)
     {
       [v15 setDoRetry:1];
     }
 
     else
     {
-      v13 = [(CRTest *)self testId];
-      [v15 setLastRunTestId:v13];
+      testId = [(CRTest *)self testId];
+      [v15 setLastRunTestId:testId];
 
-      v14 = [(CRTest *)self statusCode];
-      [v15 setLastTestStatusCode:v14];
+      statusCode3 = [(CRTest *)self statusCode];
+      [v15 setLastTestStatusCode:statusCode3];
 
-      [v15 setLastRunTestIndex:a4];
+      [v15 setLastRunTestIndex:index];
     }
 
-    v8 = v15;
+    updateCopy = v15;
   }
 }
 

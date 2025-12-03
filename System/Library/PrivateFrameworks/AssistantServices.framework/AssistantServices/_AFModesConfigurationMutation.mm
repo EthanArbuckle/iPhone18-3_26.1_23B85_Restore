@@ -14,7 +14,7 @@
 - (BOOL)getIsUIFree;
 - (BOOL)getIsVoiceTriggerRequest;
 - (BOOL)getUserTypedInSiri;
-- (_AFModesConfigurationMutation)initWithBase:(id)a3;
+- (_AFModesConfigurationMutation)initWithBase:(id)base;
 - (id)getModeOverrideValue;
 - (int64_t)getIsUserEngagedWithDevice;
 @end
@@ -168,15 +168,15 @@
 {
   if ((*(&self->_mutationFlags + 1) & 0x20) != 0)
   {
-    v2 = self->_modeOverrideValue;
+    modeOverrideValue = self->_modeOverrideValue;
   }
 
   else
   {
-    v2 = [(AFModesConfiguration *)self->_base modeOverrideValue];
+    modeOverrideValue = [(AFModesConfiguration *)self->_base modeOverrideValue];
   }
 
-  return v2;
+  return modeOverrideValue;
 }
 
 - (BOOL)getIsDeviceUnlocked
@@ -244,16 +244,16 @@
   }
 }
 
-- (_AFModesConfigurationMutation)initWithBase:(id)a3
+- (_AFModesConfigurationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFModesConfigurationMutation;
   v6 = [(_AFModesConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -2,31 +2,31 @@
 - (BOOL)_languageMatchesSystem;
 - (BOOL)_shouldShowSpinner;
 - (CACSettingsController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_updatedDownloadString;
-- (id)alwaysShowOverlaySummary:(id)a3;
+- (id)alwaysShowOverlaySummary:(id)summary;
 - (id)attentionAwareActionIsSleepWake;
-- (id)commandAndControlEnabled:(id)a3;
-- (id)languageSummary:(id)a3;
-- (id)playSoundEnabled:(id)a3;
-- (id)showTextBannerEnabled:(id)a3;
+- (id)commandAndControlEnabled:(id)enabled;
+- (id)languageSummary:(id)summary;
+- (id)playSoundEnabled:(id)enabled;
+- (id)showTextBannerEnabled:(id)enabled;
 - (id)specifiers;
-- (id)userHintsEnabled:(id)a3;
+- (id)userHintsEnabled:(id)enabled;
 - (void)_fetchInstallationStatus;
-- (void)_showOverviewWithStyle:(unint64_t)a3;
-- (void)_tipLoaded:(id)a3;
+- (void)_showOverviewWithStyle:(unint64_t)style;
+- (void)_tipLoaded:(id)loaded;
 - (void)_updateTutorialButtonForOneness;
-- (void)clearUserHintsHistory:(id)a3 specifier:(id)a4;
+- (void)clearUserHintsHistory:(id)history specifier:(id)specifier;
 - (void)dealloc;
 - (void)launchCommandAndControlOnboarding;
 - (void)presentLanguageSelection;
-- (void)setAttentionAwareActionIsSleepWakeEnabled:(id)a3 specifier:(id)a4;
-- (void)setCommandAndControlEnabled:(id)a3 specifier:(id)a4;
-- (void)setPlaySoundEnabled:(id)a3 specifier:(id)a4;
-- (void)setShowTextBannerEnabled:(id)a3 specifier:(id)a4;
-- (void)setUserHintsEnabled:(id)a3 specifier:(id)a4;
-- (void)setUserHintsForCommandSuggestionsEnabled:(id)a3 specifier:(id)a4;
-- (void)setUserHintsForNextStepSuggestionsEnabled:(id)a3 specifier:(id)a4;
+- (void)setAttentionAwareActionIsSleepWakeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCommandAndControlEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPlaySoundEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShowTextBannerEnabled:(id)enabled specifier:(id)specifier;
+- (void)setUserHintsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setUserHintsForCommandSuggestionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setUserHintsForNextStepSuggestionsEnabled:(id)enabled specifier:(id)specifier;
 - (void)showAboutDonation;
 - (void)showDonationModalView;
 @end
@@ -134,20 +134,20 @@
       {
         v7 = v6;
         v8 = [v98 objectAtIndex:?];
-        v97 = [v8 identifier];
-        if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_FOOTER"])
+        identifier = [v8 identifier];
+        if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_FOOTER"])
         {
           if (v95)
           {
-            v9 = [(CACSettingsController *)val _updatedDownloadString];
-            v10 = [(CACSettingsController *)val getCommandAndControlFooterTextLearnMore];
+            _updatedDownloadString = [(CACSettingsController *)val _updatedDownloadString];
+            getCommandAndControlFooterTextLearnMore = [(CACSettingsController *)val getCommandAndControlFooterTextLearnMore];
             v11 = settingsLocString(@"LEARN_MORE", @"CommandAndControlSettings");
-            v12 = [NSString stringWithFormat:v10, v11];
+            v12 = [NSString stringWithFormat:getCommandAndControlFooterTextLearnMore, v11];
             v13 = v12;
-            if ([v9 length])
+            if ([_updatedDownloadString length])
             {
               v14 = settingsLocString(@"DOWNLOAD_FORMAT", @"CommandAndControlSettings");
-              v13 = [NSString stringWithFormat:v14, v12, v9];
+              v13 = [NSString stringWithFormat:v14, v12, _updatedDownloadString];
             }
 
             v15 = objc_opt_class();
@@ -168,14 +168,14 @@
 
           else
           {
-            v9 = [(CACSettingsController *)val getCommandAndControlFooterText];
-            [v8 setProperty:v9 forKey:v89];
+            _updatedDownloadString = [(CACSettingsController *)val getCommandAndControlFooterText];
+            [v8 setProperty:_updatedDownloadString forKey:v89];
           }
         }
 
-        else if (v95 | (([v97 isEqualToString:@"COMMAND_AND_CONTROL_FEATURE_SWITCH"] & 1) == 0))
+        else if (v95 | (([identifier isEqualToString:@"COMMAND_AND_CONTROL_FEATURE_SWITCH"] & 1) == 0))
         {
-          if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_DONATION_ON_FOOTER"])
+          if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_DONATION_ON_FOOTER"])
           {
             if (!_AXSAudioDonationSiriImprovementEnabled())
             {
@@ -187,23 +187,23 @@
             v22 = v21;
             if (v21)
             {
-              v23 = [v21 bundle];
-              v24 = [v23 privacyFlow];
-              v25 = [v24 localizedButtonTitle];
+              bundle = [v21 bundle];
+              privacyFlow = [bundle privacyFlow];
+              localizedButtonTitle = [privacyFlow localizedButtonTitle];
             }
 
             else
             {
-              v25 = settingsLocString(@"COMMAND_AND_CONTROL_DONATION_ABOUT_LINK_TEXT", @"CommandAndControlSettings");
+              localizedButtonTitle = settingsLocString(@"COMMAND_AND_CONTROL_DONATION_ABOUT_LINK_TEXT", @"CommandAndControlSettings");
             }
 
-            v29 = [NSString stringWithFormat:v20, v25];
+            v29 = [NSString stringWithFormat:v20, localizedButtonTitle];
             v30 = objc_opt_class();
             v31 = NSStringFromClass(v30);
             [v8 setProperty:v31 forKey:v94];
 
             [v8 setProperty:v29 forKey:v93];
-            v117.location = [v29 rangeOfString:v25];
+            v117.location = [v29 rangeOfString:localizedButtonTitle];
             v32 = NSStringFromRange(v117);
             [v8 setProperty:v32 forKey:v92];
 
@@ -216,12 +216,12 @@
 
           else
           {
-            if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_DONATION_OFF_FOOTER"])
+            if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_DONATION_OFF_FOOTER"])
             {
               goto LABEL_49;
             }
 
-            if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_DONATION_TipKitGroup"])
+            if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_DONATION_TipKitGroup"])
             {
               v28 = +[CACPreferences sharedPreferences];
               if ([v28 donationTipKitSeen])
@@ -237,7 +237,7 @@
               }
             }
 
-            else if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_DONATION_TipKit"])
+            else if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_DONATION_TipKit"])
             {
               v28 = +[CACPreferences sharedPreferences];
               if ([v28 donationTipKitSeen])
@@ -294,16 +294,16 @@ LABEL_49:
               objc_destroyWeak(&location);
             }
 
-            else if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_LAUNCH_ONBOARDING"])
+            else if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_LAUNCH_ONBOARDING"])
             {
               v36 = +[AXSpringBoardServer server];
-              v37 = [v36 isContinuitySessionActive];
+              isContinuitySessionActive = [v36 isContinuitySessionActive];
 
-              v38 = [NSNumber numberWithBool:v37 ^ 1];
+              v38 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
               [v8 setProperty:v38 forKey:v85];
             }
 
-            else if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_WHATS_NEW"])
+            else if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_WHATS_NEW"])
             {
               v82 = +[PSSpecifier emptyGroupSpecifier];
               v40 = objc_opt_class();
@@ -356,12 +356,12 @@ LABEL_49:
 
                       v52 = *(*(&v99 + 1) + 8 * i);
                       v108[0] = @"headerLabel";
-                      v53 = [v52 itemTitle];
-                      v109[0] = v53;
+                      itemTitle = [v52 itemTitle];
+                      v109[0] = itemTitle;
                       v108[1] = @"contentLabel";
-                      v54 = [v52 itemDescription];
+                      itemDescription = [v52 itemDescription];
                       v108[2] = @"alreadyLocalized";
-                      v109[1] = v54;
+                      v109[1] = itemDescription;
                       v109[2] = &__kCFBooleanTrue;
                       v55 = [NSDictionary dictionaryWithObjects:v109 forKeys:v108 count:3];
                       [v45 addObject:v55];
@@ -381,23 +381,23 @@ LABEL_49:
               [v98 replaceObjectAtIndex:v7 withObject:v82];
             }
 
-            else if ([v97 isEqualToString:@"COMMAND_AND_CONTROL_LANGUAGE"])
+            else if ([identifier isEqualToString:@"COMMAND_AND_CONTROL_LANGUAGE"])
             {
               [v8 setControllerLoadAction:"presentLanguageSelection"];
             }
 
-            else if ([v97 isEqualToString:@"ATTENTION_AWARE_GROUP"])
+            else if ([identifier isEqualToString:@"ATTENTION_AWARE_GROUP"])
             {
               v64 = +[UIDevice currentDevice];
-              v65 = [v64 userInterfaceIdiom];
+              userInterfaceIdiom = [v64 userInterfaceIdiom];
               v66 = @"ATTENTION_AWARE_FOOTER_TEXT_IPHONE";
-              if (v65 == &dword_0 + 1)
+              if (userInterfaceIdiom == &dword_0 + 1)
               {
                 v66 = @"ATTENTION_AWARE_FOOTER_TEXT_IPAD";
               }
 
               v67 = @"ATTENTION_AWARE_DISABLED_FOOTER_TEXT_IPHONE";
-              if (v65 == &dword_0 + 1)
+              if (userInterfaceIdiom == &dword_0 + 1)
               {
                 v67 = @"ATTENTION_AWARE_DISABLED_FOOTER_TEXT_IPAD";
               }
@@ -417,7 +417,7 @@ LABEL_49:
               [v8 setProperty:v69 forKey:v89];
             }
 
-            else if (([v97 isEqualToString:@"ATTENTION_AWARE_ACTION"] & (v86 == 0)) == 1)
+            else if (([identifier isEqualToString:@"ATTENTION_AWARE_ACTION"] & (v86 == 0)) == 1)
             {
               [v8 setProperty:&__kCFBooleanFalse forKey:v85];
             }
@@ -482,8 +482,8 @@ LABEL_73:
         }
       }
 
-      v75 = [v72 identifier];
-      v76 = [v75 isEqualToString:@"COMMAND_AND_CONTROL_DONATION_ON_FOOTER"];
+      identifier2 = [v72 identifier];
+      v76 = [identifier2 isEqualToString:@"COMMAND_AND_CONTROL_DONATION_ON_FOOTER"];
 
       if ((v76 & 1) == 0)
       {
@@ -503,14 +503,14 @@ LABEL_75:
   return v3;
 }
 
-- (void)setCommandAndControlEnabled:(id)a3 specifier:(id)a4
+- (void)setCommandAndControlEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSCommandAndControlSetEnabled(v4);
+  __AXSCommandAndControlSetEnabled(bOOLValue);
 }
 
-- (id)commandAndControlEnabled:(id)a3
+- (id)commandAndControlEnabled:(id)enabled
 {
   v3 = _AXSCommandAndControlEnabled();
 
@@ -520,12 +520,12 @@ LABEL_75:
 - (BOOL)_languageMatchesSystem
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 localeIdentifier];
+  localeIdentifier = [v2 localeIdentifier];
 
   v4 = +[CACPreferences sharedPreferences];
-  v5 = [v4 bestLocaleIdentifier];
+  bestLocaleIdentifier = [v4 bestLocaleIdentifier];
 
-  LOBYTE(v4) = [CACLocaleUtilities isSameLangaugeFromLocaleIdentifier:v3 secondLocaleIdentifier:v5];
+  LOBYTE(v4) = [CACLocaleUtilities isSameLangaugeFromLocaleIdentifier:localeIdentifier secondLocaleIdentifier:bestLocaleIdentifier];
   return v4;
 }
 
@@ -570,9 +570,9 @@ LABEL_75:
 {
   v6 = [(CACSettingsController *)self specifierForID:@"COMMAND_AND_CONTROL_LAUNCH_ONBOARDING"];
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 isContinuitySessionActive];
+  isContinuitySessionActive = [v3 isContinuitySessionActive];
 
-  v5 = [NSNumber numberWithBool:v4 ^ 1];
+  v5 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
   [v6 setProperty:v5 forKey:PSEnabledKey];
 
   [(CACSettingsController *)self reloadSpecifier:v6];
@@ -584,15 +584,15 @@ LABEL_75:
   [(CACSettingsController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (id)languageSummary:(id)a3
+- (id)languageSummary:(id)summary
 {
   v3 = +[NSLocale currentLocale];
   v4 = +[CACPreferences sharedPreferences];
-  v5 = [v4 bestLocaleIdentifier];
-  v6 = [v3 localizedStringForLocaleIdentifier:v5];
-  v7 = [v6 localizedCapitalizedString];
+  bestLocaleIdentifier = [v4 bestLocaleIdentifier];
+  v6 = [v3 localizedStringForLocaleIdentifier:bestLocaleIdentifier];
+  localizedCapitalizedString = [v6 localizedCapitalizedString];
 
-  return v7;
+  return localizedCapitalizedString;
 }
 
 - (void)presentLanguageSelection
@@ -615,8 +615,8 @@ LABEL_75:
 - (id)_updatedDownloadString
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 bestLocaleIdentifier];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  bestLocaleIdentifier = [v3 bestLocaleIdentifier];
+  v5 = [bestLocaleIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   v6 = +[CACLanguageAssetManager sharedManager];
   v7 = [v6 errorStatusForLanguage:v5];
@@ -626,7 +626,7 @@ LABEL_75:
 
   v10 = _AXSCommandAndControlEnabled();
   v11 = [v9 objectForKey:kCACDownloadProgressDictionaryKeyCompleted];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = [v9 objectForKey:kCACDownloadProgressDictionaryKeyTimeRemaining];
   [v13 floatValue];
@@ -659,24 +659,24 @@ LABEL_75:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v36 = [(CACSettingsController *)self languageModelStatus];
+    languageModelStatus = [(CACSettingsController *)self languageModelStatus];
     _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "Language model status: %lu", buf, 0xCu);
   }
 
-  v28 = [(CACSettingsController *)self languageModelStatus];
-  if (!v28)
+  languageModelStatus2 = [(CACSettingsController *)self languageModelStatus];
+  if (!languageModelStatus2)
   {
     goto LABEL_20;
   }
 
-  if (v28 != 1)
+  if (languageModelStatus2 != 1)
   {
-    if (v28 == 2)
+    if (languageModelStatus2 == 2)
     {
       v29 = +[CACPreferences sharedPreferences];
-      v30 = [v29 didShowOnboarding];
+      didShowOnboarding = [v29 didShowOnboarding];
 
-      if (!v30)
+      if (!didShowOnboarding)
       {
         goto LABEL_20;
       }
@@ -701,7 +701,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!((v7 == 0) | v12 & 1))
+  if (!((v7 == 0) | bOOLValue & 1))
   {
     if (v7 != &dword_0 + 1 && v7 != &dword_0 + 2)
     {
@@ -711,7 +711,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ((v12 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (v15 <= 1.0)
     {
@@ -744,8 +744,8 @@ LABEL_21:
 - (BOOL)_shouldShowSpinner
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 bestLocaleIdentifier];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  bestLocaleIdentifier = [v3 bestLocaleIdentifier];
+  v5 = [bestLocaleIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   v6 = +[CACLanguageAssetManager sharedManager];
   v7 = [v6 downloadProgressForLanguage:v5];
@@ -762,10 +762,10 @@ LABEL_21:
 
   else
   {
-    v12 = [(CACSettingsController *)self languageModelStatus];
+    languageModelStatus = [(CACSettingsController *)self languageModelStatus];
 
     v11 = 0;
-    if (v12 && !v9)
+    if (languageModelStatus && !v9)
     {
       v11 = _AXSCommandAndControlEnabled() != 0;
     }
@@ -774,16 +774,16 @@ LABEL_21:
   return v11;
 }
 
-- (void)setShowTextBannerEnabled:(id)a3 specifier:(id)a4
+- (void)setShowTextBannerEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[CACPreferences sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setShowTextResponseUponRecognition:v5];
+  [v6 setShowTextResponseUponRecognition:bOOLValue];
 }
 
-- (id)showTextBannerEnabled:(id)a3
+- (id)showTextBannerEnabled:(id)enabled
 {
   v3 = +[CACPreferences sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 showTextResponseUponRecognition]);
@@ -791,16 +791,16 @@ LABEL_21:
   return v4;
 }
 
-- (void)setPlaySoundEnabled:(id)a3 specifier:(id)a4
+- (void)setPlaySoundEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[CACPreferences sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setPlaySoundUponRecognition:v5];
+  [v6 setPlaySoundUponRecognition:bOOLValue];
 }
 
-- (id)playSoundEnabled:(id)a3
+- (id)playSoundEnabled:(id)enabled
 {
   v3 = +[CACPreferences sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 playSoundUponRecognition]);
@@ -811,18 +811,18 @@ LABEL_21:
 - (id)attentionAwareActionIsSleepWake
 {
   v2 = +[CACPreferences sharedPreferences];
-  v3 = [v2 attentionAwareAction];
+  attentionAwareAction = [v2 attentionAwareAction];
 
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEqualToString:@"SleepAndWake"]);
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [attentionAwareAction isEqualToString:@"SleepAndWake"]);
 
   return v4;
 }
 
-- (void)setAttentionAwareActionIsSleepWakeEnabled:(id)a3 specifier:(id)a4
+- (void)setAttentionAwareActionIsSleepWakeEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = @"None";
-  if (v4)
+  if (bOOLValue)
   {
     v5 = @"SleepAndWake";
   }
@@ -832,22 +832,22 @@ LABEL_21:
   [v7 setAttentionAwareAction:v6];
 }
 
-- (id)alwaysShowOverlaySummary:(id)a3
+- (id)alwaysShowOverlaySummary:(id)summary
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 alwaysShowOverlayType];
+  alwaysShowOverlayType = [v3 alwaysShowOverlayType];
 
-  if ([v4 isEqualToString:@"NumberedElements"])
+  if ([alwaysShowOverlayType isEqualToString:@"NumberedElements"])
   {
     v5 = @"OVERLAY_NUMBERS";
   }
 
-  else if ([v4 isEqualToString:@"NamedElements"])
+  else if ([alwaysShowOverlayType isEqualToString:@"NamedElements"])
   {
     v5 = @"OVERLAY_NAMES";
   }
 
-  else if ([v4 isEqualToString:@"NumberedGrid"])
+  else if ([alwaysShowOverlayType isEqualToString:@"NumberedGrid"])
   {
     v5 = @"OVERLAY_GRID";
   }
@@ -862,41 +862,41 @@ LABEL_21:
   return v6;
 }
 
-- (id)userHintsEnabled:(id)a3
+- (id)userHintsEnabled:(id)enabled
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 userHintsFeatures];
+  userHintsFeatures = [v3 userHintsFeatures];
 
   v5 = +[CACPreferences sharedPreferences];
   v6 = ([v5 userHintsFeatures] >> 1) & 1;
 
-  return [NSNumber numberWithBool:v4 & v6];
+  return [NSNumber numberWithBool:userHintsFeatures & v6];
 }
 
-- (void)setUserHintsEnabled:(id)a3 specifier:(id)a4
+- (void)setUserHintsEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  [(CACSettingsController *)self setUserHintsForCommandSuggestionsEnabled:v7 specifier:v6];
-  [(CACSettingsController *)self setUserHintsForNextStepSuggestionsEnabled:v7 specifier:v6];
+  specifierCopy = specifier;
+  enabledCopy = enabled;
+  [(CACSettingsController *)self setUserHintsForCommandSuggestionsEnabled:enabledCopy specifier:specifierCopy];
+  [(CACSettingsController *)self setUserHintsForNextStepSuggestionsEnabled:enabledCopy specifier:specifierCopy];
 }
 
-- (void)setUserHintsForCommandSuggestionsEnabled:(id)a3 specifier:(id)a4
+- (void)setUserHintsForCommandSuggestionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v6 = +[CACPreferences sharedPreferences];
   v5 = +[CACPreferences sharedPreferences];
-  [v6 setUserHintsFeatures:{objc_msgSend(v5, "userHintsFeatures") & 0xFFFFFFFFFFFFFFFELL | v4}];
+  [v6 setUserHintsFeatures:{objc_msgSend(v5, "userHintsFeatures") & 0xFFFFFFFFFFFFFFFELL | bOOLValue}];
 }
 
-- (void)setUserHintsForNextStepSuggestionsEnabled:(id)a3 specifier:(id)a4
+- (void)setUserHintsForNextStepSuggestionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v8 = +[CACPreferences sharedPreferences];
   v5 = +[CACPreferences sharedPreferences];
   v6 = [v5 userHintsFeatures] & 0xFFFFFFFFFFFFFFFDLL;
   v7 = 2;
-  if (!v4)
+  if (!bOOLValue)
   {
     v7 = 0;
   }
@@ -904,7 +904,7 @@ LABEL_21:
   [v8 setUserHintsFeatures:v6 | v7];
 }
 
-- (void)clearUserHintsHistory:(id)a3 specifier:(id)a4
+- (void)clearUserHintsHistory:(id)history specifier:(id)specifier
 {
   v5 = settingsLocString(@"USER_HINTS_CLEAR_HISTORY_CONFIRM_TITLE", @"CommandAndControlSettings");
   v6 = settingsLocString(@"USER_HINTS_CLEAR_HISTORY_CONFIRM_DESC", @"CommandAndControlSettings");
@@ -921,16 +921,16 @@ LABEL_21:
   [(CACSettingsController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_showOverviewWithStyle:(unint64_t)a3
+- (void)_showOverviewWithStyle:(unint64_t)style
 {
-  v4 = [CACOnboardingIntroViewController defaultControllerWithStyle:a3];
+  v4 = [CACOnboardingIntroViewController defaultControllerWithStyle:style];
   v5 = [[UINavigationController alloc] initWithRootViewController:v4];
   v6 = objc_opt_new();
-  v7 = [v5 navigationBar];
-  [v7 setShadowImage:v6];
+  navigationBar = [v5 navigationBar];
+  [navigationBar setShadowImage:v6];
 
-  v8 = [v5 navigationBar];
-  [v8 setBackgroundImage:v6 forBarMetrics:0];
+  navigationBar2 = [v5 navigationBar];
+  [navigationBar2 setBackgroundImage:v6 forBarMetrics:0];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -947,7 +947,7 @@ LABEL_21:
   [v3 present];
 }
 
-- (void)_tipLoaded:(id)a3
+- (void)_tipLoaded:(id)loaded
 {
   if (!self->_tipLoaded)
   {
@@ -955,11 +955,11 @@ LABEL_21:
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CACSettingsController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CACSettingsController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSCellClassKey];
   v10 = [v9 isEqual:objc_opt_class()];
 
@@ -972,7 +972,7 @@ LABEL_21:
   {
     v14.receiver = self;
     v14.super_class = CACSettingsController;
-    [(CACSettingsController *)&v14 tableView:v6 heightForRowAtIndexPath:v7];
+    [(CACSettingsController *)&v14 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     tipHeight = v12;
   }
 

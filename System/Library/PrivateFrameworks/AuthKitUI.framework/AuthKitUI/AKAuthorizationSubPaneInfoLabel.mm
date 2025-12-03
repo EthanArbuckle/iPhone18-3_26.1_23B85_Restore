@@ -1,96 +1,96 @@
 @interface AKAuthorizationSubPaneInfoLabel
-- (AKAuthorizationSubPaneInfoLabel)infoLabelWithString:(id)a3;
-- (AKAuthorizationSubPaneInfoLabel)initWithString:(id)a3;
+- (AKAuthorizationSubPaneInfoLabel)infoLabelWithString:(id)string;
+- (AKAuthorizationSubPaneInfoLabel)initWithString:(id)string;
 - (NSString)string;
-- (void)addToConstraints:(id)a3 context:(id)a4;
-- (void)addToStackView:(id)a3 context:(id)a4;
-- (void)setInfoLabelType:(unint64_t)a3;
-- (void)setLabel:(id)a3 toInfoLabelType:(unint64_t)a4;
-- (void)setLabelColor:(id)a3;
-- (void)setString:(id)a3;
-- (void)setString:(id)a3 animated:(BOOL)a4;
+- (void)addToConstraints:(id)constraints context:(id)context;
+- (void)addToStackView:(id)view context:(id)context;
+- (void)setInfoLabelType:(unint64_t)type;
+- (void)setLabel:(id)label toInfoLabelType:(unint64_t)type;
+- (void)setLabelColor:(id)color;
+- (void)setString:(id)string;
+- (void)setString:(id)string animated:(BOOL)animated;
 @end
 
 @implementation AKAuthorizationSubPaneInfoLabel
 
-- (AKAuthorizationSubPaneInfoLabel)initWithString:(id)a3
+- (AKAuthorizationSubPaneInfoLabel)initWithString:(id)string
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAuthorizationSubPaneInfoLabel *)v13 infoLabelWithString:location[0]];
-  infoLabel = v13->_infoLabel;
-  v13->_infoLabel = v3;
+  objc_storeStrong(location, string);
+  v3 = [(AKAuthorizationSubPaneInfoLabel *)selfCopy infoLabelWithString:location[0]];
+  infoLabel = selfCopy->_infoLabel;
+  selfCopy->_infoLabel = v3;
   *&v5 = MEMORY[0x277D82BD8](infoLabel).n128_u64[0];
-  v6 = v13;
-  v7 = v13->_infoLabel;
-  v13 = 0;
+  v6 = selfCopy;
+  v7 = selfCopy->_infoLabel;
+  selfCopy = 0;
   v11.receiver = v6;
   v11.super_class = AKAuthorizationSubPaneInfoLabel;
-  v13 = [(AKAuthorizationSubPane *)&v11 initWithView:v7, v5];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKAuthorizationSubPane *)&v11 initWithView:v7, v5];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     +[AKAuthorizationSubPaneMetrics infoLabelMarginInset];
-    v13->_marginInset = v8;
+    selfCopy->_marginInset = v8;
   }
 
-  v10 = MEMORY[0x277D82BE0](v13);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
 - (NSString)string
 {
-  v3 = [(AKAuthorizationSubPaneInfoLabel *)self infoLabel];
-  v4 = [(UILabel *)v3 text];
-  MEMORY[0x277D82BD8](v3);
+  infoLabel = [(AKAuthorizationSubPaneInfoLabel *)self infoLabel];
+  text = [(UILabel *)infoLabel text];
+  MEMORY[0x277D82BD8](infoLabel);
 
-  return v4;
+  return text;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v3 = location[0];
-  v4 = [(AKAuthorizationSubPaneInfoLabel *)v6 infoLabel];
-  [(UILabel *)v4 setText:v3];
-  MEMORY[0x277D82BD8](v4);
+  infoLabel = [(AKAuthorizationSubPaneInfoLabel *)selfCopy infoLabel];
+  [(UILabel *)infoLabel setText:v3];
+  MEMORY[0x277D82BD8](infoLabel);
   objc_storeStrong(location, 0);
 }
 
-- (void)setString:(id)a3 animated:(BOOL)a4
+- (void)setString:(id)string animated:(BOOL)animated
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
-  if (a4)
+  objc_storeStrong(location, string);
+  animatedCopy = animated;
+  if (animated)
   {
     v4 = MEMORY[0x277D75D18];
-    v5 = [(AKAuthorizationSubPaneInfoLabel *)v16 infoLabel];
+    infoLabel = [(AKAuthorizationSubPaneInfoLabel *)selfCopy infoLabel];
     v7 = MEMORY[0x277D85DD0];
     v8 = -1073741824;
     v9 = 0;
     v10 = __54__AKAuthorizationSubPaneInfoLabel_setString_animated___block_invoke;
     v11 = &unk_2784A6420;
-    v12 = MEMORY[0x277D82BE0](v16);
+    v12 = MEMORY[0x277D82BE0](selfCopy);
     v13 = MEMORY[0x277D82BE0](location[0]);
-    [v4 transitionWithView:v5 duration:5242880 options:&v7 animations:0.25 completion:?];
-    MEMORY[0x277D82BD8](v5);
+    [v4 transitionWithView:infoLabel duration:5242880 options:&v7 animations:0.25 completion:?];
+    MEMORY[0x277D82BD8](infoLabel);
     objc_storeStrong(&v13, 0);
     objc_storeStrong(&v12, 0);
   }
 
   else
   {
-    [(AKAuthorizationSubPaneInfoLabel *)v16 setString:location[0]];
+    [(AKAuthorizationSubPaneInfoLabel *)selfCopy setString:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -105,63 +105,63 @@ double __54__AKAuthorizationSubPaneInfoLabel_setString_animated___block_invoke(u
   return result;
 }
 
-- (void)addToStackView:(id)a3 context:(id)a4
+- (void)addToStackView:(id)view context:(id)context
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, context);
+  v5.receiver = selfCopy;
   v5.super_class = AKAuthorizationSubPaneInfoLabel;
   [(AKAuthorizationSubPane *)&v5 addToStackView:location[0] context:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)addToConstraints:(id)a3 context:(id)a4
+- (void)addToConstraints:(id)constraints context:(id)context
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, constraints);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v19 = [v21 stackView];
-  v20 = [v19 axis];
-  *&v4 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-  if (v20 == 1)
+  objc_storeStrong(&v21, context);
+  stackView = [v21 stackView];
+  axis = [stackView axis];
+  *&v4 = MEMORY[0x277D82BD8](stackView).n128_u64[0];
+  if (axis == 1)
   {
     v6 = location[0];
-    v17 = [(AKAuthorizationSubPaneInfoLabel *)v23 infoLabel];
-    v16 = [(UILabel *)v17 leadingAnchor];
-    v15 = [v21 stackView];
-    v14 = [v15 leadingAnchor];
-    [(AKAuthorizationSubPaneInfoLabel *)v23 marginInset];
-    v13 = [v16 constraintEqualToAnchor:v14 constant:?];
+    infoLabel = [(AKAuthorizationSubPaneInfoLabel *)selfCopy infoLabel];
+    leadingAnchor = [(UILabel *)infoLabel leadingAnchor];
+    stackView2 = [v21 stackView];
+    leadingAnchor2 = [stackView2 leadingAnchor];
+    [(AKAuthorizationSubPaneInfoLabel *)selfCopy marginInset];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v24[0] = v13;
-    v12 = [(AKAuthorizationSubPaneInfoLabel *)v23 infoLabel];
-    v11 = [(UILabel *)v12 trailingAnchor];
-    v10 = [v21 stackView];
-    v9 = [v10 trailingAnchor];
-    [(AKAuthorizationSubPaneInfoLabel *)v23 marginInset];
-    v8 = [v11 constraintEqualToAnchor:v9 constant:-v5];
+    infoLabel2 = [(AKAuthorizationSubPaneInfoLabel *)selfCopy infoLabel];
+    trailingAnchor = [(UILabel *)infoLabel2 trailingAnchor];
+    stackView3 = [v21 stackView];
+    trailingAnchor2 = [stackView3 trailingAnchor];
+    [(AKAuthorizationSubPaneInfoLabel *)selfCopy marginInset];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v5];
     v24[1] = v8;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
     [v6 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v7);
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](stackView3);
+    MEMORY[0x277D82BD8](trailingAnchor);
+    MEMORY[0x277D82BD8](infoLabel2);
     MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](stackView2);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    MEMORY[0x277D82BD8](infoLabel);
   }
 
   objc_storeStrong(&v21, 0);
@@ -169,16 +169,16 @@ double __54__AKAuthorizationSubPaneInfoLabel_setString_animated___block_invoke(u
   *MEMORY[0x277D85DE8];
 }
 
-- (AKAuthorizationSubPaneInfoLabel)infoLabelWithString:(id)a3
+- (AKAuthorizationSubPaneInfoLabel)infoLabelWithString:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v11 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [MEMORY[0x277CF0228] sharedManager];
-  if ([v7 isAuthKitSolariumFeatureEnabled])
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
     v3 = 4;
   }
@@ -189,13 +189,13 @@ double __54__AKAuthorizationSubPaneInfoLabel_setString_animated___block_invoke(u
   }
 
   [v11 setTextAlignment:v3];
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
   [v11 setNumberOfLines:{0, v4}];
   [v11 setAdjustsFontSizeToFitWidth:0];
   [v11 setAdjustsFontForContentSizeCategory:1];
-  v8 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   [v11 setBackgroundColor:?];
-  *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](clearColor).n128_u64[0];
   [v11 setText:{location[0], v5}];
   v9 = +[AKAuthorizationAppearance messageFont];
   [v11 setFont:?];
@@ -207,15 +207,15 @@ double __54__AKAuthorizationSubPaneInfoLabel_setString_animated___block_invoke(u
   return v10;
 }
 
-- (void)setLabel:(id)a3 toInfoLabelType:(unint64_t)a4
+- (void)setLabel:(id)label toInfoLabelType:(unint64_t)type
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, label);
+  if (type)
   {
-    switch(a4)
+    switch(type)
     {
       case 1uLL:
         v10 = +[AKAuthorizationAppearance titleFont];
@@ -256,24 +256,24 @@ double __54__AKAuthorizationSubPaneInfoLabel_setString_animated___block_invoke(u
   objc_storeStrong(location, 0);
 }
 
-- (void)setInfoLabelType:(unint64_t)a3
+- (void)setInfoLabelType:(unint64_t)type
 {
-  if ([(AKAuthorizationSubPaneInfoLabel *)self internalInfoLabelType]!= a3)
+  if ([(AKAuthorizationSubPaneInfoLabel *)self internalInfoLabelType]!= type)
   {
-    [(AKAuthorizationSubPaneInfoLabel *)self setInternalInfoLabelType:a3];
-    v3 = [(AKAuthorizationSubPaneInfoLabel *)self infoLabel];
+    [(AKAuthorizationSubPaneInfoLabel *)self setInternalInfoLabelType:type];
+    infoLabel = [(AKAuthorizationSubPaneInfoLabel *)self infoLabel];
     [AKAuthorizationSubPaneInfoLabel setLabel:"setLabel:toInfoLabelType:" toInfoLabelType:?];
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](infoLabel);
   }
 }
 
-- (void)setLabelColor:(id)a3
+- (void)setLabelColor:(id)color
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UILabel *)v4->_infoLabel setColor:location[0]];
+  objc_storeStrong(location, color);
+  [(UILabel *)selfCopy->_infoLabel setColor:location[0]];
   objc_storeStrong(location, 0);
 }
 

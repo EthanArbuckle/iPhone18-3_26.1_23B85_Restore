@@ -1,22 +1,22 @@
 @interface SimplePing
-+ (unint64_t)icmpHeaderOffsetInIPv4Packet:(id)a3;
-- (BOOL)validatePing4ResponsePacket:(id)a3 sequenceNumber:(unsigned __int16 *)a4;
-- (BOOL)validatePing6ResponsePacket:(id)a3 sequenceNumber:(unsigned __int16 *)a4;
-- (BOOL)validatePingResponsePacket:(id)a3 sequenceNumber:(unsigned __int16 *)a4;
-- (BOOL)validateSequenceNumber:(unsigned __int16)a3;
-- (SimplePing)initWithHostName:(id)a3;
++ (unint64_t)icmpHeaderOffsetInIPv4Packet:(id)packet;
+- (BOOL)validatePing4ResponsePacket:(id)packet sequenceNumber:(unsigned __int16 *)number;
+- (BOOL)validatePing6ResponsePacket:(id)packet sequenceNumber:(unsigned __int16 *)number;
+- (BOOL)validatePingResponsePacket:(id)packet sequenceNumber:(unsigned __int16 *)number;
+- (BOOL)validateSequenceNumber:(unsigned __int16)number;
+- (SimplePing)initWithHostName:(id)name;
 - (SimplePingDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)pingPacketWithType:(unsigned __int8)a3 payload:(id)a4 requiresChecksum:(BOOL)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)pingPacketWithType:(unsigned __int8)type payload:(id)payload requiresChecksum:(BOOL)checksum;
 - (unsigned)hostAddressFamily;
 - (void)dealloc;
-- (void)didFailWithError:(id)a3;
-- (void)didFailWithHostStreamError:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didFailWithHostStreamError:(id)error;
 - (void)hostResolutionDone;
-- (void)packetDidFailToSendDelegate:(id)a3 error:(id)a4;
+- (void)packetDidFailToSendDelegate:(id)delegate error:(id)error;
 - (void)readData;
-- (void)sendPingWithData:(id)a3;
-- (void)setupTimer:(id)a3 currentSequenceNumber:(unsigned __int16)a4;
+- (void)sendPingWithData:(id)data;
+- (void)setupTimer:(id)timer currentSequenceNumber:(unsigned __int16)number;
 - (void)start;
 - (void)startWithHostAddress;
 - (void)stop;
@@ -26,17 +26,17 @@
 
 @implementation SimplePing
 
-- (SimplePing)initWithHostName:(id)a3
+- (SimplePing)initWithHostName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v10.receiver = self;
     v10.super_class = SimplePing;
     v5 = [(SimplePing *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [nameCopy copy];
       hostName = v5->_hostName;
       v5->_hostName = v6;
 
@@ -44,15 +44,15 @@
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -66,25 +66,25 @@
 
 - (unsigned)hostAddressFamily
 {
-  v3 = [(SimplePing *)self hostAddress];
-  if (v3)
+  hostAddress = [(SimplePing *)self hostAddress];
+  if (hostAddress)
   {
-    v4 = v3;
-    v5 = [(SimplePing *)self hostAddress];
-    if ([v5 length] <= 0xF)
+    hostAddress4 = hostAddress;
+    hostAddress2 = [(SimplePing *)self hostAddress];
+    if ([hostAddress2 length] <= 0xF)
     {
 
       v8 = 0;
       goto LABEL_7;
     }
 
-    v6 = [(SimplePing *)self hostAddress];
-    v7 = [v6 bytes];
+    hostAddress3 = [(SimplePing *)self hostAddress];
+    bytes = [hostAddress3 bytes];
 
-    if (v7)
+    if (bytes)
     {
-      v4 = [(SimplePing *)self hostAddress];
-      v8 = *([v4 bytes] + 1);
+      hostAddress4 = [(SimplePing *)self hostAddress];
+      v8 = *([hostAddress4 bytes] + 1);
 LABEL_7:
 
       return v8;
@@ -94,12 +94,12 @@ LABEL_7:
   return 0;
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v6 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277CCA450];
@@ -108,25 +108,25 @@ LABEL_7:
     v5 = [v6 errorWithDomain:@"com.apple.NPTKit" code:-1 userInfo:v7];
   }
 
-  v8 = self;
-  CFAutorelease(v8);
-  [(SimplePing *)v8 stop];
-  v9 = [(SimplePing *)v8 delegate];
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  selfCopy = self;
+  CFAutorelease(selfCopy);
+  [(SimplePing *)selfCopy stop];
+  delegate = [(SimplePing *)selfCopy delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v9 simplePing:v8 didFailWithError:v5];
+    [delegate simplePing:selfCopy didFailWithError:v5];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailWithHostStreamError:(id)a3
+- (void)didFailWithHostStreamError:(id)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3.var0 == *MEMORY[0x277CBAD40])
+  if (error.var0 == *MEMORY[0x277CBAD40])
   {
     v8 = *MEMORY[0x277CBACF0];
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3.var1];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:*&error.var1];
     v9[0] = v4;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
@@ -142,29 +142,29 @@ LABEL_7:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pingPacketWithType:(unsigned __int8)a3 payload:(id)a4 requiresChecksum:(BOOL)a5
+- (id)pingPacketWithType:(unsigned __int8)type payload:(id)payload requiresChecksum:(BOOL)checksum
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v8, "length") + 8}];
+  checksumCopy = checksum;
+  payloadCopy = payload;
+  v9 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(payloadCopy, "length") + 8}];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 mutableBytes];
-    *v11 = a3;
-    *(v11 + 1) = 0;
-    *(v11 + 2) = 0;
-    *(v11 + 4) = __rev16([(SimplePing *)self identifier]);
-    *(v11 + 6) = __rev16([(SimplePing *)self nextSequenceNumber]);
-    memcpy((v11 + 8), [v8 bytes], objc_msgSend(v8, "length"));
-    if (!v5)
+    mutableBytes = [v9 mutableBytes];
+    *mutableBytes = type;
+    *(mutableBytes + 1) = 0;
+    *(mutableBytes + 2) = 0;
+    *(mutableBytes + 4) = __rev16([(SimplePing *)self identifier]);
+    *(mutableBytes + 6) = __rev16([(SimplePing *)self nextSequenceNumber]);
+    memcpy((mutableBytes + 8), [payloadCopy bytes], objc_msgSend(payloadCopy, "length"));
+    if (!checksumCopy)
     {
 LABEL_9:
       v16 = v10;
       goto LABEL_10;
     }
 
-    v12 = [v10 bytes];
+    bytes = [v10 bytes];
     v13 = [v10 length];
     if (v13 < 2)
     {
@@ -180,7 +180,7 @@ LABEL_9:
       v14 = 0;
       do
       {
-        v15 = *v12++;
+        v15 = *bytes++;
         v14 += v15;
         v13 -= 2;
       }
@@ -192,9 +192,9 @@ LABEL_9:
       }
     }
 
-    v14 += *v12;
+    v14 += *bytes;
 LABEL_8:
-    *(v11 + 2) = ~(HIWORD(v14) + v14 + (((v14 >> 16) + v14) >> 16));
+    *(mutableBytes + 2) = ~(HIWORD(v14) + v14 + (((v14 >> 16) + v14) >> 16));
     goto LABEL_9;
   }
 
@@ -203,24 +203,24 @@ LABEL_10:
   return v10;
 }
 
-- (void)setupTimer:(id)a3 currentSequenceNumber:(unsigned __int16)a4
+- (void)setupTimer:(id)timer currentSequenceNumber:(unsigned __int16)number
 {
-  v6 = a3;
+  timerCopy = timer;
   v7 = dispatch_get_global_queue(0, 0);
   v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
   [(SimplePing *)self setTimeoutTimer:v8];
 
   objc_initWeak(&location, self);
-  v9 = [(SimplePing *)self timeoutTimer];
+  timeoutTimer = [(SimplePing *)self timeoutTimer];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __47__SimplePing_setupTimer_currentSequenceNumber___block_invoke;
   v19 = &unk_2789D43C8;
   objc_copyWeak(&v21, &location);
-  v10 = v6;
+  v10 = timerCopy;
   v20 = v10;
-  v22 = a4;
-  dispatch_source_set_event_handler(v9, &v16);
+  numberCopy = number;
+  dispatch_source_set_event_handler(timeoutTimer, &v16);
 
   v11 = [(SimplePing *)self hostAddress:v16];
 
@@ -238,8 +238,8 @@ LABEL_10:
   v14 = dispatch_time(0, v13);
   dispatch_source_set_timer(v12, v14, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-  v15 = [(SimplePing *)self timeoutTimer];
-  dispatch_source_set_cancel_handler(v15, &__block_literal_global_1);
+  timeoutTimer2 = [(SimplePing *)self timeoutTimer];
+  dispatch_source_set_cancel_handler(timeoutTimer2, &__block_literal_global_1);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -275,13 +275,13 @@ uint64_t __47__SimplePing_setupTimer_currentSequenceNumber___block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)sendPingWithData:(id)a3
+- (void)sendPingWithData:(id)data
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SimplePing *)self hostAddress];
+  dataCopy = data;
+  hostAddress = [(SimplePing *)self hostAddress];
 
-  if (!v5)
+  if (!hostAddress)
   {
     v16 = MEMORY[0x277CCA9B8];
     v45 = *MEMORY[0x277CCA450];
@@ -290,26 +290,26 @@ uint64_t __47__SimplePing_setupTimer_currentSequenceNumber___block_invoke(uint64
     v18 = [v16 errorWithDomain:@"com.apple.NPTKit" code:1 userInfo:v17];
 
     [(SimplePing *)self packetDidFailToSendDelegate:0 error:v18];
-    v19 = 0;
+    delegate = 0;
     v20 = 0;
     v7 = 0;
     goto LABEL_29;
   }
 
-  v6 = v4;
+  v6 = dataCopy;
   v7 = v6;
   if (!v6)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(SimplePing *)self nextSequenceNumber];
-    v10 = [v8 stringWithFormat:@"%28zd bottles of beer on the wall", (100 * (v9 / 0x64u) - v9 + 99)];
+    nextSequenceNumber = [(SimplePing *)self nextSequenceNumber];
+    v10 = [v8 stringWithFormat:@"%28zd bottles of beer on the wall", (100 * (nextSequenceNumber / 0x64u) - nextSequenceNumber + 99)];
     v7 = [v10 dataUsingEncoding:1];
   }
 
-  v11 = [(SimplePing *)self hostAddressFamily];
-  if (v11 == 30)
+  hostAddressFamily = [(SimplePing *)self hostAddressFamily];
+  if (hostAddressFamily == 30)
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = 128;
     v14 = v7;
     v15 = 0;
@@ -317,7 +317,7 @@ uint64_t __47__SimplePing_setupTimer_currentSequenceNumber___block_invoke(uint64
 
   else
   {
-    if (v11 != 2)
+    if (hostAddressFamily != 2)
     {
       v29 = MEMORY[0x277CCA9B8];
       v43 = *MEMORY[0x277CCA450];
@@ -330,18 +330,18 @@ LABEL_16:
       v34 = [v29 errorWithDomain:@"com.apple.NPTKit" code:1 userInfo:v33];
 
       [(SimplePing *)self packetDidFailToSendDelegate:0 error:v34];
-      v19 = 0;
+      delegate = 0;
       v20 = 0;
       goto LABEL_29;
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 8;
     v14 = v7;
     v15 = 1;
   }
 
-  v20 = [(SimplePing *)v12 pingPacketWithType:v13 payload:v14 requiresChecksum:v15];
+  v20 = [(SimplePing *)selfCopy2 pingPacketWithType:v13 payload:v14 requiresChecksum:v15];
   if (!v20)
   {
     v29 = MEMORY[0x277CCA9B8];
@@ -355,17 +355,17 @@ LABEL_16:
 
   if ([(SimplePing *)self socket])
   {
-    v39 = v4;
+    v39 = dataCopy;
     Native = CFSocketGetNative(self->_socket);
     v40[0] = 0;
     v40[1] = 1000000;
     setsockopt(Native, 0xFFFF, 4101, v40, 0x10u);
-    v22 = [v20 bytes];
+    bytes = [v20 bytes];
     v23 = [v20 length];
-    v24 = [(SimplePing *)self hostAddress];
-    v25 = [v24 bytes];
-    v26 = [(SimplePing *)self hostAddress];
-    v27 = sendto(Native, v22, v23, 0, v25, [v26 length]);
+    hostAddress2 = [(SimplePing *)self hostAddress];
+    bytes2 = [hostAddress2 bytes];
+    hostAddress3 = [(SimplePing *)self hostAddress];
+    v27 = sendto(Native, bytes, v23, 0, bytes2, [hostAddress3 length]);
 
     v28 = 0;
     if (v27 < 0)
@@ -373,7 +373,7 @@ LABEL_16:
       v28 = *__error();
     }
 
-    v4 = v39;
+    dataCopy = v39;
   }
 
   else
@@ -382,16 +382,16 @@ LABEL_16:
     v27 = -1;
   }
 
-  v19 = [(SimplePing *)self delegate];
+  delegate = [(SimplePing *)self delegate];
   if (v27 >= 1 && v27 == [v20 length])
   {
     [(SimplePing *)self setupTimer:v6 currentSequenceNumber:[(SimplePing *)self nextSequenceNumber]];
-    v35 = [(SimplePing *)self timeoutTimer];
-    dispatch_activate(v35);
+    timeoutTimer = [(SimplePing *)self timeoutTimer];
+    dispatch_activate(timeoutTimer);
 
-    if (v19 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v19 simplePing:self didSendPacket:v20 sequenceNumber:{-[SimplePing nextSequenceNumber](self, "nextSequenceNumber")}];
+      [delegate simplePing:self didSendPacket:v20 sequenceNumber:{-[SimplePing nextSequenceNumber](self, "nextSequenceNumber")}];
     }
 
     [(SimplePing *)self setNextSequenceNumber:([(SimplePing *)self nextSequenceNumber]+ 1)];
@@ -422,14 +422,14 @@ LABEL_29:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)packetDidFailToSendDelegate:(id)a3 error:(id)a4
+- (void)packetDidFailToSendDelegate:(id)delegate error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SimplePing *)self delegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegateCopy = delegate;
+  errorCopy = error;
+  delegate = [(SimplePing *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 simplePing:self didFailToSendPacket:v8 sequenceNumber:-[SimplePing nextSequenceNumber](self error:{"nextSequenceNumber"), v6}];
+    [delegate simplePing:self didFailToSendPacket:delegateCopy sequenceNumber:-[SimplePing nextSequenceNumber](self error:{"nextSequenceNumber"), errorCopy}];
   }
 
   [(SimplePing *)self setNextSequenceNumber:([(SimplePing *)self nextSequenceNumber]+ 1)];
@@ -439,16 +439,16 @@ LABEL_29:
   }
 }
 
-+ (unint64_t)icmpHeaderOffsetInIPv4Packet:(id)a3
++ (unint64_t)icmpHeaderOffsetInIPv4Packet:(id)packet
 {
-  v3 = a3;
-  if ([v3 length] >= 0x1C && (v4 = objc_msgSend(v3, "bytes"), (*v4 & 0xF0) == 0x40))
+  packetCopy = packet;
+  if ([packetCopy length] >= 0x1C && (v4 = objc_msgSend(packetCopy, "bytes"), (*v4 & 0xF0) == 0x40))
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
     if (v4[9] == 1)
     {
       v6 = 4 * (*v4 & 0xF);
-      if ([v3 length] >= (v6 + 8))
+      if ([packetCopy length] >= (v6 + 8))
       {
         v5 = v6;
       }
@@ -463,36 +463,36 @@ LABEL_29:
   return v5;
 }
 
-- (BOOL)validateSequenceNumber:(unsigned __int16)a3
+- (BOOL)validateSequenceNumber:(unsigned __int16)number
 {
-  v3 = a3;
-  v5 = [(SimplePing *)self nextSequenceNumberHasWrapped];
-  v6 = [(SimplePing *)self nextSequenceNumber];
-  if (v5)
+  numberCopy = number;
+  nextSequenceNumberHasWrapped = [(SimplePing *)self nextSequenceNumberHasWrapped];
+  nextSequenceNumber = [(SimplePing *)self nextSequenceNumber];
+  if (nextSequenceNumberHasWrapped)
   {
-    return (v6 - v3) < 0x78u;
+    return (nextSequenceNumber - numberCopy) < 0x78u;
   }
 
   else
   {
-    return v6 > v3;
+    return nextSequenceNumber > numberCopy;
   }
 }
 
-- (BOOL)validatePing4ResponsePacket:(id)a3 sequenceNumber:(unsigned __int16 *)a4
+- (BOOL)validatePing4ResponsePacket:(id)packet sequenceNumber:(unsigned __int16 *)number
 {
-  v6 = a3;
-  v7 = [objc_opt_class() icmpHeaderOffsetInIPv4Packet:v6];
+  packetCopy = packet;
+  v7 = [objc_opt_class() icmpHeaderOffsetInIPv4Packet:packetCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_13;
   }
 
   v8 = v7;
-  v9 = ([v6 mutableBytes] + v7);
+  v9 = ([packetCopy mutableBytes] + v7);
   v10 = v9[1];
   v9[1] = 0;
-  v11 = [v6 length] - v8;
+  v11 = [packetCopy length] - v8;
   if (v11 < 2)
   {
     v12 = 0;
@@ -530,20 +530,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [v6 replaceBytesInRange:0 withBytes:v8 length:{0, 0}];
-  *a4 = v16;
+  [packetCopy replaceBytesInRange:0 withBytes:v8 length:{0, 0}];
+  *number = v16;
   v17 = 1;
 LABEL_14:
 
   return v17;
 }
 
-- (BOOL)validatePing6ResponsePacket:(id)a3 sequenceNumber:(unsigned __int16 *)a4
+- (BOOL)validatePing6ResponsePacket:(id)packet sequenceNumber:(unsigned __int16 *)number
 {
-  v6 = a3;
-  if ([v6 length] >= 8 && (v7 = objc_msgSend(v6, "bytes"), *v7 == 129) && (v8 = v7, !v7[1]) && (v9 = bswap32(*(v7 + 2)), -[SimplePing identifier](self, "identifier") == HIWORD(v9)) && (v10 = bswap32(*(v8 + 3)) >> 16, -[SimplePing validateSequenceNumber:](self, "validateSequenceNumber:", v10)))
+  packetCopy = packet;
+  if ([packetCopy length] >= 8 && (v7 = objc_msgSend(packetCopy, "bytes"), *v7 == 129) && (v8 = v7, !v7[1]) && (v9 = bswap32(*(v7 + 2)), -[SimplePing identifier](self, "identifier") == HIWORD(v9)) && (v10 = bswap32(*(v8 + 3)) >> 16, -[SimplePing validateSequenceNumber:](self, "validateSequenceNumber:", v10)))
   {
-    *a4 = v10;
+    *number = v10;
     v11 = 1;
   }
 
@@ -555,24 +555,24 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)validatePingResponsePacket:(id)a3 sequenceNumber:(unsigned __int16 *)a4
+- (BOOL)validatePingResponsePacket:(id)packet sequenceNumber:(unsigned __int16 *)number
 {
-  v6 = a3;
-  v7 = [(SimplePing *)self hostAddressFamily];
-  if (v7 == 30)
+  packetCopy = packet;
+  hostAddressFamily = [(SimplePing *)self hostAddressFamily];
+  if (hostAddressFamily == 30)
   {
-    v8 = [(SimplePing *)self validatePing6ResponsePacket:v6 sequenceNumber:a4];
+    v8 = [(SimplePing *)self validatePing6ResponsePacket:packetCopy sequenceNumber:number];
   }
 
   else
   {
-    if (v7 != 2)
+    if (hostAddressFamily != 2)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v8 = [(SimplePing *)self validatePing4ResponsePacket:v6 sequenceNumber:a4];
+    v8 = [(SimplePing *)self validatePing4ResponsePacket:packetCopy sequenceNumber:number];
   }
 
   v9 = v8;
@@ -605,17 +605,17 @@ LABEL_7:
       v7 = *__error();
     }
 
-    v8 = [(SimplePing *)self timeoutTimer];
-    if (v8)
+    timeoutTimer = [(SimplePing *)self timeoutTimer];
+    if (timeoutTimer)
     {
-      v9 = v8;
-      v10 = [(SimplePing *)self timeoutTimer];
-      v11 = dispatch_source_testcancel(v10);
+      v9 = timeoutTimer;
+      timeoutTimer2 = [(SimplePing *)self timeoutTimer];
+      v11 = dispatch_source_testcancel(timeoutTimer2);
 
       if (!v11)
       {
-        v12 = [(SimplePing *)self timeoutTimer];
-        dispatch_source_cancel(v12);
+        timeoutTimer3 = [(SimplePing *)self timeoutTimer];
+        dispatch_source_cancel(timeoutTimer3);
       }
     }
 
@@ -643,18 +643,18 @@ LABEL_24:
     v13 = [MEMORY[0x277CBEB28] dataWithBytes:v4 length:v6];
     if ([v13 length])
     {
-      v14 = [(SimplePing *)self delegate];
+      delegate = [(SimplePing *)self delegate];
       if ([(SimplePing *)self validatePingResponsePacket:v13 sequenceNumber:&v22])
       {
-        if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v14 simplePing:self didReceivePingResponsePacket:v13 sequenceNumber:v22];
+          [delegate simplePing:self didReceivePingResponsePacket:v13 sequenceNumber:v22];
         }
       }
 
-      else if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+      else if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v14 simplePing:self didReceiveUnexpectedPacket:v13];
+        [delegate simplePing:self didReceiveUnexpectedPacket:v13];
       }
 
       goto LABEL_24;
@@ -685,18 +685,18 @@ LABEL_25:
 - (void)startWithHostAddress
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SimplePing *)self hostAddressFamily];
-  if (v3 == 30)
+  hostAddressFamily = [(SimplePing *)self hostAddressFamily];
+  if (hostAddressFamily == 30)
   {
     v4 = 58;
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (hostAddressFamily == 2)
   {
     v4 = 1;
 LABEL_5:
-    v5 = socket(v3, 2, v4);
+    v5 = socket(hostAddressFamily, 2, v4);
     if (v5 < 0)
     {
       v11 = *__error();
@@ -719,17 +719,17 @@ LABEL_5:
       }
 
       RunLoopSource = CFSocketCreateRunLoopSource(0, [(SimplePing *)self socket], 0);
-      v8 = [MEMORY[0x277CBAB78] resourceLoaderRunLoop];
-      CFRunLoopAddSource(v8, RunLoopSource, *MEMORY[0x277CBF058]);
+      resourceLoaderRunLoop = [MEMORY[0x277CBAB78] resourceLoaderRunLoop];
+      CFRunLoopAddSource(resourceLoaderRunLoop, RunLoopSource, *MEMORY[0x277CBF058]);
       CFRelease(RunLoopSource);
-      v9 = [(SimplePing *)self delegate];
-      if (!v9 || (objc_opt_respondsToSelector() & 1) == 0)
+      delegate = [(SimplePing *)self delegate];
+      if (!delegate || (objc_opt_respondsToSelector() & 1) == 0)
       {
         goto LABEL_18;
       }
 
-      v10 = [(SimplePing *)self hostAddress];
-      [v9 simplePing:self didStartWithAddress:v10];
+      hostAddress = [(SimplePing *)self hostAddress];
+      [delegate simplePing:self didStartWithAddress:hostAddress];
     }
 
     else
@@ -738,11 +738,11 @@ LABEL_5:
       v13 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277CCA450];
       v19[0] = @"Failed to create Socket";
-      v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      v14 = [v13 errorWithDomain:@"com.apple.NPTKit" code:-1 userInfo:v10];
+      hostAddress = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
+      v14 = [v13 errorWithDomain:@"com.apple.NPTKit" code:-1 userInfo:hostAddress];
       [(SimplePing *)self didFailWithError:v14];
 
-      v9 = 0;
+      delegate = 0;
     }
 
 LABEL_18:
@@ -797,10 +797,10 @@ LABEL_13:
 
           v11 = *(*(&v18 + 1) + 8 * i);
           v12 = v11;
-          v13 = [v12 bytes];
+          bytes = [v12 bytes];
           if ([v11 length] >= 0x10)
           {
-            v14 = *(v13 + 1);
+            v14 = *(bytes + 1);
             if (v14 == 30)
             {
               if ([(SimplePing *)self addressStyle]!= 1)
@@ -919,17 +919,17 @@ LABEL_5:
 {
   if ([(SimplePing *)self host])
   {
-    v3 = [(SimplePing *)self host];
-    CFRetain(v3);
+    host = [(SimplePing *)self host];
+    CFRetain(host);
     [(SimplePing *)self setHost:0];
-    v4 = [MEMORY[0x277CBAB78] resourceLoaderRunLoop];
+    resourceLoaderRunLoop = [MEMORY[0x277CBAB78] resourceLoaderRunLoop];
     v5 = *MEMORY[0x277CBF058];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __32__SimplePing_stopHostResolution__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = v3;
-    CFRunLoopPerformBlock(v4, v5, block);
+    block[4] = host;
+    CFRunLoopPerformBlock(resourceLoaderRunLoop, v5, block);
     CFRunLoopWakeUp([MEMORY[0x277CBAB78] resourceLoaderRunLoop]);
   }
 }
@@ -949,17 +949,17 @@ void __32__SimplePing_stopHostResolution__block_invoke(uint64_t a1)
 {
   if ([(SimplePing *)self socket])
   {
-    v3 = [(SimplePing *)self socket];
-    CFRetain(v3);
+    socket = [(SimplePing *)self socket];
+    CFRetain(socket);
     [(SimplePing *)self setSocket:0];
-    v4 = [MEMORY[0x277CBAB78] resourceLoaderRunLoop];
+    resourceLoaderRunLoop = [MEMORY[0x277CBAB78] resourceLoaderRunLoop];
     v5 = *MEMORY[0x277CBF058];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __24__SimplePing_stopSocket__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = v3;
-    CFRunLoopPerformBlock(v4, v5, block);
+    block[4] = socket;
+    CFRunLoopPerformBlock(resourceLoaderRunLoop, v5, block);
     CFRunLoopWakeUp([MEMORY[0x277CBAB78] resourceLoaderRunLoop]);
   }
 }
@@ -974,17 +974,17 @@ void __24__SimplePing_stopSocket__block_invoke(uint64_t a1)
 
 - (void)stop
 {
-  v3 = [(SimplePing *)self timeoutTimer];
-  if (v3)
+  timeoutTimer = [(SimplePing *)self timeoutTimer];
+  if (timeoutTimer)
   {
-    v4 = v3;
-    v5 = [(SimplePing *)self timeoutTimer];
-    v6 = dispatch_source_testcancel(v5);
+    v4 = timeoutTimer;
+    timeoutTimer2 = [(SimplePing *)self timeoutTimer];
+    v6 = dispatch_source_testcancel(timeoutTimer2);
 
     if (!v6)
     {
-      v7 = [(SimplePing *)self timeoutTimer];
-      dispatch_source_cancel(v7);
+      timeoutTimer3 = [(SimplePing *)self timeoutTimer];
+      dispatch_source_cancel(timeoutTimer3);
     }
   }
 
@@ -994,11 +994,11 @@ void __24__SimplePing_stopSocket__block_invoke(uint64_t a1)
   [(SimplePing *)self setHostAddress:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SimplePing allocWithZone:a3];
-  v5 = [(SimplePing *)self hostName];
-  v6 = [(SimplePing *)v4 initWithHostName:v5];
+  v4 = [SimplePing allocWithZone:zone];
+  hostName = [(SimplePing *)self hostName];
+  v6 = [(SimplePing *)v4 initWithHostName:hostName];
 
   [(SimplePing *)v6 setAddressStyle:[(SimplePing *)self addressStyle]];
   return v6;

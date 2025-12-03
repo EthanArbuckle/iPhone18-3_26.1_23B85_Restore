@@ -1,14 +1,14 @@
 @interface IMDiagnosticSwiftBridge
-+ (id)dictionaryForCodingObject:(id)a3;
++ (id)dictionaryForCodingObject:(id)object;
 - (IMDiagnosticSwiftBridge)init;
 @end
 
 @implementation IMDiagnosticSwiftBridge
 
-+ (id)dictionaryForCodingObject:(id)a3
++ (id)dictionaryForCodingObject:(id)object
 {
   swift_unknownObjectRetain();
-  v4 = sub_10000306C(a3);
+  v4 = sub_10000306C(object);
   swift_unknownObjectRelease();
   if (v4)
   {

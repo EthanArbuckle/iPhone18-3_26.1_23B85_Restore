@@ -1,40 +1,40 @@
 @interface PDSProtoBatchRegisterResp
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUserPushTokenRegResponses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRetryInterval:(BOOL)a3;
-- (void)setHasServerTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserPushTokenRegResponses:(id)responses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRetryInterval:(BOOL)interval;
+- (void)setHasServerTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDSProtoBatchRegisterResp
 
-- (void)addUserPushTokenRegResponses:(id)a3
+- (void)addUserPushTokenRegResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   userPushTokenRegResponses = self->_userPushTokenRegResponses;
-  v8 = v4;
+  v8 = responsesCopy;
   if (!userPushTokenRegResponses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_userPushTokenRegResponses;
     self->_userPushTokenRegResponses = v6;
 
-    v4 = v8;
+    responsesCopy = v8;
     userPushTokenRegResponses = self->_userPushTokenRegResponses;
   }
 
-  [(NSMutableArray *)userPushTokenRegResponses addObject:v4];
+  [(NSMutableArray *)userPushTokenRegResponses addObject:responsesCopy];
 }
 
-- (void)setHasRetryInterval:(BOOL)a3
+- (void)setHasRetryInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasServerTimestamp:(BOOL)a3
+- (void)setHasServerTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = PDSProtoBatchRegisterResp;
   v4 = [(PDSProtoBatchRegisterResp *)&v8 description];
-  v5 = [(PDSProtoBatchRegisterResp *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PDSProtoBatchRegisterResp *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,14 +77,14 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_status];
-  [v3 setObject:v4 forKey:@"status"];
+  [dictionary setObject:v4 forKey:@"status"];
 
   message = self->_message;
   if (message)
   {
-    [v3 setObject:message forKey:@"message"];
+    [dictionary setObject:message forKey:@"message"];
   }
 
   if ([(NSMutableArray *)self->_userPushTokenRegResponses count])
@@ -109,8 +109,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -119,14 +119,14 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"user_push_token_reg_responses"];
+    [dictionary setObject:v6 forKey:@"user_push_token_reg_responses"];
   }
 
   has = self->_has;
   if (has)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_responseTtl];
-    [v3 setObject:v17 forKey:@"response_ttl"];
+    [dictionary setObject:v17 forKey:@"response_ttl"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -147,25 +147,25 @@ LABEL_14:
   }
 
   v18 = [MEMORY[0x277CCABB0] numberWithLongLong:{self->_retryInterval, v19}];
-  [v3 setObject:v18 forKey:@"retry_interval"];
+  [dictionary setObject:v18 forKey:@"retry_interval"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_15:
     v14 = [MEMORY[0x277CCABB0] numberWithLongLong:{self->_serverTimestamp, v19}];
-    [v3 setObject:v14 forKey:@"server_timestamp"];
+    [dictionary setObject:v14 forKey:@"server_timestamp"];
   }
 
 LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   status = self->_status;
   PBDataWriterWriteInt32Field();
   if (self->_message)
@@ -242,26 +242,26 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
-  v9[10] = self->_status;
+  toCopy = to;
+  toCopy[10] = self->_status;
   if (self->_message)
   {
-    [v9 setMessage:?];
+    [toCopy setMessage:?];
   }
 
   if ([(PDSProtoBatchRegisterResp *)self userPushTokenRegResponsesCount])
   {
-    [v9 clearUserPushTokenRegResponses];
-    v4 = [(PDSProtoBatchRegisterResp *)self userPushTokenRegResponsesCount];
-    if (v4)
+    [toCopy clearUserPushTokenRegResponses];
+    userPushTokenRegResponsesCount = [(PDSProtoBatchRegisterResp *)self userPushTokenRegResponsesCount];
+    if (userPushTokenRegResponsesCount)
     {
-      v5 = v4;
+      v5 = userPushTokenRegResponsesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDSProtoBatchRegisterResp *)self userPushTokenRegResponsesAtIndex:i];
-        [v9 addUserPushTokenRegResponses:v7];
+        [toCopy addUserPushTokenRegResponses:v7];
       }
     }
   }
@@ -269,8 +269,8 @@ LABEL_14:
   has = self->_has;
   if (has)
   {
-    *(v9 + 1) = self->_responseTtl;
-    *(v9 + 56) |= 1u;
+    *(toCopy + 1) = self->_responseTtl;
+    *(toCopy + 56) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -289,24 +289,24 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v9 + 2) = self->_retryInterval;
-  *(v9 + 56) |= 2u;
+  *(toCopy + 2) = self->_retryInterval;
+  *(toCopy + 56) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_10:
-    *(v9 + 3) = self->_serverTimestamp;
-    *(v9 + 56) |= 4u;
+    *(toCopy + 3) = self->_serverTimestamp;
+    *(toCopy + 56) |= 4u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 40) = self->_status;
-  v6 = [(NSString *)self->_message copyWithZone:a3];
+  v6 = [(NSString *)self->_message copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -329,7 +329,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v5 addUserPushTokenRegResponses:v13];
       }
 
@@ -379,21 +379,21 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  if (self->_status != *(v4 + 10))
+  if (self->_status != *(equalCopy + 10))
   {
     goto LABEL_21;
   }
 
   message = self->_message;
-  if (message | *(v4 + 4))
+  if (message | *(equalCopy + 4))
   {
     if (![(NSString *)message isEqual:?])
     {
@@ -402,7 +402,7 @@ LABEL_12:
   }
 
   userPushTokenRegResponses = self->_userPushTokenRegResponses;
-  if (userPushTokenRegResponses | *(v4 + 6))
+  if (userPushTokenRegResponses | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)userPushTokenRegResponses isEqual:?])
     {
@@ -412,13 +412,13 @@ LABEL_12:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_responseTtl != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_responseTtl != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_21:
     v7 = 0;
@@ -427,21 +427,21 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_retryInterval != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_retryInterval != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_21;
   }
 
-  v7 = (*(v4 + 56) & 4) == 0;
+  v7 = (*(equalCopy + 56) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_serverTimestamp != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_serverTimestamp != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
@@ -497,12 +497,12 @@ LABEL_4:
   return v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ (2654435761 * status);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_status = *(v4 + 10);
-  if (*(v4 + 4))
+  fromCopy = from;
+  self->_status = *(fromCopy + 10);
+  if (*(fromCopy + 4))
   {
     [(PDSProtoBatchRegisterResp *)self setMessage:?];
   }
@@ -511,7 +511,7 @@ LABEL_4:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 6);
+  v5 = *(fromCopy + 6);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -535,18 +535,18 @@ LABEL_4:
     while (v7);
   }
 
-  v10 = *(v4 + 56);
+  v10 = *(fromCopy + 56);
   if ((v10 & 1) == 0)
   {
-    if ((*(v4 + 56) & 2) == 0)
+    if ((*(fromCopy + 56) & 2) == 0)
     {
       goto LABEL_12;
     }
 
 LABEL_16:
-    self->_retryInterval = *(v4 + 2);
+    self->_retryInterval = *(fromCopy + 2);
     *&self->_has |= 2u;
-    if ((*(v4 + 56) & 4) == 0)
+    if ((*(fromCopy + 56) & 4) == 0)
     {
       goto LABEL_14;
     }
@@ -554,9 +554,9 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  self->_responseTtl = *(v4 + 1);
+  self->_responseTtl = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v10 = *(v4 + 56);
+  v10 = *(fromCopy + 56);
   if ((v10 & 2) != 0)
   {
     goto LABEL_16;
@@ -566,7 +566,7 @@ LABEL_12:
   if ((v10 & 4) != 0)
   {
 LABEL_13:
-    self->_serverTimestamp = *(v4 + 3);
+    self->_serverTimestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

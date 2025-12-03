@@ -58,21 +58,21 @@
           v18 = [v17 url];
           if (v18)
           {
-            v19 = [v17 title];
-            if ([v19 length])
+            title = [v17 title];
+            if ([title length])
             {
-              v20 = v19;
+              safari_userVisibleHostWithoutWWWSubdomain = title;
             }
 
             else
             {
-              v20 = [v18 safari_userVisibleHostWithoutWWWSubdomain];
+              safari_userVisibleHostWithoutWWWSubdomain = [v18 safari_userVisibleHostWithoutWWWSubdomain];
             }
 
-            v21 = v20;
+            v21 = safari_userVisibleHostWithoutWWWSubdomain;
             v22 = MEMORY[0x1E696AAB0];
-            v23 = [v18 absoluteString];
-            v24 = [v22 safari_attributedStringWithLinkText:v21 linkUrl:v23 extraTitle:0];
+            absoluteString = [v18 absoluteString];
+            v24 = [v22 safari_attributedStringWithLinkText:v21 linkUrl:absoluteString extraTitle:0];
             v25 = [v24 mutableCopy];
 
             if (v15)

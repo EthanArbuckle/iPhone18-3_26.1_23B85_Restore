@@ -1,33 +1,33 @@
 @interface PXSectionedDataSourceChangeDetails
-+ (BOOL)changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:(id)a3 fromDataSource:(id)a4 toDataSource:(id)a5;
-+ (BOOL)changesHaveAnyInsertionsRemovalsOrMoves:(id)a3;
-+ (PXSectionedDataSourceChangeDetails)changeDetailsWithNoChangesFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4;
-+ (PXSectionedDataSourceChangeDetails)changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4;
-+ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)a3 toIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6;
-+ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)a3 toIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6 changedProperties:(BOOL *)a7;
-+ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)a3 fromIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6;
-+ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)a3 fromIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6 changedProperties:(BOOL *)a7;
-+ (id)indexPathSetAfterApplyingChanges:(id)a3 toIndexPathSet:(id)a4 hasIncrementalChanges:(BOOL *)a5;
-+ (id)indexPathSetAfterRevertingChanges:(id)a3 fromIndexPathSet:(id)a4 hasIncrementalChanges:(BOOL *)a5;
-+ (void)debug_assertValidChangeDetails:(id)a3 fromDataSource:(id)a4 toDataSource:(id)a5;
++ (BOOL)changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:(id)end fromDataSource:(id)source toDataSource:(id)dataSource;
++ (BOOL)changesHaveAnyInsertionsRemovalsOrMoves:(id)moves;
++ (PXSectionedDataSourceChangeDetails)changeDetailsWithNoChangesFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier;
++ (PXSectionedDataSourceChangeDetails)changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier;
++ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)changes toIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed;
++ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)changes toIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties;
++ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)changes fromIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed;
++ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)changes fromIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties;
++ (id)indexPathSetAfterApplyingChanges:(id)changes toIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)incrementalChanges;
++ (id)indexPathSetAfterRevertingChanges:(id)changes fromIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)incrementalChanges;
++ (void)debug_assertValidChangeDetails:(id)details fromDataSource:(id)source toDataSource:(id)dataSource;
 - (BOOL)hasAnyChanges;
 - (BOOL)hasAnyInsertionsRemovalsOrMoves;
 - (NSString)description;
 - (PXSectionedDataSourceChangeDetails)init;
-- (PXSectionedDataSourceChangeDetails)initWithFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4 sectionChanges:(id)a5 itemChangeDetailsBySection:(id)a6 subitemChangeDetailsByItemBySection:(id)a7;
-- (PXSectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)a3 withFromDataSourceIdentifier:(int64_t)a4 toDataSourceIdentifier:(int64_t)a5;
-- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5;
-- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5 changedProperties:(BOOL *)a6;
-- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5;
-- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5 changedProperties:(BOOL *)a6;
-- (id)changedItemsInSection:(int64_t)a3;
-- (id)deletedItemsInSection:(int64_t)a3;
-- (id)indexPathSetAfterApplyingChangesToIndexPathSet:(id)a3 hasIncrementalChanges:(BOOL *)a4;
-- (id)indexPathSetAfterRevertingChangesFromIndexPathSet:(id)a3 hasIncrementalChanges:(BOOL *)a4;
-- (id)insertedItemsInSection:(int64_t)a3;
-- (id)itemChangesInSection:(int64_t)a3;
-- (id)itemsWithSubitemChangesInSection:(int64_t)a3;
-- (id)subitemChangesInItem:(int64_t)a3 section:(int64_t)a4;
+- (PXSectionedDataSourceChangeDetails)initWithFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier sectionChanges:(id)changes itemChangeDetailsBySection:(id)section subitemChangeDetailsByItemBySection:(id)bySection;
+- (PXSectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)details withFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier;
+- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed;
+- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties;
+- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed;
+- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties;
+- (id)changedItemsInSection:(int64_t)section;
+- (id)deletedItemsInSection:(int64_t)section;
+- (id)indexPathSetAfterApplyingChangesToIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)changes;
+- (id)indexPathSetAfterRevertingChangesFromIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)changes;
+- (id)insertedItemsInSection:(int64_t)section;
+- (id)itemChangesInSection:(int64_t)section;
+- (id)itemsWithSubitemChangesInSection:(int64_t)section;
+- (id)subitemChangesInItem:(int64_t)item section:(int64_t)section;
 @end
 
 @implementation PXSectionedDataSourceChangeDetails
@@ -38,7 +38,7 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(NSNumber *)v3 BOOLValue];
+    bOOLValue = [(NSNumber *)v3 BOOLValue];
   }
 
   else
@@ -46,10 +46,10 @@
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
-    v6 = [(PXSectionedDataSourceChangeDetails *)self sectionChanges];
-    v7 = [v6 hasAnyInsertionsRemovalsOrMoves];
+    sectionChanges = [(PXSectionedDataSourceChangeDetails *)self sectionChanges];
+    hasAnyInsertionsRemovalsOrMoves = [sectionChanges hasAnyInsertionsRemovalsOrMoves];
 
-    v17 = v7;
+    v17 = hasAnyInsertionsRemovalsOrMoves;
     if (v15[3])
     {
       v8 = 1;
@@ -57,14 +57,14 @@
 
     else
     {
-      v9 = [(PXSectionedDataSourceChangeDetails *)self sectionsWithItemChanges];
+      sectionsWithItemChanges = [(PXSectionedDataSourceChangeDetails *)self sectionsWithItemChanges];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __69__PXSectionedDataSourceChangeDetails_hasAnyInsertionsRemovalsOrMoves__block_invoke;
       v13[3] = &unk_1E7BB84F0;
       v13[4] = self;
       v13[5] = &v14;
-      [v9 enumerateIndexesUsingBlock:v13];
+      [sectionsWithItemChanges enumerateIndexesUsingBlock:v13];
 
       v8 = *(v15 + 24);
     }
@@ -73,35 +73,35 @@
     hasAnyInsertionsRemovalsOrMovesCache = self->_hasAnyInsertionsRemovalsOrMovesCache;
     self->_hasAnyInsertionsRemovalsOrMovesCache = v10;
 
-    v5 = *(v15 + 24);
+    bOOLValue = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
   }
 
-  return v5 & 1;
+  return bOOLValue & 1;
 }
 
-- (id)changedItemsInSection:(int64_t)a3
+- (id)changedItemsInSection:(int64_t)section
 {
-  v3 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:a3];
-  v4 = [v3 changedIndexes];
+  v3 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:section];
+  changedIndexes = [v3 changedIndexes];
 
-  return v4;
+  return changedIndexes;
 }
 
-- (id)insertedItemsInSection:(int64_t)a3
+- (id)insertedItemsInSection:(int64_t)section
 {
-  v3 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:a3];
-  v4 = [v3 insertedIndexes];
+  v3 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:section];
+  insertedIndexes = [v3 insertedIndexes];
 
-  return v4;
+  return insertedIndexes;
 }
 
-- (id)deletedItemsInSection:(int64_t)a3
+- (id)deletedItemsInSection:(int64_t)section
 {
-  v3 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:a3];
-  v4 = [v3 removedIndexes];
+  v3 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:section];
+  removedIndexes = [v3 removedIndexes];
 
-  return v4;
+  return removedIndexes;
 }
 
 - (NSString)description
@@ -115,9 +115,9 @@
   return v5;
 }
 
-- (id)indexPathSetAfterRevertingChangesFromIndexPathSet:(id)a3 hasIncrementalChanges:(BOOL *)a4
+- (id)indexPathSetAfterRevertingChangesFromIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)changes
 {
-  v6 = a3;
+  setCopy = set;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -131,10 +131,10 @@
   v8 = v7;
   v13 = v8;
   v14 = &v15;
-  [v6 enumerateAllIndexPathsUsingBlock:v12];
-  if (a4)
+  [setCopy enumerateAllIndexPathsUsingBlock:v12];
+  if (changes)
   {
-    *a4 = *(v16 + 24);
+    *changes = *(v16 + 24);
   }
 
   v9 = v13;
@@ -170,57 +170,57 @@ void *__110__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChange
   return result;
 }
 
-- (id)indexPathSetAfterApplyingChangesToIndexPathSet:(id)a3 hasIncrementalChanges:(BOOL *)a4
+- (id)indexPathSetAfterApplyingChangesToIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)changes
 {
-  v6 = a3;
+  setCopy = set;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 1;
   if ([(PXSectionedDataSourceChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
   {
-    v7 = [(PXSectionedDataSourceChangeDetails *)self fromDataSourceIdentifier];
-    v8 = [(PXSectionedDataSourceChangeDetails *)self toDataSourceIdentifier];
-    v9 = [(PXSectionedDataSourceChangeDetails *)self sectionChanges];
+    fromDataSourceIdentifier = [(PXSectionedDataSourceChangeDetails *)self fromDataSourceIdentifier];
+    toDataSourceIdentifier = [(PXSectionedDataSourceChangeDetails *)self toDataSourceIdentifier];
+    sectionChanges = [(PXSectionedDataSourceChangeDetails *)self sectionChanges];
     v10 = +[(PXIndexPathSet *)PXMutableIndexPathSet];
-    if ([v9 hasIncrementalChanges])
+    if ([sectionChanges hasIncrementalChanges])
     {
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __107__PXSectionedDataSourceChangeDetails_indexPathSetAfterApplyingChangesToIndexPathSet_hasIncrementalChanges___block_invoke;
       v30[3] = &unk_1E7BB8540;
-      v34 = v7;
+      v34 = fromDataSourceIdentifier;
       v11 = v10;
       v31 = v11;
-      v35 = v8;
-      v12 = v9;
+      v35 = toDataSourceIdentifier;
+      v12 = sectionChanges;
       v32 = v12;
       v33 = &v36;
-      [v6 enumerateSectionIndexSetsUsingBlock:v30];
+      [setCopy enumerateSectionIndexSetsUsingBlock:v30];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __107__PXSectionedDataSourceChangeDetails_indexPathSetAfterApplyingChangesToIndexPathSet_hasIncrementalChanges___block_invoke_3;
       v23[3] = &unk_1E7BB8568;
-      v28 = v7;
+      v28 = fromDataSourceIdentifier;
       v13 = v12;
       v24 = v13;
-      v25 = self;
+      selfCopy = self;
       v14 = v11;
-      v29 = v8;
+      v29 = toDataSourceIdentifier;
       v26 = v14;
       v27 = &v36;
-      [v6 enumerateItemIndexSetsUsingBlock:v23];
+      [setCopy enumerateItemIndexSetsUsingBlock:v23];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __107__PXSectionedDataSourceChangeDetails_indexPathSetAfterApplyingChangesToIndexPathSet_hasIncrementalChanges___block_invoke_5;
       v16[3] = &unk_1E7BB8590;
-      v21 = v7;
+      v21 = fromDataSourceIdentifier;
       v17 = v13;
-      v18 = self;
-      v22 = v8;
+      selfCopy2 = self;
+      v22 = toDataSourceIdentifier;
       v19 = v14;
       v20 = &v36;
-      [v6 enumerateSubitemIndexSetsUsingBlock:v16];
+      [setCopy enumerateSubitemIndexSetsUsingBlock:v16];
     }
 
     else
@@ -228,7 +228,7 @@ void *__110__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChange
       *(v37 + 24) = 0;
     }
 
-    if (!a4)
+    if (!changes)
     {
       goto LABEL_6;
     }
@@ -236,14 +236,14 @@ void *__110__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChange
 
   else
   {
-    v10 = [v6 indexPathSetByFilteringAndReplacingDataSourceIdentifier:-[PXSectionedDataSourceChangeDetails fromDataSourceIdentifier](self withDataSourceIdentifier:{"fromDataSourceIdentifier"), -[PXSectionedDataSourceChangeDetails toDataSourceIdentifier](self, "toDataSourceIdentifier")}];
-    if (!a4)
+    v10 = [setCopy indexPathSetByFilteringAndReplacingDataSourceIdentifier:-[PXSectionedDataSourceChangeDetails fromDataSourceIdentifier](self withDataSourceIdentifier:{"fromDataSourceIdentifier"), -[PXSectionedDataSourceChangeDetails toDataSourceIdentifier](self, "toDataSourceIdentifier")}];
+    if (!changes)
     {
       goto LABEL_6;
     }
   }
 
-  *a4 = *(v37 + 24);
+  *changes = *(v37 + 24);
 LABEL_6:
   _Block_object_dispose(&v36, 8);
 
@@ -385,16 +385,16 @@ void __107__PXSectionedDataSourceChangeDetails_indexPathSetAfterApplyingChangesT
   [v4 addIndexes:v5];
 }
 
-- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5 changedProperties:(BOOL *)a6
+- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties
 {
   v12 = a7;
   *retstr = *PXSimpleIndexPathNull;
-  if (a4->dataSourceIdentifier != self->_toDataSourceIdentifier || !a4->dataSourceIdentifier)
+  if (changes->dataSourceIdentifier != self->_toDataSourceIdentifier || !changes->dataSourceIdentifier)
   {
 LABEL_6:
     v16 = 0;
-    v17 = 0;
-    if (!a5)
+    hasIncrementalChanges = 0;
+    if (!changed)
     {
       goto LABEL_8;
     }
@@ -402,11 +402,11 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  section = a4->section;
-  item = a4->item;
+  section = changes->section;
+  item = changes->item;
   if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
-    subitem = a4->subitem;
+    subitem = changes->subitem;
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (subitem == 0x7FFFFFFFFFFFFFFFLL)
@@ -422,19 +422,19 @@ LABEL_17:
     {
       v38 = v12;
       v23 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:section];
-      v17 = [v23 hasIncrementalChanges];
-      v24 = [v23 changedIndexes];
-      v16 = [v24 containsIndex:a4->item];
+      hasIncrementalChanges = [v23 hasIncrementalChanges];
+      changedIndexes = [v23 changedIndexes];
+      v16 = [changedIndexes containsIndex:changes->item];
 
-      v25 = [v23 changedPropertiesForIndex:a4->item];
+      v25 = [v23 changedPropertiesForIndex:changes->item];
       [v38 addObjectsFromArray:v25];
 
-      v26 = [v23 indexAfterRevertingChangesFromIndex:a4->item];
+      v26 = [v23 indexAfterRevertingChangesFromIndex:changes->item];
       if (v26 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v27 = v26;
-        v17 = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
-        v28 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterRevertingChangesFromIndex:a4->section];
+        hasIncrementalChanges = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
+        v28 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterRevertingChangesFromIndex:changes->section];
         if (v28 != 0x7FFFFFFFFFFFFFFFLL)
         {
           retstr->dataSourceIdentifier = self->_fromDataSourceIdentifier;
@@ -450,26 +450,26 @@ LABEL_17:
 LABEL_21:
     v38 = v12;
     v23 = [PXSectionedDataSourceChangeDetails subitemChangesInItem:"subitemChangesInItem:section:" section:?];
-    v17 = [v23 hasIncrementalChanges];
-    v29 = [v23 changedIndexes];
-    v16 = [v29 containsIndex:a4->subitem];
+    hasIncrementalChanges = [v23 hasIncrementalChanges];
+    changedIndexes2 = [v23 changedIndexes];
+    v16 = [changedIndexes2 containsIndex:changes->subitem];
 
-    v30 = [v23 changedPropertiesForIndex:a4->subitem];
+    v30 = [v23 changedPropertiesForIndex:changes->subitem];
     [v38 addObjectsFromArray:v30];
 
-    v31 = [v23 indexAfterRevertingChangesFromIndex:a4->subitem];
+    v31 = [v23 indexAfterRevertingChangesFromIndex:changes->subitem];
     if (v31 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v32 = v31;
-      v33 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:a4->section];
-      v17 = [v33 hasIncrementalChanges];
+      v33 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:changes->section];
+      hasIncrementalChanges = [v33 hasIncrementalChanges];
       v37 = v33;
-      v34 = [v33 indexAfterRevertingChangesFromIndex:a4->item];
+      v34 = [v33 indexAfterRevertingChangesFromIndex:changes->item];
       if (v34 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v35 = v34;
-        v17 = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
-        v36 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterRevertingChangesFromIndex:a4->section];
+        hasIncrementalChanges = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
+        v36 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterRevertingChangesFromIndex:changes->section];
         if (v36 != 0x7FFFFFFFFFFFFFFFLL)
         {
           retstr->dataSourceIdentifier = self->_fromDataSourceIdentifier;
@@ -487,19 +487,19 @@ LABEL_26:
 
   if (item != 0x7FFFFFFFFFFFFFFFLL)
   {
-    subitem = a4->subitem;
+    subitem = changes->subitem;
     goto LABEL_17;
   }
 
   v38 = v12;
-  v17 = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
-  v19 = [(PXArrayChangeDetails *)self->_sectionChanges changedIndexes];
-  v16 = [v19 containsIndex:a4->section];
+  hasIncrementalChanges = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
+  changedIndexes3 = [(PXArrayChangeDetails *)self->_sectionChanges changedIndexes];
+  v16 = [changedIndexes3 containsIndex:changes->section];
 
-  v20 = [(PXArrayChangeDetails *)self->_sectionChanges changedPropertiesForIndex:a4->section];
+  v20 = [(PXArrayChangeDetails *)self->_sectionChanges changedPropertiesForIndex:changes->section];
   [v38 addObjectsFromArray:v20];
 
-  v21 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterRevertingChangesFromIndex:a4->section];
+  v21 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterRevertingChangesFromIndex:changes->section];
   if (v21 != 0x7FFFFFFFFFFFFFFFLL)
   {
     retstr->dataSourceIdentifier = self->_fromDataSourceIdentifier;
@@ -511,56 +511,56 @@ LABEL_26:
 
 LABEL_27:
   v12 = v38;
-  if (a5)
+  if (changed)
   {
 LABEL_7:
-    *a5 = v17;
+    *changed = hasIncrementalChanges;
   }
 
 LABEL_8:
-  if (a6)
+  if (properties)
   {
-    *a6 = v16;
+    *properties = v16;
   }
 
   return result;
 }
 
-- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5
+- (PXSimpleIndexPath)indexPathAfterRevertingChangesFromIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed
 {
-  v6 = *&a4->item;
-  v8[0] = *&a4->dataSourceIdentifier;
+  v6 = *&changes->item;
+  v8[0] = *&changes->dataSourceIdentifier;
   v8[1] = v6;
-  return [(PXSectionedDataSourceChangeDetails *)self indexPathAfterRevertingChangesFromIndexPath:v8 hasIncrementalChanges:a5 objectChanged:a6 changedProperties:0];
+  return [(PXSectionedDataSourceChangeDetails *)self indexPathAfterRevertingChangesFromIndexPath:v8 hasIncrementalChanges:changed objectChanged:a6 changedProperties:0];
 }
 
-- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5 changedProperties:(BOOL *)a6
+- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties
 {
   v12 = a7;
   *retstr = *PXSimpleIndexPathNull;
-  if (a4->dataSourceIdentifier != self->_fromDataSourceIdentifier || !a4->dataSourceIdentifier)
+  if (changes->dataSourceIdentifier != self->_fromDataSourceIdentifier || !changes->dataSourceIdentifier)
   {
     goto LABEL_6;
   }
 
-  item = a4->item;
-  if (a4->section == 0x7FFFFFFFFFFFFFFFLL)
+  item = changes->item;
+  if (changes->section == 0x7FFFFFFFFFFFFFFFLL)
   {
-    subitem = a4->subitem;
+    subitem = changes->subitem;
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (subitem == 0x7FFFFFFFFFFFFFFFLL)
       {
 LABEL_6:
         v15 = 0;
-        v16 = 0;
+        hasIncrementalChanges = 0;
         goto LABEL_25;
       }
 
 LABEL_15:
       v40 = v12;
-      v16 = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
-      v29 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterApplyingChangesToIndex:a4->section];
+      hasIncrementalChanges = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
+      v29 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterApplyingChangesToIndex:changes->section];
       if (v29 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_16;
@@ -568,14 +568,14 @@ LABEL_15:
 
       v30 = v29;
       v24 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:v29];
-      v16 = [v24 hasIncrementalChanges];
-      v31 = [v24 indexAfterApplyingChangesToIndex:a4->item];
+      hasIncrementalChanges = [v24 hasIncrementalChanges];
+      v31 = [v24 indexAfterApplyingChangesToIndex:changes->item];
       if (v31 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v32 = v31;
         v33 = [(PXSectionedDataSourceChangeDetails *)self subitemChangesInItem:v31 section:v30];
-        v16 = [v33 hasIncrementalChanges];
-        v34 = [v33 indexAfterApplyingChangesToIndex:a4->subitem];
+        hasIncrementalChanges = [v33 hasIncrementalChanges];
+        v34 = [v33 indexAfterApplyingChangesToIndex:changes->subitem];
         if (v34 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v15 = 0;
@@ -584,9 +584,9 @@ LABEL_15:
         else
         {
           v35 = v34;
-          v37 = [v33 changedIndexes];
+          changedIndexes = [v33 changedIndexes];
           v39 = v35;
-          v15 = [v37 containsIndex:v35];
+          v15 = [changedIndexes containsIndex:v35];
 
           v38 = [v33 changedPropertiesForIndex:v39];
           [v40 addObjectsFromArray:v38];
@@ -609,13 +609,13 @@ LABEL_15:
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
       v40 = v12;
-      v16 = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
-      v17 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterApplyingChangesToIndex:a4->section];
+      hasIncrementalChanges = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
+      v17 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterApplyingChangesToIndex:changes->section];
       if (v17 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v18 = v17;
-        v19 = [(PXArrayChangeDetails *)self->_sectionChanges changedIndexes];
-        v15 = [v19 containsIndex:v18];
+        changedIndexes2 = [(PXArrayChangeDetails *)self->_sectionChanges changedIndexes];
+        v15 = [changedIndexes2 containsIndex:v18];
 
         v20 = [(PXArrayChangeDetails *)self->_sectionChanges changedPropertiesForIndex:v18];
         [v40 addObjectsFromArray:v20];
@@ -632,7 +632,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    subitem = a4->subitem;
+    subitem = changes->subitem;
   }
 
   if (subitem != 0x7FFFFFFFFFFFFFFFLL)
@@ -641,19 +641,19 @@ LABEL_15:
   }
 
   v40 = v12;
-  v16 = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
-  v22 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterApplyingChangesToIndex:a4->section];
+  hasIncrementalChanges = [(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges];
+  v22 = [(PXArrayChangeDetails *)self->_sectionChanges indexAfterApplyingChangesToIndex:changes->section];
   if (v22 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v23 = v22;
     v24 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:v22];
-    v16 = [v24 hasIncrementalChanges];
-    v25 = [v24 indexAfterApplyingChangesToIndex:a4->item];
+    hasIncrementalChanges = [v24 hasIncrementalChanges];
+    v25 = [v24 indexAfterApplyingChangesToIndex:changes->item];
     if (v25 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v26 = v25;
-      v27 = [v24 changedIndexes];
-      v15 = [v27 containsIndex:v26];
+      changedIndexes3 = [v24 changedIndexes];
+      v15 = [changedIndexes3 containsIndex:v26];
 
       v28 = [v24 changedPropertiesForIndex:v26];
       [v40 addObjectsFromArray:v28];
@@ -677,25 +677,25 @@ LABEL_16:
 LABEL_24:
   v12 = v40;
 LABEL_25:
-  if (a5)
+  if (changed)
   {
-    *a5 = v16;
+    *changed = hasIncrementalChanges;
   }
 
-  if (a6)
+  if (properties)
   {
-    *a6 = v15;
+    *properties = v15;
   }
 
   return result;
 }
 
-- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)a3 hasIncrementalChanges:(PXSimpleIndexPath *)a4 objectChanged:(BOOL *)a5
+- (PXSimpleIndexPath)indexPathAfterApplyingChangesToIndexPath:(SEL)path hasIncrementalChanges:(PXSimpleIndexPath *)changes objectChanged:(BOOL *)changed
 {
-  v6 = *&a4->item;
-  v8[0] = *&a4->dataSourceIdentifier;
+  v6 = *&changes->item;
+  v8[0] = *&changes->dataSourceIdentifier;
   v8[1] = v6;
-  return [(PXSectionedDataSourceChangeDetails *)self indexPathAfterApplyingChangesToIndexPath:v8 hasIncrementalChanges:a5 objectChanged:a6 changedProperties:0];
+  return [(PXSectionedDataSourceChangeDetails *)self indexPathAfterApplyingChangesToIndexPath:v8 hasIncrementalChanges:changed objectChanged:a6 changedProperties:0];
 }
 
 void __69__PXSectionedDataSourceChangeDetails_hasAnyInsertionsRemovalsOrMoves__block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -733,7 +733,7 @@ void __69__PXSectionedDataSourceChangeDetails_hasAnyInsertionsRemovalsOrMoves__b
   v4 = v3;
   if (v3)
   {
-    v5 = [(NSNumber *)v3 BOOLValue];
+    bOOLValue = [(NSNumber *)v3 BOOLValue];
   }
 
   else
@@ -741,10 +741,10 @@ void __69__PXSectionedDataSourceChangeDetails_hasAnyInsertionsRemovalsOrMoves__b
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
-    v6 = [(PXSectionedDataSourceChangeDetails *)self sectionChanges];
-    v7 = [v6 hasAnyChanges];
+    sectionChanges = [(PXSectionedDataSourceChangeDetails *)self sectionChanges];
+    hasAnyChanges = [sectionChanges hasAnyChanges];
 
-    v17 = v7;
+    v17 = hasAnyChanges;
     if (v15[3])
     {
       v8 = 1;
@@ -752,14 +752,14 @@ void __69__PXSectionedDataSourceChangeDetails_hasAnyInsertionsRemovalsOrMoves__b
 
     else
     {
-      v9 = [(PXSectionedDataSourceChangeDetails *)self sectionsWithItemChanges];
+      sectionsWithItemChanges = [(PXSectionedDataSourceChangeDetails *)self sectionsWithItemChanges];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __51__PXSectionedDataSourceChangeDetails_hasAnyChanges__block_invoke;
       v13[3] = &unk_1E7BB84F0;
       v13[4] = self;
       v13[5] = &v14;
-      [v9 enumerateIndexesUsingBlock:v13];
+      [sectionsWithItemChanges enumerateIndexesUsingBlock:v13];
 
       v8 = *(v15 + 24);
     }
@@ -768,11 +768,11 @@ void __69__PXSectionedDataSourceChangeDetails_hasAnyInsertionsRemovalsOrMoves__b
     hasAnyChangesCache = self->_hasAnyChangesCache;
     self->_hasAnyChangesCache = v10;
 
-    v5 = *(v15 + 24);
+    bOOLValue = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
   }
 
-  return v5 & 1;
+  return bOOLValue & 1;
 }
 
 void __51__PXSectionedDataSourceChangeDetails_hasAnyChanges__block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -804,15 +804,15 @@ void __51__PXSectionedDataSourceChangeDetails_hasAnyChanges__block_invoke_2(uint
   *a3 = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (id)subitemChangesInItem:(int64_t)a3 section:(int64_t)a4
+- (id)subitemChangesInItem:(int64_t)item section:(int64_t)section
 {
-  v7 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:a4];
+  v7 = [(PXSectionedDataSourceChangeDetails *)self itemChangesInSection:section];
   if ([v7 hasIncrementalChanges])
   {
     subitemChangeDetailsByItemBySection = self->_subitemChangeDetailsByItemBySection;
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:section];
     v10 = [(NSDictionary *)subitemChangeDetailsByItemBySection objectForKeyedSubscript:v9];
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:item];
     v12 = [v10 objectForKeyedSubscript:v11];
     v13 = v12;
     if (v12)
@@ -836,33 +836,33 @@ void __51__PXSectionedDataSourceChangeDetails_hasAnyChanges__block_invoke_2(uint
   return v15;
 }
 
-- (id)itemsWithSubitemChangesInSection:(int64_t)a3
+- (id)itemsWithSubitemChangesInSection:(int64_t)section
 {
   itemsWithSubitemChangesBySection = self->_itemsWithSubitemChangesBySection;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v5 = [(NSDictionary *)itemsWithSubitemChangesBySection objectForKeyedSubscript:v4];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    indexSet = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
   }
 
-  v8 = v7;
+  v8 = indexSet;
 
   return v8;
 }
 
-- (id)itemChangesInSection:(int64_t)a3
+- (id)itemChangesInSection:(int64_t)section
 {
   if ([(PXArrayChangeDetails *)self->_sectionChanges hasIncrementalChanges])
   {
     itemChangeDetailsBySection = self->_itemChangeDetailsBySection;
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:section];
     v7 = [(NSDictionary *)itemChangeDetailsBySection objectForKeyedSubscript:v6];
     v8 = v7;
     if (v7)
@@ -886,51 +886,51 @@ void __51__PXSectionedDataSourceChangeDetails_hasAnyChanges__block_invoke_2(uint
   return v10;
 }
 
-- (PXSectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)a3 withFromDataSourceIdentifier:(int64_t)a4 toDataSourceIdentifier:(int64_t)a5
+- (PXSectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)details withFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier
 {
-  v8 = a3;
-  v9 = [v8 sectionChanges];
-  v10 = v8[1];
-  v11 = v8[3];
+  detailsCopy = details;
+  sectionChanges = [detailsCopy sectionChanges];
+  v10 = detailsCopy[1];
+  v11 = detailsCopy[3];
 
-  v12 = [(PXSectionedDataSourceChangeDetails *)self initWithFromDataSourceIdentifier:a4 toDataSourceIdentifier:a5 sectionChanges:v9 itemChangeDetailsBySection:v10 subitemChangeDetailsByItemBySection:v11];
+  v12 = [(PXSectionedDataSourceChangeDetails *)self initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:sourceIdentifier sectionChanges:sectionChanges itemChangeDetailsBySection:v10 subitemChangeDetailsByItemBySection:v11];
   return v12;
 }
 
-- (PXSectionedDataSourceChangeDetails)initWithFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4 sectionChanges:(id)a5 itemChangeDetailsBySection:(id)a6 subitemChangeDetailsByItemBySection:(id)a7
+- (PXSectionedDataSourceChangeDetails)initWithFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier sectionChanges:(id)changes itemChangeDetailsBySection:(id)section subitemChangeDetailsByItemBySection:(id)bySection
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  changesCopy = changes;
+  sectionCopy = section;
+  bySectionCopy = bySection;
   v39.receiver = self;
   v39.super_class = PXSectionedDataSourceChangeDetails;
   v16 = [(PXSectionedDataSourceChangeDetails *)&v39 init];
   v17 = v16;
   if (v16)
   {
-    v16->_fromDataSourceIdentifier = a3;
-    v16->_toDataSourceIdentifier = a4;
-    objc_storeStrong(&v16->_sectionChanges, a5);
-    if ([v13 hasIncrementalChanges])
+    v16->_fromDataSourceIdentifier = identifier;
+    v16->_toDataSourceIdentifier = sourceIdentifier;
+    objc_storeStrong(&v16->_sectionChanges, changes);
+    if ([changesCopy hasIncrementalChanges])
     {
-      v18 = [v14 copy];
+      v18 = [sectionCopy copy];
       itemChangeDetailsBySection = v17->_itemChangeDetailsBySection;
       v17->_itemChangeDetailsBySection = v18;
 
-      v20 = [v15 copy];
+      v20 = [bySectionCopy copy];
       subitemChangeDetailsByItemBySection = v17->_subitemChangeDetailsByItemBySection;
       v17->_subitemChangeDetailsByItemBySection = v20;
 
-      v22 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
       v23 = v17->_itemChangeDetailsBySection;
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __172__PXSectionedDataSourceChangeDetails_initWithFromDataSourceIdentifier_toDataSourceIdentifier_sectionChanges_itemChangeDetailsBySection_subitemChangeDetailsByItemBySection___block_invoke;
       v37[3] = &unk_1E7BB8478;
-      v24 = v22;
+      v24 = indexSet;
       v38 = v24;
       [(NSDictionary *)v23 enumerateKeysAndObjectsUsingBlock:v37];
-      v25 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v26 = v17->_subitemChangeDetailsByItemBySection;
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
@@ -938,7 +938,7 @@ void __51__PXSectionedDataSourceChangeDetails_hasAnyChanges__block_invoke_2(uint
       v34[3] = &unk_1E7BB84A0;
       v27 = v24;
       v35 = v27;
-      v28 = v25;
+      v28 = dictionary;
       v36 = v28;
       [(NSDictionary *)v26 enumerateKeysAndObjectsUsingBlock:v34];
       itemsWithSubitemChangesBySection = v17->_itemsWithSubitemChangesBySection;
@@ -993,62 +993,62 @@ uint64_t __172__PXSectionedDataSourceChangeDetails_initWithFromDataSourceIdentif
 
 - (PXSectionedDataSourceChangeDetails)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:128 description:{@"%@ not supported", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:128 description:{@"%@ not supported", v5}];
 
   abort();
 }
 
-+ (void)debug_assertValidChangeDetails:(id)a3 fromDataSource:(id)a4 toDataSource:(id)a5
++ (void)debug_assertValidChangeDetails:(id)details fromDataSource:(id)source toDataSource:(id)dataSource
 {
   v109 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v75 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = v10;
-  if (v9)
+  detailsCopy = details;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  v11 = detailsCopy;
+  v12 = dataSourceCopy;
+  if (detailsCopy)
   {
-    v74 = v10;
-    if (![v9 count])
+    v74 = dataSourceCopy;
+    if (![detailsCopy count])
     {
-      v65 = [v75 identifier];
+      identifier = [sourceCopy identifier];
       v12 = v74;
-      if (v65 == [v74 identifier])
+      if (identifier == [v74 identifier])
       {
         goto LABEL_75;
       }
 
-      v64 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v64 handleFailureInMethod:a2 object:a1 file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:580 description:{@"Invalid parameter not satisfying: %@", @"fromDataSource.identifier == toDataSource.identifier"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:580 description:{@"Invalid parameter not satisfying: %@", @"fromDataSource.identifier == toDataSource.identifier"}];
       goto LABEL_73;
     }
 
     v68 = a2;
-    v69 = a1;
-    v13 = [v9 firstObject];
-    v14 = [v13 fromDataSourceIdentifier];
-    v15 = [v75 identifier];
+    selfCopy = self;
+    firstObject = [detailsCopy firstObject];
+    fromDataSourceIdentifier = [firstObject fromDataSourceIdentifier];
+    identifier2 = [sourceCopy identifier];
 
-    if (v14 != v15)
+    if (fromDataSourceIdentifier != identifier2)
     {
-      v66 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v66 handleFailureInMethod:v68 object:a1 file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:584 description:{@"Invalid parameter not satisfying: %@", @"changeDetailsArray.firstObject.fromDataSourceIdentifier == fromDataSource.identifier"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v68 object:self file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:584 description:{@"Invalid parameter not satisfying: %@", @"changeDetailsArray.firstObject.fromDataSourceIdentifier == fromDataSource.identifier"}];
     }
 
-    v16 = [v9 lastObject];
-    v17 = [v16 toDataSourceIdentifier];
-    v18 = [v74 identifier];
+    lastObject = [detailsCopy lastObject];
+    toDataSourceIdentifier = [lastObject toDataSourceIdentifier];
+    identifier3 = [v74 identifier];
 
-    if (v17 != v18)
+    if (toDataSourceIdentifier != identifier3)
     {
-      v67 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v67 handleFailureInMethod:v68 object:a1 file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:585 description:{@"Invalid parameter not satisfying: %@", @"changeDetailsArray.lastObject.toDataSourceIdentifier == toDataSource.identifier"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:v68 object:self file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:585 description:{@"Invalid parameter not satisfying: %@", @"changeDetailsArray.lastObject.toDataSourceIdentifier == toDataSource.identifier"}];
     }
 
-    v71 = v9;
-    if ([v75 numberOfSections] >= 1)
+    v71 = detailsCopy;
+    if ([sourceCopy numberOfSections] >= 1)
     {
       v19 = 0;
       while (1)
@@ -1074,12 +1074,12 @@ uint64_t __172__PXSectionedDataSourceChangeDetails_initWithFromDataSourceIdentif
                 objc_enumerationMutation(v20);
               }
 
-              v26 = [*(*(&v101 + 1) + 8 * i) sectionChanges];
-              v22 = [v26 indexAfterApplyingChangesToIndex:v22];
+              sectionChanges = [*(*(&v101 + 1) + 8 * i) sectionChanges];
+              v22 = [sectionChanges indexAfterApplyingChangesToIndex:v22];
 
               if (v22 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v27 = v20;
+                currentHandler4 = v20;
                 goto LABEL_20;
               }
             }
@@ -1096,12 +1096,12 @@ uint64_t __172__PXSectionedDataSourceChangeDetails_initWithFromDataSourceIdentif
 
         if (v22 >= [v74 numberOfSections])
         {
-          v27 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v27 handleFailureInMethod:v68 object:v69 file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"section == NSNotFound || section < toDataSource.numberOfSections"}];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler4 handleFailureInMethod:v68 object:selfCopy file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"section == NSNotFound || section < toDataSource.numberOfSections"}];
 LABEL_20:
         }
 
-        v72 = [v75 numberOfItemsInSection:v19];
+        v72 = [sourceCopy numberOfItemsInSection:v19];
         if (v72 >= 1)
         {
           break;
@@ -1110,7 +1110,7 @@ LABEL_20:
 LABEL_38:
         ++v19;
         v11 = v71;
-        if (v19 >= [v75 numberOfSections])
+        if (v19 >= [sourceCopy numberOfSections])
         {
           goto LABEL_39;
         }
@@ -1120,7 +1120,7 @@ LABEL_38:
       v70 = v20;
       while (1)
       {
-        v29 = [v75 identifier];
+        identifier4 = [sourceCopy identifier];
         v97 = 0u;
         v98 = 0u;
         v99 = 0u;
@@ -1132,13 +1132,13 @@ LABEL_38:
           break;
         }
 
-        if (v29)
+        if (identifier4)
         {
           v34 = 0x7FFFFFFFFFFFFFFFLL;
           v37 = v19;
           v35 = v28;
 LABEL_36:
-          v93 = v29;
+          v93 = identifier4;
           v94 = v37;
           v95 = v35;
           v96 = v34;
@@ -1168,7 +1168,7 @@ LABEL_37:
           }
 
           v39 = *(*(&v97 + 1) + 8 * j);
-          if (!v39 || (v89 = v29, v90 = v37, v91 = v35, v92 = v34, [v39 indexPathAfterApplyingChangesToIndexPath:&v89 hasIncrementalChanges:0 objectChanged:0 changedProperties:0], (v29 = v93) == 0))
+          if (!v39 || (v89 = identifier4, v90 = v37, v91 = v35, v92 = v34, [v39 indexPathAfterApplyingChangesToIndexPath:&v89 hasIncrementalChanges:0 objectChanged:0 changedProperties:0], (identifier4 = v93) == 0))
           {
 
             v19 = v36;
@@ -1206,8 +1206,8 @@ LABEL_39:
         v88 = 0u;
         v85 = 0u;
         v86 = 0u;
-        v42 = [v11 reverseObjectEnumerator];
-        v43 = [v42 countByEnumeratingWithState:&v85 objects:v106 count:16];
+        reverseObjectEnumerator = [v11 reverseObjectEnumerator];
+        v43 = [reverseObjectEnumerator countByEnumeratingWithState:&v85 objects:v106 count:16];
         v44 = v41;
         if (v43)
         {
@@ -1220,11 +1220,11 @@ LABEL_39:
             {
               if (*v86 != v46)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
-              v48 = [*(*(&v85 + 1) + 8 * k) sectionChanges];
-              v44 = [v48 indexAfterRevertingChangesFromIndex:v44];
+              sectionChanges2 = [*(*(&v85 + 1) + 8 * k) sectionChanges];
+              v44 = [sectionChanges2 indexAfterRevertingChangesFromIndex:v44];
 
               if (v44 == 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -1233,7 +1233,7 @@ LABEL_39:
               }
             }
 
-            v45 = [v42 countByEnumeratingWithState:&v85 objects:v106 count:16];
+            v45 = [reverseObjectEnumerator countByEnumeratingWithState:&v85 objects:v106 count:16];
             if (v45)
             {
               continue;
@@ -1244,10 +1244,10 @@ LABEL_39:
         }
 
         v12 = v74;
-        if (v44 >= [v75 numberOfSections])
+        if (v44 >= [sourceCopy numberOfSections])
         {
-          v42 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v42 handleFailureInMethod:v68 object:v69 file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"section == NSNotFound || section < fromDataSource.numberOfSections"}];
+          reverseObjectEnumerator = [MEMORY[0x1E696AAA8] currentHandler];
+          [reverseObjectEnumerator handleFailureInMethod:v68 object:selfCopy file:@"PXSectionedDataSourceChangeDetails.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"section == NSNotFound || section < fromDataSource.numberOfSections"}];
 LABEL_52:
         }
 
@@ -1267,30 +1267,30 @@ LABEL_70:
       v49 = 0;
       while (1)
       {
-        v50 = [v12 identifier];
+        identifier5 = [v12 identifier];
         v81 = 0u;
         v82 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v51 = [v11 reverseObjectEnumerator];
-        v52 = [v51 countByEnumeratingWithState:&v81 objects:v105 count:16];
+        reverseObjectEnumerator2 = [v11 reverseObjectEnumerator];
+        v52 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v81 objects:v105 count:16];
         if (v52)
         {
           break;
         }
 
         v12 = v74;
-        if (v50)
+        if (identifier5)
         {
           v55 = 0x7FFFFFFFFFFFFFFFLL;
           v58 = v49;
           v57 = v41;
 LABEL_68:
-          v93 = v50;
+          v93 = identifier5;
           v94 = v57;
           v95 = v58;
           v96 = v55;
-          v61 = [v75 objectAtIndexPath:&v93];
+          v61 = [sourceCopy objectAtIndexPath:&v93];
           v11 = v71;
         }
 
@@ -1313,11 +1313,11 @@ LABEL_69:
         {
           if (*v82 != v54)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(reverseObjectEnumerator2);
           }
 
           v60 = *(*(&v81 + 1) + 8 * m);
-          if (!v60 || (v89 = v50, v90 = v57, v91 = v58, v92 = v55, [v60 indexPathAfterRevertingChangesFromIndexPath:&v89 hasIncrementalChanges:0 objectChanged:0 changedProperties:0], (v50 = v93) == 0))
+          if (!v60 || (v89 = identifier5, v90 = v57, v91 = v58, v92 = v55, [v60 indexPathAfterRevertingChangesFromIndexPath:&v89 hasIncrementalChanges:0 objectChanged:0 changedProperties:0], (identifier5 = v93) == 0))
           {
 
             v11 = v71;
@@ -1331,7 +1331,7 @@ LABEL_69:
           v55 = v96;
         }
 
-        v53 = [v51 countByEnumeratingWithState:&v81 objects:v105 count:16];
+        v53 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v81 objects:v105 count:16];
         if (v53)
         {
           continue;
@@ -1348,18 +1348,18 @@ LABEL_69:
 LABEL_71:
     if ([v11 count] == 1)
     {
-      v62 = [v11 lastObject];
-      v63 = [v62 sectionsWithItemChanges];
+      lastObject2 = [v11 lastObject];
+      sectionsWithItemChanges = [lastObject2 sectionsWithItemChanges];
       v76[0] = MEMORY[0x1E69E9820];
       v76[1] = 3221225472;
       v76[2] = __97__PXSectionedDataSourceChangeDetails_debug_assertValidChangeDetails_fromDataSource_toDataSource___block_invoke;
       v76[3] = &unk_1E7BB8608;
       v79 = v68;
-      v80 = v69;
+      v80 = selfCopy;
       v77 = v74;
-      v78 = v62;
-      v64 = v62;
-      [v63 enumerateIndexesUsingBlock:v76];
+      v78 = lastObject2;
+      currentHandler = lastObject2;
+      [sectionsWithItemChanges enumerateIndexesUsingBlock:v76];
 
 LABEL_73:
       v12 = v74;
@@ -1389,70 +1389,70 @@ void __97__PXSectionedDataSourceChangeDetails_debug_assertValidChangeDetails_fro
   }
 }
 
-+ (BOOL)changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:(id)a3 fromDataSource:(id)a4 toDataSource:(id)a5
++ (BOOL)changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:(id)end fromDataSource:(id)source toDataSource:(id)dataSource
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v10 count] >= 2)
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  endCopy = end;
+  if ([endCopy count] >= 2)
   {
-    v11 = [PXSectionedChangeDetailsCoalescer changeDetailsByCoalescingChangeDetails:v10];
+    firstObject = [PXSectionedChangeDetailsCoalescer changeDetailsByCoalescingChangeDetails:endCopy];
 
-    v29[0] = v11;
-    v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-    v13 = [a1 changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:v12 fromDataSource:v8 toDataSource:v9];
+    v29[0] = firstObject;
+    sectionChanges = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
+    v13 = [self changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:sectionChanges fromDataSource:sourceCopy toDataSource:dataSourceCopy];
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v11 = [v10 firstObject];
+  firstObject = [endCopy firstObject];
 
-  if ([v11 hasAnyInsertionsRemovalsOrMoves])
+  if ([firstObject hasAnyInsertionsRemovalsOrMoves])
   {
-    v12 = [v11 sectionChanges];
-    if ([v12 hasIncrementalChanges] && (objc_msgSend(v12, "hasMoves") & 1) == 0)
+    sectionChanges = [firstObject sectionChanges];
+    if ([sectionChanges hasIncrementalChanges] && (objc_msgSend(sectionChanges, "hasMoves") & 1) == 0)
     {
       v28 = 0;
-      if (([v12 hasAnyInsertionsRemovalsOrMoves] & 1) == 0)
+      if (([sectionChanges hasAnyInsertionsRemovalsOrMoves] & 1) == 0)
       {
-        v15 = [v9 numberOfSections];
+        numberOfSections = [dataSourceCopy numberOfSections];
         goto LABEL_15;
       }
 
-      if ([v12 isOnlyInsertionAtEnd:&v28 + 1 orRemovalAtEnd:&v28 countBeforeChange:objc_msgSend(v8 countAfterChange:{"numberOfSections"), objc_msgSend(v9, "numberOfSections")}])
+      if ([sectionChanges isOnlyInsertionAtEnd:&v28 + 1 orRemovalAtEnd:&v28 countBeforeChange:objc_msgSend(sourceCopy countAfterChange:{"numberOfSections"), objc_msgSend(dataSourceCopy, "numberOfSections")}])
       {
         if (HIBYTE(v28) == 1)
         {
-          v14 = [v12 insertedIndexes];
+          insertedIndexes = [sectionChanges insertedIndexes];
 LABEL_14:
-          v16 = v14;
-          v15 = [v14 firstIndex];
+          v16 = insertedIndexes;
+          numberOfSections = [insertedIndexes firstIndex];
 
 LABEL_15:
-          if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+          if (numberOfSections != 0x7FFFFFFFFFFFFFFFLL)
           {
             v18 = objc_alloc_init(MEMORY[0x1E696AD50]);
-            v19 = [v11 sectionsWithItemChanges];
+            sectionsWithItemChanges = [firstObject sectionsWithItemChanges];
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
             v25[2] = __116__PXSectionedDataSourceChangeDetails_changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd_fromDataSource_toDataSource___block_invoke;
             v25[3] = &unk_1E7BB85E0;
-            v20 = v11;
+            v20 = firstObject;
             v26 = v20;
             v21 = v18;
             v27 = v21;
-            [v19 enumerateIndexesUsingBlock:v25];
+            [sectionsWithItemChanges enumerateIndexesUsingBlock:v25];
 
             if ([v21 count])
             {
-              if ([v21 px_isSingleRangeWithMax:v15] && objc_msgSend(v21, "count") == 1)
+              if ([v21 px_isSingleRangeWithMax:numberOfSections] && objc_msgSend(v21, "count") == 1)
               {
-                v22 = [v21 firstIndex];
-                v23 = [v20 itemChangesInSection:v22];
+                firstIndex = [v21 firstIndex];
+                v23 = [v20 itemChangesInSection:firstIndex];
                 v24 = 0;
-                v13 = (![v23 hasAnyInsertionsRemovalsOrMoves] || objc_msgSend(v23, "isOnlyInsertionAtEnd:orRemovalAtEnd:countBeforeChange:countAfterChange:", &v24 + 1, &v24, objc_msgSend(v8, "numberOfItemsInSection:", v22), objc_msgSend(v9, "numberOfItemsInSection:", v22)) && ((v24 & 0x100) == 0 || (v28 & 1) == 0)) && (v24 != 1 || (v28 & 0x100) == 0);
+                v13 = (![v23 hasAnyInsertionsRemovalsOrMoves] || objc_msgSend(v23, "isOnlyInsertionAtEnd:orRemovalAtEnd:countBeforeChange:countAfterChange:", &v24 + 1, &v24, objc_msgSend(sourceCopy, "numberOfItemsInSection:", firstIndex), objc_msgSend(dataSourceCopy, "numberOfItemsInSection:", firstIndex)) && ((v24 & 0x100) == 0 || (v28 & 1) == 0)) && (v24 != 1 || (v28 & 0x100) == 0);
               }
 
               else
@@ -1474,7 +1474,7 @@ LABEL_15:
 
         if (v28 == 1)
         {
-          v14 = [v12 removedIndexes];
+          insertedIndexes = [sectionChanges removedIndexes];
           goto LABEL_14;
         }
       }
@@ -1504,33 +1504,33 @@ void __116__PXSectionedDataSourceChangeDetails_changeDetailsAreOnlyInsertionsOrO
   }
 }
 
-+ (PXSectionedDataSourceChangeDetails)changeDetailsWithNoChangesFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4
++ (PXSectionedDataSourceChangeDetails)changeDetailsWithNoChangesFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = +[PXArrayChangeDetails changeDetailsWithNoChanges];
-  v8 = [v6 initWithFromDataSourceIdentifier:a3 toDataSourceIdentifier:a4 sectionChanges:v7 itemChangeDetailsBySection:0 subitemChangeDetailsByItemBySection:0];
+  v8 = [v6 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:sourceIdentifier sectionChanges:v7 itemChangeDetailsBySection:0 subitemChangeDetailsByItemBySection:0];
 
   return v8;
 }
 
-+ (PXSectionedDataSourceChangeDetails)changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4
++ (PXSectionedDataSourceChangeDetails)changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = +[PXArrayChangeDetails changeDetailsWithNoIncrementalChanges];
-  v8 = [v6 initWithFromDataSourceIdentifier:a3 toDataSourceIdentifier:a4 sectionChanges:v7 itemChangeDetailsBySection:0 subitemChangeDetailsByItemBySection:0];
+  v8 = [v6 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:sourceIdentifier sectionChanges:v7 itemChangeDetailsBySection:0 subitemChangeDetailsByItemBySection:0];
 
   return v8;
 }
 
-+ (BOOL)changesHaveAnyInsertionsRemovalsOrMoves:(id)a3
++ (BOOL)changesHaveAnyInsertionsRemovalsOrMoves:(id)moves
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  movesCopy = moves;
+  v4 = [movesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -1540,7 +1540,7 @@ void __116__PXSectionedDataSourceChangeDetails_changeDetailsAreOnlyInsertionsOrO
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(movesCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) hasAnyInsertionsRemovalsOrMoves])
@@ -1550,7 +1550,7 @@ void __116__PXSectionedDataSourceChangeDetails_changeDetailsAreOnlyInsertionsOrO
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [movesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -1565,30 +1565,30 @@ LABEL_11:
   return v4;
 }
 
-+ (id)indexPathSetAfterRevertingChanges:(id)a3 fromIndexPathSet:(id)a4 hasIncrementalChanges:(BOOL *)a5
++ (id)indexPathSetAfterRevertingChanges:(id)changes fromIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)incrementalChanges
 {
-  v7 = a3;
+  changesCopy = changes;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__16665;
   v20 = __Block_byref_object_dispose__16666;
-  v8 = a4;
-  v21 = v8;
+  setCopy = set;
+  v21 = setCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
-  v15 = [v7 count] != 0;
+  v15 = [changesCopy count] != 0;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __111__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChanges_fromIndexPathSet_hasIncrementalChanges___block_invoke;
   v11[3] = &unk_1E7BB8450;
   v11[4] = &v16;
   v11[5] = &v12;
-  [v7 enumerateObjectsWithOptions:2 usingBlock:v11];
-  if (a5)
+  [changesCopy enumerateObjectsWithOptions:2 usingBlock:v11];
+  if (incrementalChanges)
   {
-    *a5 = *(v13 + 24);
+    *incrementalChanges = *(v13 + 24);
   }
 
   v9 = v17[5];
@@ -1609,23 +1609,23 @@ void __111__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChanges
   *(*(*(a1 + 40) + 8) + 24) &= v6;
 }
 
-+ (id)indexPathSetAfterApplyingChanges:(id)a3 toIndexPathSet:(id)a4 hasIncrementalChanges:(BOOL *)a5
++ (id)indexPathSetAfterApplyingChanges:(id)changes toIndexPathSet:(id)set hasIncrementalChanges:(BOOL *)incrementalChanges
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  changesCopy = changes;
+  setCopy = set;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v7 count] != 0;
+  v9 = [changesCopy count] != 0;
   v22 = 0u;
   v23 = 0u;
-  v10 = v7;
+  v10 = changesCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v21;
-    v14 = v8;
+    v14 = setCopy;
     do
     {
       v15 = 0;
@@ -1655,27 +1655,27 @@ void __111__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChanges
 
   else
   {
-    v14 = v8;
+    v14 = setCopy;
   }
 
-  if (a5)
+  if (incrementalChanges)
   {
-    *a5 = v9 & 1;
+    *incrementalChanges = v9 & 1;
   }
 
   return v14;
 }
 
-+ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)a3 fromIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6 changedProperties:(BOOL *)a7
++ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)changes fromIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties
 {
-  v13 = a4;
+  pathCopy = path;
   v14 = a8;
   v32 = 0;
   v33 = &v32;
   v34 = 0x4010000000;
   v35 = "";
-  v15 = *&a5->item;
-  v36 = *&a5->dataSourceIdentifier;
+  v15 = *&incrementalChanges->item;
+  v36 = *&incrementalChanges->dataSourceIdentifier;
   v37 = v15;
   v28 = 0;
   v29 = &v28;
@@ -1684,7 +1684,7 @@ void __111__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChanges
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
-  v27 = [v13 count] != 0;
+  v27 = [pathCopy count] != 0;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __137__PXSectionedDataSourceChangeDetails_indexPathAfterRevertingChanges_fromIndexPath_hasIncrementalChanges_objectChanged_changedProperties___block_invoke;
@@ -1694,15 +1694,15 @@ void __111__PXSectionedDataSourceChangeDetails_indexPathSetAfterRevertingChanges
   v20 = v16;
   v22 = &v28;
   v23 = &v24;
-  [v13 enumerateObjectsWithOptions:2 usingBlock:v19];
-  if (a7)
+  [pathCopy enumerateObjectsWithOptions:2 usingBlock:v19];
+  if (properties)
   {
-    *a7 = *(v29 + 24);
+    *properties = *(v29 + 24);
   }
 
-  if (a6)
+  if (changed)
   {
-    *a6 = *(v25 + 24);
+    *changed = *(v25 + 24);
   }
 
   v17 = *(v33 + 3);
@@ -1735,28 +1735,28 @@ double __137__PXSectionedDataSourceChangeDetails_indexPathAfterRevertingChanges_
   return result;
 }
 
-+ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)a3 fromIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6
++ (PXSimpleIndexPath)indexPathAfterRevertingChanges:(SEL)changes fromIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed
 {
-  v7 = *&a5->item;
-  v9[0] = *&a5->dataSourceIdentifier;
+  v7 = *&incrementalChanges->item;
+  v9[0] = *&incrementalChanges->dataSourceIdentifier;
   v9[1] = v7;
-  return [a2 indexPathAfterRevertingChanges:a4 fromIndexPath:v9 hasIncrementalChanges:a6 objectChanged:a7 changedProperties:0];
+  return [a2 indexPathAfterRevertingChanges:path fromIndexPath:v9 hasIncrementalChanges:changed objectChanged:a7 changedProperties:0];
 }
 
-+ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)a3 toIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6 changedProperties:(BOOL *)a7
++ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)changes toIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed changedProperties:(BOOL *)properties
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a4;
+  pathCopy = path;
   v14 = a8;
-  v15 = *&a5->item;
-  *&retstr->dataSourceIdentifier = *&a5->dataSourceIdentifier;
+  v15 = *&incrementalChanges->item;
+  *&retstr->dataSourceIdentifier = *&incrementalChanges->dataSourceIdentifier;
   *&retstr->item = v15;
   v33 = 0u;
   v34 = 0u;
-  v16 = [v13 count] != 0;
+  v16 = [pathCopy count] != 0;
   v35 = 0u;
   v36 = 0u;
-  v17 = v13;
+  v17 = pathCopy;
   v18 = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v18)
   {
@@ -1810,25 +1810,25 @@ double __137__PXSectionedDataSourceChangeDetails_indexPathAfterRevertingChanges_
     v20 = 0;
   }
 
-  if (a7)
+  if (properties)
   {
-    *a7 = v20 & 1;
+    *properties = v20 & 1;
   }
 
-  if (a6)
+  if (changed)
   {
-    *a6 = v16 & 1;
+    *changed = v16 & 1;
   }
 
   return result;
 }
 
-+ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)a3 toIndexPath:(id)a4 hasIncrementalChanges:(PXSimpleIndexPath *)a5 objectChanged:(BOOL *)a6
++ (PXSimpleIndexPath)indexPathAfterApplyingChanges:(SEL)changes toIndexPath:(id)path hasIncrementalChanges:(PXSimpleIndexPath *)incrementalChanges objectChanged:(BOOL *)changed
 {
-  v7 = *&a5->item;
-  v9[0] = *&a5->dataSourceIdentifier;
+  v7 = *&incrementalChanges->item;
+  v9[0] = *&incrementalChanges->dataSourceIdentifier;
   v9[1] = v7;
-  return [a2 indexPathAfterApplyingChanges:a4 toIndexPath:v9 hasIncrementalChanges:a6 objectChanged:a7 changedProperties:0];
+  return [a2 indexPathAfterApplyingChanges:path toIndexPath:v9 hasIncrementalChanges:changed objectChanged:a7 changedProperties:0];
 }
 
 @end

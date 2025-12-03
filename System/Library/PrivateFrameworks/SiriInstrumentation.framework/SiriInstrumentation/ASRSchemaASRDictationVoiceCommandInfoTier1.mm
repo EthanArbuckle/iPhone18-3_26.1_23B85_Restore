@@ -1,26 +1,26 @@
 @interface ASRSchemaASRDictationVoiceCommandInfoTier1
-- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithDictionary:(id)a3;
-- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRDictationVoiceCommandInfoTier1
 
-- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithDictionary:(id)a3
+- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = ASRSchemaASRDictationVoiceCommandInfoTier1;
   v5 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"previousUtterance"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"previousUtterance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)v5 setPreviousUtterance:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"commandUtterance"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"commandUtterance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)v5 setCommandUtterance:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"target"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"target"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)v5 setTarget:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"payload"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"payload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)v5 setPayload:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"dictationVoiceCommandLinkId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"dictationVoiceCommandLinkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithJSON:(id)a3
+- (ASRSchemaASRDictationVoiceCommandInfoTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,54 +102,54 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_commandUtterance)
   {
-    v4 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"commandUtterance"];
+    commandUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
+    v5 = [commandUtterance copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"commandUtterance"];
   }
 
   if (self->_dictationVoiceCommandLinkId)
   {
-    v6 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
+    dictionaryRepresentation = [dictationVoiceCommandLinkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"dictationVoiceCommandLinkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dictationVoiceCommandLinkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"dictationVoiceCommandLinkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dictationVoiceCommandLinkId"];
     }
   }
 
   if (self->_payload)
   {
-    v9 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"payload"];
+    payload = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
+    v10 = [payload copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"payload"];
   }
 
   if (self->_previousUtterance)
   {
-    v11 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"previousUtterance"];
+    previousUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
+    v12 = [previousUtterance copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"previousUtterance"];
   }
 
   if (self->_target)
   {
-    v13 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"target"];
+    target = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
+    v14 = [target copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"target"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -161,28 +161,28 @@
   return v6 ^ [(SISchemaUUID *)self->_dictationVoiceCommandLinkId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
-  v6 = [v4 previousUtterance];
-  if ((v5 != 0) == (v6 == 0))
+  previousUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
+  previousUtterance2 = [equalCopy previousUtterance];
+  if ((previousUtterance != 0) == (previousUtterance2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
-  if (v7)
+  previousUtterance3 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
+  if (previousUtterance3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
-    v10 = [v4 previousUtterance];
-    v11 = [v9 isEqual:v10];
+    v8 = previousUtterance3;
+    previousUtterance4 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
+    previousUtterance5 = [equalCopy previousUtterance];
+    v11 = [previousUtterance4 isEqual:previousUtterance5];
 
     if (!v11)
     {
@@ -194,20 +194,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
-  v6 = [v4 commandUtterance];
-  if ((v5 != 0) == (v6 == 0))
+  previousUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
+  previousUtterance2 = [equalCopy commandUtterance];
+  if ((previousUtterance != 0) == (previousUtterance2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
-  if (v12)
+  commandUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
+  if (commandUtterance)
   {
-    v13 = v12;
-    v14 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
-    v15 = [v4 commandUtterance];
-    v16 = [v14 isEqual:v15];
+    v13 = commandUtterance;
+    commandUtterance2 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
+    commandUtterance3 = [equalCopy commandUtterance];
+    v16 = [commandUtterance2 isEqual:commandUtterance3];
 
     if (!v16)
     {
@@ -219,20 +219,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
-  v6 = [v4 target];
-  if ((v5 != 0) == (v6 == 0))
+  previousUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
+  previousUtterance2 = [equalCopy target];
+  if ((previousUtterance != 0) == (previousUtterance2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
-  if (v17)
+  target = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
+  if (target)
   {
-    v18 = v17;
-    v19 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
-    v20 = [v4 target];
-    v21 = [v19 isEqual:v20];
+    v18 = target;
+    target2 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
+    target3 = [equalCopy target];
+    v21 = [target2 isEqual:target3];
 
     if (!v21)
     {
@@ -244,20 +244,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
-  v6 = [v4 payload];
-  if ((v5 != 0) == (v6 == 0))
+  previousUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
+  previousUtterance2 = [equalCopy payload];
+  if ((previousUtterance != 0) == (previousUtterance2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
-  if (v22)
+  payload = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
+  if (payload)
   {
-    v23 = v22;
-    v24 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
-    v25 = [v4 payload];
-    v26 = [v24 isEqual:v25];
+    v23 = payload;
+    payload2 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
+    payload3 = [equalCopy payload];
+    v26 = [payload2 isEqual:payload3];
 
     if (!v26)
     {
@@ -269,12 +269,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
-  v6 = [v4 dictationVoiceCommandLinkId];
-  if ((v5 != 0) != (v6 == 0))
+  previousUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
+  previousUtterance2 = [equalCopy dictationVoiceCommandLinkId];
+  if ((previousUtterance != 0) != (previousUtterance2 == 0))
   {
-    v27 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
-    if (!v27)
+    dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
+    if (!dictationVoiceCommandLinkId)
     {
 
 LABEL_30:
@@ -282,10 +282,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
-    v30 = [v4 dictationVoiceCommandLinkId];
-    v31 = [v29 isEqual:v30];
+    v28 = dictationVoiceCommandLinkId;
+    dictationVoiceCommandLinkId2 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
+    dictationVoiceCommandLinkId3 = [equalCopy dictationVoiceCommandLinkId];
+    v31 = [dictationVoiceCommandLinkId2 isEqual:dictationVoiceCommandLinkId3];
 
     if (v31)
     {
@@ -305,56 +305,56 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
+  toCopy = to;
+  previousUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self previousUtterance];
 
-  if (v4)
+  if (previousUtterance)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
+  commandUtterance = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self commandUtterance];
 
-  if (v5)
+  if (commandUtterance)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
+  target = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self target];
 
-  if (v6)
+  if (target)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
+  payload = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self payload];
 
-  if (v7)
+  if (payload)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
+  dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (dictationVoiceCommandLinkId)
   {
-    v10 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
+    dictationVoiceCommandLinkId2 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = ASRSchemaASRDictationVoiceCommandInfoTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePreviousUtterance];
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deleteCommandUtterance];
@@ -362,7 +362,7 @@ LABEL_28:
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePayload];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePreviousUtterance];
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deleteCommandUtterance];
@@ -370,7 +370,7 @@ LABEL_28:
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePayload];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePreviousUtterance];
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deleteCommandUtterance];
@@ -378,7 +378,7 @@ LABEL_28:
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePayload];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePreviousUtterance];
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deleteCommandUtterance];
@@ -386,7 +386,7 @@ LABEL_28:
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePayload];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePreviousUtterance];
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deleteCommandUtterance];
@@ -394,11 +394,11 @@ LABEL_28:
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deletePayload];
   }
 
-  v6 = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self dictationVoiceCommandLinkId];
+  v7 = [dictationVoiceCommandLinkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRDictationVoiceCommandInfoTier1 *)self deleteDictationVoiceCommandLinkId];
   }

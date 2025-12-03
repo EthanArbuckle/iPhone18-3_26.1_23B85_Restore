@@ -1,24 +1,24 @@
 @interface PKInstallmentPlanTotalFinancedCollectionViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKInstallmentPlanTotalFinancedCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKInstallmentPlanTotalFinancedCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAmount:(id)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAmount:(id)amount;
+- (void)setSubtitleText:(id)text;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKInstallmentPlanTotalFinancedCollectionViewCell
 
-- (PKInstallmentPlanTotalFinancedCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKInstallmentPlanTotalFinancedCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v36.receiver = self;
   v36.super_class = PKInstallmentPlanTotalFinancedCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKInstallmentPlanTotalFinancedCollectionViewCell *)v3 contentView];
+    contentView = [(PKInstallmentPlanTotalFinancedCollectionViewCell *)v3 contentView];
     v6 = objc_alloc(MEMORY[0x1E69DCC10]);
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -33,11 +33,11 @@
     [(UILabel *)v13 setFont:v14];
 
     v15 = v4->_titleLabel;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v15 setTextColor:labelColor];
 
     [(UILabel *)v4->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     v17 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
     amountLabel = v4->_amountLabel;
     v4->_amountLabel = v17;
@@ -47,11 +47,11 @@
     [(UILabel *)v19 setFont:v20];
 
     v21 = v4->_amountLabel;
-    v22 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v21 setTextColor:v22];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v21 setTextColor:labelColor2];
 
     [(UILabel *)v4->_amountLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9448]];
-    [v5 addSubview:v4->_amountLabel];
+    [contentView addSubview:v4->_amountLabel];
     v23 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
     subtitleLabel = v4->_subtitleLabel;
     v4->_subtitleLabel = v23;
@@ -61,11 +61,11 @@
     [(UILabel *)v25 setFont:v26];
 
     v27 = v4->_subtitleLabel;
-    v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v27 setTextColor:v28];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v27 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_subtitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-    [v5 addSubview:v4->_subtitleLabel];
+    [contentView addSubview:v4->_subtitleLabel];
     v29 = objc_alloc(MEMORY[0x1E69DCAE0]);
     if (_UISolariumFeatureFlagEnabled())
     {
@@ -82,20 +82,20 @@
     v4->_disclosureView = v31;
 
     v33 = v4->_disclosureView;
-    v34 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v33 setTintColor:v34];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v33 setTintColor:tertiaryLabelColor];
 
-    [v5 addSubview:v4->_disclosureView];
+    [contentView addSubview:v4->_disclosureView];
     [(PKInstallmentPlanTotalFinancedCollectionViewCell *)v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9D28]];
   }
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   self->_isTemplateLayout = 1;
   [(PKDashboardCollectionViewCell *)self horizontalInset];
   [(PKInstallmentPlanTotalFinancedCollectionViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width - (v6 + v6), height];
@@ -110,17 +110,17 @@
   v4.receiver = self;
   v4.super_class = PKInstallmentPlanTotalFinancedCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(PKInstallmentPlanTotalFinancedCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKInstallmentPlanTotalFinancedCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(PKInstallmentPlanTotalFinancedCollectionViewCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(PKInstallmentPlanTotalFinancedCollectionViewCell *)self _shouldReverseLayoutDirection])
   {
     v8 = CGRectMinXEdge;
@@ -205,11 +205,11 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_title;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -239,25 +239,25 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAmount:(id)a3
+- (void)setAmount:(id)amount
 {
-  v7 = a3;
+  amountCopy = amount;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_amount, a3);
+    objc_storeStrong(&self->_amount, amount);
     amountLabel = self->_amountLabel;
-    v6 = [v7 formattedStringValue];
-    [(UILabel *)amountLabel setText:v6];
+    formattedStringValue = [amountCopy formattedStringValue];
+    [(UILabel *)amountLabel setText:formattedStringValue];
 
     [(PKInstallmentPlanTotalFinancedCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_subtitleText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {

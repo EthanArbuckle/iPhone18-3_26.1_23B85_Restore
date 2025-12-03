@@ -1,14 +1,14 @@
 @interface OITSUDateParserLibrary
-- (OITSUDateParserLibrary)initWithLocale:(id)a3;
+- (OITSUDateParserLibrary)initWithLocale:(id)locale;
 - (id)checkoutDateParser;
 - (void)dealloc;
 - (void)prepareDateParserInBackground;
-- (void)returnDateParser:(id)a3;
+- (void)returnDateParser:(id)parser;
 @end
 
 @implementation OITSUDateParserLibrary
 
-- (OITSUDateParserLibrary)initWithLocale:(id)a3
+- (OITSUDateParserLibrary)initWithLocale:(id)locale
 {
   v7.receiver = self;
   v7.super_class = OITSUDateParserLibrary;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mLocale = a3;
+    v4->mLocale = locale;
     v4->mAvailableDateParsers = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5->mParserLibraryConditionVariable = objc_alloc_init(MEMORY[0x277CCA928]);
     v5->mNumberOfUses = 0;
@@ -87,16 +87,16 @@
     }
   }
 
-  v11 = [(NSMutableArray *)self->mAvailableDateParsers lastObject];
+  lastObject = [(NSMutableArray *)self->mAvailableDateParsers lastObject];
   [(NSMutableArray *)self->mAvailableDateParsers removeLastObject];
   [(NSCondition *)self->mParserLibraryConditionVariable unlock];
-  return v11;
+  return lastObject;
 }
 
-- (void)returnDateParser:(id)a3
+- (void)returnDateParser:(id)parser
 {
   [(NSCondition *)self->mParserLibraryConditionVariable lock];
-  [(NSMutableArray *)self->mAvailableDateParsers addObject:a3];
+  [(NSMutableArray *)self->mAvailableDateParsers addObject:parser];
   [(NSCondition *)self->mParserLibraryConditionVariable signal];
   mParserLibraryConditionVariable = self->mParserLibraryConditionVariable;
 

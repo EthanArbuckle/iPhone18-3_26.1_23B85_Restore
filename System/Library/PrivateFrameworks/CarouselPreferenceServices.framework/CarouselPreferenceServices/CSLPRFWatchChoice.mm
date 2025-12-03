@@ -1,12 +1,12 @@
 @interface CSLPRFWatchChoice
-+ (id)watchChoice:(int64_t)a3;
++ (id)watchChoice:(int64_t)choice;
 + (id)watchChoices;
-- (CSLPRFWatchChoice)initWithChoice:(int64_t)a3;
+- (CSLPRFWatchChoice)initWithChoice:(int64_t)choice;
 @end
 
 @implementation CSLPRFWatchChoice
 
-- (CSLPRFWatchChoice)initWithChoice:(int64_t)a3
+- (CSLPRFWatchChoice)initWithChoice:(int64_t)choice
 {
   v13.receiver = self;
   v13.super_class = CSLPRFWatchChoice;
@@ -14,8 +14,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_choice = a3;
-    if (a3 == 2)
+    v4->_choice = choice;
+    if (choice == 2)
     {
       label = v4->_label;
       v4->_label = @"APP_VIEW_CHOICE_LIST_VIEW";
@@ -27,7 +27,7 @@
       v5->_swapForRightToLeft = 1;
     }
 
-    else if (a3 == 1)
+    else if (choice == 1)
     {
       v6 = v4->_label;
       v4->_label = @"APP_VIEW_CHOICE_GRID_VIEW";
@@ -41,9 +41,9 @@
   return v5;
 }
 
-+ (id)watchChoice:(int64_t)a3
++ (id)watchChoice:(int64_t)choice
 {
-  v3 = [[a1 alloc] initWithChoice:a3];
+  v3 = [[self alloc] initWithChoice:choice];
 
   return v3;
 }
@@ -51,9 +51,9 @@
 + (id)watchChoices
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [a1 watchChoice:1];
+  v3 = [self watchChoice:1];
   v8[0] = v3;
-  v4 = [a1 watchChoice:2];
+  v4 = [self watchChoice:2];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 

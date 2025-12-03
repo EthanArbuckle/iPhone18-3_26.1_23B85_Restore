@@ -1,19 +1,19 @@
 @interface DSSnapshotRequest
-- (BOOL)__collectSpaceAttributionSnapshot:(id *)a3;
-- (BOOL)__createPreSnapshotVolumeManagerUsingProvider:(id)a3 error:(id *)a4;
-- (BOOL)__createSnapshotFileManagerUsingProvider:(id)a3 error:(id *)a4;
-- (BOOL)_setupManagersAndProgress:(id)a3 volumeManagerProvider:(id)a4 error:(id *)a5;
-- (DSSnapshotRequest)initWithOptions:(id)a3;
+- (BOOL)__collectSpaceAttributionSnapshot:(id *)snapshot;
+- (BOOL)__createPreSnapshotVolumeManagerUsingProvider:(id)provider error:(id *)error;
+- (BOOL)__createSnapshotFileManagerUsingProvider:(id)provider error:(id *)error;
+- (BOOL)_setupManagersAndProgress:(id)progress volumeManagerProvider:(id)provider error:(id *)error;
+- (DSSnapshotRequest)initWithOptions:(id)options;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)__createVolumeManagerUsingProvider:(id)a3 error:(id *)a4;
-- (id)__doDataCollection:(id *)a3;
+- (id)__createVolumeManagerUsingProvider:(id)provider error:(id *)error;
+- (id)__doDataCollection:(id *)collection;
 - (id)__fetchMetadata;
 - (id)__stockSnapshotFileManagerProvider;
 - (id)__stockVolumeManagerProvider;
-- (id)executeWithError:(id *)a3;
+- (id)executeWithError:(id *)error;
 - (void)__createPowerAssertions;
-- (void)__incrementProgress:(id)a3 byPercent:(float)a4;
+- (void)__incrementProgress:(id)progress byPercent:(float)percent;
 - (void)__initializeProgress;
 - (void)__releasePowerAssertions;
 @end
@@ -53,8 +53,8 @@
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "Fetching metadata", buf, 2u);
   }
 
-  v3 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v4 = fprintf([v3 sharedLogFile], "%s\t%s\n", "Version:", "1013") == -1;
+  snapshotFileManager = [(DSSnapshotRequest *)self snapshotFileManager];
+  v4 = fprintf([snapshotFileManager sharedLogFile], "%s\t%s\n", "Version:", "1013") == -1;
 
   if (v4)
   {
@@ -71,8 +71,8 @@
     }
   }
 
-  v8 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v9 = fprintf([v8 sharedLogFile], "%s\t%s\n", "Snapshot Version:", objc_msgSend(@"2.7", "UTF8String")) == -1;
+  snapshotFileManager2 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v9 = fprintf([snapshotFileManager2 sharedLogFile], "%s\t%s\n", "Snapshot Version:", objc_msgSend(@"2.7", "UTF8String")) == -1;
 
   if (v9)
   {
@@ -92,14 +92,14 @@
   v135 = [NSMutableDictionary dictionaryWithCapacity:10];
   [v135 setObject:@"1013" forKeyedSubscript:@"DiskSpaceDiagnosticsVersion"];
   [v135 setObject:@"2.7" forKeyedSubscript:@"SnapshotVersion"];
-  v13 = [(DSSnapshotRequest *)self options];
-  v14 = [v13 objectForKeyedSubscript:@"FilesystemMetadatSnapshotOptionShouldHashVolumeListings"];
+  options = [(DSSnapshotRequest *)self options];
+  v14 = [options objectForKeyedSubscript:@"FilesystemMetadatSnapshotOptionShouldHashVolumeListings"];
   v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v14 BOOLValue]);
   [v135 setObject:v15 forKeyedSubscript:@"HasHashedFSListings"];
 
-  v16 = [(DSSnapshotRequest *)self beginDate];
+  beginDate = [(DSSnapshotRequest *)self beginDate];
   v17 = +[NSTimeZone systemTimeZone];
-  v18 = [NSISO8601DateFormatter stringFromDate:v16 timeZone:v17 formatOptions:3955];
+  v18 = [NSISO8601DateFormatter stringFromDate:beginDate timeZone:v17 formatOptions:3955];
   [v135 setObject:v18 forKeyedSubscript:@"TimestampBegin"];
 
   v19 = shared_filesystem_metadata_snapshot_service_log_handle();
@@ -118,13 +118,13 @@
   v128 = MGCopyAnswer();
   [v135 setObject:v134 forKeyedSubscript:@"HardwareModel"];
   [v135 setObject:v133 forKeyedSubscript:@"MarketingName"];
-  v20 = [NSString stringWithFormat:@"%@ %@ %@ (%@)", v132, v131, v130, v129];
-  [v135 setObject:v20 forKeyedSubscript:@"OSVersion"];
+  v129 = [NSString stringWithFormat:@"%@ %@ %@ (%@)", v132, v131, v130, v129];
+  [v135 setObject:v129 forKeyedSubscript:@"OSVersion"];
 
   [v135 setObject:v128 forKeyedSubscript:@"InternalBuild"];
-  v21 = [(DSSnapshotRequest *)self __miscProgress];
+  __miscProgress = [(DSSnapshotRequest *)self __miscProgress];
   LODWORD(v22) = 10.0;
-  [(DSSnapshotRequest *)self __incrementProgress:v21 byPercent:v22];
+  [(DSSnapshotRequest *)self __incrementProgress:__miscProgress byPercent:v22];
 
   v23 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -140,8 +140,8 @@
   v26 = +[NSDate now];
   [v26 timeIntervalSinceDate:v24];
   v28 = v27;
-  v29 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v30 = fprintf([v29 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] Indirection table stats", v28) == -1;
+  snapshotFileManager3 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v30 = fprintf([snapshotFileManager3 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] Indirection table stats", v28) == -1;
 
   if (v30)
   {
@@ -169,9 +169,9 @@
   }
 
   [(DSSnapshotRequestTelemetryReporter *)self->__telemetryReporter setSnapshotMetadataIndirectionTableStatsDurationSec:v28];
-  v35 = [(DSSnapshotRequest *)self __miscProgress];
+  __miscProgress2 = [(DSSnapshotRequest *)self __miscProgress];
   LODWORD(v36) = 10.0;
-  [(DSSnapshotRequest *)self __incrementProgress:v35 byPercent:v36];
+  [(DSSnapshotRequest *)self __incrementProgress:__miscProgress2 byPercent:v36];
 
   v37 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -181,15 +181,15 @@
   }
 
   v38 = +[NSDate now];
-  v39 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v40 = apfsVolumeInfo([v39 sharedLogFile]);
+  snapshotFileManager4 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v40 = apfsVolumeInfo([snapshotFileManager4 sharedLogFile]);
   [v135 addEntriesFromDictionary:v40];
 
   v41 = +[NSDate now];
   [v41 timeIntervalSinceDate:v38];
   v43 = v42;
-  v44 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v45 = fprintf([v44 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] APFS volume info", v43) == -1;
+  snapshotFileManager5 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v45 = fprintf([snapshotFileManager5 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] APFS volume info", v43) == -1;
 
   if (v45)
   {
@@ -217,9 +217,9 @@
   }
 
   [(DSSnapshotRequestTelemetryReporter *)self->__telemetryReporter setSnapshotMetadataAPFSVolumeInfoDurationSec:v43];
-  v50 = [(DSSnapshotRequest *)self __miscProgress];
+  __miscProgress3 = [(DSSnapshotRequest *)self __miscProgress];
   LODWORD(v51) = 10.0;
-  [(DSSnapshotRequest *)self __incrementProgress:v50 byPercent:v51];
+  [(DSSnapshotRequest *)self __incrementProgress:__miscProgress3 byPercent:v51];
 
   v52 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -233,17 +233,17 @@
   *&buf[16] = 0x2020000000;
   v153 = 0;
   v53 = objc_alloc_init(NSMutableDictionary);
-  v54 = [(DSSnapshotRequest *)self _volumeManager];
-  v55 = [v54 volumesForSnapshotting];
+  _volumeManager = [(DSSnapshotRequest *)self _volumeManager];
+  volumesForSnapshotting = [_volumeManager volumesForSnapshotting];
   v142[0] = _NSConcreteStackBlock;
   v142[1] = 3221225472;
   v142[2] = sub_100007DB4;
   v142[3] = &unk_1000688A0;
   v56 = v53;
   v143 = v56;
-  v144 = self;
+  selfCopy = self;
   v145 = buf;
-  [v55 enumerateObjectsUsingBlock:v142];
+  [volumesForSnapshotting enumerateObjectsUsingBlock:v142];
 
   [(DSSnapshotRequestTelemetryReporter *)self->__telemetryReporter setSnapshotMetadataAPFSSnapshotInfoDurationSec:*(*&buf[8] + 24)];
   v150 = @"FSSnapshots";
@@ -260,16 +260,16 @@
   }
 
   v59 = +[NSDate now];
-  v60 = [(DSSnapshotRequest *)self _volumeManager];
-  v61 = [v60 allVolumesInfoDict];
-  [v135 addEntriesFromDictionary:v61];
+  _volumeManager2 = [(DSSnapshotRequest *)self _volumeManager];
+  allVolumesInfoDict = [_volumeManager2 allVolumesInfoDict];
+  [v135 addEntriesFromDictionary:allVolumesInfoDict];
 
-  v62 = [(DSSnapshotRequest *)self __stockVolumeManagerProvider];
-  v63 = [(DSSnapshotRequest *)self __createVolumeManagerUsingProvider:v62 error:0];
+  __stockVolumeManagerProvider = [(DSSnapshotRequest *)self __stockVolumeManagerProvider];
+  v63 = [(DSSnapshotRequest *)self __createVolumeManagerUsingProvider:__stockVolumeManagerProvider error:0];
 
-  v64 = [v63 allVolumesInfoDict];
+  allVolumesInfoDict2 = [v63 allVolumesInfoDict];
   v148 = @"VolumesPostSnapshot";
-  v65 = [v64 objectForKeyedSubscript:@"Volumes"];
+  v65 = [allVolumesInfoDict2 objectForKeyedSubscript:@"Volumes"];
   v149 = v65;
   v66 = [NSDictionary dictionaryWithObjects:&v149 forKeys:&v148 count:1];
 
@@ -277,8 +277,8 @@
   v67 = +[NSDate now];
   [v67 timeIntervalSinceDate:v59];
   v69 = v68;
-  v70 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v71 = fprintf([v70 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] Volume info", v69) == -1;
+  snapshotFileManager6 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v71 = fprintf([snapshotFileManager6 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] Volume info", v69) == -1;
 
   if (v71)
   {
@@ -306,9 +306,9 @@
   }
 
   [(DSSnapshotRequestTelemetryReporter *)self->__telemetryReporter setSnapshotMetadataVolumeInfoDurationSec:v69];
-  v76 = [(DSSnapshotRequest *)self __miscProgress];
+  __miscProgress4 = [(DSSnapshotRequest *)self __miscProgress];
   LODWORD(v77) = 10.0;
-  [(DSSnapshotRequest *)self __incrementProgress:v76 byPercent:v77];
+  [(DSSnapshotRequest *)self __incrementProgress:__miscProgress4 byPercent:v77];
 
   v78 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
@@ -318,15 +318,15 @@
   }
 
   v79 = +[NSDate now];
-  v80 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v81 = unlinkedOpenFiles([v80 sharedLogFile]);
+  snapshotFileManager7 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v81 = unlinkedOpenFiles([snapshotFileManager7 sharedLogFile]);
   [v135 addEntriesFromDictionary:v81];
 
   v82 = +[NSDate now];
   [v82 timeIntervalSinceDate:v79];
   v84 = v83;
-  v85 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v86 = fprintf([v85 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] Unlinked open files", v84) == -1;
+  snapshotFileManager8 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v86 = fprintf([snapshotFileManager8 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] Unlinked open files", v84) == -1;
 
   if (v86)
   {
@@ -354,9 +354,9 @@
   }
 
   [(DSSnapshotRequestTelemetryReporter *)self->__telemetryReporter setSnapshotMetadataUnlinkedOpenFilesDurationSec:v84];
-  v91 = [(DSSnapshotRequest *)self __miscProgress];
+  __miscProgress5 = [(DSSnapshotRequest *)self __miscProgress];
   LODWORD(v92) = 10.0;
-  [(DSSnapshotRequest *)self __incrementProgress:v91 byPercent:v92];
+  [(DSSnapshotRequest *)self __incrementProgress:__miscProgress5 byPercent:v92];
 
   v93 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
@@ -371,8 +371,8 @@
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v95 = [(DSSnapshotRequest *)self _volumeManager];
-  obj = [v95 volumesForSnapshotting];
+  _volumeManager3 = [(DSSnapshotRequest *)self _volumeManager];
+  obj = [_volumeManager3 volumesForSnapshotting];
 
   v96 = [obj countByEnumeratingWithState:&v138 objects:v147 count:16];
   if (v96)
@@ -399,19 +399,19 @@
         }
 
         v102 = +[NSDate now];
-        v103 = [v99 mountPoint];
-        v104 = cacheDeleteInfo(v103);
+        mountPoint = [v99 mountPoint];
+        v104 = cacheDeleteInfo(mountPoint);
         [v94 addObject:v104];
 
-        v105 = [(DSSnapshotRequest *)self __cacheDeleteProgress];
-        v106 = [v99 progress];
-        [v105 setCompletedUnitCount:{(objc_msgSend(v105, "completedUnitCount") + objc_msgSend(v106, "totalUnitCount") * 0.1)}];
+        __cacheDeleteProgress = [(DSSnapshotRequest *)self __cacheDeleteProgress];
+        progress = [v99 progress];
+        [__cacheDeleteProgress setCompletedUnitCount:{(objc_msgSend(__cacheDeleteProgress, "completedUnitCount") + objc_msgSend(progress, "totalUnitCount") * 0.1)}];
 
         v107 = +[NSDate now];
         [v107 timeIntervalSinceDate:v102];
         v109 = v108;
-        v110 = [(DSSnapshotRequest *)self snapshotFileManager];
-        LODWORD(v104) = fprintf([v110 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] CacheDeleteInfo for volume", v109) == -1;
+        snapshotFileManager9 = [(DSSnapshotRequest *)self snapshotFileManager];
+        LODWORD(v104) = fprintf([snapshotFileManager9 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] CacheDeleteInfo for volume", v109) == -1;
 
         if (v104)
         {
@@ -460,8 +460,8 @@
   v116 = +[NSDate now];
   [v116 timeIntervalSinceDate:v127];
   v118 = v117;
-  v119 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v120 = fprintf([v119 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] CacheDeleteInfo", v118) == -1;
+  snapshotFileManager10 = [(DSSnapshotRequest *)self snapshotFileManager];
+  v120 = fprintf([snapshotFileManager10 sharedLogFile], "%s duration: %.0f seconds\n", "[Metadata] CacheDeleteInfo", v118) == -1;
 
   if (v120)
   {
@@ -495,7 +495,7 @@
   return v135;
 }
 
-- (BOOL)__collectSpaceAttributionSnapshot:(id *)a3
+- (BOOL)__collectSpaceAttributionSnapshot:(id *)snapshot
 {
   v85 = 0;
   v86 = &v85;
@@ -518,10 +518,10 @@
   [SAReporter reportSnapshot:v78];
   if (!v86[5] && v80[5])
   {
-    v22 = [(DSSnapshotRequest *)self snapshotFileManager];
+    snapshotFileManager = [(DSSnapshotRequest *)self snapshotFileManager];
     v23 = (v86 + 5);
     obj = v86[5];
-    v24 = [v22 fileURLForFileNamed:@"SpaceAttributionSnapshot.plist" error:&obj];
+    v24 = [snapshotFileManager fileURLForFileNamed:@"SpaceAttributionSnapshot.plist" error:&obj];
     objc_storeStrong(v23, obj);
 
     if (v24)
@@ -544,16 +544,16 @@
         goto LABEL_52;
       }
 
-      v46 = [(DSSnapshotRequest *)self snapshotFileManager];
-      v47 = [v46 sharedLogFile];
-      v48 = [v86[5] localizedDescription];
-      v49 = v48;
-      v50 = [v48 UTF8String];
+      snapshotFileManager2 = [(DSSnapshotRequest *)self snapshotFileManager];
+      sharedLogFile = [snapshotFileManager2 sharedLogFile];
+      localizedDescription = [v86[5] localizedDescription];
+      v49 = localizedDescription;
+      uTF8String = [localizedDescription UTF8String];
       v51 = [v80[5] description];
       v52 = v51;
-      LODWORD(v47) = fprintf(v47, "Error: Failed to write SpaceAttribution snapshot to file: %s\n%s\n", v50, [v51 UTF8String]) == -1;
+      LODWORD(sharedLogFile) = fprintf(sharedLogFile, "Error: Failed to write SpaceAttribution snapshot to file: %s\n%s\n", uTF8String, [v51 UTF8String]) == -1;
 
-      if (v47)
+      if (sharedLogFile)
       {
         v53 = __error();
         if ((byte_10006E56D & 1) == 0)
@@ -571,20 +571,20 @@
       v56 = shared_filesystem_metadata_snapshot_service_log_handle();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
-        v70 = [v86[5] localizedDescription];
-        v71 = v70;
-        v72 = [v70 UTF8String];
+        localizedDescription2 = [v86[5] localizedDescription];
+        v71 = localizedDescription2;
+        uTF8String2 = [localizedDescription2 UTF8String];
         v73 = [v80[5] description];
         v74 = v73;
-        v75 = [v73 UTF8String];
+        uTF8String3 = [v73 UTF8String];
         *buf = 136315394;
-        v92 = v72;
+        v92 = uTF8String2;
         v93 = 2080;
-        v94 = v75;
+        v94 = uTF8String3;
         _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "Error: Failed to write SpaceAttribution snapshot to file: %s\n%s", buf, 0x16u);
       }
 
-      if (a3)
+      if (snapshot)
       {
         v45 = v86[5];
         goto LABEL_50;
@@ -593,13 +593,13 @@
 
     else
     {
-      v29 = [(DSSnapshotRequest *)self snapshotFileManager];
-      v30 = [v29 sharedLogFile];
-      v31 = [v86[5] localizedDescription];
-      v32 = v31;
-      LODWORD(v30) = fprintf(v30, "Error: Failed to get file URL for writing SpaceAttribution snapshot: %s\n", [v31 UTF8String]) == -1;
+      snapshotFileManager3 = [(DSSnapshotRequest *)self snapshotFileManager];
+      sharedLogFile2 = [snapshotFileManager3 sharedLogFile];
+      localizedDescription3 = [v86[5] localizedDescription];
+      v32 = localizedDescription3;
+      LODWORD(sharedLogFile2) = fprintf(sharedLogFile2, "Error: Failed to get file URL for writing SpaceAttribution snapshot: %s\n", [localizedDescription3 UTF8String]) == -1;
 
-      if (v30)
+      if (sharedLogFile2)
       {
         v33 = __error();
         if ((byte_10006E56B & 1) == 0)
@@ -617,21 +617,21 @@
       v36 = shared_filesystem_metadata_snapshot_service_log_handle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v64 = [v86[5] localizedDescription];
-        v65 = v64;
-        v66 = [v64 UTF8String];
+        localizedDescription4 = [v86[5] localizedDescription];
+        v65 = localizedDescription4;
+        uTF8String4 = [localizedDescription4 UTF8String];
         *buf = 136315138;
-        v92 = v66;
+        v92 = uTF8String4;
         _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Error: Failed to get file URL for writing SpaceAttribution snapshot: %s", buf, 0xCu);
       }
 
-      v37 = [(DSSnapshotRequest *)self snapshotFileManager];
-      v38 = [v37 sharedLogFile];
+      snapshotFileManager4 = [(DSSnapshotRequest *)self snapshotFileManager];
+      sharedLogFile3 = [snapshotFileManager4 sharedLogFile];
       v39 = [v80[5] description];
       v40 = v39;
-      LODWORD(v38) = fprintf(v38, "SpaceAttribution snapshot: %s\n", [v39 UTF8String]) == -1;
+      LODWORD(sharedLogFile3) = fprintf(sharedLogFile3, "SpaceAttribution snapshot: %s\n", [v39 UTF8String]) == -1;
 
-      if (v38)
+      if (sharedLogFile3)
       {
         v41 = __error();
         if ((byte_10006E56C & 1) == 0)
@@ -651,18 +651,18 @@
       {
         v67 = [v80[5] description];
         v68 = v67;
-        v69 = [v67 UTF8String];
+        uTF8String5 = [v67 UTF8String];
         *buf = 136315138;
-        v92 = v69;
+        v92 = uTF8String5;
         _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "SpaceAttribution snapshot: %s", buf, 0xCu);
       }
 
-      if (a3)
+      if (snapshot)
       {
         v45 = v86[5];
 LABEL_50:
         v21 = 0;
-        *a3 = v45;
+        *snapshot = v45;
 LABEL_52:
 
         goto LABEL_53;
@@ -673,13 +673,13 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  v5 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v6 = [v5 sharedLogFile];
-  v7 = [v86[5] localizedDescription];
-  v8 = v7;
-  LODWORD(v6) = fprintf(v6, "Error: Failed to collect SpaceAttribution snapshot: %s\n", [v7 UTF8String]) == -1;
+  snapshotFileManager5 = [(DSSnapshotRequest *)self snapshotFileManager];
+  sharedLogFile4 = [snapshotFileManager5 sharedLogFile];
+  localizedDescription5 = [v86[5] localizedDescription];
+  v8 = localizedDescription5;
+  LODWORD(sharedLogFile4) = fprintf(sharedLogFile4, "Error: Failed to collect SpaceAttribution snapshot: %s\n", [localizedDescription5 UTF8String]) == -1;
 
-  if (v6)
+  if (sharedLogFile4)
   {
     v9 = __error();
     if ((byte_10006E569 & 1) == 0)
@@ -697,21 +697,21 @@ LABEL_52:
   v12 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v58 = [v86[5] localizedDescription];
-    v59 = v58;
-    v60 = [v58 UTF8String];
+    localizedDescription6 = [v86[5] localizedDescription];
+    v59 = localizedDescription6;
+    uTF8String6 = [localizedDescription6 UTF8String];
     *buf = 136315138;
-    v92 = v60;
+    v92 = uTF8String6;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Error: Failed to collect SpaceAttribution snapshot: %s", buf, 0xCu);
   }
 
-  v13 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v14 = [v13 sharedLogFile];
+  snapshotFileManager6 = [(DSSnapshotRequest *)self snapshotFileManager];
+  sharedLogFile5 = [snapshotFileManager6 sharedLogFile];
   v15 = [v80[5] description];
   v16 = v15;
-  LODWORD(v14) = fprintf(v14, "SpaceAttribution snapshot: %s\n", [v15 UTF8String]) == -1;
+  LODWORD(sharedLogFile5) = fprintf(sharedLogFile5, "SpaceAttribution snapshot: %s\n", [v15 UTF8String]) == -1;
 
-  if (v14)
+  if (sharedLogFile5)
   {
     v17 = __error();
     if ((byte_10006E56A & 1) == 0)
@@ -731,16 +731,16 @@ LABEL_52:
   {
     v61 = [v80[5] description];
     v62 = v61;
-    v63 = [v61 UTF8String];
+    uTF8String7 = [v61 UTF8String];
     *buf = 136315138;
-    v92 = v63;
+    v92 = uTF8String7;
     _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "SpaceAttribution snapshot: %s", buf, 0xCu);
   }
 
   v21 = 0;
-  if (a3)
+  if (snapshot)
   {
-    *a3 = v86[5];
+    *snapshot = v86[5];
   }
 
 LABEL_53:
@@ -750,13 +750,13 @@ LABEL_53:
   return v21;
 }
 
-- (void)__incrementProgress:(id)a3 byPercent:(float)a4
+- (void)__incrementProgress:(id)progress byPercent:(float)percent
 {
-  v6 = a3;
-  [v6 fractionCompleted];
+  progressCopy = progress;
+  [progressCopy fractionCompleted];
   if (v7 < 1.0)
   {
-    [v6 setCompletedUnitCount:{objc_msgSend(v6, "completedUnitCount") + (objc_msgSend(v6, "totalUnitCount") * 0.01 * a4)}];
+    [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + (objc_msgSend(progressCopy, "totalUnitCount") * 0.01 * percent)}];
   }
 
   v8 = shared_filesystem_metadata_snapshot_service_log_handle();
@@ -787,11 +787,11 @@ LABEL_53:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v5 = [(DSSnapshotRequest *)self _volumeManager];
-  v6 = [v5 volumesForSnapshotting];
+  _volumeManager = [(DSSnapshotRequest *)self _volumeManager];
+  volumesForSnapshotting = [_volumeManager volumesForSnapshotting];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  obj = volumesForSnapshotting;
+  v7 = [volumesForSnapshotting countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v7)
   {
     v52 = v2;
@@ -808,20 +808,20 @@ LABEL_53:
         }
 
         v12 = *(*(&v55 + 1) + 8 * i);
-        v13 = [v12 progress];
-        v9 += [v13 totalUnitCount];
+        progress = [v12 progress];
+        v9 += [progress totalUnitCount];
 
-        v14 = [(DSSnapshotRequest *)self progress];
-        v15 = [v12 progress];
-        [v14 setTotalUnitCount:{objc_msgSend(v15, "totalUnitCount") + objc_msgSend(v14, "totalUnitCount")}];
+        progress2 = [(DSSnapshotRequest *)self progress];
+        progress3 = [v12 progress];
+        [progress2 setTotalUnitCount:{objc_msgSend(progress3, "totalUnitCount") + objc_msgSend(progress2, "totalUnitCount")}];
 
-        v16 = [(DSSnapshotRequest *)self progress];
-        v17 = [v12 progress];
-        v18 = [v12 progress];
-        [v16 addChild:v17 withPendingUnitCount:{objc_msgSend(v18, "totalUnitCount")}];
+        progress4 = [(DSSnapshotRequest *)self progress];
+        progress5 = [v12 progress];
+        progress6 = [v12 progress];
+        [progress4 addChild:progress5 withPendingUnitCount:{objc_msgSend(progress6, "totalUnitCount")}];
 
-        v19 = [v12 progress];
-        v8 = (v8 + [v19 totalUnitCount] * 0.1);
+        progress7 = [v12 progress];
+        v8 = (v8 + [progress7 totalUnitCount] * 0.1);
       }
 
       v7 = [obj countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -840,14 +840,14 @@ LABEL_53:
   v20 = [NSProgress progressWithTotalUnitCount:v8];
   [(DSSnapshotRequest *)self set__cacheDeleteProgress:v20];
 
-  v21 = [(DSSnapshotRequest *)self progress];
-  v22 = [(DSSnapshotRequest *)self __cacheDeleteProgress];
-  [v21 setTotalUnitCount:{objc_msgSend(v22, "totalUnitCount") + objc_msgSend(v21, "totalUnitCount")}];
+  progress8 = [(DSSnapshotRequest *)self progress];
+  __cacheDeleteProgress = [(DSSnapshotRequest *)self __cacheDeleteProgress];
+  [progress8 setTotalUnitCount:{objc_msgSend(__cacheDeleteProgress, "totalUnitCount") + objc_msgSend(progress8, "totalUnitCount")}];
 
-  v23 = [(DSSnapshotRequest *)self progress];
-  v24 = [(DSSnapshotRequest *)self __cacheDeleteProgress];
-  v25 = [(DSSnapshotRequest *)self __cacheDeleteProgress];
-  [v23 addChild:v24 withPendingUnitCount:{objc_msgSend(v25, "totalUnitCount")}];
+  progress9 = [(DSSnapshotRequest *)self progress];
+  __cacheDeleteProgress2 = [(DSSnapshotRequest *)self __cacheDeleteProgress];
+  __cacheDeleteProgress3 = [(DSSnapshotRequest *)self __cacheDeleteProgress];
+  [progress9 addChild:__cacheDeleteProgress2 withPendingUnitCount:{objc_msgSend(__cacheDeleteProgress3, "totalUnitCount")}];
 
   v26 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -864,14 +864,14 @@ LABEL_53:
   v28 = [NSProgress progressWithTotalUnitCount:v7];
   [(DSSnapshotRequest *)self set__archivingProgress:v28];
 
-  v29 = [(DSSnapshotRequest *)self progress];
-  v30 = [(DSSnapshotRequest *)self __archivingProgress];
-  [v29 setTotalUnitCount:{objc_msgSend(v30, "totalUnitCount") + objc_msgSend(v29, "totalUnitCount")}];
+  progress10 = [(DSSnapshotRequest *)self progress];
+  __archivingProgress = [(DSSnapshotRequest *)self __archivingProgress];
+  [progress10 setTotalUnitCount:{objc_msgSend(__archivingProgress, "totalUnitCount") + objc_msgSend(progress10, "totalUnitCount")}];
 
-  v31 = [(DSSnapshotRequest *)self progress];
-  v32 = [(DSSnapshotRequest *)self __archivingProgress];
-  v33 = [(DSSnapshotRequest *)self __archivingProgress];
-  [v31 addChild:v32 withPendingUnitCount:{objc_msgSend(v33, "totalUnitCount")}];
+  progress11 = [(DSSnapshotRequest *)self progress];
+  __archivingProgress2 = [(DSSnapshotRequest *)self __archivingProgress];
+  __archivingProgress3 = [(DSSnapshotRequest *)self __archivingProgress];
+  [progress11 addChild:__archivingProgress2 withPendingUnitCount:{objc_msgSend(__archivingProgress3, "totalUnitCount")}];
 
   v34 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -888,14 +888,14 @@ LABEL_53:
   v36 = [NSProgress progressWithTotalUnitCount:v7];
   [(DSSnapshotRequest *)self set__spaceAttributionProgress:v36];
 
-  v37 = [(DSSnapshotRequest *)self progress];
-  v38 = [(DSSnapshotRequest *)self __spaceAttributionProgress];
-  [v37 setTotalUnitCount:{objc_msgSend(v38, "totalUnitCount") + objc_msgSend(v37, "totalUnitCount")}];
+  progress12 = [(DSSnapshotRequest *)self progress];
+  __spaceAttributionProgress = [(DSSnapshotRequest *)self __spaceAttributionProgress];
+  [progress12 setTotalUnitCount:{objc_msgSend(__spaceAttributionProgress, "totalUnitCount") + objc_msgSend(progress12, "totalUnitCount")}];
 
-  v39 = [(DSSnapshotRequest *)self progress];
-  v40 = [(DSSnapshotRequest *)self __spaceAttributionProgress];
-  v41 = [(DSSnapshotRequest *)self __spaceAttributionProgress];
-  [v39 addChild:v40 withPendingUnitCount:{objc_msgSend(v41, "totalUnitCount")}];
+  progress13 = [(DSSnapshotRequest *)self progress];
+  __spaceAttributionProgress2 = [(DSSnapshotRequest *)self __spaceAttributionProgress];
+  __spaceAttributionProgress3 = [(DSSnapshotRequest *)self __spaceAttributionProgress];
+  [progress13 addChild:__spaceAttributionProgress2 withPendingUnitCount:{objc_msgSend(__spaceAttributionProgress3, "totalUnitCount")}];
 
   v42 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -912,14 +912,14 @@ LABEL_53:
   v44 = [NSProgress progressWithTotalUnitCount:v7];
   [(DSSnapshotRequest *)self set__miscProgress:v44];
 
-  v45 = [(DSSnapshotRequest *)self progress];
-  v46 = [(DSSnapshotRequest *)self __miscProgress];
-  [v45 setTotalUnitCount:{objc_msgSend(v46, "totalUnitCount") + objc_msgSend(v45, "totalUnitCount")}];
+  progress14 = [(DSSnapshotRequest *)self progress];
+  __miscProgress = [(DSSnapshotRequest *)self __miscProgress];
+  [progress14 setTotalUnitCount:{objc_msgSend(__miscProgress, "totalUnitCount") + objc_msgSend(progress14, "totalUnitCount")}];
 
-  v47 = [(DSSnapshotRequest *)self progress];
-  v48 = [(DSSnapshotRequest *)self __miscProgress];
-  v49 = [(DSSnapshotRequest *)self __miscProgress];
-  [v47 addChild:v48 withPendingUnitCount:{objc_msgSend(v49, "totalUnitCount")}];
+  progress15 = [(DSSnapshotRequest *)self progress];
+  __miscProgress2 = [(DSSnapshotRequest *)self __miscProgress];
+  __miscProgress3 = [(DSSnapshotRequest *)self __miscProgress];
+  [progress15 addChild:__miscProgress2 withPendingUnitCount:{objc_msgSend(__miscProgress3, "totalUnitCount")}];
 
   v50 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -936,20 +936,20 @@ LABEL_53:
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)__createSnapshotFileManagerUsingProvider:(id)a3 error:(id *)a4
+- (BOOL)__createSnapshotFileManagerUsingProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating snapshot file manager for %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (self->_snapshotFileManager)
@@ -957,7 +957,7 @@ LABEL_53:
     sub_100030548();
   }
 
-  if (!v6)
+  if (!providerCopy)
   {
     v18 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -970,7 +970,7 @@ LABEL_53:
     v19 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v12 = [NSError errorWithDomain:@"com.apple.FilesystemMetadataSnapshot" code:65540 userInfo:v19];
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -978,18 +978,18 @@ LABEL_53:
     goto LABEL_14;
   }
 
-  v8 = v6[2](v6, self);
+  v8 = providerCopy[2](providerCopy, self);
   snapshotFileManager = self->_snapshotFileManager;
   self->_snapshotFileManager = v8;
 
-  v10 = [(DSSnapshotRequest *)self snapshotFileManager];
+  snapshotFileManager = [(DSSnapshotRequest *)self snapshotFileManager];
   v25 = 0;
-  v11 = [v10 createWorkingDirectoryAndSharedFilesWithError:&v25];
+  v11 = [snapshotFileManager createWorkingDirectoryAndSharedFilesWithError:&v25];
   v12 = v25;
 
   if (!v11 || v12)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_16:
       v17 = 0;
@@ -999,17 +999,17 @@ LABEL_16:
 LABEL_14:
     v20 = v12;
     v17 = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_17;
   }
 
-  v13 = [(DSSnapshotRequest *)self snapshotFileManager];
-  v14 = [v13 sharedLogFile];
-  v15 = [(DSSnapshotRequest *)self beginDate];
-  v16 = [v15 description];
-  LODWORD(v14) = fprintf(v14, "Started snapshotting at %s\n", [v16 UTF8String]);
+  snapshotFileManager2 = [(DSSnapshotRequest *)self snapshotFileManager];
+  sharedLogFile = [snapshotFileManager2 sharedLogFile];
+  beginDate = [(DSSnapshotRequest *)self beginDate];
+  v16 = [beginDate description];
+  LODWORD(sharedLogFile) = fprintf(sharedLogFile, "Started snapshotting at %s\n", [v16 UTF8String]);
 
-  if (v14 == -1)
+  if (sharedLogFile == -1)
   {
     v22 = __error();
     v17 = 1;
@@ -1035,9 +1035,9 @@ LABEL_17:
   return v17;
 }
 
-- (id)__createVolumeManagerUsingProvider:(id)a3 error:(id *)a4
+- (id)__createVolumeManagerUsingProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1045,21 +1045,21 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating volume manager", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  if (v6)
+  if (providerCopy)
   {
-    v8 = v6[2](v6, self);
+    v8 = providerCopy[2](providerCopy, self);
     v20 = 0;
     v9 = [v8 discoverVolumesWithError:&v20];
     v10 = v20;
     v11 = v10;
     if (!v9 || v10)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_18;
       }
@@ -1067,8 +1067,8 @@ LABEL_17:
 
     else
     {
-      v12 = [v8 volumesForSnapshotting];
-      v13 = [v12 count];
+      volumesForSnapshotting = [v8 volumesForSnapshotting];
+      v13 = [volumesForSnapshotting count];
 
       if (v13)
       {
@@ -1080,7 +1080,7 @@ LABEL_19:
       }
 
       v11 = [NSError errorWithDomain:@"com.apple.FilesystemMetadataSnapshot" code:65542 userInfo:0];
-      if (!a4)
+      if (!error)
       {
 LABEL_18:
         v14 = 0;
@@ -1090,7 +1090,7 @@ LABEL_18:
 
     v18 = v11;
     v14 = 0;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_19;
   }
 
@@ -1105,11 +1105,11 @@ LABEL_18:
   v16 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   v11 = [NSError errorWithDomain:@"com.apple.FilesystemMetadataSnapshot" code:65540 userInfo:v16];
 
-  if (a4)
+  if (error)
   {
     v17 = v11;
     v14 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -1122,14 +1122,14 @@ LABEL_20:
   return v14;
 }
 
-- (BOOL)__createPreSnapshotVolumeManagerUsingProvider:(id)a3 error:(id *)a4
+- (BOOL)__createPreSnapshotVolumeManagerUsingProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating pre-snapshot volume manager for %@", &v12, 0xCu);
   }
 
@@ -1139,7 +1139,7 @@ LABEL_20:
     sub_100030674();
   }
 
-  v8 = [(DSSnapshotRequest *)self __createVolumeManagerUsingProvider:v6 error:a4];
+  v8 = [(DSSnapshotRequest *)self __createVolumeManagerUsingProvider:providerCopy error:error];
   volumeManager = self->__volumeManager;
   self->__volumeManager = v8;
 
@@ -1147,32 +1147,32 @@ LABEL_20:
   return v10;
 }
 
-- (id)__doDataCollection:(id *)a3
+- (id)__doDataCollection:(id *)collection
 {
   v5 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v145 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Collecting data and metadata %@", buf, 0xCu);
   }
 
-  if (a3)
+  if (collection)
   {
-    *a3 = 0;
+    *collection = 0;
   }
 
-  v116 = a3;
+  collectionCopy = collection;
   v136 = 0u;
   v137 = 0u;
   v134 = 0u;
   v135 = 0u;
-  v120 = self;
-  v6 = [(DSSnapshotRequest *)self _volumeManager];
-  v7 = [v6 volumesForSnapshotting];
+  selfCopy2 = self;
+  _volumeManager = [(DSSnapshotRequest *)self _volumeManager];
+  volumesForSnapshotting = [_volumeManager volumesForSnapshotting];
 
-  obj = v7;
-  v119 = [v7 countByEnumeratingWithState:&v134 objects:v148 count:16];
+  obj = volumesForSnapshotting;
+  v119 = [volumesForSnapshotting countByEnumeratingWithState:&v134 objects:v148 count:16];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -1202,8 +1202,8 @@ LABEL_20:
         v18 = +[NSDate now];
         [v18 timeIntervalSinceDate:v14];
         v20 = v19;
-        v21 = [(DSSnapshotRequest *)v120 snapshotFileManager];
-        v22 = fprintf([v21 sharedLogFile], "%s duration: %.0f seconds\n", "Volume listing", v20);
+        snapshotFileManager = [(DSSnapshotRequest *)selfCopy2 snapshotFileManager];
+        v22 = fprintf([snapshotFileManager sharedLogFile], "%s duration: %.0f seconds\n", "Volume listing", v20);
 
         if (v22 == -1)
         {
@@ -1216,7 +1216,7 @@ LABEL_20:
             if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
             {
               *buf = 67109120;
-              LODWORD(v145) = v24;
+              LODWORD(selfCopy) = v24;
               _os_log_fault_impl(&_mh_execute_header, v25, OS_LOG_TYPE_FAULT, "Failed to write to file: %{darwin.errno}d", buf, 8u);
             }
           }
@@ -1226,7 +1226,7 @@ LABEL_20:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315394;
-          v145 = "Volume listing";
+          selfCopy = "Volume listing";
           v146 = 2048;
           v147 = v20;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%s duration: %.0f seconds", buf, 0x16u);
@@ -1235,7 +1235,7 @@ LABEL_20:
         v27 = shared_filesystem_metadata_snapshot_service_log_handle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
-          sub_100030258(v143, v120);
+          sub_100030258(v143, selfCopy2);
         }
 
         v8 |= v15;
@@ -1254,17 +1254,17 @@ LABEL_20:
     while (v119);
   }
 
-  [(DSSnapshotRequestTelemetryReporter *)v120->__telemetryReporter setSnapshotFSListingsEntryCount:v9];
-  v28 = [(DSSnapshotRequest *)v120 _volumeManager];
-  v29 = [v28 volumesForSnapshotting];
-  -[DSSnapshotRequestTelemetryReporter setSnapshotVolumeCount:](v120->__telemetryReporter, "setSnapshotVolumeCount:", [v29 count]);
+  [(DSSnapshotRequestTelemetryReporter *)selfCopy2->__telemetryReporter setSnapshotFSListingsEntryCount:v9];
+  _volumeManager2 = [(DSSnapshotRequest *)selfCopy2 _volumeManager];
+  volumesForSnapshotting2 = [_volumeManager2 volumesForSnapshotting];
+  -[DSSnapshotRequestTelemetryReporter setSnapshotVolumeCount:](selfCopy2->__telemetryReporter, "setSnapshotVolumeCount:", [volumesForSnapshotting2 count]);
 
   if (v8)
   {
     goto LABEL_25;
   }
 
-  v30 = v116;
+  v30 = collectionCopy;
   if (!v10)
   {
     v10 = [NSError errorWithDomain:@"com.apple.FilesystemMetadataSnapshot" code:65537 userInfo:0];
@@ -1275,14 +1275,14 @@ LABEL_20:
 LABEL_25:
     v31 = +[NSDate now];
     v132 = v10;
-    [(DSSnapshotRequest *)v120 __collectSpaceAttributionSnapshot:&v132];
+    [(DSSnapshotRequest *)selfCopy2 __collectSpaceAttributionSnapshot:&v132];
     v32 = v132;
 
     v33 = +[NSDate now];
     [v33 timeIntervalSinceDate:v31];
     v35 = v34;
-    v36 = [(DSSnapshotRequest *)v120 snapshotFileManager];
-    v37 = fprintf([v36 sharedLogFile], "%s duration: %.0f seconds\n", "SpaceAttribution snapshot", v35);
+    snapshotFileManager2 = [(DSSnapshotRequest *)selfCopy2 snapshotFileManager];
+    v37 = fprintf([snapshotFileManager2 sharedLogFile], "%s duration: %.0f seconds\n", "SpaceAttribution snapshot", v35);
 
     if (v37 == -1)
     {
@@ -1303,30 +1303,30 @@ LABEL_25:
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v145 = "SpaceAttribution snapshot";
+      selfCopy = "SpaceAttribution snapshot";
       v146 = 2048;
       v147 = v35;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%s duration: %.0f seconds", buf, 0x16u);
     }
 
-    v42 = [(DSSnapshotRequest *)v120 __spaceAttributionProgress];
-    v43 = [v42 totalUnitCount];
-    v44 = [(DSSnapshotRequest *)v120 __spaceAttributionProgress];
-    [v44 setCompletedUnitCount:v43];
+    __spaceAttributionProgress = [(DSSnapshotRequest *)selfCopy2 __spaceAttributionProgress];
+    totalUnitCount = [__spaceAttributionProgress totalUnitCount];
+    __spaceAttributionProgress2 = [(DSSnapshotRequest *)selfCopy2 __spaceAttributionProgress];
+    [__spaceAttributionProgress2 setCompletedUnitCount:totalUnitCount];
 
     v45 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000302B4(v120);
+      sub_1000302B4(selfCopy2);
     }
 
     v46 = +[NSDate now];
-    v47 = [(DSSnapshotRequest *)v120 __fetchMetadata];
+    __fetchMetadata = [(DSSnapshotRequest *)selfCopy2 __fetchMetadata];
     v48 = +[NSDate now];
     [v48 timeIntervalSinceDate:v46];
     v50 = v49;
-    v51 = [(DSSnapshotRequest *)v120 snapshotFileManager];
-    v52 = fprintf([v51 sharedLogFile], "%s duration: %.0f seconds\n", "Metadata", v50);
+    snapshotFileManager3 = [(DSSnapshotRequest *)selfCopy2 snapshotFileManager];
+    v52 = fprintf([snapshotFileManager3 sharedLogFile], "%s duration: %.0f seconds\n", "Metadata", v50);
 
     if (v52 == -1)
     {
@@ -1347,28 +1347,28 @@ LABEL_25:
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v145 = "Metadata";
+      selfCopy = "Metadata";
       v146 = 2048;
       v147 = v50;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "%s duration: %.0f seconds", buf, 0x16u);
     }
 
     v57 = objc_alloc_init(NSDate);
-    endDate = v120->___endDate;
-    v120->___endDate = v57;
+    endDate = selfCopy2->___endDate;
+    selfCopy2->___endDate = v57;
 
-    v59 = [(DSSnapshotRequest *)v120 __endDate];
+    __endDate = [(DSSnapshotRequest *)selfCopy2 __endDate];
     v60 = +[NSTimeZone systemTimeZone];
-    v61 = [NSISO8601DateFormatter stringFromDate:v59 timeZone:v60 formatOptions:3955];
-    [v47 setObject:v61 forKeyedSubscript:@"TimestampEnd"];
+    v61 = [NSISO8601DateFormatter stringFromDate:__endDate timeZone:v60 formatOptions:3955];
+    [__fetchMetadata setObject:v61 forKeyedSubscript:@"TimestampEnd"];
 
-    v62 = [(DSSnapshotRequest *)v120 snapshotFileManager];
-    v63 = [v62 sharedLogFile];
-    v64 = [(DSSnapshotRequest *)v120 __endDate];
-    v65 = [v64 description];
-    LODWORD(v63) = fprintf(v63, "Finished snapshotting at %s\n", [v65 UTF8String]);
+    snapshotFileManager4 = [(DSSnapshotRequest *)selfCopy2 snapshotFileManager];
+    sharedLogFile = [snapshotFileManager4 sharedLogFile];
+    __endDate2 = [(DSSnapshotRequest *)selfCopy2 __endDate];
+    v65 = [__endDate2 description];
+    LODWORD(sharedLogFile) = fprintf(sharedLogFile, "Finished snapshotting at %s\n", [v65 UTF8String]);
 
-    if (v63 == -1)
+    if (sharedLogFile == -1)
     {
       v66 = __error();
       if ((byte_10006E572 & 1) == 0)
@@ -1386,34 +1386,34 @@ LABEL_25:
     v69 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
     {
-      v70 = [(DSSnapshotRequest *)v120 __endDate];
-      v71 = [v70 description];
-      v72 = [v71 UTF8String];
+      __endDate3 = [(DSSnapshotRequest *)selfCopy2 __endDate];
+      v71 = [__endDate3 description];
+      uTF8String = [v71 UTF8String];
       *buf = 136315138;
-      v145 = v72;
+      selfCopy = uTF8String;
       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "Finished snapshotting at %s", buf, 0xCu);
     }
 
-    v73 = [(DSSnapshotRequest *)v120 snapshotFileManager];
+    snapshotFileManager5 = [(DSSnapshotRequest *)selfCopy2 snapshotFileManager];
     v131 = v32;
-    [v73 writeFileForMetadata:v47 error:&v131];
+    [snapshotFileManager5 writeFileForMetadata:__fetchMetadata error:&v131];
     v74 = v131;
 
-    v75 = [(DSSnapshotRequest *)v120 __miscProgress];
+    __miscProgress = [(DSSnapshotRequest *)selfCopy2 __miscProgress];
     LODWORD(v76) = 10.0;
-    [(DSSnapshotRequest *)v120 __incrementProgress:v75 byPercent:v76];
+    [(DSSnapshotRequest *)selfCopy2 __incrementProgress:__miscProgress byPercent:v76];
 
     v77 = +[NSDate now];
-    v78 = [(DSSnapshotRequest *)v120 snapshotFileManager];
+    snapshotFileManager6 = [(DSSnapshotRequest *)selfCopy2 snapshotFileManager];
     v130 = v74;
-    v79 = [v78 archiveWithError:&v130];
+    v79 = [snapshotFileManager6 archiveWithError:&v130];
     v10 = v130;
 
     v80 = +[NSDate now];
     [v80 timeIntervalSinceDate:v77];
     v82 = v81;
-    v83 = [(DSSnapshotRequest *)v120 snapshotFileManager];
-    v84 = fprintf([v83 sharedLogFile], "%s duration: %.0f seconds\n", "Archiving", v82);
+    snapshotFileManager7 = [(DSSnapshotRequest *)selfCopy2 snapshotFileManager];
+    v84 = fprintf([snapshotFileManager7 sharedLogFile], "%s duration: %.0f seconds\n", "Archiving", v82);
 
     if (v84 == -1)
     {
@@ -1434,24 +1434,24 @@ LABEL_25:
     if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v145 = "Archiving";
+      selfCopy = "Archiving";
       v146 = 2048;
       v147 = v82;
       _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "%s duration: %.0f seconds", buf, 0x16u);
     }
 
-    v89 = [(DSSnapshotRequest *)v120 __archivingProgress];
-    v90 = [v89 totalUnitCount];
-    v91 = [(DSSnapshotRequest *)v120 __archivingProgress];
-    [v91 setCompletedUnitCount:v90];
+    __archivingProgress = [(DSSnapshotRequest *)selfCopy2 __archivingProgress];
+    totalUnitCount2 = [__archivingProgress totalUnitCount];
+    __archivingProgress2 = [(DSSnapshotRequest *)selfCopy2 __archivingProgress];
+    [__archivingProgress2 setCompletedUnitCount:totalUnitCount2];
 
     v92 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v92, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000302B4(v120);
+      sub_1000302B4(selfCopy2);
     }
 
-    v30 = v116;
+    v30 = collectionCopy;
     if (v10)
     {
 LABEL_58:
@@ -1477,10 +1477,10 @@ LABEL_58:
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v95 = [(DSSnapshotRequest *)v120 _volumeManager];
-  v96 = [v95 volumesForSnapshotting];
+  _volumeManager3 = [(DSSnapshotRequest *)selfCopy2 _volumeManager];
+  volumesForSnapshotting3 = [_volumeManager3 volumesForSnapshotting];
 
-  v97 = [v96 countByEnumeratingWithState:&v126 objects:v142 count:16];
+  v97 = [volumesForSnapshotting3 countByEnumeratingWithState:&v126 objects:v142 count:16];
   if (v97)
   {
     v98 = v97;
@@ -1491,30 +1491,30 @@ LABEL_58:
       {
         if (*v127 != v99)
         {
-          objc_enumerationMutation(v96);
+          objc_enumerationMutation(volumesForSnapshotting3);
         }
 
         v101 = *(*(&v126 + 1) + 8 * i);
-        v102 = [v101 progress];
-        v103 = [v102 totalUnitCount];
-        v104 = [v101 progress];
-        [v104 setCompletedUnitCount:v103];
+        progress = [v101 progress];
+        totalUnitCount3 = [progress totalUnitCount];
+        progress2 = [v101 progress];
+        [progress2 setCompletedUnitCount:totalUnitCount3];
 
         v105 = shared_filesystem_metadata_snapshot_service_log_handle();
         if (os_log_type_enabled(v105, OS_LOG_TYPE_DEBUG))
         {
-          sub_100030258(buf, v120);
+          sub_100030258(buf, selfCopy2);
         }
       }
 
-      v98 = [v96 countByEnumeratingWithState:&v126 objects:v142 count:16];
+      v98 = [volumesForSnapshotting3 countByEnumeratingWithState:&v126 objects:v142 count:16];
     }
 
     while (v98);
   }
 
-  v140 = *&v120->___cacheDeleteProgress;
-  miscProgress = v120->___miscProgress;
+  v140 = *&selfCopy2->___cacheDeleteProgress;
+  miscProgress = selfCopy2->___miscProgress;
   [NSArray arrayWithObjects:&v140 count:3];
   v122 = 0u;
   v123 = 0u;
@@ -1538,7 +1538,7 @@ LABEL_58:
         v111 = shared_filesystem_metadata_snapshot_service_log_handle();
         if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
         {
-          sub_100030258(v138, v120);
+          sub_100030258(v138, selfCopy2);
         }
       }
 
@@ -1548,19 +1548,19 @@ LABEL_58:
     while (v108);
   }
 
-  v112 = [(DSSnapshotRequest *)v120 progress];
-  v113 = [v112 totalUnitCount];
-  v114 = [(DSSnapshotRequest *)v120 progress];
-  [v114 setCompletedUnitCount:v113];
+  progress3 = [(DSSnapshotRequest *)selfCopy2 progress];
+  totalUnitCount4 = [progress3 totalUnitCount];
+  progress4 = [(DSSnapshotRequest *)selfCopy2 progress];
+  [progress4 setCompletedUnitCount:totalUnitCount4];
 
   v115 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v115, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000302B4(v120);
+    sub_1000302B4(selfCopy2);
   }
 
-  v30 = v116;
-  if (v116)
+  v30 = collectionCopy;
+  if (collectionCopy)
   {
 LABEL_59:
     v93 = v10;
@@ -1590,8 +1590,8 @@ LABEL_60:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(DSSnapshotRequest *)self __powerAssertionIDs];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  __powerAssertionIDs = [(DSSnapshotRequest *)self __powerAssertionIDs];
+  v5 = [__powerAssertionIDs countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (!v5)
   {
 LABEL_26:
@@ -1608,19 +1608,19 @@ LABEL_26:
     {
       if (*v21 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(__powerAssertionIDs);
       }
 
-      v10 = [*(*(&v20 + 1) + 8 * i) unsignedIntValue];
+      unsignedIntValue = [*(*(&v20 + 1) + 8 * i) unsignedIntValue];
       v11 = shared_filesystem_metadata_snapshot_service_log_handle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v25 = v10;
+        v25 = unsignedIntValue;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Checking status of power assertion 0x%x", buf, 8u);
       }
 
-      v12 = IOPMAssertionCopyProperties(v10);
+      v12 = IOPMAssertionCopyProperties(unsignedIntValue);
       v13 = shared_filesystem_metadata_snapshot_service_log_handle();
       v14 = v13;
       if (!v12)
@@ -1628,7 +1628,7 @@ LABEL_26:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109120;
-          v25 = v10;
+          v25 = unsignedIntValue;
           _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Querying properties for power assertion 0x%x returned NULL - assertion must have timed out", buf, 8u);
         }
 
@@ -1639,11 +1639,11 @@ LABEL_26:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v25 = v10;
+        v25 = unsignedIntValue;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Releasing power assertion 0x%x", buf, 8u);
       }
 
-      v15 = IOPMAssertionRelease(v10);
+      v15 = IOPMAssertionRelease(unsignedIntValue);
       if (v15)
       {
         v16 = v15;
@@ -1651,7 +1651,7 @@ LABEL_26:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109376;
-          v25 = v10;
+          v25 = unsignedIntValue;
           v26 = 1024;
           v27 = v16;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Failed to release power assertion 0x%x: %d", buf, 0xEu);
@@ -1661,7 +1661,7 @@ LABEL_20:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    v6 = [__powerAssertionIDs countByEnumeratingWithState:&v20 objects:v28 count:16];
   }
 
   while (v6);
@@ -1673,10 +1673,10 @@ LABEL_20:
     [v17 timeIntervalSinceDate:self->_beginDate];
     v19 = v18;
 
-    v4 = shared_filesystem_metadata_snapshot_service_log_handle();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+    __powerAssertionIDs = shared_filesystem_metadata_snapshot_service_log_handle();
+    if (os_log_type_enabled(__powerAssertionIDs, OS_LOG_TYPE_FAULT))
     {
-      sub_1000306A0(self, v4, v19);
+      sub_1000306A0(self, __powerAssertionIDs, v19);
     }
 
     goto LABEL_26;
@@ -1705,7 +1705,7 @@ LABEL_20:
   AssertionID = 0;
   v7 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", [NSString stringWithFormat:@"%@.preventUserIdleSystemSleep", @"com.apple.FilesystemMetadataSnapshotService"], v6, v6, 0, 1800.0, @"TimeoutActionRelease", &AssertionID);
   v8 = shared_filesystem_metadata_snapshot_service_log_handle();
-  v9 = v8;
+  __powerAssertionIDs = v8;
   if (v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1722,12 +1722,12 @@ LABEL_20:
       v19 = 0x409C200000000000;
       v20 = 1024;
       v21 = AssertionID;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Created power assertion to prevent system sleep (with a %0.2f sec timeout): 0x%x.", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, __powerAssertionIDs, OS_LOG_TYPE_DEFAULT, "Created power assertion to prevent system sleep (with a %0.2f sec timeout): 0x%x.", buf, 0x12u);
     }
 
-    v9 = [(DSSnapshotRequest *)self __powerAssertionIDs];
+    __powerAssertionIDs = [(DSSnapshotRequest *)self __powerAssertionIDs];
     v10 = [NSNumber numberWithUnsignedInt:AssertionID];
-    [v9 addObject:v10];
+    [__powerAssertionIDs addObject:v10];
   }
 
   v11 = [NSString stringWithFormat:@"%@ collects diagnostics for filesystem utilization triage and may take time in the order of hours. To allow continued data collection while the user is away requires preventing disks from idling.", @"com.apple.FilesystemMetadataSnapshotService"];
@@ -1735,7 +1735,7 @@ LABEL_20:
   AssertionID = 0;
   v13 = IOPMAssertionCreateWithDescription(@"PreventDiskIdle", v12, v11, v11, 0, 1800.0, @"TimeoutActionRelease", &AssertionID);
   v14 = shared_filesystem_metadata_snapshot_service_log_handle();
-  v15 = v14;
+  __powerAssertionIDs2 = v14;
   if (v13)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1752,19 +1752,19 @@ LABEL_20:
       v19 = 0x409C200000000000;
       v20 = 1024;
       v21 = AssertionID;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Created power assertion to prevent disk idling (with a %0.2f sec timeout): 0x%x.", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, __powerAssertionIDs2, OS_LOG_TYPE_DEFAULT, "Created power assertion to prevent disk idling (with a %0.2f sec timeout): 0x%x.", buf, 0x12u);
     }
 
-    v15 = [(DSSnapshotRequest *)self __powerAssertionIDs];
+    __powerAssertionIDs2 = [(DSSnapshotRequest *)self __powerAssertionIDs];
     v16 = [NSNumber numberWithUnsignedInt:AssertionID];
-    [v15 addObject:v16];
+    [__powerAssertionIDs2 addObject:v16];
   }
 }
 
-- (BOOL)_setupManagersAndProgress:(id)a3 volumeManagerProvider:(id)a4 error:(id *)a5
+- (BOOL)_setupManagersAndProgress:(id)progress volumeManagerProvider:(id)provider error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  providerCopy = provider;
+  progressCopy = progress;
   v10 = objc_alloc_init(NSDate);
   beginDate = self->_beginDate;
   self->_beginDate = v10;
@@ -1772,19 +1772,19 @@ LABEL_20:
   v12 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(DSSnapshotRequest *)self beginDate];
+    beginDate = [(DSSnapshotRequest *)self beginDate];
     v19 = 138412290;
-    v20 = v13;
+    v20 = beginDate;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Begin date: %@", &v19, 0xCu);
   }
 
-  v14 = [(DSSnapshotRequest *)self __createSnapshotFileManagerUsingProvider:v9 error:a5];
-  if (v14 && [(DSSnapshotRequest *)self __createPreSnapshotVolumeManagerUsingProvider:v8 error:a5])
+  v14 = [(DSSnapshotRequest *)self __createSnapshotFileManagerUsingProvider:progressCopy error:error];
+  if (v14 && [(DSSnapshotRequest *)self __createPreSnapshotVolumeManagerUsingProvider:providerCopy error:error])
   {
     [(DSSnapshotRequest *)self __initializeProgress];
-    v15 = [(DSSnapshotRequest *)self __miscProgress];
+    __miscProgress = [(DSSnapshotRequest *)self __miscProgress];
     LODWORD(v16) = 10.0;
-    [(DSSnapshotRequest *)self __incrementProgress:v15 byPercent:v16];
+    [(DSSnapshotRequest *)self __incrementProgress:__miscProgress byPercent:v16];
 
     v17 = 1;
   }
@@ -1797,38 +1797,38 @@ LABEL_20:
   return v17;
 }
 
-- (id)executeWithError:(id *)a3
+- (id)executeWithError:(id *)error
 {
   v5 = +[NSDate now];
   v6 = [DSSnapshotRequestTelemetryReporter telemetryReporterForSnapshotRequest:self];
   telemetryReporter = self->__telemetryReporter;
   self->__telemetryReporter = v6;
 
-  v8 = [(DSSnapshotRequest *)self __stockSnapshotFileManagerProvider];
-  v9 = [(DSSnapshotRequest *)self __stockVolumeManagerProvider];
-  v10 = [(DSSnapshotRequest *)self _setupManagersAndProgress:v8 volumeManagerProvider:v9 error:a3];
+  __stockSnapshotFileManagerProvider = [(DSSnapshotRequest *)self __stockSnapshotFileManagerProvider];
+  __stockVolumeManagerProvider = [(DSSnapshotRequest *)self __stockVolumeManagerProvider];
+  v10 = [(DSSnapshotRequest *)self _setupManagersAndProgress:__stockSnapshotFileManagerProvider volumeManagerProvider:__stockVolumeManagerProvider error:error];
 
   if (v10)
   {
     [(DSSnapshotRequest *)self __createPowerAssertions];
-    v11 = [(DSSnapshotRequest *)self __doDataCollection:a3];
-    v12 = [(DSSnapshotRequest *)self snapshotFileManager];
+    v11 = [(DSSnapshotRequest *)self __doDataCollection:error];
+    snapshotFileManager = [(DSSnapshotRequest *)self snapshotFileManager];
     v31 = 0;
-    v13 = [v12 cleanupWithError:&v31];
+    v13 = [snapshotFileManager cleanupWithError:&v31];
     v14 = v31;
 
-    if (a3 && (v13 & 1) == 0 && !*a3)
+    if (error && (v13 & 1) == 0 && !*error)
     {
       v15 = v14;
-      *a3 = v14;
+      *error = v14;
     }
 
     [(DSSnapshotRequest *)self __releasePowerAssertions];
     v16 = +[NSDate now];
     [v16 timeIntervalSinceDate:v5];
     v18 = v17;
-    v19 = [(DSSnapshotRequest *)self snapshotFileManager];
-    v20 = fprintf([v19 sharedLogFile], "%s duration: %.0f seconds\n", "Snapshot request", v18);
+    snapshotFileManager2 = [(DSSnapshotRequest *)self snapshotFileManager];
+    v20 = fprintf([snapshotFileManager2 sharedLogFile], "%s duration: %.0f seconds\n", "Snapshot request", v18);
 
     if (v20 == -1)
     {
@@ -1856,9 +1856,9 @@ LABEL_20:
     }
 
     [(DSSnapshotRequestTelemetryReporter *)self->__telemetryReporter setSnapshotDateEnd:v16];
-    if (*a3)
+    if (*error)
     {
-      -[DSSnapshotRequestTelemetryReporter setSnapshotExitCode:](self->__telemetryReporter, "setSnapshotExitCode:", [*a3 code]);
+      -[DSSnapshotRequestTelemetryReporter setSnapshotExitCode:](self->__telemetryReporter, "setSnapshotExitCode:", [*error code]);
     }
 
     if (v11)
@@ -1903,9 +1903,9 @@ LABEL_20:
   return v6;
 }
 
-- (DSSnapshotRequest)initWithOptions:(id)a3
+- (DSSnapshotRequest)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = DSSnapshotRequest;
   v6 = [(DSSnapshotRequest *)&v13 init];
@@ -1915,7 +1915,7 @@ LABEL_20:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v5;
+      v15 = optionsCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Snapshot request with options: %@", buf, 0xCu);
     }
 
@@ -1923,7 +1923,7 @@ LABEL_20:
     requestDate = v6->___requestDate;
     v6->___requestDate = v8;
 
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v10 = [NSProgress progressWithTotalUnitCount:0];
     progress = v6->_progress;
     v6->_progress = v10;

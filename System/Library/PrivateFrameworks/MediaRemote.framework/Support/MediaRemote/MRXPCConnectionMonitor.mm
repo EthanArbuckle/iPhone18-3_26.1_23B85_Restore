@@ -1,39 +1,39 @@
 @interface MRXPCConnectionMonitor
 - (BOOL)_canSendMessage;
-- (MRXPCConnectionMonitor)initWithConnection:(id)a3 label:(id)a4;
-- (MRXPCConnectionMonitor)initWithXPCConnection:(id)a3 label:(id)a4;
+- (MRXPCConnectionMonitor)initWithConnection:(id)connection label:(id)label;
+- (MRXPCConnectionMonitor)initWithXPCConnection:(id)connection label:(id)label;
 - (MRXPCConnectionMonitorDelegate)delegate;
 - (NSString)label;
-- (id)_initWithLabel:(id)a3;
+- (id)_initWithLabel:(id)label;
 - (id)debugDescription;
 - (id)description;
 - (void)_checkConnectionStatus;
-- (void)_onCalloutQueue_notifyStatusDidChange:(unint64_t)a3;
-- (void)canSendMessage:(id)a3;
+- (void)_onCalloutQueue_notifyStatusDidChange:(unint64_t)change;
+- (void)canSendMessage:(id)message;
 @end
 
 @implementation MRXPCConnectionMonitor
 
 - (BOOL)_canSendMessage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentMessageCount + 1;
-  v2->_currentMessageCount = v3;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentMessageCount + 1;
+  selfCopy->_currentMessageCount = v3;
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 checkXPCConnectionStatusDefaultInterval];
+  checkXPCConnectionStatusDefaultInterval = [v4 checkXPCConnectionStatusDefaultInterval];
 
   v6 = +[NSDate now];
-  lastMessageSentDate = v2->_lastMessageSentDate;
-  v2->_lastMessageSentDate = v6;
+  lastMessageSentDate = selfCopy->_lastMessageSentDate;
+  selfCopy->_lastMessageSentDate = v6;
 
-  status = v2->_status;
-  ++v2->_totalMessageCount;
-  objc_sync_exit(v2);
+  status = selfCopy->_status;
+  ++selfCopy->_totalMessageCount;
+  objc_sync_exit(selfCopy);
 
-  if (v3 == v5)
+  if (v3 == checkXPCConnectionStatusDefaultInterval)
   {
-    [(MRXPCConnectionMonitor *)v2 _checkConnectionStatus];
+    [(MRXPCConnectionMonitor *)selfCopy _checkConnectionStatus];
   }
 
   return status == 0;
@@ -58,40 +58,40 @@
   v20 = 3221225472;
   v21 = sub_100034E04;
   v22 = &unk_1004B68F0;
-  v23 = self;
+  selfCopy = self;
   v9 = v8;
   v24 = v9;
   v10 = objc_retainBlock(&v19);
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v11->_pendingBarrierCompletion)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy2->_pendingBarrierCompletion)
   {
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy2);
   }
 
   else
   {
-    v11->_pendingBarrierCompletion = 1;
+    selfCopy2->_pendingBarrierCompletion = 1;
     v12 = [NSDate now:v19];
-    lastStatusCheckDate = v11->_lastStatusCheckDate;
-    v11->_lastStatusCheckDate = v12;
+    lastStatusCheckDate = selfCopy2->_lastStatusCheckDate;
+    selfCopy2->_lastStatusCheckDate = v12;
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy2);
     v14 = +[MRUserSettings currentSettings];
-    v15 = [v14 verboseConnectionMonitorLogging];
+    verboseConnectionMonitorLogging = [v14 verboseConnectionMonitorLogging];
 
-    if (v15)
+    if (verboseConnectionMonitorLogging)
     {
       v16 = _MRLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v11;
+        v29 = selfCopy2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[ConnectionMonitor] Checking connection %@", buf, 0xCu);
       }
     }
 
-    connection = v11->_connection;
+    connection = selfCopy2->_connection;
     if (connection)
     {
       [(NSXPCConnection *)connection scheduleSendBarrierBlock:v10];
@@ -99,7 +99,7 @@
 
     else
     {
-      connection_t = v11->_connection_t;
+      connection_t = selfCopy2->_connection_t;
       if (connection_t)
       {
         xpc_connection_send_barrier(connection_t, v10);
@@ -111,18 +111,18 @@
   objc_destroyWeak(&location);
 }
 
-- (MRXPCConnectionMonitor)initWithConnection:(id)a3 label:(id)a4
+- (MRXPCConnectionMonitor)initWithConnection:(id)connection label:(id)label
 {
-  v7 = a3;
-  v8 = [(MRXPCConnectionMonitor *)self _initWithLabel:a4];
+  connectionCopy = connection;
+  v8 = [(MRXPCConnectionMonitor *)self _initWithLabel:label];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 4, a3);
-    v9->_pid = [v7 processIdentifier];
-    if (v7)
+    objc_storeStrong(v8 + 4, connection);
+    v9->_pid = [connectionCopy processIdentifier];
+    if (connectionCopy)
     {
-      [v7 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -138,15 +138,15 @@
   return v9;
 }
 
-- (MRXPCConnectionMonitor)initWithXPCConnection:(id)a3 label:(id)a4
+- (MRXPCConnectionMonitor)initWithXPCConnection:(id)connection label:(id)label
 {
-  v7 = a3;
-  v8 = [(MRXPCConnectionMonitor *)self _initWithLabel:a4];
+  connectionCopy = connection;
+  v8 = [(MRXPCConnectionMonitor *)self _initWithLabel:label];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 5, a3);
-    v9->_pid = xpc_connection_get_pid(v7);
+    objc_storeStrong(v8 + 5, connection);
+    v9->_pid = xpc_connection_get_pid(connectionCopy);
     xpc_connection_get_audit_token();
     memset(v13, 0, sizeof(v13));
     v10 = sub_100007074(v13);
@@ -157,9 +157,9 @@
   return v9;
 }
 
-- (id)_initWithLabel:(id)a3
+- (id)_initWithLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v11.receiver = self;
   v11.super_class = MRXPCConnectionMonitor;
   v6 = [(MRXPCConnectionMonitor *)&v11 init];
@@ -170,7 +170,7 @@
     calloutQueue = v6->_calloutQueue;
     v6->_calloutQueue = v8;
 
-    objc_storeStrong(&v6->_label, a3);
+    objc_storeStrong(&v6->_label, label);
   }
 
   return v6;
@@ -180,18 +180,18 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MRXPCConnectionMonitor *)self label];
-  v6 = [v3 initWithFormat:@"<%@ %p : %@>", v4, self, v5];
+  label = [(MRXPCConnectionMonitor *)self label];
+  v6 = [v3 initWithFormat:@"<%@ %p : %@>", v4, self, label];
 
   return v6;
 }
 
 - (id)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [NSMutableString stringWithFormat:@"<%@ %p {\n", objc_opt_class(), v2];
-  status = v2->_status;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy = [NSMutableString stringWithFormat:@"<%@ %p {\n", objc_opt_class(), selfCopy];
+  status = selfCopy->_status;
   v5 = @"?";
   if (status == 1)
   {
@@ -209,46 +209,46 @@
   }
 
   v7 = v6;
-  [v3 appendFormat:@"    status = %@\n", v7];
+  [selfCopy appendFormat:@"    status = %@\n", v7];
 
-  [v3 appendFormat:@"    currentMessageCount = %lu\n", v2->_currentMessageCount];
-  [v3 appendFormat:@"    totalMessageCount = %lu\n", v2->_totalMessageCount];
-  lastMessageSentDate = v2->_lastMessageSentDate;
+  [selfCopy appendFormat:@"    currentMessageCount = %lu\n", selfCopy->_currentMessageCount];
+  [selfCopy appendFormat:@"    totalMessageCount = %lu\n", selfCopy->_totalMessageCount];
+  lastMessageSentDate = selfCopy->_lastMessageSentDate;
   if (lastMessageSentDate)
   {
     [(NSDate *)lastMessageSentDate timeIntervalSinceNow];
-    [v3 appendFormat:@"    lastMessageSent = %f seconds ago\n", -v9];
+    [selfCopy appendFormat:@"    lastMessageSent = %f seconds ago\n", -v9];
   }
 
-  lastStatusCheckDate = v2->_lastStatusCheckDate;
+  lastStatusCheckDate = selfCopy->_lastStatusCheckDate;
   if (lastStatusCheckDate)
   {
     [(NSDate *)lastStatusCheckDate timeIntervalSinceNow];
-    [v3 appendFormat:@"    lastStatusCheck = %f seconds ago\n", -v11];
+    [selfCopy appendFormat:@"    lastStatusCheck = %f seconds ago\n", -v11];
   }
 
-  lastStatusChangeDate = v2->_lastStatusChangeDate;
+  lastStatusChangeDate = selfCopy->_lastStatusChangeDate;
   if (lastStatusChangeDate)
   {
     [(NSDate *)lastStatusChangeDate timeIntervalSinceNow];
-    [v3 appendFormat:@"    lastStatusChange = %f seconds ago\n", -v13];
+    [selfCopy appendFormat:@"    lastStatusChange = %f seconds ago\n", -v13];
   }
 
-  if (v2->_pendingBarrierCompletion)
+  if (selfCopy->_pendingBarrierCompletion)
   {
-    [v3 appendString:@"    pendingBarrierCompletion = YES\n"];
+    [selfCopy appendString:@"    pendingBarrierCompletion = YES\n"];
   }
 
   v14 = +[MRUserSettings currentSettings];
-  v15 = [v14 checkXPCConnectionStatusDefaultInterval];
+  checkXPCConnectionStatusDefaultInterval = [v14 checkXPCConnectionStatusDefaultInterval];
   v16 = +[MRUserSettings currentSettings];
   [v16 checkXPCConnectionStatusDefaultResponseTimeout];
-  [v3 appendFormat:@"    params = {%lu x %f}\n", v15, v17];
+  [selfCopy appendFormat:@"    params = {%lu x %f}\n", checkXPCConnectionStatusDefaultInterval, v17];
 
-  [v3 appendFormat:@"}>\n"];
-  objc_sync_exit(v2);
+  [selfCopy appendFormat:@"}>\n"];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return selfCopy;
 }
 
 - (NSString)label
@@ -258,63 +258,63 @@
   return v2;
 }
 
-- (void)canSendMessage:(id)a3
+- (void)canSendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   calloutQueue = self->_calloutQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10015BBEC;
   v7[3] = &unk_1004B8B50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(calloutQueue, v7);
 }
 
-- (void)_onCalloutQueue_notifyStatusDidChange:(unint64_t)a3
+- (void)_onCalloutQueue_notifyStatusDidChange:(unint64_t)change
 {
   dispatch_assert_queue_V2(self->_calloutQueue);
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"?";
-    if (a3 == 1)
+    if (change == 1)
     {
       v7 = @"Suspended";
     }
 
-    if (!a3)
+    if (!change)
     {
       v7 = @"Running";
     }
 
     v8 = v7;
-    [(NSDate *)v5->_lastStatusChangeDate timeIntervalSinceNow];
+    [(NSDate *)selfCopy->_lastStatusChangeDate timeIntervalSinceNow];
     *buf = 138412802;
     v29 = v8;
     v30 = 2112;
-    v31 = v5;
+    v31 = selfCopy;
     v32 = 2048;
     v33 = -v9;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[ConnectionMonitor] Updated connectionStatus = %@ for %@ after %lf seconds", buf, 0x20u);
   }
 
-  v5->_status = a3;
+  selfCopy->_status = change;
   v10 = +[NSDate now];
-  lastStatusChangeDate = v5->_lastStatusChangeDate;
-  v5->_lastStatusChangeDate = v10;
+  lastStatusChangeDate = selfCopy->_lastStatusChangeDate;
+  selfCopy->_lastStatusChangeDate = v10;
 
-  WeakRetained = objc_loadWeakRetained(&v5->_delegate);
-  objc_sync_exit(v5);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  objc_sync_exit(selfCopy);
 
-  if (a3)
+  if (change)
   {
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained connectionDidInvalidate:v5];
+      [WeakRetained connectionDidInvalidate:selfCopy];
     }
   }
 
@@ -322,14 +322,14 @@
   {
     v13 = +[NSDate now];
     v14 = [MRDTaskAssertion alloc];
-    v15 = [(MRXPCConnectionMonitor *)v5 pid];
-    v16 = [(MRXPCConnectionMonitor *)v5 bundleID];
-    v17 = [(MRXPCConnectionMonitor *)v5 label];
-    v18 = [(MRDTaskAssertion *)v14 initWithType:5 pid:v15 bundleID:v16 name:v17];
+    v15 = [(MRXPCConnectionMonitor *)selfCopy pid];
+    bundleID = [(MRXPCConnectionMonitor *)selfCopy bundleID];
+    label = [(MRXPCConnectionMonitor *)selfCopy label];
+    v18 = [(MRDTaskAssertion *)v14 initWithType:5 pid:v15 bundleID:bundleID name:label];
 
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained connectionDidResume:v5];
+      [WeakRetained connectionDidResume:selfCopy];
     }
 
     v24[0] = _NSConcreteStackBlock;
@@ -338,11 +338,11 @@
     v24[3] = &unk_1004B69D0;
     v19 = v18;
     v25 = v19;
-    v26 = v5;
+    v26 = selfCopy;
     v20 = v13;
     v27 = v20;
     v21 = objc_retainBlock(v24);
-    connection = v5->_connection;
+    connection = selfCopy->_connection;
     if (connection)
     {
       [(NSXPCConnection *)connection scheduleSendBarrierBlock:v21];
@@ -350,7 +350,7 @@
 
     else
     {
-      connection_t = v5->_connection_t;
+      connection_t = selfCopy->_connection_t;
       if (connection_t)
       {
         xpc_connection_send_barrier(connection_t, v21);

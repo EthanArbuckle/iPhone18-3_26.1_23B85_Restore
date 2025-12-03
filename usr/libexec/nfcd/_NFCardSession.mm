@@ -1,41 +1,41 @@
 @interface _NFCardSession
-+ (id)validateEntitlements:(id)a3;
-- (BOOL)validateReceivedAPDU:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
+- (BOOL)validateReceivedAPDU:(id)u;
 - (BOOL)willStartSession;
-- (_NFCardSession)initWithConfig:(id)a3 allowlistChecker:(id)a4 remoteObject:(id)a5 workQueue:(id)a6;
+- (_NFCardSession)initWithConfig:(id)config allowlistChecker:(id)checker remoteObject:(id)object workQueue:(id)queue;
 - (id)initialRoutingConfig;
-- (id)initialRoutingConfigWithField:(id)a3;
-- (void)_activateUIControllerWithCompletion:(id)a3;
+- (id)initialRoutingConfigWithField:(id)field;
+- (void)_activateUIControllerWithCompletion:(id)completion;
 - (void)_deassertPresentationAssertion;
 - (void)_initPaymentAIDPrefixList;
 - (void)_invalidateUIController;
-- (void)_sendErrorStatus:(unsigned __int16)a3;
-- (void)asyncReadAPDUWithCompletion:(id)a3;
+- (void)_sendErrorStatus:(unsigned __int16)status;
+- (void)asyncReadAPDUWithCompletion:(id)completion;
 - (void)cleanup;
-- (void)didStartSession:(id)a3;
-- (void)handleFieldNotification:(id)a3;
-- (void)readAPDUWithCompletion:(id)a3;
-- (void)requestEmulationAssertion:(id)a3 completion:(id)a4;
+- (void)didStartSession:(id)session;
+- (void)handleFieldNotification:(id)notification;
+- (void)readAPDUWithCompletion:(id)completion;
+- (void)requestEmulationAssertion:(id)assertion completion:(id)completion;
 - (void)restartDiscovery;
-- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)a3;
-- (void)sendAPDU:(id)a3 completion:(id)a4;
-- (void)startEmulationWithCompletion:(id)a3;
-- (void)updateUIString:(id)a3 completion:(id)a4;
+- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)completion;
+- (void)sendAPDU:(id)u completion:(id)completion;
+- (void)startEmulationWithCompletion:(id)completion;
+- (void)updateUIString:(id)string completion:(id)completion;
 @end
 
 @implementation _NFCardSession
 
-- (_NFCardSession)initWithConfig:(id)a3 allowlistChecker:(id)a4 remoteObject:(id)a5 workQueue:(id)a6
+- (_NFCardSession)initWithConfig:(id)config allowlistChecker:(id)checker remoteObject:(id)object workQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
+  configCopy = config;
+  checkerCopy = checker;
   v21.receiver = self;
   v21.super_class = _NFCardSession;
-  v12 = [(_NFXPCSession *)&v21 initWithRemoteObject:a5 workQueue:a6];
+  v12 = [(_NFXPCSession *)&v21 initWithRemoteObject:object workQueue:queue];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_allowlistChecker, a4);
+    objc_storeStrong(&v12->_allowlistChecker, checker);
     v14 = objc_opt_new();
     uiService = v13->_uiService;
     v13->_uiService = v14;
@@ -45,8 +45,8 @@
     {
       [(NFUIService *)v16 coreNFCUISetMode:3];
       v17 = v13->_uiService;
-      v18 = [v10 initialUIText];
-      [(NFUIService *)v17 coreNFCUISetScanText:v18];
+      initialUIText = [configCopy initialUIText];
+      [(NFUIService *)v17 coreNFCUISetScanText:initialUIText];
 
       v13->_uiServiceWasActivated = 0;
       [(_NFHCESession *)v13 setReadOnConnected:1];
@@ -59,9 +59,9 @@
   return v13;
 }
 
-- (void)_activateUIControllerWithCompletion:(id)a3
+- (void)_activateUIControllerWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (self->_uiServiceWasActivated)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -108,7 +108,7 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i UI already activated", &buf, 0x22u);
     }
 
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -134,10 +134,10 @@
     }
 
     v19 = [NSString alloc];
-    v20 = [(_NFSession *)self sessionUID];
+    sessionUID = [(_NFSession *)self sessionUID];
     v21 = +[NSDate now];
     v22 = [v21 description];
-    v23 = [v19 initWithFormat:@"%@, %@", v20, v22];
+    v23 = [v19 initWithFormat:@"%@, %@", sessionUID, v22];
     assertionHandle = self->_assertionHandle;
     self->_assertionHandle = v23;
 
@@ -161,7 +161,7 @@
     v28[2] = sub_1001A446C;
     v28[3] = &unk_10031B198;
     v28[4] = self;
-    v29 = v5;
+    v29 = completionCopy;
     [(NFUIService *)v26 coreNFCUIActivateWithCompletion:v28];
 
     objc_destroyWeak(v31);
@@ -179,8 +179,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NFServiceWhitelistChecker *)self->_allowlistChecker nfcCardSessionAIDPrefixList];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  nfcCardSessionAIDPrefixList = [(NFServiceWhitelistChecker *)self->_allowlistChecker nfcCardSessionAIDPrefixList];
+  v6 = [nfcCardSessionAIDPrefixList countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -191,18 +191,18 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(nfcCardSessionAIDPrefixList);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v10 NF_asHexString];
-        if ([NFATLMobileSettings findAID:v11 filterType:1]|| [NFATLMobileSettings findAID:v11 filterType:0])
+        nF_asHexString = [v10 NF_asHexString];
+        if ([NFATLMobileSettings findAID:nF_asHexString filterType:1]|| [NFATLMobileSettings findAID:nF_asHexString filterType:0])
         {
           [(NSMutableOrderedSet *)self->_paymentAIDPrefixes addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [nfcCardSessionAIDPrefixList countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -288,27 +288,27 @@
   [(_NFCardSession *)self _deassertPresentationAssertion];
 }
 
-- (void)sendAPDU:(id)a3 completion:(id)a4
+- (void)sendAPDU:(id)u completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  uCopy = u;
+  completionCopy = completion;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001A4BB0;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = uCopy;
+  v10 = uCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)startEmulationWithCompletion:(id)a3
+- (void)startEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = NFSharedSignpostLog();
   if (os_signpost_enabled(v6))
   {
@@ -316,48 +316,48 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TAG_SESSION_START_EMULATION_XPC", &unk_1002E8B7A, buf, 2u);
   }
 
-  v7 = [(_NFSession *)self workQueue];
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A509C;
   block[3] = &unk_100316050;
-  v10 = v5;
+  v10 = completionCopy;
   v11 = a2;
   block[4] = self;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)updateUIString:(id)a3 completion:(id)a4
+- (void)updateUIString:(id)string completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  stringCopy = string;
+  completionCopy = completion;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001A585C;
   v12[3] = &unk_100316078;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
+  v13 = stringCopy;
+  selfCopy = self;
+  v15 = completionCopy;
   v16 = a2;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v10 = completionCopy;
+  v11 = stringCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)_sendErrorStatus:(unsigned __int16)a3
+- (void)_sendErrorStatus:(unsigned __int16)status
 {
-  v5 = __rev16(a3);
+  v5 = __rev16(status);
   v4 = [[NSData alloc] initWithBytes:&v5 length:2];
   [(_NFCardSession *)self sendAPDU:v4 completion:&stru_10031B1B8];
 }
 
-- (BOOL)validateReceivedAPDU:(id)a3
+- (BOOL)validateReceivedAPDU:(id)u
 {
-  v5 = a3;
-  v6 = [(_NFHCESession *)self caLogger];
-  v7 = [[NFCommandAPDU alloc] initWithData:v5];
+  uCopy = u;
+  caLogger = [(_NFHCESession *)self caLogger];
+  v7 = [[NFCommandAPDU alloc] initWithData:uCopy];
   v8 = v7;
   if (!v7)
   {
@@ -371,9 +371,9 @@
       ClassName = object_getClassName(self);
       v31 = a2;
       Name = sel_getName(a2);
-      [v5 NF_asHexString];
-      v33 = self;
-      v35 = v34 = v5;
+      [uCopy NF_asHexString];
+      selfCopy = self;
+      v35 = v34 = uCopy;
       v109 = Name;
       a2 = v31;
       v36 = 45;
@@ -384,8 +384,8 @@
 
       v27(3, "%c[%{public}s %{public}s]:%i Invalid ISO7816 APDU detected, %{public}@", v36, ClassName, v109, 278, v35);
 
-      v5 = v34;
-      self = v33;
+      uCopy = v34;
+      self = selfCopy;
       v8 = 0;
     }
 
@@ -409,7 +409,7 @@
 
     v39 = object_getClassName(self);
     v40 = sel_getName(a2);
-    v41 = [v5 NF_asHexString];
+    nF_asHexString = [uCopy NF_asHexString];
     *buf = 67110146;
     v122 = v38;
     v123 = 2082;
@@ -419,7 +419,7 @@
     v127 = 1024;
     v128 = 278;
     v129 = 2114;
-    v130 = v41;
+    v130 = nF_asHexString;
     v42 = "%c[%{public}s %{public}s]:%i Invalid ISO7816 APDU detected, %{public}@";
 LABEL_40:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, v42, buf, 0x2Cu);
@@ -430,11 +430,11 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v9 = [v7 isSecureMessaging];
-  v10 = [v8 isSelectByDFNameCommand];
-  if (v10)
+  isSecureMessaging = [v7 isSecureMessaging];
+  isSelectByDFNameCommand = [v8 isSelectByDFNameCommand];
+  if (isSelectByDFNameCommand)
   {
-    v11 = v9 == 0;
+    v11 = isSecureMessaging == 0;
   }
 
   else
@@ -454,10 +454,10 @@ LABEL_52:
       v47 = object_getClassName(self);
       v48 = a2;
       v49 = sel_getName(a2);
-      [v5 NF_asHexString];
+      [uCopy NF_asHexString];
       v50 = v8;
-      v51 = self;
-      v53 = v52 = v5;
+      selfCopy2 = self;
+      v53 = v52 = uCopy;
       v110 = v49;
       a2 = v48;
       v54 = 45;
@@ -468,8 +468,8 @@ LABEL_52:
 
       v44(3, "%c[%{public}s %{public}s]:%i Invalid ISO7816 SELECT command detected, %{public}@", v54, v47, v110, 287, v53);
 
-      v5 = v52;
-      self = v51;
+      uCopy = v52;
+      self = selfCopy2;
       v8 = v50;
     }
 
@@ -493,7 +493,7 @@ LABEL_52:
 
     v57 = object_getClassName(self);
     v58 = sel_getName(a2);
-    v41 = [v5 NF_asHexString];
+    nF_asHexString = [uCopy NF_asHexString];
     *buf = 67110146;
     v122 = v56;
     v123 = 2082;
@@ -503,12 +503,12 @@ LABEL_52:
     v127 = 1024;
     v128 = 287;
     v129 = 2114;
-    v130 = v41;
+    v130 = nF_asHexString;
     v42 = "%c[%{public}s %{public}s]:%i Invalid ISO7816 SELECT command detected, %{public}@";
     goto LABEL_40;
   }
 
-  v12 = v10;
+  v12 = isSelectByDFNameCommand;
   if ([(_NFCardSession *)self cardState]== 1)
   {
     v13 = v12;
@@ -584,12 +584,12 @@ LABEL_52:
     {
       v98 = v97;
       v99 = object_getClass(self);
-      v100 = v6;
+      v100 = caLogger;
       v101 = class_isMetaClass(v99);
       v102 = object_getClassName(self);
       v112 = sel_getName(a2);
       v11 = !v101;
-      v6 = v100;
+      caLogger = v100;
       v103 = 45;
       if (!v11)
       {
@@ -687,16 +687,16 @@ LABEL_51:
   }
 
   sel = a2;
-  v114 = v6;
-  v115 = v5;
+  v114 = caLogger;
+  v115 = uCopy;
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v69 = [(_NFCardSession *)self allowlistChecker];
-  v70 = [v69 nfcCardSessionAIDPrefixList];
+  allowlistChecker = [(_NFCardSession *)self allowlistChecker];
+  nfcCardSessionAIDPrefixList = [allowlistChecker nfcCardSessionAIDPrefixList];
 
-  v71 = [v70 countByEnumeratingWithState:&v116 objects:v120 count:16];
+  v71 = [nfcCardSessionAIDPrefixList countByEnumeratingWithState:&v116 objects:v120 count:16];
   if (!v71)
   {
 LABEL_66:
@@ -711,15 +711,15 @@ LABEL_66:
       v84 = class_isMetaClass(v83);
       v85 = object_getClassName(self);
       v86 = sel_getName(sel);
-      v87 = [v8 payload];
-      v88 = [v87 NF_asHexString];
+      payload = [v8 payload];
+      nF_asHexString2 = [payload NF_asHexString];
       v89 = 45;
       if (v84)
       {
         v89 = 43;
       }
 
-      v82(6, "%c[%{public}s %{public}s]:%i AID %{public}@ is disallowed", v89, v85, v86, 335, v88);
+      v82(6, "%c[%{public}s %{public}s]:%i AID %{public}@ is disallowed", v89, v85, v86, 335, nF_asHexString2);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -739,8 +739,8 @@ LABEL_66:
 
       v93 = object_getClassName(self);
       v94 = sel_getName(sel);
-      v95 = [v8 payload];
-      v96 = [v95 NF_asHexString];
+      payload2 = [v8 payload];
+      nF_asHexString3 = [payload2 NF_asHexString];
       *buf = 67110146;
       v122 = v92;
       v123 = 2082;
@@ -750,15 +750,15 @@ LABEL_66:
       v127 = 1024;
       v128 = 335;
       v129 = 2114;
-      v130 = v96;
+      v130 = nF_asHexString3;
       _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i AID %{public}@ is disallowed", buf, 0x2Cu);
     }
 
     [(_NFCardSession *)self _sendErrorStatus:27266];
     v67 = 0;
 LABEL_88:
-    v6 = v114;
-    v5 = v115;
+    caLogger = v114;
+    uCopy = v115;
     goto LABEL_53;
   }
 
@@ -770,12 +770,12 @@ LABEL_58:
   {
     if (*v117 != v73)
     {
-      objc_enumerationMutation(v70);
+      objc_enumerationMutation(nfcCardSessionAIDPrefixList);
     }
 
     v75 = *(*(&v116 + 1) + 8 * v74);
-    v76 = [v8 payload];
-    v77 = [v76 length];
+    payload3 = [v8 payload];
+    v77 = [payload3 length];
     v78 = [v75 length];
 
     if (v77 < v78)
@@ -783,8 +783,8 @@ LABEL_58:
       goto LABEL_64;
     }
 
-    v79 = [v8 payload];
-    v80 = [v79 subdataWithRange:{0, objc_msgSend(v75, "length")}];
+    payload4 = [v8 payload];
+    v80 = [payload4 subdataWithRange:{0, objc_msgSend(v75, "length")}];
 
     if ([v80 isEqualToData:v75])
     {
@@ -794,7 +794,7 @@ LABEL_58:
 LABEL_64:
     if (v72 == ++v74)
     {
-      v72 = [v70 countByEnumeratingWithState:&v116 objects:v120 count:16];
+      v72 = [nfcCardSessionAIDPrefixList countByEnumeratingWithState:&v116 objects:v120 count:16];
       if (v72)
       {
         goto LABEL_58;
@@ -804,8 +804,8 @@ LABEL_64:
     }
   }
 
-  v106 = [(_NFCardSession *)self paymentAIDPrefixes];
-  v107 = [v106 containsObject:v75];
+  paymentAIDPrefixes = [(_NFCardSession *)self paymentAIDPrefixes];
+  v107 = [paymentAIDPrefixes containsObject:v75];
 
   [(_NFCardSession *)self setCardState:2];
   v67 = 1;
@@ -814,8 +814,8 @@ LABEL_64:
     goto LABEL_88;
   }
 
-  v6 = v114;
-  v5 = v115;
+  caLogger = v114;
+  uCopy = v115;
   if (v114)
   {
     v114[43] = 257;
@@ -826,9 +826,9 @@ LABEL_53:
   return v67;
 }
 
-- (void)asyncReadAPDUWithCompletion:(id)a3
+- (void)asyncReadAPDUWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [NSError alloc];
   v7 = [NSString stringWithUTF8String:"nfcd"];
   v13[0] = NSLocalizedDescriptionKey;
@@ -844,12 +844,12 @@ LABEL_53:
   v14[3] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
   v12 = [v6 initWithDomain:v7 code:14 userInfo:v11];
-  (*(a3 + 2))(v5, 0, v12);
+  (*(completion + 2))(completionCopy, 0, v12);
 }
 
-- (void)readAPDUWithCompletion:(id)a3
+- (void)readAPDUWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [NSError alloc];
   v7 = [NSString stringWithUTF8String:"nfcd"];
   v13[0] = NSLocalizedDescriptionKey;
@@ -865,7 +865,7 @@ LABEL_53:
   v14[3] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
   v12 = [v6 initWithDomain:v7 code:14 userInfo:v11];
-  (*(a3 + 2))(v5, 0, v12);
+  (*(completion + 2))(completionCopy, 0, v12);
 }
 
 - (void)restartDiscovery
@@ -915,9 +915,9 @@ LABEL_53:
   }
 }
 
-- (void)requestEmulationAssertion:(id)a3 completion:(id)a4
+- (void)requestEmulationAssertion:(id)assertion completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [NSError alloc];
   v8 = [NSString stringWithUTF8String:"nfcd"];
   v14[0] = NSLocalizedDescriptionKey;
@@ -933,12 +933,12 @@ LABEL_53:
   v15[3] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4];
   v13 = [v7 initWithDomain:v8 code:14 userInfo:v12];
-  (*(a4 + 2))(v6, v13);
+  (*(completion + 2))(completionCopy, v13);
 }
 
-- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)a3
+- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [NSError alloc];
   v7 = [NSString stringWithUTF8String:"nfcd"];
   v13[0] = NSLocalizedDescriptionKey;
@@ -954,16 +954,16 @@ LABEL_53:
   v14[3] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
   v12 = [v6 initWithDomain:v7 code:14 userInfo:v11];
-  (*(a3 + 2))(v5, v12);
+  (*(completion + 2))(completionCopy, v12);
 }
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  v5 = a3;
-  if ([v5 nfcCardSessionAccess])
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy nfcCardSessionAccess])
   {
-    v6 = [v5 nfcCardSessionAIDPrefixList];
-    v7 = [v6 count];
+    nfcCardSessionAIDPrefixList = [entitlementsCopy nfcCardSessionAIDPrefixList];
+    v7 = [nfcCardSessionAIDPrefixList count];
 
     if (v7)
     {
@@ -976,9 +976,9 @@ LABEL_53:
     if (Logger)
     {
       v26 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v30 = 45;
       if (isMetaClass)
@@ -993,7 +993,7 @@ LABEL_53:
     v31 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v32 = object_getClass(a1);
+      v32 = object_getClass(self);
       if (class_isMetaClass(v32))
       {
         v33 = 43;
@@ -1007,7 +1007,7 @@ LABEL_53:
       *buf = 67109890;
       v43 = v33;
       v44 = 2082;
-      v45 = object_getClassName(a1);
+      v45 = object_getClassName(self);
       v46 = 2082;
       v47 = sel_getName(a2);
       v48 = 1024;
@@ -1039,9 +1039,9 @@ LABEL_53:
     if (v9)
     {
       v10 = v9;
-      v11 = object_getClass(a1);
+      v11 = object_getClass(self);
       v12 = class_isMetaClass(v11);
-      v13 = object_getClassName(a1);
+      v13 = object_getClassName(self);
       v36 = sel_getName(a2);
       v14 = 45;
       if (v12)
@@ -1056,7 +1056,7 @@ LABEL_53:
     v15 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = object_getClass(a1);
+      v16 = object_getClass(self);
       if (class_isMetaClass(v16))
       {
         v17 = 43;
@@ -1070,7 +1070,7 @@ LABEL_53:
       *buf = 67109890;
       v43 = v17;
       v44 = 2082;
-      v45 = object_getClassName(a1);
+      v45 = object_getClassName(self);
       v46 = 2082;
       v47 = sel_getName(a2);
       v48 = 1024;
@@ -1103,15 +1103,15 @@ LABEL_25:
   return v8;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v5.receiver = self;
   v5.super_class = _NFCardSession;
-  [(_NFHCESession *)&v5 didStartSession:a3];
-  v4 = [(_NFHCESession *)self caLogger];
-  if (v4)
+  [(_NFHCESession *)&v5 didStartSession:session];
+  caLogger = [(_NFHCESession *)self caLogger];
+  if (caLogger)
   {
-    v4[85] = 1;
+    caLogger[85] = 1;
   }
 }
 
@@ -1123,9 +1123,9 @@ LABEL_25:
   return [(_NFHCESession *)&v4 willStartSession];
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1141,7 +1141,7 @@ LABEL_25:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 416, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 416, notificationCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1168,7 +1168,7 @@ LABEL_25:
     v23 = 1024;
     v24 = 416;
     v25 = 2114;
-    v26 = v5;
+    v26 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1281,9 +1281,9 @@ LABEL_25:
   }
 }
 
-- (id)initialRoutingConfigWithField:(id)a3
+- (id)initialRoutingConfigWithField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   if ([(_NFHCESession *)self emulationOnSessionStart])
   {
     v9[0] = _NSConcreteStackBlock;
@@ -1297,7 +1297,7 @@ LABEL_25:
 
   v8.receiver = self;
   v8.super_class = _NFCardSession;
-  v6 = [(_NFHCESession *)&v8 initialRoutingConfigWithField:v5];
+  v6 = [(_NFHCESession *)&v8 initialRoutingConfigWithField:fieldCopy];
 
   return v6;
 }
@@ -1317,9 +1317,9 @@ LABEL_25:
 
   v6.receiver = self;
   v6.super_class = _NFCardSession;
-  v4 = [(_NFHCESession *)&v6 initialRoutingConfig];
+  initialRoutingConfig = [(_NFHCESession *)&v6 initialRoutingConfig];
 
-  return v4;
+  return initialRoutingConfig;
 }
 
 @end

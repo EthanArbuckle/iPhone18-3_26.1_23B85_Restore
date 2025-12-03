@@ -1,28 +1,28 @@
 @interface CUIPSDLayerGroupRef
-- (BOOL)_isGroupType:(unsigned int)a3;
+- (BOOL)_isGroupType:(unsigned int)type;
 - (BOOL)isGroupStart;
 - (CGRect)bounds;
-- (CUIPSDLayerGroupRef)initWithImageRef:(id)a3 layerIndex:(unsigned int)a4;
+- (CUIPSDLayerGroupRef)initWithImageRef:(id)ref layerIndex:(unsigned int)index;
 - (id)layerNames;
-- (id)layerRefAtIndex:(unsigned int)a3;
+- (id)layerRefAtIndex:(unsigned int)index;
 - (void)dealloc;
-- (void)enumerateLayersUsingBlock:(id)a3;
+- (void)enumerateLayersUsingBlock:(id)block;
 @end
 
 @implementation CUIPSDLayerGroupRef
 
-- (CUIPSDLayerGroupRef)initWithImageRef:(id)a3 layerIndex:(unsigned int)a4
+- (CUIPSDLayerGroupRef)initWithImageRef:(id)ref layerIndex:(unsigned int)index
 {
-  v4 = *&a4;
+  v4 = *&index;
   v9.receiver = self;
   v9.super_class = CUIPSDLayerGroupRef;
   v6 = [(CUIPSDLayerGroupRef *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(CUIPSDLayerBaseRef *)v6 setImageRef:a3];
+    [(CUIPSDLayerBaseRef *)v6 setImageRef:ref];
     [(CUIPSDLayerBaseRef *)v7 setLayerIndex:v4];
-    v7->_sublayerInfo = [a3 _copySublayerInfoAtAbsoluteIndex:v4 atRoot:0];
+    v7->_sublayerInfo = [ref _copySublayerInfoAtAbsoluteIndex:v4 atRoot:0];
   }
 
   return v7;
@@ -41,10 +41,10 @@
   y = NSZeroRect.origin.y;
   width = NSZeroRect.size.width;
   height = NSZeroRect.size.height;
-  v7 = [(CUIPSDLayerGroupRef *)self numberOfLayers];
-  if (v7)
+  numberOfLayers = [(CUIPSDLayerGroupRef *)self numberOfLayers];
+  if (numberOfLayers)
   {
-    v8 = v7;
+    v8 = numberOfLayers;
     v9 = 0;
     do
     {
@@ -84,17 +84,17 @@
   return result;
 }
 
-- (BOOL)_isGroupType:(unsigned int)a3
+- (BOOL)_isGroupType:(unsigned int)type
 {
-  v5 = [(CUIPSDImageRef *)[(CUIPSDLayerBaseRef *)self imageRef] psdFile];
-  if (v5)
+  psdFile = [(CUIPSDImageRef *)[(CUIPSDLayerBaseRef *)self imageRef] psdFile];
+  if (psdFile)
   {
     v7 = 0;
-    CPSDFile::GetLayerSectionDividerType(v5, [(CUIPSDLayerBaseRef *)self layerIndex], &v7);
-    LOBYTE(v5) = v7 == a3;
+    CPSDFile::GetLayerSectionDividerType(psdFile, [(CUIPSDLayerBaseRef *)self layerIndex], &v7);
+    LOBYTE(psdFile) = v7 == type;
   }
 
-  return v5;
+  return psdFile;
 }
 
 - (BOOL)isGroupStart
@@ -109,16 +109,16 @@
 
 - (id)layerNames
 {
-  v3 = [(CUIPSDLayerBaseRef *)self imageRef];
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
   sublayerInfo = self->_sublayerInfo;
 
-  return [(CUIPSDImageRef *)v3 _namesOfSublayers:sublayerInfo];
+  return [(CUIPSDImageRef *)imageRef _namesOfSublayers:sublayerInfo];
 }
 
-- (id)layerRefAtIndex:(unsigned int)a3
+- (id)layerRefAtIndex:(unsigned int)index
 {
   v6 = 0;
-  v4 = [(_CUIPSDSublayerInfo *)self->_sublayerInfo sublayerAtIndex:*&a3 isValid:&v6];
+  v4 = [(_CUIPSDSublayerInfo *)self->_sublayerInfo sublayerAtIndex:*&index isValid:&v6];
   if (v6 == 1)
   {
     return [(CUIPSDImageRef *)[(CUIPSDLayerBaseRef *)self imageRef] _layerRefAtAbsoluteIndex:v4];
@@ -130,14 +130,14 @@
   }
 }
 
-- (void)enumerateLayersUsingBlock:(id)a3
+- (void)enumerateLayersUsingBlock:(id)block
 {
-  v4 = [(CUIPSDLayerGroupRef *)self layerEnumerator];
+  layerEnumerator = [(CUIPSDLayerGroupRef *)self layerEnumerator];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [layerEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -148,12 +148,12 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(layerEnumerator);
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
       v10 = 0;
-      (*(a3 + 2))(a3, v9, &v10);
+      (*(block + 2))(block, v9, &v10);
       if (v10)
       {
         break;
@@ -161,7 +161,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [layerEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;

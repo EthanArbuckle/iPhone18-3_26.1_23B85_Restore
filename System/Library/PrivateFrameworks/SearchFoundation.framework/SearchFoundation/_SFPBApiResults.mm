@@ -1,36 +1,36 @@
 @interface _SFPBApiResults
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBApiResults)initWithDictionary:(id)a3;
-- (_SFPBApiResults)initWithFacade:(id)a3;
-- (_SFPBApiResults)initWithJSON:(id)a3;
+- (_SFPBApiResults)initWithDictionary:(id)dictionary;
+- (_SFPBApiResults)initWithFacade:(id)facade;
+- (_SFPBApiResults)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addFlights:(id)a3;
-- (void)setFlights:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFlights:(id)flights;
+- (void)setFlights:(id)flights;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBApiResults
 
-- (_SFPBApiResults)initWithFacade:(id)a3
+- (_SFPBApiResults)initWithFacade:(id)facade
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBApiResults *)self init];
   if (v5)
   {
-    if ([v4 hasStatus])
+    if ([facadeCopy hasStatus])
     {
-      -[_SFPBApiResults setStatus:](v5, "setStatus:", [v4 status]);
+      -[_SFPBApiResults setStatus:](v5, "setStatus:", [facadeCopy status]);
     }
 
-    if ([v4 hasResultType])
+    if ([facadeCopy hasResultType])
     {
-      -[_SFPBApiResults setResultType:](v5, "setResultType:", [v4 resultType]);
+      -[_SFPBApiResults setResultType:](v5, "setResultType:", [facadeCopy resultType]);
     }
 
-    v6 = [v4 flights];
-    if (v6)
+    flights = [facadeCopy flights];
+    if (flights)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -44,8 +44,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 flights];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    flights2 = [facadeCopy flights];
+    v9 = [flights2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -56,7 +56,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(flights2);
           }
 
           v13 = [[_SFPBFlight alloc] initWithFacade:*(*(&v17 + 1) + 8 * i)];
@@ -66,7 +66,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [flights2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -80,30 +80,30 @@
   return v5;
 }
 
-- (_SFPBApiResults)initWithDictionary:(id)a3
+- (_SFPBApiResults)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = _SFPBApiResults;
   v5 = [(_SFPBApiResults *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"status"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBApiResults setStatus:](v5, "setStatus:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"resultType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"resultType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBApiResults setResultType:](v5, "setResultType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"flights"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"flights"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,30 +158,30 @@
   return v5;
 }
 
-- (_SFPBApiResults)initWithJSON:(id)a3
+- (_SFPBApiResults)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBApiResults *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBApiResults *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBApiResults *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -195,10 +195,10 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_flights count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -218,16 +218,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -237,22 +237,22 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"flights"];
+    [dictionary setObject:array forKeyedSubscript:@"flights"];
   }
 
   if (self->_resultType)
   {
-    v12 = [(_SFPBApiResults *)self resultType];
-    if (v12)
+    resultType = [(_SFPBApiResults *)self resultType];
+    if (resultType)
     {
-      if (v12 == 1)
+      if (resultType == 1)
       {
         v13 = @"1";
       }
 
       else
       {
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", resultType];
       }
     }
 
@@ -261,48 +261,48 @@
       v13 = @"0";
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"resultType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"resultType"];
   }
 
   if (self->_status)
   {
-    v14 = [(_SFPBApiResults *)self status];
-    if (v14 >= 3)
+    status = [(_SFPBApiResults *)self status];
+    if (status >= 3)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", status];
     }
 
     else
     {
-      v15 = off_1E7ACE548[v14];
+      v15 = off_1E7ACE548[status];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"status"];
+    [dictionary setObject:v15 forKeyedSubscript:@"status"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     status = self->_status;
-    if (status == [v4 status])
+    if (status == [equalCopy status])
     {
       resultType = self->_resultType;
-      if (resultType == [v4 resultType])
+      if (resultType == [equalCopy resultType])
       {
-        v7 = [(_SFPBApiResults *)self flights];
-        v8 = [v4 flights];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        flights = [(_SFPBApiResults *)self flights];
+        flights2 = [equalCopy flights];
+        v9 = flights2;
+        if ((flights != 0) != (flights2 == 0))
         {
-          v10 = [(_SFPBApiResults *)self flights];
-          if (!v10)
+          flights3 = [(_SFPBApiResults *)self flights];
+          if (!flights3)
           {
 
 LABEL_12:
@@ -310,10 +310,10 @@ LABEL_12:
             goto LABEL_10;
           }
 
-          v11 = v10;
-          v12 = [(_SFPBApiResults *)self flights];
-          v13 = [v4 flights];
-          v14 = [v12 isEqual:v13];
+          v11 = flights3;
+          flights4 = [(_SFPBApiResults *)self flights];
+          flights5 = [equalCopy flights];
+          v14 = [flights4 isEqual:flights5];
 
           if (v14)
           {
@@ -334,10 +334,10 @@ LABEL_10:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBApiResults *)self status])
   {
     PBDataWriterWriteInt32Field();
@@ -348,12 +348,12 @@ LABEL_10:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_SFPBApiResults *)self flights];
+  flights = [(_SFPBApiResults *)self flights];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [flights countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -365,7 +365,7 @@ LABEL_10:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(flights);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -374,7 +374,7 @@ LABEL_10:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [flights countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -383,27 +383,27 @@ LABEL_10:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFlights:(id)a3
+- (void)addFlights:(id)flights
 {
-  v4 = a3;
+  flightsCopy = flights;
   flights = self->_flights;
-  v8 = v4;
+  v8 = flightsCopy;
   if (!flights)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_flights;
-    self->_flights = v6;
+    self->_flights = array;
 
-    v4 = v8;
+    flightsCopy = v8;
     flights = self->_flights;
   }
 
-  [(NSArray *)flights addObject:v4];
+  [(NSArray *)flights addObject:flightsCopy];
 }
 
-- (void)setFlights:(id)a3
+- (void)setFlights:(id)flights
 {
-  v4 = [a3 copy];
+  v4 = [flights copy];
   flights = self->_flights;
   self->_flights = v4;
 

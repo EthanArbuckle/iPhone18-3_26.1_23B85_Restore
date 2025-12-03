@@ -1,46 +1,46 @@
 @interface HUUserListTableManager
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (HUUserListManagerTableDelegate)delegate;
-- (HUUserListTableManager)initWithTableView:(id)a3 viewController:(id)a4;
+- (HUUserListTableManager)initWithTableView:(id)view viewController:(id)controller;
 - (UIViewController)viewController;
-- (id)_contactForUser:(id)a3;
-- (id)_displayNameForUser:(id)a3;
-- (id)_monogramForUser:(id)a3;
-- (id)_personViewControllerForUser:(id)a3 invitation:(id)a4;
-- (id)_stringForInvitationState:(int64_t)a3;
+- (id)_contactForUser:(id)user;
+- (id)_displayNameForUser:(id)user;
+- (id)_monogramForUser:(id)user;
+- (id)_personViewControllerForUser:(id)user invitation:(id)invitation;
+- (id)_stringForInvitationState:(int64_t)state;
 - (id)sortedInvitations;
 - (id)sortedUsers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)numberOfDataRows;
-- (void)_configurePersonViewController:(id)a3 invitation:(id)a4 isRemovable:(BOOL)a5;
-- (void)_didAddUser:(id)a3;
-- (void)_didInsertAtIndex:(unint64_t)a3;
-- (void)_didReloadAtIndex:(unint64_t)a3;
-- (void)_didRemoveAtIndex:(unint64_t)a3;
-- (void)_didRemoveInvitation:(id)a3;
-- (void)_didRemoveUser:(id)a3;
+- (void)_configurePersonViewController:(id)controller invitation:(id)invitation isRemovable:(BOOL)removable;
+- (void)_didAddUser:(id)user;
+- (void)_didInsertAtIndex:(unint64_t)index;
+- (void)_didReloadAtIndex:(unint64_t)index;
+- (void)_didRemoveAtIndex:(unint64_t)index;
+- (void)_didRemoveInvitation:(id)invitation;
+- (void)_didRemoveUser:(id)user;
 - (void)_reinvite;
-- (void)_removeInvitation:(id)a3 completion:(id)a4;
-- (void)_removeUser:(id)a3 completion:(id)a4;
-- (void)_stopSharingWithCompletion:(id)a3;
-- (void)addPeopleViewController:(id)a3 didSendInvitations:(id)a4;
-- (void)addPeopleViewControllerDidCancel:(id)a3;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)home:(id)a3 didUpdateStateForOutgoingInvitations:(id)a4;
-- (void)setEditing:(BOOL)a3;
-- (void)setHome:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_removeInvitation:(id)invitation completion:(id)completion;
+- (void)_removeUser:(id)user completion:(id)completion;
+- (void)_stopSharingWithCompletion:(id)completion;
+- (void)addPeopleViewController:(id)controller didSendInvitations:(id)invitations;
+- (void)addPeopleViewControllerDidCancel:(id)cancel;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)home:(id)home didUpdateStateForOutgoingInvitations:(id)invitations;
+- (void)setEditing:(BOOL)editing;
+- (void)setHome:(id)home;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateEditingRows;
 @end
 
 @implementation HUUserListTableManager
 
-- (HUUserListTableManager)initWithTableView:(id)a3 viewController:(id)a4
+- (HUUserListTableManager)initWithTableView:(id)view viewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = HUUserListTableManager;
   v9 = [(HUUserListTableManager *)&v22 init];
@@ -52,8 +52,8 @@
     contactStore = v10->_contactStore;
     v10->_contactStore = v11;
 
-    objc_storeWeak(&v10->_viewController, v8);
-    objc_storeStrong(&v10->_tableView, a3);
+    objc_storeWeak(&v10->_viewController, controllerCopy);
+    objc_storeStrong(&v10->_tableView, view);
     tableView = v10->_tableView;
     v14 = objc_opt_class();
     v15 = objc_opt_class();
@@ -73,11 +73,11 @@
   return v10;
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_home == v5)
+  homeCopy = home;
+  if (self->_home == homeCopy)
   {
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -85,55 +85,55 @@
       v21 = 136315394;
       v22 = "[HUUserListTableManager setHome:]";
       v23 = 2112;
-      v24 = v5;
+      v24 = homeCopy;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%s Skipping since same as previous home %@", &v21, 0x16u);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_home, a3);
-    v6 = [(HUUserListTableManager *)self sortedUsers];
-    [(HUUserListTableManager *)self setUsers:v6];
+    objc_storeStrong(&self->_home, home);
+    sortedUsers = [(HUUserListTableManager *)self sortedUsers];
+    [(HUUserListTableManager *)self setUsers:sortedUsers];
 
-    v7 = [(HUUserListTableManager *)self sortedInvitations];
-    [(HUUserListTableManager *)self setInvitations:v7];
+    sortedInvitations = [(HUUserListTableManager *)self sortedInvitations];
+    [(HUUserListTableManager *)self setInvitations:sortedInvitations];
 
-    v8 = [(HUUserListTableManager *)self home];
-    [v8 setDelegate:self];
+    home = [(HUUserListTableManager *)self home];
+    [home setDelegate:self];
 
-    v9 = [(HUUserListTableManager *)self home];
-    v10 = [(HUUserListTableManager *)self home];
-    v11 = [v10 currentUser];
-    v12 = [v9 homeAccessControlForUser:v11];
+    home2 = [(HUUserListTableManager *)self home];
+    home3 = [(HUUserListTableManager *)self home];
+    currentUser = [home3 currentUser];
+    v12 = [home2 homeAccessControlForUser:currentUser];
     -[HUUserListTableManager setAllowsEditing:](self, "setAllowsEditing:", [v12 isAdministrator]);
 
-    v13 = [(HUUserListTableManager *)self tableView];
-    [v13 reloadData];
+    tableView = [(HUUserListTableManager *)self tableView];
+    [tableView reloadData];
 
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(HUUserListTableManager *)self users];
-      v16 = [v15 count];
-      v17 = [(HUUserListTableManager *)self users];
-      v18 = [(HUUserListTableManager *)self invitations];
-      v19 = [v18 count];
-      v20 = [(HUUserListTableManager *)self invitations];
+      users = [(HUUserListTableManager *)self users];
+      v16 = [users count];
+      users2 = [(HUUserListTableManager *)self users];
+      invitations = [(HUUserListTableManager *)self invitations];
+      v19 = [invitations count];
+      invitations2 = [(HUUserListTableManager *)self invitations];
       v21 = 136316674;
       v22 = "[HUUserListTableManager setHome:]";
       v23 = 2112;
-      v24 = v5;
+      v24 = homeCopy;
       v25 = 2048;
       v26 = v16;
       v27 = 2112;
-      v28 = v17;
+      v28 = users2;
       v29 = 2048;
       v30 = v19;
       v31 = 2112;
-      v32 = v20;
+      v32 = invitations2;
       v33 = 1024;
-      v34 = [(HUUserListTableManager *)self allowsEditing];
+      allowsEditing = [(HUUserListTableManager *)self allowsEditing];
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%s Updating to new home %@. users (%ld) %@. invitations (%ld) %@. allowsEditing %{BOOL}d", &v21, 0x44u);
     }
   }
@@ -141,9 +141,9 @@
 
 - (id)sortedUsers
 {
-  v2 = [(HUUserListTableManager *)self home];
-  v3 = [v2 users];
-  v4 = [v3 mutableCopy];
+  home = [(HUUserListTableManager *)self home];
+  users = [home users];
+  v4 = [users mutableCopy];
 
   [v4 sortUsingComparator:&__block_literal_global_107];
 
@@ -162,9 +162,9 @@ uint64_t __37__HUUserListTableManager_sortedUsers__block_invoke(uint64_t a1, voi
 
 - (id)sortedInvitations
 {
-  v2 = [(HUUserListTableManager *)self home];
-  v3 = [v2 outgoingInvitations];
-  v4 = [v3 mutableCopy];
+  home = [(HUUserListTableManager *)self home];
+  outgoingInvitations = [home outgoingInvitations];
+  v4 = [outgoingInvitations mutableCopy];
 
   [v4 sortUsingComparator:&__block_literal_global_5_0];
 
@@ -226,25 +226,25 @@ void __35__HUUserListTableManager__reinvite__block_invoke_2(uint64_t a1, void *a
   [v6 managerDidSendInvitations:v4];
 }
 
-- (void)_stopSharingWithCompletion:(id)a3
+- (void)_stopSharingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HUUserListTableManager *)self selectedIndexPath];
+  completionCopy = completion;
+  selectedIndexPath = [(HUUserListTableManager *)self selectedIndexPath];
 
-  if (v5)
+  if (selectedIndexPath)
   {
-    v6 = [(HUUserListTableManager *)self selectedIndexPath];
-    v7 = [v6 row];
-    v8 = [(HUUserListTableManager *)self users];
-    v9 = [v8 count];
+    selectedIndexPath2 = [(HUUserListTableManager *)self selectedIndexPath];
+    v7 = [selectedIndexPath2 row];
+    users = [(HUUserListTableManager *)self users];
+    v9 = [users count];
 
     if (v7 >= v9)
     {
-      v16 = [(HUUserListTableManager *)self invitations];
-      v17 = [(HUUserListTableManager *)self selectedIndexPath];
-      v18 = [v17 row];
-      v19 = [(HUUserListTableManager *)self users];
-      v20 = [v16 objectAtIndexedSubscript:{v18 - objc_msgSend(v19, "count")}];
+      invitations = [(HUUserListTableManager *)self invitations];
+      selectedIndexPath3 = [(HUUserListTableManager *)self selectedIndexPath];
+      v18 = [selectedIndexPath3 row];
+      users2 = [(HUUserListTableManager *)self users];
+      v20 = [invitations objectAtIndexedSubscript:{v18 - objc_msgSend(users2, "count")}];
 
       v24 = MEMORY[0x277D85DD0];
       v25 = 3221225472;
@@ -253,16 +253,16 @@ void __35__HUUserListTableManager__reinvite__block_invoke_2(uint64_t a1, void *a
       v13 = &v29;
       v14 = &v28;
       v28 = v20;
-      v29 = v4;
+      v29 = completionCopy;
       v15 = v20;
       [(HUUserListTableManager *)self _removeInvitation:v15 completion:&v24];
     }
 
     else
     {
-      v10 = [(HUUserListTableManager *)self users];
-      v11 = [(HUUserListTableManager *)self selectedIndexPath];
-      v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v11, "row")}];
+      users3 = [(HUUserListTableManager *)self users];
+      selectedIndexPath4 = [(HUUserListTableManager *)self selectedIndexPath];
+      v12 = [users3 objectAtIndexedSubscript:{objc_msgSend(selectedIndexPath4, "row")}];
 
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -271,7 +271,7 @@ void __35__HUUserListTableManager__reinvite__block_invoke_2(uint64_t a1, void *a
       v13 = &v32;
       v14 = &v31;
       v31 = v12;
-      v32 = v4;
+      v32 = completionCopy;
       v15 = v12;
       [(HUUserListTableManager *)self _removeUser:v15 completion:v30];
     }
@@ -280,8 +280,8 @@ void __35__HUUserListTableManager__reinvite__block_invoke_2(uint64_t a1, void *a
   }
 
   v21 = [(HUUserListTableManager *)self viewController:v24];
-  v22 = [v21 navigationController];
-  v23 = [v22 popViewControllerAnimated:1];
+  navigationController = [v21 navigationController];
+  v23 = [navigationController popViewControllerAnimated:1];
 }
 
 void __53__HUUserListTableManager__stopSharingWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -309,22 +309,22 @@ void __53__HUUserListTableManager__stopSharingWithCompletion___block_invoke_2(ui
   }
 }
 
-- (void)_removeUser:(id)a3 completion:(id)a4
+- (void)_removeUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(HUUserListTableManager *)self _didRemoveUser:v6];
-  v8 = [(HUUserListTableManager *)self home];
+  userCopy = user;
+  completionCopy = completion;
+  [(HUUserListTableManager *)self _didRemoveUser:userCopy];
+  home = [(HUUserListTableManager *)self home];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__HUUserListTableManager__removeUser_completion___block_invoke;
   v11[3] = &unk_277DBCEB0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 removeUserWithoutConfirmation:v10 completionHandler:v11];
+  v12 = userCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = userCopy;
+  [home removeUserWithoutConfirmation:v10 completionHandler:v11];
 }
 
 void __49__HUUserListTableManager__removeUser_completion___block_invoke(uint64_t a1, void *a2)
@@ -363,19 +363,19 @@ void __49__HUUserListTableManager__removeUser_completion___block_invoke(uint64_t
   }
 }
 
-- (void)_removeInvitation:(id)a3 completion:(id)a4
+- (void)_removeInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__HUUserListTableManager__removeInvitation_completion___block_invoke;
   v10[3] = &unk_277DBCEB0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = invitationCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = invitationCopy;
   [v9 cancelInviteWithCompletionHandler:v10];
 }
 
@@ -410,22 +410,22 @@ void __55__HUUserListTableManager__removeInvitation_completion___block_invoke(ui
   }
 }
 
-- (void)_didAddUser:(id)a3
+- (void)_didAddUser:(id)user
 {
-  v10 = a3;
-  v4 = [(HUUserListTableManager *)self users];
-  v5 = [v4 indexOfObject:v10];
+  userCopy = user;
+  users = [(HUUserListTableManager *)self users];
+  v5 = [users indexOfObject:userCopy];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(HUUserListTableManager *)self users];
-    v7 = [v6 mutableCopy];
+    users2 = [(HUUserListTableManager *)self users];
+    v7 = [users2 mutableCopy];
 
-    [v7 addObject:v10];
+    [v7 addObject:userCopy];
     [v7 sortUsingComparator:&__block_literal_global_16_1];
     [(HUUserListTableManager *)self setUsers:v7];
-    v8 = [(HUUserListTableManager *)self users];
-    v9 = [v8 indexOfObject:v10];
+    users3 = [(HUUserListTableManager *)self users];
+    v9 = [users3 indexOfObject:userCopy];
 
     [(HUUserListTableManager *)self _didInsertAtIndex:v9];
   }
@@ -441,80 +441,80 @@ uint64_t __38__HUUserListTableManager__didAddUser___block_invoke(uint64_t a1, vo
   return v7;
 }
 
-- (void)_didRemoveUser:(id)a3
+- (void)_didRemoveUser:(id)user
 {
-  v8 = a3;
-  v4 = [(HUUserListTableManager *)self users];
-  v5 = [v4 indexOfObject:v8];
+  userCopy = user;
+  users = [(HUUserListTableManager *)self users];
+  v5 = [users indexOfObject:userCopy];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(HUUserListTableManager *)self users];
-    v7 = [v6 mutableCopy];
+    users2 = [(HUUserListTableManager *)self users];
+    v7 = [users2 mutableCopy];
 
-    [v7 removeObject:v8];
+    [v7 removeObject:userCopy];
     [(HUUserListTableManager *)self setUsers:v7];
     [(HUUserListTableManager *)self _didRemoveAtIndex:v5];
   }
 }
 
-- (void)_didRemoveInvitation:(id)a3
+- (void)_didRemoveInvitation:(id)invitation
 {
-  v10 = a3;
-  v4 = [(HUUserListTableManager *)self invitations];
-  v5 = [v4 indexOfObject:v10];
+  invitationCopy = invitation;
+  invitations = [(HUUserListTableManager *)self invitations];
+  v5 = [invitations indexOfObject:invitationCopy];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(HUUserListTableManager *)self invitations];
-    v7 = [v6 mutableCopy];
+    invitations2 = [(HUUserListTableManager *)self invitations];
+    v7 = [invitations2 mutableCopy];
 
-    [v7 removeObject:v10];
+    [v7 removeObject:invitationCopy];
     [(HUUserListTableManager *)self setInvitations:v7];
-    v8 = [(HUUserListTableManager *)self users];
-    v9 = [v8 count];
+    users = [(HUUserListTableManager *)self users];
+    v9 = [users count];
 
     [(HUUserListTableManager *)self _didRemoveAtIndex:v9 + v5];
   }
 }
 
-- (void)_didInsertAtIndex:(unint64_t)a3
+- (void)_didInsertAtIndex:(unint64_t)index
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v5 = [(HUUserListTableManager *)self tableView];
-  v6 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:{-[HUUserListTableManager sectionForPeople](self, "sectionForPeople")}];
+  tableView = [(HUUserListTableManager *)self tableView];
+  v6 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:{-[HUUserListTableManager sectionForPeople](self, "sectionForPeople")}];
   v8[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  [v5 insertRowsAtIndexPaths:v7 withRowAnimation:100];
+  [tableView insertRowsAtIndexPaths:v7 withRowAnimation:100];
 }
 
-- (void)_didRemoveAtIndex:(unint64_t)a3
+- (void)_didRemoveAtIndex:(unint64_t)index
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v5 = [(HUUserListTableManager *)self tableView];
-  v6 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:{-[HUUserListTableManager sectionForPeople](self, "sectionForPeople")}];
+  tableView = [(HUUserListTableManager *)self tableView];
+  v6 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:{-[HUUserListTableManager sectionForPeople](self, "sectionForPeople")}];
   v8[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  [v5 deleteRowsAtIndexPaths:v7 withRowAnimation:100];
+  [tableView deleteRowsAtIndexPaths:v7 withRowAnimation:100];
 }
 
-- (void)_didReloadAtIndex:(unint64_t)a3
+- (void)_didReloadAtIndex:(unint64_t)index
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v5 = [(HUUserListTableManager *)self tableView];
-  v6 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:{-[HUUserListTableManager sectionForPeople](self, "sectionForPeople")}];
+  tableView = [(HUUserListTableManager *)self tableView];
+  v6 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:{-[HUUserListTableManager sectionForPeople](self, "sectionForPeople")}];
   v8[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  [v5 reloadRowsAtIndexPaths:v7 withRowAnimation:100];
+  [tableView reloadRowsAtIndexPaths:v7 withRowAnimation:100];
 }
 
-- (id)_contactForUser:(id)a3
+- (id)_contactForUser:(id)user
 {
   v35[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userID];
+  userCopy = user;
+  userID = [userCopy userID];
 
-  if (v5)
+  if (userID)
   {
     v6 = objc_alloc(MEMORY[0x277CBDA70]);
     v7 = *MEMORY[0x277CBD000];
@@ -523,8 +523,8 @@ uint64_t __38__HUUserListTableManager__didAddUser___block_invoke(uint64_t a1, vo
     v35[2] = *MEMORY[0x277CBCFF8];
     v8 = [MEMORY[0x277CBDC70] descriptorForRequiredKeysIncludingImage:1];
     v35[3] = v8;
-    v9 = [MEMORY[0x277CBDC48] descriptorForRequiredKeys];
-    v35[4] = v9;
+    descriptorForRequiredKeys = [MEMORY[0x277CBDC48] descriptorForRequiredKeys];
+    v35[4] = descriptorForRequiredKeys;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:5];
     v11 = [v6 initWithKeysToFetch:v10];
 
@@ -534,16 +534,16 @@ uint64_t __38__HUUserListTableManager__didAddUser___block_invoke(uint64_t a1, vo
     v28 = __Block_byref_object_copy__12;
     v29 = __Block_byref_object_dispose__12;
     v30 = 0;
-    v12 = [(HUUserListTableManager *)self contactStore];
+    contactStore = [(HUUserListTableManager *)self contactStore];
     v24 = 0;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __42__HUUserListTableManager__contactForUser___block_invoke;
     v21[3] = &unk_277DBCEF8;
-    v13 = v4;
+    v13 = userCopy;
     v22 = v13;
     v23 = &v25;
-    v14 = [v12 enumerateContactsWithFetchRequest:v11 error:&v24 usingBlock:v21];
+    v14 = [contactStore enumerateContactsWithFetchRequest:v11 error:&v24 usingBlock:v21];
     v15 = v24;
 
     if (v15)
@@ -561,11 +561,11 @@ uint64_t __38__HUUserListTableManager__didAddUser___block_invoke(uint64_t a1, vo
       v17 = HFLogForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v13 userID];
+        userID2 = [v13 userID];
         *buf = 138412546;
         v32 = v15;
         v33 = 2112;
-        v34 = v20;
+        v34 = userID2;
         _os_log_error_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_ERROR, "Error %@ looking up user: %@", buf, 0x16u);
       }
     }
@@ -599,16 +599,16 @@ void __42__HUUserListTableManager__contactForUser___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)_displayNameForUser:(id)a3
+- (id)_displayNameForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HUUserListTableManager *)self _contactForUser:v4];
+  userCopy = user;
+  v5 = [(HUUserListTableManager *)self _contactForUser:userCopy];
   if (!v5 || ([MEMORY[0x277CBDA78] stringFromContact:v5 style:0], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [v4 userID];
-    if (v7)
+    userID = [userCopy userID];
+    if (userID)
     {
-      [v4 userID];
+      [userCopy userID];
     }
 
     else
@@ -621,9 +621,9 @@ void __42__HUUserListTableManager__contactForUser___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (id)_stringForInvitationState:(int64_t)a3
+- (id)_stringForInvitationState:(int64_t)state
 {
-  if ((a3 - 1) > 5)
+  if ((state - 1) > 5)
   {
     v4 = 0;
   }
@@ -636,9 +636,9 @@ void __42__HUUserListTableManager__contactForUser___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (id)_monogramForUser:(id)a3
+- (id)_monogramForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   if (!_monogramForUser__monogrammer)
   {
     v5 = [objc_alloc(MEMORY[0x277CBDC70]) initWithStyle:0 diameter:40.0];
@@ -646,77 +646,77 @@ void __42__HUUserListTableManager__contactForUser___block_invoke(uint64_t a1, vo
     _monogramForUser__monogrammer = v5;
   }
 
-  v7 = [(HUUserListTableManager *)self _contactForUser:v4];
-  if (!v7 || ([_monogramForUser__monogrammer monogramForContact:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  v7 = [(HUUserListTableManager *)self _contactForUser:userCopy];
+  if (!v7 || ([_monogramForUser__monogrammer monogramForContact:v7], (silhouetteMonogram = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [_monogramForUser__monogrammer silhouetteMonogram];
+    silhouetteMonogram = [_monogramForUser__monogrammer silhouetteMonogram];
   }
 
-  return v8;
+  return silhouetteMonogram;
 }
 
-- (id)_personViewControllerForUser:(id)a3 invitation:(id)a4
+- (id)_personViewControllerForUser:(id)user invitation:(id)invitation
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUUserListTableManager *)self _contactForUser:v6];
+  userCopy = user;
+  invitationCopy = invitation;
+  v8 = [(HUUserListTableManager *)self _contactForUser:userCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBDC48] viewControllerForContact:v8];
-    [v9 setAllowsEditing:0];
-    v10 = [(HUUserListTableManager *)self home];
-    v11 = [v10 owner];
-    -[HUUserListTableManager _configurePersonViewController:invitation:isRemovable:](self, "_configurePersonViewController:invitation:isRemovable:", v9, v7, [v11 isEqual:v6] ^ 1);
+    userID = [MEMORY[0x277CBDC48] viewControllerForContact:v8];
+    [userID setAllowsEditing:0];
+    home = [(HUUserListTableManager *)self home];
+    owner = [home owner];
+    -[HUUserListTableManager _configurePersonViewController:invitation:isRemovable:](self, "_configurePersonViewController:invitation:isRemovable:", userID, invitationCopy, [owner isEqual:userCopy] ^ 1);
   }
 
   else
   {
-    v9 = [v6 userID];
+    userID = [userCopy userID];
 
-    if (!v9)
+    if (!userID)
     {
       goto LABEL_6;
     }
 
-    v10 = objc_alloc_init(MEMORY[0x277CBDB38]);
+    home = objc_alloc_init(MEMORY[0x277CBDB38]);
     v12 = MEMORY[0x277CBDB20];
     v13 = *MEMORY[0x277CBD8E0];
-    v14 = [v6 userID];
-    v15 = [v12 labeledValueWithLabel:v13 value:v14];
+    userID2 = [userCopy userID];
+    v15 = [v12 labeledValueWithLabel:v13 value:userID2];
     v19[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    [v10 setEmailAddresses:v16];
+    [home setEmailAddresses:v16];
 
-    v9 = [MEMORY[0x277CBDC48] viewControllerForUnknownContact:v10];
-    [v9 setActions:{objc_msgSend(v9, "actions") & 0xFFFFFFFFFFFFFFDFLL}];
-    v11 = [(HUUserListTableManager *)self home];
-    v17 = [v11 owner];
-    -[HUUserListTableManager _configurePersonViewController:invitation:isRemovable:](self, "_configurePersonViewController:invitation:isRemovable:", v9, v7, [v17 isEqual:v6] ^ 1);
+    userID = [MEMORY[0x277CBDC48] viewControllerForUnknownContact:home];
+    [userID setActions:{objc_msgSend(userID, "actions") & 0xFFFFFFFFFFFFFFDFLL}];
+    owner = [(HUUserListTableManager *)self home];
+    v11Owner = [owner owner];
+    -[HUUserListTableManager _configurePersonViewController:invitation:isRemovable:](self, "_configurePersonViewController:invitation:isRemovable:", userID, invitationCopy, [v11Owner isEqual:userCopy] ^ 1);
   }
 
 LABEL_6:
 
-  return v9;
+  return userID;
 }
 
-- (void)_configurePersonViewController:(id)a3 invitation:(id)a4 isRemovable:(BOOL)a5
+- (void)_configurePersonViewController:(id)controller invitation:(id)invitation isRemovable:(BOOL)removable
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
-  [v15 setAllowsActions:0];
+  removableCopy = removable;
+  controllerCopy = controller;
+  invitationCopy = invitation;
+  [controllerCopy setAllowsActions:0];
   if ([(HUUserListTableManager *)self allowsEditing])
   {
-    [v15 setDisplayMode:2];
-    v9 = [v15 contentViewController];
-    if (v8)
+    [controllerCopy setDisplayMode:2];
+    contentViewController = [controllerCopy contentViewController];
+    if (invitationCopy)
     {
-      if ([v8 invitationState] == 4 || objc_msgSend(v8, "invitationState") == 6)
+      if ([invitationCopy invitationState] == 4 || objc_msgSend(invitationCopy, "invitationState") == 6)
       {
         v10 = _HULocalizedStringWithDefaultValue(@"HUUserManagementInviteAgain", @"HUUserManagementInviteAgain", 1);
-        v11 = [v9 cardTopGroup];
-        [v9 addActionWithTitle:v10 target:self selector:sel__reinvite inGroup:v11 destructive:1];
+        cardTopGroup = [contentViewController cardTopGroup];
+        [contentViewController addActionWithTitle:v10 target:self selector:sel__reinvite inGroup:cardTopGroup destructive:1];
       }
 
       v12 = @"HUUserManagementCancelInvite";
@@ -724,7 +724,7 @@ LABEL_6:
 
     else
     {
-      if (!v5)
+      if (!removableCopy)
       {
 LABEL_10:
 
@@ -735,8 +735,8 @@ LABEL_10:
     }
 
     v13 = _HULocalizedStringWithDefaultValue(v12, v12, 1);
-    v14 = [v9 cardTopGroup];
-    [v9 addActionWithTitle:v13 target:self selector:sel__stopSharing inGroup:v14 destructive:1];
+    cardTopGroup2 = [contentViewController cardTopGroup];
+    [contentViewController addActionWithTitle:v13 target:self selector:sel__stopSharing inGroup:cardTopGroup2 destructive:1];
 
     goto LABEL_10;
   }
@@ -744,58 +744,58 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)addPeopleViewControllerDidCancel:(id)a3
+- (void)addPeopleViewControllerDidCancel:(id)cancel
 {
-  v4 = [(HUUserListTableManager *)self delegate];
+  delegate = [(HUUserListTableManager *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(HUUserListTableManager *)self delegate];
-    [v5 managerDidDismissWithError:0];
+    delegate2 = [(HUUserListTableManager *)self delegate];
+    [delegate2 managerDidDismissWithError:0];
   }
 }
 
-- (void)addPeopleViewController:(id)a3 didSendInvitations:(id)a4
+- (void)addPeopleViewController:(id)controller didSendInvitations:(id)invitations
 {
-  v15 = a4;
-  v5 = [(HUUserListTableManager *)self sortedInvitations];
-  [(HUUserListTableManager *)self setInvitations:v5];
+  invitationsCopy = invitations;
+  sortedInvitations = [(HUUserListTableManager *)self sortedInvitations];
+  [(HUUserListTableManager *)self setInvitations:sortedInvitations];
 
-  v6 = [(HUUserListTableManager *)self tableView];
-  [v6 reloadData];
+  tableView = [(HUUserListTableManager *)self tableView];
+  [tableView reloadData];
 
-  v7 = [(HUUserListTableManager *)self viewController];
-  v8 = [v7 navigationController];
-  v9 = [v8 popViewControllerAnimated:1];
+  viewController = [(HUUserListTableManager *)self viewController];
+  navigationController = [viewController navigationController];
+  v9 = [navigationController popViewControllerAnimated:1];
 
-  v10 = [(HUUserListTableManager *)self delegate];
+  delegate = [(HUUserListTableManager *)self delegate];
 
-  if (v10)
+  if (delegate)
   {
-    v11 = [(HUUserListTableManager *)self delegate];
-    [v11 managerDidSendInvitations:v15];
+    delegate2 = [(HUUserListTableManager *)self delegate];
+    [delegate2 managerDidSendInvitations:invitationsCopy];
 
-    v12 = [(HUUserListTableManager *)self delegate];
+    delegate3 = [(HUUserListTableManager *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(HUUserListTableManager *)self delegate];
-      [v14 managerDidUpdateUserList];
+      delegate4 = [(HUUserListTableManager *)self delegate];
+      [delegate4 managerDidUpdateUserList];
     }
   }
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v5 = a4;
+  userCopy = user;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HUUserListTableManager_home_didAddUser___block_invoke;
   v7[3] = &unk_277DB7558;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = userCopy;
+  v6 = userCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -817,16 +817,16 @@ void __42__HUUserListTableManager_home_didAddUser___block_invoke(uint64_t a1)
   }
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v5 = a4;
+  userCopy = user;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HUUserListTableManager_home_didRemoveUser___block_invoke;
   v7[3] = &unk_277DB7558;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = userCopy;
+  v6 = userCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -848,16 +848,16 @@ void __45__HUUserListTableManager_home_didRemoveUser___block_invoke(uint64_t a1)
   }
 }
 
-- (void)home:(id)a3 didUpdateStateForOutgoingInvitations:(id)a4
+- (void)home:(id)home didUpdateStateForOutgoingInvitations:(id)invitations
 {
-  v5 = a4;
+  invitationsCopy = invitations;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HUUserListTableManager_home_didUpdateStateForOutgoingInvitations___block_invoke;
   v7[3] = &unk_277DB7558;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = invitationsCopy;
+  v6 = invitationsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -987,17 +987,17 @@ void __68__HUUserListTableManager_home_didUpdateStateForOutgoingInvitations___bl
 
 - (int64_t)numberOfDataRows
 {
-  v3 = [(HUUserListTableManager *)self users];
-  v4 = [v3 count];
-  v5 = [(HUUserListTableManager *)self invitations];
-  v6 = [v5 count];
+  users = [(HUUserListTableManager *)self users];
+  v4 = [users count];
+  invitations = [(HUUserListTableManager *)self invitations];
+  v6 = [invitations count];
 
   return v6 + v4;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  if ([(HUUserListTableManager *)self _indexPathIsInviteUser:a4])
+  if ([(HUUserListTableManager *)self _indexPathIsInviteUser:path])
   {
     return 0;
   }
@@ -1005,37 +1005,37 @@ void __68__HUUserListTableManager_home_didUpdateStateForOutgoingInvitations___bl
   return [(HUUserListTableManager *)self allowsEditing];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 row];
-  v9 = [(HUUserListTableManager *)self users];
-  v10 = [v9 count];
-  v11 = [(HUUserListTableManager *)self invitations];
-  v12 = [v11 count] + v10;
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [pathCopy row];
+  users = [(HUUserListTableManager *)self users];
+  v10 = [users count];
+  invitations = [(HUUserListTableManager *)self invitations];
+  v12 = [invitations count] + v10;
 
   if (v8 >= v12)
   {
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v15 = [v7 dequeueReusableCellWithIdentifier:v22];
+    v15 = [viewCopy dequeueReusableCellWithIdentifier:v22];
 
     v23 = _HULocalizedStringWithDefaultValue(@"HUUserManagementInvitePeopleButton", @"HUUserManagementInvitePeopleButton", 1);
-    v24 = [v15 textLabel];
-    [v24 setText:v23];
+    textLabel = [v15 textLabel];
+    [textLabel setText:v23];
 
-    v25 = [MEMORY[0x277D75348] systemBlueColor];
-    v26 = [v15 textLabel];
-    [v26 setTextColor:v25];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    textLabel2 = [v15 textLabel];
+    [textLabel2 setTextColor:systemBlueColor];
 
     [v15 setUserInteractionEnabled:{-[HUUserListTableManager editing](self, "editing") ^ 1}];
-    v27 = [(HUUserListTableManager *)self editing];
-    v28 = [v15 textLabel];
-    [v28 setEnabled:!v27];
+    editing = [(HUUserListTableManager *)self editing];
+    textLabel3 = [v15 textLabel];
+    [textLabel3 setEnabled:!editing];
 
-    v29 = [v15 detailTextLabel];
-    [v29 setText:0];
+    detailTextLabel = [v15 detailTextLabel];
+    [detailTextLabel setText:0];
 
     [v15 setAccessoryType:0];
   }
@@ -1044,40 +1044,40 @@ void __68__HUUserListTableManager_home_didUpdateStateForOutgoingInvitations___bl
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v7 dequeueReusableCellWithIdentifier:v14];
+    v15 = [viewCopy dequeueReusableCellWithIdentifier:v14];
 
-    v16 = [v6 row];
-    v17 = [(HUUserListTableManager *)self users];
-    v18 = [v17 count];
+    v16 = [pathCopy row];
+    users2 = [(HUUserListTableManager *)self users];
+    v18 = [users2 count];
 
     if (v16 >= v18)
     {
-      v30 = [v6 row];
-      v31 = [(HUUserListTableManager *)self users];
-      v32 = v30 - [v31 count];
+      v30 = [pathCopy row];
+      users3 = [(HUUserListTableManager *)self users];
+      v32 = v30 - [users3 count];
 
-      v33 = [(HUUserListTableManager *)self invitations];
-      v34 = [v33 objectAtIndexedSubscript:v32];
+      invitations2 = [(HUUserListTableManager *)self invitations];
+      v34 = [invitations2 objectAtIndexedSubscript:v32];
 
-      v20 = [v34 invitee];
+      invitee = [v34 invitee];
       v35 = -[HUUserListTableManager _stringForInvitationState:](self, "_stringForInvitationState:", [v34 invitationState]);
       [v15 setInvitationStatusString:v35];
     }
 
     else
     {
-      v19 = [(HUUserListTableManager *)self users];
-      v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      users4 = [(HUUserListTableManager *)self users];
+      invitee = [users4 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
       [v15 setInvitationStatusString:0];
     }
 
-    v36 = [(HUUserListTableManager *)self _displayNameForUser:v20];
+    v36 = [(HUUserListTableManager *)self _displayNameForUser:invitee];
     [v15 setDisplayName:v36];
 
-    v37 = [v20 userID];
+    userID = [invitee userID];
 
-    if (!v37)
+    if (!userID)
     {
       [v15 setSelectionStyle:0];
     }
@@ -1086,128 +1086,128 @@ void __68__HUUserListTableManager_home_didUpdateStateForOutgoingInvitations___bl
   return v15;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v19 = a5;
-  v6 = [v19 row];
-  v7 = [(HUUserListTableManager *)self users];
-  v8 = [v7 count];
+  pathCopy = path;
+  v6 = [pathCopy row];
+  users = [(HUUserListTableManager *)self users];
+  v8 = [users count];
 
   if (v6 >= v8)
   {
-    v11 = [v19 row];
-    v12 = [(HUUserListTableManager *)self users];
-    v13 = [v12 count];
-    v14 = [(HUUserListTableManager *)self invitations];
-    v15 = [v14 count] + v13;
+    v11 = [pathCopy row];
+    users2 = [(HUUserListTableManager *)self users];
+    v13 = [users2 count];
+    invitations = [(HUUserListTableManager *)self invitations];
+    v15 = [invitations count] + v13;
 
     if (v11 >= v15)
     {
       goto LABEL_6;
     }
 
-    v16 = [v19 row];
-    v17 = [(HUUserListTableManager *)self users];
-    v18 = v16 - [v17 count];
+    v16 = [pathCopy row];
+    users3 = [(HUUserListTableManager *)self users];
+    v18 = v16 - [users3 count];
 
-    v9 = [(HUUserListTableManager *)self invitations];
-    v10 = [v9 objectAtIndexedSubscript:v18];
+    invitations2 = [(HUUserListTableManager *)self invitations];
+    v10 = [invitations2 objectAtIndexedSubscript:v18];
     [(HUUserListTableManager *)self _removeInvitation:v10 completion:0];
   }
 
   else
   {
-    v9 = [(HUUserListTableManager *)self users];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v19, "row")}];
+    invitations2 = [(HUUserListTableManager *)self users];
+    v10 = [invitations2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     [(HUUserListTableManager *)self _removeUser:v10 completion:0];
   }
 
 LABEL_6:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v27 = a3;
-  v6 = a4;
-  v7 = [v6 row];
-  v8 = [(HUUserListTableManager *)self users];
-  v9 = [v8 count];
-  v10 = [(HUUserListTableManager *)self invitations];
-  v11 = [v10 count] + v9;
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
+  users = [(HUUserListTableManager *)self users];
+  v9 = [users count];
+  invitations = [(HUUserListTableManager *)self invitations];
+  v11 = [invitations count] + v9;
 
   if (v7 < v11)
   {
-    v12 = [v6 row];
-    v13 = [(HUUserListTableManager *)self users];
-    v14 = [v13 count];
+    v12 = [pathCopy row];
+    users2 = [(HUUserListTableManager *)self users];
+    v14 = [users2 count];
 
     if (v12 >= v14)
     {
-      v21 = [v6 row];
-      v22 = [(HUUserListTableManager *)self users];
-      v23 = v21 - [v22 count];
+      v21 = [pathCopy row];
+      users3 = [(HUUserListTableManager *)self users];
+      v23 = v21 - [users3 count];
 
-      v24 = [(HUUserListTableManager *)self invitations];
-      v17 = [v24 objectAtIndexedSubscript:v23];
+      invitations2 = [(HUUserListTableManager *)self invitations];
+      viewController2 = [invitations2 objectAtIndexedSubscript:v23];
 
-      v16 = [v17 invitee];
+      invitee = [viewController2 invitee];
     }
 
     else
     {
-      v15 = [(HUUserListTableManager *)self users];
-      v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      users4 = [(HUUserListTableManager *)self users];
+      invitee = [users4 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-      v17 = 0;
+      viewController2 = 0;
     }
 
-    [(HUUserListTableManager *)self setSelectedIndexPath:v6];
-    v20 = [(HUUserListTableManager *)self _personViewControllerForUser:v16 invitation:v17];
-    if (v20)
+    [(HUUserListTableManager *)self setSelectedIndexPath:pathCopy];
+    navigationController2 = [(HUUserListTableManager *)self _personViewControllerForUser:invitee invitation:viewController2];
+    if (navigationController2)
     {
-      v25 = [(HUUserListTableManager *)self viewController];
-      v26 = [v25 navigationController];
-      [v26 pushViewController:v20 animated:1];
+      viewController = [(HUUserListTableManager *)self viewController];
+      navigationController = [viewController navigationController];
+      [navigationController pushViewController:navigationController2 animated:1];
     }
 
     goto LABEL_10;
   }
 
-  if ([(HUUserListTableManager *)self allowsEditing]&& [(HUUserListTableManager *)self _indexPathIsInviteUser:v6])
+  if ([(HUUserListTableManager *)self allowsEditing]&& [(HUUserListTableManager *)self _indexPathIsInviteUser:pathCopy])
   {
     v18 = [HUAddPeopleViewController alloc];
-    v19 = [(HUUserListTableManager *)self home];
-    v16 = [(HUAddPeopleViewController *)v18 initWithHome:v19 viewContext:0];
+    home = [(HUUserListTableManager *)self home];
+    invitee = [(HUAddPeopleViewController *)v18 initWithHome:home viewContext:0];
 
-    [(HUAddPeopleViewController *)v16 setDelegate:self];
-    v17 = [(HUUserListTableManager *)self viewController];
-    v20 = [v17 navigationController];
-    [v20 pushViewController:v16 animated:1];
+    [(HUAddPeopleViewController *)invitee setDelegate:self];
+    viewController2 = [(HUUserListTableManager *)self viewController];
+    navigationController2 = [viewController2 navigationController];
+    [navigationController2 pushViewController:invitee animated:1];
 LABEL_10:
   }
 
-  [v27 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
-    v5 = [(HUUserListTableManager *)self tableView];
-    [v5 beginUpdates];
+    self->_editing = editing;
+    tableView = [(HUUserListTableManager *)self tableView];
+    [tableView beginUpdates];
 
     [(HUUserListTableManager *)self updateEditingRows];
-    v6 = [(HUUserListTableManager *)self tableView];
-    [v6 endUpdates];
+    tableView2 = [(HUUserListTableManager *)self tableView];
+    [tableView2 endUpdates];
   }
 }
 
 - (void)updateEditingRows
 {
-  v3 = [(HUUserListTableManager *)self numberOfDataRows];
+  numberOfDataRows = [(HUUserListTableManager *)self numberOfDataRows];
 
-  [(HUUserListTableManager *)self _didReloadAtIndex:v3];
+  [(HUUserListTableManager *)self _didReloadAtIndex:numberOfDataRows];
 }
 
 - (HUUserListManagerTableDelegate)delegate

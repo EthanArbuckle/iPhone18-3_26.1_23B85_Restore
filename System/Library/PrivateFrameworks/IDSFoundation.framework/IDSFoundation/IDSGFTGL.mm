@@ -1,70 +1,70 @@
 @interface IDSGFTGL
-- (BOOL)_IsExtIPDiscoveryNeeded:(sockaddr *)a3 candidatePairList:(id)a4;
-- (BOOL)_postProcessAllocbindResponse:(id)a3 candidatePair:(id)a4 candidatePairToken:(id)a5;
-- (BOOL)_postProcessQUICAllocbindResponse:(id)a3 candidatePair:(id)a4;
-- (BOOL)_processRegisterAckResponse:(id)a3 candidatePairToken:(id)a4;
-- (BOOL)_processRegisterIndication:(id)a3 candidatePairToken:(id)a4;
-- (BOOL)_processRegisterResponse:(id)a3 candidatePairToken:(id)a4;
-- (BOOL)_processReliableUnicastRegistrationErrorResponse:(id)a3 packetBuffer:(id *)a4 startTime:(double)a5 candidatePair:(id)a6;
-- (BOOL)_processRemovedLocalAddressList:(id)a3;
+- (BOOL)_IsExtIPDiscoveryNeeded:(sockaddr *)needed candidatePairList:(id)list;
+- (BOOL)_postProcessAllocbindResponse:(id)response candidatePair:(id)pair candidatePairToken:(id)token;
+- (BOOL)_postProcessQUICAllocbindResponse:(id)response candidatePair:(id)pair;
+- (BOOL)_processRegisterAckResponse:(id)response candidatePairToken:(id)token;
+- (BOOL)_processRegisterIndication:(id)indication candidatePairToken:(id)token;
+- (BOOL)_processRegisterResponse:(id)response candidatePairToken:(id)token;
+- (BOOL)_processReliableUnicastRegistrationErrorResponse:(id)response packetBuffer:(id *)buffer startTime:(double)time candidatePair:(id)pair;
+- (BOOL)_processRemovedLocalAddressList:(id)list;
 - (BOOL)_sendCallModeUpdateToQR;
-- (BOOL)_setupNewQRLinkIfNecessary:(id)a3;
-- (id)_findVirtualCandidatePair:(id)a3;
-- (id)_virtualCandidatePairFromLocalLinkID:(unsigned __int16)a3 remoteRelayLinkID:(unsigned __int16)a4;
+- (BOOL)_setupNewQRLinkIfNecessary:(id)necessary;
+- (id)_findVirtualCandidatePair:(id)pair;
+- (id)_virtualCandidatePairFromLocalLinkID:(unsigned __int16)d remoteRelayLinkID:(unsigned __int16)iD;
 - (void)_checkIfQRLinkIsDownButP2PLinkIsUp;
-- (void)_destroyVirtualRelayLinksForCandidatePair:(id)a3 withReason:(unsigned __int8)a4;
+- (void)_destroyVirtualRelayLinksForCandidatePair:(id)pair withReason:(unsigned __int8)reason;
 - (void)_disableE2E;
-- (void)_discardCandidatePairsWithOption:(BOOL)a3 isReinitiating:(BOOL)a4;
-- (void)_discardKeyMaterialMessage:(int64_t)a3;
+- (void)_discardCandidatePairsWithOption:(BOOL)option isReinitiating:(BOOL)reinitiating;
+- (void)_discardKeyMaterialMessage:(int64_t)message;
 - (void)_enableE2E;
-- (void)_processCommandRelayInterfaceInfo:(id)a3 candidatePairToken:(id)a4;
-- (void)_processReceivedRemoteCandidatePairs:(id)a3;
-- (void)_sendConnectionDataWithRemovedAddressList:(id)a3;
-- (void)_sendQUICRegisterAckRequest:(id)a3 withOptions:(id)a4;
-- (void)_sendQUICRegisterRequest:(id)a3 withOptions:(id)a4;
-- (void)_sendRegisterRequest:(id)a3;
-- (void)_sendRelayInterfaceInfo:(id)a3;
-- (void)_setupVirtualCandidatePairs:(id)a3 remoteCandidatePair:(id)a4;
-- (void)didReceiveProtobufPacketForLinkID:(unsigned __int8)a3;
-- (void)disconnectWithCompletionHandler:(id)a3 isReinitiating:(BOOL)a4;
-- (void)enableUPlusOneSessionForTransition:(BOOL)a3;
+- (void)_processCommandRelayInterfaceInfo:(id)info candidatePairToken:(id)token;
+- (void)_processReceivedRemoteCandidatePairs:(id)pairs;
+- (void)_sendConnectionDataWithRemovedAddressList:(id)list;
+- (void)_sendQUICRegisterAckRequest:(id)request withOptions:(id)options;
+- (void)_sendQUICRegisterRequest:(id)request withOptions:(id)options;
+- (void)_sendRegisterRequest:(id)request;
+- (void)_sendRelayInterfaceInfo:(id)info;
+- (void)_setupVirtualCandidatePairs:(id)pairs remoteCandidatePair:(id)pair;
+- (void)didReceiveProtobufPacketForLinkID:(unsigned __int8)d;
+- (void)disconnectWithCompletionHandler:(id)handler isReinitiating:(BOOL)reinitiating;
+- (void)enableUPlusOneSessionForTransition:(BOOL)transition;
 - (void)invalidate;
-- (void)manageDesignatedDestinations:(id)a3 relayGroupID:(id)a4 withType:(unsigned __int16)a5 sessionStateCounter:(unsigned int)a6 withClientContextBlob:(id)a7 identifier:(unint64_t)a8;
+- (void)manageDesignatedDestinations:(id)destinations relayGroupID:(id)d withType:(unsigned __int16)type sessionStateCounter:(unsigned int)counter withClientContextBlob:(id)blob identifier:(unint64_t)identifier;
 - (void)receiveJoinNotificationFromAParticipant;
-- (void)removeParticipantIDs:(id)a3 relayGroupID:(id)a4 sessionStateCounter:(unsigned int)a5;
-- (void)reportLinkMetricsForLinkID:(unsigned __int8)a3 lastPacketReceivedTime:(double)a4 lastPacketSentTime:(double)a5;
-- (void)sendKeyMaterialMessageData:(id)a3 relayGroupID:(id)a4 destinationURIs:(id)a5 completionHandler:(id)a6;
-- (void)setAllowP2P:(BOOL)a3;
-- (void)setCellInterfaceName:(id)a3;
-- (void)setDefaultUnderlyingLink:(char)a3;
-- (void)setIsUPlusOneSession:(BOOL)a3;
-- (void)setParticipantType:(unsigned __int16)a3 relayGroupID:(id)a4 sessionStateCounter:(unsigned int)a5 withClientContextBlob:(id)a6 identifier:(unint64_t)a7;
-- (void)setPluginCache:(id)a3;
-- (void)startWithOptions:(id)a3;
-- (void)updateURIToParticipantIDs:(id)a3 relaySessionID:(id)a4 sessionInfo:(id)a5;
+- (void)removeParticipantIDs:(id)ds relayGroupID:(id)d sessionStateCounter:(unsigned int)counter;
+- (void)reportLinkMetricsForLinkID:(unsigned __int8)d lastPacketReceivedTime:(double)time lastPacketSentTime:(double)sentTime;
+- (void)sendKeyMaterialMessageData:(id)data relayGroupID:(id)d destinationURIs:(id)is completionHandler:(id)handler;
+- (void)setAllowP2P:(BOOL)p;
+- (void)setCellInterfaceName:(id)name;
+- (void)setDefaultUnderlyingLink:(char)link;
+- (void)setIsUPlusOneSession:(BOOL)session;
+- (void)setParticipantType:(unsigned __int16)type relayGroupID:(id)d sessionStateCounter:(unsigned int)counter withClientContextBlob:(id)blob identifier:(unint64_t)identifier;
+- (void)setPluginCache:(id)cache;
+- (void)startWithOptions:(id)options;
+- (void)updateURIToParticipantIDs:(id)ds relaySessionID:(id)d sessionInfo:(id)info;
 @end
 
 @implementation IDSGFTGL
 
-- (void)startWithOptions:(id)a3
+- (void)startWithOptions:(id)options
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     idsSessionID = self->super._idsSessionID;
     *buf = 138412546;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = idsSessionID;
     _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "Start GL %@ for IDSSessionID: %@ (FaceTime:YES, isMultiway:YES).", buf, 0x16u);
   }
 
   Value = 0;
-  if (v4 && @"gl-option-timebase")
+  if (optionsCopy && @"gl-option-timebase")
   {
-    Value = CFDictionaryGetValue(v4, @"gl-option-timebase");
+    Value = CFDictionaryGetValue(optionsCopy, @"gl-option-timebase");
   }
 
   objc_storeStrong(&self->super._timeBase, Value);
@@ -72,7 +72,7 @@
   self->super._portRange = 10;
   v24.receiver = self;
   v24.super_class = IDSGFTGL;
-  [(IDSGlobalLink *)&v24 startWithOptions:v4];
+  [(IDSGlobalLink *)&v24 startWithOptions:optionsCopy];
   if (self->super._isUPlusOneSession)
   {
     v8 = IMGetDomainBoolForKeyWithDefaultValue();
@@ -88,9 +88,9 @@
     }
 
     v10 = 0;
-    if (v4 && @"gl-option-disable-p2p")
+    if (optionsCopy && @"gl-option-disable-p2p")
     {
-      v10 = CFDictionaryGetValue(v4, @"gl-option-disable-p2p");
+      v10 = CFDictionaryGetValue(optionsCopy, @"gl-option-disable-p2p");
     }
 
     if (([v10 BOOLValue] & 1) != 0 || self->super._isReliableUnicastSession)
@@ -123,7 +123,7 @@
         }
 
         *buf = 138412802;
-        v26 = v13;
+        selfCopy = v13;
         if (isReliableUnicastSession)
         {
           v15 = @"YES";
@@ -177,7 +177,7 @@
           }
 
           *buf = 138412802;
-          v26 = v21;
+          selfCopy = v21;
           if (receivedRemoteDeviceVersion)
           {
             v19 = @"YES";
@@ -230,16 +230,16 @@
   [(IDSGlobalLink *)&v6 invalidate];
 }
 
-- (void)disconnectWithCompletionHandler:(id)a3 isReinitiating:(BOOL)a4
+- (void)disconnectWithCompletionHandler:(id)handler isReinitiating:(BOOL)reinitiating
 {
-  v4 = a4;
+  reinitiatingCopy = reinitiating;
   v6.receiver = self;
   v6.super_class = IDSGFTGL;
-  [(IDSGlobalLink *)&v6 disconnectWithCompletionHandler:a3 isReinitiating:?];
-  [(IDSGlobalLink *)self _handleDisconnect:v4];
+  [(IDSGlobalLink *)&v6 disconnectWithCompletionHandler:handler isReinitiating:?];
+  [(IDSGlobalLink *)self _handleDisconnect:reinitiatingCopy];
 }
 
-- (void)setDefaultUnderlyingLink:(char)a3
+- (void)setDefaultUnderlyingLink:(char)link
 {
   v16 = *MEMORY[0x1E69E9840];
   if (!self->super._isUPlusOneSession)
@@ -259,7 +259,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v3 = a3;
+  linkCopy = link;
   if (!self->super._isInitiator)
   {
     p_super = +[IDSFoundationLog GFTGL];
@@ -279,7 +279,7 @@ LABEL_16:
     }
 
     v12 = 67109378;
-    v13 = v3;
+    v13 = linkCopy;
     v14 = 2112;
     v15 = v11;
     v8 = "set default underlying link (linkID:%d) failed (isInitiator:%@).";
@@ -288,7 +288,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3 < 0 || self->super._maxLinkID <= a3 || (v5 = self->super._candidatePairs[a3]) == 0)
+  if (link < 0 || self->super._maxLinkID <= link || (v5 = self->super._candidatePairs[link]) == 0)
   {
     p_super = +[IDSFoundationLog GFTGL];
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
@@ -297,7 +297,7 @@ LABEL_16:
     }
 
     v12 = 67109120;
-    v13 = v3;
+    v13 = linkCopy;
     v8 = "failed to find candidate pair for linkID:%d.";
     v9 = p_super;
     v10 = 8;
@@ -305,27 +305,27 @@ LABEL_16:
   }
 
   p_super = &v5->super;
-  v7 = [(IDSStunCandidatePair *)v5 candidatePairToken];
-  [(IDSGlobalLink *)self _nominateCandidatePair:v7];
+  candidatePairToken = [(IDSStunCandidatePair *)v5 candidatePairToken];
+  [(IDSGlobalLink *)self _nominateCandidatePair:candidatePairToken];
 
 LABEL_17:
 }
 
-- (void)_setupVirtualCandidatePairs:(id)a3 remoteCandidatePair:(id)a4
+- (void)_setupVirtualCandidatePairs:(id)pairs remoteCandidatePair:(id)pair
 {
   v94 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 relayLinkID];
-  v83 = [v7 relayLinkID];
-  v9 = [v6 sessionID];
-  v10 = [v7 sessionID];
-  v11 = [v9 isEqualToString:v10];
+  pairsCopy = pairs;
+  pairCopy = pair;
+  relayLinkID = [pairsCopy relayLinkID];
+  relayLinkID2 = [pairCopy relayLinkID];
+  sessionID = [pairsCopy sessionID];
+  sessionID2 = [pairCopy sessionID];
+  v11 = [sessionID isEqualToString:sessionID2];
 
   if (v11)
   {
-    v81 = self;
-    v82 = v7;
+    selfCopy = self;
+    v82 = pairCopy;
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
@@ -346,15 +346,15 @@ LABEL_17:
           }
 
           v17 = *(*(&v85 + 1) + 8 * i);
-          v18 = [v17 sessionID];
-          v19 = v6;
-          v20 = [v6 sessionID];
-          if ([v18 isEqualToString:v20] && -[NSObject relayLinkID](v17, "relayLinkID") == v8)
+          sessionID3 = [v17 sessionID];
+          v19 = pairsCopy;
+          sessionID4 = [pairsCopy sessionID];
+          if ([sessionID3 isEqualToString:sessionID4] && -[NSObject relayLinkID](v17, "relayLinkID") == relayLinkID)
           {
             v21 = v12;
-            v22 = [v17 remoteRelayLinkID];
+            remoteRelayLinkID = [v17 remoteRelayLinkID];
 
-            v23 = v22 == v83;
+            v23 = remoteRelayLinkID == relayLinkID2;
             v12 = v21;
             if (v23)
             {
@@ -366,9 +366,9 @@ LABEL_17:
                 _os_log_impl(&dword_1A7AD9000, v41, OS_LOG_TYPE_DEFAULT, "[U+1] Virtual candidate pair exists %@, no need to set up virtual candidate pairs, return", buf, 0xCu);
               }
 
-              v7 = v82;
+              pairCopy = v82;
               p_super = &v21->super.super;
-              v6 = v19;
+              pairsCopy = v19;
               goto LABEL_42;
             }
           }
@@ -377,7 +377,7 @@ LABEL_17:
           {
           }
 
-          v6 = v19;
+          pairsCopy = v19;
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v85 objects:v89 count:16];
@@ -390,34 +390,34 @@ LABEL_17:
       }
     }
 
-    v24 = [v6 local];
-    v25 = [v82 remote];
-    v26 = [v6 sessionID];
-    v27 = [IDSStunCandidatePair candidatePairWithLocalCandidate:v24 remoteCandidate:v25 sessionID:v26 delegate:v81];
+    local = [pairsCopy local];
+    remote = [v82 remote];
+    sessionID5 = [pairsCopy sessionID];
+    v27 = [IDSStunCandidatePair candidatePairWithLocalCandidate:local remoteCandidate:remote sessionID:sessionID5 delegate:selfCopy];
 
-    [v27 setIsNAT64:{objc_msgSend(v6, "isNAT64")}];
+    [v27 setIsNAT64:{objc_msgSend(pairsCopy, "isNAT64")}];
     [v27 setState:4];
-    [v27 setRelayLinkID:v8];
-    [v27 setRemoteRelayLinkID:v83];
+    [v27 setRelayLinkID:relayLinkID];
+    [v27 setRemoteRelayLinkID:relayLinkID2];
     [v27 setLinkUUIDWithRelayLinkIDs];
-    [v27 setDelegatedLinkID:{objc_msgSend(v6, "linkID")}];
-    [v27 setChannelNumber:{objc_msgSend(v6, "channelNumber")}];
+    [v27 setDelegatedLinkID:{objc_msgSend(pairsCopy, "linkID")}];
+    [v27 setChannelNumber:{objc_msgSend(pairsCopy, "channelNumber")}];
     [v27 setRelayProviderType:2];
-    [v27 setServerIsDegraded:{objc_msgSend(v6, "serverIsDegraded")}];
-    v28 = [v27 remote];
-    v29 = [v6 remote];
-    v30 = [v29 address];
-    v31 = [v6 remote];
-    [v28 setAddress:v30 external:{objc_msgSend(v31, "external")}];
+    [v27 setServerIsDegraded:{objc_msgSend(pairsCopy, "serverIsDegraded")}];
+    remote2 = [v27 remote];
+    remote3 = [pairsCopy remote];
+    address = [remote3 address];
+    remote4 = [pairsCopy remote];
+    [remote2 setAddress:address external:{objc_msgSend(remote4, "external")}];
 
-    virtualCandidatePairs = v81->_virtualCandidatePairs;
+    virtualCandidatePairs = selfCopy->_virtualCandidatePairs;
     if (!virtualCandidatePairs)
     {
       v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v34 = v81->_virtualCandidatePairs;
-      v81->_virtualCandidatePairs = v33;
+      v34 = selfCopy->_virtualCandidatePairs;
+      selfCopy->_virtualCandidatePairs = v33;
 
-      virtualCandidatePairs = v81->_virtualCandidatePairs;
+      virtualCandidatePairs = selfCopy->_virtualCandidatePairs;
     }
 
     if (virtualCandidatePairs && v27)
@@ -425,18 +425,18 @@ LABEL_17:
       CFArrayAppendValue(virtualCandidatePairs, v27);
     }
 
-    v35 = localRemoteRelayLinkIDForVirtualStunCandidatePair([v6 relayLinkID], objc_msgSend(v82, "relayLinkID"));
-    if (!v81->super._localRemoteRelayLinkIDToVirtualCandidatePairs)
+    v35 = localRemoteRelayLinkIDForVirtualStunCandidatePair([pairsCopy relayLinkID], objc_msgSend(v82, "relayLinkID"));
+    if (!selfCopy->super._localRemoteRelayLinkIDToVirtualCandidatePairs)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-      localRemoteRelayLinkIDToVirtualCandidatePairs = v81->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
-      v81->super._localRemoteRelayLinkIDToVirtualCandidatePairs = Mutable;
+      localRemoteRelayLinkIDToVirtualCandidatePairs = selfCopy->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
+      selfCopy->super._localRemoteRelayLinkIDToVirtualCandidatePairs = Mutable;
     }
 
     p_super = v27;
     if (v27)
     {
-      CFDictionarySetValue(v81->super._localRemoteRelayLinkIDToVirtualCandidatePairs, v35, p_super);
+      CFDictionarySetValue(selfCopy->super._localRemoteRelayLinkIDToVirtualCandidatePairs, v35, p_super);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -454,39 +454,39 @@ LABEL_17:
       _os_log_impl(&dword_1A7AD9000, v43, OS_LOG_TYPE_DEFAULT, "[U+1] set up virtual candidate pair: %@", buf, 0xCu);
     }
 
-    nwLink = v81->super._nwLink;
-    v44 = [p_super local];
-    v45 = [v44 address];
-    v46 = [p_super remote];
-    v47 = [v46 external];
-    v48 = [p_super sessionID];
-    v49 = [p_super kindSuffix];
-    v50 = [p_super local];
-    LOBYTE(v77) = [v50 isCellularStunCandidate];
-    v80 = [(IDSNWLink *)nwLink connectionInfoForLocalAddress:v45 remoteAddress:v47 clientUniquePID:0 sessionID:v48 type:7 isRelay:1 protocolStackSuffix:v49 isCellular:v77];
+    nwLink = selfCopy->super._nwLink;
+    local2 = [p_super local];
+    address2 = [local2 address];
+    remote5 = [p_super remote];
+    external = [remote5 external];
+    sessionID6 = [p_super sessionID];
+    kindSuffix = [p_super kindSuffix];
+    local3 = [p_super local];
+    LOBYTE(v77) = [local3 isCellularStunCandidate];
+    v80 = [(IDSNWLink *)nwLink connectionInfoForLocalAddress:address2 remoteAddress:external clientUniquePID:0 sessionID:sessionID6 type:7 isRelay:1 protocolStackSuffix:kindSuffix isCellular:v77];
 
-    v51 = v81->super._nwLink;
-    v52 = [p_super local];
-    v53 = [v52 address];
-    v54 = [p_super remote];
-    v55 = [v54 external];
-    v56 = [p_super sessionID];
-    v57 = [p_super kindSuffix];
-    v58 = [p_super local];
-    LOBYTE(v78) = [v58 isCellularStunCandidate];
-    v59 = [(IDSNWLink *)v51 connectionInfoForLocalAddress:v53 remoteAddress:v55 clientUniquePID:0 sessionID:v56 type:0 isRelay:1 protocolStackSuffix:v57 isCellular:v78];
+    v51 = selfCopy->super._nwLink;
+    local4 = [p_super local];
+    address3 = [local4 address];
+    remote6 = [p_super remote];
+    external2 = [remote6 external];
+    sessionID7 = [p_super sessionID];
+    kindSuffix2 = [p_super kindSuffix];
+    local5 = [p_super local];
+    LOBYTE(v78) = [local5 isCellularStunCandidate];
+    v59 = [(IDSNWLink *)v51 connectionInfoForLocalAddress:address3 remoteAddress:external2 clientUniquePID:0 sessionID:sessionID7 type:0 isRelay:1 protocolStackSuffix:kindSuffix2 isCellular:v78];
 
     v60 = GLUtilConnectionDictionaryForNWConnectionInfo(v59, 1);
-    v61 = [p_super connections];
-    [v61 setObject:v60 forKeyedSubscript:@"udp"];
+    connections = [p_super connections];
+    [connections setObject:v60 forKeyedSubscript:@"udp"];
 
-    v62 = GLUtilConnectionDictionaryForNWConnectionInfo(v80, v81->super._allowTLEOverVRLinks);
-    v63 = [p_super connections];
-    [v63 setObject:v62 forKeyedSubscript:@"qpod"];
+    v62 = GLUtilConnectionDictionaryForNWConnectionInfo(v80, selfCopy->super._allowTLEOverVRLinks);
+    connections2 = [p_super connections];
+    [connections2 setObject:v62 forKeyedSubscript:@"qpod"];
 
-    v64 = [v6 linkEngine];
+    linkEngine = [pairsCopy linkEngine];
 
-    if (v64)
+    if (linkEngine)
     {
       v65 = +[IDSFoundationLog GFTGL];
       if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
@@ -495,39 +495,39 @@ LABEL_17:
         _os_log_impl(&dword_1A7AD9000, v65, OS_LOG_TYPE_DEFAULT, "giving virtual candidate pair to LinkEngine", buf, 2u);
       }
 
-      v66 = [v6 linkEngine];
-      v67 = [v66 addLinkForCandidatePair:p_super];
+      linkEngine2 = [pairsCopy linkEngine];
+      v67 = [linkEngine2 addLinkForCandidatePair:p_super];
 
       if (v67)
       {
-        v68 = [v6 linkEngine];
-        [p_super setLinkEngine:v68];
+        linkEngine3 = [pairsCopy linkEngine];
+        [p_super setLinkEngine:linkEngine3];
 
         [p_super setLinkUniqueName:v67];
-        v69 = [v6 linkEngine];
-        [v69 linkDidConnect:v67];
+        linkEngine4 = [pairsCopy linkEngine];
+        [linkEngine4 linkDidConnect:v67];
       }
 
-      if (v81->super._useLinkSelection)
+      if (selfCopy->super._useLinkSelection)
       {
-        v70 = [p_super linkEngine];
-        v71 = [p_super testableLink];
-        v72 = [p_super linkUniqueName];
-        [v70 setTestableLink:v71 forLinkWithUniqueID:v72];
+        linkEngine5 = [p_super linkEngine];
+        testableLink = [p_super testableLink];
+        linkUniqueName = [p_super linkUniqueName];
+        [linkEngine5 setTestableLink:testableLink forLinkWithUniqueID:linkUniqueName];
 
-        v73 = [p_super linkEngine];
-        v74 = [p_super linkUniqueName];
-        v75 = [v73 packetQualityHandlerForLinkWithUniqueName:v74];
+        linkEngine6 = [p_super linkEngine];
+        linkUniqueName2 = [p_super linkUniqueName];
+        v75 = [linkEngine6 packetQualityHandlerForLinkWithUniqueName:linkUniqueName2];
         [p_super setQualityHandler:v75];
       }
     }
 
-    [(IDSGlobalLink *)v81 _setCandidatePairConnected:p_super];
-    v76 = [p_super linkMetrics];
-    [v76 virtualRelayLinkConnected];
+    [(IDSGlobalLink *)selfCopy _setCandidatePairConnected:p_super];
+    linkMetrics = [p_super linkMetrics];
+    [linkMetrics virtualRelayLinkConnected];
 
-    [(IDSGFTGL *)v81 _sendRegisterRequest:p_super];
-    v7 = v82;
+    [(IDSGFTGL *)selfCopy _sendRegisterRequest:p_super];
+    pairCopy = v82;
   }
 
   else
@@ -535,12 +535,12 @@ LABEL_17:
     p_super = +[IDSFoundationLog GFTGL];
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [v6 sessionID];
-      v40 = [v7 sessionID];
+      sessionID8 = [pairsCopy sessionID];
+      sessionID9 = [pairCopy sessionID];
       *buf = 138412546;
-      v91 = v39;
+      v91 = sessionID8;
       v92 = 2112;
-      v93 = v40;
+      v93 = sessionID9;
       _os_log_impl(&dword_1A7AD9000, p_super, OS_LOG_TYPE_DEFAULT, "[U+1]: _setupVirtualCandidatePairs local sessionID: %@ doesn't match remote sessionID: %@, return", buf, 0x16u);
     }
   }
@@ -548,22 +548,22 @@ LABEL_17:
 LABEL_42:
 }
 
-- (void)_sendRegisterRequest:(id)a3
+- (void)_sendRegisterRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->super._isReliableUnicastSession && [v4 isVirtualRelayStunCandidatePair])
+  requestCopy = request;
+  v5 = requestCopy;
+  if (self->super._isReliableUnicastSession && [requestCopy isVirtualRelayStunCandidatePair])
   {
     if (self->super._isReliableUnicastClient)
     {
-      v6 = [v5 relayLinkID];
-      if (v6)
+      relayLinkID = [v5 relayLinkID];
+      if (relayLinkID)
       {
-        v7 = v6;
-        v8 = [v5 remoteRelayLinkID];
-        if (v8)
+        v7 = relayLinkID;
+        remoteRelayLinkID = [v5 remoteRelayLinkID];
+        if (remoteRelayLinkID)
         {
-          v9 = v8;
+          v9 = remoteRelayLinkID;
           Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
           v11 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v7];
           [(__CFDictionary *)Mutable setObject:v11 forKeyedSubscript:@"gl-option-reliable-unicast-local-relay-id"];
@@ -571,12 +571,12 @@ LABEL_42:
           v12 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v9];
           [(__CFDictionary *)Mutable setObject:v12 forKeyedSubscript:@"gl-option-reliable-unicast-remote-relay-id"];
 
-          v13 = [MEMORY[0x1E696AFB0] UUID];
-          [(__CFDictionary *)Mutable setObject:v13 forKeyedSubscript:@"gl-option-reliable-unicast-reliable-link-uuid"];
-          v14 = [v5 local];
-          v15 = [v14 transport];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          [(__CFDictionary *)Mutable setObject:uUID forKeyedSubscript:@"gl-option-reliable-unicast-reliable-link-uuid"];
+          local = [v5 local];
+          transport = [local transport];
 
-          if (v15 == 2)
+          if (transport == 2)
           {
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
@@ -611,8 +611,8 @@ LABEL_42:
 
         else
         {
-          v13 = +[IDSFoundationLog GFTGL];
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          uUID = +[IDSFoundationLog GFTGL];
+          if (os_log_type_enabled(uUID, OS_LOG_TYPE_ERROR))
           {
             sub_1A7E1ADC4();
           }
@@ -621,8 +621,8 @@ LABEL_42:
 
       else
       {
-        v13 = +[IDSFoundationLog GFTGL];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        uUID = +[IDSFoundationLog GFTGL];
+        if (os_log_type_enabled(uUID, OS_LOG_TYPE_ERROR))
         {
           sub_1A7E1AE00();
         }
@@ -631,37 +631,37 @@ LABEL_42:
 
     else
     {
-      v13 = +[IDSFoundationLog GFTGL];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      uUID = +[IDSFoundationLog GFTGL];
+      if (os_log_type_enabled(uUID, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1A7AD9000, v13, OS_LOG_TYPE_DEFAULT, "Will not send register request, not a client device. Remote will kick-off registration!", buf, 2u);
+        _os_log_impl(&dword_1A7AD9000, uUID, OS_LOG_TYPE_DEFAULT, "Will not send register request, not a client device. Remote will kick-off registration!", buf, 2u);
       }
     }
   }
 }
 
-- (void)_sendQUICRegisterRequest:(id)a3 withOptions:(id)a4
+- (void)_sendQUICRegisterRequest:(id)request withOptions:(id)options
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  requestCopy = request;
+  optionsCopy = options;
+  if (requestCopy)
   {
     if (self->super._state < 5)
     {
       tokenToCandidatePairs = self->super._tokenToCandidatePairs;
-      if (tokenToCandidatePairs && (v12 = CFDictionaryGetValue(tokenToCandidatePairs, v6)) != 0)
+      if (tokenToCandidatePairs && (v12 = CFDictionaryGetValue(tokenToCandidatePairs, requestCopy)) != 0)
       {
         v13 = v12;
-        v14 = [[IDSQRProtoMessage alloc] initWithType:29 candidatePair:v12 options:v7];
+        v14 = [[IDSQRProtoMessage alloc] initWithType:29 candidatePair:v12 options:optionsCopy];
         if (v14)
         {
           v15 = +[IDSFoundationLog GFTGL];
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             idsSessionID = self->super._idsSessionID;
-            v17 = [v13 sessionID];
+            sessionID = [v13 sessionID];
             *buf = 138413314;
             v26 = @"register_request";
             v27 = 2112;
@@ -669,9 +669,9 @@ LABEL_42:
             v29 = 2112;
             v30 = idsSessionID;
             v31 = 2112;
-            v32 = v17;
+            v32 = sessionID;
             v33 = 2112;
-            v34 = v6;
+            v34 = requestCopy;
             _os_log_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_DEFAULT, "Send %@ %@ for IDSSessionID: %@ QRSessionID: %@ candidatePairToken: %@", buf, 0x34u);
           }
 
@@ -684,7 +684,7 @@ LABEL_42:
             self->_reliableUnicastServerMaterialToProtoMessageTransactionID = Mutable;
           }
 
-          v20 = [v7 copy];
+          v20 = [optionsCopy copy];
           if (v20)
           {
             CFDictionarySetValue(self->_reliableUnicastServerMaterialToProtoMessageTransactionID, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[IDSQRProtoMessage transactionID](v14, "transactionID")}], v20);
@@ -741,7 +741,7 @@ LABEL_42:
         {
           v23 = self->super._tokenToCandidatePairs;
           *buf = 138412546;
-          v26 = v6;
+          v26 = requestCopy;
           v27 = 2112;
           v28 = v23;
           _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "_sendQUICRegisterRequest: Token: %@, _tokenToCandidatePairs:%@", buf, 0x16u);
@@ -768,7 +768,7 @@ LABEL_42:
       {
         v9 = _IDSLinkStateStrings[self->super._state];
         *buf = 138412546;
-        v26 = v6;
+        v26 = requestCopy;
         v27 = 2080;
         v28 = v9;
         _os_log_impl(&dword_1A7AD9000, v8, OS_LOG_TYPE_DEFAULT, "Will not send register request for %@, GL state [%s]!", buf, 0x16u);
@@ -811,27 +811,27 @@ LABEL_42:
   }
 }
 
-- (BOOL)_processRegisterIndication:(id)a3 candidatePairToken:(id)a4
+- (BOOL)_processRegisterIndication:(id)indication candidatePairToken:(id)token
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 registerIndication];
+  tokenCopy = token;
+  registerIndication = [indication registerIndication];
   v8 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v33 = [v7 txnId];
+    txnId = [registerIndication txnId];
     v34 = 2112;
-    v35 = v6;
+    v35 = tokenCopy;
     _os_log_impl(&dword_1A7AD9000, v8, OS_LOG_TYPE_DEFAULT, "received register-indication(%llu) for %@.", buf, 0x16u);
   }
 
-  if (v7)
+  if (registerIndication)
   {
     if (self->super._isReliableUnicastSession)
     {
-      v9 = [v7 e2eChannelUuid];
-      if (!v9)
+      e2eChannelUuid = [registerIndication e2eChannelUuid];
+      if (!e2eChannelUuid)
       {
         v10 = +[IDSFoundationLog GFTGL];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -844,51 +844,51 @@ LABEL_42:
         goto LABEL_44;
       }
 
-      v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{-[NSObject bytes](v9, "bytes")}];
+      v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{-[NSObject bytes](e2eChannelUuid, "bytes")}];
       if (!v10)
       {
-        v11 = +[IDSFoundationLog GFTGL];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        virtualQuicClientConnectionId = +[IDSFoundationLog GFTGL];
+        if (os_log_type_enabled(virtualQuicClientConnectionId, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_1A7AD9000, v11, OS_LOG_TYPE_DEFAULT, "processRegisterIndication failed due to invalid reliableLinkUUID!", buf, 2u);
+          _os_log_impl(&dword_1A7AD9000, virtualQuicClientConnectionId, OS_LOG_TYPE_DEFAULT, "processRegisterIndication failed due to invalid reliableLinkUUID!", buf, 2u);
         }
 
         v23 = 0;
         goto LABEL_43;
       }
 
-      v11 = [v7 virtualQuicClientConnectionId];
-      if (!v11)
+      virtualQuicClientConnectionId = [registerIndication virtualQuicClientConnectionId];
+      if (!virtualQuicClientConnectionId)
       {
-        v12 = +[IDSFoundationLog GFTGL];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        channelInfo = +[IDSFoundationLog GFTGL];
+        if (os_log_type_enabled(channelInfo, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_DEFAULT, "processRegisterIndication failed due to invalid virtualConnectionID!", buf, 2u);
+          _os_log_impl(&dword_1A7AD9000, channelInfo, OS_LOG_TYPE_DEFAULT, "processRegisterIndication failed due to invalid virtualConnectionID!", buf, 2u);
         }
 
         v23 = 0;
         goto LABEL_42;
       }
 
-      v12 = [v7 channelInfo];
-      v13 = [v12 quicServerConnectionId];
-      if (!v13)
+      channelInfo = [registerIndication channelInfo];
+      quicServerConnectionId = [channelInfo quicServerConnectionId];
+      if (!quicServerConnectionId)
       {
-        v14 = +[IDSFoundationLog GFTGL];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        quicClientConnectionId = +[IDSFoundationLog GFTGL];
+        if (os_log_type_enabled(quicClientConnectionId, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_1A7AD9000, v14, OS_LOG_TYPE_DEFAULT, "processRegisterIndication failed due to invalid local connection ID!", buf, 2u);
+          _os_log_impl(&dword_1A7AD9000, quicClientConnectionId, OS_LOG_TYPE_DEFAULT, "processRegisterIndication failed due to invalid local connection ID!", buf, 2u);
         }
 
         v23 = 0;
         goto LABEL_41;
       }
 
-      v14 = [v12 quicClientConnectionId];
-      if (!v14)
+      quicClientConnectionId = [channelInfo quicClientConnectionId];
+      if (!quicClientConnectionId)
       {
         v22 = +[IDSFoundationLog GFTGL];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -901,25 +901,25 @@ LABEL_42:
         goto LABEL_40;
       }
 
-      v28 = v13;
-      v15 = [v12 quicServerLinkId];
-      if (v15)
+      v28 = quicServerConnectionId;
+      quicServerLinkId = [channelInfo quicServerLinkId];
+      if (quicServerLinkId)
       {
-        v16 = v15;
-        v17 = [v12 quicClientLinkId];
-        if (v17)
+        v16 = quicServerLinkId;
+        quicClientLinkId = [channelInfo quicClientLinkId];
+        if (quicClientLinkId)
         {
-          v27 = v17;
+          v27 = quicClientLinkId;
           Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
           [(__CFDictionary *)Mutable setObject:v28 forKeyedSubscript:@"gl-option-reliable-unicast-local-connection-id"];
-          [(__CFDictionary *)Mutable setObject:v14 forKeyedSubscript:@"gl-option-reliable-unicast-remote-connection-id"];
+          [(__CFDictionary *)Mutable setObject:quicClientConnectionId forKeyedSubscript:@"gl-option-reliable-unicast-remote-connection-id"];
           v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v16];
           [(__CFDictionary *)Mutable setObject:v19 forKeyedSubscript:@"gl-option-reliable-unicast-local-relay-id"];
 
           v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v27];
           [(__CFDictionary *)Mutable setObject:v20 forKeyedSubscript:@"gl-option-reliable-unicast-remote-relay-id"];
 
-          [(__CFDictionary *)Mutable setObject:v11 forKeyedSubscript:@"gl-option-reliable-unicast-virtual-connection-id"];
+          [(__CFDictionary *)Mutable setObject:virtualQuicClientConnectionId forKeyedSubscript:@"gl-option-reliable-unicast-virtual-connection-id"];
           [(__CFDictionary *)Mutable setObject:v10 forKeyedSubscript:@"gl-option-reliable-unicast-reliable-link-uuid"];
           v21 = im_primary_queue();
           block[0] = MEMORY[0x1E69E9820];
@@ -927,12 +927,12 @@ LABEL_42:
           block[2] = sub_1A7BF79FC;
           block[3] = &unk_1E77E0E18;
           block[4] = self;
-          v30 = v6;
+          v30 = tokenCopy;
           v31 = Mutable;
           v22 = Mutable;
           dispatch_async(v21, block);
 
-          v13 = v28;
+          quicServerConnectionId = v28;
           v23 = 1;
 LABEL_40:
 
@@ -967,12 +967,12 @@ LABEL_38:
       }
 
       v23 = 0;
-      v13 = v28;
+      quicServerConnectionId = v28;
       goto LABEL_40;
     }
 
-    v9 = +[IDSFoundationLog GFTGL];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    e2eChannelUuid = +[IDSFoundationLog GFTGL];
+    if (os_log_type_enabled(e2eChannelUuid, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v24 = "processRegisterIndication failed, not a Reliable Unicast Session!";
@@ -982,13 +982,13 @@ LABEL_38:
 
   else
   {
-    v9 = +[IDSFoundationLog GFTGL];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    e2eChannelUuid = +[IDSFoundationLog GFTGL];
+    if (os_log_type_enabled(e2eChannelUuid, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v24 = "processRegisterIndication failed due to invalid registerIndication!";
 LABEL_17:
-      _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, v24, buf, 2u);
+      _os_log_impl(&dword_1A7AD9000, e2eChannelUuid, OS_LOG_TYPE_DEFAULT, v24, buf, 2u);
     }
   }
 
@@ -998,20 +998,20 @@ LABEL_45:
   return v23;
 }
 
-- (void)_sendQUICRegisterAckRequest:(id)a3 withOptions:(id)a4
+- (void)_sendQUICRegisterAckRequest:(id)request withOptions:(id)options
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (requestCopy)
   {
-    if (v7)
+    if (optionsCopy)
     {
       if (self->super._state < 5)
       {
         tokenToCandidatePairs = self->super._tokenToCandidatePairs;
-        if (tokenToCandidatePairs && (v14 = CFDictionaryGetValue(tokenToCandidatePairs, v6)) != 0)
+        if (tokenToCandidatePairs && (v14 = CFDictionaryGetValue(tokenToCandidatePairs, requestCopy)) != 0)
         {
           v15 = v14;
           v16 = [[IDSQRProtoMessage alloc] initWithType:32 candidatePair:v14 options:v8];
@@ -1021,7 +1021,7 @@ LABEL_45:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
               idsSessionID = self->super._idsSessionID;
-              v19 = [v15 sessionID];
+              sessionID = [v15 sessionID];
               *buf = 138413314;
               v26 = @"registerAck_request";
               v27 = 2112;
@@ -1029,9 +1029,9 @@ LABEL_45:
               v29 = 2112;
               v30 = idsSessionID;
               v31 = 2112;
-              v32 = v19;
+              v32 = sessionID;
               v33 = 2112;
-              v34 = v6;
+              v34 = requestCopy;
               _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "Send %@ %@ for IDSSessionID: %@ QRSessionID: %@ candidatePairToken: %@", buf, 0x34u);
             }
 
@@ -1105,7 +1105,7 @@ LABEL_45:
         {
           v10 = _IDSLinkStateStrings[self->super._state];
           *buf = 138412546;
-          v26 = v6;
+          v26 = requestCopy;
           v27 = 2080;
           v28 = v10;
           _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "Will not send register ack request for %@, GL state [%s]!", buf, 0x16u);
@@ -1171,30 +1171,30 @@ LABEL_45:
   }
 }
 
-- (BOOL)_processRegisterAckResponse:(id)a3 candidatePairToken:(id)a4
+- (BOOL)_processRegisterAckResponse:(id)response candidatePairToken:(id)token
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  tokenCopy = token;
   v8 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v46 = [v6 transactionID];
+    transactionID = [responseCopy transactionID];
     v47 = 2112;
-    v48 = v7;
+    v48 = tokenCopy;
     _os_log_impl(&dword_1A7AD9000, v8, OS_LOG_TYPE_DEFAULT, "received registerAck-response(%llu) for %@.", buf, 0x16u);
   }
 
-  if (v7)
+  if (tokenCopy)
   {
     if (self->_reliableUnicastServerMaterialToProtoMessageTransactionID)
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "transactionID")}];
+      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(responseCopy, "transactionID")}];
       if (v9)
       {
         reliableUnicastServerMaterialToProtoMessageTransactionID = self->_reliableUnicastServerMaterialToProtoMessageTransactionID;
-        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "transactionID")}];
+        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(responseCopy, "transactionID")}];
         v12 = [CFDictionaryGetValue(reliableUnicastServerMaterialToProtoMessageTransactionID v11)];
       }
 
@@ -1232,44 +1232,44 @@ LABEL_45:
       if (v44)
       {
         v16 = [v12 objectForKeyedSubscript:@"gl-option-reliable-unicast-local-relay-id"];
-        v17 = [v16 unsignedIntValue];
+        unsignedIntValue = [v16 unsignedIntValue];
 
-        if (v17)
+        if (unsignedIntValue)
         {
           v18 = [v12 objectForKeyedSubscript:@"gl-option-reliable-unicast-remote-relay-id"];
-          v19 = [v18 unsignedIntValue];
+          unsignedIntValue2 = [v18 unsignedIntValue];
 
-          if (v19)
+          if (unsignedIntValue2)
           {
-            v20 = [(IDSGFTGL *)self _virtualCandidatePairFromLocalLinkID:v17 remoteRelayLinkID:v19];
+            v20 = [(IDSGFTGL *)self _virtualCandidatePairFromLocalLinkID:unsignedIntValue remoteRelayLinkID:unsignedIntValue2];
             v21 = v20;
             v15 = v20 != 0;
             if (v20)
             {
-              v22 = [v20 remote];
-              v23 = [v22 radioAccessTechnology];
+              remote = [v20 remote];
+              radioAccessTechnology = [remote radioAccessTechnology];
 
-              v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v23];
+              v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:radioAccessTechnology];
               if (v24)
               {
                 CFDictionarySetValue(v12, @"gl-option-reliable-unicast-remote-type", v24);
               }
 
               nwLink = self->super._nwLink;
-              v43 = [v21 local];
-              v40 = [v43 address];
-              v42 = [v21 remote];
-              v25 = [v42 external];
-              v26 = [v21 sessionID];
-              v27 = [v21 kindSuffix];
-              v28 = [v21 local];
-              LOBYTE(v39) = [v28 isCellularStunCandidate];
-              v29 = [(IDSNWLink *)nwLink connectionInfoForLocalAddress:v40 remoteAddress:v25 clientUniquePID:0 sessionID:v26 type:5 isRelay:1 protocolStackSuffix:v27 isCellular:v39];
+              local = [v21 local];
+              address = [local address];
+              remote2 = [v21 remote];
+              external = [remote2 external];
+              sessionID = [v21 sessionID];
+              kindSuffix = [v21 kindSuffix];
+              local2 = [v21 local];
+              LOBYTE(v39) = [local2 isCellularStunCandidate];
+              v29 = [(IDSNWLink *)nwLink connectionInfoForLocalAddress:address remoteAddress:external clientUniquePID:0 sessionID:sessionID type:5 isRelay:1 protocolStackSuffix:kindSuffix isCellular:v39];
 
-              v30 = [v29 connection];
-              if (v30)
+              connection = [v29 connection];
+              if (connection)
               {
-                CFDictionarySetValue(v12, @"gl-option-reliable-unicast-parent-connection", v30);
+                CFDictionarySetValue(v12, @"gl-option-reliable-unicast-parent-connection", connection);
               }
 
               WeakRetained = objc_loadWeakRetained(&self->super._delegate);
@@ -1401,33 +1401,33 @@ LABEL_62:
   return v15;
 }
 
-- (BOOL)_processRegisterResponse:(id)a3 candidatePairToken:(id)a4
+- (BOOL)_processRegisterResponse:(id)response candidatePairToken:(id)token
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 registerResponse];
+  responseCopy = response;
+  tokenCopy = token;
+  registerResponse = [responseCopy registerResponse];
   v9 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v50 = [v6 transactionID];
+    transactionID = [responseCopy transactionID];
     v51 = 2112;
-    v52 = v7;
+    v52 = tokenCopy;
     _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "received register-response(%llu) for %@.", buf, 0x16u);
   }
 
-  if (v8)
+  if (registerResponse)
   {
-    v10 = [v8 channelInfo];
+    channelInfo = [registerResponse channelInfo];
     if (self->_reliableUnicastServerMaterialToProtoMessageTransactionID)
     {
-      v11 = v7;
-      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "transactionID")}];
+      v11 = tokenCopy;
+      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(responseCopy, "transactionID")}];
       if (v12)
       {
         reliableUnicastServerMaterialToProtoMessageTransactionID = self->_reliableUnicastServerMaterialToProtoMessageTransactionID;
-        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "transactionID")}];
+        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(responseCopy, "transactionID")}];
         v15 = [CFDictionaryGetValue(reliableUnicastServerMaterialToProtoMessageTransactionID v14)];
       }
 
@@ -1436,12 +1436,12 @@ LABEL_62:
         v15 = [0 mutableCopy];
       }
 
-      v7 = v11;
+      tokenCopy = v11;
       if (v15)
       {
 LABEL_16:
-        v17 = [v10 quicClientConnectionId];
-        if (!v17)
+        quicClientConnectionId = [channelInfo quicClientConnectionId];
+        if (!quicClientConnectionId)
         {
           v48 = +[IDSFoundationLog GFTGL];
           if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -1453,10 +1453,10 @@ LABEL_16:
           goto LABEL_45;
         }
 
-        CFDictionarySetValue(v15, @"gl-option-reliable-unicast-local-connection-id", v17);
-        v18 = [v10 quicServerConnectionId];
-        v48 = v18;
-        if (!v18)
+        CFDictionarySetValue(v15, @"gl-option-reliable-unicast-local-connection-id", quicClientConnectionId);
+        quicServerConnectionId = [channelInfo quicServerConnectionId];
+        v48 = quicServerConnectionId;
+        if (!quicServerConnectionId)
         {
           v25 = +[IDSFoundationLog GFTGL];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1468,54 +1468,54 @@ LABEL_16:
           goto LABEL_44;
         }
 
-        v47 = v7;
-        CFDictionarySetValue(v15, @"gl-option-reliable-unicast-remote-connection-id", v18);
+        v47 = tokenCopy;
+        CFDictionarySetValue(v15, @"gl-option-reliable-unicast-remote-connection-id", quicServerConnectionId);
         v19 = [(__CFDictionary *)v15 copy];
         if (v19)
         {
-          CFDictionarySetValue(self->_reliableUnicastServerMaterialToProtoMessageTransactionID, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "transactionID")}], v19);
+          CFDictionarySetValue(self->_reliableUnicastServerMaterialToProtoMessageTransactionID, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(responseCopy, "transactionID")}], v19);
         }
 
         v20 = [(__CFDictionary *)v15 objectForKeyedSubscript:@"gl-option-reliable-unicast-local-relay-id"];
-        v21 = [v20 unsignedIntValue];
+        unsignedIntValue = [v20 unsignedIntValue];
 
-        if (v21)
+        if (unsignedIntValue)
         {
           v22 = [(__CFDictionary *)v15 objectForKeyedSubscript:@"gl-option-reliable-unicast-remote-relay-id"];
-          v23 = [v22 unsignedIntValue];
+          unsignedIntValue2 = [v22 unsignedIntValue];
 
-          if (v23)
+          if (unsignedIntValue2)
           {
-            v24 = [(IDSGFTGL *)self _virtualCandidatePairFromLocalLinkID:v21 remoteRelayLinkID:v23];
+            v24 = [(IDSGFTGL *)self _virtualCandidatePairFromLocalLinkID:unsignedIntValue remoteRelayLinkID:unsignedIntValue2];
             v25 = v24;
             v16 = v24 != 0;
             if (v24)
             {
-              v26 = [v24 remote];
-              v27 = [v26 radioAccessTechnology];
+              remote = [v24 remote];
+              radioAccessTechnology = [remote radioAccessTechnology];
 
-              v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v27];
+              v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:radioAccessTechnology];
               if (v28)
               {
                 CFDictionarySetValue(v15, @"gl-option-reliable-unicast-remote-type", v28);
               }
 
               nwLink = self->super._nwLink;
-              v43 = [v25 local];
-              v40 = [v43 address];
-              v42 = [v25 remote];
-              v39 = [v42 external];
-              v45 = [v25 sessionID];
-              v38 = [v25 kindSuffix];
-              v29 = [v25 local];
-              LOBYTE(v37) = [v29 isCellularStunCandidate];
-              v30 = [(IDSNWLink *)nwLink connectionInfoForLocalAddress:v40 remoteAddress:v39 clientUniquePID:0 sessionID:v45 type:5 isRelay:1 protocolStackSuffix:v38 isCellular:v37];
+              local = [v25 local];
+              address = [local address];
+              remote2 = [v25 remote];
+              external = [remote2 external];
+              sessionID = [v25 sessionID];
+              kindSuffix = [v25 kindSuffix];
+              local2 = [v25 local];
+              LOBYTE(v37) = [local2 isCellularStunCandidate];
+              v30 = [(IDSNWLink *)nwLink connectionInfoForLocalAddress:address remoteAddress:external clientUniquePID:0 sessionID:sessionID type:5 isRelay:1 protocolStackSuffix:kindSuffix isCellular:v37];
 
               v46 = v30;
-              v31 = [v30 connection];
-              if (v31)
+              connection = [v30 connection];
+              if (connection)
               {
-                CFDictionarySetValue(v15, @"gl-option-reliable-unicast-parent-connection", v31);
+                CFDictionarySetValue(v15, @"gl-option-reliable-unicast-parent-connection", connection);
               }
 
               WeakRetained = objc_loadWeakRetained(&self->super._delegate);
@@ -1529,13 +1529,13 @@ LABEL_16:
               }
 
               v35 = v46;
-              v7 = v47;
+              tokenCopy = v47;
             }
 
             else
             {
               v35 = +[IDSFoundationLog GFTGL];
-              v7 = v47;
+              tokenCopy = v47;
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 0;
@@ -1563,7 +1563,7 @@ LABEL_16:
         }
 
         v16 = 0;
-        v7 = v47;
+        tokenCopy = v47;
 LABEL_44:
 
 LABEL_45:
@@ -1582,22 +1582,22 @@ LABEL_46:
       }
     }
 
-    v17 = +[IDSFoundationLog GFTGL];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    quicClientConnectionId = +[IDSFoundationLog GFTGL];
+    if (os_log_type_enabled(quicClientConnectionId, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "processRegisterResponse failed due to invalid _reliableUnicastServerMaterialToProtoMessageTransactionID!", buf, 2u);
+      _os_log_impl(&dword_1A7AD9000, quicClientConnectionId, OS_LOG_TYPE_DEFAULT, "processRegisterResponse failed due to invalid _reliableUnicastServerMaterialToProtoMessageTransactionID!", buf, 2u);
     }
 
     v16 = 0;
     goto LABEL_46;
   }
 
-  v10 = +[IDSFoundationLog GFTGL];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  channelInfo = +[IDSFoundationLog GFTGL];
+  if (os_log_type_enabled(channelInfo, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "processRegisterResponse failed due to invalid registerResponse!", buf, 2u);
+    _os_log_impl(&dword_1A7AD9000, channelInfo, OS_LOG_TYPE_DEFAULT, "processRegisterResponse failed due to invalid registerResponse!", buf, 2u);
   }
 
   v16 = 0;
@@ -1606,25 +1606,25 @@ LABEL_47:
   return v16;
 }
 
-- (BOOL)_processReliableUnicastRegistrationErrorResponse:(id)a3 packetBuffer:(id *)a4 startTime:(double)a5 candidatePair:(id)a6
+- (BOOL)_processReliableUnicastRegistrationErrorResponse:(id)response packetBuffer:(id *)buffer startTime:(double)time candidatePair:(id)pair
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  var31 = a4->var31;
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", var31];
-  var35_low = LOWORD(a4->var35);
-  var34_low = LOWORD(a4->var34);
-  if ([v10 removeProtoRequest:var31])
+  responseCopy = response;
+  pairCopy = pair;
+  var31 = buffer->var31;
+  var31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", var31];
+  var35_low = LOWORD(buffer->var35);
+  var34_low = LOWORD(buffer->var34);
+  if ([pairCopy removeProtoRequest:var31])
   {
-    if ([v10 state] == 2)
+    if ([pairCopy state] == 2)
     {
       v15 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v10 candidatePairToken];
+        candidatePairToken = [pairCopy candidatePairToken];
         *buf = 138412546;
-        *v22 = v16;
+        *v22 = candidatePairToken;
         *&v22[8] = 1024;
         *v23 = var34_low;
         _os_log_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_DEFAULT, "%@ is already in error state, ignore error response %04x.", buf, 0x12u);
@@ -1634,12 +1634,12 @@ LABEL_47:
       {
         if (_IDSShouldLogTransport())
         {
-          v19 = [v10 candidatePairToken];
+          candidatePairToken2 = [pairCopy candidatePairToken];
           _IDSLogTransport(@"GL", @"IDS", @"%@ is already in error state, ignore error response %04x.");
 
           if (_IDSShouldLog())
           {
-            v20 = [v10 candidatePairToken];
+            candidatePairToken3 = [pairCopy candidatePairToken];
             _IDSLogV(0, @"IDSFoundation", @"GL", @"%@ is already in error state, ignore error response %04x.");
           }
         }
@@ -1656,9 +1656,9 @@ LABEL_47:
         *&v22[4] = 1024;
         *&v22[6] = var35_low;
         *v23 = 2112;
-        *&v23[2] = v12;
+        *&v23[2] = var31;
         v24 = 2048;
-        v25 = (ids_monotonic_time() - a5) * 1000.0;
+        v25 = (ids_monotonic_time() - time) * 1000.0;
         _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "receive error response - type(%04x) error_code(%u) txn_id(%@) after %0.3lf ms.", buf, 0x22u);
       }
 
@@ -1681,10 +1681,10 @@ LABEL_47:
   return 1;
 }
 
-- (id)_findVirtualCandidatePair:(id)a3
+- (id)_findVirtualCandidatePair:(id)pair
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pairCopy = pair;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1704,8 +1704,8 @@ LABEL_47:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 candidatePairToken];
-        v11 = [v10 isEqualToString:v4];
+        candidatePairToken = [v9 candidatePairToken];
+        v11 = [candidatePairToken isEqualToString:pairCopy];
 
         if (v11)
         {
@@ -1729,23 +1729,23 @@ LABEL_11:
   return v6;
 }
 
-- (id)_virtualCandidatePairFromLocalLinkID:(unsigned __int16)a3 remoteRelayLinkID:(unsigned __int16)a4
+- (id)_virtualCandidatePairFromLocalLinkID:(unsigned __int16)d remoteRelayLinkID:(unsigned __int16)iD
 {
-  v5 = localRemoteRelayLinkIDForVirtualStunCandidatePair(a3, a4);
+  v5 = localRemoteRelayLinkIDForVirtualStunCandidatePair(d, iD);
   v6 = [(NSMutableDictionary *)self->super._localRemoteRelayLinkIDToVirtualCandidatePairs objectForKey:v5];
 
   return v6;
 }
 
-- (void)_processReceivedRemoteCandidatePairs:(id)a3
+- (void)_processReceivedRemoteCandidatePairs:(id)pairs
 {
   v129 = *MEMORY[0x1E69E9840];
-  v76 = a3;
+  pairsCopy = pairs;
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v82 = self;
+  selfCopy = self;
   obj = self->_remoteCandidatePairs;
   v79 = [(NSArray *)obj countByEnumeratingWithState:&v111 objects:v128 count:16];
   if (v79)
@@ -1774,7 +1774,7 @@ LABEL_11:
         v110 = 0u;
         v107 = 0u;
         v108 = 0u;
-        v7 = v76;
+        v7 = pairsCopy;
         v8 = [v7 countByEnumeratingWithState:&v107 objects:v127 count:16];
         if (v8)
         {
@@ -1789,14 +1789,14 @@ LABEL_11:
               }
 
               v11 = *(*(&v107 + 1) + 8 * j);
-              v12 = [v11 sessionID];
-              v13 = [(__CFArray *)v5 sessionID];
-              if ([v12 isEqualToString:v13])
+              sessionID = [v11 sessionID];
+              sessionID2 = [(__CFArray *)v5 sessionID];
+              if ([sessionID isEqualToString:sessionID2])
               {
-                v14 = [(__CFArray *)v5 relayLinkID];
-                LOBYTE(v14) = v14 == [v11 relayLinkID];
+                relayLinkID = [(__CFArray *)v5 relayLinkID];
+                LOBYTE(relayLinkID) = relayLinkID == [v11 relayLinkID];
 
-                if (v14)
+                if (relayLinkID)
                 {
 
                   goto LABEL_24;
@@ -1845,7 +1845,7 @@ LABEL_24:
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v75 = v76;
+  v75 = pairsCopy;
   v16 = [v75 countByEnumeratingWithState:&v103 objects:v126 count:16];
   if (v16)
   {
@@ -1873,7 +1873,7 @@ LABEL_24:
         v102 = 0u;
         v99 = 0u;
         v100 = 0u;
-        v20 = v82->_remoteCandidatePairs;
+        v20 = selfCopy->_remoteCandidatePairs;
         v21 = [(NSArray *)v20 countByEnumeratingWithState:&v99 objects:v125 count:16];
         if (v21)
         {
@@ -1888,14 +1888,14 @@ LABEL_24:
               }
 
               v24 = *(*(&v99 + 1) + 8 * m);
-              v25 = [(__CFArray *)v18 sessionID];
-              v26 = [v24 sessionID];
-              if ([v25 isEqualToString:v26])
+              sessionID3 = [(__CFArray *)v18 sessionID];
+              sessionID4 = [v24 sessionID];
+              if ([sessionID3 isEqualToString:sessionID4])
               {
-                v27 = [v24 relayLinkID];
-                LOBYTE(v27) = v27 == [(__CFArray *)v18 relayLinkID];
+                relayLinkID2 = [v24 relayLinkID];
+                LOBYTE(relayLinkID2) = relayLinkID2 == [(__CFArray *)v18 relayLinkID];
 
-                if (v27)
+                if (relayLinkID2)
                 {
 
                   goto LABEL_51;
@@ -1940,7 +1940,7 @@ LABEL_51:
     v77 = 0;
   }
 
-  objc_storeStrong(&v82->_remoteCandidatePairs, a3);
+  objc_storeStrong(&selfCopy->_remoteCandidatePairs, pairs);
   if (![(__CFArray *)theArray count])
   {
     v30 = 0;
@@ -1987,7 +1987,7 @@ LABEL_51:
       v92 = 0u;
       v93 = 0u;
       v94 = 0u;
-      v34 = v82->_virtualCandidatePairs;
+      v34 = selfCopy->_virtualCandidatePairs;
       v35 = [(NSMutableArray *)v34 countByEnumeratingWithState:&v91 objects:v123 count:16];
       if (v35)
       {
@@ -2002,12 +2002,12 @@ LABEL_51:
             }
 
             v38 = *(*(&v91 + 1) + 8 * n);
-            v39 = [v38 remoteRelayLinkID];
-            if (v39 == [v33 relayLinkID])
+            remoteRelayLinkID = [v38 remoteRelayLinkID];
+            if (remoteRelayLinkID == [v33 relayLinkID])
             {
-              v40 = [v38 sessionID];
-              v41 = [v33 sessionID];
-              v42 = [v40 isEqualToString:v41];
+              sessionID5 = [v38 sessionID];
+              sessionID6 = [v33 sessionID];
+              v42 = [sessionID5 isEqualToString:sessionID6];
 
               if (v42)
               {
@@ -2028,9 +2028,9 @@ LABEL_76:
                     v43 = OSLogHandleForTransportCategory();
                     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
                     {
-                      v44 = [v38 candidatePairToken];
+                      candidatePairToken = [v38 candidatePairToken];
                       *buf = 138412290;
-                      v116 = v44;
+                      v116 = candidatePairToken;
                       _os_log_impl(&dword_1A7AD9000, v43, OS_LOG_TYPE_DEFAULT, "[U+1] _processReceivedRemoteCandidatePairs: remove virtual candidate pair %@.", buf, 0xCu);
                     }
 
@@ -2038,22 +2038,22 @@ LABEL_76:
                     {
                       if (_IDSShouldLogTransport())
                       {
-                        v66 = [v38 candidatePairToken];
+                        candidatePairToken2 = [v38 candidatePairToken];
                         _IDSLogTransport(@"GL", @"IDS", @"[U+1] _processReceivedRemoteCandidatePairs: remove virtual candidate pair %@.");
 
                         if (_IDSShouldLog())
                         {
-                          v66 = [v38 candidatePairToken];
+                          candidatePairToken2 = [v38 candidatePairToken];
                           _IDSLogV(0, @"IDSFoundation", @"GL", @"[U+1] _processReceivedRemoteCandidatePairs: remove virtual candidate pair %@.");
                         }
                       }
                     }
 
-                    [(IDSGlobalLink *)v82 _notifyCandidatePairDisconnected:v38 withReason:2, v66];
+                    [(IDSGlobalLink *)selfCopy _notifyCandidatePairDisconnected:v38 withReason:2, candidatePairToken2];
                     v45 = localRemoteRelayLinkIDForVirtualStunCandidatePair([v38 relayLinkID], objc_msgSend(v38, "remoteRelayLinkID"));
                     if (v45)
                     {
-                      localRemoteRelayLinkIDToVirtualCandidatePairs = v82->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
+                      localRemoteRelayLinkIDToVirtualCandidatePairs = selfCopy->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
                       if (localRemoteRelayLinkIDToVirtualCandidatePairs)
                       {
                         CFDictionaryRemoveValue(localRemoteRelayLinkIDToVirtualCandidatePairs, v45);
@@ -2090,7 +2090,7 @@ LABEL_76:
   while (v70);
 LABEL_93:
 
-  [(NSMutableArray *)v82->_virtualCandidatePairs removeObjectsInArray:v30];
+  [(NSMutableArray *)selfCopy->_virtualCandidatePairs removeObjectsInArray:v30];
 LABEL_94:
   if ([(__CFArray *)v77 count])
   {
@@ -2102,7 +2102,7 @@ LABEL_94:
       _os_log_impl(&dword_1A7AD9000, v47, OS_LOG_TYPE_DEFAULT, "[U+1] _processReceivedRemoteCandidatePairs: new remote candidate pairs: %@", buf, 0xCu);
     }
 
-    v81 = [(NSMutableDictionary *)v82->super._tokenToCandidatePairs allValues];
+    allValues = [(NSMutableDictionary *)selfCopy->super._tokenToCandidatePairs allValues];
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
@@ -2126,7 +2126,7 @@ LABEL_94:
           v84 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v52 = v81;
+          v52 = allValues;
           v53 = [v52 countByEnumeratingWithState:&v83 objects:v121 count:16];
           if (v53)
           {
@@ -2143,7 +2143,7 @@ LABEL_94:
                 v56 = *(*(&v83 + 1) + 8 * jj);
                 if ([v56 isSharedQRSession] && objc_msgSend(v56, "state") == 4)
                 {
-                  [(IDSGFTGL *)v82 _setupVirtualCandidatePairs:v56 remoteCandidatePair:v51];
+                  [(IDSGFTGL *)selfCopy _setupVirtualCandidatePairs:v56 remoteCandidatePair:v51];
                 }
               }
 
@@ -2164,10 +2164,10 @@ LABEL_94:
   v57 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
   {
-    v58 = [(NSMutableDictionary *)v82->super._tokenToCandidatePairs allValues];
-    v59 = [v58 count];
-    v60 = [(NSArray *)v82->_remoteCandidatePairs count];
-    v61 = [(NSMutableArray *)v82->_virtualCandidatePairs count];
+    allValues2 = [(NSMutableDictionary *)selfCopy->super._tokenToCandidatePairs allValues];
+    v59 = [allValues2 count];
+    v60 = [(NSArray *)selfCopy->_remoteCandidatePairs count];
+    v61 = [(NSMutableArray *)selfCopy->_virtualCandidatePairs count];
     *buf = 134218496;
     v116 = v59;
     v117 = 2048;
@@ -2180,7 +2180,7 @@ LABEL_94:
   v62 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
   {
-    virtualCandidatePairs = v82->_virtualCandidatePairs;
+    virtualCandidatePairs = selfCopy->_virtualCandidatePairs;
     *buf = 138412290;
     v116 = virtualCandidatePairs;
     _os_log_impl(&dword_1A7AD9000, v62, OS_LOG_TYPE_DEFAULT, "[U+1] _processReceivedRemoteCandidatePairs: virtual candidate pairs: %@", buf, 0xCu);
@@ -2189,24 +2189,24 @@ LABEL_94:
   v64 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
   {
-    v65 = v82->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
+    v65 = selfCopy->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
     *buf = 138412290;
     v116 = v65;
     _os_log_impl(&dword_1A7AD9000, v64, OS_LOG_TYPE_DEFAULT, "[U+1] _processReceivedRemoteCandidatePairs: localRemoteRelayLinkID map: %@", buf, 0xCu);
   }
 }
 
-- (void)_processCommandRelayInterfaceInfo:(id)a3 candidatePairToken:(id)a4
+- (void)_processCommandRelayInterfaceInfo:(id)info candidatePairToken:(id)token
 {
   v134 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 command];
+  infoCopy = info;
+  tokenCopy = token;
+  command = [infoCopy command];
   if (self->super._isUPlusOneSession)
   {
     if (self->super._receivedRemoteDeviceVersion)
     {
-      if (!v7 || (v9 = v8, (tokenToCandidatePairs = self->super._tokenToCandidatePairs) == 0) || (v11 = CFDictionaryGetValue(tokenToCandidatePairs, v7)) == 0)
+      if (!tokenCopy || (v9 = command, (tokenToCandidatePairs = self->super._tokenToCandidatePairs) == 0) || (v11 = CFDictionaryGetValue(tokenToCandidatePairs, tokenCopy)) == 0)
       {
         v28 = +[IDSFoundationLog GFTGL];
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -2221,7 +2221,7 @@ LABEL_94:
       v93 = v11;
       v117 = 0;
       v116 = 0;
-      if (GLUtilHasValidUInt16Attr(v6, 12, &v117) && self->super._remoteCapabilityFlag != v117)
+      if (GLUtilHasValidUInt16Attr(infoCopy, 12, &v117) && self->super._remoteCapabilityFlag != v117)
       {
         self->super._remoteCapabilityFlag = v117;
         v12 = OSLogHandleForTransportCategory();
@@ -2248,7 +2248,7 @@ LABEL_94:
         }
       }
 
-      if (self->super._isInitiator && !self->super._acceptDelayU32 && GLUtilHasValidUInt32Attr(v6, 7, &v116))
+      if (self->super._isInitiator && !self->super._acceptDelayU32 && GLUtilHasValidUInt32Attr(infoCopy, 7, &v116))
       {
         v14 = v116;
         self->super._acceptDelayU32 = v116;
@@ -2282,7 +2282,7 @@ LABEL_94:
       }
 
       v115 = 0;
-      if (GLUtilHasValidUInt16Attr(v6, 1, &v115))
+      if (GLUtilHasValidUInt16Attr(infoCopy, 1, &v115))
       {
         if (v9 != 32774)
         {
@@ -2310,11 +2310,11 @@ LABEL_158:
             *buf = 67109378;
             *&buf[4] = v115;
             *&buf[8] = 2112;
-            *&buf[10] = v7;
+            *&buf[10] = tokenCopy;
             _os_log_impl(&dword_1A7AD9000, v20, OS_LOG_TYPE_DEFAULT, "[U+1] _processCommandRelayInterfaceInfo: send RelayInterfaceInfoAck (counter: %u) using %@", buf, 0x12u);
           }
 
-          [(IDSGlobalLink *)self _sendCommandMessage:32774 stunMessage:0 options:v91 candidatePairToken:v7];
+          [(IDSGlobalLink *)self _sendCommandMessage:32774 stunMessage:0 options:v91 candidatePairToken:tokenCopy];
           if (self->super._remoteRelayInterfaceCounter >= v115)
           {
             v41 = +[IDSFoundationLog GFTGL];
@@ -2334,11 +2334,11 @@ LABEL_158:
             self->super._remoteRelayInterfaceCounter = v115;
             memset(buf, 170, 0x400uLL);
             v114 = 0;
-            if (GLUtilHasValidBinaryDataAttr(v6, 21, buf, &v114))
+            if (GLUtilHasValidBinaryDataAttr(infoCopy, 21, buf, &v114))
             {
               memset(__b, 170, sizeof(__b));
               v113 = 0;
-              if (!GLUtilHasValidBinaryDataAttr(v6, 22, __b, &v113) || !self->super._shouldAcceptIncomingMKMOverQR)
+              if (!GLUtilHasValidBinaryDataAttr(infoCopy, 22, __b, &v113) || !self->super._shouldAcceptIncomingMKMOverQR)
               {
                 goto LABEL_122;
               }
@@ -2351,26 +2351,26 @@ LABEL_158:
               {
                 if ([v93 isSharedQRSession])
                 {
-                  v21 = [v93 groupID];
-                  v22 = [v21 isEqualToString:v90];
+                  groupID = [v93 groupID];
+                  v22 = [groupID isEqualToString:v90];
 
                   if (v22)
                   {
                     v23 = v93;
 LABEL_88:
                     v93 = v23;
-                    v55 = [v23 participantID];
-                    v86 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v55];
-                    v56 = [v93 URIToParticipantIDs];
-                    v57 = [v56 allValues];
+                    participantID = [v23 participantID];
+                    v86 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:participantID];
+                    uRIToParticipantIDs = [v93 URIToParticipantIDs];
+                    allValues = [uRIToParticipantIDs allValues];
 
                     v58 = +[IDSFoundationLog GFTGL];
                     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
                     {
                       *v123 = 134218242;
-                      v124 = v55;
+                      v124 = participantID;
                       v125 = 2112;
-                      v126 = v57;
+                      v126 = allValues;
                       _os_log_impl(&dword_1A7AD9000, v58, OS_LOG_TYPE_DEFAULT, "[U+1] _processCommandRelayInterfaceInfo localParticipantID = %llu participantIDSets = %@", v123, 0x16u);
                     }
 
@@ -2378,7 +2378,7 @@ LABEL_88:
                     v108 = 0u;
                     v105 = 0u;
                     v106 = 0u;
-                    obj = v57;
+                    obj = allValues;
                     v59 = [obj countByEnumeratingWithState:&v105 objects:v130 count:16];
                     if (v59)
                     {
@@ -2412,7 +2412,7 @@ LABEL_88:
                                   objc_enumerationMutation(v62);
                                 }
 
-                                if ([*(*(&v101 + 1) + 8 * j) unsignedLongLongValue] == v55)
+                                if ([*(*(&v101 + 1) + 8 * j) unsignedLongLongValue] == participantID)
                                 {
                                   LOBYTE(v63) = 1;
                                   goto LABEL_105;
@@ -2514,8 +2514,8 @@ LABEL_120:
                       v49 = *(*(&v109 + 1) + 8 * k);
                       if ([v49 isSharedQRSession])
                       {
-                        v50 = [v49 groupID];
-                        if ([v50 isEqualToString:v90])
+                        groupID2 = [v49 groupID];
+                        if ([groupID2 isEqualToString:v90])
                         {
                           v51 = [v49 state] == 4;
 
@@ -2561,11 +2561,11 @@ LABEL_121:
 LABEL_122:
                   if ([v93 isSharedQRSession])
                   {
-                    v70 = [v93 sessionID];
+                    sessionID = [v93 sessionID];
 LABEL_124:
                     *v123 = 0;
                     v71 = +[IDSStunRelayInterfaceInfoController sharedInstance];
-                    v72 = [v71 candidatePairsFromRelayInterfaceInfo:buf bufferLength:v114 token:self->super._cbuuid sessionID:v70 error:v123];
+                    v72 = [v71 candidatePairsFromRelayInterfaceInfo:buf bufferLength:v114 token:self->super._cbuuid sessionID:sessionID error:v123];
 
                     if (*v123)
                     {
@@ -2593,7 +2593,7 @@ LABEL_124:
                     v75 = [v74 countByEnumeratingWithState:&v97 objects:v122 count:16];
                     if (v75)
                     {
-                      v70 = 0;
+                      sessionID = 0;
                       v76 = *v98;
                       while (2)
                       {
@@ -2607,11 +2607,11 @@ LABEL_124:
                           v78 = *(*(&v97 + 1) + 8 * m);
                           if ([v78 isSharedQRSession] && objc_msgSend(v78, "state") == 4)
                           {
-                            v79 = [v78 sessionID];
-                            v80 = v79;
-                            if (v70)
+                            sessionID2 = [v78 sessionID];
+                            v80 = sessionID2;
+                            if (sessionID)
                             {
-                              if (([v70 isEqualToString:v79] & 1) == 0)
+                              if (([sessionID isEqualToString:sessionID2] & 1) == 0)
                               {
                                 v81 = +[IDSFoundationLog GFTGL];
                                 if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
@@ -2627,7 +2627,7 @@ LABEL_124:
 
                             else
                             {
-                              v70 = v79;
+                              sessionID = sessionID2;
                             }
                           }
                         }
@@ -2641,7 +2641,7 @@ LABEL_124:
                         break;
                       }
 
-                      if (v70)
+                      if (sessionID)
                       {
 
                         goto LABEL_124;
@@ -2659,7 +2659,7 @@ LABEL_124:
                       _os_log_impl(&dword_1A7AD9000, v83, OS_LOG_TYPE_DEFAULT, "[U+1] There is no relaySessionID found - ignore this relayInterface Info", v123, 2u);
                     }
 
-                    v70 = 0;
+                    sessionID = 0;
 LABEL_153:
                   }
 
@@ -2786,8 +2786,8 @@ LABEL_156:
     aBlock[2] = sub_1A7BFB2D8;
     aBlock[3] = &unk_1E77E0FA0;
     objc_copyWeak(&v121, buf);
-    v119 = v6;
-    v120 = v7;
+    v119 = infoCopy;
+    v120 = tokenCopy;
     v26 = _Block_copy(aBlock);
     pendingCommandRelayInterfaceInfoBlock = self->super._pendingCommandRelayInterfaceInfoBlock;
     self->super._pendingCommandRelayInterfaceInfoBlock = v26;
@@ -2809,41 +2809,41 @@ LABEL_156:
 LABEL_159:
 }
 
-- (BOOL)_postProcessAllocbindResponse:(id)a3 candidatePair:(id)a4 candidatePairToken:(id)a5
+- (BOOL)_postProcessAllocbindResponse:(id)response candidatePair:(id)pair candidatePairToken:(id)token
 {
   v140 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v113 = a4;
-  v107 = a5;
+  responseCopy = response;
+  pairCopy = pair;
+  tokenCopy = token;
   v129 = 0;
-  v112 = v7;
-  if (StunUtilHasValidUInt32Attr(v7, 65512, &v129))
+  v112 = responseCopy;
+  if (StunUtilHasValidUInt32Attr(responseCopy, 65512, &v129))
   {
-    [v113 setChannelSettings:v129];
+    [pairCopy setChannelSettings:v129];
   }
 
-  v111 = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
+  allValues = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
   v8 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v133 = v111;
+    v133 = allValues;
     _os_log_impl(&dword_1A7AD9000, v8, OS_LOG_TYPE_DEFAULT, "current candidate pairs: %@", buf, 0xCu);
   }
 
-  v110 = GLUtilGetDifferentRelayCandidatePairSucceeded(v113, v111);
-  v9 = [v110 local];
-  v10 = [v9 transport];
+  v110 = GLUtilGetDifferentRelayCandidatePairSucceeded(pairCopy, allValues);
+  local = [v110 local];
+  transport = [local transport];
 
-  v11 = [v113 local];
-  v12 = [v11 transport];
+  local2 = [pairCopy local];
+  transport2 = [local2 transport];
 
-  v13 = [v113 local];
-  v106 = -[IDSGlobalLink _interfaceNameForInterfaceIndexIncludingVPN:](self, "_interfaceNameForInterfaceIndexIncludingVPN:", [v13 index]);
+  local3 = [pairCopy local];
+  v106 = -[IDSGlobalLink _interfaceNameForInterfaceIndexIncludingVPN:](self, "_interfaceNameForInterfaceIndexIncludingVPN:", [local3 index]);
 
-  v14 = [v113 linkEngine];
+  linkEngine = [pairCopy linkEngine];
 
-  if (!v14)
+  if (!linkEngine)
   {
     if (!v110)
     {
@@ -2852,19 +2852,19 @@ LABEL_159:
 
     if (self->super._cellInterfaceName)
     {
-      v20 = [v113 local];
-      if ([v20 isCellularStunCandidate])
+      local4 = [pairCopy local];
+      if ([local4 isCellularStunCandidate])
       {
         v21 = [(__CFString *)v106 isEqualToIgnoringCase:self->super._cellInterfaceName];
 
         if (v21)
         {
           v22 = [IDSServerBag sharedInstanceForBagType:0];
-          v23 = [v22 objectForKey:@"ids-delay-for-cellular-default-and-slicing"];
+          candidatePairToken2 = [v22 objectForKey:@"ids-delay-for-cellular-default-and-slicing"];
 
-          if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+          if (candidatePairToken2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v24 = [v23 unsignedIntegerValue];
+            unsignedIntegerValue = [candidatePairToken2 unsignedIntegerValue];
             v25 = +[IDSFoundationLog GFTGL];
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
@@ -2876,12 +2876,12 @@ LABEL_159:
               v136 = 2112;
               v137 = v110;
               v138 = 1024;
-              v139 = v24;
+              v139 = unsignedIntegerValue;
               _os_log_impl(&dword_1A7AD9000, v25, OS_LOG_TYPE_DEFAULT, "Sliced Cellular Interface - currentInterfaceName %@ _cellInterfaceName %@ will discard existing pair: %@ in %u seconds.", buf, 0x26u);
             }
 
             v27 = [MEMORY[0x1E6995700] weakRefWithObject:self];
-            v28 = dispatch_time(0, 1000000000 * v24);
+            v28 = dispatch_time(0, 1000000000 * unsignedIntegerValue);
             v29 = im_primary_queue();
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
@@ -2889,7 +2889,7 @@ LABEL_159:
             block[3] = &unk_1E77E0C88;
             v127 = v27;
             v128 = v110;
-            v30 = v27;
+            candidatePairToken = v27;
             dispatch_after(v28, v29, block);
           }
 
@@ -2908,8 +2908,8 @@ LABEL_159:
               _os_log_impl(&dword_1A7AD9000, v100, OS_LOG_TYPE_DEFAULT, "Sliced Cellular Interface - currentInterfaceName %@ _cellInterfaceName %@ discard existing pair: %@.", buf, 0x20u);
             }
 
-            v30 = [v110 candidatePairToken];
-            [(IDSGlobalLink *)self _sendUnallocbindRequest:v30 stunMessage:0 reason:13];
+            candidatePairToken = [v110 candidatePairToken];
+            [(IDSGlobalLink *)self _sendUnallocbindRequest:candidatePairToken stunMessage:0 reason:13];
           }
 
 LABEL_25:
@@ -2922,17 +2922,17 @@ LABEL_25:
       }
     }
 
-    if (v10 <= v12 && ([v113 isRealloc] & 1) == 0)
+    if (transport <= transport2 && ([pairCopy isRealloc] & 1) == 0)
     {
       v18 = +[IDSFoundationLog GFTGL];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v133 = v10;
+        v133 = transport;
         v134 = 2048;
-        v135 = v12;
+        v135 = transport2;
         v136 = 2112;
-        v137 = v113;
+        v137 = pairCopy;
         _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_DEFAULT, "succeededTransport %ld currentTransport %ld discard current pair: %@", buf, 0x20u);
       }
 
@@ -2943,56 +2943,56 @@ LABEL_25:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v133 = v10;
+      v133 = transport;
       v134 = 2048;
-      v135 = v12;
+      v135 = transport2;
       v136 = 2112;
       v137 = v110;
       _os_log_impl(&dword_1A7AD9000, v31, OS_LOG_TYPE_DEFAULT, "succeededTransport %ld currentTransport %ld discard existing pair: %@.", buf, 0x20u);
     }
 
-    v23 = [v110 candidatePairToken];
-    [(IDSGlobalLink *)self _sendUnallocbindRequest:v23 stunMessage:0 reason:8];
+    candidatePairToken2 = [v110 candidatePairToken];
+    [(IDSGlobalLink *)self _sendUnallocbindRequest:candidatePairToken2 stunMessage:0 reason:8];
     goto LABEL_25;
   }
 
-  v15 = [v113 linkEngine];
-  v16 = [v113 linkUniqueName];
-  v17 = [v15 isLinkConnecting:v16];
+  linkEngine2 = [pairCopy linkEngine];
+  linkUniqueName = [pairCopy linkUniqueName];
+  v17 = [linkEngine2 isLinkConnecting:linkUniqueName];
 
   if ((v17 & 1) == 0)
   {
     v18 = +[IDSFoundationLog GFTGL];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v113 linkUniqueName];
+      linkUniqueName2 = [pairCopy linkUniqueName];
       *buf = 138412290;
-      v133 = v19;
+      v133 = linkUniqueName2;
       _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_DEFAULT, "discard current pair because it should no longer be connecting: %@", buf, 0xCu);
     }
 
 LABEL_9:
 
-    [(IDSGlobalLink *)self _sendUnallocbindRequest:v107 stunMessage:0 reason:8];
+    [(IDSGlobalLink *)self _sendUnallocbindRequest:tokenCopy stunMessage:0 reason:8];
     goto LABEL_110;
   }
 
 LABEL_26:
-  v32 = [v113 hbhEncKey];
-  if (!v32 || ([v113 hbhDecKey], v33 = objc_claimAutoreleasedReturnValue(), v34 = v33 == 0, v33, v32, v34))
+  hbhEncKey = [pairCopy hbhEncKey];
+  if (!hbhEncKey || ([pairCopy hbhDecKey], v33 = objc_claimAutoreleasedReturnValue(), v34 = v33 == 0, v33, hbhEncKey, v34))
   {
-    v35 = [v113 relaySessionKey];
-    v36 = [v113 sessionID];
-    v37 = [v113 participantID];
-    v38 = [v112 transactionID];
-    v39 = IDSLinkHBHDeriveHKDFSha256Keys(v35, v36, v37, v38);
+    relaySessionKey = [pairCopy relaySessionKey];
+    sessionID = [pairCopy sessionID];
+    participantID = [pairCopy participantID];
+    transactionID = [v112 transactionID];
+    v39 = IDSLinkHBHDeriveHKDFSha256Keys(relaySessionKey, sessionID, participantID, transactionID);
 
     if (v39)
     {
       v40 = [v39 subdataWithRange:{0, 32}];
       v41 = [v39 subdataWithRange:{32, 32}];
-      [v113 setHbhEncKey:v40];
-      [v113 setHbhDecKey:v41];
+      [pairCopy setHbhEncKey:v40];
+      [pairCopy setHbhDecKey:v41];
     }
 
     else
@@ -3005,11 +3005,11 @@ LABEL_26:
     }
   }
 
-  [(IDSGlobalLink *)self _notifyQRSessionConnected:v113];
-  v42 = self;
+  [(IDSGlobalLink *)self _notifyQRSessionConnected:pairCopy];
+  selfCopy2 = self;
   if (self->super._isUPlusOneSession)
   {
-    [(IDSGFTGL *)self _sendRelayInterfaceInfo:v107];
+    [(IDSGFTGL *)self _sendRelayInterfaceInfo:tokenCopy];
     v124 = 0u;
     v125 = 0u;
     v123 = 0u;
@@ -3028,7 +3028,7 @@ LABEL_26:
             objc_enumerationMutation(v43);
           }
 
-          [(IDSGFTGL *)self _setupVirtualCandidatePairs:v113 remoteCandidatePair:*(*(&v122 + 1) + 8 * i)];
+          [(IDSGFTGL *)self _setupVirtualCandidatePairs:pairCopy remoteCandidatePair:*(*(&v122 + 1) + 8 * i)];
         }
 
         v44 = [(NSArray *)v43 countByEnumeratingWithState:&v122 objects:v131 count:16];
@@ -3037,17 +3037,17 @@ LABEL_26:
       while (v44);
     }
 
-    v42 = self;
+    selfCopy2 = self;
   }
 
-  v47 = [(NSMutableDictionary *)v42->super._tokenToCandidatePairs allValues];
-  v108 = GLUtilGetRelayCandidatePairNotSucceededForOppositeIPVersion(v113, v47);
+  allValues2 = [(NSMutableDictionary *)selfCopy2->super._tokenToCandidatePairs allValues];
+  v108 = GLUtilGetRelayCandidatePairNotSucceededForOppositeIPVersion(pairCopy, allValues2);
 
   if (v108)
   {
     v48 = GLUCreateIPVersionFailureEvent(v108);
-    v49 = [v108 local];
-    if (*([v49 address] + 1) == 2)
+    local5 = [v108 local];
+    if (*([local5 address] + 1) == 2)
     {
       v50 = @"IPv4";
     }
@@ -3091,8 +3091,8 @@ LABEL_26:
     }
   }
 
-  v56 = [v113 linkID];
-  v57 = StunUtilProcessStreamInfo(v112, v56, v56);
+  linkID = [pairCopy linkID];
+  v57 = StunUtilProcessStreamInfo(v112, linkID, linkID);
   v58 = v57;
   Value = 0;
   if (v57 && @"stream-info-peer-published-streams")
@@ -3100,7 +3100,7 @@ LABEL_26:
     Value = CFDictionaryGetValue(v57, @"stream-info-peer-published-streams");
   }
 
-  v60 = StunUtilProcessParticipants(Value, [v113 participantID], self->super._isLightweightParticipant);
+  v60 = StunUtilProcessParticipants(Value, [pairCopy participantID], self->super._isLightweightParticipant);
   v61 = StunUtilProcessLightweightParticipants(v112);
   if ([v60 count] >= 2)
   {
@@ -3108,7 +3108,7 @@ LABEL_26:
     if (!self->super._receivedAllocbindResponse)
     {
       v62 = ids_monotonic_time();
-      v63 = GLUCreateQRClientTimeEvent(311, 0, v113, 0, v62);
+      v63 = GLUCreateQRClientTimeEvent(311, 0, pairCopy, 0, v62);
       v64 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
@@ -3172,18 +3172,18 @@ LABEL_26:
 
   v103 = v72;
 
-  v74 = [v113 groupID];
-  v75 = [v113 sessionID];
-  [(IDSGlobalLink *)self _notifySessionInfoReceived:theDict relayGroupID:v74 relaySessionID:v75 status:0];
+  groupID = [pairCopy groupID];
+  sessionID2 = [pairCopy sessionID];
+  [(IDSGlobalLink *)self _notifySessionInfoReceived:theDict relayGroupID:groupID relaySessionID:sessionID2 status:0];
 
-  v76 = [v113 sessionID];
-  [v113 initParticipantIDMap:0];
-  v77 = [v113 groupID];
+  sessionID3 = [pairCopy sessionID];
+  [pairCopy initParticipantIDMap:0];
+  groupID2 = [pairCopy groupID];
   v120 = 0u;
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v78 = v111;
+  v78 = allValues;
   v79 = [(__CFString *)v78 countByEnumeratingWithState:&v118 objects:v130 count:16];
   if (v79)
   {
@@ -3198,21 +3198,21 @@ LABEL_26:
         }
 
         v82 = *(*(&v118 + 1) + 8 * j);
-        v83 = [v82 sessionID];
-        if ([v83 isEqualToString:v76])
+        sessionID4 = [v82 sessionID];
+        if ([sessionID4 isEqualToString:sessionID3])
         {
-          v84 = [v82 groupID];
-          if ([v84 isEqualToString:v77] && objc_msgSend(v82, "state") == 4)
+          groupID3 = [v82 groupID];
+          if ([groupID3 isEqualToString:groupID2] && objc_msgSend(v82, "state") == 4)
           {
-            v85 = [v82 isSharedQRSession];
+            isSharedQRSession = [v82 isSharedQRSession];
 
-            if (!v85)
+            if (!isSharedQRSession)
             {
               continue;
             }
 
-            v83 = [(NSMutableDictionary *)self->super._pluginParticipantIDs allKeys];
-            [v82 updateParticipantIDMap:v83];
+            sessionID4 = [(NSMutableDictionary *)self->super._pluginParticipantIDs allKeys];
+            [v82 updateParticipantIDMap:sessionID4];
           }
 
           else
@@ -3239,7 +3239,7 @@ LABEL_26:
     }
 
     v87 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v88 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v113, "nextSessionInfoReqID")}];
+    v88 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(pairCopy, "nextSessionInfoReqID")}];
     if (v88)
     {
       CFDictionarySetValue(v87, @"gl-option-sessioninfo-request-id", v88);
@@ -3271,7 +3271,7 @@ LABEL_26:
       }
     }
 
-    [v113 sendSessionInfoRequest:0 options:v87];
+    [pairCopy sendSessionInfoRequest:0 options:v87];
   }
 
   *buf = 0;
@@ -3303,17 +3303,17 @@ LABEL_26:
   v115[2] = sub_1A7BFC578;
   v115[3] = &unk_1E77E0250;
   v115[4] = self;
-  v116 = v113;
+  v116 = pairCopy;
   IDSTransportThreadAddBlockAfter(v115, 1.0);
 
 LABEL_110:
   return 1;
 }
 
-- (void)_sendRelayInterfaceInfo:(id)a3
+- (void)_sendRelayInterfaceInfo:(id)info
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSStunRelayInterfaceInfoController sharedInstance];
   v6 = [v5 relayInterfaceInfoDeliveryStatus:self->super._cbuuid];
 
@@ -3365,32 +3365,32 @@ LABEL_110:
   }
 
   tokenToCandidatePairs = self->super._tokenToCandidatePairs;
-  if (v4)
+  if (infoCopy)
   {
-    v10 = [(NSMutableDictionary *)tokenToCandidatePairs objectForKeyedSubscript:v4];
+    v10 = [(NSMutableDictionary *)tokenToCandidatePairs objectForKeyedSubscript:infoCopy];
     v11 = v10;
     if (v10)
     {
       v41 = v10;
-      v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
+      allValues = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
     }
 
     else
     {
-      v12 = 0;
+      allValues = 0;
     }
   }
 
   else
   {
-    v12 = [(NSMutableDictionary *)tokenToCandidatePairs allValues];
+    allValues = [(NSMutableDictionary *)tokenToCandidatePairs allValues];
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = v12;
+  v16 = allValues;
   v17 = [v16 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v17)
   {
@@ -3409,16 +3409,16 @@ LABEL_110:
         }
 
         v22 = *(*(&v36 + 1) + 8 * v21);
-        v23 = [v22 state];
+        state = [v22 state];
         if ([v22 isRelayStunCandidatePair])
         {
-          if (v23 != 4)
+          if (state != 4)
           {
             goto LABEL_43;
           }
         }
 
-        else if (v23 != 3)
+        else if (state != 3)
         {
           goto LABEL_43;
         }
@@ -3459,7 +3459,7 @@ LABEL_110:
           v29 = [v30 dictionaryWithObjectsAndKeys:{v28, @"gl-attr-counter", 0}];
         }
 
-        v31 = [v22 candidatePairToken];
+        candidatePairToken = [v22 candidatePairToken];
 
         v32 = +[IDSFoundationLog GFTGL];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -3468,13 +3468,13 @@ LABEL_110:
           *buf = 67109378;
           *v43 = localRelayInterfaceCounter;
           *&v43[4] = 2112;
-          *&v43[6] = v31;
+          *&v43[6] = candidatePairToken;
           _os_log_impl(&dword_1A7AD9000, v32, OS_LOG_TYPE_DEFAULT, "[U+1] _sendRelayInterfaceInfo: send RelayInterfaceInfo (counter: %u) on %@", buf, 0x12u);
         }
 
-        [(IDSGlobalLink *)self _sendCommandMessage:6 stunMessage:0 options:v29 candidatePairToken:v31];
+        [(IDSGlobalLink *)self _sendCommandMessage:6 stunMessage:0 options:v29 candidatePairToken:candidatePairToken];
         v19 = 1;
-        v4 = v31;
+        infoCopy = candidatePairToken;
         v18 = v35;
 LABEL_43:
         ++v21;
@@ -3503,14 +3503,14 @@ LABEL_48:
 LABEL_18:
 }
 
-- (BOOL)_setupNewQRLinkIfNecessary:(id)a3
+- (BOOL)_setupNewQRLinkIfNecessary:(id)necessary
 {
   v15 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = IDSGFTGL;
   v5 = [(IDSGlobalLink *)&v12 _setupNewQRLinkIfNecessary:?];
   v6 = v5;
-  if (!a3 && v5)
+  if (!necessary && v5)
   {
     v7 = +[IDSFoundationLog GFTGL];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3533,7 +3533,7 @@ LABEL_18:
   return v6;
 }
 
-- (void)setAllowP2P:(BOOL)a3
+- (void)setAllowP2P:(BOOL)p
 {
   v11 = *MEMORY[0x1E69E9840];
   if (IMGetDomainBoolForKeyWithDefaultValue())
@@ -3548,7 +3548,7 @@ LABEL_18:
 
   else
   {
-    self->super._allowP2P = a3;
+    self->super._allowP2P = p;
     v6 = +[IDSFoundationLog GFTGL];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -3662,12 +3662,12 @@ LABEL_18:
 
   self->super._receivedRemoteDeviceVersion = 0;
   self->super._remoteRelayInterfaceCounter = 0;
-  v14 = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
+  allValues = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v33 objects:v43 count:16];
+  v15 = [allValues countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v15)
   {
     v16 = v15;
@@ -3680,39 +3680,39 @@ LABEL_18:
       {
         if (*v34 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         v20 = *(*(&v33 + 1) + 8 * j);
         if (([v20 isRelayStunCandidatePair] & 1) == 0 && objc_msgSend(v20, "state") == 3)
         {
-          v21 = [v20 candidatePairToken];
+          candidatePairToken = [v20 candidatePairToken];
           if (!v17)
           {
             v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
           }
 
-          if (v17 && v21)
+          if (v17 && candidatePairToken)
           {
-            CFArrayAppendValue(v17, v21);
+            CFArrayAppendValue(v17, candidatePairToken);
           }
 
-          v22 = [*(v3 + 2592) GFTGL];
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+          gFTGL = [*(v3 + 2592) GFTGL];
+          if (os_log_type_enabled(gFTGL, OS_LOG_TYPE_DEFAULT))
           {
             [v20 candidatePairToken];
-            v23 = self;
+            selfCopy = self;
             v24 = v17;
-            v25 = v14;
+            v25 = allValues;
             v27 = v26 = v3;
             *buf = 138412290;
             v42 = v27;
-            _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "[U+1] removing P2P candidate pair %@", buf, 0xCu);
+            _os_log_impl(&dword_1A7AD9000, gFTGL, OS_LOG_TYPE_DEFAULT, "[U+1] removing P2P candidate pair %@", buf, 0xCu);
 
             v3 = v26;
-            v14 = v25;
+            allValues = v25;
             v17 = v24;
-            self = v23;
+            self = selfCopy;
             v18 = v32;
           }
 
@@ -3720,7 +3720,7 @@ LABEL_18:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v33 objects:v43 count:16];
+      v16 = [allValues countByEnumeratingWithState:&v33 objects:v43 count:16];
     }
 
     while (v16);
@@ -3738,25 +3738,25 @@ LABEL_18:
   remoteCandidateList = self->super._remoteCandidateList;
   self->super._remoteCandidateList = 0;
 
-  v30 = [*(v3 + 2592) GFTGL];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+  gFTGL2 = [*(v3 + 2592) GFTGL];
+  if (os_log_type_enabled(gFTGL2, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
+    allValues2 = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
     *buf = 138412290;
-    v42 = v31;
-    _os_log_impl(&dword_1A7AD9000, v30, OS_LOG_TYPE_DEFAULT, "[U+1] remaining candidate pairs: %@", buf, 0xCu);
+    v42 = allValues2;
+    _os_log_impl(&dword_1A7AD9000, gFTGL2, OS_LOG_TYPE_DEFAULT, "[U+1] remaining candidate pairs: %@", buf, 0xCu);
   }
 }
 
-- (void)_sendConnectionDataWithRemovedAddressList:(id)a3
+- (void)_sendConnectionDataWithRemovedAddressList:(id)list
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   if (self->_allowE2E && self->super._receivedRemoteDeviceVersion)
   {
     v8.receiver = self;
     v8.super_class = IDSGFTGL;
-    [(IDSGlobalLink *)&v8 _sendConnectionDataWithRemovedAddressList:v4];
+    [(IDSGlobalLink *)&v8 _sendConnectionDataWithRemovedAddressList:listCopy];
   }
 
   else
@@ -3806,18 +3806,18 @@ LABEL_18:
   }
 }
 
-- (void)setIsUPlusOneSession:(BOOL)a3
+- (void)setIsUPlusOneSession:(BOOL)session
 {
-  if (self->super._isUPlusOneSession != a3)
+  if (self->super._isUPlusOneSession != session)
   {
     v18 = v3;
     v19 = v4;
-    v5 = a3;
-    self->super._isUPlusOneSession = a3;
+    sessionCopy = session;
+    self->super._isUPlusOneSession = session;
     ++self->super._callModeUpdateGenerationCounter;
     v7 = +[IDSFoundationLog GFTGL];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (sessionCopy)
     {
       if (v8)
       {
@@ -3850,7 +3850,7 @@ LABEL_18:
       self->super._allowP2P = 0;
     }
 
-    v11 = GLUCreateSetUPlusOneEvent(v5, self->super._timeBase);
+    v11 = GLUCreateSetUPlusOneEvent(sessionCopy, self->super._timeBase);
     if (v11)
     {
       WeakRetained = objc_loadWeakRetained(&self->super._delegate);
@@ -3865,15 +3865,15 @@ LABEL_18:
   }
 }
 
-- (void)enableUPlusOneSessionForTransition:(BOOL)a3
+- (void)enableUPlusOneSessionForTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v14 = *MEMORY[0x1E69E9840];
   v5 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (transitionCopy)
     {
       v7 = @"YES";
     }
@@ -3895,11 +3895,11 @@ LABEL_18:
     _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "[U+1] enableUPlusOneSessionForTransition: enableUPlusOneSession: %@, _isUPlusOneSession: %@", &v10, 0x16u);
   }
 
-  if (self->super._isUPlusOneSession != v3)
+  if (self->super._isUPlusOneSession != transitionCopy)
   {
-    [(IDSGFTGL *)self setIsUPlusOneSession:v3];
+    [(IDSGFTGL *)self setIsUPlusOneSession:transitionCopy];
     [(IDSGFTGL *)self _sendCallModeUpdateToQR];
-    if (v3)
+    if (transitionCopy)
     {
       v8 = +[IDSStunRelayInterfaceInfoController sharedInstance];
       [v8 setRelayInterfaceInfoDeliveryStatus:self->super._cbuuid status:1];
@@ -3932,12 +3932,12 @@ LABEL_18:
   }
 
   [(IDSQRProtoCallModeUpdateInfo *)v3 setFacetimeMode:v4];
-  v5 = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
+  allValues = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3949,14 +3949,14 @@ LABEL_18:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 state];
+        state = [v11 state];
         if ([v11 isActualRelayStunCandidatePair])
         {
-          v13 = v12 == 4;
+          v13 = state == 4;
         }
 
         else
@@ -3976,7 +3976,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v7);
@@ -3990,10 +3990,10 @@ LABEL_18:
   return v8 & 1;
 }
 
-- (void)_discardCandidatePairsWithOption:(BOOL)a3 isReinitiating:(BOOL)a4
+- (void)_discardCandidatePairsWithOption:(BOOL)option isReinitiating:(BOOL)reinitiating
 {
-  v4 = a4;
-  v5 = a3;
+  reinitiatingCopy = reinitiating;
+  optionCopy = option;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
@@ -4030,21 +4030,21 @@ LABEL_18:
 
   v13.receiver = self;
   v13.super_class = IDSGFTGL;
-  [(IDSGlobalLink *)&v13 _discardCandidatePairsWithOption:v5 isReinitiating:v4];
+  [(IDSGlobalLink *)&v13 _discardCandidatePairsWithOption:optionCopy isReinitiating:reinitiatingCopy];
 }
 
-- (BOOL)_processRemovedLocalAddressList:(id)a3
+- (BOOL)_processRemovedLocalAddressList:(id)list
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v40.receiver = self;
   v40.super_class = IDSGFTGL;
-  v27 = [(IDSGlobalLink *)&v40 _processRemovedLocalAddressList:v4];
+  v27 = [(IDSGlobalLink *)&v40 _processRemovedLocalAddressList:listCopy];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v4;
+  obj = listCopy;
   v30 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
   v5 = 0;
   if (v30)
@@ -4061,8 +4061,8 @@ LABEL_18:
         }
 
         v31 = v6;
-        v7 = [*(*(&v36 + 1) + 8 * v6) address];
-        v8 = [v7 sa];
+        address = [*(*(&v36 + 1) + 8 * v6) address];
+        v8 = [address sa];
 
         v34 = 0u;
         v35 = 0u;
@@ -4084,8 +4084,8 @@ LABEL_18:
               }
 
               v14 = *(*(&v32 + 1) + 8 * i);
-              v15 = [v14 local];
-              v16 = IsSameIP(v8, [v15 address]);
+              local = [v14 local];
+              v16 = IsSameIP(v8, [local address]);
 
               if (v16)
               {
@@ -4112,9 +4112,9 @@ LABEL_18:
                 v18 = +[IDSFoundationLog GFTGL];
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                 {
-                  v19 = [v14 candidatePairToken];
+                  candidatePairToken = [v14 candidatePairToken];
                   *buf = 138412290;
-                  v42 = v19;
+                  v42 = candidatePairToken;
                   _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_DEFAULT, "[U+1] _processRemovedLocalAddressList: remove virtual candidate pair %@.", buf, 0xCu);
                 }
 
@@ -4174,14 +4174,14 @@ LABEL_18:
   return v27;
 }
 
-- (void)manageDesignatedDestinations:(id)a3 relayGroupID:(id)a4 withType:(unsigned __int16)a5 sessionStateCounter:(unsigned int)a6 withClientContextBlob:(id)a7 identifier:(unint64_t)a8
+- (void)manageDesignatedDestinations:(id)destinations relayGroupID:(id)d withType:(unsigned __int16)type sessionStateCounter:(unsigned int)counter withClientContextBlob:(id)blob identifier:(unint64_t)identifier
 {
-  v58 = a5;
+  typeCopy = type;
   v71 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v55 = self;
+  destinationsCopy = destinations;
+  dCopy = d;
+  blobCopy = blob;
+  selfCopy = self;
   [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
   v63 = 0u;
   v64 = 0u;
@@ -4205,15 +4205,15 @@ LABEL_18:
       }
 
       v19 = *(*(&v63 + 1) + 8 * i);
-      v20 = [v19 groupID];
-      if ([v20 isEqualToString:v12])
+      groupID = [v19 groupID];
+      if ([groupID isEqualToString:dCopy])
       {
-        v21 = [v19 state];
+        state = [v19 state];
 
-        if (v21 == 4)
+        if (state == 4)
         {
           v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v24 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v58];
+          v24 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
           v25 = v24;
           if (v24)
           {
@@ -4225,21 +4225,21 @@ LABEL_18:
             sub_1A7E1B088();
           }
 
-          if ((v58 - 1) <= 3u)
+          if ((typeCopy - 1) <= 3u)
           {
             v50 = v23;
             v51 = v14;
-            v52 = v13;
-            v53 = v12;
-            v26 = [v19 URIToParticipantIDs];
+            v52 = blobCopy;
+            v53 = dCopy;
+            uRIToParticipantIDs = [v19 URIToParticipantIDs];
             v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v59 = 0u;
             v60 = 0u;
             v61 = 0u;
             v62 = 0u;
-            v54 = v11;
-            v29 = v11;
+            v54 = destinationsCopy;
+            v29 = destinationsCopy;
             v30 = [v29 countByEnumeratingWithState:&v59 objects:v69 count:16];
             if (v30)
             {
@@ -4255,11 +4255,11 @@ LABEL_18:
                   }
 
                   v34 = *(*(&v59 + 1) + 8 * j);
-                  v35 = [v26 objectForKey:v34];
+                  v35 = [uRIToParticipantIDs objectForKey:v34];
 
                   if (v35)
                   {
-                    v36 = [v26 objectForKeyedSubscript:v34];
+                    v36 = [uRIToParticipantIDs objectForKeyedSubscript:v34];
                     [v27 addObjectsFromArray:v36];
                   }
 
@@ -4280,7 +4280,7 @@ LABEL_18:
             v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT);
             if (!v37)
             {
-              v13 = v52;
+              blobCopy = v52;
               if (v39)
               {
                 *buf = 0;
@@ -4288,14 +4288,14 @@ LABEL_18:
               }
 
               v41 = objc_alloc_init(MEMORY[0x1E695DF90]);
-              v42 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v58];
+              v42 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
               if (v42)
               {
                 CFDictionarySetValue(v41, @"ids-stun-attribute-session-state-type", v42);
               }
 
               v43 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:6];
-              v11 = v54;
+              destinationsCopy = v54;
               if (v43)
               {
                 CFDictionarySetValue(v41, @"ids-stun-message-type", v43);
@@ -4306,22 +4306,22 @@ LABEL_18:
                 sub_1A7E1B2C8();
               }
 
-              WeakRetained = objc_loadWeakRetained(&v55->super._delegate);
+              WeakRetained = objc_loadWeakRetained(&selfCopy->super._delegate);
               v48 = objc_opt_respondsToSelector();
 
               if (v48)
               {
-                v49 = objc_loadWeakRetained(&v55->super._delegate);
-                [v49 link:v55 didReceiveParticipantUpdate:v41 status:6];
+                v49 = objc_loadWeakRetained(&selfCopy->super._delegate);
+                [v49 link:selfCopy didReceiveParticipantUpdate:v41 status:6];
               }
 
               v14 = v51;
               v22 = v51;
-              v12 = v53;
+              dCopy = v53;
               goto LABEL_63;
             }
 
-            v13 = v52;
+            blobCopy = v52;
             v23 = v50;
             if (v39)
             {
@@ -4334,14 +4334,14 @@ LABEL_18:
             if (v40)
             {
               CFDictionarySetValue(v50, @"gl-option-participant-update-blocked-participantIDs", v40);
-              v12 = v53;
-              v11 = v54;
+              dCopy = v53;
+              destinationsCopy = v54;
             }
 
             else
             {
-              v12 = v53;
-              v11 = v54;
+              dCopy = v53;
+              destinationsCopy = v54;
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 sub_1A7E1B118();
@@ -4362,12 +4362,12 @@ LABEL_18:
             v14 = v51;
           }
 
-          if (v13)
+          if (blobCopy)
           {
-            CFDictionarySetValue(v23, @"gl-option-ids-context-blob-key", v13);
+            CFDictionarySetValue(v23, @"gl-option-ids-context-blob-key", blobCopy);
           }
 
-          if (a8)
+          if (identifier)
           {
             v45 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
             if (v45)
@@ -4381,7 +4381,7 @@ LABEL_18:
             }
           }
 
-          v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a6];
+          v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:counter];
           if (v46)
           {
             CFDictionarySetValue(v23, @"gl-option-participant-update-request-counter", v46);
@@ -4433,12 +4433,12 @@ LABEL_12:
 LABEL_63:
 }
 
-- (void)removeParticipantIDs:(id)a3 relayGroupID:(id)a4 sessionStateCounter:(unsigned int)a5
+- (void)removeParticipantIDs:(id)ds relayGroupID:(id)d sessionStateCounter:(unsigned int)counter
 {
-  v5 = *&a5;
+  v5 = *&counter;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  dCopy = d;
   [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
   v24 = 0u;
   v25 = 0u;
@@ -4459,20 +4459,20 @@ LABEL_63:
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 groupID];
-        if ([v16 isEqualToString:v9])
+        groupID = [v15 groupID];
+        if ([groupID isEqualToString:dCopy])
         {
-          v17 = [v15 state];
+          state = [v15 state];
 
-          if (v17 == 4)
+          if (state == 4)
           {
             v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
             CFDictionarySetValue(v19, @"gl-option-participant-update-request-type", &unk_1F1B20198);
-            v20 = [v8 allObjects];
-            v21 = v20;
-            if (v20)
+            allObjects = [dsCopy allObjects];
+            v21 = allObjects;
+            if (allObjects)
             {
-              CFDictionarySetValue(v19, @"gl-option-participant-update-blocked-participantIDs", v20);
+              CFDictionarySetValue(v19, @"gl-option-participant-update-blocked-participantIDs", allObjects);
             }
 
             else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -4531,18 +4531,18 @@ LABEL_63:
 LABEL_26:
 }
 
-- (void)_destroyVirtualRelayLinksForCandidatePair:(id)a3 withReason:(unsigned __int8)a4
+- (void)_destroyVirtualRelayLinksForCandidatePair:(id)pair withReason:(unsigned __int8)reason
 {
-  v23 = a4;
+  reasonCopy = reason;
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  pairCopy = pair;
+  if (pairCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v24 = self;
+    selfCopy = self;
     v6 = self->_virtualCandidatePairs;
     v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v7)
@@ -4560,14 +4560,14 @@ LABEL_26:
           }
 
           v11 = *(*(&v26 + 1) + 8 * i);
-          v12 = [v11 sessionID];
-          v13 = [v5 sessionID];
-          if ([v12 isEqualToString:v13])
+          sessionID = [v11 sessionID];
+          sessionID2 = [pairCopy sessionID];
+          if ([sessionID isEqualToString:sessionID2])
           {
-            v14 = [v11 relayLinkID];
-            v15 = [v5 relayLinkID];
+            relayLinkID = [v11 relayLinkID];
+            relayLinkID2 = [pairCopy relayLinkID];
 
-            if (v14 != v15)
+            if (relayLinkID != relayLinkID2)
             {
               continue;
             }
@@ -4587,20 +4587,20 @@ LABEL_26:
             v17 = +[IDSFoundationLog GFTGL];
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v11 candidatePairToken];
+              candidatePairToken = [v11 candidatePairToken];
               *buf = 138412290;
-              v31 = v18;
+              v31 = candidatePairToken;
               _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "[U+1] _destroyVirtualRelayLinksForCandidatePair: remove virtual candidate pair %@.", buf, 0xCu);
             }
 
-            [(IDSGlobalLink *)v24 _notifyCandidatePairDisconnected:v11 withReason:v23];
-            v12 = localRemoteRelayLinkIDForVirtualStunCandidatePair([v11 relayLinkID], objc_msgSend(v11, "remoteRelayLinkID"));
-            if (v12)
+            [(IDSGlobalLink *)selfCopy _notifyCandidatePairDisconnected:v11 withReason:reasonCopy];
+            sessionID = localRemoteRelayLinkIDForVirtualStunCandidatePair([v11 relayLinkID], objc_msgSend(v11, "remoteRelayLinkID"));
+            if (sessionID)
             {
-              localRemoteRelayLinkIDToVirtualCandidatePairs = v24->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
+              localRemoteRelayLinkIDToVirtualCandidatePairs = selfCopy->super._localRemoteRelayLinkIDToVirtualCandidatePairs;
               if (localRemoteRelayLinkIDToVirtualCandidatePairs)
               {
-                CFDictionaryRemoveValue(localRemoteRelayLinkIDToVirtualCandidatePairs, v12);
+                CFDictionaryRemoveValue(localRemoteRelayLinkIDToVirtualCandidatePairs, sessionID);
               }
             }
           }
@@ -4623,17 +4623,17 @@ LABEL_27:
 
     if ([(__CFArray *)v25 count])
     {
-      [(NSMutableArray *)v24->_virtualCandidatePairs removeObjectsInArray:v25];
+      [(NSMutableArray *)selfCopy->_virtualCandidatePairs removeObjectsInArray:v25];
       v21 = +[IDSFoundationLog GFTGL];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        virtualCandidatePairs = v24->_virtualCandidatePairs;
+        virtualCandidatePairs = selfCopy->_virtualCandidatePairs;
         *buf = 138412290;
         v31 = virtualCandidatePairs;
         _os_log_impl(&dword_1A7AD9000, v21, OS_LOG_TYPE_DEFAULT, "[U+1] _destroyVirtualRelayLinksForCandidatePair: virtual candidate pairs: %@", buf, 0xCu);
       }
 
-      [(IDSGFTGL *)v24 _sendRelayInterfaceInfo:0];
+      [(IDSGFTGL *)selfCopy _sendRelayInterfaceInfo:0];
       v20 = v25;
     }
 
@@ -4654,13 +4654,13 @@ LABEL_27:
   }
 }
 
-- (void)updateURIToParticipantIDs:(id)a3 relaySessionID:(id)a4 sessionInfo:(id)a5
+- (void)updateURIToParticipantIDs:(id)ds relaySessionID:(id)d sessionInfo:(id)info
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v29 = self;
+  dsCopy = ds;
+  dCopy = d;
+  infoCopy = info;
+  selfCopy = self;
   [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
   v31 = 0u;
   v32 = 0u;
@@ -4681,11 +4681,11 @@ LABEL_27:
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v15 sessionID];
-        if ([(IDSQuickRelaySessionInfo *)v16 isEqualToString:v9])
+        sessionID = [v15 sessionID];
+        if ([(IDSQuickRelaySessionInfo *)sessionID isEqualToString:dCopy])
         {
-          v17 = [v15 groupID];
-          v18 = [v17 isEqualToString:v8];
+          groupID = [v15 groupID];
+          v18 = [groupID isEqualToString:dsCopy];
 
           if (!v18)
           {
@@ -4696,15 +4696,15 @@ LABEL_27:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v36 = v8;
+            v36 = dsCopy;
             v37 = 2112;
-            v38 = v9;
+            v38 = dCopy;
             _os_log_impl(&dword_1A7AD9000, v19, OS_LOG_TYPE_DEFAULT, "updateURIToParticipantIDs for group %@, session %@.", buf, 0x16u);
           }
 
-          [v15 updateURIToParticipantIDMapping:v10];
-          v16 = objc_alloc_init(IDSQuickRelaySessionInfo);
-          v20 = [(IDSQuickRelaySessionInfo *)v16 parseSessionInfo:v10];
+          [v15 updateURIToParticipantIDMapping:infoCopy];
+          sessionID = objc_alloc_init(IDSQuickRelaySessionInfo);
+          v20 = [(IDSQuickRelaySessionInfo *)sessionID parseSessionInfo:infoCopy];
           v21 = +[IDSFoundationLog GFTGL];
           v22 = v21;
           if (v20)
@@ -4721,13 +4721,13 @@ LABEL_27:
           {
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v15 candidatePairToken];
+              candidatePairToken = [v15 candidatePairToken];
               *buf = 138412290;
-              v36 = v23;
+              v36 = candidatePairToken;
               _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "updateURIToParticipantIDs updating session info for %@", buf, 0xCu);
             }
 
-            [v15 setPropertiesWithRelaySessionInfo:v16 sessionInfoDict:v10 enableSKE:{objc_msgSend(v15, "enableSKE")}];
+            [v15 setPropertiesWithRelaySessionInfo:sessionID sessionInfoDict:infoCopy enableSKE:{objc_msgSend(v15, "enableSKE")}];
           }
         }
       }
@@ -4738,11 +4738,11 @@ LABEL_27:
     while (v12);
   }
 
-  v24 = [(NSMutableDictionary *)v29->super._sessionsByID objectForKeyedSubscript:v9];
+  v24 = [(NSMutableDictionary *)selfCopy->super._sessionsByID objectForKeyedSubscript:dCopy];
   if (v24)
   {
     v25 = objc_alloc_init(IDSQuickRelaySessionInfo);
-    v26 = [(IDSQuickRelaySessionInfo *)v25 parseSessionInfo:v10];
+    v26 = [(IDSQuickRelaySessionInfo *)v25 parseSessionInfo:infoCopy];
     v27 = +[IDSFoundationLog GFTGL];
     v28 = v27;
     if (v26)
@@ -4758,41 +4758,41 @@ LABEL_27:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v9;
+        v36 = dCopy;
         _os_log_impl(&dword_1A7AD9000, v28, OS_LOG_TYPE_DEFAULT, "updateURIToParticipantIDs updating session info for session %@", buf, 0xCu);
       }
 
-      [v24 setSessionInfo:v25 sessionInfoDict:v10];
+      [v24 setSessionInfo:v25 sessionInfoDict:infoCopy];
     }
   }
 }
 
-- (void)setPluginCache:(id)a3
+- (void)setPluginCache:(id)cache
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = cacheCopy;
     _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "setPluginCache: pluginNameToPluginOptionsDict %@", &v8, 0xCu);
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [cacheCopy mutableCopy];
   pluginNameToPluginOptionsDict = self->super._pluginNameToPluginOptionsDict;
   self->super._pluginNameToPluginOptionsDict = v6;
 }
 
-- (void)setParticipantType:(unsigned __int16)a3 relayGroupID:(id)a4 sessionStateCounter:(unsigned int)a5 withClientContextBlob:(id)a6 identifier:(unint64_t)a7
+- (void)setParticipantType:(unsigned __int16)type relayGroupID:(id)d sessionStateCounter:(unsigned int)counter withClientContextBlob:(id)blob identifier:(unint64_t)identifier
 {
-  v8 = *&a5;
-  v10 = a3;
+  v8 = *&counter;
+  typeCopy = type;
   v23 = *MEMORY[0x1E69E9840];
   isLightweightParticipant = self->super._isLightweightParticipant;
-  self->super._isLightweightParticipant = a3 == 0;
-  v13 = a6;
-  v14 = a4;
+  self->super._isLightweightParticipant = type == 0;
+  blobCopy = blob;
+  dCopy = d;
   v15 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -4819,7 +4819,7 @@ LABEL_27:
     _os_log_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_DEFAULT, "setParticipantType: lightweight %@ -> lightweight %@", &v19, 0x16u);
   }
 
-  if (v10)
+  if (typeCopy)
   {
     v18 = 8;
   }
@@ -4829,16 +4829,16 @@ LABEL_27:
     v18 = 7;
   }
 
-  [(IDSGFTGL *)self manageDesignatedDestinations:0 relayGroupID:v14 withType:v18 sessionStateCounter:v8 withClientContextBlob:v13 identifier:a7];
+  [(IDSGFTGL *)self manageDesignatedDestinations:0 relayGroupID:dCopy withType:v18 sessionStateCounter:v8 withClientContextBlob:blobCopy identifier:identifier];
 }
 
-- (void)sendKeyMaterialMessageData:(id)a3 relayGroupID:(id)a4 destinationURIs:(id)a5 completionHandler:(id)a6
+- (void)sendKeyMaterialMessageData:(id)data relayGroupID:(id)d destinationURIs:(id)is completionHandler:(id)handler
 {
   v78 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  dCopy = d;
+  isCopy = is;
+  handlerCopy = handler;
   v14 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -4856,11 +4856,11 @@ LABEL_27:
 
     *v73 = v16;
     *&v73[8] = 2112;
-    *&v73[10] = v11;
+    *&v73[10] = dCopy;
     v74 = 2112;
-    v75 = v12;
+    v75 = isCopy;
     v76 = 2112;
-    v77 = v10;
+    v77 = dataCopy;
     _os_log_impl(&dword_1A7AD9000, v14, OS_LOG_TYPE_DEFAULT, "sendKeyMaterialMessageData isUPlusOneSession %@ relayGroupID %@ destinationURIs %@ keyMaterialMessageData %@", buf, 0x2Au);
   }
 
@@ -4879,19 +4879,19 @@ LABEL_43:
 
 LABEL_44:
 
-    v13[2](v13, 2);
+    handlerCopy[2](handlerCopy, 2);
     goto LABEL_49;
   }
 
-  if (!v10 || !v11)
+  if (!dataCopy || !dCopy)
   {
     v43 = +[IDSFoundationLog GFTGL];
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v73 = v10;
+      *v73 = dataCopy;
       *&v73[8] = 2112;
-      *&v73[10] = v11;
+      *&v73[10] = dCopy;
       v44 = "[U+1] sendKeyMaterialMessageData Invalid params {keyMaterialMessageData: %@, relayGroupID: %@}";
       v45 = v43;
       v46 = 22;
@@ -4903,13 +4903,13 @@ LABEL_44:
 
   v70[0] = @"p";
   v70[1] = @"r";
-  v71[0] = v10;
-  v71[1] = v11;
+  v71[0] = dataCopy;
+  v71[1] = dCopy;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:v70 count:2];
   v57 = JWEncodeDictionary();
   objc_storeStrong(&self->_keyMaterialData, v57);
-  v56 = v13;
-  v18 = _Block_copy(v13);
+  v56 = handlerCopy;
+  v18 = _Block_copy(handlerCopy);
   keyMaterialSentHandler = self->_keyMaterialSentHandler;
   self->_keyMaterialSentHandler = v18;
 
@@ -4943,10 +4943,10 @@ LABEL_44:
   {
     v27 = v26;
     v28 = *v65;
-    v50 = self;
-    v51 = v10;
-    v54 = v12;
-    v55 = v11;
+    selfCopy = self;
+    v51 = dataCopy;
+    v54 = isCopy;
+    v55 = dCopy;
     v52 = v25;
     v53 = v17;
     v49 = *v65;
@@ -4964,24 +4964,24 @@ LABEL_44:
         v30 = *(*(&v64 + 1) + 8 * v29);
         if ([v30 isSharedQRSession])
         {
-          v31 = [v30 groupID];
-          if (![v31 isEqualToString:v11])
+          groupID = [v30 groupID];
+          if (![groupID isEqualToString:dCopy])
           {
             goto LABEL_35;
           }
 
-          v32 = [v30 state];
+          state = [v30 state];
 
-          v33 = v32 == 4;
+          v33 = state == 4;
           v27 = v58;
           if (v33)
           {
-            v31 = [v30 URIToParticipantIDs];
+            groupID = [v30 URIToParticipantIDs];
             v34 = +[IDSFoundationLog GFTGL];
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              *v73 = v31;
+              *v73 = groupID;
               _os_log_impl(&dword_1A7AD9000, v34, OS_LOG_TYPE_DEFAULT, "sendKeyMaterialMessageData URIToParticipantIDs = %@", buf, 0xCu);
             }
 
@@ -4989,7 +4989,7 @@ LABEL_44:
             v63 = 0u;
             v60 = 0u;
             v61 = 0u;
-            obj = v12;
+            obj = isCopy;
             v35 = [obj countByEnumeratingWithState:&v60 objects:v68 count:16];
             if (v35)
             {
@@ -5006,7 +5006,7 @@ LABEL_44:
 
                   v39 = *(*(&v60 + 1) + 8 * i);
                   v40 = [v39 _stripPotentialTokenURIWithToken:0];
-                  v41 = [v31 objectForKey:v40];
+                  v41 = [groupID objectForKey:v40];
                   v42 = +[IDSFoundationLog GFTGL];
                   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
                   {
@@ -5024,9 +5024,9 @@ LABEL_44:
                     v47 = +[IDSFoundationLog GFTGL];
                     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
                     {
-                      v48 = [v30 candidatePairToken];
+                      candidatePairToken = [v30 candidatePairToken];
                       *buf = 138412802;
-                      *v73 = v48;
+                      *v73 = candidatePairToken;
                       *&v73[8] = 2112;
                       *&v73[10] = v41;
                       v74 = 2112;
@@ -5034,11 +5034,11 @@ LABEL_44:
                       _os_log_impl(&dword_1A7AD9000, v47, OS_LOG_TYPE_DEFAULT, "sendKeyMaterialMessageData found candidatePair %@ with participantIDs %@ for destinationURI %@", buf, 0x20u);
                     }
 
-                    [(IDSGFTGL *)v50 _sendRelayInterfaceInfo:0];
-                    v10 = v51;
+                    [(IDSGFTGL *)selfCopy _sendRelayInterfaceInfo:0];
+                    dataCopy = v51;
                     v25 = v52;
-                    v12 = v54;
-                    v11 = v55;
+                    isCopy = v54;
+                    dCopy = v55;
                     v17 = v53;
                     goto LABEL_48;
                   }
@@ -5054,8 +5054,8 @@ LABEL_44:
               }
             }
 
-            v12 = v54;
-            v11 = v55;
+            isCopy = v54;
+            dCopy = v55;
             v25 = v52;
             v17 = v53;
             v28 = v49;
@@ -5069,7 +5069,7 @@ LABEL_35:
 
       while (v29 != v27);
       v27 = [v25 countByEnumeratingWithState:&v64 objects:v69 count:16];
-      v10 = v51;
+      dataCopy = v51;
     }
 
     while (v27);
@@ -5077,11 +5077,11 @@ LABEL_35:
 
 LABEL_48:
 
-  v13 = v56;
+  handlerCopy = v56;
 LABEL_49:
 }
 
-- (void)_discardKeyMaterialMessage:(int64_t)a3
+- (void)_discardKeyMaterialMessage:(int64_t)message
 {
   keyMaterialData = self->_keyMaterialData;
   self->_keyMaterialData = 0;
@@ -5090,23 +5090,23 @@ LABEL_49:
   keyMaterialSentHandler = self->_keyMaterialSentHandler;
   if (keyMaterialSentHandler)
   {
-    keyMaterialSentHandler[2](keyMaterialSentHandler, a3);
+    keyMaterialSentHandler[2](keyMaterialSentHandler, message);
     v7 = self->_keyMaterialSentHandler;
     self->_keyMaterialSentHandler = 0;
   }
 }
 
-- (void)reportLinkMetricsForLinkID:(unsigned __int8)a3 lastPacketReceivedTime:(double)a4 lastPacketSentTime:(double)a5
+- (void)reportLinkMetricsForLinkID:(unsigned __int8)d lastPacketReceivedTime:(double)time lastPacketSentTime:(double)sentTime
 {
-  if (self->super._maxLinkID > a3 && (v7 = self->super._candidatePairs[a3]) != 0)
+  if (self->super._maxLinkID > d && (v7 = self->super._candidatePairs[d]) != 0)
   {
     v8 = v7;
     if ([(IDSStunCandidatePair *)v7 isP2P])
     {
       lastP2PPacketReceivedTime = self->_lastP2PPacketReceivedTime;
-      if (lastP2PPacketReceivedTime < a4)
+      if (lastP2PPacketReceivedTime < time)
       {
-        lastP2PPacketReceivedTime = a4;
+        lastP2PPacketReceivedTime = time;
       }
 
       self->_lastP2PPacketReceivedTime = lastP2PPacketReceivedTime;
@@ -5126,9 +5126,9 @@ LABEL_49:
   }
 }
 
-- (void)didReceiveProtobufPacketForLinkID:(unsigned __int8)a3
+- (void)didReceiveProtobufPacketForLinkID:(unsigned __int8)d
 {
-  if (self->super._maxLinkID > a3 && (v4 = self->super._candidatePairs[a3]) != 0)
+  if (self->super._maxLinkID > d && (v4 = self->super._candidatePairs[d]) != 0)
   {
     p_super = &v4->super;
     if ([(IDSStunCandidatePair *)v4 isQUIC])
@@ -5174,8 +5174,8 @@ LABEL_49:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (!v7)
   {
 LABEL_16:
@@ -5194,7 +5194,7 @@ LABEL_16:
     {
       if (*v17 != v12)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allValues);
       }
 
       v14 = *(*(&v16 + 1) + 8 * i);
@@ -5204,7 +5204,7 @@ LABEL_16:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v16 objects:v26 count:16];
+    v8 = [allValues countByEnumeratingWithState:&v16 objects:v26 count:16];
   }
 
   while (v8);
@@ -5223,63 +5223,63 @@ LABEL_16:
       _os_log_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_DEFAULT, "_checkIfQRLinkIsDownButP2PLinkIsUp: has active QUIC: %@, last P2P: %f, last QR: %f", buf, 0x20u);
     }
 
-    v6 = [(IDSGFTMetricsCollector *)self->super._metricsCollector error:@"gl"];
-    [v6 event:@"p2p-but-no-qr"];
+    allValues = [(IDSGFTMetricsCollector *)self->super._metricsCollector error:@"gl"];
+    [allValues event:@"p2p-but-no-qr"];
     goto LABEL_16;
   }
 }
 
-- (BOOL)_postProcessQUICAllocbindResponse:(id)a3 candidatePair:(id)a4
+- (BOOL)_postProcessQUICAllocbindResponse:(id)response candidatePair:(id)pair
 {
   v148 = *MEMORY[0x1E69E9840];
-  v122 = a3;
-  v123 = a4;
-  v116 = [v123 candidatePairToken];
-  v5 = [v122 channelSettings];
-  if (v5)
+  responseCopy = response;
+  pairCopy = pair;
+  candidatePairToken = [pairCopy candidatePairToken];
+  channelSettings = [responseCopy channelSettings];
+  if (channelSettings)
   {
-    [v123 setChannelSettings:v5];
+    [pairCopy setChannelSettings:channelSettings];
   }
 
-  v119 = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
+  allValues = [(NSMutableDictionary *)self->super._tokenToCandidatePairs allValues];
   v6 = +[IDSFoundationLog GFTGL];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v141 = v119;
+    v141 = allValues;
     _os_log_impl(&dword_1A7AD9000, v6, OS_LOG_TYPE_DEFAULT, "current candidate pairs: %@", buf, 0xCu);
   }
 
-  v118 = GLUtilGetDifferentRelayCandidatePairSucceeded(v123, v119);
-  v7 = [v118 local];
-  v8 = [v7 transport];
+  v118 = GLUtilGetDifferentRelayCandidatePairSucceeded(pairCopy, allValues);
+  local = [v118 local];
+  transport = [local transport];
 
-  v9 = [v123 local];
-  v10 = [v9 transport];
+  local2 = [pairCopy local];
+  transport2 = [local2 transport];
 
-  v11 = [v123 local];
-  v115 = -[IDSGlobalLink _interfaceNameForInterfaceIndexIncludingVPN:](self, "_interfaceNameForInterfaceIndexIncludingVPN:", [v11 index]);
+  local3 = [pairCopy local];
+  v115 = -[IDSGlobalLink _interfaceNameForInterfaceIndexIncludingVPN:](self, "_interfaceNameForInterfaceIndexIncludingVPN:", [local3 index]);
 
-  v12 = [v123 linkEngine];
+  linkEngine = [pairCopy linkEngine];
 
-  if (v12)
+  if (linkEngine)
   {
-    v13 = [v123 linkEngine];
-    v14 = [v123 linkUniqueName];
-    v15 = [v13 isLinkConnecting:v14];
+    linkEngine2 = [pairCopy linkEngine];
+    linkUniqueName = [pairCopy linkUniqueName];
+    v15 = [linkEngine2 isLinkConnecting:linkUniqueName];
 
     if ((v15 & 1) == 0)
     {
       v16 = +[IDSFoundationLog GFTGL];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v123 linkUniqueName];
+        linkUniqueName2 = [pairCopy linkUniqueName];
         *buf = 138412290;
-        v141 = v17;
+        v141 = linkUniqueName2;
         _os_log_impl(&dword_1A7AD9000, v16, OS_LOG_TYPE_DEFAULT, "discard current pair because it should no longer be connecting: %@", buf, 0xCu);
       }
 
-      [(IDSGlobalLink *)self _sendUnallocbindRequest:v116 stunMessage:0 reason:8];
+      [(IDSGlobalLink *)self _sendUnallocbindRequest:candidatePairToken stunMessage:0 reason:8];
       goto LABEL_109;
     }
 
@@ -5290,19 +5290,19 @@ LABEL_16:
   {
     if (self->super._cellInterfaceName)
     {
-      v18 = [v123 local];
-      if ([v18 isCellularStunCandidate])
+      local4 = [pairCopy local];
+      if ([local4 isCellularStunCandidate])
       {
         v19 = [(__CFString *)v115 isEqualToIgnoringCase:self->super._cellInterfaceName];
 
         if (v19)
         {
           v20 = [IDSServerBag sharedInstanceForBagType:0];
-          v21 = [v20 objectForKey:@"ids-delay-for-cellular-default-and-slicing"];
+          candidatePairToken3 = [v20 objectForKey:@"ids-delay-for-cellular-default-and-slicing"];
 
-          if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+          if (candidatePairToken3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v22 = [v21 unsignedIntegerValue];
+            unsignedIntegerValue = [candidatePairToken3 unsignedIntegerValue];
             v23 = +[IDSFoundationLog GFTGL];
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
@@ -5314,19 +5314,19 @@ LABEL_16:
               v144 = 2112;
               v145 = v118;
               v146 = 1024;
-              v147 = v22;
+              v147 = unsignedIntegerValue;
               _os_log_impl(&dword_1A7AD9000, v23, OS_LOG_TYPE_DEFAULT, "Sliced Cellular Interface - currentInterfaceName %@ _cellInterfaceName %@ will discard existing pair: %@ in %u seconds.", buf, 0x26u);
             }
 
             v25 = [MEMORY[0x1E6995700] weakRefWithObject:self];
-            v26 = dispatch_time(0, 1000000000 * v22);
+            v26 = dispatch_time(0, 1000000000 * unsignedIntegerValue);
             v27 = im_primary_queue();
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = sub_1A7C01274;
             block[3] = &unk_1E77E0C88;
-            v28 = v25;
-            v136 = v28;
+            candidatePairToken2 = v25;
+            v136 = candidatePairToken2;
             v137 = v118;
             dispatch_after(v26, v27, block);
           }
@@ -5346,8 +5346,8 @@ LABEL_16:
               _os_log_impl(&dword_1A7AD9000, v106, OS_LOG_TYPE_DEFAULT, "Sliced Cellular Interface - currentInterfaceName %@ _cellInterfaceName %@ discard existing pair: %@.", buf, 0x20u);
             }
 
-            v28 = [v118 candidatePairToken];
-            [(IDSGlobalLink *)self _sendUnallocbindRequest:v28 stunMessage:0 reason:13];
+            candidatePairToken2 = [v118 candidatePairToken];
+            [(IDSGlobalLink *)self _sendUnallocbindRequest:candidatePairToken2 stunMessage:0 reason:13];
           }
 
 LABEL_25:
@@ -5360,21 +5360,21 @@ LABEL_25:
       }
     }
 
-    if (v8 <= v10 && ([v123 isRealloc] & 1) == 0)
+    if (transport <= transport2 && ([pairCopy isRealloc] & 1) == 0)
     {
       v105 = +[IDSFoundationLog GFTGL];
       if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v141 = v8;
+        v141 = transport;
         v142 = 2048;
-        v143 = v10;
+        v143 = transport2;
         v144 = 2112;
-        v145 = v123;
+        v145 = pairCopy;
         _os_log_impl(&dword_1A7AD9000, v105, OS_LOG_TYPE_DEFAULT, "succeededTransport %ld currentTransport %ld discard current pair: %@", buf, 0x20u);
       }
 
-      [(IDSGlobalLink *)self _sendUnallocbindRequest:v116 stunMessage:0 reason:8];
+      [(IDSGlobalLink *)self _sendUnallocbindRequest:candidatePairToken stunMessage:0 reason:8];
       goto LABEL_109;
     }
 
@@ -5382,35 +5382,35 @@ LABEL_25:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v141 = v8;
+      v141 = transport;
       v142 = 2048;
-      v143 = v10;
+      v143 = transport2;
       v144 = 2112;
       v145 = v118;
       _os_log_impl(&dword_1A7AD9000, v29, OS_LOG_TYPE_DEFAULT, "succeededTransport %ld currentTransport %ld discard existing pair: %@.", buf, 0x20u);
     }
 
-    v21 = [v118 candidatePairToken];
-    [(IDSGlobalLink *)self _sendUnallocbindRequest:v21 stunMessage:0 reason:8];
+    candidatePairToken3 = [v118 candidatePairToken];
+    [(IDSGlobalLink *)self _sendUnallocbindRequest:candidatePairToken3 stunMessage:0 reason:8];
     goto LABEL_25;
   }
 
 LABEL_26:
-  v30 = [v123 hbhEncKey];
-  if (!v30 || ([v123 hbhDecKey], v31 = objc_claimAutoreleasedReturnValue(), v32 = v31 == 0, v31, v30, v32))
+  hbhEncKey = [pairCopy hbhEncKey];
+  if (!hbhEncKey || ([pairCopy hbhDecKey], v31 = objc_claimAutoreleasedReturnValue(), v32 = v31 == 0, v31, hbhEncKey, v32))
   {
-    v33 = [v123 relaySessionKey];
-    v34 = [v123 sessionID];
-    v35 = [v123 participantID];
-    v36 = [v123 hbhSalt];
-    v37 = IDSLinkHBHDeriveHKDFSha256Keys(v33, v34, v35, v36);
+    relaySessionKey = [pairCopy relaySessionKey];
+    sessionID = [pairCopy sessionID];
+    participantID = [pairCopy participantID];
+    hbhSalt = [pairCopy hbhSalt];
+    v37 = IDSLinkHBHDeriveHKDFSha256Keys(relaySessionKey, sessionID, participantID, hbhSalt);
 
     if (v37)
     {
       v38 = [v37 subdataWithRange:{0, 32}];
       v39 = [v37 subdataWithRange:{32, 32}];
-      [v123 setHbhEncKey:v38];
-      [v123 setHbhDecKey:v39];
+      [pairCopy setHbhEncKey:v38];
+      [pairCopy setHbhDecKey:v39];
     }
 
     else
@@ -5423,14 +5423,14 @@ LABEL_26:
     }
   }
 
-  if ([v122 hasIsNewlyJoined])
+  if ([responseCopy hasIsNewlyJoined])
   {
     v40 = +[IDSFoundationLog GFTGL];
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = [v122 isNewlyJoined];
+      isNewlyJoined = [responseCopy isNewlyJoined];
       v42 = @"NO";
-      if (v41)
+      if (isNewlyJoined)
       {
         v42 = @"YES";
       }
@@ -5438,21 +5438,21 @@ LABEL_26:
       *buf = 138412546;
       v141 = v42;
       v142 = 2112;
-      v143 = v123;
+      v143 = pairCopy;
       _os_log_impl(&dword_1A7AD9000, v40, OS_LOG_TYPE_DEFAULT, "isNewlyJoined:%@ for candidatePair: %@.", buf, 0x16u);
     }
 
-    if ([v122 isNewlyJoined])
+    if ([responseCopy isNewlyJoined])
     {
-      [v123 setIsNewlyJoined:1];
+      [pairCopy setIsNewlyJoined:1];
     }
   }
 
-  [(IDSGlobalLink *)self _notifyQRSessionConnected:v123];
-  v43 = self;
+  [(IDSGlobalLink *)self _notifyQRSessionConnected:pairCopy];
+  selfCopy2 = self;
   if (self->super._isUPlusOneSession)
   {
-    [(IDSGFTGL *)self _sendRelayInterfaceInfo:v116];
+    [(IDSGFTGL *)self _sendRelayInterfaceInfo:candidatePairToken];
     v133 = 0u;
     v134 = 0u;
     v131 = 0u;
@@ -5471,7 +5471,7 @@ LABEL_26:
             objc_enumerationMutation(v44);
           }
 
-          [(IDSGFTGL *)self _setupVirtualCandidatePairs:v123 remoteCandidatePair:*(*(&v131 + 1) + 8 * i)];
+          [(IDSGFTGL *)self _setupVirtualCandidatePairs:pairCopy remoteCandidatePair:*(*(&v131 + 1) + 8 * i)];
         }
 
         v45 = [(NSArray *)v44 countByEnumeratingWithState:&v131 objects:v139 count:16];
@@ -5480,17 +5480,17 @@ LABEL_26:
       while (v45);
     }
 
-    v43 = self;
+    selfCopy2 = self;
   }
 
-  v48 = [(NSMutableDictionary *)v43->super._tokenToCandidatePairs allValues];
-  v117 = GLUtilGetRelayCandidatePairNotSucceededForOppositeIPVersion(v123, v48);
+  allValues2 = [(NSMutableDictionary *)selfCopy2->super._tokenToCandidatePairs allValues];
+  v117 = GLUtilGetRelayCandidatePairNotSucceededForOppositeIPVersion(pairCopy, allValues2);
 
   if (v117)
   {
     v49 = GLUCreateIPVersionFailureEvent(v117);
-    v50 = [v117 local];
-    if (*([v50 address] + 1) == 2)
+    local5 = [v117 local];
+    if (*([local5 address] + 1) == 2)
     {
       v51 = @"IPv4";
     }
@@ -5534,8 +5534,8 @@ LABEL_26:
     }
   }
 
-  v57 = [v123 linkID];
-  v58 = ProtoUtilProcessStreamInfo(v122, v57, v57);
+  linkID = [pairCopy linkID];
+  v58 = ProtoUtilProcessStreamInfo(responseCopy, linkID, linkID);
   v59 = v58;
   Value = 0;
   if (v58 && @"stream-info-peer-published-streams")
@@ -5543,16 +5543,16 @@ LABEL_26:
     Value = CFDictionaryGetValue(v58, @"stream-info-peer-published-streams");
   }
 
-  v61 = StunUtilProcessParticipants(Value, [v123 participantID], self->super._isLightweightParticipant);
-  v62 = ProtoUtilProcessLightweightParticipants(v122);
-  v63 = [v122 leftParticipants];
-  v64 = ProtoUtilProcessLeftParticipants(v63, v61, v62);
+  v61 = StunUtilProcessParticipants(Value, [pairCopy participantID], self->super._isLightweightParticipant);
+  v62 = ProtoUtilProcessLightweightParticipants(responseCopy);
+  leftParticipants = [responseCopy leftParticipants];
+  v64 = ProtoUtilProcessLeftParticipants(leftParticipants, v61, v62);
 
-  v65 = [v122 joinedParticipants];
-  v66 = ProtoUtilProcessjoinedParticipants(v65, v61, v62);
+  joinedParticipants = [responseCopy joinedParticipants];
+  v66 = ProtoUtilProcessjoinedParticipants(joinedParticipants, v61, v62);
 
-  v67 = [v122 updatedParticipants];
-  v68 = ProtoUtilProcessUpdatedParticipants(v67, v61, v62);
+  updatedParticipants = [responseCopy updatedParticipants];
+  v68 = ProtoUtilProcessUpdatedParticipants(updatedParticipants, v61, v62);
 
   if ([v61 count] >= 2)
   {
@@ -5560,7 +5560,7 @@ LABEL_26:
     if (!self->super._receivedAllocbindResponse)
     {
       v69 = ids_monotonic_time();
-      theDict = GLUCreateQRClientTimeEvent(311, 0, v123, 0, v69);
+      theDict = GLUCreateQRClientTimeEvent(311, 0, pairCopy, 0, v69);
       v70 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
       {
@@ -5654,18 +5654,18 @@ LABEL_26:
 
   v110 = v84;
 
-  v86 = [v123 groupID];
-  v87 = [v123 sessionID];
-  [(IDSGlobalLink *)self _notifySessionInfoReceived:theDicta relayGroupID:v86 relaySessionID:v87 status:0];
+  groupID = [pairCopy groupID];
+  sessionID2 = [pairCopy sessionID];
+  [(IDSGlobalLink *)self _notifySessionInfoReceived:theDicta relayGroupID:groupID relaySessionID:sessionID2 status:0];
 
-  v88 = [v123 sessionID];
-  [v123 initParticipantIDMap:0];
-  v89 = [v123 groupID];
+  sessionID3 = [pairCopy sessionID];
+  [pairCopy initParticipantIDMap:0];
+  groupID2 = [pairCopy groupID];
   v129 = 0u;
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  v90 = v119;
+  v90 = allValues;
   v91 = [(__CFString *)v90 countByEnumeratingWithState:&v127 objects:v138 count:16];
   if (v91)
   {
@@ -5680,21 +5680,21 @@ LABEL_26:
         }
 
         v94 = *(*(&v127 + 1) + 8 * j);
-        v95 = [v94 sessionID];
-        if ([v95 isEqualToString:v88])
+        sessionID4 = [v94 sessionID];
+        if ([sessionID4 isEqualToString:sessionID3])
         {
-          v96 = [v94 groupID];
-          if ([v96 isEqualToString:v89] && objc_msgSend(v94, "state") == 4)
+          groupID3 = [v94 groupID];
+          if ([groupID3 isEqualToString:groupID2] && objc_msgSend(v94, "state") == 4)
           {
-            v97 = [v94 isSharedQRSession];
+            isSharedQRSession = [v94 isSharedQRSession];
 
-            if (!v97)
+            if (!isSharedQRSession)
             {
               continue;
             }
 
-            v95 = [(NSMutableDictionary *)self->super._pluginParticipantIDs allKeys];
-            [v94 updateParticipantIDMap:v95];
+            sessionID4 = [(NSMutableDictionary *)self->super._pluginParticipantIDs allKeys];
+            [v94 updateParticipantIDMap:sessionID4];
           }
 
           else
@@ -5709,10 +5709,10 @@ LABEL_26:
     while (v91);
   }
 
-  if ([v122 hasSessionStateCounter])
+  if ([responseCopy hasSessionStateCounter])
   {
-    v98 = [v122 sessionStateCounter];
-    if (v98)
+    sessionStateCounter = [responseCopy sessionStateCounter];
+    if (sessionStateCounter)
     {
       v99 = objc_loadWeakRetained(&self->super._delegate);
       v100 = objc_opt_respondsToSelector();
@@ -5720,13 +5720,13 @@ LABEL_26:
       if (v100)
       {
         v101 = objc_loadWeakRetained(&self->super._delegate);
-        [v101 link:self didReceiveSessionStateCounter:v98];
+        [v101 link:self didReceiveSessionStateCounter:sessionStateCounter];
       }
     }
   }
 
-  v102 = [v123 linkEngine];
-  v103 = v102 == 0;
+  linkEngine3 = [pairCopy linkEngine];
+  v103 = linkEngine3 == 0;
 
   if (v103)
   {
@@ -5735,7 +5735,7 @@ LABEL_26:
     v125[2] = sub_1A7C01384;
     v125[3] = &unk_1E77E0250;
     v125[4] = self;
-    v126 = v123;
+    v126 = pairCopy;
     IDSTransportThreadAddBlockAfter(v125, 1.0);
   }
 
@@ -5743,15 +5743,15 @@ LABEL_109:
   return 1;
 }
 
-- (BOOL)_IsExtIPDiscoveryNeeded:(sockaddr *)a3 candidatePairList:(id)a4
+- (BOOL)_IsExtIPDiscoveryNeeded:(sockaddr *)needed candidatePairList:(id)list
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  listCopy = list;
   if (self->super._sharedSessionHasJoined && self->super._isUPlusOneSession && !self->super._ipDiscoveryDisabled)
   {
     v13.receiver = self;
     v13.super_class = IDSGFTGL;
-    v11 = [(IDSGlobalLink *)&v13 _IsExtIPDiscoveryNeeded:a3 candidatePairList:v6];
+    v11 = [(IDSGlobalLink *)&v13 _IsExtIPDiscoveryNeeded:needed candidatePairList:listCopy];
   }
 
   else
@@ -5812,19 +5812,19 @@ LABEL_109:
   return v11;
 }
 
-- (void)setCellInterfaceName:(id)a3
+- (void)setCellInterfaceName:(id)name
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
-    [(IDSNWLink *)self->super._nwLink setCellInterfaceName:v5];
-    objc_storeStrong(&self->super._cellInterfaceName, a3);
+    [(IDSNWLink *)self->super._nwLink setCellInterfaceName:nameCopy];
+    objc_storeStrong(&self->super._cellInterfaceName, name);
     v6 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v5;
+      v11 = nameCopy;
       _os_log_impl(&dword_1A7AD9000, v6, OS_LOG_TYPE_DEFAULT, "setCellInterfaceName: %@", buf, 0xCu);
     }
 
@@ -5832,11 +5832,11 @@ LABEL_109:
     {
       if (_IDSShouldLogTransport())
       {
-        v9 = v5;
+        v9 = nameCopy;
         _IDSLogTransport(@"GL", @"IDS", @"setCellInterfaceName: %@");
         if (_IDSShouldLog())
         {
-          v9 = v5;
+          v9 = nameCopy;
           _IDSLogV(0, @"IDSFoundation", @"GL", @"setCellInterfaceName: %@");
         }
       }

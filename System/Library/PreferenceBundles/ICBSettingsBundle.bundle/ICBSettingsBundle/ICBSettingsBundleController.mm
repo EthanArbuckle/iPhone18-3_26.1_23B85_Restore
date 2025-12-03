@@ -1,13 +1,13 @@
 @interface ICBSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
-- (ICBSettingsBundleController)initWithParentListController:(id)a3;
++ (id)localizedStringForKey:(id)key;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
+- (ICBSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
 - (id)incomingCallStyleIcon;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleICSPreferencesDidChangeNotification:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleICSPreferencesDidChangeNotification:(id)notification;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
 @end
 
 @implementation ICBSettingsBundleController
@@ -19,11 +19,11 @@
   return WeakRetained;
 }
 
-- (ICBSettingsBundleController)initWithParentListController:(id)a3
+- (ICBSettingsBundleController)initWithParentListController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = ICBSettingsBundleController;
-  v3 = [(ICBSettingsBundleController *)&v7 initWithParentListController:a3];
+  v3 = [(ICBSettingsBundleController *)&v7 initWithParentListController:controller];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -34,18 +34,18 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
   if (_os_feature_enabled_impl())
   {
-    v5 = [(ICBSettingsBundleController *)self styleSpecifier];
+    styleSpecifier = [(ICBSettingsBundleController *)self styleSpecifier];
 
-    if (!v5)
+    if (!styleSpecifier)
     {
       v6 = [objc_opt_class() localizedStringForKey:@"INCOMING_CALL_STYLE_LIST_TITLE"];
-      v7 = [(ICBSettingsBundleController *)self parentListController];
-      v8 = [(ICBSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:v7];
+      parentListController = [(ICBSettingsBundleController *)self parentListController];
+      v8 = [(ICBSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
       if (v8)
       {
@@ -70,8 +70,8 @@ LABEL_8:
       }
 
       [v9 setIdentifier:@"INCOMING_CALL_STYLE"];
-      v10 = [(ICBSettingsBundleController *)self incomingCallStyleIcon];
-      [v9 setProperty:v10 forKey:PSIconImageKey];
+      incomingCallStyleIcon = [(ICBSettingsBundleController *)self incomingCallStyleIcon];
+      [v9 setProperty:incomingCallStyleIcon forKey:PSIconImageKey];
 
       [v4 addObject:v9];
       goto LABEL_8;
@@ -84,22 +84,22 @@ LABEL_9:
   return v11;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_8758 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_8758 table:localizationTableName];
 
   return v7;
 }
 
 - (id)incomingCallStyleIcon
 {
-  v2 = [(ICBSettingsBundleController *)self parentListController];
-  v3 = [v2 specifier];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"FACETIME"];
+  parentListController = [(ICBSettingsBundleController *)self parentListController];
+  specifier = [parentListController specifier];
+  identifier = [specifier identifier];
+  v5 = [identifier isEqualToString:@"FACETIME"];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   if (v5)
@@ -117,21 +117,21 @@ LABEL_9:
   return v8;
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICBSettingsBundleController *)self parentListController];
-  [(ICBSettingsBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(ICBSettingsBundleController *)self parentListController];
+  [(ICBSettingsBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (void)handleICSPreferencesDidChangeNotification:(id)a3
+- (void)handleICSPreferencesDidChangeNotification:(id)notification
 {
-  v5 = [(ICBSettingsBundleController *)self parentListController];
-  v4 = [(ICBSettingsBundleController *)self styleSpecifier];
-  [v5 reloadSpecifier:v4];
+  parentListController = [(ICBSettingsBundleController *)self parentListController];
+  styleSpecifier = [(ICBSettingsBundleController *)self styleSpecifier];
+  [parentListController reloadSpecifier:styleSpecifier];
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_41BC();
   v5 = *(v4 - 8);
@@ -146,17 +146,17 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_420C();
 
-  LOBYTE(v10) = sub_419C();
+  LOBYTE(traitCollection) = sub_419C();
   (*(v5 + 8))(v8, v4);
 
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v19 = sub_41BC();
   v5 = *(v19 - 8);
@@ -179,10 +179,10 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v16 = a4;
+  controllerCopy = controller;
   sub_421C();
   sub_417C();
-  v17 = [v16 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_420C();
 
   sub_3DCC();

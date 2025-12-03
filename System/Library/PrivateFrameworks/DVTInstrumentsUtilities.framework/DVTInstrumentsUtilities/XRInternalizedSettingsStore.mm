@@ -7,7 +7,7 @@
 + (void)initialize
 {
   v106 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_new();
     v94 = 0u;

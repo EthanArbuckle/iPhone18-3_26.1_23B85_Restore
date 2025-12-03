@@ -5,119 +5,119 @@
 - (id)clientSettings;
 - (id)settings;
 - (int64_t)activeAppearance;
-- (void)addObserver:(id)a3;
-- (void)notifyObserversOfPrefersContentProtectionUpdate:(BOOL)a3;
-- (void)removeObserver:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scene:(id)a3 willUpdateSettings:(id)a4;
-- (void)setActiveAppearance:(int64_t)a3;
-- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)a3;
-- (void)setScene:(id)a3;
-- (void)setSystemDisplayIdentifier:(id)a3;
-- (void)updateSettings:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)notifyObserversOfPrefersContentProtectionUpdate:(BOOL)update;
+- (void)removeObserver:(id)observer;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scene:(id)scene willUpdateSettings:(id)settings;
+- (void)setActiveAppearance:(int64_t)appearance;
+- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)destination;
+- (void)setScene:(id)scene;
+- (void)setSystemDisplayIdentifier:(id)identifier;
+- (void)updateSettings:(id)settings;
 @end
 
 @implementation _UISceneRenderingEnvironmentHostComponent
 
 - (int64_t)activeAppearance
 {
-  v2 = [(_UISceneRenderingEnvironmentHostComponent *)self settings];
-  v3 = [v2 activeAppearance];
+  settings = [(_UISceneRenderingEnvironmentHostComponent *)self settings];
+  activeAppearance = [settings activeAppearance];
 
-  return v3;
+  return activeAppearance;
 }
 
 - (id)settings
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
 
-  return v3;
+  return settings;
 }
 
-- (void)updateSettings:(id)a3
+- (void)updateSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSceneComponent *)self hostScene];
-  [v5 updateSettings:v4];
+  settingsCopy = settings;
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  [hostScene updateSettings:settingsCopy];
 }
 
 - (id)clientSettings
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 clientSettings];
+  scene = [(FBSSceneComponent *)self scene];
+  clientSettings = [scene clientSettings];
 
-  return v3;
+  return clientSettings;
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v4.receiver = self;
   v4.super_class = _UISceneRenderingEnvironmentHostComponent;
-  [(FBSSceneComponent *)&v4 setScene:a3];
+  [(FBSSceneComponent *)&v4 setScene:scene];
   [(_UISceneRenderingEnvironmentHostComponent *)self setIsCapturingContentForAdditionalRenderingDestination:0];
   [(_UISceneRenderingEnvironmentHostComponent *)self setSystemDisplayIdentifier:0];
 }
 
-- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)a3
+- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)destination
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __100___UISceneRenderingEnvironmentHostComponent_setIsCapturingContentForAdditionalRenderingDestination___block_invoke;
   v3[3] = &__block_descriptor_33_e71_v16__0__FBSMutableSceneSettings__UISceneRenderingEnvironmentSettings__8l;
-  v4 = a3;
+  destinationCopy = destination;
   [(_UISceneRenderingEnvironmentHostComponent *)self updateSettings:v3];
 }
 
 - (BOOL)isCapturingContentForAdditionalRenderingDestination
 {
-  v2 = [(_UISceneRenderingEnvironmentHostComponent *)self settings];
-  v3 = [v2 modern_isCapturingContentForAdditionalRenderingDestination];
+  settings = [(_UISceneRenderingEnvironmentHostComponent *)self settings];
+  modern_isCapturingContentForAdditionalRenderingDestination = [settings modern_isCapturingContentForAdditionalRenderingDestination];
 
-  return v3;
+  return modern_isCapturingContentForAdditionalRenderingDestination;
 }
 
-- (void)setSystemDisplayIdentifier:(id)a3
+- (void)setSystemDisplayIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72___UISceneRenderingEnvironmentHostComponent_setSystemDisplayIdentifier___block_invoke;
   v6[3] = &unk_1E7125860;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(_UISceneRenderingEnvironmentHostComponent *)self updateSettings:v6];
 }
 
 - (NSString)systemDisplayIdentifier
 {
-  v2 = [(_UISceneRenderingEnvironmentHostComponent *)self settings];
-  v3 = [v2 systemDisplayIdentifier];
+  settings = [(_UISceneRenderingEnvironmentHostComponent *)self settings];
+  systemDisplayIdentifier = [settings systemDisplayIdentifier];
 
-  return v3;
+  return systemDisplayIdentifier;
 }
 
 - (BOOL)prefersContentProtection
 {
-  v2 = [(_UISceneRenderingEnvironmentHostComponent *)self clientSettings];
-  v3 = [v2 prefersContentProtection];
+  clientSettings = [(_UISceneRenderingEnvironmentHostComponent *)self clientSettings];
+  prefersContentProtection = [clientSettings prefersContentProtection];
 
-  return v3;
+  return prefersContentProtection;
 }
 
-- (void)setActiveAppearance:(int64_t)a3
+- (void)setActiveAppearance:(int64_t)appearance
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __65___UISceneRenderingEnvironmentHostComponent_setActiveAppearance___block_invoke;
   v3[3] = &__block_descriptor_40_e71_v16__0__FBSMutableSceneSettings__UISceneRenderingEnvironmentSettings__8l;
-  v3[4] = a3;
+  v3[4] = appearance;
   [(_UISceneRenderingEnvironmentHostComponent *)self updateSettings:v3];
 }
 
-- (void)notifyObserversOfPrefersContentProtectionUpdate:(BOOL)a3
+- (void)notifyObserversOfPrefersContentProtectionUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
@@ -140,8 +140,8 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(FBSSceneComponent *)self hostScene];
-        [v10 _scene:v11 didUpdatePrefersContentProtection:v3];
+        hostScene = [(FBSSceneComponent *)self hostScene];
+        [v10 _scene:hostScene didUpdatePrefersContentProtection:updateCopy];
 
         ++v9;
       }
@@ -154,45 +154,45 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v10 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v10 = observerCopy;
+  if (!observerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UISceneRenderingEnvironmentHostComponent.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneRenderingEnvironmentHostComponent.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
 
-    v5 = 0;
+    observerCopy = 0;
   }
 
   observers = self->_observers;
   if (!observers)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v8 = self->_observers;
-    self->_observers = v7;
+    self->_observers = weakObjectsHashTable;
 
-    v5 = v10;
+    observerCopy = v10;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v5];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v8 = observerCopy;
+  if (!observerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UISceneRenderingEnvironmentHostComponent.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneRenderingEnvironmentHostComponent.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
 
-    v5 = 0;
+    observerCopy = 0;
   }
 
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -200,33 +200,33 @@
   }
 }
 
-- (void)scene:(id)a3 willUpdateSettings:(id)a4
+- (void)scene:(id)scene willUpdateSettings:(id)settings
 {
-  v9 = a4;
-  v5 = [v9 settingsDiff];
-  v6 = [v5 containsProperty:sel_isCapturingContentForAdditionalRenderingDestination];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v6 = [settingsDiff containsProperty:sel_isCapturingContentForAdditionalRenderingDestination];
 
   if (v6)
   {
-    v7 = [v9 settings];
-    v8 = [v7 isCapturingContentForAdditionalRenderingDestination];
+    settings = [settingsCopy settings];
+    isCapturingContentForAdditionalRenderingDestination = [settings isCapturingContentForAdditionalRenderingDestination];
 
-    [(_UISceneRenderingEnvironmentHostComponent *)self setIsCapturingContentForAdditionalRenderingDestination:v8];
+    [(_UISceneRenderingEnvironmentHostComponent *)self setIsCapturingContentForAdditionalRenderingDestination:isCapturingContentForAdditionalRenderingDestination];
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v9 = a4;
-  v5 = [v9 settingsDiff];
-  v6 = [v5 containsProperty:sel_prefersContentProtection];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v6 = [settingsDiff containsProperty:sel_prefersContentProtection];
 
   if (v6)
   {
-    v7 = [v9 settings];
-    v8 = [v7 prefersContentProtection];
+    settings = [settingsCopy settings];
+    prefersContentProtection = [settings prefersContentProtection];
 
-    [(_UISceneRenderingEnvironmentHostComponent *)self notifyObserversOfPrefersContentProtectionUpdate:v8];
+    [(_UISceneRenderingEnvironmentHostComponent *)self notifyObserversOfPrefersContentProtectionUpdate:prefersContentProtection];
   }
 }
 

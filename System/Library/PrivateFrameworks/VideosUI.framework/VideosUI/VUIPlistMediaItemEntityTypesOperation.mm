@@ -1,6 +1,6 @@
 @interface VUIPlistMediaItemEntityTypesOperation
 - (VUIPlistMediaItemEntityTypesOperation)init;
-- (VUIPlistMediaItemEntityTypesOperation)initWithDatabase:(id)a3;
+- (VUIPlistMediaItemEntityTypesOperation)initWithDatabase:(id)database;
 - (void)executionDidBegin;
 @end
 
@@ -16,10 +16,10 @@
   return 0;
 }
 
-- (VUIPlistMediaItemEntityTypesOperation)initWithDatabase:(id)a3
+- (VUIPlistMediaItemEntityTypesOperation)initWithDatabase:(id)database
 {
-  v5 = a3;
-  if (!v5)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"database"}];
   }
@@ -30,7 +30,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
   }
 
   return v7;
@@ -40,41 +40,41 @@
 {
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v4 = [(VUIPlistMediaItemEntityTypesOperation *)self database];
-  v5 = [v4 episodes];
-  if ([v5 count])
+  database = [(VUIPlistMediaItemEntityTypesOperation *)self database];
+  episodes = [database episodes];
+  if ([episodes count])
   {
     v6 = +[VUIMediaEntityType episode];
     [v3 addObject:v6];
 
-    [v19 addObjectsFromArray:v5];
+    [v19 addObjectsFromArray:episodes];
   }
 
-  v7 = [v4 homeVideos];
-  if ([v7 count])
+  homeVideos = [database homeVideos];
+  if ([homeVideos count])
   {
     v8 = +[VUIMediaEntityType homeVideo];
     [v3 addObject:v8];
 
-    [v19 addObjectsFromArray:v7];
+    [v19 addObjectsFromArray:homeVideos];
   }
 
-  v9 = [v4 movies];
-  if ([v9 count])
+  movies = [database movies];
+  if ([movies count])
   {
     v10 = +[VUIMediaEntityType movie];
     [v3 addObject:v10];
 
-    [v19 addObjectsFromArray:v9];
+    [v19 addObjectsFromArray:movies];
   }
 
-  v11 = [v4 movieRentals];
-  if ([v11 count])
+  movieRentals = [database movieRentals];
+  if ([movieRentals count])
   {
     v12 = +[VUIMediaEntityType movieRental];
     [v3 addObject:v12];
 
-    [v19 addObjectsFromArray:v11];
+    [v19 addObjectsFromArray:movieRentals];
   }
 
   v13 = +[VUIMediaLibraryUtilities mediaItemEntityTypesSortComparator];

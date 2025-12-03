@@ -1,26 +1,26 @@
 @interface PKPaymentNonceResponse
-- (PKPaymentNonceResponse)initWithData:(id)a3;
+- (PKPaymentNonceResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentNonceResponse
 
-- (PKPaymentNonceResponse)initWithData:(id)a3
+- (PKPaymentNonceResponse)initWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PKPaymentNonceResponse;
-  v3 = [(PKPaymentAugmentBaseResponse *)&v14 initWithData:a3];
+  v3 = [(PKPaymentAugmentBaseResponse *)&v14 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectForKey:@"nOnce"];
-      v7 = [v6 pk_decodeHexadecimal];
+      v6 = [jSONObject objectForKey:@"nOnce"];
+      pk_decodeHexadecimal = [v6 pk_decodeHexadecimal];
       p_super = &v4->_nonceData->super;
-      v4->_nonceData = v7;
+      v4->_nonceData = pk_decodeHexadecimal;
     }
 
     else

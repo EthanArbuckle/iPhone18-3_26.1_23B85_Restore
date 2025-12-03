@@ -1,10 +1,10 @@
 @interface FTiMessageRequestMMCSDownloadToken
 - (FTiMessageRequestMMCSDownloadToken)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation FTiMessageRequestMMCSDownloadToken
@@ -27,11 +27,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42.receiver = self;
   v42.super_class = FTiMessageRequestMMCSDownloadToken;
-  v4 = [(IDSMessage *)&v42 copyWithZone:a3];
+  v4 = [(IDSMessage *)&v42 copyWithZone:zone];
   v7 = objc_msgSend_owner(self, v5, v6);
   objc_msgSend_setOwner_(v4, v8, v7);
 
@@ -88,8 +88,8 @@
 {
   v26.receiver = self;
   v26.super_class = FTiMessageRequestMMCSDownloadToken;
-  v3 = [(IDSMessage *)&v26 messageBody];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  messageBody = [(IDSMessage *)&v26 messageBody];
+  v6 = objc_msgSend_mutableCopy(messageBody, v4, v5);
 
   v9 = objc_msgSend_owner(self, v7, v8);
   if (v9)
@@ -136,26 +136,26 @@
   return v6;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v17 = a3;
-  v6 = objc_msgSend_objectForKey_(v17, v4, @"mA");
+  dictionaryCopy = dictionary;
+  v6 = objc_msgSend_objectForKey_(dictionaryCopy, v4, @"mA");
   if (v6)
   {
     objc_msgSend_setResponseAuthToken_(self, v5, v6);
   }
 
-  v8 = objc_msgSend_objectForKey_(v17, v5, @"mU");
+  v8 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"mU");
   if (v8)
   {
     objc_msgSend_setResponseRequestorID_(self, v7, v8);
   }
 
-  v9 = objc_msgSend_objectForKey_(v17, v7, @"cV");
+  v9 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"cV");
   v12 = objc_msgSend_intValue(v9, v10, v11);
   objc_msgSend_setResponseContentVersion_(self, v13, v12);
 
-  v15 = objc_msgSend_objectForKey_(v17, v14, @"cB");
+  v15 = objc_msgSend_objectForKey_(dictionaryCopy, v14, @"cB");
   objc_msgSend_setResponseContentBody_(self, v16, v15);
 }
 

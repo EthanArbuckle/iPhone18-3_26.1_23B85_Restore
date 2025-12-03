@@ -1,15 +1,15 @@
 @interface DisplayFilterSettingsPreviewPageViewController
 - (DisplayFilterPageControllerDelegate)displayFilterPageDelegate;
-- (DisplayFilterSettingsPreviewPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (id)viewControllerAtIndex:(unint64_t)a3;
+- (DisplayFilterSettingsPreviewPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (id)viewControllerAtIndex:(unint64_t)index;
 - (int64_t)currentPage;
-- (int64_t)indexOfViewController:(id)a3;
+- (int64_t)indexOfViewController:(id)controller;
 - (void)_setControllers;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)setCurrentPage:(int64_t)a3;
-- (void)setPageHeight:(double)a3;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)setCurrentPage:(int64_t)page;
+- (void)setPageHeight:(double)height;
 - (void)viewDidLoad;
 @end
 
@@ -20,34 +20,34 @@
   v4.receiver = self;
   v4.super_class = DisplayFilterSettingsPreviewPageViewController;
   [(DisplayFilterSettingsPreviewPageViewController *)&v4 viewDidLoad];
-  v3 = [(DisplayFilterSettingsPreviewPageViewController *)self view];
-  [v3 setFrame:{0.0, 0.0, 200.0, 200.0}];
+  view = [(DisplayFilterSettingsPreviewPageViewController *)self view];
+  [view setFrame:{0.0, 0.0, 200.0, 200.0}];
 }
 
-- (DisplayFilterSettingsPreviewPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5
+- (DisplayFilterSettingsPreviewPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options
 {
   v7.receiver = self;
   v7.super_class = DisplayFilterSettingsPreviewPageViewController;
-  v5 = [(DisplayFilterSettingsPreviewPageViewController *)&v7 initWithTransitionStyle:1 navigationOrientation:0 options:a5];
+  v5 = [(DisplayFilterSettingsPreviewPageViewController *)&v7 initWithTransitionStyle:1 navigationOrientation:0 options:options];
   [(DisplayFilterSettingsPreviewPageViewController *)v5 setDataSource:v5];
   [(DisplayFilterSettingsPreviewPageViewController *)v5 setDelegate:v5];
   [(DisplayFilterSettingsPreviewPageViewController *)v5 _setControllers];
   return v5;
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v7 = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllers:a3];
-  v10 = [v7 firstObject];
+  v7 = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllers:controller];
+  firstObject = [v7 firstObject];
 
-  v8 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:v10];
-  v9 = [(DisplayFilterSettingsPreviewPageViewController *)self displayFilterPageDelegate];
-  [v9 didSelectDisplayFilterPage:v8];
+  v8 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:firstObject];
+  displayFilterPageDelegate = [(DisplayFilterSettingsPreviewPageViewController *)self displayFilterPageDelegate];
+  [displayFilterPageDelegate didSelectDisplayFilterPage:v8];
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:a4];
+  v5 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:viewController];
   if (v5)
   {
     v6 = v5 - 1;
@@ -63,9 +63,9 @@
   return v7;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:a4];
+  v5 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:viewController];
   if (v5 == 2)
   {
     v6 = 0;
@@ -89,9 +89,9 @@
   [(DisplayFilterSettingsPreviewPageViewController *)self setViewControllers:v4 direction:0 animated:0 completion:0];
 }
 
-- (void)setCurrentPage:(int64_t)a3
+- (void)setCurrentPage:(int64_t)page
 {
-  v4 = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllerAtIndex:a3];
+  v4 = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllerAtIndex:page];
   v6 = v4;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [(DisplayFilterSettingsPreviewPageViewController *)self setViewControllers:v5 direction:0 animated:0 completion:0];
@@ -99,39 +99,39 @@
 
 - (int64_t)currentPage
 {
-  v3 = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllers];
-  v4 = [v3 firstObject];
-  v5 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:v4];
+  viewControllers = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
+  v5 = [(DisplayFilterSettingsPreviewPageViewController *)self indexOfViewController:firstObject];
 
   return v5;
 }
 
-- (int64_t)indexOfViewController:(id)a3
+- (int64_t)indexOfViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 pageIndex];
+    pageIndex = [controllerCopy pageIndex];
   }
 
   else
   {
-    v4 = 0;
+    pageIndex = 0;
   }
 
-  return v4;
+  return pageIndex;
 }
 
-- (void)setPageHeight:(double)a3
+- (void)setPageHeight:(double)height
 {
-  self->_pageHeight = a3;
+  self->_pageHeight = height;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  viewControllers = [(DisplayFilterSettingsPreviewPageViewController *)self viewControllers];
+  v5 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,30 +143,30 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v9 setPageHeight:a3];
+          [v9 setPageHeight:height];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)viewControllerAtIndex:(unint64_t)a3
+- (id)viewControllerAtIndex:(unint64_t)index
 {
-  if (a3 == 2)
+  if (index == 2)
   {
     v5 = [DisplayFilterPageImageViewController alloc];
     v6 = @"colorFilterPreview";
@@ -175,7 +175,7 @@
 
   else
   {
-    if (a3)
+    if (index)
     {
       v8 = objc_alloc_init(DisplayFilterPageGridViewController);
       goto LABEL_7;
@@ -189,7 +189,7 @@
   v8 = [(DisplayFilterPageImageViewController *)v5 initWithImageName:v6 stretchHorizontal:v7];
 LABEL_7:
   v9 = v8;
-  [(DisplayFilterPageViewController *)v8 setPageIndex:a3];
+  [(DisplayFilterPageViewController *)v8 setPageIndex:index];
   [(DisplayFilterSettingsPreviewPageViewController *)self pageHeight];
   [(DisplayFilterPageGridViewController *)v9 setPageHeight:?];
 

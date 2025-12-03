@@ -1,14 +1,14 @@
 @interface PeopleViewHandler
 - (_TtC17PeopleViewService17PeopleViewHandler)init;
-- (void)dismissSearchViewWithReason:(unint64_t)a3;
+- (void)dismissSearchViewWithReason:(unint64_t)reason;
 @end
 
 @implementation PeopleViewHandler
 
-- (void)dismissSearchViewWithReason:(unint64_t)a3
+- (void)dismissSearchViewWithReason:(unint64_t)reason
 {
-  v4 = self;
-  sub_100010480(a3);
+  selfCopy = self;
+  sub_100010480(reason);
 }
 
 - (_TtC17PeopleViewService17PeopleViewHandler)init

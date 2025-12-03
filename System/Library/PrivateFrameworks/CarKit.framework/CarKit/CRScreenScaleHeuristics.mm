@@ -1,28 +1,28 @@
 @interface CRScreenScaleHeuristics
-+ (BOOL)viewAreas:(id)a3 containsSize:(CGSize)a4;
-+ (double)getPrimaryDisplayScale:(CGSize)a3 viewAreas:(id)a4 widthThreshold:(double)a5 heightThreshold:(double)a6;
-+ (void)scaledDisplays:(id)a3 withDisplayScaling:(BOOL)a4 reply:(id)a5;
++ (BOOL)viewAreas:(id)areas containsSize:(CGSize)size;
++ (double)getPrimaryDisplayScale:(CGSize)scale viewAreas:(id)areas widthThreshold:(double)threshold heightThreshold:(double)heightThreshold;
++ (void)scaledDisplays:(id)displays withDisplayScaling:(BOOL)scaling reply:(id)reply;
 @end
 
 @implementation CRScreenScaleHeuristics
 
-+ (void)scaledDisplays:(id)a3 withDisplayScaling:(BOOL)a4 reply:(id)a5
++ (void)scaledDisplays:(id)displays withDisplayScaling:(BOOL)scaling reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (reply)
   {
-    v8 = a5;
-    v9 = a3;
+    replyCopy = reply;
+    displaysCopy = displays;
     v10 = objc_opt_new();
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __67__CRScreenScaleHeuristics_scaledDisplays_withDisplayScaling_reply___block_invoke;
     v13[3] = &unk_1E82FC710;
-    v16 = a4;
+    scalingCopy = scaling;
     v11 = v10;
     v14 = v11;
-    v15 = a1;
-    [v9 enumerateObjectsUsingBlock:v13];
+    selfCopy = self;
+    [displaysCopy enumerateObjectsUsingBlock:v13];
 
     v12 = CarGeneralLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -32,7 +32,7 @@
       _os_log_impl(&dword_1C81FC000, v12, OS_LOG_TYPE_DEFAULT, "CRScreenScaleHeuristics: displays: %@", buf, 0xCu);
     }
 
-    v8[2](v8, v11, 0);
+    replyCopy[2](replyCopy, v11, 0);
   }
 }
 
@@ -151,30 +151,30 @@ void __67__CRScreenScaleHeuristics_scaledDisplays_withDisplayScaling_reply___blo
   }
 }
 
-+ (double)getPrimaryDisplayScale:(CGSize)a3 viewAreas:(id)a4 widthThreshold:(double)a5 heightThreshold:(double)a6
++ (double)getPrimaryDisplayScale:(CGSize)scale viewAreas:(id)areas widthThreshold:(double)threshold heightThreshold:(double)heightThreshold
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a4;
-  v11 = v10;
+  height = scale.height;
+  width = scale.width;
+  areasCopy = areas;
+  v11 = areasCopy;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v12 = 2.0;
-  if (width >= a5 && height >= a6)
+  if (width >= threshold && height >= heightThreshold)
   {
     v12 = 3.0;
   }
 
   v19 = v12;
-  if (v10 && width >= a5 && height >= a6 && [v10 count])
+  if (areasCopy && width >= threshold && height >= heightThreshold && [areasCopy count])
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __91__CRScreenScaleHeuristics_getPrimaryDisplayScale_viewAreas_widthThreshold_heightThreshold___block_invoke;
     v15[3] = &unk_1E82FC738;
-    *&v15[5] = a5;
-    *&v15[6] = a6;
+    *&v15[5] = threshold;
+    *&v15[6] = heightThreshold;
     v15[4] = &v16;
     [v11 enumerateObjectsUsingBlock:v15];
   }
@@ -222,11 +222,11 @@ LABEL_8:
   }
 }
 
-+ (BOOL)viewAreas:(id)a3 containsSize:(CGSize)a4
++ (BOOL)viewAreas:(id)areas containsSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  areasCopy = areas;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -238,7 +238,7 @@ LABEL_8:
   *&v9[5] = width;
   *&v9[6] = height;
   v9[4] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [areasCopy enumerateObjectsUsingBlock:v9];
   v7 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 

@@ -1,22 +1,22 @@
 @interface MKDELETEPlaceholderRouter
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5;
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response;
 @end
 
 @implementation MKDELETEPlaceholderRouter
 
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response
 {
-  v9 = [a4 headers];
-  v5 = [v9 path];
-  v6 = [v5 pathComponents];
-  if ([v6 count] < 3)
+  headers = [request headers];
+  path = [headers path];
+  pathComponents = [path pathComponents];
+  if ([pathComponents count] < 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndexedSubscript:2];
+    v7 = [pathComponents objectAtIndexedSubscript:2];
   }
 
   if ([v7 isEqualToString:@"/"])

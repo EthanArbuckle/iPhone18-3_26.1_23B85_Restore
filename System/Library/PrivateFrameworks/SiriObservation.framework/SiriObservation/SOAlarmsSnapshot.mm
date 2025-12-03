@@ -1,55 +1,55 @@
 @interface SOAlarmsSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SOAlarmsSnapshot)initWithBuilder:(id)a3;
-- (SOAlarmsSnapshot)initWithCoder:(id)a3;
-- (SOAlarmsSnapshot)initWithDate:(id)a3 alarmsByID:(id)a4 firingAlarmIDs:(id)a5 dismissedAlarmIDs:(id)a6;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SOAlarmsSnapshot)initWithBuilder:(id)builder;
+- (SOAlarmsSnapshot)initWithCoder:(id)coder;
+- (SOAlarmsSnapshot)initWithDate:(id)date alarmsByID:(id)d firingAlarmIDs:(id)ds dismissedAlarmIDs:(id)iDs;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOAlarmsSnapshot
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"SOAlarmsSnapshot::date"];
-  [v5 encodeObject:self->_alarmsByID forKey:@"SOAlarmsSnapshot::alarmsByID"];
-  [v5 encodeObject:self->_firingAlarmIDs forKey:@"SOAlarmsSnapshot::firingAlarmIDs"];
-  [v5 encodeObject:self->_dismissedAlarmIDs forKey:@"SOAlarmsSnapshot::dismissedAlarmIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"SOAlarmsSnapshot::date"];
+  [coderCopy encodeObject:self->_alarmsByID forKey:@"SOAlarmsSnapshot::alarmsByID"];
+  [coderCopy encodeObject:self->_firingAlarmIDs forKey:@"SOAlarmsSnapshot::firingAlarmIDs"];
+  [coderCopy encodeObject:self->_dismissedAlarmIDs forKey:@"SOAlarmsSnapshot::dismissedAlarmIDs"];
 }
 
-- (SOAlarmsSnapshot)initWithCoder:(id)a3
+- (SOAlarmsSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarmsSnapshot::date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarmsSnapshot::date"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"SOAlarmsSnapshot::alarmsByID"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"SOAlarmsSnapshot::alarmsByID"];
 
   v11 = MEMORY[0x277CBEB98];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"SOAlarmsSnapshot::firingAlarmIDs"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"SOAlarmsSnapshot::firingAlarmIDs"];
 
   v15 = MEMORY[0x277CBEB98];
   v16 = objc_opt_class();
   v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"SOAlarmsSnapshot::dismissedAlarmIDs"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"SOAlarmsSnapshot::dismissedAlarmIDs"];
 
   v19 = [(SOAlarmsSnapshot *)self initWithDate:v5 alarmsByID:v10 firingAlarmIDs:v14 dismissedAlarmIDs:v18];
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -59,22 +59,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SOAlarmsSnapshot *)v5 date];
+      v5 = equalCopy;
+      date = [(SOAlarmsSnapshot *)v5 date];
       date = self->_date;
-      if (date == v6 || [(NSDate *)date isEqual:v6])
+      if (date == date || [(NSDate *)date isEqual:date])
       {
-        v8 = [(SOAlarmsSnapshot *)v5 alarmsByID];
+        alarmsByID = [(SOAlarmsSnapshot *)v5 alarmsByID];
         alarmsByID = self->_alarmsByID;
-        if (alarmsByID == v8 || [(NSDictionary *)alarmsByID isEqual:v8])
+        if (alarmsByID == alarmsByID || [(NSDictionary *)alarmsByID isEqual:alarmsByID])
         {
-          v10 = [(SOAlarmsSnapshot *)v5 firingAlarmIDs];
+          firingAlarmIDs = [(SOAlarmsSnapshot *)v5 firingAlarmIDs];
           firingAlarmIDs = self->_firingAlarmIDs;
-          if (firingAlarmIDs == v10 || [(NSOrderedSet *)firingAlarmIDs isEqual:v10])
+          if (firingAlarmIDs == firingAlarmIDs || [(NSOrderedSet *)firingAlarmIDs isEqual:firingAlarmIDs])
           {
-            v12 = [(SOAlarmsSnapshot *)v5 dismissedAlarmIDs];
+            dismissedAlarmIDs = [(SOAlarmsSnapshot *)v5 dismissedAlarmIDs];
             dismissedAlarmIDs = self->_dismissedAlarmIDs;
-            v14 = dismissedAlarmIDs == v12 || [(NSOrderedSet *)dismissedAlarmIDs isEqual:v12];
+            v14 = dismissedAlarmIDs == dismissedAlarmIDs || [(NSOrderedSet *)dismissedAlarmIDs isEqual:dismissedAlarmIDs];
           }
 
           else
@@ -112,7 +112,7 @@
   return v4 ^ v5 ^ [(NSOrderedSet *)self->_dismissedAlarmIDs hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -123,24 +123,24 @@
   return v6;
 }
 
-- (SOAlarmsSnapshot)initWithDate:(id)a3 alarmsByID:(id)a4 firingAlarmIDs:(id)a5 dismissedAlarmIDs:(id)a6
+- (SOAlarmsSnapshot)initWithDate:(id)date alarmsByID:(id)d firingAlarmIDs:(id)ds dismissedAlarmIDs:(id)iDs
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  dCopy = d;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __77__SOAlarmsSnapshot_initWithDate_alarmsByID_firingAlarmIDs_dismissedAlarmIDs___block_invoke;
   v20[3] = &unk_279C3D230;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v21 = dateCopy;
+  v22 = dCopy;
+  v23 = dsCopy;
+  v24 = iDsCopy;
+  v14 = iDsCopy;
+  v15 = dsCopy;
+  v16 = dCopy;
+  v17 = dateCopy;
   v18 = [(SOAlarmsSnapshot *)self initWithBuilder:v20];
 
   return v18;
@@ -156,36 +156,36 @@ void __77__SOAlarmsSnapshot_initWithDate_alarmsByID_firingAlarmIDs_dismissedAlar
   [v4 setDismissedAlarmIDs:a1[7]];
 }
 
-- (SOAlarmsSnapshot)initWithBuilder:(id)a3
+- (SOAlarmsSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = SOAlarmsSnapshot;
   v5 = [(SOAlarmsSnapshot *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SOAlarmsSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SOAlarmsSnapshotMutation *)v7 isDirty])
     {
-      v8 = [(_SOAlarmsSnapshotMutation *)v7 getDate];
-      v9 = [v8 copy];
+      getDate = [(_SOAlarmsSnapshotMutation *)v7 getDate];
+      v9 = [getDate copy];
       date = v6->_date;
       v6->_date = v9;
 
-      v11 = [(_SOAlarmsSnapshotMutation *)v7 getAlarmsByID];
-      v12 = [v11 copy];
+      getAlarmsByID = [(_SOAlarmsSnapshotMutation *)v7 getAlarmsByID];
+      v12 = [getAlarmsByID copy];
       alarmsByID = v6->_alarmsByID;
       v6->_alarmsByID = v12;
 
-      v14 = [(_SOAlarmsSnapshotMutation *)v7 getFiringAlarmIDs];
-      v15 = [v14 copy];
+      getFiringAlarmIDs = [(_SOAlarmsSnapshotMutation *)v7 getFiringAlarmIDs];
+      v15 = [getFiringAlarmIDs copy];
       firingAlarmIDs = v6->_firingAlarmIDs;
       v6->_firingAlarmIDs = v15;
 
-      v17 = [(_SOAlarmsSnapshotMutation *)v7 getDismissedAlarmIDs];
-      v18 = [v17 copy];
+      getDismissedAlarmIDs = [(_SOAlarmsSnapshotMutation *)v7 getDismissedAlarmIDs];
+      v18 = [getDismissedAlarmIDs copy];
       dismissedAlarmIDs = v6->_dismissedAlarmIDs;
       v6->_dismissedAlarmIDs = v18;
     }
@@ -194,41 +194,41 @@ void __77__SOAlarmsSnapshot_initWithDate_alarmsByID_firingAlarmIDs_dismissedAlar
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SOAlarmsSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SOAlarmsSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SOAlarmsSnapshot);
-      v7 = [(_SOAlarmsSnapshotMutation *)v5 getDate];
-      v8 = [v7 copy];
+      getDate = [(_SOAlarmsSnapshotMutation *)v5 getDate];
+      v8 = [getDate copy];
       date = v6->_date;
       v6->_date = v8;
 
-      v10 = [(_SOAlarmsSnapshotMutation *)v5 getAlarmsByID];
-      v11 = [v10 copy];
+      getAlarmsByID = [(_SOAlarmsSnapshotMutation *)v5 getAlarmsByID];
+      v11 = [getAlarmsByID copy];
       alarmsByID = v6->_alarmsByID;
       v6->_alarmsByID = v11;
 
-      v13 = [(_SOAlarmsSnapshotMutation *)v5 getFiringAlarmIDs];
-      v14 = [v13 copy];
+      getFiringAlarmIDs = [(_SOAlarmsSnapshotMutation *)v5 getFiringAlarmIDs];
+      v14 = [getFiringAlarmIDs copy];
       firingAlarmIDs = v6->_firingAlarmIDs;
       v6->_firingAlarmIDs = v14;
 
-      v16 = [(_SOAlarmsSnapshotMutation *)v5 getDismissedAlarmIDs];
-      v17 = [v16 copy];
+      getDismissedAlarmIDs = [(_SOAlarmsSnapshotMutation *)v5 getDismissedAlarmIDs];
+      v17 = [getDismissedAlarmIDs copy];
       dismissedAlarmIDs = v6->_dismissedAlarmIDs;
       v6->_dismissedAlarmIDs = v17;
     }

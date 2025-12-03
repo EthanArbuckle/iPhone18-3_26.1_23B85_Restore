@@ -1,15 +1,15 @@
 @interface POXSIntegerDefinition
-- (id)valueFromString:(id)a3;
+- (id)valueFromString:(id)string;
 @end
 
 @implementation POXSIntegerDefinition
 
-- (id)valueFromString:(id)a3
+- (id)valueFromString:(id)string
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [a3 integerValue];
+  integerValue = [string integerValue];
 
-  return [v3 numberWithInteger:v4];
+  return [v3 numberWithInteger:integerValue];
 }
 
 @end

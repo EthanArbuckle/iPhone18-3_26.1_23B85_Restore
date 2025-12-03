@@ -1,17 +1,17 @@
 @interface PASExtensionPickedAccount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC21ProximityAppleIDSetup25PASExtensionPickedAccount)init;
-- (_TtC21ProximityAppleIDSetup25PASExtensionPickedAccount)initWithCoder:(id)a3;
+- (_TtC21ProximityAppleIDSetup25PASExtensionPickedAccount)initWithCoder:(id)coder;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PASExtensionPickedAccount
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   PASExtensionPickedAccount.description.getter();
 
   v3 = sub_2610BC9D4();
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2610BCEA4();
     swift_unknownObjectRelease();
@@ -32,7 +32,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PASExtensionPickedAccount.isEqual(_:)(v8);
@@ -43,23 +43,23 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PASExtensionPickedAccount.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PASExtensionPickedAccount.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PASExtensionPickedAccount.encode(with:)(coderCopy);
 }
 
-- (_TtC21ProximityAppleIDSetup25PASExtensionPickedAccount)initWithCoder:(id)a3
+- (_TtC21ProximityAppleIDSetup25PASExtensionPickedAccount)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_260FACAA0(v3);
+  coderCopy = coder;
+  v4 = sub_260FACAA0(coderCopy);
 
   return v4;
 }

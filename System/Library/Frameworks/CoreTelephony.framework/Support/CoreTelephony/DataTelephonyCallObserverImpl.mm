@@ -1,7 +1,7 @@
 @interface DataTelephonyCallObserverImpl
 - (DataTelephonyCallObserverImpl)initWithCallback:(function<void)(BOOL queue:()BOOL;
 - (id).cxx_construct;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -37,11 +37,11 @@
   [(DataTelephonyCallObserverImpl *)&v5 dealloc];
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 providerIdentifier];
+  observerCopy = observer;
+  changedCopy = changed;
+  providerIdentifier = [changedCopy providerIdentifier];
   *&buf[8] = 0;
   *&buf[16] = 0;
   ctu::cf::assign();
@@ -104,32 +104,32 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v30 = v14;
-    v31 = v6;
-    v16 = asStringBool([v7 isOutgoing]);
-    v17 = [v7 hasConnected];
-    v18 = [v7 hasEnded];
+    v31 = observerCopy;
+    v16 = asStringBool([changedCopy isOutgoing]);
+    hasConnected = [changedCopy hasConnected];
+    hasEnded = [changedCopy hasEnded];
     v19 = *(v9 + 56);
     v20 = *(v9 + 57);
-    v21 = [v7 providerIdentifier];
+    providerIdentifier2 = [changedCopy providerIdentifier];
     *buf = 136316418;
     *&buf[4] = v16;
     *&buf[12] = 1024;
-    *&buf[14] = v17;
+    *&buf[14] = hasConnected;
     *&buf[18] = 1024;
-    *&buf[20] = v18;
+    *&buf[20] = hasEnded;
     v38 = 1024;
     v39 = v19;
     v40 = 1024;
     v41 = v20;
     v42 = 2112;
-    v43 = v21;
+    v43 = providerIdentifier2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#I (1) [outgoing=%s] call connected: %{BOOL}d, call ended: %{BOOL}d, _callStarting: %{BOOL}d, _callActive: %{BOOL}d, call provider: %@", buf, 0x2Eu);
 
-    v6 = v31;
+    observerCopy = v31;
     v14 = v30;
   }
 
-  if ([v7 hasConnected] & 1) != 0 || (objc_msgSend(v7, "hasEnded"))
+  if ([changedCopy hasConnected] & 1) != 0 || (objc_msgSend(changedCopy, "hasEnded"))
   {
     v22 = 0;
     if (*(v9 + 56) == 1)
@@ -149,7 +149,7 @@ LABEL_24:
 
   v23 = 0;
 LABEL_25:
-  if ([v7 hasConnected] && (objc_msgSend(v7, "hasEnded") & 1) == 0)
+  if ([changedCopy hasConnected] && (objc_msgSend(changedCopy, "hasEnded") & 1) == 0)
   {
     if ((*(v9 + 57) & 1) == 0)
     {
@@ -167,17 +167,17 @@ LABEL_25:
   v24 = sub_100032AC8(self->_logger.__ptr_);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = asStringBool([v7 isOutgoing]);
-    v26 = [v7 hasConnected];
-    v27 = [v7 hasEnded];
+    v25 = asStringBool([changedCopy isOutgoing]);
+    hasConnected2 = [changedCopy hasConnected];
+    hasEnded2 = [changedCopy hasEnded];
     v28 = *(v9 + 56);
     v29 = *(v9 + 57);
     *buf = 136316162;
     *&buf[4] = v25;
     *&buf[12] = 1024;
-    *&buf[14] = v26;
+    *&buf[14] = hasConnected2;
     *&buf[18] = 1024;
-    *&buf[20] = v27;
+    *&buf[20] = hasEnded2;
     v38 = 1024;
     v39 = v28;
     v40 = 1024;

@@ -1,8 +1,8 @@
 @interface COConditionTask
-- (BOOL)launchTask:(id *)a3;
+- (BOOL)launchTask:(id *)task;
 - (BOOL)start;
-- (BOOL)waitForTaskWithTimeout:(unsigned int)a3;
-- (COConditionTask)initWithCommand:(id)a3 arguments:(id)a4;
+- (BOOL)waitForTaskWithTimeout:(unsigned int)timeout;
+- (COConditionTask)initWithCommand:(id)command arguments:(id)arguments;
 - (id)description;
 - (id)stderrFromResults;
 - (id)stdoutFromResults;
@@ -10,18 +10,18 @@
 - (void)stdoutFromResults;
 - (void)stop;
 - (void)stopTask;
-- (void)waitForExitInformation:(int)a3;
+- (void)waitForExitInformation:(int)information;
 @end
 
 @implementation COConditionTask
 
-- (COConditionTask)initWithCommand:(id)a3 arguments:(id)a4
+- (COConditionTask)initWithCommand:(id)command arguments:(id)arguments
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  argumentsCopy = arguments;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [COConditionTask initWithCommand:v7 arguments:v8];
+    [COConditionTask initWithCommand:commandCopy arguments:argumentsCopy];
   }
 
   v41.receiver = self;
@@ -29,24 +29,24 @@
   v9 = [(COConditionTask *)&v41 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
-    v13 = [v7 lastPathComponent];
-    v14 = [v12 initWithFormat:@"/tmp/%@.%@.stdout.txt", v13, v11];
+    lastPathComponent = [commandCopy lastPathComponent];
+    v14 = [v12 initWithFormat:@"/tmp/%@.%@.stdout.txt", lastPathComponent, uUIDString];
     stdoutFname = v9->_stdoutFname;
     v9->_stdoutFname = v14;
 
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
-    v17 = [v7 lastPathComponent];
-    v18 = [v16 initWithFormat:@"/tmp/%@.%@.stderr.txt", v17, v11];
+    lastPathComponent2 = [commandCopy lastPathComponent];
+    v18 = [v16 initWithFormat:@"/tmp/%@.%@.stderr.txt", lastPathComponent2, uUIDString];
     stderrFname = v9->_stderrFname;
     v9->_stderrFname = v18;
 
     v20 = objc_alloc(MEMORY[0x277CCACA8]);
-    v21 = [v7 lastPathComponent];
-    v22 = [v20 initWithFormat:@"/tmp/%@.%@.stdin.txt", v21, v11];
+    lastPathComponent3 = [commandCopy lastPathComponent];
+    v22 = [v20 initWithFormat:@"/tmp/%@.%@.stdin.txt", lastPathComponent3, uUIDString];
     stdinFname = v9->_stdinFname;
     v9->_stdinFname = v22;
 
@@ -74,7 +74,7 @@
       v9->_stderrFileHandle = v31;
     }
 
-    if (!v9->_stdinFileHandle || !v9->_stdoutFileHandle || !v8 || !v7 || !v9->_stderrFileHandle)
+    if (!v9->_stdinFileHandle || !v9->_stdoutFileHandle || !argumentsCopy || !commandCopy || !v9->_stderrFileHandle)
     {
 
       v39 = 0;
@@ -82,8 +82,8 @@
     }
 
     v9->_processIdentifier = -1;
-    objc_storeStrong(&v9->_launchPath, a3);
-    objc_storeStrong(&v9->_arguments, a4);
+    objc_storeStrong(&v9->_launchPath, command);
+    objc_storeStrong(&v9->_arguments, arguments);
     v33 = dispatch_semaphore_create(0);
     termination_sem = v9->_termination_sem;
     v9->_termination_sem = v33;
@@ -103,7 +103,7 @@ LABEL_18:
   return v39;
 }
 
-- (void)waitForExitInformation:(int)a3
+- (void)waitForExitInformation:(int)information
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0;
@@ -120,9 +120,9 @@ LABEL_18:
       if (v10)
       {
         v6 = [(COConditionTask *)self launchPath:*&v12.ru_utime];
-        v7 = [v6 lastPathComponent];
+        lastPathComponent = [v6 lastPathComponent];
         *buf = 138412546;
-        v15 = v7;
+        v15 = lastPathComponent;
         v16 = 1024;
         v17 = v13;
         v8 = MEMORY[0x277D86220];
@@ -134,9 +134,9 @@ LABEL_18:
     else if (v10)
     {
       v6 = [(COConditionTask *)self launchPath:*&v12.ru_utime];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       *buf = 138412546;
-      v15 = v7;
+      v15 = lastPathComponent;
       v16 = 1024;
       v17 = v13 >> 8;
       v8 = MEMORY[0x277D86220];
@@ -150,9 +150,9 @@ LABEL_18:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = [(COConditionTask *)self launchPath:*&v12.ru_utime];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       *buf = 138412546;
-      v15 = v7;
+      v15 = lastPathComponent;
       v16 = 1024;
       v17 = v13 & 0x7F;
       v8 = MEMORY[0x277D86220];
@@ -164,9 +164,9 @@ LABEL_18:
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = [(COConditionTask *)self launchPath:*&v12.ru_utime];
-    v7 = [v6 lastPathComponent];
+    lastPathComponent = [v6 lastPathComponent];
     *buf = 138412546;
-    v15 = v7;
+    v15 = lastPathComponent;
     v16 = 1024;
     v17 = BYTE1(v13);
     v8 = MEMORY[0x277D86220];
@@ -180,9 +180,9 @@ LABEL_15:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)waitForTaskWithTimeout:(unsigned int)a3
+- (BOOL)waitForTaskWithTimeout:(unsigned int)timeout
 {
-  if ([(COConditionTask *)self running]&& (!a3 ? (v5 = -1) : (v5 = dispatch_time(0, 1000000000 * a3)), [(COConditionTask *)self termination_sem], v6 = objc_claimAutoreleasedReturnValue(), v7 = dispatch_semaphore_wait(v6, v5), v6, v7))
+  if ([(COConditionTask *)self running]&& (!timeout ? (v5 = -1) : (v5 = dispatch_time(0, 1000000000 * timeout)), [(COConditionTask *)self termination_sem], v6 = objc_claimAutoreleasedReturnValue(), v7 = dispatch_semaphore_wait(v6, v5), v6, v7))
   {
     v8 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v8)
@@ -200,14 +200,14 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)launchTask:(id *)a3
+- (BOOL)launchTask:(id *)task
 {
   v56 = *MEMORY[0x277D85DE8];
   v50 = -1;
   v48 = 0;
   v49 = 0;
-  v4 = [(COConditionTask *)self taskQueue];
-  dispatch_assert_queue_V2(v4);
+  taskQueue = [(COConditionTask *)self taskQueue];
+  dispatch_assert_queue_V2(taskQueue);
 
   if ([(COConditionTask *)self running])
   {
@@ -218,24 +218,24 @@ LABEL_3:
     goto LABEL_35;
   }
 
-  v8 = [(COConditionTask *)self launchPath];
+  launchPath = [(COConditionTask *)self launchPath];
 
-  if (v8)
+  if (launchPath)
   {
-    v9 = [(COConditionTask *)self arguments];
-    v6 = malloc_type_calloc([v9 count] + 2, 8uLL, 0x10040436913F5uLL);
+    arguments = [(COConditionTask *)self arguments];
+    v6 = malloc_type_calloc([arguments count] + 2, 8uLL, 0x10040436913F5uLL);
 
     if (v6)
     {
-      v10 = [(COConditionTask *)self launchPath];
-      *v6 = [v10 fileSystemRepresentation];
+      launchPath2 = [(COConditionTask *)self launchPath];
+      *v6 = [launchPath2 fileSystemRepresentation];
 
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v11 = [(COConditionTask *)self arguments];
-      v12 = [v11 countByEnumeratingWithState:&v44 objects:v55 count:16];
+      arguments2 = [(COConditionTask *)self arguments];
+      v12 = [arguments2 countByEnumeratingWithState:&v44 objects:v55 count:16];
       if (v12)
       {
         v13 = v12;
@@ -249,27 +249,27 @@ LABEL_3:
           {
             if (*v45 != v15)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(arguments2);
             }
 
             v17 = *(*(&v44 + 1) + 8 * v16);
             if ([v17 length])
             {
-              v18 = [v17 fileSystemRepresentation];
+              fileSystemRepresentation = [v17 fileSystemRepresentation];
             }
 
             else
             {
-              v18 = "";
+              fileSystemRepresentation = "";
             }
 
-            v6[v14 + 1] = v18;
+            v6[v14 + 1] = fileSystemRepresentation;
             ++v16;
             ++v14;
           }
 
           while (v13 != v16);
-          v13 = [v11 countByEnumeratingWithState:&v44 objects:v55 count:16];
+          v13 = [arguments2 countByEnumeratingWithState:&v44 objects:v55 count:16];
         }
 
         while (v13);
@@ -286,8 +286,8 @@ LABEL_3:
         goto LABEL_33;
       }
 
-      v19 = [(COConditionTask *)self taskFileHandleArray];
-      v20 = [v19 objectAtIndexedSubscript:0];
+      taskFileHandleArray = [(COConditionTask *)self taskFileHandleArray];
+      v20 = [taskFileHandleArray objectAtIndexedSubscript:0];
       v21 = posix_spawn_file_actions_adddup2(&v49, [v20 fileDescriptor], 0);
 
       if (v21)
@@ -301,8 +301,8 @@ LABEL_32:
 
       else
       {
-        v22 = [(COConditionTask *)self taskFileHandleArray];
-        v23 = [v22 objectAtIndexedSubscript:1];
+        taskFileHandleArray2 = [(COConditionTask *)self taskFileHandleArray];
+        v23 = [taskFileHandleArray2 objectAtIndexedSubscript:1];
         v21 = posix_spawn_file_actions_adddup2(&v49, [v23 fileDescriptor], 1);
 
         if (v21)
@@ -315,8 +315,8 @@ LABEL_32:
 
         else
         {
-          v24 = [(COConditionTask *)self taskFileHandleArray];
-          v25 = [v24 objectAtIndexedSubscript:2];
+          taskFileHandleArray3 = [(COConditionTask *)self taskFileHandleArray];
+          v25 = [taskFileHandleArray3 objectAtIndexedSubscript:2];
           v21 = posix_spawn_file_actions_adddup2(&v49, [v25 fileDescriptor], 2);
 
           if (!v21)
@@ -325,10 +325,10 @@ LABEL_32:
             if (v48)
             {
               signal(20, 0);
-              v28 = [(COConditionTask *)self launchPath];
-              v29 = [v28 fileSystemRepresentation];
+              launchPath3 = [(COConditionTask *)self launchPath];
+              fileSystemRepresentation2 = [launchPath3 fileSystemRepresentation];
               v30 = _NSGetEnviron();
-              v31 = posix_spawn(&v50, v29, &v49, &v48, v6, *v30);
+              v31 = posix_spawn(&v50, fileSystemRepresentation2, &v49, &v48, v6, *v30);
 
               if (v31)
               {
@@ -342,11 +342,11 @@ LABEL_32:
               {
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                 {
-                  v32 = [(COConditionTask *)self launchPath];
-                  v33 = [(COConditionTask *)self arguments];
-                  v34 = [v33 componentsJoinedByString:@" "];
+                  launchPath4 = [(COConditionTask *)self launchPath];
+                  arguments3 = [(COConditionTask *)self arguments];
+                  v34 = [arguments3 componentsJoinedByString:@" "];
                   *buf = 138412546;
-                  v52 = v32;
+                  v52 = launchPath4;
                   v53 = 2112;
                   v54 = v34;
                   _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Spawned %@ with arguments: %@.", buf, 0x16u);
@@ -366,7 +366,7 @@ LABEL_32:
                   handler[3] = &unk_278DF7E18;
                   v5 = v37;
                   v41 = v5;
-                  v42 = self;
+                  selfCopy = self;
                   v43 = v35;
                   dispatch_source_set_event_handler(v5, handler);
                   v38[0] = MEMORY[0x277D85DD0];
@@ -470,8 +470,8 @@ void __30__COConditionTask_launchTask___block_invoke_2(uint64_t a1)
 - (void)stopTask
 {
   *&v32[5] = *MEMORY[0x277D85DE8];
-  v3 = [(COConditionTask *)self taskQueue];
-  dispatch_assert_queue_V2(v3);
+  taskQueue = [(COConditionTask *)self taskQueue];
+  dispatch_assert_queue_V2(taskQueue);
 
   if (![(COConditionTask *)self running])
   {
@@ -488,10 +488,10 @@ void __30__COConditionTask_launchTask___block_invoke_2(uint64_t a1)
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v5 = [(COConditionTask *)self launchPath];
-    v6 = [v5 lastPathComponent];
+    launchPath = [(COConditionTask *)self launchPath];
+    lastPathComponent = [launchPath lastPathComponent];
     v31 = 138412290;
-    *v32 = v6;
+    *v32 = lastPathComponent;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "-->\tInterrupting: '%@'", &v31, 0xCu);
   }
 
@@ -507,19 +507,19 @@ void __30__COConditionTask_launchTask___block_invoke_2(uint64_t a1)
   }
 
   usleep(v7);
-  v8 = [(COConditionTask *)self running];
+  running = [(COConditionTask *)self running];
   v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (!v8)
+  if (!running)
   {
     if (!v9)
     {
       goto LABEL_30;
     }
 
-    v23 = [(COConditionTask *)self launchPath];
-    v24 = [v23 lastPathComponent];
+    launchPath2 = [(COConditionTask *)self launchPath];
+    lastPathComponent2 = [launchPath2 lastPathComponent];
     v31 = 138412290;
-    *v32 = v24;
+    *v32 = lastPathComponent2;
     v25 = MEMORY[0x277D86220];
     v26 = "-->\tInterrupted: '%@'";
 LABEL_29:
@@ -530,10 +530,10 @@ LABEL_29:
 
   if (v9)
   {
-    v10 = [(COConditionTask *)self launchPath];
-    v11 = [v10 lastPathComponent];
+    launchPath3 = [(COConditionTask *)self launchPath];
+    lastPathComponent3 = [launchPath3 lastPathComponent];
     v31 = 138412290;
-    *v32 = v11;
+    *v32 = lastPathComponent3;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "-->\tTerminating: '%@'", &v31, 0xCu);
   }
 
@@ -549,9 +549,9 @@ LABEL_29:
   }
 
   usleep(v12);
-  v13 = [(COConditionTask *)self running];
+  running2 = [(COConditionTask *)self running];
   v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (!v13)
+  if (!running2)
   {
     if (!v14)
     {
@@ -563,10 +563,10 @@ LABEL_29:
 
   if (v14)
   {
-    v15 = [(COConditionTask *)self launchPath];
-    v16 = [v15 lastPathComponent];
+    launchPath4 = [(COConditionTask *)self launchPath];
+    lastPathComponent4 = [launchPath4 lastPathComponent];
     v31 = 138412290;
-    *v32 = v16;
+    *v32 = lastPathComponent4;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "-->\tTask is taking a while to terminate: '%@'", &v31, 0xCu);
   }
 
@@ -579,28 +579,28 @@ LABEL_29:
     }
 
 LABEL_28:
-    v23 = [(COConditionTask *)self launchPath];
-    v24 = [v23 lastPathComponent];
+    launchPath2 = [(COConditionTask *)self launchPath];
+    lastPathComponent2 = [launchPath2 lastPathComponent];
     v31 = 138412290;
-    *v32 = v24;
+    *v32 = lastPathComponent2;
     v25 = MEMORY[0x277D86220];
     v26 = "-->\tTerminated: '%@'";
     goto LABEL_29;
   }
 
-  v17 = [(COConditionTask *)self processIdentifier];
+  processIdentifier = [(COConditionTask *)self processIdentifier];
   v18 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (v17 <= 0)
+  if (processIdentifier <= 0)
   {
     if (v18)
     {
-      v28 = [(COConditionTask *)self processIdentifier];
-      v29 = [(COConditionTask *)self launchPath];
-      v30 = [v29 lastPathComponent];
+      processIdentifier2 = [(COConditionTask *)self processIdentifier];
+      launchPath5 = [(COConditionTask *)self launchPath];
+      lastPathComponent5 = [launchPath5 lastPathComponent];
       v31 = 67109378;
-      v32[0] = v28;
+      v32[0] = processIdentifier2;
       LOWORD(v32[1]) = 2112;
-      *(&v32[1] + 2) = v30;
+      *(&v32[1] + 2) = lastPathComponent5;
       _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "-->\t*** [self.task processIdentifier] returned %d; assuming process is dead: '%@'", &v31, 0x12u);
     }
   }
@@ -609,19 +609,19 @@ LABEL_28:
   {
     if (v18)
     {
-      v19 = [(COConditionTask *)self processIdentifier];
-      v20 = [(COConditionTask *)self launchPath];
-      v21 = [v20 lastPathComponent];
+      processIdentifier3 = [(COConditionTask *)self processIdentifier];
+      launchPath6 = [(COConditionTask *)self launchPath];
+      lastPathComponent6 = [launchPath6 lastPathComponent];
       v31 = 67109378;
-      v32[0] = v19;
+      v32[0] = processIdentifier3;
       LOWORD(v32[1]) = 2112;
-      *(&v32[1] + 2) = v21;
+      *(&v32[1] + 2) = lastPathComponent6;
       _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "-->\tKilling (pid %d): '%@'", &v31, 0x12u);
     }
 
     [(COConditionTask *)self signalRunningTask:9];
-    v22 = [(COConditionTask *)self termination_sem];
-    dispatch_semaphore_signal(v22);
+    termination_sem = [(COConditionTask *)self termination_sem];
+    dispatch_semaphore_signal(termination_sem);
   }
 
 LABEL_30:
@@ -631,9 +631,9 @@ LABEL_30:
 - (id)stdoutFromResults
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(COConditionTask *)self stdoutFname];
+  stdoutFname = [(COConditionTask *)self stdoutFname];
   v9 = 0;
-  v5 = [v3 stringWithContentsOfFile:v4 encoding:4 error:&v9];
+  v5 = [v3 stringWithContentsOfFile:stdoutFname encoding:4 error:&v9];
   v6 = v9;
 
   if (v6)
@@ -657,9 +657,9 @@ LABEL_30:
 - (id)stderrFromResults
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(COConditionTask *)self stderrFname];
+  stderrFname = [(COConditionTask *)self stderrFname];
   v9 = 0;
-  v5 = [v3 stringWithContentsOfFile:v4 encoding:4 error:&v9];
+  v5 = [v3 stringWithContentsOfFile:stderrFname encoding:4 error:&v9];
   v6 = v9;
 
   if (v6)
@@ -682,7 +682,7 @@ LABEL_30:
 
 - (BOOL)start
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -693,21 +693,21 @@ LABEL_30:
   v6[3] = __Block_byref_object_copy_;
   v6[4] = __Block_byref_object_dispose_;
   v7 = 0;
-  v3 = [(COConditionTask *)self taskQueue];
+  taskQueue = [(COConditionTask *)self taskQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __24__COConditionTask_start__block_invoke;
   block[3] = &unk_278DF7E68;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = &v8;
   block[6] = v6;
-  dispatch_sync(v3, block);
+  dispatch_sync(taskQueue, block);
 
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(v6, 8);
 
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __24__COConditionTask_start__block_invoke(void *a1)
@@ -722,22 +722,22 @@ void __24__COConditionTask_start__block_invoke(void *a1)
 
 - (void)stop
 {
-  v3 = [(COConditionTask *)self taskQueue];
+  taskQueue = [(COConditionTask *)self taskQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __23__COConditionTask_stop__block_invoke;
   block[3] = &unk_278DF7E90;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(taskQueue, block);
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(COConditionTask *)self launchPath];
-  v5 = [(COConditionTask *)self arguments];
-  v6 = [v5 componentsJoinedByString:@" "];
-  v7 = [v3 stringWithFormat:@"%@ %@ (running with PID: %d)", v4, v6, -[COConditionTask processIdentifier](self, "processIdentifier")];
+  launchPath = [(COConditionTask *)self launchPath];
+  arguments = [(COConditionTask *)self arguments];
+  v6 = [arguments componentsJoinedByString:@" "];
+  v7 = [v3 stringWithFormat:@"%@ %@ (running with PID: %d)", launchPath, v6, -[COConditionTask processIdentifier](self, "processIdentifier")];
 
   return v7;
 }
@@ -822,7 +822,7 @@ void __30__COConditionTask_launchTask___block_invoke_2_cold_1(uint64_t a1)
 - (void)stdoutFromResults
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 stdoutFname];
+  stdoutFname = [self stdoutFname];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -833,7 +833,7 @@ void __30__COConditionTask_launchTask___block_invoke_2_cold_1(uint64_t a1)
 - (void)stderrFromResults
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 stderrFname];
+  stderrFname = [self stderrFname];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

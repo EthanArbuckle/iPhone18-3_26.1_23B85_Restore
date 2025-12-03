@@ -1,51 +1,51 @@
 @interface PKPeerPaymentFamilyCircleViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (PKPeerPaymentFamilyCircleViewController)initWithFamilyCollection:(id)a3 avatarManager:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6;
-- (id)_familyMemberWithDSID:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_handleRowTapped:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (PKPeerPaymentFamilyCircleViewController)initWithFamilyCollection:(id)collection avatarManager:(id)manager passLibraryDataProvider:(id)provider context:(int64_t)context;
+- (id)_familyMemberWithDSID:(id)d;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_handleRowTapped:(id)tapped;
 - (void)_loadAvatarImagesIfNecessary;
-- (void)_peerPaymentAccountChanged:(id)a3;
+- (void)_peerPaymentAccountChanged:(id)changed;
 - (void)_reloadSortedRows;
-- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)a3 updatedAccount:(id)a4 forFamilyMember:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)sucess updatedAccount:(id)account forFamilyMember:(id)member;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentFamilyCircleViewController
 
-- (PKPeerPaymentFamilyCircleViewController)initWithFamilyCollection:(id)a3 avatarManager:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6
+- (PKPeerPaymentFamilyCircleViewController)initWithFamilyCollection:(id)collection avatarManager:(id)manager passLibraryDataProvider:(id)provider context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  collectionCopy = collection;
+  managerCopy = manager;
+  providerCopy = provider;
   v27.receiver = self;
   v27.super_class = PKPeerPaymentFamilyCircleViewController;
   v14 = -[PKPeerPaymentFamilyCircleViewController initWithStyle:](&v27, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   if (v14)
   {
-    v15 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v14->_paymentService;
-    v14->_paymentService = v15;
+    v14->_paymentService = paymentService;
 
-    v17 = [MEMORY[0x1E69B9000] sharedInstance];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
     peerPaymentService = v14->_peerPaymentService;
-    v14->_peerPaymentService = v17;
+    v14->_peerPaymentService = mEMORY[0x1E69B9000];
 
-    v19 = [(PKPeerPaymentService *)v14->_peerPaymentService account];
+    account = [(PKPeerPaymentService *)v14->_peerPaymentService account];
     account = v14->_account;
-    v14->_account = v19;
+    v14->_account = account;
 
-    objc_storeStrong(&v14->_familyCollection, a3);
-    objc_storeStrong(&v14->_avatarManager, a4);
-    objc_storeStrong(&v14->_passLibraryDataProvider, a5);
-    v14->_context = a6;
-    v21 = [v11 familyMembers];
-    v22 = [PKPeerPaymentFamilyMemberRowModel sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:v21 peerPaymentAccount:v14->_account];
+    objc_storeStrong(&v14->_familyCollection, collection);
+    objc_storeStrong(&v14->_avatarManager, manager);
+    objc_storeStrong(&v14->_passLibraryDataProvider, provider);
+    v14->_context = context;
+    familyMembers = [collectionCopy familyMembers];
+    v22 = [PKPeerPaymentFamilyMemberRowModel sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:familyMembers peerPaymentAccount:v14->_account];
     sortedRows = v14->_sortedRows;
     v14->_sortedRows = v22;
 
@@ -53,8 +53,8 @@
     v24 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentFam.isa);
     [(PKPeerPaymentFamilyCircleViewController *)v14 setTitle:v24];
 
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v14 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v14->_peerPaymentService];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v14->_peerPaymentService];
   }
 
   return v14;
@@ -65,18 +65,18 @@
   v5.receiver = self;
   v5.super_class = PKPeerPaymentFamilyCircleViewController;
   [(PKPeerPaymentFamilyCircleViewController *)&v5 viewDidLoad];
-  v3 = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"kFamilyMemberCellReuseIdentifier"];
+  tableView = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kFamilyMemberCellReuseIdentifier"];
 
-  v4 = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
-  [v4 pkui_setupForReadableContentGuide];
+  tableView2 = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
+  [tableView2 pkui_setupForReadableContentGuide];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = PKPeerPaymentFamilyCircleViewController;
-  [(PKPeerPaymentFamilyCircleViewController *)&v13 viewDidAppear:a3];
+  [(PKPeerPaymentFamilyCircleViewController *)&v13 viewDidAppear:appear];
   if (([(PKPeerPaymentAccount *)self->_account supportsFamilySharing]& 1) == 0)
   {
     v4 = PKLogFacilityTypeGetObject();
@@ -100,9 +100,9 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (![(PKPeerPaymentAccount *)self->_account supportsFamilySharing:a3])
+  if (![(PKPeerPaymentAccount *)self->_account supportsFamilySharing:view])
   {
     return 0;
   }
@@ -112,12 +112,12 @@
   return [(NSArray *)sortedRows count];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"kFamilyMemberCellReuseIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"kFamilyMemberCellReuseIdentifier" forIndexPath:pathCopy];
   sortedRows = self->_sortedRows;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)sortedRows objectAtIndex:v9];
   [v7 setRowModel:v10];
@@ -125,59 +125,59 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   sortedRows = self->_sortedRows;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v9 = [(NSArray *)sortedRows objectAtIndex:v8];
   [(PKPeerPaymentFamilyCircleViewController *)self _handleRowTapped:v9];
 }
 
-- (void)_handleRowTapped:(id)a3
+- (void)_handleRowTapped:(id)tapped
 {
-  v11 = a3;
-  v4 = [v11 state];
-  if ((v4 - 1) >= 2)
+  tappedCopy = tapped;
+  state = [tappedCopy state];
+  if ((state - 1) >= 2)
   {
-    if (v4 != 3)
+    if (state != 3)
     {
       goto LABEL_6;
     }
 
     v8 = [PKPeerPaymentTurnOnAssociatedAccountViewController alloc];
-    v6 = [v11 familyMember];
-    v7 = [(PKPeerPaymentTurnOnAssociatedAccountViewController *)v8 initWithFamilyMember:v6 familyCollection:self->_familyCollection delegate:self passLibraryDataProvider:self->_passLibraryDataProvider context:self->_context setupType:0];
+    familyMember = [tappedCopy familyMember];
+    v7 = [(PKPeerPaymentTurnOnAssociatedAccountViewController *)v8 initWithFamilyMember:familyMember familyCollection:self->_familyCollection delegate:self passLibraryDataProvider:self->_passLibraryDataProvider context:self->_context setupType:0];
   }
 
   else
   {
     v5 = [PKPeerPaymentAssociatedAccountViewController alloc];
-    v6 = [v11 familyMember];
-    v7 = [(PKPeerPaymentAssociatedAccountViewController *)v5 initWithFamilyMember:v6 familyCollection:self->_familyCollection account:self->_account context:self->_context];
+    familyMember = [tappedCopy familyMember];
+    v7 = [(PKPeerPaymentAssociatedAccountViewController *)v5 initWithFamilyMember:familyMember familyCollection:self->_familyCollection account:self->_account context:self->_context];
   }
 
   v9 = v7;
 
-  v10 = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
-  [v10 pushViewController:v9 animated:1];
+  navigationController = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
+  [navigationController pushViewController:v9 animated:1];
 
 LABEL_6:
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndex:](self->_sortedRows, "objectAtIndex:", [a4 row]);
+  v4 = -[NSArray objectAtIndex:](self->_sortedRows, "objectAtIndex:", [path row]);
   v5 = [v4 state] != 4;
 
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(PKPeerPaymentFamilyCircleViewController *)self _pendingInvitations:a3];
+  v4 = [(PKPeerPaymentFamilyCircleViewController *)self _pendingInvitations:view];
   if ([v4 count])
   {
     v5 = 0;
@@ -191,9 +191,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v4 = [(PKPeerPaymentFamilyCircleViewController *)self _pendingInvitations:a3];
+  v4 = [(PKPeerPaymentFamilyCircleViewController *)self _pendingInvitations:view];
   v5 = [v4 count];
 
   if (v5)
@@ -217,24 +217,24 @@ LABEL_6:
   return v6;
 }
 
-- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)a3 updatedAccount:(id)a4 forFamilyMember:(id)a5
+- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)sucess updatedAccount:(id)account forFamilyMember:(id)member
 {
-  v7 = a3;
-  v21 = a4;
-  v9 = a5;
-  if (v7)
+  sucessCopy = sucess;
+  accountCopy = account;
+  memberCopy = member;
+  if (sucessCopy)
   {
-    if (v21)
+    if (accountCopy)
     {
-      objc_storeStrong(&self->_account, a4);
+      objc_storeStrong(&self->_account, account);
     }
 
     [(PKPeerPaymentFamilyCircleViewController *)self _reloadSortedRows];
-    v10 = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
-    v11 = [v10 viewControllers];
-    v12 = [v11 mutableCopy];
+    navigationController = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v12 = [viewControllers mutableCopy];
 
-    v13 = [v12 lastObject];
+    lastObject = [v12 lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -242,22 +242,22 @@ LABEL_6:
     }
 
     account = self->_account;
-    v15 = [v9 altDSID];
-    v16 = [(PKPeerPaymentAccount *)account peerPaymentAccountWithAltDSID:v15];
+    altDSID = [memberCopy altDSID];
+    v16 = [(PKPeerPaymentAccount *)account peerPaymentAccountWithAltDSID:altDSID];
 
     if (v16)
     {
-      v17 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:v9 familyCollection:self->_familyCollection account:self->_account context:self->_context];
+      v17 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:memberCopy familyCollection:self->_familyCollection account:self->_account context:self->_context];
       [v12 addObject:v17];
     }
 
-    v18 = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
+    navigationController2 = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
     v19 = [v12 copy];
-    [v18 setViewControllers:v19];
+    [navigationController2 setViewControllers:v19];
   }
 
-  v20 = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
-  [v20 dismissViewControllerAnimated:1 completion:0];
+  navigationController3 = [(PKPeerPaymentFamilyCircleViewController *)self navigationController];
+  [navigationController3 dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_reloadSortedRows
@@ -283,13 +283,13 @@ LABEL_6:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 familyMember];
-        v10 = [v9 altDSID];
+        familyMember = [v8 familyMember];
+        altDSID = [familyMember altDSID];
 
-        v11 = [(PKPeerPaymentAccount *)self->_account peerPaymentAccountWithAltDSID:v10];
+        v11 = [(PKPeerPaymentAccount *)self->_account peerPaymentAccountWithAltDSID:altDSID];
         [v8 setAccount:v11];
 
-        v12 = [(PKPeerPaymentAccount *)self->_account accountInvitationWithAltDSID:v10];
+        v12 = [(PKPeerPaymentAccount *)self->_account accountInvitationWithAltDSID:altDSID];
         [v8 setInvitation:v12];
       }
 
@@ -299,8 +299,8 @@ LABEL_6:
     while (v5);
   }
 
-  v13 = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
-  [v13 reloadData];
+  tableView = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_loadAvatarImagesIfNecessary
@@ -319,19 +319,19 @@ LABEL_6:
         v18 = __Block_byref_object_copy__5;
         v19 = __Block_byref_object_dispose__5;
         v20 = [(NSArray *)self->_sortedRows objectAtIndexedSubscript:v3, v12];
-        v4 = [v16[5] familyMember];
-        v5 = [v4 altDSID];
+        familyMember = [v16[5] familyMember];
+        altDSID = [familyMember altDSID];
 
-        if (v5)
+        if (altDSID)
         {
-          v6 = [(PKContactAvatarManager *)self->_avatarManager cachedAvatarForAltDSID:v5];
+          v6 = [(PKContactAvatarManager *)self->_avatarManager cachedAvatarForAltDSID:altDSID];
           [v16[5] setImage:v6];
           if (!v6)
           {
             avatarManager = self->_avatarManager;
-            v8 = [v16[5] familyMember];
+            familyMember2 = [v16[5] familyMember];
             account = self->_account;
-            v10 = [v16[5] invitation];
+            invitation = [v16[5] invitation];
             v13[0] = MEMORY[0x1E69E9820];
             v13[1] = 3221225472;
             v14[0] = __71__PKPeerPaymentFamilyCircleViewController__loadAvatarImagesIfNecessary__block_invoke;
@@ -339,7 +339,7 @@ LABEL_6:
             v14[2] = self;
             v14[3] = &v15;
             v14[4] = v3;
-            [(PKContactAvatarManager *)avatarManager avatarForFamilyMember:v8 peerPaymentAccount:account invitation:v10 completion:v13];
+            [(PKContactAvatarManager *)avatarManager avatarForFamilyMember:familyMember2 peerPaymentAccount:account invitation:invitation completion:v13];
           }
         }
 
@@ -350,8 +350,8 @@ LABEL_6:
       while (v3 < [(NSArray *)self->_sortedRows count]);
     }
 
-    v11 = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
-    [v11 reloadData];
+    tableView = [(PKPeerPaymentFamilyCircleViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -380,22 +380,22 @@ void __71__PKPeerPaymentFamilyCircleViewController__loadAvatarImagesIfNecessary_
   [v2 reloadRowsAtIndexPaths:v4 withRowAnimation:100];
 }
 
-- (id)_familyMemberWithDSID:(id)a3
+- (id)_familyMemberWithDSID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v5 = self->_sortedRows;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  familyMember2 = [(NSArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (familyMember2)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != familyMember2; i = i + 1)
       {
         if (*v15 != v7)
         {
@@ -403,19 +403,19 @@ void __71__PKPeerPaymentFamilyCircleViewController__loadAvatarImagesIfNecessary_
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 familyMember];
-        v11 = [v10 dsid];
+        familyMember = [v9 familyMember];
+        dsid = [familyMember dsid];
         v12 = PKEqualObjects();
 
         if (v12)
         {
-          v6 = [v9 familyMember];
+          familyMember2 = [v9 familyMember];
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      familyMember2 = [(NSArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (familyMember2)
       {
         continue;
       }
@@ -426,10 +426,10 @@ void __71__PKPeerPaymentFamilyCircleViewController__loadAvatarImagesIfNecessary_
 
 LABEL_11:
 
-  return v6;
+  return familyMember2;
 }
 
-- (void)_peerPaymentAccountChanged:(id)a3
+- (void)_peerPaymentAccountChanged:(id)changed
 {
   peerPaymentService = self->_peerPaymentService;
   v4[0] = MEMORY[0x1E69E9820];

@@ -1,16 +1,16 @@
 @interface _NSCloudKitDataFileBackedFuture
-- (_NSCloudKitDataFileBackedFuture)initWithStoreMetadata:(id)a3 directory:(id)a4 originalFileURL:(id)a5;
+- (_NSCloudKitDataFileBackedFuture)initWithStoreMetadata:(id)metadata directory:(id)directory originalFileURL:(id)l;
 - (void)_copyToInterimLocation;
 - (void)_moveToPermanentLocation;
 @end
 
 @implementation _NSCloudKitDataFileBackedFuture
 
-- (_NSCloudKitDataFileBackedFuture)initWithStoreMetadata:(id)a3 directory:(id)a4 originalFileURL:(id)a5
+- (_NSCloudKitDataFileBackedFuture)initWithStoreMetadata:(id)metadata directory:(id)directory originalFileURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = _NSCloudKitDataFileBackedFuture;
-  return [(_NSDataFileBackedFuture *)&v6 initWithStoreMetadata:a3 directory:a4 originalFileURL:a5];
+  return [(_NSDataFileBackedFuture *)&v6 initWithStoreMetadata:metadata directory:directory originalFileURL:l];
 }
 
 - (void)_copyToInterimLocation

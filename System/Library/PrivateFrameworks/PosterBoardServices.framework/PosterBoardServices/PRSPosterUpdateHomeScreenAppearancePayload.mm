@@ -1,14 +1,14 @@
 @interface PRSPosterUpdateHomeScreenAppearancePayload
 - (PRSPosterUpdateHomeScreenAppearancePayload)init;
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithCoder:(id)a3;
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3;
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 gradientColorAppearance:(id)a4;
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 solidColorAppearance:(id)a4;
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 updateHomePoster:(id)a4 homeProviderIdentifier:(id)a5;
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 updateSwitcherPoster:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithCoder:(id)coder;
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type;
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type gradientColorAppearance:(id)appearance;
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type solidColorAppearance:(id)appearance;
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type updateHomePoster:(id)poster homeProviderIdentifier:(id)identifier;
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type updateSwitcherPoster:(id)poster;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)rawValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSPosterUpdateHomeScreenAppearancePayload
@@ -26,38 +26,38 @@
   return result;
 }
 
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type
 {
   result = [(PRSPosterUpdateHomeScreenAppearancePayload *)self init];
   if (result)
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Undefined apperance type specified %lu", a3];
+      type = [MEMORY[0x1E696AEC0] stringWithFormat:@"Undefined apperance type specified %lu", type];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2];
       }
 
-      [v6 UTF8String];
+      [type UTF8String];
       result = _bs_set_crash_log_message();
       __break(0);
     }
 
     else
     {
-      result->_updatedAppearanceType = a3;
+      result->_updatedAppearanceType = type;
     }
   }
 
   return result;
 }
 
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 solidColorAppearance:(id)a4
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type solidColorAppearance:(id)appearance
 {
-  v7 = a4;
+  appearanceCopy = appearance;
   NSClassFromString(&cfstr_Prsposterupdat_24.isa);
-  if (!v7)
+  if (!appearanceCopy)
   {
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 solidColorAppearance:?];
   }
@@ -67,10 +67,10 @@
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 solidColorAppearance:?];
   }
 
-  v8 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:a3];
+  v8 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:type];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [appearanceCopy copy];
     solidColorAppearance = v8->_solidColorAppearance;
     v8->_solidColorAppearance = v9;
   }
@@ -78,11 +78,11 @@
   return v8;
 }
 
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 gradientColorAppearance:(id)a4
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type gradientColorAppearance:(id)appearance
 {
-  v7 = a4;
+  appearanceCopy = appearance;
   NSClassFromString(&cfstr_Prsposterupdat_24.isa);
-  if (!v7)
+  if (!appearanceCopy)
   {
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 gradientColorAppearance:?];
   }
@@ -92,10 +92,10 @@
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 gradientColorAppearance:?];
   }
 
-  v8 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:a3];
+  v8 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:type];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [appearanceCopy copy];
     gradientColorAppearance = v8->_gradientColorAppearance;
     v8->_gradientColorAppearance = v9;
   }
@@ -103,11 +103,11 @@
   return v8;
 }
 
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 updateSwitcherPoster:(id)a4
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type updateSwitcherPoster:(id)poster
 {
-  v8 = a4;
+  posterCopy = poster;
   NSClassFromString(&cfstr_Prsposterupdat_23.isa);
-  if (!v8)
+  if (!posterCopy)
   {
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 updateSwitcherPoster:?];
   }
@@ -117,21 +117,21 @@
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 updateSwitcherPoster:?];
   }
 
-  v9 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:a3];
+  v9 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:type];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_switcherProviderUpdateSessionInfo, a4);
+    objc_storeStrong(&v9->_switcherProviderUpdateSessionInfo, poster);
   }
 
   return v10;
 }
 
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)a3 updateHomePoster:(id)a4 homeProviderIdentifier:(id)a5
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithUpdatedAppearanceType:(unint64_t)type updateHomePoster:(id)poster homeProviderIdentifier:(id)identifier
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
+  posterCopy = poster;
+  identifierCopy = identifier;
+  v12 = posterCopy;
   NSClassFromString(&cfstr_Prsposterupdat_23.isa);
   if (!v12)
   {
@@ -143,7 +143,7 @@
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 updateHomePoster:? homeProviderIdentifier:?];
   }
 
-  v13 = v11;
+  v13 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v13)
   {
@@ -155,22 +155,22 @@
     [PRSPosterUpdateHomeScreenAppearancePayload initWithUpdatedAppearanceType:a2 updateHomePoster:? homeProviderIdentifier:?];
   }
 
-  v14 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:a3];
+  v14 = [(PRSPosterUpdateHomeScreenAppearancePayload *)self initWithUpdatedAppearanceType:type];
   if (v14)
   {
     v15 = [v13 copy];
     homeProviderIdentifier = v14->_homeProviderIdentifier;
     v14->_homeProviderIdentifier = v15;
 
-    objc_storeStrong(&v14->_homeProviderUpdateSessionInfo, a4);
+    objc_storeStrong(&v14->_homeProviderUpdateSessionInfo, poster);
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithUpdatedAppearanceType:", self->_updatedAppearanceType}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithUpdatedAppearanceType:", self->_updatedAppearanceType}];
   v5 = [(PRSPosterUpdateColorPayload *)self->_solidColorAppearance copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;
@@ -188,52 +188,52 @@
   return v4;
 }
 
-- (PRSPosterUpdateHomeScreenAppearancePayload)initWithCoder:(id)a3
+- (PRSPosterUpdateHomeScreenAppearancePayload)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRSPosterUpdatePayload *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PRSPosterUpdatePayload *)self _init];
+  if (_init)
   {
-    v5->_updatedAppearanceType = [v4 decodeIntegerForKey:@"_updatedAppearanceType"];
+    _init->_updatedAppearanceType = [coderCopy decodeIntegerForKey:@"_updatedAppearanceType"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_solidColorAppearance"];
-    solidColorAppearance = v5->_solidColorAppearance;
-    v5->_solidColorAppearance = v7;
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_solidColorAppearance"];
+    solidColorAppearance = _init->_solidColorAppearance;
+    _init->_solidColorAppearance = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"_gradientColorAppearance"];
-    gradientColorAppearance = v5->_gradientColorAppearance;
-    v5->_gradientColorAppearance = v10;
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"_gradientColorAppearance"];
+    gradientColorAppearance = _init->_gradientColorAppearance;
+    _init->_gradientColorAppearance = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"_switcherProviderUpdateSessionInfo"];
-    switcherProviderUpdateSessionInfo = v5->_switcherProviderUpdateSessionInfo;
-    v5->_switcherProviderUpdateSessionInfo = v13;
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"_switcherProviderUpdateSessionInfo"];
+    switcherProviderUpdateSessionInfo = _init->_switcherProviderUpdateSessionInfo;
+    _init->_switcherProviderUpdateSessionInfo = v13;
 
     v15 = objc_opt_self();
-    v16 = [v4 decodeObjectOfClass:v15 forKey:@"_homeProviderIdentifier"];
-    homeProviderIdentifier = v5->_homeProviderIdentifier;
-    v5->_homeProviderIdentifier = v16;
+    v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"_homeProviderIdentifier"];
+    homeProviderIdentifier = _init->_homeProviderIdentifier;
+    _init->_homeProviderIdentifier = v16;
 
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"_homeProviderUpdateSessionInfo"];
-    homeProviderUpdateSessionInfo = v5->_homeProviderUpdateSessionInfo;
-    v5->_homeProviderUpdateSessionInfo = v19;
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"_homeProviderUpdateSessionInfo"];
+    homeProviderUpdateSessionInfo = _init->_homeProviderUpdateSessionInfo;
+    _init->_homeProviderUpdateSessionInfo = v19;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   updatedAppearanceType = self->_updatedAppearanceType;
-  v5 = a3;
-  [v5 encodeInteger:updatedAppearanceType forKey:@"_updatedAppearanceType"];
-  [v5 encodeObject:self->_solidColorAppearance forKey:@"_solidColorAppearance"];
-  [v5 encodeObject:self->_gradientColorAppearance forKey:@"_gradientColorAppearance"];
-  [v5 encodeObject:self->_switcherProviderUpdateSessionInfo forKey:@"_switcherProviderUpdateSessionInfo"];
-  [v5 encodeObject:self->_homeProviderIdentifier forKey:@"_homeProviderIdentifier"];
-  [v5 encodeObject:self->_homeProviderUpdateSessionInfo forKey:@"_homeProviderUpdateSessionInfo"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:updatedAppearanceType forKey:@"_updatedAppearanceType"];
+  [coderCopy encodeObject:self->_solidColorAppearance forKey:@"_solidColorAppearance"];
+  [coderCopy encodeObject:self->_gradientColorAppearance forKey:@"_gradientColorAppearance"];
+  [coderCopy encodeObject:self->_switcherProviderUpdateSessionInfo forKey:@"_switcherProviderUpdateSessionInfo"];
+  [coderCopy encodeObject:self->_homeProviderIdentifier forKey:@"_homeProviderIdentifier"];
+  [coderCopy encodeObject:self->_homeProviderUpdateSessionInfo forKey:@"_homeProviderUpdateSessionInfo"];
 }
 
 - (id)rawValue
@@ -245,15 +245,15 @@
   solidColorAppearance = self->_solidColorAppearance;
   if (solidColorAppearance)
   {
-    v7 = [(PRSPosterUpdateColorPayload *)solidColorAppearance color];
-    [v5 setObject:v7 forKeyedSubscript:@"_solidColorAppearance"];
+    color = [(PRSPosterUpdateColorPayload *)solidColorAppearance color];
+    [v5 setObject:color forKeyedSubscript:@"_solidColorAppearance"];
   }
 
   gradientColorAppearance = self->_gradientColorAppearance;
   if (gradientColorAppearance)
   {
-    v9 = [(PRSPosterUpdateColorPayload *)gradientColorAppearance color];
-    [v5 setObject:v9 forKeyedSubscript:@"_gradientColorAppearance"];
+    color2 = [(PRSPosterUpdateColorPayload *)gradientColorAppearance color];
+    [v5 setObject:color2 forKeyedSubscript:@"_gradientColorAppearance"];
   }
 
   homeProviderIdentifier = self->_homeProviderIdentifier;

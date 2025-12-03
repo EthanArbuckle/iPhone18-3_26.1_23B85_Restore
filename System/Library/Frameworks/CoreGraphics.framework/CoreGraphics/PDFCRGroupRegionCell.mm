@@ -1,26 +1,26 @@
 @interface PDFCRGroupRegionCell
-- (PDFCRGroupRegionCell)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 subregions:(id)a5 parent:(id)a6 groupID:(unint64_t)a7 rowIndex:(unint64_t)a8 colIndex:(unint64_t)a9 rowSpan:(unint64_t)a10 colSpan:(unint64_t)a11;
+- (PDFCRGroupRegionCell)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction subregions:(id)subregions parent:(id)parent groupID:(unint64_t)d rowIndex:(unint64_t)index colIndex:(unint64_t)colIndex rowSpan:(unint64_t)self0 colSpan:(unint64_t)self1;
 @end
 
 @implementation PDFCRGroupRegionCell
 
-- (PDFCRGroupRegionCell)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 subregions:(id)a5 parent:(id)a6 groupID:(unint64_t)a7 rowIndex:(unint64_t)a8 colIndex:(unint64_t)a9 rowSpan:(unint64_t)a10 colSpan:(unint64_t)a11
+- (PDFCRGroupRegionCell)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction subregions:(id)subregions parent:(id)parent groupID:(unint64_t)d rowIndex:(unint64_t)index colIndex:(unint64_t)colIndex rowSpan:(unint64_t)self0 colSpan:(unint64_t)self1
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
+  quadCopy = quad;
+  subregionsCopy = subregions;
+  parentCopy = parent;
   v23.receiver = self;
   v23.super_class = PDFCRGroupRegionCell;
-  v20 = [(PDFCRGroupRegion *)&v23 initWithBoundingQuad:v17 layoutDirection:a4 subregions:v18 parent:v19];
+  v20 = [(PDFCRGroupRegion *)&v23 initWithBoundingQuad:quadCopy layoutDirection:direction subregions:subregionsCopy parent:parentCopy];
   v21 = v20;
   if (v20)
   {
     [(PDFCRGroupRegion *)v20 setType:6];
-    [(PDFCRGroupRegionCell *)v21 setGroupID:a7];
-    [(PDFCRGroupRegionCell *)v21 setRowIndex:a8];
-    [(PDFCRGroupRegionCell *)v21 setColIndex:a9];
-    [(PDFCRGroupRegionCell *)v21 setRowSpan:a10];
-    [(PDFCRGroupRegionCell *)v21 setColSpan:a11];
+    [(PDFCRGroupRegionCell *)v21 setGroupID:d];
+    [(PDFCRGroupRegionCell *)v21 setRowIndex:index];
+    [(PDFCRGroupRegionCell *)v21 setColIndex:colIndex];
+    [(PDFCRGroupRegionCell *)v21 setRowSpan:span];
+    [(PDFCRGroupRegionCell *)v21 setColSpan:colSpan];
   }
 
   return v21;

@@ -1,15 +1,15 @@
 @interface PlaceholderRequest
 - (_TtC9WidgetKit18PlaceholderRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PlaceholderRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1922106F8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1922106F8(coderCopy);
 }
 
 - (_TtC9WidgetKit18PlaceholderRequest)init

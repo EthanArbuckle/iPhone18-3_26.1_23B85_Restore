@@ -1,9 +1,9 @@
 @interface AASignInOperationHelper
 - (AASignInOperationHelper)init;
-- (AASignInOperationHelper)initWithAccountStore:(id)a3;
-- (void)_refreshEnabledDataclassesForAccount:(id)a3;
-- (void)signInAccount:(id)a3 enablingDataclasses:(BOOL)a4 completion:(id)a5;
-- (void)signInAccount:(id)a3 withDataclassActions:(id)a4 completion:(id)a5;
+- (AASignInOperationHelper)initWithAccountStore:(id)store;
+- (void)_refreshEnabledDataclassesForAccount:(id)account;
+- (void)signInAccount:(id)account enablingDataclasses:(BOOL)dataclasses completion:(id)completion;
+- (void)signInAccount:(id)account withDataclassActions:(id)actions completion:(id)completion;
 @end
 
 @implementation AASignInOperationHelper
@@ -15,24 +15,24 @@
   v2 = [(AASignInOperationHelper *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     accountStore = v2->_accountStore;
-    v2->_accountStore = v3;
+    v2->_accountStore = defaultStore;
   }
 
   return v2;
 }
 
-- (AASignInOperationHelper)initWithAccountStore:(id)a3
+- (AASignInOperationHelper)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = AASignInOperationHelper;
   v6 = [(AASignInOperationHelper *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
     v8 = [[AADataclassManager alloc] initWithAccountStore:v7->_accountStore];
     dataclassManager = v7->_dataclassManager;
     v7->_dataclassManager = v8;
@@ -41,77 +41,77 @@
   return v7;
 }
 
-- (void)signInAccount:(id)a3 enablingDataclasses:(BOOL)a4 completion:(id)a5
+- (void)signInAccount:(id)account enablingDataclasses:(BOOL)dataclasses completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  dataclassesCopy = dataclasses;
+  accountCopy = account;
+  completionCopy = completion;
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [AASignInOperationHelper signInAccount:v10 enablingDataclasses:? completion:?];
   }
 
-  if (v6)
+  if (dataclassesCopy)
   {
     dataclassManager = self->_dataclassManager;
     if (dataclassManager)
     {
-      [(AADataclassManager *)dataclassManager enableDataclassesWithoutLocalDataDataclassActionsForAccount:v8 completion:v9];
+      [(AADataclassManager *)dataclassManager enableDataclassesWithoutLocalDataDataclassActionsForAccount:accountCopy completion:completionCopy];
     }
 
     else
     {
       v12 = +[AADataclassManager sharedManager];
-      [v12 enableDataclassesWithoutLocalDataDataclassActionsForAccount:v8 completion:v9];
+      [v12 enableDataclassesWithoutLocalDataDataclassActionsForAccount:accountCopy completion:completionCopy];
     }
   }
 
   else
   {
-    [(AASignInOperationHelper *)self _saveAccount:v8 completion:v9];
+    [(AASignInOperationHelper *)self _saveAccount:accountCopy completion:completionCopy];
   }
 }
 
-- (void)signInAccount:(id)a3 withDataclassActions:(id)a4 completion:(id)a5
+- (void)signInAccount:(id)account withDataclassActions:(id)actions completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  actionsCopy = actions;
+  completionCopy = completion;
   v11 = _AALogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [AASignInOperationHelper signInAccount:v11 withDataclassActions:? completion:?];
   }
 
-  if (v9)
+  if (actionsCopy)
   {
-    [(ACAccountStore *)self->_accountStore saveAccount:v8 withDataclassActions:v9 completion:v10];
+    [(ACAccountStore *)self->_accountStore saveAccount:accountCopy withDataclassActions:actionsCopy completion:completionCopy];
   }
 
   else
   {
-    [(AASignInOperationHelper *)self _saveAccount:v8 completion:v10];
+    [(AASignInOperationHelper *)self _saveAccount:accountCopy completion:completionCopy];
   }
 }
 
-- (void)_refreshEnabledDataclassesForAccount:(id)a3
+- (void)_refreshEnabledDataclassesForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(AASignInOperationHelper *)v3 _refreshEnabledDataclassesForAccount:v4];
+    [(AASignInOperationHelper *)accountCopy _refreshEnabledDataclassesForAccount:v4];
   }
 
-  v5 = [MEMORY[0x1E6959A48] defaultStore];
-  v6 = [v5 enabledDataclassesForAccount:v3];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v6 = [defaultStore enabledDataclassesForAccount:accountCopy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__AASignInOperationHelper__refreshEnabledDataclassesForAccount___block_invoke;
   v8[3] = &unk_1E7C9AEE8;
-  v9 = v3;
-  v7 = v3;
+  v9 = accountCopy;
+  v7 = accountCopy;
   [v6 enumerateObjectsUsingBlock:v8];
 }
 

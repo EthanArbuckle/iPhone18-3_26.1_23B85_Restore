@@ -7,7 +7,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -26,7 +26,7 @@
     v5 = [v19 dictionaryWithObjectsAndKeys:{v6, v7, v14, v15, 0}];
 
     v16 = +[ASItem parseRuleCache];
-    v17 = NSStringFromClass(a1);
+    v17 = NSStringFromClass(self);
     [v16 setObject:v5 forKey:v17];
   }
 

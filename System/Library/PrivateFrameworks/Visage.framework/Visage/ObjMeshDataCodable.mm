@@ -1,13 +1,13 @@
 @interface ObjMeshDataCodable
-- (ObjMeshDataCodable)initWithCoder:(id)a3;
-- (ObjMeshDataCodable)initWithObjMeshDataNoCopy:(const void *)a3;
+- (ObjMeshDataCodable)initWithCoder:(id)coder;
+- (ObjMeshDataCodable)initWithObjMeshDataNoCopy:(const void *)copy;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ObjMeshDataCodable
 
-- (ObjMeshDataCodable)initWithObjMeshDataNoCopy:(const void *)a3
+- (ObjMeshDataCodable)initWithObjMeshDataNoCopy:(const void *)copy
 {
   v8.receiver = self;
   v8.super_class = ObjMeshDataCodable;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_pObjMeshData = a3;
+    v4->_pObjMeshData = copy;
     v4->_freeWhenDone = 0;
     v6 = v4;
   }
@@ -66,9 +66,9 @@
   [(ObjMeshDataCodable *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_pObjMeshData)
   {
     cva::DictionaryHandler::DictionaryHandler(v5, [MEMORY[0x277CBEC10] mutableCopy]);
@@ -76,10 +76,10 @@
   }
 }
 
-- (ObjMeshDataCodable)initWithCoder:(id)a3
+- (ObjMeshDataCodable)initWithCoder:(id)coder
 {
   v13[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v13[2] = objc_opt_class();
@@ -87,7 +87,7 @@
   v13[4] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:5];
   v6 = [MEMORY[0x277CBEB98] setWithArray:v5];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"meshProperties"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"meshProperties"];
 
   cva::DictionaryHandler::DictionaryHandler(v12, v7);
   if (cva::DictionaryHandler::hasKey(v12, "V") && (cva::DictionaryHandler::hasKey(v12, "F") & 1) != 0)

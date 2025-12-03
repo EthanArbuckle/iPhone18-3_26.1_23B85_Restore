@@ -1,6 +1,6 @@
 @interface HFServiceBuilder
 - (BOOL)_shouldUpdateNilNameWithRoomName;
-- (HFServiceBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (HFServiceBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (NSArray)availableIconDescriptors;
 - (NSString)description;
 - (NSString)originalName;
@@ -9,67 +9,67 @@
 - (id)_lazilyUpdateIcon;
 - (id)_lazilyUpdateName;
 - (id)_lazilyUpdateRoom;
-- (id)_lazilyUpdateValueForContextType:(unint64_t)a3;
+- (id)_lazilyUpdateValueForContextType:(unint64_t)type;
 - (id)_performValidation;
 - (id)accessories;
 - (id)commitItem;
 - (id)removeItemFromHome;
-- (void)setAssociatedServiceType:(id)a3;
+- (void)setAssociatedServiceType:(id)type;
 @end
 
 @implementation HFServiceBuilder
 
-- (HFServiceBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFServiceBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  objectCopy = object;
+  homeCopy = home;
+  if (!objectCopy)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"HFServiceBuilder.m" lineNumber:40 description:{@"%@ can only be used with existing HMServices", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceBuilder.m" lineNumber:40 description:{@"%@ can only be used with existing HMServices", objc_opt_class()}];
   }
 
   v31.receiver = self;
   v31.super_class = HFServiceBuilder;
-  v9 = [(HFItemBuilder *)&v31 initWithExistingObject:v7 inHome:v8];
+  v9 = [(HFItemBuilder *)&v31 initWithExistingObject:objectCopy inHome:homeCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(HFServiceBuilder *)v9 service];
-    v12 = [HFNamingComponents namingComponentFromService:v11];
+    service = [(HFServiceBuilder *)v9 service];
+    v12 = [HFNamingComponents namingComponentFromService:service];
     [(HFServiceBuilder *)v10 setNamingComponent:v12];
 
-    v13 = [(HFServiceBuilder *)v10 originalName];
-    [(HFServiceBuilder *)v10 setName:v13];
+    originalName = [(HFServiceBuilder *)v10 originalName];
+    [(HFServiceBuilder *)v10 setName:originalName];
 
-    v14 = [(HFServiceBuilder *)v10 service];
-    v15 = [v14 accessory];
-    v16 = [v15 name];
-    [(HFServiceBuilder *)v10 setAccessoryName:v16];
+    service2 = [(HFServiceBuilder *)v10 service];
+    accessory = [service2 accessory];
+    name = [accessory name];
+    [(HFServiceBuilder *)v10 setAccessoryName:name];
 
     v17 = [HFRoomBuilder alloc];
-    v18 = [(HFServiceBuilder *)v10 service];
-    v19 = [v18 accessory];
-    v20 = [v19 room];
-    v21 = [(HFRoomBuilder *)v17 initWithExistingObject:v20 inHome:v8];
+    service3 = [(HFServiceBuilder *)v10 service];
+    accessory2 = [service3 accessory];
+    room = [accessory2 room];
+    v21 = [(HFRoomBuilder *)v17 initWithExistingObject:room inHome:homeCopy];
     [(HFServiceBuilder *)v10 setRoom:v21];
 
-    v22 = [(HFServiceBuilder *)v10 service];
-    v23 = [v22 associatedServiceType];
-    [(HFServiceBuilder *)v10 setAssociatedServiceType:v23];
+    service4 = [(HFServiceBuilder *)v10 service];
+    associatedServiceType = [service4 associatedServiceType];
+    [(HFServiceBuilder *)v10 setAssociatedServiceType:associatedServiceType];
 
-    v24 = [(HFServiceBuilder *)v10 service];
-    v25 = [v24 hf_iconDescriptor];
-    [(HFServiceBuilder *)v10 setIconDescriptor:v25];
+    service5 = [(HFServiceBuilder *)v10 service];
+    hf_iconDescriptor = [service5 hf_iconDescriptor];
+    [(HFServiceBuilder *)v10 setIconDescriptor:hf_iconDescriptor];
 
-    v26 = [(HFServiceBuilder *)v10 service];
-    -[HFServiceBuilder setShowInHomeDashboard:](v10, "setShowInHomeDashboard:", [v26 hf_effectiveShowInHomeDashboard]);
+    service6 = [(HFServiceBuilder *)v10 service];
+    -[HFServiceBuilder setShowInHomeDashboard:](v10, "setShowInHomeDashboard:", [service6 hf_effectiveShowInHomeDashboard]);
 
-    v27 = [(HFServiceBuilder *)v10 service];
-    -[HFServiceBuilder setIsFavorite:](v10, "setIsFavorite:", [v27 hf_effectiveIsFavorite]);
+    service7 = [(HFServiceBuilder *)v10 service];
+    -[HFServiceBuilder setIsFavorite:](v10, "setIsFavorite:", [service7 hf_effectiveIsFavorite]);
 
-    v28 = [(HFServiceBuilder *)v10 service];
-    -[HFServiceBuilder setConfigurationState:](v10, "setConfigurationState:", [v28 configurationState]);
+    service8 = [(HFServiceBuilder *)v10 service];
+    -[HFServiceBuilder setConfigurationState:](v10, "setConfigurationState:", [service8 configurationState]);
   }
 
   return v10;
@@ -77,43 +77,43 @@
 
 - (NSString)originalName
 {
-  v2 = [(HFServiceBuilder *)self namingComponent];
-  v3 = [v2 name];
+  namingComponent = [(HFServiceBuilder *)self namingComponent];
+  name = [namingComponent name];
 
-  return v3;
+  return name;
 }
 
-- (void)setAssociatedServiceType:(id)a3
+- (void)setAssociatedServiceType:(id)type
 {
-  v3 = a3;
-  v5 = a3;
+  typeCopy = type;
+  typeCopy2 = type;
   associatedServiceType = self->_associatedServiceType;
-  if (associatedServiceType != v5)
+  if (associatedServiceType != typeCopy2)
   {
-    v13 = v5;
-    v7 = [(NSString *)associatedServiceType isEqualToString:v5];
-    v5 = v13;
+    v13 = typeCopy2;
+    v7 = [(NSString *)associatedServiceType isEqualToString:typeCopy2];
+    typeCopy2 = v13;
     if (!v7)
     {
-      objc_storeStrong(&self->_associatedServiceType, v3);
+      objc_storeStrong(&self->_associatedServiceType, typeCopy);
       v8 = self->_associatedServiceType;
-      v9 = v8;
+      serviceType = v8;
       if (!v8)
       {
-        v3 = [(HFServiceBuilder *)self service];
-        v9 = [v3 serviceType];
+        typeCopy = [(HFServiceBuilder *)self service];
+        serviceType = [typeCopy serviceType];
       }
 
-      v10 = [(HFServiceBuilder *)self service];
-      v11 = [v10 serviceSubtype];
-      v12 = [HFServiceIconFactory defaultIconDescriptorForServiceType:v9 serviceSubtype:v11];
+      service = [(HFServiceBuilder *)self service];
+      serviceSubtype = [service serviceSubtype];
+      v12 = [HFServiceIconFactory defaultIconDescriptorForServiceType:serviceType serviceSubtype:serviceSubtype];
       [(HFServiceBuilder *)self setIconDescriptor:v12];
 
-      v5 = v13;
+      typeCopy2 = v13;
       if (!v8)
       {
 
-        v5 = v13;
+        typeCopy2 = v13;
       }
     }
   }
@@ -122,55 +122,55 @@
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFServiceBuilder *)self service];
-  v4 = [v3 accessory];
-  v5 = [v2 na_setWithSafeObject:v4];
+  service = [(HFServiceBuilder *)self service];
+  accessory = [service accessory];
+  v5 = [v2 na_setWithSafeObject:accessory];
 
   return v5;
 }
 
 - (NSArray)availableIconDescriptors
 {
-  v3 = [(HFServiceBuilder *)self associatedServiceType];
-  v4 = v3;
-  if (v3)
+  associatedServiceType = [(HFServiceBuilder *)self associatedServiceType];
+  v4 = associatedServiceType;
+  if (associatedServiceType)
   {
-    v5 = v3;
+    hf_effectiveServiceType = associatedServiceType;
   }
 
   else
   {
-    v6 = [(HFServiceBuilder *)self service];
-    v5 = [v6 hf_effectiveServiceType];
+    service = [(HFServiceBuilder *)self service];
+    hf_effectiveServiceType = [service hf_effectiveServiceType];
   }
 
-  v7 = [(HFServiceBuilder *)self service];
-  v8 = [v7 serviceSubtype];
-  v9 = [HFServiceIconFactory allIconDescriptorsForServiceType:v5 serviceSubtype:v8];
-  v10 = [v9 allObjects];
+  service2 = [(HFServiceBuilder *)self service];
+  serviceSubtype = [service2 serviceSubtype];
+  v9 = [HFServiceIconFactory allIconDescriptorsForServiceType:hf_effectiveServiceType serviceSubtype:serviceSubtype];
+  allObjects = [v9 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
 - (id)removeItemFromHome
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [(HFServiceBuilder *)self accessories];
-  v5 = [v4 anyObject];
+  accessories = [(HFServiceBuilder *)self accessories];
+  anyObject = [accessories anyObject];
 
   v6 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 hf_prettyDescription];
+    hf_prettyDescription = [anyObject hf_prettyDescription];
     *buf = 138412290;
-    v22 = v7;
+    v22 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Removing accessory from home: %@", buf, 0xCu);
   }
 
-  v8 = [(HFItemBuilder *)self home];
-  v9 = [v3 errorOnlyCompletionHandlerAdapter];
-  [v8 removeAccessory:v5 completionHandler:v9];
+  home = [(HFItemBuilder *)self home];
+  errorOnlyCompletionHandlerAdapter = [v3 errorOnlyCompletionHandlerAdapter];
+  [home removeAccessory:anyObject completionHandler:errorOnlyCompletionHandlerAdapter];
 
   objc_initWeak(buf, self);
   v18[0] = MEMORY[0x277D85DD0];
@@ -178,7 +178,7 @@
   v18[2] = __38__HFServiceBuilder_removeItemFromHome__block_invoke;
   v18[3] = &unk_277DF6F48;
   objc_copyWeak(&v20, buf);
-  v10 = v5;
+  v10 = anyObject;
   v19 = v10;
   v11 = [v3 flatMap:v18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -278,49 +278,49 @@ id __38__HFServiceBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void *
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFServiceBuilder *)self service];
+  service = [(HFServiceBuilder *)self service];
 
-  if (v4)
+  if (service)
   {
-    v5 = [(HFServiceBuilder *)self service];
-    v6 = [v5 hf_prettyDescription];
-    v7 = [v3 appendObject:v6 withName:@"service"];
+    service2 = [(HFServiceBuilder *)self service];
+    hf_prettyDescription = [service2 hf_prettyDescription];
+    v7 = [v3 appendObject:hf_prettyDescription withName:@"service"];
   }
 
   else
   {
-    v5 = [(HFServiceBuilder *)self name];
-    v8 = [v3 appendObject:v5 withName:@"name"];
+    service2 = [(HFServiceBuilder *)self name];
+    v8 = [v3 appendObject:service2 withName:@"name"];
   }
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (BOOL)_shouldUpdateNilNameWithRoomName
 {
-  v3 = [(HFServiceBuilder *)self name];
+  name = [(HFServiceBuilder *)self name];
 
-  if (v3)
+  if (name)
   {
     return 0;
   }
 
-  v5 = [(HFServiceBuilder *)self service];
-  v6 = [v5 accessory];
+  service = [(HFServiceBuilder *)self service];
+  accessory = [service accessory];
 
-  if (![v6 hf_isMediaAccessory] || (objc_msgSend(v6, "hf_isHomePod") & 1) != 0 || objc_msgSend(v6, "hf_isAppleTV"))
+  if (![accessory hf_isMediaAccessory] || (objc_msgSend(accessory, "hf_isHomePod") & 1) != 0 || objc_msgSend(accessory, "hf_isAppleTV"))
   {
-    v4 = [v6 hf_isTelevision];
+    hf_isTelevision = [accessory hf_isTelevision];
   }
 
   else
   {
-    v4 = 1;
+    hf_isTelevision = 1;
   }
 
-  return v4;
+  return hf_isTelevision;
 }
 
 - (id)_performValidation
@@ -344,14 +344,14 @@ id __38__HFServiceBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void *
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Starting commit (%@)", buf, 0xCu);
   }
 
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [v4 hf_currentUserIsAdministrator];
+  home = [(HFItemBuilder *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v5)
+  if (hf_currentUserIsAdministrator)
   {
     v6 = [(HFServiceBuilder *)self _lazilyUpdateValueForContextType:2];
     v30[0] = v6;
@@ -362,19 +362,19 @@ id __38__HFServiceBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void *
     v23 = [MEMORY[0x277D2C900] combineAllFutures:v24];
     v8 = @"HFOperationEditService";
     v9 = MEMORY[0x277D2C900];
-    v10 = [(HFServiceBuilder *)self _performValidation];
-    v29[0] = v10;
-    v11 = [(HFServiceBuilder *)self _lazilyUpdateName];
-    v29[1] = v11;
-    v12 = [(HFServiceBuilder *)self _lazilyUpdateRoom];
-    v29[2] = v12;
+    _performValidation = [(HFServiceBuilder *)self _performValidation];
+    v29[0] = _performValidation;
+    _lazilyUpdateName = [(HFServiceBuilder *)self _lazilyUpdateName];
+    v29[1] = _lazilyUpdateName;
+    _lazilyUpdateRoom = [(HFServiceBuilder *)self _lazilyUpdateRoom];
+    v29[2] = _lazilyUpdateRoom;
     v29[3] = v23;
-    v13 = [(HFServiceBuilder *)self _lazilyUpdateAssociatedServiceType];
-    v29[4] = v13;
-    v14 = [(HFServiceBuilder *)self _lazilyUpdateIcon];
-    v29[5] = v14;
-    v15 = [(HFServiceBuilder *)self _lazilyUpdateConfigurationState];
-    v29[6] = v15;
+    _lazilyUpdateAssociatedServiceType = [(HFServiceBuilder *)self _lazilyUpdateAssociatedServiceType];
+    v29[4] = _lazilyUpdateAssociatedServiceType;
+    _lazilyUpdateIcon = [(HFServiceBuilder *)self _lazilyUpdateIcon];
+    v29[5] = _lazilyUpdateIcon;
+    _lazilyUpdateConfigurationState = [(HFServiceBuilder *)self _lazilyUpdateConfigurationState];
+    v29[6] = _lazilyUpdateConfigurationState;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:7];
     v17 = [v9 chainFutures:v16];
     v26[0] = MEMORY[0x277D85DD0];
@@ -382,15 +382,15 @@ id __38__HFServiceBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void *
     v26[2] = __30__HFServiceBuilder_commitItem__block_invoke;
     v26[3] = &unk_277DF2D30;
     v27 = v8;
-    v28 = self;
-    v18 = [v17 recover:v26];
+    selfCopy2 = self;
+    futureWithNoResult = [v17 recover:v26];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __30__HFServiceBuilder_commitItem__block_invoke_2;
     v25[3] = &unk_277DF70B0;
     v25[4] = self;
-    v19 = [v18 addCompletionBlock:v25];
+    v19 = [futureWithNoResult addCompletionBlock:v25];
   }
 
   else
@@ -402,12 +402,12 @@ id __38__HFServiceBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void *
       _os_log_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Ignoring request to commit because the current user is not an administrator", buf, 2u);
     }
 
-    v18 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return futureWithNoResult;
 }
 
 id __30__HFServiceBuilder_commitItem__block_invoke(uint64_t a1, void *a2)
@@ -447,23 +447,23 @@ void __30__HFServiceBuilder_commitItem__block_invoke_2(uint64_t a1, uint64_t a2,
   v22 = *MEMORY[0x277D85DE8];
   if ([(HFServiceBuilder *)self _shouldUpdateNilNameWithRoomName])
   {
-    v3 = [(HFServiceBuilder *)self room];
-    v4 = [v3 name];
-    [(HFServiceBuilder *)self setName:v4];
+    room = [(HFServiceBuilder *)self room];
+    name = [room name];
+    [(HFServiceBuilder *)self setName:name];
   }
 
   else
   {
-    v3 = [(HFServiceBuilder *)self namingComponent];
-    v4 = [(HFServiceBuilder *)self name];
-    v5 = [v3 commitableNameForString:v4];
+    room = [(HFServiceBuilder *)self namingComponent];
+    name = [(HFServiceBuilder *)self name];
+    v5 = [room commitableNameForString:name];
     [(HFServiceBuilder *)self setName:v5];
   }
 
-  v6 = [(HFServiceBuilder *)self name];
-  v7 = [(HFServiceBuilder *)self originalName];
-  v8 = v6;
-  v9 = v7;
+  name2 = [(HFServiceBuilder *)self name];
+  originalName = [(HFServiceBuilder *)self originalName];
+  v8 = name2;
+  v9 = originalName;
   v10 = v9;
   if (v8 == v9)
   {
@@ -482,7 +482,7 @@ LABEL_13:
       v18[2] = __37__HFServiceBuilder__lazilyUpdateName__block_invoke;
       v18[3] = &unk_277DF4F68;
       objc_copyWeak(&v19, buf);
-      v14 = [v15 lazyFutureWithBlock:v18];
+      futureWithNoResult = [v15 lazyFutureWithBlock:v18];
       objc_destroyWeak(&v19);
       objc_destroyWeak(buf);
       goto LABEL_14;
@@ -499,17 +499,17 @@ LABEL_13:
   v12 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(HFServiceBuilder *)self name];
+    name3 = [(HFServiceBuilder *)self name];
     *buf = 138412290;
-    v21 = v13;
+    v21 = name3;
     _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Not updating name because it hasn't changed (%@)", buf, 0xCu);
   }
 
-  v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoResult;
 }
 
 void __37__HFServiceBuilder__lazilyUpdateName__block_invoke(uint64_t a1, void *a2)
@@ -691,51 +691,51 @@ void __37__HFServiceBuilder__lazilyUpdateName__block_invoke_2_40(uint64_t a1, vo
   [v3 logError:v2 operationDescription:@"HFServiceBuilder.updateName"];
 }
 
-- (id)_lazilyUpdateValueForContextType:(unint64_t)a3
+- (id)_lazilyUpdateValueForContextType:(unint64_t)type
 {
   v5 = 0;
   v28 = *MEMORY[0x277D85DE8];
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_10;
       }
 
-      v6 = [(HFServiceBuilder *)self showInHomeDashboard];
+      showInHomeDashboard = [(HFServiceBuilder *)self showInHomeDashboard];
       goto LABEL_9;
     }
 
 LABEL_8:
-    v6 = [(HFServiceBuilder *)self isFavorite];
+    showInHomeDashboard = [(HFServiceBuilder *)self isFavorite];
 LABEL_9:
-    v5 = v6;
+    v5 = showInHomeDashboard;
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!type)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     NSLog(&cfstr_IncludeInStatu_3.isa, a2);
 LABEL_16:
-    v16 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_22;
   }
 
 LABEL_10:
-  v7 = [(HFServiceBuilder *)self service];
-  v8 = [v7 accessory];
-  v9 = [v8 home];
-  v10 = [v9 accessories];
-  v11 = [(HFServiceBuilder *)self service];
-  v12 = [v11 accessory];
-  v13 = [v10 containsObject:v12];
+  service = [(HFServiceBuilder *)self service];
+  accessory = [service accessory];
+  home = [accessory home];
+  accessories = [home accessories];
+  service2 = [(HFServiceBuilder *)self service];
+  accessory2 = [service2 accessory];
+  v13 = [accessories containsObject:accessory2];
 
   if ((v13 & 1) == 0)
   {
@@ -743,18 +743,18 @@ LABEL_10:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v25 = a3;
+      typeCopy2 = type;
       _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Not updating state for context type %lu because accessory was removed from the home", buf, 0xCu);
     }
 
     goto LABEL_16;
   }
 
-  v14 = [(HFServiceBuilder *)self service];
-  if (v5 == [v14 hf_isOnForContextType:a3])
+  service3 = [(HFServiceBuilder *)self service];
+  if (v5 == [service3 hf_isOnForContextType:type])
   {
-    v17 = [(HFServiceBuilder *)self service];
-    v18 = [v17 hf_hasSetForContextType:a3];
+    service4 = [(HFServiceBuilder *)self service];
+    v18 = [service4 hf_hasSetForContextType:type];
 
     if (v18)
     {
@@ -762,7 +762,7 @@ LABEL_10:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v25 = a3;
+        typeCopy2 = type;
         v26 = 1024;
         v27 = v5;
         _os_log_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Not updating state for context type %lu because it hasn't changed (currentState = %{BOOL}d)", buf, 0x12u);
@@ -781,13 +781,13 @@ LABEL_10:
   v22[2] = __53__HFServiceBuilder__lazilyUpdateValueForContextType___block_invoke;
   v22[3] = &unk_277DF7088;
   v22[4] = self;
-  v22[5] = a3;
+  v22[5] = type;
   v23 = v5;
-  v16 = [MEMORY[0x277D2C900] lazyFutureWithBlock:v22];
+  futureWithNoResult = [MEMORY[0x277D2C900] lazyFutureWithBlock:v22];
 LABEL_22:
   v20 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return futureWithNoResult;
 }
 
 void __53__HFServiceBuilder__lazilyUpdateValueForContextType___block_invoke(uint64_t a1, void *a2)
@@ -915,28 +915,28 @@ void __53__HFServiceBuilder__lazilyUpdateValueForContextType___block_invoke_2(ui
 - (id)_lazilyUpdateRoom
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HFServiceBuilder *)self service];
-  v4 = [v3 accessory];
+  service = [(HFServiceBuilder *)self service];
+  accessory = [service accessory];
 
-  v5 = [v4 room];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [(HFServiceBuilder *)self room];
-  v8 = [v7 room];
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v6 isEqual:v9];
+  room = [accessory room];
+  uniqueIdentifier = [room uniqueIdentifier];
+  room2 = [(HFServiceBuilder *)self room];
+  v7Room = [room2 room];
+  uniqueIdentifier2 = [v7Room uniqueIdentifier];
+  v10 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v10)
   {
     v11 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(HFServiceBuilder *)self room];
+      room3 = [(HFServiceBuilder *)self room];
       *buf = 138412290;
-      v25 = v12;
+      v25 = room3;
       _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Not updating room because it hasn't changed (%@)", buf, 0xCu);
     }
 
-    v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -946,15 +946,15 @@ void __53__HFServiceBuilder__lazilyUpdateValueForContextType___block_invoke_2(ui
     v19 = 3221225472;
     v20 = __37__HFServiceBuilder__lazilyUpdateRoom__block_invoke;
     v21 = &unk_277DF28D8;
-    v22 = self;
-    v23 = v4;
-    v13 = [v14 lazyFutureWithBlock:&v18];
-    v15 = [v13 addCompletionBlock:{&__block_literal_global_61_5, v18, v19, v20, v21, v22}];
+    selfCopy = self;
+    v23 = accessory;
+    futureWithNoResult = [v14 lazyFutureWithBlock:&v18];
+    v15 = [futureWithNoResult addCompletionBlock:{&__block_literal_global_61_5, v18, v19, v20, v21, selfCopy}];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return futureWithNoResult;
 }
 
 void __37__HFServiceBuilder__lazilyUpdateRoom__block_invoke(uint64_t a1, void *a2)
@@ -1043,27 +1043,27 @@ void __37__HFServiceBuilder__lazilyUpdateRoom__block_invoke_2(uint64_t a1, uint6
 - (id)_lazilyUpdateIcon
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HFServiceBuilder *)self service];
-  v4 = [v3 hf_iconDescriptor];
-  v5 = [v4 identifier];
+  service = [(HFServiceBuilder *)self service];
+  hf_iconDescriptor = [service hf_iconDescriptor];
+  identifier = [hf_iconDescriptor identifier];
 
-  v6 = [(HFServiceBuilder *)self iconDescriptor];
-  v7 = [v6 identifier];
-  v8 = [v5 isEqualToString:v7];
+  iconDescriptor = [(HFServiceBuilder *)self iconDescriptor];
+  identifier2 = [iconDescriptor identifier];
+  v8 = [identifier isEqualToString:identifier2];
 
   if (v8)
   {
     v9 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(HFServiceBuilder *)self iconDescriptor];
-      v11 = [v10 identifier];
+      iconDescriptor2 = [(HFServiceBuilder *)self iconDescriptor];
+      identifier3 = [iconDescriptor2 identifier];
       *buf = 138412290;
-      v18 = v11;
+      v18 = identifier3;
       _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Not updating icon because it hasn't changed (%@)", buf, 0xCu);
     }
 
-    v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -1073,10 +1073,10 @@ void __37__HFServiceBuilder__lazilyUpdateRoom__block_invoke_2(uint64_t a1, uint6
     v16[2] = __37__HFServiceBuilder__lazilyUpdateIcon__block_invoke;
     v16[3] = &unk_277DF29A0;
     v16[4] = self;
-    v12 = [MEMORY[0x277D2C900] lazyFutureWithBlock:v16];
+    futureWithNoResult = [MEMORY[0x277D2C900] lazyFutureWithBlock:v16];
   }
 
-  v13 = v12;
+  v13 = futureWithNoResult;
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -1186,20 +1186,20 @@ void __37__HFServiceBuilder__lazilyUpdateIcon__block_invoke_66(uint64_t a1, void
 - (id)_lazilyUpdateAssociatedServiceType
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HFServiceBuilder *)self associatedServiceType];
-  v4 = [(HFServiceBuilder *)self service];
-  v5 = [v4 serviceType];
-  v6 = [(__CFString *)v3 isEqualToString:v5];
+  associatedServiceType = [(HFServiceBuilder *)self associatedServiceType];
+  service = [(HFServiceBuilder *)self service];
+  serviceType = [service serviceType];
+  v6 = [(__CFString *)associatedServiceType isEqualToString:serviceType];
 
   if (v6)
   {
 
-    v3 = 0;
+    associatedServiceType = 0;
   }
 
-  if (v3)
+  if (associatedServiceType)
   {
-    v7 = v3;
+    v7 = associatedServiceType;
   }
 
   else
@@ -1207,12 +1207,12 @@ void __37__HFServiceBuilder__lazilyUpdateIcon__block_invoke_66(uint64_t a1, void
     v7 = &stru_2824B1A78;
   }
 
-  v8 = [(HFServiceBuilder *)self service];
-  v9 = [v8 associatedServiceType];
-  v10 = v9;
-  if (v9)
+  service2 = [(HFServiceBuilder *)self service];
+  associatedServiceType2 = [service2 associatedServiceType];
+  v10 = associatedServiceType2;
+  if (associatedServiceType2)
   {
-    v11 = v9;
+    v11 = associatedServiceType2;
   }
 
   else
@@ -1228,11 +1228,11 @@ void __37__HFServiceBuilder__lazilyUpdateIcon__block_invoke_66(uint64_t a1, void
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v3;
+      v22 = associatedServiceType;
       _os_log_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Not updating associated service type because it hasn't changed (%@)", buf, 0xCu);
     }
 
-    v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -1242,14 +1242,14 @@ void __37__HFServiceBuilder__lazilyUpdateIcon__block_invoke_66(uint64_t a1, void
     v18[1] = 3221225472;
     v18[2] = __54__HFServiceBuilder__lazilyUpdateAssociatedServiceType__block_invoke;
     v18[3] = &unk_277DF28D8;
-    v19 = v3;
-    v20 = self;
-    v14 = [v15 lazyFutureWithBlock:v18];
+    v19 = associatedServiceType;
+    selfCopy = self;
+    futureWithNoResult = [v15 lazyFutureWithBlock:v18];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoResult;
 }
 
 void __54__HFServiceBuilder__lazilyUpdateAssociatedServiceType__block_invoke(int8x16_t *a1, void *a2)
@@ -1348,22 +1348,22 @@ void __54__HFServiceBuilder__lazilyUpdateAssociatedServiceType__block_invoke_74(
 - (id)_lazilyUpdateConfigurationState
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HFServiceBuilder *)self configurationState];
-  v4 = [(HFServiceBuilder *)self service];
-  v5 = [v4 configurationState];
+  configurationState = [(HFServiceBuilder *)self configurationState];
+  service = [(HFServiceBuilder *)self service];
+  configurationState2 = [service configurationState];
 
-  if (v3 == v5)
+  if (configurationState == configurationState2)
   {
     v6 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = NSStringFromConfigurationState(v3);
+      v7 = NSStringFromConfigurationState(configurationState);
       *buf = 138412290;
       v13 = v7;
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "HFServiceBuilder: Not updating configuration state because it hasn't changed (%@)", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -1373,13 +1373,13 @@ void __54__HFServiceBuilder__lazilyUpdateAssociatedServiceType__block_invoke_74(
     v11[2] = __51__HFServiceBuilder__lazilyUpdateConfigurationState__block_invoke;
     v11[3] = &unk_277DF2770;
     v11[4] = self;
-    v11[5] = v3;
-    v8 = [MEMORY[0x277D2C900] lazyFutureWithBlock:v11];
+    v11[5] = configurationState;
+    futureWithNoResult = [MEMORY[0x277D2C900] lazyFutureWithBlock:v11];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return futureWithNoResult;
 }
 
 void __51__HFServiceBuilder__lazilyUpdateConfigurationState__block_invoke(uint64_t a1, void *a2)

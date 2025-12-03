@@ -1,38 +1,38 @@
 @interface PGLandscapeWallpaperSuggester
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 thresholdHelper:(id)a6 statistics:(id *)a7;
-+ (BOOL)isPositiveLandscapeAsset:(id)a3;
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6;
-+ (id)candidatesFromAssets:(id)a3;
-+ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)a3;
-- (PGLandscapeWallpaperSuggester)initWithSession:(id)a3;
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext thresholdHelper:(id)helper statistics:(id *)statistics;
++ (BOOL)isPositiveLandscapeAsset:(id)asset;
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason;
++ (id)candidatesFromAssets:(id)assets;
++ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)ds;
+- (PGLandscapeWallpaperSuggester)initWithSession:(id)session;
 - (id)fetchCandidateAssets;
-- (id)fetchUnsortedCandidatesWithProgressReporter:(id)a3;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
-- (void)logPosterFilteringStatistics:(id *)a3;
+- (id)fetchUnsortedCandidatesWithProgressReporter:(id)reporter;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
+- (void)logPosterFilteringStatistics:(id *)statistics;
 - (void)setupFilteringContexts;
 @end
 
 @implementation PGLandscapeWallpaperSuggester
 
-- (void)logPosterFilteringStatistics:(id *)a3
+- (void)logPosterFilteringStatistics:(id *)statistics
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = [(PGAbstractSuggester *)self session];
-  v5 = [v4 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
-    var3 = a3->var3;
-    var4 = a3->var4;
-    var5 = a3->var5;
-    var6 = a3->var6;
-    var7 = a3->var7;
-    var8 = a3->var8;
-    var9 = a3->var9;
-    var10 = a3->var10;
+    var0 = statistics->var0;
+    var1 = statistics->var1;
+    var2 = statistics->var2;
+    var3 = statistics->var3;
+    var4 = statistics->var4;
+    var5 = statistics->var5;
+    var6 = statistics->var6;
+    var7 = statistics->var7;
+    var8 = statistics->var8;
+    var9 = statistics->var9;
+    var10 = statistics->var10;
     v18[0] = 67111680;
     v18[1] = var0;
     v19 = 1024;
@@ -55,17 +55,17 @@
     v36 = var9;
     v37 = 1024;
     v38 = var10;
-    _os_log_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_INFO, "[PGLandscapeWallpaperSuggester] Filtered out %d for isUtility, %d for avoidForKeyAsset, %d for aesthetics, %d for wallpaper score, %d for clock overlap, %d for low resolution, %d for crop score, %d for not safe for display, %d for positive people scene, %d for low light, %d for sensitive location", v18, 0x44u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGLandscapeWallpaperSuggester] Filtered out %d for isUtility, %d for avoidForKeyAsset, %d for aesthetics, %d for wallpaper score, %d for clock overlap, %d for low resolution, %d for crop score, %d for not safe for display, %d for positive people scene, %d for low light, %d for sensitive location", v18, 0x44u);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchUnsortedCandidatesWithProgressReporter:(id)a3
+- (id)fetchUnsortedCandidatesWithProgressReporter:(id)reporter
 {
   v93 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isCancelledWithProgress:0.0])
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -81,11 +81,11 @@
 
   else
   {
-    v58 = [(PGAbstractSuggester *)self session];
-    v6 = [v58 loggingConnection];
-    v57 = [(PGLandscapeWallpaperSuggester *)self fetchCandidateAssets];
-    v52 = v6;
-    if ([v4 isCancelledWithProgress:0.2])
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
+    fetchCandidateAssets = [(PGLandscapeWallpaperSuggester *)self fetchCandidateAssets];
+    v52 = loggingConnection;
+    if ([reporterCopy isCancelledWithProgress:0.2])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -102,7 +102,7 @@
     else
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = v6;
+      v8 = loggingConnection;
       v9 = os_signpost_id_generate(v8);
       v10 = v8;
       v11 = v10;
@@ -118,7 +118,7 @@
       info = 0;
       mach_timebase_info(&info);
       v50 = mach_absolute_time();
-      v12 = [v57 count];
+      v12 = [fetchCandidateAssets count];
       v56 = v12;
       v13 = v12 + 199;
       v91 = 0u;
@@ -136,7 +136,7 @@
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v14 = [v58 curationContext];
+      curationContext = [session curationContext];
       if (v13 >= 0xC8)
       {
         v26 = 0;
@@ -145,16 +145,16 @@
         *&v15 = 134218240;
         v48 = v15;
         oslog = v11;
-        v55 = v4;
+        v55 = reporterCopy;
         while (1)
         {
           v60 = v26;
           context = objc_autoreleasePoolPush();
           v59 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v48, spid}];
-          v28 = [v57 objectsAtIndexes:?];
+          v28 = [fetchCandidateAssets objectsAtIndexes:?];
           v29 = MEMORY[0x277CD97A8];
-          v30 = [v58 curationContext];
-          [v29 prefetchOnAssets:v28 options:14 curationContext:v30];
+          curationContext2 = [session curationContext];
+          [v29 prefetchOnAssets:v28 options:14 curationContext:curationContext2];
 
           v67 = 0u;
           v68 = 0u;
@@ -179,22 +179,22 @@
                 v34 = objc_autoreleasePoolPush();
                 v35 = [objc_alloc(v31[208]) initWithAsset:v33];
                 v36 = objc_opt_class();
-                v37 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
-                LODWORD(v36) = [v36 candidate:v35 passesFilteringWithContext:v37 curationContext:v14 thresholdHelper:self->_peopleSceneConfidenceThresholdHelper statistics:buf];
+                primaryFilteringContext = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
+                LODWORD(v36) = [v36 candidate:v35 passesFilteringWithContext:primaryFilteringContext curationContext:curationContext thresholdHelper:self->_peopleSceneConfidenceThresholdHelper statistics:buf];
 
                 if (v36)
                 {
-                  v38 = [(PGLandscapeWallpaperSuggester *)self secondaryFilteringContext];
-                  if (!v38)
+                  secondaryFilteringContext = [(PGLandscapeWallpaperSuggester *)self secondaryFilteringContext];
+                  if (!secondaryFilteringContext)
                   {
                     goto LABEL_38;
                   }
 
-                  v39 = v38;
+                  v39 = secondaryFilteringContext;
                   v40 = objc_opt_class();
                   [(PGLandscapeWallpaperSuggester *)self secondaryFilteringContext];
                   v42 = v41 = v7;
-                  LODWORD(v40) = [v40 candidate:v35 passesFilteringWithContext:v42 curationContext:v14 thresholdHelper:self->_peopleSceneConfidenceThresholdHelper statistics:&v69];
+                  LODWORD(v40) = [v40 candidate:v35 passesFilteringWithContext:v42 curationContext:curationContext thresholdHelper:self->_peopleSceneConfidenceThresholdHelper statistics:&v69];
 
                   v7 = v41;
                   v31 = off_27887B000;
@@ -219,16 +219,16 @@ LABEL_38:
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
           {
             v43 = oslog;
-            v44 = [v59 firstIndex];
-            v45 = [v59 lastIndex];
+            firstIndex = [v59 firstIndex];
+            lastIndex = [v59 lastIndex];
             *v78 = v48;
-            *&v78[4] = v44;
+            *&v78[4] = firstIndex;
             *&v78[12] = 2048;
-            *&v78[14] = v45;
+            *&v78[14] = lastIndex;
             _os_log_debug_impl(&dword_22F0FC000, v43, OS_LOG_TYPE_DEBUG, "[PGLandscapeWallpaperSuggester] processed candidates from %lu to %lu", v78, 0x16u);
           }
 
-          v4 = v55;
+          reporterCopy = v55;
           if ([v55 isCancelledWithProgress:v27 * v60 + 0.2])
           {
             break;
@@ -258,7 +258,7 @@ LABEL_38:
       else
       {
 LABEL_13:
-        v16 = v14;
+        v16 = curationContext;
         v17 = v7;
         v18 = mach_absolute_time();
         numer = info.numer;
@@ -306,9 +306,9 @@ LABEL_13:
         *v78 = *buf;
         *&v78[16] = *&buf[16];
         [(PGLandscapeWallpaperSuggester *)self logPosterFilteringStatistics:v78];
-        v25 = [(PGLandscapeWallpaperSuggester *)self secondaryFilteringContext];
+        secondaryFilteringContext2 = [(PGLandscapeWallpaperSuggester *)self secondaryFilteringContext];
 
-        if (v25)
+        if (secondaryFilteringContext2)
         {
           if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
           {
@@ -335,7 +335,7 @@ LABEL_13:
 
         v7 = v17;
         v5 = v17;
-        v14 = v16;
+        curationContext = v16;
       }
     }
   }
@@ -348,10 +348,10 @@ LABEL_13:
 - (id)fetchCandidateAssets
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v2 = [(PGAbstractSuggester *)self session];
-  v3 = [v2 loggingConnection];
-  v4 = os_signpost_id_generate(v3);
-  v5 = v3;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  v4 = os_signpost_id_generate(loggingConnection);
+  v5 = loggingConnection;
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
@@ -362,24 +362,24 @@ LABEL_13:
   info = 0;
   mach_timebase_info(&info);
   v7 = mach_absolute_time();
-  v8 = [v2 photoLibrary];
-  v9 = [v8 librarySpecificFetchOptions];
-  [v9 setCacheSizeForFetch:200];
-  [v9 setChunkSizeForFetch:200];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setCacheSizeForFetch:200];
+  [librarySpecificFetchOptions setChunkSizeForFetch:200];
   v10 = +[PGWallpaperSuggestionUtilities assetFetchPropertySetsIncludingGating:](PGWallpaperSuggestionUtilities, "assetFetchPropertySetsIncludingGating:", [objc_opt_class() filtersForTopSuggestions]);
-  [v9 setFetchPropertySets:v10];
+  [librarySpecificFetchOptions setFetchPropertySets:v10];
 
   v11 = objc_opt_class();
-  v12 = [v2 forbiddenAssetUUIDs];
-  v13 = [v11 prefilteringInternalPredicateWithForbiddenAssetUUIDs:v12];
-  [v9 setInternalPredicate:v13];
+  forbiddenAssetUUIDs = [session forbiddenAssetUUIDs];
+  v13 = [v11 prefilteringInternalPredicateWithForbiddenAssetUUIDs:forbiddenAssetUUIDs];
+  [librarySpecificFetchOptions setInternalPredicate:v13];
 
   v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
   v31[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-  [v9 setSortDescriptors:v15];
+  [librarySpecificFetchOptions setSortDescriptors:v15];
 
-  v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v9];
+  v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v17 = v6;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -414,11 +414,11 @@ LABEL_13:
   return v16;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v151[8] = *MEMORY[0x277D85DE8];
-  v132 = a3;
-  v130 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v5 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:?];
   v143 = 0;
   v144 = &v143;
@@ -441,10 +441,10 @@ LABEL_13:
     goto LABEL_29;
   }
 
-  v8 = [v132 maximumNumberOfSuggestions];
-  v9 = [(PGAbstractSuggester *)self session];
-  [v9 loggingConnection];
-  v10 = v128 = v9;
+  maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
+  session = [(PGAbstractSuggester *)self session];
+  [session loggingConnection];
+  v10 = v128 = session;
   v11 = os_signpost_id_generate(v10);
   v12 = v10;
   v13 = v12;
@@ -461,12 +461,12 @@ LABEL_13:
   info = 0;
   mach_timebase_info(&info);
   v121 = mach_absolute_time();
-  v14 = [v132 additionalOptions];
+  additionalOptions = [optionsCopy additionalOptions];
 
-  if (v14)
+  if (additionalOptions)
   {
-    v15 = [v132 additionalOptions];
-    v16 = [v15 objectForKey:@"filteringContext"];
+    additionalOptions2 = [optionsCopy additionalOptions];
+    v16 = [additionalOptions2 objectForKey:@"filteringContext"];
 
     if (v16)
     {
@@ -478,7 +478,7 @@ LABEL_13:
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    *v149 = v8;
+    *v149 = maximumNumberOfSuggestions;
     _os_log_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_INFO, "[PGLandscapeWallpaperSuggester] Starting to generate %d suggestions.", buf, 8u);
   }
 
@@ -588,8 +588,8 @@ LABEL_26:
   v28 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"wallpaperScore" ascending:0];
   v151[4] = v28;
   v29 = MEMORY[0x277D3C828];
-  v30 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
-  v31 = [v29 cropScoreSortDescriptorForOrientation:{objc_msgSend(v30, "orientation")}];
+  primaryFilteringContext = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
+  v31 = [v29 cropScoreSortDescriptorForOrientation:{objc_msgSend(primaryFilteringContext, "orientation")}];
   v151[5] = v31;
   v32 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v151[6] = v32;
@@ -598,9 +598,9 @@ LABEL_26:
   v114 = [MEMORY[0x277CBEA60] arrayWithObjects:v151 count:8];
 
   v34 = MEMORY[0x277D3C810];
-  v35 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
-  [v35 timeIntervalForCandidateDeduping];
-  v111 = [v34 sortedDedupedCandidatesFromCandidates:v129 sortDescriptors:v114 timeIntervalForCandidateDeduping:v8 targetNumberOfSuggestions:4 maximumTimeIntervalReductionFactor:?];
+  primaryFilteringContext2 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
+  [primaryFilteringContext2 timeIntervalForCandidateDeduping];
+  v111 = [v34 sortedDedupedCandidatesFromCandidates:v129 sortDescriptors:v114 timeIntervalForCandidateDeduping:maximumNumberOfSuggestions targetNumberOfSuggestions:4 maximumTimeIntervalReductionFactor:?];
 
   if (v144[3])
   {
@@ -626,17 +626,17 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v42 = [objc_opt_class() suggestionTypes];
-  v120 = [v42 firstIndex];
+  suggestionTypes = [objc_opt_class() suggestionTypes];
+  firstIndex = [suggestionTypes firstIndex];
 
-  v43 = [objc_opt_class() suggestionSubtypes];
-  v119 = [v43 firstIndex];
+  suggestionSubtypes = [objc_opt_class() suggestionSubtypes];
+  firstIndex2 = [suggestionSubtypes firstIndex];
 
   assetGater = self->_assetGater;
   v45 = [PGWallpaperSuggestionAccumulator alloc];
   if (assetGater)
   {
-    v46 = 2 * v8;
+    v46 = 2 * maximumNumberOfSuggestions;
   }
 
   else
@@ -654,9 +654,9 @@ LABEL_42:
     v47 = 0;
   }
 
-  v110 = [(PGWallpaperSuggestionAccumulator *)v45 initWithTargetNumberOfSuggestions:v8 targetMinimumNumberOfGatedSuggestions:v47 maximumNumberOfSuggestionsToTryForGating:v46 loggingConnection:oslog];
-  v106 = [MEMORY[0x277CBEAA8] date];
-  v109 = [v106 dateByAddingTimeInterval:120.0];
+  v110 = [(PGWallpaperSuggestionAccumulator *)v45 initWithTargetNumberOfSuggestions:maximumNumberOfSuggestions targetMinimumNumberOfGatedSuggestions:v47 maximumNumberOfSuggestionsToTryForGating:v46 loggingConnection:oslog];
+  date = [MEMORY[0x277CBEAA8] date];
+  v109 = [date dateByAddingTimeInterval:120.0];
   v48 = [v111 count];
   log = oslog;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -665,7 +665,7 @@ LABEL_42:
     *buf = 67109890;
     *v149 = v48;
     *&v149[4] = 2112;
-    *&v149[6] = v106;
+    *&v149[6] = date;
     *&v149[14] = 2112;
     *&v149[16] = v49;
     LOWORD(v150[0]) = 2112;
@@ -698,7 +698,7 @@ LABEL_42:
 LABEL_99:
 
 LABEL_100:
-    v88 = [(PGWallpaperSuggestionAccumulator *)v110 suggestions];
+    suggestions = [(PGWallpaperSuggestionAccumulator *)v110 suggestions];
     v89 = self->_assetGater;
     v90 = log;
     v91 = os_log_type_enabled(v90, OS_LOG_TYPE_INFO);
@@ -709,12 +709,12 @@ LABEL_100:
         goto LABEL_106;
       }
 
-      v92 = [v88 count];
-      v93 = [(PGWallpaperSuggestionAccumulator *)v110 numberOfGatedSuggestions];
+      v92 = [suggestions count];
+      numberOfGatedSuggestions = [(PGWallpaperSuggestionAccumulator *)v110 numberOfGatedSuggestions];
       *buf = 67109376;
       *v149 = v92;
       *&v149[4] = 1024;
-      *&v149[6] = v93;
+      *&v149[6] = numberOfGatedSuggestions;
       v94 = "[PGLandscapeWallpaperSuggester] Generated %d suggestions (%d gated)";
       v95 = v90;
       v96 = 14;
@@ -727,7 +727,7 @@ LABEL_100:
         goto LABEL_106;
       }
 
-      v97 = [v88 count];
+      v97 = [suggestions count];
       *buf = 67109120;
       *v149 = v97;
       v94 = "[PGLandscapeWallpaperSuggester] Generated %d suggestions";
@@ -784,7 +784,7 @@ LABEL_106:
           _os_log_impl(&dword_22F0FC000, v103, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
         }
 
-        v7 = v88;
+        v7 = suggestions;
         goto LABEL_120;
       }
     }
@@ -827,17 +827,17 @@ LABEL_58:
     v56 = *(*(&v138 + 1) + 8 * v55);
     v57 = objc_autoreleasePoolPush();
     v58 = [PGSingleAssetSuggestion alloc];
-    v59 = [v56 asset];
-    v60 = [(PGSingleAssetSuggestion *)v58 initWithType:v120 subtype:v119 asset:v59];
+    asset = [v56 asset];
+    v60 = [(PGSingleAssetSuggestion *)v58 initWithType:firstIndex subtype:firstIndex2 asset:asset];
 
     if (self->_assetGater)
     {
-      v61 = [v56 asset];
-      v62 = [PGSettlingEffectWallpaperSuggesterFilteringContext shouldRunSettlingEffectForAsset:v61 subtype:604];
+      asset2 = [v56 asset];
+      v62 = [PGSettlingEffectWallpaperSuggesterFilteringContext shouldRunSettlingEffectForAsset:asset2 subtype:604];
 
       [(PGWallpaperSuggestionAssetGater *)self->_assetGater setEnableSettlingEffect:v62];
       v63 = self->_assetGater;
-      v64 = [v56 asset];
+      asset3 = [v56 asset];
       v134[0] = MEMORY[0x277D85DD0];
       v134[1] = 3221225472;
       v134[2] = __65__PGLandscapeWallpaperSuggester_suggestionsWithOptions_progress___block_invoke;
@@ -845,18 +845,18 @@ LABEL_58:
       v136 = &v143;
       v135 = v5;
       v137 = v54 * v53;
-      v65 = [(PGWallpaperSuggestionAssetGater *)v63 gateAsset:v64 progressBlock:v134];
+      v65 = [(PGWallpaperSuggestionAssetGater *)v63 gateAsset:asset3 progressBlock:v134];
 
       -[PGSingleAssetSuggestion setAvailableFeatures:](v60, "setAvailableFeatures:", [v65 availableFeatures]);
-      v66 = [v65 passesAnyGating];
-      LODWORD(v61) = [v65 didTimeout];
+      passesAnyGating = [v65 passesAnyGating];
+      LODWORD(asset2) = [v65 didTimeout];
 
-      v124 += v61;
+      v124 += asset2;
     }
 
     else
     {
-      v66 = 1;
+      passesAnyGating = 1;
     }
 
     if (v144[3])
@@ -885,34 +885,34 @@ LABEL_67:
     }
 
     ++v116;
-    if (v66)
+    if (passesAnyGating)
     {
       goto LABEL_74;
     }
 
-    v70 = [v56 cropResult];
-    v71 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
-    v72 = [v70 cropForOrientation:{objc_msgSend(v71, "orientation")}];
+    cropResult = [v56 cropResult];
+    primaryFilteringContext3 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
+    v72 = [cropResult cropForOrientation:{objc_msgSend(primaryFilteringContext3, "orientation")}];
 
-    v73 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
-    v108 = ([v73 ignoreClockOverlap] & 1) != 0 ? 1 : objc_msgSend(v72, "passesClockOverlap");
+    primaryFilteringContext4 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
+    v108 = ([primaryFilteringContext4 ignoreClockOverlap] & 1) != 0 ? 1 : objc_msgSend(v72, "passesClockOverlap");
 
     [v72 cropZoomRatio];
     v75 = v74;
-    v76 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
-    [v76 maximumCropZoomRatio];
+    primaryFilteringContext5 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
+    [primaryFilteringContext5 maximumCropZoomRatio];
     v78 = v77;
 
     [v72 cropScore];
     v80 = v79;
-    v81 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
-    [v81 minimumCropScore];
+    primaryFilteringContext6 = [(PGLandscapeWallpaperSuggester *)self primaryFilteringContext];
+    [primaryFilteringContext6 minimumCropScore];
     v83 = v80 >= v82;
 
     if ((v108 & (v75 <= v78) & v83) != 0)
     {
 LABEL_74:
-      [(PGWallpaperSuggestionAccumulator *)v110 addSuggestion:v60 passingGating:v66, v104];
+      [(PGWallpaperSuggestionAccumulator *)v110 addSuggestion:v60 passingGating:passesAnyGating, v104];
       ++v112;
       if ([(PGWallpaperSuggestionAccumulator *)v110 accumulationIsComplete])
       {
@@ -952,8 +952,8 @@ LABEL_74:
       }
     }
 
-    v85 = [MEMORY[0x277CBEAA8] date];
-    [v109 timeIntervalSinceDate:v85];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [v109 timeIntervalSinceDate:date2];
     v87 = v86;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
@@ -1047,9 +1047,9 @@ uint64_t __65__PGLandscapeWallpaperSuggester_suggestionsWithOptions_progress___b
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -1059,7 +1059,7 @@ LABEL_11:
     return;
   }
 
-  if (([(PGLandscapeWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGLandscapeWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v12 = objc_opt_class();
     NSStringFromClass(v12);
@@ -1075,8 +1075,8 @@ LABEL_11:
   if (IsIPad)
   {
     v6 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v5 initForLandscapesInOrientation:2];
-    primaryFilteringContext = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v6;
+    primaryFilteringContext = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v6;
 
     v8 = [[PGLandscapeWallpaperSuggesterFilteringContext alloc] initForLandscapesInOrientation:1];
   }
@@ -1084,29 +1084,29 @@ LABEL_11:
   else
   {
     v9 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v5 initForLandscapesInOrientation:1];
-    v10 = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v9;
+    v10 = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v9;
 
     v8 = 0;
   }
 
-  secondaryFilteringContext = v2->_secondaryFilteringContext;
-  v2->_secondaryFilteringContext = v8;
+  secondaryFilteringContext = selfCopy->_secondaryFilteringContext;
+  selfCopy->_secondaryFilteringContext = v8;
 }
 
-- (PGLandscapeWallpaperSuggester)initWithSession:(id)a3
+- (PGLandscapeWallpaperSuggester)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = PGLandscapeWallpaperSuggester;
-  v5 = [(PGAbstractSuggester *)&v13 initWithSession:v4];
+  v5 = [(PGAbstractSuggester *)&v13 initWithSession:sessionCopy];
   if (v5)
   {
     if ([objc_opt_class() filtersForTopSuggestions])
     {
       v6 = [PGWallpaperSuggestionAssetGater alloc];
-      v7 = [v4 loggingConnection];
-      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:3 loggingConnection:v7];
+      loggingConnection = [sessionCopy loggingConnection];
+      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:3 loggingConnection:loggingConnection];
       assetGater = v5->_assetGater;
       v5->_assetGater = v8;
     }
@@ -1121,62 +1121,62 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([a1 isPositiveLandscapeAsset:v10])
+  assetCopy = asset;
+  contextCopy = context;
+  if ([self isPositiveLandscapeAsset:assetCopy])
   {
-    v38 = [v10 photoLibrary];
-    v12 = [v38 librarySpecificFetchOptions];
-    v13 = [a1 prefilteringInternalPredicateWithForbiddenAssetUUIDs:0];
-    [v12 setInternalPredicate:v13];
+    photoLibrary = [assetCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v13 = [self prefilteringInternalPredicateWithForbiddenAssetUUIDs:0];
+    [librarySpecificFetchOptions setInternalPredicate:v13];
 
     v14 = MEMORY[0x277CD97A8];
-    v15 = [v10 localIdentifier];
-    v39[0] = v15;
+    localIdentifier = [assetCopy localIdentifier];
+    v39[0] = localIdentifier;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-    v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:v12];
-    v18 = [v17 firstObject];
+    v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:librarySpecificFetchOptions];
+    firstObject = [v17 firstObject];
 
-    if (!v18)
+    if (!firstObject)
     {
       v23 = 0;
-      if (a6)
+      if (reason)
       {
-        *a6 = @"Fails Predicate";
+        *reason = @"Fails Predicate";
       }
 
       goto LABEL_29;
     }
 
-    v19 = [objc_opt_class() filtersForTopSuggestions];
-    v20 = [[PGLandscapeWallpaperSuggestionCandidate alloc] initWithAsset:v10];
+    filtersForTopSuggestions = [objc_opt_class() filtersForTopSuggestions];
+    v20 = [[PGLandscapeWallpaperSuggestionCandidate alloc] initWithAsset:assetCopy];
     v21 = [PGLandscapeWallpaperSuggesterFilteringContext alloc];
-    if (v19)
+    if (filtersForTopSuggestions)
     {
-      v22 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v21 initForTopLandscapesInOrientation:a5];
+      v22 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v21 initForTopLandscapesInOrientation:orientation];
     }
 
     else
     {
-      v22 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v21 initForLandscapesInOrientation:a5];
+      v22 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v21 initForLandscapesInOrientation:orientation];
     }
 
     v24 = v22;
     v36 = +[PGWallpaperSuggestionUtilities peopleSceneConfidenceThresholdHelper];
     v37 = v20;
-    if ([a1 candidate:v20 passesFilteringWithContext:v24 curationContext:v11 thresholdHelper:? statistics:?])
+    if ([self candidate:v20 passesFilteringWithContext:v24 curationContext:contextCopy thresholdHelper:? statistics:?])
     {
-      if (v19)
+      if (filtersForTopSuggestions)
       {
         v25 = [PGWallpaperSuggestionAssetGater alloc];
         v26 = [(PGWallpaperSuggestionAssetGater *)v25 initWithType:3 loggingConnection:MEMORY[0x277D86220]];
         v23 = 1;
         [(PGWallpaperSuggestionAssetGater *)v26 setCoversTracks:1];
         [(PGWallpaperSuggestionAssetGater *)v26 setIsUserInitiated:1];
-        v35 = [(PGWallpaperSuggestionAssetGater *)v26 gateAsset:v10 progressBlock:&__block_literal_global_233];
+        v35 = [(PGWallpaperSuggestionAssetGater *)v26 gateAsset:assetCopy progressBlock:&__block_literal_global_233];
         if ([v35 passesAnyGating])
         {
           v27 = @"Pass Segmented";
@@ -1184,8 +1184,8 @@ LABEL_11:
 
         else
         {
-          v28 = [(PGLandscapeWallpaperSuggestionCandidate *)v20 cropResult];
-          v29 = [v28 cropForOrientation:a5];
+          cropResult = [(PGLandscapeWallpaperSuggestionCandidate *)v20 cropResult];
+          v29 = [cropResult cropForOrientation:orientation];
 
           if (([v24 ignoreClockOverlap] & 1) != 0 || objc_msgSend(v29, "passesClockOverlap"))
           {
@@ -1211,7 +1211,7 @@ LABEL_11:
           }
         }
 
-        if (!a6)
+        if (!reason)
         {
           goto LABEL_28;
         }
@@ -1221,7 +1221,7 @@ LABEL_11:
       {
         v27 = @"Pass";
         v23 = 1;
-        if (!a6)
+        if (!reason)
         {
           goto LABEL_28;
         }
@@ -1230,7 +1230,7 @@ LABEL_11:
 
     else
     {
-      if (!a6)
+      if (!reason)
       {
         v23 = 0;
 LABEL_28:
@@ -1243,14 +1243,14 @@ LABEL_29:
       v27 = @"Unknown Reason";
     }
 
-    *a6 = v27;
+    *reason = v27;
     goto LABEL_28;
   }
 
   v23 = 0;
-  if (a6)
+  if (reason)
   {
-    *a6 = @"Not Landscape";
+    *reason = @"Not Landscape";
   }
 
 LABEL_30:
@@ -1259,115 +1259,115 @@ LABEL_30:
   return v23;
 }
 
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 thresholdHelper:(id)a6 statistics:(id *)a7
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext thresholdHelper:(id)helper statistics:(id *)statistics
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 asset];
-  v16 = [v15 curationModel];
-  [v12 minimumWallpaperScore];
+  candidateCopy = candidate;
+  contextCopy = context;
+  curationContextCopy = curationContext;
+  helperCopy = helper;
+  asset = [candidateCopy asset];
+  curationModel = [asset curationModel];
+  [contextCopy minimumWallpaperScore];
   v18 = v17;
   if (v17 < 0.0)
   {
-    v19 = [v16 wallpaperScoreModel];
-    v20 = [v19 landscapeNode];
-    [v20 highRecallOperatingPoint];
+    wallpaperScoreModel = [curationModel wallpaperScoreModel];
+    landscapeNode = [wallpaperScoreModel landscapeNode];
+    [landscapeNode highRecallOperatingPoint];
     v18 = v21;
   }
 
-  [v11 wallpaperScore];
+  [candidateCopy wallpaperScore];
   if (v18 > v22)
   {
     v23 = 0;
-    ++a7->var3;
+    ++statistics->var3;
     goto LABEL_35;
   }
 
-  [v12 wallpaperScorePenaltyCutOff];
+  [contextCopy wallpaperScorePenaltyCutOff];
   v25 = v24;
   if (v24 < 0.0)
   {
-    v26 = [v16 wallpaperScoreModel];
-    v27 = [v26 landscapeNode];
-    [v27 highPrecisionOperatingPoint];
+    wallpaperScoreModel2 = [curationModel wallpaperScoreModel];
+    landscapeNode2 = [wallpaperScoreModel2 landscapeNode];
+    [landscapeNode2 highPrecisionOperatingPoint];
     v25 = v28;
   }
 
-  [v11 wallpaperScore];
-  [v11 setWallpaperScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v29, v18, v25)}];
-  v30 = [v13 userFeedbackCalculator];
-  v31 = [v16 isUtilityForMemoriesWithAsset:v15 userFeedbackCalculator:v30 blockSocialMediaImportedAssets:PGWallpaperSuggestionBlockSocialMediaImportedAssets];
+  [candidateCopy wallpaperScore];
+  [candidateCopy setWallpaperScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v29, v18, v25)}];
+  userFeedbackCalculator = [curationContextCopy userFeedbackCalculator];
+  v31 = [curationModel isUtilityForMemoriesWithAsset:asset userFeedbackCalculator:userFeedbackCalculator blockSocialMediaImportedAssets:PGWallpaperSuggestionBlockSocialMediaImportedAssets];
 
   if (v31)
   {
     v23 = 0;
-    ++a7->var0;
+    ++statistics->var0;
     goto LABEL_35;
   }
 
-  if ([v16 avoidIfPossibleForKeyAssetWithAsset:v15 statistics:&a7->var11])
+  if ([curationModel avoidIfPossibleForKeyAssetWithAsset:asset statistics:&statistics->var11])
   {
     v23 = 0;
-    ++a7->var1;
+    ++statistics->var1;
     goto LABEL_35;
   }
 
-  [v12 minimumAestheticsScore];
+  [contextCopy minimumAestheticsScore];
   v33 = v32;
   if (v32 < 0.0)
   {
-    v34 = [v16 aestheticsModel];
-    v35 = [v34 overallAestheticScoreNode];
-    [v35 highPrecisionOperatingPoint];
+    aestheticsModel = [curationModel aestheticsModel];
+    overallAestheticScoreNode = [aestheticsModel overallAestheticScoreNode];
+    [overallAestheticScoreNode highPrecisionOperatingPoint];
     v33 = v36;
   }
 
-  [v15 overallAestheticScore];
+  [asset overallAestheticScore];
   v38 = v37;
   if (v33 > v37)
   {
     v23 = 0;
-    ++a7->var2;
+    ++statistics->var2;
     goto LABEL_35;
   }
 
-  [v12 aestheticsScorePenaltyCutOff];
+  [contextCopy aestheticsScorePenaltyCutOff];
   v40 = v39;
   if (v39 < 0.0)
   {
-    v41 = [v16 aestheticsModel];
-    [v41 aestheticScoreThresholdToBeAestheticallyPrettyGood];
+    aestheticsModel2 = [curationModel aestheticsModel];
+    [aestheticsModel2 aestheticScoreThresholdToBeAestheticallyPrettyGood];
     v40 = v42;
   }
 
-  [v11 setAestheticsScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v38, v33, v40)}];
-  if (([v12 bypassCropScoreCheck] & 1) == 0)
+  [candidateCopy setAestheticsScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v38, v33, v40)}];
+  if (([contextCopy bypassCropScoreCheck] & 1) == 0)
   {
-    v43 = [v11 cropResult];
-    v44 = [v43 cropForOrientation:{objc_msgSend(v12, "orientation")}];
+    cropResult = [candidateCopy cropResult];
+    v44 = [cropResult cropForOrientation:{objc_msgSend(contextCopy, "orientation")}];
 
-    if (([v12 ignoreClockOverlap] & 1) != 0 || objc_msgSend(v44, "passesClockOverlap"))
+    if (([contextCopy ignoreClockOverlap] & 1) != 0 || objc_msgSend(v44, "passesClockOverlap"))
     {
       [v44 cropZoomRatio];
       v46 = v45;
-      [v12 maximumCropZoomRatio];
+      [contextCopy maximumCropZoomRatio];
       if (v46 <= v47)
       {
         [v44 cropScore];
         v50 = v49;
-        [v12 minimumCropScore];
+        [contextCopy minimumCropScore];
         if (v50 >= v51)
         {
           v62 = v51;
-          [v12 cropScorePenaltyCutOff];
-          [v11 setCropScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v50, v62, v63)}];
+          [contextCopy cropScorePenaltyCutOff];
+          [candidateCopy setCropScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v50, v62, v63)}];
 
           goto LABEL_18;
         }
 
-        ++a7->var6;
+        ++statistics->var6;
 LABEL_34:
 
         v23 = 0;
@@ -1382,45 +1382,45 @@ LABEL_34:
       v48 = 16;
     }
 
-    ++*(&a7->var0 + v48);
+    ++*(&statistics->var0 + v48);
     goto LABEL_34;
   }
 
 LABEL_18:
-  if ([MEMORY[0x277D3C7C0] assetIsSafeForWidgetDisplay:v15])
+  if ([MEMORY[0x277D3C7C0] assetIsSafeForWidgetDisplay:asset])
   {
-    if ([PGWallpaperSuggestionUtilities foundDominantPeopleSceneInAsset:v15 withConfidenceThresholdHelper:v14])
+    if ([PGWallpaperSuggestionUtilities foundDominantPeopleSceneInAsset:asset withConfidenceThresholdHelper:helperCopy])
     {
       v23 = 0;
-      ++a7->var8;
+      ++statistics->var8;
     }
 
     else
     {
-      [v12 maximumLowLightScore];
+      [contextCopy maximumLowLightScore];
       v53 = v52;
       if (v52 < 0.0)
       {
-        v54 = [v15 curationModel];
-        v55 = [v54 aestheticsModel];
-        v56 = [v55 lowLightNode];
-        [v56 operatingPoint];
+        curationModel2 = [asset curationModel];
+        aestheticsModel3 = [curationModel2 aestheticsModel];
+        lowLightNode = [aestheticsModel3 lowLightNode];
+        [lowLightNode operatingPoint];
         v53 = v57;
       }
 
-      v58 = [v15 aestheticProperties];
-      [v58 lowLight];
+      aestheticProperties = [asset aestheticProperties];
+      [aestheticProperties lowLight];
       v60 = v59;
 
       if (v53 >= v60)
       {
-        v64 = [v11 asset];
-        v65 = [PGSensitiveLocationBlocklistConfiguration isAssetAtSensitiveLocationAndDate:v64];
+        asset2 = [candidateCopy asset];
+        v65 = [PGSensitiveLocationBlocklistConfiguration isAssetAtSensitiveLocationAndDate:asset2];
 
         if (v65)
         {
           v23 = 0;
-          ++a7->var10;
+          ++statistics->var10;
         }
 
         else
@@ -1432,7 +1432,7 @@ LABEL_18:
       else
       {
         v23 = 0;
-        ++a7->var9;
+        ++statistics->var9;
       }
     }
   }
@@ -1440,7 +1440,7 @@ LABEL_18:
   else
   {
     v23 = 0;
-    ++a7->var7;
+    ++statistics->var7;
   }
 
 LABEL_35:
@@ -1448,11 +1448,11 @@ LABEL_35:
   return v23;
 }
 
-+ (BOOL)isPositiveLandscapeAsset:(id)a3
++ (BOOL)isPositiveLandscapeAsset:(id)asset
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 clsSceneClassifications];
+  assetCopy = asset;
+  [assetCopy clsSceneClassifications];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -1474,17 +1474,17 @@ LABEL_35:
         v9 = *(*(&v21 + 1) + 8 * i);
         if ([v9 extendedSceneIdentifier] == 2147481597)
         {
-          v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          [v11 doubleForKey:@"PGLandscapeWallpaperSuggesterNatureSceneThreshold"];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          [standardUserDefaults doubleForKey:@"PGLandscapeWallpaperSuggesterNatureSceneThreshold"];
           v13 = v12;
 
           if (v13 <= 0.0)
           {
-            v14 = [v3 curationModel];
-            v15 = [v14 cityNatureModel];
+            curationModel = [assetCopy curationModel];
+            cityNatureModel = [curationModel cityNatureModel];
 
-            v16 = [v15 natureNode];
-            [v16 operatingPoint];
+            natureNode = [cityNatureModel natureNode];
+            [natureNode operatingPoint];
             v13 = v17;
           }
 
@@ -1511,16 +1511,16 @@ LABEL_13:
   return v10;
 }
 
-+ (id)candidatesFromAssets:(id)a3
++ (id)candidatesFromAssets:(id)assets
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1552,9 +1552,9 @@ LABEL_13:
   return v4;
 }
 
-+ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)a3
++ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"kind", 0];
   [v4 addObject:v5];
@@ -1566,10 +1566,10 @@ LABEL_13:
   [v4 addObject:v8];
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"playbackStyle", &unk_284485418];
   [v4 addObject:v9];
-  if ([v3 count])
+  if ([dsCopy count])
   {
-    v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", v3];
-    [v4 addObject:v10];
+    dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", dsCopy];
+    [v4 addObject:dsCopy];
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);

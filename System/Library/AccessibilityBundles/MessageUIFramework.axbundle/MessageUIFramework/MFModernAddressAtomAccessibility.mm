@@ -1,26 +1,26 @@
 @interface MFModernAddressAtomAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 @end
 
 @implementation MFModernAddressAtomAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFModernAddressAtom" hasInstanceVariable:@"_atomView" withType:"CNAtomView"];
-  [v3 validateClass:@"MFModernAddressAtom" hasInstanceVariable:@"_delegate" withType:"<MFModernAddressAtomDelegate>"];
-  [v3 validateClass:@"MFModernLabelledAtomList" conformsToProtocol:@"MFModernAddressAtomDelegate"];
-  [v3 validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFModernLabelledAtomList" hasInstanceVariable:@"_labelVisible" withType:"BOOL"];
-  [v3 validateClass:@"MFModernLabelledAtomList"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFModernAddressAtom" hasInstanceVariable:@"_atomView" withType:"CNAtomView"];
+  [validationsCopy validateClass:@"MFModernAddressAtom" hasInstanceVariable:@"_delegate" withType:"<MFModernAddressAtomDelegate>"];
+  [validationsCopy validateClass:@"MFModernLabelledAtomList" conformsToProtocol:@"MFModernAddressAtomDelegate"];
+  [validationsCopy validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFModernLabelledAtomList" hasInstanceVariable:@"_labelVisible" withType:"BOOL"];
+  [validationsCopy validateClass:@"MFModernLabelledAtomList"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(MFModernAddressAtomAccessibility *)self safeValueForKey:@"_atomView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
   v6 = accessibilityLocalizedString(@"address.atom.type");
   v4 = __UIAXStringForVariables();

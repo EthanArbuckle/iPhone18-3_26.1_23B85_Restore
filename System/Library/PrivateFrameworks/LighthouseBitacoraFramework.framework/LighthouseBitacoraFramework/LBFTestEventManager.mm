@@ -1,20 +1,20 @@
 @interface LBFTestEventManager
 + (id)sharedInstance;
 - (BOOL)generateEventStore;
-- (BOOL)loadSyntheticJSON:(id)a3 datasetName:(id)a4;
-- (BOOL)validateOutcomes:(id)a3 withAggregatedStates:(id)a4;
+- (BOOL)loadSyntheticJSON:(id)n datasetName:(id)name;
+- (BOOL)validateOutcomes:(id)outcomes withAggregatedStates:(id)states;
 - (LBFTestEventManager)init;
-- (id)dprivacydEventFromDict:(id)a3;
+- (id)dprivacydEventFromDict:(id)dict;
 - (id)ensureBiomeManagerDprivacyd;
 - (id)ensureBiomeManagerLighthouse;
 - (id)ensureBiomeManagerMLRuntimed;
 - (id)ensureBiomeManagerTrial;
 - (id)generateOutcomeDict;
-- (id)lighthouseEventFromDict:(id)a3;
-- (id)mlRuntimedEventFromDict:(id)a3;
-- (id)readData:(id)a3 endDate:(id)a4;
-- (id)trialEventFromDict:(id)a3;
-- (id)trialIdentifiersFromJSON:(id)a3;
+- (id)lighthouseEventFromDict:(id)dict;
+- (id)mlRuntimedEventFromDict:(id)dict;
+- (id)readData:(id)data endDate:(id)date;
+- (id)trialEventFromDict:(id)dict;
+- (id)trialIdentifiersFromJSON:(id)n;
 @end
 
 @implementation LBFTestEventManager
@@ -50,19 +50,19 @@
 
 + (id)sharedInstance
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (BOOL)loadSyntheticJSON:(id)a3 datasetName:(id)a4
+- (BOOL)loadSyntheticJSON:(id)n datasetName:(id)name
 {
-  v6 = a4;
-  v10 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x277CBEA90], v7, a3, v8, v9);
+  nameCopy = name;
+  v10 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x277CBEA90], v7, n, v8, v9);
   v12 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x277CCAAA0], v11, v10, 0, 0);
   SyntheticData = objc_msgSend_loadSyntheticData_(self, v13, v12, v14, v15);
   datasetName = self->_datasetName;
-  self->_datasetName = v6;
+  self->_datasetName = nameCopy;
 
   return SyntheticData;
 }
@@ -99,10 +99,10 @@
   return self;
 }
 
-- (id)trialIdentifiersFromJSON:(id)a3
+- (id)trialIdentifiersFromJSON:(id)n
 {
-  v3 = a3;
-  v7 = objc_msgSend_objectForKey_(v3, v4, @"bmltIdentifiers", v5, v6);
+  nCopy = n;
+  v7 = objc_msgSend_objectForKey_(nCopy, v4, @"bmltIdentifiers", v5, v6);
   v11 = v7;
   if (v7)
   {
@@ -125,7 +125,7 @@
     v25 = 0;
   }
 
-  v26 = objc_msgSend_objectForKey_(v3, v8, @"experimentIdentifiers", v9, v10);
+  v26 = objc_msgSend_objectForKey_(nCopy, v8, @"experimentIdentifiers", v9, v10);
   v30 = v26;
   if (v26)
   {
@@ -149,10 +149,10 @@
   return v25;
 }
 
-- (id)lighthouseEventFromDict:(id)a3
+- (id)lighthouseEventFromDict:(id)dict
 {
-  v3 = a3;
-  v7 = objc_msgSend_objectForKey_(v3, v4, @"performTrialTaskStatus", v5, v6);
+  dictCopy = dict;
+  v7 = objc_msgSend_objectForKey_(dictCopy, v4, @"performTrialTaskStatus", v5, v6);
   v11 = v7;
   if (v7)
   {
@@ -170,7 +170,7 @@
     v24 = 0;
   }
 
-  v25 = objc_msgSend_objectForKey_(v3, v8, @"performTaskStatus", v9, v10);
+  v25 = objc_msgSend_objectForKey_(dictCopy, v8, @"performTaskStatus", v9, v10);
   v29 = v25;
   if (v25)
   {
@@ -183,7 +183,7 @@
     v24 = v39;
   }
 
-  v40 = objc_msgSend_objectForKey_(v3, v26, @"stop", v27, v28);
+  v40 = objc_msgSend_objectForKey_(dictCopy, v26, @"stop", v27, v28);
   v44 = v40;
   if (v40)
   {
@@ -199,10 +199,10 @@
   return v24;
 }
 
-- (id)mlRuntimedEventFromDict:(id)a3
+- (id)mlRuntimedEventFromDict:(id)dict
 {
-  v3 = a3;
-  v7 = objc_msgSend_objectForKey_(v3, v4, @"taskCompleted", v5, v6);
+  dictCopy = dict;
+  v7 = objc_msgSend_objectForKey_(dictCopy, v4, @"taskCompleted", v5, v6);
   v11 = v7;
   if (v7)
   {
@@ -218,7 +218,7 @@
     v21 = 0;
   }
 
-  v22 = objc_msgSend_objectForKey_(v3, v8, @"taskFetched", v9, v10);
+  v22 = objc_msgSend_objectForKey_(dictCopy, v8, @"taskFetched", v9, v10);
   v26 = v22;
   if (v22)
   {
@@ -231,7 +231,7 @@
     v21 = v36;
   }
 
-  v37 = objc_msgSend_objectForKey_(v3, v23, @"taskScheduled", v24, v25);
+  v37 = objc_msgSend_objectForKey_(dictCopy, v23, @"taskScheduled", v24, v25);
   v41 = v37;
   if (v37)
   {
@@ -244,7 +244,7 @@
     v21 = v51;
   }
 
-  v52 = objc_msgSend_objectForKey_(v3, v38, @"activityScheduleStatus", v39, v40);
+  v52 = objc_msgSend_objectForKey_(dictCopy, v38, @"activityScheduleStatus", v39, v40);
   v56 = v52;
   if (v52)
   {
@@ -260,16 +260,16 @@
   return v21;
 }
 
-- (id)dprivacydEventFromDict:(id)a3
+- (id)dprivacydEventFromDict:(id)dict
 {
-  v3 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"event", v5, v6);
+  dictCopy = dict;
+  v7 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v4, @"event", v5, v6);
   v11 = objc_msgSend_objectForKeyedSubscript_(v7, v8, @"phase", v9, v10);
 
   v15 = objc_msgSend_objectForKeyedSubscript_(&unk_286801330, v12, v11, v13, v14);
   v20 = objc_msgSend_intValue(v15, v16, v17, v18, v19);
 
-  v24 = objc_msgSend_objectForKeyedSubscript_(v3, v21, @"event", v22, v23);
+  v24 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v21, @"event", v22, v23);
 
   v28 = objc_msgSend_objectForKeyedSubscript_(v24, v25, @"succeeded", v26, v27);
   v29 = v28 != 0;
@@ -280,11 +280,11 @@
   return v32;
 }
 
-- (id)trialEventFromDict:(id)a3
+- (id)trialEventFromDict:(id)dict
 {
-  v3 = a3;
-  v7 = objc_msgSend_objectForKey_(v3, v4, @"eventType", v5, v6);
-  v11 = objc_msgSend_objectForKey_(v3, v8, @"eventSucceeded", v9, v10);
+  dictCopy = dict;
+  v7 = objc_msgSend_objectForKey_(dictCopy, v4, @"eventType", v5, v6);
+  v11 = objc_msgSend_objectForKey_(dictCopy, v8, @"eventSucceeded", v9, v10);
 
   v16 = objc_msgSend_BOOLValue(v11, v12, v13, v14, v15);
   if (objc_msgSend_isEqualToString_(v7, v17, @"Allocation", v18, v19))
@@ -534,15 +534,15 @@
   return 1;
 }
 
-- (id)readData:(id)a3 endDate:(id)a4
+- (id)readData:(id)data endDate:(id)date
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dateCopy = date;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  objc_msgSend_timeIntervalSince1970(v6, v9, v10, v11, v12);
+  objc_msgSend_timeIntervalSince1970(dataCopy, v9, v10, v11, v12);
   v14 = v13;
-  objc_msgSend_timeIntervalSince1970(v7, v15, v16, v17, v18);
+  objc_msgSend_timeIntervalSince1970(dateCopy, v15, v16, v17, v18);
   v20 = v19;
   v24 = objc_msgSend_objectForKey_(self->_eventStore, v21, self->_readCategory, v22, v23);
   v46 = 0u;
@@ -587,17 +587,17 @@
   return v43;
 }
 
-- (BOOL)validateOutcomes:(id)a3 withAggregatedStates:(id)a4
+- (BOOL)validateOutcomes:(id)outcomes withAggregatedStates:(id)states
 {
   v128 = *MEMORY[0x277D85DE8];
-  v100 = a3;
-  v5 = a4;
+  outcomesCopy = outcomes;
+  statesCopy = states;
   NSLog(&cfstr_StartingOutcom.isa);
   v122 = 0u;
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v6 = v5;
+  v6 = statesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v120, v127, 16);
   if (v8)
   {
@@ -667,7 +667,7 @@
                     v39 = objc_msgSend_longLongValue(v104, v35, v36, v37, v38);
                     v103 = objc_msgSend_dateWithTimeIntervalSince1970_(MEMORY[0x277CBEAA8], v40, v41, v42, v43, (v39 / 1000 - 86400));
                     v102 = objc_msgSend_stringFromDate_(self->_dateFormatter, v44, v103, v45, v46);
-                    v50 = objc_msgSend_objectForKey_(v100, v47, v102, v48, v49);
+                    v50 = objc_msgSend_objectForKey_(outcomesCopy, v47, v102, v48, v49);
                     v54 = objc_msgSend_objectForKey_(v50, v51, v107, v52, v53);
                     v58 = objc_msgSend_objectForKey_(v54, v55, v26, v56, v57);
 

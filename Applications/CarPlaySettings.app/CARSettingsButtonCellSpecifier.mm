@@ -1,24 +1,24 @@
 @interface CARSettingsButtonCellSpecifier
-- (CARSettingsButtonCellSpecifier)initWithTitle:(id)a3 image:(id)a4 icon:(id)a5;
-- (CARSettingsButtonCellSpecifier)initWithTitle:(id)a3 image:(id)a4 icon:(id)a5 actionBlock:(id)a6;
+- (CARSettingsButtonCellSpecifier)initWithTitle:(id)title image:(id)image icon:(id)icon;
+- (CARSettingsButtonCellSpecifier)initWithTitle:(id)title image:(id)image icon:(id)icon actionBlock:(id)block;
 @end
 
 @implementation CARSettingsButtonCellSpecifier
 
-- (CARSettingsButtonCellSpecifier)initWithTitle:(id)a3 image:(id)a4 icon:(id)a5 actionBlock:(id)a6
+- (CARSettingsButtonCellSpecifier)initWithTitle:(id)title image:(id)image icon:(id)icon actionBlock:(id)block
 {
-  v10 = a6;
-  v11 = [(CARSettingsButtonCellSpecifier *)self initWithTitle:a3 image:a4 icon:a5];
-  [(CARSettingsCellSpecifier *)v11 setActionBlock:v10];
+  blockCopy = block;
+  v11 = [(CARSettingsButtonCellSpecifier *)self initWithTitle:title image:image icon:icon];
+  [(CARSettingsCellSpecifier *)v11 setActionBlock:blockCopy];
 
   return v11;
 }
 
-- (CARSettingsButtonCellSpecifier)initWithTitle:(id)a3 image:(id)a4 icon:(id)a5
+- (CARSettingsButtonCellSpecifier)initWithTitle:(id)title image:(id)image icon:(id)icon
 {
   v8.receiver = self;
   v8.super_class = CARSettingsButtonCellSpecifier;
-  v5 = [(CARSettingsCellSpecifier *)&v8 initWithTitle:a3 image:a4 icon:a5 accessoryType:0];
+  v5 = [(CARSettingsCellSpecifier *)&v8 initWithTitle:title image:image icon:icon accessoryType:0];
   v6 = +[UIColor systemBlueColor];
   [(CARSettingsCellSpecifier *)v5 setTitleColor:v6];
 

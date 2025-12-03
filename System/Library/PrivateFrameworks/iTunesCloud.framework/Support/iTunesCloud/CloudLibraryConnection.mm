@@ -1,36 +1,36 @@
 @interface CloudLibraryConnection
-- (CloudLibraryConnection)initWithConfiguration:(id)a3;
+- (CloudLibraryConnection)initWithConfiguration:(id)configuration;
 - (ICUserIdentity)userIdentity;
 - (ICUserIdentityStore)userIdentityStore;
-- (void)_onQueue_sendRequest:(id)a3 withInternalResponseHandler:(id)a4;
-- (void)connectWithCompletionHandler:(id)a3;
+- (void)_onQueue_sendRequest:(id)request withInternalResponseHandler:(id)handler;
+- (void)connectWithCompletionHandler:(id)handler;
 - (void)disconnect;
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4;
+- (void)sendRequest:(id)request withResponseHandler:(id)handler;
 @end
 
 @implementation CloudLibraryConnection
 
 - (void)disconnect
 {
-  v3 = [(CloudLibraryConnection *)self queue];
+  queue = [(CloudLibraryConnection *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F8268;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)connectWithCompletionHandler:(id)a3
+- (void)connectWithCompletionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000F838C;
   v10[3] = &unk_1001DE1C8;
-  v11 = a3;
-  v4 = v11;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   v5 = objc_retainBlock(v10);
-  v6 = [(CloudLibraryConnection *)self queue];
+  queue = [(CloudLibraryConnection *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F845C;
@@ -38,73 +38,73 @@
   block[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_onQueue_sendRequest:(id)a3 withInternalResponseHandler:(id)a4
+- (void)_onQueue_sendRequest:(id)request withInternalResponseHandler:(id)handler
 {
-  v6 = a3;
-  v61 = a4;
-  v7 = [(ICConnectionConfiguration *)self->_configuration baseURL];
-  v8 = [v6 requestURLForBaseURL:v7 sessionID:0];
+  requestCopy = request;
+  handlerCopy = handler;
+  baseURL = [(ICConnectionConfiguration *)self->_configuration baseURL];
+  v8 = [requestCopy requestURLForBaseURL:baseURL sessionID:0];
 
   v9 = [NSMutableURLRequest requestWithURL:v8];
-  v10 = [v6 bodyData];
-  v11 = [v10 length];
+  bodyData = [requestCopy bodyData];
+  v11 = [bodyData length];
 
   if (v11)
   {
     [v9 setHTTPMethod:@"POST"];
-    v12 = [v6 bodyData];
-    [v9 setHTTPBody:v12];
+    bodyData2 = [requestCopy bodyData];
+    [v9 setHTTPBody:bodyData2];
 
     [v9 setValue:@"application/x-dmap-tagged" forHTTPHeaderField:@"Content-Type"];
   }
 
-  v13 = [(ICConnectionConfiguration *)self->_configuration buildIdentifier];
-  [v9 setValue:v13 forHTTPHeaderField:@"Client-Cloud-Daap-Version"];
+  buildIdentifier = [(ICConnectionConfiguration *)self->_configuration buildIdentifier];
+  [v9 setValue:buildIdentifier forHTTPHeaderField:@"Client-Cloud-Daap-Version"];
 
-  v14 = [(ICConnectionConfiguration *)self->_configuration purchaseClientIdentifier];
-  [v9 setValue:v14 forHTTPHeaderField:@"Client-Cloud-Purchase-DAAP-Version"];
+  purchaseClientIdentifier = [(ICConnectionConfiguration *)self->_configuration purchaseClientIdentifier];
+  [v9 setValue:purchaseClientIdentifier forHTTPHeaderField:@"Client-Cloud-Purchase-DAAP-Version"];
 
-  v15 = [(ICConnectionConfiguration *)self->_configuration familyMemberStoreID];
-  v16 = [v15 stringValue];
-  [v9 setValue:v16 forHTTPHeaderField:@"X-FM-Dsid"];
+  familyMemberStoreID = [(ICConnectionConfiguration *)self->_configuration familyMemberStoreID];
+  stringValue = [familyMemberStoreID stringValue];
+  [v9 setValue:stringValue forHTTPHeaderField:@"X-FM-Dsid"];
 
   v17 = +[ICDeviceInfo currentDeviceInfo];
-  v64 = [v17 deviceGUID];
+  deviceGUID = [v17 deviceGUID];
 
-  if ([v64 length])
+  if ([deviceGUID length])
   {
-    [v9 setValue:v64 forHTTPHeaderField:ICStoreHTTPHeaderKeyXGUID];
+    [v9 setValue:deviceGUID forHTTPHeaderField:ICStoreHTTPHeaderKeyXGUID];
   }
 
-  v18 = [v6 reason];
-  if (v18 || (v18 = [(ICConnectionConfiguration *)self->_configuration requestReason]) != 0)
+  reason = [requestCopy reason];
+  if (reason || (reason = [(ICConnectionConfiguration *)self->_configuration requestReason]) != 0)
   {
-    if (v18 == 1000)
+    if (reason == 1000)
     {
       v19 = 2;
     }
 
-    else if (v18 == 1001)
+    else if (reason == 1001)
     {
       v19 = 1;
     }
 
     else
     {
-      v19 = v18;
+      v19 = reason;
     }
 
     v20 = [NSString stringWithFormat:@"%li", v19];
     [v9 setValue:v20 forHTTPHeaderField:@"Client-Cloud-DAAP-Request-Reason"];
   }
 
-  v63 = [v6 requestingBundleID];
-  if ([v63 length])
+  requestingBundleID = [requestCopy requestingBundleID];
+  if ([requestingBundleID length])
   {
-    [v9 setValue:v63 forHTTPHeaderField:ICStoreHTTPHeaderKeyXAppleRequestingBundleID];
+    [v9 setValue:requestingBundleID forHTTPHeaderField:ICStoreHTTPHeaderKeyXAppleRequestingBundleID];
   }
 
   v75 = 0;
@@ -125,11 +125,11 @@
 
   v22 = v21;
   _Block_object_dispose(&v75, 8);
-  v62 = [v21 standardUserDefaults];
-  v65 = [v62 isPrivateListeningEnabled];
-  if (v65)
+  standardUserDefaults = [v21 standardUserDefaults];
+  isPrivateListeningEnabled = [standardUserDefaults isPrivateListeningEnabled];
+  if (isPrivateListeningEnabled)
   {
-    if ([v65 BOOLValue])
+    if ([isPrivateListeningEnabled BOOLValue])
     {
       v23 = @"true";
     }
@@ -142,10 +142,10 @@
     [v9 setValue:v23 forHTTPHeaderField:ICStoreHTTPHeaderKeyXApplePrivateListening];
   }
 
-  v66 = [v6 sagaClientFeaturesVersion];
-  if ([(__CFString *)v66 length])
+  sagaClientFeaturesVersion = [requestCopy sagaClientFeaturesVersion];
+  if ([(__CFString *)sagaClientFeaturesVersion length])
   {
-    v24 = v66;
+    v24 = sagaClientFeaturesVersion;
   }
 
   else
@@ -181,15 +181,15 @@
   [v9 setTimeoutInterval:120.0];
   if (MSVDeviceOSIsInternalInstall())
   {
-    if ([v6 includeCloudLibraryDAAPDebugFeature])
+    if ([requestCopy includeCloudLibraryDAAPDebugFeature])
     {
       v30 = +[ICDefaults standardDefaults];
-      v31 = [v30 shouldForceServerToUseDAAPDebugFeatureAlwaysPerformResetSync];
+      shouldForceServerToUseDAAPDebugFeatureAlwaysPerformResetSync = [v30 shouldForceServerToUseDAAPDebugFeatureAlwaysPerformResetSync];
 
       v32 = +[ICDefaults standardDefaults];
-      v33 = [v32 shouldForceServerToUseDAAPDebugFeatureAlwaysBackoff];
+      shouldForceServerToUseDAAPDebugFeatureAlwaysBackoff = [v32 shouldForceServerToUseDAAPDebugFeatureAlwaysBackoff];
 
-      v34 = v33 ? v31 | 2 : v31;
+      v34 = shouldForceServerToUseDAAPDebugFeatureAlwaysBackoff ? shouldForceServerToUseDAAPDebugFeatureAlwaysPerformResetSync | 2 : shouldForceServerToUseDAAPDebugFeatureAlwaysPerformResetSync;
       if (v34)
       {
         v35 = v34;
@@ -235,7 +235,7 @@
   {
     v43 = objc_opt_class();
     v44 = NSStringFromClass(v43);
-    if ([v6 method])
+    if ([requestCopy method])
     {
       v45 = @"POST";
     }
@@ -245,15 +245,15 @@
       v45 = @"GET";
     }
 
-    v46 = [v6 action];
+    action = [requestCopy action];
     *buf = 138544386;
     *&buf[4] = v44;
     *&buf[12] = 2048;
-    *&buf[14] = v6;
+    *&buf[14] = requestCopy;
     *&buf[22] = 2114;
     v80 = v45;
     *v81 = 2114;
-    *&v81[2] = v46;
+    *&v81[2] = action;
     v82 = 2114;
     v83 = v8;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Sending request: <%{public}@: %p method=%{public}@ action=%{public}@> to URL: %{public}@", buf, 0x34u);
@@ -262,9 +262,9 @@
   v47 = os_log_create("com.apple.amp.itunescloudd", "Connections_Oversize");
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
-    v48 = [v9 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v9 allHTTPHeaderFields];
     *buf = 138543362;
-    *&buf[4] = v48;
+    *&buf[4] = allHTTPHeaderFields;
     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Request headers: %{public}@", buf, 0xCu);
   }
 
@@ -274,19 +274,19 @@
   v73[2] = sub_1000F962C;
   v73[3] = &unk_1001DF490;
   v73[4] = self;
-  v50 = v6;
+  v50 = requestCopy;
   v74 = v50;
   v51 = [v49 initWithBlock:v73];
   v52 = [[ICStoreURLRequest alloc] initWithURLRequest:v9 requestContext:v51];
   [v52 setCancelOnHTTPErrors:0];
-  v53 = [v50 responseDataDestinationFileURL];
-  if (v53)
+  responseDataDestinationFileURL = [v50 responseDataDestinationFileURL];
+  if (responseDataDestinationFileURL)
   {
     v54 = os_log_create("com.apple.amp.itunescloudd", "Connections");
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v53;
+      *&buf[4] = responseDataDestinationFileURL;
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "Downloading response to: %{public}@", buf, 0xCu);
     }
   }
@@ -299,60 +299,60 @@
   v67[2] = sub_1000F976C;
   v67[3] = &unk_1001DE178;
   v68 = v8;
-  v69 = v53;
-  v71 = self;
-  v72 = v61;
+  v69 = responseDataDestinationFileURL;
+  selfCopy = self;
+  v72 = handlerCopy;
   v70 = v50;
-  v57 = v61;
+  v57 = handlerCopy;
   v58 = v50;
-  v59 = v53;
+  v59 = responseDataDestinationFileURL;
   v60 = v8;
   [v56 enqueueDataRequest:v52 withCompletionHandler:v67];
 }
 
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)sendRequest:(id)request withResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CloudLibraryConnection *)self queue];
+  requestCopy = request;
+  handlerCopy = handler;
+  queue = [(CloudLibraryConnection *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FA554;
   block[3] = &unk_1001DF5F0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
+  dispatch_async(queue, block);
 }
 
 - (ICUserIdentityStore)userIdentityStore
 {
-  v2 = [(CloudLibraryConnection *)self configuration];
-  v3 = [v2 userIdentityStore];
+  configuration = [(CloudLibraryConnection *)self configuration];
+  userIdentityStore = [configuration userIdentityStore];
 
-  return v3;
+  return userIdentityStore;
 }
 
 - (ICUserIdentity)userIdentity
 {
-  v2 = [(CloudLibraryConnection *)self configuration];
-  v3 = [v2 userIdentity];
+  configuration = [(CloudLibraryConnection *)self configuration];
+  userIdentity = [configuration userIdentity];
 
-  return v3;
+  return userIdentity;
 }
 
-- (CloudLibraryConnection)initWithConfiguration:(id)a3
+- (CloudLibraryConnection)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = CloudLibraryConnection;
   v6 = [(CloudLibraryConnection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = dispatch_queue_create("com.apple.itunescloudd.CloudLibraryConnection.serial", 0);
     queue = v7->_queue;
     v7->_queue = v8;

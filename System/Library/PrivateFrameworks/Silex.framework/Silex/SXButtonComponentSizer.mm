@@ -1,78 +1,78 @@
 @interface SXButtonComponentSizer
-- (SXButtonComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 textProvider:(id)a8 textComponentLayoutHosting:(id)a9 textSourceFactory:(id)a10;
-- (UIEdgeInsets)contentInsetsWithUnitConverter:(id)a3;
-- (UIEdgeInsets)layoutMarginsWithUnitConverter:(id)a3;
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
-- (id)additionsForTextSource:(id)a3;
-- (id)componentTextStyleForTextSource:(id)a3 inheritingFromDefaultStyles:(BOOL)a4;
-- (id)contentSizeCategoryForTextSource:(id)a3;
-- (id)defaultComponentTextStyleForTextSource:(id)a3;
-- (id)defaultComponentTextStylesForTextSource:(id)a3;
-- (id)textResizerForTextSource:(id)a3;
-- (id)textRulesForTextSource:(id)a3;
-- (id)textStyleForIdentifier:(id)a3;
+- (SXButtonComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options textProvider:(id)textProvider textComponentLayoutHosting:(id)hosting textSourceFactory:(id)self0;
+- (UIEdgeInsets)contentInsetsWithUnitConverter:(id)converter;
+- (UIEdgeInsets)layoutMarginsWithUnitConverter:(id)converter;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
+- (id)additionsForTextSource:(id)source;
+- (id)componentTextStyleForTextSource:(id)source inheritingFromDefaultStyles:(BOOL)styles;
+- (id)contentSizeCategoryForTextSource:(id)source;
+- (id)defaultComponentTextStyleForTextSource:(id)source;
+- (id)defaultComponentTextStylesForTextSource:(id)source;
+- (id)textResizerForTextSource:(id)source;
+- (id)textRulesForTextSource:(id)source;
+- (id)textStyleForIdentifier:(id)identifier;
 @end
 
 @implementation SXButtonComponentSizer
 
-- (SXButtonComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 textProvider:(id)a8 textComponentLayoutHosting:(id)a9 textSourceFactory:(id)a10
+- (SXButtonComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options textProvider:(id)textProvider textComponentLayoutHosting:(id)hosting textSourceFactory:(id)self0
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  componentCopy = component;
+  textProviderCopy = textProvider;
+  hostingCopy = hosting;
+  factoryCopy = factory;
   v29.receiver = self;
   v29.super_class = SXButtonComponentSizer;
-  v20 = [(SXComponentSizer *)&v29 initWithComponent:v16 componentLayout:a4 componentStyle:a5 DOMObjectProvider:a6 layoutOptions:a7];
+  v20 = [(SXComponentSizer *)&v29 initWithComponent:componentCopy componentLayout:layout componentStyle:style DOMObjectProvider:provider layoutOptions:options];
   if (v20)
   {
-    v21 = [v17 textForComponent:v16];
-    v22 = [v19 createTextSourceWithString:v21 dataSource:v20];
+    v21 = [textProviderCopy textForComponent:componentCopy];
+    v22 = [factoryCopy createTextSourceWithString:v21 dataSource:v20];
     v23 = [SXTextLayouter alloc];
-    v24 = [v18 documentRoot];
-    v25 = [(SXTextLayouter *)v23 initWithTextSource:v22 andDocumentRoot:v24];
+    documentRoot = [hostingCopy documentRoot];
+    v25 = [(SXTextLayouter *)v23 initWithTextSource:v22 andDocumentRoot:documentRoot];
     textLayouter = v20->_textLayouter;
     v20->_textLayouter = v25;
 
-    v27 = [(SXButtonComponentSizer *)v20 textLayouter];
-    [(SXComponentSizer *)v20 saveInfo:v27 forRenderingPhaseWithIdentifier:@"TextLayouter"];
+    textLayouter = [(SXButtonComponentSizer *)v20 textLayouter];
+    [(SXComponentSizer *)v20 saveInfo:textLayouter forRenderingPhaseWithIdentifier:@"TextLayouter"];
   }
 
   return v20;
 }
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = [(SXButtonComponentSizer *)self textLayouter];
-  [v6 reset];
+  textLayouter = [(SXButtonComponentSizer *)self textLayouter];
+  [textLayouter reset];
 
-  v7 = [(SXButtonComponentSizer *)self textLayouter];
-  [v7 calculateHeightForWidth:a3];
+  textLayouter2 = [(SXButtonComponentSizer *)self textLayouter];
+  [textLayouter2 calculateHeightForWidth:width];
 
   v8 = MEMORY[0x1E696B098];
-  v9 = [(SXButtonComponentSizer *)self textLayouter];
-  [v9 typographicBounds];
+  textLayouter3 = [(SXButtonComponentSizer *)self textLayouter];
+  [textLayouter3 typographicBounds];
   v10 = [v8 valueWithCGRect:?];
   [(SXComponentSizer *)self saveInfo:v10 forRenderingPhaseWithIdentifier:@"TypographicBounds"];
 
-  v11 = [(SXButtonComponentSizer *)self textLayouter];
-  [v11 typographicBounds];
+  textLayouter4 = [(SXButtonComponentSizer *)self textLayouter];
+  [textLayouter4 typographicBounds];
   v13 = v12;
 
   return v13;
 }
 
-- (UIEdgeInsets)contentInsetsWithUnitConverter:(id)a3
+- (UIEdgeInsets)contentInsetsWithUnitConverter:(id)converter
 {
-  v4 = a3;
-  v5 = [(SXComponentSizer *)self componentLayout];
-  v6 = [v5 padding];
+  converterCopy = converter;
+  componentLayout = [(SXComponentSizer *)self componentLayout];
+  padding = [componentLayout padding];
 
-  if (v6)
+  if (padding)
   {
     v25.receiver = self;
     v25.super_class = SXButtonComponentSizer;
-    [(SXComponentSizer *)&v25 contentInsetsWithUnitConverter:v4];
+    [(SXComponentSizer *)&v25 contentInsetsWithUnitConverter:converterCopy];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -83,7 +83,7 @@
   {
     v26.receiver = self;
     v26.super_class = SXButtonComponentSizer;
-    [(SXComponentSizer *)&v26 contentInsetsWithUnitConverter:v4];
+    [(SXComponentSizer *)&v26 contentInsetsWithUnitConverter:converterCopy];
     v16 = v15;
     v10 = v17;
     v19 = v18;
@@ -104,31 +104,31 @@
   return result;
 }
 
-- (UIEdgeInsets)layoutMarginsWithUnitConverter:(id)a3
+- (UIEdgeInsets)layoutMarginsWithUnitConverter:(id)converter
 {
-  v4 = a3;
+  converterCopy = converter;
   v50.receiver = self;
   v50.super_class = SXButtonComponentSizer;
-  [(SXComponentSizer *)&v50 layoutMarginsWithUnitConverter:v4];
+  [(SXComponentSizer *)&v50 layoutMarginsWithUnitConverter:converterCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SXComponentSizer *)self componentLayout];
-  v14 = [v13 padding];
+  componentLayout = [(SXComponentSizer *)self componentLayout];
+  padding = [componentLayout padding];
 
-  if (v14)
+  if (padding)
   {
-    v15 = [v14 left];
-    [v4 convertValueToPoints:{v15, v16}];
+    left = [padding left];
+    [converterCopy convertValueToPoints:{left, v16}];
     v18 = v17;
-    v19 = [v14 top];
-    [v4 convertValueToPoints:{v19, v20}];
-    v21 = [v14 right];
-    [v4 convertValueToPoints:{v21, v22}];
+    v19 = [padding top];
+    [converterCopy convertValueToPoints:{v19, v20}];
+    right = [padding right];
+    [converterCopy convertValueToPoints:{right, v22}];
     v24 = v23;
-    v25 = [v14 bottom];
-    [v4 convertValueToPoints:{v25, v26}];
+    bottom = [padding bottom];
+    [converterCopy convertValueToPoints:{bottom, v26}];
   }
 
   else
@@ -137,24 +137,24 @@
     v18 = 10.0;
   }
 
-  v27 = [(SXButtonComponentSizer *)self textLayouter];
-  v28 = [v27 wpStorage];
+  textLayouter = [(SXButtonComponentSizer *)self textLayouter];
+  wpStorage = [textLayouter wpStorage];
 
-  v29 = [v28 paragraphStyleAtParIndex:0 effectiveRange:0];
+  v29 = [wpStorage paragraphStyleAtParIndex:0 effectiveRange:0];
   v30 = [(TSWPText *)[SXTextUtilities alloc] initWithParagraphStyle:v29];
-  [(TSWPText *)v30 measureStorage:v28];
+  [(TSWPText *)v30 measureStorage:wpStorage];
   v32 = v31;
-  [v4 convertValueToPoints:{0x4059000000000000, 7}];
+  [converterCopy convertValueToPoints:{0x4059000000000000, 7}];
   v34 = v33 - v18 - v24 - v8 - v12;
-  v35 = [(SXComponentSizer *)self componentLayout];
-  [v35 maximumContentWidth];
+  componentLayout2 = [(SXComponentSizer *)self componentLayout];
+  [componentLayout2 maximumContentWidth];
   v37 = v36;
 
   if (v37)
   {
-    v38 = [(SXComponentSizer *)self componentLayout];
-    v39 = [v38 maximumContentWidth];
-    [v4 convertValueToPoints:{v39, v40}];
+    componentLayout3 = [(SXComponentSizer *)self componentLayout];
+    maximumContentWidth = [componentLayout3 maximumContentWidth];
+    [converterCopy convertValueToPoints:{maximumContentWidth, v40}];
     v42 = v41;
 
     if (v32 >= v42)
@@ -166,15 +166,15 @@
   v43 = v34 - v32;
   if (v34 - v32 > 0.0)
   {
-    v44 = [(SXComponentSizer *)self componentLayout];
-    v45 = [v44 horizontalContentAlignment];
+    componentLayout4 = [(SXComponentSizer *)self componentLayout];
+    horizontalContentAlignment = [componentLayout4 horizontalContentAlignment];
 
-    if (v45 == 1)
+    if (horizontalContentAlignment == 1)
     {
       v12 = v34 - v32;
     }
 
-    else if (v45 == 3)
+    else if (horizontalContentAlignment == 3)
     {
       v8 = v34 - v32;
     }
@@ -197,105 +197,105 @@
   return result;
 }
 
-- (id)textResizerForTextSource:(id)a3
+- (id)textResizerForTextSource:(id)source
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXComponentSizer *)self DOMObjectProvider];
+  sourceCopy = source;
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
   v6 = SXDefaultTextStyleIdentifierForRole(@"body");
   v22[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-  v8 = [(SXComponentSizer *)self component];
-  v9 = [v5 componentTextStyleForIdentifiers:v7 component:v8];
+  component = [(SXComponentSizer *)self component];
+  v9 = [dOMObjectProvider componentTextStyleForIdentifiers:v7 component:component];
 
   if (!v9)
   {
-    v10 = [(SXComponentSizer *)self DOMObjectProvider];
+    dOMObjectProvider2 = [(SXComponentSizer *)self DOMObjectProvider];
     v21 = @"default";
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-    v12 = [(SXComponentSizer *)self component];
-    v9 = [v10 componentTextStyleForIdentifiers:v11 component:v12];
+    component2 = [(SXComponentSizer *)self component];
+    v9 = [dOMObjectProvider2 componentTextStyleForIdentifiers:v11 component:component2];
   }
 
-  v13 = 1;
-  v14 = [(SXButtonComponentSizer *)self componentTextStyleForTextSource:v4 inheritingFromDefaultStyles:1];
+  fontScaling = 1;
+  v14 = [(SXButtonComponentSizer *)self componentTextStyleForTextSource:sourceCopy inheritingFromDefaultStyles:1];
   v15 = v14;
   if (v14)
   {
-    v13 = [v14 fontScaling];
+    fontScaling = [v14 fontScaling];
   }
 
   v16 = [SXTextResizer alloc];
-  v17 = [(SXComponentSizer *)self layoutOptions];
-  v18 = [v17 columnLayout];
-  v19 = [(SXTextResizer *)&v16->super.isa initWithColumnLayout:v18 defaultTextStyle:v9 fontScalingEnabled:v13];
+  layoutOptions = [(SXComponentSizer *)self layoutOptions];
+  columnLayout = [layoutOptions columnLayout];
+  v19 = [(SXTextResizer *)&v16->super.isa initWithColumnLayout:columnLayout defaultTextStyle:v9 fontScalingEnabled:fontScaling];
 
   return v19;
 }
 
-- (id)componentTextStyleForTextSource:(id)a3 inheritingFromDefaultStyles:(BOOL)a4
+- (id)componentTextStyleForTextSource:(id)source inheritingFromDefaultStyles:(BOOL)styles
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
-  if (v4)
+  stylesCopy = styles;
+  array = [MEMORY[0x1E695DF70] array];
+  if (stylesCopy)
   {
-    v7 = [(SXComponentSizer *)self component];
-    v8 = [v7 classification];
-    v9 = [v8 defaultTextStyleIdentifiers];
+    component = [(SXComponentSizer *)self component];
+    classification = [component classification];
+    defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
 
-    if (v9)
+    if (defaultTextStyleIdentifiers)
     {
-      v10 = [(SXComponentSizer *)self component];
-      v11 = [v10 classification];
-      v12 = [v11 defaultTextStyleIdentifiers];
-      [v6 addObjectsFromArray:v12];
+      component2 = [(SXComponentSizer *)self component];
+      classification2 = [component2 classification];
+      defaultTextStyleIdentifiers2 = [classification2 defaultTextStyleIdentifiers];
+      [array addObjectsFromArray:defaultTextStyleIdentifiers2];
     }
   }
 
-  v13 = [(SXComponentSizer *)self component];
-  v14 = [v13 textStyle];
+  component3 = [(SXComponentSizer *)self component];
+  textStyle = [component3 textStyle];
 
-  if (v14)
+  if (textStyle)
   {
-    v15 = [(SXComponentSizer *)self component];
-    v16 = [v15 textStyle];
-    [v6 addObject:v16];
+    component4 = [(SXComponentSizer *)self component];
+    textStyle2 = [component4 textStyle];
+    [array addObject:textStyle2];
   }
 
-  v17 = [(SXComponentSizer *)self DOMObjectProvider];
-  v18 = [(SXComponentSizer *)self component];
-  v19 = [v17 componentTextStyleForIdentifiers:v6 component:v18];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component5 = [(SXComponentSizer *)self component];
+  v19 = [dOMObjectProvider componentTextStyleForIdentifiers:array component:component5];
 
   return v19;
 }
 
-- (id)defaultComponentTextStyleForTextSource:(id)a3
+- (id)defaultComponentTextStyleForTextSource:(id)source
 {
-  v4 = [(SXComponentSizer *)self DOMObjectProvider];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
   v5 = MEMORY[0x1E695DEC8];
-  v6 = [(SXComponentSizer *)self component];
-  v7 = [v6 classification];
-  v8 = [v7 defaultTextStyleIdentifiers];
-  v9 = [v5 arrayWithArray:v8];
-  v10 = [(SXComponentSizer *)self component];
-  v11 = [v4 componentTextStyleForIdentifiers:v9 component:v10];
+  component = [(SXComponentSizer *)self component];
+  classification = [component classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
+  v9 = [v5 arrayWithArray:defaultTextStyleIdentifiers];
+  component2 = [(SXComponentSizer *)self component];
+  v11 = [dOMObjectProvider componentTextStyleForIdentifiers:v9 component:component2];
 
   return v11;
 }
 
-- (id)defaultComponentTextStylesForTextSource:(id)a3
+- (id)defaultComponentTextStylesForTextSource:(id)source
 {
   v24 = *MEMORY[0x1E69E9840];
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(SXComponentSizer *)self component];
-  v5 = [v4 classification];
-  v6 = [v5 defaultTextStyleIdentifiers];
+  component = [(SXComponentSizer *)self component];
+  classification = [component classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v7 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -306,63 +306,63 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(defaultTextStyleIdentifiers);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [(SXComponentSizer *)self DOMObjectProvider];
+        dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
         v22 = v11;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-        v14 = [(SXComponentSizer *)self component];
-        v15 = [v12 componentTextStyleForIdentifiers:v13 component:v14];
+        component2 = [(SXComponentSizer *)self component];
+        v15 = [dOMObjectProvider componentTextStyleForIdentifiers:v13 component:component2];
 
         if (v15)
         {
-          [v17 addObject:v15];
+          [array addObject:v15];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v8 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  return v17;
+  return array;
 }
 
-- (id)additionsForTextSource:(id)a3
+- (id)additionsForTextSource:(id)source
 {
-  v3 = [(SXComponentSizer *)self component];
-  v4 = [v3 additions];
-  v5 = [v4 NSArray];
+  component = [(SXComponentSizer *)self component];
+  additions = [component additions];
+  nSArray = [additions NSArray];
 
-  return v5;
+  return nSArray;
 }
 
-- (id)textRulesForTextSource:(id)a3
+- (id)textRulesForTextSource:(id)source
 {
-  v3 = [(SXComponentSizer *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 textRules];
+  component = [(SXComponentSizer *)self component];
+  classification = [component classification];
+  textRules = [classification textRules];
 
-  return v5;
+  return textRules;
 }
 
-- (id)contentSizeCategoryForTextSource:(id)a3
+- (id)contentSizeCategoryForTextSource:(id)source
 {
-  v3 = [(SXComponentSizer *)self layoutOptions];
-  v4 = [v3 contentSizeCategory];
+  layoutOptions = [(SXComponentSizer *)self layoutOptions];
+  contentSizeCategory = [layoutOptions contentSizeCategory];
 
-  return v4;
+  return contentSizeCategory;
 }
 
-- (id)textStyleForIdentifier:(id)a3
+- (id)textStyleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentSizer *)self DOMObjectProvider];
-  v6 = [(SXComponentSizer *)self component];
-  v7 = [v5 textStyleForIdentifier:v4 component:v6];
+  identifierCopy = identifier;
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component = [(SXComponentSizer *)self component];
+  v7 = [dOMObjectProvider textStyleForIdentifier:identifierCopy component:component];
 
   return v7;
 }

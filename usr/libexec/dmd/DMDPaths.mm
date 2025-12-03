@@ -9,7 +9,7 @@
 + (NSString)purchasedBooksManifest;
 + (NSString)systemLostModeRequestPath;
 + (id)_managedNonStoreBooksSystemGroupContainer;
-+ (id)_systemGroupContainerPathWithGroupIdentifier:(id)a3;
++ (id)_systemGroupContainerPathWithGroupIdentifier:(id)identifier;
 + (id)_systemProfileLibraryDirectory;
 + (id)_systemProfileStorageDirectory;
 + (id)configurationProfilesSystemGroupContainer;
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005AE30;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF188 != -1)
   {
     dispatch_once(&qword_1000FF188, block);
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005AF7C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF198 != -1)
   {
     dispatch_once(&qword_1000FF198, block);
@@ -57,7 +57,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B07C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF1A8 != -1)
   {
     dispatch_once(&qword_1000FF1A8, block);
@@ -74,7 +74,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B17C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF1B8 != -1)
   {
     dispatch_once(&qword_1000FF1B8, block);
@@ -91,7 +91,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B27C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF1C8 != -1)
   {
     dispatch_once(&qword_1000FF1C8, block);
@@ -108,7 +108,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B37C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF1D8 != -1)
   {
     dispatch_once(&qword_1000FF1D8, block);
@@ -125,7 +125,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B47C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF1E8 != -1)
   {
     dispatch_once(&qword_1000FF1E8, block);
@@ -142,7 +142,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B57C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF1F8 != -1)
   {
     dispatch_once(&qword_1000FF1F8, block);
@@ -159,7 +159,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B67C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF208 != -1)
   {
     dispatch_once(&qword_1000FF208, block);
@@ -176,7 +176,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B77C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF218 != -1)
   {
     dispatch_once(&qword_1000FF218, block);
@@ -193,7 +193,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B888;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF228 != -1)
   {
     dispatch_once(&qword_1000FF228, block);
@@ -210,7 +210,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005B988;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF238 != -1)
   {
     dispatch_once(&qword_1000FF238, block);
@@ -226,7 +226,7 @@
   v3 = qword_1000FF240;
   if (!qword_1000FF240)
   {
-    v4 = [a1 _systemGroupContainerPathWithGroupIdentifier:@"systemgroup.com.apple.media.books.managed"];
+    v4 = [self _systemGroupContainerPathWithGroupIdentifier:@"systemgroup.com.apple.media.books.managed"];
     v5 = qword_1000FF240;
     qword_1000FF240 = v4;
 
@@ -245,18 +245,18 @@
   return v3;
 }
 
-+ (id)_systemGroupContainerPathWithGroupIdentifier:(id)a3
++ (id)_systemGroupContainerPathWithGroupIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v8 = 1;
-  [v3 UTF8String];
+  [identifierCopy UTF8String];
   v4 = container_system_group_path_for_identifier();
   if (v4)
   {
     v5 = v4;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_100085CF4(v3, v5);
+      sub_100085CF4(identifierCopy, v5);
     }
 
     v6 = [NSString stringWithCString:v5 encoding:4];
@@ -267,7 +267,7 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100085D80(v3, &v8);
+      sub_100085D80(identifierCopy, &v8);
     }
 
     v6 = 0;

@@ -1,18 +1,18 @@
 @interface CKAssistantSMSGroupSearch
 - (id)_search;
 - (id)_validate;
-- (id)identifierForChatIdentifier:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (id)identifierForChatIdentifier:(id)identifier;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CKAssistantSMSGroupSearch
 
-- (id)identifierForChatIdentifier:(id)a3
+- (id)identifierForChatIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [@"x-apple-sms-group://" stringByAppendingString:v3];
+    v4 = [@"x-apple-sms-group://" stringByAppendingString:identifierCopy];
     v5 = [NSURL URLWithString:v4];
   }
 
@@ -52,8 +52,8 @@
           _IMDChatRecordBulkCopy();
           if ([v16[0] length])
           {
-            v8 = [(CKAssistantSMSGroupSearch *)self smsGroupName];
-            [v8 isEqualToString:v16[0]];
+            smsGroupName = [(CKAssistantSMSGroupSearch *)self smsGroupName];
+            [smsGroupName isEqualToString:v16[0]];
           }
         }
 
@@ -68,9 +68,9 @@
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(CKAssistantSMSGroupSearch *)self smsGroupName];
+        smsGroupName2 = [(CKAssistantSMSGroupSearch *)self smsGroupName];
         *buf = 138412546;
-        *&buf[4] = v10;
+        *&buf[4] = smsGroupName2;
         v18 = 2112;
         v19 = v6;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Looking at groups with name %@ and found groups names %@", buf, 0x16u);
@@ -88,9 +88,9 @@
       v11 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(CKAssistantSMSGroupSearch *)self smsGroupName];
+        smsGroupName3 = [(CKAssistantSMSGroupSearch *)self smsGroupName];
         *buf = 138412290;
-        *&buf[4] = v12;
+        *&buf[4] = smsGroupName3;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Looking at groups with name %@ but there were no named chats at all", buf, 0xCu);
       }
     }
@@ -119,8 +119,8 @@ LABEL_25:
 
 - (id)_validate
 {
-  v2 = [(CKAssistantSMSGroupSearch *)self smsGroupName];
-  if ([v2 length])
+  smsGroupName = [(CKAssistantSMSGroupSearch *)self smsGroupName];
+  if ([smsGroupName length])
   {
     v3 = 0;
   }
@@ -133,9 +133,9 @@ LABEL_25:
   return v3;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -146,10 +146,10 @@ LABEL_25:
     }
   }
 
-  v6 = [(CKAssistantSMSGroupSearch *)self _validate];
-  if (v6)
+  _validate = [(CKAssistantSMSGroupSearch *)self _validate];
+  if (_validate)
   {
-    v7 = v6;
+    _perform = _validate;
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
@@ -163,11 +163,11 @@ LABEL_25:
 
   else
   {
-    v7 = [(CKAssistantSMSGroupSearch *)self _perform];
+    _perform = [(CKAssistantSMSGroupSearch *)self _perform];
   }
 
-  v9 = [v7 dictionary];
-  v4[2](v4, v9);
+  dictionary = [_perform dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

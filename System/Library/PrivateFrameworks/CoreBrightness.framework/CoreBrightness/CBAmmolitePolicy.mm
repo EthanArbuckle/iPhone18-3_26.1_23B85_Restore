@@ -1,30 +1,30 @@
 @interface CBAmmolitePolicy
-- (CBAmmolitePolicy)initWithParams:(id)a3;
+- (CBAmmolitePolicy)initWithParams:(id)params;
 - (float)rampTargetLuxCap;
 - (void)dealloc;
 @end
 
 @implementation CBAmmolitePolicy
 
-- (CBAmmolitePolicy)initWithParams:(id)a3
+- (CBAmmolitePolicy)initWithParams:(id)params
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  paramsCopy = params;
   v4.receiver = self;
   v4.super_class = CBAmmolitePolicy;
-  v7 = [(CBAmmolitePolicy *)&v4 init];
-  v7->_params = v5;
-  return v7;
+  selfCopy = [(CBAmmolitePolicy *)&v4 init];
+  selfCopy->_params = paramsCopy;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](self->_params).n128_u64[0];
-  v5->_params = 0;
-  v3.receiver = v5;
+  selfCopy->_params = 0;
+  v3.receiver = selfCopy;
   v3.super_class = CBAmmolitePolicy;
   [(CBAmmolitePolicy *)&v3 dealloc];
 }

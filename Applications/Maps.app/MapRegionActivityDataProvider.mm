@@ -3,12 +3,12 @@
 - (NSString)activityTitle;
 - (NSURL)activityURL;
 - (_TtC4Maps29MapRegionActivityDataProvider)init;
-- (_TtC4Maps29MapRegionActivityDataProvider)initWithMapRegion:(id *)a3 camera:(id)a4 title:(id)a5 mapType:(unint64_t)a6;
+- (_TtC4Maps29MapRegionActivityDataProvider)initWithMapRegion:(id *)region camera:(id)camera title:(id)title mapType:(unint64_t)type;
 @end
 
 @implementation MapRegionActivityDataProvider
 
-- (_TtC4Maps29MapRegionActivityDataProvider)initWithMapRegion:(id *)a3 camera:(id)a4 title:(id)a5 mapType:(unint64_t)a6
+- (_TtC4Maps29MapRegionActivityDataProvider)initWithMapRegion:(id *)region camera:(id)camera title:(id)title mapType:(unint64_t)type
 {
   v12 = v9;
   v13 = v8;
@@ -16,8 +16,8 @@
   v15 = v6;
   v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
-  v19 = a3;
-  v20 = sub_1000D4208(v19, v16, v18, a5, v15, v14, v13, v12);
+  regionCopy = region;
+  v20 = sub_1000D4208(regionCopy, v16, v18, title, v15, v14, v13, v12);
 
   return v20;
 }
@@ -46,7 +46,7 @@
 
 - (NSData)pushSubmissionData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000D3E78();
   v5 = v4;
 

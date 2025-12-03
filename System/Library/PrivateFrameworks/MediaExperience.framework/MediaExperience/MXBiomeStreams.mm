@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (MXBiomeStreams)init;
 - (void)dealloc;
-- (void)updateBiomeSilentMode:(BOOL)a3 clientType:(unsigned int)a4 untilTime:(id)a5 reason:(id)a6;
+- (void)updateBiomeSilentMode:(BOOL)mode clientType:(unsigned int)type untilTime:(id)time reason:(id)reason;
 @end
 
 @implementation MXBiomeStreams
@@ -68,19 +68,19 @@ MXBiomeStreams *__32__MXBiomeStreams_sharedInstance__block_invoke()
   [(MXBiomeStreams *)&v3 dealloc];
 }
 
-- (void)updateBiomeSilentMode:(BOOL)a3 clientType:(unsigned int)a4 untilTime:(id)a5 reason:(id)a6
+- (void)updateBiomeSilentMode:(BOOL)mode clientType:(unsigned int)type untilTime:(id)time reason:(id)reason
 {
-  v11 = a5;
-  v12 = a6;
+  timeCopy = time;
+  reasonCopy = reason;
   mAccessQueue = self->mAccessQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__MXBiomeStreams_updateBiomeSilentMode_clientType_untilTime_reason___block_invoke;
   v14[3] = &unk_1E7AE7348;
-  v16 = a3;
-  v15 = a4;
-  v14[4] = a5;
-  v14[5] = a6;
+  modeCopy = mode;
+  typeCopy = type;
+  v14[4] = time;
+  v14[5] = reason;
   MXDispatchAsync("[MXBiomeStreams updateBiomeSilentMode:clientType:untilTime:reason:]", "MXBiomeStreams.m", 93, 0, 0, mAccessQueue, v14);
 }
 

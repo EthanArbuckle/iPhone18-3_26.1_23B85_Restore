@@ -1,30 +1,30 @@
 @interface CSStateCaptureOptions
-- (CSStateCaptureOptions)initWithMutableBuilder:(id)a3;
+- (CSStateCaptureOptions)initWithMutableBuilder:(id)builder;
 @end
 
 @implementation CSStateCaptureOptions
 
-- (CSStateCaptureOptions)initWithMutableBuilder:(id)a3
+- (CSStateCaptureOptions)initWithMutableBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = CSStateCaptureOptions;
   v5 = [(CSStateCaptureOptions *)&v12 init];
   v6 = objc_alloc_init(CSStateCaptureOptionsMutable);
   if (v5)
   {
-    if (v4)
+    if (builderCopy)
     {
-      v4[2](v4, v6);
+      builderCopy[2](builderCopy, v6);
     }
 
-    v7 = [(CSStateCaptureOptionsMutable *)v6 stateDataTitle];
+    stateDataTitle = [(CSStateCaptureOptionsMutable *)v6 stateDataTitle];
     stateDataTitle = v5->_stateDataTitle;
-    v5->_stateDataTitle = v7;
+    v5->_stateDataTitle = stateDataTitle;
 
-    v9 = [(CSStateCaptureOptionsMutable *)v6 stateData];
+    stateData = [(CSStateCaptureOptionsMutable *)v6 stateData];
     stateData = v5->_stateData;
-    v5->_stateData = v9;
+    v5->_stateData = stateData;
   }
 
   return v5;

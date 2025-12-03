@@ -1,20 +1,20 @@
 @interface SKUIPreviewDocumentController
-- (SKUIPreviewDocumentController)initWithDocument:(id)a3;
+- (SKUIPreviewDocumentController)initWithDocument:(id)document;
 - (id)_operationQueue;
-- (id)overlayViewControllerWithBackgroundStyle:(int64_t)a3;
-- (void)_audioPlayerStatusChangeNotification:(id)a3;
+- (id)overlayViewControllerWithBackgroundStyle:(int64_t)style;
+- (void)_audioPlayerStatusChangeNotification:(id)notification;
 - (void)_connectToAudioPlayer;
-- (void)_playerSessionsDidChangeNotification:(id)a3;
-- (void)_reloadViewControllersWithPreviewStatus:(id)a3 animated:(BOOL)a4;
+- (void)_playerSessionsDidChangeNotification:(id)notification;
+- (void)_reloadViewControllersWithPreviewStatus:(id)status animated:(BOOL)animated;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 @end
 
 @implementation SKUIPreviewDocumentController
 
-- (SKUIPreviewDocumentController)initWithDocument:(id)a3
+- (SKUIPreviewDocumentController)initWithDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPreviewDocumentController initWithDocument:];
@@ -26,10 +26,10 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_document, a3);
+    objc_storeStrong(&v6->_document, document);
     [(IKAppDocument *)v7->_document setDelegate:v7];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__playerSessionsDidChangeNotification_ name:*MEMORY[0x277D7FF10] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__playerSessionsDidChangeNotification_ name:*MEMORY[0x277D7FF10] object:0];
     [(SKUIPreviewDocumentController *)v7 _connectToAudioPlayer];
   }
 
@@ -38,9 +38,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF10] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF10] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
   [(IKAppDocument *)self->_document setDelegate:0];
 
   v4.receiver = self;
@@ -48,10 +48,10 @@
   [(SKUIPreviewDocumentController *)&v4 dealloc];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -72,7 +72,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) documentDidUpdate:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) documentDidUpdate:{updateCopy, v10}];
       }
 
       while (v7 != v9);
@@ -83,17 +83,17 @@
   }
 }
 
-- (id)overlayViewControllerWithBackgroundStyle:(int64_t)a3
+- (id)overlayViewControllerWithBackgroundStyle:(int64_t)style
 {
   v5 = [[SKUIPreviewOverlayViewController alloc] initWithDocument:self->_document];
-  [(SKUIPreviewOverlayViewController *)v5 setBackgroundStyle:a3];
+  [(SKUIPreviewOverlayViewController *)v5 setBackgroundStyle:style];
   [(SKUIViewController *)v5 setClientContext:self->_clientContext];
-  v6 = [(SKUIPreviewDocumentController *)self _operationQueue];
-  [(SKUIViewController *)v5 setOperationQueue:v6];
+  _operationQueue = [(SKUIPreviewDocumentController *)self _operationQueue];
+  [(SKUIViewController *)v5 setOperationQueue:_operationQueue];
 
   [(SKUIPreviewOverlayViewController *)v5 prepareOverlayView];
-  v7 = [(SUAudioPlayer *)self->_audioPlayer playerStatus];
-  [(SKUIPreviewOverlayViewController *)v5 showPreviewProgressWithStatus:v7 animated:0];
+  playerStatus = [(SUAudioPlayer *)self->_audioPlayer playerStatus];
+  [(SKUIPreviewOverlayViewController *)v5 showPreviewProgressWithStatus:playerStatus animated:0];
 
   viewControllers = self->_viewControllers;
   if (!viewControllers)
@@ -110,53 +110,53 @@
   return v5;
 }
 
-- (void)_audioPlayerStatusChangeNotification:(id)a3
+- (void)_audioPlayerStatusChangeNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   audioPlayer = self->_audioPlayer;
 
-  if (v4 == audioPlayer)
+  if (object == audioPlayer)
   {
-    v6 = [(SUAudioPlayer *)self->_audioPlayer playerStatus];
-    [(SKUIPreviewDocumentController *)self _reloadViewControllersWithPreviewStatus:v6 animated:1];
+    playerStatus = [(SUAudioPlayer *)self->_audioPlayer playerStatus];
+    [(SKUIPreviewDocumentController *)self _reloadViewControllersWithPreviewStatus:playerStatus animated:1];
   }
 }
 
-- (void)_playerSessionsDidChangeNotification:(id)a3
+- (void)_playerSessionsDidChangeNotification:(id)notification
 {
-  v4 = [(SKUIPreviewDocumentController *)self isPreviewActive];
+  isPreviewActive = [(SKUIPreviewDocumentController *)self isPreviewActive];
   [(SKUIPreviewDocumentController *)self _connectToAudioPlayer];
-  if (v4 != [(SKUIPreviewDocumentController *)self isPreviewActive])
+  if (isPreviewActive != [(SKUIPreviewDocumentController *)self isPreviewActive])
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"SKUIPreviewDocumentIsActiveDidChangeNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SKUIPreviewDocumentIsActiveDidChangeNotification" object:self userInfo:0];
   }
 }
 
 - (void)_connectToAudioPlayer
 {
-  v3 = [(IKAppDocument *)self->_document templateElement];
-  v4 = [v3 previewURLString];
-  v5 = v4;
-  if (v4)
+  templateElement = [(IKAppDocument *)self->_document templateElement];
+  previewURLString = [templateElement previewURLString];
+  v5 = previewURLString;
+  if (previewURLString)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v4];
-    v7 = [MEMORY[0x277D7FDA8] sessionManager];
-    obja = [v7 audioPlayerForURL:v6];
+    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:previewURLString];
+    sessionManager = [MEMORY[0x277D7FDA8] sessionManager];
+    obja = [sessionManager audioPlayerForURL:v6];
 
-    v4 = obja;
+    previewURLString = obja;
   }
 
   p_audioPlayer = &self->_audioPlayer;
-  obj = v4;
-  if (v4 != self->_audioPlayer)
+  obj = previewURLString;
+  if (previewURLString != self->_audioPlayer)
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    v10 = v9;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v10 = defaultCenter;
     v11 = MEMORY[0x277D7FF18];
     if (*p_audioPlayer)
     {
-      [v9 removeObserver:self name:*MEMORY[0x277D7FF18] object:?];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:?];
     }
 
     objc_storeStrong(&self->_audioPlayer, obj);
@@ -171,8 +171,8 @@
       audioPlayer = 0;
     }
 
-    v13 = [(SUAudioPlayer *)audioPlayer playerStatus];
-    [(SKUIPreviewDocumentController *)self _reloadViewControllersWithPreviewStatus:v13 animated:0];
+    playerStatus = [(SUAudioPlayer *)audioPlayer playerStatus];
+    [(SKUIPreviewDocumentController *)self _reloadViewControllersWithPreviewStatus:playerStatus animated:0];
   }
 }
 
@@ -196,11 +196,11 @@
   return operationQueue;
 }
 
-- (void)_reloadViewControllersWithPreviewStatus:(id)a3 animated:(BOOL)a4
+- (void)_reloadViewControllersWithPreviewStatus:(id)status animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  statusCopy = status;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -221,7 +221,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) showPreviewProgressWithStatus:v6 animated:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) showPreviewProgressWithStatus:statusCopy animated:{animatedCopy, v12}];
       }
 
       while (v9 != v11);

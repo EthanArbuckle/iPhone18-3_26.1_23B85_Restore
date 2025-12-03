@@ -1,39 +1,39 @@
 @interface SDLogArchiveUnit
-+ (id)logArchiveUnitWithDictionary:(id)a3;
-- (void)logArchiveOverride:(id)a3;
++ (id)logArchiveUnitWithDictionary:(id)dictionary;
+- (void)logArchiveOverride:(id)override;
 @end
 
 @implementation SDLogArchiveUnit
 
-+ (id)logArchiveUnitWithDictionary:(id)a3
++ (id)logArchiveUnitWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v9.receiver = a1;
+  dictionaryCopy = dictionary;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___SDLogArchiveUnit;
   v5 = [objc_msgSendSuper2(&v9 "alloc")];
   v6 = v5;
-  if (v4 && v5)
+  if (dictionaryCopy && v5)
   {
-    v7 = [v4 mutableCopy];
+    v7 = [dictionaryCopy mutableCopy];
     [v6 setArchive_arguments:v7];
   }
 
   return v6;
 }
 
-- (void)logArchiveOverride:(id)a3
+- (void)logArchiveOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(SDLogArchiveUnit *)self archive_arguments];
+  overrideCopy = override;
+  archive_arguments = [(SDLogArchiveUnit *)self archive_arguments];
 
-  if (v5)
+  if (archive_arguments)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v4;
-    v6 = v4;
+    v18 = overrideCopy;
+    v6 = overrideCopy;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v7)
     {
@@ -49,9 +49,9 @@
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [(SDLogArchiveUnit *)self archive_arguments];
+          archive_arguments2 = [(SDLogArchiveUnit *)self archive_arguments];
           v13 = [v6 objectForKeyedSubscript:v11];
-          [v12 setValue:v13 forKey:v11];
+          [archive_arguments2 setValue:v13 forKey:v11];
 
           v14 = sub_1000278E8();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@
       while (v8);
     }
 
-    v4 = v18;
+    overrideCopy = v18;
   }
 }
 

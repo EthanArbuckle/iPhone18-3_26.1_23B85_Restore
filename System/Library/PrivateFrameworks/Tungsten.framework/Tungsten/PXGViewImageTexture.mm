@@ -1,13 +1,13 @@
 @interface PXGViewImageTexture
 - (CGSize)pixelSize;
-- (PXGViewImageTexture)initWithImage:(CGImage *)a3 orientation:(unsigned int)a4 alpha:(float)a5 suppressContentsRect:(float)a6;
-- (id)copyWithOrientationTransform:(float)a3 alpha:(float)a4 suppressContentsRect:;
+- (PXGViewImageTexture)initWithImage:(CGImage *)image orientation:(unsigned int)orientation alpha:(float)alpha suppressContentsRect:(float)rect;
+- (id)copyWithOrientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:;
 - (void)dealloc;
 @end
 
 @implementation PXGViewImageTexture
 
-- (id)copyWithOrientationTransform:(float)a3 alpha:(float)a4 suppressContentsRect:
+- (id)copyWithOrientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:
 {
   v5 = v4;
   if (v7 >= 0.0)
@@ -55,7 +55,7 @@
     v15 = 4;
   }
 
-  if (a3 > 0.0)
+  if (transform > 0.0)
   {
     v10 = v15;
   }
@@ -70,7 +70,7 @@
     v17 = 3;
   }
 
-  if (a3 < 0.0)
+  if (transform < 0.0)
   {
     v18 = v17;
   }
@@ -80,7 +80,7 @@
     v18 = v10;
   }
 
-  if (v18 == self->_orientation && self->_alpha == a4 && self->_suppressContentsRect == v4)
+  if (v18 == self->_orientation && self->_alpha == alpha && self->_suppressContentsRect == v4)
   {
 
     return self;
@@ -89,7 +89,7 @@
   else
   {
     v20 = objc_alloc(objc_opt_class());
-    *&v21 = a4;
+    *&v21 = alpha;
     *&v22 = v5;
     v23 = [v20 initWithImage:self->_imageRef orientation:v18 alpha:v21 suppressContentsRect:v22];
     [v23 setSourceCGImage:{-[PXGImageTexture sourceCGImage](self, "sourceCGImage")}];
@@ -116,18 +116,18 @@
   [(PXGImageTexture *)&v3 dealloc];
 }
 
-- (PXGViewImageTexture)initWithImage:(CGImage *)a3 orientation:(unsigned int)a4 alpha:(float)a5 suppressContentsRect:(float)a6
+- (PXGViewImageTexture)initWithImage:(CGImage *)image orientation:(unsigned int)orientation alpha:(float)alpha suppressContentsRect:(float)rect
 {
   v13.receiver = self;
   v13.super_class = PXGViewImageTexture;
   v10 = [(PXGImageTexture *)&v13 init];
   if (v10)
   {
-    v10->_imageRef = CGImageRetain(a3);
-    v10->_orientation = a4;
-    v10->_alpha = a5;
-    v10->_suppressContentsRect = a6;
-    AlphaInfo = CGImageGetAlphaInfo(a3);
+    v10->_imageRef = CGImageRetain(image);
+    v10->_orientation = orientation;
+    v10->_alpha = alpha;
+    v10->_suppressContentsRect = rect;
+    AlphaInfo = CGImageGetAlphaInfo(image);
     v10->_isContentOpaque = (AlphaInfo < kCGImageAlphaOnly) & (0x61u >> AlphaInfo);
   }
 

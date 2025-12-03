@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceStatementsRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceStatementsRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -30,7 +30,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v9 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))

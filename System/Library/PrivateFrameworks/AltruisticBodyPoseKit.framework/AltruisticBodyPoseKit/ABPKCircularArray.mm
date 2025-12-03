@@ -1,12 +1,12 @@
 @interface ABPKCircularArray
-- (ABPKCircularArray)initWithCapacity:(int64_t)a3;
+- (ABPKCircularArray)initWithCapacity:(int64_t)capacity;
 - (NSArray)contents;
-- (void)add:(id)a3;
+- (void)add:(id)add;
 @end
 
 @implementation ABPKCircularArray
 
-- (ABPKCircularArray)initWithCapacity:(int64_t)a3
+- (ABPKCircularArray)initWithCapacity:(int64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = ABPKCircularArray;
@@ -14,17 +14,17 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 <= 1)
+    if (capacity <= 1)
     {
-      v6 = 1;
+      capacityCopy = 1;
     }
 
     else
     {
-      v6 = a3;
+      capacityCopy = capacity;
     }
 
-    v4->_capacity = v6;
+    v4->_capacity = capacityCopy;
     v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v4->_capacity];
     array = v5->_array;
     v5->_array = v7;
@@ -40,10 +40,10 @@
   return v2;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addCopy = add;
   v5 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -103,7 +103,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  [(NSMutableArray *)self->_array addObject:v4];
+  [(NSMutableArray *)self->_array addObject:addCopy];
   v17 = *MEMORY[0x277D85DE8];
 }
 

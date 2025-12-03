@@ -1,20 +1,20 @@
 @interface AutocompleteStringMatcher
 - (AutocompleteStringMatcher)init;
-- (AutocompleteStringMatcher)initWithPlaceAddress:(id)a3 matchInfo:(id)a4;
-- (AutocompleteStringMatcher)initWithString:(id)a3 requiredMatchLength:(unint64_t)a4 matchInfo:(id)a5;
-- (id)matchForAutocompleteSearchString:(id)a3;
+- (AutocompleteStringMatcher)initWithPlaceAddress:(id)address matchInfo:(id)info;
+- (AutocompleteStringMatcher)initWithString:(id)string requiredMatchLength:(unint64_t)length matchInfo:(id)info;
+- (id)matchForAutocompleteSearchString:(id)string;
 @end
 
 @implementation AutocompleteStringMatcher
 
-- (id)matchForAutocompleteSearchString:(id)a3
+- (id)matchForAutocompleteSearchString:(id)string
 {
-  v4 = a3;
-  if (-[NSString length](self->_string, "length") && [v4 length])
+  stringCopy = string;
+  if (-[NSString length](self->_string, "length") && [stringCopy length])
   {
-    v5 = [v4 _navigation_isCJK];
+    _navigation_isCJK = [stringCopy _navigation_isCJK];
     v6 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v7 = [v4 stringByTrimmingCharactersInSet:v6];
+    v7 = [stringCopy stringByTrimmingCharactersInSet:v6];
     v8 = [v7 componentsSeparatedByCharactersInSet:v6];
 
     if ([v8 count])
@@ -39,7 +39,7 @@
       v11 = [obj countByEnumeratingWithState:&v32 objects:v44 count:16];
       if (v11)
       {
-        v12 = v5 ^ 1;
+        v12 = _navigation_isCJK ^ 1;
         v13 = *v33;
         while (2)
         {
@@ -101,8 +101,8 @@ LABEL_17:
 
       else
       {
-        v16 = [(AutocompleteStringMatcher *)self matchInfo];
-        v17 = [v16 copy];
+        matchInfo = [(AutocompleteStringMatcher *)self matchInfo];
+        v17 = [matchInfo copy];
 
         if (v20)
         {
@@ -136,11 +136,11 @@ LABEL_17:
   return v17;
 }
 
-- (AutocompleteStringMatcher)initWithPlaceAddress:(id)a3 matchInfo:(id)a4
+- (AutocompleteStringMatcher)initWithPlaceAddress:(id)address matchInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 _navigation_isCJK])
+  infoCopy = info;
+  addressCopy = address;
+  if ([addressCopy _navigation_isCJK])
   {
     v8 = 1;
   }
@@ -150,24 +150,24 @@ LABEL_17:
     v8 = 3;
   }
 
-  v9 = [(AutocompleteStringMatcher *)self initWithString:v7 requiredMatchLength:v8 matchInfo:v6];
+  v9 = [(AutocompleteStringMatcher *)self initWithString:addressCopy requiredMatchLength:v8 matchInfo:infoCopy];
 
   return v9;
 }
 
-- (AutocompleteStringMatcher)initWithString:(id)a3 requiredMatchLength:(unint64_t)a4 matchInfo:(id)a5
+- (AutocompleteStringMatcher)initWithString:(id)string requiredMatchLength:(unint64_t)length matchInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
+  stringCopy = string;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = AutocompleteStringMatcher;
   v11 = [(AutocompleteStringMatcher *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_string, a3);
-    v12->_requiredMatchLength = a4;
-    objc_storeStrong(&v12->_matchInfo, a5);
+    objc_storeStrong(&v11->_string, string);
+    v12->_requiredMatchLength = length;
+    objc_storeStrong(&v12->_matchInfo, info);
   }
 
   return v12;

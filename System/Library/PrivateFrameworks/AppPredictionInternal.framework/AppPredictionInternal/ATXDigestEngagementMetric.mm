@@ -1,63 +1,63 @@
 @interface ATXDigestEngagementMetric
 - (id)coreAnalyticsDictionary;
-- (void)populateMetricsFromDigest:(id)a3;
+- (void)populateMetricsFromDigest:(id)digest;
 @end
 
 @implementation ATXDigestEngagementMetric
 
-- (void)populateMetricsFromDigest:(id)a3
+- (void)populateMetricsFromDigest:(id)digest
 {
-  v33 = a3;
-  v4 = [v33 modeIdString];
-  [(ATXDigestEngagementMetric *)self setDigestTimeCategory:v4];
+  digestCopy = digest;
+  modeIdString = [digestCopy modeIdString];
+  [(ATXDigestEngagementMetric *)self setDigestTimeCategory:modeIdString];
 
-  v5 = [v33 uuid];
-  v6 = [v5 UUIDString];
-  [(ATXDigestEngagementMetric *)self setDigestUUID:v6];
+  uuid = [digestCopy uuid];
+  uUIDString = [uuid UUIDString];
+  [(ATXDigestEngagementMetric *)self setDigestUUID:uUIDString];
 
-  v7 = [v33 digestEngagementTrackingMetrics];
-  -[ATXDigestEngagementMetric setNumDigestExpansions:](self, "setNumDigestExpansions:", [v7 numDigestExpansions]);
+  digestEngagementTrackingMetrics = [digestCopy digestEngagementTrackingMetrics];
+  -[ATXDigestEngagementMetric setNumDigestExpansions:](self, "setNumDigestExpansions:", [digestEngagementTrackingMetrics numDigestExpansions]);
 
-  v8 = [v33 messageGroups];
-  -[ATXDigestEngagementMetric setNumMessageGroups:](self, "setNumMessageGroups:", [v8 count]);
+  messageGroups = [digestCopy messageGroups];
+  -[ATXDigestEngagementMetric setNumMessageGroups:](self, "setNumMessageGroups:", [messageGroups count]);
 
-  v9 = [v33 highlightedGroups];
-  -[ATXDigestEngagementMetric setNumHighlightedGroups:](self, "setNumHighlightedGroups:", [v9 count]);
+  highlightedGroups = [digestCopy highlightedGroups];
+  -[ATXDigestEngagementMetric setNumHighlightedGroups:](self, "setNumHighlightedGroups:", [highlightedGroups count]);
 
-  v10 = [v33 rankedGroups];
-  -[ATXDigestEngagementMetric setNumOtherGroups:](self, "setNumOtherGroups:", [v10 count]);
+  rankedGroups = [digestCopy rankedGroups];
+  -[ATXDigestEngagementMetric setNumOtherGroups:](self, "setNumOtherGroups:", [rankedGroups count]);
 
-  v11 = [v33 messageGroups];
-  v12 = [v11 _pas_leftFoldWithInitialObject:&unk_283A572D8 accumulate:&__block_literal_global_203];
+  messageGroups2 = [digestCopy messageGroups];
+  v12 = [messageGroups2 _pas_leftFoldWithInitialObject:&unk_283A572D8 accumulate:&__block_literal_global_203];
   -[ATXDigestEngagementMetric setNumMessageNotifications:](self, "setNumMessageNotifications:", [v12 unsignedIntegerValue]);
 
-  v13 = [v33 highlightedGroups];
-  v14 = [v13 _pas_leftFoldWithInitialObject:&unk_283A572D8 accumulate:&__block_literal_global_22_0];
+  highlightedGroups2 = [digestCopy highlightedGroups];
+  v14 = [highlightedGroups2 _pas_leftFoldWithInitialObject:&unk_283A572D8 accumulate:&__block_literal_global_22_0];
   -[ATXDigestEngagementMetric setNumHighlightedNotifications:](self, "setNumHighlightedNotifications:", [v14 unsignedIntegerValue]);
 
-  v15 = [v33 rankedGroups];
-  v16 = [v15 _pas_leftFoldWithInitialObject:&unk_283A572D8 accumulate:&__block_literal_global_24_3];
+  rankedGroups2 = [digestCopy rankedGroups];
+  v16 = [rankedGroups2 _pas_leftFoldWithInitialObject:&unk_283A572D8 accumulate:&__block_literal_global_24_3];
   -[ATXDigestEngagementMetric setNumOtherNotifications:](self, "setNumOtherNotifications:", [v16 unsignedIntegerValue]);
 
-  v17 = [v33 digestEngagementTrackingMetrics];
-  -[ATXDigestEngagementMetric setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", [v17 numEngagementsInUpcoming]);
+  digestEngagementTrackingMetrics2 = [digestCopy digestEngagementTrackingMetrics];
+  -[ATXDigestEngagementMetric setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", [digestEngagementTrackingMetrics2 numEngagementsInUpcoming]);
 
-  v18 = [v33 digestEngagementTrackingMetrics];
-  -[ATXDigestEngagementMetric setNumEngagementsInScheduled:](self, "setNumEngagementsInScheduled:", [v18 numEngagementsInScheduled]);
+  digestEngagementTrackingMetrics3 = [digestCopy digestEngagementTrackingMetrics];
+  -[ATXDigestEngagementMetric setNumEngagementsInScheduled:](self, "setNumEngagementsInScheduled:", [digestEngagementTrackingMetrics3 numEngagementsInScheduled]);
 
-  v19 = [v33 digestEngagementTrackingMetrics];
-  -[ATXDigestEngagementMetric setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", [v19 numEngagementsAfterExpiration]);
+  digestEngagementTrackingMetrics4 = [digestCopy digestEngagementTrackingMetrics];
+  -[ATXDigestEngagementMetric setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", [digestEngagementTrackingMetrics4 numEngagementsAfterExpiration]);
 
-  v20 = [v33 digestEngagementTrackingMetrics];
-  -[ATXDigestEngagementMetric setNumNotificationGroupExpansions:](self, "setNumNotificationGroupExpansions:", [v20 numExpansions]);
+  digestEngagementTrackingMetrics5 = [digestCopy digestEngagementTrackingMetrics];
+  -[ATXDigestEngagementMetric setNumNotificationGroupExpansions:](self, "setNumNotificationGroupExpansions:", [digestEngagementTrackingMetrics5 numExpansions]);
 
-  v21 = [v33 digestTimeline];
-  v22 = [v21 firstUpcomingViewTimestamp];
-  if (v22)
+  digestTimeline = [digestCopy digestTimeline];
+  firstUpcomingViewTimestamp = [digestTimeline firstUpcomingViewTimestamp];
+  if (firstUpcomingViewTimestamp)
   {
-    v23 = [v33 digestTimeline];
-    v24 = [v23 firstUpcomingViewTimestamp];
-    [v24 timeIntervalSinceReferenceDate];
+    digestTimeline2 = [digestCopy digestTimeline];
+    firstUpcomingViewTimestamp2 = [digestTimeline2 firstUpcomingViewTimestamp];
+    [firstUpcomingViewTimestamp2 timeIntervalSinceReferenceDate];
     [(ATXDigestEngagementMetric *)self setFirstUpcomingViewTimestamp:?];
   }
 
@@ -66,13 +66,13 @@
     [(ATXDigestEngagementMetric *)self setFirstUpcomingViewTimestamp:0.0];
   }
 
-  v25 = [v33 digestTimeline];
-  v26 = [v25 firstScheduledViewTimestamp];
-  if (v26)
+  digestTimeline3 = [digestCopy digestTimeline];
+  firstScheduledViewTimestamp = [digestTimeline3 firstScheduledViewTimestamp];
+  if (firstScheduledViewTimestamp)
   {
-    v27 = [v33 digestTimeline];
-    v28 = [v27 firstScheduledViewTimestamp];
-    [v28 timeIntervalSinceReferenceDate];
+    digestTimeline4 = [digestCopy digestTimeline];
+    firstScheduledViewTimestamp2 = [digestTimeline4 firstScheduledViewTimestamp];
+    [firstScheduledViewTimestamp2 timeIntervalSinceReferenceDate];
     [(ATXDigestEngagementMetric *)self setFirstScheduledViewTimestamp:?];
   }
 
@@ -81,13 +81,13 @@
     [(ATXDigestEngagementMetric *)self setFirstScheduledViewTimestamp:0.0];
   }
 
-  v29 = [v33 digestTimeline];
-  v30 = [v29 digestRemovedTimestamp];
-  if (v30)
+  digestTimeline5 = [digestCopy digestTimeline];
+  digestRemovedTimestamp = [digestTimeline5 digestRemovedTimestamp];
+  if (digestRemovedTimestamp)
   {
-    v31 = [v33 digestTimeline];
-    v32 = [v31 digestRemovedTimestamp];
-    [v32 timeIntervalSinceReferenceDate];
+    digestTimeline6 = [digestCopy digestTimeline];
+    digestRemovedTimestamp2 = [digestTimeline6 digestRemovedTimestamp];
+    [digestRemovedTimestamp2 timeIntervalSinceReferenceDate];
     [(ATXDigestEngagementMetric *)self setDigestExpirationTimestamp:?];
   }
 
@@ -137,26 +137,26 @@ id __55__ATXDigestEngagementMetric_populateMetricsFromDigest___block_invoke_3(ui
 {
   v31[16] = *MEMORY[0x277D85DE8];
   v30[0] = @"digestTimeCategory";
-  v3 = [(ATXDigestEngagementMetric *)self digestTimeCategory];
-  v4 = v3;
-  if (!v3)
+  digestTimeCategory = [(ATXDigestEngagementMetric *)self digestTimeCategory];
+  v4 = digestTimeCategory;
+  if (!digestTimeCategory)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    digestTimeCategory = [MEMORY[0x277CBEB68] null];
   }
 
   v29 = v4;
-  v22 = v3;
-  v31[0] = v3;
+  v22 = digestTimeCategory;
+  v31[0] = digestTimeCategory;
   v30[1] = @"digestUUID";
-  v5 = [(ATXDigestEngagementMetric *)self digestUUID];
-  v28 = v5;
-  if (!v5)
+  digestUUID = [(ATXDigestEngagementMetric *)self digestUUID];
+  v28 = digestUUID;
+  if (!digestUUID)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    digestUUID = [MEMORY[0x277CBEB68] null];
   }
 
-  v21 = v5;
-  v31[1] = v5;
+  v21 = digestUUID;
+  v31[1] = digestUUID;
   v30[2] = @"numDigestExpansions";
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXDigestEngagementMetric numDigestExpansions](self, "numDigestExpansions")}];
   v31[2] = v27;

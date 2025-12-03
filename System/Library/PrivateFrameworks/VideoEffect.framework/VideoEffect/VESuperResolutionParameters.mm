@@ -1,16 +1,16 @@
 @interface VESuperResolutionParameters
-- (VESuperResolutionParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 previousOutputFrame:(id)a5 opticalFlow:(id)a6 submissionMode:(int64_t)a7 destinationFrame:(id)a8;
+- (VESuperResolutionParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame previousOutputFrame:(id)outputFrame opticalFlow:(id)flow submissionMode:(int64_t)mode destinationFrame:(id)destinationFrame;
 @end
 
 @implementation VESuperResolutionParameters
 
-- (VESuperResolutionParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 previousOutputFrame:(id)a5 opticalFlow:(id)a6 submissionMode:(int64_t)a7 destinationFrame:(id)a8
+- (VESuperResolutionParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame previousOutputFrame:(id)outputFrame opticalFlow:(id)flow submissionMode:(int64_t)mode destinationFrame:(id)destinationFrame
 {
-  v14 = a3;
-  v15 = a4;
-  v22 = a5;
-  v16 = a6;
-  v17 = a8;
+  frameCopy = frame;
+  previousFrameCopy = previousFrame;
+  outputFrameCopy = outputFrame;
+  flowCopy = flow;
+  destinationFrameCopy = destinationFrame;
   v23.receiver = self;
   v23.super_class = VESuperResolutionParameters;
   v18 = [(VESuperResolutionParameters *)&v23 init];
@@ -22,20 +22,20 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  if (!v14 || !v17)
+  if (!frameCopy || !destinationFrameCopy)
   {
     NSLog(&cfstr_FailToToInitia_1.isa);
     goto LABEL_11;
   }
 
-  if (isSameFormat([v14 buffer], objc_msgSend(v15, "buffer")) && isSameFormat(objc_msgSend(v15, "buffer"), objc_msgSend(v22, "buffer")))
+  if (isSameFormat([frameCopy buffer], objc_msgSend(previousFrameCopy, "buffer")) && isSameFormat(objc_msgSend(previousFrameCopy, "buffer"), objc_msgSend(outputFrameCopy, "buffer")))
   {
-    objc_storeStrong(&v18->_sourceFrame, a3);
-    objc_storeStrong(&v18->_previousFrame, a4);
-    objc_storeStrong(&v18->_previousOutputFrame, a5);
-    objc_storeStrong(&v18->_opticalFlow, a6);
-    v18->_submissionMode = a7;
-    objc_storeStrong(&v18->_destinationFrame, a8);
+    objc_storeStrong(&v18->_sourceFrame, frame);
+    objc_storeStrong(&v18->_previousFrame, previousFrame);
+    objc_storeStrong(&v18->_previousOutputFrame, outputFrame);
+    objc_storeStrong(&v18->_opticalFlow, flow);
+    v18->_submissionMode = mode;
+    objc_storeStrong(&v18->_destinationFrame, destinationFrame);
     v19 = v18;
   }
 

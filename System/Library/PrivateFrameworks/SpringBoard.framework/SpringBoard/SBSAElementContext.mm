@@ -1,14 +1,14 @@
 @interface SBSAElementContext
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)preferredLeadingBounds;
 - (CGRect)preferredMinimalBounds;
 - (CGRect)preferredTrailingBounds;
 - (NSDirectionalEdgeInsets)preferredEdgeOutsets;
 - (NSString)description;
-- (SBSAElementContext)initWithSystemApertureElementContext:(id)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAElementContext)initWithSystemApertureElementContext:(id)context;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -66,72 +66,72 @@
   return result;
 }
 
-- (SBSAElementContext)initWithSystemApertureElementContext:(id)a3
+- (SBSAElementContext)initWithSystemApertureElementContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = SBSAElementContext;
   v5 = [(SBSAElementContext *)&v31 init];
   if (v5)
   {
-    v6 = [v4 clientIdentifier];
-    v7 = [v6 copy];
+    clientIdentifier = [contextCopy clientIdentifier];
+    v7 = [clientIdentifier copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v7;
 
-    v9 = [v4 elementIdentifier];
-    v10 = [v9 copy];
+    elementIdentifier = [contextCopy elementIdentifier];
+    v10 = [elementIdentifier copy];
     elementIdentifier = v5->_elementIdentifier;
     v5->_elementIdentifier = v10;
 
-    v5->_layoutMode = [v4 layoutMode];
-    [v4 preferredEdgeOutsets];
+    v5->_layoutMode = [contextCopy layoutMode];
+    [contextCopy preferredEdgeOutsets];
     v5->_preferredEdgeOutsets.top = v12;
     v5->_preferredEdgeOutsets.leading = v13;
     v5->_preferredEdgeOutsets.bottom = v14;
     v5->_preferredEdgeOutsets.trailing = v15;
-    v5->_interfaceOrientation = [v4 interfaceOrientation];
-    v5->_systemApertureCustomLayout = [v4 systemApertureCustomLayout];
-    v5->_systemApertureCustomLayoutCustomAnimationStyle = [v4 systemApertureCustomLayoutCustomAnimationStyle];
-    v5->_systemApertureLayoutCustomizingOptions = [v4 systemApertureLayoutCustomizingOptions];
-    v5->_activeDynamicAnimation = [v4 activeDynamicAnimation];
-    v16 = [v4 keyColor];
+    v5->_interfaceOrientation = [contextCopy interfaceOrientation];
+    v5->_systemApertureCustomLayout = [contextCopy systemApertureCustomLayout];
+    v5->_systemApertureCustomLayoutCustomAnimationStyle = [contextCopy systemApertureCustomLayoutCustomAnimationStyle];
+    v5->_systemApertureLayoutCustomizingOptions = [contextCopy systemApertureLayoutCustomizingOptions];
+    v5->_activeDynamicAnimation = [contextCopy activeDynamicAnimation];
+    keyColor = [contextCopy keyColor];
     keyColor = v5->_keyColor;
-    v5->_keyColor = v16;
+    v5->_keyColor = keyColor;
 
-    v5->_preventsInteractiveGestures = [v4 preventsInteractiveGestures];
-    [v4 preferredLeadingBounds];
+    v5->_preventsInteractiveGestures = [contextCopy preventsInteractiveGestures];
+    [contextCopy preferredLeadingBounds];
     v5->_preferredLeadingBounds.origin.x = v18;
     v5->_preferredLeadingBounds.origin.y = v19;
     v5->_preferredLeadingBounds.size.width = v20;
     v5->_preferredLeadingBounds.size.height = v21;
-    [v4 preferredTrailingBounds];
+    [contextCopy preferredTrailingBounds];
     v5->_preferredTrailingBounds.origin.x = v22;
     v5->_preferredTrailingBounds.origin.y = v23;
     v5->_preferredTrailingBounds.size.width = v24;
     v5->_preferredTrailingBounds.size.height = v25;
-    [v4 preferredMinimalBounds];
+    [contextCopy preferredMinimalBounds];
     v5->_preferredMinimalBounds.origin.x = v26;
     v5->_preferredMinimalBounds.origin.y = v27;
     v5->_preferredMinimalBounds.size.width = v28;
     v5->_preferredMinimalBounds.size.height = v29;
-    v5->_viewControllerAppearState = [v4 viewControllerAppearState];
-    v5->_requestingMenuPresentation = [v4 isRequestingMenuPresentation];
+    v5->_viewControllerAppearState = [contextCopy viewControllerAppearState];
+    v5->_requestingMenuPresentation = [contextCopy isRequestingMenuPresentation];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v50 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v50 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   clientIdentifier = self->_clientIdentifier;
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = __30__SBSAElementContext_isEqual___block_invoke;
   v81[3] = &unk_2783ACDB8;
-  v6 = v4;
+  v6 = equalCopy;
   v82 = v6;
   v49 = [v50 appendObject:clientIdentifier counterpart:v81];
   elementIdentifier = self->_elementIdentifier;
@@ -267,8 +267,8 @@ uint64_t __30__SBSAElementContext_isEqual___block_invoke_4(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v24 = [MEMORY[0x277CF0C40] builder];
-  v23 = [v24 appendObject:self->_clientIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v23 = [builder appendObject:self->_clientIdentifier];
   v22 = [v23 appendObject:self->_elementIdentifier];
   v21 = [v22 appendInteger:self->_layoutMode];
   v20 = [v21 appendCGFloat:self->_preferredEdgeOutsets.top];
@@ -318,30 +318,30 @@ uint64_t __30__SBSAElementContext_isEqual___block_invoke_4(uint64_t a1)
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithSystemApertureElementContext:self];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAElementContext *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

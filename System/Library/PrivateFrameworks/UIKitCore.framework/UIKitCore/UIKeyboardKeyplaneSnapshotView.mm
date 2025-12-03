@@ -1,33 +1,33 @@
 @interface UIKeyboardKeyplaneSnapshotView
-- (UIKeyboardKeyplaneSnapshotView)initWithKeyplaneView:(id)a3;
-- (id)snapshotFromView:(id)a3;
-- (void)setAlpha:(double)a3;
+- (UIKeyboardKeyplaneSnapshotView)initWithKeyplaneView:(id)view;
+- (id)snapshotFromView:(id)view;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation UIKeyboardKeyplaneSnapshotView
 
-- (UIKeyboardKeyplaneSnapshotView)initWithKeyplaneView:(id)a3
+- (UIKeyboardKeyplaneSnapshotView)initWithKeyplaneView:(id)view
 {
   v94 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v87.receiver = self;
   v87.super_class = UIKeyboardKeyplaneSnapshotView;
   v5 = [(UIView *)&v87 initWithFrame:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [(UIView *)v5 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(UIView *)v5 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v58 = v4;
-    obj = [v4 subviews];
+    v58 = viewCopy;
+    obj = [viewCopy subviews];
     p_isa = &v6->super.super.super.isa;
     v62 = [obj countByEnumeratingWithState:&v83 objects:v93 count:16];
     v10 = 0;
@@ -48,10 +48,10 @@
           v80 = 0u;
           v81 = 0u;
           v82 = 0u;
-          v13 = [v12 layer];
-          v14 = [v13 sublayers];
+          layer2 = [v12 layer];
+          sublayers = [layer2 sublayers];
 
-          v15 = [v14 countByEnumeratingWithState:&v79 objects:v92 count:16];
+          v15 = [sublayers countByEnumeratingWithState:&v79 objects:v92 count:16];
           if (v15)
           {
             v16 = v15;
@@ -62,32 +62,32 @@
               {
                 if (*v80 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(sublayers);
                 }
 
                 v19 = *(*(&v79 + 1) + 8 * j);
                 if (([v19 isHidden] & 1) == 0)
                 {
-                  v20 = [v19 compositingFilter];
+                  compositingFilter = [v19 compositingFilter];
 
-                  if (v20)
+                  if (compositingFilter)
                   {
-                    v21 = [v19 compositingFilter];
+                    compositingFilter2 = [v19 compositingFilter];
 
-                    v22 = v9;
-                    v10 = v21;
+                    v22 = array2;
+                    v10 = compositingFilter2;
                   }
 
                   else
                   {
-                    v22 = v8;
+                    v22 = array;
                   }
 
                   [v22 addObject:v19];
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v79 objects:v92 count:16];
+              v16 = [sublayers countByEnumeratingWithState:&v79 objects:v92 count:16];
             }
 
             while (v16);
@@ -104,9 +104,9 @@
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v23 = v8;
+    v23 = array;
     v24 = [v23 countByEnumeratingWithState:&v75 objects:v91 count:16];
-    v4 = v58;
+    viewCopy = v58;
     if (v24)
     {
       v25 = v24;
@@ -138,8 +138,8 @@
     v31 = [p_isa snapshotFromView:v58];
     [p_isa[52] setImage:v31];
 
-    v32 = [p_isa[52] layer];
-    [v32 setCompositingFilter:v10];
+    layer3 = [p_isa[52] layer];
+    [layer3 setCompositingFilter:v10];
 
     v73 = 0u;
     v74 = 0u;
@@ -173,7 +173,7 @@
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v38 = v9;
+    v38 = array2;
     v39 = [v38 countByEnumeratingWithState:&v67 objects:v89 count:16];
     if (v39)
     {
@@ -206,15 +206,15 @@
     v46 = [p_isa snapshotFromView:v58];
     [p_isa[51] setImage:v46];
 
-    v47 = [p_isa _inheritedRenderConfig];
-    v48 = [v47 colorAdaptiveBackground];
+    _inheritedRenderConfig = [p_isa _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v48)
+    if (colorAdaptiveBackground)
     {
-      v49 = [p_isa layer];
+      layer4 = [p_isa layer];
       v50 = +[UIKBRenderTraits emptyTraits];
       v51 = [v50 extraFiltersForType:*MEMORY[0x1E6979D78]];
-      [v49 setFilters:v51];
+      [layer4 setFilters:v51];
     }
 
     v65 = 0u;
@@ -253,22 +253,22 @@
   return v6;
 }
 
-- (id)snapshotFromView:(id)a3
+- (id)snapshotFromView:(id)view
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  viewCopy = view;
+  v4 = viewCopy;
+  if (viewCopy)
   {
-    v5 = [v3 window];
-    v6 = [v5 screen];
-    [v6 scale];
+    window = [viewCopy window];
+    screen = [window screen];
+    [screen scale];
 
     v7 = [UIGraphicsImageRenderer alloc];
     [v4 frame];
     v9 = v8;
     v11 = v10;
-    v12 = [v4 traitCollection];
-    v13 = [UIGraphicsImageRendererFormat formatForTraitCollection:v12];
+    traitCollection = [v4 traitCollection];
+    v13 = [UIGraphicsImageRendererFormat formatForTraitCollection:traitCollection];
     v14 = [(UIGraphicsImageRenderer *)v7 initWithSize:v13 format:v9, v11];
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -297,16 +297,16 @@ void __51__UIKeyboardKeyplaneSnapshotView_snapshotFromView___block_invoke(uint64
   [v5 renderInContext:v4];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = a3;
-  v5 = [(UIView *)self->_fgView layer];
-  *&v6 = v4;
-  [v5 setOpacity:v6];
+  alphaCopy = alpha;
+  layer = [(UIView *)self->_fgView layer];
+  *&v6 = alphaCopy;
+  [layer setOpacity:v6];
 
-  v8 = [(UIView *)self->_bgView layer];
-  *&v7 = v4;
-  [v8 setOpacity:v7];
+  layer2 = [(UIView *)self->_bgView layer];
+  *&v7 = alphaCopy;
+  [layer2 setOpacity:v7];
 }
 
 @end

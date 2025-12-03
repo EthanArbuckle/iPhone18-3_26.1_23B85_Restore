@@ -1,38 +1,38 @@
 @interface SBCaptureHardwareButtonScanningPowerLinkedTimer
-- (SBCaptureHardwareButtonScanningPowerLinkedTimer)initWithIdentifier:(id)a3 timeout:(double)a4 existingRequest:(id)a5 scanModeResource:(id)a6 handler:(id)a7;
-- (void)_didTimeoutWithHandler:(id)a3;
+- (SBCaptureHardwareButtonScanningPowerLinkedTimer)initWithIdentifier:(id)identifier timeout:(double)timeout existingRequest:(id)request scanModeResource:(id)resource handler:(id)handler;
+- (void)_didTimeoutWithHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SBCaptureHardwareButtonScanningPowerLinkedTimer
 
-- (SBCaptureHardwareButtonScanningPowerLinkedTimer)initWithIdentifier:(id)a3 timeout:(double)a4 existingRequest:(id)a5 scanModeResource:(id)a6 handler:(id)a7
+- (SBCaptureHardwareButtonScanningPowerLinkedTimer)initWithIdentifier:(id)identifier timeout:(double)timeout existingRequest:(id)request scanModeResource:(id)resource handler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  requestCopy = request;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v29.receiver = self;
   v29.super_class = SBCaptureHardwareButtonScanningPowerLinkedTimer;
   v16 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)&v29 init];
   if (v16)
   {
-    if (v13)
+    if (requestCopy)
     {
-      v17 = v13;
+      v17 = requestCopy;
     }
 
     else
     {
-      v17 = [v14 requestActiveScanningModeForReason:v12];
+      v17 = [resourceCopy requestActiveScanningModeForReason:identifierCopy];
     }
 
     buttonPowerRequest = v16->_buttonPowerRequest;
     v16->_buttonPowerRequest = v17;
 
     objc_initWeak(&location, v16);
-    v19 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:v12];
+    v19 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:identifierCopy];
     timer = v16->_timer;
     v16->_timer = v19;
 
@@ -44,8 +44,8 @@
     v25[2] = __119__SBCaptureHardwareButtonScanningPowerLinkedTimer_initWithIdentifier_timeout_existingRequest_scanModeResource_handler___block_invoke;
     v25[3] = &unk_2783BD5A0;
     objc_copyWeak(&v27, &location);
-    v26 = v15;
-    [(BSAbsoluteMachTimer *)v21 scheduleWithFireInterval:v22 leewayInterval:v25 queue:a4 handler:0.0];
+    v26 = handlerCopy;
+    [(BSAbsoluteMachTimer *)v21 scheduleWithFireInterval:v22 leewayInterval:v25 queue:timeout handler:0.0];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -65,7 +65,7 @@ void __119__SBCaptureHardwareButtonScanningPowerLinkedTimer_initWithIdentifier_t
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"must -invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -103,15 +103,15 @@ void __119__SBCaptureHardwareButtonScanningPowerLinkedTimer_initWithIdentifier_t
   }
 }
 
-- (void)_didTimeoutWithHandler:(id)a3
+- (void)_didTimeoutWithHandler:(id)handler
 {
   timer = self->_timer;
-  v5 = a3;
+  handlerCopy = handler;
   [(BSAbsoluteMachTimer *)timer invalidate];
   v6 = self->_timer;
   self->_timer = 0;
 
-  v5[2](v5, self);
+  handlerCopy[2](handlerCopy, self);
   [(BSInvalidatable *)self->_buttonPowerRequest invalidate];
   buttonPowerRequest = self->_buttonPowerRequest;
   self->_buttonPowerRequest = 0;

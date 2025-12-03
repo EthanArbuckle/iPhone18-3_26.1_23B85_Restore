@@ -1,21 +1,21 @@
 @interface TSACirrusDocument
-- (TSACirrusDocument)initWithURL:(id)a3 registry:(id)a4 error:(id *)a5 passphrase:(id)a6;
+- (TSACirrusDocument)initWithURL:(id)l registry:(id)registry error:(id *)error passphrase:(id)passphrase;
 - (TSADocumentRoot)documentRoot;
 - (void)close;
 - (void)dealloc;
 - (void)documentDidLoad;
-- (void)presentPersistenceError:(id)a3;
-- (void)setContext:(id)a3;
+- (void)presentPersistenceError:(id)error;
+- (void)setContext:(id)context;
 @end
 
 @implementation TSACirrusDocument
 
-- (TSACirrusDocument)initWithURL:(id)a3 registry:(id)a4 error:(id *)a5 passphrase:(id)a6
+- (TSACirrusDocument)initWithURL:(id)l registry:(id)registry error:(id *)error passphrase:(id)passphrase
 {
-  v10 = a3;
-  v11 = a4;
-  v14 = a6;
-  if (!v10)
+  lCopy = l;
+  registryCopy = registry;
+  passphraseCopy = passphrase;
+  if (!lCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSACirrusDocument initWithURL:registry:error:passphrase:]", v13);
@@ -45,7 +45,7 @@
     tempDirForCache = v24->_tempDirForCache;
     v24->_tempDirForCache = v34;
 
-    v40 = objc_msgSend_copy(v10, v37, v38, v39);
+    v40 = objc_msgSend_copy(lCopy, v37, v38, v39);
     fileURL = v24->_fileURL;
     v24->_fileURL = v40;
 
@@ -53,7 +53,7 @@
     {
       v44 = objc_alloc(MEMORY[0x277D80878]);
       v63 = v35;
-      v46 = objc_msgSend_initForQuickLookWithURL_registry_delegate_passphrase_error_(v44, v45, v10, v11, v24, v14, &v63);
+      v46 = objc_msgSend_initForQuickLookWithURL_registry_delegate_passphrase_error_(v44, v45, lCopy, registryCopy, v24, passphraseCopy, &v63);
       v47 = v63;
 
       v35 = v47;
@@ -77,11 +77,11 @@
     else
     {
 
-      if (a5)
+      if (error)
       {
         v61 = v35;
         v24 = 0;
-        *a5 = v35;
+        *error = v35;
       }
 
       else
@@ -94,16 +94,16 @@
   return v24;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   context = self->_context;
-  if (v5 | context)
+  if (contextCopy | context)
   {
-    v17 = v5;
-    if ((objc_msgSend_isEqual_(context, v5, v5, v6) & 1) == 0)
+    v17 = contextCopy;
+    if ((objc_msgSend_isEqual_(context, contextCopy, contextCopy, v6) & 1) == 0)
     {
-      objc_storeStrong(&self->_context, a3);
+      objc_storeStrong(&self->_context, context);
       v11 = objc_msgSend_documentPasswordHint(v17, v8, v9, v10);
       v15 = objc_msgSend_copy(v11, v12, v13, v14);
       documentPasswordHint = self->_documentPasswordHint;
@@ -162,11 +162,11 @@
   objc_msgSend_documentDidLoad(v7, v4, v5, v6);
 }
 
-- (void)presentPersistenceError:(id)a3
+- (void)presentPersistenceError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v9 = objc_msgSend_sharedDelegate(TSABaseApplicationDelegate, v4, v5, v6);
-  objc_msgSend_persistenceError_(v9, v7, v3, v8);
+  objc_msgSend_persistenceError_(v9, v7, errorCopy, v8);
 }
 
 @end

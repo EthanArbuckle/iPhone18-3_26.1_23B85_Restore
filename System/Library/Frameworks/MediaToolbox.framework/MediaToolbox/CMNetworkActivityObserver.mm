@@ -1,7 +1,7 @@
 @interface CMNetworkActivityObserver
-+ (id)registeredObserverForActivityMonitor:(id)a3;
-- (id)initForActivityMonitor:(id)a3;
-- (void)_pollWithInterval:(double)a3 networkActivityDidCompleteBlock:(id)a4;
++ (id)registeredObserverForActivityMonitor:(id)monitor;
+- (id)initForActivityMonitor:(id)monitor;
+- (void)_pollWithInterval:(double)interval networkActivityDidCompleteBlock:(id)block;
 - (void)dealloc;
 - (void)registerObservations;
 - (void)unregisterObservations;
@@ -9,7 +9,7 @@
 
 @implementation CMNetworkActivityObserver
 
-- (id)initForActivityMonitor:(id)a3
+- (id)initForActivityMonitor:(id)monitor
 {
   v7.receiver = self;
   v7.super_class = CMNetworkActivityObserver;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_activityMonitor, a3);
+    objc_storeWeak(&v4->_activityMonitor, monitor);
     v5->_valid = 1;
   }
 
@@ -51,15 +51,15 @@
   }
 }
 
-- (void)_pollWithInterval:(double)a3 networkActivityDidCompleteBlock:(id)a4
+- (void)_pollWithInterval:(double)interval networkActivityDidCompleteBlock:(id)block
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__CMNetworkActivityObserver__pollWithInterval_networkActivityDidCompleteBlock___block_invoke;
   block[3] = &unk_1E7483F00;
-  *&block[6] = a3;
+  *&block[6] = interval;
   block[4] = self;
-  block[5] = a4;
+  block[5] = block;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -170,9 +170,9 @@ uint64_t __49__CMNetworkActivityObserver_registerObservations__block_invoke_2(ui
   return [v2 registerObservations];
 }
 
-+ (id)registeredObserverForActivityMonitor:(id)a3
++ (id)registeredObserverForActivityMonitor:(id)monitor
 {
-  v3 = [objc_alloc(objc_opt_class()) initForActivityMonitor:a3];
+  v3 = [objc_alloc(objc_opt_class()) initForActivityMonitor:monitor];
   [v3 registerObservations];
 
   return v3;

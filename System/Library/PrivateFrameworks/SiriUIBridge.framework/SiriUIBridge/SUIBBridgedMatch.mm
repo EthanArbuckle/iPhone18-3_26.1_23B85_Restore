@@ -7,7 +7,7 @@
 
 - (_NSRange)range
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_222DF7948();
   v5 = v4;
 
@@ -20,7 +20,7 @@
 
 - (id)captured
 {
-  v2 = self;
+  selfCopy = self;
   sub_222DF7B08();
 
   v3 = sub_222E098B0();

@@ -11,13 +11,13 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
+  v3 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 queryItems];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  queryItems = [v3 queryItems];
+  v5 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -28,26 +28,26 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(queryItems);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 name];
-        if (v10)
+        name = [v9 name];
+        if (name)
         {
-          v11 = v10;
-          v12 = [v9 value];
+          v11 = name;
+          value = [v9 value];
 
-          if (v12)
+          if (value)
           {
-            v13 = [v9 value];
-            v14 = [v9 name];
-            [v2 setObject:v13 forKeyedSubscript:v14];
+            value2 = [v9 value];
+            name2 = [v9 name];
+            [v2 setObject:value2 forKeyedSubscript:name2];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -60,15 +60,15 @@
 {
   v36 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v25 = v5;
-  v7 = [v5 queryItems];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  queryItems = [v5 queryItems];
+  v8 = [queryItems countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -79,15 +79,15 @@
       {
         if (*v31 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(queryItems);
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v12 name];
-        [v6 setObject:v12 forKeyedSubscript:v13];
+        name = [v12 name];
+        [dictionary setObject:v12 forKeyedSubscript:name];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v9 = [queryItems countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v9);
@@ -97,8 +97,8 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [v4 allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  allKeys = [v4 allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v15)
   {
     v16 = v15;
@@ -109,23 +109,23 @@
       {
         if (*v27 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v26 + 1) + 8 * j);
         v20 = [v4 objectForKeyedSubscript:v19];
         v21 = [MEMORY[0x1E696AF60] queryItemWithName:v19 value:v20];
-        [v6 setObject:v21 forKeyedSubscript:v19];
+        [dictionary setObject:v21 forKeyedSubscript:v19];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v16);
   }
 
-  v22 = [v6 allValues];
-  [v25 setQueryItems:v22];
+  allValues = [dictionary allValues];
+  [v25 setQueryItems:allValues];
 
   v23 = [v25 URL];
 
@@ -135,9 +135,9 @@
 - (id)ic_URLByAppendingQueryItems:()ICAdditions
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-  v6 = [v5 queryItems];
-  v7 = [v6 mutableCopy];
+  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v5 queryItems];
+  v7 = [queryItems mutableCopy];
 
   if (!v7)
   {
@@ -155,15 +155,15 @@
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v5 setQuery:v3];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 queryItems];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  queryItems = [v5 queryItems];
+  v7 = [queryItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -174,32 +174,32 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(queryItems);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 name];
-        if (v12)
+        name = [v11 name];
+        if (name)
         {
-          v13 = v12;
-          v14 = [v11 value];
+          v13 = name;
+          value = [v11 value];
 
-          if (v14)
+          if (value)
           {
-            v15 = [v11 value];
-            v16 = [v11 name];
-            [v4 setObject:v15 forKeyedSubscript:v16];
+            value2 = [v11 value];
+            name2 = [v11 name];
+            [dictionary setObject:value2 forKeyedSubscript:name2];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [queryItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  return v4;
+  return dictionary;
 }
 
 @end

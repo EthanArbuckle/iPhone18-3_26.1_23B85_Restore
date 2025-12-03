@@ -1,29 +1,29 @@
 @interface CIRAWFilterImpl
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)applyMatrix:(const double *)a3 toCIImage:(id)a4;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)applyMatrix:(const double *)matrix toCIImage:(id)image;
 + (id)customAttributes;
-+ (id)filterWithCVPixelBuffer:(__CVBuffer *)a3 properties:(id)a4 options:(id)a5;
-+ (id)filterWithImageData:(id)a3 options:(id)a4;
-+ (id)filterWithImageURL:(id)a3 options:(id)a4;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-+ (id)matteOptionNameFromOptions:(id)a3;
++ (id)filterWithCVPixelBuffer:(__CVBuffer *)buffer properties:(id)properties options:(id)options;
++ (id)filterWithImageData:(id)data options:(id)options;
++ (id)filterWithImageURL:(id)l options:(id)options;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
++ (id)matteOptionNameFromOptions:(id)options;
 + (id)optionKeys;
 + (id)supportedRawCameraModels;
-+ (void)convertNeutralTemperature:(id)a3 tint:(id)a4 toX:(id *)a5 y:(id *)a6;
-+ (void)convertNeutralX:(id)a3 y:(id)a4 toTemperature:(id *)a5 tint:(id *)a6;
-- (CGAffineTransform)getOrientationTransform:(SEL)a3;
-- (CGAffineTransform)getScaleTransform:(SEL)a3;
++ (void)convertNeutralTemperature:(id)temperature tint:(id)tint toX:(id *)x y:(id *)y;
++ (void)convertNeutralX:(id)x y:(id)y toTemperature:(id *)temperature tint:(id *)tint;
+- (CGAffineTransform)getOrientationTransform:(SEL)transform;
+- (CGAffineTransform)getScaleTransform:(SEL)transform;
 - (CGSize)nativeSize;
 - (CIRAWFilterImpl)init;
-- (CIRAWFilterImpl)initWithCVPixelBuffer:(__CVBuffer *)a3 properties:(id)a4 options:(id)a5;
-- (CIRAWFilterImpl)initWithImageSource:(CGImageSource *)a3 options:(id)a4;
+- (CIRAWFilterImpl)initWithCVPixelBuffer:(__CVBuffer *)buffer properties:(id)properties options:(id)options;
+- (CIRAWFilterImpl)initWithImageSource:(CGImageSource *)source options:(id)options;
 - (NSArray)filters;
 - (NSDictionary)rawDictionary;
 - (NSDictionary)rawReconstructionDefaultsDictionary;
 - (NSNumber)sushiMode;
-- (id)RAWFiltersValueForKeyPath:(id)a3;
+- (id)RAWFiltersValueForKeyPath:(id)path;
 - (id)activeKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultBoostShadowAmount;
 - (id)defaultDecoderVersion;
 - (id)defaultImageOrientation;
@@ -49,71 +49,71 @@
 - (id)outputImage;
 - (id)outputKeys;
 - (id)outputNativeSize;
-- (id)rawOptionsWithSubsampling:(BOOL)a3;
+- (id)rawOptionsWithSubsampling:(BOOL)subsampling;
 - (id)supportedDecoderVersions;
 - (id)supportedSushiModes;
-- (id)transformedImageIgnoringOrientation:(BOOL)a3 andIgnoringScaleFactor:(BOOL)a4;
+- (id)transformedImageIgnoringOrientation:(BOOL)orientation andIgnoringScaleFactor:(BOOL)factor;
 - (id)whitePoint;
 - (id)whitePointArray;
 - (int)subsampling;
 - (void)dealloc;
-- (void)getWhitePointVectorsR:(id *)a3 g:(id *)a4 b:(id *)a5;
+- (void)getWhitePointVectorsR:(id *)r g:(id *)g b:(id *)b;
 - (void)invalidateFilters;
 - (void)invalidateInputImage;
 - (void)setDefaults;
-- (void)setInputBaselineExposure:(id)a3;
-- (void)setInputBias:(id)a3;
-- (void)setInputBoost:(id)a3;
-- (void)setInputBoostShadowAmount:(id)a3;
-- (void)setInputColorNoiseReductionAmount:(id)a3;
-- (void)setInputDecoderVersion:(id)a3;
-- (void)setInputDisableGamutMap:(id)a3;
-- (void)setInputDisableHighlightRecovery:(id)a3;
-- (void)setInputDraftMode:(id)a3;
-- (void)setInputEV:(id)a3;
-- (void)setInputEnableEDRMode:(id)a3;
-- (void)setInputEnableNoiseTracking:(id)a3;
-- (void)setInputEnableSharpening:(id)a3;
-- (void)setInputEnableVendorLensCorrection:(id)a3;
-- (void)setInputHueMagBM:(id)a3;
-- (void)setInputHueMagCB:(id)a3;
-- (void)setInputHueMagGC:(id)a3;
-- (void)setInputHueMagMR:(id)a3;
-- (void)setInputHueMagRY:(id)a3;
-- (void)setInputHueMagYG:(id)a3;
-- (void)setInputIgnoreOrientation:(id)a3;
-- (void)setInputImageOrientation:(id)a3;
-- (void)setInputLinearSpaceFilter:(id)a3;
-- (void)setInputLocalToneMapAmount:(id)a3;
-- (void)setInputLuminanceNoiseReductionAmount:(id)a3;
-- (void)setInputMoireAmount:(id)a3;
-- (void)setInputNeutralChromaticityX:(id)a3;
-- (void)setInputNeutralChromaticityY:(id)a3;
-- (void)setInputNeutralLocation:(id)a3;
-- (void)setInputNeutralTemperature:(id)a3;
-- (void)setInputNeutralTint:(id)a3;
-- (void)setInputNoiseReductionAmount:(id)a3;
-- (void)setInputNoiseReductionContrastAmount:(id)a3;
-- (void)setInputNoiseReductionDetailAmount:(id)a3;
-- (void)setInputNoiseReductionSharpnessAmount:(id)a3;
-- (void)setInputRequestedSushiMode:(id)a3;
-- (void)setInputReturnDemosaiced:(id)a3;
-- (void)setInputScaleFactor:(id)a3;
-- (void)setTempTintAtPoint:(CGPoint)a3;
+- (void)setInputBaselineExposure:(id)exposure;
+- (void)setInputBias:(id)bias;
+- (void)setInputBoost:(id)boost;
+- (void)setInputBoostShadowAmount:(id)amount;
+- (void)setInputColorNoiseReductionAmount:(id)amount;
+- (void)setInputDecoderVersion:(id)version;
+- (void)setInputDisableGamutMap:(id)map;
+- (void)setInputDisableHighlightRecovery:(id)recovery;
+- (void)setInputDraftMode:(id)mode;
+- (void)setInputEV:(id)v;
+- (void)setInputEnableEDRMode:(id)mode;
+- (void)setInputEnableNoiseTracking:(id)tracking;
+- (void)setInputEnableSharpening:(id)sharpening;
+- (void)setInputEnableVendorLensCorrection:(id)correction;
+- (void)setInputHueMagBM:(id)m;
+- (void)setInputHueMagCB:(id)b;
+- (void)setInputHueMagGC:(id)c;
+- (void)setInputHueMagMR:(id)r;
+- (void)setInputHueMagRY:(id)y;
+- (void)setInputHueMagYG:(id)g;
+- (void)setInputIgnoreOrientation:(id)orientation;
+- (void)setInputImageOrientation:(id)orientation;
+- (void)setInputLinearSpaceFilter:(id)filter;
+- (void)setInputLocalToneMapAmount:(id)amount;
+- (void)setInputLuminanceNoiseReductionAmount:(id)amount;
+- (void)setInputMoireAmount:(id)amount;
+- (void)setInputNeutralChromaticityX:(id)x;
+- (void)setInputNeutralChromaticityY:(id)y;
+- (void)setInputNeutralLocation:(id)location;
+- (void)setInputNeutralTemperature:(id)temperature;
+- (void)setInputNeutralTint:(id)tint;
+- (void)setInputNoiseReductionAmount:(id)amount;
+- (void)setInputNoiseReductionContrastAmount:(id)amount;
+- (void)setInputNoiseReductionDetailAmount:(id)amount;
+- (void)setInputNoiseReductionSharpnessAmount:(id)amount;
+- (void)setInputRequestedSushiMode:(id)mode;
+- (void)setInputReturnDemosaiced:(id)demosaiced;
+- (void)setInputScaleFactor:(id)factor;
+- (void)setTempTintAtPoint:(CGPoint)point;
 - (void)updateChomaticityXAndY;
 - (void)updateTemperatureAndTint;
 @end
 
 @implementation CIRAWFilterImpl
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"outputImage"])
+  if ([key isEqualToString:@"outputImage"])
   {
     return [MEMORY[0x1E695DFD8] setWithObjects:{@"inputBoostShadowAmount", @"inputBaselineExposure", @"inputBias", @"inputEnableNoiseTracking", @"inputNoiseReductionAmount", @"inputLuminanceNoiseReductionAmount", @"inputColorNoiseReductionAmount", @"inputNoiseReductionSharpnessAmount", @"inputNoiseReductionContrastAmount", @"inputNoiseReductionDetailAmount", @"inputEnableVendorLensCorrection", @"inputEnableSharpening", @"inputBoost", @"inputNeutralChromaticityX", @"inputNeutralChromaticityY", @"inputNeutralLocation", @"inputScaleFactor", @"inputDraftMode", @"inputIgnoreOrientation", @"inputImageOrientation", @"inputDecoderVersion", @"inputEV", @"inputDisableHighlightRecovery", @"inputDisableGamutMap", @"inputLinearSpaceFilter", @"inputMoireAmount", @"inputReturnDemosaiced", @"inputEnableEDRMode", @"inputLocalToneMapAmount", 0}];
   }
 
-  if ([a3 isEqualToString:@"outputNativeSize"])
+  if ([key isEqualToString:@"outputNativeSize"])
   {
     v6 = MEMORY[0x1E695DFD8];
 
@@ -122,19 +122,19 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CIRAWFilterImpl;
-    return objc_msgSendSuper2(&v7, sel_keyPathsForValuesAffectingValueForKey_, a3);
+    return objc_msgSendSuper2(&v7, sel_keyPathsForValuesAffectingValueForKey_, key);
   }
 }
 
-+ (id)filterWithImageData:(id)a3 options:(id)a4
++ (id)filterWithImageData:(id)data options:(id)options
 {
-  result = CGImageSourceCreateWithData(a3, a4);
+  result = CGImageSourceCreateWithData(data, options);
   if (result)
   {
     v7 = result;
-    v8 = [[a1 alloc] initWithImageSource:result options:a4];
+    v8 = [[self alloc] initWithImageSource:result options:options];
     CFRelease(v7);
     return v8;
   }
@@ -142,25 +142,25 @@
   return result;
 }
 
-+ (id)filterWithImageURL:(id)a3 options:(id)a4
++ (id)filterWithImageURL:(id)l options:(id)options
 {
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
     v7 = *MEMORY[0x1E696E118];
-    if (![a4 objectForKeyedSubscript:*MEMORY[0x1E696E118]])
+    if (![options objectForKeyedSubscript:*MEMORY[0x1E696E118]])
     {
-      [objc_msgSend(a3 "path")];
+      [objc_msgSend(l "path")];
       TypeWithExtension = CGImageSourceGetTypeWithExtension();
-      a4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a4];
-      [a4 setObject:TypeWithExtension forKeyedSubscript:v7];
+      options = [MEMORY[0x1E695DF90] dictionaryWithDictionary:options];
+      [options setObject:TypeWithExtension forKeyedSubscript:v7];
     }
   }
 
-  result = CGImageSourceCreateWithURL(a3, a4);
+  result = CGImageSourceCreateWithURL(l, options);
   if (result)
   {
     v10 = result;
-    v11 = [[a1 alloc] initWithImageSource:result options:a4];
+    v11 = [[self alloc] initWithImageSource:result options:options];
     CFRelease(v10);
     return v11;
   }
@@ -168,9 +168,9 @@
   return result;
 }
 
-+ (id)filterWithCVPixelBuffer:(__CVBuffer *)a3 properties:(id)a4 options:(id)a5
++ (id)filterWithCVPixelBuffer:(__CVBuffer *)buffer properties:(id)properties options:(id)options
 {
-  v5 = [[a1 alloc] initWithCVPixelBuffer:a3 properties:a4 options:a5];
+  v5 = [[self alloc] initWithCVPixelBuffer:buffer properties:properties options:options];
 
   return v5;
 }
@@ -189,9 +189,9 @@
     v3 = v3(1);
   }
 
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
 
-  return [v4 sortedArrayUsingSelector:sel_compare_];
+  return [allKeys sortedArrayUsingSelector:sel_compare_];
 }
 
 - (CIRAWFilterImpl)init
@@ -284,7 +284,7 @@
   [(CIFilter *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(objc_opt_class());
@@ -311,8 +311,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [objc_opt_class() optionKeys];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  optionKeys = [objc_opt_class() optionKeys];
+  v7 = [optionKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -323,7 +323,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(optionKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -334,7 +334,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [optionKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -381,9 +381,9 @@
   [(CIRAWFilterImpl *)self setInputNeutralChromaticityY:[(CIRAWFilterImpl *)self defaultNeutralChromaticityY]];
   [(CIRAWFilterImpl *)self setInputEnableEDRMode:[(CIRAWFilterImpl *)self defaultInputEnableEDRMode]];
   [(CIRAWFilterImpl *)self setInputLocalToneMapAmount:[(CIRAWFilterImpl *)self defaultInputLocalToneMapAmount]];
-  v5 = [(CIRAWFilterImpl *)self defaultInputReturnDemosaiced];
+  defaultInputReturnDemosaiced = [(CIRAWFilterImpl *)self defaultInputReturnDemosaiced];
 
-  [(CIRAWFilterImpl *)self setInputReturnDemosaiced:v5];
+  [(CIRAWFilterImpl *)self setInputReturnDemosaiced:defaultInputReturnDemosaiced];
 }
 
 + (id)customAttributes
@@ -769,14 +769,14 @@
   return [(NSArray *)[(CIFilter *)&v3 outputKeys] arrayByAddingObject:@"outputNativeSize"];
 }
 
-+ (id)applyMatrix:(const double *)a3 toCIImage:(id)a4
++ (id)applyMatrix:(const double *)matrix toCIImage:(id)image
 {
   v6 = [CIFilter filterWithName:@"CIColorMatrix"];
   [(CIFilter *)v6 setDefaults];
-  [(CIFilter *)v6 setValue:[CIVector forKey:"vectorWithX:Y:Z:W:" vectorWithX:a3[1] Y:a3[2] Z:0.0 W:?], @"inputRVector"];
-  [(CIFilter *)v6 setValue:[CIVector forKey:"vectorWithX:Y:Z:W:" vectorWithX:a3[4] Y:a3[5] Z:0.0 W:?], @"inputGVector"];
-  [(CIFilter *)v6 setValue:[CIVector forKey:"vectorWithX:Y:Z:W:" vectorWithX:a3[7] Y:a3[8] Z:0.0 W:?], @"inputBVector"];
-  [(CIFilter *)v6 setValue:a4 forKey:@"inputImage"];
+  [(CIFilter *)v6 setValue:[CIVector forKey:"vectorWithX:Y:Z:W:" vectorWithX:matrix[1] Y:matrix[2] Z:0.0 W:?], @"inputRVector"];
+  [(CIFilter *)v6 setValue:[CIVector forKey:"vectorWithX:Y:Z:W:" vectorWithX:matrix[4] Y:matrix[5] Z:0.0 W:?], @"inputGVector"];
+  [(CIFilter *)v6 setValue:[CIVector forKey:"vectorWithX:Y:Z:W:" vectorWithX:matrix[7] Y:matrix[8] Z:0.0 W:?], @"inputBVector"];
+  [(CIFilter *)v6 setValue:image forKey:@"inputImage"];
 
   return [(CIFilter *)v6 valueForKey:@"outputImage"];
 }
@@ -824,34 +824,34 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:37];
 }
 
-+ (id)matteOptionNameFromOptions:(id)a3
++ (id)matteOptionNameFromOptions:(id)options
 {
   v4 = @"kCIImageAuxiliaryPortraitEffectsMatte";
-  v5 = [a3 valueForKey:@"kCIImageAuxiliaryPortraitEffectsMatte"];
+  v5 = [options valueForKey:@"kCIImageAuxiliaryPortraitEffectsMatte"];
   if (([v5 isEqual:MEMORY[0x1E695E118]] & 1) == 0)
   {
     v4 = @"kCIImageAuxiliarySemanticSegmentationSkinMatte";
-    v6 = [a3 valueForKey:@"kCIImageAuxiliarySemanticSegmentationSkinMatte"];
+    v6 = [options valueForKey:@"kCIImageAuxiliarySemanticSegmentationSkinMatte"];
     if (([v6 isEqual:MEMORY[0x1E695E118]] & 1) == 0)
     {
       v4 = @"kCIImageAuxiliarySemanticSegmentationHairMatte";
-      v7 = [a3 valueForKey:@"kCIImageAuxiliarySemanticSegmentationHairMatte"];
+      v7 = [options valueForKey:@"kCIImageAuxiliarySemanticSegmentationHairMatte"];
       if (([v7 isEqual:MEMORY[0x1E695E118]] & 1) == 0)
       {
         v4 = @"kCIImageAuxiliarySemanticSegmentationTeethMatte";
-        v8 = [a3 valueForKey:@"kCIImageAuxiliarySemanticSegmentationTeethMatte"];
+        v8 = [options valueForKey:@"kCIImageAuxiliarySemanticSegmentationTeethMatte"];
         if (([v8 isEqual:MEMORY[0x1E695E118]] & 1) == 0)
         {
           v4 = @"kCIImageAuxiliarySemanticSegmentationGlassesMatte";
-          v9 = [a3 valueForKey:@"kCIImageAuxiliarySemanticSegmentationGlassesMatte"];
+          v9 = [options valueForKey:@"kCIImageAuxiliarySemanticSegmentationGlassesMatte"];
           if (([v9 isEqual:MEMORY[0x1E695E118]] & 1) == 0)
           {
             v4 = @"kCIImageAuxiliarySemanticSegmentationSkyMatte";
-            v10 = [a3 valueForKey:@"kCIImageAuxiliarySemanticSegmentationSkyMatte"];
+            v10 = [options valueForKey:@"kCIImageAuxiliarySemanticSegmentationSkyMatte"];
             if (([v10 isEqual:MEMORY[0x1E695E118]] & 1) == 0)
             {
               v4 = @"kCIImageAuxiliaryHDRGainMap";
-              v11 = [a3 valueForKey:@"kCIImageAuxiliaryHDRGainMap"];
+              v11 = [options valueForKey:@"kCIImageAuxiliaryHDRGainMap"];
               if (![v11 isEqual:MEMORY[0x1E695E118]])
               {
                 return 0;
@@ -866,7 +866,7 @@
   return v4;
 }
 
-- (CIRAWFilterImpl)initWithCVPixelBuffer:(__CVBuffer *)a3 properties:(id)a4 options:(id)a5
+- (CIRAWFilterImpl)initWithCVPixelBuffer:(__CVBuffer *)buffer properties:(id)properties options:(id)options
 {
   v34 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -874,7 +874,7 @@
   v8 = [(CIRAWFilterImpl *)&v32 init];
   if (v8)
   {
-    if (!a3 || !a4)
+    if (!buffer || !properties)
     {
       goto LABEL_12;
     }
@@ -886,40 +886,40 @@
     }
 
     v10 = dlsym(0xFFFFFFFFFFFFFFFELL, "RCCreateCIImageFromBufferAndProperties");
-    if (v10 && (v11 = v10(a3, a4), [v11 count] == 2))
+    if (v10 && (v11 = v10(buffer, properties), [v11 count] == 2))
     {
       *(v8 + 11) = v11;
       __asm { FMOV            V0.2D, #-1.0 }
 
       *(v8 + 104) = _Q0;
       v8[120] = 1;
-      v17 = [a4 valueForKey:*MEMORY[0x1E696DE78]];
+      v17 = [properties valueForKey:*MEMORY[0x1E696DE78]];
       v18 = MEMORY[0x1E696AD98];
       if ([v17 intValue] <= 8 && objc_msgSend(v17, "intValue") < 1)
       {
-        v19 = 1;
+        intValue = 1;
       }
 
       else if ([v17 intValue] <= 8)
       {
-        v19 = [v17 intValue];
+        intValue = [v17 intValue];
       }
 
       else
       {
-        v19 = 8;
+        intValue = 8;
       }
 
-      *(v8 + 24) = [v18 numberWithInt:v19];
-      *(v8 + 17) = a4;
-      *(v8 + 23) = [a5 objectForKeyedSubscript:*MEMORY[0x1E696E118]];
+      *(v8 + 24) = [v18 numberWithInt:intValue];
+      *(v8 + 17) = properties;
+      *(v8 + 23) = [options objectForKeyedSubscript:*MEMORY[0x1E696E118]];
       [v8 setDefaults];
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v21 = [objc_opt_class() optionKeys];
-      v22 = [v21 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      optionKeys = [objc_opt_class() optionKeys];
+      v22 = [optionKeys countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v22)
       {
         v23 = v22;
@@ -930,24 +930,24 @@
           {
             if (*v29 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(optionKeys);
             }
 
             v26 = *(*(&v28 + 1) + 8 * i);
-            v27 = [a5 objectForKeyedSubscript:v26];
+            v27 = [options objectForKeyedSubscript:v26];
             if (v27)
             {
               [v8 setValue:v27 forKey:v26];
             }
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v28 objects:v33 count:16];
+          v23 = [optionKeys countByEnumeratingWithState:&v28 objects:v33 count:16];
         }
 
         while (v23);
       }
 
-      *(v8 + 16) = [objc_opt_class() matteOptionNameFromOptions:a5];
+      *(v8 + 16) = [objc_opt_class() matteOptionNameFromOptions:options];
     }
 
     else
@@ -961,7 +961,7 @@ LABEL_12:
   return v8;
 }
 
-- (CIRAWFilterImpl)initWithImageSource:(CGImageSource *)a3 options:(id)a4
+- (CIRAWFilterImpl)initWithImageSource:(CGImageSource *)source options:(id)options
 {
   v33 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
@@ -970,13 +970,13 @@ LABEL_12:
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (source)
     {
       __asm { FMOV            V0.2D, #-1.0 }
 
       *(v6 + 104) = _Q0;
-      *(v6 + 10) = a3;
-      CFRetain(a3);
+      *(v6 + 10) = source;
+      CFRetain(source);
       Type = CGImageSourceGetType(v7->_inputImageSource);
       if (Type)
       {
@@ -994,29 +994,29 @@ LABEL_12:
       v17 = MEMORY[0x1E696AD98];
       if ([v16 intValue] <= 8 && objc_msgSend(v16, "intValue") < 1)
       {
-        v18 = 1;
+        intValue = 1;
       }
 
       else if ([v16 intValue] <= 8)
       {
-        v18 = [v16 intValue];
+        intValue = [v16 intValue];
       }
 
       else
       {
-        v18 = 8;
+        intValue = 8;
       }
 
-      v7->_defaultOrientation = [v17 numberWithInt:v18];
+      v7->_defaultOrientation = [v17 numberWithInt:intValue];
       v7->_baseImageProperties = v15;
-      v7->_typeIdentifierHint = [a4 objectForKeyedSubscript:*MEMORY[0x1E696E118]];
+      v7->_typeIdentifierHint = [options objectForKeyedSubscript:*MEMORY[0x1E696E118]];
       [(CIRAWFilterImpl *)v7 setDefaults];
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v19 = [objc_opt_class() optionKeys];
-      v20 = [v19 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      optionKeys = [objc_opt_class() optionKeys];
+      v20 = [optionKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v20)
       {
         v21 = v20;
@@ -1027,24 +1027,24 @@ LABEL_12:
           {
             if (*v28 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(optionKeys);
             }
 
             v24 = *(*(&v27 + 1) + 8 * i);
-            v25 = [a4 objectForKeyedSubscript:v24];
+            v25 = [options objectForKeyedSubscript:v24];
             if (v25)
             {
               [(CIRAWFilterImpl *)v7 setValue:v25 forKey:v24];
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v27 objects:v32 count:16];
+          v21 = [optionKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
         }
 
         while (v21);
       }
 
-      v7->_matteOption = [objc_opt_class() matteOptionNameFromOptions:a4];
+      v7->_matteOption = [objc_opt_class() matteOptionNameFromOptions:options];
     }
 
     else
@@ -1064,9 +1064,9 @@ LABEL_12:
   if (self->inputRequestedSushiMode && [v3 containsObject:?])
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(NSString *)self->inputRequestedSushiMode intValue];
+    intValue = [(NSString *)self->inputRequestedSushiMode intValue];
 
-    return [v5 numberWithInt:v6];
+    return [v5 numberWithInt:intValue];
   }
 
   else if (v4)
@@ -1292,7 +1292,7 @@ LABEL_4:
 
       if ([(NSString *)v14 isEqualToString:@"RAWAdjustTempTint"])
       {
-        v21 = [(CIRAWFilterImpl *)self whitePoint];
+        whitePoint = [(CIRAWFilterImpl *)self whitePoint];
         v22 = v16;
         v23 = @"inputWhitePoint";
         goto LABEL_26;
@@ -1482,11 +1482,11 @@ LABEL_56:
 
     v20 = [-[CIRAWFilterImpl valueForKey:](self valueForKey:{@"inputDisableHighlightRecovery", "BOOLValue"}];
     [v16 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", v20 ^ 1u), @"inputShouldRecoverHighlights"}];
-    v21 = [(CIRAWFilterImpl *)self whitePointArray];
+    whitePoint = [(CIRAWFilterImpl *)self whitePointArray];
     v22 = v16;
     v23 = @"inputNeutral";
 LABEL_26:
-    [v22 setValue:v21 forKey:v23];
+    [v22 setValue:whitePoint forKey:v23];
     v70 = 1;
     goto LABEL_19;
   }
@@ -1503,9 +1503,9 @@ LABEL_26:
 
   [(NSNumber *)self->inputScaleFactor floatValue];
   v5 = v4;
-  v6 = [(NSNumber *)self->inputDraftMode BOOLValue];
+  bOOLValue = [(NSNumber *)self->inputDraftMode BOOLValue];
   result = 0;
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 1.0 / v5;
     if ((1.0 / v5) >= 0.5)
@@ -1541,15 +1541,15 @@ LABEL_26:
   self->_inputImage = 0;
 }
 
-- (id)rawOptionsWithSubsampling:(BOOL)a3
+- (id)rawOptionsWithSubsampling:(BOOL)subsampling
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
+  subsamplingCopy = subsampling;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
   inputDecoderVersion = self->inputDecoderVersion;
   if (inputDecoderVersion)
   {
-    [v5 setObject:inputDecoderVersion forKeyedSubscript:*MEMORY[0x1E696E0D8]];
+    [dictionary setObject:inputDecoderVersion forKeyedSubscript:*MEMORY[0x1E696E0D8]];
   }
 
   inputEnableSharpening = self->inputEnableSharpening;
@@ -1619,39 +1619,39 @@ LABEL_26:
     [v6 setObject:inputEnableEDRMode forKeyedSubscript:@"kCGImageSourceUseEDRMode"];
   }
 
-  v19 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v20 = *MEMORY[0x1E696E080];
-  [v19 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696E080]];
+  [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696E080]];
   if ([(CIRAWFilterImpl *)self sushiMode])
   {
-    v21 = [(CIRAWFilterImpl *)self sushiMode];
-    [v19 setObject:v21 forKeyedSubscript:*MEMORY[0x1E696E0C0]];
+    sushiMode = [(CIRAWFilterImpl *)self sushiMode];
+    [dictionary2 setObject:sushiMode forKeyedSubscript:*MEMORY[0x1E696E0C0]];
   }
 
-  [v19 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kCGImageSourceShouldUseRawDataForFullSize"];
-  [v19 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696E090]];
-  [v19 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E696E0A8]];
-  [v19 setObject:&unk_1F10820E8 forKeyedSubscript:v20];
+  [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kCGImageSourceShouldUseRawDataForFullSize"];
+  [dictionary2 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696E090]];
+  [dictionary2 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E696E0A8]];
+  [dictionary2 setObject:&unk_1F10820E8 forKeyedSubscript:v20];
   typeIdentifierHint = self->_typeIdentifierHint;
   if (typeIdentifierHint)
   {
-    [v19 setObject:typeIdentifierHint forKeyedSubscript:*MEMORY[0x1E696E118]];
+    [dictionary2 setObject:typeIdentifierHint forKeyedSubscript:*MEMORY[0x1E696E118]];
   }
 
-  if (v3 && [(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]<= 2)
+  if (subsamplingCopy && [(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]<= 2)
   {
-    v23 = [(CIRAWFilterImpl *)self subsampling];
-    if (v23 < 1)
+    subsampling = [(CIRAWFilterImpl *)self subsampling];
+    if (subsampling < 1)
     {
       v24 = &unk_1F10820E8;
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AD98] numberWithInt:(1 << v23)];
+      v24 = [MEMORY[0x1E696AD98] numberWithInt:(1 << subsampling)];
     }
 
-    [v19 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696E0F8]];
+    [dictionary2 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696E0F8]];
   }
 
   if (self->inputDecoderVersion)
@@ -1659,17 +1659,17 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v19 setObject:self->inputDecoderVersion forKeyedSubscript:*MEMORY[0x1E696E0D8]];
+      [dictionary2 setObject:self->inputDecoderVersion forKeyedSubscript:*MEMORY[0x1E696E0D8]];
     }
   }
 
-  return v19;
+  return dictionary2;
 }
 
-- (void)setTempTintAtPoint:(CGPoint)a3
+- (void)setTempTintAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v53 = *MEMORY[0x1E69E9840];
   v6 = [(CIRAWFilterImpl *)self transformedImageIgnoringOrientation:0 andIgnoringScaleFactor:0];
   v7 = x;
@@ -1731,8 +1731,8 @@ LABEL_26:
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v29 = [(CIRAWFilterImpl *)self filters];
-        v30 = [(NSArray *)v29 countByEnumeratingWithState:&v43 objects:v50 count:16];
+        filters = [(CIRAWFilterImpl *)self filters];
+        v30 = [(NSArray *)filters countByEnumeratingWithState:&v43 objects:v50 count:16];
         if (v30)
         {
           v31 = v30;
@@ -1744,7 +1744,7 @@ LABEL_26:
             {
               if (*v44 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(filters);
               }
 
               v35 = *(*(&v43 + 1) + 8 * i);
@@ -1767,7 +1767,7 @@ LABEL_26:
               }
             }
 
-            v31 = [(NSArray *)v29 countByEnumeratingWithState:&v43 objects:v50 count:16];
+            v31 = [(NSArray *)filters countByEnumeratingWithState:&v43 objects:v50 count:16];
             if (v31)
             {
               continue;
@@ -1911,7 +1911,7 @@ LABEL_26:
   return result;
 }
 
-- (CGAffineTransform)getScaleTransform:(SEL)a3
+- (CGAffineTransform)getScaleTransform:(SEL)transform
 {
   [(NSNumber *)self->inputScaleFactor doubleValue];
   v7 = v6 * (1 << [(CIRAWFilterImpl *)self subsampling]);
@@ -1919,7 +1919,7 @@ LABEL_26:
   return CGAffineTransformMakeScale(retstr, v7, v7);
 }
 
-- (CGAffineTransform)getOrientationTransform:(SEL)a3
+- (CGAffineTransform)getOrientationTransform:(SEL)transform
 {
   v49 = *MEMORY[0x1E69E9840];
   [a4 extent];
@@ -2000,7 +2000,7 @@ LABEL_26:
   return result;
 }
 
-- (id)transformedImageIgnoringOrientation:(BOOL)a3 andIgnoringScaleFactor:(BOOL)a4
+- (id)transformedImageIgnoringOrientation:(BOOL)orientation andIgnoringScaleFactor:(BOOL)factor
 {
   v48 = *MEMORY[0x1E69E9840];
   if (self->_isRawSource && ![(NSArray *)self->_supportedDecoderVersions count])
@@ -2008,10 +2008,10 @@ LABEL_26:
     return 0;
   }
 
-  v7 = [(CIRAWFilterImpl *)self inputImage];
+  inputImage = [(CIRAWFilterImpl *)self inputImage];
   v45 = *(MEMORY[0x1E695EFD0] + 32);
-  v30 = a3;
-  if (a4)
+  orientationCopy = orientation;
+  if (factor)
   {
     v8 = *MEMORY[0x1E695EFD0];
     v9 = *(MEMORY[0x1E695EFD0] + 16);
@@ -2019,7 +2019,7 @@ LABEL_26:
 
   else
   {
-    [(CIRAWFilterImpl *)self getScaleTransform:v7];
+    [(CIRAWFilterImpl *)self getScaleTransform:inputImage];
     v8 = v42;
     v9 = v43;
     v45 = v44;
@@ -2032,8 +2032,8 @@ LABEL_26:
   v10 = fmax(fabs(*&v8), fmax(fabs(*(&v8 + 1)), fmax(fabs(*&v9), fabs(*(&v9 + 1)))));
   v38 = 0u;
   v39 = 0u;
-  v11 = [(CIRAWFilterImpl *)self filters];
-  v12 = [(NSArray *)v11 countByEnumeratingWithState:&v38 objects:v47 count:16];
+  filters = [(CIRAWFilterImpl *)self filters];
+  v12 = [(NSArray *)filters countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2045,13 +2045,13 @@ LABEL_26:
       {
         if (*v39 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(filters);
         }
 
         v14 |= [objc_msgSend(objc_opt_class() "description")];
       }
 
-      v13 = [(NSArray *)v11 countByEnumeratingWithState:&v38 objects:v47 count:16];
+      v13 = [(NSArray *)filters countByEnumeratingWithState:&v38 objects:v47 count:16];
     }
 
     while (v13);
@@ -2067,15 +2067,15 @@ LABEL_14:
     v42 = v31;
     v43 = v32;
     v44 = v45;
-    v7 = scaleImageWithQuality(v7, &v42);
+    inputImage = scaleImageWithQuality(inputImage, &v42);
   }
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v17 = [(CIRAWFilterImpl *)self filters];
-  v18 = [(NSArray *)v17 countByEnumeratingWithState:&v34 objects:v46 count:16];
+  filters2 = [(CIRAWFilterImpl *)self filters];
+  v18 = [(NSArray *)filters2 countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v18)
   {
     v19 = v18;
@@ -2086,7 +2086,7 @@ LABEL_14:
       {
         if (*v35 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(filters2);
         }
 
         v22 = *(*(&v34 + 1) + 8 * j);
@@ -2094,8 +2094,8 @@ LABEL_14:
         v24 = NSStringFromClass(v23);
         if ([(NSString *)v24 isEqualToString:@"CIAffineTransform"]|| [(NSString *)v24 isEqualToString:@"CILanczosScaleTransform"]|| [(NSString *)v24 isEqualToString:@"RAWCropFilter"])
         {
-          [v22 setValue:v7 forKey:@"inputImage"];
-          v7 = [v22 outputImage];
+          [v22 setValue:inputImage forKey:@"inputImage"];
+          inputImage = [v22 outputImage];
         }
 
         if ([(NSString *)v24 isEqualToString:@"RAWCropFilter"])
@@ -2113,13 +2113,13 @@ LABEL_14:
           v42 = v31;
           v43 = v32;
           v44 = v45;
-          v7 = scaleImageWithQuality(v7, &v42);
+          inputImage = scaleImageWithQuality(inputImage, &v42);
         }
 
         [v22 setValue:0 forKey:@"inputImage"];
       }
 
-      v19 = [(NSArray *)v17 countByEnumeratingWithState:&v34 objects:v46 count:16];
+      v19 = [(NSArray *)filters2 countByEnumeratingWithState:&v34 objects:v46 count:16];
     }
 
     while (v19);
@@ -2127,19 +2127,19 @@ LABEL_14:
 
   if (v10 <= 1.0)
   {
-    v26 = self;
-    if (v30)
+    selfCopy2 = self;
+    if (orientationCopy)
     {
-      return v7;
+      return inputImage;
     }
   }
 
   else
   {
-    v26 = self;
+    selfCopy2 = self;
     if (self)
     {
-      [(CIRAWFilterImpl *)self getScaleTransform:v7];
+      [(CIRAWFilterImpl *)self getScaleTransform:inputImage];
       v27 = v42;
       v28 = v43;
     }
@@ -2156,25 +2156,25 @@ LABEL_14:
     v45 = v44;
     v42 = v27;
     v43 = v28;
-    v7 = scaleImageWithQuality(v7, &v42);
-    if (v30)
+    inputImage = scaleImageWithQuality(inputImage, &v42);
+    if (orientationCopy)
     {
-      return v7;
+      return inputImage;
     }
   }
 
   v43 = 0u;
   v44 = 0u;
   v42 = 0u;
-  if (v26)
+  if (selfCopy2)
   {
-    [(CIRAWFilterImpl *)v26 getOrientationTransform:v7];
+    [(CIRAWFilterImpl *)selfCopy2 getOrientationTransform:inputImage];
   }
 
   v33[0] = v42;
   v33[1] = v43;
   v33[2] = v44;
-  return [v7 imageByApplyingTransform:v33];
+  return [inputImage imageByApplyingTransform:v33];
 }
 
 - (id)outputImage
@@ -2193,19 +2193,19 @@ LABEL_14:
     return 0;
   }
 
-  v5 = [(CIRAWFilterImpl *)self inputImage];
+  inputImage = [(CIRAWFilterImpl *)self inputImage];
   v7 = [-[CIRAWFilterImpl valueForKey:](self valueForKey:{@"inputReturnDemosaiced", "BOOLValue"}];
   v56 = 0u;
   v57 = 0u;
   v55 = 0u;
-  [(CIRAWFilterImpl *)self getScaleTransform:v5];
+  [(CIRAWFilterImpl *)self getScaleTransform:inputImage];
   v8 = fmax(fabs(*&v55), fmax(fabs(*(&v55 + 1)), fmax(fabs(*&v56), fabs(*(&v56 + 1)))));
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v9 = [(CIRAWFilterImpl *)self filters];
-  v10 = [(NSArray *)v9 countByEnumeratingWithState:&v51 objects:v59 count:16];
+  filters = [(CIRAWFilterImpl *)self filters];
+  v10 = [(NSArray *)filters countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2216,7 +2216,7 @@ LABEL_9:
     {
       if (*v52 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(filters);
       }
 
       if ([objc_msgSend(objc_opt_class() "description")])
@@ -2226,7 +2226,7 @@ LABEL_9:
 
       if (v11 == ++v13)
       {
-        v11 = [(NSArray *)v9 countByEnumeratingWithState:&v51 objects:v59 count:16];
+        v11 = [(NSArray *)filters countByEnumeratingWithState:&v51 objects:v59 count:16];
         if (v11)
         {
           goto LABEL_9;
@@ -2245,7 +2245,7 @@ LABEL_15:
       v48 = v55;
       v49 = v56;
       v50 = v57;
-      v5 = scaleImageWithQuality(v5, &v48);
+      inputImage = scaleImageWithQuality(inputImage, &v48);
     }
   }
 
@@ -2253,32 +2253,32 @@ LABEL_15:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v42 = self;
-  v14 = [(CIRAWFilterImpl *)self filters];
-  v15 = [(NSArray *)v14 countByEnumeratingWithState:&v44 objects:v58 count:16];
+  selfCopy = self;
+  filters2 = [(CIRAWFilterImpl *)self filters];
+  v15 = [(NSArray *)filters2 countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (!v15)
   {
 LABEL_33:
     if (v8 > 1.0)
     {
-      [(CIRAWFilterImpl *)v42 getScaleTransform:v5];
+      [(CIRAWFilterImpl *)selfCopy getScaleTransform:inputImage];
       v56 = v49;
       v57 = v50;
       v55 = v48;
-      v5 = scaleImageWithQuality(v5, &v48);
+      inputImage = scaleImageWithQuality(inputImage, &v48);
     }
 
     v49 = 0u;
     v50 = 0u;
     v48 = 0u;
-    [(CIRAWFilterImpl *)v42 getOrientationTransform:v5];
+    [(CIRAWFilterImpl *)selfCopy getOrientationTransform:inputImage];
     v43[0] = v48;
     v43[1] = v49;
     v43[2] = v50;
-    v21 = [v5 imageByApplyingTransform:v43];
-    v22 = [(NSString *)v42->inputDecoderVersion intValue];
+    v21 = [inputImage imageByApplyingTransform:v43];
+    intValue = [(NSString *)selfCopy->inputDecoderVersion intValue];
     v23 = MEMORY[0x1E695F0B8];
-    if (v22 <= 6)
+    if (intValue <= 6)
     {
       v23 = MEMORY[0x1E695F0A0];
     }
@@ -2291,7 +2291,7 @@ LABEL_33:
       CFRelease(v25);
     }
 
-    v26 = [(NSDictionary *)v42->_baseImageProperties mutableCopy];
+    v26 = [(NSDictionary *)selfCopy->_baseImageProperties mutableCopy];
     v27 = *MEMORY[0x1E696DF28];
     v28 = [objc_msgSend(v26 objectForKeyedSubscript:{*MEMORY[0x1E696DF28]), "mutableCopy"}];
     v29 = *MEMORY[0x1E696D9B0];
@@ -2306,10 +2306,10 @@ LABEL_33:
       [v26 setObject:v30 forKeyedSubscript:v29];
     }
 
-    inputIgnoreOrientation = v42->inputIgnoreOrientation;
+    inputIgnoreOrientation = selfCopy->inputIgnoreOrientation;
     if (inputIgnoreOrientation && [(NSNumber *)inputIgnoreOrientation BOOLValue])
     {
-      defaultOrientation = v42->_defaultOrientation;
+      defaultOrientation = selfCopy->_defaultOrientation;
     }
 
     else
@@ -2358,17 +2358,17 @@ LABEL_19:
   {
     if (*v45 != v17)
     {
-      objc_enumerationMutation(v14);
+      objc_enumerationMutation(filters2);
     }
 
     v19 = *(*(&v44 + 1) + 8 * v18);
     if ([objc_msgSend(v19 "inputKeys")])
     {
-      [v19 setValue:-[CIRAWFilterImpl valueForKey:](v42 forKey:{"valueForKey:", @"inputScaleFactor", @"inputScaleFactor"}];
+      [v19 setValue:-[CIRAWFilterImpl valueForKey:](selfCopy forKey:{"valueForKey:", @"inputScaleFactor", @"inputScaleFactor"}];
     }
 
-    [v19 setValue:v5 forKey:@"inputImage"];
-    v5 = [v19 outputImage];
+    [v19 setValue:inputImage forKey:@"inputImage"];
+    inputImage = [v19 outputImage];
     if ([objc_msgSend(objc_opt_class() "description")])
     {
       v20 = v8 <= 1.0;
@@ -2384,18 +2384,18 @@ LABEL_19:
       v48 = v55;
       v49 = v56;
       v50 = v57;
-      v5 = scaleImageWithQuality(v5, &v48);
+      inputImage = scaleImageWithQuality(inputImage, &v48);
     }
 
     [v19 setValue:0 forKey:@"inputImage"];
     if ([objc_msgSend(objc_opt_class() "description")] & v7)
     {
-      return v5;
+      return inputImage;
     }
 
     if (v16 == ++v18)
     {
-      v16 = [(NSArray *)v14 countByEnumeratingWithState:&v44 objects:v58 count:16];
+      v16 = [(NSArray *)filters2 countByEnumeratingWithState:&v44 objects:v58 count:16];
       if (v16)
       {
         goto LABEL_19;
@@ -2406,23 +2406,23 @@ LABEL_19:
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  if ([a3 isEqualToString:@"inputNeutralChromaticityX"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"inputNeutralChromaticityY") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"inputNeutralTemperature") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"inputNeutralTint"))
+  if ([key isEqualToString:@"inputNeutralChromaticityX"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"inputNeutralChromaticityY") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"inputNeutralTemperature") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"inputNeutralTint"))
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CIRAWFilterImpl;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
-- (id)RAWFiltersValueForKeyPath:(id)a3
+- (id)RAWFiltersValueForKeyPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = [(NSDictionary *)[(CIRAWFilterImpl *)self rawDictionary] objectForKeyedSubscript:@"filters"];
-  v5 = [a3 componentsSeparatedByString:@"."];
+  v5 = [path componentsSeparatedByString:@"."];
   if ([v5 count] <= 2)
   {
     if (![v5 count])
@@ -2585,20 +2585,20 @@ LABEL_26:
   v3 = MEMORY[0x1E696AD98];
   if ([(NSNumber *)self->inputIgnoreOrientation BOOLValue]|| [(NSNumber *)self->_defaultOrientation intValue]<= 8 && [(NSNumber *)self->_defaultOrientation intValue]< 1)
   {
-    v4 = 1;
+    intValue = 1;
   }
 
   else if ([(NSNumber *)self->_defaultOrientation intValue]<= 8)
   {
-    v4 = [(NSNumber *)self->_defaultOrientation intValue];
+    intValue = [(NSNumber *)self->_defaultOrientation intValue];
   }
 
   else
   {
-    v4 = 8;
+    intValue = 8;
   }
 
-  return [v3 numberWithInt:v4];
+  return [v3 numberWithInt:intValue];
 }
 
 - (id)inputNeutralLocation
@@ -2608,28 +2608,28 @@ LABEL_26:
   return v2;
 }
 
-- (void)setInputNeutralLocation:(id)a3
+- (void)setInputNeutralLocation:(id)location
 {
   if (!self->_calledDealloc)
   {
-    [a3 X];
+    [location X];
     v7 = v6;
-    [a3 Y];
+    [location Y];
 
     [(CIRAWFilterImpl *)self setTempTintAtPoint:v7, v8];
   }
 }
 
-- (void)setInputScaleFactor:(id)a3
+- (void)setInputScaleFactor:(id)factor
 {
   if (!self->_calledDealloc)
   {
     inputScaleFactor = self->inputScaleFactor;
-    if (a3)
+    if (factor)
     {
       if (inputScaleFactor)
       {
-        if ([a3 isEqualToValue:inputScaleFactor])
+        if ([factor isEqualToValue:inputScaleFactor])
         {
           return;
         }
@@ -2637,20 +2637,20 @@ LABEL_26:
         inputScaleFactor = self->inputScaleFactor;
       }
 
-      v6 = [(CIRAWFilterImpl *)self subsampling];
-      [a3 doubleValue];
+      subsampling = [(CIRAWFilterImpl *)self subsampling];
+      [factor doubleValue];
       v8 = [MEMORY[0x1E696AD98] numberWithDouble:{fmax(fmin(v7, 1.0), 0.0)}];
     }
 
     else
     {
-      v6 = [(CIRAWFilterImpl *)self subsampling];
+      subsampling = [(CIRAWFilterImpl *)self subsampling];
       v8 = 0;
     }
 
     self->inputScaleFactor = v8;
 
-    if ([(CIRAWFilterImpl *)self subsampling]!= v6 || !self->_inputImage)
+    if ([(CIRAWFilterImpl *)self subsampling]!= subsampling || !self->_inputImage)
     {
 
       [(CIRAWFilterImpl *)self invalidateInputImage];
@@ -2658,18 +2658,18 @@ LABEL_26:
   }
 }
 
-- (void)setInputDraftMode:(id)a3
+- (void)setInputDraftMode:(id)mode
 {
   if (!self->_calledDealloc)
   {
-    v5 = [(NSNumber *)self->inputDraftMode BOOLValue];
-    if (v5 != [a3 BOOLValue])
+    bOOLValue = [(NSNumber *)self->inputDraftMode BOOLValue];
+    if (bOOLValue != [mode BOOLValue])
     {
       inputDraftMode = self->inputDraftMode;
-      v7 = [(CIRAWFilterImpl *)self subsampling];
-      self->inputDraftMode = a3;
+      subsampling = [(CIRAWFilterImpl *)self subsampling];
+      self->inputDraftMode = mode;
 
-      if ([(CIRAWFilterImpl *)self subsampling]!= v7 || !self->_inputImage)
+      if ([(CIRAWFilterImpl *)self subsampling]!= subsampling || !self->_inputImage)
       {
 
         [(CIRAWFilterImpl *)self invalidateInputImage];
@@ -2678,38 +2678,38 @@ LABEL_26:
   }
 }
 
-- (void)setInputEnableSharpening:(id)a3
+- (void)setInputEnableSharpening:(id)sharpening
 {
-  v5 = [(NSNumber *)self->inputEnableSharpening BOOLValue];
-  if (v5 != [a3 BOOLValue])
+  bOOLValue = [(NSNumber *)self->inputEnableSharpening BOOLValue];
+  if (bOOLValue != [sharpening BOOLValue])
   {
     inputEnableSharpening = self->inputEnableSharpening;
-    self->inputEnableSharpening = a3;
+    self->inputEnableSharpening = sharpening;
 
     [(CIRAWFilterImpl *)self invalidateInputImage];
   }
 }
 
-- (void)setInputEnableNoiseTracking:(id)a3
+- (void)setInputEnableNoiseTracking:(id)tracking
 {
-  v5 = [(NSNumber *)self->inputEnableNoiseTracking BOOLValue];
-  if (v5 != [a3 BOOLValue])
+  bOOLValue = [(NSNumber *)self->inputEnableNoiseTracking BOOLValue];
+  if (bOOLValue != [tracking BOOLValue])
   {
     inputEnableNoiseTracking = self->inputEnableNoiseTracking;
-    self->inputEnableNoiseTracking = a3;
+    self->inputEnableNoiseTracking = tracking;
 
     [(CIRAWFilterImpl *)self invalidateInputImage];
   }
 }
 
-- (void)setInputNoiseReductionAmount:(id)a3
+- (void)setInputNoiseReductionAmount:(id)amount
 {
   inputNoiseReductionAmount = self->inputNoiseReductionAmount;
-  if (inputNoiseReductionAmount != a3)
+  if (inputNoiseReductionAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputNoiseReductionAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputNoiseReductionAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -2717,20 +2717,20 @@ LABEL_26:
       inputNoiseReductionAmount = self->inputNoiseReductionAmount;
     }
 
-    self->inputNoiseReductionAmount = a3;
+    self->inputNoiseReductionAmount = amount;
 
     [(CIRAWFilterImpl *)self invalidateInputImage];
   }
 }
 
-- (void)setInputEnableVendorLensCorrection:(id)a3
+- (void)setInputEnableVendorLensCorrection:(id)correction
 {
   inputEnableVendorLensCorrection = self->inputEnableVendorLensCorrection;
-  if (inputEnableVendorLensCorrection != a3)
+  if (inputEnableVendorLensCorrection != correction)
   {
-    if (a3)
+    if (correction)
     {
-      if ([(NSNumber *)self->inputEnableVendorLensCorrection isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputEnableVendorLensCorrection isEqualToNumber:correction])
       {
         return;
       }
@@ -2738,7 +2738,7 @@ LABEL_26:
       inputEnableVendorLensCorrection = self->inputEnableVendorLensCorrection;
     }
 
-    self->inputEnableVendorLensCorrection = [a3 copy];
+    self->inputEnableVendorLensCorrection = [correction copy];
 
     if ([(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]< 2)
     {
@@ -2754,14 +2754,14 @@ LABEL_26:
   }
 }
 
-- (void)setInputLuminanceNoiseReductionAmount:(id)a3
+- (void)setInputLuminanceNoiseReductionAmount:(id)amount
 {
   inputLuminanceNoiseReductionAmount = self->inputLuminanceNoiseReductionAmount;
-  if (inputLuminanceNoiseReductionAmount != a3)
+  if (inputLuminanceNoiseReductionAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputLuminanceNoiseReductionAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputLuminanceNoiseReductionAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -2769,7 +2769,7 @@ LABEL_26:
       inputLuminanceNoiseReductionAmount = self->inputLuminanceNoiseReductionAmount;
     }
 
-    self->inputLuminanceNoiseReductionAmount = [a3 copy];
+    self->inputLuminanceNoiseReductionAmount = [amount copy];
 
     if ([(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]< 2)
     {
@@ -2785,14 +2785,14 @@ LABEL_26:
   }
 }
 
-- (void)setInputColorNoiseReductionAmount:(id)a3
+- (void)setInputColorNoiseReductionAmount:(id)amount
 {
   inputColorNoiseReductionAmount = self->inputColorNoiseReductionAmount;
-  if (inputColorNoiseReductionAmount != a3)
+  if (inputColorNoiseReductionAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputColorNoiseReductionAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputColorNoiseReductionAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -2800,7 +2800,7 @@ LABEL_26:
       inputColorNoiseReductionAmount = self->inputColorNoiseReductionAmount;
     }
 
-    self->inputColorNoiseReductionAmount = [a3 copy];
+    self->inputColorNoiseReductionAmount = [amount copy];
 
     if ([(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]< 2)
     {
@@ -2816,14 +2816,14 @@ LABEL_26:
   }
 }
 
-- (void)setInputNoiseReductionSharpnessAmount:(id)a3
+- (void)setInputNoiseReductionSharpnessAmount:(id)amount
 {
   inputNoiseReductionSharpnessAmount = self->inputNoiseReductionSharpnessAmount;
-  if (inputNoiseReductionSharpnessAmount != a3)
+  if (inputNoiseReductionSharpnessAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputNoiseReductionSharpnessAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputNoiseReductionSharpnessAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -2831,7 +2831,7 @@ LABEL_26:
       inputNoiseReductionSharpnessAmount = self->inputNoiseReductionSharpnessAmount;
     }
 
-    self->inputNoiseReductionSharpnessAmount = [a3 copy];
+    self->inputNoiseReductionSharpnessAmount = [amount copy];
 
     if ([(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]< 2)
     {
@@ -2847,14 +2847,14 @@ LABEL_26:
   }
 }
 
-- (void)setInputNoiseReductionContrastAmount:(id)a3
+- (void)setInputNoiseReductionContrastAmount:(id)amount
 {
   inputNoiseReductionContrastAmount = self->inputNoiseReductionContrastAmount;
-  if (inputNoiseReductionContrastAmount != a3)
+  if (inputNoiseReductionContrastAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputNoiseReductionContrastAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputNoiseReductionContrastAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -2862,7 +2862,7 @@ LABEL_26:
       inputNoiseReductionContrastAmount = self->inputNoiseReductionContrastAmount;
     }
 
-    self->inputNoiseReductionContrastAmount = [a3 copy];
+    self->inputNoiseReductionContrastAmount = [amount copy];
 
     if ([(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]< 2)
     {
@@ -2878,14 +2878,14 @@ LABEL_26:
   }
 }
 
-- (void)setInputNoiseReductionDetailAmount:(id)a3
+- (void)setInputNoiseReductionDetailAmount:(id)amount
 {
   inputNoiseReductionDetailAmount = self->inputNoiseReductionDetailAmount;
-  if (inputNoiseReductionDetailAmount != a3)
+  if (inputNoiseReductionDetailAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputNoiseReductionDetailAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputNoiseReductionDetailAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -2893,7 +2893,7 @@ LABEL_26:
       inputNoiseReductionDetailAmount = self->inputNoiseReductionDetailAmount;
     }
 
-    self->inputNoiseReductionDetailAmount = [a3 copy];
+    self->inputNoiseReductionDetailAmount = [amount copy];
 
     if ([(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]< 2)
     {
@@ -2909,14 +2909,14 @@ LABEL_26:
   }
 }
 
-- (void)setInputMoireAmount:(id)a3
+- (void)setInputMoireAmount:(id)amount
 {
   inputMoireAmount = self->inputMoireAmount;
-  if (inputMoireAmount != a3)
+  if (inputMoireAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputMoireAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputMoireAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -2924,7 +2924,7 @@ LABEL_26:
       inputMoireAmount = self->inputMoireAmount;
     }
 
-    self->inputMoireAmount = [a3 copy];
+    self->inputMoireAmount = [amount copy];
 
     if ([(NSNumber *)[(CIRAWFilterImpl *)self sushiMode] intValue]< 2)
     {
@@ -2940,14 +2940,14 @@ LABEL_26:
   }
 }
 
-- (void)setInputEV:(id)a3
+- (void)setInputEV:(id)v
 {
   inputEV = self->inputEV;
-  if (inputEV != a3)
+  if (inputEV != v)
   {
-    if (a3)
+    if (v)
     {
-      if ([(NSNumber *)self->inputEV isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputEV isEqualToNumber:v])
       {
         return;
       }
@@ -2955,20 +2955,20 @@ LABEL_26:
       inputEV = self->inputEV;
     }
 
-    self->inputEV = [a3 copy];
+    self->inputEV = [v copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputBoost:(id)a3
+- (void)setInputBoost:(id)boost
 {
   inputBoost = self->inputBoost;
-  if (inputBoost != a3)
+  if (inputBoost != boost)
   {
-    if (a3)
+    if (boost)
     {
-      if ([(NSNumber *)self->inputBoost isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputBoost isEqualToNumber:boost])
       {
         return;
       }
@@ -2976,21 +2976,21 @@ LABEL_26:
       inputBoost = self->inputBoost;
     }
 
-    self->inputBoost = [a3 copy];
+    self->inputBoost = [boost copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputDecoderVersion:(id)a3
+- (void)setInputDecoderVersion:(id)version
 {
   v5 = objc_opt_class();
   if ([v5 isSubclassOfClass:objc_opt_class()])
   {
-    a3 = [a3 stringValue];
+    version = [version stringValue];
   }
 
-  if (a3)
+  if (version)
   {
     v6 = objc_opt_class();
     if (([v6 isSubclassOfClass:objc_opt_class()] & 1) == 0)
@@ -3003,12 +3003,12 @@ LABEL_26:
     }
   }
 
-  if ([(NSArray *)self->_supportedDecoderVersions containsObject:a3])
+  if ([(NSArray *)self->_supportedDecoderVersions containsObject:version])
   {
-    if (self->inputDecoderVersion != a3 && ([a3 isEqualToString:?] & 1) == 0)
+    if (self->inputDecoderVersion != version && ([version isEqualToString:?] & 1) == 0)
     {
       inputDecoderVersion = self->inputDecoderVersion;
-      self->inputDecoderVersion = [a3 copy];
+      self->inputDecoderVersion = [version copy];
 
       self->_rawDictionary = 0;
       self->_rawReconstructionDefaultsDictionary = 0;
@@ -3023,43 +3023,43 @@ LABEL_26:
       v9 = ci_logger_api();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(CIRAWFilterImpl(CustomAccessors) *)a3 setInputDecoderVersion:v9];
+        [(CIRAWFilterImpl(CustomAccessors) *)version setInputDecoderVersion:v9];
       }
     }
   }
 }
 
-- (void)setInputImageOrientation:(id)a3
+- (void)setInputImageOrientation:(id)orientation
 {
-  v5 = [a3 intValue];
-  if (v5 != [(NSNumber *)self->inputImageOrientation intValue])
+  intValue = [orientation intValue];
+  if (intValue != [(NSNumber *)self->inputImageOrientation intValue])
   {
     inputImageOrientation = self->inputImageOrientation;
-    self->inputImageOrientation = [a3 copy];
+    self->inputImageOrientation = [orientation copy];
   }
 }
 
-- (void)setInputIgnoreOrientation:(id)a3
+- (void)setInputIgnoreOrientation:(id)orientation
 {
-  v5 = [a3 BOOLValue];
-  if (v5 != [(NSNumber *)self->inputIgnoreOrientation BOOLValue])
+  bOOLValue = [orientation BOOLValue];
+  if (bOOLValue != [(NSNumber *)self->inputIgnoreOrientation BOOLValue])
   {
     inputIgnoreOrientation = self->inputIgnoreOrientation;
-    self->inputIgnoreOrientation = [a3 copy];
+    self->inputIgnoreOrientation = [orientation copy];
 
-    v7 = [(CIRAWFilterImpl *)self defaultImageOrientation];
+    defaultImageOrientation = [(CIRAWFilterImpl *)self defaultImageOrientation];
 
-    [(CIRAWFilterImpl *)self setInputImageOrientation:v7];
+    [(CIRAWFilterImpl *)self setInputImageOrientation:defaultImageOrientation];
   }
 }
 
-- (void)setInputReturnDemosaiced:(id)a3
+- (void)setInputReturnDemosaiced:(id)demosaiced
 {
-  v5 = [a3 intValue];
-  if (v5 != [(NSNumber *)self->inputReturnDemosaiced intValue])
+  intValue = [demosaiced intValue];
+  if (intValue != [(NSNumber *)self->inputReturnDemosaiced intValue])
   {
     inputReturnDemosaiced = self->inputReturnDemosaiced;
-    self->inputReturnDemosaiced = [a3 copy];
+    self->inputReturnDemosaiced = [demosaiced copy];
   }
 }
 
@@ -3075,14 +3075,14 @@ LABEL_26:
   return result;
 }
 
-- (void)setInputEnableEDRMode:(id)a3
+- (void)setInputEnableEDRMode:(id)mode
 {
   inputEnableEDRMode = self->inputEnableEDRMode;
-  if (inputEnableEDRMode != a3)
+  if (inputEnableEDRMode != mode)
   {
-    if (a3)
+    if (mode)
     {
-      if ([(NSNumber *)self->inputEnableEDRMode isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputEnableEDRMode isEqualToNumber:mode])
       {
         return;
       }
@@ -3090,20 +3090,20 @@ LABEL_26:
       inputEnableEDRMode = self->inputEnableEDRMode;
     }
 
-    self->inputEnableEDRMode = a3;
+    self->inputEnableEDRMode = mode;
 
     [(CIRAWFilterImpl *)self invalidateInputImage];
   }
 }
 
-- (void)setInputLocalToneMapAmount:(id)a3
+- (void)setInputLocalToneMapAmount:(id)amount
 {
   inputLocalToneMapAmount = self->inputLocalToneMapAmount;
-  if (inputLocalToneMapAmount != a3)
+  if (inputLocalToneMapAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputLocalToneMapAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputLocalToneMapAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -3111,7 +3111,7 @@ LABEL_26:
       inputLocalToneMapAmount = self->inputLocalToneMapAmount;
     }
 
-    self->inputLocalToneMapAmount = a3;
+    self->inputLocalToneMapAmount = amount;
 
     [(CIRAWFilterImpl *)self invalidateInputImage];
   }
@@ -3223,14 +3223,14 @@ LABEL_26:
 
 - (id)defaultDecoderVersion
 {
-  v2 = [(CIRAWFilterImpl *)self supportedDecoderVersions];
-  if (!v2)
+  supportedDecoderVersions = [(CIRAWFilterImpl *)self supportedDecoderVersions];
+  if (!supportedDecoderVersions)
   {
     return 0;
   }
 
-  v3 = v2;
-  if (![v2 count])
+  v3 = supportedDecoderVersions;
+  if (![supportedDecoderVersions count])
   {
     return 0;
   }
@@ -3261,7 +3261,7 @@ LABEL_26:
     {
       v5 = CGImageSourceCopyPropertiesAtIndex(inputImageSource, 0, [(CIRAWFilterImpl *)self rawOptions]);
       v6 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
-      v7 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
@@ -3281,7 +3281,7 @@ LABEL_26:
               objc_enumerationMutation(v8);
             }
 
-            [v7 addObject:*(*(&v25 + 1) + 8 * i)];
+            [array addObject:*(*(&v25 + 1) + 8 * i)];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -3290,7 +3290,7 @@ LABEL_26:
         while (v10);
       }
 
-      result = [v7 copy];
+      result = [array copy];
       self->_supportedSushiModes = result;
       if (v5)
       {
@@ -3306,7 +3306,7 @@ LABEL_26:
       {
         v13 = [result objectAtIndexedSubscript:1];
         v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
-        v15 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -3326,7 +3326,7 @@ LABEL_26:
                 objc_enumerationMutation(v16);
               }
 
-              [v15 addObject:*(*(&v21 + 1) + 8 * j)];
+              [array2 addObject:*(*(&v21 + 1) + 8 * j)];
             }
 
             v18 = [v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -3335,7 +3335,7 @@ LABEL_26:
           while (v18);
         }
 
-        result = [v15 copy];
+        result = [array2 copy];
         self->_supportedSushiModes = result;
       }
     }
@@ -3358,10 +3358,10 @@ LABEL_26:
     inputImageSource = self->_inputImageSource;
     if (inputImageSource)
     {
-      v27 = self;
+      selfCopy = self;
       cf = CGImageSourceCopyPropertiesAtIndex(inputImageSource, 0, [(CIRAWFilterImpl *)self rawOptions]);
       v5 = [(__CFDictionary *)cf objectForKeyedSubscript:*MEMORY[0x1E696E090]];
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -3390,7 +3390,7 @@ LABEL_26:
                 [v12 floatValue];
                 if (v14 < 10.0)
                 {
-                  [v6 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@", v12)}];
+                  [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@", v12)}];
                 }
               }
             }
@@ -3402,12 +3402,12 @@ LABEL_26:
         while (v9);
       }
 
-      result = [v6 copy];
-      v27->_supportedDecoderVersions = result;
+      result = [array copy];
+      selfCopy->_supportedDecoderVersions = result;
       if (cf)
       {
         CFRelease(cf);
-        return v27->_supportedDecoderVersions;
+        return selfCopy->_supportedDecoderVersions;
       }
     }
 
@@ -3416,10 +3416,10 @@ LABEL_26:
       result = self->_inputImageAndProperties;
       if (result)
       {
-        v28 = self;
+        selfCopy2 = self;
         v15 = [result objectAtIndexedSubscript:1];
         v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
-        v17 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
@@ -3448,7 +3448,7 @@ LABEL_26:
                   [v23 floatValue];
                   if (v25 < 10.0)
                   {
-                    [v17 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@", v23)}];
+                    [array2 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@", v23)}];
                   }
                 }
               }
@@ -3460,8 +3460,8 @@ LABEL_26:
           while (v20);
         }
 
-        result = [v17 copy];
-        v28->_supportedDecoderVersions = result;
+        result = [array2 copy];
+        selfCopy2->_supportedDecoderVersions = result;
       }
     }
   }
@@ -3469,14 +3469,14 @@ LABEL_26:
   return result;
 }
 
-- (void)setInputBias:(id)a3
+- (void)setInputBias:(id)bias
 {
   inputBias = self->inputBias;
-  if (inputBias != a3)
+  if (inputBias != bias)
   {
-    if (a3)
+    if (bias)
     {
-      if ([(NSNumber *)self->inputBias isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputBias isEqualToNumber:bias])
       {
         return;
       }
@@ -3484,20 +3484,20 @@ LABEL_26:
       inputBias = self->inputBias;
     }
 
-    self->inputBias = [a3 copy];
+    self->inputBias = [bias copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputBaselineExposure:(id)a3
+- (void)setInputBaselineExposure:(id)exposure
 {
   inputBaselineExposure = self->inputBaselineExposure;
-  if (inputBaselineExposure != a3)
+  if (inputBaselineExposure != exposure)
   {
-    if (a3)
+    if (exposure)
     {
-      if ([(NSNumber *)self->inputBaselineExposure isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputBaselineExposure isEqualToNumber:exposure])
       {
         return;
       }
@@ -3505,20 +3505,20 @@ LABEL_26:
       inputBaselineExposure = self->inputBaselineExposure;
     }
 
-    self->inputBaselineExposure = [a3 copy];
+    self->inputBaselineExposure = [exposure copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputHueMagMR:(id)a3
+- (void)setInputHueMagMR:(id)r
 {
   inputHueMagMR = self->inputHueMagMR;
-  if (inputHueMagMR != a3)
+  if (inputHueMagMR != r)
   {
-    if (a3)
+    if (r)
     {
-      if ([(NSNumber *)self->inputHueMagMR isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputHueMagMR isEqualToNumber:r])
       {
         return;
       }
@@ -3526,20 +3526,20 @@ LABEL_26:
       inputHueMagMR = self->inputHueMagMR;
     }
 
-    self->inputHueMagMR = [a3 copy];
+    self->inputHueMagMR = [r copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputHueMagRY:(id)a3
+- (void)setInputHueMagRY:(id)y
 {
   inputHueMagRY = self->inputHueMagRY;
-  if (inputHueMagRY != a3)
+  if (inputHueMagRY != y)
   {
-    if (a3)
+    if (y)
     {
-      if ([(NSNumber *)self->inputHueMagRY isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputHueMagRY isEqualToNumber:y])
       {
         return;
       }
@@ -3547,20 +3547,20 @@ LABEL_26:
       inputHueMagRY = self->inputHueMagRY;
     }
 
-    self->inputHueMagRY = [a3 copy];
+    self->inputHueMagRY = [y copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputHueMagYG:(id)a3
+- (void)setInputHueMagYG:(id)g
 {
   inputHueMagYG = self->inputHueMagYG;
-  if (inputHueMagYG != a3)
+  if (inputHueMagYG != g)
   {
-    if (a3)
+    if (g)
     {
-      if ([(NSNumber *)self->inputHueMagYG isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputHueMagYG isEqualToNumber:g])
       {
         return;
       }
@@ -3568,20 +3568,20 @@ LABEL_26:
       inputHueMagYG = self->inputHueMagYG;
     }
 
-    self->inputHueMagYG = [a3 copy];
+    self->inputHueMagYG = [g copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputHueMagGC:(id)a3
+- (void)setInputHueMagGC:(id)c
 {
   inputHueMagGC = self->inputHueMagGC;
-  if (inputHueMagGC != a3)
+  if (inputHueMagGC != c)
   {
-    if (a3)
+    if (c)
     {
-      if ([(NSNumber *)self->inputHueMagGC isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputHueMagGC isEqualToNumber:c])
       {
         return;
       }
@@ -3589,20 +3589,20 @@ LABEL_26:
       inputHueMagGC = self->inputHueMagGC;
     }
 
-    self->inputHueMagGC = [a3 copy];
+    self->inputHueMagGC = [c copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputHueMagCB:(id)a3
+- (void)setInputHueMagCB:(id)b
 {
   inputHueMagCB = self->inputHueMagCB;
-  if (inputHueMagCB != a3)
+  if (inputHueMagCB != b)
   {
-    if (a3)
+    if (b)
     {
-      if ([(NSNumber *)self->inputHueMagCB isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputHueMagCB isEqualToNumber:b])
       {
         return;
       }
@@ -3610,20 +3610,20 @@ LABEL_26:
       inputHueMagCB = self->inputHueMagCB;
     }
 
-    self->inputHueMagCB = [a3 copy];
+    self->inputHueMagCB = [b copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputHueMagBM:(id)a3
+- (void)setInputHueMagBM:(id)m
 {
   inputHueMagBM = self->inputHueMagBM;
-  if (inputHueMagBM != a3)
+  if (inputHueMagBM != m)
   {
-    if (a3)
+    if (m)
     {
-      if ([(NSNumber *)self->inputHueMagBM isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputHueMagBM isEqualToNumber:m])
       {
         return;
       }
@@ -3631,20 +3631,20 @@ LABEL_26:
       inputHueMagBM = self->inputHueMagBM;
     }
 
-    self->inputHueMagBM = [a3 copy];
+    self->inputHueMagBM = [m copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputDisableHighlightRecovery:(id)a3
+- (void)setInputDisableHighlightRecovery:(id)recovery
 {
   inputDisableHighlightRecovery = self->inputDisableHighlightRecovery;
-  if (inputDisableHighlightRecovery != a3)
+  if (inputDisableHighlightRecovery != recovery)
   {
-    if (a3)
+    if (recovery)
     {
-      if ([(NSNumber *)self->inputDisableHighlightRecovery isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputDisableHighlightRecovery isEqualToNumber:recovery])
       {
         return;
       }
@@ -3652,20 +3652,20 @@ LABEL_26:
       inputDisableHighlightRecovery = self->inputDisableHighlightRecovery;
     }
 
-    self->inputDisableHighlightRecovery = [a3 copy];
+    self->inputDisableHighlightRecovery = [recovery copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputDisableGamutMap:(id)a3
+- (void)setInputDisableGamutMap:(id)map
 {
   inputDisableGamutMap = self->inputDisableGamutMap;
-  if (inputDisableGamutMap != a3)
+  if (inputDisableGamutMap != map)
   {
-    if (a3)
+    if (map)
     {
-      if ([(NSNumber *)self->inputDisableGamutMap isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputDisableGamutMap isEqualToNumber:map])
       {
         return;
       }
@@ -3673,31 +3673,31 @@ LABEL_26:
       inputDisableGamutMap = self->inputDisableGamutMap;
     }
 
-    self->inputDisableGamutMap = [a3 copy];
+    self->inputDisableGamutMap = [map copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputLinearSpaceFilter:(id)a3
+- (void)setInputLinearSpaceFilter:(id)filter
 {
   inputLinearSpaceFilter = self->inputLinearSpaceFilter;
-  if (inputLinearSpaceFilter != a3)
+  if (inputLinearSpaceFilter != filter)
   {
-    self->inputLinearSpaceFilter = a3;
+    self->inputLinearSpaceFilter = filter;
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
 }
 
-- (void)setInputBoostShadowAmount:(id)a3
+- (void)setInputBoostShadowAmount:(id)amount
 {
   inputBoostShadowAmount = self->inputBoostShadowAmount;
-  if (inputBoostShadowAmount != a3)
+  if (inputBoostShadowAmount != amount)
   {
-    if (a3)
+    if (amount)
     {
-      if ([(NSNumber *)self->inputBoostShadowAmount isEqualToNumber:a3])
+      if ([(NSNumber *)self->inputBoostShadowAmount isEqualToNumber:amount])
       {
         return;
       }
@@ -3705,7 +3705,7 @@ LABEL_26:
       inputBoostShadowAmount = self->inputBoostShadowAmount;
     }
 
-    self->inputBoostShadowAmount = [a3 copy];
+    self->inputBoostShadowAmount = [amount copy];
 
     [(CIRAWFilterImpl *)self invalidateFilters];
   }
@@ -3713,9 +3713,9 @@ LABEL_26:
 
 - (id)defaultBoostShadowAmount
 {
-  v2 = [(CIRAWFilterImpl *)self rawDictionary];
+  rawDictionary = [(CIRAWFilterImpl *)self rawDictionary];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"bsamt"];
+  return [(NSDictionary *)rawDictionary objectForKeyedSubscript:@"bsamt"];
 }
 
 - (id)activeKeys
@@ -3885,46 +3885,46 @@ LABEL_32:
   [-[CIRAWFilterImpl transformedImageIgnoringOrientation:andIgnoringScaleFactor:](self transformedImageIgnoringOrientation:1 andIgnoringScaleFactor:{1), "extent"}];
   v4 = v3;
   v6 = v5;
-  v7 = [(CIRAWFilterImpl *)self subsampling];
+  subsampling = [(CIRAWFilterImpl *)self subsampling];
 
-  return [CIVector vectorWithX:(v4 << v7) Y:(v6 << v7)];
+  return [CIVector vectorWithX:(v4 << subsampling) Y:(v6 << subsampling)];
 }
 
-+ (void)convertNeutralX:(id)a3 y:(id)a4 toTemperature:(id *)a5 tint:(id *)a6
++ (void)convertNeutralX:(id)x y:(id)y toTemperature:(id *)temperature tint:(id *)tint
 {
-  [a3 doubleValue];
+  [x doubleValue];
   v10 = v9;
-  [a4 doubleValue];
+  [y doubleValue];
   v12 = 0.0;
   v13 = 0.0;
   CI_xy_to_TempTint(&v13, &v12, v10, v11);
-  if (a5)
+  if (temperature)
   {
-    *a5 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
+    *temperature = [MEMORY[0x1E696AD98] numberWithDouble:v13];
   }
 
-  if (a6)
+  if (tint)
   {
-    *a6 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
+    *tint = [MEMORY[0x1E696AD98] numberWithDouble:v12];
   }
 }
 
-+ (void)convertNeutralTemperature:(id)a3 tint:(id)a4 toX:(id *)a5 y:(id *)a6
++ (void)convertNeutralTemperature:(id)temperature tint:(id)tint toX:(id *)x y:(id *)y
 {
-  [a3 doubleValue];
+  [temperature doubleValue];
   v10 = v9;
-  [a4 doubleValue];
+  [tint doubleValue];
   v12 = 0.0;
   v13 = 0.0;
   CI_TempTint_to_xy(&v13, &v12, v10, v11);
-  if (a5)
+  if (x)
   {
-    *a5 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
+    *x = [MEMORY[0x1E696AD98] numberWithDouble:v13];
   }
 
-  if (a6)
+  if (y)
   {
-    *a6 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
+    *y = [MEMORY[0x1E696AD98] numberWithDouble:v12];
   }
 }
 
@@ -4042,12 +4042,12 @@ LABEL_32:
   return result;
 }
 
-- (void)setInputNeutralTemperature:(id)a3
+- (void)setInputNeutralTemperature:(id)temperature
 {
   if (!self->_calledDealloc)
   {
     inputNeutralTemperature = self->inputNeutralTemperature;
-    if (inputNeutralTemperature != a3 && (!a3 || ![(NSNumber *)inputNeutralTemperature isEqualToNumber:a3]))
+    if (inputNeutralTemperature != temperature && (!temperature || ![(NSNumber *)inputNeutralTemperature isEqualToNumber:temperature]))
     {
       if (!self->inputNeutralTint)
       {
@@ -4058,7 +4058,7 @@ LABEL_32:
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralChromaticityX"];
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralChromaticityY"];
       v6 = self->inputNeutralTemperature;
-      self->inputNeutralTemperature = [a3 copy];
+      self->inputNeutralTemperature = [temperature copy];
 
       self->inputNeutralChromaticityX = 0;
       self->inputNeutralChromaticityY = 0;
@@ -4103,12 +4103,12 @@ LABEL_32:
   }
 }
 
-- (void)setInputNeutralTint:(id)a3
+- (void)setInputNeutralTint:(id)tint
 {
   if (!self->_calledDealloc)
   {
     inputNeutralTint = self->inputNeutralTint;
-    if (inputNeutralTint != a3 && (!a3 || ![(NSNumber *)inputNeutralTint isEqualToNumber:a3]))
+    if (inputNeutralTint != tint && (!tint || ![(NSNumber *)inputNeutralTint isEqualToNumber:tint]))
     {
       if (!self->inputNeutralTemperature)
       {
@@ -4119,7 +4119,7 @@ LABEL_32:
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralChromaticityX"];
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralChromaticityY"];
       v6 = self->inputNeutralTint;
-      self->inputNeutralTint = [a3 copy];
+      self->inputNeutralTint = [tint copy];
 
       self->inputNeutralChromaticityX = 0;
       self->inputNeutralChromaticityY = 0;
@@ -4151,12 +4151,12 @@ LABEL_32:
   return result;
 }
 
-- (void)setInputNeutralChromaticityX:(id)a3
+- (void)setInputNeutralChromaticityX:(id)x
 {
   if (!self->_calledDealloc)
   {
     inputNeutralChromaticityX = self->inputNeutralChromaticityX;
-    if (inputNeutralChromaticityX != a3 && (!a3 || ![(NSNumber *)inputNeutralChromaticityX isEqualToNumber:a3]))
+    if (inputNeutralChromaticityX != x && (!x || ![(NSNumber *)inputNeutralChromaticityX isEqualToNumber:x]))
     {
       if (!self->inputNeutralChromaticityY)
       {
@@ -4167,7 +4167,7 @@ LABEL_32:
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralTint"];
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralTemperature"];
       v6 = self->inputNeutralChromaticityX;
-      self->inputNeutralChromaticityX = [a3 copy];
+      self->inputNeutralChromaticityX = [x copy];
 
       self->inputNeutralTemperature = 0;
       self->inputNeutralTint = 0;
@@ -4199,12 +4199,12 @@ LABEL_32:
   return result;
 }
 
-- (void)setInputNeutralChromaticityY:(id)a3
+- (void)setInputNeutralChromaticityY:(id)y
 {
   if (!self->_calledDealloc)
   {
     inputNeutralChromaticityY = self->inputNeutralChromaticityY;
-    if (inputNeutralChromaticityY != a3 && (!a3 || ![(NSNumber *)inputNeutralChromaticityY isEqualToNumber:a3]))
+    if (inputNeutralChromaticityY != y && (!y || ![(NSNumber *)inputNeutralChromaticityY isEqualToNumber:y]))
     {
       if (!self->inputNeutralChromaticityX)
       {
@@ -4215,7 +4215,7 @@ LABEL_32:
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralTint"];
       [(CIRAWFilterImpl *)self willChangeValueForKey:@"inputNeutralTemperature"];
       v6 = self->inputNeutralChromaticityY;
-      self->inputNeutralChromaticityY = [a3 copy];
+      self->inputNeutralChromaticityY = [y copy];
 
       self->inputNeutralTemperature = 0;
       self->inputNeutralTint = 0;
@@ -4228,16 +4228,16 @@ LABEL_32:
   }
 }
 
-- (void)setInputRequestedSushiMode:(id)a3
+- (void)setInputRequestedSushiMode:(id)mode
 {
   if (!self->_calledDealloc)
   {
     inputRequestedSushiMode = self->inputRequestedSushiMode;
-    if (inputRequestedSushiMode != a3)
+    if (inputRequestedSushiMode != mode)
     {
-      if (a3)
+      if (mode)
       {
-        if ([(NSString *)self->inputRequestedSushiMode isEqualToString:a3])
+        if ([(NSString *)self->inputRequestedSushiMode isEqualToString:mode])
         {
           return;
         }
@@ -4245,7 +4245,7 @@ LABEL_32:
         inputRequestedSushiMode = self->inputRequestedSushiMode;
       }
 
-      self->inputRequestedSushiMode = [a3 copy];
+      self->inputRequestedSushiMode = [mode copy];
 
       self->_rawDictionary = 0;
     }
@@ -4269,10 +4269,10 @@ LABEL_32:
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:2];
 }
 
-- (void)getWhitePointVectorsR:(id *)a3 g:(id *)a4 b:(id *)a5
+- (void)getWhitePointVectorsR:(id *)r g:(id *)g b:(id *)b
 {
   v12[9] = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4 || !a5)
+  if (!r || !g || !b)
   {
     [CIRAWFilterImpl(WhiteBalance) getWhitePointVectorsR:a2 g:self b:?];
   }
@@ -4281,9 +4281,9 @@ LABEL_32:
   v10 = v9;
   [-[CIRAWFilterImpl inputNeutralTint](self "inputNeutralTint")];
   tempTint_to_matrix(v12, v10, v11);
-  *a3 = [CIVector vectorWithX:v12[0] Y:v12[1] Z:v12[2]];
-  *a4 = [CIVector vectorWithX:v12[3] Y:v12[4] Z:v12[5]];
-  *a5 = [CIVector vectorWithX:v12[6] Y:v12[7] Z:v12[8]];
+  *r = [CIVector vectorWithX:v12[0] Y:v12[1] Z:v12[2]];
+  *g = [CIVector vectorWithX:v12[3] Y:v12[4] Z:v12[5]];
+  *b = [CIVector vectorWithX:v12[6] Y:v12[7] Z:v12[8]];
 }
 
 @end

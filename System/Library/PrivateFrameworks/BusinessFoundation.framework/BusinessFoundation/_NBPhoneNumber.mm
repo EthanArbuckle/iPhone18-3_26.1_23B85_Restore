@@ -1,12 +1,12 @@
 @interface _NBPhoneNumber
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_NBPhoneNumber)init;
-- (_NBPhoneNumber)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NBPhoneNumber)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)getCountryCodeSourceOrDefault;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NBPhoneNumber
@@ -29,46 +29,46 @@
 
 - (int64_t)getCountryCodeSourceOrDefault
 {
-  v3 = [(_NBPhoneNumber *)self countryCodeSource];
+  countryCodeSource = [(_NBPhoneNumber *)self countryCodeSource];
 
-  if (!v3)
+  if (!countryCodeSource)
   {
     return 1;
   }
 
-  v4 = [(_NBPhoneNumber *)self countryCodeSource];
-  v5 = [v4 integerValue];
+  countryCodeSource2 = [(_NBPhoneNumber *)self countryCodeSource];
+  integerValue = [countryCodeSource2 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(_NBPhoneNumber *)self countryCode];
-  v4 = [v3 hash];
+  countryCode = [(_NBPhoneNumber *)self countryCode];
+  v4 = [countryCode hash];
 
-  v5 = [(_NBPhoneNumber *)self nationalNumber];
-  v6 = ((v4 << 6) + (v4 >> 2) + [v5 hash] + 2654435769) ^ v4;
+  nationalNumber = [(_NBPhoneNumber *)self nationalNumber];
+  v6 = ((v4 << 6) + (v4 >> 2) + [nationalNumber hash] + 2654435769) ^ v4;
 
-  v7 = [(_NBPhoneNumber *)self numberOfLeadingZeros];
-  v8 = ((v6 << 6) + (v6 >> 2) + [v7 hash] + 2654435769) ^ v6;
+  numberOfLeadingZeros = [(_NBPhoneNumber *)self numberOfLeadingZeros];
+  v8 = ((v6 << 6) + (v6 >> 2) + [numberOfLeadingZeros hash] + 2654435769) ^ v6;
 
-  v9 = [(_NBPhoneNumber *)self extension];
-  v10 = [v9 hash] + (v8 << 6) + (v8 >> 2) + 2654435769u;
+  extension = [(_NBPhoneNumber *)self extension];
+  v10 = [extension hash] + (v8 << 6) + (v8 >> 2) + 2654435769u;
 
   return v10 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_NBPhoneNumber *)self countryCode];
-    v7 = [v5 countryCode];
-    if (![v6 isEqualToNumber:v7])
+    v5 = equalCopy;
+    countryCode = [(_NBPhoneNumber *)self countryCode];
+    countryCode2 = [v5 countryCode];
+    if (![countryCode isEqualToNumber:countryCode2])
     {
       v11 = 0;
 LABEL_19:
@@ -76,9 +76,9 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v8 = [(_NBPhoneNumber *)self nationalNumber];
-    v9 = [v5 nationalNumber];
-    if (![v8 isEqualToNumber:v9] || (v10 = -[_NBPhoneNumber italianLeadingZero](self, "italianLeadingZero"), v10 != objc_msgSend(v5, "italianLeadingZero")))
+    nationalNumber = [(_NBPhoneNumber *)self nationalNumber];
+    nationalNumber2 = [v5 nationalNumber];
+    if (![nationalNumber isEqualToNumber:nationalNumber2] || (v10 = -[_NBPhoneNumber italianLeadingZero](self, "italianLeadingZero"), v10 != objc_msgSend(v5, "italianLeadingZero")))
     {
       v11 = 0;
 LABEL_18:
@@ -86,9 +86,9 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v12 = [(_NBPhoneNumber *)self numberOfLeadingZeros];
-    v13 = [v5 numberOfLeadingZeros];
-    if (![v12 isEqualToNumber:v13])
+    numberOfLeadingZeros = [(_NBPhoneNumber *)self numberOfLeadingZeros];
+    numberOfLeadingZeros2 = [v5 numberOfLeadingZeros];
+    if (![numberOfLeadingZeros isEqualToNumber:numberOfLeadingZeros2])
     {
       v11 = 0;
 LABEL_17:
@@ -96,18 +96,18 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v14 = [(_NBPhoneNumber *)self extension];
-    if (v14 || ([v5 extension], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+    extension = [(_NBPhoneNumber *)self extension];
+    if (extension || ([v5 extension], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       [(_NBPhoneNumber *)self extension];
-      v15 = v20 = v12;
+      v15 = v20 = numberOfLeadingZeros;
       [v5 extension];
-      v16 = v19 = v13;
+      v16 = v19 = numberOfLeadingZeros2;
       v11 = [v15 isEqualToString:v16];
 
-      v13 = v19;
-      v12 = v20;
-      if (v14)
+      numberOfLeadingZeros2 = v19;
+      numberOfLeadingZeros = v20;
+      if (extension)
       {
 LABEL_16:
 
@@ -121,7 +121,7 @@ LABEL_16:
       v11 = 1;
     }
 
-    v14 = v18;
+    extension = v18;
     goto LABEL_16;
   }
 
@@ -131,111 +131,111 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_NBPhoneNumber allocWithZone:?]];
-  v5 = [(_NBPhoneNumber *)self countryCode];
-  v6 = [v5 copy];
+  countryCode = [(_NBPhoneNumber *)self countryCode];
+  v6 = [countryCode copy];
   [(_NBPhoneNumber *)v4 setCountryCode:v6];
 
-  v7 = [(_NBPhoneNumber *)self nationalNumber];
-  v8 = [v7 copy];
+  nationalNumber = [(_NBPhoneNumber *)self nationalNumber];
+  v8 = [nationalNumber copy];
   [(_NBPhoneNumber *)v4 setNationalNumber:v8];
 
-  v9 = [(_NBPhoneNumber *)self extension];
-  v10 = [v9 copy];
+  extension = [(_NBPhoneNumber *)self extension];
+  v10 = [extension copy];
   [(_NBPhoneNumber *)v4 setExtension:v10];
 
   [(_NBPhoneNumber *)v4 setItalianLeadingZero:[(_NBPhoneNumber *)self italianLeadingZero]];
-  v11 = [(_NBPhoneNumber *)self numberOfLeadingZeros];
-  v12 = [v11 copy];
+  numberOfLeadingZeros = [(_NBPhoneNumber *)self numberOfLeadingZeros];
+  v12 = [numberOfLeadingZeros copy];
   [(_NBPhoneNumber *)v4 setNumberOfLeadingZeros:v12];
 
-  v13 = [(_NBPhoneNumber *)self rawInput];
-  v14 = [v13 copy];
+  rawInput = [(_NBPhoneNumber *)self rawInput];
+  v14 = [rawInput copy];
   [(_NBPhoneNumber *)v4 setRawInput:v14];
 
-  v15 = [(_NBPhoneNumber *)self countryCodeSource];
-  v16 = [v15 copy];
+  countryCodeSource = [(_NBPhoneNumber *)self countryCodeSource];
+  v16 = [countryCodeSource copy];
   [(_NBPhoneNumber *)v4 setCountryCodeSource:v16];
 
-  v17 = [(_NBPhoneNumber *)self preferredDomesticCarrierCode];
-  v18 = [v17 copy];
+  preferredDomesticCarrierCode = [(_NBPhoneNumber *)self preferredDomesticCarrierCode];
+  v18 = [preferredDomesticCarrierCode copy];
   [(_NBPhoneNumber *)v4 setPreferredDomesticCarrierCode:v18];
 
   return v4;
 }
 
-- (_NBPhoneNumber)initWithCoder:(id)a3
+- (_NBPhoneNumber)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _NBPhoneNumber;
   v5 = [(_NBPhoneNumber *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"countryCode"];
+    v6 = [coderCopy decodeObjectForKey:@"countryCode"];
     [(_NBPhoneNumber *)v5 setCountryCode:v6];
 
-    v7 = [v4 decodeObjectForKey:@"nationalNumber"];
+    v7 = [coderCopy decodeObjectForKey:@"nationalNumber"];
     [(_NBPhoneNumber *)v5 setNationalNumber:v7];
 
-    v8 = [v4 decodeObjectForKey:@"extension"];
+    v8 = [coderCopy decodeObjectForKey:@"extension"];
     [(_NBPhoneNumber *)v5 setExtension:v8];
 
-    v9 = [v4 decodeObjectForKey:@"italianLeadingZero"];
+    v9 = [coderCopy decodeObjectForKey:@"italianLeadingZero"];
     -[_NBPhoneNumber setItalianLeadingZero:](v5, "setItalianLeadingZero:", [v9 BOOLValue]);
 
-    v10 = [v4 decodeObjectForKey:@"numberOfLeadingZeros"];
+    v10 = [coderCopy decodeObjectForKey:@"numberOfLeadingZeros"];
     [(_NBPhoneNumber *)v5 setNumberOfLeadingZeros:v10];
 
-    v11 = [v4 decodeObjectForKey:@"rawInput"];
+    v11 = [coderCopy decodeObjectForKey:@"rawInput"];
     [(_NBPhoneNumber *)v5 setRawInput:v11];
 
-    v12 = [v4 decodeObjectForKey:@"countryCodeSource"];
+    v12 = [coderCopy decodeObjectForKey:@"countryCodeSource"];
     [(_NBPhoneNumber *)v5 setCountryCodeSource:v12];
 
-    v13 = [v4 decodeObjectForKey:@"preferredDomesticCarrierCode"];
+    v13 = [coderCopy decodeObjectForKey:@"preferredDomesticCarrierCode"];
     [(_NBPhoneNumber *)v5 setPreferredDomesticCarrierCode:v13];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumber *)self countryCode];
-  [v4 encodeObject:v5 forKey:@"countryCode"];
+  coderCopy = coder;
+  countryCode = [(_NBPhoneNumber *)self countryCode];
+  [coderCopy encodeObject:countryCode forKey:@"countryCode"];
 
-  v6 = [(_NBPhoneNumber *)self nationalNumber];
-  [v4 encodeObject:v6 forKey:@"nationalNumber"];
+  nationalNumber = [(_NBPhoneNumber *)self nationalNumber];
+  [coderCopy encodeObject:nationalNumber forKey:@"nationalNumber"];
 
-  v7 = [(_NBPhoneNumber *)self extension];
-  [v4 encodeObject:v7 forKey:@"extension"];
+  extension = [(_NBPhoneNumber *)self extension];
+  [coderCopy encodeObject:extension forKey:@"extension"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[_NBPhoneNumber italianLeadingZero](self, "italianLeadingZero")}];
-  [v4 encodeObject:v8 forKey:@"italianLeadingZero"];
+  [coderCopy encodeObject:v8 forKey:@"italianLeadingZero"];
 
-  v9 = [(_NBPhoneNumber *)self numberOfLeadingZeros];
-  [v4 encodeObject:v9 forKey:@"numberOfLeadingZeros"];
+  numberOfLeadingZeros = [(_NBPhoneNumber *)self numberOfLeadingZeros];
+  [coderCopy encodeObject:numberOfLeadingZeros forKey:@"numberOfLeadingZeros"];
 
-  v10 = [(_NBPhoneNumber *)self rawInput];
-  [v4 encodeObject:v10 forKey:@"rawInput"];
+  rawInput = [(_NBPhoneNumber *)self rawInput];
+  [coderCopy encodeObject:rawInput forKey:@"rawInput"];
 
-  v11 = [(_NBPhoneNumber *)self countryCodeSource];
-  [v4 encodeObject:v11 forKey:@"countryCodeSource"];
+  countryCodeSource = [(_NBPhoneNumber *)self countryCodeSource];
+  [coderCopy encodeObject:countryCodeSource forKey:@"countryCodeSource"];
 
-  v12 = [(_NBPhoneNumber *)self preferredDomesticCarrierCode];
-  [v4 encodeObject:v12 forKey:@"preferredDomesticCarrierCode"];
+  preferredDomesticCarrierCode = [(_NBPhoneNumber *)self preferredDomesticCarrierCode];
+  [coderCopy encodeObject:preferredDomesticCarrierCode forKey:@"preferredDomesticCarrierCode"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_NBPhoneNumber *)self countryCode];
-  v5 = [(_NBPhoneNumber *)self nationalNumber];
-  v6 = [(_NBPhoneNumber *)self extension];
+  countryCode = [(_NBPhoneNumber *)self countryCode];
+  nationalNumber = [(_NBPhoneNumber *)self nationalNumber];
+  extension = [(_NBPhoneNumber *)self extension];
   if ([(_NBPhoneNumber *)self italianLeadingZero])
   {
     v7 = @"Y";
@@ -246,11 +246,11 @@ LABEL_20:
     v7 = @"N";
   }
 
-  v8 = [(_NBPhoneNumber *)self numberOfLeadingZeros];
-  v9 = [(_NBPhoneNumber *)self rawInput];
-  v10 = [(_NBPhoneNumber *)self countryCodeSource];
-  v11 = [(_NBPhoneNumber *)self preferredDomesticCarrierCode];
-  v12 = [v3 stringWithFormat:@" - countryCode[%@], nationalNumber[%@], extension[%@], italianLeadingZero[%@], numberOfLeadingZeros[%@], rawInput[%@] countryCodeSource[%@] preferredDomesticCarrierCode[%@]", v4, v5, v6, v7, v8, v9, v10, v11];
+  numberOfLeadingZeros = [(_NBPhoneNumber *)self numberOfLeadingZeros];
+  rawInput = [(_NBPhoneNumber *)self rawInput];
+  countryCodeSource = [(_NBPhoneNumber *)self countryCodeSource];
+  preferredDomesticCarrierCode = [(_NBPhoneNumber *)self preferredDomesticCarrierCode];
+  v12 = [v3 stringWithFormat:@" - countryCode[%@], nationalNumber[%@], extension[%@], italianLeadingZero[%@], numberOfLeadingZeros[%@], rawInput[%@] countryCodeSource[%@] preferredDomesticCarrierCode[%@]", countryCode, nationalNumber, extension, v7, numberOfLeadingZeros, rawInput, countryCodeSource, preferredDomesticCarrierCode];
 
   return v12;
 }

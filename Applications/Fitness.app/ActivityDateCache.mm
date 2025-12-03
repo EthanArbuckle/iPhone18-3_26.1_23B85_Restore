@@ -1,25 +1,25 @@
 @interface ActivityDateCache
 - (NSCalendar)calendar;
-- (void)dateCacheDidUpdate:(id)a3 onNotification:(id)a4;
+- (void)dateCacheDidUpdate:(id)update onNotification:(id)notification;
 - (void)dealloc;
-- (void)setCurrentDeviceDate:(id)a3;
-- (void)setCurrentSelectedDate:(id)a3;
+- (void)setCurrentDeviceDate:(id)date;
+- (void)setCurrentSelectedDate:(id)date;
 @end
 
 @implementation ActivityDateCache
 
-- (void)setCurrentDeviceDate:(id)a3
+- (void)setCurrentDeviceDate:(id)date
 {
   v4 = *(self + OBJC_IVAR____TtC10FitnessApp17ActivityDateCache_currentDeviceDate);
-  *(self + OBJC_IVAR____TtC10FitnessApp17ActivityDateCache_currentDeviceDate) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10FitnessApp17ActivityDateCache_currentDeviceDate) = date;
+  dateCopy = date;
 }
 
-- (void)setCurrentSelectedDate:(id)a3
+- (void)setCurrentSelectedDate:(id)date
 {
   v4 = *(self + OBJC_IVAR____TtC10FitnessApp17ActivityDateCache_currentSelectedDate);
-  *(self + OBJC_IVAR____TtC10FitnessApp17ActivityDateCache_currentSelectedDate) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10FitnessApp17ActivityDateCache_currentSelectedDate) = date;
+  dateCopy = date;
 }
 
 - (NSCalendar)calendar
@@ -38,21 +38,21 @@
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR____TtC10FitnessApp17ActivityDateCache_dateCache);
-  v3 = self;
-  [v2 removeObserver:v3];
-  v4.receiver = v3;
+  selfCopy = self;
+  [v2 removeObserver:selfCopy];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for ActivityDateCache();
   [(ActivityDateCache *)&v4 dealloc];
 }
 
-- (void)dateCacheDidUpdate:(id)a3 onNotification:(id)a4
+- (void)dateCacheDidUpdate:(id)update onNotification:(id)notification
 {
   v5 = type metadata accessor for Notification();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v17 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   v10 = Notification.name.getter();
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;

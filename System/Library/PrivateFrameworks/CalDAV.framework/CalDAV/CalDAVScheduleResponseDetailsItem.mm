@@ -2,19 +2,19 @@
 - (NSString)recipientString;
 - (id)copyParseRules;
 - (id)description;
-- (void)_setCalendarDataWithLeafItem:(id)a3;
+- (void)_setCalendarDataWithLeafItem:(id)item;
 @end
 
 @implementation CalDAVScheduleResponseDetailsItem
 
-- (void)_setCalendarDataWithLeafItem:(id)a3
+- (void)_setCalendarDataWithLeafItem:(id)item
 {
   v4 = MEMORY[0x277D7F108];
-  v5 = a3;
+  itemCopy = item;
   v6 = [v4 alloc];
-  v8 = [v5 payloadAsString];
+  payloadAsString = [itemCopy payloadAsString];
 
-  v7 = [v6 initWithICSString:v8 options:0 error:0];
+  v7 = [v6 initWithICSString:payloadAsString options:0 error:0];
   [(CalDAVScheduleResponseDetailsItem *)self setCalendarData:v7];
 }
 
@@ -42,11 +42,11 @@
 
 - (NSString)recipientString
 {
-  v2 = [(CalDAVScheduleResponseDetailsItem *)self recipientHREF];
-  v3 = [v2 href];
-  v4 = [v3 payloadAsString];
+  recipientHREF = [(CalDAVScheduleResponseDetailsItem *)self recipientHREF];
+  href = [recipientHREF href];
+  payloadAsString = [href payloadAsString];
 
-  return v4;
+  return payloadAsString;
 }
 
 - (id)description
@@ -55,9 +55,9 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   recipientHREF = self->_recipientHREF;
-  v7 = [(CoreDAVLeafItem *)self->_requestStatus payloadAsString];
+  payloadAsString = [(CoreDAVLeafItem *)self->_requestStatus payloadAsString];
   topLevelErrorItem = self->_topLevelErrorItem;
-  v9 = [v3 stringWithFormat:@"%@ %p: RecipientHREF: %@, RequestStatus: %@ CalendarData:\n%@ TopLevelErrorItem: %@ ResponseDescription:\n%@\n", v5, self, recipientHREF, v7, self->_calendarData, topLevelErrorItem, self->_responseDescription];
+  v9 = [v3 stringWithFormat:@"%@ %p: RecipientHREF: %@, RequestStatus: %@ CalendarData:\n%@ TopLevelErrorItem: %@ ResponseDescription:\n%@\n", v5, self, recipientHREF, payloadAsString, self->_calendarData, topLevelErrorItem, self->_responseDescription];
 
   return v9;
 }

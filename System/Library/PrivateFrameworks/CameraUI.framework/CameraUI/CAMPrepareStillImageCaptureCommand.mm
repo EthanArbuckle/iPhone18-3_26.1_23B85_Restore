@@ -1,60 +1,60 @@
 @interface CAMPrepareStillImageCaptureCommand
-- (CAMPrepareStillImageCaptureCommand)initWithCoder:(id)a3;
-- (CAMPrepareStillImageCaptureCommand)initWithSystemTime:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPrepareStillImageCaptureCommand)initWithCoder:(id)coder;
+- (CAMPrepareStillImageCaptureCommand)initWithSystemTime:(unint64_t)time;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPrepareStillImageCaptureCommand
 
-- (CAMPrepareStillImageCaptureCommand)initWithSystemTime:(unint64_t)a3
+- (CAMPrepareStillImageCaptureCommand)initWithSystemTime:(unint64_t)time
 {
   v5.receiver = self;
   v5.super_class = CAMPrepareStillImageCaptureCommand;
   result = [(CAMCaptureCommand *)&v5 init];
   if (result)
   {
-    result->__systemTimeOfCapture = a3;
+    result->__systemTimeOfCapture = time;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMPrepareStillImageCaptureCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[3] = [(CAMPrepareStillImageCaptureCommand *)self _systemTimeOfCapture];
   return v4;
 }
 
-- (CAMPrepareStillImageCaptureCommand)initWithCoder:(id)a3
+- (CAMPrepareStillImageCaptureCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMPrepareStillImageCaptureCommand;
-  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->__systemTimeOfCapture = [v4 decodeInt64ForKey:@"CAMPrepareStillImageCaptureCommandSystemTime"];
+    v5->__systemTimeOfCapture = [coderCopy decodeInt64ForKey:@"CAMPrepareStillImageCaptureCommandSystemTime"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[CAMPrepareStillImageCaptureCommand _systemTimeOfCapture](self forKey:{"_systemTimeOfCapture"), @"CAMPrepareStillImageCaptureCommandSystemTime"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[CAMPrepareStillImageCaptureCommand _systemTimeOfCapture](self forKey:{"_systemTimeOfCapture"), @"CAMPrepareStillImageCaptureCommandSystemTime"}];
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentStillImageOutput];
-  [v4 userInitiatedCaptureRequestAtTime:{-[CAMPrepareStillImageCaptureCommand _systemTimeOfCapture](self, "_systemTimeOfCapture")}];
+  currentStillImageOutput = [context currentStillImageOutput];
+  [currentStillImageOutput userInitiatedCaptureRequestAtTime:{-[CAMPrepareStillImageCaptureCommand _systemTimeOfCapture](self, "_systemTimeOfCapture")}];
 }
 
 @end

@@ -1,48 +1,48 @@
 @interface GKImageEffects
-+ (id)imageByApplyingBlurToImage:(id)a3 withRadius:(double)a4 tintColor:(id)a5 saturationDeltaFactor:(double)a6 maskImage:(id)a7;
-+ (id)imageByApplyingDarkEffectToImage:(id)a3;
-+ (id)imageByApplyingExtraLightEffectToImage:(id)a3;
-+ (id)imageByApplyingLightEffectToImage:(id)a3;
-+ (id)imageByApplyingTintEffectWithColor:(id)a3 toImage:(id)a4;
++ (id)imageByApplyingBlurToImage:(id)image withRadius:(double)radius tintColor:(id)color saturationDeltaFactor:(double)factor maskImage:(id)maskImage;
++ (id)imageByApplyingDarkEffectToImage:(id)image;
++ (id)imageByApplyingExtraLightEffectToImage:(id)image;
++ (id)imageByApplyingLightEffectToImage:(id)image;
++ (id)imageByApplyingTintEffectWithColor:(id)color toImage:(id)image;
 @end
 
 @implementation GKImageEffects
 
-+ (id)imageByApplyingLightEffectToImage:(id)a3
++ (id)imageByApplyingLightEffectToImage:(id)image
 {
   v4 = MEMORY[0x277D75348];
-  v5 = a3;
+  imageCopy = image;
   v6 = [v4 colorWithWhite:1.0 alpha:0.3];
-  v7 = [a1 imageByApplyingBlurToImage:v5 withRadius:v6 tintColor:0 saturationDeltaFactor:60.0 maskImage:1.8];
+  v7 = [self imageByApplyingBlurToImage:imageCopy withRadius:v6 tintColor:0 saturationDeltaFactor:60.0 maskImage:1.8];
 
   return v7;
 }
 
-+ (id)imageByApplyingExtraLightEffectToImage:(id)a3
++ (id)imageByApplyingExtraLightEffectToImage:(id)image
 {
   v4 = MEMORY[0x277D75348];
-  v5 = a3;
+  imageCopy = image;
   v6 = [v4 colorWithWhite:0.97 alpha:0.82];
-  v7 = [a1 imageByApplyingBlurToImage:v5 withRadius:v6 tintColor:0 saturationDeltaFactor:40.0 maskImage:1.8];
+  v7 = [self imageByApplyingBlurToImage:imageCopy withRadius:v6 tintColor:0 saturationDeltaFactor:40.0 maskImage:1.8];
 
   return v7;
 }
 
-+ (id)imageByApplyingDarkEffectToImage:(id)a3
++ (id)imageByApplyingDarkEffectToImage:(id)image
 {
   v4 = MEMORY[0x277D75348];
-  v5 = a3;
+  imageCopy = image;
   v6 = [v4 colorWithWhite:0.11 alpha:0.73];
-  v7 = [a1 imageByApplyingBlurToImage:v5 withRadius:v6 tintColor:0 saturationDeltaFactor:40.0 maskImage:1.8];
+  v7 = [self imageByApplyingBlurToImage:imageCopy withRadius:v6 tintColor:0 saturationDeltaFactor:40.0 maskImage:1.8];
 
   return v7;
 }
 
-+ (id)imageByApplyingTintEffectWithColor:(id)a3 toImage:(id)a4
++ (id)imageByApplyingTintEffectWithColor:(id)color toImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  colorCopy = color;
+  imageCopy = image;
+  v8 = colorCopy;
   if (CGColorGetNumberOfComponents([v8 CGColor]) == 2)
   {
     v15 = 0.0;
@@ -72,48 +72,48 @@
   v9 = v10;
 
 LABEL_7:
-  v11 = [a1 imageByApplyingBlurToImage:v7 withRadius:v9 tintColor:0 saturationDeltaFactor:20.0 maskImage:-1.0];
+  v11 = [self imageByApplyingBlurToImage:imageCopy withRadius:v9 tintColor:0 saturationDeltaFactor:20.0 maskImage:-1.0];
 
   return v11;
 }
 
-+ (id)imageByApplyingBlurToImage:(id)a3 withRadius:(double)a4 tintColor:(id)a5 saturationDeltaFactor:(double)a6 maskImage:(id)a7
++ (id)imageByApplyingBlurToImage:(id)image withRadius:(double)radius tintColor:(id)color saturationDeltaFactor:(double)factor maskImage:(id)maskImage
 {
-  *v47 = *&a6;
+  *v47 = *&factor;
   v65 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
-  [v10 size];
-  if (v13 < 1.0 || ([v10 size], v14 < 1.0))
+  imageCopy = image;
+  colorCopy = color;
+  maskImageCopy = maskImage;
+  [imageCopy size];
+  if (v13 < 1.0 || ([imageCopy size], v14 < 1.0))
   {
-    [v10 size];
+    [imageCopy size];
     v16 = v15;
-    [v10 size];
-    NSLog(&cfstr_ErrorInvalidSi.isa, v16, v17, v10);
+    [imageCopy size];
+    NSLog(&cfstr_ErrorInvalidSi.isa, v16, v17, imageCopy);
 LABEL_4:
     v18 = 0;
     goto LABEL_5;
   }
 
-  if (![v10 CGImage])
+  if (![imageCopy CGImage])
   {
-    NSLog(&cfstr_ErrorInputimag.isa, v10);
+    NSLog(&cfstr_ErrorInputimag.isa, imageCopy);
     goto LABEL_4;
   }
 
-  if (v12 && ![v12 CGImage])
+  if (maskImageCopy && ![maskImageCopy CGImage])
   {
-    NSLog(&cfstr_ErrorEffectmas.isa, v12);
+    NSLog(&cfstr_ErrorEffectmas.isa, maskImageCopy);
     goto LABEL_4;
   }
 
   v20 = fabs(v47[0] + -1.0);
-  v21 = [v10 CGImage];
-  [v10 scale];
+  cGImage = [imageCopy CGImage];
+  [imageCopy scale];
   v23 = v22;
-  BitmapInfo = CGImageGetBitmapInfo(v21);
-  [v10 size];
+  BitmapInfo = CGImageGetBitmapInfo(cGImage);
+  [imageCopy size];
   width = v67.width;
   height = v67.height;
   v27 = *MEMORY[0x277CBF348];
@@ -122,7 +122,7 @@ LABEL_4:
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
   CGContextTranslateCTM(CurrentContext, 0.0, -height);
-  if (a4 > 0.00000011920929 || v20 > 0.00000011920929)
+  if (radius > 0.00000011920929 || v20 > 0.00000011920929)
   {
     memset(&src, 0, sizeof(src));
     memset(&dest, 0, sizeof(dest));
@@ -130,25 +130,25 @@ LABEL_4:
     v50 = 0u;
     v48 = 0x2000000008;
     DWORD2(v49) = 8194;
-    v30 = MEMORY[0x253041070](&src, &v48, 0, [v10 CGImage], 256);
+    v30 = MEMORY[0x253041070](&src, &v48, 0, [imageCopy CGImage], 256);
     if (v30)
     {
-      NSLog(&cfstr_ErrorVimagebuf.isa, v30, v10);
+      NSLog(&cfstr_ErrorVimagebuf.isa, v30, imageCopy);
       UIGraphicsEndImageContext();
       goto LABEL_4;
     }
 
     p_dest = &dest;
     MEMORY[0x253041060](&dest, src.height, src.width, HIDWORD(v48), 0);
-    if (a4 <= 0.00000011920929)
+    if (radius <= 0.00000011920929)
     {
       p_src = &src;
     }
 
     else
     {
-      v32 = (v23 * a4 * 3.0 * 2.50662827 * 0.25 + 0.5) * 0.5;
-      if (v23 * a4 + -2.0 < 0.00000011920929)
+      v32 = (v23 * radius * 3.0 * 2.50662827 * 0.25 + 0.5) * 0.5;
+      if (v23 * radius + -2.0 < 0.00000011920929)
       {
         v32 = 2.12997121;
       }
@@ -209,20 +209,20 @@ LABEL_4:
       free(p_dest->data);
     }
 
-    if (v12)
+    if (maskImageCopy)
     {
       v70.origin.x = v27;
       v70.origin.y = v28;
       v70.size.width = width;
       v70.size.height = height;
-      CGContextDrawImage(CurrentContext, v70, v21);
+      CGContextDrawImage(CurrentContext, v70, cGImage);
       CGContextSaveGState(CurrentContext);
-      v45 = [v12 CGImage];
+      cGImage2 = [maskImageCopy CGImage];
       v71.origin.x = v27;
       v71.origin.y = v28;
       v71.size.width = width;
       v71.size.height = height;
-      CGContextClipToMask(CurrentContext, v71, v45);
+      CGContextClipToMask(CurrentContext, v71, cGImage2);
     }
 
     else
@@ -238,7 +238,7 @@ LABEL_4:
     CGContextRestoreGState(CurrentContext);
     CGImageRelease(v44);
     free(*p_data);
-    if (v11)
+    if (colorCopy)
     {
       goto LABEL_14;
     }
@@ -250,12 +250,12 @@ LABEL_4:
     v68.origin.y = v28;
     v68.size.width = width;
     v68.size.height = height;
-    CGContextDrawImage(CurrentContext, v68, v21);
-    if (v11)
+    CGContextDrawImage(CurrentContext, v68, cGImage);
+    if (colorCopy)
     {
 LABEL_14:
       CGContextSaveGState(CurrentContext);
-      CGContextSetFillColorWithColor(CurrentContext, [v11 CGColor]);
+      CGContextSetFillColorWithColor(CurrentContext, [colorCopy CGColor]);
       v69.origin.x = v27;
       v69.origin.y = v28;
       v69.size.width = width;

@@ -1,143 +1,143 @@
 @interface MSPMutableHistoryEntrySearch
-- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)a3;
+- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)object;
 - (GEOMapRegion)mapRegion;
-- (MSPMutableHistoryEntrySearch)initWithStorage:(id)a3;
+- (MSPMutableHistoryEntrySearch)initWithStorage:(id)storage;
 - (NSString)languageCode;
 - (NSString)locationDisplayString;
 - (NSString)query;
-- (id)transferToImmutableIfValidWithError:(id *)a3;
-- (void)setLanguageCode:(id)a3;
-- (void)setLocationDisplayString:(id)a3;
-- (void)setMapRegion:(id)a3;
-- (void)setQuery:(id)a3;
+- (id)transferToImmutableIfValidWithError:(id *)error;
+- (void)setLanguageCode:(id)code;
+- (void)setLocationDisplayString:(id)string;
+- (void)setMapRegion:(id)region;
+- (void)setQuery:(id)query;
 @end
 
 @implementation MSPMutableHistoryEntrySearch
 
-- (MSPMutableHistoryEntrySearch)initWithStorage:(id)a3
+- (MSPMutableHistoryEntrySearch)initWithStorage:(id)storage
 {
-  v4 = a3;
-  if (!v4)
+  storageCopy = storage;
+  if (!storageCopy)
   {
-    v4 = objc_alloc_init(MSPHistoryEntryStorage);
-    [(MSPHistoryEntryStorage *)v4 setSearchType:1];
+    storageCopy = objc_alloc_init(MSPHistoryEntryStorage);
+    [(MSPHistoryEntryStorage *)storageCopy setSearchType:1];
     v5 = objc_alloc_init(MSPQuerySearch);
-    [(MSPHistoryEntryStorage *)v4 setQuerySearch:v5];
+    [(MSPHistoryEntryStorage *)storageCopy setQuerySearch:v5];
   }
 
   v9.receiver = self;
   v9.super_class = MSPMutableHistoryEntrySearch;
-  v6 = [(MSPMutableHistoryEntry *)&v9 initWithStorage:v4];
+  v6 = [(MSPMutableHistoryEntry *)&v9 initWithStorage:storageCopy];
   if (!v6)
   {
     goto LABEL_6;
   }
 
-  if ([(MSPHistoryEntryStorage *)v4 searchType]!= 1)
+  if ([(MSPHistoryEntryStorage *)storageCopy searchType]!= 1)
   {
-    v7 = 0;
+    querySearch = 0;
     goto LABEL_8;
   }
 
-  v7 = [(MSPHistoryEntryStorage *)v4 querySearch];
+  querySearch = [(MSPHistoryEntryStorage *)storageCopy querySearch];
 
-  if (v7)
+  if (querySearch)
   {
 LABEL_6:
-    v7 = v6;
+    querySearch = v6;
   }
 
 LABEL_8:
 
-  return v7;
+  return querySearch;
 }
 
 - (NSString)query
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 querySearch];
-  v4 = [v3 query];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  query = [querySearch query];
 
-  return v4;
+  return query;
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   [(MSPMutableHistoryEntry *)self _noteWillMutate];
-  v7 = [v4 copy];
+  v7 = [queryCopy copy];
 
-  v5 = [(MSPMutableHistoryEntry *)self storage];
-  v6 = [v5 querySearch];
-  [v6 setQuery:v7];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  [querySearch setQuery:v7];
 }
 
 - (NSString)locationDisplayString
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 querySearch];
-  v4 = [v3 locationDisplayString];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  locationDisplayString = [querySearch locationDisplayString];
 
-  return v4;
+  return locationDisplayString;
 }
 
-- (void)setLocationDisplayString:(id)a3
+- (void)setLocationDisplayString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(MSPMutableHistoryEntry *)self _noteWillMutate];
-  v7 = [v4 copy];
+  v7 = [stringCopy copy];
 
-  v5 = [(MSPMutableHistoryEntry *)self storage];
-  v6 = [v5 querySearch];
-  [v6 setLocationDisplayString:v7];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  [querySearch setLocationDisplayString:v7];
 }
 
 - (NSString)languageCode
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 querySearch];
-  v4 = [v3 language];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  language = [querySearch language];
 
-  return v4;
+  return language;
 }
 
-- (void)setLanguageCode:(id)a3
+- (void)setLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   [(MSPMutableHistoryEntry *)self _noteWillMutate];
-  v7 = [v4 copy];
+  v7 = [codeCopy copy];
 
-  v5 = [(MSPMutableHistoryEntry *)self storage];
-  v6 = [v5 querySearch];
-  [v6 setLanguage:v7];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  [querySearch setLanguage:v7];
 }
 
 - (GEOMapRegion)mapRegion
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 querySearch];
-  v4 = [v3 mapRegion];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  mapRegion = [querySearch mapRegion];
 
-  return v4;
+  return mapRegion;
 }
 
-- (void)setMapRegion:(id)a3
+- (void)setMapRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   [(MSPMutableHistoryEntry *)self _noteWillMutate];
-  v7 = [v4 copy];
+  v7 = [regionCopy copy];
 
-  v5 = [(MSPMutableHistoryEntry *)self storage];
-  v6 = [v5 querySearch];
-  [v6 setMapRegion:v7];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  querySearch = [storage querySearch];
+  [querySearch setMapRegion:v7];
 }
 
-- (id)transferToImmutableIfValidWithError:(id *)a3
+- (id)transferToImmutableIfValidWithError:(id *)error
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(MSPMutableHistoryEntrySearch *)self query];
-  v7 = [v6 length];
+  query = [(MSPMutableHistoryEntrySearch *)self query];
+  v7 = [query length];
 
   if (!v7)
   {
@@ -146,7 +146,7 @@ LABEL_8:
 
   if ([v5 count])
   {
-    if (a3)
+    if (error)
     {
       v8 = MEMORY[0x277CCA9B8];
       v12[0] = @"MSPContainerUntransferableObject";
@@ -154,29 +154,29 @@ LABEL_8:
       v13[0] = self;
       v13[1] = v5;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
-      *a3 = [v8 errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:1 userInfo:v9];
+      *error = [v8 errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:1 userInfo:v9];
 
-      a3 = 0;
+      error = 0;
     }
   }
 
   else
   {
     [(MSPMutableHistoryEntry *)self _markImmutable];
-    a3 = self;
+    error = self;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)a3
+- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MSPMutableHistoryEntrySearch *)self query];
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  objectCopy = object;
+  query = [(MSPMutableHistoryEntrySearch *)self query];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v7 = [query stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v8 = v7;
   if (v7)
   {
@@ -190,10 +190,10 @@ LABEL_8:
 
   v10 = v9;
 
-  v11 = [v4 query];
+  query2 = [objectCopy query];
 
-  v12 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v13 = [v11 stringByTrimmingCharactersInSet:v12];
+  whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v13 = [query2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
   v14 = v13;
   if (v13)
   {

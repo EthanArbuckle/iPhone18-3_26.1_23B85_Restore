@@ -1,9 +1,9 @@
 @interface CLKComplicationTemplateGraphicCircularStackText
 + (CLKComplicationTemplateGraphicCircularStackText)templateWithLine1TextProvider:(CLKTextProvider *)line1TextProvider line2TextProvider:(CLKTextProvider *)line2TextProvider;
 - (CLKComplicationTemplateGraphicCircularStackText)initWithLine1TextProvider:(CLKTextProvider *)line1TextProvider line2TextProvider:(CLKTextProvider *)line2TextProvider;
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3;
-- (id)initPrivateWithJSONObjectRepresentation:(id)a3 bundle:(id)a4;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path;
+- (id)initPrivateWithJSONObjectRepresentation:(id)representation bundle:(id)bundle;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCircularStackText
@@ -14,11 +14,11 @@
   v7 = line2TextProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateGraphicCircularStackText;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicCircularStackText *)v8 setLine1TextProvider:v6];
+    [(CLKComplicationTemplateGraphicCircularStackText *)initPrivate setLine1TextProvider:v6];
     [(CLKComplicationTemplateGraphicCircularStackText *)v9 setLine2TextProvider:v7];
   }
 
@@ -29,31 +29,31 @@
 {
   v6 = line2TextProvider;
   v7 = line1TextProvider;
-  v8 = [[a1 alloc] initWithLine1TextProvider:v7 line2TextProvider:v6];
+  v8 = [[self alloc] initWithLine1TextProvider:v7 line2TextProvider:v6];
 
   return v8;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"line1TextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"line1TextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"line2TextProvider", 0, 1, &v4);
+    blockCopy[2](blockCopy, @"line2TextProvider", 0, 1, &v4);
   }
 }
 
-- (id)initPrivateWithJSONObjectRepresentation:(id)a3 bundle:(id)a4
+- (id)initPrivateWithJSONObjectRepresentation:(id)representation bundle:(id)bundle
 {
-  v6 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = CLKComplicationTemplateGraphicCircularStackText;
-  v7 = [(CLKComplicationTemplate *)&v10 initPrivateWithJSONObjectRepresentation:v6 bundle:a4];
+  v7 = [(CLKComplicationTemplate *)&v10 initPrivateWithJSONObjectRepresentation:representationCopy bundle:bundle];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"highlightLine2"];
+    v8 = [representationCopy objectForKeyedSubscript:@"highlightLine2"];
     if (v8)
     {
       objc_opt_class();
@@ -69,11 +69,11 @@
   return v7;
 }
 
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CLKComplicationTemplateGraphicCircularStackText;
-  v4 = [(CLKComplicationTemplate *)&v7 JSONObjectRepresentationWritingResourcesToBundlePath:a3 purpose:0];
+  v4 = [(CLKComplicationTemplate *)&v7 JSONObjectRepresentationWritingResourcesToBundlePath:path purpose:0];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[CLKComplicationTemplateGraphicCircularStackText highlightLine2](self, "highlightLine2")}];
   [v4 setObject:v5 forKeyedSubscript:@"highlightLine2"];
 

@@ -1,28 +1,28 @@
 @interface HDCodableStaticSyncChangeSet
-+ (id)changeSetWithChanges:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)changeSetWithChanges:(id)changes;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addChanges:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChanges:(id)changes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableStaticSyncChangeSet
 
-+ (id)changeSetWithChanges:(id)a3
++ (id)changeSetWithChanges:(id)changes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changesCopy = changes;
   v5 = objc_alloc_init(HDCodableStaticSyncChangeSet);
   v6 = objc_opt_class();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = changesCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -41,8 +41,8 @@
         v12 = *(*(&v17 + 1) + 8 * v11);
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v13 = [MEMORY[0x277CCA890] currentHandler];
-          [v13 handleFailureInMethod:a2 object:a1 file:@"HDStaticSyncTask.m" lineNumber:762 description:{@"%@ must be an instance of %@", v12, v6}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"HDStaticSyncTask.m" lineNumber:762 description:{@"%@ must be an instance of %@", v12, v6}];
         }
 
         if (objc_opt_isKindOfClass())
@@ -65,22 +65,22 @@
   return v5;
 }
 
-- (void)addChanges:(id)a3
+- (void)addChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   changes = self->_changes;
-  v8 = v4;
+  v8 = changesCopy;
   if (!changes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_changes;
     self->_changes = v6;
 
-    v4 = v8;
+    changesCopy = v8;
     changes = self->_changes;
   }
 
-  [(NSMutableArray *)changes addObject:v4];
+  [(NSMutableArray *)changes addObject:changesCopy];
 }
 
 - (id)description
@@ -89,8 +89,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableStaticSyncChangeSet;
   v4 = [(HDCodableStaticSyncChangeSet *)&v8 description];
-  v5 = [(HDCodableStaticSyncChangeSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableStaticSyncChangeSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -98,7 +98,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_changes count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_changes, "count")}];
@@ -121,8 +121,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -131,18 +131,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"changes"];
+    [dictionary setObject:v4 forKey:@"changes"];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -178,29 +178,29 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HDCodableStaticSyncChangeSet *)self changesCount])
   {
-    [v8 clearChanges];
-    v4 = [(HDCodableStaticSyncChangeSet *)self changesCount];
-    if (v4)
+    [toCopy clearChanges];
+    changesCount = [(HDCodableStaticSyncChangeSet *)self changesCount];
+    if (changesCount)
     {
-      v5 = v4;
+      v5 = changesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableStaticSyncChangeSet *)self changesAtIndex:i];
-        [v8 addChanges:v7];
+        [toCopy addChanges:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -221,7 +221,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addChanges:v11];
 
         ++v10;
@@ -238,13 +238,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     changes = self->_changes;
-    if (changes | v4[1])
+    if (changes | equalCopy[1])
     {
       v6 = [(NSMutableArray *)changes isEqual:?];
     }
@@ -263,14 +263,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

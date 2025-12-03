@@ -1,18 +1,18 @@
 @interface SizedToLabelButton
 - (CGSize)intrinsicContentSize;
-- (_TtC5MusicP33_B29993BA797B47F8C660EB2DB95D08BA18SizedToLabelButton)initWithCoder:(id)a3;
+- (_TtC5MusicP33_B29993BA797B47F8C660EB2DB95D08BA18SizedToLabelButton)initWithCoder:(id)coder;
 @end
 
 @implementation SizedToLabelButton
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(SizedToLabelButton *)v2 titleLabel];
-  if (v3)
+  selfCopy = self;
+  titleLabel = [(SizedToLabelButton *)selfCopy titleLabel];
+  if (titleLabel)
   {
-    v4 = v3;
-    [v3 intrinsicContentSize];
+    v4 = titleLabel;
+    [titleLabel intrinsicContentSize];
     v6 = v5;
     v8 = v7;
   }
@@ -31,12 +31,12 @@
   return result;
 }
 
-- (_TtC5MusicP33_B29993BA797B47F8C660EB2DB95D08BA18SizedToLabelButton)initWithCoder:(id)a3
+- (_TtC5MusicP33_B29993BA797B47F8C660EB2DB95D08BA18SizedToLabelButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SizedToLabelButton();
-  v4 = a3;
-  v5 = [(SizedToLabelButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SizedToLabelButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

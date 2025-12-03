@@ -1,24 +1,24 @@
 @interface SBAccessibilityMesaUnlockTrigger
 - (BOOL)bioUnlock;
-- (SBAccessibilityMesaUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)a3 baseTrigger:(id)a4;
+- (SBAccessibilityMesaUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)delegate baseTrigger:(id)trigger;
 - (void)fingerOn;
-- (void)mesaUnlockTriggerFired:(id)a3;
+- (void)mesaUnlockTriggerFired:(id)fired;
 @end
 
 @implementation SBAccessibilityMesaUnlockTrigger
 
-- (SBAccessibilityMesaUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)a3 baseTrigger:(id)a4
+- (SBAccessibilityMesaUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)delegate baseTrigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  triggerCopy = trigger;
   v11.receiver = self;
   v11.super_class = SBAccessibilityMesaUnlockTrigger;
   v8 = [(SBAccessibilityMesaUnlockTrigger *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_behaviorConfigurationDelegate, v6);
-    objc_storeStrong(&v9->_baseTrigger, a4);
+    objc_storeWeak(&v8->_behaviorConfigurationDelegate, delegateCopy);
+    objc_storeStrong(&v9->_baseTrigger, trigger);
     [(SBMesaUnlockTrigger *)v9->_baseTrigger setDelegate:v9];
   }
 
@@ -73,25 +73,25 @@
   [(SBMesaUnlockTrigger *)self->_baseTrigger fingerOn];
   if ([(SBMesaUnlockTrigger *)self authenticated]&& [(SBAccessibilityMesaUnlockTrigger *)self bioUnlock])
   {
-    v3 = [(SBMesaUnlockTrigger *)self delegate];
-    [v3 mesaUnlockTriggerFired:self];
+    delegate = [(SBMesaUnlockTrigger *)self delegate];
+    [delegate mesaUnlockTriggerFired:self];
   }
 }
 
-- (void)mesaUnlockTriggerFired:(id)a3
+- (void)mesaUnlockTriggerFired:(id)fired
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  firedCopy = fired;
   v5 = SBLogLockScreenMesaUnlockBehaviors();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = firedCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "[SBAccessibilityMesaUnlockTrigger] triggering because base unlock trigger fired: %@", &v7, 0xCu);
   }
 
-  v6 = [(SBMesaUnlockTrigger *)self delegate];
-  [v6 mesaUnlockTriggerFired:self];
+  delegate = [(SBMesaUnlockTrigger *)self delegate];
+  [delegate mesaUnlockTriggerFired:self];
 }
 
 @end

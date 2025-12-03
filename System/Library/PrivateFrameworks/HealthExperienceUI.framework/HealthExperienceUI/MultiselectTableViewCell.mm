@@ -1,27 +1,27 @@
 @interface MultiselectTableViewCell
-- (_TtC18HealthExperienceUI24MultiselectTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI24MultiselectTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MultiselectTableViewCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA1DCA68(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA1DCA68(change);
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA1DCC4C();
 }
 
-- (_TtC18HealthExperienceUI24MultiselectTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI24MultiselectTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
   }

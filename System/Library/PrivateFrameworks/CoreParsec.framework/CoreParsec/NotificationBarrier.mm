@@ -1,10 +1,10 @@
 @interface NotificationBarrier
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 @end
 
 @implementation NotificationBarrier
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

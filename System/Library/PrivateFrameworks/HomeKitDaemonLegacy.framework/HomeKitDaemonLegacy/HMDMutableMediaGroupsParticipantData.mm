@@ -1,16 +1,16 @@
 @interface HMDMutableMediaGroupsParticipantData
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMDMutableMediaGroupsParticipantData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMDMediaGroupsParticipantData alloc];
-  v5 = [(HMDMediaGroupsParticipantData *)self destination];
-  v6 = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
-  v7 = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
-  v8 = [(HMDMediaGroupsParticipantData *)v4 initWithDestination:v5 destinationControllerData:v6 backedUpGroups:v7];
+  destination = [(HMDMediaGroupsParticipantData *)self destination];
+  destinationControllerData = [(HMDMediaGroupsParticipantData *)self destinationControllerData];
+  backedUpGroups = [(HMDMediaGroupsParticipantData *)self backedUpGroups];
+  v8 = [(HMDMediaGroupsParticipantData *)v4 initWithDestination:destination destinationControllerData:destinationControllerData backedUpGroups:backedUpGroups];
 
   return v8;
 }

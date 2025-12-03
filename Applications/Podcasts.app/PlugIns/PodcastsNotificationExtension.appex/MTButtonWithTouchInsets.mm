@@ -1,19 +1,19 @@
 @interface MTButtonWithTouchInsets
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_boundsRelativeHitRect;
-- (MTButtonWithTouchInsets)initWithFrame:(CGRect)a3;
+- (MTButtonWithTouchInsets)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)touchInsets;
 - (void)layoutSubviews;
-- (void)setTouchInsets:(UIEdgeInsets)a3;
+- (void)setTouchInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation MTButtonWithTouchInsets
 
-- (MTButtonWithTouchInsets)initWithFrame:(CGRect)a3
+- (MTButtonWithTouchInsets)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = MTButtonWithTouchInsets;
-  result = [(MTButtonWithTouchInsets *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(MTButtonWithTouchInsets *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v4 = *&UIEdgeInsetsZero.bottom;
@@ -24,15 +24,15 @@
   return result;
 }
 
-- (void)setTouchInsets:(UIEdgeInsets)a3
+- (void)setTouchInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_touchInsets.top, v3), vceqq_f64(*&self->_touchInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_touchInsets = a3;
+    self->_touchInsets = insets;
     [(MTButtonWithTouchInsets *)self updateDebugUI];
   }
 }
@@ -45,10 +45,10 @@
   [(MTButtonWithTouchInsets *)self updateDebugUI];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MTButtonWithTouchInsets *)self _boundsRelativeHitRect];
   v10 = x;
   v11 = y;

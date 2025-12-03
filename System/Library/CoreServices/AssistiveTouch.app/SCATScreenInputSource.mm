@@ -1,49 +1,49 @@
 @interface SCATScreenInputSource
-- (BOOL)handledEvent:(id)a3;
-- (id)_actionIdentifierWithType:(id)a3;
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5;
+- (BOOL)handledEvent:(id)event;
+- (id)_actionIdentifierWithType:(id)type;
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
 - (void)_startHandlingEvents;
 - (void)_stopHandlingEvents;
 - (void)dealloc;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)startRunning;
 - (void)stopRunning;
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4;
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe;
 @end
 
 @implementation SCATScreenInputSource
 
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v8 = a3;
-  v9 = [(SCATInputSource *)self delegate];
-  v10 = [(SCATInputSource *)self queue];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  delegate = [(SCATInputSource *)self delegate];
+  queue = [(SCATInputSource *)self queue];
+  if (queue && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10007D568;
     v12[3] = &unk_1001D5B70;
-    v13 = v9;
-    v14 = self;
-    v11 = v8;
+    v13 = delegate;
+    selfCopy = self;
+    v11 = identifierCopy;
     v15 = v11;
-    v16 = a4;
-    v17 = a5;
-    [v10 performAsynchronousWritingBlock:v12];
+    startCopy = start;
+    holdCopy = hold;
+    [queue performAsynchronousWritingBlock:v12];
     HNDTestingSetLastFiredAction(v11);
   }
 }
 
-- (id)_actionIdentifierWithType:(id)a3
+- (id)_actionIdentifierWithType:(id)type
 {
-  v4 = a3;
-  v5 = [(SCATInputSource *)self actions];
+  typeCopy = type;
+  actions = [(SCATInputSource *)self actions];
 
-  if (v5)
+  if (actions)
   {
-    v6 = [(SCATInputSource *)self actions];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    actions2 = [(SCATInputSource *)self actions];
+    v7 = [actions2 objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -55,26 +55,26 @@
   return v7;
 }
 
-- (BOOL)handledEvent:(id)a3
+- (BOOL)handledEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 3001)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type == 3001)
   {
-    v6 = [v4 handInfo];
-    v7 = [v6 eventType];
+    handInfo = [eventCopy handInfo];
+    eventType = [handInfo eventType];
 
-    v8 = [v4 handInfo];
-    v9 = [v8 eventType];
+    handInfo2 = [eventCopy handInfo];
+    eventType2 = [handInfo2 eventType];
 
-    if (v9 <= 0xA && ((1 << v9) & 0x640) != 0)
+    if (eventType2 <= 0xA && ((1 << eventType2) & 0x640) != 0)
     {
       v10 = 0;
     }
 
     else
     {
-      if (v7 != 1)
+      if (eventType != 1)
       {
         _AXSAutomationEnabled();
         goto LABEL_11;
@@ -85,8 +85,8 @@
 
     v11 = [(SCATScreenInputSource *)self _actionIdentifierWithType:@"SwitchActionTypeNormal"];
     v12 = [(SCATScreenInputSource *)self _actionIdentifierWithType:@"SwitchActionTypeLongPress"];
-    v13 = [(SCATScreenInputSource *)self switchDisplayName];
-    [(SCATInputSource *)self _handleAction:v11 longPressAction:v12 start:v7 == 1 switchIdentifier:@"FullScreen" switchDisplayName:v13];
+    switchDisplayName = [(SCATScreenInputSource *)self switchDisplayName];
+    [(SCATInputSource *)self _handleAction:v11 longPressAction:v12 start:eventType == 1 switchIdentifier:@"FullScreen" switchDisplayName:switchDisplayName];
 
     v14 = _AXSAutomationEnabled();
     if ((v10 & 1) == 0 && v14)
@@ -97,7 +97,7 @@
 
 LABEL_11:
 
-  return v5 == 3001;
+  return type == 3001;
 }
 
 - (void)_startHandlingEvents
@@ -120,11 +120,11 @@ LABEL_11:
   [(SCATScreenInputSource *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = SCATScreenInputSource;
-  [(SCATInputSource *)&v4 setDelegate:a3 queue:a4];
+  [(SCATInputSource *)&v4 setDelegate:delegate queue:queue];
 }
 
 - (void)startRunning
@@ -147,23 +147,23 @@ LABEL_11:
   }
 }
 
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe
 {
-  v6 = a4;
+  recipeCopy = recipe;
   v14.receiver = self;
   v14.super_class = SCATScreenInputSource;
-  v7 = a3;
-  [(SCATInputSource *)&v14 updateWithSwitches:v7 recipe:v6];
+  switchesCopy = switches;
+  [(SCATInputSource *)&v14 updateWithSwitches:switchesCopy recipe:recipeCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007DAA8;
   v10[3] = &unk_1001D5B98;
-  v11 = v6;
+  v11 = recipeCopy;
   v12 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  v13 = self;
+  selfCopy = self;
   v8 = v12;
-  v9 = v6;
-  [v7 enumerateObjectsUsingBlock:v10];
+  v9 = recipeCopy;
+  [switchesCopy enumerateObjectsUsingBlock:v10];
 
   [(SCATInputSource *)self setActions:v8];
 }

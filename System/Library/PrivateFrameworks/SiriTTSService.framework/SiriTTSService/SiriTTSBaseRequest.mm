@@ -1,16 +1,16 @@
 @interface SiriTTSBaseRequest
 - (NSURL)outputPath;
 - (id)didReportInstrument;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDidReportInstrument:(id)a3;
-- (void)setOutputPath:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDidReportInstrument:(id)instrument;
+- (void)setOutputPath:(id)path;
 @end
 
 @implementation SiriTTSBaseRequest
 
-- (void)setDidReportInstrument:(id)a3
+- (void)setDidReportInstrument:(id)instrument
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(instrument);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -23,7 +23,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1B1AD6170(v4, v5);
 }
 
@@ -45,13 +45,13 @@
   return v7;
 }
 
-- (void)setOutputPath:(id)a3
+- (void)setOutputPath:(id)path
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB761F00, &qword_1B1C36480);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (path)
   {
     sub_1B1C2C168();
     v9 = sub_1B1C2C1C8();
@@ -65,7 +65,7 @@
   }
 
   __swift_storeEnumTagSinglePayload(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   sub_1B1B0FD20(v8);
 }
 
@@ -91,11 +91,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1A99C9C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1A99C9C(coderCopy);
 }
 
 @end

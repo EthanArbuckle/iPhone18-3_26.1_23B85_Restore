@@ -1,30 +1,30 @@
 @interface CLCompanionRelativeElevationService
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLCompanionRelativeElevationService)init;
 - (id).cxx_construct;
 - (void)beginService;
 - (void)calculateRelativeElevation;
 - (void)endService;
 - (void)logToCA;
-- (void)onCompanionNotification:(int)a3 data:(NotificationData *)a4;
-- (void)onKFFilteredPressure:(const CMKFFilteredPressureSample *)a3;
-- (void)registerForUpdates:(id)a3;
+- (void)onCompanionNotification:(int)notification data:(NotificationData *)data;
+- (void)onKFFilteredPressure:(const CMKFFilteredPressureSample *)pressure;
+- (void)registerForUpdates:(id)updates;
 - (void)rotateCADaily;
 - (void)rotateCAHourly;
 - (void)unregisterForAlgorithmSources;
-- (void)unregisterForUpdates:(id)a3;
+- (void)unregisterForUpdates:(id)updates;
 - (void)updateRelativePressureCalibration;
 @end
 
 @implementation CLCompanionRelativeElevationService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -205,9 +205,9 @@
   }
 }
 
-- (void)registerForUpdates:(id)a3
+- (void)registerForUpdates:(id)updates
 {
-  [(NSMutableSet *)[(CLCompanionRelativeElevationService *)self clients] addObject:a3];
+  [(NSMutableSet *)[(CLCompanionRelativeElevationService *)self clients] addObject:updates];
   if (qword_1025D4440 != -1)
   {
     sub_1018AC88C();
@@ -227,9 +227,9 @@
   }
 }
 
-- (void)unregisterForUpdates:(id)a3
+- (void)unregisterForUpdates:(id)updates
 {
-  [(NSMutableSet *)[(CLCompanionRelativeElevationService *)self clients] removeObject:a3];
+  [(NSMutableSet *)[(CLCompanionRelativeElevationService *)self clients] removeObject:updates];
   if (qword_1025D4440 != -1)
   {
     sub_1018AC88C();
@@ -441,8 +441,8 @@ LABEL_30:
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v21 = [(CLCompanionRelativeElevationService *)self clients];
-      v22 = [(NSMutableSet *)v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      clients = [(CLCompanionRelativeElevationService *)self clients];
+      v22 = [(NSMutableSet *)clients countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v22)
       {
         v23 = v22;
@@ -453,13 +453,13 @@ LABEL_30:
           {
             if (*v29 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(clients);
             }
 
             [*(*(&v28 + 1) + 8 * i) onCompanionRelativeElevationUpdate:{watchPressureTimestamp, v19, v20}];
           }
 
-          v23 = [(NSMutableSet *)v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v23 = [(NSMutableSet *)clients countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v23);
@@ -778,15 +778,15 @@ LABEL_30:
   }
 }
 
-- (void)onCompanionNotification:(int)a3 data:(NotificationData *)a4
+- (void)onCompanionNotification:(int)notification data:(NotificationData *)data
 {
-  if (a3 == 13)
+  if (notification == 13)
   {
     p_fCurrentCalibrationEntry = &self->fCurrentCalibrationEntry;
-    self->fCurrentCalibrationEntry.isConnected = *a4;
-    self->fCurrentCalibrationEntry.isNearby = *(a4 + 1);
-    self->fCurrentCalibrationEntry.isActive = *(a4 + 2);
-    self->fCurrentCalibrationEntry.nearbyTimestamp = *(a4 + 1);
+    self->fCurrentCalibrationEntry.isConnected = *data;
+    self->fCurrentCalibrationEntry.isNearby = *(data + 1);
+    self->fCurrentCalibrationEntry.isActive = *(data + 2);
+    self->fCurrentCalibrationEntry.nearbyTimestamp = *(data + 1);
     if (qword_1025D4440 != -1)
     {
       sub_1018AC88C();
@@ -824,11 +824,11 @@ LABEL_30:
     }
   }
 
-  else if (a3 == 12)
+  else if (notification == 12)
   {
     v5 = &self->fCurrentCalibrationEntry;
-    *&self->fCurrentCalibrationEntry.companionPressure = *a4;
-    self->fCurrentCalibrationEntry.companionPressureUncertainty = *(a4 + 2);
+    *&self->fCurrentCalibrationEntry.companionPressure = *data;
+    self->fCurrentCalibrationEntry.companionPressureUncertainty = *(data + 2);
     if (qword_1025D4440 != -1)
     {
       sub_1018AC88C();
@@ -879,14 +879,14 @@ LABEL_30:
   }
 }
 
-- (void)onKFFilteredPressure:(const CMKFFilteredPressureSample *)a3
+- (void)onKFFilteredPressure:(const CMKFFilteredPressureSample *)pressure
 {
-  if (a3)
+  if (pressure)
   {
-    var1 = a3->var1;
-    self->fCurrentCalibrationEntry.watchPressure = a3->var2;
+    var1 = pressure->var1;
+    self->fCurrentCalibrationEntry.watchPressure = pressure->var2;
     self->fCurrentCalibrationEntry.watchPressureTimestamp = var1;
-    self->fCurrentCalibrationEntry.watchPressureUncertainty = a3->var4;
+    self->fCurrentCalibrationEntry.watchPressureUncertainty = pressure->var4;
     if ([(NSMutableSet *)[(CLCompanionRelativeElevationService *)self clients] count])
     {
 

@@ -1,19 +1,19 @@
 @interface TSCEFunction_REDUCE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_REDUCE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 16);
+  v8 = **arguments;
+  v9 = *(*arguments + 16);
   v106 = 0;
-  v11 = objc_msgSend_asFunctorValue_functionSpec_argumentIndex_outError_(v9, v10, a3, a4, 2, &v106);
+  v11 = objc_msgSend_asFunctorValue_functionSpec_argumentIndex_outError_(v9, v10, context, spec, 2, &v106);
   v16 = v106;
   if (v16)
   {
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v12, v16, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v12, v16, v14, v15);
     goto LABEL_24;
   }
 
@@ -21,25 +21,25 @@
   v22 = objc_msgSend_functor(v11, v12, v13, v14, v15);
   if (v22->_numArgs != 2)
   {
-    v27 = objc_msgSend_functionName(a4, v18, v19, v20, v21);
+    v27 = objc_msgSend_functionName(spec, v18, v19, v20, v21);
     v16 = objc_msgSend_wrongArityForLambdaError_providedArity_expectedArity_(TSCEError, v28, v27, v22->_numArgs + 1, 3);
 
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v29, v16, v30, v31);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v29, v16, v30, v31);
     goto LABEL_24;
   }
 
-  v23 = *(*a5 + 8);
+  v23 = *(*arguments + 8);
   v105 = 0;
-  v94 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v23, v18, a3, a4, 1, 0, &v105);
+  v94 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v23, v18, context, spec, 1, 0, &v105);
   v16 = v105;
   if (!v16)
   {
     v32 = v8;
     v104 = v32;
     v103 = objc_msgSend_dimensions(v94, v33, v34, v35, v36);
-    v37 = a3;
-    v97[0] = v37;
-    v97[1] = a4;
+    contextCopy = context;
+    v97[0] = contextCopy;
+    v97[1] = spec;
     v98 = 0;
     v99[0] = 1;
     *(v99 + 7) = 0;
@@ -63,7 +63,7 @@
       {
         if (v56)
         {
-          v17 = objc_msgSend_raiseErrorOrConvert_(v37, v47, v56, v61, v50);
+          v17 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v47, v56, v61, v50);
 
 LABEL_22:
           goto LABEL_23;
@@ -81,15 +81,15 @@ LABEL_12:
               v107[0] = objc_msgSend_valueAtGridCoord_accessContext_(v94, v47, *&v96, v97, v50, v92);
               sub_221179A54(v95, &v104);
               sub_221179A54(v95, v107);
-              v65 = TSCEFunctor::evaluateWithArgs(v22, v37, v95);
+              v65 = TSCEFunctor::evaluateWithArgs(v22, contextCopy, v95);
               v66 = v104;
               v104 = v65;
 
-              v70 = objc_msgSend_errorWithContext_(v104, v67, v37, v68, v69);
+              v70 = objc_msgSend_errorWithContext_(v104, v67, contextCopy, v68, v69);
               v75 = v70;
               if (v70 && objc_msgSend_errorType(v70, v71, v72, v73, v74) == 168)
               {
-                v80 = objc_msgSend_functionName(a4, v76, v77, v78, v79);
+                v80 = objc_msgSend_functionName(spec, v76, v77, v78, v79);
                 v84 = objc_msgSend_evaluationRecursingTooDeepError_(TSCEError, v81, v80, v82, v83);
                 v88 = objc_msgSend_errorValue_(TSCEErrorValue, v85, v84, v86, v87);
                 v89 = v104;
@@ -131,7 +131,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v17 = objc_msgSend_raiseErrorOrConvert_(a3, v24, v16, v25, v26);
+  v17 = objc_msgSend_raiseErrorOrConvert_(context, v24, v16, v25, v26);
 LABEL_23:
   v11 = v93;
 

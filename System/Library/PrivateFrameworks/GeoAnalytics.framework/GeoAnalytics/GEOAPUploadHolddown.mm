@@ -1,5 +1,5 @@
 @interface GEOAPUploadHolddown
-- (GEOAPUploadHolddown)initWithTimeProvider:(id)a3 configProvider:(id)a4;
+- (GEOAPUploadHolddown)initWithTimeProvider:(id)provider configProvider:(id)configProvider;
 - (double)_mustWait;
 - (void)_conditionMet;
 - (void)_conditionUnmet;
@@ -123,18 +123,18 @@
   return result;
 }
 
-- (GEOAPUploadHolddown)initWithTimeProvider:(id)a3 configProvider:(id)a4
+- (GEOAPUploadHolddown)initWithTimeProvider:(id)provider configProvider:(id)configProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  configProviderCopy = configProvider;
   v12.receiver = self;
   v12.super_class = GEOAPUploadHolddown;
   v9 = [(GEOAPUploadHolddown *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timeProvider, a3);
-    objc_storeStrong(&v10->_configProvider, a4);
+    objc_storeStrong(&v9->_timeProvider, provider);
+    objc_storeStrong(&v10->_configProvider, configProvider);
     *&v10->_hasURL = 257;
     [(GEOAPUploadHolddown *)v10 _conditionMet];
   }

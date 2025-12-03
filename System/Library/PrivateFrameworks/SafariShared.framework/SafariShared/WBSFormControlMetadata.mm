@@ -1,125 +1,125 @@
 @interface WBSFormControlMetadata
-+ (id)formControlMetadataFromSerializedData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)formControlMetadataFromSerializedData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)frame;
 - (NSData)serializedData;
 - (WBSFormControlMetadata)init;
-- (WBSFormControlMetadata)initWithCoder:(id)a3;
-- (WBSFormControlMetadata)initWithDictionary:(id)a3;
-- (WBSFormControlMetadata)initWithMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WBSFormControlMetadata)initWithCoder:(id)coder;
+- (WBSFormControlMetadata)initWithDictionary:(id)dictionary;
+- (WBSFormControlMetadata)initWithMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)values;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)oneTimeCodeFieldClassification;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)serializedData;
 @end
 
 @implementation WBSFormControlMetadata
 
-- (WBSFormControlMetadata)initWithCoder:(id)a3
+- (WBSFormControlMetadata)initWithCoder:(id)coder
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WBSFormControlMetadata *)self init];
   if (setUpEncodingClasses_onceToken != -1)
   {
     [WBSFormControlMetadata initWithCoder:];
   }
 
-  v6 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"a"];
+  v6 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"a"];
   addressBookLabel = v5->_addressBookLabel;
   v5->_addressBookLabel = v6;
 
-  v8 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"d"];
+  v8 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"d"];
   associatedUsername = v5->_associatedUsername;
   v5->_associatedUsername = v8;
 
-  v10 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"f"];
+  v10 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"f"];
   fieldClass = v5->_fieldClass;
   v5->_fieldClass = v10;
 
-  v12 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"g"];
+  v12 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"g"];
   fieldID = v5->_fieldID;
   v5->_fieldID = v12;
 
-  v14 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"h"];
+  v14 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"h"];
   fieldName = v5->_fieldName;
   v5->_fieldName = v14;
 
-  v16 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"i"];
+  v16 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"i"];
   tagName = v5->_tagName;
   v5->_tagName = v16;
 
-  v18 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"j"];
+  v18 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"j"];
   uniqueID = v5->_uniqueID;
   v5->_uniqueID = v18;
 
-  v20 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"k"];
+  v20 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"k"];
   nextControlUniqueID = v5->_nextControlUniqueID;
   v5->_nextControlUniqueID = v20;
 
-  v22 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"1"];
+  v22 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"1"];
   placeholder = v5->_placeholder;
   v5->_placeholder = v22;
 
-  v24 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"l"];
+  v24 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"l"];
   value = v5->_value;
   v5->_value = v24;
 
-  v26 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"e"];
+  v26 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"e"];
   passwordRules = v5->_passwordRules;
   v5->_passwordRules = v26;
 
-  v28 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"3"];
+  v28 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"3"];
   requiredFormatForDateTimeInput = v5->_requiredFormatForDateTimeInput;
   v5->_requiredFormatForDateTimeInput = v28;
 
-  v30 = [v4 decodeObjectOfClasses:nsStringClassSet forKey:@"4"];
+  v30 = [coderCopy decodeObjectOfClasses:nsStringClassSet forKey:@"4"];
   classification = v5->_classification;
   v5->_classification = v30;
 
-  v5->_size = [v4 decodeInt32ForKey:@"s"];
-  v5->_maxLength = [v4 decodeInt32ForKey:@"t"];
-  v5->_minLength = [v4 decodeInt32ForKey:@"u"];
-  v5->_selectionStart = [v4 decodeInt32ForKey:@"v"];
-  v5->_selectionLength = [v4 decodeInt32ForKey:@"w"];
-  v5->_autoFillButtonType = [v4 decodeInt32ForKey:@"y"];
-  v5->_lastAutoFillButtonType = [v4 decodeInt32ForKey:@"z"];
-  v5->_continuationID = [v4 decodeInt32ForKey:@"5"];
-  v5->_continuationIndex = [v4 decodeInt32ForKey:@"6"];
-  [v4 decodeDoubleForKey:@"o"];
+  v5->_size = [coderCopy decodeInt32ForKey:@"s"];
+  v5->_maxLength = [coderCopy decodeInt32ForKey:@"t"];
+  v5->_minLength = [coderCopy decodeInt32ForKey:@"u"];
+  v5->_selectionStart = [coderCopy decodeInt32ForKey:@"v"];
+  v5->_selectionLength = [coderCopy decodeInt32ForKey:@"w"];
+  v5->_autoFillButtonType = [coderCopy decodeInt32ForKey:@"y"];
+  v5->_lastAutoFillButtonType = [coderCopy decodeInt32ForKey:@"z"];
+  v5->_continuationID = [coderCopy decodeInt32ForKey:@"5"];
+  v5->_continuationIndex = [coderCopy decodeInt32ForKey:@"6"];
+  [coderCopy decodeDoubleForKey:@"o"];
   v5->_rectLeft = v32;
-  [v4 decodeDoubleForKey:@"p"];
+  [coderCopy decodeDoubleForKey:@"p"];
   v5->_rectTop = v33;
-  [v4 decodeDoubleForKey:@"q"];
+  [coderCopy decodeDoubleForKey:@"q"];
   v5->_rectWidth = v34;
-  [v4 decodeDoubleForKey:@"r"];
+  [coderCopy decodeDoubleForKey:@"r"];
   v5->_rectHeight = v35;
-  v36 = [v4 decodeObjectOfClasses:stringDictionaryClasses forKey:@"b"];
+  v36 = [coderCopy decodeObjectOfClasses:stringDictionaryClasses forKey:@"b"];
   annotations = v5->_annotations;
   v5->_annotations = v36;
 
   p_name = &OBJC_PROTOCOL___WBSURLCompletionMatchData.name;
-  v39 = [v4 decodeObjectOfClasses:stringArrayClasses forKey:@"c"];
+  v39 = [coderCopy decodeObjectOfClasses:stringArrayClasses forKey:@"c"];
   autocompleteTokens = v5->_autocompleteTokens;
   v5->_autocompleteTokens = v39;
 
-  v41 = [v4 decodeObjectOfClasses:stringArrayDictionaryClasses forKey:@"m"];
+  v41 = [coderCopy decodeObjectOfClasses:stringArrayDictionaryClasses forKey:@"m"];
   radioButtonInfo = v5->_radioButtonInfo;
   v5->_radioButtonInfo = v41;
 
-  v43 = [v4 decodeObjectOfClasses:urlArrayDictionaryClasses forKey:@"2"];
+  v43 = [coderCopy decodeObjectOfClasses:urlArrayDictionaryClasses forKey:@"2"];
   ancestorFrameURLs = v5->_ancestorFrameURLs;
   v5->_ancestorFrameURLs = v43;
 
-  v45 = [v4 decodeObjectOfClasses:selectElementInfoClasses forKey:@"n"];
+  v45 = [coderCopy decodeObjectOfClasses:selectElementInfoClasses forKey:@"n"];
   if (objc_opt_isKindOfClass())
   {
-    v65 = v4;
-    v46 = [MEMORY[0x1E695DF70] array];
+    v65 = coderCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
@@ -130,7 +130,7 @@
     if (v48)
     {
       v49 = v48;
-      v50 = 0;
+      integerValue = 0;
       v51 = *v67;
       do
       {
@@ -144,18 +144,18 @@
           v53 = *(*(&v66 + 1) + 8 * i);
           if (objc_opt_isKindOfClass())
           {
-            v50 = [v53 integerValue];
+            integerValue = [v53 integerValue];
           }
 
           else
           {
-            v54 = [MEMORY[0x1E696AD98] numberWithInteger:v50];
+            v54 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
             v70[0] = v54;
             v70[1] = v53;
             v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
-            [(NSArray *)v46 addObject:v55];
+            [(NSArray *)array addObject:v55];
 
-            ++v50;
+            ++integerValue;
           }
         }
 
@@ -165,44 +165,44 @@
       while (v49);
     }
 
-    v4 = v65;
+    coderCopy = v65;
     p_name = (&OBJC_PROTOCOL___WBSURLCompletionMatchData + 8);
     v45 = v64;
   }
 
   else
   {
-    v46 = 0;
+    array = 0;
   }
 
   selectElementInfo = v5->_selectElementInfo;
-  v5->_selectElementInfo = v46;
+  v5->_selectElementInfo = array;
 
-  v5->_flags.asInteger = [v4 decodeIntegerForKey:@"x"];
-  v57 = [v4 decodeObjectOfClasses:p_name[400] forKey:@"7"];
+  v5->_flags.asInteger = [coderCopy decodeIntegerForKey:@"x"];
+  v57 = [coderCopy decodeObjectOfClasses:p_name[400] forKey:@"7"];
   orderedParts = v5->_orderedParts;
   v5->_orderedParts = v57;
 
-  v59 = [v4 decodeObjectOfClasses:p_name[400] forKey:@"8"];
+  v59 = [coderCopy decodeObjectOfClasses:p_name[400] forKey:@"8"];
   classificationHints = v5->_classificationHints;
   v5->_classificationHints = v59;
 
-  v61 = [v4 decodeObjectOfClasses:nodePathClasses forKey:@"9"];
+  v61 = [coderCopy decodeObjectOfClasses:nodePathClasses forKey:@"9"];
   nodePath = v5->_nodePath;
   v5->_nodePath = v61;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   addressBookLabel = self->_addressBookLabel;
   if (addressBookLabel)
   {
-    [v4 encodeObject:addressBookLabel forKey:@"a"];
+    [coderCopy encodeObject:addressBookLabel forKey:@"a"];
   }
 
   associatedUsername = self->_associatedUsername;
@@ -402,12 +402,12 @@
 
             v41 = *(*(&v53 + 1) + 8 * i);
             v42 = [v41 objectAtIndexedSubscript:0];
-            v43 = [v42 integerValue];
+            integerValue = [v42 integerValue];
             v44 = [v41 objectAtIndexedSubscript:1];
-            if (v43 != v38)
+            if (integerValue != v38)
             {
               [v34 addObject:v42];
-              v38 = v43;
+              v38 = integerValue;
             }
 
             [v34 addObject:v44];
@@ -459,16 +459,16 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [WBSFormControlMetadata allocWithZone:a3];
+  v4 = [WBSFormControlMetadata allocWithZone:zone];
 
   return [(WBSFormControlMetadata *)v4 initWithMetadata:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [WBSMutableFormControlMetadata allocWithZone:a3];
+  v4 = [WBSMutableFormControlMetadata allocWithZone:zone];
 
   return [(WBSFormControlMetadata *)v4 initWithMetadata:self];
 }
@@ -482,20 +482,20 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_flags.asInteger == v5->_flags.asInteger && WBSIsEqual() && WBSIsEqual() && self->_rectLeft == v5->_rectLeft && self->_rectTop == v5->_rectTop && self->_rectWidth == v5->_rectWidth && self->_rectHeight == v5->_rectHeight && self->_size == v5->_size && self->_maxLength == v5->_maxLength && self->_minLength == v5->_minLength && self->_selectionStart == v5->_selectionStart && self->_selectionLength == v5->_selectionLength && self->_autoFillButtonType == v5->_autoFillButtonType && self->_lastAutoFillButtonType == v5->_lastAutoFillButtonType && self->_continuationID == v5->_continuationID && self->_continuationIndex == v5->_continuationIndex && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual() && WBSIsEqual())
       {
         v6 = WBSIsEqual();
@@ -527,58 +527,58 @@
   return v5 ^ v7;
 }
 
-- (WBSFormControlMetadata)initWithMetadata:(id)a3
+- (WBSFormControlMetadata)initWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [(WBSFormControlMetadata *)self init];
   v6 = v5;
-  if (v4)
+  if (metadataCopy)
   {
-    objc_storeStrong(&v5->_addressBookLabel, v4[1]);
-    objc_storeStrong(&v6->_associatedUsername, v4[2]);
-    objc_storeStrong(&v6->_fieldClass, v4[3]);
-    objc_storeStrong(&v6->_fieldID, v4[4]);
-    objc_storeStrong(&v6->_fieldName, v4[5]);
-    objc_storeStrong(&v6->_tagName, v4[6]);
-    objc_storeStrong(&v6->_uniqueID, v4[7]);
-    objc_storeStrong(&v6->_nextControlUniqueID, v4[8]);
-    objc_storeStrong(&v6->_placeholder, v4[9]);
-    objc_storeStrong(&v6->_value, v4[10]);
-    objc_storeStrong(&v6->_passwordRules, v4[11]);
-    objc_storeStrong(&v6->_requiredFormatForDateTimeInput, v4[12]);
-    objc_storeStrong(&v6->_classification, v4[13]);
-    v6->_size = *(v4 + 52);
-    v6->_maxLength = *(v4 + 53);
-    v6->_minLength = *(v4 + 54);
-    v6->_selectionStart = *(v4 + 55);
-    v6->_selectionLength = *(v4 + 56);
-    v6->_autoFillButtonType = *(v4 + 57);
-    v6->_lastAutoFillButtonType = *(v4 + 58);
-    v6->_continuationID = *(v4 + 59);
-    v6->_continuationIndex = *(v4 + 60);
-    *&v6->_rectLeft = v4[21];
-    *&v6->_rectTop = v4[22];
-    *&v6->_rectWidth = v4[23];
-    *&v6->_rectHeight = v4[24];
-    objc_storeStrong(&v6->_annotations, v4[15]);
-    objc_storeStrong(&v6->_autocompleteTokens, v4[17]);
-    objc_storeStrong(&v6->_radioButtonInfo, v4[14]);
-    objc_storeStrong(&v6->_selectElementInfo, v4[16]);
-    objc_storeStrong(&v6->_ancestorFrameURLs, v4[18]);
-    v6->_flags.asInteger = v4[25];
-    objc_storeStrong(&v6->_orderedParts, v4[19]);
-    objc_storeStrong(&v6->_classificationHints, v4[20]);
-    objc_storeStrong(&v6->_nodePath, v4[31]);
+    objc_storeStrong(&v5->_addressBookLabel, metadataCopy[1]);
+    objc_storeStrong(&v6->_associatedUsername, metadataCopy[2]);
+    objc_storeStrong(&v6->_fieldClass, metadataCopy[3]);
+    objc_storeStrong(&v6->_fieldID, metadataCopy[4]);
+    objc_storeStrong(&v6->_fieldName, metadataCopy[5]);
+    objc_storeStrong(&v6->_tagName, metadataCopy[6]);
+    objc_storeStrong(&v6->_uniqueID, metadataCopy[7]);
+    objc_storeStrong(&v6->_nextControlUniqueID, metadataCopy[8]);
+    objc_storeStrong(&v6->_placeholder, metadataCopy[9]);
+    objc_storeStrong(&v6->_value, metadataCopy[10]);
+    objc_storeStrong(&v6->_passwordRules, metadataCopy[11]);
+    objc_storeStrong(&v6->_requiredFormatForDateTimeInput, metadataCopy[12]);
+    objc_storeStrong(&v6->_classification, metadataCopy[13]);
+    v6->_size = *(metadataCopy + 52);
+    v6->_maxLength = *(metadataCopy + 53);
+    v6->_minLength = *(metadataCopy + 54);
+    v6->_selectionStart = *(metadataCopy + 55);
+    v6->_selectionLength = *(metadataCopy + 56);
+    v6->_autoFillButtonType = *(metadataCopy + 57);
+    v6->_lastAutoFillButtonType = *(metadataCopy + 58);
+    v6->_continuationID = *(metadataCopy + 59);
+    v6->_continuationIndex = *(metadataCopy + 60);
+    *&v6->_rectLeft = metadataCopy[21];
+    *&v6->_rectTop = metadataCopy[22];
+    *&v6->_rectWidth = metadataCopy[23];
+    *&v6->_rectHeight = metadataCopy[24];
+    objc_storeStrong(&v6->_annotations, metadataCopy[15]);
+    objc_storeStrong(&v6->_autocompleteTokens, metadataCopy[17]);
+    objc_storeStrong(&v6->_radioButtonInfo, metadataCopy[14]);
+    objc_storeStrong(&v6->_selectElementInfo, metadataCopy[16]);
+    objc_storeStrong(&v6->_ancestorFrameURLs, metadataCopy[18]);
+    v6->_flags.asInteger = metadataCopy[25];
+    objc_storeStrong(&v6->_orderedParts, metadataCopy[19]);
+    objc_storeStrong(&v6->_classificationHints, metadataCopy[20]);
+    objc_storeStrong(&v6->_nodePath, metadataCopy[31]);
   }
 
   return v6;
 }
 
-- (WBSFormControlMetadata)initWithDictionary:(id)a3
+- (WBSFormControlMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(WBSFormControlMetadata *)self init];
-  if ([v4 count])
+  if ([dictionaryCopy count])
   {
     if (getPropertyMap_onceToken != -1)
     {
@@ -592,39 +592,39 @@
     v34 = getPropertyMap_map;
     v6 = v5;
     v33 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v29];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:&v29];
     if (([MEMORY[0x1E69C8880] isInternalInstall] & 1) != 0 || objc_msgSend(MEMORY[0x1E69C8880], "isAutoFillDrivenByUIProcess"))
     {
-      v7 = [v4 safari_numberForKey:@"ControlRectLeft"];
+      v7 = [dictionaryCopy safari_numberForKey:@"ControlRectLeft"];
       [v7 doubleValue];
       v6->_rectLeft = v8;
 
-      v9 = [v4 safari_numberForKey:@"ControlRectTop"];
+      v9 = [dictionaryCopy safari_numberForKey:@"ControlRectTop"];
       [v9 doubleValue];
       v6->_rectTop = v10;
 
-      v11 = [v4 safari_numberForKey:@"ControlRectWidth"];
+      v11 = [dictionaryCopy safari_numberForKey:@"ControlRectWidth"];
       [v11 doubleValue];
       v6->_rectWidth = v12;
 
-      v13 = [v4 safari_numberForKey:@"ControlRectHeight"];
+      v13 = [dictionaryCopy safari_numberForKey:@"ControlRectHeight"];
       [v13 doubleValue];
       v6->_rectHeight = v14;
     }
 
-    v15 = [v4 safari_numberForKey:@"ControlSize"];
+    v15 = [dictionaryCopy safari_numberForKey:@"ControlSize"];
     v6->_size = [v15 integerValue];
 
-    v16 = [v4 safari_numberForKey:@"ControlMaxLength"];
-    v17 = [v16 integerValue];
-    if (v17 >= 0x80000)
+    v16 = [dictionaryCopy safari_numberForKey:@"ControlMaxLength"];
+    integerValue = [v16 integerValue];
+    if (integerValue >= 0x80000)
     {
       v18 = 0x80000;
     }
 
     else
     {
-      v18 = v17;
+      v18 = integerValue;
     }
 
     if (v16)
@@ -638,25 +638,25 @@
     }
 
     v6->_maxLength = v19;
-    v20 = [v4 safari_numberForKey:@"ControlMinLength"];
+    v20 = [dictionaryCopy safari_numberForKey:@"ControlMinLength"];
     v6->_minLength = [v20 integerValue];
 
-    v21 = [v4 safari_numberForKey:@"SelectionStart"];
+    v21 = [dictionaryCopy safari_numberForKey:@"SelectionStart"];
     v6->_selectionStart = [v21 integerValue];
 
-    v22 = [v4 safari_numberForKey:@"SelectionLength"];
+    v22 = [dictionaryCopy safari_numberForKey:@"SelectionLength"];
     v6->_selectionLength = [v22 integerValue];
 
-    v23 = [v4 safari_numberForKey:@"ControlAutoFillButtonType"];
+    v23 = [dictionaryCopy safari_numberForKey:@"ControlAutoFillButtonType"];
     v6->_autoFillButtonType = [v23 integerValue];
 
-    v24 = [v4 safari_numberForKey:@"ControlLastAutoFillButtonType"];
+    v24 = [dictionaryCopy safari_numberForKey:@"ControlLastAutoFillButtonType"];
     v6->_lastAutoFillButtonType = [v24 integerValue];
 
-    v25 = [v4 safari_numberForKey:@"ControlContinuationID"];
+    v25 = [dictionaryCopy safari_numberForKey:@"ControlContinuationID"];
     v6->_continuationID = [v25 integerValue];
 
-    v26 = [v4 safari_numberForKey:@"ControlContinuationIndex"];
+    v26 = [dictionaryCopy safari_numberForKey:@"ControlContinuationIndex"];
     v6->_continuationIndex = [v26 integerValue];
 
     v27 = v6;
@@ -704,15 +704,15 @@ void __45__WBSFormControlMetadata_initWithDictionary___block_invoke(uint64_t a1,
   }
 }
 
-- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)a3
+- (id)dictionaryRepresentationRedactingSensitiveValues:(BOOL)values
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
+  valuesCopy = values;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
   flags = self->_flags.flags;
   if (*&flags)
   {
-    [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"DisallowsAutocomplete"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"DisallowsAutocomplete"];
     flags = self->_flags.flags;
     if ((*&flags & 2) == 0)
     {
@@ -1300,7 +1300,7 @@ LABEL_30:
 
   if (!self->_continuationID || self->_continuationIndex)
   {
-    if (!v3)
+    if (!valuesCopy)
     {
       goto LABEL_104;
     }
@@ -1309,7 +1309,7 @@ LABEL_30:
   }
 
   [v6 setObject:&unk_1F3A9AD18 forKeyedSubscript:@"ControlContinuationIndex"];
-  if (v3)
+  if (valuesCopy)
   {
 LABEL_103:
     [v6 removeObjectForKey:@"ControlValue"];
@@ -1339,9 +1339,9 @@ LABEL_104:
   return v2;
 }
 
-+ (id)formControlMetadataFromSerializedData:(id)a3
++ (id)formControlMetadataFromSerializedData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1361,7 +1361,7 @@ LABEL_104:
   v12 = objc_opt_class();
   v13 = [v19 setWithObjects:{v4, v5, v6, v7, v8, v9, v10, v11, v12, objc_opt_class(), 0}];
   v20 = 0;
-  v14 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v13 fromData:v3 error:&v20];
+  v14 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v13 fromData:dataCopy error:&v20];
   v15 = v20;
   if (v15)
   {
@@ -1422,16 +1422,16 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = WBSFormControlMetadata;
   v4 = [(WBSFormControlMetadata *)&v8 description];
-  v5 = [(WBSFormControlMetadata *)self uniqueID];
-  v6 = [v3 stringWithFormat:@"<%@ controlUniqueID=%@>", v4, v5];
+  uniqueID = [(WBSFormControlMetadata *)self uniqueID];
+  v6 = [v3 stringWithFormat:@"<%@ controlUniqueID=%@>", v4, uniqueID];
 
   return v6;
 }
 
 - (void)serializedData
 {
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_1(&dword_1BB6F3000, v5, v6, "Failed to archive WBSFormControlMetadata: %{public}@", v7, v8, v9, v10, 2u);
 }
 

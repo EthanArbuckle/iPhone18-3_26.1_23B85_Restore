@@ -5,20 +5,20 @@
 - ($1AB5FA073B851C12C2339EC22442E995)rawRotationRate;
 - ($1AB5FA073B851C12C2339EC22442E995)rotationRate;
 - ($1AB5FA073B851C12C2339EC22442E995)userAcceleration;
-- (CMDeviceMotionLite)initWithCoder:(id)a3;
-- (CMDeviceMotionLite)initWithDeviceMotionLite:(id *)a3 andDeviceID:(id)a4;
+- (CMDeviceMotionLite)initWithCoder:(id)coder;
+- (CMDeviceMotionLite)initWithDeviceMotionLite:(id *)lite andDeviceID:(id)d;
 - (float)tilt;
 - (float)tip;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMDeviceMotionLite
 
-- (CMDeviceMotionLite)initWithDeviceMotionLite:(id *)a3 andDeviceID:(id)a4
+- (CMDeviceMotionLite)initWithDeviceMotionLite:(id *)lite andDeviceID:(id)d
 {
   v20.receiver = self;
   v20.super_class = CMDeviceMotionLite;
@@ -26,26 +26,26 @@
   if (v6)
   {
     v7 = [CMAttitude alloc];
-    *(v6 + 3) = objc_msgSend_initWithQuaternion_(v7, v8, v9, a3->var0.var0, a3->var0.var1, a3->var0.var2, a3->var0.var3);
-    *(v6 + 6) = sub_19B420740(&a3->var0.var0);
+    *(v6 + 3) = objc_msgSend_initWithQuaternion_(v7, v8, v9, lite->var0.var0, lite->var0.var1, lite->var0.var2, lite->var0.var3);
+    *(v6 + 6) = sub_19B420740(&lite->var0.var0);
     *(v6 + 7) = v10;
     *(v6 + 8) = v11;
-    v12 = *&a3->var1.var2;
-    *(v6 + 72) = vcvtq_f64_f32(*&a3->var1.var0);
+    v12 = *&lite->var1.var2;
+    *(v6 + 72) = vcvtq_f64_f32(*&lite->var1.var0);
     *(v6 + 88) = vcvtq_f64_f32(v12);
-    v13 = *&a3->var3.var0;
-    *(v6 + 104) = vcvtq_f64_f32(*&a3->var2.var1);
+    v13 = *&lite->var3.var0;
+    *(v6 + 104) = vcvtq_f64_f32(*&lite->var2.var1);
     *(v6 + 120) = vcvtq_f64_f32(v13);
-    v14 = *&a3->var4.var1;
-    *(v6 + 136) = vcvtq_f64_f32(*&a3->var3.var2);
+    v14 = *&lite->var4.var1;
+    *(v6 + 136) = vcvtq_f64_f32(*&lite->var3.var2);
     *(v6 + 152) = vcvtq_f64_f32(v14);
-    *(v6 + 5) = a3->var5;
-    v6[8] = a3->var6;
-    *(v6 + 4) = objc_msgSend_copy(a4, v15, v16);
-    *(v6 + 3) = LODWORD(a3->var7);
-    *(v6 + 4) = LODWORD(a3->var8);
-    var2 = a3->var9.var2;
-    *(v6 + 168) = vcvtq_f64_f32(*&a3->var9.var0);
+    *(v6 + 5) = lite->var5;
+    v6[8] = lite->var6;
+    *(v6 + 4) = objc_msgSend_copy(d, v15, v16);
+    *(v6 + 3) = LODWORD(lite->var7);
+    *(v6 + 4) = LODWORD(lite->var8);
+    var2 = lite->var9.var2;
+    *(v6 + 168) = vcvtq_f64_f32(*&lite->var9.var0);
     *(v6 + 23) = var2;
   }
 
@@ -73,62 +73,62 @@
   return v6;
 }
 
-- (CMDeviceMotionLite)initWithCoder:(id)a3
+- (CMDeviceMotionLite)initWithCoder:(id)coder
 {
-  if (objc_msgSend_allowsKeyedCoding(a3, a2, a3))
+  if (objc_msgSend_allowsKeyedCoding(coder, a2, coder))
   {
     v97 = 0;
     v96 = 0;
     v105 = 0;
     v106 = 0;
-    objc_msgSend_decodeDoubleForKey_(a3, v5, @"kCMDeviceMotionLiteCodingKeyQuaternionW");
+    objc_msgSend_decodeDoubleForKey_(coder, v5, @"kCMDeviceMotionLiteCodingKeyQuaternionW");
     v80 = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"kCMDeviceMotionLiteCodingKeyQuaternionX");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"kCMDeviceMotionLiteCodingKeyQuaternionX");
     v79 = v8;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"kCMDeviceMotionLiteCodingKeyQuaternionY");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"kCMDeviceMotionLiteCodingKeyQuaternionY");
     v78 = v10;
-    objc_msgSend_decodeDoubleForKey_(a3, v11, @"kCMDeviceMotionLiteCodingKeyQuaternionZ");
+    objc_msgSend_decodeDoubleForKey_(coder, v11, @"kCMDeviceMotionLiteCodingKeyQuaternionZ");
     v77 = v12;
-    objc_msgSend_decodeFloatForKey_(a3, v13, @"kCMDeviceMotionLiteCodingKeyUserAccelerationX");
+    objc_msgSend_decodeFloatForKey_(coder, v13, @"kCMDeviceMotionLiteCodingKeyUserAccelerationX");
     v76 = v14;
-    objc_msgSend_decodeFloatForKey_(a3, v15, @"kCMDeviceMotionLiteCodingKeyUserAccelerationY");
+    objc_msgSend_decodeFloatForKey_(coder, v15, @"kCMDeviceMotionLiteCodingKeyUserAccelerationY");
     v75 = v16;
-    objc_msgSend_decodeFloatForKey_(a3, v17, @"kCMDeviceMotionLiteCodingKeyUserAccelerationZ");
+    objc_msgSend_decodeFloatForKey_(coder, v17, @"kCMDeviceMotionLiteCodingKeyUserAccelerationZ");
     v74 = v18;
-    objc_msgSend_decodeFloatForKey_(a3, v19, @"kCMDeviceMotionLiteCodingKeyRotationRateX");
+    objc_msgSend_decodeFloatForKey_(coder, v19, @"kCMDeviceMotionLiteCodingKeyRotationRateX");
     v73 = v20;
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"kCMDeviceMotionLiteCodingKeyRotationRateY");
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"kCMDeviceMotionLiteCodingKeyRotationRateY");
     v72 = v22;
-    objc_msgSend_decodeFloatForKey_(a3, v23, @"kCMDeviceMotionLiteCodingKeyRotationRateZ");
+    objc_msgSend_decodeFloatForKey_(coder, v23, @"kCMDeviceMotionLiteCodingKeyRotationRateZ");
     v71 = v24;
-    objc_msgSend_decodeFloatForKey_(a3, v25, @"kCMDeviceMotionLiteCodingKeyRawAccelerationX");
+    objc_msgSend_decodeFloatForKey_(coder, v25, @"kCMDeviceMotionLiteCodingKeyRawAccelerationX");
     v70 = v26;
-    objc_msgSend_decodeFloatForKey_(a3, v27, @"kCMDeviceMotionLiteCodingKeyRawAccelerationY");
+    objc_msgSend_decodeFloatForKey_(coder, v27, @"kCMDeviceMotionLiteCodingKeyRawAccelerationY");
     v69 = v28;
-    objc_msgSend_decodeFloatForKey_(a3, v29, @"kCMDeviceMotionLiteCodingKeyRawAccelerationZ");
+    objc_msgSend_decodeFloatForKey_(coder, v29, @"kCMDeviceMotionLiteCodingKeyRawAccelerationZ");
     v68 = v30;
-    objc_msgSend_decodeFloatForKey_(a3, v31, @"kCMDeviceMotionLiteCodingKeyRawRotationRateX");
+    objc_msgSend_decodeFloatForKey_(coder, v31, @"kCMDeviceMotionLiteCodingKeyRawRotationRateX");
     v33 = v32;
-    objc_msgSend_decodeFloatForKey_(a3, v34, @"kCMDeviceMotionLiteCodingKeyRawRotationRateY");
+    objc_msgSend_decodeFloatForKey_(coder, v34, @"kCMDeviceMotionLiteCodingKeyRawRotationRateY");
     v36 = v35;
-    objc_msgSend_decodeFloatForKey_(a3, v37, @"kCMDeviceMotionLiteCodingKeyRawRotationRateZ");
+    objc_msgSend_decodeFloatForKey_(coder, v37, @"kCMDeviceMotionLiteCodingKeyRawRotationRateZ");
     v39 = v38;
     v40 = objc_opt_class();
-    v42 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v41, v40, @"kCMDeviceMotionLiteCodingKeyMachTimestamp");
+    v42 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v41, v40, @"kCMDeviceMotionLiteCodingKeyMachTimestamp");
     v45 = objc_msgSend_unsignedLongLongValue(v42, v43, v44);
-    v47 = objc_msgSend_decodeBoolForKey_(a3, v46, @"kCMDeviceMotionLiteCodingKeyUsingCompass");
-    objc_msgSend_decodeFloatForKey_(a3, v48, @"kCMDeviceMotionLiteCodingKeyGyroTemperature");
+    v47 = objc_msgSend_decodeBoolForKey_(coder, v46, @"kCMDeviceMotionLiteCodingKeyUsingCompass");
+    objc_msgSend_decodeFloatForKey_(coder, v48, @"kCMDeviceMotionLiteCodingKeyGyroTemperature");
     v50 = v49;
-    objc_msgSend_decodeFloatForKey_(a3, v51, @"kCMDeviceMotionLiteCodingKeyCompassTemperature");
+    objc_msgSend_decodeFloatForKey_(coder, v51, @"kCMDeviceMotionLiteCodingKeyCompassTemperature");
     v53 = v52;
-    objc_msgSend_decodeFloatForKey_(a3, v54, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldX");
+    objc_msgSend_decodeFloatForKey_(coder, v54, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldX");
     v56 = v55;
-    objc_msgSend_decodeFloatForKey_(a3, v57, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldY");
+    objc_msgSend_decodeFloatForKey_(coder, v57, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldY");
     v59 = v58;
-    objc_msgSend_decodeFloatForKey_(a3, v60, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldZ");
+    objc_msgSend_decodeFloatForKey_(coder, v60, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldZ");
     v62 = v61;
     v63 = objc_opt_class();
-    v65 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v64, v63, @"kCMDeviceMotionLiteCodingKeyPhysicalDeviceUniqueID");
+    v65 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v64, v63, @"kCMDeviceMotionLiteCodingKeyPhysicalDeviceUniqueID");
     v81[0] = v80;
     v81[1] = v79;
     v81[2] = v78;
@@ -164,76 +164,76 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ((objc_msgSend_allowsKeyedCoding(a3, a2, a3) & 1) == 0)
+  if ((objc_msgSend_allowsKeyedCoding(coder, a2, coder) & 1) == 0)
   {
     v60 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v6, v7);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v60, v61, a2, self, @"CMDeviceMotionLite.mm", 162, @"Invalid parameter not satisfying: %@", @"[encoder allowsKeyedCoding]");
   }
 
   objc_msgSend_quaternion(self->_attitude, v6, v7);
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kCMDeviceMotionLiteCodingKeyQuaternionX");
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kCMDeviceMotionLiteCodingKeyQuaternionX");
   objc_msgSend_quaternion(self->_attitude, v9, v10);
-  objc_msgSend_encodeDouble_forKey_(a3, v11, @"kCMDeviceMotionLiteCodingKeyQuaternionY", v12);
+  objc_msgSend_encodeDouble_forKey_(coder, v11, @"kCMDeviceMotionLiteCodingKeyQuaternionY", v12);
   objc_msgSend_quaternion(self->_attitude, v13, v14);
-  objc_msgSend_encodeDouble_forKey_(a3, v15, @"kCMDeviceMotionLiteCodingKeyQuaternionZ", v16);
+  objc_msgSend_encodeDouble_forKey_(coder, v15, @"kCMDeviceMotionLiteCodingKeyQuaternionZ", v16);
   objc_msgSend_quaternion(self->_attitude, v17, v18);
-  objc_msgSend_encodeDouble_forKey_(a3, v19, @"kCMDeviceMotionLiteCodingKeyQuaternionW", v20);
+  objc_msgSend_encodeDouble_forKey_(coder, v19, @"kCMDeviceMotionLiteCodingKeyQuaternionW", v20);
   x = self->_userAcceleration.x;
   *&x = x;
-  objc_msgSend_encodeFloat_forKey_(a3, v22, @"kCMDeviceMotionLiteCodingKeyUserAccelerationX", x);
+  objc_msgSend_encodeFloat_forKey_(coder, v22, @"kCMDeviceMotionLiteCodingKeyUserAccelerationX", x);
   y = self->_userAcceleration.y;
   *&y = y;
-  objc_msgSend_encodeFloat_forKey_(a3, v24, @"kCMDeviceMotionLiteCodingKeyUserAccelerationY", y);
+  objc_msgSend_encodeFloat_forKey_(coder, v24, @"kCMDeviceMotionLiteCodingKeyUserAccelerationY", y);
   z = self->_userAcceleration.z;
   *&z = z;
-  objc_msgSend_encodeFloat_forKey_(a3, v26, @"kCMDeviceMotionLiteCodingKeyUserAccelerationZ", z);
+  objc_msgSend_encodeFloat_forKey_(coder, v26, @"kCMDeviceMotionLiteCodingKeyUserAccelerationZ", z);
   v27 = self->_rotationRate.x;
   *&v27 = v27;
-  objc_msgSend_encodeFloat_forKey_(a3, v28, @"kCMDeviceMotionLiteCodingKeyRotationRateX", v27);
+  objc_msgSend_encodeFloat_forKey_(coder, v28, @"kCMDeviceMotionLiteCodingKeyRotationRateX", v27);
   v29 = self->_rotationRate.y;
   *&v29 = v29;
-  objc_msgSend_encodeFloat_forKey_(a3, v30, @"kCMDeviceMotionLiteCodingKeyRotationRateY", v29);
+  objc_msgSend_encodeFloat_forKey_(coder, v30, @"kCMDeviceMotionLiteCodingKeyRotationRateY", v29);
   v31 = self->_rotationRate.z;
   *&v31 = v31;
-  objc_msgSend_encodeFloat_forKey_(a3, v32, @"kCMDeviceMotionLiteCodingKeyRotationRateZ", v31);
+  objc_msgSend_encodeFloat_forKey_(coder, v32, @"kCMDeviceMotionLiteCodingKeyRotationRateZ", v31);
   v33 = self->_rawAcceleration.x;
   *&v33 = v33;
-  objc_msgSend_encodeFloat_forKey_(a3, v34, @"kCMDeviceMotionLiteCodingKeyRawAccelerationX", v33);
+  objc_msgSend_encodeFloat_forKey_(coder, v34, @"kCMDeviceMotionLiteCodingKeyRawAccelerationX", v33);
   v35 = self->_rawAcceleration.y;
   *&v35 = v35;
-  objc_msgSend_encodeFloat_forKey_(a3, v36, @"kCMDeviceMotionLiteCodingKeyRawAccelerationY", v35);
+  objc_msgSend_encodeFloat_forKey_(coder, v36, @"kCMDeviceMotionLiteCodingKeyRawAccelerationY", v35);
   v37 = self->_rawAcceleration.z;
   *&v37 = v37;
-  objc_msgSend_encodeFloat_forKey_(a3, v38, @"kCMDeviceMotionLiteCodingKeyRawAccelerationZ", v37);
+  objc_msgSend_encodeFloat_forKey_(coder, v38, @"kCMDeviceMotionLiteCodingKeyRawAccelerationZ", v37);
   v39 = self->_rawRotationRate.x;
   *&v39 = v39;
-  objc_msgSend_encodeFloat_forKey_(a3, v40, @"kCMDeviceMotionLiteCodingKeyRawRotationRateX", v39);
+  objc_msgSend_encodeFloat_forKey_(coder, v40, @"kCMDeviceMotionLiteCodingKeyRawRotationRateX", v39);
   v41 = self->_rawRotationRate.y;
   *&v41 = v41;
-  objc_msgSend_encodeFloat_forKey_(a3, v42, @"kCMDeviceMotionLiteCodingKeyRawRotationRateY", v41);
+  objc_msgSend_encodeFloat_forKey_(coder, v42, @"kCMDeviceMotionLiteCodingKeyRawRotationRateY", v41);
   v43 = self->_rawRotationRate.z;
   *&v43 = v43;
-  objc_msgSend_encodeFloat_forKey_(a3, v44, @"kCMDeviceMotionLiteCodingKeyRawRotationRateZ", v43);
+  objc_msgSend_encodeFloat_forKey_(coder, v44, @"kCMDeviceMotionLiteCodingKeyRawRotationRateZ", v43);
   v46 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], v45, self->_machTimestamp);
-  objc_msgSend_encodeObject_forKey_(a3, v47, v46, @"kCMDeviceMotionLiteCodingKeyMachTimestamp");
-  objc_msgSend_encodeBool_forKey_(a3, v48, self->_usingCompass, @"kCMDeviceMotionLiteCodingKeyUsingCompass");
-  objc_msgSend_encodeObject_forKey_(a3, v49, self->_physicalDeviceUniqueID, @"kCMDeviceMotionLiteCodingKeyPhysicalDeviceUniqueID");
+  objc_msgSend_encodeObject_forKey_(coder, v47, v46, @"kCMDeviceMotionLiteCodingKeyMachTimestamp");
+  objc_msgSend_encodeBool_forKey_(coder, v48, self->_usingCompass, @"kCMDeviceMotionLiteCodingKeyUsingCompass");
+  objc_msgSend_encodeObject_forKey_(coder, v49, self->_physicalDeviceUniqueID, @"kCMDeviceMotionLiteCodingKeyPhysicalDeviceUniqueID");
   *&v50 = self->_gyroTemperature;
-  objc_msgSend_encodeFloat_forKey_(a3, v51, @"kCMDeviceMotionLiteCodingKeyGyroTemperature", v50);
+  objc_msgSend_encodeFloat_forKey_(coder, v51, @"kCMDeviceMotionLiteCodingKeyGyroTemperature", v50);
   *&v52 = self->_compassTemperature;
-  objc_msgSend_encodeFloat_forKey_(a3, v53, @"kCMDeviceMotionLiteCodingKeyCompassTemperature", v52);
+  objc_msgSend_encodeFloat_forKey_(coder, v53, @"kCMDeviceMotionLiteCodingKeyCompassTemperature", v52);
   v54 = self->_rawMagneticField.x;
   *&v54 = v54;
-  objc_msgSend_encodeFloat_forKey_(a3, v55, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldX", v54);
+  objc_msgSend_encodeFloat_forKey_(coder, v55, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldX", v54);
   v56 = self->_rawMagneticField.y;
   *&v56 = v56;
-  objc_msgSend_encodeFloat_forKey_(a3, v57, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldY", v56);
+  objc_msgSend_encodeFloat_forKey_(coder, v57, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldY", v56);
   v59 = self->_rawMagneticField.z;
   *&v59 = v59;
 
-  objc_msgSend_encodeFloat_forKey_(a3, v58, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldZ", v59);
+  objc_msgSend_encodeFloat_forKey_(coder, v58, @"kCMDeviceMotionLiteCodingKeyRawMagneticFieldZ", v59);
 }
 
 - (void)dealloc
@@ -243,14 +243,14 @@
   [(CMDeviceMotionLite *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v11 = objc_msgSend_init(v7, v8, v9);
   if (v11)
   {
-    *(v11 + 24) = objc_msgSend_copyWithZone_(self->_attitude, v10, a3);
+    *(v11 + 24) = objc_msgSend_copyWithZone_(self->_attitude, v10, zone);
     z = self->_gravity.z;
     *(v11 + 48) = *&self->_gravity.x;
     *(v11 + 64) = z;
@@ -268,7 +268,7 @@
     *(v11 + 144) = v16;
     *(v11 + 40) = self->_machTimestamp;
     *(v11 + 8) = self->_usingCompass;
-    *(v11 + 32) = objc_msgSend_copyWithZone_(self->_physicalDeviceUniqueID, v17, a3);
+    *(v11 + 32) = objc_msgSend_copyWithZone_(self->_physicalDeviceUniqueID, v17, zone);
     *(v11 + 12) = self->_gyroTemperature;
     *(v11 + 16) = self->_compassTemperature;
     v18 = *&self->_rawMagneticField.x;

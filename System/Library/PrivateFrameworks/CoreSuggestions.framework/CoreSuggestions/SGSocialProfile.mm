@@ -1,11 +1,11 @@
 @interface SGSocialProfile
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSGSocialProfile:(id)a3;
-- (SGSocialProfile)initWithCoder:(id)a3;
-- (SGSocialProfile)initWithUsername:(id)a3 userIdentifier:(id)a4 bundleIdentifier:(id)a5 displayName:(id)a6 service:(id)a7 teamIdentifier:(id)a8 label:(id)a9 extractionInfo:(id)a10 recordId:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSGSocialProfile:(id)profile;
+- (SGSocialProfile)initWithCoder:(id)coder;
+- (SGSocialProfile)initWithUsername:(id)username userIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier displayName:(id)name service:(id)service teamIdentifier:(id)teamIdentifier label:(id)label extractionInfo:(id)self0 recordId:(id)self1;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGSocialProfile
@@ -13,21 +13,21 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SGLabeledObject *)self label];
-  v5 = [v4 length];
+  label = [(SGLabeledObject *)self label];
+  v5 = [label length];
   if (v5)
   {
-    v6 = [(SGLabeledObject *)self label];
+    label2 = [(SGLabeledObject *)self label];
   }
 
   else
   {
-    v6 = @"unlabeled";
+    label2 = @"unlabeled";
   }
 
   displayName = self->_displayName;
   service = self->_service;
-  v9 = [v3 initWithFormat:@"%@/[%@ %@:%@:%@:%@:%@]", v6, displayName, self->_bundleIdentifier, self->_username, self->_userIdentifier, service, self->_teamIdentifier];
+  v9 = [v3 initWithFormat:@"%@/[%@ %@:%@:%@:%@:%@]", label2, displayName, self->_bundleIdentifier, self->_username, self->_userIdentifier, service, self->_teamIdentifier];
   if (v5)
   {
   }
@@ -47,17 +47,17 @@
   return [(NSString *)*p_userIdentifier hash]- v3 + 32 * v3;
 }
 
-- (BOOL)isEqualToSGSocialProfile:(id)a3
+- (BOOL)isEqualToSGSocialProfile:(id)profile
 {
-  v4 = a3;
-  if (![(SGLabeledObject *)self isEqualToLabeledObject:v4])
+  profileCopy = profile;
+  if (![(SGLabeledObject *)self isEqualToLabeledObject:profileCopy])
   {
     goto LABEL_20;
   }
 
   v5 = self->_username;
   v6 = v5;
-  if (v5 == v4[5])
+  if (v5 == profileCopy[5])
   {
   }
 
@@ -73,7 +73,7 @@
 
   v8 = self->_userIdentifier;
   v9 = v8;
-  if (v8 == v4[6])
+  if (v8 == profileCopy[6])
   {
   }
 
@@ -89,7 +89,7 @@
 
   v11 = self->_bundleIdentifier;
   v12 = v11;
-  if (v11 == v4[7])
+  if (v11 == profileCopy[7])
   {
   }
 
@@ -105,7 +105,7 @@
 
   v14 = self->_displayName;
   v15 = v14;
-  if (v14 == v4[8])
+  if (v14 == profileCopy[8])
   {
   }
 
@@ -121,7 +121,7 @@
 
   v17 = self->_service;
   v18 = v17;
-  if (v17 == v4[9])
+  if (v17 == profileCopy[9])
   {
   }
 
@@ -139,7 +139,7 @@ LABEL_20:
 
   v22 = self->_teamIdentifier;
   v23 = v22;
-  if (v22 == v4[10])
+  if (v22 == profileCopy[10])
   {
     v20 = 1;
   }
@@ -153,56 +153,56 @@ LABEL_21:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSocialProfile *)self isEqualToSGSocialProfile:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSocialProfile *)self isEqualToSGSocialProfile:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGSocialProfile;
-  v4 = a3;
-  [(SGLabeledObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_username forKey:{@"username", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_userIdentifier forKey:@"userIdentifier"];
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v4 encodeObject:self->_displayName forKey:@"displayName"];
-  [v4 encodeObject:self->_service forKey:@"service"];
-  [v4 encodeObject:self->_teamIdentifier forKey:@"teamIdentifier"];
+  coderCopy = coder;
+  [(SGLabeledObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_username forKey:{@"username", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_userIdentifier forKey:@"userIdentifier"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_service forKey:@"service"];
+  [coderCopy encodeObject:self->_teamIdentifier forKey:@"teamIdentifier"];
 }
 
-- (SGSocialProfile)initWithCoder:(id)a3
+- (SGSocialProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = SGSocialProfile;
-  v5 = [(SGLabeledObject *)&v27 initWithCoder:v4];
+  v5 = [(SGLabeledObject *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"username"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"username"];
     username = v5->_username;
     v5->_username = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"userIdentifier"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"userIdentifier"];
     userIdentifier = v5->_userIdentifier;
     v5->_userIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     if (!v12)
     {
       v13 = sgLogHandle();
@@ -225,17 +225,17 @@ LABEL_21:
     v15 = v12;
 
     v16 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"displayName"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v17;
 
     v19 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"service"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"service"];
     service = v5->_service;
     v5->_service = v20;
 
     v22 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"teamIdentifier"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"teamIdentifier"];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v23;
   }
@@ -243,40 +243,40 @@ LABEL_21:
   return v5;
 }
 
-- (SGSocialProfile)initWithUsername:(id)a3 userIdentifier:(id)a4 bundleIdentifier:(id)a5 displayName:(id)a6 service:(id)a7 teamIdentifier:(id)a8 label:(id)a9 extractionInfo:(id)a10 recordId:(id)a11
+- (SGSocialProfile)initWithUsername:(id)username userIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier displayName:(id)name service:(id)service teamIdentifier:(id)teamIdentifier label:(id)label extractionInfo:(id)self0 recordId:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
+  usernameCopy = username;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  serviceCopy = service;
+  teamIdentifierCopy = teamIdentifier;
   v37.receiver = self;
   v37.super_class = SGSocialProfile;
-  v23 = [(SGLabeledObject *)&v37 initWithLabel:a9 extractionInfo:a10 recordId:a11];
+  v23 = [(SGLabeledObject *)&v37 initWithLabel:label extractionInfo:info recordId:id];
   if (v23)
   {
-    v24 = [v17 copy];
+    v24 = [usernameCopy copy];
     username = v23->_username;
     v23->_username = v24;
 
-    v26 = [v18 copy];
+    v26 = [identifierCopy copy];
     userIdentifier = v23->_userIdentifier;
     v23->_userIdentifier = v26;
 
-    v28 = [v19 copy];
+    v28 = [bundleIdentifierCopy copy];
     bundleIdentifier = v23->_bundleIdentifier;
     v23->_bundleIdentifier = v28;
 
-    v30 = [v20 copy];
+    v30 = [nameCopy copy];
     displayName = v23->_displayName;
     v23->_displayName = v30;
 
-    v32 = [v21 copy];
+    v32 = [serviceCopy copy];
     service = v23->_service;
     v23->_service = v32;
 
-    v34 = [v22 copy];
+    v34 = [teamIdentifierCopy copy];
     teamIdentifier = v23->_teamIdentifier;
     v23->_teamIdentifier = v34;
   }

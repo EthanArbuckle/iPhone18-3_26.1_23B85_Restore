@@ -1,16 +1,16 @@
 @interface SFCapsulePageLayoutFadeOut
 - (NSArray)supplementaryIdentifiers;
 - (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)init;
-- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)a3;
-- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)a3 baseLayout:(id)a4;
+- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)container;
+- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)container baseLayout:(id)layout;
 - (double)pageWidth;
-- (id)capsuleInfoForPage:(id)a3;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
+- (id)capsuleInfoForPage:(id)page;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutFadeOut
 
-- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)a3
+- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)container
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -21,7 +21,7 @@
   return [(SFCapsulePageLayoutFadeOut *)&v5 init];
 }
 
-- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)a3 baseLayout:(id)a4
+- (_TtC12MobileSafari26SFCapsulePageLayoutFadeOut)initWithContainer:(id)container baseLayout:(id)layout
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -56,8 +56,8 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    v6 = [v4 supplementaryIdentifiers];
+    selfCopy = self;
+    supplementaryIdentifiers = [v4 supplementaryIdentifiers];
     swift_unknownObjectRelease();
     sub_18BC20D98();
   }
@@ -67,19 +67,19 @@
   return v7;
 }
 
-- (id)capsuleInfoForPage:(id)a3
+- (id)capsuleInfoForPage:(id)page
 {
   swift_beginAccess();
   result = swift_unknownObjectWeakLoadStrong();
   if (result)
   {
-    v5 = [result capsuleInfoForPage_];
+    capsuleInfoForPage_ = [result capsuleInfoForPage_];
     swift_unknownObjectRelease();
     v6 = OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_alpha;
     swift_beginAccess();
-    *&v5[v6] = 0;
+    *&capsuleInfoForPage_[v6] = 0;
 
-    return v5;
+    return capsuleInfoForPage_;
   }
 
   else
@@ -90,13 +90,13 @@
   return result;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
   v6 = sub_18BC20BD8();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = sub_18BAB1C40(v6, v8, a4);
+  selfCopy = self;
+  v10 = sub_18BAB1C40(v6, v8, page);
   swift_unknownObjectRelease();
 
   return v10;

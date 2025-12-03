@@ -1,9 +1,9 @@
 @interface PXOverlayFeedLayoutGenerator
-- ($AD15B6C785738E514ABCC493A298F7F8)_frameForItemAtIndex:(SEL)a3 in:(int64_t)a4 verticalOffset:(CGRect *)a5;
+- ($AD15B6C785738E514ABCC493A298F7F8)_frameForItemAtIndex:(SEL)index in:(int64_t)in verticalOffset:(CGRect *)offset;
 - (CGPoint)visibleOrigin;
-- (CGRect)_frameForItemInColumn:(int64_t)a3 columnCount:(int64_t)a4 verticalOffset:(double)a5;
-- (void)setVisibleOrigin:(CGPoint)a3 updateFirstItemPosition:(BOOL)a4;
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5 zPositions:(float *)a6;
+- (CGRect)_frameForItemInColumn:(int64_t)column columnCount:(int64_t)count verticalOffset:(double)offset;
+- (void)setVisibleOrigin:(CGPoint)origin updateFirstItemPosition:(BOOL)position;
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds zPositions:(float *)positions;
 @end
 
 @implementation PXOverlayFeedLayoutGenerator
@@ -17,19 +17,19 @@
   return result;
 }
 
-- (CGRect)_frameForItemInColumn:(int64_t)a3 columnCount:(int64_t)a4 verticalOffset:(double)a5
+- (CGRect)_frameForItemInColumn:(int64_t)column columnCount:(int64_t)count verticalOffset:(double)offset
 {
-  v5 = [(PXOverlayFeedLayoutGenerator *)self metrics];
-  [v5 referenceSize];
-  [v5 contentInsets];
+  metrics = [(PXOverlayFeedLayoutGenerator *)self metrics];
+  [metrics referenceSize];
+  [metrics contentInsets];
   PXEdgeInsetsInsetSize();
 }
 
-- ($AD15B6C785738E514ABCC493A298F7F8)_frameForItemAtIndex:(SEL)a3 in:(int64_t)a4 verticalOffset:(CGRect *)a5
+- ($AD15B6C785738E514ABCC493A298F7F8)_frameForItemAtIndex:(SEL)index in:(int64_t)in verticalOffset:(CGRect *)offset
 {
-  v38 = [(PXOverlayFeedLayoutGenerator *)self metrics:a4];
+  v38 = [(PXOverlayFeedLayoutGenerator *)self metrics:in];
   [v38 referenceSize];
-  if (!a4)
+  if (!in)
   {
     v17 = v10;
     v18 = v11;
@@ -43,22 +43,22 @@
     goto LABEL_20;
   }
 
-  v12 = [v38 useSimpleLayout];
-  v13 = [(PXOverlayFeedLayoutGenerator *)self itemCount];
-  v14 = a4 - 1;
-  v15 = (a4 - 1) % 15;
-  if (!v12)
+  useSimpleLayout = [v38 useSimpleLayout];
+  itemCount = [(PXOverlayFeedLayoutGenerator *)self itemCount];
+  v14 = in - 1;
+  v15 = (in - 1) % 15;
+  if (!useSimpleLayout)
   {
-    v14 = (a4 - 1) % 15;
+    v14 = (in - 1) % 15;
   }
 
-  if (v12)
+  if (useSimpleLayout)
   {
     goto LABEL_5;
   }
 
-  v16 = (v13 - 1) % 15;
-  if (15 * ((v13 - 1) / 15) >= a4)
+  v16 = (itemCount - 1) % 15;
+  if (15 * ((itemCount - 1) / 15) >= in)
   {
     v25 = 1;
     if (v15 < 0xE)
@@ -213,76 +213,76 @@ LABEL_21:
   return result;
 }
 
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5 zPositions:(float *)a6
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds zPositions:(float *)positions
 {
-  v12 = [(PXOverlayFeedLayoutGenerator *)self itemCount];
-  v13 = [(PXOverlayFeedLayoutGenerator *)self metrics];
-  [v13 referenceSize];
+  itemCount = [(PXOverlayFeedLayoutGenerator *)self itemCount];
+  metrics = [(PXOverlayFeedLayoutGenerator *)self metrics];
+  [metrics referenceSize];
   v15 = v14;
   v17 = v16;
-  [v13 contentInsets];
+  [metrics contentInsets];
   v19 = v18;
   v21 = v20;
   if (v15 > 0.0)
   {
-    if (v12)
+    if (itemCount)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PXOverlayFeedLayoutGenerator.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"itemCount > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXOverlayFeedLayoutGenerator.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"itemCount > 0"}];
 
     goto LABEL_5;
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"PXOverlayFeedLayoutGenerator.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"referenceSize.width > 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXOverlayFeedLayoutGenerator.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"referenceSize.width > 0"}];
 
-  if (!v12)
+  if (!itemCount)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
   v22 = 0;
-  v23 = a4;
+  rectsCopy = rects;
   do
   {
-    [(PXOverlayFeedLayoutGenerator *)self _frameForItemAtIndex:v22 in:a4 verticalOffset:0.0];
-    v23->origin = 0u;
-    v23->size = 0u;
-    ++v23;
-    a5[v22] = 0;
-    a6[v22++] = -1.0;
+    [(PXOverlayFeedLayoutGenerator *)self _frameForItemAtIndex:v22 in:rects verticalOffset:0.0];
+    rectsCopy->origin = 0u;
+    rectsCopy->size = 0u;
+    ++rectsCopy;
+    kinds[v22] = 0;
+    positions[v22++] = -1.0;
   }
 
-  while (v12 != v22);
+  while (itemCount != v22);
 LABEL_5:
-  *a6 = 0.0;
-  a3->width = v15;
-  MaxY = CGRectGetMaxY(a4[v12 - 1]);
-  if (v12 > 1)
+  *positions = 0.0;
+  size->width = v15;
+  MaxY = CGRectGetMaxY(rects[itemCount - 1]);
+  if (itemCount > 1)
   {
     v25 = v21 + v19 + MaxY;
-    MaxY = v17 + CGRectGetMinY(a4[1]) - v19;
+    MaxY = v17 + CGRectGetMinY(rects[1]) - v19;
     if (v25 >= MaxY)
     {
       MaxY = v25;
     }
   }
 
-  a3->height = MaxY;
+  size->height = MaxY;
 }
 
-- (void)setVisibleOrigin:(CGPoint)a3 updateFirstItemPosition:(BOOL)a4
+- (void)setVisibleOrigin:(CGPoint)origin updateFirstItemPosition:(BOOL)position
 {
-  if (a3.x != self->_visibleOrigin.x || a3.y != self->_visibleOrigin.y)
+  if (origin.x != self->_visibleOrigin.x || origin.y != self->_visibleOrigin.y)
   {
-    v5 = a4;
+    positionCopy = position;
     [(PXOverlayFeedLayoutGenerator *)self setVisibleOrigin:?];
-    if (v5)
+    if (positionCopy)
     {
 
       [(PXCachingLayoutGenerator *)self invalidate];

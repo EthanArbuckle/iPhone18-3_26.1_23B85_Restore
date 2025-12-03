@@ -1,5 +1,5 @@
 @interface TUIVideoView
-+ (id)renderModelWithIdentifier:(id)a3 url:(id)a4 posterFrameResource:(id)a5 videoId:(id)a6 loop:(BOOL)a7 muted:(BOOL)a8 allowFullScreen:(BOOL)a9 autoPlay:(BOOL)a10 showPlaybackControls:(BOOL)a11 gravity:(id)a12 cornerRadius:(double)a13 topTriggerName:(id)a14 bottomTriggerName:(id)a15 leftTriggerName:(id)a16 rightTriggerName:(id)a17 actionHandler:(id)a18;
++ (id)renderModelWithIdentifier:(id)identifier url:(id)url posterFrameResource:(id)resource videoId:(id)id loop:(BOOL)loop muted:(BOOL)muted allowFullScreen:(BOOL)screen autoPlay:(BOOL)self0 showPlaybackControls:(BOOL)self1 gravity:(id)self2 cornerRadius:(double)self3 topTriggerName:(id)self4 bottomTriggerName:(id)self5 leftTriggerName:(id)self6 rightTriggerName:(id)self7 actionHandler:(id)self8;
 - (BOOL)isPlaying;
 - (TUIImageResource)posterFrameResource;
 - (double)currentTime;
@@ -11,55 +11,55 @@
 - (void)_configurePlayButtonView;
 - (void)_configurePosterFrameImageView;
 - (void)_configureVideoViewController;
-- (void)_configureWithModel:(id)a3;
-- (void)_handleFullScreenTapGesture:(id)a3;
-- (void)_handlePlayTapGesture:(id)a3;
+- (void)_configureWithModel:(id)model;
+- (void)_handleFullScreenTapGesture:(id)gesture;
+- (void)_handlePlayTapGesture:(id)gesture;
 - (void)_registerTriggers;
-- (void)_reportAction:(unint64_t)a3 origin:(unint64_t)a4 videoId:(id)a5;
-- (void)_reportEvent:(unint64_t)a3 mediaTimePlayed:(double)a4 videoId:(id)a5;
-- (void)_setPlayButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setPosterFrameImageVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_reportAction:(unint64_t)action origin:(unint64_t)origin videoId:(id)id;
+- (void)_reportEvent:(unint64_t)event mediaTimePlayed:(double)played videoId:(id)id;
+- (void)_setPlayButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_setPosterFrameImageVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)_unregisterTriggers;
-- (void)_updateStateBasedSubviewsAnimated:(BOOL)a3;
+- (void)_updateStateBasedSubviewsAnimated:(BOOL)animated;
 - (void)_updateStateBasedTapGestureRecognizers;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
 - (void)didBecomeActiveHost;
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5;
-- (void)imageResourceDidChangeImage:(id)a3;
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event;
+- (void)imageResourceDidChangeImage:(id)image;
 - (void)layoutSubviews;
-- (void)managerAttemptingActionWithOrigin:(unint64_t)a3 actionCase:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playerViewController:(id)a3 metricsCollectionEventOccured:(int64_t)a4;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)playerWithVideoId:(id)a3 didChangeState:(unint64_t)a4;
-- (void)playerWithVideoId:(id)a3 didSetMuted:(BOOL)a4 mediaTimePlayed:(double)a5;
-- (void)setPlayerController:(id)a3;
-- (void)viewStateRestore:(id)a3;
+- (void)managerAttemptingActionWithOrigin:(unint64_t)origin actionCase:(unint64_t)case;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playerViewController:(id)controller metricsCollectionEventOccured:(int64_t)occured;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator;
+- (void)playerWithVideoId:(id)id didChangeState:(unint64_t)state;
+- (void)playerWithVideoId:(id)id didSetMuted:(BOOL)muted mediaTimePlayed:(double)played;
+- (void)setPlayerController:(id)controller;
+- (void)viewStateRestore:(id)restore;
 @end
 
 @implementation TUIVideoView
 
-+ (id)renderModelWithIdentifier:(id)a3 url:(id)a4 posterFrameResource:(id)a5 videoId:(id)a6 loop:(BOOL)a7 muted:(BOOL)a8 allowFullScreen:(BOOL)a9 autoPlay:(BOOL)a10 showPlaybackControls:(BOOL)a11 gravity:(id)a12 cornerRadius:(double)a13 topTriggerName:(id)a14 bottomTriggerName:(id)a15 leftTriggerName:(id)a16 rightTriggerName:(id)a17 actionHandler:(id)a18
++ (id)renderModelWithIdentifier:(id)identifier url:(id)url posterFrameResource:(id)resource videoId:(id)id loop:(BOOL)loop muted:(BOOL)muted allowFullScreen:(BOOL)screen autoPlay:(BOOL)self0 showPlaybackControls:(BOOL)self1 gravity:(id)self2 cornerRadius:(double)self3 topTriggerName:(id)self4 bottomTriggerName:(id)self5 leftTriggerName:(id)self6 rightTriggerName:(id)self7 actionHandler:(id)self8
 {
-  v37 = a7;
-  v38 = a8;
-  v22 = a18;
-  v23 = a17;
-  v24 = a16;
-  v25 = a15;
-  v26 = a14;
-  v27 = a12;
-  v28 = a6;
-  v29 = a5;
-  v30 = a4;
-  v36 = a3;
-  LOWORD(v34) = __PAIR16__(a11, a10);
-  v31 = [[_TUIRenderModelVideo alloc] initWithUrl:v30 posterFrameResource:v29 videoId:v28 loop:v37 muted:v38 allowFullScreen:a9 autoPlay:a13 showPlaybackControls:v34 gravity:v27 cornerRadius:v26 topTriggerName:v25 bottomTriggerName:v24 leftTriggerName:v23 rightTriggerName:v22 actionHandler:?];
+  loopCopy = loop;
+  mutedCopy = muted;
+  handlerCopy = handler;
+  rightTriggerNameCopy = rightTriggerName;
+  leftTriggerNameCopy = leftTriggerName;
+  triggerNameCopy = triggerName;
+  nameCopy = name;
+  gravityCopy = gravity;
+  idCopy = id;
+  resourceCopy = resource;
+  urlCopy = url;
+  identifierCopy = identifier;
+  LOWORD(v34) = __PAIR16__(controls, play);
+  v31 = [[_TUIRenderModelVideo alloc] initWithUrl:urlCopy posterFrameResource:resourceCopy videoId:idCopy loop:loopCopy muted:mutedCopy allowFullScreen:screen autoPlay:radius showPlaybackControls:v34 gravity:gravityCopy cornerRadius:nameCopy topTriggerName:triggerNameCopy bottomTriggerName:leftTriggerNameCopy leftTriggerName:rightTriggerNameCopy rightTriggerName:handlerCopy actionHandler:?];
 
-  v32 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierVideoView" identifier:v36 submodel:v31];
+  v32 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierVideoView" identifier:identifierCopy submodel:v31];
 
   return v32;
 }
@@ -67,14 +67,14 @@
 - (void)dealloc
 {
   [(AVPlayerController *)self->_playerController removeObserver:self forKeyPath:@"scrubbing" context:&off_261DE8];
-  v3 = [(TUIVideoView *)self videoViewController];
-  [v3 removeObserver:self forKeyPath:@"playerController" context:&off_261DE8];
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  [videoViewController removeObserver:self forKeyPath:@"playerController" context:&off_261DE8];
 
-  v4 = [(TUIVideoView *)self videoViewController];
-  [v4 removeObserver:self forKeyPath:@"readyForDisplay" context:&off_261DE8];
+  videoViewController2 = [(TUIVideoView *)self videoViewController];
+  [videoViewController2 removeObserver:self forKeyPath:@"readyForDisplay" context:&off_261DE8];
 
-  v5 = [(TUIVideoView *)self videoViewController];
-  [v5 removeFromParentViewController];
+  videoViewController3 = [(TUIVideoView *)self videoViewController];
+  [videoViewController3 removeFromParentViewController];
 
   WeakRetained = objc_loadWeakRetained(&self->_posterFrameResource);
   [WeakRetained removeInterest];
@@ -82,14 +82,14 @@
   v7 = objc_loadWeakRetained(&self->_posterFrameResource);
   [v7 removeObserver:self];
 
-  v8 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
 
-  if (v8)
+  if (videoId)
   {
-    v9 = [(TUIReusableBaseView *)self feedControllerHost];
-    v10 = [v9 videoPlayerManager];
-    v11 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-    [v10 endHostingForVideoId:v11 forHost:self];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    videoPlayerManager = [feedControllerHost videoPlayerManager];
+    videoId2 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+    [videoPlayerManager endHostingForVideoId:videoId2 forHost:self];
   }
 
   [(TUIVideoView *)self _unregisterTriggers];
@@ -98,49 +98,49 @@
   [(TUIVideoView *)&v12 dealloc];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = TUIVideoView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(TUIVideoView *)self _configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(TUIVideoView *)self _configureWithModel:submodel];
 }
 
-- (void)_configureWithModel:(id)a3
+- (void)_configureWithModel:(id)model
 {
-  v25 = a3;
-  if (([v25 isEqualToRenderModel:self->_renderModel] & 1) == 0)
+  modelCopy = model;
+  if (([modelCopy isEqualToRenderModel:self->_renderModel] & 1) == 0)
   {
     renderModel = self->_renderModel;
     if (renderModel)
     {
-      v6 = [(_TUIRenderModelVideo *)renderModel videoId];
-      v7 = [v25 videoId];
-      v8 = [v6 isEqual:v7];
+      videoId = [(_TUIRenderModelVideo *)renderModel videoId];
+      videoId2 = [modelCopy videoId];
+      v8 = [videoId isEqual:videoId2];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [(TUIReusableBaseView *)self feedControllerHost];
-        v10 = [v9 videoPlayerManager];
-        [v10 endHostingForVideoId:v6 forHost:self];
+        feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+        videoPlayerManager = [feedControllerHost videoPlayerManager];
+        [videoPlayerManager endHostingForVideoId:videoId forHost:self];
       }
 
       [(TUIVideoView *)self _unregisterTriggers];
     }
 
-    objc_storeStrong(&self->_renderModel, a3);
+    objc_storeStrong(&self->_renderModel, model);
     [(TUIVideoView *)self _registerTriggers];
     [(TUIVideoView *)self _configureFullscreenTapGestureRecognizer];
     [(TUIVideoView *)self _configureVideoViewController];
     [(TUIVideoView *)self _updateStateBasedTapGestureRecognizers];
     WeakRetained = objc_loadWeakRetained(&self->_posterFrameResource);
-    v12 = [(_TUIRenderModelVideo *)self->_renderModel posterFrameResource];
+    posterFrameResource = [(_TUIRenderModelVideo *)self->_renderModel posterFrameResource];
 
-    if (WeakRetained != v12)
+    if (WeakRetained != posterFrameResource)
     {
       v13 = objc_loadWeakRetained(&self->_posterFrameResource);
       [v13 removeInterest];
@@ -148,8 +148,8 @@
       v14 = objc_loadWeakRetained(&self->_posterFrameResource);
       [v14 removeObserver:self];
 
-      v15 = [(_TUIRenderModelVideo *)self->_renderModel posterFrameResource];
-      objc_storeWeak(&self->_posterFrameResource, v15);
+      posterFrameResource2 = [(_TUIRenderModelVideo *)self->_renderModel posterFrameResource];
+      objc_storeWeak(&self->_posterFrameResource, posterFrameResource2);
 
       v16 = objc_loadWeakRetained(&self->_posterFrameResource);
       [v16 addInterest];
@@ -178,12 +178,12 @@
       v19 = v18;
     }
 
-    v20 = [(_TUIRenderModelVideo *)self->_renderModel loop];
-    v21 = [(TUIReusableBaseView *)self feedControllerHost];
-    v22 = [v21 videoPlayerManager];
-    v23 = [v25 url];
-    v24 = [v25 videoId];
-    [v22 configureHostWithPlayerForURL:v23 videoId:v24 host:self options:v19 | v20];
+    loop = [(_TUIRenderModelVideo *)self->_renderModel loop];
+    feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+    videoPlayerManager2 = [feedControllerHost2 videoPlayerManager];
+    v23 = [modelCopy url];
+    videoId3 = [modelCopy videoId];
+    [videoPlayerManager2 configureHostWithPlayerForURL:v23 videoId:videoId3 host:self options:v19 | loop];
   }
 }
 
@@ -200,9 +200,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUIVideoView *)self videoViewController];
-  v12 = [v11 view];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  view = [videoViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 
   [(UIImageView *)self->_posterFrameImageView setFrame:v4, v6, v8, v10];
   [(TUIVideoView *)self center];
@@ -224,12 +224,12 @@
 
 - (double)currentTime
 {
-  v2 = [(TUIVideoView *)self videoViewController];
-  v3 = [v2 player];
-  v4 = v3;
-  if (v3)
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  player = [videoViewController player];
+  v4 = player;
+  if (player)
   {
-    [v3 currentTime];
+    [player currentTime];
   }
 
   else
@@ -244,13 +244,13 @@
 
 - (double)duration
 {
-  v2 = [(TUIVideoView *)self videoViewController];
-  v3 = [v2 player];
-  v4 = [v3 currentItem];
-  v5 = v4;
-  if (v4)
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  player = [videoViewController player];
+  currentItem = [player currentItem];
+  v5 = currentItem;
+  if (currentItem)
   {
-    [v4 duration];
+    [currentItem duration];
   }
 
   else
@@ -265,29 +265,29 @@
 
 - (BOOL)isPlaying
 {
-  v3 = [(TUIReusableBaseView *)self feedControllerHost];
-  v4 = [v3 videoPlayerManager];
-  v5 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-  v6 = [v4 playerWithVideoIdIsPlaying:v5];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  videoPlayerManager = [feedControllerHost videoPlayerManager];
+  videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  v6 = [videoPlayerManager playerWithVideoIdIsPlaying:videoId];
 
   return v6;
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   playerController = self->_playerController;
-  if (playerController != v5)
+  if (playerController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     if (playerController)
     {
       [(AVPlayerController *)playerController removeObserver:self forKeyPath:@"scrubbing" context:&off_261DE8];
     }
 
-    objc_storeStrong(&self->_playerController, a3);
+    objc_storeStrong(&self->_playerController, controller);
     [(AVPlayerController *)self->_playerController addObserver:self forKeyPath:@"scrubbing" options:1 context:&off_261DE8];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
@@ -298,130 +298,130 @@
   return v2;
 }
 
-- (void)viewStateRestore:(id)a3
+- (void)viewStateRestore:(id)restore
 {
-  if (a3)
+  if (restore)
   {
-    v4 = [a3 muted];
+    muted = [restore muted];
 
-    [(TUIVideoView *)self setShouldMuteOnNextDisplay:v4];
+    [(TUIVideoView *)self setShouldMuteOnNextDisplay:muted];
   }
 }
 
 - (void)_registerTriggers
 {
-  v3 = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
-  if ([v3 length])
+  topTriggerName = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
+  if ([topTriggerName length])
   {
-    v4 = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
-    v5 = [v4 length];
+    bottomTriggerName = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
+    v5 = [bottomTriggerName length];
 
     if (!v5)
     {
       goto LABEL_5;
     }
 
-    v6 = [(TUIReusableBaseView *)self feedControllerHost];
-    v7 = [v6 triggerStateManager];
-    v8 = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
-    [v7 addObserver:self forTrigger:v8];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager = [feedControllerHost triggerStateManager];
+    topTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
+    [triggerStateManager addObserver:self forTrigger:topTriggerName2];
 
-    v3 = [(TUIReusableBaseView *)self feedControllerHost];
-    v9 = [v3 triggerStateManager];
-    v10 = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
-    [v9 addObserver:self forTrigger:v10];
+    topTriggerName = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager2 = [topTriggerName triggerStateManager];
+    bottomTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
+    [triggerStateManager2 addObserver:self forTrigger:bottomTriggerName2];
   }
 
 LABEL_5:
-  v18 = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
-  if ([v18 length])
+  leftTriggerName = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
+  if ([leftTriggerName length])
   {
-    v11 = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
-    v12 = [v11 length];
+    rightTriggerName = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
+    v12 = [rightTriggerName length];
 
     if (!v12)
     {
       return;
     }
 
-    v13 = [(TUIReusableBaseView *)self feedControllerHost];
-    v14 = [v13 triggerStateManager];
-    v15 = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
-    [v14 addObserver:self forTrigger:v15];
+    feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager3 = [feedControllerHost2 triggerStateManager];
+    leftTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
+    [triggerStateManager3 addObserver:self forTrigger:leftTriggerName2];
 
-    v18 = [(TUIReusableBaseView *)self feedControllerHost];
-    v16 = [v18 triggerStateManager];
-    v17 = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
-    [v16 addObserver:self forTrigger:v17];
+    leftTriggerName = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager4 = [leftTriggerName triggerStateManager];
+    rightTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
+    [triggerStateManager4 addObserver:self forTrigger:rightTriggerName2];
   }
 }
 
 - (void)_unregisterTriggers
 {
-  v3 = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
-  if ([v3 length])
+  topTriggerName = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
+  if ([topTriggerName length])
   {
-    v4 = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
-    v5 = [v4 length];
+    bottomTriggerName = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
+    v5 = [bottomTriggerName length];
 
     if (!v5)
     {
       goto LABEL_5;
     }
 
-    v6 = [(TUIReusableBaseView *)self feedControllerHost];
-    v7 = [v6 triggerStateManager];
-    v8 = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
-    [v7 removeObserver:self forTrigger:v8];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager = [feedControllerHost triggerStateManager];
+    topTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
+    [triggerStateManager removeObserver:self forTrigger:topTriggerName2];
 
-    v3 = [(TUIReusableBaseView *)self feedControllerHost];
-    v9 = [v3 triggerStateManager];
-    v10 = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
-    [v9 removeObserver:self forTrigger:v10];
+    topTriggerName = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager2 = [topTriggerName triggerStateManager];
+    bottomTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
+    [triggerStateManager2 removeObserver:self forTrigger:bottomTriggerName2];
   }
 
 LABEL_5:
-  v18 = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
-  if ([v18 length])
+  leftTriggerName = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
+  if ([leftTriggerName length])
   {
-    v11 = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
-    v12 = [v11 length];
+    rightTriggerName = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
+    v12 = [rightTriggerName length];
 
     if (!v12)
     {
       return;
     }
 
-    v13 = [(TUIReusableBaseView *)self feedControllerHost];
-    v14 = [v13 triggerStateManager];
-    v15 = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
-    [v14 removeObserver:self forTrigger:v15];
+    feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager3 = [feedControllerHost2 triggerStateManager];
+    leftTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
+    [triggerStateManager3 removeObserver:self forTrigger:leftTriggerName2];
 
-    v18 = [(TUIReusableBaseView *)self feedControllerHost];
-    v16 = [v18 triggerStateManager];
-    v17 = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
-    [v16 removeObserver:self forTrigger:v17];
+    leftTriggerName = [(TUIReusableBaseView *)self feedControllerHost];
+    triggerStateManager4 = [leftTriggerName triggerStateManager];
+    rightTriggerName2 = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
+    [triggerStateManager4 removeObserver:self forTrigger:rightTriggerName2];
   }
 }
 
-- (void)_setPosterFrameImageVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPosterFrameImageVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(TUIVideoView *)self posterFrameImageView];
-  [v7 alpha];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  posterFrameImageView = [(TUIVideoView *)self posterFrameImageView];
+  [posterFrameImageView alpha];
   v9 = v8;
 
-  if ((((v9 != 1.0) ^ v5) & 1) == 0)
+  if ((((v9 != 1.0) ^ visibleCopy) & 1) == 0)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_11113C;
       v12[3] = &unk_25EF60;
       v12[4] = self;
-      v13 = v5;
+      v13 = visibleCopy;
       [UIView animateWithDuration:v12 animations:0 completion:0.2];
     }
 
@@ -432,36 +432,36 @@ LABEL_5:
       v10[2] = sub_111194;
       v10[3] = &unk_25EF60;
       v10[4] = self;
-      v11 = v5;
+      v11 = visibleCopy;
       [UIView performWithoutAnimation:v10];
     }
   }
 }
 
-- (void)_setPlayButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPlayButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(TUIVideoView *)self playButton];
-  [v7 alpha];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  playButton = [(TUIVideoView *)self playButton];
+  [playButton alpha];
   v9 = v8;
 
-  if ((((v9 != 1.0) ^ v5) & 1) == 0)
+  if ((((v9 != 1.0) ^ visibleCopy) & 1) == 0)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_111360;
       v14[3] = &unk_25EF60;
       v14[4] = self;
-      v15 = v5;
+      v15 = visibleCopy;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1113B8;
       v12[3] = &unk_261DF8;
       v12[4] = self;
-      v13 = v5;
+      v13 = visibleCopy;
       [UIView animateWithDuration:v14 animations:v12 completion:0.3];
     }
 
@@ -472,7 +472,7 @@ LABEL_5:
       v10[2] = sub_111438;
       v10[3] = &unk_25EF60;
       v10[4] = self;
-      v11 = v5;
+      v11 = visibleCopy;
       [UIView performWithoutAnimation:v10];
     }
   }
@@ -480,115 +480,115 @@ LABEL_5:
 
 - (void)_configureVideoViewController
 {
-  v3 = [(TUIVideoView *)self videoViewController];
+  videoViewController = [(TUIVideoView *)self videoViewController];
 
-  if (!v3)
+  if (!videoViewController)
   {
     v4 = objc_alloc_init(AVPlayerViewController);
     [(TUIVideoView *)self setVideoViewController:v4];
 
-    v5 = [(TUIVideoView *)self videoViewController];
-    [v5 setDelegate:self];
+    videoViewController2 = [(TUIVideoView *)self videoViewController];
+    [videoViewController2 setDelegate:self];
 
-    v6 = [(TUIVideoView *)self videoViewController];
-    [v6 setCanPausePlaybackWhenExitingFullScreen:0];
+    videoViewController3 = [(TUIVideoView *)self videoViewController];
+    [videoViewController3 setCanPausePlaybackWhenExitingFullScreen:0];
 
-    v7 = [(TUIVideoView *)self videoViewController];
-    [v7 setCanToggleVideoGravityWhenEmbeddedInline:0];
+    videoViewController4 = [(TUIVideoView *)self videoViewController];
+    [videoViewController4 setCanToggleVideoGravityWhenEmbeddedInline:0];
 
-    v8 = [(TUIVideoView *)self videoViewController];
-    [v8 setModalPresentationStyle:5];
+    videoViewController5 = [(TUIVideoView *)self videoViewController];
+    [videoViewController5 setModalPresentationStyle:5];
 
-    v9 = [(TUIVideoView *)self videoViewController];
-    [v9 setUpdatesNowPlayingInfoCenter:0];
+    videoViewController6 = [(TUIVideoView *)self videoViewController];
+    [videoViewController6 setUpdatesNowPlayingInfoCenter:0];
 
-    v10 = [(TUIVideoView *)self videoViewController];
-    [v10 setAllowsPictureInPicturePlayback:0];
+    videoViewController7 = [(TUIVideoView *)self videoViewController];
+    [videoViewController7 setAllowsPictureInPicturePlayback:0];
 
-    v11 = [(TUIVideoView *)self videoViewController];
-    [v11 setExitsFullScreenWhenPlaybackEnds:1];
+    videoViewController8 = [(TUIVideoView *)self videoViewController];
+    [videoViewController8 setExitsFullScreenWhenPlaybackEnds:1];
 
-    v12 = [(TUIVideoView *)self videoViewController];
-    v13 = [v12 view];
-    [v13 setClipsToBounds:1];
+    videoViewController9 = [(TUIVideoView *)self videoViewController];
+    view = [videoViewController9 view];
+    [view setClipsToBounds:1];
 
-    v14 = [(TUIVideoView *)self videoViewController];
-    v15 = [v14 view];
-    v16 = [v15 layer];
-    [v16 setMasksToBounds:1];
+    videoViewController10 = [(TUIVideoView *)self videoViewController];
+    view2 = [videoViewController10 view];
+    layer = [view2 layer];
+    [layer setMasksToBounds:1];
 
-    v17 = [(TUIReusableBaseView *)self feedControllerHost];
-    v18 = [(TUIVideoView *)self videoViewController];
-    [v17 addChildViewController:v18];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    videoViewController11 = [(TUIVideoView *)self videoViewController];
+    [feedControllerHost addChildViewController:videoViewController11];
 
-    v19 = [(TUIVideoView *)self videoViewController];
-    v20 = [v19 view];
-    [(TUIVideoView *)self addSubview:v20];
+    videoViewController12 = [(TUIVideoView *)self videoViewController];
+    view3 = [videoViewController12 view];
+    [(TUIVideoView *)self addSubview:view3];
 
-    v21 = [(TUIReusableBaseView *)self feedControllerHost];
-    v22 = [(TUIVideoView *)self videoViewController];
-    [v21 didAddChildViewController:v22];
+    feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+    videoViewController13 = [(TUIVideoView *)self videoViewController];
+    [feedControllerHost2 didAddChildViewController:videoViewController13];
 
-    v23 = [(TUIVideoView *)self videoViewController];
-    [v23 addObserver:self forKeyPath:@"readyForDisplay" options:5 context:&off_261DE8];
+    videoViewController14 = [(TUIVideoView *)self videoViewController];
+    [videoViewController14 addObserver:self forKeyPath:@"readyForDisplay" options:5 context:&off_261DE8];
 
-    v24 = [(TUIVideoView *)self videoViewController];
-    [v24 addObserver:self forKeyPath:@"playerController" options:1 context:&off_261DE8];
+    videoViewController15 = [(TUIVideoView *)self videoViewController];
+    [videoViewController15 addObserver:self forKeyPath:@"playerController" options:1 context:&off_261DE8];
   }
 
   isInFullScreen = self->_isInFullScreen;
-  v26 = [(TUIVideoView *)self videoViewController];
-  v27 = v26;
+  videoViewController16 = [(TUIVideoView *)self videoViewController];
+  v27 = videoViewController16;
   if (isInFullScreen)
   {
-    [v26 setShowsPlaybackControls:1];
+    [videoViewController16 setShowsPlaybackControls:1];
 
-    v28 = [(TUIVideoView *)self videoViewController];
-    [v28 setCanHidePlaybackControls:1];
+    videoViewController17 = [(TUIVideoView *)self videoViewController];
+    [videoViewController17 setCanHidePlaybackControls:1];
     v29 = 0;
   }
 
   else
   {
-    [v26 setCanHidePlaybackControls:0];
+    [videoViewController16 setCanHidePlaybackControls:0];
 
-    v30 = [(_TUIRenderModelVideo *)self->_renderModel gravity];
-    v31 = [(TUIVideoView *)self videoViewController];
-    [v31 setVideoGravity:v30];
+    gravity = [(_TUIRenderModelVideo *)self->_renderModel gravity];
+    videoViewController18 = [(TUIVideoView *)self videoViewController];
+    [videoViewController18 setVideoGravity:gravity];
 
     [(_TUIRenderModelVideo *)self->_renderModel cornerRadius];
     v33 = v32;
-    v34 = [(TUIVideoView *)self videoViewController];
-    v35 = [v34 view];
-    v36 = [v35 layer];
-    [v36 setCornerRadius:v33];
+    videoViewController19 = [(TUIVideoView *)self videoViewController];
+    view4 = [videoViewController19 view];
+    layer2 = [view4 layer];
+    [layer2 setCornerRadius:v33];
 
-    v37 = [(_TUIRenderModelVideo *)self->_renderModel allowFullScreen];
-    v38 = [(TUIVideoView *)self videoViewController];
-    [v38 setAllowsEnteringFullScreen:v37];
+    allowFullScreen = [(_TUIRenderModelVideo *)self->_renderModel allowFullScreen];
+    videoViewController20 = [(TUIVideoView *)self videoViewController];
+    [videoViewController20 setAllowsEnteringFullScreen:allowFullScreen];
 
-    v39 = [(_TUIRenderModelVideo *)self->_renderModel showPlaybackControls];
-    v28 = [(TUIVideoView *)self videoViewController];
-    [v28 setShowsPlaybackControls:v39];
+    showPlaybackControls = [(_TUIRenderModelVideo *)self->_renderModel showPlaybackControls];
+    videoViewController17 = [(TUIVideoView *)self videoViewController];
+    [videoViewController17 setShowsPlaybackControls:showPlaybackControls];
     v29 = 1;
   }
 
-  v40 = [(TUIVideoView *)self videoViewController];
-  [v40 setPreferredUnobscuredArea:v29];
+  videoViewController21 = [(TUIVideoView *)self videoViewController];
+  [videoViewController21 setPreferredUnobscuredArea:v29];
 }
 
-- (void)_handleFullScreenTapGesture:(id)a3
+- (void)_handleFullScreenTapGesture:(id)gesture
 {
-  v3 = [(TUIVideoView *)self videoViewController];
-  [v3 enterFullScreenWithCompletion:0];
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  [videoViewController enterFullScreenWithCompletion:0];
 }
 
-- (void)_handlePlayTapGesture:(id)a3
+- (void)_handlePlayTapGesture:(id)gesture
 {
-  v6 = [(TUIReusableBaseView *)self feedControllerHost];
-  v4 = [v6 videoPlayerManager];
-  v5 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-  [v4 hostWantsToPlayVideoWithVideoId:v5 requestingHost:self isTriggerInitiated:0];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  videoPlayerManager = [feedControllerHost videoPlayerManager];
+  videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  [videoPlayerManager hostWantsToPlayVideoWithVideoId:videoId requestingHost:self isTriggerInitiated:0];
 }
 
 - (void)_configureFullscreenTapGestureRecognizer
@@ -609,14 +609,14 @@ LABEL_5:
     posterFrameImageView = self->_posterFrameImageView;
     self->_posterFrameImageView = v3;
 
-    v5 = [(UIImageView *)self->_posterFrameImageView layer];
-    [v5 setMasksToBounds:1];
+    layer = [(UIImageView *)self->_posterFrameImageView layer];
+    [layer setMasksToBounds:1];
 
     [(TUIVideoView *)self addSubview:self->_posterFrameImageView];
   }
 
-  v12 = [(_TUIRenderModelVideo *)self->_renderModel gravity];
-  if ([v12 isEqualToString:AVLayerVideoGravityResizeAspect])
+  gravity = [(_TUIRenderModelVideo *)self->_renderModel gravity];
+  if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect])
   {
     v6 = self->_posterFrameImageView;
     v7 = 1;
@@ -624,7 +624,7 @@ LABEL_5:
 
   else
   {
-    v8 = [v12 isEqualToString:AVLayerVideoGravityResizeAspectFill];
+    v8 = [gravity isEqualToString:AVLayerVideoGravityResizeAspectFill];
     v6 = self->_posterFrameImageView;
     if (v8)
     {
@@ -640,8 +640,8 @@ LABEL_5:
   [(UIImageView *)v6 setContentMode:v7];
   [(_TUIRenderModelVideo *)self->_renderModel cornerRadius];
   v10 = v9;
-  v11 = [(UIImageView *)self->_posterFrameImageView layer];
-  [v11 setCornerRadius:v10];
+  layer2 = [(UIImageView *)self->_posterFrameImageView layer];
+  [layer2 setCornerRadius:v10];
 }
 
 - (void)_configurePlayButtonView
@@ -677,28 +677,28 @@ LABEL_5:
   }
 }
 
-- (void)_updateStateBasedSubviewsAnimated:(BOOL)a3
+- (void)_updateStateBasedSubviewsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(TUIReusableBaseView *)self feedControllerHost];
-  v6 = [v5 videoPlayerManager];
-  v7 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-  v8 = [v6 stateForPlayerWithVideoId:v7];
+  animatedCopy = animated;
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  videoPlayerManager = [feedControllerHost videoPlayerManager];
+  videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  v8 = [videoPlayerManager stateForPlayerWithVideoId:videoId];
 
-  v9 = [(TUIVideoView *)self videoViewController];
-  v10 = [v9 isReadyForDisplay];
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  isReadyForDisplay = [videoViewController isReadyForDisplay];
 
-  [(TUIVideoView *)self _setPosterFrameImageVisible:v10 ^ 1 animated:v3];
+  [(TUIVideoView *)self _setPosterFrameImageVisible:isReadyForDisplay ^ 1 animated:animatedCopy];
   if (v8 == &dword_4 + 1 || v8 == &dword_0 + 3)
   {
-    v12 = ![(_TUIRenderModelVideo *)self->_renderModel showPlaybackControls]&& ((self->_isInFullScreen | v10 ^ 1) & 1) == 0;
-    [(TUIVideoView *)self _setPlayButtonVisible:v12 animated:v3];
+    v12 = ![(_TUIRenderModelVideo *)self->_renderModel showPlaybackControls]&& ((self->_isInFullScreen | isReadyForDisplay ^ 1) & 1) == 0;
+    [(TUIVideoView *)self _setPlayButtonVisible:v12 animated:animatedCopy];
   }
 
   else
   {
-    [(TUIVideoView *)self _setPlayButtonVisible:0 animated:v3];
-    if (((v8 == &dword_8 + 1) & v10) == 1)
+    [(TUIVideoView *)self _setPlayButtonVisible:0 animated:animatedCopy];
+    if (((v8 == &dword_8 + 1) & isReadyForDisplay) == 1)
     {
       activityIndicatorView = self->_activityIndicatorView;
 
@@ -714,10 +714,10 @@ LABEL_5:
 
 - (void)_updateStateBasedTapGestureRecognizers
 {
-  v3 = [(TUIReusableBaseView *)self feedControllerHost];
-  v4 = [v3 videoPlayerManager];
-  v5 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-  v6 = [v4 stateForPlayerWithVideoId:v5];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  videoPlayerManager = [feedControllerHost videoPlayerManager];
+  videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  v6 = [videoPlayerManager stateForPlayerWithVideoId:videoId];
 
   if (self->_isInFullScreen || [(_TUIRenderModelVideo *)self->_renderModel showPlaybackControls]|| ([(_TUIRenderModelVideo *)self->_renderModel allowFullScreen]? (v7 = v6 == &dword_4) : (v7 = 0), !v7))
   {
@@ -728,9 +728,9 @@ LABEL_5:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Removing fullscreen tap gesture recognizer", v12, 2u);
     }
 
-    v9 = [(TUIVideoView *)self videoViewController];
-    v10 = [v9 view];
-    [v10 removeGestureRecognizer:self->_fullScreenTapGesture];
+    videoViewController = [(TUIVideoView *)self videoViewController];
+    view = [videoViewController view];
+    [view removeGestureRecognizer:self->_fullScreenTapGesture];
   }
 
   else
@@ -742,94 +742,94 @@ LABEL_5:
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Adding fullscreen tap gesture recognizer", buf, 2u);
     }
 
-    v9 = [(TUIVideoView *)self videoViewController];
-    v10 = [v9 view];
-    [v10 addGestureRecognizer:self->_fullScreenTapGesture];
+    videoViewController = [(TUIVideoView *)self videoViewController];
+    view = [videoViewController view];
+    [view addGestureRecognizer:self->_fullScreenTapGesture];
   }
 }
 
-- (void)_reportEvent:(unint64_t)a3 mediaTimePlayed:(double)a4 videoId:(id)a5
+- (void)_reportEvent:(unint64_t)event mediaTimePlayed:(double)played videoId:(id)id
 {
-  v8 = a5;
+  idCopy = id;
   v9 = [TUIVideoEventMetadata alloc];
-  v10 = [(TUIVideoView *)self videoMode];
-  v11 = [(TUIVideoView *)self videoViewController];
-  v12 = [v11 player];
-  v13 = [v12 isMuted];
-  v14 = [(TUIVideoView *)self isPlaying];
+  videoMode = [(TUIVideoView *)self videoMode];
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  player = [videoViewController player];
+  isMuted = [player isMuted];
+  isPlaying = [(TUIVideoView *)self isPlaying];
   [(TUIVideoView *)self duration];
-  v16 = [(TUIVideoEventMetadata *)v9 initWithEventCase:a3 mode:v10 isMuted:v13 isPlaying:v14 mediaTimePlayed:v8 mediaDuration:a4 mediaId:v15];
+  v16 = [(TUIVideoEventMetadata *)v9 initWithEventCase:event mode:videoMode isMuted:isMuted isPlaying:isPlaying mediaTimePlayed:idCopy mediaDuration:played mediaId:v15];
 
   if (v16)
   {
-    v17 = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
+    actionHandler = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
 
-    if (v17)
+    if (actionHandler)
     {
-      v18 = [(TUIVideoEventMetadata *)v16 serialize];
-      v19 = [(TUIVideoEventMetadata *)v16 triggerForEvent:a3];
-      v20 = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
+      serialize = [(TUIVideoEventMetadata *)v16 serialize];
+      v19 = [(TUIVideoEventMetadata *)v16 triggerForEvent:event];
+      actionHandler2 = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
       v22 = @"eventData";
-      v23 = v18;
+      v23 = serialize;
       v21 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      [v20 invoke:v19 arguments:v21];
+      [actionHandler2 invoke:v19 arguments:v21];
     }
   }
 }
 
-- (void)_reportAction:(unint64_t)a3 origin:(unint64_t)a4 videoId:(id)a5
+- (void)_reportAction:(unint64_t)action origin:(unint64_t)origin videoId:(id)id
 {
-  v8 = a5;
+  idCopy = id;
   v9 = [TUIVideoActionMetadata alloc];
-  v10 = [(TUIVideoView *)self videoMode];
-  v11 = [(TUIVideoView *)self videoViewController];
-  v12 = [v11 player];
-  v13 = [v12 isMuted];
-  v14 = [(TUIVideoView *)self isPlaying];
+  videoMode = [(TUIVideoView *)self videoMode];
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  player = [videoViewController player];
+  isMuted = [player isMuted];
+  isPlaying = [(TUIVideoView *)self isPlaying];
   [(TUIVideoView *)self currentTime];
   v16 = v15;
   [(TUIVideoView *)self duration];
-  v18 = [(TUIVideoActionMetadata *)v9 initWithActionCase:a3 origin:a4 mode:v10 isMuted:v13 isPlaying:v14 mediaTimePlayed:v8 mediaDuration:v16 mediaId:v17];
+  v18 = [(TUIVideoActionMetadata *)v9 initWithActionCase:action origin:origin mode:videoMode isMuted:isMuted isPlaying:isPlaying mediaTimePlayed:idCopy mediaDuration:v16 mediaId:v17];
 
   if (v18)
   {
-    v19 = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
+    actionHandler = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
 
-    if (v19)
+    if (actionHandler)
     {
-      v20 = [(TUIVideoActionMetadata *)v18 serialize];
-      v21 = [(TUIVideoActionMetadata *)v18 triggerForAction:a3];
-      v22 = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
+      serialize = [(TUIVideoActionMetadata *)v18 serialize];
+      v21 = [(TUIVideoActionMetadata *)v18 triggerForAction:action];
+      actionHandler2 = [(_TUIRenderModelVideo *)self->_renderModel actionHandler];
       v24 = @"actionData";
-      v25 = v20;
+      v25 = serialize;
       v23 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-      [v22 invoke:v21 arguments:v23];
+      [actionHandler2 invoke:v21 arguments:v23];
     }
   }
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1123B4;
   v5[3] = &unk_25DCA0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  imageCopy = image;
+  selfCopy = self;
+  v4 = imageCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)playerWithVideoId:(id)a3 didChangeState:(unint64_t)a4
+- (void)playerWithVideoId:(id)id didChangeState:(unint64_t)state
 {
-  [(TUIVideoView *)self _updateStateBasedSubviewsAnimated:1, a4];
+  [(TUIVideoView *)self _updateStateBasedSubviewsAnimated:1, state];
 
   [(TUIVideoView *)self _updateStateBasedTapGestureRecognizers];
 }
 
-- (void)playerWithVideoId:(id)a3 didSetMuted:(BOOL)a4 mediaTimePlayed:(double)a5
+- (void)playerWithVideoId:(id)id didSetMuted:(BOOL)muted mediaTimePlayed:(double)played
 {
-  if (a4)
+  if (muted)
   {
     v6 = 3;
   }
@@ -839,26 +839,26 @@ LABEL_5:
     v6 = 4;
   }
 
-  [(TUIVideoView *)self _reportEvent:v6 mediaTimePlayed:a3 videoId:a5];
+  [(TUIVideoView *)self _reportEvent:v6 mediaTimePlayed:id videoId:played];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == &off_261DE8)
+  pathCopy = path;
+  changeCopy = change;
+  if (context == &off_261DE8)
   {
-    if ([v10 isEqualToString:@"scrubbing"])
+    if ([pathCopy isEqualToString:@"scrubbing"])
     {
       v12 = objc_opt_class();
-      v13 = [v11 objectForKey:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
       v14 = TUIDynamicCast(v12, v13);
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
 
       [(TUIVideoView *)self currentTime];
       v17 = v16;
-      v18 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-      if (v15)
+      videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+      if (bOOLValue)
       {
         v19 = 10;
       }
@@ -868,25 +868,25 @@ LABEL_5:
         v19 = 11;
       }
 
-      [(TUIVideoView *)self _reportEvent:v19 mediaTimePlayed:v18 videoId:v17];
+      [(TUIVideoView *)self _reportEvent:v19 mediaTimePlayed:videoId videoId:v17];
     }
 
     else
     {
-      if ([v10 isEqualToString:@"readyForDisplay"])
+      if ([pathCopy isEqualToString:@"readyForDisplay"])
       {
         [(TUIVideoView *)self _updateStateBasedSubviewsAnimated:1];
         goto LABEL_11;
       }
 
-      if (![v10 isEqualToString:@"playerController"])
+      if (![pathCopy isEqualToString:@"playerController"])
       {
         goto LABEL_11;
       }
 
-      v18 = [(TUIVideoView *)self videoViewController];
-      v20 = [v18 playerController];
-      [(TUIVideoView *)self setPlayerController:v20];
+      videoId = [(TUIVideoView *)self videoViewController];
+      playerController = [videoId playerController];
+      [(TUIVideoView *)self setPlayerController:playerController];
     }
 
     goto LABEL_11;
@@ -894,49 +894,49 @@ LABEL_5:
 
   v21.receiver = self;
   v21.super_class = TUIVideoView;
-  [(TUIVideoView *)&v21 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(TUIVideoView *)&v21 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_11:
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(TUIVideoView *)self videoViewController];
-  v4 = [v3 view];
+  videoViewController = [(TUIVideoView *)self videoViewController];
+  view = [videoViewController view];
   playButton = self->_playButton;
-  v8[0] = v4;
+  v8[0] = view;
   v8[1] = playButton;
   v6 = [NSArray arrayWithObjects:v8 count:2];
 
   return v6;
 }
 
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event
 {
-  v6 = [(TUIReusableBaseView *)self feedControllerHost:a3];
-  v7 = [v6 triggerStateManager];
-  v8 = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
-  v9 = [v7 stateForTriggerWithName:v8];
+  v6 = [(TUIReusableBaseView *)self feedControllerHost:trigger];
+  triggerStateManager = [v6 triggerStateManager];
+  topTriggerName = [(_TUIRenderModelVideo *)self->_renderModel topTriggerName];
+  v9 = [triggerStateManager stateForTriggerWithName:topTriggerName];
 
-  v10 = [(TUIReusableBaseView *)self feedControllerHost];
-  v11 = [v10 triggerStateManager];
-  v12 = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
-  v13 = [v11 stateForTriggerWithName:v12];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  triggerStateManager2 = [feedControllerHost triggerStateManager];
+  bottomTriggerName = [(_TUIRenderModelVideo *)self->_renderModel bottomTriggerName];
+  v13 = [triggerStateManager2 stateForTriggerWithName:bottomTriggerName];
 
-  v14 = [(TUIReusableBaseView *)self feedControllerHost];
-  v15 = [v14 triggerStateManager];
-  v16 = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
-  v17 = [v15 stateForTriggerWithName:v16];
+  feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+  triggerStateManager3 = [feedControllerHost2 triggerStateManager];
+  leftTriggerName = [(_TUIRenderModelVideo *)self->_renderModel leftTriggerName];
+  v17 = [triggerStateManager3 stateForTriggerWithName:leftTriggerName];
 
-  v18 = [(TUIReusableBaseView *)self feedControllerHost];
-  v19 = [v18 triggerStateManager];
-  v20 = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
-  v21 = [v19 stateForTriggerWithName:v20];
+  feedControllerHost3 = [(TUIReusableBaseView *)self feedControllerHost];
+  triggerStateManager4 = [feedControllerHost3 triggerStateManager];
+  rightTriggerName = [(_TUIRenderModelVideo *)self->_renderModel rightTriggerName];
+  v21 = [triggerStateManager4 stateForTriggerWithName:rightTriggerName];
 
   v22 = (v21 & 0xFFFFFFFFFFFFFFFDLL) != 0 && (v17 & 0xFFFFFFFFFFFFFFFDLL) != 0;
   v24 = v9 == (&dword_0 + 2) || v13 == (&dword_0 + 2);
-  v25 = [(TUIReusableBaseView *)self feedControllerHost];
-  v26 = [v25 videoPlayerManager];
-  v27 = [v26 isInForeground];
+  feedControllerHost4 = [(TUIReusableBaseView *)self feedControllerHost];
+  videoPlayerManager = [feedControllerHost4 videoPlayerManager];
+  isInForeground = [videoPlayerManager isInForeground];
 
   v30 = v9 == &dword_4 || v13 == &dword_4 || v17 == 4 || v21 == 4;
   v31 = v22;
@@ -944,19 +944,19 @@ LABEL_11:
   v33 = v30 || v31;
   v34 = v24;
   v35 = v24 & ~v33;
-  v36 = [(TUIReusableBaseView *)self feedControllerHost];
-  v37 = [v36 videoPlayerManager];
-  v38 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-  [v37 hostWantsToSetPlayerIsWithinVisibleBoundsForPlayerWithVideoId:v38 requestingHost:self isWithinVisibleBounds:v35 & v27];
+  feedControllerHost5 = [(TUIReusableBaseView *)self feedControllerHost];
+  videoPlayerManager2 = [feedControllerHost5 videoPlayerManager];
+  videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  [videoPlayerManager2 hostWantsToSetPlayerIsWithinVisibleBoundsForPlayerWithVideoId:videoId requestingHost:self isWithinVisibleBounds:v35 & isInForeground];
 
-  if (a4 != 4)
+  if (state != 4)
   {
     [(TUIReusableBaseView *)self feedControllerHost];
     v40 = v39 = v32;
-    v41 = [v40 videoPlayerManager];
-    v42 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+    videoPlayerManager3 = [v40 videoPlayerManager];
+    videoId2 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
     v43 = [(_TUIRenderModelVideo *)self->_renderModel url];
-    [v41 setActiveHostOfPlayerForVideoId:v42 videoUrl:v43 host:self];
+    [videoPlayerManager3 setActiveHostOfPlayerForVideoId:videoId2 videoUrl:v43 host:self];
 
     v32 = v39;
   }
@@ -966,10 +966,10 @@ LABEL_11:
     [(TUIVideoView *)self _updateStateBasedSubviewsAnimated:1];
     if (v32 & 1 | (v31 || !v34))
     {
-      v47 = [(TUIReusableBaseView *)self feedControllerHost];
-      v44 = [v47 videoPlayerManager];
-      v45 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-      [v44 hostWantsToPausePlayerWithVideoId:v45 requestingHost:self isTriggerInitiated:1];
+      feedControllerHost6 = [(TUIReusableBaseView *)self feedControllerHost];
+      videoPlayerManager4 = [feedControllerHost6 videoPlayerManager];
+      videoId3 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+      [videoPlayerManager4 hostWantsToPausePlayerWithVideoId:videoId3 requestingHost:self isTriggerInitiated:1];
     }
 
     else
@@ -979,10 +979,10 @@ LABEL_11:
         return;
       }
 
-      v47 = [(TUIReusableBaseView *)self feedControllerHost];
-      v44 = [v47 videoPlayerManager];
-      v45 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-      [v44 hostWantsToPlayVideoWithVideoId:v45 requestingHost:self isTriggerInitiated:1];
+      feedControllerHost6 = [(TUIReusableBaseView *)self feedControllerHost];
+      videoPlayerManager4 = [feedControllerHost6 videoPlayerManager];
+      videoId3 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+      [videoPlayerManager4 hostWantsToPlayVideoWithVideoId:videoId3 requestingHost:self isTriggerInitiated:1];
     }
   }
 }
@@ -991,28 +991,28 @@ LABEL_11:
 {
   if (self->_shouldMuteOnNextDisplay)
   {
-    v3 = [(TUIReusableBaseView *)self feedControllerHost];
-    v4 = [v3 videoPlayerManager];
-    v5 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-    [v4 setMuteStateForPlayerWithVideoId:v5 muted:1 requestingHost:self isTriggerInitiated:1];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    videoPlayerManager = [feedControllerHost videoPlayerManager];
+    videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+    [videoPlayerManager setMuteStateForPlayerWithVideoId:videoId muted:1 requestingHost:self isTriggerInitiated:1];
 
     self->_shouldMuteOnNextDisplay = 0;
   }
 
   [(TUIVideoView *)self _updateStateBasedSubviewsAnimated:1];
-  v8 = [(TUIReusableBaseView *)self feedControllerHost];
-  v6 = [v8 videoPlayerManager];
-  v7 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-  [v6 setLoopingStateForPlayerWithVideoId:v7 loop:-[_TUIRenderModelVideo loop](self->_renderModel requestingHost:{"loop"), self}];
+  feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+  videoPlayerManager2 = [feedControllerHost2 videoPlayerManager];
+  videoId2 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  [videoPlayerManager2 setLoopingStateForPlayerWithVideoId:videoId2 loop:-[_TUIRenderModelVideo loop](self->_renderModel requestingHost:{"loop"), self}];
 }
 
-- (void)managerAttemptingActionWithOrigin:(unint64_t)a3 actionCase:(unint64_t)a4
+- (void)managerAttemptingActionWithOrigin:(unint64_t)origin actionCase:(unint64_t)case
 {
-  v7 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-  [(TUIVideoView *)self _reportAction:a4 origin:a3 videoId:v7];
+  videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+  [(TUIVideoView *)self _reportAction:case origin:origin videoId:videoId];
 }
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   self->_fullScreenTransitionInFlight = 1;
   v4[0] = _NSConcreteStackBlock;
@@ -1020,10 +1020,10 @@ LABEL_11:
   v4[2] = sub_112D3C;
   v4[3] = &unk_261E20;
   v4[4] = self;
-  [a4 animateAlongsideTransition:0 completion:v4];
+  [coordinator animateAlongsideTransition:0 completion:v4];
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   self->_fullScreenTransitionInFlight = 1;
   v4[0] = _NSConcreteStackBlock;
@@ -1031,34 +1031,34 @@ LABEL_11:
   v4[2] = sub_112EFC;
   v4[3] = &unk_261E20;
   v4[4] = self;
-  [a4 animateAlongsideTransition:0 completion:v4];
+  [coordinator animateAlongsideTransition:0 completion:v4];
 }
 
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a4 && !self->_isInFullScreen)
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
+  if (!controls && !self->_isInFullScreen)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1130C0;
     v9[3] = &unk_25DE30;
     v9[4] = self;
-    [v7 addCoordinatedAnimations:v9 completion:0];
+    [coordinatorCopy addCoordinatedAnimations:v9 completion:0];
   }
 }
 
-- (void)playerViewController:(id)a3 metricsCollectionEventOccured:(int64_t)a4
+- (void)playerViewController:(id)controller metricsCollectionEventOccured:(int64_t)occured
 {
-  v6 = a3;
-  if (a4 <= 5)
+  controllerCopy = controller;
+  if (occured <= 5)
   {
-    v8 = v6;
-    v7 = [(_TUIRenderModelVideo *)self->_renderModel videoId];
-    [(TUIVideoView *)self _reportAction:a4 origin:0 videoId:v7];
+    v8 = controllerCopy;
+    videoId = [(_TUIRenderModelVideo *)self->_renderModel videoId];
+    [(TUIVideoView *)self _reportAction:occured origin:0 videoId:videoId];
 
-    v6 = v8;
+    controllerCopy = v8;
   }
 }
 

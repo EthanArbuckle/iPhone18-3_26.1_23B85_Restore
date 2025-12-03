@@ -6,8 +6,8 @@
 
 - (id)pb_mineTinkerDevices
 {
-  v2 = [a1 linkedDevicesWithRelationship:1];
-  v3 = [a1 linkedDevicesWithRelationship:2];
+  v2 = [self linkedDevicesWithRelationship:1];
+  v3 = [self linkedDevicesWithRelationship:2];
   if (v2 | v3)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count") + objc_msgSend(v2, "count")}];

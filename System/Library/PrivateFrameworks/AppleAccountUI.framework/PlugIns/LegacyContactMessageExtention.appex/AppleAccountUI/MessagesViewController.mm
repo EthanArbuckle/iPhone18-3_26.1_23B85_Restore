@@ -1,10 +1,10 @@
 @interface MessagesViewController
 - (CGSize)contentSizeThatFits:(CGSize)result;
-- (_TtC29LegacyContactMessageExtention22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC29LegacyContactMessageExtention22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleLegacyContactDidUpdate;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willBecomeActiveWithConversation:(id)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willBecomeActiveWithConversation:(id)conversation;
 @end
 
 @implementation MessagesViewController
@@ -16,34 +16,34 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000BEAC(a3);
+  selfCopy = self;
+  sub_10000BEAC(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10000C0B8(a3);
+  selfCopy = self;
+  sub_10000C0B8(disappear);
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000C2BC(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_10000C2BC(conversationCopy);
 }
 
 - (void)handleLegacyContactDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000DB40();
 }
 
-- (_TtC29LegacyContactMessageExtention22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC29LegacyContactMessageExtention22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10000F4D0();
     v7 = v6;
@@ -55,8 +55,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000E278(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000E278(v5, v7, bundle);
 }
 
 @end

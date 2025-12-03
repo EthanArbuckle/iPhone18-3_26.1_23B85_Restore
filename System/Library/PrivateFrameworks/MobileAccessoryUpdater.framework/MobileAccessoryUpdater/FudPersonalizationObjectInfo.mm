@@ -1,26 +1,26 @@
 @interface FudPersonalizationObjectInfo
-- (FudPersonalizationObjectInfo)initWithCoder:(id)a3;
-- (FudPersonalizationObjectInfo)initWithTag:(id)a3;
+- (FudPersonalizationObjectInfo)initWithCoder:(id)coder;
+- (FudPersonalizationObjectInfo)initWithTag:(id)tag;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FudPersonalizationObjectInfo
 
-- (FudPersonalizationObjectInfo)initWithTag:(id)a3
+- (FudPersonalizationObjectInfo)initWithTag:(id)tag
 {
-  v8 = self;
-  if (a3)
+  selfCopy = self;
+  if (tag)
   {
     v18.receiver = self;
     v18.super_class = FudPersonalizationObjectInfo;
-    v8 = [(FudPersonalizationObjectInfo *)&v18 init];
-    if (v8)
+    selfCopy = [(FudPersonalizationObjectInfo *)&v18 init];
+    if (selfCopy)
     {
-      v8->_objectTag = [a3 copy];
-      v8->_digest = 0;
-      v8->_trustedSet = 0;
-      *&v8->_esecSet = 0;
+      selfCopy->_objectTag = [tag copy];
+      selfCopy->_digest = 0;
+      selfCopy->_trustedSet = 0;
+      *&selfCopy->_esecSet = 0;
     }
 
     else
@@ -34,7 +34,7 @@
     [(FudPersonalizationObjectInfo *)self initWithTag:a2, 0, v3, v4, v5, v6, v7];
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -54,35 +54,35 @@
   [(FudPersonalizationObjectInfo *)&v5 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_objectTag forKey:@"requestObjectTag"];
-  [a3 encodeObject:self->_digest forKey:@"requestDigest"];
-  [a3 encodeBool:self->_trustedSet forKey:@"requestTrustedSet"];
-  [a3 encodeBool:self->_trusted forKey:@"requestTrusted"];
-  [a3 encodeBool:self->_esecSet forKey:@"requestEffectiveSecModeSet"];
-  [a3 encodeBool:self->_effectiveSecurityMode forKey:@"requestEffectiveSecMode"];
-  [a3 encodeBool:self->_eproSet forKey:@"requestEffectiveProdModeSet"];
+  [coder encodeObject:self->_objectTag forKey:@"requestObjectTag"];
+  [coder encodeObject:self->_digest forKey:@"requestDigest"];
+  [coder encodeBool:self->_trustedSet forKey:@"requestTrustedSet"];
+  [coder encodeBool:self->_trusted forKey:@"requestTrusted"];
+  [coder encodeBool:self->_esecSet forKey:@"requestEffectiveSecModeSet"];
+  [coder encodeBool:self->_effectiveSecurityMode forKey:@"requestEffectiveSecMode"];
+  [coder encodeBool:self->_eproSet forKey:@"requestEffectiveProdModeSet"];
   effectiveProductionMode = self->_effectiveProductionMode;
 
-  [a3 encodeBool:effectiveProductionMode forKey:@"requestEffectiveProdMode"];
+  [coder encodeBool:effectiveProductionMode forKey:@"requestEffectiveProdMode"];
 }
 
-- (FudPersonalizationObjectInfo)initWithCoder:(id)a3
+- (FudPersonalizationObjectInfo)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FudPersonalizationObjectInfo;
   v4 = [(FudPersonalizationObjectInfo *)&v6 init];
   if (v4)
   {
-    v4->_objectTag = [a3 decodeObjectForKey:@"requestObjectTag"];
-    v4->_digest = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestDigest"];
-    v4->_trustedSet = [a3 decodeBoolForKey:@"requestTrustedSet"];
-    v4->_trusted = [a3 decodeBoolForKey:@"requestTrusted"];
-    v4->_esecSet = [a3 decodeBoolForKey:@"requestEffectiveSecModeSet"];
-    v4->_effectiveSecurityMode = [a3 decodeBoolForKey:@"requestEffectiveSecMode"];
-    v4->_eproSet = [a3 decodeBoolForKey:@"requestEffectiveProdModeSet"];
-    v4->_effectiveProductionMode = [a3 decodeBoolForKey:@"requestEffectiveProdMode"];
+    v4->_objectTag = [coder decodeObjectForKey:@"requestObjectTag"];
+    v4->_digest = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestDigest"];
+    v4->_trustedSet = [coder decodeBoolForKey:@"requestTrustedSet"];
+    v4->_trusted = [coder decodeBoolForKey:@"requestTrusted"];
+    v4->_esecSet = [coder decodeBoolForKey:@"requestEffectiveSecModeSet"];
+    v4->_effectiveSecurityMode = [coder decodeBoolForKey:@"requestEffectiveSecMode"];
+    v4->_eproSet = [coder decodeBoolForKey:@"requestEffectiveProdModeSet"];
+    v4->_effectiveProductionMode = [coder decodeBoolForKey:@"requestEffectiveProdMode"];
   }
 
   return v4;

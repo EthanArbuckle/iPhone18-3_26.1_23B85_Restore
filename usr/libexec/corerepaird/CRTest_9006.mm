@@ -1,6 +1,6 @@
 @interface CRTest_9006
 - (CRTest_9006)init;
-- (void)update:(id)a3 testIndex:(int64_t)a4 testResult:(id)a5;
+- (void)update:(id)update testIndex:(int64_t)index testResult:(id)result;
 @end
 
 @implementation CRTest_9006
@@ -18,8 +18,8 @@
     if (os_variant_has_internal_content())
     {
       v4 = [[CRUserDefaults alloc] initWithSuiteName:@"com.apple.corerepaird.test"];
-      v5 = [(CRTest *)v3 name];
-      v6 = [v4 dictionaryForKey:v5];
+      name = [(CRTest *)v3 name];
+      v6 = [v4 dictionaryForKey:name];
       [(CRTest *)v3 setOverrides:v6];
     }
   }
@@ -27,41 +27,41 @@
   return v3;
 }
 
-- (void)update:(id)a3 testIndex:(int64_t)a4 testResult:(id)a5
+- (void)update:(id)update testIndex:(int64_t)index testResult:(id)result
 {
-  v8 = a3;
-  if (!v8 || !a5)
+  updateCopy = update;
+  if (!updateCopy || !result)
   {
     goto LABEL_11;
   }
 
   v23.receiver = self;
   v23.super_class = CRTest_9006;
-  [(CRTest *)&v23 update:v8 testIndex:a4 testResult:a5];
-  v9 = [(CRTest *)self resultData];
-  v10 = [v9 objectForKeyedSubscript:@"preflightPartSPC"];
+  [(CRTest *)&v23 update:updateCopy testIndex:index testResult:result];
+  resultData = [(CRTest *)self resultData];
+  v10 = [resultData objectForKeyedSubscript:@"preflightPartSPC"];
   if (!v10)
   {
     goto LABEL_6;
   }
 
   v11 = v10;
-  v12 = [(CRTest *)self resultData];
-  v13 = [v12 objectForKeyedSubscript:@"preflightPartSPC"];
+  resultData2 = [(CRTest *)self resultData];
+  v13 = [resultData2 objectForKeyedSubscript:@"preflightPartSPC"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(CRTest *)self resultData];
-    v15 = [v9 objectForKeyedSubscript:@"preflightPartSPC"];
-    [v8 setPartSPC:v15];
+    resultData = [(CRTest *)self resultData];
+    v15 = [resultData objectForKeyedSubscript:@"preflightPartSPC"];
+    [updateCopy setPartSPC:v15];
 
 LABEL_6:
   }
 
-  v16 = [(CRTest *)self resultData];
-  v17 = [v16 objectForKeyedSubscript:@"preflightRIK"];
+  resultData3 = [(CRTest *)self resultData];
+  v17 = [resultData3 objectForKeyedSubscript:@"preflightRIK"];
   if (!v17)
   {
 LABEL_10:
@@ -70,16 +70,16 @@ LABEL_10:
   }
 
   v18 = v17;
-  v19 = [(CRTest *)self resultData];
-  v20 = [v19 objectForKeyedSubscript:@"preflightRIK"];
+  resultData4 = [(CRTest *)self resultData];
+  v20 = [resultData4 objectForKeyedSubscript:@"preflightRIK"];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
   if (v21)
   {
-    v16 = [(CRTest *)self resultData];
-    v22 = [v16 objectForKeyedSubscript:@"preflightRIK"];
-    [v8 setRik:v22];
+    resultData3 = [(CRTest *)self resultData];
+    v22 = [resultData3 objectForKeyedSubscript:@"preflightRIK"];
+    [updateCopy setRik:v22];
 
     goto LABEL_10;
   }

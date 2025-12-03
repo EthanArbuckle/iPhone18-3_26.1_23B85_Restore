@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterCalendarPeriodStruct
 - (MTRCommodityTariffClusterCalendarPeriodStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,22 +17,22 @@
     startDate = v2->_startDate;
     v2->_startDate = 0;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     dayPatternIDs = v3->_dayPatternIDs;
-    v3->_dayPatternIDs = v5;
+    v3->_dayPatternIDs = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterCalendarPeriodStruct);
-  v5 = [(MTRCommodityTariffClusterCalendarPeriodStruct *)self startDate];
-  [(MTRCommodityTariffClusterCalendarPeriodStruct *)v4 setStartDate:v5];
+  startDate = [(MTRCommodityTariffClusterCalendarPeriodStruct *)self startDate];
+  [(MTRCommodityTariffClusterCalendarPeriodStruct *)v4 setStartDate:startDate];
 
-  v6 = [(MTRCommodityTariffClusterCalendarPeriodStruct *)self dayPatternIDs];
-  [(MTRCommodityTariffClusterCalendarPeriodStruct *)v4 setDayPatternIDs:v6];
+  dayPatternIDs = [(MTRCommodityTariffClusterCalendarPeriodStruct *)self dayPatternIDs];
+  [(MTRCommodityTariffClusterCalendarPeriodStruct *)v4 setDayPatternIDs:dayPatternIDs];
 
   return v4;
 }

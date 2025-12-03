@@ -8,11 +8,11 @@
 - (id)userActivity
 {
   v3 = objc_allocWithZone(MEMORY[0x1E696B090]);
-  v4 = self;
+  selfCopy = self;
   v5 = sub_18B6C55FC();
-  v6 = [v3 initWithActivityType_];
+  initWithActivityType_ = [v3 initWithActivityType_];
 
-  return v6;
+  return initWithActivityType_;
 }
 
 - (_TtC5AVKit51_AVInputRoutePickerViewControllerSceneSpecification)init

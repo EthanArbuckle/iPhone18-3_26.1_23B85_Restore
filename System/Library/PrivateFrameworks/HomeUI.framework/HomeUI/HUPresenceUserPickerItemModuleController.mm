@@ -1,21 +1,21 @@
 @interface HUPresenceUserPickerItemModuleController
-- (BOOL)canSelectDisabledItem:(id)a3;
-- (BOOL)canSelectItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
+- (BOOL)canSelectDisabledItem:(id)item;
+- (BOOL)canSelectItem:(id)item;
+- (Class)cellClassForItem:(id)item;
 - (HUPresenceUserPickerItemModuleControllerDelegate)delegate;
-- (id)_showAlertForConfirmationPrompt:(id)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)accessoryButtonTappedForItem:(id)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (id)_showAlertForConfirmationPrompt:(id)prompt;
+- (unint64_t)didSelectItem:(id)item;
+- (void)accessoryButtonTappedForItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUPresenceUserPickerItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 itemTypeForItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module itemTypeForItem:itemCopy];
 
   if (v6 > 2)
   {
@@ -30,34 +30,34 @@
   return v7;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v26 = a3;
-  v7 = a4;
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 itemTypeForItem:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v9 = [module itemTypeForItem:itemCopy];
 
   switch(v9)
   {
     case 2:
-      v16 = [(HUItemModuleController *)self module];
-      v10 = [v16 stateForUserItem:v7];
+      module2 = [(HUItemModuleController *)self module];
+      v10 = [module2 stateForUserItem:itemCopy];
 
-      v17 = v26;
-      v18 = [v7 latestResults];
-      v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      v17 = cellCopy;
+      latestResults = [itemCopy latestResults];
+      v19 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
       [v17 setUserName:v19];
 
-      v20 = [v7 latestResults];
-      v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+      latestResults2 = [itemCopy latestResults];
+      v21 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
       [v17 setDeviceName:v21];
 
-      v22 = [v7 latestResults];
-      v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+      latestResults3 = [itemCopy latestResults];
+      v23 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D14120]];
       [v17 setUserHandle:v23];
 
-      v24 = [v7 latestResults];
-      v25 = [v24 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+      latestResults4 = [itemCopy latestResults];
+      v25 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
       [v17 setChecked:{objc_msgSend(v25, "BOOLValue")}];
 
       [v17 setLocationUnavailable:{objc_msgSend(v10, "isLocationAvailable") ^ 1}];
@@ -65,13 +65,13 @@ LABEL_10:
 
       break;
     case 1:
-      v10 = v26;
-      v11 = [v7 latestResults];
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      v10 = cellCopy;
+      latestResults5 = [itemCopy latestResults];
+      v12 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
       [v10 setTitleText:v12];
 
-      v13 = [v7 latestResults];
-      v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+      latestResults6 = [itemCopy latestResults];
+      v14 = [latestResults6 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
       [v10 setChecked:{objc_msgSend(v14, "BOOLValue")}];
 
       if ([v10 checked])
@@ -87,41 +87,41 @@ LABEL_10:
       [v10 setAccessoryType:v15];
       goto LABEL_10;
     case 0:
-      [v26 setHideIcon:1];
+      [cellCopy setHideIcon:1];
       break;
   }
 }
 
-- (BOOL)canSelectItem:(id)a3
+- (BOOL)canSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 itemTypeForItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module itemTypeForItem:itemCopy];
 
   return (v6 < 3) & (6u >> (v6 & 7));
 }
 
-- (BOOL)canSelectDisabledItem:(id)a3
+- (BOOL)canSelectDisabledItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 itemTypeForItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module itemTypeForItem:itemCopy];
 
   return v6 == 2;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D2C900] futureWithNoResult];
-  v6 = [(HUItemModuleController *)self module];
-  v7 = [v6 confirmationPromptForOptionItem:v4];
+  itemCopy = item;
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
+  module = [(HUItemModuleController *)self module];
+  v7 = [module confirmationPromptForOptionItem:itemCopy];
 
   if (v7)
   {
     v8 = [(HUPresenceUserPickerItemModuleController *)self _showAlertForConfirmationPrompt:v7];
 
-    v5 = v8;
+    futureWithNoResult = v8;
   }
 
   v13[0] = MEMORY[0x277D85DD0];
@@ -129,11 +129,11 @@ LABEL_10:
   v13[2] = __58__HUPresenceUserPickerItemModuleController_didSelectItem___block_invoke;
   v13[3] = &unk_277DBD0A0;
   v14 = v7;
-  v15 = self;
-  v16 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v16 = itemCopy;
+  v9 = itemCopy;
   v10 = v7;
-  v11 = [v5 addSuccessBlock:v13];
+  v11 = [futureWithNoResult addSuccessBlock:v13];
 
   return 0;
 }
@@ -185,29 +185,29 @@ void __58__HUPresenceUserPickerItemModuleController_didSelectItem___block_invoke
 LABEL_12:
 }
 
-- (void)accessoryButtonTappedForItem:(id)a3
+- (void)accessoryButtonTappedForItem:(id)item
 {
-  v7 = a3;
-  v4 = [(HUItemModuleController *)self module];
-  v5 = [v4 itemTypeForItem:v7];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v5 = [module itemTypeForItem:itemCopy];
 
   if (v5 == 1)
   {
-    v6 = [(HUItemModuleController *)self module];
-    [v6 toggleExpandedForActivationOptionItem:v7];
+    module2 = [(HUItemModuleController *)self module];
+    [module2 toggleExpandedForActivationOptionItem:itemCopy];
   }
 }
 
-- (id)_showAlertForConfirmationPrompt:(id)a3
+- (id)_showAlertForConfirmationPrompt:(id)prompt
 {
   v4 = MEMORY[0x277D2C900];
-  v5 = a3;
+  promptCopy = prompt;
   v6 = objc_alloc_init(v4);
   v7 = MEMORY[0x277D75110];
-  v8 = [v5 alertTitle];
-  v9 = [v5 alertBody];
+  alertTitle = [promptCopy alertTitle];
+  alertBody = [promptCopy alertBody];
 
-  v10 = [v7 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
+  v10 = [v7 alertControllerWithTitle:alertTitle message:alertBody preferredStyle:1];
 
   v11 = MEMORY[0x277D750F8];
   v12 = _HULocalizedStringWithDefaultValue(@"HUPresenceEventUnsupportedCustomLocationAlertActionContinue", @"HUPresenceEventUnsupportedCustomLocationAlertActionContinue", 1);
@@ -231,13 +231,13 @@ LABEL_12:
   v18 = [v15 actionWithTitle:v16 style:1 handler:&v24];
   [v10 addAction:{v18, v24, v25, v26, v27}];
 
-  v19 = [(HUPresenceUserPickerItemModuleController *)self delegate];
+  delegate = [(HUPresenceUserPickerItemModuleController *)self delegate];
   LOBYTE(v16) = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v20 = [(HUPresenceUserPickerItemModuleController *)self delegate];
-    [v20 presenceUserPickerItemModuleController:self presentViewController:v10];
+    delegate2 = [(HUPresenceUserPickerItemModuleController *)self delegate];
+    [delegate2 presenceUserPickerItemModuleController:self presentViewController:v10];
   }
 
   v21 = v28;

@@ -1,49 +1,49 @@
 @interface AWDProactiveModelFittingSparseFloatVector
-+ (id)sparseFloatVectorFromModelWeights:(id)a3;
-+ (id)sparseFloatVectorFromSparseVector:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (float)valueAtIndex:(unint64_t)a3;
-- (float)valuesAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)sparseFloatVectorFromModelWeights:(id)weights;
++ (id)sparseFloatVectorFromSparseVector:(id)vector;
+- (BOOL)isEqual:(id)equal;
+- (float)valueAtIndex:(unint64_t)index;
+- (float)valuesAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)indicesAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)indicesAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingSparseFloatVector
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v10 = a3;
-  v4 = [v10 indicesCount];
-  if (v4)
+  fromCopy = from;
+  indicesCount = [fromCopy indicesCount];
+  if (indicesCount)
   {
-    v5 = v4;
+    v5 = indicesCount;
     for (i = 0; i != v5; ++i)
     {
-      -[AWDProactiveModelFittingSparseFloatVector addIndices:](self, "addIndices:", [v10 indicesAtIndex:i]);
+      -[AWDProactiveModelFittingSparseFloatVector addIndices:](self, "addIndices:", [fromCopy indicesAtIndex:i]);
     }
   }
 
-  v7 = [v10 valuesCount];
-  if (v7)
+  valuesCount = [fromCopy valuesCount];
+  if (valuesCount)
   {
-    v8 = v7;
+    v8 = valuesCount;
     for (j = 0; j != v8; ++j)
     {
-      [v10 valuesAtIndex:j];
+      [fromCopy valuesAtIndex:j];
       [(AWDProactiveModelFittingSparseFloatVector *)self addValues:?];
     }
   }
 
-  if (v10[8])
+  if (fromCopy[8])
   {
-    self->_length = v10[7];
+    self->_length = fromCopy[7];
     *&self->_has |= 1u;
   }
 }
@@ -65,18 +65,18 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual() || !PBRepeatedFloatIsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual() || !PBRepeatedFloatIsEqual())
   {
     goto LABEL_8;
   }
 
-  v5 = (*(v4 + 64) & 1) == 0;
+  v5 = (*(equalCopy + 64) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) != 0 && self->_length == *(v4 + 7))
+    if ((*(equalCopy + 64) & 1) != 0 && self->_length == *(equalCopy + 7))
     {
       v5 = 1;
       goto LABEL_9;
@@ -91,9 +91,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt64Copy();
   PBRepeatedFloatCopy();
   if (*&self->_has)
@@ -105,49 +105,49 @@ LABEL_9:
   return v4;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(AWDProactiveModelFittingSparseFloatVector *)self indicesCount])
   {
-    [v10 clearIndices];
-    v4 = [(AWDProactiveModelFittingSparseFloatVector *)self indicesCount];
-    if (v4)
+    [toCopy clearIndices];
+    indicesCount = [(AWDProactiveModelFittingSparseFloatVector *)self indicesCount];
+    if (indicesCount)
     {
-      v5 = v4;
+      v5 = indicesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v10 addIndices:{-[AWDProactiveModelFittingSparseFloatVector indicesAtIndex:](self, "indicesAtIndex:", i)}];
+        [toCopy addIndices:{-[AWDProactiveModelFittingSparseFloatVector indicesAtIndex:](self, "indicesAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDProactiveModelFittingSparseFloatVector *)self valuesCount])
   {
-    [v10 clearValues];
-    v7 = [(AWDProactiveModelFittingSparseFloatVector *)self valuesCount];
-    if (v7)
+    [toCopy clearValues];
+    valuesCount = [(AWDProactiveModelFittingSparseFloatVector *)self valuesCount];
+    if (valuesCount)
     {
-      v8 = v7;
+      v8 = valuesCount;
       for (j = 0; j != v8; ++j)
       {
         [(AWDProactiveModelFittingSparseFloatVector *)self valuesAtIndex:j];
-        [v10 addValues:?];
+        [toCopy addValues:?];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v10 + 7) = self->_length;
-    *(v10 + 64) |= 1u;
+    *(toCopy + 7) = self->_length;
+    *(toCopy + 64) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_indices.count)
   {
     v5 = 0;
@@ -155,7 +155,7 @@ LABEL_9:
     {
       v6 = self->_indices.list[v5];
       PBDataWriterWriteUint64Field();
-      v4 = v10;
+      toCopy = v10;
       ++v5;
     }
 
@@ -169,7 +169,7 @@ LABEL_9:
     {
       v8 = self->_values.list[v7];
       PBDataWriterWriteFloatField();
-      v4 = v10;
+      toCopy = v10;
       ++v7;
     }
 
@@ -180,26 +180,26 @@ LABEL_9:
   {
     length = self->_length;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v4 forKey:@"indices"];
+  [dictionary setObject:v4 forKey:@"indices"];
 
   v5 = PBRepeatedFloatNSArray();
-  [v3 setObject:v5 forKey:@"values"];
+  [dictionary setObject:v5 forKey:@"values"];
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_length];
-    [v3 setObject:v6 forKey:@"length"];
+    [dictionary setObject:v6 forKey:@"length"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -208,42 +208,42 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingSparseFloatVector;
   v4 = [(AWDProactiveModelFittingSparseFloatVector *)&v8 description];
-  v5 = [(AWDProactiveModelFittingSparseFloatVector *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingSparseFloatVector *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (float)valuesAtIndex:(unint64_t)a3
+- (float)valuesAtIndex:(unint64_t)index
 {
   p_values = &self->_values;
   count = self->_values.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_values->list[a3];
+  return p_values->list[index];
 }
 
-- (unint64_t)indicesAtIndex:(unint64_t)a3
+- (unint64_t)indicesAtIndex:(unint64_t)index
 {
   p_indices = &self->_indices;
   count = self->_indices.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_indices->list[a3];
+  return p_indices->list[index];
 }
 
 - (void)dealloc
@@ -255,13 +255,13 @@ LABEL_9:
   [(AWDProactiveModelFittingSparseFloatVector *)&v3 dealloc];
 }
 
-- (float)valueAtIndex:(unint64_t)a3
+- (float)valueAtIndex:(unint64_t)index
 {
   v5 = 0.0;
   if ([(AWDProactiveModelFittingSparseFloatVector *)self valuesCount])
   {
     v6 = 0;
-    while ([(AWDProactiveModelFittingSparseFloatVector *)self indices][8 * v6] != a3)
+    while ([(AWDProactiveModelFittingSparseFloatVector *)self indices][8 * v6] != index)
     {
       if (++v6 >= [(AWDProactiveModelFittingSparseFloatVector *)self valuesCount])
       {
@@ -275,18 +275,18 @@ LABEL_9:
   return v5;
 }
 
-+ (id)sparseFloatVectorFromSparseVector:(id)a3
++ (id)sparseFloatVectorFromSparseVector:(id)vector
 {
-  v3 = a3;
+  vectorCopy = vector;
   v4 = objc_opt_new();
-  [v4 setLength:{objc_msgSend(v3, "length")}];
+  [v4 setLength:{objc_msgSend(vectorCopy, "length")}];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__AWDProactiveModelFittingSparseFloatVector_PML__sparseFloatVectorFromSparseVector___block_invoke;
   v7[3] = &unk_279AC02D0;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateNonZeroValuesWithBlock:v7];
+  [vectorCopy enumerateNonZeroValuesWithBlock:v7];
 
   return v5;
 }
@@ -300,17 +300,17 @@ uint64_t __84__AWDProactiveModelFittingSparseFloatVector_PML__sparseFloatVectorF
   return [v5 addValues:v6];
 }
 
-+ (id)sparseFloatVectorFromModelWeights:(id)a3
++ (id)sparseFloatVectorFromModelWeights:(id)weights
 {
-  v3 = a3;
+  weightsCopy = weights;
   v4 = objc_opt_new();
-  [v4 setLength:{objc_msgSend(v3, "length")}];
-  if ([v3 length])
+  [v4 setLength:{objc_msgSend(weightsCopy, "length")}];
+  if ([weightsCopy length])
   {
     v5 = 0;
     do
     {
-      v6 = *([v3 values] + 4 * v5);
+      v6 = *([weightsCopy values] + 4 * v5);
       if (v6 != 0.0)
       {
         [v4 addIndices:v5];
@@ -321,7 +321,7 @@ uint64_t __84__AWDProactiveModelFittingSparseFloatVector_PML__sparseFloatVectorF
       ++v5;
     }
 
-    while (v5 < [v3 length]);
+    while (v5 < [weightsCopy length]);
   }
 
   return v4;

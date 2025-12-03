@@ -6,9 +6,9 @@
 
 - (id)conciseDescription
 {
-  v3 = [(ASFolder *)self serverID];
-  v4 = [(ASFolder *)self displayName];
-  v5 = [NSString stringWithFormat:@"%@:%@", v3, v4];
+  serverID = [(ASFolder *)self serverID];
+  displayName = [(ASFolder *)self displayName];
+  v5 = [NSString stringWithFormat:@"%@:%@", serverID, displayName];
 
   return v5;
 }

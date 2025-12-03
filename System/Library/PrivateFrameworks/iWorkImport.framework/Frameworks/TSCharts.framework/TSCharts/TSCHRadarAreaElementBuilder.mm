@@ -1,5 +1,5 @@
 @interface TSCHRadarAreaElementBuilder
-- (BOOL)p_testIntersectionOfRect:(CGRect)a3 againstSortedRects:(id)a4 withInset:(double)a5 isVertical:(BOOL)a6;
+- (BOOL)p_testIntersectionOfRect:(CGRect)rect againstSortedRects:(id)rects withInset:(double)inset isVertical:(BOOL)vertical;
 - (id)coordinateAdapter;
 @end
 
@@ -17,19 +17,19 @@
   return v3;
 }
 
-- (BOOL)p_testIntersectionOfRect:(CGRect)a3 againstSortedRects:(id)a4 withInset:(double)a5 isVertical:(BOOL)a6
+- (BOOL)p_testIntersectionOfRect:(CGRect)rect againstSortedRects:(id)rects withInset:(double)inset isVertical:(BOOL)vertical
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v36 = *MEMORY[0x277D85DE8];
-  v11 = a4;
+  rectsCopy = rects;
   v37.origin.x = x;
   v37.origin.y = y;
   v37.size.width = width;
   v37.size.height = height;
-  v38 = CGRectInset(v37, a5, a5);
+  v38 = CGRectInset(v37, inset, inset);
   v12 = v38.origin.x;
   v13 = v38.origin.y;
   v14 = v38.size.width;
@@ -38,7 +38,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = objc_msgSend_reverseObjectEnumerator(v11, v16, 0.0, v38.origin.y, v38.size.width, 0);
+  v17 = objc_msgSend_reverseObjectEnumerator(rectsCopy, v16, 0.0, v38.origin.y, v38.size.width, 0);
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, v19, v20, v21, &v31, v35, 16);
   if (v23)
   {
@@ -53,7 +53,7 @@
         }
 
         objc_msgSend_CGRectValue(*(*(&v31 + 1) + 8 * i), v22, v24, v25, v26);
-        v41 = CGRectInset(v39, a5, a5);
+        v41 = CGRectInset(v39, inset, inset);
         v40.origin.x = v12;
         v40.origin.y = v13;
         v40.size.width = v14;

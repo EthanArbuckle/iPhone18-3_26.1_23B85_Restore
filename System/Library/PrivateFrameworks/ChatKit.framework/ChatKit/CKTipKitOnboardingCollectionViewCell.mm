@@ -1,28 +1,28 @@
 @interface CKTipKitOnboardingCollectionViewCell
 - (CAPackage)package;
 - (CAStateController)stateController;
-- (CKTipKitOnboardingCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CKTipKitOnboardingCollectionViewCell)initWithFrame:(CGRect)frame;
 - (NSMutableArray)avatarViews;
 - (UIView)micaView;
 - (void)dealloc;
-- (void)didUpdateContentForAvatarView:(id)a3;
+- (void)didUpdateContentForAvatarView:(id)view;
 - (void)prepareForReuse;
 - (void)resetViews;
-- (void)setTipUIView:(id)a3;
-- (void)setTipUIView:(id)a3 withRecommendedPinningConversations:(id)a4;
+- (void)setTipUIView:(id)view;
+- (void)setTipUIView:(id)view withRecommendedPinningConversations:(id)conversations;
 - (void)startAnimations;
-- (void)stepThroughOnboardingTipAnimationForLayer:(id)a3;
+- (void)stepThroughOnboardingTipAnimationForLayer:(id)layer;
 - (void)stopAnimations;
 - (void)updateTipAnimationIfNeeded;
 @end
 
 @implementation CKTipKitOnboardingCollectionViewCell
 
-- (CKTipKitOnboardingCollectionViewCell)initWithFrame:(CGRect)a3
+- (CKTipKitOnboardingCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKTipKitOnboardingCollectionViewCell;
-  v3 = [(CKTipKitOnboardingCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTipKitOnboardingCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -122,15 +122,15 @@
 - (void)startAnimations
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
-  [(CKTipKitOnboardingCollectionViewCell *)self stepThroughOnboardingTipAnimationForLayer:v3];
+  packageLayer = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
+  [(CKTipKitOnboardingCollectionViewCell *)self stepThroughOnboardingTipAnimationForLayer:packageLayer];
 }
 
 - (void)stopAnimations
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [(CKTipKitOnboardingCollectionViewCell *)self stateController];
-  [v3 cancelTimers];
+  stateController = [(CKTipKitOnboardingCollectionViewCell *)self stateController];
+  [stateController cancelTimers];
 }
 
 - (void)resetViews
@@ -168,8 +168,8 @@
       while (v5);
     }
 
-    v8 = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
-    [v8 removeFromSuperlayer];
+    packageLayer = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
+    [packageLayer removeFromSuperlayer];
 
     [(UIView *)self->_micaView removeFromSuperview];
     stateController = self->_stateController;
@@ -183,17 +183,17 @@
   }
 }
 
-- (void)setTipUIView:(id)a3 withRecommendedPinningConversations:(id)a4
+- (void)setTipUIView:(id)view withRecommendedPinningConversations:(id)conversations
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(CKTipKitOnboardingCollectionViewCell *)self tipUIView];
+  viewCopy = view;
+  conversationsCopy = conversations;
+  tipUIView = [(CKTipKitOnboardingCollectionViewCell *)self tipUIView];
 
-  if (v7 != v8)
+  if (tipUIView != viewCopy)
   {
     [(CKTipKitOnboardingCollectionViewCell *)self resetViews];
-    [(CKTipKitOnboardingCollectionViewCell *)self setTipUIView:v8];
-    [(CKTipKitOnboardingCollectionViewCell *)self setRecommendedPinningConversations:v6];
+    [(CKTipKitOnboardingCollectionViewCell *)self setTipUIView:viewCopy];
+    [(CKTipKitOnboardingCollectionViewCell *)self setRecommendedPinningConversations:conversationsCopy];
     [(CKTipKitOnboardingCollectionViewCell *)self stopAnimations];
     [(CKTipKitOnboardingCollectionViewCell *)self updateTipAnimationIfNeeded];
   }
@@ -202,8 +202,8 @@
 - (void)updateTipAnimationIfNeeded
 {
   v86[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CKTipKitOnboardingCollectionViewCell *)self recommendedPinningConversations];
-  v4 = [v3 count];
+  recommendedPinningConversations = [(CKTipKitOnboardingCollectionViewCell *)self recommendedPinningConversations];
+  v4 = [recommendedPinningConversations count];
 
   if (v4)
   {
@@ -211,37 +211,37 @@
     v6 = +[CKUIBehavior sharedBehaviors];
     [v6 tipCellCornerRadius];
     v8 = v7;
-    v9 = [v5 layer];
-    [v9 setCornerRadius:v8];
+    layer = [v5 layer];
+    [layer setCornerRadius:v8];
 
-    v10 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v5 setBackgroundColor:v10];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [v5 setBackgroundColor:secondarySystemBackgroundColor];
 
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(CKTipKitOnboardingCollectionViewCell *)self contentView];
-    [v11 addSubview:v5];
+    contentView = [(CKTipKitOnboardingCollectionViewCell *)self contentView];
+    [contentView addSubview:v5];
     v62 = MEMORY[0x1E696ACD8];
-    v78 = [v5 topAnchor];
-    v77 = [v11 topAnchor];
-    v74 = [v78 constraintEqualToAnchor:v77];
+    topAnchor = [v5 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v74 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v86[0] = v74;
-    v71 = [v5 bottomAnchor];
-    v68 = [v11 bottomAnchor];
-    v65 = [v71 constraintEqualToAnchor:v68];
+    bottomAnchor = [v5 bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v65 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v86[1] = v65;
-    v12 = [v5 leadingAnchor];
-    v13 = [v11 leadingAnchor];
+    leadingAnchor = [v5 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
     v14 = +[CKUIBehavior sharedBehaviors];
     [v14 tipCellLeadingInset];
-    v15 = [v12 constraintEqualToAnchor:v13 constant:?];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v86[2] = v15;
     v81 = v5;
-    v16 = [v5 trailingAnchor];
-    v80 = v11;
-    v17 = [v11 trailingAnchor];
+    trailingAnchor = [v5 trailingAnchor];
+    v80 = contentView;
+    trailingAnchor2 = [contentView trailingAnchor];
     v18 = +[CKUIBehavior sharedBehaviors];
     [v18 tipCellTrailingInset];
-    v19 = [v16 constraintEqualToAnchor:v17 constant:?];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:?];
     v86[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:4];
     [v62 activateConstraints:v20];
@@ -254,41 +254,41 @@
     [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v24 setBounds:{0.0, 0.0, v23, v23}];
     [v24 setClipsToBounds:0];
-    v25 = [(CKTipKitOnboardingCollectionViewCell *)self micaView];
+    micaView = [(CKTipKitOnboardingCollectionViewCell *)self micaView];
     [v24 bounds];
-    [v25 setFrame:?];
+    [micaView setFrame:?];
 
-    v26 = [(CKTipKitOnboardingCollectionViewCell *)self micaView];
-    [v24 addSubview:v26];
+    micaView2 = [(CKTipKitOnboardingCollectionViewCell *)self micaView];
+    [v24 addSubview:micaView2];
 
-    v27 = [(CKTipKitOnboardingCollectionViewCell *)self recommendedPinningConversations];
-    v28 = [v27 count];
-    v29 = self;
-    v30 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
-    v31 = [v30 count];
+    recommendedPinningConversations2 = [(CKTipKitOnboardingCollectionViewCell *)self recommendedPinningConversations];
+    v28 = [recommendedPinningConversations2 count];
+    selfCopy = self;
+    layerNames = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
+    v31 = [layerNames count];
 
     if (v28 >= v31)
     {
-      v32 = [(CKTipKitOnboardingCollectionViewCell *)self package];
-      v33 = [v32 rootLayer];
-      [(CKTipKitOnboardingCollectionViewCell *)self setPackageLayer:v33];
+      package = [(CKTipKitOnboardingCollectionViewCell *)self package];
+      rootLayer = [package rootLayer];
+      [(CKTipKitOnboardingCollectionViewCell *)self setPackageLayer:rootLayer];
 
-      v34 = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
-      [v34 setGeometryFlipped:1];
+      packageLayer = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
+      [packageLayer setGeometryFlipped:1];
 
-      v35 = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
-      [v35 setPosition:{v23 * 0.5, v23 * 0.5}];
+      packageLayer2 = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
+      [packageLayer2 setPosition:{v23 * 0.5, v23 * 0.5}];
 
-      v36 = [(CKTipKitOnboardingCollectionViewCell *)self micaView];
-      v37 = [v36 layer];
-      v38 = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
-      [v37 addSublayer:v38];
+      micaView3 = [(CKTipKitOnboardingCollectionViewCell *)self micaView];
+      layer2 = [micaView3 layer];
+      packageLayer3 = [(CKTipKitOnboardingCollectionViewCell *)self packageLayer];
+      [layer2 addSublayer:packageLayer3];
 
-      v39 = [(CKTipKitOnboardingCollectionViewCell *)self recommendedPinningConversations];
-      v40 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
-      v41 = [v39 subarrayWithRange:{0, objc_msgSend(v40, "count")}];
+      recommendedPinningConversations3 = [(CKTipKitOnboardingCollectionViewCell *)self recommendedPinningConversations];
+      layerNames2 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
+      v41 = [recommendedPinningConversations3 subarrayWithRange:{0, objc_msgSend(layerNames2, "count")}];
 
-      v42 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
+      layerNames3 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
       v82[0] = MEMORY[0x1E69E9820];
       v82[1] = 3221225472;
       v82[2] = __66__CKTipKitOnboardingCollectionViewCell_updateTipAnimationIfNeeded__block_invoke;
@@ -296,7 +296,7 @@
       v82[4] = self;
       v83 = v41;
       v79 = v41;
-      [v42 enumerateObjectsUsingBlock:v82];
+      [layerNames3 enumerateObjectsUsingBlock:v82];
 
       [v81 addSubview:self->_tipUIView];
       [v81 addSubview:v24];
@@ -305,39 +305,39 @@
       v45 = v44;
 
       v63 = MEMORY[0x1E696ACD8];
-      v75 = [v24 leadingAnchor];
-      v72 = [v81 leadingAnchor];
-      v69 = [v75 constraintEqualToAnchor:v72 constant:v45];
+      leadingAnchor3 = [v24 leadingAnchor];
+      leadingAnchor4 = [v81 leadingAnchor];
+      v69 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v45];
       v85[0] = v69;
-      v66 = [v24 topAnchor];
-      v46 = [v81 topAnchor];
-      v47 = [v66 constraintEqualToAnchor:v46 constant:v45];
+      topAnchor3 = [v24 topAnchor];
+      topAnchor4 = [v81 topAnchor];
+      v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v45];
       v85[1] = v47;
-      v48 = [v24 widthAnchor];
-      v49 = [v48 constraintEqualToConstant:v23];
+      widthAnchor = [v24 widthAnchor];
+      v49 = [widthAnchor constraintEqualToConstant:v23];
       v85[2] = v49;
-      v50 = [v24 heightAnchor];
-      v51 = [v50 constraintEqualToConstant:v23];
+      heightAnchor = [v24 heightAnchor];
+      v51 = [heightAnchor constraintEqualToConstant:v23];
       v85[3] = v51;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:4];
       [v63 activateConstraints:v52];
 
       v64 = MEMORY[0x1E696ACD8];
-      v76 = [v29->_tipUIView topAnchor];
-      v73 = [v81 topAnchor];
-      v70 = [v76 constraintEqualToAnchor:v73];
+      topAnchor5 = [selfCopy->_tipUIView topAnchor];
+      topAnchor6 = [v81 topAnchor];
+      v70 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       v84[0] = v70;
-      v67 = [v29->_tipUIView bottomAnchor];
-      v53 = [v81 bottomAnchor];
-      v54 = [v67 constraintEqualToAnchor:v53];
+      bottomAnchor3 = [selfCopy->_tipUIView bottomAnchor];
+      bottomAnchor4 = [v81 bottomAnchor];
+      v54 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v84[1] = v54;
-      v55 = [v29->_tipUIView leadingAnchor];
-      v56 = [v24 trailingAnchor];
-      v57 = [v55 constraintEqualToAnchor:v56];
+      leadingAnchor5 = [selfCopy->_tipUIView leadingAnchor];
+      trailingAnchor3 = [v24 trailingAnchor];
+      v57 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3];
       v84[2] = v57;
-      v58 = [v29->_tipUIView trailingAnchor];
-      v59 = [v81 trailingAnchor];
-      v60 = [v58 constraintEqualToAnchor:v59];
+      trailingAnchor4 = [selfCopy->_tipUIView trailingAnchor];
+      trailingAnchor5 = [v81 trailingAnchor];
+      v60 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
       v84[3] = v60;
       v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:4];
       [v64 activateConstraints:v61];
@@ -371,22 +371,22 @@ void __66__CKTipKitOnboardingCollectionViewCell_updateTipAnimationIfNeeded__bloc
   [v14 addSubview:v11];
 }
 
-- (void)setTipUIView:(id)a3
+- (void)setTipUIView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   tipUIView = self->_tipUIView;
-  if (tipUIView != v5)
+  if (tipUIView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [tipUIView removeFromSuperview];
-    objc_storeStrong(&self->_tipUIView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_tipUIView, view);
+    viewCopy = v7;
   }
 }
 
-- (void)stepThroughOnboardingTipAnimationForLayer:(id)a3
+- (void)stepThroughOnboardingTipAnimationForLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   if ([(CKTipKitOnboardingCollectionViewCell *)self state]== 4)
   {
     v5 = 0.0;
@@ -403,34 +403,34 @@ void __66__CKTipKitOnboardingCollectionViewCell_updateTipAnimationIfNeeded__bloc
 
   [(CKTipKitOnboardingCollectionViewCell *)self setState:v7];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"State %ld", -[CKTipKitOnboardingCollectionViewCell state](self, "state")];
-  v11 = [v4 stateWithName:v8];
+  v11 = [layerCopy stateWithName:v8];
 
-  v9 = [(CKTipKitOnboardingCollectionViewCell *)self stateController];
+  stateController = [(CKTipKitOnboardingCollectionViewCell *)self stateController];
   *&v10 = v6;
-  [v9 setState:v11 ofLayer:v4 transitionSpeed:v10];
+  [stateController setState:v11 ofLayer:layerCopy transitionSpeed:v10];
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
-  [(CKTipKitOnboardingCollectionViewCell *)self performSelector:sel_stepThroughOnboardingTipAnimationForLayer_ withObject:v4 afterDelay:v5];
+  [(CKTipKitOnboardingCollectionViewCell *)self performSelector:sel_stepThroughOnboardingTipAnimationForLayer_ withObject:layerCopy afterDelay:v5];
 }
 
-- (void)didUpdateContentForAvatarView:(id)a3
+- (void)didUpdateContentForAvatarView:(id)view
 {
-  v13 = a3;
-  v4 = [(CKTipKitOnboardingCollectionViewCell *)self avatarViews];
-  v5 = [v4 indexOfObject:v13];
+  viewCopy = view;
+  avatarViews = [(CKTipKitOnboardingCollectionViewCell *)self avatarViews];
+  v5 = [avatarViews indexOfObject:viewCopy];
 
-  v6 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
-  v7 = [v6 count];
+  layerNames = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
+  v7 = [layerNames count];
 
   if (v7 > v5)
   {
-    v8 = [(CKTipKitOnboardingCollectionViewCell *)self package];
-    v9 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
-    v10 = [v9 objectAtIndexedSubscript:v5];
-    v11 = [v8 publishedObjectWithName:v10];
+    package = [(CKTipKitOnboardingCollectionViewCell *)self package];
+    layerNames2 = [(CKTipKitOnboardingCollectionViewCell *)self layerNames];
+    v10 = [layerNames2 objectAtIndexedSubscript:v5];
+    v11 = [package publishedObjectWithName:v10];
 
-    v12 = [v13 layer];
-    [v11 addSublayer:v12];
+    layer = [viewCopy layer];
+    [v11 addSublayer:layer];
   }
 }
 

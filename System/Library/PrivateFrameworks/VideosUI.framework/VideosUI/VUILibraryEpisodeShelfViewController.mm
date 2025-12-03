@@ -1,44 +1,44 @@
 @interface VUILibraryEpisodeShelfViewController
-- (BOOL)_canRemoveEpisodeAtIndexPath:(id)a3;
-- (BOOL)dialogInteractionController:(id)a3 shouldBeginInteractionForIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (VUILibraryEpisodeShelfViewController)initWithEpisodes:(id)a3 season:(id)a4;
+- (BOOL)_canRemoveEpisodeAtIndexPath:(id)path;
+- (BOOL)dialogInteractionController:(id)controller shouldBeginInteractionForIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (VUILibraryEpisodeShelfViewController)initWithEpisodes:(id)episodes season:(id)season;
 - (VUILibraryEpisodeShelfViewControllerDelegate)delegate;
-- (id)_createDiffableDataSourceForCollectionView:(id)a3;
+- (id)_createDiffableDataSourceForCollectionView:(id)view;
 - (id)_createDiffableDataSourceSnapshot;
-- (id)_episodeViewModelsWithFetchedEpisodes:(id)a3;
-- (id)_episodeWithIdentifier:(id)a3;
+- (id)_episodeViewModelsWithFetchedEpisodes:(id)episodes;
+- (id)_episodeWithIdentifier:(id)identifier;
 - (id)_getEntityIdentifiersFromViewModels;
-- (void)_configureShelfLayout:(id)a3;
+- (void)_configureShelfLayout:(id)layout;
 - (void)_updateHeaderView;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureWithCollectionView:(id)a3;
-- (void)dialogInteractionController:(id)a3 interactionDidEndForIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureWithCollectionView:(id)view;
+- (void)dialogInteractionController:(id)controller interactionDidEndForIndexPath:(id)path;
 - (void)removeDownloadPressed;
-- (void)setEpisodeDetailViewController:(id)a3;
-- (void)updateShelfLayout:(id)a3;
-- (void)updateWithEpisodes:(id)a3;
+- (void)setEpisodeDetailViewController:(id)controller;
+- (void)updateShelfLayout:(id)layout;
+- (void)updateWithEpisodes:(id)episodes;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation VUILibraryEpisodeShelfViewController
 
-- (VUILibraryEpisodeShelfViewController)initWithEpisodes:(id)a3 season:(id)a4
+- (VUILibraryEpisodeShelfViewController)initWithEpisodes:(id)episodes season:(id)season
 {
-  v6 = a3;
-  v7 = a4;
+  episodesCopy = episodes;
+  seasonCopy = season;
   v13.receiver = self;
   v13.super_class = VUILibraryEpisodeShelfViewController;
   v8 = [(VUIShelfViewController *)&v13 initWithGridStyle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_season, a4);
-    v10 = [(VUILibraryEpisodeShelfViewController *)v9 _episodeViewModelsWithFetchedEpisodes:v6];
+    objc_storeStrong(&v8->_season, season);
+    v10 = [(VUILibraryEpisodeShelfViewController *)v9 _episodeViewModelsWithFetchedEpisodes:episodesCopy];
     episodeViewModels = v9->_episodeViewModels;
     v9->_episodeViewModels = v10;
 
@@ -48,39 +48,39 @@
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = VUILibraryEpisodeShelfViewController;
   [(VUILibraryEpisodeShelfViewController *)&v16 viewWillAppear:?];
-  v5 = [(VUIShelfViewController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
-  v7 = [v6 firstObject];
+  collectionView = [(VUIShelfViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(VUILibraryEpisodeShelfViewController *)self transitionCoordinator];
-    if (v8)
+    transitionCoordinator = [(VUILibraryEpisodeShelfViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __55__VUILibraryEpisodeShelfViewController_viewWillAppear___block_invoke;
       v12[3] = &unk_1E872D878;
-      v13 = v5;
-      v14 = v7;
-      v15 = a3;
+      v13 = collectionView;
+      v14 = firstObject;
+      appearCopy = appear;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __55__VUILibraryEpisodeShelfViewController_viewWillAppear___block_invoke_2;
       v9[3] = &unk_1E872D8A0;
       v10 = v13;
       v11 = v14;
-      [v8 animateAlongsideTransition:v12 completion:v9];
+      [transitionCoordinator animateAlongsideTransition:v12 completion:v9];
     }
 
     else
     {
-      [v5 deselectItemAtIndexPath:v7 animated:1];
+      [collectionView deselectItemAtIndexPath:firstObject animated:1];
     }
   }
 
@@ -106,17 +106,17 @@ uint64_t __55__VUILibraryEpisodeShelfViewController_viewWillAppear___block_invok
   v12.receiver = self;
   v12.super_class = VUILibraryEpisodeShelfViewController;
   [(VUILibraryEpisodeShelfViewController *)&v12 viewDidLoad];
-  v3 = [(VUILibraryEpisodeShelfViewController *)self diffableDataSource];
-  v4 = [(VUILibraryEpisodeShelfViewController *)self _createDiffableDataSourceSnapshot];
-  [v3 applySnapshot:v4 animatingDifferences:1];
+  diffableDataSource = [(VUILibraryEpisodeShelfViewController *)self diffableDataSource];
+  _createDiffableDataSourceSnapshot = [(VUILibraryEpisodeShelfViewController *)self _createDiffableDataSourceSnapshot];
+  [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:1];
 
   if (!self->_dialogInteractionController)
   {
     v5 = objc_alloc_init(VUILibraryDownloadPopoverViewController);
     [(VUILibraryDownloadPopoverViewController *)v5 setDelegate:self];
     v6 = [VUIDialogInteractionController alloc];
-    v7 = [(VUIShelfViewController *)self collectionView];
-    v8 = [(VUIDialogInteractionController *)v6 initWithPresentingViewController:self collectionView:v7 controllerToPresent:v5];
+    collectionView = [(VUIShelfViewController *)self collectionView];
+    v8 = [(VUIDialogInteractionController *)v6 initWithPresentingViewController:self collectionView:collectionView controllerToPresent:v5];
     dialogInteractionController = self->_dialogInteractionController;
     self->_dialogInteractionController = v8;
 
@@ -128,33 +128,33 @@ uint64_t __55__VUILibraryEpisodeShelfViewController_viewWillAppear___block_invok
 
   if ([MEMORY[0x1E69DF6F0] isPad])
   {
-    v10 = [(VUIShelfViewController *)self collectionView];
-    [v10 setClipsToBounds:0];
+    collectionView2 = [(VUIShelfViewController *)self collectionView];
+    [collectionView2 setClipsToBounds:0];
 
-    v11 = [(VUIShelfViewController *)self collectionView];
-    [v11 _setVisibleRectEdgeInsets:{0.0, -400.0, 0.0, 0.0}];
+    collectionView3 = [(VUIShelfViewController *)self collectionView];
+    [collectionView3 _setVisibleRectEdgeInsets:{0.0, -400.0, 0.0, 0.0}];
   }
 }
 
-- (void)updateWithEpisodes:(id)a3
+- (void)updateWithEpisodes:(id)episodes
 {
-  v4 = [(VUILibraryEpisodeShelfViewController *)self _episodeViewModelsWithFetchedEpisodes:a3];
+  v4 = [(VUILibraryEpisodeShelfViewController *)self _episodeViewModelsWithFetchedEpisodes:episodes];
   episodeViewModels = self->_episodeViewModels;
   self->_episodeViewModels = v4;
 
-  v6 = [(VUIShelfViewController *)self collectionView];
-  v7 = [v6 collectionViewLayout];
-  [(VUILibraryEpisodeShelfViewController *)self updateShelfLayout:v7];
+  collectionView = [(VUIShelfViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [(VUILibraryEpisodeShelfViewController *)self updateShelfLayout:collectionViewLayout];
 
   [(VUILibraryEpisodeShelfViewController *)self _updateHeaderView];
-  v8 = [(VUILibraryEpisodeShelfViewController *)self diffableDataSource];
-  v9 = [(VUILibraryEpisodeShelfViewController *)self _createDiffableDataSourceSnapshot];
+  diffableDataSource = [(VUILibraryEpisodeShelfViewController *)self diffableDataSource];
+  _createDiffableDataSourceSnapshot = [(VUILibraryEpisodeShelfViewController *)self _createDiffableDataSourceSnapshot];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invoke;
   v10[3] = &unk_1E872D768;
   v10[4] = self;
-  [v8 applySnapshot:v9 animatingDifferences:1 completion:v10];
+  [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:1 completion:v10];
 }
 
 void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invoke(uint64_t a1)
@@ -182,21 +182,21 @@ void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invok
   }
 }
 
-- (void)configureWithCollectionView:(id)a3
+- (void)configureWithCollectionView:(id)view
 {
-  v4 = a3;
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"EpisodeList"];
-  v5 = [(VUILibraryEpisodeShelfViewController *)self _createDiffableDataSourceForCollectionView:v4];
+  viewCopy = view;
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"EpisodeList"];
+  v5 = [(VUILibraryEpisodeShelfViewController *)self _createDiffableDataSourceForCollectionView:viewCopy];
 
   [(VUILibraryEpisodeShelfViewController *)self setDiffableDataSource:v5];
 }
 
-- (void)updateShelfLayout:(id)a3
+- (void)updateShelfLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v4 = MEMORY[0x1E69DD2E8];
-  v5 = [(VUILibraryEpisodeShelfViewController *)self view];
-  [v5 bounds];
+  view = [(VUILibraryEpisodeShelfViewController *)self view];
+  [view bounds];
   v6 = [v4 vui_currentSizeClassForWindowWidth:CGRectGetWidth(v10)];
 
   if ((v6 - 2) >= 6)
@@ -209,12 +209,12 @@ void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invok
     v7 = qword_1E42969F8[v6 - 2];
   }
 
-  [v8 setRowCount:v7];
+  [layoutCopy setRowCount:v7];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   if (!self->_sizingCell)
   {
     v7 = [VUILibraryEpisodeListCell alloc];
@@ -224,16 +224,16 @@ void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invok
   }
 
   v10 = MEMORY[0x1E69DD2E8];
-  v11 = [(VUILibraryEpisodeShelfViewController *)self view];
-  [v11 bounds];
+  view = [(VUILibraryEpisodeShelfViewController *)self view];
+  [view bounds];
   [v10 vui_itemWidthForGridStyle:0 gridType:0 numGridColumns:1 windowWidth:CGRectGetWidth(v25)];
   v13 = v12;
 
-  v14 = -[NSArray objectAtIndex:](self->_episodeViewModels, "objectAtIndex:", [v6 row]);
-  v15 = [v14 episode];
+  v14 = -[NSArray objectAtIndex:](self->_episodeViewModels, "objectAtIndex:", [pathCopy row]);
+  episode = [v14 episode];
   v16 = self->_sizingCell;
-  v17 = [v14 assetController];
-  [VUILibraryEpisodeListCell configureVUILibraryEpisodeListCell:v16 withMedia:v15 andAssetController:v17];
+  assetController = [v14 assetController];
+  [VUILibraryEpisodeListCell configureVUILibraryEpisodeListCell:v16 withMedia:episode andAssetController:assetController];
 
   [(VUILibraryEpisodeListCell *)self->_sizingCell sizeThatFits:v13, 1.79769313e308];
   v19 = v18;
@@ -246,78 +246,78 @@ void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invok
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
   if (v5 < [(NSArray *)self->_episodeViewModels count])
   {
     v18 = [(NSArray *)self->_episodeViewModels objectAtIndex:v5];
-    v6 = [v18 episode];
-    v7 = [[VUIEpisodeDetailViewController alloc] initWithMediaItem:v6];
+    episode = [v18 episode];
+    v7 = [[VUIEpisodeDetailViewController alloc] initWithMediaItem:episode];
     [(VUILibraryEpisodeShelfViewController *)self setEpisodeDetailViewController:v7];
-    v8 = [(VUILibraryEpisodeShelfViewController *)self navigationController];
-    if (!v8)
+    navigationController = [(VUILibraryEpisodeShelfViewController *)self navigationController];
+    if (!navigationController)
     {
-      v8 = +[VUIApplicationRouter currentNavigationController];
+      navigationController = +[VUIApplicationRouter currentNavigationController];
     }
 
-    v9 = [(VUILibraryEpisodeShelfViewController *)self traitCollection];
-    v10 = [v9 userInterfaceIdiom];
+    traitCollection = [(VUILibraryEpisodeShelfViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v10)
+    if (userInterfaceIdiom)
     {
       v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
       [v11 setModalPresentationStyle:2];
       [(UIViewController *)self vui_presentViewController:v11 animated:1 completion:0];
-      v12 = [(VUILibraryEpisodeShelfViewController *)self view];
-      v13 = [(VUILibraryEpisodeShelfViewController *)self view];
-      [v13 bounds];
+      view = [(VUILibraryEpisodeShelfViewController *)self view];
+      view2 = [(VUILibraryEpisodeShelfViewController *)self view];
+      [view2 bounds];
       MidX = CGRectGetMidX(v20);
-      v15 = [(VUILibraryEpisodeShelfViewController *)self view];
-      [v15 bounds];
+      view3 = [(VUILibraryEpisodeShelfViewController *)self view];
+      [view3 bounds];
       MidY = CGRectGetMidY(v21);
 
-      v17 = [(VUIEpisodeDetailViewController *)v7 popoverPresentationController];
-      [v17 setSourceView:v12];
-      [v17 setSourceRect:{MidX, MidY, 0.0, 0.0}];
-      [v17 setPermittedArrowDirections:-1];
+      popoverPresentationController = [(VUIEpisodeDetailViewController *)v7 popoverPresentationController];
+      [popoverPresentationController setSourceView:view];
+      [popoverPresentationController setSourceRect:{MidX, MidY, 0.0, 0.0}];
+      [popoverPresentationController setPermittedArrowDirections:-1];
     }
 
     else
     {
-      [v8 pushViewController:v7 animated:1];
+      [navigationController pushViewController:v7 animated:1];
     }
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = VUILibraryEpisodeShelfViewController;
-  [(VUIShelfViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(VUIShelfViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   if ([(VUIDialogInteractionController *)self->_dialogInteractionController isPresenting])
   {
     [(VUIDialogInteractionController *)self->_dialogInteractionController dismissConfirmation];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = VUILibraryEpisodeShelfViewController;
-  [(VUILibraryEpisodeShelfViewController *)&v4 viewWillDisappear:a3];
+  [(VUILibraryEpisodeShelfViewController *)&v4 viewWillDisappear:disappear];
   if ([(VUIDialogInteractionController *)self->_dialogInteractionController isPresenting])
   {
     [(VUIDialogInteractionController *)self->_dialogInteractionController dismissConfirmation];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = VUILibraryEpisodeShelfViewController;
   [(VUILibraryEpisodeShelfViewController *)&v6 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     dialogInteractionController = self->_dialogInteractionController;
     self->_dialogInteractionController = 0;
@@ -333,15 +333,15 @@ void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invok
     if (v4 < [(NSArray *)self->_episodeViewModels count])
     {
       v9 = [(NSArray *)self->_episodeViewModels objectAtIndex:v4];
-      v5 = [v9 assetController];
-      v6 = v5;
-      if (v5)
+      assetController = [v9 assetController];
+      v6 = assetController;
+      if (assetController)
       {
-        [v5 cancelAndRemoveDownload];
-        v7 = [(VUILibraryEpisodeShelfViewController *)self delegate];
+        [assetController cancelAndRemoveDownload];
+        delegate = [(VUILibraryEpisodeShelfViewController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v7 libraryEpisodesShelfViewController:self didRemoveDownloadForAssetController:v6];
+          [delegate libraryEpisodesShelfViewController:self didRemoveDownloadForAssetController:v6];
         }
 
         dialogInteractionController = self->_dialogInteractionController;
@@ -354,23 +354,23 @@ void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invok
   }
 }
 
-- (BOOL)dialogInteractionController:(id)a3 shouldBeginInteractionForIndexPath:(id)a4
+- (BOOL)dialogInteractionController:(id)controller shouldBeginInteractionForIndexPath:(id)path
 {
-  result = [(VUILibraryEpisodeShelfViewController *)self _canRemoveEpisodeAtIndexPath:a4];
+  result = [(VUILibraryEpisodeShelfViewController *)self _canRemoveEpisodeAtIndexPath:path];
   self->_shouldIgnoreSelectEvent = result;
   return result;
 }
 
-- (void)dialogInteractionController:(id)a3 interactionDidEndForIndexPath:(id)a4
+- (void)dialogInteractionController:(id)controller interactionDidEndForIndexPath:(id)path
 {
   self->_shouldIgnoreSelectEvent = 0;
   popoverIndexPath = self->_popoverIndexPath;
   self->_popoverIndexPath = 0;
 }
 
-- (id)_createDiffableDataSourceForCollectionView:(id)a3
+- (id)_createDiffableDataSourceForCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x1E69DC820]);
   v8[0] = MEMORY[0x1E69E9820];
@@ -378,7 +378,7 @@ void __59__VUILibraryEpisodeShelfViewController_updateWithEpisodes___block_invok
   v8[2] = __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollectionView___block_invoke;
   v8[3] = &unk_1E872D8C8;
   objc_copyWeak(&v9, &location);
-  v6 = [v5 initWithCollectionView:v4 cellProvider:v8];
+  v6 = [v5 initWithCollectionView:viewCopy cellProvider:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 
@@ -412,8 +412,8 @@ id __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollec
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [v3 appendSectionsWithIdentifiers:v4];
 
-  v5 = [(VUILibraryEpisodeShelfViewController *)self _getEntityIdentifiersFromViewModels];
-  [v3 appendItemsWithIdentifiers:v5 intoSectionWithIdentifier:@"ShelfMainSection"];
+  _getEntityIdentifiersFromViewModels = [(VUILibraryEpisodeShelfViewController *)self _getEntityIdentifiersFromViewModels];
+  [v3 appendItemsWithIdentifiers:_getEntityIdentifiersFromViewModels intoSectionWithIdentifier:@"ShelfMainSection"];
 
   return v3;
 }
@@ -426,8 +426,8 @@ id __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollec
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(VUILibraryEpisodeShelfViewController *)self episodeViewModels];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  episodeViewModels = [(VUILibraryEpisodeShelfViewController *)self episodeViewModels];
+  v5 = [episodeViewModels countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -438,15 +438,15 @@ id __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollec
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(episodeViewModels);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) episode];
-        v10 = [v9 identifier];
-        [v3 addObject:v10];
+        episode = [*(*(&v13 + 1) + 8 * i) episode];
+        identifier = [episode identifier];
+        [v3 addObject:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [episodeViewModels countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -457,19 +457,19 @@ id __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollec
   return v11;
 }
 
-- (void)setEpisodeDetailViewController:(id)a3
+- (void)setEpisodeDetailViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   episodeDetailViewController = self->_episodeDetailViewController;
-  v8 = v5;
-  if (episodeDetailViewController != v5)
+  v8 = controllerCopy;
+  if (episodeDetailViewController != controllerCopy)
   {
     if (episodeDetailViewController)
     {
       [(VUIEpisodeDetailViewController *)episodeDetailViewController setDelegate:0];
     }
 
-    objc_storeStrong(&self->_episodeDetailViewController, a3);
+    objc_storeStrong(&self->_episodeDetailViewController, controller);
     v7 = self->_episodeDetailViewController;
     if (v7)
     {
@@ -478,16 +478,16 @@ id __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollec
   }
 }
 
-- (id)_episodeViewModelsWithFetchedEpisodes:(id)a3
+- (id)_episodeViewModelsWithFetchedEpisodes:(id)episodes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  episodesCopy = episodes;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = episodesCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -507,24 +507,24 @@ id __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollec
         v9 = *(*(&v19 + 1) + 8 * v8);
         v10 = objc_alloc_init(VUILibraryEpisodeShelfEpisodeViewModel);
         [(VUILibraryEpisodeShelfEpisodeViewModel *)v10 setEpisode:v9];
-        v11 = [v9 assetController];
+        assetController = [v9 assetController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v12 = v7;
-          v13 = v11;
+          v13 = assetController;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [(VUIMediaCollection *)self->_season mediaItemCollection];
-            [v13 setMpMediaItemCollection:v14];
+            mediaItemCollection = [(VUIMediaCollection *)self->_season mediaItemCollection];
+            [v13 setMpMediaItemCollection:mediaItemCollection];
           }
 
           v7 = v12;
           v6 = v16;
         }
 
-        [(VUILibraryEpisodeShelfEpisodeViewModel *)v10 setAssetController:v11];
+        [(VUILibraryEpisodeShelfEpisodeViewModel *)v10 setAssetController:assetController];
         [v4 addObject:v10];
 
         ++v8;
@@ -540,10 +540,10 @@ id __83__VUILibraryEpisodeShelfViewController__createDiffableDataSourceForCollec
   return v4;
 }
 
-- (id)_episodeWithIdentifier:(id)a3
+- (id)_episodeWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -563,9 +563,9 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v10 = [*(*(&v14 + 1) + 8 * v9) episode];
-      v11 = [v10 identifier];
-      v12 = [v11 isEqual:v4];
+      episode = [*(*(&v14 + 1) + 8 * v9) episode];
+      identifier = [episode identifier];
+      v12 = [identifier isEqual:identifierCopy];
 
       if (v12)
       {
@@ -588,19 +588,19 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v10 = 0;
+    episode = 0;
   }
 
-  return v10;
+  return episode;
 }
 
-- (void)_configureShelfLayout:(id)a3
+- (void)_configureShelfLayout:(id)layout
 {
-  v7 = a3;
-  v4 = [(VUILibraryEpisodeShelfViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  layoutCopy = layout;
+  traitCollection = [(VUILibraryEpisodeShelfViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = 4;
   }
@@ -610,22 +610,22 @@ LABEL_9:
     v6 = [(NSArray *)self->_episodeViewModels count];
   }
 
-  [v7 setRowCount:v6];
+  [layoutCopy setRowCount:v6];
 }
 
-- (BOOL)_canRemoveEpisodeAtIndexPath:(id)a3
+- (BOOL)_canRemoveEpisodeAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
+  pathCopy = path;
+  v5 = [pathCopy row];
   v10 = 0;
   if (v5 < [(NSArray *)self->_episodeViewModels count])
   {
-    v6 = -[NSArray objectAtIndex:](self->_episodeViewModels, "objectAtIndex:", [v4 row]);
-    v7 = [v6 episode];
-    v8 = [v7 isLocal];
-    v9 = [v8 BOOLValue];
+    v6 = -[NSArray objectAtIndex:](self->_episodeViewModels, "objectAtIndex:", [pathCopy row]);
+    episode = [v6 episode];
+    isLocal = [episode isLocal];
+    bOOLValue = [isLocal BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = 1;
     }

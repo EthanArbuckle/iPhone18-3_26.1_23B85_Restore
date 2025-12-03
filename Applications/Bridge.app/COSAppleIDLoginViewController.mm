@@ -1,9 +1,9 @@
 @interface COSAppleIDLoginViewController
 + (BOOL)controllerNeedsToRun;
-+ (BOOL)showAlertIfLackingConnectivityAndPresentAlertWithPresentingViewController:(id)a3;
++ (BOOL)showAlertIfLackingConnectivityAndPresentAlertWithPresentingViewController:(id)controller;
 + (id)accountTypeString;
 + (id)appleIDServiceState;
-+ (void)showAlertForLoginFailureWithError:(id)a3 presentingViewController:(id)a4;
++ (void)showAlertForLoginFailureWithError:(id)error presentingViewController:(id)controller;
 - (ACAccount)idmsAccount;
 - (BOOL)controllerAllowsNavigatingBackTo;
 - (BOOL)holdBeforeDisplaying;
@@ -11,32 +11,32 @@
 - (BOOL)registerActivationObserver;
 - (COSAppleIDLoginViewController)init;
 - (id)alternateButtonTitle;
-- (id)appendUsernameToDetailText:(id)a3;
+- (id)appendUsernameToDetailText:(id)text;
 - (id)localizedWaitScreenDescription;
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
 - (unint64_t)authenticationMode;
 - (void)_finishedActivating;
-- (void)allowUserInteractions:(BOOL)a3;
-- (void)alternateButtonPressed:(id)a3;
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5;
+- (void)allowUserInteractions:(BOOL)interactions;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error;
 - (void)attachAuthStateAfterReleasingHoldToPresentController;
 - (void)checkAndReleaseHold;
 - (void)dealloc;
 - (void)didEstablishHold;
-- (void)didSendSignInRequestToWatchFromAppleIDAuthContoller:(id)a3;
+- (void)didSendSignInRequestToWatchFromAppleIDAuthContoller:(id)contoller;
 - (void)markEndOfHoldActivity;
 - (void)recoverCredentials;
 - (void)saveiTunesStoreAccountToPairedDeviceIfForSameAppleID;
 - (void)setAwaitingActivationIfNotActivated;
-- (void)setWaitingForSignInResponseFromWatch:(BOOL)a3;
-- (void)signInFailedWithError:(id)a3;
-- (void)signInToAccountWithPassword:(id)a3;
-- (void)silentSignInStateChanged:(id)a3;
+- (void)setWaitingForSignInResponseFromWatch:(BOOL)watch;
+- (void)signInFailedWithError:(id)error;
+- (void)signInToAccountWithPassword:(id)password;
+- (void)silentSignInStateChanged:(id)changed;
 - (void)startNetworkRequest;
 - (void)stopNetworkRequest;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)tappedSkipButton:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)tappedSkipButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -44,17 +44,17 @@
 
 + (BOOL)controllerNeedsToRun
 {
-  v2 = [objc_opt_class() appleIDServiceState];
-  v3 = [objc_opt_class() accountTypeString];
-  if (([v2 signedIn] & 1) == 0 && !objc_msgSend(v2, "signInSkipped"))
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  accountTypeString = [objc_opt_class() accountTypeString];
+  if (([appleIDServiceState signedIn] & 1) == 0 && !objc_msgSend(appleIDServiceState, "signInSkipped"))
   {
-    if ([v2 silentSignInSuccessful])
+    if ([appleIDServiceState silentSignInSuccessful])
     {
       v7 = pbb_accountsignin_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = accountTypeString;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Skipping %@ sign in: silent sign in was successfull", &v11, 0xCu);
       }
 
@@ -76,7 +76,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = accountTypeString;
         v10 = "Presenting %@ sign in";
 LABEL_18:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, v10, &v11, 0xCu);
@@ -89,7 +89,7 @@ LABEL_18:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = accountTypeString;
         v10 = "Skipping %@ sign in: no account";
         goto LABEL_18;
       }
@@ -105,9 +105,9 @@ LABEL_21:
     v11 = 136315650;
     v12 = "+[COSAppleIDLoginViewController controllerNeedsToRun]";
     v13 = 2112;
-    v14 = v3;
+    v14 = accountTypeString;
     v15 = 2112;
-    v16 = v2;
+    v16 = appleIDServiceState;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: User already skipped/signed in. %@ ServiceState: %@", &v11, 0x20u);
   }
 
@@ -120,10 +120,10 @@ LABEL_7:
 
 - (BOOL)controllerAllowsNavigatingBackTo
 {
-  v2 = [objc_opt_class() appleIDServiceState];
-  v3 = [v2 signedIn];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  signedIn = [appleIDServiceState signedIn];
 
-  return v3 ^ 1;
+  return signedIn ^ 1;
 }
 
 - (COSAppleIDLoginViewController)init
@@ -139,9 +139,9 @@ LABEL_7:
     accountStore = v3->_accountStore;
     v3->_accountStore = v4;
 
-    v6 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     device = v3->_device;
-    v3->_device = v6;
+    v3->_device = activeWatch;
   }
 
   return v3;
@@ -159,10 +159,10 @@ LABEL_7:
 
 - (id)suggestedButtonTitle
 {
-  v2 = [(COSAppleIDLoginViewController *)self authenticationMode];
+  authenticationMode = [(COSAppleIDLoginViewController *)self authenticationMode];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2 == 2)
+  if (authenticationMode == 2)
   {
     v5 = @"APPLEID_SIGN_IN";
   }
@@ -209,11 +209,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [objc_opt_class() appleIDServiceState];
-  [v5 setSignInSkipped:0];
+  pressedCopy = pressed;
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  [appleIDServiceState setSignInSkipped:0];
 
   if (![COSAppleIDLoginViewController showAlertIfLackingConnectivityAndPresentAlertWithPresentingViewController:self])
   {
@@ -231,13 +231,13 @@ LABEL_7:
 
     else
     {
-      v7 = [(COSAppleIDLoginViewController *)self titleString];
+      titleString = [(COSAppleIDLoginViewController *)self titleString];
       v8 = +[NSBundle mainBundle];
       v9 = [v8 localizedStringForKey:@"APPLEID_PASSWORD_PROMPT_%@" value:&stru_10026E598 table:@"Localizable"];
-      v10 = [(COSAppleIDLoginViewController *)self username];
-      v11 = [NSString stringWithFormat:v9, v10];
+      username = [(COSAppleIDLoginViewController *)self username];
+      v11 = [NSString stringWithFormat:v9, username];
 
-      v12 = [UIAlertController alertControllerWithTitle:v7 message:v11 preferredStyle:1];
+      v12 = [UIAlertController alertControllerWithTitle:titleString message:v11 preferredStyle:1];
       *buf = 0;
       v22 = buf;
       v23 = 0x3032000000;
@@ -273,15 +273,15 @@ LABEL_7:
   }
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = [objc_opt_class() appleIDServiceState];
-  [v4 setSignInSkipped:0];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  [appleIDServiceState setSignInSkipped:0];
 
   if (![COSAppleIDLoginViewController showAlertIfLackingConnectivityAndPresentAlertWithPresentingViewController:self])
   {
-    v5 = [objc_opt_class() appleIDServiceState];
-    [v5 setRecoveringCredentials:1];
+    appleIDServiceState2 = [objc_opt_class() appleIDServiceState];
+    [appleIDServiceState2 setRecoveringCredentials:1];
 
     [(COSAppleIDLoginViewController *)self startNetworkRequest];
 
@@ -289,7 +289,7 @@ LABEL_7:
   }
 }
 
-- (void)tappedSkipButton:(id)a3
+- (void)tappedSkipButton:(id)button
 {
   v4 = pbb_accountsignin_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -299,24 +299,24 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: Tapped Skip Button", &v7, 0xCu);
   }
 
-  v5 = [objc_opt_class() appleIDServiceState];
-  [v5 setSignInSkipped:1];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  [appleIDServiceState setSignInSkipped:1];
 
-  v6 = [(COSAppleIDLoginViewController *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate = [(COSAppleIDLoginViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)signInFailedWithError:(id)a3
+- (void)signInFailedWithError:(id)error
 {
-  v4 = a3;
-  [objc_opt_class() showAlertForLoginFailureWithError:v4 presentingViewController:self];
+  errorCopy = error;
+  [objc_opt_class() showAlertForLoginFailureWithError:errorCopy presentingViewController:self];
 }
 
-- (id)appendUsernameToDetailText:(id)a3
+- (id)appendUsernameToDetailText:(id)text
 {
-  v4 = a3;
-  v5 = [(COSAppleIDLoginViewController *)self username];
-  v6 = [v4 stringByAppendingFormat:@"\n\n%@", v5];
+  textCopy = text;
+  username = [(COSAppleIDLoginViewController *)self username];
+  v6 = [textCopy stringByAppendingFormat:@"\n\n%@", username];
 
   return v6;
 }
@@ -331,45 +331,45 @@ LABEL_7:
   self->_activityIndicator = v3;
 
   [(UIActivityIndicatorView *)self->_activityIndicator setAlpha:0.0];
-  v5 = [(COSAppleIDLoginViewController *)self contentView];
-  [v5 addSubview:self->_activityIndicator];
+  contentView = [(COSAppleIDLoginViewController *)self contentView];
+  [contentView addSubview:self->_activityIndicator];
 
   [(UIActivityIndicatorView *)self->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(UIActivityIndicatorView *)self->_activityIndicator topAnchor];
-  v7 = [(COSAppleIDLoginViewController *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  topAnchor = [(UIActivityIndicatorView *)self->_activityIndicator topAnchor];
+  contentView2 = [(COSAppleIDLoginViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
-  v11 = [(COSAppleIDLoginViewController *)self contentView];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
+  contentView3 = [(COSAppleIDLoginViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v13 setActive:1];
 
-  v14 = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
-  v15 = [(COSAppleIDLoginViewController *)self contentView];
-  v16 = [v15 centerXAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
+  contentView4 = [(COSAppleIDLoginViewController *)self contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v17 setActive:1];
 
-  LOBYTE(v15) = [(COSAppleIDLoginViewController *)self allowSkipping];
-  v18 = [(COSAppleIDLoginViewController *)self okayButton];
-  v19 = v18;
-  if (v15)
+  LOBYTE(contentView4) = [(COSAppleIDLoginViewController *)self allowSkipping];
+  okayButton = [(COSAppleIDLoginViewController *)self okayButton];
+  v19 = okayButton;
+  if (contentView4)
   {
-    [v18 removeTarget:self action:0 forControlEvents:64];
+    [okayButton removeTarget:self action:0 forControlEvents:64];
 
-    v20 = [(COSAppleIDLoginViewController *)self okayButton];
-    [v20 addTarget:self action:"tappedSkipButton:" forControlEvents:64];
+    okayButton2 = [(COSAppleIDLoginViewController *)self okayButton];
+    [okayButton2 addTarget:self action:"tappedSkipButton:" forControlEvents:64];
   }
 
   else
   {
-    [v18 setHidden:1];
+    [okayButton setHidden:1];
 
-    v20 = [(COSAppleIDLoginViewController *)self okayButton];
-    [v20 setUserInteractionEnabled:0];
+    okayButton2 = [(COSAppleIDLoginViewController *)self okayButton];
+    [okayButton2 setUserInteractionEnabled:0];
   }
 }
 
@@ -401,32 +401,32 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)allowUserInteractions:(BOOL)a3
+- (void)allowUserInteractions:(BOOL)interactions
 {
-  v3 = a3;
-  v5 = [(COSAppleIDLoginViewController *)self navigationController];
-  v11 = [v5 navigationBar];
+  interactionsCopy = interactions;
+  navigationController = [(COSAppleIDLoginViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v6 = [v11 topItem];
-  [v6 setHidesBackButton:v3 ^ 1 animated:1];
-  v7 = [v6 leftBarButtonItem];
-  [v7 setEnabled:v3];
+  topItem = [navigationBar topItem];
+  [topItem setHidesBackButton:interactionsCopy ^ 1 animated:1];
+  leftBarButtonItem = [topItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:interactionsCopy];
 
-  v8 = [(COSAppleIDLoginViewController *)self suggestedChoiceButton];
-  [v8 setEnabled:v3];
+  suggestedChoiceButton = [(COSAppleIDLoginViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:interactionsCopy];
 
-  v9 = [(COSAppleIDLoginViewController *)self alternateChoiceButton];
-  [v9 setEnabled:v3];
+  alternateChoiceButton = [(COSAppleIDLoginViewController *)self alternateChoiceButton];
+  [alternateChoiceButton setEnabled:interactionsCopy];
 
-  v10 = [(COSAppleIDLoginViewController *)self okayButton];
-  [v10 setEnabled:v3];
+  okayButton = [(COSAppleIDLoginViewController *)self okayButton];
+  [okayButton setEnabled:interactionsCopy];
 }
 
 - (void)recoverCredentials
 {
-  v3 = [(COSAppleIDLoginViewController *)self performanceMonitorActivityName];
+  performanceMonitorActivityName = [(COSAppleIDLoginViewController *)self performanceMonitorActivityName];
   v4 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-  [v4 beginMacroActivity:v3 beginTime:CFAbsoluteTimeGetCurrent()];
+  [v4 beginMacroActivity:performanceMonitorActivityName beginTime:CFAbsoluteTimeGetCurrent()];
 
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -438,25 +438,25 @@ LABEL_7:
   kdebug_trace();
   v6 = [COSAppleIDAuthController alloc];
   accountStore = self->_accountStore;
-  v8 = [(COSAppleIDLoginViewController *)self account];
-  v9 = [(COSAppleIDAuthController *)v6 initWithAccountStore:accountStore account:v8 timeout:self->_device device:0.0];
+  account = [(COSAppleIDLoginViewController *)self account];
+  v9 = [(COSAppleIDAuthController *)v6 initWithAccountStore:accountStore account:account timeout:self->_device device:0.0];
 
   [(COSAppleIDAuthController *)v9 setDelegate:self];
-  v10 = [objc_opt_class() appleIDServiceState];
-  [v10 setAuthController:v9];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  [appleIDServiceState setAuthController:v9];
 
   [(COSAppleIDAuthController *)v9 startRecoveringCredentials];
 }
 
-+ (BOOL)showAlertIfLackingConnectivityAndPresentAlertWithPresentingViewController:(id)a3
++ (BOOL)showAlertIfLackingConnectivityAndPresentAlertWithPresentingViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (+[PSAirplaneModeSettingsDetail isEnabled](PSAirplaneModeSettingsDetail, "isEnabled") && (+[PSWiFiSettingsDetail isEnabled]& 1) == 0)
   {
     v5 = pbb_accountsignin_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_10018A368(v3, v5);
+      sub_10018A368(controllerCopy, v5);
     }
 
     v6 = +[NSBundle mainBundle];
@@ -475,7 +475,7 @@ LABEL_7:
     v15 = [UIAlertAction actionWithTitle:v14 style:0 handler:&stru_10026BBD0];
     [v9 addAction:v15];
 
-    [v3 presentViewController:v9 animated:1 completion:0];
+    [controllerCopy presentViewController:v9 animated:1 completion:0];
   }
 
   else
@@ -486,30 +486,30 @@ LABEL_7:
   return v4;
 }
 
-+ (void)showAlertForLoginFailureWithError:(id)a3 presentingViewController:(id)a4
++ (void)showAlertForLoginFailureWithError:(id)error presentingViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 domain];
-  v8 = [v7 isEqualToString:AKAppleIDAuthenticationErrorDomain];
+  errorCopy = error;
+  controllerCopy = controller;
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:AKAppleIDAuthenticationErrorDomain];
 
-  if (!v8 || [v5 code] != -7003)
+  if (!v8 || [errorCopy code] != -7003)
   {
-    v9 = [v5 domain];
-    if ([v9 isEqualToString:ACErrorDomain])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:ACErrorDomain])
     {
-      v10 = [v5 code];
+      code = [errorCopy code];
 
-      if (v10 == 10)
+      if (code == 10)
       {
         v11 = +[NSBundle mainBundle];
         v12 = [v11 localizedStringForKey:@"CANT_LOGIN_GENERIC_TITLE" value:&stru_10026E598 table:@"Localizable"];
-        v13 = [UIAlertController alertControllerWithTitle:v12 message:0 preferredStyle:1];
+        userInfo = [UIAlertController alertControllerWithTitle:v12 message:0 preferredStyle:1];
 
         v14 = +[NSBundle mainBundle];
         v15 = [v14 localizedStringForKey:@"APPLEID_ERROR_UNLOCK_MESSAGE" value:&stru_10026E598 table:@"Localizable"];
         v16 = [UIAlertAction actionWithTitle:v15 style:0 handler:0];
-        [v13 addAction:v16];
+        [userInfo addAction:v16];
 
         v17 = pbb_accountsignin_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -517,7 +517,7 @@ LABEL_7:
           sub_10018A450(v17, v18, v19, v20, v21, v22, v23, v24);
         }
 
-        [v6 presentViewController:v13 animated:1 completion:0];
+        [controllerCopy presentViewController:userInfo animated:1 completion:0];
         goto LABEL_41;
       }
     }
@@ -526,39 +526,39 @@ LABEL_7:
     {
     }
 
-    v25 = [v5 domain];
-    if ([v25 isEqualToString:@"com.apple.appleaccount"])
+    domain3 = [errorCopy domain];
+    if ([domain3 isEqualToString:@"com.apple.appleaccount"])
     {
-      v26 = [v5 code];
+      code2 = [errorCopy code];
 
-      if (v26 == -6)
+      if (code2 == -6)
       {
-        v13 = [v5 userInfo];
-        v27 = [v13 objectForKeyedSubscript:kAAErrorDetailsTitleKey];
-        v28 = [v13 objectForKeyedSubscript:kAAErrorDetailsMessageKey];
+        userInfo = [errorCopy userInfo];
+        v27 = [userInfo objectForKeyedSubscript:kAAErrorDetailsTitleKey];
+        v28 = [userInfo objectForKeyedSubscript:kAAErrorDetailsMessageKey];
         v29 = [UIAlertController alertControllerWithTitle:v27 message:v28 preferredStyle:1];
 
         v30 = kAAErrorDetailsDismissButtonTitleKey;
-        v31 = [v13 objectForKeyedSubscript:kAAErrorDetailsDismissButtonTitleKey];
+        v31 = [userInfo objectForKeyedSubscript:kAAErrorDetailsDismissButtonTitleKey];
 
         if (v31)
         {
-          v32 = [v13 objectForKeyedSubscript:v30];
+          v32 = [userInfo objectForKeyedSubscript:v30];
           v33 = [UIAlertAction actionWithTitle:v32 style:1 handler:0];
           [v29 addAction:v33];
         }
 
         v34 = kAAErrorDetailsActionButtonTitleKey;
-        v35 = [v13 objectForKeyedSubscript:kAAErrorDetailsActionButtonTitleKey];
+        v35 = [userInfo objectForKeyedSubscript:kAAErrorDetailsActionButtonTitleKey];
 
         if (v35)
         {
-          v36 = [v13 objectForKeyedSubscript:v34];
+          v36 = [userInfo objectForKeyedSubscript:v34];
           v83[0] = _NSConcreteStackBlock;
           v83[1] = 3221225472;
           v83[2] = sub_1000FA024;
           v83[3] = &unk_100268580;
-          v84 = v13;
+          v84 = userInfo;
           v37 = [UIAlertAction actionWithTitle:v36 style:0 handler:v83];
           [v29 addAction:v37];
         }
@@ -569,7 +569,7 @@ LABEL_7:
           sub_10018A418(v38, v39, v40, v41, v42, v43, v44, v45);
         }
 
-        [v6 presentViewController:v29 animated:1 completion:0];
+        [controllerCopy presentViewController:v29 animated:1 completion:0];
         goto LABEL_40;
       }
     }
@@ -578,25 +578,25 @@ LABEL_7:
     {
     }
 
-    v46 = [v5 userInfo];
+    userInfo2 = [errorCopy userInfo];
     v47 = AMSAuthenticateErrorDialogKey;
-    v48 = [v46 objectForKeyedSubscript:AMSAuthenticateErrorDialogKey];
+    v48 = [userInfo2 objectForKeyedSubscript:AMSAuthenticateErrorDialogKey];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v48;
+      userInfo = v48;
     }
 
     else
     {
-      v13 = 0;
+      userInfo = 0;
     }
 
-    if (v13)
+    if (userInfo)
     {
       v82 = 0;
-      v49 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v13 error:&v82];
+      v49 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:userInfo error:&v82];
       v29 = v82;
     }
 
@@ -626,11 +626,11 @@ LABEL_7:
       goto LABEL_36;
     }
 
-    v52 = [v5 userInfo];
-    v53 = [v52 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo3 = [errorCopy userInfo];
+    v53 = [userInfo3 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-    v54 = [v53 userInfo];
-    v55 = [v54 objectForKeyedSubscript:v47];
+    userInfo4 = [v53 userInfo];
+    v55 = [userInfo4 objectForKeyedSubscript:v47];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -661,9 +661,9 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Presenting AMS dialog! 🍾", buf, 2u);
       }
 
-      v58 = [[AMSUIAlertDialogTask alloc] initWithRequest:v49 presentingViewController:v6];
-      v59 = [v58 present];
-      [v59 addFinishBlock:&stru_10026BC10];
+      v58 = [[AMSUIAlertDialogTask alloc] initWithRequest:v49 presentingViewController:controllerCopy];
+      present = [v58 present];
+      [present addFinishBlock:&stru_10026BC10];
 LABEL_39:
 
 LABEL_40:
@@ -679,15 +679,15 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "NOT presenting AMS dialog... just doing the same old thing we've always done", buf, 2u);
     }
 
-    v61 = [v5 userInfo];
-    v62 = [v61 objectForKey:kAAProtocolErrorResponseDictionaryKey];
+    userInfo5 = [errorCopy userInfo];
+    v62 = [userInfo5 objectForKey:kAAProtocolErrorResponseDictionaryKey];
 
     v81 = v62;
     if (v62)
     {
       v63 = [v62 objectForKey:kAAProtocolErrorMessageKey];
       v58 = [v62 objectForKey:kAAProtocolErrorTitleKey];
-      v59 = [v62 objectForKey:kAAProtocolErrorCancelButtonTitleKey];
+      present = [v62 objectForKey:kAAProtocolErrorCancelButtonTitleKey];
       if (v63)
       {
         v49 = v63;
@@ -702,16 +702,16 @@ LABEL_55:
             v58 = v68;
           }
 
-          if (!v59 || ![v59 length])
+          if (!present || ![present length])
           {
             v69 = +[NSBundle mainBundle];
             v70 = [v69 localizedStringForKey:@"OK" value:&stru_10026E598 table:@"Localizable"];
 
-            v59 = v70;
+            present = v70;
           }
 
           v71 = [UIAlertController alertControllerWithTitle:v58 message:v49 preferredStyle:1];
-          v72 = [UIAlertAction actionWithTitle:v59 style:1 handler:0];
+          v72 = [UIAlertAction actionWithTitle:present style:1 handler:0];
           [v71 addAction:v72];
 
           v73 = pbb_accountsignin_log();
@@ -720,7 +720,7 @@ LABEL_55:
             sub_10018A3E0(v73, v74, v75, v76, v77, v78, v79, v80);
           }
 
-          [v6 presentViewController:v71 animated:1 completion:0];
+          [controllerCopy presentViewController:v71 animated:1 completion:0];
           goto LABEL_39;
         }
       }
@@ -730,13 +730,13 @@ LABEL_55:
     {
       v63 = 0;
       v58 = 0;
-      v59 = 0;
+      present = 0;
     }
 
     if (sub_100009A74())
     {
-      v64 = [v5 userInfo];
-      v65 = [v64 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+      userInfo6 = [errorCopy userInfo];
+      v65 = [userInfo6 objectForKeyedSubscript:NSLocalizedDescriptionKey];
       v49 = [NSString stringWithFormat:@"[Internal] error: %@", v65, v81];
     }
 
@@ -745,12 +745,12 @@ LABEL_55:
       v66 = +[NSBundle mainBundle];
       v49 = [v66 localizedStringForKey:@"CANT_LOGIN_UNKNOWN_ERROR" value:&stru_10026E598 table:@"Localizable"];
 
-      v64 = pbb_accountsignin_log();
-      if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
+      userInfo6 = pbb_accountsignin_log();
+      if (os_log_type_enabled(userInfo6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v86 = v5;
-        _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "Using generic login error message for error %@", buf, 0xCu);
+        v86 = errorCopy;
+        _os_log_impl(&_mh_execute_header, userInfo6, OS_LOG_TYPE_DEFAULT, "Using generic login error message for error %@", buf, 0xCu);
       }
     }
 
@@ -763,15 +763,15 @@ LABEL_42:
 - (BOOL)registerActivationObserver
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 isActivated];
+  isActivated = [v3 isActivated];
 
-  if ((v4 & 1) == 0)
+  if ((isActivated & 1) == 0)
   {
     if (PBLogPerformanceMetrics())
     {
       v5 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-      v6 = [(COSAppleIDLoginViewController *)self activationHoldActivityIdentifier];
-      [v5 beginMacroActivity:v6 beginTime:CFAbsoluteTimeGetCurrent()];
+      activationHoldActivityIdentifier = [(COSAppleIDLoginViewController *)self activationHoldActivityIdentifier];
+      [v5 beginMacroActivity:activationHoldActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
     }
 
     v7 = pbb_accountsignin_log();
@@ -788,19 +788,19 @@ LABEL_42:
     [v10 addObserver:self selector:"_finishedActivating" name:PBBridgeGizmoDidFinishActivatingNotification object:0];
   }
 
-  return v4 ^ 1;
+  return isActivated ^ 1;
 }
 
 - (void)setAwaitingActivationIfNotActivated
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isActivated];
+  isActivated = [v2 isActivated];
 
-  if ((v3 & 1) == 0)
+  if ((isActivated & 1) == 0)
   {
-    v5 = [UIApp setupController];
-    v4 = [v5 activationManager];
-    [v4 setAwaitingActivation:1];
+    setupController = [UIApp setupController];
+    activationManager = [setupController activationManager];
+    [activationManager setAwaitingActivation:1];
   }
 }
 
@@ -808,12 +808,12 @@ LABEL_42:
 {
   if (PBLogPerformanceMetrics())
   {
-    v3 = [(COSAppleIDLoginViewController *)self activationHoldActivityIdentifier];
+    activationHoldActivityIdentifier = [(COSAppleIDLoginViewController *)self activationHoldActivityIdentifier];
     v4 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    [v4 endMacroActivity:v3 beginTime:CFAbsoluteTimeGetCurrent()];
+    [v4 endMacroActivity:activationHoldActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
     v6 = v5;
 
-    [PBBridgeCAReporter pushTimingForTypeNamed:v3 withValue:v6];
+    [PBBridgeCAReporter pushTimingForTypeNamed:activationHoldActivityIdentifier withValue:v6];
   }
 
   v7 = +[NSNotificationCenter defaultCenter];
@@ -824,22 +824,22 @@ LABEL_42:
 
 + (id)appleIDServiceState
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 appleIDSignInModel];
-  v4 = [v3 stateForServiceType:{objc_msgSend(objc_opt_class(), "appleIDServiceType")}];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  v4 = [appleIDSignInModel stateForServiceType:{objc_msgSend(objc_opt_class(), "appleIDServiceType")}];
 
   return v4;
 }
 
-- (void)signInToAccountWithPassword:(id)a3
+- (void)signInToAccountWithPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(COSAppleIDLoginViewController *)self account];
+    account = [(COSAppleIDLoginViewController *)self account];
     v19 = 138412546;
-    v20 = v6;
+    v20 = account;
     v21 = 2112;
     v22 = objc_opt_class();
     v7 = v22;
@@ -847,15 +847,15 @@ LABEL_42:
   }
 
   [(COSAppleIDLoginViewController *)self startNetworkRequest];
-  v8 = [(COSAppleIDLoginViewController *)self performanceMonitorActivityName];
+  performanceMonitorActivityName = [(COSAppleIDLoginViewController *)self performanceMonitorActivityName];
   v9 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-  [v9 beginMacroActivity:v8 beginTime:CFAbsoluteTimeGetCurrent()];
+  [v9 beginMacroActivity:performanceMonitorActivityName beginTime:CFAbsoluteTimeGetCurrent()];
 
   v10 = pbb_accountsignin_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [objc_opt_class() appleIDServiceType];
-    v12 = sub_1000EAA90(v11);
+    appleIDServiceType = [objc_opt_class() appleIDServiceType];
+    v12 = sub_1000EAA90(appleIDServiceType);
     v19 = 138412290;
     v20 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Signing in %@ account", &v19, 0xCu);
@@ -864,83 +864,83 @@ LABEL_42:
   kdebug_trace();
   v13 = [COSAppleIDAuthController alloc];
   accountStore = self->_accountStore;
-  v15 = [(COSAppleIDLoginViewController *)self account];
-  v16 = [(COSAppleIDAuthController *)v13 initWithAccountStore:accountStore account:v15 timeout:self->_device device:0.0];
+  account2 = [(COSAppleIDLoginViewController *)self account];
+  v16 = [(COSAppleIDAuthController *)v13 initWithAccountStore:accountStore account:account2 timeout:self->_device device:0.0];
 
   [(COSAppleIDAuthController *)v16 setDelegate:self];
-  v17 = [objc_opt_class() appleIDServiceState];
-  [v17 setAuthController:v16];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  [appleIDServiceState setAuthController:v16];
 
-  v18 = [objc_opt_class() accountTypeString];
-  [(COSAppleIDAuthController *)v16 setSignInAccountType:v18];
+  accountTypeString = [objc_opt_class() accountTypeString];
+  [(COSAppleIDAuthController *)v16 setSignInAccountType:accountTypeString];
 
-  [(COSAppleIDAuthController *)v16 startSigningInWithPassword:v4];
-  if (v4)
+  [(COSAppleIDAuthController *)v16 startSigningInWithPassword:passwordCopy];
+  if (passwordCopy)
   {
-    [(COSAppleIDLoginViewController *)self _signInToAccountWithPassword:v4];
+    [(COSAppleIDLoginViewController *)self _signInToAccountWithPassword:passwordCopy];
   }
 }
 
 + (id)accountTypeString
 {
-  v2 = [objc_opt_class() appleIDServiceType];
+  appleIDServiceType = [objc_opt_class() appleIDServiceType];
 
-  return sub_1000EAA90(v2);
+  return sub_1000EAA90(appleIDServiceType);
 }
 
 - (void)saveiTunesStoreAccountToPairedDeviceIfForSameAppleID
 {
-  v3 = [(COSAppleIDLoginViewController *)self device];
+  device = [(COSAppleIDLoginViewController *)self device];
   v4 = [[NSUUID alloc] initWithUUIDString:@"1F1097A5-5A0B-4795-9FBE-B206DB49FA1D"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [device supportsCapability:v4];
 
   if (v5)
   {
     v10 = +[COSiTunesStoreAuthController iTunesStoreAccountInAccountStore];
-    v6 = [(COSAppleIDLoginViewController *)self account];
-    v7 = [COSAppleIDUtilities checkIfAccount:v10 isForSameAppleIDAsAccount:v6];
+    account = [(COSAppleIDLoginViewController *)self account];
+    v7 = [COSAppleIDUtilities checkIfAccount:v10 isForSameAppleIDAsAccount:account];
 
     if (v7)
     {
-      v8 = [(COSAppleIDLoginViewController *)self delegate];
-      v9 = [(COSAppleIDLoginViewController *)self accountStore];
-      [v8 saveCombinedPasswordBasediTunesStoreAccount:v10 fromAccountStore:v9];
+      delegate = [(COSAppleIDLoginViewController *)self delegate];
+      accountStore = [(COSAppleIDLoginViewController *)self accountStore];
+      [delegate saveCombinedPasswordBasediTunesStoreAccount:v10 fromAccountStore:accountStore];
     }
   }
 }
 
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v24 = a3;
-  v25 = a5;
-  v8 = [objc_opt_class() appleIDServiceState];
-  v9 = [v8 authController];
-  [v9 setDelegate:0];
+  successCopy = success;
+  controllerCopy = controller;
+  errorCopy = error;
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  authController = [appleIDServiceState authController];
+  [authController setDelegate:0];
 
-  [v8 setAuthController:0];
-  [v8 setRecoveringCredentials:0];
+  [appleIDServiceState setAuthController:0];
+  [appleIDServiceState setRecoveringCredentials:0];
   kdebug_trace();
-  v10 = [(COSAppleIDLoginViewController *)self performanceMonitorActivityName];
-  v11 = [(COSAppleIDLoginViewController *)self performanceMonitorCATiming];
+  performanceMonitorActivityName = [(COSAppleIDLoginViewController *)self performanceMonitorActivityName];
+  performanceMonitorCATiming = [(COSAppleIDLoginViewController *)self performanceMonitorCATiming];
   v12 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-  [v12 endMacroActivity:v10 beginTime:CFAbsoluteTimeGetCurrent()];
+  [v12 endMacroActivity:performanceMonitorActivityName beginTime:CFAbsoluteTimeGetCurrent()];
   v14 = v13;
 
-  [PBBridgeCAReporter pushTimingType:v11 withValue:v14];
-  v15 = [objc_opt_class() accountTypeString];
-  v16 = [UIApp setupController];
-  v17 = [v16 pairingReportManager];
+  [PBBridgeCAReporter pushTimingType:performanceMonitorCATiming withValue:v14];
+  accountTypeString = [objc_opt_class() accountTypeString];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
   v18 = BRSignInPairingTimeEventForAccountType();
   v19 = BRSignInPairingTimeEventForAccountType();
-  v20 = [NSNumber numberWithBool:v6];
-  [v17 addPairingTimeEventToPairingReportPlist:v18 withValue:v20 withError:0];
+  v20 = [NSNumber numberWithBool:successCopy];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:v18 withValue:v20 withError:0];
 
-  [v17 checkInWithClosingPairingTimeEvent:v19];
-  if (v6)
+  [pairingReportManager checkInWithClosingPairingTimeEvent:v19];
+  if (successCopy)
   {
-    v21 = v25;
+    v21 = errorCopy;
     objc_initWeak(&location, self);
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
@@ -956,23 +956,23 @@ LABEL_42:
   else
   {
     v22 = BRSignInFailureErrorForAccountType();
-    v21 = v25;
-    v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v25 code]);
-    [v17 addPairingTimeEventToPairingReportPlist:v22 withValue:v23 withError:0];
+    v21 = errorCopy;
+    v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:v22 withValue:v23 withError:0];
 
     [(COSAppleIDLoginViewController *)self stopNetworkRequest];
-    [(COSAppleIDLoginViewController *)self signInFailedWithError:v25];
+    [(COSAppleIDLoginViewController *)self signInFailedWithError:errorCopy];
   }
 }
 
-- (void)didSendSignInRequestToWatchFromAppleIDAuthContoller:(id)a3
+- (void)didSendSignInRequestToWatchFromAppleIDAuthContoller:(id)contoller
 {
-  v4 = [UIApp setupController];
-  if (([v4 nextControllerToPresentAfterBlockedOnSignInStep] & 1) == 0)
+  setupController = [UIApp setupController];
+  if (([setupController nextControllerToPresentAfterBlockedOnSignInStep] & 1) == 0)
   {
-    v5 = [objc_opt_class() appleIDServiceState];
-    v6 = [v5 authController];
-    [v6 setDelegate:0];
+    appleIDServiceState = [objc_opt_class() appleIDServiceState];
+    authController = [appleIDServiceState authController];
+    [authController setDelegate:0];
 
     v7 = pbb_accountsignin_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -981,8 +981,8 @@ LABEL_42:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Waiting for sign-in response from watch and segueing to present non-Apple ID buddy screens", v9, 2u);
     }
 
-    v8 = [(COSAppleIDLoginViewController *)self delegate];
-    [v8 buddyControllerDoneForSignIn:self];
+    delegate = [(COSAppleIDLoginViewController *)self delegate];
+    [delegate buddyControllerDoneForSignIn:self];
   }
 }
 
@@ -991,9 +991,9 @@ LABEL_42:
   idmsAccount = self->_idmsAccount;
   if (!idmsAccount)
   {
-    v4 = [(COSAppleIDLoginViewController *)self accountStore];
-    v5 = [(COSAppleIDLoginViewController *)self account];
-    v6 = [COSAppleIDAuthController lookupIDMSAccountWithAccountStore:v4 matchingAccount:v5];
+    accountStore = [(COSAppleIDLoginViewController *)self accountStore];
+    account = [(COSAppleIDLoginViewController *)self account];
+    v6 = [COSAppleIDAuthController lookupIDMSAccountWithAccountStore:accountStore matchingAccount:account];
     v7 = self->_idmsAccount;
     self->_idmsAccount = v6;
 
@@ -1005,27 +1005,27 @@ LABEL_42:
 
 - (unint64_t)authenticationMode
 {
-  v2 = [(COSAppleIDLoginViewController *)self idmsAccount];
-  v3 = [v2 accountPropertyForKey:AKAuthMode];
-  v4 = [v3 unsignedIntegerValue];
+  idmsAccount = [(COSAppleIDLoginViewController *)self idmsAccount];
+  v3 = [idmsAccount accountPropertyForKey:AKAuthMode];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setWaitingForSignInResponseFromWatch:(BOOL)a3
+- (void)setWaitingForSignInResponseFromWatch:(BOOL)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[COSAppleIDLoginViewController setWaitingForSignInResponseFromWatch:]";
     v10 = 1024;
-    v11 = v3;
+    v11 = watchCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: waiting: %d", &v8, 0x12u);
   }
 
-  if (v3)
+  if (watchCopy)
   {
     [(COSAppleIDLoginViewController *)self loadViewIfNeeded];
     [(COSAppleIDLoginViewController *)self startNetworkRequest];
@@ -1034,9 +1034,9 @@ LABEL_42:
   else
   {
     [(COSAppleIDLoginViewController *)self stopNetworkRequest];
-    v6 = [objc_opt_class() appleIDServiceState];
-    v7 = [v6 authController];
-    [v7 resetWatchSignInResponse];
+    appleIDServiceState = [objc_opt_class() appleIDServiceState];
+    authController = [appleIDServiceState authController];
+    [authController resetWatchSignInResponse];
   }
 }
 
@@ -1050,20 +1050,20 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [objc_opt_class() appleIDServiceState];
-  v5 = [v4 authController];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  authController = [appleIDServiceState authController];
 
-  if (!v5)
+  if (!authController)
   {
     goto LABEL_11;
   }
 
-  [v5 setDelegate:self];
-  if (([v5 waitingForWatchSignInAfterInteractiveAuth] & 1) == 0)
+  [authController setDelegate:self];
+  if (([authController waitingForWatchSignInAfterInteractiveAuth] & 1) == 0)
   {
-    if ([v5 watchSignInResult])
+    if ([authController watchSignInResult])
     {
-      if ([v5 watchSignInResult] == 2)
+      if ([authController watchSignInResult] == 2)
       {
         objc_initWeak(buf, self);
         v8 = _NSConcreteStackBlock;
@@ -1071,16 +1071,16 @@ LABEL_42:
         v10 = sub_1000FB2F4;
         v11 = &unk_100268458;
         objc_copyWeak(&v13, buf);
-        v12 = self;
+        selfCopy = self;
         [(COSAppleIDLoginViewController *)self loggedInSuccessfullyWithBuddyControllerDoneBlock:&v8];
         objc_destroyWeak(&v13);
         objc_destroyWeak(buf);
       }
 
-      else if ([v5 watchSignInResult] == 1)
+      else if ([authController watchSignInResult] == 1)
       {
-        v7 = [v5 watchSignInErrorResult];
-        [(COSAppleIDLoginViewController *)self signInFailedWithError:v7];
+        watchSignInErrorResult = [authController watchSignInErrorResult];
+        [(COSAppleIDLoginViewController *)self signInFailedWithError:watchSignInErrorResult];
       }
     }
 
@@ -1099,20 +1099,20 @@ LABEL_12:
   if (PBLogPerformanceMetrics())
   {
     v3 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    v4 = [(COSAppleIDLoginViewController *)self holdActivityIdentifier];
-    [v3 beginMacroActivity:v4 beginTime:CFAbsoluteTimeGetCurrent()];
+    holdActivityIdentifier = [(COSAppleIDLoginViewController *)self holdActivityIdentifier];
+    [v3 beginMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
   }
 
-  v5 = [objc_opt_class() appleIDServiceState];
-  v6 = [v5 silentSignInSuccessful];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  silentSignInSuccessful = [appleIDServiceState silentSignInSuccessful];
 
-  if ((v6 & 1) == 0)
+  if ((silentSignInSuccessful & 1) == 0)
   {
     [(COSAppleIDLoginViewController *)self registerActivationObserver];
-    v7 = [objc_opt_class() appleIDServiceState];
-    v8 = [v7 waitingForSilentSigninToComplete];
+    appleIDServiceState2 = [objc_opt_class() appleIDServiceState];
+    waitingForSilentSigninToComplete = [appleIDServiceState2 waitingForSilentSigninToComplete];
 
-    if (v8)
+    if (waitingForSilentSigninToComplete)
     {
       v9 = pbb_accountsignin_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1143,12 +1143,12 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)silentSignInStateChanged:(id)a3
+- (void)silentSignInStateChanged:(id)changed
 {
-  v4 = [objc_opt_class() appleIDServiceState];
-  v5 = [v4 waitingForSilentSigninToComplete];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  waitingForSilentSigninToComplete = [appleIDServiceState waitingForSilentSigninToComplete];
 
-  if ((v5 & 1) == 0)
+  if ((waitingForSilentSigninToComplete & 1) == 0)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 removeObserver:self name:@"COSBuddyAppleIDSilentSignInChangeNotification" object:0];
@@ -1159,29 +1159,29 @@ LABEL_12:
 
 - (void)checkAndReleaseHold
 {
-  v3 = [(COSAppleIDLoginViewController *)self delegate];
-  v4 = [v3 buddyControllerIsBeingHeldOff:self];
+  delegate = [(COSAppleIDLoginViewController *)self delegate];
+  v4 = [delegate buddyControllerIsBeingHeldOff:self];
 
   if (!v4)
   {
     return;
   }
 
-  v5 = [objc_opt_class() appleIDServiceState];
-  v6 = [v5 waitingForSilentSigninToComplete];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  waitingForSilentSigninToComplete = [appleIDServiceState waitingForSilentSigninToComplete];
 
-  v7 = [objc_opt_class() appleIDServiceState];
-  v8 = [v7 silentSignInSuccessful];
+  appleIDServiceState2 = [objc_opt_class() appleIDServiceState];
+  silentSignInSuccessful = [appleIDServiceState2 silentSignInSuccessful];
 
-  v9 = [objc_opt_class() appleIDServiceState];
-  v10 = [v9 signedIn];
+  appleIDServiceState3 = [objc_opt_class() appleIDServiceState];
+  signedIn = [appleIDServiceState3 signedIn];
 
-  v11 = [objc_opt_class() appleIDServiceState];
-  v12 = [v11 signInSkipped];
+  appleIDServiceState4 = [objc_opt_class() appleIDServiceState];
+  signInSkipped = [appleIDServiceState4 signInSkipped];
 
-  v13 = [(COSAppleIDLoginViewController *)self completedCustomHoldActivities];
+  completedCustomHoldActivities = [(COSAppleIDLoginViewController *)self completedCustomHoldActivities];
   v14 = +[UIApplication sharedApplication];
-  v15 = [v14 isActivated];
+  isActivated = [v14 isActivated];
 
   v16 = pbb_accountsignin_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1191,44 +1191,44 @@ LABEL_12:
     v26 = 138413826;
     v27 = v18;
     v28 = 1024;
-    v29 = v6;
+    v29 = waitingForSilentSigninToComplete;
     v30 = 1024;
-    v31 = v8;
+    v31 = silentSignInSuccessful;
     v32 = 1024;
-    v33 = v15;
+    v33 = isActivated;
     v34 = 1024;
-    v35 = v13;
+    v35 = completedCustomHoldActivities;
     v36 = 1024;
-    v37 = v10;
+    v37 = signedIn;
     v38 = 1024;
-    v39 = v12;
+    v39 = signInSkipped;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Checking if can release hold (%@); waitingForSilentSignInToComplete: (%{BOOL}d); silentSignInWasSuccessful: (%{BOOL}d); activated: (%{BOOL}d); completedHoldActivitiesForAccount: (%{BOOL}d) signedIn: (%{BOOL}d) signInSkipped: (%{BOOL}d)", &v26, 0x30u);
   }
 
-  if (v8 & 1 | ((v6 & 1) == 0))
+  if (silentSignInSuccessful & 1 | ((waitingForSilentSigninToComplete & 1) == 0))
   {
     goto LABEL_7;
   }
 
-  v19 = [UIApp setupController];
-  if ([v19 nextControllerToPresentAfterBlockedOnSignInStep])
+  setupController = [UIApp setupController];
+  if ([setupController nextControllerToPresentAfterBlockedOnSignInStep])
   {
 
 LABEL_7:
-    if (!(v6 & 1 | ((v15 & 1) == 0)))
+    if (!(waitingForSilentSigninToComplete & 1 | ((isActivated & 1) == 0)))
     {
-      if ((v8 | v10 | v12))
+      if ((silentSignInSuccessful | signedIn | signInSkipped))
       {
         [(COSAppleIDLoginViewController *)self markEndOfHoldActivity];
-        v20 = [(COSAppleIDLoginViewController *)self delegate];
-        [v20 buddyControllerReleaseHoldAndSkip:self];
+        delegate2 = [(COSAppleIDLoginViewController *)self delegate];
+        [delegate2 buddyControllerReleaseHoldAndSkip:self];
       }
 
-      else if (v13)
+      else if (completedCustomHoldActivities)
       {
         [(COSAppleIDLoginViewController *)self markEndOfHoldActivity];
-        v25 = [(COSAppleIDLoginViewController *)self delegate];
-        [v25 buddyControllerReleaseHold:self];
+        delegate3 = [(COSAppleIDLoginViewController *)self delegate];
+        [delegate3 buddyControllerReleaseHold:self];
 
         [(COSAppleIDLoginViewController *)self attachAuthStateAfterReleasingHoldToPresentController];
       }
@@ -1237,9 +1237,9 @@ LABEL_7:
     return;
   }
 
-  v21 = [objc_opt_class() appleIDServiceState];
-  v22 = [v21 authController];
-  [v22 setDelegate:0];
+  appleIDServiceState5 = [objc_opt_class() appleIDServiceState];
+  authController = [appleIDServiceState5 authController];
+  [authController setDelegate:0];
 
   v23 = pbb_accountsignin_log();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -1249,31 +1249,31 @@ LABEL_7:
   }
 
   [(COSAppleIDLoginViewController *)self markEndOfHoldActivity];
-  v24 = [(COSAppleIDLoginViewController *)self delegate];
-  [v24 buddyControllerDoneForSignIn:self];
+  delegate4 = [(COSAppleIDLoginViewController *)self delegate];
+  [delegate4 buddyControllerDoneForSignIn:self];
 }
 
 - (void)markEndOfHoldActivity
 {
   if (PBLogPerformanceMetrics())
   {
-    v6 = [(COSAppleIDLoginViewController *)self holdActivityIdentifier];
+    holdActivityIdentifier = [(COSAppleIDLoginViewController *)self holdActivityIdentifier];
     v3 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    [v3 endMacroActivity:v6 beginTime:CFAbsoluteTimeGetCurrent()];
+    [v3 endMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
     v5 = v4;
 
-    [PBBridgeCAReporter pushTimingForTypeNamed:v6 withValue:v5];
+    [PBBridgeCAReporter pushTimingForTypeNamed:holdActivityIdentifier withValue:v5];
   }
 }
 
 - (BOOL)holdWithWaitScreen
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 activationManager];
+  setupController = [UIApp setupController];
+  activationManager = [setupController activationManager];
 
-  if ([v3 awaitingActivation])
+  if ([activationManager awaitingActivation])
   {
-    v4 = [v3 didPresentFlow] ^ 1;
+    v4 = [activationManager didPresentFlow] ^ 1;
   }
 
   else

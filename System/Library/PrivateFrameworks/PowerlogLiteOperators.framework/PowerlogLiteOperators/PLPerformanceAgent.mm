@@ -14,25 +14,25 @@
 + (id)entryEventPointDefinitions;
 + (void)load;
 - (PLPerformanceAgent)init;
-- (id)descriptionForMemoryPressure:(int)a3;
-- (int)convertCodePrewarmingSysctl:(id)a3;
-- (int)countFD:(int)a3;
+- (id)descriptionForMemoryPressure:(int)pressure;
+- (int)convertCodePrewarmingSysctl:(id)sysctl;
+- (int)countFD:(int)d;
 - (void)initOperatorDependancies;
 - (void)log;
 - (void)logEventIntervalExperiment;
 - (void)logEventPointAPFSFragmentation;
-- (void)logEventPointAPFSFragmentationWithContainer:(const char *)a3;
+- (void)logEventPointAPFSFragmentationWithContainer:(const char *)container;
 - (void)logEventPointCodePrewarming;
 - (void)logEventPointDiskFragmentation;
 - (void)logEventPointDiskUsage;
 - (void)logEventPointIdleReaper;
 - (void)logEventPointJetsamPrority;
 - (void)logEventPointRollout;
-- (void)logEventPointSystemMemory:(BOOL)a3;
-- (void)logEventPointSystemMemoryPerProcess:(id)a3;
+- (void)logEventPointSystemMemory:(BOOL)memory;
+- (void)logEventPointSystemMemoryPerProcess:(id)process;
 - (void)logEventPointVMTunables;
-- (void)logSharedCacheStatisticsToCA:(id)a3;
-- (void)logSystemMemoryToCA:(id)a3;
+- (void)logSharedCacheStatisticsToCA:(id)a;
+- (void)logSystemMemoryToCA:(id)a;
 @end
 
 @implementation PLPerformanceAgent
@@ -51,9 +51,9 @@ uint64_t __46__PLPerformanceAgent_initOperatorDependancies__block_invoke(uint64_
 - (void)logEventPointCodePrewarming
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [@"kern.trial_experiment_id" UTF8String];
+  uTF8String = [@"kern.trial_experiment_id" UTF8String];
   size = 0;
-  if (sysctlbyname(v3, 0, &size, 0, 0))
+  if (sysctlbyname(uTF8String, 0, &size, 0, 0))
   {
     v4 = PLLogPerformance();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@ uint64_t __46__PLPerformanceAgent_initOperatorDependancies__block_invoke(uint64_
   else
   {
     v5 = malloc_type_malloc(size, 0x100004077774924uLL);
-    if (sysctlbyname(v3, v5, &size, 0, 0))
+    if (sysctlbyname(uTF8String, v5, &size, 0, 0))
     {
       v6 = PLLogPerformance();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -100,9 +100,9 @@ uint64_t __46__PLPerformanceAgent_initOperatorDependancies__block_invoke(uint64_
       v12 = PLLogPerformance();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v10 dictionary];
+        dictionary = [v10 dictionary];
         *buf = 138412290;
-        v19 = v16;
+        v19 = dictionary;
         _os_log_debug_impl(&dword_21A4C6000, v12, OS_LOG_TYPE_DEBUG, "CodePrewarming sysctls: %@", buf, 0xCu);
       }
 
@@ -139,7 +139,7 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLPerformanceAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -195,147 +195,147 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v87[0] = v77;
   v86[1] = *MEMORY[0x277D3F540];
   v82[0] = @"FreeCount";
-  v76 = [MEMORY[0x277D3F198] sharedInstance];
-  v75 = [v76 commonTypeDict_IntegerFormat];
-  v83[0] = v75;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v83[0] = commonTypeDict_IntegerFormat;
   v82[1] = @"WiredCount";
-  v74 = [MEMORY[0x277D3F198] sharedInstance];
-  v73 = [v74 commonTypeDict_IntegerFormat];
-  v83[1] = v73;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v83[1] = commonTypeDict_IntegerFormat2;
   v82[2] = @"CompressorPageCount";
-  v72 = [MEMORY[0x277D3F198] sharedInstance];
-  v71 = [v72 commonTypeDict_IntegerFormat];
-  v83[2] = v71;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v83[2] = commonTypeDict_IntegerFormat3;
   v82[3] = @"PurgeableCount";
-  v70 = [MEMORY[0x277D3F198] sharedInstance];
-  v69 = [v70 commonTypeDict_IntegerFormat];
-  v83[3] = v69;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v83[3] = commonTypeDict_IntegerFormat4;
   v82[4] = @"Purges";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_IntegerFormat];
-  v83[4] = v67;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v83[4] = commonTypeDict_IntegerFormat5;
   v82[5] = @"Faults";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_IntegerFormat];
-  v83[5] = v65;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v83[5] = commonTypeDict_IntegerFormat6;
   v82[6] = @"ZeroFills";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_IntegerFormat];
-  v83[6] = v63;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v83[6] = commonTypeDict_IntegerFormat7;
   v82[7] = @"Reactivations";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_IntegerFormat];
-  v83[7] = v61;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v83[7] = commonTypeDict_IntegerFormat8;
   v82[8] = @"PageIns";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v83[8] = v59;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v83[8] = commonTypeDict_IntegerFormat9;
   v82[9] = @"PageOuts";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v83[9] = v57;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v83[9] = commonTypeDict_IntegerFormat10;
   v82[10] = @"Decompressions";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v83[10] = v55;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v83[10] = commonTypeDict_IntegerFormat11;
   v82[11] = @"Compressions";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v83[11] = v53;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v83[11] = commonTypeDict_IntegerFormat12;
   v82[12] = @"SwapIns";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v83[12] = v51;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v83[12] = commonTypeDict_IntegerFormat13;
   v82[13] = @"SwapOuts";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v83[13] = v49;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v83[13] = commonTypeDict_IntegerFormat14;
   v82[14] = @"CompressedPageCount";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v83[14] = v47;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v83[14] = commonTypeDict_IntegerFormat15;
   v82[15] = @"InternalPageCount";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v83[15] = v45;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v83[15] = commonTypeDict_IntegerFormat16;
   v82[16] = @"ExternalPageCount";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v83[16] = v43;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v83[16] = commonTypeDict_IntegerFormat17;
   v82[17] = @"SwapAvailSize";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v83[17] = v41;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v83[17] = commonTypeDict_IntegerFormat18;
   v82[18] = @"SwapUsedSize";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v83[18] = v39;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v83[18] = commonTypeDict_IntegerFormat19;
   v82[19] = @"MemoryPressureLevel";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_StringFormat];
-  v83[19] = v37;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]20 commonTypeDict_StringFormat];
+  v83[19] = commonTypeDict_StringFormat;
   v82[20] = @"FreeVnodeCount";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v83[20] = v35;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v83[20] = commonTypeDict_IntegerFormat20;
   v82[21] = @"SharedCacheVirtualSize";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v83[21] = v33;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+  v83[21] = commonTypeDict_IntegerFormat21;
   v82[22] = @"SharedCacheResidentSize";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v83[22] = v31;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v83[22] = commonTypeDict_IntegerFormat22;
   v82[23] = @"SharedCacheResidencyPercent";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v83[23] = v29;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+  v83[23] = commonTypeDict_IntegerFormat23;
   v82[24] = @"PagesGrabbed";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v83[24] = v27;
+  mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+  v83[24] = commonTypeDict_IntegerFormat24;
   v82[25] = @"IdlePhysFootprint";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v83[25] = v25;
+  mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+  v83[25] = commonTypeDict_IntegerFormat25;
   v82[26] = @"IdleWired";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v83[26] = v23;
+  mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+  v83[26] = commonTypeDict_IntegerFormat26;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:v82 count:27];
   v87[1] = v22;
   v86[2] = *MEMORY[0x277D3F500];
   v80[0] = @"key";
   v78[0] = @"ProcessName";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_StringFormat_withProcessName];
-  v79[0] = v20;
+  mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]28 commonTypeDict_StringFormat_withProcessName];
+  v79[0] = commonTypeDict_StringFormat_withProcessName;
   v78[1] = @"PG_indiv";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v79[1] = v18;
+  mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+  v79[1] = commonTypeDict_IntegerFormat27;
   v78[2] = @"PG_upl";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v79[2] = v16;
+  mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+  v79[2] = commonTypeDict_IntegerFormat28;
   v78[3] = @"PG_iopl";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat];
-  v79[3] = v3;
+  mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+  v79[3] = commonTypeDict_IntegerFormat29;
   v78[4] = @"PG_kern";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v79[4] = v5;
+  mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+  v79[4] = commonTypeDict_IntegerFormat30;
   v78[5] = @"PG_other";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v79[5] = v7;
+  mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+  v79[5] = commonTypeDict_IntegerFormat31;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:6];
   v81[0] = v8;
   v80[1] = @"value";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v81[1] = v10;
+  mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+  v81[1] = commonTypeDict_IntegerFormat32;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v81 forKeys:v80 count:2];
   v87[2] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:3];
@@ -355,13 +355,13 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"FreeSize";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"SystemSize";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -381,9 +381,9 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"INDPoolFull";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_RealFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v10 = commonTypeDict_RealFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -403,17 +403,17 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"container";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v14[0] = commonTypeDict_StringFormat;
   v13[1] = @"fragmentedExtent";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat;
   v13[2] = @"fileCount";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v14[2] = commonTypeDict_IntegerFormat2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -435,57 +435,57 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
     v38[0] = v32;
     v37[1] = *MEMORY[0x277D3F540];
     v33[0] = @"pid";
-    v31 = [MEMORY[0x277D3F198] sharedInstance];
-    v30 = [v31 commonTypeDict_IntegerFormat];
-    v34[0] = v30;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v34[0] = commonTypeDict_IntegerFormat;
     v33[1] = @"name";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_StringFormat];
-    v34[1] = v28;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+    v34[1] = commonTypeDict_StringFormat;
     v33[2] = @"priority";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v34[2] = v26;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v34[2] = commonTypeDict_IntegerFormat2;
     v33[3] = @"footprint";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_IntegerFormat];
-    v34[3] = v24;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v34[3] = commonTypeDict_IntegerFormat3;
     v33[4] = @"peakFootprint";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_IntegerFormat];
-    v34[4] = v22;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v34[4] = commonTypeDict_IntegerFormat4;
     v33[5] = @"activeLimit";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_IntegerFormat];
-    v34[5] = v20;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v34[5] = commonTypeDict_IntegerFormat5;
     v33[6] = @"activeLimitIsHard";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_BoolFormat];
-    v34[6] = v18;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]7 commonTypeDict_BoolFormat];
+    v34[6] = commonTypeDict_BoolFormat;
     v33[7] = @"inactiveLimit";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v34[7] = v16;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v34[7] = commonTypeDict_IntegerFormat6;
     v33[8] = @"inactiveLimitIsHard";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_BoolFormat];
-    v34[8] = v14;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]9 commonTypeDict_BoolFormat];
+    v34[8] = commonTypeDict_BoolFormat2;
     v33[9] = @"frozen";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_BoolFormat];
-    v34[9] = v3;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]10 commonTypeDict_BoolFormat];
+    v34[9] = commonTypeDict_BoolFormat3;
     v33[10] = @"pressuredExit";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_BoolFormat];
-    v34[10] = v5;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]11 commonTypeDict_BoolFormat];
+    v34[10] = commonTypeDict_BoolFormat4;
     v33[11] = @"fds";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v34[11] = v7;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v34[11] = commonTypeDict_IntegerFormat7;
     v33[12] = @"machPorts";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v34[12] = v9;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+    v34[12] = commonTypeDict_IntegerFormat8;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:13];
     v38[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
@@ -511,13 +511,13 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"rolloutID";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v11[1] = @"deploymentID";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -537,9 +537,9 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"BallastOffset";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v10 = commonTypeDict_IntegerFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -562,33 +562,33 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v27[0] = v21;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"Enabled";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v23[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v23[0] = commonTypeDict_IntegerFormat;
   v22[1] = @"MinAgeSecs";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v23[1] = v17;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v23[1] = commonTypeDict_IntegerFormat2;
   v22[2] = @"ThresholdMB";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v23[2] = v15;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v23[2] = commonTypeDict_IntegerFormat3;
   v22[3] = @"RescanSecs";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v23[3] = v4;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v23[3] = commonTypeDict_IntegerFormat4;
   v22[4] = @"SweepCount";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v23[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v23[4] = commonTypeDict_IntegerFormat5;
   v22[5] = @"TotalKills";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v23[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v23[5] = commonTypeDict_IntegerFormat6;
   v22[6] = @"TotalFreedMB";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v23[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v23[6] = commonTypeDict_IntegerFormat7;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
   v27[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -611,9 +611,9 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"State";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -646,29 +646,29 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"namespace";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_StringFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v20[0] = commonTypeDict_StringFormat;
   v19[1] = @"experimentID";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_StringFormat];
-  v20[1] = v14;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v20[1] = commonTypeDict_StringFormat2;
   v19[2] = @"treatmentID";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_StringFormat];
-  v20[2] = v3;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v20[2] = commonTypeDict_StringFormat3;
   v19[3] = @"deploymentID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v20[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat;
   v19[4] = @"startDate";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_DateFormat];
-  v20[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v20[4] = commonTypeDict_DateFormat;
   v19[5] = @"EndDate";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_DateFormat];
-  v20[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_DateFormat];
+  v20[5] = commonTypeDict_DateFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:6];
   v24[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -692,18 +692,18 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   {
     if ([MEMORY[0x277D3F208] isiOS] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "isARMMac"))
     {
-      v3 = 1;
+      isWatch = 1;
     }
 
     else
     {
-      v3 = [MEMORY[0x277D3F208] isWatch];
+      isWatch = [MEMORY[0x277D3F208] isWatch];
     }
   }
 
   else
   {
-    v3 = 0;
+    isWatch = 0;
   }
 
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{@"TGOnDeviceInferenceProviderService", @"VisualGenerationInference", @"aned", 0}];
@@ -719,10 +719,10 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
   batteryLevelChanged = self->_batteryLevelChanged;
   self->_batteryLevelChanged = v6;
 
-  if (v3)
+  if (isWatch)
   {
     v8 = objc_alloc(MEMORY[0x277D3F1A8]);
-    v9 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v36[0] = &unk_282C10050;
     v36[1] = &unk_282C10068;
     v37[0] = &unk_282C1BCB8;
@@ -738,7 +738,7 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
     v32[2] = __46__PLPerformanceAgent_initOperatorDependancies__block_invoke_295;
     v32[3] = &unk_2782597E8;
     v32[4] = self;
-    v12 = [v8 initWithWorkQueue:v9 forEntryKey:@"PLBatteryAgent_EventBackward_Battery" withFilter:v11 withBlock:v32];
+    v12 = [v8 initWithWorkQueue:workQueue forEntryKey:@"PLBatteryAgent_EventBackward_Battery" withFilter:v11 withBlock:v32];
     batteryEntryLogged = self->_batteryEntryLogged;
     self->_batteryEntryLogged = v12;
   }
@@ -755,24 +755,24 @@ uint64_t __53__PLPerformanceAgent_shouldCreateJetsamPriorityTable__block_invoke(
 
   [(PLPerformanceAgent *)self setDailyTaskNotification:v17];
   v18 = objc_alloc(MEMORY[0x277D3F160]);
-  v19 = [(PLOperator *)self workQueue];
+  workQueue2 = [(PLOperator *)self workQueue];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __46__PLPerformanceAgent_initOperatorDependancies__block_invoke_2_316;
   v30[3] = &unk_2782597E8;
   v30[4] = self;
-  v20 = [v18 initWithWorkQueue:v19 forNotification:@"com.apple.trial.NamespaceUpdate.MEMORY_ANALYSIS_LLM_OVERHEAD" requireState:1 withBlock:v30];
+  v20 = [v18 initWithWorkQueue:workQueue2 forNotification:@"com.apple.trial.NamespaceUpdate.MEMORY_ANALYSIS_LLM_OVERHEAD" requireState:1 withBlock:v30];
   llmOverheadNotification = self->_llmOverheadNotification;
   self->_llmOverheadNotification = v20;
 
   v22 = objc_alloc(MEMORY[0x277D3F160]);
-  v23 = [(PLOperator *)self workQueue];
+  workQueue3 = [(PLOperator *)self workQueue];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __46__PLPerformanceAgent_initOperatorDependancies__block_invoke_320;
   v29[3] = &unk_2782597E8;
   v29[4] = self;
-  v24 = [v22 initWithWorkQueue:v23 forNotification:@"com.apple.trial.NamespaceUpdate.COREOS_GMPOWER_VM_TUNING_PAGE_SHORTAGE_THRESHOLDS" requireState:1 withBlock:v29];
+  v24 = [v22 initWithWorkQueue:workQueue3 forNotification:@"com.apple.trial.NamespaceUpdate.COREOS_GMPOWER_VM_TUNING_PAGE_SHORTAGE_THRESHOLDS" requireState:1 withBlock:v29];
   vmTuningNotification = self->_vmTuningNotification;
   self->_vmTuningNotification = v24;
 
@@ -911,7 +911,7 @@ uint64_t __46__PLPerformanceAgent_initOperatorDependancies__block_invoke_320(uin
 
   v3 = objc_opt_new();
   v4 = [(PLOperator *)PLPerformanceAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"Experiment"];
-  v5 = [MEMORY[0x277D73648] defaultProvider];
+  defaultProvider = [MEMORY[0x277D73648] defaultProvider];
   if (([MEMORY[0x277D3F208] seedBuild] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "internalBuild"))
   {
     v6 = PLLogCommon();
@@ -931,7 +931,7 @@ uint64_t __46__PLPerformanceAgent_initOperatorDependancies__block_invoke_320(uin
     v8 = &v23;
     v23 = v3;
     v9 = &v24;
-    [v5 enumerateActiveExperimentsForEnvironment:0 error:&v24 block:v21];
+    [defaultProvider enumerateActiveExperimentsForEnvironment:0 error:&v24 block:v21];
   }
 
   else
@@ -959,7 +959,7 @@ uint64_t __46__PLPerformanceAgent_initOperatorDependancies__block_invoke_320(uin
     v8 = &v19;
     v19 = v3;
     v9 = &v20;
-    [v5 enumerateSampledActiveExperimentsForEnvironment:0 correlationID:@"com.apple.powerlog" error:&v20 block:&v14];
+    [defaultProvider enumerateSampledActiveExperimentsForEnvironment:0 correlationID:@"com.apple.powerlog" error:&v20 block:&v14];
   }
 
   v10 = *v9;
@@ -1113,119 +1113,119 @@ void __48__PLPerformanceAgent_logEventIntervalExperiment__block_invoke_334(uint6
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)descriptionForMemoryPressure:(int)a3
+- (id)descriptionForMemoryPressure:(int)pressure
 {
-  if ((a3 - 1) > 3)
+  if ((pressure - 1) > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_27825A880[a3 - 1];
+    return off_27825A880[pressure - 1];
   }
 }
 
-- (void)logSystemMemoryToCA:(id)a3
+- (void)logSystemMemoryToCA:(id)a
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  aCopy = a;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v37 = 0;
   v36 = 4;
   if (!sysctlbyname("vm.pagesize", &v37, &v36, 0, 0))
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [v3 objectForKeyedSubscript:@"WiredCount"];
-    v7 = [v6 unsignedLongLongValue];
-    v8 = [v5 numberWithUnsignedLongLong:(v7 * v37) >> 10];
-    [v4 setObject:v8 forKeyedSubscript:@"wired_down"];
+    v6 = [aCopy objectForKeyedSubscript:@"WiredCount"];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
+    v8 = [v5 numberWithUnsignedLongLong:(unsignedLongLongValue * v37) >> 10];
+    [dictionary setObject:v8 forKeyedSubscript:@"wired_down"];
 
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v3 objectForKeyedSubscript:@"ExternalPageCount"];
-    v11 = [v10 unsignedLongLongValue];
-    v12 = [v9 numberWithUnsignedLongLong:(v11 * v37) >> 10];
-    [v4 setObject:v12 forKeyedSubscript:@"file_backed"];
+    v10 = [aCopy objectForKeyedSubscript:@"ExternalPageCount"];
+    unsignedLongLongValue2 = [v10 unsignedLongLongValue];
+    v12 = [v9 numberWithUnsignedLongLong:(unsignedLongLongValue2 * v37) >> 10];
+    [dictionary setObject:v12 forKeyedSubscript:@"file_backed"];
 
     v13 = MEMORY[0x277CCABB0];
-    v14 = [v3 objectForKeyedSubscript:@"CompressorPageCount"];
-    v15 = [v14 unsignedLongLongValue];
-    v16 = [v13 numberWithUnsignedLongLong:(v15 * v37) >> 10];
-    [v4 setObject:v16 forKeyedSubscript:@"occupied_by_compressor"];
+    v14 = [aCopy objectForKeyedSubscript:@"CompressorPageCount"];
+    unsignedLongLongValue3 = [v14 unsignedLongLongValue];
+    v16 = [v13 numberWithUnsignedLongLong:(unsignedLongLongValue3 * v37) >> 10];
+    [dictionary setObject:v16 forKeyedSubscript:@"occupied_by_compressor"];
 
     v17 = MEMORY[0x277CCABB0];
-    v18 = [v3 objectForKeyedSubscript:@"CompressedPageCount"];
-    v19 = [v18 unsignedLongLongValue];
-    v20 = [v17 numberWithUnsignedLongLong:(v19 * v37) >> 10];
-    [v4 setObject:v20 forKeyedSubscript:@"stored_in_compressor"];
+    v18 = [aCopy objectForKeyedSubscript:@"CompressedPageCount"];
+    unsignedLongLongValue4 = [v18 unsignedLongLongValue];
+    v20 = [v17 numberWithUnsignedLongLong:(unsignedLongLongValue4 * v37) >> 10];
+    [dictionary setObject:v20 forKeyedSubscript:@"stored_in_compressor"];
 
     v21 = MEMORY[0x277CCABB0];
-    v22 = [v3 objectForKeyedSubscript:@"FreeCount"];
-    v23 = [v22 unsignedLongLongValue];
-    v24 = [v21 numberWithUnsignedLongLong:(v23 * v37) >> 10];
-    [v4 setObject:v24 forKeyedSubscript:@"free"];
+    v22 = [aCopy objectForKeyedSubscript:@"FreeCount"];
+    unsignedLongLongValue5 = [v22 unsignedLongLongValue];
+    v24 = [v21 numberWithUnsignedLongLong:(unsignedLongLongValue5 * v37) >> 10];
+    [dictionary setObject:v24 forKeyedSubscript:@"free"];
 
     v25 = MEMORY[0x277CCABB0];
-    v26 = [v3 objectForKeyedSubscript:@"IdlePhysFootprint"];
-    v27 = [v26 unsignedLongLongValue];
-    v28 = [v25 numberWithUnsignedLongLong:(v27 * v37) >> 10];
-    [v4 setObject:v28 forKeyedSubscript:@"idle_phys_footprint"];
+    v26 = [aCopy objectForKeyedSubscript:@"IdlePhysFootprint"];
+    unsignedLongLongValue6 = [v26 unsignedLongLongValue];
+    v28 = [v25 numberWithUnsignedLongLong:(unsignedLongLongValue6 * v37) >> 10];
+    [dictionary setObject:v28 forKeyedSubscript:@"idle_phys_footprint"];
 
     v29 = MEMORY[0x277CCABB0];
-    v30 = [v3 objectForKeyedSubscript:@"IdleWired"];
-    v31 = [v30 unsignedLongLongValue];
-    v32 = [v29 numberWithUnsignedLongLong:(v31 * v37) >> 10];
-    [v4 setObject:v32 forKeyedSubscript:@"idle_wired"];
+    v30 = [aCopy objectForKeyedSubscript:@"IdleWired"];
+    unsignedLongLongValue7 = [v30 unsignedLongLongValue];
+    v32 = [v29 numberWithUnsignedLongLong:(unsignedLongLongValue7 * v37) >> 10];
+    [dictionary setObject:v32 forKeyedSubscript:@"idle_wired"];
 
     v33 = PLLogPerformance();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v39 = v4;
+      v39 = dictionary;
       _os_log_debug_impl(&dword_21A4C6000, v33, OS_LOG_TYPE_DEBUG, "Log System Memory Stats to CA %@", buf, 0xCu);
     }
 
-    v35 = v4;
+    v35 = dictionary;
     AnalyticsSendEventLazy();
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSharedCacheStatisticsToCA:(id)a3
+- (void)logSharedCacheStatisticsToCA:(id)a
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 objectForKeyedSubscript:@"SharedCacheVirtualSize"];
-  [v5 setObject:v6 forKeyedSubscript:@"virtual_shared_cache"];
+  aCopy = a;
+  dictionary = [v3 dictionary];
+  v6 = [aCopy objectForKeyedSubscript:@"SharedCacheVirtualSize"];
+  [dictionary setObject:v6 forKeyedSubscript:@"virtual_shared_cache"];
 
-  v7 = [v4 objectForKeyedSubscript:@"SharedCacheResidentSize"];
-  [v5 setObject:v7 forKeyedSubscript:@"resident_shared_cache"];
+  v7 = [aCopy objectForKeyedSubscript:@"SharedCacheResidentSize"];
+  [dictionary setObject:v7 forKeyedSubscript:@"resident_shared_cache"];
 
-  v8 = [v4 objectForKeyedSubscript:@"SharedCacheResidencyPercent"];
+  v8 = [aCopy objectForKeyedSubscript:@"SharedCacheResidencyPercent"];
 
-  [v5 setObject:v8 forKeyedSubscript:@"shared_cache_resident_percent"];
+  [dictionary setObject:v8 forKeyedSubscript:@"shared_cache_resident_percent"];
   v9 = PLLogPerformance();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = dictionary;
     _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "Log Shared Cache Stats to CA %@", buf, 0xCu);
   }
 
-  v12 = v5;
-  v10 = v5;
+  v12 = dictionary;
+  v10 = dictionary;
   AnalyticsSendEventLazy();
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventPointSystemMemoryPerProcess:(id)a3
+- (void)logEventPointSystemMemoryPerProcess:(id)process
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   if (qword_2811F30C0 != -1)
   {
     dispatch_once(&qword_2811F30C0, &__block_literal_global_386);
@@ -1265,8 +1265,8 @@ void __48__PLPerformanceAgent_logEventIntervalExperiment__block_invoke_334(uint6
           *&v12 = 134218242;
           v41 = v12;
           v19 = v9;
-          v43 = v4;
-          v44 = self;
+          v43 = processCopy;
+          selfCopy = self;
           do
           {
             v21 = *v19++;
@@ -1382,10 +1382,10 @@ void __48__PLPerformanceAgent_logEventIntervalExperiment__block_invoke_334(uint6
                 v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:6];
 
                 v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v46];
-                v4 = v43;
+                processCopy = v43;
                 [v43 setObject:v40 forKeyedSubscript:v39];
                 v45 = v39;
-                self = v44;
+                self = selfCopy;
               }
 
               v17 = 0x277D3F000;
@@ -1422,7 +1422,7 @@ void __48__PLPerformanceAgent_logEventIntervalExperiment__block_invoke_334(uint6
     }
   }
 
-  [(PLOperator *)self logEntry:v4];
+  [(PLOperator *)self logEntry:processCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1527,20 +1527,20 @@ LABEL_25:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventPointSystemMemory:(BOOL)a3
+- (void)logEventPointSystemMemory:(BOOL)memory
 {
   v100 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F180] fullMode] && objc_msgSend(MEMORY[0x277D3F208], "internalBuild"))
   {
-    v5 = [MEMORY[0x277D3F208] isiOS];
+    isiOS = [MEMORY[0x277D3F208] isiOS];
   }
 
   else
   {
-    v5 = 0;
+    isiOS = 0;
   }
 
-  if (a3)
+  if (memory)
   {
     v6 = 1;
   }
@@ -1629,11 +1629,11 @@ LABEL_25:
     v75 = 0uLL;
     if (!PLProcessMetricsForIdleBand(&v75))
     {
-      v30 = [MEMORY[0x277CCABB0] numberWithLongLong:v75.i64[1] / 1024];
-      [v12 setObject:v30 forKeyedSubscript:@"IdlePhysFootprint"];
+      1024 = [MEMORY[0x277CCABB0] numberWithLongLong:v75.i64[1] / 1024];
+      [v12 setObject:1024 forKeyedSubscript:@"IdlePhysFootprint"];
 
-      v31 = [MEMORY[0x277CCABB0] numberWithLongLong:v75.i64[0] / 1024];
-      [v12 setObject:v31 forKeyedSubscript:@"IdleWired"];
+      10242 = [MEMORY[0x277CCABB0] numberWithLongLong:v75.i64[0] / 1024];
+      [v12 setObject:10242 forKeyedSubscript:@"IdleWired"];
     }
 
     v92 = 0x500000002;
@@ -1822,7 +1822,7 @@ LABEL_54:
 LABEL_55:
           [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{mapped_size >> 10, v66}];
           v68 = v6;
-          v52 = v5;
+          v52 = isiOS;
           v54 = v53 = mapped_size;
           [v12 setObject:v54 forKeyedSubscript:@"SharedCacheVirtualSize"];
 
@@ -1830,7 +1830,7 @@ LABEL_55:
           [v12 setObject:v55 forKeyedSubscript:@"SharedCacheResidentSize"];
 
           v56 = v53;
-          v5 = v52;
+          isiOS = v52;
           v6 = v68;
           v57 = v45 * 100.0 / v56;
           *&v57 = v57;
@@ -1868,7 +1868,7 @@ LABEL_56:
       }
     }
 
-    if (v5)
+    if (isiOS)
     {
       [(PLPerformanceAgent *)self logEventPointSystemMemoryPerProcess:v12];
       if (!v6)
@@ -1914,19 +1914,19 @@ LABEL_69:
 
   v6 = [MEMORY[0x277D73660] clientWithIdentifier:227];
   v7 = [v6 levelForFactor:@"BallastOffset" withNamespaceName:@"COREOS_GMPOWER_VM_TUNING_PAGE_SHORTAGE_THRESHOLDS"];
-  v8 = [v7 longValue];
+  longValue = [v7 longValue];
   v9 = PLLogPerformance();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v13 = 134217984;
-    v14 = v8;
+    v14 = longValue;
     _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "logEventPointVMTunables VM_TUNING_PAGE_SHORTAGE_THRESHOLDS ballast offset: %lu", &v13, 0xCu);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:longValue];
   if (v10)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:longValue];
     [v5 setObject:v11 forKeyedSubscript:@"BallastOffset"];
   }
 
@@ -1970,9 +1970,9 @@ LABEL_69:
   v13 = PLLogPerformance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [v5 dictionary];
+    dictionary = [v5 dictionary];
     v16 = 138412290;
-    v17 = v15;
+    v17 = dictionary;
     _os_log_debug_impl(&dword_21A4C6000, v13, OS_LOG_TYPE_DEBUG, "IdleReaper sysctls: %@", &v16, 0xCu);
   }
 
@@ -1980,16 +1980,16 @@ LABEL_69:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (int)convertCodePrewarmingSysctl:(id)a3
+- (int)convertCodePrewarmingSysctl:(id)sysctl
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"on"])
+  sysctlCopy = sysctl;
+  if ([sysctlCopy isEqualToString:@"on"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"off"])
+  else if ([sysctlCopy isEqualToString:@"off"])
   {
     v4 = 0;
   }
@@ -2000,7 +2000,7 @@ LABEL_69:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = sysctlCopy;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, " Unknown code prewarming sysctl %@", &v8, 0xCu);
     }
 
@@ -2016,9 +2016,9 @@ LABEL_69:
   v26 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F180] isTaskFullEPLMode])
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v23 = 0;
-    v4 = [v3 attributesOfFileSystemForPath:@"/" error:&v23];
+    v4 = [defaultManager attributesOfFileSystemForPath:@"/" error:&v23];
     v5 = v23;
     if (v4)
     {
@@ -2065,9 +2065,9 @@ LABEL_69:
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not get root dir attributes. Error: %@", v5];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLPerformanceAgent.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPerformanceAgent logEventPointDiskUsage]"];
-      [v16 logMessage:v8 fromFile:v18 fromFunction:v19 fromLineNumber:1022];
+      [v16 logMessage:v8 fromFile:lastPathComponent fromFunction:v19 fromLineNumber:1022];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -2157,9 +2157,9 @@ uint64_t __44__PLPerformanceAgent_logEventPointDiskUsage__block_invoke(uint64_t 
             v14 = [v12 stringWithFormat:@"Could not get jetsam priority list size: %s\n", strerror(*v13)];
             v15 = MEMORY[0x277D3F178];
             v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLPerformanceAgent.m"];
-            v17 = [v16 lastPathComponent];
+            lastPathComponent = [v16 lastPathComponent];
             v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPerformanceAgent logEventPointJetsamPrority]"];
-            [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:1114];
+            [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:1114];
 
             v19 = PLLogCommon();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -2182,7 +2182,7 @@ uint64_t __44__PLPerformanceAgent_logEventPointDiskUsage__block_invoke(uint64_t 
           v62 = v5;
           v8 = objc_opt_new();
           v9 = [(PLOperator *)PLPerformanceAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"JetsamPriority"];
-          v65 = [MEMORY[0x277CBEAA8] monotonicDate];
+          monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
           if (v7 < 0x18)
           {
 LABEL_6:
@@ -2202,7 +2202,7 @@ LABEL_6:
           while (1)
           {
             context = objc_autoreleasePoolPush();
-            v32 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9 withDate:v65];
+            v32 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9 withDate:monotonicDate];
             v33 = [MEMORY[0x277CCABB0] numberWithInt:*v31];
             [v32 setObject:v33 forKeyedSubscript:@"pid"];
 
@@ -2233,9 +2233,9 @@ LABEL_6:
                 v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Warning: Failed to get memory limit info for pid %d.  Limits will appear as 0MB and not fatal.\n", *v31];
                 v38 = MEMORY[0x277D3F178];
                 v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLPerformanceAgent.m"];
-                v40 = [v39 lastPathComponent];
+                lastPathComponent2 = [v39 lastPathComponent];
                 v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPerformanceAgent logEventPointJetsamPrority]"];
-                [v38 logMessage:v37 fromFile:v40 fromFunction:v41 fromLineNumber:1080];
+                [v38 logMessage:v37 fromFile:lastPathComponent2 fromFunction:v41 fromLineNumber:1080];
 
                 v42 = PLLogCommon();
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -2308,9 +2308,9 @@ LABEL_6:
               v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"Warning: Could not get rusage for pid %d.\n", *v31];
               v49 = MEMORY[0x277D3F178];
               v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLPerformanceAgent.m"];
-              v51 = [v50 lastPathComponent];
+              lastPathComponent3 = [v50 lastPathComponent];
               v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPerformanceAgent logEventPointJetsamPrority]"];
-              [v49 logMessage:v48 fromFile:v51 fromFunction:v52 fromLineNumber:1090];
+              [v49 logMessage:v48 fromFile:lastPathComponent3 fromFunction:v52 fromLineNumber:1090];
 
               v53 = PLLogCommon();
               if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -2338,8 +2338,8 @@ LABEL_42:
             v55 = [MEMORY[0x277CCABB0] numberWithInt:v31[1]];
             [v32 setObject:v55 forKeyedSubscript:@"priority"];
 
-            v56 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v31[5] & 0x10];
-            [v32 setObject:v56 forKeyedSubscript:@"pressuredExit"];
+            0x10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v31[5] & 0x10];
+            [v32 setObject:0x10 forKeyedSubscript:@"pressuredExit"];
 
             v57 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v31[5] & 2];
             [v32 setObject:v57 forKeyedSubscript:@"frozen"];
@@ -2389,9 +2389,9 @@ LABEL_42:
             v23 = [v21 stringWithFormat:@"Error: Could not get jetsam priority list: %s\n", strerror(*v22)];
             v24 = MEMORY[0x277D3F178];
             v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLPerformanceAgent.m"];
-            v26 = [v25 lastPathComponent];
+            lastPathComponent4 = [v25 lastPathComponent];
             v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPerformanceAgent logEventPointJetsamPrority]"];
-            [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:1057];
+            [v24 logMessage:v23 fromFile:lastPathComponent4 fromFunction:v27 fromLineNumber:1057];
 
             v28 = PLLogCommon();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -2440,9 +2440,9 @@ uint64_t __48__PLPerformanceAgent_logEventPointJetsamPrority__block_invoke_460(u
   return result;
 }
 
-- (int)countFD:(int)a3
+- (int)countFD:(int)d
 {
-  v4 = proc_pidinfo(a3, 1, 0, 0, 0);
+  v4 = proc_pidinfo(d, 1, 0, 0, 0);
   if (v4 < 1)
   {
     return -1;
@@ -2456,7 +2456,7 @@ uint64_t __48__PLPerformanceAgent_logEventPointJetsamPrority__block_invoke_460(u
   }
 
   v7 = v6;
-  v8 = (proc_pidinfo(a3, 1, 0, v6, v5) >> 3);
+  v8 = (proc_pidinfo(d, 1, 0, v6, v5) >> 3);
   if (v8 >= 1)
   {
     v9 = 0;
@@ -2466,7 +2466,7 @@ uint64_t __48__PLPerformanceAgent_logEventPointJetsamPrority__block_invoke_460(u
       if (*v10 == 1)
       {
         memset(v13, 0, sizeof(v13));
-        v11 = proc_pidfdinfo(a3, *(v10 - 1), 1, v13, 176);
+        v11 = proc_pidfdinfo(d, *(v10 - 1), 1, v13, 176);
         if (v11 <= 0)
         {
           if (*__error() != 2)
@@ -2522,13 +2522,13 @@ uint64_t __36__PLPerformanceAgent_countMachPort___block_invoke_469(uint64_t a1)
   {
     if ([MEMORY[0x277D3F180] isTaskFullEPLMode])
     {
-      v3 = [(PLOperator *)self workQueue];
+      workQueue = [(PLOperator *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __52__PLPerformanceAgent_logEventPointAPFSFragmentation__block_invoke;
       block[3] = &unk_2782591D0;
       block[4] = self;
-      dispatch_async(v3, block);
+      dispatch_async(workQueue, block);
     }
   }
 }
@@ -2764,7 +2764,7 @@ uint64_t __52__PLPerformanceAgent_logEventPointAPFSFragmentation__block_invoke_4
   return result;
 }
 
-- (void)logEventPointAPFSFragmentationWithContainer:(const char *)a3
+- (void)logEventPointAPFSFragmentationWithContainer:(const char *)container
 {
   v27 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -2782,18 +2782,18 @@ uint64_t __52__PLPerformanceAgent_logEventPointAPFSFragmentation__block_invoke_4
 
     if (byte_2811F307D == 1)
     {
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"logEventPointAPFSFragmentationWithContainer:%s\n", a3];
+      container = [MEMORY[0x277CCACA8] stringWithFormat:@"logEventPointAPFSFragmentationWithContainer:%s\n", container];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLPerformanceAgent.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPerformanceAgent logEventPointAPFSFragmentationWithContainer:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1227];
+      [v6 logMessage:container fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1227];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v26 = v5;
+        v26 = container;
         _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -2817,14 +2817,14 @@ uint64_t __52__PLPerformanceAgent_logEventPointAPFSFragmentation__block_invoke_4
 
     if (byte_2811F307E == 1)
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"unable to get fragmentation histogram for %s", a3];
+      container2 = [MEMORY[0x277CCACA8] stringWithFormat:@"unable to get fragmentation histogram for %s", container];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLPerformanceAgent.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent2 = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPerformanceAgent logEventPointAPFSFragmentationWithContainer:]"];
       v17 = v13;
-      v18 = v12;
-      [v17 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:1233];
+      v18 = container2;
+      [v17 logMessage:container2 fromFile:lastPathComponent2 fromFunction:v16 fromLineNumber:1233];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -2877,8 +2877,8 @@ uint64_t __66__PLPerformanceAgent_logEventPointAPFSFragmentationWithContainer___
 
   v3 = objc_opt_new();
   v4 = [(PLOperator *)PLPerformanceAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"Rollout"];
-  v5 = [MEMORY[0x277D73648] defaultProvider];
-  v6 = [MEMORY[0x277CBEAA8] monotonicDate];
+  defaultProvider = [MEMORY[0x277D73648] defaultProvider];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   if (([MEMORY[0x277D3F208] seedBuild] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "internalBuild"))
   {
     v7 = PLLogCommon();
@@ -2896,11 +2896,11 @@ uint64_t __66__PLPerformanceAgent_logEventPointAPFSFragmentationWithContainer___
     v8 = &v25;
     v25 = v4;
     v9 = &v26;
-    v26 = v6;
+    v26 = monotonicDate;
     v10 = &v27;
     v27 = v3;
     v11 = &v28;
-    [v5 enumerateActiveRolloutsWithError:&v28 block:v24];
+    [defaultProvider enumerateActiveRolloutsWithError:&v28 block:v24];
   }
 
   else
@@ -2926,11 +2926,11 @@ uint64_t __66__PLPerformanceAgent_logEventPointAPFSFragmentationWithContainer___
     v8 = &v20;
     v20 = v4;
     v9 = &v21;
-    v21 = v6;
+    v21 = monotonicDate;
     v10 = &v22;
     v22 = v3;
     v11 = &v23;
-    [v5 enumerateSampledActiveRolloutsForCorrelationID:@"com.apple.powerlog" error:&v23 block:&v16];
+    [defaultProvider enumerateSampledActiveRolloutsForCorrelationID:@"com.apple.powerlog" error:&v23 block:&v16];
   }
 
   v12 = *v11;

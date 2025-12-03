@@ -1,36 +1,36 @@
 @interface HDHeadphoneExposureStatisticUpdateResult
-- (id)_initWithIncludedSeries:(BOOL)a3 canTriggerNotification:(BOOL)a4;
-- (void)combineWithResult:(id)a3;
+- (id)_initWithIncludedSeries:(BOOL)series canTriggerNotification:(BOOL)notification;
+- (void)combineWithResult:(id)result;
 @end
 
 @implementation HDHeadphoneExposureStatisticUpdateResult
 
-- (void)combineWithResult:(id)a3
+- (void)combineWithResult:(id)result
 {
-  v6 = a3;
-  v4 = [(HDHeadphoneExposureStatisticUpdateResult *)self includedSeries];
-  if (v4)
+  resultCopy = result;
+  includedSeries = [(HDHeadphoneExposureStatisticUpdateResult *)self includedSeries];
+  if (includedSeries)
   {
-    LOBYTE(v4) = [v6 includedSeries];
+    LOBYTE(includedSeries) = [resultCopy includedSeries];
   }
 
-  self->_includedSeries = v4;
+  self->_includedSeries = includedSeries;
   if ([(HDHeadphoneExposureStatisticUpdateResult *)self canTriggerNotification])
   {
-    v5 = 1;
+    canTriggerNotification = 1;
   }
 
   else
   {
-    v5 = [v6 canTriggerNotification];
+    canTriggerNotification = [resultCopy canTriggerNotification];
   }
 
-  self->_canTriggerNotification = v5;
+  self->_canTriggerNotification = canTriggerNotification;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)_initWithIncludedSeries:(BOOL)a3 canTriggerNotification:(BOOL)a4
+- (id)_initWithIncludedSeries:(BOOL)series canTriggerNotification:(BOOL)notification
 {
   v10.receiver = self;
   v10.super_class = HDHeadphoneExposureStatisticUpdateResult;
@@ -38,8 +38,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_includedSeries = a3;
-    v6->_canTriggerNotification = a4;
+    v6->_includedSeries = series;
+    v6->_canTriggerNotification = notification;
     v8 = v6;
   }
 

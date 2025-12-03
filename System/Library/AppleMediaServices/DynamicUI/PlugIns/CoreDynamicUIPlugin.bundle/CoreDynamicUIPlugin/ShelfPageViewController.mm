@@ -1,15 +1,15 @@
 @interface ShelfPageViewController
 - (NSString)title;
 - (UINavigationItem)navigationItem;
-- (_TtC19CoreDynamicUIPlugin23ShelfPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19CoreDynamicUIPlugin23ShelfPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -17,7 +17,7 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_7B970();
 
   return v3;
@@ -25,7 +25,7 @@
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_7BAA8();
   v4 = v3;
 
@@ -42,9 +42,9 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_8F5F4();
     v6 = v5;
@@ -56,67 +56,67 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_7BC14(v4, v6);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_7BD28();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_7BE08(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_7BE08(change);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_7BEDC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_7BFA8(a3);
+  selfCopy = self;
+  sub_7BFA8(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_7C090(a3);
+  selfCopy = self;
+  sub_7C090(disappear);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_7C188(a3);
+  selfCopy = self;
+  sub_7C188(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_7C2B0(a3);
+  selfCopy = self;
+  sub_7C2B0(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_7C458();
 }
 
-- (_TtC19CoreDynamicUIPlugin23ShelfPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19CoreDynamicUIPlugin23ShelfPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_8F5F4();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_7F728();
 }
 

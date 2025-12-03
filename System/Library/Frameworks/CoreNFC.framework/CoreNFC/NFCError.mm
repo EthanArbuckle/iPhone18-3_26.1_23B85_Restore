@@ -1,46 +1,46 @@
 @interface NFCError
-+ (id)errorWithCode:(int64_t)a3;
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4;
-+ (id)errorWithNFCDError:(id)a3 defaultNFCErrorCode:(int64_t)a4;
-- (NFCError)initWithCode:(int64_t)a3 userInfo:(id)a4;
++ (id)errorWithCode:(int64_t)code;
++ (id)errorWithCode:(int64_t)code userInfo:(id)info;
++ (id)errorWithNFCDError:(id)error defaultNFCErrorCode:(int64_t)code;
+- (NFCError)initWithCode:(int64_t)code userInfo:(id)info;
 @end
 
 @implementation NFCError
 
-+ (id)errorWithCode:(int64_t)a3
++ (id)errorWithCode:(int64_t)code
 {
-  v3 = [[NFCError alloc] initWithCode:a3 userInfo:0];
+  v3 = [[NFCError alloc] initWithCode:code userInfo:0];
 
   return v3;
 }
 
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [[NFCError alloc] initWithCode:a3 userInfo:v5];
+  infoCopy = info;
+  v6 = [[NFCError alloc] initWithCode:code userInfo:infoCopy];
 
   return v6;
 }
 
-- (NFCError)initWithCode:(int64_t)a3 userInfo:(id)a4
+- (NFCError)initWithCode:(int64_t)code userInfo:(id)info
 {
-  v6 = a4;
-  if (a3 > 103)
+  infoCopy = info;
+  if (code > 103)
   {
     v7 = @"NDEF tag write failed";
     v20 = @"Insufficient space on NDEF tag";
     v21 = @"NDEF tag does not contain any NDEF message";
-    if (a3 != 403)
+    if (code != 403)
     {
       v21 = 0;
     }
 
-    if (a3 != 402)
+    if (code != 402)
     {
       v20 = v21;
     }
 
-    if (a3 != 401)
+    if (code != 401)
     {
       v7 = v20;
     }
@@ -48,22 +48,22 @@
     v22 = @"First NDEF tag read";
     v23 = @"Invalid configuration parameters";
     v24 = @"NDEF tag is read only";
-    if (a3 != 400)
+    if (code != 400)
     {
       v24 = 0;
     }
 
-    if (a3 != 300)
+    if (code != 300)
     {
       v23 = v24;
     }
 
-    if (a3 != 204)
+    if (code != 204)
     {
       v22 = v23;
     }
 
-    if (a3 <= 400)
+    if (code <= 400)
     {
       v7 = v22;
     }
@@ -71,17 +71,17 @@
     v13 = @"Session timeout";
     v25 = @"Session invalidated unexpectedly";
     v26 = @"System resource unavailable";
-    if (a3 != 203)
+    if (code != 203)
     {
       v26 = 0;
     }
 
-    if (a3 != 202)
+    if (code != 202)
     {
       v25 = v26;
     }
 
-    if (a3 != 201)
+    if (code != 201)
     {
       v13 = v25;
     }
@@ -89,27 +89,27 @@
     v27 = @"Tag is not connected";
     v28 = @"Packet length has exceeded the limit";
     v29 = @"Session invalidated by user";
-    if (a3 != 200)
+    if (code != 200)
     {
       v29 = 0;
     }
 
-    if (a3 != 105)
+    if (code != 105)
     {
       v28 = v29;
     }
 
-    if (a3 != 104)
+    if (code != 104)
     {
       v27 = v28;
     }
 
-    if (a3 <= 200)
+    if (code <= 200)
     {
       v13 = v27;
     }
 
-    v19 = a3 <= 203;
+    v19 = code <= 203;
   }
 
   else
@@ -117,17 +117,17 @@
     v7 = @"Maximum retries exceeded";
     v8 = @"Tag response error";
     v9 = @"Session invalidated";
-    if (a3 != 103)
+    if (code != 103)
     {
       v9 = 0;
     }
 
-    if (a3 != 102)
+    if (code != 102)
     {
       v8 = v9;
     }
 
-    if (a3 != 101)
+    if (code != 101)
     {
       v7 = v8;
     }
@@ -135,22 +135,22 @@
     v10 = @"System is ineligible for this operation";
     v11 = @"User has not yet accepted or declined app request to use this service";
     v12 = @"Tag connection lost";
-    if (a3 != 100)
+    if (code != 100)
     {
       v12 = 0;
     }
 
-    if (a3 != 8)
+    if (code != 8)
     {
       v11 = v12;
     }
 
-    if (a3 != 7)
+    if (code != 7)
     {
       v10 = v11;
     }
 
-    if (a3 <= 100)
+    if (code <= 100)
     {
       v7 = v10;
     }
@@ -158,17 +158,17 @@
     v13 = @"Invalid parameter length";
     v14 = @"Parameter value is out of bound";
     v15 = @"NFC radio is disabled";
-    if (a3 != 6)
+    if (code != 6)
     {
       v15 = 0;
     }
 
-    if (a3 != 5)
+    if (code != 5)
     {
       v14 = v15;
     }
 
-    if (a3 != 4)
+    if (code != 4)
     {
       v13 = v14;
     }
@@ -176,27 +176,27 @@
     v16 = @"Feature not supported";
     v17 = @"Missing required entitlement";
     v18 = @"Invalid parameter";
-    if (a3 != 3)
+    if (code != 3)
     {
       v18 = 0;
     }
 
-    if (a3 != 2)
+    if (code != 2)
     {
       v17 = v18;
     }
 
-    if (a3 != 1)
+    if (code != 1)
     {
       v16 = v17;
     }
 
-    if (a3 <= 3)
+    if (code <= 3)
     {
       v13 = v16;
     }
 
-    v19 = a3 <= 6;
+    v19 = code <= 6;
   }
 
   if (v19)
@@ -211,31 +211,31 @@
 
   v31 = objc_alloc(MEMORY[0x277CBEB38]);
   v32 = [v31 initWithObjectsAndKeys:{v30, *MEMORY[0x277CCA450], 0}];
-  if ([v6 count])
+  if ([infoCopy count])
   {
-    [v32 addEntriesFromDictionary:v6];
+    [v32 addEntriesFromDictionary:infoCopy];
   }
 
   v35.receiver = self;
   v35.super_class = NFCError;
-  v33 = [(NFCError *)&v35 initWithDomain:@"NFCError" code:a3 userInfo:v32];
+  v33 = [(NFCError *)&v35 initWithDomain:@"NFCError" code:code userInfo:v32];
 
   return v33;
 }
 
-+ (id)errorWithNFCDError:(id)a3 defaultNFCErrorCode:(int64_t)a4
++ (id)errorWithNFCDError:(id)error defaultNFCErrorCode:(int64_t)code
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (!errorCopy)
   {
     v10 = 0;
     goto LABEL_14;
   }
 
-  v7 = [v5 domain];
-  v8 = [v7 isEqualToString:@"NFCError"];
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:@"NFCError"];
 
   if (v8)
   {
@@ -245,9 +245,9 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v11 = [v6 domain];
+  domain2 = [v6 domain];
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
-  v13 = [v11 isEqualToString:v12];
+  v13 = [domain2 isEqualToString:v12];
 
   if ((v13 & 1) == 0)
   {
@@ -307,15 +307,15 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v26 = [v6 code];
+    code = [v6 code];
     v27 = *MEMORY[0x277CCA450];
-    if (v26 == 64)
+    if (code == 64)
     {
       v30 = *MEMORY[0x277CCA450];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Reader mode prohibit timer"];
       v31 = v15;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      v20 = 203;
+      codeCopy = 203;
       goto LABEL_13;
     }
 
@@ -329,9 +329,9 @@ LABEL_9:
     v18 = v28;
 LABEL_12:
     v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:2];
-    v20 = a4;
+    codeCopy = code;
 LABEL_13:
-    v10 = [NFCError errorWithCode:v20 userInfo:v19];
+    v10 = [NFCError errorWithCode:codeCopy userInfo:v19];
 
     goto LABEL_14;
   }

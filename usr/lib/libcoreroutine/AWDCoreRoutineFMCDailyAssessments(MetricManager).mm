@@ -8,7 +8,7 @@
 
 - (char)_init
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_284627EE0;
   v1 = objc_msgSendSuper2(&v6, sel_init);
   if (v1)
@@ -25,7 +25,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -69,27 +69,27 @@ LABEL_9:
 - (id)description
 {
   v2 = objc_opt_new();
-  if ([a1 assessmentsCount])
+  if ([self assessmentsCount])
   {
     v3 = 0;
     do
     {
-      v4 = [a1 assessmentAtIndex:v3];
+      v4 = [self assessmentAtIndex:v3];
       v5 = [v4 description];
       [v2 appendFormat:@"{%@}", v5];
 
       ++v3;
     }
 
-    while ([a1 assessmentsCount] > v3);
+    while ([self assessmentsCount] > v3);
   }
 
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [a1 assessmentsCount];
+  assessmentsCount = [self assessmentsCount];
   v10 = [v2 description];
-  v11 = [v6 stringWithFormat:@"%@, count %lu, assessments %@", v8, v9, v10];
+  v11 = [v6 stringWithFormat:@"%@, count %lu, assessments %@", v8, assessmentsCount, v10];
 
   return v11;
 }

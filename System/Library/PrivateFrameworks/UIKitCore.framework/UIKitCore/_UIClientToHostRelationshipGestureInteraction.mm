@@ -1,16 +1,16 @@
 @interface _UIClientToHostRelationshipGestureInteraction
-+ (id)_hostGestureRecognizersForFailureRelationshipsWithIdentifier:(id)a3;
-+ (id)hostGestureRecognizerForFailureRelationshipsWithIdentifier:(id)a3;
-+ (void)dispatchGestureRecognizerStateChange:(int64_t)a3 toHostGestureWithIdentifier:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
++ (id)_hostGestureRecognizersForFailureRelationshipsWithIdentifier:(id)identifier;
++ (id)hostGestureRecognizerForFailureRelationshipsWithIdentifier:(id)identifier;
++ (void)dispatchGestureRecognizerStateChange:(int64_t)change toHostGestureWithIdentifier:(id)identifier;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
-- (_UIClientToHostRelationshipGestureInteraction)initWithHostIdentifier:(id)a3;
+- (_UIClientToHostRelationshipGestureInteraction)initWithHostIdentifier:(id)identifier;
 - (void)_invalidatePointerPauseAssertion;
-- (void)_wrappedRecognizerDidRecognize:(id)a3;
-- (void)addGestureRecognizer:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)removeGestureRecognizer:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_wrappedRecognizerDidRecognize:(id)recognize;
+- (void)addGestureRecognizer:(id)recognizer;
+- (void)didMoveToView:(id)view;
+- (void)removeGestureRecognizer:(id)recognizer;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIClientToHostRelationshipGestureInteraction
@@ -22,46 +22,46 @@
   return WeakRetained;
 }
 
-+ (id)_hostGestureRecognizersForFailureRelationshipsWithIdentifier:(id)a3
++ (id)_hostGestureRecognizersForFailureRelationshipsWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_MergedGlobals_1247 != -1)
   {
     dispatch_once(&_MergedGlobals_1247, &__block_literal_global_472);
   }
 
-  v4 = [qword_1ED49FEE0 objectForKey:v3];
-  if (!v4)
+  weakObjectsHashTable = [qword_1ED49FEE0 objectForKey:identifierCopy];
+  if (!weakObjectsHashTable)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [qword_1ED49FEE0 setObject:v4 forKey:v3];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [qword_1ED49FEE0 setObject:weakObjectsHashTable forKey:identifierCopy];
   }
 
-  return v4;
+  return weakObjectsHashTable;
 }
 
-+ (id)hostGestureRecognizerForFailureRelationshipsWithIdentifier:(id)a3
++ (id)hostGestureRecognizerForFailureRelationshipsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [[_UIRelationshipGestureRecognizer alloc] initWithTarget:0 action:0];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"clientRelationshipGestureRecognizer:%@", v4];
-  [(UIGestureRecognizer *)v5 setName:v6];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"clientRelationshipGestureRecognizer:%@", identifierCopy];
+  [(UIGestureRecognizer *)v5 setName:identifierCopy];
 
   [(_UIRelationshipGestureRecognizer *)v5 setSucceedsOnTouchesEnded:1];
   [(_UIRelationshipGestureRecognizer *)v5 setFailsOnTouchesCancelled:0];
-  v7 = [a1 _hostGestureRecognizersForFailureRelationshipsWithIdentifier:v4];
+  v7 = [self _hostGestureRecognizersForFailureRelationshipsWithIdentifier:identifierCopy];
 
   [v7 addObject:v5];
 
   return v5;
 }
 
-+ (void)dispatchGestureRecognizerStateChange:(int64_t)a3 toHostGestureWithIdentifier:(id)a4
++ (void)dispatchGestureRecognizerStateChange:(int64_t)change toHostGestureWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (change == 1)
   {
-    v4 = [a1 _hostGestureRecognizersForFailureRelationshipsWithIdentifier:a4];
+    v4 = [self _hostGestureRecognizersForFailureRelationshipsWithIdentifier:identifier];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -93,37 +93,37 @@
   }
 }
 
-- (_UIClientToHostRelationshipGestureInteraction)initWithHostIdentifier:(id)a3
+- (_UIClientToHostRelationshipGestureInteraction)initWithHostIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _UIClientToHostRelationshipGestureInteraction;
   v6 = [(_UIClientToHostRelationshipGestureInteraction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hostIdentifier, a3);
+    objc_storeStrong(&v6->_hostIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (void)addGestureRecognizer:(id)a3
+- (void)addGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   gestureRecognizers = self->_gestureRecognizers;
-  v9 = v4;
+  v9 = recognizerCopy;
   if (!gestureRecognizers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_gestureRecognizers;
     self->_gestureRecognizers = v6;
 
-    v4 = v9;
+    recognizerCopy = v9;
     gestureRecognizers = self->_gestureRecognizers;
   }
 
-  [(NSMutableArray *)gestureRecognizers addObject:v4];
+  [(NSMutableArray *)gestureRecognizers addObject:recognizerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained addGestureRecognizer:v9];
 
@@ -131,20 +131,20 @@
   [v9 setDelegate:self];
 }
 
-- (void)removeGestureRecognizer:(id)a3
+- (void)removeGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [v4 setDelegate:0];
-  [v4 removeTarget:self action:sel__wrappedRecognizerDidRecognize_];
-  [(NSMutableArray *)self->_gestureRecognizers removeObject:v4];
+  recognizerCopy = recognizer;
+  [recognizerCopy setDelegate:0];
+  [recognizerCopy removeTarget:self action:sel__wrappedRecognizerDidRecognize_];
+  [(NSMutableArray *)self->_gestureRecognizers removeObject:recognizerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [WeakRetained removeGestureRecognizer:v4];
+  [WeakRetained removeGestureRecognizer:recognizerCopy];
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!view)
   {
     v13 = 0u;
     v14 = 0u;
@@ -184,11 +184,11 @@
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v5 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     v15 = 0u;
     v16 = 0u;
@@ -233,44 +233,44 @@
   self->_pointerUpdatePauseAssertion = 0;
 }
 
-- (void)_wrappedRecognizerDidRecognize:(id)a3
+- (void)_wrappedRecognizerDidRecognize:(id)recognize
 {
-  v14 = a3;
-  if ([v14 state] == 1)
+  recognizeCopy = recognize;
+  if ([recognizeCopy state] == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v5 = [WeakRetained _window];
+    _window = [WeakRetained _window];
 
     v6 = [_UIClientToHostGestureChangeAction alloc];
-    v7 = [(_UIClientToHostRelationshipGestureInteraction *)self hostIdentifier];
-    v8 = -[_UIClientToHostGestureChangeAction initWithHostGestureIdentifier:changeToState:](v6, "initWithHostGestureIdentifier:changeToState:", v7, [v14 state]);
+    hostIdentifier = [(_UIClientToHostRelationshipGestureInteraction *)self hostIdentifier];
+    v8 = -[_UIClientToHostGestureChangeAction initWithHostGestureIdentifier:changeToState:](v6, "initWithHostGestureIdentifier:changeToState:", hostIdentifier, [recognizeCopy state]);
 
-    v9 = [v5 rootViewController];
-    v10 = [v9 sendClientToHostAction:v8];
+    rootViewController = [_window rootViewController];
+    v10 = [rootViewController sendClientToHostAction:v8];
 
     if (v10)
     {
       [(_UIAssertion *)self->_pointerUpdatePauseAssertion _invalidate];
       v11 = +[_UIPointerArbiter sharedArbiter];
-      v12 = [v11 obtainPointerUpdatePauseAssertion];
+      obtainPointerUpdatePauseAssertion = [v11 obtainPointerUpdatePauseAssertion];
       pointerUpdatePauseAssertion = self->_pointerUpdatePauseAssertion;
-      self->_pointerUpdatePauseAssertion = v12;
+      self->_pointerUpdatePauseAssertion = obtainPointerUpdatePauseAssertion;
     }
   }
 
-  else if ([v14 state] == 3 || objc_msgSend(v14, "state") == 5 || objc_msgSend(v14, "state") == 4)
+  else if ([recognizeCopy state] == 3 || objc_msgSend(recognizeCopy, "state") == 5 || objc_msgSend(recognizeCopy, "state") == 4)
   {
     [(_UIClientToHostRelationshipGestureInteraction *)self performSelector:sel__invalidatePointerPauseAssertion withObject:0 afterDelay:0.5];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = a3;
-  if (-[NSMutableArray containsObject:](self->_gestureRecognizers, "containsObject:", v5) && [v5 _requiresSystemGesturesToFail])
+  beginCopy = begin;
+  if (-[NSMutableArray containsObject:](self->_gestureRecognizers, "containsObject:", beginCopy) && [beginCopy _requiresSystemGesturesToFail])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIClientToHostRelationshipGestureInteraction.m" lineNumber:177 description:{@"Wrapped recognizer for %@ must have requiresSystemGesturesToFail=NO, otherwise we'll be stuck waiting for the relationship recognizer to fail, causing a deadlock.", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIClientToHostRelationshipGestureInteraction.m" lineNumber:177 description:{@"Wrapped recognizer for %@ must have requiresSystemGesturesToFail=NO, otherwise we'll be stuck waiting for the relationship recognizer to fail, causing a deadlock.", self}];
   }
 
   return 1;

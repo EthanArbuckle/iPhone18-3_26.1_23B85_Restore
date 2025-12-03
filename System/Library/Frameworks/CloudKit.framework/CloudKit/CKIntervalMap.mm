@@ -1,10 +1,10 @@
 @interface CKIntervalMap
-- (BOOL)containsIndex:(unint64_t)a3;
-- (BOOL)containsIndexes:(id)a3;
+- (BOOL)containsIndex:(unint64_t)index;
+- (BOOL)containsIndexes:(id)indexes;
 - (CKIntervalMap)init;
 - (id)allIndexes;
 - (id)description;
-- (void)enumerateObjectsForIndexes:(id)a3 usingBlock:(id)a4;
+- (void)enumerateObjectsForIndexes:(id)indexes usingBlock:(id)block;
 - (void)maintainInvariants;
 @end
 
@@ -215,9 +215,9 @@ LABEL_52:
   }
 }
 
-- (BOOL)containsIndex:(unint64_t)a3
+- (BOOL)containsIndex:(unint64_t)index
 {
-  objc_msgSend_maintainInvariants(self, a2, a3);
+  objc_msgSend_maintainInvariants(self, a2, index);
   v7 = objc_msgSend_rangeMap(self, v5, v6);
   v8 = v7[1];
   v9 = v7[2];
@@ -235,7 +235,7 @@ LABEL_52:
     v15 = *v13;
     v14 = v13 + 4;
     v10 += ~(v10 >> 1);
-    if (v15 < a3)
+    if (v15 < index)
     {
       v11 = v14;
     }
@@ -247,17 +247,17 @@ LABEL_52:
   }
 
   while (v10);
-  v16 = a3 + 1;
+  v16 = index + 1;
   while (v11 != v8)
   {
     v17 = v11;
     v19 = *(v11 - 4);
     v11 -= 4;
     v18 = v19;
-    if (v19 <= a3)
+    if (v19 <= index)
     {
       v20 = *(v17 - 3) + v18;
-      v21 = v20 <= a3 || v18 > v16;
+      v21 = v20 <= index || v18 > v16;
       if (!v21 && v20 >= v16)
       {
         continue;
@@ -269,7 +269,7 @@ LABEL_52:
 
   v17 = v7[1];
 LABEL_19:
-  if (v17 == v9 || (v23 = *v17, *v17 > a3) || ((v24 = v17[1] + v23, v24 > a3) ? (v25 = v23 > v16) : (v25 = 1), !v25 ? (v26 = v24 >= v16) : (v26 = 0), !v26))
+  if (v17 == v9 || (v23 = *v17, *v17 > index) || ((v24 = v17[1] + v23, v24 > index) ? (v25 = v23 > v16) : (v25 = 1), !v25 ? (v26 = v24 >= v16) : (v26 = 0), !v26))
   {
 LABEL_28:
     v17 = v7[2];
@@ -280,9 +280,9 @@ LABEL_28:
   return v28;
 }
 
-- (BOOL)containsIndexes:(id)a3
+- (BOOL)containsIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   objc_msgSend_maintainInvariants(self, v5, v6);
   v7 = objc_opt_new();
   v12[0] = MEMORY[0x1E69E9820];
@@ -291,8 +291,8 @@ LABEL_28:
   v12[3] = &unk_1E70C1D80;
   v8 = v7;
   v13 = v8;
-  objc_msgSend_enumerateObjectsForIndexes_usingBlock_(self, v9, v4, v12);
-  LOBYTE(self) = objc_msgSend_containsIndexes_(v8, v10, v4);
+  objc_msgSend_enumerateObjectsForIndexes_usingBlock_(self, v9, indexesCopy, v12);
+  LOBYTE(self) = objc_msgSend_containsIndexes_(v8, v10, indexesCopy);
 
   return self;
 }
@@ -325,19 +325,19 @@ LABEL_28:
   return v6;
 }
 
-- (void)enumerateObjectsForIndexes:(id)a3 usingBlock:(id)a4
+- (void)enumerateObjectsForIndexes:(id)indexes usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  indexesCopy = indexes;
+  blockCopy = block;
   objc_msgSend_maintainInvariants(self, v8, v9);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1886B57CC;
   v12[3] = &unk_1E70C1DA8;
   v12[4] = self;
-  v10 = v7;
+  v10 = blockCopy;
   v13 = v10;
-  objc_msgSend_enumerateRangesUsingBlock_(v6, v11, v12);
+  objc_msgSend_enumerateRangesUsingBlock_(indexesCopy, v11, v12);
 }
 
 - (id)description

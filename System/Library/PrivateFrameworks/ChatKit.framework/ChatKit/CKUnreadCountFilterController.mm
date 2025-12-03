@@ -1,6 +1,6 @@
 @interface CKUnreadCountFilterController
-- (BOOL)implementsFilterMode:(unint64_t)a3;
-- (BOOL)unreadReport:(id)a3 satisfiesFilterMode:(unint64_t)a4;
+- (BOOL)implementsFilterMode:(unint64_t)mode;
+- (BOOL)unreadReport:(id)report satisfiesFilterMode:(unint64_t)mode;
 - (CKUnreadCountFilterController)init;
 @end
 
@@ -13,18 +13,18 @@
   return [(IMUnreadCountFilterController *)&v3 init];
 }
 
-- (BOOL)implementsFilterMode:(unint64_t)a3
+- (BOOL)implementsFilterMode:(unint64_t)mode
 {
   if (qword_1EAD44F40 != -1)
   {
-    v5 = a3;
+    modeCopy = mode;
     swift_once();
-    a3 = v5;
+    mode = modeCopy;
   }
 
   if (*(off_1EAD44F48 + 2))
   {
-    sub_1908789E8(a3);
+    sub_1908789E8(mode);
   }
 
   else
@@ -35,13 +35,13 @@
   return v3 & 1;
 }
 
-- (BOOL)unreadReport:(id)a3 satisfiesFilterMode:(unint64_t)a4
+- (BOOL)unreadReport:(id)report satisfiesFilterMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = self;
-  LOBYTE(a4) = _sSo29CKUnreadCountFilterControllerC7ChatKitE12unreadReport_09satisfiesC4ModeSbSo08IMUnreadbH0C_So018IMConversationListcJ0VtF_0(v6, a4);
+  reportCopy = report;
+  selfCopy = self;
+  LOBYTE(mode) = _sSo29CKUnreadCountFilterControllerC7ChatKitE12unreadReport_09satisfiesC4ModeSbSo08IMUnreadbH0C_So018IMConversationListcJ0VtF_0(reportCopy, mode);
 
-  return a4 & 1;
+  return mode & 1;
 }
 
 @end

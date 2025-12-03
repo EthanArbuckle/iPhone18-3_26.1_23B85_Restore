@@ -2,18 +2,18 @@
 + (id)allowedActionClasses;
 + (id)logCategory;
 - (BOOL)_fixUpActions;
-- (BOOL)_handleRenameActionSetTransaction:(id)a3 message:(id)a4;
-- (BOOL)_isValidCharacteristicWriteAction:(id)a3;
-- (BOOL)_updateActionSetFromDictionary:(void *)a3 transaction:(void *)a4 response:(void *)a5 error:;
-- (BOOL)configure:(id)a3 messageDispatcher:(id)a4 queue:(id)a5;
+- (BOOL)_handleRenameActionSetTransaction:(id)transaction message:(id)message;
+- (BOOL)_isValidCharacteristicWriteAction:(id)action;
+- (BOOL)_updateActionSetFromDictionary:(void *)dictionary transaction:(void *)transaction response:(void *)response error:;
+- (BOOL)configure:(id)configure messageDispatcher:(id)dispatcher queue:(id)queue;
 - (BOOL)containsMediaPlaybackActions;
 - (BOOL)containsSecureCharacteristic;
 - (BOOL)containsShortcutActions;
 - (BOOL)containsUnsecuringAction;
-- (BOOL)isAssociatedWithAccessory:(id)a3;
-- (HMDActionSet)initWithCoder:(id)a3;
-- (HMDActionSet)initWithName:(id)a3 uuid:(id)a4 type:(id)a5 home:(id)a6 queue:(id)a7;
-- (HMDActionSet)initWithName:(id)a3 uuid:(id)a4 type:(id)a5 home:(id)a6 queue:(id)a7 notificationCenter:(id)a8;
+- (BOOL)isAssociatedWithAccessory:(id)accessory;
+- (HMDActionSet)initWithCoder:(id)coder;
+- (HMDActionSet)initWithName:(id)name uuid:(id)uuid type:(id)type home:(id)home queue:(id)queue;
+- (HMDActionSet)initWithName:(id)name uuid:(id)uuid type:(id)type home:(id)home queue:(id)queue notificationCenter:(id)center;
 - (HMDHome)home;
 - (NSArray)actions;
 - (NSArray)associatedAccessories;
@@ -22,74 +22,74 @@
 - (NSString)name;
 - (NSString)serializedIdentifier;
 - (NSString)urlString;
-- (id)_addCharacteristicWriteActionModelWithUUID:(id)a3 message:(id)a4;
-- (id)_addLightProfileNaturalLightingModelWithUUID:(id)a3 message:(id)a4;
-- (id)_addMediaPlaybackActionModelWithUUID:(id)a3 message:(id)a4;
-- (id)_createActionExecutionLogEvent:(id)a3;
-- (id)_executeCharacteristicWriteRequests:(id)a3 message:(id)a4;
-- (id)_executeGenericActions:(id)a3 message:(id)a4;
-- (id)_executeMediaPlaybackActions:(id)a3 message:(id)a4;
-- (id)_executeNaturalLightingActions:(id)a3 writeRequests:(id)a4 message:(id)a5;
-- (id)_executeNaturalLightingWriteRequests:(id)a3 message:(id)a4 naturalLightingActions:(id)a5 naturalLightingActionResultByActionUUID:(id)a6;
-- (id)_generateOverallError:(id)a3 forSource:(unint64_t)a4;
+- (id)_addCharacteristicWriteActionModelWithUUID:(id)d message:(id)message;
+- (id)_addLightProfileNaturalLightingModelWithUUID:(id)d message:(id)message;
+- (id)_addMediaPlaybackActionModelWithUUID:(id)d message:(id)message;
+- (id)_createActionExecutionLogEvent:(id)event;
+- (id)_executeCharacteristicWriteRequests:(id)requests message:(id)message;
+- (id)_executeGenericActions:(id)actions message:(id)message;
+- (id)_executeMediaPlaybackActions:(id)actions message:(id)message;
+- (id)_executeNaturalLightingActions:(id)actions writeRequests:(id)requests message:(id)message;
+- (id)_executeNaturalLightingWriteRequests:(id)requests message:(id)message naturalLightingActions:(id)actions naturalLightingActionResultByActionUUID:(id)d;
+- (id)_generateOverallError:(id)error forSource:(unint64_t)source;
 - (id)_getActionsForActionSetObject;
-- (id)_initWithCoder:(id)a3;
-- (id)actionWithUUID:(id)a3;
-- (id)backingStoreObjects:(int64_t)a3;
+- (id)_initWithCoder:(id)coder;
+- (id)actionWithUUID:(id)d;
+- (id)backingStoreObjects:(int64_t)objects;
 - (id)createPayload;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)logIdentifier;
 - (id)messageDestination;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
+- (id)modelObjectWithChangeType:(unint64_t)type;
 - (void)__handleActionsUpdated;
-- (void)_encodeWithCoder:(id)a3;
-- (void)_execute:(id)a3 activity:(id)a4;
-- (void)_execute:(id)a3 captureCurrentState:(BOOL)a4 writeRequestTuples:(id)a5;
-- (void)_executeGenericActions:(id)a3 source:(unint64_t)a4 clientName:(id)a5 completionHandler:(id)a6;
-- (void)_executeMediaPlaybackActions:(id)a3 source:(unint64_t)a4 clientName:(id)a5 completionHandler:(id)a6;
-- (void)_handleAddActionRequest:(id)a3;
-- (void)_handleAddCharacteristicWriteActionTransaction:(id)a3 message:(id)a4;
-- (void)_handleAddLightProfileNaturalLightingActionTransaction:(id)a3 message:(id)a4;
-- (void)_handleAddMediaPlaybackActionTransaction:(id)a3 message:(id)a4;
-- (void)_handleAddNewAction:(id)a3 message:(id)a4;
-- (void)_handleAddShortcutActionTransaction:(id)a3 message:(id)a4;
-- (void)_handleRemovalOfAction:(id)a3 transaction:(id)a4;
-- (void)_handleRemovalOfActions:(id)a3 transaction:(id)a4;
-- (void)_handleRemoveActionRequest:(id)a3;
-- (void)_handleRemoveActionTransaction:(id)a3 message:(id)a4;
-- (void)_handleRemoveAppDataModel:(id)a3 message:(id)a4;
-- (void)_handleRenameRequest:(id)a3;
-- (void)_handleUpdateActionRequest:(id)a3;
-- (void)_handleUpdateActionSet:(id)a3;
-- (void)_handleUpdateAppDataModel:(id)a3 message:(id)a4;
+- (void)_encodeWithCoder:(id)coder;
+- (void)_execute:(id)_execute activity:(id)activity;
+- (void)_execute:(id)_execute captureCurrentState:(BOOL)state writeRequestTuples:(id)tuples;
+- (void)_executeGenericActions:(id)actions source:(unint64_t)source clientName:(id)name completionHandler:(id)handler;
+- (void)_executeMediaPlaybackActions:(id)actions source:(unint64_t)source clientName:(id)name completionHandler:(id)handler;
+- (void)_handleAddActionRequest:(id)request;
+- (void)_handleAddCharacteristicWriteActionTransaction:(id)transaction message:(id)message;
+- (void)_handleAddLightProfileNaturalLightingActionTransaction:(id)transaction message:(id)message;
+- (void)_handleAddMediaPlaybackActionTransaction:(id)transaction message:(id)message;
+- (void)_handleAddNewAction:(id)action message:(id)message;
+- (void)_handleAddShortcutActionTransaction:(id)transaction message:(id)message;
+- (void)_handleRemovalOfAction:(id)action transaction:(id)transaction;
+- (void)_handleRemovalOfActions:(id)actions transaction:(id)transaction;
+- (void)_handleRemoveActionRequest:(id)request;
+- (void)_handleRemoveActionTransaction:(id)transaction message:(id)message;
+- (void)_handleRemoveAppDataModel:(id)model message:(id)message;
+- (void)_handleRenameRequest:(id)request;
+- (void)_handleUpdateActionRequest:(id)request;
+- (void)_handleUpdateActionSet:(id)set;
+- (void)_handleUpdateAppDataModel:(id)model message:(id)message;
 - (void)_issueReadRequests;
-- (void)_issueWriteRequests:(id)a3;
-- (void)_processActionSetModelUpdated:(id)a3 message:(id)a4;
+- (void)_issueWriteRequests:(id)requests;
+- (void)_processActionSetModelUpdated:(id)updated message:(id)message;
 - (void)_registerForMessages;
-- (void)_removeAction:(id)a3 message:(id)a4;
+- (void)_removeAction:(id)action message:(id)message;
 - (void)_removeDonatedIntent;
-- (void)_updateNaturalLightingAction:(id)a3 forMessage:(id)a4;
-- (void)_updatePlaybackAction:(id)a3 forMessage:(id)a4;
-- (void)_updateWriteAction:(id)a3 forMessage:(id)a4;
-- (void)addAction:(id)a3;
+- (void)_updateNaturalLightingAction:(id)action forMessage:(id)message;
+- (void)_updatePlaybackAction:(id)action forMessage:(id)message;
+- (void)_updateWriteAction:(id)action forMessage:(id)message;
+- (void)addAction:(id)action;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)execute:(id)a3;
-- (void)executeWithTriggerSource:(id)a3 captureCurrentState:(BOOL)a4 completionHandler:(id)a5;
-- (void)handleExecutionCompletionWithResponsePayload:(id)a3 error:(id)a4;
-- (void)handleRemovalOfAccessory:(id)a3 transaction:(id)a4;
-- (void)handleRemovalOfActionForCharacteristic:(id)a3 transaction:(id)a4;
-- (void)handleRemovalOfService:(id)a3 transaction:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)execute:(id)execute;
+- (void)executeWithTriggerSource:(id)source captureCurrentState:(BOOL)state completionHandler:(id)handler;
+- (void)handleExecutionCompletionWithResponsePayload:(id)payload error:(id)error;
+- (void)handleRemovalOfAccessory:(id)accessory transaction:(id)transaction;
+- (void)handleRemovalOfActionForCharacteristic:(id)characteristic transaction:(id)transaction;
+- (void)handleRemovalOfService:(id)service transaction:(id)transaction;
 - (void)invalidate;
-- (void)isAccessValidForExecutionWithMessage:(id)a3 completion:(id)a4;
-- (void)removeAction:(id)a3;
+- (void)isAccessValidForExecutionWithMessage:(id)message completion:(id)completion;
+- (void)removeAction:(id)action;
 - (void)removeAllActions;
-- (void)sendNotificationWithAction:(id)a3 message:(id)a4;
-- (void)setActions:(id)a3;
-- (void)setName:(id)a3;
-- (void)timerDidFire:(id)a3;
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)sendNotificationWithAction:(id)action message:(id)message;
+- (void)setActions:(id)actions;
+- (void)setName:(id)name;
+- (void)timerDidFire:(id)fire;
+- (void)transactionObjectRemoved:(id)removed message:(id)message;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDActionSet
@@ -106,25 +106,25 @@
   if (isInternalBuild())
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(HMDActionSet *)self name];
-    v5 = [(HMDActionSet *)self uuid];
-    v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+    name = [(HMDActionSet *)self name];
+    uuid = [(HMDActionSet *)self uuid];
+    uUIDString = [v3 stringWithFormat:@"%@/%@", name, uuid];
   }
 
   else
   {
-    v4 = [(HMDActionSet *)self uuid];
-    v6 = [v4 UUIDString];
+    name = [(HMDActionSet *)self uuid];
+    uUIDString = [name UUIDString];
   }
 
-  return v6;
+  return uUIDString;
 }
 
-- (id)backingStoreObjects:(int64_t)a3
+- (id)backingStoreObjects:(int64_t)objects
 {
   v47 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -132,23 +132,23 @@
     *buf = 138543618;
     v41 = v8;
     v42 = 2048;
-    v43 = a3;
+    objectsCopy = objects;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Creating backing store objects for version: %ld", buf, 0x16u);
   }
 
-  v33 = a3;
+  objectsCopy2 = objects;
 
   objc_autoreleasePoolPop(v5);
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(HMDActionSet *)v6 modelObjectWithChangeType:1];
-  [v9 addObject:v10];
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = [(HMDActionSet *)selfCopy modelObjectWithChangeType:1];
+  [array addObject:v10];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v11 = [(HMDActionSet *)v6 actions];
-  v35 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+  actions = [(HMDActionSet *)selfCopy actions];
+  v35 = [actions countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v35)
   {
     v12 = *v37;
@@ -159,18 +159,18 @@
       {
         if (*v37 != v12)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(actions);
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
-        v15 = [v14 type];
-        if (v15 <= 5)
+        type = [v14 type];
+        if (type <= 5)
         {
-          if (v15 == 2)
+          if (type == 2)
           {
-            v17 = [(HMDActionSet *)v6 home];
-            v18 = [(HMDActionSet *)v6 uuid];
-            v19 = [v17 triggerOwnedActionSetWithUUID:v18];
+            home = [(HMDActionSet *)selfCopy home];
+            uuid = [(HMDActionSet *)selfCopy uuid];
+            v19 = [home triggerOwnedActionSetWithUUID:uuid];
 
             [v19 addAction:v14];
             v16 = [v14 modelObjectWithChangeType:1];
@@ -178,7 +178,7 @@
             if (v16)
             {
 LABEL_11:
-              [v9 addObject:v16];
+              [array addObject:v16];
 
               continue;
             }
@@ -195,88 +195,88 @@ LABEL_11:
         }
 
         v20 = objc_autoreleasePoolPush();
-        v21 = v6;
+        v21 = selfCopy;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
-          v23 = v11;
-          v24 = v9;
-          v26 = v25 = v6;
+          v23 = actions;
+          v24 = array;
+          v26 = v25 = selfCopy;
           v27 = HMActionTypeAsString();
           *buf = 138543874;
           v41 = v26;
           v42 = 2112;
-          v43 = v14;
+          objectsCopy = v14;
           v44 = 2112;
           v45 = v27;
           _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@Did not create backing store object for action %@:%@", buf, 0x20u);
 
-          v6 = v25;
-          v9 = v24;
-          v11 = v23;
+          selfCopy = v25;
+          array = v24;
+          actions = v23;
           v12 = v34;
         }
 
         objc_autoreleasePoolPop(v20);
       }
 
-      v35 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+      v35 = [actions countByEnumeratingWithState:&v36 objects:v46 count:16];
     }
 
     while (v35);
   }
 
-  v28 = [(HMDActionSet *)v6 appData];
+  appData = [(HMDActionSet *)selfCopy appData];
 
-  if (v33 >= 3 && v28)
+  if (objectsCopy2 >= 3 && appData)
   {
-    v29 = [(HMDActionSet *)v6 appData];
-    v30 = [v29 modelObjectWithChangeType:1];
-    [v9 addObject:v30];
+    appData2 = [(HMDActionSet *)selfCopy appData];
+    v30 = [appData2 modelObjectWithChangeType:1];
+    [array addObject:v30];
   }
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
   v5 = [HMDActionSetModel alloc];
-  v6 = [(HMDActionSet *)self uuid];
-  v7 = [(HMDActionSet *)self home];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  uuid = [(HMDActionSet *)self uuid];
+  home = [(HMDActionSet *)self home];
+  uuid2 = [home uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:uuid parentUUID:uuid2];
 
-  v10 = [(HMDActionSet *)self name];
-  [(HMDActionSetModel *)v9 setName:v10];
+  name = [(HMDActionSet *)self name];
+  [(HMDActionSetModel *)v9 setName:name];
 
-  v11 = [(HMDActionSet *)self type];
-  [(HMDActionSetModel *)v9 setType:v11];
+  type = [(HMDActionSet *)self type];
+  [(HMDActionSetModel *)v9 setType:type];
 
-  v12 = [(HMDActionSet *)self lastExecutionDate];
+  lastExecutionDate = [(HMDActionSet *)self lastExecutionDate];
 
-  if (v12)
+  if (lastExecutionDate)
   {
-    v13 = [(HMDActionSet *)self lastExecutionDate];
-    [(HMDActionSetModel *)v9 setLastExecutionDate:v13];
+    lastExecutionDate2 = [(HMDActionSet *)self lastExecutionDate];
+    [(HMDActionSetModel *)v9 setLastExecutionDate:lastExecutionDate2];
   }
 
   return v9;
 }
 
-- (void)_processActionSetModelUpdated:(id)a3 message:(id)a4
+- (void)_processActionSetModelUpdated:(id)updated message:(id)message
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 transactionResult];
-  v8 = [v16 name];
+  updatedCopy = updated;
+  messageCopy = message;
+  transactionResult = [messageCopy transactionResult];
+  name = [updatedCopy name];
 
-  if (v8)
+  if (name)
   {
-    v9 = [(HMDActionSet *)self _handleRenameActionSetTransaction:v16 message:v6];
-    [v7 markSaveToAssistant];
+    v9 = [(HMDActionSet *)self _handleRenameActionSetTransaction:updatedCopy message:messageCopy];
+    [transactionResult markSaveToAssistant];
   }
 
   else
@@ -284,38 +284,38 @@ LABEL_11:
     v9 = 1;
   }
 
-  v10 = [v16 lastExecutionDate];
-  if (v10)
+  lastExecutionDate = [updatedCopy lastExecutionDate];
+  if (lastExecutionDate)
   {
-    v11 = v10;
-    v12 = [(HMDActionSet *)self lastExecutionDate];
-    v13 = [v16 lastExecutionDate];
-    v14 = [v12 compare:v13];
+    v11 = lastExecutionDate;
+    lastExecutionDate2 = [(HMDActionSet *)self lastExecutionDate];
+    lastExecutionDate3 = [updatedCopy lastExecutionDate];
+    v14 = [lastExecutionDate2 compare:lastExecutionDate3];
 
     if (v14 == -1)
     {
-      v15 = [v16 lastExecutionDate];
-      [(HMDActionSet *)self setLastExecutionDate:v15];
+      lastExecutionDate4 = [updatedCopy lastExecutionDate];
+      [(HMDActionSet *)self setLastExecutionDate:lastExecutionDate4];
     }
   }
 
-  [v7 markChanged];
+  [transactionResult markChanged];
   if (!v9)
   {
-    [v6 respondWithPayload:0];
+    [messageCopy respondWithPayload:0];
   }
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
+    v11 = valuesCopy;
   }
 
   else
@@ -326,12 +326,12 @@ LABEL_11:
   v12 = v11;
   if (v12)
   {
-    [(HMDActionSet *)self _processActionSetModelUpdated:v12 message:v10];
-    v13 = v9;
+    [(HMDActionSet *)self _processActionSetModelUpdated:v12 message:messageCopy];
+    v13 = valuesCopy;
     goto LABEL_31;
   }
 
-  v13 = v9;
+  v13 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -347,12 +347,12 @@ LABEL_11:
 
   if (v15)
   {
-    v16 = [v15 uuid];
-    v17 = [(HMDActionSet *)self actionWithUUID:v16];
+    uuid = [v15 uuid];
+    v17 = [(HMDActionSet *)self actionWithUUID:uuid];
 
     if (!v17)
     {
-      [(HMDActionSet *)self _handleAddCharacteristicWriteActionTransaction:v15 message:v10];
+      [(HMDActionSet *)self _handleAddCharacteristicWriteActionTransaction:v15 message:messageCopy];
 LABEL_30:
 
       goto LABEL_31;
@@ -377,17 +377,17 @@ LABEL_30:
 
   if (v19)
   {
-    v20 = [v19 uuid];
-    v17 = [(HMDActionSet *)self actionWithUUID:v20];
+    uuid2 = [v19 uuid];
+    v17 = [(HMDActionSet *)self actionWithUUID:uuid2];
 
     if (!v17)
     {
-      [(HMDActionSet *)self _handleAddMediaPlaybackActionTransaction:v19 message:v10];
+      [(HMDActionSet *)self _handleAddMediaPlaybackActionTransaction:v19 message:messageCopy];
       goto LABEL_30;
     }
 
 LABEL_29:
-    [v17 transactionObjectUpdated:v8 newValues:v13 message:v10];
+    [v17 transactionObjectUpdated:updatedCopy newValues:v13 message:messageCopy];
     goto LABEL_30;
   }
 
@@ -407,12 +407,12 @@ LABEL_29:
 
   if (v22)
   {
-    v23 = [v22 uuid];
-    v17 = [(HMDActionSet *)self actionWithUUID:v23];
+    uuid3 = [v22 uuid];
+    v17 = [(HMDActionSet *)self actionWithUUID:uuid3];
 
     if (!v17)
     {
-      [(HMDActionSet *)self _handleAddShortcutActionTransaction:v22 message:v10];
+      [(HMDActionSet *)self _handleAddShortcutActionTransaction:v22 message:messageCopy];
       goto LABEL_30;
     }
 
@@ -435,12 +435,12 @@ LABEL_29:
 
   if (v25)
   {
-    v26 = [v25 uuid];
-    v17 = [(HMDActionSet *)self actionWithUUID:v26];
+    uuid4 = [v25 uuid];
+    v17 = [(HMDActionSet *)self actionWithUUID:uuid4];
 
     if (!v17)
     {
-      [(HMDActionSet *)self _handleAddLightProfileNaturalLightingActionTransaction:v25 message:v10];
+      [(HMDActionSet *)self _handleAddLightProfileNaturalLightingActionTransaction:v25 message:messageCopy];
       goto LABEL_30;
     }
 
@@ -463,23 +463,23 @@ LABEL_29:
 
   if (v29)
   {
-    v30 = [v29 uuid];
-    v31 = [(HMDActionSet *)self actionWithUUID:v30];
+    uuid5 = [v29 uuid];
+    v31 = [(HMDActionSet *)self actionWithUUID:uuid5];
 
     if (v31)
     {
-      [v31 transactionObjectUpdated:v8 newValues:v13 message:v10];
+      [v31 transactionObjectUpdated:updatedCopy newValues:v13 message:messageCopy];
     }
 
     else
     {
       v48 = 0;
-      v34 = __HMDActionSetAddActionWithModel(self, v29, v10, &v48);
+      v34 = __HMDActionSetAddActionWithModel(self, v29, messageCopy, &v48);
       v35 = v48;
       if ((v34 & 1) == 0)
       {
         v36 = objc_autoreleasePoolPush();
-        v37 = self;
+        selfCopy = self;
         v38 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
@@ -497,12 +497,12 @@ LABEL_29:
         }
 
         objc_autoreleasePoolPop(v36);
-        v40 = [v10 responseHandler];
+        responseHandler = [messageCopy responseHandler];
 
-        if (v40)
+        if (responseHandler)
         {
-          v41 = [v10 responseHandler];
-          (v41)[2](v41, v35, 0);
+          responseHandler2 = [messageCopy responseHandler];
+          (responseHandler2)[2](responseHandler2, v35, 0);
         }
       }
     }
@@ -526,13 +526,13 @@ LABEL_29:
 
     if (v33)
     {
-      [(HMDActionSet *)self _handleUpdateAppDataModel:v33 message:v10];
+      [(HMDActionSet *)self _handleUpdateAppDataModel:v33 message:messageCopy];
     }
 
     else
     {
       v42 = objc_autoreleasePoolPush();
-      v43 = self;
+      selfCopy2 = self;
       v44 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
@@ -549,7 +549,7 @@ LABEL_29:
 
       objc_autoreleasePoolPop(v42);
       v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v10 respondWithError:v13];
+      [messageCopy respondWithError:v13];
     }
   }
 
@@ -558,15 +558,15 @@ LABEL_31:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)transactionObjectRemoved:(id)removed message:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = removedCopy;
   }
 
   else
@@ -577,13 +577,13 @@ LABEL_31:
   v9 = v8;
   if (v9)
   {
-    [(HMDActionSet *)self _handleRemoveActionTransaction:v9 message:v7];
-    v10 = v6;
+    [(HMDActionSet *)self _handleRemoveActionTransaction:v9 message:messageCopy];
+    v10 = removedCopy;
   }
 
   else
   {
-    v10 = v6;
+    v10 = removedCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -599,13 +599,13 @@ LABEL_31:
 
     if (v12)
     {
-      [(HMDActionSet *)self _handleRemoveAppDataModel:v12 message:v7];
+      [(HMDActionSet *)self _handleRemoveAppDataModel:v12 message:messageCopy];
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -622,19 +622,19 @@ LABEL_31:
 
       objc_autoreleasePoolPop(v13);
       v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v7 respondWithError:v10];
+      [messageCopy respondWithError:v10];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeGenericActions:(id)a3 source:(unint64_t)a4 clientName:(id)a5 completionHandler:(id)a6
+- (void)_executeGenericActions:(id)actions source:(unint64_t)source clientName:(id)name completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v23 = a5;
-  v11 = a6;
+  actionsCopy = actions;
+  nameCopy = name;
+  handlerCopy = handler;
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x3032000000;
@@ -647,15 +647,15 @@ LABEL_31:
   v40[3] = __Block_byref_object_copy__22030;
   v40[4] = __Block_byref_object_dispose__22031;
   [MEMORY[0x277CBEB38] dictionary];
-  v41 = v21 = v11;
-  v12 = [(HMDActionSet *)self workQueue];
+  v41 = v21 = handlerCopy;
+  workQueue = [(HMDActionSet *)self workQueue];
   v13 = dispatch_group_create();
   objc_initWeak(&location, self);
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v10;
+  obj = actionsCopy;
   v14 = [obj countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v14)
   {
@@ -675,13 +675,13 @@ LABEL_31:
         v28[1] = 3221225472;
         v28[2] = __75__HMDActionSet__executeGenericActions_source_clientName_completionHandler___block_invoke;
         v28[3] = &unk_279723F40;
-        v29 = v12;
+        v29 = workQueue;
         objc_copyWeak(&v34, &location);
         v30 = v17;
         v32 = v42;
         v33 = v40;
         v31 = v13;
-        [v17 executeWithSource:a4 clientName:v23 completionHandler:v28];
+        [v17 executeWithSource:source clientName:nameCopy completionHandler:v28];
 
         objc_destroyWeak(&v34);
       }
@@ -692,7 +692,7 @@ LABEL_31:
     while (v14);
   }
 
-  v18 = [(HMDActionSet *)self workQueue];
+  workQueue2 = [(HMDActionSet *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__HMDActionSet__executeGenericActions_source_clientName_completionHandler___block_invoke_182;
@@ -701,7 +701,7 @@ LABEL_31:
   v26 = v42;
   v27 = v40;
   v19 = v21;
-  dispatch_group_notify(v13, v18, block);
+  dispatch_group_notify(v13, workQueue2, block);
 
   objc_destroyWeak(&location);
   _Block_object_dispose(v40, 8);
@@ -798,17 +798,17 @@ void __75__HMDActionSet__executeGenericActions_source_clientName_completionHandl
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeMediaPlaybackActions:(id)a3 source:(unint64_t)a4 clientName:(id)a5 completionHandler:(id)a6
+- (void)_executeMediaPlaybackActions:(id)actions source:(unint64_t)source clientName:(id)name completionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v27 = a5;
-  v24 = a6;
+  actionsCopy = actions;
+  nameCopy = name;
+  handlerCopy = handler;
   v11 = objc_alloc(MEMORY[0x277D0F770]);
   v12 = MEMORY[0x277CCACA8];
   v13 = MEMORY[0x259C01AE0](self, a2);
-  v14 = [v12 stringWithFormat:@"%@, %s:%ld", v13, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Action Sets/HMDActionSet.m", 3288];
-  v49 = [v11 initWithName:v14];
+  3288 = [v12 stringWithFormat:@"%@, %s:%ld", v13, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Action Sets/HMDActionSet.m", 3288];
+  v49 = [v11 initWithName:3288];
 
   v47[0] = 0;
   v47[1] = v47;
@@ -821,15 +821,15 @@ void __75__HMDActionSet__executeGenericActions_source_clientName_completionHandl
   v45[2] = 0x3032000000;
   v45[3] = __Block_byref_object_copy__22030;
   v45[4] = __Block_byref_object_dispose__22031;
-  v46 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [(HMDActionSet *)self workQueue];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  workQueue = [(HMDActionSet *)self workQueue];
   v16 = dispatch_group_create();
   objc_initWeak(&location, self);
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v10;
+  obj = actionsCopy;
   v17 = [obj countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v17)
   {
@@ -849,14 +849,14 @@ void __75__HMDActionSet__executeGenericActions_source_clientName_completionHandl
         v32[1] = 3221225472;
         v32[2] = __81__HMDActionSet__executeMediaPlaybackActions_source_clientName_completionHandler___block_invoke;
         v32[3] = &unk_279723EF0;
-        v33 = v15;
+        v33 = workQueue;
         objc_copyWeak(&v39, &location);
         v34 = v49;
         v35 = v20;
         v37 = v47;
         v38 = v45;
         v36 = v16;
-        [v20 executeWithSource:a4 clientName:v27 completionHandler:v32];
+        [v20 executeWithSource:source clientName:nameCopy completionHandler:v32];
 
         objc_destroyWeak(&v39);
       }
@@ -867,16 +867,16 @@ void __75__HMDActionSet__executeGenericActions_source_clientName_completionHandl
     while (v17);
   }
 
-  v21 = [(HMDActionSet *)self workQueue];
+  workQueue2 = [(HMDActionSet *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__HMDActionSet__executeMediaPlaybackActions_source_clientName_completionHandler___block_invoke_181;
   block[3] = &unk_27972C358;
-  v29 = v24;
+  v29 = handlerCopy;
   v30 = v47;
   v31 = v45;
-  v22 = v24;
-  dispatch_group_notify(v16, v21, block);
+  v22 = handlerCopy;
+  dispatch_group_notify(v16, workQueue2, block);
 
   objc_destroyWeak(&location);
   _Block_object_dispose(v45, 8);
@@ -1014,26 +1014,26 @@ void __81__HMDActionSet__executeMediaPlaybackActions_source_clientName_completio
 - (void)_issueReadRequests
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDActionSet *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDActionSet *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_alloc(MEMORY[0x277D0F770]);
   v5 = MEMORY[0x277CCACA8];
   v6 = MEMORY[0x259C01AE0](self, a2);
-  v7 = [v5 stringWithFormat:@"%@, %s:%ld", v6, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Action Sets/HMDActionSet.m", 3228];
-  v57 = [v4 initWithName:v7];
+  3228 = [v5 stringWithFormat:@"%@, %s:%ld", v6, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Action Sets/HMDActionSet.m", 3228];
+  v57 = [v4 initWithName:3228];
 
-  v38 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v9 = [(HMDActionSet *)self actions];
-  v10 = [v9 countByEnumeratingWithState:&v53 objects:v59 count:16];
+  actions = [(HMDActionSet *)self actions];
+  v10 = [actions countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v10)
   {
-    obj = v9;
+    obj = actions;
     v40 = *v54;
     do
     {
@@ -1061,11 +1061,11 @@ void __81__HMDActionSet__executeMediaPlaybackActions_source_clientName_completio
 
         if (v42)
         {
-          v14 = [v42 characteristic];
-          if ([v14 supportsRead])
+          characteristic = [v42 characteristic];
+          if ([characteristic supportsRead])
           {
-            v15 = [HMDCharacteristicRequest requestWithCharacteristic:v14];
-            [v38 addObject:v15];
+            v15 = [HMDCharacteristicRequest requestWithCharacteristic:characteristic];
+            [array addObject:v15];
           }
         }
 
@@ -1089,8 +1089,8 @@ void __81__HMDActionSet__executeMediaPlaybackActions_source_clientName_completio
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v19 = [v18 mediaProfiles];
-          v20 = [v19 countByEnumeratingWithState:&v49 objects:v58 count:16];
+          mediaProfiles = [v18 mediaProfiles];
+          v20 = [mediaProfiles countByEnumeratingWithState:&v49 objects:v58 count:16];
           if (v20)
           {
             v21 = *v50;
@@ -1100,17 +1100,17 @@ void __81__HMDActionSet__executeMediaPlaybackActions_source_clientName_completio
               {
                 if (*v50 != v21)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(mediaProfiles);
                 }
 
                 v23 = *(*(&v49 + 1) + 8 * j);
-                v24 = [v23 mediaSession];
-                v25 = [v24 state];
-                v26 = [v23 uniqueIdentifier];
-                [v8 setObject:v25 forKeyedSubscript:v26];
+                mediaSession = [v23 mediaSession];
+                state = [mediaSession state];
+                uniqueIdentifier = [v23 uniqueIdentifier];
+                [dictionary setObject:state forKeyedSubscript:uniqueIdentifier];
               }
 
-              v20 = [v19 countByEnumeratingWithState:&v49 objects:v58 count:16];
+              v20 = [mediaProfiles countByEnumeratingWithState:&v49 objects:v58 count:16];
             }
 
             while (v20);
@@ -1118,35 +1118,35 @@ void __81__HMDActionSet__executeMediaPlaybackActions_source_clientName_completio
         }
       }
 
-      v9 = obj;
+      actions = obj;
       v10 = [obj countByEnumeratingWithState:&v53 objects:v59 count:16];
     }
 
     while (v10);
   }
 
-  v27 = [(HMDActionSet *)self executionMessage];
-  v28 = [v27 source];
+  executionMessage = [(HMDActionSet *)self executionMessage];
+  source = [executionMessage source];
 
   v29 = v57;
-  [v38 count];
+  [array count];
 
   objc_initWeak(&location, self);
-  v30 = [(HMDActionSet *)self home];
+  home = [(HMDActionSet *)self home];
   v31 = [(HMDActionSet *)self description];
-  v32 = [(HMDActionSet *)self executionMessage];
-  v33 = [v32 qualityOfService];
+  executionMessage2 = [(HMDActionSet *)self executionMessage];
+  qualityOfService = [executionMessage2 qualityOfService];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __34__HMDActionSet__issueReadRequests__block_invoke;
   v43[3] = &unk_2797308C0;
   objc_copyWeak(&v47, &location);
   v44 = v57;
-  v34 = v38;
+  v34 = array;
   v45 = v34;
-  v35 = v8;
+  v35 = dictionary;
   v46 = v35;
-  [v30 readCharacteristicValues:v34 source:v28 sourceForLogging:v31 qualityOfService:v33 withCompletionHandler:v43];
+  [home readCharacteristicValues:v34 source:source sourceForLogging:v31 qualityOfService:qualityOfService withCompletionHandler:v43];
 
   objc_destroyWeak(&v47);
   objc_destroyWeak(&location);
@@ -1265,19 +1265,19 @@ void __34__HMDActionSet__issueReadRequests__block_invoke_180(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_executeGenericActions:(id)a3 message:(id)a4
+- (id)_executeGenericActions:(id)actions message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  actionsCopy = actions;
+  messageCopy = message;
+  if ([actionsCopy count])
   {
-    v8 = [v7 source];
-    v9 = [v7 clientName];
-    v10 = v9;
+    source = [messageCopy source];
+    clientName = [messageCopy clientName];
+    v10 = clientName;
     v11 = @"Unknown";
-    if (v9)
+    if (clientName)
     {
-      v11 = v9;
+      v11 = clientName;
     }
 
     v12 = v11;
@@ -1290,7 +1290,7 @@ void __34__HMDActionSet__issueReadRequests__block_invoke_180(uint64_t a1)
     v15[3] = &unk_279733FB0;
     v15[4] = self;
     v16 = v17;
-    [(HMDActionSet *)self _executeGenericActions:v6 source:v8 clientName:v12 completionHandler:v15];
+    [(HMDActionSet *)self _executeGenericActions:actionsCopy source:source clientName:v12 completionHandler:v15];
   }
 
   else
@@ -1334,32 +1334,32 @@ void __47__HMDActionSet__executeGenericActions_message___block_invoke(uint64_t a
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_executeNaturalLightingWriteRequests:(id)a3 message:(id)a4 naturalLightingActions:(id)a5 naturalLightingActionResultByActionUUID:(id)a6
+- (id)_executeNaturalLightingWriteRequests:(id)requests message:(id)message naturalLightingActions:(id)actions naturalLightingActionResultByActionUUID:(id)d
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  requestsCopy = requests;
+  messageCopy = message;
+  actionsCopy = actions;
+  dCopy = d;
+  if ([requestsCopy count])
   {
-    v32 = [v11 source];
+    source = [messageCopy source];
     v39 = 0;
     v33 = [MEMORY[0x277D0F7C0] futureWithPromise:&v39];
-    v14 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v31 = v12;
+      v31 = actionsCopy;
       v18 = HMFGetLogIdentifier();
       *buf = 0;
       *&buf[8] = 0;
       v19 = v15;
-      if (v14)
+      if (uUID)
       {
-        [v14 getUUIDBytes:buf];
+        [uUID getUUIDBytes:buf];
       }
 
       else
@@ -1370,12 +1370,12 @@ void __47__HMDActionSet__executeGenericActions_message___block_invoke(uint64_t a
       v41 = *buf;
       *buf = 0;
       *&buf[8] = 0;
-      v23 = [v11 identifier];
+      identifier = [messageCopy identifier];
 
-      if (v23)
+      if (identifier)
       {
-        v24 = [v11 identifier];
-        [v24 getUUIDBytes:buf];
+        identifier2 = [messageCopy identifier];
+        [identifier2 getUUIDBytes:buf];
       }
 
       else
@@ -1385,7 +1385,7 @@ void __47__HMDActionSet__executeGenericActions_message___block_invoke(uint64_t a
 
       v15 = v19;
       v40 = *buf;
-      v25 = [v10 count];
+      v25 = [requestsCopy count];
       *buf = 138544898;
       *&buf[4] = v18;
       *&buf[12] = 1042;
@@ -1397,28 +1397,28 @@ void __47__HMDActionSet__executeGenericActions_message___block_invoke(uint64_t a
       v47 = 2098;
       v48 = &v40;
       v49 = 2114;
-      v50 = v16;
+      v50 = selfCopy;
       v51 = 2048;
       v52 = v25;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Executing write requests with identifier: %{public,uuid_t}.16P for request identifier: %{public,uuid_t}.16P from natural lighting action set: %{public}@ count: %lu", buf, 0x40u);
 
-      v12 = v31;
+      actionsCopy = v31;
     }
 
     objc_autoreleasePoolPop(v15);
-    v26 = [(HMDActionSet *)v16 home];
-    v27 = [v11 transport];
-    v28 = [v11 qualityOfService];
+    home = [(HMDActionSet *)selfCopy home];
+    transport = [messageCopy transport];
+    qualityOfService = [messageCopy qualityOfService];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __124__HMDActionSet__executeNaturalLightingWriteRequests_message_naturalLightingActions_naturalLightingActionResultByActionUUID___block_invoke;
     v34[3] = &unk_279723EA0;
-    v34[4] = v16;
+    v34[4] = selfCopy;
     v35 = v39;
-    v36 = v10;
-    v37 = v12;
-    v38 = v13;
-    [v26 writeCharacteristicValues:v36 source:v32 biomeSource:1 identifier:v14 transport:v27 qualityOfService:v28 withCompletionHandler:v34];
+    v36 = requestsCopy;
+    v37 = actionsCopy;
+    v38 = dCopy;
+    [home writeCharacteristicValues:v36 source:source biomeSource:1 identifier:uUID transport:transport qualityOfService:qualityOfService withCompletionHandler:v34];
 
     v22 = v33;
   }
@@ -1426,7 +1426,7 @@ void __47__HMDActionSet__executeGenericActions_message___block_invoke(uint64_t a
   else
   {
     v20 = MEMORY[0x277D0F7C0];
-    v21 = [v13 copy];
+    v21 = [dCopy copy];
     v22 = [v20 futureWithValue:v21];
   }
 
@@ -1653,26 +1653,26 @@ uint64_t __124__HMDActionSet__executeNaturalLightingWriteRequests_message_natura
   return v5;
 }
 
-- (id)_executeNaturalLightingActions:(id)a3 writeRequests:(id)a4 message:(id)a5
+- (id)_executeNaturalLightingActions:(id)actions writeRequests:(id)requests message:(id)message
 {
   v70 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v39 = a5;
-  v40 = v8;
-  v38 = v9;
-  if ([v8 count] && objc_msgSend(v9, "count"))
+  actionsCopy = actions;
+  requestsCopy = requests;
+  messageCopy = message;
+  v40 = actionsCopy;
+  v38 = requestsCopy;
+  if ([actionsCopy count] && objc_msgSend(requestsCopy, "count"))
   {
-    v42 = [v9 mutableCopy];
-    v44 = [MEMORY[0x277CBEB38] dictionary];
+    v42 = [requestsCopy mutableCopy];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v61 = 0;
     v62 = &v61;
     v63 = 0x2810000000;
     v64 = "";
     v65 = 0;
-    v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(actionsCopy, "count")}];
     v10 = objc_autoreleasePoolPush();
-    v45 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -1687,7 +1687,7 @@ uint64_t __124__HMDActionSet__executeNaturalLightingWriteRequests_message_natura
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = v8;
+    obj = actionsCopy;
     v13 = [obj countByEnumeratingWithState:&v57 objects:v69 count:16];
     if (v13)
     {
@@ -1702,11 +1702,11 @@ uint64_t __124__HMDActionSet__executeNaturalLightingWriteRequests_message_natura
           }
 
           v16 = *(*(&v57 + 1) + 8 * i);
-          v17 = [v16 lightProfile];
-          v18 = [v16 uuid];
-          v19 = [v18 UUIDString];
+          lightProfile = [v16 lightProfile];
+          uuid = [v16 uuid];
+          uUIDString = [uuid UUIDString];
 
-          if (v17)
+          if (lightProfile)
           {
             *buf = 0;
             v20 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
@@ -1715,20 +1715,20 @@ uint64_t __124__HMDActionSet__executeNaturalLightingWriteRequests_message_natura
             v51[2] = __69__HMDActionSet__executeNaturalLightingActions_writeRequests_message___block_invoke;
             v51[3] = &unk_279723E28;
             v51[4] = v16;
-            v51[5] = v45;
+            v51[5] = selfCopy;
             v56 = &v61;
-            v52 = v44;
-            v53 = v19;
+            v52 = dictionary;
+            v53 = uUIDString;
             v54 = v42;
             v55 = *buf;
-            [v17 fetchNaturalLightingEnabledWithCompletion:v51];
+            [lightProfile fetchNaturalLightingEnabledWithCompletion:v51];
             [v43 addObject:v20];
           }
 
           else
           {
             v21 = objc_autoreleasePoolPush();
-            v22 = v45;
+            v22 = selfCopy;
             v23 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
@@ -1746,7 +1746,7 @@ uint64_t __124__HMDActionSet__executeNaturalLightingWriteRequests_message_natura
             v26 = MEMORY[0x277CBEAC0];
             v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
             v28 = [v26 hmd_dictionaryWithActionExecutionError:v27];
-            [v44 setObject:v28 forKeyedSubscript:v19];
+            [dictionary setObject:v28 forKeyedSubscript:uUIDString];
 
             os_unfair_lock_unlock(v25 + 8);
           }
@@ -1759,20 +1759,20 @@ uint64_t __124__HMDActionSet__executeNaturalLightingWriteRequests_message_natura
     }
 
     v29 = objc_alloc(MEMORY[0x277D0F7A8]);
-    v30 = [(HMDActionSet *)v45 workQueue];
-    v31 = [v29 initWithQueue:v30];
+    workQueue = [(HMDActionSet *)selfCopy workQueue];
+    v31 = [v29 initWithQueue:workQueue];
 
     v32 = [MEMORY[0x277D0F7C0] allSettled:v43];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __69__HMDActionSet__executeNaturalLightingActions_writeRequests_message___block_invoke_172;
     v46[3] = &unk_279723E50;
-    v46[4] = v45;
+    v46[4] = selfCopy;
     v33 = v42;
     v47 = v33;
-    v48 = v39;
+    v48 = messageCopy;
     v49 = obj;
-    v34 = v44;
+    v34 = dictionary;
     v50 = v34;
     v35 = [v32 inContext:v31 then:v46];
 
@@ -1894,20 +1894,20 @@ uint64_t __69__HMDActionSet__executeNaturalLightingActions_writeRequests_message
   return v6;
 }
 
-- (id)_executeMediaPlaybackActions:(id)a3 message:(id)a4
+- (id)_executeMediaPlaybackActions:(id)actions message:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  actionsCopy = actions;
+  messageCopy = message;
+  if ([actionsCopy count])
   {
-    v8 = [v7 source];
-    v9 = [v7 clientName];
-    v10 = v9;
+    source = [messageCopy source];
+    clientName = [messageCopy clientName];
+    v10 = clientName;
     v11 = @"Unknown";
-    if (v9)
+    if (clientName)
     {
-      v11 = v9;
+      v11 = clientName;
     }
 
     v12 = v11;
@@ -1915,12 +1915,12 @@ uint64_t __69__HMDActionSet__executeNaturalLightingActions_writeRequests_message
     v23 = 0;
     v13 = [MEMORY[0x277D0F7C0] futureWithPromise:&v23];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v6 count];
+      v18 = [actionsCopy count];
       *buf = 138543618;
       v25 = v17;
       v26 = 2048;
@@ -1933,9 +1933,9 @@ uint64_t __69__HMDActionSet__executeNaturalLightingActions_writeRequests_message
     v21[1] = 3221225472;
     v21[2] = __53__HMDActionSet__executeMediaPlaybackActions_message___block_invoke;
     v21[3] = &unk_279733FB0;
-    v21[4] = v15;
+    v21[4] = selfCopy;
     v22 = v23;
-    [(HMDActionSet *)v15 _executeMediaPlaybackActions:v6 source:v8 clientName:v12 completionHandler:v21];
+    [(HMDActionSet *)selfCopy _executeMediaPlaybackActions:actionsCopy source:source clientName:v12 completionHandler:v21];
   }
 
   else
@@ -1981,28 +1981,28 @@ void __53__HMDActionSet__executeMediaPlaybackActions_message___block_invoke(uint
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_executeCharacteristicWriteRequests:(id)a3 message:(id)a4
+- (id)_executeCharacteristicWriteRequests:(id)requests message:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  requestsCopy = requests;
+  messageCopy = message;
+  if ([requestsCopy count])
   {
-    v8 = [v7 source];
+    source = [messageCopy source];
     v25 = 0;
     v9 = [MEMORY[0x277D0F7C0] futureWithPromise:&v25];
-    v10 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
       *buf = 0;
       *&buf[8] = 0;
-      if (v10)
+      if (uUID)
       {
-        [v10 getUUIDBytes:buf];
+        [uUID getUUIDBytes:buf];
       }
 
       else
@@ -2013,12 +2013,12 @@ void __53__HMDActionSet__executeMediaPlaybackActions_message___block_invoke(uint
       v27 = *buf;
       *buf = 0;
       *&buf[8] = 0;
-      v15 = [v7 identifier];
+      identifier = [messageCopy identifier];
 
-      if (v15)
+      if (identifier)
       {
-        v16 = [v7 identifier];
-        [v16 getUUIDBytes:buf];
+        identifier2 = [messageCopy identifier];
+        [identifier2 getUUIDBytes:buf];
       }
 
       else
@@ -2027,7 +2027,7 @@ void __53__HMDActionSet__executeMediaPlaybackActions_message___block_invoke(uint
       }
 
       v26 = *buf;
-      v17 = [v6 count];
+      v17 = [requestsCopy count];
       *buf = 138544898;
       *&buf[4] = v14;
       *&buf[12] = 1042;
@@ -2039,23 +2039,23 @@ void __53__HMDActionSet__executeMediaPlaybackActions_message___block_invoke(uint
       v33 = 2098;
       v34 = &v26;
       v35 = 2114;
-      v36 = v12;
+      v36 = selfCopy;
       v37 = 2048;
       v38 = v17;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Executing write requests with identifier: %{public,uuid_t}.16P for request identifier: %{public,uuid_t}.16P from characteristic write action set: %{public}@ count: %lu", buf, 0x40u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v18 = [(HMDActionSet *)v12 home];
-    v19 = [v7 transport];
-    v20 = [v7 qualityOfService];
+    home = [(HMDActionSet *)selfCopy home];
+    transport = [messageCopy transport];
+    qualityOfService = [messageCopy qualityOfService];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __60__HMDActionSet__executeCharacteristicWriteRequests_message___block_invoke;
     v23[3] = &unk_279733FB0;
-    v23[4] = v12;
+    v23[4] = selfCopy;
     v24 = v25;
-    [v18 writeCharacteristicValues:v6 source:v8 biomeSource:1 identifier:v10 transport:v19 qualityOfService:v20 withCompletionHandler:v23];
+    [home writeCharacteristicValues:requestsCopy source:source biomeSource:1 identifier:uUID transport:transport qualityOfService:qualityOfService withCompletionHandler:v23];
   }
 
   else
@@ -2115,59 +2115,59 @@ void __60__HMDActionSet__executeCharacteristicWriteRequests_message___block_invo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_issueWriteRequests:(id)a3
+- (void)_issueWriteRequests:(id)requests
 {
   v179 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDActionSet *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  requestsCopy = requests;
+  workQueue = [(HMDActionSet *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v140 = [(HMDActionSet *)self executionMessage];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [v4 mutableCopy];
+  executionMessage = [(HMDActionSet *)self executionMessage];
+  array = [MEMORY[0x277CBEB18] array];
+  v7 = [requestsCopy mutableCopy];
   v8 = v7;
-  v132 = v4;
-  v134 = v6;
+  v132 = requestsCopy;
+  v134 = array;
   if (v7)
   {
-    v9 = v7;
+    array2 = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
   }
 
-  v130 = v9;
+  v130 = array2;
 
-  v133 = [MEMORY[0x277CBEB18] array];
-  v131 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v161 = 0u;
   v162 = 0u;
   v163 = 0u;
   v164 = 0u;
-  v10 = [(HMDActionSet *)self actions];
-  v11 = [v10 countByEnumeratingWithState:&v161 objects:v178 count:16];
+  actions = [(HMDActionSet *)self actions];
+  v11 = [actions countByEnumeratingWithState:&v161 objects:v178 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v162;
-    v14 = v10;
-    v141 = self;
+    v14 = actions;
+    selfCopy = self;
 LABEL_6:
     v15 = 0;
     while (1)
     {
       if (*v162 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(actions);
       }
 
       v16 = *(*(&v161 + 1) + 8 * v15);
-      v17 = [v16 type];
-      if (v17 <= 1)
+      type = [v16 type];
+      if (type <= 1)
       {
-        if (!v17)
+        if (!type)
         {
           v41 = v16;
           objc_opt_class();
@@ -2198,7 +2198,7 @@ LABEL_58:
           }
 
           v48 = objc_autoreleasePoolPush();
-          v49 = self;
+          selfCopy3 = self;
           v50 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
@@ -2212,14 +2212,14 @@ LABEL_58:
             v173 = v52;
             _os_log_impl(&dword_2531F8000, v50, OS_LOG_TYPE_ERROR, "%{public}@Action doesn't match its type %@:%@", buf, 0x20u);
 
-            self = v141;
-            v10 = v14;
+            self = selfCopy;
+            actions = v14;
           }
 
           goto LABEL_54;
         }
 
-        if (v17 == 1)
+        if (type == 1)
         {
           v22 = v16;
           objc_opt_class();
@@ -2235,15 +2235,15 @@ LABEL_58:
 
           v24 = v23;
 
-          v10 = v14;
+          actions = v14;
           if (v24)
           {
-            v25 = v133;
+            v25 = array3;
             goto LABEL_46;
           }
 
           v48 = objc_autoreleasePoolPush();
-          v49 = self;
+          selfCopy3 = self;
           v50 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
@@ -2257,8 +2257,8 @@ LABEL_58:
             v173 = v54;
             _os_log_impl(&dword_2531F8000, v50, OS_LOG_TYPE_ERROR, "%{public}@Action doesn't match its type %@:%@", buf, 0x20u);
 
-            v10 = v14;
-            self = v141;
+            actions = v14;
+            self = selfCopy;
           }
 
 LABEL_54:
@@ -2270,7 +2270,7 @@ LABEL_54:
 
       else
       {
-        switch(v17)
+        switch(type)
         {
           case 2:
             v31 = v16;
@@ -2290,16 +2290,16 @@ LABEL_54:
             v34 = v33;
             if (v33)
             {
-              v35 = [v140 proxyConnection];
-              if (v35)
+              proxyConnection = [executionMessage proxyConnection];
+              if (proxyConnection)
               {
-                v36 = v35;
-                v37 = [v140 isEntitledForShortcutsAutomationAccess];
+                v36 = proxyConnection;
+                isEntitledForShortcutsAutomationAccess = [executionMessage isEntitledForShortcutsAutomationAccess];
 
-                if ((v37 & 1) == 0)
+                if ((isEntitledForShortcutsAutomationAccess & 1) == 0)
                 {
                   v64 = objc_autoreleasePoolPush();
-                  v65 = self;
+                  selfCopy4 = self;
                   v66 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
                   {
@@ -2311,8 +2311,8 @@ LABEL_54:
 
                   objc_autoreleasePoolPop(v64);
                   v68 = [MEMORY[0x277CCA9B8] hmErrorWithCode:80 description:@"Missing Entitlement" reason:0 suggestion:0];
-                  [(HMDActionSet *)v65 handleExecutionCompletionWithResponsePayload:0 error:v68];
-                  v69 = v140;
+                  [(HMDActionSet *)selfCopy4 handleExecutionCompletionWithResponsePayload:0 error:v68];
+                  v69 = executionMessage;
                   v70 = v134;
                   v71 = v132;
                   goto LABEL_101;
@@ -2341,7 +2341,7 @@ LABEL_54:
             if (!v24)
             {
               v43 = objc_autoreleasePoolPush();
-              v44 = self;
+              selfCopy5 = self;
               v45 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
               {
@@ -2355,21 +2355,21 @@ LABEL_54:
                 v173 = v47;
                 _os_log_impl(&dword_2531F8000, v45, OS_LOG_TYPE_ERROR, "%{public}@Action doesn't match its type %@:%@", buf, 0x20u);
 
-                self = v141;
+                self = selfCopy;
               }
 
-              v10 = v14;
+              actions = v14;
               goto LABEL_57;
             }
 
-            v40 = [v24 lightProfile];
+            lightProfile = [v24 lightProfile];
 
-            if (!v40)
+            if (!lightProfile)
             {
               v43 = objc_autoreleasePoolPush();
-              v55 = self;
+              selfCopy6 = self;
               v45 = HMFGetOSLogHandle();
-              v10 = v14;
+              actions = v14;
               if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
               {
                 v56 = HMFGetLogIdentifier();
@@ -2386,12 +2386,12 @@ LABEL_57:
               goto LABEL_58;
             }
 
-            [v131 addObject:v24];
+            [array4 addObject:v24];
 
             goto LABEL_26;
           case 5:
             v18 = objc_autoreleasePoolPush();
-            v19 = self;
+            selfCopy7 = self;
             v20 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
@@ -2400,7 +2400,7 @@ LABEL_57:
               v169 = v21;
               _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Native matter actions are not supported in HH1", buf, 0xCu);
 
-              self = v141;
+              self = selfCopy;
             }
 
             objc_autoreleasePoolPop(v18);
@@ -2409,7 +2409,7 @@ LABEL_57:
       }
 
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy8 = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
@@ -2423,16 +2423,16 @@ LABEL_57:
         v173 = v30;
         _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@Unknown action type %@:%@", buf, 0x20u);
 
-        self = v141;
+        self = selfCopy;
       }
 
       objc_autoreleasePoolPop(v26);
 LABEL_26:
-      v10 = v14;
+      actions = v14;
 LABEL_59:
       if (v12 == ++v15)
       {
-        v12 = [v10 countByEnumeratingWithState:&v161 objects:v178 count:16];
+        v12 = [actions countByEnumeratingWithState:&v161 objects:v178 count:16];
         if (v12)
         {
           goto LABEL_6;
@@ -2444,7 +2444,7 @@ LABEL_59:
   }
 
   v57 = objc_autoreleasePoolPush();
-  v58 = self;
+  selfCopy9 = self;
   v59 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
   {
@@ -2454,9 +2454,9 @@ LABEL_59:
     v170 = 2112;
     v171 = v130;
     v172 = 2112;
-    v173 = v133;
+    v173 = array3;
     v174 = 2112;
-    v175 = v131;
+    v175 = array4;
     v176 = 2112;
     v177 = v134;
     _os_log_impl(&dword_2531F8000, v59, OS_LOG_TYPE_DEBUG, "%{public}@Preparing to execute characteristic write actions: [%@], media playback actions: [%@], natural lighting actions: [%@] short cut actions: [%@]", buf, 0x34u);
@@ -2467,16 +2467,16 @@ LABEL_59:
   v62 = v61;
   if (v61)
   {
-    v63 = v61;
+    array5 = v61;
   }
 
   else
   {
-    v63 = [MEMORY[0x277CBEB18] array];
+    array5 = [MEMORY[0x277CBEB18] array];
   }
 
-  v142 = v63;
-  v135 = v58;
+  v142 = array5;
+  v135 = selfCopy9;
 
   v159 = 0u;
   v160 = 0u;
@@ -2498,11 +2498,11 @@ LABEL_59:
         }
 
         v77 = *(*(&v157 + 1) + 8 * i);
-        v78 = [v77 characteristic];
-        v79 = [v77 targetValue];
-        v80 = [v78 authorizationData];
-        v81 = [v140 identifier];
-        v82 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v78 value:v79 authorizationData:v80 identifier:v81 type:1];
+        characteristic = [v77 characteristic];
+        targetValue = [v77 targetValue];
+        authorizationData = [characteristic authorizationData];
+        identifier = [executionMessage identifier];
+        v82 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:characteristic value:targetValue authorizationData:authorizationData identifier:identifier type:1];
 
         [v142 addObject:v82];
       }
@@ -2513,15 +2513,15 @@ LABEL_59:
     while (v74);
   }
 
-  v83 = [MEMORY[0x277CBEB18] array];
-  v136 = [MEMORY[0x277CBEB18] array];
+  array6 = [MEMORY[0x277CBEB18] array];
+  array7 = [MEMORY[0x277CBEB18] array];
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
-  obj = v133;
+  obj = array3;
   v84 = [obj countByEnumeratingWithState:&v153 objects:v166 count:16];
-  v10 = v142;
+  actions = v142;
   if (v84)
   {
     v85 = v84;
@@ -2536,25 +2536,25 @@ LABEL_59:
         }
 
         v88 = *(*(&v153 + 1) + 8 * j);
-        v89 = [v88 convertedCharacteristicWriteRequests];
-        if (v89)
+        convertedCharacteristicWriteRequests = [v88 convertedCharacteristicWriteRequests];
+        if (convertedCharacteristicWriteRequests)
         {
-          [v83 addObject:v88];
-          v90 = [v89 characteristicWriteRequests];
-          v91 = [v90 count];
+          [array6 addObject:v88];
+          characteristicWriteRequests = [convertedCharacteristicWriteRequests characteristicWriteRequests];
+          v91 = [characteristicWriteRequests count];
 
           if (v91)
           {
-            v92 = [v89 characteristicWriteRequests];
-            [v142 addObjectsFromArray:v92];
+            characteristicWriteRequests2 = [convertedCharacteristicWriteRequests characteristicWriteRequests];
+            [v142 addObjectsFromArray:characteristicWriteRequests2];
           }
 
-          v93 = [v89 residualAction];
+          residualAction = [convertedCharacteristicWriteRequests residualAction];
 
-          if (v93)
+          if (residualAction)
           {
-            v94 = [v89 residualAction];
-            [v136 addObject:v94];
+            residualAction2 = [convertedCharacteristicWriteRequests residualAction];
+            [array7 addObject:residualAction2];
           }
         }
       }
@@ -2565,16 +2565,16 @@ LABEL_59:
     while (v85);
   }
 
-  v129 = v83;
-  [obj removeObjectsInArray:v83];
-  [obj addObjectsFromArray:v136];
-  v95 = [MEMORY[0x277CBEAA8] date];
-  v139 = [MEMORY[0x277CBEB18] array];
+  v129 = array6;
+  [obj removeObjectsInArray:array6];
+  [obj addObjectsFromArray:array7];
+  date = [MEMORY[0x277CBEAA8] date];
+  array8 = [MEMORY[0x277CBEB18] array];
   v149 = 0u;
   v150 = 0u;
   v151 = 0u;
   v152 = 0u;
-  v137 = v131;
+  v137 = array4;
   v96 = [v137 countByEnumeratingWithState:&v149 objects:v165 count:16];
   v97 = v135;
   if (v96)
@@ -2591,26 +2591,26 @@ LABEL_59:
         }
 
         v101 = *(*(&v149 + 1) + 8 * k);
-        v102 = [v101 lightProfile];
-        v103 = [v101 writeRequestForTransitionStartWithLightProfile:v102 startDate:v95 type:1];
+        lightProfile2 = [v101 lightProfile];
+        v103 = [v101 writeRequestForTransitionStartWithLightProfile:lightProfile2 startDate:date type:1];
 
         if (v103)
         {
-          [v139 addObject:v103];
-          v104 = [v10 copy];
+          [array8 addObject:v103];
+          v104 = [actions copy];
           v146[0] = MEMORY[0x277D85DD0];
           v146[1] = 3221225472;
           v146[2] = __36__HMDActionSet__issueWriteRequests___block_invoke;
           v146[3] = &unk_279723DB0;
           v146[4] = v101;
-          v147 = v10;
-          v148 = v139;
+          v147 = actions;
+          v148 = array8;
           [v104 na_each:v146];
         }
 
         else
         {
-          v105 = v95;
+          v105 = date;
           v106 = objc_autoreleasePoolPush();
           v107 = v97;
           v108 = HMFGetOSLogHandle();
@@ -2627,8 +2627,8 @@ LABEL_59:
           }
 
           objc_autoreleasePoolPop(v106);
-          v10 = v142;
-          v95 = v105;
+          actions = v142;
+          date = v105;
         }
       }
 
@@ -2639,40 +2639,40 @@ LABEL_59:
   }
 
   v110 = MEMORY[0x277D0F848];
-  v111 = [(HMDActionSet *)v97 messageDestination];
-  v112 = [v110 messageWithName:@"kActionSetWillStartExecutionNotificationKey" destination:v111 payload:0];
+  messageDestination = [(HMDActionSet *)v97 messageDestination];
+  v112 = [v110 messageWithName:@"kActionSetWillStartExecutionNotificationKey" destination:messageDestination payload:0];
 
-  v69 = v140;
+  v69 = executionMessage;
   v113 = v112;
-  [v112 setRemote:{objc_msgSend(v140, "isRemote")}];
-  v114 = [v140 transport];
+  [v112 setRemote:{objc_msgSend(executionMessage, "isRemote")}];
+  transport = [executionMessage transport];
   v143 = v113;
-  [v113 setTransport:v114];
+  [v113 setTransport:transport];
 
-  v115 = [(HMDActionSet *)v97 msgDispatcher];
-  [v115 sendMessage:v113 completionHandler:0];
+  msgDispatcher = [(HMDActionSet *)v97 msgDispatcher];
+  [msgDispatcher sendMessage:v113 completionHandler:0];
 
-  v116 = [MEMORY[0x277CBEB18] array];
-  v117 = [(HMDActionSet *)v97 _executeCharacteristicWriteRequests:v10 message:v140];
-  [v116 addObject:v117];
+  array9 = [MEMORY[0x277CBEB18] array];
+  v117 = [(HMDActionSet *)v97 _executeCharacteristicWriteRequests:actions message:executionMessage];
+  [array9 addObject:v117];
 
-  v118 = [(HMDActionSet *)v97 _executeMediaPlaybackActions:obj message:v140];
-  [v116 addObject:v118];
+  v118 = [(HMDActionSet *)v97 _executeMediaPlaybackActions:obj message:executionMessage];
+  [array9 addObject:v118];
 
-  v119 = [(HMDActionSet *)v97 _executeNaturalLightingActions:v137 writeRequests:v139 message:v140];
-  [v116 addObject:v119];
+  v119 = [(HMDActionSet *)v97 _executeNaturalLightingActions:v137 writeRequests:array8 message:executionMessage];
+  [array9 addObject:v119];
 
   v70 = v134;
-  v120 = [(HMDActionSet *)v97 _executeGenericActions:v134 message:v140];
-  [v116 addObject:v120];
+  v120 = [(HMDActionSet *)v97 _executeGenericActions:v134 message:executionMessage];
+  [array9 addObject:v120];
 
   v121 = objc_alloc(MEMORY[0x277D0F7A8]);
   [(HMDActionSet *)v97 workQueue];
-  v122 = v95;
+  v122 = date;
   v124 = v123 = v97;
   v125 = [v121 initWithQueue:v124];
 
-  v126 = [MEMORY[0x277D0F7C0] allSettled:v116];
+  v126 = [MEMORY[0x277D0F7C0] allSettled:array9];
   v145[0] = MEMORY[0x277D85DD0];
   v145[1] = 3221225472;
   v145[2] = __36__HMDActionSet__issueWriteRequests___block_invoke_161;
@@ -2689,7 +2689,7 @@ LABEL_59:
 
   v71 = v132;
   v34 = v129;
-  v68 = v136;
+  v68 = array7;
 LABEL_101:
 
   v128 = *MEMORY[0x277D85DE8];
@@ -2843,38 +2843,38 @@ uint64_t __36__HMDActionSet__issueWriteRequests___block_invoke_2(uint64_t a1, vo
   return v5;
 }
 
-- (id)_createActionExecutionLogEvent:(id)a3
+- (id)_createActionExecutionLogEvent:(id)event
 {
   v76 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v56 = v3;
-  v54 = [v3 source];
-  if (v54 == 1)
+  eventCopy = event;
+  v56 = eventCopy;
+  source = [eventCopy source];
+  if (source == 1)
   {
-    v55 = @"com.apple.Siri";
+    clientIdentifier = @"com.apple.Siri";
     v4 = @"com.apple.Siri";
   }
 
   else
   {
-    v55 = [v3 clientIdentifier];
+    clientIdentifier = [eventCopy clientIdentifier];
   }
 
   v5 = MEMORY[0x277CBEB58];
-  v6 = [(HMDActionSet *)self actions];
-  v7 = [v5 setWithCapacity:{objc_msgSend(v6, "count")}];
+  actions = [(HMDActionSet *)self actions];
+  v7 = [v5 setWithCapacity:{objc_msgSend(actions, "count")}];
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v8 = [(HMDActionSet *)self actions];
-  v9 = [v8 countByEnumeratingWithState:&v64 objects:v75 count:16];
+  actions2 = [(HMDActionSet *)self actions];
+  v9 = [actions2 countByEnumeratingWithState:&v64 objects:v75 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v65;
-    v57 = v8;
+    v57 = actions2;
     v58 = *v65;
     do
     {
@@ -2882,14 +2882,14 @@ uint64_t __36__HMDActionSet__issueWriteRequests___block_invoke_2(uint64_t a1, vo
       {
         if (*v65 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actions2);
         }
 
         v13 = *(*(&v64 + 1) + 8 * i);
-        v14 = [v13 type];
-        if (v14 > 2)
+        type = [v13 type];
+        if (type > 2)
         {
-          if (v14 == 3)
+          if (type == 3)
           {
             v33 = v13;
             objc_opt_class();
@@ -2907,12 +2907,12 @@ uint64_t __36__HMDActionSet__issueWriteRequests___block_invoke_2(uint64_t a1, vo
 
             if (v30)
             {
-              v35 = [v30 lightProfile];
-              v31 = [v35 accessory];
+              lightProfile = [v30 lightProfile];
+              accessory = [lightProfile accessory];
 
-              if (v31)
+              if (accessory)
               {
-                [v7 addObject:v31];
+                [v7 addObject:accessory];
               }
 
 LABEL_44:
@@ -2922,7 +2922,7 @@ LABEL_54:
             }
 
             v41 = objc_autoreleasePoolPush();
-            v42 = self;
+            selfCopy3 = self;
             v43 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
             {
@@ -2936,7 +2936,7 @@ LABEL_54:
               v74 = v47;
               _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_ERROR, "%{public}@Action doesn't match its type %@:%@", buf, 0x20u);
 
-              v8 = v57;
+              actions2 = v57;
             }
 
 LABEL_53:
@@ -2946,10 +2946,10 @@ LABEL_53:
             goto LABEL_54;
           }
 
-          if (v14 == 5)
+          if (type == 5)
           {
             v24 = objc_autoreleasePoolPush();
-            v25 = self;
+            selfCopy2 = self;
             v26 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
@@ -2965,7 +2965,7 @@ LABEL_53:
 
         else
         {
-          if (!v14)
+          if (!type)
           {
             v28 = v13;
             objc_opt_class();
@@ -2983,18 +2983,18 @@ LABEL_53:
 
             if (v30)
             {
-              v31 = [v30 characteristic];
-              v32 = [v31 accessory];
-              if (v32)
+              accessory = [v30 characteristic];
+              v31Accessory = [accessory accessory];
+              if (v31Accessory)
               {
-                [v7 addObject:v32];
+                [v7 addObject:v31Accessory];
               }
 
               goto LABEL_44;
             }
 
             v41 = objc_autoreleasePoolPush();
-            v42 = self;
+            selfCopy3 = self;
             v43 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
             {
@@ -3008,13 +3008,13 @@ LABEL_53:
               v74 = v45;
               _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_ERROR, "%{public}@Action doesn't match its type %@:%@", buf, 0x20u);
 
-              v8 = v57;
+              actions2 = v57;
             }
 
             goto LABEL_53;
           }
 
-          if (v14 == 1)
+          if (type == 1)
           {
             v15 = v13;
             objc_opt_class();
@@ -3036,8 +3036,8 @@ LABEL_53:
               v63 = 0u;
               v60 = 0u;
               v61 = 0u;
-              v18 = [v17 mediaProfiles];
-              v19 = [v18 countByEnumeratingWithState:&v60 objects:v68 count:16];
+              mediaProfiles = [v17 mediaProfiles];
+              v19 = [mediaProfiles countByEnumeratingWithState:&v60 objects:v68 count:16];
               if (v19)
               {
                 v20 = v19;
@@ -3048,29 +3048,29 @@ LABEL_53:
                   {
                     if (*v61 != v21)
                     {
-                      objc_enumerationMutation(v18);
+                      objc_enumerationMutation(mediaProfiles);
                     }
 
-                    v23 = [*(*(&v60 + 1) + 8 * j) accessory];
-                    if (v23)
+                    accessory2 = [*(*(&v60 + 1) + 8 * j) accessory];
+                    if (accessory2)
                     {
-                      [v7 addObject:v23];
+                      [v7 addObject:accessory2];
                     }
                   }
 
-                  v20 = [v18 countByEnumeratingWithState:&v60 objects:v68 count:16];
+                  v20 = [mediaProfiles countByEnumeratingWithState:&v60 objects:v68 count:16];
                 }
 
                 while (v20);
               }
 
-              v8 = v57;
+              actions2 = v57;
             }
 
             else
             {
               v36 = objc_autoreleasePoolPush();
-              v37 = self;
+              selfCopy4 = self;
               v38 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
               {
@@ -3084,7 +3084,7 @@ LABEL_53:
                 v74 = v40;
                 _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_ERROR, "%{public}@Action doesn't match its type %@:%@", buf, 0x20u);
 
-                v8 = v57;
+                actions2 = v57;
               }
 
               objc_autoreleasePoolPop(v36);
@@ -3095,7 +3095,7 @@ LABEL_53:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v64 objects:v75 count:16];
+      v10 = [actions2 countByEnumeratingWithState:&v64 objects:v75 count:16];
     }
 
     while (v10);
@@ -3103,25 +3103,25 @@ LABEL_53:
 
   v48 = [HMDActionSetEvent alloc];
   v49 = [v7 count];
-  v50 = [v56 identifier];
-  v51 = [(HMDActionSetEvent *)v48 initWithActionSet:self source:v54 numAccessories:v49 bundleId:v55 transactionId:v50];
+  identifier = [v56 identifier];
+  v51 = [(HMDActionSetEvent *)v48 initWithActionSet:self source:source numAccessories:v49 bundleId:clientIdentifier transactionId:identifier];
 
   v52 = *MEMORY[0x277D85DE8];
 
   return v51;
 }
 
-- (void)_execute:(id)a3 captureCurrentState:(BOOL)a4 writeRequestTuples:(id)a5
+- (void)_execute:(id)_execute captureCurrentState:(BOOL)state writeRequestTuples:(id)tuples
 {
-  v6 = a4;
+  stateCopy = state;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDActionSet *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  _executeCopy = _execute;
+  tuplesCopy = tuples;
+  workQueue = [(HMDActionSet *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -3132,22 +3132,22 @@ LABEL_53:
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDActionSet *)v12 actions];
-  v16 = [v15 count];
+  actions = [(HMDActionSet *)selfCopy actions];
+  v16 = [actions count];
 
   if (!v16)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v12;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v8 shortDescription];
+      shortDescription = [_executeCopy shortDescription];
       v40 = 138543618;
       v41 = v27;
       v42 = 2112;
-      v43 = v28;
+      v43 = shortDescription;
       _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@Not executing the action set: there are no actions in it: %@", &v40, 0x16u);
     }
 
@@ -3157,12 +3157,12 @@ LABEL_53:
     goto LABEL_11;
   }
 
-  v17 = [(HMDActionSet *)v12 executionMessage];
+  executionMessage = [(HMDActionSet *)selfCopy executionMessage];
 
-  if (v17)
+  if (executionMessage)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v12;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -3177,44 +3177,44 @@ LABEL_53:
     v23 = 65;
 LABEL_11:
     v29 = [v22 hmErrorWithCode:v23];
-    [v8 respondWithError:v29];
+    [_executeCopy respondWithError:v29];
 
     goto LABEL_12;
   }
 
-  [(HMDActionSet *)v12 setExecutionMessage:v8];
-  v31 = [MEMORY[0x277CBEAA8] date];
-  [(HMDActionSet *)v12 setExecutionStart:v31];
+  [(HMDActionSet *)selfCopy setExecutionMessage:_executeCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDActionSet *)selfCopy setExecutionStart:date];
 
-  v32 = [(HMDActionSet *)v12 home];
-  [v32 startReportingSessionForMessage:v8];
+  home = [(HMDActionSet *)selfCopy home];
+  [home startReportingSessionForMessage:_executeCopy];
 
   v33 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:600.0];
-  [(HMDActionSet *)v12 setExecutionTimeoutTimer:v33];
+  [(HMDActionSet *)selfCopy setExecutionTimeoutTimer:v33];
 
-  v34 = [(HMDActionSet *)v12 executionTimeoutTimer];
-  [v34 setDelegate:v12];
+  executionTimeoutTimer = [(HMDActionSet *)selfCopy executionTimeoutTimer];
+  [executionTimeoutTimer setDelegate:selfCopy];
 
-  v35 = [(HMDActionSet *)v12 workQueue];
-  v36 = [(HMDActionSet *)v12 executionTimeoutTimer];
-  [v36 setDelegateQueue:v35];
+  workQueue2 = [(HMDActionSet *)selfCopy workQueue];
+  executionTimeoutTimer2 = [(HMDActionSet *)selfCopy executionTimeoutTimer];
+  [executionTimeoutTimer2 setDelegateQueue:workQueue2];
 
-  v37 = [(HMDActionSet *)v12 executionTimeoutTimer];
-  [v37 resume];
+  executionTimeoutTimer3 = [(HMDActionSet *)selfCopy executionTimeoutTimer];
+  [executionTimeoutTimer3 resume];
 
-  [(HMDActionSet *)v12 setExecutionInitialStates:0];
-  v38 = [(HMDActionSet *)v12 _createActionExecutionLogEvent:v8];
-  [(HMDActionSet *)v12 setExecutionActionSetEvent:v38];
+  [(HMDActionSet *)selfCopy setExecutionInitialStates:0];
+  v38 = [(HMDActionSet *)selfCopy _createActionExecutionLogEvent:_executeCopy];
+  [(HMDActionSet *)selfCopy setExecutionActionSetEvent:v38];
 
-  if (v6)
+  if (stateCopy)
   {
-    [(HMDActionSet *)v12 _issueReadRequests];
+    [(HMDActionSet *)selfCopy _issueReadRequests];
   }
 
   else
   {
     v39 = objc_autoreleasePoolPush();
-    [(HMDActionSet *)v12 _issueWriteRequests:v9];
+    [(HMDActionSet *)selfCopy _issueWriteRequests:tuplesCopy];
     objc_autoreleasePoolPop(v39);
   }
 
@@ -3223,20 +3223,20 @@ LABEL_12:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDActionSet *)self executionTimeoutTimer];
+  fireCopy = fire;
+  executionTimeoutTimer = [(HMDActionSet *)self executionTimeoutTimer];
 
-  if (v5 == v4)
+  if (executionTimeoutTimer == fireCopy)
   {
-    v6 = [(HMDActionSet *)self executionMessage];
+    executionMessage = [(HMDActionSet *)self executionMessage];
 
-    if (v6)
+    if (executionMessage)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -3248,42 +3248,42 @@ LABEL_12:
 
       objc_autoreleasePoolPop(v7);
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:8];
-      [(HMDActionSet *)v8 handleExecutionCompletionWithResponsePayload:0 error:v11];
+      [(HMDActionSet *)selfCopy handleExecutionCompletionWithResponsePayload:0 error:v11];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleExecutionCompletionWithResponsePayload:(id)a3 error:(id)a4
+- (void)handleExecutionCompletionWithResponsePayload:(id)payload error:(id)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v7 = a4;
-  v8 = [(HMDActionSet *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  payloadCopy = payload;
+  errorCopy = error;
+  workQueue = [(HMDActionSet *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_alloc(MEMORY[0x277D0F770]);
   v10 = MEMORY[0x277CCACA8];
   v11 = MEMORY[0x259C01AE0](self, a2);
-  v12 = [v10 stringWithFormat:@"%@, %s:%ld", v11, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Action Sets/HMDActionSet.m", 2489];
-  v48 = [v9 initWithName:v12];
+  2489 = [v10 stringWithFormat:@"%@, %s:%ld", v11, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Action Sets/HMDActionSet.m", 2489];
+  v48 = [v9 initWithName:2489];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
     v51 = 0uLL;
-    v17 = [(HMDActionSet *)v14 executionMessage];
-    v18 = [v17 identifier];
+    executionMessage = [(HMDActionSet *)selfCopy executionMessage];
+    identifier = [executionMessage identifier];
 
-    if (v18)
+    if (identifier)
     {
-      v19 = [(HMDActionSet *)v14 executionMessage];
-      v20 = [v19 identifier];
-      [v20 getUUIDBytes:&v51];
+      executionMessage2 = [(HMDActionSet *)selfCopy executionMessage];
+      identifier2 = [executionMessage2 identifier];
+      [identifier2 getUUIDBytes:&v51];
     }
 
     else
@@ -3302,73 +3302,73 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v13);
-  v21 = [(HMDActionSet *)v14 executionMessage];
-  v22 = [(HMDActionSet *)v14 executionInitialStates];
-  v23 = [(HMDActionSet *)v14 executionActionSetEvent];
-  [(HMDActionSet *)v14 setExecutionActionSetEvent:0];
-  [(HMDActionSet *)v14 setExecutionMessage:0];
-  [(HMDActionSet *)v14 setExecutionStart:0];
-  [(HMDActionSet *)v14 setExecutionTimeoutTimer:0];
-  [(HMDActionSet *)v14 setExecutionInitialStates:0];
-  v24 = [(HMDActionSet *)v14 home];
-  if (v24)
+  executionMessage3 = [(HMDActionSet *)selfCopy executionMessage];
+  executionInitialStates = [(HMDActionSet *)selfCopy executionInitialStates];
+  executionActionSetEvent = [(HMDActionSet *)selfCopy executionActionSetEvent];
+  [(HMDActionSet *)selfCopy setExecutionActionSetEvent:0];
+  [(HMDActionSet *)selfCopy setExecutionMessage:0];
+  [(HMDActionSet *)selfCopy setExecutionStart:0];
+  [(HMDActionSet *)selfCopy setExecutionTimeoutTimer:0];
+  [(HMDActionSet *)selfCopy setExecutionInitialStates:0];
+  home = [(HMDActionSet *)selfCopy home];
+  if (home)
   {
-    v25 = [MEMORY[0x277CBEAA8] date];
-    [(HMDActionSet *)v14 setLastExecutionDate:v25];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HMDActionSet *)selfCopy setLastExecutionDate:date];
 
-    v26 = [v21 name];
-    v27 = v26;
+    name = [executionMessage3 name];
+    v27 = name;
     v28 = *MEMORY[0x277CD2348];
-    if (v26)
+    if (name)
     {
-      v28 = v26;
+      v28 = name;
     }
 
     v29 = v28;
 
-    [v24 saveWithReason:v29 postSyncNotification:0];
+    [home saveWithReason:v29 postSyncNotification:0];
     v49 = *MEMORY[0x277CD2038];
-    v30 = [(HMDActionSet *)v14 lastExecutionDate];
-    v50 = v30;
+    lastExecutionDate = [(HMDActionSet *)selfCopy lastExecutionDate];
+    v50 = lastExecutionDate;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
 
     v32 = MEMORY[0x277D0F848];
-    v33 = [(HMDActionSet *)v14 messageDestination];
-    v34 = [v32 messageWithName:@"kActionSetExecutedNotificationKey" destination:v33 payload:v31];
+    messageDestination = [(HMDActionSet *)selfCopy messageDestination];
+    v34 = [v32 messageWithName:@"kActionSetExecutedNotificationKey" destination:messageDestination payload:v31];
 
-    v35 = [v21 identifier];
-    [v34 setIdentifier:v35];
+    identifier3 = [executionMessage3 identifier];
+    [v34 setIdentifier:identifier3];
 
-    [v34 setRemote:{objc_msgSend(v21, "isRemote")}];
-    v36 = [(HMDActionSet *)v14 msgDispatcher];
-    [v36 sendMessage:v34];
+    [v34 setRemote:{objc_msgSend(executionMessage3, "isRemote")}];
+    msgDispatcher = [(HMDActionSet *)selfCopy msgDispatcher];
+    [msgDispatcher sendMessage:v34];
 
-    v37 = [v21 responseHandler];
+    responseHandler = [executionMessage3 responseHandler];
 
-    if (v37)
+    if (responseHandler)
     {
-      v38 = v7;
+      v38 = errorCopy;
       if (!v38)
       {
-        v38 = -[HMDActionSet _generateOverallError:forSource:](v14, "_generateOverallError:forSource:", v47, [v21 source]);
+        v38 = -[HMDActionSet _generateOverallError:forSource:](selfCopy, "_generateOverallError:forSource:", payloadCopy, [executionMessage3 source]);
       }
 
       v39 = v38;
-      v40 = [v47 mutableCopy];
-      [v40 setObject:v22 forKeyedSubscript:*MEMORY[0x277CD21E8]];
-      [v21 respondWithPayload:v40 error:v39];
+      v40 = [payloadCopy mutableCopy];
+      [v40 setObject:executionInitialStates forKeyedSubscript:*MEMORY[0x277CD21E8]];
+      [executionMessage3 respondWithPayload:v40 error:v39];
     }
 
-    [v24 handleReportingSessionResponseMessage:v34];
-    [v24 endReportingSessionForMessage:v21];
+    [home handleReportingSessionResponseMessage:v34];
+    [home endReportingSessionForMessage:executionMessage3];
     v41 = +[HMDMetricsManager sharedLogEventSubmitter];
-    [v41 submitLogEvent:v23 error:v7];
+    [v41 submitLogEvent:executionActionSetEvent error:errorCopy];
   }
 
   else
   {
     v42 = objc_autoreleasePoolPush();
-    v43 = v14;
+    v43 = selfCopy;
     v44 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
@@ -3385,15 +3385,15 @@ LABEL_12:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_generateOverallError:(id)a3 forSource:(unint64_t)a4
+- (id)_generateOverallError:(id)error forSource:(unint64_t)source
 {
   v120 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![v6 count])
+  errorCopy = error;
+  if (![errorCopy count])
   {
     v67 = [MEMORY[0x277CCA9B8] hmErrorWithCode:63];
     v68 = objc_autoreleasePoolPush();
-    v69 = self;
+    selfCopy = self;
     v70 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
     {
@@ -3401,7 +3401,7 @@ LABEL_12:
       *buf = 138543874;
       v115 = v71;
       v116 = 2112;
-      v117 = v69;
+      selfCopy10 = selfCopy;
       v118 = 2112;
       v119 = v67;
       _os_log_impl(&dword_2531F8000, v70, OS_LOG_TYPE_ERROR, "%{public}@No accessories were changed so noting that action set %@ failed with error: %@", buf, 0x20u);
@@ -3417,11 +3417,11 @@ LABEL_12:
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v7 = v6;
+  v7 = errorCopy;
   v83 = [v7 countByEnumeratingWithState:&v107 objects:v113 count:16];
   if (v83)
   {
-    v78 = v6;
+    v78 = errorCopy;
     v8 = 0;
     v84 = *v108;
     v9 = *MEMORY[0x277CD2128];
@@ -3446,7 +3446,7 @@ LABEL_12:
         if (v91)
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = self;
+          selfCopy2 = self;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
@@ -3454,7 +3454,7 @@ LABEL_12:
             *buf = 138543874;
             v115 = v18;
             v116 = 2112;
-            v117 = self;
+            selfCopy10 = self;
             v118 = 2112;
             v119 = v91;
             _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@Received media error for action set %@: %@", buf, 0x20u);
@@ -3476,7 +3476,7 @@ LABEL_12:
           if (v91)
           {
             v20 = objc_autoreleasePoolPush();
-            v21 = self;
+            selfCopy4 = self;
             v22 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
@@ -3484,7 +3484,7 @@ LABEL_12:
               *buf = 138543874;
               v115 = v23;
               v116 = 2112;
-              v117 = self;
+              selfCopy10 = self;
               v118 = 2112;
               v119 = v91;
               _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@Received error for action set %@: %@", buf, 0x20u);
@@ -3499,9 +3499,9 @@ LABEL_12:
 
           else
           {
-            v24 = [(HMDActionSet *)self home];
+            home = [(HMDActionSet *)self home];
             v25 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v12];
-            v26 = [v24 accessoryWithUUID:v25];
+            v26 = [home accessoryWithUUID:v25];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -3526,8 +3526,8 @@ LABEL_12:
             {
               v29 = *v104;
               v30 = v93;
-              v86 = a4;
-              v87 = self;
+              sourceCopy = source;
+              selfCopy6 = self;
               v76 = *v104;
               v77 = v13;
               v81 = v28;
@@ -3578,7 +3578,7 @@ LABEL_12:
                             v94 = v30;
                             v95 = v38;
                             v39 = objc_autoreleasePoolPush();
-                            v40 = self;
+                            selfCopy7 = self;
                             v41 = HMFGetOSLogHandle();
                             if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
                             {
@@ -3587,7 +3587,7 @@ LABEL_12:
                               *buf = 138543874;
                               v115 = v43;
                               v116 = 2112;
-                              v117 = self;
+                              selfCopy10 = self;
                               v118 = 2112;
                               v119 = v95;
                               _os_log_impl(&dword_2531F8000, v41, OS_LOG_TYPE_ERROR, "%{public}@Received error for action set %@: %@", buf, 0x20u);
@@ -3597,22 +3597,22 @@ LABEL_12:
 
                             objc_autoreleasePoolPop(v39);
                             ++v8;
-                            if (a4 == 1)
+                            if (source == 1)
                             {
                               v90 = v8;
                               v44 = HAPInstanceIDFromValue();
                               v45 = HAPInstanceIDFromValue();
                               v46 = [v91 findCharacteristic:v44 forService:v45];
-                              v47 = [v46 type];
-                              v48 = [v46 service];
-                              v49 = [v48 type];
-                              v50 = [v89 requiresDeviceUnlock:v47 forService:v49];
+                              type = [v46 type];
+                              service = [v46 service];
+                              type2 = [service type];
+                              v50 = [v89 requiresDeviceUnlock:type forService:type2];
 
                               if (v50)
                               {
                                 v61 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:4000];
                                 v62 = objc_autoreleasePoolPush();
-                                v63 = v40;
+                                v63 = selfCopy7;
                                 v64 = HMFGetOSLogHandle();
                                 if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
                                 {
@@ -3620,7 +3620,7 @@ LABEL_12:
                                   *buf = 138543874;
                                   v115 = v65;
                                   v116 = 2112;
-                                  v117 = v87;
+                                  selfCopy10 = selfCopy6;
                                   v118 = 2112;
                                   v119 = v61;
                                   _os_log_impl(&dword_2531F8000, v64, OS_LOG_TYPE_ERROR, "%{public}@Execution for action set %@ completed with error: %@", buf, 0x20u);
@@ -3629,12 +3629,12 @@ LABEL_12:
                                 objc_autoreleasePoolPop(v62);
                                 v66 = v61;
 
-                                v6 = v78;
+                                errorCopy = v78;
                                 goto LABEL_65;
                               }
 
-                              a4 = v86;
-                              self = v87;
+                              source = sourceCopy;
+                              self = selfCopy6;
                               v8 = v90;
                             }
 
@@ -3693,11 +3693,11 @@ LABEL_12:
 
     while (v51);
 
-    v6 = v78;
+    errorCopy = v78;
     if (v8)
     {
-      v52 = [(HMDActionSet *)self actions];
-      v53 = [v52 count];
+      actions = [(HMDActionSet *)self actions];
+      v53 = [actions count];
 
       v54 = v8 >= v53 ? 63 : 64;
       v55 = [*(v10 + 2488) hmErrorWithCode:v54];
@@ -3705,7 +3705,7 @@ LABEL_12:
       {
         v56 = v55;
         v57 = objc_autoreleasePoolPush();
-        v58 = self;
+        selfCopy9 = self;
         v59 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
         {
@@ -3713,7 +3713,7 @@ LABEL_12:
           *buf = 138543874;
           v115 = v60;
           v116 = 2112;
-          v117 = self;
+          selfCopy10 = self;
           v118 = 2112;
           v119 = v56;
           _os_log_impl(&dword_2531F8000, v59, OS_LOG_TYPE_ERROR, "%{public}@Execution for action set %@ completed with error: %@", buf, 0x20u);
@@ -3729,7 +3729,7 @@ LABEL_12:
   }
 
   v57 = objc_autoreleasePoolPush();
-  v72 = self;
+  selfCopy11 = self;
   v59 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
   {
@@ -3737,7 +3737,7 @@ LABEL_12:
     *buf = 138543618;
     v115 = v73;
     v116 = 2112;
-    v117 = v72;
+    selfCopy10 = selfCopy11;
     _os_log_impl(&dword_2531F8000, v59, OS_LOG_TYPE_INFO, "%{public}@Execution for action set %@ completed successfully", buf, 0x16u);
   }
 
@@ -3754,16 +3754,16 @@ LABEL_66:
   return v66;
 }
 
-- (BOOL)isAssociatedWithAccessory:(id)a3
+- (BOOL)isAssociatedWithAccessory:(id)accessory
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HMDActionSet *)self actions];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  actions = [(HMDActionSet *)self actions];
+  v6 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -3773,17 +3773,17 @@ LABEL_66:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) isAssociatedWithAccessory:v4])
+        if ([*(*(&v11 + 1) + 8 * i) isAssociatedWithAccessory:accessoryCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -3801,77 +3801,77 @@ LABEL_11:
 
 - (NSArray)associatedAccessories
 {
-  v2 = [(HMDActionSet *)self actions];
-  v3 = [v2 na_flatMap:&__block_literal_global_152];
+  actions = [(HMDActionSet *)self actions];
+  v3 = [actions na_flatMap:&__block_literal_global_152];
 
   return v3;
 }
 
-- (void)_handleRemoveAppDataModel:(id)a3 message:(id)a4
+- (void)_handleRemoveAppDataModel:(id)model message:(id)message
 {
-  v5 = a4;
-  v6 = [v5 transactionResult];
+  messageCopy = message;
+  transactionResult = [messageCopy transactionResult];
   [(HMDActionSet *)self setAppData:0];
-  [v6 markChanged];
-  [v5 respondWithPayload:0];
+  [transactionResult markChanged];
+  [messageCopy respondWithPayload:0];
 }
 
-- (void)_handleUpdateAppDataModel:(id)a3 message:(id)a4
+- (void)_handleUpdateAppDataModel:(id)model message:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 transactionResult];
-  v9 = [(HMDActionSet *)self appData];
+  modelCopy = model;
+  messageCopy = message;
+  transactionResult = [messageCopy transactionResult];
+  appData = [(HMDActionSet *)self appData];
 
-  if (v9)
+  if (appData)
   {
-    v10 = [(HMDActionSet *)self appData];
-    [v10 updateWithModel:v6];
+    appData2 = [(HMDActionSet *)self appData];
+    [appData2 updateWithModel:modelCopy];
   }
 
   else
   {
     v11 = [HMDApplicationData alloc];
-    v12 = [v6 appDataDictionary];
-    v13 = [(HMDActionSet *)self uuid];
-    v14 = [(HMDApplicationData *)v11 initWithDictionary:v12 parentUUID:v13];
+    appDataDictionary = [modelCopy appDataDictionary];
+    uuid = [(HMDActionSet *)self uuid];
+    v14 = [(HMDApplicationData *)v11 initWithDictionary:appDataDictionary parentUUID:uuid];
     [(HMDActionSet *)self setAppData:v14];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v6 appDataDictionary];
+      appDataDictionary2 = [modelCopy appDataDictionary];
       v21 = 138543618;
       v22 = v18;
       v23 = 2112;
-      v24 = v19;
+      v24 = appDataDictionary2;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Updating the application data : %@", &v21, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
   }
 
-  [v8 markChanged];
-  [v7 respondWithPayload:0];
+  [transactionResult markChanged];
+  [messageCopy respondWithPayload:0];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdateActionRequest:(id)a3
+- (void)_handleUpdateActionRequest:(id)request
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uuidForKey:*MEMORY[0x277CD2060]];
+  requestCopy = request;
+  v5 = [requestCopy uuidForKey:*MEMORY[0x277CD2060]];
   v6 = [(HMDActionSet *)self actionWithUUID:v5];
-  v7 = [(HMDActionSet *)self home];
-  v8 = v7;
+  home = [(HMDActionSet *)self home];
+  v8 = home;
   if (v6)
   {
-    v9 = v7 == 0;
+    v9 = home == 0;
   }
 
   else
@@ -3885,15 +3885,15 @@ LABEL_11:
     v11 = 2;
 LABEL_40:
     v36 = [v10 hmErrorWithCode:{v11, *v38, *&v38[16], v39}];
-    [v4 respondWithError:v36];
+    [requestCopy respondWithError:v36];
 
     goto LABEL_41;
   }
 
-  v12 = [v6 type];
-  if (v12 > 2)
+  type = [v6 type];
+  if (type > 2)
   {
-    if (v12 == 3)
+    if (type == 3)
     {
       v13 = v6;
       objc_opt_class();
@@ -3912,12 +3912,12 @@ LABEL_40:
 
       if (v24)
       {
-        [(HMDActionSet *)self _updateNaturalLightingAction:v13 forMessage:v4];
+        [(HMDActionSet *)self _updateNaturalLightingAction:v13 forMessage:requestCopy];
         goto LABEL_29;
       }
 
       v17 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -3927,10 +3927,10 @@ LABEL_40:
       goto LABEL_35;
     }
 
-    if (v12 == 5)
+    if (type == 5)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy2 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -3946,7 +3946,7 @@ LABEL_40:
     goto LABEL_37;
   }
 
-  if (!v12)
+  if (!type)
   {
     v13 = v6;
     objc_opt_class();
@@ -3965,12 +3965,12 @@ LABEL_40:
 
     if (v21)
     {
-      [(HMDActionSet *)self _updateWriteAction:v13 forMessage:v4];
+      [(HMDActionSet *)self _updateWriteAction:v13 forMessage:requestCopy];
       goto LABEL_29;
     }
 
     v17 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -3980,11 +3980,11 @@ LABEL_40:
     goto LABEL_35;
   }
 
-  if (v12 != 1)
+  if (type != 1)
   {
 LABEL_37:
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy4 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -3994,7 +3994,7 @@ LABEL_37:
       *&v38[12] = 2112;
       *&v38[14] = v6;
       *&v38[22] = 2112;
-      v39 = v33;
+      v39 = selfCopy4;
       _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_ERROR, "%{public}@Unknown action %@ in set %@, cannot handle update action request", v38, 0x20u);
     }
 
@@ -4022,7 +4022,7 @@ LABEL_37:
   if (!v14)
   {
     v17 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy5 = self;
     v19 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -4046,21 +4046,21 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  [(HMDActionSet *)self _updatePlaybackAction:v13 forMessage:v4];
+  [(HMDActionSet *)self _updatePlaybackAction:v13 forMessage:requestCopy];
 LABEL_29:
 
 LABEL_41:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateNaturalLightingAction:(id)a3 forMessage:(id)a4
+- (void)_updateNaturalLightingAction:(id)action forMessage:(id)message
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dictionaryForKey:*MEMORY[0x277CD2028]];
+  actionCopy = action;
+  messageCopy = message;
+  v8 = [messageCopy dictionaryForKey:*MEMORY[0x277CD2028]];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -4068,7 +4068,7 @@ LABEL_41:
     v23 = 138543874;
     v24 = v12;
     v25 = 2112;
-    v26 = v6;
+    v26 = actionCopy;
     v27 = 2112;
     v28 = v8;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Updating natural lighting action with action info %@:%@", &v23, 0x20u);
@@ -4076,31 +4076,31 @@ LABEL_41:
 
   objc_autoreleasePoolPop(v9);
   v13 = [HMDLightProfileNaturalLightingActionModel alloc];
-  v14 = [v6 uuid];
-  v15 = [(HMDActionSet *)v10 uuid];
-  v16 = [(HMDBackingStoreModelObject *)v13 initWithObjectChangeType:2 uuid:v14 parentUUID:v15];
+  uuid = [actionCopy uuid];
+  uuid2 = [(HMDActionSet *)selfCopy uuid];
+  v16 = [(HMDBackingStoreModelObject *)v13 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
   -[HMDLightProfileNaturalLightingActionModel setNaturalLightingEnabled:](v16, "setNaturalLightingEnabled:", [v8 hmf_BOOLForKey:*MEMORY[0x277CD0788]]);
-  v17 = [(HMDActionSet *)v10 home];
-  v18 = [v17 backingStore];
-  v19 = [v7 name];
+  home = [(HMDActionSet *)selfCopy home];
+  backingStore = [home backingStore];
+  name = [messageCopy name];
   v20 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-  v21 = [v18 transaction:v19 options:v20];
+  v21 = [backingStore transaction:name options:v20];
 
-  [v21 add:v16 withMessage:v7];
+  [v21 add:v16 withMessage:messageCopy];
   [v21 run];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePlaybackAction:(id)a3 forMessage:(id)a4
+- (void)_updatePlaybackAction:(id)action forMessage:(id)message
 {
   v87 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dictionaryForKey:*MEMORY[0x277CD2028]];
+  actionCopy = action;
+  messageCopy = message;
+  v8 = [messageCopy dictionaryForKey:*MEMORY[0x277CD2028]];
   v9 = [v8 hmf_arrayForKey:*MEMORY[0x277CD08A0]];
-  v71 = v6;
+  v71 = actionCopy;
   if (v9)
   {
     v10 = [MEMORY[0x277CBEB98] setWithArray:v9];
@@ -4114,7 +4114,7 @@ LABEL_41:
   if ([v10 count])
   {
     v70 = [v8 hmf_numberForKey:*MEMORY[0x277CD08B0]];
-    v11 = [v70 integerValue];
+    integerValue = [v70 integerValue];
     v73 = [v8 hmf_numberForKey:*MEMORY[0x277CD08C0]];
     v12 = [v8 hmf_dataForKey:*MEMORY[0x277CD0890]];
     if (v12)
@@ -4128,7 +4128,7 @@ LABEL_41:
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -4145,12 +4145,12 @@ LABEL_41:
     }
 
     objc_autoreleasePoolPop(v19);
-    if (v73 || v72 || v11)
+    if (v73 || v72 || integerValue)
     {
       v67 = v9;
       v68 = v8;
-      v69 = v7;
-      v27 = [(HMDActionSet *)v20 home];
+      v69 = messageCopy;
+      home = [(HMDActionSet *)selfCopy home];
       v28 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v10, "count")}];
       v74 = 0u;
       v75 = 0u;
@@ -4172,7 +4172,7 @@ LABEL_41:
             }
 
             v34 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v74 + 1) + 8 * i)];
-            v35 = [v27 mediaProfileWithUUID:v34];
+            v35 = [home mediaProfileWithUUID:v34];
             if (v35)
             {
               [v28 addObject:v35];
@@ -4187,30 +4187,30 @@ LABEL_41:
 
       if ([v28 count])
       {
-        v6 = v71;
-        v36 = [v71 validate];
-        v7 = v69;
-        if (v36)
+        actionCopy = v71;
+        validate = [v71 validate];
+        messageCopy = v69;
+        if (validate)
         {
-          v37 = v36;
-          [v69 respondWithError:v36];
+          v37 = validate;
+          [v69 respondWithError:validate];
         }
 
         else
         {
           v38 = objc_alloc([v71 modelClass]);
-          v39 = [v71 modelIdentifier];
-          v40 = [(HMDActionSet *)v20 uuid];
-          v41 = [v38 initWithObjectChangeType:2 uuid:v39 parentUUID:v40];
+          modelIdentifier = [v71 modelIdentifier];
+          uuid = [(HMDActionSet *)selfCopy uuid];
+          v41 = [v38 initWithObjectChangeType:2 uuid:modelIdentifier parentUUID:uuid];
 
           v42 = v41;
-          v43 = [v70 integerValue];
-          if (v43 != [v71 state])
+          integerValue2 = [v70 integerValue];
+          if (integerValue2 != [v71 state])
           {
             [v42 setState:v70];
           }
 
-          v44 = [v71 volume];
+          volume = [v71 volume];
           v45 = HMFEqualObjects();
 
           if ((v45 & 1) == 0)
@@ -4218,20 +4218,20 @@ LABEL_41:
             [v42 setVolume:v73];
           }
 
-          v46 = [v71 mediaProfiles];
+          mediaProfiles = [v71 mediaProfiles];
           v47 = HMFEqualObjects();
 
           if ((v47 & 1) == 0)
           {
             [v42 setProfiles:v29];
-            v48 = mapProfilesToAccessoryUUIDs(v27, v29);
+            v48 = mapProfilesToAccessoryUUIDs(home, v29);
             [v42 setAccessories:v48];
 
-            v49 = mapProfilesToServiceUUIDs(v27, v29);
+            v49 = mapProfilesToServiceUUIDs(home, v29);
             [v42 setServices:v49];
           }
 
-          v50 = [v71 playbackArchive];
+          playbackArchive = [v71 playbackArchive];
           v51 = HMFEqualObjects();
 
           if ((v51 & 1) == 0)
@@ -4240,7 +4240,7 @@ LABEL_41:
           }
 
           v52 = objc_autoreleasePoolPush();
-          v53 = v20;
+          v53 = selfCopy;
           v54 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
           {
@@ -4268,10 +4268,10 @@ LABEL_41:
           }
 
           objc_autoreleasePoolPop(v52);
-          v59 = [v27 backingStore];
-          v60 = [v69 name];
+          backingStore = [home backingStore];
+          name = [v69 name];
           v61 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-          v62 = [v59 transaction:v60 options:v61];
+          v62 = [backingStore transaction:name options:v61];
 
           [v62 add:v42 withMessage:v69];
           [v62 run];
@@ -4283,9 +4283,9 @@ LABEL_41:
       else
       {
         v37 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        v7 = v69;
+        messageCopy = v69;
         [v69 respondWithError:v37];
-        v6 = v71;
+        actionCopy = v71;
       }
 
       v9 = v67;
@@ -4296,7 +4296,7 @@ LABEL_41:
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v20;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -4307,8 +4307,8 @@ LABEL_41:
       }
 
       objc_autoreleasePoolPop(v23);
-      v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20 description:@"No action set in update action request" reason:0 suggestion:0];
-      [v7 respondWithError:v27];
+      home = [MEMORY[0x277CCA9B8] hmErrorWithCode:20 description:@"No action set in update action request" reason:0 suggestion:0];
+      [messageCopy respondWithError:home];
       v18 = v70;
     }
   }
@@ -4317,7 +4317,7 @@ LABEL_41:
   {
     v13 = v10;
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -4329,49 +4329,49 @@ LABEL_41:
 
     objc_autoreleasePoolPop(v14);
     v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20 description:@"At least one media profile needed in the updateAction request" reason:0 suggestion:0];
-    [v7 respondWithError:v18];
+    [messageCopy respondWithError:v18];
     v10 = v13;
   }
 
   v63 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWriteAction:(id)a3 forMessage:(id)a4
+- (void)_updateWriteAction:(id)action forMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 uuidForKey:*MEMORY[0x277CD2060]];
-  v9 = [v7 dictionaryForKey:*MEMORY[0x277CD2028]];
+  actionCopy = action;
+  messageCopy = message;
+  v8 = [messageCopy uuidForKey:*MEMORY[0x277CD2060]];
+  v9 = [messageCopy dictionaryForKey:*MEMORY[0x277CD2028]];
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
   if (v10)
   {
-    v11 = [v6 characteristic];
+    characteristic = [actionCopy characteristic];
     v25 = v10;
-    v12 = [v11 validateValueForWrite:v10 outValue:&v25];
+    v12 = [characteristic validateValueForWrite:v10 outValue:&v25];
     v13 = v25;
 
     if (v12)
     {
-      [v7 respondWithError:v12];
+      [messageCopy respondWithError:v12];
     }
 
     else
     {
       v15 = [HMDCharacteristicWriteActionModel alloc];
-      v16 = [(HMDActionSet *)self uuid];
-      v22 = [(HMDBackingStoreModelObject *)v15 initWithObjectChangeType:2 uuid:v8 parentUUID:v16];
+      uuid = [(HMDActionSet *)self uuid];
+      v22 = [(HMDBackingStoreModelObject *)v15 initWithObjectChangeType:2 uuid:v8 parentUUID:uuid];
 
       [(HMDCharacteristicWriteActionModel *)v22 setTargetValue:v10];
-      v17 = [(HMDActionSet *)self home];
-      v18 = [v17 backingStore];
-      [v7 name];
+      home = [(HMDActionSet *)self home];
+      backingStore = [home backingStore];
+      [messageCopy name];
       v19 = v23 = v13;
       v20 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-      [v18 transaction:v19 options:v20];
+      [backingStore transaction:v19 options:v20];
       v21 = v24 = v8;
 
       v13 = v23;
-      [v21 add:v22 withMessage:v7];
+      [v21 add:v22 withMessage:messageCopy];
       [v21 run];
 
       v8 = v24;
@@ -4381,41 +4381,41 @@ LABEL_41:
   else
   {
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
-    [v7 respondWithError:v14];
+    [messageCopy respondWithError:v14];
   }
 }
 
-- (BOOL)_handleRenameActionSetTransaction:(id)a3 message:(id)a4
+- (BOOL)_handleRenameActionSetTransaction:(id)transaction message:(id)message
 {
   v31[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
-  v9 = [v8 hm_truncatedNameString];
+  transactionCopy = transaction;
+  messageCopy = message;
+  name = [transactionCopy name];
+  hm_truncatedNameString = [name hm_truncatedNameString];
 
-  v10 = [(HMDActionSet *)self home];
-  v11 = [(HMDActionSet *)self name];
-  v12 = [v10 replaceName:v11 withNewName:v9];
+  home = [(HMDActionSet *)self home];
+  name2 = [(HMDActionSet *)self name];
+  v12 = [home replaceName:name2 withNewName:hm_truncatedNameString];
 
-  [(HMDActionSet *)self setName:v9];
+  [(HMDActionSet *)self setName:hm_truncatedNameString];
   v30[0] = *MEMORY[0x277CD2050];
-  v13 = [(HMDActionSet *)self uuid];
-  v14 = [v13 UUIDString];
+  uuid = [(HMDActionSet *)self uuid];
+  uUIDString = [uuid UUIDString];
   v15 = *MEMORY[0x277CD2040];
-  v31[0] = v14;
-  v31[1] = v9;
+  v31[0] = uUIDString;
+  v31[1] = hm_truncatedNameString;
   v16 = *MEMORY[0x277CD0640];
   v30[1] = v15;
   v30[2] = v16;
-  v17 = [v10 uuid];
-  v18 = [v17 UUIDString];
-  v31[2] = v18;
+  uuid2 = [home uuid];
+  uUIDString2 = [uuid2 UUIDString];
+  v31[2] = uUIDString2;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
 
   logAndPostNotification(@"HMDActionSetRenamedNotification", self, v19);
-  [v7 respondWithPayload:v19];
+  [messageCopy respondWithPayload:v19];
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -4432,34 +4432,34 @@ LABEL_41:
   return 1;
 }
 
-- (void)_handleRenameRequest:(id)a3
+- (void)_handleRenameRequest:(id)request
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringForKey:*MEMORY[0x277CD2040]];
+  requestCopy = request;
+  v5 = [requestCopy stringForKey:*MEMORY[0x277CD2040]];
   v6 = v5;
   if (!v5 || ![v5 length])
   {
     v7 = MEMORY[0x277CD1800];
-    v8 = [(HMDActionSet *)self type];
-    LOBYTE(v7) = [v7 isBuiltinActionSetType:v8];
+    type = [(HMDActionSet *)self type];
+    LOBYTE(v7) = [v7 isBuiltinActionSetType:type];
 
     if ((v7 & 1) == 0)
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = self;
+      selfCopy = self;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
         v39 = HMFGetLogIdentifier();
-        v40 = [(HMDActionSet *)v37 type];
-        v41 = [(HMDActionSet *)v37 name];
+        type2 = [(HMDActionSet *)selfCopy type];
+        name = [(HMDActionSet *)selfCopy name];
         *buf = 138543874;
         v48 = v39;
         v49 = 2112;
-        v50 = v40;
+        v50 = type2;
         v51 = 2112;
-        v52 = v41;
+        v52 = name;
         _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_INFO, "%{public}@Attempt to rename the actionSet %@/%@ to nil name", buf, 0x20u);
       }
 
@@ -4470,21 +4470,21 @@ LABEL_41:
     }
 
     v9 = +[HMDHome getBuiltinActionSets];
-    v10 = [(HMDActionSet *)self type];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    type3 = [(HMDActionSet *)self type];
+    v11 = [v9 objectForKeyedSubscript:type3];
     v12 = HMDLocalizedStringForKey(v11);
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(HMDActionSet *)v14 type];
+      type4 = [(HMDActionSet *)selfCopy2 type];
       *buf = 138543874;
       v48 = v16;
       v49 = 2112;
-      v50 = v17;
+      v50 = type4;
       v51 = 2112;
       v52 = v12;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Resetting the name of built-in actionSet of type %@ to %@", buf, 0x20u);
@@ -4497,33 +4497,33 @@ LABEL_41:
   v18 = HMMaxLengthForNaming();
   if ([v6 length] <= v18)
   {
-    v25 = [(HMDActionSet *)self home];
-    if (v25)
+    home = [(HMDActionSet *)self home];
+    if (home)
     {
-      v26 = [(HMDActionSet *)self name];
-      v27 = [v25 replaceActionSetName:v26 withNewName:v6];
+      name2 = [(HMDActionSet *)self name];
+      v27 = [home replaceActionSetName:name2 withNewName:v6];
 
       if (!v27)
       {
         v28 = [HMDActionSetModel alloc];
-        v29 = [(HMDActionSet *)self uuid];
-        v30 = [v25 uuid];
-        v31 = [(HMDBackingStoreModelObject *)v28 initWithObjectChangeType:2 uuid:v29 parentUUID:v30];
+        uuid = [(HMDActionSet *)self uuid];
+        uuid2 = [home uuid];
+        v31 = [(HMDBackingStoreModelObject *)v28 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
         [(HMDActionSetModel *)v31 setName:v6];
-        v32 = [v25 backingStore];
-        v33 = [v4 name];
+        backingStore = [home backingStore];
+        name3 = [requestCopy name];
         v34 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-        v35 = [v32 transaction:v33 options:v34];
+        v35 = [backingStore transaction:name3 options:v34];
 
-        [v35 add:v31 withMessage:v4];
+        [v35 add:v31 withMessage:requestCopy];
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __37__HMDActionSet__handleRenameRequest___block_invoke;
         v43[3] = &unk_279734D88;
-        v44 = v25;
+        v44 = home;
         v45 = v6;
-        v46 = self;
+        selfCopy3 = self;
         [v35 run:v43];
 
         v27 = 0;
@@ -4538,12 +4538,12 @@ LABEL_20:
       v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
     }
 
-    [v4 respondWithError:v27];
+    [requestCopy respondWithError:v27];
     goto LABEL_20;
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy4 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -4557,8 +4557,8 @@ LABEL_20:
   v23 = MEMORY[0x277CCA9B8];
   v24 = 46;
 LABEL_17:
-  v25 = [v23 hmErrorWithCode:v24];
-  [v4 respondWithError:v25];
+  home = [v23 hmErrorWithCode:v24];
+  [requestCopy respondWithError:home];
 LABEL_21:
 
   v42 = *MEMORY[0x277D85DE8];
@@ -4581,36 +4581,36 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
   [v3 removeIntentForActionSet:self];
 }
 
-- (void)_handleRemoveActionTransaction:(id)a3 message:(id)a4
+- (void)_handleRemoveActionTransaction:(id)transaction message:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 transactionResult];
-  v9 = [v6 uuid];
-  v10 = [(HMDActionSet *)self actionWithUUID:v9];
-  v11 = [(HMDActionSet *)self home];
-  v12 = v11;
-  if (v10 && v11)
+  transactionCopy = transaction;
+  messageCopy = message;
+  transactionResult = [messageCopy transactionResult];
+  uuid = [transactionCopy uuid];
+  v10 = [(HMDActionSet *)self actionWithUUID:uuid];
+  home = [(HMDActionSet *)self home];
+  v12 = home;
+  if (v10 && home)
   {
-    [(HMDActionSet *)self _removeAction:v10 message:v7];
+    [(HMDActionSet *)self _removeAction:v10 message:messageCopy];
     if ([v12 isOwnerUser])
     {
-      [v8 markChanged];
+      [transactionResult markChanged];
     }
 
     else if ([v12 isAdminUser])
     {
-      [v8 markLocalChanged];
+      [transactionResult markLocalChanged];
     }
 
-    [v8 markSaveToAssistant];
+    [transactionResult markSaveToAssistant];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -4626,22 +4626,22 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v7 respondWithError:v17];
+    [messageCopy respondWithError:v17];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRemovalOfActions:(id)a3 transaction:(id)a4
+- (void)_handleRemovalOfActions:(id)actions transaction:(id)transaction
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  actionsCopy = actions;
+  transactionCopy = transaction;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [actionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4653,17 +4653,17 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actionsCopy);
         }
 
         v11 = [*(*(&v13 + 1) + 8 * v10) modelObjectWithChangeType:3];
-        [v6 add:v11];
+        [transactionCopy add:v11];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [actionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -4672,30 +4672,30 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRemovalOfAction:(id)a3 transaction:(id)a4
+- (void)_handleRemovalOfAction:(id)action transaction:(id)transaction
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  actionCopy = action;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  transactionCopy = transaction;
+  actionCopy2 = action;
+  v9 = [v6 arrayWithObjects:&actionCopy count:1];
 
-  [(HMDActionSet *)self _handleRemovalOfActions:v9 transaction:v7, v11, v12];
+  [(HMDActionSet *)self _handleRemovalOfActions:v9 transaction:transactionCopy, actionCopy, v12];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRemoveActionRequest:(id)a3
+- (void)_handleRemoveActionRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uuidForKey:*MEMORY[0x277CD2060]];
+  requestCopy = request;
+  v5 = [requestCopy uuidForKey:*MEMORY[0x277CD2060]];
   v6 = [(HMDActionSet *)self actionWithUUID:v5];
-  v7 = [(HMDActionSet *)self home];
-  v8 = v7;
+  home = [(HMDActionSet *)self home];
+  v8 = home;
   if (v6)
   {
-    v9 = v7 == 0;
+    v9 = home == 0;
   }
 
   else
@@ -4706,13 +4706,13 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
   if (v9)
   {
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v10];
+    [requestCopy respondWithError:v10];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -4722,33 +4722,33 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
       v24 = 2112;
       v25 = v6;
       v26 = 2112;
-      v27 = v4;
+      v27 = requestCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Removing action from actionSet : %@ / %@", &v22, 0x20u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v16 = [v8 backingStore];
-    v17 = [v4 name];
+    backingStore = [v8 backingStore];
+    name = [requestCopy name];
     v18 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v19 = [v16 transaction:v17 options:v18];
+    v19 = [backingStore transaction:name options:v18];
 
     v20 = [v6 modelObjectWithChangeType:3];
-    [v19 add:v20 withMessage:v4];
+    [v19 add:v20 withMessage:requestCopy];
     [v19 run];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeAction:(id)a3 message:(id)a4
+- (void)_removeAction:(id)action message:(id)message
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDActionSet *)self home];
-  if (v8)
+  actionCopy = action;
+  messageCopy = message;
+  home = [(HMDActionSet *)self home];
+  if (home)
   {
-    v9 = v6;
+    v9 = actionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -4762,10 +4762,10 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
 
     v11 = v10;
 
-    if (v11 && ([v7 proxyConnection], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, v14 = objc_msgSend(v7, "isEntitledForShortcutsAutomationAccess"), v13, (v14 & 1) == 0))
+    if (v11 && ([messageCopy proxyConnection], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, v14 = objc_msgSend(messageCopy, "isEntitledForShortcutsAutomationAccess"), v13, (v14 & 1) == 0))
     {
       v40 = objc_autoreleasePoolPush();
-      v41 = self;
+      selfCopy = self;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -4777,131 +4777,131 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
 
       objc_autoreleasePoolPop(v40);
       v29 = [MEMORY[0x277CCA9B8] hmErrorWithCode:80 description:@"Missing Entitlement" reason:0 suggestion:0];
-      [v7 respondWithError:v29];
+      [messageCopy respondWithError:v29];
     }
 
     else
     {
       [(HMDActionSet *)self removeAction:v9];
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v18 = v46 = v6;
+        v18 = v46 = actionCopy;
         [v9 uuid];
-        v19 = v45 = v7;
+        v19 = v45 = messageCopy;
         [v19 UUIDString];
         v20 = v44 = v15;
-        [(HMDActionSet *)v16 uuid];
-        v22 = v21 = v8;
-        v23 = [v22 UUIDString];
+        [(HMDActionSet *)selfCopy2 uuid];
+        v22 = v21 = home;
+        uUIDString = [v22 UUIDString];
         *buf = 138543874;
         v50 = v18;
         v51 = 2112;
         v52 = v20;
         v53 = 2112;
-        v54 = v23;
+        v54 = uUIDString;
         _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Remove Action uuid: %@, Action set uuid: %@", buf, 0x20u);
 
-        v8 = v21;
-        v7 = v45;
+        home = v21;
+        messageCopy = v45;
 
         v15 = v44;
-        v6 = v46;
+        actionCopy = v46;
       }
 
       objc_autoreleasePoolPop(v15);
       v47[0] = *MEMORY[0x277CD2060];
-      v24 = [v9 uuid];
-      v25 = [v24 UUIDString];
-      v48[0] = v25;
+      uuid = [v9 uuid];
+      uUIDString2 = [uuid UUIDString];
+      v48[0] = uUIDString2;
       v47[1] = *MEMORY[0x277CD0640];
-      [v8 uuid];
-      v27 = v26 = v8;
-      v28 = [v27 UUIDString];
-      v48[1] = v28;
+      [home uuid];
+      v27 = v26 = home;
+      uUIDString3 = [v27 UUIDString];
+      v48[1] = uUIDString3;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
-      v8 = v26;
-      [v7 respondWithPayload:v29];
+      home = v26;
+      [messageCopy respondWithPayload:v29];
     }
   }
 
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy3 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [(HMDActionSet *)v31 name];
-      [(HMDActionSet *)v31 uuid];
-      v36 = v35 = v6;
+      name = [(HMDActionSet *)selfCopy3 name];
+      [(HMDActionSet *)selfCopy3 uuid];
+      v36 = v35 = actionCopy;
       [v36 UUIDString];
-      v38 = v37 = v7;
+      v38 = v37 = messageCopy;
       *buf = 138543874;
       v50 = v33;
       v51 = 2112;
-      v52 = v34;
+      v52 = name;
       v53 = 2112;
       v54 = v38;
       _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_ERROR, "%{public}@%@/%@: Ignoring _removeAction since home is nil", buf, 0x20u);
 
-      v6 = v35;
-      v7 = v37;
+      actionCopy = v35;
+      messageCopy = v37;
     }
 
     objc_autoreleasePoolPop(v30);
     v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v7 respondWithError:v11];
+    [messageCopy respondWithError:v11];
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAddLightProfileNaturalLightingActionTransaction:(id)a3 message:(id)a4
+- (void)_handleAddLightProfileNaturalLightingActionTransaction:(id)transaction message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  transactionCopy = transaction;
   v10 = 0;
-  v8 = [[HMDLightProfileNaturalLightingAction alloc] initWithModelObject:v7 parent:self error:&v10];
+  v8 = [[HMDLightProfileNaturalLightingAction alloc] initWithModelObject:transactionCopy parent:self error:&v10];
 
   v9 = v10;
   if (v8)
   {
-    [(HMDActionSet *)self _handleAddNewAction:v8 message:v6];
+    [(HMDActionSet *)self _handleAddNewAction:v8 message:messageCopy];
   }
 
   else
   {
-    [v6 respondWithError:v9];
+    [messageCopy respondWithError:v9];
   }
 }
 
-- (void)_handleAddShortcutActionTransaction:(id)a3 message:(id)a4
+- (void)_handleAddShortcutActionTransaction:(id)transaction message:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 data];
+  transactionCopy = transaction;
+  messageCopy = message;
+  data = [transactionCopy data];
 
-  if (v8)
+  if (data)
   {
     v9 = [HMDShortcutAction alloc];
-    v10 = [v6 data];
-    v11 = [v6 uuid];
-    v12 = [(HMDShortcutAction *)v9 initWithSerializedShortcut:v10 uuid:v11 actionSet:self];
+    data2 = [transactionCopy data];
+    uuid = [transactionCopy uuid];
+    v12 = [(HMDShortcutAction *)v9 initWithSerializedShortcut:data2 uuid:uuid actionSet:self];
 
-    [(HMDActionSet *)self _handleAddNewAction:v12 message:v7];
+    [(HMDActionSet *)self _handleAddNewAction:v12 message:messageCopy];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -4913,37 +4913,37 @@ void __37__HMDActionSet__handleRenameRequest___block_invoke(uint64_t a1, uint64_
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20 description:@"Invalid action properties" reason:0 suggestion:0];
-    [v7 respondWithError:v17];
+    [messageCopy respondWithError:v17];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAddMediaPlaybackActionTransaction:(id)a3 message:(id)a4
+- (void)_handleAddMediaPlaybackActionTransaction:(id)transaction message:(id)message
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 profiles];
-  if ([v8 count])
+  transactionCopy = transaction;
+  messageCopy = message;
+  profiles = [transactionCopy profiles];
+  if ([profiles count])
   {
-    v9 = [v6 volume];
-    if (v9 || ([v6 state], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "integerValue")))
+    volume = [transactionCopy volume];
+    if (volume || ([transactionCopy state], volume = objc_claimAutoreleasedReturnValue(), objc_msgSend(volume, "integerValue")))
     {
 
 LABEL_5:
-      v42 = self;
-      v10 = [(HMDActionSet *)self home];
+      selfCopy = self;
+      home = [(HMDActionSet *)self home];
       v11 = MEMORY[0x277CBEB58];
-      v12 = [v6 profiles];
-      v13 = [v11 setWithCapacity:{objc_msgSend(v12, "count")}];
+      profiles2 = [transactionCopy profiles];
+      v13 = [v11 setWithCapacity:{objc_msgSend(profiles2, "count")}];
 
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v14 = [v6 profiles];
-      v15 = [v14 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      profiles3 = [transactionCopy profiles];
+      v15 = [profiles3 countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v15)
       {
         v16 = v15;
@@ -4954,18 +4954,18 @@ LABEL_5:
           {
             if (*v45 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(profiles3);
             }
 
             v19 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v44 + 1) + 8 * i)];
-            v20 = [v10 mediaProfileWithUUID:v19];
+            v20 = [home mediaProfileWithUUID:v19];
             if (v20)
             {
               [v13 addObject:v20];
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v44 objects:v48 count:16];
+          v16 = [profiles3 countByEnumeratingWithState:&v44 objects:v48 count:16];
         }
 
         while (v16);
@@ -4974,17 +4974,17 @@ LABEL_5:
       if ([v13 count])
       {
         v43 = 0;
-        v21 = [[HMDMediaPlaybackAction alloc] initWithModelObject:v6 parent:v42 error:&v43];
+        v21 = [[HMDMediaPlaybackAction alloc] initWithModelObject:transactionCopy parent:selfCopy error:&v43];
         v22 = v43;
         if (v21)
         {
-          [(HMDActionSet *)v42 _handleAddNewAction:v21 message:v7];
+          [(HMDActionSet *)selfCopy _handleAddNewAction:v21 message:messageCopy];
         }
 
         else
         {
           v36 = objc_autoreleasePoolPush();
-          v37 = v42;
+          v37 = selfCopy;
           v38 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
@@ -4997,37 +4997,37 @@ LABEL_5:
           }
 
           objc_autoreleasePoolPop(v36);
-          [v7 respondWithError:v22];
+          [messageCopy respondWithError:v22];
         }
       }
 
       else
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = v42;
+        v32 = selfCopy;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           v34 = HMFGetLogIdentifier();
-          v35 = [v6 profiles];
+          profiles4 = [transactionCopy profiles];
           *buf = 138543618;
           v50 = v34;
           v51 = 2112;
-          v52 = v35;
+          v52 = profiles4;
           _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@Add media action could not match profile UUIDs to profiles. UUIDs: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v31);
         v22 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2 description:@"Could not map profile UUIDs to media profiles" reason:0 suggestion:0];
-        [v7 respondWithError:v22];
+        [messageCopy respondWithError:v22];
       }
 
       goto LABEL_29;
     }
 
-    v41 = [v6 encodedPlaybackArchive];
+    encodedPlaybackArchive = [transactionCopy encodedPlaybackArchive];
 
-    if (v41)
+    if (encodedPlaybackArchive)
     {
       goto LABEL_5;
     }
@@ -5038,80 +5038,80 @@ LABEL_5:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy2 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     v26 = HMFGetLogIdentifier();
-    v27 = [v6 profiles];
-    v28 = [v6 volume];
-    v29 = [v6 state];
-    v30 = [v6 encodedPlaybackArchive];
+    profiles5 = [transactionCopy profiles];
+    volume2 = [transactionCopy volume];
+    state = [transactionCopy state];
+    encodedPlaybackArchive2 = [transactionCopy encodedPlaybackArchive];
     *buf = 138544386;
     v50 = v26;
     v51 = 2112;
-    v52 = v27;
+    v52 = profiles5;
     v53 = 2112;
-    v54 = v28;
+    v54 = volume2;
     v55 = 2112;
-    v56 = v29;
+    v56 = state;
     v57 = 2112;
-    v58 = v30;
+    v58 = encodedPlaybackArchive2;
     _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_ERROR, "%{public}@Add media action invalid parameter: profiles : [%@], volume: %@, state: %@, encodedPlaybackArchive: %@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v23);
-  v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20 description:@"Invalid action properties" reason:0 suggestion:0];
-  [v7 respondWithError:v10];
+  home = [MEMORY[0x277CCA9B8] hmErrorWithCode:20 description:@"Invalid action properties" reason:0 suggestion:0];
+  [messageCopy respondWithError:home];
 LABEL_29:
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAddCharacteristicWriteActionTransaction:(id)a3 message:(id)a4
+- (void)_handleAddCharacteristicWriteActionTransaction:(id)transaction message:(id)message
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 targetValue];
-  if (!v8)
+  transactionCopy = transaction;
+  messageCopy = message;
+  targetValue = [transactionCopy targetValue];
+  if (!targetValue)
   {
     goto LABEL_26;
   }
 
-  v9 = v8;
-  v10 = [v6 accessory];
-  if (!v10)
+  v9 = targetValue;
+  accessory = [transactionCopy accessory];
+  if (!accessory)
   {
     goto LABEL_25;
   }
 
-  v11 = v10;
-  v12 = [v6 serviceID];
-  if (!v12)
+  v11 = accessory;
+  serviceID = [transactionCopy serviceID];
+  if (!serviceID)
   {
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  v13 = v12;
-  v14 = [v6 characteristicID];
+  v13 = serviceID;
+  characteristicID = [transactionCopy characteristicID];
 
-  if (!v14)
+  if (!characteristicID)
   {
 LABEL_26:
-    v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v7 respondWithError:v15];
+    home = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
+    [messageCopy respondWithError:home];
     goto LABEL_27;
   }
 
-  v15 = [(HMDActionSet *)self home];
+  home = [(HMDActionSet *)self home];
   v16 = objc_alloc(MEMORY[0x277CCAD78]);
-  v17 = [v6 accessory];
-  v18 = [v16 initWithUUIDString:v17];
+  accessory2 = [transactionCopy accessory];
+  v18 = [v16 initWithUUIDString:accessory2];
 
-  v19 = [v15 accessoryWithUUID:v18];
+  v19 = [home accessoryWithUUID:v18];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -5125,24 +5125,24 @@ LABEL_26:
 
   v21 = v20;
 
-  v22 = [v6 characteristicID];
-  v23 = [v6 serviceID];
-  v24 = [v21 findCharacteristic:v22 forService:v23];
+  characteristicID2 = [transactionCopy characteristicID];
+  serviceID2 = [transactionCopy serviceID];
+  v24 = [v21 findCharacteristic:characteristicID2 forService:serviceID2];
 
   if (v24)
   {
     v51 = v18;
-    v50 = [v7 transactionResult];
-    if ([v50 source] == 1)
+    transactionResult = [messageCopy transactionResult];
+    if ([transactionResult source] == 1)
     {
       v48 = v21;
-      v49 = v15;
+      v49 = home;
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v25 = [(HMDActionSet *)self actions];
-      v26 = [(HMDCharacteristicWriteAction *)v25 countByEnumeratingWithState:&v52 objects:v62 count:16];
+      actions = [(HMDActionSet *)self actions];
+      v26 = [(HMDCharacteristicWriteAction *)actions countByEnumeratingWithState:&v52 objects:v62 count:16];
       if (v26)
       {
         v27 = v26;
@@ -5154,7 +5154,7 @@ LABEL_26:
           {
             if (*v53 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(actions);
             }
 
             v30 = *(*(&v52 + 1) + 8 * v29);
@@ -5174,32 +5174,32 @@ LABEL_26:
             if (v32 && [v32 isActionForCharacteristic:v24])
             {
               v39 = objc_autoreleasePoolPush();
-              v40 = self;
+              selfCopy = self;
               v41 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
               {
                 v42 = HMFGetLogIdentifier();
-                v43 = [v33 uuid];
+                uuid = [v33 uuid];
                 *buf = 138543874;
                 v57 = v42;
                 v58 = 2112;
                 v59 = v24;
                 v60 = 2112;
-                v61 = v43;
+                v61 = uuid;
                 _os_log_impl(&dword_2531F8000, v41, OS_LOG_TYPE_ERROR, "%{public}@Action for chr (%@) has already existed with UUID %@. Cleaning from transaction store.", buf, 0x20u);
               }
 
               objc_autoreleasePoolPop(v39);
               v44 = [MEMORY[0x277CCA9B8] hmErrorWithCode:1];
-              [v7 respondWithError:v44];
+              [messageCopy respondWithError:v44];
 
-              [v6 setObjectChangeType:3];
-              v15 = v49;
-              v45 = [v49 backingStore];
+              [transactionCopy setObjectChangeType:3];
+              home = v49;
+              backingStore = [v49 backingStore];
               v46 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-              v47 = [v45 transaction:@"RemoveUnpushedActionModel" options:v46];
+              v47 = [backingStore transaction:@"RemoveUnpushedActionModel" options:v46];
 
-              [v47 add:v6];
+              [v47 add:transactionCopy];
               [v47 save];
 
               v21 = v48;
@@ -5210,7 +5210,7 @@ LABEL_26:
           }
 
           while (v27 != v29);
-          v27 = [(HMDCharacteristicWriteAction *)v25 countByEnumeratingWithState:&v52 objects:v62 count:16];
+          v27 = [(HMDCharacteristicWriteAction *)actions countByEnumeratingWithState:&v52 objects:v62 count:16];
           if (v27)
           {
             continue;
@@ -5221,15 +5221,15 @@ LABEL_26:
       }
 
       v21 = v48;
-      v15 = v49;
+      home = v49;
     }
 
     v34 = [HMDCharacteristicWriteAction alloc];
-    v35 = [v6 uuid];
-    v36 = [v6 targetValue];
-    v25 = [(HMDCharacteristicWriteAction *)v34 initWithUUID:v35 characteristic:v24 targetValue:v36 actionSet:self];
+    uuid2 = [transactionCopy uuid];
+    targetValue2 = [transactionCopy targetValue];
+    actions = [(HMDCharacteristicWriteAction *)v34 initWithUUID:uuid2 characteristic:v24 targetValue:targetValue2 actionSet:self];
 
-    [(HMDActionSet *)self _handleAddNewAction:v25 message:v7];
+    [(HMDActionSet *)self _handleAddNewAction:actions message:messageCopy];
 LABEL_32:
 
     v18 = v51;
@@ -5238,44 +5238,44 @@ LABEL_32:
   else
   {
     v38 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v7 respondWithError:v38];
+    [messageCopy respondWithError:v38];
   }
 
 LABEL_27:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendNotificationWithAction:(id)a3 message:(id)a4
+- (void)sendNotificationWithAction:(id)action message:(id)message
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 name];
-  v9 = [v8 isEqualToString:@"kTransactionUpdate"];
+  actionCopy = action;
+  messageCopy = message;
+  name = [messageCopy name];
+  v9 = [name isEqualToString:@"kTransactionUpdate"];
 
   if (v9)
   {
-    [v7 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v26[0] = *MEMORY[0x277CD2060];
-    v10 = [v6 uuid];
-    v11 = [v10 UUIDString];
-    v27[0] = v11;
+    uuid = [actionCopy uuid];
+    uUIDString = [uuid UUIDString];
+    v27[0] = uUIDString;
     v26[1] = *MEMORY[0x277CD2028];
-    v12 = [v6 dictionaryRepresentation];
-    v27[1] = v12;
+    dictionaryRepresentation = [actionCopy dictionaryRepresentation];
+    v27[1] = dictionaryRepresentation;
     v26[2] = *MEMORY[0x277CD0640];
-    v13 = [(HMDActionSet *)self home];
-    v14 = [v13 uuid];
-    v15 = [v14 UUIDString];
-    v27[2] = v15;
+    home = [(HMDActionSet *)self home];
+    uuid2 = [home uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    v27[2] = uUIDString2;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -5283,23 +5283,23 @@ LABEL_27:
       v22 = 138543618;
       v23 = v20;
       v24 = 2112;
-      v25 = v6;
+      v25 = actionCopy;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Responding to client that ActionSet is successfully added : %@", &v22, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
-    [v7 respondWithPayload:v16];
+    [messageCopy respondWithPayload:v16];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAddNewAction:(id)a3 message:(id)a4
+- (void)_handleAddNewAction:(id)action message:(id)message
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  actionCopy = action;
+  messageCopy = message;
+  v8 = actionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -5315,16 +5315,16 @@ LABEL_27:
 
   if (v10)
   {
-    v11 = [v7 proxyConnection];
-    if (v11)
+    proxyConnection = [messageCopy proxyConnection];
+    if (proxyConnection)
     {
-      v12 = v11;
-      v13 = [v7 isEntitledForShortcutsAutomationAccess];
+      v12 = proxyConnection;
+      isEntitledForShortcutsAutomationAccess = [messageCopy isEntitledForShortcutsAutomationAccess];
 
-      if ((v13 & 1) == 0)
+      if ((isEntitledForShortcutsAutomationAccess & 1) == 0)
       {
         v32 = objc_autoreleasePoolPush();
-        v33 = self;
+        selfCopy = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
@@ -5335,56 +5335,56 @@ LABEL_27:
         }
 
         objc_autoreleasePoolPop(v32);
-        v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:80 description:@"Missing Entitlement" reason:0 suggestion:0];
-        [v7 respondWithError:v14];
+        transactionResult = [MEMORY[0x277CCA9B8] hmErrorWithCode:80 description:@"Missing Entitlement" reason:0 suggestion:0];
+        [messageCopy respondWithError:transactionResult];
         goto LABEL_37;
       }
     }
   }
 
   [(HMDActionSet *)self addAction:v8];
-  v14 = [v7 transactionResult];
-  [v14 markChanged];
-  [v14 markSaveToAssistant];
+  transactionResult = [messageCopy transactionResult];
+  [transactionResult markChanged];
+  [transactionResult markSaveToAssistant];
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy2 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v8 uuid];
-    [v19 UUIDString];
-    v20 = v46 = v7;
-    [(HMDActionSet *)v16 uuid];
-    v47 = v14;
+    uuid = [v8 uuid];
+    [uuid UUIDString];
+    v20 = v46 = messageCopy;
+    [(HMDActionSet *)selfCopy2 uuid];
+    v47 = transactionResult;
     v21 = v8;
     v23 = v22 = v10;
-    v24 = [v23 UUIDString];
+    uUIDString = [v23 UUIDString];
     *buf = 138543874;
     v50 = v18;
     v51 = 2112;
     v52 = v20;
     v53 = 2112;
-    v54 = v24;
+    v54 = uUIDString;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Add Action uuid: %@, Action set uuid: %@", buf, 0x20u);
 
     v10 = v22;
     v8 = v21;
-    v14 = v47;
+    transactionResult = v47;
 
-    v7 = v46;
+    messageCopy = v46;
   }
 
   objc_autoreleasePoolPop(v15);
-  v25 = [v8 type];
-  if (v25 > 2)
+  type = [v8 type];
+  if (type > 2)
   {
-    if ((v25 - 3) >= 2)
+    if ((type - 3) >= 2)
     {
-      if (v25 == 5)
+      if (type == 5)
       {
         v36 = objc_autoreleasePoolPush();
-        v37 = v16;
+        v37 = selfCopy2;
         v38 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
@@ -5401,11 +5401,11 @@ LABEL_27:
     }
 
 LABEL_20:
-    [(HMDActionSet *)v16 sendNotificationWithAction:v8 message:v7];
+    [(HMDActionSet *)selfCopy2 sendNotificationWithAction:v8 message:messageCopy];
     goto LABEL_37;
   }
 
-  switch(v25)
+  switch(type)
   {
     case 0:
       v26 = v8;
@@ -5425,14 +5425,14 @@ LABEL_20:
       if (!v28)
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = v16;
+        v30 = selfCopy2;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
 LABEL_34:
           v41 = HMFGetLogIdentifier();
           HMActionTypeAsString();
-          v48 = v14;
+          v48 = transactionResult;
           v42 = v8;
           v44 = v43 = v10;
           *buf = 138543874;
@@ -5445,7 +5445,7 @@ LABEL_34:
 
           v10 = v43;
           v8 = v42;
-          v14 = v48;
+          transactionResult = v48;
         }
 
 LABEL_35:
@@ -5455,7 +5455,7 @@ LABEL_35:
       }
 
 LABEL_32:
-      [(HMDActionSet *)v16 sendNotificationWithAction:v26 message:v7];
+      [(HMDActionSet *)selfCopy2 sendNotificationWithAction:v26 message:messageCopy];
 LABEL_36:
 
       break;
@@ -5479,7 +5479,7 @@ LABEL_36:
       if (!v28)
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = v16;
+        v30 = selfCopy2;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
@@ -5497,68 +5497,68 @@ LABEL_37:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdateActionSet:(id)a3
+- (void)_handleUpdateActionSet:(id)set
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 messagePayload];
+    messagePayload = [setCopy messagePayload];
     *buf = 138543874;
     v47 = v8;
     v48 = 2112;
-    v49 = v4;
+    v49 = setCopy;
     v50 = 2112;
-    v51 = v9;
+    v51 = messagePayload;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Received request to update ActionSet %@ / %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMDActionSet *)v6 home];
-  v11 = [(HMDActionSet *)v6 type];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CCF1A0]];
+  home = [(HMDActionSet *)selfCopy home];
+  type = [(HMDActionSet *)selfCopy type];
+  v12 = [type isEqualToString:*MEMORY[0x277CCF1A0]];
 
   if (v12)
   {
-    v13 = [v4 responseHandler];
+    responseHandler = [setCopy responseHandler];
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    v13[2](v13, v14, 0);
+    responseHandler[2](responseHandler, v14, 0);
   }
 
   else
   {
-    v15 = [v10 backingStore];
-    v16 = [v4 name];
+    backingStore = [home backingStore];
+    name = [setCopy name];
     v17 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v18 = [v15 transaction:v16 options:v17];
+    v18 = [backingStore transaction:name options:v17];
 
-    v19 = [v4 messagePayload];
-    v20 = [v19 hmf_stringForKey:*MEMORY[0x277CD2040]];
+    messagePayload2 = [setCopy messagePayload];
+    v20 = [messagePayload2 hmf_stringForKey:*MEMORY[0x277CD2040]];
 
     if (!v20)
     {
       goto LABEL_11;
     }
 
-    v21 = [(HMDActionSet *)v6 name];
-    v22 = [v20 isEqualToString:v21];
+    name2 = [(HMDActionSet *)selfCopy name];
+    v22 = [v20 isEqualToString:name2];
 
     if (v22)
     {
       goto LABEL_11;
     }
 
-    v23 = [(HMDActionSet *)v6 name];
-    v24 = [v10 replaceActionSetName:v23 withNewName:v20];
+    name3 = [(HMDActionSet *)selfCopy name];
+    v24 = [home replaceActionSetName:name3 withNewName:v20];
 
     if (v24)
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v6;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -5571,26 +5571,26 @@ LABEL_37:
       }
 
       objc_autoreleasePoolPop(v25);
-      [v4 respondWithError:v24];
+      [setCopy respondWithError:v24];
 
       v14 = 0;
-      v13 = 0;
+      responseHandler = 0;
     }
 
     else
     {
 LABEL_11:
-      v29 = [v4 messagePayload];
+      messagePayload3 = [setCopy messagePayload];
       v44 = 0;
       v45 = 0;
-      v30 = [(HMDActionSet *)v6 _updateActionSetFromDictionary:v29 transaction:v18 response:&v45 error:&v44];
+      v30 = [(HMDActionSet *)selfCopy _updateActionSetFromDictionary:messagePayload3 transaction:v18 response:&v45 error:&v44];
       v14 = v45;
-      v13 = v44;
+      responseHandler = v44;
 
       if (v30)
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = v6;
+        v32 = selfCopy;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
@@ -5605,10 +5605,10 @@ LABEL_11:
         v38[1] = 3221225472;
         v38[2] = __39__HMDActionSet__handleUpdateActionSet___block_invoke;
         v38[3] = &unk_279727688;
-        v39 = v4;
+        v39 = setCopy;
         v40 = v20;
         v41 = v32;
-        v42 = v10;
+        v42 = home;
         v14 = v14;
         v43 = v14;
         [v18 run:v38];
@@ -5616,10 +5616,10 @@ LABEL_11:
 
       else
       {
-        v35 = [(HMDActionSet *)v6 name];
-        v36 = [v10 replaceActionSetName:v20 withNewName:v35];
+        name4 = [(HMDActionSet *)selfCopy name];
+        v36 = [home replaceActionSetName:v20 withNewName:name4];
 
-        [v4 respondWithError:v13];
+        [setCopy respondWithError:responseHandler];
       }
     }
   }
@@ -5627,12 +5627,12 @@ LABEL_11:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updateActionSetFromDictionary:(void *)a3 transaction:(void *)a4 response:(void *)a5 error:
+- (BOOL)_updateActionSetFromDictionary:(void *)dictionary transaction:(void *)transaction response:(void *)response error:
 {
   v94 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  dictionaryCopy = dictionary;
+  if (!self)
   {
     v35 = 0;
     goto LABEL_58;
@@ -5640,10 +5640,10 @@ LABEL_11:
 
   v9 = [v7 hmf_arrayForKey:*MEMORY[0x277CD2030]];
   v73 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [a1 actions];
-  v72 = [v10 mutableCopy];
+  actions = [self actions];
+  v72 = [actions mutableCopy];
 
-  v74 = [a1 home];
+  home = [self home];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
@@ -5683,35 +5683,35 @@ LABEL_11:
       if (!v14)
       {
         v51 = objc_autoreleasePoolPush();
-        v52 = a1;
+        selfCopy = self;
         v53 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
         {
           v54 = HMFGetLogIdentifier();
-          v55 = [v52 name];
+          name = [selfCopy name];
           *buf = 138543618;
           v90 = v54;
           v91 = 2112;
-          v92 = v55;
+          v92 = name;
           _os_log_impl(&dword_2531F8000, v53, OS_LOG_TYPE_ERROR, "%{public}@Can't update action set %@; invalid serialized action", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v51);
         v7 = v67;
         v27 = obj;
-        if (a5)
+        if (response)
         {
-          *a5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+          *response = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
         }
 
         goto LABEL_55;
       }
 
-      v15 = [v74 actionWithDictionaryRepresentation:v14];
+      v15 = [home actionWithDictionaryRepresentation:v14];
       if (!v15)
       {
         v56 = objc_autoreleasePoolPush();
-        v57 = a1;
+        selfCopy2 = self;
         v58 = HMFGetOSLogHandle();
         v7 = v67;
         if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
@@ -5726,9 +5726,9 @@ LABEL_11:
 
         objc_autoreleasePoolPop(v56);
         v27 = obj;
-        if (a5)
+        if (response)
         {
-          *a5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+          *response = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
         }
 
 LABEL_55:
@@ -5737,8 +5737,8 @@ LABEL_55:
 
       v16 = v15;
       [v73 addObject:v15];
-      v17 = a1;
-      [v16 updateActionSetIfNil:a1];
+      selfCopy3 = self;
+      [v16 updateActionSetIfNil:self];
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
@@ -5783,11 +5783,11 @@ LABEL_14:
           goto LABEL_23;
         }
 
-        v25 = [v24 uuid];
-        [v16 setUuid:v25];
+        uuid = [v24 uuid];
+        [v16 setUuid:uuid];
 
         v26 = [v16 modelObjectWithChangeType:2];
-        [v8 add:v26];
+        [dictionaryCopy add:v26];
 
         [v18 removeObject:v24];
       }
@@ -5798,10 +5798,10 @@ LABEL_20:
 
 LABEL_23:
         v24 = [v16 modelObjectWithChangeType:1];
-        [v8 add:v24];
+        [dictionaryCopy add:v24];
       }
 
-      a1 = v17;
+      self = selfCopy3;
     }
 
     v7 = v67;
@@ -5817,7 +5817,7 @@ LABEL_23:
 LABEL_26:
   v27 = obj;
 
-  if ([v74 validateActionsDoNotConflict:v73])
+  if ([home validateActionsDoNotConflict:v73])
   {
     v77 = 0u;
     v78 = 0u;
@@ -5839,7 +5839,7 @@ LABEL_26:
           }
 
           v33 = [*(*(&v75 + 1) + 8 * j) modelObjectWithChangeType:3];
-          [v8 add:v33];
+          [dictionaryCopy add:v33];
         }
 
         v30 = [v28 countByEnumeratingWithState:&v75 objects:v87 count:16];
@@ -5848,24 +5848,24 @@ LABEL_26:
       while (v30);
     }
 
-    v34 = [v7 hmd_appDataDictionaryWithError:a5];
+    v34 = [v7 hmd_appDataDictionaryWithError:response];
     v35 = v34 != 0;
     if (v34)
     {
-      v36 = [a1 appData];
-      v37 = [a1 uuid];
-      v38 = [HMDApplicationDataModel modelWithAppDataPayload:v34 existingAppData:v36 parentUUID:v37];
+      appData = [self appData];
+      uuid2 = [self uuid];
+      v38 = [HMDApplicationDataModel modelWithAppDataPayload:v34 existingAppData:appData parentUUID:uuid2];
 
       if (v38)
       {
-        [v8 add:v38];
+        [dictionaryCopy add:v38];
       }
 
       v39 = [v7 hmf_stringForKey:*MEMORY[0x277CD2040]];
       if (v39)
       {
-        v40 = [a1 name];
-        if ([v39 isEqualToString:v40])
+        name2 = [self name];
+        if ([v39 isEqualToString:name2])
         {
           goto LABEL_41;
         }
@@ -5875,29 +5875,29 @@ LABEL_26:
         if (v41)
         {
           v42 = [HMDActionSetModel alloc];
-          v43 = [a1 uuid];
-          v44 = [v74 uuid];
-          v40 = [(HMDBackingStoreModelObject *)v42 initWithObjectChangeType:2 uuid:v43 parentUUID:v44];
+          uuid3 = [self uuid];
+          uuid4 = [home uuid];
+          name2 = [(HMDBackingStoreModelObject *)v42 initWithObjectChangeType:2 uuid:uuid3 parentUUID:uuid4];
 
-          [(HMDActionSetModel *)v40 setName:v39];
-          [v8 add:v40];
+          [(HMDActionSetModel *)name2 setName:v39];
+          [dictionaryCopy add:name2];
 LABEL_41:
         }
       }
 
       v45 = [HMDActionSet alloc];
-      v46 = [a1 uuid];
-      v47 = [a1 type];
-      v48 = [(HMDActionSet *)v45 initWithName:v39 uuid:v46 type:v47 home:v74 queue:0];
+      uuid5 = [self uuid];
+      type = [self type];
+      v48 = [(HMDActionSet *)v45 initWithName:v39 uuid:uuid5 type:type home:home queue:0];
 
       [(HMDActionSet *)v48 setActions:v73];
-      if (a4)
+      if (transaction)
       {
-        v49 = [(HMDActionSet *)v48 createPayload];
-        v50 = [v49 mutableCopy];
+        createPayload = [(HMDActionSet *)v48 createPayload];
+        v50 = [createPayload mutableCopy];
 
         [v50 setObject:v34 forKeyedSubscript:@"kAppDataInformationKey"];
-        *a4 = [v50 copy];
+        *transaction = [v50 copy];
       }
 
       v27 = obj;
@@ -5907,7 +5907,7 @@ LABEL_41:
   else
   {
     v62 = objc_autoreleasePoolPush();
-    v63 = a1;
+    selfCopy4 = self;
     v64 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
     {
@@ -5915,15 +5915,15 @@ LABEL_41:
       *buf = 138543618;
       v90 = v65;
       v91 = 2112;
-      v92 = v63;
+      v92 = selfCopy4;
       _os_log_impl(&dword_2531F8000, v64, OS_LOG_TYPE_ERROR, "%{public}@Can't update action set %@; conflicting actions", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v62);
-    if (a5)
+    if (response)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a5 = v35 = 0;
+      *response = v35 = 0;
     }
 
     else
@@ -5968,13 +5968,13 @@ void __39__HMDActionSet__handleUpdateActionSet___block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)_addLightProfileNaturalLightingModelWithUUID:(id)a3 message:(id)a4
+- (id)_addLightProfileNaturalLightingModelWithUUID:(id)d message:(id)message
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -5985,51 +5985,51 @@ void __39__HMDActionSet__handleUpdateActionSet___block_invoke(uint64_t a1, void 
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v7 dictionaryForKey:*MEMORY[0x277CD2028]];
+  v12 = [messageCopy dictionaryForKey:*MEMORY[0x277CD2028]];
   v13 = [v12 mutableCopy];
 
   if (!v13)
   {
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
-    [v7 respondWithError:v14];
+    [messageCopy respondWithError:v14];
     v24 = 0;
     goto LABEL_16;
   }
 
-  [v13 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2060]];
-  v14 = [HMDLightProfileNaturalLightingAction actionWithDictionaryRepresentation:v13 actionSet:v9];
+  [v13 setObject:dCopy forKeyedSubscript:*MEMORY[0x277CD2060]];
+  v14 = [HMDLightProfileNaturalLightingAction actionWithDictionaryRepresentation:v13 actionSet:selfCopy];
   if (v14)
   {
-    v15 = [(HMDActionSet *)v9 actions];
+    actions = [(HMDActionSet *)selfCopy actions];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __69__HMDActionSet__addLightProfileNaturalLightingModelWithUUID_message___block_invoke;
     v30[3] = &unk_27972AF48;
     v16 = v14;
     v31 = v16;
-    v17 = [v15 na_firstObjectPassingTest:v30];
+    v17 = [actions na_firstObjectPassingTest:v30];
 
     if (v17)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = v9;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v16 lightProfileUUID];
+        lightProfileUUID = [v16 lightProfileUUID];
         *buf = 138543874;
         v33 = v21;
         v34 = 2112;
         v35 = v17;
         v36 = 2112;
-        v37 = v22;
+        v37 = lightProfileUUID;
         _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Action already exists for light profile with UUID %@:%@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v18);
       v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:1];
-      [v7 respondWithError:v23];
+      [messageCopy respondWithError:v23];
     }
 
     else
@@ -6043,7 +6043,7 @@ void __39__HMDActionSet__handleUpdateActionSet___block_invoke(uint64_t a1, void 
       }
 
       v29 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      [v7 respondWithError:v29];
+      [messageCopy respondWithError:v29];
 
       v23 = 0;
     }
@@ -6056,7 +6056,7 @@ LABEL_14:
   }
 
   v25 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-  [v7 respondWithError:v25];
+  [messageCopy respondWithError:v25];
   v24 = 0;
 LABEL_15:
 
@@ -6097,13 +6097,13 @@ uint64_t __69__HMDActionSet__addLightProfileNaturalLightingModelWithUUID_message
   return v9;
 }
 
-- (id)_addMediaPlaybackActionModelWithUUID:(id)a3 message:(id)a4
+- (id)_addMediaPlaybackActionModelWithUUID:(id)d message:(id)message
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -6115,40 +6115,40 @@ uint64_t __69__HMDActionSet__addLightProfileNaturalLightingModelWithUUID_message
 
   objc_autoreleasePoolPop(v8);
   v12 = [HMDMediaPlaybackActionModel alloc];
-  v13 = [(HMDActionSet *)v9 uuid];
-  v14 = [(HMDBackingStoreModelObject *)v12 initWithObjectChangeType:1 uuid:v6 parentUUID:v13];
+  uuid = [(HMDActionSet *)selfCopy uuid];
+  v14 = [(HMDBackingStoreModelObject *)v12 initWithObjectChangeType:1 uuid:dCopy parentUUID:uuid];
 
-  v15 = [v7 dictionaryForKey:*MEMORY[0x277CD2028]];
+  v15 = [messageCopy dictionaryForKey:*MEMORY[0x277CD2028]];
   [(HMDMediaPlaybackActionModel *)v14 loadModelWithActionInformation:v15];
-  v16 = [(HMDActionSet *)v9 home];
-  v17 = [(HMDMediaPlaybackActionModel *)v14 profiles];
+  home = [(HMDActionSet *)selfCopy home];
+  profiles = [(HMDMediaPlaybackActionModel *)v14 profiles];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __61__HMDActionSet__addMediaPlaybackActionModelWithUUID_message___block_invoke;
   v55[3] = &unk_279723D68;
-  v18 = v16;
+  v18 = home;
   v56 = v18;
-  v19 = [v17 na_map:v55];
+  v19 = [profiles na_map:v55];
 
-  v20 = [(HMDMediaPlaybackActionModel *)v14 profiles];
-  v21 = mapProfilesToAccessoryUUIDs(v18, v20);
+  profiles2 = [(HMDMediaPlaybackActionModel *)v14 profiles];
+  v21 = mapProfilesToAccessoryUUIDs(v18, profiles2);
   [(HMDMediaPlaybackActionModel *)v14 setAccessories:v21];
 
-  v22 = [(HMDMediaPlaybackActionModel *)v14 profiles];
-  v23 = mapProfilesToServiceUUIDs(v18, v22);
+  profiles3 = [(HMDMediaPlaybackActionModel *)v14 profiles];
+  v23 = mapProfilesToServiceUUIDs(v18, profiles3);
   [(HMDMediaPlaybackActionModel *)v14 setServices:v23];
 
   if ([v19 count] && (-[HMDMediaPlaybackActionModel accessories](v14, "accessories"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "count"), v24, v25) && v18)
   {
     v47 = v18;
-    v48 = v6;
+    v48 = dCopy;
     v49 = v15;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v26 = [(HMDActionSet *)v9 actions];
-    v27 = [v26 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    actions = [(HMDActionSet *)selfCopy actions];
+    v27 = [actions countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v27)
     {
       v28 = v27;
@@ -6159,7 +6159,7 @@ uint64_t __69__HMDActionSet__addLightProfileNaturalLightingModelWithUUID_message
         {
           if (*v52 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(actions);
           }
 
           v31 = *(*(&v51 + 1) + 8 * i);
@@ -6178,20 +6178,20 @@ uint64_t __69__HMDActionSet__addLightProfileNaturalLightingModelWithUUID_message
 
           if (v33)
           {
-            v34 = [v33 mediaProfiles];
-            v35 = [v34 intersectsSet:v19];
+            mediaProfiles = [v33 mediaProfiles];
+            v35 = [mediaProfiles intersectsSet:v19];
 
             if (v35)
             {
               v44 = [MEMORY[0x277CCA9B8] hmErrorWithCode:1];
-              [v7 respondWithError:v44];
+              [messageCopy respondWithError:v44];
 
               goto LABEL_24;
             }
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v51 objects:v57 count:16];
+        v28 = [actions countByEnumeratingWithState:&v51 objects:v57 count:16];
         if (v28)
         {
           continue;
@@ -6201,19 +6201,19 @@ uint64_t __69__HMDActionSet__addLightProfileNaturalLightingModelWithUUID_message
       }
     }
 
-    v26 = [(HMDMediaPlaybackActionModel *)v14 validate];
-    if (v26)
+    actions = [(HMDMediaPlaybackActionModel *)v14 validate];
+    if (actions)
     {
-      [v7 respondWithError:v26];
+      [messageCopy respondWithError:actions];
 LABEL_24:
       v43 = 0;
-      v6 = v48;
+      dCopy = v48;
     }
 
     else
     {
       v43 = v14;
-      v6 = v48;
+      dCopy = v48;
     }
 
     v15 = v49;
@@ -6223,15 +6223,15 @@ LABEL_24:
   else
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = v9;
+    v37 = selfCopy;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       v39 = HMFGetLogIdentifier();
       [(HMDMediaPlaybackActionModel *)v14 accessories];
       v50 = v15;
-      v40 = v7;
-      v42 = v41 = v6;
+      v40 = messageCopy;
+      v42 = v41 = dCopy;
       *buf = 138544386;
       v59 = v39;
       v60 = 2112;
@@ -6244,14 +6244,14 @@ LABEL_24:
       v67 = v18;
       _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_ERROR, "%{public}@Attempt to add playback action model with UUID (%@) and mediaProfiles: (%@) and accessories (%@) on home (%@)", buf, 0x34u);
 
-      v6 = v41;
-      v7 = v40;
+      dCopy = v41;
+      messageCopy = v40;
       v15 = v50;
     }
 
     objc_autoreleasePoolPop(v36);
-    v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v7 respondWithError:v26];
+    actions = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    [messageCopy respondWithError:actions];
     v43 = 0;
   }
 
@@ -6271,13 +6271,13 @@ id __61__HMDActionSet__addMediaPlaybackActionModelWithUUID_message___block_invok
   return v6;
 }
 
-- (id)_addCharacteristicWriteActionModelWithUUID:(id)a3 message:(id)a4
+- (id)_addCharacteristicWriteActionModelWithUUID:(id)d message:(id)message
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -6289,16 +6289,16 @@ id __61__HMDActionSet__addMediaPlaybackActionModelWithUUID_message___block_invok
 
   objc_autoreleasePoolPop(v8);
   v12 = [HMDCharacteristicWriteActionModel alloc];
-  v13 = [(HMDActionSet *)v9 uuid];
-  v14 = [(HMDBackingStoreModelObject *)v12 initWithObjectChangeType:1 uuid:v6 parentUUID:v13];
+  uuid = [(HMDActionSet *)selfCopy uuid];
+  v14 = [(HMDBackingStoreModelObject *)v12 initWithObjectChangeType:1 uuid:dCopy parentUUID:uuid];
 
-  v15 = [v7 dictionaryForKey:*MEMORY[0x277CD2028]];
+  v15 = [messageCopy dictionaryForKey:*MEMORY[0x277CD2028]];
   [(HMDCharacteristicWriteActionModel *)v14 loadModelWithActionInformation:v15];
-  v16 = [(HMDActionSet *)v9 home];
+  home = [(HMDActionSet *)selfCopy home];
   v17 = objc_alloc(MEMORY[0x277CCAD78]);
-  v18 = [(HMDCharacteristicWriteActionModel *)v14 accessory];
-  v19 = [v17 initWithUUIDString:v18];
-  v20 = [v16 accessoryWithUUID:v19];
+  accessory = [(HMDCharacteristicWriteActionModel *)v14 accessory];
+  v19 = [v17 initWithUUIDString:accessory];
+  v20 = [home accessoryWithUUID:v19];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -6313,26 +6313,26 @@ id __61__HMDActionSet__addMediaPlaybackActionModelWithUUID_message___block_invok
 
   v22 = v21;
 
-  v23 = [(HMDCharacteristicWriteActionModel *)v14 characteristicID];
-  v24 = [(HMDCharacteristicWriteActionModel *)v14 serviceID];
-  v25 = [v22 findCharacteristic:v23 forService:v24];
+  characteristicID = [(HMDCharacteristicWriteActionModel *)v14 characteristicID];
+  serviceID = [(HMDCharacteristicWriteActionModel *)v14 serviceID];
+  v25 = [v22 findCharacteristic:characteristicID forService:serviceID];
 
   v56 = v25;
-  if (v25 && v16)
+  if (v25 && home)
   {
     v50 = v22;
-    v51 = v16;
+    v51 = home;
     v52 = v15;
     v53 = v14;
-    v54 = v7;
-    v55 = v6;
+    v54 = messageCopy;
+    v55 = dCopy;
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v26 = [(HMDActionSet *)v9 actions];
+    actions = [(HMDActionSet *)selfCopy actions];
     v27 = v25;
-    v62 = [v26 countByEnumeratingWithState:&v65 objects:v69 count:16];
+    v62 = [actions countByEnumeratingWithState:&v65 objects:v69 count:16];
     if (!v62)
     {
       goto LABEL_26;
@@ -6340,14 +6340,14 @@ id __61__HMDActionSet__addMediaPlaybackActionModelWithUUID_message___block_invok
 
     v28 = *v66;
     v60 = *v66;
-    v61 = v26;
+    v61 = actions;
     while (1)
     {
       for (i = 0; i != v62; ++i)
       {
         if (*v66 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(actions);
         }
 
         v30 = *(*(&v65 + 1) + 8 * i);
@@ -6366,42 +6366,42 @@ id __61__HMDActionSet__addMediaPlaybackActionModelWithUUID_message___block_invok
 
         if (v32)
         {
-          v33 = [v32 characteristic];
-          v34 = [v33 accessory];
-          v63 = [v33 service];
-          v35 = [v33 instanceID];
-          v36 = [v27 instanceID];
-          if ([v35 isEqual:v36])
+          characteristic = [v32 characteristic];
+          accessory2 = [characteristic accessory];
+          service = [characteristic service];
+          instanceID = [characteristic instanceID];
+          instanceID2 = [v27 instanceID];
+          if ([instanceID isEqual:instanceID2])
           {
-            v37 = [v34 uuid];
-            v38 = [v27 accessory];
-            v39 = [v38 uuid];
-            if ([v37 isEqual:v39])
+            uuid2 = [accessory2 uuid];
+            accessory3 = [v27 accessory];
+            uuid3 = [accessory3 uuid];
+            if ([uuid2 isEqual:uuid3])
             {
-              [v63 instanceID];
-              v40 = v57 = v37;
+              [service instanceID];
+              v40 = v57 = uuid2;
               [v27 service];
-              v41 = v59 = v34;
-              v42 = [v41 instanceID];
-              v58 = [v40 isEqual:v42];
+              v41 = v59 = accessory2;
+              instanceID3 = [v41 instanceID];
+              v58 = [v40 isEqual:instanceID3];
 
               v27 = v56;
-              v34 = v59;
+              accessory2 = v59;
 
               v28 = v60;
-              v26 = v61;
+              actions = v61;
               if (v58)
               {
                 v46 = [MEMORY[0x277CCA9B8] hmErrorWithCode:1];
-                v7 = v54;
+                messageCopy = v54;
                 [v54 respondWithError:v46];
 
                 v47 = 0;
-                v6 = v55;
+                dCopy = v55;
                 v15 = v52;
                 v14 = v53;
                 v22 = v50;
-                v16 = v51;
+                home = v51;
                 goto LABEL_31;
               }
 
@@ -6409,41 +6409,41 @@ id __61__HMDActionSet__addMediaPlaybackActionModelWithUUID_message___block_invok
             }
 
             v28 = v60;
-            v26 = v61;
+            actions = v61;
           }
 
 LABEL_23:
         }
       }
 
-      v62 = [v26 countByEnumeratingWithState:&v65 objects:v69 count:16];
+      v62 = [actions countByEnumeratingWithState:&v65 objects:v69 count:16];
       if (!v62)
       {
 LABEL_26:
 
         v14 = v53;
-        v43 = [(HMDCharacteristicWriteActionModel *)v53 targetValue];
-        v44 = [(HMDCharacteristicWriteActionModel *)v53 targetValue];
-        v64 = v43;
-        v45 = [v27 validateValueForWrite:v44 outValue:&v64];
-        v26 = v64;
+        targetValue = [(HMDCharacteristicWriteActionModel *)v53 targetValue];
+        targetValue2 = [(HMDCharacteristicWriteActionModel *)v53 targetValue];
+        v64 = targetValue;
+        v45 = [v27 validateValueForWrite:targetValue2 outValue:&v64];
+        actions = v64;
 
         if (v45)
         {
-          v7 = v54;
+          messageCopy = v54;
           [v54 respondWithError:v45];
           v47 = 0;
         }
 
         else
         {
-          [(HMDCharacteristicWriteActionModel *)v53 setTargetValue:v26];
+          [(HMDCharacteristicWriteActionModel *)v53 setTargetValue:actions];
           v47 = v53;
-          v7 = v54;
+          messageCopy = v54;
         }
 
-        v6 = v55;
-        v16 = v51;
+        dCopy = v55;
+        home = v51;
         v15 = v52;
         v22 = v50;
 
@@ -6452,8 +6452,8 @@ LABEL_26:
     }
   }
 
-  v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  [v7 respondWithError:v26];
+  actions = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+  [messageCopy respondWithError:actions];
   v47 = 0;
 LABEL_31:
 
@@ -6462,12 +6462,12 @@ LABEL_31:
   return v47;
 }
 
-- (void)_handleAddActionRequest:(id)a3
+- (void)_handleAddActionRequest:(id)request
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -6478,49 +6478,49 @@ LABEL_31:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 uuidForKey:*MEMORY[0x277CD0B10]];
-  if (v9 || ([v4 uuidForKey:*MEMORY[0x277CD2060]], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = [requestCopy uuidForKey:*MEMORY[0x277CD0B10]];
+  if (v9 || ([requestCopy uuidForKey:*MEMORY[0x277CD2060]], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
-    v11 = [(HMDActionSet *)v6 actions];
-    v12 = [v11 count];
+    actions = [(HMDActionSet *)selfCopy actions];
+    v12 = [actions count];
     v13 = maximumActionsPerActionSet;
 
     if (v12 >= v13)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = v6;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [(HMDActionSet *)v23 name];
+        name = [(HMDActionSet *)v23 name];
         v49 = 138543618;
         v50 = v25;
         v51 = 2112;
-        v52 = v26;
+        v52 = name;
         _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@Can't add action to action set %@; already at maximum actions allowed", &v49, 0x16u);
       }
 
       objc_autoreleasePoolPop(v22);
       v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:49];
-      [v4 respondWithError:v15];
+      [requestCopy respondWithError:v15];
       goto LABEL_34;
     }
 
     v14 = *MEMORY[0x277CD2028];
-    v15 = [v4 dictionaryForKey:*MEMORY[0x277CD2028]];
+    v15 = [requestCopy dictionaryForKey:*MEMORY[0x277CD2028]];
     v16 = [v15 hmf_numberForKey:*MEMORY[0x277CD2058]];
-    v17 = [v16 unsignedIntegerValue];
-    if (v17 <= 1)
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
+    if (unsignedIntegerValue <= 1)
     {
-      if (v17)
+      if (unsignedIntegerValue)
       {
-        if (v17 != 1)
+        if (unsignedIntegerValue != 1)
         {
 LABEL_19:
           v28 = objc_autoreleasePoolPush();
-          v29 = v6;
+          v29 = selfCopy;
           v30 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
@@ -6532,38 +6532,38 @@ LABEL_19:
 
           objc_autoreleasePoolPop(v28);
           v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-          [v4 respondWithError:v32];
+          [requestCopy respondWithError:v32];
 
           goto LABEL_33;
         }
 
-        v27 = [(HMDActionSet *)v6 _addMediaPlaybackActionModelWithUUID:v10 message:v4];
+        v27 = [(HMDActionSet *)selfCopy _addMediaPlaybackActionModelWithUUID:v10 message:requestCopy];
       }
 
       else
       {
-        v27 = [(HMDActionSet *)v6 _addCharacteristicWriteActionModelWithUUID:v10 message:v4];
+        v27 = [(HMDActionSet *)selfCopy _addCharacteristicWriteActionModelWithUUID:v10 message:requestCopy];
       }
     }
 
     else
     {
-      if (v17 == 2)
+      if (unsignedIntegerValue == 2)
       {
-        v37 = [(HMDBackingStoreModelObject *)[HMDShortcutActionModel alloc] initWithObjectChangeType:1 uuid:v10 parentUUID:v6->_uuid];
-        v38 = [v4 dictionaryForKey:v14];
+        v37 = [(HMDBackingStoreModelObject *)[HMDShortcutActionModel alloc] initWithObjectChangeType:1 uuid:v10 parentUUID:selfCopy->_uuid];
+        v38 = [requestCopy dictionaryForKey:v14];
         [(HMDShortcutActionModel *)v37 loadModelWithActionInformation:v38];
 
         if (v37)
         {
 LABEL_32:
-          v43 = [(HMDActionSet *)v6 home];
-          v44 = [v43 backingStore];
-          v45 = [v4 name];
+          home = [(HMDActionSet *)selfCopy home];
+          backingStore = [home backingStore];
+          name2 = [requestCopy name];
           v46 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-          v47 = [v44 transaction:v45 options:v46];
+          v47 = [backingStore transaction:name2 options:v46];
 
-          [v47 add:v37 withMessage:v4];
+          [v47 add:v37 withMessage:requestCopy];
           [v47 run];
 
 LABEL_33:
@@ -6574,7 +6574,7 @@ LABEL_34:
 
 LABEL_26:
         v39 = objc_autoreleasePoolPush();
-        v40 = v6;
+        v40 = selfCopy;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
@@ -6588,12 +6588,12 @@ LABEL_26:
         goto LABEL_33;
       }
 
-      if (v17 != 3)
+      if (unsignedIntegerValue != 3)
       {
-        if (v17 == 5)
+        if (unsignedIntegerValue == 5)
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = v6;
+          v19 = selfCopy;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
@@ -6609,7 +6609,7 @@ LABEL_26:
         goto LABEL_19;
       }
 
-      v27 = [(HMDActionSet *)v6 _addLightProfileNaturalLightingModelWithUUID:v10 message:v4];
+      v27 = [(HMDActionSet *)selfCopy _addLightProfileNaturalLightingModelWithUUID:v10 message:requestCopy];
     }
 
     v37 = v27;
@@ -6622,7 +6622,7 @@ LABEL_26:
   }
 
   v33 = objc_autoreleasePoolPush();
-  v34 = v6;
+  v34 = selfCopy;
   v35 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
@@ -6634,7 +6634,7 @@ LABEL_26:
 
   objc_autoreleasePoolPop(v33);
   v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-  [v4 respondWithError:v10];
+  [requestCopy respondWithError:v10];
 LABEL_35:
 
   v48 = *MEMORY[0x277D85DE8];
@@ -6643,9 +6643,9 @@ LABEL_35:
 - (void)_registerForMessages
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDActionSet *)self type];
+  type = [(HMDActionSet *)self type];
   v32 = *MEMORY[0x277CCF1A0];
-  v4 = [v3 isEqualToString:?];
+  v4 = [type isEqualToString:?];
 
   v5 = [HMDConfigurationMessagePolicy policyWithOperationTypes:1];
   v6 = v5;
@@ -6691,43 +6691,43 @@ LABEL_35:
   v14[1] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
 
-  v20 = [(HMDActionSet *)self home];
-  v21 = [v20 administratorHandler];
-  [v21 registerForMessage:@"kAddActionRequestKey" receiver:self policies:v9 selector:sel__handleAddActionRequest_];
+  home = [(HMDActionSet *)self home];
+  administratorHandler = [home administratorHandler];
+  [administratorHandler registerForMessage:@"kAddActionRequestKey" receiver:self policies:v9 selector:sel__handleAddActionRequest_];
 
-  v22 = [v20 administratorHandler];
-  [v22 registerForMessage:@"kRemoveActionRequestKey" receiver:self policies:v12 selector:sel__handleRemoveActionRequest_];
+  administratorHandler2 = [home administratorHandler];
+  [administratorHandler2 registerForMessage:@"kRemoveActionRequestKey" receiver:self policies:v12 selector:sel__handleRemoveActionRequest_];
 
-  v23 = [v20 administratorHandler];
-  [v23 registerForMessage:@"kReplaceActionValueKey" receiver:self policies:v19 selector:sel__handleUpdateActionRequest_];
+  administratorHandler3 = [home administratorHandler];
+  [administratorHandler3 registerForMessage:@"kReplaceActionValueKey" receiver:self policies:v19 selector:sel__handleUpdateActionRequest_];
 
-  v24 = [v20 administratorHandler];
+  administratorHandler4 = [home administratorHandler];
   v25 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v33[0] = v25;
   v26 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v33[1] = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
-  [v24 registerForMessage:@"HMUpdateActionSetFromBuilderMessage" receiver:self policies:v27 selector:sel__handleUpdateActionSet_];
+  [administratorHandler4 registerForMessage:@"HMUpdateActionSetFromBuilderMessage" receiver:self policies:v27 selector:sel__handleUpdateActionSet_];
 
-  v28 = [(HMDActionSet *)self type];
-  v29 = [v28 isEqualToString:v32];
+  type2 = [(HMDActionSet *)self type];
+  v29 = [type2 isEqualToString:v32];
 
   if ((v29 & 1) == 0)
   {
-    v30 = [v20 administratorHandler];
-    [v30 registerForMessage:*MEMORY[0x277CD2538] receiver:self policies:v19 selector:sel__handleRenameRequest_];
+    administratorHandler5 = [home administratorHandler];
+    [administratorHandler5 registerForMessage:*MEMORY[0x277CD2538] receiver:self policies:v19 selector:sel__handleRenameRequest_];
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)actionWithUUID:(id)a3
+- (id)actionWithUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(HMDActionSet *)self actions];
-    v6 = [v5 hmf_firstObjectWithUUID:v4];
+    dCopy = d;
+    actions = [(HMDActionSet *)self actions];
+    v6 = [actions hmf_firstObjectWithUUID:dCopy];
   }
 
   else
@@ -6740,13 +6740,13 @@ LABEL_35:
 
 - (void)invalidate
 {
-  v3 = [(HMDActionSet *)self workQueue];
+  workQueue = [(HMDActionSet *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__HMDActionSet_invalidate__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __26__HMDActionSet_invalidate__block_invoke(uint64_t a1)
@@ -6765,16 +6765,16 @@ uint64_t __26__HMDActionSet_invalidate__block_invoke(uint64_t a1)
   return [v4 setMsgDispatcher:0];
 }
 
-- (void)handleRemovalOfAccessory:(id)a3 transaction:(id)a4
+- (void)handleRemovalOfAccessory:(id)accessory transaction:(id)transaction
 {
   v119 = *MEMORY[0x277D85DE8];
-  v86 = a3;
-  v82 = a4;
+  accessoryCopy = accessory;
+  transactionCopy = transaction;
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v90 = self;
+  selfCopy = self;
   obj = [(HMDActionSet *)self actions];
   v6 = [obj countByEnumeratingWithState:&v106 objects:v118 count:16];
   if (v6)
@@ -6796,18 +6796,18 @@ uint64_t __26__HMDActionSet_invalidate__block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v106 + 1) + 8 * v10);
-        v12 = [v11 type];
-        if (v12 > 2)
+        type = [v11 type];
+        if (type > 2)
         {
-          if (v12 != 3)
+          if (type != 3)
           {
-            if (v12 != 5)
+            if (type != 5)
             {
               goto LABEL_81;
             }
 
             v13 = objc_autoreleasePoolPush();
-            v14 = v90;
+            v14 = selfCopy;
             v15 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
             {
@@ -6837,23 +6837,23 @@ LABEL_15:
 
             if (v19)
             {
-              v20 = [v19 mediaProfiles];
-              v21 = [v20 mutableCopy];
+              mediaProfiles = [v19 mediaProfiles];
+              v21 = [mediaProfiles mutableCopy];
 
               v104 = 0u;
               v105 = 0u;
               v102 = 0u;
               v103 = 0u;
-              v22 = [v86 accessoryProfiles];
+              accessoryProfiles = [accessoryCopy accessoryProfiles];
               v93 = v21;
-              v95 = [v22 countByEnumeratingWithState:&v102 objects:v111 count:16];
+              v95 = [accessoryProfiles countByEnumeratingWithState:&v102 objects:v111 count:16];
               if (v95)
               {
                 v83 = v19;
                 v91 = 0;
                 v94 = *v103;
-                v23 = v22;
-                v92 = v22;
+                v23 = accessoryProfiles;
+                v92 = accessoryProfiles;
                 do
                 {
                   for (i = 0; i != v95; ++i)
@@ -6899,9 +6899,9 @@ LABEL_15:
                             }
 
                             v33 = *(*(&v98 + 1) + 8 * j);
-                            v34 = [v33 uniqueIdentifier];
-                            v35 = [v27 uniqueIdentifier];
-                            v36 = [v34 isEqual:v35];
+                            uniqueIdentifier = [v33 uniqueIdentifier];
+                            uniqueIdentifier2 = [v27 uniqueIdentifier];
+                            v36 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
                             if (v36)
                             {
@@ -6929,7 +6929,7 @@ LABEL_38:
                     else
                     {
                       v37 = objc_autoreleasePoolPush();
-                      v38 = v90;
+                      v38 = selfCopy;
                       v39 = HMFGetOSLogHandle();
                       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
                       {
@@ -6957,12 +6957,12 @@ LABEL_38:
                   if ([v93 count])
                   {
                     v41 = [v83 modelObjectWithUpdatedMediaProfiles:v93];
-                    [v82 add:v41];
+                    [transactionCopy add:v41];
                   }
 
                   else
                   {
-                    [(HMDActionSet *)v90 _handleRemovalOfAction:v87 transaction:v82];
+                    [(HMDActionSet *)selfCopy _handleRemovalOfAction:v87 transaction:transactionCopy];
                   }
                 }
               }
@@ -6977,7 +6977,7 @@ LABEL_38:
             else
             {
               v65 = objc_autoreleasePoolPush();
-              v66 = v90;
+              v66 = selfCopy;
               v67 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
               {
@@ -7020,7 +7020,7 @@ LABEL_80:
           if (!v55)
           {
             v75 = objc_autoreleasePoolPush();
-            v76 = v90;
+            v76 = selfCopy;
             v77 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
             {
@@ -7041,7 +7041,7 @@ LABEL_80:
             goto LABEL_80;
           }
 
-          v56 = v86;
+          v56 = accessoryCopy;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -7055,19 +7055,19 @@ LABEL_80:
 
           v58 = v57;
 
-          v59 = [v58 lightProfiles];
+          lightProfiles = [v58 lightProfiles];
           v96[0] = MEMORY[0x277D85DD0];
           v96[1] = 3221225472;
           v96[2] = __53__HMDActionSet_handleRemovalOfAccessory_transaction___block_invoke;
           v96[3] = &unk_2797285D0;
           v45 = v55;
           v97 = v45;
-          v60 = [v59 na_firstObjectPassingTest:v96];
+          v60 = [lightProfiles na_firstObjectPassingTest:v96];
 
           if (v60)
           {
             v61 = objc_autoreleasePoolPush();
-            v62 = v90;
+            v62 = selfCopy;
             v63 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
             {
@@ -7080,7 +7080,7 @@ LABEL_80:
             }
 
             objc_autoreleasePoolPop(v61);
-            [(HMDActionSet *)v62 _handleRemovalOfAction:v53 transaction:v82];
+            [(HMDActionSet *)v62 _handleRemovalOfAction:v53 transaction:transactionCopy];
             v9 = v84;
             v8 = v85;
           }
@@ -7091,7 +7091,7 @@ LABEL_67:
           goto LABEL_80;
         }
 
-        if (!v12)
+        if (!type)
         {
           v42 = v11;
           objc_opt_class();
@@ -7110,7 +7110,7 @@ LABEL_67:
           if (!v44)
           {
             v70 = objc_autoreleasePoolPush();
-            v71 = v90;
+            v71 = selfCopy;
             v72 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
             {
@@ -7131,16 +7131,16 @@ LABEL_67:
           }
 
           v45 = v44;
-          v46 = [v44 characteristic];
-          v47 = [v86 uuid];
-          v48 = [v46 service];
-          v49 = [v48 accessory];
-          v50 = [v49 uuid];
-          v51 = [v47 isEqual:v50];
+          characteristic = [v44 characteristic];
+          uuid = [accessoryCopy uuid];
+          service = [characteristic service];
+          accessory = [service accessory];
+          uuid2 = [accessory uuid];
+          v51 = [uuid isEqual:uuid2];
 
           if (v51)
           {
-            [(HMDActionSet *)v90 _handleRemovalOfAction:v42 transaction:v82];
+            [(HMDActionSet *)selfCopy _handleRemovalOfAction:v42 transaction:transactionCopy];
           }
 
           v9 = v84;
@@ -7148,7 +7148,7 @@ LABEL_67:
           goto LABEL_67;
         }
 
-        if (v12 == 1)
+        if (type == 1)
         {
           goto LABEL_15;
         }
@@ -7179,57 +7179,57 @@ uint64_t __53__HMDActionSet_handleRemovalOfAccessory_transaction___block_invoke(
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDActionSet *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDActionSet *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
-- (void)_encodeWithCoder:(id)a3
+- (void)_encodeWithCoder:(id)coder
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDActionSet *)self home];
-  [v4 encodeConditionalObject:v5 forKey:@"home"];
-  v6 = [(HMDActionSet *)self uuid];
-  v7 = [v6 UUIDString];
-  [v4 encodeObject:v7 forKey:@"actionSetUUID"];
+  coderCopy = coder;
+  home = [(HMDActionSet *)self home];
+  [coderCopy encodeConditionalObject:home forKey:@"home"];
+  uuid = [(HMDActionSet *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:@"actionSetUUID"];
 
-  v8 = [v4 hmd_isForXPCTransport];
-  v9 = [v4 hmd_isForXPCTransportEntitledForSPIAccess];
-  v10 = [v4 hmd_homeManagerOptions];
-  v64 = self;
-  if (!v8)
+  hmd_isForXPCTransport = [coderCopy hmd_isForXPCTransport];
+  hmd_isForXPCTransportEntitledForSPIAccess = [coderCopy hmd_isForXPCTransportEntitledForSPIAccess];
+  hmd_homeManagerOptions = [coderCopy hmd_homeManagerOptions];
+  selfCopy = self;
+  if (!hmd_isForXPCTransport)
   {
-    v59 = v5;
-    v61 = v4;
-    v12 = [MEMORY[0x277CBEB18] array];
+    v59 = home;
+    v61 = coderCopy;
+    array = [MEMORY[0x277CBEB18] array];
     obj = [MEMORY[0x277CBEB18] array];
-    v13 = [MEMORY[0x277CBEB18] array];
-    v65 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v14 = [(HMDActionSet *)self actions];
-    v15 = [v14 countByEnumeratingWithState:&v69 objects:v78 count:16];
+    actions = [(HMDActionSet *)self actions];
+    v15 = [actions countByEnumeratingWithState:&v69 objects:v78 count:16];
     if (!v15)
     {
 LABEL_26:
 
-      v4 = v61;
-      [v61 encodeObject:v12 forKey:@"actionSetActions"];
+      coderCopy = v61;
+      [v61 encodeObject:array forKey:@"actionSetActions"];
       [v61 encodeObject:obj forKey:@"HM.actionSetMediaPlaybackActionsCodingKey"];
-      [v61 encodeObject:v13 forKey:@"HM.actions.3"];
-      [v61 encodeObject:v65 forKey:@"HM.actions.4"];
+      [v61 encodeObject:array2 forKey:@"HM.actions.3"];
+      [v61 encodeObject:array3 forKey:@"HM.actions.4"];
 
-      v5 = v59;
-      v8 = 0;
+      home = v59;
+      hmd_isForXPCTransport = 0;
       goto LABEL_66;
     }
 
     v16 = v15;
-    v17 = self;
+    selfCopy2 = self;
     v18 = *v70;
 LABEL_6:
     v19 = 0;
@@ -7237,29 +7237,29 @@ LABEL_6:
     {
       if (*v70 != v18)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(actions);
       }
 
       v20 = *(*(&v69 + 1) + 8 * v19);
-      v21 = [v20 type];
-      if (v21 > 1)
+      type = [v20 type];
+      if (type > 1)
       {
         break;
       }
 
-      if (!v21)
+      if (!type)
       {
-        v26 = v12;
+        v26 = array;
 LABEL_21:
         [v26 addObject:v20];
 LABEL_22:
-        v27 = v13;
+        v27 = array2;
 LABEL_23:
         [v27 addObject:v20];
         goto LABEL_24;
       }
 
-      if (v21 == 1)
+      if (type == 1)
       {
         v26 = obj;
         goto LABEL_21;
@@ -7268,7 +7268,7 @@ LABEL_23:
 LABEL_24:
       if (v16 == ++v19)
       {
-        v16 = [v14 countByEnumeratingWithState:&v69 objects:v78 count:16];
+        v16 = [actions countByEnumeratingWithState:&v69 objects:v78 count:16];
         if (!v16)
         {
           goto LABEL_26;
@@ -7278,17 +7278,17 @@ LABEL_24:
       }
     }
 
-    if (v21 == 2)
+    if (type == 2)
     {
       goto LABEL_22;
     }
 
-    if (v21 != 3)
+    if (type != 3)
     {
-      if (v21 == 5)
+      if (type == 5)
       {
         v22 = objc_autoreleasePoolPush();
-        v23 = v17;
+        v23 = selfCopy2;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
@@ -7297,7 +7297,7 @@ LABEL_24:
           v80 = v25;
           _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@Attempting to encode an action only available in HH2", buf, 0xCu);
 
-          v17 = v64;
+          selfCopy2 = selfCopy;
         }
 
         objc_autoreleasePoolPop(v22);
@@ -7306,31 +7306,31 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    v27 = v65;
+    v27 = array3;
     goto LABEL_23;
   }
 
-  v63 = v9;
-  if ((((v10 & 0x400) != 0) & v9) == 1)
+  v63 = hmd_isForXPCTransportEntitledForSPIAccess;
+  if ((((hmd_homeManagerOptions & 0x400) != 0) & hmd_isForXPCTransportEntitledForSPIAccess) == 1)
   {
-    v11 = [(HMDActionSet *)self actions];
+    actions2 = [(HMDActionSet *)self actions];
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
     v77[2] = __33__HMDActionSet__encodeWithCoder___block_invoke;
     v77[3] = &unk_27972AF48;
     v77[4] = self;
-    v12 = [v11 na_filter:v77];
+    array = [actions2 na_filter:v77];
 
     goto LABEL_65;
   }
 
-  v58 = v8;
-  v60 = v5;
-  v62 = v4;
+  v58 = hmd_isForXPCTransport;
+  v60 = home;
+  v62 = coderCopy;
   v28 = MEMORY[0x277CBEB18];
-  v29 = self;
-  v30 = [(HMDActionSet *)self actions];
-  v31 = [v28 arrayWithCapacity:{objc_msgSend(v30, "count")}];
+  selfCopy3 = self;
+  actions3 = [(HMDActionSet *)self actions];
+  v31 = [v28 arrayWithCapacity:{objc_msgSend(actions3, "count")}];
 
   v75 = 0u;
   v76 = 0u;
@@ -7357,12 +7357,12 @@ LABEL_24:
       }
 
       v37 = *(*(&v73 + 1) + 8 * i);
-      v38 = [v37 type];
-      if (v38 <= 1)
+      type2 = [v37 type];
+      if (type2 <= 1)
       {
-        if (v38)
+        if (type2)
         {
-          if (v38 != 1)
+          if (type2 != 1)
           {
             continue;
           }
@@ -7394,7 +7394,7 @@ LABEL_43:
 
         if (v42)
         {
-          if ([(HMDActionSet *)v29 _isValidCharacteristicWriteAction:v42])
+          if ([(HMDActionSet *)selfCopy3 _isValidCharacteristicWriteAction:v42])
           {
 LABEL_55:
             [v31 addObject:v40];
@@ -7406,7 +7406,7 @@ LABEL_61:
         }
 
         v46 = objc_autoreleasePoolPush();
-        v47 = v29;
+        v47 = selfCopy3;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
@@ -7422,7 +7422,7 @@ LABEL_59:
           _os_log_impl(&dword_2531F8000, v48, OS_LOG_TYPE_ERROR, "%{public}@Action doesn't match its type %@:%@", buf, 0x20u);
 
           v33 = v63;
-          v29 = v64;
+          selfCopy3 = selfCopy;
         }
 
 LABEL_60:
@@ -7432,7 +7432,7 @@ LABEL_60:
         goto LABEL_61;
       }
 
-      if (v38 == 2)
+      if (type2 == 2)
       {
         v40 = v37;
         objc_opt_class();
@@ -7456,14 +7456,14 @@ LABEL_60:
           }
 
           v43 = [v42 copy];
-          v44 = [v43 removeShortcut];
+          removeShortcut = [v43 removeShortcut];
 
-          [v31 addObject:v44];
+          [v31 addObject:removeShortcut];
           goto LABEL_61;
         }
 
         v46 = objc_autoreleasePoolPush();
-        v47 = v29;
+        v47 = selfCopy3;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
@@ -7473,12 +7473,12 @@ LABEL_60:
         goto LABEL_60;
       }
 
-      if (v38 == 3)
+      if (type2 == 3)
       {
         goto LABEL_42;
       }
 
-      if (v38 == 5 && v33 != 0)
+      if (type2 == 5 && v33 != 0)
       {
         goto LABEL_43;
       }
@@ -7490,42 +7490,42 @@ LABEL_60:
   while (v34);
 LABEL_64:
 
-  v12 = [v31 copy];
-  v5 = v60;
-  v4 = v62;
-  v8 = v58;
+  array = [v31 copy];
+  home = v60;
+  coderCopy = v62;
+  hmd_isForXPCTransport = v58;
 LABEL_65:
-  [v4 encodeObject:v12 forKey:@"actionSetActions"];
+  [coderCopy encodeObject:array forKey:@"actionSetActions"];
 LABEL_66:
 
-  v51 = [(HMDActionSet *)v64 executionMessage];
-  [v4 encodeBool:v51 != 0 forKey:@"HM.actionSetExecutionInProgress"];
+  executionMessage = [(HMDActionSet *)selfCopy executionMessage];
+  [coderCopy encodeBool:executionMessage != 0 forKey:@"HM.actionSetExecutionInProgress"];
 
-  if ((v8 & 1) != 0 || [v4 hmd_isForLocalStore])
+  if ((hmd_isForXPCTransport & 1) != 0 || [coderCopy hmd_isForLocalStore])
   {
-    v52 = [(HMDActionSet *)v64 lastExecutionDate];
-    [v4 encodeObject:v52 forKey:@"HM.actionSetLastExecutionDate"];
+    lastExecutionDate = [(HMDActionSet *)selfCopy lastExecutionDate];
+    [coderCopy encodeObject:lastExecutionDate forKey:@"HM.actionSetLastExecutionDate"];
   }
 
-  if (([v4 hmd_isForRemoteGatewayCoder] & 1) == 0)
+  if (([coderCopy hmd_isForRemoteGatewayCoder] & 1) == 0)
   {
-    v53 = [(HMDActionSet *)v64 name];
-    [v4 encodeObject:v53 forKey:@"actionSetName"];
+    name = [(HMDActionSet *)selfCopy name];
+    [coderCopy encodeObject:name forKey:@"actionSetName"];
 
-    v54 = [(HMDActionSet *)v64 type];
-    [v4 encodeObject:v54 forKey:@"actionSetType"];
+    type3 = [(HMDActionSet *)selfCopy type];
+    [coderCopy encodeObject:type3 forKey:@"actionSetType"];
   }
 
-  v55 = [(HMDActionSet *)v64 appData];
-  v56 = v55;
-  if (v8)
+  appData = [(HMDActionSet *)selfCopy appData];
+  v56 = appData;
+  if (hmd_isForXPCTransport)
   {
-    [v55 encodeForXPCTransportWithCoder:v4 key:@"HM.appData"];
+    [appData encodeForXPCTransportWithCoder:coderCopy key:@"HM.appData"];
   }
 
   else
   {
-    [v4 encodeObject:v55 forKey:@"HM.appDataRepository"];
+    [coderCopy encodeObject:appData forKey:@"HM.appDataRepository"];
   }
 
   v57 = *MEMORY[0x277D85DE8];
@@ -7561,27 +7561,27 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [(HMDActionSet *)self _encodeWithCoder:v5];
+  [(HMDActionSet *)self _encodeWithCoder:coderCopy];
   objc_autoreleasePoolPop(v4);
 }
 
-- (BOOL)_isValidCharacteristicWriteAction:(id)a3
+- (BOOL)_isValidCharacteristicWriteAction:(id)action
 {
-  v3 = [a3 characteristic];
-  v4 = [v3 service];
-  v5 = v4;
+  characteristic = [action characteristic];
+  service = [characteristic service];
+  v5 = service;
   v6 = 0;
-  if (v3 && v4)
+  if (characteristic && service)
   {
-    v7 = [v3 accessory];
-    if (v7)
+    accessory = [characteristic accessory];
+    if (accessory)
     {
-      v8 = [v5 accessory];
-      v6 = v8 != 0;
+      accessory2 = [v5 accessory];
+      v6 = accessory2 != 0;
     }
 
     else
@@ -7593,13 +7593,13 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
   return v6;
 }
 
-- (id)_initWithCoder:(id)a3
+- (id)_initWithCoder:(id)coder
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
-  v6 = [v4 hm_decodeAndCacheTruncatedNameStringForKey:@"actionSetName"];
-  v7 = [v4 hm_decodeAndCacheStringForKey:@"actionSetType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+  v6 = [coderCopy hm_decodeAndCacheTruncatedNameStringForKey:@"actionSetName"];
+  v7 = [coderCopy hm_decodeAndCacheStringForKey:@"actionSetType"];
   if (![v7 length])
   {
     v8 = *MEMORY[0x277CCF1A8];
@@ -7611,39 +7611,39 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
   {
     v9 = MEMORY[0x277CCAD78];
     WeakRetained = objc_loadWeakRetained(&self->_home);
-    v11 = [WeakRetained uuid];
+    uuid = [WeakRetained uuid];
     v40[0] = self->_type;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-    v13 = [v9 hm_deriveUUIDFromBaseUUID:v11 identifierSalt:0 withSalts:v12];
+    v13 = [v9 hm_deriveUUIDFromBaseUUID:uuid identifierSalt:0 withSalts:v12];
   }
 
   else
   {
-    WeakRetained = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionSetUUID"];
+    WeakRetained = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionSetUUID"];
     v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:WeakRetained];
   }
 
   v14 = [(HMDActionSet *)self initWithName:v6 uuid:v13 type:v7 home:v5 queue:0];
   if (v14)
   {
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.appDataRepository"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.appDataRepository"];
     appData = v14->_appData;
     v14->_appData = v15;
 
     [(HMDApplicationData *)v14->_appData updateParentUUIDIfNil:v14->_uuid];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.actionSetLastExecutionDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.actionSetLastExecutionDate"];
     lastExecutionDate = v14->_lastExecutionDate;
     v14->_lastExecutionDate = v17;
 
     v19 = +[HMDActionSet allowedActionClasses];
-    if ([v4 containsValueForKey:@"HM.actions.3"])
+    if ([coderCopy containsValueForKey:@"HM.actions.3"])
     {
       v34 = v6;
       currentActions = v14->_currentActions;
-      v21 = [v4 decodeObjectOfClasses:v19 forKey:@"HM.actions.3"];
+      v21 = [coderCopy decodeObjectOfClasses:v19 forKey:@"HM.actions.3"];
       [(NSMutableArray *)currentActions setArray:v21];
 
-      v22 = [v4 decodeObjectOfClasses:v19 forKey:@"HM.actions.4"];
+      v22 = [coderCopy decodeObjectOfClasses:v19 forKey:@"HM.actions.4"];
       v23 = v22;
       v24 = MEMORY[0x277CBEBF8];
       if (v22)
@@ -7689,9 +7689,9 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
 
     else
     {
-      v25 = [v4 decodeObjectOfClasses:v19 forKey:@"actionSetActions"];
+      v25 = [coderCopy decodeObjectOfClasses:v19 forKey:@"actionSetActions"];
       [(NSMutableArray *)v14->_currentActions setArray:v25];
-      v26 = [v4 decodeObjectOfClasses:v19 forKey:@"HM.actionSetMediaPlaybackActionsCodingKey"];
+      v26 = [coderCopy decodeObjectOfClasses:v19 forKey:@"HM.actionSetMediaPlaybackActionsCodingKey"];
       [(NSMutableArray *)v14->_currentActions addObjectsFromArray:v26];
     }
   }
@@ -7700,11 +7700,11 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
   return v14;
 }
 
-- (HMDActionSet)initWithCoder:(id)a3
+- (HMDActionSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(HMDActionSet *)self _initWithCoder:v4];
+  v6 = [(HMDActionSet *)self _initWithCoder:coderCopy];
   objc_autoreleasePoolPop(v5);
 
   return v6;
@@ -7717,8 +7717,8 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDActionSet *)self actions];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  actions = [(HMDActionSet *)self actions];
+  v3 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -7728,7 +7728,7 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(actions);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) type] == 2)
@@ -7738,7 +7738,7 @@ uint64_t __33__HMDActionSet__encodeWithCoder___block_invoke(uint64_t a1, void *a
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -7761,8 +7761,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDActionSet *)self actions];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  actions = [(HMDActionSet *)self actions];
+  v3 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -7772,7 +7772,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(actions);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) type] == 1)
@@ -7782,7 +7782,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -7801,11 +7801,11 @@ LABEL_11:
 - (BOOL)containsUnsecuringAction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDActionSet *)self actions];
-  v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_87];
+  actions = [(HMDActionSet *)self actions];
+  v4 = [actions indexOfObjectPassingTest:&__block_literal_global_87];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -7838,11 +7838,11 @@ uint64_t __40__HMDActionSet_containsUnsecuringAction__block_invoke(uint64_t a1, 
 - (BOOL)containsSecureCharacteristic
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDActionSet *)self actions];
-  v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_22207];
+  actions = [(HMDActionSet *)self actions];
+  v4 = [actions indexOfObjectPassingTest:&__block_literal_global_22207];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -7875,13 +7875,13 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
 - (BOOL)_fixUpActions
 {
   v74 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDActionSet *)self actions];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  actions = [(HMDActionSet *)self actions];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(actions, "count")}];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v4 = v2;
+  v4 = actions;
   v5 = [v4 countByEnumeratingWithState:&v57 objects:v73 count:16];
   if (v5)
   {
@@ -7903,12 +7903,12 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
         }
 
         v10 = *(*(&v57 + 1) + 8 * i);
-        v11 = [v10 type];
-        if (v11 <= 1)
+        type = [v10 type];
+        if (type <= 1)
         {
-          if (v11)
+          if (type)
           {
-            if (v11 != 1)
+            if (type != 1)
             {
               continue;
             }
@@ -7929,8 +7929,8 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
 
             if (v18)
             {
-              v19 = [v18 mediaProfiles];
-              v20 = [v19 count];
+              mediaProfiles = [v18 mediaProfiles];
+              v20 = [mediaProfiles count];
 
               if (v20)
               {
@@ -7940,22 +7940,22 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
               else
               {
                 v40 = objc_autoreleasePoolPush();
-                v41 = self;
+                selfCopy = self;
                 v42 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
                 {
                   v43 = HMFGetLogIdentifier();
-                  v44 = [(HMDActionSet *)v41 name];
-                  v45 = [(HMDActionSet *)v41 uuid];
-                  v46 = [v18 uuid];
+                  name = [(HMDActionSet *)selfCopy name];
+                  uuid = [(HMDActionSet *)selfCopy uuid];
+                  uuid2 = [v18 uuid];
                   *buf = v49;
                   v62 = v43;
                   v63 = 2112;
-                  v64 = v44;
+                  v64 = name;
                   v65 = 2112;
-                  v66 = v45;
+                  v66 = uuid;
                   v67 = 2112;
-                  v68 = v46;
+                  v68 = uuid2;
                   _os_log_impl(&dword_2531F8000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ActionSet %@/%@: Removing media action %@ since there are no media profiles", buf, 0x2Au);
                 }
 
@@ -7969,7 +7969,7 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
             }
 
             v34 = objc_autoreleasePoolPush();
-            v35 = self;
+            selfCopy4 = self;
             v36 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
@@ -8005,8 +8005,8 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
 
             if (v18)
             {
-              v23 = [v18 characteristic];
-              if (v23 && ([v18 targetValue], v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
+              characteristic = [v18 characteristic];
+              if (characteristic && ([v18 targetValue], v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
               {
                 [v3 addObject:v18];
               }
@@ -8014,30 +8014,30 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
               else
               {
                 v25 = objc_autoreleasePoolPush();
-                v26 = self;
+                selfCopy3 = self;
                 v27 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                 {
                   v50 = HMFGetLogIdentifier();
-                  [(HMDActionSet *)v26 name];
+                  [(HMDActionSet *)selfCopy3 name];
                   v28 = v52 = v25;
-                  v29 = [(HMDActionSet *)v26 uuid];
-                  v30 = [v18 uuid];
-                  v31 = [v18 targetValue];
+                  uuid3 = [(HMDActionSet *)selfCopy3 uuid];
+                  uuid4 = [v18 uuid];
+                  targetValue = [v18 targetValue];
                   *buf = 138544642;
                   v62 = v50;
                   v63 = 2112;
                   v64 = v28;
                   v65 = 2112;
-                  v66 = v29;
+                  v66 = uuid3;
                   v67 = 2112;
-                  v68 = v30;
-                  v32 = v30;
+                  v68 = uuid4;
+                  v32 = uuid4;
                   v69 = 2112;
-                  v70 = v23;
+                  v70 = characteristic;
                   v71 = 2112;
-                  v72 = v31;
-                  v33 = v31;
+                  v72 = targetValue;
+                  v33 = targetValue;
                   _os_log_impl(&dword_2531F8000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ActionSet %@/%@: Removing write action %@/%@ since the characteristic %@ or value is nil", buf, 0x3Eu);
 
                   v4 = v54;
@@ -8053,7 +8053,7 @@ uint64_t __44__HMDActionSet_containsSecureCharacteristic__block_invoke(uint64_t 
             }
 
             v34 = objc_autoreleasePoolPush();
-            v35 = self;
+            selfCopy4 = self;
             v36 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
@@ -8081,15 +8081,15 @@ LABEL_42:
           continue;
         }
 
-        if ((v11 - 2) >= 3)
+        if ((type - 2) >= 3)
         {
-          if (v11 != 5)
+          if (type != 5)
           {
             continue;
           }
 
           v12 = objc_autoreleasePoolPush();
-          v13 = self;
+          selfCopy5 = self;
           v14 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
@@ -8126,12 +8126,12 @@ LABEL_47:
 - (NSString)serializedIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDActionSet *)self home];
-  v5 = [v4 uuid];
-  v6 = [v5 UUIDString];
-  v7 = [(HMDActionSet *)self uuid];
-  v8 = [v7 UUIDString];
-  v9 = [v3 stringWithFormat:@"%@/%@", v6, v8];
+  home = [(HMDActionSet *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
+  uuid2 = [(HMDActionSet *)self uuid];
+  uUIDString2 = [uuid2 UUIDString];
+  v9 = [v3 stringWithFormat:@"%@/%@", uUIDString, uUIDString2];
 
   return v9;
 }
@@ -8154,20 +8154,20 @@ LABEL_47:
   [(HMDActionSet *)self __handleActionsUpdated];
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_currentActions removeObject:v4];
+  [(NSMutableArray *)self->_currentActions removeObject:actionCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(HMDActionSet *)self __handleActionsUpdated];
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_currentActions addObject:v4];
+  [(NSMutableArray *)self->_currentActions addObject:actionCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(HMDActionSet *)self __handleActionsUpdated];
 }
@@ -8190,7 +8190,7 @@ LABEL_47:
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -8201,9 +8201,9 @@ LABEL_47:
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HMDActionSet *)v6 _removeDonatedIntent];
+    [(HMDActionSet *)selfCopy _removeDonatedIntent];
     v9 = objc_autoreleasePoolPush();
-    v10 = v6;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -8216,16 +8216,16 @@ LABEL_47:
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(HMDActionSet *)v10 notificationCenter];
-    v14 = [(HMDActionSet *)v10 home];
+    notificationCenter = [(HMDActionSet *)v10 notificationCenter];
+    home = [(HMDActionSet *)v10 home];
     v23 = @"HMDActionSetNotificationKey";
     *buf = v10;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:&v23 count:1];
-    [v13 postNotificationName:@"HMDHomeActionSetEmptiedNotification" object:v14 userInfo:v15];
+    [notificationCenter postNotificationName:@"HMDHomeActionSetEmptiedNotification" object:home userInfo:v15];
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -8236,39 +8236,39 @@ LABEL_47:
   }
 
   objc_autoreleasePoolPop(v16);
-  v20 = [(HMDActionSet *)v17 home];
-  [v20 reEvaluateTriggers];
+  home2 = [(HMDActionSet *)selfCopy2 home];
+  [home2 reEvaluateTriggers];
 
 LABEL_12:
-  v21 = [(HMDActionSet *)self notificationCenter];
-  [v21 postNotificationName:@"HMDActionSetActionsUpdatedNotification" object:self userInfo:0];
+  notificationCenter2 = [(HMDActionSet *)self notificationCenter];
+  [notificationCenter2 postNotificationName:@"HMDActionSetActionsUpdatedNotification" object:self userInfo:0];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_currentActions setArray:v4];
+  [(NSMutableArray *)self->_currentActions setArray:actionsCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)configure:(id)a3 messageDispatcher:(id)a4 queue:(id)a5
+- (BOOL)configure:(id)configure messageDispatcher:(id)dispatcher queue:(id)queue
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(HMDActionSet *)self setHome:v8];
-  [(HMDActionSet *)self setMsgDispatcher:v9];
-  [(HMDActionSet *)self setWorkQueue:v10];
+  configureCopy = configure;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  [(HMDActionSet *)self setHome:configureCopy];
+  [(HMDActionSet *)self setMsgDispatcher:dispatcherCopy];
+  [(HMDActionSet *)self setWorkQueue:queueCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(HMDActionSet *)self actions];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  actions = [(HMDActionSet *)self actions];
+  v12 = [actions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -8280,38 +8280,38 @@ LABEL_12:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(actions);
         }
 
-        [*(*(&v19 + 1) + 8 * v15++) configureWithHome:v8];
+        [*(*(&v19 + 1) + 8 * v15++) configureWithHome:configureCopy];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [actions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
   }
 
-  v16 = [(HMDActionSet *)self _fixUpActions];
+  _fixUpActions = [(HMDActionSet *)self _fixUpActions];
   [(HMDActionSet *)self _registerForMessages];
 
   v17 = *MEMORY[0x277D85DE8];
-  return v16;
+  return _fixUpActions;
 }
 
-- (void)handleRemovalOfActionForCharacteristic:(id)a3 transaction:(id)a4
+- (void)handleRemovalOfActionForCharacteristic:(id)characteristic transaction:(id)transaction
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
+  characteristicCopy = characteristic;
+  transactionCopy = transaction;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = self;
-  v8 = [(HMDActionSet *)self actions];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  selfCopy = self;
+  actions = [(HMDActionSet *)self actions];
+  v9 = [actions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -8323,7 +8323,7 @@ LABEL_12:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actions);
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
@@ -8342,9 +8342,9 @@ LABEL_12:
 
         if (v15)
         {
-          if ([v15 isActionForCharacteristic:v6])
+          if ([v15 isActionForCharacteristic:characteristicCopy])
           {
-            [(HMDActionSet *)v7 _handleRemovalOfAction:v13 transaction:v20];
+            [(HMDActionSet *)selfCopy _handleRemovalOfAction:v13 transaction:transactionCopy];
           }
         }
 
@@ -8364,9 +8364,9 @@ LABEL_12:
 
           v18 = v17;
 
-          if (v18 && [v18 isActionForCharacteristic:v6])
+          if (v18 && [v18 isActionForCharacteristic:characteristicCopy])
           {
-            [(HMDActionSet *)v7 _handleRemovalOfAction:v16 transaction:v20];
+            [(HMDActionSet *)selfCopy _handleRemovalOfAction:v16 transaction:transactionCopy];
           }
         }
 
@@ -8374,7 +8374,7 @@ LABEL_12:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [actions countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -8383,18 +8383,18 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemovalOfService:(id)a3 transaction:(id)a4
+- (void)handleRemovalOfService:(id)service transaction:(id)transaction
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v22 = a4;
-  v27 = v6;
-  v24 = [v6 accessory];
+  serviceCopy = service;
+  transactionCopy = transaction;
+  v27 = serviceCopy;
+  accessory = [serviceCopy accessory];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = [(HMDActionSet *)self actions];
   v28 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v28)
@@ -8426,28 +8426,28 @@ LABEL_12:
 
         if (v11)
         {
-          v12 = [v11 characteristic];
-          v13 = [v12 service];
-          v14 = [v13 instanceID];
-          v15 = [v27 instanceID];
-          if ([v14 isEqualToNumber:v15])
+          characteristic = [v11 characteristic];
+          service = [characteristic service];
+          instanceID = [service instanceID];
+          instanceID2 = [v27 instanceID];
+          if ([instanceID isEqualToNumber:instanceID2])
           {
-            v16 = v12;
-            v17 = [v12 accessory];
-            v18 = [v17 uuid];
-            v19 = [v24 uuid];
-            v26 = [v18 isEqual:v19];
+            v16 = characteristic;
+            accessory2 = [characteristic accessory];
+            uuid = [accessory2 uuid];
+            uuid2 = [accessory uuid];
+            v26 = [uuid isEqual:uuid2];
 
             v7 = v23;
             if (v26)
             {
-              [(HMDActionSet *)v21 _handleRemovalOfAction:v9 transaction:v22];
+              [(HMDActionSet *)selfCopy _handleRemovalOfAction:v9 transaction:transactionCopy];
             }
           }
 
           else
           {
-            v16 = v12;
+            v16 = characteristic;
           }
         }
       }
@@ -8461,51 +8461,51 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)executeWithTriggerSource:(id)a3 captureCurrentState:(BOOL)a4 completionHandler:(id)a5
+- (void)executeWithTriggerSource:(id)source captureCurrentState:(BOOL)state completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDActionSet *)self workQueue];
+  sourceCopy = source;
+  handlerCopy = handler;
+  workQueue = [(HMDActionSet *)self workQueue];
 
-  if (v10)
+  if (workQueue)
   {
-    v11 = [(HMDActionSet *)self workQueue];
+    workQueue2 = [(HMDActionSet *)self workQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __79__HMDActionSet_executeWithTriggerSource_captureCurrentState_completionHandler___block_invoke;
     v20[3] = &unk_279732430;
     v20[4] = self;
-    v21 = v8;
-    v22 = v9;
-    v23 = a4;
-    dispatch_async(v11, v20);
+    v21 = sourceCopy;
+    v22 = handlerCopy;
+    stateCopy = state;
+    dispatch_async(workQueue2, v20);
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMDActionSet *)v13 name];
-      v17 = [(HMDActionSet *)v13 actions];
+      name = [(HMDActionSet *)selfCopy name];
+      actions = [(HMDActionSet *)selfCopy actions];
       *buf = 138543874;
       v25 = v15;
       v26 = 2112;
-      v27 = v16;
+      v27 = name;
       v28 = 2048;
-      v29 = [v17 count];
+      v29 = [actions count];
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_ERROR, "%{public}@Work queue hasn't been configured, bailing out the execution for action set %@ with number of actions: %lu", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (v9)
+    if (handlerCopy)
     {
       v18 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      (*(v9 + 2))(v9, v18, 0);
+      (*(handlerCopy + 2))(handlerCopy, v18, 0);
     }
   }
 
@@ -8583,17 +8583,17 @@ void __79__HMDActionSet_executeWithTriggerSource_captureCurrentState_completionH
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_execute:(id)a3 activity:(id)a4
+- (void)_execute:(id)_execute activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDActionSet *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  _executeCopy = _execute;
+  activityCopy = activity;
+  workQueue = [(HMDActionSet *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v6 isRemote])
+  if ([_executeCopy isRemote])
   {
-    v9 = [(HMDActionSet *)self home];
-    v10 = [v9 writeRequestTuplesFromMessage:v6 outUnhandledRequests:0];
+    home = [(HMDActionSet *)self home];
+    v10 = [home writeRequestTuplesFromMessage:_executeCopy outUnhandledRequests:0];
   }
 
   else
@@ -8607,9 +8607,9 @@ void __79__HMDActionSet_executeWithTriggerSource_captureCurrentState_completionH
   v14[2] = __34__HMDActionSet__execute_activity___block_invoke;
   v14[3] = &unk_279732760;
   objc_copyWeak(&v18, &location);
-  v11 = v7;
+  v11 = activityCopy;
   v15 = v11;
-  v12 = v6;
+  v12 = _executeCopy;
   v16 = v12;
   v13 = v10;
   v17 = v13;
@@ -8722,46 +8722,46 @@ uint64_t __34__HMDActionSet__execute_activity___block_invoke_71(uint64_t a1)
   return result;
 }
 
-- (void)execute:(id)a3
+- (void)execute:(id)execute
 {
-  v5 = a3;
+  executeCopy = execute;
   v6 = objc_alloc(MEMORY[0x277D0F770]);
   v7 = MEMORY[0x277CCACA8];
   v8 = MEMORY[0x259C01AE0](self, a2);
   v9 = [v7 stringWithFormat:@"%@, %s:%ld", v8, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Action Sets/HMDActionSet.m", 304];
   v15 = [v6 initWithName:v9];
 
-  v10 = [(HMDActionSet *)self workQueue];
+  workQueue = [(HMDActionSet *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __24__HMDActionSet_execute___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v13 = v5;
+  v13 = executeCopy;
   v14 = v15;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = executeCopy;
+  dispatch_async(workQueue, block);
 
   __HMFActivityScopeLeave();
 }
 
-- (void)isAccessValidForExecutionWithMessage:(id)a3 completion:(id)a4
+- (void)isAccessValidForExecutionWithMessage:(id)message completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 source];
-  v9 = [(HMDActionSet *)self home];
-  v10 = [v9 synchronouslyFetchIsCarPlayConnectedStatus];
-  if (![v9 applyDeviceLockStatus:v6] || !-[HMDActionSet containsSecureCharacteristic](self, "containsSecureCharacteristic") || !-[HMDActionSet containsUnsecuringAction](self, "containsUnsecuringAction") && (v8 | 8) == 9)
+  messageCopy = message;
+  completionCopy = completion;
+  source = [messageCopy source];
+  home = [(HMDActionSet *)self home];
+  synchronouslyFetchIsCarPlayConnectedStatus = [home synchronouslyFetchIsCarPlayConnectedStatus];
+  if (![home applyDeviceLockStatus:messageCopy] || !-[HMDActionSet containsSecureCharacteristic](self, "containsSecureCharacteristic") || !-[HMDActionSet containsUnsecuringAction](self, "containsUnsecuringAction") && (source | 8) == 9)
   {
     goto LABEL_18;
   }
 
-  if (v10 && [v9 isCarPlayAccessAllowedForActionSet:self withMessage:v6 fromSource:v8])
+  if (synchronouslyFetchIsCarPlayConnectedStatus && [home isCarPlayAccessAllowedForActionSet:self withMessage:messageCopy fromSource:source])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -8772,25 +8772,25 @@ uint64_t __34__HMDActionSet__execute_activity___block_invoke_71(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v11);
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_25;
   }
 
-  if ([v6 isEntitledForSPIAccess])
+  if ([messageCopy isEntitledForSPIAccess])
   {
-    v15 = 1;
+    isInternal = 1;
   }
 
   else
   {
-    v15 = [v6 isInternal];
+    isInternal = [messageCopy isInternal];
   }
 
-  if (v8 == 1)
+  if (source == 1)
   {
     objc_initWeak(&location, self);
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -8801,27 +8801,27 @@ uint64_t __34__HMDActionSet__execute_activity___block_invoke_71(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v16);
-    v20 = [v9 siriSecureAccessoryAccessController];
+    siriSecureAccessoryAccessController = [home siriSecureAccessoryAccessController];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __64__HMDActionSet_isAccessValidForExecutionWithMessage_completion___block_invoke;
     v33[3] = &unk_279723D20;
     objc_copyWeak(&v35, &location);
-    v34 = v7;
-    v36 = v15;
-    [v20 isUnsecuringSiriActionAllowedWithCompletion:v33];
+    v34 = completionCopy;
+    v36 = isInternal;
+    [siriSecureAccessoryAccessController isUnsecuringSiriActionAllowedWithCompletion:v33];
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
     goto LABEL_25;
   }
 
-  if (([v6 isEntitledForSecureAccess] & 1) == 0)
+  if (([messageCopy isEntitledForSecureAccess] & 1) == 0)
   {
     v29 = MEMORY[0x277CCA9B8];
     v30 = +[HMDDeviceCapabilities supportsDeviceLock];
     v31 = 10;
-    if (v15)
+    if (isInternal)
     {
       v31 = 2003;
     }
@@ -8846,7 +8846,7 @@ LABEL_18:
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy3 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
@@ -8861,7 +8861,7 @@ LABEL_18:
       v26 = @"allowed";
     }
 
-    v27 = HMDRequestSourceAsString(v8);
+    v27 = HMDRequestSourceAsString(source);
     *buf = 138544130;
     v39 = v25;
     v40 = 2112;
@@ -8874,7 +8874,7 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v22);
-  (v7)[2](v7, v21 == 0, v21);
+  (completionCopy)[2](completionCopy, v21 == 0, v21);
 
 LABEL_25:
   v28 = *MEMORY[0x277D85DE8];
@@ -8951,33 +8951,33 @@ void __64__HMDActionSet_isAccessValidForExecutionWithMessage_completion___block_
 
 - (id)createPayload
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDActionSet *)self uuid];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x277CD2050]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uuid = [(HMDActionSet *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CD2050]];
 
-  v6 = [(HMDActionSet *)self type];
-  [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2048]];
+  type = [(HMDActionSet *)self type];
+  [dictionary setObject:type forKeyedSubscript:*MEMORY[0x277CD2048]];
 
-  v7 = [(HMDActionSet *)self name];
-  [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x277CD2040]];
+  name = [(HMDActionSet *)self name];
+  [dictionary setObject:name forKeyedSubscript:*MEMORY[0x277CD2040]];
 
-  v8 = [(HMDActionSet *)self actions];
-  v9 = [v8 valueForKey:@"dictionaryRepresentation"];
-  [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x277CD2030]];
+  actions = [(HMDActionSet *)self actions];
+  v9 = [actions valueForKey:@"dictionaryRepresentation"];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x277CD2030]];
 
-  v10 = [v3 copy];
+  v10 = [dictionary copy];
 
   return v10;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 hm_truncatedNameString];
+  hm_truncatedNameString = [nameCopy hm_truncatedNameString];
   name = self->_name;
-  self->_name = v4;
+  self->_name = hm_truncatedNameString;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -8991,30 +8991,30 @@ void __64__HMDActionSet_isAccessValidForExecutionWithMessage_completion___block_
   return v3;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v31 = MEMORY[0x277CCAB68];
-  v30 = [(HMDActionSet *)self name];
-  v33 = [(HMDActionSet *)self uuid];
-  v5 = [v33 UUIDString];
-  v32 = [(HMDActionSet *)self spiClientIdentifier];
-  v6 = [v32 UUIDString];
-  v7 = [(HMDActionSet *)self type];
-  v8 = [(HMDActionSet *)self lastExecutionDate];
-  v9 = [(HMDActionSet *)self actions];
-  v10 = [v9 count];
-  v11 = [(HMDActionSet *)self urlString];
-  v12 = [v31 stringWithFormat:@"ActionSet name: %@, uuid: %@, spiClientIdentifier: %@, type: %@, lastExecutionDate: %@, numActions: %tu, assistantIdentifier: %@", v30, v5, v6, v7, v8, v10, v11];
+  name = [(HMDActionSet *)self name];
+  uuid = [(HMDActionSet *)self uuid];
+  uUIDString = [uuid UUIDString];
+  spiClientIdentifier = [(HMDActionSet *)self spiClientIdentifier];
+  uUIDString2 = [spiClientIdentifier UUIDString];
+  type = [(HMDActionSet *)self type];
+  lastExecutionDate = [(HMDActionSet *)self lastExecutionDate];
+  actions = [(HMDActionSet *)self actions];
+  v10 = [actions count];
+  urlString = [(HMDActionSet *)self urlString];
+  v12 = [v31 stringWithFormat:@"ActionSet name: %@, uuid: %@, spiClientIdentifier: %@, type: %@, lastExecutionDate: %@, numActions: %tu, assistantIdentifier: %@", name, uUIDString, uUIDString2, type, lastExecutionDate, v10, urlString];
 
-  [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277D0F170]];
-  v13 = [(HMDActionSet *)self appData];
-  v14 = [v13 dumpStateWithPrivacyLevel:a3];
-  [v4 setObject:v14 forKeyedSubscript:*MEMORY[0x277D0F050]];
+  [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277D0F170]];
+  appData = [(HMDActionSet *)self appData];
+  v14 = [appData dumpStateWithPrivacyLevel:level];
+  [dictionary setObject:v14 forKeyedSubscript:*MEMORY[0x277D0F050]];
 
-  v15 = [(HMDActionSet *)self actions];
-  v16 = [v15 copy];
+  actions2 = [(HMDActionSet *)self actions];
+  v16 = [actions2 copy];
 
   if ([v16 count])
   {
@@ -9043,15 +9043,15 @@ void __64__HMDActionSet_isAccessValidForExecutionWithMessage_completion___block_
           v23 = objc_autoreleasePoolPush();
           [v22 type];
           v24 = HMActionTypeAsString();
-          v25 = [v4 objectForKeyedSubscript:v24];
-          if (!v25)
+          array = [dictionary objectForKeyedSubscript:v24];
+          if (!array)
           {
-            v25 = [MEMORY[0x277CBEB18] array];
-            [v4 setObject:v25 forKeyedSubscript:v24];
+            array = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:array forKeyedSubscript:v24];
           }
 
-          v26 = [v22 stateDump];
-          [v25 addObject:v26];
+          stateDump = [v22 stateDump];
+          [array addObject:stateDump];
 
           objc_autoreleasePoolPop(v23);
         }
@@ -9066,7 +9066,7 @@ void __64__HMDActionSet_isAccessValidForExecutionWithMessage_completion___block_
     v12 = v36;
   }
 
-  v27 = [v4 copy];
+  v27 = [dictionary copy];
 
   v28 = *MEMORY[0x277D85DE8];
 
@@ -9076,81 +9076,81 @@ void __64__HMDActionSet_isAccessValidForExecutionWithMessage_completion___block_
 - (NSString)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(HMDActionSet *)self name];
-  v5 = [(HMDActionSet *)self uuid];
-  v6 = [v5 UUIDString];
-  v7 = [(HMDActionSet *)self spiClientIdentifier];
-  v8 = [v7 UUIDString];
-  v9 = [(HMDActionSet *)self type];
-  v10 = [(HMDActionSet *)self lastExecutionDate];
-  v11 = [(HMDActionSet *)self actions];
-  v12 = [v3 stringWithFormat:@"ActionSet name: %@, uuid: %@, spiClientIdentifier: %@, type: %@, lastExecutionDate: %@, numActions: %tu", v4, v6, v8, v9, v10, objc_msgSend(v11, "count")];
+  name = [(HMDActionSet *)self name];
+  uuid = [(HMDActionSet *)self uuid];
+  uUIDString = [uuid UUIDString];
+  spiClientIdentifier = [(HMDActionSet *)self spiClientIdentifier];
+  uUIDString2 = [spiClientIdentifier UUIDString];
+  type = [(HMDActionSet *)self type];
+  lastExecutionDate = [(HMDActionSet *)self lastExecutionDate];
+  actions = [(HMDActionSet *)self actions];
+  v12 = [v3 stringWithFormat:@"ActionSet name: %@, uuid: %@, spiClientIdentifier: %@, type: %@, lastExecutionDate: %@, numActions: %tu", name, uUIDString, uUIDString2, type, lastExecutionDate, objc_msgSend(actions, "count")];
 
   return v12;
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDActionSet *)self msgDispatcher];
-  [v3 deregisterReceiver:self];
+  msgDispatcher = [(HMDActionSet *)self msgDispatcher];
+  [msgDispatcher deregisterReceiver:self];
 
-  v4 = [(HMDActionSet *)self home];
-  v5 = [v4 administratorHandler];
-  [v5 deregisterReceiver:self];
+  home = [(HMDActionSet *)self home];
+  administratorHandler = [home administratorHandler];
+  [administratorHandler deregisterReceiver:self];
 
   v6.receiver = self;
   v6.super_class = HMDActionSet;
   [(HMDActionSet *)&v6 dealloc];
 }
 
-- (HMDActionSet)initWithName:(id)a3 uuid:(id)a4 type:(id)a5 home:(id)a6 queue:(id)a7 notificationCenter:(id)a8
+- (HMDActionSet)initWithName:(id)name uuid:(id)uuid type:(id)type home:(id)home queue:(id)queue notificationCenter:(id)center
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  uuidCopy = uuid;
+  typeCopy = type;
+  homeCopy = home;
+  queueCopy = queue;
+  centerCopy = center;
   v45.receiver = self;
   v45.super_class = HMDActionSet;
   v20 = [(HMDActionSet *)&v45 init];
   if (v20)
   {
-    v43 = v19;
-    v44 = v14;
+    v43 = centerCopy;
+    v44 = nameCopy;
     v21 = MEMORY[0x277D0F888];
-    v22 = [v14 hm_truncatedNameString];
-    v23 = [v21 hmf_cachedInstanceForString:v22];
+    hm_truncatedNameString = [nameCopy hm_truncatedNameString];
+    v23 = [v21 hmf_cachedInstanceForString:hm_truncatedNameString];
     name = v20->_name;
     v20->_name = v23;
 
-    v25 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v16];
+    v25 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:typeCopy];
     type = v20->_type;
     v20->_type = v25;
 
-    if (v16 && v17 && [MEMORY[0x277CD1800] isBuiltinActionSetType:v16])
+    if (typeCopy && homeCopy && [MEMORY[0x277CD1800] isBuiltinActionSetType:typeCopy])
     {
       v27 = MEMORY[0x277CCAD78];
-      v28 = [v17 uuid];
-      v46[0] = v16;
+      uuid = [homeCopy uuid];
+      v46[0] = typeCopy;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
-      v30 = [v27 hm_deriveUUIDFromBaseUUID:v28 identifierSalt:0 withSalts:v29];
+      v30 = [v27 hm_deriveUUIDFromBaseUUID:uuid identifierSalt:0 withSalts:v29];
     }
 
     else
     {
-      if (v15)
+      if (uuidCopy)
       {
-        v31 = [v15 copy];
+        uUID = [uuidCopy copy];
       }
 
       else
       {
-        v31 = [MEMORY[0x277CCAD78] UUID];
+        uUID = [MEMORY[0x277CCAD78] UUID];
       }
 
-      v30 = v31;
+      v30 = uUID;
     }
 
     v32 = [MEMORY[0x277D0F890] hmf_cachedInstanceForNSUUID:v30];
@@ -9162,41 +9162,41 @@ void __64__HMDActionSet_isAccessValidForExecutionWithMessage_completion___block_
     spiClientIdentifier = v20->_spiClientIdentifier;
     v20->_spiClientIdentifier = v35;
 
-    objc_storeStrong(&v20->_workQueue, a7);
-    objc_storeWeak(&v20->_home, v17);
-    v37 = [v17 msgDispatcher];
+    objc_storeStrong(&v20->_workQueue, queue);
+    objc_storeWeak(&v20->_home, homeCopy);
+    msgDispatcher = [homeCopy msgDispatcher];
     msgDispatcher = v20->_msgDispatcher;
-    v20->_msgDispatcher = v37;
+    v20->_msgDispatcher = msgDispatcher;
 
-    v39 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     currentActions = v20->_currentActions;
-    v20->_currentActions = v39;
+    v20->_currentActions = array;
 
     v20->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v20->_notificationCenter, a8);
-    if (v18)
+    objc_storeStrong(&v20->_notificationCenter, center);
+    if (queueCopy)
     {
       [(HMDActionSet *)v20 _registerForMessages];
     }
 
-    v19 = v43;
-    v14 = v44;
+    centerCopy = v43;
+    nameCopy = v44;
   }
 
   v41 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (HMDActionSet)initWithName:(id)a3 uuid:(id)a4 type:(id)a5 home:(id)a6 queue:(id)a7
+- (HMDActionSet)initWithName:(id)name uuid:(id)uuid type:(id)type home:(id)home queue:(id)queue
 {
   v12 = MEMORY[0x277CCAB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v12 defaultCenter];
-  v19 = [(HMDActionSet *)self initWithName:v17 uuid:v16 type:v15 home:v14 queue:v13 notificationCenter:v18];
+  queueCopy = queue;
+  homeCopy = home;
+  typeCopy = type;
+  uuidCopy = uuid;
+  nameCopy = name;
+  defaultCenter = [v12 defaultCenter];
+  v19 = [(HMDActionSet *)self initWithName:nameCopy uuid:uuidCopy type:typeCopy home:homeCopy queue:queueCopy notificationCenter:defaultCenter];
 
   return v19;
 }
@@ -9242,10 +9242,10 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
 
 - (id)_getActionsForActionSetObject
 {
-  v2 = self;
+  selfCopy = self;
   v107 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDActionSet *)self actions];
-  v4 = [v3 count];
+  actions = [(HMDActionSet *)self actions];
+  v4 = [actions count];
 
   if (!v4)
   {
@@ -9253,15 +9253,15 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
   }
 
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [(HMDActionSet *)v2 actions];
-  v85 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  actions2 = [(HMDActionSet *)selfCopy actions];
+  v85 = [v5 initWithCapacity:{objc_msgSend(actions2, "count")}];
 
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v7 = [(HMDActionSet *)v2 actions];
-  v8 = [v7 countByEnumeratingWithState:&v95 objects:v106 count:16];
+  actions3 = [(HMDActionSet *)selfCopy actions];
+  v8 = [actions3 countByEnumeratingWithState:&v95 objects:v106 count:16];
   if (v8)
   {
     v10 = v8;
@@ -9272,8 +9272,8 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
     *&v9 = 138543618;
     v80 = v9;
     v87 = *v96;
-    v88 = v7;
-    v84 = v2;
+    v88 = actions3;
+    v84 = selfCopy;
     do
     {
       v12 = 0;
@@ -9282,12 +9282,12 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
       {
         if (*v96 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actions3);
         }
 
         v13 = *(*(&v95 + 1) + 8 * v12);
-        v14 = [v13 type];
-        if (v14 == 3)
+        type = [v13 type];
+        if (type == 3)
         {
           v32 = v13;
           objc_opt_class();
@@ -9305,12 +9305,12 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
 
           if (v31)
           {
-            v49 = [v31 lightProfile];
-            v50 = v49;
-            if (v49)
+            lightProfile = [v31 lightProfile];
+            v50 = lightProfile;
+            if (lightProfile)
             {
-              v51 = v2;
-              v52 = [v49 service];
+              v51 = selfCopy;
+              service = [lightProfile service];
               v53 = objc_alloc_init(MEMORY[0x277D47328]);
               [v53 setActionType:v90];
               v54 = objc_alloc_init(MEMORY[0x277D47340]);
@@ -9321,8 +9321,8 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
               v56 = v12;
               v57 = objc_alloc_init(MEMORY[0x277D47378]);
               v58 = MEMORY[0x277CBEBC0];
-              v59 = [v52 urlString];
-              v60 = [v58 URLWithString:v59];
+              urlString = [service urlString];
+              v60 = [v58 URLWithString:urlString];
               [v57 setEntityId:v60];
 
               v10 = v86;
@@ -9337,8 +9337,8 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
             else
             {
               v71 = objc_autoreleasePoolPush();
-              v51 = v2;
-              v72 = v2;
+              v51 = selfCopy;
+              v72 = selfCopy;
               v73 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
               {
@@ -9358,12 +9358,12 @@ uint64_t __27__HMDActionSet_logCategory__block_invoke()
               objc_autoreleasePoolPop(v71);
             }
 
-            v2 = v51;
+            selfCopy = v51;
             goto LABEL_51;
           }
 
           v61 = objc_autoreleasePoolPush();
-          v62 = v2;
+          v62 = selfCopy;
           v63 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
           {
@@ -9388,7 +9388,7 @@ LABEL_42:
           goto LABEL_46;
         }
 
-        if (v14 == 1)
+        if (type == 1)
         {
           v32 = v13;
           objc_opt_class();
@@ -9410,8 +9410,8 @@ LABEL_42:
             v94 = 0u;
             v91 = 0u;
             v92 = 0u;
-            v34 = [v31 mediaProfiles];
-            v35 = [v34 countByEnumeratingWithState:&v91 objects:v99 count:16];
+            mediaProfiles = [v31 mediaProfiles];
+            v35 = [mediaProfiles countByEnumeratingWithState:&v91 objects:v99 count:16];
             if (v35)
             {
               v36 = v35;
@@ -9429,7 +9429,7 @@ LABEL_42:
                 {
                   if (*v92 != v39)
                   {
-                    objc_enumerationMutation(v34);
+                    objc_enumerationMutation(mediaProfiles);
                   }
 
                   v43 = *(*(&v91 + 1) + 8 * v40);
@@ -9442,8 +9442,8 @@ LABEL_42:
                   v37 = objc_alloc_init(MEMORY[0x277D47378]);
 
                   v45 = MEMORY[0x277CBEBC0];
-                  v46 = [v43 urlString];
-                  v47 = [v45 URLWithString:v46];
+                  urlString2 = [v43 urlString];
+                  v47 = [v45 URLWithString:urlString2];
                   [v37 setEntityId:v47];
 
                   [v37 setAction:v38];
@@ -9456,15 +9456,15 @@ LABEL_42:
                 }
 
                 while (v36 != v40);
-                v36 = [v34 countByEnumeratingWithState:&v91 objects:v99 count:16];
+                v36 = [mediaProfiles countByEnumeratingWithState:&v91 objects:v99 count:16];
               }
 
               while (v36);
 
               v12 = v83;
-              v2 = v84;
+              selfCopy = v84;
               v11 = v87;
-              v7 = v88;
+              actions3 = v88;
               v10 = v86;
               v31 = v82;
             }
@@ -9473,7 +9473,7 @@ LABEL_42:
           }
 
           v61 = objc_autoreleasePoolPush();
-          v62 = v2;
+          v62 = selfCopy;
           v63 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
           {
@@ -9483,7 +9483,7 @@ LABEL_42:
           goto LABEL_42;
         }
 
-        if (v14)
+        if (type)
         {
           goto LABEL_53;
         }
@@ -9504,32 +9504,32 @@ LABEL_42:
 
         if (v17)
         {
-          v18 = [v17 characteristic];
-          v19 = [v18 service];
+          characteristic = [v17 characteristic];
+          service2 = [characteristic service];
           v20 = v17;
-          v21 = [v17 targetValue];
+          targetValue = [v17 targetValue];
           v22 = v12;
           if (isMetricLocale_onceToken != -1)
           {
             dispatch_once(&isMetricLocale_onceToken, &__block_literal_global_133089);
           }
 
-          v23 = getTupleForCharacteristic(v18, v21, isMetricLocale_isMetricLocale);
+          v23 = getTupleForCharacteristic(characteristic, targetValue, isMetricLocale_isMetricLocale);
 
           if (v23)
           {
             v24 = objc_alloc_init(MEMORY[0x277D47328]);
-            v25 = [v23 attribute];
-            [v24 setAttribute:v25];
+            attribute = [v23 attribute];
+            [v24 setAttribute:attribute];
 
             [v24 setActionType:v90];
-            v26 = [v23 value];
-            [v24 setValue:v26];
+            value = [v23 value];
+            [v24 setValue:value];
 
             v27 = objc_alloc_init(MEMORY[0x277D47378]);
             v28 = MEMORY[0x277CBEBC0];
-            v29 = [v19 urlString];
-            v30 = [v28 URLWithString:v29];
+            urlString3 = [service2 urlString];
+            v30 = [v28 URLWithString:urlString3];
             [v27 setEntityId:v30];
 
             [v27 setAction:v24];
@@ -9539,14 +9539,14 @@ LABEL_42:
           v11 = v87;
           v12 = v22;
           v31 = v20;
-          v2 = v84;
+          selfCopy = v84;
 LABEL_51:
-          v7 = v88;
+          actions3 = v88;
           goto LABEL_52;
         }
 
         v61 = objc_autoreleasePoolPush();
-        v67 = v2;
+        v67 = selfCopy;
         v68 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
         {
@@ -9574,7 +9574,7 @@ LABEL_53:
       }
 
       while (v12 != v10);
-      v10 = [v7 countByEnumeratingWithState:&v95 objects:v106 count:16];
+      v10 = [actions3 countByEnumeratingWithState:&v95 objects:v106 count:16];
     }
 
     while (v10);
@@ -9600,31 +9600,31 @@ LABEL_58:
 - (NSDictionary)assistantObject
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDActionSet *)self home];
-  v4 = [(HMDActionSet *)self name];
-  v5 = v4;
-  if (v4 && v3)
+  home = [(HMDActionSet *)self home];
+  name = [(HMDActionSet *)self name];
+  v5 = name;
+  if (name && home)
   {
-    v6 = [v3 name];
+    name2 = [home name];
 
-    if (v6)
+    if (name2)
     {
-      v7 = [MEMORY[0x277CBEB18] array];
-      v8 = [(HMDActionSet *)self actions];
-      v9 = [v8 count];
+      array = [MEMORY[0x277CBEB18] array];
+      actions = [(HMDActionSet *)self actions];
+      v9 = [actions count];
 
       if (v9)
       {
         if ([(HMDActionSet *)self containsSecureCharacteristic])
         {
-          v10 = [(HMDActionSet *)self containsUnsecuringAction];
+          containsUnsecuringAction = [(HMDActionSet *)self containsUnsecuringAction];
           v11 = MEMORY[0x277D48138];
-          if (!v10)
+          if (!containsUnsecuringAction)
           {
             v11 = MEMORY[0x277D48130];
           }
 
-          [v7 addObject:*v11];
+          [array addObject:*v11];
         }
 
         if (![(HMDActionSet *)self containsMediaPlaybackActions])
@@ -9640,40 +9640,40 @@ LABEL_58:
         v12 = MEMORY[0x277D48140];
       }
 
-      [v7 addObject:*v12];
+      [array addObject:*v12];
 LABEL_17:
-      v34 = v7;
-      v33 = [(HMDActionSet *)self _getActionsForActionSetObject];
+      v34 = array;
+      _getActionsForActionSetObject = [(HMDActionSet *)self _getActionsForActionSetObject];
       v32 = objc_alloc(MEMORY[0x277CBEB38]);
       v36[0] = *MEMORY[0x277D48168];
       v35[0] = @"objectType";
       v35[1] = @"objectName";
-      v20 = [(HMDActionSet *)self name];
-      v36[1] = v20;
+      name3 = [(HMDActionSet *)self name];
+      v36[1] = name3;
       v35[2] = @"objectIdentifier";
-      v21 = [(HMDActionSet *)self urlString];
-      v36[2] = v21;
+      urlString = [(HMDActionSet *)self urlString];
+      v36[2] = urlString;
       v35[3] = @"objectHome";
-      v22 = [v3 name];
-      v36[3] = v22;
+      name4 = [home name];
+      v36[3] = name4;
       v35[4] = @"objectHomeIdentifier";
-      v23 = [v3 urlString];
-      v36[4] = v23;
+      urlString2 = [home urlString];
+      v36[4] = urlString2;
       v36[5] = self;
       v35[5] = @"objectReference";
       v35[6] = @"objectSceneType";
-      v24 = [(HMDActionSet *)self type];
-      v36[6] = v24;
+      type = [(HMDActionSet *)self type];
+      v36[6] = type;
       v35[7] = @"objectSPIIdentifier";
-      v25 = [(HMDActionSet *)self spiClientIdentifier];
-      v26 = [v25 UUIDString];
-      v36[7] = v26;
+      spiClientIdentifier = [(HMDActionSet *)self spiClientIdentifier];
+      uUIDString = [spiClientIdentifier UUIDString];
+      v36[7] = uUIDString;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:8];
       v28 = [v32 initWithDictionary:v27];
 
-      if (v33)
+      if (_getActionsForActionSetObject)
       {
-        [v28 setObject:v33 forKey:@"objectSceneActions"];
+        [v28 setObject:_getActionsForActionSetObject forKey:@"objectSceneActions"];
       }
 
       if ([v34 count])
@@ -9697,17 +9697,17 @@ LABEL_17:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [(HMDActionSet *)self name];
-    v17 = [(HMDActionSet *)self uuid];
-    v18 = [v17 UUIDString];
+    name5 = [(HMDActionSet *)self name];
+    uuid = [(HMDActionSet *)self uuid];
+    uUIDString2 = [uuid UUIDString];
     *buf = 138544130;
     v38 = v15;
     v39 = 2112;
-    v40 = v16;
+    v40 = name5;
     v41 = 2112;
-    v42 = v18;
+    v42 = uUIDString2;
     v43 = 2112;
-    v44 = v3;
+    v44 = home;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@Skipping because attribute(s) is nil: actionSet %@/%@  actionSet.home %@", buf, 0x2Au);
   }
 
@@ -9723,7 +9723,7 @@ LABEL_22:
 - (NSString)urlString
 {
   v2 = *MEMORY[0x277CCF280];
-  v3 = [(HMDActionSet *)self uuid];
+  uuid = [(HMDActionSet *)self uuid];
   v4 = hm_assistantIdentifier();
 
   return v4;

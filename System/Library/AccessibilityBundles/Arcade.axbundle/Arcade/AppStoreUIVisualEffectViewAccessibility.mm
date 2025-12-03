@@ -1,5 +1,5 @@
 @interface AppStoreUIVisualEffectViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (BOOL)isArticleBackgroundView;
@@ -12,12 +12,12 @@
 
 @implementation AppStoreUIVisualEffectViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.ArticlePagePresentationController"];
-  [v3 validateClass:@"UITransitionView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.ArticlePagePresentationController" isKindOfClass:@"UIPresentationController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.ArticlePagePresentationController"];
+  [validationsCopy validateClass:@"UITransitionView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.ArticlePagePresentationController" isKindOfClass:@"UIPresentationController"];
 }
 
 - (BOOL)isArticleBackgroundView
@@ -32,8 +32,8 @@
   [(AppStoreUIVisualEffectViewAccessibility *)self safeCGRectForKey:@"frame"];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v10 = v9;
   v12 = v11;
 
@@ -87,51 +87,51 @@ uint64_t __66__AppStoreUIVisualEffectViewAccessibility_isArticleBackgroundView__
 {
   if ([(AppStoreUIVisualEffectViewAccessibility *)self isArticleBackgroundView])
   {
-    v3 = accessibilityAppStoreLocalizedString(@"popover.view.dismiss.article");
+    accessibilityLabel = accessibilityAppStoreLocalizedString(@"popover.view.dismiss.article");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = AppStoreUIVisualEffectViewAccessibility;
-    v3 = [(AppStoreUIVisualEffectViewAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(AppStoreUIVisualEffectViewAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityIdentifier
 {
   if ([(AppStoreUIVisualEffectViewAccessibility *)self isArticleBackgroundView])
   {
-    v3 = @"PopoverDismissArticle";
+    accessibilityIdentifier = @"PopoverDismissArticle";
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = AppStoreUIVisualEffectViewAccessibility;
-    v3 = [(AppStoreUIVisualEffectViewAccessibility *)&v5 accessibilityIdentifier];
+    accessibilityIdentifier = [(AppStoreUIVisualEffectViewAccessibility *)&v5 accessibilityIdentifier];
   }
 
-  return v3;
+  return accessibilityIdentifier;
 }
 
 - (id)accessibilityHint
 {
   if ([(AppStoreUIVisualEffectViewAccessibility *)self isArticleBackgroundView])
   {
-    v3 = accessibilityAppStoreLocalizedString(@"popover.view.dismiss.article.hint");
+    accessibilityHint = accessibilityAppStoreLocalizedString(@"popover.view.dismiss.article.hint");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = AppStoreUIVisualEffectViewAccessibility;
-    v3 = [(AppStoreUIVisualEffectViewAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(AppStoreUIVisualEffectViewAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)accessibilityUserInputLabels

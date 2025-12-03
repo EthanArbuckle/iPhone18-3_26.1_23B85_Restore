@@ -1,17 +1,17 @@
 @interface MusicVideoVerticalCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MusicVideoVerticalCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"headline" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"headline" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.MusicVideoVerticalCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

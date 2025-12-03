@@ -1,31 +1,31 @@
 @interface _SBAppSwitcherSnapshotCacheKey
-- (BOOL)isEqual:(id)a3;
-- (_SBAppSwitcherSnapshotCacheKey)initWithDisplayItem:(id)a3 inAppLayout:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_SBAppSwitcherSnapshotCacheKey)initWithDisplayItem:(id)item inAppLayout:(id)layout;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _SBAppSwitcherSnapshotCacheKey
 
-- (_SBAppSwitcherSnapshotCacheKey)initWithDisplayItem:(id)a3 inAppLayout:(id)a4
+- (_SBAppSwitcherSnapshotCacheKey)initWithDisplayItem:(id)item inAppLayout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  layoutCopy = layout;
   v14.receiver = self;
   v14.super_class = _SBAppSwitcherSnapshotCacheKey;
   v9 = [(_SBAppSwitcherSnapshotCacheKey *)&v14 init];
   if (v9)
   {
-    if (v7)
+    if (itemCopy)
     {
-      if (v8)
+      if (layoutCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v9->_displayItem, a3);
-        objc_storeStrong(&v9->_appLayout, a4);
-        v10 = [MEMORY[0x277CF0C40] builder];
-        v11 = [v10 appendObject:v9->_displayItem];
-        v12 = [v10 appendObject:v9->_appLayout];
-        v9->_hash = [v10 hash];
+        objc_storeStrong(&v9->_displayItem, item);
+        objc_storeStrong(&v9->_appLayout, layout);
+        builder = [MEMORY[0x277CF0C40] builder];
+        v11 = [builder appendObject:v9->_displayItem];
+        v12 = [builder appendObject:v9->_appLayout];
+        v9->_hash = [builder hash];
 
         goto LABEL_5;
       }
@@ -34,7 +34,7 @@ LABEL_4:
     else
     {
       [_SBAppSwitcherSnapshotCacheKey initWithDisplayItem:inAppLayout:];
-      if (v8)
+      if (layoutCopy)
       {
         goto LABEL_4;
       }
@@ -49,19 +49,19 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, equalCopy);
 
   if (v6)
   {
-    v7 = [v6 displayItem];
-    if ([v7 isEqual:self->_displayItem])
+    displayItem = [v6 displayItem];
+    if ([displayItem isEqual:self->_displayItem])
     {
-      v8 = [v6 appLayout];
-      v9 = [v8 isEqual:self->_appLayout];
+      appLayout = [v6 appLayout];
+      v9 = [appLayout isEqual:self->_appLayout];
     }
 
     else
@@ -78,7 +78,7 @@ LABEL_5:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   appLayout = self->_appLayout;

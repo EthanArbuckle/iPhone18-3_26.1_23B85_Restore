@@ -1,27 +1,27 @@
 @interface CRTextFeatureMultiRegion
-- (CRTextFeatureMultiRegion)initWithOrderedFeatures:(id)a3;
+- (CRTextFeatureMultiRegion)initWithOrderedFeatures:(id)features;
 @end
 
 @implementation CRTextFeatureMultiRegion
 
-- (CRTextFeatureMultiRegion)initWithOrderedFeatures:(id)a3
+- (CRTextFeatureMultiRegion)initWithOrderedFeatures:(id)features
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  featuresCopy = features;
   v29.receiver = self;
   v29.super_class = CRTextFeatureMultiRegion;
   v5 = [(CRTextFeature *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    [(CRTextFeature *)v5 setSubFeatures:v4];
+    [(CRTextFeature *)v5 setSubFeatures:featuresCopy];
     [(CRTextFeature *)v6 setBounds:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [(CRTextFeature *)v6 subFeatures];
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    subFeatures = [(CRTextFeature *)v6 subFeatures];
+    v8 = [subFeatures countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v8)
     {
       v9 = *v26;
@@ -32,7 +32,7 @@
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subFeatures);
           }
 
           v11 = *(*(&v25 + 1) + 8 * v10);
@@ -57,7 +57,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v8 = [subFeatures countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v8);

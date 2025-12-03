@@ -7,9 +7,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 cloudKitDevicesListURL];
+  cloudKitDevicesListURL = [v2 cloudKitDevicesListURL];
 
-  return v3;
+  return cloudKitDevicesListURL;
 }
 
 @end

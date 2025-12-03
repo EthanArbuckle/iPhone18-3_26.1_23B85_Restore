@@ -1,13 +1,13 @@
 @interface JavaUtilAbstractList
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)iterator;
-- (id)listIteratorWithInt:(int)a3;
-- (id)subListWithInt:(int)a3 withInt:(int)a4;
-- (int)indexOfWithId:(id)a3;
-- (int)lastIndexOfWithId:(id)a3;
+- (id)listIteratorWithInt:(int)int;
+- (id)subListWithInt:(int)int withInt:(int)withInt;
+- (int)indexOfWithId:(id)id;
+- (int)lastIndexOfWithId:(id)id;
 - (unint64_t)hash;
 - (void)clear;
-- (void)removeRangeWithInt:(int)a3 withInt:(int)a4;
+- (void)removeRangeWithInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation JavaUtilAbstractList
@@ -19,70 +19,70 @@
   [(JavaUtilAbstractList *)self removeRangeWithInt:0 withInt:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     v14 = 1;
   }
 
   else
   {
-    if (![JavaUtilList_class_() isInstance:a3])
+    if (![JavaUtilList_class_() isInstance:equal])
     {
       goto LABEL_15;
     }
 
     v5 = JavaUtilList_class_();
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_18;
     }
 
-    if (([v5 isInstance:a3] & 1) == 0)
+    if (([v5 isInstance:equal] & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
-    v6 = [a3 size];
+    v6 = [equal size];
     if (v6 == [(JavaUtilAbstractCollection *)self size])
     {
-      v7 = [(JavaUtilAbstractList *)self iterator];
-      v8 = [a3 iterator];
-      if (!v7)
+      iterator = [(JavaUtilAbstractList *)self iterator];
+      iterator2 = [equal iterator];
+      if (!iterator)
       {
         goto LABEL_18;
       }
 
-      v9 = v8;
-      v10 = [v7 hasNext];
-      if (v10)
+      v9 = iterator2;
+      hasNext = [iterator hasNext];
+      if (hasNext)
       {
         while (1)
         {
-          v11 = [v7 next];
+          next = [iterator next];
           if (!v9)
           {
             break;
           }
 
-          v12 = v11;
-          v13 = [v9 next];
+          v12 = next;
+          next2 = [v9 next];
           if (v12)
           {
-            if (![v12 isEqual:v13])
+            if (![v12 isEqual:next2])
             {
               goto LABEL_14;
             }
           }
 
-          else if (v13)
+          else if (next2)
           {
             goto LABEL_14;
           }
 
-          LOBYTE(v10) = [v7 hasNext];
-          if ((v10 & 1) == 0)
+          LOBYTE(hasNext) = [iterator hasNext];
+          if ((hasNext & 1) == 0)
           {
             goto LABEL_14;
           }
@@ -93,7 +93,7 @@ LABEL_18:
       }
 
 LABEL_14:
-      v14 = v10 ^ 1;
+      v14 = hasNext ^ 1;
     }
 
     else
@@ -108,14 +108,14 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(JavaUtilAbstractList *)self iterator];
-  if (!v2)
+  iterator = [(JavaUtilAbstractList *)self iterator];
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = v2;
-  if (![v2 hasNext])
+  v3 = iterator;
+  if (![iterator hasNext])
   {
     return 1;
   }
@@ -123,30 +123,30 @@ LABEL_15:
   v4 = 1;
   do
   {
-    v5 = [v3 next];
-    if (v5)
+    next = [v3 next];
+    if (next)
     {
-      LODWORD(v5) = [v5 hash];
+      LODWORD(next) = [next hash];
     }
 
-    v4 = v5 + 31 * v4;
+    v4 = next + 31 * v4;
   }
 
   while (([v3 hasNext] & 1) != 0);
   return v4;
 }
 
-- (int)indexOfWithId:(id)a3
+- (int)indexOfWithId:(id)id
 {
-  v4 = [(JavaUtilAbstractList *)self listIterator];
-  v5 = v4;
-  if (a3)
+  listIterator = [(JavaUtilAbstractList *)self listIterator];
+  v5 = listIterator;
+  if (id)
   {
-    if (v4)
+    if (listIterator)
     {
       while (([v5 hasNext] & 1) != 0)
       {
-        if ([a3 isEqual:{objc_msgSend(v5, "next")}])
+        if ([id isEqual:{objc_msgSend(v5, "next")}])
         {
           goto LABEL_9;
         }
@@ -159,7 +159,7 @@ LABEL_13:
     JreThrowNullPointerException();
   }
 
-  if (!v4)
+  if (!listIterator)
   {
     goto LABEL_13;
   }
@@ -188,17 +188,17 @@ LABEL_9:
   return v3;
 }
 
-- (int)lastIndexOfWithId:(id)a3
+- (int)lastIndexOfWithId:(id)id
 {
   v4 = [(JavaUtilAbstractList *)self listIteratorWithInt:[(JavaUtilAbstractCollection *)self size]];
   v5 = v4;
-  if (a3)
+  if (id)
   {
     if (v4)
     {
       while (([v5 hasPrevious] & 1) != 0)
       {
-        if ([a3 isEqual:{objc_msgSend(v5, "previous")}])
+        if ([id isEqual:{objc_msgSend(v5, "previous")}])
         {
           goto LABEL_9;
         }
@@ -229,19 +229,19 @@ LABEL_9:
   return -1;
 }
 
-- (id)listIteratorWithInt:(int)a3
+- (id)listIteratorWithInt:(int)int
 {
   v5 = [JavaUtilAbstractList_FullListIterator alloc];
-  sub_1002647DC(v5, self, a3);
+  sub_1002647DC(v5, self, int);
 
   return v5;
 }
 
-- (void)removeRangeWithInt:(int)a3 withInt:(int)a4
+- (void)removeRangeWithInt:(int)int withInt:(int)withInt
 {
   v6 = [(JavaUtilAbstractList *)self listIteratorWithInt:?];
-  v7 = __OFSUB__(a4, a3);
-  v8 = a4 - a3;
+  v7 = __OFSUB__(withInt, int);
+  v8 = withInt - int;
   if (!((v8 < 0) ^ v7 | (v8 == 0)))
   {
     v9 = v6;
@@ -261,15 +261,15 @@ LABEL_9:
   }
 }
 
-- (id)subListWithInt:(int)a3 withInt:(int)a4
+- (id)subListWithInt:(int)int withInt:(int)withInt
 {
-  if (a3 < 0 || [(JavaUtilAbstractCollection *)self size]< a4)
+  if (int < 0 || [(JavaUtilAbstractCollection *)self size]< withInt)
   {
     v11 = new_JavaLangIndexOutOfBoundsException_init();
     goto LABEL_11;
   }
 
-  if (a3 > a4)
+  if (int > withInt)
   {
     v11 = new_JavaLangIllegalArgumentException_init();
 LABEL_11:
@@ -284,7 +284,7 @@ LABEL_11:
   }
 
   v9 = objc_alloc(*v8);
-  sub_100264B18(v9, self, a3, a4);
+  sub_100264B18(v9, self, int, withInt);
 
   return v9;
 }

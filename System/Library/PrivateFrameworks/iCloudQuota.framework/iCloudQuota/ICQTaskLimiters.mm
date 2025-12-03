@@ -1,18 +1,18 @@
 @interface ICQTaskLimiters
 - (_TtC11iCloudQuota15ICQTaskLimiters)init;
-- (void)performClosureNoParamsWithIdentifier:(id)a3 task:(id)a4 completion:(id)a5;
-- (void)performWithIdentifier:(id)a3 task:(id)a4 completion:(id)a5;
+- (void)performClosureNoParamsWithIdentifier:(id)identifier task:(id)task completion:(id)completion;
+- (void)performWithIdentifier:(id)identifier task:(id)task completion:(id)completion;
 @end
 
 @implementation ICQTaskLimiters
 
-- (void)performClosureNoParamsWithIdentifier:(id)a3 task:(id)a4 completion:(id)a5
+- (void)performClosureNoParamsWithIdentifier:(id)identifier task:(id)task completion:(id)completion
 {
   v8 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_2809F9CE8, &qword_2755F3690) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v10 = &v21 - v9;
-  v11 = _Block_copy(a4);
-  v12 = _Block_copy(a5);
+  v11 = _Block_copy(task);
+  v12 = _Block_copy(completion);
   v13 = sub_2755EC98C();
   v15 = v14;
   v16 = swift_allocObject();
@@ -31,18 +31,18 @@
   v19[8] = v16;
   v19[9] = sub_275579318;
   v19[10] = v17;
-  v20 = self;
+  selfCopy = self;
   sub_2755CF6F4(0, 0, v10, &unk_2755F36E8, v19);
 }
 
-- (void)performWithIdentifier:(id)a3 task:(id)a4 completion:(id)a5
+- (void)performWithIdentifier:(id)identifier task:(id)task completion:(id)completion
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2809F9CE8, &qword_2755F3690);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x28223BE20](v8 - 8);
   v11 = &v22 - v10;
-  v12 = _Block_copy(a4);
-  v13 = _Block_copy(a5);
+  v12 = _Block_copy(task);
+  v13 = _Block_copy(completion);
   v14 = sub_2755EC98C();
   v16 = v15;
   v17 = swift_allocObject();
@@ -61,7 +61,7 @@
   v20[8] = v17;
   v20[9] = sub_275578EB0;
   v20[10] = v18;
-  v21 = self;
+  selfCopy = self;
   sub_2755CEE70(0, 0, v11, &unk_2755F36F0, v20);
 }
 

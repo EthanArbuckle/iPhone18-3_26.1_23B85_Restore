@@ -1,22 +1,22 @@
 @interface SBUIPasscodeBiometricAuthenticationView
-- (SBUIPasscodeBiometricAuthenticationView)initWithFrame:(CGRect)a3 layoutDelegate:(id)a4;
+- (SBUIPasscodeBiometricAuthenticationView)initWithFrame:(CGRect)frame layoutDelegate:(id)delegate;
 - (SBUIPasscodeBiometricAuthenticationViewDelegate)delegate;
 - (SBUIPasscodeBiometricAuthenticationViewLayoutDelegate)layoutDelegate;
 - (void)_cancelButtonHit;
 - (void)_emergencyCallButtonHit;
-- (void)_layoutAuthReasonLabel:(id)a3;
-- (void)_setTouchIDReason:(id)a3;
+- (void)_layoutAuthReasonLabel:(id)label;
+- (void)_setTouchIDReason:(id)reason;
 - (void)_updateConstraints;
 - (void)_updateReasonTextIfPossible;
 - (void)_updateSubviews;
 - (void)_usePasscodeButtonHit;
 - (void)layoutSubviews;
-- (void)setAncillaryButtonsVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFaceIDUsePasscodeButtonVisible:(BOOL)a3;
-- (void)setOverrideFaceIDReason:(id)a3;
-- (void)setShowsLockIconForFaceID:(BOOL)a3;
-- (void)setType:(unint64_t)a3;
-- (void)setUnlockDestination:(id)a3;
+- (void)setAncillaryButtonsVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setFaceIDUsePasscodeButtonVisible:(BOOL)visible;
+- (void)setOverrideFaceIDReason:(id)reason;
+- (void)setShowsLockIconForFaceID:(BOOL)d;
+- (void)setType:(unint64_t)type;
+- (void)setUnlockDestination:(id)destination;
 @end
 
 @implementation SBUIPasscodeBiometricAuthenticationView
@@ -44,14 +44,14 @@
 
 - (void)_updateSubviews
 {
-  v3 = [(SBUIPasscodeBiometricAuthenticationView *)self layer];
-  [v3 setAllowsGroupBlending:0];
+  layer = [(SBUIPasscodeBiometricAuthenticationView *)self layer];
+  [layer setAllowsGroupBlending:0];
 
-  v4 = [(SBUIPasscodeBiometricAuthenticationView *)self type];
+  type = [(SBUIPasscodeBiometricAuthenticationView *)self type];
   v5 = [(SBUIPasscodeBiometricAuthenticationView *)self type]== 2 || [(SBUIPasscodeBiometricAuthenticationView *)self type]== 3;
-  v6 = [(SBUIPasscodeBiometricAuthenticationView *)self type];
+  type2 = [(SBUIPasscodeBiometricAuthenticationView *)self type];
   touchIDGlyphLayoutGuide = self->_touchIDGlyphLayoutGuide;
-  if (v4 == 1)
+  if (type == 1)
   {
     if (!touchIDGlyphLayoutGuide)
     {
@@ -87,8 +87,8 @@
       self->_touchIDGlyphView = v12;
 
       v14 = self->_touchIDGlyphView;
-      v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v15 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       [(PKGlyphView *)v14 updateRasterizationScale:?];
 
       [(PKGlyphView *)self->_touchIDGlyphView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -108,16 +108,16 @@
       [(UILabel *)v18 setFont:v19];
 
       v20 = self->_touchIDReasonLabel;
-      v21 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v20 setBackgroundColor:v21];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v20 setBackgroundColor:clearColor];
 
       v22 = self->_touchIDReasonLabel;
       v23 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.48];
       [(UILabel *)v22 setTextColor:v23];
 
-      v24 = [(UILabel *)self->_touchIDReasonLabel layer];
+      layer2 = [(UILabel *)self->_touchIDReasonLabel layer];
       v25 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-      [v24 setCompositingFilter:v25];
+      [layer2 setCompositingFilter:v25];
 
       [(UILabel *)self->_touchIDReasonLabel setTextAlignment:1];
       [(UILabel *)self->_touchIDReasonLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -142,7 +142,7 @@
   }
 
   backgroundCancelButton = self->_backgroundCancelButton;
-  if (v6)
+  if (type2)
   {
     if (!backgroundCancelButton)
     {
@@ -187,16 +187,16 @@
 
       [(UILabel *)self->_faceIDReasonLabel setAdjustsFontForContentSizeCategory:1];
       v40 = self->_faceIDReasonLabel;
-      v41 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v40 setBackgroundColor:v41];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v40 setBackgroundColor:clearColor2];
 
       v42 = self->_faceIDReasonLabel;
       v43 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.23];
       [(UILabel *)v42 setTextColor:v43];
 
-      v44 = [(UILabel *)self->_faceIDReasonLabel layer];
+      layer3 = [(UILabel *)self->_faceIDReasonLabel layer];
       v45 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-      [v44 setCompositingFilter:v45];
+      [layer3 setCompositingFilter:v45];
 
       [(UILabel *)self->_faceIDReasonLabel setTextAlignment:1];
       [(UILabel *)self->_faceIDReasonLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -257,7 +257,7 @@
   }
 
   touchIDUsePasscodeButton = self->_touchIDUsePasscodeButton;
-  if (v4 == 1)
+  if (type == 1)
   {
     if (!touchIDUsePasscodeButton)
     {
@@ -275,9 +275,9 @@
       v69 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.48];
       [(SBUIButton *)v68 setTitleColor:v69 forState:0];
 
-      v70 = [(SBUIButton *)self->_touchIDUsePasscodeButton layer];
+      layer4 = [(SBUIButton *)self->_touchIDUsePasscodeButton layer];
       v71 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-      [v70 setCompositingFilter:v71];
+      [layer4 setCompositingFilter:v71];
 
       [(SBUIPasscodeBiometricAuthenticationView *)self addSubview:self->_touchIDUsePasscodeButton];
     }
@@ -312,8 +312,8 @@
 
     [(SBUIButton *)self->_cancelButton addTarget:self action:sel__cancelButtonHit forControlEvents:64];
     v80 = self->_cancelButton;
-    v81 = [MEMORY[0x1E69DC888] whiteColor];
-    [(SBUIButton *)v80 setTitleColor:v81 forState:0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(SBUIButton *)v80 setTitleColor:whiteColor forState:0];
 
     [(SBUIPasscodeBiometricAuthenticationView *)self addSubview:self->_cancelButton];
   }
@@ -331,8 +331,8 @@
 
     [(SBUIButton *)self->_emergencyCallButton addTarget:self action:sel__emergencyCallButtonHit forControlEvents:64];
     v87 = self->_emergencyCallButton;
-    v88 = [MEMORY[0x1E69DC888] whiteColor];
-    [(SBUIButton *)v87 setTitleColor:v88 forState:0];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(SBUIButton *)v87 setTitleColor:whiteColor2 forState:0];
 
     [(SBUIButton *)self->_emergencyCallButton setExclusiveTouch:1];
     [(SBUIPasscodeBiometricAuthenticationView *)self addSubview:self->_emergencyCallButton];
@@ -342,9 +342,9 @@
 - (void)_updateConstraints
 {
   v173[4] = *MEMORY[0x1E69E9840];
-  v3 = [(SBUIPasscodeBiometricAuthenticationView *)self type];
-  v157 = self;
-  if (v3 - 2 < 2)
+  type = [(SBUIPasscodeBiometricAuthenticationView *)self type];
+  selfCopy = self;
+  if (type - 2 < 2)
   {
     emergencyCallButton = self->_emergencyCallButton;
     v173[0] = self->_cancelButton;
@@ -359,7 +359,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
     cancelButton = self->_cancelButton;
     v172[0] = self->_touchIDUsePasscodeButton;
@@ -402,16 +402,16 @@ LABEL_7:
         v18 = *(*(&v159 + 1) + 8 * i);
         [v18 setUserInteractionEnabled:1];
         [v18 setClipsToBounds:1];
-        v19 = [MEMORY[0x1E69DC888] clearColor];
-        [v18 setBackgroundColor:v19];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [v18 setBackgroundColor:clearColor];
 
-        v20 = [v18 titleLabel];
+        titleLabel = [v18 titleLabel];
         v21 = [MEMORY[0x1E69DB878] systemFontOfSize:{SBUIScaledFontSizeWithMaxSizeCategory(v16, 16.0)}];
-        [v20 setFont:v21];
+        [titleLabel setFont:v21];
 
-        [v20 setLineBreakMode:5];
-        [v20 setAdjustsFontSizeToFitWidth:1];
-        [v20 setMinimumScaleFactor:1.0];
+        [titleLabel setLineBreakMode:5];
+        [titleLabel setAdjustsFontSizeToFitWidth:1];
+        [titleLabel setMinimumScaleFactor:1.0];
         [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v18 setContentHorizontalAlignment:0];
         LODWORD(v22) = 1144750080;
@@ -424,151 +424,151 @@ LABEL_7:
     while (v14);
   }
 
-  p_isa = &v157->super.super.super.super.isa;
-  v24 = [(SBUIPasscodePillButton *)v157->_faceIDUsePasscodeButton widthAnchor];
-  v25 = [v24 constraintEqualToConstant:225.0];
+  p_isa = &selfCopy->super.super.super.super.isa;
+  widthAnchor = [(SBUIPasscodePillButton *)selfCopy->_faceIDUsePasscodeButton widthAnchor];
+  v25 = [widthAnchor constraintEqualToConstant:225.0];
 
   LODWORD(v26) = 1132068864;
   v156 = v25;
   [v25 setPriority:v26];
-  if ([(SBUIPasscodeBiometricAuthenticationView *)v157 type]== 2 || [(SBUIPasscodeBiometricAuthenticationView *)v157 type]== 3)
+  if ([(SBUIPasscodeBiometricAuthenticationView *)selfCopy type]== 2 || [(SBUIPasscodeBiometricAuthenticationView *)selfCopy type]== 3)
   {
     v121 = MEMORY[0x1E696ACD8];
-    v152 = [(UILabel *)v157->_faceIDReasonLabel centerXAnchor];
-    v147 = [(SBUIPasscodeBiometricAuthenticationView *)v157 centerXAnchor];
-    v143 = [v152 constraintEqualToAnchor:v147];
+    centerXAnchor = [(UILabel *)selfCopy->_faceIDReasonLabel centerXAnchor];
+    centerXAnchor2 = [(SBUIPasscodeBiometricAuthenticationView *)selfCopy centerXAnchor];
+    v143 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v169[0] = v143;
-    v139 = [(UILayoutGuide *)v157->_faceIDLabelAndReasonHelperGuide topAnchor];
-    v136 = [(SBUIPasscodeBiometricAuthenticationView *)v157 topAnchor];
-    v133 = [v139 constraintEqualToAnchor:v136];
+    topAnchor = [(UILayoutGuide *)selfCopy->_faceIDLabelAndReasonHelperGuide topAnchor];
+    topAnchor2 = [(SBUIPasscodeBiometricAuthenticationView *)selfCopy topAnchor];
+    v133 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v169[1] = v133;
-    v131 = [(UILayoutGuide *)v157->_faceIDLabelAndReasonHelperGuide heightAnchor];
-    v129 = [(SBUIPasscodeBiometricAuthenticationView *)v157 heightAnchor];
-    v127 = [v131 constraintEqualToAnchor:v129 multiplier:0.48];
+    heightAnchor = [(UILayoutGuide *)selfCopy->_faceIDLabelAndReasonHelperGuide heightAnchor];
+    heightAnchor2 = [(SBUIPasscodeBiometricAuthenticationView *)selfCopy heightAnchor];
+    v127 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.48];
     v169[2] = v127;
-    v125 = [(UILabel *)v157->_faceIDReasonLabel centerYAnchor];
-    v123 = [(UILayoutGuide *)v157->_faceIDLabelAndReasonHelperGuide bottomAnchor];
-    v119 = [v125 constraintEqualToAnchor:v123];
+    centerYAnchor = [(UILabel *)selfCopy->_faceIDReasonLabel centerYAnchor];
+    bottomAnchor = [(UILayoutGuide *)selfCopy->_faceIDLabelAndReasonHelperGuide bottomAnchor];
+    v119 = [centerYAnchor constraintEqualToAnchor:bottomAnchor];
     v169[3] = v119;
-    v117 = [(SBUIPasscodePillButton *)v157->_faceIDUsePasscodeButton centerXAnchor];
-    v115 = [(SBUIPasscodeBiometricAuthenticationView *)v157 centerXAnchor];
-    v113 = [v117 constraintEqualToAnchor:v115];
+    centerXAnchor3 = [(SBUIPasscodePillButton *)selfCopy->_faceIDUsePasscodeButton centerXAnchor];
+    centerXAnchor4 = [(SBUIPasscodeBiometricAuthenticationView *)selfCopy centerXAnchor];
+    v113 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v169[4] = v113;
-    v111 = [(SBUIPasscodePillButton *)v157->_faceIDUsePasscodeButton centerYAnchor];
-    v109 = [(UILayoutGuide *)v157->_faceIDLabelAndReasonHelperGuide bottomAnchor];
-    v107 = [v111 constraintEqualToAnchor:v109];
+    centerYAnchor2 = [(SBUIPasscodePillButton *)selfCopy->_faceIDUsePasscodeButton centerYAnchor];
+    bottomAnchor2 = [(UILayoutGuide *)selfCopy->_faceIDLabelAndReasonHelperGuide bottomAnchor];
+    v107 = [centerYAnchor2 constraintEqualToAnchor:bottomAnchor2];
     v169[5] = v107;
     v169[6] = v25;
-    v105 = [(UIButton *)v157->_invisibleUsePasscodeButton widthAnchor];
-    v103 = [v105 constraintEqualToConstant:232.0];
+    widthAnchor2 = [(UIButton *)selfCopy->_invisibleUsePasscodeButton widthAnchor];
+    v103 = [widthAnchor2 constraintEqualToConstant:232.0];
     v169[7] = v103;
-    v101 = [(UIButton *)v157->_invisibleUsePasscodeButton heightAnchor];
-    v27 = [v101 constraintEqualToConstant:332.0];
+    heightAnchor3 = [(UIButton *)selfCopy->_invisibleUsePasscodeButton heightAnchor];
+    v27 = [heightAnchor3 constraintEqualToConstant:332.0];
     v169[8] = v27;
-    v28 = [(UIButton *)v157->_invisibleUsePasscodeButton centerXAnchor];
-    v29 = [(SBUIPasscodeBiometricAuthenticationView *)v157 centerXAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerXAnchor5 = [(UIButton *)selfCopy->_invisibleUsePasscodeButton centerXAnchor];
+    centerXAnchor6 = [(SBUIPasscodeBiometricAuthenticationView *)selfCopy centerXAnchor];
+    v30 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v169[9] = v30;
-    v31 = [(UIButton *)v157->_invisibleUsePasscodeButton centerYAnchor];
-    v32 = [(UILayoutGuide *)v157->_faceIDLabelAndReasonHelperGuide bottomAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    centerYAnchor3 = [(UIButton *)selfCopy->_invisibleUsePasscodeButton centerYAnchor];
+    bottomAnchor3 = [(UILayoutGuide *)selfCopy->_faceIDLabelAndReasonHelperGuide bottomAnchor];
+    v33 = [centerYAnchor3 constraintEqualToAnchor:bottomAnchor3];
     v169[10] = v33;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v169 count:11];
     [v121 activateConstraints:v34];
 
-    p_isa = &v157->super.super.super.super.isa;
+    p_isa = &selfCopy->super.super.super.super.isa;
   }
 
   if ([p_isa type] == 1)
   {
     v124 = MEMORY[0x1E696ACD8];
-    v153 = [p_isa[62] heightAnchor];
-    v148 = [v153 constraintEqualToConstant:66.0];
+    heightAnchor4 = [p_isa[62] heightAnchor];
+    v148 = [heightAnchor4 constraintEqualToConstant:66.0];
     v168[0] = v148;
-    v144 = [p_isa[62] widthAnchor];
-    v140 = [v144 constraintEqualToConstant:66.0];
+    widthAnchor3 = [p_isa[62] widthAnchor];
+    v140 = [widthAnchor3 constraintEqualToConstant:66.0];
     v168[1] = v140;
-    v137 = [p_isa[62] centerXAnchor];
-    v134 = [p_isa centerXAnchor];
-    v132 = [v137 constraintEqualToAnchor:v134];
+    centerXAnchor7 = [p_isa[62] centerXAnchor];
+    centerXAnchor8 = [p_isa centerXAnchor];
+    v132 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v168[2] = v132;
-    v130 = [p_isa[71] topAnchor];
-    v128 = [p_isa topAnchor];
-    v126 = [v130 constraintEqualToAnchor:v128];
+    topAnchor3 = [p_isa[71] topAnchor];
+    topAnchor4 = [p_isa topAnchor];
+    v126 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v168[3] = v126;
-    v122 = [p_isa[71] heightAnchor];
-    v120 = [p_isa heightAnchor];
-    v118 = [v122 constraintEqualToAnchor:v120 multiplier:0.4 constant:33.0];
+    heightAnchor5 = [p_isa[71] heightAnchor];
+    heightAnchor6 = [p_isa heightAnchor];
+    v118 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6 multiplier:0.4 constant:33.0];
     v168[4] = v118;
-    v116 = [p_isa[62] bottomAnchor];
-    v114 = [p_isa[71] bottomAnchor];
-    v112 = [v116 constraintEqualToAnchor:v114];
+    bottomAnchor4 = [p_isa[62] bottomAnchor];
+    bottomAnchor5 = [p_isa[71] bottomAnchor];
+    v112 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v168[5] = v112;
-    v110 = [p_isa[67] centerXAnchor];
-    v108 = [p_isa centerXAnchor];
-    v106 = [v110 constraintEqualToAnchor:v108];
+    centerXAnchor9 = [p_isa[67] centerXAnchor];
+    centerXAnchor10 = [p_isa centerXAnchor];
+    v106 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
     v168[6] = v106;
-    v104 = [p_isa[67] firstBaselineAnchor];
-    v102 = [p_isa[62] bottomAnchor];
-    v35 = [v104 constraintEqualToAnchor:v102 constant:36.0];
+    firstBaselineAnchor = [p_isa[67] firstBaselineAnchor];
+    bottomAnchor6 = [p_isa[62] bottomAnchor];
+    v35 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor6 constant:36.0];
     v168[7] = v35;
-    v36 = [p_isa[60] centerXAnchor];
-    v37 = [p_isa centerXAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerXAnchor11 = [p_isa[60] centerXAnchor];
+    centerXAnchor12 = [p_isa centerXAnchor];
+    v38 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
     v168[8] = v38;
-    v39 = [p_isa[60] firstBaselineAnchor];
-    v40 = [p_isa[67] bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:56.0];
+    firstBaselineAnchor2 = [p_isa[60] firstBaselineAnchor];
+    bottomAnchor7 = [p_isa[67] bottomAnchor];
+    v41 = [firstBaselineAnchor2 constraintEqualToAnchor:bottomAnchor7 constant:56.0];
     v168[9] = v41;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v168 count:10];
     [v124 activateConstraints:v42];
 
-    p_isa = &v157->super.super.super.super.isa;
+    p_isa = &selfCopy->super.super.super.super.isa;
   }
 
   if ([p_isa type])
   {
     v135 = MEMORY[0x1E696ACD8];
-    v154 = [p_isa[65] topAnchor];
-    v149 = [p_isa topAnchor];
-    v145 = [v154 constraintEqualToAnchor:v149];
+    topAnchor5 = [p_isa[65] topAnchor];
+    topAnchor6 = [p_isa topAnchor];
+    v145 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v167[0] = v145;
-    v141 = [p_isa[65] leadingAnchor];
-    v138 = [p_isa leadingAnchor];
-    v43 = [v141 constraintEqualToAnchor:v138];
+    leadingAnchor = [p_isa[65] leadingAnchor];
+    leadingAnchor2 = [p_isa leadingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v167[1] = v43;
-    v44 = [p_isa[65] trailingAnchor];
-    v45 = [p_isa trailingAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    trailingAnchor = [p_isa[65] trailingAnchor];
+    trailingAnchor2 = [p_isa trailingAnchor];
+    v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v167[2] = v46;
-    v47 = [p_isa[65] bottomAnchor];
-    v48 = [p_isa bottomAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:-50.0];
+    bottomAnchor8 = [p_isa[65] bottomAnchor];
+    bottomAnchor9 = [p_isa bottomAnchor];
+    v49 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:-50.0];
     v167[3] = v49;
     v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v167 count:4];
     [v135 activateConstraints:v50];
 
-    p_isa = &v157->super.super.super.super.isa;
+    p_isa = &selfCopy->super.super.super.super.isa;
   }
 
-  v51 = [MEMORY[0x1E69DC938] currentDevice];
-  v52 = [v51 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v52 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v71 = [MEMORY[0x1E69DC938] currentDevice];
-    v72 = [v71 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v72 & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 1) < 2)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 1) < 2)
     {
-      v73 = [p_isa rightAnchor];
-      v74 = [p_isa[64] rightAnchor];
-      v75 = [v73 constraintGreaterThanOrEqualToAnchor:v74];
+      rightAnchor = [p_isa rightAnchor];
+      rightAnchor2 = [p_isa[64] rightAnchor];
+      v75 = [rightAnchor constraintGreaterThanOrEqualToAnchor:rightAnchor2];
       [v75 setActive:1];
 
-      v76 = [p_isa[63] leftAnchor];
-      v77 = [p_isa leftAnchor];
-      v78 = [v76 constraintGreaterThanOrEqualToAnchor:v77];
+      leftAnchor = [p_isa[63] leftAnchor];
+      leftAnchor2 = [p_isa leftAnchor];
+      v78 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2];
       [v78 setActive:1];
     }
 
@@ -577,50 +577,50 @@ LABEL_7:
     v88 = [v86 constraintsWithVisualFormat:@"[_emergencyCallButton]-(>=10)-[_cancelButton]" options:0x10000 metrics:0 views:v87];
     [v86 activateConstraints:v88];
 
-    v158 = [p_isa layoutDelegate];
-    [v158 passcodeBiometricAuthenticationViewSideButtonsOffsetFromCenter:p_isa];
+    layoutDelegate = [p_isa layoutDelegate];
+    [layoutDelegate passcodeBiometricAuthenticationViewSideButtonsOffsetFromCenter:p_isa];
     v90 = v89;
     v151 = MEMORY[0x1E696ACD8];
-    v91 = [p_isa[63] centerXAnchor];
-    v92 = [p_isa centerXAnchor];
-    v93 = [v91 constraintEqualToAnchor:v92 constant:-v90];
+    centerXAnchor13 = [p_isa[63] centerXAnchor];
+    centerXAnchor14 = [p_isa centerXAnchor];
+    v93 = [centerXAnchor13 constraintEqualToAnchor:centerXAnchor14 constant:-v90];
     v164[0] = v93;
-    v94 = [p_isa[64] centerXAnchor];
-    v95 = [p_isa centerXAnchor];
-    v96 = [v94 constraintEqualToAnchor:v95 constant:v90];
+    centerXAnchor15 = [p_isa[64] centerXAnchor];
+    centerXAnchor16 = [p_isa centerXAnchor];
+    v96 = [centerXAnchor15 constraintEqualToAnchor:centerXAnchor16 constant:v90];
     v164[1] = v96;
     v97 = [MEMORY[0x1E695DEC8] arrayWithObjects:v164 count:2];
     [v151 activateConstraints:v97];
 
-    [v158 passcodeBiometricAuthenticationViewNumberPadAncillaryButtonOffsetFromTopOfScreen:p_isa];
+    [layoutDelegate passcodeBiometricAuthenticationViewNumberPadAncillaryButtonOffsetFromTopOfScreen:p_isa];
     v99 = v98;
     v59 = MEMORY[0x1E696ACD8];
-    v63 = [p_isa[64] centerYAnchor];
-    v100 = [p_isa topAnchor];
-    v64 = [v63 constraintEqualToAnchor:v100 constant:v99];
+    centerYAnchor4 = [p_isa[64] centerYAnchor];
+    topAnchor7 = [p_isa topAnchor];
+    v64 = [centerYAnchor4 constraintEqualToAnchor:topAnchor7 constant:v99];
     v163[0] = v64;
-    v66 = [p_isa[63] centerYAnchor];
-    v67 = [p_isa[64] centerYAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67];
-    v163[1] = v68;
+    centerYAnchor5 = [p_isa[63] centerYAnchor];
+    centerYAnchor6 = [p_isa[64] centerYAnchor];
+    centerXAnchor18 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
+    v163[1] = centerXAnchor18;
     v69 = MEMORY[0x1E695DEC8];
-    v65 = v100;
+    v65 = topAnchor7;
     v70 = v163;
     goto LABEL_33;
   }
 
   v53 = MEMORY[0x1E69DDA98];
-  v54 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v54))
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    v55 = [p_isa type];
+    type2 = [p_isa type];
 
-    if (v55)
+    if (type2)
     {
       v56 = dbl_1A9B2A670[([*v53 activeInterfaceOrientation] - 1) < 2];
-      v57 = [p_isa type];
+      type3 = [p_isa type];
       v58 = &OBJC_IVAR___SBUIPasscodeBiometricAuthenticationView__faceIDReasonLabel;
-      if (v57 == 1)
+      if (type3 == 1)
       {
         v58 = &OBJC_IVAR___SBUIPasscodeBiometricAuthenticationView__touchIDUsePasscodeButton;
       }
@@ -628,21 +628,21 @@ LABEL_7:
       v59 = MEMORY[0x1E696ACD8];
       v60 = p_isa[64];
       v61 = *(p_isa + *v58);
-      v62 = [v60 centerXAnchor];
-      v63 = [p_isa centerXAnchor];
-      v158 = v62;
-      v64 = [v62 constraintEqualToAnchor:v63];
+      centerXAnchor17 = [v60 centerXAnchor];
+      centerYAnchor4 = [p_isa centerXAnchor];
+      layoutDelegate = centerXAnchor17;
+      v64 = [centerXAnchor17 constraintEqualToAnchor:centerYAnchor4];
       v166[0] = v64;
       v65 = v61;
-      v66 = [p_isa[64] topAnchor];
-      v67 = [v65 bottomAnchor];
-      v68 = [v66 constraintEqualToAnchor:v67 constant:v56];
-      v166[1] = v68;
+      centerYAnchor5 = [p_isa[64] topAnchor];
+      centerYAnchor6 = [v65 bottomAnchor];
+      centerXAnchor18 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6 constant:v56];
+      v166[1] = centerXAnchor18;
       v69 = MEMORY[0x1E695DEC8];
       v70 = v166;
 LABEL_33:
-      v80 = [v69 arrayWithObjects:v70 count:2];
-      [v59 activateConstraints:v80];
+      centerXAnchor19 = [v69 arrayWithObjects:v70 count:2];
+      [v59 activateConstraints:centerXAnchor19];
       goto LABEL_34;
     }
   }
@@ -652,28 +652,28 @@ LABEL_33:
   }
 
   v155 = MEMORY[0x1E696ACD8];
-  v158 = [p_isa[72] topAnchor];
-  v150 = [p_isa topAnchor];
-  v146 = [v158 constraintEqualToAnchor:v150];
+  layoutDelegate = [p_isa[72] topAnchor];
+  topAnchor8 = [p_isa topAnchor];
+  v146 = [layoutDelegate constraintEqualToAnchor:topAnchor8];
   v165[0] = v146;
-  v142 = [p_isa[72] heightAnchor];
+  heightAnchor7 = [p_isa[72] heightAnchor];
   [p_isa heightAnchor];
-  v66 = v79 = p_isa;
-  v67 = [v142 constraintEqualToAnchor:v66 multiplier:0.6];
-  v165[1] = v67;
-  v68 = [p_isa[64] centerXAnchor];
-  v80 = [p_isa centerXAnchor];
-  v81 = [v68 constraintEqualToAnchor:v80];
+  centerYAnchor5 = v79 = p_isa;
+  centerYAnchor6 = [heightAnchor7 constraintEqualToAnchor:centerYAnchor5 multiplier:0.6];
+  v165[1] = centerYAnchor6;
+  centerXAnchor18 = [p_isa[64] centerXAnchor];
+  centerXAnchor19 = [p_isa centerXAnchor];
+  v81 = [centerXAnchor18 constraintEqualToAnchor:centerXAnchor19];
   v165[2] = v81;
-  v82 = [v79[64] topAnchor];
-  v83 = [v79[72] bottomAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83];
+  topAnchor9 = [v79[64] topAnchor];
+  bottomAnchor10 = [v79[72] bottomAnchor];
+  v84 = [topAnchor9 constraintEqualToAnchor:bottomAnchor10];
   v165[3] = v84;
   v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v165 count:4];
   [v155 activateConstraints:v85];
 
-  v64 = v142;
-  v63 = v150;
+  v64 = heightAnchor7;
+  centerYAnchor4 = topAnchor8;
 
   v65 = v146;
 LABEL_34:
@@ -695,39 +695,39 @@ LABEL_34:
   [(SBUIPasscodeBiometricAuthenticationView *)self _layoutAuthReasonLabel:self->_faceIDReasonLabel];
 }
 
-- (SBUIPasscodeBiometricAuthenticationView)initWithFrame:(CGRect)a3 layoutDelegate:(id)a4
+- (SBUIPasscodeBiometricAuthenticationView)initWithFrame:(CGRect)frame layoutDelegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = SBUIPasscodeBiometricAuthenticationView;
-  v10 = [(SBUIPasscodeBiometricAuthenticationView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SBUIPasscodeBiometricAuthenticationView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(SBUIPasscodeBiometricAuthenticationView *)v10 setLayoutDelegate:v9];
+    [(SBUIPasscodeBiometricAuthenticationView *)height setLayoutDelegate:delegateCopy];
   }
 
   return v11;
 }
 
-- (void)_layoutAuthReasonLabel:(id)a3
+- (void)_layoutAuthReasonLabel:(id)label
 {
-  v3 = a3;
-  [v3 frame];
-  [v3 setFrame:?];
-  [v3 setPreferredMaxLayoutWidth:246.0];
-  [v3 sizeToFit];
+  labelCopy = label;
+  [labelCopy frame];
+  [labelCopy setFrame:?];
+  [labelCopy setPreferredMaxLayoutWidth:246.0];
+  [labelCopy sizeToFit];
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     [(SBUIPasscodeBiometricAuthenticationView *)self _updateReasonTextIfPossible];
     [(SBUIPasscodeBiometricAuthenticationView *)self _updateSubviews];
 
@@ -735,24 +735,24 @@ LABEL_34:
   }
 }
 
-- (void)setUnlockDestination:(id)a3
+- (void)setUnlockDestination:(id)destination
 {
-  v4 = [a3 copy];
+  v4 = [destination copy];
   unlockDestination = self->_unlockDestination;
   self->_unlockDestination = v4;
 
   [(SBUIPasscodeBiometricAuthenticationView *)self _updateReasonTextIfPossible];
 }
 
-- (void)setAncillaryButtonsVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setAncillaryButtonsVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_ancillaryButtonsVisible != a3)
+  if (self->_ancillaryButtonsVisible != visible)
   {
     v7[5] = v4;
     v7[6] = v5;
-    self->_ancillaryButtonsVisible = a3;
+    self->_ancillaryButtonsVisible = visible;
     v6 = 0.3;
-    if (!a4)
+    if (!animated)
     {
       v6 = 0.0;
     }
@@ -786,14 +786,14 @@ uint64_t __79__SBUIPasscodeBiometricAuthenticationView_setAncillaryButtonsVisibl
   return [v4 setAlpha:v3];
 }
 
-- (void)setFaceIDUsePasscodeButtonVisible:(BOOL)a3
+- (void)setFaceIDUsePasscodeButtonVisible:(BOOL)visible
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __77__SBUIPasscodeBiometricAuthenticationView_setFaceIDUsePasscodeButtonVisible___block_invoke;
   v3[3] = &unk_1E789DA60;
   v3[4] = self;
-  v4 = a3;
+  visibleCopy = visible;
   [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v3 options:0 animations:0.3 completion:0.0];
 }
 
@@ -836,16 +836,16 @@ uint64_t __77__SBUIPasscodeBiometricAuthenticationView_setFaceIDUsePasscodeButto
   return [v5 setAlpha:v6];
 }
 
-- (void)setShowsLockIconForFaceID:(BOOL)a3
+- (void)setShowsLockIconForFaceID:(BOOL)d
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  if (self->_showsLockIconForFaceID != a3)
+  if (self->_showsLockIconForFaceID != d)
   {
-    v3 = a3;
-    self->_showsLockIconForFaceID = a3;
+    dCopy = d;
+    self->_showsLockIconForFaceID = d;
     v5 = [(SBUIPasscodeBiometricAuthenticationView *)self type]== 2 || [(SBUIPasscodeBiometricAuthenticationView *)self type]== 3;
     faceIDLockIcon = self->_faceIDLockIcon;
-    if (v3 && v5 && !faceIDLockIcon)
+    if (dCopy && v5 && !faceIDLockIcon)
     {
       v7 = MEMORY[0x1E69DCAB8];
       v8 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:2 scale:46.0];
@@ -862,13 +862,13 @@ uint64_t __77__SBUIPasscodeBiometricAuthenticationView_setFaceIDUsePasscodeButto
       [(UIImageView *)self->_faceIDLockIcon setTranslatesAutoresizingMaskIntoConstraints:0];
       [(SBUIPasscodeBiometricAuthenticationView *)self addSubview:self->_faceIDLockIcon];
       v14 = MEMORY[0x1E696ACD8];
-      v15 = [(UIImageView *)self->_faceIDLockIcon centerXAnchor];
-      v16 = [(SBUIPasscodeBiometricAuthenticationView *)self centerXAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      centerXAnchor = [(UIImageView *)self->_faceIDLockIcon centerXAnchor];
+      centerXAnchor2 = [(SBUIPasscodeBiometricAuthenticationView *)self centerXAnchor];
+      v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v23[0] = v17;
-      v18 = [(UIImageView *)self->_faceIDLockIcon bottomAnchor];
-      v19 = [(UILabel *)self->_faceIDReasonLabel topAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19];
+      bottomAnchor = [(UIImageView *)self->_faceIDLockIcon bottomAnchor];
+      topAnchor = [(UILabel *)self->_faceIDReasonLabel topAnchor];
+      v20 = [bottomAnchor constraintEqualToAnchor:topAnchor];
       v23[1] = v20;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
       [v14 activateConstraints:v21];
@@ -885,12 +885,12 @@ uint64_t __77__SBUIPasscodeBiometricAuthenticationView_setFaceIDUsePasscodeButto
   }
 }
 
-- (void)setOverrideFaceIDReason:(id)a3
+- (void)setOverrideFaceIDReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   if (![(NSString *)self->_overrideFaceIDReason isEqualToString:?]&& self->_faceIDReasonLabel)
   {
-    v4 = [v6 copy];
+    v4 = [reasonCopy copy];
     overrideFaceIDReason = self->_overrideFaceIDReason;
     self->_overrideFaceIDReason = v4;
 
@@ -899,12 +899,12 @@ uint64_t __77__SBUIPasscodeBiometricAuthenticationView_setFaceIDUsePasscodeButto
   }
 }
 
-- (void)_setTouchIDReason:(id)a3
+- (void)_setTouchIDReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   if (![(NSString *)self->_touchIDReason isEqualToString:?]&& self->_touchIDReasonLabel)
   {
-    v4 = [v6 copy];
+    v4 = [reasonCopy copy];
     touchIDReason = self->_touchIDReason;
     self->_touchIDReason = v4;
 
@@ -915,20 +915,20 @@ uint64_t __77__SBUIPasscodeBiometricAuthenticationView_setFaceIDUsePasscodeButto
 
 - (void)_usePasscodeButtonHit
 {
-  v3 = [(SBUIPasscodeBiometricAuthenticationView *)self delegate];
-  [v3 passcodeBiometricAuthenticationViewUsePasscodeButtonHit:self];
+  delegate = [(SBUIPasscodeBiometricAuthenticationView *)self delegate];
+  [delegate passcodeBiometricAuthenticationViewUsePasscodeButtonHit:self];
 }
 
 - (void)_cancelButtonHit
 {
-  v3 = [(SBUIPasscodeBiometricAuthenticationView *)self delegate];
-  [v3 passcodeBiometricAuthenticationViewCancelButtonHit:self];
+  delegate = [(SBUIPasscodeBiometricAuthenticationView *)self delegate];
+  [delegate passcodeBiometricAuthenticationViewCancelButtonHit:self];
 }
 
 - (void)_emergencyCallButtonHit
 {
-  v3 = [(SBUIPasscodeBiometricAuthenticationView *)self delegate];
-  [v3 passcodeBiometricAuthenticationViewEmergencyCallButtonHit:self];
+  delegate = [(SBUIPasscodeBiometricAuthenticationView *)self delegate];
+  [delegate passcodeBiometricAuthenticationViewEmergencyCallButtonHit:self];
 }
 
 - (SBUIPasscodeBiometricAuthenticationViewDelegate)delegate

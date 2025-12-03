@@ -1,6 +1,6 @@
 @interface MTRElectricalPowerMeasurementClusterMeasurementRangeStruct
 - (MTRElectricalPowerMeasurementClusterMeasurementRangeStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -51,11 +51,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct);
-  v5 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self measurementType];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMeasurementType:v5];
+  measurementType = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self measurementType];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMeasurementType:measurementType];
 
   v6 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self min];
   [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMin:v6];
@@ -63,29 +63,29 @@
   v7 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self max];
   [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMax:v7];
 
-  v8 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self startTimestamp];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setStartTimestamp:v8];
+  startTimestamp = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self startTimestamp];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setStartTimestamp:startTimestamp];
 
-  v9 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self endTimestamp];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setEndTimestamp:v9];
+  endTimestamp = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self endTimestamp];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setEndTimestamp:endTimestamp];
 
-  v10 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self minTimestamp];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMinTimestamp:v10];
+  minTimestamp = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self minTimestamp];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMinTimestamp:minTimestamp];
 
-  v11 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self maxTimestamp];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMaxTimestamp:v11];
+  maxTimestamp = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self maxTimestamp];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMaxTimestamp:maxTimestamp];
 
-  v12 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self startSystime];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setStartSystime:v12];
+  startSystime = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self startSystime];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setStartSystime:startSystime];
 
-  v13 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self endSystime];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setEndSystime:v13];
+  endSystime = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self endSystime];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setEndSystime:endSystime];
 
-  v14 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self minSystime];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMinSystime:v14];
+  minSystime = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self minSystime];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMinSystime:minSystime];
 
-  v15 = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self maxSystime];
-  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMaxSystime:v15];
+  maxSystime = [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)self maxSystime];
+  [(MTRElectricalPowerMeasurementClusterMeasurementRangeStruct *)v4 setMaxSystime:maxSystime];
 
   return v4;
 }

@@ -9,9 +9,9 @@
   v3 = [NSString alloc];
   scopedIdentifier = self->_scopedIdentifier;
   recordClass = self->_recordClass;
-  v6 = [(CKRecordID *)self->_privateRecordID recordName];
-  v7 = [(CKRecordID *)self->_sharedRecordID recordName];
-  v8 = [v3 initWithFormat:@"<%@ %@ [%@->%@]>", recordClass, scopedIdentifier, v6, v7];
+  recordName = [(CKRecordID *)self->_privateRecordID recordName];
+  recordName2 = [(CKRecordID *)self->_sharedRecordID recordName];
+  v8 = [v3 initWithFormat:@"<%@ %@ [%@->%@]>", recordClass, scopedIdentifier, recordName, recordName2];
 
   return v8;
 }

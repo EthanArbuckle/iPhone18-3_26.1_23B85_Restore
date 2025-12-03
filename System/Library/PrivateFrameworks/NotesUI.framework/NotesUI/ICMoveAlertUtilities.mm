@@ -1,49 +1,49 @@
 @interface ICMoveAlertUtilities
-+ (void)postAlertForFolderDepthLimitWithPresentingViewController:(id)a3 completionHandler:(id)a4;
-+ (void)postAlertForMovingFolderWithSharedNotes:(id)a3 sharedSubfolders:(id)a4 destination:(id)a5 presentingViewController:(id)a6 shareHandler:(id)a7 cancelHandler:(id)a8;
-+ (void)postAlertForMovingLockedNotesToOtherAccountIsCopy:(BOOL)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
-+ (void)postAlertForMovingLockedOrSingleJoinedNotesToSharedFolderWithCountOfNotes:(unint64_t)a3 guiltyObjects:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6;
-+ (void)postAlertForMovingNotesContainingSharedNotesToSharedFolder:(id)a3 destination:(id)a4 presentingViewController:(id)a5 shareHandler:(id)a6 cancelHandler:(id)a7;
-+ (void)postAlertForMovingSharedNotesToAnotherAccountWithPresentingViewController:(id)a3 completionHandler:(id)a4;
-+ (void)postAlertForMovingSmartFolderWithRestrictedFilterToLocalAccount:(id)a3 presentingViewController:(id)a4;
-+ (void)postAlertForOwnerStoppedSharingCurrentFolderWithPresentingViewController:(id)a3 completionHandler:(id)a4;
-+ (void)postAlertForSharingFolderContainingLockedOrJoinedRootObjectsWithGuiltyObjects:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
-+ (void)postAlertForSharingFolderWithSharedNotes:(id)a3 sharedSubfolders:(id)a4 presentingViewController:(id)a5 shareHandler:(id)a6 cancelHandler:(id)a7;
-+ (void)postAlertForUnsupportedAttachmentsInLegacyAccount:(id)a3 presentingViewController:(id)a4;
-+ (void)postAlertWithOKButtonWithTitle:(id)a3 message:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6;
-+ (void)postAlertWithProceedAndCancelButtonsWithTitle:(id)a3 message:(id)a4 proceedTitle:(id)a5 presentingViewController:(id)a6 proceedHandler:(id)a7 cancelHandler:(id)a8;
++ (void)postAlertForFolderDepthLimitWithPresentingViewController:(id)controller completionHandler:(id)handler;
++ (void)postAlertForMovingFolderWithSharedNotes:(id)notes sharedSubfolders:(id)subfolders destination:(id)destination presentingViewController:(id)controller shareHandler:(id)handler cancelHandler:(id)cancelHandler;
++ (void)postAlertForMovingLockedNotesToOtherAccountIsCopy:(BOOL)copy presentingViewController:(id)controller completionHandler:(id)handler;
++ (void)postAlertForMovingLockedOrSingleJoinedNotesToSharedFolderWithCountOfNotes:(unint64_t)notes guiltyObjects:(id)objects presentingViewController:(id)controller completionHandler:(id)handler;
++ (void)postAlertForMovingNotesContainingSharedNotesToSharedFolder:(id)folder destination:(id)destination presentingViewController:(id)controller shareHandler:(id)handler cancelHandler:(id)cancelHandler;
++ (void)postAlertForMovingSharedNotesToAnotherAccountWithPresentingViewController:(id)controller completionHandler:(id)handler;
++ (void)postAlertForMovingSmartFolderWithRestrictedFilterToLocalAccount:(id)account presentingViewController:(id)controller;
++ (void)postAlertForOwnerStoppedSharingCurrentFolderWithPresentingViewController:(id)controller completionHandler:(id)handler;
++ (void)postAlertForSharingFolderContainingLockedOrJoinedRootObjectsWithGuiltyObjects:(id)objects presentingViewController:(id)controller completionHandler:(id)handler;
++ (void)postAlertForSharingFolderWithSharedNotes:(id)notes sharedSubfolders:(id)subfolders presentingViewController:(id)controller shareHandler:(id)handler cancelHandler:(id)cancelHandler;
++ (void)postAlertForUnsupportedAttachmentsInLegacyAccount:(id)account presentingViewController:(id)controller;
++ (void)postAlertWithOKButtonWithTitle:(id)title message:(id)message presentingViewController:(id)controller completionHandler:(id)handler;
++ (void)postAlertWithProceedAndCancelButtonsWithTitle:(id)title message:(id)message proceedTitle:(id)proceedTitle presentingViewController:(id)controller proceedHandler:(id)handler cancelHandler:(id)cancelHandler;
 @end
 
 @implementation ICMoveAlertUtilities
 
-+ (void)postAlertWithOKButtonWithTitle:(id)a3 message:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6
++ (void)postAlertWithOKButtonWithTitle:(id)title message:(id)message presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  controllerCopy = controller;
+  handlerCopy = handler;
   if ([objc_opt_class() suppressesAlerts])
   {
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v9 message:v10 preferredStyle:1];
+    v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     v14 = MEMORY[0x1E69DC648];
     v15 = __ICLocalizedFrameworkString_impl(@"OK", @"OK", 0, 1);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __106__ICMoveAlertUtilities_postAlertWithOKButtonWithTitle_message_presentingViewController_completionHandler___block_invoke;
     v17[3] = &unk_1E846A970;
-    v18 = v12;
+    v18 = handlerCopy;
     v16 = [v14 actionWithTitle:v15 style:0 handler:v17];
 
     [v13 addAction:v16];
-    [v11 presentViewController:v13 animated:1 completion:0];
+    [controllerCopy presentViewController:v13 animated:1 completion:0];
   }
 }
 
@@ -58,24 +58,24 @@ uint64_t __106__ICMoveAlertUtilities_postAlertWithOKButtonWithTitle_message_pres
   return result;
 }
 
-+ (void)postAlertWithProceedAndCancelButtonsWithTitle:(id)a3 message:(id)a4 proceedTitle:(id)a5 presentingViewController:(id)a6 proceedHandler:(id)a7 cancelHandler:(id)a8
++ (void)postAlertWithProceedAndCancelButtonsWithTitle:(id)title message:(id)message proceedTitle:(id)proceedTitle presentingViewController:(id)controller proceedHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (![objc_opt_class() suppressesAlerts] && v13 && v14)
+  titleCopy = title;
+  messageCopy = message;
+  proceedTitleCopy = proceedTitle;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
+  if (![objc_opt_class() suppressesAlerts] && titleCopy && messageCopy)
   {
-    v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v13 message:v14 preferredStyle:1];
+    v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     v20 = MEMORY[0x1E69DC648];
     v21 = __ICLocalizedFrameworkString_impl(@"Cancel", @"Cancel", 0, 1);
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __145__ICMoveAlertUtilities_postAlertWithProceedAndCancelButtonsWithTitle_message_proceedTitle_presentingViewController_proceedHandler_cancelHandler___block_invoke;
     v30[3] = &unk_1E846A970;
-    v31 = v18;
+    v31 = cancelHandlerCopy;
     v22 = [v20 actionWithTitle:v21 style:1 handler:v30];
 
     [v19 addAction:v22];
@@ -84,16 +84,16 @@ uint64_t __106__ICMoveAlertUtilities_postAlertWithOKButtonWithTitle_message_pres
     v26 = 3221225472;
     v27 = __145__ICMoveAlertUtilities_postAlertWithProceedAndCancelButtonsWithTitle_message_proceedTitle_presentingViewController_proceedHandler_cancelHandler___block_invoke_2;
     v28 = &unk_1E846A970;
-    v29 = v17;
-    v24 = [v23 actionWithTitle:v15 style:0 handler:&v25];
+    v29 = handlerCopy;
+    v24 = [v23 actionWithTitle:proceedTitleCopy style:0 handler:&v25];
     [v19 addAction:{v24, v25, v26, v27, v28}];
     [v19 setPreferredAction:v24];
-    [v16 presentViewController:v19 animated:1 completion:0];
+    [controllerCopy presentViewController:v19 animated:1 completion:0];
   }
 
-  else if (v17)
+  else if (handlerCopy)
   {
-    v17[2](v17);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -119,13 +119,13 @@ uint64_t __145__ICMoveAlertUtilities_postAlertWithProceedAndCancelButtonsWithTit
   return result;
 }
 
-+ (void)postAlertForMovingLockedOrSingleJoinedNotesToSharedFolderWithCountOfNotes:(unint64_t)a3 guiltyObjects:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6
++ (void)postAlertForMovingLockedOrSingleJoinedNotesToSharedFolderWithCountOfNotes:(unint64_t)notes guiltyObjects:(id)objects presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v14 = a5;
-  v10 = a6;
-  if ([a4 ic_containsObjectPassingTest:&__block_literal_global_27])
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if ([objects ic_containsObjectPassingTest:&__block_literal_global_27])
   {
-    if (a3 == 1)
+    if (notes == 1)
     {
       v11 = @"Your note wasn’t moved.";
     }
@@ -137,22 +137,22 @@ uint64_t __145__ICMoveAlertUtilities_postAlertWithProceedAndCancelButtonsWithTit
 
     v12 = __ICLocalizedFrameworkString_impl(v11, v11, 0, 1);
     v13 = __ICLocalizedFrameworkString_impl(@"Locked notes can’t be shared.", @"Locked notes can’t be shared.", 0, 1);
-    [a1 postAlertWithOKButtonWithTitle:v12 message:v13 presentingViewController:v14 completionHandler:v10];
+    [self postAlertWithOKButtonWithTitle:v12 message:v13 presentingViewController:controllerCopy completionHandler:handlerCopy];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-+ (void)postAlertForSharingFolderContainingLockedOrJoinedRootObjectsWithGuiltyObjects:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
++ (void)postAlertForSharingFolderContainingLockedOrJoinedRootObjectsWithGuiltyObjects:(id)objects presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 ic_containsObjectPassingTest:&__block_literal_global_26];
-  v12 = [v10 ic_containsObjectPassingTest:&__block_literal_global_28];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  objectsCopy = objects;
+  v11 = [objectsCopy ic_containsObjectPassingTest:&__block_literal_global_26];
+  v12 = [objectsCopy ic_containsObjectPassingTest:&__block_literal_global_28];
 
   v13 = __ICLocalizedFrameworkString_impl(@"Can’t Share Folder", @"Can’t Share Folder", 0, 1);
   if (v11 && v12)
@@ -180,7 +180,7 @@ uint64_t __145__ICMoveAlertUtilities_postAlertWithProceedAndCancelButtonsWithTit
   v16 = v15;
   if (v13 && v15)
   {
-    [a1 postAlertWithOKButtonWithTitle:v13 message:v15 presentingViewController:v8 completionHandler:v9];
+    [self postAlertWithOKButtonWithTitle:v13 message:v15 presentingViewController:controllerCopy completionHandler:handlerCopy];
     goto LABEL_16;
   }
 
@@ -191,9 +191,9 @@ LABEL_12:
     [ICMoveAlertUtilities postAlertForSharingFolderContainingLockedOrJoinedRootObjectsWithGuiltyObjects:v17 presentingViewController:? completionHandler:?];
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_16:
@@ -215,36 +215,36 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
   return v3;
 }
 
-+ (void)postAlertForOwnerStoppedSharingCurrentFolderWithPresentingViewController:(id)a3 completionHandler:(id)a4
++ (void)postAlertForOwnerStoppedSharingCurrentFolderWithPresentingViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v9 = __ICLocalizedFrameworkString_impl(@"Sharing Stopped", @"Sharing Stopped", 0, 1);
   v8 = __ICLocalizedFrameworkString_impl(@"The owner stopped sharing this folder. It’s no longer available.", @"The owner stopped sharing this folder. It’s no longer available.", 0, 1);
-  [a1 postAlertWithOKButtonWithTitle:v9 message:v8 presentingViewController:v7 completionHandler:v6];
+  [self postAlertWithOKButtonWithTitle:v9 message:v8 presentingViewController:controllerCopy completionHandler:handlerCopy];
 }
 
-+ (void)postAlertForSharingFolderWithSharedNotes:(id)a3 sharedSubfolders:(id)a4 presentingViewController:(id)a5 shareHandler:(id)a6 cancelHandler:(id)a7
++ (void)postAlertForSharingFolderWithSharedNotes:(id)notes sharedSubfolders:(id)subfolders presentingViewController:(id)controller shareHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v21 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  notesCopy = notes;
+  cancelHandlerCopy = cancelHandler;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  subfoldersCopy = subfolders;
   v16 = __ICLocalizedFrameworkString_impl(@"Sharing this folder will change who can read and edit all notes within it.", @"Sharing this folder will change who can read and edit all notes within it.", 0, 1);
-  v17 = [v15 count];
+  v17 = [subfoldersCopy count];
 
   if (v17)
   {
     v18 = @"This folder already contains shared notes and folders. People who currently have access to these may lose it.";
   }
 
-  else if ([v21 count] == 1)
+  else if ([notesCopy count] == 1)
   {
     v18 = @"This folder already contains a shared note. People who currently have access to this note may lose it.";
   }
 
-  else if ([v21 count] < 2)
+  else if ([notesCopy count] < 2)
   {
     v18 = @"This folder is shared. People who currently have access to it may lose it.";
   }
@@ -256,17 +256,17 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
 
   v19 = __ICLocalizedFrameworkString_impl(v18, v18, 0, 1);
   v20 = __ICLocalizedFrameworkString_impl(@"Share", @"Share", 0, 1);
-  [a1 postAlertWithProceedAndCancelButtonsWithTitle:v16 message:v19 proceedTitle:v20 presentingViewController:v14 proceedHandler:v13 cancelHandler:v12];
+  [self postAlertWithProceedAndCancelButtonsWithTitle:v16 message:v19 proceedTitle:v20 presentingViewController:controllerCopy proceedHandler:handlerCopy cancelHandler:cancelHandlerCopy];
 }
 
-+ (void)postAlertForMovingFolderWithSharedNotes:(id)a3 sharedSubfolders:(id)a4 destination:(id)a5 presentingViewController:(id)a6 shareHandler:(id)a7 cancelHandler:(id)a8
++ (void)postAlertForMovingFolderWithSharedNotes:(id)notes sharedSubfolders:(id)subfolders destination:(id)destination presentingViewController:(id)controller shareHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v37 = a3;
-  v13 = a4;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
+  notesCopy = notes;
+  subfoldersCopy = subfolders;
+  cancelHandlerCopy = cancelHandler;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  destinationCopy = destination;
   objc_opt_class();
   v18 = ICDynamicCast();
   objc_opt_class();
@@ -274,35 +274,35 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
   objc_opt_class();
   v20 = ICDynamicCast();
 
-  v21 = [v19 isSharedViaICloud];
-  v22 = [v18 localizedName];
-  v23 = v22;
+  isSharedViaICloud = [v19 isSharedViaICloud];
+  localizedName = [v18 localizedName];
+  v23 = localizedName;
   v35 = v20;
-  if (v22)
+  if (localizedName)
   {
-    v24 = v22;
+    v24 = localizedName;
   }
 
   else
   {
-    v25 = [v19 localizedTitle];
-    v26 = v25;
-    if (v25)
+    localizedTitle = [v19 localizedTitle];
+    v26 = localizedTitle;
+    if (localizedTitle)
     {
-      v27 = v25;
+      title = localizedTitle;
     }
 
     else
     {
-      v27 = [v20 title];
+      title = [v20 title];
     }
 
-    v24 = v27;
+    v24 = title;
   }
 
-  if (v21)
+  if (isSharedViaICloud)
   {
-    if ([v13 count] == 1)
+    if ([subfoldersCopy count] == 1)
     {
       v28 = __ICLocalizedFrameworkString_impl(@"Move Shared Folder?", @"Move Shared Folder?", 0, 1);
       v29 = MEMORY[0x1E696AEC0];
@@ -323,17 +323,17 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
   else
   {
     v28 = __ICLocalizedFrameworkString_impl(@"Moving this folder will change who can read and edit all notes within it.", @"Moving this folder will change who can read and edit all notes within it.", 0, 1);
-    if ([v13 count])
+    if ([subfoldersCopy count])
     {
       v31 = @"This folder already contains shared notes and folders. People who currently have access to these may lose it.";
     }
 
-    else if ([v37 count] == 1)
+    else if ([notesCopy count] == 1)
     {
       v31 = @"This folder already contains a shared note. People who currently have access to this note may lose it.";
     }
 
-    else if ([v37 count] < 2)
+    else if ([notesCopy count] < 2)
     {
       v31 = @"This folder is shared. People who currently have access to it may lose it.";
     }
@@ -347,17 +347,17 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
   }
 
   v34 = __ICLocalizedFrameworkString_impl(@"Move Anyway", @"Move Anyway", 0, 1);
-  [a1 postAlertWithProceedAndCancelButtonsWithTitle:v28 message:v33 proceedTitle:v34 presentingViewController:v16 proceedHandler:v15 cancelHandler:v14];
+  [self postAlertWithProceedAndCancelButtonsWithTitle:v28 message:v33 proceedTitle:v34 presentingViewController:controllerCopy proceedHandler:handlerCopy cancelHandler:cancelHandlerCopy];
 }
 
-+ (void)postAlertForMovingNotesContainingSharedNotesToSharedFolder:(id)a3 destination:(id)a4 presentingViewController:(id)a5 shareHandler:(id)a6 cancelHandler:(id)a7
++ (void)postAlertForMovingNotesContainingSharedNotesToSharedFolder:(id)folder destination:(id)destination presentingViewController:(id)controller shareHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v37 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v37 count])
+  folderCopy = folder;
+  destinationCopy = destination;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
+  if ([folderCopy count])
   {
     objc_opt_class();
     v16 = ICDynamicCast();
@@ -365,37 +365,37 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
     v17 = ICDynamicCast();
     objc_opt_class();
     v18 = ICDynamicCast();
-    v19 = [v17 isSharedViaICloud];
+    isSharedViaICloud = [v17 isSharedViaICloud];
     v36 = v16;
-    v20 = [v16 localizedName];
-    v21 = v20;
+    localizedName = [v16 localizedName];
+    v21 = localizedName;
     v35 = v18;
-    if (v20)
+    if (localizedName)
     {
-      v22 = v20;
+      v22 = localizedName;
     }
 
     else
     {
-      v23 = [v17 localizedTitle];
-      v24 = v23;
-      if (v23)
+      localizedTitle = [v17 localizedTitle];
+      v24 = localizedTitle;
+      if (localizedTitle)
       {
-        v25 = v23;
+        title = localizedTitle;
       }
 
       else
       {
-        v25 = [v18 title];
+        title = [v18 title];
       }
 
-      v22 = v25;
+      v22 = title;
     }
 
-    v26 = [v37 count];
-    if (v19)
+    v26 = [folderCopy count];
+    if (isSharedViaICloud)
     {
-      v34 = a1;
+      selfCopy = self;
       if (v26 == 1)
       {
         v27 = __ICLocalizedFrameworkString_impl(@"Move Shared Note?", @"Move Shared Note?", 0, 1);
@@ -413,7 +413,7 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
       v31 = __ICLocalizedFrameworkString_impl(v29, v29, 0, 1);
       v32 = [v28 localizedStringWithFormat:v31, v22];
 
-      a1 = v34;
+      self = selfCopy;
     }
 
     else
@@ -434,25 +434,25 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
     }
 
     v33 = __ICLocalizedFrameworkString_impl(@"Move Anyway", @"Move Anyway", 0, 1);
-    [a1 postAlertWithProceedAndCancelButtonsWithTitle:v27 message:v32 proceedTitle:v33 presentingViewController:v13 proceedHandler:v14 cancelHandler:v15];
+    [self postAlertWithProceedAndCancelButtonsWithTitle:v27 message:v32 proceedTitle:v33 presentingViewController:controllerCopy proceedHandler:handlerCopy cancelHandler:cancelHandlerCopy];
   }
 }
 
-+ (void)postAlertForMovingSharedNotesToAnotherAccountWithPresentingViewController:(id)a3 completionHandler:(id)a4
++ (void)postAlertForMovingSharedNotesToAnotherAccountWithPresentingViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v9 = __ICLocalizedFrameworkString_impl(@"Notes couldn’t be moved.", @"Notes couldn’t be moved.", 0, 1);
   v8 = __ICLocalizedFrameworkString_impl(@"Shared notes can’t be moved to a different account.", @"Shared notes can’t be moved to a different account.", 0, 1);
-  [a1 postAlertWithOKButtonWithTitle:v9 message:v8 presentingViewController:v7 completionHandler:v6];
+  [self postAlertWithOKButtonWithTitle:v9 message:v8 presentingViewController:controllerCopy completionHandler:handlerCopy];
 }
 
-+ (void)postAlertForMovingLockedNotesToOtherAccountIsCopy:(BOOL)a3 presentingViewController:(id)a4 completionHandler:(id)a5
++ (void)postAlertForMovingLockedNotesToOtherAccountIsCopy:(BOOL)copy presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v12 = __ICLocalizedFrameworkString_impl(@"One or more notes are locked.", @"One or more notes are locked.", 0, 1);
-  if (a3)
+  if (copy)
   {
     v10 = @"You must remove the lock from this note to copy it to a different account.";
   }
@@ -463,42 +463,42 @@ uint64_t __145__ICMoveAlertUtilities_postAlertForSharingFolderContainingLockedOr
   }
 
   v11 = __ICLocalizedFrameworkString_impl(v10, v10, 0, 1);
-  [a1 postAlertWithOKButtonWithTitle:v12 message:v11 presentingViewController:v9 completionHandler:v8];
+  [self postAlertWithOKButtonWithTitle:v12 message:v11 presentingViewController:controllerCopy completionHandler:handlerCopy];
 }
 
-+ (void)postAlertForFolderDepthLimitWithPresentingViewController:(id)a3 completionHandler:(id)a4
++ (void)postAlertForFolderDepthLimitWithPresentingViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v11 = __ICLocalizedFrameworkString_impl(@"Can’t move folder", @"Can’t move folder", 0, 1);
   v8 = [MEMORY[0x1E69B7760] folderDepthLimit] + 1;
   v9 = __ICLocalizedFrameworkString_impl(@"FOLDER_DEPTH_LIMIT_MESSAGE_%lu", @"FOLDER_DEPTH_LIMIT_MESSAGE_%lu", 0, 1);
   v10 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v9, v8];
-  [a1 postAlertWithOKButtonWithTitle:v11 message:v10 presentingViewController:v7 completionHandler:v6];
+  [self postAlertWithOKButtonWithTitle:v11 message:v10 presentingViewController:controllerCopy completionHandler:handlerCopy];
 }
 
-+ (void)postAlertForUnsupportedAttachmentsInLegacyAccount:(id)a3 presentingViewController:(id)a4
++ (void)postAlertForUnsupportedAttachmentsInLegacyAccount:(id)account presentingViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  accountCopy = account;
   v9 = __ICLocalizedFrameworkString_impl(@"The folder couldn’t be added because one or more notes have attachments.", @"The folder couldn’t be added because one or more notes have attachments.", 0, 1);
-  v8 = [v7 localizedAttachmentsNotSupportedReason];
+  localizedAttachmentsNotSupportedReason = [accountCopy localizedAttachmentsNotSupportedReason];
 
-  [a1 postAlertWithOKButtonWithTitle:v9 message:v8 presentingViewController:v6 completionHandler:0];
+  [self postAlertWithOKButtonWithTitle:v9 message:localizedAttachmentsNotSupportedReason presentingViewController:controllerCopy completionHandler:0];
 }
 
-+ (void)postAlertForMovingSmartFolderWithRestrictedFilterToLocalAccount:(id)a3 presentingViewController:(id)a4
++ (void)postAlertForMovingSmartFolderWithRestrictedFilterToLocalAccount:(id)account presentingViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  accountCopy = account;
   v12 = __ICLocalizedFrameworkString_impl(@"Can’t Move Folder", @"Can’t Move Folder", 0, 1);
   v8 = MEMORY[0x1E696AEC0];
   v9 = __ICLocalizedFrameworkString_impl(@"Smart Folders using Shared and Mentions filters can’t be moved to the “%@” account.", @"Smart Folders using Shared and Mentions filters can’t be moved to the “%@” account.", 0, 1);
-  v10 = [v7 localizedName];
+  localizedName = [accountCopy localizedName];
 
-  v11 = [v8 localizedStringWithFormat:v9, v10];
+  v11 = [v8 localizedStringWithFormat:v9, localizedName];
 
-  [a1 postAlertWithOKButtonWithTitle:v12 message:v11 presentingViewController:v6 completionHandler:0];
+  [self postAlertWithOKButtonWithTitle:v12 message:v11 presentingViewController:controllerCopy completionHandler:0];
 }
 
 @end

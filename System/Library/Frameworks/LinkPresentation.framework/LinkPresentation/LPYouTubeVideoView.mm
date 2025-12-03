@@ -1,27 +1,27 @@
 @interface LPYouTubeVideoView
-- (LPYouTubeVideoView)initWithHost:(id)a3 video:(id)a4 style:(id)a5 posterFrame:(id)a6 posterFrameStyle:(id)a7 configuration:(id)a8;
+- (LPYouTubeVideoView)initWithHost:(id)host video:(id)video style:(id)style posterFrame:(id)frame posterFrameStyle:(id)frameStyle configuration:(id)configuration;
 - (id)createVideoPlayerView;
-- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)youTubePlayer:(id)a3 didChangeToFullScreen:(BOOL)a4;
-- (void)youTubePlayer:(id)a3 didChangeToState:(int64_t)a4;
-- (void)youTubePlayer:(id)a3 didReceiveError:(id)a4;
+- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)player;
+- (void)setMuted:(BOOL)muted;
+- (void)setPlaying:(BOOL)playing;
+- (void)youTubePlayer:(id)player didChangeToFullScreen:(BOOL)screen;
+- (void)youTubePlayer:(id)player didChangeToState:(int64_t)state;
+- (void)youTubePlayer:(id)player didReceiveError:(id)error;
 @end
 
 @implementation LPYouTubeVideoView
 
-- (LPYouTubeVideoView)initWithHost:(id)a3 video:(id)a4 style:(id)a5 posterFrame:(id)a6 posterFrameStyle:(id)a7 configuration:(id)a8
+- (LPYouTubeVideoView)initWithHost:(id)host video:(id)video style:(id)style posterFrame:(id)frame posterFrameStyle:(id)frameStyle configuration:(id)configuration
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  hostCopy = host;
+  videoCopy = video;
+  styleCopy = style;
+  frameCopy = frame;
+  frameStyleCopy = frameStyle;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = LPYouTubeVideoView;
-  v20 = [(LPVisualMediaView *)&v25 initWithHost:v14 media:v15 style:v16 posterFrame:v17 posterFrameStyle:v18 configuration:v19];
+  v20 = [(LPVisualMediaView *)&v25 initWithHost:hostCopy media:videoCopy style:styleCopy posterFrame:frameCopy posterFrameStyle:frameStyleCopy configuration:configurationCopy];
   if (v20)
   {
     v21 = objc_alloc_init(LPYouTubePlayerView);
@@ -36,22 +36,22 @@
   return v20;
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   [(LPYouTubePlayerView *)self->_platformYouTubeView setMuted:?];
 
-  [(LPVisualMediaView *)self didChangeMutedState:v3];
+  [(LPVisualMediaView *)self didChangeMutedState:mutedCopy];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  v3 = a3;
-  if ([(LPVisualMediaView *)self isPlaying]!= a3)
+  playingCopy = playing;
+  if ([(LPVisualMediaView *)self isPlaying]!= playing)
   {
     [(LPVisualMediaView *)self swapVideoPlaceholderForPlaybackIfNeeded];
     platformYouTubeView = self->_platformYouTubeView;
-    if (v3)
+    if (playingCopy)
     {
       [(LPYouTubePlayerView *)platformYouTubeView play];
     }
@@ -61,15 +61,15 @@
       [(LPYouTubePlayerView *)platformYouTubeView pause];
     }
 
-    [(LPVisualMediaView *)self setWaitingForPlayback:v3];
+    [(LPVisualMediaView *)self setWaitingForPlayback:playingCopy];
   }
 }
 
 - (id)createVideoPlayerView
 {
-  v3 = [(LPVisualMediaView *)self media];
-  v4 = [v3 youTubeURL];
-  v5 = [LPPresentationSpecializations youTubeVideoComponentsForEmbedURL:v4];
+  media = [(LPVisualMediaView *)self media];
+  youTubeURL = [media youTubeURL];
+  v5 = [LPPresentationSpecializations youTubeVideoComponentsForEmbedURL:youTubeURL];
 
   [v5 startTime];
   if (v6 != 0.0)
@@ -80,8 +80,8 @@
 
   [(LPYouTubePlayerView *)self->_platformYouTubeView setMuted:1];
   platformYouTubeView = self->_platformYouTubeView;
-  v8 = [v5 videoID];
-  [(LPYouTubePlayerView *)platformYouTubeView loadVideoWithID:v8];
+  videoID = [v5 videoID];
+  [(LPYouTubePlayerView *)platformYouTubeView loadVideoWithID:videoID];
 
   v9 = self->_platformYouTubeView;
   v10 = v9;
@@ -89,18 +89,18 @@
   return v9;
 }
 
-- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)a3
+- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)player
 {
-  v3 = a3;
+  playerCopy = player;
   v5.receiver = self;
   v5.super_class = LPYouTubeVideoView;
   [(LPVisualMediaView *)&v5 setAllowsUserInteractionWithVideoPlayer:?];
-  [(LPYouTubePlayerView *)self->_platformYouTubeView setUserInteractionEnabled:v3];
+  [(LPYouTubePlayerView *)self->_platformYouTubeView setUserInteractionEnabled:playerCopy];
 }
 
-- (void)youTubePlayer:(id)a3 didChangeToState:(int64_t)a4
+- (void)youTubePlayer:(id)player didChangeToState:(int64_t)state
 {
-  if (![(LPVisualMediaView *)self hasEverPlayed]&& a4 == 2)
+  if (![(LPVisualMediaView *)self hasEverPlayed]&& state == 2)
   {
     [(LPYouTubeVideoView *)self setAllowsUserInteractionWithVideoPlayer:1];
     v6 = dispatch_time(0, 3000000000);
@@ -113,8 +113,8 @@
     [(LPVisualMediaView *)self setHasEverPlayed:1];
   }
 
-  [(LPVisualMediaView *)self didChangePlayingState:a4 == 2];
-  if (a4 == 2)
+  [(LPVisualMediaView *)self didChangePlayingState:state == 2];
+  if (state == 2)
   {
     [(LPVisualMediaView *)self setWaitingForPlayback:0];
     if (self->_allowingInteractionUntilPlaybackResumes)
@@ -124,16 +124,16 @@
     }
   }
 
-  else if (a4 == 1)
+  else if (state == 1)
   {
     [(LPVisualMediaView *)self resetToPlaceholderView];
   }
 }
 
-- (void)youTubePlayer:(id)a3 didReceiveError:(id)a4
+- (void)youTubePlayer:(id)player didReceiveError:(id)error
 {
-  v5 = a4;
-  if ([v5 code] == 7)
+  errorCopy = error;
+  if ([errorCopy code] == 7)
   {
     [(LPVisualMediaView *)self didEncounterPossiblyTransientPlaybackError];
   }
@@ -144,10 +144,10 @@
   }
 }
 
-- (void)youTubePlayer:(id)a3 didChangeToFullScreen:(BOOL)a4
+- (void)youTubePlayer:(id)player didChangeToFullScreen:(BOOL)screen
 {
-  [(LPVisualMediaView *)self setFullScreen:a4];
-  if (a4)
+  [(LPVisualMediaView *)self setFullScreen:screen];
+  if (screen)
   {
 
     [(LPVisualMediaView *)self fullScreenVideoDidPresent];

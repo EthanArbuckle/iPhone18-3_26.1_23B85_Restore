@@ -1,19 +1,19 @@
 @interface CKSendMenuPopoverAnimation
-- (CKSendMenuPopoverAnimation)initWithAnimators:(id)a3;
+- (CKSendMenuPopoverAnimation)initWithAnimators:(id)animators;
 - (void)startAnimation;
 @end
 
 @implementation CKSendMenuPopoverAnimation
 
-- (CKSendMenuPopoverAnimation)initWithAnimators:(id)a3
+- (CKSendMenuPopoverAnimation)initWithAnimators:(id)animators
 {
-  v4 = a3;
+  animatorsCopy = animators;
   v12.receiver = self;
   v12.super_class = CKSendMenuPopoverAnimation;
   v5 = [(CKSendMenuPopoverAnimation *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [animatorsCopy copy];
     animators = v5->_animators;
     v5->_animators = v6;
 

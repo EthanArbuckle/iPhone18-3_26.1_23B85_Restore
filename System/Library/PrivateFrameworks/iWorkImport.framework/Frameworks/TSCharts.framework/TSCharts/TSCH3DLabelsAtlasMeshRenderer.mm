@@ -1,14 +1,14 @@
 @interface TSCH3DLabelsAtlasMeshRenderer
 - (TSCH3DLabelsAtlasMeshRenderer)init;
-- (id)p_resourceAtIndex:(unint64_t)a3 childIndex:(unint64_t)a4 dimension:(unint64_t)a5 createIfAbsent:(BOOL)a6;
-- (id)p_resourceForExternalLabelAttribute:(id)a3 index:(unint64_t)a4 createIfAbsent:(BOOL)a5;
-- (unint64_t)p_indexForExternalAttribute:(id)a3;
+- (id)p_resourceAtIndex:(unint64_t)index childIndex:(unint64_t)childIndex dimension:(unint64_t)dimension createIfAbsent:(BOOL)absent;
+- (id)p_resourceForExternalLabelAttribute:(id)attribute index:(unint64_t)index createIfAbsent:(BOOL)absent;
+- (unint64_t)p_indexForExternalAttribute:(id)attribute;
 - (unint64_t)p_resourceCount;
-- (void)beginResources:(id)a3 samples:(float)a4;
+- (void)beginResources:(id)resources samples:(float)samples;
 - (void)flushCache;
-- (void)p_submitExternalAttributesForIndex:(unint64_t)a3 processor:(id)a4;
-- (void)renderWithMeshRenderLabelInfo:(id)a3;
-- (void)submitResourcesWithProcessor:(id)a3;
+- (void)p_submitExternalAttributesForIndex:(unint64_t)index processor:(id)processor;
+- (void)renderWithMeshRenderLabelInfo:(id)info;
+- (void)submitResourcesWithProcessor:(id)processor;
 @end
 
 @implementation TSCH3DLabelsAtlasMeshRenderer
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (void)beginResources:(id)a3 samples:(float)a4
+- (void)beginResources:(id)resources samples:(float)samples
 {
-  v27 = a3;
+  resourcesCopy = resources;
   if (self->_atlas)
   {
     v10 = MEMORY[0x277D81150];
@@ -41,31 +41,31 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  *&v7 = a4;
-  v25 = objc_msgSend_prepareTextureAtlasWithSamples_(v27, v6, v7, v8, v9);
+  *&v7 = samples;
+  v25 = objc_msgSend_prepareTextureAtlasWithSamples_(resourcesCopy, v6, v7, v8, v9);
   atlas = self->_atlas;
   self->_atlas = v25;
 }
 
-- (id)p_resourceAtIndex:(unint64_t)a3 childIndex:(unint64_t)a4 dimension:(unint64_t)a5 createIfAbsent:(BOOL)a6
+- (id)p_resourceAtIndex:(unint64_t)index childIndex:(unint64_t)childIndex dimension:(unint64_t)dimension createIfAbsent:(BOOL)absent
 {
-  v6 = a6;
+  absentCopy = absent;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = sub_276219A84;
   v23[3] = &unk_27A6B6BE8;
-  v23[4] = a5;
+  v23[4] = dimension;
   v10 = MEMORY[0x277C98B30](v23, a2);
-  v15 = objc_msgSend_childCacheObjectAtIndex_(self, v11, v12, v13, v14, a4);
+  v15 = objc_msgSend_childCacheObjectAtIndex_(self, v11, v12, v13, v14, childIndex);
   v20 = v15;
-  if (v6)
+  if (absentCopy)
   {
-    objc_msgSend_resourceAtIndex_created_ifAbsent_(v15, v16, v17, v18, v19, a3, 0, v10);
+    objc_msgSend_resourceAtIndex_created_ifAbsent_(v15, v16, v17, v18, v19, index, 0, v10);
   }
 
   else
   {
-    objc_msgSend_resourceAtIndex_created_ifAbsent_(v15, v16, v17, v18, v19, a3, 0, 0);
+    objc_msgSend_resourceAtIndex_created_ifAbsent_(v15, v16, v17, v18, v19, index, 0, 0);
   }
   v21 = ;
 
@@ -80,10 +80,10 @@
   return v10;
 }
 
-- (unint64_t)p_indexForExternalAttribute:(id)a3
+- (unint64_t)p_indexForExternalAttribute:(id)attribute
 {
-  v4 = a3;
-  if ((objc_msgSend_isValid(v4, v5, v6, v7, v8) & 1) == 0)
+  attributeCopy = attribute;
+  if ((objc_msgSend_isValid(attributeCopy, v5, v6, v7, v8) & 1) == 0)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "[TSCH3DLabelsAtlasMeshRenderer p_indexForExternalAttribute:]");
@@ -94,7 +94,7 @@
   }
 
   externalAttributeVariables = self->_externalAttributeVariables;
-  v29 = objc_msgSend_variable(v4, v9, v10, v11, v12);
+  v29 = objc_msgSend_variable(attributeCopy, v9, v10, v11, v12);
   v34 = objc_msgSend_objectForKey_(externalAttributeVariables, v30, v31, v32, v33, v29);
 
   if (v34)
@@ -107,7 +107,7 @@
     v40 = objc_msgSend_count(self->_externalAttributeVariables, v35, v36, v37, v38) + 2;
     v44 = self->_externalAttributeVariables;
     v49 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v45, v46, v47, v48, v40);
-    v54 = objc_msgSend_variable(v4, v50, v51, v52, v53);
+    v54 = objc_msgSend_variable(attributeCopy, v50, v51, v52, v53);
     objc_msgSend_setObject_forKey_(v44, v55, v56, v57, v58, v49, v54);
   }
 
@@ -134,11 +134,11 @@
   return v40;
 }
 
-- (id)p_resourceForExternalLabelAttribute:(id)a3 index:(unint64_t)a4 createIfAbsent:(BOOL)a5
+- (id)p_resourceForExternalLabelAttribute:(id)attribute index:(unint64_t)index createIfAbsent:(BOOL)absent
 {
-  v5 = a5;
-  v8 = a3;
-  if ((objc_msgSend_isValid(v8, v9, v10, v11, v12) & 1) == 0)
+  absentCopy = absent;
+  attributeCopy = attribute;
+  if ((objc_msgSend_isValid(attributeCopy, v9, v10, v11, v12) & 1) == 0)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "[TSCH3DLabelsAtlasMeshRenderer p_resourceForExternalLabelAttribute:index:createIfAbsent:]");
@@ -148,20 +148,20 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  v32 = objc_msgSend_p_indexForExternalAttribute_(self, v13, v14, v15, v16, v8);
-  v37 = objc_msgSend_p_resourceAtIndex_childIndex_dimension_createIfAbsent_(self, v33, v34, v35, v36, a4, v32, 2, v5);
+  v32 = objc_msgSend_p_indexForExternalAttribute_(self, v13, v14, v15, v16, attributeCopy);
+  v37 = objc_msgSend_p_resourceAtIndex_childIndex_dimension_createIfAbsent_(self, v33, v34, v35, v36, index, v32, 2, absentCopy);
 
   return v37;
 }
 
-- (void)p_submitExternalAttributesForIndex:(unint64_t)a3 processor:(id)a4
+- (void)p_submitExternalAttributesForIndex:(unint64_t)index processor:(id)processor
 {
   v85 = *MEMORY[0x277D85DE8];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v78 = a4;
+  processorCopy = processor;
   obj = self->_externalAttributeVariables;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v5, v6, v7, v8, &v80, v84, 16);
   if (v10)
@@ -189,7 +189,7 @@
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v37, v38, v39, v40);
         }
 
-        v41 = objc_msgSend_p_resourceAtIndex_childIndex_dimension_createIfAbsent_(self, v21, v23, v24, v25, a3, v22, 2, 0);
+        v41 = objc_msgSend_p_resourceAtIndex_childIndex_dimension_createIfAbsent_(self, v21, v23, v24, v25, index, v22, 2, 0);
         v47 = objc_msgSend_buffer(v41, v42, v43, v44, v45);
         if (!v47 || (objc_msgSend_buffer(v41, v46, v48, v49, v50), v51 = objc_claimAutoreleasedReturnValue(), v52 = sub_276165208(v51), v54 = *v52, v53 = v52[1], v51, v51, v47, v53 == v54))
         {
@@ -203,7 +203,7 @@
         }
 
         memset(v79, 0, sizeof(v79));
-        objc_msgSend_attribute_resource_specs_(v78, v46, v48, v49, v50, v15, v41, v79);
+        objc_msgSend_attribute_resource_specs_(processorCopy, v46, v48, v49, v50, v15, v41, v79);
       }
 
       v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, v11, v12, v13, &v80, v84, 16);
@@ -213,7 +213,7 @@
   }
 }
 
-- (void)submitResourcesWithProcessor:(id)a3
+- (void)submitResourcesWithProcessor:(id)processor
 {
   v89 = 1065353216;
   v91 = 0;
@@ -225,8 +225,8 @@
   v96 = 0;
   v95 = 1065353216;
   v98 = 1065353216;
-  v79 = a3;
-  objc_msgSend_replace_(v79, v4, v5, v6, v7, &v89);
+  processorCopy = processor;
+  objc_msgSend_replace_(processorCopy, v4, v5, v6, v7, &v89);
   v13 = objc_msgSend_p_resourceCount(self, v8, v9, v10, v11);
   if (v13)
   {
@@ -287,7 +287,7 @@
               *(v88 + 5) = 0;
               v82 = v23;
               v83 = v18;
-              objc_msgSend_performBlockWithProcessor_block_(TSCH3DRenderProcessorStateSession, v75, v76, v77, v78, v79, v81);
+              objc_msgSend_performBlockWithProcessor_block_(TSCH3DRenderProcessorStateSession, v75, v76, v77, v78, processorCopy, v81);
             }
           }
         }
@@ -309,11 +309,11 @@
   self->_atlas = 0;
 }
 
-- (void)renderWithMeshRenderLabelInfo:(id)a3
+- (void)renderWithMeshRenderLabelInfo:(id)info
 {
   v298 = *MEMORY[0x277D85DE8];
-  v231 = a3;
-  v227 = objc_msgSend_renderer(v231, v5, v6, v7, v8);
+  infoCopy = info;
+  v227 = objc_msgSend_renderer(infoCopy, v5, v6, v7, v8);
   if (!self->_atlas)
   {
     v13 = MEMORY[0x277D81150];
@@ -362,12 +362,12 @@
 
   v223 = objc_msgSend_p_vertexResourceAtIndex_createIfAbsent_(self, v28, v29, v30, v31, v33, 1);
   v224 = objc_msgSend_p_texcoordResourceAtIndex_createIfAbsent_(self, v35, v36, v37, v38, v33, 1);
-  v43 = objc_msgSend_externalAttribute(v231, v39, v40, v41, v42);
+  v43 = objc_msgSend_externalAttribute(infoCopy, v39, v40, v41, v42);
   isValid = objc_msgSend_isValid(v43, v44, v45, v46, v47);
 
   if (isValid)
   {
-    v53 = objc_msgSend_externalAttribute(v231, v49, v50, v51, v52);
+    v53 = objc_msgSend_externalAttribute(infoCopy, v49, v50, v51, v52);
     v225 = objc_msgSend_p_resourceForExternalLabelAttribute_index_createIfAbsent_(self, v54, v55, v56, v57, v53, v33, 1);
   }
 
@@ -405,9 +405,9 @@
   v292 = 0u;
   v293 = 0u;
   v291 = 0u;
-  if (v231)
+  if (infoCopy)
   {
-    objc_msgSend_translation(v231, v77, 0.0, v79, v80);
+    objc_msgSend_translation(infoCopy, v77, 0.0, v79, v80);
     v83 = v263;
     LODWORD(v84) = v264;
   }
@@ -437,9 +437,9 @@
   v272 = v88;
   v273 = LODWORD(v84);
   v274 = (v86.f32[0] + *v81.i32) + 1.0;
-  if (v231)
+  if (infoCopy)
   {
-    objc_msgSend_offset(v231, v77, 0.0, v88, v84);
+    objc_msgSend_offset(infoCopy, v77, 0.0, v88, v84);
     v85 = v252;
   }
 
@@ -460,7 +460,7 @@
   v261 = vaddv_f32(v89) + 0.0;
   v262 = v261 + 1.0;
   *&v90 = sub_2761558A0(&v265, &v253, v275).u64[0];
-  objc_msgSend_rotation(v231, v91, v90, v92, v93);
+  objc_msgSend_rotation(infoCopy, v91, v90, v92, v93);
   v95 = __sincosf_stret(v94 * 0.017453);
   v96 = (1.0 - v95.__cosval) * 0.0;
   v97 = v95.__cosval + (v96 * 0.0);
@@ -491,9 +491,9 @@
   v250[11] = (v107 * 0.0) + v110;
   v251 = xmmword_2764D5F20;
   *&v112 = sub_2761558A0(v275, v250, v276).u64[0];
-  if (v231)
+  if (infoCopy)
   {
-    objc_msgSend_alignmentOffset(v231, v111, v112, v113, v114);
+    objc_msgSend_alignmentOffset(infoCopy, v111, v112, v113, v114);
     v115 = v239;
   }
 
@@ -515,9 +515,9 @@
   v248 = vaddv_f32(v116) + 0.0;
   v249 = v248 + 1.0;
   *&v118 = sub_2761558A0(v276, &v240, &__p).u64[0];
-  if (v231)
+  if (infoCopy)
   {
-    objc_msgSend_scale(v231, v117, v118, *v119.i64, v120);
+    objc_msgSend_scale(infoCopy, v117, v118, *v119.i64, v120);
     v119.i32[0] = v232;
     v121 = v233;
   }
@@ -641,7 +641,7 @@
     sub_276161E1C(v78, &v291 + 4 * v182);
     if (v82)
     {
-      v189 = objc_msgSend_externalAttribute(v231, v185, v186, v187, v188);
+      v189 = objc_msgSend_externalAttribute(infoCopy, v185, v186, v187, v188);
       v194 = objc_msgSend_isValid(v189, v190, v191, v192, v193);
 
       if ((v194 & 1) == 0)
@@ -654,7 +654,7 @@
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v210, v211, v212, v213);
       }
 
-      v214 = objc_msgSend_externalAttribute(v231, v195, v196, v197, v198);
+      v214 = objc_msgSend_externalAttribute(infoCopy, v195, v196, v197, v198);
       v219 = v214;
       if (v214)
       {

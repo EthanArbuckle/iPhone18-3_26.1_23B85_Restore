@@ -1,10 +1,10 @@
 @interface PUDefaultUpdateTileTransitionCoordinator
-- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)a3;
+- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)transform;
 @end
 
 @implementation PUDefaultUpdateTileTransitionCoordinator
 
-- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)a3
+- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)transform
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;

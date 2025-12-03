@@ -1,14 +1,14 @@
 @interface SNMockSNSessionObject
-- (id)serializedAceDataError:(id *)a3;
+- (id)serializedAceDataError:(id *)error;
 @end
 
 @implementation SNMockSNSessionObject
 
-- (id)serializedAceDataError:(id *)a3
+- (id)serializedAceDataError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = self->serializedAceDataError;
+    *error = self->serializedAceDataError;
   }
 
   data = self->_data;

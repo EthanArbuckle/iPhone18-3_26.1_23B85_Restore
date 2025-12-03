@@ -8,7 +8,7 @@
 - (void)invalidate
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20CancellableAssertion_token);
-  v3 = self;
+  selfCopy = self;
 
   sub_18E65F730();
 }

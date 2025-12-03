@@ -1,60 +1,60 @@
 @interface NEKReminderStore
-- (BOOL)_saveEventStore:(id)a3;
-- (BOOL)_updateAccount:(id)a3 withSourceWrapper:(id)a4 store:(id)a5;
-- (BOOL)_updateList:(id)a3 withCalendarWrapper:(id)a4;
-- (BOOL)shouldSendReminder:(id)a3;
-- (NEKReminderStore)initWithEnvironment:(id)a3;
-- (id)_createListForWrapper:(id)a3 store:(id)a4;
-- (id)_deletableAccountsForStore:(id)a3;
-- (id)_deletableListsForStore:(id)a3;
-- (id)deduplicateICSWrappers:(id)a3;
-- (id)freshEventStoreFor:(id)a3;
-- (id)getDefaultListForStore:(id)a3;
-- (id)listCacheForStore:(id)a3 wrappers:(id)a4;
-- (id)reminderCacheForStore:(id)a3 wrappers:(id)a4;
-- (id)saveRequestForStore:(id)a3 needsPurgeDeletedObjectsAfterSave:(BOOL)a4;
-- (void)ICSWrappersForChangeSet:(id)a3 movedReminderAndListMapping:(id)a4 pipe:(id)a5;
-- (void)_createAccountForWrapper:(id)a3 store:(id)a4;
-- (void)_deleteAccountWithIdentifier:(id)a3 store:(id)a4;
-- (void)_deleteListWithIdentifier:(id)a3 store:(id)a4;
-- (void)_deleteReminderWithIdentifier:(id)a3 store:(id)a4;
-- (void)_ensureReminderInList:(id)a3 saveRequest:(id)a4 inICSWrapper:(id)a5;
-- (void)applySidePropertiesToReminderChangeItem:(id)a3 withWrapper:(id)a4 session:(id)a5;
-- (void)deleteAccount:(id)a3;
-- (void)deleteItem:(id)a3 store:(id)a4;
-- (void)deleteItemWithIdentifier:(id)a3 store:(id)a4;
-- (void)deleteList:(id)a3;
-- (void)deleteReminder:(id)a3;
-- (void)handleReminderWithUniqueIdentifierFromGizmo:(id)a3 saveRequest:(id)a4 list:(id)a5 wrapper:(id)a6;
-- (void)handleUpdatedReminderFromGizmo:(id)a3 withSaveRequest:(id)a4 withWrapper:(id)a5;
-- (void)listWrappersForChangeSet:(id)a3 pipe:(id)a4;
-- (void)performUpdateWithICSWrappers:(id)a3 store:(id)a4 session:(id)a5;
+- (BOOL)_saveEventStore:(id)store;
+- (BOOL)_updateAccount:(id)account withSourceWrapper:(id)wrapper store:(id)store;
+- (BOOL)_updateList:(id)list withCalendarWrapper:(id)wrapper;
+- (BOOL)shouldSendReminder:(id)reminder;
+- (NEKReminderStore)initWithEnvironment:(id)environment;
+- (id)_createListForWrapper:(id)wrapper store:(id)store;
+- (id)_deletableAccountsForStore:(id)store;
+- (id)_deletableListsForStore:(id)store;
+- (id)deduplicateICSWrappers:(id)wrappers;
+- (id)freshEventStoreFor:(id)for;
+- (id)getDefaultListForStore:(id)store;
+- (id)listCacheForStore:(id)store wrappers:(id)wrappers;
+- (id)reminderCacheForStore:(id)store wrappers:(id)wrappers;
+- (id)saveRequestForStore:(id)store needsPurgeDeletedObjectsAfterSave:(BOOL)save;
+- (void)ICSWrappersForChangeSet:(id)set movedReminderAndListMapping:(id)mapping pipe:(id)pipe;
+- (void)_createAccountForWrapper:(id)wrapper store:(id)store;
+- (void)_deleteAccountWithIdentifier:(id)identifier store:(id)store;
+- (void)_deleteListWithIdentifier:(id)identifier store:(id)store;
+- (void)_deleteReminderWithIdentifier:(id)identifier store:(id)store;
+- (void)_ensureReminderInList:(id)list saveRequest:(id)request inICSWrapper:(id)wrapper;
+- (void)applySidePropertiesToReminderChangeItem:(id)item withWrapper:(id)wrapper session:(id)session;
+- (void)deleteAccount:(id)account;
+- (void)deleteItem:(id)item store:(id)store;
+- (void)deleteItemWithIdentifier:(id)identifier store:(id)store;
+- (void)deleteList:(id)list;
+- (void)deleteReminder:(id)reminder;
+- (void)handleReminderWithUniqueIdentifierFromGizmo:(id)gizmo saveRequest:(id)request list:(id)list wrapper:(id)wrapper;
+- (void)handleUpdatedReminderFromGizmo:(id)gizmo withSaveRequest:(id)request withWrapper:(id)wrapper;
+- (void)listWrappersForChangeSet:(id)set pipe:(id)pipe;
+- (void)performUpdateWithICSWrappers:(id)wrappers store:(id)store session:(id)session;
 - (void)removeAllItems;
-- (void)removeAllRemindersInList:(id)a3;
-- (void)removeDeletableAccounts:(id)a3;
-- (void)removeDeletableLists:(id)a3;
-- (void)saveEventStore:(id)a3;
-- (void)storeWrapperForCloudKitAccount:(id)a3 pipe:(id)a4;
-- (void)updateCalendar:(id)a3 store:(id)a4;
-- (void)updateICS:(id)a3 store:(id)a4 session:(id)a5;
-- (void)updateSource:(id)a3 store:(id)a4;
+- (void)removeAllRemindersInList:(id)list;
+- (void)removeDeletableAccounts:(id)accounts;
+- (void)removeDeletableLists:(id)lists;
+- (void)saveEventStore:(id)store;
+- (void)storeWrapperForCloudKitAccount:(id)account pipe:(id)pipe;
+- (void)updateCalendar:(id)calendar store:(id)store;
+- (void)updateICS:(id)s store:(id)store session:(id)session;
+- (void)updateSource:(id)source store:(id)store;
 @end
 
 @implementation NEKReminderStore
 
-- (NEKReminderStore)initWithEnvironment:(id)a3
+- (NEKReminderStore)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = NEKReminderStore;
-  v5 = [(NEKStore *)&v12 initWithEnvironment:v4];
+  v5 = [(NEKStore *)&v12 initWithEnvironment:environmentCopy];
   if (v5)
   {
     v6 = sub_100004B98("com.apple.eventkitsync.nekreminderstore");
     queue = v5->_queue;
     v5->_queue = v6;
 
-    v8 = [NEKChangeObserver changeObserverForReminderWithQueue:v5->_queue databaseController:v5 environment:v4];
+    v8 = [NEKChangeObserver changeObserverForReminderWithQueue:v5->_queue databaseController:v5 environment:environmentCopy];
     [(NEKStore *)v5 setChangeObserver:v8];
 
     v9 = [NSMapTable mapTableWithKeyOptions:5 valueOptions:0];
@@ -65,19 +65,19 @@
   return v5;
 }
 
-- (id)freshEventStoreFor:(id)a3
+- (id)freshEventStoreFor:(id)for
 {
   v4 = +[REMStore eks_storeForSyncing];
-  v5 = [(NEKReminderStore *)self saveRequests];
+  saveRequests = [(NEKReminderStore *)self saveRequests];
   v6 = +[NSMutableArray array];
-  [v5 setObject:v6 forKey:v4];
+  [saveRequests setObject:v6 forKey:v4];
 
   return v4;
 }
 
-- (void)saveEventStore:(id)a3
+- (void)saveEventStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -85,28 +85,28 @@
   v7[2] = sub_100053DE0;
   v7[3] = &unk_1000B4BB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = storeCopy;
+  v6 = storeCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)_saveEventStore:(id)a3
+- (BOOL)_saveEventStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   dispatch_assert_queue_V2(self->_queue);
   v26 = os_transaction_create();
   v24 = objc_alloc_init(NDTPerf);
   kdebug_trace();
   context = objc_autoreleasePoolPush();
-  v5 = [(NEKReminderStore *)self saveRequests];
-  v6 = [v5 objectForKey:v4];
+  saveRequests = [(NEKReminderStore *)self saveRequests];
+  v6 = [saveRequests objectForKey:storeCopy];
   v7 = [v6 copy];
 
   [v7 count];
-  v25 = self;
-  v8 = [(NEKReminderStore *)self saveRequests];
+  selfCopy = self;
+  saveRequests2 = [(NEKReminderStore *)self saveRequests];
   v9 = +[NSMutableArray array];
-  [v8 setObject:v9 forKey:v4];
+  [saveRequests2 setObject:v9 forKey:storeCopy];
 
   v30 = 0u;
   v31 = 0u;
@@ -160,12 +160,12 @@
   }
 
   objc_autoreleasePoolPop(context);
-  if ([(NEKReminderStore *)v25 saveRequestsNeedPurgeDeletedObjectsAfterSave]&& os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_FAULT))
+  if ([(NEKReminderStore *)selfCopy saveRequestsNeedPurgeDeletedObjectsAfterSave]&& os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_FAULT))
   {
     sub_100074180();
   }
 
-  [(NEKReminderStore *)v25 setSaveRequestsNeedPurgeDeletedObjectsAfterSave:0];
+  [(NEKReminderStore *)selfCopy setSaveRequestsNeedPurgeDeletedObjectsAfterSave:0];
   kdebug_trace();
   v19 = [NDTPerf nowMinusPrevious:v24];
 
@@ -197,30 +197,30 @@ LABEL_21:
   return v14 & 1;
 }
 
-- (id)saveRequestForStore:(id)a3 needsPurgeDeletedObjectsAfterSave:(BOOL)a4
+- (id)saveRequestForStore:(id)store needsPurgeDeletedObjectsAfterSave:(BOOL)save
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  saveCopy = save;
+  storeCopy = store;
+  if (!storeCopy)
   {
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_FAULT))
     {
       sub_100074294();
     }
 
-    v6 = [(NEKReminderStore *)self freshEventStoreFor:@"saveRequestForStore(Reminders)"];
+    storeCopy = [(NEKReminderStore *)self freshEventStoreFor:@"saveRequestForStore(Reminders)"];
   }
 
-  v7 = [[REMSaveRequest alloc] initWithStore:v6];
-  v8 = [(NEKStore *)self environment];
-  v9 = [v8 clientName];
-  [v7 setAuthor:v9];
+  v7 = [[REMSaveRequest alloc] initWithStore:storeCopy];
+  environment = [(NEKStore *)self environment];
+  clientName = [environment clientName];
+  [v7 setAuthor:clientName];
 
-  v10 = [(NEKReminderStore *)self saveRequests];
-  v11 = [v10 objectForKey:v6];
+  saveRequests = [(NEKReminderStore *)self saveRequests];
+  v11 = [saveRequests objectForKey:storeCopy];
   [v11 addObject:v7];
 
-  if (v4)
+  if (saveCopy)
   {
     v12 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -230,7 +230,7 @@ LABEL_21:
     }
   }
 
-  [(NEKReminderStore *)self setSaveRequestsNeedPurgeDeletedObjectsAfterSave:[(NEKReminderStore *)self saveRequestsNeedPurgeDeletedObjectsAfterSave]| v4];
+  [(NEKReminderStore *)self setSaveRequestsNeedPurgeDeletedObjectsAfterSave:[(NEKReminderStore *)self saveRequestsNeedPurgeDeletedObjectsAfterSave]| saveCopy];
 
   return v7;
 }
@@ -249,9 +249,9 @@ LABEL_21:
   dispatch_async(queue, v6);
 }
 
-- (void)removeDeletableAccounts:(id)a3
+- (void)removeDeletableAccounts:(id)accounts
 {
-  v4 = [(NEKReminderStore *)self _deletableAccountsForStore:a3];
+  v4 = [(NEKReminderStore *)self _deletableAccountsForStore:accounts];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -283,10 +283,10 @@ LABEL_21:
   }
 }
 
-- (id)_deletableAccountsForStore:(id)a3
+- (id)_deletableAccountsForStore:(id)store
 {
   v8 = 0;
-  v3 = [a3 fetchAccountsWithError:&v8];
+  v3 = [store fetchAccountsWithError:&v8];
   v4 = v8;
   if (!v3 && os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
   {
@@ -299,11 +299,11 @@ LABEL_21:
   return v6;
 }
 
-- (void)removeDeletableLists:(id)a3
+- (void)removeDeletableLists:(id)lists
 {
-  v4 = a3;
-  v5 = [(NEKReminderStore *)self _deletableListsForStore:v4];
-  v6 = [v4 eks_defaultLocalList];
+  listsCopy = lists;
+  v5 = [(NEKReminderStore *)self _deletableListsForStore:listsCopy];
+  eks_defaultLocalList = [listsCopy eks_defaultLocalList];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -324,7 +324,7 @@ LABEL_21:
           objc_enumerationMutation(v7);
         }
 
-        if (*(*(&v12 + 1) + 8 * v11) != v6)
+        if (*(*(&v12 + 1) + 8 * v11) != eks_defaultLocalList)
         {
           [(NEKReminderStore *)self deleteList:v12];
         }
@@ -339,20 +339,20 @@ LABEL_21:
     while (v9);
   }
 
-  if (v6)
+  if (eks_defaultLocalList)
   {
-    [(NEKReminderStore *)self removeAllRemindersInList:v6];
+    [(NEKReminderStore *)self removeAllRemindersInList:eks_defaultLocalList];
   }
 }
 
-- (void)removeAllRemindersInList:(id)a3
+- (void)removeAllRemindersInList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 store];
-  v6 = [(NEKReminderStore *)self saveRequestForStore:v5];
+  listCopy = list;
+  store = [listCopy store];
+  v6 = [(NEKReminderStore *)self saveRequestForStore:store];
 
   v19 = 0;
-  v7 = [v4 fetchRemindersWithError:&v19];
+  v7 = [listCopy fetchRemindersWithError:&v19];
   v8 = v19;
   v15 = 0u;
   v16 = 0u;
@@ -388,19 +388,19 @@ LABEL_21:
   }
 }
 
-- (id)_deletableListsForStore:(id)a3
+- (id)_deletableListsForStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v27 = +[NSMutableArray array];
   v37 = 0;
-  v4 = [v3 fetchAccountsWithError:&v37];
+  v4 = [storeCopy fetchAccountsWithError:&v37];
   v5 = v37;
   if (!v4 && os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
   {
     sub_1000742D0();
   }
 
-  v28 = [v3 eks_localAccount];
+  eks_localAccount = [storeCopy eks_localAccount];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -429,9 +429,9 @@ LABEL_21:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             v14 = v13;
-            v15 = [v12 objectID];
+            objectID = [v12 objectID];
             *buf = 138543362;
-            v39 = v15;
+            v39 = objectID;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Skip deleting list in CloudKit account with ID %{public}@", buf, 0xCu);
           }
         }
@@ -453,21 +453,21 @@ LABEL_21:
             }
           }
 
-          if (v12 == v28)
+          if (v12 == eks_localAccount)
           {
-            v19 = [v3 eks_defaultLocalList];
+            eks_defaultLocalList = [storeCopy eks_defaultLocalList];
             v29[0] = _NSConcreteStackBlock;
             v29[1] = 3221225472;
             v30[0] = sub_100054DDC;
             v30[1] = &unk_1000B5CD0;
-            v31 = v19;
-            v20 = v19;
+            v31 = eks_defaultLocalList;
+            v20 = eks_defaultLocalList;
             v21 = [NSPredicate predicateWithBlock:v29];
             [v16 filteredArrayUsingPredicate:v21];
-            v23 = v22 = v3;
+            v23 = v22 = storeCopy;
 
             v16 = v23;
-            v3 = v22;
+            storeCopy = v22;
             v10 = v27;
           }
 
@@ -493,17 +493,17 @@ LABEL_21:
   return v24;
 }
 
-- (id)getDefaultListForStore:(id)a3
+- (id)getDefaultListForStore:(id)store
 {
-  v3 = a3;
-  v4 = [v3 fetchDefaultListWithError:0];
-  v5 = [v3 eks_defaultLocalList];
+  storeCopy = store;
+  v4 = [storeCopy fetchDefaultListWithError:0];
+  eks_defaultLocalList = [storeCopy eks_defaultLocalList];
 
-  if (v5)
+  if (eks_defaultLocalList)
   {
-    v6 = [v4 remObjectID];
-    v7 = [v5 remObjectID];
-    v8 = [v6 isEqual:v7];
+    remObjectID = [v4 remObjectID];
+    remObjectID2 = [eks_defaultLocalList remObjectID];
+    v8 = [remObjectID isEqual:remObjectID2];
 
     if (v8)
     {
@@ -515,71 +515,71 @@ LABEL_21:
   return v4;
 }
 
-- (BOOL)shouldSendReminder:(id)a3
+- (BOOL)shouldSendReminder:(id)reminder
 {
   v4 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = a3;
-    v7 = [v6 objectID];
-    v8 = [v6 daCalendarItemUniqueIdentifier];
+    reminderCopy = reminder;
+    objectID = [reminderCopy objectID];
+    daCalendarItemUniqueIdentifier = [reminderCopy daCalendarItemUniqueIdentifier];
 
     v10 = 138543618;
-    v11 = v7;
+    v11 = objectID;
     v12 = 2114;
-    v13 = v8;
+    v13 = daCalendarItemUniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Selecting reminder (id=%{public}@, calendarUniqueId=%{public}@)", &v10, 0x16u);
   }
 
   return 1;
 }
 
-- (void)updateSource:(id)a3 store:(id)a4
+- (void)updateSource:(id)source store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  storeCopy = store;
   v8 = os_transaction_create();
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10005509C;
   v13[3] = &unk_1000B5098;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
+  v14 = sourceCopy;
+  v15 = storeCopy;
+  selfCopy = self;
   v17 = v8;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = storeCopy;
+  v12 = sourceCopy;
   dispatch_sync(queue, v13);
 }
 
-- (void)updateCalendar:(id)a3 store:(id)a4
+- (void)updateCalendar:(id)calendar store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  storeCopy = store;
   v8 = os_transaction_create();
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000555AC;
   v13[3] = &unk_1000B5098;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
+  v14 = calendarCopy;
+  v15 = storeCopy;
+  selfCopy = self;
   v17 = v8;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = storeCopy;
+  v12 = calendarCopy;
   dispatch_sync(queue, v13);
 }
 
-- (void)updateICS:(id)a3 store:(id)a4 session:(id)a5
+- (void)updateICS:(id)s store:(id)store session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sCopy = s;
+  storeCopy = store;
+  sessionCopy = session;
   v11 = os_transaction_create();
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -587,21 +587,21 @@ LABEL_21:
   block[2] = sub_100055A78;
   block[3] = &unk_1000B5070;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = sCopy;
+  v19 = storeCopy;
+  v20 = sessionCopy;
   v21 = v11;
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = sessionCopy;
+  v15 = storeCopy;
+  v16 = sCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)deleteItemWithIdentifier:(id)a3 store:(id)a4
+- (void)deleteItemWithIdentifier:(id)identifier store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v8 = os_transaction_create();
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
@@ -609,45 +609,45 @@ LABEL_21:
   v13[2] = sub_100055B78;
   v13[3] = &unk_1000B5098;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = storeCopy;
   v16 = v8;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = storeCopy;
+  v12 = identifierCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)deleteItem:(id)a3 store:(id)a4
+- (void)deleteItem:(id)item store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectIdentifier];
-  v9 = [v6 type];
-  if (v9 <= 2)
+  itemCopy = item;
+  storeCopy = store;
+  objectIdentifier = [itemCopy objectIdentifier];
+  type = [itemCopy type];
+  if (type <= 2)
   {
-    if (v9 == 1)
+    if (type == 1)
     {
-      [(NEKReminderStore *)self _deleteAccountWithIdentifier:v8 store:v7];
+      [(NEKReminderStore *)self _deleteAccountWithIdentifier:objectIdentifier store:storeCopy];
       goto LABEL_11;
     }
 
-    if (v9 == 2)
+    if (type == 2)
     {
-      [(NEKReminderStore *)self _deleteListWithIdentifier:v8 store:v7];
+      [(NEKReminderStore *)self _deleteListWithIdentifier:objectIdentifier store:storeCopy];
       goto LABEL_11;
     }
 
     goto LABEL_7;
   }
 
-  if (v9 == 3)
+  if (type == 3)
   {
-    [(NEKReminderStore *)self _deleteReminderWithIdentifier:v8 store:v7];
+    [(NEKReminderStore *)self _deleteReminderWithIdentifier:objectIdentifier store:storeCopy];
     goto LABEL_11;
   }
 
-  if (v9 != 4)
+  if (type != 4)
   {
 LABEL_7:
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
@@ -659,38 +659,38 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)handleUpdatedReminderFromGizmo:(id)a3 withSaveRequest:(id)a4 withWrapper:(id)a5
+- (void)handleUpdatedReminderFromGizmo:(id)gizmo withSaveRequest:(id)request withWrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  gizmoCopy = gizmo;
+  requestCopy = request;
+  wrapperCopy = wrapper;
   v10 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v7 title];
-    v13 = sub_10002CDF8(v12);
-    v14 = [v7 daCalendarItemUniqueIdentifier];
+    title = [gizmoCopy title];
+    v13 = sub_10002CDF8(title);
+    daCalendarItemUniqueIdentifier = [gizmoCopy daCalendarItemUniqueIdentifier];
     v20 = 138543618;
     v21 = v13;
     v22 = 2114;
-    v23 = v14;
+    v23 = daCalendarItemUniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Handling updated reminder from gizmo with summary %{public}@ and identifier %{public}@", &v20, 0x16u);
   }
 
-  if ([v9 isTaskCompleted])
+  if ([wrapperCopy isTaskCompleted])
   {
-    [v9 taskCompletionDate];
+    [wrapperCopy taskCompletionDate];
     v15 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    v16 = [v8 updateReminder:v7];
+    v16 = [requestCopy updateReminder:gizmoCopy];
     [v16 setCompletionDate:v15];
     v17 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v7 daCalendarItemUniqueIdentifier];
+      daCalendarItemUniqueIdentifier2 = [gizmoCopy daCalendarItemUniqueIdentifier];
       v20 = 138543618;
-      v21 = v19;
+      v21 = daCalendarItemUniqueIdentifier2;
       v22 = 2114;
       v23 = v15;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Reminder with identifier %{public}@ is completed, completion date is %{public}@", &v20, 0x16u);
@@ -698,20 +698,20 @@ LABEL_11:
   }
 }
 
-- (void)handleReminderWithUniqueIdentifierFromGizmo:(id)a3 saveRequest:(id)a4 list:(id)a5 wrapper:(id)a6
+- (void)handleReminderWithUniqueIdentifierFromGizmo:(id)gizmo saveRequest:(id)request list:(id)list wrapper:(id)wrapper
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [v11 store];
+  gizmoCopy = gizmo;
+  requestCopy = request;
+  wrapperCopy = wrapper;
+  listCopy = list;
+  store = [requestCopy store];
   v18 = 0;
-  v15 = [v14 fetchReminderWithDACalendarItemUniqueIdentifier:v10 inList:v13 error:&v18];
+  v15 = [store fetchReminderWithDACalendarItemUniqueIdentifier:gizmoCopy inList:listCopy error:&v18];
 
   v16 = v18;
   if (v15)
   {
-    [(NEKReminderStore *)self handleUpdatedReminderFromGizmo:v15 withSaveRequest:v11 withWrapper:v12];
+    [(NEKReminderStore *)self handleUpdatedReminderFromGizmo:v15 withSaveRequest:requestCopy withWrapper:wrapperCopy];
   }
 
   else
@@ -719,22 +719,22 @@ LABEL_11:
     v17 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_100074738(v10, v17, v12);
+      sub_100074738(gizmoCopy, v17, wrapperCopy);
     }
   }
 }
 
-- (id)deduplicateICSWrappers:(id)a3
+- (id)deduplicateICSWrappers:(id)wrappers
 {
-  v3 = a3;
+  wrappersCopy = wrappers;
   v4 = +[NSMutableSet set];
   v5 = +[NSMutableOrderedSet orderedSet];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v3 reverseObjectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  reverseObjectEnumerator = [wrappersCopy reverseObjectEnumerator];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -745,51 +745,51 @@ LABEL_11:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 objectIdentifier];
-        if ([v4 containsObject:v12])
+        objectIdentifier = [v11 objectIdentifier];
+        if ([v4 containsObject:objectIdentifier])
         {
           v13 = *(qword_1000D18A8 + 8);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
           {
             *buf = 138543362;
-            v22 = v12;
+            v22 = objectIdentifier;
             _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "Received ICS wrappers with the same identifier %{public}@ in the same batch. Deduplicating. ", buf, 0xCu);
           }
         }
 
         else
         {
-          [v4 addObject:v12];
+          [v4 addObject:objectIdentifier];
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [v5 reverseObjectEnumerator];
-  v15 = [v14 allObjects];
+  reverseObjectEnumerator2 = [v5 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator2 allObjects];
 
-  return v15;
+  return allObjects;
 }
 
-- (id)listCacheForStore:(id)a3 wrappers:(id)a4
+- (id)listCacheForStore:(id)store wrappers:(id)wrappers
 {
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  wrappersCopy = wrappers;
   v7 = +[NSMutableSet set];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = v6;
+  v8 = wrappersCopy;
   v9 = [v8 countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v9)
   {
@@ -804,8 +804,8 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v33 + 1) + 8 * i) calendarIdentifier];
-        [v7 addObject:v13];
+        calendarIdentifier = [*(*(&v33 + 1) + 8 * i) calendarIdentifier];
+        [v7 addObject:calendarIdentifier];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v33 objects:v40 count:16];
@@ -845,7 +845,7 @@ LABEL_11:
         }
 
         v21 = *(*(&v29 + 1) + 8 * j);
-        v22 = [NEKCalendarID listInStore:v5 withNEKCalendarID:v21];
+        v22 = [NEKCalendarID listInStore:storeCopy withNEKCalendarID:v21];
         if (v22)
         {
           [v15 setObject:v22 forKeyedSubscript:v21];
@@ -862,9 +862,9 @@ LABEL_11:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v24 = v23;
-    v25 = [v15 allKeys];
+    allKeys = [v15 allKeys];
     *buf = 138543362;
-    v39 = v25;
+    v39 = allKeys;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Built list cache for wrappers %{public}@", buf, 0xCu);
   }
 
@@ -873,16 +873,16 @@ LABEL_11:
   return v26;
 }
 
-- (id)reminderCacheForStore:(id)a3 wrappers:(id)a4
+- (id)reminderCacheForStore:(id)store wrappers:(id)wrappers
 {
-  v22 = a3;
-  v5 = a4;
+  storeCopy = store;
+  wrappersCopy = wrappers;
   v6 = +[NSMutableSet set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v5;
+  v7 = wrappersCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
@@ -897,19 +897,19 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v24 + 1) + 8 * i) objectIdentifier];
-        if ([v6 containsObject:v12])
+        objectIdentifier = [*(*(&v24 + 1) + 8 * i) objectIdentifier];
+        if ([v6 containsObject:objectIdentifier])
         {
           v13 = *(qword_1000D18A8 + 8);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
           {
             *buf = 138543362;
-            v29 = v12;
+            v29 = objectIdentifier;
             _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "Received ICS wrappers with the same identifier %{public}@ in the same batch", buf, 0xCu);
           }
         }
 
-        [v6 addObject:v12];
+        [v6 addObject:objectIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
@@ -926,9 +926,9 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Going to build reminder cache for IDs %{public}@", buf, 0xCu);
   }
 
-  v15 = [v6 allObjects];
+  allObjects = [v6 allObjects];
   v23 = 0;
-  v16 = [v22 fetchRemindersWithDACalendarItemUniqueIdentifiers:v15 inList:0 error:&v23];
+  v16 = [storeCopy fetchRemindersWithDACalendarItemUniqueIdentifiers:allObjects inList:0 error:&v23];
   v17 = v23;
 
   if (!v16)
@@ -945,34 +945,34 @@ LABEL_11:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [v16 allKeys];
+    allKeys = [v16 allKeys];
     *buf = 138543362;
-    v29 = v20;
+    v29 = allKeys;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Built reminder cache for wrappers %{public}@", buf, 0xCu);
   }
 
   return v16;
 }
 
-- (void)performUpdateWithICSWrappers:(id)a3 store:(id)a4 session:(id)a5
+- (void)performUpdateWithICSWrappers:(id)wrappers store:(id)store session:(id)session
 {
-  v8 = a3;
-  v79 = a4;
-  v9 = a5;
+  wrappersCopy = wrappers;
+  storeCopy = store;
+  sessionCopy = session;
   v10 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
     *buf = 67109120;
-    LODWORD(v118) = [v8 count];
+    LODWORD(v118) = [wrappersCopy count];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "performUpdateWithICSWrappers received %d items", buf, 8u);
   }
 
-  v12 = [(NEKReminderStore *)self saveRequestForStore:v79];
-  v13 = [(NEKReminderStore *)self deduplicateICSWrappers:v8];
+  v12 = [(NEKReminderStore *)self saveRequestForStore:storeCopy];
+  v13 = [(NEKReminderStore *)self deduplicateICSWrappers:wrappersCopy];
 
-  v14 = [(NEKReminderStore *)self listCacheForStore:v79 wrappers:v13];
-  v78 = [(NEKReminderStore *)self reminderCacheForStore:v79 wrappers:v13];
+  v14 = [(NEKReminderStore *)self listCacheForStore:storeCopy wrappers:v13];
+  v78 = [(NEKReminderStore *)self reminderCacheForStore:storeCopy wrappers:v13];
   v83 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
   v85 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
   v111 = 0u;
@@ -1011,16 +1011,16 @@ LABEL_11:
           sub_100070290(v123, v18, v16, &v124);
         }
 
-        v19 = [v16 calendarIdentifier];
-        v20 = [v14 objectForKeyedSubscript:v19];
+        calendarIdentifier = [v16 calendarIdentifier];
+        v20 = [v14 objectForKeyedSubscript:calendarIdentifier];
 
         if (v20)
         {
-          v21 = [v16 ICSData];
+          iCSData = [v16 ICSData];
 
           v22 = *(qword_1000D18A8 + 8);
           v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-          if (v21)
+          if (iCSData)
           {
             if (v23)
             {
@@ -1028,36 +1028,36 @@ LABEL_11:
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Processing add/update from companion, or a new record from the watch", buf, 2u);
             }
 
-            v24 = [v16 oldCalendarIdentifier];
-            if (!v24)
+            oldCalendarIdentifier = [v16 oldCalendarIdentifier];
+            if (!oldCalendarIdentifier)
             {
               goto LABEL_25;
             }
 
-            v25 = v24;
-            v26 = [v16 calendarIdentifier];
-            v27 = [v26 identifier];
+            v25 = oldCalendarIdentifier;
+            calendarIdentifier2 = [v16 calendarIdentifier];
+            identifier = [calendarIdentifier2 identifier];
 
-            if (v27)
+            if (identifier)
             {
               v28 = *(qword_1000D18A8 + 8);
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
                 v29 = v28;
-                v30 = [v16 oldCalendarIdentifier];
-                v31 = [v16 calendarIdentifier];
-                v32 = [v31 identifier];
+                oldCalendarIdentifier2 = [v16 oldCalendarIdentifier];
+                calendarIdentifier3 = [v16 calendarIdentifier];
+                identifier2 = [calendarIdentifier3 identifier];
                 *buf = 138543618;
-                v118 = *&v30;
+                v118 = *&oldCalendarIdentifier2;
                 v119 = 2114;
-                v120 = v32;
+                v120 = identifier2;
                 _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Got an update/add for reminder, old list id = %{public}@, current list id = %{public}@", buf, 0x16u);
               }
 
-              v33 = [v16 oldCalendarIdentifier];
-              v34 = [v16 calendarIdentifier];
-              v35 = [v34 identifier];
-              v36 = [v33 isEqualToString:v35];
+              oldCalendarIdentifier3 = [v16 oldCalendarIdentifier];
+              calendarIdentifier4 = [v16 calendarIdentifier];
+              identifier3 = [calendarIdentifier4 identifier];
+              v36 = [oldCalendarIdentifier3 isEqualToString:identifier3];
 
               v37 = *(qword_1000D18A8 + 8);
               v38 = os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT);
@@ -1067,13 +1067,13 @@ LABEL_11:
                 if (v38)
                 {
                   v39 = v37;
-                  v40 = [v16 oldCalendarIdentifier];
-                  v41 = [v16 calendarIdentifier];
-                  v42 = [v41 identifier];
+                  oldCalendarIdentifier4 = [v16 oldCalendarIdentifier];
+                  calendarIdentifier5 = [v16 calendarIdentifier];
+                  identifier4 = [calendarIdentifier5 identifier];
                   *buf = 138543618;
-                  v118 = *&v40;
+                  v118 = *&oldCalendarIdentifier4;
                   v119 = 2114;
-                  v120 = v42;
+                  v120 = identifier4;
                   _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Lists match, so reminder didn't move: old list id = %{public}@, current list id = %{public}@", buf, 0x16u);
 
                   v14 = v82;
@@ -1085,13 +1085,13 @@ LABEL_11:
                 if (v38)
                 {
                   v52 = v37;
-                  v53 = [v16 oldCalendarIdentifier];
-                  v54 = [v16 calendarIdentifier];
-                  v55 = [v54 identifier];
+                  oldCalendarIdentifier5 = [v16 oldCalendarIdentifier];
+                  calendarIdentifier6 = [v16 calendarIdentifier];
+                  identifier5 = [calendarIdentifier6 identifier];
                   *buf = 138543618;
-                  v118 = *&v53;
+                  v118 = *&oldCalendarIdentifier5;
                   v119 = 2114;
-                  v120 = v55;
+                  v120 = identifier5;
                   _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Lists don't match, so deleting from old list: old list id = %{public}@, current list id = %{public}@", buf, 0x16u);
                 }
 
@@ -1107,14 +1107,14 @@ LABEL_25:
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
                 v45 = v44;
-                v46 = [v16 title];
-                v47 = sub_10002CDF8(v46);
-                v48 = [v16 calendarIdentifier];
-                v49 = [v48 identifier];
+                title = [v16 title];
+                v47 = sub_10002CDF8(title);
+                calendarIdentifier7 = [v16 calendarIdentifier];
+                identifier6 = [calendarIdentifier7 identifier];
                 *buf = 138543618;
                 v118 = *&v47;
                 v119 = 2114;
-                v120 = v49;
+                v120 = identifier6;
                 _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Got an update/add for reminder %{public}@, no old list id was sent, so this is from an old record map and falling back to old code to check and delete from any old list. The current list id = %{public}@", buf, 0x16u);
 
                 v12 = v80;
@@ -1133,9 +1133,9 @@ LABEL_25:
             if (v23)
             {
               v50 = v22;
-              v51 = [v16 objectIdentifier];
+              objectIdentifier = [v16 objectIdentifier];
               *buf = 138543362;
-              v118 = *&v51;
+              v118 = *&objectIdentifier;
               _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Processing update from the watch, main identifier is %{public}@", buf, 0xCu);
             }
 
@@ -1190,8 +1190,8 @@ LABEL_25:
           objc_enumerationMutation(contexta);
         }
 
-        v62 = [*(*(&v104 + 1) + 8 * j) ICSData];
-        [v56 addObject:v62];
+        iCSData2 = [*(*(&v104 + 1) + 8 * j) ICSData];
+        [v56 addObject:iCSData2];
       }
 
       v57 = contexta;
@@ -1260,7 +1260,7 @@ LABEL_25:
 
               v76 = *(*(&v94 + 1) + 8 * k);
               v77 = objc_autoreleasePoolPush();
-              [(NEKReminderStore *)self handleNewReminderChangeItem:v76 withWrapper:v69 session:v9];
+              [(NEKReminderStore *)self handleNewReminderChangeItem:v76 withWrapper:v69 session:sessionCopy];
               objc_autoreleasePoolPop(v77);
             }
 
@@ -1283,21 +1283,21 @@ LABEL_25:
   }
 }
 
-- (void)_ensureReminderInList:(id)a3 saveRequest:(id)a4 inICSWrapper:(id)a5
+- (void)_ensureReminderInList:(id)list saveRequest:(id)request inICSWrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v8 && v9)
+  listCopy = list;
+  requestCopy = request;
+  wrapperCopy = wrapper;
+  v10 = wrapperCopy;
+  if (listCopy && requestCopy && wrapperCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100057978;
     v12[3] = &unk_1000B5110;
-    v13 = v7;
+    v13 = listCopy;
     v14 = v10;
-    v15 = v8;
+    v15 = requestCopy;
     [v14 enumerateCalendarItemIdentifiersUsingBlock:v12];
   }
 
@@ -1307,9 +1307,9 @@ LABEL_25:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      v17 = v7;
+      v17 = listCopy;
       v18 = 2112;
-      v19 = v8;
+      v19 = requestCopy;
       v20 = 2112;
       v21 = v10;
       _os_log_fault_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "Input to _ensureReminderInList is nil (%@, %@, %@). Skipping.", buf, 0x20u);
@@ -1317,12 +1317,12 @@ LABEL_25:
   }
 }
 
-- (void)applySidePropertiesToReminderChangeItem:(id)a3 withWrapper:(id)a4 session:(id)a5
+- (void)applySidePropertiesToReminderChangeItem:(id)item withWrapper:(id)wrapper session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 daCalendarItemUniqueIdentifier];
-  v9 = [v7 externalIDForIdentifier:v8];
+  itemCopy = item;
+  wrapperCopy = wrapper;
+  daCalendarItemUniqueIdentifier = [itemCopy daCalendarItemUniqueIdentifier];
+  v9 = [wrapperCopy externalIDForIdentifier:daCalendarItemUniqueIdentifier];
 
   v10 = *(qword_1000D18A8 + 8);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -1333,26 +1333,26 @@ LABEL_25:
       v12 = 138543618;
       v13 = v9;
       v14 = 2114;
-      v15 = v8;
+      v15 = daCalendarItemUniqueIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "setting externalID %{public}@ for event with identifier %{public}@", &v12, 0x16u);
     }
 
-    [v6 setExternalIdentifier:v9];
+    [itemCopy setExternalIdentifier:v9];
   }
 
   else if (v11)
   {
     v12 = 138543362;
-    v13 = v8;
+    v13 = daCalendarItemUniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No externalID in metadata for event with identifier %{public}@", &v12, 0xCu);
   }
 }
 
-- (void)storeWrapperForCloudKitAccount:(id)a3 pipe:(id)a4
+- (void)storeWrapperForCloudKitAccount:(id)account pipe:(id)pipe
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEmpty])
+  accountCopy = account;
+  pipeCopy = pipe;
+  if ([accountCopy isEmpty])
   {
     v8 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1370,24 +1370,24 @@ LABEL_25:
     v13[2] = sub_100058A8C;
     v13[3] = &unk_1000B5D98;
     v13[4] = self;
-    v10 = v7;
+    v10 = pipeCopy;
     v14 = v10;
-    [(NEKReminderStore *)self batchedEnumerateAccountsForStore:v9 changeSet:v6 changeType:2 withBlock:v13];
+    [(NEKReminderStore *)self batchedEnumerateAccountsForStore:v9 changeSet:accountCopy changeType:2 withBlock:v13];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100058AA0;
     v11[3] = &unk_1000B5D98;
     v11[4] = self;
     v12 = v10;
-    [(NEKReminderStore *)self batchedEnumerateAccountsForStore:v9 changeSet:v6 changeType:1 withBlock:v11];
+    [(NEKReminderStore *)self batchedEnumerateAccountsForStore:v9 changeSet:accountCopy changeType:1 withBlock:v11];
   }
 }
 
-- (void)listWrappersForChangeSet:(id)a3 pipe:(id)a4
+- (void)listWrappersForChangeSet:(id)set pipe:(id)pipe
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEmpty])
+  setCopy = set;
+  pipeCopy = pipe;
+  if ([setCopy isEmpty])
   {
     v8 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1399,20 +1399,20 @@ LABEL_25:
 
   else
   {
-    [(NEKReminderStore *)self _batchEnumerateChangeSet:v6 intoPipe:v7 forChangeType:1];
-    [(NEKReminderStore *)self _batchEnumerateChangeSet:v6 intoPipe:v7 forChangeType:2];
+    [(NEKReminderStore *)self _batchEnumerateChangeSet:setCopy intoPipe:pipeCopy forChangeType:1];
+    [(NEKReminderStore *)self _batchEnumerateChangeSet:setCopy intoPipe:pipeCopy forChangeType:2];
   }
 }
 
-- (void)ICSWrappersForChangeSet:(id)a3 movedReminderAndListMapping:(id)a4 pipe:(id)a5
+- (void)ICSWrappersForChangeSet:(id)set movedReminderAndListMapping:(id)mapping pipe:(id)pipe
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  mappingCopy = mapping;
+  pipeCopy = pipe;
+  setCopy = set;
   v11 = [NEKSyncWindow alloc];
-  v12 = [(NEKStore *)self environment];
-  v13 = [v12 tinyStore];
-  v14 = [(NEKSyncWindow *)v11 initForFullSync:0 tinyStore:v13];
+  environment = [(NEKStore *)self environment];
+  tinyStore = [environment tinyStore];
+  v14 = [(NEKSyncWindow *)v11 initForFullSync:0 tinyStore:tinyStore];
 
   v15 = [(NEKReminderStore *)self freshEventStoreFor:@"ICSWrappersForChangeSet(Reminders)"];
   v26[0] = _NSConcreteStackBlock;
@@ -1421,37 +1421,37 @@ LABEL_25:
   v26[3] = &unk_1000B5DE8;
   v16 = v14;
   v27 = v16;
-  v28 = self;
-  v17 = v9;
+  selfCopy = self;
+  v17 = pipeCopy;
   v29 = v17;
-  [(NEKReminderStore *)self batchedEnumerateRemindersForStore:v15 changeSet:v10 changeType:1 withBlock:v26];
+  [(NEKReminderStore *)self batchedEnumerateRemindersForStore:v15 changeSet:setCopy changeType:1 withBlock:v26];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100059614;
   v21[3] = &unk_1000B5E10;
   v22 = v16;
-  v23 = self;
-  v24 = v8;
+  selfCopy2 = self;
+  v24 = mappingCopy;
   v25 = v17;
   v18 = v17;
-  v19 = v8;
+  v19 = mappingCopy;
   v20 = v16;
-  [(NEKReminderStore *)self batchedEnumerateRemindersForStore:v15 changeSet:v10 changeType:2 withBlock:v21];
+  [(NEKReminderStore *)self batchedEnumerateRemindersForStore:v15 changeSet:setCopy changeType:2 withBlock:v21];
 }
 
-- (void)_deleteAccountWithIdentifier:(id)a3 store:(id)a4
+- (void)_deleteAccountWithIdentifier:(id)identifier store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v8 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Deleting account with identifier %{public}@", buf, 0xCu);
   }
 
-  v9 = [[NSUUID alloc] initWithUUIDString:v6];
+  v9 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
   if (!v9 && os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_FAULT))
   {
     sub_100074D24();
@@ -1459,7 +1459,7 @@ LABEL_25:
 
   v10 = [REMAccount objectIDWithUUID:v9];
   v16 = 0;
-  v11 = [v7 fetchAccountWithObjectID:v10 error:&v16];
+  v11 = [storeCopy fetchAccountWithObjectID:v10 error:&v16];
   v12 = v16;
   if (v11)
   {
@@ -1469,7 +1469,7 @@ LABEL_25:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = v6;
+        v18 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Cannot delete; account with identifier %{public}@ is a local account", buf, 0xCu);
       }
     }
@@ -1484,7 +1484,7 @@ LABEL_25:
 
     else
     {
-      v14 = [(NEKReminderStore *)self saveRequestForStore:v7];
+      v14 = [(NEKReminderStore *)self saveRequestForStore:storeCopy];
       v15 = [v14 updateAccount:v11];
       [v15 removeFromStore];
     }
@@ -1496,20 +1496,20 @@ LABEL_25:
   }
 }
 
-- (void)_deleteListWithIdentifier:(id)a3 store:(id)a4
+- (void)_deleteListWithIdentifier:(id)identifier store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NSUUID alloc] initWithUUIDString:v6];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v8 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
   if (!v8 && os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_FAULT))
   {
     sub_100074E70();
   }
 
   v9 = [REMList objectIDWithUUID:v8];
-  v10 = [(NEKReminderStore *)self saveRequestForStore:v7 needsPurgeDeletedObjectsAfterSave:1];
+  v10 = [(NEKReminderStore *)self saveRequestForStore:storeCopy needsPurgeDeletedObjectsAfterSave:1];
   v14 = 0;
-  v11 = [v7 fetchListWithObjectID:v9 error:&v14];
+  v11 = [storeCopy fetchListWithObjectID:v9 error:&v14];
 
   v12 = v14;
   if (v11)
@@ -1524,13 +1524,13 @@ LABEL_25:
   }
 }
 
-- (void)_deleteReminderWithIdentifier:(id)a3 store:(id)a4
+- (void)_deleteReminderWithIdentifier:(id)identifier store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEKReminderStore *)self saveRequestForStore:v7];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v8 = [(NEKReminderStore *)self saveRequestForStore:storeCopy];
   v12 = 0;
-  v9 = [v7 fetchReminderWithDACalendarItemUniqueIdentifier:v6 inList:0 error:&v12];
+  v9 = [storeCopy fetchReminderWithDACalendarItemUniqueIdentifier:identifierCopy inList:0 error:&v12];
 
   v10 = v12;
   if (v9)
@@ -1545,55 +1545,55 @@ LABEL_25:
   }
 }
 
-- (BOOL)_updateAccount:(id)a3 withSourceWrapper:(id)a4 store:(id)a5
+- (BOOL)_updateAccount:(id)account withSourceWrapper:(id)wrapper store:(id)store
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 store];
-  v10 = [(NEKReminderStore *)self saveRequestForStore:v9];
+  wrapperCopy = wrapper;
+  accountCopy = account;
+  store = [accountCopy store];
+  v10 = [(NEKReminderStore *)self saveRequestForStore:store];
 
-  v11 = [v7 attributes];
+  attributes = [wrapperCopy attributes];
 
-  LOBYTE(v7) = [NEKSourceAttributes configureAccount:v8 withSaveRequest:v10 withAttributes:v11];
-  return v7;
+  LOBYTE(wrapperCopy) = [NEKSourceAttributes configureAccount:accountCopy withSaveRequest:v10 withAttributes:attributes];
+  return wrapperCopy;
 }
 
-- (void)_createAccountForWrapper:(id)a3 store:(id)a4
+- (void)_createAccountForWrapper:(id)wrapper store:(id)store
 {
-  v6 = a3;
-  v8 = [(NEKReminderStore *)self saveRequestForStore:a4];
-  v7 = [v6 attributes];
+  wrapperCopy = wrapper;
+  v8 = [(NEKReminderStore *)self saveRequestForStore:store];
+  attributes = [wrapperCopy attributes];
 
-  [NEKSourceAttributes createAccountWithSaveRequest:v8 withAttributes:v7];
+  [NEKSourceAttributes createAccountWithSaveRequest:v8 withAttributes:attributes];
 }
 
-- (BOOL)_updateList:(id)a3 withCalendarWrapper:(id)a4
+- (BOOL)_updateList:(id)list withCalendarWrapper:(id)wrapper
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 attributes];
-  v9 = v8;
-  if (v8 && [v8 supportedEntityTypes] == 2)
+  listCopy = list;
+  wrapperCopy = wrapper;
+  attributes = [wrapperCopy attributes];
+  v9 = attributes;
+  if (attributes && [attributes supportedEntityTypes] == 2)
   {
     v10 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v7 attributes];
-      v13 = [v12 title];
-      v14 = sub_10002CDF8(v13);
-      v15 = [v7 calendarIdentifier];
+      attributes2 = [wrapperCopy attributes];
+      title = [attributes2 title];
+      v14 = sub_10002CDF8(title);
+      calendarIdentifier = [wrapperCopy calendarIdentifier];
       v22 = 138543618;
       v23 = v14;
       v24 = 2114;
-      v25 = v15;
+      v25 = calendarIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating list with title %{public}@, identifier %{public}@", &v22, 0x16u);
     }
 
-    v16 = [v6 store];
-    v17 = [(NEKReminderStore *)self saveRequestForStore:v16];
+    store = [listCopy store];
+    v17 = [(NEKReminderStore *)self saveRequestForStore:store];
 
-    v18 = [NEKCalendarAttributes configureList:v6 withSaveRequest:v17 withAttributes:v9];
+    v18 = [NEKCalendarAttributes configureList:listCopy withSaveRequest:v17 withAttributes:v9];
   }
 
   else
@@ -1601,42 +1601,42 @@ LABEL_25:
     v18 = 0;
   }
 
-  v19 = [v6 store];
-  v20 = [(NEKReminderStore *)self _checkAndSetDefaultList:v6 calendarWrapper:v7 store:v19];
+  store2 = [listCopy store];
+  v20 = [(NEKReminderStore *)self _checkAndSetDefaultList:listCopy calendarWrapper:wrapperCopy store:store2];
 
   return v18 | v20;
 }
 
-- (id)_createListForWrapper:(id)a3 store:(id)a4
+- (id)_createListForWrapper:(id)wrapper store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 attributes];
-  v9 = v8;
-  if (!v8 || [v8 supportedEntityTypes] != 2)
+  wrapperCopy = wrapper;
+  storeCopy = store;
+  attributes = [wrapperCopy attributes];
+  v9 = attributes;
+  if (!attributes || [attributes supportedEntityTypes] != 2)
   {
     v21 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v22 = v21;
-      v23 = [v6 calendarIdentifier];
-      v24 = [v6 storeIdentifier];
+      calendarIdentifier = [wrapperCopy calendarIdentifier];
+      storeIdentifier = [wrapperCopy storeIdentifier];
       v26 = 138543618;
-      v27 = v23;
+      v27 = calendarIdentifier;
       v28 = 2114;
-      v29 = v24;
+      v29 = storeIdentifier;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Asked to set a nonexistent list as the default. Ignoring. List identifier = %{public}@, account identifier = %{public}@", &v26, 0x16u);
     }
 
     goto LABEL_12;
   }
 
-  v10 = [v6 storeIdentifier];
+  storeIdentifier2 = [wrapperCopy storeIdentifier];
 
-  if (v10)
+  if (storeIdentifier2)
   {
-    v11 = [v6 storeIdentifier];
-    v12 = [NEKSourceID accountForStore:v7 identifier:v11];
+    storeIdentifier3 = [wrapperCopy storeIdentifier];
+    v12 = [NEKSourceID accountForStore:storeCopy identifier:storeIdentifier3];
 
     if (v12)
     {
@@ -1644,8 +1644,8 @@ LABEL_25:
     }
   }
 
-  v13 = [v7 eks_localAccount];
-  if (!v13)
+  eks_localAccount = [storeCopy eks_localAccount];
+  if (!eks_localAccount)
   {
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
     {
@@ -1657,21 +1657,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = v13;
+  v12 = eks_localAccount;
 LABEL_7:
-  v14 = [(NEKReminderStore *)self saveRequestForStore:v7];
+  v14 = [(NEKReminderStore *)self saveRequestForStore:storeCopy];
   v15 = [NEKCalendarAttributes createListInAccount:v12 withSaveRequest:v14 withAttributes:v9];
   v16 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v16;
-    v18 = [v12 name];
-    v19 = sub_10002CDF8(v18);
-    v20 = [v15 objectID];
+    name = [v12 name];
+    v19 = sub_10002CDF8(name);
+    objectID = [v15 objectID];
     v26 = 138543618;
     v27 = v19;
     v28 = 2114;
-    v29 = v20;
+    v29 = objectID;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Created list with title %{public}@, identifier %{public}@", &v26, 0x16u);
   }
 
@@ -1680,52 +1680,52 @@ LABEL_13:
   return v15;
 }
 
-- (void)deleteAccount:(id)a3
+- (void)deleteAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     v5 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [v4 objectID];
+      objectID = [accountCopy objectID];
       v11 = 138543362;
-      v12 = v7;
+      v12 = objectID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Deleting account with identifier %{public}@", &v11, 0xCu);
     }
 
-    v8 = [v4 store];
-    v9 = [(NEKReminderStore *)self saveRequestForStore:v8];
+    store = [accountCopy store];
+    v9 = [(NEKReminderStore *)self saveRequestForStore:store];
 
-    v10 = [v9 updateAccount:v4];
+    v10 = [v9 updateAccount:accountCopy];
     [v10 removeFromStore];
   }
 }
 
-- (void)deleteList:(id)a3
+- (void)deleteList:(id)list
 {
-  if (a3)
+  if (list)
   {
-    v4 = a3;
-    v5 = [v4 store];
-    v7 = [(NEKReminderStore *)self saveRequestForStore:v5 needsPurgeDeletedObjectsAfterSave:1];
+    listCopy = list;
+    store = [listCopy store];
+    v7 = [(NEKReminderStore *)self saveRequestForStore:store needsPurgeDeletedObjectsAfterSave:1];
 
-    v6 = [v7 updateList:v4];
+    v6 = [v7 updateList:listCopy];
 
     [v6 removeFromParent];
   }
 }
 
-- (void)deleteReminder:(id)a3
+- (void)deleteReminder:(id)reminder
 {
-  if (a3)
+  if (reminder)
   {
-    v4 = a3;
-    v5 = [v4 store];
-    v6 = [(NEKReminderStore *)self saveRequestForStore:v5];
+    reminderCopy = reminder;
+    store = [reminderCopy store];
+    v6 = [(NEKReminderStore *)self saveRequestForStore:store];
 
-    v7 = [v6 updateReminder:v4];
+    v7 = [v6 updateReminder:reminderCopy];
 
     [v7 removeFromList];
     v9 = 0;

@@ -1,6 +1,6 @@
 @interface HomeManagerActor
 - (_TtC13HomeDataModel16HomeManagerActor)init;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeManagerActor
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v3 = a3;
+  homesCopy = homes;
 
-  HomeManagerActor.homeManagerDidUpdateHomes(_:)(v3);
+  HomeManagerActor.homeManagerDidUpdateHomes(_:)(homesCopy);
 }
 
 @end

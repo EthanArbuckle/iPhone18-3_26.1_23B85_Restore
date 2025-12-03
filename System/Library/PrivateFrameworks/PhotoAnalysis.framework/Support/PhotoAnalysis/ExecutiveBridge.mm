@@ -1,19 +1,19 @@
 @interface ExecutiveBridge
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)targetForOriginalTarget:(id)a3 connection:(id)a4 selector:(SEL)a5;
-- (void)dispatchOperation:(id)a3 toTarget:(id)a4 service:(id)a5;
-- (void)dumpStatusToLog:(id)a3;
-- (void)shutdown:(id)a3;
-- (void)startup:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)targetForOriginalTarget:(id)target connection:(id)connection selector:(SEL)selector;
+- (void)dispatchOperation:(id)operation toTarget:(id)target service:(id)service;
+- (void)dumpStatusToLog:(id)log;
+- (void)shutdown:(id)shutdown;
+- (void)startup:(id)startup;
 @end
 
 @implementation ExecutiveBridge
 
-- (id)targetForOriginalTarget:(id)a3 connection:(id)a4 selector:(SEL)a5
+- (id)targetForOriginalTarget:(id)target connection:(id)connection selector:(SEL)selector
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
+  connectionCopy = connection;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   ExecutiveBridge.target(forOriginalTarget:connection:selector:)(v17, v18);
@@ -41,13 +41,13 @@
   return v15;
 }
 
-- (void)startup:(id)a3
+- (void)startup:(id)startup
 {
   v5 = sub_100002B1C(&qword_10000C628, &qword_100004BD0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(startup);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -63,17 +63,17 @@
   v14[3] = 0;
   v14[4] = &unk_100004C50;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100002F28(0, 0, v9, &unk_100004C58, v14);
 }
 
-- (void)shutdown:(id)a3
+- (void)shutdown:(id)shutdown
 {
   v5 = sub_100002B1C(&qword_10000C628, &qword_100004BD0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(shutdown);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -89,17 +89,17 @@
   v14[3] = 0;
   v14[4] = &unk_100004C30;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100002F28(0, 0, v9, &unk_100004C38, v14);
 }
 
-- (void)dumpStatusToLog:(id)a3
+- (void)dumpStatusToLog:(id)log
 {
   v5 = sub_100002B1C(&qword_10000C628, &qword_100004BD0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(log);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -115,31 +115,31 @@
   v14[3] = 0;
   v14[4] = &unk_100004BF0;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100002F28(0, 0, v9, &unk_100004C00, v14);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = ExecutiveBridge.listener(_:shouldAcceptNewConnection:)(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = ExecutiveBridge.listener(_:shouldAcceptNewConnection:)(listenerCopy, connectionCopy);
 
   return v9;
 }
 
-- (void)dispatchOperation:(id)a3 toTarget:(id)a4 service:(id)a5
+- (void)dispatchOperation:(id)operation toTarget:(id)target service:(id)service
 {
-  v6 = a3;
+  operationCopy = operation;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  _s14photoanalysisd15ExecutiveBridgeC17dispatchOperation_8toTarget7serviceySo020PHAServiceCancelableE0C_ypyptF_0(v6, v9, v8);
+  _s14photoanalysisd15ExecutiveBridgeC17dispatchOperation_8toTarget7serviceySo020PHAServiceCancelableE0C_ypyptF_0(operationCopy, v9, v8);
 
   sub_100001C24(v8);
   sub_100001C24(v9);

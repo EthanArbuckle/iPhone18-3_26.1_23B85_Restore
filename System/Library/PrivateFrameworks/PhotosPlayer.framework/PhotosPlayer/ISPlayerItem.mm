@@ -1,8 +1,8 @@
 @interface ISPlayerItem
-+ (ISPlayerItem)playerItemWithAsset:(id)a3 targetSize:(CGSize)a4;
-+ (ISPlayerItem)playerItemWithAsset:(id)a3 targetSize:(CGSize)a4 contentAspectRatio:(id)a5;
++ (ISPlayerItem)playerItemWithAsset:(id)asset targetSize:(CGSize)size;
++ (ISPlayerItem)playerItemWithAsset:(id)asset targetSize:(CGSize)size contentAspectRatio:(id)ratio;
 - (AVVideoComposition)videoComposition;
-- (BOOL)_blendsVideoFramesForVideoPlayerItem:(id)a3;
+- (BOOL)_blendsVideoFramesForVideoPlayerItem:(id)item;
 - (BOOL)_isContentSupportsVitalityValid;
 - (BOOL)_isMinimumClientVersionValid;
 - (BOOL)_isPlaybackStyleIdentifierValid;
@@ -16,7 +16,7 @@
 - (BOOL)reversesMoreVideoFramesInMemory;
 - (CGSize)targetSize;
 - (ISPlayerContent)playerContent;
-- (ISPlayerItem)initWithAsset:(id)a3 targetSize:(CGSize)a4 contentAspectRatio:(id)a5;
+- (ISPlayerItem)initWithAsset:(id)asset targetSize:(CGSize)size contentAspectRatio:(id)ratio;
 - (NSError)error;
 - (NSNumber)_variationIdentifier;
 - (NSString)_minimumClientVersion;
@@ -25,25 +25,25 @@
 - (int64_t)loadingTarget;
 - (int64_t)status;
 - (void)_cancelLoading;
-- (void)_dimFlashingLightsDidChangeValue:(id)a3;
-- (void)_handleVideoPlayerItemLoadResultWithSuccess:(BOOL)a3 playerItem:(id)a4 videoDuration:(id *)a5 error:(id)a6;
+- (void)_dimFlashingLightsDidChangeValue:(id)value;
+- (void)_handleVideoPlayerItemLoadResultWithSuccess:(BOOL)success playerItem:(id)item videoDuration:(id *)duration error:(id)error;
 - (void)_invalidateContentSupportsVitality;
 - (void)_invalidateMinimumClientVersion;
 - (void)_invalidatePlaybackStyleIdentifier;
 - (void)_invalidatePlayerContent;
 - (void)_invalidateStatus;
 - (void)_invalidateVideoPlayerItem;
-- (void)_performIvarRead:(id)a3;
-- (void)_performIvarWrite:(id)a3;
-- (void)_performWork:(id)a3 sync:(BOOL)a4;
+- (void)_performIvarRead:(id)read;
+- (void)_performIvarWrite:(id)write;
+- (void)_performWork:(id)work sync:(BOOL)sync;
 - (void)_reloadAllContent;
-- (void)_setError:(id)a3;
-- (void)_setMinimumClientVersion:(id)a3;
-- (void)_setPlayerContent:(id)a3;
-- (void)_setStatus:(int64_t)a3;
-- (void)_setVariationIdentifier:(id)a3;
-- (void)_setVideoPlayerItem:(id)a3 videoDuration:(id *)a4;
-- (void)_setVideoPlayerItemRequestID:(int64_t)a3;
+- (void)_setError:(id)error;
+- (void)_setMinimumClientVersion:(id)version;
+- (void)_setPlayerContent:(id)content;
+- (void)_setStatus:(int64_t)status;
+- (void)_setVariationIdentifier:(id)identifier;
+- (void)_setVideoPlayerItem:(id)item videoDuration:(id *)duration;
+- (void)_setVideoPlayerItemRequestID:(int64_t)d;
 - (void)_updateContentSupportsVitalityIfNeeded;
 - (void)_updateMinimumClientVersionIfNeeded;
 - (void)_updatePlaybackStyleIdentifierIfNeeded;
@@ -53,14 +53,14 @@
 - (void)cancelLoading;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
+- (void)performChanges:(id)changes;
 - (void)resetAVObjects;
-- (void)setAggressivelyCacheVideoFrames:(BOOL)a3;
-- (void)setContentSupportsVitality:(BOOL)a3;
-- (void)setDecodesAllFramesDuringOrdinaryPlayback:(BOOL)a3;
-- (void)setLoadingTarget:(int64_t)a3;
-- (void)setReversesMoreVideoFramesInMemory:(BOOL)a3;
-- (void)setVideoComposition:(id)a3;
+- (void)setAggressivelyCacheVideoFrames:(BOOL)frames;
+- (void)setContentSupportsVitality:(BOOL)vitality;
+- (void)setDecodesAllFramesDuringOrdinaryPlayback:(BOOL)playback;
+- (void)setLoadingTarget:(int64_t)target;
+- (void)setReversesMoreVideoFramesInMemory:(BOOL)memory;
+- (void)setVideoComposition:(id)composition;
 @end
 
 @implementation ISPlayerItem
@@ -74,44 +74,44 @@
   return result;
 }
 
-- (void)_performIvarWrite:(id)a3
+- (void)_performIvarWrite:(id)write
 {
   ivarQueue = self->_ivarQueue;
   if (ivarQueue)
   {
-    dispatch_barrier_sync(ivarQueue, a3);
+    dispatch_barrier_sync(ivarQueue, write);
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(write + 2))(write);
   }
 }
 
-- (void)_performIvarRead:(id)a3
+- (void)_performIvarRead:(id)read
 {
-  v4 = a3;
-  block = v4;
-  if (self->_ivarQueue && (v5 = [(ISPlayerItem *)self _isOnIvarQueue], v4 = block, !v5))
+  readCopy = read;
+  block = readCopy;
+  if (self->_ivarQueue && (v5 = [(ISPlayerItem *)self _isOnIvarQueue], readCopy = block, !v5))
   {
     dispatch_sync(self->_ivarQueue, block);
   }
 
   else
   {
-    (*(v4 + 2))(v4);
+    (*(readCopy + 2))(readCopy);
   }
 }
 
-- (void)_performWork:(id)a3 sync:(BOOL)a4
+- (void)_performWork:(id)work sync:(BOOL)sync
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  syncCopy = sync;
+  workCopy = work;
+  if (syncCopy)
   {
     if ([(ISPlayerItem *)self _isOnWorkQueue])
     {
-      v6[2](v6, self);
+      workCopy[2](workCopy, self);
     }
 
     else
@@ -122,7 +122,7 @@
       v13[2] = __34__ISPlayerItem__performWork_sync___block_invoke;
       v13[3] = &unk_279A29EA8;
       v13[4] = self;
-      v14 = v6;
+      v14 = workCopy;
       dispatch_sync(workQueue, v13);
     }
   }
@@ -136,7 +136,7 @@
     block[2] = __34__ISPlayerItem__performWork_sync___block_invoke_2;
     block[3] = &unk_279A2A158;
     objc_copyWeak(&v11, &location);
-    v10 = v6;
+    v10 = workCopy;
     dispatch_async(v7, block);
 
     objc_destroyWeak(&v11);
@@ -350,7 +350,7 @@ void __44__ISPlayerItem__updatePlayerContentIfNeeded__block_invoke_3(void *a1)
   [(ISPlayerItem *)self _performIvarWrite:v2];
 }
 
-- (void)_dimFlashingLightsDidChangeValue:(id)a3
+- (void)_dimFlashingLightsDidChangeValue:(id)value
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -379,17 +379,17 @@ uint64_t __49__ISPlayerItem__dimFlashingLightsDidChangeValue___block_invoke_2(ui
   return [v3 setBlendsVideoFrames:v2];
 }
 
-- (BOOL)_blendsVideoFramesForVideoPlayerItem:(id)a3
+- (BOOL)_blendsVideoFramesForVideoPlayerItem:(id)item
 {
-  if ([a3 is_isHighFramerate])
+  if ([item is_isHighFramerate])
   {
     return 0;
   }
 
   v3 = +[ISPlayerSettings sharedInstance];
-  v4 = [v3 allowFrameBlending];
+  allowFrameBlending = [v3 allowFrameBlending];
 
-  return v4 && !MADimFlashingLightsEnabled();
+  return allowFrameBlending && !MADimFlashingLightsEnabled();
 }
 
 - (id)_videoPlayerItem
@@ -413,21 +413,21 @@ uint64_t __49__ISPlayerItem__dimFlashingLightsDidChangeValue___block_invoke_2(ui
   return v2;
 }
 
-- (void)_setVideoPlayerItem:(id)a3 videoDuration:(id *)a4
+- (void)_setVideoPlayerItem:(id)item videoDuration:(id *)duration
 {
-  v6 = a3;
-  v7 = [(ISPlayerItem *)self _videoPlayerItem];
+  itemCopy = item;
+  _videoPlayerItem = [(ISPlayerItem *)self _videoPlayerItem];
 
-  if (v7 != v6)
+  if (_videoPlayerItem != itemCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__ISPlayerItem__setVideoPlayerItem_videoDuration___block_invoke;
     v8[3] = &unk_279A29E58;
     v8[4] = self;
-    v9 = v6;
-    v10 = *&a4->var0;
-    var3 = a4->var3;
+    v9 = itemCopy;
+    v10 = *&duration->var0;
+    var3 = duration->var3;
     [(ISPlayerItem *)self performChanges:v8];
   }
 }
@@ -481,20 +481,20 @@ __n128 __50__ISPlayerItem__setVideoPlayerItem_videoDuration___block_invoke_2(uin
   return result;
 }
 
-- (void)_handleVideoPlayerItemLoadResultWithSuccess:(BOOL)a3 playerItem:(id)a4 videoDuration:(id *)a5 error:(id)a6
+- (void)_handleVideoPlayerItemLoadResultWithSuccess:(BOOL)success playerItem:(id)item videoDuration:(id *)duration error:(id)error
 {
-  v10 = a4;
-  v11 = a6;
+  itemCopy = item;
+  errorCopy = error;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__ISPlayerItem__handleVideoPlayerItemLoadResultWithSuccess_playerItem_videoDuration_error___block_invoke;
   v14[3] = &unk_279A29E08;
-  v18 = a3;
-  v17 = *a5;
-  v15 = v10;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
+  successCopy = success;
+  v17 = *duration;
+  v15 = itemCopy;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = itemCopy;
   [(ISPlayerItem *)self _performWork:v14];
 }
 
@@ -658,14 +658,14 @@ void __42__ISPlayerItem__invalidateVideoPlayerItem__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setContentSupportsVitality:(BOOL)a3
+- (void)setContentSupportsVitality:(BOOL)vitality
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __43__ISPlayerItem_setContentSupportsVitality___block_invoke;
   v3[3] = &unk_279A29DB8;
   v3[4] = self;
-  v4 = a3;
+  vitalityCopy = vitality;
   [(ISPlayerItem *)self performChanges:v3];
 }
 
@@ -893,16 +893,16 @@ uint64_t __50__ISPlayerItem__invalidateContentSupportsVitality__block_invoke(uin
   return v2;
 }
 
-- (void)_setVariationIdentifier:(id)a3
+- (void)_setVariationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__ISPlayerItem__setVariationIdentifier___block_invoke;
   v6[3] = &unk_279A2A398;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(ISPlayerItem *)self performChanges:v6];
 }
 
@@ -1057,12 +1057,12 @@ uint64_t __50__ISPlayerItem__invalidatePlaybackStyleIdentifier__block_invoke(uin
   return v2;
 }
 
-- (void)_setMinimumClientVersion:(id)a3
+- (void)_setMinimumClientVersion:(id)version
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ISPlayerItem *)self _minimumClientVersion];
-  v6 = [v4 isEqualToString:v5];
+  versionCopy = version;
+  _minimumClientVersion = [(ISPlayerItem *)self _minimumClientVersion];
+  v6 = [versionCopy isEqualToString:_minimumClientVersion];
 
   if ((v6 & 1) == 0)
   {
@@ -1070,16 +1070,16 @@ uint64_t __50__ISPlayerItem__invalidatePlaybackStyleIdentifier__block_invoke(uin
     v14 = 3221225472;
     v15 = __41__ISPlayerItem__setMinimumClientVersion___block_invoke;
     v16 = &unk_279A2A348;
-    v17 = self;
-    v7 = v4;
+    selfCopy = self;
+    v7 = versionCopy;
     v18 = v7;
     [(ISPlayerItem *)self _performIvarWrite:&v13];
     if ([v7 integerValue] >= 1)
     {
       v8 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA450];
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"The current client version of PhotosPlayer is %d, but the media in %@ requires version >= %@", 0, self->_asset, v7, v13, v14, v15, v16, v17];
-      v20[0] = v9;
+      selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"The current client version of PhotosPlayer is %d, but the media in %@ requires version >= %@", 0, self->_asset, v7, v13, v14, v15, v16, selfCopy];
+      v20[0] = selfCopy;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       v11 = [v8 errorWithDomain:@"com.apple.photosplayer" code:104 userInfo:v10];
 
@@ -1322,16 +1322,16 @@ void __31__ISPlayerItem__updateIfNeeded__block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (void)_setStatus:(int64_t)a3
+- (void)_setStatus:(int64_t)status
 {
-  if ([(ISPlayerItem *)self status]!= a3)
+  if ([(ISPlayerItem *)self status]!= status)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __27__ISPlayerItem__setStatus___block_invoke;
     v5[3] = &unk_279A2A438;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = status;
     [(ISPlayerItem *)self performChanges:v5];
   }
 }
@@ -1355,18 +1355,18 @@ uint64_t __27__ISPlayerItem__setStatus___block_invoke(uint64_t a1)
   return [*(a1 + 32) signalChange:1];
 }
 
-- (void)_setPlayerContent:(id)a3
+- (void)_setPlayerContent:(id)content
 {
-  v4 = a3;
-  v5 = [(ISPlayerItem *)self playerContent];
-  if (v5 != v4 && ([v4 isEqual:v5] & 1) == 0)
+  contentCopy = content;
+  playerContent = [(ISPlayerItem *)self playerContent];
+  if (playerContent != contentCopy && ([contentCopy isEqual:playerContent] & 1) == 0)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __34__ISPlayerItem__setPlayerContent___block_invoke;
     v6[3] = &unk_279A2A398;
     v6[4] = self;
-    v7 = v4;
+    v7 = contentCopy;
     [(ISPlayerItem *)self performChanges:v6];
   }
 }
@@ -1406,19 +1406,19 @@ void __34__ISPlayerItem__setPlayerContent___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
-  v4 = a3;
-  v5 = [(ISPlayerItem *)self error];
+  errorCopy = error;
+  error = [(ISPlayerItem *)self error];
 
-  if (v5 != v4)
+  if (error != errorCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __26__ISPlayerItem__setError___block_invoke;
     v6[3] = &unk_279A2A398;
     v6[4] = self;
-    v7 = v4;
+    v7 = errorCopy;
     [(ISPlayerItem *)self performChanges:v6];
   }
 }
@@ -1468,16 +1468,16 @@ void __26__ISPlayerItem__setError___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setDecodesAllFramesDuringOrdinaryPlayback:(BOOL)a3
+- (void)setDecodesAllFramesDuringOrdinaryPlayback:(BOOL)playback
 {
-  if ([(ISPlayerItem *)self decodesAllFramesDuringOrdinaryPlayback]!= a3)
+  if ([(ISPlayerItem *)self decodesAllFramesDuringOrdinaryPlayback]!= playback)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __58__ISPlayerItem_setDecodesAllFramesDuringOrdinaryPlayback___block_invoke;
     v5[3] = &unk_279A2A4D8;
     v5[4] = self;
-    v6 = a3;
+    playbackCopy = playback;
     [(ISPlayerItem *)self _performIvarWrite:v5];
   }
 }
@@ -1500,16 +1500,16 @@ void __26__ISPlayerItem__setError___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setReversesMoreVideoFramesInMemory:(BOOL)a3
+- (void)setReversesMoreVideoFramesInMemory:(BOOL)memory
 {
-  if ([(ISPlayerItem *)self reversesMoreVideoFramesInMemory]!= a3)
+  if ([(ISPlayerItem *)self reversesMoreVideoFramesInMemory]!= memory)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__ISPlayerItem_setReversesMoreVideoFramesInMemory___block_invoke;
     v5[3] = &unk_279A2A4D8;
     v5[4] = self;
-    v6 = a3;
+    memoryCopy = memory;
     [(ISPlayerItem *)self _performIvarWrite:v5];
   }
 }
@@ -1532,16 +1532,16 @@ void __26__ISPlayerItem__setError___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setAggressivelyCacheVideoFrames:(BOOL)a3
+- (void)setAggressivelyCacheVideoFrames:(BOOL)frames
 {
-  if ([(ISPlayerItem *)self aggressivelyCacheVideoFrames]!= a3)
+  if ([(ISPlayerItem *)self aggressivelyCacheVideoFrames]!= frames)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __48__ISPlayerItem_setAggressivelyCacheVideoFrames___block_invoke;
     v5[3] = &unk_279A2A4D8;
     v5[4] = self;
-    v6 = a3;
+    framesCopy = frames;
     [(ISPlayerItem *)self _performIvarWrite:v5];
   }
 }
@@ -1682,14 +1682,14 @@ uint64_t __48__ISPlayerItem_discardContentBelowLoadingTarget__block_invoke_2(uin
   return result;
 }
 
-- (void)_setVideoPlayerItemRequestID:(int64_t)a3
+- (void)_setVideoPlayerItemRequestID:(int64_t)d
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__ISPlayerItem__setVideoPlayerItemRequestID___block_invoke;
   v3[3] = &unk_279A2A410;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = d;
   [(ISPlayerItem *)self _performIvarWrite:v3];
 }
 
@@ -1717,19 +1717,19 @@ uint64_t __48__ISPlayerItem_discardContentBelowLoadingTarget__block_invoke_2(uin
   [v3 cancelPreparationOfIrisAssetWithRequestID:{-[ISPlayerItem _videoPlayerItemRequestID](self, "_videoPlayerItemRequestID")}];
 }
 
-- (void)setVideoComposition:(id)a3
+- (void)setVideoComposition:(id)composition
 {
-  v4 = a3;
-  v5 = [(ISPlayerItem *)self videoComposition];
+  compositionCopy = composition;
+  videoComposition = [(ISPlayerItem *)self videoComposition];
 
-  if (v5 != v4)
+  if (videoComposition != compositionCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __36__ISPlayerItem_setVideoComposition___block_invoke;
     v6[3] = &unk_279A2A398;
     v6[4] = self;
-    v7 = v4;
+    v7 = compositionCopy;
     [(ISPlayerItem *)self performChanges:v6];
   }
 }
@@ -1780,18 +1780,18 @@ uint64_t __36__ISPlayerItem_setVideoComposition___block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (void)setLoadingTarget:(int64_t)a3
+- (void)setLoadingTarget:(int64_t)target
 {
-  v5 = [(ISPlayerItem *)self loadingTarget];
-  if (v5 != a3)
+  loadingTarget = [(ISPlayerItem *)self loadingTarget];
+  if (loadingTarget != target)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __33__ISPlayerItem_setLoadingTarget___block_invoke;
     v6[3] = &unk_279A29D20;
     v6[4] = self;
-    v6[5] = a3;
-    v6[6] = v5;
+    v6[5] = target;
+    v6[6] = loadingTarget;
     [(ISPlayerItem *)self performChanges:v6];
   }
 }
@@ -1838,16 +1838,16 @@ uint64_t __33__ISPlayerItem_setLoadingTarget___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__ISPlayerItem_performChanges___block_invoke;
   v6[3] = &unk_279A29CF8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changesCopy;
+  v5 = changesCopy;
   [(ISPlayerItem *)self _performWork:v6 sync:0];
 }
 
@@ -1859,12 +1859,12 @@ id __31__ISPlayerItem_performChanges___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_performChanges_, v1);
 }
 
-- (ISPlayerItem)initWithAsset:(id)a3 targetSize:(CGSize)a4 contentAspectRatio:(id)a5
+- (ISPlayerItem)initWithAsset:(id)asset targetSize:(CGSize)size contentAspectRatio:(id)ratio
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  ratioCopy = ratio;
   v34.receiver = self;
   v34.super_class = ISPlayerItem;
   v12 = [(ISObservable *)&v34 init];
@@ -1888,17 +1888,17 @@ id __31__ISPlayerItem_performChanges___block_invoke(uint64_t a1)
     *(v12 + 14) = v19;
 
     dispatch_queue_set_specific(*(v12 + 14), QueueIdentifierContext, *(v12 + 12), 0);
-    objc_storeStrong(v12 + 34, a3);
+    objc_storeStrong(v12 + 34, asset);
     *(v12 + 36) = width;
     *(v12 + 37) = height;
     *(v12 + 26) = 0;
-    objc_storeStrong(v12 + 35, a5);
+    objc_storeStrong(v12 + 35, ratio);
     v21 = [ISPlayerContent alloc];
-    v22 = [v10 photo];
-    v23 = [v10 photoEXIFOrientation];
-    if (v10)
+    photo = [assetCopy photo];
+    photoEXIFOrientation = [assetCopy photoEXIFOrientation];
+    if (assetCopy)
     {
-      [v10 photoCMTime];
+      [assetCopy photoCMTime];
     }
 
     else
@@ -1906,18 +1906,18 @@ id __31__ISPlayerItem_performChanges___block_invoke(uint64_t a1)
       memset(v33, 0, sizeof(v33));
     }
 
-    v24 = [v10 hasColorAdjustments];
+    hasColorAdjustments = [assetCopy hasColorAdjustments];
     v31 = *MEMORY[0x277CC0898];
     v32 = *(MEMORY[0x277CC0898] + 16);
     LOBYTE(v30) = 0;
-    v25 = [(ISPlayerContent *)v21 initWithPhoto:v22 photoIsOriginal:1 photoEXIFOrientation:v23 photoTime:v33 videoDuration:&v31 photoHasColorAdjustments:v24 videoPlayerItem:0 variationIdentifier:0 supportsVitality:v30];
+    v25 = [(ISPlayerContent *)v21 initWithPhoto:photo photoIsOriginal:1 photoEXIFOrientation:photoEXIFOrientation photoTime:v33 videoDuration:&v31 photoHasColorAdjustments:hasColorAdjustments videoPlayerItem:0 variationIdentifier:0 supportsVitality:v30];
     v26 = *(v12 + 25);
     *(v12 + 25) = v25;
     v27 = v25;
 
     *(v12 + 146) = 1;
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v12 selector:sel__dimFlashingLightsDidChangeValue_ name:*MEMORY[0x277CD5610] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__dimFlashingLightsDidChangeValue_ name:*MEMORY[0x277CD5610] object:0];
 
     [v12 _updateIfNeeded];
   }
@@ -1938,31 +1938,31 @@ id __31__ISPlayerItem_performChanges___block_invoke(uint64_t a1)
   v3 = +[ISPlayerItemChef defaultChef];
   [v3 cancelPreparationOfIrisAssetWithRequestID:{-[ISPlayerItem _videoPlayerItemRequestID](self, "_videoPlayerItemRequestID")}];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = ISPlayerItem;
   [(ISPlayerItem *)&v5 dealloc];
 }
 
-+ (ISPlayerItem)playerItemWithAsset:(id)a3 targetSize:(CGSize)a4 contentAspectRatio:(id)a5
++ (ISPlayerItem)playerItemWithAsset:(id)asset targetSize:(CGSize)size contentAspectRatio:(id)ratio
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithAsset:v10 targetSize:v9 contentAspectRatio:{width, height}];
+  height = size.height;
+  width = size.width;
+  ratioCopy = ratio;
+  assetCopy = asset;
+  v11 = [[self alloc] initWithAsset:assetCopy targetSize:ratioCopy contentAspectRatio:{width, height}];
 
   return v11;
 }
 
-+ (ISPlayerItem)playerItemWithAsset:(id)a3 targetSize:(CGSize)a4
++ (ISPlayerItem)playerItemWithAsset:(id)asset targetSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAsset:v7 targetSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  v8 = [[self alloc] initWithAsset:assetCopy targetSize:{width, height}];
 
   return v8;
 }

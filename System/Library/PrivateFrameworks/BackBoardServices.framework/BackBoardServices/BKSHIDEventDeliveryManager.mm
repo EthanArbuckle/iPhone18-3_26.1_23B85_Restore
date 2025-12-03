@@ -1,34 +1,34 @@
 @interface BKSHIDEventDeliveryManager
 + (id)sharedInstance;
 - (BKSHIDEventDeliveryManager)init;
-- (BOOL)validateProvenance:(id)a3;
+- (BOOL)validateProvenance:(id)provenance;
 - (NSString)debugDescription;
-- (id)_initWithConnectionFactory:(id)a3 forTesting:(BOOL)a4;
+- (id)_initWithConnectionFactory:(id)factory forTesting:(BOOL)testing;
 - (id)_lock_stateDescription;
-- (id)_lock_transactionAssertionWithReason:(id)a3;
-- (id)assertSelectionPath:(id)a3 target:(id)a4 hasModality:(id)a5 basis:(id)a6;
-- (id)assertSelectionPath:(id)a3 target:(id)a4 imposesConstraint:(id)a5;
-- (id)bufferEventsMatchingPredicate:(id)a3 withReason:(id)a4;
-- (id)deferEventsMatchingPredicate:(id)a3 restrictedToEventDescriptors:(id)a4 toTarget:(id)a5 withReason:(id)a6;
-- (id)deferEventsMatchingPredicate:(id)a3 toTarget:(id)a4 withReason:(id)a5;
-- (id)dispatchDiscreteEventsForReason:(id)a3 withRules:(id)a4;
-- (id)dispatchKeyCommandsForReason:(id)a3 withRule:(id)a4;
-- (id)registerKeyCommands:(id)a3;
-- (id)transactionAssertionWithReason:(id)a3;
-- (int64_t)authenticateMessage:(id)a3;
-- (void)_executeDescriptionFetch:(id)a3 result:(id)a4;
+- (id)_lock_transactionAssertionWithReason:(id)reason;
+- (id)assertSelectionPath:(id)path target:(id)target hasModality:(id)modality basis:(id)basis;
+- (id)assertSelectionPath:(id)path target:(id)target imposesConstraint:(id)constraint;
+- (id)bufferEventsMatchingPredicate:(id)predicate withReason:(id)reason;
+- (id)deferEventsMatchingPredicate:(id)predicate restrictedToEventDescriptors:(id)descriptors toTarget:(id)target withReason:(id)reason;
+- (id)deferEventsMatchingPredicate:(id)predicate toTarget:(id)target withReason:(id)reason;
+- (id)dispatchDiscreteEventsForReason:(id)reason withRules:(id)rules;
+- (id)dispatchKeyCommandsForReason:(id)reason withRule:(id)rule;
+- (id)registerKeyCommands:(id)commands;
+- (id)transactionAssertionWithReason:(id)reason;
+- (int64_t)authenticateMessage:(id)message;
+- (void)_executeDescriptionFetch:(id)fetch result:(id)result;
 - (void)_lock_flushIfNeeded;
 - (void)_lock_implicitFlush;
 - (void)_lock_noteServerInterruption;
-- (void)_lock_pendQuery:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)changeSelectionPath:(id)a3 target:(id)a4 basis:(id)a5 ignoreModalities:(BOOL)a6;
-- (void)connectionDescriptionForDeferringRuleIdentity:(id)a3 result:(id)a4;
+- (void)_lock_pendQuery:(id)query;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)changeSelectionPath:(id)path target:(id)target basis:(id)basis ignoreModalities:(BOOL)modalities;
+- (void)connectionDescriptionForDeferringRuleIdentity:(id)identity result:(id)result;
 - (void)dealloc;
-- (void)deliveryChainsDescription:(id)a3;
-- (void)deliveryGraphDescription:(id)a3;
-- (void)resolutionDescriptionForEventDescriptor:(id)a3 sender:(id)a4 result:(id)a5;
-- (void)resolutionDescriptionForKeyCommand:(id)a3 sender:(id)a4 result:(id)a5;
+- (void)deliveryChainsDescription:(id)description;
+- (void)deliveryGraphDescription:(id)description;
+- (void)resolutionDescriptionForEventDescriptor:(id)descriptor sender:(id)sender result:(id)result;
+- (void)resolutionDescriptionForKeyCommand:(id)command sender:(id)sender result:(id)result;
 @end
 
 @implementation BKSHIDEventDeliveryManager
@@ -92,8 +92,8 @@
         v10 = self->_lock_lastSentDiscreteDispatchingRoots;
         self->_lock_lastSentDiscreteDispatchingRoots = v9;
 
-        v11 = [(NSMutableSet *)self->_lock_discreteDispatchingRoots allObjects];
-        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setDiscreteDispatchingRules:v11];
+        allObjects = [(NSMutableSet *)self->_lock_discreteDispatchingRoots allObjects];
+        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setDiscreteDispatchingRules:allObjects];
       }
 
       lock_keyCommandsDispatchingRoots = self->_lock_keyCommandsDispatchingRoots;
@@ -104,8 +104,8 @@
         v15 = self->_lock_lastSentKeyCommandsDispatchingRoots;
         self->_lock_lastSentKeyCommandsDispatchingRoots = v14;
 
-        v16 = [(NSMutableSet *)self->_lock_keyCommandsDispatchingRoots allObjects];
-        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setKeyCommandDispatchingRules:v16];
+        allObjects2 = [(NSMutableSet *)self->_lock_keyCommandsDispatchingRoots allObjects];
+        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setKeyCommandDispatchingRules:allObjects2];
       }
 
       lock_deferringRules = self->_lock_deferringRules;
@@ -128,27 +128,27 @@
         self->_lock_lastSentKeyCommandsRegistrations = v23;
 
         v25 = MEMORY[0x1E695DFD8];
-        v26 = [(NSDictionary *)self->_lock_lastSentKeyCommandsRegistrations allValues];
-        v27 = [v25 setWithArray:v26];
+        allValues = [(NSDictionary *)self->_lock_lastSentKeyCommandsRegistrations allValues];
+        v27 = [v25 setWithArray:allValues];
 
         if (([(NSSet *)self->_lock_lastSentSetOfKeyCommandsRegistrations isEqual:v27]& 1) == 0)
         {
           objc_storeStrong(&self->_lock_lastSentSetOfKeyCommandsRegistrations, v27);
-          v28 = [v27 allObjects];
-          [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setKeyCommandsRegistrations:v28];
+          allObjects3 = [v27 allObjects];
+          [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setKeyCommandsRegistrations:allObjects3];
         }
       }
 
       v29 = MEMORY[0x1E695DFD8];
-      v30 = [(NSMutableDictionary *)self->_lock_bufferingPredicates allValues];
-      v31 = [v29 setWithArray:v30];
+      allValues2 = [(NSMutableDictionary *)self->_lock_bufferingPredicates allValues];
+      v31 = [v29 setWithArray:allValues2];
 
       lock_lastSentBufferingPredicates = self->_lock_lastSentBufferingPredicates;
       if ((BSEqualObjects() & 1) == 0)
       {
         objc_storeStrong(&self->_lock_lastSentBufferingPredicates, v31);
-        v33 = [v31 allObjects];
-        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setBufferingPredicates:v33];
+        allObjects4 = [v31 allObjects];
+        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setBufferingPredicates:allObjects4];
       }
 
       v34 = self->_lock_constraintAsserts;
@@ -159,8 +159,8 @@
         v37 = self->_lock_lastSentConstraintAsserts;
         self->_lock_lastSentConstraintAsserts = v36;
 
-        v38 = [(NSMutableSet *)v34 allObjects];
-        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setConstraintAssertions:v38];
+        allObjects5 = [(NSMutableSet *)v34 allObjects];
+        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setConstraintAssertions:allObjects5];
       }
 
       v39 = self->_lock_modalityAsserts;
@@ -171,28 +171,28 @@
         v42 = self->_lock_lastSentModalityAsserts;
         self->_lock_lastSentModalityAsserts = v41;
 
-        v43 = [(NSMutableSet *)v39 allObjects];
-        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setModalityAssertions:v43];
+        allObjects6 = [(NSMutableSet *)v39 allObjects];
+        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setModalityAssertions:allObjects6];
       }
 
       if ([(NSMutableSet *)self->_lock_selectionRequests count])
       {
-        v44 = [(NSMutableSet *)self->_lock_selectionRequests allObjects];
-        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setSelectionRequests:v44];
+        allObjects7 = [(NSMutableSet *)self->_lock_selectionRequests allObjects];
+        [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 setSelectionRequests:allObjects7];
 
         [(NSMutableSet *)self->_lock_selectionRequests removeAllObjects];
       }
 
-      v45 = [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 contentsMask];
+      contentsMask = [(BKSHIDEventDeliveryRuleChangeTransaction *)v4 contentsMask];
       v46 = BKLogEventDelivery();
       v47 = os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG);
-      if (v45)
+      if (contentsMask)
       {
         if (v47)
         {
           v49 = MEMORY[0x1E698E688];
-          v50 = [MEMORY[0x1E698E690] succinctStyle];
-          v51 = [v49 descriptionForRootObject:v4 withStyle:v50];
+          succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+          v51 = [v49 descriptionForRootObject:v4 withStyle:succinctStyle];
           v52 = 138543362;
           v53 = v51;
           _os_log_debug_impl(&dword_186345000, v46, OS_LOG_TYPE_DEBUG, "flushing changes: %{public}@", &v52, 0xCu);
@@ -258,17 +258,17 @@ void __44__BKSHIDEventDeliveryManager_sharedInstance__block_invoke()
   sharedInstance___sharedInstance_11525 = v1;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   os_unfair_lock_lock(&self->_lock);
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke;
   v19 = &unk_1E6F47C78;
-  v5 = v4;
+  v5 = streamCopy;
   v20 = v5;
-  v21 = self;
+  selfCopy = self;
   [v5 appendProem:self block:&v16];
   v6 = [v5 appendObject:self->_lock_preventFlushingReasons withName:@"preventFlushingReasons" skipIfNil:{1, v16, v17, v18, v19}];
   if ([(NSMutableSet *)self->_lock_discreteDispatchingRoots count])
@@ -329,8 +329,8 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
@@ -361,13 +361,13 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
   return @"initial";
 }
 
-- (id)_lock_transactionAssertionWithReason:(id)a3
+- (id)_lock_transactionAssertionWithReason:(id)reason
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  if (!v5)
+  if (!reasonCopy)
   {
     v15 = NSStringFromClass(v7);
     v16 = [v6 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"reason", v15];
@@ -382,7 +382,7 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
       v36 = 2114;
       v37 = v19;
       v38 = 2048;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
       v41 = @"BKSHIDEventDeliveryManager.m";
       v42 = 1024;
@@ -401,13 +401,13 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [v5 classForCoder];
-    if (!v21)
+    classForCoder = [reasonCopy classForCoder];
+    if (!classForCoder)
     {
-      v21 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v22 = NSStringFromClass(v21);
+    v22 = NSStringFromClass(classForCoder);
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
     v25 = [v20 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"reason", v22, v24];
@@ -422,7 +422,7 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
       v36 = 2114;
       v37 = v28;
       v38 = 2048;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
       v41 = @"BKSHIDEventDeliveryManager.m";
       v42 = 1024;
@@ -446,7 +446,7 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
 
   if (v10)
   {
-    v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wow! we've wrapped all the way back around!!! token=%li reason=%@ reasons=%@", v9, v5, self->_lock_preventFlushingReasons];
+    v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wow! we've wrapped all the way back around!!! token=%li reason=%@ reasons=%@", v9, reasonCopy, self->_lock_preventFlushingReasons];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v30 = NSStringFromSelector(a2);
@@ -457,7 +457,7 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
       v36 = 2114;
       v37 = v32;
       v38 = 2048;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
       v41 = @"BKSHIDEventDeliveryManager.m";
       v42 = 1024;
@@ -473,7 +473,7 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
     JUMPOUT(0x1863A54A8);
   }
 
-  [(BSMutableIntegerMap *)self->_lock_preventFlushingReasons setObject:v5 forKey:v9];
+  [(BSMutableIntegerMap *)self->_lock_preventFlushingReasons setObject:reasonCopy forKey:v9];
   v11 = objc_alloc(MEMORY[0x1E698E778]);
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
@@ -481,7 +481,7 @@ void __56__BKSHIDEventDeliveryManager_appendDescriptionToStream___block_invoke(u
   v33[3] = &unk_1E6F47660;
   v33[4] = self;
   v33[5] = v9;
-  v12 = [v11 initWithIdentifier:@"com.apple.backboard.hid.delivery.transaction" forReason:v5 invalidationBlock:v33];
+  v12 = [v11 initWithIdentifier:@"com.apple.backboard.hid.delivery.transaction" forReason:reasonCopy invalidationBlock:v33];
   [(NSHashTable *)self->_lock_assertions addObject:v12];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -542,9 +542,9 @@ void __67__BKSHIDEventDeliveryManager__lock_transactionAssertionWithReason___blo
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_lock_pendQuery:(id)a3
+- (void)_lock_pendQuery:(id)query
 {
-  v8 = a3;
+  queryCopy = query;
   os_unfair_lock_assert_owner(&self->_lock);
   lock_pendingQueriesToBeExecutedInsideLockOnceActivationHappens = self->_lock_pendingQueriesToBeExecutedInsideLockOnceActivationHappens;
   if (!lock_pendingQueriesToBeExecutedInsideLockOnceActivationHappens)
@@ -556,23 +556,23 @@ void __67__BKSHIDEventDeliveryManager__lock_transactionAssertionWithReason___blo
     lock_pendingQueriesToBeExecutedInsideLockOnceActivationHappens = self->_lock_pendingQueriesToBeExecutedInsideLockOnceActivationHappens;
   }
 
-  v7 = MEMORY[0x186605BB0](v8);
+  v7 = MEMORY[0x186605BB0](queryCopy);
   [(NSMutableArray *)lock_pendingQueriesToBeExecutedInsideLockOnceActivationHappens addObject:v7];
 }
 
-- (void)_executeDescriptionFetch:(id)a3 result:(id)a4
+- (void)_executeDescriptionFetch:(id)fetch result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  fetchCopy = fetch;
+  resultCopy = result;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_remoteTargetSafeToMessage)
   {
-    v8 = v6[2](v6);
+    v8 = fetchCopy[2](fetchCopy);
     os_unfair_lock_unlock(&self->_lock);
-    if (v7)
+    if (resultCopy)
     {
-      v7[2](v7, v8, 0);
+      resultCopy[2](resultCopy, v8, 0);
     }
   }
 
@@ -583,8 +583,8 @@ void __67__BKSHIDEventDeliveryManager__lock_transactionAssertionWithReason___blo
     v10[2] = __62__BKSHIDEventDeliveryManager__executeDescriptionFetch_result___block_invoke;
     v10[3] = &unk_1E6F47638;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = fetchCopy;
+    v12 = resultCopy;
     v9 = MEMORY[0x186605BB0](v10);
     [(BKSHIDEventDeliveryManager *)self _lock_pendQuery:v9];
     os_unfair_lock_unlock(&self->_lock);
@@ -624,16 +624,16 @@ uint64_t __62__BKSHIDEventDeliveryManager__executeDescriptionFetch_result___bloc
   return result;
 }
 
-- (BOOL)validateProvenance:(id)a3
+- (BOOL)validateProvenance:(id)provenance
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  provenanceCopy = provenance;
+  if (provenanceCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v13 = 0;
-    v5 = [MEMORY[0x1E698E750] encodeObject:v3 error:&v13];
+    v5 = [MEMORY[0x1E698E750] encodeObject:provenanceCopy error:&v13];
     v6 = v13;
     if (v5)
     {
@@ -659,7 +659,7 @@ uint64_t __62__BKSHIDEventDeliveryManager__executeDescriptionFetch_result___bloc
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = v3;
+        v15 = provenanceCopy;
         v16 = 2114;
         v17 = v6;
         _os_log_error_impl(&dword_186345000, v10, OS_LOG_TYPE_ERROR, "authenticateProvenance: failed to encode %{public}@: %{public}@", buf, 0x16u);
@@ -678,12 +678,12 @@ uint64_t __62__BKSHIDEventDeliveryManager__executeDescriptionFetch_result___bloc
   return v9;
 }
 
-- (int64_t)authenticateMessage:(id)a3
+- (int64_t)authenticateMessage:(id)message
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  messageCopy = message;
+  v4 = messageCopy;
+  if (!messageCopy)
   {
     v9 = BKLogEventDelivery();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -703,7 +703,7 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if ([v3 originIdentifier] != 0xC181BADB23D8497BLL)
+  if ([messageCopy originIdentifier] != 0xC181BADB23D8497BLL)
   {
     v9 = BKLogEventDelivery();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -750,12 +750,12 @@ LABEL_13:
   return v8;
 }
 
-- (id)dispatchKeyCommandsForReason:(id)a3 withRule:(id)a4
+- (id)dispatchKeyCommandsForReason:(id)reason withRule:(id)rule
 {
   v67 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  reasonCopy = reason;
+  ruleCopy = rule;
+  v9 = reasonCopy;
   v10 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
   if (!v9)
@@ -773,7 +773,7 @@ LABEL_13:
       v57 = 2114;
       v58 = v27;
       v59 = 2048;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2114;
       v62 = @"BKSHIDEventDeliveryManager.m";
       v63 = 1024;
@@ -792,13 +792,13 @@ LABEL_13:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v28 = MEMORY[0x1E696AEC0];
-    v29 = [v9 classForCoder];
-    if (!v29)
+    classForCoder = [v9 classForCoder];
+    if (!classForCoder)
     {
-      v29 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v30 = NSStringFromClass(v29);
+    v30 = NSStringFromClass(classForCoder);
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
     v33 = [v28 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"reason", v30, v32];
@@ -813,7 +813,7 @@ LABEL_13:
       v57 = 2114;
       v58 = v36;
       v59 = 2048;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2114;
       v62 = @"BKSHIDEventDeliveryManager.m";
       v63 = 1024;
@@ -829,7 +829,7 @@ LABEL_13:
     JUMPOUT(0x1863A6130);
   }
 
-  v12 = v8;
+  v12 = ruleCopy;
   if (!v12)
   {
     v37 = MEMORY[0x1E696AEC0];
@@ -847,7 +847,7 @@ LABEL_13:
       v57 = 2114;
       v58 = v43;
       v59 = 2048;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2114;
       v62 = @"BKSHIDEventDeliveryManager.m";
       v63 = 1024;
@@ -868,13 +868,13 @@ LABEL_13:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v44 = MEMORY[0x1E696AEC0];
-    v45 = [v13 classForCoder];
-    if (!v45)
+    classForCoder2 = [v13 classForCoder];
+    if (!classForCoder2)
     {
-      v45 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v46 = NSStringFromClass(v45);
+    v46 = NSStringFromClass(classForCoder2);
     v47 = objc_opt_class();
     v48 = NSStringFromClass(v47);
     v49 = [v44 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"rule", v46, v48];
@@ -889,7 +889,7 @@ LABEL_13:
       v57 = 2114;
       v58 = v52;
       v59 = 2048;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2114;
       v62 = @"BKSHIDEventDeliveryManager.m";
       v63 = 1024;
@@ -947,12 +947,12 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
   os_unfair_lock_unlock(v5);
 }
 
-- (id)dispatchDiscreteEventsForReason:(id)a3 withRules:(id)a4
+- (id)dispatchDiscreteEventsForReason:(id)reason withRules:(id)rules
 {
   v95 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  reasonCopy = reason;
+  rulesCopy = rules;
+  v9 = reasonCopy;
   v10 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
   if (!v9)
@@ -970,7 +970,7 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
       v85 = 2114;
       v86 = v50;
       v87 = 2048;
-      v88 = self;
+      selfCopy6 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -989,13 +989,13 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v51 = MEMORY[0x1E696AEC0];
-    v52 = [v9 classForCoder];
-    if (!v52)
+    classForCoder = [v9 classForCoder];
+    if (!classForCoder)
     {
-      v52 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v53 = NSStringFromClass(v52);
+    v53 = NSStringFromClass(classForCoder);
     v54 = objc_opt_class();
     v55 = NSStringFromClass(v54);
     v56 = [v51 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"reason", v53, v55];
@@ -1010,7 +1010,7 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
       v85 = 2114;
       v86 = v59;
       v87 = 2048;
-      v88 = self;
+      selfCopy6 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1026,7 +1026,7 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
     JUMPOUT(0x1863A6BC8);
   }
 
-  v12 = v8;
+  v12 = rulesCopy;
   if (!v12)
   {
     v60 = MEMORY[0x1E696AEC0];
@@ -1044,7 +1044,7 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
       v85 = 2114;
       v86 = v66;
       v87 = 2048;
-      v88 = self;
+      selfCopy6 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1065,13 +1065,13 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v67 = MEMORY[0x1E696AEC0];
-    v68 = [v13 classForCoder];
-    if (!v68)
+    classForCoder2 = [v13 classForCoder];
+    if (!classForCoder2)
     {
-      v68 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v69 = NSStringFromClass(v68);
+    v69 = NSStringFromClass(classForCoder2);
     v70 = objc_opt_class();
     v71 = NSStringFromClass(v70);
     v72 = [v67 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"ruleSet", v69, v71];
@@ -1086,7 +1086,7 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
       v85 = 2114;
       v86 = v75;
       v87 = 2048;
-      v88 = self;
+      selfCopy6 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1140,7 +1140,7 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
             v85 = 2114;
             v86 = v36;
             v87 = 2048;
-            v88 = self;
+            selfCopy6 = self;
             v89 = 2114;
             v90 = @"BKSHIDEventDeliveryManager.m";
             v91 = 1024;
@@ -1161,13 +1161,13 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v37 = MEMORY[0x1E696AEC0];
-          v38 = [v21 classForCoder];
-          if (!v38)
+          classForCoder3 = [v21 classForCoder];
+          if (!classForCoder3)
           {
-            v38 = objc_opt_class();
+            classForCoder3 = objc_opt_class();
           }
 
-          v39 = NSStringFromClass(v38);
+          v39 = NSStringFromClass(classForCoder3);
           v40 = objc_opt_class();
           v41 = NSStringFromClass(v40);
           v42 = [v37 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"rule", v39, v41];
@@ -1182,7 +1182,7 @@ void __68__BKSHIDEventDeliveryManager_dispatchKeyCommandsForReason_withRule___bl
             v85 = 2114;
             v86 = v45;
             v87 = 2048;
-            v88 = self;
+            selfCopy6 = self;
             v89 = 2114;
             v90 = @"BKSHIDEventDeliveryManager.m";
             v91 = 1024;
@@ -1253,15 +1253,15 @@ void __72__BKSHIDEventDeliveryManager_dispatchDiscreteEventsForReason_withRules_
   os_unfair_lock_unlock(v5);
 }
 
-- (void)resolutionDescriptionForKeyCommand:(id)a3 sender:(id)a4 result:(id)a5
+- (void)resolutionDescriptionForKeyCommand:(id)command sender:(id)sender result:(id)result
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  commandCopy = command;
+  senderCopy = sender;
+  resultCopy = result;
+  if (!commandCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"BKSHIDEventDeliveryManager.m" lineNumber:520 description:{@"Invalid parameter not satisfying: %@", @"keyCommand"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventDeliveryManager.m" lineNumber:520 description:{@"Invalid parameter not satisfying: %@", @"keyCommand"}];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -1269,12 +1269,12 @@ void __72__BKSHIDEventDeliveryManager_dispatchDiscreteEventsForReason_withRules_
   v16[2] = __79__BKSHIDEventDeliveryManager_resolutionDescriptionForKeyCommand_sender_result___block_invoke;
   v16[3] = &unk_1E6F475E8;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
+  v17 = commandCopy;
+  v18 = senderCopy;
+  v12 = senderCopy;
+  v13 = commandCopy;
   v14 = MEMORY[0x186605BB0](v16);
-  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v14 result:v11];
+  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v14 result:resultCopy];
 }
 
 id __79__BKSHIDEventDeliveryManager_resolutionDescriptionForKeyCommand_sender_result___block_invoke(void *a1, void *a2)
@@ -1287,15 +1287,15 @@ id __79__BKSHIDEventDeliveryManager_resolutionDescriptionForKeyCommand_sender_re
   return v5;
 }
 
-- (void)resolutionDescriptionForEventDescriptor:(id)a3 sender:(id)a4 result:(id)a5
+- (void)resolutionDescriptionForEventDescriptor:(id)descriptor sender:(id)sender result:(id)result
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  descriptorCopy = descriptor;
+  senderCopy = sender;
+  resultCopy = result;
+  if (!descriptorCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"BKSHIDEventDeliveryManager.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"eventDescriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventDeliveryManager.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"eventDescriptor"}];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -1303,12 +1303,12 @@ id __79__BKSHIDEventDeliveryManager_resolutionDescriptionForKeyCommand_sender_re
   v16[2] = __84__BKSHIDEventDeliveryManager_resolutionDescriptionForEventDescriptor_sender_result___block_invoke;
   v16[3] = &unk_1E6F475E8;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
+  v17 = descriptorCopy;
+  v18 = senderCopy;
+  v12 = senderCopy;
+  v13 = descriptorCopy;
   v14 = MEMORY[0x186605BB0](v16);
-  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v14 result:v11];
+  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v14 result:resultCopy];
 }
 
 id __84__BKSHIDEventDeliveryManager_resolutionDescriptionForEventDescriptor_sender_result___block_invoke(void *a1, void *a2)
@@ -1321,19 +1321,19 @@ id __84__BKSHIDEventDeliveryManager_resolutionDescriptionForEventDescriptor_send
   return v5;
 }
 
-- (void)connectionDescriptionForDeferringRuleIdentity:(id)a3 result:(id)a4
+- (void)connectionDescriptionForDeferringRuleIdentity:(id)identity result:(id)result
 {
-  v6 = a3;
+  identityCopy = identity;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __83__BKSHIDEventDeliveryManager_connectionDescriptionForDeferringRuleIdentity_result___block_invoke;
   v13 = &unk_1E6F475C0;
-  v14 = self;
-  v15 = v6;
-  v7 = v6;
-  v8 = a4;
+  selfCopy = self;
+  v15 = identityCopy;
+  v7 = identityCopy;
+  resultCopy = result;
   v9 = MEMORY[0x186605BB0](&v10);
-  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v9 result:v8, v10, v11, v12, v13, v14];
+  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v9 result:resultCopy, v10, v11, v12, v13, selfCopy];
 }
 
 id __83__BKSHIDEventDeliveryManager_connectionDescriptionForDeferringRuleIdentity_result___block_invoke(uint64_t a1, void *a2)
@@ -1346,16 +1346,16 @@ id __83__BKSHIDEventDeliveryManager_connectionDescriptionForDeferringRuleIdentit
   return v5;
 }
 
-- (void)deliveryChainsDescription:(id)a3
+- (void)deliveryChainsDescription:(id)description
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__BKSHIDEventDeliveryManager_deliveryChainsDescription___block_invoke;
   v6[3] = &unk_1E6F47598;
   v6[4] = self;
-  v4 = a3;
+  descriptionCopy = description;
   v5 = MEMORY[0x186605BB0](v6);
-  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v5 result:v4];
+  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v5 result:descriptionCopy];
 }
 
 id __56__BKSHIDEventDeliveryManager_deliveryChainsDescription___block_invoke(uint64_t a1, void *a2)
@@ -1368,16 +1368,16 @@ id __56__BKSHIDEventDeliveryManager_deliveryChainsDescription___block_invoke(uin
   return v4;
 }
 
-- (void)deliveryGraphDescription:(id)a3
+- (void)deliveryGraphDescription:(id)description
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke;
   v6[3] = &unk_1E6F47598;
   v6[4] = self;
-  v4 = a3;
+  descriptionCopy = description;
   v5 = MEMORY[0x186605BB0](v6);
-  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v5 result:v4];
+  [(BKSHIDEventDeliveryManager *)self _executeDescriptionFetch:v5 result:descriptionCopy];
 }
 
 id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint64_t a1, void *a2)
@@ -1390,13 +1390,13 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
   return v4;
 }
 
-- (void)changeSelectionPath:(id)a3 target:(id)a4 basis:(id)a5 ignoreModalities:(BOOL)a6
+- (void)changeSelectionPath:(id)path target:(id)target basis:(id)basis ignoreModalities:(BOOL)modalities
 {
   v95 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  pathCopy = path;
+  targetCopy = target;
+  basisCopy = basis;
+  if (!pathCopy)
   {
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"path != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1409,7 +1409,7 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
       v85 = 2114;
       v86 = v29;
       v87 = 2048;
-      v88 = self;
+      selfCopy7 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1425,8 +1425,8 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
     JUMPOUT(0x1863A7890);
   }
 
-  v14 = v13;
-  v15 = v12;
+  v14 = basisCopy;
+  v15 = targetCopy;
   if (!v15)
   {
     v30 = MEMORY[0x1E696AEC0];
@@ -1444,7 +1444,7 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
       v85 = 2114;
       v86 = v36;
       v87 = 2048;
-      v88 = self;
+      selfCopy7 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1465,13 +1465,13 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v37 = MEMORY[0x1E696AEC0];
-    v38 = [v16 classForCoder];
-    if (!v38)
+    classForCoder = [v16 classForCoder];
+    if (!classForCoder)
     {
-      v38 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v39 = NSStringFromClass(v38);
+    v39 = NSStringFromClass(classForCoder);
     v40 = objc_opt_class();
     v41 = NSStringFromClass(v40);
     v42 = [v37 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"target", v39, v41];
@@ -1486,7 +1486,7 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
       v85 = 2114;
       v86 = v45;
       v87 = 2048;
-      v88 = self;
+      selfCopy7 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1502,8 +1502,8 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
     JUMPOUT(0x1863A7AE4);
   }
 
-  v17 = [v16 target];
-  if (!v17)
+  target = [v16 target];
+  if (!target)
   {
     v46 = MEMORY[0x1E696AEC0];
     v47 = objc_opt_class();
@@ -1520,7 +1520,7 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
       v85 = 2114;
       v86 = v52;
       v87 = 2048;
-      v88 = self;
+      selfCopy7 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1536,18 +1536,18 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
     JUMPOUT(0x1863A7BFCLL);
   }
 
-  v18 = v17;
+  v18 = target;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v53 = MEMORY[0x1E696AEC0];
-    v54 = [v18 classForCoder];
-    if (!v54)
+    classForCoder2 = [v18 classForCoder];
+    if (!classForCoder2)
     {
-      v54 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v55 = NSStringFromClass(v54);
+    v55 = NSStringFromClass(classForCoder2);
     v56 = objc_opt_class();
     v57 = NSStringFromClass(v56);
     v58 = [v53 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"[target target]", v55, v57];
@@ -1562,7 +1562,7 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
       v85 = 2114;
       v86 = v61;
       v87 = 2048;
-      v88 = self;
+      selfCopy7 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1596,7 +1596,7 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
       v85 = 2114;
       v86 = v68;
       v87 = 2048;
-      v88 = self;
+      selfCopy7 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1617,13 +1617,13 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v69 = MEMORY[0x1E696AEC0];
-    v70 = [v20 classForCoder];
-    if (!v70)
+    classForCoder3 = [v20 classForCoder];
+    if (!classForCoder3)
     {
-      v70 = objc_opt_class();
+      classForCoder3 = objc_opt_class();
     }
 
-    v71 = NSStringFromClass(v70);
+    v71 = NSStringFromClass(classForCoder3);
     v72 = objc_opt_class();
     v73 = NSStringFromClass(v72);
     v74 = [v69 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"basis", v71, v73];
@@ -1638,7 +1638,7 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
       v85 = 2114;
       v86 = v77;
       v87 = 2048;
-      v88 = self;
+      selfCopy7 = self;
       v89 = 2114;
       v90 = @"BKSHIDEventDeliveryManager.m";
       v91 = 1024;
@@ -1660,11 +1660,11 @@ id __55__BKSHIDEventDeliveryManager_deliveryGraphDescription___block_invoke(uint
   v78[2] = __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreModalities___block_invoke;
   v78[3] = &unk_1E6F47570;
   v79 = v16;
-  v80 = v11;
-  v82 = a6;
+  v80 = pathCopy;
+  modalitiesCopy = modalities;
   v81 = v20;
   v21 = v20;
-  v22 = v11;
+  v22 = pathCopy;
   v23 = v16;
   v24 = [BKSHIDEventDeferringSelectionChangeRequest build:v78];
   [(NSMutableSet *)self->_lock_selectionRequests addObject:v24];
@@ -1684,14 +1684,14 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
   [v4 setBasis:*(a1 + 48)];
 }
 
-- (id)assertSelectionPath:(id)a3 target:(id)a4 hasModality:(id)a5 basis:(id)a6
+- (id)assertSelectionPath:(id)path target:(id)target hasModality:(id)modality basis:(id)basis
 {
   v106 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  pathCopy = path;
+  targetCopy = target;
+  modalityCopy = modality;
+  basisCopy = basis;
+  if (!pathCopy)
   {
     v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"selectionPath != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1704,7 +1704,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
       v96 = 2114;
       v97 = v38;
       v98 = 2048;
-      v99 = self;
+      selfCopy7 = self;
       v100 = 2114;
       v101 = @"BKSHIDEventDeliveryManager.m";
       v102 = 1024;
@@ -1720,8 +1720,8 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
     JUMPOUT(0x1863A83E4);
   }
 
-  v15 = v14;
-  v16 = v12;
+  v15 = basisCopy;
+  v16 = targetCopy;
   if (!v16)
   {
     v39 = MEMORY[0x1E696AEC0];
@@ -1739,7 +1739,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
       v96 = 2114;
       v97 = v45;
       v98 = 2048;
-      v99 = self;
+      selfCopy7 = self;
       v100 = 2114;
       v101 = @"BKSHIDEventDeliveryManager.m";
       v102 = 1024;
@@ -1760,13 +1760,13 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v46 = MEMORY[0x1E696AEC0];
-    v47 = [v17 classForCoder];
-    if (!v47)
+    classForCoder = [v17 classForCoder];
+    if (!classForCoder)
     {
-      v47 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v48 = NSStringFromClass(v47);
+    v48 = NSStringFromClass(classForCoder);
     v49 = objc_opt_class();
     v50 = NSStringFromClass(v49);
     v51 = [v46 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"target", v48, v50];
@@ -1781,7 +1781,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
       v96 = 2114;
       v97 = v54;
       v98 = 2048;
-      v99 = self;
+      selfCopy7 = self;
       v100 = 2114;
       v101 = @"BKSHIDEventDeliveryManager.m";
       v102 = 1024;
@@ -1797,8 +1797,8 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
     JUMPOUT(0x1863A8638);
   }
 
-  v18 = [v17 target];
-  if (!v18)
+  target = [v17 target];
+  if (!target)
   {
     v55 = MEMORY[0x1E696AEC0];
     v56 = objc_opt_class();
@@ -1815,7 +1815,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
       v96 = 2114;
       v97 = v61;
       v98 = 2048;
-      v99 = self;
+      selfCopy7 = self;
       v100 = 2114;
       v101 = @"BKSHIDEventDeliveryManager.m";
       v102 = 1024;
@@ -1831,18 +1831,18 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
     JUMPOUT(0x1863A8750);
   }
 
-  v19 = v18;
+  v19 = target;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v62 = MEMORY[0x1E696AEC0];
-    v63 = [v19 classForCoder];
-    if (!v63)
+    classForCoder2 = [v19 classForCoder];
+    if (!classForCoder2)
     {
-      v63 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v64 = NSStringFromClass(v63);
+    v64 = NSStringFromClass(classForCoder2);
     v65 = objc_opt_class();
     v66 = NSStringFromClass(v65);
     v67 = [v62 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"[target target]", v64, v66];
@@ -1857,7 +1857,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
       v96 = 2114;
       v97 = v70;
       v98 = 2048;
-      v99 = self;
+      selfCopy7 = self;
       v100 = 2114;
       v101 = @"BKSHIDEventDeliveryManager.m";
       v102 = 1024;
@@ -1873,7 +1873,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
     JUMPOUT(0x1863A888CLL);
   }
 
-  v20 = v13;
+  v20 = modalityCopy;
   if (!v20)
   {
     v71 = MEMORY[0x1E696AEC0];
@@ -1891,7 +1891,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
       v96 = 2114;
       v97 = v77;
       v98 = 2048;
-      v99 = self;
+      selfCopy7 = self;
       v100 = 2114;
       v101 = @"BKSHIDEventDeliveryManager.m";
       v102 = 1024;
@@ -1912,13 +1912,13 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v78 = MEMORY[0x1E696AEC0];
-    v79 = [v21 classForCoder];
-    if (!v79)
+    classForCoder3 = [v21 classForCoder];
+    if (!classForCoder3)
     {
-      v79 = objc_opt_class();
+      classForCoder3 = objc_opt_class();
     }
 
-    v80 = NSStringFromClass(v79);
+    v80 = NSStringFromClass(classForCoder3);
     v81 = objc_opt_class();
     v82 = NSStringFromClass(v81);
     v83 = [v78 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"modality", v80, v82];
@@ -1933,7 +1933,7 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
       v96 = 2114;
       v97 = v86;
       v98 = 2048;
-      v99 = self;
+      selfCopy7 = self;
       v100 = 2114;
       v101 = @"BKSHIDEventDeliveryManager.m";
       v102 = 1024;
@@ -1959,12 +1959,12 @@ void __80__BKSHIDEventDeliveryManager_changeSelectionPath_target_basis_ignoreMod
   v89[2] = __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_basis___block_invoke;
   v89[3] = &unk_1E6F47548;
   v90 = v17;
-  v91 = v11;
+  v91 = pathCopy;
   v92 = v21;
   v93 = v15;
   v25 = v15;
   v26 = v21;
-  v27 = v11;
+  v27 = pathCopy;
   v28 = v17;
   v29 = [BKSHIDEventDeferringModalityAssertion build:v89];
   [(NSMutableSet *)self->_lock_modalityAsserts addObject:v29];
@@ -2010,13 +2010,13 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
   os_unfair_lock_unlock(v5);
 }
 
-- (id)assertSelectionPath:(id)a3 target:(id)a4 imposesConstraint:(id)a5
+- (id)assertSelectionPath:(id)path target:(id)target imposesConstraint:(id)constraint
 {
   v101 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  pathCopy = path;
+  targetCopy = target;
+  constraintCopy = constraint;
+  if (!pathCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"selectionPath != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -2029,7 +2029,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
       v91 = 2114;
       v92 = v34;
       v93 = 2048;
-      v94 = self;
+      selfCopy7 = self;
       v95 = 2114;
       v96 = @"BKSHIDEventDeliveryManager.m";
       v97 = 1024;
@@ -2045,8 +2045,8 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
     JUMPOUT(0x1863A8F94);
   }
 
-  v12 = v11;
-  v13 = v10;
+  v12 = constraintCopy;
+  v13 = targetCopy;
   if (!v13)
   {
     v35 = MEMORY[0x1E696AEC0];
@@ -2064,7 +2064,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
       v91 = 2114;
       v92 = v41;
       v93 = 2048;
-      v94 = self;
+      selfCopy7 = self;
       v95 = 2114;
       v96 = @"BKSHIDEventDeliveryManager.m";
       v97 = 1024;
@@ -2085,13 +2085,13 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v42 = MEMORY[0x1E696AEC0];
-    v43 = [v14 classForCoder];
-    if (!v43)
+    classForCoder = [v14 classForCoder];
+    if (!classForCoder)
     {
-      v43 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v44 = NSStringFromClass(v43);
+    v44 = NSStringFromClass(classForCoder);
     v45 = objc_opt_class();
     v46 = NSStringFromClass(v45);
     v47 = [v42 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"target", v44, v46];
@@ -2106,7 +2106,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
       v91 = 2114;
       v92 = v50;
       v93 = 2048;
-      v94 = self;
+      selfCopy7 = self;
       v95 = 2114;
       v96 = @"BKSHIDEventDeliveryManager.m";
       v97 = 1024;
@@ -2122,8 +2122,8 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
     JUMPOUT(0x1863A91E8);
   }
 
-  v15 = [v14 target];
-  if (!v15)
+  target = [v14 target];
+  if (!target)
   {
     v51 = MEMORY[0x1E696AEC0];
     v52 = objc_opt_class();
@@ -2140,7 +2140,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
       v91 = 2114;
       v92 = v57;
       v93 = 2048;
-      v94 = self;
+      selfCopy7 = self;
       v95 = 2114;
       v96 = @"BKSHIDEventDeliveryManager.m";
       v97 = 1024;
@@ -2156,18 +2156,18 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
     JUMPOUT(0x1863A9300);
   }
 
-  v16 = v15;
+  v16 = target;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v58 = MEMORY[0x1E696AEC0];
-    v59 = [v16 classForCoder];
-    if (!v59)
+    classForCoder2 = [v16 classForCoder];
+    if (!classForCoder2)
     {
-      v59 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v60 = NSStringFromClass(v59);
+    v60 = NSStringFromClass(classForCoder2);
     v61 = objc_opt_class();
     v62 = NSStringFromClass(v61);
     v63 = [v58 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"[target target]", v60, v62];
@@ -2182,7 +2182,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
       v91 = 2114;
       v92 = v66;
       v93 = 2048;
-      v94 = self;
+      selfCopy7 = self;
       v95 = 2114;
       v96 = @"BKSHIDEventDeliveryManager.m";
       v97 = 1024;
@@ -2216,7 +2216,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
       v91 = 2114;
       v92 = v73;
       v93 = 2048;
-      v94 = self;
+      selfCopy7 = self;
       v95 = 2114;
       v96 = @"BKSHIDEventDeliveryManager.m";
       v97 = 1024;
@@ -2237,13 +2237,13 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v74 = MEMORY[0x1E696AEC0];
-    v75 = [v18 classForCoder];
-    if (!v75)
+    classForCoder3 = [v18 classForCoder];
+    if (!classForCoder3)
     {
-      v75 = objc_opt_class();
+      classForCoder3 = objc_opt_class();
     }
 
-    v76 = NSStringFromClass(v75);
+    v76 = NSStringFromClass(classForCoder3);
     v77 = objc_opt_class();
     v78 = NSStringFromClass(v77);
     v79 = [v74 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"constraint", v76, v78];
@@ -2258,7 +2258,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
       v91 = 2114;
       v92 = v82;
       v93 = 2048;
-      v94 = self;
+      selfCopy7 = self;
       v95 = 2114;
       v96 = @"BKSHIDEventDeliveryManager.m";
       v97 = 1024;
@@ -2284,10 +2284,10 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_hasModality_bas
   v85[2] = __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstraint___block_invoke;
   v85[3] = &unk_1E6F47520;
   v86 = v14;
-  v87 = v9;
+  v87 = pathCopy;
   v88 = v18;
   v22 = v18;
-  v23 = v9;
+  v23 = pathCopy;
   v24 = v14;
   v25 = [BKSHIDEventDeferringConstraintAssertion build:v85];
   [(NSMutableSet *)self->_lock_constraintAsserts addObject:v25];
@@ -2332,12 +2332,12 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
   os_unfair_lock_unlock(v5);
 }
 
-- (id)bufferEventsMatchingPredicate:(id)a3 withReason:(id)a4
+- (id)bufferEventsMatchingPredicate:(id)predicate withReason:(id)reason
 {
   v71 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  predicateCopy = predicate;
+  reasonCopy = reason;
+  v9 = predicateCopy;
   if (!v9)
   {
     v23 = MEMORY[0x1E696AEC0];
@@ -2355,7 +2355,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
       v61 = 2114;
       v62 = v29;
       v63 = 2048;
-      v64 = self;
+      selfCopy5 = self;
       v65 = 2114;
       v66 = @"BKSHIDEventDeliveryManager.m";
       v67 = 1024;
@@ -2376,13 +2376,13 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v30 = MEMORY[0x1E696AEC0];
-    v31 = [v10 classForCoder];
-    if (!v31)
+    classForCoder = [v10 classForCoder];
+    if (!classForCoder)
     {
-      v31 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v32 = NSStringFromClass(v31);
+    v32 = NSStringFromClass(classForCoder);
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
     v35 = [v30 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"predicate", v32, v34];
@@ -2397,7 +2397,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
       v61 = 2114;
       v62 = v38;
       v63 = 2048;
-      v64 = self;
+      selfCopy5 = self;
       v65 = 2114;
       v66 = @"BKSHIDEventDeliveryManager.m";
       v67 = 1024;
@@ -2413,7 +2413,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
     JUMPOUT(0x1863A9BD4);
   }
 
-  v11 = v8;
+  v11 = reasonCopy;
   v12 = MEMORY[0x1E696AEC0];
   v13 = objc_opt_class();
   if (!v11)
@@ -2431,7 +2431,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
       v61 = 2114;
       v62 = v43;
       v63 = 2048;
-      v64 = self;
+      selfCopy5 = self;
       v65 = 2114;
       v66 = @"BKSHIDEventDeliveryManager.m";
       v67 = 1024;
@@ -2450,13 +2450,13 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v44 = MEMORY[0x1E696AEC0];
-    v45 = [v11 classForCoder];
-    if (!v45)
+    classForCoder2 = [v11 classForCoder];
+    if (!classForCoder2)
     {
-      v45 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v46 = NSStringFromClass(v45);
+    v46 = NSStringFromClass(classForCoder2);
     v47 = objc_opt_class();
     v48 = NSStringFromClass(v47);
     v49 = [v44 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"reason", v46, v48];
@@ -2471,7 +2471,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
       v61 = 2114;
       v62 = v52;
       v63 = 2048;
-      v64 = self;
+      selfCopy5 = self;
       v65 = 2114;
       v66 = @"BKSHIDEventDeliveryManager.m";
       v67 = 1024;
@@ -2508,7 +2508,7 @@ void __75__BKSHIDEventDeliveryManager_assertSelectionPath_target_imposesConstrai
       v61 = 2114;
       v62 = v56;
       v63 = 2048;
-      v64 = self;
+      selfCopy5 = self;
       v65 = 2114;
       v66 = @"BKSHIDEventDeliveryManager.m";
       v67 = 1024;
@@ -2559,13 +2559,13 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
   os_unfair_lock_unlock(v5);
 }
 
-- (id)transactionAssertionWithReason:(id)a3
+- (id)transactionAssertionWithReason:(id)reason
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  if (!v5)
+  if (!reasonCopy)
   {
     v11 = NSStringFromClass(v7);
     v12 = [v6 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"reason", v11];
@@ -2580,7 +2580,7 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
       v27 = 2114;
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeliveryManager.m";
       v33 = 1024;
@@ -2599,13 +2599,13 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v5 classForCoder];
-    if (!v17)
+    classForCoder = [reasonCopy classForCoder];
+    if (!classForCoder)
     {
-      v17 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v18 = NSStringFromClass(v17);
+    v18 = NSStringFromClass(classForCoder);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v16 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"reason", v18, v20];
@@ -2620,7 +2620,7 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
       v27 = 2114;
       v28 = v24;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeliveryManager.m";
       v33 = 1024;
@@ -2638,7 +2638,7 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(BKSHIDEventDeliveryManager *)self _lock_transactionAssertionWithReason:v5];
+  v8 = [(BKSHIDEventDeliveryManager *)self _lock_transactionAssertionWithReason:reasonCopy];
   os_unfair_lock_unlock(&self->_lock);
   os_unfair_lock_assert_not_owner(&self->_lock);
 
@@ -2647,11 +2647,11 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
   return v8;
 }
 
-- (id)registerKeyCommands:(id)a3
+- (id)registerKeyCommands:(id)commands
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  commandsCopy = commands;
+  if (!commandsCopy)
   {
     v16 = MEMORY[0x1E696AEC0];
     v17 = objc_opt_class();
@@ -2668,7 +2668,7 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
       v40 = 2114;
       v41 = v22;
       v42 = 2048;
-      v43 = self;
+      selfCopy3 = self;
       v44 = 2114;
       v45 = @"BKSHIDEventDeliveryManager.m";
       v46 = 1024;
@@ -2684,18 +2684,18 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
     JUMPOUT(0x1863AA58CLL);
   }
 
-  v6 = v5;
+  v6 = commandsCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [v6 classForCoder];
-    if (!v24)
+    classForCoder = [v6 classForCoder];
+    if (!classForCoder)
     {
-      v24 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v25 = NSStringFromClass(v24);
+    v25 = NSStringFromClass(classForCoder);
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
     v28 = [v23 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"registration", v25, v27];
@@ -2710,7 +2710,7 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
       v40 = 2114;
       v41 = v31;
       v42 = 2048;
-      v43 = self;
+      selfCopy3 = self;
       v44 = 2114;
       v45 = @"BKSHIDEventDeliveryManager.m";
       v46 = 1024;
@@ -2747,7 +2747,7 @@ void __71__BKSHIDEventDeliveryManager_bufferEventsMatchingPredicate_withReason__
       v40 = 2114;
       v41 = v35;
       v42 = 2048;
-      v43 = self;
+      selfCopy3 = self;
       v44 = 2114;
       v45 = @"BKSHIDEventDeliveryManager.m";
       v46 = 1024;
@@ -2797,26 +2797,26 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
   os_unfair_lock_unlock(v5);
 }
 
-- (id)deferEventsMatchingPredicate:(id)a3 toTarget:(id)a4 withReason:(id)a5
+- (id)deferEventsMatchingPredicate:(id)predicate toTarget:(id)target withReason:(id)reason
 {
   v8 = MEMORY[0x1E695DFD8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  reasonCopy = reason;
+  targetCopy = target;
+  predicateCopy = predicate;
   v12 = [v8 set];
-  v13 = [(BKSHIDEventDeliveryManager *)self deferEventsMatchingPredicate:v11 restrictedToEventDescriptors:v12 toTarget:v10 withReason:v9];
+  v13 = [(BKSHIDEventDeliveryManager *)self deferEventsMatchingPredicate:predicateCopy restrictedToEventDescriptors:v12 toTarget:targetCopy withReason:reasonCopy];
 
   return v13;
 }
 
-- (id)deferEventsMatchingPredicate:(id)a3 restrictedToEventDescriptors:(id)a4 toTarget:(id)a5 withReason:(id)a6
+- (id)deferEventsMatchingPredicate:(id)predicate restrictedToEventDescriptors:(id)descriptors toTarget:(id)target withReason:(id)reason
 {
   v113 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v11;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  targetCopy = target;
+  reasonCopy = reason;
+  v15 = predicateCopy;
   if (!v15)
   {
     v33 = MEMORY[0x1E696AEC0];
@@ -2834,7 +2834,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v39;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -2855,13 +2855,13 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v40 = MEMORY[0x1E696AEC0];
-    v41 = [v16 classForCoder];
-    if (!v41)
+    classForCoder = [v16 classForCoder];
+    if (!classForCoder)
     {
-      v41 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v42 = NSStringFromClass(v41);
+    v42 = NSStringFromClass(classForCoder);
     v43 = objc_opt_class();
     v44 = NSStringFromClass(v43);
     v45 = [v40 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"predicate", v42, v44];
@@ -2876,7 +2876,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v48;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -2892,7 +2892,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
     JUMPOUT(0x1863AADFCLL);
   }
 
-  v17 = v12;
+  v17 = descriptorsCopy;
   if (!v17)
   {
     v49 = MEMORY[0x1E696AEC0];
@@ -2910,7 +2910,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v55;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -2931,13 +2931,13 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v56 = MEMORY[0x1E696AEC0];
-    v57 = [v18 classForCoder];
-    if (!v57)
+    classForCoder2 = [v18 classForCoder];
+    if (!classForCoder2)
     {
-      v57 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v58 = NSStringFromClass(v57);
+    v58 = NSStringFromClass(classForCoder2);
     v59 = objc_opt_class();
     v60 = NSStringFromClass(v59);
     v61 = [v56 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"eventDescriptors", v58, v60];
@@ -2952,7 +2952,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v64;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -2968,7 +2968,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
     JUMPOUT(0x1863AB050);
   }
 
-  v19 = v13;
+  v19 = targetCopy;
   if (!v19)
   {
     v65 = MEMORY[0x1E696AEC0];
@@ -2986,7 +2986,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v71;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -3007,13 +3007,13 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v72 = MEMORY[0x1E696AEC0];
-    v73 = [v20 classForCoder];
-    if (!v73)
+    classForCoder3 = [v20 classForCoder];
+    if (!classForCoder3)
     {
-      v73 = objc_opt_class();
+      classForCoder3 = objc_opt_class();
     }
 
-    v74 = NSStringFromClass(v73);
+    v74 = NSStringFromClass(classForCoder3);
     v75 = objc_opt_class();
     v76 = NSStringFromClass(v75);
     v77 = [v72 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"target", v74, v76];
@@ -3028,7 +3028,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v80;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -3044,7 +3044,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
     JUMPOUT(0x1863AB2A4);
   }
 
-  v21 = v14;
+  v21 = reasonCopy;
   v22 = MEMORY[0x1E696AEC0];
   v23 = objc_opt_class();
   if (!v21)
@@ -3062,7 +3062,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v85;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -3081,13 +3081,13 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v86 = MEMORY[0x1E696AEC0];
-    v87 = [v21 classForCoder];
-    if (!v87)
+    classForCoder4 = [v21 classForCoder];
+    if (!classForCoder4)
     {
-      v87 = objc_opt_class();
+      classForCoder4 = objc_opt_class();
     }
 
-    v88 = NSStringFromClass(v87);
+    v88 = NSStringFromClass(classForCoder4);
     v89 = objc_opt_class();
     v90 = NSStringFromClass(v89);
     v91 = [v86 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"reason", v88, v90];
@@ -3102,7 +3102,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v94;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -3146,7 +3146,7 @@ void __50__BKSHIDEventDeliveryManager_registerKeyCommands___block_invoke(uint64_
       v103 = 2114;
       v104 = v98;
       v105 = 2048;
-      v106 = self;
+      selfCopy9 = self;
       v107 = 2114;
       v108 = @"BKSHIDEventDeliveryManager.m";
       v109 = 1024;
@@ -3213,7 +3213,7 @@ void __108__BKSHIDEventDeliveryManager_deferEventsMatchingPredicate_restrictedTo
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BKSHIDEventDeliveryManager.m";
       v18 = 1024;
@@ -3235,14 +3235,14 @@ void __108__BKSHIDEventDeliveryManager_deferEventsMatchingPredicate_restrictedTo
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithConnectionFactory:(id)a3 forTesting:(BOOL)a4
+- (id)_initWithConnectionFactory:(id)factory forTesting:(BOOL)testing
 {
   v90 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  factoryCopy = factory;
+  if (!factoryCopy)
   {
-    v58 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v58 handleFailureInMethod:a2 object:self file:@"BKSHIDEventDeliveryManager.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"connectionFactory"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventDeliveryManager.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"connectionFactory"}];
   }
 
   v77.receiver = self;
@@ -3251,11 +3251,11 @@ void __108__BKSHIDEventDeliveryManager_deferEventsMatchingPredicate_restrictedTo
   v9 = v8;
   if (v8)
   {
-    v8->_forTesting = a4;
+    v8->_forTesting = testing;
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_assertions = v9->_lock_assertions;
-    v9->_lock_assertions = v10;
+    v9->_lock_assertions = weakObjectsHashTable;
 
     Serial = BSDispatchQueueCreateSerial();
     asyncResultQueue = v9->_asyncResultQueue;
@@ -3334,7 +3334,7 @@ void __108__BKSHIDEventDeliveryManager_deferEventsMatchingPredicate_restrictedTo
     lock_lastSentSetOfKeyCommandsRegistrations = v9->_lock_lastSentSetOfKeyCommandsRegistrations;
     v9->_lock_lastSentSetOfKeyCommandsRegistrations = v49;
 
-    v51 = [v7 clientConnectionForServiceWithName:@"BKHIDEventDeliveryManager"];
+    v51 = [factoryCopy clientConnectionForServiceWithName:@"BKHIDEventDeliveryManager"];
     if (!v51)
     {
       v59 = MEMORY[0x1E696AEC0];
@@ -3375,13 +3375,13 @@ void __108__BKSHIDEventDeliveryManager_deferEventsMatchingPredicate_restrictedTo
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v66 = MEMORY[0x1E696AEC0];
-      v67 = [v52 classForCoder];
-      if (!v67)
+      classForCoder = [v52 classForCoder];
+      if (!classForCoder)
       {
-        v67 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v68 = NSStringFromClass(v67);
+      v68 = NSStringFromClass(classForCoder);
       objc_opt_class();
       v69 = objc_opt_class();
       v70 = NSStringFromClass(v69);
@@ -3561,7 +3561,7 @@ void __68__BKSHIDEventDeliveryManager__initWithConnectionFactory_forTesting___bl
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeliveryManager.m";
     v17 = 1024;

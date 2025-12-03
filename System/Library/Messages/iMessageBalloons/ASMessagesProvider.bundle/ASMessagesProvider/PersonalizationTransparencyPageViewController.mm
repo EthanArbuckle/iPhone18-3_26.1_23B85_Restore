@@ -1,12 +1,12 @@
 @interface PersonalizationTransparencyPageViewController
-- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation PersonalizationTransparencyPageViewController
 
-- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController_overlayViewController) = 0;
   result = sub_76A840();
@@ -23,7 +23,7 @@
   sub_75A160();
 }
 
-- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider45PersonalizationTransparencyPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

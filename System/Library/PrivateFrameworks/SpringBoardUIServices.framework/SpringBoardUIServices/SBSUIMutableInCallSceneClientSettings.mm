@@ -10,29 +10,29 @@
 - (BOOL)transientOverlayHomeIndicatorAutoHidden;
 - (NSSet)preferredBackgroundActivitiesToSuppress;
 - (UIEdgeInsets)expanseHUDDodgingInsets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)preferredHardwareButtonEventTypes;
 - (unint64_t)preferredStatusBarStyleOverridesToSuppress;
-- (void)setAcceptsKeyboardFocus:(BOOL)a3;
-- (void)setCallConnected:(BOOL)a3;
-- (void)setExpanseHUDDodgingInsets:(UIEdgeInsets)a3;
-- (void)setPreferredBackgroundActivitiesToSuppress:(id)a3;
-- (void)setPreferredHardwareButtonEventTypes:(unint64_t)a3;
-- (void)setPreferredStatusBarStyleOverridesToSuppress:(unint64_t)a3;
-- (void)setPrefersBannersHiddenFromClonedDisplay:(BOOL)a3;
-- (void)setPrefersHiddenWhenDismissed:(BOOL)a3;
-- (void)setPrefersLockedIdleDurationOnCoversheet:(BOOL)a3;
-- (void)setShouldBecomeVisibleWhenWakingDisplay:(BOOL)a3;
-- (void)setShouldNeverBeShownWhenLaunchingFaceTime:(BOOL)a3;
-- (void)setSupportsDeviceLockActions:(BOOL)a3;
-- (void)setTransientOverlayHomeIndicatorAutoHidden:(BOOL)a3;
+- (void)setAcceptsKeyboardFocus:(BOOL)focus;
+- (void)setCallConnected:(BOOL)connected;
+- (void)setExpanseHUDDodgingInsets:(UIEdgeInsets)insets;
+- (void)setPreferredBackgroundActivitiesToSuppress:(id)suppress;
+- (void)setPreferredHardwareButtonEventTypes:(unint64_t)types;
+- (void)setPreferredStatusBarStyleOverridesToSuppress:(unint64_t)suppress;
+- (void)setPrefersBannersHiddenFromClonedDisplay:(BOOL)display;
+- (void)setPrefersHiddenWhenDismissed:(BOOL)dismissed;
+- (void)setPrefersLockedIdleDurationOnCoversheet:(BOOL)coversheet;
+- (void)setShouldBecomeVisibleWhenWakingDisplay:(BOOL)display;
+- (void)setShouldNeverBeShownWhenLaunchingFaceTime:(BOOL)time;
+- (void)setSupportsDeviceLockActions:(BOOL)actions;
+- (void)setTransientOverlayHomeIndicatorAutoHidden:(BOOL)hidden;
 @end
 
 @implementation SBSUIMutableInCallSceneClientSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBSUIInCallSceneClientSettings alloc];
 
@@ -41,68 +41,68 @@
 
 - (unint64_t)preferredHardwareButtonEventTypes
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2001];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2001];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSSet)preferredBackgroundActivitiesToSuppress
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2002];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2002];
 
   return v3;
 }
 
 - (unint64_t)preferredStatusBarStyleOverridesToSuppress
 {
-  v2 = [(SBSUIMutableInCallSceneClientSettings *)self preferredBackgroundActivitiesToSuppress];
+  preferredBackgroundActivitiesToSuppress = [(SBSUIMutableInCallSceneClientSettings *)self preferredBackgroundActivitiesToSuppress];
 
-  return soft_STUIStyleOverridesForBackgroundActivityIdentifiers(v2);
+  return soft_STUIStyleOverridesForBackgroundActivityIdentifiers(preferredBackgroundActivitiesToSuppress);
 }
 
 - (BOOL)supportsDeviceLockActions
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2003];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2003];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldBecomeVisibleWhenWakingDisplay
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2005];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2005];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)transientOverlayHomeIndicatorAutoHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2004];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2004];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isCallConnected
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2006];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2006];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (UIEdgeInsets)expanseHUDDodgingInsets
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2007];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2007];
   [v3 UIEdgeInsetsValue];
   v5 = v4;
   v7 = v6;
@@ -122,159 +122,159 @@
 
 - (BOOL)prefersBannersHiddenFromClonedDisplay
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2008];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2008];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)prefersHiddenWhenDismissed
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2009];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2009];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldNeverBeShownWhenLaunchingFaceTime
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2010];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2010];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)prefersLockedIdleDurationOnCoversheet
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2011];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2011];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)acceptsKeyboardFocus
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2012];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2012];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setPreferredHardwareButtonEventTypes:(unint64_t)a3
+- (void)setPreferredHardwareButtonEventTypes:(unint64_t)types
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:2001];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:types];
+  [otherSettings setObject:v4 forSetting:2001];
 }
 
-- (void)setPreferredStatusBarStyleOverridesToSuppress:(unint64_t)a3
+- (void)setPreferredStatusBarStyleOverridesToSuppress:(unint64_t)suppress
 {
-  v4 = soft_STUIBackgroundActivityIdentifiersForStyleOverrides(a3);
+  v4 = soft_STUIBackgroundActivityIdentifiersForStyleOverrides(suppress);
   [(SBSUIMutableInCallSceneClientSettings *)self setPreferredBackgroundActivitiesToSuppress:v4];
 }
 
-- (void)setPreferredBackgroundActivitiesToSuppress:(id)a3
+- (void)setPreferredBackgroundActivitiesToSuppress:(id)suppress
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:2002];
+  suppressCopy = suppress;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:suppressCopy forSetting:2002];
 }
 
-- (void)setSupportsDeviceLockActions:(BOOL)a3
+- (void)setSupportsDeviceLockActions:(BOOL)actions
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2003];
+  actionsCopy = actions;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:actionsCopy];
+  [otherSettings setObject:v4 forSetting:2003];
 }
 
-- (void)setTransientOverlayHomeIndicatorAutoHidden:(BOOL)a3
+- (void)setTransientOverlayHomeIndicatorAutoHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2004];
+  hiddenCopy = hidden;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:hiddenCopy];
+  [otherSettings setObject:v4 forSetting:2004];
 }
 
-- (void)setShouldBecomeVisibleWhenWakingDisplay:(BOOL)a3
+- (void)setShouldBecomeVisibleWhenWakingDisplay:(BOOL)display
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2005];
+  displayCopy = display;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:displayCopy];
+  [otherSettings setObject:v4 forSetting:2005];
 }
 
-- (void)setCallConnected:(BOOL)a3
+- (void)setCallConnected:(BOOL)connected
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2006];
+  connectedCopy = connected;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:connectedCopy];
+  [otherSettings setObject:v4 forSetting:2006];
 }
 
-- (void)setExpanseHUDDodgingInsets:(UIEdgeInsets)a3
+- (void)setExpanseHUDDodgingInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(FBSSettings *)self otherSettings];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = top;
   *&v9[1] = left;
   *&v9[2] = bottom;
   *&v9[3] = right;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{UIEdgeInsets=dddd}"];
-  [v7 setObject:v8 forSetting:2007];
+  [otherSettings setObject:v8 forSetting:2007];
 }
 
-- (void)setPrefersBannersHiddenFromClonedDisplay:(BOOL)a3
+- (void)setPrefersBannersHiddenFromClonedDisplay:(BOOL)display
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2008];
+  displayCopy = display;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:displayCopy];
+  [otherSettings setObject:v4 forSetting:2008];
 }
 
-- (void)setPrefersHiddenWhenDismissed:(BOOL)a3
+- (void)setPrefersHiddenWhenDismissed:(BOOL)dismissed
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2009];
+  dismissedCopy = dismissed;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:dismissedCopy];
+  [otherSettings setObject:v4 forSetting:2009];
 }
 
-- (void)setShouldNeverBeShownWhenLaunchingFaceTime:(BOOL)a3
+- (void)setShouldNeverBeShownWhenLaunchingFaceTime:(BOOL)time
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2010];
+  timeCopy = time;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:timeCopy];
+  [otherSettings setObject:v4 forSetting:2010];
 }
 
-- (void)setPrefersLockedIdleDurationOnCoversheet:(BOOL)a3
+- (void)setPrefersLockedIdleDurationOnCoversheet:(BOOL)coversheet
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2011];
+  coversheetCopy = coversheet;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:coversheetCopy];
+  [otherSettings setObject:v4 forSetting:2011];
 }
 
-- (void)setAcceptsKeyboardFocus:(BOOL)a3
+- (void)setAcceptsKeyboardFocus:(BOOL)focus
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:2012];
+  focusCopy = focus;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:focusCopy];
+  [otherSettings setObject:v4 forSetting:2012];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 2001 > 0xB)
+  if (setting - 2001 > 0xB)
   {
     v5.receiver = self;
     v5.super_class = SBSUIMutableInCallSceneClientSettings;
@@ -283,24 +283,24 @@
 
   else
   {
-    v3 = SBSUIInCallSceneClientSettingKeyDescription(a3);
+    v3 = SBSUIInCallSceneClientSettingKeyDescription(setting);
   }
 
   return v3;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 - 2001 > 0xB)
+  if (setting - 2001 > 0xB)
   {
     v7.receiver = self;
     v7.super_class = SBSUIMutableInCallSceneClientSettings;
-    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:a3 object:a4 ofSetting:?];
+    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:flag object:object ofSetting:?];
   }
 
   else
   {
-    v5 = SBSUIInCallSceneClientSettingValueDescription(a5, a4);
+    v5 = SBSUIInCallSceneClientSettingValueDescription(setting, object);
   }
 
   return v5;

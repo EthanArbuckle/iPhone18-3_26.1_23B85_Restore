@@ -1,50 +1,50 @@
 @interface UIKeyboardLayoutGuide
-- (BOOL)_changeOffsetConstants:(UIOffset)a3 force:(BOOL)a4;
-- (BOOL)_changeSizingConstants:(CGSize)a3 force:(BOOL)a4;
-- (BOOL)_moveGuideOffscreenAtEdge:(unint64_t)a3 force:(BOOL)a4;
-- (BOOL)assertionActivationStateForType:(unint64_t)a3;
+- (BOOL)_changeOffsetConstants:(UIOffset)constants force:(BOOL)force;
+- (BOOL)_changeSizingConstants:(CGSize)constants force:(BOOL)force;
+- (BOOL)_moveGuideOffscreenAtEdge:(unint64_t)edge force:(BOOL)force;
+- (BOOL)assertionActivationStateForType:(unint64_t)type;
 - (BOOL)isTransitioning;
 - (BOOL)shouldFollowCurrentKeyboard;
-- (BOOL)updateLightEffectsRenderConfig:(id)a3 animated:(BOOL)a4;
-- (CGSize)defaultKeyboardSizeForInputMode:(id)a3 orientation:(int64_t)a4 addingAssistant:(BOOL)a5;
+- (BOOL)updateLightEffectsRenderConfig:(id)config animated:(BOOL)animated;
+- (CGSize)defaultKeyboardSizeForInputMode:(id)mode orientation:(int64_t)orientation addingAssistant:(BOOL)assistant;
 - (CGSize)interactionResetSize;
 - (CGSize)previousSize;
 - (UIKeyboardLayoutGuide)init;
-- (UIKeyboardLayoutGuide)initWithCoder:(id)a3;
+- (UIKeyboardLayoutGuide)initWithCoder:(id)coder;
 - (UIOffset)interactionResetOffset;
 - (UIOffset)previousOffset;
 - (_UIAssertionController)_assertionController;
-- (id)_obtainTransitionAssertionForReason:(id)a3;
+- (id)_obtainTransitionAssertionForReason:(id)reason;
 - (id)guideBackdropMatchLayer;
-- (unint64_t)validatedOverlappingEdges:(unint64_t)a3;
+- (unint64_t)validatedOverlappingEdges:(unint64_t)edges;
 - (void)_commonInit;
-- (void)_detachGuideFromKeyboard:(BOOL)a3;
-- (void)_setTransitioning:(BOOL)a3;
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4;
-- (void)constrainToReference:(id)a3;
+- (void)_detachGuideFromKeyboard:(BOOL)keyboard;
+- (void)_setTransitioning:(BOOL)transitioning;
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type;
+- (void)constrainToReference:(id)reference;
 - (void)disableSynchronizingWithKeyboard;
-- (void)encodeWithCoder:(id)a3;
-- (void)followUndockedKeyboardOfTypes:(int64_t)a3;
-- (void)forceDismissGuideAnimated:(BOOL)a3;
-- (void)forceResizeGuideForInputMode:(id)a3 orientation:(BOOL)a4 showsAssistantBar:(BOOL)a5 animated:(BOOL)a6;
-- (void)forceResizeGuideForOrientation:(int64_t)a3 showsAssistantBar:(BOOL)a4 animated:(BOOL)a5;
-- (void)hideLightEffectsView:(BOOL)a3;
-- (void)inheritOptionsFromGuide:(id)a3;
-- (void)prepareForTestingWithState:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)followUndockedKeyboardOfTypes:(int64_t)types;
+- (void)forceDismissGuideAnimated:(BOOL)animated;
+- (void)forceResizeGuideForInputMode:(id)mode orientation:(BOOL)orientation showsAssistantBar:(BOOL)bar animated:(BOOL)animated;
+- (void)forceResizeGuideForOrientation:(int64_t)orientation showsAssistantBar:(BOOL)bar animated:(BOOL)animated;
+- (void)hideLightEffectsView:(BOOL)view;
+- (void)inheritOptionsFromGuide:(id)guide;
+- (void)prepareForTestingWithState:(int64_t)state;
 - (void)reenableSynchronizingWithKeyboard;
 - (void)removeLightEffectsView;
 - (void)resetGuideForCancelledDismissInteraction;
-- (void)setCurrentKeyboardVisualState:(int64_t)a3;
-- (void)setDocked:(BOOL)a3;
+- (void)setCurrentKeyboardVisualState:(int64_t)state;
+- (void)setDocked:(BOOL)docked;
 - (void)setFollowsUndockedKeyboard:(BOOL)followsUndockedKeyboard;
-- (void)setIgnoresSafeArea:(BOOL)a3;
+- (void)setIgnoresSafeArea:(BOOL)area;
 - (void)setKeyboardDismissPadding:(CGFloat)keyboardDismissPadding;
-- (void)setKeyboardTrackingState:(id)a3;
-- (void)setWindowGuide:(BOOL)a3;
-- (void)transitionBackdropForAnimationStart:(BOOL)a3;
+- (void)setKeyboardTrackingState:(id)state;
+- (void)setWindowGuide:(BOOL)guide;
+- (void)transitionBackdropForAnimationStart:(BOOL)start;
 - (void)updateBottomConstraint;
-- (void)updateSizeForInputMode:(id)a3 orientation:(int64_t)a4 showsAssistantBar:(BOOL)a5 animated:(BOOL)a6;
-- (void)useLightEffectsBackgroundBelowView:(id)a3;
+- (void)updateSizeForInputMode:(id)mode orientation:(int64_t)orientation showsAssistantBar:(BOOL)bar animated:(BOOL)animated;
+- (void)useLightEffectsBackgroundBelowView:(id)view;
 @end
 
 @implementation UIKeyboardLayoutGuide
@@ -87,39 +87,39 @@
 
 - (void)updateBottomConstraint
 {
-  v3 = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
+  viewBottomConstraint = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
 
-  if (v3)
+  if (viewBottomConstraint)
   {
-    v4 = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
-    [v4 setActive:0];
+    viewBottomConstraint2 = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
+    [viewBottomConstraint2 setActive:0];
   }
 
-  v5 = [(UIKeyboardLayoutGuide *)self ignoresSafeArea];
-  v6 = [(UILayoutGuide *)self owningView];
-  v7 = v6;
-  if (v5)
+  ignoresSafeArea = [(UIKeyboardLayoutGuide *)self ignoresSafeArea];
+  owningView = [(UILayoutGuide *)self owningView];
+  v7 = owningView;
+  if (ignoresSafeArea)
   {
-    v8 = [v6 bottomAnchor];
-    v9 = [(UILayoutGuide *)self topAnchor];
-    v10 = [v8 constraintGreaterThanOrEqualToAnchor:v9];
-    [(UIKeyboardLayoutGuide *)self setViewBottomConstraint:v10];
+    bottomAnchor = [owningView bottomAnchor];
+    topAnchor = [(UILayoutGuide *)self topAnchor];
+    topAnchor2 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:topAnchor];
+    [(UIKeyboardLayoutGuide *)self setViewBottomConstraint:topAnchor2];
   }
 
   else
   {
-    v8 = [v6 safeAreaLayoutGuide];
-    v9 = [v8 bottomAnchor];
-    v10 = [(UILayoutGuide *)self topAnchor];
-    v11 = [v9 constraintGreaterThanOrEqualToAnchor:v10];
+    bottomAnchor = [owningView safeAreaLayoutGuide];
+    topAnchor = [bottomAnchor bottomAnchor];
+    topAnchor2 = [(UILayoutGuide *)self topAnchor];
+    v11 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     [(UIKeyboardLayoutGuide *)self setViewBottomConstraint:v11];
   }
 
-  v12 = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
-  [v12 setIdentifier:@"UIViewKeyboardLayoutGuide-viewBottom"];
+  viewBottomConstraint3 = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
+  [viewBottomConstraint3 setIdentifier:@"UIViewKeyboardLayoutGuide-viewBottom"];
 
-  v13 = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
-  [v13 setActive:1];
+  viewBottomConstraint4 = [(UIKeyboardLayoutGuide *)self viewBottomConstraint];
+  [viewBottomConstraint4 setActive:1];
 }
 
 - (UIOffset)previousOffset
@@ -147,16 +147,16 @@
     goto LABEL_2;
   }
 
-  v3 = [(UIKeyboardLayoutGuide *)self currentKeyboardVisualState];
-  if (v3 == 1)
+  currentKeyboardVisualState = [(UIKeyboardLayoutGuide *)self currentKeyboardVisualState];
+  if (currentKeyboardVisualState == 1)
   {
-    return v3;
+    return currentKeyboardVisualState;
   }
 
   if (self->_followsUndockedKeyboard || self->_followTypes == 30)
   {
 LABEL_2:
-    LOBYTE(v3) = 1;
+    LOBYTE(currentKeyboardVisualState) = 1;
   }
 
   else
@@ -180,17 +180,17 @@ LABEL_2:
     {
       if ([(UIKeyboardLayoutGuide *)self currentKeyboardVisualState]!= 6)
       {
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(currentKeyboardVisualState) = 0;
+        return currentKeyboardVisualState;
       }
 
       v4 = 16;
     }
 
-    LOBYTE(v3) = (self->_followTypes & v4) != 0;
+    LOBYTE(currentKeyboardVisualState) = (self->_followTypes & v4) != 0;
   }
 
-  return v3;
+  return currentKeyboardVisualState;
 }
 
 - (BOOL)isTransitioning
@@ -204,40 +204,40 @@ LABEL_2:
   {
     if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
-      v4 = [(UILayoutGuide *)self owningView];
-      v5 = [v4 window];
-      v6 = [v5 _primaryKeyboardTrackingGuide];
-      v7 = [v6 isTransitioning];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+      isTransitioning = [_primaryKeyboardTrackingGuide isTransitioning];
 
-      return v7;
+      return isTransitioning;
     }
 
     return 0;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardLayoutGuide;
-  v4 = a3;
-  [(UILayoutGuide *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_followsUndockedKeyboard forKey:{@"UIKeyboardLayoutGuideFollowsUndocked", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_usesBottomSafeArea forKey:@"UIKeyboardLayoutGuideUsesBottomSafeArea"];
-  [v4 encodeDouble:@"UIKeyboardLayoutGuideKeyboardDismissPadding" forKey:self->_keyboardDismissPadding];
+  coderCopy = coder;
+  [(UILayoutGuide *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_followsUndockedKeyboard forKey:{@"UIKeyboardLayoutGuideFollowsUndocked", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_usesBottomSafeArea forKey:@"UIKeyboardLayoutGuideUsesBottomSafeArea"];
+  [coderCopy encodeDouble:@"UIKeyboardLayoutGuideKeyboardDismissPadding" forKey:self->_keyboardDismissPadding];
 }
 
-- (UIKeyboardLayoutGuide)initWithCoder:(id)a3
+- (UIKeyboardLayoutGuide)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = UIKeyboardLayoutGuide;
-  v5 = [(UILayoutGuide *)&v8 initWithCoder:v4];
+  v5 = [(UILayoutGuide *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_followsUndockedKeyboard = [v4 decodeBoolForKey:@"UIKeyboardLayoutGuideFollowsUndocked"];
-    v5->_usesBottomSafeArea = [v4 decodeBoolForKey:@"UIKeyboardLayoutGuideUsesBottomSafeArea"];
-    [v4 decodeDoubleForKey:@"UIKeyboardLayoutGuideKeyboardDismissPadding"];
+    v5->_followsUndockedKeyboard = [coderCopy decodeBoolForKey:@"UIKeyboardLayoutGuideFollowsUndocked"];
+    v5->_usesBottomSafeArea = [coderCopy decodeBoolForKey:@"UIKeyboardLayoutGuideUsesBottomSafeArea"];
+    [coderCopy decodeDoubleForKey:@"UIKeyboardLayoutGuideKeyboardDismissPadding"];
     v5->_keyboardDismissPadding = v6;
     [(UIKeyboardLayoutGuide *)v5 _commonInit];
   }
@@ -245,63 +245,63 @@ LABEL_2:
   return v5;
 }
 
-- (void)inheritOptionsFromGuide:(id)a3
+- (void)inheritOptionsFromGuide:(id)guide
 {
-  v4 = a3;
-  self->_followsUndockedKeyboard = [v4 followsUndockedKeyboard];
-  self->_followTypes = [v4 followTypes];
-  self->_docked = [v4 isDocked];
-  self->_addsHeightWhenUndocked = [v4 addsHeightWhenUndocked];
-  self->_ignoresSafeArea = [v4 ignoresSafeArea] ^ 1;
-  -[UIKeyboardLayoutGuide setIgnoresSafeArea:](self, "setIgnoresSafeArea:", [v4 ignoresSafeArea]);
-  [v4 keyboardDismissPadding];
+  guideCopy = guide;
+  self->_followsUndockedKeyboard = [guideCopy followsUndockedKeyboard];
+  self->_followTypes = [guideCopy followTypes];
+  self->_docked = [guideCopy isDocked];
+  self->_addsHeightWhenUndocked = [guideCopy addsHeightWhenUndocked];
+  self->_ignoresSafeArea = [guideCopy ignoresSafeArea] ^ 1;
+  -[UIKeyboardLayoutGuide setIgnoresSafeArea:](self, "setIgnoresSafeArea:", [guideCopy ignoresSafeArea]);
+  [guideCopy keyboardDismissPadding];
   self->_keyboardDismissPadding = v5;
-  v6 = [v4 lightEffectsBackdrop];
+  lightEffectsBackdrop = [guideCopy lightEffectsBackdrop];
   lightEffectsBackdrop = self->_lightEffectsBackdrop;
-  self->_lightEffectsBackdrop = v6;
+  self->_lightEffectsBackdrop = lightEffectsBackdrop;
 
-  v8 = [v4 assistantHeightConstraint];
+  assistantHeightConstraint = [guideCopy assistantHeightConstraint];
 
   assistantHeightConstraint = self->_assistantHeightConstraint;
-  self->_assistantHeightConstraint = v8;
+  self->_assistantHeightConstraint = assistantHeightConstraint;
 }
 
-- (void)constrainToReference:(id)a3
+- (void)constrainToReference:(id)reference
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  referenceCopy = reference;
   if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
   {
-    v5 = [(UILayoutGuide *)self _systemConstraints];
-    v6 = [v5 count];
+    _systemConstraints = [(UILayoutGuide *)self _systemConstraints];
+    v6 = [_systemConstraints count];
 
     if (v6)
     {
       v7 = MEMORY[0x1E69977A0];
-      v8 = [(UILayoutGuide *)self _systemConstraints];
-      [v7 deactivateConstraints:v8];
+      _systemConstraints2 = [(UILayoutGuide *)self _systemConstraints];
+      [v7 deactivateConstraints:_systemConstraints2];
     }
 
-    v9 = [(UILayoutGuide *)self topAnchor];
-    v10 = [v4 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(UILayoutGuide *)self topAnchor];
+    topAnchor2 = [referenceCopy topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
     LODWORD(v12) = 1148829696;
     [v11 setPriority:v12];
     [v11 setIdentifier:@"UIViewKeyboardLayoutGuide-topConstraint"];
-    v13 = [(UILayoutGuide *)self leadingAnchor];
-    v14 = [v4 leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [(UILayoutGuide *)self leadingAnchor];
+    leadingAnchor2 = [referenceCopy leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
     [v15 setIdentifier:@"UIViewKeyboardLayoutGuide-leadingConstraint"];
-    v16 = [v4 bottomAnchor];
-    v17 = [(UILayoutGuide *)self bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [referenceCopy bottomAnchor];
+    bottomAnchor2 = [(UILayoutGuide *)self bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
     [v18 setIdentifier:@"UIViewKeyboardLayoutGuide-bottomConstraint"];
-    v19 = [v4 trailingAnchor];
-    v20 = [(UILayoutGuide *)self trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor = [referenceCopy trailingAnchor];
+    trailingAnchor2 = [(UILayoutGuide *)self trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
     [v21 setIdentifier:@"UIViewKeyboardLayoutGuide-trailingConstraint"];
     v25[0] = v11;
@@ -312,8 +312,8 @@ LABEL_2:
     [(UILayoutGuide *)self _setSystemConstraints:v22];
 
     v23 = MEMORY[0x1E69977A0];
-    v24 = [(UILayoutGuide *)self _systemConstraints];
-    [v23 activateConstraints:v24];
+    _systemConstraints3 = [(UILayoutGuide *)self _systemConstraints];
+    [v23 activateConstraints:_systemConstraints3];
 
     [(UIKeyboardLayoutGuide *)self updateBottomConstraint];
   }
@@ -327,10 +327,10 @@ LABEL_2:
     self->_followsUndockedKeyboard = followsUndockedKeyboard;
     if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
-      v6 = [(UILayoutGuide *)self owningView];
-      v7 = [v6 window];
-      v8 = [v7 _primaryKeyboardTrackingGuide];
-      [v8 setFollowsUndockedKeyboard:v4];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+      [_primaryKeyboardTrackingGuide setFollowsUndockedKeyboard:v4];
     }
 
     else
@@ -352,19 +352,19 @@ LABEL_2:
   }
 }
 
-- (void)setIgnoresSafeArea:(BOOL)a3
+- (void)setIgnoresSafeArea:(BOOL)area
 {
-  if (self->_ignoresSafeArea != a3)
+  if (self->_ignoresSafeArea != area)
   {
-    v3 = a3;
-    self->_ignoresSafeArea = a3;
+    areaCopy = area;
+    self->_ignoresSafeArea = area;
     if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
       [(UIKeyboardLayoutGuide *)self updateBottomConstraint];
-      v7 = [(UILayoutGuide *)self owningView];
-      v5 = [v7 window];
-      v6 = [v5 _primaryKeyboardTrackingGuide];
-      [v6 setIgnoresSafeArea:v3];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+      [_primaryKeyboardTrackingGuide setIgnoresSafeArea:areaCopy];
     }
 
     else if ([(UIKeyboardLayoutGuide *)self isWindowGuide])
@@ -382,33 +382,33 @@ LABEL_2:
     self->_keyboardDismissPadding = keyboardDismissPadding;
     if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
-      v7 = [(UILayoutGuide *)self owningView];
-      v5 = [v7 window];
-      v6 = [v5 _primaryKeyboardTrackingGuide];
-      [v6 setKeyboardDismissPadding:keyboardDismissPadding];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+      [_primaryKeyboardTrackingGuide setKeyboardDismissPadding:keyboardDismissPadding];
     }
   }
 }
 
-- (void)followUndockedKeyboardOfTypes:(int64_t)a3
+- (void)followUndockedKeyboardOfTypes:(int64_t)types
 {
-  if (self->_followTypes != a3)
+  if (self->_followTypes != types)
   {
-    self->_followTypes = a3;
+    self->_followTypes = types;
     if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
-      v7 = [(UILayoutGuide *)self owningView];
-      v5 = [v7 window];
-      v6 = [v5 _primaryKeyboardTrackingGuide];
-      [v6 followUndockedKeyboardOfTypes:a3];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+      [_primaryKeyboardTrackingGuide followUndockedKeyboardOfTypes:types];
     }
   }
 }
 
-- (void)forceResizeGuideForOrientation:(int64_t)a3 showsAssistantBar:(BOOL)a4 animated:(BOOL)a5
+- (void)forceResizeGuideForOrientation:(int64_t)orientation showsAssistantBar:(BOOL)bar animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
+  animatedCopy = animated;
+  barCopy = bar;
   v9 = _UIKeyboardLayoutGuideLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -417,16 +417,16 @@ LABEL_2:
   }
 
   v10 = +[UIKeyboardInputModeController sharedInputModeController];
-  v11 = [v10 currentInputMode];
-  [(UIKeyboardLayoutGuide *)self updateSizeForInputMode:v11 orientation:a3 showsAssistantBar:v6 animated:v5];
+  currentInputMode = [v10 currentInputMode];
+  [(UIKeyboardLayoutGuide *)self updateSizeForInputMode:currentInputMode orientation:orientation showsAssistantBar:barCopy animated:animatedCopy];
 }
 
-- (void)forceResizeGuideForInputMode:(id)a3 orientation:(BOOL)a4 showsAssistantBar:(BOOL)a5 animated:(BOOL)a6
+- (void)forceResizeGuideForInputMode:(id)mode orientation:(BOOL)orientation showsAssistantBar:(BOOL)bar animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  animatedCopy = animated;
+  barCopy = bar;
+  orientationCopy = orientation;
+  modeCopy = mode;
   v11 = _UIKeyboardLayoutGuideLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -434,21 +434,21 @@ LABEL_2:
     _os_log_error_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "forceResizeGuideForInputMode:orientation:showsAssistantBar:animated: has been deprecated.", v15, 2u);
   }
 
-  if (!v10)
+  if (!modeCopy)
   {
     v12 = +[UIKeyboardInputModeController sharedInputModeController];
-    v10 = [v12 documentInputMode];
+    modeCopy = [v12 documentInputMode];
   }
 
   v13 = +[UIKeyboardInputModeController sharedInputModeController];
-  v14 = [v13 lastUsedInputModeForTextInputMode:v10];
+  v14 = [v13 lastUsedInputModeForTextInputMode:modeCopy];
 
-  [(UIKeyboardLayoutGuide *)self updateSizeForInputMode:v14 orientation:v8 showsAssistantBar:v7 animated:v6];
+  [(UIKeyboardLayoutGuide *)self updateSizeForInputMode:v14 orientation:orientationCopy showsAssistantBar:barCopy animated:animatedCopy];
 }
 
-- (void)forceDismissGuideAnimated:(BOOL)a3
+- (void)forceDismissGuideAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = _UIKeyboardLayoutGuideLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -456,10 +456,10 @@ LABEL_2:
     _os_log_error_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "forceDismissGuideAnimated: has been deprecated.", v6, 2u);
   }
 
-  [(UIKeyboardLayoutGuide *)self updateSizeForInputMode:0 orientation:0 showsAssistantBar:0 animated:v3];
+  [(UIKeyboardLayoutGuide *)self updateSizeForInputMode:0 orientation:0 showsAssistantBar:0 animated:animatedCopy];
 }
 
-- (void)updateSizeForInputMode:(id)a3 orientation:(int64_t)a4 showsAssistantBar:(BOOL)a5 animated:(BOOL)a6
+- (void)updateSizeForInputMode:(id)mode orientation:(int64_t)orientation showsAssistantBar:(BOOL)bar animated:(BOOL)animated
 {
   v6 = _UIKeyboardLayoutGuideLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -489,17 +489,17 @@ LABEL_2:
   }
 }
 
-- (void)_detachGuideFromKeyboard:(BOOL)a3
+- (void)_detachGuideFromKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
+  keyboardCopy = keyboard;
   v12 = *MEMORY[0x1E69E9840];
-  if ([(UIKeyboardLayoutGuide *)self ignoreKeyboardChanges]!= a3)
+  if ([(UIKeyboardLayoutGuide *)self ignoreKeyboardChanges]!= keyboard)
   {
     v5 = _UIKeyboardLayoutGuideLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"attached";
-      if (v3)
+      if (keyboardCopy)
       {
         v6 = @"detached";
       }
@@ -511,54 +511,54 @@ LABEL_2:
 
     if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
-      v7 = [(UILayoutGuide *)self owningView];
-      v8 = [v7 window];
-      v9 = [v8 _primaryKeyboardTrackingGuide];
-      [v9 _detachGuideFromKeyboard:v3];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+      [_primaryKeyboardTrackingGuide _detachGuideFromKeyboard:keyboardCopy];
     }
 
-    [(UIKeyboardLayoutGuide *)self setIgnoreKeyboardChanges:v3];
+    [(UIKeyboardLayoutGuide *)self setIgnoreKeyboardChanges:keyboardCopy];
   }
 }
 
-- (CGSize)defaultKeyboardSizeForInputMode:(id)a3 orientation:(int64_t)a4 addingAssistant:(BOOL)a5
+- (CGSize)defaultKeyboardSizeForInputMode:(id)mode orientation:(int64_t)orientation addingAssistant:(BOOL)assistant
 {
-  v5 = a5;
-  v8 = a3;
+  assistantCopy = assistant;
+  modeCopy = mode;
   v9 = +[UIKeyboardImpl keyboardScreen];
-  v10 = [UIKBScreenTraits traitsWithScreen:v9 orientation:a4];
+  v10 = [UIKBScreenTraits traitsWithScreen:v9 orientation:orientation];
 
-  v11 = [v8 identifier];
-  [UIKeyboardLayoutStar keyboardSizeForInputMode:v11 screenTraits:v10 keyboardType:0];
+  identifier = [modeCopy identifier];
+  [UIKeyboardLayoutStar keyboardSizeForInputMode:identifier screenTraits:v10 keyboardType:0];
   v13 = v12;
   v15 = v14;
 
-  [UIKeyboardImpl topMarginForInterfaceOrientation:a4];
+  [UIKeyboardImpl topMarginForInterfaceOrientation:orientation];
   v17 = v15 + v16;
-  [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:a4 inputMode:v8];
+  [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:orientation inputMode:modeCopy];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
   v26 = v17 + v19 + v23;
-  if (v5)
+  if (assistantCopy)
   {
     v27 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v28 = [v27 systemInputAssistantViewController];
-    v29 = v28;
-    if (v28)
+    systemInputAssistantViewController = [v27 systemInputAssistantViewController];
+    v29 = systemInputAssistantViewController;
+    if (systemInputAssistantViewController)
     {
-      v30 = [v28 traitCollection];
-      [v29 preferredHeightForTraitCollection:v30 orientation:a4];
+      traitCollection = [systemInputAssistantViewController traitCollection];
+      [v29 preferredHeightForTraitCollection:traitCollection orientation:orientation];
     }
 
     else
     {
-      v32 = [(UILayoutGuide *)self owningView];
-      v30 = [v32 traitCollection];
+      owningView = [(UILayoutGuide *)self owningView];
+      traitCollection = [owningView traitCollection];
 
-      [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:v30 interfaceOrientation:a4];
+      [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:traitCollection interfaceOrientation:orientation];
     }
 
     v33 = v31;
@@ -573,26 +573,26 @@ LABEL_2:
   return result;
 }
 
-- (void)useLightEffectsBackgroundBelowView:(id)a3
+- (void)useLightEffectsBackgroundBelowView:(id)view
 {
   v85 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(UILayoutGuide *)self owningView];
-  v7 = [v5 isEqual:v6];
+  viewCopy = view;
+  owningView = [(UILayoutGuide *)self owningView];
+  v7 = [viewCopy isEqual:owningView];
 
   if (v7)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:367 description:{@"You cannot add a backdrop below a view to that view's keyboardLayoutGuide. Please use a keyboardLayoutGuide from higher up the view hierarchy. For best results, use viewController.view.keyboardLayoutGuide (or something else that's the size of your window)."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:367 description:{@"You cannot add a backdrop below a view to that view's keyboardLayoutGuide. Please use a keyboardLayoutGuide from higher up the view hierarchy. For best results, use viewController.view.keyboardLayoutGuide (or something else that's the size of your window)."}];
   }
 
-  v8 = [(UILayoutGuide *)self owningView];
-  v9 = [v5 isDescendantOfView:v8];
+  owningView2 = [(UILayoutGuide *)self owningView];
+  v9 = [viewCopy isDescendantOfView:owningView2];
 
   if ((v9 & 1) == 0)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:368 description:{@"To add a backdrop with keyboardLayoutGuide, the backedView to put it below must be a subview of the keyboardLayoutGuide's owning view. Ideally use viewController.view.keyboardLayoutGuide (or something else that's the size of your window)."}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:368 description:{@"To add a backdrop with keyboardLayoutGuide, the backedView to put it below must be a subview of the keyboardLayoutGuide's owning view. Ideally use viewController.view.keyboardLayoutGuide (or something else that's the size of your window)."}];
   }
 
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
@@ -609,14 +609,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+  lightEffectsBackdrop = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
 
-  if (!v11)
+  if (!lightEffectsBackdrop)
   {
-    v12 = [(UILayoutGuide *)self owningView];
-    v13 = [v12 _window];
-    v14 = [v13 _primaryKeyboardTrackingGuide];
-    [v14 previousSize];
+    owningView3 = [(UILayoutGuide *)self owningView];
+    _window = [owningView3 _window];
+    _primaryKeyboardTrackingGuide = [_window _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide previousSize];
     v16 = v15;
 
     v17 = _UIKeyboardLayoutGuideLogger();
@@ -625,95 +625,95 @@ LABEL_14:
       *buf = 138412546;
       v82 = objc_opt_class();
       v83 = 2048;
-      v84 = v5;
+      v84 = viewCopy;
       _os_log_debug_impl(&dword_188A29000, v17, OS_LOG_TYPE_DEBUG, "useLightEffectsBackgroundBelowView: adding below <%@: %p>", buf, 0x16u);
     }
 
     v10 = objc_alloc_init(_UIKBLightEffectsBackground);
     [(UIView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(UILayoutGuide *)self owningView];
-    v78 = v5;
-    [v18 insertSubview:v10 belowSubview:v5];
+    owningView4 = [(UILayoutGuide *)self owningView];
+    v78 = viewCopy;
+    [owningView4 insertSubview:v10 belowSubview:viewCopy];
 
-    v76 = [(UIView *)v10 topAnchor];
-    v77 = [(UILayoutGuide *)self owningView];
-    v75 = [v77 topAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    topAnchor = [(UIView *)v10 topAnchor];
+    owningView5 = [(UILayoutGuide *)self owningView];
+    topAnchor2 = [owningView5 topAnchor];
+    v74 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v80[0] = v74;
-    v72 = [(UIView *)v10 leadingAnchor];
-    v73 = [(UILayoutGuide *)self owningView];
-    v71 = [v73 leadingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    leadingAnchor = [(UIView *)v10 leadingAnchor];
+    owningView6 = [(UILayoutGuide *)self owningView];
+    leadingAnchor2 = [owningView6 leadingAnchor];
+    v70 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v80[1] = v70;
-    v69 = [(UILayoutGuide *)self owningView];
-    v68 = [v69 bottomAnchor];
-    v67 = [(UIView *)v10 bottomAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    owningView7 = [(UILayoutGuide *)self owningView];
+    bottomAnchor = [owningView7 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v10 bottomAnchor];
+    v66 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v80[2] = v66;
-    v65 = [(UILayoutGuide *)self owningView];
-    v64 = [v65 trailingAnchor];
-    v63 = [(UIView *)v10 trailingAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63];
+    owningView8 = [(UILayoutGuide *)self owningView];
+    trailingAnchor = [owningView8 trailingAnchor];
+    trailingAnchor2 = [(UIView *)v10 trailingAnchor];
+    v62 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v80[3] = v62;
-    v61 = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
-    v60 = [v61 topAnchor];
-    v59 = [(UILayoutGuide *)self topAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    fullBackdropLayoutGuide = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
+    topAnchor3 = [fullBackdropLayoutGuide topAnchor];
+    topAnchor4 = [(UILayoutGuide *)self topAnchor];
+    v58 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v80[4] = v58;
-    v57 = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
-    v56 = [v57 leadingAnchor];
-    v55 = [(UILayoutGuide *)self leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    fullBackdropLayoutGuide2 = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
+    leadingAnchor3 = [fullBackdropLayoutGuide2 leadingAnchor];
+    leadingAnchor4 = [(UILayoutGuide *)self leadingAnchor];
+    v54 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v80[5] = v54;
-    v52 = [(UILayoutGuide *)self trailingAnchor];
-    v53 = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
-    v51 = [v53 trailingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    trailingAnchor3 = [(UILayoutGuide *)self trailingAnchor];
+    fullBackdropLayoutGuide3 = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
+    trailingAnchor4 = [fullBackdropLayoutGuide3 trailingAnchor];
+    v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v80[6] = v50;
-    v49 = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
-    v19 = [v49 bottomAnchor];
-    v20 = [(UILayoutGuide *)self bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    fullBackdropLayoutGuide4 = [(_UIKBLightEffectsBackground *)v10 fullBackdropLayoutGuide];
+    bottomAnchor3 = [fullBackdropLayoutGuide4 bottomAnchor];
+    bottomAnchor4 = [(UILayoutGuide *)self bottomAnchor];
+    v21 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v80[7] = v21;
-    v22 = [(_UIKBLightEffectsBackground *)v10 assistantLayoutGuide];
-    v23 = [v22 topAnchor];
-    v24 = [(UILayoutGuide *)self topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    assistantLayoutGuide = [(_UIKBLightEffectsBackground *)v10 assistantLayoutGuide];
+    topAnchor5 = [assistantLayoutGuide topAnchor];
+    topAnchor6 = [(UILayoutGuide *)self topAnchor];
+    v25 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v80[8] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:9];
     [(UIKeyboardLayoutGuide *)self setBackdropConstraints:v26];
 
-    v27 = [(UILayoutGuide *)self owningView];
-    v28 = [v27 traitCollection];
-    [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:v28];
+    owningView9 = [(UILayoutGuide *)self owningView];
+    traitCollection = [owningView9 traitCollection];
+    [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:traitCollection];
     v30 = v29;
 
-    v31 = [(_UIKBLightEffectsBackground *)v10 assistantLayoutGuide];
-    v32 = [v31 heightAnchor];
-    v33 = [v32 constraintEqualToConstant:v30];
+    assistantLayoutGuide2 = [(_UIKBLightEffectsBackground *)v10 assistantLayoutGuide];
+    heightAnchor = [assistantLayoutGuide2 heightAnchor];
+    v33 = [heightAnchor constraintEqualToConstant:v30];
     [(UIKeyboardLayoutGuide *)self setAssistantHeightConstraint:v33];
 
     v34 = MEMORY[0x1E69977A0];
-    v35 = [(UIKeyboardLayoutGuide *)self backdropConstraints];
-    v36 = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
-    v37 = [v35 arrayByAddingObject:v36];
+    backdropConstraints = [(UIKeyboardLayoutGuide *)self backdropConstraints];
+    assistantHeightConstraint = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
+    v37 = [backdropConstraints arrayByAddingObject:assistantHeightConstraint];
     [v34 activateConstraints:v37];
 
     [(UIKeyboardLayoutGuide *)self setLightEffectsBackdrop:v10];
-    v38 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
-    [v38 changeClippingStyle:3];
+    lightEffectsBackdrop2 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+    [lightEffectsBackdrop2 changeClippingStyle:3];
 
-    v39 = [(UILayoutGuide *)self owningView];
-    v40 = [v39 _window];
-    v41 = [v40 _primaryKeyboardTrackingGuide];
-    v42 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
-    [v41 setLightEffectsBackdrop:v42];
+    owningView10 = [(UILayoutGuide *)self owningView];
+    _window2 = [owningView10 _window];
+    _primaryKeyboardTrackingGuide2 = [_window2 _primaryKeyboardTrackingGuide];
+    lightEffectsBackdrop3 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+    [_primaryKeyboardTrackingGuide2 setLightEffectsBackdrop:lightEffectsBackdrop3];
 
-    v43 = [(UILayoutGuide *)self owningView];
-    v44 = [v43 _window];
-    v45 = [v44 _primaryKeyboardTrackingGuide];
-    v46 = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
-    [v45 setAssistantHeightConstraint:v46];
+    owningView11 = [(UILayoutGuide *)self owningView];
+    _window3 = [owningView11 _window];
+    _primaryKeyboardTrackingGuide3 = [_window3 _primaryKeyboardTrackingGuide];
+    assistantHeightConstraint2 = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
+    [_primaryKeyboardTrackingGuide3 setAssistantHeightConstraint:assistantHeightConstraint2];
 
     v79[0] = MEMORY[0x1E69E9820];
     v79[1] = 3221225472;
@@ -726,7 +726,7 @@ LABEL_14:
       [UIKeyboardSceneDelegate performOnControllers:&__block_literal_global_606];
     }
 
-    v5 = v78;
+    viewCopy = v78;
     goto LABEL_14;
   }
 
@@ -740,9 +740,9 @@ void __60__UIKeyboardLayoutGuide_useLightEffectsBackgroundBelowView___block_invo
   [v1 layoutIfNeeded];
 }
 
-- (void)hideLightEffectsView:(BOOL)a3
+- (void)hideLightEffectsView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     v3 = 0.0;
   }
@@ -752,8 +752,8 @@ void __60__UIKeyboardLayoutGuide_useLightEffectsBackgroundBelowView___block_invo
     v3 = 1.0;
   }
 
-  v4 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
-  [v4 setAlpha:v3];
+  lightEffectsBackdrop = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+  [lightEffectsBackdrop setAlpha:v3];
 }
 
 - (void)removeLightEffectsView
@@ -765,29 +765,29 @@ void __60__UIKeyboardLayoutGuide_useLightEffectsBackgroundBelowView___block_invo
     v14 = 138412546;
     v15 = objc_opt_class();
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEBUG, "removeLightEffectsView for <%@: %p>", &v14, 0x16u);
   }
 
-  v4 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+  lightEffectsBackdrop = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
 
-  if (v4)
+  if (lightEffectsBackdrop)
   {
     v5 = MEMORY[0x1E69977A0];
-    v6 = [(UIKeyboardLayoutGuide *)self backdropConstraints];
-    [v5 deactivateConstraints:v6];
+    backdropConstraints = [(UIKeyboardLayoutGuide *)self backdropConstraints];
+    [v5 deactivateConstraints:backdropConstraints];
 
     [(UIKeyboardLayoutGuide *)self setBackdropConstraints:0];
-    v7 = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
-    [v7 setActive:0];
+    assistantHeightConstraint = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
+    [assistantHeightConstraint setActive:0];
 
     [(UIKeyboardLayoutGuide *)self setAssistantHeightConstraint:0];
-    v8 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
-    [v8 removeFromSuperview];
+    lightEffectsBackdrop2 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+    [lightEffectsBackdrop2 removeFromSuperview];
 
     [(UIKeyboardLayoutGuide *)self setLightEffectsBackdrop:0];
-    v9 = [(UILayoutGuide *)self owningView];
-    [v9 layoutIfNeeded];
+    owningView = [(UILayoutGuide *)self owningView];
+    [owningView layoutIfNeeded];
   }
 
   if ([(UIKeyboardLayoutGuide *)self isWindowGuide])
@@ -804,41 +804,41 @@ void __60__UIKeyboardLayoutGuide_useLightEffectsBackgroundBelowView___block_invo
 
   else
   {
-    v11 = [(UILayoutGuide *)self owningView];
-    v12 = [v11 _window];
-    v13 = [v12 _primaryKeyboardTrackingGuide];
-    [v13 removeLightEffectsView];
+    owningView2 = [(UILayoutGuide *)self owningView];
+    _window = [owningView2 _window];
+    _primaryKeyboardTrackingGuide = [_window _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide removeLightEffectsView];
   }
 }
 
-- (void)transitionBackdropForAnimationStart:(BOOL)a3
+- (void)transitionBackdropForAnimationStart:(BOOL)start
 {
-  v3 = a3;
-  v4 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
-  [v4 updateAlphaForAnimationStart:v3];
+  startCopy = start;
+  lightEffectsBackdrop = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+  [lightEffectsBackdrop updateAlphaForAnimationStart:startCopy];
 }
 
-- (BOOL)updateLightEffectsRenderConfig:(id)a3 animated:(BOOL)a4
+- (BOOL)updateLightEffectsRenderConfig:(id)config animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+  animatedCopy = animated;
+  configCopy = config;
+  lightEffectsBackdrop = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
 
-  if (v7)
+  if (lightEffectsBackdrop)
   {
-    if ([v6 animatedBackground])
+    if ([configCopy animatedBackground])
     {
       [(UIKeyboardLayoutGuide *)self hideLightEffectsView:0];
-      v8 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
-      v9 = v8;
-      if (v4)
+      lightEffectsBackdrop2 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+      v9 = lightEffectsBackdrop2;
+      if (animatedCopy)
       {
-        [v8 animatedTransitionToRenderConfig:v6];
+        [lightEffectsBackdrop2 animatedTransitionToRenderConfig:configCopy];
       }
 
       else
       {
-        [v8 _setRenderConfig:v6];
+        [lightEffectsBackdrop2 _setRenderConfig:configCopy];
       }
     }
 
@@ -848,57 +848,57 @@ void __60__UIKeyboardLayoutGuide_useLightEffectsBackgroundBelowView___block_invo
     }
   }
 
-  return v7 != 0;
+  return lightEffectsBackdrop != 0;
 }
 
 - (id)guideBackdropMatchLayer
 {
-  v2 = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
-  v3 = [v2 layerForPositionMatchMove];
+  lightEffectsBackdrop = [(UIKeyboardLayoutGuide *)self lightEffectsBackdrop];
+  layerForPositionMatchMove = [lightEffectsBackdrop layerForPositionMatchMove];
 
-  return v3;
+  return layerForPositionMatchMove;
 }
 
-- (void)setDocked:(BOOL)a3
+- (void)setDocked:(BOOL)docked
 {
-  if (self->_docked != a3)
+  if (self->_docked != docked)
   {
-    v3 = a3;
-    self->_docked = a3;
+    dockedCopy = docked;
+    self->_docked = docked;
     if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
-      v10 = [(UILayoutGuide *)self owningView];
-      v5 = [v10 window];
-      v6 = [v5 _primaryKeyboardTrackingGuide];
-      [v6 setDocked:v3];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+      [_primaryKeyboardTrackingGuide setDocked:dockedCopy];
     }
 
     else
     {
       [(UITrackingLayoutGuide *)self resetAnimationOptions];
-      if (![(UIKeyboardLayoutGuide *)self isTransitioning]|| !v3 || [(UIKeyboardLayoutGuide *)self shouldFollowCurrentKeyboard])
+      if (![(UIKeyboardLayoutGuide *)self isTransitioning]|| !dockedCopy || [(UIKeyboardLayoutGuide *)self shouldFollowCurrentKeyboard])
       {
         return;
       }
 
-      v10 = [(UILayoutGuide *)self owningView];
-      [v10 bounds];
+      owningView = [(UILayoutGuide *)self owningView];
+      [owningView bounds];
       v8 = v7;
-      v5 = [(UILayoutGuide *)self owningView];
-      v6 = [v5 window];
-      [v6 insetForDismissedKeyboardGuide];
+      window = [(UILayoutGuide *)self owningView];
+      _primaryKeyboardTrackingGuide = [window window];
+      [_primaryKeyboardTrackingGuide insetForDismissedKeyboardGuide];
       [(UIKeyboardLayoutGuide *)self setPreviousSize:v8, v9];
     }
   }
 }
 
-- (void)setCurrentKeyboardVisualState:(int64_t)a3
+- (void)setCurrentKeyboardVisualState:(int64_t)state
 {
-  if (self->_currentKeyboardVisualState != a3)
+  if (self->_currentKeyboardVisualState != state)
   {
     [(UIKeyboardLayoutGuide *)self keyboardStateIsDocked:?];
-    v5 = [(UIKeyboardLayoutGuide *)self keyboardStateIsDocked:a3];
-    self->_currentKeyboardVisualState = a3;
+    v5 = [(UIKeyboardLayoutGuide *)self keyboardStateIsDocked:state];
+    self->_currentKeyboardVisualState = state;
     [(UIKeyboardLayoutGuide *)self setDocked:v5];
     if (!v5)
     {
@@ -908,30 +908,30 @@ void __60__UIKeyboardLayoutGuide_useLightEffectsBackgroundBelowView___block_invo
   }
 }
 
-- (void)setKeyboardTrackingState:(id)a3
+- (void)setKeyboardTrackingState:(id)state
 {
-  v7 = a3;
-  if ([v7 isFloating])
+  stateCopy = state;
+  if ([stateCopy isFloating])
   {
-    if (![v7 hasFloatingAssistantView])
+    if (![stateCopy hasFloatingAssistantView])
     {
       v6 = 3;
       goto LABEL_11;
     }
 
-    v4 = [v7 isCompact] == 0;
+    v4 = [stateCopy isCompact] == 0;
     v5 = 5;
   }
 
   else
   {
-    if (![v7 isDocked])
+    if (![stateCopy isDocked])
     {
       v6 = 4;
       goto LABEL_11;
     }
 
-    v4 = [v7 hasInputView] == 0;
+    v4 = [stateCopy hasInputView] == 0;
     v5 = 1;
   }
 
@@ -949,21 +949,21 @@ LABEL_11:
   [(UIKeyboardLayoutGuide *)self setCurrentKeyboardVisualState:v6];
 }
 
-- (void)setWindowGuide:(BOOL)a3
+- (void)setWindowGuide:(BOOL)guide
 {
-  if (self->_windowGuide != a3)
+  if (self->_windowGuide != guide)
   {
-    self->_windowGuide = a3;
+    self->_windowGuide = guide;
   }
 }
 
-- (id)_obtainTransitionAssertionForReason:(id)a3
+- (id)_obtainTransitionAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(UIKeyboardLayoutGuide *)self isWindowGuide])
   {
-    v5 = [(UIKeyboardLayoutGuide *)self _assertionController];
-    v6 = [v5 vendAssertionOfType:1 initialState:1 reason:v4 requiresExplicitInvalidation:0];
+    _assertionController = [(UIKeyboardLayoutGuide *)self _assertionController];
+    v6 = [_assertionController vendAssertionOfType:1 initialState:1 reason:reasonCopy requiresExplicitInvalidation:0];
 LABEL_5:
 
     goto LABEL_7;
@@ -971,10 +971,10 @@ LABEL_5:
 
   if ([(UITrackingLayoutGuide *)self constrainedToWindowGuide])
   {
-    v5 = [(UILayoutGuide *)self owningView];
-    v7 = [v5 window];
-    v8 = [v7 _primaryKeyboardTrackingGuide];
-    v6 = [v8 _obtainTransitionAssertionForReason:v4];
+    _assertionController = [(UILayoutGuide *)self owningView];
+    window = [_assertionController window];
+    _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+    v6 = [_primaryKeyboardTrackingGuide _obtainTransitionAssertionForReason:reasonCopy];
 
     goto LABEL_5;
   }
@@ -985,18 +985,18 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setTransitioning:(BOOL)a3
+- (void)_setTransitioning:(BOOL)transitioning
 {
-  v3 = a3;
+  transitioningCopy = transitioning;
   v9 = *MEMORY[0x1E69E9840];
-  if ([(UIKeyboardLayoutGuide *)self isWindowGuide]&& self->_transitioning != v3)
+  if ([(UIKeyboardLayoutGuide *)self isWindowGuide]&& self->_transitioning != transitioningCopy)
   {
-    self->_transitioning = v3;
+    self->_transitioning = transitioningCopy;
     v5 = _UIKeyboardLayoutGuideLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"not transitioning";
-      if (v3)
+      if (transitioningCopy)
       {
         v6 = @"transitioning";
       }
@@ -1006,29 +1006,29 @@ LABEL_7:
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "setTransitioning: %@", &v7, 0xCu);
     }
 
-    if (!v3)
+    if (!transitioningCopy)
     {
       [(UITrackingLayoutGuide *)self resetAnimationOptions];
     }
   }
 }
 
-- (unint64_t)validatedOverlappingEdges:(unint64_t)a3
+- (unint64_t)validatedOverlappingEdges:(unint64_t)edges
 {
-  v3 = a3 & 0xFFFFFFFFFFFFFFF5;
-  if ((~a3 & 0xA) != 0)
+  edgesCopy = edges & 0xFFFFFFFFFFFFFFF5;
+  if ((~edges & 0xA) != 0)
   {
-    v3 = a3;
+    edgesCopy = edges;
   }
 
-  if ((~a3 & 5) != 0)
+  if ((~edges & 5) != 0)
   {
-    v4 = v3;
+    v4 = edgesCopy;
   }
 
   else
   {
-    v4 = a3 & 0xFFFFFFFFFFFFFFFELL;
+    v4 = edges & 0xFFFFFFFFFFFFFFFELL;
   }
 
   if ((v4 & 4) == 0 && [(UIKeyboardLayoutGuide *)self currentKeyboardVisualState]!= 3 && [(UIKeyboardLayoutGuide *)self currentKeyboardVisualState]!= 4)
@@ -1039,11 +1039,11 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)_moveGuideOffscreenAtEdge:(unint64_t)a3 force:(BOOL)a4
+- (BOOL)_moveGuideOffscreenAtEdge:(unint64_t)edge force:(BOOL)force
 {
-  v4 = a4;
+  forceCopy = force;
   v29 = *MEMORY[0x1E69E9840];
-  if (![(UIKeyboardLayoutGuide *)self isWindowGuide]|| [(UIKeyboardLayoutGuide *)self isTransitioning]&& !v4)
+  if (![(UIKeyboardLayoutGuide *)self isWindowGuide]|| [(UIKeyboardLayoutGuide *)self isTransitioning]&& !forceCopy)
   {
     return 0;
   }
@@ -1052,12 +1052,12 @@ LABEL_7:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 134217984;
-    v28 = a3;
+    edgeCopy = edge;
     _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "_moveGuideOffscreenAtEdge: %lu", &v27, 0xCu);
   }
 
-  v8 = [(UILayoutGuide *)self owningView];
-  [v8 bounds];
+  owningView = [(UILayoutGuide *)self owningView];
+  [owningView bounds];
   v10 = v9;
 
   [(UIKeyboardLayoutGuide *)self previousOffset];
@@ -1070,12 +1070,12 @@ LABEL_7:
   v20 = v14 >= 0.0 ? v14 : 0.0;
   [(UIKeyboardLayoutGuide *)self setInteractionResetOffset:v19, v20];
   [(UIKeyboardLayoutGuide *)self setInteractionResetSize:v16, v18];
-  if (a3 == 2)
+  if (edge == 2)
   {
     v21 = v19 - v10;
   }
 
-  else if (a3 == 8)
+  else if (edge == 8)
   {
     v21 = v10 + v19;
   }
@@ -1090,8 +1090,8 @@ LABEL_7:
 
     else
     {
-      v22 = [(UILayoutGuide *)self owningView];
-      [v22 safeAreaInsets];
+      owningView2 = [(UILayoutGuide *)self owningView];
+      [owningView2 safeAreaInsets];
       v18 = v23;
     }
 
@@ -1099,8 +1099,8 @@ LABEL_7:
     v21 = 0.0;
   }
 
-  v24 = [(UIKeyboardLayoutGuide *)self _changeOffsetConstants:v4 force:v21, v20];
-  v25 = [(UIKeyboardLayoutGuide *)self _changeSizingConstants:v4 force:v16, v18];
+  v24 = [(UIKeyboardLayoutGuide *)self _changeOffsetConstants:forceCopy force:v21, v20];
+  v25 = [(UIKeyboardLayoutGuide *)self _changeSizingConstants:forceCopy force:v16, v18];
   [(UITrackingLayoutGuide *)self updateConstraintsForActiveEdges];
   result = 1;
   if (!v24 && !v25)
@@ -1132,17 +1132,17 @@ LABEL_7:
   }
 }
 
-- (void)prepareForTestingWithState:(int64_t)a3
+- (void)prepareForTestingWithState:(int64_t)state
 {
   if (![(UIKeyboardLayoutGuide *)self isWindowGuide])
   {
-    v5 = [(UILayoutGuide *)self owningView];
-    v6 = [v5 window];
-    v7 = [v6 _primaryKeyboardTrackingGuide];
-    [v7 prepareForTestingWithState:a3];
+    owningView = [(UILayoutGuide *)self owningView];
+    window = [owningView window];
+    _primaryKeyboardTrackingGuide = [window _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide prepareForTestingWithState:state];
   }
 
-  [(UIKeyboardLayoutGuide *)self setCurrentKeyboardVisualState:a3];
+  [(UIKeyboardLayoutGuide *)self setCurrentKeyboardVisualState:state];
 }
 
 - (_UIAssertionController)_assertionController
@@ -1160,57 +1160,57 @@ LABEL_7:
   return assertionController;
 }
 
-- (BOOL)assertionActivationStateForType:(unint64_t)a3
+- (BOOL)assertionActivationStateForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return self->_transitioning;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:734 description:{@"Unknown _UIAssertionType %lu", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:734 description:{@"Unknown _UIAssertionType %lu", type}];
 
     return 0;
   }
 }
 
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
 
-    [(UIKeyboardLayoutGuide *)self _setTransitioning:a3];
+    [(UIKeyboardLayoutGuide *)self _setTransitioning:state];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:746 description:{@"Unknown _UIAssertionType %lu", a4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardLayoutGuide.m" lineNumber:746 description:{@"Unknown _UIAssertionType %lu", type}];
   }
 }
 
-- (BOOL)_changeOffsetConstants:(UIOffset)a3 force:(BOOL)a4
+- (BOOL)_changeOffsetConstants:(UIOffset)constants force:(BOOL)force
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = constants.vertical;
+  horizontal = constants.horizontal;
   v39 = *MEMORY[0x1E69E9840];
-  v8 = [(UIKeyboardLayoutGuide *)self isWindowGuide];
-  if (!v8)
+  isWindowGuide = [(UIKeyboardLayoutGuide *)self isWindowGuide];
+  if (!isWindowGuide)
   {
-    return v8;
+    return isWindowGuide;
   }
 
   [(UIKeyboardLayoutGuide *)self previousOffset];
   if (horizontal == v10 && vertical == v9)
   {
 LABEL_11:
-    LOBYTE(v8) = 0;
-    return v8;
+    LOBYTE(isWindowGuide) = 0;
+    return isWindowGuide;
   }
 
-  if ([(UIKeyboardLayoutGuide *)self ignoreKeyboardChanges]&& !a4)
+  if ([(UIKeyboardLayoutGuide *)self ignoreKeyboardChanges]&& !force)
   {
     v12 = _UIKeyboardLayoutGuideLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1254,8 +1254,8 @@ LABEL_11:
       goto LABEL_41;
     }
 
-    v20 = [(UILayoutGuide *)self owningView];
-    [v20 safeAreaInsets];
+    owningView = [(UILayoutGuide *)self owningView];
+    [owningView safeAreaInsets];
     if (vertical > v21)
     {
       if ([(UIKeyboardLayoutGuide *)self currentKeyboardVisualState]== 5)
@@ -1264,16 +1264,16 @@ LABEL_11:
 
       else
       {
-        v22 = [(UIKeyboardLayoutGuide *)self currentKeyboardVisualState];
+        currentKeyboardVisualState = [(UIKeyboardLayoutGuide *)self currentKeyboardVisualState];
 
-        if (v22 != 6)
+        if (currentKeyboardVisualState != 6)
         {
           goto LABEL_35;
         }
       }
 
-      v20 = [(UILayoutGuide *)self owningView];
-      [v20 safeAreaInsets];
+      owningView = [(UILayoutGuide *)self owningView];
+      [owningView safeAreaInsets];
       vertical = v23;
     }
 
@@ -1341,14 +1341,14 @@ LABEL_41:
   v30.receiver = self;
   v30.super_class = UIKeyboardLayoutGuide;
   v28 = [(UITrackingLayoutGuide *)&v30 changeOffsetConstants:v19, v18];
-  LOBYTE(v8) = ![(UIKeyboardLayoutGuide *)self isTransitioning]& v28;
-  return v8;
+  LOBYTE(isWindowGuide) = ![(UIKeyboardLayoutGuide *)self isTransitioning]& v28;
+  return isWindowGuide;
 }
 
-- (BOOL)_changeSizingConstants:(CGSize)a3 force:(BOOL)a4
+- (BOOL)_changeSizingConstants:(CGSize)constants force:(BOOL)force
 {
-  height = a3.height;
-  width = a3.width;
+  height = constants.height;
+  width = constants.width;
   v51 = *MEMORY[0x1E69E9840];
   if (![(UIKeyboardLayoutGuide *)self isWindowGuide])
   {
@@ -1377,7 +1377,7 @@ LABEL_11:
   }
 
 LABEL_4:
-  if ([(UIKeyboardLayoutGuide *)self ignoreKeyboardChanges]&& !a4)
+  if ([(UIKeyboardLayoutGuide *)self ignoreKeyboardChanges]&& !force)
   {
     v10 = _UIKeyboardLayoutGuideLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1397,8 +1397,8 @@ LABEL_4:
   {
     if ([(UIKeyboardLayoutGuide *)self addsHeightWhenUndocked])
     {
-      v19 = [(UILayoutGuide *)self owningView];
-      [v19 safeAreaInsets];
+      owningView = [(UILayoutGuide *)self owningView];
+      [owningView safeAreaInsets];
       height = height + v20;
     }
 
@@ -1409,15 +1409,15 @@ LABEL_4:
         goto LABEL_19;
       }
 
-      v19 = [(UILayoutGuide *)self owningView];
-      v21 = [v19 window];
-      [v21 insetForDismissedKeyboardGuide];
+      owningView = [(UILayoutGuide *)self owningView];
+      window = [owningView window];
+      [window insetForDismissedKeyboardGuide];
       height = v22;
     }
 
 LABEL_19:
-    v23 = [(UILayoutGuide *)self owningView];
-    [v23 bounds];
+    owningView2 = [(UILayoutGuide *)self owningView];
+    [owningView2 bounds];
     width = v24;
 
     [(UIKeyboardLayoutGuide *)self previousOffset];
@@ -1429,32 +1429,32 @@ LABEL_19:
 
   if (height == 0.0)
   {
-    v26 = [(UILayoutGuide *)self owningView];
-    v27 = [v26 window];
-    [v27 insetForDismissedKeyboardGuide];
+    owningView3 = [(UILayoutGuide *)self owningView];
+    window2 = [owningView3 window];
+    [window2 insetForDismissedKeyboardGuide];
     height = v28;
   }
 
-  v29 = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
+  assistantHeightConstraint = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
 
-  if (v29)
+  if (assistantHeightConstraint)
   {
-    v30 = [(UILayoutGuide *)self owningView];
-    v31 = [v30 traitCollection];
-    [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:v31];
+    owningView4 = [(UILayoutGuide *)self owningView];
+    traitCollection = [owningView4 traitCollection];
+    [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:traitCollection];
     v33 = v32;
 
-    v34 = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
-    [v34 setConstant:v33];
+    assistantHeightConstraint2 = [(UIKeyboardLayoutGuide *)self assistantHeightConstraint];
+    [assistantHeightConstraint2 setConstant:v33];
   }
 
   v35 = _UIKeyboardLayoutGuideLogger();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [(UIKeyboardLayoutGuide *)self isTransitioning];
+    isTransitioning = [(UIKeyboardLayoutGuide *)self isTransitioning];
     *buf = 138413314;
     v37 = @"not transitioning";
-    if (v36)
+    if (isTransitioning)
     {
       v37 = @"transitioning";
     }
@@ -1473,8 +1473,8 @@ LABEL_19:
 
   v39.receiver = self;
   v39.super_class = UIKeyboardLayoutGuide;
-  v38 = [(UITrackingLayoutGuide *)&v39 changeSizingConstants:width, height];
-  v13 = (v9 <= 1.0) | ((v9 <= 1.0) | ![(UIKeyboardLayoutGuide *)self isTransitioning]) & v38;
+  height = [(UITrackingLayoutGuide *)&v39 changeSizingConstants:width, height];
+  v13 = (v9 <= 1.0) | ((v9 <= 1.0) | ![(UIKeyboardLayoutGuide *)self isTransitioning]) & height;
   return v13 & 1;
 }
 

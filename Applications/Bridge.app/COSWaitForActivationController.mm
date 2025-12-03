@@ -10,9 +10,9 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isActivated];
+  isActivated = [v2 isActivated];
 
-  return v3 ^ 1;
+  return isActivated ^ 1;
 }
 
 - (void)didEstablishHold
@@ -22,23 +22,23 @@
   [v3 addObserver:self selector:"finishedActivating" name:PBBridgeGizmoDidFinishActivatingNotification object:0];
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 isActivated];
+  isActivated = [v5 isActivated];
 
-  if (v6)
+  if (isActivated)
   {
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 removeObserver:self name:v4 object:0];
 
-    v10 = [(COSWaitForActivationController *)self delegate];
-    [v10 buddyControllerReleaseHoldAndSkip:self];
+    delegate = [(COSWaitForActivationController *)self delegate];
+    [delegate buddyControllerReleaseHoldAndSkip:self];
   }
 
   else
   {
-    v10 = +[UIApplication sharedApplication];
-    v8 = [v10 setupController];
-    v9 = [v8 activationManager];
-    [v9 setAwaitingActivation:1];
+    delegate = +[UIApplication sharedApplication];
+    setupController = [delegate setupController];
+    activationManager = [setupController activationManager];
+    [activationManager setAwaitingActivation:1];
   }
 }
 
@@ -47,13 +47,13 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self name:PBBridgeGizmoDidFinishActivatingNotification object:0];
 
-  v4 = [(COSWaitForActivationController *)self delegate];
-  v5 = [v4 buddyControllerIsBeingHeldOff:self];
+  delegate = [(COSWaitForActivationController *)self delegate];
+  v5 = [delegate buddyControllerIsBeingHeldOff:self];
 
   if (v5)
   {
-    v6 = [(COSWaitForActivationController *)self delegate];
-    [v6 buddyControllerReleaseHoldAndSkip:self];
+    delegate2 = [(COSWaitForActivationController *)self delegate];
+    [delegate2 buddyControllerReleaseHoldAndSkip:self];
   }
 }
 

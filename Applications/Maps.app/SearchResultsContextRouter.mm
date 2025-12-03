@@ -1,19 +1,19 @@
 @interface SearchResultsContextRouter
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
 - (_TtC4Maps26SearchResultsContextRouter)init;
 - (id)allSearchResultsForCurrentPinsOnMap;
 - (void)clearSearchResults;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)doAudioCallToSearchResult:(id)a3;
-- (void)doSearchItem:(id)a3 withUserInfo:(id)a4 refinementsQuery:(id)a5 viewController:(id)a6;
-- (void)doSearchItem:(id)a3 withUserInfo:(id)a4 viewController:(id)a5;
-- (void)doShareSheetForShareItem:(id)a3;
-- (void)openWebsiteForSearchResult:(id)a3;
-- (void)selectSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)setSearchPins:(id)a3 selectedPin:(id)a4 animated:(BOOL)a5;
-- (void)setSearchPinsFromSearchInfo:(id)a3 scrollToResults:(BOOL)a4 displayPlaceCardForResult:(id)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)showFiltersUsingViewController:(id)a3;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)doAudioCallToSearchResult:(id)result;
+- (void)doSearchItem:(id)item withUserInfo:(id)info refinementsQuery:(id)query viewController:(id)controller;
+- (void)doSearchItem:(id)item withUserInfo:(id)info viewController:(id)controller;
+- (void)doShareSheetForShareItem:(id)item;
+- (void)openWebsiteForSearchResult:(id)result;
+- (void)selectSearchResult:(id)result animated:(BOOL)animated;
+- (void)setSearchPins:(id)pins selectedPin:(id)pin animated:(BOOL)animated;
+- (void)setSearchPinsFromSearchInfo:(id)info scrollToResults:(BOOL)results displayPlaceCardForResult:(id)result animated:(BOOL)animated completion:(id)completion;
+- (void)showFiltersUsingViewController:(id)controller;
 @end
 
 @implementation SearchResultsContextRouter
@@ -25,12 +25,12 @@
   return result;
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    stateCopy = state;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -39,63 +39,63 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    stateCopy2 = state;
+    selfCopy2 = self;
   }
 
-  sub_1003FAF44(a3);
+  sub_1003FAF44(state);
 
   sub_100024F64(v10, &unk_101908380);
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003FB414(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1003FB414(itemCopy);
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1003FB5B8(a3);
+  selfCopy = self;
+  v6 = sub_1003FB5B8(annotation);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)showFiltersUsingViewController:(id)a3
+- (void)showFiltersUsingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003FB7DC(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1003FB7DC(controllerCopy);
 }
 
-- (void)doSearchItem:(id)a3 withUserInfo:(id)a4 refinementsQuery:(id)a5 viewController:(id)a6
+- (void)doSearchItem:(id)item withUserInfo:(id)info refinementsQuery:(id)query viewController:(id)controller
 {
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_1003FD0E0(v11, v10, v12);
+  itemCopy = item;
+  queryCopy = query;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1003FD0E0(itemCopy, v10, queryCopy);
 }
 
-- (void)doSearchItem:(id)a3 withUserInfo:(id)a4 viewController:(id)a5
+- (void)doSearchItem:(id)item withUserInfo:(id)info viewController:(id)controller
 {
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_1003FD238(v9, v8);
+  itemCopy = item;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1003FD238(itemCopy, v8);
 }
 
 - (id)allSearchResultsForCurrentPinsOnMap
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003FBBC0();
 
   sub_10019152C();
@@ -104,18 +104,18 @@
   return v3.super.isa;
 }
 
-- (void)setSearchPins:(id)a3 selectedPin:(id)a4 animated:(BOOL)a5
+- (void)setSearchPins:(id)pins selectedPin:(id)pin animated:(BOOL)animated
 {
   sub_10019152C();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a4;
-  v10 = self;
-  sub_1003FBD70(v8, a4, a5);
+  pinCopy = pin;
+  selfCopy = self;
+  sub_1003FBD70(v8, pin, animated);
 }
 
-- (void)setSearchPinsFromSearchInfo:(id)a3 scrollToResults:(BOOL)a4 displayPlaceCardForResult:(id)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)setSearchPinsFromSearchInfo:(id)info scrollToResults:(BOOL)results displayPlaceCardForResult:(id)result animated:(BOOL)animated completion:(id)completion
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(completion);
   if (v12)
   {
     v13 = swift_allocObject();
@@ -128,45 +128,45 @@
     v13 = 0;
   }
 
-  v14 = a3;
-  v15 = a5;
-  v16 = self;
-  sub_1003FC028(v14, a4, a5, a6, v12, v13);
+  infoCopy = info;
+  resultCopy = result;
+  selfCopy = self;
+  sub_1003FC028(infoCopy, results, result, animated, v12, v13);
   sub_1000588AC(v12);
 }
 
-- (void)selectSearchResult:(id)a3 animated:(BOOL)a4
+- (void)selectSearchResult:(id)result animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_1003FC3FC(v6, a4);
+  resultCopy = result;
+  selfCopy = self;
+  sub_1003FC3FC(resultCopy, animated);
 }
 
 - (void)clearSearchResults
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003FC640();
 }
 
-- (void)doAudioCallToSearchResult:(id)a3
+- (void)doAudioCallToSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003FC7D0(v4);
+  resultCopy = result;
+  selfCopy = self;
+  sub_1003FC7D0(resultCopy);
 }
 
-- (void)openWebsiteForSearchResult:(id)a3
+- (void)openWebsiteForSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003FCAA8(v4);
+  resultCopy = result;
+  selfCopy = self;
+  sub_1003FCAA8(resultCopy);
 }
 
-- (void)doShareSheetForShareItem:(id)a3
+- (void)doShareSheetForShareItem:(id)item
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1003FCDF0(a3);
+  selfCopy = self;
+  sub_1003FCDF0(item);
   swift_unknownObjectRelease();
 }
 

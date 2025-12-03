@@ -12,7 +12,7 @@
   *&v8[1] = a3;
   *&v8[2] = a4;
   v8[3] = a6;
-  v6 = [a1 plk_sharedMemoryPoolForDescriptor:v8];
+  v6 = [self plk_sharedMemoryPoolForDescriptor:v8];
 
   return v6;
 }
@@ -55,8 +55,8 @@
   v4 = a3[1];
   v5 = a3[2];
   v6 = *(a3 + 3);
-  v7 = [a1 slotLength];
-  return PLKGraphicsContextCalculateBytesNeededForSize(v6, v3, v4, v5) <= v7;
+  slotLength = [self slotLength];
+  return PLKGraphicsContextCalculateBytesNeededForSize(v6, v3, v4, v5) <= slotLength;
 }
 
 @end

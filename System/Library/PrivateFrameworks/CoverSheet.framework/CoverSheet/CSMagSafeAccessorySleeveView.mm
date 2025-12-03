@@ -1,38 +1,38 @@
 @interface CSMagSafeAccessorySleeveView
 - (CGRect)_chargingViewFrame;
 - (CGRect)visibleWindowFrame;
-- (CSMagSafeAccessorySleeveView)initWithFrame:(CGRect)a3;
-- (id)_batteryChargingViewWithChargingInfo:(id)a3;
+- (CSMagSafeAccessorySleeveView)initWithFrame:(CGRect)frame;
+- (id)_batteryChargingViewWithChargingInfo:(id)info;
 - (void)_dismissAnimation;
 - (void)_presentAnimation;
-- (void)_runAnimationWithType:(unint64_t)a3;
+- (void)_runAnimationWithType:(unint64_t)type;
 - (void)layoutSubviews;
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4;
-- (void)setCharging:(BOOL)a3;
-- (void)setDateView:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setSecondaryDateView:(id)a3;
-- (void)setVisibleWindowFrame:(CGRect)a3;
-- (void)transitionChargingViewVisible:(BOOL)a3 chargingInfo:(id)a4;
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler;
+- (void)setCharging:(BOOL)charging;
+- (void)setDateView:(id)view;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setSecondaryDateView:(id)view;
+- (void)setVisibleWindowFrame:(CGRect)frame;
+- (void)transitionChargingViewVisible:(BOOL)visible chargingInfo:(id)info;
 - (void)updateDateViews;
 @end
 
 @implementation CSMagSafeAccessorySleeveView
 
-- (CSMagSafeAccessorySleeveView)initWithFrame:(CGRect)a3
+- (CSMagSafeAccessorySleeveView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20.receiver = self;
   v20.super_class = CSMagSafeAccessorySleeveView;
   v7 = [(CSMagSafeAccessoryView *)&v20 initWithFrame:?];
   v8 = v7;
   if (v7)
   {
-    v9 = [(CSMagSafeAccessorySleeveView *)v7 layer];
-    [v9 setAllowsGroupBlending:0];
+    layer = [(CSMagSafeAccessorySleeveView *)v7 layer];
+    [layer setAllowsGroupBlending:0];
 
     v10 = objc_opt_new();
     backgroundColorLayer = v8->_backgroundColorLayer;
@@ -43,8 +43,8 @@
     [(CALayer *)v8->_backgroundColorLayer setAllowsGroupOpacity:1];
     [(CALayer *)v8->_backgroundColorLayer setAllowsGroupBlending:1];
     v12 = [MEMORY[0x277D755B8] systemImageNamed:@"bolt.fill"];
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    v14 = [v12 _flatImageWithColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v14 = [v12 _flatImageWithColor:whiteColor];
 
     v15 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:1 scale:32.0];
     v16 = [v14 imageWithRenderingMode:2];
@@ -66,8 +66,8 @@
   v21.super_class = CSMagSafeAccessorySleeveView;
   [(CSMagSafeAccessoryView *)&v21 layoutSubviews];
   [(CSMagSafeAccessorySleeveView *)self updateDateViews];
-  v3 = [(CSMagSafeAccessorySleeveView *)self superview];
-  [v3 bounds];
+  superview = [(CSMagSafeAccessorySleeveView *)self superview];
+  [superview bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -94,10 +94,10 @@
   UIRectCenteredIntegralRect();
   UIRectGetCenter();
   [(CALayer *)v17 setPosition:?];
-  v18 = [(CSMagSafeAccessorySleeveView *)self layer];
+  layer = [(CSMagSafeAccessorySleeveView *)self layer];
   v19 = self->_backgroundColorLayer;
-  v20 = [(SBFLockScreenDateView *)self->_dateView layer];
-  [v18 insertSublayer:v19 below:v20];
+  layer2 = [(SBFLockScreenDateView *)self->_dateView layer];
+  [layer insertSublayer:v19 below:layer2];
 }
 
 - (void)updateDateViews
@@ -131,22 +131,22 @@
     [(SBFLockScreenDateView *)secondaryDateView setFrame:v16, v20, v17, v18];
     [(SBFLockScreenDateView *)self->_secondaryDateView setSubtitleHidden:1];
     v23 = self->_secondaryDateView;
-    v24 = [(CSMagSafeAccessoryView *)self legibilitySettings];
-    [(SBFLockScreenDateView *)v23 setLegibilitySettings:v24];
+    legibilitySettings = [(CSMagSafeAccessoryView *)self legibilitySettings];
+    [(SBFLockScreenDateView *)v23 setLegibilitySettings:legibilitySettings];
 
-    v25 = [(SBFLockScreenDateView *)self->_secondaryDateView layer];
-    [v25 setOpacity:0.0];
+    layer = [(SBFLockScreenDateView *)self->_secondaryDateView layer];
+    [layer setOpacity:0.0];
   }
 }
 
-- (void)setVisibleWindowFrame:(CGRect)a3
+- (void)setVisibleWindowFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_visibleWindowFrame = &self->_visibleWindowFrame;
-  if (!CGRectEqualToRect(self->_visibleWindowFrame, a3))
+  if (!CGRectEqualToRect(self->_visibleWindowFrame, frame))
   {
     p_visibleWindowFrame->origin.x = x;
     p_visibleWindowFrame->origin.y = y;
@@ -157,32 +157,32 @@
   }
 }
 
-- (void)setDateView:(id)a3
+- (void)setDateView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   dateView = self->_dateView;
-  if (dateView != v5)
+  if (dateView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (dateView)
     {
       [(SBFLockScreenDateView *)dateView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_dateView, a3);
+    objc_storeStrong(&self->_dateView, view);
     [(CSMagSafeAccessorySleeveView *)self addSubview:self->_dateView];
     dateView = [(CSMagSafeAccessorySleeveView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](dateView, v5);
+  MEMORY[0x2821F96F8](dateView, viewCopy);
 }
 
-- (void)setCharging:(BOOL)a3
+- (void)setCharging:(BOOL)charging
 {
-  if (self->_charging != a3)
+  if (self->_charging != charging)
   {
-    self->_charging = a3;
+    self->_charging = charging;
     batteryChargingView = self->_batteryChargingView;
     v5 = objc_opt_class();
     v6 = batteryChargingView;
@@ -221,11 +221,11 @@
   }
 }
 
-- (void)transitionChargingViewVisible:(BOOL)a3 chargingInfo:(id)a4
+- (void)transitionChargingViewVisible:(BOOL)visible chargingInfo:(id)info
 {
-  v4 = a3;
-  v13 = a4;
-  if (v4)
+  visibleCopy = visible;
+  infoCopy = info;
+  if (visibleCopy)
   {
     dateView = self->_dateView;
     if (dateView)
@@ -235,11 +235,11 @@
     }
 
     [(UIImageView *)self->_chargingBoltImageView setHidden:1];
-    v7 = [v13 internalBatteryDevice];
+    internalBatteryDevice = [infoCopy internalBatteryDevice];
     batteryDevice = self->_batteryDevice;
-    self->_batteryDevice = v7;
+    self->_batteryDevice = internalBatteryDevice;
 
-    v9 = [(CSMagSafeAccessorySleeveView *)self _batteryChargingViewWithChargingInfo:v13];
+    v9 = [(CSMagSafeAccessorySleeveView *)self _batteryChargingViewWithChargingInfo:infoCopy];
     [(CSMagSafeAccessorySleeveView *)self addSubview:v9];
   }
 
@@ -282,13 +282,13 @@
   return result;
 }
 
-- (id)_batteryChargingViewWithChargingInfo:(id)a3
+- (id)_batteryChargingViewWithChargingInfo:(id)info
 {
   batteryChargingView = self->_batteryChargingView;
   if (!batteryChargingView)
   {
-    v5 = a3;
-    if ([v5 isChargingWithInternalWirelessAccessory])
+    infoCopy = info;
+    if ([infoCopy isChargingWithInternalWirelessAccessory])
     {
       v6 = +[CSMagSafeAccessoryConfiguration staticViewConfiguration];
       v7 = [CSBatteryChargingView batteryChargingRingViewWithConfiguration:v6];
@@ -312,11 +312,11 @@
     [(CSBatteryChargingView *)v11 setLegibilitySettings:v12];
 
     [(CSBatteryChargingView *)self->_batteryChargingView setAutoresizingMask:18];
-    v13 = [v5 internalBatteryDevice];
+    internalBatteryDevice = [infoCopy internalBatteryDevice];
 
-    v14 = [v13 percentCharge];
-    v15 = [MEMORY[0x277CF0DA8] localizedBatteryDetailTextForBatteryLevel:v14];
-    [(CSBatteryChargingView *)self->_batteryChargingView setPrimaryBatteryText:v15 forBattery:v13];
+    percentCharge = [internalBatteryDevice percentCharge];
+    v15 = [MEMORY[0x277CF0DA8] localizedBatteryDetailTextForBatteryLevel:percentCharge];
+    [(CSBatteryChargingView *)self->_batteryChargingView setPrimaryBatteryText:v15 forBattery:internalBatteryDevice];
 
     batteryChargingView = self->_batteryChargingView;
   }
@@ -324,37 +324,37 @@
   return batteryChargingView;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = CSMagSafeAccessorySleeveView;
-  v4 = a3;
-  [(CSMagSafeAccessoryView *)&v7 setLegibilitySettings:v4];
+  settingsCopy = settings;
+  [(CSMagSafeAccessoryView *)&v7 setLegibilitySettings:settingsCopy];
   backgroundColorLayer = self->_backgroundColorLayer;
-  v6 = [v4 secondaryColor];
+  secondaryColor = [settingsCopy secondaryColor];
 
-  -[CALayer setBackgroundColor:](backgroundColorLayer, "setBackgroundColor:", [v6 CGColor]);
+  -[CALayer setBackgroundColor:](backgroundColorLayer, "setBackgroundColor:", [secondaryColor CGColor]);
 }
 
-- (void)setSecondaryDateView:(id)a3
+- (void)setSecondaryDateView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   secondaryDateView = self->_secondaryDateView;
-  if (secondaryDateView != v5)
+  if (secondaryDateView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (secondaryDateView)
     {
       [(SBFLockScreenDateView *)secondaryDateView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_secondaryDateView, a3);
+    objc_storeStrong(&self->_secondaryDateView, view);
     [(CSMagSafeAccessorySleeveView *)self addSubview:self->_secondaryDateView];
     secondaryDateView = [(CSMagSafeAccessorySleeveView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](secondaryDateView, v5);
+  MEMORY[0x2821F96F8](secondaryDateView, viewCopy);
 }
 
 - (void)_presentAnimation
@@ -383,8 +383,8 @@
   [v4 setKeyTimes:&unk_28307A0E8];
   [v4 setValues:&unk_28307A100];
   [v4 setDuration:0.88];
-  v11 = [(SBFLockScreenDateView *)self->_secondaryDateView layer];
-  [v11 addAnimation:v4 forKey:@"opacity"];
+  layer = [(SBFLockScreenDateView *)self->_secondaryDateView layer];
+  [layer addAnimation:v4 forKey:@"opacity"];
 
   v12 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
   [v12 setBeginTime:v10];
@@ -396,8 +396,8 @@
   v13 = [MEMORY[0x277CD9EF8] functionWithName:v7];
   [v4 setTimingFunction:v13];
 
-  v14 = [(SBFLockScreenDateView *)self->_dateView layer];
-  [v14 addAnimation:v12 forKey:@"opacity"];
+  layer2 = [(SBFLockScreenDateView *)self->_dateView layer];
+  [layer2 addAnimation:v12 forKey:@"opacity"];
 }
 
 - (void)_dismissAnimation
@@ -412,41 +412,41 @@
   [v7 setTimingFunction:v3];
 
   [(CALayer *)self->_backgroundColorLayer addAnimation:v7 forKey:@"opacity"];
-  v4 = [(SBFLockScreenDateView *)self->_secondaryDateView layer];
-  [v4 addAnimation:v7 forKey:@"fadeOut"];
+  layer = [(SBFLockScreenDateView *)self->_secondaryDateView layer];
+  [layer addAnimation:v7 forKey:@"fadeOut"];
 
   v5 = [v7 copy];
   [v5 setValues:&unk_28307A178];
-  v6 = [(SBFLockScreenDateView *)self->_dateView layer];
-  [v6 addAnimation:v5 forKey:@"fadeIn"];
+  layer2 = [(SBFLockScreenDateView *)self->_dateView layer];
+  [layer2 addAnimation:v5 forKey:@"fadeIn"];
 }
 
-- (void)_runAnimationWithType:(unint64_t)a3
+- (void)_runAnimationWithType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     [(CSMagSafeAccessorySleeveView *)self _dismissAnimation];
   }
 
-  else if (!a3)
+  else if (!type)
   {
     [(CSMagSafeAccessorySleeveView *)self _presentAnimation];
   }
 }
 
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   [MEMORY[0x277CD9FF0] begin];
   v7 = MEMORY[0x277CD9FF0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__CSMagSafeAccessorySleeveView_performAnimation_completionHandler___block_invoke;
   v9[3] = &unk_27838BB18;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v7 setCompletionBlock:v9];
-  [(CSMagSafeAccessorySleeveView *)self _runAnimationWithType:a3];
+  [(CSMagSafeAccessorySleeveView *)self _runAnimationWithType:animation];
   [MEMORY[0x277CD9FF0] commit];
 }
 

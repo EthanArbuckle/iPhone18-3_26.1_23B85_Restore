@@ -1,36 +1,36 @@
 @interface PSFooterMultiHyperlinkViewLinkSpec
-+ (id)specWithRange:(_NSRange)a3 target:(id)a4 action:(SEL)a5;
-+ (id)specWithRange:(_NSRange)a3 url:(id)a4;
++ (id)specWithRange:(_NSRange)range target:(id)target action:(SEL)action;
++ (id)specWithRange:(_NSRange)range url:(id)url;
 - (SEL)action;
 - (_NSRange)linkRange;
 - (id)target;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation PSFooterMultiHyperlinkViewLinkSpec
 
-+ (id)specWithRange:(_NSRange)a3 url:(id)a4
++ (id)specWithRange:(_NSRange)range url:(id)url
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
+  length = range.length;
+  location = range.location;
+  urlCopy = url;
   v7 = objc_alloc_init(PSFooterMultiHyperlinkViewLinkSpec);
   [(PSFooterMultiHyperlinkViewLinkSpec *)v7 setLinkRange:location, length];
-  [(PSFooterMultiHyperlinkViewLinkSpec *)v7 setURL:v6];
+  [(PSFooterMultiHyperlinkViewLinkSpec *)v7 setURL:urlCopy];
 
   return v7;
 }
 
-+ (id)specWithRange:(_NSRange)a3 target:(id)a4 action:(SEL)a5
++ (id)specWithRange:(_NSRange)range target:(id)target action:(SEL)action
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  targetCopy = target;
   v9 = objc_alloc_init(PSFooterMultiHyperlinkViewLinkSpec);
   [(PSFooterMultiHyperlinkViewLinkSpec *)v9 setLinkRange:location, length];
-  [(PSFooterMultiHyperlinkViewLinkSpec *)v9 setTarget:v8];
+  [(PSFooterMultiHyperlinkViewLinkSpec *)v9 setTarget:targetCopy];
 
-  [(PSFooterMultiHyperlinkViewLinkSpec *)v9 setAction:a5];
+  [(PSFooterMultiHyperlinkViewLinkSpec *)v9 setAction:action];
 
   return v9;
 }
@@ -64,19 +64,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

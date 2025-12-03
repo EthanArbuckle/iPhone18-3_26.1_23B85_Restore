@@ -8,10 +8,10 @@
 
 - (uint64_t)nu_isInfinite
 {
-  result = [a1 nu_isFloat];
+  result = [self nu_isFloat];
   if (result)
   {
-    [a1 doubleValue];
+    [self doubleValue];
     return fabs(v3) == INFINITY;
   }
 
@@ -20,10 +20,10 @@
 
 - (uint64_t)nu_isNaN
 {
-  result = [a1 nu_isFloat];
+  result = [self nu_isFloat];
   if (result)
   {
-    [a1 doubleValue];
+    [self doubleValue];
     return 0;
   }
 
@@ -32,10 +32,10 @@
 
 - (uint64_t)nu_isBoolean
 {
-  result = [a1 nu_isInteger];
+  result = [self nu_isInteger];
   if (result)
   {
-    return [a1 integerValue] < 2;
+    return [self integerValue] < 2;
   }
 
   return result;

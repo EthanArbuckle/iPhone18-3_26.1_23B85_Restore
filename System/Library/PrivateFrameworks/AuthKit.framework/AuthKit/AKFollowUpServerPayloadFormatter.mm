@@ -1,15 +1,15 @@
 @interface AKFollowUpServerPayloadFormatter
-+ (id)pendingAuthKitFollowUpPayload:(id)a3;
++ (id)pendingAuthKitFollowUpPayload:(id)payload;
 @end
 
 @implementation AKFollowUpServerPayloadFormatter
 
-+ (id)pendingAuthKitFollowUpPayload:(id)a3
++ (id)pendingAuthKitFollowUpPayload:(id)payload
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v4 = [location[0] aaf_map:&__block_literal_global_38];
   objc_storeStrong(location, 0);
 

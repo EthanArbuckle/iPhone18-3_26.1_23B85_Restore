@@ -1,39 +1,39 @@
 @interface STUIStatusBarStyleAttributes
 + (id)overriddenStyleAttributes;
-+ (id)styleAttributesForStatusBar:(id)a3 style:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)styleAttributesForStatusBar:(id)bar style:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRounded;
-- (STUIStatusBarStyleAttributes)initWithCoder:(id)a3;
-- (STUIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)fontForStyle:(int64_t)a3;
+- (STUIStatusBarStyleAttributes)initWithCoder:(id)coder;
+- (STUIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)overrides;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)fontForStyle:(int64_t)style;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STUIStatusBarStyleAttributes
 
 + (id)overriddenStyleAttributes
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 - (BOOL)isRounded
 {
-  v2 = [(STUIStatusBarStyleAttributes *)self font];
+  font = [(STUIStatusBarStyleAttributes *)self font];
   UIFontDesign = CTFontGetUIFontDesign();
 
-  LOBYTE(v2) = [UIFontDesign isEqualToString:*MEMORY[0x277CC4978]];
-  return v2;
+  LOBYTE(font) = [UIFontDesign isEqualToString:*MEMORY[0x277CC4978]];
+  return font;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 2) = self->_style;
@@ -56,102 +56,102 @@
   return v4;
 }
 
-- (STUIStatusBarStyleAttributes)initWithCoder:(id)a3
+- (STUIStatusBarStyleAttributes)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = STUIStatusBarStyleAttributes;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(STUIStatusBarStyleAttributes *)&v16 init];
-  v4->_style = [v3 decodeIntegerForKey:{@"style", v16.receiver, v16.super_class}];
-  v4->_mode = [v3 decodeIntegerForKey:@"mode"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
+  v4->_style = [coderCopy decodeIntegerForKey:{@"style", v16.receiver, v16.super_class}];
+  v4->_mode = [coderCopy decodeIntegerForKey:@"mode"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
   traitCollection = v4->_traitCollection;
   v4->_traitCollection = v5;
 
-  v4->_effectiveLayoutDirection = [v3 decodeIntegerForKey:@"effectiveLayoutDirection"];
-  [v3 decodeDoubleForKey:@"iconScale"];
+  v4->_effectiveLayoutDirection = [coderCopy decodeIntegerForKey:@"effectiveLayoutDirection"];
+  [coderCopy decodeDoubleForKey:@"iconScale"];
   v4->_iconScale = v7;
-  v4->_iconSize = [v3 decodeIntegerForKey:@"iconSize"];
-  v4->_symbolScale = [v3 decodeIntegerForKey:@"symbolScale"];
-  v4->_scaledFixedWidthBar = [v3 decodeBoolForKey:@"scaledFixedWidthBar"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"font"];
+  v4->_iconSize = [coderCopy decodeIntegerForKey:@"iconSize"];
+  v4->_symbolScale = [coderCopy decodeIntegerForKey:@"symbolScale"];
+  v4->_scaledFixedWidthBar = [coderCopy decodeBoolForKey:@"scaledFixedWidthBar"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"font"];
   [(STUIStatusBarStyleAttributes *)v4 setFont:v8];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"emphasizedFont"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emphasizedFont"];
   [(STUIStatusBarStyleAttributes *)v4 setEmphasizedFont:v9];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"smallFont"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smallFont"];
   [(STUIStatusBarStyleAttributes *)v4 setSmallFont:v10];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
   [(STUIStatusBarStyleAttributes *)v4 setTextColor:v11];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageTintColor"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageTintColor"];
   [(STUIStatusBarStyleAttributes *)v4 setImageTintColor:v12];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageDimmedTintColor"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageDimmedTintColor"];
   [(STUIStatusBarStyleAttributes *)v4 setImageDimmedTintColor:v13];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageNamePrefixes"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageNamePrefixes"];
 
   [(STUIStatusBarStyleAttributes *)v4 setImageNamePrefixes:v14];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"style"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
-  [v5 encodeObject:self->_traitCollection forKey:@"traitCollection"];
-  [v5 encodeInteger:self->_effectiveLayoutDirection forKey:@"effectiveLayoutDirection"];
-  [v5 encodeDouble:@"iconScale" forKey:self->_iconScale];
-  [v5 encodeInteger:self->_iconSize forKey:@"iconSize"];
-  [v5 encodeInteger:self->_symbolScale forKey:@"symbolScale"];
-  [v5 encodeBool:self->_scaledFixedWidthBar forKey:@"scaledFixedWidthBar"];
-  [v5 encodeObject:self->_font forKey:@"font"];
-  [v5 encodeObject:self->_emphasizedFont forKey:@"emphasizedFont"];
-  [v5 encodeObject:self->_smallFont forKey:@"smallFont"];
-  [v5 encodeObject:self->_textColor forKey:@"textColor"];
-  [v5 encodeObject:self->_imageTintColor forKey:@"imageTintColor"];
-  [v5 encodeObject:self->_imageDimmedTintColor forKey:@"imageDimmedTintColor"];
-  [v5 encodeObject:self->_imageNamePrefixes forKey:@"imageNamePrefixes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"style"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeObject:self->_traitCollection forKey:@"traitCollection"];
+  [coderCopy encodeInteger:self->_effectiveLayoutDirection forKey:@"effectiveLayoutDirection"];
+  [coderCopy encodeDouble:@"iconScale" forKey:self->_iconScale];
+  [coderCopy encodeInteger:self->_iconSize forKey:@"iconSize"];
+  [coderCopy encodeInteger:self->_symbolScale forKey:@"symbolScale"];
+  [coderCopy encodeBool:self->_scaledFixedWidthBar forKey:@"scaledFixedWidthBar"];
+  [coderCopy encodeObject:self->_font forKey:@"font"];
+  [coderCopy encodeObject:self->_emphasizedFont forKey:@"emphasizedFont"];
+  [coderCopy encodeObject:self->_smallFont forKey:@"smallFont"];
+  [coderCopy encodeObject:self->_textColor forKey:@"textColor"];
+  [coderCopy encodeObject:self->_imageTintColor forKey:@"imageTintColor"];
+  [coderCopy encodeObject:self->_imageDimmedTintColor forKey:@"imageDimmedTintColor"];
+  [coderCopy encodeObject:self->_imageNamePrefixes forKey:@"imageNamePrefixes"];
 }
 
-+ (id)styleAttributesForStatusBar:(id)a3 style:(int64_t)a4
++ (id)styleAttributesForStatusBar:(id)bar style:(int64_t)style
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
-  *(v7 + 2) = a4;
-  *(v7 + 3) = [v6 mode];
-  *(v7 + 5) = [v6 effectiveUserInterfaceLayoutDirection];
+  barCopy = bar;
+  v7 = objc_alloc_init(self);
+  *(v7 + 2) = style;
+  *(v7 + 3) = [barCopy mode];
+  *(v7 + 5) = [barCopy effectiveUserInterfaceLayoutDirection];
   *(v7 + 6) = 0x3FF0000000000000;
   *(v7 + 7) = 0;
-  v8 = [v6 traitCollection];
-  [v8 displayScale];
+  traitCollection = [barCopy traitCollection];
+  [traitCollection displayScale];
   if (v9 == 0.0)
   {
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v12 = v11;
     v13 = objc_opt_self();
-    v14 = [v8 traitCollectionByReplacingCGFloatValue:v13 forTrait:v12];
+    v14 = [traitCollection traitCollectionByReplacingCGFloatValue:v13 forTrait:v12];
 
-    v8 = v14;
+    traitCollection = v14;
   }
 
-  objc_storeStrong(v7 + 4, v8);
-  [v8 displayScale];
+  objc_storeStrong(v7 + 4, traitCollection);
+  [traitCollection displayScale];
   v16 = v15;
-  v17 = [MEMORY[0x277D75418] currentDevice];
-  v18 = [v17 userInterfaceIdiom];
-  if (v18 == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  if (userInterfaceIdiom == 1)
   {
     v19 = 14;
   }
 
-  else if (v18 == 3)
+  else if (userInterfaceIdiom == 3)
   {
     v19 = 16;
     if (v16 > 2.5)
@@ -172,60 +172,60 @@
 
   *(v7 + 8) = v19;
 
-  v20 = [v6 foregroundColor];
+  foregroundColor = [barCopy foregroundColor];
 
-  if (v20)
+  if (foregroundColor)
   {
-    v21 = [v6 foregroundColor];
+    foregroundColor2 = [barCopy foregroundColor];
     v22 = *(v7 + 12);
-    *(v7 + 12) = v21;
+    *(v7 + 12) = foregroundColor2;
 
-    v23 = [v6 foregroundColor];
+    foregroundColor3 = [barCopy foregroundColor];
     v24 = *(v7 + 13);
-    *(v7 + 13) = v23;
+    *(v7 + 13) = foregroundColor3;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
-  v7 = [(STUIStatusBarStyleAttributes *)self style];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
+  style = [(STUIStatusBarStyleAttributes *)self style];
   v80[0] = MEMORY[0x277D85DD0];
   v80[1] = 3221225472;
   v80[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke;
   v80[3] = &unk_279D38A98;
   v8 = v6;
   v81 = v8;
-  v9 = [v5 appendInteger:v7 counterpart:v80];
-  v10 = [(STUIStatusBarStyleAttributes *)self mode];
+  v9 = [v5 appendInteger:style counterpart:v80];
+  mode = [(STUIStatusBarStyleAttributes *)self mode];
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_2;
   v78[3] = &unk_279D38A98;
   v11 = v8;
   v79 = v11;
-  v12 = [v5 appendInteger:v10 counterpart:v78];
-  v13 = [(STUIStatusBarStyleAttributes *)self traitCollection];
+  v12 = [v5 appendInteger:mode counterpart:v78];
+  traitCollection = [(STUIStatusBarStyleAttributes *)self traitCollection];
   v76[0] = MEMORY[0x277D85DD0];
   v76[1] = 3221225472;
   v76[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_3;
   v76[3] = &unk_279D39320;
   v14 = v11;
   v77 = v14;
-  v15 = [v5 appendObject:v13 counterpart:v76];
+  v15 = [v5 appendObject:traitCollection counterpart:v76];
 
-  v16 = [(STUIStatusBarStyleAttributes *)self effectiveLayoutDirection];
+  effectiveLayoutDirection = [(STUIStatusBarStyleAttributes *)self effectiveLayoutDirection];
   v74[0] = MEMORY[0x277D85DD0];
   v74[1] = 3221225472;
   v74[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_4;
   v74[3] = &unk_279D38A98;
   v17 = v14;
   v75 = v17;
-  v18 = [v5 appendInteger:v16 counterpart:v74];
+  v18 = [v5 appendInteger:effectiveLayoutDirection counterpart:v74];
   [(STUIStatusBarStyleAttributes *)self iconScale];
   v20 = v19;
   v72[0] = MEMORY[0x277D85DD0];
@@ -235,83 +235,83 @@
   v21 = v17;
   v73 = v21;
   v22 = [v5 appendCGFloat:v72 counterpart:v20];
-  v23 = [(STUIStatusBarStyleAttributes *)self iconSize];
+  iconSize = [(STUIStatusBarStyleAttributes *)self iconSize];
   v70[0] = MEMORY[0x277D85DD0];
   v70[1] = 3221225472;
   v70[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_6;
   v70[3] = &unk_279D38A98;
   v24 = v21;
   v71 = v24;
-  v25 = [v5 appendInteger:v23 counterpart:v70];
-  v26 = [(STUIStatusBarStyleAttributes *)self symbolScale];
+  v25 = [v5 appendInteger:iconSize counterpart:v70];
+  symbolScale = [(STUIStatusBarStyleAttributes *)self symbolScale];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_7;
   v68[3] = &unk_279D38A98;
   v27 = v24;
   v69 = v27;
-  v28 = [v5 appendInteger:v26 counterpart:v68];
-  v29 = [(STUIStatusBarStyleAttributes *)self isScaledFixedWidthBar];
+  v28 = [v5 appendInteger:symbolScale counterpart:v68];
+  isScaledFixedWidthBar = [(STUIStatusBarStyleAttributes *)self isScaledFixedWidthBar];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_8;
   v66[3] = &unk_279D38128;
   v30 = v27;
   v67 = v30;
-  v31 = [v5 appendBool:v29 counterpart:v66];
-  v32 = [(STUIStatusBarStyleAttributes *)self font];
+  v31 = [v5 appendBool:isScaledFixedWidthBar counterpart:v66];
+  font = [(STUIStatusBarStyleAttributes *)self font];
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_9;
   v64[3] = &unk_279D39320;
   v33 = v30;
   v65 = v33;
-  v34 = [v5 appendObject:v32 counterpart:v64];
+  v34 = [v5 appendObject:font counterpart:v64];
 
-  v35 = [(STUIStatusBarStyleAttributes *)self emphasizedFont];
+  emphasizedFont = [(STUIStatusBarStyleAttributes *)self emphasizedFont];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_10;
   v62[3] = &unk_279D39320;
   v36 = v33;
   v63 = v36;
-  v37 = [v5 appendObject:v35 counterpart:v62];
+  v37 = [v5 appendObject:emphasizedFont counterpart:v62];
 
-  v38 = [(STUIStatusBarStyleAttributes *)self smallFont];
+  smallFont = [(STUIStatusBarStyleAttributes *)self smallFont];
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_11;
   v60[3] = &unk_279D39320;
   v39 = v36;
   v61 = v39;
-  v40 = [v5 appendObject:v38 counterpart:v60];
+  v40 = [v5 appendObject:smallFont counterpart:v60];
 
-  v41 = [(STUIStatusBarStyleAttributes *)self imageTintColor];
+  imageTintColor = [(STUIStatusBarStyleAttributes *)self imageTintColor];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_12;
   v58[3] = &unk_279D39320;
   v42 = v39;
   v59 = v42;
-  v43 = [v5 appendObject:v41 counterpart:v58];
+  v43 = [v5 appendObject:imageTintColor counterpart:v58];
 
-  v44 = [(STUIStatusBarStyleAttributes *)self imageDimmedTintColor];
+  imageDimmedTintColor = [(STUIStatusBarStyleAttributes *)self imageDimmedTintColor];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_13;
   v56[3] = &unk_279D39320;
   v45 = v42;
   v57 = v45;
-  v46 = [v5 appendObject:v44 counterpart:v56];
+  v46 = [v5 appendObject:imageDimmedTintColor counterpart:v56];
 
-  v47 = [(STUIStatusBarStyleAttributes *)self imageNamePrefixes];
+  imageNamePrefixes = [(STUIStatusBarStyleAttributes *)self imageNamePrefixes];
   v51 = MEMORY[0x277D85DD0];
   v52 = 3221225472;
   v53 = __40__STUIStatusBarStyleAttributes_isEqual___block_invoke_14;
   v54 = &unk_279D39320;
   v55 = v45;
   v48 = v45;
-  v49 = [v5 appendObject:v47 counterpart:&v51];
+  v49 = [v5 appendObject:imageNamePrefixes counterpart:&v51];
 
   LOBYTE(v45) = [v5 isEqual];
   return v45;
@@ -320,39 +320,39 @@
 - (unint64_t)hash
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:{-[STUIStatusBarStyleAttributes style](self, "style")}];
-  v5 = [v3 appendInteger:{-[STUIStatusBarStyleAttributes mode](self, "mode")}];
-  v6 = [(STUIStatusBarStyleAttributes *)self traitCollection];
-  v7 = [v3 appendObject:v6];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:{-[STUIStatusBarStyleAttributes style](self, "style")}];
+  v5 = [builder appendInteger:{-[STUIStatusBarStyleAttributes mode](self, "mode")}];
+  traitCollection = [(STUIStatusBarStyleAttributes *)self traitCollection];
+  v7 = [builder appendObject:traitCollection];
 
-  v8 = [v3 appendInteger:{-[STUIStatusBarStyleAttributes effectiveLayoutDirection](self, "effectiveLayoutDirection")}];
+  v8 = [builder appendInteger:{-[STUIStatusBarStyleAttributes effectiveLayoutDirection](self, "effectiveLayoutDirection")}];
   [(STUIStatusBarStyleAttributes *)self iconScale];
-  v9 = [v3 appendCGFloat:?];
-  v10 = [v3 appendInteger:{-[STUIStatusBarStyleAttributes iconSize](self, "iconSize")}];
-  v11 = [v3 appendInteger:{-[STUIStatusBarStyleAttributes symbolScale](self, "symbolScale")}];
-  v12 = [v3 appendBool:{-[STUIStatusBarStyleAttributes isScaledFixedWidthBar](self, "isScaledFixedWidthBar")}];
-  v13 = [(STUIStatusBarStyleAttributes *)self font];
-  v14 = [v3 appendObject:v13];
+  v9 = [builder appendCGFloat:?];
+  v10 = [builder appendInteger:{-[STUIStatusBarStyleAttributes iconSize](self, "iconSize")}];
+  v11 = [builder appendInteger:{-[STUIStatusBarStyleAttributes symbolScale](self, "symbolScale")}];
+  v12 = [builder appendBool:{-[STUIStatusBarStyleAttributes isScaledFixedWidthBar](self, "isScaledFixedWidthBar")}];
+  font = [(STUIStatusBarStyleAttributes *)self font];
+  v14 = [builder appendObject:font];
 
-  v15 = [(STUIStatusBarStyleAttributes *)self emphasizedFont];
-  v16 = [v3 appendObject:v15];
+  emphasizedFont = [(STUIStatusBarStyleAttributes *)self emphasizedFont];
+  v16 = [builder appendObject:emphasizedFont];
 
-  v17 = [(STUIStatusBarStyleAttributes *)self smallFont];
-  v18 = [v3 appendObject:v17];
+  smallFont = [(STUIStatusBarStyleAttributes *)self smallFont];
+  v18 = [builder appendObject:smallFont];
 
-  v19 = [(STUIStatusBarStyleAttributes *)self imageTintColor];
-  v20 = [v3 appendObject:v19];
+  imageTintColor = [(STUIStatusBarStyleAttributes *)self imageTintColor];
+  v20 = [builder appendObject:imageTintColor];
 
-  v21 = [(STUIStatusBarStyleAttributes *)self imageDimmedTintColor];
-  v22 = [v3 appendObject:v21];
+  imageDimmedTintColor = [(STUIStatusBarStyleAttributes *)self imageDimmedTintColor];
+  v22 = [builder appendObject:imageDimmedTintColor];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v23 = [(STUIStatusBarStyleAttributes *)self imageNamePrefixes];
-  v24 = [v23 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  imageNamePrefixes = [(STUIStatusBarStyleAttributes *)self imageNamePrefixes];
+  v24 = [imageNamePrefixes countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v24)
   {
     v25 = v24;
@@ -364,135 +364,135 @@
       {
         if (*v32 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(imageNamePrefixes);
         }
 
-        v28 = [v3 appendString:*(*(&v31 + 1) + 8 * v27++)];
+        v28 = [builder appendString:*(*(&v31 + 1) + 8 * v27++)];
       }
 
       while (v25 != v27);
-      v25 = [v23 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v25 = [imageNamePrefixes countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v25);
   }
 
-  v29 = [v3 hash];
+  v29 = [builder hash];
   return v29;
 }
 
-- (STUIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)a3
+- (STUIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)overrides
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || v4 == self)
+  overridesCopy = overrides;
+  v5 = overridesCopy;
+  if (!overridesCopy || overridesCopy == self)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(STUIStatusBarStyleAttributes *)self copy];
+    selfCopy = [(STUIStatusBarStyleAttributes *)self copy];
     [(STUIStatusBarStyleAttributes *)v5 iconScale];
     if (v7 > 0.0)
     {
       [(STUIStatusBarStyleAttributes *)v5 iconScale];
-      [(STUIStatusBarStyleAttributes *)v6 setIconScale:?];
+      [(STUIStatusBarStyleAttributes *)selfCopy setIconScale:?];
     }
 
     if ([(STUIStatusBarStyleAttributes *)v5 iconSize])
     {
-      [(STUIStatusBarStyleAttributes *)v6 setIconSize:[(STUIStatusBarStyleAttributes *)v5 iconSize]];
+      [(STUIStatusBarStyleAttributes *)selfCopy setIconSize:[(STUIStatusBarStyleAttributes *)v5 iconSize]];
     }
 
     if ([(STUIStatusBarStyleAttributes *)v5 symbolScale])
     {
-      [(STUIStatusBarStyleAttributes *)v6 setSymbolScale:[(STUIStatusBarStyleAttributes *)v5 symbolScale]];
+      [(STUIStatusBarStyleAttributes *)selfCopy setSymbolScale:[(STUIStatusBarStyleAttributes *)v5 symbolScale]];
     }
 
-    v8 = [(STUIStatusBarStyleAttributes *)v5 font];
+    font = [(STUIStatusBarStyleAttributes *)v5 font];
 
-    if (v8)
+    if (font)
     {
-      v9 = [(STUIStatusBarStyleAttributes *)v5 font];
-      [(STUIStatusBarStyleAttributes *)v6 setFont:v9];
+      font2 = [(STUIStatusBarStyleAttributes *)v5 font];
+      [(STUIStatusBarStyleAttributes *)selfCopy setFont:font2];
     }
 
-    v10 = [(STUIStatusBarStyleAttributes *)v5 emphasizedFont];
+    emphasizedFont = [(STUIStatusBarStyleAttributes *)v5 emphasizedFont];
 
-    if (v10)
+    if (emphasizedFont)
     {
-      v11 = [(STUIStatusBarStyleAttributes *)v5 emphasizedFont];
-      [(STUIStatusBarStyleAttributes *)v6 setEmphasizedFont:v11];
+      emphasizedFont2 = [(STUIStatusBarStyleAttributes *)v5 emphasizedFont];
+      [(STUIStatusBarStyleAttributes *)selfCopy setEmphasizedFont:emphasizedFont2];
     }
 
-    v12 = [(STUIStatusBarStyleAttributes *)v5 smallFont];
+    smallFont = [(STUIStatusBarStyleAttributes *)v5 smallFont];
 
-    if (v12)
+    if (smallFont)
     {
-      v13 = [(STUIStatusBarStyleAttributes *)v5 smallFont];
-      [(STUIStatusBarStyleAttributes *)v6 setSmallFont:v13];
+      smallFont2 = [(STUIStatusBarStyleAttributes *)v5 smallFont];
+      [(STUIStatusBarStyleAttributes *)selfCopy setSmallFont:smallFont2];
     }
 
-    v14 = [(STUIStatusBarStyleAttributes *)v5 textColor];
+    textColor = [(STUIStatusBarStyleAttributes *)v5 textColor];
 
-    if (v14)
+    if (textColor)
     {
-      v15 = [(STUIStatusBarStyleAttributes *)v5 textColor];
-      [(STUIStatusBarStyleAttributes *)v6 setTextColor:v15];
+      textColor2 = [(STUIStatusBarStyleAttributes *)v5 textColor];
+      [(STUIStatusBarStyleAttributes *)selfCopy setTextColor:textColor2];
     }
 
-    v16 = [(STUIStatusBarStyleAttributes *)v5 imageTintColor];
+    imageTintColor = [(STUIStatusBarStyleAttributes *)v5 imageTintColor];
 
-    if (v16)
+    if (imageTintColor)
     {
-      v17 = [(STUIStatusBarStyleAttributes *)v5 imageTintColor];
-      [(STUIStatusBarStyleAttributes *)v6 setImageTintColor:v17];
+      imageTintColor2 = [(STUIStatusBarStyleAttributes *)v5 imageTintColor];
+      [(STUIStatusBarStyleAttributes *)selfCopy setImageTintColor:imageTintColor2];
     }
 
-    v18 = [(STUIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
+    imageDimmedTintColor = [(STUIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
 
-    if (v18)
+    if (imageDimmedTintColor)
     {
-      v19 = [(STUIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
-      [(STUIStatusBarStyleAttributes *)v6 setImageDimmedTintColor:v19];
+      imageDimmedTintColor2 = [(STUIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
+      [(STUIStatusBarStyleAttributes *)selfCopy setImageDimmedTintColor:imageDimmedTintColor2];
     }
 
-    v20 = [(STUIStatusBarStyleAttributes *)v5 imageNamePrefixes];
+    imageNamePrefixes = [(STUIStatusBarStyleAttributes *)v5 imageNamePrefixes];
 
-    if (v20)
+    if (imageNamePrefixes)
     {
-      v21 = [(STUIStatusBarStyleAttributes *)v5 imageNamePrefixes];
-      [(STUIStatusBarStyleAttributes *)v6 setImageNamePrefixes:v21];
+      imageNamePrefixes2 = [(STUIStatusBarStyleAttributes *)v5 imageNamePrefixes];
+      [(STUIStatusBarStyleAttributes *)selfCopy setImageNamePrefixes:imageNamePrefixes2];
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)fontForStyle:(int64_t)a3
+- (id)fontForStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    v3 = [(STUIStatusBarStyleAttributes *)self smallFont];
+    smallFont = [(STUIStatusBarStyleAttributes *)self smallFont];
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
-    v3 = [(STUIStatusBarStyleAttributes *)self emphasizedFont];
+    smallFont = [(STUIStatusBarStyleAttributes *)self emphasizedFont];
   }
 
   else
   {
-    if (a3)
+    if (style)
     {
       goto LABEL_8;
     }
 
-    v3 = [(STUIStatusBarStyleAttributes *)self font];
+    smallFont = [(STUIStatusBarStyleAttributes *)self font];
   }
 
-  a2 = v3;
+  a2 = smallFont;
 LABEL_8:
 
   return a2;
@@ -500,45 +500,45 @@ LABEL_8:
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarStyleAttributes *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarStyleAttributes *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarStyleAttributes *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarStyleAttributes *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarStyleAttributes *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarStyleAttributes *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STUIStatusBarStyleAttributes *)self succinctDescriptionBuilder];
-  [v7 setUseDebugDescription:v4];
-  [v7 setActiveMultilinePrefix:v6];
+  debugCopy = debug;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STUIStatusBarStyleAttributes *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-  v8 = [v7 activeMultilinePrefix];
+  activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__STUIStatusBarStyleAttributes__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
   v12[3] = &unk_279D38150;
-  v9 = v7;
+  v9 = succinctDescriptionBuilder;
   v13 = v9;
-  v14 = self;
-  [v9 appendBodySectionWithName:0 multilinePrefix:v8 block:v12];
+  selfCopy = self;
+  [v9 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v12];
 
   v10 = v9;
   return v9;

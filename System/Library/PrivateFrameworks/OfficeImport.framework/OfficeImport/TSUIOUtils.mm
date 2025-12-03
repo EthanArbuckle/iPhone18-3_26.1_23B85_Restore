@@ -1,17 +1,17 @@
 @interface TSUIOUtils
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3;
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3;
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6;
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream;
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel;
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion;
 @end
 
 @implementation TSUIOUtils
 
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (!v9)
+  channelCopy = channel;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!channelCopy)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUIOUtils readAllFromChannel:offset:length:completion:]"];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUIOUtils.m"];
@@ -32,7 +32,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -53,7 +53,7 @@ LABEL_3:
   v21 = v22;
   v14 = v11;
   v20 = v14;
-  [v9 readFromOffset:a4 length:a5 handler:v19];
+  [channelCopy readFromOffset:offset length:length handler:v19];
 
   _Block_object_dispose(v22, 8);
 }
@@ -95,33 +95,33 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     return 0;
   }
 
-  v3 = a3;
-  CFRetain(v3);
-  Sequential = CGDataProviderCreateSequential(v3, &TSUIOUtilsCGDataProviderCallbacks);
+  streamCopy = stream;
+  CFRetain(streamCopy);
+  Sequential = CGDataProviderCreateSequential(streamCopy, &TSUIOUtilsCGDataProviderCallbacks);
 
   return Sequential;
 }
 
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel
 {
-  if (!a3)
+  if (!channel)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [[TSUReadChannelInputStreamAdapter alloc] initWithReadChannel:v4];
+  channelCopy = channel;
+  v5 = [[TSUReadChannelInputStreamAdapter alloc] initWithReadChannel:channelCopy];
 
   if ([(TSUReadChannelInputStreamAdapter *)v5 canSeek])
   {
-    v6 = [a1 newCGDataProviderForInputStream:v5];
+    v6 = [self newCGDataProviderForInputStream:v5];
   }
 
   else

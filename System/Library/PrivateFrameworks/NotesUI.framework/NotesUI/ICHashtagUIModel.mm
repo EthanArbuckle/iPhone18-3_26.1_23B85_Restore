@@ -10,29 +10,29 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(ICInlineAttachmentUIModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICInlineAttachmentUIModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __30__ICHashtagUIModel_labelColor__block_invoke;
   v9[3] = &unk_1E846B1D8;
   v9[4] = self;
   v9[5] = &v10;
-  [v4 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   if (*(v11 + 24) == 1)
   {
     v8.receiver = self;
     v8.super_class = ICHashtagUIModel;
-    v5 = [(ICInlineAttachmentUIModel *)&v8 labelColor];
+    labelColor = [(ICInlineAttachmentUIModel *)&v8 labelColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] ICHashtagColor];
+    labelColor = [MEMORY[0x1E69DC888] ICHashtagColor];
   }
 
-  v6 = v5;
+  v6 = labelColor;
   _Block_object_dispose(&v10, 8);
 
   return v6;

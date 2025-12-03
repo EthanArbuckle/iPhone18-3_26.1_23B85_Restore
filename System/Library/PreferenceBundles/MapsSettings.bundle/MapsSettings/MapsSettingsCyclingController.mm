@@ -1,9 +1,9 @@
 @interface MapsSettingsCyclingController
-- (id)_avoidBusyRoads:(id)a3;
-- (id)_avoidHills:(id)a3;
-- (id)_useEbike:(id)a3;
+- (id)_avoidBusyRoads:(id)roads;
+- (id)_avoidHills:(id)hills;
+- (id)_useEbike:(id)ebike;
 - (id)specifiers;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -20,11 +20,11 @@
   [(MapsSettingsCyclingController *)self setTitle:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MapsSettingsCyclingController;
-  [(MapsSettingsCyclingController *)&v9 viewDidAppear:a3];
+  [(MapsSettingsCyclingController *)&v9 viewDidAppear:appear];
   v4 = MapsSettingsCyclingTitle();
   v5 = AppsSettingsTitle();
   v10[0] = v5;
@@ -39,8 +39,8 @@
 {
   v3 = +[NSMutableArray array];
   v4 = +[GEOCountryConfiguration sharedConfiguration];
-  v5 = [v4 countryCode];
-  v6 = [v5 isEqualToString:@"CN"];
+  countryCode = [v4 countryCode];
+  v6 = [countryCode isEqualToString:@"CN"];
 
   v7 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
   v8 = v7;
@@ -90,7 +90,7 @@
   return v3;
 }
 
-- (id)_avoidHills:(id)a3
+- (id)_avoidHills:(id)hills
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultAvoidHillsKey"];
   if (!v3)
@@ -101,7 +101,7 @@
   return v3;
 }
 
-- (id)_avoidBusyRoads:(id)a3
+- (id)_avoidBusyRoads:(id)roads
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultAvoidBusyRoadsKey"];
   if (!v3)
@@ -112,7 +112,7 @@
   return v3;
 }
 
-- (id)_useEbike:(id)a3
+- (id)_useEbike:(id)ebike
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultUseEbikeKey"];
   if (!v3)

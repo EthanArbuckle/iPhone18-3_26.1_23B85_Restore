@@ -2,7 +2,7 @@
 - (HKDataMetadataWorkoutRouteCell)init;
 - (HKDataMetadataWorkoutRouteCellDelegate)delegate;
 - (void)_handleDidUpdateTraitCollection;
-- (void)setRouteImage:(id)a3;
+- (void)setRouteImage:(id)image;
 - (void)setupConstraints;
 @end
 
@@ -27,11 +27,11 @@
 
     [(UIActivityIndicatorView *)v2->_activityIndicator startAnimating];
     [(UIActivityIndicatorView *)v2->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(HKDataMetadataWorkoutRouteCell *)v2 contentView];
-    [v7 addSubview:v2->_routeImageView];
+    contentView = [(HKDataMetadataWorkoutRouteCell *)v2 contentView];
+    [contentView addSubview:v2->_routeImageView];
 
-    v8 = [(HKDataMetadataWorkoutRouteCell *)v2 contentView];
-    [v8 addSubview:v2->_activityIndicator];
+    contentView2 = [(HKDataMetadataWorkoutRouteCell *)v2 contentView];
+    [contentView2 addSubview:v2->_activityIndicator];
 
     [(HKDataMetadataWorkoutRouteCell *)v2 setupConstraints];
     v13[0] = objc_opt_class();
@@ -44,47 +44,47 @@
 
 - (void)setupConstraints
 {
-  v3 = [(UIImageView *)self->_routeImageView topAnchor];
-  v4 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  topAnchor = [(UIImageView *)self->_routeImageView topAnchor];
+  contentView = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v6 setActive:1];
 
-  v7 = [(UIImageView *)self->_routeImageView leftAnchor];
-  v8 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v9 = [v8 leftAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  leftAnchor = [(UIImageView *)self->_routeImageView leftAnchor];
+  contentView2 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  leftAnchor2 = [contentView2 leftAnchor];
+  v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v10 setActive:1];
 
-  v11 = [(UIImageView *)self->_routeImageView bottomAnchor];
-  v12 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [(UIImageView *)self->_routeImageView bottomAnchor];
+  contentView3 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v14 setActive:1];
 
-  v15 = [(UIImageView *)self->_routeImageView rightAnchor];
-  v16 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v17 = [v16 rightAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  rightAnchor = [(UIImageView *)self->_routeImageView rightAnchor];
+  contentView4 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  rightAnchor2 = [contentView4 rightAnchor];
+  v18 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v18 setActive:1];
 
-  v19 = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
-  v20 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v21 = [v20 centerXAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
+  contentView5 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  centerXAnchor2 = [contentView5 centerXAnchor];
+  v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v22 setActive:1];
 
-  v23 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
-  v24 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v25 = [v24 centerYAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
+  contentView6 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  centerYAnchor2 = [contentView6 centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v26 setActive:1];
 
-  v27 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v28 = [v27 heightAnchor];
-  v29 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
-  v30 = [v29 widthAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 multiplier:0.66];
+  contentView7 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  heightAnchor = [contentView7 heightAnchor];
+  contentView8 = [(HKDataMetadataWorkoutRouteCell *)self contentView];
+  widthAnchor = [contentView8 widthAnchor];
+  v31 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:0.66];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v31;
 
@@ -93,27 +93,27 @@
   [(NSLayoutConstraint *)v33 setActive:1];
 }
 
-- (void)setRouteImage:(id)a3
+- (void)setRouteImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v4 = a3;
-    v5 = [(HKDataMetadataWorkoutRouteCell *)self activityIndicator];
-    [v5 stopAnimating];
+    imageCopy = image;
+    activityIndicator = [(HKDataMetadataWorkoutRouteCell *)self activityIndicator];
+    [activityIndicator stopAnimating];
 
-    v6 = [(HKDataMetadataWorkoutRouteCell *)self routeImageView];
-    [v6 setImage:v4];
+    routeImageView = [(HKDataMetadataWorkoutRouteCell *)self routeImageView];
+    [routeImageView setImage:imageCopy];
 
-    v7 = [(HKDataMetadataWorkoutRouteCell *)self routeImageView];
-    [v7 setContentMode:2];
+    routeImageView2 = [(HKDataMetadataWorkoutRouteCell *)self routeImageView];
+    [routeImageView2 setContentMode:2];
   }
 }
 
 - (void)_handleDidUpdateTraitCollection
 {
-  v4 = [(HKDataMetadataWorkoutRouteCell *)self delegate];
-  v3 = [(HKDataMetadataWorkoutRouteCell *)self traitCollection];
-  [v4 workoutRouteCell:self didUpdateTraitCollection:v3];
+  delegate = [(HKDataMetadataWorkoutRouteCell *)self delegate];
+  traitCollection = [(HKDataMetadataWorkoutRouteCell *)self traitCollection];
+  [delegate workoutRouteCell:self didUpdateTraitCollection:traitCollection];
 }
 
 - (HKDataMetadataWorkoutRouteCellDelegate)delegate

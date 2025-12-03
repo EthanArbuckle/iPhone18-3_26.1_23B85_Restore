@@ -1,5 +1,5 @@
 @interface VSOccasionalTimesObserver
-- (VSOccasionalTimesObserver)initWithTimebase:(OpaqueCMTimebase *)a3 times:(id)a4 queue:(id)a5 block:(id)a6;
+- (VSOccasionalTimesObserver)initWithTimebase:(OpaqueCMTimebase *)timebase times:(id)times queue:(id)queue block:(id)block;
 - (void)_reallyInvalidate;
 - (void)_resetNextFireTime;
 - (void)dealloc;
@@ -139,24 +139,24 @@ LABEL_22:
   [(VSOccasionalTimesObserver *)&v5 dealloc];
 }
 
-- (VSOccasionalTimesObserver)initWithTimebase:(OpaqueCMTimebase *)a3 times:(id)a4 queue:(id)a5 block:(id)a6
+- (VSOccasionalTimesObserver)initWithTimebase:(OpaqueCMTimebase *)timebase times:(id)times queue:(id)queue block:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  timesCopy = times;
+  queueCopy = queue;
+  blockCopy = block;
   v32.receiver = self;
   v32.super_class = VSOccasionalTimesObserver;
   v13 = [(VSOccasionalTimesObserver *)&v32 init];
   if (v13)
   {
-    *(v13 + 9) = CFRetain(a3);
-    v14 = [v10 sortedArrayUsingComparator:&__block_literal_global_1366];
+    *(v13 + 9) = CFRetain(timebase);
+    v14 = [timesCopy sortedArrayUsingComparator:&__block_literal_global_1366];
     v15 = *(v13 + 4);
     *(v13 + 4) = v14;
 
-    if (v11)
+    if (queueCopy)
     {
-      v16 = v11;
+      v16 = queueCopy;
       v17 = *(v13 + 1);
       *(v13 + 1) = v16;
     }
@@ -169,7 +169,7 @@ LABEL_22:
       *(v13 + 1) = v18;
     }
 
-    v20 = [v12 copy];
+    v20 = [blockCopy copy];
     v21 = *(v13 + 8);
     *(v13 + 8) = v20;
 

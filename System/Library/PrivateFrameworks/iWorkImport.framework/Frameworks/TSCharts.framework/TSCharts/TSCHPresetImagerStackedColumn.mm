@@ -1,15 +1,15 @@
 @interface TSCHPresetImagerStackedColumn
-- (CGRect)p_stackRectWithRects:(CGRect *)a3 atIndex:(unint64_t)a4;
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (CGRect)p_stackRectWithRects:(CGRect *)rects atIndex:(unint64_t)index;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerStackedColumn
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  width = a4.width;
+  width = size.width;
   v119 = *MEMORY[0x277D85DE8];
-  v97 = a6;
+  presetCopy = preset;
   objc_msgSend_p_nativeSize(self, v11, v12, v13, v14);
   v16 = width / v15;
   v114[0] = sub_27628CE94(11.0, 9.0, 25.0, 34.0, v16);
@@ -28,7 +28,7 @@
   v116 = v26;
   v117 = v27;
   v118 = v28;
-  v30 = objc_msgSend_seriesStyles(v97, v29, v115, v26, v27);
+  v30 = objc_msgSend_seriesStyles(presetCopy, v29, v115, v26, v27);
   v35 = objc_msgSend_objectAtIndexedSubscript_(v30, v31, v32, v33, v34, 0);
   if (objc_msgSend_count(v30, v36, v37, v38, v39) <= 1)
   {
@@ -58,7 +58,7 @@
     v106[2] = sub_276319600;
     v106[3] = &unk_27A6B99C8;
     v106[4] = self;
-    v109 = a3;
+    contextCopy = context;
     v110 = v61;
     v111 = v62;
     v112 = v63;
@@ -67,7 +67,7 @@
     v107 = v65;
     v66 = v54;
     v108 = v66;
-    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v67, v61, v62, v63, a3, v97, v65, 1, v106, v64 * 0.5, v61, v62, v63, v64);
+    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v67, v61, v62, v63, context, presetCopy, v65, 1, v106, v64 * 0.5, v61, v62, v63, v64);
 
     v59 += 4;
   }
@@ -96,7 +96,7 @@
     v98[2] = sub_276319618;
     v98[3] = &unk_27A6B99C8;
     v98[4] = self;
-    v101 = a3;
+    contextCopy2 = context;
     v102 = v85;
     v103 = v86 + v88 * 0.5;
     v104 = v87;
@@ -105,22 +105,22 @@
     v99 = v89;
     v90 = v78;
     v100 = v90;
-    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v91, v85, v86 + v88 * 0.5, v87, a3, v97, v89, 1, v98, v88 * 0.5, v85, v86, v87, v88);
+    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v91, v85, v86 + v88 * 0.5, v87, context, presetCopy, v89, 1, v98, v88 * 0.5, v85, v86, v87, v88);
 
     v83 += 4;
   }
 
   while (v83 != 16);
 
-  if (a8)
+  if (cache)
   {
-    *a8 = v93;
+    *cache = v93;
   }
 }
 
-- (CGRect)p_stackRectWithRects:(CGRect *)a3 atIndex:(unint64_t)a4
+- (CGRect)p_stackRectWithRects:(CGRect *)rects atIndex:(unint64_t)index
 {
-  v4 = &a3[a4];
+  v4 = &rects[index];
   x = v4->origin.x;
   y = v4->origin.y;
   width = v4->size.width;

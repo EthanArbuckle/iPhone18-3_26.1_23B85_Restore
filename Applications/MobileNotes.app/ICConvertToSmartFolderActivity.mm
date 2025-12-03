@@ -1,29 +1,29 @@
 @interface ICConvertToSmartFolderActivity
-- (ICConvertToSmartFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 sender:(id)a6;
+- (ICConvertToSmartFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item sender:(id)sender;
 - (NSAttributedString)footerAttributedString;
 - (UICollectionViewCell)folderCell;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICConvertToSmartFolderActivity
 
-- (ICConvertToSmartFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 sender:(id)a6
+- (ICConvertToSmartFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item sender:(id)sender
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  folderCopy = folder;
+  controllerCopy = controller;
+  itemCopy = item;
+  senderCopy = sender;
   v18.receiver = self;
   v18.super_class = ICConvertToSmartFolderActivity;
   v15 = [(ICConvertToSmartFolderActivity *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_folder, a3);
-    objc_storeStrong(&v16->_presentingViewController, a4);
-    objc_storeStrong(&v16->_presentingBarButtonItem, a5);
-    objc_storeStrong(&v16->_sender, a6);
+    objc_storeStrong(&v15->_folder, folder);
+    objc_storeStrong(&v16->_presentingViewController, controller);
+    objc_storeStrong(&v16->_presentingBarButtonItem, item);
+    objc_storeStrong(&v16->_sender, sender);
   }
 
   return v16;
@@ -63,38 +63,38 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICConvertToSmartFolderActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICConvertToSmartFolderActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v6 = [ICConvertToSmartFolderDecisionController alloc];
-    v7 = [(ICConvertToSmartFolderActivity *)self folder];
-    v8 = [(ICConvertToSmartFolderActivity *)self presentingViewController];
-    v9 = [(ICConvertToSmartFolderDecisionController *)v6 initWithSourceFolder:v7 presentingViewController:v8];
+    folder = [(ICConvertToSmartFolderActivity *)self folder];
+    presentingViewController2 = [(ICConvertToSmartFolderActivity *)self presentingViewController];
+    v9 = [(ICConvertToSmartFolderDecisionController *)v6 initWithSourceFolder:folder presentingViewController:presentingViewController2];
 
-    v10 = [(ICConvertToSmartFolderActivity *)self presentingViewController];
-    v11 = [v10 ic_viewControllerManager];
+    presentingViewController3 = [(ICConvertToSmartFolderActivity *)self presentingViewController];
+    ic_viewControllerManager = [presentingViewController3 ic_viewControllerManager];
 
-    v12 = [v11 folderListViewController];
-    v13 = [(ICConvertToSmartFolderActivity *)self folderCell];
-    [(ICConvertToSmartFolderDecisionController *)v9 setFolderSourceView:v13];
+    folderListViewController = [ic_viewControllerManager folderListViewController];
+    folderCell = [(ICConvertToSmartFolderActivity *)self folderCell];
+    [(ICConvertToSmartFolderDecisionController *)v9 setFolderSourceView:folderCell];
 
-    v14 = [(ICConvertToSmartFolderActivity *)self presentingBarButtonItem];
-    [(ICConvertToSmartFolderDecisionController *)v9 setPresentingBarButtonItem:v14];
+    presentingBarButtonItem = [(ICConvertToSmartFolderActivity *)self presentingBarButtonItem];
+    [(ICConvertToSmartFolderDecisionController *)v9 setPresentingBarButtonItem:presentingBarButtonItem];
 
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = sub_1000F9518;
     v20 = &unk_100649E68;
-    v21 = v12;
-    v22 = v11;
-    v23 = self;
-    v24 = v4;
-    v15 = v11;
-    v16 = v12;
+    v21 = folderListViewController;
+    v22 = ic_viewControllerManager;
+    selfCopy = self;
+    v24 = completionCopy;
+    v15 = ic_viewControllerManager;
+    v16 = folderListViewController;
     [(ICConvertToSmartFolderDecisionController *)v9 performDecisionWithCompletion:&v17];
   }
 
@@ -103,21 +103,21 @@
 
 - (UICollectionViewCell)folderCell
 {
-  v3 = [(ICConvertToSmartFolderActivity *)self presentingViewController];
-  v4 = [v3 ic_viewControllerManager];
+  presentingViewController = [(ICConvertToSmartFolderActivity *)self presentingViewController];
+  ic_viewControllerManager = [presentingViewController ic_viewControllerManager];
 
-  if ([v4 isPrimaryContentVisible])
+  if ([ic_viewControllerManager isPrimaryContentVisible])
   {
-    v5 = [v4 folderListViewController];
-    v6 = [v5 dataSource];
-    v7 = [v6 collectionViewDiffableDataSource];
+    folderListViewController = [ic_viewControllerManager folderListViewController];
+    dataSource = [folderListViewController dataSource];
+    collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
 
-    v8 = [(ICConvertToSmartFolderActivity *)self folder];
-    v9 = [v8 objectID];
+    folder = [(ICConvertToSmartFolderActivity *)self folder];
+    objectID = [folder objectID];
 
-    v10 = [v7 indexPathForItemIdentifier:v9];
-    v11 = [v5 collectionView];
-    v12 = [v11 cellForItemAtIndexPath:v10];
+    v10 = [collectionViewDiffableDataSource indexPathForItemIdentifier:objectID];
+    collectionView = [folderListViewController collectionView];
+    v12 = [collectionView cellForItemAtIndexPath:v10];
   }
 
   else

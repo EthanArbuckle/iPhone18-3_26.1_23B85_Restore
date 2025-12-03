@@ -1,10 +1,10 @@
 @interface HMDHomeNaturalLightingCurveWriter
 + (id)logCategory;
 - (HMDHome)home;
-- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)a3;
-- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)a3 dataSource:(id)a4;
+- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)home;
+- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)home dataSource:(id)source;
 - (NSString)logIdentifier;
-- (void)setNaturalLightingEnabled:(BOOL)a3 forLightProfiles:(id)a4 completion:(id)a5;
+- (void)setNaturalLightingEnabled:(BOOL)enabled forLightProfiles:(id)profiles completion:(id)completion;
 @end
 
 @implementation HMDHomeNaturalLightingCurveWriter
@@ -18,20 +18,20 @@
 
 - (NSString)logIdentifier
 {
-  v2 = [(HMDHomeNaturalLightingCurveWriter *)self home];
-  v3 = [v2 name];
+  home = [(HMDHomeNaturalLightingCurveWriter *)self home];
+  name = [home name];
 
-  return v3;
+  return name;
 }
 
-- (void)setNaturalLightingEnabled:(BOOL)a3 forLightProfiles:(id)a4 completion:(id)a5
+- (void)setNaturalLightingEnabled:(BOOL)enabled forLightProfiles:(id)profiles completion:(id)completion
 {
-  v52 = a3;
+  enabledCopy = enabled;
   v78 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v49 = a5;
+  profilesCopy = profiles;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -42,18 +42,18 @@
     v74 = 2112;
     v75 = v12;
     v76 = 2112;
-    v77 = v7;
+    v77 = profilesCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Setting natural lighting enabled for light profiles %@:%@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v50 = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
-  v51 = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
+  mapTableWithWeakToStrongObjects = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
+  mapTableWithWeakToStrongObjects2 = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v13 = v7;
+  v13 = profilesCopy;
   v14 = [v13 countByEnumeratingWithState:&v66 objects:v71 count:16];
   if (v14)
   {
@@ -70,20 +70,20 @@
         }
 
         v19 = *(*(&v66 + 1) + 8 * i);
-        v20 = [(HMDHomeNaturalLightingCurveWriter *)v9 dataSource];
-        v21 = [v20 date];
-        v22 = [(HMDHomeNaturalLightingCurveWriter *)v9 dataSource];
-        v23 = [HMDCharacteristicWriteRequest writeRequestForTransitionStartWithLightProfile:v19 naturalLightingEnabled:v52 startDate:v21 type:0 dataSource:v22];
+        dataSource = [(HMDHomeNaturalLightingCurveWriter *)selfCopy dataSource];
+        date = [dataSource date];
+        dataSource2 = [(HMDHomeNaturalLightingCurveWriter *)selfCopy dataSource];
+        v23 = [HMDCharacteristicWriteRequest writeRequestForTransitionStartWithLightProfile:v19 naturalLightingEnabled:enabledCopy startDate:date type:0 dataSource:dataSource2];
 
         if (v23)
         {
-          [v51 setObject:v23 forKey:v19];
+          [mapTableWithWeakToStrongObjects2 setObject:v23 forKey:v19];
         }
 
         else
         {
           v24 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-          [v50 setObject:v24 forKey:v19];
+          [mapTableWithWeakToStrongObjects setObject:v24 forKey:v19];
         }
       }
 
@@ -94,15 +94,15 @@
     while (v15);
   }
 
-  v25 = v51;
-  if ([v51 count])
+  v25 = mapTableWithWeakToStrongObjects2;
+  if ([mapTableWithWeakToStrongObjects2 count])
   {
     v26 = [MEMORY[0x277CBEB58] set];
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v27 = v51;
+    v27 = mapTableWithWeakToStrongObjects2;
     v28 = [v27 countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (v28)
     {
@@ -131,55 +131,55 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __91__HMDHomeNaturalLightingCurveWriter_setNaturalLightingEnabled_forLightProfiles_completion___block_invoke;
     aBlock[3] = &unk_279727DB0;
-    aBlock[4] = v9;
+    aBlock[4] = selfCopy;
     v57 = v13;
-    v58 = v50;
-    v33 = v49;
-    v60 = v49;
+    v58 = mapTableWithWeakToStrongObjects;
+    v33 = completionCopy;
+    v60 = completionCopy;
     v59 = v27;
-    v61 = v52;
+    v61 = enabledCopy;
     v34 = _Block_copy(aBlock);
-    v35 = [(HMDHomeNaturalLightingCurveWriter *)v9 home];
-    v36 = [v26 allObjects];
-    v37 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
-    v38 = [v35 performWriteRequests:v36 withRetries:4 timeInterval:v9 loggingObject:v37 flow:5.0];
+    home = [(HMDHomeNaturalLightingCurveWriter *)selfCopy home];
+    allObjects = [v26 allObjects];
+    untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+    v38 = [home performWriteRequests:allObjects withRetries:4 timeInterval:selfCopy loggingObject:untrackedPlaceholderFlow flow:5.0];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __91__HMDHomeNaturalLightingCurveWriter_setNaturalLightingEnabled_forLightProfiles_completion___block_invoke_6;
     v53[3] = &unk_279727DD8;
-    v55 = v52;
-    v39 = v50;
-    v53[4] = v9;
+    v55 = enabledCopy;
+    v39 = mapTableWithWeakToStrongObjects;
+    v53[4] = selfCopy;
     v54 = v34;
     v40 = v13;
     v41 = v34;
     v42 = [v38 addCompletionBlock:v53];
 
-    v25 = v51;
+    v25 = mapTableWithWeakToStrongObjects2;
   }
 
   else
   {
     v43 = v13;
     v44 = objc_autoreleasePoolPush();
-    v45 = v9;
+    v45 = selfCopy;
     v46 = HMFGetOSLogHandle();
-    v39 = v50;
+    v39 = mapTableWithWeakToStrongObjects;
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
       v47 = HMFGetLogIdentifier();
       *buf = 138543874;
       v73 = v47;
       v74 = 2112;
-      v75 = v51;
+      v75 = mapTableWithWeakToStrongObjects2;
       v76 = 2112;
       v77 = v43;
       _os_log_impl(&dword_2531F8000, v46, OS_LOG_TYPE_ERROR, "%{public}@No characteristic write request for light profiles %@:%@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v44);
-    v33 = v49;
-    (*(v49 + 2))(v49, v50);
+    v33 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, mapTableWithWeakToStrongObjects);
     v40 = v43;
   }
 
@@ -329,27 +329,27 @@ void __91__HMDHomeNaturalLightingCurveWriter_setNaturalLightingEnabled_forLightP
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)a3
+- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_alloc_init(HMDLightProfileDataSource);
-  v6 = [(HMDHomeNaturalLightingCurveWriter *)self initWithHome:v4 dataSource:v5];
+  v6 = [(HMDHomeNaturalLightingCurveWriter *)self initWithHome:homeCopy dataSource:v5];
 
   return v6;
 }
 
-- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)a3 dataSource:(id)a4
+- (HMDHomeNaturalLightingCurveWriter)initWithHome:(id)home dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = HMDHomeNaturalLightingCurveWriter;
   v8 = [(HMDHomeNaturalLightingCurveWriter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_home, v6);
-    objc_storeStrong(&v9->_dataSource, a4);
+    objc_storeWeak(&v8->_home, homeCopy);
+    objc_storeStrong(&v9->_dataSource, source);
   }
 
   return v9;

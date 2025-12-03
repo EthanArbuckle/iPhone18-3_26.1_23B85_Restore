@@ -9,9 +9,9 @@
 {
   v6.receiver = self;
   v6.super_class = ApplePayBubbleViewAccessibility;
-  v2 = [(ApplePayBubbleViewAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(ApplePayBubbleViewAccessibility *)&v6 accessibilityLabel];
   v3 = accessibilityLocalizedString(@"APPLE_PAY");
-  v4 = [v2 stringByAppendingString:v3];
+  v4 = [accessibilityLabel stringByAppendingString:v3];
 
   return v4;
 }

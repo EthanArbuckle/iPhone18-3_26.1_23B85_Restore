@@ -1,9 +1,9 @@
 @interface CHStrokeGroupQuery
 - (NSArray)strokeGroupItems;
-- (id)q_strokeGroupItemsFromSessionResult:(id)a3;
-- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)a3 completion:(id)a4 shouldCancel:(id)a5;
-- (id)tokenizedStrokeResultForInitialStrokes:(id)a3 point:(CGPoint)a4 tokenizationLevel:(int64_t)a5;
-- (id)tokenizedStrokeResultForInitialStrokes:(id)a3 point:(CGPoint)a4 tokenizationLevel:(int64_t)a5 completion:(id)a6 shouldCancel:(id)a7;
+- (id)q_strokeGroupItemsFromSessionResult:(id)result;
+- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)stroke completion:(id)completion shouldCancel:(id)cancel;
+- (id)tokenizedStrokeResultForInitialStrokes:(id)strokes point:(CGPoint)point tokenizationLevel:(int64_t)level;
+- (id)tokenizedStrokeResultForInitialStrokes:(id)strokes point:(CGPoint)point tokenizationLevel:(int64_t)level completion:(id)completion shouldCancel:(id)cancel;
 - (void)q_updateQueryResult;
 @end
 
@@ -190,11 +190,11 @@ LABEL_33:
   }
 }
 
-- (id)q_strokeGroupItemsFromSessionResult:(id)a3
+- (id)q_strokeGroupItemsFromSessionResult:(id)result
 {
   v223 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v10 = objc_msgSend_strokeGroupingResult(v4, v5, v6, v7, v8, v9);
+  resultCopy = result;
+  v10 = objc_msgSend_strokeGroupingResult(resultCopy, v5, v6, v7, v8, v9);
   v11 = MEMORY[0x1E695DF70];
   v17 = objc_msgSend_strokeGroups(v10, v12, v13, v14, v15, v16);
   v23 = objc_msgSend_count(v17, v18, v19, v20, v21, v22);
@@ -204,7 +204,7 @@ LABEL_33:
   v221 = 0u;
   v218 = 0u;
   v219 = 0u;
-  v217 = self;
+  selfCopy = self;
   v33 = objc_msgSend_recognitionSession(self, v28, v29, v30, v31, v32);
   v39 = objc_msgSend_strokeGroupOrdering(v33, v34, v35, v36, v37, v38);
   v206 = v10;
@@ -216,7 +216,7 @@ LABEL_33:
   {
     v51 = *v219;
     v208 = *v219;
-    v209 = v4;
+    v209 = resultCopy;
     do
     {
       for (i = 0; i != v215; ++i)
@@ -230,10 +230,10 @@ LABEL_33:
         v54 = MEMORY[0x1E696AD98];
         v55 = objc_msgSend_uniqueIdentifier(v53, v46, v47, v48, v49, v50);
         v60 = objc_msgSend_numberWithInteger_(v54, v56, v55, v57, v58, v59);
-        v65 = objc_msgSend_objectForKeyedSubscript_(v217->_strokeGroupItemsByID, v61, v60, v62, v63, v64);
+        v65 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_strokeGroupItemsByID, v61, v60, v62, v63, v64);
         v71 = objc_msgSend_mathResult(v65, v66, v67, v68, v69, v70);
         v77 = objc_msgSend_uniqueIdentifier(v53, v72, v73, v74, v75, v76);
-        v82 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(v4, v78, v77, v79, v80, v81);
+        v82 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(resultCopy, v78, v77, v79, v80, v81);
         v88 = objc_msgSend_mathResult(v82, v83, v84, v85, v86, v87);
         isEqualToTokenizedMathResult = objc_msgSend_isEqualToTokenizedMathResult_(v71, v89, v88, v90, v91, v92);
 
@@ -243,7 +243,7 @@ LABEL_33:
         }
 
         v99 = objc_msgSend_uniqueIdentifier(v53, v94, v95, v96, v97, v98);
-        v104 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(v4, v100, v99, v101, v102, v103);
+        v104 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(resultCopy, v100, v99, v101, v102, v103);
         v110 = objc_msgSend_inputStrokeIdentifiers(v104, v105, v106, v107, v108, v109);
         v213 = objc_msgSend_recognitionResultsByLocale(v104, v111, v112, v113, v114, v115);
         v216 = objc_msgSend_errorsByLocale(v104, v116, v117, v118, v119, v120);
@@ -251,7 +251,7 @@ LABEL_33:
         v127 = objc_msgSend_ancestorIdentifier(v53, v122, v123, v124, v125, v126);
         v212 = objc_msgSend_numberWithInteger_(v121, v128, v127, v129, v130, v131);
         v137 = objc_msgSend_preferredLocale(v104, v132, v133, v134, v135, v136);
-        v143 = objc_msgSend_recognitionSession(v217, v138, v139, v140, v141, v142);
+        v143 = objc_msgSend_recognitionSession(selfCopy, v138, v139, v140, v141, v142);
         v149 = objc_msgSend_latestStrokeProvider(v143, v144, v145, v146, v147, v148);
         v214 = v110;
         v153 = objc_msgSend_strokeIdentifiersForData_withStrokeProvider_(CHStrokeUtilities, v150, v110, v149, v151, v152);
@@ -284,7 +284,7 @@ LABEL_33:
             v196 = sub_18369AE18(v194, v60, v212, v153, v186, 1, v137, v213, v193, v216);
 
             v65 = v193;
-            v4 = v209;
+            resultCopy = v209;
           }
 
           else
@@ -294,7 +294,7 @@ LABEL_33:
             v204 = v197;
             v195 = v212;
             v196 = sub_18369AE18(v204, v60, v212, v153, v203, 0, 0, MEMORY[0x1E695E0F8], 0, MEMORY[0x1E695E0F8]);
-            v4 = v209;
+            resultCopy = v209;
             v179 = v213;
           }
 
@@ -303,7 +303,7 @@ LABEL_33:
 
         else
         {
-          v4 = v209;
+          resultCopy = v209;
           v195 = v212;
           v179 = v213;
         }
@@ -325,11 +325,11 @@ LABEL_5:
   return v211;
 }
 
-- (id)tokenizedStrokeResultForInitialStrokes:(id)a3 point:(CGPoint)a4 tokenizationLevel:(int64_t)a5
+- (id)tokenizedStrokeResultForInitialStrokes:(id)strokes point:(CGPoint)point tokenizationLevel:(int64_t)level
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = point.y;
+  x = point.x;
+  strokesCopy = strokes;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -344,7 +344,7 @@ LABEL_5:
   v18 = &v19;
   v11 = v10;
   v17 = v11;
-  v13 = objc_msgSend_tokenizedStrokeResultForInitialStrokes_point_tokenizationLevel_completion_shouldCancel_(self, v12, v9, a5, v16, 0, x, y);
+  v13 = objc_msgSend_tokenizedStrokeResultForInitialStrokes_point_tokenizationLevel_completion_shouldCancel_(self, v12, strokesCopy, level, v16, 0, x, y);
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   v14 = v20[5];
 
@@ -353,13 +353,13 @@ LABEL_5:
   return v14;
 }
 
-- (id)tokenizedStrokeResultForInitialStrokes:(id)a3 point:(CGPoint)a4 tokenizationLevel:(int64_t)a5 completion:(id)a6 shouldCancel:(id)a7
+- (id)tokenizedStrokeResultForInitialStrokes:(id)strokes point:(CGPoint)point tokenizationLevel:(int64_t)level completion:(id)completion shouldCancel:(id)cancel
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  cancelCopy = cancel;
+  strokesCopy = strokes;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -409,26 +409,26 @@ LABEL_7:
 
   v25 = objc_msgSend_recognitionSession(self, v20, v21, v22, v23, v24);
   v31 = objc_msgSend_latestStrokeProvider(v25, v26, v27, v28, v29, v30);
-  v35 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v32, v15, v31, v33, v34);
+  v35 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v32, strokesCopy, v31, v33, v34);
 
   v41 = objc_msgSend_recognitionSession(self, v36, v37, v38, v39, v40);
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = sub_18369B440;
   v46[3] = &unk_1E6DDC130;
-  v47 = v13;
+  v47 = completionCopy;
   v48 = v17;
-  v42 = v13;
-  v44 = objc_msgSend_tokenStrokeIdentifiersForContextStrokes_point_tokenizationLevel_completion_shouldCancel_(v41, v43, v35, a5, v46, v14, x, y);
+  v42 = completionCopy;
+  v44 = objc_msgSend_tokenStrokeIdentifiersForContextStrokes_point_tokenizationLevel_completion_shouldCancel_(v41, v43, v35, level, v46, cancelCopy, x, y);
 
   return v44;
 }
 
-- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)a3 completion:(id)a4 shouldCancel:(id)a5
+- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)stroke completion:(id)completion shouldCancel:(id)cancel
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  completionCopy = completion;
+  cancelCopy = cancel;
+  strokeCopy = stroke;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -481,10 +481,10 @@ LABEL_7:
   v26[1] = 3221225472;
   v26[2] = sub_18369B7E0;
   v26[3] = &unk_1E6DDC158;
-  v27 = v8;
+  v27 = completionCopy;
   v28 = v12;
-  v21 = v8;
-  v24 = objc_msgSend_tokenStrokeIdentifiersWithCoveringStroke_completion_shouldCancel_(v20, v22, v10, v26, v9, v23);
+  v21 = completionCopy;
+  v24 = objc_msgSend_tokenStrokeIdentifiersWithCoveringStroke_completion_shouldCancel_(v20, v22, strokeCopy, v26, cancelCopy, v23);
 
   return v24;
 }

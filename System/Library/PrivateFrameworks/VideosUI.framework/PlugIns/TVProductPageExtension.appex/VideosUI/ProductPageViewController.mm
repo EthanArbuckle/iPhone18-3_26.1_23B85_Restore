@@ -1,6 +1,6 @@
 @interface ProductPageViewController
-- (BOOL)lookupItemDidLoad:(id)a3 parameters:(id)a4;
-- (_TtC22TVProductPageExtension25ProductPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)lookupItemDidLoad:(id)load parameters:(id)parameters;
+- (_TtC22TVProductPageExtension25ProductPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -8,9 +8,9 @@
 
 @implementation ProductPageViewController
 
-- (_TtC22TVProductPageExtension25ProductPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22TVProductPageExtension25ProductPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100006B78();
     v7 = v6;
@@ -22,8 +22,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100001718(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100001718(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
@@ -38,26 +38,26 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002504();
 }
 
-- (BOOL)lookupItemDidLoad:(id)a3 parameters:(id)a4
+- (BOOL)lookupItemDidLoad:(id)load parameters:(id)parameters
 {
   v6 = sub_100006B48();
-  v7 = a3;
-  v8 = self;
-  v9 = sub_100002CCC(v7, v6);
+  loadCopy = load;
+  selfCopy = self;
+  v9 = sub_100002CCC(loadCopy, v6);
 
   return v9 & 1;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

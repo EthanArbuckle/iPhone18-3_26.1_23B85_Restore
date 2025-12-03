@@ -2,10 +2,10 @@
 - (int64_t)_displayLayoutElementLevel;
 - (unint64_t)level;
 - (unint64_t)remoteSearchViewPresentationSource;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3;
+- (void)_setDisplayLayoutElementActive:(BOOL)active;
 - (void)dealloc;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _SBTodaySpotlightViewController
@@ -18,26 +18,26 @@
   [(SBSpotlightMultiplexingViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _SBTodaySpotlightViewController;
-  [(SBSpotlightMultiplexingViewController *)&v4 viewWillAppear:a3];
+  [(SBSpotlightMultiplexingViewController *)&v4 viewWillAppear:appear];
   [(_SBTodaySpotlightViewController *)self _setDisplayLayoutElementActive:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _SBTodaySpotlightViewController;
-  [(SBSpotlightMultiplexingViewController *)&v4 viewDidDisappear:a3];
+  [(SBSpotlightMultiplexingViewController *)&v4 viewDidDisappear:disappear];
   [(_SBTodaySpotlightViewController *)self _setDisplayLayoutElementActive:0];
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3
+- (void)_setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutAssertion = self->_displayLayoutAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutAssertion)
     {
@@ -49,8 +49,8 @@
     [v10 setLevel:{-[_SBTodaySpotlightViewController _displayLayoutElementLevel](self, "_displayLayoutElementLevel")}];
     [v10 setFillsDisplayBounds:1];
     [v10 setLayoutRole:6];
-    v6 = [MEMORY[0x277D0AAA0] sharedInstance];
-    v7 = [v6 addElement:v10];
+    mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
+    v7 = [mEMORY[0x277D0AAA0] addElement:v10];
     v8 = self->_displayLayoutAssertion;
     self->_displayLayoutAssertion = v7;
 

@@ -1,28 +1,28 @@
 @interface _EditScriptDataArray
-+ (id)EditScriptDataWithArray:(id)a3;
-+ (id)EditScriptDataWithString:(id)a3 chunkSize:(int64_t)a4;
-- (_EditScriptDataArray)initWithArray:(id)a3;
-- (_EditScriptDataArray)initWithString:(id)a3 chunkSize:(int64_t)a4;
++ (id)EditScriptDataWithArray:(id)array;
++ (id)EditScriptDataWithString:(id)string chunkSize:(int64_t)size;
+- (_EditScriptDataArray)initWithArray:(id)array;
+- (_EditScriptDataArray)initWithString:(id)string chunkSize:(int64_t)size;
 - (id)stringValue;
-- (int64_t)characterIndexForItem:(int64_t)a3;
-- (int64_t)indexOfFirstDifferenceWithOtherData:(id)a3 shouldReverseIterate:(BOOL)a4;
-- (int64_t)lengthOfItem:(int64_t)a3;
+- (int64_t)characterIndexForItem:(int64_t)item;
+- (int64_t)indexOfFirstDifferenceWithOtherData:(id)data shouldReverseIterate:(BOOL)iterate;
+- (int64_t)lengthOfItem:(int64_t)item;
 @end
 
 @implementation _EditScriptDataArray
 
-- (_EditScriptDataArray)initWithString:(id)a3 chunkSize:(int64_t)a4
+- (_EditScriptDataArray)initWithString:(id)string chunkSize:(int64_t)size
 {
-  v7 = a3;
+  stringCopy = string;
   v34.receiver = self;
   v34.super_class = _EditScriptDataArray;
   v8 = [(_EditScriptDataArray *)&v34 init];
   v9 = v8;
   if (v8)
   {
-    [(_EditScriptDataArray *)v8 setCachedStringValue:v7];
-    v10 = [v7 length];
-    if (a4 == 1)
+    [(_EditScriptDataArray *)v8 setCachedStringValue:stringCopy];
+    v10 = [stringCopy length];
+    if (size == 1)
     {
       v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
       data = v9->_data;
@@ -34,27 +34,27 @@
         v17 = 0;
         v18 = 0;
         v19 = 0;
-        v29 = v7;
+        v29 = stringCopy;
         v30 = v10;
         do
         {
-          v20 = [v7 characterAtIndex:v19];
-          v21 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v22 = [v21 characterIsMember:v20];
+          v20 = [stringCopy characterAtIndex:v19];
+          whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v22 = [whitespaceCharacterSet characterIsMember:v20];
 
           if ((v22 & 1) != 0 || v19 == v31)
           {
             v17 += v18;
             v18 = v19 + 1 - v17 - v22;
             v23 = v9->_data;
-            [v7 substringWithRange:{v17, v18}];
+            [stringCopy substringWithRange:{v17, v18}];
             v25 = v24 = v9;
             [(NSArray *)v23 addObject:v25];
 
             if (v22)
             {
               v26 = v24->_data;
-              v27 = [v7 substringWithRange:{v19, 1}];
+              v27 = [stringCopy substringWithRange:{v19, 1}];
               [(NSArray *)v26 addObject:v27];
 
               v17 = v19;
@@ -63,7 +63,7 @@
 
             v9 = v24;
             ++v19;
-            v7 = v29;
+            stringCopy = v29;
             v10 = v30;
           }
 
@@ -79,10 +79,10 @@
 
     else
     {
-      if (a4)
+      if (size)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:v9 file:@"_EditScriptDataArray.m" lineNumber:61 description:{@"Unexpected chunk size == %ld!", a4}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v9 file:@"_EditScriptDataArray.m" lineNumber:61 description:{@"Unexpected chunk size == %ld!", size}];
       }
 
       else
@@ -91,14 +91,14 @@
         v12 = v9->_data;
         v9->_data = v11;
 
-        v13 = [v7 length];
+        v13 = [stringCopy length];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __49___EditScriptDataArray_initWithString_chunkSize___block_invoke;
         v32[3] = &unk_1E7115940;
         v33 = v9;
-        [v7 enumerateSubstringsInRange:0 options:v13 usingBlock:{2, v32}];
-        v14 = v33;
+        [stringCopy enumerateSubstringsInRange:0 options:v13 usingBlock:{2, v32}];
+        currentHandler = v33;
       }
     }
   }
@@ -106,15 +106,15 @@
   return v9;
 }
 
-- (_EditScriptDataArray)initWithArray:(id)a3
+- (_EditScriptDataArray)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = _EditScriptDataArray;
   v5 = [(_EditScriptDataArray *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [arrayCopy copy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -122,18 +122,18 @@
   return v5;
 }
 
-+ (id)EditScriptDataWithString:(id)a3 chunkSize:(int64_t)a4
++ (id)EditScriptDataWithString:(id)string chunkSize:(int64_t)size
 {
-  v5 = a3;
-  v6 = [[_EditScriptDataArray alloc] initWithString:v5 chunkSize:a4];
+  stringCopy = string;
+  v6 = [[_EditScriptDataArray alloc] initWithString:stringCopy chunkSize:size];
 
   return v6;
 }
 
-+ (id)EditScriptDataWithArray:(id)a3
++ (id)EditScriptDataWithArray:(id)array
 {
-  v3 = a3;
-  v4 = [[_EditScriptDataArray alloc] initWithArray:v3];
+  arrayCopy = array;
+  v4 = [[_EditScriptDataArray alloc] initWithArray:arrayCopy];
 
   return v4;
 }
@@ -152,17 +152,17 @@
   return cachedStringValue;
 }
 
-- (int64_t)lengthOfItem:(int64_t)a3
+- (int64_t)lengthOfItem:(int64_t)item
 {
-  v3 = [(NSArray *)self->_data objectAtIndex:a3];
+  v3 = [(NSArray *)self->_data objectAtIndex:item];
   v4 = [v3 length];
 
   return v4;
 }
 
-- (int64_t)characterIndexForItem:(int64_t)a3
+- (int64_t)characterIndexForItem:(int64_t)item
 {
-  if (a3 < 1)
+  if (item < 1)
   {
     return 0;
   }
@@ -174,16 +174,16 @@
     v6 += [(_EditScriptDataArray *)self lengthOfItem:v5++];
   }
 
-  while (a3 != v5);
+  while (item != v5);
   return v6;
 }
 
-- (int64_t)indexOfFirstDifferenceWithOtherData:(id)a3 shouldReverseIterate:(BOOL)a4
+- (int64_t)indexOfFirstDifferenceWithOtherData:(id)data shouldReverseIterate:(BOOL)iterate
 {
-  v4 = a4;
-  v6 = a3;
+  iterateCopy = iterate;
+  dataCopy = data;
   v7 = [(_EditScriptDataArray *)self length];
-  v8 = [v6 length];
+  v8 = [dataCopy length];
   v9 = 0;
   if (v7 >= v8)
   {
@@ -203,10 +203,10 @@
     v12 = v7 - 1;
     while (1)
     {
-      v13 = v4 ? v12 : v9;
-      v14 = v4 ? v11 : v9;
+      v13 = iterateCopy ? v12 : v9;
+      v14 = iterateCopy ? v11 : v9;
       v15 = [(_EditScriptDataArray *)self stringAtIndex:v13, v21, v22];
-      v16 = [v6 stringAtIndex:v14];
+      v16 = [dataCopy stringAtIndex:v14];
       v17 = [v15 isEqualToString:v16];
 
       if (!v17)

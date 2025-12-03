@@ -2,7 +2,7 @@
 - (CGSize)pixelSize;
 - (CGSize)size;
 - (id)imageQueue;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation SearchUIPhotosImage
@@ -12,26 +12,26 @@
   v12.receiver = self;
   v12.super_class = SearchUIPhotosImage;
   [(SearchUIImage *)&v12 size];
-  v4 = v3;
-  v6 = v5;
+  pixelWidth = v3;
+  pixelHeight = v5;
   v7 = *(MEMORY[0x1E695F060] + 8);
-  if (*MEMORY[0x1E695F060] == v3 && v7 == v6)
+  if (*MEMORY[0x1E695F060] == v3 && v7 == pixelHeight)
   {
-    v9 = [(SearchUIPhotosImage *)self asset:*MEMORY[0x1E695F060]];
-    if (!v9)
+    fetchAsset = [(SearchUIPhotosImage *)self asset:*MEMORY[0x1E695F060]];
+    if (!fetchAsset)
     {
-      v9 = [(SearchUIPhotosImage *)self fetchAsset];
-      [(SearchUIPhotosImage *)self setAsset:v9];
+      fetchAsset = [(SearchUIPhotosImage *)self fetchAsset];
+      [(SearchUIPhotosImage *)self setAsset:fetchAsset];
     }
 
-    v4 = [v9 pixelWidth];
-    v6 = [v9 pixelHeight];
-    [(SearchUIPhotosImage *)self setPixelSize:v4, v6];
-    [(SearchUIPhotosImage *)self setSize:v4, v6];
+    pixelWidth = [fetchAsset pixelWidth];
+    pixelHeight = [fetchAsset pixelHeight];
+    [(SearchUIPhotosImage *)self setPixelSize:pixelWidth, pixelHeight];
+    [(SearchUIPhotosImage *)self setSize:pixelWidth, pixelHeight];
   }
 
-  v10 = v4;
-  v11 = v6;
+  v10 = pixelWidth;
+  v11 = pixelHeight;
   result.height = v11;
   result.width = v10;
   return result;
@@ -59,9 +59,9 @@ void __33__SearchUIPhotosImage_imageQueue__block_invoke()
   imageQueue_queue = v1;
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   [(SearchUIPhotosImage *)self size];
   v10 = v9;
   v12 = v11;
@@ -74,11 +74,11 @@ void __33__SearchUIPhotosImage_imageQueue__block_invoke()
   v19 = v14;
   v20 = v10;
   v21 = v12;
-  v22 = a3;
+  scaleCopy = scale;
   v16[4] = self;
-  v17 = v8;
-  v23 = a4;
-  v15 = v8;
+  v17 = handlerCopy;
+  styleCopy = style;
+  v15 = handlerCopy;
   [(SearchUIPhotosImage *)self fetchAssetWithCompletionHandler:v16];
 }
 

@@ -1,7 +1,7 @@
 @interface SBHFloatingDockStyleConfiguration
 + (SBHFloatingDockStyleConfiguration)defaultConfiguration;
-- (SBHFloatingDockStyleConfiguration)configurationWithWantsPlatterShadow:(BOOL)a3;
-- (SBHFloatingDockStyleConfiguration)initWithBackgroundEffect:(unint64_t)a3 platterEffect:(unint64_t)a4 wantsPlatterShadow:(BOOL)a5;
+- (SBHFloatingDockStyleConfiguration)configurationWithWantsPlatterShadow:(BOOL)shadow;
+- (SBHFloatingDockStyleConfiguration)initWithBackgroundEffect:(unint64_t)effect platterEffect:(unint64_t)platterEffect wantsPlatterShadow:(BOOL)shadow;
 - (id)description;
 - (unint64_t)backgroundEffect;
 - (unint64_t)platterEffect;
@@ -30,16 +30,16 @@ uint64_t __57__SBHFloatingDockStyleConfiguration_defaultConfiguration__block_inv
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (SBHFloatingDockStyleConfiguration)initWithBackgroundEffect:(unint64_t)a3 platterEffect:(unint64_t)a4 wantsPlatterShadow:(BOOL)a5
+- (SBHFloatingDockStyleConfiguration)initWithBackgroundEffect:(unint64_t)effect platterEffect:(unint64_t)platterEffect wantsPlatterShadow:(BOOL)shadow
 {
   v9.receiver = self;
   v9.super_class = SBHFloatingDockStyleConfiguration;
   result = [(SBHFloatingDockStyleConfiguration *)&v9 init];
   if (result)
   {
-    result->_backgroundEffect = a3;
-    result->_platterEffect = a4;
-    result->_wantsPlatterShadow = a5;
+    result->_backgroundEffect = effect;
+    result->_platterEffect = platterEffect;
+    result->_wantsPlatterShadow = shadow;
   }
 
   return result;
@@ -73,9 +73,9 @@ uint64_t __57__SBHFloatingDockStyleConfiguration_defaultConfiguration__block_inv
   }
 }
 
-- (SBHFloatingDockStyleConfiguration)configurationWithWantsPlatterShadow:(BOOL)a3
+- (SBHFloatingDockStyleConfiguration)configurationWithWantsPlatterShadow:(BOOL)shadow
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithBackgroundEffect:self->_backgroundEffect platterEffect:self->_platterEffect wantsPlatterShadow:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithBackgroundEffect:self->_backgroundEffect platterEffect:self->_platterEffect wantsPlatterShadow:shadow];
 
   return v3;
 }
@@ -83,36 +83,36 @@ uint64_t __57__SBHFloatingDockStyleConfiguration_defaultConfiguration__block_inv
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBHFloatingDockStyleConfiguration *)self platterEffect];
-  if (v4 > 2)
+  platterEffect = [(SBHFloatingDockStyleConfiguration *)self platterEffect];
+  if (platterEffect > 2)
   {
     v5 = @"SBFolderBackgroundViewEffectNone";
   }
 
   else
   {
-    v5 = off_1E808D300[v4];
+    v5 = off_1E808D300[platterEffect];
   }
 
   [v3 appendString:v5 withName:@"platterEffect"];
-  v6 = [(SBHFloatingDockStyleConfiguration *)self backgroundEffect];
-  if (v6 > 5)
+  backgroundEffect = [(SBHFloatingDockStyleConfiguration *)self backgroundEffect];
+  if (backgroundEffect > 5)
   {
     v7 = @"SBFolderControllerBackgroundViewEffectBlur";
   }
 
   else
   {
-    v7 = off_1E808D318[v6];
+    v7 = off_1E808D318[backgroundEffect];
   }
 
   [v3 appendString:v7 withName:@"backgroundEffect"];
   v8 = [v3 appendBool:UIAccessibilityIsReduceTransparencyEnabled() withName:@"UIAccessibilityIsReduceTransparencyEnabled()"];
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v9 = [(SBHFloatingDockStyleConfiguration *)self platterEffect];
+    platterEffect2 = [(SBHFloatingDockStyleConfiguration *)self platterEffect];
     platterEffect = self->_platterEffect;
-    if (v9 != platterEffect)
+    if (platterEffect2 != platterEffect)
     {
       if (platterEffect > 2)
       {
@@ -127,9 +127,9 @@ uint64_t __57__SBHFloatingDockStyleConfiguration_defaultConfiguration__block_inv
       [v3 appendString:v11 withName:@"orig platterEffect"];
     }
 
-    v12 = [(SBHFloatingDockStyleConfiguration *)self backgroundEffect];
+    backgroundEffect2 = [(SBHFloatingDockStyleConfiguration *)self backgroundEffect];
     backgroundEffect = self->_backgroundEffect;
-    if (v12 != backgroundEffect)
+    if (backgroundEffect2 != backgroundEffect)
     {
       if (backgroundEffect > 5)
       {
@@ -146,9 +146,9 @@ uint64_t __57__SBHFloatingDockStyleConfiguration_defaultConfiguration__block_inv
   }
 
   v15 = [v3 appendBool:-[SBHFloatingDockStyleConfiguration wantsPlatterShadow](self withName:{"wantsPlatterShadow"), @"wantsPlatterShadow"}];
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface HFServiceGroupBuilder
 - (BOOL)_supportsCustomIcons;
-- (BOOL)shouldAllowAddingService:(id)a3;
+- (BOOL)shouldAllowAddingService:(id)service;
 - (HFIconDescriptor)iconDescriptor;
 - (HFRoomBuilder)room;
-- (HFServiceGroupBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (HFServiceGroupBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (NSArray)availableIconDescriptors;
 - (NSArray)services;
 - (NSString)originalName;
@@ -16,32 +16,32 @@
 - (id)_updateName;
 - (id)_updateRooms;
 - (id)_updateServices;
-- (id)_updateValueForContextType:(unint64_t)a3;
+- (id)_updateValueForContextType:(unint64_t)type;
 - (id)accessories;
 - (id)commitItem;
 - (id)removeItemFromHome;
-- (void)addService:(id)a3;
-- (void)removeService:(id)a3;
-- (void)setIconDescriptor:(id)a3;
-- (void)setRoom:(id)a3;
+- (void)addService:(id)service;
+- (void)removeService:(id)service;
+- (void)setIconDescriptor:(id)descriptor;
+- (void)setRoom:(id)room;
 @end
 
 @implementation HFServiceGroupBuilder
 
-- (HFServiceGroupBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFServiceGroupBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v6 = a4;
+  homeCopy = home;
   v24.receiver = self;
   v24.super_class = HFServiceGroupBuilder;
-  v7 = [(HFItemBuilder *)&v24 initWithExistingObject:a3 inHome:v6];
+  v7 = [(HFItemBuilder *)&v24 initWithExistingObject:object inHome:homeCopy];
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (object)
     {
-      v9 = [(HFServiceGroupBuilder *)v7 serviceGroup];
-      v10 = [v9 services];
-      v11 = HFHomeKitObjectUniqueIdentifiers(v10);
+      serviceGroup = [(HFServiceGroupBuilder *)v7 serviceGroup];
+      services = [serviceGroup services];
+      v11 = HFHomeKitObjectUniqueIdentifiers(services);
     }
 
     else
@@ -53,24 +53,24 @@
     serviceUUIDs = v8->_serviceUUIDs;
     v8->_serviceUUIDs = v12;
 
-    v14 = [(HFServiceGroupBuilder *)v8 serviceGroup];
-    v15 = [v14 name];
-    [(HFServiceGroupBuilder *)v8 setName:v15];
+    serviceGroup2 = [(HFServiceGroupBuilder *)v8 serviceGroup];
+    name = [serviceGroup2 name];
+    [(HFServiceGroupBuilder *)v8 setName:name];
 
-    v16 = [(HFServiceGroupBuilder *)v8 serviceGroup];
-    -[HFServiceGroupBuilder setShowInHomeDashboard:](v8, "setShowInHomeDashboard:", [v16 hf_effectiveShowInHomeDashboard]);
+    serviceGroup3 = [(HFServiceGroupBuilder *)v8 serviceGroup];
+    -[HFServiceGroupBuilder setShowInHomeDashboard:](v8, "setShowInHomeDashboard:", [serviceGroup3 hf_effectiveShowInHomeDashboard]);
 
-    v17 = [(HFServiceGroupBuilder *)v8 serviceGroup];
-    -[HFServiceGroupBuilder setIsFavorite:](v8, "setIsFavorite:", [v17 hf_effectiveIsFavorite]);
+    serviceGroup4 = [(HFServiceGroupBuilder *)v8 serviceGroup];
+    -[HFServiceGroupBuilder setIsFavorite:](v8, "setIsFavorite:", [serviceGroup4 hf_effectiveIsFavorite]);
 
-    v18 = [(HFServiceGroupBuilder *)v8 _rooms];
-    v19 = [v18 allObjects];
+    _rooms = [(HFServiceGroupBuilder *)v8 _rooms];
+    allObjects = [_rooms allObjects];
 
-    if ([v19 count] == 1)
+    if ([allObjects count] == 1)
     {
       v20 = [HFRoomBuilder alloc];
-      v21 = [v19 firstObject];
-      v22 = [(HFRoomBuilder *)v20 initWithExistingObject:v21 inHome:v6];
+      firstObject = [allObjects firstObject];
+      v22 = [(HFRoomBuilder *)v20 initWithExistingObject:firstObject inHome:homeCopy];
       [(HFServiceGroupBuilder *)v8 setRoom:v22];
     }
 
@@ -89,8 +89,8 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [(HFServiceGroupBuilder *)self services];
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  services = [(HFServiceGroupBuilder *)self services];
+  v5 = [services countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
@@ -101,14 +101,14 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(services);
         }
 
-        v9 = [*(*(&v27 + 1) + 8 * i) hf_effectiveServiceType];
-        [v3 na_safeAddObject:v9];
+        hf_effectiveServiceType = [*(*(&v27 + 1) + 8 * i) hf_effectiveServiceType];
+        [v3 na_safeAddObject:hf_effectiveServiceType];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v6 = [services countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v6);
@@ -165,63 +165,63 @@
 
 - (id)_mostCommonIconDescriptor
 {
-  v2 = [(HFServiceGroupBuilder *)self services];
-  v3 = [v2 na_map:&__block_literal_global_110];
+  services = [(HFServiceGroupBuilder *)self services];
+  v3 = [services na_map:&__block_literal_global_110];
 
   if ([v3 count])
   {
     v4 = [MEMORY[0x277CCA940] setWithArray:v3];
-    v5 = [v4 na_mostCommonObject];
+    na_mostCommonObject = [v4 na_mostCommonObject];
   }
 
   else
   {
-    v5 = [[HFImageIconDescriptor alloc] initWithImageIdentifier:@"HFImageIconIdentifierGeneric"];
+    na_mostCommonObject = [[HFImageIconDescriptor alloc] initWithImageIdentifier:@"HFImageIconIdentifierGeneric"];
   }
 
-  return v5;
+  return na_mostCommonObject;
 }
 
-- (BOOL)shouldAllowAddingService:(id)a3
+- (BOOL)shouldAllowAddingService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 serviceType];
+  serviceCopy = service;
+  serviceType = [serviceCopy serviceType];
 
-  if (v5)
+  if (serviceType)
   {
-    v6 = [(HFItemBuilder *)self home];
-    v7 = [v6 hf_serviceGroupsForService:v4];
+    home = [(HFItemBuilder *)self home];
+    v7 = [home hf_serviceGroupsForService:serviceCopy];
 
     if (![v7 count])
     {
       goto LABEL_5;
     }
 
-    v8 = [(HFServiceGroupBuilder *)self serviceGroup];
-    if (!v8)
+    serviceGroup = [(HFServiceGroupBuilder *)self serviceGroup];
+    if (!serviceGroup)
     {
       goto LABEL_8;
     }
 
-    v9 = v8;
-    v10 = [(HFServiceGroupBuilder *)self serviceGroup];
-    v11 = [v7 containsObject:v10];
+    v9 = serviceGroup;
+    serviceGroup2 = [(HFServiceGroupBuilder *)self serviceGroup];
+    v11 = [v7 containsObject:serviceGroup2];
 
     if (v11)
     {
 LABEL_5:
-      v12 = [(HFServiceGroupBuilder *)self services];
-      v13 = [v12 count];
+      services = [(HFServiceGroupBuilder *)self services];
+      v13 = [services count];
 
       if (v13)
       {
-        v14 = [(HFServiceGroupBuilder *)self services];
+        services2 = [(HFServiceGroupBuilder *)self services];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __50__HFServiceGroupBuilder_shouldAllowAddingService___block_invoke;
         v17[3] = &unk_277DF4020;
-        v18 = v4;
-        v15 = [v14 na_any:v17];
+        v18 = serviceCopy;
+        v15 = [services2 na_any:v17];
       }
 
       else
@@ -245,49 +245,49 @@ LABEL_8:
   return v15;
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(HFServiceGroupBuilder *)self shouldAllowAddingService:v4])
+  serviceCopy = service;
+  if (![(HFServiceGroupBuilder *)self shouldAllowAddingService:serviceCopy])
   {
     v5 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 hf_prettyDescription];
+      hf_prettyDescription = [serviceCopy hf_prettyDescription];
       v10 = 138412290;
-      v11 = v6;
+      v11 = hf_prettyDescription;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Request to add a service that is not supported in this service group. We'll allow this to proceed (because there are no API restriction of what services can go into a group; we just want to enforce restrictions in our UI). Service: %@", &v10, 0xCu);
     }
   }
 
-  v7 = [(HFServiceGroupBuilder *)self serviceUUIDs];
-  v8 = [v4 uniqueIdentifier];
-  [v7 addObject:v8];
+  serviceUUIDs = [(HFServiceGroupBuilder *)self serviceUUIDs];
+  uniqueIdentifier = [serviceCopy uniqueIdentifier];
+  [serviceUUIDs addObject:uniqueIdentifier];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeService:(id)a3
+- (void)removeService:(id)service
 {
-  v4 = a3;
-  v6 = [(HFServiceGroupBuilder *)self serviceUUIDs];
-  v5 = [v4 uniqueIdentifier];
+  serviceCopy = service;
+  serviceUUIDs = [(HFServiceGroupBuilder *)self serviceUUIDs];
+  uniqueIdentifier = [serviceCopy uniqueIdentifier];
 
-  [v6 deleteObject:v5];
+  [serviceUUIDs deleteObject:uniqueIdentifier];
 }
 
 - (NSArray)services
 {
-  v3 = [(HFServiceGroupBuilder *)self serviceUUIDs];
-  v4 = [v3 toSet];
-  v5 = [v4 allObjects];
+  serviceUUIDs = [(HFServiceGroupBuilder *)self serviceUUIDs];
+  toSet = [serviceUUIDs toSet];
+  allObjects = [toSet allObjects];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__HFServiceGroupBuilder_services__block_invoke;
   v8[3] = &unk_277DF5E10;
   v8[4] = self;
-  v6 = [v5 na_map:v8];
+  v6 = [allObjects na_map:v8];
 
   return v6;
 }
@@ -306,19 +306,19 @@ id __33__HFServiceGroupBuilder_services__block_invoke(uint64_t a1, void *a2)
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [(HFServiceGroupBuilder *)self serviceGroup];
+  serviceGroup = [(HFServiceGroupBuilder *)self serviceGroup];
   v5 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 hf_prettyDescription];
+    hf_prettyDescription = [serviceGroup hf_prettyDescription];
     *buf = 138412290;
-    v21 = v6;
+    v21 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "HFServiceGroupBuilder: Removing service group from home: %@", buf, 0xCu);
   }
 
-  v7 = [(HFItemBuilder *)self home];
-  v8 = [v3 errorOnlyCompletionHandlerAdapter];
-  [v7 removeServiceGroup:v4 completionHandler:v8];
+  home = [(HFItemBuilder *)self home];
+  errorOnlyCompletionHandlerAdapter = [v3 errorOnlyCompletionHandlerAdapter];
+  [home removeServiceGroup:serviceGroup completionHandler:errorOnlyCompletionHandlerAdapter];
 
   objc_initWeak(buf, self);
   v17[0] = MEMORY[0x277D85DD0];
@@ -326,7 +326,7 @@ id __33__HFServiceGroupBuilder_services__block_invoke(uint64_t a1, void *a2)
   v17[2] = __43__HFServiceGroupBuilder_removeItemFromHome__block_invoke;
   v17[3] = &unk_277DF6F48;
   objc_copyWeak(&v19, buf);
-  v9 = v4;
+  v9 = serviceGroup;
   v18 = v9;
   v10 = [v3 flatMap:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -425,42 +425,42 @@ id __43__HFServiceGroupBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, v
 
 - (id)commitItem
 {
-  v3 = [(HFItemBuilder *)self home];
-  v4 = [v3 hf_currentUserIsAdministrator];
+  home = [(HFItemBuilder *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v4)
+  if (hf_currentUserIsAdministrator)
   {
-    v5 = [(HFServiceGroupBuilder *)self serviceGroup];
+    serviceGroup = [(HFServiceGroupBuilder *)self serviceGroup];
     v6 = HFOperationEditItemGroup;
-    if (!v5)
+    if (!serviceGroup)
     {
       v6 = HFOperationAddServiceGroup;
     }
 
     v7 = *v6;
 
-    v8 = [(HFServiceGroupBuilder *)self serviceGroup];
+    serviceGroup2 = [(HFServiceGroupBuilder *)self serviceGroup];
 
-    if (!v8)
+    if (!serviceGroup2)
     {
-      v9 = [(HFItemBuilder *)self home];
-      v10 = [v9 serviceGroups];
+      home2 = [(HFItemBuilder *)self home];
+      serviceGroups = [home2 serviceGroups];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __35__HFServiceGroupBuilder_commitItem__block_invoke;
       v23[3] = &unk_277DF7F28;
       v23[4] = self;
-      v11 = [v10 na_firstObjectPassingTest:v23];
+      v11 = [serviceGroups na_firstObjectPassingTest:v23];
       [(HFServiceGroupBuilder *)self setServiceGroup:v11];
     }
 
-    v12 = [(HFServiceGroupBuilder *)self _performValidation];
+    _performValidation = [(HFServiceGroupBuilder *)self _performValidation];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __35__HFServiceGroupBuilder_commitItem__block_invoke_2;
     v22[3] = &unk_277DF2CE0;
     v22[4] = self;
-    v13 = [v12 flatMap:v22];
+    v13 = [_performValidation flatMap:v22];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __35__HFServiceGroupBuilder_commitItem__block_invoke_3;
@@ -472,17 +472,17 @@ id __43__HFServiceGroupBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, v
     v18[2] = __35__HFServiceGroupBuilder_commitItem__block_invoke_4;
     v18[3] = &unk_277DF2D30;
     v19 = v7;
-    v20 = self;
+    selfCopy = self;
     v15 = v7;
-    v16 = [v14 recover:v18];
+    futureWithNoResult = [v14 recover:v18];
   }
 
   else
   {
-    v16 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v16;
+  return futureWithNoResult;
 }
 
 BOOL __35__HFServiceGroupBuilder_commitItem__block_invoke(uint64_t a1, void *a2)
@@ -563,8 +563,8 @@ id __35__HFServiceGroupBuilder_commitItem__block_invoke_4(uint64_t a1, void *a2)
   v3 = MEMORY[0x277D2C900];
   v4 = [(HFItemBuilder *)self lazy_verifyPropertyIsSet:@"name"];
   v11[0] = v4;
-  v5 = [(HFServiceGroupBuilder *)self name];
-  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:v5];
+  name = [(HFServiceGroupBuilder *)self name];
+  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:name];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v3 chainFutures:v7];
@@ -694,7 +694,7 @@ void __36__HFServiceGroupBuilder__updateName__block_invoke_4(uint64_t a1, void *
 
 - (id)_updateServices
 {
-  v3 = [(HFServiceGroupBuilder *)self serviceUUIDs];
+  serviceUUIDs = [(HFServiceGroupBuilder *)self serviceUUIDs];
   v6[4] = self;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -705,7 +705,7 @@ void __36__HFServiceGroupBuilder__updateName__block_invoke_4(uint64_t a1, void *
   v6[1] = 3221225472;
   v6[2] = __40__HFServiceGroupBuilder__updateServices__block_invoke_7;
   v6[3] = &unk_277DFB478;
-  v4 = [(HFItemBuilder *)self commitSetDiff:v3 addBlock:v7 updateBlock:&__block_literal_global_46_1 deleteBlock:v6];
+  v4 = [(HFItemBuilder *)self commitSetDiff:serviceUUIDs addBlock:v7 updateBlock:&__block_literal_global_46_1 deleteBlock:v6];
 
   return v4;
 }
@@ -858,48 +858,48 @@ void __40__HFServiceGroupBuilder__updateServices__block_invoke_11(uint64_t a1, v
   }
 }
 
-- (id)_updateValueForContextType:(unint64_t)a3
+- (id)_updateValueForContextType:(unint64_t)type
 {
   v5 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_10;
       }
 
-      v6 = [(HFServiceGroupBuilder *)self showInHomeDashboard];
+      showInHomeDashboard = [(HFServiceGroupBuilder *)self showInHomeDashboard];
       goto LABEL_9;
     }
 
 LABEL_8:
-    v6 = [(HFServiceGroupBuilder *)self isFavorite];
+    showInHomeDashboard = [(HFServiceGroupBuilder *)self isFavorite];
 LABEL_9:
-    v5 = v6;
+    v5 = showInHomeDashboard;
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!type)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     NSLog(&cfstr_IncludeInStatu_1.isa, a2);
 LABEL_13:
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_15;
   }
 
 LABEL_10:
-  v7 = [(HFServiceGroupBuilder *)self serviceGroup];
-  if (v5 == [v7 hf_isOnForContextType:a3])
+  serviceGroup = [(HFServiceGroupBuilder *)self serviceGroup];
+  if (v5 == [serviceGroup hf_isOnForContextType:type])
   {
-    v8 = [(HFServiceGroupBuilder *)self serviceGroup];
-    v9 = [v8 hf_hasSetForContextType:a3];
+    serviceGroup2 = [(HFServiceGroupBuilder *)self serviceGroup];
+    v9 = [serviceGroup2 hf_hasSetForContextType:type];
 
     if (v9)
     {
@@ -911,8 +911,8 @@ LABEL_10:
   {
   }
 
-  v11 = [(HFServiceGroupBuilder *)self serviceGroup];
-  v12 = [v11 hf_updateValue:v5 forContextType:a3];
+  serviceGroup3 = [(HFServiceGroupBuilder *)self serviceGroup];
+  v12 = [serviceGroup3 hf_updateValue:v5 forContextType:type];
 
   v13 = [v12 addFailureBlock:&__block_literal_global_58_0];
   v15[0] = MEMORY[0x277D85DD0];
@@ -920,11 +920,11 @@ LABEL_10:
   v15[2] = __52__HFServiceGroupBuilder__updateValueForContextType___block_invoke_2;
   v15[3] = &unk_277DF2CE0;
   v15[4] = self;
-  v10 = [v12 flatMap:v15];
+  futureWithNoResult = [v12 flatMap:v15];
 
 LABEL_15:
 
-  return v10;
+  return futureWithNoResult;
 }
 
 void __52__HFServiceGroupBuilder__updateValueForContextType___block_invoke(uint64_t a1, void *a2)
@@ -1015,17 +1015,17 @@ void __52__HFServiceGroupBuilder__updateValueForContextType___block_invoke_3(uin
           }
 
           v6 = *(*(&v20 + 1) + 8 * i);
-          v7 = [v6 room];
-          v8 = [v7 uniqueIdentifier];
-          v9 = [(HFServiceGroupBuilder *)self room];
-          v10 = [v9 room];
-          v11 = [v10 uniqueIdentifier];
-          v12 = [v8 isEqual:v11];
+          room = [v6 room];
+          uniqueIdentifier = [room uniqueIdentifier];
+          room2 = [(HFServiceGroupBuilder *)self room];
+          v9Room = [room2 room];
+          uniqueIdentifier2 = [v9Room uniqueIdentifier];
+          v12 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
           if ((v12 & 1) == 0)
           {
-            v13 = [(HFServiceGroupBuilder *)self room];
-            [v13 addAccessory:v6];
+            room3 = [(HFServiceGroupBuilder *)self room];
+            [room3 addAccessory:v6];
           }
         }
 
@@ -1035,18 +1035,18 @@ void __52__HFServiceGroupBuilder__updateValueForContextType___block_invoke_3(uin
       while (v4);
     }
 
-    v14 = [(HFServiceGroupBuilder *)self room];
-    v15 = [v14 commitItem];
+    room4 = [(HFServiceGroupBuilder *)self room];
+    commitItem = [room4 commitItem];
   }
 
   else
   {
-    v15 = [MEMORY[0x277D2C900] futureWithNoResult];
+    commitItem = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return commitItem;
 }
 
 - (id)_updateIcon
@@ -1054,30 +1054,30 @@ void __52__HFServiceGroupBuilder__updateValueForContextType___block_invoke_3(uin
   if ([(HFServiceGroupBuilder *)self hasSetIcon])
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = [(HFServiceGroupBuilder *)self services];
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    services = [(HFServiceGroupBuilder *)self services];
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(services, "count")}];
 
-    v6 = [(HFServiceGroupBuilder *)self services];
+    services2 = [(HFServiceGroupBuilder *)self services];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __36__HFServiceGroupBuilder__updateIcon__block_invoke;
     v16 = &unk_277DFB4C0;
-    v17 = self;
+    selfCopy = self;
     v18 = v5;
     v7 = v5;
-    v8 = [v6 na_map:&v13];
+    v8 = [services2 na_map:&v13];
 
     v9 = MEMORY[0x277D2C900];
-    v10 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v11 = [v9 combineAllFutures:v7 ignoringErrors:1 scheduler:v10];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    futureWithNoResult = [v9 combineAllFutures:v7 ignoringErrors:1 scheduler:mainThreadScheduler];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v11;
+  return futureWithNoResult;
 }
 
 id __36__HFServiceGroupBuilder__updateIcon__block_invoke(uint64_t a1, void *a2)
@@ -1141,8 +1141,8 @@ void __36__HFServiceGroupBuilder__updateIcon__block_invoke_4(uint64_t a1, void *
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(HFServiceGroupBuilder *)self services];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  services = [(HFServiceGroupBuilder *)self services];
+  v5 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1153,15 +1153,15 @@ void __36__HFServiceGroupBuilder__updateIcon__block_invoke_4(uint64_t a1, void *
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(services);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) accessory];
-        v10 = [v9 room];
-        [v3 na_safeAddObject:v10];
+        accessory = [*(*(&v13 + 1) + 8 * i) accessory];
+        room = [accessory room];
+        [v3 na_safeAddObject:room];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1174,18 +1174,18 @@ void __36__HFServiceGroupBuilder__updateIcon__block_invoke_4(uint64_t a1, void *
 
 - (NSString)originalName
 {
-  v2 = [(HFServiceGroupBuilder *)self serviceGroup];
-  v3 = [v2 name];
+  serviceGroup = [(HFServiceGroupBuilder *)self serviceGroup];
+  name = [serviceGroup name];
 
-  return v3;
+  return name;
 }
 
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFServiceGroupBuilder *)self serviceGroup];
-  v4 = [v3 services];
-  v5 = [v4 na_map:&__block_literal_global_71_2];
+  serviceGroup = [(HFServiceGroupBuilder *)self serviceGroup];
+  services = [serviceGroup services];
+  v5 = [services na_map:&__block_literal_global_71_2];
   v6 = [v2 setWithArray:v5];
 
   return v6;
@@ -1197,8 +1197,8 @@ void __36__HFServiceGroupBuilder__updateIcon__block_invoke_4(uint64_t a1, void *
   if (!roomBuilder)
   {
     v4 = [HFRoomBuilder alloc];
-    v5 = [(HFItemBuilder *)self home];
-    v6 = [(HFItemBuilder *)v4 initWithHome:v5];
+    home = [(HFItemBuilder *)self home];
+    v6 = [(HFItemBuilder *)v4 initWithHome:home];
     v7 = self->_roomBuilder;
     self->_roomBuilder = v6;
 
@@ -1208,12 +1208,12 @@ void __36__HFServiceGroupBuilder__updateIcon__block_invoke_4(uint64_t a1, void *
   return roomBuilder;
 }
 
-- (void)setRoom:(id)a3
+- (void)setRoom:(id)room
 {
-  v4 = a3;
+  roomCopy = room;
   [(HFServiceGroupBuilder *)self setHasSetRoom:1];
   roomBuilder = self->_roomBuilder;
-  self->_roomBuilder = v4;
+  self->_roomBuilder = roomCopy;
 }
 
 - (HFIconDescriptor)iconDescriptor
@@ -1221,9 +1221,9 @@ void __36__HFServiceGroupBuilder__updateIcon__block_invoke_4(uint64_t a1, void *
   iconDescriptor = self->_iconDescriptor;
   if (!iconDescriptor)
   {
-    v4 = [(HFServiceGroupBuilder *)self _mostCommonIconDescriptor];
+    _mostCommonIconDescriptor = [(HFServiceGroupBuilder *)self _mostCommonIconDescriptor];
     v5 = self->_iconDescriptor;
-    self->_iconDescriptor = v4;
+    self->_iconDescriptor = _mostCommonIconDescriptor;
 
     iconDescriptor = self->_iconDescriptor;
   }
@@ -1231,47 +1231,47 @@ void __36__HFServiceGroupBuilder__updateIcon__block_invoke_4(uint64_t a1, void *
   return iconDescriptor;
 }
 
-- (void)setIconDescriptor:(id)a3
+- (void)setIconDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   [(HFServiceGroupBuilder *)self setHasSetIcon:1];
   iconDescriptor = self->_iconDescriptor;
-  self->_iconDescriptor = v4;
+  self->_iconDescriptor = descriptorCopy;
 }
 
 - (NSArray)availableIconDescriptors
 {
   if ([(HFServiceGroupBuilder *)self _supportsCustomIcons])
   {
-    v3 = [(HFServiceGroupBuilder *)self primaryServiceType];
-    v4 = [HFServiceIconFactory allIconDescriptorsForServiceType:v3 serviceSubtype:0];
-    v5 = [v4 allObjects];
+    primaryServiceType = [(HFServiceGroupBuilder *)self primaryServiceType];
+    v4 = [HFServiceIconFactory allIconDescriptorsForServiceType:primaryServiceType serviceSubtype:0];
+    allObjects = [v4 allObjects];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA60] array];
+    allObjects = [MEMORY[0x277CBEA60] array];
   }
 
-  return v5;
+  return allObjects;
 }
 
 - (BOOL)_supportsCustomIcons
 {
-  v3 = [(HFServiceGroupBuilder *)self services];
-  v4 = [v3 firstObject];
-  v5 = [v4 hf_effectiveServiceType];
+  services = [(HFServiceGroupBuilder *)self services];
+  firstObject = [services firstObject];
+  hf_effectiveServiceType = [firstObject hf_effectiveServiceType];
 
-  v6 = [(HFServiceGroupBuilder *)self services];
+  services2 = [(HFServiceGroupBuilder *)self services];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__HFServiceGroupBuilder__supportsCustomIcons__block_invoke;
   v9[3] = &unk_277DF4020;
-  v10 = v5;
-  v7 = v5;
-  LOBYTE(v4) = [v6 na_all:v9];
+  v10 = hf_effectiveServiceType;
+  v7 = hf_effectiveServiceType;
+  LOBYTE(firstObject) = [services2 na_all:v9];
 
-  return v4;
+  return firstObject;
 }
 
 uint64_t __45__HFServiceGroupBuilder__supportsCustomIcons__block_invoke(uint64_t a1, void *a2)

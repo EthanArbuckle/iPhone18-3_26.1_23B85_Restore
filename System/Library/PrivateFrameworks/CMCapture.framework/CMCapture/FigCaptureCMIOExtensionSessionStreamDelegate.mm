@@ -1,6 +1,6 @@
 @interface FigCaptureCMIOExtensionSessionStreamDelegate
-- (void)stream:(id)a3 propertiesChanged:(id)a4;
-- (void)stream:(id)a3 receivedSampleBuffer:(opaqueCMSampleBuffer *)a4;
+- (void)stream:(id)stream propertiesChanged:(id)changed;
+- (void)stream:(id)stream receivedSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation FigCaptureCMIOExtensionSessionStreamDelegate
@@ -79,19 +79,19 @@ LABEL_14:
   return result;
 }
 
-- (void)stream:(id)a3 receivedSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)stream:(id)stream receivedSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   pixelBufferOut = 0;
   v6 = *off_1E798A3C8;
-  v7 = CMGetAttachment(a4, *off_1E798A3C8, 0);
-  if (!v7)
+  dictionary = CMGetAttachment(buffer, *off_1E798A3C8, 0);
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    CMSetAttachment(a4, v6, v7, 1u);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    CMSetAttachment(buffer, v6, dictionary, 1u);
   }
 
-  FormatDescription = CMSampleBufferGetFormatDescription(a4);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
   v10 = Dimensions;
   if (Dimensions.width >= 1 && Dimensions.height >= 1)
@@ -101,20 +101,20 @@ LABEL_14:
     v38.origin.x = 0.0;
     v38.origin.y = 0.0;
     DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v38);
-    [v7 setObject:DictionaryRepresentation forKeyedSubscript:*off_1E798B790];
+    [dictionary setObject:DictionaryRepresentation forKeyedSubscript:*off_1E798B790];
     if (DictionaryRepresentation)
     {
       CFRelease(DictionaryRepresentation);
     }
 
-    [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v10), *off_1E798B5A8}];
-    [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", HIDWORD(*&v10)), *off_1E798B5A0}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v10), *off_1E798B5A8}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", HIDWORD(*&v10)), *off_1E798B5A0}];
   }
 
-  [*(DerivedStorage + 248) processSampleBuffer:a4];
-  ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+  [*(DerivedStorage + 248) processSampleBuffer:buffer];
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   v13 = *off_1E798A518;
-  v14 = CMGetAttachment(a4, *off_1E798A518, 0);
+  v14 = CMGetAttachment(buffer, *off_1E798A518, 0);
   if (v14)
   {
     v15 = v14;
@@ -124,12 +124,12 @@ LABEL_14:
     v19 = [v15 objectForKeyedSubscript:*off_1E798B228];
     if (v17)
     {
-      [v7 setObject:v17 forKeyedSubscript:v16];
+      [dictionary setObject:v17 forKeyedSubscript:v16];
     }
 
     if (v19)
     {
-      [v7 setObject:v19 forKeyedSubscript:v18];
+      [dictionary setObject:v19 forKeyedSubscript:v18];
     }
 
     v20 = [v15 objectForKeyedSubscript:*off_1E798CD78];
@@ -138,11 +138,11 @@ LABEL_14:
       CMSetAttachments(ImageBuffer, v20, 1u);
     }
 
-    CMRemoveAttachment(a4, v13);
+    CMRemoveAttachment(buffer, v13);
   }
 
   memset(&v36, 0, sizeof(v36));
-  CMSampleBufferGetPresentationTimeStamp(&v36, a4);
+  CMSampleBufferGetPresentationTimeStamp(&v36, buffer);
   v21 = [objc_msgSend(*(DerivedStorage + 96) objectForKeyedSubscript:{*off_1E798CA98), "objectForKeyedSubscript:", *off_1E798C9B8}];
   v22 = MEMORY[0x1E695E480];
   if (v21)
@@ -200,7 +200,7 @@ LABEL_14:
   }
 
   v28 = *v22;
-  v29 = CMCopyDictionaryOfAttachments(*v22, a4, 1u);
+  v29 = CMCopyDictionaryOfAttachments(*v22, buffer, 1u);
   if (v29)
   {
     v30 = v29;
@@ -208,7 +208,7 @@ LABEL_14:
     CFRelease(v30);
   }
 
-  v31 = CMCopyDictionaryOfAttachments(v28, a4, 0);
+  v31 = CMCopyDictionaryOfAttachments(v28, buffer, 0);
   if (v31)
   {
     v32 = v31;
@@ -236,7 +236,7 @@ LABEL_39:
   }
 }
 
-- (void)stream:(id)a3 propertiesChanged:(id)a4
+- (void)stream:(id)stream propertiesChanged:(id)changed
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   os_unfair_lock_lock((DerivedStorage + 20));
@@ -257,7 +257,7 @@ LABEL_39:
       block[1] = 3221225472;
       block[2] = __73__FigCaptureCMIOExtensionSessionStreamDelegate_stream_propertiesChanged___block_invoke;
       block[3] = &unk_1E798FD58;
-      block[4] = a4;
+      block[4] = changed;
       block[5] = self;
       block[6] = v7;
       dispatch_async(global_queue, block);

@@ -1,34 +1,34 @@
 @interface SearchUIAppEntityAnnotator
-+ (BOOL)annotateView:(id)a3 withRowModel:(id)a4;
-+ (void)registerCollectionViewController:(id)a3;
-+ (void)resetAnnotationForView:(id)a3;
++ (BOOL)annotateView:(id)view withRowModel:(id)model;
++ (void)registerCollectionViewController:(id)controller;
++ (void)resetAnnotationForView:(id)view;
 - (SearchUIAppEntityAnnotator)init;
 @end
 
 @implementation SearchUIAppEntityAnnotator
 
-+ (void)registerCollectionViewController:(id)a3
++ (void)registerCollectionViewController:(id)controller
 {
-  v3 = a3;
-  sub_1DA16F834(v3);
+  controllerCopy = controller;
+  sub_1DA16F834(controllerCopy);
 }
 
-+ (void)resetAnnotationForView:(id)a3
++ (void)resetAnnotationForView:(id)view
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECBA3978);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v9 - v5;
   v7 = sub_1DA25DB84();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
-  v8 = a3;
+  viewCopy = view;
   sub_1DA25F4C4();
 }
 
-+ (BOOL)annotateView:(id)a3 withRowModel:(id)a4
++ (BOOL)annotateView:(id)view withRowModel:(id)model
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_1DA17B348(v5, v6);
+  viewCopy = view;
+  modelCopy = model;
+  v7 = sub_1DA17B348(viewCopy, modelCopy);
 
   return v7 & 1;
 }

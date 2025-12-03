@@ -12,25 +12,25 @@
 
 - (id)time
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 time];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  time = [iMChatItem time];
 
-  return v3;
+  return time;
 }
 
 - (id)sender
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 conversationInitiator];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  conversationInitiator = [iMChatItem conversationInitiator];
 
-  return v3;
+  return conversationInitiator;
 }
 
 - (char)color
 {
   v2 = MEMORY[0x1E69A5B78];
-  v3 = [(CKTUConversationChatItem *)self faceTimeConversation];
-  LODWORD(v2) = [v2 conversationIsAVLessSharePlay:v3];
+  faceTimeConversation = [(CKTUConversationChatItem *)self faceTimeConversation];
+  LODWORD(v2) = [v2 conversationIsAVLessSharePlay:faceTimeConversation];
 
   if (v2)
   {
@@ -45,28 +45,28 @@
 
 - (NSUUID)tuConversationUUID
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 tuConversationUUID];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  tuConversationUUID = [iMChatItem tuConversationUUID];
 
-  return v3;
+  return tuConversationUUID;
 }
 
 - (id)faceTimeConversation
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 tuConversation];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  tuConversation = [iMChatItem tuConversation];
 
-  return v3;
+  return tuConversation;
 }
 
 - (BOOL)isSendersUnknown
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 message];
-  if ([v3 isSenderUnknown])
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  message = [iMChatItem message];
+  if ([message isSenderUnknown])
   {
-    v4 = [v2 chatContext];
-    v5 = [v4 hasResponded] ^ 1;
+    chatContext = [iMChatItem chatContext];
+    v5 = [chatContext hasResponded] ^ 1;
   }
 
   else
@@ -79,10 +79,10 @@
 
 - (unint64_t)conversationAVMode
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 conversationAVMode];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  conversationAVMode = [iMChatItem conversationAVMode];
 
-  return v3;
+  return conversationAVMode;
 }
 
 @end

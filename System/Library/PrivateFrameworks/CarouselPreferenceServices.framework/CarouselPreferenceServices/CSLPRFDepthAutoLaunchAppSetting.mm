@@ -1,12 +1,12 @@
 @interface CSLPRFDepthAutoLaunchAppSetting
 + (int64_t)preferredVersion;
 - (CSLPRFDepthAutoLaunchAppSetting)init;
-- (CSLPRFDepthAutoLaunchAppSetting)initWithDelegate:(id)a3;
-- (CSLPRFDepthAutoLaunchAppSetting)initWithVersion:(int64_t)a3;
+- (CSLPRFDepthAutoLaunchAppSetting)initWithDelegate:(id)delegate;
+- (CSLPRFDepthAutoLaunchAppSetting)initWithVersion:(int64_t)version;
 - (CSLPRFDepthAutoLaunchAppSettingDelegate)delegate;
 - (CSLPRFDepthAutoLaunchSettings)settings;
-- (void)autoLaunchSettingCoordinator:(id)a3 didUpdateSettings:(id)a4;
-- (void)updateSettingsWithBlock:(id)a3;
+- (void)autoLaunchSettingCoordinator:(id)coordinator didUpdateSettings:(id)settings;
+- (void)updateSettingsWithBlock:(id)block;
 @end
 
 @implementation CSLPRFDepthAutoLaunchAppSetting
@@ -18,49 +18,49 @@
   return WeakRetained;
 }
 
-- (void)autoLaunchSettingCoordinator:(id)a3 didUpdateSettings:(id)a4
+- (void)autoLaunchSettingCoordinator:(id)coordinator didUpdateSettings:(id)settings
 {
-  v5 = [(CSLPRFDepthAutoLaunchAppSetting *)self delegate:a3];
+  v5 = [(CSLPRFDepthAutoLaunchAppSetting *)self delegate:coordinator];
   [v5 depthAutoLaunchAppSettingDidUpdate:self];
 }
 
-- (void)updateSettingsWithBlock:(id)a3
+- (void)updateSettingsWithBlock:(id)block
 {
-  v4 = a3;
-  v7 = [(CSLPRFDepthAutoLaunchAppSetting *)self settings];
-  v5 = [v7 mutableCopy];
-  v4[2](v4, v5);
+  blockCopy = block;
+  settings = [(CSLPRFDepthAutoLaunchAppSetting *)self settings];
+  v5 = [settings mutableCopy];
+  blockCopy[2](blockCopy, v5);
 
-  if (([v7 isEqual:v5] & 1) == 0)
+  if (([settings isEqual:v5] & 1) == 0)
   {
-    v6 = [(CSLPRFDepthAutoLaunchAppSetting *)self coordinator];
-    [v6 applySettings:v5];
+    coordinator = [(CSLPRFDepthAutoLaunchAppSetting *)self coordinator];
+    [coordinator applySettings:v5];
   }
 }
 
 - (CSLPRFDepthAutoLaunchSettings)settings
 {
-  v2 = [(CSLPRFDepthAutoLaunchAppSetting *)self coordinator];
-  v3 = [v2 settings];
-  v4 = [v3 copy];
+  coordinator = [(CSLPRFDepthAutoLaunchAppSetting *)self coordinator];
+  settings = [coordinator settings];
+  v4 = [settings copy];
 
   return v4;
 }
 
-- (CSLPRFDepthAutoLaunchAppSetting)initWithDelegate:(id)a3
+- (CSLPRFDepthAutoLaunchAppSetting)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(CSLPRFDepthAutoLaunchAppSetting *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (CSLPRFDepthAutoLaunchAppSetting)initWithVersion:(int64_t)a3
+- (CSLPRFDepthAutoLaunchAppSetting)initWithVersion:(int64_t)version
 {
   v13.receiver = self;
   v13.super_class = CSLPRFDepthAutoLaunchAppSetting;
@@ -68,8 +68,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_version = a3;
-    if (a3 == 1)
+    v4->_version = version;
+    if (version == 1)
     {
       v7 = objc_alloc_init(CSLPRFDepthAutoLaunchSettingsMigrator);
       [(CSLPRFDepthAutoLaunchSettingsMigrator *)v7 migrateIfNeeded];
@@ -78,11 +78,11 @@
       v5->_coordinator = v8;
     }
 
-    else if (a3)
+    else if (version)
     {
       v10 = MEMORY[0x277CBEAD8];
       v11 = *MEMORY[0x277CBE660];
-      v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v7 = [MEMORY[0x277CCABB0] numberWithInteger:version];
       [v10 raise:v11 format:{@"Unknown CSLPRFDepthAutoLaunchVersion: %@", v7}];
     }
 
@@ -101,19 +101,19 @@
 
 - (CSLPRFDepthAutoLaunchAppSetting)init
 {
-  v3 = [objc_opt_class() preferredVersion];
+  preferredVersion = [objc_opt_class() preferredVersion];
 
-  return [(CSLPRFDepthAutoLaunchAppSetting *)self initWithVersion:v3];
+  return [(CSLPRFDepthAutoLaunchAppSetting *)self initWithVersion:preferredVersion];
 }
 
 + (int64_t)preferredVersion
 {
-  v2 = [MEMORY[0x277D37B50] sharedInstance];
-  v3 = [v2 getActivePairedDeviceExcludingAltAccount];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  getActivePairedDeviceExcludingAltAccount = [mEMORY[0x277D37B50] getActivePairedDeviceExcludingAltAccount];
 
-  if (v3)
+  if (getActivePairedDeviceExcludingAltAccount)
   {
-    v4 = [v3 supportsCapability:2878292065];
+    v4 = [getActivePairedDeviceExcludingAltAccount supportsCapability:2878292065];
   }
 
   else

@@ -7,31 +7,31 @@
 - (NSSet)backgroundActivitiesToSuppress;
 - (NSString)inCallSceneSessionIdentifier;
 - (_TtC15ConversationKit30SystemBannerHostViewController)presentedBanner;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
 - (void)deepLinkToFullScreenCallDetailsView;
 - (void)deepLinkToFullScreenCallUI;
 - (void)deepLinkToFullScreenPTTCallDetailsView;
-- (void)didDismiss:(id)a3 reason:(int64_t)a4;
+- (void)didDismiss:(id)dismiss reason:(int64_t)reason;
 - (void)didUpdatePresentationModeToDismissed;
 - (void)didUpdatePresentationModeToFullScreen;
-- (void)dismissPresentedBannerForReason:(id)a3 animated:(BOOL)a4;
-- (void)handleSecondaryPillWantsHUDDismissal:(id)a3;
-- (void)invalidatePersistentSystemApertureAlertWithReason:(id)a3;
-- (void)setPresentedBanner:(id)a3;
+- (void)dismissPresentedBannerForReason:(id)reason animated:(BOOL)animated;
+- (void)handleSecondaryPillWantsHUDDismissal:(id)dismissal;
+- (void)invalidatePersistentSystemApertureAlertWithReason:(id)reason;
+- (void)setPresentedBanner:(id)banner;
 - (void)showDefaultSystemHUD;
 @end
 
 @implementation BannerPresentationManager
 
-- (void)dismissPresentedBannerForReason:(id)a3 animated:(BOOL)a4
+- (void)dismissPresentedBannerForReason:(id)reason animated:(BOOL)animated
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  BannerPresentationManager.dismissPresentedBanner(forReason:animated:)(v10, a4);
+  BannerPresentationManager.dismissPresentedBanner(forReason:animated:)(v10, animated);
 }
 
 - (_TtC15ConversationKit30SystemBannerHostViewController)presentedBanner
@@ -41,26 +41,26 @@
   return v2;
 }
 
-- (void)setPresentedBanner:(id)a3
+- (void)setPresentedBanner:(id)banner
 {
-  v5 = a3;
-  v6 = self;
-  BannerPresentationManager.presentedBanner.setter(a3);
+  bannerCopy = banner;
+  selfCopy = self;
+  BannerPresentationManager.presentedBanner.setter(banner);
 }
 
 - (BOOL)inCallControlsVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BannerPresentationManager.inCallControlsVisible.getter();
 
   return v3 & 1;
 }
 
-- (void)invalidatePersistentSystemApertureAlertWithReason:(id)a3
+- (void)invalidatePersistentSystemApertureAlertWithReason:(id)reason
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   BannerPresentationManager.invalidatePersistentSystemApertureAlert(reason:)(v8);
@@ -68,7 +68,7 @@
 
 - (NSString)inCallSceneSessionIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BannerPresentationManager.inCallSceneSessionIdentifier.getter();
   v5 = v4;
 
@@ -87,7 +87,7 @@
 
 - (NSSet)backgroundActivitiesToSuppress
 {
-  v2 = self;
+  selfCopy = self;
   BannerPresentationManager.backgroundActivitiesToSuppress.getter();
 
   type metadata accessor for STBackgroundActivityIdentifier(0);
@@ -99,7 +99,7 @@
 
 - (BOOL)hasPresentedFullScreenCallUI
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BannerPresentationManager.hasPresentedFullScreenCallUI.getter();
 
   return v3 & 1;
@@ -107,7 +107,7 @@
 
 - (BOOL)isPresentingFullScreenCallUI
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BannerPresentationManager.isPresentingFullScreenCallUI.getter();
 
   return v3 & 1;
@@ -115,7 +115,7 @@
 
 - (BOOL)isAmbient
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BannerPresentationManager.isAmbient.getter();
 
   return v3 & 1;
@@ -123,7 +123,7 @@
 
 - (BOOL)isSpringBoardLocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BannerPresentationManager.isSpringBoardLocked.getter();
 
   return v3 & 1;
@@ -131,43 +131,43 @@
 
 - (void)deepLinkToFullScreenCallUI
 {
-  v2 = self;
+  selfCopy = self;
   BannerPresentationManager.presentFullscreenUI()();
 }
 
 - (void)deepLinkToFullScreenCallDetailsView
 {
-  v2 = self;
+  selfCopy = self;
   BannerPresentationManager.deepLinkToFullScreenCallDetailsView()();
 }
 
 - (void)deepLinkToFullScreenPTTCallDetailsView
 {
-  v2 = self;
+  selfCopy = self;
   BannerPresentationManager.deepLinkToFullScreenPTTCallDetailsView()();
 }
 
 - (void)showDefaultSystemHUD
 {
-  v2 = self;
+  selfCopy = self;
   BannerPresentationManager.showDefaultSystemHUD()();
 }
 
-- (void)didDismiss:(id)a3 reason:(int64_t)a4
+- (void)didDismiss:(id)dismiss reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = self;
-  BannerPresentationManager.didDismiss(_:reason:)(v6, a4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  BannerPresentationManager.didDismiss(_:reason:)(dismissCopy, reason);
 }
 
-- (void)handleSecondaryPillWantsHUDDismissal:(id)a3
+- (void)handleSecondaryPillWantsHUDDismissal:(id)dismissal
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   BannerPresentationManager.handleSecondaryPillWantsHUDDismissal(_:)();
 
   (*(v5 + 8))(v7, v4);
@@ -175,30 +175,30 @@
 
 - (void)didUpdatePresentationModeToDismissed
 {
-  v2 = self;
+  selfCopy = self;
   BannerPresentationManager.didUpdatePresentationModeToDismissed()();
 }
 
 - (void)didUpdatePresentationModeToFullScreen
 {
-  v2 = self;
+  selfCopy = self;
   BannerPresentationManager.didUpdatePresentationModeToFullScreen()();
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   BannerPresentationManager.conversationManager(_:removedActiveConversation:)();
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  selfCopy = self;
   BannerPresentationManager.conversationManager(_:stateChangedFor:fromOldConversation:)();
 }
 

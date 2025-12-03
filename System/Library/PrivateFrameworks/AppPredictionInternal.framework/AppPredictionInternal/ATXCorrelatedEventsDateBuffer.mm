@@ -1,27 +1,27 @@
 @interface ATXCorrelatedEventsDateBuffer
-- (ATXCorrelatedEventsDateBuffer)initWithBufferSeconds:(double)a3 andBufferType:(int64_t)a4;
-- (id)endDateWithBufferForEvent:(id)a3;
-- (id)startDateWithBufferForEvent:(id)a3;
+- (ATXCorrelatedEventsDateBuffer)initWithBufferSeconds:(double)seconds andBufferType:(int64_t)type;
+- (id)endDateWithBufferForEvent:(id)event;
+- (id)startDateWithBufferForEvent:(id)event;
 @end
 
 @implementation ATXCorrelatedEventsDateBuffer
 
-- (ATXCorrelatedEventsDateBuffer)initWithBufferSeconds:(double)a3 andBufferType:(int64_t)a4
+- (ATXCorrelatedEventsDateBuffer)initWithBufferSeconds:(double)seconds andBufferType:(int64_t)type
 {
-  v4 = self;
-  if (a4 < 3)
+  selfCopy = self;
+  if (type < 3)
   {
     v11.receiver = self;
     v11.super_class = ATXCorrelatedEventsDateBuffer;
     v9 = [(ATXCorrelatedEventsDateBuffer *)&v11 init];
     if (v9)
     {
-      v9->_bufferSeconds = a3;
-      v9->_bufferType = a4;
+      v9->_bufferSeconds = seconds;
+      v9->_bufferType = type;
     }
 
-    v4 = v9;
-    v6 = v4;
+    selfCopy = v9;
+    v6 = selfCopy;
   }
 
   else
@@ -38,10 +38,10 @@
   return v6;
 }
 
-- (id)startDateWithBufferForEvent:(id)a3
+- (id)startDateWithBufferForEvent:(id)event
 {
-  v5 = a3;
-  if (!v5)
+  eventCopy = event;
+  if (!eventCopy)
   {
     [(ATXCorrelatedEventsDateBuffer *)a2 startDateWithBufferForEvent:?];
   }
@@ -50,12 +50,12 @@
   v7 = -self->_bufferSeconds;
   if ((self->_bufferType | 2) == 2)
   {
-    [v5 startDate];
+    [eventCopy startDate];
   }
 
   else
   {
-    [v5 endDate];
+    [eventCopy endDate];
   }
   v8 = ;
   v9 = [v6 dateWithTimeInterval:v8 sinceDate:v7];
@@ -63,10 +63,10 @@
   return v9;
 }
 
-- (id)endDateWithBufferForEvent:(id)a3
+- (id)endDateWithBufferForEvent:(id)event
 {
-  v5 = a3;
-  if (!v5)
+  eventCopy = event;
+  if (!eventCopy)
   {
     [(ATXCorrelatedEventsDateBuffer *)a2 endDateWithBufferForEvent:?];
   }
@@ -75,12 +75,12 @@
   bufferSeconds = self->_bufferSeconds;
   if ((self->_bufferType - 1) > 1)
   {
-    [v5 startDate];
+    [eventCopy startDate];
   }
 
   else
   {
-    [v5 endDate];
+    [eventCopy endDate];
   }
   v8 = ;
   v9 = [v6 dateWithTimeInterval:v8 sinceDate:bufferSeconds];

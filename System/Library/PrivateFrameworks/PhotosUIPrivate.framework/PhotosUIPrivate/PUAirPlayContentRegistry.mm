@@ -1,32 +1,32 @@
 @interface PUAirPlayContentRegistry
 - (PHAirPlayControllerContentProvider)currentContentProvider;
 - (PUAirPlayContentRegistry)init;
-- (id)contentForController:(id)a3;
-- (unint64_t)_indexOfContentProvider:(id)a3;
-- (void)addContentProvider:(id)a3;
-- (void)removeContentProvider:(id)a3;
+- (id)contentForController:(id)controller;
+- (unint64_t)_indexOfContentProvider:(id)provider;
+- (void)addContentProvider:(id)provider;
+- (void)removeContentProvider:(id)provider;
 @end
 
 @implementation PUAirPlayContentRegistry
 
-- (id)contentForController:(id)a3
+- (id)contentForController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUAirPlayContentRegistry *)self _cachedCurrentContent];
-  if (!v5)
+  controllerCopy = controller;
+  _cachedCurrentContent = [(PUAirPlayContentRegistry *)self _cachedCurrentContent];
+  if (!_cachedCurrentContent)
   {
-    v6 = [(PUAirPlayContentRegistry *)self currentContentProvider];
-    v5 = [v6 contentViewControllerForAirPlayController:v4];
-    [(PUAirPlayContentRegistry *)self _setCachedCurrentContent:v5];
+    currentContentProvider = [(PUAirPlayContentRegistry *)self currentContentProvider];
+    _cachedCurrentContent = [currentContentProvider contentViewControllerForAirPlayController:controllerCopy];
+    [(PUAirPlayContentRegistry *)self _setCachedCurrentContent:_cachedCurrentContent];
   }
 
-  return v5;
+  return _cachedCurrentContent;
 }
 
 - (PHAirPlayControllerContentProvider)currentContentProvider
 {
-  v3 = [(PUAirPlayContentRegistry *)self _contentProviders];
-  v4 = [v3 count];
+  _contentProviders = [(PUAirPlayContentRegistry *)self _contentProviders];
+  v4 = [_contentProviders count];
   if (v4 - 1 < 0)
   {
 LABEL_7:
@@ -38,7 +38,7 @@ LABEL_7:
     v5 = v4;
     while (1)
     {
-      v6 = [v3 pointerAtIndex:--v5];
+      v6 = [_contentProviders pointerAtIndex:--v5];
       if (v6)
       {
         break;
@@ -69,19 +69,19 @@ LABEL_7:
   return v8;
 }
 
-- (unint64_t)_indexOfContentProvider:(id)a3
+- (unint64_t)_indexOfContentProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(PUAirPlayContentRegistry *)self _contentProviders];
-  v6 = [v5 allObjects];
+  providerCopy = provider;
+  _contentProviders = [(PUAirPlayContentRegistry *)self _contentProviders];
+  allObjects = [_contentProviders allObjects];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__PUAirPlayContentRegistry__indexOfContentProvider___block_invoke;
   v10[3] = &unk_1E7B74BF8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 indexOfObjectWithOptions:2 passingTest:v10];
+  v11 = providerCopy;
+  v7 = providerCopy;
+  v8 = [allObjects indexOfObjectWithOptions:2 passingTest:v10];
 
   return v8;
 }
@@ -93,32 +93,32 @@ BOOL __52__PUAirPlayContentRegistry__indexOfContentProvider___block_invoke(uint6
   return result;
 }
 
-- (void)removeContentProvider:(id)a3
+- (void)removeContentProvider:(id)provider
 {
-  v7 = a3;
-  v4 = [(PUAirPlayContentRegistry *)self _indexOfContentProvider:v7];
+  providerCopy = provider;
+  v4 = [(PUAirPlayContentRegistry *)self _indexOfContentProvider:providerCopy];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    if ([(PUAirPlayContentRegistry *)self isCurrentContentProvider:v7])
+    if ([(PUAirPlayContentRegistry *)self isCurrentContentProvider:providerCopy])
     {
       [(PUAirPlayContentRegistry *)self _invalidateCurrentContent];
     }
 
-    v6 = [(PUAirPlayContentRegistry *)self _contentProviders];
-    [v6 removePointerAtIndex:v5];
+    _contentProviders = [(PUAirPlayContentRegistry *)self _contentProviders];
+    [_contentProviders removePointerAtIndex:v5];
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)addContentProvider:(id)a3
+- (void)addContentProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   if ([(PUAirPlayContentRegistry *)self _indexOfContentProvider:?]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(PUAirPlayContentRegistry *)self _contentProviders];
-    [v4 addPointer:v5];
+    _contentProviders = [(PUAirPlayContentRegistry *)self _contentProviders];
+    [_contentProviders addPointer:providerCopy];
 
     [(PUAirPlayContentRegistry *)self _invalidateCurrentContent];
   }
@@ -131,8 +131,8 @@ BOOL __52__PUAirPlayContentRegistry__indexOfContentProvider___block_invoke(uint6
   v2 = [(PUAirPlayContentRegistry *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-    [(PUAirPlayContentRegistry *)v2 _setContentProviders:v3];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    [(PUAirPlayContentRegistry *)v2 _setContentProviders:weakObjectsPointerArray];
   }
 
   return v2;

@@ -4,21 +4,21 @@
 - (BOOL)_shouldShowLaneGuidance;
 - (BOOL)_usesLargeScreenLayout;
 - (BOOL)shouldShowLaneGuidance;
-- (CGSize)sizeForCompressionStage:(unint64_t)a3;
-- (CarManeuverView)initWithGuidance:(id)a3 variant:(unint64_t)a4 destination:(unint64_t)a5 layoutType:(unint64_t)a6 sizeDataSource:(id)a7;
+- (CGSize)sizeForCompressionStage:(unint64_t)stage;
+- (CarManeuverView)initWithGuidance:(id)guidance variant:(unint64_t)variant destination:(unint64_t)destination layoutType:(unint64_t)type sizeDataSource:(id)source;
 - (CarManeuverViewAnalyticsDelegate)analyticsDelegate;
 - (CarManeuverViewSizeDataSource)sizeDataSource;
 - (CarManeuverViewStyle)style;
 - (NSDictionary)sizeByCompressionStage;
 - (id)_instructionHorizontalPrimaryConstraint;
-- (id)_maneuverArtworkForDirection:(int)a3;
+- (id)_maneuverArtworkForDirection:(int)direction;
 - (id)_maneuverBottomPrimaryConstraint;
 - (id)_maneuverTopPrimaryConstraint;
 - (id)_shieldImage;
 - (id)_shieldViewPrimaryLeadingConstraint;
-- (int)GEOManeuverTypeForGEOLaneDirection:(int)a3;
+- (int)GEOManeuverTypeForGEOLaneDirection:(int)direction;
 - (int)_preferredDirectionForLaneGuidance;
-- (unint64_t)compressionStageForSize:(CGSize)a3;
+- (unint64_t)compressionStageForSize:(CGSize)size;
 - (unint64_t)variant;
 - (void)_setupConstraints;
 - (void)_setupStyling;
@@ -30,53 +30,53 @@
 - (void)_updateShield;
 - (void)_updateStyling;
 - (void)_updateSubviews;
-- (void)alignSecondarySignSubviewsToPrimaryManeuverView:(id)a3;
+- (void)alignSecondarySignSubviewsToPrimaryManeuverView:(id)view;
 - (void)didMoveToWindow;
 - (void)hideLaneGuidance;
 - (void)layoutSubviews;
-- (void)navSignLabel:(id)a3 didSelectAlternate:(unint64_t)a4;
+- (void)navSignLabel:(id)label didSelectAlternate:(unint64_t)alternate;
 - (void)resetCompressionSizes;
-- (void)setBlurMode:(int64_t)a3;
-- (void)setCompressionStage:(unint64_t)a3;
-- (void)setLayoutType:(unint64_t)a3;
-- (void)setSecondarySignVisible:(BOOL)a3;
-- (void)showLaneGuidance:(id)a3;
-- (void)showLaneGuidanceFromManeuver:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateLaneGuidance:(id)a3;
+- (void)setBlurMode:(int64_t)mode;
+- (void)setCompressionStage:(unint64_t)stage;
+- (void)setLayoutType:(unint64_t)type;
+- (void)setSecondarySignVisible:(BOOL)visible;
+- (void)showLaneGuidance:(id)guidance;
+- (void)showLaneGuidanceFromManeuver:(id)maneuver;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateLaneGuidance:(id)guidance;
 @end
 
 @implementation CarManeuverView
 
 - (CarManeuverViewStyle)style
 {
-  v3 = [(CarManeuverView *)self configuredStyle];
-  v4 = [v3 variant];
+  configuredStyle = [(CarManeuverView *)self configuredStyle];
+  variant = [configuredStyle variant];
 
-  if (v4 == 2 || [(CarManeuverView *)self compressionStage]< 6)
+  if (variant == 2 || [(CarManeuverView *)self compressionStage]< 6)
   {
-    v5 = [(CarManeuverView *)self configuredStyle];
+    configuredStyle2 = [(CarManeuverView *)self configuredStyle];
   }
 
   else
   {
-    v5 = [(CarManeuverView *)self lowGuidanceStyle];
+    configuredStyle2 = [(CarManeuverView *)self lowGuidanceStyle];
   }
 
-  return v5;
+  return configuredStyle2;
 }
 
 - (void)_updateContents
 {
-  v3 = [(NavSignLaneGuidanceInfo *)self->_laneGuidance lanes];
-  [(NavSignLaneGuidanceView *)self->_laneGuidanceView setLanes:v3];
+  lanes = [(NavSignLaneGuidanceInfo *)self->_laneGuidance lanes];
+  [(NavSignLaneGuidanceView *)self->_laneGuidanceView setLanes:lanes];
 
   [(CarManeuverView *)self _updateManeuverView];
   [(CarManeuverView *)self _updateLabels];
-  v4 = [(CarManeuverView *)self style];
-  v5 = [v4 variant];
+  style = [(CarManeuverView *)self style];
+  variant = [style variant];
 
-  if (v5 != 1)
+  if (variant != 1)
   {
 
     [(CarManeuverView *)self _updateShield];
@@ -87,65 +87,65 @@
 {
   if ([(NavSignLaneGuidanceInfo *)self->_laneGuidance isForMidStep])
   {
-    v4 = [(CarManeuverView *)self _maneuverArtworkForDirection:[(CarManeuverView *)self _preferredDirectionForLaneGuidance]];
+    guidance = [(CarManeuverView *)self _maneuverArtworkForDirection:[(CarManeuverView *)self _preferredDirectionForLaneGuidance]];
     [(GuidanceManeuverView *)self->_arrowView setManeuverArtwork:?];
   }
 
   else
   {
-    v4 = [(CarManeuverView *)self guidance];
-    v3 = [v4 maneuverArtwork];
-    [(GuidanceManeuverView *)self->_arrowView setManeuverArtwork:v3];
+    guidance = [(CarManeuverView *)self guidance];
+    maneuverArtwork = [guidance maneuverArtwork];
+    [(GuidanceManeuverView *)self->_arrowView setManeuverArtwork:maneuverArtwork];
   }
 }
 
 - (void)_updateShield
 {
-  v5 = [(CarManeuverView *)self _shieldImage];
-  v3 = [(UIImageView *)self->_shieldView image];
-  v4 = [MNComparison isValue:v3 equalTo:v5];
+  _shieldImage = [(CarManeuverView *)self _shieldImage];
+  image = [(UIImageView *)self->_shieldView image];
+  v4 = [MNComparison isValue:image equalTo:_shieldImage];
 
   if ((v4 & 1) == 0)
   {
-    [(UIImageView *)self->_shieldView setImage:v5];
+    [(UIImageView *)self->_shieldView setImage:_shieldImage];
   }
 }
 
 - (id)_shieldImage
 {
-  v3 = [(CarManeuverView *)self guidance];
-  v4 = [v3 signID];
+  guidance = [(CarManeuverView *)self guidance];
+  signID = [guidance signID];
 
-  if (![MNComparison isValue:v4 equalTo:self->_lastRenderedShieldSignID])
+  if (![MNComparison isValue:signID equalTo:self->_lastRenderedShieldSignID])
   {
-    objc_storeStrong(&self->_lastRenderedShieldSignID, v4);
-    v5 = [(CarManeuverView *)self _screen];
-    [v5 scale];
+    objc_storeStrong(&self->_lastRenderedShieldSignID, signID);
+    _screen = [(CarManeuverView *)self _screen];
+    [_screen scale];
     v7 = v6;
 
-    v8 = [(CarManeuverView *)self sizeDataSource];
-    [v8 dynamicPointScaleValue];
+    sizeDataSource = [(CarManeuverView *)self sizeDataSource];
+    [sizeDataSource dynamicPointScaleValue];
     v10 = v9;
 
-    v11 = [(CarManeuverView *)self destination];
-    v12 = v11 - 1 < 2 || v11 == 4;
-    if (v11 <= 4 && ((1 << v11) & 0x16) != 0)
+    destination = [(CarManeuverView *)self destination];
+    v12 = destination - 1 < 2 || destination == 4;
+    if (destination <= 4 && ((1 << destination) & 0x16) != 0)
     {
-      v13 = [(CarManeuverView *)self traitCollection];
-      v14 = [v13 userInterfaceStyle] == 2;
+      traitCollection = [(CarManeuverView *)self traitCollection];
+      v14 = [traitCollection userInterfaceStyle] == 2;
     }
 
     else
     {
-      v13 = [(CarManeuverView *)self style];
-      v14 = [v13 blurMode] == 3;
+      traitCollection = [(CarManeuverView *)self style];
+      v14 = [traitCollection blurMode] == 3;
     }
 
     v15 = v14;
 
-    v16 = [(CarManeuverView *)self guidance];
-    v17 = [v16 shieldInfo];
-    v18 = [v17 _car_shieldImageWithSize:3 scale:v12 useAdaptiveStyling:v15 nightMode:v7];
+    guidance2 = [(CarManeuverView *)self guidance];
+    shieldInfo = [guidance2 shieldInfo];
+    v18 = [shieldInfo _car_shieldImageWithSize:3 scale:v12 useAdaptiveStyling:v15 nightMode:v7];
 
     if (v18)
     {
@@ -171,35 +171,35 @@
 
 - (void)_updateLabels
 {
-  v3 = [(CarManeuverView *)self laneGuidance];
-  if ([v3 isForMidStep])
+  laneGuidance = [(CarManeuverView *)self laneGuidance];
+  if ([laneGuidance isForMidStep])
   {
-    v4 = [(CarManeuverView *)self style];
-    v5 = [v4 isSecondary];
+    style = [(CarManeuverView *)self style];
+    isSecondary = [style isSecondary];
 
-    if ((v5 & 1) == 0)
+    if ((isSecondary & 1) == 0)
     {
-      v6 = [(CarManeuverView *)self laneGuidance];
-      v7 = [v6 midStepTitles];
-      v8 = [v7 count];
+      laneGuidance2 = [(CarManeuverView *)self laneGuidance];
+      midStepTitles = [laneGuidance2 midStepTitles];
+      v8 = [midStepTitles count];
 
       if (v8)
       {
-        v9 = [(CarManeuverView *)self laneGuidance];
-        [v9 midStepTitles];
+        laneGuidance3 = [(CarManeuverView *)self laneGuidance];
+        [laneGuidance3 midStepTitles];
       }
 
       else
       {
-        v9 = [(CarManeuverView *)self guidance];
-        [v9 majorTextAlternatives];
+        laneGuidance3 = [(CarManeuverView *)self guidance];
+        [laneGuidance3 majorTextAlternatives];
       }
       v32 = ;
       [(NavSignLabel *)self->_distanceLabel setTextAlternatives:v32];
 
-      v34 = [(CarManeuverView *)self laneGuidance];
-      v33 = [v34 textAlternatives];
-      [(NavSignLabel *)self->_instructionsLabel setTextAlternatives:v33];
+      laneGuidance4 = [(CarManeuverView *)self laneGuidance];
+      textAlternatives = [laneGuidance4 textAlternatives];
+      [(NavSignLabel *)self->_instructionsLabel setTextAlternatives:textAlternatives];
 
       return;
     }
@@ -211,12 +211,12 @@
 
   if ([(CarManeuverView *)self _isDisplayingStartManeuver])
   {
-    v10 = [(CarManeuverView *)self style];
-    if ([v10 variant] == 1)
+    style2 = [(CarManeuverView *)self style];
+    if ([style2 variant] == 1)
     {
-      v11 = [(CarManeuverView *)self guidance];
-      v12 = [v11 majorTextAlternatives];
-      v13 = [v12 count];
+      guidance = [(CarManeuverView *)self guidance];
+      majorTextAlternatives = [guidance majorTextAlternatives];
+      v13 = [majorTextAlternatives count];
 
       if (!v13)
       {
@@ -246,26 +246,26 @@
     }
   }
 
-  v22 = [(CarManeuverView *)self guidance];
-  v23 = [v22 majorTextAlternatives];
-  [(NavSignLabel *)self->_distanceLabel setTextAlternatives:v23];
+  guidance2 = [(CarManeuverView *)self guidance];
+  majorTextAlternatives2 = [guidance2 majorTextAlternatives];
+  [(NavSignLabel *)self->_distanceLabel setTextAlternatives:majorTextAlternatives2];
 
-  v24 = [(CarManeuverView *)self guidance];
-  v25 = [v24 minorTextAlternatives];
-  [(NavSignLabel *)self->_instructionsLabel setTextAlternatives:v25];
+  guidance3 = [(CarManeuverView *)self guidance];
+  minorTextAlternatives = [guidance3 minorTextAlternatives];
+  [(NavSignLabel *)self->_instructionsLabel setTextAlternatives:minorTextAlternatives];
 
   if (self->_destination - 3 <= 1)
   {
-    v26 = [(NavSignLabel *)self->_distanceLabel text];
-    v27 = [v26 length];
+    text = [(NavSignLabel *)self->_distanceLabel text];
+    v27 = [text length];
 
     if (v27)
     {
-      v28 = [(CarManeuverView *)self style];
-      -[NavSignLabel setMaxNumberOfTotalLines:](self->_instructionsLabel, "setMaxNumberOfTotalLines:", [v28 instructionsMaxNumberOfTotalLines]);
+      style3 = [(CarManeuverView *)self style];
+      -[NavSignLabel setMaxNumberOfTotalLines:](self->_instructionsLabel, "setMaxNumberOfTotalLines:", [style3 instructionsMaxNumberOfTotalLines]);
 
-      v29 = [(CarManeuverView *)self style];
-      -[NavSignLabel setMaxNumberOfLinesWithPreferredFont:](self->_instructionsLabel, "setMaxNumberOfLinesWithPreferredFont:", [v29 instructionsMaxNumberOfLinesWithPreferredFont]);
+      style4 = [(CarManeuverView *)self style];
+      -[NavSignLabel setMaxNumberOfLinesWithPreferredFont:](self->_instructionsLabel, "setMaxNumberOfLinesWithPreferredFont:", [style4 instructionsMaxNumberOfLinesWithPreferredFont]);
 
       instructionsLabel = self->_instructionsLabel;
       v31 = 1;
@@ -285,11 +285,11 @@
 
 - (BOOL)_isDisplayingStartManeuver
 {
-  v2 = [(CarManeuverView *)self guidance];
-  v3 = [v2 maneuverArtwork];
-  v4 = [v3 maneuver];
+  guidance = [(CarManeuverView *)self guidance];
+  maneuverArtwork = [guidance maneuverArtwork];
+  maneuver = [maneuverArtwork maneuver];
 
-  return ((v4 - 17) & 0xFFFFFFF7) == 0;
+  return ((maneuver - 17) & 0xFFFFFFF7) == 0;
 }
 
 - (CarManeuverViewAnalyticsDelegate)analyticsDelegate
@@ -311,8 +311,8 @@
 
 - (BOOL)_shouldShowLaneGuidance
 {
-  v3 = [(CarManeuverView *)self laneGuidance];
-  if (v3)
+  laneGuidance = [(CarManeuverView *)self laneGuidance];
+  if (laneGuidance)
   {
     v4 = ![(NavSignLaneGuidanceView *)self->_laneGuidanceView highlightedLanesNotInVisibleRange];
   }
@@ -327,8 +327,8 @@
 
 - (BOOL)_usesLargeScreenLayout
 {
-  v2 = [(CarManeuverView *)self style];
-  v3 = [v2 layoutType] == 1;
+  style = [(CarManeuverView *)self style];
+  v3 = [style layoutType] == 1;
 
   return v3;
 }
@@ -341,69 +341,69 @@
     v4 = sub_10007E168();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CarManeuverView *)self variant];
-      if (v5 > 2)
+      variant = [(CarManeuverView *)self variant];
+      if (variant > 2)
       {
         v6 = @".Unknown";
       }
 
       else
       {
-        v6 = *(&off_101656248 + v5);
+        v6 = *(&off_101656248 + variant);
       }
 
       v7 = v6;
       *buf = 138412546;
       v62 = v7;
       v63 = 2048;
-      v64 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, sizing calculations began ----------------------------------", buf, 0x16u);
     }
 
     v8 = objc_opt_new();
     v9 = [UIView alloc];
-    v10 = [(CarManeuverView *)self sizeDataSource];
-    [v10 availableWidth];
+    sizeDataSource = [(CarManeuverView *)self sizeDataSource];
+    [sizeDataSource availableWidth];
     v12 = [v9 initWithFrame:{0.0, 0.0, v11, 1.79769313e308}];
 
     v13 = [CarManeuverView alloc];
-    v14 = [(CarManeuverView *)self guidance];
-    v15 = [(CarManeuverView *)self configuredStyle];
-    v58 = [v15 variant];
-    v16 = self;
-    v17 = [(CarManeuverView *)self destination];
-    v18 = [(CarManeuverView *)self configuredStyle];
-    v19 = [v18 layoutType];
-    v60 = self;
-    v20 = [(CarManeuverView *)self sizeDataSource];
+    guidance = [(CarManeuverView *)self guidance];
+    configuredStyle = [(CarManeuverView *)self configuredStyle];
+    variant2 = [configuredStyle variant];
+    selfCopy2 = self;
+    destination = [(CarManeuverView *)self destination];
+    configuredStyle2 = [(CarManeuverView *)self configuredStyle];
+    layoutType = [configuredStyle2 layoutType];
+    selfCopy3 = self;
+    sizeDataSource2 = [(CarManeuverView *)self sizeDataSource];
     v21 = v13;
-    v22 = v14;
-    v23 = [(CarManeuverView *)v21 initWithGuidance:v14 variant:v58 destination:v17 layoutType:v19 sizeDataSource:v20];
+    v22 = guidance;
+    v23 = [(CarManeuverView *)v21 initWithGuidance:guidance variant:variant2 destination:destination layoutType:layoutType sizeDataSource:sizeDataSource2];
 
     [(CarManeuverView *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CarManeuverView *)v23 setLabelLineBreakMode:0];
-    [(CarManeuverView *)v23 showLaneGuidanceFromManeuver:v16];
+    [(CarManeuverView *)v23 showLaneGuidanceFromManeuver:selfCopy2];
     [v12 addSubview:v23];
-    v59 = [(CarManeuverView *)v23 topAnchor];
-    v57 = [v12 topAnchor];
-    v56 = [v59 constraintEqualToAnchor:v57];
+    topAnchor = [(CarManeuverView *)v23 topAnchor];
+    topAnchor2 = [v12 topAnchor];
+    v56 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v67[0] = v56;
-    v24 = [(CarManeuverView *)v23 leadingAnchor];
-    v25 = [v12 leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    leadingAnchor = [(CarManeuverView *)v23 leadingAnchor];
+    leadingAnchor2 = [v12 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v67[1] = v26;
-    v27 = [(CarManeuverView *)v23 trailingAnchor];
-    v28 = [v12 trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    trailingAnchor = [(CarManeuverView *)v23 trailingAnchor];
+    trailingAnchor2 = [v12 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v67[2] = v29;
     v30 = [NSArray arrayWithObjects:v67 count:3];
     [NSLayoutConstraint activateConstraints:v30];
 
-    v31 = [(CarManeuverView *)v60 style];
-    LODWORD(v28) = [v31 isSecondary];
+    style = [(CarManeuverView *)selfCopy3 style];
+    LODWORD(trailingAnchor2) = [style isSecondary];
 
     v32 = 0;
-    if (v28)
+    if (trailingAnchor2)
     {
       v33 = 2;
     }
@@ -429,13 +429,13 @@
     }
 
     while (v33 != v32);
-    v39 = [(CarManeuverView *)v60 style];
-    v40 = [v39 isSecondary];
+    style2 = [(CarManeuverView *)selfCopy3 style];
+    isSecondary = [style2 isSecondary];
 
-    if ((v40 & 1) == 0)
+    if ((isSecondary & 1) == 0)
     {
-      v41 = [(CarManeuverView *)v60 sizeDataSource];
-      [v41 availableWidth];
+      sizeDataSource3 = [(CarManeuverView *)selfCopy3 sizeDataSource];
+      [sizeDataSource3 availableWidth];
       v42 = [NSValue valueWithSize:?];
       v43 = [NSNumber numberWithUnsignedInteger:v33];
       [v8 setObject:v42 forKeyedSubscript:v43];
@@ -447,19 +447,19 @@
     v45 = [NSNumber numberWithUnsignedInteger:v33];
     [v8 setObject:v44 forKeyedSubscript:v45];
 
-    objc_storeStrong(&v60->_sizeByCompressionStage, v8);
+    objc_storeStrong(&selfCopy3->_sizeByCompressionStage, v8);
     v46 = sub_10007E168();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
-      v47 = [(CarManeuverView *)v60 variant];
-      if (v47 > 2)
+      variant3 = [(CarManeuverView *)selfCopy3 variant];
+      if (variant3 > 2)
       {
         v48 = @".Unknown";
       }
 
       else
       {
-        v48 = *(&off_101656248 + v47);
+        v48 = *(&off_101656248 + variant3);
       }
 
       v49 = v48;
@@ -467,7 +467,7 @@
       *buf = 138412802;
       v62 = v49;
       v63 = 2048;
-      v64 = v60;
+      selfCopy = selfCopy3;
       v65 = 2112;
       v66 = v50;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, building sizeByCompressionStage: %@", buf, 0x20u);
@@ -476,26 +476,26 @@
     v51 = sub_10007E168();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
-      v52 = [(CarManeuverView *)v60 variant];
-      if (v52 > 2)
+      variant4 = [(CarManeuverView *)selfCopy3 variant];
+      if (variant4 > 2)
       {
         v53 = @".Unknown";
       }
 
       else
       {
-        v53 = *(&off_101656248 + v52);
+        v53 = *(&off_101656248 + variant4);
       }
 
       v54 = v53;
       *buf = 138412546;
       v62 = v54;
       v63 = 2048;
-      v64 = v60;
+      selfCopy = selfCopy3;
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, sizing calculations ended ----------------------------------", buf, 0x16u);
     }
 
-    sizeByCompressionStage = v60->_sizeByCompressionStage;
+    sizeByCompressionStage = selfCopy3->_sizeByCompressionStage;
   }
 
   return sizeByCompressionStage;
@@ -506,11 +506,11 @@
   v5.receiver = self;
   v5.super_class = CarManeuverView;
   [(CarManeuverView *)&v5 didMoveToWindow];
-  v3 = [(CarManeuverView *)self window];
-  -[CarManeuverViewStyle setAlignmentStyle:](self->_configuredStyle, "setAlignmentStyle:", [v3 _car_hybridInstrumentClusterAlignmentStyle]);
+  window = [(CarManeuverView *)self window];
+  -[CarManeuverViewStyle setAlignmentStyle:](self->_configuredStyle, "setAlignmentStyle:", [window _car_hybridInstrumentClusterAlignmentStyle]);
 
-  v4 = [(CarManeuverView *)self window];
-  -[CarManeuverViewStyle setAlignmentStyle:](self->_lowGuidanceStyle, "setAlignmentStyle:", [v4 _car_hybridInstrumentClusterAlignmentStyle]);
+  window2 = [(CarManeuverView *)self window];
+  -[CarManeuverViewStyle setAlignmentStyle:](self->_lowGuidanceStyle, "setAlignmentStyle:", [window2 _car_hybridInstrumentClusterAlignmentStyle]);
 
   [(CarManeuverView *)self resetCompressionSizes];
   [(CarManeuverView *)self _setupConstraints];
@@ -523,15 +523,15 @@
   v3 = sub_10007E168();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarManeuverView *)self variant];
-    if (v4 > 2)
+    variant = [(CarManeuverView *)self variant];
+    if (variant > 2)
     {
       v5 = @".Unknown";
     }
 
     else
     {
-      v5 = *(&off_101656248 + v4);
+      v5 = *(&off_101656248 + variant);
     }
 
     v6 = v5;
@@ -540,7 +540,7 @@
     v9 = 138412802;
     v10 = v6;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, resetting compression sizes. (current frame: %@)", &v9, 0x20u);
@@ -552,10 +552,10 @@
 
 - (unint64_t)variant
 {
-  v2 = [(CarManeuverView *)self configuredStyle];
-  v3 = [v2 variant];
+  configuredStyle = [(CarManeuverView *)self configuredStyle];
+  variant = [configuredStyle variant];
 
-  return v3;
+  return variant;
 }
 
 - (void)_setupConstraints
@@ -563,15 +563,15 @@
   v3 = sub_10007E168();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarManeuverView *)self variant];
-    if (v4 > 2)
+    variant = [(CarManeuverView *)self variant];
+    if (variant > 2)
     {
       v5 = @".Unknown";
     }
 
     else
     {
-      v5 = *(&off_101656248 + v4);
+      v5 = *(&off_101656248 + variant);
     }
 
     v6 = v5;
@@ -583,105 +583,105 @@
   }
 
   v7 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-  v8 = [(CarManeuverView *)self myConstraints];
-  [NSLayoutConstraint deactivateConstraints:v8];
+  myConstraints = [(CarManeuverView *)self myConstraints];
+  [NSLayoutConstraint deactivateConstraints:myConstraints];
 
-  v9 = [(CarManeuverView *)self dynamicConstraints];
-  [v9 enumerateKeysAndObjectsUsingBlock:&stru_101650340];
+  dynamicConstraints = [(CarManeuverView *)self dynamicConstraints];
+  [dynamicConstraints enumerateKeysAndObjectsUsingBlock:&stru_101650340];
 
-  v10 = [(CarManeuverView *)self dynamicConstraints];
-  [v10 removeAllObjects];
+  dynamicConstraints2 = [(CarManeuverView *)self dynamicConstraints];
+  [dynamicConstraints2 removeAllObjects];
 
   v11 = objc_opt_new();
-  v12 = [(UIImageView *)self->_shieldView heightAnchor];
-  v13 = [(CarManeuverView *)self sizeDataSource];
-  [v13 dynamicPointScaleValue];
+  heightAnchor = [(UIImageView *)self->_shieldView heightAnchor];
+  sizeDataSource = [(CarManeuverView *)self sizeDataSource];
+  [sizeDataSource dynamicPointScaleValue];
   v15 = v14;
 
-  v16 = [v12 constraintLessThanOrEqualToConstant:v15 * 16.0];
+  v16 = [heightAnchor constraintLessThanOrEqualToConstant:v15 * 16.0];
   v254 = v16;
   v17 = 1;
   v18 = [NSArray arrayWithObjects:&v254 count:1];
   [v11 addObjectsFromArray:v18];
 
-  v19 = [(CarManeuverView *)self laneGuidance];
-  v20 = [v19 midStepTitles];
-  if (![v20 count])
+  laneGuidance = [(CarManeuverView *)self laneGuidance];
+  midStepTitles = [laneGuidance midStepTitles];
+  if (![midStepTitles count])
   {
-    v21 = [(CarManeuverView *)self guidance];
-    v22 = [v21 majorTextAlternatives];
-    v17 = [v22 count] != 0;
+    guidance = [(CarManeuverView *)self guidance];
+    majorTextAlternatives = [guidance majorTextAlternatives];
+    v17 = [majorTextAlternatives count] != 0;
   }
 
-  v23 = [(CarManeuverView *)self style];
-  v24 = [v23 variant];
+  style = [(CarManeuverView *)self style];
+  variant2 = [style variant];
 
-  if (v24 == 2)
+  if (variant2 == 2)
   {
-    v216 = [(NavSignLabel *)self->_instructionsLabel topAnchor];
-    v211 = [v216 maps_uniqueKey];
-    v228[0] = v211;
-    v207 = [(NavSignLabel *)self->_instructionsLabel topAnchor];
-    v201 = [(CarManeuverView *)self topAnchor];
+    topAnchor = [(NavSignLabel *)self->_instructionsLabel topAnchor];
+    maps_uniqueKey = [topAnchor maps_uniqueKey];
+    v228[0] = maps_uniqueKey;
+    topAnchor2 = [(NavSignLabel *)self->_instructionsLabel topAnchor];
+    topAnchor3 = [(CarManeuverView *)self topAnchor];
     [(NavSignLabel *)self->_instructionsLabel inlineShieldFirstBaselineTopOffset];
     LODWORD(v60) = 1148846080;
-    v61 = [v207 constraintEqualToAnchor:v201 constant:v59 + 6.0 priority:v60];
+    v61 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:v59 + 6.0 priority:v60];
     v229[0] = v61;
-    v62 = [(NavSignLabel *)self->_instructionsLabel bottomAnchor];
-    v63 = [v62 maps_uniqueKey];
-    v228[1] = v63;
-    v64 = [(CarManeuverView *)self bottomAnchor];
-    v65 = [(NavSignLabel *)self->_instructionsLabel bottomAnchor];
+    bottomAnchor = [(NavSignLabel *)self->_instructionsLabel bottomAnchor];
+    maps_uniqueKey2 = [bottomAnchor maps_uniqueKey];
+    v228[1] = maps_uniqueKey2;
+    bottomAnchor2 = [(CarManeuverView *)self bottomAnchor];
+    bottomAnchor3 = [(NavSignLabel *)self->_instructionsLabel bottomAnchor];
     [(NavSignLabel *)self->_instructionsLabel inlineShieldLastBaselineBottomOffset];
     LODWORD(v67) = 1148846080;
-    [v64 constraintEqualToAnchor:v65 constant:v66 + 6.0 priority:v67];
+    [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:v66 + 6.0 priority:v67];
     v68 = v224 = v11;
     v229[1] = v68;
     v69 = [NSDictionary dictionaryWithObjects:v229 forKeys:v228 count:2];
-    v70 = [(CarManeuverView *)self dynamicConstraints];
-    [v70 setObject:v69 forKeyedSubscript:@"SecondaryLabelsBaselines"];
+    dynamicConstraints3 = [(CarManeuverView *)self dynamicConstraints];
+    [dynamicConstraints3 setObject:v69 forKeyedSubscript:@"SecondaryLabelsBaselines"];
 
-    v71 = [(CarManeuverView *)self dynamicConstraints];
-    v72 = [v71 objectForKeyedSubscript:@"SecondaryLabelsBaselines"];
-    v73 = [v72 allValues];
-    [v224 addObjectsFromArray:v73];
+    dynamicConstraints4 = [(CarManeuverView *)self dynamicConstraints];
+    v72 = [dynamicConstraints4 objectForKeyedSubscript:@"SecondaryLabelsBaselines"];
+    allValues = [v72 allValues];
+    [v224 addObjectsFromArray:allValues];
 
-    v217 = [(GuidanceManeuverView *)self->_arrowView centerXAnchor];
-    v212 = [v217 maps_uniqueKey];
-    v226[0] = v212;
-    v208 = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
-    v202 = [(CarManeuverView *)self leadingAnchor];
-    v195 = [v208 constraintEqualToAnchor:v202 constant:13.0];
+    centerXAnchor = [(GuidanceManeuverView *)self->_arrowView centerXAnchor];
+    maps_uniqueKey3 = [centerXAnchor maps_uniqueKey];
+    v226[0] = maps_uniqueKey3;
+    leadingAnchor = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
+    leadingAnchor2 = [(CarManeuverView *)self leadingAnchor];
+    v195 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:13.0];
     v227[0] = v195;
-    v74 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
-    v75 = [v74 maps_uniqueKey];
-    v226[1] = v75;
-    v76 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
-    v77 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77 constant:9.0];
+    leadingAnchor3 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
+    maps_uniqueKey4 = [leadingAnchor3 maps_uniqueKey];
+    v226[1] = maps_uniqueKey4;
+    leadingAnchor4 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
+    trailingAnchor = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
+    v78 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor constant:9.0];
     v227[1] = v78;
     v79 = [NSDictionary dictionaryWithObjects:v227 forKeys:v226 count:2];
-    v80 = [(CarManeuverView *)self dynamicConstraints];
-    [v80 setObject:v79 forKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
+    dynamicConstraints5 = [(CarManeuverView *)self dynamicConstraints];
+    [dynamicConstraints5 setObject:v79 forKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
 
-    v81 = [(CarManeuverView *)self dynamicConstraints];
-    v82 = [v81 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
-    v83 = [v82 allValues];
-    [v224 addObjectsFromArray:v83];
+    dynamicConstraints6 = [(CarManeuverView *)self dynamicConstraints];
+    v82 = [dynamicConstraints6 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
+    allValues2 = [v82 allValues];
+    [v224 addObjectsFromArray:allValues2];
 
-    v218 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
-    v213 = [v218 constraintEqualToConstant:18.0];
+    heightAnchor2 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
+    v213 = [heightAnchor2 constraintEqualToConstant:18.0];
     v225[0] = v213;
-    v84 = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
-    v85 = [v84 constraintGreaterThanOrEqualToConstant:13.0];
+    widthAnchor = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
+    v85 = [widthAnchor constraintGreaterThanOrEqualToConstant:13.0];
     v225[1] = v85;
-    v86 = [(GuidanceManeuverView *)self->_arrowView centerYAnchor];
-    v87 = [(CarManeuverView *)self centerYAnchor];
-    v88 = [v86 constraintEqualToAnchor:v87];
+    centerYAnchor = [(GuidanceManeuverView *)self->_arrowView centerYAnchor];
+    centerYAnchor2 = [(CarManeuverView *)self centerYAnchor];
+    v88 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v225[2] = v88;
-    v89 = [(NavSignLabel *)self->_instructionsLabel trailingAnchor];
-    v90 = [(CarManeuverView *)self trailingAnchor];
-    v91 = [v89 constraintEqualToAnchor:v90 constant:-11.0];
+    trailingAnchor2 = [(NavSignLabel *)self->_instructionsLabel trailingAnchor];
+    trailingAnchor3 = [(CarManeuverView *)self trailingAnchor];
+    v91 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-11.0];
     v225[3] = v91;
     v92 = [NSArray arrayWithObjects:v225 count:4];
     [v224 addObjectsFromArray:v92];
@@ -689,59 +689,59 @@
     v11 = v224;
     v7 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
 
-    v58 = v218;
+    v58 = heightAnchor2;
 LABEL_17:
 
     goto LABEL_25;
   }
 
-  if (v24 == 1)
+  if (variant2 == 1)
   {
-    v223 = [(CarManeuverView *)self widthAnchor];
-    v221 = [v223 constraintGreaterThanOrEqualToConstant:100.0];
+    widthAnchor2 = [(CarManeuverView *)self widthAnchor];
+    v221 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:100.0];
     v230[0] = v221;
-    v215 = [(GuidanceManeuverView *)self->_arrowView topAnchor];
-    v206 = [(CarManeuverView *)self topAnchor];
-    v200 = [v215 constraintEqualToAnchor:v206 constant:11.0];
+    topAnchor4 = [(GuidanceManeuverView *)self->_arrowView topAnchor];
+    topAnchor5 = [(CarManeuverView *)self topAnchor];
+    v200 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:11.0];
     v230[1] = v200;
-    v194 = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
-    v189 = [(CarManeuverView *)self leadingAnchor];
-    v185 = [v194 constraintEqualToAnchor:v189 constant:7.5];
+    leadingAnchor5 = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
+    leadingAnchor6 = [(CarManeuverView *)self leadingAnchor];
+    v185 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:7.5];
     v230[2] = v185;
-    v181 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
-    v177 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
-    v173 = [v181 constraintEqualToAnchor:v177 constant:-7.0];
+    trailingAnchor4 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
+    leadingAnchor7 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
+    v173 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor7 constant:-7.0];
     v230[3] = v173;
-    v169 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
-    v165 = [v169 constraintEqualToConstant:23.0];
+    heightAnchor3 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
+    v165 = [heightAnchor3 constraintEqualToConstant:23.0];
     v230[4] = v165;
-    v161 = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
-    v158 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
-    v155 = [v161 constraintEqualToAnchor:v158];
+    widthAnchor3 = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
+    heightAnchor4 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
+    v155 = [widthAnchor3 constraintEqualToAnchor:heightAnchor4];
     v230[5] = v155;
-    v152 = [(GuidanceManeuverView *)self->_arrowView bottomAnchor];
-    v150 = [(CarManeuverView *)self bottomAnchor];
-    v148 = [v152 constraintEqualToAnchor:v150 constant:-11.0];
+    bottomAnchor4 = [(GuidanceManeuverView *)self->_arrowView bottomAnchor];
+    bottomAnchor5 = [(CarManeuverView *)self bottomAnchor];
+    v148 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-11.0];
     v230[6] = v148;
-    v146 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
-    v144 = [(CarManeuverView *)self topAnchor];
-    v47 = [v146 constraintEqualToAnchor:v144 constant:29.0];
+    firstBaselineAnchor = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
+    topAnchor6 = [(CarManeuverView *)self topAnchor];
+    v47 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor6 constant:29.0];
     v230[7] = v47;
-    v48 = [(NavSignLabel *)self->_distanceLabel lastBaselineAnchor];
+    lastBaselineAnchor = [(NavSignLabel *)self->_distanceLabel lastBaselineAnchor];
     [(CarManeuverView *)self bottomAnchor];
     v50 = v49 = v17;
-    v51 = [v48 constraintEqualToAnchor:v50 constant:-16.0];
+    v51 = [lastBaselineAnchor constraintEqualToAnchor:v50 constant:-16.0];
     v230[8] = v51;
     [(NavSignLabel *)self->_distanceLabel trailingAnchor];
     v53 = v52 = v11;
-    v54 = [(CarManeuverView *)self trailingAnchor];
+    trailingAnchor5 = [(CarManeuverView *)self trailingAnchor];
     v55 = -4.0;
     if (v49)
     {
       v55 = -11.0;
     }
 
-    v56 = [v53 constraintEqualToAnchor:v54 constant:v55];
+    v56 = [v53 constraintEqualToAnchor:trailingAnchor5 constant:v55];
     v230[9] = v56;
     v57 = [NSArray arrayWithObjects:v230 count:10];
     [v52 addObjectsFromArray:v57];
@@ -749,11 +749,11 @@ LABEL_17:
     v11 = v52;
     v7 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
 
-    v58 = v223;
+    v58 = widthAnchor2;
     goto LABEL_17;
   }
 
-  if (!v24)
+  if (!variant2)
   {
     v210 = v17;
     v253 = 0.0;
@@ -768,80 +768,80 @@ LABEL_17:
     v244 = 0u;
     memset(buf, 0, sizeof(buf));
     [(CarManeuverView *)self primaryMetrics];
-    v219 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView leadingAnchor];
-    v214 = [(CarManeuverView *)self leadingAnchor];
-    v205 = [v219 constraintEqualToAnchor:v214 constant:*(&v252 + 1)];
+    leadingAnchor8 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView leadingAnchor];
+    leadingAnchor9 = [(CarManeuverView *)self leadingAnchor];
+    v205 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:*(&v252 + 1)];
     v242[0] = v205;
-    v198 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView trailingAnchor];
-    v192 = [(CarManeuverView *)self trailingAnchor];
-    v25 = [v198 constraintEqualToAnchor:v192 constant:v253];
+    trailingAnchor6 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView trailingAnchor];
+    trailingAnchor7 = [(CarManeuverView *)self trailingAnchor];
+    v25 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:v253];
     v242[1] = v25;
-    v26 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView topAnchor];
-    v27 = [(CarManeuverView *)self topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:*&v252];
+    topAnchor7 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView topAnchor];
+    topAnchor8 = [(CarManeuverView *)self topAnchor];
+    v28 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:*&v252];
     v242[2] = v28;
-    v29 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView heightAnchor];
-    v30 = [v29 constraintLessThanOrEqualToConstant:*(&v251 + 1)];
+    heightAnchor5 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView heightAnchor];
+    v30 = [heightAnchor5 constraintLessThanOrEqualToConstant:*(&v251 + 1)];
     v242[3] = v30;
     v31 = [NSArray arrayWithObjects:v242 count:4];
     v222 = v11;
     [v11 addObjectsFromArray:v31];
 
     v220 = +[NSMutableDictionary dictionary];
-    v199 = [(UIImageView *)self->_shieldView leadingAnchor];
-    v193 = [v199 maps_uniqueKey];
-    v240[0] = v193;
-    v188 = [(CarManeuverView *)self _shieldViewPrimaryLeadingConstraint];
-    v241[0] = v188;
-    v184 = [(UIImageView *)self->_shieldView trailingAnchor];
-    v180 = [v184 maps_uniqueKey];
-    v240[1] = v180;
-    v176 = [(UIImageView *)self->_shieldView trailingAnchor];
-    v172 = [(CarManeuverView *)self trailingAnchor];
-    v168 = [v176 constraintEqualToAnchor:v172 constant:*&v249];
+    leadingAnchor10 = [(UIImageView *)self->_shieldView leadingAnchor];
+    maps_uniqueKey5 = [leadingAnchor10 maps_uniqueKey];
+    v240[0] = maps_uniqueKey5;
+    _shieldViewPrimaryLeadingConstraint = [(CarManeuverView *)self _shieldViewPrimaryLeadingConstraint];
+    v241[0] = _shieldViewPrimaryLeadingConstraint;
+    trailingAnchor8 = [(UIImageView *)self->_shieldView trailingAnchor];
+    maps_uniqueKey6 = [trailingAnchor8 maps_uniqueKey];
+    v240[1] = maps_uniqueKey6;
+    trailingAnchor9 = [(UIImageView *)self->_shieldView trailingAnchor];
+    trailingAnchor10 = [(CarManeuverView *)self trailingAnchor];
+    v168 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:*&v249];
     v241[1] = v168;
-    v164 = [(GuidanceManeuverView *)self->_arrowView topAnchor];
-    v160 = [v164 maps_uniqueKey];
-    v240[2] = v160;
-    v157 = [(CarManeuverView *)self _maneuverTopPrimaryConstraint];
-    v241[2] = v157;
-    v154 = [(GuidanceManeuverView *)self->_arrowView bottomAnchor];
-    v151 = [v154 maps_uniqueKey];
-    v240[3] = v151;
-    v149 = [(CarManeuverView *)self _maneuverBottomPrimaryConstraint];
-    v241[3] = v149;
-    v147 = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
-    v145 = [v147 maps_uniqueKey];
-    v240[4] = v145;
-    v143 = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
-    v142 = [(CarManeuverView *)self leadingAnchor];
-    v141 = [v143 constraintEqualToAnchor:v142 constant:*&buf[16]];
+    topAnchor9 = [(GuidanceManeuverView *)self->_arrowView topAnchor];
+    maps_uniqueKey7 = [topAnchor9 maps_uniqueKey];
+    v240[2] = maps_uniqueKey7;
+    _maneuverTopPrimaryConstraint = [(CarManeuverView *)self _maneuverTopPrimaryConstraint];
+    v241[2] = _maneuverTopPrimaryConstraint;
+    bottomAnchor6 = [(GuidanceManeuverView *)self->_arrowView bottomAnchor];
+    maps_uniqueKey8 = [bottomAnchor6 maps_uniqueKey];
+    v240[3] = maps_uniqueKey8;
+    _maneuverBottomPrimaryConstraint = [(CarManeuverView *)self _maneuverBottomPrimaryConstraint];
+    v241[3] = _maneuverBottomPrimaryConstraint;
+    leadingAnchor11 = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
+    maps_uniqueKey9 = [leadingAnchor11 maps_uniqueKey];
+    v240[4] = maps_uniqueKey9;
+    leadingAnchor12 = [(GuidanceManeuverView *)self->_arrowView leadingAnchor];
+    leadingAnchor13 = [(CarManeuverView *)self leadingAnchor];
+    v141 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13 constant:*&buf[16]];
     v241[4] = v141;
-    v140 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
-    v139 = [v140 maps_uniqueKey];
-    v240[5] = v139;
-    v32 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
-    v33 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:*&buf[24]];
+    trailingAnchor11 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
+    maps_uniqueKey10 = [trailingAnchor11 maps_uniqueKey];
+    v240[5] = maps_uniqueKey10;
+    trailingAnchor12 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
+    leadingAnchor14 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
+    v34 = [trailingAnchor12 constraintEqualToAnchor:leadingAnchor14 constant:*&buf[24]];
     v241[5] = v34;
-    v35 = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
-    v36 = [v35 maps_uniqueKey];
-    v240[6] = v36;
-    v37 = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
-    v38 = [v37 constraintGreaterThanOrEqualToConstant:*(&v244 + 1)];
+    widthAnchor4 = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
+    maps_uniqueKey11 = [widthAnchor4 maps_uniqueKey];
+    v240[6] = maps_uniqueKey11;
+    widthAnchor5 = [(GuidanceManeuverView *)self->_arrowView widthAnchor];
+    v38 = [widthAnchor5 constraintGreaterThanOrEqualToConstant:*(&v244 + 1)];
     v241[6] = v38;
     v39 = [NSDictionary dictionaryWithObjects:v241 forKeys:v240 count:7];
     [v220 addEntriesFromDictionary:v39];
 
-    LODWORD(v37) = _os_feature_enabled_impl();
-    v40 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
-    v41 = [v40 maps_uniqueKey];
-    v42 = v41;
-    if (v37)
+    LODWORD(widthAnchor5) = _os_feature_enabled_impl();
+    heightAnchor6 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
+    maps_uniqueKey12 = [heightAnchor6 maps_uniqueKey];
+    v42 = maps_uniqueKey12;
+    if (widthAnchor5)
     {
-      v238 = v41;
-      v43 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
-      v44 = [v43 constraintGreaterThanOrEqualToConstant:*&v244];
+      v238 = maps_uniqueKey12;
+      heightAnchor7 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
+      v44 = [heightAnchor7 constraintGreaterThanOrEqualToConstant:*&v244];
       v239 = v44;
       v45 = &v239;
       v46 = &v238;
@@ -849,9 +849,9 @@ LABEL_17:
 
     else
     {
-      v236 = v41;
-      v43 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
-      v44 = [v43 constraintEqualToConstant:*&v244];
+      v236 = maps_uniqueKey12;
+      heightAnchor7 = [(GuidanceManeuverView *)self->_arrowView heightAnchor];
+      v44 = [heightAnchor7 constraintEqualToConstant:*&v244];
       v237 = v44;
       v45 = &v237;
       v46 = &v236;
@@ -862,106 +862,106 @@ LABEL_17:
 
     if ([(CarManeuverView *)self _usesLargeScreenLayout]|| !v210)
     {
-      v94 = [(GuidanceManeuverView *)self->_arrowView centerYAnchor];
-      v95 = [(CarManeuverView *)self centerYAnchor];
-      v96 = [v94 constraintEqualToAnchor:v95];
-      v97 = [(GuidanceManeuverView *)self->_arrowView centerYAnchor];
-      v98 = [v97 maps_uniqueKey];
-      [v220 setObject:v96 forKey:v98];
+      centerYAnchor3 = [(GuidanceManeuverView *)self->_arrowView centerYAnchor];
+      centerYAnchor4 = [(CarManeuverView *)self centerYAnchor];
+      v96 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+      centerYAnchor5 = [(GuidanceManeuverView *)self->_arrowView centerYAnchor];
+      maps_uniqueKey13 = [centerYAnchor5 maps_uniqueKey];
+      [v220 setObject:v96 forKey:maps_uniqueKey13];
     }
 
     v99 = [v220 copy];
-    v100 = [(CarManeuverView *)self dynamicConstraints];
-    [v100 setObject:v99 forKeyedSubscript:@"PrimaryManeuverView"];
+    dynamicConstraints7 = [(CarManeuverView *)self dynamicConstraints];
+    [dynamicConstraints7 setObject:v99 forKeyedSubscript:@"PrimaryManeuverView"];
 
-    v203 = [(UIImageView *)self->_shieldView leadingAnchor];
-    v196 = [v203 maps_uniqueKey];
-    v234[0] = v196;
-    v186 = [(UIImageView *)self->_shieldView leadingAnchor];
-    v190 = [(NavSignLabel *)self->_distanceLabel textTrailingLayoutGuide];
-    v182 = [v190 trailingAnchor];
-    v178 = [v186 constraintGreaterThanOrEqualToAnchor:v182 constant:*buf];
+    leadingAnchor15 = [(UIImageView *)self->_shieldView leadingAnchor];
+    maps_uniqueKey14 = [leadingAnchor15 maps_uniqueKey];
+    v234[0] = maps_uniqueKey14;
+    leadingAnchor16 = [(UIImageView *)self->_shieldView leadingAnchor];
+    textTrailingLayoutGuide = [(NavSignLabel *)self->_distanceLabel textTrailingLayoutGuide];
+    trailingAnchor13 = [textTrailingLayoutGuide trailingAnchor];
+    v178 = [leadingAnchor16 constraintGreaterThanOrEqualToAnchor:trailingAnchor13 constant:*buf];
     v235[0] = v178;
-    v174 = [(UIImageView *)self->_shieldView trailingAnchor];
-    v170 = [v174 maps_uniqueKey];
-    v234[1] = v170;
-    v166 = [(UIImageView *)self->_shieldView trailingAnchor];
-    v162 = [(CarManeuverView *)self trailingAnchor];
-    v101 = [v166 constraintEqualToAnchor:v162 constant:*&v249];
+    trailingAnchor14 = [(UIImageView *)self->_shieldView trailingAnchor];
+    maps_uniqueKey15 = [trailingAnchor14 maps_uniqueKey];
+    v234[1] = maps_uniqueKey15;
+    trailingAnchor15 = [(UIImageView *)self->_shieldView trailingAnchor];
+    trailingAnchor16 = [(CarManeuverView *)self trailingAnchor];
+    v101 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16 constant:*&v249];
     v235[1] = v101;
-    v102 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
-    v103 = [v102 maps_uniqueKey];
-    v234[2] = v103;
-    v104 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
-    v105 = [(CarManeuverView *)self leadingAnchor];
-    v106 = [v104 constraintEqualToAnchor:v105 constant:*&v245];
+    leadingAnchor17 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
+    maps_uniqueKey16 = [leadingAnchor17 maps_uniqueKey];
+    v234[2] = maps_uniqueKey16;
+    leadingAnchor18 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
+    leadingAnchor19 = [(CarManeuverView *)self leadingAnchor];
+    v106 = [leadingAnchor18 constraintEqualToAnchor:leadingAnchor19 constant:*&v245];
     v235[2] = v106;
     v107 = [NSDictionary dictionaryWithObjects:v235 forKeys:v234 count:3];
-    v108 = [(CarManeuverView *)self dynamicConstraints];
-    [v108 setObject:v107 forKeyedSubscript:@"PrimaryNoManeuverView"];
+    dynamicConstraints8 = [(CarManeuverView *)self dynamicConstraints];
+    [dynamicConstraints8 setObject:v107 forKeyedSubscript:@"PrimaryNoManeuverView"];
 
-    v204 = [(UIImageView *)self->_shieldView topAnchor];
-    v197 = [v204 maps_uniqueKey];
-    v232[0] = v197;
-    v209 = [(UIImageView *)self->_shieldView topAnchor];
-    v191 = [(CarManeuverView *)self topAnchor];
-    v187 = [v209 constraintEqualToAnchor:v191 constant:*(&v245 + 1)];
+    topAnchor10 = [(UIImageView *)self->_shieldView topAnchor];
+    maps_uniqueKey17 = [topAnchor10 maps_uniqueKey];
+    v232[0] = maps_uniqueKey17;
+    topAnchor11 = [(UIImageView *)self->_shieldView topAnchor];
+    topAnchor12 = [(CarManeuverView *)self topAnchor];
+    v187 = [topAnchor11 constraintEqualToAnchor:topAnchor12 constant:*(&v245 + 1)];
     v233[0] = v187;
-    v183 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
-    v179 = [v183 maps_uniqueKey];
-    v232[1] = v179;
-    v175 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
-    v171 = [(CarManeuverView *)self topAnchor];
-    v167 = [v175 constraintEqualToAnchor:v171 constant:*(&v246 + 1)];
+    firstBaselineAnchor2 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
+    maps_uniqueKey18 = [firstBaselineAnchor2 maps_uniqueKey];
+    v232[1] = maps_uniqueKey18;
+    firstBaselineAnchor3 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
+    topAnchor13 = [(CarManeuverView *)self topAnchor];
+    v167 = [firstBaselineAnchor3 constraintEqualToAnchor:topAnchor13 constant:*(&v246 + 1)];
     v233[1] = v167;
-    v163 = [(NavSignLabel *)self->_instructionsLabel firstBaselineAnchor];
-    v159 = [v163 maps_uniqueKey];
-    v232[2] = v159;
-    v156 = [(NavSignLabel *)self->_instructionsLabel firstBaselineAnchor];
-    v153 = [(CarManeuverView *)self topAnchor];
+    firstBaselineAnchor4 = [(NavSignLabel *)self->_instructionsLabel firstBaselineAnchor];
+    maps_uniqueKey19 = [firstBaselineAnchor4 maps_uniqueKey];
+    v232[2] = maps_uniqueKey19;
+    firstBaselineAnchor5 = [(NavSignLabel *)self->_instructionsLabel firstBaselineAnchor];
+    topAnchor14 = [(CarManeuverView *)self topAnchor];
     v109 = *&v248;
     [(NavSignLabel *)self->_instructionsLabel inlineShieldFirstBaselineTopOffset];
     LODWORD(v111) = 1148846080;
-    v112 = [v156 constraintEqualToAnchor:v153 constant:v110 + v109 priority:v111];
+    v112 = [firstBaselineAnchor5 constraintEqualToAnchor:topAnchor14 constant:v110 + v109 priority:v111];
     v233[2] = v112;
-    v113 = [(NavSignLabel *)self->_instructionsLabel lastBaselineAnchor];
-    v114 = [v113 maps_uniqueKey];
-    v232[3] = v114;
-    v115 = [(NavSignLabel *)self->_instructionsLabel lastBaselineAnchor];
-    v116 = [(CarManeuverView *)self bottomAnchor];
+    lastBaselineAnchor2 = [(NavSignLabel *)self->_instructionsLabel lastBaselineAnchor];
+    maps_uniqueKey20 = [lastBaselineAnchor2 maps_uniqueKey];
+    v232[3] = maps_uniqueKey20;
+    lastBaselineAnchor3 = [(NavSignLabel *)self->_instructionsLabel lastBaselineAnchor];
+    bottomAnchor7 = [(CarManeuverView *)self bottomAnchor];
     v117 = *(&v250 + 1);
     [(NavSignLabel *)self->_instructionsLabel inlineShieldLastBaselineBottomOffset];
     LODWORD(v119) = 1148846080;
-    v120 = [v115 constraintEqualToAnchor:v116 constant:v118 + v117 priority:v119];
+    v120 = [lastBaselineAnchor3 constraintEqualToAnchor:bottomAnchor7 constant:v118 + v117 priority:v119];
     v233[3] = v120;
     v121 = [NSDictionary dictionaryWithObjects:v233 forKeys:v232 count:4];
-    v122 = [(CarManeuverView *)self dynamicConstraints];
-    [v122 setObject:v121 forKeyedSubscript:@"PrimaryLabelsBaselines"];
+    dynamicConstraints9 = [(CarManeuverView *)self dynamicConstraints];
+    [dynamicConstraints9 setObject:v121 forKeyedSubscript:@"PrimaryLabelsBaselines"];
 
-    v123 = [(CarManeuverView *)self dynamicConstraints];
-    v124 = [v123 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
-    v125 = [v124 allValues];
+    dynamicConstraints10 = [(CarManeuverView *)self dynamicConstraints];
+    v124 = [dynamicConstraints10 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
+    allValues3 = [v124 allValues];
     v11 = v222;
-    [v222 addObjectsFromArray:v125];
+    [v222 addObjectsFromArray:allValues3];
 
-    v126 = [(NavSignLabel *)self->_distanceLabel trailingAnchor];
-    v127 = [(CarManeuverView *)self trailingAnchor];
-    v128 = [v126 constraintEqualToAnchor:v127 constant:*&v249];
+    trailingAnchor17 = [(NavSignLabel *)self->_distanceLabel trailingAnchor];
+    trailingAnchor18 = [(CarManeuverView *)self trailingAnchor];
+    v128 = [trailingAnchor17 constraintEqualToAnchor:trailingAnchor18 constant:*&v249];
     v231[0] = v128;
-    v129 = [(CarManeuverView *)self _instructionHorizontalPrimaryConstraint];
-    v231[1] = v129;
-    v130 = [(NavSignLabel *)self->_instructionsLabel trailingAnchor];
-    v131 = [(CarManeuverView *)self trailingAnchor];
-    v132 = [v130 constraintEqualToAnchor:v131 constant:*&v250];
+    _instructionHorizontalPrimaryConstraint = [(CarManeuverView *)self _instructionHorizontalPrimaryConstraint];
+    v231[1] = _instructionHorizontalPrimaryConstraint;
+    trailingAnchor19 = [(NavSignLabel *)self->_instructionsLabel trailingAnchor];
+    trailingAnchor20 = [(CarManeuverView *)self trailingAnchor];
+    v132 = [trailingAnchor19 constraintEqualToAnchor:trailingAnchor20 constant:*&v250];
     v231[2] = v132;
     v133 = [NSArray arrayWithObjects:v231 count:3];
     [v222 addObjectsFromArray:v133];
 
     if (!v210)
     {
-      v134 = [(NavSignLabel *)self->_instructionsLabel centerYAnchor];
-      v135 = [(CarManeuverView *)self centerYAnchor];
-      v136 = [v134 constraintEqualToAnchor:v135];
+      centerYAnchor6 = [(NavSignLabel *)self->_instructionsLabel centerYAnchor];
+      centerYAnchor7 = [(CarManeuverView *)self centerYAnchor];
+      v136 = [centerYAnchor6 constraintEqualToAnchor:centerYAnchor7];
       [v222 addObject:v136];
     }
 
@@ -971,8 +971,8 @@ LABEL_17:
 LABEL_25:
   [(CarManeuverView *)self setMyConstraints:v11];
   v137 = v7[433];
-  v138 = [(CarManeuverView *)self myConstraints];
-  [v137 activateConstraints:v138];
+  myConstraints2 = [(CarManeuverView *)self myConstraints];
+  [v137 activateConstraints:myConstraints2];
 }
 
 - (CarManeuverViewSizeDataSource)sizeDataSource
@@ -987,23 +987,23 @@ LABEL_25:
   v3 = sub_10007E168();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarManeuverView *)self variant];
-    if (v4 > 2)
+    variant = [(CarManeuverView *)self variant];
+    if (variant > 2)
     {
       v5 = @".Unknown";
     }
 
     else
     {
-      v5 = *(&off_101656248 + v4);
+      v5 = *(&off_101656248 + variant);
     }
 
     v6 = v5;
-    v7 = [(CarManeuverView *)self style];
-    v8 = [v7 variant];
-    v9 = [(CarManeuverView *)self shouldShowLaneGuidance];
+    style = [(CarManeuverView *)self style];
+    variant2 = [style variant];
+    shouldShowLaneGuidance = [(CarManeuverView *)self shouldShowLaneGuidance];
     v10 = @"NO";
-    if (v9)
+    if (shouldShowLaneGuidance)
     {
       v10 = @"YES";
     }
@@ -1014,22 +1014,22 @@ LABEL_25:
     *&v89[12] = 2048;
     *&v89[14] = self;
     v90 = 2048;
-    v91 = v8;
+    v91 = variant2;
     v92 = 2112;
     v93 = v11;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, _updateConstraints. variant: %lu, shouldShowLaneGuidance: %@", v89, 0x2Au);
   }
 
-  v12 = [(CarManeuverView *)self style];
-  v13 = [v12 variant];
+  style2 = [(CarManeuverView *)self style];
+  variant3 = [style2 variant];
 
-  if (v13 == 2)
+  if (variant3 == 2)
   {
     LODWORD(v14) = 1148829696;
     [(CarManeuverView *)self setContentCompressionResistancePriority:1 forAxis:v14];
-    v40 = [(NavSignLabel *)self->_instructionsLabel lineCount];
+    lineCount = [(NavSignLabel *)self->_instructionsLabel lineCount];
     instructionsLabel = self->_instructionsLabel;
-    if (v40 == 1)
+    if (lineCount == 1)
     {
       v42 = 6.0;
     }
@@ -1043,28 +1043,28 @@ LABEL_25:
 
     [(NavSignLabel *)instructionsLabel inlineShieldLastBaselineBottomOffset];
     v45 = v44 + 6.0;
-    v46 = [(CarManeuverView *)self dynamicConstraints];
-    v47 = [v46 objectForKeyedSubscript:@"SecondaryLabelsBaselines"];
-    v48 = [(NavSignLabel *)self->_instructionsLabel firstBaselineAnchor];
-    v49 = [v48 maps_uniqueKey];
-    v50 = [v47 objectForKeyedSubscript:v49];
+    dynamicConstraints = [(CarManeuverView *)self dynamicConstraints];
+    v47 = [dynamicConstraints objectForKeyedSubscript:@"SecondaryLabelsBaselines"];
+    firstBaselineAnchor = [(NavSignLabel *)self->_instructionsLabel firstBaselineAnchor];
+    maps_uniqueKey = [firstBaselineAnchor maps_uniqueKey];
+    v50 = [v47 objectForKeyedSubscript:maps_uniqueKey];
     [v50 setConstant:v42];
 
-    v51 = [(CarManeuverView *)self dynamicConstraints];
-    v52 = [v51 objectForKeyedSubscript:@"SecondaryLabelsBaselines"];
-    v53 = [(NavSignLabel *)self->_instructionsLabel lastBaselineAnchor];
-    v54 = [v53 maps_uniqueKey];
-    v55 = [v52 objectForKeyedSubscript:v54];
+    dynamicConstraints2 = [(CarManeuverView *)self dynamicConstraints];
+    v52 = [dynamicConstraints2 objectForKeyedSubscript:@"SecondaryLabelsBaselines"];
+    lastBaselineAnchor = [(NavSignLabel *)self->_instructionsLabel lastBaselineAnchor];
+    maps_uniqueKey2 = [lastBaselineAnchor maps_uniqueKey];
+    v55 = [v52 objectForKeyedSubscript:maps_uniqueKey2];
     [v55 setConstant:v45];
   }
 
-  else if (v13 == 1)
+  else if (variant3 == 1)
   {
     LODWORD(v14) = 1148846080;
     [(CarManeuverView *)self setContentCompressionResistancePriority:1 forAxis:v14];
   }
 
-  else if (!v13)
+  else if (!variant3)
   {
     LODWORD(v14) = 1148829696;
     [(CarManeuverView *)self setContentCompressionResistancePriority:1 forAxis:v14];
@@ -1077,35 +1077,35 @@ LABEL_25:
     v94 = 0u;
     v95 = 0u;
     [(CarManeuverView *)self primaryMetrics:0];
-    v15 = [(CarManeuverView *)self shouldShowLaneGuidance];
-    v16 = [(CarManeuverView *)self dynamicConstraints];
-    v17 = v16;
-    if (v15)
+    shouldShowLaneGuidance2 = [(CarManeuverView *)self shouldShowLaneGuidance];
+    dynamicConstraints3 = [(CarManeuverView *)self dynamicConstraints];
+    v17 = dynamicConstraints3;
+    if (shouldShowLaneGuidance2)
     {
       v18 = v100;
-      v19 = [v16 objectForKeyedSubscript:@"PrimaryManeuverView"];
-      v20 = [v19 allValues];
-      [NSLayoutConstraint deactivateConstraints:v20];
+      v19 = [dynamicConstraints3 objectForKeyedSubscript:@"PrimaryManeuverView"];
+      allValues = [v19 allValues];
+      [NSLayoutConstraint deactivateConstraints:allValues];
 
-      v21 = [(CarManeuverView *)self dynamicConstraints];
-      v22 = [v21 objectForKeyedSubscript:@"PrimaryNoManeuverView"];
-      v23 = [v22 allValues];
-      [NSLayoutConstraint activateConstraints:v23];
+      dynamicConstraints4 = [(CarManeuverView *)self dynamicConstraints];
+      v22 = [dynamicConstraints4 objectForKeyedSubscript:@"PrimaryNoManeuverView"];
+      allValues2 = [v22 allValues];
+      [NSLayoutConstraint activateConstraints:allValues2];
 
       v24 = *&v95;
-      v25 = [(CarManeuverView *)self dynamicConstraints];
-      v26 = [v25 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
-      v27 = [(UIImageView *)self->_shieldView topAnchor];
-      v28 = [v27 maps_uniqueKey];
-      v29 = [v26 objectForKeyedSubscript:v28];
+      dynamicConstraints5 = [(CarManeuverView *)self dynamicConstraints];
+      v26 = [dynamicConstraints5 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
+      topAnchor = [(UIImageView *)self->_shieldView topAnchor];
+      maps_uniqueKey3 = [topAnchor maps_uniqueKey];
+      v29 = [v26 objectForKeyedSubscript:maps_uniqueKey3];
       [v29 setConstant:v24];
 
       v30 = *&v96;
-      v31 = [(CarManeuverView *)self dynamicConstraints];
-      v32 = [v31 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
-      v33 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
-      v34 = [v33 maps_uniqueKey];
-      v35 = [v32 objectForKeyedSubscript:v34];
+      dynamicConstraints6 = [(CarManeuverView *)self dynamicConstraints];
+      v32 = [dynamicConstraints6 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
+      firstBaselineAnchor2 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
+      maps_uniqueKey4 = [firstBaselineAnchor2 maps_uniqueKey];
+      v35 = [v32 objectForKeyedSubscript:maps_uniqueKey4];
       [v35 setConstant:v30];
 
       v36 = *(&v97 + 1);
@@ -1117,36 +1117,36 @@ LABEL_25:
     else
     {
       v18 = &v99 + 1;
-      v56 = [v16 objectForKeyedSubscript:@"PrimaryNoManeuverView"];
-      v57 = [v56 allValues];
-      [NSLayoutConstraint deactivateConstraints:v57];
+      v56 = [dynamicConstraints3 objectForKeyedSubscript:@"PrimaryNoManeuverView"];
+      allValues3 = [v56 allValues];
+      [NSLayoutConstraint deactivateConstraints:allValues3];
 
-      v58 = [(CarManeuverView *)self dynamicConstraints];
-      v59 = [v58 objectForKeyedSubscript:@"PrimaryManeuverView"];
-      v60 = [v59 allValues];
-      [NSLayoutConstraint activateConstraints:v60];
+      dynamicConstraints7 = [(CarManeuverView *)self dynamicConstraints];
+      v59 = [dynamicConstraints7 objectForKeyedSubscript:@"PrimaryManeuverView"];
+      allValues4 = [v59 allValues];
+      [NSLayoutConstraint activateConstraints:allValues4];
 
       v61 = *(&v94 + 1);
-      v62 = [(CarManeuverView *)self dynamicConstraints];
-      v63 = [v62 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
-      v64 = [(UIImageView *)self->_shieldView topAnchor];
-      v65 = [v64 maps_uniqueKey];
-      v66 = [v63 objectForKeyedSubscript:v65];
+      dynamicConstraints8 = [(CarManeuverView *)self dynamicConstraints];
+      v63 = [dynamicConstraints8 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
+      topAnchor2 = [(UIImageView *)self->_shieldView topAnchor];
+      maps_uniqueKey5 = [topAnchor2 maps_uniqueKey];
+      v66 = [v63 objectForKeyedSubscript:maps_uniqueKey5];
       [v66 setConstant:v61];
 
-      v67 = [(CarManeuverView *)self _shieldImage];
+      _shieldImage = [(CarManeuverView *)self _shieldImage];
       v68 = &v96 + 1;
-      if (!v67)
+      if (!_shieldImage)
       {
         v68 = &v95 + 1;
       }
 
       v69 = *v68;
-      v70 = [(CarManeuverView *)self dynamicConstraints];
-      v71 = [v70 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
-      v72 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
-      v73 = [v72 maps_uniqueKey];
-      v74 = [v71 objectForKeyedSubscript:v73];
+      dynamicConstraints9 = [(CarManeuverView *)self dynamicConstraints];
+      v71 = [dynamicConstraints9 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
+      firstBaselineAnchor3 = [(NavSignLabel *)self->_distanceLabel firstBaselineAnchor];
+      maps_uniqueKey6 = [firstBaselineAnchor3 maps_uniqueKey];
+      v74 = [v71 objectForKeyedSubscript:maps_uniqueKey6];
       [v74 setConstant:v69];
 
       p_instructionsLabel = &self->_instructionsLabel;
@@ -1154,39 +1154,39 @@ LABEL_25:
       v39 = *&v97 + v75;
     }
 
-    v76 = [(CarManeuverView *)self dynamicConstraints];
-    v77 = [v76 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
-    v78 = [(NavSignLabel *)*p_instructionsLabel firstBaselineAnchor];
-    v79 = [v78 maps_uniqueKey];
-    v80 = [v77 objectForKeyedSubscript:v79];
+    dynamicConstraints10 = [(CarManeuverView *)self dynamicConstraints];
+    v77 = [dynamicConstraints10 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
+    firstBaselineAnchor4 = [(NavSignLabel *)*p_instructionsLabel firstBaselineAnchor];
+    maps_uniqueKey7 = [firstBaselineAnchor4 maps_uniqueKey];
+    v80 = [v77 objectForKeyedSubscript:maps_uniqueKey7];
     [v80 setConstant:v39];
 
     v81 = *v18;
     [(NavSignLabel *)*p_instructionsLabel inlineShieldLastBaselineBottomOffset];
     v83 = v82 + v81;
-    v84 = [(CarManeuverView *)self dynamicConstraints];
-    v85 = [v84 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
-    v86 = [(NavSignLabel *)*p_instructionsLabel lastBaselineAnchor];
-    v87 = [v86 maps_uniqueKey];
-    v88 = [v85 objectForKeyedSubscript:v87];
+    dynamicConstraints11 = [(CarManeuverView *)self dynamicConstraints];
+    v85 = [dynamicConstraints11 objectForKeyedSubscript:@"PrimaryLabelsBaselines"];
+    lastBaselineAnchor2 = [(NavSignLabel *)*p_instructionsLabel lastBaselineAnchor];
+    maps_uniqueKey8 = [lastBaselineAnchor2 maps_uniqueKey];
+    v88 = [v85 objectForKeyedSubscript:maps_uniqueKey8];
     [v88 setConstant:v83];
   }
 }
 
 - (void)_setupStyling
 {
-  v3 = [(CarManeuverView *)self style];
-  self->_labelLineBreakMode = [v3 labelLineBreakMode];
-  v4 = [(CarManeuverView *)self sizeDataSource];
-  [v4 dynamicPointScaleValue];
+  style = [(CarManeuverView *)self style];
+  self->_labelLineBreakMode = [style labelLineBreakMode];
+  sizeDataSource = [(CarManeuverView *)self sizeDataSource];
+  [sizeDataSource dynamicPointScaleValue];
 
   memset(__src, 0, sizeof(__src));
-  if (v3)
+  if (style)
   {
-    [v3 arrowMetrics];
+    [style arrowMetrics];
     MKGuidanceManeuverArrowMetricsApplyScale();
     memset(v16, 0, sizeof(v16));
-    [v3 junctionArrowMetrics];
+    [style junctionArrowMetrics];
   }
 
   else
@@ -1201,31 +1201,31 @@ LABEL_25:
   [(GuidanceManeuverView *)self->_arrowView setArrowMetrics:v15];
   memcpy(v15, v16, sizeof(v15));
   [(GuidanceManeuverView *)self->_arrowView setJunctionArrowMetrics:v15];
-  -[GuidanceManeuverView setFraming:](self->_arrowView, "setFraming:", [v3 desiredFraming]);
-  v5 = [v3 arrowMainColor];
-  [(GuidanceManeuverView *)self->_arrowView setArrowColor:v5];
+  -[GuidanceManeuverView setFraming:](self->_arrowView, "setFraming:", [style desiredFraming]);
+  arrowMainColor = [style arrowMainColor];
+  [(GuidanceManeuverView *)self->_arrowView setArrowColor:arrowMainColor];
 
-  v6 = [v3 arrowAccentColor];
-  [(GuidanceManeuverView *)self->_arrowView setAccentColor:v6];
+  arrowAccentColor = [style arrowAccentColor];
+  [(GuidanceManeuverView *)self->_arrowView setAccentColor:arrowAccentColor];
 
-  v7 = [(CarManeuverView *)self sizeDataSource];
-  [v7 dynamicPointScaleValue];
+  sizeDataSource2 = [(CarManeuverView *)self sizeDataSource];
+  [sizeDataSource2 dynamicPointScaleValue];
   v9 = v8;
 
-  v10 = [v3 instructionsPreferredFont];
-  v11 = [v10 _maps_scaledFontForScaleFactor:v9];
+  instructionsPreferredFont = [style instructionsPreferredFont];
+  v11 = [instructionsPreferredFont _maps_scaledFontForScaleFactor:v9];
   [(NavSignLabel *)self->_instructionsLabel setPreferredFont:v11];
 
-  v12 = [v3 instructionsAlternateFont];
-  v13 = [v12 _maps_scaledFontForScaleFactor:v9];
+  instructionsAlternateFont = [style instructionsAlternateFont];
+  v13 = [instructionsAlternateFont _maps_scaledFontForScaleFactor:v9];
   [(NavSignLabel *)self->_instructionsLabel setAlternateFont:v13];
 
-  [v3 instructionsAlternateFontLineSpacing];
+  [style instructionsAlternateFontLineSpacing];
   [(NavSignLabel *)self->_instructionsLabel setAlternateFontLineSpacing:?];
-  -[NavSignLabel setMaxNumberOfLinesWithPreferredFont:](self->_instructionsLabel, "setMaxNumberOfLinesWithPreferredFont:", [v3 instructionsMaxNumberOfLinesWithPreferredFont]);
-  -[NavSignLabel setMaxNumberOfTotalLines:](self->_instructionsLabel, "setMaxNumberOfTotalLines:", [v3 instructionsMaxNumberOfTotalLines]);
-  v14 = [v3 instructionsColor];
-  [(NavSignLabel *)self->_instructionsLabel setTextColor:v14];
+  -[NavSignLabel setMaxNumberOfLinesWithPreferredFont:](self->_instructionsLabel, "setMaxNumberOfLinesWithPreferredFont:", [style instructionsMaxNumberOfLinesWithPreferredFont]);
+  -[NavSignLabel setMaxNumberOfTotalLines:](self->_instructionsLabel, "setMaxNumberOfTotalLines:", [style instructionsMaxNumberOfTotalLines]);
+  instructionsColor = [style instructionsColor];
+  [(NavSignLabel *)self->_instructionsLabel setTextColor:instructionsColor];
 
   [(NavSignLabel *)self->_instructionsLabel setParagraphLineBreakMode:[(CarManeuverView *)self labelLineBreakMode]];
   [(NavSignLabel *)self->_instructionsLabel updateLabelIfNeeded];
@@ -1234,28 +1234,28 @@ LABEL_25:
 
 - (void)_updateStyling
 {
-  v3 = [(CarManeuverView *)self style];
-  [v3 setHasLaneGuidance:{-[CarManeuverView shouldShowLaneGuidance](self, "shouldShowLaneGuidance")}];
-  v4 = [(CarManeuverView *)self _shieldImage];
-  [v3 setHasShield:v4 != 0];
+  style = [(CarManeuverView *)self style];
+  [style setHasLaneGuidance:{-[CarManeuverView shouldShowLaneGuidance](self, "shouldShowLaneGuidance")}];
+  _shieldImage = [(CarManeuverView *)self _shieldImage];
+  [style setHasShield:_shieldImage != 0];
 
-  [v3 setSecondarySignVisible:{-[CarManeuverView secondarySignVisible](self, "secondarySignVisible")}];
-  [v3 setCompressionStage:{-[CarManeuverView compressionStage](self, "compressionStage")}];
-  v5 = [(CarManeuverView *)self style];
-  v6 = [v5 invalidArrowColor];
+  [style setSecondarySignVisible:{-[CarManeuverView secondarySignVisible](self, "secondarySignVisible")}];
+  [style setCompressionStage:{-[CarManeuverView compressionStage](self, "compressionStage")}];
+  style2 = [(CarManeuverView *)self style];
+  invalidArrowColor = [style2 invalidArrowColor];
 
-  [(GuidanceManeuverView *)self->_arrowView setAccentColor:v6];
-  [(NavSignLaneGuidanceView *)self->_laneGuidanceView setInvalidArrowColor:v6];
-  v7 = [(CarManeuverView *)self sizeDataSource];
-  [v7 dynamicPointScaleValue];
+  [(GuidanceManeuverView *)self->_arrowView setAccentColor:invalidArrowColor];
+  [(NavSignLaneGuidanceView *)self->_laneGuidanceView setInvalidArrowColor:invalidArrowColor];
+  sizeDataSource = [(CarManeuverView *)self sizeDataSource];
+  [sizeDataSource dynamicPointScaleValue];
   v9 = v8;
 
-  v10 = [v3 distanceFont];
-  v11 = [v10 _maps_scaledFontForScaleFactor:v9];
+  distanceFont = [style distanceFont];
+  v11 = [distanceFont _maps_scaledFontForScaleFactor:v9];
   [(NavSignLabel *)self->_distanceLabel setPreferredFont:v11];
 
-  v12 = [(NavSignLabel *)self->_distanceLabel font];
-  [v12 pointSize];
+  font = [(NavSignLabel *)self->_distanceLabel font];
+  [font pointSize];
   distanceLabel = self->_distanceLabel;
   if (10.0 / v13 > 1.0)
   {
@@ -1264,79 +1264,79 @@ LABEL_25:
 
   else
   {
-    v15 = [(NavSignLabel *)distanceLabel font];
-    [v15 pointSize];
+    font2 = [(NavSignLabel *)distanceLabel font];
+    [font2 pointSize];
     [(NavSignLabel *)self->_distanceLabel setPreferredFontMinimumScaleFactor:10.0 / v16];
   }
 
-  v17 = [v3 distanceColor];
-  [(NavSignLabel *)self->_distanceLabel setTextColor:v17];
+  distanceColor = [style distanceColor];
+  [(NavSignLabel *)self->_distanceLabel setTextColor:distanceColor];
 
   [(NavSignLabel *)self->_distanceLabel updateLabelIfNeeded];
-  -[NavSignLabel setMaxNumberOfTotalLines:](self->_instructionsLabel, "setMaxNumberOfTotalLines:", [v3 instructionsMaxNumberOfTotalLines]);
+  -[NavSignLabel setMaxNumberOfTotalLines:](self->_instructionsLabel, "setMaxNumberOfTotalLines:", [style instructionsMaxNumberOfTotalLines]);
   [(NavSignLabel *)self->_instructionsLabel setParagraphLineBreakMode:[(CarManeuverView *)self labelLineBreakMode]];
-  v18 = [v3 instructionsPreferredFont];
-  v19 = [v18 _maps_scaledFontForScaleFactor:v9];
+  instructionsPreferredFont = [style instructionsPreferredFont];
+  v19 = [instructionsPreferredFont _maps_scaledFontForScaleFactor:v9];
   [(NavSignLabel *)self->_instructionsLabel setPreferredFont:v19];
 
-  v20 = [v3 instructionsAlternateFont];
-  v21 = [v20 _maps_scaledFontForScaleFactor:v9];
+  instructionsAlternateFont = [style instructionsAlternateFont];
+  v21 = [instructionsAlternateFont _maps_scaledFontForScaleFactor:v9];
   [(NavSignLabel *)self->_instructionsLabel setAlternateFont:v21];
 
-  -[NavSignLabel setShouldRemoveTextStartingAtFirstNewline:](self->_instructionsLabel, "setShouldRemoveTextStartingAtFirstNewline:", [v3 isSecondary]);
-  -[NavSignLabel setPerferredFontAdjustsFontSizeToFitWidth:](self->_instructionsLabel, "setPerferredFontAdjustsFontSizeToFitWidth:", [v3 shouldScaleInstructionsPreferredFont]);
+  -[NavSignLabel setShouldRemoveTextStartingAtFirstNewline:](self->_instructionsLabel, "setShouldRemoveTextStartingAtFirstNewline:", [style isSecondary]);
+  -[NavSignLabel setPerferredFontAdjustsFontSizeToFitWidth:](self->_instructionsLabel, "setPerferredFontAdjustsFontSizeToFitWidth:", [style shouldScaleInstructionsPreferredFont]);
   [(NavSignLabel *)self->_instructionsLabel updateLabelIfNeeded];
   v22 = sub_10007E168();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    v23 = [(CarManeuverView *)self variant];
-    if (v23 > 2)
+    variant = [(CarManeuverView *)self variant];
+    if (variant > 2)
     {
       v24 = @".Unknown";
     }
 
     else
     {
-      v24 = *(&off_101656248 + v23);
+      v24 = *(&off_101656248 + variant);
     }
 
     v25 = v24;
-    v26 = [(CarManeuverView *)self compressionStage];
-    v27 = [(CarManeuverView *)self style];
-    v28 = [v27 variant];
-    v29 = [(NavSignLabel *)self->_instructionsLabel maxNumberOfTotalLines];
+    compressionStage = [(CarManeuverView *)self compressionStage];
+    style3 = [(CarManeuverView *)self style];
+    variant2 = [style3 variant];
+    maxNumberOfTotalLines = [(NavSignLabel *)self->_instructionsLabel maxNumberOfTotalLines];
     v30 = 138413570;
     v31 = v25;
     v32 = 2048;
-    v33 = self;
+    selfCopy = self;
     v34 = 2048;
-    v35 = v26;
+    v35 = compressionStage;
     v36 = 2048;
-    v37 = v28;
+    v37 = variant2;
     v38 = 2048;
-    v39 = v29;
+    v39 = maxNumberOfTotalLines;
     v40 = 2048;
-    v41 = [(CarManeuverView *)self labelLineBreakMode];
+    labelLineBreakMode = [(CarManeuverView *)self labelLineBreakMode];
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, _updateStyling. compressionStage: %lu, variant: %lu, instructionMaxLines: %ld, lineBreakMode: %ld", &v30, 0x3Eu);
   }
 }
 
 - ($3B4E6468B3EC00ED59A5207EEA3643F1)primaryMetrics
 {
-  v5 = [(CarManeuverView *)self style];
-  v6 = [v5 layoutType];
+  style = [(CarManeuverView *)self style];
+  layoutType = [style layoutType];
 
-  if (v6 == 2)
+  if (layoutType == 2)
   {
     v8 = &xmmword_1012159F0;
   }
 
   else
   {
-    if (v6 == 1)
+    if (layoutType == 1)
     {
-      v9 = [(CarManeuverView *)self sizeDataSource];
-      [v9 dynamicPointScaleValue];
+      sizeDataSource = [(CarManeuverView *)self sizeDataSource];
+      [sizeDataSource dynamicPointScaleValue];
       v20 = v10;
 
       v11 = vmulq_n_f64(xmmword_101212A50, v20);
@@ -1360,7 +1360,7 @@ LABEL_25:
       return result;
     }
 
-    if (v6)
+    if (layoutType)
     {
       return result;
     }
@@ -1390,19 +1390,19 @@ LABEL_25:
 
 - (id)_shieldViewPrimaryLeadingConstraint
 {
-  v3 = [(CarManeuverView *)self _usesLargeScreenLayout];
-  v4 = [(UIImageView *)self->_shieldView leadingAnchor];
-  if (v3)
+  _usesLargeScreenLayout = [(CarManeuverView *)self _usesLargeScreenLayout];
+  leadingAnchor = [(UIImageView *)self->_shieldView leadingAnchor];
+  if (_usesLargeScreenLayout)
   {
-    v5 = [(NavSignLabel *)self->_distanceLabel textTrailingLayoutGuide];
-    v6 = [v5 trailingAnchor];
-    v7 = [v4 constraintGreaterThanOrEqualToAnchor:v6 constant:12.0];
+    textTrailingLayoutGuide = [(NavSignLabel *)self->_distanceLabel textTrailingLayoutGuide];
+    trailingAnchor = [textTrailingLayoutGuide trailingAnchor];
+    v7 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor constant:12.0];
   }
 
   else
   {
-    v5 = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
-    v7 = [v4 constraintGreaterThanOrEqualToAnchor:v5 constant:12.0];
+    textTrailingLayoutGuide = [(GuidanceManeuverView *)self->_arrowView trailingAnchor];
+    v7 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:textTrailingLayoutGuide constant:12.0];
   }
 
   return v7;
@@ -1410,17 +1410,17 @@ LABEL_25:
 
 - (id)_maneuverTopPrimaryConstraint
 {
-  v3 = [(CarManeuverView *)self _usesLargeScreenLayout];
-  v4 = [(GuidanceManeuverView *)self->_arrowView topAnchor];
-  v5 = [(CarManeuverView *)self topAnchor];
-  if (v3)
+  _usesLargeScreenLayout = [(CarManeuverView *)self _usesLargeScreenLayout];
+  topAnchor = [(GuidanceManeuverView *)self->_arrowView topAnchor];
+  topAnchor2 = [(CarManeuverView *)self topAnchor];
+  if (_usesLargeScreenLayout)
   {
-    [v4 constraintGreaterThanOrEqualToAnchor:v5 constant:12.0];
+    [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:12.0];
   }
 
   else
   {
-    [v4 constraintEqualToAnchor:v5 constant:11.0];
+    [topAnchor constraintEqualToAnchor:topAnchor2 constant:11.0];
   }
   v6 = ;
 
@@ -1429,48 +1429,48 @@ LABEL_25:
 
 - (id)_maneuverBottomPrimaryConstraint
 {
-  v3 = [(CarManeuverView *)self _usesLargeScreenLayout];
-  v4 = [(GuidanceManeuverView *)self->_arrowView bottomAnchor];
-  v5 = [(CarManeuverView *)self bottomAnchor];
+  _usesLargeScreenLayout = [(CarManeuverView *)self _usesLargeScreenLayout];
+  bottomAnchor = [(GuidanceManeuverView *)self->_arrowView bottomAnchor];
+  bottomAnchor2 = [(CarManeuverView *)self bottomAnchor];
   v6 = -11.0;
-  if (v3)
+  if (_usesLargeScreenLayout)
   {
     v6 = -12.0;
   }
 
-  v7 = [v4 constraintLessThanOrEqualToAnchor:v5 constant:v6];
+  v7 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:v6];
 
   return v7;
 }
 
 - (id)_instructionHorizontalPrimaryConstraint
 {
-  v3 = [(CarManeuverView *)self laneGuidance];
-  v4 = [v3 midStepTitles];
-  if ([v4 count])
+  laneGuidance = [(CarManeuverView *)self laneGuidance];
+  midStepTitles = [laneGuidance midStepTitles];
+  if ([midStepTitles count])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(CarManeuverView *)self guidance];
-    v7 = [v6 majorTextAlternatives];
-    v5 = [v7 count] == 0;
+    guidance = [(CarManeuverView *)self guidance];
+    majorTextAlternatives = [guidance majorTextAlternatives];
+    v5 = [majorTextAlternatives count] == 0;
   }
 
-  v8 = [(CarManeuverView *)self _usesLargeScreenLayout];
-  v9 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
-  if ((v8 & 1) != 0 || v5)
+  _usesLargeScreenLayout = [(CarManeuverView *)self _usesLargeScreenLayout];
+  leadingAnchor = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
+  if ((_usesLargeScreenLayout & 1) != 0 || v5)
   {
-    v10 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    leadingAnchor2 = [(NavSignLabel *)self->_distanceLabel leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   }
 
   else
   {
-    v10 = [(CarManeuverView *)self leadingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:11.0];
+    leadingAnchor2 = [(CarManeuverView *)self leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:11.0];
   }
 
   v12 = v11;
@@ -1478,26 +1478,26 @@ LABEL_25:
   return v12;
 }
 
-- (void)navSignLabel:(id)a3 didSelectAlternate:(unint64_t)a4
+- (void)navSignLabel:(id)label didSelectAlternate:(unint64_t)alternate
 {
-  v6 = a3;
+  labelCopy = label;
   distanceLabel = self->_distanceLabel;
-  if (distanceLabel == v6 || self->_instructionsLabel == v6)
+  if (distanceLabel == labelCopy || self->_instructionsLabel == labelCopy)
   {
-    v8 = distanceLabel == v6;
-    v12 = v6;
-    v9 = [(CarManeuverView *)self analyticsDelegate];
-    v10 = [(CarManeuverView *)self guidance];
-    v11 = [v10 signID];
-    [v9 carManeuverView:self didSelectAlternate:a4 forPrimaryString:v8 inSign:v11];
+    v8 = distanceLabel == labelCopy;
+    v12 = labelCopy;
+    analyticsDelegate = [(CarManeuverView *)self analyticsDelegate];
+    guidance = [(CarManeuverView *)self guidance];
+    signID = [guidance signID];
+    [analyticsDelegate carManeuverView:self didSelectAlternate:alternate forPrimaryString:v8 inSign:signID];
 
-    v6 = v12;
+    labelCopy = v12;
   }
 }
 
-- (int)GEOManeuverTypeForGEOLaneDirection:(int)a3
+- (int)GEOManeuverTypeForGEOLaneDirection:(int)direction
 {
-  if (a3 == 256)
+  if (direction == 256)
   {
     v3 = 4;
   }
@@ -1507,7 +1507,7 @@ LABEL_25:
     v3 = 3;
   }
 
-  if (a3 == 128)
+  if (direction == 128)
   {
     v4 = 62;
   }
@@ -1517,7 +1517,7 @@ LABEL_25:
     v4 = v3;
   }
 
-  if (a3 == 64)
+  if (direction == 64)
   {
     v5 = 1;
   }
@@ -1527,7 +1527,7 @@ LABEL_25:
     v5 = v4;
   }
 
-  if (a3 == 32)
+  if (direction == 32)
   {
     v6 = 60;
   }
@@ -1537,7 +1537,7 @@ LABEL_25:
     v6 = 3;
   }
 
-  if (a3 == 16)
+  if (direction == 16)
   {
     v7 = 4;
   }
@@ -1547,12 +1547,12 @@ LABEL_25:
     v7 = v6;
   }
 
-  if (a3 <= 63)
+  if (direction <= 63)
   {
     v5 = v7;
   }
 
-  if (a3 == 8)
+  if (direction == 8)
   {
     v8 = 61;
   }
@@ -1562,7 +1562,7 @@ LABEL_25:
     v8 = 3;
   }
 
-  if (a3 == 4)
+  if (direction == 4)
   {
     v9 = 2;
   }
@@ -1572,7 +1572,7 @@ LABEL_25:
     v9 = v8;
   }
 
-  if (a3 == 2)
+  if (direction == 2)
   {
     v10 = 63;
   }
@@ -1582,17 +1582,17 @@ LABEL_25:
     v10 = 3;
   }
 
-  if (!a3)
+  if (!direction)
   {
     v10 = 0;
   }
 
-  if (a3 > 3)
+  if (direction > 3)
   {
     v10 = v9;
   }
 
-  if (a3 <= 15)
+  if (direction <= 15)
   {
     return v10;
   }
@@ -1603,24 +1603,24 @@ LABEL_25:
   }
 }
 
-- (id)_maneuverArtworkForDirection:(int)a3
+- (id)_maneuverArtworkForDirection:(int)direction
 {
-  v3 = [(CarManeuverView *)self GEOManeuverTypeForGEOLaneDirection:*&a3];
+  v3 = [(CarManeuverView *)self GEOManeuverTypeForGEOLaneDirection:*&direction];
 
   return [GuidanceManeuverArtwork artworkWithManeuver:v3];
 }
 
 - (int)_preferredDirectionForLaneGuidance
 {
-  v3 = [(NavSignLaneGuidanceInfo *)self->_laneGuidance highlightedLanes];
-  v4 = [v3 firstObject];
+  highlightedLanes = [(NavSignLaneGuidanceInfo *)self->_laneGuidance highlightedLanes];
+  firstObject = [highlightedLanes firstObject];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NavSignLaneGuidanceInfo *)self->_laneGuidance highlightedLanes];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  highlightedLanes2 = [(NavSignLaneGuidanceInfo *)self->_laneGuidance highlightedLanes];
+  v6 = [highlightedLanes2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1631,7 +1631,7 @@ LABEL_25:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(highlightedLanes2);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -1639,12 +1639,12 @@ LABEL_25:
         {
           v11 = v10;
 
-          v4 = v11;
+          firstObject = v11;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [highlightedLanes2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -1656,68 +1656,68 @@ LABEL_25:
 
 LABEL_11:
 
-  v12 = [v4 directions];
-  v13 = [v12 count];
+  directions = [firstObject directions];
+  v13 = [directions count];
 
   if (v13)
   {
-    v14 = [v4 directions];
-    v15 = [v14 firstObject];
-    v16 = [v15 direction];
+    directions2 = [firstObject directions];
+    firstObject2 = [directions2 firstObject];
+    direction = [firstObject2 direction];
   }
 
   else
   {
-    v16 = 0;
+    direction = 0;
   }
 
-  return v16;
+  return direction;
 }
 
-- (void)showLaneGuidanceFromManeuver:(id)a3
+- (void)showLaneGuidanceFromManeuver:(id)maneuver
 {
-  v6 = a3;
-  v4 = [v6 laneGuidance];
+  maneuverCopy = maneuver;
+  laneGuidance = [maneuverCopy laneGuidance];
 
-  if (v4)
+  if (laneGuidance)
   {
-    v5 = [v6 laneGuidance];
-    [(CarManeuverView *)self showLaneGuidance:v5];
+    laneGuidance2 = [maneuverCopy laneGuidance];
+    [(CarManeuverView *)self showLaneGuidance:laneGuidance2];
   }
 }
 
 - (void)hideLaneGuidance
 {
-  v3 = [(CarManeuverView *)self style];
-  v4 = [v3 variant];
+  style = [(CarManeuverView *)self style];
+  variant = [style variant];
 
-  if (v4 != 2 && self->_laneGuidance)
+  if (variant != 2 && self->_laneGuidance)
   {
     v5 = sub_10007E168();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(CarManeuverView *)self variant];
-      if (v6 > 2)
+      variant2 = [(CarManeuverView *)self variant];
+      if (variant2 > 2)
       {
         v7 = @".Unknown";
       }
 
       else
       {
-        v7 = *(&off_101656248 + v6);
+        v7 = *(&off_101656248 + variant2);
       }
 
       v8 = v7;
       v11 = 138412546;
       v12 = v8;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, hideLaneGuidance", &v11, 0x16u);
     }
 
-    v9 = [(CarManeuverView *)self sizeByCompressionStage];
+    sizeByCompressionStage = [(CarManeuverView *)self sizeByCompressionStage];
 
-    if (v9)
+    if (sizeByCompressionStage)
     {
       [(CarManeuverView *)self setSizeByCompressionStage:0];
     }
@@ -1729,98 +1729,98 @@ LABEL_11:
   }
 }
 
-- (void)updateLaneGuidance:(id)a3
+- (void)updateLaneGuidance:(id)guidance
 {
-  objc_storeStrong(&self->_laneGuidance, a3);
+  objc_storeStrong(&self->_laneGuidance, guidance);
 
   [(CarManeuverView *)self _updateLabels];
 }
 
-- (void)showLaneGuidance:(id)a3
+- (void)showLaneGuidance:(id)guidance
 {
-  v5 = a3;
-  if (v5)
+  guidanceCopy = guidance;
+  if (guidanceCopy)
   {
-    v6 = [(CarManeuverView *)self style];
-    v7 = [v6 isSecondary];
+    style = [(CarManeuverView *)self style];
+    isSecondary = [style isSecondary];
 
-    if ((v7 & 1) == 0)
+    if ((isSecondary & 1) == 0)
     {
-      v8 = [v5 laneInfoId];
-      v9 = [(NavSignLaneGuidanceInfo *)self->_laneGuidance laneInfoId];
-      v10 = [v8 isEqual:v9];
+      laneInfoId = [guidanceCopy laneInfoId];
+      laneInfoId2 = [(NavSignLaneGuidanceInfo *)self->_laneGuidance laneInfoId];
+      v10 = [laneInfoId isEqual:laneInfoId2];
 
       if ((v10 & 1) == 0)
       {
         v11 = sub_10007E168();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [(CarManeuverView *)self variant];
-          if (v12 > 2)
+          variant = [(CarManeuverView *)self variant];
+          if (variant > 2)
           {
             v13 = @".Unknown";
           }
 
           else
           {
-            v13 = *(&off_101656248 + v12);
+            v13 = *(&off_101656248 + variant);
           }
 
           v14 = v13;
           v16 = 138412546;
           v17 = v14;
           v18 = 2048;
-          v19 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, showLaneGuidance", &v16, 0x16u);
         }
 
-        v15 = [(CarManeuverView *)self sizeByCompressionStage];
+        sizeByCompressionStage = [(CarManeuverView *)self sizeByCompressionStage];
 
-        if (v15)
+        if (sizeByCompressionStage)
         {
           [(CarManeuverView *)self setSizeByCompressionStage:0];
         }
 
-        objc_storeStrong(&self->_laneGuidance, a3);
+        objc_storeStrong(&self->_laneGuidance, guidance);
         [(CarManeuverView *)self _updateContents];
       }
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = CarManeuverView;
-  v4 = a3;
-  [(CarManeuverView *)&v10 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(CarManeuverView *)&v10 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(CarManeuverView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(CarManeuverView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     lastRenderedShieldSignID = self->_lastRenderedShieldSignID;
     self->_lastRenderedShieldSignID = 0;
 
-    v9 = [(CarManeuverView *)self _shieldImage];
-    [(UIImageView *)self->_shieldView setImage:v9];
+    _shieldImage = [(CarManeuverView *)self _shieldImage];
+    [(UIImageView *)self->_shieldView setImage:_shieldImage];
   }
 }
 
-- (void)setLayoutType:(unint64_t)a3
+- (void)setLayoutType:(unint64_t)type
 {
-  v5 = [(CarManeuverView *)self configuredStyle];
-  v6 = [v5 layoutType];
+  configuredStyle = [(CarManeuverView *)self configuredStyle];
+  layoutType = [configuredStyle layoutType];
 
-  if (v6 != a3)
+  if (layoutType != type)
   {
-    v7 = [(CarManeuverView *)self configuredStyle];
-    [v7 setLayoutType:a3];
+    configuredStyle2 = [(CarManeuverView *)self configuredStyle];
+    [configuredStyle2 setLayoutType:type];
 
-    v8 = [(CarManeuverView *)self lowGuidanceStyle];
-    [v8 setLayoutType:a3];
+    lowGuidanceStyle = [(CarManeuverView *)self lowGuidanceStyle];
+    [lowGuidanceStyle setLayoutType:type];
 
     [(CarManeuverView *)self resetCompressionSizes];
     [(CarManeuverView *)self _setupConstraints];
@@ -1834,12 +1834,12 @@ LABEL_11:
 - (void)_updateSubviews
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v3 userInterfaceLayoutDirection];
 
-  v5 = [(CarManeuverView *)self style];
-  v6 = [v5 variant];
+  style = [(CarManeuverView *)self style];
+  variant = [style variant];
 
-  if (v6 == 2)
+  if (variant == 2)
   {
     v10 = 1;
     [(NavSignLaneGuidanceView *)self->_laneGuidanceView setHidden:1];
@@ -1849,7 +1849,7 @@ LABEL_11:
     v11 = &OBJC_IVAR___CarManeuverView__shieldView;
   }
 
-  else if (v6 == 1)
+  else if (variant == 1)
   {
     v9 = 1;
     [(NavSignLaneGuidanceView *)self->_laneGuidanceView setHidden:1];
@@ -1862,33 +1862,33 @@ LABEL_11:
 
   else
   {
-    if (v6)
+    if (variant)
     {
       return;
     }
 
-    v7 = [(CarManeuverView *)self shouldShowLaneGuidance];
+    shouldShowLaneGuidance = [(CarManeuverView *)self shouldShowLaneGuidance];
     laneGuidanceView = self->_laneGuidanceView;
-    if (!v7)
+    if (!shouldShowLaneGuidance)
     {
       [(NavSignLaneGuidanceView *)laneGuidanceView setHidden:1];
       [(NavSignLabel *)self->_distanceLabel setHidden:0];
-      if ([(CarManeuverView *)self _usesLargeScreenLayout]&& v4 == 1)
+      if ([(CarManeuverView *)self _usesLargeScreenLayout]&& userInterfaceLayoutDirection == 1)
       {
         v15 = 2;
       }
 
       else
       {
-        v16 = [(CarManeuverView *)self _usesLargeScreenLayout];
-        if (v4 == 1)
+        _usesLargeScreenLayout = [(CarManeuverView *)self _usesLargeScreenLayout];
+        if (userInterfaceLayoutDirection == 1)
         {
           v17 = 1;
         }
 
         else
         {
-          v17 = v16;
+          v17 = _usesLargeScreenLayout;
         }
 
         if (v17)
@@ -1929,65 +1929,65 @@ LABEL_9:
   [v14 setHidden:v10];
 }
 
-- (void)alignSecondarySignSubviewsToPrimaryManeuverView:(id)a3
+- (void)alignSecondarySignSubviewsToPrimaryManeuverView:(id)view
 {
-  v4 = a3;
-  v5 = [(CarManeuverView *)self style];
-  v6 = [v5 isSecondary];
+  viewCopy = view;
+  style = [(CarManeuverView *)self style];
+  isSecondary = [style isSecondary];
 
-  if (v6)
+  if (isSecondary)
   {
-    if (([v4 shouldShowLaneGuidance] & 1) == 0)
+    if (([viewCopy shouldShowLaneGuidance] & 1) == 0)
     {
-      v7 = [v4 maneuverViewCenteringAnchor];
-      if (v7)
+      maneuverViewCenteringAnchor = [viewCopy maneuverViewCenteringAnchor];
+      if (maneuverViewCenteringAnchor)
       {
-        v8 = v7;
-        v9 = [v4 instructionsLabelLeadingAnchor];
+        v8 = maneuverViewCenteringAnchor;
+        instructionsLabelLeadingAnchor = [viewCopy instructionsLabelLeadingAnchor];
 
-        if (v9)
+        if (instructionsLabelLeadingAnchor)
         {
-          v10 = [(CarManeuverView *)self dynamicConstraints];
-          v11 = [v10 objectForKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
-          v12 = [v11 allValues];
-          [NSLayoutConstraint deactivateConstraints:v12];
+          dynamicConstraints = [(CarManeuverView *)self dynamicConstraints];
+          v11 = [dynamicConstraints objectForKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
+          allValues = [v11 allValues];
+          [NSLayoutConstraint deactivateConstraints:allValues];
 
-          v13 = [(CarManeuverView *)self dynamicConstraints];
-          v14 = [v13 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
-          v15 = [v14 allValues];
-          [NSLayoutConstraint deactivateConstraints:v15];
+          dynamicConstraints2 = [(CarManeuverView *)self dynamicConstraints];
+          v14 = [dynamicConstraints2 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
+          allValues2 = [v14 allValues];
+          [NSLayoutConstraint deactivateConstraints:allValues2];
 
           v16 = [[NSMutableDictionary alloc] initWithCapacity:2];
-          v17 = [(GuidanceManeuverView *)self->_arrowView centerXAnchor];
-          v18 = [v4 maneuverViewCenteringAnchor];
-          v19 = [v17 constraintEqualToAnchor:v18];
-          v20 = [(GuidanceManeuverView *)self->_arrowView centerXAnchor];
-          v21 = [v20 maps_uniqueKey];
-          [v16 setObject:v19 forKeyedSubscript:v21];
+          centerXAnchor = [(GuidanceManeuverView *)self->_arrowView centerXAnchor];
+          maneuverViewCenteringAnchor2 = [viewCopy maneuverViewCenteringAnchor];
+          v19 = [centerXAnchor constraintEqualToAnchor:maneuverViewCenteringAnchor2];
+          centerXAnchor2 = [(GuidanceManeuverView *)self->_arrowView centerXAnchor];
+          maps_uniqueKey = [centerXAnchor2 maps_uniqueKey];
+          [v16 setObject:v19 forKeyedSubscript:maps_uniqueKey];
 
           if ([(CarManeuverView *)self _usesLargeScreenLayout])
           {
-            v22 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
-            v23 = [v4 instructionsLabelLeadingAnchor];
-            v24 = [v22 constraintEqualToAnchor:v23];
-            v25 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
-            v26 = [v25 maps_uniqueKey];
-            [v16 setObject:v24 forKeyedSubscript:v26];
+            leadingAnchor = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
+            instructionsLabelLeadingAnchor2 = [viewCopy instructionsLabelLeadingAnchor];
+            maps_uniqueKey4 = [leadingAnchor constraintEqualToAnchor:instructionsLabelLeadingAnchor2];
+            leadingAnchor2 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
+            maps_uniqueKey2 = [leadingAnchor2 maps_uniqueKey];
+            [v16 setObject:maps_uniqueKey4 forKeyedSubscript:maps_uniqueKey2];
           }
 
           else
           {
-            v36 = [(CarManeuverView *)self dynamicConstraints];
-            v37 = [v36 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
-            v38 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
-            v39 = [v38 maps_uniqueKey];
-            v22 = [v37 objectForKeyedSubscript:v39];
+            dynamicConstraints3 = [(CarManeuverView *)self dynamicConstraints];
+            v37 = [dynamicConstraints3 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
+            leadingAnchor3 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
+            maps_uniqueKey3 = [leadingAnchor3 maps_uniqueKey];
+            leadingAnchor = [v37 objectForKeyedSubscript:maps_uniqueKey3];
 
-            if (v22)
+            if (leadingAnchor)
             {
-              v23 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
-              v24 = [v23 maps_uniqueKey];
-              [v16 setObject:v22 forKeyedSubscript:v24];
+              instructionsLabelLeadingAnchor2 = [(NavSignLabel *)self->_instructionsLabel leadingAnchor];
+              maps_uniqueKey4 = [instructionsLabelLeadingAnchor2 maps_uniqueKey];
+              [v16 setObject:leadingAnchor forKeyedSubscript:maps_uniqueKey4];
             }
 
             else
@@ -2011,28 +2011,28 @@ LABEL_9:
                 goto LABEL_21;
               }
 
-              v23 = sub_10006D178();
-              if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+              instructionsLabelLeadingAnchor2 = sub_10006D178();
+              if (!os_log_type_enabled(instructionsLabelLeadingAnchor2, OS_LOG_TYPE_ERROR))
               {
 LABEL_20:
 
 LABEL_21:
                 v40 = [v16 copy];
-                v41 = [(CarManeuverView *)self dynamicConstraints];
-                [v41 setObject:v40 forKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
+                dynamicConstraints4 = [(CarManeuverView *)self dynamicConstraints];
+                [dynamicConstraints4 setObject:v40 forKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
 
-                v42 = [(CarManeuverView *)self dynamicConstraints];
-                v43 = [v42 objectForKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
-                v44 = [v43 allValues];
-                [NSLayoutConstraint activateConstraints:v44];
+                dynamicConstraints5 = [(CarManeuverView *)self dynamicConstraints];
+                v43 = [dynamicConstraints5 objectForKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
+                allValues3 = [v43 allValues];
+                [NSLayoutConstraint activateConstraints:allValues3];
 
                 goto LABEL_16;
               }
 
-              v24 = +[NSThread callStackSymbols];
+              maps_uniqueKey4 = +[NSThread callStackSymbols];
               v46 = 138412290;
-              v47 = v24;
-              _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@", &v46, 0xCu);
+              v47 = maps_uniqueKey4;
+              _os_log_impl(&_mh_execute_header, instructionsLabelLeadingAnchor2, OS_LOG_TYPE_ERROR, "%@", &v46, 0xCu);
             }
           }
 
@@ -2041,15 +2041,15 @@ LABEL_21:
       }
     }
 
-    v31 = [(CarManeuverView *)self dynamicConstraints];
-    v32 = [v31 objectForKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
-    v33 = [v32 allValues];
-    [NSLayoutConstraint deactivateConstraints:v33];
+    dynamicConstraints6 = [(CarManeuverView *)self dynamicConstraints];
+    v32 = [dynamicConstraints6 objectForKeyedSubscript:@"SecondaryAligningConstraintsLargeScreen"];
+    allValues4 = [v32 allValues];
+    [NSLayoutConstraint deactivateConstraints:allValues4];
 
-    v29 = [(CarManeuverView *)self dynamicConstraints];
-    v34 = [v29 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
-    v35 = [v34 allValues];
-    [NSLayoutConstraint activateConstraints:v35];
+    dynamicConstraints7 = [(CarManeuverView *)self dynamicConstraints];
+    v34 = [dynamicConstraints7 objectForKeyedSubscript:@"SecondaryAligningConstraintsSmallScreen"];
+    allValues5 = [v34 allValues];
+    [NSLayoutConstraint activateConstraints:allValues5];
 
     goto LABEL_15;
   }
@@ -2075,13 +2075,13 @@ LABEL_21:
 
   if (sub_100E03634())
   {
-    v29 = sub_10006D178();
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    dynamicConstraints7 = sub_10006D178();
+    if (os_log_type_enabled(dynamicConstraints7, OS_LOG_TYPE_ERROR))
     {
       v30 = +[NSThread callStackSymbols];
       v46 = 138412290;
       v47 = v30;
-      _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%@", &v46, 0xCu);
+      _os_log_impl(&_mh_execute_header, dynamicConstraints7, OS_LOG_TYPE_ERROR, "%@", &v46, 0xCu);
     }
 
 LABEL_15:
@@ -2119,9 +2119,9 @@ LABEL_16:
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v14 = [(GuidanceManeuverView *)v10 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(GuidanceManeuverView *)v10 initWithFrame:CGRectZero.origin.x, y, width, height];
   arrowView = self->_arrowView;
-  self->_arrowView = v14;
+  self->_arrowView = height;
 
   [(GuidanceManeuverView *)self->_arrowView setShieldIdiom:1];
   [(GuidanceManeuverView *)self->_arrowView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2131,19 +2131,19 @@ LABEL_16:
   [(GuidanceManeuverView *)self->_arrowView setContentCompressionResistancePriority:1 forAxis:v17];
   LODWORD(v18) = 1148846080;
   [(GuidanceManeuverView *)self->_arrowView setContentHuggingPriority:0 forAxis:v18];
-  v19 = [(CarManeuverView *)self style];
-  v20 = [v19 variant];
+  style = [(CarManeuverView *)self style];
+  variant = [style variant];
 
-  if (v20 != 2)
+  if (variant != 2)
   {
     LODWORD(v21) = 1148846080;
     [(GuidanceManeuverView *)self->_arrowView setContentHuggingPriority:1 forAxis:v21];
   }
 
   [(CarManeuverView *)self addSubview:self->_arrowView];
-  v22 = [[NavSignLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[NavSignLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   distanceLabel = self->_distanceLabel;
-  self->_distanceLabel = v22;
+  self->_distanceLabel = height2;
 
   [(NavSignLabel *)self->_distanceLabel setAccessibilityIdentifier:@"DistanceLabel"];
   [(NavSignLabel *)self->_distanceLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2157,8 +2157,8 @@ LABEL_16:
   [(NavSignLabel *)self->_distanceLabel setMaxNumberOfLinesWithLongestAlternative:1];
   [(NavSignLabel *)self->_distanceLabel setMaxNumberOfTotalLines:1];
   [(NavSignLabel *)self->_distanceLabel setPerferredFontAdjustsFontSizeToFitWidth:1];
-  v27 = [(NavSignLabel *)self->_distanceLabel font];
-  [v27 pointSize];
+  font = [(NavSignLabel *)self->_distanceLabel font];
+  [font pointSize];
   v29 = self->_distanceLabel;
   if (10.0 / v28 > 1.0)
   {
@@ -2167,17 +2167,17 @@ LABEL_16:
 
   else
   {
-    v30 = [(NavSignLabel *)v29 font];
-    [v30 pointSize];
+    font2 = [(NavSignLabel *)v29 font];
+    [font2 pointSize];
     [(NavSignLabel *)self->_distanceLabel setPreferredFontMinimumScaleFactor:10.0 / v31];
   }
 
   [(NavSignLabel *)self->_distanceLabel setInlineShieldSize:4];
   [(NavSignLabel *)self->_distanceLabel setDelegate:self];
   [(CarManeuverView *)self addSubview:self->_distanceLabel];
-  v32 = [[NavSignLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height3 = [[NavSignLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   instructionsLabel = self->_instructionsLabel;
-  self->_instructionsLabel = v32;
+  self->_instructionsLabel = height3;
 
   [(NavSignLabel *)self->_instructionsLabel setAccessibilityIdentifier:@"InstructionsLabel"];
   [(NavSignLabel *)self->_instructionsLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2190,8 +2190,8 @@ LABEL_16:
   if (self->_destination - 3 <= 1)
   {
     [(NavSignLabel *)self->_instructionsLabel setMaxNumberOfLinesWithLongestAlternative:1];
-    v37 = [(NavSignLabel *)self->_instructionsLabel font];
-    [v37 pointSize];
+    font3 = [(NavSignLabel *)self->_instructionsLabel font];
+    [font3 pointSize];
     v39 = self->_instructionsLabel;
     if (10.0 / v38 > 1.0)
     {
@@ -2200,14 +2200,14 @@ LABEL_16:
 
     else
     {
-      v40 = [(NavSignLabel *)v39 font];
-      [v40 pointSize];
+      font4 = [(NavSignLabel *)v39 font];
+      [font4 pointSize];
       [(NavSignLabel *)self->_instructionsLabel setPreferredFontMinimumScaleFactor:10.0 / v41];
     }
   }
 
-  v42 = [(CarManeuverView *)self style];
-  if ([v42 isSecondary])
+  style2 = [(CarManeuverView *)self style];
+  if ([style2 isSecondary])
   {
     v43 = 3;
   }
@@ -2244,20 +2244,20 @@ LABEL_16:
   [(CarManeuverView *)self addSubview:v49];
 }
 
-- (CGSize)sizeForCompressionStage:(unint64_t)a3
+- (CGSize)sizeForCompressionStage:(unint64_t)stage
 {
-  v5 = [(CarManeuverView *)self sizeByCompressionStage];
-  v6 = [v5 count];
+  sizeByCompressionStage = [(CarManeuverView *)self sizeByCompressionStage];
+  v6 = [sizeByCompressionStage count];
 
-  if (v6 <= a3)
+  if (v6 <= stage)
   {
-    v7 = [(CarManeuverView *)self sizeByCompressionStage];
-    a3 = [v7 count] - 1;
+    sizeByCompressionStage2 = [(CarManeuverView *)self sizeByCompressionStage];
+    stage = [sizeByCompressionStage2 count] - 1;
   }
 
-  v8 = [(CarManeuverView *)self sizeByCompressionStage];
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  sizeByCompressionStage3 = [(CarManeuverView *)self sizeByCompressionStage];
+  v9 = [NSNumber numberWithUnsignedInteger:stage];
+  v10 = [sizeByCompressionStage3 objectForKeyedSubscript:v9];
 
   [v10 CGSizeValue];
   v12 = v11;
@@ -2270,12 +2270,12 @@ LABEL_16:
   return result;
 }
 
-- (unint64_t)compressionStageForSize:(CGSize)a3
+- (unint64_t)compressionStageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CarManeuverView *)self style];
-  if ([v6 isSecondary])
+  height = size.height;
+  width = size.width;
+  style = [(CarManeuverView *)self style];
+  if ([style isSecondary])
   {
     v7 = 2;
   }
@@ -2288,9 +2288,9 @@ LABEL_16:
   v8 = 0;
   while (1)
   {
-    v9 = [(CarManeuverView *)self sizeByCompressionStage];
+    sizeByCompressionStage = [(CarManeuverView *)self sizeByCompressionStage];
     v10 = [NSNumber numberWithUnsignedInteger:v8];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    v11 = [sizeByCompressionStage objectForKeyedSubscript:v10];
     [v11 CGSizeValue];
     v13 = v12;
 
@@ -2310,15 +2310,15 @@ LABEL_16:
   v16 = sub_10007E168();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [(CarManeuverView *)self variant];
-    if (v17 > 2)
+    variant = [(CarManeuverView *)self variant];
+    if (variant > 2)
     {
       v18 = @".Unknown";
     }
 
     else
     {
-      v18 = *(&off_101656248 + v17);
+      v18 = *(&off_101656248 + variant);
     }
 
     v19 = v18;
@@ -2328,7 +2328,7 @@ LABEL_16:
     v22 = 138413058;
     v23 = v19;
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v20;
     v28 = 2048;
@@ -2339,38 +2339,38 @@ LABEL_16:
   return v8;
 }
 
-- (void)setBlurMode:(int64_t)a3
+- (void)setBlurMode:(int64_t)mode
 {
-  v5 = [(CarManeuverView *)self style];
-  v6 = [v5 blurMode];
+  style = [(CarManeuverView *)self style];
+  blurMode = [style blurMode];
 
-  if (v6 != a3)
+  if (blurMode != mode)
   {
-    v7 = [(CarManeuverView *)self style];
-    [v7 setBlurMode:a3];
+    style2 = [(CarManeuverView *)self style];
+    [style2 setBlurMode:mode];
 
     [(CarManeuverView *)self _updateStyling];
   }
 }
 
-- (void)setCompressionStage:(unint64_t)a3
+- (void)setCompressionStage:(unint64_t)stage
 {
-  if (self->_compressionStage != a3)
+  if (self->_compressionStage != stage)
   {
     if ([(CarManeuverView *)self stopUpdatingCompressionStage])
     {
       v5 = sub_10007E168();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(CarManeuverView *)self variant];
-        if (v6 > 2)
+        variant = [(CarManeuverView *)self variant];
+        if (variant > 2)
         {
           v7 = @".Unknown";
         }
 
         else
         {
-          v7 = *(&off_101656248 + v6);
+          v7 = *(&off_101656248 + variant);
         }
 
         v15 = v7;
@@ -2378,23 +2378,23 @@ LABEL_16:
         v20 = 138413058;
         v21 = v15;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2048;
-        v25 = compressionStage;
+        stageCopy2 = compressionStage;
         v26 = 2048;
-        v27 = a3;
+        stageCopy = stage;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, Tried to change compressionStage from: %lu to %lu, but stopUpdatingCompressionStage was set, so ignoring the call.", &v20, 0x2Au);
       }
     }
 
     else
     {
-      v8 = [(CarManeuverView *)self configuredStyle];
-      v9 = [v8 variant] != 2 && (a3 == 6 || self->_compressionStage == 6);
+      configuredStyle = [(CarManeuverView *)self configuredStyle];
+      v9 = [configuredStyle variant] != 2 && (stage == 6 || self->_compressionStage == 6);
 
-      self->_compressionStage = a3;
-      v11 = [(CarManeuverView *)self style];
-      [v11 setCompressionStage:a3];
+      self->_compressionStage = stage;
+      style = [(CarManeuverView *)self style];
+      [style setCompressionStage:stage];
 
       if (v9)
       {
@@ -2405,15 +2405,15 @@ LABEL_16:
       v12 = sub_10007E168();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [(CarManeuverView *)self variant];
-        if (v13 > 2)
+        variant2 = [(CarManeuverView *)self variant];
+        if (variant2 > 2)
         {
           v14 = @".Unknown";
         }
 
         else
         {
-          v14 = *(&off_101656248 + v13);
+          v14 = *(&off_101656248 + variant2);
         }
 
         v17 = v14;
@@ -2427,11 +2427,11 @@ LABEL_16:
         v20 = 138413058;
         v21 = v17;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2048;
-        v25 = a3;
+        stageCopy2 = stage;
         v26 = 2112;
-        v27 = v19;
+        stageCopy = v19;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, setCompressionStage %lu. redoingConstraints: %@", &v20, 0x2Au);
       }
 
@@ -2441,11 +2441,11 @@ LABEL_16:
   }
 }
 
-- (void)setSecondarySignVisible:(BOOL)a3
+- (void)setSecondarySignVisible:(BOOL)visible
 {
-  if (self->_secondarySignVisible != a3)
+  if (self->_secondarySignVisible != visible)
   {
-    self->_secondarySignVisible = a3;
+    self->_secondarySignVisible = visible;
     [(CarManeuverView *)self setNeedsLayout];
 
     [(CarManeuverView *)self layoutIfNeeded];
@@ -2460,28 +2460,28 @@ LABEL_16:
   v3 = sub_10007E168();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarManeuverView *)self variant];
-    if (v4 > 2)
+    variant = [(CarManeuverView *)self variant];
+    if (variant > 2)
     {
       v5 = @".Unknown";
     }
 
     else
     {
-      v5 = *(&off_101656248 + v4);
+      v5 = *(&off_101656248 + variant);
     }
 
     v6 = v5;
     [(CarManeuverView *)self frame];
     v7 = NSStringFromCGRect(v59);
-    v8 = [(CarManeuverView *)self compressionStage];
-    v9 = [(CarManeuverView *)self style];
-    v10 = [v9 variant];
-    v11 = [(NavSignLabel *)self->_instructionsLabel maxNumberOfTotalLines];
-    v12 = [(CarManeuverView *)self labelLineBreakMode];
-    v13 = [(CarManeuverView *)self _shouldShowLaneGuidance];
+    compressionStage = [(CarManeuverView *)self compressionStage];
+    style = [(CarManeuverView *)self style];
+    variant2 = [style variant];
+    maxNumberOfTotalLines = [(NavSignLabel *)self->_instructionsLabel maxNumberOfTotalLines];
+    labelLineBreakMode = [(CarManeuverView *)self labelLineBreakMode];
+    _shouldShowLaneGuidance = [(CarManeuverView *)self _shouldShowLaneGuidance];
     v14 = @"YES";
-    if (!v13)
+    if (!_shouldShowLaneGuidance)
     {
       v14 = @"NO";
     }
@@ -2490,17 +2490,17 @@ LABEL_16:
     *buf = 138414082;
     v44 = v6;
     v45 = 2048;
-    v46 = self;
+    selfCopy3 = self;
     v47 = 2112;
     v48 = v7;
     v49 = 2048;
-    v50 = v8;
+    v50 = compressionStage;
     v51 = 2048;
-    v52 = v10;
+    v52 = variant2;
     v53 = 2048;
-    v54 = v11;
+    v54 = maxNumberOfTotalLines;
     v55 = 2048;
-    v56 = v12;
+    v56 = labelLineBreakMode;
     v57 = 2112;
     v58 = v15;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, layoutSubviews before updating styles, frame: %@, compressionStage: %lu, variant: %lu, instructionMaxLines: %ld, lineBreakMode: %ld, shouldShowLaneGuidance: %@", buf, 0x52u);
@@ -2511,53 +2511,53 @@ LABEL_16:
   [(CarManeuverView *)self _updateConstraints];
   [(NavSignLabel *)self->_distanceLabel updateLabelIfNeeded];
   [(NavSignLabel *)self->_instructionsLabel updateLabelIfNeeded];
-  v16 = [(CarManeuverView *)self style];
-  if ([v16 variant])
+  style2 = [(CarManeuverView *)self style];
+  if ([style2 variant])
   {
     goto LABEL_9;
   }
 
-  v20 = [(UIImageView *)self->_shieldView image];
-  if (!v20)
+  image = [(UIImageView *)self->_shieldView image];
+  if (!image)
   {
     goto LABEL_9;
   }
 
-  v21 = v20;
-  v22 = [(UIImageView *)self->_shieldView image];
-  [v22 size];
+  v21 = image;
+  image2 = [(UIImageView *)self->_shieldView image];
+  [image2 size];
   v24 = v23;
 
   if (v24 > 0.0)
   {
     [(UIImageView *)self->_shieldView frame];
     v26 = v25;
-    v27 = [(UIImageView *)self->_shieldView image];
-    [v27 size];
+    image3 = [(UIImageView *)self->_shieldView image];
+    [image3 size];
     [(UIImageView *)self->_shieldView setHidden:v26 / v28 < 0.779999971];
 
     if ([(UIImageView *)self->_shieldView isHidden])
     {
-      v16 = sub_10007E168();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+      style2 = sub_10007E168();
+      if (os_log_type_enabled(style2, OS_LOG_TYPE_INFO))
       {
-        v29 = [(CarManeuverView *)self variant];
-        if (v29 > 2)
+        variant3 = [(CarManeuverView *)self variant];
+        if (variant3 > 2)
         {
           v30 = @".Unknown";
         }
 
         else
         {
-          v30 = *(&off_101656248 + v29);
+          v30 = *(&off_101656248 + variant3);
         }
 
         v41 = v30;
         *buf = 138412546;
         v44 = v41;
         v45 = 2048;
-        v46 = self;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, Hide exit shield because it scaled below the min threshold to fit with content.", buf, 0x16u);
+        selfCopy3 = self;
+        _os_log_impl(&_mh_execute_header, style2, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, Hide exit shield because it scaled below the min threshold to fit with content.", buf, 0x16u);
       }
 
 LABEL_9:
@@ -2567,28 +2567,28 @@ LABEL_9:
   v17 = sub_10007E168();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [(CarManeuverView *)self variant];
-    if (v18 > 2)
+    variant4 = [(CarManeuverView *)self variant];
+    if (variant4 > 2)
     {
       v19 = @".Unknown";
     }
 
     else
     {
-      v19 = *(&off_101656248 + v18);
+      v19 = *(&off_101656248 + variant4);
     }
 
     v31 = v19;
     [(CarManeuverView *)self frame];
     v32 = NSStringFromCGRect(v60);
-    v33 = [(CarManeuverView *)self compressionStage];
-    v34 = [(CarManeuverView *)self style];
-    v35 = [v34 variant];
-    v36 = [(NavSignLabel *)self->_instructionsLabel maxNumberOfTotalLines];
-    v37 = [(CarManeuverView *)self labelLineBreakMode];
-    v38 = [(CarManeuverView *)self _shouldShowLaneGuidance];
+    compressionStage2 = [(CarManeuverView *)self compressionStage];
+    style3 = [(CarManeuverView *)self style];
+    variant5 = [style3 variant];
+    maxNumberOfTotalLines2 = [(NavSignLabel *)self->_instructionsLabel maxNumberOfTotalLines];
+    labelLineBreakMode2 = [(CarManeuverView *)self labelLineBreakMode];
+    _shouldShowLaneGuidance2 = [(CarManeuverView *)self _shouldShowLaneGuidance];
     v39 = @"YES";
-    if (!v38)
+    if (!_shouldShowLaneGuidance2)
     {
       v39 = @"NO";
     }
@@ -2597,27 +2597,27 @@ LABEL_9:
     *buf = 138414082;
     v44 = v31;
     v45 = 2048;
-    v46 = self;
+    selfCopy3 = self;
     v47 = 2112;
     v48 = v32;
     v49 = 2048;
-    v50 = v33;
+    v50 = compressionStage2;
     v51 = 2048;
-    v52 = v35;
+    v52 = variant5;
     v53 = 2048;
-    v54 = v36;
+    v54 = maxNumberOfTotalLines2;
     v55 = 2048;
-    v56 = v37;
+    v56 = labelLineBreakMode2;
     v57 = 2112;
     v58 = v40;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@ maneuverView: %p, layoutSubviews after updating styles, frame: %@, compressionStage: %lu, variant: %lu, instructionMaxLines: %ld, lineBreakMode: %ld, shouldShowLaneGuidance: %@", buf, 0x52u);
   }
 }
 
-- (CarManeuverView)initWithGuidance:(id)a3 variant:(unint64_t)a4 destination:(unint64_t)a5 layoutType:(unint64_t)a6 sizeDataSource:(id)a7
+- (CarManeuverView)initWithGuidance:(id)guidance variant:(unint64_t)variant destination:(unint64_t)destination layoutType:(unint64_t)type sizeDataSource:(id)source
 {
-  v13 = a3;
-  v14 = a7;
+  guidanceCopy = guidance;
+  sourceCopy = source;
   v38.receiver = self;
   v38.super_class = CarManeuverView;
   v15 = [(CarManeuverView *)&v38 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -2625,18 +2625,18 @@ LABEL_9:
   if (v15)
   {
     [(CarManeuverView *)v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    objc_storeWeak(&v16->_sizeDataSource, v14);
+    objc_storeWeak(&v16->_sizeDataSource, sourceCopy);
     v17 = objc_opt_new();
     dynamicConstraints = v16->_dynamicConstraints;
     v16->_dynamicConstraints = v17;
 
-    v16->_destination = a5;
-    objc_storeStrong(&v16->_guidance, a3);
-    v19 = [CarManeuverViewStyle styleWithVariant:a4 destination:a5 layoutType:a6];
+    v16->_destination = destination;
+    objc_storeStrong(&v16->_guidance, guidance);
+    v19 = [CarManeuverViewStyle styleWithVariant:variant destination:destination layoutType:type];
     configuredStyle = v16->_configuredStyle;
     v16->_configuredStyle = v19;
 
-    v21 = [CarManeuverViewStyle styleWithVariant:1 destination:a5 layoutType:0];
+    v21 = [CarManeuverViewStyle styleWithVariant:1 destination:destination layoutType:0];
     lowGuidanceStyle = v16->_lowGuidanceStyle;
     v16->_lowGuidanceStyle = v21;
 
@@ -2671,15 +2671,15 @@ LABEL_15:
     v29 = [NSString stringWithFormat:@"%@<%p>", v26, v24];
 LABEL_8:
 
-    v30 = [(CarManeuverView *)v24 variant];
-    if (v30 > 2)
+    variant = [(CarManeuverView *)v24 variant];
+    if (variant > 2)
     {
       v31 = @".Unknown";
     }
 
     else
     {
-      v31 = *(&off_101656248 + v30);
+      v31 = *(&off_101656248 + variant);
     }
 
     v32 = v31;
@@ -2695,7 +2695,7 @@ LABEL_8:
     }
 
     v35 = v34;
-    v36 = [v13 signID];
+    signID = [guidanceCopy signID];
     *buf = 138544386;
     v40 = v29;
     v41 = 2112;
@@ -2703,9 +2703,9 @@ LABEL_8:
     v43 = 2112;
     v44 = v35;
     v45 = 2112;
-    v46 = v13;
+    v46 = guidanceCopy;
     v47 = 2114;
-    v48 = v36;
+    v48 = signID;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "[%{public}@] Initialized variant: %@, destination: %@, guidance: %@, %{public}@", buf, 0x34u);
 
     goto LABEL_15;

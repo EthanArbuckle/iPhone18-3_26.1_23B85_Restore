@@ -1,8 +1,8 @@
 @interface SCUIInterventionAlertController
-+ (id)_viewControllerWithAnalysis:(id)a3 workflow:(int64_t)a4 contextDictionary:(id)a5 options:(int64_t)a6 error:(id *)a7;
-+ (id)viewControllerWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5;
-- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5;
-- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5 type:(int64_t)a6;
++ (id)_viewControllerWithAnalysis:(id)analysis workflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options error:(id *)error;
++ (id)viewControllerWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options;
+- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options;
+- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options type:(int64_t)type;
 - (SCUIInterventionViewControllerDelegate)interventionDelegate;
 - (void)presentAlertScreen;
 - (void)screenOne_acceptButtonPressed;
@@ -15,17 +15,17 @@
 
 @implementation SCUIInterventionAlertController
 
-- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5
+- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options
 {
-  v8 = a4;
-  v9 = [(SCUIInterventionAlertController *)self initWithWorkflow:a3 contextDictionary:v8 options:a5 type:SCUICurrentInterventionType()];
+  dictionaryCopy = dictionary;
+  v9 = [(SCUIInterventionAlertController *)self initWithWorkflow:workflow contextDictionary:dictionaryCopy options:options type:SCUICurrentInterventionType()];
 
   return v9;
 }
 
-- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5 type:(int64_t)a6
+- (SCUIInterventionAlertController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options type:(int64_t)type
 {
-  v10 = a4;
+  dictionaryCopy = dictionary;
   v11 = objc_opt_new();
   v18.receiver = self;
   v18.super_class = SCUIInterventionAlertController;
@@ -33,13 +33,13 @@
 
   if (v12)
   {
-    v12->_workflow = a3;
-    v13 = [v10 copy];
+    v12->_workflow = workflow;
+    v13 = [dictionaryCopy copy];
     contextDictionary = v12->_contextDictionary;
     v12->_contextDictionary = v13;
 
-    v12->_options = a5 | 1;
-    v12->_type = a6;
+    v12->_options = options | 1;
+    v12->_type = type;
     v12->_contentScreen = 0;
     v15 = [[SCUIInterventionScreenModel alloc] initWithScreen:v12->_contentScreen workflow:v12->_workflow type:v12->_type options:v12->_options];
     screenModel = v12->_screenModel;
@@ -49,10 +49,10 @@
   return v12;
 }
 
-+ (id)viewControllerWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5
++ (id)viewControllerWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options
 {
-  v7 = a4;
-  v8 = [objc_alloc(objc_opt_class()) initWithWorkflow:a3 contextDictionary:v7 options:a5];
+  dictionaryCopy = dictionary;
+  v8 = [objc_alloc(objc_opt_class()) initWithWorkflow:workflow contextDictionary:dictionaryCopy options:options];
 
   return v8;
 }
@@ -66,8 +66,8 @@
   v32 = 0u;
   v33 = 0u;
   val = self;
-  v4 = [(SCUIInterventionScreenModel *)self->_screenModel bullets];
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  bullets = [(SCUIInterventionScreenModel *)self->_screenModel bullets];
+  v5 = [bullets countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v5)
   {
     v6 = *v31;
@@ -77,7 +77,7 @@
       {
         if (*v31 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bullets);
         }
 
         v8 = *(*(&v30 + 1) + 8 * i);
@@ -86,27 +86,27 @@
           [v3 appendString:@"\n\n"];
         }
 
-        v9 = [v8 text];
-        [v3 appendString:v9];
+        text = [v8 text];
+        [v3 appendString:text];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v5 = [bullets countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v5);
   }
 
   v10 = MEMORY[0x1E69DC650];
-  v11 = [(SCUIInterventionScreenModel *)val->_screenModel title];
-  v22 = [v10 alertControllerWithTitle:v11 message:v3 preferredStyle:1];
+  title = [(SCUIInterventionScreenModel *)val->_screenModel title];
+  v22 = [v10 alertControllerWithTitle:title message:v3 preferredStyle:1];
 
   objc_initWeak(&location, val);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [(SCUIInterventionScreenModel *)val->_screenModel actions];
-  v13 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+  actions = [(SCUIInterventionScreenModel *)val->_screenModel actions];
+  v13 = [actions countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v13)
   {
     v14 = *v26;
@@ -116,25 +116,25 @@
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(actions);
         }
 
         v16 = *(*(&v25 + 1) + 8 * j);
         v17 = MEMORY[0x1E69DC648];
-        v18 = [v16 title];
+        title2 = [v16 title];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __53__SCUIInterventionAlertController_presentAlertScreen__block_invoke;
         v23[3] = &unk_1E7FF2560;
         v23[4] = v16;
         objc_copyWeak(&v24, &location);
-        v19 = [v17 actionWithTitle:v18 style:0 handler:v23];
+        v19 = [v17 actionWithTitle:title2 style:0 handler:v23];
 
         [v22 addAction:v19];
         objc_destroyWeak(&v24);
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      v13 = [actions countByEnumeratingWithState:&v25 objects:v34 count:16];
     }
 
     while (v13);
@@ -194,27 +194,27 @@ void __53__SCUIInterventionAlertController_presentAlertScreen__block_invoke(uint
 
 - (void)screenOne_notNowButtonPressed
 {
-  v3 = [(SCUIInterventionAlertController *)self screenModel];
-  [v3 collectInterventionInteractionEventWith:3];
+  screenModel = [(SCUIInterventionAlertController *)self screenModel];
+  [screenModel collectInterventionInteractionEventWith:3];
 
-  v4 = [(SCUIInterventionAlertController *)self interventionDelegate];
-  [v4 didRejectForInterventionViewController:self];
+  interventionDelegate = [(SCUIInterventionAlertController *)self interventionDelegate];
+  [interventionDelegate didRejectForInterventionViewController:self];
 
   [(SCUIInterventionAlertController *)self dismissViewControllerAnimated:0 completion:0];
 }
 
 - (void)screenOne_moreHelpButtonPressed
 {
-  v3 = [(SCUIInterventionAlertController *)self screenModel];
-  [v3 collectResourceInteractionEventWith:2];
+  screenModel = [(SCUIInterventionAlertController *)self screenModel];
+  [screenModel collectResourceInteractionEventWith:2];
 
-  v4 = [(SCUIInterventionAlertController *)self interventionDelegate];
+  interventionDelegate = [(SCUIInterventionAlertController *)self interventionDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SCUIInterventionAlertController *)self interventionDelegate];
-    [v6 didRequestMoreHelpForInterventionViewController:self];
+    interventionDelegate2 = [(SCUIInterventionAlertController *)self interventionDelegate];
+    [interventionDelegate2 didRequestMoreHelpForInterventionViewController:self];
   }
 
   else
@@ -237,16 +237,16 @@ void __53__SCUIInterventionAlertController_presentAlertScreen__block_invoke(uint
 
 - (void)screenTwo_messageButtonPressed
 {
-  v3 = [(SCUIInterventionAlertController *)self screenModel];
-  [v3 collectResourceInteractionEventWith:3];
+  screenModel = [(SCUIInterventionAlertController *)self screenModel];
+  [screenModel collectResourceInteractionEventWith:3];
 
-  v4 = [(SCUIInterventionAlertController *)self interventionDelegate];
+  interventionDelegate = [(SCUIInterventionAlertController *)self interventionDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SCUIInterventionAlertController *)self interventionDelegate];
-    [v6 didContactSomeoneForInterventionViewController:self];
+    interventionDelegate2 = [(SCUIInterventionAlertController *)self interventionDelegate];
+    [interventionDelegate2 didContactSomeoneForInterventionViewController:self];
   }
 
   else
@@ -259,20 +259,20 @@ void __53__SCUIInterventionAlertController_presentAlertScreen__block_invoke(uint
 
 - (void)screenTwo_acceptButtonPressed
 {
-  v3 = [(SCUIInterventionAlertController *)self screenModel];
-  v4 = [(SCUIInterventionAlertController *)self interventionDelegate];
-  [v3 bypassInterventionForContainer:self delegate:v4];
+  screenModel = [(SCUIInterventionAlertController *)self screenModel];
+  interventionDelegate = [(SCUIInterventionAlertController *)self interventionDelegate];
+  [screenModel bypassInterventionForContainer:self delegate:interventionDelegate];
 
   [(SCUIInterventionAlertController *)self dismissViewControllerAnimated:0 completion:0];
 }
 
 - (void)screenTwo_notNowButtonPressed
 {
-  v3 = [(SCUIInterventionAlertController *)self screenModel];
-  [v3 collectInterventionInteractionEventWith:4];
+  screenModel = [(SCUIInterventionAlertController *)self screenModel];
+  [screenModel collectInterventionInteractionEventWith:4];
 
-  v4 = [(SCUIInterventionAlertController *)self interventionDelegate];
-  [v4 didRejectForInterventionViewController:self];
+  interventionDelegate = [(SCUIInterventionAlertController *)self interventionDelegate];
+  [interventionDelegate didRejectForInterventionViewController:self];
 
   [(SCUIInterventionAlertController *)self dismissViewControllerAnimated:0 completion:0];
 }
@@ -284,9 +284,9 @@ void __53__SCUIInterventionAlertController_presentAlertScreen__block_invoke(uint
   return WeakRetained;
 }
 
-+ (id)_viewControllerWithAnalysis:(id)a3 workflow:(int64_t)a4 contextDictionary:(id)a5 options:(int64_t)a6 error:(id *)a7
++ (id)_viewControllerWithAnalysis:(id)analysis workflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options error:(id *)error
 {
-  if (a5)
+  if (dictionary)
   {
     v10 = sub_1BC75BA40();
   }
@@ -296,8 +296,8 @@ void __53__SCUIInterventionAlertController_presentAlertScreen__block_invoke(uint
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = sub_1BC67EE08(a4, v10, a6);
+  analysisCopy = analysis;
+  v12 = sub_1BC67EE08(workflow, v10, options);
 
   return v12;
 }
